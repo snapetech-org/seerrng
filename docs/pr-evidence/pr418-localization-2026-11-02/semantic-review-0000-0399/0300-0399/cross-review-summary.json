@@ -1,0 +1,53 @@
+{
+  "schemaVersion": 1,
+  "crossReviewer": "crossreview-0300-0399",
+  "reviewDate": "2026-11-02",
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "state": "OPEN",
+  "isDraft": true,
+  "head": "d1137d06ffb5af57ef599ac9bf495aff2a990a7b",
+  "tree": "0aa22f0bb43e3e30d216e2ae19939220e05f04f7",
+  "srcTree": "db8d479688d06980e63c5f71362d64f16efa50d8",
+  "window": "W700-749",
+  "sourceIdPositionsInclusive": [
+    300,
+    399
+  ],
+  "directLocales": [
+    "ar",
+    "de",
+    "es",
+    "fr",
+    "hi",
+    "id",
+    "ja",
+    "ko",
+    "pt-BR",
+    "vi",
+    "zh-CN",
+    "zh-TW"
+  ],
+  "correctionProposalsCrossReviewed": 198,
+  "decisionCounts": {
+    "accept": 182,
+    "refine": 16
+  },
+  "held": 0,
+  "priorGermanAppliedExactMatchRowsPreserved": 28,
+  "otherPrimaryAcceptCurrentRowsOutsideCrossReviewScope": 974,
+  "sourceHashesVerified": true,
+  "currentTargetHashesVerified": true,
+  "finalStringHashesRecorded": true,
+  "placeholderMismatches": 0,
+  "primaryLedgerSha256": "11d7f353439fc8a4db6680632c4bfaea731b034e3cbce8eb94ee976734baf107",
+  "primaryLedgerManifestSha256": "ecedddb217ca040f4a71f46253a2540e703a59550747cb423dd37dd38110b1df",
+  "packetChecksumManifestSha256": "c2944e555abc03d9760c81ebadab62cbd0530f2e8ac5084063f9b1f4c9c1ee0f",
+  "exactHeadAttestationSha256": "c8866bbd3dfaba67857a0830c09e5e2abd26e806f7f9f46c273b8277a0204f3f",
+  "limitations": [
+    "This cross-review addresses all 198 correction-needed proposals from the bounded slice; the other 974 primary accept-current rows were not cross-reviewed here.",
+    "The 28 prior German applied-exact-match rows are preserved unchanged and were not re-adjudicated.",
+    "No source/catalog edits, tests/builds/CI, browser work, commits, pushes, or PR operations were performed.",
+    "Review confidence is moderate and is not native-speaker certification."
+  ]
+}

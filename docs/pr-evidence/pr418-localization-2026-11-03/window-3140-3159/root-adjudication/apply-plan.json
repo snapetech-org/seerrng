@@ -1,0 +1,14 @@
+{
+  "head": "536dfdb7630d5f61fc8a90b82bc33234eb432c9f",
+  "tree": "a011ac81dabbcbc46a4a522f1355efc9025fadc1",
+  "sourceCells": 240,
+  "updates": 60,
+  "noChangeCells": 180,
+  "dispositions": {
+    "accept-current": 180,
+    "correction": 35,
+    "refinement": 25
+  },
+  "applyPlan": "apply-plan.jsonl",
+  "precondition": "Require expectedCatalogBlob and expectedCurrentTargetSha256 before each replacement."
+}

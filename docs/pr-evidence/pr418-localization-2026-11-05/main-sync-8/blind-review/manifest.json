@@ -1,0 +1,36 @@
+{
+  "packet": "SeerrNG PR #418 main-sync independent blind translation proposals",
+  "review_head": "ca2309e960733a7486c55b9a761d82771be97cde",
+  "review_tree": "8c5df06aaf1d703ff923bf1fdf8a21c901b9d26d",
+  "candidate_free_input": "../candidate-free/",
+  "candidate_free_input_sha256": {
+    "README.md": "4b094890f197a95f49ce6d48242a0ea4d2e09fcca3c5f4ac9f27d0cbed27061b",
+    "manifest.json": "c9b97c2b7122cd2f74a291ed7b0cecd3a272752be96d5e7c7b8f6b4575c081a7",
+    "candidate-free.jsonl": "807a273055c784ba4eb80130247b02e071d61988d0f7e9beeda040269dd7eae4",
+    "SHA256SUMS.txt": "6153dcd86c8cdf5feec7689c14a0cfeb31ec40688f80f79101f488ea51ebface"
+  },
+  "source_ids": 8,
+  "locales": [
+    "es",
+    "zh_Hans",
+    "hi",
+    "de",
+    "ja",
+    "fr",
+    "pt_BR",
+    "ar",
+    "ko",
+    "zh_Hant",
+    "vi",
+    "id"
+  ],
+  "cells": 96,
+  "proposals": 96,
+  "holds": 0,
+  "revise": 0,
+  "input_targets_absent": 96,
+  "primary_packet_opened": false,
+  "repository_modified": false,
+  "token_audit_file": "token-audit.json",
+  "token_audit_pass": true
+}

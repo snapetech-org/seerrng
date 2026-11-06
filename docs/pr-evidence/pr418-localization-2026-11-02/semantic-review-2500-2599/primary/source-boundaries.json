@@ -1,0 +1,43 @@
+{
+  "definition": "zero-based insertion order after recursively flattening the English catalog in JSON property order",
+  "head": "0905d4be32d8b7ec3b1af701473a3fdf6e0f30a2",
+  "positions": [
+    {
+      "sourceCatalogBlob": "12e04a118c30b71b3714291adeaf9fdb2735cee4",
+      "sourceFileSha256": "75ff3c90b52aedd636a506281ffbd6fb2d3739c61294b6008a517f17647e2316",
+      "sourceId": "components.ReaderDeliveryLink.comicsGrimmoryHelp",
+      "sourceIdSha256": "c3fb5ba79244c2e0d742a264fea5f03ce7567d59bb1e08ef8693087ca0365da2",
+      "sourcePosition": 2499,
+      "sourceText": "Open the Grimmory library in a browser. For page-by-page comic reading, copy Grimmory’s Komga address under Settings > Services > Reader Apps into a compatible app.",
+      "sourceTextSha256": "148d412b3cb387aa6290ff578c70a2072edb724b141078e6702f846aac602bd1"
+    },
+    {
+      "sourceCatalogBlob": "12e04a118c30b71b3714291adeaf9fdb2735cee4",
+      "sourceFileSha256": "75ff3c90b52aedd636a506281ffbd6fb2d3739c61294b6008a517f17647e2316",
+      "sourceId": "components.ReaderDeliveryLink.ebooks",
+      "sourceIdSha256": "b72a0ff2041f9b147f140fbc0cac1194916ec3b00c435da1f244a0bfb9ac083e",
+      "sourcePosition": 2500,
+      "sourceText": "Browse ebooks in {serviceName}",
+      "sourceTextSha256": "f87cf51392d901b263cfe685b5233373f50957613340c2bf4b030ad2788a054b"
+    },
+    {
+      "sourceCatalogBlob": "12e04a118c30b71b3714291adeaf9fdb2735cee4",
+      "sourceFileSha256": "75ff3c90b52aedd636a506281ffbd6fb2d3739c61294b6008a517f17647e2316",
+      "sourceId": "components.ReaderGroupingAction.update",
+      "sourceIdSha256": "743115851d027c7e2ce23e9ed5f950b6b35979acc4e479a7af2452519c02f23c",
+      "sourcePosition": 2599,
+      "sourceText": "Save shelf updates",
+      "sourceTextSha256": "040b02d0eaeb8ca9dfc0899e8f32d072d47cbdb6f67c97d1320270b9fd1d1f4d"
+    },
+    {
+      "sourceCatalogBlob": "12e04a118c30b71b3714291adeaf9fdb2735cee4",
+      "sourceFileSha256": "75ff3c90b52aedd636a506281ffbd6fb2d3739c61294b6008a517f17647e2316",
+      "sourceId": "components.ReaderGroupingAction.updateAction",
+      "sourceIdSha256": "d93f616a0324c33bc29bc0ff91e8df2870786ed2e4a8d8b56ce6a3802c3fa164",
+      "sourcePosition": 2600,
+      "sourceText": "Update reader shelf",
+      "sourceTextSha256": "b7d5fd43fb164b3021821081f36eb7a639f77d34041c1f42abc2029a7952c7a9"
+    }
+  ],
+  "tree": "a09117211080bbd89d32959f17d93b02a82b966f"
+}

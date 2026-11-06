@@ -1,0 +1,2328 @@
+{
+  "application": "SeerrNG",
+  "pr": 418,
+  "entryHead": "77d30ae742aad7245e6e419237fca6a544531e1f",
+  "entryTree": "2c6fe4a0c1c33aa56b01f06a70702f68598509a7",
+  "candidateFreeManifestSha256": "56c41a6e81e270bdc3ef4a318f16d5882b1e9b7dd693f80a8ffcd3cec3d3890c",
+  "crossReviewManifestSha256": "24ff767058f5fafb477d2478c00497926bcf10a5a5dacaa36d03976e6fe03146",
+  "rootAdjudicationSha256": "18c0855e0646b3c3e9221744031b507a6db45b72f28a82b9da0722d94ea3e47f",
+  "changedCells": [
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.toastWebhookTestFailed::ar",
+      "sourceId": "components.Settings.Notifications.NotificationsWebhook.toastWebhookTestFailed",
+      "locale": "ar",
+      "rootDisposition": "correction",
+      "rootTarget": "فشل إرسال إشعار اختبار Webhook.",
+      "rootTargetSha256": "28c3b680835134ceb993dbcf3b97aab96b147831f8c12321fde0e8ca8ca7fa95",
+      "currentTarget": "فشل ارسال تنبيه تجريبي الى Webhook.",
+      "currentTargetSha256": "db1a6a925f17081ff2bb5e609b4a8161b60115daa14ce6bb4fcf0331b4a3c17c",
+      "sourceTextSha256": "79d249249e87c7032d5e15e0cf01406626ab48b26cfe4266ee2874ecce43c468",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.toastWebhookTestSuccess::ar",
+      "sourceId": "components.Settings.Notifications.NotificationsWebhook.toastWebhookTestSuccess",
+      "locale": "ar",
+      "rootDisposition": "correction",
+      "rootTarget": "تم إرسال إشعار اختبار Webhook!",
+      "rootTargetSha256": "5ffa624f43a66e5e975fda4bfa4eaf81bc69f626eebba0c015cc194b0fdd8d28",
+      "currentTarget": "تم ارسال تنبيه تجريبي بنجاح!",
+      "currentTargetSha256": "5a88c0b3021e2609efff146ea10f65879b0c101ba648b21b9b2f01dd2506a03c",
+      "sourceTextSha256": "dac5bb28b857f215e7415d2e608b566cb4f7c2e31353f3f6350b8e4fe038e972",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.agentenabled::ar",
+      "sourceId": "components.Settings.Notifications.agentenabled",
+      "locale": "ar",
+      "rootDisposition": "correction",
+      "rootTarget": "تفعيل خدمة الإشعارات",
+      "rootTargetSha256": "268911f7dc09c37c83082a02964dcd6d70651ae1d05aeea9bf7f6254c66fa141",
+      "currentTarget": "تفعيل الوكيل",
+      "currentTargetSha256": "8b966cfa6125d8df0f97fd11c138ac75be835a1606450b0823ac3d91373f3640",
+      "sourceTextSha256": "91d232f79a26c8106f6f292cba08ef9d8a74659aebd24576f3a70bb3611e8c21",
+      "rootOverride": "context-resolved-agent"
+    },
+    {
+      "cellId": "components.Settings.Notifications.allowselfsigned::ar",
+      "sourceId": "components.Settings.Notifications.allowselfsigned",
+      "locale": "ar",
+      "rootDisposition": "correction",
+      "rootTarget": "السماح بالشهادات الموقعة ذاتيًا",
+      "rootTargetSha256": "e1c7b469c08e49b09e5d1e4682df291f99dd3b103e7488f84008e943615644b5",
+      "currentTarget": "السماح بالشهادة الشخصية الموقعة",
+      "currentTargetSha256": "161c8b3125e9f16eebdfa58e86e14abe4f505af9f7d730aea2e9c947f9103f99",
+      "sourceTextSha256": "b305fe8fbfab55f5b8daf10ab85180262ae1e2bd338404198f634574a20ad2a4",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.authPass::ar",
+      "sourceId": "components.Settings.Notifications.authPass",
+      "locale": "ar",
+      "rootDisposition": "correction",
+      "rootTarget": "كلمة مرور SMTP",
+      "rootTargetSha256": "d338ff4d564c99600c40c52df584d9285226f3d8481a1b8c6068c6f18f7aa4c6",
+      "currentTarget": "SMTP كلمة سر",
+      "currentTargetSha256": "548372ed6d18959ce3aee151ffdd910cd15704dc22be7e1ee9101add7b20a665",
+      "sourceTextSha256": "f81d4d2dca1958c104cba47ace9981cd852baae51d9733bd9697ce43885a24b3",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.toastWebhookTestFailed::de",
+      "sourceId": "components.Settings.Notifications.NotificationsWebhook.toastWebhookTestFailed",
+      "locale": "de",
+      "rootDisposition": "refinement",
+      "rootTarget": "Webhook-Testbenachrichtigung konnte nicht gesendet werden.",
+      "rootTargetSha256": "5fe27b926614063ad4d6d5746e3eda15d7bcaa7aa19464dc08d409405f4182a7",
+      "currentTarget": "Webhook Testbenachrichtigung konnte nicht gesendet werden.",
+      "currentTargetSha256": "840c464b314c0cb7842ba19f4b707261624e57cf8c8407beff374a6716ea78fe",
+      "sourceTextSha256": "79d249249e87c7032d5e15e0cf01406626ab48b26cfe4266ee2874ecce43c468",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.toastWebhookTestSending::de",
+      "sourceId": "components.Settings.Notifications.NotificationsWebhook.toastWebhookTestSending",
+      "locale": "de",
+      "rootDisposition": "refinement",
+      "rootTarget": "Webhook-Testbenachrichtigung wird gesendet…",
+      "rootTargetSha256": "6e2759c66707d8959ce9352db1debf92f4ffd6c8a27749dc2a309bdd82b60e13",
+      "currentTarget": "Webhook Testbenachrichtigung wird gesendet…",
+      "currentTargetSha256": "55b352eb0857cad673c79c5d8e8ca5bd551c5f9c2003599ec1402fe73ac3ad94",
+      "sourceTextSha256": "752c3852d8461d4a0813aa3c46e3ec5163fcb44d463ba95bf8b0e289bbfcf7a6",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.toastWebhookTestSuccess::de",
+      "sourceId": "components.Settings.Notifications.NotificationsWebhook.toastWebhookTestSuccess",
+      "locale": "de",
+      "rootDisposition": "refinement",
+      "rootTarget": "Webhook-Testbenachrichtigung gesendet!",
+      "rootTargetSha256": "128181e10da1a6ceb5eca074d63683a5ea62cd68c4a3658ae23e9fa8fc7cd32c",
+      "currentTarget": "Webhook Testbenachrichtigung gesendet!",
+      "currentTargetSha256": "20ce2bacad51389d82cb383567260966434daf66bbb654a0bf4082838b899128",
+      "sourceTextSha256": "dac5bb28b857f215e7415d2e608b566cb4f7c2e31353f3f6350b8e4fe038e972",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.validationTypes::de",
+      "sourceId": "components.Settings.Notifications.NotificationsWebhook.validationTypes",
+      "locale": "de",
+      "rootDisposition": "correction",
+      "rootTarget": "Du musst mindestens einen Benachrichtigungstyp auswählen",
+      "rootTargetSha256": "a052df608243f705a3887daa4401ab4b62d80f9f460ffe818306a3b1b9296b82",
+      "currentTarget": "Du musst mindestens einen Benachrichtigungstypen auswählen",
+      "currentTargetSha256": "3816fb3ff3ac5c5e74cb7b61ffaf76d06ce77859af75bfacdaa3553a41ca5553",
+      "sourceTextSha256": "95026ecf1a7fe911e5a4e23d1ccecb28e02232c3b75d68ba5380cb6e3f8e19ce",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.agentenabled::de",
+      "sourceId": "components.Settings.Notifications.agentenabled",
+      "locale": "de",
+      "rootDisposition": "correction",
+      "rootTarget": "Benachrichtigungsagent aktivieren",
+      "rootTargetSha256": "a848ab0b4beb30de7291b850a4373c2467627095f2dbd96cde85be96995c6c32",
+      "currentTarget": "Agent aktivieren",
+      "currentTargetSha256": "1d6aeeaa4eb099e5df8a3c90052888d31acb4c1854fd37e7b040f1474d9abd08",
+      "sourceTextSha256": "91d232f79a26c8106f6f292cba08ef9d8a74659aebd24576f3a70bb3611e8c21",
+      "rootOverride": "context-resolved-agent"
+    },
+    {
+      "cellId": "components.Settings.Notifications.botAvatarUrl::de",
+      "sourceId": "components.Settings.Notifications.botAvatarUrl",
+      "locale": "de",
+      "rootDisposition": "refinement",
+      "rootTarget": "Bot-Avatar-URL",
+      "rootTargetSha256": "b67b9179ca0852f71fbd9d5c88a7bcc457a6b9f4814d9f5a9989522de152c835",
+      "currentTarget": "Bot-Avatar URL",
+      "currentTargetSha256": "f023e4754c0235943c68f654325b401f15648eee662ab80a3e853aa220d85f7b",
+      "sourceTextSha256": "ae507c5da4d3e10d3e1accc2b6ec47574829f94f913e9211b826605d7ceb425b",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.validationTypes::es",
+      "sourceId": "components.Settings.Notifications.NotificationsWebhook.validationTypes",
+      "locale": "es",
+      "rootDisposition": "correction",
+      "rootTarget": "Debes seleccionar al menos un tipo de notificación",
+      "rootTargetSha256": "f20bcd89be357adb60c0b08ae3bcb29e7c8874c6b9a2f1a05707e0299ea2f507",
+      "currentTarget": "Debes seleccionar, al menos, un tipo de notificación",
+      "currentTargetSha256": "be55a2fd7cff0eff9635c4b9c8773ffefc0547d259b6656fb52db2854bf6224b",
+      "sourceTextSha256": "95026ecf1a7fe911e5a4e23d1ccecb28e02232c3b75d68ba5380cb6e3f8e19ce",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.webhookUrl::es",
+      "sourceId": "components.Settings.Notifications.NotificationsWebhook.webhookUrl",
+      "locale": "es",
+      "rootDisposition": "refinement",
+      "rootTarget": "URL del webhook",
+      "rootTargetSha256": "75fdbae4994e2a5410ca1f5b894f36a5ca893411c50408f8a6a61c7728d6818d",
+      "currentTarget": "URL de Webhook",
+      "currentTargetSha256": "895ccda2b23d220c4d9626580a22c0960c0c3652b0669e1cdbecbf822884c483",
+      "sourceTextSha256": "84805a7574a82052bdd5b3b98119cfd838d04036ec4bd3d667a95698e7097ad6",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.webhookUrlTip::es",
+      "sourceId": "components.Settings.Notifications.NotificationsWebhook.webhookUrlTip",
+      "locale": "es",
+      "rootDisposition": "correction",
+      "rootTarget": "La URL de notificación de prueba está configurada como {testUrl} en vez de la URL real del webhook.",
+      "rootTargetSha256": "286fa52a8a9f15772a54faec3c64111b63312337b1602f77d5e6dd4da67cfe42",
+      "currentTarget": "La URL de prueba de notificación es {testUrl} en vez de la URL actual del webhook.",
+      "currentTargetSha256": "633b7346f0c9df9297900dd805a385527564ec5dc76633d7b61d23654b0134f3",
+      "sourceTextSha256": "c64a2d765dc15db4fd4b5f8caedd17bdcb59da8701a4d487dbe33409994443a8",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.agentenabled::es",
+      "sourceId": "components.Settings.Notifications.agentenabled",
+      "locale": "es",
+      "rootDisposition": "correction",
+      "rootTarget": "Habilitar el agente de notificaciones",
+      "rootTargetSha256": "add91b78b78286acd6e4ed9fbb33d1401a5886042a35a1711d8c6adcf62033c9",
+      "currentTarget": "Habilitar Agente",
+      "currentTargetSha256": "e7c50bd2f160f74f3988bb9668b01ef8f7db80a3679686ea9e4caa20d45e60dc",
+      "sourceTextSha256": "91d232f79a26c8106f6f292cba08ef9d8a74659aebd24576f3a70bb3611e8c21",
+      "rootOverride": "context-resolved-agent"
+    },
+    {
+      "cellId": "components.Settings.Notifications.botAvatarUrl::es",
+      "sourceId": "components.Settings.Notifications.botAvatarUrl",
+      "locale": "es",
+      "rootDisposition": "correction",
+      "rootTarget": "URL del avatar del bot",
+      "rootTargetSha256": "e058d07d8817865cb2529156a5cb869e5b4746caa3378d9004a280b77c83bc8b",
+      "currentTarget": "URL del Bot Avatar",
+      "currentTargetSha256": "39bbbca4eabf79c7c7137efe4d1a3a61dcc178312fd3e47e96cf3daa11478800",
+      "sourceTextSha256": "ae507c5da4d3e10d3e1accc2b6ec47574829f94f913e9211b826605d7ceb425b",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.supportVariables::fr",
+      "sourceId": "components.Settings.Notifications.NotificationsWebhook.supportVariables",
+      "locale": "fr",
+      "rootDisposition": "correction",
+      "rootTarget": "Prendre en charge les variables d’URL",
+      "rootTargetSha256": "b4e8c0812e2c36189effb416b49007a79a81e8294a084b7c4273c82b5bf701da",
+      "currentTarget": "Gérer les variables URL",
+      "currentTargetSha256": "2c7111543f4c7e4a158621ba8de3fb67b5672a01a3534cf5ea9f2a60e608a8b1",
+      "sourceTextSha256": "f70f4aeba841b62d915fd14619ac2d4528c2f8ae5735ac621ce9e9d3aec26965",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.toastWebhookTestSuccess::fr",
+      "sourceId": "components.Settings.Notifications.NotificationsWebhook.toastWebhookTestSuccess",
+      "locale": "fr",
+      "rootDisposition": "refinement",
+      "rootTarget": "Notification de test du webhook envoyée !",
+      "rootTargetSha256": "735d5cc945587739a5d59d355ecf5e2b000b0517f479801a8779eacd0b0435a7",
+      "currentTarget": "Notification de test webhook envoyée !",
+      "currentTargetSha256": "e8097eed292b9450635b85d13c03588a03e86cffbc865dd292181246fc19f47f",
+      "sourceTextSha256": "dac5bb28b857f215e7415d2e608b566cb4f7c2e31353f3f6350b8e4fe038e972",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.agentenabled::fr",
+      "sourceId": "components.Settings.Notifications.agentenabled",
+      "locale": "fr",
+      "rootDisposition": "correction",
+      "rootTarget": "Activer l’agent de notification",
+      "rootTargetSha256": "a0b75dc19ffbc2244fac71f27da3cdbb296785b420e327d684f15a799fa3a74a",
+      "currentTarget": "Activer l'agent",
+      "currentTargetSha256": "51df5f54cabf366298504c2bd2f972c3b304d4076dc06767499393fc57d1ddb9",
+      "sourceTextSha256": "91d232f79a26c8106f6f292cba08ef9d8a74659aebd24576f3a70bb3611e8c21",
+      "rootOverride": "context-resolved-agent"
+    },
+    {
+      "cellId": "components.Settings.Notifications.botAvatarUrl::fr",
+      "sourceId": "components.Settings.Notifications.botAvatarUrl",
+      "locale": "fr",
+      "rootDisposition": "refinement",
+      "rootTarget": "URL de l’avatar du bot",
+      "rootTargetSha256": "cf02f8a1b15e11b594e2482d23ef46954c9a08ad038154c4dadd813228b566f7",
+      "currentTarget": "URL de l'avatar de votre Bot",
+      "currentTargetSha256": "0ee86aa76a93ead7b3094547a1cd92dd8e012032036fc9809238e5dbe35f1346",
+      "sourceTextSha256": "ae507c5da4d3e10d3e1accc2b6ec47574829f94f913e9211b826605d7ceb425b",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.supportVariables::hi",
+      "sourceId": "components.Settings.Notifications.NotificationsWebhook.supportVariables",
+      "locale": "hi",
+      "rootDisposition": "correction",
+      "rootTarget": "URL चर का समर्थन",
+      "rootTargetSha256": "9ea4e43d9709c9e44f4781000bf73381ace6ab2fc9aae30b48fa83445b58ec51",
+      "currentTarget": "समर्थन URL चर",
+      "currentTargetSha256": "1aee10f326aaab14267786fcc9751480100021ca5befcb74c4d31865af16f10c",
+      "sourceTextSha256": "f70f4aeba841b62d915fd14619ac2d4528c2f8ae5735ac621ce9e9d3aec26965",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.templatevariablehelp::hi",
+      "sourceId": "components.Settings.Notifications.NotificationsWebhook.templatevariablehelp",
+      "locale": "hi",
+      "rootDisposition": "correction",
+      "rootTarget": "टेम्पलेट चर सहायता",
+      "rootTargetSha256": "d3056c1e6dbf125919f9075a4259cd445b4e7a98ef55e83926eaf1089a06a6ac",
+      "currentTarget": "टेम्पलेट परिवर्तनीय सहायता",
+      "currentTargetSha256": "8a93ad36ee5729e76231797faa6326f60dc4d893f2ed9a43b02f65a4c8367327",
+      "sourceTextSha256": "89613d111034c4768122946d11d82188fdef10cbf761ac258e0f0cfbbcf90d82",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.toastWebhookTestSending::hi",
+      "sourceId": "components.Settings.Notifications.NotificationsWebhook.toastWebhookTestSending",
+      "locale": "hi",
+      "rootDisposition": "correction",
+      "rootTarget": "वेबहुक परीक्षण अधिसूचना भेजी जा रही है…",
+      "rootTargetSha256": "1648bb053d44aae1d7823989e205348ce60b7f007772aa0d5075407a8814b22e",
+      "currentTarget": "वेबहुक परीक्षण अधिसूचना भेजना ...",
+      "currentTargetSha256": "04b6400e913721252d180620e31056dbea3d9ff8cee32f5dcee9c16ec862062a",
+      "sourceTextSha256": "752c3852d8461d4a0813aa3c46e3ec5163fcb44d463ba95bf8b0e289bbfcf7a6",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.webhooksettingsfailed::hi",
+      "sourceId": "components.Settings.Notifications.NotificationsWebhook.webhooksettingsfailed",
+      "locale": "hi",
+      "rootDisposition": "correction",
+      "rootTarget": "वेबहुक अधिसूचना सेटिंग्स सहेजी नहीं जा सकीं।",
+      "rootTargetSha256": "99b00fd5ff86992b6e05ff7b206d3297c87229f6cf4992fa3ad4d91f531e7747",
+      "currentTarget": "वेबहुक अधिसूचना सेटिंग्स को बचाने में विफल रहा।",
+      "currentTargetSha256": "969d2172422e9ce58683602520de3908cf5021c49593bf19deb0978212a3c9b6",
+      "sourceTextSha256": "99a92b14d054ad7ad361fcb1782e1291c5959f5ddef70aa897c3d77d5eb5cfcd",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.webhooksettingssaved::hi",
+      "sourceId": "components.Settings.Notifications.NotificationsWebhook.webhooksettingssaved",
+      "locale": "hi",
+      "rootDisposition": "correction",
+      "rootTarget": "वेबहुक अधिसूचना सेटिंग्स सफलतापूर्वक सहेजी गईं!",
+      "rootTargetSha256": "8427afb645813c062e60a1af6bb8c1ad5c047dd137fd3655b55357a1dcad1396",
+      "currentTarget": "वेबहुक सूचना सेटिंग सफलतापूर्वक सहेजी गईं!",
+      "currentTargetSha256": "1a1a2a064cd63141708fa950d92ac33db59b26b12cece1ff619e76243202ee48",
+      "sourceTextSha256": "18fc944585c0b3cd968075a52e71b6025a7e27976725a1bfd4714324894e110a",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.agentenabled::hi",
+      "sourceId": "components.Settings.Notifications.agentenabled",
+      "locale": "hi",
+      "rootDisposition": "correction",
+      "rootTarget": "अधिसूचना एजेंट को सक्षम करें",
+      "rootTargetSha256": "ba9541674e026fc155f2fc9a3f21c43aae60fb774e6b728a2e6b897812abd40d",
+      "currentTarget": "एजेंट सक्षम करें",
+      "currentTargetSha256": "fd9eb8c21884f1100c3cacfca4ebbe2848650eedd7c56fc16682a3f26a4f7d76",
+      "sourceTextSha256": "91d232f79a26c8106f6f292cba08ef9d8a74659aebd24576f3a70bb3611e8c21",
+      "rootOverride": "context-resolved-agent"
+    },
+    {
+      "cellId": "components.Settings.Notifications.botAPI::hi",
+      "sourceId": "components.Settings.Notifications.botAPI",
+      "locale": "hi",
+      "rootDisposition": "refinement",
+      "rootTarget": "बॉट प्राधिकरण टोकन",
+      "rootTargetSha256": "3b2c9ad52fa6afaffaaf817ae7ec3112cfa350add59dc3287c978b9ca3ff60a3",
+      "currentTarget": "Bot प्राधिकरण Token",
+      "currentTargetSha256": "fbd6d5dd9e1fd5356dab9ea544ecd71fc034faf6f627ca22cfb7b03ab913a42b",
+      "sourceTextSha256": "515dac4d588cc6f73e6965b6b3289c2507574d6544b62f7b6a516633ea6e474c",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.botApiTip::hi",
+      "sourceId": "components.Settings.Notifications.botApiTip",
+      "locale": "hi",
+      "rootDisposition": "refinement",
+      "rootTarget": "Seerr के साथ उपयोग के लिए <CreateBotLink>एक बॉट बनाएँ</CreateBotLink>",
+      "rootTargetSha256": "a829f0020a8c64c1cb14994f780365702f0c61cf3b79c582d7b6bd27189d5972",
+      "currentTarget": "<CreateBotLink>एक bot बनाएँ</CreateBotLink> Seerr के साथ उपयोग के लिए",
+      "currentTargetSha256": "3f930c0e74d3de56d31516a1d13bbf5c7aaaefe091fb068d6c9140588bbe8c60",
+      "sourceTextSha256": "c5bf36da92f302c3cbd0f39238347a6613bb480ce57d44f154d70d0e32842091",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.supportVariables::id",
+      "sourceId": "components.Settings.Notifications.NotificationsWebhook.supportVariables",
+      "locale": "id",
+      "rootDisposition": "correction",
+      "rootTarget": "Dukungan variabel URL",
+      "rootTargetSha256": "320168e4ef87e5755e8ead7d177654577bf1191248ffc95731868ea96d2fbbf1",
+      "currentTarget": "Variabel URL Dukungan",
+      "currentTargetSha256": "aad464f346d71ebd0776542d4154e65de0bb16951fde05f2ece2cc963239766c",
+      "sourceTextSha256": "f70f4aeba841b62d915fd14619ac2d4528c2f8ae5735ac621ce9e9d3aec26965",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.supportVariablesTip::id",
+      "sourceId": "components.Settings.Notifications.NotificationsWebhook.supportVariablesTip",
+      "locale": "id",
+      "rootDisposition": "correction",
+      "rootTarget": "Variabel yang tersedia tercantum di bagian variabel template webhook.",
+      "rootTargetSha256": "98b72915cfca54d61f3503d1fc3fcd9b863221afff2f760dcf09193eb02d1424",
+      "currentTarget": "Variabel tersedia didokumentasikan dalam daerah variabel template webhook",
+      "currentTargetSha256": "a5239514259bd9c011d87d1db2f455be02890f09799a73363766d2c57c8c3b76",
+      "sourceTextSha256": "08f4726b3a3acae64ee7de05cd643a150a5683fe3304b5d4ddb4d333c567f551",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.validationWebhookUrl::id",
+      "sourceId": "components.Settings.Notifications.NotificationsWebhook.validationWebhookUrl",
+      "locale": "id",
+      "rootDisposition": "refinement",
+      "rootTarget": "Anda harus memberikan URL yang valid.",
+      "rootTargetSha256": "fe1dbd8c49d1c6332e48f1bd22a1041d3a26d00b4848897ad0625219294bbbbb",
+      "currentTarget": "Anda mesti memberikan suatu URL yang valid",
+      "currentTargetSha256": "567551bdd577c5e5911c7258c3172b29b9627b35008a3caf4b0698a565f4ff2e",
+      "sourceTextSha256": "9a705af3a4fe575d6fcbe4094234eff0baa47824ab9069e6e32e63915774836a",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.webhookUrlTip::id",
+      "sourceId": "components.Settings.Notifications.NotificationsWebhook.webhookUrlTip",
+      "locale": "id",
+      "rootDisposition": "correction",
+      "rootTarget": "URL Notifikasi Uji ditetapkan ke {testUrl}, bukan ke URL webhook yang sebenarnya.",
+      "rootTargetSha256": "c709bebbf73f95f43012c8206fc775e52ee5ff6cdafe9fc5f74aaa0e37935701",
+      "currentTarget": "URL Notifikasi Uji diset ke {testUrl} bukan URL webhook yang sebenarnya.",
+      "currentTargetSha256": "d0b4654bdf7391868fad9359eec8a5b4fa2ee9ee5d1e18239a9ea41344f86aff",
+      "sourceTextSha256": "c64a2d765dc15db4fd4b5f8caedd17bdcb59da8701a4d487dbe33409994443a8",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.agentenabled::id",
+      "sourceId": "components.Settings.Notifications.agentenabled",
+      "locale": "id",
+      "rootDisposition": "correction",
+      "rootTarget": "Aktifkan agen pemberitahuan",
+      "rootTargetSha256": "da84fd4360f35ed2ba71946bec32b6ad5bf5a48cf2b58909ed41075ca7cf31bc",
+      "currentTarget": "Aktifkan Agen",
+      "currentTargetSha256": "4de0576e91b49ce0ab0778e1d5d076119e934117254ebad5c01bf4cc48cc40f3",
+      "sourceTextSha256": "91d232f79a26c8106f6f292cba08ef9d8a74659aebd24576f3a70bb3611e8c21",
+      "rootOverride": "context-resolved-agent"
+    },
+    {
+      "cellId": "components.Settings.Notifications.botAvatarUrl::id",
+      "sourceId": "components.Settings.Notifications.botAvatarUrl",
+      "locale": "id",
+      "rootDisposition": "correction",
+      "rootTarget": "URL untuk avatar bot",
+      "rootTargetSha256": "5a868dd8495cfdfadaf22c34e9f964446257031f0112a00e220fb68a33fa8b25",
+      "currentTarget": "URL Bot Avatar",
+      "currentTargetSha256": "3323b1b49f95ef5f0667c9bec862c2d149d6df380059f6b33753afc7f5d161ec",
+      "sourceTextSha256": "ae507c5da4d3e10d3e1accc2b6ec47574829f94f913e9211b826605d7ceb425b",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.supportVariables::ja",
+      "sourceId": "components.Settings.Notifications.NotificationsWebhook.supportVariables",
+      "locale": "ja",
+      "rootDisposition": "correction",
+      "rootTarget": "URL変数をサポート",
+      "rootTargetSha256": "d12c0ec802a231be8c745cfee7564bd228c78245ed7388124fc54b99cba707cb",
+      "currentTarget": "URLパラメータのサポート",
+      "currentTargetSha256": "1d38d4b6680781164ee94b007006cdd1a9b9f56da27985a1ae1858547a8517d7",
+      "sourceTextSha256": "f70f4aeba841b62d915fd14619ac2d4528c2f8ae5735ac621ce9e9d3aec26965",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.supportVariablesTip::ja",
+      "sourceId": "components.Settings.Notifications.NotificationsWebhook.supportVariablesTip",
+      "locale": "ja",
+      "rootDisposition": "correction",
+      "rootTarget": "利用可能な変数は Webhook テンプレート変数のセクションに記載されています。",
+      "rootTargetSha256": "d63c2668ff7b1e55cfac1dfd46891c3db126f309a3529ad53e2313391c8a44ef",
+      "currentTarget": "用可能な変数はWebhookテンプレート変数セクションに記載されています",
+      "currentTargetSha256": "bb7785650910f8aaee69ef3c80c57b9186c13ad6778a9eaac7f0b47bfa2e3b55",
+      "sourceTextSha256": "08f4726b3a3acae64ee7de05cd643a150a5683fe3304b5d4ddb4d333c567f551",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.agentenabled::ja",
+      "sourceId": "components.Settings.Notifications.agentenabled",
+      "locale": "ja",
+      "rootDisposition": "correction",
+      "rootTarget": "通知エージェントを有効にする",
+      "rootTargetSha256": "2cd6889477199fb2be45d237a21f21f2a8986258595e7dd251b79cf56244465d",
+      "currentTarget": "エージェントを有効にする",
+      "currentTargetSha256": "adeb6d03058e1eeacc0a37b2178af230cafc9514fc732e2a5edeca053274890d",
+      "sourceTextSha256": "91d232f79a26c8106f6f292cba08ef9d8a74659aebd24576f3a70bb3611e8c21",
+      "rootOverride": "context-resolved-agent"
+    },
+    {
+      "cellId": "components.Settings.Notifications.authUser::ja",
+      "sourceId": "components.Settings.Notifications.authUser",
+      "locale": "ja",
+      "rootDisposition": "correction",
+      "rootTarget": "SMTP ユーザー名",
+      "rootTargetSha256": "07d9217f80872da68afd8303a782ad4521d09857c0ac7ec420d28f0ea6383f84",
+      "currentTarget": "SMTP 認証ユーザー",
+      "currentTargetSha256": "1759f01d99cf1c23586ca4e9c25d53bd01b7a472b390e315fb0aa03cd5e9e9d3",
+      "sourceTextSha256": "39f2026ad7ac5e4ea5f7318a403d7fe0ee5176d999c429bed935d164fccea341",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.supportVariablesTip::ko",
+      "sourceId": "components.Settings.Notifications.NotificationsWebhook.supportVariablesTip",
+      "locale": "ko",
+      "rootDisposition": "correction",
+      "rootTarget": "사용 가능한 변수는 Webhook 템플릿 변수 섹션에 설명되어 있습니다.",
+      "rootTargetSha256": "d33931de11da44fa4118e6756cd0b8ff68fc9cbd218d314e1f8ce22577137b98",
+      "currentTarget": "가능한 변수는 webhook 템플릿 변수 섹션에서 문서화됩니다.",
+      "currentTargetSha256": "a05d6efc4b830b5afbf82056ed22389b075b1ea1cde027f6ed61f77fa81a2767",
+      "sourceTextSha256": "08f4726b3a3acae64ee7de05cd643a150a5683fe3304b5d4ddb4d333c567f551",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.validationTypes::ko",
+      "sourceId": "components.Settings.Notifications.NotificationsWebhook.validationTypes",
+      "locale": "ko",
+      "rootDisposition": "correction",
+      "rootTarget": "알림 유형을 하나 이상 선택해야 합니다.",
+      "rootTargetSha256": "0b81d9f1ba0f478606ae6a189cb867ad5eff8b24ca0b3c5919721a16a854a4e7",
+      "currentTarget": "적어도 하나 이상의 알림 유형을 선택해야 합니다",
+      "currentTargetSha256": "c5e8e49c9eea858299fa6f6f4f8d51a2670e47d0f006a8998370ab1b70e1aae4",
+      "sourceTextSha256": "95026ecf1a7fe911e5a4e23d1ccecb28e02232c3b75d68ba5380cb6e3f8e19ce",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.agentenabled::ko",
+      "sourceId": "components.Settings.Notifications.agentenabled",
+      "locale": "ko",
+      "rootDisposition": "correction",
+      "rootTarget": "알림 에이전트 활성화",
+      "rootTargetSha256": "a3e8a8bd90952609651651fe006bb184bcbca096e8bdc79e791f599b77f6e3b9",
+      "currentTarget": "에이전트 활성화",
+      "currentTargetSha256": "7179eaa9a63c68928c435994cdda73a7c18926c875063c919f387efa524bf4a5",
+      "sourceTextSha256": "91d232f79a26c8106f6f292cba08ef9d8a74659aebd24576f3a70bb3611e8c21",
+      "rootOverride": "context-resolved-agent"
+    },
+    {
+      "cellId": "components.Settings.Notifications.botApiTip::ko",
+      "sourceId": "components.Settings.Notifications.botApiTip",
+      "locale": "ko",
+      "rootDisposition": "correction",
+      "rootTarget": "Seerr와 함께 사용할 <CreateBotLink>봇을 만드세요</CreateBotLink>",
+      "rootTargetSha256": "a68d2e087f0265a8859a99b06f428f14bb58ad23c7d4115184a4bc31773cce96",
+      "currentTarget": "Seerr와 함께 사용할 <CreateBotLink>봇 생성</CreateBotLink>이 필요합니다",
+      "currentTargetSha256": "2143aa6d6730c16e718608dd3b85dc18fa47102a254613ef9329605679e9a74e",
+      "sourceTextSha256": "c5bf36da92f302c3cbd0f39238347a6613bb480ce57d44f154d70d0e32842091",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.validationJsonPayloadRequired::pt-BR",
+      "sourceId": "components.Settings.Notifications.NotificationsWebhook.validationJsonPayloadRequired",
+      "locale": "pt-BR",
+      "rootDisposition": "refinement",
+      "rootTarget": "Você deve fornecer um conteúdo JSON válido",
+      "rootTargetSha256": "096ff7d6b1bcfc3a155018283ad18e7cd36b9ca31da27f287ca66ff0a8338c84",
+      "currentTarget": "Você deve prover um conteúdo JSON válido",
+      "currentTargetSha256": "8ef6f915c3f29cb1045e1f0a93e64467e6cc3c17cca1a128aef3566d0631b519",
+      "sourceTextSha256": "df5099b8fbabc2e6c9661aede21faea7b6841e8704cbc779a9c170012cb86788",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.validationWebhookUrl::pt-BR",
+      "sourceId": "components.Settings.Notifications.NotificationsWebhook.validationWebhookUrl",
+      "locale": "pt-BR",
+      "rootDisposition": "refinement",
+      "rootTarget": "Você deve fornecer uma URL válida",
+      "rootTargetSha256": "080153d74f7a863cc461ebb4987c7ffdc64f7ca45939802e7ec2476e09b9837d",
+      "currentTarget": "Você deve prover uma URL válida",
+      "currentTargetSha256": "53346a2179f119ed4d22ec2d58977ef51ff3f66944fb0a44b2dad26df366baea",
+      "sourceTextSha256": "9a705af3a4fe575d6fcbe4094234eff0baa47824ab9069e6e32e63915774836a",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.webhookUrl::pt-BR",
+      "sourceId": "components.Settings.Notifications.NotificationsWebhook.webhookUrl",
+      "locale": "pt-BR",
+      "rootDisposition": "refinement",
+      "rootTarget": "URL do webhook",
+      "rootTargetSha256": "e70485a30964e2257fb1a576cf60f64d704a19ed620dc025fbb9e86aa00174b3",
+      "currentTarget": "URL de Webhook",
+      "currentTargetSha256": "895ccda2b23d220c4d9626580a22c0960c0c3652b0669e1cdbecbf822884c483",
+      "sourceTextSha256": "84805a7574a82052bdd5b3b98119cfd838d04036ec4bd3d667a95698e7097ad6",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.webhookUrlTip::pt-BR",
+      "sourceId": "components.Settings.Notifications.NotificationsWebhook.webhookUrlTip",
+      "locale": "pt-BR",
+      "rootDisposition": "correction",
+      "rootTarget": "A URL da notificação de teste está definida como {testUrl}, em vez da URL real do webhook.",
+      "rootTargetSha256": "0da39995426e7fd02d460dbb6848ba1530ee30495d59828ce04bc5262b5f4317",
+      "currentTarget": "O URL de notificação de teste está definido como {testUrl} em vez do URL atual do webhook.",
+      "currentTargetSha256": "49d0d98764b85bb3a20128748215fa0246450f0c62aa561f35bab63e9e768b45",
+      "sourceTextSha256": "c64a2d765dc15db4fd4b5f8caedd17bdcb59da8701a4d487dbe33409994443a8",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.agentenabled::pt-BR",
+      "sourceId": "components.Settings.Notifications.agentenabled",
+      "locale": "pt-BR",
+      "rootDisposition": "correction",
+      "rootTarget": "Ativar agente de notificação",
+      "rootTargetSha256": "0f7631dad75ba3149aedb72b382e69051a8c59aad1335f5f5a1636c0043f09df",
+      "currentTarget": "Habilitar Agente",
+      "currentTargetSha256": "e7c50bd2f160f74f3988bb9668b01ef8f7db80a3679686ea9e4caa20d45e60dc",
+      "sourceTextSha256": "91d232f79a26c8106f6f292cba08ef9d8a74659aebd24576f3a70bb3611e8c21",
+      "rootOverride": "context-resolved-agent"
+    },
+    {
+      "cellId": "components.Settings.Notifications.botAvatarUrl::pt-BR",
+      "sourceId": "components.Settings.Notifications.botAvatarUrl",
+      "locale": "pt-BR",
+      "rootDisposition": "correction",
+      "rootTarget": "URL do avatar do bot",
+      "rootTargetSha256": "72cf996257cb5cb93c66d8fd7aa2d777364c743eed1bef1c0cfa435676af47f0",
+      "currentTarget": "URL de Avatar do Bot",
+      "currentTargetSha256": "d9b358b75032cda8abbd752701a9579f32f03228f286b5365eea6f9f4b932d6c",
+      "sourceTextSha256": "ae507c5da4d3e10d3e1accc2b6ec47574829f94f913e9211b826605d7ceb425b",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.validationJsonPayloadRequired::vi",
+      "sourceId": "components.Settings.Notifications.NotificationsWebhook.validationJsonPayloadRequired",
+      "locale": "vi",
+      "rootDisposition": "correction",
+      "rootTarget": "Bạn phải cung cấp dữ liệu JSON hợp lệ.",
+      "rootTargetSha256": "78010ec65bfc4ca90af94e7e4c8baaba0935ff56febca6374a49c8e2194ab8b7",
+      "currentTarget": "Bạn phải cung cấp một dữ liệu JSON hợp lệ",
+      "currentTargetSha256": "ff97b75bf17aa27a63628425bb10b4101805549d3f6d2d3604b513a907771cbd",
+      "sourceTextSha256": "df5099b8fbabc2e6c9661aede21faea7b6841e8704cbc779a9c170012cb86788",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.agentenabled::vi",
+      "sourceId": "components.Settings.Notifications.agentenabled",
+      "locale": "vi",
+      "rootDisposition": "correction",
+      "rootTarget": "Bật dịch vụ thông báo",
+      "rootTargetSha256": "d99d17541507a51878e9be5139e66f74243c69ec2262147efb8c5329ede453c8",
+      "currentTarget": "Bật tác nhân",
+      "currentTargetSha256": "736cef914f33cf7fb6cc0b6fab3b59ece91d463599cf67c296fffa5d5fa8eec0",
+      "sourceTextSha256": "91d232f79a26c8106f6f292cba08ef9d8a74659aebd24576f3a70bb3611e8c21",
+      "rootOverride": "context-resolved-agent"
+    },
+    {
+      "cellId": "components.Settings.Notifications.botAPI::vi",
+      "sourceId": "components.Settings.Notifications.botAPI",
+      "locale": "vi",
+      "rootDisposition": "correction",
+      "rootTarget": "Token ủy quyền của bot",
+      "rootTargetSha256": "c334ba123931e0e271778a067bf9f7d09b4b14ee7263e086b402497d5e55dda2",
+      "currentTarget": "Mã thông báo ủy quyền của bot",
+      "currentTargetSha256": "a7a0c1d489aeca596748240522966b820b6a442933ceb70c88d5b62947e0be34",
+      "sourceTextSha256": "515dac4d588cc6f73e6965b6b3289c2507574d6544b62f7b6a516633ea6e474c",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.botApiTip::vi",
+      "sourceId": "components.Settings.Notifications.botApiTip",
+      "locale": "vi",
+      "rootDisposition": "correction",
+      "rootTarget": "<CreateBotLink>Tạo bot</CreateBotLink> để sử dụng với Seerr",
+      "rootTargetSha256": "432e605a80e765ded878d465a3cdee791d17e837e4fe9fed37c4e5aae946f84d",
+      "currentTarget": "<CreateBotLink>Tạo ra một robot</CreateBotLink> dùng với Seerr",
+      "currentTargetSha256": "4a5de8f1483d28297f36534a4d45b2187a923508160809c336ca93cf8fe89243",
+      "sourceTextSha256": "c5bf36da92f302c3cbd0f39238347a6613bb480ce57d44f154d70d0e32842091",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.supportVariablesTip::zh-Hans",
+      "sourceId": "components.Settings.Notifications.NotificationsWebhook.supportVariablesTip",
+      "locale": "zh-Hans",
+      "rootDisposition": "refinement",
+      "rootTarget": "可用变量的说明见 Webhook 模板变量部分。",
+      "rootTargetSha256": "28de777b77f479c538bc06e8a8500ab6519272d94c841f715cf348b7c2ff273a",
+      "currentTarget": "可用变量记录在 Webhook 模板变量部分",
+      "currentTargetSha256": "b98e55256cc27de17eb21d4b469bf36d3df34ff55c46acd815dd67d2713923c9",
+      "sourceTextSha256": "08f4726b3a3acae64ee7de05cd643a150a5683fe3304b5d4ddb4d333c567f551",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.webhookUrlTip::zh-Hans",
+      "sourceId": "components.Settings.Notifications.NotificationsWebhook.webhookUrlTip",
+      "locale": "zh-Hans",
+      "rootDisposition": "refinement",
+      "rootTarget": "测试通知 URL 设置为 {testUrl} 而不是实际的 Webhook URL。",
+      "rootTargetSha256": "44af70b492d2a7755ba08b0cc30d568218456ecc496e5096f3a824c99b382f57",
+      "currentTarget": "测试通知 URL 设置为 {testUrl} 而不是实际的 Webhook URL 。",
+      "currentTargetSha256": "b9db7b62de9956fd6a61b4c58dc9675dce7d17fa12e352e492ebb9ada794444a",
+      "sourceTextSha256": "c64a2d765dc15db4fd4b5f8caedd17bdcb59da8701a4d487dbe33409994443a8",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.agentenabled::zh-Hans",
+      "sourceId": "components.Settings.Notifications.agentenabled",
+      "locale": "zh-Hans",
+      "rootDisposition": "correction",
+      "rootTarget": "启用通知代理服务",
+      "rootTargetSha256": "d3515e57a0351aafdd57a6f69656af00311b07455af2a01945a85e81415aac0d",
+      "currentTarget": "启用代理",
+      "currentTargetSha256": "2a93cbbab9f7f145b4dce6a525c77440adc08527b87242314f6ee6b14dfa5824",
+      "sourceTextSha256": "91d232f79a26c8106f6f292cba08ef9d8a74659aebd24576f3a70bb3611e8c21",
+      "rootOverride": "context-resolved-agent"
+    },
+    {
+      "cellId": "components.Settings.Notifications.authUser::zh-Hans",
+      "sourceId": "components.Settings.Notifications.authUser",
+      "locale": "zh-Hans",
+      "rootDisposition": "refinement",
+      "rootTarget": "SMTP 用户名",
+      "rootTargetSha256": "cb6de497bbc98ebbaaf1e672e7928056907c605520b034a2b198dbc3ba2543ce",
+      "currentTarget": "SMTP 用户",
+      "currentTargetSha256": "80b0dd3e4df11ef1452498e73ff64a5f5b557b7daeceaaf3ef207de6dd20ca64",
+      "sourceTextSha256": "39f2026ad7ac5e4ea5f7318a403d7fe0ee5176d999c429bed935d164fccea341",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.toastWebhookTestSending::zh-Hant",
+      "sourceId": "components.Settings.Notifications.NotificationsWebhook.toastWebhookTestSending",
+      "locale": "zh-Hant",
+      "rootDisposition": "correction",
+      "rootTarget": "正在傳送 Webhook 測試通知…",
+      "rootTargetSha256": "a6cc18d88fcf92389f387b4e0bc2bfa0eb47ce6f12c2f9c752c71cbc4cfe1f62",
+      "currentTarget": "發送 webhook 測試通知中…",
+      "currentTargetSha256": "101aada69341b201f66f027d72965290ee017df15de60122eab5f5e7b76beb02",
+      "sourceTextSha256": "752c3852d8461d4a0813aa3c46e3ec5163fcb44d463ba95bf8b0e289bbfcf7a6",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.webhookUrlTip::zh-Hant",
+      "sourceId": "components.Settings.Notifications.NotificationsWebhook.webhookUrlTip",
+      "locale": "zh-Hant",
+      "rootDisposition": "refinement",
+      "rootTarget": "測試通知 URL 設定為 {testUrl}，而非實際的 Webhook URL。",
+      "rootTargetSha256": "4559242221d8c980d2fb3a6fa99415ffb50b9ad65f6c84ff51ba0851244fb221",
+      "currentTarget": "測試通知 URL 設定為 {testUrl} 而不是實際的 webhook URL.",
+      "currentTargetSha256": "bc6c53ff9e112caea5fbaa3d48948d955f6a26e03d84768706f11e15b2d004ac",
+      "sourceTextSha256": "c64a2d765dc15db4fd4b5f8caedd17bdcb59da8701a4d487dbe33409994443a8",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.agentenabled::zh-Hant",
+      "sourceId": "components.Settings.Notifications.agentenabled",
+      "locale": "zh-Hant",
+      "rootDisposition": "correction",
+      "rootTarget": "啟用通知代理服務",
+      "rootTargetSha256": "fe01611ad71fe0fa049a7b7c0b067f34c0c6be9968a61d1b9da2347a844b9aaa",
+      "currentTarget": "啟用代理",
+      "currentTargetSha256": "24b4f4c72cac4d9d46164d3a6e6ac2f9856e63fcef0e9b237e8d9d23dfa989dd",
+      "sourceTextSha256": "91d232f79a26c8106f6f292cba08ef9d8a74659aebd24576f3a70bb3611e8c21",
+      "rootOverride": "context-resolved-agent"
+    },
+    {
+      "cellId": "components.Settings.Notifications.allowselfsigned::zh-Hant",
+      "sourceId": "components.Settings.Notifications.allowselfsigned",
+      "locale": "zh-Hant",
+      "rootDisposition": "refinement",
+      "rootTarget": "允許自簽憑證",
+      "rootTargetSha256": "8741421d4b00d8bc2f969b9d3612d6abaeba7d0b690ec3834a747e20a4c9037c",
+      "currentTarget": "允許自簽名證書",
+      "currentTargetSha256": "e1ebc6b94866071c046edceab1045f8be3261da7b8aa849668e78bcb0bb406cd",
+      "sourceTextSha256": "b305fe8fbfab55f5b8daf10ab85180262ae1e2bd338404198f634574a20ad2a4",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.authUser::zh-Hant",
+      "sourceId": "components.Settings.Notifications.authUser",
+      "locale": "zh-Hant",
+      "rootDisposition": "correction",
+      "rootTarget": "SMTP 使用者名稱",
+      "rootTargetSha256": "876e574c64c072ef79f2f456f38bee5bfb83980c48a2e552f21004fcca211c0a",
+      "currentTarget": "SMTP 使用者",
+      "currentTargetSha256": "bfa0ec651fa39b2fe619252bc19e7310316eac2a30445340f40c17ab64fdbde5",
+      "sourceTextSha256": "39f2026ad7ac5e4ea5f7318a403d7fe0ee5176d999c429bed935d164fccea341",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.botApiTip::zh-Hant",
+      "sourceId": "components.Settings.Notifications.botApiTip",
+      "locale": "zh-Hant",
+      "rootDisposition": "refinement",
+      "rootTarget": "<CreateBotLink>建立機器人</CreateBotLink>，以供 Seerr 使用",
+      "rootTargetSha256": "6fcb882387582688013b15b21b4ef950ae694e82dd954394463c6770fe3a719c",
+      "currentTarget": "<CreateBotLink>創建機器人</CreateBotLink>以與Seerr一起使用",
+      "currentTargetSha256": "c1d250e6b6f9f7addaf87fef544607219e29358ebf734a14958369b5c02a2953",
+      "sourceTextSha256": "c5bf36da92f302c3cbd0f39238347a6613bb480ce57d44f154d70d0e32842091",
+      "rootOverride": null
+    }
+  ],
+  "catalogs": {
+    "ar": {
+      "path": "src/i18n/locale/ar.json",
+      "beforeSha256": "4d0cbfb1a3a80f25675d187af2462c76ee186bca2a0e00c6abc3ad4a007c707e",
+      "afterSha256": "cc2e349a6bd826b1522f508e1f29aed2442f7ea8ac42ecf46fcab53f248d8ae3",
+      "beforeGitBlob": "af9b20fead233653cda6f67de8d47d7000846bbd",
+      "addedKeys": [],
+      "changedCellCount": 5,
+      "keyCountBefore": 9494,
+      "keyCountAfter": 9494
+    },
+    "de": {
+      "path": "src/i18n/locale/de.json",
+      "beforeSha256": "f482d61b33b494268228c57fea8aefd7c4094aa56935720873150dd0badffdd0",
+      "afterSha256": "e83a88be2abf095849cd6c683076563874e358da72f258f2292e8d5c6440fa8f",
+      "beforeGitBlob": "dfd9979caa2d58d29591886957265e21e55a1e26",
+      "addedKeys": [],
+      "changedCellCount": 6,
+      "keyCountBefore": 9494,
+      "keyCountAfter": 9494
+    },
+    "es": {
+      "path": "src/i18n/locale/es.json",
+      "beforeSha256": "c0c8d09b843a93a9c8ed5a7d07057af7141f5fa0e6778924f73a818712c70b8e",
+      "afterSha256": "36438d7488a8c88772adc386bc75def8a76fa8f28054b084414e3fe774e69915",
+      "beforeGitBlob": "e62f5bafe9410e2637c8acdb5b54dbc975e8beca",
+      "addedKeys": [],
+      "changedCellCount": 5,
+      "keyCountBefore": 9494,
+      "keyCountAfter": 9494
+    },
+    "fr": {
+      "path": "src/i18n/locale/fr.json",
+      "beforeSha256": "9f2dd575612f212e249f8c76d0baf200f65e811d4bb1b6f5790b9994bc4a4506",
+      "afterSha256": "2411fbf175517401514ad10ede7b8852cdf3180f6945ade4d202e1fbfb569b6a",
+      "beforeGitBlob": "d9de5a573b61b44efaeb3db9a5cdb5a1cde7d473",
+      "addedKeys": [],
+      "changedCellCount": 4,
+      "keyCountBefore": 9494,
+      "keyCountAfter": 9494
+    },
+    "hi": {
+      "path": "src/i18n/locale/hi.json",
+      "beforeSha256": "1bd2f3a1b5672eba4f2714b239e7f671afb4da5aa59b7fb778e7932ce78d0ee7",
+      "afterSha256": "c6947f9e78cf7b09d05e5f1c7d865438ca09f647f84c7e1c04becb9751cf69cd",
+      "beforeGitBlob": "8b3c63746af868c6e0a259857e73fc85b04d57dc",
+      "addedKeys": [],
+      "changedCellCount": 8,
+      "keyCountBefore": 9494,
+      "keyCountAfter": 9494
+    },
+    "id": {
+      "path": "src/i18n/locale/id.json",
+      "beforeSha256": "c23d07e45d8043b0e71eb3c05057a1ec693d154930450c30c3fdc7eb0709ecf3",
+      "afterSha256": "84656e77120c57d9a2f2fb39900a236ed11f3a095e2b0789724d5d1f9f411e18",
+      "beforeGitBlob": "677db3fe5a5fa80e3cc3b256d016eaa0d020b98a",
+      "addedKeys": [],
+      "changedCellCount": 6,
+      "keyCountBefore": 9494,
+      "keyCountAfter": 9494
+    },
+    "ja": {
+      "path": "src/i18n/locale/ja.json",
+      "beforeSha256": "eb4e4b1b61f31cf1b0859c099046729be8c05da95efbd5cd68ee9d43baefa9cc",
+      "afterSha256": "620840916233ef180a39a8e681cd527730f3ab1c181dece59b2e8042b5eadde1",
+      "beforeGitBlob": "a163057212a43b789069d20bc8c3c33671c584c8",
+      "addedKeys": [],
+      "changedCellCount": 4,
+      "keyCountBefore": 9494,
+      "keyCountAfter": 9494
+    },
+    "ko": {
+      "path": "src/i18n/locale/ko.json",
+      "beforeSha256": "71b793002ec319e34af0ab9b47c6761b8722d39183d93ae956f828a95d9af6c1",
+      "afterSha256": "142adfe2d7209a6bb159eaa0579a79e8353af6ed4847f71f261002f520b704c1",
+      "beforeGitBlob": "fc19b6287e9241071ac17a01c937b394cff2ad8e",
+      "addedKeys": [],
+      "changedCellCount": 4,
+      "keyCountBefore": 9494,
+      "keyCountAfter": 9494
+    },
+    "pt-BR": {
+      "path": "src/i18n/locale/pt_BR.json",
+      "beforeSha256": "f2efa3e279879b96f7d103513e9942ad94363ff28c8a8bdf11cebc01eb822d9c",
+      "afterSha256": "335867ce2e14615170a883162e4157b3a3ea015880100d0431df57cd8968e0bb",
+      "beforeGitBlob": "9bf851ba1cb54646a2f552ecc66cfd062f7f040a",
+      "addedKeys": [],
+      "changedCellCount": 6,
+      "keyCountBefore": 9494,
+      "keyCountAfter": 9494
+    },
+    "vi": {
+      "path": "src/i18n/locale/vi.json",
+      "beforeSha256": "a54c08c339564e899113aa50090a6becd49c98646e3498df2504044b0f9153b1",
+      "afterSha256": "be6c8d777c2af7b8f793be6a72e55278d3e0777dc75cd6eee3165fd804b94682",
+      "beforeGitBlob": "346758ef5c202660263a74c41ddeb1fa3974da82",
+      "addedKeys": [],
+      "changedCellCount": 4,
+      "keyCountBefore": 9494,
+      "keyCountAfter": 9494
+    },
+    "zh-Hans": {
+      "path": "src/i18n/locale/zh_Hans.json",
+      "beforeSha256": "ab5108223472b5a4a4791cf550bd80399f7e6e62261307a3d52d4e7fa198583d",
+      "afterSha256": "74374b5c7818c1b80594c9d74ec4a45f2d48cef40a9aaa9c5f375a7d4507827d",
+      "beforeGitBlob": "8d385c1e1aa4ed714a1116551e5922a8927cc83c",
+      "addedKeys": [],
+      "changedCellCount": 4,
+      "keyCountBefore": 9494,
+      "keyCountAfter": 9494
+    },
+    "zh-Hant": {
+      "path": "src/i18n/locale/zh_Hant.json",
+      "beforeSha256": "d3bcf0172f06b9d3ca499c50455629a45f08a2d29740999e3d2d495b6bd3cdce",
+      "afterSha256": "e1f7383a6a19748d20c9f3b78e9f79bd35f41b41abb159fefae3bc697bcd0f90",
+      "beforeGitBlob": "fe4ef8f5199ac6f3f9b0af4454a15de98dcbbbfd",
+      "addedKeys": [],
+      "changedCellCount": 6,
+      "keyCountBefore": 9494,
+      "keyCountAfter": 9494
+    }
+  },
+  "changedCellCount": 62,
+  "retainedCurrentCellCount": 178,
+  "heldCellCount": 0,
+  "resolvedFormerHoldCount": 12,
+  "changedTargetCountRecommendedByCrossReview": 50,
+  "allCells": [
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.supportVariables::es",
+      "rootDisposition": "accept-current",
+      "rootTarget": "Soportar variables en la URL",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.supportVariables::zh-Hans",
+      "rootDisposition": "accept-current",
+      "rootTarget": "支持 URL 变量",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.supportVariables::hi",
+      "rootDisposition": "correction",
+      "rootTarget": "URL चर का समर्थन",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.supportVariables::de",
+      "rootDisposition": "accept-current",
+      "rootTarget": "Unterstützung von URL-Variablen",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.supportVariables::ja",
+      "rootDisposition": "correction",
+      "rootTarget": "URL変数をサポート",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.supportVariables::fr",
+      "rootDisposition": "correction",
+      "rootTarget": "Prendre en charge les variables d’URL",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.supportVariables::pt-BR",
+      "rootDisposition": "accept-current",
+      "rootTarget": "Suporte a variáveis de URL",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.supportVariables::ar",
+      "rootDisposition": "accept-current",
+      "rootTarget": "دعم متغيرات URL",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.supportVariables::ko",
+      "rootDisposition": "accept-current",
+      "rootTarget": "URL 변수 지원",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.supportVariables::zh-Hant",
+      "rootDisposition": "accept-current",
+      "rootTarget": "支援 URL 變數",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.supportVariables::vi",
+      "rootDisposition": "accept-current",
+      "rootTarget": "Hỗ trợ biến URL",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.supportVariables::id",
+      "rootDisposition": "correction",
+      "rootTarget": "Dukungan variabel URL",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.supportVariablesTip::es",
+      "rootDisposition": "accept-current",
+      "rootTarget": "Las variables disponibles están documentadas en la sección de variables de la plantilla de Webhook",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.supportVariablesTip::zh-Hans",
+      "rootDisposition": "refinement",
+      "rootTarget": "可用变量的说明见 Webhook 模板变量部分。",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.supportVariablesTip::hi",
+      "rootDisposition": "accept-current",
+      "rootTarget": "उपलब्ध चर webhook टेम्पलेट चर अनुभाग में प्रलेखित हैं।",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.supportVariablesTip::de",
+      "rootDisposition": "accept-current",
+      "rootTarget": "Die verfügbaren Variablen sind im Abschnitt Webhook-Vorlagenvariablen dokumentiert",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.supportVariablesTip::ja",
+      "rootDisposition": "correction",
+      "rootTarget": "利用可能な変数は Webhook テンプレート変数のセクションに記載されています。",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.supportVariablesTip::fr",
+      "rootDisposition": "accept-current",
+      "rootTarget": "Les variables disponibles sont documentées dans la section des variables de modèle du webhook.",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.supportVariablesTip::pt-BR",
+      "rootDisposition": "accept-current",
+      "rootTarget": "As variáveis disponíveis estão documentadas na seção de variáveis do modelo de webhook",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.supportVariablesTip::ar",
+      "rootDisposition": "accept-current",
+      "rootTarget": "تجد توثيق المتغيرات المتاحة في قسم متغيرات قالب خطاف الويب.",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.supportVariablesTip::ko",
+      "rootDisposition": "correction",
+      "rootTarget": "사용 가능한 변수는 Webhook 템플릿 변수 섹션에 설명되어 있습니다.",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.supportVariablesTip::zh-Hant",
+      "rootDisposition": "accept-current",
+      "rootTarget": "可用變數記載於 webhook 範本變數區段。",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.supportVariablesTip::vi",
+      "rootDisposition": "accept-current",
+      "rootTarget": "Các biến khả dụng được mô tả trong phần biến mẫu của webhook.",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.supportVariablesTip::id",
+      "rootDisposition": "correction",
+      "rootTarget": "Variabel yang tersedia tercantum di bagian variabel template webhook.",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.templatevariablehelp::es",
+      "rootDisposition": "accept-current",
+      "rootTarget": "Ayuda de variable de plantilla",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.templatevariablehelp::zh-Hans",
+      "rootDisposition": "accept-current",
+      "rootTarget": "模板变量帮助",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.templatevariablehelp::hi",
+      "rootDisposition": "correction",
+      "rootTarget": "टेम्पलेट चर सहायता",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.templatevariablehelp::de",
+      "rootDisposition": "accept-current",
+      "rootTarget": "Hilfe zu Vorlagenvariablen",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.templatevariablehelp::ja",
+      "rootDisposition": "accept-current",
+      "rootTarget": "テンプレート変数のヘルプ",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.templatevariablehelp::fr",
+      "rootDisposition": "accept-current",
+      "rootTarget": "Aide sur les variables de modèle",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.templatevariablehelp::pt-BR",
+      "rootDisposition": "accept-current",
+      "rootTarget": "Ajuda sobre variáveis de modelo",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.templatevariablehelp::ar",
+      "rootDisposition": "accept-current",
+      "rootTarget": "مساعدة متغيرات القالب",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.templatevariablehelp::ko",
+      "rootDisposition": "accept-current",
+      "rootTarget": "템플릿 변수 도움말",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.templatevariablehelp::zh-Hant",
+      "rootDisposition": "accept-current",
+      "rootTarget": "範本變數說明",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.templatevariablehelp::vi",
+      "rootDisposition": "accept-current",
+      "rootTarget": "Trợ giúp về biến mẫu",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.templatevariablehelp::id",
+      "rootDisposition": "accept-current",
+      "rootTarget": "Bantuan Variabel Template",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.toastWebhookTestFailed::es",
+      "rootDisposition": "accept-current",
+      "rootTarget": "Fallo al enviar la notificación de prueba de Webhook.",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.toastWebhookTestFailed::zh-Hans",
+      "rootDisposition": "accept-current",
+      "rootTarget": "网络钩子测试通知发送失败。",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.toastWebhookTestFailed::hi",
+      "rootDisposition": "accept-current",
+      "rootTarget": "वेबहुक परीक्षण अधिसूचना भेजने में विफल रही।",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.toastWebhookTestFailed::de",
+      "rootDisposition": "refinement",
+      "rootTarget": "Webhook-Testbenachrichtigung konnte nicht gesendet werden.",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.toastWebhookTestFailed::ja",
+      "rootDisposition": "accept-current",
+      "rootTarget": "Webhook テスト通知の送信に失敗しました。",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.toastWebhookTestFailed::fr",
+      "rootDisposition": "accept-current",
+      "rootTarget": "L'envoi de la notification de test du webhook a échoué.",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.toastWebhookTestFailed::pt-BR",
+      "rootDisposition": "accept-current",
+      "rootTarget": "Falha ao enviar notificação de teste via webhook.",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.toastWebhookTestFailed::ar",
+      "rootDisposition": "correction",
+      "rootTarget": "فشل إرسال إشعار اختبار Webhook.",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.toastWebhookTestFailed::ko",
+      "rootDisposition": "accept-current",
+      "rootTarget": "웹훅 테스트 알림을 보내지 못했습니다.",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.toastWebhookTestFailed::zh-Hant",
+      "rootDisposition": "accept-current",
+      "rootTarget": "Webhook 測試通知發送失敗。",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.toastWebhookTestFailed::vi",
+      "rootDisposition": "accept-current",
+      "rootTarget": "Không thể gửi thông báo thử nghiệm webhook.",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.toastWebhookTestFailed::id",
+      "rootDisposition": "accept-current",
+      "rootTarget": "Notifikasi tes Webhook gagal dikirim.",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.toastWebhookTestSending::es",
+      "rootDisposition": "accept-current",
+      "rootTarget": "Enviando notificación de prueba de Webhook…",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.toastWebhookTestSending::zh-Hans",
+      "rootDisposition": "accept-current",
+      "rootTarget": "发送网络钩子测试通知中…",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.toastWebhookTestSending::hi",
+      "rootDisposition": "correction",
+      "rootTarget": "वेबहुक परीक्षण अधिसूचना भेजी जा रही है…",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.toastWebhookTestSending::de",
+      "rootDisposition": "refinement",
+      "rootTarget": "Webhook-Testbenachrichtigung wird gesendet…",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.toastWebhookTestSending::ja",
+      "rootDisposition": "accept-current",
+      "rootTarget": "Webhook テスト通知を送信中…",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.toastWebhookTestSending::fr",
+      "rootDisposition": "accept-current",
+      "rootTarget": "Envoi de notification de test webhook…",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.toastWebhookTestSending::pt-BR",
+      "rootDisposition": "accept-current",
+      "rootTarget": "Enviando notificação de teste via webhook…",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.toastWebhookTestSending::ar",
+      "rootDisposition": "accept-current",
+      "rootTarget": "جارٍ إرسال إشعار اختبار لخطاف الويب…",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.toastWebhookTestSending::ko",
+      "rootDisposition": "accept-current",
+      "rootTarget": "웹훅 테스트 알림을 보내는 중…",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.toastWebhookTestSending::zh-Hant",
+      "rootDisposition": "correction",
+      "rootTarget": "正在傳送 Webhook 測試通知…",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.toastWebhookTestSending::vi",
+      "rootDisposition": "accept-current",
+      "rootTarget": "Đang gửi thông báo kiểm tra webhook…",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.toastWebhookTestSending::id",
+      "rootDisposition": "accept-current",
+      "rootTarget": "Mengirim pemberitahuan uji webhook...",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.toastWebhookTestSuccess::es",
+      "rootDisposition": "accept-current",
+      "rootTarget": "¡Notificación de prueba de Webhook enviada!",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.toastWebhookTestSuccess::zh-Hans",
+      "rootDisposition": "accept-current",
+      "rootTarget": "网络钩子测试通知已发送！",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.toastWebhookTestSuccess::hi",
+      "rootDisposition": "accept-current",
+      "rootTarget": "वेबहुक परीक्षण अधिसूचना सफलतापूर्वक भेजी गई!",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.toastWebhookTestSuccess::de",
+      "rootDisposition": "refinement",
+      "rootTarget": "Webhook-Testbenachrichtigung gesendet!",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.toastWebhookTestSuccess::ja",
+      "rootDisposition": "accept-current",
+      "rootTarget": "Webhook テスト通知が送信されました！",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.toastWebhookTestSuccess::fr",
+      "rootDisposition": "refinement",
+      "rootTarget": "Notification de test du webhook envoyée !",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.toastWebhookTestSuccess::pt-BR",
+      "rootDisposition": "accept-current",
+      "rootTarget": "Notificação de teste via webhook enviada!",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.toastWebhookTestSuccess::ar",
+      "rootDisposition": "correction",
+      "rootTarget": "تم إرسال إشعار اختبار Webhook!",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.toastWebhookTestSuccess::ko",
+      "rootDisposition": "accept-current",
+      "rootTarget": "웹훅 테스트 알림이 전송되었습니다!",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.toastWebhookTestSuccess::zh-Hant",
+      "rootDisposition": "accept-current",
+      "rootTarget": "Webhook 測試通知已發送！",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.toastWebhookTestSuccess::vi",
+      "rootDisposition": "accept-current",
+      "rootTarget": "Đã gửi thông báo kiểm tra Webhook!",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.toastWebhookTestSuccess::id",
+      "rootDisposition": "accept-current",
+      "rootTarget": "Pemberitahuan tes Webhook dikirim!",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.validationJsonPayloadRequired::es",
+      "rootDisposition": "accept-current",
+      "rootTarget": "Debes proporcionar un payload de JSON válido",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.validationJsonPayloadRequired::zh-Hans",
+      "rootDisposition": "accept-current",
+      "rootTarget": "请输入有效的 JSON 数据。",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.validationJsonPayloadRequired::hi",
+      "rootDisposition": "accept-current",
+      "rootTarget": "आपको एक वैध JSON पेलोड प्रदान करना होगा",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.validationJsonPayloadRequired::de",
+      "rootDisposition": "accept-current",
+      "rootTarget": "Du musst einen gültigen JSON-Inhalt angeben",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.validationJsonPayloadRequired::ja",
+      "rootDisposition": "accept-current",
+      "rootTarget": "有効な JSONペイロードを指定してください",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.validationJsonPayloadRequired::fr",
+      "rootDisposition": "accept-current",
+      "rootTarget": "Vous devez fournir un payload JSON valide",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.validationJsonPayloadRequired::pt-BR",
+      "rootDisposition": "refinement",
+      "rootTarget": "Você deve fornecer um conteúdo JSON válido",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.validationJsonPayloadRequired::ar",
+      "rootDisposition": "accept-current",
+      "rootTarget": "يجب تقديم حمولة JSON صالحة.",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.validationJsonPayloadRequired::ko",
+      "rootDisposition": "accept-current",
+      "rootTarget": "유효한 JSON 페이로드를 입력해야 합니다",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.validationJsonPayloadRequired::zh-Hant",
+      "rootDisposition": "accept-current",
+      "rootTarget": "請輸入有效的 JSON 資料。",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.validationJsonPayloadRequired::vi",
+      "rootDisposition": "correction",
+      "rootTarget": "Bạn phải cung cấp dữ liệu JSON hợp lệ.",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.validationJsonPayloadRequired::id",
+      "rootDisposition": "accept-current",
+      "rootTarget": "Anda harus memberikan muatan JSON yang valid",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.validationTypes::es",
+      "rootDisposition": "correction",
+      "rootTarget": "Debes seleccionar al menos un tipo de notificación",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.validationTypes::zh-Hans",
+      "rootDisposition": "accept-current",
+      "rootTarget": "您必须至少选择一种通知类型。",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.validationTypes::hi",
+      "rootDisposition": "accept-current",
+      "rootTarget": "आपको कम से कम एक अधिसूचना प्रकार का चयन करना होगा",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.validationTypes::de",
+      "rootDisposition": "correction",
+      "rootTarget": "Du musst mindestens einen Benachrichtigungstyp auswählen",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.validationTypes::ja",
+      "rootDisposition": "accept-current",
+      "rootTarget": "通知タイプを1つ以上選択してください",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.validationTypes::fr",
+      "rootDisposition": "accept-current",
+      "rootTarget": "Vous devez sélectionner au moins un type de notification",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.validationTypes::pt-BR",
+      "rootDisposition": "accept-current",
+      "rootTarget": "Você deve selecionar ao menos um tipo de notificação",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.validationTypes::ar",
+      "rootDisposition": "accept-current",
+      "rootTarget": "يجب اختيار نوع واحد من الإشعارات على الأقل.",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.validationTypes::ko",
+      "rootDisposition": "correction",
+      "rootTarget": "알림 유형을 하나 이상 선택해야 합니다.",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.validationTypes::zh-Hant",
+      "rootDisposition": "accept-current",
+      "rootTarget": "您必須至少選擇一種通知類型。",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.validationTypes::vi",
+      "rootDisposition": "accept-current",
+      "rootTarget": "Bạn phải chọn ít nhất một kiểu thông báo",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.validationTypes::id",
+      "rootDisposition": "accept-current",
+      "rootTarget": "Anda harus memilih paling tidak satu tipe pemberitahuan",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.validationWebhookUrl::es",
+      "rootDisposition": "accept-current",
+      "rootTarget": "Debes indicar una URL válida",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.validationWebhookUrl::zh-Hans",
+      "rootDisposition": "accept-current",
+      "rootTarget": "您必须提供有效的 URL",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.validationWebhookUrl::hi",
+      "rootDisposition": "accept-current",
+      "rootTarget": "आपको एक वैध URL प्रदान करना होगा",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.validationWebhookUrl::de",
+      "rootDisposition": "accept-current",
+      "rootTarget": "Du musst eine gültige URL angeben",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.validationWebhookUrl::ja",
+      "rootDisposition": "accept-current",
+      "rootTarget": "有効な URL を入力してください",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.validationWebhookUrl::fr",
+      "rootDisposition": "accept-current",
+      "rootTarget": "Vous devez fournir une URL valide",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.validationWebhookUrl::pt-BR",
+      "rootDisposition": "refinement",
+      "rootTarget": "Você deve fornecer uma URL válida",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.validationWebhookUrl::ar",
+      "rootDisposition": "accept-current",
+      "rootTarget": "يجب تقديم عنوان URL صالح.",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.validationWebhookUrl::ko",
+      "rootDisposition": "accept-current",
+      "rootTarget": "유효한 URL을 입력해야 합니다",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.validationWebhookUrl::zh-Hant",
+      "rootDisposition": "accept-current",
+      "rootTarget": "您必須提供有效的 URL",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.validationWebhookUrl::vi",
+      "rootDisposition": "accept-current",
+      "rootTarget": "Bạn phải cung cấp một URL hợp lệ.",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.validationWebhookUrl::id",
+      "rootDisposition": "refinement",
+      "rootTarget": "Anda harus memberikan URL yang valid.",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.webhookUrl::es",
+      "rootDisposition": "refinement",
+      "rootTarget": "URL del webhook",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.webhookUrl::zh-Hans",
+      "rootDisposition": "accept-current",
+      "rootTarget": "网络钩子网址（URL）",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.webhookUrl::hi",
+      "rootDisposition": "accept-current",
+      "rootTarget": "वेबहुक URL",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.webhookUrl::de",
+      "rootDisposition": "accept-current",
+      "rootTarget": "Webhook-URL",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.webhookUrl::ja",
+      "rootDisposition": "accept-current",
+      "rootTarget": "ウェブフック URL",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.webhookUrl::fr",
+      "rootDisposition": "accept-current",
+      "rootTarget": "URL du webhook",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.webhookUrl::pt-BR",
+      "rootDisposition": "refinement",
+      "rootTarget": "URL do webhook",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.webhookUrl::ar",
+      "rootDisposition": "accept-current",
+      "rootTarget": "عنوان URL لخطاف الويب",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.webhookUrl::ko",
+      "rootDisposition": "accept-current",
+      "rootTarget": "웹훅 URL",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.webhookUrl::zh-Hant",
+      "rootDisposition": "accept-current",
+      "rootTarget": "Webhook URL",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.webhookUrl::vi",
+      "rootDisposition": "accept-current",
+      "rootTarget": "URL webhook",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.webhookUrl::id",
+      "rootDisposition": "accept-current",
+      "rootTarget": "URL Webhook",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.webhookUrlTip::es",
+      "rootDisposition": "correction",
+      "rootTarget": "La URL de notificación de prueba está configurada como {testUrl} en vez de la URL real del webhook.",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.webhookUrlTip::zh-Hans",
+      "rootDisposition": "refinement",
+      "rootTarget": "测试通知 URL 设置为 {testUrl} 而不是实际的 Webhook URL。",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.webhookUrlTip::hi",
+      "rootDisposition": "accept-current",
+      "rootTarget": "वास्तविक वेबहुक URL के बजाय परीक्षण सूचना URL {testUrl} पर सेट है।",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.webhookUrlTip::de",
+      "rootDisposition": "accept-current",
+      "rootTarget": "Die URL der Testbenachrichtigung ist auf {testUrl} anstelle der eigentlichen Webhook-URL festgelegt.",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.webhookUrlTip::ja",
+      "rootDisposition": "accept-current",
+      "rootTarget": "テスト通知URLは、実際のWebhook URLではなく{testUrl}に設定されます。",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.webhookUrlTip::fr",
+      "rootDisposition": "accept-current",
+      "rootTarget": "L'URL de test des notifications est définie sur {testUrl} au lieu de la véritable URL du webhook.",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.webhookUrlTip::pt-BR",
+      "rootDisposition": "correction",
+      "rootTarget": "A URL da notificação de teste está definida como {testUrl}, em vez da URL real do webhook.",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.webhookUrlTip::ar",
+      "rootDisposition": "accept-current",
+      "rootTarget": "تم تعيين عنوان URL لإشعار الاختبار على {testUrl} بدلًا من عنوان URL الفعلي لخطاف الويب.",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.webhookUrlTip::ko",
+      "rootDisposition": "accept-current",
+      "rootTarget": "실제 webhook URL 대신 테스트 알림 URL이 {testUrl}로 설정되어 있습니다.",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.webhookUrlTip::zh-Hant",
+      "rootDisposition": "refinement",
+      "rootTarget": "測試通知 URL 設定為 {testUrl}，而非實際的 Webhook URL。",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.webhookUrlTip::vi",
+      "rootDisposition": "accept-current",
+      "rootTarget": "URL thông báo thử nghiệm được đặt là {testUrl} thay vì URL webhook thực tế.",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.webhookUrlTip::id",
+      "rootDisposition": "correction",
+      "rootTarget": "URL Notifikasi Uji ditetapkan ke {testUrl}, bukan ke URL webhook yang sebenarnya.",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.webhooksettingsfailed::es",
+      "rootDisposition": "accept-current",
+      "rootTarget": "No se pudo guardar la configuración de notificación de webhook.",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.webhooksettingsfailed::zh-Hans",
+      "rootDisposition": "accept-current",
+      "rootTarget": "网络钩子通知设置保存失败。",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.webhooksettingsfailed::hi",
+      "rootDisposition": "correction",
+      "rootTarget": "वेबहुक अधिसूचना सेटिंग्स सहेजी नहीं जा सकीं।",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.webhooksettingsfailed::de",
+      "rootDisposition": "accept-current",
+      "rootTarget": "Webhook-Benachrichtigungseinstellungen konnten nicht gespeichert werden.",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.webhooksettingsfailed::ja",
+      "rootDisposition": "accept-current",
+      "rootTarget": "Webhook 通知設定を保存できませんでした。",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.webhooksettingsfailed::fr",
+      "rootDisposition": "accept-current",
+      "rootTarget": "Échec de l'enregistrement des paramètres de notification du webhook.",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.webhooksettingsfailed::pt-BR",
+      "rootDisposition": "accept-current",
+      "rootTarget": "Falha ao salvar configurações de notificação via Webhook.",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.webhooksettingsfailed::ar",
+      "rootDisposition": "accept-current",
+      "rootTarget": "فشل حفظ إعدادات إشعارات Webhook.",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.webhooksettingsfailed::ko",
+      "rootDisposition": "accept-current",
+      "rootTarget": "웹훅 알림 설정을 저장하지 못했습니다.",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.webhooksettingsfailed::zh-Hant",
+      "rootDisposition": "accept-current",
+      "rootTarget": "Webhook 通知設定儲存失敗。",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.webhooksettingsfailed::vi",
+      "rootDisposition": "accept-current",
+      "rootTarget": "Không thể lưu cài đặt thông báo webhook.",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.webhooksettingsfailed::id",
+      "rootDisposition": "accept-current",
+      "rootTarget": "Pengaturan pemberitahuan Webhook gagal disimpan.",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.webhooksettingssaved::es",
+      "rootDisposition": "accept-current",
+      "rootTarget": "¡Configuración de notificación de webhook guardada con éxito!",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.webhooksettingssaved::zh-Hans",
+      "rootDisposition": "accept-current",
+      "rootTarget": "网络钩子通知设置保存成功！",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.webhooksettingssaved::hi",
+      "rootDisposition": "correction",
+      "rootTarget": "वेबहुक अधिसूचना सेटिंग्स सफलतापूर्वक सहेजी गईं!",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.webhooksettingssaved::de",
+      "rootDisposition": "accept-current",
+      "rootTarget": "Webhook-Benachrichtigungseinstellungen erfolgreich gespeichert!",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.webhooksettingssaved::ja",
+      "rootDisposition": "accept-current",
+      "rootTarget": "Webhook 通知設定が保存されました！",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.webhooksettingssaved::fr",
+      "rootDisposition": "accept-current",
+      "rootTarget": "Paramètres de notification webhook enregistrés !",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.webhooksettingssaved::pt-BR",
+      "rootDisposition": "accept-current",
+      "rootTarget": "Configurações de notificação via Webhook salvas com sucesso!",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.webhooksettingssaved::ar",
+      "rootDisposition": "accept-current",
+      "rootTarget": "تم حفظ إعدادات إشعارات Webhook بنجاح!",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.webhooksettingssaved::ko",
+      "rootDisposition": "accept-current",
+      "rootTarget": "웹훅 알림 설정이 성공적으로 저장되었습니다!",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.webhooksettingssaved::zh-Hant",
+      "rootDisposition": "accept-current",
+      "rootTarget": "Webhook 通知設定儲存成功！",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.webhooksettingssaved::vi",
+      "rootDisposition": "accept-current",
+      "rootTarget": "Đã lưu cài đặt thông báo webhook thành công!",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.NotificationsWebhook.webhooksettingssaved::id",
+      "rootDisposition": "accept-current",
+      "rootTarget": "Pengaturan pemberitahuan Webhook berhasil disimpan!",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.agentenabled::es",
+      "rootDisposition": "correction",
+      "rootTarget": "Habilitar el agente de notificaciones",
+      "rootOverride": "context-resolved-agent"
+    },
+    {
+      "cellId": "components.Settings.Notifications.agentenabled::zh-Hans",
+      "rootDisposition": "correction",
+      "rootTarget": "启用通知代理服务",
+      "rootOverride": "context-resolved-agent"
+    },
+    {
+      "cellId": "components.Settings.Notifications.agentenabled::hi",
+      "rootDisposition": "correction",
+      "rootTarget": "अधिसूचना एजेंट को सक्षम करें",
+      "rootOverride": "context-resolved-agent"
+    },
+    {
+      "cellId": "components.Settings.Notifications.agentenabled::de",
+      "rootDisposition": "correction",
+      "rootTarget": "Benachrichtigungsagent aktivieren",
+      "rootOverride": "context-resolved-agent"
+    },
+    {
+      "cellId": "components.Settings.Notifications.agentenabled::ja",
+      "rootDisposition": "correction",
+      "rootTarget": "通知エージェントを有効にする",
+      "rootOverride": "context-resolved-agent"
+    },
+    {
+      "cellId": "components.Settings.Notifications.agentenabled::fr",
+      "rootDisposition": "correction",
+      "rootTarget": "Activer l’agent de notification",
+      "rootOverride": "context-resolved-agent"
+    },
+    {
+      "cellId": "components.Settings.Notifications.agentenabled::pt-BR",
+      "rootDisposition": "correction",
+      "rootTarget": "Ativar agente de notificação",
+      "rootOverride": "context-resolved-agent"
+    },
+    {
+      "cellId": "components.Settings.Notifications.agentenabled::ar",
+      "rootDisposition": "correction",
+      "rootTarget": "تفعيل خدمة الإشعارات",
+      "rootOverride": "context-resolved-agent"
+    },
+    {
+      "cellId": "components.Settings.Notifications.agentenabled::ko",
+      "rootDisposition": "correction",
+      "rootTarget": "알림 에이전트 활성화",
+      "rootOverride": "context-resolved-agent"
+    },
+    {
+      "cellId": "components.Settings.Notifications.agentenabled::zh-Hant",
+      "rootDisposition": "correction",
+      "rootTarget": "啟用通知代理服務",
+      "rootOverride": "context-resolved-agent"
+    },
+    {
+      "cellId": "components.Settings.Notifications.agentenabled::vi",
+      "rootDisposition": "correction",
+      "rootTarget": "Bật dịch vụ thông báo",
+      "rootOverride": "context-resolved-agent"
+    },
+    {
+      "cellId": "components.Settings.Notifications.agentenabled::id",
+      "rootDisposition": "correction",
+      "rootTarget": "Aktifkan agen pemberitahuan",
+      "rootOverride": "context-resolved-agent"
+    },
+    {
+      "cellId": "components.Settings.Notifications.allowselfsigned::es",
+      "rootDisposition": "accept-current",
+      "rootTarget": "Permitir certificados autofirmados",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.allowselfsigned::zh-Hans",
+      "rootDisposition": "accept-current",
+      "rootTarget": "允许自签名证书",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.allowselfsigned::hi",
+      "rootDisposition": "accept-current",
+      "rootTarget": "स्व-हस्ताक्षरित प्रमाणपत्रों की अनुमति दें",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.allowselfsigned::de",
+      "rootDisposition": "accept-current",
+      "rootTarget": "Selbstsignierte Zertifikate erlauben",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.allowselfsigned::ja",
+      "rootDisposition": "accept-current",
+      "rootTarget": "自己署名証明書を許可する",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.allowselfsigned::fr",
+      "rootDisposition": "accept-current",
+      "rootTarget": "Autoriser les certificats autosignés",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.allowselfsigned::pt-BR",
+      "rootDisposition": "accept-current",
+      "rootTarget": "Permitir certificados auto-assinados",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.allowselfsigned::ar",
+      "rootDisposition": "correction",
+      "rootTarget": "السماح بالشهادات الموقعة ذاتيًا",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.allowselfsigned::ko",
+      "rootDisposition": "accept-current",
+      "rootTarget": "자체 서명된 인증서 허용",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.allowselfsigned::zh-Hant",
+      "rootDisposition": "refinement",
+      "rootTarget": "允許自簽憑證",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.allowselfsigned::vi",
+      "rootDisposition": "accept-current",
+      "rootTarget": "Cho phép chứng chỉ tự ký",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.allowselfsigned::id",
+      "rootDisposition": "accept-current",
+      "rootTarget": "Izinkan sertifikat yang ditandatangani sendiri",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.authPass::es",
+      "rootDisposition": "accept-current",
+      "rootTarget": "Contraseña SMTP",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.authPass::zh-Hans",
+      "rootDisposition": "accept-current",
+      "rootTarget": "SMTP 密码",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.authPass::hi",
+      "rootDisposition": "accept-current",
+      "rootTarget": "SMTP पासवर्ड",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.authPass::de",
+      "rootDisposition": "accept-current",
+      "rootTarget": "SMTP-Passwort",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.authPass::ja",
+      "rootDisposition": "accept-current",
+      "rootTarget": "SMTP 認証パスワード",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.authPass::fr",
+      "rootDisposition": "accept-current",
+      "rootTarget": "Mot de passe SMTP",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.authPass::pt-BR",
+      "rootDisposition": "accept-current",
+      "rootTarget": "Senha SMTP",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.authPass::ar",
+      "rootDisposition": "correction",
+      "rootTarget": "كلمة مرور SMTP",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.authPass::ko",
+      "rootDisposition": "accept-current",
+      "rootTarget": "SMTP 비밀번호",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.authPass::zh-Hant",
+      "rootDisposition": "accept-current",
+      "rootTarget": "SMTP 密碼",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.authPass::vi",
+      "rootDisposition": "accept-current",
+      "rootTarget": "Mật khẩu SMTP",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.authPass::id",
+      "rootDisposition": "accept-current",
+      "rootTarget": "Sandi SMTP",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.authUser::es",
+      "rootDisposition": "accept-current",
+      "rootTarget": "Usuario SMTP",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.authUser::zh-Hans",
+      "rootDisposition": "refinement",
+      "rootTarget": "SMTP 用户名",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.authUser::hi",
+      "rootDisposition": "accept-current",
+      "rootTarget": "SMTP उपयोगकर्ता नाम",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.authUser::de",
+      "rootDisposition": "accept-current",
+      "rootTarget": "SMTP-Benutzername",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.authUser::ja",
+      "rootDisposition": "correction",
+      "rootTarget": "SMTP ユーザー名",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.authUser::fr",
+      "rootDisposition": "accept-current",
+      "rootTarget": "Nom d'utilisateur SMTP",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.authUser::pt-BR",
+      "rootDisposition": "accept-current",
+      "rootTarget": "Usuário SMTP",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.authUser::ar",
+      "rootDisposition": "accept-current",
+      "rootTarget": "اسم مستخدم SMTP",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.authUser::ko",
+      "rootDisposition": "accept-current",
+      "rootTarget": "SMTP 사용자 이름",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.authUser::zh-Hant",
+      "rootDisposition": "correction",
+      "rootTarget": "SMTP 使用者名稱",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.authUser::vi",
+      "rootDisposition": "accept-current",
+      "rootTarget": "Tên người dùng SMTP",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.authUser::id",
+      "rootDisposition": "accept-current",
+      "rootTarget": "Nama Pengguna SMTP",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.botAPI::es",
+      "rootDisposition": "accept-current",
+      "rootTarget": "Token de Autorización del Bot",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.botAPI::zh-Hans",
+      "rootDisposition": "accept-current",
+      "rootTarget": "机器人授权令牌",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.botAPI::hi",
+      "rootDisposition": "refinement",
+      "rootTarget": "बॉट प्राधिकरण टोकन",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.botAPI::de",
+      "rootDisposition": "accept-current",
+      "rootTarget": "Bot-Autorisierungstoken",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.botAPI::ja",
+      "rootDisposition": "accept-current",
+      "rootTarget": "ボット認証トークン",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.botAPI::fr",
+      "rootDisposition": "accept-current",
+      "rootTarget": "Jeton d'autorisation du bot",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.botAPI::pt-BR",
+      "rootDisposition": "accept-current",
+      "rootTarget": "Token de Autorização do Bot",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.botAPI::ar",
+      "rootDisposition": "accept-current",
+      "rootTarget": "رمز تفويض البوت",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.botAPI::ko",
+      "rootDisposition": "accept-current",
+      "rootTarget": "봇 인증 토큰",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.botAPI::zh-Hant",
+      "rootDisposition": "accept-current",
+      "rootTarget": "機器人授權權杖",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.botAPI::vi",
+      "rootDisposition": "correction",
+      "rootTarget": "Token ủy quyền của bot",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.botAPI::id",
+      "rootDisposition": "accept-current",
+      "rootTarget": "Token Otorisasi Bot",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.botApiTip::es",
+      "rootDisposition": "accept-current",
+      "rootTarget": "<CreateBotLink>Crea un bot</CreateBotLink> para usar con Seerr",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.botApiTip::zh-Hans",
+      "rootDisposition": "accept-current",
+      "rootTarget": "<CreateBotLink>创建机器人</CreateBotLink> 以供 Seerr 使用。",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.botApiTip::hi",
+      "rootDisposition": "refinement",
+      "rootTarget": "Seerr के साथ उपयोग के लिए <CreateBotLink>एक बॉट बनाएँ</CreateBotLink>",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.botApiTip::de",
+      "rootDisposition": "accept-current",
+      "rootTarget": "<CreateBotLink>Bot erstellen</CreateBotLink> für die Verwendung mit Seerr",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.botApiTip::ja",
+      "rootDisposition": "accept-current",
+      "rootTarget": "Seerrで使用する<CreateBotLink>ボットを作成する</CreateBotLink>",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.botApiTip::fr",
+      "rootDisposition": "accept-current",
+      "rootTarget": "<CreateBotLink>Créer un bot</CreateBotLink> à utiliser avec Seerr",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.botApiTip::pt-BR",
+      "rootDisposition": "accept-current",
+      "rootTarget": "<CreateBotLink>Criar um bot</CreateBotLink> para usar com Seerr",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.botApiTip::ar",
+      "rootDisposition": "accept-current",
+      "rootTarget": "<CreateBotLink>أنشئ روبوتًا</CreateBotLink> لاستخدامه مع Seerr.",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.botApiTip::ko",
+      "rootDisposition": "correction",
+      "rootTarget": "Seerr와 함께 사용할 <CreateBotLink>봇을 만드세요</CreateBotLink>",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.botApiTip::zh-Hant",
+      "rootDisposition": "refinement",
+      "rootTarget": "<CreateBotLink>建立機器人</CreateBotLink>，以供 Seerr 使用",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.botApiTip::vi",
+      "rootDisposition": "correction",
+      "rootTarget": "<CreateBotLink>Tạo bot</CreateBotLink> để sử dụng với Seerr",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.botApiTip::id",
+      "rootDisposition": "accept-current",
+      "rootTarget": "<CreateBotLink>Buat sebuah bot</CreateBotLink> untuk digunakan dengan Seerr",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.botAvatarUrl::es",
+      "rootDisposition": "correction",
+      "rootTarget": "URL del avatar del bot",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.botAvatarUrl::zh-Hans",
+      "rootDisposition": "accept-current",
+      "rootTarget": "机器人头像 URL",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.botAvatarUrl::hi",
+      "rootDisposition": "accept-current",
+      "rootTarget": "बॉट अवतार URL",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.botAvatarUrl::de",
+      "rootDisposition": "refinement",
+      "rootTarget": "Bot-Avatar-URL",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.botAvatarUrl::ja",
+      "rootDisposition": "accept-current",
+      "rootTarget": "ボットアバターのURL",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.botAvatarUrl::fr",
+      "rootDisposition": "refinement",
+      "rootTarget": "URL de l’avatar du bot",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.botAvatarUrl::pt-BR",
+      "rootDisposition": "correction",
+      "rootTarget": "URL do avatar do bot",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.botAvatarUrl::ar",
+      "rootDisposition": "accept-current",
+      "rootTarget": "عنوان URL لصورة الروبوت",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.botAvatarUrl::ko",
+      "rootDisposition": "accept-current",
+      "rootTarget": "봇 아바타 URL",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.botAvatarUrl::zh-Hant",
+      "rootDisposition": "accept-current",
+      "rootTarget": "機器人頭像 URL",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.botAvatarUrl::vi",
+      "rootDisposition": "accept-current",
+      "rootTarget": "URL ảnh đại diện của bot",
+      "rootOverride": null
+    },
+    {
+      "cellId": "components.Settings.Notifications.botAvatarUrl::id",
+      "rootDisposition": "correction",
+      "rootTarget": "URL untuk avatar bot",
+      "rootOverride": null
+    }
+  ],
+  "productCommit": "e27337742b8e0f7926d18bbb766df3e6ce909527",
+  "productTree": "fa183151152695a0038f44036d4fccc32029af62",
+  "productCommitMessage": "fix(i18n): review Seerr webhook notification translations",
+  "productPathsOnlyLocaleCatalogs": true
+}

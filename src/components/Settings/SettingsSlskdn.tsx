@@ -1,4 +1,5 @@
 import Alert from '@app/components/Common/Alert';
+import ApiMessageText from '@app/components/Common/ApiMessageText';
 import Button from '@app/components/Common/Button';
 import LoadingSpinner from '@app/components/Common/LoadingSpinner';
 import { SavedServiceHostPicker } from '@app/components/Settings/SavedServiceHostPicker';
@@ -204,7 +205,12 @@ const SettingsSlskdn = () => {
         )}
         {data && draft && !error && (
           <form onSubmit={(event) => void submit(event)}>
-            {saveError && <Alert type="error" title={saveError} />}
+            {saveError && (
+              <Alert
+                type="error"
+                title={<ApiMessageText>{saveError}</ApiMessageText>}
+              />
+            )}
             <Alert type="info">
               <p>{intl.formatMessage(messages.keyNote)}</p>
             </Alert>

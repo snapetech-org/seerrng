@@ -1,5 +1,4 @@
-import { IssueType, IssueTypeName } from '@server/constants/issue';
-import { MediaType } from '@server/constants/media';
+import { IssueType } from '@server/constants/issue';
 import { defineMessages, getIntl } from '@server/i18n';
 import PreparedEmail from '@server/lib/email';
 import {
@@ -11,6 +10,7 @@ import type { NotificationAgentEmail } from '@server/lib/settings';
 import { NotificationAgentKey } from '@server/lib/settings';
 import logger from '@server/logger';
 import type { AvailableLocale } from '@server/types/languages';
+import { getLocaleMetadata } from '@server/types/languages';
 import { mapWithConcurrency } from '@server/utils/concurrency';
 import type { EmailOptions } from 'email-templates';
 import path from 'path';
@@ -20,16 +20,23 @@ import type { NotificationAgent, NotificationPayload } from './agent';
 import {
   BaseAgent,
   NOTIFICATION_DELIVERY_CONCURRENCY,
+  getIssueTypeName,
+  getLocalizedNotificationPayload,
   getMediaTypeLabel,
   getNotificationActionLabel,
   getNotificationActionUrl,
+  getNotificationContent,
+  isolateBidiText,
 } from './agent';
 
 const PUBLIC_LOGO_URL =
   'https://raw.githubusercontent.com/seerr-team/seerr/refs/heads/develop/public/logo_full.svg';
 
 const messages = defineMessages('notifications.agents.email', {
-  issueType: '{type} issue',
+  greeting: 'Hi, {recipientName}!',
+  requestedByLabel: 'Requested By',
+  viewIssueIn: 'View Issue in {applicationTitle}',
+  openApplication: 'Open {applicationTitle}',
   issue: 'issue',
   pendingRequest:
     'A new request for the following {mediaType} is pending approval:',
@@ -59,10 +66,10 @@ const messages = defineMessages('notifications.agents.email', {
   declinedRequest: 'Your request for the following {mediaType} was declined:',
   declinedRequest4k:
     'Your request for the following {mediaType} in 4K was declined:',
-  failedRequest:
-    'A request for the following {mediaType} failed to be added to {service}:',
-  failedRequest4k:
-    'A request for the following {mediaType} in 4K failed to be added to {service}:',
+  failedRequestNoService:
+    'A request for the following {mediaType} could not be added:',
+  failedRequest4kNoService:
+    'A request for the following {mediaType} in 4K could not be added:',
   issueCreated:
     'A new {issueType} has been reported by {userName} for the {mediaType} {subject}:',
   issueComment:
@@ -108,6 +115,9 @@ class EmailAgent
     locale?: AvailableLocale
   ): EmailOptions | undefined {
     const intl = getIntl(locale);
+    payload = getLocalizedNotificationPayload(payload, intl);
+    const emailLocale = intl.locale;
+    const direction = getLocaleMetadata(emailLocale).direction;
     const { applicationUrl, applicationTitle } =
       getExternalRuntimeConfig().main;
     const { embedPoster, options } = this.getSettings();
@@ -125,6 +135,18 @@ class EmailAgent
         },
         locals: {
           body: payload.message,
+          testSubject: payload.subject,
+          locale: emailLocale,
+          direction,
+          greeting:
+            recipientName && recipientName !== recipientEmail
+              ? intl.formatMessage(messages.greeting, {
+                  recipientName: `\u2068${recipientName}\u2069`,
+                })
+              : undefined,
+          openApplicationLabel: intl.formatMessage(messages.openApplication, {
+            applicationTitle,
+          }),
           applicationUrl,
           applicationTitle,
           logoUrl,
@@ -191,14 +213,10 @@ class EmailAgent
           break;
         case Notification.MEDIA_FAILED:
           body = intl.formatMessage(
-            is4k ? messages.failedRequest4k : messages.failedRequest,
-            {
-              mediaType,
-              service:
-                payload.media?.mediaType === MediaType.MOVIE
-                  ? 'Radarr'
-                  : 'Sonarr',
-            }
+            is4k
+              ? messages.failedRequest4kNoService
+              : messages.failedRequestNoService,
+            { mediaType, applicationTitle }
           );
           break;
       }
@@ -214,7 +232,20 @@ class EmailAgent
         locals: {
           event: payload.event,
           body,
+          locale: emailLocale,
+          direction,
+          greeting:
+            recipientName && recipientName !== recipientEmail
+              ? intl.formatMessage(messages.greeting, {
+                  recipientName: `\u2068${recipientName}\u2069`,
+                })
+              : undefined,
+          requestedByLabel: intl.formatMessage(messages.requestedByLabel),
+          openApplicationLabel: intl.formatMessage(messages.openApplication, {
+            applicationTitle,
+          }),
           mediaName: payload.subject,
+          mediaNameForSubject: isolateBidiText(payload.subject),
           mediaExtra: payload.extra ?? [],
           imageUrl: embedPoster ? payload.image : undefined,
           timestamp: new Date().toTimeString(),
@@ -234,6 +265,7 @@ class EmailAgent
       type === Notification.SOFTWARE_AVAILABLE ||
       type === Notification.SOFTWARE_STATUS
     ) {
+      const content = getNotificationContent(payload, intl);
       return {
         template: path.join(
           __dirname,
@@ -243,10 +275,25 @@ class EmailAgent
           to: recipientEmail,
         },
         locals: {
-          event: payload.event,
-          body: payload.message ?? '',
+          event: content.event,
+          body: content.message ?? '',
+          locale: emailLocale,
+          direction,
+          greeting:
+            recipientName && recipientName !== recipientEmail
+              ? intl.formatMessage(messages.greeting, {
+                  recipientName: `\u2068${recipientName}\u2069`,
+                })
+              : undefined,
+          requestedByLabel: intl.formatMessage(messages.requestedByLabel),
+          openApplicationLabel: intl.formatMessage(messages.openApplication, {
+            applicationTitle,
+          }),
           mediaName: payload.subject,
-          mediaExtra: payload.extra ?? [],
+          mediaNameForSubject: isolateBidiText(payload.subject),
+          mediaExtra: payload.softwareRequestStatus
+            ? []
+            : (payload.extra ?? []),
           imageUrl: embedPoster ? payload.image : undefined,
           timestamp: new Date().toTimeString(),
           requestedBy: payload.notifyUser?.displayName ?? '',
@@ -263,10 +310,8 @@ class EmailAgent
       };
     } else if (payload.issue) {
       const issueType =
-        payload.issue && payload.issue.issueType !== IssueType.OTHER
-          ? intl.formatMessage(messages.issueType, {
-              type: IssueTypeName[payload.issue.issueType].toLowerCase(),
-            })
+        payload.issue.issueType !== IssueType.OTHER
+          ? getIssueTypeName(intl, payload.issue.issueType)
           : intl.formatMessage(messages.issue);
 
       let body = '';
@@ -275,33 +320,33 @@ class EmailAgent
         case Notification.ISSUE_CREATED:
           body = intl.formatMessage(messages.issueCreated, {
             issueType,
-            userName: payload.issue.createdBy.displayName,
+            userName: isolateBidiText(payload.issue.createdBy.displayName),
             mediaType,
-            subject: payload.subject,
+            subject: isolateBidiText(payload.subject),
           });
           break;
         case Notification.ISSUE_COMMENT:
           body = intl.formatMessage(messages.issueComment, {
-            userName: payload.comment?.user.displayName,
+            userName: isolateBidiText(payload.comment?.user.displayName),
             issueType,
             mediaType,
-            subject: payload.subject,
+            subject: isolateBidiText(payload.subject),
           });
           break;
         case Notification.ISSUE_RESOLVED:
           body = intl.formatMessage(messages.issueResolved, {
             issueType,
-            userName: payload.issue.modifiedBy?.displayName,
+            userName: isolateBidiText(payload.issue.modifiedBy?.displayName),
             mediaType,
-            subject: payload.subject,
+            subject: isolateBidiText(payload.subject),
           });
           break;
         case Notification.ISSUE_REOPENED:
           body = intl.formatMessage(messages.issueReopened, {
             issueType,
-            userName: payload.issue.modifiedBy?.displayName,
+            userName: isolateBidiText(payload.issue.modifiedBy?.displayName),
             mediaType,
-            subject: payload.subject,
+            subject: isolateBidiText(payload.subject),
           });
           break;
       }
@@ -314,9 +359,21 @@ class EmailAgent
         locals: {
           event: payload.event,
           body,
+          locale: emailLocale,
+          direction,
+          greeting:
+            recipientName && recipientName !== recipientEmail
+              ? intl.formatMessage(messages.greeting, {
+                  recipientName: `\u2068${recipientName}\u2069`,
+                })
+              : undefined,
+          viewIssueLabel: intl.formatMessage(messages.viewIssueIn, {
+            applicationTitle,
+          }),
           issueDescription: payload.message,
           issueComment: payload.comment?.message,
           mediaName: payload.subject,
+          mediaNameForSubject: isolateBidiText(payload.subject),
           extra: payload.extra ?? [],
           imageUrl: embedPoster ? payload.image : undefined,
           timestamp: new Date().toTimeString(),

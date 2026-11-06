@@ -1,0 +1,120 @@
+{
+  "assignedLocales": [
+    "ar",
+    "de",
+    "es",
+    "fr",
+    "hi",
+    "id"
+  ],
+  "assignedPrimaryBlindCandidateHashesReconciled": 528,
+  "baseSha": "2647e15762de0c2285cd9d8ebc6d27ffafce6358",
+  "baseTree": "b6f4acb9debdc1b0a838b50d5ad88aaa467e429b",
+  "candidateFreeVerifierResult": "PASS",
+  "candidateSources": {
+    "blind": 92,
+    "new": 4,
+    "primary": 44,
+    "primary+blind": 124
+  },
+  "changedSourceRefreshCells": 6,
+  "contextDependentCellCount": 18,
+  "contextDependentCells": [
+    "components.CollectionQueue.buffer::ar",
+    "components.CollectionQueue.buffer::de",
+    "components.CollectionQueue.buffer::es",
+    "components.CollectionQueue.buffer::fr",
+    "components.CollectionQueue.buffer::hi",
+    "components.CollectionQueue.buffer::id",
+    "components.Settings.SettingsJobsCache.movie-collection-queue::ar",
+    "components.Settings.SettingsJobsCache.movie-collection-queue::de",
+    "components.Settings.SettingsJobsCache.movie-collection-queue::es",
+    "components.Settings.SettingsJobsCache.movie-collection-queue::fr",
+    "components.Settings.SettingsJobsCache.movie-collection-queue::hi",
+    "components.Settings.SettingsJobsCache.movie-collection-queue::id",
+    "components.RequestModal.watchAheadActiveForRequest::ar",
+    "components.RequestModal.watchAheadActiveForRequest::de",
+    "components.RequestModal.watchAheadActiveForRequest::es",
+    "components.RequestModal.watchAheadActiveForRequest::fr",
+    "components.RequestModal.watchAheadActiveForRequest::hi",
+    "components.RequestModal.watchAheadActiveForRequest::id"
+  ],
+  "contextDependentSourceIds": [
+    "components.CollectionQueue.buffer",
+    "components.RequestModal.watchAheadActiveForRequest",
+    "components.Settings.SettingsJobsCache.movie-collection-queue"
+  ],
+  "customAdjustments": [
+    {
+      "cellId": "components.RequestEpisodeQueueControl.watchAheadOff::ar",
+      "rationale": "This is a disabled selector state, and the current Arabic episode-queue glossary uses معطّل for Off.",
+      "recommendedTarget": "معطّل"
+    },
+    {
+      "cellId": "components.RequestEpisodeQueueControl.watchAheadOverrideHelp::id",
+      "rationale": "The help applies only to future additions to the queue and assures users that existing episode requests and downloaded files remain unchanged.",
+      "recommendedTarget": "Hanya berlaku untuk penambahan episode ke antrean di masa mendatang. Permintaan episode dan file yang sudah diunduh tetap seperti semula."
+    },
+    {
+      "cellId": "components.RequestModal.watchAheadOff::ar",
+      "rationale": "This is a disabled selector state, and the current Arabic episode-queue glossary uses معطّل for Off.",
+      "recommendedTarget": "معطّل"
+    },
+    {
+      "cellId": "discovery.accounts.traktSetup::hi",
+      "rationale": "The account setup instructions must preserve the exact callback route and use the locale’s current Settings → General labels.",
+      "recommendedTarget": "Trakt जोड़ने के लिए, व्यवस्थापक को सेटिंग → जनरल में सार्वजनिक HTTPS ऐप URL सेट करना होगा और उस URL के बाद /api/v1/integrations/discovery/trakt/callback जोड़कर Trakt ऐप में पंजीकृत करना होगा।"
+    }
+  ],
+  "dispositions": {
+    "accept": 260,
+    "adjust": 4
+  },
+  "entryRefs": {
+    "refs/heads/codex/seerrng-localization-overhaul-20261028": "f48afa55ce2abeb00ee8b2dc66fa6d2df8f62ba4",
+    "refs/heads/main": "2647e15762de0c2285cd9d8ebc6d27ffafce6358",
+    "refs/pull/418/head": "f48afa55ce2abeb00ee8b2dc66fa6d2df8f62ba4"
+  },
+  "exactHead": "f48afa55ce2abeb00ee8b2dc66fa6d2df8f62ba4",
+  "exactTree": "f7ea727b0383397ec8d6220667b4abe151d43b46",
+  "headedBrowserReviewPerformed": false,
+  "holds": 0,
+  "insertionGapCells": 258,
+  "localeCellCounts": {
+    "ar": 44,
+    "de": 44,
+    "es": 44,
+    "fr": 44,
+    "hi": 44,
+    "id": 44
+  },
+  "localeChangedSourceRefreshCounts": {
+    "ar": 1,
+    "de": 1,
+    "es": 1,
+    "fr": 1,
+    "hi": 1,
+    "id": 1
+  },
+  "localeInsertionGapCounts": {
+    "ar": 43,
+    "de": 43,
+    "es": 43,
+    "fr": 43,
+    "hi": 43,
+    "id": 43
+  },
+  "nativeSpeakerReviewPerformed": false,
+  "oldReviewHead": "77d30ae742aad7245e6e419237fca6a544531e1f",
+  "oldReviewTree": "2c6fe4a0c1c33aa56b01f06a70702f68598509a7",
+  "packetType": "independent-cross-review",
+  "primaryAndBlindRowsReattested": 528,
+  "pullRequest": 418,
+  "repository": "snapetech-org/seerrng",
+  "result": "PASS",
+  "reviewLimits": "Independent semantic cross-review of both sealed proposal lanes against fresh caller/source/current-target pins. No native-speaker or headed-browser review was performed.",
+  "scopeCells": 264,
+  "sourceIds": 44,
+  "testsBuildsScansCiOrWorkflowsRun": false,
+  "tokenCheckFailures": 0
+}

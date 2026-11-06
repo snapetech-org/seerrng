@@ -1,0 +1,13 @@
+{
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "window": "W3500-W3519",
+  "head": "9bb8fd4695b207165e4bb8e56c5239eb50cee37c",
+  "tree": "74a4b0208108be4bc593c63c8ac55b4a2df74862",
+  "inputPath": "/mnt/disks/scratch/task-scratch/seerrng-pr418-w3500-3519-candidate-free-20261103/candidate-free-input",
+  "inputManifestSha256": "822f5f75528a016494cade5f20d09b87eca6c484f51eea5b67ec61257c71fc5b",
+  "reviewMode": "independent primary review from candidate-free packet only",
+  "reviewedAtUTC": "2026-11-03T10:45:59.637747+00:00",
+  "proposedCells": 16,
+  "candidateProposalsConsulted": false
+}

@@ -1,0 +1,30 @@
+Candidate-free packet verifier ran before primary review generation.
+
+{
+  "result": "PASS",
+  "head": "ebf1cb6082ef173688227c507acfdc04c3cf7ca7",
+  "tree": "e3c4d1d10f40ea078b66dfdf942e99c8189fee0c",
+  "range": [
+    3620,
+    3639
+  ],
+  "sourceCount": 20,
+  "cellCount": 240,
+  "priorExcludedSourceIds": 3620,
+  "previousBoundary": "components.Settings.BinderyModal.ownerNote",
+  "nextBoundary": "components.Settings.BookshelfPathMigration.commandStatusError",
+  "callerlessPositions": [
+    3632
+  ],
+  "baselineTokenDiagnostics": {
+    "placeholderMismatchCount": 0,
+    "placeholderSequenceMismatchCount": 0,
+    "icuPluralCategorySetDifferenceCount": 9,
+    "markupMismatchCount": 0,
+    "numericTokenMismatchCount": 8,
+    "protectedLiteralMismatchCount": 0
+  },
+  "w3600ApplicationEvidence": "PASS",
+  "outputChecksumEntries": 22,
+  "candidateProposalsIncluded": false
+}

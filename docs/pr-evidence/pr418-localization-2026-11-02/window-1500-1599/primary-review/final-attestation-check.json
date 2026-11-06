@@ -1,0 +1,17 @@
+{
+  "head": "94bdd3f690fc54d37d17e04d29a443533af3fb0d",
+  "tree": "17df3c6f626ac544990d2f8f2049daf95b4738ac",
+  "sourceIds": 100,
+  "cells": 1200,
+  "sourceCurrentCatalogMismatches": 0,
+  "callerLineOrBlobMismatches": 0,
+  "priorCellsPreserved": 38,
+  "candidateCount": 339,
+  "holds": 286,
+  "candidateHashMismatches": 0,
+  "placeholderFailures": 0,
+  "markupFailures": 0,
+  "protectedLiteralFailures": 0,
+  "currentProtectedLiteralMismatchCells": 13,
+  "result": "pass"
+}

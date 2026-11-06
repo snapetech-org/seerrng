@@ -1,0 +1,5 @@
+# SeerrNG PR #418 W3320–W3339 clean review input
+
+Candidate-free input for 20 contiguous English source IDs and 240 existing targets across 12 direct locales, pinned to PR head 70caabc2f95df1a7de3f869111aea1df58522d96 and tree daac9e9284adac648fd3f6147265c21c90cdddba. The source queue continues the checksum-verified W3280–W3299 clean input. It pins all 13 locale catalogs (including English), file hashes, Git blobs, 9,494-key counts and ordered-key hashes, plus exact message-definition, caller, route, and namespace-contract context snippets and file hashes.
+
+W3320 begins at components.Requests.deleted; W3339 ends at components.Requests.fourK. Adjacent source IDs are pinned in source-boundaries.json. The clean input contains no review decisions or proposed translations. Placeholder schemas and source/current protected-literal occurrences are recorded for every cell. Caller context rows: 51. Caller-gate holds: 5 source findings (see window/source boundaries); current placeholder-parity exceptions: 0. Caller context resolved is distinct from a field-specific production caller existing. This machine review is not native-speaker approval.

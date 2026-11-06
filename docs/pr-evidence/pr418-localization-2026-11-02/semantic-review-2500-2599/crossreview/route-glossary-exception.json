@@ -1,0 +1,42 @@
+{
+  "callerEvidence": {
+    "breadcrumbCallers": [
+      {
+        "line": 23,
+        "lineText": "ebooksHelp:",
+        "path": "src/components/Common/ReaderDeliveryLink.tsx",
+        "sourcePosition": 2501
+      },
+      {
+        "line": 86,
+        "lineText": "setup: 'Set up a reader service in Settings > Services > Reader Apps, then return here.'",
+        "path": "src/components/Common/ReaderGroupingAction.tsx",
+        "sourcePosition": 2594
+      }
+    ],
+    "exactTreeCallerContextHashes": {
+      "2501": "8133f136812d0cdfec231ef4fa131c5e534ff04af9367c61f56d5bd9f57daf6b",
+      "2568": "1f2336e159bc23740ea377581bb105841d6a4c5b1c23f37b561307df81ea4c43",
+      "2594": "1859b8790a01ff466d0adf0b678e126a1d9fc9e912bf376479b2e1064a7e29b9"
+    },
+    "renderCaller": {
+      "line": 644,
+      "lineText": "{intl.formatMessage(messages.title)}",
+      "path": "src/components/Settings/ReaderDeliverySettings.tsx"
+    },
+    "titleCaller": {
+      "line": 20,
+      "lineText": "title: 'Reader Apps',",
+      "path": "src/components/Settings/ReaderDeliverySettings.tsx"
+    }
+  },
+  "crossReviewDisposition": "accept-primary-correction",
+  "frozenGlossaryLabel": "أجهزة قراءة",
+  "head": "0905d4be32d8b7ec3b1af701473a3fdf6e0f30a2",
+  "locale": "ar",
+  "reason": "The frozen title reads as reading devices. The exact caller defines the page title as Reader Apps; in-scope breadcrumbs at positions 2501 and 2594 already use تطبيقات القراءة. Reconcile the Arabic route glossary with that reviewed software-app label before applying the localization packet.",
+  "reviewedPrimaryAndCrossReviewedLabel": "تطبيقات القراءة",
+  "source": "Reader Apps",
+  "sourceId": "components.ReaderDeliverySettings.title",
+  "tree": "a09117211080bbd89d32959f17d93b02a82b966f"
+}

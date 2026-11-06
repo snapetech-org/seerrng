@@ -1,0 +1,320 @@
+{
+  "3141:zh_Hant": {
+    "confidence": "high",
+    "kind": "correction",
+    "rationale": "Replaces 季度, which usually means calendar quarter, with the TV season term 季.",
+    "target": "正在檢查已連結的播放紀錄，以便申請後續影集季數。"
+  },
+  "3142:zh_Hant": {
+    "confidence": "high",
+    "kind": "correction",
+    "rationale": "Corrects the use of 季度 for a TV series season.",
+    "target": "電視劇季規則"
+  },
+  "3143:zh_Hant": {
+    "confidence": "high",
+    "kind": "correction",
+    "rationale": "Uses 影集季 to distinguish a TV season from a calendar quarter and preserves {reason}.",
+    "target": "只有通過此播放檢查的影集季才會納入申請。{reason}"
+  },
+  "3144:hi": {
+    "confidence": "high",
+    "kind": "correction",
+    "rationale": "Corrects Hindi case agreement and makes the retry instruction natural.",
+    "target": "अभी प्लेबैक इतिहास का सत्यापन नहीं किया जा सकता। फिर से कोशिश करें।"
+  },
+  "3145:hi": {
+    "confidence": "high",
+    "kind": "correction",
+    "rationale": "Replaces the unnatural “against metadata” construction with natural Hindi verification wording.",
+    "target": "टीवी मेटाडेटा के आधार पर इस सीज़न की पुष्टि नहीं हो सकी। बाद में फिर कोशिश करें।"
+  },
+  "3146:hi": {
+    "confidence": "high",
+    "kind": "correction",
+    "rationale": "Replaces मौसम (weather) with सीज़न for a TV season.",
+    "target": "सीज़न {number}"
+  },
+  "3147:fr": {
+    "confidence": "high",
+    "kind": "correction",
+    "rationale": "Clarifies that the films are ready to be requested, rather than ready to request something.",
+    "target": "Sélectionnez tous les films prêts à être demandés"
+  },
+  "3147:hi": {
+    "confidence": "high",
+    "kind": "refinement",
+    "rationale": "Uses a more natural and concise Hindi UI instruction.",
+    "target": "अनुरोध के लिए तैयार हर फ़िल्म चुनें"
+  },
+  "3147:id": {
+    "confidence": "high",
+    "kind": "correction",
+    "rationale": "Corrects wording that makes the film sound like the requester.",
+    "target": "Pilih semua film yang siap diminta"
+  },
+  "3147:pt_BR": {
+    "confidence": "high",
+    "kind": "correction",
+    "rationale": "Clarifies that the films are ready to be requested, rather than ready to request something.",
+    "target": "Selecione todos os filmes prontos para serem solicitados"
+  },
+  "3147:vi": {
+    "confidence": "high",
+    "kind": "refinement",
+    "rationale": "Clarifies that the films are ready to be requested.",
+    "target": "Chọn tất cả phim đã sẵn sàng để được yêu cầu"
+  },
+  "3147:zh_Hans": {
+    "confidence": "high",
+    "kind": "correction",
+    "rationale": "Replaces an ungrammatical phrase with a natural requestable-state label.",
+    "target": "选择所有可申请的电影"
+  },
+  "3147:zh_Hant": {
+    "confidence": "high",
+    "kind": "correction",
+    "rationale": "Adds the missing ready/requestable state in natural Traditional Chinese.",
+    "target": "選取所有可申請的影片"
+  },
+  "3148:ar": {
+    "confidence": "high",
+    "kind": "correction",
+    "rationale": "Adds a natural Arabic object construction for the movie being requested.",
+    "target": "يرجى اختيار فيلم واحد على الأقل لطلبه。"
+  },
+  "3148:ja": {
+    "confidence": "high",
+    "kind": "correction",
+    "rationale": "Clarifies that the user selects a movie to request, not a movie request.",
+    "target": "リクエストする映画を1本以上選択してください。"
+  },
+  "3148:ko": {
+    "confidence": "high",
+    "kind": "correction",
+    "rationale": "Replaces an unnatural noun phrase with a clear request instruction.",
+    "target": "요청할 영화를 하나 이상 선택하세요."
+  },
+  "3148:pt_BR": {
+    "confidence": "high",
+    "kind": "refinement",
+    "rationale": "Uses the more consistent product-flow verb solicitar instead of the colloquial pedir.",
+    "target": "Selecione pelo menos um filme para solicitar."
+  },
+  "3148:zh_Hans": {
+    "confidence": "high",
+    "kind": "correction",
+    "rationale": "Corrects the movie classifier and removes whitespace before punctuation.",
+    "target": "请选择至少一部要申请的电影。"
+  },
+  "3148:zh_Hant": {
+    "confidence": "high",
+    "kind": "correction",
+    "rationale": "Uses 申請 for the request workflow and removes whitespace before punctuation.",
+    "target": "請至少選取一部要申請的電影。"
+  },
+  "3149:de": {
+    "confidence": "high",
+    "kind": "refinement",
+    "rationale": "Matches the formal German address used in the neighboring modal strings.",
+    "target": "Wählen Sie nicht verfügbare Staffeln oder Episoden aus, die Sie anfordern möchten."
+  },
+  "3150:ar": {
+    "confidence": "high",
+    "kind": "correction",
+    "rationale": "Completes the object so the Arabic instruction clearly means request this movie.",
+    "target": "اختر هذا الفيلم لطلبه"
+  },
+  "3150:es": {
+    "confidence": "high",
+    "kind": "correction",
+    "rationale": "Adds the pronoun needed to say that this movie is the item being requested.",
+    "target": "Seleccione esta película para solicitarla."
+  },
+  "3150:fr": {
+    "confidence": "high",
+    "kind": "refinement",
+    "rationale": "Uses a more idiomatic French expression for requesting the selected film.",
+    "target": "Sélectionnez ce film pour en faire la demande."
+  },
+  "3150:ko": {
+    "confidence": "high",
+    "kind": "refinement",
+    "rationale": "Uses a natural concise Korean button label meaning select as the movie to request.",
+    "target": "요청할 영화로 선택"
+  },
+  "3150:pt_BR": {
+    "confidence": "high",
+    "kind": "correction",
+    "rationale": "Adds the pronoun needed to complete the Portuguese meaning.",
+    "target": "Selecione este filme para solicitá-lo."
+  },
+  "3150:vi": {
+    "confidence": "high",
+    "kind": "refinement",
+    "rationale": "Uses a natural Vietnamese expression for submitting a request for this film.",
+    "target": "Chọn phim này để gửi yêu cầu."
+  },
+  "3150:zh_Hant": {
+    "confidence": "high",
+    "kind": "correction",
+    "rationale": "Uses 申請 for the request workflow instead of 要求, which means require/demand.",
+    "target": "選擇要申請的影片"
+  },
+  "3151:fr": {
+    "confidence": "high",
+    "kind": "correction",
+    "rationale": "Matches the singular source label.",
+    "target": "Service"
+  },
+  "3155:de": {
+    "confidence": "high",
+    "kind": "correction",
+    "rationale": "Replaces Episodenschlange with the unambiguous German term Episodenwarteschlange.",
+    "target": "Diese Anfrage verwendet den Standardwert {count} für die Episodenwarteschlange des Administrators."
+  },
+  "3155:es": {
+    "confidence": "high",
+    "kind": "refinement",
+    "rationale": "Reorders the sentence so de {count} modifies the default value, not the administrator.",
+    "target": "Esta solicitud usa el valor predeterminado de {count} de la cola de episodios del administrador."
+  },
+  "3155:hi": {
+    "confidence": "high",
+    "kind": "correction",
+    "rationale": "Uses natural Hindi possessive phrasing for the administrator’s queue default.",
+    "target": "यह अनुरोध आपके व्यवस्थापक की एपिसोड कतार का डिफ़ॉल्ट मान {count} इस्तेमाल करता है।"
+  },
+  "3155:id": {
+    "confidence": "high",
+    "kind": "correction",
+    "rationale": "Replaces mixed English phrasing with a clear Indonesian translation.",
+    "target": "Permintaan ini menggunakan nilai bawaan {count} yang ditetapkan administrator untuk antrean episode."
+  },
+  "3155:ja": {
+    "confidence": "high",
+    "kind": "refinement",
+    "rationale": "Reorders the phrase naturally and separates the placeholder from 値.",
+    "target": "このリクエストでは、管理者が設定したエピソードキューのデフォルト値 {count} を使用します。"
+  },
+  "3155:pt_BR": {
+    "confidence": "high",
+    "kind": "refinement",
+    "rationale": "Makes de {count} modify the default value rather than the administrator.",
+    "target": "Esta solicitação usa o valor padrão de {count} da fila de episódios definido pelo administrador."
+  },
+  "3155:vi": {
+    "confidence": "high",
+    "kind": "correction",
+    "rationale": "Improves the sentence structure and clarifies the Episode Queue term.",
+    "target": "Yêu cầu này sử dụng giá trị mặc định {count} cho hàng đợi tập phim do quản trị viên đặt."
+  },
+  "3157:de": {
+    "confidence": "high",
+    "kind": "correction",
+    "rationale": "Replaces Episodenschlange with the unambiguous German term Episodenwarteschlange.",
+    "target": "Ihr Administrator hat die Episodenwarteschlange für TV-Anfragen von {owner} auf {count} gesetzt. Sie kann für diese Anfrage noch nicht ausgeführt werden."
+  },
+  "3157:es": {
+    "confidence": "high",
+    "kind": "refinement",
+    "rationale": "Uses sentence-case terminology and improves the sentence flow.",
+    "target": "Tu administrador estableció la cola de episodios en {count} para las solicitudes de TV de {owner}, pero todavía no se puede ejecutar para esta solicitud."
+  },
+  "3157:hi": {
+    "confidence": "high",
+    "kind": "correction",
+    "rationale": "Corrects feminine agreement for कतार and improves the clause.",
+    "target": "आपके व्यवस्थापक ने {owner} के TV अनुरोधों के लिए एपिसोड कतार को {count} पर सेट किया है, लेकिन यह अभी इस अनुरोध के लिए काम नहीं कर सकती।"
+  },
+  "3157:id": {
+    "confidence": "high",
+    "kind": "refinement",
+    "rationale": "Uses standard spelling antrean and makes the queue reference clear.",
+    "target": "Administrator Anda menetapkan antrean episode ke {count} untuk permintaan TV {owner}, tetapi antrean ini belum dapat dijalankan untuk permintaan ini."
+  },
+  "3157:vi": {
+    "confidence": "high",
+    "kind": "refinement",
+    "rationale": "Uses a natural Vietnamese noun phrase for Episode Queue and improves the sentence flow.",
+    "target": "Quản trị viên của bạn đã đặt hàng đợi tập phim ở mức {count} cho các yêu cầu TV của {owner}, nhưng hiện chưa thể chạy cho yêu cầu này."
+  },
+  "3157:zh_Hant": {
+    "confidence": "high",
+    "kind": "correction",
+    "rationale": "Clarifies the Episode Queue setting instead of describing it as pre-queuing.",
+    "target": "管理員為 {owner} 的電視節目請求將集數佇列設為 {count}，但目前尚無法在此請求中執行。"
+  },
+  "3158:de": {
+    "confidence": "high",
+    "kind": "refinement",
+    "rationale": "Uses consistent queue terminology and makes “queued ahead” explicit.",
+    "target": "Die Episodenwarteschlange ist für TV-Anfragen von {owner} durch Ihren Administrator aktiviert; {count} Episoden stehen vor dieser Anfrage in der Warteschlange."
+  },
+  "3158:es": {
+    "confidence": "high",
+    "kind": "refinement",
+    "rationale": "Clarifies that the count refers to episodes ahead in the queue.",
+    "target": "Tu administrador activó la cola de episodios para las solicitudes de TV de {owner}; hay {count} episodios por delante en la cola."
+  },
+  "3158:hi": {
+    "confidence": "high",
+    "kind": "refinement",
+    "rationale": "Uses a more natural verb and word order.",
+    "target": "आपके व्यवस्थापक ने {owner} के TV अनुरोधों के लिए एपिसोड कतार चालू की है; कतार में {count} एपिसोड पहले से हैं।"
+  },
+  "3158:id": {
+    "confidence": "high",
+    "kind": "correction",
+    "rationale": "Uses standard spelling antrean and clarifies that the episodes are ahead in the queue.",
+    "target": "Administrator Anda mengaktifkan antrean episode untuk permintaan TV {owner}, dengan {count} episode di depan dalam antrean."
+  },
+  "3158:ja": {
+    "confidence": "high",
+    "kind": "refinement",
+    "rationale": "Makes “ahead” explicit while retaining both placeholders.",
+    "target": "管理者が{owner}のTVリクエストにエピソードキューを有効にしました。キューにはこのリクエストより前に{count}件のエピソードがあります。"
+  },
+  "3158:pt_BR": {
+    "confidence": "high",
+    "kind": "refinement",
+    "rationale": "Uses sentence case and clarifies that the count refers to episodes ahead.",
+    "target": "Seu administrador ativou a fila de episódios para as solicitações de TV de {owner}, com {count} episódios à frente na fila."
+  },
+  "3158:vi": {
+    "confidence": "high",
+    "kind": "refinement",
+    "rationale": "Uses consistent Episode Queue terminology and makes the queue position explicit.",
+    "target": "Quản trị viên đã bật hàng đợi tập phim cho yêu cầu TV của {owner}, với {count} tập đang chờ phía trước."
+  },
+  "3158:zh_Hant": {
+    "confidence": "high",
+    "kind": "refinement",
+    "rationale": "Uses consistent Episode Queue terminology and clarifies that those episodes precede this request.",
+    "target": "管理員已為 {owner} 的電視節目請求啟用集數佇列，目前有 {count} 集排在此請求之前。"
+  },
+  "3159:hi": {
+    "confidence": "high",
+    "kind": "correction",
+    "rationale": "Replaces प्रकरण, which means case/section, with the TV episode term एपिसोड.",
+    "target": "{count, plural, one {# एपिसोड} other {# एपिसोड}}"
+  },
+  "3159:id": {
+    "confidence": "high",
+    "kind": "correction",
+    "rationale": "Corrects the misspelling episoda; Indonesian uses episode for both plural categories.",
+    "target": "{count, plural, one {# episode} other {# episode}}"
+  },
+  "3159:vi": {
+    "confidence": "high",
+    "kind": "refinement",
+    "rationale": "Uses consistent sentence case in both plural branches.",
+    "target": "{count, plural, one {# tập} other {# tập}}"
+  },
+  "3159:zh_Hans": {
+    "confidence": "high",
+    "kind": "correction",
+    "rationale": "Replaces 插曲/剧情, which mean interlude/plot, with 集 for a television episode.",
+    "target": "{count, plural, one {# 集} other {# 集}}"
+  }
+}

@@ -1,0 +1,166 @@
+{
+  "repository": "snapetech-org/SeerrNG",
+  "pullRequest": 418,
+  "head": "2be00354833160f0681d5cd779a1b1be37a63a4b",
+  "tree": "af588a1ee34f768ae37a29dccd5a508595b7199d",
+  "sourceOrderCount": 9494,
+  "range": [
+    3200,
+    3219
+  ],
+  "priorRange": [
+    3180,
+    3199
+  ],
+  "sourceIds": [
+    {
+      "position": 3200,
+      "id": "components.RequestStatus.SoftwareRequests.history",
+      "source": "History",
+      "sourceSha256": "0e769600933790607b2a13b33ddfade0fa17810eb62c3b28ee23e59516516491"
+    },
+    {
+      "position": 3201,
+      "id": "components.RequestStatus.SoftwareRequests.historyError",
+      "source": "Status history could not be loaded.",
+      "sourceSha256": "c61b90ad2486520cf4da6e7de906ad37ccee5b727abe97462689f535e234a21f"
+    },
+    {
+      "position": 3202,
+      "id": "components.RequestStatus.SoftwareRequests.historyLoading",
+      "source": "Loading status history…",
+      "sourceSha256": "4079b49608da58dd0fce85e543f668b3e00ee8a3a196e5884bd186d0eaf73bfa"
+    },
+    {
+      "position": 3203,
+      "id": "components.RequestStatus.SoftwareRequests.importing",
+      "source": "Verifying Import",
+      "sourceSha256": "6326c7f165b1b08cded4d607e58206230b5319b3f79aaff69944449417a51568"
+    },
+    {
+      "position": 3204,
+      "id": "components.RequestStatus.SoftwareRequests.linux",
+      "source": "Linux",
+      "sourceSha256": "4828e60247c1636f57b7446a314e7f599c12b53d40061cc851a1442004354fed"
+    },
+    {
+      "position": 3205,
+      "id": "components.RequestStatus.SoftwareRequests.loadError",
+      "source": "Software request status could not be loaded.",
+      "sourceSha256": "120c8664c6fc89841702737e4054577202ba9227bc8d91867b4f36aec50ad815"
+    },
+    {
+      "position": 3206,
+      "id": "components.RequestStatus.SoftwareRequests.macos",
+      "source": "macOS",
+      "sourceSha256": "aed6b7aa2a0511a9bbcaae2a10127a3139fc6494c57769b31b1a694c14483ce7"
+    },
+    {
+      "position": 3207,
+      "id": "components.RequestStatus.SoftwareRequests.manageError",
+      "source": "This software request could not be updated.",
+      "sourceSha256": "34de813bd0dc65d52d406bfc4b6f10ce8415a0cdbfed2b648b8bc282e4024438"
+    },
+    {
+      "position": 3208,
+      "id": "components.RequestStatus.SoftwareRequests.modern",
+      "source": "Modern",
+      "sourceSha256": "eef6c7f6ddd4067eb8afcea1a2104116ed5c09287b11433ed96a2b3c47cbb55c"
+    },
+    {
+      "position": 3209,
+      "id": "components.RequestStatus.SoftwareRequests.noHistory",
+      "source": "No saved status updates are available.",
+      "sourceSha256": "29716385ca5819129c4ecf59c348fce7129c2375a5055823631cd9831f10c3e5"
+    },
+    {
+      "position": 3210,
+      "id": "components.RequestStatus.SoftwareRequests.noRequests",
+      "source": "No software requests yet.",
+      "sourceSha256": "824cc7e924a9d6f028c51b767f37e83a23e6b2d98def18d6bbf86529c07f7cfe"
+    },
+    {
+      "position": 3211,
+      "id": "components.RequestStatus.SoftwareRequests.operatingSystem",
+      "source": "Operating System: {value}",
+      "sourceSha256": "4fe2d825458dcf4af2ea067c7a904c5d3afd1e9e0a2d5605d22c91f54d6f5208"
+    },
+    {
+      "position": 3212,
+      "id": "components.RequestStatus.SoftwareRequests.pending",
+      "source": "Pending Approval",
+      "sourceSha256": "6da02e71e215fc0154208f2a8e1638143e56a833c246d756cc28226023e00c9a"
+    },
+    {
+      "position": 3213,
+      "id": "components.RequestStatus.SoftwareRequests.progress",
+      "source": "{percent}% downloaded",
+      "sourceSha256": "996ace29d6dfca443e2a1da94bc9c4c11080099e9a23a7573a9d8ac8c4233ef2"
+    },
+    {
+      "position": 3214,
+      "id": "components.RequestStatus.SoftwareRequests.quotaExceeded",
+      "source": "Your software request limit has been reached.",
+      "sourceSha256": "20e7862df164739fc05871ff695c8e48a81f7a4031216d41cf70ded7b4b1a698"
+    },
+    {
+      "position": 3215,
+      "id": "components.RequestStatus.SoftwareRequests.removeFromRequests",
+      "source": "Remove from Requests",
+      "sourceSha256": "30a1db31bbbebe900b0db24b49a603639cdb766b8c468443dee45bd400682ca4"
+    },
+    {
+      "position": 3216,
+      "id": "components.RequestStatus.SoftwareRequests.removeFromRequestsDescription",
+      "source": "This removes the request and its saved status history from SeerrNG. Any download already handed to ROMarrNG or a download client will keep running; cancel it there if you want to stop it. SeerrNG will stop showing progress and sending updates for this request. Requesting the same title again before this transfer finishes may start a second acquisition. Installed software is not deleted.",
+      "sourceSha256": "e13635e0bc53fd210f40056792115f0a067e95f11fb4687c40fa0b8c9dcda8aa"
+    },
+    {
+      "position": 3217,
+      "id": "components.RequestStatus.SoftwareRequests.removeFromRequestsFailed",
+      "source": "Unable to remove this request from SeerrNG.",
+      "sourceSha256": "d50906bc5365a347625aabe5a2b0263c21d600335eb4df2672fa0a74e2014b89"
+    },
+    {
+      "position": 3218,
+      "id": "components.RequestStatus.SoftwareRequests.removeFromRequestsSuccess",
+      "source": "Request removed from SeerrNG. Any active download will keep running.",
+      "sourceSha256": "38e2c518cf2f0a96e59671777915e12594731d35d98d9e390896ffc68c589954"
+    },
+    {
+      "position": 3219,
+      "id": "components.RequestStatus.SoftwareRequests.removeFromRequestsTitle",
+      "source": "Remove This Request from SeerrNG?",
+      "sourceSha256": "3931bac4464e75c2c1a0be6f842789b1ef044f0f6d74f95127e35b5ede911306"
+    }
+  ],
+  "catalogKeyCounts": {
+    "es": 9494,
+    "zh_Hans": 9494,
+    "hi": 9494,
+    "de": 9494,
+    "ja": 9494,
+    "fr": 9494,
+    "pt_BR": 9494,
+    "ar": 9494,
+    "ko": 9494,
+    "zh_Hant": 9494,
+    "vi": 9494,
+    "id": 9494
+  },
+  "localeOrder": [
+    "es",
+    "zh_Hans",
+    "hi",
+    "de",
+    "ja",
+    "fr",
+    "pt_BR",
+    "ar",
+    "ko",
+    "zh_Hant",
+    "vi",
+    "id"
+  ],
+  "callerSearchScope": "Message definitions and direct named uses in SoftwareRequests.tsx, including status-label dispatch for pending/importing."
+}

@@ -1,0 +1,545 @@
+{
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "head": "1586a249e3f86deb7b9410cff50223e5f76209ff",
+  "tree": "d620a906353e9724ba28986103c76b7792c56099",
+  "range": [
+    3360,
+    3379
+  ],
+  "nextSequentialRange": [
+    3380,
+    3399
+  ],
+  "cellCount": 240,
+  "decisionCounts": {
+    "accept": 189,
+    "hold": 36,
+    "correction": 6,
+    "refinement": 9
+  },
+  "byLocale": {
+    "es": {
+      "accept": 17,
+      "hold": 3
+    },
+    "zh_Hans": {
+      "accept": 16,
+      "hold": 3,
+      "refinement": 1
+    },
+    "hi": {
+      "accept": 17,
+      "hold": 3
+    },
+    "de": {
+      "accept": 16,
+      "hold": 3,
+      "correction": 1
+    },
+    "ja": {
+      "accept": 16,
+      "hold": 3,
+      "correction": 1
+    },
+    "fr": {
+      "accept": 14,
+      "hold": 3,
+      "refinement": 2,
+      "correction": 1
+    },
+    "pt_BR": {
+      "accept": 16,
+      "hold": 3,
+      "refinement": 1
+    },
+    "ar": {
+      "accept": 13,
+      "hold": 3,
+      "refinement": 3,
+      "correction": 1
+    },
+    "ko": {
+      "accept": 16,
+      "hold": 3,
+      "correction": 1
+    },
+    "zh_Hant": {
+      "accept": 15,
+      "hold": 3,
+      "correction": 1,
+      "refinement": 1
+    },
+    "vi": {
+      "accept": 16,
+      "hold": 3,
+      "refinement": 1
+    },
+    "id": {
+      "accept": 17,
+      "hold": 3
+    }
+  },
+  "holdIds": [
+    {
+      "id": "components.Requests.mediaType",
+      "position": 3361,
+      "locales": 12,
+      "reason": "0 direct production references in pinned callers"
+    },
+    {
+      "id": "components.Requests.mediaTypeValue",
+      "position": 3362,
+      "locales": 12,
+      "reason": "0 direct production references in pinned callers"
+    },
+    {
+      "id": "components.Requests.minutes",
+      "position": 3363,
+      "locales": 12,
+      "reason": "0 direct production references in pinned callers"
+    }
+  ],
+  "disputedCells": {
+    "components.Requests.mediaType": [
+      {
+        "locale": "es",
+        "decision": "hold",
+        "currentTarget": "Tipo de medio",
+        "suggestedTarget": null,
+        "rationale": "Hold: the sealed caller gate records a message definition but zero direct production references for this ID. The pinned snippets provide no field-specific production use, and generic/dynamic rendering is explicitly insufficient. No translation winner is advanced for this cell.",
+        "confidence": "high"
+      },
+      {
+        "locale": "zh_Hans",
+        "decision": "hold",
+        "currentTarget": "媒体类型",
+        "suggestedTarget": null,
+        "rationale": "Hold: the sealed caller gate records a message definition but zero direct production references for this ID. The pinned snippets provide no field-specific production use, and generic/dynamic rendering is explicitly insufficient. No translation winner is advanced for this cell.",
+        "confidence": "high"
+      },
+      {
+        "locale": "hi",
+        "decision": "hold",
+        "currentTarget": "मीडिया प्रकार",
+        "suggestedTarget": null,
+        "rationale": "Hold: the sealed caller gate records a message definition but zero direct production references for this ID. The pinned snippets provide no field-specific production use, and generic/dynamic rendering is explicitly insufficient. No translation winner is advanced for this cell.",
+        "confidence": "high"
+      },
+      {
+        "locale": "de",
+        "decision": "hold",
+        "currentTarget": "Medientyp",
+        "suggestedTarget": null,
+        "rationale": "Hold: the sealed caller gate records a message definition but zero direct production references for this ID. The pinned snippets provide no field-specific production use, and generic/dynamic rendering is explicitly insufficient. No translation winner is advanced for this cell.",
+        "confidence": "high"
+      },
+      {
+        "locale": "ja",
+        "decision": "hold",
+        "currentTarget": "メディアタイプ",
+        "suggestedTarget": null,
+        "rationale": "Hold: the sealed caller gate records a message definition but zero direct production references for this ID. The pinned snippets provide no field-specific production use, and generic/dynamic rendering is explicitly insufficient. No translation winner is advanced for this cell.",
+        "confidence": "high"
+      },
+      {
+        "locale": "fr",
+        "decision": "hold",
+        "currentTarget": "Type de média",
+        "suggestedTarget": null,
+        "rationale": "Hold: the sealed caller gate records a message definition but zero direct production references for this ID. The pinned snippets provide no field-specific production use, and generic/dynamic rendering is explicitly insufficient. No translation winner is advanced for this cell.",
+        "confidence": "high"
+      },
+      {
+        "locale": "pt_BR",
+        "decision": "hold",
+        "currentTarget": "Tipo de Mídia",
+        "suggestedTarget": null,
+        "rationale": "Hold: the sealed caller gate records a message definition but zero direct production references for this ID. The pinned snippets provide no field-specific production use, and generic/dynamic rendering is explicitly insufficient. No translation winner is advanced for this cell.",
+        "confidence": "high"
+      },
+      {
+        "locale": "ar",
+        "decision": "hold",
+        "currentTarget": "نوع الوسائط",
+        "suggestedTarget": null,
+        "rationale": "Hold: the sealed caller gate records a message definition but zero direct production references for this ID. The pinned snippets provide no field-specific production use, and generic/dynamic rendering is explicitly insufficient. No translation winner is advanced for this cell.",
+        "confidence": "high"
+      },
+      {
+        "locale": "ko",
+        "decision": "hold",
+        "currentTarget": "미디어 유형",
+        "suggestedTarget": null,
+        "rationale": "Hold: the sealed caller gate records a message definition but zero direct production references for this ID. The pinned snippets provide no field-specific production use, and generic/dynamic rendering is explicitly insufficient. No translation winner is advanced for this cell.",
+        "confidence": "high"
+      },
+      {
+        "locale": "zh_Hant",
+        "decision": "hold",
+        "currentTarget": "媒體類型",
+        "suggestedTarget": null,
+        "rationale": "Hold: the sealed caller gate records a message definition but zero direct production references for this ID. The pinned snippets provide no field-specific production use, and generic/dynamic rendering is explicitly insufficient. No translation winner is advanced for this cell.",
+        "confidence": "high"
+      },
+      {
+        "locale": "vi",
+        "decision": "hold",
+        "currentTarget": "Kiểu phương tiện",
+        "suggestedTarget": null,
+        "rationale": "Hold: the sealed caller gate records a message definition but zero direct production references for this ID. The pinned snippets provide no field-specific production use, and generic/dynamic rendering is explicitly insufficient. No translation winner is advanced for this cell.",
+        "confidence": "high"
+      },
+      {
+        "locale": "id",
+        "decision": "hold",
+        "currentTarget": "Jenis Media",
+        "suggestedTarget": null,
+        "rationale": "Hold: the sealed caller gate records a message definition but zero direct production references for this ID. The pinned snippets provide no field-specific production use, and generic/dynamic rendering is explicitly insufficient. No translation winner is advanced for this cell.",
+        "confidence": "high"
+      }
+    ],
+    "components.Requests.mediaTypeValue": [
+      {
+        "locale": "es",
+        "decision": "hold",
+        "currentTarget": "Tipo de medio",
+        "suggestedTarget": null,
+        "rationale": "Hold: the sealed caller gate records a message definition but zero direct production references for this ID. The pinned snippets provide no field-specific production use, and generic/dynamic rendering is explicitly insufficient. No translation winner is advanced for this cell.",
+        "confidence": "high"
+      },
+      {
+        "locale": "zh_Hans",
+        "decision": "hold",
+        "currentTarget": "媒体类型",
+        "suggestedTarget": null,
+        "rationale": "Hold: the sealed caller gate records a message definition but zero direct production references for this ID. The pinned snippets provide no field-specific production use, and generic/dynamic rendering is explicitly insufficient. No translation winner is advanced for this cell.",
+        "confidence": "high"
+      },
+      {
+        "locale": "hi",
+        "decision": "hold",
+        "currentTarget": "मीडिया प्रकार",
+        "suggestedTarget": null,
+        "rationale": "Hold: the sealed caller gate records a message definition but zero direct production references for this ID. The pinned snippets provide no field-specific production use, and generic/dynamic rendering is explicitly insufficient. No translation winner is advanced for this cell.",
+        "confidence": "high"
+      },
+      {
+        "locale": "de",
+        "decision": "hold",
+        "currentTarget": "Medientyp",
+        "suggestedTarget": null,
+        "rationale": "Hold: the sealed caller gate records a message definition but zero direct production references for this ID. The pinned snippets provide no field-specific production use, and generic/dynamic rendering is explicitly insufficient. No translation winner is advanced for this cell.",
+        "confidence": "high"
+      },
+      {
+        "locale": "ja",
+        "decision": "hold",
+        "currentTarget": "メディアタイプ",
+        "suggestedTarget": null,
+        "rationale": "Hold: the sealed caller gate records a message definition but zero direct production references for this ID. The pinned snippets provide no field-specific production use, and generic/dynamic rendering is explicitly insufficient. No translation winner is advanced for this cell.",
+        "confidence": "high"
+      },
+      {
+        "locale": "fr",
+        "decision": "hold",
+        "currentTarget": "Type de média",
+        "suggestedTarget": null,
+        "rationale": "Hold: the sealed caller gate records a message definition but zero direct production references for this ID. The pinned snippets provide no field-specific production use, and generic/dynamic rendering is explicitly insufficient. No translation winner is advanced for this cell.",
+        "confidence": "high"
+      },
+      {
+        "locale": "pt_BR",
+        "decision": "hold",
+        "currentTarget": "Tipo de Mídia",
+        "suggestedTarget": null,
+        "rationale": "Hold: the sealed caller gate records a message definition but zero direct production references for this ID. The pinned snippets provide no field-specific production use, and generic/dynamic rendering is explicitly insufficient. No translation winner is advanced for this cell.",
+        "confidence": "high"
+      },
+      {
+        "locale": "ar",
+        "decision": "hold",
+        "currentTarget": "نوع الوسائط",
+        "suggestedTarget": null,
+        "rationale": "Hold: the sealed caller gate records a message definition but zero direct production references for this ID. The pinned snippets provide no field-specific production use, and generic/dynamic rendering is explicitly insufficient. No translation winner is advanced for this cell.",
+        "confidence": "high"
+      },
+      {
+        "locale": "ko",
+        "decision": "hold",
+        "currentTarget": "미디어 유형",
+        "suggestedTarget": null,
+        "rationale": "Hold: the sealed caller gate records a message definition but zero direct production references for this ID. The pinned snippets provide no field-specific production use, and generic/dynamic rendering is explicitly insufficient. No translation winner is advanced for this cell.",
+        "confidence": "high"
+      },
+      {
+        "locale": "zh_Hant",
+        "decision": "hold",
+        "currentTarget": "媒體類型",
+        "suggestedTarget": null,
+        "rationale": "Hold: the sealed caller gate records a message definition but zero direct production references for this ID. The pinned snippets provide no field-specific production use, and generic/dynamic rendering is explicitly insufficient. No translation winner is advanced for this cell.",
+        "confidence": "high"
+      },
+      {
+        "locale": "vi",
+        "decision": "hold",
+        "currentTarget": "Kiểu phương tiện",
+        "suggestedTarget": null,
+        "rationale": "Hold: the sealed caller gate records a message definition but zero direct production references for this ID. The pinned snippets provide no field-specific production use, and generic/dynamic rendering is explicitly insufficient. No translation winner is advanced for this cell.",
+        "confidence": "high"
+      },
+      {
+        "locale": "id",
+        "decision": "hold",
+        "currentTarget": "Jenis Media",
+        "suggestedTarget": null,
+        "rationale": "Hold: the sealed caller gate records a message definition but zero direct production references for this ID. The pinned snippets provide no field-specific production use, and generic/dynamic rendering is explicitly insufficient. No translation winner is advanced for this cell.",
+        "confidence": "high"
+      }
+    ],
+    "components.Requests.minutes": [
+      {
+        "locale": "es",
+        "decision": "hold",
+        "currentTarget": "{count} minutos",
+        "suggestedTarget": null,
+        "rationale": "Hold: the sealed caller gate records a message definition but zero direct production references for this ID. The pinned snippets provide no field-specific production use, and generic/dynamic rendering is explicitly insufficient. No translation winner is advanced for this cell.",
+        "confidence": "high"
+      },
+      {
+        "locale": "zh_Hans",
+        "decision": "hold",
+        "currentTarget": "{count} 分钟",
+        "suggestedTarget": null,
+        "rationale": "Hold: the sealed caller gate records a message definition but zero direct production references for this ID. The pinned snippets provide no field-specific production use, and generic/dynamic rendering is explicitly insufficient. No translation winner is advanced for this cell.",
+        "confidence": "high"
+      },
+      {
+        "locale": "hi",
+        "decision": "hold",
+        "currentTarget": "{count} मिनट",
+        "suggestedTarget": null,
+        "rationale": "Hold: the sealed caller gate records a message definition but zero direct production references for this ID. The pinned snippets provide no field-specific production use, and generic/dynamic rendering is explicitly insufficient. No translation winner is advanced for this cell.",
+        "confidence": "high"
+      },
+      {
+        "locale": "de",
+        "decision": "hold",
+        "currentTarget": "{count} Minuten",
+        "suggestedTarget": null,
+        "rationale": "Hold: the sealed caller gate records a message definition but zero direct production references for this ID. The pinned snippets provide no field-specific production use, and generic/dynamic rendering is explicitly insufficient. No translation winner is advanced for this cell.",
+        "confidence": "high"
+      },
+      {
+        "locale": "ja",
+        "decision": "hold",
+        "currentTarget": "{count}分",
+        "suggestedTarget": null,
+        "rationale": "Hold: the sealed caller gate records a message definition but zero direct production references for this ID. The pinned snippets provide no field-specific production use, and generic/dynamic rendering is explicitly insufficient. No translation winner is advanced for this cell.",
+        "confidence": "high"
+      },
+      {
+        "locale": "fr",
+        "decision": "hold",
+        "currentTarget": "{count} minutes",
+        "suggestedTarget": null,
+        "rationale": "Hold: the sealed caller gate records a message definition but zero direct production references for this ID. The pinned snippets provide no field-specific production use, and generic/dynamic rendering is explicitly insufficient. No translation winner is advanced for this cell.",
+        "confidence": "high"
+      },
+      {
+        "locale": "pt_BR",
+        "decision": "hold",
+        "currentTarget": "{count} minutos",
+        "suggestedTarget": null,
+        "rationale": "Hold: the sealed caller gate records a message definition but zero direct production references for this ID. The pinned snippets provide no field-specific production use, and generic/dynamic rendering is explicitly insufficient. No translation winner is advanced for this cell.",
+        "confidence": "high"
+      },
+      {
+        "locale": "ar",
+        "decision": "hold",
+        "currentTarget": "{count} دقائق",
+        "suggestedTarget": null,
+        "rationale": "Hold: the sealed caller gate records a message definition but zero direct production references for this ID. The pinned snippets provide no field-specific production use, and generic/dynamic rendering is explicitly insufficient. No translation winner is advanced for this cell.",
+        "confidence": "high"
+      },
+      {
+        "locale": "ko",
+        "decision": "hold",
+        "currentTarget": "{count}분",
+        "suggestedTarget": null,
+        "rationale": "Hold: the sealed caller gate records a message definition but zero direct production references for this ID. The pinned snippets provide no field-specific production use, and generic/dynamic rendering is explicitly insufficient. No translation winner is advanced for this cell.",
+        "confidence": "high"
+      },
+      {
+        "locale": "zh_Hant",
+        "decision": "hold",
+        "currentTarget": "{count} 分鐘",
+        "suggestedTarget": null,
+        "rationale": "Hold: the sealed caller gate records a message definition but zero direct production references for this ID. The pinned snippets provide no field-specific production use, and generic/dynamic rendering is explicitly insufficient. No translation winner is advanced for this cell.",
+        "confidence": "high"
+      },
+      {
+        "locale": "vi",
+        "decision": "hold",
+        "currentTarget": "{count} phút",
+        "suggestedTarget": null,
+        "rationale": "Hold: the sealed caller gate records a message definition but zero direct production references for this ID. The pinned snippets provide no field-specific production use, and generic/dynamic rendering is explicitly insufficient. No translation winner is advanced for this cell.",
+        "confidence": "high"
+      },
+      {
+        "locale": "id",
+        "decision": "hold",
+        "currentTarget": "{count} menit",
+        "suggestedTarget": null,
+        "rationale": "Hold: the sealed caller gate records a message definition but zero direct production references for this ID. The pinned snippets provide no field-specific production use, and generic/dynamic rendering is explicitly insufficient. No translation winner is advanced for this cell.",
+        "confidence": "high"
+      }
+    ],
+    "components.Requests.modifyFailed": [
+      {
+        "locale": "de",
+        "decision": "correction",
+        "currentTarget": "Diese Anforderung kann nicht aktualisiert werden.",
+        "suggestedTarget": "Diese Anfrage kann nicht aktualisiert werden.",
+        "rationale": "“Anforderung” normally reads as requirement/demand here, while the caller is updating a user media request and showing an error toast. “Anfrage” names the request object and preserves the source meaning.",
+        "confidence": "moderate"
+      },
+      {
+        "locale": "fr",
+        "decision": "refinement",
+        "currentTarget": "Impossible de mettre à jour cette requête.",
+        "suggestedTarget": "Impossible de mettre à jour cette demande.",
+        "rationale": "“Requête” can read as a technical query. The caller updates a user media request; “demande” is the clearer product-domain term.",
+        "confidence": "moderate"
+      },
+      {
+        "locale": "zh_Hant",
+        "decision": "correction",
+        "currentTarget": "無法更新此要求。",
+        "suggestedTarget": "無法更新此請求。",
+        "rationale": "“要求” can mean a requirement. The caller refers to the user’s request object; “請求” preserves that object meaning and is already used for requests elsewhere in this packet.",
+        "confidence": "moderate"
+      }
+    ],
+    "components.Requests.noHistory": [
+      {
+        "locale": "ar",
+        "decision": "refinement",
+        "currentTarget": "لم يسجل أي تاريخ للوضع بعد",
+        "suggestedTarget": "لم يُسجَّل أي سجل لحالة الطلب بعد.",
+        "rationale": "The current “تاريخ الوضع” can be read as the date/history of a situation. The caller is an empty request-status-history state; naming the request status record is clearer. Arabic phrasing confidence is limited.",
+        "confidence": "low"
+      }
+    ],
+    "components.Requests.noMediaResults": [
+      {
+        "locale": "ja",
+        "decision": "correction",
+        "currentTarget": "映画、ショー、音楽、書籍、コミック、雑誌のリクエストはこれらのフィルターにマッチしません。",
+        "suggestedTarget": "映画、テレビ番組、音楽、書籍、コミック、雑誌、または成人向けコンテンツのリクエストで、これらのフィルターに一致するものはありません。",
+        "rationale": "The current sentence omits the source’s final “adult” request category. The all-media empty state must include adult content; the proposed wording restores it and makes “show” explicit as a television program.",
+        "confidence": "high"
+      }
+    ],
+    "components.Requests.noReleaseFoundFilter": [
+      {
+        "locale": "fr",
+        "decision": "correction",
+        "currentTarget": "Aucune publication trouvée",
+        "suggestedTarget": "Aucune version trouvée",
+        "rationale": "“Publication” refers to a publication/publishing event and shifts the meaning of the media-release status. “Version” is a clearer general rendering for a release found for the requested media.",
+        "confidence": "moderate"
+      }
+    ],
+    "components.Requests.noResults": [
+      {
+        "locale": "fr",
+        "decision": "refinement",
+        "currentTarget": "Aucune requête ne correspond à ces filtres",
+        "suggestedTarget": "Aucune demande ne correspond à ces filtres",
+        "rationale": "In this filtered request-list context, “requête” can be read as a query. “Demande” consistently names the user’s media requests and removes that ambiguity.",
+        "confidence": "moderate"
+      }
+    ],
+    "components.Requests.notAvailable": [
+      {
+        "locale": "pt_BR",
+        "decision": "refinement",
+        "currentTarget": "Não disponível.",
+        "suggestedTarget": "Não disponível",
+        "rationale": "The source is a standalone unavailable value used inside detail fields; the added final period is unnecessary UI punctuation.",
+        "confidence": "high"
+      },
+      {
+        "locale": "ar",
+        "decision": "refinement",
+        "currentTarget": "غير متاحة",
+        "suggestedTarget": "غير متاح",
+        "rationale": "This generic value is reused for several missing fields, including numeric and metadata values. The feminine adjective assumes an unstated feminine referent; masculine “غير متاح” is a safer generic form. This is a low-confidence Arabic agreement refinement.",
+        "confidence": "low"
+      }
+    ],
+    "components.Requests.olderRequests": [
+      {
+        "locale": "zh_Hans",
+        "decision": "refinement",
+        "currentTarget": "{count, plural, =1 {# 旧请求在此窗口之外 。} other {# 旧的请求在此窗口之外。}}",
+        "suggestedTarget": "{count, plural, =1 {# 旧请求在此窗口之外。} other {# 旧的请求在此窗口之外。}}",
+        "rationale": "The exact-one branch has a stray space before the full stop. Removing it preserves the meaning and yields standard Chinese punctuation spacing.",
+        "confidence": "high"
+      },
+      {
+        "locale": "zh_Hant",
+        "decision": "refinement",
+        "currentTarget": "{count, plural, =1 {# 舊要求在此視窗外 。} other {# 更早的要求在此視窗外 。}}",
+        "suggestedTarget": "{count, plural, =1 {# 個較早的請求在此視窗外。} other {# 個較早的請求在此視窗外。}}",
+        "rationale": "Both branches have a stray space before the full stop, and “要求” can mean requirements rather than the user requests counted by the caller. “請求” aligns with the request-list terminology in this packet.",
+        "confidence": "moderate"
+      },
+      {
+        "locale": "vi",
+        "decision": "refinement",
+        "currentTarget": "{count, plural, =1 {# Yêu cầu cũ ở ngoài cửa sổ này.} other {# Yêu cầu cũ ở ngoài cửa sổ này.}}",
+        "suggestedTarget": "{count, plural, =1 {# yêu cầu cũ ở ngoài cửa sổ này.} other {# yêu cầu cũ ở ngoài cửa sổ này.}}",
+        "rationale": "After the count marker, “Yêu cầu” is capitalized mid-sentence. Lowercase “yêu cầu” is the conventional styling here; meaning and plural invariance remain intact. Vietnamese idiom confidence is limited.",
+        "confidence": "low"
+      }
+    ],
+    "components.Requests.pages": [
+      {
+        "locale": "ar",
+        "decision": "correction",
+        "currentTarget": "الصفحة",
+        "suggestedTarget": "الصفحات",
+        "rationale": "The caller uses this as a book page-count label. The current definite singular “الصفحة” means “the page”; plural “الصفحات” matches “Pages” and the count field.",
+        "confidence": "high"
+      }
+    ],
+    "components.Requests.pending": [
+      {
+        "locale": "ar",
+        "decision": "refinement",
+        "currentTarget": "معلّق",
+        "suggestedTarget": "قيد الانتظار",
+        "rationale": "The status stage is requested/pending. “معلّق” can imply suspended or on hold; “قيد الانتظار” more directly communicates waiting for the next request-status step.",
+        "confidence": "moderate"
+      },
+      {
+        "locale": "ko",
+        "decision": "correction",
+        "currentTarget": "보류 중",
+        "suggestedTarget": "대기 중",
+        "rationale": "The caller maps the requested stage to this pending label. “보류 중” more strongly means on hold/deferred; “대기 중” better expresses a request awaiting the next step.",
+        "confidence": "moderate"
+      }
+    ]
+  },
+  "confidenceLimits": [
+    "This is an independent AI semantic review, not native-speaker approval.",
+    "Confidence is lower for idiom, register, and grammatical-agreement judgments in Arabic, Hindi, Korean, and Vietnamese; those accepted cells are marked low confidence unless a specific issue is recorded.",
+    "The sealed window manifest reports orderedLocaleKeySequencesMatch=false while pinning each locale catalog independently. The selected IDs and source order are pinned in the packet; this review did not reconcile catalog order outside the window.",
+    "No tests, builds, scans, CI, repository edits, or PR edits were performed."
+  ],
+  "nativeSpeakerApproval": false,
+  "independentBlindReview": true
+}

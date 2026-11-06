@@ -316,9 +316,10 @@ const TvSeasonMappingModal = ({
                       <li key={event.id}>
                         {intl.formatMessage(messages.historyItem, {
                           event: event.sourceTitle || event.eventType,
-                          date: new Date(event.date).toLocaleString(
-                            intl.locale
-                          ),
+                          date: intl.formatDate(new Date(event.date), {
+                            dateStyle: 'medium',
+                            timeStyle: 'short',
+                          }),
                         })}
                       </li>
                     ))}

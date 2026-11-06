@@ -212,11 +212,11 @@ const PlexImportModal = ({ onCancel, onComplete }: PlexImportProps) => {
                               aria-hidden="true"
                               className={`${
                                 isAllUsers() ? 'translate-x-5' : 'translate-x-0'
-                              } absolute left-0 inline-block h-5 w-5 rounded-full border border-gray-200 bg-white shadow transition-transform duration-200 ease-in-out group-focus:border-blue-300 group-focus:ring`}
+                              } absolute start-0 inline-block h-5 w-5 rounded-full border border-gray-200 bg-white shadow transition-transform duration-200 ease-in-out group-focus:border-blue-300 group-focus:ring`}
                             />
                           </span>
                         </th>
-                        <th className="bg-gray-500 px-1 py-3 text-left text-xs leading-4 font-medium tracking-wider text-gray-200 uppercase md:px-6">
+                        <th className="bg-gray-500 px-1 py-3 text-start text-xs leading-4 font-medium tracking-wider text-gray-200 uppercase md:px-6">
                           {intl.formatMessage(messages.user)}
                         </th>
                       </tr>
@@ -251,7 +251,7 @@ const PlexImportModal = ({ onCancel, onComplete }: PlexImportProps) => {
                                   isSelectedUser(user.id)
                                     ? 'translate-x-5'
                                     : 'translate-x-0'
-                                } absolute left-0 inline-block h-5 w-5 rounded-full border border-gray-200 bg-white shadow transition-transform duration-200 ease-in-out group-focus:border-blue-300 group-focus:ring`}
+                                } absolute start-0 inline-block h-5 w-5 rounded-full border border-gray-200 bg-white shadow transition-transform duration-200 ease-in-out group-focus:border-blue-300 group-focus:ring`}
                               />
                             </span>
                           </td>
@@ -265,7 +265,7 @@ const PlexImportModal = ({ onCancel, onComplete }: PlexImportProps) => {
                                 width={40}
                                 height={40}
                               />
-                              <div className="ml-4">
+                              <div className="ms-4">
                                 <div className="text-base leading-5 font-bold">
                                   {user.username}
                                 </div>

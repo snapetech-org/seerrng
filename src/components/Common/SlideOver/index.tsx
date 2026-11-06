@@ -57,7 +57,7 @@ const SlideOver = ({
         }}
       >
         <div className="absolute inset-0 overflow-hidden">
-          <section className="absolute inset-y-0 right-0 flex max-w-full">
+          <section className="absolute inset-y-0 end-0 flex max-w-full">
             <TransitionChild
               enter="transition-transform ease-in-out duration-500 sm:duration-700"
               enterFrom="translate-x-full"

@@ -47,7 +47,7 @@ const ErrorPage: NextPage<ErrorProps> = ({ statusCode }) => {
       </div>
       <Link href="/" className="mt-2 flex">
         {intl.formatMessage(messages.returnHome)}
-        <ArrowRightCircleIcon className="ml-2 h-6 w-6" />
+        <ArrowRightCircleIcon className="ms-2 h-6 w-6" />
       </Link>
     </div>
   );

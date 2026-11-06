@@ -1,0 +1,82 @@
+{
+  "task": "SEERR-LOCALE-001 minimal locale boot gate; prepared patch only",
+  "observed_at": "2026-11-03",
+  "host": "kspls0",
+  "repository": "SeerrNG",
+  "pull_request": {
+    "number": 418,
+    "state": "OPEN",
+    "draft": true,
+    "branch": "codex/seerrng-localization-overhaul-20261028",
+    "base_branch": "main",
+    "head": "c08aab4bb69590a73e6482c6c16a0ecc6a8a0e82",
+    "tree": "1b9d940146936ee6b28af40563fcc6b680953ab6",
+    "branch_and_pull_refs_match_head": true
+  },
+  "finding_reference": {
+    "id": "SEERR-LOCALE-001",
+    "review_path": "/home/keith/Documents/code/task-scratch/seerrng-pr418-locale-runtime-review-20261103/review.md",
+    "review_head": "30f626a4626d460f426666cde02f5c1ed17fa206",
+    "review_tree": "9b2616780791c73eb176aca6ad53061f1f3587d8"
+  },
+  "pre_patch_source_files": [
+    "src/pages/_app.tsx",
+    "src/utils/localeHint.ts"
+  ],
+  "pre_patch_blob_hashes": {
+    "src/pages/_app.tsx": "db37dc934adcd7922e928b2c3507d201aec9d8ec",
+    "src/utils/localeHint.ts": "5e291c85bff0418af33666706c6751389d924be1"
+  },
+  "prepared_blob_hashes": {
+    "src/pages/_app.tsx": "bc3aeaf23fb25643abd7abed87227b988eeb7580",
+    "src/utils/localeHint.ts": "4ca50f158206e78af16d4e125ed8f011633e7595"
+  },
+  "comparison_blobs_at_finding_head_and_pre_patch_head": {
+    "src/pages/_app.tsx": "db37dc934adcd7922e928b2c3507d201aec9d8ec",
+    "src/pages/_document.tsx": "290d6e054b5a059e9aa2b0c9e45a4ef5f784d896",
+    "src/components/Layout/index.tsx": "b33cb7704fdf485563ce49945b528a719a9a0f17",
+    "src/hooks/useUser.ts": "c69faca6fe5eb7fdba111b91747ecad26e38d3e6",
+    "src/utils/localeHint.ts": "5e291c85bff0418af16d4e125ed8f011633e7595"
+  },
+  "framework": {
+    "next_version_from_package_json": "16.4.2",
+    "router": "Pages Router",
+    "route_source_modules_excluding_api_and_special": 146,
+    "routes_with_getServerSideProps": 6,
+    "routes_with_getStaticProps": 0,
+    "routes_without_explicit_static_or_server_data_method": 140,
+    "custom_app_getInitialProps": false
+  },
+  "static_checks": {
+    "git diff --check": "passed",
+    "source_diff_scope": "src/pages/_app.tsx and src/utils/localeHint.ts only",
+    "workflow_paths_changed": false,
+    "tests_builds_scans_ci_browser_runtime": "not run by instruction"
+  },
+  "tradeoff": "Initial SSR/SSG shows the neutral pending spinner until client locale selection and catalog loading finish; no-JavaScript clients remain on that indicator and first app content is delayed.",
+  "disposition": "Reviewed source patch and evidence prepared for the authorized focused commit; no release or merge.",
+  "bootstrap_indicator": {
+    "visible_primitive": "Common/LoadingSpinner",
+    "accessible_region": {
+      "role": "status",
+      "aria_live": "polite",
+      "aria_busy": "true",
+      "native_progress": "visually hidden indeterminate progress element with language-neutral hourglass accessible name",
+      "aria_atomic": "true",
+      "progress_accessible_name": "\u23f3"
+    },
+    "untranslated_english_copy": false,
+    "server_first_hydration_markup_identical": true,
+    "removed_only_after_catalog_or_english_fallback_and_document_lang_dir_ready": true
+  },
+  "expected_commit_files": [
+    "docs/pr-evidence/pr418-localization-2026-11-03/locale-runtime-fix/README.md",
+    "docs/pr-evidence/pr418-localization-2026-11-03/locale-runtime-fix/SHA256SUMS.txt",
+    "docs/pr-evidence/pr418-localization-2026-11-03/locale-runtime-fix/patch.diff",
+    "docs/pr-evidence/pr418-localization-2026-11-03/locale-runtime-fix/review.md",
+    "docs/pr-evidence/pr418-localization-2026-11-03/locale-runtime-fix/static-inspection.json",
+    "docs/pr-evidence/pr418-localization-2026-11-03/locale-runtime-fix/verify_evidence.py",
+    "src/pages/_app.tsx",
+    "src/utils/localeHint.ts"
+  ]
+}

@@ -1,0 +1,49 @@
+{
+  "artifact": "SeerrNG PR #418 W4000-W4019 primary review",
+  "schemaVersion": 1,
+  "status": "SEALED",
+  "reviewCompleted": true,
+  "reviewMode": "primary semantic review only",
+  "blindPacketInspected": false,
+  "crossReviewPerformed": false,
+  "rootAdjudicationPerformed": false,
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "window": "W4000-W4019",
+  "head": "ac193096ebfc0007183348b24e35bf6fee33f67a",
+  "tree": "93e71e7c52602ec3f8b76548fd12b2f5b4368b4c",
+  "candidateFreeInputPath": "/home/keith/Documents/code/task-scratch/seerrng-pr418-w4000-4019-primary-20261105/candidate-free-input",
+  "candidateFreeManifestSha256": "619ceb7419f7d3fabde471580a714e5010dbc90e5f41b1ebeee04cfb80597a38",
+  "candidateFreeChecksumManifestSha256": "c0c925b92b7921c37c8ec85980420f0584fdf381d8c6a60f642124bea7c62246",
+  "cells": 240,
+  "sourceIds": 20,
+  "localeCount": 12,
+  "primaryDispositionCounts": {
+    "REFINEMENT": 7,
+    "ACCEPT_CURRENT": 194,
+    "CORRECTION": 27,
+    "HOLD": 12
+  },
+  "proposalCount": 34,
+  "currentHashOnlyHolds": 12,
+  "baselineTokenMismatchCounts": {
+    "markupTags": 0,
+    "numericTokens": 1,
+    "placeholders": 0,
+    "protectedLiterals": 0
+  },
+  "acceptedJapaneseNumericEquivalent": true,
+  "nativeSpeakerApproval": false,
+  "browserAcceptance": false,
+  "PRorCatalogEdits": false,
+  "testsBuildsScansCI": false,
+  "fileNames": [
+    "README.md",
+    "build_primary_review.py",
+    "hash-only-holds.jsonl",
+    "primary-ledger.jsonl",
+    "primary-summary.json",
+    "selected-proposals.jsonl",
+    "verify-primary.py"
+  ]
+}

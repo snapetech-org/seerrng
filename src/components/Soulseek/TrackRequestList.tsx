@@ -1,3 +1,5 @@
+import ApiErrorToastText from '@app/components/Common/ApiErrorToastText';
+import ApiMessageText from '@app/components/Common/ApiMessageText';
 import Badge from '@app/components/Common/Badge';
 import Button from '@app/components/Common/Button';
 import LoadingSpinner from '@app/components/Common/LoadingSpinner';
@@ -23,6 +25,7 @@ interface TrackRequestView {
   searchCount: number;
   lastMatchCount: number;
   lastError?: string;
+  lastErrorMessageKey?: string;
   createdAt: string;
   requestedBy?: { id: number; displayName: string };
 }
@@ -122,11 +125,20 @@ const TrackRequestList = () => {
       }
       await mutate();
     } catch (failure) {
+      const responseData = axios.isAxiosError(failure)
+        ? failure.response?.data
+        : undefined;
       addToast(
-        axios.isAxiosError(failure) &&
-          typeof failure.response?.data?.message === 'string'
-          ? failure.response.data.message
-          : intl.formatMessage(messages.actionFailed),
+        typeof responseData?.message === 'string' ? (
+          <ApiErrorToastText
+            message={responseData.message}
+            messageOrigin={responseData.messageOrigin}
+            messageKey={responseData.messageKey}
+            messageParams={responseData.messageParams}
+          />
+        ) : (
+          intl.formatMessage(messages.actionFailed)
+        ),
         { appearance: 'error', autoDismiss: true }
       );
     } finally {
@@ -165,7 +177,11 @@ const TrackRequestList = () => {
             )}
           </dl>
           {request.lastError && (
-            <p className="card-body-text">{request.lastError}</p>
+            <p className="card-body-text">
+              <ApiMessageText trustedKey={request.lastErrorMessageKey ?? null}>
+                {request.lastError}
+              </ApiMessageText>
+            </p>
           )}
           {active && (canManage || isOwner) && (
             <div className="app-action-row">

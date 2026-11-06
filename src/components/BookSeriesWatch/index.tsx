@@ -1,3 +1,4 @@
+import ApiMessageText from '@app/components/Common/ApiMessageText';
 import Button from '@app/components/Common/Button';
 import { Permission, useUser } from '@app/hooks/useUser';
 import defineMessages from '@app/utils/defineMessages';
@@ -115,7 +116,7 @@ export default function BookSeriesWatch({
       </p>
       {failure && (
         <p role="alert" className="text-red-400">
-          {failure}
+          {<ApiMessageText>{failure}</ApiMessageText>}
         </p>
       )}
       {data.enabled ? (
@@ -219,7 +220,11 @@ export function SeriesWatchRequests() {
       </p>
       {(failure || error) && (
         <p role="alert" className="text-red-400">
-          {failure ?? intl.formatMessage(messages.unavailable)}
+          {
+            <ApiMessageText>
+              {failure ?? intl.formatMessage(messages.unavailable)}
+            </ApiMessageText>
+          }
         </p>
       )}
       {data?.length === 0 && <p>{intl.formatMessage(messages.empty)}</p>}

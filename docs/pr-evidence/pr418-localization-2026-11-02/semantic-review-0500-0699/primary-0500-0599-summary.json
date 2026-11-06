@@ -1,0 +1,129 @@
+{
+  "byLocale": {
+    "ar": {
+      "accept-current": 72,
+      "correction-needed": 28,
+      "hold": 0,
+      "prior-disposition-preserved": 0
+    },
+    "de": {
+      "accept-current": 79,
+      "correction-needed": 13,
+      "hold": 0,
+      "prior-disposition-preserved": 8
+    },
+    "es": {
+      "accept-current": 72,
+      "correction-needed": 28,
+      "hold": 0,
+      "prior-disposition-preserved": 0
+    },
+    "fr": {
+      "accept-current": 80,
+      "correction-needed": 18,
+      "hold": 0,
+      "prior-disposition-preserved": 2
+    },
+    "hi": {
+      "accept-current": 61,
+      "correction-needed": 39,
+      "hold": 0,
+      "prior-disposition-preserved": 0
+    },
+    "id": {
+      "accept-current": 81,
+      "correction-needed": 18,
+      "hold": 0,
+      "prior-disposition-preserved": 1
+    },
+    "ja": {
+      "accept-current": 82,
+      "correction-needed": 18,
+      "hold": 0,
+      "prior-disposition-preserved": 0
+    },
+    "ko": {
+      "accept-current": 75,
+      "correction-needed": 25,
+      "hold": 0,
+      "prior-disposition-preserved": 0
+    },
+    "pt-BR": {
+      "accept-current": 73,
+      "correction-needed": 27,
+      "hold": 0,
+      "prior-disposition-preserved": 0
+    },
+    "vi": {
+      "accept-current": 69,
+      "correction-needed": 31,
+      "hold": 0,
+      "prior-disposition-preserved": 0
+    },
+    "zh-CN": {
+      "accept-current": 79,
+      "correction-needed": 21,
+      "hold": 0,
+      "prior-disposition-preserved": 0
+    },
+    "zh-TW": {
+      "accept-current": 77,
+      "correction-needed": 23,
+      "hold": 0,
+      "prior-disposition-preserved": 0
+    }
+  },
+  "callerContextMismatches": 0,
+  "callerContextReferencesInLedger": 5628,
+  "cellRowCount": 1200,
+  "confidence": "moderate",
+  "decisions": {
+    "accept-current": 900,
+    "correction-needed": 289,
+    "hold": 0,
+    "prior-disposition-preserved": 11
+  },
+  "ledger": "reviews/agent-0500-0599/cell-review-ledger.jsonl",
+  "ledgerSha256": "1771e38ade10b357eb1c7fe58d65aa15b7011f8e4832e539609fcfa8eea6fb96",
+  "limitations": [
+    "Not native-speaker certification."
+  ],
+  "liveHead": "d1137d06ffb5af57ef599ac9bf495aff2a990a7b",
+  "liveTree": "0aa22f0bb43e3e30d216e2ae19939220e05f04f7",
+  "localeCount": 12,
+  "nativeSpeakerApproval": false,
+  "newSemanticRowsReviewed": 1189,
+  "packetChecksums": "passed",
+  "pinnedCallerSnippetsVerified": 469,
+  "pinnedSourceAndTargetCellsVerified": 1200,
+  "priorDispositionRoutes": {
+    "prior-correction-applied-exact-target-match": 7,
+    "prior-equivalence-reviewed-target-matches-live": 4
+  },
+  "priorRoutesPreservedExactly": true,
+  "priorRowsPreservedUnchanged": 11,
+  "pullRequest": 418,
+  "pullRequestDraft": true,
+  "pullRequestState": "OPEN",
+  "repository": "snapetech-org/seerrng",
+  "schemaVersion": 1,
+  "scope": "Review evidence only; no repository/catalog edits, tests, builds, scans, CI, browser, commits, pushes, or PR mutations.",
+  "sourceContextCoverageBySourceId": {
+    "found": 100
+  },
+  "sourceCurrentHashMismatches": 0,
+  "sourceIdCount": 100,
+  "sourceIdPositions": [
+    500,
+    599
+  ],
+  "subreviewCounts": {
+    "accept-current": 214,
+    "correction-needed": 85,
+    "prior-disposition-preserved": 1
+  },
+  "subreviewLedger": "reviews/agent-0500-0599/subreview-ar-hi-id.jsonl",
+  "subreviewLedgerSha256": "8273edf030fd3d901c202ffa7413accfdc0952381793a2eb11f245913c7360d5",
+  "uniquePinnedCallerLineSnippetsVerified": 469,
+  "window": "W700-749 sourceId positions 500-599"
+}

@@ -1,0 +1,162 @@
+{
+  "schemaVersion": 1,
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "head": "447b806871926a7c8dea06958d19cbd7e5230006",
+  "tree": "92450b5d67ea7551ef1eb262c05f77053ea016a0",
+  "branch": "codex/seerrng-localization-overhaul-20261028",
+  "baseHead": "221d8e0d542802da7529cd272c928cc747677e5c",
+  "livePullRequest": {
+    "state": "OPEN",
+    "isDraft": true,
+    "mergeStateStatus": "CLEAN",
+    "headRefOid": "447b806871926a7c8dea06958d19cbd7e5230006",
+    "headRefName": "codex/seerrng-localization-overhaul-20261028",
+    "baseRefOid": "221d8e0d542802da7529cd272c928cc747677e5c"
+  },
+  "sourceCatalog": {
+    "path": "src/i18n/locale/en.json",
+    "blob": "12e04a118c30b71b3714291adeaf9fdb2735cee4",
+    "bytes": 835513,
+    "sha256": "75ff3c90b52aedd636a506281ffbd6fb2d3739c61294b6008a517f17647e2316",
+    "keyCount": 9494
+  },
+  "sourceIdPositionRange": [
+    1000,
+    1099
+  ],
+  "sourceIdCount": 100,
+  "sourceIdWindowBoundaryIds": {
+    "1000": "components.Discover.FilterPanel.genres",
+    "1099": "components.Discover.TvGenreSlider.tvgenres"
+  },
+  "priorWindow": {
+    "packet": "/mnt/disks/scratch/task-scratch/seerrng-pr418-0900-0999-20261102/manifest.json",
+    "sourceIdPositionRange": [
+      900,
+      999
+    ],
+    "head": "18001c2d09d5d271bd4fe2ad22189c29d069a457",
+    "tree": "7a9f3218d79501fb620329f0e53c1a0b3dd44508",
+    "nonOverlapping": true
+  },
+  "targetLocales": [
+    "ar",
+    "de",
+    "es",
+    "fr",
+    "hi",
+    "id",
+    "ja",
+    "ko",
+    "pt-BR",
+    "vi",
+    "zh-CN",
+    "zh-TW"
+  ],
+  "targetCellCount": 1200,
+  "targetCatalogs": {
+    "ar": {
+      "path": "src/i18n/locale/ar.json",
+      "blob": "5ea204bc9040e482fa61c14021b3ea60f29cb807",
+      "bytes": 1041134,
+      "sha256": "f3e941d56ef7514be993a8e6e9f57bff0dc64e1aef6f69f0be0c955fe7a69454",
+      "keyCount": 9494
+    },
+    "de": {
+      "path": "src/i18n/locale/de.json",
+      "blob": "2f2a8d4cf154321196f62504935aee4d100ba543",
+      "bytes": 926359,
+      "sha256": "cf51a0e67a5d5afd007d14d258a82aeec997eaadd3c8c7c32e5895f840f2dfae",
+      "keyCount": 9494
+    },
+    "es": {
+      "path": "src/i18n/locale/es.json",
+      "blob": "7b564c51e6a07c6fab7d9831bae65851dfbc1cf9",
+      "bytes": 921766,
+      "sha256": "6fa11a50d0ecf8bd670752d5127ffbc964771070d365037a442739034823a66b",
+      "keyCount": 9494
+    },
+    "fr": {
+      "path": "src/i18n/locale/fr.json",
+      "blob": "5c2210c800e8b8573e78d7c7f39b2c0b9d892592",
+      "bytes": 938324,
+      "sha256": "e89c276c9ab229be9b86198ba15103bc51ef1aac11dc8a2ac02a249f75c4582b",
+      "keyCount": 9494
+    },
+    "hi": {
+      "path": "src/i18n/locale/hi.json",
+      "blob": "1be9ee404ecfdf9ad7c993ce4997d1231ddc746f",
+      "bytes": 1366395,
+      "sha256": "0344126b0a22c9f91d7721aefc03f6a08922f3a1d5253bbcdac89b8eeb226001",
+      "keyCount": 9494
+    },
+    "id": {
+      "path": "src/i18n/locale/id.json",
+      "blob": "e01aab721863e961925c5e5904031e3ad74d44a0",
+      "bytes": 866035,
+      "sha256": "e0ffd0263f45ef0c106cb082903eb6ec4de81851493fcd89c67ce8b1f747f0d9",
+      "keyCount": 9494
+    },
+    "ja": {
+      "path": "src/i18n/locale/ja.json",
+      "blob": "5090e5a7cd150fb3edf54309416a618d71349398",
+      "bytes": 1014222,
+      "sha256": "6890e7261c4133ca75efdf9db3ce5d80275430269dc2e43fdb2d7b1a515a7d15",
+      "keyCount": 9494
+    },
+    "ko": {
+      "path": "src/i18n/locale/ko.json",
+      "blob": "272885b89d2d227f9773645391801d89179ef732",
+      "bytes": 930751,
+      "sha256": "60033f7de448a2b5e6f07ddf7ab9c670cb9ca1aa79511b936abe32ffee28e4fe",
+      "keyCount": 9494
+    },
+    "pt-BR": {
+      "path": "src/i18n/locale/pt_BR.json",
+      "blob": "f87f38046007a30655b00c079e922824fbc7c4fe",
+      "bytes": 909492,
+      "sha256": "8ad00dbf71dc59659681e32778f6bd8c978c38d010f3fdba2ef244b3519de8ad",
+      "keyCount": 9494
+    },
+    "vi": {
+      "path": "src/i18n/locale/vi.json",
+      "blob": "65bd79916c00cb5970f215a4f86968e7651395a8",
+      "bytes": 965254,
+      "sha256": "ec56b7dd2196dc9a65885bf93fc9d45e918e499123e77345fb2509c151b04686",
+      "keyCount": 9494
+    },
+    "zh-CN": {
+      "path": "src/i18n/locale/zh_Hans.json",
+      "blob": "2d92b580fb1579537f26f20def0cd964c29f127a",
+      "bytes": 810242,
+      "sha256": "4aab74f529da76b417872e8a8d5f656160187b3109792405c86ec39a7998a3b6",
+      "keyCount": 9494
+    },
+    "zh-TW": {
+      "path": "src/i18n/locale/zh_Hant.json",
+      "blob": "5829cf240bbb59214348087dce798b2cc803cb31",
+      "bytes": 810702,
+      "sha256": "4986feaa9b6fab38219630627e1ccc51392430e858eab5526f6c224dfdc907ed",
+      "keyCount": 9494
+    }
+  },
+  "spanishRegisterLane": {
+    "newCellRegister": "formal usted or impersonal forms for new Spanish corrections",
+    "priorRoutedCells": "preserve applied values and register exactly; do not normalize the 12 frozen Spanish rows",
+    "priorDispositionEvidence": "docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-600-649/root-cross-review.jsonl"
+  },
+  "callerUseGap": {
+    "sourceId": "components.Discover.ReadMeABookSearch.disabled",
+    "sourceIdPosition": 1080,
+    "definitionPinned": true,
+    "usageReferenceFound": false,
+    "handling": "recorded as definition-only at the exact head"
+  },
+  "primaryReviewLedger": "primary-review-ledger.jsonl",
+  "sourceCurrentAttestation": "source-current-attestation.jsonl",
+  "sourceContexts": "source-contexts.jsonl",
+  "callerContextAttestation": "caller-context-attestation.jsonl",
+  "selectedDirectLocaleCells": "selected-direct-locale-cells.jsonl",
+  "preservedPriorRoutingRows": "preserved-prior-routing-rows.jsonl"
+}

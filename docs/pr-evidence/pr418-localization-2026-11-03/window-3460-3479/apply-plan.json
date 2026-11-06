@@ -1,0 +1,227 @@
+{
+  "schemaVersion": 1,
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "baseHead": "76fd466ba7e44ed9853115f8fb1f8ab8bec93c8e",
+  "baseTree": "00a72de46a40df893a24e0a93e85ec505e035a2d",
+  "window": "W3460-W3479",
+  "selectedTargetCount": 13,
+  "selectedTargets": [
+    {
+      "position": 3466,
+      "sourceId": "components.ResetPassword.passwordreset",
+      "locale": "es",
+      "catalogPath": "src/i18n/locale/es.json",
+      "oldValue": "Reinicio de Contraseña",
+      "oldSha256": "6d731ed177f59161183412e23f7f3f448c0977087c28dd61a6b00b5270331b0b",
+      "newValue": "Restablecimiento de contraseña",
+      "newSha256": "f1bf10f8bd9c616b1364b2799448a6256e09dd9b6caa45111df4e728d192cbfa",
+      "disposition": "correction"
+    },
+    {
+      "position": 3467,
+      "sourceId": "components.ResetPassword.requestresetlinksuccessmessage",
+      "locale": "id",
+      "catalogPath": "src/i18n/locale/id.json",
+      "oldValue": "Taut ulang sandi akan dikirim ke alamat surel yang disediakan jika terkait dengan pengguna yang valid.",
+      "oldSha256": "c97694a28c2c4c1faa17891e894fc9584b4dd0dcafb11021ff04fb2fc261a9c3",
+      "newValue": "Tautan pengaturan ulang kata sandi akan dikirim ke alamat surel yang diberikan jika alamat tersebut terkait dengan pengguna yang valid.",
+      "newSha256": "8969ecb016f26b5060e87052b54acfd173b016516be5a81c7097f81f4fef13aa",
+      "disposition": "correction"
+    },
+    {
+      "position": 3468,
+      "sourceId": "components.ResetPassword.resetpassword",
+      "locale": "es",
+      "catalogPath": "src/i18n/locale/es.json",
+      "oldValue": "Reiniciar contraseña",
+      "oldSha256": "4c6f32cf74ac573e58f5b63a18624376d73147869f98dfe6b65a44ffab4a2188",
+      "newValue": "Restablece tu contraseña",
+      "newSha256": "bc0903ca545fd47cc5cfcfbe886bb22c116d363d630144dc2b7ea09ebf578dce",
+      "disposition": "correction"
+    },
+    {
+      "position": 3468,
+      "sourceId": "components.ResetPassword.resetpassword",
+      "locale": "id",
+      "catalogPath": "src/i18n/locale/id.json",
+      "oldValue": "Reset kata sandi Anda",
+      "oldSha256": "98fad6285016b4e52cdc856b5b0ab4ddb8d70ca3f32aa2fa02d0c45e40912b73",
+      "newValue": "Atur ulang kata sandi Anda",
+      "newSha256": "2df1887424abcbe5af9fe6aee7e92cfb8650a70b83a0145f0d644bcb3916c02e",
+      "disposition": "refinement"
+    },
+    {
+      "position": 3468,
+      "sourceId": "components.ResetPassword.resetpassword",
+      "locale": "pt_BR",
+      "catalogPath": "src/i18n/locale/pt_BR.json",
+      "oldValue": "Alterar sua Senha",
+      "oldSha256": "8cd73c2d1fb678965d6ce8db931c0191b0cb00a57b65e0f523237b6a7cc96146",
+      "newValue": "Redefina sua senha",
+      "newSha256": "eb577c2a84bfc252f8d2eb784b689acb8769a048e37eb87dd7d2e28c54a22f2a",
+      "disposition": "correction"
+    },
+    {
+      "position": 3469,
+      "sourceId": "components.ResetPassword.resetpasswordsuccessmessage",
+      "locale": "es",
+      "catalogPath": "src/i18n/locale/es.json",
+      "oldValue": "¡Contraseña reiniciada con éxito!",
+      "oldSha256": "f27b392e26ab2b6c99f59f1059e2a1d5fa9d5e360a9749fa52cfba4915d196cb",
+      "newValue": "¡Contraseña restablecida con éxito!",
+      "newSha256": "47efc1143b0bf8474fe6c0ab63a9b446c97b87779e859e1a97400d436866d869",
+      "disposition": "correction"
+    },
+    {
+      "position": 3469,
+      "sourceId": "components.ResetPassword.resetpasswordsuccessmessage",
+      "locale": "id",
+      "catalogPath": "src/i18n/locale/id.json",
+      "oldValue": "Reset sandi berhasil!",
+      "oldSha256": "a481ef029fa734d45b44b0d50f8608674363afb9e463c6df87f17fa0b3a1f6ff",
+      "newValue": "Kata sandi berhasil diatur ulang!",
+      "newSha256": "9d6455f6a1dcc41b7b7c1235233ce7164b613a7f31578ea1831e56e1959f608c",
+      "disposition": "refinement"
+    },
+    {
+      "position": 3471,
+      "sourceId": "components.ResetPassword.validationpasswordmatch",
+      "locale": "es",
+      "catalogPath": "src/i18n/locale/es.json",
+      "oldValue": "La contraseña debe coincidir",
+      "oldSha256": "4a7d185c66d17c77d42119232c34def52c162c4ef409e64dc4fdea121cfcd3d3",
+      "newValue": "Las contraseñas deben coincidir",
+      "newSha256": "b38ad69afef78a7602c87a77808abf584d28e87463f069b029c8460f77749fd7",
+      "disposition": "correction"
+    },
+    {
+      "position": 3471,
+      "sourceId": "components.ResetPassword.validationpasswordmatch",
+      "locale": "id",
+      "catalogPath": "src/i18n/locale/id.json",
+      "oldValue": "Sandi harus cocok",
+      "oldSha256": "9b74973b7259bdd41bcfabd9949afb0730569f5aca46c4d19276a0e2426f46a4",
+      "newValue": "Kedua kata sandi harus sama",
+      "newSha256": "22f4fc489299e6d9c92516b80603e488e5cba02da15b3b9e61922ec5aa145590",
+      "disposition": "refinement"
+    },
+    {
+      "position": 3471,
+      "sourceId": "components.ResetPassword.validationpasswordmatch",
+      "locale": "vi",
+      "catalogPath": "src/i18n/locale/vi.json",
+      "oldValue": "Mật khẩu phải trùng",
+      "oldSha256": "90ebee0f5b14e0820f17725fbd2217a1f5ec771cbc89f5df392082aba88114ab",
+      "newValue": "Hai mật khẩu phải khớp nhau",
+      "newSha256": "de9c55b507019187943d1ad72e7308da171bcd08d01993d605c933205adc8c0f",
+      "disposition": "correction"
+    },
+    {
+      "position": 3472,
+      "sourceId": "components.ResetPassword.validationpasswordminchars",
+      "locale": "ko",
+      "catalogPath": "src/i18n/locale/ko.json",
+      "oldValue": "비밀번호가 너무 짧습니다; 최소 8자리 이상이어야 합니다",
+      "oldSha256": "20a27986e986370030e67a06271b25e02cca124d4fa4d076635dea74213b93d6",
+      "newValue": "비밀번호가 너무 짧습니다. 8자 이상이어야 합니다.",
+      "newSha256": "f2f28f67338a45eb92a0bcba19dff4a14788b8aaa9112bcebadc7ed216e3233a",
+      "disposition": "correction"
+    },
+    {
+      "position": 3479,
+      "sourceId": "components.Search.SoftwarePreview.available",
+      "locale": "zh_Hans",
+      "catalogPath": "src/i18n/locale/zh_Hans.json",
+      "oldValue": "图书馆",
+      "oldSha256": "266e6cb77079f0c379ce844fd255ae9a58bd224bee91b5039853ffc1ba951dbb",
+      "newValue": "已在库中",
+      "newSha256": "de61a659ae8c021a9a9173a6a696e2440a0eebe3b850c73e5ed3eedd3767142e",
+      "disposition": "correction"
+    },
+    {
+      "position": 3479,
+      "sourceId": "components.Search.SoftwarePreview.available",
+      "locale": "zh_Hant",
+      "catalogPath": "src/i18n/locale/zh_Hant.json",
+      "oldValue": "在圖書館",
+      "oldSha256": "1f8f8acc4e3b31a12776a70dad9134c411b9625a79fcd5ba69f05b490aad6d63",
+      "newValue": "已在庫中",
+      "newSha256": "ed5add9aed3fad56fa0627160618278914544ce8a93e55059a67317fa17b8023",
+      "disposition": "correction"
+    }
+  ],
+  "retainedHolds": [
+    {
+      "position": 3463,
+      "sourceId": "components.ResetPassword.emailresetlink",
+      "locale": "hi",
+      "catalogPath": "src/i18n/locale/hi.json",
+      "target": "ईमेल रिकवरी लिंक",
+      "sha256": "612555582057010901a5d9b89a91c74460e529f749f54c73a0ac378d0b91fb76",
+      "reason": "The same-namespace caller renders this on a button that sends the reset email; the Hindi/Korean/Indonesian noun phrase names a recovery link but does not clearly express sending/emailing it. Hold for qualified locale review."
+    },
+    {
+      "position": 3463,
+      "sourceId": "components.ResetPassword.emailresetlink",
+      "locale": "id",
+      "catalogPath": "src/i18n/locale/id.json",
+      "target": "Tautan Pemulihan Surel",
+      "sha256": "c436ea024e5a5103010c3a2286588d235e9d8e64503f2eeb525f12c396bf1f63",
+      "reason": "The same-namespace caller renders this on a button that sends the reset email; the Hindi/Korean/Indonesian noun phrase names a recovery link but does not clearly express sending/emailing it. Hold for qualified locale review."
+    },
+    {
+      "position": 3463,
+      "sourceId": "components.ResetPassword.emailresetlink",
+      "locale": "ko",
+      "catalogPath": "src/i18n/locale/ko.json",
+      "target": "이메일 복구 링크",
+      "sha256": "b22ce95bcba27fe07385ffd10e02bc00ecdb7ffe67bf219e19ae0c8f09852288",
+      "reason": "The same-namespace caller renders this on a button that sends the reset email; the Hindi/Korean/Indonesian noun phrase names a recovery link but does not clearly express sending/emailing it. Hold for qualified locale review."
+    },
+    {
+      "position": 3479,
+      "sourceId": "components.Search.SoftwarePreview.available",
+      "locale": "ar",
+      "catalogPath": "src/i18n/locale/ar.json",
+      "target": "في المكتبة",
+      "sha256": "574015c014a57b1d169f06fbc360114e74317600633f77c26f749e438c21ec0b",
+      "reason": "The same-namespace caller shows this as a game-availability status; the translated generic-library term can suggest a physical/public library instead of the user’s game collection. Hold for qualified locale review."
+    },
+    {
+      "position": 3479,
+      "sourceId": "components.Search.SoftwarePreview.available",
+      "locale": "hi",
+      "catalogPath": "src/i18n/locale/hi.json",
+      "target": "पुस्तकालय",
+      "sha256": "e97df27ebab420cceaf6ff8548822356c3896925a5e5738b71a1d32590dbb1c1",
+      "reason": "The same-namespace caller shows this as a game-availability status; the translated generic-library term can suggest a physical/public library instead of the user’s game collection. Hold for qualified locale review."
+    },
+    {
+      "position": 3479,
+      "sourceId": "components.Search.SoftwarePreview.available",
+      "locale": "id",
+      "catalogPath": "src/i18n/locale/id.json",
+      "target": "Di perpustakaan",
+      "sha256": "933268a116b8ef6924b15f1a585ab9ef6e08b2f76a287012b6bb1dce96a144d2",
+      "reason": "The same-namespace caller shows this as a game-availability status; the translated generic-library term can suggest a physical/public library instead of the user’s game collection. Hold for qualified locale review."
+    },
+    {
+      "position": 3479,
+      "sourceId": "components.Search.SoftwarePreview.available",
+      "locale": "vi",
+      "catalogPath": "src/i18n/locale/vi.json",
+      "target": "Trong thư viện",
+      "sha256": "bbe1a462e0fdc98aeacc3c09f575e2d1d1eec100811fcb24dfbbd7bc2302a9db",
+      "reason": "The same-namespace caller shows this as a game-availability status; the translated generic-library term can suggest a physical/public library instead of the user’s game collection. Hold for qualified locale review."
+    }
+  ],
+  "finalDispositions": {
+    "accept-current": 220,
+    "correction": 10,
+    "hold": 7,
+    "refinement": 3
+  },
+  "nativeSpeakerApproval": false,
+  "releaseApproval": false
+}

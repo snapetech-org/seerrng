@@ -95,7 +95,7 @@ const QuotaDisplay = ({
               : ''
           }`}
         >
-          <div className="ml-2 text-lg">
+          <div className="ms-2 text-lg">
             {overLimit !== undefined
               ? intl.formatMessage(messages.notenoughseasonrequests)
               : mediaType === 'software'
@@ -163,11 +163,13 @@ const QuotaDisplay = ({
                         ? messages.booklimit
                         : mediaType === 'comic'
                           ? messages.comiclimit
-                          : mediaType === 'software'
-                            ? messages.softwarelimit
-                            : mediaType === 'adult'
-                              ? messages.adultlimit
-                              : messages.seasonlimit,
+                          : mediaType === 'magazine'
+                            ? messages.magazinelimit
+                            : mediaType === 'software'
+                              ? messages.softwarelimit
+                              : mediaType === 'adult'
+                                ? messages.adultlimit
+                                : messages.seasonlimit,
                   { limit: quota?.limit }
                 ),
                 strong: (msg: React.ReactNode) => <strong>{msg}</strong>,

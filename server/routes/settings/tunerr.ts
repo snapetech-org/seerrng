@@ -375,7 +375,9 @@ tunerrRoutes.post(
       missingFeatures: string[];
       guide: boolean;
       error?: string;
+      errorOrigin?: 'app' | 'opaque';
       guideError?: string;
+      guideErrorOrigin?: 'app' | 'opaque';
     } = { deck: false, missingFeatures: [], guide: false };
 
     try {
@@ -387,6 +389,7 @@ tunerrRoutes.post(
         error instanceof TunerrError
           ? error.message
           : 'The Tunerr deck could not be reached. Check the hostname and deck port.';
+      result.errorOrigin = 'app';
     }
 
     try {
@@ -398,6 +401,7 @@ tunerrRoutes.post(
         error instanceof TunerrError
           ? error.message
           : 'The Tunerr guide could not be reached. Check the tuner port or guide URL.';
+      result.guideErrorOrigin = 'app';
     }
 
     return res.status(result.deck && result.guide ? 200 : 502).json(result);

@@ -1,0 +1,27 @@
+{
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "window": "W3260-W3279",
+  "status": "ratified translation adjudication; no repository or PR changes applied",
+  "inputHead": "4cfcda2cb279ab056b46df4779aaadf8313c4594",
+  "inputTree": "4f6b1921a48aefe444c81d317a0f3ae265707bcc",
+  "inputWindowJsonSha256": "9dc3816bc7bbe26272c1b5c95e88429633fda7dbb2651c96aabdea7ec2d4e961",
+  "rootBlindLedgerSha256": "84b771906a1f5ef63d9a20b15521451872c76ebcf39278911409ac974d6fb309",
+  "primaryLedgerSha256": "8f2a5e52be4995bbd2b2eea59bad9af7290fad2228edc08909f22241c1c3e44b",
+  "independentLedgerSha256": "d3ba93002fcb1fb8b587fb9c43a6a6360ba3d0ab424d9fac3d595ed3160b6ff8",
+  "cellCount": 240,
+  "sourceCount": 20,
+  "localeCount": 12,
+  "targetChanges": 65,
+  "finalDispositions": {
+    "accept-current": 175,
+    "refinement": 33,
+    "correction": 32
+  },
+  "placeholderParity": true,
+  "callerContextPinsMatch": true,
+  "holds": 0,
+  "sourceOrdinal130Resolution": "The exact-source catalog text-node path translates the placeholder-free “games found.” fragment independently of the distinct “{count} games found.” template; no placeholder is added.",
+  "nativeSpeakerReview": false,
+  "repoOrPrMutated": false
+}

@@ -1,0 +1,69 @@
+{
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "window": "W3360-W3379",
+  "head": "1586a249e3f86deb7b9410cff50223e5f76209ff",
+  "tree": "d620a906353e9724ba28986103c76b7792c56099",
+  "sourceCount": 20,
+  "localeCount": 12,
+  "cellCount": 240,
+  "rootDispositionCounts": {
+    "accept-current": 183,
+    "hold-context": 37,
+    "correction": 7,
+    "refinement": 13
+  },
+  "rootChangeCount": 20,
+  "changesByLocale": {
+    "ar": 5,
+    "de": 1,
+    "fr": 3,
+    "id": 1,
+    "ja": 2,
+    "ko": 1,
+    "pt_BR": 2,
+    "vi": 1,
+    "zh_Hans": 2,
+    "zh_Hant": 2
+  },
+  "changedCatalogs": [
+    "src/i18n/locale/ar.json",
+    "src/i18n/locale/de.json",
+    "src/i18n/locale/fr.json",
+    "src/i18n/locale/id.json",
+    "src/i18n/locale/ja.json",
+    "src/i18n/locale/ko.json",
+    "src/i18n/locale/pt_BR.json",
+    "src/i18n/locale/vi.json",
+    "src/i18n/locale/zh_Hans.json",
+    "src/i18n/locale/zh_Hant.json"
+  ],
+  "holdIds": [
+    "components.Requests.mediaType",
+    "components.Requests.mediaTypeValue",
+    "components.Requests.minutes",
+    "components.Requests.noReleaseFoundFilter"
+  ],
+  "holdCells": 37,
+  "unresolvedTerminology": [
+    {
+      "position": 3372,
+      "id": "components.Requests.noReleaseFoundFilter",
+      "locale": "fr",
+      "currentTarget": "Aucune publication trouvée",
+      "options": [
+        "Aucune release trouvée",
+        "Aucune version trouvée"
+      ],
+      "reason": "Reviewers disagree and pinned caller does not settle French product terminology; retain current pending qualified French review."
+    }
+  ],
+  "nativeSpeakerApproval": false,
+  "headedBrowserAcceptance": false,
+  "repositoryOrPullRequestMutated": false,
+  "testsBuildsScansCI": false,
+  "workflowChanges": false,
+  "mergeReleaseTag": false,
+  "reviewMethod": "root ratification of exact-head primary, blind, and third-party reconciliation; machine-assisted, not native-speaker approval",
+  "structuralMismatchCount": 0
+}

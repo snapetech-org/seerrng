@@ -1,0 +1,162 @@
+{
+  "repository": "snapetech-org/SeerrNG",
+  "pullRequest": 418,
+  "head": "c03816972aab761a69b343abcdfe8a10f85aeabb",
+  "tree": "1ffc02d5d7dbbb14ab4706ce61bfcfda64592a01",
+  "sourceOrderCount": 9494,
+  "range": [
+    3180,
+    3199
+  ],
+  "sourceIds": [
+    {
+      "position": 3180,
+      "id": "components.RequestStatus.SoftwareRequests.cancelRetry",
+      "source": "Cancel",
+      "sourceSha256": "19766ed6ccb2f4a32778eed80d1928d2c87a18d7c275ccb163ec6709d3eb2e27"
+    },
+    {
+      "position": 3181,
+      "id": "components.RequestStatus.SoftwareRequests.cancelled",
+      "source": "Cancelled",
+      "sourceSha256": "d353a99eb4556847ceeb3c306ac886cf6b4fa13043eb1864b9aeb0607fd5f2cc"
+    },
+    {
+      "position": 3182,
+      "id": "components.RequestStatus.SoftwareRequests.clearCancelled",
+      "source": "Clear cancelled request",
+      "sourceSha256": "823440944824187c9e93c9172d8cad4811283a09d6452ee0b306ed9fcee654e1"
+    },
+    {
+      "position": 3183,
+      "id": "components.RequestStatus.SoftwareRequests.clearCancelledDescription",
+      "source": "This removes the cancelled request and its saved status history from Seerr. It does not delete installed software.",
+      "sourceSha256": "b93e445535362cb78ba1c97559e2d4c2e5133bb1fc92593a83c3aba294a2e799"
+    },
+    {
+      "position": 3184,
+      "id": "components.RequestStatus.SoftwareRequests.clearCancelledTitle",
+      "source": "Clear This Cancelled Request?",
+      "sourceSha256": "da2b8003321fe644fbabc88142e9a8b451b02921396f7ce45dc6a3f53a636646"
+    },
+    {
+      "position": 3185,
+      "id": "components.RequestStatus.SoftwareRequests.clearFailed",
+      "source": "Unable to clear this cancelled request.",
+      "sourceSha256": "1793a250bdb8f13b0f2ec0df53e9a8bb305b85b05d57540e6dcfa13e7e36c51d"
+    },
+    {
+      "position": 3186,
+      "id": "components.RequestStatus.SoftwareRequests.clearSuccess",
+      "source": "Cancelled request cleared.",
+      "sourceSha256": "cea8d6ea0a9ba4edb2b2cd55fbdefb144372ea4588979d66ba6f24492ba8ac34"
+    },
+    {
+      "position": 3187,
+      "id": "components.RequestStatus.SoftwareRequests.confirmAfterCheck",
+      "source": "I checked; continue",
+      "sourceSha256": "058463a35981ec657fcf6ebe82e2df8e556016af4f98bf5abac29721c387e4bf"
+    },
+    {
+      "position": 3188,
+      "id": "components.RequestStatus.SoftwareRequests.datPartlyVerified",
+      "source": "{verified} of {total} DAT Verified",
+      "sourceSha256": "0a911c38403869b2cdebf8e924050081757f188bb3b205ff9b83abc96c1d1914"
+    },
+    {
+      "position": 3189,
+      "id": "components.RequestStatus.SoftwareRequests.datVerified",
+      "source": "DAT Verified",
+      "sourceSha256": "1bdd129852cf9e77a69de51a9794b34c97ad53555fa9ea937641f4603c84114d"
+    },
+    {
+      "position": 3190,
+      "id": "components.RequestStatus.SoftwareRequests.decline",
+      "source": "Decline",
+      "sourceSha256": "a2d285b352873457207a34a015267524bb4613c3e8c961c8998da4e08e0d5745"
+    },
+    {
+      "position": 3191,
+      "id": "components.RequestStatus.SoftwareRequests.declined",
+      "source": "Declined",
+      "sourceSha256": "dce083a2c47ffdc44982315487afb6e121e96cef2df6dc1ec11bac7ab5052142"
+    },
+    {
+      "position": 3192,
+      "id": "components.RequestStatus.SoftwareRequests.downloadAllCopies",
+      "source": "Download all files",
+      "sourceSha256": "21bcf9c7d4f1b5eee85f8beea6f1fc5e384c7eb8e9e22c2b6df0a45af58a8eb9"
+    },
+    {
+      "position": 3193,
+      "id": "components.RequestStatus.SoftwareRequests.downloadCopies",
+      "source": "Download copies",
+      "sourceSha256": "900ba9bd447fcc05ff86bd23a4a5b64f5c3590c676ad1ece17b65fc4e9a675a4"
+    },
+    {
+      "position": 3194,
+      "id": "components.RequestStatus.SoftwareRequests.downloadCopy",
+      "source": "Download copy",
+      "sourceSha256": "e35dde6db75b453468347bdf512602a543e1a90c8e11301166c62da4359447ec"
+    },
+    {
+      "position": 3195,
+      "id": "components.RequestStatus.SoftwareRequests.downloadNamed",
+      "source": "Download {name}",
+      "sourceSha256": "c807156b8e24f0a378cd22e57f3bddcd25555680645c9f0636d3b59d5e4563c3"
+    },
+    {
+      "position": 3196,
+      "id": "components.RequestStatus.SoftwareRequests.downloading",
+      "source": "Downloading",
+      "sourceSha256": "37b345555d7ea6c1724d28076ce47b956d202574c211fefa36afba778f335373"
+    },
+    {
+      "position": 3197,
+      "id": "components.RequestStatus.SoftwareRequests.failed",
+      "source": "Failed",
+      "sourceSha256": "031a8f0f659df890dfd53c92e45295b0f14c997185bae46e168831e403b273f7"
+    },
+    {
+      "position": 3198,
+      "id": "components.RequestStatus.SoftwareRequests.failureCode",
+      "source": "Failure code: {code}",
+      "sourceSha256": "227b4042e83602c5ed869441f118c70f8d373e473933545f14ff40d0c1c647dd"
+    },
+    {
+      "position": 3199,
+      "id": "components.RequestStatus.SoftwareRequests.game",
+      "source": "PC Game",
+      "sourceSha256": "bab750cf4dc3f6a154a1823249920711421f28672bf6c7504fe49a35dbd7db1a"
+    }
+  ],
+  "catalogKeyCounts": {
+    "es": 9494,
+    "zh_Hans": 9494,
+    "hi": 9494,
+    "de": 9494,
+    "ja": 9494,
+    "fr": 9494,
+    "pt_BR": 9494,
+    "ar": 9494,
+    "ko": 9494,
+    "zh_Hant": 9494,
+    "vi": 9494,
+    "id": 9494
+  },
+  "localeOrder": [
+    "es",
+    "zh_Hans",
+    "hi",
+    "de",
+    "ja",
+    "fr",
+    "pt_BR",
+    "ar",
+    "ko",
+    "zh_Hant",
+    "vi",
+    "id"
+  ],
+  "callerSearchScope": "Message definitions and statically named uses in SoftwareRequests.tsx, plus dynamic status-label map for cancelled/declined/downloading/failed."
+}

@@ -1,0 +1,99 @@
+{
+  "schemaVersion": 1,
+  "head": "3f5ddfdddbeb77cf02cc9d14e00001c8d1aa61c6",
+  "tree": "1c48dc5ea6e8db6c2da546ec58e88d38eb8f9cc7",
+  "catalogFiles": {
+    "src/i18n/locale/en.json": {
+      "path": "src/i18n/locale/en.json",
+      "sha256": "75ff3c90b52aedd636a506281ffbd6fb2d3739c61294b6008a517f17647e2316",
+      "gitBlob": "12e04a118c30b71b3714291adeaf9fdb2735cee4",
+      "byteCount": 835513
+    },
+    "src/i18n/locale/es.json": {
+      "path": "src/i18n/locale/es.json",
+      "sha256": "456eaf0736f3cfc792d394f26bed3ea40cb44f15ae7a46d7b45f3f56102a8756",
+      "gitBlob": "da00a5d74c7bcb910464098211b7961020dc8ef5",
+      "byteCount": 922904
+    },
+    "src/i18n/locale/zh_Hans.json": {
+      "path": "src/i18n/locale/zh_Hans.json",
+      "sha256": "a212d40717433a19b5addb68a535c75a4a2b74773e6710e5cbc40e596995b2d6",
+      "gitBlob": "044f2f4ed663ddc3bd997248e16789d550ae79e8",
+      "byteCount": 812883
+    },
+    "src/i18n/locale/hi.json": {
+      "path": "src/i18n/locale/hi.json",
+      "sha256": "7e26f179697ad38ac49d9951c987cc99543a8d16b27bc6f66db4e8dffa607f02",
+      "gitBlob": "3fbff4dd1e9981627c991ee0187daa2e3aaf20ba",
+      "byteCount": 1373398
+    },
+    "src/i18n/locale/de.json": {
+      "path": "src/i18n/locale/de.json",
+      "sha256": "a98548f3dde2a00cb1e53aa7e391b9f2f8c2bf263786bc497d95ee46ed35e96a",
+      "gitBlob": "679cabe9207c76ec7164b57d8d9c4bb71fb1be2b",
+      "byteCount": 927155
+    },
+    "src/i18n/locale/ja.json": {
+      "path": "src/i18n/locale/ja.json",
+      "sha256": "3779b08469021d3fe50b04f64c2f1ec97452a08ae053c41d12a3185a3ad654a8",
+      "gitBlob": "1e9ef9e0a6250a0a0b6c7003e7dc7b0e1e567b05",
+      "byteCount": 1016340
+    },
+    "src/i18n/locale/fr.json": {
+      "path": "src/i18n/locale/fr.json",
+      "sha256": "4889cfc0fb774391bc8d14a3c10ef904a0497da8b7022ba131f1c21a7198772f",
+      "gitBlob": "08b008536e8193f76e14df2be7157d41e899307a",
+      "byteCount": 941108
+    },
+    "src/i18n/locale/pt_BR.json": {
+      "path": "src/i18n/locale/pt_BR.json",
+      "sha256": "c092313df03696cdb45d146b1318050d0d7ace1f80d5e740143e8a0125aad85f",
+      "gitBlob": "9270379d783907447794851105520be2edae1f96",
+      "byteCount": 912297
+    },
+    "src/i18n/locale/ar.json": {
+      "path": "src/i18n/locale/ar.json",
+      "sha256": "f1f53268fc5a8851860c73941bb144c0b9d2b3f6f544c0f7ed3f6e2aa9edced5",
+      "gitBlob": "d2d23f0e11d7d82bd03c34c1ca9bc5e90868f97b",
+      "byteCount": 1045103
+    },
+    "src/i18n/locale/ko.json": {
+      "path": "src/i18n/locale/ko.json",
+      "sha256": "0391217e08f36c4151976492eee35e8a984f9879705aa4356bbe41d126d721a8",
+      "gitBlob": "3e3b1ac49745c98890e2fa859a15468dd02db6dd",
+      "byteCount": 934963
+    },
+    "src/i18n/locale/zh_Hant.json": {
+      "path": "src/i18n/locale/zh_Hant.json",
+      "sha256": "005fe69b448fbc51f727929812861f3ac613268e0f01a794cfa4f3437513546e",
+      "gitBlob": "707e011d56b28ef6e9e0fc1a5fc0a093f6bf3a46",
+      "byteCount": 814722
+    },
+    "src/i18n/locale/vi.json": {
+      "path": "src/i18n/locale/vi.json",
+      "sha256": "4ea5b3795db56e368a344366a30e4bcb61424aab797ccac42d0253731c4c56eb",
+      "gitBlob": "ff5b1f1dec9b64f2d4e2d60fc83b4e43bc295b94",
+      "byteCount": 970523
+    },
+    "src/i18n/locale/id.json": {
+      "path": "src/i18n/locale/id.json",
+      "sha256": "bf85b4716400fa83e8e5f5de5f4a2d2dbe217786eeffa191b993010f687c6a53",
+      "gitBlob": "c5334fee791c03328b9543ff20f439aaa20d6123",
+      "byteCount": 868399
+    }
+  },
+  "runtimeLocaleRegistry": {
+    "path": "config/i18n/locales.json",
+    "sha256": "6e8ea070b441db9700325cf838d440dbbef1d1e5331e28332ed6c15cb789376a",
+    "gitBlob": "d699bd347f4fbad07bce14a743c884800d9d4a84"
+  },
+  "productionCallerFiles": {
+    "src/components/Requests/index.tsx": {
+      "path": "src/components/Requests/index.tsx",
+      "sha256": "25b612dcda274fe2ea64b76f169587e153b04a675c9b8cd817814d9fbfde5360",
+      "gitBlob": "84f6a19674b329df0ef6be6483d74bbaeb110ccb",
+      "byteCount": 100417,
+      "lineCount": 3115
+    }
+  }
+}

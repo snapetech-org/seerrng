@@ -1,0 +1,85 @@
+{
+  "verifiedAtUTC": "2026-11-03T22:05:23.160098+00:00",
+  "exactHead": "1ca6ec2d5a0e9ef8000c69997e75648a8ccaf06e",
+  "exactTree": "6a51f3fb1d1f65c12bfe82bf47834626aa364488",
+  "results": {
+    "candidateFree": {
+      "exitCode": 0,
+      "result": {
+        "result": "PASS",
+        "head": "1ca6ec2d5a0e9ef8000c69997e75648a8ccaf06e",
+        "tree": "6a51f3fb1d1f65c12bfe82bf47834626aa364488",
+        "sources": 20,
+        "cells": 240,
+        "directCallerRows": 20,
+        "callerless": 0,
+        "baselineProtectedLiteralFindings": 1,
+        "priorSelectionsReattested": 240,
+        "carriedHolds": 12,
+        "pinnedCatalogs": 13,
+        "pinnedRuntimeFiles": 29,
+        "inputChecksums": 19
+      },
+      "stderr": ""
+    },
+    "primary": {
+      "exitCode": 0,
+      "result": {
+        "result": "PASS",
+        "head": "1ca6ec2d5a0e9ef8000c69997e75648a8ccaf06e",
+        "tree": "6a51f3fb1d1f65c12bfe82bf47834626aa364488",
+        "cells": 240,
+        "decisionCounts": {
+          "accept-current": 189,
+          "correction": 35,
+          "refinement": 16,
+          "hold": 0
+        },
+        "selectedChanges": 51,
+        "carriedHolds": 12,
+        "baselineProtectedLiteralFlags": 1,
+        "selectedTokenFailures": 0,
+        "selectedProtectedLiteralFailures": 0,
+        "inputFilesVerified": 19,
+        "outputFilesVerified": 7
+      },
+      "stderr": ""
+    },
+    "blind": {
+      "exitCode": 0,
+      "result": {
+        "pass": true,
+        "head": "1ca6ec2d5a0e9ef8000c69997e75648a8ccaf06e",
+        "tree": "6a51f3fb1d1f65c12bfe82bf47834626aa364488",
+        "window": "W3720-W3739",
+        "cells": 240,
+        "dispositions": {
+          "correction": 19,
+          "refinement": 9,
+          "accept-current": 212
+        },
+        "changes": 28,
+        "baselineTokenMismatches": {
+          "placeholder": 0,
+          "markup": 0,
+          "numeric": 0,
+          "protectedLiteral": 1
+        },
+        "selectedTokenMismatches": {
+          "placeholder": 0,
+          "markup": 0,
+          "numeric": 0,
+          "protectedLiteral": 0
+        },
+        "priorWindowCellsReattested": 240,
+        "carriedHoldsReattested": 12,
+        "pinnedFilesReattested": 42,
+        "callerContextBlocksReattested": 41,
+        "PR": "OPEN/DRAFT",
+        "primaryOrSummaryOutputAccessed": false,
+        "crossAuditOutputAccessed": false
+      },
+      "stderr": ""
+    }
+  }
+}

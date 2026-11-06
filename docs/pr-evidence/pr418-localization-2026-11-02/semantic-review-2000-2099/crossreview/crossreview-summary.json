@@ -1,0 +1,51 @@
+{
+  "additionalMissedCorrections": 1,
+  "allChecksPassed": true,
+  "boundaryCellsReattested": 24,
+  "boundaryPositions": [
+    1999,
+    2100
+  ],
+  "branchHeadAtStartAndFinish": "d897f04661802d7f47446e46602f1b521d33c52f",
+  "callerFiles": 13,
+  "callerRefsReattested": 348,
+  "candidateNoops": 0,
+  "cellsReattested": 1200,
+  "checkCount": 3537,
+  "currentMarkupMismatchCells": 1,
+  "currentPlaceholderMismatchCells": 1,
+  "currentProtectedLiteralMismatchCells": 29,
+  "finalMarkupMismatchCells": 0,
+  "finalPlaceholderMismatchCells": 0,
+  "finalProtectedLiteralMismatchCells": 0,
+  "headCommit": "d897f04661802d7f47446e46602f1b521d33c52f",
+  "holds": 0,
+  "icuPluralCellsReattested": 24,
+  "independentCellDispositions": {
+    "accept-current": 816,
+    "accept-primary-candidate": 380,
+    "propose-additional-correction": 1,
+    "revise-primary-candidate": 3
+  },
+  "independentChangedTargets": 384,
+  "inputSha256ManifestSha256": "5d30690a7cee3f2797802035bc0a035e794ade14b4e8c4097cd6177972d76068",
+  "nativeSpeakerReview": "outstanding",
+  "prOpenDraftAtStartAndFinish": true,
+  "primaryCandidates": 383,
+  "primaryCandidatesRevised": 3,
+  "primaryProposalOutcomes": {
+    "accept-primary-candidate": 380,
+    "revise-primary-candidate": 3
+  },
+  "primarySha256ManifestSha256": "0dfeba57b2e9d1a9fe930f6da89317804f85b73bad524a072f7ef73f3f07f4dd",
+  "pullRequest": 418,
+  "readOnly": true,
+  "repoOrPrWrites": false,
+  "repository": "snapetech-org/SeerrNG",
+  "result": "INDEPENDENT_CROSS_REVIEW_COMPLETE_PENDING_NATIVE_SPEAKER_REVIEW",
+  "sourcePositions": [
+    2000,
+    2099
+  ],
+  "tree": "309b846c546923856ffde114fd3cf75a7c8de7a7"
+}

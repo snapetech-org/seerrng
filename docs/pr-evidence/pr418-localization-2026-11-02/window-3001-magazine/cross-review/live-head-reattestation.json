@@ -1,0 +1,26 @@
+{
+  "baseRefName": "main",
+  "baseRefOid": "221d8e0d542802da7529cd272c928cc747677e5c",
+  "branch": "codex/seerrng-localization-overhaul-20261028",
+  "exactPinsMatch": true,
+  "githubRemote": "github",
+  "githubRemoteBranchHead": "a1d39112a4e378a38640dc183e820c646b49665a",
+  "isDraft": true,
+  "localHead": "a1d39112a4e378a38640dc183e820c646b49665a",
+  "localTree": "fa084f89e9ae90ca196a7201b91882a1fd9f9710",
+  "localWorktreeStatus": [
+    "M AGENTS.md",
+    "?? .next-webpack-dev"
+  ],
+  "oldHead": "5df4c711f832f1f9a818c4d9cfca46661bff0835",
+  "oldTree": "116ff2934d7eaf3d02f84f104621860c16babc01",
+  "pullRequest": 418,
+  "repository": "snapetech-org/SeerrNG",
+  "repositoryOrCatalogEditsMade": false,
+  "state": "OPEN",
+  "testsBuildsScansCiOrBrowserRun": false,
+  "unrelatedSharedWorktreeStatePreserved": true,
+  "updatedAt": "2026-11-03T00:16:53Z",
+  "url": "https://github.com/snapetech-org/seerrng/pull/418",
+  "worktreeClean": false
+}

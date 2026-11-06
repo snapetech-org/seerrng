@@ -1,0 +1,80 @@
+{
+  "finalReattestationFile": "final-reattestation.json",
+  "head": "9242898e23f7f25d515d10b5b0b51df322e395fb",
+  "inputChecksumFile": "INPUT-SHA256SUMS",
+  "livePrAttestationFile": "live-localization-prs-end.json",
+  "localeCatalogFiles": {
+    "ar": "bff294a3f6f772214e9db75a655fc42d03a75dca1d75bcc1fb93326e629f3421",
+    "de": "a0d67d19f9bcc7b22f0bb436e74dfcdab1c8b5e599314e17e1d68aa2cc683f9d",
+    "es": "9b93191257e6628c8bbc4b52d42915ffafa6438151d98b481ec1e77af72cd44b",
+    "fr": "544b0927451974ac73c958b5ba0077970e5f11c177357f3b1b67b5f14b492e3c",
+    "hi": "e28bf6252f8ed3bc90cc19cc465c115b1f7534ee5d807bb2d8b8a595e61cd2af",
+    "id": "b0a7e8aae027c54976cd55d272bb958bdcc64ef44ce93b2c751867ace6d126ff",
+    "ja": "f0862996ef90c8bc4fe7626b4d70f66bbe9e0dd2ac768493f48e2b8b8e85f544",
+    "ko": "e872506d1af4339e6c8742166fe672365e0a01b47d3edbfdb79d9258f0dfef55",
+    "pt_BR": "f78fcac8f1dfee086336e5072d47818a68840f757895191ba672a46247ed9e4c",
+    "vi": "4e0c7f9125ff6d0d57b745660cf86227d127f1870e755c8bdd2ddd4f9482c1e2",
+    "zh_Hans": "c27b518b3638adc3362cf5901709f61bd13118ad001253aea6272efc2f9fdb8b",
+    "zh_Hant": "659b7e414ea58cf79cb7dc70f2edbe8b5843b82e3dfa5224701f5dc36bbb6c8e"
+  },
+  "nativeSpeakerReviewOutstanding": true,
+  "packetFiles": [
+    "INPUT-SHA256SUMS",
+    "README.md",
+    "build_primary.py",
+    "caller-contexts.jsonl",
+    "caller-gaps.json",
+    "candidate-proposals.jsonl",
+    "candidate-targets.json",
+    "final-reattestation.json",
+    "input-manifest.json",
+    "live-localization-prs-end.json",
+    "live-localization-prs-start.json",
+    "prepare_input.py",
+    "primary-review-ledger.jsonl",
+    "prior-disposition-boundary.json",
+    "source-boundaries.json",
+    "source-current-cells.jsonl",
+    "source-window.json",
+    "spanish-formal-review.jsonl",
+    "structural-validation.json",
+    "summary.json"
+  ],
+  "pullRequest": 418,
+  "repository": "snapetech-org/SeerrNG",
+  "repositoryOrPrEdited": false,
+  "reviewDispositionCounts": {
+    "accept-current": 1025,
+    "propose-correction": 165,
+    "refinement": 10
+  },
+  "scope": {
+    "cells": 1200,
+    "locales": [
+      "ar",
+      "de",
+      "es",
+      "fr",
+      "hi",
+      "id",
+      "ja",
+      "ko",
+      "pt_BR",
+      "vi",
+      "zh_Hans",
+      "zh_Hant"
+    ],
+    "positions": [
+      2600,
+      2699
+    ],
+    "sourceIds": 100
+  },
+  "sourceCatalog": {
+    "blob": "12e04a118c30b71b3714291adeaf9fdb2735cee4",
+    "path": "src/i18n/locale/en.json",
+    "sha256": "75ff3c90b52aedd636a506281ffbd6fb2d3739c61294b6008a517f17647e2316"
+  },
+  "testsBuildsScansCiBrowser": false,
+  "tree": "06cfd94ee611684c33e9e78af9d8bb60a2e98825"
+}

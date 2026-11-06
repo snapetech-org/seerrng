@@ -1,0 +1,189 @@
+{
+  "schemaVersion": 1,
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "window": "W3660-W3679",
+  "range": [
+    3660,
+    3679
+  ],
+  "head": "eb279fc80be656f379cd893642bf741ba0a24d85",
+  "tree": "85a73172719b38e99a4e74c0ef9a303164cb4fcb",
+  "baseRef": "main",
+  "baseSha": "221d8e0d542802da7529cd272c928cc747677e5c",
+  "sourceCatalogPath": "src/i18n/locale/en.json",
+  "englishCatalogGitBlob": "12e04a118c30b71b3714291adeaf9fdb2735cee4",
+  "sourceOrderCount": 9494,
+  "sourceOrderSha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+  "sourceOrderHashDerivation": "Computed from the ordered English catalog keys pinned by Git blob at this head.",
+  "priorSelectedSourceIdCount": 3660,
+  "priorSelectedSourceIdPrefixSha256": "5f6478a951c78fcc2cda6d3ea031b4668b8988516078f5897216cdb1ea087a90",
+  "selectedSourceIdOrderSha256": "3dfda187cce78a6cd533ae8fe19a62ba3d14ba1711844156e9453804445f9ec5",
+  "previousBoundary": {
+    "position": 3659,
+    "sourceId": "components.Settings.BookshelfPathMigration.format",
+    "source": "Media format",
+    "sourceSha256": "96c38c272ed750aea0a624b56f76935b219477580ec6da25712af91fdca2f90a",
+    "sourceIdSha256": "4c312771ea402cdf62a04be6808f3c743d9ef2cd348c99e0a11f46b3968da2b1",
+    "boundaryKind": "previous"
+  },
+  "nextBoundary": {
+    "position": 3680,
+    "sourceId": "components.Settings.BookshelfPathMigration.selected",
+    "source": "{count} authors selected",
+    "sourceSha256": "115fd459b151b33b0fc81b42e53263d6191edb32161de189b2db57d2611ee772",
+    "sourceIdSha256": "6c3eeb7a6f8d581e709d9c63c5221de2d17061433aa47d04ed907e85a0eaa393",
+    "boundaryKind": "next"
+  },
+  "remainingAtWindowStart": 5834,
+  "selectedSourceCount": 20,
+  "remainingAfterWindow": 5814,
+  "sourceRecordCount": 20,
+  "sourceOrderBoundaryRecordCount": 22,
+  "cellCount": 240,
+  "localeOrder": [
+    "es",
+    "zh_Hans",
+    "hi",
+    "de",
+    "ja",
+    "fr",
+    "pt_BR",
+    "ar",
+    "ko",
+    "zh_Hant",
+    "vi",
+    "id"
+  ],
+  "localeInfo": [
+    {
+      "catalogKey": "es",
+      "tag": "es",
+      "nativeName": "Español",
+      "direction": "ltr",
+      "clientFile": "es.json",
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "catalogKey": "zh_Hans",
+      "tag": "zh-CN",
+      "nativeName": "简体中文",
+      "direction": "ltr",
+      "clientFile": "zh_Hans.json",
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "catalogKey": "hi",
+      "tag": "hi",
+      "nativeName": "हिन्दी",
+      "direction": "ltr",
+      "clientFile": "hi.json",
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "catalogKey": "de",
+      "tag": "de",
+      "nativeName": "Deutsch",
+      "direction": "ltr",
+      "clientFile": "de.json",
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "catalogKey": "ja",
+      "tag": "ja",
+      "nativeName": "日本語",
+      "direction": "ltr",
+      "clientFile": "ja.json",
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "catalogKey": "fr",
+      "tag": "fr",
+      "nativeName": "Français",
+      "direction": "ltr",
+      "clientFile": "fr.json",
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "catalogKey": "pt_BR",
+      "tag": "pt-BR",
+      "nativeName": "Português (Brasil)",
+      "direction": "ltr",
+      "clientFile": "pt_BR.json",
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "catalogKey": "ar",
+      "tag": "ar",
+      "nativeName": "العربية",
+      "direction": "rtl",
+      "clientFile": "ar.json",
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "catalogKey": "ko",
+      "tag": "ko",
+      "nativeName": "한국어",
+      "direction": "ltr",
+      "clientFile": "ko.json",
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "catalogKey": "zh_Hant",
+      "tag": "zh-TW",
+      "nativeName": "繁體中文",
+      "direction": "ltr",
+      "clientFile": "zh_Hant.json",
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "catalogKey": "vi",
+      "tag": "vi",
+      "nativeName": "Tiếng Việt",
+      "direction": "ltr",
+      "clientFile": "vi.json",
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "catalogKey": "id",
+      "tag": "id",
+      "nativeName": "Bahasa Indonesia",
+      "direction": "ltr",
+      "clientFile": "id.json",
+      "reviewStatus": "unreviewed"
+    }
+  ],
+  "catalogKeySetEqualsEnglish": true,
+  "catalogOrderedKeyHashes": {
+    "en": "47d40a21145f2f198fadaa29baeef5461718c4b6365d564af60ee015f18f1974",
+    "es": "47d40a21145f2f198fadaa29baeef5461718c4b6365d564af60ee015f18f1974",
+    "zh_Hans": "35faf7107f1be3900172b7c08ac7558b51f31d63b3b6c57eebe7710e8a81ca33",
+    "hi": "47d40a21145f2f198fadaa29baeef5461718c4b6365d564af60ee015f18f1974",
+    "de": "47d40a21145f2f198fadaa29baeef5461718c4b6365d564af60ee015f18f1974",
+    "ja": "35faf7107f1be3900172b7c08ac7558b51f31d63b3b6c57eebe7710e8a81ca33",
+    "fr": "47d40a21145f2f198fadaa29baeef5461718c4b6365d564af60ee015f18f1974",
+    "pt_BR": "47d40a21145f2f198fadaa29baeef5461718c4b6365d564af60ee015f18f1974",
+    "ar": "47d40a21145f2f198fadaa29baeef5461718c4b6365d564af60ee015f18f1974",
+    "ko": "35faf7107f1be3900172b7c08ac7558b51f31d63b3b6c57eebe7710e8a81ca33",
+    "zh_Hant": "35faf7107f1be3900172b7c08ac7558b51f31d63b3b6c57eebe7710e8a81ca33",
+    "vi": "35faf7107f1be3900172b7c08ac7558b51f31d63b3b6c57eebe7710e8a81ca33",
+    "id": "47d40a21145f2f198fadaa29baeef5461718c4b6365d564af60ee015f18f1974"
+  },
+  "baselineTokenDiagnostics": {
+    "placeholderMismatchCount": 0,
+    "placeholderSequenceMismatchCount": 2,
+    "icuPluralCategorySetDifferenceCount": 0,
+    "markupMismatchCount": 0,
+    "numericTokenMismatchCount": 0,
+    "protectedLiteralMismatchCount": 0
+  },
+  "callerlessSourcePositions": [],
+  "previousCompletedWindow": "W3640-W3659",
+  "previousCompletedEndPosition": 3659,
+  "previousWindowHoldCount": 12,
+  "priorHoldCount": 12,
+  "priorHoldSourcePositions": [
+    3632
+  ],
+  "priorHoldPreservation": "Preserve all twelve source-position-3632 callerless holds by exact target hash; no old target text is included as a proposal."
+}

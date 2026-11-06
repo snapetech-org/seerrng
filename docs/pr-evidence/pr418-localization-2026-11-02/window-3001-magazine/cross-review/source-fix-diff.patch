@@ -1,0 +1,41 @@
+diff --git a/src/components/RequestModal/QuotaDisplay/index.tsx b/src/components/RequestModal/QuotaDisplay/index.tsx
+index 04a3da7d0..fa059f7cf 100644
+--- a/src/components/RequestModal/QuotaDisplay/index.tsx
++++ b/src/components/RequestModal/QuotaDisplay/index.tsx
+@@ -154,29 +154,31 @@ const QuotaDisplay = ({
+               {
+                 limit: quota?.limit,
+                 days: quota?.days,
+                 type: intl.formatMessage(
+                   mediaType === 'movie'
+                     ? messages.movielimit
+                     : mediaType === 'music'
+                       ? messages.musiclimit
+                       : mediaType === 'book'
+                         ? messages.booklimit
+                         : mediaType === 'comic'
+                           ? messages.comiclimit
+-                          : mediaType === 'software'
+-                            ? messages.softwarelimit
+-                            : mediaType === 'adult'
+-                              ? messages.adultlimit
+-                              : messages.seasonlimit,
++                          : mediaType === 'magazine'
++                            ? messages.magazinelimit
++                            : mediaType === 'software'
++                              ? messages.softwarelimit
++                              : mediaType === 'adult'
++                                ? messages.adultlimit
++                                : messages.seasonlimit,
+                   { limit: quota?.limit }
+                 ),
+                 strong: (msg: React.ReactNode) => <strong>{msg}</strong>,
+               }
+             )}
+           </div>
+           <div className="mt-2">
+             {intl.formatMessage(
+               userOverride ? messages.quotaLinkUser : messages.quotaLink,
+               {
+                 ProfileLink: (msg: React.ReactNode) => (
+                   <Link

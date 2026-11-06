@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 1,
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "branch": "codex/seerrng-localization-overhaul-20261028",
+  "baseHead": "78efa0ef0410ebd8911026ecbbfe1f621d26770b",
+  "baseTree": "749819bc888fc400bbb185fc9310043ab45c0d5c",
+  "window": "W3640-W3659",
+  "sourceCount": 20,
+  "localeCount": 12,
+  "reviewedCells": 240,
+  "dispositions": {
+    "accept-current": 175,
+    "correction-needed": 19,
+    "refinement-needed": 46
+  },
+  "exactCatalogEdits": 65,
+  "noOpCells": 175,
+  "catalogCount": 12,
+  "catalogKeyCountPerFile": {
+    "src/i18n/locale/ar.json": 9494,
+    "src/i18n/locale/de.json": 9494,
+    "src/i18n/locale/es.json": 9494,
+    "src/i18n/locale/fr.json": 9494,
+    "src/i18n/locale/hi.json": 9494,
+    "src/i18n/locale/id.json": 9494,
+    "src/i18n/locale/ja.json": 9494,
+    "src/i18n/locale/ko.json": 9494,
+    "src/i18n/locale/pt_BR.json": 9494,
+    "src/i18n/locale/vi.json": 9494,
+    "src/i18n/locale/zh_Hans.json": 9494,
+    "src/i18n/locale/zh_Hant.json": 9494
+  },
+  "previousHoldPolicy": "All out-of-window keys and values were preserved; current packet contains no hold dispositions.",
+  "browserReview": "pending isolated headed VM review",
+  "qualifiedNativeSpeakerReview": "pending; machine review does not establish native-speaker approval",
+  "testsBuildsCI": "not run",
+  "releasesTagsMerges": "not performed",
+  "workflowFiles": "untouched"
+}

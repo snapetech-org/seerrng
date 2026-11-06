@@ -1,0 +1,50 @@
+{
+  "cells": 1200,
+  "correctionCandidateCount": 172,
+  "definitionOnlyOrSingleReferenceCells": 24,
+  "definitionOnlyOrSingleReferenceKeys": [
+    "components.Layout.UserWarnings.emailInvalid",
+    "components.Layout.UserWarnings.passwordRequired"
+  ],
+  "dispositionCounts": {
+    "accept-current": 997,
+    "preserve-prior-disposition": 1,
+    "propose-correction": 172,
+    "propose-refinement": 30
+  },
+  "head": "670d1a213179dcc690f27a8b92c2372dba699091",
+  "historicalReuseEquivalenceReferences": 12,
+  "isDraft": true,
+  "locales": [
+    "ar",
+    "de",
+    "es",
+    "fr",
+    "hi",
+    "id",
+    "ja",
+    "ko",
+    "pt_BR",
+    "vi",
+    "zh_Hans",
+    "zh_Hant"
+  ],
+  "markupMismatchCount": 0,
+  "nativeSpeakerApproval": "outstanding",
+  "outputPath": "/mnt/disks/scratch/task-scratch/seerrng-pr418-window-1700-1799-primary-20261102",
+  "placeholderMismatchCount": 0,
+  "priorFrozenDispositionCount": 1,
+  "protectedLiteralMismatchCount": 0,
+  "pullRequest": 418,
+  "refinementCandidateCount": 30,
+  "repoOrPullRequestModified": false,
+  "repository": "snapetech-org/seerrng",
+  "sourceIds": 100,
+  "sourcePositionRange": [
+    1700,
+    1799
+  ],
+  "state": "OPEN",
+  "testsBuildsScansCIorBrowserRun": false,
+  "tree": "be2a8a70ef7f86f3499be7c2190a07b3d2d78036"
+}

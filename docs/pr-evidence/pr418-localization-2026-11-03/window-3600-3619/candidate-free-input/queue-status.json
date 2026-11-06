@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "head": "1fdec93d1b021e4ec7a7c2265230f59d81d2675e",
+  "tree": "6234854dc0b1e7aee17ef2e819ffc2b5b2e386ce",
+  "sourceCatalogPath": "src/i18n/locale/en.json",
+  "sourceOrderCount": 9494,
+  "sourceOrderSha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+  "priorSelectedSourceIdCount": 3600,
+  "priorSelectedSourceIdPrefixSha256": "01432a58360b523c54a3cbfe41f4cc196cc1d146e647ae7507e5716e7f534f5f",
+  "selectedSourceIdOrderSha256": "dc00bdaa06ec62fac025f92269119d254c92b1f27de53ba36c0cc2b2dca80042",
+  "previousCompletedWindow": "W3580-W3599",
+  "previousCompletedEndPosition": 3599,
+  "previousCompletedHoldCount": 0,
+  "nextWindow": "W3600-W3619",
+  "nextWindowRangeInclusive": [
+    3600,
+    3619
+  ],
+  "remainingAtWindowStart": 5894,
+  "selectedSourceCount": 20,
+  "remainingAfterWindow": 5874,
+  "callerlessSourcePositions": [],
+  "previousWindowLineage": {
+    "window": "W3580-W3599",
+    "head": "30f626a4626d460f426666cde02f5c1ed17fa206",
+    "tree": "9b2616780791c73eb176aca6d53061f1f3587d8",
+    "applicationVerificationPath": "docs/pr-evidence/pr418-localization-2026-11-03/window-3580-3599/application-verification.json",
+    "applicationEvidenceHead": "1fdec93d1b021e4ec7a7c2265230f59d81d2675e",
+    "applicationEvidenceTree": "6234854dc0b1e7aee17ef2e819ffc2b5b2e386ce",
+    "applicationVerificationGitBlob": "c710757847c823b9d0a4751232a0a0be7ad19936",
+    "applicationVerificationSha256": "97d2358e4f90c14795f59e531f4148329289d121c9703c0019a7507690183a8d",
+    "applicationVerificationStatus": "PASS",
+    "holds": 0,
+    "priorHoldsOutsideThisWindowUntouched": true
+  },
+  "priorHoldPreservation": "No catalog values are changed. Existing prior holds remain untouched."
+}

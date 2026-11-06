@@ -1,0 +1,24 @@
+{
+  "subtask": "Independent semantic review of the ar, de, es, fr, hi, id cells",
+  "cellCount": 600,
+  "primaryProposalCount": 66,
+  "proposalVerdicts": {
+    "accept": 66,
+    "revise": 0,
+    "reject": 0,
+    "hold": 0
+  },
+  "additionalFindingsIncludedInIndependentFindingsJson": [
+    "W2708 hi",
+    "W2711 es",
+    "W2765 ar",
+    "W2773 ar"
+  ],
+  "lowConfidenceNoteIncluded": "W2753 ar Advanced Request heading",
+  "protectedNameChecks": [
+    "W2757 hi Bindery",
+    "W2796 hi Bookshelf"
+  ],
+  "reviewer": "sub-agent /root/slskr_w883_apply_review/seerr_first6_review",
+  "nativeSpeakerApproval": false
+}

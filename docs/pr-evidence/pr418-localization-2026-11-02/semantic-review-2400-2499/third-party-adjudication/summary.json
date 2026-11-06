@@ -1,0 +1,42 @@
+{
+  "browserReview": false,
+  "callerContextHashesReattested": 27,
+  "callerLinePinsReattested": 43,
+  "chaptarrHead": "175cff3a50569b67def345bb82332b30e9bb378c",
+  "chaptarrTree": "e682581e3c577b62215658c374b15a9d3f8f8bd0",
+  "counts": {
+    "accept": 26,
+    "revise": 1
+  },
+  "holds": 0,
+  "markupParityExact": 27,
+  "nativeSpeakerApproval": false,
+  "packetChecksumsVerified": true,
+  "perCohort": {
+    "ChaptarrNG": {
+      "accept": 14
+    },
+    "SeerrNG": {
+      "accept": 12,
+      "revise": 1
+    }
+  },
+  "placeholderParityExact": 27,
+  "protectedLiteralParityExact": 27,
+  "repoEdits": false,
+  "revisedCandidate": {
+    "locale": "ko",
+    "reason": "The added correction dropped the source instruction to open Grimmory and choose an audiobook; revised target preserves both sentences.",
+    "sourceId": "components.ReaderDeliveryLink.audiobooksHelp",
+    "sourcePosition": 2496
+  },
+  "scope": {
+    "ChaptarrNG": 14,
+    "SeerrNG": 13,
+    "total": 27
+  },
+  "seerrHead": "f20893e57a89827095fa049d8e0475df7ec7170f",
+  "seerrTree": "b5a5952fb4f8a37ea5a39286295f153ce9504f52",
+  "sourceCurrentCatalogHashesReattested": 27,
+  "testsBuildsCiRun": false
+}

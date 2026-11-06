@@ -1,0 +1,127 @@
+{
+  "artifact": "SeerrNG PR #418 W3940-W3959 sealed independent cross-audit",
+  "schemaVersion": 1,
+  "reviewMode": "independent exact-head primary/blind cross-audit",
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "window": "W3940-W3959",
+  "branch": "codex/seerrng-localization-overhaul-20261028",
+  "head": "a0104b4c84a9c4561020ca72062171b22ffc49f2",
+  "tree": "aaa44c8019c58fde7ae796065e8aae7ac11d7a80",
+  "sourceCount": 20,
+  "localeCount": 12,
+  "cellCount": 240,
+  "candidateFreeInputManifestSha256": "f610e66ce6edbb91457c74d004e19b5827beb62bfac0a190a8cf8156b6eda476",
+  "primaryManifestSha256": "bd3b2f12ebc29f13741107506bd54bd4aa1f1417c4e42136a805da51423c095f",
+  "blindManifestSha256": "59762b40e30b8b1d9d6c61f47d1d22466751eaa828a998e75644f157423207e4",
+  "blindChecksumManifestSha256": "8d507a98537bd4687767b8d56efa9c94a0745fffc76648324bad4f6980f5abb3",
+  "crossDispositionCounts": {
+    "KEEP": 168,
+    "SELECT_PROPOSAL": 48,
+    "HOLD": 24
+  },
+  "selectedProposalCount": 48,
+  "proposalCandidateAssessments": {
+    "SELECTED": 61,
+    "NOT_SELECTED_ALTERNATIVE": 15
+  },
+  "noOpCount": 168,
+  "currentHashOnlyHoldCount": 24,
+  "historicalHashOnlyHoldCount": 26,
+  "historicalAppliedTargetHashCount": 214,
+  "nativeSpeakerApproval": false,
+  "browserReview": false,
+  "applyStatus": "PREPARED_NOT_APPLIED",
+  "files": [
+    {
+      "path": "README.md",
+      "bytes": 2919,
+      "sha256": "13ad96c3c3b5d9ad571f703cac505a73f72fd37d3ac44dd3d863ed90d8f9834f"
+    },
+    {
+      "path": "apply-plan.json",
+      "bytes": 44061,
+      "sha256": "3bdae5526650779cc4321526686829ea2eb3d5577a2fbf6ad385ba9f08ba7e2e"
+    },
+    {
+      "path": "build_cross_packet.py",
+      "bytes": 37640,
+      "sha256": "5230ef71e070ce6428580027f45dfe2ac78221ddbea701909e75e67db56565c2"
+    },
+    {
+      "path": "caller-context-audit.jsonl",
+      "bytes": 30023,
+      "sha256": "8a796bf1d0247a34e2557dbf12538dda10dda57ce57fddb82db7c886bae2c4f5"
+    },
+    {
+      "path": "capture_after_and_seal.py",
+      "bytes": 4538,
+      "sha256": "9d06249d1e5c3e35f888ab1698103939b29441b71f468b80227646d0731a8c25"
+    },
+    {
+      "path": "cross-ledger.jsonl",
+      "bytes": 173351,
+      "sha256": "7c19399675069c23888a6f395ef7b756da5f96a54e5f58226151090e599d3db6"
+    },
+    {
+      "path": "historical-applied-target-hashes.jsonl",
+      "bytes": 116647,
+      "sha256": "5f0bea0078c42a5df1cb821d8529c62d87ab89663c054b19b19d3381f6d7e424"
+    },
+    {
+      "path": "historical-hold-hashes.jsonl",
+      "bytes": 20079,
+      "sha256": "f40590b3fbbd2e5a626dbecb7fa5bf2d1f9ebe1e95659d2b6600ec7df920c5d1"
+    },
+    {
+      "path": "input-attestation.json",
+      "bytes": 2332,
+      "sha256": "12265324d599c46974900260168a247027984ca776d3d4abdeccfaede570e56a"
+    },
+    {
+      "path": "live-review-after.json",
+      "bytes": 1103,
+      "sha256": "43a8f496f1f15c1189dbb52f190612fca8c330c74972d212cb4332c946921d68"
+    },
+    {
+      "path": "live-review-before.json",
+      "bytes": 1105,
+      "sha256": "15961831b4607d1175179d53de9532db4dacf150f0f3eafb1f495766a14f415e"
+    },
+    {
+      "path": "no-op-ledger.jsonl",
+      "bytes": 140194,
+      "sha256": "d77f12d31fb05709266e236cbede84939397f8ffa2a930776bfd9c1f8a4451b1"
+    },
+    {
+      "path": "proposal-reconciliation.jsonl",
+      "bytes": 131181,
+      "sha256": "a901135644b31777e860ee1314c21edcffc5d257084daed4c233f6412cbdd7d3"
+    },
+    {
+      "path": "resolved-blind-holds.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "selected-proposals.jsonl",
+      "bytes": 95845,
+      "sha256": "faba0904411d901b3d2b9f9e6c0120de06fb226fe112e195c54b10e2ca4228ce"
+    },
+    {
+      "path": "summary.json",
+      "bytes": 2011,
+      "sha256": "427cea7c117d1322df807a39c6af22f70900035ce964bf96a0cd2d151e9952a7"
+    },
+    {
+      "path": "unresolved-holds.jsonl",
+      "bytes": 15842,
+      "sha256": "4de2e666af7d96dff468a39602dd048cb29ba3d7ef8724fc6c8aa4f33f0087a2"
+    },
+    {
+      "path": "verify_cross_review.py",
+      "bytes": 20451,
+      "sha256": "e3eb01de7f34d7c75256c56854bba8d200356c5ecb8f62ec718dbe8a87a01378"
+    }
+  ]
+}

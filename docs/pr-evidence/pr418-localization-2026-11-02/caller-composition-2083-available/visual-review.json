@@ -1,0 +1,14 @@
+{
+  "required_comparison": "baseline and candidate rendered at matching viewport and state",
+  "target_surface": "SeasonEpisodeTree season/all-season/accessibility selection descriptions",
+  "status": "unverified",
+  "ui_work_complete": false,
+  "blockers": [
+    "agent_desktop_pool_v2 desktop_queue returned: Agent Pool coordinator is unavailable",
+    "PR head had no current-head deployment or preview in the live PR/status record"
+  ],
+  "existing_evidence_not_applicable": "The retained Arabic /setup screenshot evidence reviews a Jellyfin protocol prefix in a different component and does not exercise this SeasonEpisodeTree copy.",
+  "screenshots_created": [],
+  "native_speaker_approval": false,
+  "follow_up": "Repeat headed visual comparison on the exact updated PR head when the isolated browser coordinator and a current-head preview are available."
+}

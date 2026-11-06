@@ -1,0 +1,13 @@
+{
+  "baseSha": "fa40534ccced75bde1125c14760514fcd5d7de4d",
+  "branch": "codex/seerrng-localization-overhaul-20261028",
+  "head": "a456dd66aad34cb23f432cb3c189bb8083bbbe96",
+  "remoteRefs": {
+    "refs/heads/codex/seerrng-localization-overhaul-20261028": "a456dd66aad34cb23f432cb3c189bb8083bbbe96",
+    "refs/heads/main": "016bcf8db7475b2105b9b488ff67ed7d1c096508",
+    "refs/pull/418/head": "a456dd66aad34cb23f432cb3c189bb8083bbbe96"
+  },
+  "sourceWorktree": "/mnt/disks/scratch/task-worktrees/localization-20261104/seerrng-pr418-w3960-3979-source",
+  "tree": "7a5447e5f08e84c392899a6e1400d1df73b1143b",
+  "worktreeStatus": "CLEAN"
+}

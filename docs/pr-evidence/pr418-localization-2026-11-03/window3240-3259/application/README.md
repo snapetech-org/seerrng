@@ -1,0 +1,3 @@
+# Root ratification and readback
+
+Root ratified the sealed 240-cell adjudication bound to the exact PR base head/tree above and applied 94 selected catalog changes to the matching worktree. All twelve direct locale catalogs retain their 9,494-key sets and each preserves its pinned key order; source/current/final hashes and all 240 target readbacks match with zero mismatches. Machine-assisted review is not native-speaker approval. The pre-commit hook was skipped because it runs lint-staged and local Semgrep outside the required private ephemeral JIT. No tests, builds, scans, CI dispatches, releases, merges, tags, or workflow changes were made.

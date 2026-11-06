@@ -1,0 +1,247 @@
+{
+  "schemaVersion": 1,
+  "pullRequest": 418,
+  "window": "W3880-W3899",
+  "inputHead": "39d8ae36ba757532f947a9a15be22f0676e79075",
+  "inputTree": "45e3ada0f565a07c675d1d75096f4266c4ef691e",
+  "sourceCount": 20,
+  "localeCount": 12,
+  "cellCount": 240,
+  "selectedUpdates": 29,
+  "retainedCurrent": 211,
+  "newHolds": 4,
+  "priorHashOnlyHoldsPreserved": 14,
+  "changedCellsByLocale": {
+    "ar": 1,
+    "de": 1,
+    "es": 1,
+    "fr": 3,
+    "hi": 2,
+    "ja": 2,
+    "ko": 4,
+    "pt-BR": 2,
+    "vi": 3,
+    "zh-Hans": 6,
+    "zh-Hant": 4
+  },
+  "catalogPreimages": [
+    {
+      "locale": "ar",
+      "path": "src/i18n/locale/ar.json",
+      "sha256": "c86f4a5c1f7db54c088b7eb5a6861707ebcb39c60de58c5b7401884dc343322d",
+      "gitBlob": "7d5a080b4acb867d53a92707f16d10302537448e",
+      "keyCount": 9494,
+      "keySequenceSha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072"
+    },
+    {
+      "locale": "de",
+      "path": "src/i18n/locale/de.json",
+      "sha256": "3d02be45dc4e41363a294fe8e390cb98b6d7a9713cde263fe2c563a2f631dc3b",
+      "gitBlob": "9dadcba337ed6a77f5a85a98160f23a2de062c11",
+      "keyCount": 9494,
+      "keySequenceSha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072"
+    },
+    {
+      "locale": "es",
+      "path": "src/i18n/locale/es.json",
+      "sha256": "b75174fc9da9c89d0b1cce832809f46011f90452355d14818abe9dc30bb6f0e9",
+      "gitBlob": "c8e57aea37ff594debea189386735da143c174bb",
+      "keyCount": 9494,
+      "keySequenceSha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072"
+    },
+    {
+      "locale": "fr",
+      "path": "src/i18n/locale/fr.json",
+      "sha256": "a9641b450e4a21bc99dbfe733c8a305e1240296921a4809cae3cc3d51a074a71",
+      "gitBlob": "986da2f244033ef5098f4d2aa934c64fdfdc2d7f",
+      "keyCount": 9494,
+      "keySequenceSha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072"
+    },
+    {
+      "locale": "hi",
+      "path": "src/i18n/locale/hi.json",
+      "sha256": "d3c4d723eaeb2a125c90a48c7db90c87a8e8a834876e2f911e7c877f697ee9ce",
+      "gitBlob": "673a44091a91a62b6f543f69de54d25d22e36e56",
+      "keyCount": 9494,
+      "keySequenceSha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072"
+    },
+    {
+      "locale": "id",
+      "path": "src/i18n/locale/id.json",
+      "sha256": "cca4d9b58fbff51224f95de7ff20befbbf7be26685ca578b3cbce0597ddb2506",
+      "gitBlob": "1b7586866a82024ba4ae9ce9158d864d95055154",
+      "keyCount": 9494,
+      "keySequenceSha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072"
+    },
+    {
+      "locale": "ja",
+      "path": "src/i18n/locale/ja.json",
+      "sha256": "f096a53dc871536a04336aaedc725ce9fa7f744cc2e51052b72d8c752ab5c855",
+      "gitBlob": "c35565d7d6e53b5c232f853b2ab3259029f36edc",
+      "keyCount": 9494,
+      "keySequenceSha256": "8d5fd7bd4351bc64c5ee813f2e50196608869e165866f3202a312078732c2baf"
+    },
+    {
+      "locale": "ko",
+      "path": "src/i18n/locale/ko.json",
+      "sha256": "4d3e2dd2122614111966434beb8e1984d098a723f3ff6be5646dbf8228d5da8f",
+      "gitBlob": "0169ea95f49e5385606f7d1147b42538498c9796",
+      "keyCount": 9494,
+      "keySequenceSha256": "8d5fd7bd4351bc64c5ee813f2e50196608869e165866f3202a312078732c2baf"
+    },
+    {
+      "locale": "pt-BR",
+      "path": "src/i18n/locale/pt_BR.json",
+      "sha256": "faa17aef21d74d6909a8d79bf143de16a183082ab8c1d1c0ff91f066f29b4f1d",
+      "gitBlob": "3bef2dba93a1e64709a5d45e2a34253acdd56bfc",
+      "keyCount": 9494,
+      "keySequenceSha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072"
+    },
+    {
+      "locale": "vi",
+      "path": "src/i18n/locale/vi.json",
+      "sha256": "c276801c2c1ea538003e9941945ebb6e4192a4945de52e2505efe26ecae1ec0f",
+      "gitBlob": "c8cc260fc88c13d56aa005afa22ced3a6d3a6518",
+      "keyCount": 9494,
+      "keySequenceSha256": "8d5fd7bd4351bc64c5ee813f2e50196608869e165866f3202a312078732c2baf"
+    },
+    {
+      "locale": "zh-Hans",
+      "path": "src/i18n/locale/zh_Hans.json",
+      "sha256": "43213004485f6e6d8ad318057363ea322b2624a03809e9f176d46185eb267219",
+      "gitBlob": "863c3ad6b143f922cdddb3da894e9435d6b1ac72",
+      "keyCount": 9494,
+      "keySequenceSha256": "8d5fd7bd4351bc64c5ee813f2e50196608869e165866f3202a312078732c2baf"
+    },
+    {
+      "locale": "zh-Hant",
+      "path": "src/i18n/locale/zh_Hant.json",
+      "sha256": "806ca50073e2d76fa2852faf1fd8007255c0e107fb5093088792b4430978324b",
+      "gitBlob": "e31634057c5350a684dbd7157feeb948a98f32ca",
+      "keyCount": 9494,
+      "keySequenceSha256": "8d5fd7bd4351bc64c5ee813f2e50196608869e165866f3202a312078732c2baf"
+    }
+  ],
+  "catalogPostimages": [
+    {
+      "path": "src/i18n/locale/ar.json",
+      "preSha256": "c86f4a5c1f7db54c088b7eb5a6861707ebcb39c60de58c5b7401884dc343322d",
+      "preGitBlob": "7d5a080b4acb867d53a92707f16d10302537448e",
+      "postSha256": "be75ac8117c8575b0ccfda8e0d95d1c7900622f0cbaf1e62952c1558cf6c4dd2",
+      "postGitBlob": "e66d9db4b6aa9a8360eda990a4b9dce9be1c8574",
+      "keyCount": 9494,
+      "changedCells": 1
+    },
+    {
+      "path": "src/i18n/locale/de.json",
+      "preSha256": "3d02be45dc4e41363a294fe8e390cb98b6d7a9713cde263fe2c563a2f631dc3b",
+      "preGitBlob": "9dadcba337ed6a77f5a85a98160f23a2de062c11",
+      "postSha256": "65e2c0434871be2e76408eb96e027a2298bf8012273390af708141f3b126e72b",
+      "postGitBlob": "d8d934c99c685a0ab2c565ea03d3d192fab8ea45",
+      "keyCount": 9494,
+      "changedCells": 1
+    },
+    {
+      "path": "src/i18n/locale/es.json",
+      "preSha256": "b75174fc9da9c89d0b1cce832809f46011f90452355d14818abe9dc30bb6f0e9",
+      "preGitBlob": "c8e57aea37ff594debea189386735da143c174bb",
+      "postSha256": "39d5db9ce9db98be867db4a138d390918d13a44f486270f2c1358f5539427d77",
+      "postGitBlob": "7003ef2ac0b922754a8d182f492d1595dce55259",
+      "keyCount": 9494,
+      "changedCells": 1
+    },
+    {
+      "path": "src/i18n/locale/fr.json",
+      "preSha256": "a9641b450e4a21bc99dbfe733c8a305e1240296921a4809cae3cc3d51a074a71",
+      "preGitBlob": "986da2f244033ef5098f4d2aa934c64fdfdc2d7f",
+      "postSha256": "163c0957031232ed9a7ddcde2908f4de839353ce04a651e5f3cf94c0230dd026",
+      "postGitBlob": "189bcd3b9a8791bfd99e11afb33c3b5faefd6e2b",
+      "keyCount": 9494,
+      "changedCells": 3
+    },
+    {
+      "path": "src/i18n/locale/hi.json",
+      "preSha256": "d3c4d723eaeb2a125c90a48c7db90c87a8e8a834876e2f911e7c877f697ee9ce",
+      "preGitBlob": "673a44091a91a62b6f543f69de54d25d22e36e56",
+      "postSha256": "77296fe869b21a1a5d8a6b9aa991051240ccefcee3c60c11338fae71b684dd9a",
+      "postGitBlob": "f300d645acfea1e61032261a0c4c76e6e395dfce",
+      "keyCount": 9494,
+      "changedCells": 2
+    },
+    {
+      "path": "src/i18n/locale/id.json",
+      "preSha256": "cca4d9b58fbff51224f95de7ff20befbbf7be26685ca578b3cbce0597ddb2506",
+      "preGitBlob": "1b7586866a82024ba4ae9ce9158d864d95055154",
+      "postSha256": "cca4d9b58fbff51224f95de7ff20befbbf7be26685ca578b3cbce0597ddb2506",
+      "postGitBlob": "1b7586866a82024ba4ae9ce9158d864d95055154",
+      "keyCount": 9494,
+      "changedCells": 0
+    },
+    {
+      "path": "src/i18n/locale/ja.json",
+      "preSha256": "f096a53dc871536a04336aaedc725ce9fa7f744cc2e51052b72d8c752ab5c855",
+      "preGitBlob": "c35565d7d6e53b5c232f853b2ab3259029f36edc",
+      "postSha256": "a573acbf404dff9eb4d54c55b9cf1b08c9ea71096f512c071516aaed923bd96c",
+      "postGitBlob": "e7da38823ba868a405a78d89e6d2fed94c0de3be",
+      "keyCount": 9494,
+      "changedCells": 2
+    },
+    {
+      "path": "src/i18n/locale/ko.json",
+      "preSha256": "4d3e2dd2122614111966434beb8e1984d098a723f3ff6be5646dbf8228d5da8f",
+      "preGitBlob": "0169ea95f49e5385606f7d1147b42538498c9796",
+      "postSha256": "2bfe04eaf69cbc15564833f6514ab1b8bf5bd824cce3f89243e5e34288ec3d6a",
+      "postGitBlob": "ef02789ca442402a30bc433d720b3d5809c03300",
+      "keyCount": 9494,
+      "changedCells": 4
+    },
+    {
+      "path": "src/i18n/locale/pt_BR.json",
+      "preSha256": "faa17aef21d74d6909a8d79bf143de16a183082ab8c1d1c0ff91f066f29b4f1d",
+      "preGitBlob": "3bef2dba93a1e64709a5d45e2a34253acdd56bfc",
+      "postSha256": "d890e65fa9dd56f32c83f14c92b8168bf8b07b082b02860654642955aeb7d288",
+      "postGitBlob": "dc3404def7d5075421ba5830cb9aafef60a17347",
+      "keyCount": 9494,
+      "changedCells": 2
+    },
+    {
+      "path": "src/i18n/locale/vi.json",
+      "preSha256": "c276801c2c1ea538003e9941945ebb6e4192a4945de52e2505efe26ecae1ec0f",
+      "preGitBlob": "c8cc260fc88c13d56aa005afa22ced3a6d3a6518",
+      "postSha256": "009731ec4ceedd304febf97e519da486258da868c97f4ce700d66d79a4a69e8e",
+      "postGitBlob": "2aa4c4d87b6a9367f38bea82575be322137cf9b7",
+      "keyCount": 9494,
+      "changedCells": 3
+    },
+    {
+      "path": "src/i18n/locale/zh_Hans.json",
+      "preSha256": "43213004485f6e6d8ad318057363ea322b2624a03809e9f176d46185eb267219",
+      "preGitBlob": "863c3ad6b143f922cdddb3da894e9435d6b1ac72",
+      "postSha256": "5a9cb312fc59579706fa2dcbfa9d76f4bddd5c758f17f571b6440edc77eddb45",
+      "postGitBlob": "5fa123a79a2858c5d4fd600de78edb006b1e8668",
+      "keyCount": 9494,
+      "changedCells": 6
+    },
+    {
+      "path": "src/i18n/locale/zh_Hant.json",
+      "preSha256": "806ca50073e2d76fa2852faf1fd8007255c0e107fb5093088792b4430978324b",
+      "preGitBlob": "e31634057c5350a684dbd7157feeb948a98f32ca",
+      "postSha256": "8b72636f6b14b4a83109be1d194084b33944736fb3901b3afabdfe398a44cddc",
+      "postGitBlob": "b332a8233a3672728dd6bb3aae9e9deaa4d70363",
+      "keyCount": 9494,
+      "changedCells": 4
+    }
+  ],
+  "englishSourceCatalogSha256": "75ff3c90b52aedd636a506281ffbd6fb2d3739c61294b6008a517f17647e2316",
+  "englishSourceCatalogGitBlob": "12e04a118c30b71b3714291adeaf9fdb2735cee4",
+  "changelogSha256Before": "8a7d002b8604a82ac212dcac1f1818b07ba2971c1bd8cc45f78932346432abd2",
+  "changelogSha256After": "a0d5447fd3b8461a28728d99638b9529dcbad07036644a271ff04aafc8f9f21c",
+  "changelogEntry": "- **Localization:** Updated 29 reviewed Apprise and Gotify settings translations across the 12 target locales.",
+  "readbackCells": 240,
+  "placeholderMarkupNumericMismatches": 0,
+  "protectedLiteralMismatches": 0,
+  "releaseCreated": false,
+  "workflowPathsChanged": 0,
+  "testsBuildsScansCiRun": false,
+  "browserOrNativeSignoffClaimed": false
+}

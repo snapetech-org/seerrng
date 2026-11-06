@@ -108,7 +108,7 @@ const RegionSelector = ({
   const optionClass = (active: boolean) =>
     compact
       ? `app-filter-select-option ${active ? 'app-filter-select-option-active' : ''}`
-      : `${active ? 'bg-indigo-600 text-white' : 'text-gray-300'} relative flex cursor-default items-center pr-4 pl-8 select-none py-2`;
+      : `${active ? 'bg-indigo-600 text-white' : 'text-gray-300'} relative flex cursor-default items-center pe-4 ps-8 select-none py-2`;
   const valueClass = (selected: boolean) =>
     compact
       ? undefined
@@ -136,7 +136,7 @@ const RegionSelector = ({
                 className={
                   compact
                     ? 'app-filter-select-trigger'
-                    : 'settings-compatible-listbox-button relative flex w-full cursor-default items-center rounded-md border pr-8 pl-2 text-left text-gray-100 transition duration-150 ease-in-out focus:outline-none'
+                    : 'settings-compatible-listbox-button relative flex w-full cursor-default items-center rounded-md border ps-2 pe-8 text-start text-gray-100 transition duration-150 ease-in-out focus:outline-none'
                 }
                 data-filter-region={compact ? 'trigger' : undefined}
               >
@@ -150,7 +150,7 @@ const RegionSelector = ({
                     className={
                       compact
                         ? undefined
-                        : 'mr-2 h-4 overflow-hidden text-base leading-4'
+                        : 'me-2 h-4 overflow-hidden text-base leading-4'
                     }
                     data-filter-region={compact ? 'flag' : undefined}
                   >
@@ -178,7 +178,7 @@ const RegionSelector = ({
                 {compact ? (
                   <ChevronDownIcon className="app-filter-select-chevron" />
                 ) : (
-                  <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 text-gray-500">
+                  <span className="pointer-events-none absolute inset-y-0 end-0 flex items-center pe-2 text-gray-500">
                     <ChevronDownIcon className="h-5 w-5" />
                   </span>
                 )}
@@ -216,7 +216,7 @@ const RegionSelector = ({
                         data-filter-region={compact ? 'option' : undefined}
                       >
                         <span
-                          className={compact ? undefined : 'mr-2 text-base'}
+                          className={compact ? undefined : 'me-2 text-base'}
                           data-filter-region={compact ? 'flag' : undefined}
                         >
                           <span
@@ -225,7 +225,7 @@ const RegionSelector = ({
                                 ? `flag:${regionValue}`
                                 : compact
                                   ? undefined
-                                  : 'pr-6'
+                                  : 'pe-6'
                             }
                           />
                         </span>
@@ -245,7 +245,7 @@ const RegionSelector = ({
                             className={
                               compact
                                 ? 'app-filter-select-check'
-                                : `${active ? 'text-white' : 'text-indigo-600'} absolute inset-y-0 left-0 flex items-center pl-1.5`
+                                : `${active ? 'text-white' : 'text-indigo-600'} absolute inset-y-0 start-0 flex items-center ps-1.5`
                             }
                           >
                             <CheckIcon
@@ -264,7 +264,7 @@ const RegionSelector = ({
                         className={
                           compact
                             ? optionClass(active)
-                            : `${active ? 'bg-indigo-600 text-white' : 'text-gray-300'} relative cursor-default py-2 pr-4 pl-8 select-none`
+                            : `${active ? 'bg-indigo-600 text-white' : 'text-gray-300'} relative cursor-default py-2 ps-8 pe-4 select-none`
                         }
                         data-filter-region={compact ? 'option' : undefined}
                       >
@@ -272,7 +272,7 @@ const RegionSelector = ({
                           className={
                             compact
                               ? undefined
-                              : `${selected ? 'font-semibold' : 'font-normal'} block truncate pl-8`
+                              : `${selected ? 'font-semibold' : 'font-normal'} block truncate ps-8`
                           }
                           data-filter-region={compact ? 'value' : undefined}
                           data-selected={selected}
@@ -284,7 +284,7 @@ const RegionSelector = ({
                             className={
                               compact
                                 ? 'app-filter-select-check'
-                                : `${active ? 'text-white' : 'text-indigo-600'} absolute inset-y-0 left-0 flex items-center pl-1.5`
+                                : `${active ? 'text-white' : 'text-indigo-600'} absolute inset-y-0 start-0 flex items-center ps-1.5`
                             }
                           >
                             <CheckIcon
@@ -304,7 +304,7 @@ const RegionSelector = ({
                         data-filter-region={compact ? 'option' : undefined}
                       >
                         <span
-                          className={compact ? undefined : 'mr-2 text-base'}
+                          className={compact ? undefined : 'me-2 text-base'}
                           data-filter-region={compact ? 'flag' : undefined}
                         >
                           <span
@@ -313,7 +313,7 @@ const RegionSelector = ({
                                 ? `flag:${region.iso_3166_1}`
                                 : compact
                                   ? undefined
-                                  : 'pr-6'
+                                  : 'pe-6'
                             }
                           />
                         </span>
@@ -329,7 +329,7 @@ const RegionSelector = ({
                             className={
                               compact
                                 ? 'app-filter-select-check'
-                                : `${active ? 'text-white' : 'text-indigo-600'} absolute inset-y-0 left-0 flex items-center pl-1.5`
+                                : `${active ? 'text-white' : 'text-indigo-600'} absolute inset-y-0 start-0 flex items-center ps-1.5`
                             }
                           >
                             <CheckIcon

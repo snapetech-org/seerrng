@@ -1,0 +1,108 @@
+{
+  "revisionOrRetentionOverrides": {
+    "2301:zh_Hans": {
+      "disposition": "retain-current",
+      "target": "请求被拒",
+      "rationale": "The existing concise label already says that the request was rejected naturally. The proposal is semantically equivalent but does not correct an error, so retain the current wording."
+    },
+    "2306:zh_Hans": {
+      "disposition": "revise-primary-proposal",
+      "target": "当用户提交新的媒体请求且这些请求需要审批时发送通知。",
+      "rationale": "The source describes new requests for media. This wording avoids the potential “new media” reading of 新媒体 and does not invent administrator-only approval."
+    },
+    "2306:zh_Hant": {
+      "disposition": "revise-primary-proposal",
+      "target": "當使用者提交新的媒體請求且這些請求需要核准時傳送通知。",
+      "rationale": "The source describes new requests for media. This wording avoids the potential “new media” reading of 新媒體 and does not invent administrator-only approval."
+    },
+    "2311:ar": {
+      "disposition": "revise-primary-proposal",
+      "target": "أرسل إشعارات عندما تصبح ROMs وألعاب PC التي طلبتها جاهزة للتنزيل.",
+      "rationale": "The primary target fixes the meaning and preserves ROM/PC, but switches the source's generic plural notifications to a singular notification. This revision keeps the source number."
+    },
+    "2311:fr": {
+      "disposition": "revise-primary-proposal",
+      "target": "Envoyer des notifications lorsque les ROM et les jeux PC demandés sont prêts à être téléchargés.",
+      "rationale": "The candidate has the right event and preserves ROM/PC, but uses a singular notification for the generic plural in the source. This revision keeps the plural."
+    },
+    "2312:ja": {
+      "disposition": "revise-primary-proposal",
+      "target": "ご自身のソフトウェアリクエストが承認待ち、承認済み、却下、または処理に失敗したときに通知を受け取ります。",
+      "rationale": "The candidate repairs the status list but drops “your.” The revised target restores the user-specific ownership shown in this notification description."
+    },
+    "2322:zh_Hans": {
+      "disposition": "revise-primary-proposal",
+      "target": "当其他用户提交新的媒体请求且这些请求需要审批时，您会收到通知。",
+      "rationale": "The source describes new requests for media. This wording avoids the potential “new media” reading of 新媒体, retains the other-user actor, and does not add administrator-only approval."
+    },
+    "2322:zh_Hant": {
+      "disposition": "revise-primary-proposal",
+      "target": "當其他使用者提交新的媒體請求且這些請求需要核准時，您會收到通知。",
+      "rationale": "The source describes new requests for media. This wording avoids the potential “new media” reading of 新媒體, retains the other-user actor, and does not add administrator-only approval."
+    },
+    "2398:zh_Hans": {
+      "disposition": "revise-primary-proposal",
+      "target": "自动批准体育类请求",
+      "rationale": "In this permission list the setting controls approval of sports requests. Naming requests makes the permission category clear; “体育项目” can read as sports activities or projects."
+    },
+    "2398:zh_Hant": {
+      "disposition": "revise-primary-proposal",
+      "target": "自動核准體育類請求",
+      "rationale": "In this permission list the setting controls approval of sports requests. Naming requests makes the permission category clear; “體育項目” can read as sports activities or projects."
+    }
+  },
+  "positionRationales": {
+    "2300": "The notification fires when the requested media item becomes available; the accepted targets correct wording that made the request itself available or narrowed availability to watchability.",
+    "2301": "The Korean/Hindi/Indonesian/Vietnamese labels repair incorrect request states; the Simplified Chinese current value is retained because it already states rejection naturally.",
+    "2302": "The accepted Chinese and Hindi descriptions replace malformed wording with a direct notification for declined media requests.",
+    "2303": "The Indonesian label now describes failure in request processing, which matches the notification state.",
+    "2304": "The Japanese and Hindi/Indonesian proposals read as failed media-request additions and preserve each named service exactly.",
+    "2305": "The Hindi and Indonesian labels now state that the request is awaiting approval rather than asking for a request or mentioning time.",
+    "2306": "The accepted targets preserve users submitting new media requests that need approval without inventing an administrator-only actor.",
+    "2307": "The Vietnamese proposal is the normal UI label for notification types.",
+    "2308": "The accepted Arabic, Korean, Portuguese, and Vietnamese category labels express updates about software requests rather than software itself being updated.",
+    "2309": "The accepted status descriptions distinguish approval pending, approved, declined, and failed software requests without changing the event.",
+    "2310": "The accepted labels make the requested software, rather than the request object, the item that is available.",
+    "2311": "The accepted/revised descriptions preserve ROM and PC and say that the requested ROMs and PC games are ready to download.",
+    "2312": "The accepted/revised descriptions correctly list pending, approved, declined, and failed states for the user's software request.",
+    "2313": "The Japanese proposal makes the new-comment event explicit on issues the user reported; Hindi restores that comments arrive on those issues.",
+    "2315": "The Indonesian target clearly says the issues reported by the user are reopened.",
+    "2316": "The proposals restore the relationship to issues reported by the user and the resolved event.",
+    "2317": "The Chinese proposals retain other users, new media requests, automatic approval, and the notification to the user.",
+    "2318": "The accepted targets keep the media-request object and the user's ownership and do not add manual approval.",
+    "2319": "The accepted targets express availability of the requested media, not just watchability, and retain the user-notification meaning.",
+    "2320": "The Hindi proposal states that the user's media request is declined.",
+    "2321": "The Japanese and Hindi/Indonesian proposals preserve Radarr, Sonarr, Lidarr, and Bookshelf verbatim while describing a failed addition.",
+    "2322": "The accepted/revised targets preserve other users submitting new media requests requiring approval and avoid unsupported admin specificity.",
+    "2323": "The accepted targets repair Arabic/Indonesian meaning and Vietnamese scope while preserving ROM and PC as exact literals.",
+    "2324": "The German revision preserves the exact Open Library product name and both score/vote placeholders.",
+    "2325": "The Simplified Chinese target means abandoned, not deprecated.",
+    "2346": "The accepted translations describe unknown completion status, rather than unknown integrity.",
+    "2347": "The Simplified Chinese target means abandoned, not deprecated.",
+    "2370": "The accepted translations describe unknown completion status, rather than unknown integrity.",
+    "2348": "The Korean target restores the dependency direction: this version requires the base game.",
+    "2372": "The Arabic role label is a natural concise equivalent for an administrator.",
+    "2373": "The accepted descriptions say full administrator access bypasses other permission checks, without saying no permissions are required or adding extra exceptions.",
+    "2375": "The accepted targets state permission to modify advanced media-request options.",
+    "2376": "The accepted labels express automatic approval rather than submission or access.",
+    "2377": "The accepted labels express automatic approval for 4K and preserve the 4K literal.",
+    "2378": "The Vietnamese description restores the all-4K-media-request scope and automatic-approval action.",
+    "2379": "The accepted labels name automatic approval for 4K movies and retain the 4K category.",
+    "2381": "The Korean/Vietnamese labels identify series rather than movies or a generic line.",
+    "2383": "The Hindi label now names automatic approval for adult media.",
+    "2384": "The Hindi description preserves adult-scene requests and the distinction from general auto-approval.",
+    "2385": "The accepted labels express auto-approval of books rather than verifying, accessing, printing, or submitting them.",
+    "2386": "The accepted Spanish/Korean descriptions state that permission is granted for automatic approval of book requests.",
+    "2387": "The accepted labels express automatic approval of comics rather than verification or application.",
+    "2388": "The accepted Spanish/Korean descriptions grant automatic approval for comic requests.",
+    "2390": "The accepted labels correctly name automatic approval for magazines rather than magazines of approval or verification.",
+    "2392": "The Indonesian/Korean/Vietnamese labels express automatic approval for movies rather than mixed-English approval, acceptance, or photographs.",
+    "2393": "The Vietnamese description restores both the movie category and non-4K restriction.",
+    "2394": "The accepted labels express automatic approval of music rather than already-approved music, application, or certification.",
+    "2395": "The Korean description grants permission for automatic approval of music requests.",
+    "2396": "The accepted Hindi/Indonesian/Vietnamese labels express automatic approval for series.",
+    "2397": "The Vietnamese description restores the series category and non-4K restriction.",
+    "2398": "The accepted/revised labels identify automatic approval of sports requests in the permission context.",
+    "2399": "The accepted targets grant automatic approval for sports league requests, with the sport-league category intact."
+  }
+}

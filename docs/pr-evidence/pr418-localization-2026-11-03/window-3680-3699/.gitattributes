@@ -1,0 +1,6 @@
+cross-audit/build-cross-audit.py whitespace=-blank-at-eof
+cross-audit/capture_live_attestation.py whitespace=-blank-at-eof
+cross-audit/independent-review/README.md whitespace=-blank-at-eof
+cross-audit/independent-review/build-blind.py whitespace=-blank-at-eof
+cross-audit/independent-review/verify-blind.py whitespace=-blank-at-eof
+cross-audit/verify-cross-audit.py whitespace=-blank-at-eof

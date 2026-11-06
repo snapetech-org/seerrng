@@ -1,0 +1,46 @@
+{
+  "baseHead": "049b23526911e6cf6b1a0b2c397d155eb51d5ddf",
+  "baseTree": "0a83d4f6bcea1367f218efb3898b15d2b0f4f140",
+  "changedCatalogFiles": [
+    "src/i18n/locale/ar.json",
+    "src/i18n/locale/de.json",
+    "src/i18n/locale/es.json",
+    "src/i18n/locale/hi.json",
+    "src/i18n/locale/ja.json",
+    "src/i18n/locale/ko.json",
+    "src/i18n/locale/pt_BR.json",
+    "src/i18n/locale/vi.json",
+    "src/i18n/locale/zh_Hans.json",
+    "src/i18n/locale/zh_Hant.json"
+  ],
+  "changedSourceIds": [
+    "components.Requests.sortTitle",
+    "components.Requests.sports",
+    "components.Requests.sportsLeagues",
+    "components.Requests.taskFilters",
+    "components.Requests.timeFrame",
+    "components.Requests.title",
+    "components.Requests.trackCount",
+    "components.Requests.unavailable",
+    "components.Requests.userFilter",
+    "components.Requests.viewAllHistory",
+    "components.Requests.viewAllHistoryTooltip",
+    "components.Requests.watchAheadAssigned",
+    "components.Requests.watchAheadEpisodeBadge",
+    "components.Requests.writer"
+  ],
+  "dispositions": {
+    "accept-current": 210,
+    "correction": 5,
+    "hold": 12,
+    "refinement": 13
+  },
+  "nonTargetCatalogChanges": 0,
+  "pullRequest": 418,
+  "readbackMismatches": 0,
+  "readbackRows": 240,
+  "repository": "snapetech-org/seerrng",
+  "reviewedCells": 240,
+  "selectedChangedTargets": 18,
+  "worktree": "/mnt/disks/scratch/task-worktrees/localization-20261103/seerrng-pr418-w3440-apply-20261103"
+}

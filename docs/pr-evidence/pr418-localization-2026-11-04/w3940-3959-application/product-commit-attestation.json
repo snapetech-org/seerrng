@@ -1,0 +1,26 @@
+{
+  "artifact": "SeerrNG PR #418 W3940-W3959 product commit attestation",
+  "repository": "snapetech-org/seerrng",
+  "baseHead": "a0104b4c84a9c4561020ca72062171b22ffc49f2",
+  "baseTree": "aaa44c8019c58fde7ae796065e8aae7ac11d7a80",
+  "productCommit": "f1252f3058c3ce558fd99eb23dc0faa842826e58",
+  "productTree": "a06d8960e5b2d3600feceedbf88f1c9e1c0d22f8",
+  "productParent": "a0104b4c84a9c4561020ca72062171b22ffc49f2",
+  "changedPaths": [
+    "src/i18n/locale/ar.json",
+    "src/i18n/locale/de.json",
+    "src/i18n/locale/es.json",
+    "src/i18n/locale/fr.json",
+    "src/i18n/locale/hi.json",
+    "src/i18n/locale/id.json",
+    "src/i18n/locale/ko.json",
+    "src/i18n/locale/pt_BR.json",
+    "src/i18n/locale/vi.json",
+    "src/i18n/locale/zh_Hans.json",
+    "src/i18n/locale/zh_Hant.json"
+  ],
+  "changedPathCount": 11,
+  "changedValueCount": 48,
+  "commitMessage": "fix(i18n): apply reviewed translations W3940-W3959",
+  "worktreeStatusAfterProductCommitBeforeEvidence": "CLEAN"
+}

@@ -1,0 +1,359 @@
+{
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "head": "7329f0ffb34d46042dbf1b165046e21c4f4d45e3",
+  "tree": "531e045f511ee9c46f4c7ed80d50f529c9c12000",
+  "initialExtractorGapCount": 11,
+  "trueUnmappedSourceCount": 0,
+  "resolution": "Manual source-group alias added to the exact-head caller extractor. Every initial gap is defined in the direct component and has exact definition/use line references; no runtime call was inferred from the unrelated helper.",
+  "resolvedCallerFile": {
+    "path": "src/components/RequestModal/VideoCollectionRequestFilters.tsx",
+    "blob": "d5c3e4b2e8e04f6175cf92bd53d2395dbc99d3e4",
+    "sha256": "6ebb5029adb343521d7b1d78a7664e7e65254a4fd081edbf192544ee7f60b5b5"
+  },
+  "gaps": [
+    {
+      "sourcePosition": 2870,
+      "sourceId": "components.RequestModal.CollectionFilters.any",
+      "source": "Any",
+      "originalStatus": "caller-use-not-found",
+      "originalCandidatePaths": [
+        "src/utils/musicCollectionFilters.ts"
+      ],
+      "resolution": "extractor alias miss: source group components.RequestModal.CollectionFilters is defined and rendered in VideoCollectionRequestFilters.tsx; not an unmapped source",
+      "resolvedCallerPath": "src/components/RequestModal/VideoCollectionRequestFilters.tsx",
+      "definitionAndUseRefs": [
+        {
+          "file": "src/components/RequestModal/VideoCollectionRequestFilters.tsx",
+          "line": 23,
+          "lineText": "any: 'Any',",
+          "lineSha256": "362a5e4adac3f0fae22ea06698ea5172d6907da16735e489cb3690d0ef8701fb",
+          "previousLine": "language: 'Language',",
+          "nextLine": "returningSeries: 'Returning Series',"
+        },
+        {
+          "file": "src/components/RequestModal/VideoCollectionRequestFilters.tsx",
+          "line": 84,
+          "lineText": "label: intl.formatMessage(messages.any),",
+          "lineSha256": "5c287f97393a2bc00cdb930bc3674d86760a5a972e5352013abeabf0fcd132bb",
+          "previousLine": "const any: CompactSelectOption = {",
+          "nextLine": "value: '',"
+        }
+      ]
+    },
+    {
+      "sourcePosition": 2871,
+      "sourceId": "components.RequestModal.CollectionFilters.canceled",
+      "source": "Canceled",
+      "originalStatus": "caller-use-not-found",
+      "originalCandidatePaths": [
+        "src/utils/musicCollectionFilters.ts"
+      ],
+      "resolution": "extractor alias miss: source group components.RequestModal.CollectionFilters is defined and rendered in VideoCollectionRequestFilters.tsx; not an unmapped source",
+      "resolvedCallerPath": "src/components/RequestModal/VideoCollectionRequestFilters.tsx",
+      "definitionAndUseRefs": [
+        {
+          "file": "src/components/RequestModal/VideoCollectionRequestFilters.tsx",
+          "line": 28,
+          "lineText": "canceled: 'Canceled',",
+          "lineSha256": "47e25876421bfcea62cef68b82b462180158dd69705df9c6635e862b7bd154d0",
+          "previousLine": "ended: 'Ended',",
+          "nextLine": "pilot: 'Pilot',"
+        },
+        {
+          "file": "src/components/RequestModal/VideoCollectionRequestFilters.tsx",
+          "line": 158,
+          "lineText": "label: intl.formatMessage(messages.canceled),",
+          "lineSha256": "d9d6647e02b5e98f2e888a2a8edbfd84f92fa72b645b578db056b3e0330bef8a",
+          "previousLine": "{",
+          "nextLine": "value: 'Canceled',"
+        }
+      ]
+    },
+    {
+      "sourcePosition": 2872,
+      "sourceId": "components.RequestModal.CollectionFilters.clear",
+      "source": "Clear Filters",
+      "originalStatus": "caller-use-not-found",
+      "originalCandidatePaths": [
+        "src/utils/musicCollectionFilters.ts"
+      ],
+      "resolution": "extractor alias miss: source group components.RequestModal.CollectionFilters is defined and rendered in VideoCollectionRequestFilters.tsx; not an unmapped source",
+      "resolvedCallerPath": "src/components/RequestModal/VideoCollectionRequestFilters.tsx",
+      "definitionAndUseRefs": [
+        {
+          "file": "src/components/RequestModal/VideoCollectionRequestFilters.tsx",
+          "line": 17,
+          "lineText": "clear: 'Clear Filters',",
+          "lineSha256": "0f4ffdd02fc4c9c804542daccf7ba162d10740101d7b6045b105b09d2a217f8d",
+          "previousLine": "const messages = defineMessages('components.RequestModal.CollectionFilters', {",
+          "nextLine": "status: 'Status',"
+        },
+        {
+          "file": "src/components/RequestModal/VideoCollectionRequestFilters.tsx",
+          "line": 137,
+          "lineText": "label={intl.formatMessage(messages.clear)}",
+          "lineSha256": "41588008761c6c2dc793c210a0ae0558b36e525bbe85042f7167c5be4c5f0794",
+          "previousLine": "<FilterResetButton",
+          "nextLine": "selected={!Object.values(filters).some(Boolean)}"
+        }
+      ]
+    },
+    {
+      "sourcePosition": 2873,
+      "sourceId": "components.RequestModal.CollectionFilters.ended",
+      "source": "Ended",
+      "originalStatus": "caller-use-not-found",
+      "originalCandidatePaths": [
+        "src/utils/musicCollectionFilters.ts"
+      ],
+      "resolution": "extractor alias miss: source group components.RequestModal.CollectionFilters is defined and rendered in VideoCollectionRequestFilters.tsx; not an unmapped source",
+      "resolvedCallerPath": "src/components/RequestModal/VideoCollectionRequestFilters.tsx",
+      "definitionAndUseRefs": [
+        {
+          "file": "src/components/RequestModal/VideoCollectionRequestFilters.tsx",
+          "line": 27,
+          "lineText": "ended: 'Ended',",
+          "lineSha256": "619d1a0078b239e89d80018dce85fe1767c67ff71ef705154d3357c3ed31b241",
+          "previousLine": "inProduction: 'In Production',",
+          "nextLine": "canceled: 'Canceled',"
+        },
+        {
+          "file": "src/components/RequestModal/VideoCollectionRequestFilters.tsx",
+          "line": 156,
+          "lineText": "{ label: intl.formatMessage(messages.ended), value: 'Ended' },",
+          "lineSha256": "f0e314e5ca1a09b153b14808a74a51336083bc1f995e8715dfd2465de464ac74",
+          "previousLine": "},",
+          "nextLine": "{"
+        }
+      ]
+    },
+    {
+      "sourcePosition": 2875,
+      "sourceId": "components.RequestModal.CollectionFilters.inProduction",
+      "source": "In Production",
+      "originalStatus": "caller-use-not-found",
+      "originalCandidatePaths": [
+        "src/utils/musicCollectionFilters.ts"
+      ],
+      "resolution": "extractor alias miss: source group components.RequestModal.CollectionFilters is defined and rendered in VideoCollectionRequestFilters.tsx; not an unmapped source",
+      "resolvedCallerPath": "src/components/RequestModal/VideoCollectionRequestFilters.tsx",
+      "definitionAndUseRefs": [
+        {
+          "file": "src/components/RequestModal/VideoCollectionRequestFilters.tsx",
+          "line": 26,
+          "lineText": "inProduction: 'In Production',",
+          "lineSha256": "a9c244e2c615a9d962d6232f2d4558df0785f6671b549607266126e5d89175ba",
+          "previousLine": "planned: 'Planned',",
+          "nextLine": "ended: 'Ended',"
+        },
+        {
+          "file": "src/components/RequestModal/VideoCollectionRequestFilters.tsx",
+          "line": 153,
+          "lineText": "label: intl.formatMessage(messages.inProduction),",
+          "lineSha256": "ce52fa5d7c14b13b340c32f698816778eeeaa714f40fe6c0293fb5e5ca996bab",
+          "previousLine": "{",
+          "nextLine": "value: 'In Production',"
+        }
+      ]
+    },
+    {
+      "sourcePosition": 2876,
+      "sourceId": "components.RequestModal.CollectionFilters.language",
+      "source": "Language",
+      "originalStatus": "caller-use-not-found",
+      "originalCandidatePaths": [
+        "src/utils/musicCollectionFilters.ts"
+      ],
+      "resolution": "extractor alias miss: source group components.RequestModal.CollectionFilters is defined and rendered in VideoCollectionRequestFilters.tsx; not an unmapped source",
+      "resolvedCallerPath": "src/components/RequestModal/VideoCollectionRequestFilters.tsx",
+      "definitionAndUseRefs": [
+        {
+          "file": "src/components/RequestModal/VideoCollectionRequestFilters.tsx",
+          "line": 22,
+          "lineText": "language: 'Language',",
+          "lineSha256": "fc737a7e0d5cce9513811ed88d18eec8b24801c8d2b2b4226aa855d89f3f7386",
+          "previousLine": "rating: 'Rating',",
+          "nextLine": "any: 'Any',"
+        },
+        {
+          "file": "src/components/RequestModal/VideoCollectionRequestFilters.tsx",
+          "line": 45,
+          "lineText": "language: '',",
+          "lineSha256": "bdaf2d62824bbd67413990af6d2dafdcd648475c4ec08496ff5dc115a2761e5d",
+          "previousLine": "rating: '',",
+          "nextLine": "};"
+        },
+        {
+          "file": "src/components/RequestModal/VideoCollectionRequestFilters.tsx",
+          "line": 185,
+          "lineText": "label={intl.formatMessage(messages.language)}",
+          "lineSha256": "09b62fcf0efb337b597d63fd1d541fb7f92ffea25211931ff34c28e8478cd6b1",
+          "previousLine": "<CompactSelect",
+          "nextLine": "value={filters.language}"
+        }
+      ]
+    },
+    {
+      "sourcePosition": 2877,
+      "sourceId": "components.RequestModal.CollectionFilters.pilot",
+      "source": "Pilot",
+      "originalStatus": "caller-use-not-found",
+      "originalCandidatePaths": [
+        "src/utils/musicCollectionFilters.ts"
+      ],
+      "resolution": "extractor alias miss: source group components.RequestModal.CollectionFilters is defined and rendered in VideoCollectionRequestFilters.tsx; not an unmapped source",
+      "resolvedCallerPath": "src/components/RequestModal/VideoCollectionRequestFilters.tsx",
+      "definitionAndUseRefs": [
+        {
+          "file": "src/components/RequestModal/VideoCollectionRequestFilters.tsx",
+          "line": 29,
+          "lineText": "pilot: 'Pilot',",
+          "lineSha256": "4decb26bdb608cdc0b3f4c597e35879dc6a869e3ff6b7eaaf8f399c0067e25e0",
+          "previousLine": "canceled: 'Canceled',",
+          "nextLine": "});"
+        },
+        {
+          "file": "src/components/RequestModal/VideoCollectionRequestFilters.tsx",
+          "line": 161,
+          "lineText": "{ label: intl.formatMessage(messages.pilot), value: 'Pilot' },",
+          "lineSha256": "7538f0c3e2116dd2b867e228ee0265f18557140df8365ca701a9d91b678b0d03",
+          "previousLine": "},",
+          "nextLine": "]}"
+        }
+      ]
+    },
+    {
+      "sourcePosition": 2878,
+      "sourceId": "components.RequestModal.CollectionFilters.planned",
+      "source": "Planned",
+      "originalStatus": "caller-use-not-found",
+      "originalCandidatePaths": [
+        "src/utils/musicCollectionFilters.ts"
+      ],
+      "resolution": "extractor alias miss: source group components.RequestModal.CollectionFilters is defined and rendered in VideoCollectionRequestFilters.tsx; not an unmapped source",
+      "resolvedCallerPath": "src/components/RequestModal/VideoCollectionRequestFilters.tsx",
+      "definitionAndUseRefs": [
+        {
+          "file": "src/components/RequestModal/VideoCollectionRequestFilters.tsx",
+          "line": 25,
+          "lineText": "planned: 'Planned',",
+          "lineSha256": "239ddf12e3bc748e0935fca35e6527e0ca80fa5cf987351688486ab795e1aaf3",
+          "previousLine": "returningSeries: 'Returning Series',",
+          "nextLine": "inProduction: 'In Production',"
+        },
+        {
+          "file": "src/components/RequestModal/VideoCollectionRequestFilters.tsx",
+          "line": 151,
+          "lineText": "{ label: intl.formatMessage(messages.planned), value: 'Planned' },",
+          "lineSha256": "8fb4b708fc7ad5b0d0d0ce622075ffd85bd463f4ef9999055cf529699b1e1db8",
+          "previousLine": "},",
+          "nextLine": "{"
+        }
+      ]
+    },
+    {
+      "sourcePosition": 2879,
+      "sourceId": "components.RequestModal.CollectionFilters.rating",
+      "source": "Rating",
+      "originalStatus": "caller-use-not-found",
+      "originalCandidatePaths": [
+        "src/utils/musicCollectionFilters.ts"
+      ],
+      "resolution": "extractor alias miss: source group components.RequestModal.CollectionFilters is defined and rendered in VideoCollectionRequestFilters.tsx; not an unmapped source",
+      "resolvedCallerPath": "src/components/RequestModal/VideoCollectionRequestFilters.tsx",
+      "definitionAndUseRefs": [
+        {
+          "file": "src/components/RequestModal/VideoCollectionRequestFilters.tsx",
+          "line": 21,
+          "lineText": "rating: 'Rating',",
+          "lineSha256": "c8eef49da4dfebd31a4033870e237cf0829f601ebdb58f9b814cff0961519aba",
+          "previousLine": "genres: 'Genres',",
+          "nextLine": "language: 'Language',"
+        },
+        {
+          "file": "src/components/RequestModal/VideoCollectionRequestFilters.tsx",
+          "line": 44,
+          "lineText": "rating: '',",
+          "lineSha256": "d787ab552efc068d0bb36c123d066e8e20e9baf119d744bae14665ea2b6dc4ff",
+          "previousLine": "genre: '',",
+          "nextLine": "language: '',"
+        },
+        {
+          "file": "src/components/RequestModal/VideoCollectionRequestFilters.tsx",
+          "line": 179,
+          "lineText": "label={intl.formatMessage(messages.rating)}",
+          "lineSha256": "7b646aee9700af4420db2204efd3dff4d59cf4ab696e1ae5d6a47e7cc232d0a8",
+          "previousLine": "<CompactRatingSelect",
+          "nextLine": "value={filters.rating}"
+        }
+      ]
+    },
+    {
+      "sourcePosition": 2881,
+      "sourceId": "components.RequestModal.CollectionFilters.returningSeries",
+      "source": "Returning Series",
+      "originalStatus": "caller-use-not-found",
+      "originalCandidatePaths": [
+        "src/utils/musicCollectionFilters.ts"
+      ],
+      "resolution": "extractor alias miss: source group components.RequestModal.CollectionFilters is defined and rendered in VideoCollectionRequestFilters.tsx; not an unmapped source",
+      "resolvedCallerPath": "src/components/RequestModal/VideoCollectionRequestFilters.tsx",
+      "definitionAndUseRefs": [
+        {
+          "file": "src/components/RequestModal/VideoCollectionRequestFilters.tsx",
+          "line": 24,
+          "lineText": "returningSeries: 'Returning Series',",
+          "lineSha256": "38d38207aa4b2644f3a15cab646b2b887a716b01e71fa5b4b31ab0e43e7615cb",
+          "previousLine": "any: 'Any',",
+          "nextLine": "planned: 'Planned',"
+        },
+        {
+          "file": "src/components/RequestModal/VideoCollectionRequestFilters.tsx",
+          "line": 148,
+          "lineText": "label: intl.formatMessage(messages.returningSeries),",
+          "lineSha256": "2a77ffbdb6c7d7c9ff44f3bf60a8d14d6d16d35e32b847130b3a115d16b74036",
+          "previousLine": "{",
+          "nextLine": "value: 'Returning Series',"
+        }
+      ]
+    },
+    {
+      "sourcePosition": 2882,
+      "sourceId": "components.RequestModal.CollectionFilters.status",
+      "source": "Status",
+      "originalStatus": "caller-use-not-found",
+      "originalCandidatePaths": [
+        "src/utils/musicCollectionFilters.ts"
+      ],
+      "resolution": "extractor alias miss: source group components.RequestModal.CollectionFilters is defined and rendered in VideoCollectionRequestFilters.tsx; not an unmapped source",
+      "resolvedCallerPath": "src/components/RequestModal/VideoCollectionRequestFilters.tsx",
+      "definitionAndUseRefs": [
+        {
+          "file": "src/components/RequestModal/VideoCollectionRequestFilters.tsx",
+          "line": 18,
+          "lineText": "status: 'Status',",
+          "lineSha256": "4860d1d7ab7b6630118801fd654a508404433dfb6bf6810e962e792d09b75703",
+          "previousLine": "clear: 'Clear Filters',",
+          "nextLine": "releaseDate: 'Release Date',"
+        },
+        {
+          "file": "src/components/RequestModal/VideoCollectionRequestFilters.tsx",
+          "line": 41,
+          "lineText": "status: '',",
+          "lineSha256": "70b70ddf667cbe890a4f1485f687b1519e77680e1b38930606c4c41addf66557",
+          "previousLine": "export const EMPTY_VIDEO_COLLECTION_FILTERS: VideoCollectionFilters = {",
+          "nextLine": "year: '',"
+        },
+        {
+          "file": "src/components/RequestModal/VideoCollectionRequestFilters.tsx",
+          "line": 143,
+          "lineText": "label={intl.formatMessage(messages.status)}",
+          "lineSha256": "d1cf1555becd97e5aba790031cfd92de2bd9892b0221381dd98cc366e920d0da",
+          "previousLine": "<CompactSelect",
+          "nextLine": "value={filters.status}"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "repository": "snapetech-org/SeerrNG",
+  "pull_request": 418,
+  "input_head": "404648643578992e8e12ce9dff47dd92d5ee7c1c",
+  "input_tree": "a17442223e33372e0cc16c3b8091e2515d5e39f3",
+  "source_positions": [
+    2100,
+    2199
+  ],
+  "cells_reviewed": 1200,
+  "source_ids": 100,
+  "locales": 12,
+  "accept_current": 1014,
+  "accepted_primary_candidates": 177,
+  "revised_primary_candidates": 1,
+  "additional_corrections": 8,
+  "applied_changes": 186,
+  "exact_readbacks": 186,
+  "catalog_keys_per_locale": {
+    "ar": 9494,
+    "de": 9494,
+    "es": 9494,
+    "fr": 9494,
+    "hi": 9494,
+    "id": 9494,
+    "ja": 9494,
+    "ko": 9494,
+    "pt_BR": 9494,
+    "vi": 9494,
+    "zh_Hans": 9494,
+    "zh_Hant": 9494
+  },
+  "catalog_key_sets_identical": true,
+  "per_locale_key_order_preserved": true,
+  "placeholder_markup_final_mismatches": 0,
+  "queued_out_of_window_followup": "Arabic components.MediaDetails.SeasonEpisodeTree.available at source position 2083; no change included in this window.",
+  "native_speaker_approval": false,
+  "tests_builds_scans_ci_workflows_releases_tags_merges": "none performed or changed"
+}

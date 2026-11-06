@@ -1,0 +1,11 @@
+{
+  "callerFilesAndLinePinsVerified": true,
+  "current1200CellValuesAndHashesVerified": true,
+  "currentSourceCatalogAndAll12LocaleCatalogBytesVerifiedAgainstExactHead": true,
+  "primaryFileChecksumsVerified": true,
+  "primaryInputChecksumsVerified": true,
+  "primaryInputSha256SumsFileSha256": "dc945e616b6b6013cc40104be97cc795985672d9951a8fd9b746edf085fa10b0",
+  "primaryPacket": "/mnt/disks/scratch/task-scratch/seerrng-pr418-window-2100-2199-primary-20261102",
+  "primarySha256SumsFileSha256": "6e554c3dd517356ad15e8a8dcafdbe16c68343d435363fbcefe7faaf5564e049",
+  "sourceIdsAndOrderVerified": true
+}

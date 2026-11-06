@@ -1,0 +1,75 @@
+{
+  "afterLiveAttestationPresent": true,
+  "blindDecisionCounts": {
+    "accept-current": 218,
+    "correction": 10,
+    "refinement": 12
+  },
+  "browserReview": "not performed",
+  "carriedPriorHoldCount": 12,
+  "carriedPriorHoldHashesUnchanged": true,
+  "carriedPriorHoldPosition": 3632,
+  "cellCount": 240,
+  "crossDecisionCounts": {
+    "accept-current": 203,
+    "correction": 27,
+    "refinement": 10
+  },
+  "evidenceNotes": [
+    "The nested primary-review/verify_primary.py copy assumes the task-root layout and fails when invoked from its nested location; the task-root verify_primary.py passed, and this cross-audit verifier independently validates the copied rows and pins."
+  ],
+  "finalNoOpCount": 203,
+  "finalUpdateCount": 37,
+  "head": "a2f015c040f933eff38e6ef3d9b1ac6050c4957d",
+  "inputCounts": {
+    "callerContexts": 20,
+    "catalogCells": 240,
+    "directCallerlessPositions": 0,
+    "locales": 12,
+    "priorSelectedSourceIdExclusions": 3680,
+    "sourceIds": 20
+  },
+  "nativeSpeakerReview": "not performed",
+  "newHoldCount": 0,
+  "primaryDecisionCounts": {
+    "accept-current": 202,
+    "correction": 27,
+    "refinement": 11
+  },
+  "pullRequest": 418,
+  "range": [
+    3680,
+    3699
+  ],
+  "repository": "snapetech-org/seerrng",
+  "repositoryOrPRFilesEdited": false,
+  "reviewerDisagreementCounts": {
+    "agreementCurrent": 199,
+    "agreementNonCurrentProposal": 3,
+    "anyDispositionOrTarget": 38,
+    "bothDispositionAndTarget": 26,
+    "disposition": 30,
+    "targetText": 34
+  },
+  "schemaVersion": 1,
+  "selectedSourceCounts": {
+    "blind": 7,
+    "both": 3,
+    "both-accept-current": 199,
+    "cross-audit-current": 4,
+    "primary": 27
+  },
+  "tokenChecks": {
+    "baselineProtectedLiteralMissCells": 2,
+    "currentNumericSurfaceDifferences": 12,
+    "finalProtectedLiteralMissCells": 0,
+    "icuPluralMismatchCells": 0,
+    "markupMismatchCells": 0,
+    "normalizedNumericCells": 24,
+    "numericValueMismatchCells": 0,
+    "placeholderMismatchCells": 0,
+    "ptBR10MilNormalizedValue": 10000
+  },
+  "tree": "9cea70e57de0d65e78dd0cc6fab8f54dbb4e5cfe",
+  "window": "W3680-W3699"
+}

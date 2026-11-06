@@ -1,0 +1,1733 @@
+{
+  "schemaVersion": 1,
+  "scope": "Entries inventory rendered JSX message/error/status fields. Companion checks also reject static accessibility text attributes and fixed copy in app-authored email subject templates. The guard complements the authored-server-source and direct-response caller inventories; it does not certify arbitrary provider/user/log text as translated.",
+  "entries": [
+    {
+      "file": "src/components/Blocklist/index.tsx",
+      "line": 827,
+      "expression": "message",
+      "context": [
+        "strong",
+        "span"
+      ],
+      "classification": "localized-rich-text",
+      "reason": "This is the rich-text callback argument supplied by an enclosing intl.formatMessage call."
+    },
+    {
+      "file": "src/components/BlocklistedTagsSelector/index.tsx",
+      "line": 339,
+      "expression": "error",
+      "context": [
+        "div",
+        "div",
+        "div",
+        "form"
+      ],
+      "classification": "localized-state",
+      "reason": "The producing state/validation path uses intl.formatMessage before rendering."
+    },
+    {
+      "file": "src/components/BookRecommendations/index.tsx",
+      "line": 239,
+      "expression": "intl.formatMessage(notice)",
+      "context": [
+        "p",
+        "section",
+        "div"
+      ],
+      "classification": "already-localized"
+    },
+    {
+      "file": "src/components/CollectionDetails/CollectionNavigation.tsx",
+      "line": 77,
+      "expression": "intl.formatMessage(error ? messages.failed : messages.loading)",
+      "context": [
+        "p",
+        "section"
+      ],
+      "classification": "already-localized"
+    },
+    {
+      "file": "src/components/CollectionDetails/CollectionQueueModal.tsx",
+      "line": 171,
+      "expression": "failed ?? intl.formatMessage(messages.error)",
+      "context": [
+        "p",
+        "Modal"
+      ],
+      "classification": "already-localized"
+    },
+    {
+      "file": "src/components/CollectionDetails/CollectionQueueModal.tsx",
+      "line": 183,
+      "expression": "intl.formatMessage(messages[queue.reason])",
+      "context": [
+        "p",
+        "div",
+        "Modal"
+      ],
+      "classification": "already-localized"
+    },
+    {
+      "file": "src/components/CollectionDetails/CollectionSummaryCard.tsx",
+      "line": 166,
+      "expression": "intl.formatMessage(\n              error\n                ? messages.failed\n                : genresError\n                  ? messages.genresFailed\n                  : messages.loading\n            )",
+      "context": [
+        "span",
+        "div",
+        "section"
+      ],
+      "classification": "already-localized"
+    },
+    {
+      "file": "src/components/CollectionDetails/CuratedCollectionDetails.tsx",
+      "line": 753,
+      "expression": "availability.error",
+      "context": [
+        "CollectionServerActions",
+        "div",
+        "div",
+        "article"
+      ],
+      "attribute": "error",
+      "classification": "localized-child-boundary",
+      "reason": "ReaderGroupingAction owns this error prop and renders it through ApiMessageText."
+    },
+    {
+      "file": "src/components/CollectionDetails/DiscographyRequestActions.tsx",
+      "line": 170,
+      "expression": "item.reason",
+      "context": [
+        "ApiMessageText",
+        "div",
+        "div",
+        "div"
+      ],
+      "classification": "api-localized"
+    },
+    {
+      "file": "src/components/CollectionDetails/index.tsx",
+      "line": 568,
+      "expression": "availability.error",
+      "context": [
+        "CollectionServerActions",
+        "div",
+        "div",
+        "article"
+      ],
+      "attribute": "error",
+      "classification": "localized-child-boundary",
+      "reason": "ReaderGroupingAction owns this error prop and renders it through ApiMessageText."
+    },
+    {
+      "file": "src/components/Collectors/index.tsx",
+      "line": 125,
+      "expression": "reason",
+      "context": [
+        "p",
+        "div",
+        "article",
+        "li",
+        "ul",
+        "div"
+      ],
+      "classification": "provider-data",
+      "reason": "Collector recommendations contain dynamic reasons returned by the configured slskdN service; no Seerr-authored fixed copy is constructed here."
+    },
+    {
+      "file": "src/components/ComicDetails/index.tsx",
+      "line": 293,
+      "expression": "message",
+      "context": [
+        "strong",
+        "span"
+      ],
+      "classification": "localized-rich-text",
+      "reason": "This is the rich-text callback argument supplied by an enclosing intl.formatMessage call."
+    },
+    {
+      "file": "src/components/Common/ApiErrorToastText.tsx",
+      "line": 24,
+      "expression": "message",
+      "context": [
+        "OpaqueApiMessageText"
+      ],
+      "classification": "provider-data"
+    },
+    {
+      "file": "src/components/Common/ApiErrorToastText.tsx",
+      "line": 31,
+      "expression": "message",
+      "context": [
+        "ApiMessageText"
+      ],
+      "classification": "api-localized"
+    },
+    {
+      "file": "src/components/Common/ApiErrorToastText.tsx",
+      "line": 35,
+      "expression": "message",
+      "context": [
+        "ApiMessageText"
+      ],
+      "classification": "api-localized"
+    },
+    {
+      "file": "src/components/Common/QuickConnectModal/index.tsx",
+      "line": 85,
+      "expression": "errorMessage",
+      "context": [
+        "ApiMessageText",
+        "Alert",
+        "div",
+        "Modal",
+        "Transition"
+      ],
+      "classification": "api-localized"
+    },
+    {
+      "file": "src/components/Common/QuickConnectModal/index.tsx",
+      "line": 121,
+      "expression": "intl.formatMessage(messages.error)",
+      "context": [
+        "h3",
+        "div",
+        "div",
+        "Modal",
+        "Transition"
+      ],
+      "classification": "already-localized"
+    },
+    {
+      "file": "src/components/Common/QuickConnectModal/index.tsx",
+      "line": 124,
+      "expression": "errorMessage",
+      "context": [
+        "ApiMessageText",
+        "p",
+        "div",
+        "div",
+        "Modal",
+        "Transition"
+      ],
+      "classification": "api-localized"
+    },
+    {
+      "file": "src/components/Common/ReaderGroupingAction.tsx",
+      "line": 284,
+      "expression": "error",
+      "context": [
+        "ApiMessageText",
+        "Alert",
+        "section",
+        "div"
+      ],
+      "attribute": "title",
+      "classification": "api-localized"
+    },
+    {
+      "file": "src/components/Common/ReaderGroupingAction.tsx",
+      "line": 291,
+      "expression": "result.ruleSummary",
+      "context": [
+        "ApiMessageText",
+        "p",
+        "Alert",
+        "section",
+        "div"
+      ],
+      "classification": "api-localized"
+    },
+    {
+      "file": "src/components/Common/ReaderGroupingAction.tsx",
+      "line": 312,
+      "expression": "result.grouping.koboSyncError",
+      "context": [
+        "ApiMessageText",
+        "p",
+        "Alert",
+        "section",
+        "div"
+      ],
+      "classification": "api-localized"
+    },
+    {
+      "file": "src/components/Common/ReaderGroupingAction.tsx",
+      "line": 319,
+      "expression": "intl.formatMessage(messages.warning)",
+      "context": [
+        "p",
+        "Alert",
+        "section",
+        "div"
+      ],
+      "classification": "already-localized"
+    },
+    {
+      "file": "src/components/Common/ReaderGroupingAction.tsx",
+      "line": 431,
+      "expression": "preview.ruleSummary",
+      "context": [
+        "ApiMessageText",
+        "p",
+        "Alert",
+        "section",
+        "div"
+      ],
+      "classification": "api-localized"
+    },
+    {
+      "file": "src/components/Discover/DiscoverBooks/ReadMeABookSearch.tsx",
+      "line": 150,
+      "expression": "notice",
+      "context": [
+        "ApiMessageText",
+        "p",
+        "section"
+      ],
+      "classification": "api-localized"
+    },
+    {
+      "file": "src/components/Discover/DiscoverBooks/ReadMeABookSearch.tsx",
+      "line": 198,
+      "expression": "item.statusMessage",
+      "context": [
+        "OpaqueApiMessageText",
+        "span",
+        "div",
+        "section"
+      ],
+      "classification": "provider-data"
+    },
+    {
+      "file": "src/components/Discover/DiscoverSports/index.tsx",
+      "line": 155,
+      "expression": "errorMessage ?? intl.formatMessage(messages.unavailable)",
+      "context": [
+        "ApiMessageText",
+        "Alert"
+      ],
+      "attribute": "title",
+      "classification": "api-localized"
+    },
+    {
+      "file": "src/components/Discover/ReadMeABookHomeSection.tsx",
+      "line": 90,
+      "expression": "notice",
+      "context": [
+        "ApiMessageText",
+        "p",
+        "section"
+      ],
+      "classification": "api-localized"
+    },
+    {
+      "file": "src/components/DiscoveryIntegrations/CuratedIdentityPackControls.tsx",
+      "line": 386,
+      "expression": "notice",
+      "context": [
+        "ApiMessageText",
+        "p",
+        "section"
+      ],
+      "classification": "api-localized"
+    },
+    {
+      "file": "src/components/DiscoveryIntegrations/IdentityMappingControls.tsx",
+      "line": 212,
+      "expression": "notice",
+      "context": [
+        "p",
+        "div"
+      ],
+      "classification": "localized-state",
+      "reason": "The producing state/validation path uses intl.formatMessage before rendering."
+    },
+    {
+      "file": "src/components/DiscoveryIntegrations/IdentityMappingPackControls.tsx",
+      "line": 209,
+      "expression": "notice",
+      "context": [
+        "ApiMessageText",
+        "p",
+        "section"
+      ],
+      "classification": "api-localized"
+    },
+    {
+      "file": "src/components/DiscoveryIntegrations/TrackingControls.tsx",
+      "line": 590,
+      "expression": "notice",
+      "context": [
+        "p",
+        "div"
+      ],
+      "classification": "localized-state",
+      "reason": "The producing state/validation path uses intl.formatMessage before rendering."
+    },
+    {
+      "file": "src/components/DownloadBlock/index.tsx",
+      "line": 138,
+      "expression": "live.state === 'error'\n                  ? intl.formatMessage(messages.liveError)\n                  : live.state === 'stalled'\n                    ? intl.formatMessage(messages.liveStalled)\n                    : intl.formatMessage(messages.liveRate, {\n                        rate: formatBytes(live.downloadRate, 1, intl.locale),\n                      })",
+      "context": [
+        "Badge",
+        "span",
+        "div",
+        "div"
+      ],
+      "classification": "already-localized"
+    },
+    {
+      "file": "src/components/Following/index.tsx",
+      "line": 309,
+      "expression": "reason\n                          ? intl.formatMessage(reason, event.reasonValues)\n                          : intl.formatMessage(messages.fallbackReason, {\n                              label: event.follow.subjectLabel,\n                            })",
+      "context": [
+        "p",
+        "div",
+        "article",
+        "li",
+        "ul",
+        "div",
+        "div"
+      ],
+      "classification": "already-localized"
+    },
+    {
+      "file": "src/components/GameDiscovery/index.tsx",
+      "line": 410,
+      "expression": "intl.formatMessage(\n                                  reasonMessages[reason.key],\n                                  {\n                                    values: reason.values.join(', '),\n                                  }\n                                )",
+      "context": [
+        "Badge",
+        "div",
+        "div",
+        "article",
+        "li",
+        "ul",
+        "div"
+      ],
+      "classification": "already-localized"
+    },
+    {
+      "file": "src/components/GameLibrary/index.tsx",
+      "line": 1054,
+      "expression": "errorMessage",
+      "context": [
+        "ApiMessageText",
+        "p",
+        "div",
+        "main"
+      ],
+      "classification": "api-localized"
+    },
+    {
+      "file": "src/components/GameLibrary/index.tsx",
+      "line": 1381,
+      "expression": "errorMessage",
+      "context": [
+        "ApiMessageText",
+        "p",
+        "div",
+        "Modal"
+      ],
+      "classification": "api-localized"
+    },
+    {
+      "file": "src/components/GameLibrary/index.tsx",
+      "line": 1458,
+      "expression": "errorMessage",
+      "context": [
+        "ApiMessageText",
+        "p",
+        "div",
+        "Modal"
+      ],
+      "classification": "api-localized"
+    },
+    {
+      "file": "src/components/IndexerSearch/index.tsx",
+      "line": 442,
+      "expression": "errorMessage",
+      "context": [
+        "Alert",
+        "div",
+        "main"
+      ],
+      "classification": "localized-state",
+      "reason": "The producing state/validation path uses intl.formatMessage before rendering."
+    },
+    {
+      "file": "src/components/IssueDetails/IssueComment/index.tsx",
+      "line": 215,
+      "expression": "comment.message",
+      "context": [
+        "ReactMarkdown",
+        "div",
+        "div",
+        "div"
+      ],
+      "classification": "user-data",
+      "reason": "Issue comments and the original issue description are user-authored Markdown; preserve their text."
+    },
+    {
+      "file": "src/components/IssueDetails/IssueDiscussion.tsx",
+      "line": 110,
+      "expression": "description?.message ?? ''",
+      "context": [
+        "ReactMarkdown",
+        "div",
+        "section",
+        "div"
+      ],
+      "classification": "user-data",
+      "reason": "Issue comments and the original issue description are user-authored Markdown; preserve their text."
+    },
+    {
+      "file": "src/components/IssueDetails/IssueDiscussion.tsx",
+      "line": 169,
+      "expression": "errors.message",
+      "context": [
+        "p",
+        "Form",
+        "Formik",
+        "div"
+      ],
+      "classification": "localized-state",
+      "reason": "The producing state/validation path uses intl.formatMessage before rendering."
+    },
+    {
+      "file": "src/components/IssueModal/CreateIssueModal/index.tsx",
+      "line": 445,
+      "expression": "errors.message",
+      "context": [
+        "div",
+        "div",
+        "div",
+        "Modal",
+        "Formik"
+      ],
+      "classification": "localized-state",
+      "reason": "The producing state/validation path uses intl.formatMessage before rendering."
+    },
+    {
+      "file": "src/components/LiveTv/RecordingList.tsx",
+      "line": 124,
+      "expression": "responseData.message",
+      "context": [
+        "ApiErrorToastText"
+      ],
+      "attribute": "message",
+      "classification": "localized-child-boundary"
+    },
+    {
+      "file": "src/components/LiveTv/RecordingList.tsx",
+      "line": 159,
+      "expression": "intl.formatMessage(messages[statusMessage[recording.status]])",
+      "context": [
+        "Badge",
+        "div",
+        "article",
+        "li"
+      ],
+      "classification": "already-localized"
+    },
+    {
+      "file": "src/components/LiveTv/RecordingList.tsx",
+      "line": 201,
+      "expression": "recording.lastError",
+      "context": [
+        "ApiMessageText",
+        "p",
+        "article",
+        "li"
+      ],
+      "classification": "api-localized"
+    },
+    {
+      "file": "src/components/Login/index.tsx",
+      "line": 364,
+      "expression": "error",
+      "context": [
+        "ApiMessageText",
+        "h3",
+        "div",
+        "div",
+        "div",
+        "Transition",
+        "div",
+        "div",
+        "div"
+      ],
+      "classification": "api-localized"
+    },
+    {
+      "file": "src/components/MagazineDetails/index.tsx",
+      "line": 182,
+      "expression": "message",
+      "context": [
+        "strong",
+        "span"
+      ],
+      "classification": "localized-rich-text",
+      "reason": "This is the rich-text callback argument supplied by an enclosing intl.formatMessage call."
+    },
+    {
+      "file": "src/components/MagazineDetails/index.tsx",
+      "line": 213,
+      "expression": "message",
+      "context": [
+        "strong",
+        "span"
+      ],
+      "classification": "localized-rich-text",
+      "reason": "This is the rich-text callback argument supplied by an enclosing intl.formatMessage call."
+    },
+    {
+      "file": "src/components/MagazineDetails/index.tsx",
+      "line": 240,
+      "expression": "message",
+      "context": [
+        "strong",
+        "span"
+      ],
+      "classification": "localized-rich-text",
+      "reason": "This is the rich-text callback argument supplied by an enclosing intl.formatMessage call."
+    },
+    {
+      "file": "src/components/MediaDetails/MediaServerCollectionButton.tsx",
+      "line": 287,
+      "expression": "intl.formatMessage(messages.error)",
+      "context": [
+        "PageErrorMessage"
+      ],
+      "attribute": "description",
+      "classification": "already-localized"
+    },
+    {
+      "file": "src/components/NotificationTypeSelector/index.tsx",
+      "line": 463,
+      "expression": "error",
+      "context": [
+        "div",
+        "div",
+        "div",
+        "div"
+      ],
+      "classification": "localized-state",
+      "reason": "The producing state/validation path uses intl.formatMessage before rendering."
+    },
+    {
+      "file": "src/components/RequestModal/BulkRequestItemCard.tsx",
+      "line": 218,
+      "expression": "reason || intl.formatMessage(messages.notRequested)",
+      "context": [
+        "Badge",
+        "dd",
+        "dl",
+        "div",
+        "div",
+        "div",
+        "article"
+      ],
+      "classification": "already-localized"
+    },
+    {
+      "file": "src/components/RequestModal/BulkRequestModal.tsx",
+      "line": 1001,
+      "expression": "failure.reason",
+      "context": [
+        "ApiMessageText",
+        "div",
+        "div",
+        "div"
+      ],
+      "classification": "api-localized"
+    },
+    {
+      "file": "src/components/RequestModal/CollectionRequestModal.tsx",
+      "line": 430,
+      "expression": "intl.formatMessage(globalMessages.error)",
+      "context": [
+        "p",
+        "RequestMediaCard",
+        "Modal"
+      ],
+      "classification": "already-localized"
+    },
+    {
+      "file": "src/components/RequestModal/MusicCollectionRequestModal.tsx",
+      "line": 317,
+      "expression": "intl.formatMessage(globalMessages.error)",
+      "context": [
+        "p",
+        "RequestMediaCard",
+        "Modal",
+        "Transition"
+      ],
+      "classification": "already-localized"
+    },
+    {
+      "file": "src/components/RequestModal/PlaylistImportModal.tsx",
+      "line": 123,
+      "expression": "error",
+      "context": [
+        "ApiMessageText",
+        "Alert",
+        "div",
+        "Modal",
+        "Transition"
+      ],
+      "attribute": "title",
+      "classification": "api-localized"
+    },
+    {
+      "file": "src/components/RequestModal/TvCollectionRequestModal.tsx",
+      "line": 412,
+      "expression": "message",
+      "context": [
+        "strong",
+        "span"
+      ],
+      "classification": "localized-rich-text",
+      "reason": "This is the rich-text callback argument supplied by an enclosing intl.formatMessage call."
+    },
+    {
+      "file": "src/components/RequestModal/TvCollectionRequestModal.tsx",
+      "line": 514,
+      "expression": "intl.formatMessage(globalMessages.error)",
+      "context": [
+        "p",
+        "RequestMediaCard",
+        "Modal",
+        "Transition"
+      ],
+      "classification": "already-localized"
+    },
+    {
+      "file": "src/components/RequestStatus/SoftwareRequests.tsx",
+      "line": 659,
+      "expression": "message",
+      "context": [
+        "ApiMessageText",
+        "p",
+        "div",
+        "div",
+        "div",
+        "div",
+        "article",
+        "div",
+        "section"
+      ],
+      "classification": "api-localized"
+    },
+    {
+      "file": "src/components/RequestStatus/SoftwareRequests.tsx",
+      "line": 917,
+      "expression": "event.message",
+      "context": [
+        "ApiMessageText",
+        "p",
+        "li",
+        "ol",
+        "div",
+        "div",
+        "div",
+        "article",
+        "div",
+        "section"
+      ],
+      "classification": "api-localized"
+    },
+    {
+      "file": "src/components/RequestStatus/messages.tsx",
+      "line": 132,
+      "expression": "message ?? ''",
+      "context": [
+        "OpaqueApiMessageText"
+      ],
+      "classification": "provider-data"
+    },
+    {
+      "file": "src/components/Requests/index.tsx",
+      "line": 2055,
+      "expression": "current.message",
+      "context": [
+        "RequestStatusMessageText",
+        "Tooltip",
+        "div",
+        "article"
+      ],
+      "attribute": "content",
+      "classification": "localized-child-boundary"
+    },
+    {
+      "file": "src/components/Requests/index.tsx",
+      "line": 2062,
+      "expression": "`${getStageLabel(intl, currentStage)}: ${currentMessage}`",
+      "context": [
+        "span",
+        "Tooltip",
+        "div",
+        "article"
+      ],
+      "attribute": "aria-label",
+      "classification": "localized-state",
+      "reason": "Both parts are generated by getStageLabel/formatRequestStatusMessage from the active Intl context; unknown provider text remains verbatim in the accessible name, while visible text uses the explicit RequestStatusMessageText owner."
+    },
+    {
+      "file": "src/components/Requests/index.tsx",
+      "line": 2133,
+      "expression": "event.message",
+      "context": [
+        "RequestStatusMessageText",
+        "span",
+        "li",
+        "ol",
+        "section",
+        "article"
+      ],
+      "attribute": "message",
+      "classification": "localized-child-boundary"
+    },
+    {
+      "file": "src/components/Search/index.tsx",
+      "line": 719,
+      "expression": "providerErrorMessage ??\n                intl.formatMessage(messages.searchUnavailable)",
+      "context": [
+        "ApiMessageText",
+        "p",
+        "div",
+        "div"
+      ],
+      "classification": "api-localized"
+    },
+    {
+      "file": "src/components/Search/index.tsx",
+      "line": 794,
+      "expression": "intl.formatMessage(searchCategory.message)",
+      "context": [
+        "MediaFilterOption",
+        "div",
+        "PinnedFilterSection"
+      ],
+      "attribute": "label",
+      "classification": "already-localized"
+    },
+    {
+      "file": "src/components/Search/index.tsx",
+      "line": 818,
+      "expression": "intl.formatMessage(searchCategory.message)",
+      "context": [
+        "button",
+        "MediaFilterOption",
+        "div",
+        "PinnedFilterSection"
+      ],
+      "classification": "already-localized"
+    },
+    {
+      "file": "src/components/Search/index.tsx",
+      "line": 882,
+      "expression": "`${intl.formatMessage(\n                      sortOption.message\n                    )}: ${directionLabel}`",
+      "context": [
+        "button",
+        "Tooltip",
+        "div",
+        "PinnedFilterSection"
+      ],
+      "attribute": "aria-label",
+      "classification": "already-localized"
+    },
+    {
+      "file": "src/components/Search/index.tsx",
+      "line": 906,
+      "expression": "intl.formatMessage(sortOption.message)",
+      "context": [
+        "button",
+        "Tooltip",
+        "div",
+        "PinnedFilterSection"
+      ],
+      "classification": "already-localized"
+    },
+    {
+      "file": "src/components/Search/index.tsx",
+      "line": 924,
+      "expression": "error && searchError",
+      "context": [],
+      "classification": "localized-child-boundary",
+      "reason": "This expression renders an already-built React error block whose fixed copy uses Intl and explicit API text boundaries."
+    },
+    {
+      "file": "src/components/Settings/BookshelfPathMigration.tsx",
+      "line": 739,
+      "expression": "warning",
+      "context": [
+        "OpaqueApiMessageText",
+        "li",
+        "ul",
+        "div",
+        "section",
+        "div",
+        "div"
+      ],
+      "classification": "provider-data"
+    },
+    {
+      "file": "src/components/Settings/BookshelfPathMigration.tsx",
+      "line": 807,
+      "expression": "notice",
+      "context": [
+        "ApiMessageText",
+        "p",
+        "div",
+        "div"
+      ],
+      "classification": "api-localized"
+    },
+    {
+      "file": "src/components/Settings/BookshelfPathMigration.tsx",
+      "line": 827,
+      "expression": "errorMessage",
+      "context": [
+        "ApiMessageText",
+        "p",
+        "div",
+        "div"
+      ],
+      "classification": "api-localized"
+    },
+    {
+      "file": "src/components/Settings/ReadarrModal/index.tsx",
+      "line": 574,
+      "expression": "diagnosticResponse.message",
+      "context": [
+        "ApiMessageText",
+        "p",
+        "div",
+        "div",
+        "div",
+        "Modal",
+        "Formik",
+        "Transition"
+      ],
+      "classification": "api-localized"
+    },
+    {
+      "file": "src/components/Settings/ReadarrModal/index.tsx",
+      "line": 578,
+      "expression": "diagnosticResponse.message",
+      "context": [
+        "OpaqueApiMessageText",
+        "p",
+        "div",
+        "div",
+        "div",
+        "Modal",
+        "Formik",
+        "Transition"
+      ],
+      "classification": "provider-data"
+    },
+    {
+      "file": "src/components/Settings/ReadarrModal/index.tsx",
+      "line": 639,
+      "expression": "diagnosticResponse.providerNotice ??\n                              diagnosticResponse.legacyWarning",
+      "context": [
+        "ApiMessageText",
+        "p",
+        "div",
+        "div",
+        "div",
+        "Modal",
+        "Formik",
+        "Transition"
+      ],
+      "classification": "api-localized"
+    },
+    {
+      "file": "src/components/Settings/ReaderDeliverySettings.tsx",
+      "line": 508,
+      "expression": "connectionStatus.error ??\n                    intl.formatMessage(messages.connectionError)",
+      "context": [
+        "Alert",
+        "div",
+        "div",
+        "li"
+      ],
+      "attribute": "title",
+      "classification": "already-localized"
+    },
+    {
+      "file": "src/components/Settings/ReaderDeliverySettings.tsx",
+      "line": 798,
+      "expression": "intl.formatMessage(statusMessage)",
+      "context": [
+        "p",
+        "div",
+        "div",
+        "li",
+        "ul",
+        "section",
+        "div",
+        "section"
+      ],
+      "classification": "already-localized"
+    },
+    {
+      "file": "src/components/Settings/ReaderDeliverySettings.tsx",
+      "line": 815,
+      "expression": "grouping.lastError",
+      "context": [
+        "ApiMessageText",
+        "p",
+        "div",
+        "div",
+        "li",
+        "ul",
+        "section",
+        "div",
+        "section"
+      ],
+      "classification": "api-localized"
+    },
+    {
+      "file": "src/components/Settings/ReaderDeliverySettings.tsx",
+      "line": 823,
+      "expression": "intl.formatMessage(\n                                grouping.koboSyncStatus === 'ready'\n                                  ? messages.groupingKoboSyncReady\n                                  : grouping.koboSyncStatus === 'pending'\n                                    ? messages.groupingKoboSyncPending\n                                    : grouping.koboSyncStatus === 'error'\n                                      ? messages.groupingKoboSyncError\n                                      : messages.groupingKoboSyncDisabled\n                              )",
+      "context": [
+        "p",
+        "div",
+        "div",
+        "li",
+        "ul",
+        "section",
+        "div",
+        "section"
+      ],
+      "classification": "already-localized"
+    },
+    {
+      "file": "src/components/Settings/ReaderDeliverySettings.tsx",
+      "line": 856,
+      "expression": "grouping.koboSyncError",
+      "context": [
+        "ApiMessageText",
+        "p",
+        "div",
+        "div",
+        "li",
+        "ul",
+        "section",
+        "div",
+        "section"
+      ],
+      "classification": "api-localized"
+    },
+    {
+      "file": "src/components/Settings/ServarrDownloadQueueSizeField.tsx",
+      "line": 71,
+      "expression": "meta.error",
+      "context": [
+        "div",
+        "div",
+        "div"
+      ],
+      "classification": "localized-state",
+      "reason": "Every consumer uses createServarrDownloadQueueSizeSchema(intl), whose type/integer/min/max/required failures are authored Intl messages."
+    },
+    {
+      "file": "src/components/Settings/SettingsDownloadClients.tsx",
+      "line": 629,
+      "expression": "health.error",
+      "context": [
+        "OpaqueApiMessageText",
+        "Alert",
+        "div",
+        "div",
+        "li"
+      ],
+      "attribute": "title",
+      "classification": "provider-data"
+    },
+    {
+      "file": "src/components/Settings/SettingsDownloadClients.tsx",
+      "line": 632,
+      "expression": "health.error",
+      "context": [
+        "ApiMessageText",
+        "Alert",
+        "div",
+        "div",
+        "li"
+      ],
+      "attribute": "title",
+      "classification": "api-localized"
+    },
+    {
+      "file": "src/components/Settings/SettingsDownloadClients.tsx",
+      "line": 667,
+      "expression": "result.error",
+      "context": [
+        "OpaqueApiMessageText",
+        "Alert",
+        "div",
+        "div",
+        "li"
+      ],
+      "attribute": "title",
+      "classification": "provider-data"
+    },
+    {
+      "file": "src/components/Settings/SettingsDownloadClients.tsx",
+      "line": 670,
+      "expression": "result.error",
+      "context": [
+        "ApiMessageText",
+        "Alert",
+        "div",
+        "div",
+        "li"
+      ],
+      "attribute": "title",
+      "classification": "api-localized"
+    },
+    {
+      "file": "src/components/Settings/SettingsGeneratedLoginLinks.tsx",
+      "line": 200,
+      "expression": "message",
+      "context": [
+        "ApiMessageText",
+        "p",
+        "section"
+      ],
+      "classification": "api-localized"
+    },
+    {
+      "file": "src/components/Settings/SettingsGeneratedLoginLinks.tsx",
+      "line": 204,
+      "expression": "error",
+      "context": [
+        "ApiMessageText",
+        "p",
+        "section"
+      ],
+      "classification": "api-localized"
+    },
+    {
+      "file": "src/components/Settings/SettingsLogs/index.tsx",
+      "line": 235,
+      "expression": "intl.formatMessage(messages.message)",
+      "context": [
+        "div",
+        "div",
+        "Modal",
+        "Transition"
+      ],
+      "classification": "already-localized"
+    },
+    {
+      "file": "src/components/Settings/SettingsLogs/index.tsx",
+      "line": 239,
+      "expression": "activeLog.log?.message",
+      "context": [
+        "div",
+        "div",
+        "div",
+        "Modal",
+        "Transition"
+      ],
+      "classification": "diagnostic-data",
+      "reason": "The log viewer displays original operational records for diagnosis and search; preserve emitted log data."
+    },
+    {
+      "file": "src/components/Settings/SettingsLogs/index.tsx",
+      "line": 339,
+      "expression": "intl.formatMessage(messages.message)",
+      "context": [
+        "Table.TH",
+        "tr",
+        "thead",
+        "Table",
+        "div"
+      ],
+      "classification": "already-localized"
+    },
+    {
+      "file": "src/components/Settings/SettingsLogs/index.tsx",
+      "line": 382,
+      "expression": "row.message",
+      "context": [
+        "Table.TD",
+        "tr",
+        "Table.TBody",
+        "Table",
+        "div"
+      ],
+      "classification": "diagnostic-data",
+      "reason": "The log viewer displays original operational records for diagnosis and search; preserve emitted log data."
+    },
+    {
+      "file": "src/components/Settings/SettingsPlex.tsx",
+      "line": 610,
+      "expression": "`\n                            ${server.name} (${server.address})\n                            [${\n                              server.local\n                                ? intl.formatMessage(messages.serverLocal)\n                                : intl.formatMessage(messages.serverRemote)\n                            }]${\n                              server.ssl\n                                ? ` [${intl.formatMessage(\n                                    messages.serverSecure\n                                  )}]`\n                                : ''\n                            }\n                            ${server.status ? '' : '(' + server.message + ')'}\n                          `",
+      "context": [
+        "option",
+        "select",
+        "div",
+        "div",
+        "div",
+        "form",
+        "Formik"
+      ],
+      "classification": "already-localized"
+    },
+    {
+      "file": "src/components/Settings/SettingsProwlarr.tsx",
+      "line": 151,
+      "expression": "intl.formatMessage(messages[message], {\n        date: intl.formatDate(date, {\n          dateStyle: 'medium',\n          timeStyle: 'short',\n        }),\n      })",
+      "context": [
+        "p"
+      ],
+      "classification": "already-localized"
+    },
+    {
+      "file": "src/components/Settings/SettingsProwlarr.tsx",
+      "line": 809,
+      "expression": "errorMessage",
+      "context": [
+        "ApiMessageText",
+        "p",
+        "section"
+      ],
+      "classification": "api-localized"
+    },
+    {
+      "file": "src/components/Settings/SettingsProwlarr.tsx",
+      "line": 880,
+      "expression": "item.error",
+      "context": [
+        "ApiMessageText",
+        "p",
+        "div",
+        "li",
+        "ul",
+        "div",
+        "div",
+        "div",
+        "section"
+      ],
+      "classification": "api-localized"
+    },
+    {
+      "file": "src/components/Settings/SettingsReadMeABook.tsx",
+      "line": 256,
+      "expression": "message",
+      "context": [
+        "ApiMessageText",
+        "p",
+        "section"
+      ],
+      "classification": "api-localized"
+    },
+    {
+      "file": "src/components/Settings/SettingsSlskdn.tsx",
+      "line": 343,
+      "expression": "testResult.error ?? intl.formatMessage(messages.saveError)",
+      "context": [
+        "Alert",
+        "form",
+        "div",
+        "section"
+      ],
+      "attribute": "title",
+      "classification": "already-localized"
+    },
+    {
+      "file": "src/components/Settings/SettingsSoftwareAcquisition.tsx",
+      "line": 598,
+      "expression": "testState.message",
+      "context": [
+        "ApiMessageText",
+        "span",
+        "div",
+        "section"
+      ],
+      "classification": "api-localized"
+    },
+    {
+      "file": "src/components/Settings/SettingsSoftwareAcquisition.tsx",
+      "line": 976,
+      "expression": "saveState.message",
+      "context": [
+        "ApiMessageText",
+        "span",
+        "div",
+        "div"
+      ],
+      "classification": "api-localized"
+    },
+    {
+      "file": "src/components/Settings/SettingsSwipe.tsx",
+      "line": 384,
+      "expression": "testResult.error",
+      "context": [
+        "OpaqueApiMessageText",
+        "Alert",
+        "form",
+        "div",
+        "section"
+      ],
+      "attribute": "title",
+      "classification": "provider-data"
+    },
+    {
+      "file": "src/components/Settings/SettingsSwipe.tsx",
+      "line": 387,
+      "expression": "testResult.error",
+      "context": [
+        "ApiMessageText",
+        "Alert",
+        "form",
+        "div",
+        "section"
+      ],
+      "attribute": "title",
+      "classification": "api-localized"
+    },
+    {
+      "file": "src/components/Settings/SettingsTunerr.tsx",
+      "line": 355,
+      "expression": "guide.lastError",
+      "context": [
+        "OpaqueApiMessageText",
+        "Alert",
+        "form",
+        "div",
+        "section"
+      ],
+      "attribute": "title",
+      "classification": "provider-data"
+    },
+    {
+      "file": "src/components/Settings/SettingsTunerr.tsx",
+      "line": 358,
+      "expression": "guide.lastError",
+      "context": [
+        "ApiMessageText",
+        "Alert",
+        "form",
+        "div",
+        "section"
+      ],
+      "attribute": "title",
+      "classification": "api-localized"
+    },
+    {
+      "file": "src/components/Settings/SettingsTunerr.tsx",
+      "line": 682,
+      "expression": "testResult.error",
+      "context": [
+        "ApiMessageText",
+        "Alert",
+        "form",
+        "div",
+        "section"
+      ],
+      "attribute": "title",
+      "classification": "api-localized"
+    },
+    {
+      "file": "src/components/Settings/SetupConnectionsImport.tsx",
+      "line": 76,
+      "expression": "error",
+      "context": [
+        "p"
+      ],
+      "classification": "localized-state",
+      "reason": "The producing state/validation path uses intl.formatMessage before rendering."
+    },
+    {
+      "file": "src/components/Share/index.tsx",
+      "line": 485,
+      "expression": "notice",
+      "context": [
+        "p",
+        "section",
+        "div"
+      ],
+      "classification": "localized-state",
+      "reason": "The producing state/validation path uses intl.formatMessage before rendering."
+    },
+    {
+      "file": "src/components/Slider/index.tsx",
+      "line": 310,
+      "expression": "notice",
+      "context": [
+        "div"
+      ],
+      "classification": "localized-child-boundary",
+      "reason": "The three notice callers (MediaSlider, RecentRequestsSlider, PersonalizedRows) pass translated JSX error/status blocks."
+    },
+    {
+      "file": "src/components/SoftwareCatalog/index.tsx",
+      "line": 919,
+      "expression": "intl.formatMessage(\n                  error ? messages.retryLoad : messages.loadMore\n                )",
+      "context": [
+        "Button",
+        "div",
+        "main"
+      ],
+      "classification": "already-localized"
+    },
+    {
+      "file": "src/components/SoftwareCatalog/index.tsx",
+      "line": 1259,
+      "expression": "requestError",
+      "context": [
+        "ApiMessageText",
+        "p",
+        "div",
+        "Modal",
+        "Transition"
+      ],
+      "classification": "api-localized"
+    },
+    {
+      "file": "src/components/Soulseek/AlbumLibraryHealthButton.tsx",
+      "line": 193,
+      "expression": "issue.reason",
+      "context": [
+        "OpaqueApiMessageText",
+        "p",
+        "article",
+        "li",
+        "ul",
+        "Modal"
+      ],
+      "classification": "provider-data"
+    },
+    {
+      "file": "src/components/Soulseek/TrackRequestList.tsx",
+      "line": 134,
+      "expression": "responseData.message",
+      "context": [
+        "ApiErrorToastText"
+      ],
+      "attribute": "message",
+      "classification": "localized-child-boundary"
+    },
+    {
+      "file": "src/components/Soulseek/TrackRequestList.tsx",
+      "line": 158,
+      "expression": "intl.formatMessage(messages[statusMessage[request.status]])",
+      "context": [
+        "Badge",
+        "div",
+        "article",
+        "li"
+      ],
+      "classification": "already-localized"
+    },
+    {
+      "file": "src/components/Soulseek/TrackRequestList.tsx",
+      "line": 182,
+      "expression": "request.lastError",
+      "context": [
+        "ApiMessageText",
+        "p",
+        "article",
+        "li"
+      ],
+      "classification": "api-localized"
+    },
+    {
+      "file": "src/components/SportarrDetails/index.tsx",
+      "line": 204,
+      "expression": "getMessage(error) ?? intl.formatMessage(messages.loadError)",
+      "context": [
+        "PageErrorMessage",
+        "div"
+      ],
+      "attribute": "title",
+      "classification": "already-localized"
+    },
+    {
+      "file": "src/components/Swipe/SwipeCardView.tsx",
+      "line": 183,
+      "expression": "card.reason ?? card.because",
+      "context": [
+        "OpaqueApiMessageText",
+        "p",
+        "div",
+        "article"
+      ],
+      "classification": "provider-data"
+    },
+    {
+      "file": "src/components/TvDetails/index.tsx",
+      "line": 650,
+      "expression": "error && loadErrorMessage",
+      "context": [],
+      "classification": "localized-child-boundary",
+      "reason": "This expression renders an already-built React error block whose fixed copy uses Intl and explicit API text boundaries."
+    },
+    {
+      "file": "src/components/UserList/TvSeasonWatchGateApprovalQueue.tsx",
+      "line": 120,
+      "expression": "intl.formatMessage(messages.error)",
+      "context": [
+        "Alert",
+        "section"
+      ],
+      "attribute": "title",
+      "classification": "already-localized"
+    },
+    {
+      "file": "src/components/UserList/TvSeasonWatchGateApprovalQueue.tsx",
+      "line": 123,
+      "expression": "intl.formatMessage(messages.error)",
+      "context": [
+        "Alert",
+        "section"
+      ],
+      "attribute": "title",
+      "classification": "already-localized"
+    },
+    {
+      "file": "src/components/UserProfile/UserSettings/UserEpisodeQueueSettings.tsx",
+      "line": 195,
+      "expression": "intl.formatMessage(messages.error)",
+      "context": [
+        "Alert",
+        "div",
+        "section",
+        "div"
+      ],
+      "attribute": "title",
+      "classification": "already-localized"
+    },
+    {
+      "file": "src/components/UserProfile/UserSettings/UserGeneralSettings/BookHomeSections.tsx",
+      "line": 182,
+      "expression": "message",
+      "context": [
+        "p",
+        "section"
+      ],
+      "classification": "localized-state",
+      "reason": "The producing state/validation path uses intl.formatMessage before rendering."
+    },
+    {
+      "file": "src/components/UserProfile/UserSettings/UserGeneralSettings/ExternalRequestLists.tsx",
+      "line": 291,
+      "expression": "message",
+      "context": [
+        "ApiMessageText",
+        "p",
+        "section"
+      ],
+      "classification": "api-localized"
+    },
+    {
+      "file": "src/components/UserProfile/UserSettings/UserGeneralSettings/ExternalRequestLists.tsx",
+      "line": 296,
+      "expression": "errorMessage",
+      "context": [
+        "ApiMessageText",
+        "p",
+        "section"
+      ],
+      "classification": "api-localized"
+    },
+    {
+      "file": "src/components/UserProfile/UserSettings/UserGeneralSettings/ExternalRequestLists.tsx",
+      "line": 304,
+      "expression": "intl.formatMessage(messages.error)",
+      "context": [
+        "p",
+        "section"
+      ],
+      "classification": "already-localized"
+    },
+    {
+      "file": "src/components/UserProfile/UserSettings/UserGeneralSettings/ExternalRequestLists.tsx",
+      "line": 344,
+      "expression": "list.lastSyncError",
+      "context": [
+        "OpaqueApiMessageText",
+        "span",
+        "div",
+        "div",
+        "div",
+        "section"
+      ],
+      "classification": "provider-data"
+    },
+    {
+      "file": "src/components/UserProfile/UserSettings/UserLinkedAccountsSettings/LinkJellyfinModal.tsx",
+      "line": 131,
+      "expression": "error",
+      "context": [
+        "Alert",
+        "div",
+        "Form",
+        "Modal",
+        "Formik",
+        "Transition"
+      ],
+      "classification": "localized-state",
+      "reason": "The producing state/validation path uses intl.formatMessage before rendering."
+    },
+    {
+      "file": "src/components/UserProfile/UserSettings/UserLinkedAccountsSettings/index.tsx",
+      "line": 340,
+      "expression": "error",
+      "context": [
+        "Alert"
+      ],
+      "attribute": "title",
+      "classification": "localized-state",
+      "reason": "The producing state/validation path uses intl.formatMessage before rendering."
+    },
+    {
+      "file": "src/components/UserProfile/UserSettings/UserTvSeasonWatchGateAccess.tsx",
+      "line": 263,
+      "expression": "intl.formatMessage(messages.error)",
+      "context": [
+        "Alert",
+        "div",
+        "section",
+        "div"
+      ],
+      "attribute": "title",
+      "classification": "already-localized"
+    },
+    {
+      "file": "src/hooks/useToasts.tsx",
+      "line": 33,
+      "expression": "message",
+      "context": [
+        "Toast"
+      ],
+      "classification": "localized-child-boundary",
+      "reason": "Toast owns this ReactNode and wraps string content in ApiMessageText; callback/JSX nodes retain their own translations."
+    },
+    {
+      "file": "src/pages/404.tsx",
+      "line": 20,
+      "expression": "intl.formatMessage(messages.errormessagewithcode, {\n          statusCode: 404,\n          error: intl.formatMessage(messages.pagenotfound),\n        })",
+      "context": [
+        "div",
+        "div"
+      ],
+      "classification": "already-localized"
+    },
+    {
+      "file": "src/pages/_error.tsx",
+      "line": 41,
+      "expression": "statusCode\n          ? intl.formatMessage(messages.errormessagewithcode, {\n              statusCode,\n              error: getErrorMessage(statusCode),\n            })\n          : getErrorMessage(statusCode)",
+      "context": [
+        "div",
+        "div"
+      ],
+      "classification": "already-localized"
+    },
+    {
+      "file": "src/pages/downloads.tsx",
+      "line": 291,
+      "expression": "notice",
+      "context": [
+        "ApiMessageText",
+        "p",
+        "div"
+      ],
+      "classification": "api-localized"
+    },
+    {
+      "file": "src/pages/downloads.tsx",
+      "line": 316,
+      "expression": "warning.title",
+      "context": [
+        "h2",
+        "div",
+        "div",
+        "article",
+        "div",
+        "div"
+      ],
+      "classification": "provider-data",
+      "reason": "Warning title, service name and service type identify provider/media/service data, not an app message."
+    },
+    {
+      "file": "src/pages/downloads.tsx",
+      "line": 319,
+      "expression": "warning.serviceName",
+      "context": [
+        "p",
+        "div",
+        "div",
+        "article",
+        "div",
+        "div"
+      ],
+      "classification": "provider-data",
+      "reason": "Warning title, service name and service type identify provider/media/service data, not an app message."
+    },
+    {
+      "file": "src/pages/downloads.tsx",
+      "line": 319,
+      "expression": "warning.serviceType",
+      "context": [
+        "p",
+        "div",
+        "div",
+        "article",
+        "div",
+        "div"
+      ],
+      "classification": "provider-data",
+      "reason": "Warning title, service name and service type identify provider/media/service data, not an app message."
+    },
+    {
+      "file": "src/pages/downloads.tsx",
+      "line": 323,
+      "expression": "intl.formatMessage(stateMessages[warning.state])",
+      "context": [
+        "span",
+        "div",
+        "article",
+        "div",
+        "div"
+      ],
+      "classification": "already-localized"
+    },
+    {
+      "file": "src/pages/downloads.tsx",
+      "line": 335,
+      "expression": "intl.formatMessage(resolutions[warning.resolution])",
+      "context": [
+        "p",
+        "article",
+        "div",
+        "div"
+      ],
+      "classification": "already-localized"
+    },
+    {
+      "file": "src/pages/downloads.tsx",
+      "line": 577,
+      "expression": "reason",
+      "context": [
+        "OpaqueApiMessageText",
+        "span",
+        "span",
+        "label",
+        "section",
+        "article",
+        "div",
+        "div"
+      ],
+      "classification": "provider-data"
+    }
+  ]
+}

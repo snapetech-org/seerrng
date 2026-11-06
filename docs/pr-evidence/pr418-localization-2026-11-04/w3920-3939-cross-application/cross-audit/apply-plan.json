@@ -1,0 +1,206 @@
+{
+  "artifact": "SeerrNG PR #418 W3920-W3939 cross-audit apply plan",
+  "reviewMode": "non-blind cross-audit",
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "window": "W3920-W3939",
+  "head": "c989e745a64743a45282a7a2704713945d8406d8",
+  "tree": "b25ffd26701a43957924a992f4368f5b7a6a8f29",
+  "applyStatus": "PREPARED_NOT_APPLIED",
+  "selectedUpdateCount": 17,
+  "sourceCellCount": 240,
+  "noRepositoryWritesPerformed": true,
+  "selectedProposalHashes": [
+    "6d8b7c27a4401b1d49b1bfe85923ea46a2b4775eaa15079bbcc0edaa8eb21025",
+    "373b9ebbc6a4f7e87de4084e59ea641eb084ce410dc7c02253a18b22695c7993",
+    "a2ed29ef58db7ddf978a7ae81af877d6a8f7afde2ccbf78ad8c61be40612111b",
+    "d0498ea492f2312b3c7b4a3d37aee14d0906462a5c62f5c59732ccc0524a6f21",
+    "afe8f13baf0ec4659dea9bb519ca187097ea7e79b397eedd94def2112ede62ef",
+    "9753a16b3fc8f6fb4033200f7b55afbda96fc2c790d3a7d99abe94e83d6a3139",
+    "8e8275d4a3dfde816b15e0901daef2f2a9de5b9bbec335536c04c9ee0cd84e66",
+    "2cb3dd72227d5ff440c1b6fe736859a0fbf938f2ac13debfacf7eb7acef0662b",
+    "7570effaaa0b444ba6e7ab18bcf6182a17ab4da6db88303f08d9a68652634b56",
+    "49d67ef022165621c68c2e4793230560aa9ac18c65329ac4f92e8123dd77cbd3",
+    "5869c3fa0d5ea6d1ded9efa3343771eb67b1217e6e57f514635f270514772475",
+    "8c2d46cc43a62f8a6c615fb780a33835ec6ec4eae3ef979e53043a4cc02d5133",
+    "9988988f4eae344558bc079fbe361d5f9e3b0a307fc4e57f236d9cccbe76dc1d",
+    "206b39dceb1ea82e9f9fb166182dbb3dcd4b9c82be79b0ca6c33fecabdf970b3",
+    "d953add6b84f213d13f31e6d72f6512124df74344621245ea62b9c4961a85076",
+    "48aa90d53a27271524c56f4a82d71a2071c0ed17a2398602ead64ec7033a8a6c",
+    "8718156427a91cd95cac92ac1e6c4dedf79e77f50abc4eef3212e75f1bf31387"
+  ],
+  "unresolvedHoldCount": 4,
+  "unresolvedHoldsFile": "unresolved-holds.jsonl",
+  "updates": [
+    {
+      "position": 3923,
+      "sourceId": "components.Settings.Notifications.NotificationsNtfy.url",
+      "locale": "hi",
+      "catalogPath": "src/i18n/locale/hi.json",
+      "expectedCurrentTargetSha256": "b2ecaf5e22c9addc5ce713c036366192e35b98554eb94863298a5648c1ac7a97",
+      "proposedTarget": "सर्वर का मूल URL",
+      "proposedTargetSha256": "6d8b7c27a4401b1d49b1bfe85923ea46a2b4775eaa15079bbcc0edaa8eb21025",
+      "callerContextSha256": "80be0b07a74855e98157264b4968957002f0419f55ac3667a5ee5d94278c6502"
+    },
+    {
+      "position": 3923,
+      "sourceId": "components.Settings.Notifications.NotificationsNtfy.url",
+      "locale": "de",
+      "catalogPath": "src/i18n/locale/de.json",
+      "expectedCurrentTargetSha256": "353ba327c1012c6ce03668da2a7f3b14e1cabf9f0faa7cbb8425bf1a6454ed24",
+      "proposedTarget": "Basis-URL des Servers",
+      "proposedTargetSha256": "373b9ebbc6a4f7e87de4084e59ea641eb084ce410dc7c02253a18b22695c7993",
+      "callerContextSha256": "80be0b07a74855e98157264b4968957002f0419f55ac3667a5ee5d94278c6502"
+    },
+    {
+      "position": 3923,
+      "sourceId": "components.Settings.Notifications.NotificationsNtfy.url",
+      "locale": "vi",
+      "catalogPath": "src/i18n/locale/vi.json",
+      "expectedCurrentTargetSha256": "2aca915f967a6a4ddc1154225d37b9a79f0ada8bf8808a569168618eb939b522",
+      "proposedTarget": "URL gốc của máy chủ",
+      "proposedTargetSha256": "a2ed29ef58db7ddf978a7ae81af877d6a8f7afde2ccbf78ad8c61be40612111b",
+      "callerContextSha256": "80be0b07a74855e98157264b4968957002f0419f55ac3667a5ee5d94278c6502"
+    },
+    {
+      "position": 3923,
+      "sourceId": "components.Settings.Notifications.NotificationsNtfy.url",
+      "locale": "id",
+      "catalogPath": "src/i18n/locale/id.json",
+      "expectedCurrentTargetSha256": "ae856b4d30d1edfc96b30674875e8f5f996106308e03aaebf8dbb7e02c216b32",
+      "proposedTarget": "URL dasar server",
+      "proposedTargetSha256": "d0498ea492f2312b3c7b4a3d37aee14d0906462a5c62f5c59732ccc0524a6f21",
+      "callerContextSha256": "80be0b07a74855e98157264b4968957002f0419f55ac3667a5ee5d94278c6502"
+    },
+    {
+      "position": 3925,
+      "sourceId": "components.Settings.Notifications.NotificationsNtfy.usernamePasswordAuth",
+      "locale": "pt-BR",
+      "catalogPath": "src/i18n/locale/pt_BR.json",
+      "expectedCurrentTargetSha256": "f42d18353c3a433d904572ceeab3bda805683bcf2ea2c495792c3a6fc604291b",
+      "proposedTarget": "Autenticação por nome de usuário e senha",
+      "proposedTargetSha256": "afe8f13baf0ec4659dea9bb519ca187097ea7e79b397eedd94def2112ede62ef",
+      "callerContextSha256": "3c62e2bf0b7616db17fd64882fe6d7668c77fd932824f4cb52c5318d1af80f28"
+    },
+    {
+      "position": 3925,
+      "sourceId": "components.Settings.Notifications.NotificationsNtfy.usernamePasswordAuth",
+      "locale": "vi",
+      "catalogPath": "src/i18n/locale/vi.json",
+      "expectedCurrentTargetSha256": "1e610c0b8e0ce17774e21d398bc50c892239564bc9ec978449f9ad825e711f57",
+      "proposedTarget": "Xác thực bằng tên người dùng và mật khẩu",
+      "proposedTargetSha256": "9753a16b3fc8f6fb4033200f7b55afbda96fc2c790d3a7d99abe94e83d6a3139",
+      "callerContextSha256": "3c62e2bf0b7616db17fd64882fe6d7668c77fd932824f4cb52c5318d1af80f28"
+    },
+    {
+      "position": 3925,
+      "sourceId": "components.Settings.Notifications.NotificationsNtfy.usernamePasswordAuth",
+      "locale": "id",
+      "catalogPath": "src/i18n/locale/id.json",
+      "expectedCurrentTargetSha256": "72e6d3456ffc74fa8ebc4df9c10826aa264f7fd1cd26521811334f3a95fd1fc7",
+      "proposedTarget": "Otentikasi nama pengguna dan kata sandi",
+      "proposedTargetSha256": "8e8275d4a3dfde816b15e0901daef2f2a9de5b9bbec335536c04c9ee0cd84e66",
+      "callerContextSha256": "3c62e2bf0b7616db17fd64882fe6d7668c77fd932824f4cb52c5318d1af80f28"
+    },
+    {
+      "position": 3928,
+      "sourceId": "components.Settings.Notifications.NotificationsNtfy.validationPriorityRequired",
+      "locale": "ko",
+      "catalogPath": "src/i18n/locale/ko.json",
+      "expectedCurrentTargetSha256": "0b7dc283631699c63822d01d6779344cefe2cde4f9ead2a597350b1c8e72e097",
+      "proposedTarget": "1과 5 사이의 우선순위를 입력해야 합니다.",
+      "proposedTargetSha256": "2cb3dd72227d5ff440c1b6fe736859a0fbf938f2ac13debfacf7eb7acef0662b",
+      "callerContextSha256": "283a7f4c4b2444ad6c9b0b75ecb4075d9738e7adff55eba0f0d11a4e2cb4bb3f"
+    },
+    {
+      "position": 3928,
+      "sourceId": "components.Settings.Notifications.NotificationsNtfy.validationPriorityRequired",
+      "locale": "vi",
+      "catalogPath": "src/i18n/locale/vi.json",
+      "expectedCurrentTargetSha256": "5883ad15d3216a2c2c397d077ea5af4ec78e28deb3f678b57a4edcdd1b232a2b",
+      "proposedTarget": "Bạn phải cung cấp mức ưu tiên từ 1 đến 5.",
+      "proposedTargetSha256": "7570effaaa0b444ba6e7ab18bcf6182a17ab4da6db88303f08d9a68652634b56",
+      "callerContextSha256": "283a7f4c4b2444ad6c9b0b75ecb4075d9738e7adff55eba0f0d11a4e2cb4bb3f"
+    },
+    {
+      "position": 3928,
+      "sourceId": "components.Settings.Notifications.NotificationsNtfy.validationPriorityRequired",
+      "locale": "id",
+      "catalogPath": "src/i18n/locale/id.json",
+      "expectedCurrentTargetSha256": "6a7a3437e16b633bf123154ac6b0ea0e839f98a787aacef99f9b6b2e99dd5ddf",
+      "proposedTarget": "Anda harus menetapkan prioritas antara 1 dan 5.",
+      "proposedTargetSha256": "49d67ef022165621c68c2e4793230560aa9ac18c65329ac4f92e8123dd77cbd3",
+      "callerContextSha256": "283a7f4c4b2444ad6c9b0b75ecb4075d9738e7adff55eba0f0d11a4e2cb4bb3f"
+    },
+    {
+      "position": 3931,
+      "sourceId": "components.Settings.Notifications.NotificationsPushbullet.accessTokenTip",
+      "locale": "es",
+      "catalogPath": "src/i18n/locale/es.json",
+      "expectedCurrentTargetSha256": "e572719d5df6365a2234d32030db5c514d63116ac2910c92bd11f0f8ee9ffdf4",
+      "proposedTarget": "Crea un token desde la <PushbulletSettingsLink>configuración de tu cuenta</PushbulletSettingsLink>.",
+      "proposedTargetSha256": "5869c3fa0d5ea6d1ded9efa3343771eb67b1217e6e57f514635f270514772475",
+      "callerContextSha256": "d7b31c3016c93a81c6f63a50b46fcc7291ede6d1d7dd762a08cc423a645fb4a6"
+    },
+    {
+      "position": 3936,
+      "sourceId": "components.Settings.Notifications.NotificationsPushbullet.toastPushbulletTestFailed",
+      "locale": "fr",
+      "catalogPath": "src/i18n/locale/fr.json",
+      "expectedCurrentTargetSha256": "6f32551a1e1bcc466c14572791bd7510f759148fd8984a49eae109ddc2973017",
+      "proposedTarget": "L’envoi de la notification de test Pushbullet a échoué.",
+      "proposedTargetSha256": "8c2d46cc43a62f8a6c615fb780a33835ec6ec4eae3ef979e53043a4cc02d5133",
+      "callerContextSha256": "2c79410f62be6e28511cf81232c79f62f6800275dd9672ec973fdeba17cb1f93"
+    },
+    {
+      "position": 3937,
+      "sourceId": "components.Settings.Notifications.NotificationsPushbullet.toastPushbulletTestSending",
+      "locale": "hi",
+      "catalogPath": "src/i18n/locale/hi.json",
+      "expectedCurrentTargetSha256": "3725d5c6b8b04b17f21f44fa80aa54b429670d3b8d54ae6983bdaa0494bcd584",
+      "proposedTarget": "Pushbullet परीक्षण अधिसूचना भेजी जा रही है…",
+      "proposedTargetSha256": "9988988f4eae344558bc079fbe361d5f9e3b0a307fc4e57f236d9cccbe76dc1d",
+      "callerContextSha256": "01d570bfd9687732f3c77ff96bbf3dfd07aa6cde32ed5909359d2ffe4653aaf0"
+    },
+    {
+      "position": 3937,
+      "sourceId": "components.Settings.Notifications.NotificationsPushbullet.toastPushbulletTestSending",
+      "locale": "ko",
+      "catalogPath": "src/i18n/locale/ko.json",
+      "expectedCurrentTargetSha256": "ad7f3acf8b5bfa9e936f121c1e98450019f6193c8de33e8cc9bcd1d0313c4ba4",
+      "proposedTarget": "Pushbullet 테스트 알림을 보내는 중…",
+      "proposedTargetSha256": "206b39dceb1ea82e9f9fb166182dbb3dcd4b9c82be79b0ca6c33fecabdf970b3",
+      "callerContextSha256": "01d570bfd9687732f3c77ff96bbf3dfd07aa6cde32ed5909359d2ffe4653aaf0"
+    },
+    {
+      "position": 3937,
+      "sourceId": "components.Settings.Notifications.NotificationsPushbullet.toastPushbulletTestSending",
+      "locale": "id",
+      "catalogPath": "src/i18n/locale/id.json",
+      "expectedCurrentTargetSha256": "3e57cf7ce71d26f5845401c4e87cb276b7f6a55a1455bccd28750c06fec0d5b3",
+      "proposedTarget": "Mengirim notifikasi uji Pushbullet…",
+      "proposedTargetSha256": "d953add6b84f213d13f31e6d72f6512124df74344621245ea62b9c4961a85076",
+      "callerContextSha256": "01d570bfd9687732f3c77ff96bbf3dfd07aa6cde32ed5909359d2ffe4653aaf0"
+    },
+    {
+      "position": 3938,
+      "sourceId": "components.Settings.Notifications.NotificationsPushbullet.toastPushbulletTestSuccess",
+      "locale": "fr",
+      "catalogPath": "src/i18n/locale/fr.json",
+      "expectedCurrentTargetSha256": "bb0155a15046af73b34f029fd3c4aa7509f43f13bc061845d247ac022cc9a7a0",
+      "proposedTarget": "Notification de test Pushbullet envoyée !",
+      "proposedTargetSha256": "48aa90d53a27271524c56f4a82d71a2071c0ed17a2398602ead64ec7033a8a6c",
+      "callerContextSha256": "101992c8b5fa22c9b856a5fc06adba992066e6f5da40528cbd2bacffcf487642"
+    },
+    {
+      "position": 3938,
+      "sourceId": "components.Settings.Notifications.NotificationsPushbullet.toastPushbulletTestSuccess",
+      "locale": "ar",
+      "catalogPath": "src/i18n/locale/ar.json",
+      "expectedCurrentTargetSha256": "699114f6a327015a29daee5165736b4c617511b8f5a1b48a97ad15b2f82bdf7f",
+      "proposedTarget": "تم إرسال إشعار تجريبي من Pushbullet!",
+      "proposedTargetSha256": "8718156427a91cd95cac92ac1e6c4dedf79e77f50abc4eef3212e75f1bf31387",
+      "callerContextSha256": "101992c8b5fa22c9b856a5fc06adba992066e6f5da40528cbd2bacffcf487642"
+    }
+  ]
+}

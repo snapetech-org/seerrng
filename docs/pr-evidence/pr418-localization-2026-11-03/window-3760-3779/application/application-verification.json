@@ -1,0 +1,31 @@
+{
+  "result": "PASS",
+  "cellsReadBack": 240,
+  "selectedChanges": 12,
+  "corrections": 9,
+  "refinements": 3,
+  "acceptCurrent": 228,
+  "newWindowHolds": 0,
+  "carriedHoldsPreserved": 12,
+  "priorSelectionsReattestedHashOnly": 3760,
+  "catalogFilesChanged": 7,
+  "directLocaleCatalogsReviewed": 12,
+  "catalogKeySetsEqualEnglish": true,
+  "catalogOrdersPreservedPerFile": true,
+  "preexistingOrderDifferenceLocales": [
+    "ja",
+    "ko",
+    "vi",
+    "zh-Hans",
+    "zh-Hant"
+  ],
+  "nonTargetValuesPreserved": true,
+  "selectedTokenFailures": 0,
+  "selectedProtectedLiteralFailures": 0,
+  "workflowsChanged": false,
+  "sourceEnglishCatalogUnchanged": true,
+  "visualAcceptance": "unverified",
+  "nativeSpeakerApproval": "pending",
+  "applicationPostflightMatched": true,
+  "deploymentsAtCatalogCommit": 0
+}

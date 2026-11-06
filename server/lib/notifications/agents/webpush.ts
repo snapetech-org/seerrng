@@ -1,4 +1,4 @@
-import { IssueType, IssueTypeName } from '@server/constants/issue';
+import { IssueType } from '@server/constants/issue';
 import { MediaRequestStatus } from '@server/constants/media';
 import { getRepository } from '@server/datasource';
 import MediaRequest from '@server/entity/MediaRequest';
@@ -24,8 +24,12 @@ import type { NotificationAgent, NotificationPayload } from './agent';
 import {
   BaseAgent,
   NOTIFICATION_HTTP_OPTIONS,
+  getIssueTypeName,
+  getLocalizedNotificationPayload,
   getMediaTypeLabel,
+  getNotificationContent,
   getNotificationMediaUrl,
+  isolateBidiText,
 } from './agent';
 
 const messages = defineMessages('notifications.agents.webpush', {
@@ -120,6 +124,7 @@ class WebPushAgent
     locale?: AvailableLocale
   ): PushNotificationPayload {
     const intl = getIntl(locale);
+    payload = getLocalizedNotificationPayload(payload, intl);
     const { embedPoster } = this.getSettings();
 
     const mediaType = payload.media
@@ -130,9 +135,7 @@ class WebPushAgent
 
     const issueType = payload.issue
       ? payload.issue.issueType !== IssueType.OTHER
-        ? intl.formatMessage(globalMessages.issueTypeName, {
-            type: IssueTypeName[payload.issue.issueType].toLowerCase(),
-          })
+        ? getIssueTypeName(intl, payload.issue.issueType)
         : intl.formatMessage(globalMessages.issue)
       : undefined;
 
@@ -157,7 +160,7 @@ class WebPushAgent
         message = intl.formatMessage(messages.autoApproved, {
           quality,
           mediaType,
-          userName: payload.request?.requestedBy.displayName,
+          userName: isolateBidiText(payload.request?.requestedBy.displayName),
         });
         break;
       case Notification.MEDIA_AVAILABLE:
@@ -170,7 +173,7 @@ class WebPushAgent
         break;
       case Notification.SOFTWARE_AVAILABLE:
       case Notification.SOFTWARE_STATUS:
-        message = payload.message;
+        message = getNotificationContent(payload, intl).message;
         break;
       case Notification.MEDIA_DECLINED:
         message = intl.formatMessage(messages.declined, {
@@ -188,7 +191,7 @@ class WebPushAgent
         message = intl.formatMessage(messages.pending, {
           quality,
           mediaType,
-          userName: payload.request?.requestedBy.displayName,
+          userName: isolateBidiText(payload.request?.requestedBy.displayName),
         });
         break;
       case Notification.MEDIA_PENDING_UPDATED:
@@ -200,25 +203,25 @@ class WebPushAgent
       case Notification.ISSUE_CREATED:
         message = intl.formatMessage(messages.issueCreated, {
           issueType,
-          userName: payload.issue?.createdBy.displayName,
+          userName: isolateBidiText(payload.issue?.createdBy.displayName),
         });
         break;
       case Notification.ISSUE_COMMENT:
         message = intl.formatMessage(messages.issueComment, {
-          userName: payload.comment?.user.displayName,
+          userName: isolateBidiText(payload.comment?.user.displayName),
           issueType,
         });
         break;
       case Notification.ISSUE_RESOLVED:
         message = intl.formatMessage(messages.issueResolved, {
           issueType,
-          userName: payload.issue?.modifiedBy?.displayName,
+          userName: isolateBidiText(payload.issue?.modifiedBy?.displayName),
         });
         break;
       case Notification.ISSUE_REOPENED:
         message = intl.formatMessage(messages.issueReopened, {
           issueType,
-          userName: payload.issue?.modifiedBy?.displayName,
+          userName: isolateBidiText(payload.issue?.modifiedBy?.displayName),
         });
         break;
       default:
@@ -249,7 +252,7 @@ class WebPushAgent
 
     return {
       notificationType: Notification[type],
-      subject: payload.subject,
+      subject: isolateBidiText(payload.subject),
       message,
       image: embedPoster ? payload.image : undefined,
       requestId: payload.request?.id,

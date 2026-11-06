@@ -1,6 +1,8 @@
 import Alert from '@app/components/Common/Alert';
+import ApiMessageText from '@app/components/Common/ApiMessageText';
 import Button from '@app/components/Common/Button';
 import LoadingSpinner from '@app/components/Common/LoadingSpinner';
+import OpaqueApiMessageText from '@app/components/Common/OpaqueApiMessageText';
 import { SavedServiceHostPicker } from '@app/components/Settings/SavedServiceHostPicker';
 import SettingsField from '@app/components/Settings/SettingsField';
 import { useLiveTvStatus } from '@app/hooks/useLiveTv';
@@ -114,7 +116,9 @@ interface TestResult {
   guide: boolean;
   missingFeatures: string[];
   error?: string;
+  errorOrigin?: 'app' | 'opaque';
   guideError?: string;
+  guideErrorOrigin?: 'app' | 'opaque';
 }
 
 const toDraft = (settings: TunerrSettings): Draft => ({
@@ -228,7 +232,9 @@ const SettingsTunerr = () => {
           guide: !!body.guide,
           missingFeatures: body.missingFeatures ?? [],
           error: body.error ?? errorMessage(failure),
+          errorOrigin: body.errorOrigin,
           guideError: body.guideError,
+          guideErrorOrigin: body.guideErrorOrigin,
         });
       } else {
         setTestResult({ deck: false, guide: false, missingFeatures: [] });
@@ -313,7 +319,12 @@ const SettingsTunerr = () => {
         )}
         {data && draft && !error && (
           <form onSubmit={(event) => void submit(event)}>
-            {saveError && <Alert type="error" title={saveError} />}
+            {saveError && (
+              <Alert
+                type="error"
+                title={<ApiMessageText>{saveError}</ApiMessageText>}
+              />
+            )}
             <Alert type="info">
               <p>{intl.formatMessage(messages.setupNote)}</p>
             </Alert>
@@ -338,7 +349,14 @@ const SettingsTunerr = () => {
               <Alert
                 type="warning"
                 title={intl.formatMessage(messages.guideError, {
-                  error: guide.lastError,
+                  error:
+                    guide.lastErrorOrigin === 'opaque' ? (
+                      <OpaqueApiMessageText>
+                        {guide.lastError}
+                      </OpaqueApiMessageText>
+                    ) : (
+                      <ApiMessageText>{guide.lastError}</ApiMessageText>
+                    ),
                 })}
               />
             )}
@@ -599,7 +617,12 @@ const SettingsTunerr = () => {
                   />
                 )}
               {sportarrConnectError && (
-                <Alert type="error" title={sportarrConnectError} />
+                <Alert
+                  type="error"
+                  title={
+                    <ApiMessageText>{sportarrConnectError}</ApiMessageText>
+                  }
+                />
               )}
               {sportarrConnectSuccess && (
                 <Alert type="info">
@@ -653,13 +676,27 @@ const SettingsTunerr = () => {
                     />
                   )}
                   {testResult.error && (
-                    <Alert type="error" title={testResult.error} />
+                    <Alert
+                      type="error"
+                      title={
+                        <ApiMessageText>{testResult.error}</ApiMessageText>
+                      }
+                    />
                   )}
                   {testResult.guideError && (
                     <Alert
                       type="error"
                       title={intl.formatMessage(messages.testGuideFailed, {
-                        error: testResult.guideError,
+                        error:
+                          testResult.guideErrorOrigin === 'opaque' ? (
+                            <OpaqueApiMessageText>
+                              {testResult.guideError}
+                            </OpaqueApiMessageText>
+                          ) : (
+                            <ApiMessageText>
+                              {testResult.guideError}
+                            </ApiMessageText>
+                          ),
                       })}
                     />
                   )}

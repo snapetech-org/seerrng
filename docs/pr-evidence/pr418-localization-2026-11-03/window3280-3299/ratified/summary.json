@@ -1,0 +1,37 @@
+{
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "window": "W3280-W3299",
+  "exactHead": "039fe9e04ea5cc6da314427fa25b0937ef8dd92b",
+  "exactTree": "b1338441dc47245b87ed77e8253843b66c367062",
+  "cleanInputManifestSha256": "d3a47dcb40bf869e4ad0f1bfe49858ebfec159ee0d066d84e1787c3a88474d9b",
+  "primaryManifestSha256": "373a355da462222805fc6c401045a844e4e29174c2ce52a92fe172b57272945c",
+  "independentBlindManifestSha256": "9da96902cc68857ea46f37fdf001ec2231b80aa8b3a72d03725ddfb73f4f0e01",
+  "ratifiedLedgerSha256": "5a83a6defde0b786741e9c6909a2742d74d08bd58b6326dae560dd0bfb843c48",
+  "cells": 240,
+  "changedCells": 67,
+  "changedByLocale": {
+    "ar": 12,
+    "de": 1,
+    "es": 3,
+    "fr": 5,
+    "hi": 6,
+    "id": 3,
+    "ja": 3,
+    "ko": 3,
+    "pt_BR": 11,
+    "vi": 9,
+    "zh_Hans": 5,
+    "zh_Hant": 6
+  },
+  "finalDispositions": {
+    "correction": 35,
+    "accept-current": 173,
+    "refinement": 32
+  },
+  "protectedLiteralMismatches": 0,
+  "sourcePlaceholderMismatches": 0,
+  "nativeSpeakerApproval": false,
+  "browserReview": false,
+  "repositoryOrPrMutated": false
+}

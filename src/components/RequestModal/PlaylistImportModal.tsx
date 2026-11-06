@@ -1,4 +1,5 @@
 import Alert from '@app/components/Common/Alert';
+import ApiMessageText from '@app/components/Common/ApiMessageText';
 import Button from '@app/components/Common/Button';
 import Modal from '@app/components/Common/Modal';
 import defineMessages from '@app/utils/defineMessages';
@@ -118,7 +119,10 @@ const PlaylistImportModal = ({
         </p>
         {error && (
           <div className="mt-4">
-            <Alert title={error} type="warning" />
+            <Alert
+              title={<ApiMessageText>{error}</ApiMessageText>}
+              type="warning"
+            />
           </div>
         )}
         <div className="mt-5">

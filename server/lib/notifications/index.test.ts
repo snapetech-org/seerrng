@@ -29,6 +29,7 @@ import {
   createNotificationOutboxRecord,
   getNotificationOutboxRetryDelayMs,
   getPendingNotificationOutboxRecords,
+  hydrateNotificationOutboxPayload,
   markNotificationAgentDelivered,
 } from '@server/lib/notifications/outbox';
 import logger from '@server/logger';
@@ -378,6 +379,71 @@ describe('NotificationManager delivery lifecycle', () => {
     assert.strictEqual(firstSends, 1);
     assert.strictEqual(secondSends, 2);
     assert.strictEqual(await getRepository(NotificationOutbox).count(), 0);
+  });
+
+  it('persists app-copy identities and dynamic values for recipient-time localization', async () => {
+    const original: NotificationPayload = {
+      ...payload,
+      event: 'Comic Request Approved',
+      eventMessage: { kind: 'approved', mediaType: 'comic', is4k: false },
+      issueEventMessage: { kind: 'comment', issueType: 'video' },
+      bodyMessage: 'comicRequestDetails',
+      subjectMessage: 'bookRequest',
+      message: 'Comic request details are available in SeerrNG.',
+      extra: [
+        {
+          name: 'Publisher',
+          label: 'publisher',
+          value: 'User Publisher <raw>',
+        },
+      ],
+    };
+    const record = await createNotificationOutboxRecord(
+      Notification.MEDIA_APPROVED,
+      original,
+      ['test']
+    );
+    const stored = JSON.parse(record.payload);
+    assert.deepEqual(stored.eventMessage, original.eventMessage);
+    assert.deepEqual(stored.issueEventMessage, original.issueEventMessage);
+    assert.equal(stored.bodyMessage, original.bodyMessage);
+    assert.equal(stored.subjectMessage, original.subjectMessage);
+    const hydrated = await hydrateNotificationOutboxPayload(record);
+    assert.equal(hydrated?.subject, original.subject);
+    assert.equal(hydrated?.message, original.message);
+    assert.deepEqual(hydrated?.extra, original.extra);
+    assert.deepEqual(hydrated?.eventMessage, original.eventMessage);
+  });
+
+  it('rejects unknown descriptors before persistence and when reading stored payloads', async () => {
+    await assert.rejects(
+      createNotificationOutboxRecord(
+        Notification.MEDIA_AVAILABLE,
+        {
+          ...payload,
+          eventMessage: {
+            kind: 'provider-generated',
+            mediaType: 'movie',
+            is4k: false,
+          },
+        } as unknown as NotificationPayload,
+        ['test']
+      ),
+      /event descriptor is invalid/
+    );
+    const record = await createNotificationOutboxRecord(
+      Notification.MEDIA_AVAILABLE,
+      payload,
+      ['test']
+    );
+    record.payload = JSON.stringify({
+      ...JSON.parse(record.payload),
+      bodyMessage: 'untrusted message ID',
+    });
+    await assert.rejects(
+      hydrateNotificationOutboxPayload(record),
+      /body descriptor is invalid/
+    );
   });
 
   it('rejects oversized outbox payloads before persistence', async () => {

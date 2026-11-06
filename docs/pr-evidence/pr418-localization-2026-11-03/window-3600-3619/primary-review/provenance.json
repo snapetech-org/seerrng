@@ -1,0 +1,139 @@
+{
+  "schemaVersion": 1,
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "window": "W3600-W3619",
+  "head": "1fdec93d1b021e4ec7a7c2265230f59d81d2675e",
+  "tree": "6234854dc0b1e7aee17ef2e819ffc2b5b2e386ce",
+  "candidateFreeManifestJsonSha256": "1089646f93bfd96df0e5f0b820da76e9132cc859b6ed9db595c9a891dbcfcd9c",
+  "candidateFreeChecksumListSha256": "fdffd9f94443ad5ac1604f4a1ba4790717ae54e900ce41b1c3a454aca19ab156",
+  "candidateFreeHashFieldsIdentifySeparateFiles": true,
+  "reviewType": "primary semantic review only",
+  "all240CellsReviewed": true,
+  "callerContextsPinned": true,
+  "callerlessHolds": 0,
+  "baselineProtectedLiteralMismatches": [
+    {
+      "position": 3604,
+      "locale": "pt_BR",
+      "sourceId": "components.Settings.BinderyModal.baseUrl",
+      "sourceProtectedLiterals": [
+        "URL"
+      ],
+      "currentTarget": "Endereço base",
+      "currentTargetSha256": "df09995be50c34ea357e53cfea4123500932cf0142444c0d77353d049680e5cc"
+    },
+    {
+      "position": 3618,
+      "locale": "zh_Hans",
+      "sourceId": "components.Settings.BinderyModal.ownerFeature",
+      "sourceProtectedLiterals": [
+        "SeerrNG",
+        "Bindery",
+        "Plex",
+        "Jellyfin",
+        "BINDERY_ENFORCE_TENANCY",
+        "Auto-approve requests"
+      ],
+      "currentTarget": "支持按用户发起请求。SeerrNG 检测到 {accountCount} 个 Bindery 账户。匹配规则不区分大小写，包括用户名、Plex 或 Jellyfin 用户名以及电子邮件地址。若希望获取流程无需二次审批即可开始，请在 Bindery 中为每个账户启用“自动批准请求”。对于私有用户库，还需在 Bindery 中启用 BINDERY_ENFORCE_TENANCY。",
+      "currentTargetSha256": "6f9298e54883db1df300c46db2261c9e66b8f041a7e015714ac0df1085a1aba3"
+    },
+    {
+      "position": 3618,
+      "locale": "de",
+      "sourceId": "components.Settings.BinderyModal.ownerFeature",
+      "sourceProtectedLiterals": [
+        "SeerrNG",
+        "Bindery",
+        "Plex",
+        "Jellyfin",
+        "BINDERY_ENFORCE_TENANCY",
+        "Auto-approve requests"
+      ],
+      "currentTarget": "Anfragen pro Benutzer werden unterstützt. SeerrNG hat {accountCount} Bindery-Konten gefunden. Es wird Benutzernamen, Plex oder Jellyfin-Benutzernamen und E-Mail-Adressen ohne Berücksichtigung der Groß-/Kleinschreibung abgeglichen. Aktiviere in Bindery für jedes Konto „Anfragen automatisch genehmigen“, wenn die Beschaffung ohne zweite Genehmigung starten soll. Für private Benutzerbibliotheken aktiviere in Bindery außerdem BINDERY_ENFORCE_TENANCY.",
+      "currentTargetSha256": "ca58bb4b3f1142f01b697a78ce20ec991824ae8e1b08070d3bf57f8f6b667169"
+    },
+    {
+      "position": 3618,
+      "locale": "ja",
+      "sourceId": "components.Settings.BinderyModal.ownerFeature",
+      "sourceProtectedLiterals": [
+        "SeerrNG",
+        "Bindery",
+        "Plex",
+        "Jellyfin",
+        "BINDERY_ENFORCE_TENANCY",
+        "Auto-approve requests"
+      ],
+      "currentTarget": "ユーザーごとのリクエストがサポートされています。SeerrNG は {accountCount} 個の Bindery アカウントを検出しました。ユーザー名、Plex または Jellyfin のユーザー名、およびメールアドレスは大文字小文字を区別せずに照合します。取得を2段階目の承認なしで開始する場合、Bindery で各アカウントの「リクエストの自動承認」を有効にしてください。プライベートなユーザーライブラリの場合、Bindery で BINDERY_ENFORCE_TENANCY も有効にしてください。",
+      "currentTargetSha256": "3a9035b444b5fada70e7f1bcc881a66d64b90cc14878bd8566f6baa15a6c4f92"
+    },
+    {
+      "position": 3618,
+      "locale": "ar",
+      "sourceId": "components.Settings.BinderyModal.ownerFeature",
+      "sourceProtectedLiterals": [
+        "SeerrNG",
+        "Bindery",
+        "Plex",
+        "Jellyfin",
+        "BINDERY_ENFORCE_TENANCY",
+        "Auto-approve requests"
+      ],
+      "currentTarget": "تدعم الطلبات لكل مستخدم. عثر SeerrNG على {accountCount} حسابًا في Bindery. يطابق التطبيق أسماء المستخدمين وأسماء Plex أو Jellyfin وعناوين البريد الإلكتروني دون تمييز بين حالة الأحرف. فعّل خيار الموافقة التلقائية على الطلبات لكل حساب في Bindery إذا أردت بدء الاقتناء دون موافقة ثانية. وإذا كانت مكتبات المستخدمين خاصة، فعّل أيضًا BINDERY_ENFORCE_TENANCY في Bindery.",
+      "currentTargetSha256": "e260c0048fb4520fd3d2294dc2348003bb8fba3c32261c451606226fa3ab67aa"
+    },
+    {
+      "position": 3618,
+      "locale": "ko",
+      "sourceId": "components.Settings.BinderyModal.ownerFeature",
+      "sourceProtectedLiterals": [
+        "SeerrNG",
+        "Bindery",
+        "Plex",
+        "Jellyfin",
+        "BINDERY_ENFORCE_TENANCY",
+        "Auto-approve requests"
+      ],
+      "currentTarget": "사용자별 요청이 지원됩니다. SeerrNG에서 {accountCount}개의 Bindery 계정을 찾았습니다. 이는 사용자 이름, Plex 또는 Jellyfin 사용자 이름, 그리고 대소문자를 구분하지 않는 이메일 주소와 일치합니다. 취득이 두 번째 승인 없이 시작되도록 하려면 Bindery에서 각 계정에 대해 '요청 자동 승인'을 활성화하세요. 개인 사용자 라이브러리의 경우, Bindery에서 BINDERY_ENFORCE_TENANCY도 활성화해야 합니다.",
+      "currentTargetSha256": "1a8b07230cbb3d4700347e31596420a45903be4147df98f1d2b6bafee37ee3cd"
+    },
+    {
+      "position": 3618,
+      "locale": "zh_Hant",
+      "sourceId": "components.Settings.BinderyModal.ownerFeature",
+      "sourceProtectedLiterals": [
+        "SeerrNG",
+        "Bindery",
+        "Plex",
+        "Jellyfin",
+        "BINDERY_ENFORCE_TENANCY",
+        "Auto-approve requests"
+      ],
+      "currentTarget": "支援個別使用者的請求。SeerrNG 找到 {accountCount} 個 Bindery 帳戶。它會比對使用者名稱、Plex 或 Jellyfin 的使用者名稱，以及電子郵件地址（不分大小寫）。如果希望獲取流程無需二次核准即可開始，請在 Bindery 中為每個帳戶啟用「自動核准請求」。對於私人使用者資料庫，也請在 Bindery 中啟用 BINDERY_ENFORCE_TENANCY。",
+      "currentTargetSha256": "b5f5614072968443850bc42d9e258c76435b4ab66ce42d578a68cd0d61761e15"
+    },
+    {
+      "position": 3618,
+      "locale": "vi",
+      "sourceId": "components.Settings.BinderyModal.ownerFeature",
+      "sourceProtectedLiterals": [
+        "SeerrNG",
+        "Bindery",
+        "Plex",
+        "Jellyfin",
+        "BINDERY_ENFORCE_TENANCY",
+        "Auto-approve requests"
+      ],
+      "currentTarget": "Hỗ trợ yêu cầu theo từng người dùng. SeerrNG đã tìm thấy {accountCount} tài khoản Bindery. Nó khớp với tên người dùng, Plex hoặc tên người dùng Jellyfin, và địa chỉ email không phân biệt chữ hoa chữ thường. Bật Tự động phê duyệt yêu cầu cho từng tài khoản trong Bindery nếu việc thu thập cần bắt đầu mà không cần phê duyệt lần hai. Đối với thư viện người dùng riêng, hãy bật BINDERY_ENFORCE_TENANCY trong Bindery.",
+      "currentTargetSha256": "465477d4bf087a7dc49c274a6b7512f02d43434901647133e7728f9da9b1f5c7"
+    }
+  ],
+  "baselinePlaceholderMismatches": 0,
+  "baselineMarkupMismatches": 0,
+  "baselineNumericTokenMismatches": 0,
+  "nativeSpeakerApproval": false,
+  "exactHeadBrowserReview": false,
+  "blindReviewIncluded": false,
+  "reviewedAtUTC": "2026-11-03T15:09:42.266204+00:00"
+}

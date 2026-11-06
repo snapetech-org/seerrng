@@ -6,6 +6,7 @@ import { memberHasQuality } from '@app/utils/curatedCollectionSelection';
 import defineMessages from '@app/utils/defineMessages';
 import { getTmdbPosterImageUrl } from '@app/utils/imageCache';
 import { musicCollectionTypeLabel } from '@app/utils/musicCollectionFilters';
+import { formatDurationMinutes } from '@app/utils/numberHelpers';
 import { getViewerAvailabilityPresentation } from '@app/utils/viewerAvailabilityPresentation';
 import { MediaStatus } from '@server/constants/media';
 import type { CuratedCollectionMember } from '@server/models/CuratedCollection';
@@ -185,9 +186,7 @@ export default function CuratedMemberCard({
               </dt>
               <dd className="card:col-start-3 card:row-start-3 m-0 truncate">
                 {part.runtime
-                  ? intl.formatMessage(messages.minutes, {
-                      minutes: part.runtime,
-                    })
+                  ? formatDurationMinutes(part.runtime, intl.locale)
                   : unavailable}
               </dd>
               <div className="media-detail-rows media-detail-column-divider card:col-start-5 card:row-span-3 card:row-start-1 col-span-2 grid min-w-0 grid-cols-[max-content_minmax(0,1fr)] content-start gap-x-3">

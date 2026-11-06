@@ -1,0 +1,146 @@
+{
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "head": "039fe9e04ea5cc6da314427fa25b0937ef8dd92b",
+  "tree": "b1338441dc47245b87ed77e8253843b66c367062",
+  "sourceOrderCount": 9494,
+  "sourceOrderSha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+  "before": {
+    "position": 3279,
+    "id": "components.RequestStatus.waitingForApproval",
+    "source": "Your request is waiting for approval."
+  },
+  "first": {
+    "position": 3280,
+    "id": "components.RequestStatus.waitingForBinderyApproval",
+    "source": "Waiting for Bindery to approve this request. Enable Auto-approve requests for this account in Bindery if acquisition should start immediately.",
+    "sourceSha256": "da877da575fd468588ed6eff86406cf3c960850c224bdb1ac497d74db7b6d54e"
+  },
+  "last": {
+    "position": 3299,
+    "id": "components.Requests.available",
+    "source": "Available",
+    "sourceSha256": "e674447337e83c1346f6122ed69f35bf5526e2a11842b2f2b788f3fb67d714ca"
+  },
+  "after": {
+    "position": 3300,
+    "id": "components.Requests.book",
+    "source": "Book"
+  },
+  "localeCatalogPins": {
+    "src/i18n/locale/en.json": {
+      "sha256": "75ff3c90b52aedd636a506281ffbd6fb2d3739c61294b6008a517f17647e2316",
+      "gitBlob": "12e04a118c30b71b3714291adeaf9fdb2735cee4",
+      "keyCount": 9494,
+      "orderedKeySha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072"
+    },
+    "src/i18n/locale/es.json": {
+      "sha256": "916ea7354e3796b311e85d6ef7190f9cca7df18c09a4367072b49436d5cba630",
+      "gitBlob": "eee01c99fd888d6c20623ce38835c876085f1fb5",
+      "keyCount": 9494,
+      "orderedKeySha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072"
+    },
+    "src/i18n/locale/zh_Hans.json": {
+      "sha256": "a34ec2b33fc7c334bfa0875bf385f3cd1b4ba1d65b3d125960d23397c558499e",
+      "gitBlob": "302293ae7be31b6e2c20282d7db0ec9195c2fdfd",
+      "keyCount": 9494,
+      "orderedKeySha256": "8d5fd7bd4351bc64c5ee813f2e50196608869e165866f3202a312078732c2baf"
+    },
+    "src/i18n/locale/hi.json": {
+      "sha256": "07bebe128a555ed7294b3f6700a6cb068ec12ca9642ee5f532d9d2636656eb41",
+      "gitBlob": "ec020429be24626a67177cb88053f6ef8d8f267e",
+      "keyCount": 9494,
+      "orderedKeySha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072"
+    },
+    "src/i18n/locale/de.json": {
+      "sha256": "b5affa3766d8c4b168b1aa21f6ac162f3f61def303b77c484f43846d0bd897c5",
+      "gitBlob": "142f09bc1e468eed2f2a7744af2291f4d4b6e485",
+      "keyCount": 9494,
+      "orderedKeySha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072"
+    },
+    "src/i18n/locale/ja.json": {
+      "sha256": "b58ceb209f87359479c299bb930f7cd7b99a83e8adfe254ea36db2df8f470f59",
+      "gitBlob": "2a851ab76c2780487c0dd0898175db504e18d9eb",
+      "keyCount": 9494,
+      "orderedKeySha256": "8d5fd7bd4351bc64c5ee813f2e50196608869e165866f3202a312078732c2baf"
+    },
+    "src/i18n/locale/fr.json": {
+      "sha256": "9da555dc2a0731d96b46eb6fb32f4f4ccec6272e5d032ba66077afabffc597fe",
+      "gitBlob": "a3f9c0d1ac5c266d5e0e50f09d8119d99d61b74a",
+      "keyCount": 9494,
+      "orderedKeySha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072"
+    },
+    "src/i18n/locale/pt_BR.json": {
+      "sha256": "93be97d99c356a5e7be7db0a52bb3a71544d74f61ec4047d8944495d984bd108",
+      "gitBlob": "e6f0094ad5854fdbf56521ac5ed353d74467fc21",
+      "keyCount": 9494,
+      "orderedKeySha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072"
+    },
+    "src/i18n/locale/ar.json": {
+      "sha256": "41ecf80a54d532c754be41d980b900333a517e0052b6c2dc7141ef4fb190addb",
+      "gitBlob": "27dbd82b235b1c69c10138fc65ae424856288b33",
+      "keyCount": 9494,
+      "orderedKeySha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072"
+    },
+    "src/i18n/locale/ko.json": {
+      "sha256": "cb71a97bb1a7814fa82d66a99472326cd0cfff49d43a5ef9318dbaa1cf1c90b4",
+      "gitBlob": "0269942318c6f141c621b33dc15997f4242b8e5e",
+      "keyCount": 9494,
+      "orderedKeySha256": "8d5fd7bd4351bc64c5ee813f2e50196608869e165866f3202a312078732c2baf"
+    },
+    "src/i18n/locale/zh_Hant.json": {
+      "sha256": "e6cf1b51bf341a96fa3ddcb99bf6543c2e6b0643257ed1e27f0e9d4a4f6898c7",
+      "gitBlob": "a1475f5787fcded0c5b08a03f430a44e265962ba",
+      "keyCount": 9494,
+      "orderedKeySha256": "8d5fd7bd4351bc64c5ee813f2e50196608869e165866f3202a312078732c2baf"
+    },
+    "src/i18n/locale/vi.json": {
+      "sha256": "fa806a479338779eff2215d4fc1a43afbe615a52d40b297ed88ac4ece27e538f",
+      "gitBlob": "8345fad0b59d3f9682b28c4680395dec0c53d8d3",
+      "keyCount": 9494,
+      "orderedKeySha256": "8d5fd7bd4351bc64c5ee813f2e50196608869e165866f3202a312078732c2baf"
+    },
+    "src/i18n/locale/id.json": {
+      "sha256": "43fe16b9df02ab29eff4bbb289ecf174f0f1e2cf4ea08c2ce209229a40ba3fee",
+      "gitBlob": "e5ea7dede0dce8f8d35aa4db9180330fa86166dc",
+      "keyCount": 9494,
+      "orderedKeySha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072"
+    }
+  },
+  "callerFiles": {
+    "src/components/RequestStatus/messages.tsx": {
+      "sha256": "5c7691636c95eed239cf012fa2e8bdc066ef773a8b4288bbd93fafddb15324eb",
+      "gitBlob": "73f660f8595c193f4996c2720d0566212545f76c",
+      "lineCount": 121
+    },
+    "server/lib/requestStatus.ts": {
+      "sha256": "63dd1b43e684a40eb82253a2942d7652cad63d87234b5c279d73af0b945b2d31",
+      "gitBlob": "e75608e1c2921b5f7b3e822c25a690f8b1cc5e82",
+      "lineCount": 2328
+    },
+    "src/components/Requests/index.tsx": {
+      "sha256": "25b612dcda274fe2ea64b76f169587e153b04a675c9b8cd817814d9fbfde5360",
+      "gitBlob": "84f6a19674b329df0ef6be6483d74bbaeb110ccb",
+      "lineCount": 3115
+    },
+    "src/components/Requests/destructiveActions.tsx": {
+      "sha256": "16d562185c1e1f3a94398369b4ab3eec28085033dcc3465c32557752687d1d57",
+      "gitBlob": "09884f99a738ce4402b5fb121d15022f0efc3a67",
+      "lineCount": 173
+    },
+    "src/pages/requests/index.tsx": {
+      "sha256": "64273c876d30c6ee3ee1f7419f3376cd1849fcc6fbbc37cec781c340e3c6cb76",
+      "gitBlob": "17a3c44c6c3073fcaecd94cc77993a8bae3bdc4d",
+      "lineCount": 6
+    },
+    "src/utils/defineMessages.ts": {
+      "sha256": "761cb0362244e473b6993c78f4b852a6673c95e35da13990856e6a44c6d9169f",
+      "gitBlob": "bb8fadb4baf7764b0af8b1a2294bf43d4196aaaa",
+      "lineCount": 26
+    }
+  },
+  "orderedLocaleKeySequencesMatch": false,
+  "perLocaleOrderedKeyHashesPinned": true,
+  "contextHolds": [],
+  "placeholderParityErrors": []
+}

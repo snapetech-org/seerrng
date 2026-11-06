@@ -962,7 +962,7 @@
   "components.UserProfile.UserSettings.UserGeneralSettings.originallanguageTip": "Filtrovat obsah podle původního jazyka",
   "components.UserProfile.UserSettings.UserNotificationSettings.pushbulletAccessTokenTip": "Vytvořte token z <PushbulletSettingsLink>Nastavení účtu</PushbulletSettingsLink>",
   "components.QuotaSelector.movies": "{count, plural, one {film} few {filmy} other {filmů}}",
-  "components.QuotaSelector.seasons": "{seasonCount, plural, one {sezóna} few {sezóny} other {sezón}}",
+  "components.QuotaSelector.seasons": "{count, plural, one {sezóna} few {sezóny} other {sezón}}",
   "components.QuotaSelector.tvRequests": "{quotaLimit} <quotaUnits>{seasons} za {quotaDays} {days}</quotaUnits>",
   "components.RequestButton.approverequests": "Schválit {requestCount, plural, one {žádost} few {{requestCount} žádosti} other {{requestCount} žádostí}}",
   "components.RequestButton.decline4krequests": "Odmítnout {requestCount, plural, one {žádost 4K} few {{requestCount} žádosti 4K} other {{requestCount} žádostí 4K}}",

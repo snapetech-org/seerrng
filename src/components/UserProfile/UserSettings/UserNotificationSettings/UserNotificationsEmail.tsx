@@ -108,7 +108,7 @@ const UserEmailSettings = () => {
           <Form className="section">
             <div className="form-row">
               <label htmlFor="pgpKey" className="text-label">
-                <span className="mr-2">
+                <span className="me-2">
                   {intl.formatMessage(messages.pgpPublicKey)}
                 </span>
                 <SettingsBadge badgeType="advanced" />
@@ -151,7 +151,7 @@ const UserEmailSettings = () => {
             />
             <div className="actions">
               <div className="flex justify-end">
-                <span className="ml-3 inline-flex rounded-md shadow-sm">
+                <span className="ms-3 inline-flex rounded-md shadow-sm">
                   <Button
                     buttonType="primary"
                     type="submit"

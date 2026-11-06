@@ -1,0 +1,471 @@
+{
+  "allLocalesExactKeySetParity": true,
+  "capturedAtUtc": "2026-11-02T20:24:31.533258+00:00",
+  "head": "0905d4be32d8b7ec3b1af701473a3fdf6e0f30a2",
+  "locales": [
+    {
+      "blob": "eaf1e0d9eeb9e2a59b10398a6ce7822e631412e6",
+      "fileBytes": 1044013,
+      "fileSha256": "8dd336b81eebd01231e5e9a60c3fda79a368fa393455e86f2621288c39460cd9",
+      "firstOrderedMismatches": [],
+      "keyCount": 9494,
+      "keySetParity": true,
+      "locale": "ar",
+      "localeOnlyKeyCount": 0,
+      "orderedKeyListSha256": "47d40a21145f2f198fadaa29baeef5461718c4b6365d564af60ee015f18f1974",
+      "orderedKeyParity": true,
+      "orderedMismatchCount": 0,
+      "path": "src/i18n/locale/ar.json",
+      "sortedKeySetSha256": "47d40a21145f2f198fadaa29baeef5461718c4b6365d564af60ee015f18f1974",
+      "sourceOnlyKeyCount": 0
+    },
+    {
+      "blob": "9e81fb50a0cd555db6a81236e45e649342f8890e",
+      "fileBytes": 926703,
+      "fileSha256": "31a410371fd227677c76f64eaf8ebab424a2af7a6a10e482012aeb5e87425ae2",
+      "firstOrderedMismatches": [],
+      "keyCount": 9494,
+      "keySetParity": true,
+      "locale": "de",
+      "localeOnlyKeyCount": 0,
+      "orderedKeyListSha256": "47d40a21145f2f198fadaa29baeef5461718c4b6365d564af60ee015f18f1974",
+      "orderedKeyParity": true,
+      "orderedMismatchCount": 0,
+      "path": "src/i18n/locale/de.json",
+      "sortedKeySetSha256": "47d40a21145f2f198fadaa29baeef5461718c4b6365d564af60ee015f18f1974",
+      "sourceOnlyKeyCount": 0
+    },
+    {
+      "blob": "b5e769046a3026cade2776e1ac87dc9638c1542b",
+      "fileBytes": 922270,
+      "fileSha256": "b655287779aa271fb4eb465b15f8146d8b7c8e6f0037b27cf62e81b86fa96b9a",
+      "firstOrderedMismatches": [],
+      "keyCount": 9494,
+      "keySetParity": true,
+      "locale": "es",
+      "localeOnlyKeyCount": 0,
+      "orderedKeyListSha256": "47d40a21145f2f198fadaa29baeef5461718c4b6365d564af60ee015f18f1974",
+      "orderedKeyParity": true,
+      "orderedMismatchCount": 0,
+      "path": "src/i18n/locale/es.json",
+      "sortedKeySetSha256": "47d40a21145f2f198fadaa29baeef5461718c4b6365d564af60ee015f18f1974",
+      "sourceOnlyKeyCount": 0
+    },
+    {
+      "blob": "2e548febf6b8d6aeda45923dde864cf1bbac3b1f",
+      "fileBytes": 939637,
+      "fileSha256": "56450b996ad086465ed3c47667fec69c86fcf43e5fbce2de30e90943b0780d64",
+      "firstOrderedMismatches": [],
+      "keyCount": 9494,
+      "keySetParity": true,
+      "locale": "fr",
+      "localeOnlyKeyCount": 0,
+      "orderedKeyListSha256": "47d40a21145f2f198fadaa29baeef5461718c4b6365d564af60ee015f18f1974",
+      "orderedKeyParity": true,
+      "orderedMismatchCount": 0,
+      "path": "src/i18n/locale/fr.json",
+      "sortedKeySetSha256": "47d40a21145f2f198fadaa29baeef5461718c4b6365d564af60ee015f18f1974",
+      "sourceOnlyKeyCount": 0
+    },
+    {
+      "blob": "42ba0cd2535026b8261ede7f3259888a1fef546a",
+      "fileBytes": 1370567,
+      "fileSha256": "48011ae4fb6a316e7b29e63991cd3dad54cf30be6f33914da82dec8ec64c720a",
+      "firstOrderedMismatches": [],
+      "keyCount": 9494,
+      "keySetParity": true,
+      "locale": "hi",
+      "localeOnlyKeyCount": 0,
+      "orderedKeyListSha256": "47d40a21145f2f198fadaa29baeef5461718c4b6365d564af60ee015f18f1974",
+      "orderedKeyParity": true,
+      "orderedMismatchCount": 0,
+      "path": "src/i18n/locale/hi.json",
+      "sortedKeySetSha256": "47d40a21145f2f198fadaa29baeef5461718c4b6365d564af60ee015f18f1974",
+      "sourceOnlyKeyCount": 0
+    },
+    {
+      "blob": "23e660533cf1ab938117c03f8a6077fd3f232c2f",
+      "fileBytes": 867259,
+      "fileSha256": "d80d4418ef6649e284495d04eb21e67b247429efbfce22384b589d60808af3b3",
+      "firstOrderedMismatches": [],
+      "keyCount": 9494,
+      "keySetParity": true,
+      "locale": "id",
+      "localeOnlyKeyCount": 0,
+      "orderedKeyListSha256": "47d40a21145f2f198fadaa29baeef5461718c4b6365d564af60ee015f18f1974",
+      "orderedKeyParity": true,
+      "orderedMismatchCount": 0,
+      "path": "src/i18n/locale/id.json",
+      "sortedKeySetSha256": "47d40a21145f2f198fadaa29baeef5461718c4b6365d564af60ee015f18f1974",
+      "sourceOnlyKeyCount": 0
+    },
+    {
+      "blob": "59d88a681446f83cb82ccba0c4fc1c1c8dbbbaf7",
+      "fileBytes": 1015265,
+      "fileSha256": "18f9a00a99d7ef3f717243496cdf281432cf54fa22ddb2258c39912c2ba5b0bf",
+      "firstOrderedMismatches": [
+        {
+          "localeId": "components.BookSeriesDetails.empty",
+          "sourceId": "components.BookSeriesDetails.collectionTitle",
+          "zeroBasedPosition": 350
+        },
+        {
+          "localeId": "components.BookSeriesDetails.firstPublished",
+          "sourceId": "components.BookSeriesDetails.empty",
+          "zeroBasedPosition": 351
+        },
+        {
+          "localeId": "components.BookSeriesDetails.genres",
+          "sourceId": "components.BookSeriesDetails.firstPublished",
+          "zeroBasedPosition": 352
+        },
+        {
+          "localeId": "components.BookSeriesDetails.language",
+          "sourceId": "components.BookSeriesDetails.genres",
+          "zeroBasedPosition": 353
+        },
+        {
+          "localeId": "components.BookSeriesDetails.mediaType",
+          "sourceId": "components.BookSeriesDetails.language",
+          "zeroBasedPosition": 354
+        },
+        {
+          "localeId": "components.BookSeriesDetails.rating",
+          "sourceId": "components.BookSeriesDetails.mediaType",
+          "zeroBasedPosition": 355
+        },
+        {
+          "localeId": "components.BookSeriesDetails.requestCollection",
+          "sourceId": "components.BookSeriesDetails.rating",
+          "zeroBasedPosition": 356
+        },
+        {
+          "localeId": "components.BookSeriesLinks.audiobook",
+          "sourceId": "components.BookSeriesDetails.requestCollection",
+          "zeroBasedPosition": 357
+        },
+        {
+          "localeId": "components.BookSeriesLinks.ebook",
+          "sourceId": "components.BookSeriesLinks.audiobook",
+          "zeroBasedPosition": 358
+        },
+        {
+          "localeId": "components.BookSeriesLinks.partial",
+          "sourceId": "components.BookSeriesLinks.ebook",
+          "zeroBasedPosition": 359
+        }
+      ],
+      "keyCount": 9494,
+      "keySetParity": true,
+      "locale": "ja",
+      "localeOnlyKeyCount": 0,
+      "orderedKeyListSha256": "35faf7107f1be3900172b7c08ac7558b51f31d63b3b6c57eebe7710e8a81ca33",
+      "orderedKeyParity": false,
+      "orderedMismatchCount": 9144,
+      "path": "src/i18n/locale/ja.json",
+      "sortedKeySetSha256": "47d40a21145f2f198fadaa29baeef5461718c4b6365d564af60ee015f18f1974",
+      "sourceOnlyKeyCount": 0
+    },
+    {
+      "blob": "6d62743968c7e454c52d2ac4d59a5234bb05f442",
+      "fileBytes": 933334,
+      "fileSha256": "13c737e8fc41c4d6a7253a7b91d74d8c934eb4b05844d4430229bc7d716a5075",
+      "firstOrderedMismatches": [
+        {
+          "localeId": "components.BookSeriesDetails.empty",
+          "sourceId": "components.BookSeriesDetails.collectionTitle",
+          "zeroBasedPosition": 350
+        },
+        {
+          "localeId": "components.BookSeriesDetails.firstPublished",
+          "sourceId": "components.BookSeriesDetails.empty",
+          "zeroBasedPosition": 351
+        },
+        {
+          "localeId": "components.BookSeriesDetails.genres",
+          "sourceId": "components.BookSeriesDetails.firstPublished",
+          "zeroBasedPosition": 352
+        },
+        {
+          "localeId": "components.BookSeriesDetails.language",
+          "sourceId": "components.BookSeriesDetails.genres",
+          "zeroBasedPosition": 353
+        },
+        {
+          "localeId": "components.BookSeriesDetails.mediaType",
+          "sourceId": "components.BookSeriesDetails.language",
+          "zeroBasedPosition": 354
+        },
+        {
+          "localeId": "components.BookSeriesDetails.rating",
+          "sourceId": "components.BookSeriesDetails.mediaType",
+          "zeroBasedPosition": 355
+        },
+        {
+          "localeId": "components.BookSeriesDetails.requestCollection",
+          "sourceId": "components.BookSeriesDetails.rating",
+          "zeroBasedPosition": 356
+        },
+        {
+          "localeId": "components.BookSeriesLinks.audiobook",
+          "sourceId": "components.BookSeriesDetails.requestCollection",
+          "zeroBasedPosition": 357
+        },
+        {
+          "localeId": "components.BookSeriesLinks.ebook",
+          "sourceId": "components.BookSeriesLinks.audiobook",
+          "zeroBasedPosition": 358
+        },
+        {
+          "localeId": "components.BookSeriesLinks.partial",
+          "sourceId": "components.BookSeriesLinks.ebook",
+          "zeroBasedPosition": 359
+        }
+      ],
+      "keyCount": 9494,
+      "keySetParity": true,
+      "locale": "ko",
+      "localeOnlyKeyCount": 0,
+      "orderedKeyListSha256": "35faf7107f1be3900172b7c08ac7558b51f31d63b3b6c57eebe7710e8a81ca33",
+      "orderedKeyParity": false,
+      "orderedMismatchCount": 9144,
+      "path": "src/i18n/locale/ko.json",
+      "sortedKeySetSha256": "47d40a21145f2f198fadaa29baeef5461718c4b6365d564af60ee015f18f1974",
+      "sourceOnlyKeyCount": 0
+    },
+    {
+      "blob": "a48b1460e3295c63986cfca0cb329114be0b6517",
+      "fileBytes": 910925,
+      "fileSha256": "4b4ef4717cef765cad74e40da053738e7b2f966bb2db8d12611dcf60e5b98519",
+      "firstOrderedMismatches": [],
+      "keyCount": 9494,
+      "keySetParity": true,
+      "locale": "pt_BR",
+      "localeOnlyKeyCount": 0,
+      "orderedKeyListSha256": "47d40a21145f2f198fadaa29baeef5461718c4b6365d564af60ee015f18f1974",
+      "orderedKeyParity": true,
+      "orderedMismatchCount": 0,
+      "path": "src/i18n/locale/pt_BR.json",
+      "sortedKeySetSha256": "47d40a21145f2f198fadaa29baeef5461718c4b6365d564af60ee015f18f1974",
+      "sourceOnlyKeyCount": 0
+    },
+    {
+      "blob": "59ae3a53aa931ee26968d7902c189409c6990cc0",
+      "fileBytes": 968591,
+      "fileSha256": "ca6b1cac9c35b5a10473c54dc988827c7909d389807b8037b91606a4baf90260",
+      "firstOrderedMismatches": [
+        {
+          "localeId": "components.BookSeriesDetails.empty",
+          "sourceId": "components.BookSeriesDetails.collectionTitle",
+          "zeroBasedPosition": 350
+        },
+        {
+          "localeId": "components.BookSeriesDetails.firstPublished",
+          "sourceId": "components.BookSeriesDetails.empty",
+          "zeroBasedPosition": 351
+        },
+        {
+          "localeId": "components.BookSeriesDetails.genres",
+          "sourceId": "components.BookSeriesDetails.firstPublished",
+          "zeroBasedPosition": 352
+        },
+        {
+          "localeId": "components.BookSeriesDetails.language",
+          "sourceId": "components.BookSeriesDetails.genres",
+          "zeroBasedPosition": 353
+        },
+        {
+          "localeId": "components.BookSeriesDetails.mediaType",
+          "sourceId": "components.BookSeriesDetails.language",
+          "zeroBasedPosition": 354
+        },
+        {
+          "localeId": "components.BookSeriesDetails.rating",
+          "sourceId": "components.BookSeriesDetails.mediaType",
+          "zeroBasedPosition": 355
+        },
+        {
+          "localeId": "components.BookSeriesDetails.requestCollection",
+          "sourceId": "components.BookSeriesDetails.rating",
+          "zeroBasedPosition": 356
+        },
+        {
+          "localeId": "components.BookSeriesLinks.audiobook",
+          "sourceId": "components.BookSeriesDetails.requestCollection",
+          "zeroBasedPosition": 357
+        },
+        {
+          "localeId": "components.BookSeriesLinks.ebook",
+          "sourceId": "components.BookSeriesLinks.audiobook",
+          "zeroBasedPosition": 358
+        },
+        {
+          "localeId": "components.BookSeriesLinks.partial",
+          "sourceId": "components.BookSeriesLinks.ebook",
+          "zeroBasedPosition": 359
+        }
+      ],
+      "keyCount": 9494,
+      "keySetParity": true,
+      "locale": "vi",
+      "localeOnlyKeyCount": 0,
+      "orderedKeyListSha256": "35faf7107f1be3900172b7c08ac7558b51f31d63b3b6c57eebe7710e8a81ca33",
+      "orderedKeyParity": false,
+      "orderedMismatchCount": 9144,
+      "path": "src/i18n/locale/vi.json",
+      "sortedKeySetSha256": "47d40a21145f2f198fadaa29baeef5461718c4b6365d564af60ee015f18f1974",
+      "sourceOnlyKeyCount": 0
+    },
+    {
+      "blob": "fe06b511ee7aac420d0af515ddc55229542efa41",
+      "fileBytes": 811822,
+      "fileSha256": "fcbc44a0e4583105fd85b28ef31c04c957f1679dcaeffbed99129bf67ab806fb",
+      "firstOrderedMismatches": [
+        {
+          "localeId": "components.BookSeriesDetails.empty",
+          "sourceId": "components.BookSeriesDetails.collectionTitle",
+          "zeroBasedPosition": 350
+        },
+        {
+          "localeId": "components.BookSeriesDetails.firstPublished",
+          "sourceId": "components.BookSeriesDetails.empty",
+          "zeroBasedPosition": 351
+        },
+        {
+          "localeId": "components.BookSeriesDetails.genres",
+          "sourceId": "components.BookSeriesDetails.firstPublished",
+          "zeroBasedPosition": 352
+        },
+        {
+          "localeId": "components.BookSeriesDetails.language",
+          "sourceId": "components.BookSeriesDetails.genres",
+          "zeroBasedPosition": 353
+        },
+        {
+          "localeId": "components.BookSeriesDetails.mediaType",
+          "sourceId": "components.BookSeriesDetails.language",
+          "zeroBasedPosition": 354
+        },
+        {
+          "localeId": "components.BookSeriesDetails.rating",
+          "sourceId": "components.BookSeriesDetails.mediaType",
+          "zeroBasedPosition": 355
+        },
+        {
+          "localeId": "components.BookSeriesDetails.requestCollection",
+          "sourceId": "components.BookSeriesDetails.rating",
+          "zeroBasedPosition": 356
+        },
+        {
+          "localeId": "components.BookSeriesLinks.audiobook",
+          "sourceId": "components.BookSeriesDetails.requestCollection",
+          "zeroBasedPosition": 357
+        },
+        {
+          "localeId": "components.BookSeriesLinks.ebook",
+          "sourceId": "components.BookSeriesLinks.audiobook",
+          "zeroBasedPosition": 358
+        },
+        {
+          "localeId": "components.BookSeriesLinks.partial",
+          "sourceId": "components.BookSeriesLinks.ebook",
+          "zeroBasedPosition": 359
+        }
+      ],
+      "keyCount": 9494,
+      "keySetParity": true,
+      "locale": "zh_Hans",
+      "localeOnlyKeyCount": 0,
+      "orderedKeyListSha256": "35faf7107f1be3900172b7c08ac7558b51f31d63b3b6c57eebe7710e8a81ca33",
+      "orderedKeyParity": false,
+      "orderedMismatchCount": 9144,
+      "path": "src/i18n/locale/zh_Hans.json",
+      "sortedKeySetSha256": "47d40a21145f2f198fadaa29baeef5461718c4b6365d564af60ee015f18f1974",
+      "sourceOnlyKeyCount": 0
+    },
+    {
+      "blob": "0183de756ddb089a387b5494bcde3f89a607be8e",
+      "fileBytes": 813204,
+      "fileSha256": "cf6547fd16f6912c2d2ea4d2d8138565ee2ce49a9359ad8993a40590cf909aae",
+      "firstOrderedMismatches": [
+        {
+          "localeId": "components.BookSeriesDetails.empty",
+          "sourceId": "components.BookSeriesDetails.collectionTitle",
+          "zeroBasedPosition": 350
+        },
+        {
+          "localeId": "components.BookSeriesDetails.firstPublished",
+          "sourceId": "components.BookSeriesDetails.empty",
+          "zeroBasedPosition": 351
+        },
+        {
+          "localeId": "components.BookSeriesDetails.genres",
+          "sourceId": "components.BookSeriesDetails.firstPublished",
+          "zeroBasedPosition": 352
+        },
+        {
+          "localeId": "components.BookSeriesDetails.language",
+          "sourceId": "components.BookSeriesDetails.genres",
+          "zeroBasedPosition": 353
+        },
+        {
+          "localeId": "components.BookSeriesDetails.mediaType",
+          "sourceId": "components.BookSeriesDetails.language",
+          "zeroBasedPosition": 354
+        },
+        {
+          "localeId": "components.BookSeriesDetails.rating",
+          "sourceId": "components.BookSeriesDetails.mediaType",
+          "zeroBasedPosition": 355
+        },
+        {
+          "localeId": "components.BookSeriesDetails.requestCollection",
+          "sourceId": "components.BookSeriesDetails.rating",
+          "zeroBasedPosition": 356
+        },
+        {
+          "localeId": "components.BookSeriesLinks.audiobook",
+          "sourceId": "components.BookSeriesDetails.requestCollection",
+          "zeroBasedPosition": 357
+        },
+        {
+          "localeId": "components.BookSeriesLinks.ebook",
+          "sourceId": "components.BookSeriesLinks.audiobook",
+          "zeroBasedPosition": 358
+        },
+        {
+          "localeId": "components.BookSeriesLinks.partial",
+          "sourceId": "components.BookSeriesLinks.ebook",
+          "zeroBasedPosition": 359
+        }
+      ],
+      "keyCount": 9494,
+      "keySetParity": true,
+      "locale": "zh_Hant",
+      "localeOnlyKeyCount": 0,
+      "orderedKeyListSha256": "35faf7107f1be3900172b7c08ac7558b51f31d63b3b6c57eebe7710e8a81ca33",
+      "orderedKeyParity": false,
+      "orderedMismatchCount": 9144,
+      "path": "src/i18n/locale/zh_Hant.json",
+      "sortedKeySetSha256": "47d40a21145f2f198fadaa29baeef5461718c4b6365d564af60ee015f18f1974",
+      "sourceOnlyKeyCount": 0
+    }
+  ],
+  "localesWithOrderDifferences": [
+    "ja",
+    "ko",
+    "vi",
+    "zh_Hans",
+    "zh_Hant"
+  ],
+  "pullRequest": 418,
+  "repository": "snapetech-org/SeerrNG",
+  "sourceCatalog": {
+    "blob": "12e04a118c30b71b3714291adeaf9fdb2735cee4",
+    "fileBytes": 835513,
+    "fileSha256": "75ff3c90b52aedd636a506281ffbd6fb2d3739c61294b6008a517f17647e2316",
+    "keyCount": 9494,
+    "orderedKeysSha256": "47d40a21145f2f198fadaa29baeef5461718c4b6365d564af60ee015f18f1974",
+    "path": "src/i18n/locale/en.json"
+  }
+}

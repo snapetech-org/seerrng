@@ -294,7 +294,7 @@
   "components.RequestModal.requestmovies": "Kërko {count} {count, plural, one {Film} other {Filma}}",
   "components.RequestModal.requestmovies4k": "Kërko {count} {count, plural, one {Film} other {Filma}} në 4K",
   "components.RequestModal.season": "Sezoni",
-  "components.RequestModal.seasonnumber": "Sezoni {numri}",
+  "components.RequestModal.seasonnumber": "Sezoni {number}",
   "components.RequestModal.selectmovies": "Zgjidh Filmat",
   "components.RequestModal.selectseason": "Zgjidh Sezon(et)",
   "components.ResetPassword.email": "Adresa e emailit",

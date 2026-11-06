@@ -1,0 +1,77 @@
+{
+  "artifact": "SeerrNG PR #418 W3620-W3639 independent cross-audit",
+  "cellCount": 240,
+  "checksumList": "SHA256SUMS.txt",
+  "head": "ebf1cb6082ef173688227c507acfdc04c3cf7ca7",
+  "inputPins": {
+    "blind": {
+      "checksumListSha256": "b798c46dde3b01e05976d6e6d49938e77c06b1f254345aabdc3fe50f372c148f",
+      "directory": "/home/keith/Documents/code/task-scratch/seerrng-pr418-w3620-3639-blind-review-20261103",
+      "head": "ebf1cb6082ef173688227c507acfdc04c3cf7ca7",
+      "manifestSha256": "3749cf975e2d1b5b0e6a459b0679a4dd4c90d058feae0bcccb0e2c0b0e31c03a",
+      "tree": "e3c4d1d10f40ea078b66dfdf942e99c8189fee0c"
+    },
+    "candidateFree": {
+      "checksumListSha256": "83be8bb6f14a09f416c7cc6e7daba148c493e6324d5f32ed177b1656e1bc2652",
+      "directory": "/home/keith/Documents/code/task-scratch/seerrng-pr418-w3620-3639-candidatefree-20261103/candidate-free-input",
+      "head": "ebf1cb6082ef173688227c507acfdc04c3cf7ca7",
+      "manifestSha256": "86554da29cb30ad1a2bec3a2503c6a43c731b438e5d73e9e7db87ec99aad0bac",
+      "tree": "e3c4d1d10f40ea078b66dfdf942e99c8189fee0c"
+    },
+    "primary": {
+      "checksumListSha256": "e68e85d257859a2f83f30b14cd73e398a7091a4de366b2728c3c94d9e0b18786",
+      "directory": "/home/keith/Documents/code/task-scratch/seerrng-pr418-w3620-3639-primary-review-20261103",
+      "head": "ebf1cb6082ef173688227c507acfdc04c3cf7ca7",
+      "manifestSha256": "95d25222d4aa568834ed55d20e70f807216556fbfcb1d092681c7b8bee304337",
+      "tree": "e3c4d1d10f40ea078b66dfdf942e99c8189fee0c"
+    }
+  },
+  "localeCount": 12,
+  "localeOrder": [
+    "es",
+    "zh_Hans",
+    "hi",
+    "de",
+    "ja",
+    "fr",
+    "pt_BR",
+    "ar",
+    "ko",
+    "zh_Hant",
+    "vi",
+    "id"
+  ],
+  "nativeSpeakerApproval": "not claimed",
+  "outputFiles": [
+    {
+      "byteCount": 1077,
+      "path": "README.md",
+      "sha256": "0756706da54560a4a2ff4e3650a35a45a9e0a3cbe7299b7449d8e19b2271985e"
+    },
+    {
+      "byteCount": 4591,
+      "path": "summary.json",
+      "sha256": "61e3b0a15722af4ea8836fe6dfac15b88b3d0b8c31d5a739749d01379ea440b0"
+    },
+    {
+      "byteCount": 558524,
+      "path": "cross-audit-ledger.jsonl",
+      "sha256": "ce9876b655a5875ee7b9a9cceae2f9720ee74f40851fa441882985d99fcdaaa7"
+    },
+    {
+      "byteCount": 12188,
+      "path": "verify_cross_audit.py",
+      "sha256": "bb7392e5a1faa4536b614c2d44be0e5f0f9358a89ca90512fefa01f6716c1853"
+    }
+  ],
+  "outputHost": "kspls0",
+  "pullRequest": 418,
+  "repository": "snapetech-org/seerrng",
+  "repositoryOrPrFilesEdited": false,
+  "schemaVersion": 1,
+  "sealed": true,
+  "sourceCount": 20,
+  "tree": "e3c4d1d10f40ea078b66dfdf942e99c8189fee0c",
+  "verifier": "verify_cross_audit.py",
+  "window": "W3620-W3639"
+}

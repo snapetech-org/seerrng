@@ -1,0 +1,42 @@
+{
+  "path": "/mnt/disks/scratch/task-scratch/seerrng-pr418-w2083-arabic-available-primary-20261102/SHA256SUMS.txt",
+  "sha256": "83489683b4085184bdea3b68178f651701ef86e378e8bd5bb73555e9a0da4897",
+  "files": [
+    {
+      "path": "README.md",
+      "sha256": "cf631ba972b67cbe63155af34c1891162a34a1b29e2d720b070c15fd0fac9272",
+      "matches": true
+    },
+    {
+      "path": "caller-pins.jsonl",
+      "sha256": "e8049ea7aabc45a0466447a98fa5fae28f0530a6d0d67cac4deb8e544577d209",
+      "matches": true
+    },
+    {
+      "path": "catalog-reattestation.jsonl",
+      "sha256": "edc6375ba07f060319e07d0b41d69334f50a7669c633c1f1a2d5455d5be45ffc",
+      "matches": true
+    },
+    {
+      "path": "primary-proposal.jsonl",
+      "sha256": "e58daf26fb6eee0b436655479988e1c1b8c2a7f9d5a4e345df56ca05869101fc",
+      "matches": true
+    },
+    {
+      "path": "prior-disposition-audit.json",
+      "sha256": "eb1c57b1aebb025020aec3756bd9b24cb85fec881cd73d0617b4d699d8d36d8f",
+      "matches": true
+    },
+    {
+      "path": "source-context.json",
+      "sha256": "e3d8f399e21d586fcb2141692fa59e0e5e4a72568aa274b2fd4caa891fe429e7",
+      "matches": true
+    },
+    {
+      "path": "summary.json",
+      "sha256": "69c9ed2341b16e571f3b0899becb75a4acd8416745234d6028819b154b87470e",
+      "matches": true
+    }
+  ],
+  "allMatch": true
+}

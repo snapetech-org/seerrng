@@ -1,0 +1,29 @@
+{
+  "artifact": "SeerrNG PR #418 W3980-W3999 cross-review package",
+  "schemaVersion": 1,
+  "status": "SEALED",
+  "window": "W3980-W3999",
+  "head": "d9c5224dbce97e8ae6e72b0ad0bf401e65e215eb",
+  "tree": "6578ebc4c8bd6c569fcea47978a2c47bd6e4bc8f",
+  "cellCount": 240,
+  "fileNames": [
+    "README.md",
+    "cross-review.json",
+    "decision-ledger.jsonl",
+    "input-bindings.json",
+    "rationale.md",
+    "verify-cross-review.py"
+  ],
+  "fileSha256": {
+    "README.md": "214f813ccc01cb145346dee9fc6c2586f2c239a9ca82a46579af7b562b42b4eb",
+    "cross-review.json": "3e9a8d184fdd63d8339205b1f4e3877bf6a7e70a6def82b5f9568a0f8e37e2ac",
+    "decision-ledger.jsonl": "2a97d27122221ec46c8580d8c01711fcf9c677abcae03c1f5b08cc1a9288829b",
+    "input-bindings.json": "78ca993b45699fe95ce12fea7c22c1894a8922a2901611e3f99652f77e2c334d",
+    "rationale.md": "b07996aa3065e914653d679374463795482a59c502fa28f196f10859d0819908",
+    "verify-cross-review.py": "25fe9110be1dceb212dd9c86e2a57e6137dbe4ba40174d4cd117e4ac65a13bfd"
+  },
+  "inputBindingsSha256": "78ca993b45699fe95ce12fea7c22c1894a8922a2901611e3f99652f77e2c334d",
+  "decisionLedgerSha256": "2a97d27122221ec46c8580d8c01711fcf9c677abcae03c1f5b08cc1a9288829b",
+  "crossReviewSha256": "3e9a8d184fdd63d8339205b1f4e3877bf6a7e70a6def82b5f9568a0f8e37e2ac",
+  "rationaleSha256": "b07996aa3065e914653d679374463795482a59c502fa28f196f10859d0819908"
+}

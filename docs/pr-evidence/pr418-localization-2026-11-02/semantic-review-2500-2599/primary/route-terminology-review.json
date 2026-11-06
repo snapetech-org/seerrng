@@ -1,0 +1,23 @@
+{
+  "head": "0905d4be32d8b7ec3b1af701473a3fdf6e0f30a2",
+  "purpose": "Record two intentional in-window label corrections where the current localized title itself is misleading or mixed-script; breadcrumb mentions in the same locale use the proposed label, while all out-of-window route labels continue to follow the frozen locale-ui-glossary.json.",
+  "decisions": [
+    {
+      "locale": "ja",
+      "sourceId": "components.ReaderDeliverySettings.title",
+      "currentLabel": "読者アプリ",
+      "reviewedLabel": "読書アプリ",
+      "reason": "The page lists software used for reading ebooks and comics; 読者アプリ reads as an app for a reader/person. The reviewed label is natural for a reading app.",
+      "breadcrumbUse": "Settings > 連携サービス > 読書アプリ"
+    },
+    {
+      "locale": "zh_Hant",
+      "sourceId": "components.ReaderDeliverySettings.title",
+      "currentLabel": "讀取器 Apps",
+      "reviewedLabel": "閱讀器應用程式",
+      "reason": "The current label mixes Simplified Chinese and English and does not localize the application term; the reviewed label is consistent Traditional Chinese.",
+      "breadcrumbUse": "設定值 > 伺服器 > 閱讀器應用程式"
+    }
+  ],
+  "allOtherLocaleRouteValues": "Use the exact values in locale-ui-glossary.json."
+}

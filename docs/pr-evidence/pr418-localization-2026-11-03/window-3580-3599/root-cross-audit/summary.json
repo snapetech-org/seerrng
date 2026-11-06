@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 1,
+  "artifact": "SeerrNG PR #418 W3580-W3599 independent root cross-audit",
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "window": "W3580-W3599",
+  "pin": {
+    "head": "30f626a4626d460f426666cde02f5c1ed17fa206",
+    "tree": "9b2616780791c73eb176aca6ad53061f1f3587d8",
+    "branch": "codex/seerrng-localization-overhaul-20261028",
+    "state": "OPEN",
+    "draft": true,
+    "baseRef": "main",
+    "baseSha": "221d8e0d542802da7529cd272c928cc747677e5c",
+    "branchRef": "30f626a4626d460f426666cde02f5c1ed17fa206",
+    "pullRef": "30f626a4626d460f426666cde02f5c1ed17fa206"
+  },
+  "candidateFreeInput": {
+    "path": "/home/keith/Documents/code/task-scratch/seerrng-pr418-w3580-3599-primary-20261103/candidate-free-input",
+    "manifestSha256": "dd52b2201b0d8608edce6953542a6459a627a93647344ec7e009f87c65e1fe56",
+    "checksumListSha256": "2b54d35d48d2309346383371bf745d747fcd64b016e1e7b6a6d6242c747c67b5",
+    "sourceOrderSha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072"
+  },
+  "primary": {
+    "path": "/home/keith/Documents/code/task-scratch/seerrng-pr418-w3580-3599-primary-20261103/primary-review",
+    "checksumListSha256": "d1cfc55bed5e0032ee912a268d4ed3d4519df64b3f3f7cadfd4229f5d6774a0a",
+    "ledgerSha256": "187949429648e9042d0ec98f5108a912cc771b736d95a8b7032f9504580c2a13",
+    "summarySha256": "e6f3898b4e7907d0f1ec9c8a3505ea13aad983295a45332c1e926fcdad36a7a6",
+    "proposalCount": 24
+  },
+  "blind": {
+    "path": "/home/keith/Documents/code/task-scratch/seerrng-pr418-w3580-3599-blind-20261103",
+    "checksumListSha256": "b17f90fb06608f8c30fe6c1a5a139490e677bd069ff2458aab91e3428a26bac0",
+    "ledgerSha256": "9dbacf9eee75145c48808ec7877028be87251c6ac3a4304fce72149eb682d09f",
+    "summarySha256": "0479a2a0a10d0714bc9cb7b45791e9421c6397b221941e2f5cc06773f0cc9253",
+    "proposalCount": 16
+  },
+  "sourceCount": 20,
+  "localeCount": 12,
+  "cellCount": 240,
+  "rootCounts": {
+    "propose-update": 28,
+    "retain-current": 212,
+    "hold": 0
+  },
+  "rootUpdates": 28,
+  "reviewerTargetDisagreements": 25,
+  "jointlyProposedSameTargetUpdates": 3,
+  "baselineStructuralMismatchCounts": {
+    "placeholder": 0,
+    "markup": 0,
+    "numeric": 0,
+    "protectedLiteral": 1
+  },
+  "finalStructuralMismatchCounts": {
+    "placeholder": 0,
+    "markup": 0,
+    "numeric": 0,
+    "protectedLiteral": 0
+  },
+  "callerlessSourceCount": 0,
+  "callerlessHolds": 0,
+  "priorWindowHoldCount": 0,
+  "holdsPreservedOutsideWindow": true,
+  "deduplication": {
+    "uniqueSourceIds": true,
+    "uniqueSourceLocaleCells": true,
+    "uniqueUpdates": true
+  },
+  "nativeSpeakerReviewPending": true,
+  "applicationAuthorized": false,
+  "createdAtUtc": "2026-11-03T14:17:54.527525+00:00"
+}

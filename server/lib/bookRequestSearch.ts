@@ -1156,8 +1156,13 @@ class BookRequestSearchManager {
       detail?.stage === stage
         ? detail.message
         : failed
-          ? 'Bookshelf search failed.'
-          : 'No release found.'
+          ? 'The request could not be completed.'
+          : 'No usable edition is available from the connected book service. Check the requested edition and the service catalog or acquisition sources, then retry when they are ready.',
+      detail?.stage === stage
+        ? undefined
+        : failed
+          ? 'couldNotComplete'
+          : 'bookUnavailable'
     );
   }
 }

@@ -1,0 +1,1361 @@
+{
+  "candidateCount": 169,
+  "candidateTargets": [
+    {
+      "candidateTarget": "जब अनुरोधित मीडिया उपलब्ध हो जाए, तो सूचनाएँ भेजें।",
+      "candidateTargetHash": "4837b3c2ad5f14c1fef0bf63b0fe6e8c3fde629514f6b32fdb0d562db1d61459",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.NotificationTypeSelector.mediaavailableDescription",
+      "sourcePosition": 2300
+    },
+    {
+      "candidateTarget": "Kirim pemberitahuan saat media yang diminta tersedia.",
+      "candidateTargetHash": "dedb418ab987ae64a5f0b982d339543267d8f70c4c4d881f346299ea654af003",
+      "disposition": "propose-correction",
+      "locale": "id",
+      "sourceId": "components.NotificationTypeSelector.mediaavailableDescription",
+      "sourcePosition": 2300
+    },
+    {
+      "candidateTarget": "リクエストされたメディアが利用可能になったときに通知を送信します。",
+      "candidateTargetHash": "258b800572728d84b2498860f12c7844c806e6ececebf2d0b022a64cd4e299b5",
+      "disposition": "propose-correction",
+      "locale": "ja",
+      "sourceId": "components.NotificationTypeSelector.mediaavailableDescription",
+      "sourcePosition": 2300
+    },
+    {
+      "candidateTarget": "요청한 미디어를 이용할 수 있게 되면 알림을 보냅니다.",
+      "candidateTargetHash": "209ba882310ba3a7d73ead790cef37c6e4d04c5c87501a4f7c6b4dfb64f6e3fd",
+      "disposition": "propose-correction",
+      "locale": "ko",
+      "sourceId": "components.NotificationTypeSelector.mediaavailableDescription",
+      "sourcePosition": 2300
+    },
+    {
+      "candidateTarget": "Gửi thông báo khi nội dung được yêu cầu có sẵn.",
+      "candidateTargetHash": "91ed185383d3e9893cd21e1ca022607ea9671adaf2f230ed4b62c395c85f340f",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.NotificationTypeSelector.mediaavailableDescription",
+      "sourcePosition": 2300
+    },
+    {
+      "candidateTarget": "当请求的媒体可用时发送通知。",
+      "candidateTargetHash": "9234d1d49d7aeebc85b5e9200e9851b1038ebc86f79be0ae5dc258bdf2a5f4c4",
+      "disposition": "propose-correction",
+      "locale": "zh_Hans",
+      "sourceId": "components.NotificationTypeSelector.mediaavailableDescription",
+      "sourcePosition": 2300
+    },
+    {
+      "candidateTarget": "अनुरोध अस्वीकार किया गया",
+      "candidateTargetHash": "8b525dc8684d77918e73aee6c2cc59995eb90b0e354f73e5211ecce46e500920",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.NotificationTypeSelector.mediadeclined",
+      "sourcePosition": 2301
+    },
+    {
+      "candidateTarget": "Permintaan Ditolak",
+      "candidateTargetHash": "9090bc7de636a49c661bcb2d21705582acb11226cc943ba2417dbe7b566a4329",
+      "disposition": "propose-correction",
+      "locale": "id",
+      "sourceId": "components.NotificationTypeSelector.mediadeclined",
+      "sourcePosition": 2301
+    },
+    {
+      "candidateTarget": "Yêu cầu bị từ chối",
+      "candidateTargetHash": "8c1e69f75d00721b8678694a55eed27d7dfdd69bee8d34bf870c7fcefe25dd24",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.NotificationTypeSelector.mediadeclined",
+      "sourcePosition": 2301
+    },
+    {
+      "candidateTarget": "请求已拒绝",
+      "candidateTargetHash": "07ff665fb9695c7e8511005c220d160278c110f873f1f687d3d778e338456e25",
+      "disposition": "propose-correction",
+      "locale": "zh_Hans",
+      "sourceId": "components.NotificationTypeSelector.mediadeclined",
+      "sourcePosition": 2301
+    },
+    {
+      "candidateTarget": "जब मीडिया अनुरोध अस्वीकार किए जाएँ, तो सूचनाएँ भेजें।",
+      "candidateTargetHash": "7ee12d16f5de9ea7adbd6abed1559a64a24e447681daa06a98c84a0129097820",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.NotificationTypeSelector.mediadeclinedDescription",
+      "sourcePosition": 2302
+    },
+    {
+      "candidateTarget": "当媒体请求被拒绝时发送通知。",
+      "candidateTargetHash": "04079865b17fc30fa4bb3bf5eb6ca1ce06080bb258f54a68a161f0ef11411fa9",
+      "disposition": "propose-correction",
+      "locale": "zh_Hans",
+      "sourceId": "components.NotificationTypeSelector.mediadeclinedDescription",
+      "sourcePosition": 2302
+    },
+    {
+      "candidateTarget": "當媒體請求遭拒時傳送通知。",
+      "candidateTargetHash": "f3134e2c640d4298767e34f33102fc6ef63f069b6f390738178573779cfc7217",
+      "disposition": "propose-correction",
+      "locale": "zh_Hant",
+      "sourceId": "components.NotificationTypeSelector.mediadeclinedDescription",
+      "sourcePosition": 2302
+    },
+    {
+      "candidateTarget": "Pemrosesan Permintaan Gagal",
+      "candidateTargetHash": "b36b6b93eeb7e9db94ccf0c59bcc7a846bb42ea0be12fc27e4cc776ccbb8057f",
+      "disposition": "propose-correction",
+      "locale": "id",
+      "sourceId": "components.NotificationTypeSelector.mediafailed",
+      "sourcePosition": 2303
+    },
+    {
+      "candidateTarget": "जब मीडिया अनुरोध Radarr, Sonarr, Lidarr या Bookshelf में जोड़ने में विफल हों, तो सूचनाएँ भेजें।",
+      "candidateTargetHash": "1561393b2f370b15c620c6ef9f7bdc05f67cabb6ee67f0e745a98cc51513752e",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.NotificationTypeSelector.mediafailedDescription",
+      "sourcePosition": 2304
+    },
+    {
+      "candidateTarget": "Kirim pemberitahuan saat permintaan media gagal ditambahkan ke Radarr, Sonarr, Lidarr, atau Bookshelf.",
+      "candidateTargetHash": "3bd5934e7cdbd39f83645568990fd324ae88109215367e673ef0b60b95bff1d9",
+      "disposition": "propose-correction",
+      "locale": "id",
+      "sourceId": "components.NotificationTypeSelector.mediafailedDescription",
+      "sourcePosition": 2304
+    },
+    {
+      "candidateTarget": "メディアリクエストを Radarr、Sonarr、Lidarr、または Bookshelf に追加できなかったときに通知を送信します。",
+      "candidateTargetHash": "046218e1c7f93fecaffdda0fa7b1cb48f69ea2a68b8301f964cfa5b1654de932",
+      "disposition": "propose-correction",
+      "locale": "ja",
+      "sourceId": "components.NotificationTypeSelector.mediafailedDescription",
+      "sourcePosition": 2304
+    },
+    {
+      "candidateTarget": "अनुमोदन की प्रतीक्षा में अनुरोध",
+      "candidateTargetHash": "6cc13ab683cc470e7ea56f719e6a69221fbb9d9ef6d69f5cb69bcd78e41a737f",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.NotificationTypeSelector.mediarequested",
+      "sourcePosition": 2305
+    },
+    {
+      "candidateTarget": "Permintaan Menunggu Persetujuan",
+      "candidateTargetHash": "f529475a0e8e7bf6ddc77e53f33c6a85fdb513c83dea1f6f5b7b70e5f255e50a",
+      "disposition": "propose-correction",
+      "locale": "id",
+      "sourceId": "components.NotificationTypeSelector.mediarequested",
+      "sourcePosition": 2305
+    },
+    {
+      "candidateTarget": "Envie notificações quando os usuários enviarem novas solicitações de mídia que exijam aprovação.",
+      "candidateTargetHash": "d77332d357b12614e500a39e2927d35b43924e043a4fee6c2f40905b7dec1cef",
+      "disposition": "propose-correction",
+      "locale": "pt_BR",
+      "sourceId": "components.NotificationTypeSelector.mediarequestedDescription",
+      "sourcePosition": 2306
+    },
+    {
+      "candidateTarget": "Gửi thông báo khi người dùng gửi yêu cầu nội dung mới cần được phê duyệt.",
+      "candidateTargetHash": "019049ec852306f3c25546cb1635735ffa89cc944c9978ebad9f50166352443b",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.NotificationTypeSelector.mediarequestedDescription",
+      "sourcePosition": 2306
+    },
+    {
+      "candidateTarget": "当用户提交需要审批的新媒体请求时发送通知。",
+      "candidateTargetHash": "d67013fbfb65c0b20961addd13d73db4b13ffd7ea254e4224c1651e97e25dcda",
+      "disposition": "propose-correction",
+      "locale": "zh_Hans",
+      "sourceId": "components.NotificationTypeSelector.mediarequestedDescription",
+      "sourcePosition": 2306
+    },
+    {
+      "candidateTarget": "當使用者提交需要核准的新媒體請求時傳送通知。",
+      "candidateTargetHash": "c094b6ef59b35d25b12f8c79b999d5f951abf6349717814ddbe9cfaea518ebd9",
+      "disposition": "propose-correction",
+      "locale": "zh_Hant",
+      "sourceId": "components.NotificationTypeSelector.mediarequestedDescription",
+      "sourcePosition": 2306
+    },
+    {
+      "candidateTarget": "Loại thông báo",
+      "candidateTargetHash": "0079964d11c0515ae870a3b7524596a06553a575cf8cf4d8babb1113d7a11971",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.NotificationTypeSelector.notificationTypes",
+      "sourcePosition": 2307
+    },
+    {
+      "candidateTarget": "تحديثات طلبات البرمجيات",
+      "candidateTargetHash": "ca68e2e956e39d105ac98725f1c140e4bb8d76eaa0678f39187dadd44ec4caef",
+      "disposition": "propose-correction",
+      "locale": "ar",
+      "sourceId": "components.NotificationTypeSelector.softwareStatus",
+      "sourcePosition": 2308
+    },
+    {
+      "candidateTarget": "सॉफ़्टवेयर अनुरोधों के अपडेट",
+      "candidateTargetHash": "f0cf4f787437df93f09bce03a5b550a6da34658989c721b35551dadc3c0e79b9",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.NotificationTypeSelector.softwareStatus",
+      "sourcePosition": 2308
+    },
+    {
+      "candidateTarget": "소프트웨어 요청 업데이트",
+      "candidateTargetHash": "240bfa45d955266b16fbe181be05032fc4d1516762e3d8e16615c0288d90d138",
+      "disposition": "propose-correction",
+      "locale": "ko",
+      "sourceId": "components.NotificationTypeSelector.softwareStatus",
+      "sourcePosition": 2308
+    },
+    {
+      "candidateTarget": "Atualizações de solicitações de software",
+      "candidateTargetHash": "f4347c29ec073a6a5816caaff6863a56664cc0c6e8be151ba8f619a0d804aab5",
+      "disposition": "propose-correction",
+      "locale": "pt_BR",
+      "sourceId": "components.NotificationTypeSelector.softwareStatus",
+      "sourcePosition": 2308
+    },
+    {
+      "candidateTarget": "Cập nhật về các yêu cầu phần mềm",
+      "candidateTargetHash": "0182d58333564946c1911a47ba999254d39bd74031e79fc3aaf94f91d59af2a6",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.NotificationTypeSelector.softwareStatus",
+      "sourcePosition": 2308
+    },
+    {
+      "candidateTarget": "सॉफ़्टवेयर अनुरोधों के लंबित, स्वीकृत, अस्वीकृत या विफल होने पर सूचनाएँ भेजें।",
+      "candidateTargetHash": "2df107bc4e45aa865b0b2af64cd1894d2b9b8e0202948bd88636404d525ee298",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.NotificationTypeSelector.softwareStatusDescription",
+      "sourcePosition": 2309
+    },
+    {
+      "candidateTarget": "承認待ち、承認済み、却下、または処理に失敗したソフトウェアリクエストの通知を送信します。",
+      "candidateTargetHash": "367c5be7f0643e151da0baf51622395ed4da8e2fd9fe1e2e677e06c2071ae756",
+      "disposition": "propose-correction",
+      "locale": "ja",
+      "sourceId": "components.NotificationTypeSelector.softwareStatusDescription",
+      "sourcePosition": 2309
+    },
+    {
+      "candidateTarget": "승인을 기다리거나 승인, 거절 또는 처리 실패 상태인 소프트웨어 요청에 대한 알림을 보냅니다.",
+      "candidateTargetHash": "9bbb7a79e4433aeb186db7b812e5c500494c7ff9ee0feba6c6edbe6ea194da9f",
+      "disposition": "propose-correction",
+      "locale": "ko",
+      "sourceId": "components.NotificationTypeSelector.softwareStatusDescription",
+      "sourcePosition": 2309
+    },
+    {
+      "candidateTarget": "Gửi thông báo về các yêu cầu phần mềm đang chờ phê duyệt, đã được phê duyệt, bị từ chối hoặc xử lý thất bại.",
+      "candidateTargetHash": "043f374f6fa7c1503d73363360d7c182c80bf8d3fa5a11351996d65cc98af344",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.NotificationTypeSelector.softwareStatusDescription",
+      "sourcePosition": 2309
+    },
+    {
+      "candidateTarget": "傳送軟體請求的通知：等待核准、已核准、遭拒或處理失敗。",
+      "candidateTargetHash": "30415ce7e5a2781aea7c61e645f405a76fe752219006baa35ce65dc66ef8cd4c",
+      "disposition": "propose-correction",
+      "locale": "zh_Hant",
+      "sourceId": "components.NotificationTypeSelector.softwareStatusDescription",
+      "sourcePosition": 2309
+    },
+    {
+      "candidateTarget": "البرمجيات المطلوبة متاحة",
+      "candidateTargetHash": "188e7cf702fad8c537da89d7dcfa6eb8a7aaaf828f0d5d86fbc0195b002964a6",
+      "disposition": "propose-correction",
+      "locale": "ar",
+      "sourceId": "components.NotificationTypeSelector.softwareavailable",
+      "sourcePosition": 2310
+    },
+    {
+      "candidateTarget": "Angeforderte Software verfügbar",
+      "candidateTargetHash": "a5093dd0435a6cabe21d3c186e2148c780a8afb2ad5fd66b9bdef47557bc7dc4",
+      "disposition": "propose-correction",
+      "locale": "de",
+      "sourceId": "components.NotificationTypeSelector.softwareavailable",
+      "sourcePosition": 2310
+    },
+    {
+      "candidateTarget": "अनुरोधित सॉफ़्टवेयर उपलब्ध",
+      "candidateTargetHash": "7bcd22e2cb8593a2e3ff4153d172929a3a7250e95aa3d6ac82f09e49b130be59",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.NotificationTypeSelector.softwareavailable",
+      "sourcePosition": 2310
+    },
+    {
+      "candidateTarget": "リクエストされたソフトウェアが利用可能",
+      "candidateTargetHash": "42f90e50b97f876587c052bf63b8d417766e6aecf787f9d44254dbc292b11fee",
+      "disposition": "propose-correction",
+      "locale": "ja",
+      "sourceId": "components.NotificationTypeSelector.softwareavailable",
+      "sourcePosition": 2310
+    },
+    {
+      "candidateTarget": "요청한 소프트웨어 사용 가능",
+      "candidateTargetHash": "349716c7c9e688d2a3804488e45e464a252b996f311b0a990db45d630e17d3c5",
+      "disposition": "propose-correction",
+      "locale": "ko",
+      "sourceId": "components.NotificationTypeSelector.softwareavailable",
+      "sourcePosition": 2310
+    },
+    {
+      "candidateTarget": "所请求的软件已可用。",
+      "candidateTargetHash": "6c0da8692133a43feaa7d86a2d295cbf158f8d7831475ce34c6af42e8a17153d",
+      "disposition": "propose-correction",
+      "locale": "zh_Hans",
+      "sourceId": "components.NotificationTypeSelector.softwareavailable",
+      "sourcePosition": 2310
+    },
+    {
+      "candidateTarget": "所請求的軟體已可用",
+      "candidateTargetHash": "563a7f772b2b6c634229822fa4f5c4e723836b38dc59c7765ad3c736829c2cbb",
+      "disposition": "propose-correction",
+      "locale": "zh_Hant",
+      "sourceId": "components.NotificationTypeSelector.softwareavailable",
+      "sourcePosition": 2310
+    },
+    {
+      "candidateTarget": "أرسل إشعارًا عندما تكون ROMs وألعاب PC التي طلبتها جاهزة للتنزيل.",
+      "candidateTargetHash": "3b6cec2fde1bbe16a62306d1071b75d5c92734b255a9a6bd2c09f27febd82b50",
+      "disposition": "propose-correction",
+      "locale": "ar",
+      "sourceId": "components.NotificationTypeSelector.softwareavailableDescription",
+      "sourcePosition": 2311
+    },
+    {
+      "candidateTarget": "Benachrichtigungen senden, wenn die angeforderten ROMs und PC-Spiele zum Download bereit sind.",
+      "candidateTargetHash": "26ccd54dc4b5ca5c186e4d773968d71509ff02ac85026468d3a059a5201afed7",
+      "disposition": "propose-correction",
+      "locale": "de",
+      "sourceId": "components.NotificationTypeSelector.softwareavailableDescription",
+      "sourcePosition": 2311
+    },
+    {
+      "candidateTarget": "Envoyer une notification lorsque les ROM et les jeux PC demandés sont prêts à être téléchargés.",
+      "candidateTargetHash": "35d47718b1c3f63cb5d643930512eca06f6c74f1eb43cde1a155ad1c076babbb",
+      "disposition": "propose-correction",
+      "locale": "fr",
+      "sourceId": "components.NotificationTypeSelector.softwareavailableDescription",
+      "sourcePosition": 2311
+    },
+    {
+      "candidateTarget": "जब अनुरोधित ROM और PC गेम डाउनलोड के लिए तैयार हों, तो सूचनाएँ भेजें।",
+      "candidateTargetHash": "7878aac8fd425b974c89fc8695446a5d28ddbebc625fbd0141e860f17ff29567",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.NotificationTypeSelector.softwareavailableDescription",
+      "sourcePosition": 2311
+    },
+    {
+      "candidateTarget": "Kirim pemberitahuan ketika ROM dan game PC yang diminta siap diunduh.",
+      "candidateTargetHash": "be3fc36b3d905c0c3f7cd9b0a42025e9301613cebb2781e4a74848312ce5d3aa",
+      "disposition": "propose-correction",
+      "locale": "id",
+      "sourceId": "components.NotificationTypeSelector.softwareavailableDescription",
+      "sourcePosition": 2311
+    },
+    {
+      "candidateTarget": "요청한 ROM과 PC 게임을 다운로드할 수 있게 되면 알림을 보냅니다.",
+      "candidateTargetHash": "414b914a83a386a8c3acb5c640fb72e0924bdcd7618524d86ad699548ca90266",
+      "disposition": "propose-correction",
+      "locale": "ko",
+      "sourceId": "components.NotificationTypeSelector.softwareavailableDescription",
+      "sourcePosition": 2311
+    },
+    {
+      "candidateTarget": "Envie notificações quando os ROMs e jogos de PC solicitados estiverem prontos para download.",
+      "candidateTargetHash": "96602f7bcbedaae444c67b1ff9156f87cc07bfe72e7be8b884b7825c88bdc03d",
+      "disposition": "propose-correction",
+      "locale": "pt_BR",
+      "sourceId": "components.NotificationTypeSelector.softwareavailableDescription",
+      "sourcePosition": 2311
+    },
+    {
+      "candidateTarget": "Gửi thông báo khi ROM và trò chơi PC bạn yêu cầu đã sẵn sàng để tải xuống.",
+      "candidateTargetHash": "78e8cc65d147bbee9e51d6a2333f5afa7a4973e2551a02a6e8f7fdec467e922a",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.NotificationTypeSelector.softwareavailableDescription",
+      "sourcePosition": 2311
+    },
+    {
+      "candidateTarget": "当请求的 ROM 和 PC 游戏准备好下载时发送通知。",
+      "candidateTargetHash": "9a8a3ab3b09955ba4fa06805ee37b2d55829d98ef73d4da2af9ae4e15bb44aca",
+      "disposition": "propose-correction",
+      "locale": "zh_Hans",
+      "sourceId": "components.NotificationTypeSelector.softwareavailableDescription",
+      "sourcePosition": 2311
+    },
+    {
+      "candidateTarget": "當您請求的 ROM 和 PC 遊戲準備好下載時傳送通知。",
+      "candidateTargetHash": "502c19bb2302b660a1bbba2a36cffa5468d70a177f812e8b2c1e5473c0beb1f2",
+      "disposition": "propose-correction",
+      "locale": "zh_Hant",
+      "sourceId": "components.NotificationTypeSelector.softwareavailableDescription",
+      "sourcePosition": 2311
+    },
+    {
+      "candidateTarget": "जब आपका सॉफ़्टवेयर अनुरोध अनुमोदन की प्रतीक्षा कर रहा हो या स्वीकृत, अस्वीकृत अथवा विफल हो जाए, तो आपको सूचना मिलेगी।",
+      "candidateTargetHash": "ba971cbe59bbe7df371e8fe22f58497273f215efae0ed891ac5ddcdada8ab555",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.NotificationTypeSelector.userSoftwareStatusDescription",
+      "sourcePosition": 2312
+    },
+    {
+      "candidateTarget": "ソフトウェアリクエストが承認待ち、承認済み、却下、または処理失敗になったときに通知を受け取ります。",
+      "candidateTargetHash": "bc86babfd4f81381e5523907c5e38830959a1125b14ed7a9cd7c33f5d43dd615",
+      "disposition": "propose-correction",
+      "locale": "ja",
+      "sourceId": "components.NotificationTypeSelector.userSoftwareStatusDescription",
+      "sourcePosition": 2312
+    },
+    {
+      "candidateTarget": "소프트웨어 요청이 승인을 기다리거나 승인, 거절 또는 처리 실패 상태가 되면 알림을 받습니다.",
+      "candidateTargetHash": "2217d45bd614862d8d520a9f7a15ffbca7e13b612cb52edfa88f8cb68abe0b43",
+      "disposition": "propose-correction",
+      "locale": "ko",
+      "sourceId": "components.NotificationTypeSelector.userSoftwareStatusDescription",
+      "sourcePosition": 2312
+    },
+    {
+      "candidateTarget": "當您的軟體請求等待核准、已獲核准、遭拒或處理失敗時，您會收到通知。",
+      "candidateTargetHash": "f64be414b09870222b01ac7b6bc47c63916848d619e7eea44129ef9cd21c84f3",
+      "disposition": "propose-correction",
+      "locale": "zh_Hant",
+      "sourceId": "components.NotificationTypeSelector.userSoftwareStatusDescription",
+      "sourcePosition": 2312
+    },
+    {
+      "candidateTarget": "आपके द्वारा रिपोर्ट की गई समस्याओं पर नई टिप्पणियाँ आने पर आपको सूचना मिलेगी।",
+      "candidateTargetHash": "3687961c9f8aa5d2abd037f2c5097b6ca020529954f5f05eebe937fe552ed8fe",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.NotificationTypeSelector.userissuecommentDescription",
+      "sourcePosition": 2313
+    },
+    {
+      "candidateTarget": "自分が報告したチケットに新しいコメントが追加されたときに通知を受け取ります。",
+      "candidateTargetHash": "297c286f83f07d16a808d67abf197da8896f0af30c630a4570d863ae2f58ca95",
+      "disposition": "propose-correction",
+      "locale": "ja",
+      "sourceId": "components.NotificationTypeSelector.userissuecommentDescription",
+      "sourcePosition": 2313
+    },
+    {
+      "candidateTarget": "Dapatkan pemberitahuan saat masalah yang Anda laporkan dibuka kembali.",
+      "candidateTargetHash": "bca3942bd3378c47cd87e826056fb0e121923f4fc3ed5acb6884efaa94c394d9",
+      "disposition": "propose-correction",
+      "locale": "id",
+      "sourceId": "components.NotificationTypeSelector.userissuereopenedDescription",
+      "sourcePosition": 2315
+    },
+    {
+      "candidateTarget": "تلقَّ إشعارًا عند حل المشكلات التي أبلغت عنها.",
+      "candidateTargetHash": "2fd053413755e07fc3b78e63906fb8dd5f2ad0cfdb1ec1ac2a2b3b876b3c9b51",
+      "disposition": "propose-correction",
+      "locale": "ar",
+      "sourceId": "components.NotificationTypeSelector.userissueresolvedDescription",
+      "sourcePosition": 2316
+    },
+    {
+      "candidateTarget": "जब आपके द्वारा रिपोर्ट की गई समस्याएँ हल हो जाएँ, तो आपको सूचना मिलेगी।",
+      "candidateTargetHash": "c7829b1fc2f258b583b1c8208f8e7938816f6eaab3b10076f6fff8e456aa09fb",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.NotificationTypeSelector.userissueresolvedDescription",
+      "sourcePosition": 2316
+    },
+    {
+      "candidateTarget": "Dapatkan pemberitahuan saat masalah yang Anda laporkan diselesaikan.",
+      "candidateTargetHash": "4602afe80f10c1f7c6c9a82ead56a51196c45faffcd2e85bc653a17174de9b7b",
+      "disposition": "propose-correction",
+      "locale": "id",
+      "sourceId": "components.NotificationTypeSelector.userissueresolvedDescription",
+      "sourcePosition": 2316
+    },
+    {
+      "candidateTarget": "Nhận thông báo khi người dùng khác gửi yêu cầu nội dung mới và các yêu cầu đó được tự động phê duyệt.",
+      "candidateTargetHash": "083f1b3dd585fc3c6afd89aa70787060999ccd0aa2d9c7088d8d7c63b05e93cf",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.NotificationTypeSelector.usermediaAutoApprovedDescription",
+      "sourcePosition": 2317
+    },
+    {
+      "candidateTarget": "当其他用户提交新的媒体请求且这些请求自动获批时，您会收到通知。",
+      "candidateTargetHash": "da5eadb619eb07ce9eb716ceaa82bdc3cbc4f2553953b2e592d6a47036e96427",
+      "disposition": "propose-correction",
+      "locale": "zh_Hans",
+      "sourceId": "components.NotificationTypeSelector.usermediaAutoApprovedDescription",
+      "sourcePosition": 2317
+    },
+    {
+      "candidateTarget": "當其他使用者提交新的媒體請求且這些請求自動獲准時，您會收到通知。",
+      "candidateTargetHash": "9d63b11f6de83d2db15582a034c8044b586fb3c93230a529a152aa31d0a638a3",
+      "disposition": "propose-correction",
+      "locale": "zh_Hant",
+      "sourceId": "components.NotificationTypeSelector.usermediaAutoApprovedDescription",
+      "sourcePosition": 2317
+    },
+    {
+      "candidateTarget": "تلقَّ إشعارًا عند الموافقة على طلبات الوسائط الخاصة بك.",
+      "candidateTargetHash": "b86d0280a366cd7df099c6815eb52aa8cbebfce732d312cce12f7a7f90b3c78b",
+      "disposition": "propose-correction",
+      "locale": "ar",
+      "sourceId": "components.NotificationTypeSelector.usermediaapprovedDescription",
+      "sourcePosition": 2318
+    },
+    {
+      "candidateTarget": "Nhận thông báo khi các yêu cầu nội dung của bạn được phê duyệt.",
+      "candidateTargetHash": "851100ac452c1b5426361231cfb51441b66d0d4daef1d9a81737689e47984342",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.NotificationTypeSelector.usermediaapprovedDescription",
+      "sourcePosition": 2318
+    },
+    {
+      "candidateTarget": "当您的媒体请求获批时，您会收到通知。",
+      "candidateTargetHash": "5742e4caf06512f5c75c64bda2c4dec9f69ce6580117b09051843fca645f523b",
+      "disposition": "propose-correction",
+      "locale": "zh_Hans",
+      "sourceId": "components.NotificationTypeSelector.usermediaapprovedDescription",
+      "sourcePosition": 2318
+    },
+    {
+      "candidateTarget": "當您的媒體請求獲准時，您會收到通知。",
+      "candidateTargetHash": "933fbf3db6216472b3fdaf4e8a063322f1ea61a195eff0d65024636a4fefc850",
+      "disposition": "propose-correction",
+      "locale": "zh_Hant",
+      "sourceId": "components.NotificationTypeSelector.usermediaapprovedDescription",
+      "sourcePosition": 2318
+    },
+    {
+      "candidateTarget": "تلقَّ إشعارًا عندما يصبح المحتوى الذي طلبته متاحًا.",
+      "candidateTargetHash": "1773f8800724e818fe2a18fee96d2a3e36ede7dc7c46a95276c4a82288dfb520",
+      "disposition": "propose-correction",
+      "locale": "ar",
+      "sourceId": "components.NotificationTypeSelector.usermediaavailableDescription",
+      "sourcePosition": 2319
+    },
+    {
+      "candidateTarget": "リクエストしたメディアが利用可能になったときに通知を受け取ります。",
+      "candidateTargetHash": "e9599c5fb264ce3df77d223edff92ddf9ea3fc2e2222f9134eb3fc72af5b3fa3",
+      "disposition": "propose-correction",
+      "locale": "ja",
+      "sourceId": "components.NotificationTypeSelector.usermediaavailableDescription",
+      "sourcePosition": 2319
+    },
+    {
+      "candidateTarget": "Nhận thông báo khi nội dung bạn yêu cầu có sẵn.",
+      "candidateTargetHash": "329479841e1093be4a7c61fe6214550885c4a3f587212c166e0ee087d950e629",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.NotificationTypeSelector.usermediaavailableDescription",
+      "sourcePosition": 2319
+    },
+    {
+      "candidateTarget": "當您請求的媒體可供使用時，您會收到通知。",
+      "candidateTargetHash": "60799f77ba365146d496142a2b8faf155eb47df6b209a80437ab3cc9a25c25d0",
+      "disposition": "propose-correction",
+      "locale": "zh_Hant",
+      "sourceId": "components.NotificationTypeSelector.usermediaavailableDescription",
+      "sourcePosition": 2319
+    },
+    {
+      "candidateTarget": "जब आपका मीडिया अनुरोध अस्वीकार किया जाए, तो आपको सूचना मिलेगी।",
+      "candidateTargetHash": "8f863ccbc820f57520cfaed0dcf07f12854abc69fa6ad5b93165d9ca193f0565",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.NotificationTypeSelector.usermediadeclinedDescription",
+      "sourcePosition": 2320
+    },
+    {
+      "candidateTarget": "जब मीडिया अनुरोध Radarr, Sonarr, Lidarr या Bookshelf में जोड़ने में विफल हों, तो आपको सूचना मिलेगी।",
+      "candidateTargetHash": "526f8321646ce9b4f81245b23fc37fb7b5751253f8f4a78434f988975ad5ba06",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.NotificationTypeSelector.usermediafailedDescription",
+      "sourcePosition": 2321
+    },
+    {
+      "candidateTarget": "Dapatkan pemberitahuan saat permintaan media gagal ditambahkan ke Radarr, Sonarr, Lidarr, atau Bookshelf.",
+      "candidateTargetHash": "09e53619e2b846893bc7bda762e0baa0da4252d7647bcdd606412de71a8bca5a",
+      "disposition": "propose-correction",
+      "locale": "id",
+      "sourceId": "components.NotificationTypeSelector.usermediafailedDescription",
+      "sourcePosition": 2321
+    },
+    {
+      "candidateTarget": "メディアリクエストを Radarr、Sonarr、Lidarr、または Bookshelf に追加できなかったときに通知を受け取ります。",
+      "candidateTargetHash": "d10cf06b63da73384966bb2237146d0f4a4c6c805d95533c040b409b04195075",
+      "disposition": "propose-correction",
+      "locale": "ja",
+      "sourceId": "components.NotificationTypeSelector.usermediafailedDescription",
+      "sourcePosition": 2321
+    },
+    {
+      "candidateTarget": "تلقَّ إشعارًا عندما يرسل مستخدمون آخرون طلبات وسائط جديدة تتطلب الموافقة.",
+      "candidateTargetHash": "a53d55b702c6ca53aa00ace7259d7b061fe744539f5aeb95b359b608590c5ade",
+      "disposition": "propose-correction",
+      "locale": "ar",
+      "sourceId": "components.NotificationTypeSelector.usermediarequestedDescription",
+      "sourcePosition": 2322
+    },
+    {
+      "candidateTarget": "जब अन्य उपयोगकर्ता नए मीडिया अनुरोध भेजें जिन्हें स्वीकृति की आवश्यकता हो, तो आपको सूचना मिलेगी।",
+      "candidateTargetHash": "8af835bbd64ba94c1507abb436e3c27ba02a099c2592c69a7d8fdc38a1ecbeec",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.NotificationTypeSelector.usermediarequestedDescription",
+      "sourcePosition": 2322
+    },
+    {
+      "candidateTarget": "Nhận thông báo khi người dùng khác gửi yêu cầu nội dung mới cần được phê duyệt.",
+      "candidateTargetHash": "710228a492c190eb03260d5a79ac52538a26ad55a10371c4b054b5be9f2b0075",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.NotificationTypeSelector.usermediarequestedDescription",
+      "sourcePosition": 2322
+    },
+    {
+      "candidateTarget": "当其他用户提交需要审批的新媒体请求时，您会收到通知。",
+      "candidateTargetHash": "eae118ff63117a39510b262538995a73e6977b6f84071933cabb8f4c3e6fa047",
+      "disposition": "propose-correction",
+      "locale": "zh_Hans",
+      "sourceId": "components.NotificationTypeSelector.usermediarequestedDescription",
+      "sourcePosition": 2322
+    },
+    {
+      "candidateTarget": "當其他使用者提交需要核准的新媒體請求時，您會收到通知。",
+      "candidateTargetHash": "d0972f7dc16fae1a03d67f307de05d4cd2bcf42b9ba282e0dfbc79178d18d326",
+      "disposition": "propose-correction",
+      "locale": "zh_Hant",
+      "sourceId": "components.NotificationTypeSelector.usermediarequestedDescription",
+      "sourcePosition": 2322
+    },
+    {
+      "candidateTarget": "ستتلقى إشعارًا عندما تصبح ROMs وألعاب PC التي طلبتها جاهزة للتنزيل.",
+      "candidateTargetHash": "9fa6070bb73447ac176c71466f8c76687414b502e260769f75e4f76a7bdd1595",
+      "disposition": "propose-correction",
+      "locale": "ar",
+      "sourceId": "components.NotificationTypeSelector.usersoftwareavailableDescription",
+      "sourcePosition": 2323
+    },
+    {
+      "candidateTarget": "जब आपके द्वारा अनुरोधित ROM और PC गेम डाउनलोड के लिए तैयार हों, तो आपको सूचना मिलेगी।",
+      "candidateTargetHash": "42ed3612e4ce6b25846f01ab4f60004f1932962347c0d0ccfbe7ee8fd1176c10",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.NotificationTypeSelector.usersoftwareavailableDescription",
+      "sourcePosition": 2323
+    },
+    {
+      "candidateTarget": "Dapatkan pemberitahuan saat ROM dan game PC yang Anda minta siap diunduh.",
+      "candidateTargetHash": "8818382faf89c99bc6cd6353e366f7c4f916a394ee1a6bdd6246a64678b12fc7",
+      "disposition": "propose-correction",
+      "locale": "id",
+      "sourceId": "components.NotificationTypeSelector.usersoftwareavailableDescription",
+      "sourcePosition": 2323
+    },
+    {
+      "candidateTarget": "Nhận thông báo khi ROM và trò chơi PC bạn yêu cầu đã sẵn sàng để tải xuống.",
+      "candidateTargetHash": "27ef9ba939fb7af25942f3e4494ef2e25cce1779643d6e72f24a16b32587873d",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.NotificationTypeSelector.usersoftwareavailableDescription",
+      "sourcePosition": 2323
+    },
+    {
+      "candidateTarget": "Open Library-Bewertung: {score}/5 aus {votes} Bewertungen",
+      "candidateTargetHash": "02a1a53e547f8fb5d621f2951fc8c01dd5f420cf46df0c99f3062d6372191e3a",
+      "disposition": "propose-correction",
+      "locale": "de",
+      "sourceId": "components.OpenLibraryRating.rating",
+      "sourcePosition": 2324
+    },
+    {
+      "candidateTarget": "已放弃",
+      "candidateTargetHash": "b6719689189554a458cc745ac0051ebeede07f521c877e117f54172e6475e21d",
+      "disposition": "propose-correction",
+      "locale": "zh_Hans",
+      "sourceId": "components.PatchProjects.PatchDiscovery.abandoned",
+      "sourcePosition": 2325
+    },
+    {
+      "candidateTarget": "Grado de finalización desconocido",
+      "candidateTargetHash": "f55b8e8362495a9178ace2fddd97f5bd1c324f5e70949867288c6245e26a2124",
+      "disposition": "propose-correction",
+      "locale": "es",
+      "sourceId": "components.PatchProjects.PatchDiscovery.unknownStatus",
+      "sourcePosition": 2346
+    },
+    {
+      "candidateTarget": "Grau de conclusão desconhecido",
+      "candidateTargetHash": "27514ba46da71edece99c5715f593718592822a7a39f95f4814f8fda1eceaee9",
+      "disposition": "propose-correction",
+      "locale": "pt_BR",
+      "sourceId": "components.PatchProjects.PatchDiscovery.unknownStatus",
+      "sourcePosition": 2346
+    },
+    {
+      "candidateTarget": "完成度未知",
+      "candidateTargetHash": "31b5b8c6dbf3c8f2e8f0d82ef62f2608558392985baf8cdf05afe2a000cfdb0b",
+      "disposition": "propose-correction",
+      "locale": "zh_Hans",
+      "sourceId": "components.PatchProjects.PatchDiscovery.unknownStatus",
+      "sourcePosition": 2346
+    },
+    {
+      "candidateTarget": "完成度未知",
+      "candidateTargetHash": "31b5b8c6dbf3c8f2e8f0d82ef62f2608558392985baf8cdf05afe2a000cfdb0b",
+      "disposition": "propose-correction",
+      "locale": "zh_Hant",
+      "sourceId": "components.PatchProjects.PatchDiscovery.unknownStatus",
+      "sourcePosition": 2346
+    },
+    {
+      "candidateTarget": "已放弃",
+      "candidateTargetHash": "b6719689189554a458cc745ac0051ebeede07f521c877e117f54172e6475e21d",
+      "disposition": "propose-correction",
+      "locale": "zh_Hans",
+      "sourceId": "components.PatchProjects.abandoned",
+      "sourcePosition": 2347
+    },
+    {
+      "candidateTarget": "이 버전에 필요한 기본 게임을 사용할 수 없어 아직 준비할 수 없습니다.",
+      "candidateTargetHash": "72c231f49b206227e4a3e69201c8858aea56f3f95a730c96a55090c70de67ba5",
+      "disposition": "propose-correction",
+      "locale": "ko",
+      "sourceId": "components.PatchProjects.baseMissing",
+      "sourcePosition": 2348
+    },
+    {
+      "candidateTarget": "Grado de finalización desconocido",
+      "candidateTargetHash": "f55b8e8362495a9178ace2fddd97f5bd1c324f5e70949867288c6245e26a2124",
+      "disposition": "propose-correction",
+      "locale": "es",
+      "sourceId": "components.PatchProjects.unknownStatus",
+      "sourcePosition": 2370
+    },
+    {
+      "candidateTarget": "Grau de conclusão desconhecido",
+      "candidateTargetHash": "27514ba46da71edece99c5715f593718592822a7a39f95f4814f8fda1eceaee9",
+      "disposition": "propose-correction",
+      "locale": "pt_BR",
+      "sourceId": "components.PatchProjects.unknownStatus",
+      "sourcePosition": 2370
+    },
+    {
+      "candidateTarget": "完成度未知",
+      "candidateTargetHash": "31b5b8c6dbf3c8f2e8f0d82ef62f2608558392985baf8cdf05afe2a000cfdb0b",
+      "disposition": "propose-correction",
+      "locale": "zh_Hans",
+      "sourceId": "components.PatchProjects.unknownStatus",
+      "sourcePosition": 2370
+    },
+    {
+      "candidateTarget": "完成度未知",
+      "candidateTargetHash": "31b5b8c6dbf3c8f2e8f0d82ef62f2608558392985baf8cdf05afe2a000cfdb0b",
+      "disposition": "propose-correction",
+      "locale": "zh_Hant",
+      "sourceId": "components.PatchProjects.unknownStatus",
+      "sourcePosition": 2370
+    },
+    {
+      "candidateTarget": "مدير",
+      "candidateTargetHash": "6a05608678d2de72f69f986e4eda0600b8afaa7f339188c8925dfdbfc24753fb",
+      "disposition": "propose-correction",
+      "locale": "ar",
+      "sourceId": "components.PermissionEdit.admin",
+      "sourcePosition": 2372
+    },
+    {
+      "candidateTarget": "صلاحيات إدارية كاملة. تتجاوز جميع عمليات التحقق من الأذونات الأخرى.",
+      "candidateTargetHash": "8e41c1d658264544156b6612acae8dcfcdc08e6c5ec92f69ffc10579f6cd37df",
+      "disposition": "propose-correction",
+      "locale": "ar",
+      "sourceId": "components.PermissionEdit.adminDescription",
+      "sourcePosition": 2373
+    },
+    {
+      "candidateTarget": "Accès administrateur complet. Contourne tous les autres contrôles d’autorisation.",
+      "candidateTargetHash": "a2d50ec9cbe16808f385fd39412c87a2a2ec15191e24b86fc8f4cb522b8081e0",
+      "disposition": "propose-correction",
+      "locale": "fr",
+      "sourceId": "components.PermissionEdit.adminDescription",
+      "sourcePosition": 2373
+    },
+    {
+      "candidateTarget": "Quyền quản trị đầy đủ. Bỏ qua mọi bước kiểm tra quyền khác.",
+      "candidateTargetHash": "9d92363b966c54e286283c398a344464e9de135aeff99129dc90dce57c727774",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.PermissionEdit.adminDescription",
+      "sourcePosition": 2373
+    },
+    {
+      "candidateTarget": "Berikan izin untuk mengubah opsi lanjutan pada permintaan media.",
+      "candidateTargetHash": "9a57af41beb7dda6957c18b1051b28072c7bae3cc2519e0b9653977635656c76",
+      "disposition": "propose-correction",
+      "locale": "id",
+      "sourceId": "components.PermissionEdit.advancedrequestDescription",
+      "sourcePosition": 2375
+    },
+    {
+      "candidateTarget": "Cho phép thay đổi các tùy chọn nâng cao cho yêu cầu nội dung.",
+      "candidateTargetHash": "f402701a6f61edc34f7221e25c482da4460e09ede671e64363ddb949fe47c541",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.PermissionEdit.advancedrequestDescription",
+      "sourcePosition": 2375
+    },
+    {
+      "candidateTarget": "授予修改進階媒體請求選項的權限。",
+      "candidateTargetHash": "277bdbe7f99bc150eaee9142eec9810eb2b14801d3250f3c311b4c149141e8ce",
+      "disposition": "propose-correction",
+      "locale": "zh_Hant",
+      "sourceId": "components.PermissionEdit.advancedrequestDescription",
+      "sourcePosition": 2375
+    },
+    {
+      "candidateTarget": "स्वतः स्वीकृति",
+      "candidateTargetHash": "154101ed5f1a9577157ef2874ee958f29b895bd9f246b7c729606b4c72784a34",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.PermissionEdit.autoapprove",
+      "sourcePosition": 2376
+    },
+    {
+      "candidateTarget": "Persetujuan Otomatis",
+      "candidateTargetHash": "faf9cf3190bfee66ce01c97db6a75122540a9d352090069490d487c76359cf1a",
+      "disposition": "propose-correction",
+      "locale": "id",
+      "sourceId": "components.PermissionEdit.autoapprove",
+      "sourcePosition": 2376
+    },
+    {
+      "candidateTarget": "Tự động phê duyệt",
+      "candidateTargetHash": "340fb0079ee6eebcab231c6c4f29fd3fc8f8ef5ef1f10aa255afc01092e14ced",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.PermissionEdit.autoapprove",
+      "sourcePosition": 2376
+    },
+    {
+      "candidateTarget": "4K के लिए स्वतः स्वीकृति",
+      "candidateTargetHash": "63c3404c804bec496d427b10066baab939df1f68af9134c907673a613b96b8db",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.PermissionEdit.autoapprove4k",
+      "sourcePosition": 2377
+    },
+    {
+      "candidateTarget": "Persetujuan Otomatis 4K",
+      "candidateTargetHash": "7938d36a364e7249d5971c6a12de703dd3b637edd11cdb698193ff7fe8d97c1f",
+      "disposition": "propose-correction",
+      "locale": "id",
+      "sourceId": "components.PermissionEdit.autoapprove4k",
+      "sourcePosition": 2377
+    },
+    {
+      "candidateTarget": "Tự động phê duyệt 4K",
+      "candidateTargetHash": "a97ed0312aebb94b2b3014da4ee0aab60491fb1f527121f7a551238b20993685",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.PermissionEdit.autoapprove4k",
+      "sourcePosition": 2377
+    },
+    {
+      "candidateTarget": "Cho phép tự động phê duyệt tất cả các yêu cầu nội dung 4K.",
+      "candidateTargetHash": "b69fe602305cdcad4b79c2bd72175a3cb7cdbd35a38fbc73292ef8a1a34c3700",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.PermissionEdit.autoapprove4kDescription",
+      "sourcePosition": 2378
+    },
+    {
+      "candidateTarget": "Aprobación automática de películas 4K",
+      "candidateTargetHash": "c733fe0207873b373b08c450202f3f81c8bf6883dc9a0d44d09a44f119e051ef",
+      "disposition": "propose-correction",
+      "locale": "es",
+      "sourceId": "components.PermissionEdit.autoapprove4kMovies",
+      "sourcePosition": 2379
+    },
+    {
+      "candidateTarget": "4K फ़िल्मों की स्वतः स्वीकृति",
+      "candidateTargetHash": "aec3c9d957c863c3a9ed0a9c82fe59a4bac36a82471778ff0c44b2caf810504a",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.PermissionEdit.autoapprove4kMovies",
+      "sourcePosition": 2379
+    },
+    {
+      "candidateTarget": "Persetujuan Otomatis Film 4K",
+      "candidateTargetHash": "7140f3417182af710959e9fc640d7db79dfe320558158332f0a1b0e0045075c1",
+      "disposition": "propose-correction",
+      "locale": "id",
+      "sourceId": "components.PermissionEdit.autoapprove4kMovies",
+      "sourcePosition": 2379
+    },
+    {
+      "candidateTarget": "4K 영화 자동 승인",
+      "candidateTargetHash": "1b4e6a9ecf1ca81175d1f1d1b9e8e1eb0f0e29c53c3c975fd950c04aefdcda16",
+      "disposition": "propose-correction",
+      "locale": "ko",
+      "sourceId": "components.PermissionEdit.autoapprove4kMovies",
+      "sourcePosition": 2379
+    },
+    {
+      "candidateTarget": "Tự động phê duyệt phim 4K",
+      "candidateTargetHash": "61885ded63cd446c6685e4718cac2b154645d7652be1bf73025d226fc9901a8c",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.PermissionEdit.autoapprove4kMovies",
+      "sourcePosition": 2379
+    },
+    {
+      "candidateTarget": "4K 시리즈 자동 승인",
+      "candidateTargetHash": "e0963b688c0851b69719e02b9c04e311992eb593d6c036c841d483d64466a2b9",
+      "disposition": "propose-correction",
+      "locale": "ko",
+      "sourceId": "components.PermissionEdit.autoapprove4kSeries",
+      "sourcePosition": 2381
+    },
+    {
+      "candidateTarget": "Tự động phê duyệt phim bộ 4K",
+      "candidateTargetHash": "9faaac2e66e6a47cc70ff47f3064e37129e66591fed0bd502f34c820fbacc966",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.PermissionEdit.autoapprove4kSeries",
+      "sourcePosition": 2381
+    },
+    {
+      "candidateTarget": "वयस्क सामग्री की स्वतः स्वीकृति",
+      "candidateTargetHash": "8c7c0dc4d2d8909554ad4e24efe692bd6c3682472eda82db091b9c3cb3e7427d",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.PermissionEdit.autoapproveAdult",
+      "sourcePosition": 2383
+    },
+    {
+      "candidateTarget": "वयस्क दृश्यों के अनुरोधों को स्वतः मंज़ूरी दें। यह सामान्य स्वतः मंज़ूरी से अलग है।",
+      "candidateTargetHash": "2c1daff9d13bc19d210fb3953b0dd2d495ae4f2a5c3d51a47fa0cc28e14c7e18",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.PermissionEdit.autoapproveAdultDescription",
+      "sourcePosition": 2384
+    },
+    {
+      "candidateTarget": "किताबों के अनुरोधों को स्वतः मंज़ूरी दें",
+      "candidateTargetHash": "f007102fa1d2c3e7b3fc47ca1156afcae1924c348c61c2692ed238ccc59d085f",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.PermissionEdit.autoapproveBooks",
+      "sourcePosition": 2385
+    },
+    {
+      "candidateTarget": "Setujui permintaan buku secara otomatis",
+      "candidateTargetHash": "6137a2fa1d4e96c8f9759e82898d146e96838bdf33717d68dc1a02128c591254",
+      "disposition": "propose-correction",
+      "locale": "id",
+      "sourceId": "components.PermissionEdit.autoapproveBooks",
+      "sourcePosition": 2385
+    },
+    {
+      "candidateTarget": "도서 자동 승인",
+      "candidateTargetHash": "6228ca52b6da1443958f9e49ab6f743d99bb351e0a978a000708ca4131319e64",
+      "disposition": "propose-correction",
+      "locale": "ko",
+      "sourceId": "components.PermissionEdit.autoapproveBooks",
+      "sourcePosition": 2385
+    },
+    {
+      "candidateTarget": "Tự động phê duyệt sách",
+      "candidateTargetHash": "6f78a653e1fc2a1a7df8806c1d9b4fb64170c1fc2a8b6a2d7ca8ebf493e388ad",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.PermissionEdit.autoapproveBooks",
+      "sourcePosition": 2385
+    },
+    {
+      "candidateTarget": "自动批准图书",
+      "candidateTargetHash": "9abce50259b99947b160a2f27cca46112927818fc00d1649d62446e4653e5c27",
+      "disposition": "propose-correction",
+      "locale": "zh_Hans",
+      "sourceId": "components.PermissionEdit.autoapproveBooks",
+      "sourcePosition": 2385
+    },
+    {
+      "candidateTarget": "自動核准書籍",
+      "candidateTargetHash": "53a47deac9b659c2951cc7acb5ec3e50e4f42fb9de981b4ce70787a5c625c7f1",
+      "disposition": "propose-correction",
+      "locale": "zh_Hant",
+      "sourceId": "components.PermissionEdit.autoapproveBooks",
+      "sourcePosition": 2385
+    },
+    {
+      "candidateTarget": "Concede aprobación automática para las solicitudes de libros.",
+      "candidateTargetHash": "67ca2d0289b4bd1393d5ce91cd8c05d0fe46be46dacdd762470939d7dd937633",
+      "disposition": "propose-correction",
+      "locale": "es",
+      "sourceId": "components.PermissionEdit.autoapproveBooksDescription",
+      "sourcePosition": 2386
+    },
+    {
+      "candidateTarget": "책 요청을 자동 승인할 권한을 부여합니다.",
+      "candidateTargetHash": "287826cece9089a8ced7d1b55e5944eec8cb75838ee7bef6f19bf4a6fb4d1e2d",
+      "disposition": "propose-correction",
+      "locale": "ko",
+      "sourceId": "components.PermissionEdit.autoapproveBooksDescription",
+      "sourcePosition": 2386
+    },
+    {
+      "candidateTarget": "Aprobación automática de cómics",
+      "candidateTargetHash": "b24163d6810517bb22089f1e923c0088697ea79a62485dd48ed88182a845dfce",
+      "disposition": "propose-correction",
+      "locale": "es",
+      "sourceId": "components.PermissionEdit.autoapproveComics",
+      "sourcePosition": 2387
+    },
+    {
+      "candidateTarget": "कॉमिक्स की स्वतः स्वीकृति",
+      "candidateTargetHash": "b040c9e9c4eee4488c948a298bcaf7c95d32f6659e76c2374ff2c6cd76397690",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.PermissionEdit.autoapproveComics",
+      "sourcePosition": 2387
+    },
+    {
+      "candidateTarget": "Persetujuan Otomatis Komik",
+      "candidateTargetHash": "2c98533d7f7fc926ed2a7225d355e196246c08b4c17e99af0b8b88be81150b22",
+      "disposition": "propose-correction",
+      "locale": "id",
+      "sourceId": "components.PermissionEdit.autoapproveComics",
+      "sourcePosition": 2387
+    },
+    {
+      "candidateTarget": "만화 자동 승인",
+      "candidateTargetHash": "4885ad090f9af5b85f62994548a19f20a88d1bd3fb6ce09518b49b9b1219432d",
+      "disposition": "propose-correction",
+      "locale": "ko",
+      "sourceId": "components.PermissionEdit.autoapproveComics",
+      "sourcePosition": 2387
+    },
+    {
+      "candidateTarget": "Tự động phê duyệt truyện tranh",
+      "candidateTargetHash": "f2d7b846b1cccf5e449c30e18fbc820afce667f55ca2ac3fd41a9d6381935cbf",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.PermissionEdit.autoapproveComics",
+      "sourcePosition": 2387
+    },
+    {
+      "candidateTarget": "自动批准漫画",
+      "candidateTargetHash": "246e5ead88a73103fea1cdcfafac8da33924926884a12f5c4ab315722022ed68",
+      "disposition": "propose-correction",
+      "locale": "zh_Hans",
+      "sourceId": "components.PermissionEdit.autoapproveComics",
+      "sourcePosition": 2387
+    },
+    {
+      "candidateTarget": "自動核准漫畫",
+      "candidateTargetHash": "f325cf3b27c9899c096bb26940a91b6d2c8ec792c86958004186e2243eff84ae",
+      "disposition": "propose-correction",
+      "locale": "zh_Hant",
+      "sourceId": "components.PermissionEdit.autoapproveComics",
+      "sourcePosition": 2387
+    },
+    {
+      "candidateTarget": "Concede aprobación automática para las solicitudes de cómics.",
+      "candidateTargetHash": "4532ab00aa0d0b316dad183397ca7ac665b42c00cd9432e4e4e8da904c8c6be6",
+      "disposition": "propose-correction",
+      "locale": "es",
+      "sourceId": "components.PermissionEdit.autoapproveComicsDescription",
+      "sourcePosition": 2388
+    },
+    {
+      "candidateTarget": "만화 요청을 자동 승인할 권한을 부여합니다.",
+      "candidateTargetHash": "a819368a32a88b4e0f87f4ad0c9de32311a20e25c76a9c3779213120328a3505",
+      "disposition": "propose-correction",
+      "locale": "ko",
+      "sourceId": "components.PermissionEdit.autoapproveComicsDescription",
+      "sourcePosition": 2388
+    },
+    {
+      "candidateTarget": "Approbation automatique des magazines",
+      "candidateTargetHash": "a7bfad056852a79308180b02ddc32b153c2953e62aad564bdc13b45e2ce8f565",
+      "disposition": "propose-correction",
+      "locale": "fr",
+      "sourceId": "components.PermissionEdit.autoapproveMagazines",
+      "sourcePosition": 2390
+    },
+    {
+      "candidateTarget": "पत्रिकाओं की स्वतः स्वीकृति",
+      "candidateTargetHash": "d189266fc5a6cfb5e775f78181d72a1af9f651fa93df479f1250b28e6007b8a2",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.PermissionEdit.autoapproveMagazines",
+      "sourcePosition": 2390
+    },
+    {
+      "candidateTarget": "Persetujuan Otomatis Majalah",
+      "candidateTargetHash": "4a7aa85fcda938ea7686f7e2601033df292c589b275a2d59ded50b92a1fb2ec1",
+      "disposition": "propose-correction",
+      "locale": "id",
+      "sourceId": "components.PermissionEdit.autoapproveMagazines",
+      "sourcePosition": 2390
+    },
+    {
+      "candidateTarget": "잡지 자동 승인",
+      "candidateTargetHash": "3ea4ad3db93bd2100f324928170985339bc8a4160c96c1dadda7b997d542643d",
+      "disposition": "propose-correction",
+      "locale": "ko",
+      "sourceId": "components.PermissionEdit.autoapproveMagazines",
+      "sourcePosition": 2390
+    },
+    {
+      "candidateTarget": "Tự động phê duyệt tạp chí",
+      "candidateTargetHash": "faf839cbed279130685c0153e277a0317c758328c9b4e1346c30eefe7a594b53",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.PermissionEdit.autoapproveMagazines",
+      "sourcePosition": 2390
+    },
+    {
+      "candidateTarget": "自动批准杂志",
+      "candidateTargetHash": "bfe8ec380ea7fd9b9df3bea2574498c63e6e69ad20b7e437ab896effd85555a2",
+      "disposition": "propose-correction",
+      "locale": "zh_Hans",
+      "sourceId": "components.PermissionEdit.autoapproveMagazines",
+      "sourcePosition": 2390
+    },
+    {
+      "candidateTarget": "自動核准雜誌",
+      "candidateTargetHash": "423aa10c34be239ae0eb7b611a4995e447d89c9733fa52696641ddc24413f828",
+      "disposition": "propose-correction",
+      "locale": "zh_Hant",
+      "sourceId": "components.PermissionEdit.autoapproveMagazines",
+      "sourcePosition": 2390
+    },
+    {
+      "candidateTarget": "Setujui film secara otomatis",
+      "candidateTargetHash": "61103b0d48739ebaa5c688122b1ac5376e4f95bf14c1651868dc0390820181c3",
+      "disposition": "propose-correction",
+      "locale": "id",
+      "sourceId": "components.PermissionEdit.autoapproveMovies",
+      "sourcePosition": 2392
+    },
+    {
+      "candidateTarget": "영화 자동 승인",
+      "candidateTargetHash": "e663d231a38e11936d7c48cba4b5359382172910d298b9531934262cc8e3a751",
+      "disposition": "propose-correction",
+      "locale": "ko",
+      "sourceId": "components.PermissionEdit.autoapproveMovies",
+      "sourcePosition": 2392
+    },
+    {
+      "candidateTarget": "Tự động phê duyệt phim",
+      "candidateTargetHash": "0ee31f51860ef138b29ffd09c14bc956736dc9c6128e6a613bcd653db7454df7",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.PermissionEdit.autoapproveMovies",
+      "sourcePosition": 2392
+    },
+    {
+      "candidateTarget": "Cho phép tự động phê duyệt các yêu cầu phim không phải 4K.",
+      "candidateTargetHash": "07cb5a440a325020b18cf3f76864b8a8df2f496b29eed7a12e03165089263a4c",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.PermissionEdit.autoapproveMoviesDescription",
+      "sourcePosition": 2393
+    },
+    {
+      "candidateTarget": "Persetujuan Otomatis Musik",
+      "candidateTargetHash": "65049d3fd3a10141d64a4613a94dd4b10d3f812543f618501afe6f464d28056d",
+      "disposition": "propose-correction",
+      "locale": "id",
+      "sourceId": "components.PermissionEdit.autoapproveMusic",
+      "sourcePosition": 2394
+    },
+    {
+      "candidateTarget": "음악 자동 승인",
+      "candidateTargetHash": "cf180cc2503e1bdd53a029f4def8030bef1042469629b3850582ed39d893f594",
+      "disposition": "propose-correction",
+      "locale": "ko",
+      "sourceId": "components.PermissionEdit.autoapproveMusic",
+      "sourcePosition": 2394
+    },
+    {
+      "candidateTarget": "Aprovação automática de música",
+      "candidateTargetHash": "0271922bbe07822eb657987a411e1534b3c744d96e9490bfb9a44f880a9e72da",
+      "disposition": "propose-correction",
+      "locale": "pt_BR",
+      "sourceId": "components.PermissionEdit.autoapproveMusic",
+      "sourcePosition": 2394
+    },
+    {
+      "candidateTarget": "Tự động phê duyệt âm nhạc",
+      "candidateTargetHash": "0700de548ee049a007daa0206f9a5c6d1724c948e7511788498c4bb07c573d1f",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.PermissionEdit.autoapproveMusic",
+      "sourcePosition": 2394
+    },
+    {
+      "candidateTarget": "自动批准音乐",
+      "candidateTargetHash": "ac91cfddad6405a2f7fe3623bff5823edfc36981e10e56d6848cef8238d4c2b7",
+      "disposition": "propose-correction",
+      "locale": "zh_Hans",
+      "sourceId": "components.PermissionEdit.autoapproveMusic",
+      "sourcePosition": 2394
+    },
+    {
+      "candidateTarget": "自動核准音樂",
+      "candidateTargetHash": "a4b75edbc94b12f1d7f1c7d838b3f6e7f68d811d563c7e3eb818f32c0f5a2a4f",
+      "disposition": "propose-correction",
+      "locale": "zh_Hant",
+      "sourceId": "components.PermissionEdit.autoapproveMusic",
+      "sourcePosition": 2394
+    },
+    {
+      "candidateTarget": "음악 요청을 자동 승인할 권한을 부여합니다.",
+      "candidateTargetHash": "2e4a62e9b79bf558d2f998e6217cb43d93ec8effd6cd886f00020b2107596a9c",
+      "disposition": "propose-correction",
+      "locale": "ko",
+      "sourceId": "components.PermissionEdit.autoapproveMusicDescription",
+      "sourcePosition": 2395
+    },
+    {
+      "candidateTarget": "सीरीज़ की स्वतः स्वीकृति",
+      "candidateTargetHash": "eca5b7c25f2117252920ce21430b2cc68a443fbd76fe53717fccb587f2038b93",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.PermissionEdit.autoapproveSeries",
+      "sourcePosition": 2396
+    },
+    {
+      "candidateTarget": "Setujui serial secara otomatis",
+      "candidateTargetHash": "f417b28f60f9cdd92271add959ae2f7771b22b6fd9f6f5f00df15c2876393573",
+      "disposition": "propose-correction",
+      "locale": "id",
+      "sourceId": "components.PermissionEdit.autoapproveSeries",
+      "sourcePosition": 2396
+    },
+    {
+      "candidateTarget": "Tự động phê duyệt phim bộ",
+      "candidateTargetHash": "0f01b59c0b8a1d7ea1f6508797c88b4d0e632f41b9eb52cb7b78401553d85220",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.PermissionEdit.autoapproveSeries",
+      "sourcePosition": 2396
+    },
+    {
+      "candidateTarget": "Cho phép tự động phê duyệt các yêu cầu phim bộ không phải 4K.",
+      "candidateTargetHash": "7554ef4a7435aeb5c438ae8d4a07ff5d26e25df0c249b42b8327e57c42fd6c6e",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.PermissionEdit.autoapproveSeriesDescription",
+      "sourcePosition": 2397
+    },
+    {
+      "candidateTarget": "Aprobación automática de solicitudes deportivas",
+      "candidateTargetHash": "f8c6a8fbd9d136310c355569c32b57d9b9c1e5e8e41234990a5432e88146512d",
+      "disposition": "propose-correction",
+      "locale": "es",
+      "sourceId": "components.PermissionEdit.autoapproveSports",
+      "sourcePosition": 2398
+    },
+    {
+      "candidateTarget": "Persetujuan Otomatis Olahraga",
+      "candidateTargetHash": "21ef6d4b58c895cbabe83bf162c14a539fcd7e6e4267bb2c532343d16e7de613",
+      "disposition": "propose-correction",
+      "locale": "id",
+      "sourceId": "components.PermissionEdit.autoapproveSports",
+      "sourcePosition": 2398
+    },
+    {
+      "candidateTarget": "스포츠 자동 승인",
+      "candidateTargetHash": "59b752f13addbc19370b13495ac21800ce4e142cb2bb99665b4f062aaeb6bc0e",
+      "disposition": "propose-correction",
+      "locale": "ko",
+      "sourceId": "components.PermissionEdit.autoapproveSports",
+      "sourcePosition": 2398
+    },
+    {
+      "candidateTarget": "Tự động phê duyệt thể thao",
+      "candidateTargetHash": "efdfe887d3ed4976301293a633ebe4ce45b5e3d20cbd0d86ba2b51047452403c",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.PermissionEdit.autoapproveSports",
+      "sourcePosition": 2398
+    },
+    {
+      "candidateTarget": "自动批准体育项目",
+      "candidateTargetHash": "8edfc9f812238b0f16423695de7b4aa01df534bda8eadc8f7a402e7ced2da0b0",
+      "disposition": "propose-correction",
+      "locale": "zh_Hans",
+      "sourceId": "components.PermissionEdit.autoapproveSports",
+      "sourcePosition": 2398
+    },
+    {
+      "candidateTarget": "自動核准體育項目",
+      "candidateTargetHash": "72b5cb461e82bb9532524d2a27a128c1ea3186e52b852ae64b147003217b0577",
+      "disposition": "propose-correction",
+      "locale": "zh_Hant",
+      "sourceId": "components.PermissionEdit.autoapproveSports",
+      "sourcePosition": 2398
+    },
+    {
+      "candidateTarget": "스포츠 리그 요청을 자동 승인할 권한을 부여합니다.",
+      "candidateTargetHash": "ea78ea24bea9a1ec0a022eccc7c114d33d0894975dc2f7618ba6fda730285aa9",
+      "disposition": "propose-correction",
+      "locale": "ko",
+      "sourceId": "components.PermissionEdit.autoapproveSportsDescription",
+      "sourcePosition": 2399
+    },
+    {
+      "candidateTarget": "Cho phép tự động phê duyệt các yêu cầu của giải đấu thể thao.",
+      "candidateTargetHash": "c2f12c474a3f5a3f17d61b33448cd7f249a2ffc3ca49d98aea17a9e9c6f9bfe8",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.PermissionEdit.autoapproveSportsDescription",
+      "sourcePosition": 2399
+    },
+    {
+      "candidateTarget": "授予自动审批体育联赛请求的权限。",
+      "candidateTargetHash": "598c7248a58b1dee6c5879e82c400d815a6fc99fb9c72835064ba638a0c97ec8",
+      "disposition": "propose-correction",
+      "locale": "zh_Hans",
+      "sourceId": "components.PermissionEdit.autoapproveSportsDescription",
+      "sourcePosition": 2399
+    },
+    {
+      "candidateTarget": "授予體育聯賽請求的自動核准權限。",
+      "candidateTargetHash": "b7f2ee8d5b550ad572c27477d606ac7ac9e5072da55578fbcc6c50bdc183c7ea",
+      "disposition": "propose-correction",
+      "locale": "zh_Hant",
+      "sourceId": "components.PermissionEdit.autoapproveSportsDescription",
+      "sourcePosition": 2399
+    }
+  ],
+  "head": "d49b44895d0ded9796f0c970ad09141212e9a98f",
+  "pullRequest": 418,
+  "repository": "snapetech-org/SeerrNG",
+  "tree": "cebcfc11e0ea37c42f5b6e979e96cca8c89c7814"
+}

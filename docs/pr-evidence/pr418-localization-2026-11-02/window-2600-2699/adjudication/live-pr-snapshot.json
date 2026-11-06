@@ -1,0 +1,125 @@
+{
+  "queriedAtUtc": "2026-11-02T21:38:38+00:00",
+  "method": "GitHub CLI `gh pr view --json number,state,isDraft,headRefOid,headRefName,baseRefOid,baseRefName,updatedAt,title,url`",
+  "pullRequests": [
+    {
+      "repository": "snapetech-org/seerrng",
+      "pullRequest": 418,
+      "exitCode": 0,
+      "pr": {
+        "baseRefName": "main",
+        "baseRefOid": "221d8e0d542802da7529cd272c928cc747677e5c",
+        "headRefName": "codex/seerrng-localization-overhaul-20261028",
+        "headRefOid": "9242898e23f7f25d515d10b5b0b51df322e395fb",
+        "isDraft": true,
+        "number": 418,
+        "state": "OPEN",
+        "title": "feat(i18n): strengthen SeerrNG localization",
+        "updatedAt": "2026-11-02T21:07:35Z",
+        "url": "https://github.com/snapetech-org/seerrng/pull/418"
+      }
+    },
+    {
+      "repository": "snapetech-org/chaptarrng",
+      "pullRequest": 190,
+      "exitCode": 0,
+      "pr": {
+        "baseRefName": "main",
+        "baseRefOid": "03274100af783fdffaca4dd8436e163dc6b18795",
+        "headRefName": "codex/chaptarrng-localization-complete-20261031",
+        "headRefOid": "961d3102ad3098ee188a6c87a0c88eea5f5ab332",
+        "isDraft": true,
+        "number": 190,
+        "state": "OPEN",
+        "title": "feat(i18n): complete ChaptarrNG localization rollout",
+        "updatedAt": "2026-11-02T21:14:03Z",
+        "url": "https://github.com/snapetech-org/chaptarrng/pull/190"
+      }
+    },
+    {
+      "repository": "snapetech-org/QuestarrNG",
+      "pullRequest": 155,
+      "exitCode": 0,
+      "pr": {
+        "baseRefName": "main",
+        "baseRefOid": "e188cd0c74c73071c94b04915e1babac2d2bf386",
+        "headRefName": "codex/localization-foundations-20261028",
+        "headRefOid": "be131f2d42988bb8f4a271e4df428985da15b53b",
+        "isDraft": false,
+        "number": 155,
+        "state": "OPEN",
+        "title": "Localization foundations: stable IDs, regional coverage, and RTL",
+        "updatedAt": "2026-11-02T20:48:52Z",
+        "url": "https://github.com/snapetech-org/QuestarrNG/pull/155"
+      }
+    },
+    {
+      "repository": "snapetech-org/ROMarrNG",
+      "pullRequest": 70,
+      "exitCode": 0,
+      "pr": {
+        "baseRefName": "main",
+        "baseRefOid": "bcd1eb41b5cdf8202acb5cf8e365e14761b743b5",
+        "headRefName": "task/localization-translation-review-20261030",
+        "headRefOid": "8e3820252b0c362e18e421b3a73e7ff1478d32a0",
+        "isDraft": true,
+        "number": 70,
+        "state": "OPEN",
+        "title": "fix: correct verified localization catalog errors",
+        "updatedAt": "2026-11-02T19:04:12Z",
+        "url": "https://github.com/snapetech-org/ROMarrNG/pull/70"
+      }
+    },
+    {
+      "repository": "snapetech-org/slskR",
+      "pullRequest": 204,
+      "exitCode": 0,
+      "pr": {
+        "baseRefName": "main",
+        "baseRefOid": "2a2b188f10b9460a15bc6d5c34e406b0193d51ba",
+        "headRefName": "codex/slskr-l10n-audit-20261030",
+        "headRefOid": "5f295feea832b3078c52d92d9268cd6446f804a5",
+        "isDraft": true,
+        "number": 204,
+        "state": "OPEN",
+        "title": "fix(i18n): correct audited locale copy",
+        "updatedAt": "2026-11-02T21:10:05Z",
+        "url": "https://github.com/snapetech-org/slskr/pull/204"
+      }
+    },
+    {
+      "repository": "snapetech-org/slskdN",
+      "pullRequest": 409,
+      "exitCode": 0,
+      "pr": {
+        "baseRefName": "main",
+        "baseRefOid": "f25d263a2a7cdb2c8f76c40c346cb10f749a9356",
+        "headRefName": "codex/slskdn-oidc-tooltip-localization-20261030",
+        "headRefOid": "fa097f9aa044a63981d0c16f6daa53837f815333",
+        "isDraft": true,
+        "number": 409,
+        "state": "OPEN",
+        "title": "fix(i18n): close tooltip and catalog copy gaps",
+        "updatedAt": "2026-11-02T21:15:13Z",
+        "url": "https://github.com/snapetech-org/slskdN/pull/409"
+      }
+    },
+    {
+      "repository": "snapetech-org/TorrentNG",
+      "pullRequest": 243,
+      "exitCode": 0,
+      "pr": {
+        "baseRefName": "main",
+        "baseRefOid": "0de7ddcf2f16a4399da8fd7904dc35f458b4837c",
+        "headRefName": "codex/torrentng-localization-audit-20261030",
+        "headRefOid": "11ff6fa2618e842e92716b7e92867769200e32e5",
+        "isDraft": true,
+        "number": 243,
+        "state": "OPEN",
+        "title": "fix(webui): correct context-sensitive locale strings",
+        "updatedAt": "2026-11-02T20:48:55Z",
+        "url": "https://github.com/snapetech-org/TorrentNG/pull/243"
+      }
+    }
+  ]
+}

@@ -1,0 +1,94 @@
+{
+  "schemaVersion": 1,
+  "livePrHead": "ebf1cb6082ef173688227c507acfdc04c3cf7ca7",
+  "livePrTree": "e3c4d1d10f40ea078b66dfdf942e99c8189fee0c",
+  "w3600ApplicationVerificationPath": "docs/pr-evidence/pr418-localization-2026-11-03/window-3600-3619/application-verification.json",
+  "w3600ApplicationVerificationGitBlob": "6994c66df913d03ad90b53eaebe66c6297e3bc2b",
+  "w3600ApplicationVerificationSha256": "ce385c138683aedfd3a86f3e2943b4edeff34fbfe15955d710c902207e32113d",
+  "w3600ApplicationVerificationStatus": "PASS",
+  "w3600EvidenceParentHead": "1fdec93d1b021e4ec7a7c2265230f59d81d2675e",
+  "w3600EvidenceParentTree": "6234854dc0b1e7aee17ef2e819ffc2b5b2e386ce",
+  "currentHeadCatalogPostApplyMatches": 13,
+  "currentCatalogs": [
+    {
+      "path": "src/i18n/locale/ar.json",
+      "postApplySha256": "3ee0f670843993fc99cac32869f363dfed60eafa5a5489507e3368473fe1c299",
+      "currentHeadSha256": "3ee0f670843993fc99cac32869f363dfed60eafa5a5489507e3368473fe1c299",
+      "matches": true
+    },
+    {
+      "path": "src/i18n/locale/de.json",
+      "postApplySha256": "3ee0a06c6c9cd8a12ac5c3fe0a1844eb35d620f0182bbcfbb630bda12415bee8",
+      "currentHeadSha256": "3ee0a06c6c9cd8a12ac5c3fe0a1844eb35d620f0182bbcfbb630bda12415bee8",
+      "matches": true
+    },
+    {
+      "path": "src/i18n/locale/en.json",
+      "postApplySha256": "75ff3c90b52aedd636a506281ffbd6fb2d3739c61294b6008a517f17647e2316",
+      "currentHeadSha256": "75ff3c90b52aedd636a506281ffbd6fb2d3739c61294b6008a517f17647e2316",
+      "matches": true
+    },
+    {
+      "path": "src/i18n/locale/es.json",
+      "postApplySha256": "cb0018aad91766df027f92e32959ee229050c58ee133a87951581744af81c9aa",
+      "currentHeadSha256": "cb0018aad91766df027f92e32959ee229050c58ee133a87951581744af81c9aa",
+      "matches": true
+    },
+    {
+      "path": "src/i18n/locale/fr.json",
+      "postApplySha256": "e420a6d40fddd81d5e24db9bb0fad02f87d7adf7fec066a1b6fd820dedfef9c8",
+      "currentHeadSha256": "e420a6d40fddd81d5e24db9bb0fad02f87d7adf7fec066a1b6fd820dedfef9c8",
+      "matches": true
+    },
+    {
+      "path": "src/i18n/locale/hi.json",
+      "postApplySha256": "75247eb2f1595630f525b0030268af0b5af7486cdb467d18a7e71032851483b0",
+      "currentHeadSha256": "75247eb2f1595630f525b0030268af0b5af7486cdb467d18a7e71032851483b0",
+      "matches": true
+    },
+    {
+      "path": "src/i18n/locale/id.json",
+      "postApplySha256": "377b71fcf4d9c006ac251cf5433ffd11634cfb5790d2fa1a66bcf60c5af761a8",
+      "currentHeadSha256": "377b71fcf4d9c006ac251cf5433ffd11634cfb5790d2fa1a66bcf60c5af761a8",
+      "matches": true
+    },
+    {
+      "path": "src/i18n/locale/ja.json",
+      "postApplySha256": "ac184f61b77b6b3d2094a3ede08d02e86bbbb32b42905ea577de7fb7ac862803",
+      "currentHeadSha256": "ac184f61b77b6b3d2094a3ede08d02e86bbbb32b42905ea577de7fb7ac862803",
+      "matches": true
+    },
+    {
+      "path": "src/i18n/locale/ko.json",
+      "postApplySha256": "4642a520a7d37b8a976e3d7311254dcbdfa7ee340e0a1d62b6dc10a7002e0b66",
+      "currentHeadSha256": "4642a520a7d37b8a976e3d7311254dcbdfa7ee340e0a1d62b6dc10a7002e0b66",
+      "matches": true
+    },
+    {
+      "path": "src/i18n/locale/pt_BR.json",
+      "postApplySha256": "ee0b360184d962da65bfae1589f9f91c521e2940617ae3976bdab4138b4ebf33",
+      "currentHeadSha256": "ee0b360184d962da65bfae1589f9f91c521e2940617ae3976bdab4138b4ebf33",
+      "matches": true
+    },
+    {
+      "path": "src/i18n/locale/vi.json",
+      "postApplySha256": "869141f2b073b04bfd0356ecaee627170f1357a9bc45def2f3c367aec356abca",
+      "currentHeadSha256": "869141f2b073b04bfd0356ecaee627170f1357a9bc45def2f3c367aec356abca",
+      "matches": true
+    },
+    {
+      "path": "src/i18n/locale/zh_Hans.json",
+      "postApplySha256": "5bef5f9244ed420b8449d8e15fdf3c5abeb3565132f7401608d4e92584777563",
+      "currentHeadSha256": "5bef5f9244ed420b8449d8e15fdf3c5abeb3565132f7401608d4e92584777563",
+      "matches": true
+    },
+    {
+      "path": "src/i18n/locale/zh_Hant.json",
+      "postApplySha256": "c73f04f36dec24fa382468bfcc7fbaf72614c8fb6f3c5035191ba120bcc137ac",
+      "currentHeadSha256": "c73f04f36dec24fa382468bfcc7fbaf72614c8fb6f3c5035191ba120bcc137ac",
+      "matches": true
+    }
+  ],
+  "applicationEvidenceIsCommittedAtLiveHead": true,
+  "noApplicationOrTranslationChangesMadeByThisTask": true
+}

@@ -1,0 +1,174 @@
+{
+  "schemaVersion": 1,
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "head": "5a4342176a8325c371a35d489cb01c58283bc983",
+  "tree": "98cd64952123c9b678e38250e7819cabb4476448",
+  "semanticManifestSha256": "3ea74cc6491aecddf9ffcedc69610f13d20b199059aef69bb3c2407feb0826ea",
+  "cellPlanSha256": "97c3402252a34aaa4f8f9f44a691281d9c35ff7b80d7edb3a26c752436af6558",
+  "retiredCellsSha256": "dc5ec05547e4da3079c0668f82a52da7999d89ef9d4f037c1cd72af9347ebd83",
+  "sourceBundleManifestSha256": "212491482d1b9207fed755af6e80ac80a97184ec8dbe84d0c4ad2bd711acae0d",
+  "sourceRowsSha256": "ad91236a31e32f199ff449f9ed4597ea6af0f5a4eff32772cefa84278cafb68c",
+  "sourceCellsSha256": "8bfcd1aa9b5d5aba4fb6317c194cd544d601543ebf250899a84a719b52e468e1",
+  "planRows": 115260,
+  "actions": {
+    "semantic-review-required": 114783,
+    "reuse-equivalence-decision": 477
+  },
+  "retiredRows": 48,
+  "reusableEquivalenceCells": 477,
+  "targetsApplied": false,
+  "batchId": "existing-es-client-0059",
+  "batchSha256": "6d4656bdaa9805f0ceedfa969dcb2725dfb66ad6e6804174a0874349c1b53cf7",
+  "rowCount": 32,
+  "model": "qwen3.8-27b-heretic:q4km",
+  "attempt": 1,
+  "decisions": [
+    {
+      "id": "components.Login.loginLinkFailed",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.Login.loginLinkHelp",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.Login.loginLinkTitle",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.Login.loginLinkUsing",
+      "verdict": "correct",
+      "target": "Iniciando sesión…",
+      "confidence": "high",
+      "reason": "'Firmando' means signing a document; 'Iniciando sesión' is the correct UI term for the login process."
+    },
+    {
+      "id": "components.Login.loginerror",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.Login.loginwithapp",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.Login.movie",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.Login.noadminerror",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.Login.orsigninwith",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.Login.password",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.Login.plexSessionMissing",
+      "verdict": "correct",
+      "target": "El inicio de sesión de Plex fue exitoso, pero Seerr no pudo establecer una sesión del navegador. Verifique que esté usando la URL HTTPS o que las cookies de sesión directa de HTTP estén habilitadas.",
+      "confidence": "high",
+      "reason": "The source 'Plex sign-in succeeded' was mistranslated as 'Plex El inicio de sesión...', breaking the sentence structure. The corrected version properly integrates the brand name and fixes the word order for 'HTTPS URL'."
+    },
+    {
+      "id": "components.Login.plexSigninFailed",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.Login.port",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.Login.quickconnect",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.Login.quickconnecterror",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.Login.save",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.Login.saveFailed",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.Login.saving",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.Login.series",
+      "verdict": "correct",
+      "target": "Series",
+      "confidence": "high",
+      "reason": "The source 'Series' is plural, but the target 'Serie' is singular. The translation should match the plural form."
+    },
+    {
+      "id": "components.Login.servertype",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.Login.sessionMissing",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.Login.sessionerror",
+      "verdict": "correct",
+      "target": "El inicio de sesión tuvo éxito, pero SeerrNG no pudo establecer una sesión del navegador. Utilice HTTPS o habilite sesiones de HTTP autenticadas, luego vuelva a intentarlo.",
+      "confidence": "high",
+      "reason": "The source 'Sign-in succeeded' was partially left in English ('Sign-in tuvo éxito'). The corrected version translates the full phrase and improves the verb form 'habilitar' to 'habilite' for natural imperative usage."
+    },
+    {
+      "id": "components.Login.setupAlreadyConfigured",
+      "verdict": "correct",
+      "target": "Jellyfin ya está configurado. Reinicie SeerrNG si cambió la configuración de transporte, luego inicie sesión de nuevo desde la página de inicio de sesión.",
+      "confidence": "high",
+      "reason": "'Regístrese' means 'register', but the context is 'sign in' (iniciar sesión). The corrected version uses the appropriate verb for logging in."
+    },
+    {
+      "id": "components.Login.setupSessionError",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.Login.signin",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.Login.signinFailed",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.Login.signingin",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.Login.signinheader",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.Login.signinwithjellyfin",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.Login.signinwithoverseerr",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.Login.signinwithplex",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.Login.tipEmailHasTrailingWhitespace",
+      "verdict": "keep"
+    }
+  ],
+  "decisionsSha256": "089633327dccda05f4a4d6c5c00ef580d56e53226dbee4e4483999eddc61da8f",
+  "rawResponseSha256": "718fc6027a4db757ddf769cbd76bd8c0156d7aaad01ffb4a601ec9d34b3be39f",
+  "rawResponseFile": "/mnt/disks/scratch/task-scratch/seerrng-review-window-650-700-422072-20261102/semantic-output/responses/existing-es-client-0059-attempt-1.json"
+}

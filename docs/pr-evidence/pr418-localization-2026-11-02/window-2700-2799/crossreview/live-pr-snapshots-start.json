@@ -1,0 +1,83 @@
+{
+  "capturedStartedUtc": "2026-11-02T22:17:24.240990+00:00",
+  "capturedFinishedUtc": "2026-11-02T22:17:38.676743+00:00",
+  "pullRequests": [
+    {
+      "repo": "snapetech-org/SeerrNG",
+      "pr": 418,
+      "state": "open",
+      "draft": true,
+      "headRef": "codex/seerrng-localization-overhaul-20261028",
+      "headSha": "6bc8d0bd3dfb4f8c87c307a3e562e0fd12474118",
+      "treeSha": "44cf1a02d645026872759fa04a7506ee738381e5",
+      "baseRef": "main",
+      "baseSha": "221d8e0d542802da7529cd272c928cc747677e5c"
+    },
+    {
+      "repo": "snapetech-org/ChaptarrNG",
+      "pr": 190,
+      "state": "open",
+      "draft": true,
+      "headRef": "codex/chaptarrng-localization-complete-20261031",
+      "headSha": "c28d0ab23b2c5454a10237496e642b2ad059d8ce",
+      "treeSha": "bd7a8a32a8bffc2a3168b648ff6e22d368064e5b",
+      "baseRef": "main",
+      "baseSha": "03274100af783fdffaca4dd8436e163dc6b18795"
+    },
+    {
+      "repo": "snapetech-org/QuestarrNG",
+      "pr": 155,
+      "state": "open",
+      "draft": false,
+      "headRef": "codex/localization-foundations-20261028",
+      "headSha": "be131f2d42988bb8f4a271e4df428985da15b53b",
+      "treeSha": "afd827714b9ada51ef269e41184ac219e064059b",
+      "baseRef": "main",
+      "baseSha": "e188cd0c74c73071c94b04915e1babac2d2bf386"
+    },
+    {
+      "repo": "snapetech-org/ROMarrNG",
+      "pr": 70,
+      "state": "open",
+      "draft": true,
+      "headRef": "task/localization-translation-review-20261030",
+      "headSha": "8e3820252b0c362e18e421b3a73e7ff1478d32a0",
+      "treeSha": "0d29024efd7e5e886926a83d95f57c472f327db9",
+      "baseRef": "main",
+      "baseSha": "bcd1eb41b5cdf8202acb5cf8e365e14761b743b5"
+    },
+    {
+      "repo": "snapetech-org/slskR",
+      "pr": 204,
+      "state": "open",
+      "draft": true,
+      "headRef": "codex/slskr-l10n-audit-20261030",
+      "headSha": "5f295feea832b3078c52d92d9268cd6446f804a5",
+      "treeSha": "22c6c11a817777e2a0df3987acd5fc6bf938c9a7",
+      "baseRef": "main",
+      "baseSha": "2a2b188f10b9460a15bc6d5c34e406b0193d51ba"
+    },
+    {
+      "repo": "snapetech-org/slskdN",
+      "pr": 409,
+      "state": "open",
+      "draft": true,
+      "headRef": "codex/slskdn-oidc-tooltip-localization-20261030",
+      "headSha": "cb6739864b3651d72412b6aeb4590537cbf23d4e",
+      "treeSha": "a0946207555e494a558707008ba051013964b447",
+      "baseRef": "main",
+      "baseSha": "f25d263a2a7cdb2c8f76c40c346cb10f749a9356"
+    },
+    {
+      "repo": "snapetech-org/TorrentNG",
+      "pr": 243,
+      "state": "open",
+      "draft": true,
+      "headRef": "codex/torrentng-localization-audit-20261030",
+      "headSha": "11ff6fa2618e842e92716b7e92867769200e32e5",
+      "treeSha": "770415a3fcd9353884ac245b53798af9610c0aa3",
+      "baseRef": "main",
+      "baseSha": "0de7ddcf2f16a4399da8fd7904dc35f458b4837c"
+    }
+  ]
+}

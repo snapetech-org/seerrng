@@ -1,6 +1,7 @@
 import EmbyLogo from '@app/assets/services/emby-icon-only.svg';
 import JellyfinLogo from '@app/assets/services/jellyfin-icon.svg';
 import PlexLogo from '@app/assets/services/plex.svg';
+import ApiMessageText from '@app/components/Common/ApiMessageText';
 import Button from '@app/components/Common/Button';
 import ButtonWithLoader from '@app/components/Common/ButtonWithLoader';
 import ImageFader from '@app/components/Common/ImageFader';
@@ -29,6 +30,13 @@ import { CSSTransition, SwitchTransition } from 'react-transition-group';
 import useSWR from 'swr';
 
 const messages = defineMessages('components.Login', {
+  signinFailed: 'Unable to complete sign-in.',
+  sessionMissing:
+    'Sign-in succeeded, but the browser session could not be established.',
+  loginLinkFailed: 'Unable to use this sign-in link.',
+  plexSessionMissing:
+    'Plex sign-in succeeded, but Seerr could not establish a browser session. Check that you are using the HTTPS URL or that direct HTTP session cookies are enabled.',
+  plexSigninFailed: 'Unable to complete Plex sign-in.',
   signin: 'Sign In',
   signinheader: 'Sign in to continue',
   signinwithplex: 'Use your Plex account',
@@ -57,6 +65,9 @@ const Login = ({
   initialBackdrops?: LoginBackdrop[];
 }) => {
   const intl = useIntl();
+  // Keep error copy current without restarting an in-flight Plex sign-in.
+  const intlRef = useRef(intl);
+  intlRef.current = intl;
   const router = useRouter();
   const settings = useSettings();
   const { user, revalidate } = useUser();
@@ -106,12 +117,11 @@ const Login = ({
       const response = await axios.post('/api/v1/auth/login-link', {
         token: loginLinkToken,
       });
-      if (!response.data?.id) throw new Error('Unable to complete sign-in.');
+      if (!response.data?.id)
+        throw new Error(intl.formatMessage(messages.signinFailed));
       const authenticatedUser = await revalidate();
       if (!authenticatedUser) {
-        throw new Error(
-          'Sign-in succeeded, but the browser session could not be established.'
-        );
+        throw new Error(intl.formatMessage(messages.sessionMissing));
       }
     } catch (caught) {
       setError(
@@ -120,7 +130,7 @@ const Login = ({
           ? caught.response.data.message
           : caught instanceof Error
             ? caught.message
-            : 'Unable to use this sign-in link.'
+            : intl.formatMessage(messages.loginLinkFailed)
       );
       setLoginLinkToken(undefined);
     } finally {
@@ -145,13 +155,15 @@ const Login = ({
 
         if (active) {
           if (!response.data?.id) {
-            throw new Error('Unable to complete Plex sign-in.');
+            throw new Error(
+              intlRef.current.formatMessage(messages.plexSigninFailed)
+            );
           }
 
           const authenticatedUser = await revalidate();
           if (!authenticatedUser) {
             throw new Error(
-              'Plex sign-in succeeded, but Seerr could not establish a browser session. Check that you are using the HTTPS URL or that direct HTTP session cookies are enabled.'
+              intlRef.current.formatMessage(messages.plexSessionMissing)
             );
           }
         }
@@ -162,7 +174,9 @@ const Login = ({
             : e instanceof Error
               ? e.message
               : undefined;
-          setError(message || 'Unable to complete Plex sign-in.');
+          setError(
+            message || intlRef.current.formatMessage(messages.plexSigninFailed)
+          );
         }
       } finally {
         if (active) {
@@ -259,7 +273,7 @@ const Login = ({
             <img
               src={versionedAsset('/os_icon.svg')}
               alt={settings.currentSettings.applicationTitle}
-              className="mr-2 h-5"
+              className="me-2 h-5"
             />
             <span>{settings.currentSettings.applicationTitle}</span>
           </ButtonWithLoader>
@@ -305,7 +319,7 @@ const Login = ({
           ) ?? []
         }
       />
-      <div className="absolute top-4 right-4 z-50">
+      <div className="absolute end-4 top-4 z-50">
         <LanguagePicker />
       </div>
       <div className="auth-login-brand relative z-40 flex flex-col items-center px-4 sm:mx-auto sm:w-full sm:max-w-md">
@@ -345,9 +359,9 @@ const Login = ({
                   <div className="flex-shrink-0">
                     <XCircleIcon className="h-5 w-5 text-red-300" />
                   </div>
-                  <div className="ml-3">
+                  <div className="ms-3">
                     <h3 className="text-sm font-medium text-red-300">
-                      {error}
+                      {<ApiMessageText>{error}</ApiMessageText>}
                     </h3>
                   </div>
                 </div>

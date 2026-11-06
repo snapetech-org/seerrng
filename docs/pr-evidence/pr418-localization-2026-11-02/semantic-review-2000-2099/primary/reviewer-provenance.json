@@ -1,0 +1,18 @@
+{
+  "acceptedCurrentCount": 817,
+  "browserReview": false,
+  "candidateCount": 383,
+  "head": "d897f04661802d7f47446e46602f1b521d33c52f",
+  "holdCount": 0,
+  "nativeSpeakerApproval": false,
+  "priorExactFinalDispositionRowsReused": 0,
+  "pullRequest": 418,
+  "repoOrPrModified": false,
+  "repository": "snapetech-org/SeerrNG",
+  "reviewType": "model-based semantic review with exact-head source/catalog/caller pinning",
+  "reviewedCells": 1200,
+  "reviewer": "Codex primary semantic reviewer",
+  "testsBuildsSecurityScansCiRun": false,
+  "tree": "309b846c546923856ffde114fd3cf75a7c8de7a7",
+  "workflowsReleasesTagsTouched": false
+}

@@ -1,0 +1,62 @@
+{
+  "task": "SeerrNG PR #418 W1700-1799 exact-hash reviewed application",
+  "inputHead": "670d1a213179dcc690f27a8b92c2372dba699091",
+  "inputTree": "be2a8a70ef7f86f3499be7c2190a07b3d2d78036",
+  "reviewedCells": 1200,
+  "appliedCellChanges": 243,
+  "perIndependentVerdict": {
+    "agree-primary-correction": 170,
+    "extra-correction": 25,
+    "extra-refinement": 16,
+    "agree-primary-refinement": 30,
+    "revise-primary-candidate": 2
+  },
+  "unchangedCurrentAndPriorCells": 957,
+  "unclaimedDefinitionOnlyCells": 24,
+  "changedUnclaimedDefinitionOnlyCells": 3,
+  "changedLocales": [
+    "ar",
+    "de",
+    "es",
+    "fr",
+    "hi",
+    "id",
+    "ja",
+    "ko",
+    "pt_BR",
+    "vi",
+    "zh_Hans",
+    "zh_Hant"
+  ],
+  "perLocale": {
+    "ar": 29,
+    "de": 6,
+    "es": 6,
+    "fr": 11,
+    "hi": 25,
+    "id": 16,
+    "ja": 23,
+    "ko": 31,
+    "pt_BR": 19,
+    "vi": 31,
+    "zh_Hans": 20,
+    "zh_Hant": 26
+  },
+  "targetKeyCountsAfter": {
+    "ar": 9494,
+    "de": 9494,
+    "es": 9494,
+    "fr": 9494,
+    "hi": 9494,
+    "id": 9494,
+    "ja": 9494,
+    "ko": 9494,
+    "pt_BR": 9494,
+    "vi": 9494,
+    "zh_Hans": 9494,
+    "zh_Hant": 9494
+  },
+  "nativeSpeakerApproval": false,
+  "testsBuildsScansCIWorkflowsRun": false,
+  "releasesTagsMerges": false
+}

@@ -1,0 +1,78 @@
+{
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "pinnedHead": "85188b1964b6bf473219c566b196d5eda94396e3",
+  "pinnedTree": "50bb1f456e29259dfe6dd022cea11da625a6cca6",
+  "primaryLedgerPath": "/mnt/disks/scratch/task-scratch/seerrng-pr418-w700-749-review-20261102/reviews/agent-0800-0899/semantic-review-ledger.jsonl",
+  "primaryLedgerSha256": "e5aa2084709df04af2d22b057f74a218db4dee8759e3ce95bedc004b1673a4a1",
+  "scope": "source positions 800–899; locales ar, de, es, fr, hi, id; correction-needed rows only",
+  "sourceCurrentRowsReattested": 600,
+  "sourceCurrentMismatches": 0,
+  "uniqueCallerReferencesReattested": 547,
+  "callerMismatches": 0,
+  "proposalsIndependentlyReviewed": 118,
+  "acceptedAsProposed": 104,
+  "refined": 14,
+  "held": 0,
+  "proposalNoOps": 0,
+  "placeholderParityFailures": 0,
+  "markupParityFailures": 0,
+  "priorRoutingRowsCopiedByteForByte": 14,
+  "priorRoutingRowsReAdjudicated": 0,
+  "byLocale": {
+    "ar": {
+      "proposalsReviewed": 43,
+      "acceptedAsProposed": 42,
+      "refined": 1,
+      "held": 0,
+      "proposalNoOps": 0,
+      "placeholderOrMarkupParityFailures": 0
+    },
+    "de": {
+      "proposalsReviewed": 4,
+      "acceptedAsProposed": 4,
+      "refined": 0,
+      "held": 0,
+      "proposalNoOps": 0,
+      "placeholderOrMarkupParityFailures": 0
+    },
+    "es": {
+      "proposalsReviewed": 20,
+      "acceptedAsProposed": 18,
+      "refined": 2,
+      "held": 0,
+      "proposalNoOps": 0,
+      "placeholderOrMarkupParityFailures": 0
+    },
+    "fr": {
+      "proposalsReviewed": 13,
+      "acceptedAsProposed": 11,
+      "refined": 2,
+      "held": 0,
+      "proposalNoOps": 0,
+      "placeholderOrMarkupParityFailures": 0
+    },
+    "hi": {
+      "proposalsReviewed": 22,
+      "acceptedAsProposed": 17,
+      "refined": 5,
+      "held": 0,
+      "proposalNoOps": 0,
+      "placeholderOrMarkupParityFailures": 0
+    },
+    "id": {
+      "proposalsReviewed": 16,
+      "acceptedAsProposed": 12,
+      "refined": 4,
+      "held": 0,
+      "proposalNoOps": 0,
+      "placeholderOrMarkupParityFailures": 0
+    }
+  },
+  "nativeSpeakerReviewPerformed": false,
+  "nativeSpeakerReviewNote": "This is an independent semantic cross-review; primary-ledger native-speaker reviews remain required where flagged.",
+  "supplementalUIEvidence": {
+    "SeerrNG": "Pinned tree 50bb1f456e29259dfe6dd022cea11da625a6cca6; SettingsLayout.tsx maps /settings/main to the visible General tab. Locale labels are read from the same pinned catalogs.",
+    "ChaptarrNG": "snapetech-org/chaptarrng commit 03274100af783fdffaca4dd8436e163dc6b18795; src/NzbDrone.Core/Localization/Core/{es,fr,hi}.json used to verify external localized Settings/General/Host and Security/API Key labels."
+  }
+}

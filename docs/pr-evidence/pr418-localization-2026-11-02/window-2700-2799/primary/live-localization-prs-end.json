@@ -1,0 +1,1037 @@
+{
+  "callerReattestation": {
+    "allCallerFileBlobsAndLinesMatch": true,
+    "callerFiles": [
+      {
+        "blob": "27de6eeecb8c6aa0602580f80b1a13362d0ce693",
+        "bytes": 54696,
+        "path": "src/components/RequestList/RequestItem/index.tsx",
+        "sha256": "4c6413e8bb7bb681baf7962b1a0c9387e30d7af9bc7c9b695e1c735be8512ae7"
+      },
+      {
+        "blob": "ba29bd13d87c3d4eaa9e60bb3038281306b49ad2",
+        "bytes": 15729,
+        "path": "src/components/RequestList/index.tsx",
+        "sha256": "858018cc08675603da29aab413c7fcc4e88899f1781683e02b5061e8dd83f65b"
+      },
+      {
+        "blob": "c1aa00d8f987169f3633fef58f4f29767d12dff4",
+        "bytes": 10364,
+        "path": "src/components/Soulseek/TrackRequestList.tsx",
+        "sha256": "7bf57686f475f9f48795e262f5d64f1a9fb6bf0659cb92951726980402acd7ff"
+      },
+      {
+        "blob": "109cc4f36578535774e4c5392820d51fe8b1d46f",
+        "bytes": 14942,
+        "path": "src/components/RequestModal/AdultRequestModal.tsx",
+        "sha256": "49588ae26bd5866d778f1f63370e06757d08d7c3715b43221894990e411b1673"
+      },
+      {
+        "blob": "dcbb6f8bb66f3f25a92e6b52d89697d1e3ba93a4",
+        "bytes": 48459,
+        "path": "src/components/RequestModal/AdvancedRequester/index.tsx",
+        "sha256": "41c05713307112241f0df33ebc3970ec8fb35a944161fbf67e61e719998f5307"
+      },
+      {
+        "blob": "784466021b34f4f04709af7495c358ae6140d131",
+        "bytes": 39701,
+        "path": "src/components/RequestModal/BookRequestModal.tsx",
+        "sha256": "12101127783cdeb1201908578b097ebbf073f2e780f89ba23502ead0e3c614da"
+      }
+    ],
+    "head": "6bc8d0bd3dfb4f8c87c307a3e562e0fd12474118",
+    "note": "Caller paths and direct/helper references are statically pinned in the target source-group files; this is not a complete runtime call graph.",
+    "pinnedLineReferences": 472,
+    "sourceIdRows": 100,
+    "tree": "44cf1a02d645026872759fa04a7506ee738381e5"
+  },
+  "capturedAtUtc": "2026-11-02T22:12:17Z",
+  "pullRequests": [
+    {
+      "baseHead": "03274100af783fdffaca4dd8436e163dc6b18795",
+      "catalogSelection": "All repository catalog/locale paths selected by established path convention.",
+      "currentCatalogFileCount": 53,
+      "currentCatalogFiles": [
+        {
+          "blob": "f1d73e5758feca4c2e6a1a432d34632d1f47ee1c",
+          "path": "src/NzbDrone.Core/Localization/Core/ar.json"
+        },
+        {
+          "blob": "0967ef424bce6791893e9a57bb952f80fd536e93",
+          "path": "src/NzbDrone.Core/Localization/Core/az.json"
+        },
+        {
+          "blob": "fef49f44d9740e412251ed4868ad91a63f70cd7a",
+          "path": "src/NzbDrone.Core/Localization/Core/bg.json"
+        },
+        {
+          "blob": "002ebadbe79b503bf5b9e0181b1392264bf6ed09",
+          "path": "src/NzbDrone.Core/Localization/Core/bn.json"
+        },
+        {
+          "blob": "0967ef424bce6791893e9a57bb952f80fd536e93",
+          "path": "src/NzbDrone.Core/Localization/Core/bs.json"
+        },
+        {
+          "blob": "b39323f4849c153a716b9e8d09f7e8860dcdac78",
+          "path": "src/NzbDrone.Core/Localization/Core/ca.json"
+        },
+        {
+          "blob": "36e85294a19fede2d0cedb3a0f10970a48c8663e",
+          "path": "src/NzbDrone.Core/Localization/Core/cs.json"
+        },
+        {
+          "blob": "3ab1461a51035b85051f0050d430a47d912a6674",
+          "path": "src/NzbDrone.Core/Localization/Core/da.json"
+        },
+        {
+          "blob": "130dd13b8e2de58602d22542e0490b47f94a2228",
+          "path": "src/NzbDrone.Core/Localization/Core/de.json"
+        },
+        {
+          "blob": "6e05c9ef02258283db79719cf50180e5c44c6b6b",
+          "path": "src/NzbDrone.Core/Localization/Core/el.json"
+        },
+        {
+          "blob": "5d72ce82a3d592f38b44f038bbf20bf12643d74d",
+          "path": "src/NzbDrone.Core/Localization/Core/en.json"
+        },
+        {
+          "blob": "5f282bcf88a5e89b61c22cc10b5da3352ca45c39",
+          "path": "src/NzbDrone.Core/Localization/Core/es.json"
+        },
+        {
+          "blob": "0967ef424bce6791893e9a57bb952f80fd536e93",
+          "path": "src/NzbDrone.Core/Localization/Core/es_419.json"
+        },
+        {
+          "blob": "0967ef424bce6791893e9a57bb952f80fd536e93",
+          "path": "src/NzbDrone.Core/Localization/Core/es_MX.json"
+        },
+        {
+          "blob": "0967ef424bce6791893e9a57bb952f80fd536e93",
+          "path": "src/NzbDrone.Core/Localization/Core/et.json"
+        },
+        {
+          "blob": "add9057cabb60b91b48db76ee01e15be5319475b",
+          "path": "src/NzbDrone.Core/Localization/Core/fa.json"
+        },
+        {
+          "blob": "995be4fac97d2ad2f997761a9d186262c3cb02cd",
+          "path": "src/NzbDrone.Core/Localization/Core/fi.json"
+        },
+        {
+          "blob": "06f873c2a09365a9cb8041ba13d43cebff7fddd5",
+          "path": "src/NzbDrone.Core/Localization/Core/fr.json"
+        },
+        {
+          "blob": "0967ef424bce6791893e9a57bb952f80fd536e93",
+          "path": "src/NzbDrone.Core/Localization/Core/fr_CA.json"
+        },
+        {
+          "blob": "5cd4e1a85067579869a992eb2af4b13eb03f873a",
+          "path": "src/NzbDrone.Core/Localization/Core/he.json"
+        },
+        {
+          "blob": "d732c9ceb4271c4f8711d0428ba72d5baccd47fa",
+          "path": "src/NzbDrone.Core/Localization/Core/hi.json"
+        },
+        {
+          "blob": "04fe6dc96020be1e97f178b5c2efe33ac74a013c",
+          "path": "src/NzbDrone.Core/Localization/Core/hr.json"
+        },
+        {
+          "blob": "25bda8c5d1f537aedc9ae46a9b7474c5ed4998b5",
+          "path": "src/NzbDrone.Core/Localization/Core/hu.json"
+        },
+        {
+          "blob": "f963fd1e1417e028a1d2a713e6c93abae4a74274",
+          "path": "src/NzbDrone.Core/Localization/Core/id.json"
+        },
+        {
+          "blob": "63e99297c11822cb1f07e8141b2cbb68f2242902",
+          "path": "src/NzbDrone.Core/Localization/Core/is.json"
+        },
+        {
+          "blob": "92dc93a78ce5077ef37671141279b608d9cbedcb",
+          "path": "src/NzbDrone.Core/Localization/Core/it.json"
+        },
+        {
+          "blob": "2eef7f381827e2cbb3d7b333f1649cf3f5ea5a8c",
+          "path": "src/NzbDrone.Core/Localization/Core/ja.json"
+        },
+        {
+          "blob": "0967ef424bce6791893e9a57bb952f80fd536e93",
+          "path": "src/NzbDrone.Core/Localization/Core/kk.json"
+        },
+        {
+          "blob": "f575f492707957e73fc6714a5943139ea00fc819",
+          "path": "src/NzbDrone.Core/Localization/Core/ko.json"
+        },
+        {
+          "blob": "0967ef424bce6791893e9a57bb952f80fd536e93",
+          "path": "src/NzbDrone.Core/Localization/Core/lt.json"
+        },
+        {
+          "blob": "9438bd91ec856a0c1a10d01faf60dbe77127a56b",
+          "path": "src/NzbDrone.Core/Localization/Core/lv.json"
+        },
+        {
+          "blob": "0967ef424bce6791893e9a57bb952f80fd536e93",
+          "path": "src/NzbDrone.Core/Localization/Core/ms.json"
+        },
+        {
+          "blob": "b5c7b871ddf138c03cb9c32d5f81367508fe3ffe",
+          "path": "src/NzbDrone.Core/Localization/Core/nb_NO.json"
+        },
+        {
+          "blob": "e42cb3cd0b22d4a276d45df023482bd645ac288d",
+          "path": "src/NzbDrone.Core/Localization/Core/nl.json"
+        },
+        {
+          "blob": "6d4e1df71fc0ddbf58abcfcd4bf80461d874966e",
+          "path": "src/NzbDrone.Core/Localization/Core/pl.json"
+        },
+        {
+          "blob": "b79758085e6d5c9caae517e3abc300ef391d7331",
+          "path": "src/NzbDrone.Core/Localization/Core/pt.json"
+        },
+        {
+          "blob": "f97e3e80debb0fcffc442217d4848561c4a51a48",
+          "path": "src/NzbDrone.Core/Localization/Core/pt_BR.json"
+        },
+        {
+          "blob": "0967ef424bce6791893e9a57bb952f80fd536e93",
+          "path": "src/NzbDrone.Core/Localization/Core/pt_PT.json"
+        },
+        {
+          "blob": "de39953c5c24de8674bacb837d543936cf8d4142",
+          "path": "src/NzbDrone.Core/Localization/Core/ro.json"
+        },
+        {
+          "blob": "a0f8079a5e4b91a1828be6a3530dcb2a926e80ed",
+          "path": "src/NzbDrone.Core/Localization/Core/ru.json"
+        },
+        {
+          "blob": "af0eea90627d5798da680d48793d79f33279c28c",
+          "path": "src/NzbDrone.Core/Localization/Core/sk.json"
+        },
+        {
+          "blob": "0967ef424bce6791893e9a57bb952f80fd536e93",
+          "path": "src/NzbDrone.Core/Localization/Core/sr.json"
+        },
+        {
+          "blob": "5b7bec33b6880b878df8f9c159df25c960e80906",
+          "path": "src/NzbDrone.Core/Localization/Core/sv.json"
+        },
+        {
+          "blob": "0967ef424bce6791893e9a57bb952f80fd536e93",
+          "path": "src/NzbDrone.Core/Localization/Core/ta.json"
+        },
+        {
+          "blob": "1f51606f8b91dcf11873ee2886a9cdb5ec2f6e83",
+          "path": "src/NzbDrone.Core/Localization/Core/th.json"
+        },
+        {
+          "blob": "d79c656f28f147f925fff5a46a86976190c0b06d",
+          "path": "src/NzbDrone.Core/Localization/Core/tr.json"
+        },
+        {
+          "blob": "1c3fe0ae3f7e25fed8b88ac82972bfdcc3b8699d",
+          "path": "src/NzbDrone.Core/Localization/Core/ui-locales.json"
+        },
+        {
+          "blob": "936065bce6a8fa97cd494cb3504abf76fa7cd350",
+          "path": "src/NzbDrone.Core/Localization/Core/uk.json"
+        },
+        {
+          "blob": "0967ef424bce6791893e9a57bb952f80fd536e93",
+          "path": "src/NzbDrone.Core/Localization/Core/uz.json"
+        },
+        {
+          "blob": "e57fdda0fc8c393ba58c17741e354266361c5365",
+          "path": "src/NzbDrone.Core/Localization/Core/vi.json"
+        },
+        {
+          "blob": "c300012b99ffc485301f1fc254c04c200eab5aa2",
+          "path": "src/NzbDrone.Core/Localization/Core/zh_CN.json"
+        },
+        {
+          "blob": "c33a6cd952ddeb6a4e92c9f866307f393e90c844",
+          "path": "src/NzbDrone.Core/Localization/Core/zh_Hans.json"
+        },
+        {
+          "blob": "447ce420ca8c308c93f2c69bf1f7f483a2c55830",
+          "path": "src/NzbDrone.Core/Localization/Core/zh_TW.json"
+        }
+      ],
+      "head": "c28d0ab23b2c5454a10237496e642b2ad059d8ce",
+      "headRefName": "codex/chaptarrng-localization-complete-20261031",
+      "isDraft": true,
+      "label": "ChaptarrNG",
+      "pullRequest": 190,
+      "repository": "snapetech-org/chaptarrng",
+      "state": "OPEN",
+      "tree": "bd7a8a32a8bffc2a3168b648ff6e22d368064e5b",
+      "treeTruncated": false,
+      "url": "https://github.com/snapetech-org/chaptarrng/pull/190"
+    },
+    {
+      "baseHead": "e188cd0c74c73071c94b04915e1babac2d2bf386",
+      "catalogSelection": "All repository catalog/locale paths selected by established path convention.",
+      "currentCatalogFileCount": 12,
+      "currentCatalogFiles": [
+        {
+          "blob": "3bcd0152fac4df850642248628873f05b9ee7792",
+          "path": "client/src/lib/api-error-locale.ts"
+        },
+        {
+          "blob": "b7f22a4d324d2b84c28b77294f9dd274431f01ba",
+          "path": "client/src/lib/download-status-locale.ts"
+        },
+        {
+          "blob": "748b0c8c16cb59ea6d0347ccf6fe3f4919723cb5",
+          "path": "client/src/lib/interface-locale.ts"
+        },
+        {
+          "blob": "d3f880a6a89fe46d316e28c3f8ffcf0d81281863",
+          "path": "client/src/lib/notification-locale.ts"
+        },
+        {
+          "blob": "be82759ecc26318cf50a663fc70d4fffbdbab29d",
+          "path": "client/src/lib/service-message-locale.ts"
+        },
+        {
+          "blob": "98d8269dd652b835be4ec8db593ea7385066e5b9",
+          "path": "localization/locale-map.json"
+        },
+        {
+          "blob": "7ba8ce482349b4a22025f113ee92dddd43b30a58",
+          "path": "localization/messages.json"
+        },
+        {
+          "blob": "eb47d92e9bb793258172a06a27109bf992623725",
+          "path": "localization/review-manifest-pr155-21444d8f.json"
+        },
+        {
+          "blob": "a5b1220c684909fbb42828b11ab9334e1743e7d7",
+          "path": "localization/service-message-ids.json"
+        },
+        {
+          "blob": "d9f8705d25f8b1221031474982858ad5a0745903",
+          "path": "localization/source-coverage.json"
+        },
+        {
+          "blob": "ae031200d0afed27d87823ff64a497b97f9b5539",
+          "path": "localization/source-message-audit.json"
+        },
+        {
+          "blob": "15ca41d3c416fc98c1989469fe88413a7af3026b",
+          "path": "shared/notification-locale.ts"
+        }
+      ],
+      "head": "be131f2d42988bb8f4a271e4df428985da15b53b",
+      "headRefName": "codex/localization-foundations-20261028",
+      "isDraft": false,
+      "label": "QuestarrNG",
+      "pullRequest": 155,
+      "repository": "snapetech-org/questarrng",
+      "state": "OPEN",
+      "tree": "afd827714b9ada51ef269e41184ac219e064059b",
+      "treeTruncated": false,
+      "url": "https://github.com/snapetech-org/QuestarrNG/pull/155"
+    },
+    {
+      "baseHead": "bcd1eb41b5cdf8202acb5cf8e365e14761b743b5",
+      "catalogSelection": "All repository catalog/locale paths selected by established path convention.",
+      "currentCatalogFileCount": 4,
+      "currentCatalogFiles": [
+        {
+          "blob": "7542b0d51fd9826c4783ae5a23f00d78ec9503bc",
+          "path": "romarr/i18n_runtime.js"
+        },
+        {
+          "blob": "0ae0af57e6f5942c8ffa97673f4db4532cf29910",
+          "path": "romarr/ui-labels.json"
+        },
+        {
+          "blob": "ea4ff095d4c9d60c175987926b852dddd1f6aa85",
+          "path": "romarr/ui-source-messages.json"
+        },
+        {
+          "blob": "c6e8f3f93cb8784a25422526730b3c21f3f000a4",
+          "path": "romarr/ui-source-snapshot.json"
+        }
+      ],
+      "head": "8e3820252b0c362e18e421b3a73e7ff1478d32a0",
+      "headRefName": "task/localization-translation-review-20261030",
+      "isDraft": true,
+      "label": "ROMarrNG",
+      "pullRequest": 70,
+      "repository": "snapetech-org/romarrng",
+      "state": "OPEN",
+      "tree": "0d29024efd7e5e886926a83d95f57c472f327db9",
+      "treeTruncated": false,
+      "url": "https://github.com/snapetech-org/ROMarrNG/pull/70"
+    },
+    {
+      "baseHead": "221d8e0d542802da7529cd272c928cc747677e5c",
+      "catalogSelection": "All repository catalog/locale paths selected by established path convention.",
+      "currentCatalogFileCount": 85,
+      "currentCatalogFiles": [
+        {
+          "blob": "d699bd347f4fbad07bce14a743c884800d9d4a84",
+          "path": "config/i18n/locales.json"
+        },
+        {
+          "blob": "1a8b5c2265252fa8eccb274b29136feaee32b24e",
+          "path": "server/i18n/locale/ar.json"
+        },
+        {
+          "blob": "4916f3134cb9928dcb66e03e2716b8da37ca3fb8",
+          "path": "server/i18n/locale/bg.json"
+        },
+        {
+          "blob": "92bb06dd081065d021269201d7ae1cc810fc6d07",
+          "path": "server/i18n/locale/ca.json"
+        },
+        {
+          "blob": "b1e5ffd3177735d1fddef3795690e820555e40a2",
+          "path": "server/i18n/locale/cs.json"
+        },
+        {
+          "blob": "5a6a2821bb88eb7a853aca8d1e5661a29822ab89",
+          "path": "server/i18n/locale/da.json"
+        },
+        {
+          "blob": "e28d4b3367901c7deff4cede1fa2623abfb0e5fe",
+          "path": "server/i18n/locale/de.json"
+        },
+        {
+          "blob": "0967ef424bce6791893e9a57bb952f80fd536e93",
+          "path": "server/i18n/locale/el.json"
+        },
+        {
+          "blob": "e2ed7331f4474116fc8765f1e0996b1ae15ebe92",
+          "path": "server/i18n/locale/en.json"
+        },
+        {
+          "blob": "a9fed1f4160550e98c6ef4a4c21f3d49eef77a6d",
+          "path": "server/i18n/locale/es-MX.json"
+        },
+        {
+          "blob": "bf55d92c43795b30c04230855a9a174360bb50e3",
+          "path": "server/i18n/locale/es.json"
+        },
+        {
+          "blob": "2669df3d5da453af279bdbccbc4c1b83f1682ffe",
+          "path": "server/i18n/locale/et.json"
+        },
+        {
+          "blob": "0967ef424bce6791893e9a57bb952f80fd536e93",
+          "path": "server/i18n/locale/eu.json"
+        },
+        {
+          "blob": "0967ef424bce6791893e9a57bb952f80fd536e93",
+          "path": "server/i18n/locale/fi.json"
+        },
+        {
+          "blob": "45f31f01a30015b3fd7d5693272b0cd3f3c3bd54",
+          "path": "server/i18n/locale/fr.json"
+        },
+        {
+          "blob": "0967ef424bce6791893e9a57bb952f80fd536e93",
+          "path": "server/i18n/locale/he.json"
+        },
+        {
+          "blob": "88ad3e0915057db6e28b95938b732f2388e4e7e4",
+          "path": "server/i18n/locale/hi.json"
+        },
+        {
+          "blob": "0967ef424bce6791893e9a57bb952f80fd536e93",
+          "path": "server/i18n/locale/hr.json"
+        },
+        {
+          "blob": "11c881e8604a09a88299462b59b397f1baa3652b",
+          "path": "server/i18n/locale/hu.json"
+        },
+        {
+          "blob": "d3a9b681195ffb71387695f55bb8b313d1e6f633",
+          "path": "server/i18n/locale/id.json"
+        },
+        {
+          "blob": "0967ef424bce6791893e9a57bb952f80fd536e93",
+          "path": "server/i18n/locale/it.json"
+        },
+        {
+          "blob": "610a3e0a4fb92fc6da1d7c7d0215afaba8c9a99d",
+          "path": "server/i18n/locale/ja.json"
+        },
+        {
+          "blob": "0967ef424bce6791893e9a57bb952f80fd536e93",
+          "path": "server/i18n/locale/kab.json"
+        },
+        {
+          "blob": "37a3743d92a0460c05cc22fe506cc1587006be81",
+          "path": "server/i18n/locale/ko.json"
+        },
+        {
+          "blob": "0967ef424bce6791893e9a57bb952f80fd536e93",
+          "path": "server/i18n/locale/lb.json"
+        },
+        {
+          "blob": "0967ef424bce6791893e9a57bb952f80fd536e93",
+          "path": "server/i18n/locale/lt.json"
+        },
+        {
+          "blob": "0967ef424bce6791893e9a57bb952f80fd536e93",
+          "path": "server/i18n/locale/nb-NO.json"
+        },
+        {
+          "blob": "675068e86743b442d2990a19fa05e89a38308b68",
+          "path": "server/i18n/locale/nl.json"
+        },
+        {
+          "blob": "47991df9335d942601d677bf0e11dd2753c5af33",
+          "path": "server/i18n/locale/pl.json"
+        },
+        {
+          "blob": "6f23f78bfb298df008bfc10eb50e6cb2aeba3843",
+          "path": "server/i18n/locale/pt-BR.json"
+        },
+        {
+          "blob": "0967ef424bce6791893e9a57bb952f80fd536e93",
+          "path": "server/i18n/locale/pt-PT.json"
+        },
+        {
+          "blob": "0967ef424bce6791893e9a57bb952f80fd536e93",
+          "path": "server/i18n/locale/ro.json"
+        },
+        {
+          "blob": "8fed1e7509bcd06e34c408c536ae8b3819bc26b4",
+          "path": "server/i18n/locale/ru.json"
+        },
+        {
+          "blob": "0967ef424bce6791893e9a57bb952f80fd536e93",
+          "path": "server/i18n/locale/sk.json"
+        },
+        {
+          "blob": "0967ef424bce6791893e9a57bb952f80fd536e93",
+          "path": "server/i18n/locale/sl.json"
+        },
+        {
+          "blob": "0967ef424bce6791893e9a57bb952f80fd536e93",
+          "path": "server/i18n/locale/sq.json"
+        },
+        {
+          "blob": "0967ef424bce6791893e9a57bb952f80fd536e93",
+          "path": "server/i18n/locale/sr.json"
+        },
+        {
+          "blob": "54e0215580e9abf19dafb93be2aabb587813bf5b",
+          "path": "server/i18n/locale/sv.json"
+        },
+        {
+          "blob": "08abd7b4a21a92faa041cb6b82d8d1f05dea0aa5",
+          "path": "server/i18n/locale/tr.json"
+        },
+        {
+          "blob": "f5c36210dd9099d78aa6a2539532bbe2a4236628",
+          "path": "server/i18n/locale/uk.json"
+        },
+        {
+          "blob": "61df5d103b49dbc289bd01a11518584b202b6826",
+          "path": "server/i18n/locale/vi.json"
+        },
+        {
+          "blob": "c4bdc1e262852ffd9137c30dedaae2d24d7441a4",
+          "path": "server/i18n/locale/zh-Hans.json"
+        },
+        {
+          "blob": "a40a5b62e6964e2143135b433ccfd96ed7468536",
+          "path": "server/i18n/locale/zh-Hant.json"
+        },
+        {
+          "blob": "3e5279cd7922249f94ae82430dc6f798af3517b3",
+          "path": "src/i18n/locale/ar.json"
+        },
+        {
+          "blob": "71ee7c38ceb320380843a16884639f852b61d113",
+          "path": "src/i18n/locale/bg.json"
+        },
+        {
+          "blob": "339906bd06944671a666146548f8d3f57a0d8a87",
+          "path": "src/i18n/locale/ca.json"
+        },
+        {
+          "blob": "a719b70b98ced05d18199208e24e6a78101c5fad",
+          "path": "src/i18n/locale/cs.json"
+        },
+        {
+          "blob": "40cc5b86d15eb48a9e1a04d54e6fc40d67f6322c",
+          "path": "src/i18n/locale/da.json"
+        },
+        {
+          "blob": "320dd26927c53dd76dd9369eee0c7195cbc2c8a9",
+          "path": "src/i18n/locale/de.json"
+        },
+        {
+          "blob": "3169a238911de150c74e89ac5d354df9ba7caf2d",
+          "path": "src/i18n/locale/el.json"
+        },
+        {
+          "blob": "12e04a118c30b71b3714291adeaf9fdb2735cee4",
+          "path": "src/i18n/locale/en.json"
+        },
+        {
+          "blob": "75d8b0e1846c94e019cbf09e503ad3e000a37636",
+          "path": "src/i18n/locale/es.json"
+        },
+        {
+          "blob": "483c2ddd22d5fabb77724715afe82267005b83ca",
+          "path": "src/i18n/locale/es_MX.json"
+        },
+        {
+          "blob": "559f1225a47f667f8d42a8764dfcca294e5e0f1e",
+          "path": "src/i18n/locale/et.json"
+        },
+        {
+          "blob": "d52e2fa74ef23d78b83277f865d9de1926653974",
+          "path": "src/i18n/locale/eu.json"
+        },
+        {
+          "blob": "7516c7f7e1bc929bd75066df0559554ac0ec203a",
+          "path": "src/i18n/locale/fi.json"
+        },
+        {
+          "blob": "c4a102a35ee5678a38e0ed9913e671680653f01f",
+          "path": "src/i18n/locale/fr.json"
+        },
+        {
+          "blob": "3e1e47cb94cbd0a31d3bc169e1dcb9965a15e17e",
+          "path": "src/i18n/locale/he.json"
+        },
+        {
+          "blob": "955b4a84cbc33f7532cd0e7c1aec8e438d5d139e",
+          "path": "src/i18n/locale/hi.json"
+        },
+        {
+          "blob": "83de4a3c34a2678cd76446427feec7a60f7e2278",
+          "path": "src/i18n/locale/hr.json"
+        },
+        {
+          "blob": "d7e7791a62f6964ff83b46c37858cfecfa0b723f",
+          "path": "src/i18n/locale/hu.json"
+        },
+        {
+          "blob": "59879d1c487efd5329f4ff11ff369989d60419f4",
+          "path": "src/i18n/locale/id.json"
+        },
+        {
+          "blob": "caa7d5b223840bed9965a3816f22b6fa629a1b6a",
+          "path": "src/i18n/locale/it.json"
+        },
+        {
+          "blob": "b040ff26f5acf7091a6bca52fdc3674840b07395",
+          "path": "src/i18n/locale/ja.json"
+        },
+        {
+          "blob": "67d3380efe7039d0702a3666c0cfa371a022216f",
+          "path": "src/i18n/locale/kab.json"
+        },
+        {
+          "blob": "a1957c9d31bef48ec5fd1c30a206dafbfc298bb4",
+          "path": "src/i18n/locale/ko.json"
+        },
+        {
+          "blob": "f6cd96e52b7d7e9374fadfa3a713d265dfedae07",
+          "path": "src/i18n/locale/lb.json"
+        },
+        {
+          "blob": "1b80225fa20b4da5fc152a36d41f017f06a747e7",
+          "path": "src/i18n/locale/lt.json"
+        },
+        {
+          "blob": "a72f9ebed300f2aaa3a5f38d419341424a42c224",
+          "path": "src/i18n/locale/nb_NO.json"
+        },
+        {
+          "blob": "778b32250d50d7289d64866b8d45510ac5dc3a1c",
+          "path": "src/i18n/locale/nl.json"
+        },
+        {
+          "blob": "353bb14b585023772d7d22fe3a897aa602b6ea18",
+          "path": "src/i18n/locale/pl.json"
+        },
+        {
+          "blob": "b3a4dc0261046197c6cc7034d542b5dbbc7eafba",
+          "path": "src/i18n/locale/pt_BR.json"
+        },
+        {
+          "blob": "b45c9d787eb0a7b9cc633d8ab7fbbc61012a31c0",
+          "path": "src/i18n/locale/pt_PT.json"
+        },
+        {
+          "blob": "fe363cea5f6b3513bd187cb638c2cf015617f8fc",
+          "path": "src/i18n/locale/ro.json"
+        },
+        {
+          "blob": "203c0e5e23e29ad630a63d1ff665606aff9a837b",
+          "path": "src/i18n/locale/ru.json"
+        },
+        {
+          "blob": "092e3b0617c8da34715dcd624e59cd8fac1606d8",
+          "path": "src/i18n/locale/sk.json"
+        },
+        {
+          "blob": "8fcedac237b4b1327debd951d72c56a4dc9c2ab0",
+          "path": "src/i18n/locale/sl.json"
+        },
+        {
+          "blob": "1190c5103a5e492e937a4b5c272deca91214bc52",
+          "path": "src/i18n/locale/sq.json"
+        },
+        {
+          "blob": "3d872a6f9a2c5a70c34396fc631fafa7e693611a",
+          "path": "src/i18n/locale/sr.json"
+        },
+        {
+          "blob": "5b8d4f151e43fabb2850b113e21ac7088b1fd8e1",
+          "path": "src/i18n/locale/sv.json"
+        },
+        {
+          "blob": "ddb3379231717b8614d4a9cb8e4c4726e9740829",
+          "path": "src/i18n/locale/tr.json"
+        },
+        {
+          "blob": "10d958294b92ae1ba44cfd1cafea009c6b5ab3d7",
+          "path": "src/i18n/locale/uk.json"
+        },
+        {
+          "blob": "96da67138c71deb03db0ebcc2f0e72c8c5b7a1d2",
+          "path": "src/i18n/locale/vi.json"
+        },
+        {
+          "blob": "be1e88ad92f57023faa520b1d41a52b27f51ee2f",
+          "path": "src/i18n/locale/zh_Hans.json"
+        },
+        {
+          "blob": "19917ca7efa8e77ece812e3acb43cbad2ab65a4e",
+          "path": "src/i18n/locale/zh_Hant.json"
+        }
+      ],
+      "head": "6bc8d0bd3dfb4f8c87c307a3e562e0fd12474118",
+      "headRefName": "codex/seerrng-localization-overhaul-20261028",
+      "isDraft": true,
+      "label": "SeerrNG",
+      "pullRequest": 418,
+      "repository": "snapetech-org/seerrng",
+      "state": "OPEN",
+      "tree": "44cf1a02d645026872759fa04a7506ee738381e5",
+      "treeTruncated": false,
+      "url": "https://github.com/snapetech-org/seerrng/pull/418"
+    },
+    {
+      "baseHead": "2a2b188f10b9460a15bc6d5c34e406b0193d51ba",
+      "catalogSelection": "All repository catalog/locale paths selected by established path convention.",
+      "currentCatalogFileCount": 13,
+      "currentCatalogFiles": [
+        {
+          "blob": "72dfea05f86bcf0ab02882a85c6e8d4a0cb0dabf",
+          "path": "web/src/lib/interfaceLocale.js"
+        },
+        {
+          "blob": "7cecee78436f9e38003aa06464d9eaaf058e2f81",
+          "path": "web/src/lib/locales/ui-labels.ar.json"
+        },
+        {
+          "blob": "26101d21711c4dfeeb7d5516a02b723276844f44",
+          "path": "web/src/lib/locales/ui-labels.de.json"
+        },
+        {
+          "blob": "6ffbe1eb78970e46bf7e5008c8d78ad5551d47dd",
+          "path": "web/src/lib/locales/ui-labels.es.json"
+        },
+        {
+          "blob": "b40b50e1e7bbcb22037505821701cb43345fc083",
+          "path": "web/src/lib/locales/ui-labels.fr.json"
+        },
+        {
+          "blob": "7f20e5c0da930c32c30e4fcd82b2b9aff28719b8",
+          "path": "web/src/lib/locales/ui-labels.hi.json"
+        },
+        {
+          "blob": "02b01aca9161c9bb256a0a4d135c021aca6af444",
+          "path": "web/src/lib/locales/ui-labels.id.json"
+        },
+        {
+          "blob": "90e10211c02218f63e4834c6665436238769cd47",
+          "path": "web/src/lib/locales/ui-labels.ja.json"
+        },
+        {
+          "blob": "b09f90bb56f11a0275185d9eee79ea5d82e6f2fc",
+          "path": "web/src/lib/locales/ui-labels.ko.json"
+        },
+        {
+          "blob": "82e0e96fe7463de25f66d49324bd6264d286b6af",
+          "path": "web/src/lib/locales/ui-labels.pt-BR.json"
+        },
+        {
+          "blob": "471146809598194707ce3e89d858844bf07ecb0d",
+          "path": "web/src/lib/locales/ui-labels.vi.json"
+        },
+        {
+          "blob": "bca90766983bb1fe55e1dbac0661694679f310ea",
+          "path": "web/src/lib/locales/ui-labels.zh-Hans.json"
+        },
+        {
+          "blob": "c88d7415d0814a56abd3ef39667ae8992e6715d2",
+          "path": "web/src/lib/locales/ui-labels.zh-Hant.json"
+        }
+      ],
+      "head": "5f295feea832b3078c52d92d9268cd6446f804a5",
+      "headRefName": "codex/slskr-l10n-audit-20261030",
+      "isDraft": true,
+      "label": "slskR",
+      "pullRequest": 204,
+      "repository": "snapetech-org/slskr",
+      "state": "OPEN",
+      "tree": "22c6c11a817777e2a0df3987acd5fc6bf938c9a7",
+      "treeTruncated": false,
+      "url": "https://github.com/snapetech-org/slskr/pull/204"
+    },
+    {
+      "baseHead": "f25d263a2a7cdb2c8f76c40c346cb10f749a9356",
+      "catalogSelection": "All repository catalog/locale paths selected by established path convention.",
+      "currentCatalogFileCount": 13,
+      "currentCatalogFiles": [
+        {
+          "blob": "667f3ebc12666c9d2b418de46e2c2729e411bdb9",
+          "path": "src/web/public/locales/ar.json"
+        },
+        {
+          "blob": "3e94cf699c8b6e061d08e512cb9d5e64d073a6da",
+          "path": "src/web/public/locales/de.json"
+        },
+        {
+          "blob": "a722aec8af3e5619b370ccc4851d0d7708c403a8",
+          "path": "src/web/public/locales/es.json"
+        },
+        {
+          "blob": "8a5d62c191273471036082d16a48efd8a2d70a8f",
+          "path": "src/web/public/locales/fr.json"
+        },
+        {
+          "blob": "199d207605380acc42bfc40205e46217fa4c186f",
+          "path": "src/web/public/locales/hi.json"
+        },
+        {
+          "blob": "f56e293ed5e27f58abf6e65b105e6ab123540d5b",
+          "path": "src/web/public/locales/id.json"
+        },
+        {
+          "blob": "e57360ce6550eb59e370a2899ad64d48fb9e39b8",
+          "path": "src/web/public/locales/ja.json"
+        },
+        {
+          "blob": "a466eed9753bacd89803bdabc2d2305fc7056a79",
+          "path": "src/web/public/locales/ko.json"
+        },
+        {
+          "blob": "1f78c5054c3fdbca439feaec323e120721b7378a",
+          "path": "src/web/public/locales/pt-BR.json"
+        },
+        {
+          "blob": "dce0675b9c100bf8eafa902d8742bc3d08ac1b3b",
+          "path": "src/web/public/locales/vi.json"
+        },
+        {
+          "blob": "d625188024c91d253ae6e6b53aecd7a7000def47",
+          "path": "src/web/public/locales/zh-Hans.json"
+        },
+        {
+          "blob": "d838d3343523cc5da0b8873fd22b4317b70d0b35",
+          "path": "src/web/public/locales/zh-Hant.json"
+        },
+        {
+          "blob": "c2d6ee23385fdaa3c6abbff70c0176ea636b2b5d",
+          "path": "src/web/src/lib/interfaceLocale.js"
+        }
+      ],
+      "head": "cb6739864b3651d72412b6aeb4590537cbf23d4e",
+      "headRefName": "codex/slskdn-oidc-tooltip-localization-20261030",
+      "isDraft": true,
+      "label": "slskdN",
+      "pullRequest": 409,
+      "repository": "snapetech-org/slskdn",
+      "state": "OPEN",
+      "tree": "a0946207555e494a558707008ba051013964b447",
+      "treeTruncated": false,
+      "url": "https://github.com/snapetech-org/slskdN/pull/409"
+    },
+    {
+      "baseHead": "0de7ddcf2f16a4399da8fd7904dc35f458b4837c",
+      "catalogSelection": "All repository catalog/locale paths selected by established path convention.",
+      "currentCatalogFileCount": 13,
+      "currentCatalogFiles": [
+        {
+          "blob": "87f3b72722d1853dcb70ab73b6f2ab5624bc62c3",
+          "path": "webui/src/lib/interfaceLocale.ts"
+        },
+        {
+          "blob": "65e5bf676479047973bf3d2084860c765e36737c",
+          "path": "webui/src/lib/locale-catalogs/ar.ts"
+        },
+        {
+          "blob": "18a96b87475bc6ba80d72778905876d4bc3785ff",
+          "path": "webui/src/lib/locale-catalogs/de.ts"
+        },
+        {
+          "blob": "28a0db8fbf101c2d0a46a9c33fcdb3d3e2719b40",
+          "path": "webui/src/lib/locale-catalogs/es.ts"
+        },
+        {
+          "blob": "d662a1d6e8d685bd1cb461c9939ee7125fa4f6ec",
+          "path": "webui/src/lib/locale-catalogs/fr.ts"
+        },
+        {
+          "blob": "2b3a26ba5666e68a3b31bb8e6482e7aa017c3d8a",
+          "path": "webui/src/lib/locale-catalogs/hi.ts"
+        },
+        {
+          "blob": "ad0373e57d09db2f9b7aaed18df0f391458fda8b",
+          "path": "webui/src/lib/locale-catalogs/id.ts"
+        },
+        {
+          "blob": "9e23499b3f5387bc45bad25bb1bb8c050d258fa4",
+          "path": "webui/src/lib/locale-catalogs/ja.ts"
+        },
+        {
+          "blob": "c7cc7cc17de01e2d3c3e8a867ae8d3b1f80f3c03",
+          "path": "webui/src/lib/locale-catalogs/ko.ts"
+        },
+        {
+          "blob": "59477e1651d4a97c87a7c17cebf4c4e8ed8eda90",
+          "path": "webui/src/lib/locale-catalogs/pt-BR.ts"
+        },
+        {
+          "blob": "5a1ff2e03db829eaa14ce5df83d6e4cd2e940575",
+          "path": "webui/src/lib/locale-catalogs/vi.ts"
+        },
+        {
+          "blob": "f0989a8aa021dc2508ab07bfd4ec37ff73fa8a41",
+          "path": "webui/src/lib/locale-catalogs/zh-Hans.ts"
+        },
+        {
+          "blob": "c05ff6d68ab9b1e222403b60a72705aa17ac3a4e",
+          "path": "webui/src/lib/locale-catalogs/zh-Hant.ts"
+        }
+      ],
+      "head": "11ff6fa2618e842e92716b7e92867769200e32e5",
+      "headRefName": "codex/torrentng-localization-audit-20261030",
+      "isDraft": true,
+      "label": "TorrentNG",
+      "pullRequest": 243,
+      "repository": "snapetech-org/TorrentNG",
+      "state": "OPEN",
+      "tree": "770415a3fcd9353884ac245b53798af9610c0aa3",
+      "treeTruncated": false,
+      "url": "https://github.com/snapetech-org/TorrentNG/pull/243"
+    }
+  ],
+  "scope": "Seven live localization PR head/tree/catalog-path snapshot; Seerr #418 exact-head source/locale blob-content and caller-line reattestation.",
+  "seerrCatalogInputMatches": true,
+  "seerrSourceAndLocaleCatalogContent": [
+    {
+      "blob": "12e04a118c30b71b3714291adeaf9fdb2735cee4",
+      "bytes": 835513,
+      "contentSource": "git object at verified live PR head",
+      "path": "src/i18n/locale/en.json",
+      "sha256": "75ff3c90b52aedd636a506281ffbd6fb2d3739c61294b6008a517f17647e2316"
+    },
+    {
+      "blob": "3e5279cd7922249f94ae82430dc6f798af3517b3",
+      "bytes": 1044483,
+      "contentSource": "git object at verified live PR head",
+      "path": "src/i18n/locale/ar.json",
+      "sha256": "ab9d3de803a5dfd24ad52eea551ad61b36d545e57b38282d3267a761bbd2ed03"
+    },
+    {
+      "blob": "320dd26927c53dd76dd9369eee0c7195cbc2c8a9",
+      "bytes": 926848,
+      "contentSource": "git object at verified live PR head",
+      "path": "src/i18n/locale/de.json",
+      "sha256": "7e07cd613e503aa135a83004dca01c570eac327e4ab19b1b4bda01948e0f84c4"
+    },
+    {
+      "blob": "75d8b0e1846c94e019cbf09e503ad3e000a37636",
+      "bytes": 922474,
+      "contentSource": "git object at verified live PR head",
+      "path": "src/i18n/locale/es.json",
+      "sha256": "0116f157277e88e2549b718f6216e19360f04407aaefae320c22c4c831ab17e4"
+    },
+    {
+      "blob": "c4a102a35ee5678a38e0ed9913e671680653f01f",
+      "bytes": 940178,
+      "contentSource": "git object at verified live PR head",
+      "path": "src/i18n/locale/fr.json",
+      "sha256": "7d7f6c00abf7d04be9951e517939d852ca215542cf8a5840bda7345d9ceb0028"
+    },
+    {
+      "blob": "955b4a84cbc33f7532cd0e7c1aec8e438d5d139e",
+      "bytes": 1371243,
+      "contentSource": "git object at verified live PR head",
+      "path": "src/i18n/locale/hi.json",
+      "sha256": "a431241f21193ef3b29ab0573de471064dc1859ad6f60cbeaa729e11d6025fb1"
+    },
+    {
+      "blob": "59879d1c487efd5329f4ff11ff369989d60419f4",
+      "bytes": 867646,
+      "contentSource": "git object at verified live PR head",
+      "path": "src/i18n/locale/id.json",
+      "sha256": "46d7cd1706e5f80e6c4b9ab554f11e4e785b01a598ac1cdbeb9ddd662b053e3f"
+    },
+    {
+      "blob": "b040ff26f5acf7091a6bca52fdc3674840b07395",
+      "bytes": 1015837,
+      "contentSource": "git object at verified live PR head",
+      "path": "src/i18n/locale/ja.json",
+      "sha256": "b2628643d17f874a47f233337027f57b3cd4e8709ccb2ae367f6d1d117207072"
+    },
+    {
+      "blob": "a1957c9d31bef48ec5fd1c30a206dafbfc298bb4",
+      "bytes": 934040,
+      "contentSource": "git object at verified live PR head",
+      "path": "src/i18n/locale/ko.json",
+      "sha256": "1d9f57a9b916999184dbe650d0da2819552b9b2d2567f6ffa70db8ad9a36dedb"
+    },
+    {
+      "blob": "b3a4dc0261046197c6cc7034d542b5dbbc7eafba",
+      "bytes": 911384,
+      "contentSource": "git object at verified live PR head",
+      "path": "src/i18n/locale/pt_BR.json",
+      "sha256": "15a7d5f8dd053d43297d396a232b752930d67ba74086eca0d5349121176e7dea"
+    },
+    {
+      "blob": "96da67138c71deb03db0ebcc2f0e72c8c5b7a1d2",
+      "bytes": 969068,
+      "contentSource": "git object at verified live PR head",
+      "path": "src/i18n/locale/vi.json",
+      "sha256": "b457b572512f815bcc3d1cf0e6fa1b62399a53342a099e0b72afa607739974ea"
+    },
+    {
+      "blob": "be1e88ad92f57023faa520b1d41a52b27f51ee2f",
+      "bytes": 812338,
+      "contentSource": "git object at verified live PR head",
+      "path": "src/i18n/locale/zh_Hans.json",
+      "sha256": "abaf3a9a8b5d2705fe4f6729dae790a1671475cd095c4be3c20f02feb93dc883"
+    },
+    {
+      "blob": "19917ca7efa8e77ece812e3acb43cbad2ab65a4e",
+      "bytes": 813820,
+      "contentSource": "git object at verified live PR head",
+      "path": "src/i18n/locale/zh_Hant.json",
+      "sha256": "e5d5055773b7a7ded29e90ed8c95767e613945924aafa6d189c563e3634b968b"
+    }
+  ]
+}

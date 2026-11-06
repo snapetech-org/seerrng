@@ -1,0 +1,1194 @@
+{
+  "checkerInspection": {
+    "contractCollectorLines": "87-155",
+    "contractComparisonLines": "643-659",
+    "note": "Static source inspection only. The checker was not run; no tests/builds/scans/CI were run.",
+    "path": "bin/check-i18n-catalogs.mjs"
+  },
+  "exactHead": "7329f0ffb34d46042dbf1b165046e21c4f4d45e3",
+  "exactTree": "531e045f511ee9c46f4c7ed80d50f529c9c12000",
+  "exceptionRule": "The English source redundantly interpolates a simple {count}/{total} and then selects a plural on the same argument. The unchanged target renders the value through that same plural root using ICU #; Arabic one/two branches use grammatical number words. The application receives numeric values at the pinned caller.",
+  "pullRequest": 418,
+  "rawPlaceholderDifferenceCount": 13,
+  "repository": "snapetech-org/SeerrNG",
+  "rows": [
+    {
+      "callerContextSha256": "01b1a7459de26802a0ae3f135acf8251cdd25d9622561f71fe6595aac1d53ff2",
+      "callerFile": "src/components/RequestModal/BulkRequestModal.tsx",
+      "callerFileBlob": "28c486ce3516e97805112781e17a1961307d0b6a",
+      "callerFileSha256": "e102557248e8613be4c35374f717cbe07d993798f2c3b22a8f21caccfa513efb",
+      "callerPins": [
+        {
+          "file": "src/components/RequestModal/BulkRequestModal.tsx",
+          "line": 80,
+          "lineSha256": "a22ca10dad45a325b4eccf76ebd6f3616db6a228ddb757cdfb724d6d56efd136",
+          "lineText": "requestitems: 'Request {count} {count, plural, one {Item} other {Items}}',",
+          "nextLine": "selectitems: 'Select Items',",
+          "previousLine": "requestdiscography: 'Request Discography',"
+        },
+        {
+          "file": "src/components/RequestModal/BulkRequestModal.tsx",
+          "line": 1413,
+          "lineSha256": "0650179b71f79140c02e57807563c640550b95368cfd1bdce420e87aeba0efee",
+          "lineText": ": intl.formatMessage(messages.requestitems, {",
+          "nextLine": "count: selectedIds.length,",
+          "previousLine": "})"
+        },
+        {
+          "file": "src/components/RequestModal/BulkRequestModal.tsx",
+          "line": 1414,
+          "lineSha256": "554934e983aec807226c37a8cf302af0219e474d2b52f77130fe08e738fe21ec",
+          "lineText": "count: selectedIds.length,"
+        }
+      ],
+      "countRendering": "ICU # in target plural branches; Arabic one/two branches use inflected number words.",
+      "currentTarget": "اطلب {count, plural, zero {# عنصر} one {عنصر واحد} two {عنصرين} few {# عناصر} many {# عنصرًا} other {# عنصر}}",
+      "currentTargetHash": "f9fdf2da28fc49b55594521bedb6ad775ec2bf11e4293814731deae75643c3a9",
+      "disposition": "accept-current",
+      "finalIcuProfile": [
+        {
+          "branches": {
+            "few": "# عناصر",
+            "many": "# عنصرًا",
+            "one": "عنصر واحد",
+            "other": "# عنصر",
+            "two": "عنصرين",
+            "zero": "# عنصر"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "finalPlaceholders": [
+        {
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "finalTarget": "اطلب {count, plural, zero {# عنصر} one {عنصر واحد} two {عنصرين} few {# عناصر} many {# عنصرًا} other {# عنصر}}",
+      "finalTargetHash": "f9fdf2da28fc49b55594521bedb6ad775ec2bf11e4293814731deae75643c3a9",
+      "locale": "ar",
+      "localeBlob": "0893eb9e65ecd869a00637f4e88b0e04893fc5cd",
+      "localeFileSha256": "a3d073fba6d5706cff4b7da002fc3897f68b7c785efc2cda922203ca33067abd",
+      "noTranslationChangeProposed": true,
+      "omittedRedundantSimpleArgument": "count",
+      "preservedPluralArgument": "count",
+      "source": "Request {count} {count, plural, one {Item} other {Items}}",
+      "sourceCatalogBlob": "12e04a118c30b71b3714291adeaf9fdb2735cee4",
+      "sourceCatalogSha256": "75ff3c90b52aedd636a506281ffbd6fb2d3739c61294b6008a517f17647e2316",
+      "sourceHash": "87ac858076eb782c84929bd8d28c6dcf7733eb7468c4fc9bdb3d1ed5ed4dabc5",
+      "sourceIcuProfile": [
+        {
+          "branches": {
+            "one": "Item",
+            "other": "Items"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "sourceId": "components.RequestModal.BulkRequestModal.requestitems",
+      "sourcePlaceholders": [
+        {
+          "kind": "plural",
+          "name": "count"
+        },
+        {
+          "kind": "simple",
+          "name": "count"
+        }
+      ],
+      "sourcePosition": 2861
+    },
+    {
+      "callerContextSha256": "158556664983a5869de81a4d61b0a229bacc0d45bf8f43bd47622af7d3a8ee12",
+      "callerFile": "src/components/RequestModal/BulkRequestModal.tsx",
+      "callerFileBlob": "28c486ce3516e97805112781e17a1961307d0b6a",
+      "callerFileSha256": "e102557248e8613be4c35374f717cbe07d993798f2c3b22a8f21caccfa513efb",
+      "callerPins": [
+        {
+          "file": "src/components/RequestModal/BulkRequestModal.tsx",
+          "line": 89,
+          "lineSha256": "d7df5bd7ca6d599a558859557bd251784dc76e817b6ae891ad5fa3bea60299f8",
+          "lineText": "requestitemsFormat:",
+          "nextLine": "'Request {count} {count, plural, one {Item} other {Items}} as {format}',",
+          "previousLine": "requestLibraryFormat: 'Request Selected {format} Books',"
+        },
+        {
+          "file": "src/components/RequestModal/BulkRequestModal.tsx",
+          "line": 1409,
+          "lineSha256": "7f79f6399435efa9d033069c4497bac02e987dce5599316525163dc729a520d1",
+          "lineText": "? intl.formatMessage(messages.requestitemsFormat, {",
+          "nextLine": "count: selectedIds.length,",
+          "previousLine": ": mediaType === 'book'"
+        },
+        {
+          "file": "src/components/RequestModal/BulkRequestModal.tsx",
+          "line": 1410,
+          "lineSha256": "554934e983aec807226c37a8cf302af0219e474d2b52f77130fe08e738fe21ec",
+          "lineText": "count: selectedIds.length,"
+        }
+      ],
+      "countRendering": "ICU # in target plural branches; Arabic one/two branches use inflected number words.",
+      "currentTarget": "اطلب {count, plural, zero {# عنصر} one {عنصر واحد} two {عنصرين} few {# عناصر} many {# عنصرًا} other {# عنصر}} بصيغة {format}",
+      "currentTargetHash": "84e35096e9be5437b8c9db42902acc54bec5b860503f39deecd08361eaec3efe",
+      "disposition": "accept-current",
+      "finalIcuProfile": [
+        {
+          "branches": {
+            "few": "# عناصر",
+            "many": "# عنصرًا",
+            "one": "عنصر واحد",
+            "other": "# عنصر",
+            "two": "عنصرين",
+            "zero": "# عنصر"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "finalPlaceholders": [
+        {
+          "kind": "plural",
+          "name": "count"
+        },
+        {
+          "kind": "simple",
+          "name": "format"
+        }
+      ],
+      "finalTarget": "اطلب {count, plural, zero {# عنصر} one {عنصر واحد} two {عنصرين} few {# عناصر} many {# عنصرًا} other {# عنصر}} بصيغة {format}",
+      "finalTargetHash": "84e35096e9be5437b8c9db42902acc54bec5b860503f39deecd08361eaec3efe",
+      "locale": "ar",
+      "localeBlob": "0893eb9e65ecd869a00637f4e88b0e04893fc5cd",
+      "localeFileSha256": "a3d073fba6d5706cff4b7da002fc3897f68b7c785efc2cda922203ca33067abd",
+      "noTranslationChangeProposed": true,
+      "omittedRedundantSimpleArgument": "count",
+      "preservedPluralArgument": "count",
+      "source": "Request {count} {count, plural, one {Item} other {Items}} as {format}",
+      "sourceCatalogBlob": "12e04a118c30b71b3714291adeaf9fdb2735cee4",
+      "sourceCatalogSha256": "75ff3c90b52aedd636a506281ffbd6fb2d3739c61294b6008a517f17647e2316",
+      "sourceHash": "08c609065db2badb3d65ef240c4c4c8a116ec7ae123b20a20258e98720c3d193",
+      "sourceIcuProfile": [
+        {
+          "branches": {
+            "one": "Item",
+            "other": "Items"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "sourceId": "components.RequestModal.BulkRequestModal.requestitemsFormat",
+      "sourcePlaceholders": [
+        {
+          "kind": "plural",
+          "name": "count"
+        },
+        {
+          "kind": "simple",
+          "name": "count"
+        },
+        {
+          "kind": "simple",
+          "name": "format"
+        }
+      ],
+      "sourcePosition": 2862
+    },
+    {
+      "callerContextSha256": "15bef19f2d5be199c5bfd6a0f9536df8c2ea17c42f4afeff4c2707d10042b98f",
+      "callerFile": "src/components/RequestModal/BulkRequestModal.tsx",
+      "callerFileBlob": "28c486ce3516e97805112781e17a1961307d0b6a",
+      "callerFileSha256": "e102557248e8613be4c35374f717cbe07d993798f2c3b22a8f21caccfa513efb",
+      "callerPins": [
+        {
+          "file": "src/components/RequestModal/BulkRequestModal.tsx",
+          "line": 93,
+          "lineSha256": "3f1d702d616fcaf79c7a4651db6b29309aaf9fe9650fb0fb0b03ad3805266ae4",
+          "lineText": "submittingprogress:",
+          "nextLine": "'Submitting {processed} of {total} {total, plural, one {item} other {items}}.',",
+          "previousLine": "retryfailed: 'Retry Failed',"
+        },
+        {
+          "file": "src/components/RequestModal/BulkRequestModal.tsx",
+          "line": 1090,
+          "lineSha256": "1117f704407f23c00797bfe38c979f9efea198852e457ddee8e5648cab7ab498",
+          "lineText": "processed: submitProgress.processed,"
+        },
+        {
+          "file": "src/components/RequestModal/BulkRequestModal.tsx",
+          "line": 1091,
+          "lineSha256": "f7b0dcc8bded208395e9a66689dd028bd01d2dd88a3019677c710b07b2d95392",
+          "lineText": "total: submitProgress.total,"
+        }
+      ],
+      "countRendering": "ICU # in target plural branches; Arabic one/two branches use inflected number words.",
+      "currentTarget": "جارٍ إرسال {processed} من أصل {total, plural, zero {# عنصر} one {عنصر واحد} two {عنصران} few {# عناصر} many {# عنصرًا} other {# عنصر}}.",
+      "currentTargetHash": "bd3705eb76bb2532fb76de844c393cbd98ad4d465029f911683acf2dc7b8dfd9",
+      "disposition": "accept-current",
+      "finalIcuProfile": [
+        {
+          "branches": {
+            "few": "# عناصر",
+            "many": "# عنصرًا",
+            "one": "عنصر واحد",
+            "other": "# عنصر",
+            "two": "عنصران",
+            "zero": "# عنصر"
+          },
+          "kind": "plural",
+          "name": "total"
+        }
+      ],
+      "finalPlaceholders": [
+        {
+          "kind": "simple",
+          "name": "processed"
+        },
+        {
+          "kind": "plural",
+          "name": "total"
+        }
+      ],
+      "finalTarget": "جارٍ إرسال {processed} من أصل {total, plural, zero {# عنصر} one {عنصر واحد} two {عنصران} few {# عناصر} many {# عنصرًا} other {# عنصر}}.",
+      "finalTargetHash": "bd3705eb76bb2532fb76de844c393cbd98ad4d465029f911683acf2dc7b8dfd9",
+      "locale": "ar",
+      "localeBlob": "0893eb9e65ecd869a00637f4e88b0e04893fc5cd",
+      "localeFileSha256": "a3d073fba6d5706cff4b7da002fc3897f68b7c785efc2cda922203ca33067abd",
+      "noTranslationChangeProposed": true,
+      "omittedRedundantSimpleArgument": "total",
+      "preservedPluralArgument": "total",
+      "source": "Submitting {processed} of {total} {total, plural, one {item} other {items}}.",
+      "sourceCatalogBlob": "12e04a118c30b71b3714291adeaf9fdb2735cee4",
+      "sourceCatalogSha256": "75ff3c90b52aedd636a506281ffbd6fb2d3739c61294b6008a517f17647e2316",
+      "sourceHash": "563a57af7de299a625ab49868988a9b666384fb9edc8c14d3de71866f931ef03",
+      "sourceIcuProfile": [
+        {
+          "branches": {
+            "one": "item",
+            "other": "items"
+          },
+          "kind": "plural",
+          "name": "total"
+        }
+      ],
+      "sourceId": "components.RequestModal.BulkRequestModal.submittingprogress",
+      "sourcePlaceholders": [
+        {
+          "kind": "simple",
+          "name": "processed"
+        },
+        {
+          "kind": "plural",
+          "name": "total"
+        },
+        {
+          "kind": "simple",
+          "name": "total"
+        }
+      ],
+      "sourcePosition": 2867
+    },
+    {
+      "callerContextSha256": "15bef19f2d5be199c5bfd6a0f9536df8c2ea17c42f4afeff4c2707d10042b98f",
+      "callerFile": "src/components/RequestModal/BulkRequestModal.tsx",
+      "callerFileBlob": "28c486ce3516e97805112781e17a1961307d0b6a",
+      "callerFileSha256": "e102557248e8613be4c35374f717cbe07d993798f2c3b22a8f21caccfa513efb",
+      "callerPins": [
+        {
+          "file": "src/components/RequestModal/BulkRequestModal.tsx",
+          "line": 93,
+          "lineSha256": "3f1d702d616fcaf79c7a4651db6b29309aaf9fe9650fb0fb0b03ad3805266ae4",
+          "lineText": "submittingprogress:",
+          "nextLine": "'Submitting {processed} of {total} {total, plural, one {item} other {items}}.',",
+          "previousLine": "retryfailed: 'Retry Failed',"
+        },
+        {
+          "file": "src/components/RequestModal/BulkRequestModal.tsx",
+          "line": 1090,
+          "lineSha256": "1117f704407f23c00797bfe38c979f9efea198852e457ddee8e5648cab7ab498",
+          "lineText": "processed: submitProgress.processed,"
+        },
+        {
+          "file": "src/components/RequestModal/BulkRequestModal.tsx",
+          "line": 1091,
+          "lineSha256": "f7b0dcc8bded208395e9a66689dd028bd01d2dd88a3019677c710b07b2d95392",
+          "lineText": "total: submitProgress.total,"
+        }
+      ],
+      "countRendering": "ICU # in target plural branches; Arabic one/two branches use inflected number words.",
+      "currentTarget": "Enviando {processed} de {total, plural, one {# elemento} many {# elementos} other {# elementos}}.",
+      "currentTargetHash": "8555dccfc72d9be275856960a7d375043de544744878bcf171c5e9e6b969b804",
+      "disposition": "accept-current",
+      "finalIcuProfile": [
+        {
+          "branches": {
+            "many": "# elementos",
+            "one": "# elemento",
+            "other": "# elementos"
+          },
+          "kind": "plural",
+          "name": "total"
+        }
+      ],
+      "finalPlaceholders": [
+        {
+          "kind": "simple",
+          "name": "processed"
+        },
+        {
+          "kind": "plural",
+          "name": "total"
+        }
+      ],
+      "finalTarget": "Enviando {processed} de {total, plural, one {# elemento} many {# elementos} other {# elementos}}.",
+      "finalTargetHash": "8555dccfc72d9be275856960a7d375043de544744878bcf171c5e9e6b969b804",
+      "locale": "es",
+      "localeBlob": "9cc40702e4ee3c5741ca41314decfd33ecfbb103",
+      "localeFileSha256": "b1dbb01793d11790fa7ac75e15db0ca18648e679afd3808c3f680c902a9914df",
+      "noTranslationChangeProposed": true,
+      "omittedRedundantSimpleArgument": "total",
+      "preservedPluralArgument": "total",
+      "source": "Submitting {processed} of {total} {total, plural, one {item} other {items}}.",
+      "sourceCatalogBlob": "12e04a118c30b71b3714291adeaf9fdb2735cee4",
+      "sourceCatalogSha256": "75ff3c90b52aedd636a506281ffbd6fb2d3739c61294b6008a517f17647e2316",
+      "sourceHash": "563a57af7de299a625ab49868988a9b666384fb9edc8c14d3de71866f931ef03",
+      "sourceIcuProfile": [
+        {
+          "branches": {
+            "one": "item",
+            "other": "items"
+          },
+          "kind": "plural",
+          "name": "total"
+        }
+      ],
+      "sourceId": "components.RequestModal.BulkRequestModal.submittingprogress",
+      "sourcePlaceholders": [
+        {
+          "kind": "simple",
+          "name": "processed"
+        },
+        {
+          "kind": "plural",
+          "name": "total"
+        },
+        {
+          "kind": "simple",
+          "name": "total"
+        }
+      ],
+      "sourcePosition": 2867
+    },
+    {
+      "callerContextSha256": "15bef19f2d5be199c5bfd6a0f9536df8c2ea17c42f4afeff4c2707d10042b98f",
+      "callerFile": "src/components/RequestModal/BulkRequestModal.tsx",
+      "callerFileBlob": "28c486ce3516e97805112781e17a1961307d0b6a",
+      "callerFileSha256": "e102557248e8613be4c35374f717cbe07d993798f2c3b22a8f21caccfa513efb",
+      "callerPins": [
+        {
+          "file": "src/components/RequestModal/BulkRequestModal.tsx",
+          "line": 93,
+          "lineSha256": "3f1d702d616fcaf79c7a4651db6b29309aaf9fe9650fb0fb0b03ad3805266ae4",
+          "lineText": "submittingprogress:",
+          "nextLine": "'Submitting {processed} of {total} {total, plural, one {item} other {items}}.',",
+          "previousLine": "retryfailed: 'Retry Failed',"
+        },
+        {
+          "file": "src/components/RequestModal/BulkRequestModal.tsx",
+          "line": 1090,
+          "lineSha256": "1117f704407f23c00797bfe38c979f9efea198852e457ddee8e5648cab7ab498",
+          "lineText": "processed: submitProgress.processed,"
+        },
+        {
+          "file": "src/components/RequestModal/BulkRequestModal.tsx",
+          "line": 1091,
+          "lineSha256": "f7b0dcc8bded208395e9a66689dd028bd01d2dd88a3019677c710b07b2d95392",
+          "lineText": "total: submitProgress.total,"
+        }
+      ],
+      "countRendering": "ICU # in target plural branches; Arabic one/two branches use inflected number words.",
+      "currentTarget": "Envoi de {processed} sur {total, plural, one {# élément} many {# éléments} other {# éléments}}.",
+      "currentTargetHash": "c3c54a6a4ba49ace6f99ddf16cca70eb1537472c158576d2bf1f689e12a4e616",
+      "disposition": "accept-current",
+      "finalIcuProfile": [
+        {
+          "branches": {
+            "many": "# éléments",
+            "one": "# élément",
+            "other": "# éléments"
+          },
+          "kind": "plural",
+          "name": "total"
+        }
+      ],
+      "finalPlaceholders": [
+        {
+          "kind": "simple",
+          "name": "processed"
+        },
+        {
+          "kind": "plural",
+          "name": "total"
+        }
+      ],
+      "finalTarget": "Envoi de {processed} sur {total, plural, one {# élément} many {# éléments} other {# éléments}}.",
+      "finalTargetHash": "c3c54a6a4ba49ace6f99ddf16cca70eb1537472c158576d2bf1f689e12a4e616",
+      "locale": "fr",
+      "localeBlob": "2b5944581f9dca3b59b01f3dd7144a78b20f4eba",
+      "localeFileSha256": "3d87791e690367034cf16e0bbaf2b1b79cb6f36a73d3283297ae15211cf31027",
+      "noTranslationChangeProposed": true,
+      "omittedRedundantSimpleArgument": "total",
+      "preservedPluralArgument": "total",
+      "source": "Submitting {processed} of {total} {total, plural, one {item} other {items}}.",
+      "sourceCatalogBlob": "12e04a118c30b71b3714291adeaf9fdb2735cee4",
+      "sourceCatalogSha256": "75ff3c90b52aedd636a506281ffbd6fb2d3739c61294b6008a517f17647e2316",
+      "sourceHash": "563a57af7de299a625ab49868988a9b666384fb9edc8c14d3de71866f931ef03",
+      "sourceIcuProfile": [
+        {
+          "branches": {
+            "one": "item",
+            "other": "items"
+          },
+          "kind": "plural",
+          "name": "total"
+        }
+      ],
+      "sourceId": "components.RequestModal.BulkRequestModal.submittingprogress",
+      "sourcePlaceholders": [
+        {
+          "kind": "simple",
+          "name": "processed"
+        },
+        {
+          "kind": "plural",
+          "name": "total"
+        },
+        {
+          "kind": "simple",
+          "name": "total"
+        }
+      ],
+      "sourcePosition": 2867
+    },
+    {
+      "callerContextSha256": "15bef19f2d5be199c5bfd6a0f9536df8c2ea17c42f4afeff4c2707d10042b98f",
+      "callerFile": "src/components/RequestModal/BulkRequestModal.tsx",
+      "callerFileBlob": "28c486ce3516e97805112781e17a1961307d0b6a",
+      "callerFileSha256": "e102557248e8613be4c35374f717cbe07d993798f2c3b22a8f21caccfa513efb",
+      "callerPins": [
+        {
+          "file": "src/components/RequestModal/BulkRequestModal.tsx",
+          "line": 93,
+          "lineSha256": "3f1d702d616fcaf79c7a4651db6b29309aaf9fe9650fb0fb0b03ad3805266ae4",
+          "lineText": "submittingprogress:",
+          "nextLine": "'Submitting {processed} of {total} {total, plural, one {item} other {items}}.',",
+          "previousLine": "retryfailed: 'Retry Failed',"
+        },
+        {
+          "file": "src/components/RequestModal/BulkRequestModal.tsx",
+          "line": 1090,
+          "lineSha256": "1117f704407f23c00797bfe38c979f9efea198852e457ddee8e5648cab7ab498",
+          "lineText": "processed: submitProgress.processed,"
+        },
+        {
+          "file": "src/components/RequestModal/BulkRequestModal.tsx",
+          "line": 1091,
+          "lineSha256": "f7b0dcc8bded208395e9a66689dd028bd01d2dd88a3019677c710b07b2d95392",
+          "lineText": "total: submitProgress.total,"
+        }
+      ],
+      "countRendering": "ICU # in target plural branches; Arabic one/two branches use inflected number words.",
+      "currentTarget": "कुल {total, plural, one {# आइटम} other {# आइटम}} में से {processed} आइटम भेजे जा रहे हैं।",
+      "currentTargetHash": "805ac2ccae6145fd7e77ac594192be04310b4f7d1f76838a4998d24a89fda6bd",
+      "disposition": "accept-current",
+      "finalIcuProfile": [
+        {
+          "branches": {
+            "one": "# आइटम",
+            "other": "# आइटम"
+          },
+          "kind": "plural",
+          "name": "total"
+        }
+      ],
+      "finalPlaceholders": [
+        {
+          "kind": "simple",
+          "name": "processed"
+        },
+        {
+          "kind": "plural",
+          "name": "total"
+        }
+      ],
+      "finalTarget": "कुल {total, plural, one {# आइटम} other {# आइटम}} में से {processed} आइटम भेजे जा रहे हैं।",
+      "finalTargetHash": "805ac2ccae6145fd7e77ac594192be04310b4f7d1f76838a4998d24a89fda6bd",
+      "locale": "hi",
+      "localeBlob": "b49db1cb93b4f11f7999df3ec6507b6ec9a93f2b",
+      "localeFileSha256": "a8cb28ae9bad5f064f95ad39cc0e846c9578a036659116abe09d4146cd983580",
+      "noTranslationChangeProposed": true,
+      "omittedRedundantSimpleArgument": "total",
+      "preservedPluralArgument": "total",
+      "source": "Submitting {processed} of {total} {total, plural, one {item} other {items}}.",
+      "sourceCatalogBlob": "12e04a118c30b71b3714291adeaf9fdb2735cee4",
+      "sourceCatalogSha256": "75ff3c90b52aedd636a506281ffbd6fb2d3739c61294b6008a517f17647e2316",
+      "sourceHash": "563a57af7de299a625ab49868988a9b666384fb9edc8c14d3de71866f931ef03",
+      "sourceIcuProfile": [
+        {
+          "branches": {
+            "one": "item",
+            "other": "items"
+          },
+          "kind": "plural",
+          "name": "total"
+        }
+      ],
+      "sourceId": "components.RequestModal.BulkRequestModal.submittingprogress",
+      "sourcePlaceholders": [
+        {
+          "kind": "simple",
+          "name": "processed"
+        },
+        {
+          "kind": "plural",
+          "name": "total"
+        },
+        {
+          "kind": "simple",
+          "name": "total"
+        }
+      ],
+      "sourcePosition": 2867
+    },
+    {
+      "callerContextSha256": "15bef19f2d5be199c5bfd6a0f9536df8c2ea17c42f4afeff4c2707d10042b98f",
+      "callerFile": "src/components/RequestModal/BulkRequestModal.tsx",
+      "callerFileBlob": "28c486ce3516e97805112781e17a1961307d0b6a",
+      "callerFileSha256": "e102557248e8613be4c35374f717cbe07d993798f2c3b22a8f21caccfa513efb",
+      "callerPins": [
+        {
+          "file": "src/components/RequestModal/BulkRequestModal.tsx",
+          "line": 93,
+          "lineSha256": "3f1d702d616fcaf79c7a4651db6b29309aaf9fe9650fb0fb0b03ad3805266ae4",
+          "lineText": "submittingprogress:",
+          "nextLine": "'Submitting {processed} of {total} {total, plural, one {item} other {items}}.',",
+          "previousLine": "retryfailed: 'Retry Failed',"
+        },
+        {
+          "file": "src/components/RequestModal/BulkRequestModal.tsx",
+          "line": 1090,
+          "lineSha256": "1117f704407f23c00797bfe38c979f9efea198852e457ddee8e5648cab7ab498",
+          "lineText": "processed: submitProgress.processed,"
+        },
+        {
+          "file": "src/components/RequestModal/BulkRequestModal.tsx",
+          "line": 1091,
+          "lineSha256": "f7b0dcc8bded208395e9a66689dd028bd01d2dd88a3019677c710b07b2d95392",
+          "lineText": "total: submitProgress.total,"
+        }
+      ],
+      "countRendering": "ICU # in target plural branches; Arabic one/two branches use inflected number words.",
+      "currentTarget": "Mengirim {processed} dari {total, plural, one {# item} other {# item}}.",
+      "currentTargetHash": "576446feddabac56a2b1844bcdf18963ab6c38163afdc48907715919abc1a666",
+      "disposition": "accept-current",
+      "finalIcuProfile": [
+        {
+          "branches": {
+            "one": "# item",
+            "other": "# item"
+          },
+          "kind": "plural",
+          "name": "total"
+        }
+      ],
+      "finalPlaceholders": [
+        {
+          "kind": "simple",
+          "name": "processed"
+        },
+        {
+          "kind": "plural",
+          "name": "total"
+        }
+      ],
+      "finalTarget": "Mengirim {processed} dari {total, plural, one {# item} other {# item}}.",
+      "finalTargetHash": "576446feddabac56a2b1844bcdf18963ab6c38163afdc48907715919abc1a666",
+      "locale": "id",
+      "localeBlob": "4bfb1aea2bc1a5c5ad291392cd95f7ae3cb093ff",
+      "localeFileSha256": "964e5cc4635ac44d2d9d7ecc9f3f4fd28736c695681223e9db1eaf4e9fd924e5",
+      "noTranslationChangeProposed": true,
+      "omittedRedundantSimpleArgument": "total",
+      "preservedPluralArgument": "total",
+      "source": "Submitting {processed} of {total} {total, plural, one {item} other {items}}.",
+      "sourceCatalogBlob": "12e04a118c30b71b3714291adeaf9fdb2735cee4",
+      "sourceCatalogSha256": "75ff3c90b52aedd636a506281ffbd6fb2d3739c61294b6008a517f17647e2316",
+      "sourceHash": "563a57af7de299a625ab49868988a9b666384fb9edc8c14d3de71866f931ef03",
+      "sourceIcuProfile": [
+        {
+          "branches": {
+            "one": "item",
+            "other": "items"
+          },
+          "kind": "plural",
+          "name": "total"
+        }
+      ],
+      "sourceId": "components.RequestModal.BulkRequestModal.submittingprogress",
+      "sourcePlaceholders": [
+        {
+          "kind": "simple",
+          "name": "processed"
+        },
+        {
+          "kind": "plural",
+          "name": "total"
+        },
+        {
+          "kind": "simple",
+          "name": "total"
+        }
+      ],
+      "sourcePosition": 2867
+    },
+    {
+      "callerContextSha256": "15bef19f2d5be199c5bfd6a0f9536df8c2ea17c42f4afeff4c2707d10042b98f",
+      "callerFile": "src/components/RequestModal/BulkRequestModal.tsx",
+      "callerFileBlob": "28c486ce3516e97805112781e17a1961307d0b6a",
+      "callerFileSha256": "e102557248e8613be4c35374f717cbe07d993798f2c3b22a8f21caccfa513efb",
+      "callerPins": [
+        {
+          "file": "src/components/RequestModal/BulkRequestModal.tsx",
+          "line": 93,
+          "lineSha256": "3f1d702d616fcaf79c7a4651db6b29309aaf9fe9650fb0fb0b03ad3805266ae4",
+          "lineText": "submittingprogress:",
+          "nextLine": "'Submitting {processed} of {total} {total, plural, one {item} other {items}}.',",
+          "previousLine": "retryfailed: 'Retry Failed',"
+        },
+        {
+          "file": "src/components/RequestModal/BulkRequestModal.tsx",
+          "line": 1090,
+          "lineSha256": "1117f704407f23c00797bfe38c979f9efea198852e457ddee8e5648cab7ab498",
+          "lineText": "processed: submitProgress.processed,"
+        },
+        {
+          "file": "src/components/RequestModal/BulkRequestModal.tsx",
+          "line": 1091,
+          "lineSha256": "f7b0dcc8bded208395e9a66689dd028bd01d2dd88a3019677c710b07b2d95392",
+          "lineText": "total: submitProgress.total,"
+        }
+      ],
+      "countRendering": "ICU # in target plural branches; Arabic one/two branches use inflected number words.",
+      "currentTarget": "全{total, plural, other {#件}}中{processed}件を送信しています。",
+      "currentTargetHash": "ac9edf337fab13e0b49aef0711166da607d785f1529cb9446621d38945829213",
+      "disposition": "accept-current",
+      "finalIcuProfile": [
+        {
+          "branches": {
+            "other": "#件"
+          },
+          "kind": "plural",
+          "name": "total"
+        }
+      ],
+      "finalPlaceholders": [
+        {
+          "kind": "simple",
+          "name": "processed"
+        },
+        {
+          "kind": "plural",
+          "name": "total"
+        }
+      ],
+      "finalTarget": "全{total, plural, other {#件}}中{processed}件を送信しています。",
+      "finalTargetHash": "ac9edf337fab13e0b49aef0711166da607d785f1529cb9446621d38945829213",
+      "locale": "ja",
+      "localeBlob": "c16df6fe6d47d58a24a13efd5c687f092dab06e9",
+      "localeFileSha256": "a80d6907a66cc2c72f4806e3f93970d61d0a81a6e32640367b7c317379e98847",
+      "noTranslationChangeProposed": true,
+      "omittedRedundantSimpleArgument": "total",
+      "preservedPluralArgument": "total",
+      "source": "Submitting {processed} of {total} {total, plural, one {item} other {items}}.",
+      "sourceCatalogBlob": "12e04a118c30b71b3714291adeaf9fdb2735cee4",
+      "sourceCatalogSha256": "75ff3c90b52aedd636a506281ffbd6fb2d3739c61294b6008a517f17647e2316",
+      "sourceHash": "563a57af7de299a625ab49868988a9b666384fb9edc8c14d3de71866f931ef03",
+      "sourceIcuProfile": [
+        {
+          "branches": {
+            "one": "item",
+            "other": "items"
+          },
+          "kind": "plural",
+          "name": "total"
+        }
+      ],
+      "sourceId": "components.RequestModal.BulkRequestModal.submittingprogress",
+      "sourcePlaceholders": [
+        {
+          "kind": "simple",
+          "name": "processed"
+        },
+        {
+          "kind": "plural",
+          "name": "total"
+        },
+        {
+          "kind": "simple",
+          "name": "total"
+        }
+      ],
+      "sourcePosition": 2867
+    },
+    {
+      "callerContextSha256": "15bef19f2d5be199c5bfd6a0f9536df8c2ea17c42f4afeff4c2707d10042b98f",
+      "callerFile": "src/components/RequestModal/BulkRequestModal.tsx",
+      "callerFileBlob": "28c486ce3516e97805112781e17a1961307d0b6a",
+      "callerFileSha256": "e102557248e8613be4c35374f717cbe07d993798f2c3b22a8f21caccfa513efb",
+      "callerPins": [
+        {
+          "file": "src/components/RequestModal/BulkRequestModal.tsx",
+          "line": 93,
+          "lineSha256": "3f1d702d616fcaf79c7a4651db6b29309aaf9fe9650fb0fb0b03ad3805266ae4",
+          "lineText": "submittingprogress:",
+          "nextLine": "'Submitting {processed} of {total} {total, plural, one {item} other {items}}.',",
+          "previousLine": "retryfailed: 'Retry Failed',"
+        },
+        {
+          "file": "src/components/RequestModal/BulkRequestModal.tsx",
+          "line": 1090,
+          "lineSha256": "1117f704407f23c00797bfe38c979f9efea198852e457ddee8e5648cab7ab498",
+          "lineText": "processed: submitProgress.processed,"
+        },
+        {
+          "file": "src/components/RequestModal/BulkRequestModal.tsx",
+          "line": 1091,
+          "lineSha256": "f7b0dcc8bded208395e9a66689dd028bd01d2dd88a3019677c710b07b2d95392",
+          "lineText": "total: submitProgress.total,"
+        }
+      ],
+      "countRendering": "ICU # in target plural branches; Arabic one/two branches use inflected number words.",
+      "currentTarget": "총 {total, plural, other {#개 항목}} 중 {processed}개를 제출하고 있습니다.",
+      "currentTargetHash": "ae33c6343ebc069492cda0e02d54d6c9a40c1e0604252f18e75c3b11c5079b82",
+      "disposition": "accept-current",
+      "finalIcuProfile": [
+        {
+          "branches": {
+            "other": "#개 항목"
+          },
+          "kind": "plural",
+          "name": "total"
+        }
+      ],
+      "finalPlaceholders": [
+        {
+          "kind": "simple",
+          "name": "processed"
+        },
+        {
+          "kind": "plural",
+          "name": "total"
+        }
+      ],
+      "finalTarget": "총 {total, plural, other {#개 항목}} 중 {processed}개를 제출하고 있습니다.",
+      "finalTargetHash": "ae33c6343ebc069492cda0e02d54d6c9a40c1e0604252f18e75c3b11c5079b82",
+      "locale": "ko",
+      "localeBlob": "8f36c79dc8afd86e13aa15771075b18b60a7a77b",
+      "localeFileSha256": "ed6c93a3efbc0d2d8bed6158cea31e4aef5c1ace0816316b30752ff9991a0205",
+      "noTranslationChangeProposed": true,
+      "omittedRedundantSimpleArgument": "total",
+      "preservedPluralArgument": "total",
+      "source": "Submitting {processed} of {total} {total, plural, one {item} other {items}}.",
+      "sourceCatalogBlob": "12e04a118c30b71b3714291adeaf9fdb2735cee4",
+      "sourceCatalogSha256": "75ff3c90b52aedd636a506281ffbd6fb2d3739c61294b6008a517f17647e2316",
+      "sourceHash": "563a57af7de299a625ab49868988a9b666384fb9edc8c14d3de71866f931ef03",
+      "sourceIcuProfile": [
+        {
+          "branches": {
+            "one": "item",
+            "other": "items"
+          },
+          "kind": "plural",
+          "name": "total"
+        }
+      ],
+      "sourceId": "components.RequestModal.BulkRequestModal.submittingprogress",
+      "sourcePlaceholders": [
+        {
+          "kind": "simple",
+          "name": "processed"
+        },
+        {
+          "kind": "plural",
+          "name": "total"
+        },
+        {
+          "kind": "simple",
+          "name": "total"
+        }
+      ],
+      "sourcePosition": 2867
+    },
+    {
+      "callerContextSha256": "15bef19f2d5be199c5bfd6a0f9536df8c2ea17c42f4afeff4c2707d10042b98f",
+      "callerFile": "src/components/RequestModal/BulkRequestModal.tsx",
+      "callerFileBlob": "28c486ce3516e97805112781e17a1961307d0b6a",
+      "callerFileSha256": "e102557248e8613be4c35374f717cbe07d993798f2c3b22a8f21caccfa513efb",
+      "callerPins": [
+        {
+          "file": "src/components/RequestModal/BulkRequestModal.tsx",
+          "line": 93,
+          "lineSha256": "3f1d702d616fcaf79c7a4651db6b29309aaf9fe9650fb0fb0b03ad3805266ae4",
+          "lineText": "submittingprogress:",
+          "nextLine": "'Submitting {processed} of {total} {total, plural, one {item} other {items}}.',",
+          "previousLine": "retryfailed: 'Retry Failed',"
+        },
+        {
+          "file": "src/components/RequestModal/BulkRequestModal.tsx",
+          "line": 1090,
+          "lineSha256": "1117f704407f23c00797bfe38c979f9efea198852e457ddee8e5648cab7ab498",
+          "lineText": "processed: submitProgress.processed,"
+        },
+        {
+          "file": "src/components/RequestModal/BulkRequestModal.tsx",
+          "line": 1091,
+          "lineSha256": "f7b0dcc8bded208395e9a66689dd028bd01d2dd88a3019677c710b07b2d95392",
+          "lineText": "total: submitProgress.total,"
+        }
+      ],
+      "countRendering": "ICU # in target plural branches; Arabic one/two branches use inflected number words.",
+      "currentTarget": "Enviando {processed} de {total, plural, one {# item} many {# itens} other {# itens}}.",
+      "currentTargetHash": "d88d720bf2dc03478359cf8818cb8a07b54f0ecee87a05ab3fe801df62536636",
+      "disposition": "accept-current",
+      "finalIcuProfile": [
+        {
+          "branches": {
+            "many": "# itens",
+            "one": "# item",
+            "other": "# itens"
+          },
+          "kind": "plural",
+          "name": "total"
+        }
+      ],
+      "finalPlaceholders": [
+        {
+          "kind": "simple",
+          "name": "processed"
+        },
+        {
+          "kind": "plural",
+          "name": "total"
+        }
+      ],
+      "finalTarget": "Enviando {processed} de {total, plural, one {# item} many {# itens} other {# itens}}.",
+      "finalTargetHash": "d88d720bf2dc03478359cf8818cb8a07b54f0ecee87a05ab3fe801df62536636",
+      "locale": "pt_BR",
+      "localeBlob": "f738268e55fa54869219b7be002c9b889fadf392",
+      "localeFileSha256": "4fbc92c2359bba4eda00d4889132074ebfd2289242020d87093b9284c214b661",
+      "noTranslationChangeProposed": true,
+      "omittedRedundantSimpleArgument": "total",
+      "preservedPluralArgument": "total",
+      "source": "Submitting {processed} of {total} {total, plural, one {item} other {items}}.",
+      "sourceCatalogBlob": "12e04a118c30b71b3714291adeaf9fdb2735cee4",
+      "sourceCatalogSha256": "75ff3c90b52aedd636a506281ffbd6fb2d3739c61294b6008a517f17647e2316",
+      "sourceHash": "563a57af7de299a625ab49868988a9b666384fb9edc8c14d3de71866f931ef03",
+      "sourceIcuProfile": [
+        {
+          "branches": {
+            "one": "item",
+            "other": "items"
+          },
+          "kind": "plural",
+          "name": "total"
+        }
+      ],
+      "sourceId": "components.RequestModal.BulkRequestModal.submittingprogress",
+      "sourcePlaceholders": [
+        {
+          "kind": "simple",
+          "name": "processed"
+        },
+        {
+          "kind": "plural",
+          "name": "total"
+        },
+        {
+          "kind": "simple",
+          "name": "total"
+        }
+      ],
+      "sourcePosition": 2867
+    },
+    {
+      "callerContextSha256": "15bef19f2d5be199c5bfd6a0f9536df8c2ea17c42f4afeff4c2707d10042b98f",
+      "callerFile": "src/components/RequestModal/BulkRequestModal.tsx",
+      "callerFileBlob": "28c486ce3516e97805112781e17a1961307d0b6a",
+      "callerFileSha256": "e102557248e8613be4c35374f717cbe07d993798f2c3b22a8f21caccfa513efb",
+      "callerPins": [
+        {
+          "file": "src/components/RequestModal/BulkRequestModal.tsx",
+          "line": 93,
+          "lineSha256": "3f1d702d616fcaf79c7a4651db6b29309aaf9fe9650fb0fb0b03ad3805266ae4",
+          "lineText": "submittingprogress:",
+          "nextLine": "'Submitting {processed} of {total} {total, plural, one {item} other {items}}.',",
+          "previousLine": "retryfailed: 'Retry Failed',"
+        },
+        {
+          "file": "src/components/RequestModal/BulkRequestModal.tsx",
+          "line": 1090,
+          "lineSha256": "1117f704407f23c00797bfe38c979f9efea198852e457ddee8e5648cab7ab498",
+          "lineText": "processed: submitProgress.processed,"
+        },
+        {
+          "file": "src/components/RequestModal/BulkRequestModal.tsx",
+          "line": 1091,
+          "lineSha256": "f7b0dcc8bded208395e9a66689dd028bd01d2dd88a3019677c710b07b2d95392",
+          "lineText": "total: submitProgress.total,"
+        }
+      ],
+      "countRendering": "ICU # in target plural branches; Arabic one/two branches use inflected number words.",
+      "currentTarget": "Đang gửi {processed} trên tổng số {total, plural, other {# mục}}.",
+      "currentTargetHash": "a8feea7cd7b12025999a53277f18c3cd2349a2b561500b03034a1e195b403c4c",
+      "disposition": "accept-current",
+      "finalIcuProfile": [
+        {
+          "branches": {
+            "other": "# mục"
+          },
+          "kind": "plural",
+          "name": "total"
+        }
+      ],
+      "finalPlaceholders": [
+        {
+          "kind": "simple",
+          "name": "processed"
+        },
+        {
+          "kind": "plural",
+          "name": "total"
+        }
+      ],
+      "finalTarget": "Đang gửi {processed} trên tổng số {total, plural, other {# mục}}.",
+      "finalTargetHash": "a8feea7cd7b12025999a53277f18c3cd2349a2b561500b03034a1e195b403c4c",
+      "locale": "vi",
+      "localeBlob": "4247c3794d6bf0529e2d22f166c16ce4b340f732",
+      "localeFileSha256": "29a2bdff375ba825891d98262d153f1d99965f2250fc856f17a56c47642c3a45",
+      "noTranslationChangeProposed": true,
+      "omittedRedundantSimpleArgument": "total",
+      "preservedPluralArgument": "total",
+      "source": "Submitting {processed} of {total} {total, plural, one {item} other {items}}.",
+      "sourceCatalogBlob": "12e04a118c30b71b3714291adeaf9fdb2735cee4",
+      "sourceCatalogSha256": "75ff3c90b52aedd636a506281ffbd6fb2d3739c61294b6008a517f17647e2316",
+      "sourceHash": "563a57af7de299a625ab49868988a9b666384fb9edc8c14d3de71866f931ef03",
+      "sourceIcuProfile": [
+        {
+          "branches": {
+            "one": "item",
+            "other": "items"
+          },
+          "kind": "plural",
+          "name": "total"
+        }
+      ],
+      "sourceId": "components.RequestModal.BulkRequestModal.submittingprogress",
+      "sourcePlaceholders": [
+        {
+          "kind": "simple",
+          "name": "processed"
+        },
+        {
+          "kind": "plural",
+          "name": "total"
+        },
+        {
+          "kind": "simple",
+          "name": "total"
+        }
+      ],
+      "sourcePosition": 2867
+    },
+    {
+      "callerContextSha256": "15bef19f2d5be199c5bfd6a0f9536df8c2ea17c42f4afeff4c2707d10042b98f",
+      "callerFile": "src/components/RequestModal/BulkRequestModal.tsx",
+      "callerFileBlob": "28c486ce3516e97805112781e17a1961307d0b6a",
+      "callerFileSha256": "e102557248e8613be4c35374f717cbe07d993798f2c3b22a8f21caccfa513efb",
+      "callerPins": [
+        {
+          "file": "src/components/RequestModal/BulkRequestModal.tsx",
+          "line": 93,
+          "lineSha256": "3f1d702d616fcaf79c7a4651db6b29309aaf9fe9650fb0fb0b03ad3805266ae4",
+          "lineText": "submittingprogress:",
+          "nextLine": "'Submitting {processed} of {total} {total, plural, one {item} other {items}}.',",
+          "previousLine": "retryfailed: 'Retry Failed',"
+        },
+        {
+          "file": "src/components/RequestModal/BulkRequestModal.tsx",
+          "line": 1090,
+          "lineSha256": "1117f704407f23c00797bfe38c979f9efea198852e457ddee8e5648cab7ab498",
+          "lineText": "processed: submitProgress.processed,"
+        },
+        {
+          "file": "src/components/RequestModal/BulkRequestModal.tsx",
+          "line": 1091,
+          "lineSha256": "f7b0dcc8bded208395e9a66689dd028bd01d2dd88a3019677c710b07b2d95392",
+          "lineText": "total: submitProgress.total,"
+        }
+      ],
+      "countRendering": "ICU # in target plural branches; Arabic one/two branches use inflected number words.",
+      "currentTarget": "正在提交 {processed} / {total, plural, other {# 个项目}}。",
+      "currentTargetHash": "2c03ace64a2ff97a464dec3c672c7c49da8549e93a702ab0f53feacbc9733a42",
+      "disposition": "accept-current",
+      "finalIcuProfile": [
+        {
+          "branches": {
+            "other": "# 个项目"
+          },
+          "kind": "plural",
+          "name": "total"
+        }
+      ],
+      "finalPlaceholders": [
+        {
+          "kind": "simple",
+          "name": "processed"
+        },
+        {
+          "kind": "plural",
+          "name": "total"
+        }
+      ],
+      "finalTarget": "正在提交 {processed} / {total, plural, other {# 个项目}}。",
+      "finalTargetHash": "2c03ace64a2ff97a464dec3c672c7c49da8549e93a702ab0f53feacbc9733a42",
+      "locale": "zh_Hans",
+      "localeBlob": "53cc4bbda936c28798570b3d8b39217bf7583262",
+      "localeFileSha256": "610cedd36e3a4361634aacb8b74c12daa117ec364628e7766bce5c31d3d79e05",
+      "noTranslationChangeProposed": true,
+      "omittedRedundantSimpleArgument": "total",
+      "preservedPluralArgument": "total",
+      "source": "Submitting {processed} of {total} {total, plural, one {item} other {items}}.",
+      "sourceCatalogBlob": "12e04a118c30b71b3714291adeaf9fdb2735cee4",
+      "sourceCatalogSha256": "75ff3c90b52aedd636a506281ffbd6fb2d3739c61294b6008a517f17647e2316",
+      "sourceHash": "563a57af7de299a625ab49868988a9b666384fb9edc8c14d3de71866f931ef03",
+      "sourceIcuProfile": [
+        {
+          "branches": {
+            "one": "item",
+            "other": "items"
+          },
+          "kind": "plural",
+          "name": "total"
+        }
+      ],
+      "sourceId": "components.RequestModal.BulkRequestModal.submittingprogress",
+      "sourcePlaceholders": [
+        {
+          "kind": "simple",
+          "name": "processed"
+        },
+        {
+          "kind": "plural",
+          "name": "total"
+        },
+        {
+          "kind": "simple",
+          "name": "total"
+        }
+      ],
+      "sourcePosition": 2867
+    },
+    {
+      "callerContextSha256": "15bef19f2d5be199c5bfd6a0f9536df8c2ea17c42f4afeff4c2707d10042b98f",
+      "callerFile": "src/components/RequestModal/BulkRequestModal.tsx",
+      "callerFileBlob": "28c486ce3516e97805112781e17a1961307d0b6a",
+      "callerFileSha256": "e102557248e8613be4c35374f717cbe07d993798f2c3b22a8f21caccfa513efb",
+      "callerPins": [
+        {
+          "file": "src/components/RequestModal/BulkRequestModal.tsx",
+          "line": 93,
+          "lineSha256": "3f1d702d616fcaf79c7a4651db6b29309aaf9fe9650fb0fb0b03ad3805266ae4",
+          "lineText": "submittingprogress:",
+          "nextLine": "'Submitting {processed} of {total} {total, plural, one {item} other {items}}.',",
+          "previousLine": "retryfailed: 'Retry Failed',"
+        },
+        {
+          "file": "src/components/RequestModal/BulkRequestModal.tsx",
+          "line": 1090,
+          "lineSha256": "1117f704407f23c00797bfe38c979f9efea198852e457ddee8e5648cab7ab498",
+          "lineText": "processed: submitProgress.processed,"
+        },
+        {
+          "file": "src/components/RequestModal/BulkRequestModal.tsx",
+          "line": 1091,
+          "lineSha256": "f7b0dcc8bded208395e9a66689dd028bd01d2dd88a3019677c710b07b2d95392",
+          "lineText": "total: submitProgress.total,"
+        }
+      ],
+      "countRendering": "ICU # in target plural branches; Arabic one/two branches use inflected number words.",
+      "currentTarget": "正在提交 {processed} / {total, plural, other {# 個項目}}。",
+      "currentTargetHash": "09900eb24f049177617c09923f20a5f205077c8a4a796d5bb393c5f3c947d4ad",
+      "disposition": "accept-current",
+      "finalIcuProfile": [
+        {
+          "branches": {
+            "other": "# 個項目"
+          },
+          "kind": "plural",
+          "name": "total"
+        }
+      ],
+      "finalPlaceholders": [
+        {
+          "kind": "simple",
+          "name": "processed"
+        },
+        {
+          "kind": "plural",
+          "name": "total"
+        }
+      ],
+      "finalTarget": "正在提交 {processed} / {total, plural, other {# 個項目}}。",
+      "finalTargetHash": "09900eb24f049177617c09923f20a5f205077c8a4a796d5bb393c5f3c947d4ad",
+      "locale": "zh_Hant",
+      "localeBlob": "a8c2efad70ed7f79f51eb36fa591d04627ed7326",
+      "localeFileSha256": "873b68a4db574b13a81ea872b9b11c0eff54ae72d8b6d911121c2479dce3a079",
+      "noTranslationChangeProposed": true,
+      "omittedRedundantSimpleArgument": "total",
+      "preservedPluralArgument": "total",
+      "source": "Submitting {processed} of {total} {total, plural, one {item} other {items}}.",
+      "sourceCatalogBlob": "12e04a118c30b71b3714291adeaf9fdb2735cee4",
+      "sourceCatalogSha256": "75ff3c90b52aedd636a506281ffbd6fb2d3739c61294b6008a517f17647e2316",
+      "sourceHash": "563a57af7de299a625ab49868988a9b666384fb9edc8c14d3de71866f931ef03",
+      "sourceIcuProfile": [
+        {
+          "branches": {
+            "one": "item",
+            "other": "items"
+          },
+          "kind": "plural",
+          "name": "total"
+        }
+      ],
+      "sourceId": "components.RequestModal.BulkRequestModal.submittingprogress",
+      "sourcePlaceholders": [
+        {
+          "kind": "simple",
+          "name": "processed"
+        },
+        {
+          "kind": "plural",
+          "name": "total"
+        },
+        {
+          "kind": "simple",
+          "name": "total"
+        }
+      ],
+      "sourcePosition": 2867
+    }
+  ],
+  "semanticallyCoveredCount": 13,
+  "unresolvedCount": 0
+}

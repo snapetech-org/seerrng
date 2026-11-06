@@ -1,0 +1,31 @@
+{
+  "allInputPinsMatched": true,
+  "allSelectedTargetStructuralChecksPass": true,
+  "blindLedgerSha256": "29ef8365dc49849712d413121e12105934c11e20b64c8457c0a15bedfde1a0c2",
+  "blindSealSha256": "8ac2d495a022528ec383964d96f02a1cc78a4dbe2941ab05fc930aaaf21c11a4",
+  "callerUnresolvedHoldCells": 12,
+  "cellsReviewed": 240,
+  "changedTargetRecommendations": 18,
+  "crossAuditLedgerSha256": "02070c96af43dd2edba0f200554b4ab0a2f780e4fb51a6d3f8c74877ff35f1f9",
+  "finalDispositionCounts": {
+    "accept-current": 210,
+    "correction": 5,
+    "hold": 12,
+    "refinement": 13
+  },
+  "head": "049b23526911e6cf6b1a0b2c397d155eb51d5ddf",
+  "inputManifestSha256": "c51bba771da7be6d11f7372190be491ac09531dc98fcde2381e6ae66a7315db4",
+  "locales": 12,
+  "nativeSpeakerApproval": false,
+  "noCatalogOrSourceEdits": true,
+  "primaryBlindDisagreements": 15,
+  "primaryLedgerSha256": "a18004221884b23424bc896b20625fb5cbd51978810f9e4076b7b94a360cf7ea",
+  "pullRequest": 418,
+  "recordType": "third-party-cross-audit-summary",
+  "repository": "snapetech-org/seerrng",
+  "schemaVersion": 1,
+  "sealedComparisonSha256": "764ea13d40b9ab0a3b22fa7b66f6b41e5bf751472782080c5124db6ce0e69c38",
+  "sourceIds": 20,
+  "tree": "0a83d4f6bcea1367f218efb3898b15d2b0f4f140",
+  "window": "W3440-W3459"
+}

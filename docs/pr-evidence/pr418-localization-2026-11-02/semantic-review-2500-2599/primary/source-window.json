@@ -1,0 +1,617 @@
+{
+  "head": "0905d4be32d8b7ec3b1af701473a3fdf6e0f30a2",
+  "sourceCatalog": {
+    "blob": "12e04a118c30b71b3714291adeaf9fdb2735cee4",
+    "bytes": 835513,
+    "path": "src/i18n/locale/en.json",
+    "sha256": "75ff3c90b52aedd636a506281ffbd6fb2d3739c61294b6008a517f17647e2316"
+  },
+  "sourceCount": 100,
+  "sourceList": [
+    {
+      "position": 2500,
+      "source": "Browse ebooks in {serviceName}",
+      "sourceHash": "b72a0ff2041f9b147f140fbc0cac1194916ec3b00c435da1f244a0bfb9ac083e",
+      "sourceId": "components.ReaderDeliveryLink.ebooks"
+    },
+    {
+      "position": 2501,
+      "source": "Open the {serviceName} library in a browser. To browse in a reader app, copy its OPDS address under Settings > Services > Reader Apps and add it there.",
+      "sourceHash": "9b0e93f71295d3ffa8e01b164aa2bb3f4b5032f94a86e68de12ce4b32ce93012",
+      "sourceId": "components.ReaderDeliveryLink.ebooksHelp"
+    },
+    {
+      "position": 2502,
+      "source": "Browse magazine PDFs in {serviceName}",
+      "sourceHash": "77b5aea40693c24900935121156e0cd2e2dd7b4eedb5ab06937415f367783a17",
+      "sourceId": "components.ReaderDeliveryLink.magazines"
+    },
+    {
+      "position": 2503,
+      "source": "Open the {serviceName} library in a browser. Import magazine issues as PDF files there. Use Download issue for copies linked to your SeerrNG request.",
+      "sourceHash": "c05fb9c3b92c429f64fda67ef34f811206598ce806e8bc42e3ddef2d81cdc47a",
+      "sourceId": "components.ReaderDeliveryLink.magazinesHelp"
+    },
+    {
+      "position": 2504,
+      "source": "Reader App Address",
+      "sourceHash": "708791a5ee84af320e0da4e07ab9155994e59bad1d91a313623bfec9c4950368",
+      "sourceId": "components.ReaderDeliverySettings.address"
+    },
+    {
+      "position": 2505,
+      "source": "Enter the address readers can open in a browser. Include a reverse-proxy base path if you use one. You can paste a full OPDS or Grimmory Komga address.",
+      "sourceHash": "6ae07b8cfcab4f47b9fd0a00e07cb27a328915a401b2ebdf7dc0d13f475ef8e3",
+      "sourceId": "components.ReaderDeliverySettings.addressDescription"
+    },
+    {
+      "position": 2506,
+      "source": "https://reader.example.com",
+      "sourceHash": "7f9544a969d6e852052b8781633901d8875d3f4d1167e5c1ca5f2b13e4b0ce7f",
+      "sourceId": "components.ReaderDeliverySettings.addressPlaceholder"
+    },
+    {
+      "position": 2507,
+      "source": "BookOrbit",
+      "sourceHash": "d5d60188c78fbd18c1a06cd5895ed6883cd9da921d2b0ee2b52bc5ff750a2a87",
+      "sourceId": "components.ReaderDeliverySettings.bookorbit"
+    },
+    {
+      "position": 2508,
+      "source": "BookOrbit has built-in readers for ebooks, PDFs, CBZ/CBR/CB7 comics, and M4B/MP3/M4A/OPUS/OGG/FLAC audiobooks. OPDS apps can browse ebooks and PDFs and download CBZ/CBR archives; import magazine issues as PDFs.",
+      "sourceHash": "b283e8d479902c18f7266c76bd504c29835f2ee61793bd22c40d1ea498cb4863",
+      "sourceId": "components.ReaderDeliverySettings.bookorbitDescription"
+    },
+    {
+      "position": 2509,
+      "source": "BookOrbit OPDS Setup",
+      "sourceHash": "6a00aefebcc441274d678af8830d45cdf4b61dfa1173aacc376c434491359e26",
+      "sourceId": "components.ReaderDeliverySettings.bookorbitSetup"
+    },
+    {
+      "position": 2510,
+      "source": "Discard Changes",
+      "sourceHash": "57ea0389fe566bb70f745e395537ae68c1b502b2ff401526c4b855ad14faec11",
+      "sourceId": "components.ReaderDeliverySettings.cancel"
+    },
+    {
+      "position": 2511,
+      "source": "OPDS Catalog Address",
+      "sourceHash": "2d8510b02823556b3d098be56f176d2af364a805569832e237e151324834d8c6",
+      "sourceId": "components.ReaderDeliverySettings.catalogAddress"
+    },
+    {
+      "position": 2512,
+      "source": "{serviceName} OPDS catalog address",
+      "sourceHash": "2e0c787540a6f48ef54e15f2af82baa5e497903b2650466eec66d7a6417503d7",
+      "sourceId": "components.ReaderDeliverySettings.catalogAddressLabel"
+    },
+    {
+      "position": 2513,
+      "source": "Remove saved account credentials",
+      "sourceHash": "d375b98cff9c0f783b12dfef3c9cba66082999db07a3547aba302e09d2975733",
+      "sourceId": "components.ReaderDeliverySettings.clearCredentials"
+    },
+    {
+      "position": 2514,
+      "source": "Komga Comic Reader Address",
+      "sourceHash": "799b440adc54a638be79448933c315e8eccc39ae4ffbdb4975866e8c4fdab285",
+      "sourceId": "components.ReaderDeliverySettings.comicCatalogAddress"
+    },
+    {
+      "position": 2515,
+      "source": "Use this address in a Komga-compatible comic app for page-by-page streaming. Enable Grimmory’s Komga API and use the same OPDS reader credentials.",
+      "sourceHash": "43a612b377408bb741e5a2aefb02ce3f63e3d85b06837a9904763050a1adcdc2",
+      "sourceId": "components.ReaderDeliverySettings.comicCatalogAddressDescription"
+    },
+    {
+      "position": 2516,
+      "source": "Remove this SeerrNG-managed grouping and its companion Kobo Collection from the reader service? Books and library files are not deleted.",
+      "sourceHash": "f21fb85ab5dec644edf68075c4108bbf8718d867341d72deb08adefcf8ae4579",
+      "sourceId": "components.ReaderDeliverySettings.confirmDeleteBookOrbitGrouping"
+    },
+    {
+      "position": 2517,
+      "source": "Remove this SeerrNG-managed grouping from the reader service? Books and library files are not deleted.",
+      "sourceHash": "a8279fac1a723630c635c4b05af006f07d828f86ba4e0ec14f49002285b563fc",
+      "sourceId": "components.ReaderDeliverySettings.confirmDeleteGrouping"
+    },
+    {
+      "position": 2518,
+      "source": "Reader service connection failed.",
+      "sourceHash": "c7ba7263f691a2b2cf126bb6dc50eb3030cefcf6be6cfde2b95cf9a4cb88d7cc",
+      "sourceId": "components.ReaderDeliverySettings.connectionError"
+    },
+    {
+      "position": 2519,
+      "source": "Connected. SeerrNG can manage groupings; {count} existing groupings were found.",
+      "sourceHash": "eecfd0c4c2f4e82c6e21767c8351e50794cccb3a9670f3962d9bf3ccba485586",
+      "sourceId": "components.ReaderDeliverySettings.connectionSuccess"
+    },
+    {
+      "position": 2520,
+      "source": "Test grouping access",
+      "sourceHash": "6bbd7009b4f555cde1d5339adfec12972232e45cb72813954ee30a00876e4ffa",
+      "sourceId": "components.ReaderDeliverySettings.connectionTest"
+    },
+    {
+      "position": 2521,
+      "source": "Checking reader service…",
+      "sourceHash": "b2500c35be802def6180db0404b098ede8e4b50dc5f6940f83bd7199151587f3",
+      "sourceId": "components.ReaderDeliverySettings.connectionTesting"
+    },
+    {
+      "position": 2522,
+      "source": "Reader address copied.",
+      "sourceHash": "ec5269a26651f51356243f09b73c49af50dab1c494445f24bb8616d5f3ed26f1",
+      "sourceId": "components.ReaderDeliverySettings.copied"
+    },
+    {
+      "position": 2523,
+      "source": "Copy Catalog Address",
+      "sourceHash": "69cc82ba8d8bf7f0fa87e807ec76471ea3e9696129c229850f84b8e34f3fb4ec",
+      "sourceId": "components.ReaderDeliverySettings.copyCatalogAddress"
+    },
+    {
+      "position": 2524,
+      "source": "Copy Comic Reader Address",
+      "sourceHash": "98386cf236c2f569a14208a4a37667fa8ceb48bce2a6f0e385f03dcada7a2cfa",
+      "sourceId": "components.ReaderDeliverySettings.copyComicCatalogAddress"
+    },
+    {
+      "position": 2525,
+      "source": "Copy {serviceName} OPDS catalog address",
+      "sourceHash": "6de8a094caa00f0a47c13b924c4e129d3199aabc3a8498b678e6b3bbdc1e252a",
+      "sourceId": "components.ReaderDeliverySettings.copyServiceCatalogAddress"
+    },
+    {
+      "position": 2526,
+      "source": "Clipboard access is unavailable here. Select and copy the reader address above.",
+      "sourceHash": "817e3dc6564f1762e341372fe51c6af747e496d5f5f5b95211aecefcfb7ac827",
+      "sourceId": "components.ReaderDeliverySettings.copyUnavailable"
+    },
+    {
+      "position": 2527,
+      "source": "Remove managed shelf",
+      "sourceHash": "b29ad4033b15e8565e6a48ae419f82cbb1c7d1eebca10c99bd68ca3ec44e7de1",
+      "sourceId": "components.ReaderDeliverySettings.deleteGrouping"
+    },
+    {
+      "position": 2528,
+      "source": "For a requested item, SeerrNG can also download available files directly to the device running this browser. Audiobooks, comics, and magazine issues use their own file type and compatible reader app.",
+      "sourceHash": "8b2ffb43e2c760c024d615e4550d8f312d7178d4bdfa72130ea9d6e8f9811c81",
+      "sourceId": "components.ReaderDeliverySettings.deliveryHelp"
+    },
+    {
+      "position": 2529,
+      "source": "Connect Grimmory or BookOrbit to browse and deliver ebooks, audiobooks, comics, and magazine issues to compatible reader apps.",
+      "sourceHash": "a7c5b9cf3ab1e03962775581d46f3971723590a0450d1991fbd7d4338495d535",
+      "sourceId": "components.ReaderDeliverySettings.description"
+    },
+    {
+      "position": 2530,
+      "source": "Recommended. Grimmory provides an OPDS catalog for ebooks and PDFs, a Komga API for streamed comic pages, and a built-in player for M4B, M4A, and MP3 audiobooks.",
+      "sourceHash": "26dfca234f87f373e2fd40780a6a1773711614366b8f5e441e9c973c63073024",
+      "sourceId": "components.ReaderDeliverySettings.grimmoryDescription"
+    },
+    {
+      "position": 2531,
+      "source": "Grimmory Komga API Setup",
+      "sourceHash": "ce60ece91f87813d0531665995d709a3eca943178c938c4f5c5b32555ec48adc",
+      "sourceId": "components.ReaderDeliverySettings.grimmoryKomgaSetup"
+    },
+    {
+      "position": 2532,
+      "source": "Grimmory (Recommended)",
+      "sourceHash": "6420caad58b78e328c7511c3e363cd3a3cf50d9978109c942279c7e97125a716",
+      "sourceId": "components.ReaderDeliverySettings.grimmoryRecommended"
+    },
+    {
+      "position": 2533,
+      "source": "Grimmory OPDS Setup",
+      "sourceHash": "8ccbe297bf48949ebbfcbfa9c3a9d5b7c29d8cf1253980eacc0b764780d2d7df",
+      "sourceId": "components.ReaderDeliverySettings.grimmorySetup"
+    },
+    {
+      "position": 2534,
+      "source": "{count, plural, one {# item} other {# items}}",
+      "sourceHash": "95952237366b60b6739d8a3fc6454db8bfee253c705061286c213412155667a6",
+      "sourceId": "components.ReaderDeliverySettings.groupingCount"
+    },
+    {
+      "position": 2535,
+      "source": "Preview found {count} items; final count not confirmed",
+      "sourceHash": "4d66a623b62dd96094715b03b29b192fc57b60e89c824837b29eadb6e8899441",
+      "sourceId": "components.ReaderDeliverySettings.groupingCountUnverified"
+    },
+    {
+      "position": 2536,
+      "source": "The managed reader shelf could not be removed.",
+      "sourceHash": "fa56a3cf5b2aa3922b7b58a62f077e816b108f464404bd8cb48f624ee4367e27",
+      "sourceId": "components.ReaderDeliverySettings.groupingDeleteError"
+    },
+    {
+      "position": 2537,
+      "source": "Managed reader shelf removed.",
+      "sourceHash": "4f8ff29978c842475dbe1987d7b48a1b7d04b1b9c59643b26d795c40f52a8051",
+      "sourceId": "components.ReaderDeliverySettings.groupingDeleted"
+    },
+    {
+      "position": 2538,
+      "source": "Needs attention",
+      "sourceHash": "297a70146c5a9d8378b87c7f4f146d3ec9d342375065f118fe85a9ecb94e227f",
+      "sourceId": "components.ReaderDeliverySettings.groupingError"
+    },
+    {
+      "position": 2539,
+      "source": "Kobo Collection sync is off",
+      "sourceHash": "3a9107d4b662aaee842f4d578450d1cd567d886954e493c98de108a0676d5d93",
+      "sourceId": "components.ReaderDeliverySettings.groupingKoboSyncDisabled"
+    },
+    {
+      "position": 2540,
+      "source": "Kobo Collection sync needs attention",
+      "sourceHash": "129edcd7b6f87990232abbc7ff6d43dfa80721163248338c07cb21c04c5e3b88",
+      "sourceId": "components.ReaderDeliverySettings.groupingKoboSyncError"
+    },
+    {
+      "position": 2541,
+      "source": "Last Kobo sync: {time}",
+      "sourceHash": "92ff9ebd7c8af032e938edef07aa96857ea82f983fc6d273fb6b38153e217b6c",
+      "sourceId": "components.ReaderDeliverySettings.groupingKoboSyncLast"
+    },
+    {
+      "position": 2542,
+      "source": "Kobo Collection is updating",
+      "sourceHash": "f756af211a075a9c2dc3010d4a7c9468a5e582a24798e4a9265bad3b96f1858a",
+      "sourceId": "components.ReaderDeliverySettings.groupingKoboSyncPending"
+    },
+    {
+      "position": 2543,
+      "source": "Kobo Collection is synced to BookOrbit",
+      "sourceHash": "00434d634248aad37e49890134406e1d19802946d7faa2aee292cb428d4171ca",
+      "sourceId": "components.ReaderDeliverySettings.groupingKoboSyncReady"
+    },
+    {
+      "position": 2544,
+      "source": "Updating",
+      "sourceHash": "95b01e7c6fe79571f05e1e7027c9d47b9999b6abbd9e9d03d8507da2f7e71a4c",
+      "sourceId": "components.ReaderDeliverySettings.groupingPending"
+    },
+    {
+      "position": 2545,
+      "source": "Ready",
+      "sourceHash": "56bb4eb3a6e83d74f3d5dcfe806dfecbf888f997438f84d7431652df5fc60a26",
+      "sourceId": "components.ReaderDeliverySettings.groupingReady"
+    },
+    {
+      "position": 2546,
+      "source": "Managed reader shelves could not be loaded.",
+      "sourceHash": "6cdda900de73774c9e5ff2bcdadddfdad2f8aa3173cbbcf588a9f529287b32ce",
+      "sourceId": "components.ReaderDeliverySettings.groupingsLoadError"
+    },
+    {
+      "position": 2547,
+      "source": "SeerrNG-managed reader shelves",
+      "sourceHash": "95956f25da6153dee9f943c87ee4fc62006343279a1d67570218b5315e192093",
+      "sourceId": "components.ReaderDeliverySettings.groupingsTitle"
+    },
+    {
+      "position": 2548,
+      "source": "Grimmory Komga comic reader address",
+      "sourceHash": "1e352ce5beaae059a3f8d916d0dcbc6da68838b50c2a4e4aa4d2cac9a2f55c9f",
+      "sourceId": "components.ReaderDeliverySettings.komgaAddressLabel"
+    },
+    {
+      "position": 2549,
+      "source": "Share the Bookshelf Library",
+      "sourceHash": "8a0126df63e2e43721cc19684805852e3bfeed0f2fc12f246ca1d98c35761271",
+      "sourceId": "components.ReaderDeliverySettings.librarySetup"
+    },
+    {
+      "position": 2550,
+      "source": "Import or mount the same media folders into Grimmory or BookOrbit and let that service scan them. Use the path as it appears inside the reader service’s container. Scheduled scans are more reliable than filesystem watchers on some network shares.",
+      "sourceHash": "67bd163e3e73f31a28302b70b9920026c585b58637c8a44f6a7b982641f9e603",
+      "sourceId": "components.ReaderDeliverySettings.librarySetupDescription"
+    },
+    {
+      "position": 2551,
+      "source": "Reader settings could not be loaded.",
+      "sourceHash": "600c98442bc92ab7aa485f8b046af9e0e3a49290e08b5b3628739959137079a5",
+      "sourceId": "components.ReaderDeliverySettings.loadError"
+    },
+    {
+      "position": 2552,
+      "source": "No reader shelves have been created from SeerrNG yet.",
+      "sourceHash": "ba053df701f0205a6d6d52d332dba85e2dcf4dd883e649cc3468bcd9a17f6720",
+      "sourceId": "components.ReaderDeliverySettings.noGroupings"
+    },
+    {
+      "position": 2553,
+      "source": "Connect an administrator account so SeerrNG can preview, create, and update reader shelves. Passwords are stored in protected app settings and never returned by the API. Reader-app and OPDS credentials remain separate.",
+      "sourceHash": "edf8671bab8328ff4e8d2d8b3c6fd914d7655340208f28fe519b3c13e7acd25c",
+      "sourceId": "components.ReaderDeliverySettings.opdsCredentials"
+    },
+    {
+      "position": 2554,
+      "source": "Open {serviceName}",
+      "sourceHash": "c14da7bbceb2ed691b6d6bf6c69124bfdb70cdbf398f51a678c1941b14e4f634",
+      "sourceId": "components.ReaderDeliverySettings.open"
+    },
+    {
+      "position": 2555,
+      "source": "Administrator account password",
+      "sourceHash": "c0a90d4261dc7355f02fa4f9330ddf92fe9743b4419a11925d0d10e34f2a624e",
+      "sourceId": "components.ReaderDeliverySettings.password"
+    },
+    {
+      "position": 2556,
+      "source": "Preferred Reader App",
+      "sourceHash": "f0fde96e59cc3283d7d41f4798c7da31edd4bbec403bee86c52e9c6805da6b12",
+      "sourceId": "components.ReaderDeliverySettings.preferredReader"
+    },
+    {
+      "position": 2557,
+      "source": "SeerrNG opens the preferred app when it is configured. If it has no address, SeerrNG uses the other configured app. Grimmory stays preferred by default.",
+      "sourceHash": "20b020a74ff5d7efe12059484f5dfed39e406db1597430de52f66da4719db4f4",
+      "sourceId": "components.ReaderDeliverySettings.preferredReaderDescription"
+    },
+    {
+      "position": 2558,
+      "source": "Private to the connected account",
+      "sourceHash": "0ab36fc62e085d260d4b89ebbaf70b36b0165cf2d6bab0827b08b21ed7c16e3c",
+      "sourceId": "components.ReaderDeliverySettings.privateVisibility"
+    },
+    {
+      "position": 2559,
+      "source": "SeerrNG sends approved book requests to the configured acquisition service. Reader Apps show files after that service imports them; BookOrbit’s own request queue is separate from this connection.",
+      "sourceHash": "a7035a3ccd90bbe1a7c5c0605b26845808137651a14113f100e350fa6ac6c169",
+      "sourceId": "components.ReaderDeliverySettings.requestWorkflow"
+    },
+    {
+      "position": 2560,
+      "source": "Save Reader Settings",
+      "sourceHash": "af2672cd61051a8da990a186939fd19b03757f001be9b0ca31fc623126b27637",
+      "sourceId": "components.ReaderDeliverySettings.save"
+    },
+    {
+      "position": 2561,
+      "source": "Reader settings could not be saved.",
+      "sourceHash": "5b965a23b06276eea614566d13f8f3774c7ed484202916088c8261a6e3f350b5",
+      "sourceId": "components.ReaderDeliverySettings.saveError"
+    },
+    {
+      "position": 2562,
+      "source": "Reader settings saved.",
+      "sourceHash": "46a4d4f5c967a8d2a67afc656203b31b5cfbed095055c1a5c1e9786240b758f5",
+      "sourceId": "components.ReaderDeliverySettings.saved"
+    },
+    {
+      "position": 2563,
+      "source": "Saved; leave blank to keep it",
+      "sourceHash": "9de3c508dab4d5e74890608cec6cbe4b4ae85038a1eeecaca9e12d1c24fe03bc",
+      "sourceId": "components.ReaderDeliverySettings.savedPassword"
+    },
+    {
+      "position": 2564,
+      "source": "Saving…",
+      "sourceHash": "fa5c5c151f4e3bb01a694ebec7eedc283e80194e2d911ad7e1913895872dc181",
+      "sourceId": "components.ReaderDeliverySettings.saving"
+    },
+    {
+      "position": 2565,
+      "source": "BookOrbit locks SmartScope visibility when the scope is created. If Kobo sync is on, SeerrNG also maintains a regular Collection and reconciles its membership every 15 minutes.",
+      "sourceHash": "56d9f2f39de7d8fa01a504be1d4a54a8ce921ff783c765979f78c47484dfb4d0",
+      "sourceId": "components.ReaderDeliverySettings.scopeVisibilityNote"
+    },
+    {
+      "position": 2566,
+      "source": "Shared with reader-service users",
+      "sourceHash": "88dfee91ed98c63961af0831f1ae1a14ecaaad6875ca323bf075c50050c4dbcc",
+      "sourceId": "components.ReaderDeliverySettings.sharedVisibility"
+    },
+    {
+      "position": 2567,
+      "source": "Save settings before testing the connection.",
+      "sourceHash": "5ff9ff653b1bf7aa8396aeac5adb425499de82b91131d07b6484df4c89654f50",
+      "sourceId": "components.ReaderDeliverySettings.testSaveFirst"
+    },
+    {
+      "position": 2568,
+      "source": "Reader Apps",
+      "sourceHash": "ac5f7215c6252af0ed3c5c8027a27300e18598f7d32d1e5053ea07edcc56364a",
+      "sourceId": "components.ReaderDeliverySettings.title"
+    },
+    {
+      "position": 2569,
+      "source": "Save these settings before using reader links on media detail pages.",
+      "sourceHash": "538c1d96163ff925171a3adced7bcf38a3c259f6cbc1dc486dd297d82cef63bf",
+      "sourceId": "components.ReaderDeliverySettings.unsavedChanges"
+    },
+    {
+      "position": 2570,
+      "source": "Administrator account username",
+      "sourceHash": "1264da21d03849ccbe1cb0a133f89324159db486aa48c50530b31ab97485bb0b",
+      "sourceId": "components.ReaderDeliverySettings.username"
+    },
+    {
+      "position": 2571,
+      "source": "Create reader shelf",
+      "sourceHash": "f5223dd6917f2dd1c04636e2866262d0bcf644ab1e6beb899ee81c31e00dcf48",
+      "sourceId": "components.ReaderGroupingAction.action"
+    },
+    {
+      "position": 2572,
+      "source": "BookOrbit",
+      "sourceHash": "926bd308427bfd2baa03301d8564f90063891f9c5d3f62397b5e0d54a4516470",
+      "sourceId": "components.ReaderGroupingAction.bookorbit"
+    },
+    {
+      "position": 2573,
+      "source": "Close",
+      "sourceHash": "325162bfbfc061da35211d9ed2619ecabd3218d51213238ed2f2a1e07a9397a7",
+      "sourceId": "components.ReaderGroupingAction.close"
+    },
+    {
+      "position": 2574,
+      "source": "Preview count: {count}. The reader service has not confirmed the saved count yet.",
+      "sourceHash": "0a04faadeb96dbf74a7e6f1330a855b6bedd906344050b5ea58f5c558c3e5074",
+      "sourceId": "components.ReaderGroupingAction.countPending"
+    },
+    {
+      "position": 2575,
+      "source": "Create this live rule anyway so future matching books appear automatically.",
+      "sourceHash": "c58a3e607e2dd3f69e6f7ab42a23de41ccdf06e016f03a591da473364737e37a",
+      "sourceId": "components.ReaderGroupingAction.emptyOptIn"
+    },
+    {
+      "position": 2576,
+      "source": "Grimmory (Recommended)",
+      "sourceHash": "82521ffaab05b2b878bc413024722e37c479ab15ae2ffadd7aaa17f644352635",
+      "sourceId": "components.ReaderGroupingAction.grimmory"
+    },
+    {
+      "position": 2577,
+      "source": "Grimmory Kobo delivery uses its separate inclusion shelf. SeerrNG leaves that provider setting unchanged.",
+      "sourceHash": "a183ce19fe2f1a3b21a5260ec1e04ea2390da2478909f11b276c65724e30b30e",
+      "sourceId": "components.ReaderGroupingAction.grimmoryKobo"
+    },
+    {
+      "position": 2578,
+      "source": "Make this a reader shelf",
+      "sourceHash": "b1e8c15937e0ffe7612349cd5acffe30815ba93b1bc9a7b1156468c0b7c6ad84",
+      "sourceId": "components.ReaderGroupingAction.heading"
+    },
+    {
+      "position": 2579,
+      "source": "SeerrNG will create a live, rule-based grouping in your reader service. It stays up to date as that library changes; it does not copy files.",
+      "sourceHash": "7098660223e5ae1389cf49c020d226a3cd5e8fffdc424a99ab8ed72ada616195",
+      "sourceId": "components.ReaderGroupingAction.intro"
+    },
+    {
+      "position": 2580,
+      "source": "The managed BookOrbit Collection is synced to Kobo.",
+      "sourceHash": "3ed2f8490fa25358ae6c9b1854b2b5038ee7bb310fafd8048b1bd76a03f7ad9d",
+      "sourceId": "components.ReaderGroupingAction.koboSyncReady"
+    },
+    {
+      "position": 2581,
+      "source": "{count, plural, one {# current match} other {# current matches}}",
+      "sourceHash": "4308180a6f3bec2b96877db51eacfdcfade6ec91e1aaf6c3e47ef144624e1b19",
+      "sourceId": "components.ReaderGroupingAction.matches"
+    },
+    {
+      "position": 2582,
+      "source": "No current books match this rule.",
+      "sourceHash": "9b76d397344923419908647ce6d73d18b0e3efba3c6f57f429beb681bada12b5",
+      "sourceId": "components.ReaderGroupingAction.noMatches"
+    },
+    {
+      "position": 2583,
+      "source": "Open {serviceName}",
+      "sourceHash": "7f29905edd6edd43e8b14b0b26b7d7a3a56f5a65f9568f7a862af98dcf175fdd",
+      "sourceId": "components.ReaderGroupingAction.open"
+    },
+    {
+      "position": 2584,
+      "source": "Close shelf setup",
+      "sourceHash": "0e0d9aec902e0f08dd3cb61e01055d85d264c4f8631b7270f411f5544131591d",
+      "sourceId": "components.ReaderGroupingAction.openClose"
+    },
+    {
+      "position": 2585,
+      "source": "Preview matches",
+      "sourceHash": "fbfd4340572803d88d1495c2954c09fed49cda540ad163935e299678d9f04bad",
+      "sourceId": "components.ReaderGroupingAction.preview"
+    },
+    {
+      "position": 2586,
+      "source": "The reader library could not be checked.",
+      "sourceHash": "9dba7dc8dfb4b1564087fd28cddaced4fd0860acad55bb3a3b8d184853b2faf4",
+      "sourceId": "components.ReaderGroupingAction.previewError"
+    },
+    {
+      "position": 2587,
+      "source": "Checking library…",
+      "sourceHash": "c9dcade264ce051c331b107bdeb135fa505b9b92ea150ab59ab195adf9476bd8",
+      "sourceId": "components.ReaderGroupingAction.previewing"
+    },
+    {
+      "position": 2588,
+      "source": "Reader service",
+      "sourceHash": "cdb1a145fb3d154ffc848f997b2335db369b175314ad4859d65c0a1ec4b9dca0",
+      "sourceId": "components.ReaderGroupingAction.provider"
+    },
+    {
+      "position": 2589,
+      "source": "Reader shelf saved",
+      "sourceHash": "042125dadf7abac3a77954c6d765b970c0c205e0339384ed3e9618fc72830159",
+      "sourceId": "components.ReaderGroupingAction.result"
+    },
+    {
+      "position": 2590,
+      "source": "A few matches",
+      "sourceHash": "4a09bc58043481b270921e762397c009065546fa2b699a11ecf9e2269395cddf",
+      "sourceId": "components.ReaderGroupingAction.sampleTitles"
+    },
+    {
+      "position": 2591,
+      "source": "Create shelf",
+      "sourceHash": "628199b0704953fc94b7b1bbf716c348d90fcd6db7df053fb3c55369beb18b48",
+      "sourceId": "components.ReaderGroupingAction.save"
+    },
+    {
+      "position": 2592,
+      "source": "The reader shelf could not be saved.",
+      "sourceHash": "5bc1e8259b70c296e7196bed1c8fa2281769c1997cfc3c3ec4fc7023553045de",
+      "sourceId": "components.ReaderGroupingAction.saveError"
+    },
+    {
+      "position": 2593,
+      "source": "Saving shelf…",
+      "sourceHash": "85dbaf5f6d2aff49fdca321431349683dd1baa74f934634c4e4533a0cf236292",
+      "sourceId": "components.ReaderGroupingAction.saving"
+    },
+    {
+      "position": 2594,
+      "source": "Set up a reader service in Settings > Services > Reader Apps, then return here.",
+      "sourceHash": "9909834c53af92db7a17050d6c49ad08ede6606a79407c6e334898c0ee1ed811",
+      "sourceId": "components.ReaderGroupingAction.setup"
+    },
+    {
+      "position": 2595,
+      "source": "Show this grouping to other reader-service users",
+      "sourceHash": "6820fc97d4b5c127cf43454058319cd024f120712c497fe31b9960d4dcaa236a",
+      "sourceId": "components.ReaderGroupingAction.share"
+    },
+    {
+      "position": 2596,
+      "source": "If your reader or OPDS account belongs to another reader-service user, share this grouping so that account can see it. The reader account still needs access to the matching library.",
+      "sourceHash": "4c7149ffeef8dd4156b70698fcb14a699b385758a39cbfb454c4809aea775cfc",
+      "sourceId": "components.ReaderGroupingAction.shareHelp"
+    },
+    {
+      "position": 2597,
+      "source": "Sync this live rule to Kobo",
+      "sourceHash": "9861ef09c837bd21b7d0c52291952372c463a65c15ef459e89abba7539ce040d",
+      "sourceId": "components.ReaderGroupingAction.syncToKobo"
+    },
+    {
+      "position": 2598,
+      "source": "When enabled, SeerrNG creates a managed BookOrbit Collection and reconciles its members with this live rule every 15 minutes. Pair the Kobo account in BookOrbit.",
+      "sourceHash": "245ce576ba65f3bfa66b259f00689df1e0f2c568a33be51efe905257ba72ba8d",
+      "sourceId": "components.ReaderGroupingAction.syncToKoboHelp"
+    },
+    {
+      "position": 2599,
+      "source": "Save shelf updates",
+      "sourceHash": "743115851d027c7e2ce23e9ed5f950b6b35979acc4e479a7af2452519c02f23c",
+      "sourceId": "components.ReaderGroupingAction.update"
+    }
+  ],
+  "sourcePositionRange": [
+    2500,
+    2599
+  ],
+  "tree": "a09117211080bbd89d32959f17d93b02a82b966f"
+}

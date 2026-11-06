@@ -1,0 +1,39 @@
+{
+  "repository": "snapetech-org/SeerrNG",
+  "pullRequest": 418,
+  "exactHead": "58697945e3d3fb44c37d49db0cc0f88e3af110cc",
+  "exactTree": "e3076937fe10b4dd3821ea573e8e5e21601fce7d",
+  "sourceLocaleRowsReviewed": 1200,
+  "windowHalves": {
+    "2900-2949": {
+      "accept": 454,
+      "refinement": 41,
+      "correction": 105
+    },
+    "2950-2999": {
+      "accept-current": 473,
+      "concur-primary-candidate": 107,
+      "recommend-new-proposal": 16,
+      "recommend-primary-candidate-adjustment": 4
+    }
+  },
+  "reconciliationOutcomes": {
+    "agrees-accept-current": 927,
+    "independently-concurs-with-primary": 235,
+    "new-independent-proposal-adopted": 31,
+    "new-proposal-adopted-rationale-narrowed-to-spacing-refinement": 1,
+    "primary-candidate-adjusted-after-independent-review": 6
+  },
+  "proposalsBeforeIndependentReviews": 241,
+  "newIndependentProposalsAdopted": 32,
+  "primaryCandidatesUpdatedAfterReview": 6,
+  "finalProposalCount": 273,
+  "unresolvedHolds": 0,
+  "structuralFailures": 0,
+  "nativeSpeakerApprovalClaimed": false,
+  "reviewerSignoff": "Machine-assisted primary plus two independent machine-assisted half-window reviews; qualified native-speaker signoff remains outstanding.",
+  "reviewArtifactHashes": {
+    "subreview-2900-2949.jsonl": "1b3cd513669e9814345243ea2dc7bf16d95b4564f6d702bef8f7957167c4ae51",
+    "subreview-2950-2999.jsonl": "d99f460bb3db1f5e5e4ddfc7ede1fef4883939432ed850eeca31a882b7736cc6"
+  }
+}

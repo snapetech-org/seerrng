@@ -44,7 +44,7 @@ const DeviceItem = ({
   return (
     <div className="relative flex w-full flex-col justify-between overflow-hidden rounded-xl bg-gray-800 py-4 text-gray-400 shadow-md ring-1 ring-gray-700 xl:h-28 xl:flex-row">
       <div className="relative flex w-full flex-col justify-between overflow-hidden sm:flex-row">
-        <div className="relative z-10 flex w-full items-center overflow-hidden pr-4 pl-4 sm:pr-0 xl:w-7/12 2xl:w-2/3">
+        <div className="relative z-10 flex w-full items-center overflow-hidden ps-4 pe-4 sm:pe-0 xl:w-7/12 2xl:w-2/3">
           <div className="relative h-auto w-12 flex-shrink-0 scale-100 transform-gpu overflow-hidden rounded-md transition duration-300 hover:scale-105">
             {parsedUserAgent.device.type === 'mobile' ? (
               <DevicePhoneMobileIcon />
@@ -52,7 +52,7 @@ const DeviceItem = ({
               <ComputerDesktopIcon />
             )}
           </div>
-          <div className="flex flex-col justify-center overflow-hidden pl-2 xl:pl-4">
+          <div className="flex flex-col justify-center overflow-hidden ps-2 xl:ps-4">
             <div className="pt-0.5 text-xs font-medium text-white sm:pt-1">
               {device.createdAt
                 ? intl.formatDate(device.createdAt, {
@@ -62,14 +62,14 @@ const DeviceItem = ({
                   })
                 : 'N/A'}
             </div>
-            <div className="mr-2 min-w-0 truncate text-lg font-bold text-white hover:underline xl:text-xl">
+            <div className="me-2 min-w-0 truncate text-lg font-bold text-white hover:underline xl:text-xl">
               {device.userAgent && parsedUserAgent.device.model
                 ? parsedUserAgent.device.model
                 : intl.formatMessage(messages.unknown)}
             </div>
           </div>
         </div>
-        <div className="z-10 mt-4 ml-4 flex w-full flex-col justify-center overflow-hidden pr-4 text-sm sm:mt-0 sm:ml-2 xl:flex-1 xl:pr-0">
+        <div className="z-10 ms-4 mt-4 flex w-full flex-col justify-center overflow-hidden pe-4 text-sm sm:ms-2 sm:mt-0 xl:flex-1 xl:pe-0">
           <div className="card-field">
             <span className="card-field-name">
               {intl.formatMessage(messages.operatingsystem)}
@@ -96,7 +96,7 @@ const DeviceItem = ({
           </div>
         </div>
       </div>
-      <div className="z-10 mt-4 flex w-full flex-col justify-center space-y-2 pr-4 pl-4 xl:mt-0 xl:w-96 xl:items-end xl:pl-0">
+      <div className="z-10 mt-4 flex w-full flex-col justify-center space-y-2 ps-4 pe-4 xl:mt-0 xl:w-96 xl:items-end xl:ps-0">
         {subEndpoint === device.endpoint ? (
           <Button buttonType="primary" className="w-full" disabled>
             <LockClosedIcon />{' '}

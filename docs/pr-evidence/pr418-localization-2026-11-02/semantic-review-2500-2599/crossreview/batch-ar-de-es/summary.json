@@ -1,0 +1,333 @@
+{
+  "head": "0905d4be32d8b7ec3b1af701473a3fdf6e0f30a2",
+  "tree": "a09117211080bbd89d32959f17d93b02a82b966f",
+  "cells": 300,
+  "dispositionCounts": {
+    "accept-current": 199,
+    "accept-primary-correction": 71,
+    "revise-primary": 30
+  },
+  "perLocale": {
+    "ar": {
+      "accept-current": 45,
+      "accept-primary-correction": 46,
+      "revise-primary": 9
+    },
+    "de": {
+      "accept-current": 83,
+      "accept-primary-correction": 12,
+      "revise-primary": 5
+    },
+    "es": {
+      "accept-current": 71,
+      "accept-primary-correction": 13,
+      "revise-primary": 16
+    }
+  },
+  "revisions": [
+    {
+      "sourcePosition": 2518,
+      "sourceId": "components.ReaderDeliverySettings.connectionError",
+      "locale": "es",
+      "currentTargetHash": "eb5ff95b181d8106a8bb66d52e10e3d052662321e63a6778ced70941a16cde4b",
+      "primaryTargetHash": "eb5ff95b181d8106a8bb66d52e10e3d052662321e63a6778ced70941a16cde4b",
+      "recommendedTargetHash": "8fafc48e2528f9b7853e1fb79d5f6013f43ef80fa730f7a17398a0ce14b73f36",
+      "reason": "The current sentence says the reader service itself failed and omits that its connection failed; the pinned call site is the connection-test error.",
+      "recommendedTarget": "Falló la conexión con el servicio de lectura."
+    },
+    {
+      "sourcePosition": 2521,
+      "sourceId": "components.ReaderDeliverySettings.connectionTesting",
+      "locale": "de",
+      "currentTargetHash": "29b9112f99de153f3bec96369185695424fb79f06056e19a58360971968e388d",
+      "primaryTargetHash": "29b9112f99de153f3bec96369185695424fb79f06056e19a58360971968e388d",
+      "recommendedTargetHash": "8908cc569d7f0ded5757bccbf0e128e32f9800d72e0ce9c7b378a7a4fdab6857",
+      "reason": "The current infinitive reads as an instruction to check the service; the caller displays this while a connection check is running.",
+      "recommendedTarget": "Lesedienst wird überprüft…"
+    },
+    {
+      "sourcePosition": 2521,
+      "sourceId": "components.ReaderDeliverySettings.connectionTesting",
+      "locale": "es",
+      "currentTargetHash": "c28c81410cf36ba4af91293659e188ce8d458af4e1d0bd58ec0a5e1b82531e2c",
+      "primaryTargetHash": "c28c81410cf36ba4af91293659e188ce8d458af4e1d0bd58ec0a5e1b82531e2c",
+      "recommendedTargetHash": "6bc9c79da11a98f928cfaec4df0f7c41b2ed12f184943a484940f4eb0becef14",
+      "reason": "“Servicio de lectores” can mean a service belonging to readers; the UI is checking the connected reader service, consistently named “servicio de lectura” elsewhere.",
+      "recommendedTarget": "Comprobando el servicio de lectura…"
+    },
+    {
+      "sourcePosition": 2528,
+      "sourceId": "components.ReaderDeliverySettings.deliveryHelp",
+      "locale": "es",
+      "currentTargetHash": "5c1130435ae401955e539231403792e5c5b92ed9fb818049868fc69c870af057",
+      "primaryTargetHash": "5c1130435ae401955e539231403792e5c5b92ed9fb818049868fc69c870af057",
+      "recommendedTargetHash": "ce22a54961660cb9f422af73f6540423c8faa62c53699d972ad8c3531a1030a5",
+      "reason": "“Aplicación de lectores” is an awkward and ambiguous rendering of the compatible reader app used for each media type; this names an application for reading.",
+      "recommendedTarget": "Para un artículo solicitado, SeerrNG también puede descargar los archivos disponibles directamente al dispositivo que ejecuta este navegador. Los audiolibros, los cómics y los números de revista requieren su propio formato de archivo y una aplicación de lectura compatible."
+    },
+    {
+      "sourcePosition": 2531,
+      "sourceId": "components.ReaderDeliverySettings.grimmoryKomgaSetup",
+      "locale": "ar",
+      "currentTargetHash": "dbad6b7e246660559daa47563960d3435e8240baf87b8f306f5931239d4b5394",
+      "primaryTargetHash": "dbad6b7e246660559daa47563960d3435e8240baf87b8f306f5931239d4b5394",
+      "recommendedTargetHash": "52f0095e65ba7fdc3ddf7a970061fb7e88165885cad2ce1133d7ecd228953ddc",
+      "reason": "The current title puts “الإنشاء” after the English product names and reads as a fragment about creation; this is a setup heading for Grimmory’s Komga API.",
+      "recommendedTarget": "إعداد واجهة Komga API في Grimmory"
+    },
+    {
+      "sourcePosition": 2534,
+      "sourceId": "components.ReaderDeliverySettings.groupingCount",
+      "locale": "ar",
+      "currentTargetHash": "7b99b1b671542416e05ef449172af0e917d66e55a4ee03aa89b80f86791c6bcf",
+      "primaryTargetHash": "7b99b1b671542416e05ef449172af0e917d66e55a4ee03aa89b80f86791c6bcf",
+      "recommendedTargetHash": "fcef5dc935bffb0dad3fa457b03ca7c7b28a7133befbd7b465e65a5acf47becb",
+      "reason": "The source count is displayed with `#`. The Arabic `one` branch spells out “one” and the `two` branch relies on a dual noun; this keeps the count-driven values in the ICU marker and retains natural zero wording.",
+      "recommendedTarget": "{count, plural, zero {لا توجد عناصر} one {# عنصر} two {# من العناصر} few {# عناصر} many {# عنصرًا} other {# عنصر}}"
+    },
+    {
+      "sourcePosition": 2535,
+      "sourceId": "components.ReaderDeliverySettings.groupingCountUnverified",
+      "locale": "es",
+      "currentTargetHash": "6833f7b3eab24ab84e296b2ca179df51ae9ee4f837fa23d726958a7354c0b1e7",
+      "primaryTargetHash": "6833f7b3eab24ab84e296b2ca179df51ae9ee4f837fa23d726958a7354c0b1e7",
+      "recommendedTargetHash": "93f2dea1b17f4ae2ab552be26befcc5da736fdd440f8981a7f511394b08e80b3",
+      "reason": "The current participle “Vista previa encontrada” is ungrammatical as a sentence; the source reports what the preview found and that the final count is not confirmed.",
+      "recommendedTarget": "La vista previa encontró {count} elementos; aún no se ha confirmado el recuento final."
+    },
+    {
+      "sourcePosition": 2537,
+      "sourceId": "components.ReaderDeliverySettings.groupingDeleted",
+      "locale": "es",
+      "currentTargetHash": "59f2410494176b8608fe5181f4137a4916585dca3490f08b550082c6b4291a66",
+      "primaryTargetHash": "59f2410494176b8608fe5181f4137a4916585dca3490f08b550082c6b4291a66",
+      "recommendedTargetHash": "6413383b1a5f196e567457a45b31e9c69bb5285f51bd804f42cf732126a78461",
+      "reason": "The current noun sequence “Estante de lector gestionado eliminado” is difficult to parse and can mean a reader’s shelf; the source reports that the managed reader shelf was removed.",
+      "recommendedTarget": "Se eliminó el estante de lectura gestionado."
+    },
+    {
+      "sourcePosition": 2547,
+      "sourceId": "components.ReaderDeliverySettings.groupingsTitle",
+      "locale": "es",
+      "currentTargetHash": "76333f6c880f06e36ca17109167eb2953c5e4de2120ee5f568cf4aeb5b93c983",
+      "primaryTargetHash": "76333f6c880f06e36ca17109167eb2953c5e4de2120ee5f568cf4aeb5b93c983",
+      "recommendedTargetHash": "44e17aa81e608ba0c64b4d65f8f6c5509733f309c8b4af2a130a53dd93d787c8",
+      "reason": "“Estantes de lectores” suggests shelves belonging to reader users; these are shelves managed in the connected reader service.",
+      "recommendedTarget": "Estantes de lectura gestionados por SeerrNG"
+    },
+    {
+      "sourcePosition": 2552,
+      "sourceId": "components.ReaderDeliverySettings.noGroupings",
+      "locale": "es",
+      "currentTargetHash": "b8ceedfbce837ce2fcff19a32247f1fd57d70436af2e4f538fabab71ffa7a6fb",
+      "primaryTargetHash": "b8ceedfbce837ce2fcff19a32247f1fd57d70436af2e4f538fabab71ffa7a6fb",
+      "recommendedTargetHash": "0a34b45007250f83ea3d1cd40d3ce4b1fd43f5c9407c84d1c1135dd1388df4e4",
+      "reason": "The current “estantes de lectores de SeerrNG” is ambiguous about whose shelves these are; the caller identifies SeerrNG-managed shelves in the reader service.",
+      "recommendedTarget": "SeerrNG aún no ha creado ningún estante de lectura."
+    },
+    {
+      "sourcePosition": 2553,
+      "sourceId": "components.ReaderDeliverySettings.opdsCredentials",
+      "locale": "es",
+      "currentTargetHash": "e54ebea94bcb2f544ef3e5b3db4b63ba187d7785e949c94dc5cf15e9d5aa833e",
+      "primaryTargetHash": "e54ebea94bcb2f544ef3e5b3db4b63ba187d7785e949c94dc5cf15e9d5aa833e",
+      "recommendedTargetHash": "d5b682ecd72f940e00fc5ff878cba9f7887bc2a1e07e9059146a0564256f5e79",
+      "reason": "The current “estantes de lectores” and “app de lectura” obscure that SeerrNG manages shelves inside the reader service; the caller distinguishes those service shelves from credentials.",
+      "recommendedTarget": "Conecta una cuenta de administrador para que SeerrNG pueda previsualizar, crear y actualizar estantes de lectura. Las contraseñas se almacenan en la configuración protegida de la aplicación y nunca se devuelven por la API. Las credenciales de la aplicación de lectura y de OPDS permanecen separadas."
+    },
+    {
+      "sourcePosition": 2556,
+      "sourceId": "components.ReaderDeliverySettings.preferredReader",
+      "locale": "ar",
+      "currentTargetHash": "8720d4c9c75df3d310c58e3e30fb5aa2bc488df474e2fbddf4ce19e527337b0c",
+      "primaryTargetHash": "8720d4c9c75df3d310c58e3e30fb5aa2bc488df474e2fbddf4ce19e527337b0c",
+      "recommendedTargetHash": "d644aa39651b9180fc6a7088038254fa3b479d717e92429b293823b5ee5a252e",
+      "reason": "The current value says “preferred reading” and omits the app selected by this field.",
+      "recommendedTarget": "تطبيق القراءة المفضل"
+    },
+    {
+      "sourcePosition": 2565,
+      "sourceId": "components.ReaderDeliverySettings.scopeVisibilityNote",
+      "locale": "de",
+      "currentTargetHash": "99201a21ac44b67cfe849e000bc2edccbe3c332f689cb32b1215504b883f05c7",
+      "primaryTargetHash": "99201a21ac44b67cfe849e000bc2edccbe3c332f689cb32b1215504b883f05c7",
+      "recommendedTargetHash": "c21e3e38bce05562af27e19f95b066cc636f8755d875eaa4012a44a5e711a8c2",
+      "reason": "“Legt die Sichtbarkeit fest” says the setting is determined, but the adjacent caller says it cannot be changed after creation; this states that the setting is locked.",
+      "recommendedTarget": "BookOrbit sperrt die Sichtbarkeitseinstellung beim Erstellen eines SmartScope. Wenn die Kobo-Synchronisierung aktiviert ist, verwaltet SeerrNG außerdem eine reguläre Sammlung und gleicht deren Einträge alle 15 Minuten ab."
+    },
+    {
+      "sourcePosition": 2571,
+      "sourceId": "components.ReaderGroupingAction.action",
+      "locale": "es",
+      "currentTargetHash": "33b8c34a7464d3b2831f87eed5a10c78a48254af3ef3d61f0656af71b9be4f58",
+      "primaryTargetHash": "33b8c34a7464d3b2831f87eed5a10c78a48254af3ef3d61f0656af71b9be4f58",
+      "recommendedTargetHash": "e3da10ab8b88de0f3874789d89847dc6fbf2b62cbaa04ccbdc655a284d356a34",
+      "reason": "“Estante de lector” reads as a shelf belonging to a reader; this is the action that creates a shelf in the reader service.",
+      "recommendedTarget": "Crear estante de lectura"
+    },
+    {
+      "sourcePosition": 2575,
+      "sourceId": "components.ReaderGroupingAction.emptyOptIn",
+      "locale": "ar",
+      "currentTargetHash": "1a9d144cfa514c5a1758aa6ffbd93c4a4dac2cb964adbcb06c0b4679e858ea9c",
+      "primaryTargetHash": "1a9d144cfa514c5a1758aa6ffbd93c4a4dac2cb964adbcb06c0b4679e858ea9c",
+      "recommendedTargetHash": "c65fd7e1cefb4df670e7ee6f4bd3cf85fa08e764554beaf73f498eeebf2b21b9",
+      "reason": "“القاعدة المباشرة” does not express a live, automatically updated rule. The caller describes future matching books appearing without further action.",
+      "recommendedTarget": "أنشئ هذه القاعدة الديناميكية على أي حال لكي تظهر الكتب المطابقة مستقبلًا تلقائيًا."
+    },
+    {
+      "sourcePosition": 2575,
+      "sourceId": "components.ReaderGroupingAction.emptyOptIn",
+      "locale": "es",
+      "currentTargetHash": "7ec880da67f7fbb3544e68e52654f4ab4e985d6a72dcaf4338bf161adbb28d09",
+      "primaryTargetHash": "7ec880da67f7fbb3544e68e52654f4ab4e985d6a72dcaf4338bf161adbb28d09",
+      "recommendedTargetHash": "9e8c23faab06b27d2551c6da8e72d45afceae55f75d8250e0e02c24cf41eadfe",
+      "reason": "“Regla en vivo” is a literal rendering; the caller makes clear that this rule updates so future matching books appear automatically.",
+      "recommendedTarget": "Cree esta regla dinámica de todos modos para que los libros que coincidan en el futuro aparezcan automáticamente."
+    },
+    {
+      "sourcePosition": 2579,
+      "sourceId": "components.ReaderGroupingAction.intro",
+      "locale": "ar",
+      "currentTargetHash": "3a904053e9448febc7c2156388e615266bc709ba4a1b44335c96e4f9aa08a154",
+      "primaryTargetHash": "3a904053e9448febc7c2156388e615266bc709ba4a1b44335c96e4f9aa08a154",
+      "recommendedTargetHash": "f979c9b2afb1603579614f19ebd6551a07145c03c5eb0c4f059493f903175ccd",
+      "reason": "“تجميع مباشر” reads as a direct/live grouping; the caller describes a rule-based grouping that stays current as the library changes.",
+      "recommendedTarget": "سينشئ SeerrNG تجميعًا ديناميكيًا قائمًا على القواعد في خدمة القراءة لديك. وسيظل محدّثًا كلما تغيّرت تلك المكتبة؛ فهو لا ينسخ الملفات."
+    },
+    {
+      "sourcePosition": 2579,
+      "sourceId": "components.ReaderGroupingAction.intro",
+      "locale": "es",
+      "currentTargetHash": "745c2f8d2de834c8c63246565ed628657c952f56dc582117fbe1bacc86e16d03",
+      "primaryTargetHash": "745c2f8d2de834c8c63246565ed628657c952f56dc582117fbe1bacc86e16d03",
+      "recommendedTargetHash": "68b16ab985da35721b996190316d284a257109fc748e3a1d8eb0a31d562eda5e",
+      "reason": "“Agrupación en vivo” is a literal rendering; the source and caller describe a dynamic rule-based grouping that stays current as the reader library changes.",
+      "recommendedTarget": "SeerrNG creará una agrupación dinámica basada en reglas en su servicio de lectura. Se mantiene actualizada a medida que cambia la biblioteca; no copia archivos."
+    },
+    {
+      "sourcePosition": 2581,
+      "sourceId": "components.ReaderGroupingAction.matches",
+      "locale": "ar",
+      "currentTargetHash": "b813a0136766a4a7100502103418def75f50f6f4e75974fd960ce601e7090125",
+      "primaryTargetHash": "b813a0136766a4a7100502103418def75f50f6f4e75974fd960ce601e7090125",
+      "recommendedTargetHash": "9d146024cd3162a6ecaa4621cdb6a96e0270d5b9e377163bb8176a14b1e8f53f",
+      "reason": "The source count is displayed with `#`. The Arabic `one` branch spells out “one” and the `two` branch relies on a dual noun; this keeps count-driven values in the ICU marker and retains natural zero wording.",
+      "recommendedTarget": "{count, plural, zero {لا توجد تطابقات حالية} one {# تطابق حالي} two {# من التطابقات الحالية} few {# تطابقات حالية} many {# تطابقًا حاليًا} other {# تطابق حالي}}"
+    },
+    {
+      "sourcePosition": 2582,
+      "sourceId": "components.ReaderGroupingAction.noMatches",
+      "locale": "ar",
+      "currentTargetHash": "f6125004122c2083bc69945b01e58ec0f8ed47c3e4fe53925937eec50202b77b",
+      "primaryTargetHash": "f6125004122c2083bc69945b01e58ec0f8ed47c3e4fe53925937eec50202b77b",
+      "recommendedTargetHash": "118fc697bfea704dea53aa59d6298871b5189fecc60fe177c8d53d26472aea13",
+      "reason": "The current “لا يوجد كتب” has incorrect Arabic agreement; the source says no current books match the rule.",
+      "recommendedTarget": "لا توجد كتب حالية تطابق هذه القاعدة."
+    },
+    {
+      "sourcePosition": 2586,
+      "sourceId": "components.ReaderGroupingAction.previewError",
+      "locale": "es",
+      "currentTargetHash": "dd651b5656e94e8b677bbce7c7a50e8196a5efcea58c97d911a14eb206cafce0",
+      "primaryTargetHash": "dd651b5656e94e8b677bbce7c7a50e8196a5efcea58c97d911a14eb206cafce0",
+      "recommendedTargetHash": "799f95990f9b71038d789d1dbfc10dd3130f393b81c2035f7fac986fcc5d01cb",
+      "reason": "“Biblioteca del lector” may mean a person’s library; this is the connected reader service library being checked.",
+      "recommendedTarget": "No se pudo comprobar la biblioteca de lectura."
+    },
+    {
+      "sourcePosition": 2587,
+      "sourceId": "components.ReaderGroupingAction.previewing",
+      "locale": "de",
+      "currentTargetHash": "9036cf13eb1d35bc3f1a103d5f8665405721d0aeb0619610a4e2a6da2ded20ef",
+      "primaryTargetHash": "9036cf13eb1d35bc3f1a103d5f8665405721d0aeb0619610a4e2a6da2ded20ef",
+      "recommendedTargetHash": "8d6f172302fbe6679a42399d52854f06d3a3fab3b0c11d12971a61318ab8a1d5",
+      "reason": "The current infinitive is an instruction; the pinned caller uses this label during an in-progress library check.",
+      "recommendedTarget": "Bibliothek wird überprüft…"
+    },
+    {
+      "sourcePosition": 2592,
+      "sourceId": "components.ReaderGroupingAction.saveError",
+      "locale": "es",
+      "currentTargetHash": "b8ac854260374173b17aad0fe3505d4d3d8151be7e15e055f9472dcdac1cdb96",
+      "primaryTargetHash": "b8ac854260374173b17aad0fe3505d4d3d8151be7e15e055f9472dcdac1cdb96",
+      "recommendedTargetHash": "2dab44cb8a26aea529710d8773a32255aeb05f09660231e866fca0e3ee2d9661",
+      "reason": "“Estante del lector” suggests a reader-owned shelf; the caller is saving a managed shelf in the reader service.",
+      "recommendedTarget": "No se pudo guardar el estante de lectura."
+    },
+    {
+      "sourcePosition": 2595,
+      "sourceId": "components.ReaderGroupingAction.share",
+      "locale": "es",
+      "currentTargetHash": "4ef39441e32b01fc62bb370a71c442fdb01d10678b629ef2d53f1c7e787fd20e",
+      "primaryTargetHash": "4ef39441e32b01fc62bb370a71c442fdb01d10678b629ef2d53f1c7e787fd20e",
+      "recommendedTargetHash": "801ce48c77ce77f562206f69702c0c514fbe010ea101f3a5eb43b201f71e4f63",
+      "reason": "The source refers to the rule-based grouping, while “grupo” is underspecified beside the other UI strings for reader shelves and groupings.",
+      "recommendedTarget": "Mostrar esta agrupación a otros usuarios del servicio de lectura"
+    },
+    {
+      "sourcePosition": 2597,
+      "sourceId": "components.ReaderGroupingAction.syncToKobo",
+      "locale": "ar",
+      "currentTargetHash": "229a28b0286919369ccb3e456472e31b6f23ee4a280707f30cdae26e60260ab1",
+      "primaryTargetHash": "229a28b0286919369ccb3e456472e31b6f23ee4a280707f30cdae26e60260ab1",
+      "recommendedTargetHash": "68b24ba66b8610c562e5c51f281fbe9dcda2667ccfa7e46a929fd2f1cbeb2601",
+      "reason": "The current “القاعدة المباشرة” does not convey a rule that continuously updates with library matches.",
+      "recommendedTarget": "مزامنة هذه القاعدة الديناميكية مع Kobo"
+    },
+    {
+      "sourcePosition": 2597,
+      "sourceId": "components.ReaderGroupingAction.syncToKobo",
+      "locale": "de",
+      "currentTargetHash": "5a750e3c8dd6235ec673fb8fe2a6125bfd1ba6a69fdd031105e5b3a9dfc783fc",
+      "primaryTargetHash": "5a750e3c8dd6235ec673fb8fe2a6125bfd1ba6a69fdd031105e5b3a9dfc783fc",
+      "recommendedTargetHash": "5b81364c21eed1a9a3dee4b6b0bf80803920b6f74c1ae2e181a10094a9d8f4cb",
+      "reason": "“Live-Regel” is an unnatural literal rendering here; the rule updates from changing library matches, so “dynamische Regel” preserves the behavior.",
+      "recommendedTarget": "Diese dynamische Regel mit Kobo synchronisieren"
+    },
+    {
+      "sourcePosition": 2597,
+      "sourceId": "components.ReaderGroupingAction.syncToKobo",
+      "locale": "es",
+      "currentTargetHash": "100aa36f382b38122532b743a0c454c2a1abb9e63baf93a25660177c5260fb74",
+      "primaryTargetHash": "100aa36f382b38122532b743a0c454c2a1abb9e63baf93a25660177c5260fb74",
+      "recommendedTargetHash": "778ca5c58f4c85dea5fe664617edf209e2e44c5e2fa1db804c8e332e85610624",
+      "reason": "“Regla activa” loses the source’s live-updating behavior; nearby help explains that the rule is reconciled against the library every 15 minutes.",
+      "recommendedTarget": "Sincronizar esta regla dinámica con Kobo"
+    },
+    {
+      "sourcePosition": 2598,
+      "sourceId": "components.ReaderGroupingAction.syncToKoboHelp",
+      "locale": "ar",
+      "currentTargetHash": "24ec9d8230f93384581b0a73fc6a02676842e81f9feba545aee3d17124a7ae14",
+      "primaryTargetHash": "24ec9d8230f93384581b0a73fc6a02676842e81f9feba545aee3d17124a7ae14",
+      "recommendedTargetHash": "c565b82e1c7b0b33fd9e0034144f070f4476afa512dbf38fdeb67b654fcadbd8",
+      "reason": "The current “القاعدة المباشرة” loses the live, rule-updated behavior stated in the source and helper text; the replacement retains the 15-minute reconciliation and account-pairing instructions.",
+      "recommendedTarget": "عند تفعيلها، ينشئ SeerrNG مجموعة BookOrbit مُدارة ويوائم عناصرها مع هذه القاعدة الديناميكية كل 15 دقيقة. اربط حساب Kobo في BookOrbit."
+    },
+    {
+      "sourcePosition": 2598,
+      "sourceId": "components.ReaderGroupingAction.syncToKoboHelp",
+      "locale": "de",
+      "currentTargetHash": "6f9163e19b37bbb528b542e84d915249b17f8305121f42b1748024c1f10c34cf",
+      "primaryTargetHash": "6f9163e19b37bbb528b542e84d915249b17f8305121f42b1748024c1f10c34cf",
+      "recommendedTargetHash": "a528746f7d9eae52d25bc3a2baaadeb96ec261475af6c69286759a681757feb1",
+      "reason": "“Live-Regel” is a literal, ambiguous rendering; the helper says SeerrNG periodically reconciles collection entries against the dynamic matching rule.",
+      "recommendedTarget": "Wenn aktiviert, erstellt SeerrNG eine verwaltete BookOrbit-Sammlung und gleicht ihre Einträge alle 15 Minuten mit dieser dynamischen Regel ab. Verknüpfen Sie das Kobo-Konto in BookOrbit."
+    },
+    {
+      "sourcePosition": 2598,
+      "sourceId": "components.ReaderGroupingAction.syncToKoboHelp",
+      "locale": "es",
+      "currentTargetHash": "8cfc001c1c7337883eb3260c638511892ff2ff7caa7aeff4c0bde957111ab760",
+      "primaryTargetHash": "8cfc001c1c7337883eb3260c638511892ff2ff7caa7aeff4c0bde957111ab760",
+      "recommendedTargetHash": "04dbbf5bc35c7b2582caa621542067fd2a1c71497e21585cd91f54a437a4c371",
+      "reason": "“Regla activa” can mean merely enabled; the source describes a live rule that changes with library matches. This also keeps the 15-minute collection reconciliation.",
+      "recommendedTarget": "Cuando se activa, SeerrNG crea una Colección de BookOrbit gestionada y reconcilia cada 15 minutos los elementos que la integran con esta regla dinámica. Asocia la cuenta de Kobo en BookOrbit."
+    }
+  ],
+  "rejects": [],
+  "holds": [],
+  "structuralMismatches": [],
+  "nativeSpeakerApproval": "not performed; remains outstanding"
+}

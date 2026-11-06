@@ -1,0 +1,37 @@
+$ python3 /home/keith/Documents/code/task-scratch/seerrng-pr418-w3740-3759-primary-20261103/verify_candidate_free.py --input /home/keith/Documents/code/task-scratch/seerrng-pr418-w3740-3759-primary-20261103/candidate-free-input --repo /home/keith/Documents/code/task-scratch/seerrng-pr418-w3740-3759-primary-20261103/repo
+{
+  "result": "PASS",
+  "head": "8d0273ebc5eb51e9d5fee0ac9a0eb022eeed06c4",
+  "tree": "163056b8255034e3ee3a99f25b63e190c88278ee",
+  "sources": 20,
+  "cells": 240,
+  "directCallerRows": 20,
+  "callerless": 0,
+  "baselineProtectedLiteralFindings": 3,
+  "priorSelectionsReattested": 240,
+  "carriedHolds": 12,
+  "pinnedCatalogs": 13,
+  "pinnedRuntimeFiles": 30,
+  "inputChecksums": 19
+}
+
+$ python3 /home/keith/Documents/code/task-scratch/seerrng-pr418-w3740-3759-primary-20261103/verify_primary.py --input /home/keith/Documents/code/task-scratch/seerrng-pr418-w3740-3759-primary-20261103/candidate-free-input --output /home/keith/Documents/code/task-scratch/seerrng-pr418-w3740-3759-primary-20261103/primary-review
+{
+  "result": "PASS",
+  "head": "8d0273ebc5eb51e9d5fee0ac9a0eb022eeed06c4",
+  "tree": "163056b8255034e3ee3a99f25b63e190c88278ee",
+  "cells": 240,
+  "decisionCounts": {
+    "accept-current": 191,
+    "correction": 26,
+    "refinement": 23,
+    "hold": 0
+  },
+  "selectedChanges": 49,
+  "carriedHolds": 12,
+  "baselineProtectedLiteralFlags": 3,
+  "selectedTokenFailures": 0,
+  "selectedProtectedLiteralFailures": 0,
+  "inputFilesVerified": 19,
+  "outputFilesVerified": 5
+}

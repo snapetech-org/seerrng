@@ -7,6 +7,10 @@ import useBookEditions from '@app/hooks/useBookEditions';
 import useToasts from '@app/hooks/useToasts';
 import { Permission, useUser } from '@app/hooks/useUser';
 import defineMessages from '@app/utils/defineMessages';
+import {
+  formatDurationParts,
+  formatLocalizedList,
+} from '@app/utils/numberHelpers';
 import type {
   EditionCard,
   NarratorSeriesPlan,
@@ -96,10 +100,11 @@ const messages = defineMessages('components.EditionCompare', {
 });
 
 const formatDuration = (seconds: number, intl: ReturnType<typeof useIntl>) =>
-  intl.formatMessage(messages.duration, {
-    hours: Math.floor(seconds / 3600),
-    minutes: Math.round((seconds % 3600) / 60),
-  });
+  formatDurationParts(
+    Math.floor(seconds / 3600),
+    Math.round((seconds % 3600) / 60),
+    intl.locale
+  );
 
 const unknownLabels = {
   narrators: messages.unknownNarrators,
@@ -246,7 +251,10 @@ export const EditionCardPicker = ({
                   <p className="card-body-text">
                     {card.narrators.length
                       ? intl.formatMessage(messages.narrators, {
-                          names: card.narrators.join(', '),
+                          names: formatLocalizedList(
+                            card.narrators,
+                            intl.locale
+                          ),
                         })
                       : intl.formatMessage(messages.unknownNarrator)}
                   </p>
@@ -300,15 +308,16 @@ export const EditionCardPicker = ({
                 {card.unknownFields.length > 0 && (
                   <p className="card-subheading">
                     {intl.formatMessage(messages.unknown, {
-                      fields: card.unknownFields
-                        .map((field) =>
+                      fields: formatLocalizedList(
+                        card.unknownFields.map((field) =>
                           intl.formatMessage(
                             unknownLabels[
                               field as keyof typeof unknownLabels
                             ] ?? messages.unknownLanguage
                           )
-                        )
-                        .join(', '),
+                        ),
+                        intl.locale
+                      ),
                     })}
                   </p>
                 )}
@@ -626,7 +635,7 @@ export const MusicEditionCompare = ({
                 {[
                   variant.disambiguation,
                   variant.year,
-                  variant.formats.join(', '),
+                  formatLocalizedList(variant.formats, intl.locale),
                   intl.formatMessage(messages.tracks, {
                     count: variant.trackCount,
                   }),
@@ -637,14 +646,20 @@ export const MusicEditionCompare = ({
               {variant.extraTracks.length > 0 && (
                 <p className="card-body-text">
                   {intl.formatMessage(messages.extraTracks, {
-                    titles: variant.extraTracks.slice(0, 8).join(' · '),
+                    titles: formatLocalizedList(
+                      variant.extraTracks.slice(0, 8),
+                      intl.locale
+                    ),
                   })}
                 </p>
               )}
               {variant.missingTracks.length > 0 && (
                 <p className="card-body-text">
                   {intl.formatMessage(messages.missingTracks, {
-                    titles: variant.missingTracks.slice(0, 8).join(' · '),
+                    titles: formatLocalizedList(
+                      variant.missingTracks.slice(0, 8),
+                      intl.locale
+                    ),
                   })}
                 </p>
               )}

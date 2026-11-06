@@ -1,4 +1,4 @@
-import { MAX_GUIDE_BYTES } from '@server/api/tunerr';
+import { MAX_GUIDE_BYTES, TunerrError } from '@server/api/tunerr';
 import { createLiveTvProvider } from '@server/lib/liveTv/provider';
 import {
   DEFAULT_XMLTV_LIMITS,
@@ -177,7 +177,10 @@ export const readGuideStream = async (
     bytes += buffer.length;
     if (bytes > MAX_GUIDE_BYTES) {
       stream.destroy();
-      throw new Error('The Tunerr guide is larger than SeerrNG accepts.');
+      throw new TunerrError(
+        'The Tunerr guide is larger than SeerrNG accepts.',
+        'protocol'
+      );
     }
     parser.push(decoder.write(buffer));
   }
@@ -198,6 +201,7 @@ class GuideIndex {
   private snapshot?: GuideSnapshot;
   private refreshing?: Promise<GuideSnapshot | undefined>;
   private lastError?: string;
+  private lastErrorOrigin?: 'app' | 'opaque';
   private sourceKey = '';
 
   public status() {
@@ -208,12 +212,14 @@ class GuideIndex {
       channelCount: this.snapshot?.channelCount ?? 0,
       truncated: this.snapshot?.truncated ?? false,
       lastError: this.lastError,
+      lastErrorOrigin: this.lastErrorOrigin,
     };
   }
 
   public clear(): void {
     this.snapshot = undefined;
     this.lastError = undefined;
+    this.lastErrorOrigin = undefined;
   }
 
   /** Returns the current snapshot, refreshing it when stale. */
@@ -255,6 +261,7 @@ class GuideIndex {
         );
         this.snapshot = snapshot;
         this.lastError = undefined;
+        this.lastErrorOrigin = undefined;
         logger.debug('Live TV guide refreshed', {
           label: 'Live TV',
           programmes: snapshot.programmeCount,
@@ -264,6 +271,10 @@ class GuideIndex {
       } catch (error) {
         this.lastError =
           error instanceof Error ? error.message : 'Guide refresh failed.';
+        this.lastErrorOrigin =
+          error instanceof TunerrError || !(error instanceof Error)
+            ? 'app'
+            : 'opaque';
         logger.warn('Live TV guide refresh failed', {
           label: 'Live TV',
           errorMessage: this.lastError,

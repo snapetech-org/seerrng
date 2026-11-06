@@ -1,0 +1,43 @@
+{
+  "checkedAtUtc": "2026-11-02T16:45:46.434364+00:00",
+  "repository": "snapetech-org/SeerrNG",
+  "pullRequest": 418,
+  "livePullRequest": {
+    "headRefName": "codex/seerrng-localization-overhaul-20261028",
+    "headRefOid": "aab1928ff83728d30a864b1ff24c5c812c7ca040",
+    "isDraft": true,
+    "number": 418,
+    "state": "OPEN"
+  },
+  "expectedHead": "aab1928ff83728d30a864b1ff24c5c812c7ca040",
+  "expectedTree": "00901677a18e5ebf8d92a1f195668289f8a6f928",
+  "worktree": {
+    "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng",
+    "head": "aab1928ff83728d30a864b1ff24c5c812c7ca040",
+    "tree": "00901677a18e5ebf8d92a1f195668289f8a6f928",
+    "status": ""
+  },
+  "sourceObjectsReattested": 100,
+  "localeCellsReattested": 1200,
+  "localeCatalogsReattested": 12,
+  "callerContextRowsReattested": 100,
+  "callerReferencesReattested": 382,
+  "callerFilesReattested": 8,
+  "callerContextHashMismatches": 0,
+  "callerLineOrBlobMismatches": 0,
+  "primaryPacketChecksumsVerified": true,
+  "priorExactHashDispositions": 0,
+  "repositoryModified": false,
+  "testsBuildsScansCIorBrowserRun": false,
+  "finalPostReviewCheck": {
+    "checkedAtUtc": "2026-11-02T16:46:36.964960+00:00",
+    "livePullRequest": {
+      "headRefName": "codex/seerrng-localization-overhaul-20261028",
+      "headRefOid": "aab1928ff83728d30a864b1ff24c5c812c7ca040",
+      "isDraft": true,
+      "number": 418,
+      "state": "OPEN"
+    },
+    "headStillPinned": true
+  }
+}

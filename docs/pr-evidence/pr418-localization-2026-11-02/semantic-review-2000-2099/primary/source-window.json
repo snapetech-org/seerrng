@@ -1,0 +1,717 @@
+{
+  "head": "d897f04661802d7f47446e46602f1b521d33c52f",
+  "sourceCatalog": {
+    "blob": "12e04a118c30b71b3714291adeaf9fdb2735cee4",
+    "bytes": 835513,
+    "path": "src/i18n/locale/en.json",
+    "sha256": "75ff3c90b52aedd636a506281ffbd6fb2d3739c61294b6008a517f17647e2316"
+  },
+  "sourceCount": 100,
+  "sourceList": [
+    {
+      "callerContextSha256": "ac23ee67fbfb3c96f89377faffce63a636e8c05e5959a4ae9582977a54ff1836",
+      "position": 2000,
+      "source": "View all open and resolved issues reported for this media.",
+      "sourceHash": "0cdd4880fff792128eb97a60110e3c2bce86ccf4bca2309208f68ded0752a40b",
+      "sourceId": "components.ManageMediaActions.viewIssuesDescription"
+    },
+    {
+      "callerContextSha256": "5d2b8be3160e975f13dd72450837f508d85eb7b1c2203c1e8cf3a1fee5bf1baf",
+      "position": 2001,
+      "source": "All Time",
+      "sourceHash": "a01ec950783ba7175c3ad7a6dea49d374380ca3c79b59f953c609979a0a6d62f",
+      "sourceId": "components.ManageSlideOver.alltime"
+    },
+    {
+      "callerContextSha256": "fe57a49f6ad7942c3494dab7f7e64dddcd6d318b2b43f9c6b89f02744536e447",
+      "position": 2002,
+      "source": "Downloads",
+      "sourceHash": "5225e87da2b1f6edfb0b71ce67bfb6ba072cfa65624c38bd7c9bec5820501321",
+      "sourceId": "components.ManageSlideOver.downloadstatus"
+    },
+    {
+      "callerContextSha256": "1b7cea616ff83dee07ad4e4fd27f5ce6aac2abd3b63c55d06e2afdb03fd7ad33",
+      "position": 2003,
+      "source": "Open Issues",
+      "sourceHash": "e0994b823b5084ac34611bc05ef61c60fffbb25497fd8723c0148bd832983cb4",
+      "sourceId": "components.ManageSlideOver.manageModalIssues"
+    },
+    {
+      "callerContextSha256": "583275ea95837d52ddb81666cdea5bc23d90b1977050620c815e2bc2e8510151",
+      "position": 2004,
+      "source": "No requests",
+      "sourceHash": "c0c9925bd8280165d60b8db7afeec17ca332548ee37158937cdc646bca407b04",
+      "sourceId": "components.ManageSlideOver.manageModalNoRequests"
+    },
+    {
+      "callerContextSha256": "ab6e286ddb53a7d28742d168e33194301d3496f9266268df3b083876cb972ce9",
+      "position": 2005,
+      "source": "Requests",
+      "sourceHash": "c19b7ee7b0c1f69a813b20b8423a22812d9a9bb76924875f7779cacda5c215ac",
+      "sourceId": "components.ManageSlideOver.manageModalRequests"
+    },
+    {
+      "callerContextSha256": "bc438696a0f055c0bfde111eb275abc1c65b2b3dd1c3568c04784dc39d3cf0f2",
+      "position": 2006,
+      "source": "Manage {mediaType}",
+      "sourceHash": "52d115fbd7dfc657fa1f997e3dc6ea96c9e8d221a42c4fb1036b4bca03c9763d",
+      "sourceId": "components.ManageSlideOver.manageModalTitle"
+    },
+    {
+      "callerContextSha256": "a4467373447bd18fe02e2e5a9962f9d4c9086f7f8e1eced7565817a94fe0a176",
+      "position": 2007,
+      "source": "movie",
+      "sourceHash": "367b3110d67f787b496b9146f71a8f85efa518d3ba590f136c12ff949fdefa73",
+      "sourceId": "components.ManageSlideOver.movie"
+    },
+    {
+      "callerContextSha256": "5dcc3fd579d70ecc91d5f3d1d53cb18aea2b7ea082b743c045828c27293318be",
+      "position": 2008,
+      "source": "Open in {arr}",
+      "sourceHash": "72cec0ffb904968d5433260211c93578e1ececd19525f75273471d3d4618b71b",
+      "sourceId": "components.ManageSlideOver.openarr"
+    },
+    {
+      "callerContextSha256": "85e32aae6ef09ad1750475eedd000a47b35e94e0c97a87ff647ba6cda0b2e154",
+      "position": 2009,
+      "source": "Open in 4K {arr}",
+      "sourceHash": "33f9aefec6785a41bd33ddc384ba781c945f1f2a216d02f517c505985f818eb4",
+      "sourceId": "components.ManageSlideOver.openarr4k"
+    },
+    {
+      "callerContextSha256": "7b091f4d8705b9e432a6b709d5be47573903c19ed504d7662b9c1d554c933b2d",
+      "position": 2010,
+      "source": "Open in Tautulli",
+      "sourceHash": "3575dc54defd8c55fed2699f1813e4ce5eb9bffe43b88bc15eab1b8143216f96",
+      "sourceId": "components.ManageSlideOver.opentautulli"
+    },
+    {
+      "callerContextSha256": "dd7325fe23ceb0d804fe150e130530bcdda7392649d2607bf79d3287cf1cab01",
+      "position": 2011,
+      "source": "Past {days, number} Days",
+      "sourceHash": "e2489cc4482c22ab1207b299c539cf8ee1d70b9301da3e29d3ef89a1de2beb4a",
+      "sourceId": "components.ManageSlideOver.pastdays"
+    },
+    {
+      "callerContextSha256": "678fa021b70f968d2940c7f6b1219ab73f19e9f4ca8aca43d76913c2e74a1d15",
+      "position": 2012,
+      "source": "Played By",
+      "sourceHash": "3b79ca25bb9adaaf0f88106df8554ac81abd941b2ed029f6d6adca8aef3bd0c6",
+      "sourceId": "components.ManageSlideOver.playedby"
+    },
+    {
+      "callerContextSha256": "9eb4f4e6634a9200c9b6174bf58adbe37e2d3190aec21622a940b5bf6866c66b",
+      "position": 2013,
+      "source": "<strong>{playCount, number}</strong> {playCount, plural, one {play} other {plays}}",
+      "sourceHash": "d2520015544cc92fdfc748f61cea2f40f182a0b7572a502917dec3fb3cc6a4f6",
+      "sourceId": "components.ManageSlideOver.plays"
+    },
+    {
+      "callerContextSha256": "7efbbe8da5cca99035dddaf5c4ecea5cf169f33b146d7e437fdf74df03a2bfbb",
+      "position": 2014,
+      "source": "series",
+      "sourceHash": "91a95bca873072fec44c4b313d30ebbfcf3022d4a2b67282ccbba9a1aaa1f4db",
+      "sourceId": "components.ManageSlideOver.tvshow"
+    },
+    {
+      "callerContextSha256": "ae5656e223b84b76b556ddab471fa7e414a3b22858176f5aa0834a59115f17c9",
+      "position": 2015,
+      "source": "Metacritic score",
+      "sourceHash": "6efaf5aca059f5e72bdc6d8b1fb2795661dd9b1b5db5d43326de6db7d91c0655",
+      "sourceId": "components.MdblistRatingBadges.metacritic"
+    },
+    {
+      "callerContextSha256": "06499b9182f2fb3fd3c4c754541c70cb18b56039dc3c2cbef788d27590addde5",
+      "position": 2016,
+      "source": "Trakt score",
+      "sourceHash": "8d480894fe135358aa7437753247d97dcdce304203d95a2081f1b067e073f95b",
+      "sourceId": "components.MdblistRatingBadges.trakt"
+    },
+    {
+      "callerContextSha256": "ebf245b2c32afac31617fd2b04c1385a576149ac7ac7e16be2f33f16c4bbb4bf",
+      "position": 2017,
+      "source": "{hours} hours of playback",
+      "sourceHash": "1bf14762531d127efb88e02cfc1b121e74f1a5cd25f880bc95bf8bf648d77c4c",
+      "sourceId": "components.Media.JellystatWatchSummary.playbackTime"
+    },
+    {
+      "callerContextSha256": "3234d5581ec9acd278caf837d17561c5484540a61745721d3dd09a9d81913f1d",
+      "position": 2018,
+      "source": "{count, plural, one {# play} other {# plays}}",
+      "sourceHash": "724edaa0321822978ed1b1941e550905e92cb4b17afda4745afac41f85652a0a",
+      "sourceId": "components.Media.JellystatWatchSummary.plays"
+    },
+    {
+      "callerContextSha256": "62c9f1ac6a452e197aad65908a9d0883bca3c7b9061e460239bb7dee31897305",
+      "position": 2019,
+      "source": "Jellystat Watch Activity",
+      "sourceHash": "7f4c3b3edc0f3e454ad7464c01d62354fcaf45b097802a7fd173feb8f799ac68",
+      "sourceId": "components.Media.JellystatWatchSummary.title"
+    },
+    {
+      "callerContextSha256": "640ca6e758e2dbd2a463b3e39123c55dce74d44d77fde4b27fb61f615847a33d",
+      "position": 2020,
+      "source": "Green check: available. Red X: not available.",
+      "sourceHash": "85755815aeb2822ba291461887178f4952f16caeffb485ff8fa87a5ee150d3a1",
+      "sourceId": "components.MediaDetails.AlbumTrackList.availabilityLegend"
+    },
+    {
+      "callerContextSha256": "503753419678581f170460d879e83612477f8125a26c54438bbe82d9701a8fbc",
+      "position": 2021,
+      "source": "Included in the album request",
+      "sourceHash": "5abfa87a3cc9be19d9681bccb3361717362f60b2fa93c4f22de042a4c8873c16",
+      "sourceId": "components.MediaDetails.AlbumTrackList.includedInAlbumRequest"
+    },
+    {
+      "callerContextSha256": "22b2dd22eff3b54213f37666ff76d14521b863ea7c0bd8a3a9bca73dc067fbbe",
+      "position": 2022,
+      "source": "No Tracks Available",
+      "sourceHash": "49fc974fae1d57fdb734d83642a665ca62033a571f30bc9e75825d8db067bf9d",
+      "sourceId": "components.MediaDetails.AlbumTrackList.noTracks"
+    },
+    {
+      "callerContextSha256": "c792621bdb829e009bc7b6d4975d45086f4d60589f8318aeac96bb25b5bb94d8",
+      "position": 2023,
+      "source": "Not available",
+      "sourceHash": "f91fc2c748aaf0ff47881009b0591f9f219702da717655bbe705e3d83d6075d5",
+      "sourceId": "components.MediaDetails.AlbumTrackList.notAvailable"
+    },
+    {
+      "callerContextSha256": "1e5cfff058f07b09d6ce3e4c550f5bb9da8ba8420303629eb0d9d33a4963b1db",
+      "position": 2024,
+      "source": "Runtime",
+      "sourceHash": "21fc463e426a1667801ad78199aa0eb8925f5a8c954ee9892edc19a8da0f4a49",
+      "sourceId": "components.MediaDetails.AlbumTrackList.runtime"
+    },
+    {
+      "callerContextSha256": "23f57acb9cccbb226c043a3e79e6a5f8d92b706c42cfd2197dbe8ca1e8f2bcee",
+      "position": 2025,
+      "source": "Select items to play",
+      "sourceHash": "382d40329743eb2e67bba74f8908772eb9a1f4dd2f06a8d776306193a1db2685",
+      "sourceId": "components.MediaDetails.AlbumTrackList.selection"
+    },
+    {
+      "callerContextSha256": "52d45048edd1a0f8186287469aa85e54a5ea88e456fb9e4cdc080ae8ba07acbb",
+      "position": 2026,
+      "source": "Title",
+      "sourceHash": "f92ea1ef078fd12c29fe90959dd30143da46163f75dac55d3eec64ad0f940552",
+      "sourceId": "components.MediaDetails.AlbumTrackList.title"
+    },
+    {
+      "callerContextSha256": "4cbe974114fae217a5d70fbbf136f818273b5f5dfe3a95fd60d08ff76274998d",
+      "position": 2027,
+      "source": "Track",
+      "sourceHash": "0fb2b97ca9b7f094491b899973b604433359861084d59b0b37648bbad4382b36",
+      "sourceId": "components.MediaDetails.AlbumTrackList.track"
+    },
+    {
+      "callerContextSha256": "e22df90cced4031df6f52809c84a9a36068b0e218bffe0cee2ed60534f4e361d",
+      "position": 2028,
+      "source": "Pin {label} open across detail pages",
+      "sourceHash": "66cee840ac1451c452a5674d353f86b322bb3c7e9ff8b377f3d99d89fd2a4932",
+      "sourceId": "components.MediaDetails.DetailDisclosure.pin"
+    },
+    {
+      "callerContextSha256": "ae3cb33e387fc3ae71b6aaea58d221eed2c5ecd571f3f2e2711468eebfa1aa8e",
+      "position": 2029,
+      "source": "Unpin {label}",
+      "sourceHash": "7ab1789fbbcdfc942affcff8dfaa777054ccc6c22d7b355e283323f02ad06cf7",
+      "sourceId": "components.MediaDetails.DetailDisclosure.unpin"
+    },
+    {
+      "callerContextSha256": "a1c09da0145e832f6f944fe2470932d494d4d8b66ad6dea374b8feeefc0f9538",
+      "position": 2030,
+      "source": "Your button order could not be saved. Your previous order has been restored. Please try again.",
+      "sourceHash": "b2695a1af4a4453cdbf06eb702817bcdc9a601e183be6a133d38dfbd1d1f6f39",
+      "sourceId": "components.MediaDetails.DisclosureOrder.failed"
+    },
+    {
+      "callerContextSha256": "0d585d3e43469c378c9bffd7422ec8b52a1a2a4c0f027388b82054b6b7edf3a4",
+      "position": 2031,
+      "source": "Hold a button for one second to move it. Or use Shift + Alt + Left or Right Arrow to reorder. Press Escape to cancel.",
+      "sourceHash": "43703d52bb42dd69452bb651b80bb14b82935af9352ad6dae92b120821ac78fc",
+      "sourceId": "components.MediaDetails.DisclosureOrder.instructions"
+    },
+    {
+      "callerContextSha256": "1e70d17c24fa4657c3a5a510233e3dd5b3b48ffcfa195492908a53b3da33306e",
+      "position": 2032,
+      "source": "{label} moved to position {position}.",
+      "sourceHash": "356795772f3d2da9e607ae16327db1f25fd9f79476dbc172e6ce6878cc994a29",
+      "sourceId": "components.MediaDetails.DisclosureOrder.moved"
+    },
+    {
+      "callerContextSha256": "d70b37067c113638b9e847172b90a102727f3605216986bc8632bea0ef70e418",
+      "position": 2033,
+      "source": "{label} is ready to move. Drag it between the other buttons.",
+      "sourceHash": "1c2875ee9db1bdb52275bda0a1d24264fcf0a74751f4fd30e56b9abcb3310f99",
+      "sourceId": "components.MediaDetails.DisclosureOrder.ready"
+    },
+    {
+      "callerContextSha256": "8e92f51d23e6221ee221f94a6f991c32a722f32e0874d0605f01286e2a049a6f",
+      "position": 2034,
+      "source": "Report an issue with the {quality} version.",
+      "sourceHash": "c9291e8ea3cf32c259043f8778ab00b8294d20a9cd97ae3878659a2bbffe97a2",
+      "sourceId": "components.MediaDetails.MediaQualitySelect.report"
+    },
+    {
+      "callerContextSha256": "3faf41f34a1244df193738c1bbf4e2424798131c0fa7e505bf2353940c39d938",
+      "position": 2035,
+      "source": "Request the {quality} version.",
+      "sourceHash": "fcb0d7968f320facf6bb4954a709989f2ceb6adcfbec0bdde4dede8409711130",
+      "sourceId": "components.MediaDetails.MediaQualitySelect.request"
+    },
+    {
+      "callerContextSha256": "0307db3654aa262d44ca2498ecdb43bd0fec06893138c02e97f5b9cc020f1bea",
+      "position": 2036,
+      "source": "Use {quality} for playback.",
+      "sourceHash": "0a430205f26de69d303147b8645f806e1730aa91e31e6787a938927c92ff2b80",
+      "sourceId": "components.MediaDetails.MediaQualitySelect.select"
+    },
+    {
+      "callerContextSha256": "106d15fe83d126d35874bf0454aaffa57cb7adf511150bc845258fa14588bd1c",
+      "position": 2037,
+      "source": "Select Quality",
+      "sourceHash": "33aa1929c3cfca9eaaeb1b519cad3992435205eea47da8d4315939d4677e9a8e",
+      "sourceId": "components.MediaDetails.MediaQualitySelect.selectQuality"
+    },
+    {
+      "callerContextSha256": "302f4f55c934f7c93938b93900ae96bce595fd117184887e40396e4410431748",
+      "position": 2038,
+      "source": "This quality is not available in your library.",
+      "sourceHash": "8a746a848a7ac19dfa7e820f1bc922c9eae6afe7845970e77c995977512b0dc0",
+      "sourceId": "components.MediaDetails.MediaQualitySelect.unavailable"
+    },
+    {
+      "callerContextSha256": "f2588f7f923f6aac05c67c36c8296f4712c67dc8b30ecabc447ef889916e5328",
+      "position": 2039,
+      "source": "Add to Collection",
+      "sourceHash": "fc7c87fab96911a10d19a457fcc38a2a13125bfdac60dd1cdceac07cc032ac5a",
+      "sourceId": "components.MediaDetails.MediaServerCollectionButton.addCollection"
+    },
+    {
+      "callerContextSha256": "3ae982660d54a801c45f080637f4297bdfa3868c250ba382b0a2bd330a309aec",
+      "position": 2040,
+      "source": "Add to {name}",
+      "sourceHash": "e59cd6072badc802b4ff8790e530f90bc9be89056933a59397b449d5b3c4a225",
+      "sourceId": "components.MediaDetails.MediaServerCollectionButton.addNamed"
+    },
+    {
+      "callerContextSha256": "9d4c23bd647db620e17d7d35f83031251232c6d966bcf9b7bc50034fbea29b1f",
+      "position": 2041,
+      "source": "The {server} collection state is loading or updating.",
+      "sourceHash": "e42228138f1f0e1e1ca2f17d4fab5949a99bedd24d38176aaf7cb43851a04845",
+      "sourceId": "components.MediaDetails.MediaServerCollectionButton.busy"
+    },
+    {
+      "callerContextSha256": "8c3547881c872b8df20a8b7394cd2229bab09f2e04ab2f0688d8f2a023bccac8",
+      "position": 2042,
+      "source": "Create a collection in {server} first. SeerrNG only adds titles to existing collections.",
+      "sourceHash": "0380e3eee5a781310afe8ed42f55f5062e0beafd15b256d692be0ace6aa8a995",
+      "sourceId": "components.MediaDetails.MediaServerCollectionButton.empty"
+    },
+    {
+      "callerContextSha256": "1fd4b7eb1a164ed6e880cebafce7f5616760b58b7fb59c2f26e7cdab09fc6d7f",
+      "position": 2043,
+      "source": "The collections could not be loaded or the change could not be confirmed. Reload their current state before changing membership.",
+      "sourceHash": "8cd8e400023918a823dbd7ae0fb1a16f725232e2006c8c2dd7bf03111223f5ed",
+      "sourceId": "components.MediaDetails.MediaServerCollectionButton.error"
+    },
+    {
+      "callerContextSha256": "726d33c569c6bba27f75e7754264852d4be54d1e4c6b10018a22eec40dec754b",
+      "position": 2044,
+      "source": "Media Server Collections Unavailable",
+      "sourceHash": "9cff12d1b7117808ceb938f9fcaaa94a871bc10731f498252fd680173bccd0e2",
+      "sourceId": "components.MediaDetails.MediaServerCollectionButton.errorTitle"
+    },
+    {
+      "callerContextSha256": "3d76aff0d753c81810eafafbf9f973c09d5a84da574b487f5e9fa6669d29f77c",
+      "position": 2045,
+      "source": "Choose an existing shared {server} collection to add or remove this entire series. Selected episodes are not added separately.",
+      "sourceHash": "ea1e035c843041a094a79002ff504cabdf5bdcd5b4a0f7cf2640d81b45ba5b3d",
+      "sourceId": "components.MediaDetails.MediaServerCollectionButton.help"
+    },
+    {
+      "callerContextSha256": "0ba7e9d9de93a1d4c8a6eb6ebbfb561ffbf9a670dcfaa6f35016c2aab42e4ac2",
+      "position": 2046,
+      "source": "The {server} collection list exceeds the supported limit. No partial list is offered.",
+      "sourceHash": "4a9bf04725595b8dc6e77ffccc1c495d016304646679367ed401037c2d3dae76",
+      "sourceId": "components.MediaDetails.MediaServerCollectionButton.limit"
+    },
+    {
+      "callerContextSha256": "99728a1327e2393e3eb7e4e61f401965b3800c9d8ae7cb4c7e3a8b4d158514cb",
+      "position": 2047,
+      "source": "Link your own {server} account before changing its collections.",
+      "sourceHash": "dd653960b8f2a47323ff8ccbddb0d7681d11e87a939350e5ea5b0b24a0ad83d6",
+      "sourceId": "components.MediaDetails.MediaServerCollectionButton.link"
+    },
+    {
+      "callerContextSha256": "367a9b051634334d100f924a75d1fef4c50618301f3ccbcf9e03faaba078bcec",
+      "position": 2048,
+      "source": "This series is not available in your accessible {server} library for the selected quality.",
+      "sourceHash": "012f5ff1c5b180757bed556424e4d3d6c3992c00f3c5f8f6bd8285cabbe10871",
+      "sourceId": "components.MediaDetails.MediaServerCollectionButton.missing"
+    },
+    {
+      "callerContextSha256": "42334b79569c8f9f968b53b0dad62419b92fd912b03a7851f14375b4b42b9f31",
+      "position": 2049,
+      "source": "Your linked {server} account does not have permission to manage these shared collections.",
+      "sourceHash": "20ee8b6a02fedd5a1ee5cef463cbe6084aef3b3e25f9e9df9ba1ab81f56a147c",
+      "sourceId": "components.MediaDetails.MediaServerCollectionButton.permission"
+    },
+    {
+      "callerContextSha256": "ce3ea6d65342d95444efc4f608ea854d85f1c391ed5f7ce5cdc40d594b6a0cf5",
+      "position": 2050,
+      "source": "Remove from {name}",
+      "sourceHash": "ba2f86cda07668f1ca884c83eb497613c5605d89f2fc343a85927f65067e2eba",
+      "sourceId": "components.MediaDetails.MediaServerCollectionButton.removeNamed"
+    },
+    {
+      "callerContextSha256": "1188dde373c5b1a279fab5fac1af554fc1dad4f37fd4332a36124acfddd58681",
+      "position": 2051,
+      "source": "Reload collection membership from your linked media-server account. This does not repeat an add or remove action.",
+      "sourceHash": "8f325f98473ce559e0c86bc53898525e0064e87f38c22b05ee1a231c749bcb7f",
+      "sourceId": "components.MediaDetails.MediaServerCollectionButton.retry"
+    },
+    {
+      "callerContextSha256": "516334ee217c70777864f186c87d1b1dc85ebca75e795842d5b1ed404f172f19",
+      "position": 2052,
+      "source": "Collections are unavailable for the configured media server.",
+      "sourceHash": "1b112af848759ff61223867dd873fd365229f13f5cb05c3805440e0cdefbd8dc",
+      "sourceId": "components.MediaDetails.MediaServerCollectionButton.unavailable"
+    },
+    {
+      "callerContextSha256": "c09cc6fb4b60060a558186cc947c2c95cecc888492d03aa5fbca4abe3d4f6f20",
+      "position": 2053,
+      "source": "Add to Favorites",
+      "sourceHash": "3235e5ee562356de406bed4aefb530b6f91deaa89c215d82c30ef15447e52fe7",
+      "sourceId": "components.MediaDetails.MediaServerWatchlistButton.addFavorites"
+    },
+    {
+      "callerContextSha256": "dde7973e63dd3264bdffe9b8c95025229609fdc6916885f7ff0c2a0086a3de80",
+      "position": 2054,
+      "source": "Add this entire series to your {server} {list}. Selected seasons and episodes are not added separately.",
+      "sourceHash": "f4d19de255ae2cef5899028c467491a00abccd06c496d11a377fc62067ed792d",
+      "sourceId": "components.MediaDetails.MediaServerWatchlistButton.addHelp"
+    },
+    {
+      "callerContextSha256": "fc1f2f8fb84b51763a66c59029e5db9fef00f6cd1a3e6d360de2905c627d5837",
+      "position": 2055,
+      "source": "Add to Watchlist",
+      "sourceHash": "70aa8125a3f4a402a76d9dd8602d2798e48409e4bbfbd8a0a07a3f3ea0be8eb2",
+      "sourceId": "components.MediaDetails.MediaServerWatchlistButton.addWatchlist"
+    },
+    {
+      "callerContextSha256": "d2b4b0a05f4b85ad450933a5a8e337b9ab372e66dc7e799d8d8301e858afd9b2",
+      "position": 2056,
+      "source": "The saved state could not be loaded or updated. Please retry before changing it.",
+      "sourceHash": "09fc97e7eca9a14846749de0c1fb5c3b7cc4ab1d2ed20fb44680dd3ebdf82625",
+      "sourceId": "components.MediaDetails.MediaServerWatchlistButton.failed"
+    },
+    {
+      "callerContextSha256": "a0314c83d01b9b5a679c99732b76f6d45e123a3a7929f0952ffd3bbe3312245a",
+      "position": 2057,
+      "source": "Media Server Saved State Unavailable",
+      "sourceHash": "e78194bf1cc8c88a87ef90536457ed66cc6e9cae57c0b10477ccd0b9a9329112",
+      "sourceId": "components.MediaDetails.MediaServerWatchlistButton.failedTitle"
+    },
+    {
+      "callerContextSha256": "3d7c55f57d5686dc14193febef13362d18aa1ae64948f29c083071ce5ba47c0b",
+      "position": 2058,
+      "source": "Link your own {server} account before saving this series.",
+      "sourceHash": "426b668d8b0c3f35541bafba3bc89b157f0a330ee02b4a405e252b7ce11ce0ac",
+      "sourceId": "components.MediaDetails.MediaServerWatchlistButton.linkHelp"
+    },
+    {
+      "callerContextSha256": "ac729addf6b24211dcee66e2655df1fc658d441e1ee60b660e7c1e95115f3e34",
+      "position": 2059,
+      "source": "This series could not be matched in your accessible {server} catalog.",
+      "sourceHash": "99d0f43e1ee6769018a8a9142931c1be37fad36c48de75588a456479886aba32",
+      "sourceId": "components.MediaDetails.MediaServerWatchlistButton.missingHelp"
+    },
+    {
+      "callerContextSha256": "29205b88a10529a771cee3af94ed81dfa22cf09c64a5083e1ae5831c21e0b49f",
+      "position": 2060,
+      "source": "The {server} saved state is loading or updating.",
+      "sourceHash": "98a51f334fe4b593e7087c048a5bfc13be180fd5ad2249bdfe6913a137cf4ba4",
+      "sourceId": "components.MediaDetails.MediaServerWatchlistButton.pendingHelp"
+    },
+    {
+      "callerContextSha256": "db9ca4266b7d0fc708b3a372d735722c7b90f91dd184cc75639b39cf07a9d19b",
+      "position": 2061,
+      "source": "Remove from Favorites",
+      "sourceHash": "19918d1a6f9a661085588baabe00d9d225d8916d91dc3e072fd031f7b1e5e80f",
+      "sourceId": "components.MediaDetails.MediaServerWatchlistButton.removeFavorites"
+    },
+    {
+      "callerContextSha256": "1d8e45a66781aa861b7f0960ebcd5de3cca532f762780bda24c7c05a9668c018",
+      "position": 2062,
+      "source": "Remove this entire series from your {server} {list}. This does not remove media or change your Seerr watchlist.",
+      "sourceHash": "5ad0b699265da9845fcdd1a98e430af320dee06adb39328735837a97ae6a4981",
+      "sourceId": "components.MediaDetails.MediaServerWatchlistButton.removeHelp"
+    },
+    {
+      "callerContextSha256": "ba45ea0d2e886a8dfb08a68e70924c468b02a03c214d80163a31e191bd1f8aa7",
+      "position": 2063,
+      "source": "Remove from Watchlist",
+      "sourceHash": "898b0e23533070b0beeae42f26f0457bfee324fc7874228dc4c42fb21732d8f8",
+      "sourceId": "components.MediaDetails.MediaServerWatchlistButton.removeWatchlist"
+    },
+    {
+      "callerContextSha256": "fe2bbdfe525cb7aae3df29e109f9ed05b1572a1d649104c97e405fd0de03d89c",
+      "position": 2064,
+      "source": "Reload the saved state from your own media-server account. This does not repeat an add or remove action.",
+      "sourceHash": "ab37936c11ed7b0320d3c695294da9fcf057c994b516883572dc2be87f345eb5",
+      "sourceId": "components.MediaDetails.MediaServerWatchlistButton.retry"
+    },
+    {
+      "callerContextSha256": "0e66db6e415edd03d669b50b9472361ef82d253decd842ec205453ae5d8b1c32",
+      "position": 2065,
+      "source": "Metadata sources",
+      "sourceHash": "203ca4b0efde6b6c5ba2e282f9448c3dbde6581d2648fc59b5b8bc6ff4643737",
+      "sourceId": "components.MediaDetails.MetadataAttribution.label"
+    },
+    {
+      "callerContextSha256": "660ae81ba4605dd314296af62171fb80c44079cdd835ce17de8bc99885b1686f",
+      "position": 2066,
+      "source": "{license} license information",
+      "sourceHash": "59801e9a870c435b46f6b5227d3f3e71c2819190981beade695f6bcc3d38f48d",
+      "sourceId": "components.MediaDetails.MetadataAttribution.licenseInformation"
+    },
+    {
+      "callerContextSha256": "3ae3caf2acdf37dd5045a313ab934d75410bbb0de21d494b6a5169d91f39d3c6",
+      "position": 2067,
+      "source": "TMDB",
+      "sourceHash": "46d417ca53292f1838f1d5005e9ae44e23c77474b71a14c5d8a9d213984a63c0",
+      "sourceId": "components.MediaDetails.MetadataAttribution.tmdb"
+    },
+    {
+      "callerContextSha256": "e86add309b4bdc7d20e035766eb062ec0b82687f316d6443cbacf23265539868",
+      "position": 2068,
+      "source": "View metadata source on TMDB.",
+      "sourceHash": "012df976bb96b67d7a411bcaa1682c5c21acaea1208bd58e41da0070ee6b9e01",
+      "sourceId": "components.MediaDetails.MetadataAttribution.tmdbTitle"
+    },
+    {
+      "callerContextSha256": "2ebf4e016524f36ab9075e4f938f14338aa8a1dfb03fce758845d325a609d1c3",
+      "position": 2069,
+      "source": "TheTVDB.com",
+      "sourceHash": "552cb06ec6fb6d890539304d38c7ccefe8eae165f496e352f851193beac10e2e",
+      "sourceId": "components.MediaDetails.MetadataAttribution.tvdb"
+    },
+    {
+      "callerContextSha256": "124c74d7cbe0ee96a382cd558e980fa68d7614828e922f770c38153bed13dd0b",
+      "position": 2070,
+      "source": "Metadata provided by TheTVDB. Attribution required.",
+      "sourceHash": "2101eb80d92394b084bc54a7578c763e072b8ce1a8823bddce369bce562d7879",
+      "sourceId": "components.MediaDetails.MetadataAttribution.tvdbTitle"
+    },
+    {
+      "callerContextSha256": "30756c887b1ef041a6b1e8f44afcdb0a6effb58665f27d47d393532bf8bbcca7",
+      "position": 2071,
+      "source": "TVmaze (adapted)",
+      "sourceHash": "41c9c49def25527829d0afd14403b85d4ed2ae22b8c8dc0401d2635f5a209713",
+      "sourceId": "components.MediaDetails.MetadataAttribution.tvmaze"
+    },
+    {
+      "callerContextSha256": "34aea050d738d3b519caeb5cc723b8a0c3f7bb3a42a9be36a71df00396b2469f",
+      "position": 2072,
+      "source": "TVmaze metadata is adapted and shared under the CC BY-SA 4.0 license.",
+      "sourceHash": "a4178deed6b6a54fb39835669d73d279f044c82479367ab64e63eec83b3d9934",
+      "sourceId": "components.MediaDetails.MetadataAttribution.tvmazeTitle"
+    },
+    {
+      "callerContextSha256": "a6b5bd4216713c60ffef3c4d265714a7c223ede62c882f1392583ef1dc472e71",
+      "position": 2073,
+      "source": "Wikidata",
+      "sourceHash": "a21eef02bd68d2e75b2aa959a2e5a0ddc62f5196fe6c8917d7292accd8fac810",
+      "sourceId": "components.MediaDetails.MetadataAttribution.wikidata"
+    },
+    {
+      "callerContextSha256": "cceb7ef4e6a207f6875ac2924a3ca7148582e9cb376bb8470c41dede303a4663",
+      "position": 2074,
+      "source": "Wikidata structured data is shared under CC0.",
+      "sourceHash": "1dbde97f7800d231a6d09f015e5a0338884cca2e974688439157c3385124ea15",
+      "sourceId": "components.MediaDetails.MetadataAttribution.wikidataTitle"
+    },
+    {
+      "callerContextSha256": "5cec87d778789347544e9db4b04970b925006f7bd32ab4a3eb02c18bb1d83428",
+      "position": 2075,
+      "source": "Audiobook",
+      "sourceHash": "fcca434c36ec389fa886a8658814123f7bed6f70b296ba64a718f0ec1b43f792",
+      "sourceId": "components.MediaDetails.PlaybackTrackList.audiobook"
+    },
+    {
+      "callerContextSha256": "5f1c3f2550128a5f213a6c729e0d47fc552e55b71a77f39a0cefcd729711929c",
+      "position": 2076,
+      "source": "Green check: available. Red X: not available.",
+      "sourceHash": "feacb21a83e96f8f5cb203e055e995a05d1eac04b1f41f050aa31c55209dab65",
+      "sourceId": "components.MediaDetails.PlaybackTrackList.availabilityLegend"
+    },
+    {
+      "callerContextSha256": "dc46d1c8cfdb97a432988547695d45fddaa761b552912bdaee6ae5c98a8241a5",
+      "position": 2077,
+      "source": "No playable tracks are available.",
+      "sourceHash": "2e9e39fd1dfb101aa4e68262d2272d147a6bc80c967f6c5ef5f0083eb54e318c",
+      "sourceId": "components.MediaDetails.PlaybackTrackList.noTracks"
+    },
+    {
+      "callerContextSha256": "96629b982b125239e2811d6b123d08b46eeb4806db79d0c4298529906b21211b",
+      "position": 2078,
+      "source": "Select items to play",
+      "sourceHash": "8ee8537923ded811546295c667bd98ef48d03050f8580f45f99edee04ba67a48",
+      "sourceId": "components.MediaDetails.PlaybackTrackList.selection"
+    },
+    {
+      "callerContextSha256": "268d275a04a59ad4b2f1ccb9257a93e3441598bb9217bb0d35b49959d768c7c2",
+      "position": 2079,
+      "source": "Title",
+      "sourceHash": "f02b3a9f9ea3111543626d2e331b6224f68a432d7154fce4a233cfc4e276f280",
+      "sourceId": "components.MediaDetails.PlaybackTrackList.title"
+    },
+    {
+      "callerContextSha256": "0b52ad00afda382020921b76b6c137d5c77d1232ef177bf532734113d2817665",
+      "position": 2080,
+      "source": "Track",
+      "sourceHash": "a94b4c652532019af3795f6e000aa6b4a5106f1237b150bd3ef896e2dfbcb66e",
+      "sourceId": "components.MediaDetails.PlaybackTrackList.track"
+    },
+    {
+      "callerContextSha256": "cbd3f2ec7631a4593d9302caa0f159d60470a6ef2dba2ef630da858c108d5d31",
+      "position": 2081,
+      "source": "Availability",
+      "sourceHash": "1ec7dc738511cddd5664dac4ceeb45a67e80bbf559fba79ba02c76cc9b79c2a0",
+      "sourceId": "components.MediaDetails.SeasonEpisodeTree.availability"
+    },
+    {
+      "callerContextSha256": "70d26ed555d513ea5cfcd2822fbb28409b037ad47d780083fa9edb00bfa5ec5f",
+      "position": 2082,
+      "source": "Episode availability in the media library: a green check means available; a red cross means unavailable.",
+      "sourceHash": "f26a15cd69fade0652828b35d15490e7a430e9946e71a73e601fd85c80e348fb",
+      "sourceId": "components.MediaDetails.SeasonEpisodeTree.availabilityTooltip"
+    },
+    {
+      "callerContextSha256": "2493b8cad17a69f522e118f97c89b7795fbe51585f30300e84ee167fefc84783",
+      "position": 2083,
+      "source": "available",
+      "sourceHash": "0ef4e306c9e62ad4c63f9945f32ab4664ee5545f18186fecc41595d385649e37",
+      "sourceId": "components.MediaDetails.SeasonEpisodeTree.available"
+    },
+    {
+      "callerContextSha256": "0f36593bd72e217fc88569f60e1afb25bf53b72543cbc7be1806d76c8a5d4c14",
+      "position": 2084,
+      "source": "Available in the library.",
+      "sourceHash": "504972d3dff611f44a9731492aa4ec949158aa5c15b29119823ddef6b37c9456",
+      "sourceId": "components.MediaDetails.SeasonEpisodeTree.availableInLibrary"
+    },
+    {
+      "callerContextSha256": "32b20a9b25e72181eb9d28b1005d7f002326c59975e49fe4e6103f0ba09b5143",
+      "position": 2085,
+      "source": "Choose one starting episode",
+      "sourceHash": "3dd7f6fc42e5fa15e4c197d1fb1f5a9913a9e2fc3f1ac6f9fd91639a8c22d450",
+      "sourceId": "components.MediaDetails.SeasonEpisodeTree.chooseStartingEpisode"
+    },
+    {
+      "callerContextSha256": "ee63d66e032e1454ea5a191f3ce984fa20f2fdf8ec2b95424046e1e795d0ddab",
+      "position": 2086,
+      "source": "Deselect every episode without changing the expanded seasons.",
+      "sourceHash": "361f29c27f5f1b1a7f5ab7d15749017e52ee6bc6b6e40183c91af0db857c22d9",
+      "sourceId": "components.MediaDetails.SeasonEpisodeTree.clearSelection"
+    },
+    {
+      "callerContextSha256": "f33408d65e32f77f2c1e5262aa6ab7c1a7eee19a742f02c08a887706c2f5d970",
+      "position": 2087,
+      "source": "Clear Selection",
+      "sourceHash": "5dcd136a01a5e439b7ac85b522973d7a806034ccf2998df0fac175ff8d4ee0d3",
+      "sourceId": "components.MediaDetails.SeasonEpisodeTree.clearSelectionAction"
+    },
+    {
+      "callerContextSha256": "9386eb301de3cdda6cc000751ba158a1d337ebe35d24e7d03ac18940f006676d",
+      "position": 2088,
+      "source": "Collapse All",
+      "sourceHash": "ae0609046882da7c5f24d213cda719e4663a7a6b8cad66ceb2af06f87a8fdaea",
+      "sourceId": "components.MediaDetails.SeasonEpisodeTree.collapseAll"
+    },
+    {
+      "callerContextSha256": "7f821b00f0005b1bbffce2a62e4c639ce2671bbca2c002bfe8b3256d49ffb990",
+      "position": 2089,
+      "source": "Collapse {seasonName}",
+      "sourceHash": "3d496e59f210043e3fb485deddd6886818f92d407972ef539e1f578cfaac2370",
+      "sourceId": "components.MediaDetails.SeasonEpisodeTree.collapseSeason"
+    },
+    {
+      "callerContextSha256": "38476bb8179ab88c2775d7d47d2540ebbcd84172a6ac1e12083faf9d5e33e6a6",
+      "position": 2090,
+      "source": "Deselect",
+      "sourceHash": "aa0aaa70facaaed3a2c5cb47a24bc994964be70b4202d95759fa207463835d1c",
+      "sourceId": "components.MediaDetails.SeasonEpisodeTree.deselect"
+    },
+    {
+      "callerContextSha256": "65f4dc3583b0fc1267bf5dfa21cd191a8032c63be48e1ee9bb3e290dcb707e20",
+      "position": 2091,
+      "source": "Deselect all {selectionDescription} episodes",
+      "sourceHash": "32696509f31750aba4801f6d986bace6d3a8cceb75432f6e1020dc756e2b9b38",
+      "sourceId": "components.MediaDetails.SeasonEpisodeTree.deselectAllEpisodes"
+    },
+    {
+      "callerContextSha256": "30d7f428a614b46598fce2229fedb7a0c0493ae5c315448494bf7f33ca62c72c",
+      "position": 2092,
+      "source": "Deselect {episodeName}.",
+      "sourceHash": "0e1a917a6d463d185377a82b90a93a753eab6d64429d3633d61a6f29df42af75",
+      "sourceId": "components.MediaDetails.SeasonEpisodeTree.deselectEpisode"
+    },
+    {
+      "callerContextSha256": "664ab0b1b0da4ab6a313e50185cd5f5a1ca02ec77ba1590fe7b7233de5e08bfe",
+      "position": 2093,
+      "source": "Deselect every {selectionDescription} episode across all seasons, including collapsed seasons.",
+      "sourceHash": "e444fe5f54aa9feefdc20812d6cdb818252f3b76866c82c0f2308aa661826f95",
+      "sourceId": "components.MediaDetails.SeasonEpisodeTree.deselectEveryEpisode"
+    },
+    {
+      "callerContextSha256": "c8c82be7ba58444e6e5b20cd85e14a84c6a56826841970972868b10b790edac0",
+      "position": 2094,
+      "source": "Deselect every {selectionDescription} episode in {seasonName}.",
+      "sourceHash": "4eaff8c745df4709538df9c8f4f808c0f22e3fcb0eabd711e544be1cbc8408ed",
+      "sourceId": "components.MediaDetails.SeasonEpisodeTree.deselectSeasonEpisodes"
+    },
+    {
+      "callerContextSha256": "95aba14811c43c4b1a99b8aa14d405cd069fad5b020da627c2e23d75091e7c5d",
+      "position": 2095,
+      "source": "{seasonName} episodes",
+      "sourceHash": "1fb4a74b735ba05a57b46f0e13123c0220cdfd664c2fe09f21b60679c5105305",
+      "sourceId": "components.MediaDetails.SeasonEpisodeTree.episodeListLabel"
+    },
+    {
+      "callerContextSha256": "4fc3503ae9568f730bf11191330d9af8f9101de1d3c5864cd5cfcf5ea2115a9c",
+      "position": 2096,
+      "source": "This episode has not been watched.",
+      "sourceHash": "159a80f6bc4b473ffb9d22c4e440c58fb701c260814c2430331a6b2a77670e3d",
+      "sourceId": "components.MediaDetails.SeasonEpisodeTree.episodeNotWatched"
+    },
+    {
+      "callerContextSha256": "a9fe8f601ea99fb82bb517a692e3dd33ee5c4497c359837877e0b17ce9a5fa0c",
+      "position": 2097,
+      "source": "Episode Number",
+      "sourceHash": "53859d6f1d21cef4946f38df8750a3cfef779f57a4859b630ce7e235bda2cf71",
+      "sourceId": "components.MediaDetails.SeasonEpisodeTree.episodeNumber"
+    },
+    {
+      "callerContextSha256": "8d3ece0eaa0b81f8590b2f744e29d3d6d887153355cbadf1452d29ca3a7828c1",
+      "position": 2098,
+      "source": "The episode number within this season.",
+      "sourceHash": "05519e89b18cf65b0b91136af3629d5fd8645c2519ce0a03db05d5ae2b8970ba",
+      "sourceId": "components.MediaDetails.SeasonEpisodeTree.episodeNumberTooltip"
+    },
+    {
+      "callerContextSha256": "95d2e84dc16822be39f0bfaa0aa60b9078d981a1ac8f7f13380421d57301a2b9",
+      "position": 2099,
+      "source": "{action} episode {episodeNumber}: {episodeName}",
+      "sourceHash": "f641cb261c0656151112a7fa71fb54371e6e2cc16647a05e2bbb40c31072f950",
+      "sourceId": "components.MediaDetails.SeasonEpisodeTree.episodeSelectionLabel"
+    }
+  ],
+  "sourcePositionRange": [
+    2000,
+    2099
+  ],
+  "tree": "309b846c546923856ffde114fd3cf75a7c8de7a7"
+}

@@ -1,0 +1,449 @@
+{
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "head": "7f652dc9b529506fded0064f73cf4a4d32dba1a9",
+  "tree": "9a42f2efdc0f64e99928a4994304413036b8a315",
+  "range": [
+    3300,
+    3319
+  ],
+  "previousRange": [
+    3280,
+    3299
+  ],
+  "sourceOrderCount": 9494,
+  "sourceOrderSha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+  "cellCount": 240,
+  "contextRows": 56,
+  "localeOrder": [
+    "es",
+    "zh_Hans",
+    "hi",
+    "de",
+    "ja",
+    "fr",
+    "pt_BR",
+    "ar",
+    "ko",
+    "zh_Hant",
+    "vi",
+    "id"
+  ],
+  "localeCatalogPins": {
+    "src/i18n/locale/en.json": {
+      "sha256": "75ff3c90b52aedd636a506281ffbd6fb2d3739c61294b6008a517f17647e2316",
+      "gitBlob": "12e04a118c30b71b3714291adeaf9fdb2735cee4",
+      "keyCount": 9494,
+      "orderedKeySha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072"
+    },
+    "src/i18n/locale/es.json": {
+      "sha256": "17135f741910363fffbb2d6d2a14caf6c1e1e292cf9309bfa6c4827a7fd4f840",
+      "gitBlob": "f6e8ac0e08758288dbfba3fb57d6121716be4e5f",
+      "keyCount": 9494,
+      "orderedKeySha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072"
+    },
+    "src/i18n/locale/zh_Hans.json": {
+      "sha256": "73a1b7437b86cd8c97a922fd1dbf3edffd53ef1d0d09970f5a8792249b3168eb",
+      "gitBlob": "c9b267b1dec07aade73adef31e2a75d2df318b66",
+      "keyCount": 9494,
+      "orderedKeySha256": "8d5fd7bd4351bc64c5ee813f2e50196608869e165866f3202a312078732c2baf"
+    },
+    "src/i18n/locale/hi.json": {
+      "sha256": "638836be9fba03675a72a2b89b902b041e9ce2691284d3f8242566fcbc132707",
+      "gitBlob": "84e0b3c85523b10ed7b0e566feaab87cea470ed3",
+      "keyCount": 9494,
+      "orderedKeySha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072"
+    },
+    "src/i18n/locale/de.json": {
+      "sha256": "dae4f53c5a73bccfe5d35732bc601f3f694a2cfbd3b39044c536be15d2b8bdd1",
+      "gitBlob": "1d2b86ef91d93c976b72ea42bba6e1045d434001",
+      "keyCount": 9494,
+      "orderedKeySha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072"
+    },
+    "src/i18n/locale/ja.json": {
+      "sha256": "70c6177f76fbfd68b8059c198eca13a454943783ecf952c329529f6958234926",
+      "gitBlob": "ed545aca579d7be6e51169da0f9af3aa4ae01d2e",
+      "keyCount": 9494,
+      "orderedKeySha256": "8d5fd7bd4351bc64c5ee813f2e50196608869e165866f3202a312078732c2baf"
+    },
+    "src/i18n/locale/fr.json": {
+      "sha256": "75c7ba987aae70be2fd38cd769a8c4e9785185366c31a520b1f69a8c5396e2a7",
+      "gitBlob": "88adceb6d48fe3a6112f46e3f961f9e55d9bd711",
+      "keyCount": 9494,
+      "orderedKeySha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072"
+    },
+    "src/i18n/locale/pt_BR.json": {
+      "sha256": "cb9bb624dbe20edfa8a0a45fe3a5e6d1b86d3cccede82b99602535e1e263f21b",
+      "gitBlob": "c3e7b1feb89e95cd941c0a496bafeaef02bbe431",
+      "keyCount": 9494,
+      "orderedKeySha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072"
+    },
+    "src/i18n/locale/ar.json": {
+      "sha256": "3773e99db951277157279c89bf16fe510cba3badfd046c587fba6ace8096b50f",
+      "gitBlob": "f0a49d7cc0198363d64ef48c310c6e88ffc6bf2e",
+      "keyCount": 9494,
+      "orderedKeySha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072"
+    },
+    "src/i18n/locale/ko.json": {
+      "sha256": "7ba2aa394e9b81c0c2a4efde8668f2d068a8865675d04c119014e57798ee0032",
+      "gitBlob": "069bf54641e76a6675858526028a1e25a78763ec",
+      "keyCount": 9494,
+      "orderedKeySha256": "8d5fd7bd4351bc64c5ee813f2e50196608869e165866f3202a312078732c2baf"
+    },
+    "src/i18n/locale/zh_Hant.json": {
+      "sha256": "ed074a77cbe65ef6cb7ca85129e42090c02bef18cfd8b70266cd94e8fd64e845",
+      "gitBlob": "0a1b16c94a164560bea82fc3bcee41e4cb188a67",
+      "keyCount": 9494,
+      "orderedKeySha256": "8d5fd7bd4351bc64c5ee813f2e50196608869e165866f3202a312078732c2baf"
+    },
+    "src/i18n/locale/vi.json": {
+      "sha256": "4069d25fdb0a597e9f155c14925a71ae9c435c9cdfd5d1213bb61d53173f35c8",
+      "gitBlob": "09941d9e38bce0c3ba40fff623f919da4edae678",
+      "keyCount": 9494,
+      "orderedKeySha256": "8d5fd7bd4351bc64c5ee813f2e50196608869e165866f3202a312078732c2baf"
+    },
+    "src/i18n/locale/id.json": {
+      "sha256": "220d30fea08ffb02c057801560de6477725b79c0166c902b36a2df28d01d839d",
+      "gitBlob": "269f1289558494f0532eb2b304c4b354e133a5df",
+      "keyCount": 9494,
+      "orderedKeySha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072"
+    }
+  },
+  "sourceCatalogSha256": "75ff3c90b52aedd636a506281ffbd6fb2d3739c61294b6008a517f17647e2316",
+  "sourceCatalogKeyCount": 9494,
+  "callerFiles": {
+    "src/components/RequestStatus/messages.tsx": {
+      "sha256": "5c7691636c95eed239cf012fa2e8bdc066ef773a8b4288bbd93fafddb15324eb",
+      "gitBlob": "73f660f8595c193f4996c2720d0566212545f76c",
+      "lineCount": 121
+    },
+    "server/lib/requestStatus.ts": {
+      "sha256": "63dd1b43e684a40eb82253a2942d7652cad63d87234b5c279d73af0b945b2d31",
+      "gitBlob": "e75608e1c2921b5f7b3e822c25a690f8b1cc5e82",
+      "lineCount": 2328
+    },
+    "src/components/Requests/index.tsx": {
+      "sha256": "25b612dcda274fe2ea64b76f169587e153b04a675c9b8cd817814d9fbfde5360",
+      "gitBlob": "84f6a19674b329df0ef6be6483d74bbaeb110ccb",
+      "lineCount": 3115
+    },
+    "src/components/Requests/destructiveActions.tsx": {
+      "sha256": "16d562185c1e1f3a94398369b4ab3eec28085033dcc3465c32557752687d1d57",
+      "gitBlob": "09884f99a738ce4402b5fb121d15022f0efc3a67",
+      "lineCount": 173
+    },
+    "src/pages/requests/index.tsx": {
+      "sha256": "64273c876d30c6ee3ee1f7419f3376cd1849fcc6fbbc37cec781c340e3c6cb76",
+      "gitBlob": "17a3c44c6c3073fcaecd94cc77993a8bae3bdc4d",
+      "lineCount": 6
+    },
+    "src/utils/defineMessages.ts": {
+      "sha256": "761cb0362244e473b6993c78f4b852a6673c95e35da13990856e6a44c6d9169f",
+      "gitBlob": "bb8fadb4baf7764b0af8b1a2294bf43d4196aaaa",
+      "lineCount": 26
+    }
+  },
+  "orderedLocaleKeySequencesMatch": false,
+  "perLocaleOrderedKeyHashesPinned": true,
+  "strictBlindInputOnly": true,
+  "nativeSpeakerApproval": false,
+  "sourceIds": [
+    {
+      "position": 3300,
+      "id": "components.Requests.book",
+      "source": "Book",
+      "sourceSha256": "909cb81127c5e1944b16dc5944ade59facb822c7a3f250d1f0256293bfd3c055"
+    },
+    {
+      "position": 3301,
+      "id": "components.Requests.bookAndAudiobook",
+      "source": "Book + Audiobook",
+      "sourceSha256": "a8e63d1a3c2b09287aa608539091869ccf4d8d7281772de6c9682d762d5ea707"
+    },
+    {
+      "position": 3302,
+      "id": "components.Requests.cancelled",
+      "source": "Cancelled",
+      "sourceSha256": "d353a99eb4556847ceeb3c306ac886cf6b4fa13043eb1864b9aeb0607fd5f2cc"
+    },
+    {
+      "position": 3303,
+      "id": "components.Requests.changeServer",
+      "source": "Change Server",
+      "sourceSha256": "9557532f39153e7f00ef6ccb64f2e22e48cf7f1a877520e4125fb160750aed01"
+    },
+    {
+      "position": 3304,
+      "id": "components.Requests.changeServerTooltip",
+      "source": "Choose another server and resubmit this failed request.",
+      "sourceSha256": "99c52309adb7065311e90a6f0cc268af72a70a0879c3501d2e5c60961894c914"
+    },
+    {
+      "position": 3305,
+      "id": "components.Requests.clearFilters",
+      "source": "Clear Filters",
+      "sourceSha256": "5776503c1a52f4fa028ff4c82b779bde7010023e3ae9f877c88156b673212e2e"
+    },
+    {
+      "position": 3306,
+      "id": "components.Requests.comic",
+      "source": "Comic",
+      "sourceSha256": "47bedccc50bb79505d511d4c9fa7157cba36721fdfca9410c96d22fe55fb9dc2"
+    },
+    {
+      "position": 3307,
+      "id": "components.Requests.comics",
+      "source": "Comics",
+      "sourceSha256": "faa92591e60533999b900614debc689c196ac4575ea9994079d2d7febc24ff6c"
+    },
+    {
+      "position": 3308,
+      "id": "components.Requests.completed",
+      "source": "Completed",
+      "sourceSha256": "22a970d2e5b1cc233e462be7c7b64e135a275bb09d83d87683bf4236c43113a1"
+    },
+    {
+      "position": 3309,
+      "id": "components.Requests.country",
+      "source": "Country",
+      "sourceSha256": "701d021d08c54579f23343581e45b65ffb1150b2c99f94352fdac4b7036dbbd5"
+    },
+    {
+      "position": 3310,
+      "id": "components.Requests.creator",
+      "source": "Creator",
+      "sourceSha256": "88447b83090cded58b10214c752813d476fa21c8c1d8dcbccbd2e2676231aab9"
+    },
+    {
+      "position": 3311,
+      "id": "components.Requests.decline",
+      "source": "Decline",
+      "sourceSha256": "a2d285b352873457207a34a015267524bb4613c3e8c961c8998da4e08e0d5745"
+    },
+    {
+      "position": 3312,
+      "id": "components.Requests.declineTooltip",
+      "source": "Decline this pending request.",
+      "sourceSha256": "48d5125bb2a4c1d9b6f068cacdac4fcb73b4c25b73cb28b8e427276ffe6953cb"
+    },
+    {
+      "position": 3313,
+      "id": "components.Requests.declined",
+      "source": "Declined",
+      "sourceSha256": "dce083a2c47ffdc44982315487afb6e121e96cef2df6dc1ec11bac7ab5052142"
+    },
+    {
+      "position": 3314,
+      "id": "components.Requests.delete",
+      "source": "Delete",
+      "sourceSha256": "e2d0a54968ead24efc0dffa6ac78fc606dceec34a0f586177a74a54cc2272cf8"
+    },
+    {
+      "position": 3315,
+      "id": "components.Requests.deleteDescription",
+      "source": "Seerr will cancel any active work it can identify, clean up temporary request records, and permanently remove this entry and its history.",
+      "sourceSha256": "ef7b55b59a5c86fcda012247115217b192328e5e3d475cfa9c16068e96aedb0c"
+    },
+    {
+      "position": 3316,
+      "id": "components.Requests.deleteFailed",
+      "source": "Unable to delete this request entry.",
+      "sourceSha256": "a35da27cd00880747aae860e0b2d4b2aec0c98431270088276df990686a78b32"
+    },
+    {
+      "position": 3317,
+      "id": "components.Requests.deleteSuccess",
+      "source": "Request entry deleted.",
+      "sourceSha256": "6ebf2b282ec0c3e454136ff4024107f2e265e65e92b67ce0743827490c068b05"
+    },
+    {
+      "position": 3318,
+      "id": "components.Requests.deleteTitle",
+      "source": "Delete Request Entry?",
+      "sourceSha256": "d453ab1a31fbb5f4e8d2ebfebd60d77b56a28bbe4217028fc12e90b5cac933c2"
+    },
+    {
+      "position": 3319,
+      "id": "components.Requests.deleteTooltip",
+      "source": "Delete this request and its status history.",
+      "sourceSha256": "5224a9a9cab1036b5880e39953d92d309a73714c25ad0070bace608c168ad24e"
+    }
+  ],
+  "callerContextHashesById": {
+    "components.Requests.book": [
+      "49b82081236a5a0da4c96394686a98dc8a83f4cfc407e1292e070bbb31cf7c65",
+      "def5b8251c838f13a4c55a9dca27ffa13ac05a373892aeec14a3f2b1ec76e185",
+      "42e2fab8166e7bcef98a717747efc7792cc57db55fb1eaa2ce578452f7a59c0e",
+      "bb061d005c289c28dce79d8826c028b3b6fa2d4593d58ae1c72b117eeec0c74b",
+      "75240bc2d7fe18337a5811c2bd01931395d53cd41d969cd2b1f3bc7a6d5848e2",
+      "aba4b3a00289e497b5c35acec0489816c1501e75943ef7ab543a2065f31afe2f",
+      "f3c64905d5cc88984ad4d383aafc299f4f8e6c839ea4c184edf0668046930210"
+    ],
+    "components.Requests.bookAndAudiobook": [
+      "30d67b1422e337b3950a8070b849cbe79f4efecd48eab438a752c1f1286456e4"
+    ],
+    "components.Requests.cancelled": [
+      "a62b96ad94e0789ae8171587333d27f5828fdf77cb98fbfb2db0b22b15ca2ab5",
+      "a9669461b2a028bbf5210fa9508804212f4160957e22af07943e3534c7c2065a",
+      "05bbaace55a212a357346ef3cac3aea2ba8557a6f7e17f8d28de21deb62a5e64",
+      "72285069badc02ca9eb09b7ca795ac399619b52c9118ed05a67efaf98ecaa376",
+      "d4814b129a07e938dfa01c47e9a6330b2596b2b3f797e7e993c5933559d03cf9",
+      "64dfe32c46e126eedd51525031983c0418b05c906a3f3f2e6d64b5eba918810c",
+      "8cf89181233ff99f17b1f816be924d20f2b94383fae51fd90abd50a6b6e1028e",
+      "fe65c7603f2dbd60a1acf321fa9846edf8d95156576c9f682c43968070c2732c"
+    ],
+    "components.Requests.changeServer": [
+      "6240c5d680cd7b1657d9fa85c16972dd378628c2c6f55a07360c614e121e0dfa",
+      "b2f8c9cfc1af9d3a78eac2bb41cb86e337abadc7d306dc5d5e98709249976ff5"
+    ],
+    "components.Requests.changeServerTooltip": [
+      "4b17261fc09f2d3bc28b955c1edb78e8f1127a34b066a0f0e5912eb58b4aa2d1",
+      "cabc7af45d4eeedf4575ccaecc00a787a1227fa479790ccd3b854143f5eef51b"
+    ],
+    "components.Requests.clearFilters": [
+      "3642b57b24a8efb326fb85797a0960981e45ac7f58ed436ba15ed45379f562ce",
+      "1401e113edae5d729735afaf270fb20c8b7de7148e6bc0dfade04f4314cbbff1",
+      "c9dbf88c093ce62a419d8a8ecbc7cf2a69311ebe9d2c8d80f42a08e4896ea9a3"
+    ],
+    "components.Requests.comic": [
+      "65c2b21c84027013ca91532e43dcb590c26e7e0f2b924300644719907fda1272",
+      "37442081b1a9afd109e97cf7a821cebd9e5d7476a0f130cba26ae647b0c894c9",
+      "267f036c5c6a1efac5978b5518550fd9a4c32735d75d064828ec8ef7445e0aca"
+    ],
+    "components.Requests.comics": [
+      "ce6e2b877d1077411f358797cb4e340d343000757548f75b3fe5581433c22195",
+      "557792cdc1d8680d170b1530880be4243869ec7dbacd5cc435c38957ab10dc46"
+    ],
+    "components.Requests.completed": [
+      "fb464cb71e46bb7fcac61f3d80d268235dfffe89216b32461a52448f77f6716a",
+      "d5a2e4c2c5f89a14cd07b9f5820353880b3ca84da1c62cf5634b53d7a1baca30"
+    ],
+    "components.Requests.country": [
+      "759ee4657613a93930f8a793be1c231ad322c45828efeaba41e1165c67346dac",
+      "f179ad226e62ea7e383b6a3fe0965662609a3342ec6a79aecc4ad914fc689334"
+    ],
+    "components.Requests.creator": [
+      "5ec048152523ac2cce0d46aa5968ea9c7ce0be424268052d24d4aa946c87d60e",
+      "6e4c02a6d7e5e41a033f22deb215cc0e4c49af2a531effbb752a53c7e0c35a36",
+      "49b01c0ae278e3951cc0b7393184413f41a582b722b5a063004755ce0ec61c1b"
+    ],
+    "components.Requests.decline": [
+      "fe76ce3becb816ac150a0200fa1ffac26df17e70036ef0010e10ab383cd4747e",
+      "2b1066b28a702f72a535701bed20b0498953e6bd210548ceb72b8a25a5d12762"
+    ],
+    "components.Requests.declineTooltip": [
+      "87f31285dc65570a1cc72285d3fc42ded98e33c42970af86a9d1d2b53b0aad93",
+      "921d7345a93070244be77c6c302ae28146e5b18d755f07c1756dc026014fd5ab"
+    ],
+    "components.Requests.declined": [
+      "9c7203955cfdea05e05459e2fcdf3fd2aa03f2461ae09a0b8065c358ad681a07",
+      "202a5f66aaa135833a082547e16a93624c5fe284a44e0b4d7f3c24bc4ede2181",
+      "b41c01508e4d9328ebb48309e79c5f82eb24c567b75616febd42727b21f81c3b"
+    ],
+    "components.Requests.delete": [
+      "f2a89ca7e2575f063690376c3e38ad2893d0c4420caa1785694c93bcfc655247",
+      "3da2b19ee05223c29f47f021c8d4eb91bb3ee3473031835043faf43f70acc648",
+      "aac466ed08baf9bcebe73e04756a0e3cc3a7530cf836ba433eac04e92de78f16"
+    ],
+    "components.Requests.deleteDescription": [
+      "12729818037535f3bc2d0ca55ff4c4b6b4a0e80ca514a2ef5caad541392d8c81",
+      "0d90c8adc97c54468ab55a1a70e3dddb492a3b6786fe52b37c29ad7808843ca5"
+    ],
+    "components.Requests.deleteFailed": [
+      "5f431ae9054b8dbadaa1597407ba30e738f2665408ce66c670e3af5ae2528c94",
+      "7da721c4e04f77253a0294b75baf6a4358ff0bcc96027c5be2097a8bc07fe495",
+      "2e47182c7569c4053b10db64b8091b5ae049b7e0b90fd2613053f2bda5fa27c0"
+    ],
+    "components.Requests.deleteSuccess": [
+      "e793c8243974da2a8b3ecb6d947e7477cdd8b0dfe1ecef86593894ab806e8190",
+      "64725edd6ea0485d3d835de66836c463f9fea048086e24939b68a782e84481a4"
+    ],
+    "components.Requests.deleteTitle": [
+      "2c67fedf251740185eb6a62fb542e38ac5674c820ac8c02722dc2bb9c4fa3165",
+      "278e9c30515cb95cefea270a81cf8f2d31549015735da4b9a66bd7604ba582fe"
+    ],
+    "components.Requests.deleteTooltip": [
+      "583f250d54631652e058a9336364088450661ab1aad0c8ea1afde332b0cd44d7",
+      "9067c46c7cfdd76627809e3cd77fa20e8043b0ca66ea8e546a39dc5533b794cd"
+    ]
+  },
+  "callerHolds": [
+    {
+      "position": 3301,
+      "id": "components.Requests.bookAndAudiobook",
+      "reason": "no direct production reference to this components.Requests message ID was found; generic/dynamic RequestStatus action rendering is context only",
+      "definitionsFound": 1,
+      "directMessageReferences": 0,
+      "source": "Book + Audiobook"
+    },
+    {
+      "position": 3314,
+      "id": "components.Requests.delete",
+      "reason": "no direct production reference to this components.Requests message ID was found; generic/dynamic RequestStatus action rendering is context only",
+      "definitionsFound": 1,
+      "directMessageReferences": 0,
+      "source": "Delete"
+    },
+    {
+      "position": 3315,
+      "id": "components.Requests.deleteDescription",
+      "reason": "no direct production reference to this components.Requests message ID was found; generic/dynamic RequestStatus action rendering is context only",
+      "definitionsFound": 1,
+      "directMessageReferences": 0,
+      "source": "Seerr will cancel any active work it can identify, clean up temporary request records, and permanently remove this entry and its history."
+    },
+    {
+      "position": 3318,
+      "id": "components.Requests.deleteTitle",
+      "reason": "no direct production reference to this components.Requests message ID was found; generic/dynamic RequestStatus action rendering is context only",
+      "definitionsFound": 1,
+      "directMessageReferences": 0,
+      "source": "Delete Request Entry?"
+    },
+    {
+      "position": 3319,
+      "id": "components.Requests.deleteTooltip",
+      "reason": "no direct production reference to this components.Requests message ID was found; generic/dynamic RequestStatus action rendering is context only",
+      "definitionsFound": 1,
+      "directMessageReferences": 0,
+      "source": "Delete this request and its status history."
+    }
+  ],
+  "placeholderParityErrors": [],
+  "protectedTermsPolicy": [
+    "Seerr",
+    "ChaptarrNG",
+    "Bindery",
+    "Bookshelf",
+    "Radarr",
+    "Sonarr",
+    "Plex",
+    "Emby",
+    "Jellyfin",
+    "TMDb",
+    "IMDb",
+    "Open Library",
+    "ComicVine",
+    "MusicBrainz",
+    "TheTVDB",
+    "Trakt",
+    "Letterboxd",
+    "Prowlarr",
+    "Bazarr",
+    "Lidarr",
+    "Readarr",
+    "Whisparr",
+    "Sportarr",
+    "Audiobookshelf"
+  ],
+  "previousWindowInputManifestSha256": "d3a47dcb40bf869e4ad0f1bfe49858ebfec159ee0d066d84e1787c3a88474d9b",
+  "livePr": {
+    "url": "https://github.com/snapetech-org/seerrng/pull/418",
+    "state": "open",
+    "draft": true,
+    "head": "7f652dc9b529506fded0064f73cf4a4d32dba1a9",
+    "headRef": "codex/seerrng-localization-overhaul-20261028",
+    "baseRef": "main",
+    "tree": "9a42f2efdc0f64e99928a4994304413036b8a315"
+  }
+}

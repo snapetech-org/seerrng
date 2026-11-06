@@ -1,0 +1,187 @@
+{
+  "acceptedUnchangedNoOpCandidates": [
+    {
+      "catalogEditRequired": false,
+      "crossReviewDisposition": "accept-proposal",
+      "finalTarget": "Editar servidor Navidrome",
+      "finalTargetHash": "2441590564e4c8230cfdcfd6a54630f4fbe5567e0ebcbaedf5b87993dc5eb432",
+      "locale": "pt-BR",
+      "primaryDisposition": "correction-needed",
+      "reconciliationDisposition": "accepted-unchanged-no-op",
+      "sourceId": "components.Settings.NavidromeModal.editTitle",
+      "sourceIdPosition": 530
+    },
+    {
+      "catalogEditRequired": false,
+      "crossReviewDisposition": "accept-proposal",
+      "finalTarget": "トークン",
+      "finalTargetHash": "e829e44ffb65154eb7206db046700173122970e188d3018e1faa8047deec2e9d",
+      "locale": "ja",
+      "primaryDisposition": "correction-needed",
+      "reconciliationDisposition": "accepted-unchanged-no-op",
+      "sourceId": "components.Settings.Notifications.NotificationsNtfy.token",
+      "sourceIdPosition": 595
+    }
+  ],
+  "blockers": [],
+  "callerContextAttestation": {
+    "currentHeadChangedCallerFiles": false,
+    "mismatches": 0,
+    "proposalRowsChecked": 289,
+    "uniqueCallerFiles": 49
+  },
+  "confidence": "moderate",
+  "crossReviewCountsByLocale": {
+    "ar": {
+      "accept-proposal": 26,
+      "refine-proposal": 2
+    },
+    "de": {
+      "accept-proposal": 13
+    },
+    "es": {
+      "accept-proposal": 28
+    },
+    "fr": {
+      "accept-proposal": 18
+    },
+    "hi": {
+      "accept-proposal": 38,
+      "refine-proposal": 1
+    },
+    "id": {
+      "accept-proposal": 17,
+      "refine-proposal": 1
+    },
+    "ja": {
+      "accept-proposal": 18
+    },
+    "ko": {
+      "accept-proposal": 25
+    },
+    "pt-BR": {
+      "accept-proposal": 27
+    },
+    "vi": {
+      "accept-proposal": 31
+    },
+    "zh-CN": {
+      "accept-proposal": 21
+    },
+    "zh-TW": {
+      "accept-proposal": 23
+    }
+  },
+  "crossReviewDispositionCounts": {
+    "accept-proposal": 285,
+    "refine-proposal": 4
+  },
+  "crossReviewLedgerSha256": "f38632c53de86908544874fae6ed92b66dc5e21520ea93872b233a2d210c3f9e",
+  "crossReviewedCorrectionCandidates": 289,
+  "finalTargetsDifferentFromCurrent": 287,
+  "holds": 0,
+  "ledger": "cross-review-0500-0599.jsonl",
+  "nativeSpeakerApproval": false,
+  "newHeadSourceCurrentAttestation": {
+    "localeCatalogCount": 12,
+    "mismatches": 0,
+    "pin": {
+      "head": "aedb6f552bb9ad4a0d93a23f461e997a78163e33",
+      "tree": "8e666e5bf89b8888a37a914c6917d57347943ce8"
+    },
+    "rowsChecked": 1200,
+    "sourceFile": "src/i18n/locale/en.json"
+  },
+  "noOpReconciliation": {
+    "acceptedUnchangedNoOp": 2,
+    "catalogEditsRequired": 287,
+    "cells": [
+      {
+        "catalogEditRequired": false,
+        "currentTargetHash": "2441590564e4c8230cfdcfd6a54630f4fbe5567e0ebcbaedf5b87993dc5eb432",
+        "finalTarget": "Editar servidor Navidrome",
+        "finalTargetHash": "2441590564e4c8230cfdcfd6a54630f4fbe5567e0ebcbaedf5b87993dc5eb432",
+        "locale": "pt-BR",
+        "reconciliationDisposition": "accepted-unchanged-no-op",
+        "sourceId": "components.Settings.NavidromeModal.editTitle",
+        "sourceIdPosition": 530
+      },
+      {
+        "catalogEditRequired": false,
+        "currentTargetHash": "e829e44ffb65154eb7206db046700173122970e188d3018e1faa8047deec2e9d",
+        "finalTarget": "トークン",
+        "finalTargetHash": "e829e44ffb65154eb7206db046700173122970e188d3018e1faa8047deec2e9d",
+        "locale": "ja",
+        "reconciliationDisposition": "accepted-unchanged-no-op",
+        "sourceId": "components.Settings.Notifications.NotificationsNtfy.token",
+        "sourceIdPosition": 595
+      }
+    ],
+    "crossReviewedCorrectionCandidates": 289,
+    "finalTargetsDifferentFromCurrent": 287,
+    "finalTargetsEqualCurrent": 2
+  },
+  "notes": [
+    "The two accepted final strings listed in acceptedUnchangedNoOpCandidates exactly match their current targets and require no catalog edit; their primary rows were labeled correction-needed, so treat them as accepted unchanged/no-op during reconciliation.",
+    "All 11 previously routed dispositions were left untouched and checked against the packet routing ledger.",
+    "The primary packet is pinned to d1137d06/0aa22f0; the current PR advanced to aedb6f55/8e666e5. All 1,200 source/current strings and hashes in this slice were re-attested at the current pin with zero mismatches.",
+    "No repository/catalog/PR changes, tests, builds, CI, or browser work were performed."
+  ],
+  "pin": {
+    "head": "aedb6f552bb9ad4a0d93a23f461e997a78163e33",
+    "isDraft": true,
+    "pullRequest": 418,
+    "state": "OPEN",
+    "tree": "8e666e5bf89b8888a37a914c6917d57347943ce8"
+  },
+  "primaryCorrectionCandidates": 289,
+  "primaryLedger": "reviews/agent-0500-0599/cell-review-ledger.jsonl",
+  "primaryLedgerSha256": "1771e38ade10b357eb1c7fe58d65aa15b7011f8e4832e539609fcfa8eea6fb96",
+  "primaryPacketPin": {
+    "head": "d1137d06ffb5af57ef599ac9bf495aff2a990a7b",
+    "tree": "0aa22f0bb43e3e30d216e2ae19939220e05f04f7"
+  },
+  "priorDispositionCounts": {
+    "prior-correction-applied-exact-target-match": 7,
+    "prior-equivalence-reviewed-target-matches-live": 4
+  },
+  "priorDispositionSnapshotSha256": "a0d33e01bbf8b51fa0f4b7b0a256c3e77ca8bd352302198e37aa4340fc708661",
+  "priorRowsNotReAdjudicated": 11,
+  "refinements": [
+    {
+      "finalTarget": "Mylar3 Usenet और टोरेंट इंडेक्सर्स पर खोज कर सकता है। Mylar3 में प्रदाताओं को कॉन्फ़िगर करें; Kapowarr और BackIssue सामग्री प्राप्त करने के लिए अपने स्वयं के स्रोतों का उपयोग करते हैं।",
+      "locale": "hi",
+      "rationale": "The primary target leaves “providers” and “acquisition sources” in English. This refinement localizes those terms while preserving that Mylar3 searches Usenet/torrent indexers and the other services use their own acquisition sources.",
+      "sourceId": "components.Settings.MylarModal.compatibilityNote",
+      "sourceIdPosition": 503
+    },
+    {
+      "finalTarget": "يجب أن تبدأ قاعدة URL بشرطة مائلة.",
+      "locale": "ar",
+      "rationale": "The primary target leaves “URL Base” in English. This refines it to a clear Arabic URL-base term while preserving the required leading slash.",
+      "sourceId": "components.Settings.MylarModal.validationBaseUrlLeadingSlash",
+      "sourceIdPosition": 523
+    },
+    {
+      "finalTarget": "يجب ألا تنتهي قاعدة URL بشرطة مائلة.",
+      "locale": "ar",
+      "rationale": "The primary target leaves “URL Base” in English. This refines it to a clear Arabic URL-base term while preserving the prohibition on a trailing slash.",
+      "sourceId": "components.Settings.MylarModal.validationBaseUrlTrailingSlash",
+      "sourceIdPosition": 524
+    },
+    {
+      "finalTarget": "Opsional. Notifikasi hanya dikirim ke tujuan di server Apprise yang memiliki tag ini.",
+      "locale": "id",
+      "rationale": "The primary target is an imperative (“only send”), while the English is a descriptive rule. This refinement keeps the optional filter description declarative.",
+      "sourceId": "components.Settings.Notifications.NotificationsApprise.tagTip",
+      "sourceIdPosition": 554
+    }
+  ],
+  "schemaVersion": 1,
+  "sourceIdPositions": {
+    "count": 100,
+    "startInclusive": 500,
+    "stopExclusive": 600
+  },
+  "task": "Independent cross-review of SeerrNG PR #418 W700–749 sourceId positions 500–599 primary correction proposals"
+}

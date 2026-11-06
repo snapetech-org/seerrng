@@ -1,0 +1,39 @@
+{
+  "exactHead": "ebebae19e24b9236192eda287938b65eabf29667",
+  "exactTree": "8e5ef5985dee40f5c1191dff794e323a851d3ef8",
+  "sourceRange": [
+    3100,
+    3119
+  ],
+  "cells": 240,
+  "primaryDispositions": {
+    "accept-current": 165,
+    "correction": 51,
+    "refinement": 24,
+    "hold": 0
+  },
+  "independentDispositions": {
+    "accept-current": 159,
+    "correction": 47,
+    "refinement": 34,
+    "hold": 0
+  },
+  "agreements": {
+    "sameDispositionAndTarget": 222,
+    "sameTargetDifferentDisposition": 6,
+    "differentTarget": 12
+  },
+  "rootAdjudicatedDifferenceRows": 18,
+  "finalDispositions": {
+    "accept-current": 158,
+    "correction": 48,
+    "refinement": 34,
+    "hold": 0
+  },
+  "exactHashApplyEntries": 82,
+  "placeholderMismatches": 0,
+  "markupMismatches": 0,
+  "nativeSpeakerApproval": false,
+  "browserReviewAtExactHead": false,
+  "testsBuildsScansCI": false
+}

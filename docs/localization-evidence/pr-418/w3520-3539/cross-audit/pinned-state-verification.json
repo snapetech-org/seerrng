@@ -1,0 +1,21 @@
+{
+  "baseRef": "main",
+  "baseSha": "221d8e0d542802da7529cd272c928cc747677e5c",
+  "draft": true,
+  "exactExpectedHeadAndTree": true,
+  "head": "265171657d48ef56ee81cc1c6a5c3d07abe5d07e",
+  "headRef": "codex/seerrng-localization-overhaul-20261028",
+  "localWorktree": "/mnt/disks/scratch/task-worktrees/localization-20261103/seerrng-pr418-w3500-apply-20261103",
+  "localWorktreeClean": true,
+  "localWorktreeHead": "265171657d48ef56ee81cc1c6a5c3d07abe5d07e",
+  "localWorktreeTree": "402984893883cf7afd106cd208f6027d7410f2fb",
+  "pullRequest": 418,
+  "remoteBranchHead": "265171657d48ef56ee81cc1c6a5c3d07abe5d07e",
+  "remoteBranchRef": "refs/heads/codex/seerrng-localization-overhaul-20261028",
+  "remotePullRef": "refs/pull/418/head",
+  "remotePullRefHead": "265171657d48ef56ee81cc1c6a5c3d07abe5d07e",
+  "repository": "snapetech-org/seerrng",
+  "state": "open",
+  "tree": "402984893883cf7afd106cd208f6027d7410f2fb",
+  "verifiedAtUTC": "2026-11-03T11:19:22Z"
+}

@@ -1,0 +1,3195 @@
+{
+  "result": "PASS",
+  "applicationCommit": "0d5addb11f1975ba29dea17e0268a01a2e8218f5",
+  "applicationTree": "afaa19049ee1eced8078e580abf1d0a811408679",
+  "commitParent": "f48afa55ce2abeb00ee8b2dc66fa6d2df8f62ba4",
+  "sourceIds": 44,
+  "locales": 12,
+  "cellsReadBack": 528,
+  "insertedCells": 516,
+  "refreshedCells": 12,
+  "catalogKeyCounts": {
+    "src/i18n/locale/ar.json": 9537,
+    "src/i18n/locale/de.json": 9537,
+    "src/i18n/locale/es.json": 9537,
+    "src/i18n/locale/fr.json": 9537,
+    "src/i18n/locale/hi.json": 9537,
+    "src/i18n/locale/id.json": 9537,
+    "src/i18n/locale/ja.json": 9537,
+    "src/i18n/locale/ko.json": 9537,
+    "src/i18n/locale/pt_BR.json": 9537,
+    "src/i18n/locale/vi.json": 9537,
+    "src/i18n/locale/zh_Hans.json": 9537,
+    "src/i18n/locale/zh_Hant.json": 9537
+  },
+  "rows": [
+    {
+      "cellId": "components.CollectionDetails.queueCollection::ar",
+      "targetCatalogPath": "src/i18n/locale/ar.json",
+      "target": "إضافة المجموعة إلى قائمة الانتظار",
+      "targetSha256": "bb7ed2acde20a962c0c9a5391ca506c0ea6ccb4c5656bcd5622e876fb651fd1f"
+    },
+    {
+      "cellId": "components.CollectionDetails.queueCollection::de",
+      "targetCatalogPath": "src/i18n/locale/de.json",
+      "target": "Sammlung zur Warteschlange hinzufügen",
+      "targetSha256": "b2f9edf85d6f94c1dd80a126a8a24293159df4a1351a7b5586c083eff605caab"
+    },
+    {
+      "cellId": "components.CollectionDetails.queueCollection::es",
+      "targetCatalogPath": "src/i18n/locale/es.json",
+      "target": "Poner la colección en cola",
+      "targetSha256": "a3ce7cc2cb61289a197d61aaebfd5c26647ef7f0342788da482fbfb49df637d1"
+    },
+    {
+      "cellId": "components.CollectionDetails.queueCollection::fr",
+      "targetCatalogPath": "src/i18n/locale/fr.json",
+      "target": "Ajouter la collection à la file d’attente",
+      "targetSha256": "f6088a93d0cf5db372693cc4ddf398a046a699a5421bb8e4501f48789faa2718"
+    },
+    {
+      "cellId": "components.CollectionDetails.queueCollection::hi",
+      "targetCatalogPath": "src/i18n/locale/hi.json",
+      "target": "संग्रह को कतार में जोड़ें",
+      "targetSha256": "323ad524a683bcebc24c07708ec18f40a7903890063d19ab4fb95ac331ecfbda"
+    },
+    {
+      "cellId": "components.CollectionDetails.queueCollection::id",
+      "targetCatalogPath": "src/i18n/locale/id.json",
+      "target": "Tambahkan koleksi ke antrean",
+      "targetSha256": "8f8b4366b9753e2db2e22c18423a81d18f4503a4b9e786eba0c430cad66cae37"
+    },
+    {
+      "cellId": "components.CollectionDetails.queueCollection::ja",
+      "targetCatalogPath": "src/i18n/locale/ja.json",
+      "target": "コレクションをキューに追加",
+      "targetSha256": "7669d935310ce42cc1ce1336d176592dbd4f35cb50e53ae61d213822dce49ec7"
+    },
+    {
+      "cellId": "components.CollectionDetails.queueCollection::ko",
+      "targetCatalogPath": "src/i18n/locale/ko.json",
+      "target": "컬렉션 대기열에 추가",
+      "targetSha256": "0c407d35acbecd3e9a24b9aaaba1f2f492cfce0932dd910cc49bb9f5788a8b56"
+    },
+    {
+      "cellId": "components.CollectionDetails.queueCollection::pt-BR",
+      "targetCatalogPath": "src/i18n/locale/pt_BR.json",
+      "target": "Adicionar coleção à fila",
+      "targetSha256": "24fb817d28da3513f86859b7ad9caae0b1437fdd95da09b4ad0f3a68a03149a2"
+    },
+    {
+      "cellId": "components.CollectionDetails.queueCollection::vi",
+      "targetCatalogPath": "src/i18n/locale/vi.json",
+      "target": "Thêm bộ sưu tập vào hàng đợi",
+      "targetSha256": "ea2e16a01e6fd2c2ebec8e8a0cb88cf60155f85c138462620c92d07813227773"
+    },
+    {
+      "cellId": "components.CollectionDetails.queueCollection::zh-Hans",
+      "targetCatalogPath": "src/i18n/locale/zh_Hans.json",
+      "target": "将合集加入队列",
+      "targetSha256": "534fb546699151f073a4043e11e67ebdf230042c2a65350abb1bb54b59c91d56"
+    },
+    {
+      "cellId": "components.CollectionDetails.queueCollection::zh-Hant",
+      "targetCatalogPath": "src/i18n/locale/zh_Hant.json",
+      "target": "將合集加入佇列",
+      "targetSha256": "dd00d003ebba7ba5383f7e07e7468372d4884b76422931e2ab46c6226ae2c944"
+    },
+    {
+      "cellId": "components.CollectionQueue.active::ar",
+      "targetCatalogPath": "src/i18n/locale/ar.json",
+      "target": "قائمة الانتظار نشطة",
+      "targetSha256": "458cbfd8ee5a4130c4428303d1e0b3a750180dc233c8aa91d91b77d615cff121"
+    },
+    {
+      "cellId": "components.CollectionQueue.active::de",
+      "targetCatalogPath": "src/i18n/locale/de.json",
+      "target": "Warteschlange aktiv",
+      "targetSha256": "f9d7cbc9127ad0263bd3b509a547b0d89ebd686f8192e66a1ebd69fea6211b1a"
+    },
+    {
+      "cellId": "components.CollectionQueue.active::es",
+      "targetCatalogPath": "src/i18n/locale/es.json",
+      "target": "Cola activa",
+      "targetSha256": "4fa699000478b2266efb4f1783386edd38981a2f453d18b311db47d8098a525a"
+    },
+    {
+      "cellId": "components.CollectionQueue.active::fr",
+      "targetCatalogPath": "src/i18n/locale/fr.json",
+      "target": "File d’attente active",
+      "targetSha256": "a178bc28127f976c20eda0249eeca2bb4cda5a65bda06519e468a15ac6944f55"
+    },
+    {
+      "cellId": "components.CollectionQueue.active::hi",
+      "targetCatalogPath": "src/i18n/locale/hi.json",
+      "target": "कतार सक्रिय",
+      "targetSha256": "751c8994576143075503513d2b870cd6efa3e4e6b03230f51dcc3260701eeaaa"
+    },
+    {
+      "cellId": "components.CollectionQueue.active::id",
+      "targetCatalogPath": "src/i18n/locale/id.json",
+      "target": "Antrean aktif",
+      "targetSha256": "560191a893095c0cf63447e0138383b147e0b73299a8dec208340cd5d4f574be"
+    },
+    {
+      "cellId": "components.CollectionQueue.active::ja",
+      "targetCatalogPath": "src/i18n/locale/ja.json",
+      "target": "キュー稼働中",
+      "targetSha256": "08eeb227294d9ef6c23787b81e060e9cea8123fcae8d27f34f6ff679398d3f72"
+    },
+    {
+      "cellId": "components.CollectionQueue.active::ko",
+      "targetCatalogPath": "src/i18n/locale/ko.json",
+      "target": "대기열 실행 중",
+      "targetSha256": "5e7c75297f9ea786632b84278580ff413181440fb6734582f9817ef7eceb5ec2"
+    },
+    {
+      "cellId": "components.CollectionQueue.active::pt-BR",
+      "targetCatalogPath": "src/i18n/locale/pt_BR.json",
+      "target": "Fila ativa",
+      "targetSha256": "66f6d02035d2ec723f1544da559a4465bdac55603b6723826d0452a2f5b0e4b3"
+    },
+    {
+      "cellId": "components.CollectionQueue.active::vi",
+      "targetCatalogPath": "src/i18n/locale/vi.json",
+      "target": "Hàng đợi đang hoạt động",
+      "targetSha256": "72c527bab6996dc838f27b9031900b926ba4584fa7aa5a6ff9910b31e9294cbb"
+    },
+    {
+      "cellId": "components.CollectionQueue.active::zh-Hans",
+      "targetCatalogPath": "src/i18n/locale/zh_Hans.json",
+      "target": "队列运行中",
+      "targetSha256": "321bda90968575931d4d020a154709079fe88ce686540ff46386222456a68a06"
+    },
+    {
+      "cellId": "components.CollectionQueue.active::zh-Hant",
+      "targetCatalogPath": "src/i18n/locale/zh_Hant.json",
+      "target": "佇列執行中",
+      "targetSha256": "008cae708817f54adff99f13f6857ad07535ec7e0fd3b8cbe84260b14ce5ab0a"
+    },
+    {
+      "cellId": "components.CollectionQueue.buffer::ar",
+      "targetCatalogPath": "src/i18n/locale/ar.json",
+      "target": "أفلام تسبق الطلب في قائمة الانتظار",
+      "targetSha256": "bca508aee46927c0d6260de4691d309f6f9ed9661d35a8a4712b151a2956fb5d"
+    },
+    {
+      "cellId": "components.CollectionQueue.buffer::de",
+      "targetCatalogPath": "src/i18n/locale/de.json",
+      "target": "Filme im Vorlauf",
+      "targetSha256": "f50d87cb57fcb7bdd3268dec430f52147683fe37b14ca8cbc913007cc14983ef"
+    },
+    {
+      "cellId": "components.CollectionQueue.buffer::es",
+      "targetCatalogPath": "src/i18n/locale/es.json",
+      "target": "Películas por delante",
+      "targetSha256": "c639c9c69699c5463361aa8976df95ff617da62aa7fa946ee996aa9a4f0df4bd"
+    },
+    {
+      "cellId": "components.CollectionQueue.buffer::fr",
+      "targetCatalogPath": "src/i18n/locale/fr.json",
+      "target": "Films d’avance",
+      "targetSha256": "7c95be203bc083db26d23b5b8110de5a053488b845a740e15f667b822e5f7984"
+    },
+    {
+      "cellId": "components.CollectionQueue.buffer::hi",
+      "targetCatalogPath": "src/i18n/locale/hi.json",
+      "target": "आगे की फ़िल्मों की संख्या",
+      "targetSha256": "4670c7181461bbb5b841d62b95c0e95c8dd59e01a9d0d08d4da3cd006fd656e5"
+    },
+    {
+      "cellId": "components.CollectionQueue.buffer::id",
+      "targetCatalogPath": "src/i18n/locale/id.json",
+      "target": "Jumlah film di depan",
+      "targetSha256": "30b4a88a0e2d02897c747c91f7b3fc3add4ac1d15bfa9823165724bff229ed49"
+    },
+    {
+      "cellId": "components.CollectionQueue.buffer::ja",
+      "targetCatalogPath": "src/i18n/locale/ja.json",
+      "target": "先行する映画の数",
+      "targetSha256": "781f9ba9e1a52b74d1d80f37c82691317e6913a8d1914193730b19e17405a546"
+    },
+    {
+      "cellId": "components.CollectionQueue.buffer::ko",
+      "targetCatalogPath": "src/i18n/locale/ko.json",
+      "target": "앞서 대기할 영화 수",
+      "targetSha256": "507962017a6ae57e3e1d9bb63a40b6dac0e91845bc4bcc25b31c4932c414f304"
+    },
+    {
+      "cellId": "components.CollectionQueue.buffer::pt-BR",
+      "targetCatalogPath": "src/i18n/locale/pt_BR.json",
+      "target": "Filmes à frente",
+      "targetSha256": "39d5f0860d2de1c2923da3e55d9a1ad98bb21952da47f5b50751accef3a0a910"
+    },
+    {
+      "cellId": "components.CollectionQueue.buffer::vi",
+      "targetCatalogPath": "src/i18n/locale/vi.json",
+      "target": "Số phim ở phía trước",
+      "targetSha256": "7c008287c2407e92f64e4f3f1410df8cf9433960933522ccfef40fdc1f20f641"
+    },
+    {
+      "cellId": "components.CollectionQueue.buffer::zh-Hans",
+      "targetCatalogPath": "src/i18n/locale/zh_Hans.json",
+      "target": "提前排队的电影数",
+      "targetSha256": "b639c584623d34033fdca328f55426c878ad37850764e309d3a080c915f08713"
+    },
+    {
+      "cellId": "components.CollectionQueue.buffer::zh-Hant",
+      "targetCatalogPath": "src/i18n/locale/zh_Hant.json",
+      "target": "提前排入佇列的電影數",
+      "targetSha256": "68ff8e6b49682221fd541160ec8af90e18edc13296d79374001c75de827e56b5"
+    },
+    {
+      "cellId": "components.CollectionQueue.completed::ar",
+      "targetCatalogPath": "src/i18n/locale/ar.json",
+      "target": "تمت إضافة جميع الأفلام إلى قائمة الانتظار",
+      "targetSha256": "3cea2c8dce7248b8609f5f6e987468a1d871d20d742b7739ec93321baf83c120"
+    },
+    {
+      "cellId": "components.CollectionQueue.completed::de",
+      "targetCatalogPath": "src/i18n/locale/de.json",
+      "target": "Alle Filme sind eingereiht",
+      "targetSha256": "766393829de11c32c60147ad9b3d324987f47e694a4622e75c96e567dc22b7ff"
+    },
+    {
+      "cellId": "components.CollectionQueue.completed::es",
+      "targetCatalogPath": "src/i18n/locale/es.json",
+      "target": "Todas las películas están en cola",
+      "targetSha256": "a01b7d2525bcb63c0180f4f76caebfca3a7b8eede6555f6db73b4ee78dbed80f"
+    },
+    {
+      "cellId": "components.CollectionQueue.completed::fr",
+      "targetCatalogPath": "src/i18n/locale/fr.json",
+      "target": "Tous les films sont en file d’attente",
+      "targetSha256": "e0c12234d689ad72e1edf4cc4ac0664d9199da71db326ef63edd114b7fc36bfd"
+    },
+    {
+      "cellId": "components.CollectionQueue.completed::hi",
+      "targetCatalogPath": "src/i18n/locale/hi.json",
+      "target": "सभी फ़िल्में कतार में हैं",
+      "targetSha256": "a2ce0ef7ae87af6ac8dd1a8873d11b22cc56e2fcb9df388b4679500608606f14"
+    },
+    {
+      "cellId": "components.CollectionQueue.completed::id",
+      "targetCatalogPath": "src/i18n/locale/id.json",
+      "target": "Semua film sudah masuk antrean",
+      "targetSha256": "b14be371cdb0e97710019e911543c9843787e2f68118d3ac8f2b9ce04704e751"
+    },
+    {
+      "cellId": "components.CollectionQueue.completed::ja",
+      "targetCatalogPath": "src/i18n/locale/ja.json",
+      "target": "すべての映画がキューに追加されました",
+      "targetSha256": "92dfd831916fe75209bff711e2c33227bb73ccc8a6011231006f47b4483cc13b"
+    },
+    {
+      "cellId": "components.CollectionQueue.completed::ko",
+      "targetCatalogPath": "src/i18n/locale/ko.json",
+      "target": "모든 영화가 대기열에 추가됨",
+      "targetSha256": "a803f5e74791099047b8495a8674995430ff81d19e120f0c548b3ac59af7cf08"
+    },
+    {
+      "cellId": "components.CollectionQueue.completed::pt-BR",
+      "targetCatalogPath": "src/i18n/locale/pt_BR.json",
+      "target": "Todos os filmes estão na fila",
+      "targetSha256": "f2e0e44f7d7bbd1cc1249b2d14b15f9bb3ca74bc667eb3f88c704f940f732dad"
+    },
+    {
+      "cellId": "components.CollectionQueue.completed::vi",
+      "targetCatalogPath": "src/i18n/locale/vi.json",
+      "target": "Tất cả phim đã được thêm vào hàng đợi",
+      "targetSha256": "ae8b70810392f661ccbef697a3b33ffe5cf080264489b8b129aa64a7ca49a0ed"
+    },
+    {
+      "cellId": "components.CollectionQueue.completed::zh-Hans",
+      "targetCatalogPath": "src/i18n/locale/zh_Hans.json",
+      "target": "所有电影均已排入队列",
+      "targetSha256": "ad54549c6c9a7e034f9ef07c26f730d095a5c54164ba1557b9533667c6aa89d7"
+    },
+    {
+      "cellId": "components.CollectionQueue.completed::zh-Hant",
+      "targetCatalogPath": "src/i18n/locale/zh_Hant.json",
+      "target": "所有電影皆已排入佇列",
+      "targetSha256": "c379cd0cbf69ae1dd534cbcfed46a35557540c79ca7f9cbaa8323403f427d7af"
+    },
+    {
+      "cellId": "components.CollectionQueue.description::ar",
+      "targetCatalogPath": "src/i18n/locale/ar.json",
+      "target": "اطلب أفلام هذه المجموعة بترتيب الإصدار، مع إبقاء فيلم أو فيلمين غير مشاهدين في المقدمة. سيُستخدم حسابك وإعدادات الطلب المعتادة. ستظل الطلبات المستقبلية بحاجة إلى صلاحية وحصة وموافقة. تُحتسب الأفلام المطلوبة مسبقًا ضمن العدد المحدد للمقدمة.",
+      "targetSha256": "491d8a2a01268af3bf57c8b0247c54ead623fd8ca93a86d36fab1fceb3897725"
+    },
+    {
+      "cellId": "components.CollectionQueue.description::de",
+      "targetCatalogPath": "src/i18n/locale/de.json",
+      "target": "Fordere die Filme dieser Sammlung in Veröffentlichungsreihenfolge an und halte ein oder zwei ungesehene Filme im Vorlauf. Es werden dein Konto und die üblichen Standardwerte für Anfragen verwendet. Für zukünftige Anfragen sind weiterhin Berechtigung, Kontingent und Genehmigung erforderlich. Bereits angeforderte Filme zählen zum Puffer.",
+      "targetSha256": "5f5269dcdac9b15f2822bafbed2f1e09e193d33a07acd86a7af17b776ea5d2da"
+    },
+    {
+      "cellId": "components.CollectionQueue.description::es",
+      "targetCatalogPath": "src/i18n/locale/es.json",
+      "target": "Solicita esta colección en orden de estreno y mantén una o dos películas sin ver por delante. Se usarán tu cuenta y la configuración predeterminada de solicitudes. Las solicitudes futuras seguirán necesitando permisos, cuota y aprobación. Las películas ya solicitadas cuentan para esa cantidad.",
+      "targetSha256": "e95a0d82953a95062e2ce3ed0cd491a59759026857aab7d3515e06d91951a69b"
+    },
+    {
+      "cellId": "components.CollectionQueue.description::fr",
+      "targetCatalogPath": "src/i18n/locale/fr.json",
+      "target": "Demandez cette collection dans l’ordre de sortie en gardant un ou deux films non vus d’avance dans la file. La file utilise votre compte et les paramètres habituels des demandes. Les demandes futures nécessitent toujours des autorisations, un quota et une approbation. Les films déjà demandés comptent dans cette quantité.",
+      "targetSha256": "cdb8a7c3b17a69930d5034104b4ed042639547af0ffe22f7e782168ae18bf122"
+    },
+    {
+      "cellId": "components.CollectionQueue.description::hi",
+      "targetCatalogPath": "src/i18n/locale/hi.json",
+      "target": "इस कलेक्शन के लिए फ़िल्मों के रिलीज़ क्रम में अनुरोध करें और एक या दो ऐसी अनदेखी फ़िल्में आगे कतार में रखें। इसमें आपका खाता और अनुरोध की सामान्य डिफ़ॉल्ट सेटिंग इस्तेमाल होती है। भविष्य के अनुरोधों के लिए अनुमति, कोटा और स्वीकृति फिर भी आवश्यक हैं। पहले से अनुरोध की गई फ़िल्में भी इस बफ़र में गिनी जाती हैं।",
+      "targetSha256": "06fcf1de8f9041b9f93213a287571ba36598154159676fab9093374bb74bc7ed"
+    },
+    {
+      "cellId": "components.CollectionQueue.description::id",
+      "targetCatalogPath": "src/i18n/locale/id.json",
+      "target": "Minta film dalam koleksi ini sesuai urutan rilis, dengan mempertahankan satu atau dua film yang belum ditonton di depan. Pengaturan ini menggunakan akun dan setelan permintaan standar Anda. Permintaan berikutnya tetap memerlukan izin, kuota, dan persetujuan. Film yang sudah diminta juga dihitung dalam jumlah tersebut.",
+      "targetSha256": "59bd4abfdd5830f57937c3e1e24ec0e88e2bfcaf98a10a6d3b37d5ffc9c0079f"
+    },
+    {
+      "cellId": "components.CollectionQueue.description::ja",
+      "targetCatalogPath": "src/i18n/locale/ja.json",
+      "target": "このコレクションを公開順にリクエストし、未視聴の映画を一本または二本、先行してキューに入れます。ご自身のアカウントと通常のリクエスト設定を使用します。今後のリクエストにも権限、上限、承認が必要です。リクエスト済みの映画も先行数に含まれます。",
+      "targetSha256": "4114381ebd8760c1f3579dcee69b3048b1ff5296cebc12b82f6d249df058a43b"
+    },
+    {
+      "cellId": "components.CollectionQueue.description::ko",
+      "targetCatalogPath": "src/i18n/locale/ko.json",
+      "target": "이 컬렉션의 영화를 개봉 순서대로 요청하고, 아직 시청하지 않은 영화 한두 편을 앞서 대기열에 둡니다. 사용자 계정과 일반 요청 기본값을 사용합니다. 이후 요청에도 권한, 할당량, 승인이 필요합니다. 이미 요청한 영화도 미리 대기할 수량에 포함됩니다.",
+      "targetSha256": "ad428f1649889eb4c1c3f86ba27869c98aa80e4027fcaa7ae3ca26d2a447cfd6"
+    },
+    {
+      "cellId": "components.CollectionQueue.description::pt-BR",
+      "targetCatalogPath": "src/i18n/locale/pt_BR.json",
+      "target": "Solicite esta coleção na ordem de lançamento, mantendo um ou dois filmes não assistidos à frente na fila. A fila usa sua conta e as configurações padrão de solicitação. As solicitações futuras ainda dependem de permissão, cota e aprovação. Os filmes já solicitados contam para essa quantidade.",
+      "targetSha256": "8b9870b3b1280ecf50e6e0b259adf92e7a6f6a4ec3bd778b6384c1c0e786cdbd"
+    },
+    {
+      "cellId": "components.CollectionQueue.description::vi",
+      "targetCatalogPath": "src/i18n/locale/vi.json",
+      "target": "Yêu cầu bộ sưu tập này theo thứ tự phát hành, giữ một hoặc hai phim chưa xem ở phía trước trong hàng đợi. Hàng đợi sử dụng tài khoản và cài đặt yêu cầu mặc định của bạn. Các yêu cầu tiếp theo vẫn cần quyền truy cập, hạn mức và phê duyệt. Những phim đã được yêu cầu cũng được tính vào số phim giữ phía trước.",
+      "targetSha256": "ada722a0636f673451bbbcd863dae7cc0549e2e384e1c8a3ccc79b7a6388ee6c"
+    },
+    {
+      "cellId": "components.CollectionQueue.description::zh-Hans",
+      "targetCatalogPath": "src/i18n/locale/zh_Hans.json",
+      "target": "按发行顺序请求此合集，并提前在队列中保留一到两部未观看的电影。此功能使用你的账户和常规请求默认设置。后续请求仍需要权限、配额和批准。已请求的电影也计入提前排队的数量。",
+      "targetSha256": "b8c6922e6fb2cbcd27832fe7abd984f97b029b2a294cb9791e1738cc89268051"
+    },
+    {
+      "cellId": "components.CollectionQueue.description::zh-Hant",
+      "targetCatalogPath": "src/i18n/locale/zh_Hant.json",
+      "target": "依上映順序請求此合集，並在佇列中預留一至兩部尚未觀看的電影作為緩衝。此操作會使用你的帳戶與一般請求預設值。後續請求仍需相應權限、額度及核准。已請求的電影也會計入緩衝數量。",
+      "targetSha256": "5cb261bf4d82b69ab33676c353c044e581bb5c0773a79703b5ee65b0bf948c22"
+    },
+    {
+      "cellId": "components.CollectionQueue.error::ar",
+      "targetCatalogPath": "src/i18n/locale/ar.json",
+      "target": "تعذّر تحديث قائمة انتظار المجموعة. حاول مرة أخرى لاحقًا.",
+      "targetSha256": "732ce1983f2b2ac664c58cadc31770cff058eb4c0d66e3dba6e9afc53e97d9ec"
+    },
+    {
+      "cellId": "components.CollectionQueue.error::de",
+      "targetCatalogPath": "src/i18n/locale/de.json",
+      "target": "Die Warteschlange für diese Sammlung konnte nicht aktualisiert werden. Versuche es später erneut.",
+      "targetSha256": "fbf1451b4f1a5ce5e23857c2594075db474dddc2916cc717d60fb61b237ff5eb"
+    },
+    {
+      "cellId": "components.CollectionQueue.error::es",
+      "targetCatalogPath": "src/i18n/locale/es.json",
+      "target": "No se pudo actualizar la cola de la colección. Inténtalo de nuevo más tarde.",
+      "targetSha256": "d6520504b8ab41e7f5a2290aa15e701a1abf22f294100f6cec301fb868dd095b"
+    },
+    {
+      "cellId": "components.CollectionQueue.error::fr",
+      "targetCatalogPath": "src/i18n/locale/fr.json",
+      "target": "Impossible de mettre à jour la file d’attente de la collection. Réessayez plus tard.",
+      "targetSha256": "cce229c32ac6610949d9405edc6619435dc91f756c37729b100afe41ded5fac8"
+    },
+    {
+      "cellId": "components.CollectionQueue.error::hi",
+      "targetCatalogPath": "src/i18n/locale/hi.json",
+      "target": "संग्रह कतार अपडेट नहीं हो सकी। बाद में फिर कोशिश करें।",
+      "targetSha256": "12a64faa5c8ef47bf71906f60a8ea1ccacf7c92e4055d23b452edd34afb7aeb8"
+    },
+    {
+      "cellId": "components.CollectionQueue.error::id",
+      "targetCatalogPath": "src/i18n/locale/id.json",
+      "target": "Antrean koleksi tidak dapat diperbarui. Coba lagi nanti.",
+      "targetSha256": "add071b0d225dbba399c4502f71ade18cb76af93103a2e2d8f5f7ed1a056bf2b"
+    },
+    {
+      "cellId": "components.CollectionQueue.error::ja",
+      "targetCatalogPath": "src/i18n/locale/ja.json",
+      "target": "コレクションキューを更新できませんでした。しばらくしてからもう一度お試しください。",
+      "targetSha256": "9414a33a698110be3f20aa53ac5d527b8de71416b4fd15e184429d1c714102a5"
+    },
+    {
+      "cellId": "components.CollectionQueue.error::ko",
+      "targetCatalogPath": "src/i18n/locale/ko.json",
+      "target": "컬렉션 대기열을 업데이트하지 못했습니다. 나중에 다시 시도하세요.",
+      "targetSha256": "11b0f2669793535f6094644c7f2e439cb5e0aca9023f9f2921df58bf3bd908ed"
+    },
+    {
+      "cellId": "components.CollectionQueue.error::pt-BR",
+      "targetCatalogPath": "src/i18n/locale/pt_BR.json",
+      "target": "Não foi possível atualizar a fila da coleção. Tente novamente mais tarde.",
+      "targetSha256": "cc55542bb9c0a6e42e521e970365dc8135525622c3cf09d5c2039fb2bcb4c17d"
+    },
+    {
+      "cellId": "components.CollectionQueue.error::vi",
+      "targetCatalogPath": "src/i18n/locale/vi.json",
+      "target": "Không thể cập nhật hàng đợi của bộ sưu tập. Hãy thử lại sau.",
+      "targetSha256": "20443cb7aee178606b88914592fcfea999eb8542c5816f2a4e72e3ea3c69e04c"
+    },
+    {
+      "cellId": "components.CollectionQueue.error::zh-Hans",
+      "targetCatalogPath": "src/i18n/locale/zh_Hans.json",
+      "target": "无法更新合集队列。请稍后重试。",
+      "targetSha256": "69d73fb0e8dec89f9e7a83f13ff4415243fb9dfca9572c6f7dff0b7da7b257e5"
+    },
+    {
+      "cellId": "components.CollectionQueue.error::zh-Hant",
+      "targetCatalogPath": "src/i18n/locale/zh_Hant.json",
+      "target": "無法更新合集佇列。請稍後再試。",
+      "targetSha256": "9d3092c847a79ec08cb5f81d3b23cd399a19c20f817aac1c8fe8fac19d596737"
+    },
+    {
+      "cellId": "components.CollectionQueue.existing4k::ar",
+      "targetCatalogPath": "src/i18n/locale/ar.json",
+      "target": "4K (ضمن قائمة الانتظار الحالية)",
+      "targetSha256": "05fec01f0330fdc26a1a6c68a13fece871879b54db9ec69da0851582f4e50f51"
+    },
+    {
+      "cellId": "components.CollectionQueue.existing4k::de",
+      "targetCatalogPath": "src/i18n/locale/de.json",
+      "target": "4K (bestehende Warteschlange)",
+      "targetSha256": "be18b32edeb5c0cddb39b867ee07f8386e806fb230f3e124afc75d4b13e21f93"
+    },
+    {
+      "cellId": "components.CollectionQueue.existing4k::es",
+      "targetCatalogPath": "src/i18n/locale/es.json",
+      "target": "4K (cola existente)",
+      "targetSha256": "966c0f4bf9f72b541bb9bb35836fd4a19b4a1637b4b3dd751663b4f7e96e48a1"
+    },
+    {
+      "cellId": "components.CollectionQueue.existing4k::fr",
+      "targetCatalogPath": "src/i18n/locale/fr.json",
+      "target": "4K (file d’attente existante)",
+      "targetSha256": "c62a69206f647d5dfea24561c29cb4d959074512450e9bed5066840a075d205f"
+    },
+    {
+      "cellId": "components.CollectionQueue.existing4k::hi",
+      "targetCatalogPath": "src/i18n/locale/hi.json",
+      "target": "4K (मौजूदा कतार)",
+      "targetSha256": "7fe68f40fe7f407b730a693adc920bfc2e298ffa73f1c182b8c70938cb9848e0"
+    },
+    {
+      "cellId": "components.CollectionQueue.existing4k::id",
+      "targetCatalogPath": "src/i18n/locale/id.json",
+      "target": "4K (antrean yang sudah ada)",
+      "targetSha256": "2166640fee010dd8f4ec8ac71b5ded33bd2743330d57cd03e4aeedb5cb4a3b0c"
+    },
+    {
+      "cellId": "components.CollectionQueue.existing4k::ja",
+      "targetCatalogPath": "src/i18n/locale/ja.json",
+      "target": "4K（既存のキュー）",
+      "targetSha256": "c5c38d9619b8cc9cc5b284998da995eab4d73797c1160cb8082346c5194e57b1"
+    },
+    {
+      "cellId": "components.CollectionQueue.existing4k::ko",
+      "targetCatalogPath": "src/i18n/locale/ko.json",
+      "target": "4K (기존 대기열)",
+      "targetSha256": "e9f294472b29bf22df9f471c2e53929167ae363c0edb64ce4bd99db1497f9a0a"
+    },
+    {
+      "cellId": "components.CollectionQueue.existing4k::pt-BR",
+      "targetCatalogPath": "src/i18n/locale/pt_BR.json",
+      "target": "4K (fila existente)",
+      "targetSha256": "9007ca40f28b809516135131dbf3014d86ffe790ed145e0c28f0ebcc09392151"
+    },
+    {
+      "cellId": "components.CollectionQueue.existing4k::vi",
+      "targetCatalogPath": "src/i18n/locale/vi.json",
+      "target": "4K (hàng đợi hiện có)",
+      "targetSha256": "be78dcb28b3c7af4ccb791d65c833782878b2ef55557273182bc23b67e213312"
+    },
+    {
+      "cellId": "components.CollectionQueue.existing4k::zh-Hans",
+      "targetCatalogPath": "src/i18n/locale/zh_Hans.json",
+      "target": "4K（现有队列）",
+      "targetSha256": "008f68d3700bfd134e8e3fb860fe44c9619fcb603497f14a961b46eefdd5d141"
+    },
+    {
+      "cellId": "components.CollectionQueue.existing4k::zh-Hant",
+      "targetCatalogPath": "src/i18n/locale/zh_Hant.json",
+      "target": "4K（現有佇列）",
+      "targetSha256": "316d06814e8c3de1770b7cfec1ce8a32761e4d8e8d0ca115c4b59a143b12d6d2"
+    },
+    {
+      "cellId": "components.CollectionQueue.loading::ar",
+      "targetCatalogPath": "src/i18n/locale/ar.json",
+      "target": "جارٍ تحميل قائمة انتظار المجموعة…",
+      "targetSha256": "33f4ff8c9c46ad6fcdd298f8f043c76c6fb5a2bc2ad6b076d269bc3f66c7ce46"
+    },
+    {
+      "cellId": "components.CollectionQueue.loading::de",
+      "targetCatalogPath": "src/i18n/locale/de.json",
+      "target": "Warteschlange für die Sammlung wird geladen…",
+      "targetSha256": "12d9424f2ee955f7412edab3432dbd6bf8ddece07d4b65482ea96260c4abd034"
+    },
+    {
+      "cellId": "components.CollectionQueue.loading::es",
+      "targetCatalogPath": "src/i18n/locale/es.json",
+      "target": "Cargando la cola de la colección…",
+      "targetSha256": "35c96667bf30c64e036712898fd2159f79dba4958f9bf94cf4ba29bad76173d8"
+    },
+    {
+      "cellId": "components.CollectionQueue.loading::fr",
+      "targetCatalogPath": "src/i18n/locale/fr.json",
+      "target": "Chargement de la file d’attente de la collection…",
+      "targetSha256": "52e279f36d8553b77ceb6ea492c282d0020fb5009c5823f3dd59c099360921d0"
+    },
+    {
+      "cellId": "components.CollectionQueue.loading::hi",
+      "targetCatalogPath": "src/i18n/locale/hi.json",
+      "target": "कलेक्शन की कतार लोड हो रही है…",
+      "targetSha256": "6a9ce319dd411e3728dd91bc12ddfc9710a3fd43e948eb845e82673f0900485d"
+    },
+    {
+      "cellId": "components.CollectionQueue.loading::id",
+      "targetCatalogPath": "src/i18n/locale/id.json",
+      "target": "Memuat antrean koleksi…",
+      "targetSha256": "97280b8901b9854d10706854f1ffd18cbc1eb8ae798764ca7f29954650a63c32"
+    },
+    {
+      "cellId": "components.CollectionQueue.loading::ja",
+      "targetCatalogPath": "src/i18n/locale/ja.json",
+      "target": "コレクションキューを読み込み中…",
+      "targetSha256": "1b42cba10c25f3514b7312d68c1b600a6bc5de56f024006d97c8b25c0b0f1c99"
+    },
+    {
+      "cellId": "components.CollectionQueue.loading::ko",
+      "targetCatalogPath": "src/i18n/locale/ko.json",
+      "target": "컬렉션 대기열을 불러오는 중…",
+      "targetSha256": "ae377b7b86d5e704d7d3f703a7585b51043387c240cca03fcfd4e680de91a716"
+    },
+    {
+      "cellId": "components.CollectionQueue.loading::pt-BR",
+      "targetCatalogPath": "src/i18n/locale/pt_BR.json",
+      "target": "Carregando a fila da coleção…",
+      "targetSha256": "b54403a07890acba33e54fcb999d45a3e6384445012fe0860b5f5973e3210cff"
+    },
+    {
+      "cellId": "components.CollectionQueue.loading::vi",
+      "targetCatalogPath": "src/i18n/locale/vi.json",
+      "target": "Đang tải hàng đợi của bộ sưu tập…",
+      "targetSha256": "b18f2a031c131bd7025ffae26c92eecccaf8aba19a1891132383e94c3cf62520"
+    },
+    {
+      "cellId": "components.CollectionQueue.loading::zh-Hans",
+      "targetCatalogPath": "src/i18n/locale/zh_Hans.json",
+      "target": "正在加载合集队列…",
+      "targetSha256": "5d1c19b8301f244ac19655e2d6628953b2c55213f8ded03b1b59e1639d49250a"
+    },
+    {
+      "cellId": "components.CollectionQueue.loading::zh-Hant",
+      "targetCatalogPath": "src/i18n/locale/zh_Hant.json",
+      "target": "正在載入合集佇列…",
+      "targetSha256": "4c2fb425bacd3c5d69baf2f1ebc4872e114b0bc31ff2cafb952acf420ca0a853"
+    },
+    {
+      "cellId": "components.CollectionQueue.one::ar",
+      "targetCatalogPath": "src/i18n/locale/ar.json",
+      "target": "1 فيلم",
+      "targetSha256": "c09f636f88f29ef701ac68b19cfb1d54a146250c98e499c2b702c4dab34f4fac"
+    },
+    {
+      "cellId": "components.CollectionQueue.one::de",
+      "targetCatalogPath": "src/i18n/locale/de.json",
+      "target": "1 Film",
+      "targetSha256": "5612703d43f3ae067192c847257572742f89cf08f8240c72f5400a80a7f53d30"
+    },
+    {
+      "cellId": "components.CollectionQueue.one::es",
+      "targetCatalogPath": "src/i18n/locale/es.json",
+      "target": "1 película",
+      "targetSha256": "31a913357947eddf9a30bd050680ee5b09182b010a86ca9736ac1a3c98c79b97"
+    },
+    {
+      "cellId": "components.CollectionQueue.one::fr",
+      "targetCatalogPath": "src/i18n/locale/fr.json",
+      "target": "1 film",
+      "targetSha256": "3ee8f7c4a5d6343213689388a521566627d285f3fe1ee62c44dda9f43db2ac4f"
+    },
+    {
+      "cellId": "components.CollectionQueue.one::hi",
+      "targetCatalogPath": "src/i18n/locale/hi.json",
+      "target": "1 फ़िल्म",
+      "targetSha256": "8666e444bc06e37bb300d12010236bdaab573479da9af33a9952efa084f82ca2"
+    },
+    {
+      "cellId": "components.CollectionQueue.one::id",
+      "targetCatalogPath": "src/i18n/locale/id.json",
+      "target": "1 film",
+      "targetSha256": "3ee8f7c4a5d6343213689388a521566627d285f3fe1ee62c44dda9f43db2ac4f"
+    },
+    {
+      "cellId": "components.CollectionQueue.one::ja",
+      "targetCatalogPath": "src/i18n/locale/ja.json",
+      "target": "映画1本",
+      "targetSha256": "1d152f9cb5bf426e08f69e6190ad2057d3047e3570f68c6b6b79d711c378c912"
+    },
+    {
+      "cellId": "components.CollectionQueue.one::ko",
+      "targetCatalogPath": "src/i18n/locale/ko.json",
+      "target": "영화 1편",
+      "targetSha256": "e0e3addc53519ffb3247e2d33b6b8048fb2af1f633883ec5ba9e60ebba6ea066"
+    },
+    {
+      "cellId": "components.CollectionQueue.one::pt-BR",
+      "targetCatalogPath": "src/i18n/locale/pt_BR.json",
+      "target": "1 filme",
+      "targetSha256": "ec2046e1c7e1ad22b5f3460f69c1f334bf422b221f06796b5747f3cf655eca41"
+    },
+    {
+      "cellId": "components.CollectionQueue.one::vi",
+      "targetCatalogPath": "src/i18n/locale/vi.json",
+      "target": "1 phim",
+      "targetSha256": "eed6f735a970c857c816d867efb893b4eb34c56a5aef0870fa76a7a52fc090ee"
+    },
+    {
+      "cellId": "components.CollectionQueue.one::zh-Hans",
+      "targetCatalogPath": "src/i18n/locale/zh_Hans.json",
+      "target": "1 部电影",
+      "targetSha256": "a7f543c42c6b6dba20535a44a59e2ba1fa15419491fca427d1fe7225237a2981"
+    },
+    {
+      "cellId": "components.CollectionQueue.one::zh-Hant",
+      "targetCatalogPath": "src/i18n/locale/zh_Hant.json",
+      "target": "1 部電影",
+      "targetSha256": "0791b7c47fc10e2deb3398ea7878827d125acdcf74bd1ab45cf49dcd474b6782"
+    },
+    {
+      "cellId": "components.CollectionQueue.playback-unlinked::ar",
+      "targetCatalogPath": "src/i18n/locale/ar.json",
+      "target": "للمتابعة، اربط حسابك على Plex أو Jellyfin أو Emby.",
+      "targetSha256": "a14b97eeb7988ed0b0b69a8d4b34689f4a528dae02ddf0c2303ba6f0fc7b8916"
+    },
+    {
+      "cellId": "components.CollectionQueue.playback-unlinked::de",
+      "targetCatalogPath": "src/i18n/locale/de.json",
+      "target": "Verknüpfe dein Plex-, Jellyfin- oder Emby-Konto, um fortzufahren.",
+      "targetSha256": "45d0d967a3b452ac6d645e598b96a2556ba40ab61c1ba55332f24c8687ff34b8"
+    },
+    {
+      "cellId": "components.CollectionQueue.playback-unlinked::es",
+      "targetCatalogPath": "src/i18n/locale/es.json",
+      "target": "Vincula tu cuenta de Plex, Jellyfin o Emby para continuar.",
+      "targetSha256": "389cb1b5fd2836338c0eef60cdf9d8ba5f8c6a48f03378899ca5992f784cafd3"
+    },
+    {
+      "cellId": "components.CollectionQueue.playback-unlinked::fr",
+      "targetCatalogPath": "src/i18n/locale/fr.json",
+      "target": "Associez votre compte Plex, Jellyfin ou Emby pour continuer.",
+      "targetSha256": "3f4a2d8b45cd0b7462a085ca3d07f198ef72039425d79dced32b71d5cfbdf35a"
+    },
+    {
+      "cellId": "components.CollectionQueue.playback-unlinked::hi",
+      "targetCatalogPath": "src/i18n/locale/hi.json",
+      "target": "जारी रखने के लिए अपना Plex, Jellyfin या Emby खाता लिंक करें।",
+      "targetSha256": "e6ab974ae0edb3f9161f7cf31a6c9be79f7adf792690d3c8cef9cbe52e3bac81"
+    },
+    {
+      "cellId": "components.CollectionQueue.playback-unlinked::id",
+      "targetCatalogPath": "src/i18n/locale/id.json",
+      "target": "Tautkan akun Plex, Jellyfin, atau Emby Anda untuk melanjutkan.",
+      "targetSha256": "c6081f5c4c669b68d3323f865a1eb2713a42cf2698cd48743b643270aed77ec0"
+    },
+    {
+      "cellId": "components.CollectionQueue.playback-unlinked::ja",
+      "targetCatalogPath": "src/i18n/locale/ja.json",
+      "target": "続行するには、Plex、Jellyfin、またはEmbyのアカウントを連携してください。",
+      "targetSha256": "45dc49bf4b06b348be3ac3db648347f10daa4ef85fd56270a41bc97b55a9500b"
+    },
+    {
+      "cellId": "components.CollectionQueue.playback-unlinked::ko",
+      "targetCatalogPath": "src/i18n/locale/ko.json",
+      "target": "계속하려면 Plex, Jellyfin 또는 Emby 계정을 연결하세요.",
+      "targetSha256": "73315c3b25c1d5b6140f786d6588a0a9edf4254afc4968f1631d07de577a68cd"
+    },
+    {
+      "cellId": "components.CollectionQueue.playback-unlinked::pt-BR",
+      "targetCatalogPath": "src/i18n/locale/pt_BR.json",
+      "target": "Vincule sua conta do Plex, Jellyfin ou Emby para continuar.",
+      "targetSha256": "67c21de2a290de90045458985e045f067d8760b079e5db5af9bebeb2c5919ebf"
+    },
+    {
+      "cellId": "components.CollectionQueue.playback-unlinked::vi",
+      "targetCatalogPath": "src/i18n/locale/vi.json",
+      "target": "Liên kết tài khoản Plex, Jellyfin hoặc Emby của bạn để tiếp tục.",
+      "targetSha256": "2b7959ea71630824be93843401a28e0ef282e1e078a29a48b6c192aa0c24ad86"
+    },
+    {
+      "cellId": "components.CollectionQueue.playback-unlinked::zh-Hans",
+      "targetCatalogPath": "src/i18n/locale/zh_Hans.json",
+      "target": "请关联你的 Plex、Jellyfin 或 Emby 账户以继续。",
+      "targetSha256": "25f5c672cfb84b26429aabe57512e1bff3a57c8c95c9e6c258d44e4786c639e7"
+    },
+    {
+      "cellId": "components.CollectionQueue.playback-unlinked::zh-Hant",
+      "targetCatalogPath": "src/i18n/locale/zh_Hant.json",
+      "target": "請連結你的 Plex、Jellyfin 或 Emby 帳戶以繼續。",
+      "targetSha256": "289870eb1b017685987084ce2a5cf6bb15852ae6bf5807c847690ef18d82be28"
+    },
+    {
+      "cellId": "components.CollectionQueue.progress::ar",
+      "targetCatalogPath": "src/i18n/locale/ar.json",
+      "target": "المشاهَد: {watched} · المطلوب عبر هذه القائمة: {requested} · إجمالي الأفلام: {total}",
+      "targetSha256": "6ae0efc7f81c9dae8be8081371d4606b21ea9bbeef97f34e3380ed5e239c9cc4"
+    },
+    {
+      "cellId": "components.CollectionQueue.progress::de",
+      "targetCatalogPath": "src/i18n/locale/de.json",
+      "target": "{watched} gesehen · {requested} über diese Warteschlange angefordert · insgesamt {total} Filme",
+      "targetSha256": "990fedb77c3e5300334d7c57facb94f7a7bbc7077ddf2baed7c4f37c325e075a"
+    },
+    {
+      "cellId": "components.CollectionQueue.progress::es",
+      "targetCatalogPath": "src/i18n/locale/es.json",
+      "target": "{watched} vistas · {requested} solicitadas por esta cola · {total} películas en total",
+      "targetSha256": "e3f7e0ea7129e78b3fe4e42946506855358bec225af4412da46163e087f9951d"
+    },
+    {
+      "cellId": "components.CollectionQueue.progress::fr",
+      "targetCatalogPath": "src/i18n/locale/fr.json",
+      "target": "{watched} visionnés · {requested} demandés par cette file · {total} films au total",
+      "targetSha256": "03d4020528787ca0d02ae9fdd6970e8fe01734ac9dbba196f709e00f85334292"
+    },
+    {
+      "cellId": "components.CollectionQueue.progress::hi",
+      "targetCatalogPath": "src/i18n/locale/hi.json",
+      "target": "{watched} देखी गईं · इस कतार से {requested} का अनुरोध किया गया · कुल {total} फ़िल्में",
+      "targetSha256": "d17c4f335778813025fea7112a85650b147716a198095fba0c80d3e59f2fd9ea"
+    },
+    {
+      "cellId": "components.CollectionQueue.progress::id",
+      "targetCatalogPath": "src/i18n/locale/id.json",
+      "target": "{watched} ditonton · {requested} diminta oleh antrean ini · total {total} film",
+      "targetSha256": "33609893c81aa2112d4b6b0c204d0f6e014ac1d7dbde48a1dffa7d41e1eb7ff3"
+    },
+    {
+      "cellId": "components.CollectionQueue.progress::ja",
+      "targetCatalogPath": "src/i18n/locale/ja.json",
+      "target": "{watched}本視聴済み · このキューから{requested}本リクエスト済み · 合計{total}本",
+      "targetSha256": "50388088062fbf84ea50b29e0b8ce9583dd51c201dc129a8d25c7ab917b396c6"
+    },
+    {
+      "cellId": "components.CollectionQueue.progress::ko",
+      "targetCatalogPath": "src/i18n/locale/ko.json",
+      "target": "{watched}편 시청 · 이 대기열에서 {requested}편 요청 · 총 {total}편",
+      "targetSha256": "de7b41899b44b5772b4dc4ca8e6825008ebbb1cb9dd56d946cf9de4105e3c2fc"
+    },
+    {
+      "cellId": "components.CollectionQueue.progress::pt-BR",
+      "targetCatalogPath": "src/i18n/locale/pt_BR.json",
+      "target": "{watched} assistidos · {requested} solicitados por esta fila · {total} filmes no total",
+      "targetSha256": "e0853e4733ee115638f76da3023742b5ae47540fb7f98c7d236dc213b34c38ba"
+    },
+    {
+      "cellId": "components.CollectionQueue.progress::vi",
+      "targetCatalogPath": "src/i18n/locale/vi.json",
+      "target": "Đã xem {watched} phim · Hàng đợi này đã yêu cầu {requested} phim · Tổng cộng {total} phim",
+      "targetSha256": "6e811450134b4c32cdad9fcfdbc403bb935ab5a79e75f74085116c9b10092fe0"
+    },
+    {
+      "cellId": "components.CollectionQueue.progress::zh-Hans",
+      "targetCatalogPath": "src/i18n/locale/zh_Hans.json",
+      "target": "已观看 {watched} 部 · 此队列已请求 {requested} 部 · 共 {total} 部电影",
+      "targetSha256": "1d6e3c7f6a5c720e6a5cd5fa03c197413d8ed51303215cffa889a0c8f45235de"
+    },
+    {
+      "cellId": "components.CollectionQueue.progress::zh-Hant",
+      "targetCatalogPath": "src/i18n/locale/zh_Hant.json",
+      "target": "已觀看 {watched} 部 · 此佇列已請求 {requested} 部 · 共 {total} 部電影",
+      "targetSha256": "42dd0d44acc98595386f5472f41794e4e4efd338479870f0b872e45696003e52"
+    },
+    {
+      "cellId": "components.CollectionQueue.provider-unavailable::ar",
+      "targetCatalogPath": "src/i18n/locale/ar.json",
+      "target": "سجل المشاهدة غير متاح. ستتم إعادة المحاولة تلقائيًا.",
+      "targetSha256": "40c3401f937ee09bbbf3d50a8e266c5dca70081e455e2584d828c22c4c972041"
+    },
+    {
+      "cellId": "components.CollectionQueue.provider-unavailable::de",
+      "targetCatalogPath": "src/i18n/locale/de.json",
+      "target": "Der Wiedergabeverlauf ist nicht verfügbar. Es wird automatisch erneut versucht.",
+      "targetSha256": "39e7c6b848c8a569d50a0b29305e3c34da985bd065ad152dff166bc75941341c"
+    },
+    {
+      "cellId": "components.CollectionQueue.provider-unavailable::es",
+      "targetCatalogPath": "src/i18n/locale/es.json",
+      "target": "El historial de reproducción no está disponible. Se volverá a intentar automáticamente.",
+      "targetSha256": "04197579f0937a8293c4cb706a7854771722a532009404265706df5633f58675"
+    },
+    {
+      "cellId": "components.CollectionQueue.provider-unavailable::fr",
+      "targetCatalogPath": "src/i18n/locale/fr.json",
+      "target": "L’historique de lecture est indisponible. Une nouvelle tentative sera effectuée automatiquement.",
+      "targetSha256": "437c3a7a8648e6f3332cd75fbd6875f6185dac362eedbfcf21b449cf86209967"
+    },
+    {
+      "cellId": "components.CollectionQueue.provider-unavailable::hi",
+      "targetCatalogPath": "src/i18n/locale/hi.json",
+      "target": "प्लेबैक इतिहास उपलब्ध नहीं है। अपने आप फिर कोशिश की जाएगी।",
+      "targetSha256": "6f2d655c6cfaa505eec3b7bc4e398629df87f868e24b95bf9917e5cf25000c55"
+    },
+    {
+      "cellId": "components.CollectionQueue.provider-unavailable::id",
+      "targetCatalogPath": "src/i18n/locale/id.json",
+      "target": "Riwayat pemutaran tidak tersedia. Sistem akan mencoba lagi secara otomatis.",
+      "targetSha256": "98b1ae1d1705296f3d41007554184d30aaebe98a2b469949de698894af0a48f8"
+    },
+    {
+      "cellId": "components.CollectionQueue.provider-unavailable::ja",
+      "targetCatalogPath": "src/i18n/locale/ja.json",
+      "target": "再生履歴を利用できません。自動的に再試行します。",
+      "targetSha256": "9cf2200b2c54c28ff5463cd25808b7f1c46d46db4023d255b0a3d17441a07756"
+    },
+    {
+      "cellId": "components.CollectionQueue.provider-unavailable::ko",
+      "targetCatalogPath": "src/i18n/locale/ko.json",
+      "target": "재생 기록을 사용할 수 없습니다. 자동으로 다시 시도합니다.",
+      "targetSha256": "c137c67ca44ecdee5fe2ac4bf0a010ca6ad3aef4a867683f07a2c29b70a334f0"
+    },
+    {
+      "cellId": "components.CollectionQueue.provider-unavailable::pt-BR",
+      "targetCatalogPath": "src/i18n/locale/pt_BR.json",
+      "target": "O histórico de reprodução está indisponível. Uma nova tentativa será feita automaticamente.",
+      "targetSha256": "953fdf61110bec0c96aca900afdb5fd7638586a4aa823d6eec82d68813a56c64"
+    },
+    {
+      "cellId": "components.CollectionQueue.provider-unavailable::vi",
+      "targetCatalogPath": "src/i18n/locale/vi.json",
+      "target": "Lịch sử phát không khả dụng. Hệ thống sẽ tự động thử lại.",
+      "targetSha256": "49c72978ba1c74eceeaa62001307f1ce7c4219b1e6139dbb957c3db0e6e1c30a"
+    },
+    {
+      "cellId": "components.CollectionQueue.provider-unavailable::zh-Hans",
+      "targetCatalogPath": "src/i18n/locale/zh_Hans.json",
+      "target": "播放记录不可用。正在自动重试。",
+      "targetSha256": "1dfad16c9913f419a1d83072231ed1b536f1418ff4258819785381293da8d50c"
+    },
+    {
+      "cellId": "components.CollectionQueue.provider-unavailable::zh-Hant",
+      "targetCatalogPath": "src/i18n/locale/zh_Hant.json",
+      "target": "播放紀錄無法使用。正在自動重試。",
+      "targetSha256": "7ff13f56490495e7bf3b086a0c959abc39535431e75b4124a85dcb538c85c540"
+    },
+    {
+      "cellId": "components.CollectionQueue.quality::ar",
+      "targetCatalogPath": "src/i18n/locale/ar.json",
+      "target": "الجودة",
+      "targetSha256": "884222efb729780eb7860a80398c145ae4fa0f65f8192258344f1cc553981adc"
+    },
+    {
+      "cellId": "components.CollectionQueue.quality::de",
+      "targetCatalogPath": "src/i18n/locale/de.json",
+      "target": "Qualität",
+      "targetSha256": "eb718207ad941704a116e56bfc61e426de0fcf7fe5db566451e3e22fd106ae43"
+    },
+    {
+      "cellId": "components.CollectionQueue.quality::es",
+      "targetCatalogPath": "src/i18n/locale/es.json",
+      "target": "Calidad",
+      "targetSha256": "aad67f106a0849a45116f1163ca09c73e7869587e43c8c13f148dbeef3e528c8"
+    },
+    {
+      "cellId": "components.CollectionQueue.quality::fr",
+      "targetCatalogPath": "src/i18n/locale/fr.json",
+      "target": "Qualité",
+      "targetSha256": "8dce95eeb4a836e6fc94e4c49a54075166c2af3aeda5854cce1fb845eb33e19d"
+    },
+    {
+      "cellId": "components.CollectionQueue.quality::hi",
+      "targetCatalogPath": "src/i18n/locale/hi.json",
+      "target": "गुणवत्ता",
+      "targetSha256": "59b6cbe64e168daa0a0f361644970f997b73c9470deb16efff25aa9de5e44724"
+    },
+    {
+      "cellId": "components.CollectionQueue.quality::id",
+      "targetCatalogPath": "src/i18n/locale/id.json",
+      "target": "Kualitas",
+      "targetSha256": "791a377dd6db00951d4aa8d285eb77e9e517bd6529a7fbed0185a008f2330666"
+    },
+    {
+      "cellId": "components.CollectionQueue.quality::ja",
+      "targetCatalogPath": "src/i18n/locale/ja.json",
+      "target": "画質",
+      "targetSha256": "97074acc36cde8ea6bc94de2978bab101e2b47da87de320b75dfb37a5971803a"
+    },
+    {
+      "cellId": "components.CollectionQueue.quality::ko",
+      "targetCatalogPath": "src/i18n/locale/ko.json",
+      "target": "화질",
+      "targetSha256": "6927e0e0126d727b83680727c90db9f376e6ef5a4d1bec911071a950f80f78a2"
+    },
+    {
+      "cellId": "components.CollectionQueue.quality::pt-BR",
+      "targetCatalogPath": "src/i18n/locale/pt_BR.json",
+      "target": "Qualidade",
+      "targetSha256": "c51403a4fdb9cd06df2794206423b30f8dbde3e36982c85ec4429ea2b5365378"
+    },
+    {
+      "cellId": "components.CollectionQueue.quality::vi",
+      "targetCatalogPath": "src/i18n/locale/vi.json",
+      "target": "Chất lượng",
+      "targetSha256": "a12ed26cb9e621656aadc9be0cdc17722add7dbe13ce6e5647c2827f6ba77e09"
+    },
+    {
+      "cellId": "components.CollectionQueue.quality::zh-Hans",
+      "targetCatalogPath": "src/i18n/locale/zh_Hans.json",
+      "target": "画质",
+      "targetSha256": "77ccdb7ba817da96fba36c30e269a9aef98d560a5371ed4c068f63cd578801a3"
+    },
+    {
+      "cellId": "components.CollectionQueue.quality::zh-Hant",
+      "targetCatalogPath": "src/i18n/locale/zh_Hant.json",
+      "target": "畫質",
+      "targetSha256": "426fb5c3a29ae7d258f9e66c63c3e6cf50f59a6bcda72758ceea0ffa1ee0ecca"
+    },
+    {
+      "cellId": "components.CollectionQueue.request-cancelled::ar",
+      "targetCatalogPath": "src/i18n/locale/ar.json",
+      "target": "طلب سابق في قائمة الانتظار مفقود أو توقف. أعد تشغيل قائمة الانتظار لطلب الأفلام المفقودة مجددًا.",
+      "targetSha256": "399cea44867ff4a047405160765ec34b4629fe7e27695aade145a00691950465"
+    },
+    {
+      "cellId": "components.CollectionQueue.request-cancelled::de",
+      "targetCatalogPath": "src/i18n/locale/de.json",
+      "target": "Eine frühere Anfrage der Warteschlange fehlt oder wurde unterbrochen. Starte die Warteschlange neu, um fehlende Filme erneut anzufragen.",
+      "targetSha256": "91e1727d323a140f1dfa63ad16eb7a4564177ffc5c419b74a2e420fa141cbfcd"
+    },
+    {
+      "cellId": "components.CollectionQueue.request-cancelled::es",
+      "targetCatalogPath": "src/i18n/locale/es.json",
+      "target": "Falta una solicitud anterior de la cola o se interrumpió. Reinicia la cola para volver a solicitar las películas que faltan.",
+      "targetSha256": "8b780b0eb7c29a149295849fd7e99c1e13157e70378fff85734ea5a6cbc3497e"
+    },
+    {
+      "cellId": "components.CollectionQueue.request-cancelled::fr",
+      "targetCatalogPath": "src/i18n/locale/fr.json",
+      "target": "Une demande précédente de la file est introuvable ou a été interrompue. Redémarrez la file pour demander à nouveau les films manquants.",
+      "targetSha256": "58ab8bb20cd1669b04c4f398bd275a2e0b8fd2ed4802e55eca353a9e532594a1"
+    },
+    {
+      "cellId": "components.CollectionQueue.request-cancelled::hi",
+      "targetCatalogPath": "src/i18n/locale/hi.json",
+      "target": "कतार का पहले का अनुरोध गायब है या बीच में रुक गया। छूटी हुई फ़िल्मों का फिर से अनुरोध करने के लिए कतार फिर से शुरू करें।",
+      "targetSha256": "74a14d35b7d0e19f496f27901adc4dbe1715d99d088c18ac035b94395b539945"
+    },
+    {
+      "cellId": "components.CollectionQueue.request-cancelled::id",
+      "targetCatalogPath": "src/i18n/locale/id.json",
+      "target": "Permintaan antrean sebelumnya tidak ditemukan atau terhenti. Mulai ulang antrean untuk meminta kembali film yang belum masuk antrean.",
+      "targetSha256": "2390ff7a3196d42c8d83993bc72f2adee8c69848e44e323789f9713ca9f4cc37"
+    },
+    {
+      "cellId": "components.CollectionQueue.request-cancelled::ja",
+      "targetCatalogPath": "src/i18n/locale/ja.json",
+      "target": "以前のキューリクエストが見つからないか、中断されました。キューを再起動すると、未リクエストの映画を再度リクエストできます。",
+      "targetSha256": "59fcfd9eacda4f40d5c81102193c1ca8e2d898875f364411561c202f0d3b68b9"
+    },
+    {
+      "cellId": "components.CollectionQueue.request-cancelled::ko",
+      "targetCatalogPath": "src/i18n/locale/ko.json",
+      "target": "이전 대기열 요청이 없거나 중단되었습니다. 누락된 영화를 다시 요청하려면 대기열을 다시 시작하세요.",
+      "targetSha256": "10b5eebfca6dd795450140399a6d38dc326924e030fb0420985f90d5894e183b"
+    },
+    {
+      "cellId": "components.CollectionQueue.request-cancelled::pt-BR",
+      "targetCatalogPath": "src/i18n/locale/pt_BR.json",
+      "target": "Uma solicitação anterior da fila está ausente ou foi interrompida. Reinicie a fila para solicitar novamente os filmes que faltam.",
+      "targetSha256": "ee962d599cf11568f53a72b1eb61fd6fea39e182f5207e5d601bc039a5cf9dfe"
+    },
+    {
+      "cellId": "components.CollectionQueue.request-cancelled::vi",
+      "targetCatalogPath": "src/i18n/locale/vi.json",
+      "target": "Một yêu cầu trước đó trong hàng đợi bị thiếu hoặc đã bị gián đoạn. Khởi động lại hàng đợi để yêu cầu lại các phim còn thiếu.",
+      "targetSha256": "cafaa863068dc62a5b3ec342797cdf8775f97e3b2b049cbff488523eebcc11ac"
+    },
+    {
+      "cellId": "components.CollectionQueue.request-cancelled::zh-Hans",
+      "targetCatalogPath": "src/i18n/locale/zh_Hans.json",
+      "target": "先前的队列请求不存在或已中断。重新启动队列以再次请求缺少的电影。",
+      "targetSha256": "dfc500b623ed01cb5b64cd2d143fdf292479186d0acc59c465358633a46ff652"
+    },
+    {
+      "cellId": "components.CollectionQueue.request-cancelled::zh-Hant",
+      "targetCatalogPath": "src/i18n/locale/zh_Hant.json",
+      "target": "先前的佇列請求已不存在或遭到中斷。重新啟動佇列即可再次請求缺少的電影。",
+      "targetSha256": "0be05e1da4fd98e9ee4c07bcbfb18386d7ae07fbd827faa26d83b1bc9366d472"
+    },
+    {
+      "cellId": "components.CollectionQueue.request-policy::ar",
+      "targetCatalogPath": "src/i18n/locale/ar.json",
+      "target": "راجع صلاحيات الطلب والحصص والعناوين المحظورة أو إعدادات الخدمة. تظل الطلبات المعلّقة بحاجة إلى موافقة.",
+      "targetSha256": "74e1ee4e6c5b6429e8f394822af8de997d4572715f055a7a596d4bd2d57208a0"
+    },
+    {
+      "cellId": "components.CollectionQueue.request-policy::de",
+      "targetCatalogPath": "src/i18n/locale/de.json",
+      "target": "Prüfe die Anfrageberechtigungen, Kontingente, blockierten Titel oder Diensteinstellungen. Ausstehende Anfragen müssen weiterhin genehmigt werden.",
+      "targetSha256": "2c83ee0d264d618af91564904d91b1dec14fec4fecf1d9ec5256a770fac5f731"
+    },
+    {
+      "cellId": "components.CollectionQueue.request-policy::es",
+      "targetCatalogPath": "src/i18n/locale/es.json",
+      "target": "Revisa los permisos de solicitud, las cuotas, los títulos bloqueados o la configuración del servicio. Las solicitudes pendientes siguen necesitando aprobación.",
+      "targetSha256": "2715b8dc7797652849a79520d04869c0641dd71dfbd38ec5f03848f97adf7d72"
+    },
+    {
+      "cellId": "components.CollectionQueue.request-policy::fr",
+      "targetCatalogPath": "src/i18n/locale/fr.json",
+      "target": "Vérifiez les droits de demande, les quotas, les titres bloqués ou les paramètres du service. Les demandes en attente doivent toujours être approuvées.",
+      "targetSha256": "a9b013cc8c5209464304a99e2d922bf7489335c22cffb5235b0286d440739fc9"
+    },
+    {
+      "cellId": "components.CollectionQueue.request-policy::hi",
+      "targetCatalogPath": "src/i18n/locale/hi.json",
+      "target": "अनुरोध की अनुमति, कोटा, अवरुद्ध शीर्षक या सेवा सेटिंग जाँचें। लंबित अनुरोधों के लिए अब भी मंज़ूरी ज़रूरी है।",
+      "targetSha256": "96a388679f418e450aa028847e16f6a6f74fd07fd9e3706f096d68f69c6f159e"
+    },
+    {
+      "cellId": "components.CollectionQueue.request-policy::id",
+      "targetCatalogPath": "src/i18n/locale/id.json",
+      "target": "Periksa izin permintaan, kuota, judul yang diblokir, atau setelan layanan. Permintaan yang tertunda tetap memerlukan persetujuan.",
+      "targetSha256": "a49ec986624fdb6fb284c2f12c6dee04abbff405ddf110dc42d37c1ea3be24c5"
+    },
+    {
+      "cellId": "components.CollectionQueue.request-policy::ja",
+      "targetCatalogPath": "src/i18n/locale/ja.json",
+      "target": "リクエスト権限、上限、ブロックされた作品、またはサービス設定を確認してください。保留中のリクエストには引き続き承認が必要です。",
+      "targetSha256": "efb8a7f56a339d8f49c0f931ee08438098f3c119e8d3beebd3fbd93eaf7c5e7d"
+    },
+    {
+      "cellId": "components.CollectionQueue.request-policy::ko",
+      "targetCatalogPath": "src/i18n/locale/ko.json",
+      "target": "요청 권한, 할당량, 차단된 제목 또는 서비스 설정을 확인하세요. 대기 중인 요청은 계속 승인이 필요합니다.",
+      "targetSha256": "67e7df21dd27ce74c6f55d8c4df1532d696ba2b2f3822270b795ec2bf79432bb"
+    },
+    {
+      "cellId": "components.CollectionQueue.request-policy::pt-BR",
+      "targetCatalogPath": "src/i18n/locale/pt_BR.json",
+      "target": "Verifique as permissões de solicitação, as cotas, os títulos bloqueados ou as configurações do serviço. Solicitações pendentes ainda precisam de aprovação.",
+      "targetSha256": "3a529cc4b0e6cf2e0cc620ff3bc5d008e8a5343d3be6c16caf46b20eec3c230c"
+    },
+    {
+      "cellId": "components.CollectionQueue.request-policy::vi",
+      "targetCatalogPath": "src/i18n/locale/vi.json",
+      "target": "Kiểm tra quyền yêu cầu, hạn mức, các tựa phim bị chặn hoặc cài đặt dịch vụ. Yêu cầu đang chờ vẫn cần được phê duyệt.",
+      "targetSha256": "8aea2c7795cab06b813560bd6ae4d666fd171410794a9dbe9910d18993e0acec"
+    },
+    {
+      "cellId": "components.CollectionQueue.request-policy::zh-Hans",
+      "targetCatalogPath": "src/i18n/locale/zh_Hans.json",
+      "target": "请检查请求权限、配额、屏蔽的影片或服务设置。待处理的请求仍需批准。",
+      "targetSha256": "1849f2dac30878aa6a666473f93c859d77ccb8e25a9f99ded64b2b15839dfe2e"
+    },
+    {
+      "cellId": "components.CollectionQueue.request-policy::zh-Hant",
+      "targetCatalogPath": "src/i18n/locale/zh_Hant.json",
+      "target": "請檢查請求權限、額度、封鎖的片名或服務設定。待處理的請求仍需核准。",
+      "targetSha256": "1dd44c03d1e0df426fa260eaecab464579c40522d447985a8808a6735e0323a2"
+    },
+    {
+      "cellId": "components.CollectionQueue.requestAccess::ar",
+      "targetCatalogPath": "src/i18n/locale/ar.json",
+      "target": "لبدء قائمة الانتظار، يلزم توفر صلاحية طلب الأفلام وجودة مفعّلة.",
+      "targetSha256": "612d98a2d1217068c91ea68fb0134b176fc9b404528cdc7816fe4a129c40643d"
+    },
+    {
+      "cellId": "components.CollectionQueue.requestAccess::de",
+      "targetCatalogPath": "src/i18n/locale/de.json",
+      "target": "Zum Starten der Warteschlange sind die Berechtigung zum Anfordern von Filmen und eine aktivierte Qualitätsstufe erforderlich.",
+      "targetSha256": "5d230b2e96d82b1b75ec3ab7e459aac90cdbc1c1cdb56f5a7a30ecd88624db7e"
+    },
+    {
+      "cellId": "components.CollectionQueue.requestAccess::es",
+      "targetCatalogPath": "src/i18n/locale/es.json",
+      "target": "Se requiere permiso para solicitar películas y una calidad habilitada para iniciar la cola.",
+      "targetSha256": "f77628fbf0fc16ab182f2b1f634af1570b43bc86548b974d9fdfdc8433e2677b"
+    },
+    {
+      "cellId": "components.CollectionQueue.requestAccess::fr",
+      "targetCatalogPath": "src/i18n/locale/fr.json",
+      "target": "Pour démarrer la file, il faut avoir le droit de demander des films et disposer d’une qualité activée.",
+      "targetSha256": "3f95ccc1bd978a1b0f9096997c8c50c122a93e1a33f3ce4b0633f8f631a95c63"
+    },
+    {
+      "cellId": "components.CollectionQueue.requestAccess::hi",
+      "targetCatalogPath": "src/i18n/locale/hi.json",
+      "target": "कतार शुरू करने के लिए फ़िल्मों का अनुरोध करने की अनुमति और सक्षम गुणवत्ता विकल्प ज़रूरी है।",
+      "targetSha256": "db5c16610195bda2ce465455cc1d0870e5404db1dee66e5142690b17ab9668a0"
+    },
+    {
+      "cellId": "components.CollectionQueue.requestAccess::id",
+      "targetCatalogPath": "src/i18n/locale/id.json",
+      "target": "Untuk memulai antrean, diperlukan akses untuk meminta film dan kualitas yang diaktifkan.",
+      "targetSha256": "f85c6186cec7363cbc08000175e01b58307168b3161c9b628ef4ea37d49580e6"
+    },
+    {
+      "cellId": "components.CollectionQueue.requestAccess::ja",
+      "targetCatalogPath": "src/i18n/locale/ja.json",
+      "target": "キューを開始するには、映画をリクエストする権限と有効な画質設定が必要です。",
+      "targetSha256": "8b98e5399219217281dc366ef8caf1676724bbaef5bd1b20f63de664abe61927"
+    },
+    {
+      "cellId": "components.CollectionQueue.requestAccess::ko",
+      "targetCatalogPath": "src/i18n/locale/ko.json",
+      "target": "대기열을 시작하려면 영화 요청 권한과 활성화된 화질 설정이 필요합니다.",
+      "targetSha256": "1e1d43b6c22f309ab633167cdf411dd6ad76beb00ccf12b9212bbee445c58286"
+    },
+    {
+      "cellId": "components.CollectionQueue.requestAccess::pt-BR",
+      "targetCatalogPath": "src/i18n/locale/pt_BR.json",
+      "target": "É necessário ter permissão para solicitar filmes e uma qualidade habilitada para iniciar uma fila.",
+      "targetSha256": "e5faf152af44edff1dc53f9b5bf6816ea1d9d10067d946e908166c38600eed07"
+    },
+    {
+      "cellId": "components.CollectionQueue.requestAccess::vi",
+      "targetCatalogPath": "src/i18n/locale/vi.json",
+      "target": "Bạn cần có quyền yêu cầu phim và bật một mức chất lượng để bắt đầu hàng đợi.",
+      "targetSha256": "c83fd8388f75b5a6559e825005326731417a468e049f60bb56c5b303fcbbf7e6"
+    },
+    {
+      "cellId": "components.CollectionQueue.requestAccess::zh-Hans",
+      "targetCatalogPath": "src/i18n/locale/zh_Hans.json",
+      "target": "启动队列需要电影请求权限并启用一种画质。",
+      "targetSha256": "2837458c62b85b951f521ef4a615bf23603e33b6dbe6cc408a2731ac3b44858f"
+    },
+    {
+      "cellId": "components.CollectionQueue.requestAccess::zh-Hant",
+      "targetCatalogPath": "src/i18n/locale/zh_Hant.json",
+      "target": "啟動佇列需要電影請求權限及已啟用的畫質。",
+      "targetSha256": "aec1c11c9ef7b03e8ea00d68702df7b98ec965376bcbcceda6e14f10fd91e21a"
+    },
+    {
+      "cellId": "components.CollectionQueue.restart::ar",
+      "targetCatalogPath": "src/i18n/locale/ar.json",
+      "target": "أعد تشغيل قائمة الانتظار",
+      "targetSha256": "81f3917512259aa604b43631649528c0c86dd0370e25536710ad465c86552973"
+    },
+    {
+      "cellId": "components.CollectionQueue.restart::de",
+      "targetCatalogPath": "src/i18n/locale/de.json",
+      "target": "Warteschlange neu starten",
+      "targetSha256": "b0792c79342da8224149c618c3e8cc07b436eff8efb85174350fe8e93088788d"
+    },
+    {
+      "cellId": "components.CollectionQueue.restart::es",
+      "targetCatalogPath": "src/i18n/locale/es.json",
+      "target": "Reiniciar cola",
+      "targetSha256": "00a8c578e1c091a1052bd7757ef5f9eb9f27ce201c364925183e7c72dc46be7c"
+    },
+    {
+      "cellId": "components.CollectionQueue.restart::fr",
+      "targetCatalogPath": "src/i18n/locale/fr.json",
+      "target": "Redémarrer la file",
+      "targetSha256": "212c1af08ac0c776e62b9132c9893ef2a98629373f64e49696b7942598776681"
+    },
+    {
+      "cellId": "components.CollectionQueue.restart::hi",
+      "targetCatalogPath": "src/i18n/locale/hi.json",
+      "target": "कतार दोबारा शुरू करें",
+      "targetSha256": "c360ffd91c7c0babfd98fd2621eaa66d1c8d6e1ae89e9b2bbea1f71c717fc1f6"
+    },
+    {
+      "cellId": "components.CollectionQueue.restart::id",
+      "targetCatalogPath": "src/i18n/locale/id.json",
+      "target": "Mulai ulang antrean",
+      "targetSha256": "041a25cebf70e55d2738da6f42b53cd2b63db83d5389ff5e83572b95c9be8628"
+    },
+    {
+      "cellId": "components.CollectionQueue.restart::ja",
+      "targetCatalogPath": "src/i18n/locale/ja.json",
+      "target": "キューを再起動",
+      "targetSha256": "c3b7275ad72cded9bb5618059384796fa6e218509b44b2d8260c4753d26e2923"
+    },
+    {
+      "cellId": "components.CollectionQueue.restart::ko",
+      "targetCatalogPath": "src/i18n/locale/ko.json",
+      "target": "대기열 다시 시작",
+      "targetSha256": "f745188ae9dca6746a59d59dd32d4fd05b94f4dd53d0a91d8ee31120c0111470"
+    },
+    {
+      "cellId": "components.CollectionQueue.restart::pt-BR",
+      "targetCatalogPath": "src/i18n/locale/pt_BR.json",
+      "target": "Reiniciar fila",
+      "targetSha256": "b92602dfcd91df94a0e3270d9bc2aa08686dc993fc275dc9c16db4770a9be72d"
+    },
+    {
+      "cellId": "components.CollectionQueue.restart::vi",
+      "targetCatalogPath": "src/i18n/locale/vi.json",
+      "target": "Khởi động lại hàng đợi",
+      "targetSha256": "b04468dd9877b9a619989413da3a1d965c51db1d83ddca2bc5cec14ab34e002b"
+    },
+    {
+      "cellId": "components.CollectionQueue.restart::zh-Hans",
+      "targetCatalogPath": "src/i18n/locale/zh_Hans.json",
+      "target": "重启队列",
+      "targetSha256": "10f6ae8ba5d0094537cbd8b571cb6ef8aa27be6d478f182be9c6f3f40b5f6149"
+    },
+    {
+      "cellId": "components.CollectionQueue.restart::zh-Hant",
+      "targetCatalogPath": "src/i18n/locale/zh_Hant.json",
+      "target": "重新啟動佇列",
+      "targetSha256": "1e36e0f83dd147e0977f724d6274783e70ab08dc7cb11fdbe5e320ce17539f47"
+    },
+    {
+      "cellId": "components.CollectionQueue.start::ar",
+      "targetCatalogPath": "src/i18n/locale/ar.json",
+      "target": "ابدأ قائمة الانتظار",
+      "targetSha256": "7196f0b539383574e4a40454c84381a4104a3efed79041df769143bfc3e2ccd3"
+    },
+    {
+      "cellId": "components.CollectionQueue.start::de",
+      "targetCatalogPath": "src/i18n/locale/de.json",
+      "target": "Warteschlange starten",
+      "targetSha256": "4f0a352bdb4814c9a29b49fca8d178508736f2bdc7ee4cfb32c315a191789873"
+    },
+    {
+      "cellId": "components.CollectionQueue.start::es",
+      "targetCatalogPath": "src/i18n/locale/es.json",
+      "target": "Iniciar cola",
+      "targetSha256": "9531a7973c78edd8e6da0ec8c80a0feed645844b3517d144e04beb8c6ee10d2b"
+    },
+    {
+      "cellId": "components.CollectionQueue.start::fr",
+      "targetCatalogPath": "src/i18n/locale/fr.json",
+      "target": "Démarrer la file",
+      "targetSha256": "9e1056ec5ecb6b06d1f6f4336704af7b59e7cb46dca50c46c3d23c745f284735"
+    },
+    {
+      "cellId": "components.CollectionQueue.start::hi",
+      "targetCatalogPath": "src/i18n/locale/hi.json",
+      "target": "कतार शुरू करें",
+      "targetSha256": "d71468586248417a069a4fddf05e9400423f0af7f945a1cac8acb3b3ccdc6fe8"
+    },
+    {
+      "cellId": "components.CollectionQueue.start::id",
+      "targetCatalogPath": "src/i18n/locale/id.json",
+      "target": "Mulai antrean",
+      "targetSha256": "ad59fb1aa11348d97c1810be3326f60dbf58b0cf7091a83ff14f2c2efb578b6f"
+    },
+    {
+      "cellId": "components.CollectionQueue.start::ja",
+      "targetCatalogPath": "src/i18n/locale/ja.json",
+      "target": "キューを開始",
+      "targetSha256": "6c36a9a7ac381482657e662bd305b622962c3c233cd516e6693125d8df259ad3"
+    },
+    {
+      "cellId": "components.CollectionQueue.start::ko",
+      "targetCatalogPath": "src/i18n/locale/ko.json",
+      "target": "대기열 시작",
+      "targetSha256": "f8887ae87c860c951686152dcf16c2c0a8a09ec1d00ee996680883710ee15d49"
+    },
+    {
+      "cellId": "components.CollectionQueue.start::pt-BR",
+      "targetCatalogPath": "src/i18n/locale/pt_BR.json",
+      "target": "Iniciar fila",
+      "targetSha256": "802a1dfa41dc155e5d145af420ec745c2198edde0292ce2eb07690454c49a97d"
+    },
+    {
+      "cellId": "components.CollectionQueue.start::vi",
+      "targetCatalogPath": "src/i18n/locale/vi.json",
+      "target": "Bắt đầu hàng đợi",
+      "targetSha256": "f10d119d755e9285b02a7259731f90e3acdd539a5189f275a5a656893a65b2fd"
+    },
+    {
+      "cellId": "components.CollectionQueue.start::zh-Hans",
+      "targetCatalogPath": "src/i18n/locale/zh_Hans.json",
+      "target": "启动队列",
+      "targetSha256": "86f83ad00941853897e53dad3b2e8c955a84c31b3a2314360c12d1fbfda01221"
+    },
+    {
+      "cellId": "components.CollectionQueue.start::zh-Hant",
+      "targetCatalogPath": "src/i18n/locale/zh_Hant.json",
+      "target": "啟動佇列",
+      "targetSha256": "938d468337d68bd3de817a61a39477057559de6c3e54c2f75447fe4244c6d3e3"
+    },
+    {
+      "cellId": "components.CollectionQueue.stop::ar",
+      "targetCatalogPath": "src/i18n/locale/ar.json",
+      "target": "أوقف قائمة الانتظار",
+      "targetSha256": "e9df28e1833d43bf8889c3a8b0d048fa2283b3d0790337fe71f7b4bf809515df"
+    },
+    {
+      "cellId": "components.CollectionQueue.stop::de",
+      "targetCatalogPath": "src/i18n/locale/de.json",
+      "target": "Warteschlange anhalten",
+      "targetSha256": "7bfc662efd548ef96addfbbff5258c74d566f9abe1461f3175386d664687abde"
+    },
+    {
+      "cellId": "components.CollectionQueue.stop::es",
+      "targetCatalogPath": "src/i18n/locale/es.json",
+      "target": "Detener cola",
+      "targetSha256": "706ef2ea7ad10fdaaf2aebf58708e7bc57790bcb85167d5abbc295d65bb3de87"
+    },
+    {
+      "cellId": "components.CollectionQueue.stop::fr",
+      "targetCatalogPath": "src/i18n/locale/fr.json",
+      "target": "Arrêter la file",
+      "targetSha256": "87eafb67dd8f8333f95c8e46174d20c0a743baa4051fb7ee7ef89f601a2b9c26"
+    },
+    {
+      "cellId": "components.CollectionQueue.stop::hi",
+      "targetCatalogPath": "src/i18n/locale/hi.json",
+      "target": "कतार रोकें",
+      "targetSha256": "f41cf9132beae42fb8f1b37c7e6222e6c5c60d71360137f262156e2671f5a784"
+    },
+    {
+      "cellId": "components.CollectionQueue.stop::id",
+      "targetCatalogPath": "src/i18n/locale/id.json",
+      "target": "Hentikan antrean",
+      "targetSha256": "09f3e54f03c0a2a657503a21540649e70859dde4bc6ee14036156703db435e98"
+    },
+    {
+      "cellId": "components.CollectionQueue.stop::ja",
+      "targetCatalogPath": "src/i18n/locale/ja.json",
+      "target": "キューを停止",
+      "targetSha256": "eca5ad784c7d2bc92ab8044dff1f99478d21f68d4b82fb805d2752657cde41bb"
+    },
+    {
+      "cellId": "components.CollectionQueue.stop::ko",
+      "targetCatalogPath": "src/i18n/locale/ko.json",
+      "target": "대기열 중지",
+      "targetSha256": "c666c81c29497c2d976bfbd77849588b437cd96bb5a4844e328ba14448ffefd3"
+    },
+    {
+      "cellId": "components.CollectionQueue.stop::pt-BR",
+      "targetCatalogPath": "src/i18n/locale/pt_BR.json",
+      "target": "Parar fila",
+      "targetSha256": "400a63f018b434ab14c8030a65d538cfa60f1ec1373b668d915edf4b31685ab5"
+    },
+    {
+      "cellId": "components.CollectionQueue.stop::vi",
+      "targetCatalogPath": "src/i18n/locale/vi.json",
+      "target": "Dừng hàng đợi",
+      "targetSha256": "435d8400c761c8194a3ffa5385c1dc669e8b078329fdc600b510cb16153d4751"
+    },
+    {
+      "cellId": "components.CollectionQueue.stop::zh-Hans",
+      "targetCatalogPath": "src/i18n/locale/zh_Hans.json",
+      "target": "停止队列",
+      "targetSha256": "c7a517a00e31313e8b4e2dfc744850190afd11a5b13779fc9b3fdb0994de779a"
+    },
+    {
+      "cellId": "components.CollectionQueue.stop::zh-Hant",
+      "targetCatalogPath": "src/i18n/locale/zh_Hant.json",
+      "target": "停止佇列",
+      "targetSha256": "f1a0e2260724aea45a758aed62cc3748614f98108c14d0959aeabdc9c4d795fc"
+    },
+    {
+      "cellId": "components.CollectionQueue.stopHelp::ar",
+      "targetCatalogPath": "src/i18n/locale/ar.json",
+      "target": "يمنع إيقاف قائمة الانتظار إرسال طلبات مستقبلية. وتظل الطلبات الحالية والملفات التي تم تنزيلها كما هي.",
+      "targetSha256": "d77856758de3bdb051f8e148aacd022fb6e7c4d4bcb8fe10059cfb969516e6d9"
+    },
+    {
+      "cellId": "components.CollectionQueue.stopHelp::de",
+      "targetCatalogPath": "src/i18n/locale/de.json",
+      "target": "Beim Anhalten werden keine weiteren Anfragen gestellt. Bestehende Anfragen und heruntergeladene Dateien bleiben erhalten.",
+      "targetSha256": "187633d50f2477accfe24829a39b5c57fc7153205ef3e697b2b9c6440065452a"
+    },
+    {
+      "cellId": "components.CollectionQueue.stopHelp::es",
+      "targetCatalogPath": "src/i18n/locale/es.json",
+      "target": "Al detenerla, no se generarán más solicitudes. Las solicitudes existentes y los archivos descargados se conservarán.",
+      "targetSha256": "b0c4e81460dcfa2d66283984a66183bae38c2b5565a1969cdc2c239e3a857000"
+    },
+    {
+      "cellId": "components.CollectionQueue.stopHelp::fr",
+      "targetCatalogPath": "src/i18n/locale/fr.json",
+      "target": "L’arrêt empêche toute nouvelle demande. Les demandes déjà envoyées et les fichiers téléchargés restent en place.",
+      "targetSha256": "a08065bd005df3c27b010cf4c730312373501e3c4826a7ad4af313b4572c01a9"
+    },
+    {
+      "cellId": "components.CollectionQueue.stopHelp::hi",
+      "targetCatalogPath": "src/i18n/locale/hi.json",
+      "target": "रोकने से भविष्य के अनुरोध रुक जाते हैं। पहले से किए गए अनुरोध और डाउनलोड की गई फ़ाइलें बनी रहेंगी।",
+      "targetSha256": "3ff42dc75e420f9b47b6c8d8dcc8e803ac4155f9da5913f3bbd7090d65abffd4"
+    },
+    {
+      "cellId": "components.CollectionQueue.stopHelp::id",
+      "targetCatalogPath": "src/i18n/locale/id.json",
+      "target": "Menghentikan antrean mencegah permintaan berikutnya. Permintaan yang sudah ada dan berkas yang telah diunduh tetap tersimpan.",
+      "targetSha256": "417b68a3de126e1af8871a1362fcae20b8acb7b250295776ea7ab8c6c5c1686e"
+    },
+    {
+      "cellId": "components.CollectionQueue.stopHelp::ja",
+      "targetCatalogPath": "src/i18n/locale/ja.json",
+      "target": "停止すると今後のリクエストが作成されなくなります。既存のリクエストとダウンロード済みファイルはそのまま残ります。",
+      "targetSha256": "0837cc30c5736b63014b945376b29953d3204bb859f022dced789e15c1121148"
+    },
+    {
+      "cellId": "components.CollectionQueue.stopHelp::ko",
+      "targetCatalogPath": "src/i18n/locale/ko.json",
+      "target": "중지하면 이후 요청이 생성되지 않습니다. 기존 요청과 다운로드한 파일은 그대로 유지됩니다.",
+      "targetSha256": "d85f6702a38518868cb6b822f3f9d6b47149a8cf07ed60a499d91690a335cecc"
+    },
+    {
+      "cellId": "components.CollectionQueue.stopHelp::pt-BR",
+      "targetCatalogPath": "src/i18n/locale/pt_BR.json",
+      "target": "Ao parar, novas solicitações deixam de ser feitas. As solicitações existentes e os arquivos baixados permanecem.",
+      "targetSha256": "d1ac894f6514af75285a92cb68ae70ea55b5e951024943651da1894feaec3499"
+    },
+    {
+      "cellId": "components.CollectionQueue.stopHelp::vi",
+      "targetCatalogPath": "src/i18n/locale/vi.json",
+      "target": "Dừng hàng đợi sẽ ngăn các yêu cầu mới. Các yêu cầu hiện có và tệp đã tải xuống vẫn được giữ nguyên.",
+      "targetSha256": "9f5e0c21fd34e26dace8b2e5920046ad92115ee564414f3d9836149e6448238e"
+    },
+    {
+      "cellId": "components.CollectionQueue.stopHelp::zh-Hans",
+      "targetCatalogPath": "src/i18n/locale/zh_Hans.json",
+      "target": "停止后将不再发出新请求。现有请求和已下载的文件会保留。",
+      "targetSha256": "c7951484afb919ce93951adc1b0076aed5e1b16fce813361c54c8b99c4b56ea0"
+    },
+    {
+      "cellId": "components.CollectionQueue.stopHelp::zh-Hant",
+      "targetCatalogPath": "src/i18n/locale/zh_Hant.json",
+      "target": "停止後不會再提出新請求。現有請求及已下載的檔案都會保留。",
+      "targetSha256": "3b78ed77c18d0cd5a51921b4698c5e84cae0908da5be783dd54a60a0a0724dad"
+    },
+    {
+      "cellId": "components.CollectionQueue.stopped::ar",
+      "targetCatalogPath": "src/i18n/locale/ar.json",
+      "target": "تم إيقاف قائمة الانتظار",
+      "targetSha256": "0b6c3f69fe87c15ae167f1ce159c68a5a0c90701e55a3fdb70374b7f8d525393"
+    },
+    {
+      "cellId": "components.CollectionQueue.stopped::de",
+      "targetCatalogPath": "src/i18n/locale/de.json",
+      "target": "Warteschlange gestoppt",
+      "targetSha256": "4fe9f3a8f9221bdc44c41499e0a85212e130982a67769230d3f7c6fb96f8bdbe"
+    },
+    {
+      "cellId": "components.CollectionQueue.stopped::es",
+      "targetCatalogPath": "src/i18n/locale/es.json",
+      "target": "Cola detenida",
+      "targetSha256": "2f6423d4760813de488e67b8f288289856241cac9a4011a18f36955b94dc6b07"
+    },
+    {
+      "cellId": "components.CollectionQueue.stopped::fr",
+      "targetCatalogPath": "src/i18n/locale/fr.json",
+      "target": "File arrêtée",
+      "targetSha256": "74a515ac8874fa4bdcd9182fb2484c4eebcb978b47e04f73a2949787cede67c6"
+    },
+    {
+      "cellId": "components.CollectionQueue.stopped::hi",
+      "targetCatalogPath": "src/i18n/locale/hi.json",
+      "target": "कतार रोक दी गई है",
+      "targetSha256": "95b189055a0e6fc6cd2533391474674c33b154b9133c19c2eea5e6ba684f6262"
+    },
+    {
+      "cellId": "components.CollectionQueue.stopped::id",
+      "targetCatalogPath": "src/i18n/locale/id.json",
+      "target": "Antrean dihentikan",
+      "targetSha256": "f49506fe6444a17dec677a15e34a68bff7128759b39dcb9499d525807c147a32"
+    },
+    {
+      "cellId": "components.CollectionQueue.stopped::ja",
+      "targetCatalogPath": "src/i18n/locale/ja.json",
+      "target": "キュー停止中",
+      "targetSha256": "ff62708abf024af45a6e2351a130746dc61152e726fb4c6aaaca944c9e9e8894"
+    },
+    {
+      "cellId": "components.CollectionQueue.stopped::ko",
+      "targetCatalogPath": "src/i18n/locale/ko.json",
+      "target": "대기열 중지됨",
+      "targetSha256": "5062a0f8fc8a9fa4d50a962c00b6e5217058f6981ff328ebfbe2bbf70871c89f"
+    },
+    {
+      "cellId": "components.CollectionQueue.stopped::pt-BR",
+      "targetCatalogPath": "src/i18n/locale/pt_BR.json",
+      "target": "Fila parada",
+      "targetSha256": "143b3006f2b9453885f7046a4184b8db6ff3c53cc62d29a4b50af4853887936c"
+    },
+    {
+      "cellId": "components.CollectionQueue.stopped::vi",
+      "targetCatalogPath": "src/i18n/locale/vi.json",
+      "target": "Hàng đợi đã dừng",
+      "targetSha256": "d0f860d384f035a04643521602c28cdcf33764276a65e82d263ec3e17c43169e"
+    },
+    {
+      "cellId": "components.CollectionQueue.stopped::zh-Hans",
+      "targetCatalogPath": "src/i18n/locale/zh_Hans.json",
+      "target": "队列已停止",
+      "targetSha256": "ffc284f0253337f3c948b13a89867229ca751de57e54a9beb79792ac7b55eb21"
+    },
+    {
+      "cellId": "components.CollectionQueue.stopped::zh-Hant",
+      "targetCatalogPath": "src/i18n/locale/zh_Hant.json",
+      "target": "佇列已停止",
+      "targetSha256": "a4e8bf7965ec635b0162f33455b79596ceeb962b7c2616f5c6ef9e8857c002b2"
+    },
+    {
+      "cellId": "components.CollectionQueue.title::ar",
+      "targetCatalogPath": "src/i18n/locale/ar.json",
+      "target": "قائمة انتظار المجموعة",
+      "targetSha256": "49c3391ec6381eab684e17fa191c214cc1d851b85b87c07e7dfe6939298536fe"
+    },
+    {
+      "cellId": "components.CollectionQueue.title::de",
+      "targetCatalogPath": "src/i18n/locale/de.json",
+      "target": "Sammlungswarteschlange",
+      "targetSha256": "19d647ed143782477d3902e958d15da89e2d5a8d2fc9a1f46612b28e8926beb4"
+    },
+    {
+      "cellId": "components.CollectionQueue.title::es",
+      "targetCatalogPath": "src/i18n/locale/es.json",
+      "target": "Cola de la colección",
+      "targetSha256": "e00c294775427bd3a3c4df82db9ca723d374becad2283f1c15c491e169ab3b34"
+    },
+    {
+      "cellId": "components.CollectionQueue.title::fr",
+      "targetCatalogPath": "src/i18n/locale/fr.json",
+      "target": "File d’attente de la collection",
+      "targetSha256": "06295caf98b95afcf55c1e6cce62d5d0e55f9548d48208c89c56edaa746f6cd6"
+    },
+    {
+      "cellId": "components.CollectionQueue.title::hi",
+      "targetCatalogPath": "src/i18n/locale/hi.json",
+      "target": "संग्रह कतार",
+      "targetSha256": "d5db2d250f009a564fc26cce7094669ee86745a9d8775bd3ef598036a696538f"
+    },
+    {
+      "cellId": "components.CollectionQueue.title::id",
+      "targetCatalogPath": "src/i18n/locale/id.json",
+      "target": "Antrean Koleksi",
+      "targetSha256": "6a864138b95f3abce821d9510eadef1dea351b32e092e2446a1227607925d6d7"
+    },
+    {
+      "cellId": "components.CollectionQueue.title::ja",
+      "targetCatalogPath": "src/i18n/locale/ja.json",
+      "target": "コレクションキュー",
+      "targetSha256": "d29615ae397f6c9de3a7d318ccdf8d7bf56ebb0d8265dd3cc6277917f89c817a"
+    },
+    {
+      "cellId": "components.CollectionQueue.title::ko",
+      "targetCatalogPath": "src/i18n/locale/ko.json",
+      "target": "컬렉션 대기열",
+      "targetSha256": "aa32c8d52bfaf953fd6de97eb69da10e744d8cd29de003b675a30ec9d0a27743"
+    },
+    {
+      "cellId": "components.CollectionQueue.title::pt-BR",
+      "targetCatalogPath": "src/i18n/locale/pt_BR.json",
+      "target": "Fila da coleção",
+      "targetSha256": "f124754a897b3c1a17a7f7e65e6312f1a015c9460ceb6d03614983873ceda9af"
+    },
+    {
+      "cellId": "components.CollectionQueue.title::vi",
+      "targetCatalogPath": "src/i18n/locale/vi.json",
+      "target": "Hàng đợi bộ sưu tập",
+      "targetSha256": "20d47cc09a4b94525de17fb8fec5c0d6d62d1fb6639ab45a140b5fc13b4ce84e"
+    },
+    {
+      "cellId": "components.CollectionQueue.title::zh-Hans",
+      "targetCatalogPath": "src/i18n/locale/zh_Hans.json",
+      "target": "合集队列",
+      "targetSha256": "ff1185fcda159c4ea72baca6f9c492c5e7a966d6cff89d3e896160558660d3ac"
+    },
+    {
+      "cellId": "components.CollectionQueue.title::zh-Hant",
+      "targetCatalogPath": "src/i18n/locale/zh_Hant.json",
+      "target": "合集佇列",
+      "targetSha256": "667b1b01f94c613f52a34228bc856f1487d070b85bc87c0ee500c8cda75a8d49"
+    },
+    {
+      "cellId": "components.CollectionQueue.two::ar",
+      "targetCatalogPath": "src/i18n/locale/ar.json",
+      "target": "فيلمان (2)",
+      "targetSha256": "393162e1e637862c6734fcbf462633467154e9ee534b46c297af2aa9a82bc7d6"
+    },
+    {
+      "cellId": "components.CollectionQueue.two::de",
+      "targetCatalogPath": "src/i18n/locale/de.json",
+      "target": "2 Filme",
+      "targetSha256": "a34fe0abefd3211de19243aa933027179d1f44ade402b884a772bc1d0879ea42"
+    },
+    {
+      "cellId": "components.CollectionQueue.two::es",
+      "targetCatalogPath": "src/i18n/locale/es.json",
+      "target": "2 películas",
+      "targetSha256": "dbbf7c0ba858ae31dc100be3a86c8c360034f9c7198237f75d9d2b8fe4c3d120"
+    },
+    {
+      "cellId": "components.CollectionQueue.two::fr",
+      "targetCatalogPath": "src/i18n/locale/fr.json",
+      "target": "2 films",
+      "targetSha256": "7dee81d075954e56177c9aa743f4a0c8a145e0a223117c91c4f8924e201283d0"
+    },
+    {
+      "cellId": "components.CollectionQueue.two::hi",
+      "targetCatalogPath": "src/i18n/locale/hi.json",
+      "target": "2 फ़िल्में",
+      "targetSha256": "294e92bd674cd4588f936b8ada735b366315d725a189e07b6a929d458ea7671b"
+    },
+    {
+      "cellId": "components.CollectionQueue.two::id",
+      "targetCatalogPath": "src/i18n/locale/id.json",
+      "target": "2 film",
+      "targetSha256": "a9bf30cddae64ab2ba0570f8f9f8dcb8ff22e759b2815eb3586ff4bfb6fb6b60"
+    },
+    {
+      "cellId": "components.CollectionQueue.two::ja",
+      "targetCatalogPath": "src/i18n/locale/ja.json",
+      "target": "映画2本",
+      "targetSha256": "7523937f750b10492e548fef54d7d3329eb7e323579b413751c8ad28142aa29c"
+    },
+    {
+      "cellId": "components.CollectionQueue.two::ko",
+      "targetCatalogPath": "src/i18n/locale/ko.json",
+      "target": "영화 2편",
+      "targetSha256": "4cbb288fe8e45cf83aab34838e48f1c27960aec156c0040ce9956d8ca45c8840"
+    },
+    {
+      "cellId": "components.CollectionQueue.two::pt-BR",
+      "targetCatalogPath": "src/i18n/locale/pt_BR.json",
+      "target": "2 filmes",
+      "targetSha256": "b942923a91fad41b83a8ae5c7c0cd5602d3cd4d4c7087e43226797552e2ed47d"
+    },
+    {
+      "cellId": "components.CollectionQueue.two::vi",
+      "targetCatalogPath": "src/i18n/locale/vi.json",
+      "target": "2 phim",
+      "targetSha256": "fb4d569a279c98980bebce283d8728d62096541fd67aadde76f74042cfd94978"
+    },
+    {
+      "cellId": "components.CollectionQueue.two::zh-Hans",
+      "targetCatalogPath": "src/i18n/locale/zh_Hans.json",
+      "target": "2 部电影",
+      "targetSha256": "bdfb4b49c85f8cd05c68eae0bd5325db5fa586a797ff66a26f576693777c6e49"
+    },
+    {
+      "cellId": "components.CollectionQueue.two::zh-Hant",
+      "targetCatalogPath": "src/i18n/locale/zh_Hant.json",
+      "target": "2 部電影",
+      "targetSha256": "4154201c07f6040bdedb4d63e9615600df712480aab9c376524f5f36b2d335ed"
+    },
+    {
+      "cellId": "components.CollectionQueue.waiting::ar",
+      "targetCatalogPath": "src/i18n/locale/ar.json",
+      "target": "قيد الانتظار",
+      "targetSha256": "7d7913fdef74dff629200c0da0971df71efb59a48883c16318183d90b7b8a98d"
+    },
+    {
+      "cellId": "components.CollectionQueue.waiting::de",
+      "targetCatalogPath": "src/i18n/locale/de.json",
+      "target": "Wartend",
+      "targetSha256": "6a61e4e02dfb4d7cbdfd12cd9c15814c47486648fb0c5f85259a028cc902fcf3"
+    },
+    {
+      "cellId": "components.CollectionQueue.waiting::es",
+      "targetCatalogPath": "src/i18n/locale/es.json",
+      "target": "En espera",
+      "targetSha256": "a285794a3cfff883a2267f49c02dfa9f23b53787347af684cd58318f5255b3a9"
+    },
+    {
+      "cellId": "components.CollectionQueue.waiting::fr",
+      "targetCatalogPath": "src/i18n/locale/fr.json",
+      "target": "En attente",
+      "targetSha256": "2f6c8477e92bc6ea236691e498763fb56100ca2db8377f83407b4b4e22da0f72"
+    },
+    {
+      "cellId": "components.CollectionQueue.waiting::hi",
+      "targetCatalogPath": "src/i18n/locale/hi.json",
+      "target": "प्रतीक्षा में",
+      "targetSha256": "e688357d5d7c99b9447da06b54fa2c6f9d9ef640139128db502b5994cc77eb0f"
+    },
+    {
+      "cellId": "components.CollectionQueue.waiting::id",
+      "targetCatalogPath": "src/i18n/locale/id.json",
+      "target": "Menunggu",
+      "targetSha256": "13f96091400ec9a68215c69471839e4dfdbdd771a711de6e9cea4aad52326e01"
+    },
+    {
+      "cellId": "components.CollectionQueue.waiting::ja",
+      "targetCatalogPath": "src/i18n/locale/ja.json",
+      "target": "待機中",
+      "targetSha256": "2f3ee0fc058199a70670fc9e8cfef41e33d1ecf8a2ed4c1600e05a1ae837d599"
+    },
+    {
+      "cellId": "components.CollectionQueue.waiting::ko",
+      "targetCatalogPath": "src/i18n/locale/ko.json",
+      "target": "대기 중",
+      "targetSha256": "6a0a0fec486c76bf6df32663977a50d3a15a237b8edc81c0bd45df376d434e7e"
+    },
+    {
+      "cellId": "components.CollectionQueue.waiting::pt-BR",
+      "targetCatalogPath": "src/i18n/locale/pt_BR.json",
+      "target": "Aguardando",
+      "targetSha256": "eac833e6ce5294250d3a89216191a0528f5f6b1a3901ec20b525e4d610d071d2"
+    },
+    {
+      "cellId": "components.CollectionQueue.waiting::vi",
+      "targetCatalogPath": "src/i18n/locale/vi.json",
+      "target": "Đang chờ",
+      "targetSha256": "4257d45b49b3f36575094f2e8972583ac10060dd2782892826053205bd3d27dc"
+    },
+    {
+      "cellId": "components.CollectionQueue.waiting::zh-Hans",
+      "targetCatalogPath": "src/i18n/locale/zh_Hans.json",
+      "target": "等待中",
+      "targetSha256": "26c8cfcbf763073f0baa48dcb197088d994fed793a6067bf7957948ab5543803"
+    },
+    {
+      "cellId": "components.CollectionQueue.waiting::zh-Hant",
+      "targetCatalogPath": "src/i18n/locale/zh_Hant.json",
+      "target": "等待中",
+      "targetSha256": "26c8cfcbf763073f0baa48dcb197088d994fed793a6067bf7957948ab5543803"
+    },
+    {
+      "cellId": "components.RequestEpisodeQueueControl.watchAheadEpisodeOption::ar",
+      "targetCatalogPath": "src/i18n/locale/ar.json",
+      "target": "{count, plural, one {# حلقة} other {# حلقات}}",
+      "targetSha256": "d1f3194d381af34416af358244960abcd5ff2ce031c8c7883f00109d147986e7"
+    },
+    {
+      "cellId": "components.RequestEpisodeQueueControl.watchAheadEpisodeOption::de",
+      "targetCatalogPath": "src/i18n/locale/de.json",
+      "target": "{count, plural, one {# Folge} other {# Folgen}}",
+      "targetSha256": "a2fdbed7cec7e365b2ff1d9c346cb86b00a1b7d1b70e768ade8252f07f1d254b"
+    },
+    {
+      "cellId": "components.RequestEpisodeQueueControl.watchAheadEpisodeOption::es",
+      "targetCatalogPath": "src/i18n/locale/es.json",
+      "target": "{count, plural, one {# episodio} other {# episodios}}",
+      "targetSha256": "081623986ca8d5ea137135b048b7092874bdb57255f3f815cf67b39568472793"
+    },
+    {
+      "cellId": "components.RequestEpisodeQueueControl.watchAheadEpisodeOption::fr",
+      "targetCatalogPath": "src/i18n/locale/fr.json",
+      "target": "{count, plural, one {# épisode} other {# épisodes}}",
+      "targetSha256": "2149a659ac0bef92143718bd571e901190f0d3500d0daea581c30e4911f3f50c"
+    },
+    {
+      "cellId": "components.RequestEpisodeQueueControl.watchAheadEpisodeOption::hi",
+      "targetCatalogPath": "src/i18n/locale/hi.json",
+      "target": "{count, plural, one {# एपिसोड} other {# एपिसोड}}",
+      "targetSha256": "7412ef105fa0dc10cfe08d89b168c82d73ccbfd8cd8c386920dde853a71e59cc"
+    },
+    {
+      "cellId": "components.RequestEpisodeQueueControl.watchAheadEpisodeOption::id",
+      "targetCatalogPath": "src/i18n/locale/id.json",
+      "target": "{count, plural, one {# episode} other {# episode}}",
+      "targetSha256": "fb8331cc7b8df8e6922e17a2bf7c1423c8bd79648819a2b9276f0f857501adf2"
+    },
+    {
+      "cellId": "components.RequestEpisodeQueueControl.watchAheadEpisodeOption::ja",
+      "targetCatalogPath": "src/i18n/locale/ja.json",
+      "target": "{count, plural, one {# 話} other {# 話}}",
+      "targetSha256": "6423ed578582bb044f97658cfc0340cdb96ea3bf0796b46529a6c3d71b0c1106"
+    },
+    {
+      "cellId": "components.RequestEpisodeQueueControl.watchAheadEpisodeOption::ko",
+      "targetCatalogPath": "src/i18n/locale/ko.json",
+      "target": "{count, plural, one {#개 에피소드} other {#개 에피소드}}",
+      "targetSha256": "59a389d4510d5675f7b81fe9f19e05dd4a9644c979ef5794be8832d0d525bda2"
+    },
+    {
+      "cellId": "components.RequestEpisodeQueueControl.watchAheadEpisodeOption::pt-BR",
+      "targetCatalogPath": "src/i18n/locale/pt_BR.json",
+      "target": "{count, plural, one {# episódio} other {# episódios}}",
+      "targetSha256": "386adb07f538e67d7a42c4d4c44f559d202564d280a97bd2113bd0670920873d"
+    },
+    {
+      "cellId": "components.RequestEpisodeQueueControl.watchAheadEpisodeOption::vi",
+      "targetCatalogPath": "src/i18n/locale/vi.json",
+      "target": "{count, plural, one {# tập} other {# tập}}",
+      "targetSha256": "26f8781b08b2a0ff6dd208b348e784a34ce82f3beadae9e58537295ba1c88b98"
+    },
+    {
+      "cellId": "components.RequestEpisodeQueueControl.watchAheadEpisodeOption::zh-Hans",
+      "targetCatalogPath": "src/i18n/locale/zh_Hans.json",
+      "target": "{count, plural, one {# 集} other {# 集}}",
+      "targetSha256": "eeab29ccf5dc1ed3d3433ea2ea9e56b22742c7530f2253b82e036a0275ac2765"
+    },
+    {
+      "cellId": "components.RequestEpisodeQueueControl.watchAheadEpisodeOption::zh-Hant",
+      "targetCatalogPath": "src/i18n/locale/zh_Hant.json",
+      "target": "{count, plural, one {# 集} other {# 集}}",
+      "targetSha256": "eeab29ccf5dc1ed3d3433ea2ea9e56b22742c7530f2253b82e036a0275ac2765"
+    },
+    {
+      "cellId": "components.RequestEpisodeQueueControl.watchAheadLoading::ar",
+      "targetCatalogPath": "src/i18n/locale/ar.json",
+      "target": "جارٍ تحميل إعداد قائمة انتظار الحلقات…",
+      "targetSha256": "6f240bbb43ed07bd92f721ec3e4bde22127e098f6d27ef464f32ce69f6dd448c"
+    },
+    {
+      "cellId": "components.RequestEpisodeQueueControl.watchAheadLoading::de",
+      "targetCatalogPath": "src/i18n/locale/de.json",
+      "target": "Deine Einstellung für die Episodenwarteschlange wird geladen…",
+      "targetSha256": "311b4f3d6c7b3da80206f0c3a50baed734188650524f717c651c6abdbf65ec8d"
+    },
+    {
+      "cellId": "components.RequestEpisodeQueueControl.watchAheadLoading::es",
+      "targetCatalogPath": "src/i18n/locale/es.json",
+      "target": "Cargando tu configuración de cola de episodios…",
+      "targetSha256": "646d33c9c62e92404dc3040dbab55e7eb9e6831e4cbfabfe43949a3c40b89fcc"
+    },
+    {
+      "cellId": "components.RequestEpisodeQueueControl.watchAheadLoading::fr",
+      "targetCatalogPath": "src/i18n/locale/fr.json",
+      "target": "Chargement de votre réglage de file d’attente des épisodes…",
+      "targetSha256": "5ab949c5a1ade30044acc8862030487557ba20208d92646f234399a390324783"
+    },
+    {
+      "cellId": "components.RequestEpisodeQueueControl.watchAheadLoading::hi",
+      "targetCatalogPath": "src/i18n/locale/hi.json",
+      "target": "आपकी एपिसोड कतार की सेटिंग लोड हो रही है…",
+      "targetSha256": "eba301408b401a9d53d2e9eaa2816cc2470bbbeb1bf13ffbab884a991fef07bd"
+    },
+    {
+      "cellId": "components.RequestEpisodeQueueControl.watchAheadLoading::id",
+      "targetCatalogPath": "src/i18n/locale/id.json",
+      "target": "Memuat pengaturan antrean episode Anda…",
+      "targetSha256": "4adccf84016f5223fb9bd4e610d45ddad4a0c14f7fe0978c5a0221eb7cac276e"
+    },
+    {
+      "cellId": "components.RequestEpisodeQueueControl.watchAheadLoading::ja",
+      "targetCatalogPath": "src/i18n/locale/ja.json",
+      "target": "エピソードキューの設定を読み込み中…",
+      "targetSha256": "e8732d834a1bbc903056effcb5671826896df283d4e709320d09b7c43a5eadf0"
+    },
+    {
+      "cellId": "components.RequestEpisodeQueueControl.watchAheadLoading::ko",
+      "targetCatalogPath": "src/i18n/locale/ko.json",
+      "target": "에피소드 큐 설정을 불러오는 중…",
+      "targetSha256": "f198f88963623c4accb9efc18007af1f1fc853f831024240623c578dfe022a09"
+    },
+    {
+      "cellId": "components.RequestEpisodeQueueControl.watchAheadLoading::pt-BR",
+      "targetCatalogPath": "src/i18n/locale/pt_BR.json",
+      "target": "Carregando a configuração da sua fila de episódios…",
+      "targetSha256": "7519f70b85f2ecf90d70addeb78ef4716c09e0577e0766c74f690c2d4c371d53"
+    },
+    {
+      "cellId": "components.RequestEpisodeQueueControl.watchAheadLoading::vi",
+      "targetCatalogPath": "src/i18n/locale/vi.json",
+      "target": "Đang tải cài đặt hàng đợi tập phim của bạn…",
+      "targetSha256": "05fc97e61fe5efff48d552b0c458e6fbd6c29f81ec64249f0eed4ca6f916eaf5"
+    },
+    {
+      "cellId": "components.RequestEpisodeQueueControl.watchAheadLoading::zh-Hans",
+      "targetCatalogPath": "src/i18n/locale/zh_Hans.json",
+      "target": "正在加载你的剧集队列设置…",
+      "targetSha256": "2d6418ec9b36684ecc931e93990c47e7296a3d682a33a69efff3ee088deb3f0b"
+    },
+    {
+      "cellId": "components.RequestEpisodeQueueControl.watchAheadLoading::zh-Hant",
+      "targetCatalogPath": "src/i18n/locale/zh_Hant.json",
+      "target": "正在載入你的集數佇列設定…",
+      "targetSha256": "35701d335a977a47ced76da1ee3b4b8fd1f87086201ecf5404cf1599e2c1503f"
+    },
+    {
+      "cellId": "components.RequestEpisodeQueueControl.watchAheadOff::ar",
+      "targetCatalogPath": "src/i18n/locale/ar.json",
+      "target": "معطّل",
+      "targetSha256": "532e66a3a8626e2af60ba3a1d4f90eb7ec75523d312f5de88d6bfda3848989d2"
+    },
+    {
+      "cellId": "components.RequestEpisodeQueueControl.watchAheadOff::de",
+      "targetCatalogPath": "src/i18n/locale/de.json",
+      "target": "Aus",
+      "targetSha256": "f0ce94502ed90ac3253eeb12f85f320eeb87b7c2d2be0a1a56f540b5603ead1b"
+    },
+    {
+      "cellId": "components.RequestEpisodeQueueControl.watchAheadOff::es",
+      "targetCatalogPath": "src/i18n/locale/es.json",
+      "target": "Desactivado",
+      "targetSha256": "e252efe6974743f63e8e27f312630e1a66d9d794272a90c6f50a7bdbfb45a92d"
+    },
+    {
+      "cellId": "components.RequestEpisodeQueueControl.watchAheadOff::fr",
+      "targetCatalogPath": "src/i18n/locale/fr.json",
+      "target": "Désactivé",
+      "targetSha256": "da60ff35b212a8aa4758f2a8bf63f12cdc79fb2f84d64ab2ed2689d80417bdf5"
+    },
+    {
+      "cellId": "components.RequestEpisodeQueueControl.watchAheadOff::hi",
+      "targetCatalogPath": "src/i18n/locale/hi.json",
+      "target": "बंद",
+      "targetSha256": "60ebc67af880b4d3e827d6201d05ed6df767c75c3393b3aad9f39ef3e2ea3adb"
+    },
+    {
+      "cellId": "components.RequestEpisodeQueueControl.watchAheadOff::id",
+      "targetCatalogPath": "src/i18n/locale/id.json",
+      "target": "Nonaktif",
+      "targetSha256": "f866da3efd2569667768985838214d454b9179f8aca07373e3c88f6e4c30455b"
+    },
+    {
+      "cellId": "components.RequestEpisodeQueueControl.watchAheadOff::ja",
+      "targetCatalogPath": "src/i18n/locale/ja.json",
+      "target": "オフ",
+      "targetSha256": "01c2df03fd3f553758a90a99605066bd31372cb19f7dce6f22087f6f96680c41"
+    },
+    {
+      "cellId": "components.RequestEpisodeQueueControl.watchAheadOff::ko",
+      "targetCatalogPath": "src/i18n/locale/ko.json",
+      "target": "사용 안 함",
+      "targetSha256": "4add32301ef381597818c4e18bc5934c1bf0f968f1c8ce6556353b0090982229"
+    },
+    {
+      "cellId": "components.RequestEpisodeQueueControl.watchAheadOff::pt-BR",
+      "targetCatalogPath": "src/i18n/locale/pt_BR.json",
+      "target": "Desativado",
+      "targetSha256": "f47dfde9cb6fd44e4be5d25be16a8bea3bd596e711d262997e16f429a50a6f93"
+    },
+    {
+      "cellId": "components.RequestEpisodeQueueControl.watchAheadOff::vi",
+      "targetCatalogPath": "src/i18n/locale/vi.json",
+      "target": "Tắt",
+      "targetSha256": "3286064e94ab53aa748448ae8ddf03bd0cbfde33030100335c7bbc01270e1231"
+    },
+    {
+      "cellId": "components.RequestEpisodeQueueControl.watchAheadOff::zh-Hans",
+      "targetCatalogPath": "src/i18n/locale/zh_Hans.json",
+      "target": "关闭",
+      "targetSha256": "3fd47edce45b3603d4192f61dbf3e51162589b0951042a18d244132ac92e7bb7"
+    },
+    {
+      "cellId": "components.RequestEpisodeQueueControl.watchAheadOff::zh-Hant",
+      "targetCatalogPath": "src/i18n/locale/zh_Hant.json",
+      "target": "關閉",
+      "targetSha256": "c7fdddf79eaa8c4f71f4976d88201a632dad2c10b518207c8dac164252ff63ce"
+    },
+    {
+      "cellId": "components.RequestEpisodeQueueControl.watchAheadOverride::ar",
+      "targetCatalogPath": "src/i18n/locale/ar.json",
+      "target": "طول قائمة الانتظار",
+      "targetSha256": "d9710ce85dcf6859d3f53f04fc89c7024f5513178b1b650ba4e80c27004a6b52"
+    },
+    {
+      "cellId": "components.RequestEpisodeQueueControl.watchAheadOverride::de",
+      "targetCatalogPath": "src/i18n/locale/de.json",
+      "target": "Warteschlangenlänge",
+      "targetSha256": "9b2b1c720eb110e621a1a36e6dc591a712f665ff9770e6bd21bd84b36d795819"
+    },
+    {
+      "cellId": "components.RequestEpisodeQueueControl.watchAheadOverride::es",
+      "targetCatalogPath": "src/i18n/locale/es.json",
+      "target": "Longitud de la cola",
+      "targetSha256": "310fd8ee4620e75634b7bd6a81eed4310d9bd6c8733c592f3f844bc3a41bed36"
+    },
+    {
+      "cellId": "components.RequestEpisodeQueueControl.watchAheadOverride::fr",
+      "targetCatalogPath": "src/i18n/locale/fr.json",
+      "target": "Longueur de la file",
+      "targetSha256": "fa78d385d4e88e3daf268da3cf24dec33b996da0a4049d8acadc1dc9b92eea4c"
+    },
+    {
+      "cellId": "components.RequestEpisodeQueueControl.watchAheadOverride::hi",
+      "targetCatalogPath": "src/i18n/locale/hi.json",
+      "target": "कतार की लंबाई",
+      "targetSha256": "35ac0620d7c72079e2a79a9ac28fe9ef4ccc57585823b16e5da50ca10401c128"
+    },
+    {
+      "cellId": "components.RequestEpisodeQueueControl.watchAheadOverride::id",
+      "targetCatalogPath": "src/i18n/locale/id.json",
+      "target": "Panjang antrean",
+      "targetSha256": "7663d6c768c2fd5ef11102987e9aea919b1e2b032fc8746462c1ac000a5892e0"
+    },
+    {
+      "cellId": "components.RequestEpisodeQueueControl.watchAheadOverride::ja",
+      "targetCatalogPath": "src/i18n/locale/ja.json",
+      "target": "キューの長さ",
+      "targetSha256": "d2af4c3800e710c2d014fa1a122f123078f79d278001ba935bf2e754b18edf59"
+    },
+    {
+      "cellId": "components.RequestEpisodeQueueControl.watchAheadOverride::ko",
+      "targetCatalogPath": "src/i18n/locale/ko.json",
+      "target": "대기열 길이",
+      "targetSha256": "3d76d1c0d3b0e7b833332b6b19d500620a8a9369b50955bff7eb45faab6a2ccd"
+    },
+    {
+      "cellId": "components.RequestEpisodeQueueControl.watchAheadOverride::pt-BR",
+      "targetCatalogPath": "src/i18n/locale/pt_BR.json",
+      "target": "Tamanho da fila",
+      "targetSha256": "ff1afd272eb764c2c5f3b5489a10105d9e6352c7b929dc285c59e47d403ad156"
+    },
+    {
+      "cellId": "components.RequestEpisodeQueueControl.watchAheadOverride::vi",
+      "targetCatalogPath": "src/i18n/locale/vi.json",
+      "target": "Độ dài hàng đợi",
+      "targetSha256": "bd6c785e3917f6fa097bf58331306b0f9fb9a41f147bcf75fb57acb880895489"
+    },
+    {
+      "cellId": "components.RequestEpisodeQueueControl.watchAheadOverride::zh-Hans",
+      "targetCatalogPath": "src/i18n/locale/zh_Hans.json",
+      "target": "队列长度",
+      "targetSha256": "addb3ae11d2e7250c905a1bca0da7d8070c78ef07ffba0818f9d4d679b942bad"
+    },
+    {
+      "cellId": "components.RequestEpisodeQueueControl.watchAheadOverride::zh-Hant",
+      "targetCatalogPath": "src/i18n/locale/zh_Hant.json",
+      "target": "佇列長度",
+      "targetSha256": "077f1bd595dd2f4734b20bdc5f02580b96e394586e752e76e088d75598bd5736"
+    },
+    {
+      "cellId": "components.RequestEpisodeQueueControl.watchAheadOverrideHelp::ar",
+      "targetCatalogPath": "src/i18n/locale/ar.json",
+      "target": "يؤثر هذا التغيير في الإضافة إلى قائمة الانتظار مستقبلًا فقط. وتظل طلبات الحلقات الحالية والملفات التي تم تنزيلها كما هي.",
+      "targetSha256": "917e0cf91ff980442f624c60448dbd8baaa642fda5dd4a724b854d841ed962aa"
+    },
+    {
+      "cellId": "components.RequestEpisodeQueueControl.watchAheadOverrideHelp::de",
+      "targetCatalogPath": "src/i18n/locale/de.json",
+      "target": "Ändert nur die künftige Einreihung. Bestehende Episodenanfragen und heruntergeladene Dateien bleiben erhalten.",
+      "targetSha256": "086e73d6a4a6a847888dbb21245fef5359ef3738d25877f9088eb478aab89349"
+    },
+    {
+      "cellId": "components.RequestEpisodeQueueControl.watchAheadOverrideHelp::es",
+      "targetCatalogPath": "src/i18n/locale/es.json",
+      "target": "Solo afecta a las futuras incorporaciones a la cola. Las solicitudes de episodios existentes y los archivos descargados se mantienen.",
+      "targetSha256": "2c37f45804d2e1434da28abac5425f7ab30f2751d923def165b5b009aefad25f"
+    },
+    {
+      "cellId": "components.RequestEpisodeQueueControl.watchAheadOverrideHelp::fr",
+      "targetCatalogPath": "src/i18n/locale/fr.json",
+      "target": "Ne modifie que les mises en file d’attente à venir. Les demandes d’épisodes existantes et les fichiers téléchargés restent en place.",
+      "targetSha256": "52debdc82909c30d68df3fe69bb821d1fa1c78a1e495bfdf9818ea435b6b9292"
+    },
+    {
+      "cellId": "components.RequestEpisodeQueueControl.watchAheadOverrideHelp::hi",
+      "targetCatalogPath": "src/i18n/locale/hi.json",
+      "target": "इससे केवल भविष्य में कतार में जोड़े जाने वाले एपिसोड बदलेंगे। मौजूदा एपिसोड अनुरोध और डाउनलोड की गई फ़ाइलें यथावत रहेंगी।",
+      "targetSha256": "11c4128105b78b5bacac80aca1c864cef7b6bf2dcf29235ae918628b9d6f2d45"
+    },
+    {
+      "cellId": "components.RequestEpisodeQueueControl.watchAheadOverrideHelp::id",
+      "targetCatalogPath": "src/i18n/locale/id.json",
+      "target": "Hanya berlaku untuk penambahan episode ke antrean di masa mendatang. Permintaan episode dan file yang sudah diunduh tetap seperti semula.",
+      "targetSha256": "897686cb34cec119a48c85fa9afbbcd6b0a3321e46818c5fdaeb0e796f31b75e"
+    },
+    {
+      "cellId": "components.RequestEpisodeQueueControl.watchAheadOverrideHelp::ja",
+      "targetCatalogPath": "src/i18n/locale/ja.json",
+      "target": "変更されるのは今後のキュー登録のみです。既存のエピソードリクエストとダウンロード済みファイルはそのまま残ります。",
+      "targetSha256": "b7af356ad31bae99cb3f8427fc05b1571899ae1dcd3081b22d449ecc58bdea1c"
+    },
+    {
+      "cellId": "components.RequestEpisodeQueueControl.watchAheadOverrideHelp::ko",
+      "targetCatalogPath": "src/i18n/locale/ko.json",
+      "target": "이 설정은 앞으로 대기열에 추가되는 항목에만 적용됩니다. 기존 에피소드 요청과 다운로드한 파일은 그대로 유지됩니다.",
+      "targetSha256": "a0b5025d746e6067efafb9d6d5c523b0acdf9e4d0677fc96c55aa5470a3bcd8d"
+    },
+    {
+      "cellId": "components.RequestEpisodeQueueControl.watchAheadOverrideHelp::pt-BR",
+      "targetCatalogPath": "src/i18n/locale/pt_BR.json",
+      "target": "Altera apenas as inclusões futuras na fila. As solicitações de episódios existentes e os arquivos baixados permanecem.",
+      "targetSha256": "2898993782feeeac262da1b4a8e43135f43464ff6195dc998695498f94b38aa8"
+    },
+    {
+      "cellId": "components.RequestEpisodeQueueControl.watchAheadOverrideHelp::vi",
+      "targetCatalogPath": "src/i18n/locale/vi.json",
+      "target": "Chỉ thay đổi việc xếp hàng trong tương lai. Các yêu cầu tập phim hiện có và tệp đã tải xuống vẫn được giữ nguyên.",
+      "targetSha256": "aca56d1768c0310a990be12211c2b983d10ccc0719f4fee019bff723170499c9"
+    },
+    {
+      "cellId": "components.RequestEpisodeQueueControl.watchAheadOverrideHelp::zh-Hans",
+      "targetCatalogPath": "src/i18n/locale/zh_Hans.json",
+      "target": "此更改仅影响今后的排队。现有剧集请求和已下载的文件会保留。",
+      "targetSha256": "81717a01ba1734f9ea9136963ee2807d14c904861d9b5ca22bacf9cae15541f9"
+    },
+    {
+      "cellId": "components.RequestEpisodeQueueControl.watchAheadOverrideHelp::zh-Hant",
+      "targetCatalogPath": "src/i18n/locale/zh_Hant.json",
+      "target": "此變更只影響後續加入佇列的項目。現有集數請求及已下載的檔案都會保留。",
+      "targetSha256": "3f0a8f8cd7460cbe848620dc00bcb230fcab31c4d03635b0072e85cdb59d16ce"
+    },
+    {
+      "cellId": "components.RequestEpisodeQueueControl.watchAheadSaveFailed::ar",
+      "targetCatalogPath": "src/i18n/locale/ar.json",
+      "target": "تعذّر حفظ قائمة انتظار الحلقات. أعد تحميل الطلب وحاول مجددًا.",
+      "targetSha256": "c69084639298316a053df8f2e04e7d93d0a7a08eab9419144ea69bc9de13bf1c"
+    },
+    {
+      "cellId": "components.RequestEpisodeQueueControl.watchAheadSaveFailed::de",
+      "targetCatalogPath": "src/i18n/locale/de.json",
+      "target": "Die Episodenwarteschlange konnte nicht gespeichert werden. Lade die Anfrage neu und versuche es erneut.",
+      "targetSha256": "c2ca5c909ae33618b7e9c5e853ab3ff0fce2729a8dfe28c8c2541d43ca92923c"
+    },
+    {
+      "cellId": "components.RequestEpisodeQueueControl.watchAheadSaveFailed::es",
+      "targetCatalogPath": "src/i18n/locale/es.json",
+      "target": "No se pudo guardar la cola de episodios. Recarga la solicitud e inténtalo de nuevo.",
+      "targetSha256": "e31f1694764344149770d8d57cd659e7326f54059c73780bf1de3d807127dd6e"
+    },
+    {
+      "cellId": "components.RequestEpisodeQueueControl.watchAheadSaveFailed::fr",
+      "targetCatalogPath": "src/i18n/locale/fr.json",
+      "target": "Impossible d’enregistrer la file d’attente des épisodes. Rechargez la demande et réessayez.",
+      "targetSha256": "cfd8bb3bbebbc397392aeebc11380d49767f8ad71eb67bd1bb4171603fd30683"
+    },
+    {
+      "cellId": "components.RequestEpisodeQueueControl.watchAheadSaveFailed::hi",
+      "targetCatalogPath": "src/i18n/locale/hi.json",
+      "target": "एपिसोड कतार सहेजी नहीं जा सकी। अनुरोध फिर से लोड करके दोबारा कोशिश करें।",
+      "targetSha256": "63717d2121fa79bfb8a52c3a2721102bf705e4a0826f5b288b3c12a795ba4186"
+    },
+    {
+      "cellId": "components.RequestEpisodeQueueControl.watchAheadSaveFailed::id",
+      "targetCatalogPath": "src/i18n/locale/id.json",
+      "target": "Pengaturan antrean episode tidak dapat disimpan. Muat ulang permintaan lalu coba lagi.",
+      "targetSha256": "9e725c635981581ebc5ad86b1cccd8a62ebd9ca7ebdce75c8ff7ea2485d5809b"
+    },
+    {
+      "cellId": "components.RequestEpisodeQueueControl.watchAheadSaveFailed::ja",
+      "targetCatalogPath": "src/i18n/locale/ja.json",
+      "target": "エピソードキューを保存できませんでした。リクエストを再読み込みして、もう一度お試しください。",
+      "targetSha256": "18f8fd615ed0bfe1935965b682f07774eea0dea29956cf102f63bf3a1f99c98a"
+    },
+    {
+      "cellId": "components.RequestEpisodeQueueControl.watchAheadSaveFailed::ko",
+      "targetCatalogPath": "src/i18n/locale/ko.json",
+      "target": "에피소드 큐를 저장하지 못했습니다. 요청을 새로고침한 뒤 다시 시도하세요.",
+      "targetSha256": "816748dab9d80fba2468156ab1d27e24d0e725d5bb8133eff8d1739cc69d467e"
+    },
+    {
+      "cellId": "components.RequestEpisodeQueueControl.watchAheadSaveFailed::pt-BR",
+      "targetCatalogPath": "src/i18n/locale/pt_BR.json",
+      "target": "Não foi possível salvar a fila de episódios. Recarregue a solicitação e tente novamente.",
+      "targetSha256": "74006e1cb55d0b1411abda64dce1380c216bb12b2d5d6a29efa4bf933d07154b"
+    },
+    {
+      "cellId": "components.RequestEpisodeQueueControl.watchAheadSaveFailed::vi",
+      "targetCatalogPath": "src/i18n/locale/vi.json",
+      "target": "Không thể lưu hàng đợi tập phim. Hãy tải lại yêu cầu rồi thử lại.",
+      "targetSha256": "3a22ed63d6a193d31830b8e86b1d8c58e3d496f5c979f0ab96f1bc9b97166de1"
+    },
+    {
+      "cellId": "components.RequestEpisodeQueueControl.watchAheadSaveFailed::zh-Hans",
+      "targetCatalogPath": "src/i18n/locale/zh_Hans.json",
+      "target": "无法保存剧集队列。请重新加载请求后重试。",
+      "targetSha256": "5bcb60f6401b3bd36105d782f03be68aabb646f7793db5561bc8ae664967f8bb"
+    },
+    {
+      "cellId": "components.RequestEpisodeQueueControl.watchAheadSaveFailed::zh-Hant",
+      "targetCatalogPath": "src/i18n/locale/zh_Hant.json",
+      "target": "無法儲存集數佇列。請重新載入請求後再試一次。",
+      "targetSha256": "b87d13c7ae9387c991b8bdb7cc839a40c90efc857cf6c85ea832fd5d83da02b9"
+    },
+    {
+      "cellId": "components.RequestEpisodeQueueControl.watchAheadSaved::ar",
+      "targetCatalogPath": "src/i18n/locale/ar.json",
+      "target": "تم حفظ قائمة انتظار الحلقات.",
+      "targetSha256": "f62d38f41c70b97c19883b1fcc8e7a6dd91429a00cee973c323df5893154cfe8"
+    },
+    {
+      "cellId": "components.RequestEpisodeQueueControl.watchAheadSaved::de",
+      "targetCatalogPath": "src/i18n/locale/de.json",
+      "target": "Episodenwarteschlange gespeichert.",
+      "targetSha256": "5ad00fb3ec5f0ee88e4c6872ce9f4ce20e000b3e1c9507d1598846be9838766f"
+    },
+    {
+      "cellId": "components.RequestEpisodeQueueControl.watchAheadSaved::es",
+      "targetCatalogPath": "src/i18n/locale/es.json",
+      "target": "Cola de episodios guardada.",
+      "targetSha256": "477e9998aaa0e057b0661730b9915465d43a077931b268e08be2870056f83d65"
+    },
+    {
+      "cellId": "components.RequestEpisodeQueueControl.watchAheadSaved::fr",
+      "targetCatalogPath": "src/i18n/locale/fr.json",
+      "target": "File d’attente des épisodes enregistrée.",
+      "targetSha256": "b6eb7ae66e3a9821146f51f14fd93a553879ad3700d47f6a3b5487d446db3ad6"
+    },
+    {
+      "cellId": "components.RequestEpisodeQueueControl.watchAheadSaved::hi",
+      "targetCatalogPath": "src/i18n/locale/hi.json",
+      "target": "एपिसोड कतार सहेजी गई।",
+      "targetSha256": "b6e076d3c822b0de8715882f79cec0f671bf641994732751157df6d5e07c4c45"
+    },
+    {
+      "cellId": "components.RequestEpisodeQueueControl.watchAheadSaved::id",
+      "targetCatalogPath": "src/i18n/locale/id.json",
+      "target": "Antrean episode disimpan.",
+      "targetSha256": "001af4c62544b3d4a2f70e3b203eb0feb5f2d4e9e5a9b04e340bf5972036277a"
+    },
+    {
+      "cellId": "components.RequestEpisodeQueueControl.watchAheadSaved::ja",
+      "targetCatalogPath": "src/i18n/locale/ja.json",
+      "target": "エピソードキューを保存しました。",
+      "targetSha256": "dd52d99903b7d159675a11de6b6e92bb2e3103b25f07216e4da8b4b098822878"
+    },
+    {
+      "cellId": "components.RequestEpisodeQueueControl.watchAheadSaved::ko",
+      "targetCatalogPath": "src/i18n/locale/ko.json",
+      "target": "에피소드 큐를 저장했습니다.",
+      "targetSha256": "866083e0ed653a0e7752ea1d8a81d9f4fa96eb2465790ae85886fcf7925652aa"
+    },
+    {
+      "cellId": "components.RequestEpisodeQueueControl.watchAheadSaved::pt-BR",
+      "targetCatalogPath": "src/i18n/locale/pt_BR.json",
+      "target": "Fila de episódios salva.",
+      "targetSha256": "c05bd5f890bfd40b40aa9104f65481df67cdd8335caf3c77c4a48cd400b57f27"
+    },
+    {
+      "cellId": "components.RequestEpisodeQueueControl.watchAheadSaved::vi",
+      "targetCatalogPath": "src/i18n/locale/vi.json",
+      "target": "Đã lưu hàng đợi tập phim.",
+      "targetSha256": "3a0581fd436cc28b9fdbcbef8baa45d2c83d4517a285921bbf9422000aa5f60a"
+    },
+    {
+      "cellId": "components.RequestEpisodeQueueControl.watchAheadSaved::zh-Hans",
+      "targetCatalogPath": "src/i18n/locale/zh_Hans.json",
+      "target": "剧集队列已保存。",
+      "targetSha256": "195030824f57d16690fd122764185c6f77cadeb76167f5a0c02d047e760c8aad"
+    },
+    {
+      "cellId": "components.RequestEpisodeQueueControl.watchAheadSaved::zh-Hant",
+      "targetCatalogPath": "src/i18n/locale/zh_Hant.json",
+      "target": "集數佇列已儲存。",
+      "targetSha256": "31bcca4578350c0bc33ae532efb0176f3884748f233f1ce80d9323c92847653c"
+    },
+    {
+      "cellId": "components.RequestEpisodeQueueControl.watchAheadUseDefault::ar",
+      "targetCatalogPath": "src/i18n/locale/ar.json",
+      "target": "الإعداد الافتراضي للحساب ({count})",
+      "targetSha256": "e750fd59de9e0e14f1c420459f41ac366c7ab9bf3bcddbb5d0622f9648094b4e"
+    },
+    {
+      "cellId": "components.RequestEpisodeQueueControl.watchAheadUseDefault::de",
+      "targetCatalogPath": "src/i18n/locale/de.json",
+      "target": "Kontovorgabe ({count})",
+      "targetSha256": "54c2466a4d754f729407a2f8d42d81606449a9542e9734501277c84e828d1d86"
+    },
+    {
+      "cellId": "components.RequestEpisodeQueueControl.watchAheadUseDefault::es",
+      "targetCatalogPath": "src/i18n/locale/es.json",
+      "target": "Predeterminado de la cuenta ({count})",
+      "targetSha256": "a545fee47dbba052a341e47614a293f3ffb1b5411be9ee470a492a1730ba9e52"
+    },
+    {
+      "cellId": "components.RequestEpisodeQueueControl.watchAheadUseDefault::fr",
+      "targetCatalogPath": "src/i18n/locale/fr.json",
+      "target": "Valeur par défaut du compte ({count})",
+      "targetSha256": "5a3e75e5b27d0b6015f89b196a18ddd885778935517ecc41ade57203bf2281ae"
+    },
+    {
+      "cellId": "components.RequestEpisodeQueueControl.watchAheadUseDefault::hi",
+      "targetCatalogPath": "src/i18n/locale/hi.json",
+      "target": "खाते का डिफ़ॉल्ट ({count})",
+      "targetSha256": "6136edd338ebf210562d972499f60db6e2aee2ad82c6085777d0a3721f051205"
+    },
+    {
+      "cellId": "components.RequestEpisodeQueueControl.watchAheadUseDefault::id",
+      "targetCatalogPath": "src/i18n/locale/id.json",
+      "target": "Bawaan akun ({count})",
+      "targetSha256": "b6d51fc0e86a08120e0963b91c1bb85ab0b2b5bee1c4a07cdbbee5152970c1bc"
+    },
+    {
+      "cellId": "components.RequestEpisodeQueueControl.watchAheadUseDefault::ja",
+      "targetCatalogPath": "src/i18n/locale/ja.json",
+      "target": "アカウントのデフォルト（{count}）",
+      "targetSha256": "323202bb52d8790df8398d0e421bff304b08113f397bcc0e277cacb2a9241699"
+    },
+    {
+      "cellId": "components.RequestEpisodeQueueControl.watchAheadUseDefault::ko",
+      "targetCatalogPath": "src/i18n/locale/ko.json",
+      "target": "계정 기본값 ({count})",
+      "targetSha256": "daf82ba999bcda67995e036221406ad8350033d3ead227e15a96e37540567469"
+    },
+    {
+      "cellId": "components.RequestEpisodeQueueControl.watchAheadUseDefault::pt-BR",
+      "targetCatalogPath": "src/i18n/locale/pt_BR.json",
+      "target": "Padrão da conta ({count})",
+      "targetSha256": "b2023536df104bd3b652ff1f8b3947c6d15250af426d80d40a0e7658f21dfda2"
+    },
+    {
+      "cellId": "components.RequestEpisodeQueueControl.watchAheadUseDefault::vi",
+      "targetCatalogPath": "src/i18n/locale/vi.json",
+      "target": "Mặc định của tài khoản ({count})",
+      "targetSha256": "70fd589e6964ec950fa3ae4820b05cd29a96474fe7b5f4f29222d8365b2da311"
+    },
+    {
+      "cellId": "components.RequestEpisodeQueueControl.watchAheadUseDefault::zh-Hans",
+      "targetCatalogPath": "src/i18n/locale/zh_Hans.json",
+      "target": "账户默认值（{count}）",
+      "targetSha256": "6fd45f2ceb92207a5e4143c92fe54eff249b59833d2528676602341eee64a99f"
+    },
+    {
+      "cellId": "components.RequestEpisodeQueueControl.watchAheadUseDefault::zh-Hant",
+      "targetCatalogPath": "src/i18n/locale/zh_Hant.json",
+      "target": "帳戶預設值（{count}）",
+      "targetSha256": "8039d17b78f2955f8103f2ed67588b3d64c95f6e4b77eccf6a02341ccb54760c"
+    },
+    {
+      "cellId": "components.RequestEpisodeQueueModal.loadError::ar",
+      "targetCatalogPath": "src/i18n/locale/ar.json",
+      "target": "تعذّر تحميل الإعداد الافتراضي للحساب. أغلق مربع الحوار هذا وحاول مرة أخرى.",
+      "targetSha256": "1b319db212747918f8a83ecbfa23402db18231f21e0f33533b9606e1b35957bc"
+    },
+    {
+      "cellId": "components.RequestEpisodeQueueModal.loadError::de",
+      "targetCatalogPath": "src/i18n/locale/de.json",
+      "target": "Der Kontostandard konnte nicht geladen werden. Schließe diesen Dialog und versuche es erneut.",
+      "targetSha256": "95a6202820094ad944955164eda96d56eee4751c7e208cf97e1976613aa4ca69"
+    },
+    {
+      "cellId": "components.RequestEpisodeQueueModal.loadError::es",
+      "targetCatalogPath": "src/i18n/locale/es.json",
+      "target": "No se pudo cargar el valor predeterminado de la cuenta. Cierra este cuadro de diálogo e inténtalo de nuevo.",
+      "targetSha256": "835a27f7b8b1e644fdf72a13f6e71b41b0b464cfd52c08218ca4ccdf9940c61f"
+    },
+    {
+      "cellId": "components.RequestEpisodeQueueModal.loadError::fr",
+      "targetCatalogPath": "src/i18n/locale/fr.json",
+      "target": "Impossible de charger la valeur par défaut du compte. Fermez cette boîte de dialogue et réessayez.",
+      "targetSha256": "c2ceb6aee2334e77fc8bf9f55d54e1772878eafe5aa25c70ec5890420693a69b"
+    },
+    {
+      "cellId": "components.RequestEpisodeQueueModal.loadError::hi",
+      "targetCatalogPath": "src/i18n/locale/hi.json",
+      "target": "खाते का डिफ़ॉल्ट लोड नहीं हो सका। यह संवाद बंद करके फिर कोशिश करें।",
+      "targetSha256": "c034e7d80343a4d55e20385409b2a138f23503e93f033469e76de9ac71ce5af6"
+    },
+    {
+      "cellId": "components.RequestEpisodeQueueModal.loadError::id",
+      "targetCatalogPath": "src/i18n/locale/id.json",
+      "target": "Default akun tidak dapat dimuat. Tutup dialog ini lalu coba lagi.",
+      "targetSha256": "bf95e63a59b730edf61326d6206ae8f5186f9eab74b6e9855fa4cce56e23b5d8"
+    },
+    {
+      "cellId": "components.RequestEpisodeQueueModal.loadError::ja",
+      "targetCatalogPath": "src/i18n/locale/ja.json",
+      "target": "アカウントのデフォルトを読み込めませんでした。このダイアログを閉じて、もう一度お試しください。",
+      "targetSha256": "e17faf59d501a451fa4a8b1d38498f3240e4b913de6c882e0019338d5fe5b4c3"
+    },
+    {
+      "cellId": "components.RequestEpisodeQueueModal.loadError::ko",
+      "targetCatalogPath": "src/i18n/locale/ko.json",
+      "target": "계정 기본값을 불러오지 못했습니다. 이 대화상자를 닫고 다시 시도하세요.",
+      "targetSha256": "b09714fc9cea3ed054b429250b7461fc40b3e5562179eda383dc3bec4fd2711f"
+    },
+    {
+      "cellId": "components.RequestEpisodeQueueModal.loadError::pt-BR",
+      "targetCatalogPath": "src/i18n/locale/pt_BR.json",
+      "target": "Não foi possível carregar o padrão da conta. Feche esta janela e tente novamente.",
+      "targetSha256": "3bb32dfd1a6c1407af34434d464337866c4e076943c212c9fd90f619fbe8948a"
+    },
+    {
+      "cellId": "components.RequestEpisodeQueueModal.loadError::vi",
+      "targetCatalogPath": "src/i18n/locale/vi.json",
+      "target": "Không thể tải mặc định của tài khoản. Hãy đóng hộp thoại này rồi thử lại.",
+      "targetSha256": "c4ddb3ebae9f712e488745367df2ac76b390ec33beec03275048d586b97c3987"
+    },
+    {
+      "cellId": "components.RequestEpisodeQueueModal.loadError::zh-Hans",
+      "targetCatalogPath": "src/i18n/locale/zh_Hans.json",
+      "target": "无法加载账户默认值。请关闭此对话框并重试。",
+      "targetSha256": "f44dc12230a71919d8a8553ee1d61497d0c6bb61ebfebe6fbfcd672934c4afce"
+    },
+    {
+      "cellId": "components.RequestEpisodeQueueModal.loadError::zh-Hant",
+      "targetCatalogPath": "src/i18n/locale/zh_Hant.json",
+      "target": "無法載入帳戶預設值。請關閉此對話框後再試一次。",
+      "targetSha256": "50b773d227d6a09cd24f974d2bc539d9981742aad8c38c3c8cb80f6abf145d7e"
+    },
+    {
+      "cellId": "components.RequestEpisodeQueueModal.title::ar",
+      "targetCatalogPath": "src/i18n/locale/ar.json",
+      "target": "قائمة انتظار الحلقات",
+      "targetSha256": "f86100a34fdb478270cccf9c476d54dedc2b36449d932242e14445dec3dd942e"
+    },
+    {
+      "cellId": "components.RequestEpisodeQueueModal.title::de",
+      "targetCatalogPath": "src/i18n/locale/de.json",
+      "target": "Episodenwarteschlange",
+      "targetSha256": "c419b5d44f192240d00e5b1abcf257f795987b160c37fd0acb8565939aafb0f9"
+    },
+    {
+      "cellId": "components.RequestEpisodeQueueModal.title::es",
+      "targetCatalogPath": "src/i18n/locale/es.json",
+      "target": "Cola de episodios",
+      "targetSha256": "c5218408e6aa6a0e5f72ea59d04969c7d8994a0b9c09cade24264d0ad38907b4"
+    },
+    {
+      "cellId": "components.RequestEpisodeQueueModal.title::fr",
+      "targetCatalogPath": "src/i18n/locale/fr.json",
+      "target": "File d’attente des épisodes",
+      "targetSha256": "7ea7e18f47af3bdcd2db58bec54a5d1e85be061727a96dfe192f3a8284178449"
+    },
+    {
+      "cellId": "components.RequestEpisodeQueueModal.title::hi",
+      "targetCatalogPath": "src/i18n/locale/hi.json",
+      "target": "एपिसोड कतार",
+      "targetSha256": "f1527ce3d80b77cd7a71684a22e44f697bdfe1476a2104f2f9ee24a0eeddc55b"
+    },
+    {
+      "cellId": "components.RequestEpisodeQueueModal.title::id",
+      "targetCatalogPath": "src/i18n/locale/id.json",
+      "target": "Antrean Episode",
+      "targetSha256": "d02c7c2a15958c0dc59d19b2a29bfba67e34e8738839f39e330fa1720292d555"
+    },
+    {
+      "cellId": "components.RequestEpisodeQueueModal.title::ja",
+      "targetCatalogPath": "src/i18n/locale/ja.json",
+      "target": "エピソードキュー",
+      "targetSha256": "3c3bc8aecb73cc3d815db386d878491525526df3e0fbc9dcd6c937afde194cca"
+    },
+    {
+      "cellId": "components.RequestEpisodeQueueModal.title::ko",
+      "targetCatalogPath": "src/i18n/locale/ko.json",
+      "target": "에피소드 큐",
+      "targetSha256": "4bcbef14c7cc5890213595fb4f9c31f7cfea6972a2154f17e16dfd763403e3cc"
+    },
+    {
+      "cellId": "components.RequestEpisodeQueueModal.title::pt-BR",
+      "targetCatalogPath": "src/i18n/locale/pt_BR.json",
+      "target": "Fila de episódios",
+      "targetSha256": "44270b29c22f6c9bd035df198691723aaa507391dde0ec019ad96b034ff7d556"
+    },
+    {
+      "cellId": "components.RequestEpisodeQueueModal.title::vi",
+      "targetCatalogPath": "src/i18n/locale/vi.json",
+      "target": "Hàng đợi tập phim",
+      "targetSha256": "e0d1fe081252f5f79c8776a245c5fbe2c28d0aec665853f136bdc89577c2798b"
+    },
+    {
+      "cellId": "components.RequestEpisodeQueueModal.title::zh-Hans",
+      "targetCatalogPath": "src/i18n/locale/zh_Hans.json",
+      "target": "剧集队列",
+      "targetSha256": "319829af858a420a3aca96e0cb1e5fa122828bd1d69cedd278cf950947e0197a"
+    },
+    {
+      "cellId": "components.RequestEpisodeQueueModal.title::zh-Hant",
+      "targetCatalogPath": "src/i18n/locale/zh_Hant.json",
+      "target": "集數佇列",
+      "targetSha256": "41fbf2e928eda2fd57ccd66950f7ac0554d03efc03003899273360f439932756"
+    },
+    {
+      "cellId": "components.RequestModal.watchAheadActiveForRequest::ar",
+      "targetCatalogPath": "src/i18n/locale/ar.json",
+      "target": "يُبقي هذا الطلب {count} قبله في قائمة الانتظار.",
+      "targetSha256": "ff41f0d5337384ee2f7bca449d19f1d9749895c3d03cd8a171186f881956d2a0"
+    },
+    {
+      "cellId": "components.RequestModal.watchAheadActiveForRequest::de",
+      "targetCatalogPath": "src/i18n/locale/de.json",
+      "target": "Diese Anfrage hält {count} vor sich in der Warteschlange.",
+      "targetSha256": "686f800e086f1f3bf35ec2678bb99003ea179558dcbb49a6a7993a3bb507bdc1"
+    },
+    {
+      "cellId": "components.RequestModal.watchAheadActiveForRequest::es",
+      "targetCatalogPath": "src/i18n/locale/es.json",
+      "target": "Esta solicitud mantiene {count} por delante en la cola.",
+      "targetSha256": "86e1f72214b74ba89aaf1ca78d8c5318b154c6e2ba1aa2f149798fa8c3e52645"
+    },
+    {
+      "cellId": "components.RequestModal.watchAheadActiveForRequest::fr",
+      "targetCatalogPath": "src/i18n/locale/fr.json",
+      "target": "Cette demande garde {count} devant elle dans la file.",
+      "targetSha256": "e077c150dde2376f950192cf249650d50de366e71205307651b91a8eaafd47e2"
+    },
+    {
+      "cellId": "components.RequestModal.watchAheadActiveForRequest::hi",
+      "targetCatalogPath": "src/i18n/locale/hi.json",
+      "target": "यह अनुरोध {count} को अपने आगे कतार में रखता है।",
+      "targetSha256": "4809c00f13d68c053d9e3b60d722c2787bed3a4a331a5ce4f7caff959a295383"
+    },
+    {
+      "cellId": "components.RequestModal.watchAheadActiveForRequest::id",
+      "targetCatalogPath": "src/i18n/locale/id.json",
+      "target": "Permintaan ini mempertahankan {count} di depannya dalam antrean.",
+      "targetSha256": "e21f8a17b133b4d42e2ac43a717dc8ca4597444ab45e7d1bda08cbcee4a540bc"
+    },
+    {
+      "cellId": "components.RequestModal.watchAheadActiveForRequest::ja",
+      "targetCatalogPath": "src/i18n/locale/ja.json",
+      "target": "このリクエストでは、{count}を先行分としてキューに保持します。",
+      "targetSha256": "1cf01b0fa6d39158ddb9c4e637f68b35b03182532cb0abdfe6140618b363e20c"
+    },
+    {
+      "cellId": "components.RequestModal.watchAheadActiveForRequest::ko",
+      "targetCatalogPath": "src/i18n/locale/ko.json",
+      "target": "이 요청보다 앞서 {count}를 대기열에 유지합니다.",
+      "targetSha256": "edcc1ca0b1a6725a9a8782472219c132c1e4380adcc7fd9ff94aa32b64798d4d"
+    },
+    {
+      "cellId": "components.RequestModal.watchAheadActiveForRequest::pt-BR",
+      "targetCatalogPath": "src/i18n/locale/pt_BR.json",
+      "target": "Esta solicitação mantém {count} à sua frente na fila.",
+      "targetSha256": "57dd6296f1d6ed6ef7a8c3a67a113ce81227663d42d554e3e8c57dc3d9406b10"
+    },
+    {
+      "cellId": "components.RequestModal.watchAheadActiveForRequest::vi",
+      "targetCatalogPath": "src/i18n/locale/vi.json",
+      "target": "Yêu cầu này giữ {count} ở phía trước nó trong hàng đợi.",
+      "targetSha256": "3991bca17de6efd3b0085ec7ef0f3b1a0cf92069f8e303a6ccc0b4f656195ee9"
+    },
+    {
+      "cellId": "components.RequestModal.watchAheadActiveForRequest::zh-Hans",
+      "targetCatalogPath": "src/i18n/locale/zh_Hans.json",
+      "target": "此请求会让 {count} 在队列中排在它前面。",
+      "targetSha256": "85f28ef8e41e1c9511624aacf9057e9b6887f732dc5e1d6fb9584ac5e21bd8d4"
+    },
+    {
+      "cellId": "components.RequestModal.watchAheadActiveForRequest::zh-Hant",
+      "targetCatalogPath": "src/i18n/locale/zh_Hant.json",
+      "target": "此請求會讓 {count} 在佇列中排在它前面。",
+      "targetSha256": "7b0317dcc11336a4cd0e8160b0ad6133de5939b119f7eb23641590fb290788c2"
+    },
+    {
+      "cellId": "components.RequestModal.watchAheadOff::ar",
+      "targetCatalogPath": "src/i18n/locale/ar.json",
+      "target": "معطّل",
+      "targetSha256": "532e66a3a8626e2af60ba3a1d4f90eb7ec75523d312f5de88d6bfda3848989d2"
+    },
+    {
+      "cellId": "components.RequestModal.watchAheadOff::de",
+      "targetCatalogPath": "src/i18n/locale/de.json",
+      "target": "Aus",
+      "targetSha256": "f0ce94502ed90ac3253eeb12f85f320eeb87b7c2d2be0a1a56f540b5603ead1b"
+    },
+    {
+      "cellId": "components.RequestModal.watchAheadOff::es",
+      "targetCatalogPath": "src/i18n/locale/es.json",
+      "target": "Desactivado",
+      "targetSha256": "e252efe6974743f63e8e27f312630e1a66d9d794272a90c6f50a7bdbfb45a92d"
+    },
+    {
+      "cellId": "components.RequestModal.watchAheadOff::fr",
+      "targetCatalogPath": "src/i18n/locale/fr.json",
+      "target": "Désactivé",
+      "targetSha256": "da60ff35b212a8aa4758f2a8bf63f12cdc79fb2f84d64ab2ed2689d80417bdf5"
+    },
+    {
+      "cellId": "components.RequestModal.watchAheadOff::hi",
+      "targetCatalogPath": "src/i18n/locale/hi.json",
+      "target": "बंद",
+      "targetSha256": "60ebc67af880b4d3e827d6201d05ed6df767c75c3393b3aad9f39ef3e2ea3adb"
+    },
+    {
+      "cellId": "components.RequestModal.watchAheadOff::id",
+      "targetCatalogPath": "src/i18n/locale/id.json",
+      "target": "Nonaktif",
+      "targetSha256": "f866da3efd2569667768985838214d454b9179f8aca07373e3c88f6e4c30455b"
+    },
+    {
+      "cellId": "components.RequestModal.watchAheadOff::ja",
+      "targetCatalogPath": "src/i18n/locale/ja.json",
+      "target": "オフ",
+      "targetSha256": "01c2df03fd3f553758a90a99605066bd31372cb19f7dce6f22087f6f96680c41"
+    },
+    {
+      "cellId": "components.RequestModal.watchAheadOff::ko",
+      "targetCatalogPath": "src/i18n/locale/ko.json",
+      "target": "사용 안 함",
+      "targetSha256": "4add32301ef381597818c4e18bc5934c1bf0f968f1c8ce6556353b0090982229"
+    },
+    {
+      "cellId": "components.RequestModal.watchAheadOff::pt-BR",
+      "targetCatalogPath": "src/i18n/locale/pt_BR.json",
+      "target": "Desativado",
+      "targetSha256": "f47dfde9cb6fd44e4be5d25be16a8bea3bd596e711d262997e16f429a50a6f93"
+    },
+    {
+      "cellId": "components.RequestModal.watchAheadOff::vi",
+      "targetCatalogPath": "src/i18n/locale/vi.json",
+      "target": "Tắt",
+      "targetSha256": "3286064e94ab53aa748448ae8ddf03bd0cbfde33030100335c7bbc01270e1231"
+    },
+    {
+      "cellId": "components.RequestModal.watchAheadOff::zh-Hans",
+      "targetCatalogPath": "src/i18n/locale/zh_Hans.json",
+      "target": "关闭",
+      "targetSha256": "3fd47edce45b3603d4192f61dbf3e51162589b0951042a18d244132ac92e7bb7"
+    },
+    {
+      "cellId": "components.RequestModal.watchAheadOff::zh-Hant",
+      "targetCatalogPath": "src/i18n/locale/zh_Hant.json",
+      "target": "關閉",
+      "targetSha256": "c7fdddf79eaa8c4f71f4976d88201a632dad2c10b518207c8dac164252ff63ce"
+    },
+    {
+      "cellId": "components.RequestModal.watchAheadOverrideDescription::ar",
+      "targetCatalogPath": "src/i18n/locale/ar.json",
+      "target": "يستخدم هذا الطلب إعداد قائمة انتظار الحلقات الخاص به: {count}.",
+      "targetSha256": "08fedbfa8747d8522b6f18603348b0997c218ea7bd84667360e86cf318c28b41"
+    },
+    {
+      "cellId": "components.RequestModal.watchAheadOverrideDescription::de",
+      "targetCatalogPath": "src/i18n/locale/de.json",
+      "target": "Diese Anfrage verwendet eine eigene Einstellung für die Episodenwarteschlange: {count}.",
+      "targetSha256": "0a2ddc076a54c52c582ff29830e5644ecbd77d9160bcd1ec82c1c23811b64223"
+    },
+    {
+      "cellId": "components.RequestModal.watchAheadOverrideDescription::es",
+      "targetCatalogPath": "src/i18n/locale/es.json",
+      "target": "Esta solicitud usa su propia configuración de cola de episodios: {count}.",
+      "targetSha256": "a91b1b800dec1abae450955be52c64b602953fa559737665ca7acbfbf2024ede"
+    },
+    {
+      "cellId": "components.RequestModal.watchAheadOverrideDescription::fr",
+      "targetCatalogPath": "src/i18n/locale/fr.json",
+      "target": "Cette demande utilise son propre paramètre de file d’attente des épisodes : {count}.",
+      "targetSha256": "aaafdd5ce192a597b39311f1b14fa3f2f77d1179ee3fd8df5944cff7a41de056"
+    },
+    {
+      "cellId": "components.RequestModal.watchAheadOverrideDescription::hi",
+      "targetCatalogPath": "src/i18n/locale/hi.json",
+      "target": "यह अनुरोध अपनी एपिसोड कतार सेटिंग का उपयोग करता है: {count}।",
+      "targetSha256": "d2a86fe061a6e9901fd29653519294ddc7e85ec6cde907a97e216b1d99c794ce"
+    },
+    {
+      "cellId": "components.RequestModal.watchAheadOverrideDescription::id",
+      "targetCatalogPath": "src/i18n/locale/id.json",
+      "target": "Permintaan ini menggunakan pengaturan antrean episodenya sendiri: {count}.",
+      "targetSha256": "a22be852038d8a51fab7c277beb7dee92d137586025dfed86da6f653dc71e9aa"
+    },
+    {
+      "cellId": "components.RequestModal.watchAheadOverrideDescription::ja",
+      "targetCatalogPath": "src/i18n/locale/ja.json",
+      "target": "このリクエストでは、独自のエピソードキュー設定（{count}）を使用します。",
+      "targetSha256": "4f7df0bc4e2a7143dbf7b9a9d864018df5ef5b96fc9e7977bec5f1ed66a60e0f"
+    },
+    {
+      "cellId": "components.RequestModal.watchAheadOverrideDescription::ko",
+      "targetCatalogPath": "src/i18n/locale/ko.json",
+      "target": "이 요청은 자체 에피소드 큐 설정을 사용합니다: {count}.",
+      "targetSha256": "d79092b0fe29c5d7e38def0925fdbabdc04cae8bc1211e1f116daa8920464e16"
+    },
+    {
+      "cellId": "components.RequestModal.watchAheadOverrideDescription::pt-BR",
+      "targetCatalogPath": "src/i18n/locale/pt_BR.json",
+      "target": "Esta solicitação usa sua própria configuração da fila de episódios: {count}.",
+      "targetSha256": "ff8f2050aad8daf8fde65c7b8507a44ad3a75e354216c2f5f46834a187a9a858"
+    },
+    {
+      "cellId": "components.RequestModal.watchAheadOverrideDescription::vi",
+      "targetCatalogPath": "src/i18n/locale/vi.json",
+      "target": "Yêu cầu này dùng cài đặt hàng đợi tập phim riêng: {count}.",
+      "targetSha256": "329cb6ff6a0c860a8aa6d22a9c003091f27628a4c54dde3d17460de7e8cbb89b"
+    },
+    {
+      "cellId": "components.RequestModal.watchAheadOverrideDescription::zh-Hans",
+      "targetCatalogPath": "src/i18n/locale/zh_Hans.json",
+      "target": "此请求使用自己的剧集队列设置：{count}。",
+      "targetSha256": "d0864262652cc03baf2f62c6d3b7974cecf69c3ce7329fef9ec28a93246d351f"
+    },
+    {
+      "cellId": "components.RequestModal.watchAheadOverrideDescription::zh-Hant",
+      "targetCatalogPath": "src/i18n/locale/zh_Hant.json",
+      "target": "此請求使用自己的集數佇列設定：{count}。",
+      "targetSha256": "6da5c0dbac108c612badbe66d027f5e87a7c0ccd0ea6569b63ba37dc4569ed9f"
+    },
+    {
+      "cellId": "components.Requests.episodeQueue::ar",
+      "targetCatalogPath": "src/i18n/locale/ar.json",
+      "target": "قائمة انتظار الحلقات",
+      "targetSha256": "f86100a34fdb478270cccf9c476d54dedc2b36449d932242e14445dec3dd942e"
+    },
+    {
+      "cellId": "components.Requests.episodeQueue::de",
+      "targetCatalogPath": "src/i18n/locale/de.json",
+      "target": "Episodenwarteschlange",
+      "targetSha256": "c419b5d44f192240d00e5b1abcf257f795987b160c37fd0acb8565939aafb0f9"
+    },
+    {
+      "cellId": "components.Requests.episodeQueue::es",
+      "targetCatalogPath": "src/i18n/locale/es.json",
+      "target": "Cola de episodios",
+      "targetSha256": "c5218408e6aa6a0e5f72ea59d04969c7d8994a0b9c09cade24264d0ad38907b4"
+    },
+    {
+      "cellId": "components.Requests.episodeQueue::fr",
+      "targetCatalogPath": "src/i18n/locale/fr.json",
+      "target": "File d’attente des épisodes",
+      "targetSha256": "7ea7e18f47af3bdcd2db58bec54a5d1e85be061727a96dfe192f3a8284178449"
+    },
+    {
+      "cellId": "components.Requests.episodeQueue::hi",
+      "targetCatalogPath": "src/i18n/locale/hi.json",
+      "target": "एपिसोड कतार",
+      "targetSha256": "f1527ce3d80b77cd7a71684a22e44f697bdfe1476a2104f2f9ee24a0eeddc55b"
+    },
+    {
+      "cellId": "components.Requests.episodeQueue::id",
+      "targetCatalogPath": "src/i18n/locale/id.json",
+      "target": "Antrean Episode",
+      "targetSha256": "d02c7c2a15958c0dc59d19b2a29bfba67e34e8738839f39e330fa1720292d555"
+    },
+    {
+      "cellId": "components.Requests.episodeQueue::ja",
+      "targetCatalogPath": "src/i18n/locale/ja.json",
+      "target": "エピソードキュー",
+      "targetSha256": "3c3bc8aecb73cc3d815db386d878491525526df3e0fbc9dcd6c937afde194cca"
+    },
+    {
+      "cellId": "components.Requests.episodeQueue::ko",
+      "targetCatalogPath": "src/i18n/locale/ko.json",
+      "target": "에피소드 큐",
+      "targetSha256": "4bcbef14c7cc5890213595fb4f9c31f7cfea6972a2154f17e16dfd763403e3cc"
+    },
+    {
+      "cellId": "components.Requests.episodeQueue::pt-BR",
+      "targetCatalogPath": "src/i18n/locale/pt_BR.json",
+      "target": "Fila de episódios",
+      "targetSha256": "44270b29c22f6c9bd035df198691723aaa507391dde0ec019ad96b034ff7d556"
+    },
+    {
+      "cellId": "components.Requests.episodeQueue::vi",
+      "targetCatalogPath": "src/i18n/locale/vi.json",
+      "target": "Hàng đợi tập phim",
+      "targetSha256": "e0d1fe081252f5f79c8776a245c5fbe2c28d0aec665853f136bdc89577c2798b"
+    },
+    {
+      "cellId": "components.Requests.episodeQueue::zh-Hans",
+      "targetCatalogPath": "src/i18n/locale/zh_Hans.json",
+      "target": "剧集队列",
+      "targetSha256": "319829af858a420a3aca96e0cb1e5fa122828bd1d69cedd278cf950947e0197a"
+    },
+    {
+      "cellId": "components.Requests.episodeQueue::zh-Hant",
+      "targetCatalogPath": "src/i18n/locale/zh_Hant.json",
+      "target": "集數佇列",
+      "targetSha256": "41fbf2e928eda2fd57ccd66950f7ac0554d03efc03003899273360f439932756"
+    },
+    {
+      "cellId": "components.Settings.SettingsJobsCache.movie-collection-queue::ar",
+      "targetCatalogPath": "src/i18n/locale/ar.json",
+      "target": "قائمة انتظار مجموعات الأفلام",
+      "targetSha256": "15bfd9a0b69acea91d2353d6f13fe544255f44c22f35879be595aad2e36a4c85"
+    },
+    {
+      "cellId": "components.Settings.SettingsJobsCache.movie-collection-queue::de",
+      "targetCatalogPath": "src/i18n/locale/de.json",
+      "target": "Warteschlange für Filmsammlungen",
+      "targetSha256": "10707fef99cfa29e5df28a9bafaaef4aeb564696a0b50b516dcf10d475eef9b3"
+    },
+    {
+      "cellId": "components.Settings.SettingsJobsCache.movie-collection-queue::es",
+      "targetCatalogPath": "src/i18n/locale/es.json",
+      "target": "Cola de películas de una colección",
+      "targetSha256": "b103773eca4d3734f7c751755a5350964266e2ccd8771bb207c5de2b7483af87"
+    },
+    {
+      "cellId": "components.Settings.SettingsJobsCache.movie-collection-queue::fr",
+      "targetCatalogPath": "src/i18n/locale/fr.json",
+      "target": "File d’attente des collections de films",
+      "targetSha256": "a15773cc109f54d4ef8e82c019b3ffc154c692013ef78fd9d6f93c15f4f61cfe"
+    },
+    {
+      "cellId": "components.Settings.SettingsJobsCache.movie-collection-queue::hi",
+      "targetCatalogPath": "src/i18n/locale/hi.json",
+      "target": "फ़िल्म संग्रह कतार",
+      "targetSha256": "8601419c955a01c5a958079bb3ed4fc10fe25f083717fec83adfbafb119cf0a9"
+    },
+    {
+      "cellId": "components.Settings.SettingsJobsCache.movie-collection-queue::id",
+      "targetCatalogPath": "src/i18n/locale/id.json",
+      "target": "Antrean Koleksi Film",
+      "targetSha256": "2dc96537ee84b95c94f7f9f46d986c2b8a3a1a8d0856b2128bc62208a519d7ec"
+    },
+    {
+      "cellId": "components.Settings.SettingsJobsCache.movie-collection-queue::ja",
+      "targetCatalogPath": "src/i18n/locale/ja.json",
+      "target": "映画コレクションキュー",
+      "targetSha256": "1b9a26314ec238fcc11fa5230186b684518bdc92daf54fa1475f248f9cad234b"
+    },
+    {
+      "cellId": "components.Settings.SettingsJobsCache.movie-collection-queue::ko",
+      "targetCatalogPath": "src/i18n/locale/ko.json",
+      "target": "영화 컬렉션 대기열",
+      "targetSha256": "c967df69553079d8096a30eb5032fb7f635dbc4879e3888b1644d7dbc50449b9"
+    },
+    {
+      "cellId": "components.Settings.SettingsJobsCache.movie-collection-queue::pt-BR",
+      "targetCatalogPath": "src/i18n/locale/pt_BR.json",
+      "target": "Fila de coleções de filmes",
+      "targetSha256": "8a7e0835c5bb6dda63339cfa12803c81e9ab9a5e9c385116cc06f394dd18804a"
+    },
+    {
+      "cellId": "components.Settings.SettingsJobsCache.movie-collection-queue::vi",
+      "targetCatalogPath": "src/i18n/locale/vi.json",
+      "target": "Hàng đợi bộ sưu tập phim",
+      "targetSha256": "43693f8c430a6c4ee17cce930aa9e4378d0a63051d5c2657de7c7c03221de03a"
+    },
+    {
+      "cellId": "components.Settings.SettingsJobsCache.movie-collection-queue::zh-Hans",
+      "targetCatalogPath": "src/i18n/locale/zh_Hans.json",
+      "target": "电影合集队列",
+      "targetSha256": "2d3e4b98342c2f97cdca55f91b2fb096c7a8d17e27f525265b7f90f44f160fda"
+    },
+    {
+      "cellId": "components.Settings.SettingsJobsCache.movie-collection-queue::zh-Hant",
+      "targetCatalogPath": "src/i18n/locale/zh_Hant.json",
+      "target": "電影合集佇列",
+      "targetSha256": "ec3bf6bce6952e8fa72c448719fd79d6b787ffb7b610c50652ed64283838039e"
+    },
+    {
+      "cellId": "components.Settings.SettingsJobsCache.plex-playback-analysis::ar",
+      "targetCatalogPath": "src/i18n/locale/ar.json",
+      "target": "تحليل تشغيل Plex",
+      "targetSha256": "6c6d3bf721e46668a2562445b20403e9c53c5a7968e0b30ead5715d31c5c2bbf"
+    },
+    {
+      "cellId": "components.Settings.SettingsJobsCache.plex-playback-analysis::de",
+      "targetCatalogPath": "src/i18n/locale/de.json",
+      "target": "Plex-Wiedergabeanalyse",
+      "targetSha256": "b7d152380d895a803c1abeccec75d596da92e2518c34753506ff2f57d92d2ebf"
+    },
+    {
+      "cellId": "components.Settings.SettingsJobsCache.plex-playback-analysis::es",
+      "targetCatalogPath": "src/i18n/locale/es.json",
+      "target": "Análisis de reproducción de Plex",
+      "targetSha256": "d897a60b2bcb0659b686efe7185da9ad501f80bfcd8bfe7290ceb32f86c69c94"
+    },
+    {
+      "cellId": "components.Settings.SettingsJobsCache.plex-playback-analysis::fr",
+      "targetCatalogPath": "src/i18n/locale/fr.json",
+      "target": "Analyse de lecture Plex",
+      "targetSha256": "749476ce54e703602b331516b8cad408f7eaeadd2f58c671b46a164fb79385c3"
+    },
+    {
+      "cellId": "components.Settings.SettingsJobsCache.plex-playback-analysis::hi",
+      "targetCatalogPath": "src/i18n/locale/hi.json",
+      "target": "Plex प्लेबैक विश्लेषण",
+      "targetSha256": "9127544b12809031a264b1394af471cea1f642f8a065a4dd62d0db9e74edd043"
+    },
+    {
+      "cellId": "components.Settings.SettingsJobsCache.plex-playback-analysis::id",
+      "targetCatalogPath": "src/i18n/locale/id.json",
+      "target": "Analisis pemutaran Plex",
+      "targetSha256": "e9aa51d2f360a96003dcfc5c4c0e0319e2f483c46158e74a0562a3c321ae9a85"
+    },
+    {
+      "cellId": "components.Settings.SettingsJobsCache.plex-playback-analysis::ja",
+      "targetCatalogPath": "src/i18n/locale/ja.json",
+      "target": "Plex再生解析",
+      "targetSha256": "15fdcd9fe9762584b9c178de0373bafe42e0fe470c02d9d877e759f34d231878"
+    },
+    {
+      "cellId": "components.Settings.SettingsJobsCache.plex-playback-analysis::ko",
+      "targetCatalogPath": "src/i18n/locale/ko.json",
+      "target": "Plex 재생 분석",
+      "targetSha256": "4c0ee0000708279e6e78add0f9ee9f1ff413479fbe2eb076d7fab2a6cda25450"
+    },
+    {
+      "cellId": "components.Settings.SettingsJobsCache.plex-playback-analysis::pt-BR",
+      "targetCatalogPath": "src/i18n/locale/pt_BR.json",
+      "target": "Análise de reprodução do Plex",
+      "targetSha256": "00b0ac17598de671dc362974d25ed52185fb490757af1326ae2ed022562be4b8"
+    },
+    {
+      "cellId": "components.Settings.SettingsJobsCache.plex-playback-analysis::vi",
+      "targetCatalogPath": "src/i18n/locale/vi.json",
+      "target": "Phân tích phát lại Plex",
+      "targetSha256": "8447804a8de30c0356328e9fd0c1309831ca998b03303927363e0ce5215a4fcf"
+    },
+    {
+      "cellId": "components.Settings.SettingsJobsCache.plex-playback-analysis::zh-Hans",
+      "targetCatalogPath": "src/i18n/locale/zh_Hans.json",
+      "target": "Plex 播放分析",
+      "targetSha256": "acc034c8248e4ab8e38fc41259f1ed814b530f7b231ab0e6b33e630bfd480b46"
+    },
+    {
+      "cellId": "components.Settings.SettingsJobsCache.plex-playback-analysis::zh-Hant",
+      "targetCatalogPath": "src/i18n/locale/zh_Hant.json",
+      "target": "Plex 播放分析",
+      "targetSha256": "acc034c8248e4ab8e38fc41259f1ed814b530f7b231ab0e6b33e630bfd480b46"
+    },
+    {
+      "cellId": "components.Settings.analyzeOnPlayback::ar",
+      "targetCatalogPath": "src/i18n/locale/ar.json",
+      "target": "تحليل المواسم أثناء التشغيل",
+      "targetSha256": "c5b9a74808d1573cb2739a80d499e733a013036bd894e791325f6a678e0183f4"
+    },
+    {
+      "cellId": "components.Settings.analyzeOnPlayback::de",
+      "targetCatalogPath": "src/i18n/locale/de.json",
+      "target": "Staffeln während der Wiedergabe analysieren",
+      "targetSha256": "7781c01282d9ef252958f6275e92417d28e8de84a9cd4e105b8d03a64dfb75f1"
+    },
+    {
+      "cellId": "components.Settings.analyzeOnPlayback::es",
+      "targetCatalogPath": "src/i18n/locale/es.json",
+      "target": "Analizar temporadas durante la reproducción",
+      "targetSha256": "2fddf0604eecefc3492d76cb6a8c698a06230be5a6a25843ecd395f57750ef17"
+    },
+    {
+      "cellId": "components.Settings.analyzeOnPlayback::fr",
+      "targetCatalogPath": "src/i18n/locale/fr.json",
+      "target": "Analyser les saisons pendant la lecture",
+      "targetSha256": "fa7171c05e8c2f63a8a1dbfb5c3b1c426e902fa0f7fa0c36b200e00a0784c21b"
+    },
+    {
+      "cellId": "components.Settings.analyzeOnPlayback::hi",
+      "targetCatalogPath": "src/i18n/locale/hi.json",
+      "target": "प्लेबैक के दौरान सीज़नों का विश्लेषण करें",
+      "targetSha256": "a78a1f9b459c795ccc6104227b3d4a49b3a091a1a3a103120829833d5874a078"
+    },
+    {
+      "cellId": "components.Settings.analyzeOnPlayback::id",
+      "targetCatalogPath": "src/i18n/locale/id.json",
+      "target": "Analisis musim saat pemutaran",
+      "targetSha256": "af55c5d614de1390ae593b5625dda3c61f76d746bcc27da88d6b5a55715d231d"
+    },
+    {
+      "cellId": "components.Settings.analyzeOnPlayback::ja",
+      "targetCatalogPath": "src/i18n/locale/ja.json",
+      "target": "再生中にシーズンを解析",
+      "targetSha256": "66cb138aa01a49c1344a0de3a08e8151fa7cce7f1bedeebad9cf48a75ba9a9c8"
+    },
+    {
+      "cellId": "components.Settings.analyzeOnPlayback::ko",
+      "targetCatalogPath": "src/i18n/locale/ko.json",
+      "target": "재생 중 시즌 분석",
+      "targetSha256": "71759a44912ae723008a5b7138e8548848c227f29ce711874aede0ea496c7c7a"
+    },
+    {
+      "cellId": "components.Settings.analyzeOnPlayback::pt-BR",
+      "targetCatalogPath": "src/i18n/locale/pt_BR.json",
+      "target": "Analisar temporadas durante a reprodução",
+      "targetSha256": "94f709d907d296e8b2a0623503373ff3bb4d275be7458f158b0acb9c7b11354c"
+    },
+    {
+      "cellId": "components.Settings.analyzeOnPlayback::vi",
+      "targetCatalogPath": "src/i18n/locale/vi.json",
+      "target": "Phân tích các mùa phim trong khi phát",
+      "targetSha256": "cf5128fc988ce6615d02f7babb3109eef5b92aeeaa4268817671b99333d5b036"
+    },
+    {
+      "cellId": "components.Settings.analyzeOnPlayback::zh-Hans",
+      "targetCatalogPath": "src/i18n/locale/zh_Hans.json",
+      "target": "播放期间分析剧季",
+      "targetSha256": "16ca2dd4a671a3b555df2edec5a3a5c0080a57a36fe5232cc4a3d36d61ad27a7"
+    },
+    {
+      "cellId": "components.Settings.analyzeOnPlayback::zh-Hant",
+      "targetCatalogPath": "src/i18n/locale/zh_Hant.json",
+      "target": "播放期間分析影集季數",
+      "targetSha256": "fd544e8dc93a9d9476c8c1c64994fb0bb1ac84e8ba9570dc09e11155cfa22f62"
+    },
+    {
+      "cellId": "components.Settings.analyzeOnPlaybackTip::ar",
+      "targetCatalogPath": "src/i18n/locale/ar.json",
+      "target": "فعّل خيار إضافة تحليل Plex إلى قائمة الانتظار أثناء تشغيل حلقة في مكتبة TV مفعّلة. يُضاف موسمان كحد أقصى إلى القائمة كل دقيقة، ولا يُضاف الموسم نفسه أكثر من مرة كل 30 يومًا. يتحكم Plex في إنشاء المقاطع التمهيدية وشارات النهاية؛ وتظل إعدادات المكتبة ومتطلبات Plex Pass سارية.",
+      "targetSha256": "15da6325dd5d474a6fba668c8af3811e832c7cdcee1e8af5d2a4deb9cb10f684"
+    },
+    {
+      "cellId": "components.Settings.analyzeOnPlaybackTip::de",
+      "targetCatalogPath": "src/i18n/locale/de.json",
+      "target": "Aktiviere die eingereihte Plex-Analyse, wenn eine Folge in einer aktivierten TV-Bibliothek wiedergegeben wird. Pro Minute werden höchstens zwei Staffeln eingereiht und jede Staffel höchstens einmal alle 30 Tage. Plex steuert die Erstellung von Intros und Abspann; die Bibliothekseinstellungen und die Anforderungen für Plex Pass gelten weiterhin.",
+      "targetSha256": "2e006b3184d20896a65a423de656021e1cd19745942e2164a2165709a5b7e238"
+    },
+    {
+      "cellId": "components.Settings.analyzeOnPlaybackTip::es",
+      "targetCatalogPath": "src/i18n/locale/es.json",
+      "target": "Activa esta opción para poner en cola el análisis de Plex cuando se reproduzca un episodio en una biblioteca de TV habilitada. Se pueden poner en cola como máximo dos temporadas por minuto, y cada temporada como máximo una vez cada 30 días. Plex controla la generación de intros y créditos; la configuración de la biblioteca y los requisitos de Plex Pass siguen aplicándose.",
+      "targetSha256": "fdd349b79c82a332670bee63a105caf931c3f6e2c0b567ad70c9c156072b9da8"
+    },
+    {
+      "cellId": "components.Settings.analyzeOnPlaybackTip::fr",
+      "targetCatalogPath": "src/i18n/locale/fr.json",
+      "target": "Activez cette option pour mettre en file d’attente l’analyse Plex lorsqu’un épisode est en cours de lecture dans une bibliothèque TV activée. Au maximum deux saisons sont mises en file d’attente par minute, et chaque saison au plus une fois tous les 30 jours. Plex contrôle la génération des intros et des génériques ; les paramètres de la bibliothèque et les exigences de Plex Pass restent applicables.",
+      "targetSha256": "fe76994dc9ba49a27bf72b6c908cd1900156b0ce54e5e61b3da65c7d9ec4e77c"
+    },
+    {
+      "cellId": "components.Settings.analyzeOnPlaybackTip::hi",
+      "targetCatalogPath": "src/i18n/locale/hi.json",
+      "target": "किसी सक्षम TV लाइब्रेरी में एपिसोड चलने पर Plex विश्लेषण कतार में लगाने की सुविधा चालू करें। प्रति मिनट अधिकतम दो सीज़न कतार में लगाए जाएँगे और हर सीज़न को हर 30 दिन में अधिकतम एक बार। इंट्रो और क्रेडिट जनरेट करने का नियंत्रण Plex के पास है; उसकी लाइब्रेरी सेटिंग और Plex Pass की ज़रूरतें भी लागू रहेंगी।",
+      "targetSha256": "6074f73aaeaf00a4137ba45e3af69b19e2a0cdddfe052cca34fb0c48504a8fc9"
+    },
+    {
+      "cellId": "components.Settings.analyzeOnPlaybackTip::id",
+      "targetCatalogPath": "src/i18n/locale/id.json",
+      "target": "Aktifkan pengantrean analisis Plex saat sebuah episode diputar di pustaka TV yang diaktifkan. Maksimal dua musim dimasukkan ke antrean per menit, dan setiap musim paling banyak sekali setiap 30 hari. Plex mengatur pembuatan intro dan kredit akhir; setelan pustaka dan persyaratan Plex Pass tetap berlaku.",
+      "targetSha256": "ccc1514f1fd019122fd5e480b3ffcc1defadb338f91183d2d0f0d0145dfd6300"
+    },
+    {
+      "cellId": "components.Settings.analyzeOnPlaybackTip::ja",
+      "targetCatalogPath": "src/i18n/locale/ja.json",
+      "target": "この設定を有効にすると、有効なTVライブラリでエピソードを再生中にPlex解析がキューに追加されます。毎分キューに追加されるのは最大二シーズンで、各シーズンは30日ごとに一度までです。イントロとクレジットの生成はPlexが制御し、ライブラリ設定とPlex Passの要件も引き続き適用されます。",
+      "targetSha256": "d4057db2c515b826e5a17bc0b9446897a3d7010a486c62dc22066b3b12f36ccc"
+    },
+    {
+      "cellId": "components.Settings.analyzeOnPlaybackTip::ko",
+      "targetCatalogPath": "src/i18n/locale/ko.json",
+      "target": "사용 설정된 TV 라이브러리에서 에피소드가 재생될 때 Plex 분석을 큐에 추가하도록 설정합니다. 분당 최대 두 시즌을 큐에 추가하고, 각 시즌은 30일마다 한 번만 추가합니다. 인트로와 크레딧 생성은 Plex가 제어하며 라이브러리 설정과 Plex Pass 요구 사항이 계속 적용됩니다.",
+      "targetSha256": "b9818d90607a4a9de253260a78f3082d4b6dba43c8ecf65dd4613a824c34da43"
+    },
+    {
+      "cellId": "components.Settings.analyzeOnPlaybackTip::pt-BR",
+      "targetCatalogPath": "src/i18n/locale/pt_BR.json",
+      "target": "Ative esta opção para colocar a análise do Plex na fila quando um episódio estiver sendo reproduzido em uma biblioteca de TV habilitada. No máximo duas temporadas entram na fila por minuto, e cada temporada, no máximo uma vez a cada 30 dias. O Plex controla a geração de introduções e créditos; as configurações da biblioteca e os requisitos do Plex Pass continuam valendo.",
+      "targetSha256": "e8e8a9c8b9bafd5958e2c424c2b308fcfedb2bd35413e789687b8fc1bd5ecdb3"
+    },
+    {
+      "cellId": "components.Settings.analyzeOnPlaybackTip::vi",
+      "targetCatalogPath": "src/i18n/locale/vi.json",
+      "target": "Bật tùy chọn này để xếp hàng phân tích Plex khi một tập đang phát trong thư viện TV đã bật. Mỗi phút có thể xếp tối đa hai mùa; mỗi mùa chỉ được xếp một lần trong 30 ngày. Plex kiểm soát việc tạo phần mở đầu và danh đề cuối; cài đặt thư viện và yêu cầu Plex Pass vẫn áp dụng.",
+      "targetSha256": "cc30f653901819b6331c4bc0145602409726b7581a9e2935821eee3e8e6ef0ec"
+    },
+    {
+      "cellId": "components.Settings.analyzeOnPlaybackTip::zh-Hans",
+      "targetCatalogPath": "src/i18n/locale/zh_Hans.json",
+      "target": "启用此选项后，某集在已启用的 TV 媒体库中播放时，Plex 分析会加入队列。每分钟最多排入两季，每季每 30 天最多排入一次。片头和片尾演职员表的生成由 Plex 控制；媒体库设置和 Plex Pass 要求仍然适用。",
+      "targetSha256": "f68c86c0d6b58980cb543e7b4c987ba7f2303b62a5ca4e73e41b136bc852880c"
+    },
+    {
+      "cellId": "components.Settings.analyzeOnPlaybackTip::zh-Hant",
+      "targetCatalogPath": "src/i18n/locale/zh_Hant.json",
+      "target": "啟用此選項後，當某集在已啟用的 TV 媒體庫中播放時，Plex 分析會加入佇列。每分鐘最多排入兩季，每一季每 30 天最多排入一次。片頭與片尾名單的產生由 Plex 控制；媒體庫設定及 Plex Pass 要求仍然適用。",
+      "targetSha256": "f43d5bf85092a4403270ea4095909870e71d6df3b4adb718cc5115ca6b2bb861"
+    },
+    {
+      "cellId": "discovery.accounts.traktCallbackFailed::ar",
+      "targetCatalogPath": "src/i18n/locale/ar.json",
+      "target": "لم يُعِد Trakt التفويض إلى SeerrNG. تحقق من عنوان URL العام للتطبيق باستخدام HTTPS وعنوان URL لرد الاتصال المسجّل في تطبيق Trakt، ثم حاول مرة أخرى.",
+      "targetSha256": "558f3967e0d76d89862b228b74ae26a6a2fda6aa9e5f1746b69147334fac2844"
+    },
+    {
+      "cellId": "discovery.accounts.traktCallbackFailed::de",
+      "targetCatalogPath": "src/i18n/locale/de.json",
+      "target": "Trakt hat die Autorisierung nicht an SeerrNG zurückgegeben. Prüfe die öffentliche HTTPS-Anwendungs-URL und die in der Trakt-Anwendung registrierte Callback-URL und versuche es erneut.",
+      "targetSha256": "311757c360303faf2a2227cc60fa3f1ee3a9c58535a83aea1623a60a73cf4d63"
+    },
+    {
+      "cellId": "discovery.accounts.traktCallbackFailed::es",
+      "targetCatalogPath": "src/i18n/locale/es.json",
+      "target": "Trakt no devolvió la autorización a SeerrNG. Comprueba la URL pública de la aplicación HTTPS y la URL de devolución de llamada registrada en la aplicación de Trakt e inténtalo de nuevo.",
+      "targetSha256": "f5e864d72d41b743fe5f6649f5800e2c18be1ec4a89553f845e1a748d8ec4290"
+    },
+    {
+      "cellId": "discovery.accounts.traktCallbackFailed::fr",
+      "targetCatalogPath": "src/i18n/locale/fr.json",
+      "target": "Trakt n’a pas renvoyé l’autorisation à SeerrNG. Vérifiez l’URL publique de l’application (HTTPS) et l’URL de rappel enregistrée dans l’application Trakt, puis réessayez.",
+      "targetSha256": "f6912be2696632dcfdbd28cc330fd6e565806cff6ef0a11d8b9b6c6552f7d437"
+    },
+    {
+      "cellId": "discovery.accounts.traktCallbackFailed::hi",
+      "targetCatalogPath": "src/i18n/locale/hi.json",
+      "target": "Trakt ने SeerrNG को प्राधिकरण वापस नहीं भेजा। Trakt ऐप में सार्वजनिक HTTPS ऐप्लिकेशन URL और पंजीकृत कॉलबैक URL जाँचें, फिर कोशिश करें।",
+      "targetSha256": "0987666f12a1c93e4bd79819aeee024fcd75e37057cae7e88b82fe5ad90a383d"
+    },
+    {
+      "cellId": "discovery.accounts.traktCallbackFailed::id",
+      "targetCatalogPath": "src/i18n/locale/id.json",
+      "target": "Trakt tidak mengembalikan otorisasi ke SeerrNG. Periksa URL aplikasi HTTPS publik dan URL callback yang terdaftar di aplikasi Trakt, lalu coba lagi.",
+      "targetSha256": "bc50573188af6628b5b7f35530416e7f1bcf19684b2b0d369c5fc4c913ae2336"
+    },
+    {
+      "cellId": "discovery.accounts.traktCallbackFailed::ja",
+      "targetCatalogPath": "src/i18n/locale/ja.json",
+      "target": "Trakt から SeerrNG に認可情報が返されませんでした。Trakt アプリに登録されている公開 HTTPS アプリケーション URL とコールバック URL を確認して、もう一度お試しください。",
+      "targetSha256": "e812456197a2b4a575f47364da08a8101e75e705c5fb4ac7a08649545d3f4c88"
+    },
+    {
+      "cellId": "discovery.accounts.traktCallbackFailed::ko",
+      "targetCatalogPath": "src/i18n/locale/ko.json",
+      "target": "Trakt가 SeerrNG에 인증 응답을 반환하지 않았습니다. Trakt 애플리케이션에 등록된 공개 HTTPS 애플리케이션 URL과 콜백 URL을 확인한 후 다시 시도하세요.",
+      "targetSha256": "889fdbf81285a4bd47dc8831f17e105192461ef65e10980030b78287351b470f"
+    },
+    {
+      "cellId": "discovery.accounts.traktCallbackFailed::pt-BR",
+      "targetCatalogPath": "src/i18n/locale/pt_BR.json",
+      "target": "O Trakt não retornou a autorização para o SeerrNG. Confira a URL pública do aplicativo HTTPS e a URL de callback cadastrada no aplicativo Trakt e tente novamente.",
+      "targetSha256": "7c2b150c8e636bc119b4b66989c25b3e4e4af322abac31aa45cb3a2d4454fbc9"
+    },
+    {
+      "cellId": "discovery.accounts.traktCallbackFailed::vi",
+      "targetCatalogPath": "src/i18n/locale/vi.json",
+      "target": "Trakt không gửi ủy quyền về SeerrNG. Hãy kiểm tra URL ứng dụng HTTPS công khai và URL callback đã đăng ký trong ứng dụng Trakt, rồi thử lại.",
+      "targetSha256": "9f40e7405f579adecf6a7448a37cafaeeef1f3f0364a66088eb7f47cd51f56b5"
+    },
+    {
+      "cellId": "discovery.accounts.traktCallbackFailed::zh-Hans",
+      "targetCatalogPath": "src/i18n/locale/zh_Hans.json",
+      "target": "Trakt 未能将授权返回给 SeerrNG。请检查 Trakt 应用中的公开 HTTPS 应用程序 URL 和已注册的回调 URL，然后重试。",
+      "targetSha256": "d350b3f6ef1b29efc70732e003bd35d578e97a375f394300229c4332bdba569c"
+    },
+    {
+      "cellId": "discovery.accounts.traktCallbackFailed::zh-Hant",
+      "targetCatalogPath": "src/i18n/locale/zh_Hant.json",
+      "target": "Trakt 未將授權傳回 SeerrNG。請檢查 Trakt 應用程式中公開的 HTTPS 應用程式 URL 和已註冊的回呼 URL，然後再試一次。",
+      "targetSha256": "f015fe816c4f9cdb6ad9d5fb39fc1ef534e273b40398b1bc08782308eb17be25"
+    },
+    {
+      "cellId": "discovery.accounts.traktSetup::ar",
+      "targetCatalogPath": "src/i18n/locale/ar.json",
+      "target": "لربط Trakt، يجب على المسؤول تعيين عنوان URL عام للتطبيق باستخدام HTTPS في الإعدادات → عام، ثم تسجيل عنوان URL هذا متبوعًا بالمسار /api/v1/integrations/discovery/trakt/callback في تطبيق Trakt.",
+      "targetSha256": "cd9587fadbad2a8f122ceb314d2dfcbfa5d56fbd88a38fdd474501d42d615d20"
+    },
+    {
+      "cellId": "discovery.accounts.traktSetup::de",
+      "targetCatalogPath": "src/i18n/locale/de.json",
+      "target": "Um Trakt zu verbinden, muss ein Administrator unter Einstellungen → Allgemein eine öffentliche HTTPS-Anwendungs-URL festlegen und diese URL gefolgt von /api/v1/integrations/discovery/trakt/callback in der Trakt-Anwendung registrieren.",
+      "targetSha256": "f1c957b58d5dded0fc34a6f32743aad3d813de9d42ef3e897b90ac0da879a448"
+    },
+    {
+      "cellId": "discovery.accounts.traktSetup::es",
+      "targetCatalogPath": "src/i18n/locale/es.json",
+      "target": "Para conectar Trakt, un administrador debe configurar una URL pública de la aplicación HTTPS en Ajustes → General y registrar en la aplicación de Trakt esa URL seguida de /api/v1/integrations/discovery/trakt/callback.",
+      "targetSha256": "f587157afed61604459a2cc8e433c7d8a85a442bd7f9fe02979f0f248f5a1414"
+    },
+    {
+      "cellId": "discovery.accounts.traktSetup::fr",
+      "targetCatalogPath": "src/i18n/locale/fr.json",
+      "target": "Pour connecter Trakt, un administrateur doit définir une URL d’application HTTPS publique dans Paramètres → Général et enregistrer cette URL suivie de /api/v1/integrations/discovery/trakt/callback dans l’application Trakt.",
+      "targetSha256": "7adb83248232da6022063b49f4d947cf92f93ca407dee2d5d8882f15293e3c9c"
+    },
+    {
+      "cellId": "discovery.accounts.traktSetup::hi",
+      "targetCatalogPath": "src/i18n/locale/hi.json",
+      "target": "Trakt जोड़ने के लिए, व्यवस्थापक को सेटिंग → जनरल में सार्वजनिक HTTPS ऐप URL सेट करना होगा और उस URL के बाद /api/v1/integrations/discovery/trakt/callback जोड़कर Trakt ऐप में पंजीकृत करना होगा।",
+      "targetSha256": "1943f2b819285510fbee29d2857622cce30b06b7c125a7c93e45b0385ab817b8"
+    },
+    {
+      "cellId": "discovery.accounts.traktSetup::id",
+      "targetCatalogPath": "src/i18n/locale/id.json",
+      "target": "Untuk menghubungkan Trakt, administrator harus menetapkan URL aplikasi HTTPS publik di Pengaturan → Umum dan mendaftarkan URL tersebut diikuti /api/v1/integrations/discovery/trakt/callback pada aplikasi Trakt.",
+      "targetSha256": "b95af8758a0ade26625dfa9b714e462a3898bf95ad6d268db5822f4801455206"
+    },
+    {
+      "cellId": "discovery.accounts.traktSetup::ja",
+      "targetCatalogPath": "src/i18n/locale/ja.json",
+      "target": "Trakt を接続するには、管理者が「設定」→「一般」で公開 HTTPS アプリケーション URL を設定し、その URL の後ろに /api/v1/integrations/discovery/trakt/callback を付けたアドレスを Trakt アプリに登録する必要があります。",
+      "targetSha256": "ed78830b6d0d8b0566f2b8896317a5ee22dd806e8efccf4064302dc3cc30e34b"
+    },
+    {
+      "cellId": "discovery.accounts.traktSetup::ko",
+      "targetCatalogPath": "src/i18n/locale/ko.json",
+      "target": "Trakt를 연결하려면 관리자가 설정 → 일반에서 공개 HTTPS 애플리케이션 URL을 설정하고, 해당 URL 뒤에 /api/v1/integrations/discovery/trakt/callback을 붙인 주소를 Trakt 애플리케이션에 등록해야 합니다.",
+      "targetSha256": "3141821fe6a26460092b7f5111a9ef1095be0303ddad3c3aea2f66f41cb7db56"
+    },
+    {
+      "cellId": "discovery.accounts.traktSetup::pt-BR",
+      "targetCatalogPath": "src/i18n/locale/pt_BR.json",
+      "target": "Para conectar o Trakt, um administrador deve definir uma URL pública do aplicativo HTTPS em Configurações → Geral e cadastrar essa URL seguida de /api/v1/integrations/discovery/trakt/callback no aplicativo Trakt.",
+      "targetSha256": "d13703378092736bf9428709edcc7a4206ac16e647c6a2f2e4cc41ad74090a0e"
+    },
+    {
+      "cellId": "discovery.accounts.traktSetup::vi",
+      "targetCatalogPath": "src/i18n/locale/vi.json",
+      "target": "Để kết nối Trakt, quản trị viên phải đặt URL ứng dụng HTTPS công khai trong Cài đặt → Chung và đăng ký URL đó kèm theo /api/v1/integrations/discovery/trakt/callback trong ứng dụng Trakt.",
+      "targetSha256": "7195ae69e0d524d1dd3994974b31b6afa03ef0cd37a95604a08d6933b3c4af7b"
+    },
+    {
+      "cellId": "discovery.accounts.traktSetup::zh-Hans",
+      "targetCatalogPath": "src/i18n/locale/zh_Hans.json",
+      "target": "要连接 Trakt，管理员必须在“设置 → 常规”中设置公开的 HTTPS 应用 URL，并在 Trakt 应用中注册该 URL 后接 /api/v1/integrations/discovery/trakt/callback 的地址。",
+      "targetSha256": "3bd8972aef9a87ceb77f44fefd02a9a0c2b7afe6e78b1869c94e32cb4eb4a18b"
+    },
+    {
+      "cellId": "discovery.accounts.traktSetup::zh-Hant",
+      "targetCatalogPath": "src/i18n/locale/zh_Hant.json",
+      "target": "若要連結 Trakt，管理員必須在「設定 → 一般」中設定公開的 HTTPS 應用程式 URL，並在 Trakt 應用程式中登記該 URL 後接 /api/v1/integrations/discovery/trakt/callback。",
+      "targetSha256": "d4106783535789304efe9026a9c56976a3d2dae4f09eb6b78b97befc0402d05e"
+    }
+  ]
+}

@@ -1,0 +1,140 @@
+{
+  "checksumListSha256": "c0c925b92b7921c37c8ec85980420f0584fdf381d8c6a60f642124bea7c62246",
+  "manifestSha256": "619ceb7419f7d3fabde471580a714e5010dbc90e5f41b1ebeee04cfb80597a38",
+  "oldBaseRef": "main",
+  "oldBaseSha": "2bb382cfeedc0af1aacda1851a2a469452eb7173",
+  "oldHead": "ac193096ebfc0007183348b24e35bf6fee33f67a",
+  "oldSelectedRange": [
+    4000,
+    4019
+  ],
+  "oldTree": "93e71e7c52602ec3f8b76548fd12b2f5b4368b4c",
+  "path": "/home/keith/Documents/code/task-scratch/seerrng-pr418-w4000-4019-candidate-free-20261105/candidate-free-input/candidate-free-input",
+  "pendingParityIds": [
+    {
+      "currentPosition": 6619,
+      "currentSourceTextMatchesPrior": true,
+      "priorPosition": 6578,
+      "sourceId": "discovery.accounts.traktCallbackFailed",
+      "sourceIdSha256": "16980c8f0290e6e2184f21e0b0707fb31e3f270fbc32dbef4ee5a88d3a285e02",
+      "sourceTextSha256": "3510a66fb99198bc2f018b4a8671e4e0dd63f169385f7c9aa57167d5793a7f34",
+      "stillMissingInAll12Targets": true
+    },
+    {
+      "currentPosition": 6620,
+      "currentSourceTextMatchesPrior": true,
+      "priorPosition": 6579,
+      "sourceId": "discovery.accounts.traktSetup",
+      "sourceIdSha256": "14741c2fa0ec19a7b7f71bc419490ed3d8c01f35547011391af6380b6b490b80",
+      "sourceTextSha256": "4e1206d043fa9d4e1794609c7601db66b28fbb63ec012f5bf3467424c4179ea2",
+      "stillMissingInAll12Targets": true
+    }
+  ],
+  "pendingParityItemCount": 2,
+  "previousSelectedSourceIdCount": 4000,
+  "w4000SelectedSourceCount": 20,
+  "w4000WindowRowsCurrentPositions": [
+    {
+      "currentPosition": 4037,
+      "priorPosition": 4000,
+      "sourceIdSha256": "6469e0978ffa5b9db639243720172e03056511ae00860e3b067c7a10b948faed"
+    },
+    {
+      "currentPosition": 4038,
+      "priorPosition": 4001,
+      "sourceIdSha256": "1112849fbd21d8c173d51f3f785f046b18f1fc4e9d1dac149504c62edb213bab"
+    },
+    {
+      "currentPosition": 4039,
+      "priorPosition": 4002,
+      "sourceIdSha256": "129693e1387ac2ecc3bf9f4e67f18e9d1e59832eb027cdeed0c7b4a8d0dfdfd5"
+    },
+    {
+      "currentPosition": 4040,
+      "priorPosition": 4003,
+      "sourceIdSha256": "6f6a5a6964f70d3f400acfdf86e17286568bf3c63cca3d867aaaf41a49d04f38"
+    },
+    {
+      "currentPosition": 4041,
+      "priorPosition": 4004,
+      "sourceIdSha256": "17690510587fd7b4b948624c2bb4461772e78c7d3bf3abb0515457f3f2fc4f72"
+    },
+    {
+      "currentPosition": 4042,
+      "priorPosition": 4005,
+      "sourceIdSha256": "88f2ac0b427b2833c6bf9116241404f14414e83b5eb52234a32105420607bee9"
+    },
+    {
+      "currentPosition": 4043,
+      "priorPosition": 4006,
+      "sourceIdSha256": "359dd524349ab2239aa1ba87ddb013f34cc9abbd061679941e1aebe7dff7f811"
+    },
+    {
+      "currentPosition": 4044,
+      "priorPosition": 4007,
+      "sourceIdSha256": "c19191d4066663a8bd6f77d15a3794deffa8e32d1ebaecd280a88e02f203142b"
+    },
+    {
+      "currentPosition": 4045,
+      "priorPosition": 4008,
+      "sourceIdSha256": "8d1f0eb1cb497cf1700e5731714a6370a7d4cd2772a4a04b4f76ce813e755229"
+    },
+    {
+      "currentPosition": 4046,
+      "priorPosition": 4009,
+      "sourceIdSha256": "4072fbb6dd985284cdcd6059ca3e5c7c3ef96c8456bb6e5c9b5f845f7dadb4e2"
+    },
+    {
+      "currentPosition": 4047,
+      "priorPosition": 4010,
+      "sourceIdSha256": "6fe67f443a4c3b36ecbe7bf7879ee80ebe14df4378e1e62274618e3040074a89"
+    },
+    {
+      "currentPosition": 4048,
+      "priorPosition": 4011,
+      "sourceIdSha256": "f652062680fc5d969683bb7932a2f918ac5852f3f5702e653b0c19c6203a76ae"
+    },
+    {
+      "currentPosition": 4049,
+      "priorPosition": 4012,
+      "sourceIdSha256": "097a4c0cb86f70c7aaf6e72a95dc7272e3b399b666162d28fbd22acdd8e6dfbe"
+    },
+    {
+      "currentPosition": 4050,
+      "priorPosition": 4013,
+      "sourceIdSha256": "c2fc5fbe7a7f13ebe3ac3754739e0c7ea62dbec95ea2014831829e4c187ae59e"
+    },
+    {
+      "currentPosition": 4051,
+      "priorPosition": 4014,
+      "sourceIdSha256": "9c5aae211c5a18f4d044db7263183c634ddb712ca5e797c3796d4fc4dae6730b"
+    },
+    {
+      "currentPosition": 4052,
+      "priorPosition": 4015,
+      "sourceIdSha256": "b700f328c76026b120c17ca17936eb0d3a06f091787144e3bf46c79735f33983"
+    },
+    {
+      "currentPosition": 4053,
+      "priorPosition": 4016,
+      "sourceIdSha256": "5a311ec823ff7113c4b2b77612aa7f06eef322f4512d379491f80eabeef45a73"
+    },
+    {
+      "currentPosition": 4054,
+      "priorPosition": 4017,
+      "sourceIdSha256": "2c1e845764f7a4b07779ad04229868144db99b09a3e01669ede88849ddf0936f"
+    },
+    {
+      "currentPosition": 4055,
+      "priorPosition": 4018,
+      "sourceIdSha256": "95c11ca123a63a969a7991a5fbde5d00cd11a7617352444e78ebebb232ac5287"
+    },
+    {
+      "currentPosition": 4056,
+      "priorPosition": 4019,
+      "sourceIdSha256": "2b98aeb959f8e694633cb448b59a7beb4aa8375155e434a492ce12694471203b"
+    }
+  ],
+  "w4000WindowRowsReconciledByIdHash": 20,
+  "w4000WindowRowsSourceTextsUnchanged": true
+}

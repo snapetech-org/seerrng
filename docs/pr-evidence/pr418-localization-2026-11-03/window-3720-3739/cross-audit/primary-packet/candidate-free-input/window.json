@@ -1,0 +1,194 @@
+{
+  "schemaVersion": 1,
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "window": "W3720-W3739",
+  "range": [
+    3720,
+    3739
+  ],
+  "head": "1ca6ec2d5a0e9ef8000c69997e75648a8ccaf06e",
+  "tree": "6a51f3fb1d1f65c12bfe82bf47834626aa364488",
+  "baseRef": "main",
+  "baseSha": "fa40534ccced75bde1125c14760514fcd5d7de4d",
+  "sourceCatalogPath": "src/i18n/locale/en.json",
+  "englishCatalogGitBlob": "12e04a118c30b71b3714291adeaf9fdb2735cee4",
+  "sourceOrderCount": 9494,
+  "sourceOrderSha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+  "priorSelectedSourceIdCount": 3720,
+  "priorSelectedSourceIdPrefixSha256": "1bc6fcc3512b7b7705e5fdb9f7a43f619935bd53c869b7f4cf4d3f6130e38585",
+  "selectedSourceIdOrderSha256": "865ff9b7990ed69aa87c48ad4262102dcbaae8418d52d5c8b204e5117a47972a",
+  "previousBoundary": {
+    "position": 3719,
+    "sourceId": "components.Settings.KapowarrModal.enableSearch",
+    "source": "Enable Automatic Search",
+    "sourceSha256": "301ad4af7c7e1cfaaad2d87f442b65881f94c6a92d4e142ae665dcfde9054134",
+    "sourceIdSha256": "fb8dbb3c5573ff70e2ce65fa51a7427d0b34626bc0e9001aaa808ab43183bb50",
+    "boundaryKind": "previous"
+  },
+  "nextBoundary": {
+    "position": 3740,
+    "sourceId": "components.Settings.KapowarrModal.validationHostnameRequired",
+    "source": "You must provide a valid hostname or IP address",
+    "sourceSha256": "ce421b3f661c7e1bdc7e4464a6dbeb2aead1b9ccebc4bdcacfbefd1ee6c37814",
+    "sourceIdSha256": "91ee9b4466b22f6e15f98836bbc4e5e8304bd2d75b1e98462b3788e2445f5c37",
+    "boundaryKind": "next"
+  },
+  "remainingAtWindowStart": 5774,
+  "selectedSourceCount": 20,
+  "remainingAfterWindow": 5754,
+  "sourceRecordCount": 20,
+  "sourceOrderBoundaryRecordCount": 22,
+  "cellCount": 240,
+  "localeOrder": [
+    "es",
+    "zh_Hans",
+    "hi",
+    "de",
+    "ja",
+    "fr",
+    "pt_BR",
+    "ar",
+    "ko",
+    "zh_Hant",
+    "vi",
+    "id"
+  ],
+  "localeInfo": [
+    {
+      "catalogKey": "es",
+      "tag": "es",
+      "nativeName": "Español",
+      "direction": "ltr",
+      "clientFile": "es.json",
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "catalogKey": "zh_Hans",
+      "tag": "zh-CN",
+      "nativeName": "简体中文",
+      "direction": "ltr",
+      "clientFile": "zh_Hans.json",
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "catalogKey": "hi",
+      "tag": "hi",
+      "nativeName": "हिन्दी",
+      "direction": "ltr",
+      "clientFile": "hi.json",
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "catalogKey": "de",
+      "tag": "de",
+      "nativeName": "Deutsch",
+      "direction": "ltr",
+      "clientFile": "de.json",
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "catalogKey": "ja",
+      "tag": "ja",
+      "nativeName": "日本語",
+      "direction": "ltr",
+      "clientFile": "ja.json",
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "catalogKey": "fr",
+      "tag": "fr",
+      "nativeName": "Français",
+      "direction": "ltr",
+      "clientFile": "fr.json",
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "catalogKey": "pt_BR",
+      "tag": "pt-BR",
+      "nativeName": "Português (Brasil)",
+      "direction": "ltr",
+      "clientFile": "pt_BR.json",
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "catalogKey": "ar",
+      "tag": "ar",
+      "nativeName": "العربية",
+      "direction": "rtl",
+      "clientFile": "ar.json",
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "catalogKey": "ko",
+      "tag": "ko",
+      "nativeName": "한국어",
+      "direction": "ltr",
+      "clientFile": "ko.json",
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "catalogKey": "zh_Hant",
+      "tag": "zh-TW",
+      "nativeName": "繁體中文",
+      "direction": "ltr",
+      "clientFile": "zh_Hant.json",
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "catalogKey": "vi",
+      "tag": "vi",
+      "nativeName": "Tiếng Việt",
+      "direction": "ltr",
+      "clientFile": "vi.json",
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "catalogKey": "id",
+      "tag": "id",
+      "nativeName": "Bahasa Indonesia",
+      "direction": "ltr",
+      "clientFile": "id.json",
+      "reviewStatus": "unreviewed"
+    }
+  ],
+  "catalogKeySetEqualsEnglish": true,
+  "catalogOrderedKeyHashes": {
+    "en": "47d40a21145f2f198fadaa29baeef5461718c4b6365d564af60ee015f18f1974",
+    "es": "47d40a21145f2f198fadaa29baeef5461718c4b6365d564af60ee015f18f1974",
+    "zh_Hans": "35faf7107f1be3900172b7c08ac7558b51f31d63b3b6c57eebe7710e8a81ca33",
+    "hi": "47d40a21145f2f198fadaa29baeef5461718c4b6365d564af60ee015f18f1974",
+    "de": "47d40a21145f2f198fadaa29baeef5461718c4b6365d564af60ee015f18f1974",
+    "ja": "35faf7107f1be3900172b7c08ac7558b51f31d63b3b6c57eebe7710e8a81ca33",
+    "fr": "47d40a21145f2f198fadaa29baeef5461718c4b6365d564af60ee015f18f1974",
+    "pt_BR": "47d40a21145f2f198fadaa29baeef5461718c4b6365d564af60ee015f18f1974",
+    "ar": "47d40a21145f2f198fadaa29baeef5461718c4b6365d564af60ee015f18f1974",
+    "ko": "35faf7107f1be3900172b7c08ac7558b51f31d63b3b6c57eebe7710e8a81ca33",
+    "zh_Hant": "35faf7107f1be3900172b7c08ac7558b51f31d63b3b6c57eebe7710e8a81ca33",
+    "vi": "35faf7107f1be3900172b7c08ac7558b51f31d63b3b6c57eebe7710e8a81ca33",
+    "id": "47d40a21145f2f198fadaa29baeef5461718c4b6365d564af60ee015f18f1974"
+  },
+  "baselineTokenDiagnostics": {
+    "placeholderMismatchCount": 0,
+    "placeholderSequenceMismatchCount": 0,
+    "icuPluralCategorySetDifferenceCount": 0,
+    "markupMismatchCount": 0,
+    "numericTokenMismatchCount": 0,
+    "protectedLiteralMismatchCount": 1
+  },
+  "callerlessSourcePositions": [],
+  "previousCompletedWindow": "W3700-W3719",
+  "previousCompletedEndPosition": 3719,
+  "previousAppliedSelectionReattestedCells": 240,
+  "previousAppliedSelectionDispositionCounts": {
+    "correction": 48,
+    "accept-current": 155,
+    "refinement": 37
+  },
+  "previousAppliedSelectionChanges": 85,
+  "priorHoldCount": 12,
+  "priorHoldSourcePositions": [
+    3632
+  ],
+  "priorHoldPreservation": "Retain all twelve position-3632 callerless holds by matching prior and current target hashes."
+}

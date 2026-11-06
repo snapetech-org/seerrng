@@ -1,0 +1,332 @@
+{
+  "3120:ar": {
+    "confidence": "high",
+    "kind": "correction",
+    "rationale": "Remove the invented parenthetical and keep the title concise.",
+    "target": "طلب مجموعة"
+  },
+  "3120:es": {
+    "confidence": "moderate",
+    "kind": "refinement",
+    "rationale": "Use standard Spanish sentence case in the modal title.",
+    "target": "Solicitar colección"
+  },
+  "3120:hi": {
+    "confidence": "high",
+    "kind": "correction",
+    "rationale": "The current noun order is unnatural for a request action.",
+    "target": "संग्रह का अनुरोध करें"
+  },
+  "3120:id": {
+    "confidence": "high",
+    "kind": "correction",
+    "rationale": "The current order is an awkward noun phrase rather than an action title.",
+    "target": "Minta koleksi"
+  },
+  "3120:vi": {
+    "confidence": "high",
+    "kind": "correction",
+    "rationale": "The current phrase means “assemble a request,” not request a collection.",
+    "target": "Yêu cầu bộ sưu tập"
+  },
+  "3122:fr": {
+    "confidence": "high",
+    "kind": "correction",
+    "rationale": "The current French omits “successfully.”",
+    "target": "La demande pour <strong>{title}</strong> a été modifiée avec succès !"
+  },
+  "3122:id": {
+    "confidence": "moderate",
+    "kind": "refinement",
+    "rationale": "Lowercase “berhasil” inside the sentence.",
+    "target": "Permintaan untuk <strong>{title}</strong> berhasil diedit!"
+  },
+  "3122:vi": {
+    "confidence": "high",
+    "kind": "correction",
+    "rationale": "Use a complete Vietnamese sentence and ordinary sentence capitalization.",
+    "target": "Yêu cầu <strong>{title}</strong> đã được chỉnh sửa thành công!"
+  },
+  "3123:ar": {
+    "confidence": "high",
+    "kind": "correction",
+    "rationale": "The current Arabic says “confirming” the request rather than submitting it.",
+    "target": "حدث خطأ ما أثناء إرسال الطلب."
+  },
+  "3123:id": {
+    "confidence": "high",
+    "kind": "correction",
+    "rationale": "The current Indonesian phrase “Sesuatu yang salah” is ungrammatical.",
+    "target": "Terjadi kesalahan saat mengirimkan permintaan."
+  },
+  "3123:pt_BR": {
+    "confidence": "high",
+    "kind": "correction",
+    "rationale": "Remove “media,” which is absent from the source, and say the request failed during submission.",
+    "target": "Algo deu errado ao enviar a solicitação."
+  },
+  "3124:ar": {
+    "confidence": "high",
+    "kind": "correction",
+    "rationale": "The current Arabic does not express that the username owns a request awaiting approval.",
+    "target": "طلب {username} بانتظار الموافقة."
+  },
+  "3124:hi": {
+    "confidence": "high",
+    "kind": "correction",
+    "rationale": "The current Hindi is missing the possessive relation and approval predicate.",
+    "target": "{username} का अनुरोध अनुमोदन की प्रतीक्षा कर रहा है।"
+  },
+  "3124:id": {
+    "confidence": "high",
+    "kind": "correction",
+    "rationale": "The current target embeds English and uses an ungrammatical “is pending” construction.",
+    "target": "Permintaan {username} sedang menunggu persetujuan."
+  },
+  "3124:ja": {
+    "confidence": "high",
+    "kind": "correction",
+    "rationale": "The current Japanese says the request was already filed and omits pending approval.",
+    "target": "{username}のリクエストは承認待ちです。"
+  },
+  "3124:vi": {
+    "confidence": "high",
+    "kind": "correction",
+    "rationale": "The current target drops the username possessive, adds “my,” and lacks spacing.",
+    "target": "Yêu cầu của {username} đang chờ phê duyệt."
+  },
+  "3124:zh_Hans": {
+    "confidence": "high",
+    "kind": "correction",
+    "rationale": "The current target only says pending/processing and omits approval.",
+    "target": "{username} 的请求正在等待批准。"
+  },
+  "3124:zh_Hant": {
+    "confidence": "high",
+    "kind": "correction",
+    "rationale": "The current target only says pending/processing and omits approval.",
+    "target": "{username} 的請求正在等待核准。"
+  },
+  "3125:es": {
+    "confidence": "moderate",
+    "kind": "refinement",
+    "rationale": "Use Spanish sentence case.",
+    "target": "Solicitar película en 4K"
+  },
+  "3125:id": {
+    "confidence": "high",
+    "kind": "correction",
+    "rationale": "Use an Indonesian request verb and natural preposition for the modal title.",
+    "target": "Minta film dalam 4K"
+  },
+  "3125:vi": {
+    "confidence": "high",
+    "kind": "correction",
+    "rationale": "The current wording reads as a request for movie screening rather than a 4K movie request.",
+    "target": "Yêu cầu phim ở độ phân giải 4K"
+  },
+  "3126:hi": {
+    "confidence": "high",
+    "kind": "correction",
+    "rationale": "The current target leaves “movie” as an English-style noun fragment.",
+    "target": "फ़िल्म का अनुरोध करें"
+  },
+  "3126:vi": {
+    "confidence": "high",
+    "kind": "correction",
+    "rationale": "The current wording says “requested movie” rather than request a movie.",
+    "target": "Yêu cầu phim"
+  },
+  "3127:ar": {
+    "confidence": "moderate",
+    "kind": "refinement",
+    "rationale": "Make the requested and failed counts read as a complete result summary.",
+    "target": "تم طلب {created} بنجاح، وفشل {failed}."
+  },
+  "3127:fr": {
+    "confidence": "moderate",
+    "kind": "refinement",
+    "rationale": "Express the requested and failed counts with grammatical French labels.",
+    "target": "Demandes envoyées : {created} ; échecs : {failed}."
+  },
+  "3127:hi": {
+    "confidence": "high",
+    "kind": "correction",
+    "rationale": "Add predicates so both counts read as a result summary.",
+    "target": "{created} अनुरोध किए गए; {failed} विफल रहे।"
+  },
+  "3127:ja": {
+    "confidence": "high",
+    "kind": "correction",
+    "rationale": "The current Japanese omits the requested count relation and is not a grammatical result summary.",
+    "target": "{created}件のリクエストを送信しました。失敗: {failed}件。"
+  },
+  "3127:ko": {
+    "confidence": "moderate",
+    "kind": "refinement",
+    "rationale": "Make the two counts explicit with Korean counters.",
+    "target": "{created}건 요청됨; {failed}건 실패."
+  },
+  "3127:pt_BR": {
+    "confidence": "moderate",
+    "kind": "refinement",
+    "rationale": "Use a natural Portuguese count summary rather than title-cased fragments.",
+    "target": "Solicitados: {created}; com falha: {failed}."
+  },
+  "3127:vi": {
+    "confidence": "moderate",
+    "kind": "refinement",
+    "rationale": "Use clear Vietnamese result wording for both counts.",
+    "target": "Đã yêu cầu {created}; thất bại: {failed}."
+  },
+  "3127:zh_Hans": {
+    "confidence": "moderate",
+    "kind": "refinement",
+    "rationale": "Remove the space before the full stop and label the failed count naturally.",
+    "target": "已请求 {created} 项；失败 {failed} 项。"
+  },
+  "3127:zh_Hant": {
+    "confidence": "moderate",
+    "kind": "refinement",
+    "rationale": "Remove the space before the full stop and label both counts naturally.",
+    "target": "已提出 {created} 項；失敗 {failed} 項。"
+  },
+  "3128:es": {
+    "confidence": "moderate",
+    "kind": "refinement",
+    "rationale": "Use Spanish sentence case.",
+    "target": "Solicitar serie en 4K"
+  },
+  "3128:hi": {
+    "confidence": "high",
+    "kind": "correction",
+    "rationale": "The current word order does not form a grammatical Hindi action title.",
+    "target": "4K में सीरीज़ का अनुरोध करें"
+  },
+  "3128:id": {
+    "confidence": "high",
+    "kind": "correction",
+    "rationale": "Replace the English “Series” and use a natural Indonesian request verb.",
+    "target": "Minta serial dalam 4K"
+  },
+  "3128:pt_BR": {
+    "confidence": "moderate",
+    "kind": "refinement",
+    "rationale": "Use sentence case for the modal title.",
+    "target": "Solicitar série em 4K"
+  },
+  "3128:vi": {
+    "confidence": "high",
+    "kind": "correction",
+    "rationale": "The current phrase reads as a “request chain” and does not identify a TV series.",
+    "target": "Yêu cầu phim bộ ở độ phân giải 4K"
+  },
+  "3129:hi": {
+    "confidence": "high",
+    "kind": "correction",
+    "rationale": "Use a grammatical action phrase rather than the current noun fragment.",
+    "target": "सीरीज़ का अनुरोध करें"
+  },
+  "3129:id": {
+    "confidence": "high",
+    "kind": "correction",
+    "rationale": "Replace the English “Series” with Indonesian “serial.”",
+    "target": "Minta serial"
+  },
+  "3129:vi": {
+    "confidence": "high",
+    "kind": "correction",
+    "rationale": "The current phrase means “request sequence,” not request a TV series.",
+    "target": "Yêu cầu phim bộ"
+  },
+  "3131:hi": {
+    "confidence": "moderate",
+    "kind": "refinement",
+    "rationale": "Use a native term for the media duration shown in this metadata label.",
+    "target": "अवधि"
+  },
+  "3131:id": {
+    "confidence": "high",
+    "kind": "correction",
+    "rationale": "The current “Waktu proses” means processing time, not media runtime.",
+    "target": "Durasi"
+  },
+  "3131:ja": {
+    "confidence": "high",
+    "kind": "correction",
+    "rationale": "The caller displays formatted media duration; transliterated “runtime” suggests software runtime.",
+    "target": "再生時間"
+  },
+  "3131:zh_Hans": {
+    "confidence": "high",
+    "kind": "correction",
+    "rationale": "The caller displays film duration, not software execution time.",
+    "target": "片长"
+  },
+  "3131:zh_Hant": {
+    "confidence": "high",
+    "kind": "correction",
+    "rationale": "The caller displays film duration, not software execution time.",
+    "target": "片長"
+  },
+  "3132:ar": {
+    "confidence": "moderate",
+    "kind": "refinement",
+    "rationale": "Remove sentence-final punctuation from the action label.",
+    "target": "حفظ ثم إعادة المحاولة"
+  },
+  "3132:hi": {
+    "confidence": "high",
+    "kind": "correction",
+    "rationale": "Replace English transliterations with a Hindi action label.",
+    "target": "सहेजें और फिर से प्रयास करें"
+  },
+  "3132:id": {
+    "confidence": "high",
+    "kind": "correction",
+    "rationale": "The current Indonesian omits retry and uses title-case capitalization mid-label.",
+    "target": "Simpan dan coba lagi"
+  },
+  "3132:ko": {
+    "confidence": "high",
+    "kind": "correction",
+    "rationale": "The current “복원” means restore, not retry.",
+    "target": "저장 후 다시 시도"
+  },
+  "3132:vi": {
+    "confidence": "moderate",
+    "kind": "refinement",
+    "rationale": "Use standard sentence case in this action label.",
+    "target": "Lưu và thử lại"
+  },
+  "3135:hi": {
+    "confidence": "moderate",
+    "kind": "refinement",
+    "rationale": "Correct the agreement for the previous season and use natural Hindi wording.",
+    "target": "पिछला सीज़न देखने के बाद क्या आप चाहते हैं कि आगे के सीज़न अनलॉक हों? अपने खाते के लिए देखने की शर्त चालू करने हेतु किसी उपयोगकर्ता प्रबंधक से कहें।"
+  },
+  "3137:vi": {
+    "confidence": "high",
+    "kind": "correction",
+    "rationale": "Replace untranslated “series” and clarify that it belongs in the linked account library.",
+    "target": "Liên kết tài khoản Plex, Jellyfin hoặc Emby của bạn và thêm bộ phim dài tập này vào thư viện của tài khoản đó trước khi yêu cầu mùa sau."
+  },
+  "3137:zh_Hant": {
+    "confidence": "high",
+    "kind": "correction",
+    "rationale": "Use the Traditional Chinese term for media library; the current “資料庫” means database.",
+    "target": "請先連結您的 Plex、Jellyfin 或 Emby 帳戶，並將此劇集加入其媒體庫，再申請後續季度。"
+  },
+  "3139:vi": {
+    "confidence": "high",
+    "kind": "correction",
+    "rationale": "Replace untranslated “series” with Vietnamese TV-series wording.",
+    "target": "Thêm bộ phim dài tập này vào thư viện Plex, Jellyfin hoặc Emby đã liên kết của bạn và đồng bộ hóa trước khi yêu cầu mùa sau."
+  },
+  "3139:zh_Hant": {
+    "confidence": "high",
+    "kind": "correction",
+    "rationale": "Use the Traditional Chinese term for media library; the current “資料庫” means database.",
+    "target": "請將此劇集加入您已連結的 Plex、Jellyfin 或 Emby 媒體庫並同步，再申請後續季度。"
+  }
+}

@@ -1,0 +1,74 @@
+{
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "url": "https://github.com/snapetech-org/seerrng/pull/418",
+  "state": "OPEN",
+  "draft": true,
+  "title": "feat(i18n): strengthen SeerrNG localization",
+  "headRefName": "codex/seerrng-localization-overhaul-20261028",
+  "headRefOid": "266d8fff4beb56eab17c9de0f6560c619577e3de",
+  "baseRefName": "main",
+  "baseRefOid": "221d8e0d542802da7529cd272c928cc747677e5c",
+  "commitTree": "5da8f5e38b95b4287821b603c4686fe866b83760",
+  "parentCommit": "70caabc2f95df1a7de3f869111aea1df58522d96",
+  "commitTime": "2026-11-02T23:34:59-06:00",
+  "remotePullRefHead": "266d8fff4beb56eab17c9de0f6560c619577e3de",
+  "reattestedAtGenerationAndSeal": true,
+  "previousWindow": {
+    "range": [
+      3320,
+      3339
+    ],
+    "head": "70caabc2f95df1a7de3f869111aea1df58522d96",
+    "tree": "daac9e9284adac648fd3f6147265c21c90cdddba",
+    "inputManifestSha256": "14ad0f598ffeb8fe4c7b42699fb0e230149ed3661b1a64c0641a6c0f1e6c8659",
+    "allPreviousSourceIdsAndTextsReattested": true
+  },
+  "currentWindow": {
+    "range": [
+      3340,
+      3359
+    ],
+    "positions": {
+      "before": {
+        "position": 3339,
+        "id": "components.Requests.fourK",
+        "source": "4K"
+      },
+      "first": {
+        "position": 3340,
+        "id": "components.Requests.genres",
+        "source": "Genres",
+        "sourceSha256": "3561abfe8067f3c1cdec6de4240f041af78d44a6ba619deee9e1d0735fe73e1e"
+      },
+      "last": {
+        "position": 3359,
+        "id": "components.Requests.mediaAndFormat",
+        "source": "Media & Format",
+        "sourceSha256": "b6136c0366498f839f4d77ebf3cde523c63aa7ce6e35a509dd086e72a5f7b96f"
+      },
+      "after": {
+        "position": 3360,
+        "id": "components.Requests.mediaFilters",
+        "source": "Media Filters"
+      }
+    },
+    "sourceCount": 20,
+    "cellCount": 240,
+    "callerContextRows": 55,
+    "callerHoldIds": [
+      "components.Requests.manageRequests"
+    ],
+    "placeholderParityErrors": 0,
+    "catalogKeyCount": 9494,
+    "catalogCountIncludingEnglish": 13,
+    "orderedLocaleKeySequencesMatch": false,
+    "catalogKeySetsEqualToEnglish": true,
+    "catalogKeyCountParity": true,
+    "orderedKeyHashGroupCount": 2
+  },
+  "inputManifestSha256": "040efb880c1355bf8ab10d555afe606e41771f7ed98ea4950a0e0fa1d6ddb4d2",
+  "primaryReviewManifestSha256": "ccd4c2ea7946ff44f5b1fad06c7f5a44575f9836f78a76042f695ed8c99f3040",
+  "noRepoOrPrMutation": true,
+  "testsBuildsScansCI": false
+}

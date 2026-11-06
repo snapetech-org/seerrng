@@ -515,6 +515,62 @@ describe('GET /search', () => {
     assert.match(res.body.message, /Language must be a string/);
   });
 
+  it('uses the saved metadata language independently from display language', async () => {
+    const targetUser = await getRepository(User).findOneOrFail({
+      where: { email: 'friend@seerr.dev' },
+    });
+    const userSettings =
+      targetUser.settings ?? new UserSettings({ user: targetUser });
+    const originalLocale = userSettings.locale;
+    const originalMetadataLocale = userSettings.metadataLocale;
+
+    try {
+      userSettings.locale = 'de';
+      userSettings.metadataLocale = 'fr';
+      await getRepository(UserSettings).save(userSettings);
+
+      const searchedLanguages: (string | undefined)[] = [];
+      mockPrivate(ExternalAPI.prototype, 'get', async (endpoint, options) => {
+        if (endpoint === '/search/multi') {
+          searchedLanguages.push(
+            (options as { params?: { language?: string } })?.params?.language
+          );
+          return {
+            page: 1,
+            total_pages: 1,
+            total_results: 0,
+            results: [],
+          };
+        }
+        throw new Error(`Unexpected endpoint: ${String(endpoint)}`);
+      });
+      const user = await loginAs('friend@seerr.dev', 'test1234');
+
+      const preferred = await user.get('/search').query({ query: 'metadata' });
+      assert.strictEqual(preferred.status, 200);
+      assert.strictEqual(searchedLanguages[0], 'fr');
+
+      const explicit = await user
+        .get('/search')
+        .query({ query: 'metadata', language: 'ja' });
+      assert.strictEqual(explicit.status, 200);
+      assert.strictEqual(searchedLanguages[1], 'ja');
+
+      userSettings.metadataLocale = null;
+      await getRepository(UserSettings).save(userSettings);
+
+      const displayFallback = await user
+        .get('/search')
+        .query({ query: 'metadata' });
+      assert.strictEqual(displayFallback.status, 200);
+      assert.strictEqual(searchedLanguages[2], 'de');
+    } finally {
+      userSettings.locale = originalLocale ?? '';
+      userSettings.metadataLocale = originalMetadataLocale ?? null;
+      await getRepository(UserSettings).save(userSettings);
+    }
+  });
+
   it('does not return ebook catalog results for an unavailable audiobook service', async () => {
     getSettings().readarr = [{ serviceType: 'ebook' } as ReadarrSettings];
     const bookSearch = mock.method(OpenLibraryAPI.prototype, 'searchBooks');

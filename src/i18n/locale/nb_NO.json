@@ -278,7 +278,7 @@
   "components.RequestBlock.rootfolder": "Grunnmappe",
   "components.RequestBlock.requestoverrides": "Overstyrer forespørsel",
   "components.RequestBlock.profilechanged": "Kvalitetsprofil",
-  "components.RegionSelector.regionServerDefault": "Standard {{region}}",
+  "components.RegionSelector.regionServerDefault": "Standard ({region})",
   "components.RegionSelector.regionDefault": "Alle Regioner",
   "components.PersonDetails.lifespan": "{birthdate} – {deathdate}",
   "components.PersonDetails.crewmember": "Stab",

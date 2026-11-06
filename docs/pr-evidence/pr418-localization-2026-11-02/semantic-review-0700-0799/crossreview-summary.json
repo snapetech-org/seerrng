@@ -1,0 +1,94 @@
+{
+  "schemaVersion": 1,
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "pullRequestState": "OPEN",
+  "pullRequestDraft": true,
+  "window": "W700-749 sourceId positions 700-799",
+  "pin": {
+    "head": "d633a7ed184bc9571a1a805da1bd25cef28d1599",
+    "tree": "abb501be60a5208a720c053976e94df72af8117e"
+  },
+  "primaryLedger": "/mnt/disks/scratch/task-scratch/seerrng-pr418-w700-749-review-20261102/reviews/agent-0700-0799/semantic-review-ledger.jsonl",
+  "primaryLedgerSha256": "430411e535dae4155657f6af380c69b872ebb6c28886b32a9452aeb5b2669731",
+  "crossReviewLedger": "independent-cross-review-0700-0799.jsonl",
+  "crossReviewLedgerSha256": "444a7ab3f0a2ca0e386595dba31b0b9632712067db700147d4ee41781bfc3f20",
+  "primaryCorrectionCandidates": 175,
+  "crossReviewedCandidates": 175,
+  "candidateDispositions": {
+    "accept-proposal": 166,
+    "refine-proposal": 9,
+    "hold": 0
+  },
+  "crossReviewDispositionCountsByLocale": {
+    "ar": {
+      "accept-proposal": 12,
+      "refine-proposal": 1
+    },
+    "es": {
+      "accept-proposal": 1,
+      "refine-proposal": 0
+    },
+    "fr": {
+      "accept-proposal": 7,
+      "refine-proposal": 0
+    },
+    "hi": {
+      "accept-proposal": 18,
+      "refine-proposal": 1
+    },
+    "id": {
+      "accept-proposal": 14,
+      "refine-proposal": 1
+    },
+    "ja": {
+      "accept-proposal": 3,
+      "refine-proposal": 0
+    },
+    "ko": {
+      "accept-proposal": 21,
+      "refine-proposal": 0
+    },
+    "pt-BR": {
+      "accept-proposal": 9,
+      "refine-proposal": 3
+    },
+    "vi": {
+      "accept-proposal": 30,
+      "refine-proposal": 3
+    },
+    "zh-CN": {
+      "accept-proposal": 20,
+      "refine-proposal": 0
+    },
+    "zh-TW": {
+      "accept-proposal": 31,
+      "refine-proposal": 0
+    }
+  },
+  "finalTargetsDifferentFromCurrent": 173,
+  "acceptedUnchangedNoOp": 2,
+  "noOpRows": [
+    {
+      "sourceIdPosition": 710,
+      "sourceId": "components.Settings.Notifications.encryptionOpportunisticTls",
+      "locale": "zh-TW"
+    },
+    {
+      "sourceIdPosition": 783,
+      "sourceId": "components.Settings.OverrideRuleTile.genre",
+      "locale": "ko"
+    }
+  ],
+  "sourceCurrentRowsReattested": 1200,
+  "sourceCurrentHashMismatches": 0,
+  "callerReferencesReattested": 344,
+  "callerReferenceMismatches": 0,
+  "primaryPriorRoutedRowsPreserved": 12,
+  "priorRoutedRowsChangedOrReadjudicated": 0,
+  "placeholderParityFailures": 0,
+  "markupParityFailures": 0,
+  "confidence": "moderate",
+  "nativeSpeakerApproval": false,
+  "scope": "Independent cross-review of primary correction proposals only; the 1,013 accept-current primary cells were not independently cross-reviewed. No catalog or repository edits, tests, builds, scans, CI, browser actions, commits, or PR mutations."
+}

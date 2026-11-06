@@ -1,0 +1,161 @@
+{
+  "schema": "seerrng.catalog-key-order-readback.v1",
+  "catalogs": [
+    {
+      "locale": "en",
+      "path": "src/i18n/locale/en.json",
+      "keyCountBefore": 9496,
+      "keyCountAfter": 9496,
+      "orderedKeySha256Before": "fe95fdecc43b25e48c118a477a0ab84467c528d07aaedf189b32fdbd7431fd59",
+      "orderedKeySha256After": "fe95fdecc43b25e48c118a477a0ab84467c528d07aaedf189b32fdbd7431fd59",
+      "keyOrderPreserved": true,
+      "keySetPreserved": true,
+      "selectedValueChanges": 0,
+      "bytesUnchanged": true
+    },
+    {
+      "locale": "es",
+      "path": "src/i18n/locale/es.json",
+      "keyCountBefore": 9494,
+      "keyCountAfter": 9494,
+      "orderedKeySha256Before": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+      "orderedKeySha256After": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+      "keyOrderPreserved": true,
+      "keySetPreserved": true,
+      "selectedValueChanges": 5,
+      "bytesUnchanged": false
+    },
+    {
+      "locale": "zh-Hans",
+      "path": "src/i18n/locale/zh_Hans.json",
+      "keyCountBefore": 9494,
+      "keyCountAfter": 9494,
+      "orderedKeySha256Before": "8d5fd7bd4351bc64c5ee813f2e50196608869e165866f3202a312078732c2baf",
+      "orderedKeySha256After": "8d5fd7bd4351bc64c5ee813f2e50196608869e165866f3202a312078732c2baf",
+      "keyOrderPreserved": true,
+      "keySetPreserved": true,
+      "selectedValueChanges": 2,
+      "bytesUnchanged": false
+    },
+    {
+      "locale": "hi",
+      "path": "src/i18n/locale/hi.json",
+      "keyCountBefore": 9494,
+      "keyCountAfter": 9494,
+      "orderedKeySha256Before": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+      "orderedKeySha256After": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+      "keyOrderPreserved": true,
+      "keySetPreserved": true,
+      "selectedValueChanges": 4,
+      "bytesUnchanged": false
+    },
+    {
+      "locale": "de",
+      "path": "src/i18n/locale/de.json",
+      "keyCountBefore": 9494,
+      "keyCountAfter": 9494,
+      "orderedKeySha256Before": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+      "orderedKeySha256After": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+      "keyOrderPreserved": true,
+      "keySetPreserved": true,
+      "selectedValueChanges": 5,
+      "bytesUnchanged": false
+    },
+    {
+      "locale": "ja",
+      "path": "src/i18n/locale/ja.json",
+      "keyCountBefore": 9494,
+      "keyCountAfter": 9494,
+      "orderedKeySha256Before": "8d5fd7bd4351bc64c5ee813f2e50196608869e165866f3202a312078732c2baf",
+      "orderedKeySha256After": "8d5fd7bd4351bc64c5ee813f2e50196608869e165866f3202a312078732c2baf",
+      "keyOrderPreserved": true,
+      "keySetPreserved": true,
+      "selectedValueChanges": 2,
+      "bytesUnchanged": false
+    },
+    {
+      "locale": "fr",
+      "path": "src/i18n/locale/fr.json",
+      "keyCountBefore": 9494,
+      "keyCountAfter": 9494,
+      "orderedKeySha256Before": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+      "orderedKeySha256After": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+      "keyOrderPreserved": true,
+      "keySetPreserved": true,
+      "selectedValueChanges": 2,
+      "bytesUnchanged": false
+    },
+    {
+      "locale": "pt-BR",
+      "path": "src/i18n/locale/pt_BR.json",
+      "keyCountBefore": 9494,
+      "keyCountAfter": 9494,
+      "orderedKeySha256Before": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+      "orderedKeySha256After": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+      "keyOrderPreserved": true,
+      "keySetPreserved": true,
+      "selectedValueChanges": 5,
+      "bytesUnchanged": false
+    },
+    {
+      "locale": "ar",
+      "path": "src/i18n/locale/ar.json",
+      "keyCountBefore": 9494,
+      "keyCountAfter": 9494,
+      "orderedKeySha256Before": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+      "orderedKeySha256After": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+      "keyOrderPreserved": true,
+      "keySetPreserved": true,
+      "selectedValueChanges": 5,
+      "bytesUnchanged": false
+    },
+    {
+      "locale": "ko",
+      "path": "src/i18n/locale/ko.json",
+      "keyCountBefore": 9494,
+      "keyCountAfter": 9494,
+      "orderedKeySha256Before": "8d5fd7bd4351bc64c5ee813f2e50196608869e165866f3202a312078732c2baf",
+      "orderedKeySha256After": "8d5fd7bd4351bc64c5ee813f2e50196608869e165866f3202a312078732c2baf",
+      "keyOrderPreserved": true,
+      "keySetPreserved": true,
+      "selectedValueChanges": 2,
+      "bytesUnchanged": false
+    },
+    {
+      "locale": "zh-Hant",
+      "path": "src/i18n/locale/zh_Hant.json",
+      "keyCountBefore": 9494,
+      "keyCountAfter": 9494,
+      "orderedKeySha256Before": "8d5fd7bd4351bc64c5ee813f2e50196608869e165866f3202a312078732c2baf",
+      "orderedKeySha256After": "8d5fd7bd4351bc64c5ee813f2e50196608869e165866f3202a312078732c2baf",
+      "keyOrderPreserved": true,
+      "keySetPreserved": true,
+      "selectedValueChanges": 7,
+      "bytesUnchanged": false
+    },
+    {
+      "locale": "vi",
+      "path": "src/i18n/locale/vi.json",
+      "keyCountBefore": 9494,
+      "keyCountAfter": 9494,
+      "orderedKeySha256Before": "8d5fd7bd4351bc64c5ee813f2e50196608869e165866f3202a312078732c2baf",
+      "orderedKeySha256After": "8d5fd7bd4351bc64c5ee813f2e50196608869e165866f3202a312078732c2baf",
+      "keyOrderPreserved": true,
+      "keySetPreserved": true,
+      "selectedValueChanges": 0,
+      "bytesUnchanged": true
+    },
+    {
+      "locale": "id",
+      "path": "src/i18n/locale/id.json",
+      "keyCountBefore": 9494,
+      "keyCountAfter": 9494,
+      "orderedKeySha256Before": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+      "orderedKeySha256After": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+      "keyOrderPreserved": true,
+      "keySetPreserved": true,
+      "selectedValueChanges": 4,
+      "bytesUnchanged": false
+    }
+  ]
+}

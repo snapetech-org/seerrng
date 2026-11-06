@@ -1,0 +1,70 @@
+{
+  "candidateFreeChecksumListSha256": "dd16da8b90a6700995f063f7189d5865602fe85aba6ee3349010e99a5dfdd9c7",
+  "candidateFreeManifestSha256": "2031b37acfbfd25db3db5f90d6520d8ae9feb1f36ee78c7e72fb17ce250e2641",
+  "candidateFreeRelevantChecks": {
+    "manifest.json": {
+      "actualSha256": "2031b37acfbfd25db3db5f90d6520d8ae9feb1f36ee78c7e72fb17ce250e2641",
+      "expectedSha256": "2031b37acfbfd25db3db5f90d6520d8ae9feb1f36ee78c7e72fb17ce250e2641",
+      "matches": true
+    },
+    "prior-hold-hash-reattestation.jsonl": {
+      "actualSha256": "fa8b434e33bc5acdd4e8bcd445ef946caeb598e5297e38053a18f97dfa39fe6d",
+      "expectedSha256": "fa8b434e33bc5acdd4e8bcd445ef946caeb598e5297e38053a18f97dfa39fe6d",
+      "matches": true
+    },
+    "prior-selection-hash-reattestation.jsonl": {
+      "actualSha256": "1af45f4a65311933e8ba3962fba6a79f5ecea89c9dcdfcf54fbb21eafef04b42",
+      "expectedSha256": "1af45f4a65311933e8ba3962fba6a79f5ecea89c9dcdfcf54fbb21eafef04b42",
+      "matches": true
+    },
+    "selected-source-cells.jsonl": {
+      "actualSha256": "59461a675294311e0cdcd4ee219ba7b9fc41e7dbb82da9f23556392c9f7346e1",
+      "expectedSha256": "59461a675294311e0cdcd4ee219ba7b9fc41e7dbb82da9f23556392c9f7346e1",
+      "matches": true
+    },
+    "window.json": {
+      "actualSha256": "f0beed55738ee3e374ae3e69a8117041d602ce9865a2eb4d64c27fce4885e717",
+      "expectedSha256": "f0beed55738ee3e374ae3e69a8117041d602ce9865a2eb4d64c27fce4885e717",
+      "matches": true
+    }
+  },
+  "previousApplicationChecksumListSha256": "64edf1fd31c1cad5e1a3cc4c8e6b72bf73436acbfaa746950cc30bbe6fb3b9e6",
+  "previousApplicationCommit": "df0de5f43bda3793eca746a4a3069f499e1fcf59",
+  "previousApplicationManifestPath": "/home/keith/Documents/code/task-scratch/seerrng-pr418-w3760-3779-primary-20261103/application-worktree/docs/pr-evidence/pr418-localization-2026-11-04/w3800-3819-independent-cross/post-application-manifest.json",
+  "previousApplicationManifestSha256": "e2dff6f673cb1bd8fab3ed7a92d7a252f8939edd0e8a6249f3fca9d681e64e87",
+  "previousApplicationReadbackMismatches": 0,
+  "previousApplicationReadbackRows": 240,
+  "previousApplicationRelevantChecks": {
+    "post-application-manifest.json": {
+      "actualSha256": "e2dff6f673cb1bd8fab3ed7a92d7a252f8939edd0e8a6249f3fca9d681e64e87",
+      "expectedSha256": "e2dff6f673cb1bd8fab3ed7a92d7a252f8939edd0e8a6249f3fca9d681e64e87",
+      "matches": true
+    }
+  },
+  "previousApplicationTree": "53b6ab2303ab8355dc93b37e897207dff02b7142",
+  "previousCandidateFreePath": "/home/keith/Documents/code/task-scratch/seerrng-pr418-w3760-3779-primary-20261103/application-worktree/docs/pr-evidence/pr418-localization-2026-11-04/w3800-3819-independent-cross/input/candidate-free-input",
+  "previousCrossHoldDispositionCount": 0,
+  "previousCrossRelevantChecks": {
+    "summary.json": {
+      "actualSha256": "5b5bbf98679dbef3cb7f5faca25c272d5770fcbe5e32312b767532ef91f85378",
+      "expectedSha256": "5b5bbf98679dbef3cb7f5faca25c272d5770fcbe5e32312b767532ef91f85378",
+      "matches": true
+    }
+  },
+  "previousCrossRootChecksumFileCount": 84,
+  "previousCrossRootChecksumListSha256": "bb2e4ac2c9c337e9d77de91b073354e3d43928c7d7dba9eddb110abfbe60d17a",
+  "previousCrossSummaryPath": "/home/keith/Documents/code/task-scratch/seerrng-pr418-w3760-3779-primary-20261103/application-worktree/docs/pr-evidence/pr418-localization-2026-11-04/w3800-3819-independent-cross/cross-review/summary.json",
+  "previousCrossSummarySha256": "5b5bbf98679dbef3cb7f5faca25c272d5770fcbe5e32312b767532ef91f85378",
+  "previousHead": "154dbf7fd6b346d9c5bddf23c7c6283db9826313",
+  "previousHoldCount": 12,
+  "previousHoldHashReattestationCount": 12,
+  "previousHoldTargetsUnchangedByHash": 12,
+  "previousSelectedIdsAndSourceTextReattestedByHash": 3820,
+  "previousSelectedSourceIdCount": 3820,
+  "previousSelectedSourceIdHashSequenceSha256": "521b9e6cc05a220d6f4fe5e3b46daed6a8e97fe5e4bfdf280195b9c1ee967e98",
+  "previousSelectionHashRows": 3800,
+  "previousTree": "a2f00bcc40b51a5643bbeb3e52ecdfc58a5718b9",
+  "previousWindow": "W3800-W3819",
+  "previousWindowSelectionRows": 20,
+  "sourceOrderChangedFromPriorFullContentHash": false
+}

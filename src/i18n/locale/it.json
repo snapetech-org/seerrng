@@ -1467,7 +1467,7 @@
   "components.Settings.Notifications.NotificationsSlack.embedPoster": "Includi Poster",
   "components.Settings.Notifications.NotificationsWebhook.supportVariables": "Supporta le variabili URL",
   "components.Settings.Notifications.NotificationsWebhook.supportVariablesTip": "Le variabili disponibili sono documentate nella sezione delle variabili del template del webhook",
-  "components.Settings.Notifications.NotificationsWebhook.webhookUrlTip": "La URL del test di notifica è impostata a {testURL} invece che sull'effettivo URL del webhook.",
+  "components.Settings.Notifications.NotificationsWebhook.webhookUrlTip": "La URL del test di notifica è impostata a {testUrl} invece che sull'effettivo URL del webhook.",
   "components.Settings.Notifications.NotificationsWebPush.embedPoster": "Includi Poster",
   "components.Settings.Notifications.embedPoster": "Includi Poster",
   "components.Settings.SettingsJobsCache.dnsCache": "Cache DNS",

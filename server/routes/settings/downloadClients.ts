@@ -275,12 +275,16 @@ downloadClientRoutes.post(
         error instanceof DownloadClientError
           ? error.message
           : 'The download client could not be reached. Check its address.';
+      const errorOrigin =
+        error instanceof DownloadClientError ? error.messageOrigin : 'app';
       logger.debug('Download client test failed', {
         label: 'Live Downloads',
         type: parsed.value.type,
         errorMessage: message,
       });
-      return res.status(502).json({ success: false, error: message });
+      return res
+        .status(502)
+        .json({ success: false, error: message, errorOrigin });
     }
   })
 );

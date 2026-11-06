@@ -1,0 +1,46 @@
+{
+  "boundaries": [
+    {
+      "position": 2799,
+      "source": "Pages",
+      "sourceHash": "ba5736bc6e33dc6012d20be700852b42532520b9f3c98ab34cb06c4030aa5fdc",
+      "sourceId": "components.RequestModal.Book.pages",
+      "sourceTextSha256": "9046da16aea909ba75a36cec13b56cb2144dc2ede45cde361e99a8d79802eabf"
+    },
+    {
+      "position": 2800,
+      "source": "Pending {format} Request",
+      "sourceHash": "e7d08c2c8a1be4598b54374973829a44c5c59cebfb035c43e6b4c01e40965a7d",
+      "sourceId": "components.RequestModal.Book.pendingRequestFormat",
+      "sourceTextSha256": "9ff9dd438db0e5bd3ac75d16571530332696d7580d4c7f2d19a8a7f5130ded53"
+    },
+    {
+      "position": 2899,
+      "source": "Request Comic",
+      "sourceHash": "3918565c8fbd6d23ae431d767712b6d5c5042943c0869f59b1e7a43a5c7df516",
+      "sourceId": "components.RequestModal.Comic.requestcomic",
+      "sourceTextSha256": "c542e3cc86b4d4ea5c898b26a64b92936ca2cc9dec5e420530b07994cb29039b"
+    },
+    {
+      "position": 2900,
+      "source": "Requested",
+      "sourceHash": "85305ea40c3f025be73334791921556e5f94fd5e589b7a4d7cbec89efb005c63",
+      "sourceId": "components.RequestModal.Comic.requested",
+      "sourceTextSha256": "2d9e28289facab94b41f9592b7f55bc4fc10fed54e789669468e8da31c9a5caf"
+    }
+  ],
+  "preservedPriorDispositionHistoryThrough": {
+    "evidence": "All previous primary packet directories scanned and exact-source/exact-final-target matching rows included in prior-disposition-boundary.json; previous window boundary independently reattested against this exact source catalog.",
+    "position": 2799
+  },
+  "sourceCatalogBlob": "12e04a118c30b71b3714291adeaf9fdb2735cee4",
+  "sourceCatalogSha256": "75ff3c90b52aedd636a506281ffbd6fb2d3739c61294b6008a517f17647e2316",
+  "windowEndsImmediatelyBefore": {
+    "position": 2900,
+    "sourceId": "components.RequestModal.Comic.requested"
+  },
+  "windowStartsImmediatelyAfter": {
+    "position": 2799,
+    "sourceId": "components.RequestModal.Book.pages"
+  }
+}

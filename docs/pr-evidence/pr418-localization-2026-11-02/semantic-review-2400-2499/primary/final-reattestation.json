@@ -1,0 +1,51 @@
+{
+  "allSevenLivePrSnapshot": "live-localization-prs.json",
+  "allSevenLivePrSnapshotSha256": "f42ee4e7cfcc330d3f981457267c3869d9f2ded6b2077d05846aae6615af2bdb",
+  "browserReview": false,
+  "callerFiles": 4,
+  "callerGaps": 0,
+  "callerReferences": 262,
+  "capturedAtUtc": "2026-11-02T19:51:30.861661+00:00",
+  "counts": {
+    "accept-current": 853,
+    "propose-correction": 347
+  },
+  "currentPlaceholderOrMarkupMismatches": 0,
+  "currentProtectedLiteralMismatchCells": 1,
+  "finalPlaceholderOrMarkupMismatches": 0,
+  "finalProtectedLiteralMismatchCells": 0,
+  "head": "f20893e57a89827095fa049d8e0475df7ec7170f",
+  "independentSubsetHolds": 0,
+  "independentSubsetNoOpProposalsRevised": 3,
+  "independentSubsetReconciledRows": 300,
+  "isDraft": true,
+  "localeCatalogKeySetParity": true,
+  "localeCatalogOrderDifferences": [
+    "ja",
+    "ko",
+    "vi",
+    "zh_Hans",
+    "zh_Hant"
+  ],
+  "localeCells": 1200,
+  "nativeSpeakerApproval": false,
+  "passed": true,
+  "pullRequest": 418,
+  "pullRequestState": "OPEN",
+  "remoteBranchHead": "f20893e57a89827095fa049d8e0475df7ec7170f",
+  "repoOrPRModified": false,
+  "repository": "snapetech-org/SeerrNG",
+  "sourceIds": 100,
+  "sourceRange": [
+    2400,
+    2499
+  ],
+  "testsBuildsCiRun": false,
+  "tree": "b5a5952fb4f8a37ea5a39286295f153ce9504f52",
+  "worktree": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng",
+  "worktreeState": {
+    "head": "f20893e57a89827095fa049d8e0475df7ec7170f",
+    "status": "",
+    "tree": "b5a5952fb4f8a37ea5a39286295f153ce9504f52"
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "pass": true,
+  "inputManifestSha256": "c47eae81b8ff26211ae4bf30966d4ececf726a8eb3eb6008965a086a225192fc",
+  "inputChecksumListSha256": "0197efc66b59dcafa26b7192db2db0256314928411504e92833aa8abdabcbf1a",
+  "candidateFreeInput": true,
+  "primaryOrSummaryOutputAccessed": false,
+  "sourceCount": 20,
+  "cellCount": 240,
+  "pinnedFilesReattested": 42,
+  "callerContextBlocksReattested": 41,
+  "priorSelectedIDsReattested": 3720,
+  "priorWindowCellsReattested": 240,
+  "carriedHoldsReattested": 12,
+  "queueStart": 3720,
+  "queueEnd": 3739,
+  "nextBoundaryPosition": 3740,
+  "nextBoundarySourceId": "components.Settings.KapowarrModal.validationHostnameRequired"
+}

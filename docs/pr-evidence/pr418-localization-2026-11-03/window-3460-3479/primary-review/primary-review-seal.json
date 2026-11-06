@@ -1,0 +1,18 @@
+{
+  "sealed": true,
+  "sealedDate": "2026-11-03",
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "head": "76fd466ba7e44ed9853115f8fb1f8ab8bec93c8e",
+  "tree": "00a72de46a40df893a24e0a93e85ec505e035a2d",
+  "candidateFreeWindowSha256": "2c8ce153678937d69b835671d26f9658113f6aae516fb83e4eea5e9be4004bfa",
+  "inputPacketChecksumsSha256": "f581bcbce2ffd680ec43345aa0c1cbe8d8cb69d15270a4b1688475459132cfd4",
+  "ledger": "primary-semantic-ledger.jsonl",
+  "ledgerSha256": "788985a41355942e686cb60e81dceec73a294b0dddb38761dbea7e16a1c37df5",
+  "ledgerRows": 240,
+  "summary": "primary-review-summary.json",
+  "summarySha256": "a87bda0ee3aeac89c54cfbd3b8a95aad6fceac5d906e15b1e497e2ba9aad8d2b",
+  "priorReviewLedgersConsultedBeforeSeal": false,
+  "priorReviewLedgersConsultedAfterSeal": false,
+  "sealScope": "Exact candidate-free source/target packet and pinned same-namespace definitions/caller context; no proposals and no release approvals."
+}

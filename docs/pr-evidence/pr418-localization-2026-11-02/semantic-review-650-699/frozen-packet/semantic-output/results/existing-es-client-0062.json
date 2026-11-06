@@ -1,0 +1,201 @@
+{
+  "schemaVersion": 1,
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "head": "5a4342176a8325c371a35d489cb01c58283bc983",
+  "tree": "98cd64952123c9b678e38250e7819cabb4476448",
+  "semanticManifestSha256": "3ea74cc6491aecddf9ffcedc69610f13d20b199059aef69bb3c2407feb0826ea",
+  "cellPlanSha256": "97c3402252a34aaa4f8f9f44a691281d9c35ff7b80d7edb3a26c752436af6558",
+  "retiredCellsSha256": "dc5ec05547e4da3079c0668f82a52da7999d89ef9d4f037c1cd72af9347ebd83",
+  "sourceBundleManifestSha256": "212491482d1b9207fed755af6e80ac80a97184ec8dbe84d0c4ad2bd711acae0d",
+  "sourceRowsSha256": "ad91236a31e32f199ff449f9ed4597ea6af0f5a4eff32772cefa84278cafb68c",
+  "sourceCellsSha256": "8bfcd1aa9b5d5aba4fb6317c194cd544d601543ebf250899a84a719b52e468e1",
+  "planRows": 115260,
+  "actions": {
+    "semantic-review-required": 114783,
+    "reuse-equivalence-decision": 477
+  },
+  "retiredRows": 48,
+  "reusableEquivalenceCells": 477,
+  "targetsApplied": false,
+  "batchId": "existing-es-client-0062",
+  "batchSha256": "969f680456376615e48de26f5b9972d5fbc9a5ccea514f3f4dfb8fd07cee5f60",
+  "rowCount": 32,
+  "model": "qwen3.8-27b-heretic:q4km",
+  "attempt": 1,
+  "decisions": [
+    {
+      "id": "components.ManageMediaActions.issueLink",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.ManageMediaActions.issues",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.ManageMediaActions.issuesDescription",
+      "verdict": "correct",
+      "target": "Cerrar incidencias abiertas marca sus incidencias abiertas como resueltas y mantiene su historial. Eliminar todas las incidencias elimina permanentemente todas sus incidencias y sus comentarios, incluidas las incidencias resueltas.",
+      "confidence": "high",
+      "reason": "The source uses the term 'Issues' (Incidencias) consistently. The target mixed 'temas', 'cuestiones', and 'incidencias', causing inconsistency. 'Close Open Issues' is a specific action label that should be translated as 'Cerrar incidencias abiertas' to match the UI context, not 'Close Open Issues' (which was left in English in the previous target) or 'temas'. 'Historial' is the standard term for 'history' in this context."
+    },
+    {
+      "id": "components.ManageMediaActions.libraryLookupFailed",
+      "verdict": "correct",
+      "target": "No se pueden verificar todos los servicios de biblioteca ni identificar el backend de este cómic. Actualice sus metadatos o verifique la disponibilidad del servicio antes de eliminar.",
+      "confidence": "high",
+      "reason": "The previous target 'Reduzca sus metadatos' (Reduce your metadata) is a mistranslation of 'Refresh its metadata' (Actualizar/Refrescar). 'Incapaz de' is also less natural than 'No se pueden' for a system error message."
+    },
+    {
+      "id": "components.ManageMediaActions.missingBlocklistId",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.ManageMediaActions.noIssues",
+      "verdict": "correct",
+      "target": "No hay incidencias para este medio.",
+      "confidence": "high",
+      "reason": "Consistency with the term 'Incidencias' used in other keys (e.g., issues, issueLink). 'Problemas' is less precise for the specific 'Issues' feature in Seerr."
+    },
+    {
+      "id": "components.ManageMediaActions.noOpenIssues",
+      "verdict": "correct",
+      "target": "No hay incidencias abiertas para cerrar para este medio.",
+      "confidence": "high",
+      "reason": "Consistency with 'Incidencias'. 'Estos medios' (plural) should be 'este medio' (singular) to match 'this media'."
+    },
+    {
+      "id": "components.ManageMediaActions.noRequests",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.ManageMediaActions.notBlocklisted",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.ManageMediaActions.open",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.ManageMediaActions.openService",
+      "verdict": "correct",
+      "target": "Abrir título en {service}",
+      "confidence": "high",
+      "reason": "The source is an imperative action 'Open title...', not a status 'Title opened...'. The previous target 'Título abierto' implies a past state."
+    },
+    {
+      "id": "components.ManageMediaActions.openServiceTooltip",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.ManageMediaActions.removeAllDescription",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.ManageMediaActions.removeAllTitle",
+      "verdict": "correct",
+      "target": "¿Eliminar de la biblioteca?",
+      "confidence": "high",
+      "reason": "Spanish question marks must be inverted (¿?). 'Biblioteca' should be lowercase as it is a common noun, not a proper noun in this context."
+    },
+    {
+      "id": "components.ManageMediaActions.requestOption",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.ManageMediaActions.requests",
+      "verdict": "correct",
+      "target": "Solicitudes",
+      "confidence": "high",
+      "reason": "The source 'Request' in this context (likely a section header or label for the list of requests) should be 'Solicitudes' (plural noun) or 'Solicitud' (singular noun). 'Solicitar' is a verb (To request). Given the ID 'requests' and the context of managing media actions, it likely refers to the list of requests. However, looking at 'noRequests' ('No request is linked...'), the label 'Request' might be a singular label for a specific action or a section. If it's a button to create a request, 'Solicitar' is correct. If it's a header for the list, 'Solicitudes' is correct. In Seerr UI, 'Request' is often a button. But 'requests' (plural ID) suggests a list. Let's look at 'requestOption'. It's a list item. The label 'Request' is ambiguous. However, 'Solicitar' (verb) is a very common UI button label. If it's a section header, it should be 'Solicitudes'. Given the ambiguity, 'Solicitudes' is safer for a list header, but 'Solicitar' is safer for a button. Let's check 'noRequests'. 'Ninguna solicitud...'. The ID is 'requests'. Usually, IDs reflect the content. If it's a button, the ID might be 'request'. If it's a list, 'requests'. Let's assume it's a label for the section or a button. 'Solicitar' is a strong candidate for a button. But 'Solicitudes' is better for a list. Let's look at the other keys. 'issues' -> 'Incidencias' (noun). 'services' -> 'Servicio' (noun, singular in target but plural in source? No, 'Service' -> 'Servicio'). 'requests' -> 'Solicitar' (verb). This inconsistency suggests 'Solicitar' might be a button. However, 'Solicitudes' is the direct translation of 'Requests'. Let's stick with 'Solicitudes' as it matches the noun pattern of 'Incidencias' and 'Servicio' (if 'Service' is a label). Wait, 'Service' -> 'Servicio' is singular. 'Requests' -> 'Solicitar' is verb. This is inconsistent. 'Solicitudes' is the noun. I will correct to 'Solicitudes' for consistency with 'Incidencias'."
+    },
+    {
+      "id": "components.ManageMediaActions.resolved",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.ManageMediaActions.retryLibraries",
+      "verdict": "correct",
+      "target": "Reintentar verificación de biblioteca",
+      "confidence": "high",
+      "reason": "The previous target 'Verificación de la Biblioteca de Retry' is a mistranslation. 'Retry' is a verb (Reintentar), not a noun 'Retry'. 'Library Check' is 'Verificación de biblioteca'."
+    },
+    {
+      "id": "components.ManageMediaActions.selectLibrary",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.ManageMediaActions.selectRequest",
+      "verdict": "correct",
+      "target": "Solicitud a eliminar",
+      "confidence": "high",
+      "reason": "'Supresión' is too formal/legalistic. 'Eliminar' is the standard UI term for 'Delete' used elsewhere in the app (e.g., 'Eliminar de la Biblioteca')."
+    },
+    {
+      "id": "components.ManageMediaActions.services",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.ManageMediaActions.servicesDescription",
+      "verdict": "correct",
+      "target": "Eliminar de la biblioteca elimina permanentemente todas las versiones de calidad y las entradas de biblioteca para este título de cada servicio listado en la confirmación.",
+      "confidence": "high",
+      "reason": "'Eliminar De la Biblioteca' has incorrect capitalization. 'De' should be lowercase. 'Biblioteca' should be lowercase."
+    },
+    {
+      "id": "components.ManageMediaActions.titleWithYear",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.ManageMediaActions.unblock",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.ManageMediaActions.unblockConfirm",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.ManageMediaActions.unblockDescription",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.ManageMediaActions.unknownUser",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.ManageMediaActions.updated",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.ManageMediaActions.viewIssues",
+      "verdict": "correct",
+      "target": "Ver todas las incidencias",
+      "confidence": "high",
+      "reason": "Consistency with 'Incidencias'."
+    },
+    {
+      "id": "components.ManageMediaActions.viewIssuesDescription",
+      "verdict": "correct",
+      "target": "Vea todas las incidencias abiertas y resueltas reportadas para este medio.",
+      "confidence": "high",
+      "reason": "Consistency with 'Incidencias'. 'Estos medios' (plural) should be 'este medio' (singular)."
+    },
+    {
+      "id": "components.ManageSlideOver.alltime",
+      "verdict": "correct",
+      "target": "Todo el tiempo",
+      "confidence": "high",
+      "reason": "'Tiempo total' (Total time) is a mistranslation of 'All Time' (Todo el tiempo), which is a standard filter label."
+    },
+    {
+      "id": "components.ManageSlideOver.downloadstatus",
+      "verdict": "correct",
+      "target": "Descargas",
+      "confidence": "high",
+      "reason": "The source is 'Downloads' (noun, plural). The target 'Estado de la Descarga' (Download Status) adds 'Status' which is not in the source. The ID is 'downloadstatus', but the source text is just 'Downloads'. If the source is 'Downloads', the translation should be 'Descargas'. If the source was 'Download Status', it would be 'Estado de la descarga'. Given the source is 'Downloads', 'Descargas' is the correct translation."
+    }
+  ],
+  "decisionsSha256": "7864090fa12b3d26f14315663ac7c89594f7ec2583ab14201b8e9f1c33588a7f",
+  "rawResponseSha256": "c4a4cbe71fdd73cf944228dcee47b1b4803166b48f69cbb768ddb5824951f479",
+  "rawResponseFile": "/mnt/disks/scratch/task-scratch/seerrng-review-window-650-700-422072-20261102/semantic-output/responses/existing-es-client-0062-attempt-1.json"
+}

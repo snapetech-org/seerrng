@@ -1,0 +1,617 @@
+{
+  "head": "d49b44895d0ded9796f0c970ad09141212e9a98f",
+  "sourceCatalog": {
+    "blob": "12e04a118c30b71b3714291adeaf9fdb2735cee4",
+    "bytes": 835513,
+    "path": "src/i18n/locale/en.json",
+    "sha256": "75ff3c90b52aedd636a506281ffbd6fb2d3739c61294b6008a517f17647e2316"
+  },
+  "sourceCount": 100,
+  "sourceList": [
+    {
+      "position": 2300,
+      "source": "Send notifications when media requests become available.",
+      "sourceHash": "23b36c741d0c1ef54f1a79f381f1dce88003b3d5934415d52d2b67fecbdd8d86",
+      "sourceId": "components.NotificationTypeSelector.mediaavailableDescription"
+    },
+    {
+      "position": 2301,
+      "source": "Request Declined",
+      "sourceHash": "0e98d5badf3bd5f7eae82a582a4e902af5b4375bc9c5a2d564c696c79f2bec97",
+      "sourceId": "components.NotificationTypeSelector.mediadeclined"
+    },
+    {
+      "position": 2302,
+      "source": "Send notifications when media requests are declined.",
+      "sourceHash": "1dc2e327d9634d2d1d660c0a3e2ee694814e7887463ae07e3f8d703ac6a06c4a",
+      "sourceId": "components.NotificationTypeSelector.mediadeclinedDescription"
+    },
+    {
+      "position": 2303,
+      "source": "Request Processing Failed",
+      "sourceHash": "53e6439fd60c04db023f6823534d95dd74240009604f011385b0b9e61230d4af",
+      "sourceId": "components.NotificationTypeSelector.mediafailed"
+    },
+    {
+      "position": 2304,
+      "source": "Send notifications when media requests fail to be added to Radarr, Sonarr, Lidarr, or Bookshelf.",
+      "sourceHash": "4d6d8d05d6c73afa90ab0212a3d8a7fc90b710061f62d947dbdc0ad4758c6199",
+      "sourceId": "components.NotificationTypeSelector.mediafailedDescription"
+    },
+    {
+      "position": 2305,
+      "source": "Request Pending Approval",
+      "sourceHash": "5c7b146c0e2a3301c9f4efbd02a01bb9e05e95cc57fc1be0ec2c282d5814a94e",
+      "sourceId": "components.NotificationTypeSelector.mediarequested"
+    },
+    {
+      "position": 2306,
+      "source": "Send notifications when users submit new media requests which require approval.",
+      "sourceHash": "2e45411ee006cb7862341111ac990e5519cb1b20696ee1316f54dd276f1210dc",
+      "sourceId": "components.NotificationTypeSelector.mediarequestedDescription"
+    },
+    {
+      "position": 2307,
+      "source": "Notification Types",
+      "sourceHash": "bbda597e781f2e5744d19cf2c61a1586acc9ef648af4b16d9b84c1d0b9c3b9dd",
+      "sourceId": "components.NotificationTypeSelector.notificationTypes"
+    },
+    {
+      "position": 2308,
+      "source": "Software Request Updates",
+      "sourceHash": "919ca7e012b96a4b076468e2699010cbcf7148fa4a48faba9d79198a70eca6b9",
+      "sourceId": "components.NotificationTypeSelector.softwareStatus"
+    },
+    {
+      "position": 2309,
+      "source": "Send notifications for software requests awaiting approval or that were approved, declined, or failed.",
+      "sourceHash": "f30be5bf6e345ec32dc3bea12990df362f50fd1afc32a113bdce24973a893db6",
+      "sourceId": "components.NotificationTypeSelector.softwareStatusDescription"
+    },
+    {
+      "position": 2310,
+      "source": "Software Request Available",
+      "sourceHash": "416f6da0e1029c60c927312df66df736543fc63c1c45c60bdaabaa2eff65b796",
+      "sourceId": "components.NotificationTypeSelector.softwareavailable"
+    },
+    {
+      "position": 2311,
+      "source": "Send notifications when requested ROMs and PC games are ready to download.",
+      "sourceHash": "2f33c42d587c93f3e98519cfeda4c8bf4f1020c28c4cfdde6bcc261c5866aa6f",
+      "sourceId": "components.NotificationTypeSelector.softwareavailableDescription"
+    },
+    {
+      "position": 2312,
+      "source": "Get notified when your software request is awaiting approval or is approved, declined, or fails.",
+      "sourceHash": "d883f086e0c05c7c7900a6f64f346f494c91e9124cb24289b12412adabc9bda8",
+      "sourceId": "components.NotificationTypeSelector.userSoftwareStatusDescription"
+    },
+    {
+      "position": 2313,
+      "source": "Get notified when issues you reported receive new comments.",
+      "sourceHash": "e1a39f7f4547454cfae81981a7e8ee8b8f37137266c2534d28912e20f221dae5",
+      "sourceId": "components.NotificationTypeSelector.userissuecommentDescription"
+    },
+    {
+      "position": 2314,
+      "source": "Get notified when other users report issues.",
+      "sourceHash": "9d0875a6e36453cff675819712166cdcd85f747e39fd0b481e8d0dc653f81cd5",
+      "sourceId": "components.NotificationTypeSelector.userissuecreatedDescription"
+    },
+    {
+      "position": 2315,
+      "source": "Get notified when issues you reported are reopened.",
+      "sourceHash": "2510126202bf8270e7cd643c7d12779197abd7c65d880f8e45da3ddcf1180d8f",
+      "sourceId": "components.NotificationTypeSelector.userissuereopenedDescription"
+    },
+    {
+      "position": 2316,
+      "source": "Get notified when issues you reported are resolved.",
+      "sourceHash": "f3ec15db5941fb9b0411e5d38c7070cbd88c555c19ae375b3aed507a03881173",
+      "sourceId": "components.NotificationTypeSelector.userissueresolvedDescription"
+    },
+    {
+      "position": 2317,
+      "source": "Get notified when other users submit new media requests which are automatically approved.",
+      "sourceHash": "66e88e47f77b6c3304f6b8260f9ada0417f1365b09147b49541f382699301756",
+      "sourceId": "components.NotificationTypeSelector.usermediaAutoApprovedDescription"
+    },
+    {
+      "position": 2318,
+      "source": "Get notified when your media requests are approved.",
+      "sourceHash": "9393496e568ba61a85d8a51b6550ba68ac1f96d833922e8a039d2ea4a442c0cf",
+      "sourceId": "components.NotificationTypeSelector.usermediaapprovedDescription"
+    },
+    {
+      "position": 2319,
+      "source": "Get notified when your media requests become available.",
+      "sourceHash": "3718dd7ac1f889a0aa10a12bfe2df71355373ee55418e66fc3eb263822e1c344",
+      "sourceId": "components.NotificationTypeSelector.usermediaavailableDescription"
+    },
+    {
+      "position": 2320,
+      "source": "Get notified when your media requests are declined.",
+      "sourceHash": "884acc9404e321a95e2aa6174c4835777f661345f745d8783cc448b9f0af1bcc",
+      "sourceId": "components.NotificationTypeSelector.usermediadeclinedDescription"
+    },
+    {
+      "position": 2321,
+      "source": "Get notified when media requests fail to be added to Radarr, Sonarr, Lidarr, or Bookshelf.",
+      "sourceHash": "33cb21f78cf6f4dc08612607de4cf9cb0a3d8c5297d8d2edc99923c7486fbb1a",
+      "sourceId": "components.NotificationTypeSelector.usermediafailedDescription"
+    },
+    {
+      "position": 2322,
+      "source": "Get notified when other users submit new media requests which require approval.",
+      "sourceHash": "20e6ae881fdfbebd9ae891926d307d59463d7ef112b8901de8340b902c538f85",
+      "sourceId": "components.NotificationTypeSelector.usermediarequestedDescription"
+    },
+    {
+      "position": 2323,
+      "source": "Get notified when your requested ROMs and PC games are ready to download.",
+      "sourceHash": "bcc50bfe00545be5d1c1e52de8525073494f32df4a797195ef0159394b2f949d",
+      "sourceId": "components.NotificationTypeSelector.usersoftwareavailableDescription"
+    },
+    {
+      "position": 2324,
+      "source": "Open Library rating: {score}/5 from {votes} ratings",
+      "sourceHash": "c50261fcf7e54a0eaaf6ea97cec2b606c250d97f325e873db5a0c8c6e5a98c41",
+      "sourceId": "components.OpenLibraryRating.rating"
+    },
+    {
+      "position": 2325,
+      "source": "Abandoned",
+      "sourceHash": "89282710b25f2051804223eb5a6befb109c597f75f2ea323ca8044b106b1f4a1",
+      "sourceId": "components.PatchProjects.PatchDiscovery.abandoned"
+    },
+    {
+      "position": 2326,
+      "source": "Any Kind",
+      "sourceHash": "9cbcad0a89305bd92a904abcf57064e11e8eacbf35421f14087bc2f71bbcb285",
+      "sourceId": "components.PatchProjects.PatchDiscovery.anyKind"
+    },
+    {
+      "position": 2327,
+      "source": "Any Language",
+      "sourceHash": "1a7647796dbe753ba93db8d94b0834748e9a2490ed280229cbd7e702e7613f24",
+      "sourceId": "components.PatchProjects.PatchDiscovery.anyLanguage"
+    },
+    {
+      "position": 2328,
+      "source": "Complete",
+      "sourceHash": "aa6a1bf015526458e580a6dd7307a334225fa6241d5d987e45e7227535eda997",
+      "sourceId": "components.PatchProjects.PatchDiscovery.complete"
+    },
+    {
+      "position": 2329,
+      "source": "Completed projects only",
+      "sourceHash": "87cf0fead6be679939bfdc43873a2fdc69bfbd1dce43ae6ff625191202817a94",
+      "sourceId": "components.PatchProjects.PatchDiscovery.completeOnly"
+    },
+    {
+      "position": 2330,
+      "source": "Fan translations, ROM hacks, and quality-of-life patches. Pick the exact version you want, keep the original alongside it, and follow a project for updates.",
+      "sourceHash": "f2e1f235b531104b1f10cb8425363d075e02f203d07da0c8b2b923b970b8c60c",
+      "sourceId": "components.PatchProjects.PatchDiscovery.description"
+    },
+    {
+      "position": 2331,
+      "source": "Follow This Project",
+      "sourceHash": "e2a05baeb335a3c04a6a9831d800a43f031cde5c27781393813b2edb3b1fbb56",
+      "sourceId": "components.PatchProjects.PatchDiscovery.follow"
+    },
+    {
+      "position": 2332,
+      "source": "ROM Hacks",
+      "sourceHash": "e28b24dbc61d1ebb023194b847807ab77a8a2ff2b262776ceeaf56c6441da772",
+      "sourceId": "components.PatchProjects.PatchDiscovery.hack"
+    },
+    {
+      "position": 2333,
+      "source": "Improvements",
+      "sourceHash": "1ba5da8ffbff3720241b7c6de427cc4c941a58b91d9474e45c18555bbfc7c2b2",
+      "sourceId": "components.PatchProjects.PatchDiscovery.improvement"
+    },
+    {
+      "position": 2334,
+      "source": "In Progress",
+      "sourceHash": "bbb44a4f6e8a64a25ccbc11bba7d50ef838c7e12f372600ada01ff94b7e94146",
+      "sourceId": "components.PatchProjects.PatchDiscovery.inProgress"
+    },
+    {
+      "position": 2335,
+      "source": "Kind",
+      "sourceHash": "19d14dd52822f6d434621d68939cc2132259f815f9315bdbedb590e79c3e7cdd",
+      "sourceId": "components.PatchProjects.PatchDiscovery.kind"
+    },
+    {
+      "position": 2336,
+      "source": "Language",
+      "sourceHash": "3ca30868ab5b8113f157e53de950861a2d67bcddcbe94627f245e2fb063c62ca",
+      "sourceId": "components.PatchProjects.PatchDiscovery.language"
+    },
+    {
+      "position": 2337,
+      "source": "Latest {version}",
+      "sourceHash": "3b20ee3bb18e5ee4e950a70b4ff37184b77926cd8b160d0453e2cb7537d224b5",
+      "sourceId": "components.PatchProjects.PatchDiscovery.latest"
+    },
+    {
+      "position": 2338,
+      "source": "Load More",
+      "sourceHash": "7a2c428a8848303e7ce17af3b0112ef1d6ad3de7af345ed956a65c9a5d81aa15",
+      "sourceId": "components.PatchProjects.PatchDiscovery.loadMore"
+    },
+    {
+      "position": 2339,
+      "source": "No projects matched.",
+      "sourceHash": "7c97a6b9f0185f8ba6ac66bcf6e3c1f7cdfaccb8de2d9f099c1e733ee3804ff8",
+      "sourceId": "components.PatchProjects.PatchDiscovery.none"
+    },
+    {
+      "position": 2340,
+      "source": "Choose a Version",
+      "sourceHash": "7f619c41c3286a98f5c6b55feb611f80e29ff898b0a21bc27005a09404325a54",
+      "sourceId": "components.PatchProjects.PatchDiscovery.openGame"
+    },
+    {
+      "position": 2341,
+      "source": "Partial",
+      "sourceHash": "55d96ff41c8a3a9cd2164f6bf5f0e5b8a41622082fa43799d9ecb4c8e51dfb7c",
+      "sourceId": "components.PatchProjects.PatchDiscovery.partial"
+    },
+    {
+      "position": 2342,
+      "source": "Search Titles",
+      "sourceHash": "e18133c73066e0bdb56d3788559cf4b37dce928badb14efa9633574073d5e5cf",
+      "sourceId": "components.PatchProjects.PatchDiscovery.search"
+    },
+    {
+      "position": 2343,
+      "source": "Translations and Hacks",
+      "sourceHash": "9f512eef9ba2243fc850b3db074844b2322613b7074526722c8a3bf01c99d73e",
+      "sourceId": "components.PatchProjects.PatchDiscovery.title"
+    },
+    {
+      "position": 2344,
+      "source": "Translations",
+      "sourceHash": "d611efc9123ffab76646daa6c4beb884663d07e13907c4151572f5ca35ec0c37",
+      "sourceId": "components.PatchProjects.PatchDiscovery.translation"
+    },
+    {
+      "position": 2345,
+      "source": "The patch catalog needs a ROMarrNG version that includes it. An administrator can connect or update ROMarrNG in Settings → Services.",
+      "sourceHash": "7a1acd0255051abaede867a3b13e1f342579e36c0152742b5547f749f1598093",
+      "sourceId": "components.PatchProjects.PatchDiscovery.unavailable"
+    },
+    {
+      "position": 2346,
+      "source": "Completeness Unknown",
+      "sourceHash": "5297496e760fbf919cef8cc8d981fcf09eedb3d7983d39c5171ab1aaffff2f27",
+      "sourceId": "components.PatchProjects.PatchDiscovery.unknownStatus"
+    },
+    {
+      "position": 2347,
+      "source": "Abandoned",
+      "sourceHash": "96a2e79a0652a4b0d6cfd2db259bbcc35f73d07ad6048a29686c6b99e04d77b4",
+      "sourceId": "components.PatchProjects.abandoned"
+    },
+    {
+      "position": 2348,
+      "source": "The base game this version needs is not available, so it cannot be prepared yet.",
+      "sourceHash": "097d09954018c514a41bdd912c0df5c9e52b6e98cac3de762b7aea401978b662",
+      "sourceId": "components.PatchProjects.baseMissing"
+    },
+    {
+      "position": 2349,
+      "source": "Needs {region} {revision}",
+      "sourceHash": "c82845aaf6eb8184eadfaa89691ad3a2ddf7870c59a43a537b1d227903274f7b",
+      "sourceId": "components.PatchProjects.baseNeeds"
+    },
+    {
+      "position": 2350,
+      "source": "By {author}",
+      "sourceHash": "f76305059d0445b3ee6a9c16e62d8abf2755dfe6732d7cdae84acf3f056ba5d3",
+      "sourceId": "components.PatchProjects.by"
+    },
+    {
+      "position": 2351,
+      "source": "Complete",
+      "sourceHash": "507487414d347ceb38d00524a88effa31fc891d8d8933b0453278c56cb4d7da1",
+      "sourceId": "components.PatchProjects.complete"
+    },
+    {
+      "position": 2352,
+      "source": "What Changes",
+      "sourceHash": "1d2f827ca09787b464ea8af290a3565f13aab96b508767b7b019399536173d33",
+      "sourceId": "components.PatchProjects.differences"
+    },
+    {
+      "position": 2353,
+      "source": "Follow This Project",
+      "sourceHash": "f68e31184164bd1f55eefcb5dc5c5fe73da5b29b7f00a499bfc77d1143d955dd",
+      "sourceId": "components.PatchProjects.followProject"
+    },
+    {
+      "position": 2354,
+      "source": "ROM Hack",
+      "sourceHash": "fb4107cd8220242aebfc6102d6b65d9f57ca82114743c2e342bc280673101fd7",
+      "sourceId": "components.PatchProjects.hack"
+    },
+    {
+      "position": 2355,
+      "source": "Translations and Hacks",
+      "sourceHash": "c9789cbeca338acfaea9d6a0e7b00f6e71cfcbcdb9a3183780e9ec6b986d26ba",
+      "sourceId": "components.PatchProjects.heading"
+    },
+    {
+      "position": 2356,
+      "source": "Improvement",
+      "sourceHash": "f16c2568a255ff6b88180b38777b5339120d9ab75e309d611c0ea0464664f686",
+      "sourceId": "components.PatchProjects.improvement"
+    },
+    {
+      "position": 2357,
+      "source": "In Progress",
+      "sourceHash": "9318edc0d7de4e2478a019b5f2c3aa528dc8375e2f3ccdb5f49fecb8d39c41ac",
+      "sourceId": "components.PatchProjects.inProgress"
+    },
+    {
+      "position": 2358,
+      "source": "Keep the original alongside the patched version",
+      "sourceHash": "61ca8f666f7fdf4b5fb6ff4fe0b49a9df47977421f5ad09d9925c059ba2116f3",
+      "sourceId": "components.PatchProjects.keepOriginal"
+    },
+    {
+      "position": 2359,
+      "source": "Latest ({version})",
+      "sourceHash": "0d586eff03f78a6ce73896d08389282fb594e48ec5cf3bacea32436e5c9bb91b",
+      "sourceId": "components.PatchProjects.latest"
+    },
+    {
+      "position": 2360,
+      "source": "Checking for patches…",
+      "sourceHash": "cfed92b1cf7370350a8f9ee7cadfafce4ef50f960f6d25051b1f77010fffe502",
+      "sourceId": "components.PatchProjects.loading"
+    },
+    {
+      "position": 2361,
+      "source": "Request the original game",
+      "sourceHash": "e8d7397fa895b6b8099b130123d154c9171999d0f1f71dff13e71ef5abbd552e",
+      "sourceId": "components.PatchProjects.none"
+    },
+    {
+      "position": 2362,
+      "source": "The original game, unmodified",
+      "sourceHash": "46de44fcbe574ad9fddb25f058d05d76c2f1a2fef6a9a1474e1c7879dd68457f",
+      "sourceId": "components.PatchProjects.original"
+    },
+    {
+      "position": 2363,
+      "source": "Partial",
+      "sourceHash": "b105eca5a2694ddcb09509c5124c922a8dfbfd7a7607e281fa599fa39a9d3d44",
+      "sourceId": "components.PatchProjects.partial"
+    },
+    {
+      "position": 2364,
+      "source": "{percent}% translated",
+      "sourceHash": "f441c94482f3fe2a1bd3e76af436cf0ca306c8971b3bf452ad1f8900376f19a5",
+      "sourceId": "components.PatchProjects.percent"
+    },
+    {
+      "position": 2365,
+      "source": "Project Page",
+      "sourceHash": "e9ea500b61396cf82ea976db92471e16bee3d8f1529638ea2ae9f08bac7bea4c",
+      "sourceId": "components.PatchProjects.project"
+    },
+    {
+      "position": 2366,
+      "source": "What this request gets",
+      "sourceHash": "04d6e73e32d783127b17e37b0e466a454595eaff4d74a09fb934025cef2ba328",
+      "sourceId": "components.PatchProjects.summary"
+    },
+    {
+      "position": 2367,
+      "source": "The original game.",
+      "sourceHash": "62223b18180cfa6d86e2e4d200e2dcff082dd944af889be4b3ad80ef4f83054b",
+      "sourceId": "components.PatchProjects.summaryOriginal"
+    },
+    {
+      "position": 2368,
+      "source": "{name} {version}{keep, select, true { and the unmodified original} other {}}.",
+      "sourceHash": "8c7f1c8f60bcd9fefa2574dffb58ec299c1ef53e3794086994a9a4263ec6fbd4",
+      "sourceId": "components.PatchProjects.summaryPatch"
+    },
+    {
+      "position": 2369,
+      "source": "Translation",
+      "sourceHash": "fe7bdaaf62db35d60661744b605159ce86e599ab4f310a5803ed1dcb2f424d68",
+      "sourceId": "components.PatchProjects.translation"
+    },
+    {
+      "position": 2370,
+      "source": "Completeness Unknown",
+      "sourceHash": "3c597f0727057b1c2db62e4844036202bfe0ad7f6f13c8d3f68e3f0c29044c46",
+      "sourceId": "components.PatchProjects.unknownStatus"
+    },
+    {
+      "position": 2371,
+      "source": "Version",
+      "sourceHash": "97e06dec2dcc9495a69812ca3201909e060f2f64c4b0b3fb261ef377000b10f4",
+      "sourceId": "components.PatchProjects.version"
+    },
+    {
+      "position": 2372,
+      "source": "Admin",
+      "sourceHash": "003fc4fa69d82c38038a3f25317c23f0959374d40310299c616be287f0df6eb7",
+      "sourceId": "components.PermissionEdit.admin"
+    },
+    {
+      "position": 2373,
+      "source": "Full administrator access. Bypasses all other permission checks.",
+      "sourceHash": "bf592c7ae3ac8ce62bc72683224aa03dabc0b7a02ad537f39affb0ca4f083775",
+      "sourceId": "components.PermissionEdit.adminDescription"
+    },
+    {
+      "position": 2374,
+      "source": "Advanced Requests",
+      "sourceHash": "a812e121d5f0940d77c16200f2767db74a1227c765f65960daacbb7aa75798ef",
+      "sourceId": "components.PermissionEdit.advancedrequest"
+    },
+    {
+      "position": 2375,
+      "source": "Grant permission to modify advanced media request options.",
+      "sourceHash": "aae4d9252f369f5e99200575eca10ba288eb3aaec0993a973d7c6a0f110ef32d",
+      "sourceId": "components.PermissionEdit.advancedrequestDescription"
+    },
+    {
+      "position": 2376,
+      "source": "Auto-Approve",
+      "sourceHash": "b65b041c78097f4d7bb60bc77ed1a857a4383da6c3aa54bcc4a5ad69866a5223",
+      "sourceId": "components.PermissionEdit.autoapprove"
+    },
+    {
+      "position": 2377,
+      "source": "Auto-Approve 4K",
+      "sourceHash": "74846f3fa3cb1678d6b8629ca41aaf1f3e43c453d32cfc37ed52c8bc9661a218",
+      "sourceId": "components.PermissionEdit.autoapprove4k"
+    },
+    {
+      "position": 2378,
+      "source": "Grant automatic approval for all 4K media requests.",
+      "sourceHash": "c9ae53161bbcf15a78596e910e154f5556d8869dbc3e4585584abc4de48c0e34",
+      "sourceId": "components.PermissionEdit.autoapprove4kDescription"
+    },
+    {
+      "position": 2379,
+      "source": "Auto-Approve 4K Movies",
+      "sourceHash": "491ebd3ed32ffdc4e654fb83dbfb814439e2ac3fc365df90d30b9b492d2c2544",
+      "sourceId": "components.PermissionEdit.autoapprove4kMovies"
+    },
+    {
+      "position": 2380,
+      "source": "Grant automatic approval for 4K movie requests.",
+      "sourceHash": "f06a3b5abf37af8ae516622b700f455ef50c4d42c50649412fec3e70c76cc284",
+      "sourceId": "components.PermissionEdit.autoapprove4kMoviesDescription"
+    },
+    {
+      "position": 2381,
+      "source": "Auto-Approve 4K Series",
+      "sourceHash": "74d878279ae2a25ea7c4d225d0077af402c091fa176d7539d514580751412562",
+      "sourceId": "components.PermissionEdit.autoapprove4kSeries"
+    },
+    {
+      "position": 2382,
+      "source": "Grant automatic approval for 4K series requests.",
+      "sourceHash": "111b8a8405d0ae1cbdbfa198df22afe45cb0ad061788e02caa79519861d44642",
+      "sourceId": "components.PermissionEdit.autoapprove4kSeriesDescription"
+    },
+    {
+      "position": 2383,
+      "source": "Auto-Approve Adult Media",
+      "sourceHash": "8f2928d75b19eb18946f0ff0bee667b1de32bc9d4b91312830c9b7591284477b",
+      "sourceId": "components.PermissionEdit.autoapproveAdult"
+    },
+    {
+      "position": 2384,
+      "source": "Grant automatic approval for adult scene requests. This is separate from general auto-approval.",
+      "sourceHash": "fe141b28f806b64a1d0fcc7190101ed8827dce75d06e8fd3970144731c38c10e",
+      "sourceId": "components.PermissionEdit.autoapproveAdultDescription"
+    },
+    {
+      "position": 2385,
+      "source": "Auto-Approve Books",
+      "sourceHash": "7a855a69001f824ab0c9a79d1cb0ab7388dbd701e7ffb5e59c7aa82792fb672b",
+      "sourceId": "components.PermissionEdit.autoapproveBooks"
+    },
+    {
+      "position": 2386,
+      "source": "Grant automatic approval for book requests.",
+      "sourceHash": "7b9d5a4a5aa54aebe520b9b98c9d0bb08078aae5d1c597b2391d74459f7c2262",
+      "sourceId": "components.PermissionEdit.autoapproveBooksDescription"
+    },
+    {
+      "position": 2387,
+      "source": "Auto-Approve Comics",
+      "sourceHash": "bff6a47b7fd05d8ef3161ad5c5fa410b30b4a07263e8614f5fe2d5107dc353ea",
+      "sourceId": "components.PermissionEdit.autoapproveComics"
+    },
+    {
+      "position": 2388,
+      "source": "Grant automatic approval for comic requests.",
+      "sourceHash": "b1c590e6ce5fda9b1046679f1cc72cdde051a79a5666e0c1e412618c8c2dd6d8",
+      "sourceId": "components.PermissionEdit.autoapproveComicsDescription"
+    },
+    {
+      "position": 2389,
+      "source": "Grant automatic approval for all non-4K media requests.",
+      "sourceHash": "4a32111b480c93ad73fcfd30f5b8454e5162062219551a4295c25961324cf810",
+      "sourceId": "components.PermissionEdit.autoapproveDescription"
+    },
+    {
+      "position": 2390,
+      "source": "Auto-Approve Magazines",
+      "sourceHash": "1e395aa58c6e161c47419fa67838f5d80dbd8ce97e10ab0e3e1299515b90e4c5",
+      "sourceId": "components.PermissionEdit.autoapproveMagazines"
+    },
+    {
+      "position": 2391,
+      "source": "Grant automatic approval for magazine requests.",
+      "sourceHash": "b3d4c2afb491d45bae25ab5780e689e1502f988693563c20870dd5e33b0f9e6c",
+      "sourceId": "components.PermissionEdit.autoapproveMagazinesDescription"
+    },
+    {
+      "position": 2392,
+      "source": "Auto-Approve Movies",
+      "sourceHash": "f5bf178dfedcae8243b59edfaa43a16401a91406d494bf9cc4f8c1ae7a511be1",
+      "sourceId": "components.PermissionEdit.autoapproveMovies"
+    },
+    {
+      "position": 2393,
+      "source": "Grant automatic approval for non-4K movie requests.",
+      "sourceHash": "5f2f564318fb5821d8c8fa01ce417c2cc7e113785d76e531d07b833dd8f0dad5",
+      "sourceId": "components.PermissionEdit.autoapproveMoviesDescription"
+    },
+    {
+      "position": 2394,
+      "source": "Auto-Approve Music",
+      "sourceHash": "b1cc8a9da7146ca5899ce41c0d4cacd1fc4994835412a13f48a2dc244f46dbb8",
+      "sourceId": "components.PermissionEdit.autoapproveMusic"
+    },
+    {
+      "position": 2395,
+      "source": "Grant automatic approval for music requests.",
+      "sourceHash": "a8c1db8615c8e32f92329c2e6593853fc318028a92ceb2c5ca09d977266c42ba",
+      "sourceId": "components.PermissionEdit.autoapproveMusicDescription"
+    },
+    {
+      "position": 2396,
+      "source": "Auto-Approve Series",
+      "sourceHash": "5a4d0871d622c060278de35402cf387ff4d95ea1a07c165a7d5c786e97df3bf3",
+      "sourceId": "components.PermissionEdit.autoapproveSeries"
+    },
+    {
+      "position": 2397,
+      "source": "Grant automatic approval for non-4K series requests.",
+      "sourceHash": "774898de93d4a3a23b557df9e25906f018ffed0fe0016e4d1dcabdf0c35bafba",
+      "sourceId": "components.PermissionEdit.autoapproveSeriesDescription"
+    },
+    {
+      "position": 2398,
+      "source": "Auto-Approve Sports",
+      "sourceHash": "aa20f49b3aa51f88b69b29e250b3547fe34fb96832eac1acf3f27f4210efcaf8",
+      "sourceId": "components.PermissionEdit.autoapproveSports"
+    },
+    {
+      "position": 2399,
+      "source": "Grant automatic approval for sports league requests.",
+      "sourceHash": "8f92fa08f4f5dc9b248b89bbfad2c89be7e92d1e6536dbe771d90ca2a4cd016f",
+      "sourceId": "components.PermissionEdit.autoapproveSportsDescription"
+    }
+  ],
+  "sourcePositionRange": [
+    2300,
+    2399
+  ],
+  "tree": "cebcfc11e0ea37c42f5b6e979e96cca8c89c7814"
+}

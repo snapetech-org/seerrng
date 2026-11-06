@@ -1,0 +1,97 @@
+{
+  "allSevenPrRefsReattested": true,
+  "branch": "codex/seerrng-localization-overhaul-20261028",
+  "callerLineReferences": 262,
+  "callerSources": 100,
+  "catalogsReattested": 12,
+  "changedPrimaryProposals": 148,
+  "confidence": "moderate machine-assisted static review",
+  "crossReviewDispositionCounts": {
+    "accept-current": 147,
+    "accept-primary-proposal": 144,
+    "propose-additional-correction": 5,
+    "revise-primary-proposal": 4
+  },
+  "exactPriorTerminalDispositions": 0,
+  "files": [
+    {
+      "bytes": 2572,
+      "path": "README.md",
+      "sha256": "e486631ea146b83cc66aca8cb0afd6e30961f0b868d416445f8be44416756b06"
+    },
+    {
+      "bytes": 4886,
+      "path": "all-seven-pr-heads.json",
+      "sha256": "c1693b6907603f6fc4df709b2eb4962ee0ed93b907866379ff2b47637082914b"
+    },
+    {
+      "bytes": 10519,
+      "path": "attest_input.py",
+      "sha256": "fbb00b126b047dbae0b575f2efdfa5980a6a1a8f481d7c3db14f88461036b1f2"
+    },
+    {
+      "bytes": 14125,
+      "path": "build_crossreview.py",
+      "sha256": "b16778f9723ca45054c86494264c253166e8d04aa9577ad781f9f3b53780ef31"
+    },
+    {
+      "bytes": 142578,
+      "path": "caller-pin-reattestation.jsonl",
+      "sha256": "92975572090c7a0fdad2f7a791baf1efe910eed462bdb68106a1bb7500eec6e8"
+    },
+    {
+      "bytes": 3409,
+      "path": "catalog-reattestation.json",
+      "sha256": "f58ab003f8469764c4e39604cc31fc6a81ce9a0cc4090470fa6e2f432223ca95"
+    },
+    {
+      "bytes": 1669435,
+      "path": "crossreview-ledger.jsonl",
+      "sha256": "6a968f7a98f624e58d679593ba569ff0aa6f5ea2965abd816f61b6ae21c99770"
+    },
+    {
+      "bytes": 7023,
+      "path": "findings.jsonl",
+      "sha256": "364dc2c2ddd991f5f7bd9251b138070b996b501c811a7093e2d715c2ff8f9ca1"
+    },
+    {
+      "bytes": 5321,
+      "path": "input-reattestation.json",
+      "sha256": "24bbccdfe0bc342513b6fe19f8c208b4783156090c17083d1f086adb6e72ec35"
+    },
+    {
+      "bytes": 1355,
+      "path": "summary.json",
+      "sha256": "ec4480da8b62aae5b206d69a0635410da6facaf7b0fbc0660f1b7eb8dd3c9868"
+    }
+  ],
+  "head": "f20893e57a89827095fa049d8e0475df7ec7170f",
+  "holds": 0,
+  "markupMismatchCells": 0,
+  "nativeSpeakerApproval": false,
+  "nativeSpeakerReviewOutstanding": true,
+  "nontrivialFindings": 9,
+  "placeholderMismatchCells": 0,
+  "primaryNoOpProposals": 3,
+  "primaryProposals": 151,
+  "protectedLiteralFailureCells": 0,
+  "pullRequest": 418,
+  "repository": "snapetech-org/SeerrNG",
+  "repositoryModified": false,
+  "schemaVersion": 1,
+  "scope": {
+    "cells": 300,
+    "locales": [
+      "hi",
+      "id",
+      "vi"
+    ],
+    "positions": [
+      2400,
+      2499
+    ],
+    "sourceIds": 100
+  },
+  "testsBuildsCiBrowserRun": false,
+  "tree": "b5a5952fb4f8a37ea5a39286295f153ce9504f52"
+}

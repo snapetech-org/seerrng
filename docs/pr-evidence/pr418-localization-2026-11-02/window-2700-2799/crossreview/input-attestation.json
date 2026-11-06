@@ -1,0 +1,27 @@
+{
+  "primaryPacketPath": "/mnt/disks/scratch/task-scratch/seerrng-pr418-window-2700-2799-primary-20261102",
+  "primarySha256SumsVerified": true,
+  "inputSha256SumsVerified": true,
+  "primaryPacketKeyHashes": {
+    "SHA256SUMS": "fc647876fc80da7b88144bc6fed1da4cb9bf94ff8776dbe266877a6763a4def4",
+    "INPUT-SHA256SUMS": "c39ecb357dff17b8fbc5d858af3fd9b8580e22b851be37adfbe90249ee2c69e3",
+    "manifest.json": "de1ceea4a4410022a8e5501f48cba615ab5bae7acd47c563179e8a89792cea56",
+    "input-manifest.json": "814b6250ed5f914f2edb6dccdd63f9813c812c4f81f9dec50a86e0cdc903c37d",
+    "source-current-cells.jsonl": "4720a96494972087088767b4a952a674ee36d62a3e123f185fa4ad86ccd6d9fe",
+    "primary-review-ledger.jsonl": "0a3b476ba1d5a41053a0e5b79498ebf679ddb582cb8e6f715c94e9f61ba93378",
+    "candidate-proposals.jsonl": "9fd824cc045095f5a00f745dc4247eec2c5d56e4a4568a6c732b423ad67e2a47",
+    "candidate-targets.json": "4429409c39db26d9449df4a3ef1f858d88cff8941095e549f253a9a054704ad9",
+    "caller-contexts.jsonl": "0945a255ac917bc5eab7d367451850ee2a599b5b6e6f62a393bd9e522e5fc029",
+    "protected-literal-assessment.json": "10d3eab8e998845aa64f482377e0364bf428c61dd430d8a26f7200cecb1937eb",
+    "structural-validation.json": "543e38acd6a22441896bc68208b776224872092633ef74528733166a9cb20daf"
+  },
+  "exactHead": "6bc8d0bd3dfb4f8c87c307a3e562e0fd12474118",
+  "exactTree": "44cf1a02d645026872759fa04a7506ee738381e5",
+  "startAllSevenSnapshotPath": "live-pr-snapshots-start.json",
+  "startAllSevenSnapshotSha256": "aef55b76f73eb4486c67922a92ca1baa84000330f43f51e4acf947ebb7752baf",
+  "startSnapshotUtc": "2026-11-02T22:17:24.240990+00:00 / 2026-11-02T22:17:38.676743+00:00",
+  "endAllSevenSnapshotPath": "live-pr-snapshots-end.json",
+  "endAllSevenSnapshotSha256": "dc604f4b6c41a4de17f3c0c64bd4a0c8aa7ed0ef6abb2547a4661d163f67f9ee",
+  "endSnapshotUtc": "2026-11-02T22:23:21.747248+00:00 / 2026-11-02T22:23:36.551254+00:00",
+  "nativeSpeakerApproval": false
+}

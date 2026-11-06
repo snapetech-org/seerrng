@@ -1,0 +1,33 @@
+{
+  "repository": "snapetech-org/SeerrNG",
+  "pullRequest": 418,
+  "exactHead": "ebebae19e24b9236192eda287938b65eabf29667",
+  "exactTree": "8e5ef5985dee40f5c1191dff794e323a851d3ef8",
+  "sourceRange": [
+    3120,
+    3139
+  ],
+  "sourceIds": 20,
+  "locales": 12,
+  "cells": 240,
+  "inputHashes": {
+    "window.json": "c5bff28317d1f3a05da92fc5d119e48d5706afad81d9e0b59b91d2bb2e351ee4",
+    "source-current-cells.jsonl": "4d0340db281fd3e21b00008d24df712665a3531db487bb51486a14a64821776c",
+    "caller-contexts.jsonl": "bb5836c36848e077616b5309bb029d1f7b99df19d43a0a799a0aeecfbe23eaee"
+  },
+  "blindReviewFile": "blind-review-decisions.jsonl",
+  "blindReviewSha256": "9d7fca0dc5feaefe2353b0a3d654533ccfe42d409462a7083a3203390b7fd366",
+  "blindReviewCompletedBeforeReadingPrimary": true,
+  "prHeadVerifiedAgainstGithubAndRemote": true,
+  "localWorktreeNote": "At review time, local branch HEAD was 536dfdb7630d5f61fc8a90b82bc33234eb432c9f (one commit ahead); PR and remote branch remain at the exact reviewed head.",
+  "comparisonInputHashes": {
+    "candidate-proposals.json": "bec8594f7e1872487809b1cff6124c31ebca662f07ec73a54d1311c35ccf3938",
+    "primary-decisions.jsonl": "852afce2dc0e0c857286977f1f86d95a74bbc2d6026d1b6d0f4f5b81e6fd54b0",
+    "SHA256SUMS.txt": "f93638d73e6a6f2391e1db4f8bbfd2498b8a47ef42b47d30b0ecf7dc34228db4"
+  },
+  "comparisonCompletedAfterBlindReview": true,
+  "comparisonReportFiles": [
+    "comparison-summary.json",
+    "blind-vs-primary-differences.jsonl"
+  ]
+}

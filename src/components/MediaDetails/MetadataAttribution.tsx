@@ -8,6 +8,7 @@ import { useIntl } from 'react-intl';
 
 const messages = defineMessages('components.MediaDetails.MetadataAttribution', {
   label: 'Metadata sources',
+  licenseInformation: '{license} license information',
   tmdb: 'TMDB',
   tvdb: 'TheTVDB.com',
   tvmaze: 'TVmaze (adapted)',
@@ -76,7 +77,9 @@ const MetadataAttribution = ({
                   href={getSafeHref(source.licenseUrl)}
                   target="_blank"
                   rel="noreferrer"
-                  title={`${source.license} license information`}
+                  title={intl.formatMessage(messages.licenseInformation, {
+                    license: source.license,
+                  })}
                 >
                   {source.license}
                 </a>

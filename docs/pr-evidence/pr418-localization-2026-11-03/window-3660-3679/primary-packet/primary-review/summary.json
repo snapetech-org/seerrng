@@ -1,0 +1,83 @@
+{
+  "schemaVersion": 1,
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "window": "W3660-W3679",
+  "range": [
+    3660,
+    3679
+  ],
+  "head": "eb279fc80be656f379cd893642bf741ba0a24d85",
+  "tree": "85a73172719b38e99a4e74c0ef9a303164cb4fcb",
+  "sourceCount": 20,
+  "localeCount": 12,
+  "cellCount": 240,
+  "decisionCounts": {
+    "accept-current": 205,
+    "correction": 22,
+    "refinement": 13
+  },
+  "confidenceCounts": {
+    "high": 150,
+    "moderate": 90
+  },
+  "holdCount": 0,
+  "holdCells": [],
+  "callerlessCellCount": 0,
+  "baselineDiagnostics": {
+    "placeholderMultisetMismatchCount": 0,
+    "placeholderSequenceDifferenceCount": 2,
+    "pluralCategoryMismatchCount": 0,
+    "markupMismatchCount": 0,
+    "numericTokenSurfaceMismatchCount": 0,
+    "protectedLiteralMismatchCount": 0
+  },
+  "reviewedDiagnostics": {
+    "placeholderMultisetMismatchCount": 0,
+    "placeholderSequenceDifferenceCount": 2,
+    "pluralCategoryMismatchCount": 0,
+    "markupMismatchCount": 0,
+    "numericTokenSurfaceMismatchCount": 0,
+    "numericValueMismatchCount": 0,
+    "protectedLiteralMismatchCount": 0
+  },
+  "validPlaceholderReorderings": [
+    {
+      "position": 3667,
+      "sourceId": "components.Settings.BookshelfPathMigration.pageOf",
+      "locale": "ja",
+      "sourceOrder": [
+        "page",
+        "pages"
+      ],
+      "currentOrder": [
+        "pages",
+        "page"
+      ]
+    },
+    {
+      "position": 3667,
+      "sourceId": "components.Settings.BookshelfPathMigration.pageOf",
+      "locale": "ko",
+      "sourceOrder": [
+        "page",
+        "pages"
+      ],
+      "currentOrder": [
+        "pages",
+        "page"
+      ]
+    }
+  ],
+  "carryForwardHoldCount": 12,
+  "carryForwardHoldPositions": [
+    3632
+  ],
+  "candidateFreeInputVerified": "PASS",
+  "candidateFreeInputManifestSha256": "09c8ae082e01f16b8e512684f8ff9022afbf3331ea594edc063341644faea0e4",
+  "candidateFreeInputChecksumListSha256": "b4d179e39a77ce84f37143df020795dbbc72a225469ea323abb099470c63075a",
+  "nativeSpeakerReview": "not performed",
+  "browserReview": "not performed",
+  "crossAudit": "not performed",
+  "repositoryOrPRFilesEdited": false
+}

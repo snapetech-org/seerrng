@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "title": "feat(i18n): strengthen SeerrNG localization",
+  "url": "https://github.com/snapetech-org/seerrng/pull/418",
+  "state": "open",
+  "merged": false,
+  "draft": true,
+  "baseRef": "main",
+  "baseSha": "221d8e0d542802da7529cd272c928cc747677e5c",
+  "headRef": "codex/seerrng-localization-overhaul-20261028",
+  "head": "f15ebead8af7bd09d81c4ea61e8cd3351a2ea66d",
+  "headTree": "3ba2579c326f8dbac943ba43df77ddd5747a85a1",
+  "remoteBranchRef": "refs/heads/codex/seerrng-localization-overhaul-20261028",
+  "remoteBranchHead": "f15ebead8af7bd09d81c4ea61e8cd3351a2ea66d",
+  "remotePullRef": "refs/pull/418/head",
+  "remotePullRefHead": "f15ebead8af7bd09d81c4ea61e8cd3351a2ea66d",
+  "pinsAgree": true,
+  "verifiedAtUTC": "2026-11-03T12:03:27.267758+00:00",
+  "verificationSources": [
+    "GitHub pull request API metadata",
+    "git ls-remote branch and pull refs",
+    "fresh clean exact-head source snapshot"
+  ],
+  "sourceSnapshot": "/home/keith/Documents/code/task-scratch/seerrng-pr418-w3540-3559-primary-20261103/source/repo",
+  "sourceSnapshotClean": true
+}

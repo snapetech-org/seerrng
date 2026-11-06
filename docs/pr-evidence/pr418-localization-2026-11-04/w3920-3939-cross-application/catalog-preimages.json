@@ -1,0 +1,144 @@
+{
+  "localeOrder": [
+    "es",
+    "zh-Hans",
+    "hi",
+    "de",
+    "ja",
+    "fr",
+    "pt-BR",
+    "ar",
+    "ko",
+    "zh-Hant",
+    "vi",
+    "id"
+  ],
+  "catalogKeyCount": 9494,
+  "sortedKeySetParityWithEnglish": true,
+  "localeInsertionOrderDifferencesFromEnglish": [
+    "zh-Hans",
+    "ja",
+    "ko",
+    "zh-Hant",
+    "vi"
+  ],
+  "catalogFiles": {
+    "en": {
+      "path": "src/i18n/locale/en.json",
+      "byteCount": 835513,
+      "sha256": "75ff3c90b52aedd636a506281ffbd6fb2d3739c61294b6008a517f17647e2316",
+      "gitBlob": "12e04a118c30b71b3714291adeaf9fdb2735cee4",
+      "keyCount": 9494,
+      "keySequenceSha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+      "sortedKeySetSha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072"
+    },
+    "es": {
+      "path": "src/i18n/locale/es.json",
+      "byteCount": 923216,
+      "sha256": "f8b2cb82e4a5388f474de1a179e6c3389efa0e605ba43749c99f3db49aca3e92",
+      "gitBlob": "7969c50a17db4d619f1caf7aa2ec3640a40680c4",
+      "keyCount": 9494,
+      "keySequenceSha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+      "sortedKeySetSha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072"
+    },
+    "zh-Hans": {
+      "path": "src/i18n/locale/zh_Hans.json",
+      "byteCount": 813038,
+      "sha256": "b6811aacf78d170ebf91ee1e54629a7ccfec9b42f963a7ab61c9a58fbc8c3c5b",
+      "gitBlob": "56ee77c1d5d02f838ce638003b2e6b3e3557376d",
+      "keyCount": 9494,
+      "keySequenceSha256": "8d5fd7bd4351bc64c5ee813f2e50196608869e165866f3202a312078732c2baf",
+      "sortedKeySetSha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072"
+    },
+    "hi": {
+      "path": "src/i18n/locale/hi.json",
+      "byteCount": 1373465,
+      "sha256": "c4141f3221b9dd785caf752da02592b5a9e5c99c25cfc8aa649f67b7bdc2ecd9",
+      "gitBlob": "5667c70e07e8f01f560fffc3341e24020e62d650",
+      "keyCount": 9494,
+      "keySequenceSha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+      "sortedKeySetSha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072"
+    },
+    "de": {
+      "path": "src/i18n/locale/de.json",
+      "byteCount": 927450,
+      "sha256": "65e2c0434871be2e76408eb96e027a2298bf8012273390af708141f3b126e72b",
+      "gitBlob": "d8d934c99c685a0ab2c565ea03d3d192fab8ea45",
+      "keyCount": 9494,
+      "keySequenceSha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+      "sortedKeySetSha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072"
+    },
+    "ja": {
+      "path": "src/i18n/locale/ja.json",
+      "byteCount": 1016619,
+      "sha256": "a573acbf404dff9eb4d54c55b9cf1b08c9ea71096f512c071516aaed923bd96c",
+      "gitBlob": "e7da38823ba868a405a78d89e6d2fed94c0de3be",
+      "keyCount": 9494,
+      "keySequenceSha256": "8d5fd7bd4351bc64c5ee813f2e50196608869e165866f3202a312078732c2baf",
+      "sortedKeySetSha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072"
+    },
+    "fr": {
+      "path": "src/i18n/locale/fr.json",
+      "byteCount": 941464,
+      "sha256": "ebad85867398e9f591c337787a1af17e9ea1d5bb44e70e8189e0765ad4eb4ff8",
+      "gitBlob": "df8bada980f0a4cb7f6c1e6e665692c8066fe95d",
+      "keyCount": 9494,
+      "keySequenceSha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+      "sortedKeySetSha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072"
+    },
+    "pt-BR": {
+      "path": "src/i18n/locale/pt_BR.json",
+      "byteCount": 912640,
+      "sha256": "6c0f54d904d13c55fc376784301f1d9e93b534e06df20778f640a24168490e26",
+      "gitBlob": "6fcabea23c1e5e20c7511c6270d573bb0e9d2178",
+      "keyCount": 9494,
+      "keySequenceSha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+      "sortedKeySetSha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072"
+    },
+    "ar": {
+      "path": "src/i18n/locale/ar.json",
+      "byteCount": 1045140,
+      "sha256": "35c2b4a596ee287b54984988296d80c53ef0302208d1800e85775e41c306883a",
+      "gitBlob": "8c5143039d81cee713153ff52195e6ee25bd5104",
+      "keyCount": 9494,
+      "keySequenceSha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+      "sortedKeySetSha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072"
+    },
+    "ko": {
+      "path": "src/i18n/locale/ko.json",
+      "byteCount": 935191,
+      "sha256": "1d700ec05edcc2a5ab7a835ca74054af4946414e82b594a2f164208b169bd1f5",
+      "gitBlob": "997aa12e164e3d98ea4f6210af6fc5b43b6ade41",
+      "keyCount": 9494,
+      "keySequenceSha256": "8d5fd7bd4351bc64c5ee813f2e50196608869e165866f3202a312078732c2baf",
+      "sortedKeySetSha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072"
+    },
+    "zh-Hant": {
+      "path": "src/i18n/locale/zh_Hant.json",
+      "byteCount": 814876,
+      "sha256": "3119719d59c8afd004b68d13c805aa97019e95913688efe649143544c7cf1bb1",
+      "gitBlob": "d303310759361dd38b0bee6aeeb67074ed321910",
+      "keyCount": 9494,
+      "keySequenceSha256": "8d5fd7bd4351bc64c5ee813f2e50196608869e165866f3202a312078732c2baf",
+      "sortedKeySetSha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072"
+    },
+    "vi": {
+      "path": "src/i18n/locale/vi.json",
+      "byteCount": 970751,
+      "sha256": "b7b521aae7ab8b3565b5b57637e490ef1415c9ee4eb2deacccc03d0a13294269",
+      "gitBlob": "87ea2055693b588150306d5d7d9b47aa1d62af55",
+      "keyCount": 9494,
+      "keySequenceSha256": "8d5fd7bd4351bc64c5ee813f2e50196608869e165866f3202a312078732c2baf",
+      "sortedKeySetSha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072"
+    },
+    "id": {
+      "path": "src/i18n/locale/id.json",
+      "byteCount": 868565,
+      "sha256": "873fa0fce6ef209127c39bb80127355db247ddd31f58da9613d8f6faf6af93e2",
+      "gitBlob": "6514567bb726777e4bd66bf12eed6585c4f59a58",
+      "keyCount": 9494,
+      "keySequenceSha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+      "sortedKeySetSha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072"
+    }
+  }
+}

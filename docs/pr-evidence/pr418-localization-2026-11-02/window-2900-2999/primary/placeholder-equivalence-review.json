@@ -1,0 +1,175 @@
+{
+  "accountedForBranchProfilesByStage": 8,
+  "distinctAccountedForBranchDifferences": 4,
+  "exactHead": "58697945e3d3fb44c37d49db0cc0f88e3af110cc",
+  "exactTree": "e3076937fe10b4dd3821ea573e8e5e21601fce7d",
+  "icuCellsChecked": 60,
+  "nestedBranchProfileMismatchesCurrent": 0,
+  "nestedBranchProfileMismatchesFinal": 0,
+  "pullRequest": 418,
+  "repository": "snapetech-org/SeerrNG",
+  "rows": [
+    {
+      "accounting": "The exact =0 selector is preserved as empty and takes precedence for numeric zero; the additional CLDR zero branch is not selected for zero input.",
+      "branch": "zero",
+      "callerContextRef": "components.RequestModal.QuotaDisplay.allowedRequests",
+      "callerContextSha256": "bfcc0cbf65dc1b9282f04f40b4aa36bd4879a84227ed96a0715493b33418a749",
+      "currentTargetHash": "de4105058f9211cfdf251750db24bdd8e1998b9d81109a93734a8d578b0b3bbe",
+      "finalTargetHash": "de4105058f9211cfdf251750db24bdd8e1998b9d81109a93734a8d578b0b3bbe",
+      "locale": "ar",
+      "localeBranchProfile": [],
+      "sourceBranchProfile": [
+        {
+          "kind": "simple",
+          "name": "days"
+        }
+      ],
+      "sourceId": "components.RequestModal.QuotaDisplay.allowedRequests",
+      "sourcePosition": 2994,
+      "sourceTextSha256": "dfb018d7a63b586ea6aa3bba17c9dd3e39387bce85f87dc0deced7aed380777b",
+      "stage": "current"
+    },
+    {
+      "accounting": "Arabic dual morphology in يومين explicitly encodes two days, so the English numeric {days} variable is realized in the word form rather than repeated as a placeholder.",
+      "branch": "two",
+      "callerContextRef": "components.RequestModal.QuotaDisplay.allowedRequests",
+      "callerContextSha256": "bfcc0cbf65dc1b9282f04f40b4aa36bd4879a84227ed96a0715493b33418a749",
+      "currentTargetHash": "de4105058f9211cfdf251750db24bdd8e1998b9d81109a93734a8d578b0b3bbe",
+      "finalTargetHash": "de4105058f9211cfdf251750db24bdd8e1998b9d81109a93734a8d578b0b3bbe",
+      "locale": "ar",
+      "localeBranchProfile": [],
+      "sourceBranchProfile": [
+        {
+          "kind": "simple",
+          "name": "days"
+        }
+      ],
+      "sourceId": "components.RequestModal.QuotaDisplay.allowedRequests",
+      "sourcePosition": 2994,
+      "sourceTextSha256": "dfb018d7a63b586ea6aa3bba17c9dd3e39387bce85f87dc0deced7aed380777b",
+      "stage": "current"
+    },
+    {
+      "accounting": "The exact =0 selector is preserved as empty and takes precedence for numeric zero; the additional CLDR zero branch is not selected for zero input.",
+      "branch": "zero",
+      "callerContextRef": "components.RequestModal.QuotaDisplay.allowedRequests",
+      "callerContextSha256": "bfcc0cbf65dc1b9282f04f40b4aa36bd4879a84227ed96a0715493b33418a749",
+      "currentTargetHash": "de4105058f9211cfdf251750db24bdd8e1998b9d81109a93734a8d578b0b3bbe",
+      "finalTargetHash": "de4105058f9211cfdf251750db24bdd8e1998b9d81109a93734a8d578b0b3bbe",
+      "locale": "ar",
+      "localeBranchProfile": [],
+      "sourceBranchProfile": [
+        {
+          "kind": "simple",
+          "name": "days"
+        }
+      ],
+      "sourceId": "components.RequestModal.QuotaDisplay.allowedRequests",
+      "sourcePosition": 2994,
+      "sourceTextSha256": "dfb018d7a63b586ea6aa3bba17c9dd3e39387bce85f87dc0deced7aed380777b",
+      "stage": "final"
+    },
+    {
+      "accounting": "Arabic dual morphology in يومين explicitly encodes two days, so the English numeric {days} variable is realized in the word form rather than repeated as a placeholder.",
+      "branch": "two",
+      "callerContextRef": "components.RequestModal.QuotaDisplay.allowedRequests",
+      "callerContextSha256": "bfcc0cbf65dc1b9282f04f40b4aa36bd4879a84227ed96a0715493b33418a749",
+      "currentTargetHash": "de4105058f9211cfdf251750db24bdd8e1998b9d81109a93734a8d578b0b3bbe",
+      "finalTargetHash": "de4105058f9211cfdf251750db24bdd8e1998b9d81109a93734a8d578b0b3bbe",
+      "locale": "ar",
+      "localeBranchProfile": [],
+      "sourceBranchProfile": [
+        {
+          "kind": "simple",
+          "name": "days"
+        }
+      ],
+      "sourceId": "components.RequestModal.QuotaDisplay.allowedRequests",
+      "sourcePosition": 2994,
+      "sourceTextSha256": "dfb018d7a63b586ea6aa3bba17c9dd3e39387bce85f87dc0deced7aed380777b",
+      "stage": "final"
+    },
+    {
+      "accounting": "The exact =0 selector is preserved as empty and takes precedence for numeric zero; the additional CLDR zero branch is not selected for zero input.",
+      "branch": "zero",
+      "callerContextRef": "components.RequestModal.QuotaDisplay.allowedRequestsUser",
+      "callerContextSha256": "963f68b6176cd12d914ece1073231a72fb6a929a9382f2cce70268bcea9294cb",
+      "currentTargetHash": "1002e2ed5ea804ed5cac5d36775d98df51944f137030461c994ee1e2377c9054",
+      "finalTargetHash": "1002e2ed5ea804ed5cac5d36775d98df51944f137030461c994ee1e2377c9054",
+      "locale": "ar",
+      "localeBranchProfile": [],
+      "sourceBranchProfile": [
+        {
+          "kind": "simple",
+          "name": "days"
+        }
+      ],
+      "sourceId": "components.RequestModal.QuotaDisplay.allowedRequestsUser",
+      "sourcePosition": 2995,
+      "sourceTextSha256": "9b1eb2c5b78c8fca66d769557688c045c2e83d3297c60f1cbec81a356e03a42b",
+      "stage": "current"
+    },
+    {
+      "accounting": "Arabic dual morphology in يومين explicitly encodes two days, so the English numeric {days} variable is realized in the word form rather than repeated as a placeholder.",
+      "branch": "two",
+      "callerContextRef": "components.RequestModal.QuotaDisplay.allowedRequestsUser",
+      "callerContextSha256": "963f68b6176cd12d914ece1073231a72fb6a929a9382f2cce70268bcea9294cb",
+      "currentTargetHash": "1002e2ed5ea804ed5cac5d36775d98df51944f137030461c994ee1e2377c9054",
+      "finalTargetHash": "1002e2ed5ea804ed5cac5d36775d98df51944f137030461c994ee1e2377c9054",
+      "locale": "ar",
+      "localeBranchProfile": [],
+      "sourceBranchProfile": [
+        {
+          "kind": "simple",
+          "name": "days"
+        }
+      ],
+      "sourceId": "components.RequestModal.QuotaDisplay.allowedRequestsUser",
+      "sourcePosition": 2995,
+      "sourceTextSha256": "9b1eb2c5b78c8fca66d769557688c045c2e83d3297c60f1cbec81a356e03a42b",
+      "stage": "current"
+    },
+    {
+      "accounting": "The exact =0 selector is preserved as empty and takes precedence for numeric zero; the additional CLDR zero branch is not selected for zero input.",
+      "branch": "zero",
+      "callerContextRef": "components.RequestModal.QuotaDisplay.allowedRequestsUser",
+      "callerContextSha256": "963f68b6176cd12d914ece1073231a72fb6a929a9382f2cce70268bcea9294cb",
+      "currentTargetHash": "1002e2ed5ea804ed5cac5d36775d98df51944f137030461c994ee1e2377c9054",
+      "finalTargetHash": "1002e2ed5ea804ed5cac5d36775d98df51944f137030461c994ee1e2377c9054",
+      "locale": "ar",
+      "localeBranchProfile": [],
+      "sourceBranchProfile": [
+        {
+          "kind": "simple",
+          "name": "days"
+        }
+      ],
+      "sourceId": "components.RequestModal.QuotaDisplay.allowedRequestsUser",
+      "sourcePosition": 2995,
+      "sourceTextSha256": "9b1eb2c5b78c8fca66d769557688c045c2e83d3297c60f1cbec81a356e03a42b",
+      "stage": "final"
+    },
+    {
+      "accounting": "Arabic dual morphology in يومين explicitly encodes two days, so the English numeric {days} variable is realized in the word form rather than repeated as a placeholder.",
+      "branch": "two",
+      "callerContextRef": "components.RequestModal.QuotaDisplay.allowedRequestsUser",
+      "callerContextSha256": "963f68b6176cd12d914ece1073231a72fb6a929a9382f2cce70268bcea9294cb",
+      "currentTargetHash": "1002e2ed5ea804ed5cac5d36775d98df51944f137030461c994ee1e2377c9054",
+      "finalTargetHash": "1002e2ed5ea804ed5cac5d36775d98df51944f137030461c994ee1e2377c9054",
+      "locale": "ar",
+      "localeBranchProfile": [],
+      "sourceBranchProfile": [
+        {
+          "kind": "simple",
+          "name": "days"
+        }
+      ],
+      "sourceId": "components.RequestModal.QuotaDisplay.allowedRequestsUser",
+      "sourcePosition": 2995,
+      "sourceTextSha256": "9b1eb2c5b78c8fca66d769557688c045c2e83d3297c60f1cbec81a356e03a42b",
+      "stage": "final"
+    }
+  ],
+  "rule": "Each localized plural branch is compared with its corresponding exact English branch, falling back to English other for locale-only categories. Exact numeric selectors are retained. The Arabic dual form يومين encodes the value two without an explicit {days} argument; the CLDR zero category is shadowed by the preserved exact =0 selector.",
+  "unresolvedSemanticGaps": 0
+}

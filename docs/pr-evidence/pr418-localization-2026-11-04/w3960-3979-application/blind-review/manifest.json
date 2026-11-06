@@ -1,0 +1,95 @@
+{
+  "artifact": "SeerrNG PR #418 W3960-W3979 independent blind semantic review packet",
+  "baseRef": "main",
+  "baseSha": "fa40534ccced75bde1125c14760514fcd5d7de4d",
+  "baselineTokenMismatchCounts": {
+    "markupTags": 0,
+    "numericTokens": 3,
+    "placeholders": 0,
+    "protectedLiterals": 4
+  },
+  "callerlessHashOnlyHoldCount": 0,
+  "callerlessSourceCount": 0,
+  "candidateFreeInputChecksumsSha256": "ab9e5c5fa71e87c6c74ebc374ebf7490e9c7db7db39bb0d352343750eac9d6d7",
+  "candidateFreeInputManifestSha256": "36446dcb3cdc927a9d20ff0473c90019ff5119e783a6f0fc8d0a9fb1c47da0d9",
+  "candidateFreeVerifierResult": {
+    "PR": "OPEN/DRAFT exact branch/pull/base",
+    "baselineTokenMismatchCounts": {
+      "numericTokens": 3,
+      "protectedLiterals": 4
+    },
+    "callerReferences": 24,
+    "catalogCount": 13,
+    "catalogKeysPerFile": 9494,
+    "cellCount": 240,
+    "checksums": 27,
+    "derivedBoundary": "3960-3979",
+    "head": "a456dd66aad34cb23f432cb3c189bb8083bbbe96",
+    "localeCount": 12,
+    "priorAppliedTargets": 262,
+    "priorHashOnlyHolds": 50,
+    "priorSelectedSourceHashes": 3960,
+    "result": "PASS",
+    "sourceCount": 20,
+    "tree": "7a5447e5f08e84c392899a6e1400d1df73b1143b",
+    "window": "W3960-W3979"
+  },
+  "cellCount": 240,
+  "currentWindowHoldCount": 0,
+  "decisionCounts": {
+    "hold-hash-only": 0,
+    "keep-current": 231,
+    "propose-replacement": 9
+  },
+  "hashOnlyCallerlessHoldsFile": "callerless-holds-hash-only.jsonl",
+  "head": "a456dd66aad34cb23f432cb3c189bb8083bbbe96",
+  "localeCount": 12,
+  "nativeSpeakerApproval": false,
+  "packetType": "blind-semantic-review",
+  "priorLineageCounts": {
+    "appliedTargetHashes": 262,
+    "hashOnlyHolds": 50,
+    "selectedSourceHashes": 3960
+  },
+  "priorLineageFiles": {
+    "prior-applied-target-hash-reattestation.jsonl": {
+      "byteIdenticalToCandidateFreeInput": true,
+      "sha256": "f3926f45362c6c0365d20d993cd184448094463a454fe308f422fa5e748bfa8b"
+    },
+    "prior-catalog-application-summary.json": {
+      "byteIdenticalToCandidateFreeInput": true,
+      "sha256": "e7ab6a167cf129555b7da55f896535084d4ac57b1bd066b05d8964b6eca32a38"
+    },
+    "prior-evidence-hash-index.json": {
+      "byteIdenticalToCandidateFreeInput": true,
+      "sha256": "2205ec9b6885ea6f47631917d1404154ab8784b85abd283697b05f13885e14b6"
+    },
+    "prior-hold-hash-reattestation.jsonl": {
+      "byteIdenticalToCandidateFreeInput": true,
+      "sha256": "18755db1dc1dfd264212af0853ac67370af93231e7fd9ba47ed855de7ef9c8c3"
+    },
+    "prior-selection-hash-reattestation.jsonl": {
+      "byteIdenticalToCandidateFreeInput": true,
+      "sha256": "4d21d7af6248e2d0df03ca39ceef7903366eaa70c73d5b27799af679bb8b0831"
+    }
+  },
+  "priorLineageSummaryFilesAlsoCopied": [
+    "prior-evidence-hash-index.json",
+    "prior-catalog-application-summary.json"
+  ],
+  "proposalCount": 9,
+  "proposalsFile": "proposals.json",
+  "pullRequest": 418,
+  "repository": "snapetech-org/seerrng",
+  "reviewMode": "independent blind review from candidate-free input",
+  "reviewedCellsFile": "reviewed-cells.jsonl",
+  "schemaVersion": 1,
+  "selectedSourceCount": 20,
+  "sourceWorktree": "/mnt/disks/scratch/task-worktrees/localization-20261104/seerrng-pr418-w3960-3979-source",
+  "tokenMismatchAssessment": {
+    "arabicProtectedIdOmissions": "proposed replacements add exact ID literals in all four affected cells",
+    "japaneseNumericTokens": "three unchanged targets use digit 1 to express source word one; quantity and thresholds match"
+  },
+  "tree": "7a5447e5f08e84c392899a6e1400d1df73b1143b",
+  "window": "W3960-W3979"
+}

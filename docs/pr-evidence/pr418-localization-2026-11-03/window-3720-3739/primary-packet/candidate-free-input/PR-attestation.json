@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "url": "https://github.com/snapetech-org/seerrng/pull/418",
+  "state": "OPEN",
+  "isDraft": true,
+  "baseRefName": "main",
+  "baseRefOid": "fa40534ccced75bde1125c14760514fcd5d7de4d",
+  "headRefName": "codex/seerrng-localization-overhaul-20261028",
+  "head": "1ca6ec2d5a0e9ef8000c69997e75648a8ccaf06e",
+  "tree": "6a51f3fb1d1f65c12bfe82bf47834626aa364488",
+  "branchRef": "1ca6ec2d5a0e9ef8000c69997e75648a8ccaf06e",
+  "pullRef": "1ca6ec2d5a0e9ef8000c69997e75648a8ccaf06e",
+  "verifiedAtUTC": "2026-11-03T20:46:09.612771+00:00"
+}

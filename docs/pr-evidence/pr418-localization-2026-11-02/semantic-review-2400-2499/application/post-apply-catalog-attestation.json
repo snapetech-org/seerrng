@@ -1,0 +1,90 @@
+{
+  "allKeySetsEqual": true,
+  "catalogs": [
+    {
+      "file": "src/i18n/locale/ar.json",
+      "keyCount": 9494,
+      "locale": "ar",
+      "orderedKeySetSha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+      "sha256": "8dd336b81eebd01231e5e9a60c3fda79a368fa393455e86f2621288c39460cd9"
+    },
+    {
+      "file": "src/i18n/locale/de.json",
+      "keyCount": 9494,
+      "locale": "de",
+      "orderedKeySetSha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+      "sha256": "31a410371fd227677c76f64eaf8ebab424a2af7a6a10e482012aeb5e87425ae2"
+    },
+    {
+      "file": "src/i18n/locale/es.json",
+      "keyCount": 9494,
+      "locale": "es",
+      "orderedKeySetSha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+      "sha256": "b655287779aa271fb4eb465b15f8146d8b7c8e6f0037b27cf62e81b86fa96b9a"
+    },
+    {
+      "file": "src/i18n/locale/fr.json",
+      "keyCount": 9494,
+      "locale": "fr",
+      "orderedKeySetSha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+      "sha256": "56450b996ad086465ed3c47667fec69c86fcf43e5fbce2de30e90943b0780d64"
+    },
+    {
+      "file": "src/i18n/locale/hi.json",
+      "keyCount": 9494,
+      "locale": "hi",
+      "orderedKeySetSha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+      "sha256": "48011ae4fb6a316e7b29e63991cd3dad54cf30be6f33914da82dec8ec64c720a"
+    },
+    {
+      "file": "src/i18n/locale/id.json",
+      "keyCount": 9494,
+      "locale": "id",
+      "orderedKeySetSha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+      "sha256": "d80d4418ef6649e284495d04eb21e67b247429efbfce22384b589d60808af3b3"
+    },
+    {
+      "file": "src/i18n/locale/ja.json",
+      "keyCount": 9494,
+      "locale": "ja",
+      "orderedKeySetSha256": "8d5fd7bd4351bc64c5ee813f2e50196608869e165866f3202a312078732c2baf",
+      "sha256": "18f9a00a99d7ef3f717243496cdf281432cf54fa22ddb2258c39912c2ba5b0bf"
+    },
+    {
+      "file": "src/i18n/locale/ko.json",
+      "keyCount": 9494,
+      "locale": "ko",
+      "orderedKeySetSha256": "8d5fd7bd4351bc64c5ee813f2e50196608869e165866f3202a312078732c2baf",
+      "sha256": "13c737e8fc41c4d6a7253a7b91d74d8c934eb4b05844d4430229bc7d716a5075"
+    },
+    {
+      "file": "src/i18n/locale/pt_BR.json",
+      "keyCount": 9494,
+      "locale": "pt_BR",
+      "orderedKeySetSha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+      "sha256": "4b4ef4717cef765cad74e40da053738e7b2f966bb2db8d12611dcf60e5b98519"
+    },
+    {
+      "file": "src/i18n/locale/vi.json",
+      "keyCount": 9494,
+      "locale": "vi",
+      "orderedKeySetSha256": "8d5fd7bd4351bc64c5ee813f2e50196608869e165866f3202a312078732c2baf",
+      "sha256": "ca6b1cac9c35b5a10473c54dc988827c7909d389807b8037b91606a4baf90260"
+    },
+    {
+      "file": "src/i18n/locale/zh_Hans.json",
+      "keyCount": 9494,
+      "locale": "zh_Hans",
+      "orderedKeySetSha256": "8d5fd7bd4351bc64c5ee813f2e50196608869e165866f3202a312078732c2baf",
+      "sha256": "fcbc44a0e4583105fd85b28ef31c04c957f1679dcaeffbed99129bf67ab806fb"
+    },
+    {
+      "file": "src/i18n/locale/zh_Hant.json",
+      "keyCount": 9494,
+      "locale": "zh_Hant",
+      "orderedKeySetSha256": "8d5fd7bd4351bc64c5ee813f2e50196608869e165866f3202a312078732c2baf",
+      "sha256": "cf6547fd16f6912c2d2ea4d2d8138565ee2ce49a9359ad8993a40590cf909aae"
+    }
+  ],
+  "keyCount": 9494
+}

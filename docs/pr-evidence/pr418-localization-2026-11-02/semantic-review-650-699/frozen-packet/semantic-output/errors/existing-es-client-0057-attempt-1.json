@@ -1,0 +1,7 @@
+{
+  "batchId": "existing-es-client-0057",
+  "attempt": 1,
+  "error": "ValueError: response must contain exactly one decisions array",
+  "rawResponseSha256": "508f69423e9685d3747bd7ba355660a43b75c56fbf1a308b54c54b9a2c3611fd",
+  "rawResponseFile": "/mnt/disks/scratch/task-scratch/seerrng-review-window-650-700-422072-20261102/semantic-output/responses/existing-es-client-0057-attempt-1.json"
+}

@@ -1,0 +1,33 @@
+{
+  "title": "Independent blind review: SeerrNG PR #418 W3340-W3359",
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "head": "266d8fff4beb56eab17c9de0f6560c619577e3de",
+  "tree": "5da8f5e38b95b4287821b603c4686fe866b83760",
+  "window": [
+    3340,
+    3359
+  ],
+  "cellCount": 240,
+  "sourceCount": 20,
+  "localeCount": 12,
+  "dispositions": {
+    "accept-current": 209,
+    "refinement": 19,
+    "hold-no-direct-caller": 12
+  },
+  "proposalCount": 19,
+  "callerHoldCount": 12,
+  "callerHoldSourceId": "components.Requests.manageRequests",
+  "numericReviewRows": 48,
+  "numericMeaningReviewed": true,
+  "inputPath": "/mnt/disks/scratch/task-scratch/seerrng-pr418-w3340-3359-primary-20261103/clean-input",
+  "inputChecksumsVerified": true,
+  "candidateFreeInputOnly": true,
+  "primaryPacketInspected": false,
+  "repositoryOrPullRequestRead": false,
+  "testsBuildsScansCI": false,
+  "placeholderParityErrors": 0,
+  "nativeSpeakerApproval": "pending; this is machine-assisted semantic review",
+  "methodology": "Reviewed all 240 current values against the English source IDs, exact production caller-context snippets, and role-specific UI contexts. Proposed only context-semantic or clearly grammatical refinements. The definition-only Manage Requests key has no direct production caller and is held for all 12 locales."
+}

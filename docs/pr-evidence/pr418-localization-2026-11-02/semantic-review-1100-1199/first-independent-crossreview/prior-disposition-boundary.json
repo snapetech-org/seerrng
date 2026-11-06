@@ -1,0 +1,36 @@
+{
+  "head": "c8f4b2f5f1f42730dcfa8d36214ee827a5d9395a",
+  "tree": "0fe67d04abfd49681556b44e900aceec1b5a9a75",
+  "sourceIdPositions": [
+    1100,
+    1199
+  ],
+  "previousWindowRange": [
+    1000,
+    1099
+  ],
+  "previousWindowDisjoint": true,
+  "repoEvidenceJsonAndJsonlFilesScanned": 369,
+  "malformedEvidenceFiles": 0,
+  "intersectingDistinctRows": 6,
+  "intersectingLocales": [
+    "es"
+  ],
+  "intersectingEvidenceArtifacts": [
+    "semantic-review-600-649/candidate-ledger.jsonl",
+    "semantic-review-600-649/exact-hash-apply-plan.jsonl",
+    "semantic-review-600-649/root-cross-review.jsonl",
+    "semantic-review-600-649/source-contexts.jsonl"
+  ],
+  "distinctDispositionEvidence": "semantic-review-600-649/root-cross-review.jsonl",
+  "allPriorFinalTargetsMatchCurrent": true,
+  "allPriorRowsPreserved": true,
+  "priorSourceIds": [
+    "components.Discover.listenbrainzmusicchart",
+    "components.DownloadBlock.failAndSearch",
+    "components.DownloadBlock.failAndSearchError",
+    "components.DownloadBlock.failAndSearchSuccess",
+    "components.DownloadBlock.failingDownload",
+    "components.DownloadBlock.liveStalled"
+  ]
+}

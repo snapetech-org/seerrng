@@ -1,0 +1,52 @@
+{
+  "browserReview": false,
+  "callerLineRefsReattested": 345,
+  "catalogPreapplySha256": {
+    "ar": "9e17f12b9d675f6a78c0f0b1927fca1f796b2bbaa89dcf05201fcf8701167c11",
+    "de": "5c02cd5c935dcd9d4826411a305052abfd7d4aff83c039d695ee0dcbfbad1266",
+    "es": "a89c5285f2f65d93824f5f40360c1691fe18fafd4d232598de34fe38e4d8c67b",
+    "fr": "50d7d158bb021b7683d1c8864ea26c4e1c89349c8262acee3294113471b99443",
+    "hi": "e01d7076f4ca15d8d32ebab54f2ad4be28d28775c71d13fb20a8ea17bec1b4e1",
+    "id": "b011acd0d3d324565314db8c4ec305930ca6115d262426666ca3b891b75866fe",
+    "ja": "a1dd0b067eec2b6a7d38dda8231222db243282a4f39db1f22453d3d869c57cd1",
+    "ko": "cc1ce35471c66aa056297f91d17b2c5ab159c81ee5b121a2615096d975ea3bb9",
+    "pt_BR": "82adff28f33a52fd2ac935800784d4b019b9a68092c33176496ad93987ac0a9a",
+    "vi": "d123bedb22bfa24c7db0458cfd79fdd0b6d01776abcfcde4758dc70735d9f990",
+    "zh_Hans": "9b9d7337b2ccac3b34083157e4804aa8c53aa752579916bf6f012e9b1a338f39",
+    "zh_Hant": "4d4ca4f2d85d8a44828eaad4992f27ba72ebcb23f014e0eaa336aafcf9551851"
+  },
+  "changedByLocale": {
+    "ar": 38,
+    "de": 5,
+    "es": 3,
+    "fr": 12,
+    "hi": 33,
+    "id": 20,
+    "ja": 28,
+    "ko": 25,
+    "pt_BR": 17,
+    "vi": 44,
+    "zh_Hans": 24,
+    "zh_Hant": 35
+  },
+  "changedCells": 284,
+  "crossreviewPacketSha256": "a600be5be958238b6fa8e15ce33d223f022e021b97f922fb3b42cb126abb9534",
+  "dispositions": {
+    "accept-current": 916,
+    "accept-primary-proposal": 261,
+    "counterproposal": 1,
+    "propose-correction": 22
+  },
+  "draft": true,
+  "head": "8c27beb8086ea6f840bdcde4b915d83db27f81a3",
+  "nativeSpeakerApproval": false,
+  "primaryPacketSha256": "59734060e00bf0dc5688ee6b7d0aa23acdc835a446901f1c1c32e0f234bbfa2a",
+  "pullRequest": 418,
+  "remoteRefHead": "8c27beb8086ea6f840bdcde4b915d83db27f81a3",
+  "repository": "snapetech-org/SeerrNG",
+  "sourceCells": 1200,
+  "sourceKeys": 9494,
+  "state": "OPEN",
+  "testsBuildsCI": false,
+  "tree": "2951195dd04af87add189090756e0d0f43e8e031"
+}

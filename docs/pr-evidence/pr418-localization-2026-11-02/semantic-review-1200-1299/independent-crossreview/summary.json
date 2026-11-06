@@ -1,0 +1,65 @@
+{
+  "schemaVersion": 1,
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "window": "W1200-1299",
+  "inputHead": "6ff9de1c39a19fe9c508f09e0f6a885022632d8b",
+  "inputTree": "68d7525714b3628bbe7b69701d8be08add152832",
+  "livePullRequest": "OPEN",
+  "isDraft": true,
+  "coreCellsReviewed": 1200,
+  "narratorAddendumRowsReattested": 12,
+  "uniqueSourceIds": 100,
+  "directLocales": [
+    "ar",
+    "de",
+    "es",
+    "fr",
+    "hi",
+    "id",
+    "ja",
+    "ko",
+    "pt-BR",
+    "vi",
+    "zh-CN",
+    "zh-TW"
+  ],
+  "primaryCandidatesReviewed": 105,
+  "crossReviewDispositions": {
+    "accepted-primary-proposal": 101,
+    "accepted-current": 1085,
+    "missed-current-issue": 10,
+    "refined-primary-proposal": 4
+  },
+  "catalogChangesRecommended": 115,
+  "sourceCatalogKeys": 9494,
+  "catalogKeySetParity": "all 12 catalogs contain the same 9,494 keys as the English source catalog",
+  "catalogOrderMismatches": [
+    "ja",
+    "ko",
+    "vi",
+    "zh-CN",
+    "zh-TW"
+  ],
+  "sourceAndCurrentHashMismatches": 0,
+  "callerReferencesReattested": 207,
+  "uniqueCallerFiles": 5,
+  "uniqueCallerLines": 206,
+  "callerPinMismatches": 0,
+  "placeholderFailures": 0,
+  "markupFailures": 0,
+  "protectedLiteralFailures": 0,
+  "nativeSpeakerApproval": false,
+  "headExactBrowserReview": false,
+  "testsBuildsScansCIWorkflowsReleasesTagsMerges": false,
+  "importantFindings": [
+    "Refined three Hindi Following action strings to match the exact `फॉलो करें` button label.",
+    "Refined the Japanese new-franchise event to preserve the source connection semantics with a relation-type placeholder.",
+    "Found ten current-value issues missed by primary review, including Arabic/Japanese franchise description terms, Arabic narrator wording, Vietnamese text, and German/French/Indonesian control-label references."
+  ],
+  "notes": [
+    "Machine cross-review only; no qualified native-speaker approval is claimed.",
+    "No repository changes or external PR updates were made.",
+    "The 12-row addendum overlaps catalog cells in the 1,200-row core window and is retained separately for auditable terminology re-attestation."
+  ]
+}

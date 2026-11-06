@@ -71,6 +71,7 @@ const messages = defineMessages('components.MediaSlider', {
   tmdbUnavailable: 'TMDB Movie Discovery Is Unavailable',
   showingSavedResults: 'TMDB is unavailable. Showing saved results.',
   tryAgain: 'Try Again',
+  refreshTitle: 'Refresh {title}',
 });
 
 interface MediaSliderProps {
@@ -628,13 +629,17 @@ const MediaSlider = ({
               <CardTextVisibilityToggle mediaType={visibleMediaTypes} />
             )}
             {randomizeOrder && (
-              <Tooltip content={`Refresh ${title}`}>
+              <Tooltip
+                content={intl.formatMessage(messages.refreshTitle, { title })}
+              >
                 <Button
                   type="button"
                   buttonType="trailer"
                   buttonSize="sm"
                   onClick={refreshRandomizedOrder}
-                  aria-label={`Refresh ${title}`}
+                  aria-label={intl.formatMessage(messages.refreshTitle, {
+                    title,
+                  })}
                 >
                   <ArrowPathIcon />
                 </Button>

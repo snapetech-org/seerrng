@@ -1,0 +1,28 @@
+{
+  "head": "536dfdb7630d5f61fc8a90b82bc33234eb432c9f",
+  "tree": "a011ac81dabbcbc46a4a522f1355efc9025fadc1",
+  "sourceCells": 240,
+  "rootFinalLedger": "root-final-ledger.jsonl",
+  "rootFinalLedgerSha256": "a4fc73f5b32645dcfbe4098f7e085ea5aac56e35c301f3536eec13fd87b27912",
+  "applyPlan": "apply-plan.jsonl",
+  "applyPlanSha256": "a23781871530a5fc4a4b2c10d79e27d55ac77fb378c754434fdf08a1682f582a",
+  "counts": {
+    "accept-current": 180,
+    "correction": 35,
+    "refinement": 25
+  },
+  "updates": 60,
+  "nativeSpeakerApproval": false,
+  "confidence": "moderate",
+  "blindLedgerSha256": "409e93ecc65018cd73b74c8afb022249c64da6767c89ce6f5bbee63949748084",
+  "correctedPrimaryManifestSha256": "9b0f356359f6bf9c08109040a271dd0122fc57b29e2e2acb2687060dc5b831e4",
+  "primaryBlindDispositionAgreement": 202,
+  "primaryBlindTargetAgreement": 185,
+  "allDifferencesAdjudicated": true,
+  "structuralValidation": {
+    "placeholderPass": 240,
+    "markupPass": 240,
+    "icuRequiredBranchPass": true,
+    "arabicLexicalSingularDocumented": true
+  }
+}

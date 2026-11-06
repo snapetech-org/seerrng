@@ -1,0 +1,233 @@
+{
+  "repository": "snapetech-org/SeerrNG",
+  "pullRequest": 418,
+  "branch": "codex/seerrng-localization-overhaul-20261028",
+  "baselineHead": "5df4c711f832f1f9a818c4d9cfca46661bff0835",
+  "baselineTree": "116ff2934d7eaf3d02f84f104621860c16babc01",
+  "reviewedCells": 1200,
+  "sourceStrings": 100,
+  "localeCount": 12,
+  "independentDispositions": {
+    "accept-current": 781,
+    "hold": 36,
+    "correction": 271,
+    "refinement": 112
+  },
+  "upstreamCandidateRows": 383,
+  "catalogChanges": 382,
+  "rootNoOpAcceptCurrent": 1,
+  "primaryProposalRevisions": 3,
+  "independentAdditionalFindings": 63,
+  "holds": 36,
+  "rootFinalDispositions": {
+    "accept-current": 782,
+    "hold": 36,
+    "correction": 270,
+    "refinement": 112
+  },
+  "holdSources": [
+    "components.RequestModal.QuotaDisplay.magazinelimit",
+    "components.RequestModal.Sportarr.notRequestable",
+    "components.RequestModal.autoapproval"
+  ],
+  "magazineQuotaHold": "all 12 held pending exact production message-key reference after source fix",
+  "primaryCrossReviewSummary": {
+    "all12LocaleCellsReviewed": true,
+    "callerAliasRepairs": 8,
+    "callerContextRows": 100,
+    "callerFiles": 21,
+    "callerGapsAfterAliasRepair": 3,
+    "callerHoldCells": 36,
+    "callerHoldSources": [
+      "components.RequestModal.QuotaDisplay.magazinelimit",
+      "components.RequestModal.Sportarr.notRequestable",
+      "components.RequestModal.autoapproval"
+    ],
+    "callerLineReferences": 649,
+    "catalogKeyCounts": {
+      "ar": 9494,
+      "de": 9494,
+      "es": 9494,
+      "fr": 9494,
+      "hi": 9494,
+      "id": 9494,
+      "ja": 9494,
+      "ko": 9494,
+      "pt_BR": 9494,
+      "vi": 9494,
+      "zh_Hans": 9494,
+      "zh_Hant": 9494
+    },
+    "catalogKeySetsIdentical": true,
+    "cellCount": 1200,
+    "confidenceCounts": {
+      "high": 231,
+      "moderate": 933,
+      "unknown": 36
+    },
+    "exactHead": "5df4c711f832f1f9a818c4d9cfca46661bff0835",
+    "exactPriorDispositionsReused": 0,
+    "exactTree": "116ff2934d7eaf3d02f84f104621860c16babc01",
+    "finalApplyCount": 383,
+    "finalCandidateCount": 383,
+    "finalDispositions": {
+      "accept-current": 781,
+      "hold": 36,
+      "propose-correction": 270,
+      "refinement": 113
+    },
+    "forwardBoundaryReadbacksAtW3100": 12,
+    "icuCellsChecked": 108,
+    "icuInvalidCells": 0,
+    "independentAdditionalFindings": 63,
+    "independentDispositionCounts": {
+      "accept-current": 781,
+      "correction": 271,
+      "hold": 36,
+      "refinement": 112
+    },
+    "localeCount": 12,
+    "markupRenderedPathMismatches": 0,
+    "nativeSpeakerApprovalOutstanding": true,
+    "nativeSpeakerSignoffClaimed": false,
+    "overallConfidence": "moderate",
+    "placeholderRenderedPathMismatches": 0,
+    "poundSignRenderedPathMismatches": 0,
+    "previousWindowW2999TargetsMatchingCurrent": 12,
+    "primaryProposalRevisions": 3,
+    "proposalKinds": {
+      "correction": 270,
+      "refinement": 113
+    },
+    "protectedLiteralMismatchCellsFinal": 0,
+    "pullRequest": 418,
+    "rawMarkupCountMismatchCellsFinal": 6,
+    "repository": "snapetech-org/SeerrNG",
+    "repositoryFilesEdited": false,
+    "sourceCount": 100,
+    "sourceFixRecommendation": "source-fix-recommendation-W3001.json",
+    "sourcePositionRange": [
+      3000,
+      3099
+    ],
+    "testsBuildsScansCiBrowserRun": false,
+    "worktreeStatus": [
+      " M AGENTS.md",
+      "?? .next-webpack-dev"
+    ]
+  },
+  "catalogs": [
+    {
+      "locale": "ar",
+      "path": "src/i18n/locale/ar.json",
+      "fileSha256": "16b41b8c7e7ed6e08922c02280f8fe432ecfc0494826744359ef5eb981db427b",
+      "keyCount": 9494,
+      "keyOrderPreserved": true,
+      "gitBlob": "28be31cc5fcfcf9319b2e19956fc577b801a1621"
+    },
+    {
+      "locale": "de",
+      "path": "src/i18n/locale/de.json",
+      "fileSha256": "5369660611694fb79a48759946e2a31992636a8ad5080f32a3e02352f134d72b",
+      "keyCount": 9494,
+      "keyOrderPreserved": true,
+      "gitBlob": "63bd790e31e4d1c97383c5b2bcb025e2331d4158"
+    },
+    {
+      "locale": "es",
+      "path": "src/i18n/locale/es.json",
+      "fileSha256": "ddc136552b9b31666233a65b165b1357264100ffe70a856c58884e517ad63fe4",
+      "keyCount": 9494,
+      "keyOrderPreserved": true,
+      "gitBlob": "20e9273729d7f696be2b7f287b63506ca970e587"
+    },
+    {
+      "locale": "fr",
+      "path": "src/i18n/locale/fr.json",
+      "fileSha256": "c6508fe27b741a0e0905caee6b521aee0fb1f95e1ca8a8f0e077a8a3e35b3d6d",
+      "keyCount": 9494,
+      "keyOrderPreserved": true,
+      "gitBlob": "c6a34db76a1167ab3072d6812d0ef6c672e0a8dc"
+    },
+    {
+      "locale": "hi",
+      "path": "src/i18n/locale/hi.json",
+      "fileSha256": "ffb29e99a802c1866e2fe217e05870150e13cefd62e527b19710df0236637e82",
+      "keyCount": 9494,
+      "keyOrderPreserved": true,
+      "gitBlob": "8e106a12ec1ee88f5b858f4ebc0ddff6796223e1"
+    },
+    {
+      "locale": "id",
+      "path": "src/i18n/locale/id.json",
+      "fileSha256": "d9c3f2e05cc5e663592aaf51bcda76f505970c2c59ff70f8baca28d1146f431f",
+      "keyCount": 9494,
+      "keyOrderPreserved": true,
+      "gitBlob": "b6a08e6afc88f8e9e20554f8b2111103251de6bb"
+    },
+    {
+      "locale": "ja",
+      "path": "src/i18n/locale/ja.json",
+      "fileSha256": "149aaca60094fcfad1ea83576a62b15afe085e49df747b6ef9b381f90cbe43c3",
+      "keyCount": 9494,
+      "keyOrderPreserved": true,
+      "gitBlob": "862c0bfcc9edeaf12f778591d6b0561fb2cc0ca2"
+    },
+    {
+      "locale": "ko",
+      "path": "src/i18n/locale/ko.json",
+      "fileSha256": "1ce2024f28298b1dd0d181002ac9bd0267dd2084efef8ad9ffaaa1e2d035c71d",
+      "keyCount": 9494,
+      "keyOrderPreserved": true,
+      "gitBlob": "b5e2ebec0b94352c6ce2f3eea5ea1afcd08504ad"
+    },
+    {
+      "locale": "pt_BR",
+      "path": "src/i18n/locale/pt_BR.json",
+      "fileSha256": "390ce5e3bc16d7ddaa14408a92ab546ded206883a03a23713fddedfde0dba09c",
+      "keyCount": 9494,
+      "keyOrderPreserved": true,
+      "gitBlob": "1f965148ad62f7b3647347f7e3f0d979051b8576"
+    },
+    {
+      "locale": "vi",
+      "path": "src/i18n/locale/vi.json",
+      "fileSha256": "90e86e8cb91a4df6cd24226123f16350b6a3d6c9f4ad1aa871bd83e70e24469d",
+      "keyCount": 9494,
+      "keyOrderPreserved": true,
+      "gitBlob": "158cd0ccf019a56c9aaa08f06346e67d94277acb"
+    },
+    {
+      "locale": "zh_Hans",
+      "path": "src/i18n/locale/zh_Hans.json",
+      "fileSha256": "b986efa6177355f5bc3a3ef41e075bcdff3bea79255e37926e7403236475937f",
+      "keyCount": 9494,
+      "keyOrderPreserved": true,
+      "gitBlob": "95f03cd0ba759910c760652d837ae4df388c0da4"
+    },
+    {
+      "locale": "zh_Hant",
+      "path": "src/i18n/locale/zh_Hant.json",
+      "fileSha256": "a08f716bf1ac8aca5cf84e322ab041c6e845dd9bf6f52760bb7e3f8b72678bcc",
+      "keyCount": 9494,
+      "keyOrderPreserved": true,
+      "gitBlob": "c67316a03b6b34c0a55860542e8f830e3601c9db"
+    }
+  ],
+  "readbackCells": 1200,
+  "readbackMatches": 1200,
+  "catalogKeySetsIdentical": true,
+  "catalogOrderPreserved": true,
+  "icuCellsChecked": 108,
+  "icuInvalidCells": 0,
+  "renderedPlaceholderMismatches": 0,
+  "renderedMarkupMismatches": 0,
+  "renderedPoundSignMismatches": 0,
+  "rawMarkupCountDifferences": 6,
+  "rawMarkupAssessment": "plural-branch repetitions covered by branch-aware rendering review",
+  "protectedLiteralMismatchCellsFinal": 0,
+  "nativeSpeakerApproval": false,
+  "gitDiffCheck": "passed",
+  "testsBuildsScansCI": "not run",
+  "workflowReleaseTagMerge": "no changes"
+}

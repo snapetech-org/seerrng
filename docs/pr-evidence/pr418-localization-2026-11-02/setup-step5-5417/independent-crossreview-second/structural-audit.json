@@ -1,0 +1,18 @@
+{
+  "catalogKeyParity": "PASS; 9,494 keys in all 12 catalogs",
+  "cellCount": 12,
+  "markup": {
+    "allCurrentAndFinalValuesEmpty": true,
+    "source": []
+  },
+  "placeholders": {
+    "allCurrentAndFinalValuesEmpty": true,
+    "source": []
+  },
+  "result": "PASS",
+  "sourceAndCaller": {
+    "PASS": true,
+    "callerReferences": 4,
+    "sourceLine": "configureservices: 'Connect Services',"
+  }
+}

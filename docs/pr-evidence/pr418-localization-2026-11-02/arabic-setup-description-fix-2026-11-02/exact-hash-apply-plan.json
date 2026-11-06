@@ -1,0 +1,38 @@
+{
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "inputHead": "e32e1748e780740ae447dc5ab91eda5b5a9a79bb",
+  "inputTree": "15b64698e3e9f835e2dbde87ee9822bf8abce6d7",
+  "sourceFile": "src/i18n/locale/en.json",
+  "targetFile": "src/i18n/locale/ar.json",
+  "sourceId": "components.Setup.advancedSetupDescription",
+  "source": "Skip the guided defaults and service choices. You’ll still connect your media server before setup can finish.",
+  "sourceSha256": "3328ec4efc40f35be20b9655b613e60e76e56011bae3a5bd3b620999d7567b81",
+  "oldTarget": "تخطَّ الإعدادات الافتراضية الموجهة واختيارات الخدمات. ستقوم لا يزال بتوصيل خادم الوسائط الخاص بك قبل اكتمال الإعداد.",
+  "oldTargetSha256": "f87fa1564c63d4aeef318e26032d4a89f57a03a0cdf4d33364385ff4109d4acc",
+  "newTarget": "تخطَّ الإعدادات الافتراضية الموجهة وخيارات الخدمات. ستظل بحاجة إلى توصيل خادم الوسائط الخاص بك قبل اكتمال الإعداد.",
+  "newTargetSha256": "5df014b6f5c51c63a3647dd59a598f8e15f424d0e9873bd5b3b5c6f4fe5e09b5",
+  "callerFile": "src/components/Setup/index.tsx",
+  "callerLine": 573,
+  "changes": 1,
+  "browserScreenshots": {
+    "before": {
+      "path": "screenshots/arabic-setup-before.png",
+      "sha256": "f36a8a3e9ed586c6c313899bf9ff2f78cbea71fc06291e8ba376c5192c7d6601"
+    },
+    "after": {
+      "path": "screenshots/arabic-setup-after.png",
+      "sha256": "fe723989adc1a11edef5d4b5c060ea192181a87f2ec5f73bcba37f7f75f22f52"
+    }
+  },
+  "browserReview": {
+    "environment": "isolated Agentic VM headed Chrome",
+    "url": "http://192.168.50.148:3200/setup",
+    "viewport": "1440x1000",
+    "postFixLocale": "ar",
+    "visualResult": "RTL setup layout mirrors; revised description appears on two lines within its card without clipping.",
+    "limitation": "Preview API was isolated on unbound port 5099; API-backed content and enabled server actions were not reviewed."
+  },
+  "nativeSpeakerApproval": false,
+  "testsBuildsScansCiWorkflowsReleasesTagsMerges": false
+}

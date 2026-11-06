@@ -1,0 +1,366 @@
+{
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "window": "W3320-W3339",
+  "baseHead": "70caabc2f95df1a7de3f869111aea1df58522d96",
+  "baseTree": "daac9e9284adac648fd3f6147265c21c90cdddba",
+  "changes": [
+    {
+      "position": 3331,
+      "id": "components.Requests.editTooltip",
+      "locale": "hi",
+      "catalogPath": "src/i18n/locale/hi.json",
+      "sourceSha256": "e497a6fe656509a3cde96cf2409dc787d1fd8440fa43ee21f5d7a2d2b74ba1a8",
+      "currentTarget": "इस अनुरोध को संपादित करें।",
+      "currentTargetSha256": "ebf4c1c4c6c2297f2157aef25a7f99b26bd50af4f73a7a41f4c9694d5807e345",
+      "proposedTarget": "इस लंबित अनुरोध को संपादित करें।",
+      "proposedTargetSha256": "d9bb2b05e726884cb3ec1ed7ff9c1973c736062418f2e49a0f723cbf014bea60",
+      "changeClass": "correction",
+      "adjudicationClass": "shared-change-agreement",
+      "callerContextHashes": [
+        "d92f41d4a516fb415c8c0a9f0664de36c3cacfddb680f32d66a2b54f733bc895",
+        "bb338a647f6f1ec34dcfc08777e6ef7553143fa9b10891bfcd1bbe82462d679d"
+      ],
+      "directMessageReferences": 1,
+      "primaryRationale": "The source explicitly identifies a pending request; the current Hindi omits that status. Use the established Hindi pending term लंबित.",
+      "adjudicationRationale": "The blind and primary reviews select the same exact target; ratify this change.",
+      "nativeSpeakerApprovalPending": true
+    },
+    {
+      "position": 3331,
+      "id": "components.Requests.editTooltip",
+      "locale": "ja",
+      "catalogPath": "src/i18n/locale/ja.json",
+      "sourceSha256": "e497a6fe656509a3cde96cf2409dc787d1fd8440fa43ee21f5d7a2d2b74ba1a8",
+      "currentTarget": "この保留リクエストを編集します。",
+      "currentTargetSha256": "405237fd648a2fac2ac5ad4e53af4455b603fabd049ecfb9b9ea49dfbd0dad69",
+      "proposedTarget": "この保留中のリクエストを編集します。",
+      "proposedTargetSha256": "b6fe7fe70e854b5f8195ec2359a2863142100a04780733a5960afb06f290c8e2",
+      "changeClass": "refinement",
+      "adjudicationClass": "primary-only-change-accepted",
+      "callerContextHashes": [
+        "d92f41d4a516fb415c8c0a9f0664de36c3cacfddb680f32d66a2b54f733bc895",
+        "bb338a647f6f1ec34dcfc08777e6ef7553143fa9b10891bfcd1bbe82462d679d"
+      ],
+      "directMessageReferences": 1,
+      "primaryRationale": "The tooltip refers to a request in the pending state. The current 保留リクエスト is clipped; 保留中の is the natural pending modifier.",
+      "adjudicationRationale": "Ratify the primary change after checking it against the pinned source and caller context; the blind review kept current.",
+      "nativeSpeakerApprovalPending": true
+    },
+    {
+      "position": 3331,
+      "id": "components.Requests.editTooltip",
+      "locale": "ko",
+      "catalogPath": "src/i18n/locale/ko.json",
+      "sourceSha256": "e497a6fe656509a3cde96cf2409dc787d1fd8440fa43ee21f5d7a2d2b74ba1a8",
+      "currentTarget": "이 보류 요청을 편집합니다.",
+      "currentTargetSha256": "98e9c7d419093dedf3e4b62cd63154da14f68b63a2737bc69a9fc0f530296313",
+      "proposedTarget": "이 보류 중인 요청을 편집합니다.",
+      "proposedTargetSha256": "9ce4fc7b786c70a33d4b1cf19c1eaa730d3f6803c684034ea4619cec9e2f41a4",
+      "changeClass": "refinement",
+      "adjudicationClass": "primary-only-change-accepted",
+      "callerContextHashes": [
+        "d92f41d4a516fb415c8c0a9f0664de36c3cacfddb680f32d66a2b54f733bc895",
+        "bb338a647f6f1ec34dcfc08777e6ef7553143fa9b10891bfcd1bbe82462d679d"
+      ],
+      "directMessageReferences": 1,
+      "primaryRationale": "Use the existing pending wording 보류 중 with the grammatical modifier 중인 for a request awaiting action.",
+      "adjudicationRationale": "Ratify the primary change after checking it against the pinned source and caller context; the blind review kept current.",
+      "nativeSpeakerApprovalPending": true
+    },
+    {
+      "position": 3331,
+      "id": "components.Requests.editTooltip",
+      "locale": "vi",
+      "catalogPath": "src/i18n/locale/vi.json",
+      "sourceSha256": "e497a6fe656509a3cde96cf2409dc787d1fd8440fa43ee21f5d7a2d2b74ba1a8",
+      "currentTarget": "Sửa yêu cầu chờ này.",
+      "currentTargetSha256": "4a5ca1933e56d1fa9f89a9ae751a2ea2f888f4db695257fa0bdbd520cf7b0e18",
+      "proposedTarget": "Sửa yêu cầu đang chờ này.",
+      "proposedTargetSha256": "ec194b60a5d747bec3cf53476d523111e5ad49c88d4467f898ced7066c15d9eb",
+      "changeClass": "refinement",
+      "adjudicationClass": "primary-only-change-accepted",
+      "callerContextHashes": [
+        "d92f41d4a516fb415c8c0a9f0664de36c3cacfddb680f32d66a2b54f733bc895",
+        "bb338a647f6f1ec34dcfc08777e6ef7553143fa9b10891bfcd1bbe82462d679d"
+      ],
+      "directMessageReferences": 1,
+      "primaryRationale": "Use the established pending phrase đang chờ as a natural modifier of yêu cầu.",
+      "adjudicationRationale": "Ratify the primary change after checking it against the pinned source and caller context; the blind review kept current.",
+      "nativeSpeakerApprovalPending": true
+    },
+    {
+      "position": 3332,
+      "id": "components.Requests.emptyTitle",
+      "locale": "pt_BR",
+      "catalogPath": "src/i18n/locale/pt_BR.json",
+      "sourceSha256": "6dca8540b2d1453729ec07f512da30600f3bb8b4c69111d8096413e077378168",
+      "currentTarget": "Nenhum pedido encontrado.",
+      "currentTargetSha256": "57c47946add9aaa466480d3192d3bf96cb3cfbf98910756e114040c1dc8f26a2",
+      "proposedTarget": "Nenhum pedido encontrado",
+      "proposedTargetSha256": "3799800dc86b7d46131d297b72456d62f2d33da2d8e6d933287f229b07bf6413",
+      "changeClass": "refinement",
+      "adjudicationClass": "shared-change-agreement",
+      "callerContextHashes": [
+        "53968da25108b8a71a979600931e0a01c4c57cdf64b78cfcbd59be9763d29e76",
+        "f86933dcb579cd279fc55639294e9f4196ca2eaaadd7142d500ecbc88a5cdc8e"
+      ],
+      "directMessageReferences": 1,
+      "primaryRationale": "This is an h3 empty-state heading, so the sentence-final period is unnecessary and inconsistent with the other locale headings.",
+      "adjudicationRationale": "The blind and primary reviews select the same exact target; ratify this change.",
+      "nativeSpeakerApprovalPending": true
+    },
+    {
+      "position": 3333,
+      "id": "components.Requests.eta",
+      "locale": "ar",
+      "catalogPath": "src/i18n/locale/ar.json",
+      "sourceSha256": "bf5c5a4a00cce832242f5d7e4312e17dc3a8f60fa20b4149d895eaae597a3982",
+      "currentTarget": "الوقت المقدر للوصول: {date}",
+      "currentTargetSha256": "78ebbd7bdb2ac50589837d7525cb53b2666a075dd4e35da9810f0d700a2403d6",
+      "proposedTarget": "وقت الانتهاء المتوقع: {date}",
+      "proposedTargetSha256": "34a05a50d4073c7a5266a9ba43df62d39dbaed70d9e8c00a14040905e700dd57",
+      "changeClass": "correction",
+      "adjudicationClass": "shared-change-agreement",
+      "callerContextHashes": [
+        "876794322e632088882b4dbade4d2c8fd755e3075ccd85addb7deb867cf6ce02",
+        "4ad8ee8d4a837c9364a8cff8124d181fbc0e2ffeed4686a530460ec030dd4cfd"
+      ],
+      "directMessageReferences": 1,
+      "primaryRationale": "The caller supplies estimatedCompletionTime. The current للوصول describes arrival; الانتهاء describes completion.",
+      "adjudicationRationale": "The blind and primary reviews select the same exact target; ratify this change.",
+      "nativeSpeakerApprovalPending": true
+    },
+    {
+      "position": 3333,
+      "id": "components.Requests.eta",
+      "locale": "de",
+      "catalogPath": "src/i18n/locale/de.json",
+      "sourceSha256": "bf5c5a4a00cce832242f5d7e4312e17dc3a8f60fa20b4149d895eaae597a3982",
+      "currentTarget": "Voraussichtliche Ankunftszeit: {date}",
+      "currentTargetSha256": "9ff4a00bfe4d65a8dfea840b39ecee8c4437c153aeaf1752f91fca3a18c82a43",
+      "proposedTarget": "Voraussichtliche Fertigstellungszeit: {date}",
+      "proposedTargetSha256": "d75956e72bc4295fc91e68493ea66f3eb793043e60281ac84336f41f9b600d68",
+      "changeClass": "correction",
+      "adjudicationClass": "primary-wording-selected",
+      "callerContextHashes": [
+        "876794322e632088882b4dbade4d2c8fd755e3075ccd85addb7deb867cf6ce02",
+        "4ad8ee8d4a837c9364a8cff8124d181fbc0e2ffeed4686a530460ec030dd4cfd"
+      ],
+      "directMessageReferences": 1,
+      "primaryRationale": "The caller supplies estimatedCompletionTime. Fertigstellungszeit describes completion; Ankunftszeit incorrectly suggests arrival.",
+      "adjudicationRationale": "Both reviews flag the current target, but choose different wording. Ratify the primary wording because it preserves the contextual meaning and exact source tokens.",
+      "nativeSpeakerApprovalPending": true
+    },
+    {
+      "position": 3333,
+      "id": "components.Requests.eta",
+      "locale": "es",
+      "catalogPath": "src/i18n/locale/es.json",
+      "sourceSha256": "bf5c5a4a00cce832242f5d7e4312e17dc3a8f60fa20b4149d895eaae597a3982",
+      "currentTarget": "Hora estimada de llegada: {date}",
+      "currentTargetSha256": "32f5872b20be14a314dc40d74bce087e7b832acb2456099a1305100b3a73ee97",
+      "proposedTarget": "Hora estimada de finalización: {date}",
+      "proposedTargetSha256": "740dac8cc826189bd580b2d7e4f0f8aafe416a91188136af54985fe6d62efa58",
+      "changeClass": "correction",
+      "adjudicationClass": "shared-change-agreement",
+      "callerContextHashes": [
+        "876794322e632088882b4dbade4d2c8fd755e3075ccd85addb7deb867cf6ce02",
+        "4ad8ee8d4a837c9364a8cff8124d181fbc0e2ffeed4686a530460ec030dd4cfd"
+      ],
+      "directMessageReferences": 1,
+      "primaryRationale": "The caller supplies estimatedCompletionTime. The current llegada describes arrival; finalización describes the actual completion time.",
+      "adjudicationRationale": "The blind and primary reviews select the same exact target; ratify this change.",
+      "nativeSpeakerApprovalPending": true
+    },
+    {
+      "position": 3333,
+      "id": "components.Requests.eta",
+      "locale": "fr",
+      "catalogPath": "src/i18n/locale/fr.json",
+      "sourceSha256": "bf5c5a4a00cce832242f5d7e4312e17dc3a8f60fa20b4149d895eaae597a3982",
+      "currentTarget": "ETA : {date}",
+      "currentTargetSha256": "fc59bb55ea60fe673b8e25b50e23027fbbb387e3c0bbf2c9a228f2d007398e2d",
+      "proposedTarget": "Heure de fin estimée : {date}",
+      "proposedTargetSha256": "f626872cb1e394bafed62fcb342502649b2c01f9a09bc3dd0af6b610c2e63c33",
+      "changeClass": "refinement",
+      "adjudicationClass": "primary-wording-selected",
+      "callerContextHashes": [
+        "876794322e632088882b4dbade4d2c8fd755e3075ccd85addb7deb867cf6ce02",
+        "4ad8ee8d4a837c9364a8cff8124d181fbc0e2ffeed4686a530460ec030dd4cfd"
+      ],
+      "directMessageReferences": 1,
+      "primaryRationale": "Expand the English acronym to an explicit French completion-time label; retain French nonbreaking-space punctuation and the date placeholder.",
+      "adjudicationRationale": "Both reviews flag the current target, but choose different wording. Ratify the primary wording because it preserves the contextual meaning and exact source tokens.",
+      "nativeSpeakerApprovalPending": true
+    },
+    {
+      "position": 3333,
+      "id": "components.Requests.eta",
+      "locale": "id",
+      "catalogPath": "src/i18n/locale/id.json",
+      "sourceSha256": "bf5c5a4a00cce832242f5d7e4312e17dc3a8f60fa20b4149d895eaae597a3982",
+      "currentTarget": "ETA: {date}",
+      "currentTargetSha256": "bf5c5a4a00cce832242f5d7e4312e17dc3a8f60fa20b4149d895eaae597a3982",
+      "proposedTarget": "Perkiraan waktu selesai: {date}",
+      "proposedTargetSha256": "f39faef56698a43c10d2d686269315bd4dfb49d54d134688a792dcbd54ae3047",
+      "changeClass": "refinement",
+      "adjudicationClass": "shared-change-agreement",
+      "callerContextHashes": [
+        "876794322e632088882b4dbade4d2c8fd755e3075ccd85addb7deb867cf6ce02",
+        "4ad8ee8d4a837c9364a8cff8124d181fbc0e2ffeed4686a530460ec030dd4cfd"
+      ],
+      "directMessageReferences": 1,
+      "primaryRationale": "Expand ETA into a clear Indonesian estimated-completion label and retain the date placeholder.",
+      "adjudicationRationale": "The blind and primary reviews select the same exact target; ratify this change.",
+      "nativeSpeakerApprovalPending": true
+    },
+    {
+      "position": 3333,
+      "id": "components.Requests.eta",
+      "locale": "ja",
+      "catalogPath": "src/i18n/locale/ja.json",
+      "sourceSha256": "bf5c5a4a00cce832242f5d7e4312e17dc3a8f60fa20b4149d895eaae597a3982",
+      "currentTarget": "到着予定時刻: {date}",
+      "currentTargetSha256": "b7a97859ac3aa88965a09dfc3fecbb357d35af026e739be5caddc1c6a75c41ea",
+      "proposedTarget": "完了予定時刻: {date}",
+      "proposedTargetSha256": "5526af868f1ff96b8e6a08f375a83cd25a05151ba5db84e14ccf8773a26055c4",
+      "changeClass": "correction",
+      "adjudicationClass": "primary-wording-selected",
+      "callerContextHashes": [
+        "876794322e632088882b4dbade4d2c8fd755e3075ccd85addb7deb867cf6ce02",
+        "4ad8ee8d4a837c9364a8cff8124d181fbc0e2ffeed4686a530460ec030dd4cfd"
+      ],
+      "directMessageReferences": 1,
+      "primaryRationale": "The caller supplies estimatedCompletionTime. 完了予定時刻 describes expected completion; 到着予定時刻 means arrival.",
+      "adjudicationRationale": "Both reviews flag the current target, but choose different wording. Ratify the primary wording because it preserves the contextual meaning and exact source tokens.",
+      "nativeSpeakerApprovalPending": true
+    },
+    {
+      "position": 3333,
+      "id": "components.Requests.eta",
+      "locale": "pt_BR",
+      "catalogPath": "src/i18n/locale/pt_BR.json",
+      "sourceSha256": "bf5c5a4a00cce832242f5d7e4312e17dc3a8f60fa20b4149d895eaae597a3982",
+      "currentTarget": "Hora prevista de chegada: {date}",
+      "currentTargetSha256": "98aaca8ab5709d424548d7ae9a5593e48e10b9a7a1d028881d9431ac4b341b03",
+      "proposedTarget": "Previsão de conclusão: {date}",
+      "proposedTargetSha256": "f8594fc0c847eda95d575a64fcd31c36c0ab6c9693b45e8c632507397bd5ade3",
+      "changeClass": "correction",
+      "adjudicationClass": "shared-change-agreement",
+      "callerContextHashes": [
+        "876794322e632088882b4dbade4d2c8fd755e3075ccd85addb7deb867cf6ce02",
+        "4ad8ee8d4a837c9364a8cff8124d181fbc0e2ffeed4686a530460ec030dd4cfd"
+      ],
+      "directMessageReferences": 1,
+      "primaryRationale": "The caller supplies estimatedCompletionTime. Conclusão describes completion; chegada incorrectly suggests arrival.",
+      "adjudicationRationale": "The blind and primary reviews select the same exact target; ratify this change.",
+      "nativeSpeakerApprovalPending": true
+    },
+    {
+      "position": 3333,
+      "id": "components.Requests.eta",
+      "locale": "vi",
+      "catalogPath": "src/i18n/locale/vi.json",
+      "sourceSha256": "bf5c5a4a00cce832242f5d7e4312e17dc3a8f60fa20b4149d895eaae597a3982",
+      "currentTarget": "ETA: {date}",
+      "currentTargetSha256": "bf5c5a4a00cce832242f5d7e4312e17dc3a8f60fa20b4149d895eaae597a3982",
+      "proposedTarget": "Thời gian hoàn tất dự kiến: {date}",
+      "proposedTargetSha256": "493e4a31ae4bb7182cebc7892b45f1b5a5065b06af727905de31c8f51c7619ba",
+      "changeClass": "refinement",
+      "adjudicationClass": "primary-wording-selected",
+      "callerContextHashes": [
+        "876794322e632088882b4dbade4d2c8fd755e3075ccd85addb7deb867cf6ce02",
+        "4ad8ee8d4a837c9364a8cff8124d181fbc0e2ffeed4686a530460ec030dd4cfd"
+      ],
+      "directMessageReferences": 1,
+      "primaryRationale": "Expand ETA into a clear Vietnamese estimated-completion label and retain the date placeholder.",
+      "adjudicationRationale": "Both reviews flag the current target, but choose different wording. Ratify the primary wording because it preserves the contextual meaning and exact source tokens.",
+      "nativeSpeakerApprovalPending": true
+    },
+    {
+      "position": 3337,
+      "id": "components.Requests.firstPublished",
+      "locale": "ar",
+      "catalogPath": "src/i18n/locale/ar.json",
+      "sourceSha256": "cf960540de47e88b9d49c13761166fe349c4ac4e9520594afb1b8e9b921a245d",
+      "currentTarget": "النشر الأول",
+      "currentTargetSha256": "87e055e543085e79d1a4984de450185c2379839ec9e5759bf4ea5e48f567a17c",
+      "proposedTarget": "تاريخ النشر الأول",
+      "proposedTargetSha256": "7d59d076f3c570d0b98eadcbf816362ed68acc32f72a1ff423782e8c1043c297",
+      "changeClass": "refinement",
+      "adjudicationClass": "primary-only-change-accepted",
+      "callerContextHashes": [
+        "d45cfcddc644155faf5419a3820e11ac5d95966852c9661f13417f87efbf0489",
+        "3e64a87e6c7479c1de051414f7c88c80aa302b3670c3b2c9c53bf7d07097690e"
+      ],
+      "directMessageReferences": 1,
+      "primaryRationale": "The field displays a book publication date. Adding تاريخ makes the date-label meaning explicit without changing the source scope.",
+      "adjudicationRationale": "Ratify the primary change after checking it against the pinned source and caller context; the blind review kept current.",
+      "nativeSpeakerApprovalPending": true
+    },
+    {
+      "position": 3337,
+      "id": "components.Requests.firstPublished",
+      "locale": "id",
+      "catalogPath": "src/i18n/locale/id.json",
+      "sourceSha256": "cf960540de47e88b9d49c13761166fe349c4ac4e9520594afb1b8e9b921a245d",
+      "currentTarget": "Pertama Diterbitkan",
+      "currentTargetSha256": "8fb2a023a1445eaf8eee2bfbc9937c5894b2346a88c94552079841d76c174a2f",
+      "proposedTarget": "Pertama kali diterbitkan",
+      "proposedTargetSha256": "f7e349ecf87275d32f93ba66b2400a094b3f169db944dfc69ee6c46c7530540c",
+      "changeClass": "refinement",
+      "adjudicationClass": "shared-change-agreement",
+      "callerContextHashes": [
+        "d45cfcddc644155faf5419a3820e11ac5d95966852c9661f13417f87efbf0489",
+        "3e64a87e6c7479c1de051414f7c88c80aa302b3670c3b2c9c53bf7d07097690e"
+      ],
+      "directMessageReferences": 1,
+      "primaryRationale": "Use the idiomatic Indonesian phrase pertama kali diterbitkan for First Published.",
+      "adjudicationRationale": "The blind and primary reviews select the same exact target; ratify this change.",
+      "nativeSpeakerApprovalPending": true
+    },
+    {
+      "position": 3337,
+      "id": "components.Requests.firstPublished",
+      "locale": "ja",
+      "catalogPath": "src/i18n/locale/ja.json",
+      "sourceSha256": "cf960540de47e88b9d49c13761166fe349c4ac4e9520594afb1b8e9b921a245d",
+      "currentTarget": "初公開",
+      "currentTargetSha256": "eff7a3c4288c0aaf2bd7ba303481f9dcac2fa4477b6706a55b2ca12afad7028b",
+      "proposedTarget": "初版発行日",
+      "proposedTargetSha256": "9b61e5efa77f4704f02078ef85011af36e0518d1cd49569f410390757cdb0c16",
+      "changeClass": "correction",
+      "adjudicationClass": "shared-change-agreement",
+      "callerContextHashes": [
+        "d45cfcddc644155faf5419a3820e11ac5d95966852c9661f13417f87efbf0489",
+        "3e64a87e6c7479c1de051414f7c88c80aa302b3670c3b2c9c53bf7d07097690e"
+      ],
+      "directMessageReferences": 1,
+      "primaryRationale": "This field is selected specifically for books and displays a date. 初版発行日 names the first book-edition publication date; 初公開 suggests a premiere or public release.",
+      "adjudicationRationale": "The blind and primary reviews select the same exact target; ratify this change.",
+      "nativeSpeakerApprovalPending": true
+    },
+    {
+      "position": 3337,
+      "id": "components.Requests.firstPublished",
+      "locale": "zh_Hans",
+      "catalogPath": "src/i18n/locale/zh_Hans.json",
+      "sourceSha256": "cf960540de47e88b9d49c13761166fe349c4ac4e9520594afb1b8e9b921a245d",
+      "currentTarget": "首次发表",
+      "currentTargetSha256": "fdef92304e6205e38b79a4cac2255f284b4848d86fb5af5823013736718288f6",
+      "proposedTarget": "首次出版",
+      "proposedTargetSha256": "3bb31472441bb7c299416829c16b5b8c4d5e333bd7c0b2dfeeb38a3631847deb",
+      "changeClass": "correction",
+      "adjudicationClass": "primary-only-change-accepted",
+      "callerContextHashes": [
+        "d45cfcddc644155faf5419a3820e11ac5d95966852c9661f13417f87efbf0489",
+        "3e64a87e6c7479c1de051414f7c88c80aa302b3670c3b2c9c53bf7d07097690e"
+      ],
+      "directMessageReferences": 1,
+      "primaryRationale": "This field is selected specifically for books. 出版 is the book-publication term; 发表 more commonly describes publishing or presenting written works.",
+      "adjudicationRationale": "Ratify the primary change after checking it against the pinned source and caller context; the blind review kept current.",
+      "nativeSpeakerApprovalPending": true
+    }
+  ]
+}

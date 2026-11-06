@@ -21,6 +21,7 @@ import {
   normalizeMusicBrainzId,
 } from '@app/utils/apiPath';
 import defineMessages from '@app/utils/defineMessages';
+import { formatDurationMinutes } from '@app/utils/numberHelpers';
 import {
   AdjustmentsHorizontalIcon,
   ArrowDownTrayIcon,
@@ -555,7 +556,7 @@ const MusicRequestModal = ({
                   </dt>
                   <dd className="card:col-start-3 card:row-start-3 m-0 truncate">
                     {runtimeMinutes > 0
-                      ? `${intl.formatNumber(runtimeMinutes)} minutes`
+                      ? formatDurationMinutes(runtimeMinutes, intl.locale)
                       : notAvailable}
                   </dd>
 
@@ -654,7 +655,7 @@ const MusicRequestModal = ({
         )}
 
         <div className="flex flex-wrap items-center justify-end gap-2 pt-2">
-          <div className="mr-auto flex items-center gap-2">
+          <div className="me-auto flex items-center gap-2">
             {canUseAdvancedOptions && (
               <button
                 type="button"

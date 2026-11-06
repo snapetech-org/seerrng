@@ -1,0 +1,56 @@
+{
+  "additionalCorrections": 5,
+  "callerReferences": 262,
+  "callerSources": 100,
+  "cells": 300,
+  "changedPrimaryProposals": 148,
+  "confidence": "moderate machine-assisted static review",
+  "crossReviewDispositionCounts": {
+    "accept-current": 147,
+    "accept-primary-proposal": 144,
+    "propose-additional-correction": 5,
+    "revise-primary-proposal": 4
+  },
+  "exactPriorTerminalDispositions": 0,
+  "findings": 9,
+  "head": "f20893e57a89827095fa049d8e0475df7ec7170f",
+  "holds": 0,
+  "locales": [
+    "hi",
+    "id",
+    "vi"
+  ],
+  "markupMismatchCells": 0,
+  "nativeSpeakerApproval": false,
+  "nativeSpeakerReviewOutstanding": true,
+  "perLocale": {
+    "hi": {
+      "accept-current": 48,
+      "accept-primary-proposal": 52
+    },
+    "id": {
+      "accept-current": 58,
+      "accept-primary-proposal": 38,
+      "revise-primary-proposal": 4
+    },
+    "vi": {
+      "accept-current": 41,
+      "accept-primary-proposal": 54,
+      "propose-additional-correction": 5
+    }
+  },
+  "placeholderMismatchCells": 0,
+  "primaryNoOpProposals": 3,
+  "primaryProposals": 151,
+  "priorMatchingRows": 1200,
+  "protectedLiteralFailureCells": 0,
+  "repositoryModified": false,
+  "revisions": 4,
+  "scopePositions": [
+    2400,
+    2499
+  ],
+  "sourceIds": 100,
+  "testsBuildsCiBrowserRun": false,
+  "tree": "b5a5952fb4f8a37ea5a39286295f153ce9504f52"
+}

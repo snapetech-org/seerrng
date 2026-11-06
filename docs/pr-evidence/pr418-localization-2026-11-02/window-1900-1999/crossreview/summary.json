@@ -1,0 +1,110 @@
+{
+  "schemaVersion": 1,
+  "review": "independent cross-review of SeerrNG PR #418 W1900-1999",
+  "repository": "snapetech-org/SeerrNG",
+  "pullRequest": 418,
+  "head": "aab1928ff83728d30a864b1ff24c5c812c7ca040",
+  "tree": "00901677a18e5ebf8d92a1f195668289f8a6f928",
+  "sourcePositionRange": [
+    1900,
+    1999
+  ],
+  "sourceObjects": 100,
+  "localeCells": 1200,
+  "locales": [
+    "ar",
+    "de",
+    "es",
+    "fr",
+    "hi",
+    "id",
+    "ja",
+    "ko",
+    "pt_BR",
+    "vi",
+    "zh_Hans",
+    "zh_Hant"
+  ],
+  "candidateCountInPrimary": 271,
+  "primaryCandidatesAccepted": 271,
+  "primaryCandidatesRejectedOrRevised": 0,
+  "crossReviewNewProposals": 9,
+  "proposalCountFinal": 280,
+  "proposalOrigins": {
+    "acceptedPrimaryCandidate": 271,
+    "newCrossReviewProposal": 9
+  },
+  "proposalKinds": {
+    "correction": 198,
+    "refinement": 82
+  },
+  "outcomeCounts": {
+    "accept-current": 920,
+    "accept-correction": 191,
+    "accept-refinement": 80,
+    "propose-correction": 7,
+    "propose-refinement": 2
+  },
+  "holdCount": 0,
+  "primaryFindingRevisionRequired": true,
+  "revisedPrimaryAcceptCurrentCells": [
+    {
+      "sourceId": "components.Login.validationEmailRequired",
+      "locale": "zh_Hans",
+      "kind": "correction"
+    },
+    {
+      "sourceId": "components.Login.validationhostformat",
+      "locale": "pt_BR",
+      "kind": "correction"
+    },
+    {
+      "sourceId": "components.Login.validationhostrequired",
+      "locale": "pt_BR",
+      "kind": "correction"
+    },
+    {
+      "sourceId": "components.MagazineDetails.status",
+      "locale": "ar",
+      "kind": "correction"
+    },
+    {
+      "sourceId": "components.ManageMediaActions.issuesDescription",
+      "locale": "zh_Hans",
+      "kind": "refinement"
+    },
+    {
+      "sourceId": "components.ManageMediaActions.explanation",
+      "locale": "ar",
+      "kind": "correction"
+    },
+    {
+      "sourceId": "components.ManageMediaActions.noOpenIssues",
+      "locale": "id",
+      "kind": "correction"
+    },
+    {
+      "sourceId": "components.ManageMediaActions.removeAllTitle",
+      "locale": "ko",
+      "kind": "correction"
+    },
+    {
+      "sourceId": "components.ManageMediaActions.selectLibrary",
+      "locale": "zh_Hant",
+      "kind": "refinement"
+    }
+  ],
+  "structuralValidationFailures": 0,
+  "icuStringsChecked": 24,
+  "arabicPluralFormsRetained": "Arabic plural targets preserve zero/one/two/few/many/other.",
+  "htmlMarkupPlaceholdersProtectedLiterals": "All source/final-target parity checks passed.",
+  "definitionOnlyOrSingleReferenceKeysKeptUnclaimed": 9,
+  "definitionOnlyOrSingleReferenceCells": 108,
+  "callerContextEvidence": "Pinned exact source files and line references; definition-only/single-reference evidence was not elevated to rendered-use claims.",
+  "nativeSpeakerApproval": "outstanding",
+  "confidence": "moderate",
+  "confidenceNote": "Git object, hash, caller-context, placeholder, markup, protected-literal and ICU checks are high-confidence. Semantic judgments are independent machine review; native-speaker approval remains outstanding.",
+  "repoOrPullRequestModified": false,
+  "testsBuildsScansCIorBrowserRun": false,
+  "outputPath": "/home/keith/Documents/code/.task-scratch/localization-20261102-seerrng/window-1900-1999-crossreview"
+}

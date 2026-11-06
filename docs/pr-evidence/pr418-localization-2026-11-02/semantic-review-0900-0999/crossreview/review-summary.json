@@ -1,0 +1,102 @@
+{
+  "allPrimaryRowsRoutedAs": "new-semantic-review-required",
+  "callerContextMismatches": 0,
+  "callerContextReferencesReattested": 218,
+  "crossReviewDecisionCounts": {
+    "accept": 1185,
+    "hold": 1,
+    "missed": 13,
+    "refine": 1
+  },
+  "crossReviewHolds": 1,
+  "crossReviewLedgerSha256": "f5e5f00debb62c5a96696df426b3278ccff0d1908c0b632aca27b3a3d6001f37",
+  "crossReviewProposalCounts": {
+    "accept": 226,
+    "refine": 1
+  },
+  "head": "18001c2d09d5d271bd4fe2ad22189c29d069a457",
+  "independentCallerAttestationSha256": "66ee1a04cb8aed9fc7a093a1a98f7588469e7f6a067bc2b261506f2a95798e8f",
+  "independentSourceCurrentAttestationSha256": "76af2a9404e0cfa18494efcfcca39563d6adcfc0e63dde02bb3b73746c031cf1",
+  "locales": [
+    "ar",
+    "de",
+    "es",
+    "fr",
+    "hi",
+    "id",
+    "ja",
+    "ko",
+    "pt-BR",
+    "vi",
+    "zh-CN",
+    "zh-TW"
+  ],
+  "markupParityFailures": 0,
+  "missedCorrections": 13,
+  "nativeSpeakerReviewPerformed": false,
+  "nativeSpeakerReviewRequired": true,
+  "noOpRows": 0,
+  "peerReportedNoOpReconciliations": 1,
+  "placeholderParityFailures": 0,
+  "prDraftAtReview": true,
+  "prMergeStateAtReview": "CLEAN",
+  "prStateAtReview": "OPEN",
+  "primaryDecisionCounts": {
+    "acceptCurrent": 973,
+    "correctionNeeded": 227
+  },
+  "primaryHeldOrNoOpRoutes": 0,
+  "primaryPacketPath": "/mnt/disks/scratch/task-scratch/seerrng-pr418-0900-0999-20261102",
+  "priorDispositionPreservedRows": 0,
+  "priorRoutedRows": 0,
+  "protectedProductLiteralFailures": 0,
+  "pullRequest": 418,
+  "refinements": 1,
+  "repoTrackedFilesChanged": false,
+  "repoWorktreePreexistingUntracked": [
+    "?? .next-webpack-dev",
+    "?? docs/pr-evidence/pr418-localization-2026-11-02/agentvm-browser-review/"
+  ],
+  "repository": "snapetech-org/seerrng",
+  "result": "INDEPENDENT_CROSS_REVIEW_COMPLETE",
+  "reviewConfidence": "Moderate overall; high for clear literal/script/polarity corrections; native-speaker approval remains outstanding.",
+  "schemaVersion": 1,
+  "scratchPacketPath": "/mnt/disks/scratch/task-scratch/seerrng-pr418-crossreview-0900-0999-20261102",
+  "sourceCatalog": {
+    "blob": "12e04a118c30b71b3714291adeaf9fdb2735cee4",
+    "path": "src/i18n/locale/en.json",
+    "sha256": "75ff3c90b52aedd636a506281ffbd6fb2d3739c61294b6008a517f17647e2316"
+  },
+  "sourceCurrentCellsReattested": 1200,
+  "sourceCurrentMismatches": 0,
+  "sourcePositions": {
+    "count": 100,
+    "endInclusive": 999,
+    "startInclusive": 900
+  },
+  "sourceRowsReattested": 100,
+  "targetCatalogHashes": {
+    "ar": "a7fa374a00081799fdcc724af5df49d79814f79867815dd5c55bfa7eea79e78b",
+    "de": "2e3eb0d46ced7563ed5975f9df47eec18ac6bd2cc83db2396a5c9b4ac89f5e81",
+    "es": "ee8a69a0b81c6b331313c20a1a6ef55167a5becb80812e44c65c5a63a2861318",
+    "fr": "bf07ff293bafec4947109cb24d9d547edd468f65b771b155f2f63c90c4624bc8",
+    "hi": "12654eb65d95d6c8415af85ea53072a8da12fa233b440411efa90d9001a9cd70",
+    "id": "1c33c299a0e397c20327ea2bc1236a1688a58ef716e4cc7588847e90c8ac92b8",
+    "ja": "2c71dfe570dccd9bf4f0e0818ef7a25baa7e0bc31148db9088d22141c8b47bfb",
+    "ko": "0babb93c02df47c84e745c86854eff6e4b1ffdb4a5d77c6b6096a80b87e12afd",
+    "pt-BR": "08e8c67a4de8f98d5c4cd123626f3a021a97a46c62a3ee75aba4ac847d3fb7c4",
+    "vi": "0746897a92ae762babc38a482c2aa07e104974123ba72c9229842cf4e8d81e3a",
+    "zh-CN": "ff4b35c759072307b02140e024d477c335511b8591aa94d53a7eae167eb3ecaa",
+    "zh-TW": "9805474a3c5632301693c8842cf6bfa2c15d1f8f67d02f7e0e81f30faa2d5fa5"
+  },
+  "targetCells": 1200,
+  "testsBuildScansCiOrPrMutationsPerformed": false,
+  "tree": "7a9f3218d79501fb620329f0e53c1a0b3dd44508",
+  "uniqueCallerFiles": 13,
+  "visualReviewSha256": "aa03b19e537e94c62dca547159633f637e4711185c206b201d7e6ae67980caa2",
+  "visualScreenshotFinding": "Step 5 current label overflows its step segment; candidate is semantically correct and two characters shorter.",
+  "visualSpanishCandidate": "accepted",
+  "visualSpanishCurrent": "Configurar servicios",
+  "visualSpanishProposal": "Conectar servicios",
+  "worktreePath": "/mnt/disks/scratch/task-worktrees/localization-20261102/seerrng-pr418-batch-0000-0399"
+}

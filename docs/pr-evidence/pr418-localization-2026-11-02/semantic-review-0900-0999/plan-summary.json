@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "head": "18001c2d09d5d271bd4fe2ad22189c29d069a457",
+  "tree": "7a9f3218d79501fb620329f0e53c1a0b3dd44508",
+  "primaryCells": 1200,
+  "crossreviewCells": 1200,
+  "crossreviewDecisionCounts": {
+    "accept": 1185,
+    "missed": 13,
+    "hold": 1,
+    "refine": 1
+  },
+  "primaryCorrectionProposals": 227,
+  "crossreviewMissedCorrections": 13,
+  "crossreviewRefinements": 1,
+  "crossreviewHoldsUnchanged": 1,
+  "separateVisualCorrections": 1,
+  "exactHashChangesPlanned": 241,
+  "localeCatalogsTouched": 12,
+  "sourceHashReattestation": "PASS",
+  "currentTargetHashReattestation": "PASS",
+  "callerReattestation": "PASS via checksum-verified independent packet",
+  "placeholderReattestation": "PASS for all changed targets",
+  "releaseOrWorkflowChanges": false,
+  "testsBuildScansCiRun": false,
+  "visualSpanishFinalDisposition": "refine `Conectar servicios` to `Conectar` after desktop fit review",
+  "visualSpanishFinalTargetSha256": "3b0b0fdfe2e3a691cd74f988612c6997feab43bb1fadd343a0616ef885349b3c",
+  "allFinalTargetHashesReattested": "PASS"
+}

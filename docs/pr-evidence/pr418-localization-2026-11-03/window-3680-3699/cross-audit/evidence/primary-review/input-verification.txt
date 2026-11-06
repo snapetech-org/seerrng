@@ -1,0 +1,34 @@
+Candidate-free input verifier result (rerun before primary review generation):
+
+{
+  "result": "PASS",
+  "head": "a2f015c040f933eff38e6ef3d9b1ac6050c4957d",
+  "tree": "9cea70e57de0d65e78dd0cc6fab8f54dbb4e5cfe",
+  "range": [
+    3680,
+    3699
+  ],
+  "sourceCount": 20,
+  "cellCount": 240,
+  "priorExcludedSourceIds": 3680,
+  "priorHoldsReattested": 12,
+  "holdPositions": [
+    3632
+  ],
+  "previousBoundary": "components.Settings.BookshelfPathMigration.selectAuthor",
+  "nextBoundary": "components.Settings.JellystatModal.editTitle",
+  "callerlessPositions": [],
+  "baselineTokenDiagnostics": {
+    "placeholderMismatchCount": 0,
+    "placeholderSequenceMismatchCount": 0,
+    "icuPluralCategorySetDifferenceCount": 0,
+    "markupMismatchCount": 0,
+    "numericTokenMismatchCount": 0,
+    "protectedLiteralMismatchCount": 2
+  },
+  "catalogPins": 13,
+  "runtimeFilePins": 5,
+  "livePR": "OPEN/DRAFT",
+  "candidateProposalsIncluded": false,
+  "checksummedFiles": 16
+}

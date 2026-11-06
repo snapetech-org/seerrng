@@ -1,0 +1,12 @@
+{
+  "url": "https://github.com/snapetech-org/seerrng/pull/418",
+  "number": 418,
+  "state": "open",
+  "draft": true,
+  "merged": false,
+  "head": "codex/seerrng-localization-overhaul-20261028",
+  "headSha": "4cfcda2cb279ab056b46df4779aaadf8313c4594",
+  "base": "main",
+  "bodyPreservedByAppendingMilestone": true,
+  "capturedBodyLengthCodePoints": 70581
+}

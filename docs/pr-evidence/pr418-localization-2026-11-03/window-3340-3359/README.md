@@ -1,0 +1,13 @@
+# SeerrNG PR #418 localization review W3340–W3359
+
+This exact-head window reviewed 20 source IDs across the 12 direct locales (240 cells) at baseline head `266d8fff4beb56eab17c9de0f6560c619577e3de` / tree `5da8f5e38b95b4287821b603c4686fe866b83760`. The source queue, 13 catalog pins, 55 caller contexts, and six caller-file pins were reattested at that head.
+
+The primary review recorded 218 accept-current values, five corrections, five refinements, and 12 caller holds. A separate blind review used only `clean-input/`; it recorded 209 accept-current values, 19 refinements, and the same 12 caller holds. Root reconciled the packets and approved 20 exact-hash changes: 19 blind refinements and one primary Arabic numeric-token correction. It retained 208 current values and held the 12 `components.Requests.manageRequests` cells because no direct production caller is pinned.
+
+The Korean date-range labels use `최근` consistently in the caller's period filter. The Korean `Incomplete` status uses `미완료` to describe an unfinished request. The Arabic “Last 6 months” value preserves the literal digit `6`. Spanish and Brazilian Portuguese “Loading Title…” use sentence-style capitalization and retain the ellipsis. Full per-cell rationales are in `adjudication/ratified-ledger.jsonl`.
+
+All 240 targets read back with zero mismatches after applying 20 changes across nine locale catalogs. All 13 catalogs retain 9,494 keys and the same key sets as English. The repository already had two ordered-key hash groups; the window remains in the same positions across all 12 locale catalogs. `readback.json` records each final value/hash and each catalog's key-count, file hash, and ordered-key hash.
+
+`clean-input/` contains the candidate-free source, caller, and catalog pins. `primary-review/` contains the primary ledger. `independent-blind/` contains the sealed blind ledger and summary. `adjudication/` contains the root decisions and apply plan. `apply_ratified_window.py` checks the exact baseline and target hashes, applies only the 20 approved values, preserves catalog ordering, and writes the readback. The primary review packet was checksum-verified in scratch before copying; its generated Python bytecode cache was excluded from this repository evidence. The nested and top-level manifests here cover all retained files.
+
+Review is machine-assisted; qualified native-speaker approval and headed exact-head product-browser acceptance remain pending. No tests, builds, scans, CI dispatches, or workflow edits were run. Commit-hook scans were skipped because they run outside private ephemeral JIT. PR #418 remains open and draft; no merge, release, or tag was made.

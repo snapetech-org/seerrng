@@ -31,6 +31,7 @@ import SoftwareRequests from '@app/components/RequestStatus/SoftwareRequests';
 import {
   formatRequestStatusMessage,
   requestStatusMessages,
+  RequestStatusMessageText,
 } from '@app/components/RequestStatus/messages';
 import useDebouncedState from '@app/hooks/useDebouncedState';
 import useMediaFilterPin from '@app/hooks/useMediaFilterPin';
@@ -47,6 +48,10 @@ import {
 import { sortCrewPriority } from '@app/utils/creditHelpers';
 import defineMessages from '@app/utils/defineMessages';
 import { getTmdbPosterImageUrl } from '@app/utils/imageCache';
+import {
+  formatDurationMinutes,
+  formatBytes as formatLocalizedBytes,
+} from '@app/utils/numberHelpers';
 import { Transition } from '@headlessui/react';
 import {
   ArrowDownTrayIcon,
@@ -863,16 +868,14 @@ const getRuntime = (
   if (item.request.type === 'movie') {
     const minutes = (details as MovieDetails).runtime;
     return minutes && Number.isFinite(minutes)
-      ? intl.formatMessage(messages.minutes, { count: minutes })
+      ? formatDurationMinutes(minutes, intl.locale)
       : notAvailable;
   }
   if (item.request.type === 'tv') {
     const minutes = (details as TvDetails).episodeRunTime.find(
       (runtime) => runtime > 0 && Number.isFinite(runtime)
     );
-    return minutes
-      ? intl.formatMessage(messages.minutes, { count: minutes })
-      : notAvailable;
+    return minutes ? formatDurationMinutes(minutes, intl.locale) : notAvailable;
   }
   if (item.request.type === 'music') {
     const milliseconds = (details as MusicDetails).tracks.reduce(
@@ -880,9 +883,7 @@ const getRuntime = (
       0
     );
     return milliseconds > 0
-      ? intl.formatMessage(messages.minutes, {
-          count: Math.round(milliseconds / 60000),
-        })
+      ? formatDurationMinutes(Math.round(milliseconds / 60000), intl.locale)
       : notAvailable;
   }
 
@@ -1200,15 +1201,8 @@ const formatBytes = (
   if (value === null || !Number.isFinite(value) || value < 0) {
     return intl.formatMessage(messages.notAvailable);
   }
-  if (value < 1024) return `${Math.round(value)} B`;
-  const units = ['KB', 'MB', 'GB', 'TB'];
-  let size = value;
-  let unit = -1;
-  do {
-    size /= 1024;
-    unit += 1;
-  } while (size >= 1024 && unit < units.length - 1);
-  return `${size.toFixed(size >= 10 ? 0 : 1)} ${units[unit]}`;
+
+  return formatLocalizedBytes(value, value < 1024 ? 0 : 1, intl.locale);
 };
 
 const getStageLabel = (intl: ReturnType<typeof useIntl>, stage: StatusStage) =>
@@ -2055,7 +2049,14 @@ const RequestStatusCard = ({
       ) : null}
 
       <div className="app-action-row request-status-action-row">
-        <Tooltip content={currentMessage}>
+        <Tooltip
+          content={
+            <RequestStatusMessageText
+              message={current.message}
+              messageKey={current.messageKey}
+            />
+          }
+        >
           <span
             className={`request-status-control ${requestStatusTone[currentStage] ?? requestStatusTone.cancelled}`}
             aria-label={`${getStageLabel(intl, currentStage)}: ${currentMessage}`}
@@ -2127,9 +2128,14 @@ const RequestStatusCard = ({
                       {getStageLabel(intl, event.stage as StatusStage)}
                     </span>
                     <span className="refreshed-detail-text app-history-description">
-                      {event.message
-                        ? formatRequestStatusMessage(intl, event)
-                        : getStageLabel(intl, event.stage as StatusStage)}
+                      {event.message ? (
+                        <RequestStatusMessageText
+                          message={event.message}
+                          messageKey={event.messageKey}
+                        />
+                      ) : (
+                        getStageLabel(intl, event.stage as StatusStage)
+                      )}
                       {event.percent !== null && ` · ${event.percent}%`}
                     </span>
                   </li>
@@ -2248,7 +2254,12 @@ const RequestStatusCard = ({
                   ? ` ${Math.round(current.percent)}%`
                   : ''}
               </span>
-              <span>{currentMessage}</span>
+              <span>
+                <RequestStatusMessageText
+                  message={current.message}
+                  messageKey={current.messageKey}
+                />
+              </span>
             </>
           }
           progress={

@@ -1,0 +1,47 @@
+{
+  "result": "cross-review decisions sealed pending verification",
+  "sourceCount": 20,
+  "cellCount": 240,
+  "decisionCounts": {
+    "keep": 204,
+    "propose": 32,
+    "hold": 4
+  },
+  "chosenPatchProposalCount": 32,
+  "holdCells": [
+    {
+      "position": 3904,
+      "locale": "zh-Hans"
+    },
+    {
+      "position": 3904,
+      "locale": "ar"
+    },
+    {
+      "position": 3904,
+      "locale": "zh-Hant"
+    },
+    {
+      "position": 3904,
+      "locale": "vi"
+    }
+  ],
+  "selectedProposalSources": {
+    "blind": 3,
+    "primary": 15,
+    "both": 14
+  },
+  "reviewerDifferences": {
+    "both-retain-current": 202,
+    "competing-proposals": 5,
+    "primary-only-proposal": 14,
+    "same-proposal": 14,
+    "hold-vs-primary-proposal": 4,
+    "blind-only-proposal": 1
+  },
+  "inputSha256ManifestSha256": "39263a92b1041ef4c35d9250f4063869c8ecc7300241e19d2f68f9dab5454e07",
+  "primaryReviewChecksumManifestSha256": "efa5b93dbd382dc3f4c3dfe2b29bb7dbdaa755e1c868cd6be4ea575689c2cb81",
+  "blindReviewChecksumManifestSha256": "c2d468f8b2a320d43a06af9d48887a2b4c5147a55815d6695e37a28ee1d9f65b",
+  "liveBaseSha": "fa40534ccced75bde1125c14760514fcd5d7de4d",
+  "liveBaseBranchSha": "016bcf8db7475b2105b9b488ff67ed7d1c096508"
+}

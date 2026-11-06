@@ -1,0 +1,52 @@
+{
+  "callerDefinitionOnly": [
+    {
+      "sourceId": "components.MovieDetails.Layout.director",
+      "status": "definition-only-or-single-reference"
+    },
+    {
+      "sourceId": "components.MovieDetails.Layout.genres",
+      "status": "definition-only-or-single-reference"
+    },
+    {
+      "sourceId": "components.MovieDetails.Layout.mediaAndFormat",
+      "status": "definition-only-or-single-reference"
+    },
+    {
+      "sourceId": "components.MovieDetails.Layout.minutes",
+      "status": "definition-only-or-single-reference"
+    },
+    {
+      "sourceId": "components.MovieDetails.Layout.runtime",
+      "status": "definition-only-or-single-reference"
+    },
+    {
+      "sourceId": "components.MovieDetails.Layout.screenplay",
+      "status": "definition-only-or-single-reference"
+    },
+    {
+      "sourceId": "components.MovieDetails.Layout.ultraHd",
+      "status": "definition-only-or-single-reference"
+    }
+  ],
+  "callerFiles": 12,
+  "callerGaps": [],
+  "callerRefs": 310,
+  "candidateCount": 178,
+  "exactHead": "404648643578992e8e12ce9dff47dd92d5ee7c1c",
+  "exactTree": "a17442223e33372e0cc16c3b8091e2515d5e39f3",
+  "headRefName": "codex/seerrng-localization-overhaul-20261028",
+  "isDraft": true,
+  "localeCells": 1200,
+  "passed": true,
+  "pullRequestState": "OPEN",
+  "remoteHead": "404648643578992e8e12ce9dff47dd92d5ee7c1c",
+  "repositoryState": {
+    "head": "404648643578992e8e12ce9dff47dd92d5ee7c1c",
+    "status": "",
+    "tree": "a17442223e33372e0cc16c3b8091e2515d5e39f3"
+  },
+  "sourceIdListSha256": "8747e97527ec1aa1a479c41f180a8e7a2ed0884c47bb07875ec79a8954043bd8",
+  "sourceIds": 100,
+  "sourceTextHashes": 100
+}

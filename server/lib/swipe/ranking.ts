@@ -315,6 +315,6 @@ export const testAiConnection = async (
     )
   );
   if (!ranking) {
-    throw new Error('The AI provider declined the test request.');
+    throw new AiProviderError('The AI provider declined the test request.');
   }
 };

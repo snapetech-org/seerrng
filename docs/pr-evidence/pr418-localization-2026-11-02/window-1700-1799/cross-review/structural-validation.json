@@ -1,0 +1,31 @@
+{
+  "allCrossReviewFinalTargetsMatchSourceArgumentNamesAndTypes": true,
+  "allPrimaryCandidatesMatchSourceArgumentNamesAndTypes": true,
+  "cellsReviewed": 1200,
+  "icuCategoryNotes": [
+    {
+      "finalCategories": [
+        "zero",
+        "one",
+        "two",
+        "few",
+        "many",
+        "other"
+      ],
+      "locale": "ar",
+      "note": "Arabic branch-specific plural categories are locale-adapted; both commitsBehind argument occurrences and their simple/plural kinds remain intact.",
+      "sourceId": "components.Layout.VersionStatus.commitsbehind"
+    }
+  ],
+  "primaryDeclaredMismatchCounts": {
+    "markup": 0,
+    "placeholder": 0,
+    "protectedLiteral": 0
+  },
+  "recomputed": {
+    "icuArgumentSignatureMismatches": 0,
+    "markupMismatches": 0,
+    "placeholderMismatches": 0,
+    "protectedLiteralMismatches": 0
+  }
+}

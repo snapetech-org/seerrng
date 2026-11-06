@@ -1,5 +1,5 @@
 import { EmbedColors } from '@server/constants/discord';
-import { IssueStatus, IssueTypeName } from '@server/constants/issue';
+import { IssueStatus } from '@server/constants/issue';
 import { getIntl } from '@server/i18n';
 import globalMessages from '@server/i18n/globalMessages';
 import {
@@ -27,7 +27,14 @@ import type { NotificationAgent, NotificationPayload } from './agent';
 import {
   BaseAgent,
   CONFIGURABLE_NOTIFICATION_HTTP_OPTIONS,
+  formatNotificationTitle,
+  getIssueTypeLabel,
+  getLocalizedNotificationPayload,
   getNotificationActionUrl,
+  getNotificationCommentFrom,
+  getNotificationContent,
+  getNotificationExtras,
+  isolateBidiText,
   truncateNotificationText,
 } from './agent';
 
@@ -145,6 +152,9 @@ class DiscordAgent
     locale?: AvailableLocale
   ): DiscordRichEmbed {
     const intl = getIntl(locale);
+    payload = getLocalizedNotificationPayload(payload, intl);
+    const content = getNotificationContent(payload, intl);
+    const extras = getNotificationExtras(payload, intl);
     const { applicationUrl } = getExternalRuntimeConfig().main;
     const { embedPoster } = this.getSettings();
 
@@ -156,7 +166,7 @@ class DiscordAgent
     if (payload.request) {
       fields.push({
         name: intl.formatMessage(globalMessages.requestedBy),
-        value: payload.request.requestedBy.displayName,
+        value: isolateBidiText(payload.request.requestedBy.displayName),
         inline: true,
       });
 
@@ -198,9 +208,10 @@ class DiscordAgent
       }
     } else if (payload.comment) {
       fields.push({
-        name: intl.formatMessage(globalMessages.commentFrom, {
-          userName: payload.comment.user.displayName,
-        }),
+        name: getNotificationCommentFrom(
+          payload.comment.user.displayName,
+          intl
+        ),
         value: payload.comment.message,
         inline: false,
       });
@@ -208,12 +219,12 @@ class DiscordAgent
       fields.push(
         {
           name: intl.formatMessage(globalMessages.reportedBy),
-          value: payload.issue.createdBy.displayName,
+          value: isolateBidiText(payload.issue.createdBy.displayName),
           inline: true,
         },
         {
           name: intl.formatMessage(globalMessages.issueType),
-          value: IssueTypeName[payload.issue.issueType],
+          value: getIssueTypeLabel(intl, payload.issue.issueType),
           inline: true,
         },
         {
@@ -240,7 +251,7 @@ class DiscordAgent
       }
     }
 
-    for (const extra of payload.extra ?? []) {
+    for (const extra of extras) {
       fields.push({
         name: extra.name,
         value: extra.value,
@@ -251,11 +262,9 @@ class DiscordAgent
     const url = getNotificationActionUrl(payload, applicationUrl);
 
     return boundDiscordEmbed({
-      title: payload.event
-        ? `${payload.event}: ${payload.subject}`
-        : payload.subject,
+      title: formatNotificationTitle(content.event, payload.subject, ': '),
       url,
-      description: payload.message,
+      description: content.message,
       color,
       timestamp: new Date().toISOString(),
       fields,

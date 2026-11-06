@@ -1,4 +1,5 @@
 import Alert from '@app/components/Common/Alert';
+import ApiMessageText from '@app/components/Common/ApiMessageText';
 import Button from '@app/components/Common/Button';
 import LoadingSpinner from '@app/components/Common/LoadingSpinner';
 import SettingsField from '@app/components/Settings/SettingsField';
@@ -119,7 +120,12 @@ const SettingsRecognition = () => {
         )}
         {data && draft && !error && (
           <form onSubmit={(event) => void submit(event)}>
-            {saveError && <Alert type="error" title={saveError} />}
+            {saveError && (
+              <Alert
+                type="error"
+                title={<ApiMessageText>{saveError}</ApiMessageText>}
+              />
+            )}
             <div className="form-row">
               <label htmlFor="recognition-enabled">
                 {intl.formatMessage(messages.enabled)}

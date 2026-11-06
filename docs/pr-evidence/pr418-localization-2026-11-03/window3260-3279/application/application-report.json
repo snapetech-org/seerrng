@@ -1,0 +1,144 @@
+{
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "window": "W3260-W3279",
+  "inputHead": "4cfcda2cb279ab056b46df4779aaadf8313c4594",
+  "inputTree": "4f6b1921a48aefe444c81d317a0f3ae265707bcc",
+  "exactBaseHead": "4cfcda2cb279ab056b46df4779aaadf8313c4594",
+  "exactBaseTree": "4f6b1921a48aefe444c81d317a0f3ae265707bcc",
+  "reviewRows": 240,
+  "changedCells": 65,
+  "changedByCatalog": {
+    "src/i18n/locale/ar.json": 8,
+    "src/i18n/locale/de.json": 1,
+    "src/i18n/locale/es.json": 5,
+    "src/i18n/locale/fr.json": 2,
+    "src/i18n/locale/hi.json": 5,
+    "src/i18n/locale/id.json": 7,
+    "src/i18n/locale/ja.json": 5,
+    "src/i18n/locale/ko.json": 3,
+    "src/i18n/locale/pt_BR.json": 6,
+    "src/i18n/locale/vi.json": 8,
+    "src/i18n/locale/zh_Hans.json": 8,
+    "src/i18n/locale/zh_Hant.json": 7
+  },
+  "readbackCells": 240,
+  "readbackMismatches": 0,
+  "catalogsChanged": 12,
+  "catalogKeysAndOrderMatchedBaseAndPins": true,
+  "sourceCurrentFinalAndCanonicalHashesVerified": true,
+  "placeholderMismatches": 0,
+  "onlyRatifiedCellsChanged": true,
+  "postApplyLocaleCatalogs": {
+    "src/i18n/locale/es.json": {
+      "sha256": "916ea7354e3796b311e85d6ef7190f9cca7df18c09a4367072b49436d5cba630",
+      "gitBlob": "eee01c99fd888d6c20623ce38835c876085f1fb5",
+      "keyCount": 9494,
+      "orderedKeySha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+      "expectedKeyCount": 9494,
+      "expectedOrderedKeySha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072"
+    },
+    "src/i18n/locale/zh_Hans.json": {
+      "sha256": "a34ec2b33fc7c334bfa0875bf385f3cd1b4ba1d65b3d125960d23397c558499e",
+      "gitBlob": "302293ae7be31b6e2c20282d7db0ec9195c2fdfd",
+      "keyCount": 9494,
+      "orderedKeySha256": "8d5fd7bd4351bc64c5ee813f2e50196608869e165866f3202a312078732c2baf",
+      "expectedKeyCount": 9494,
+      "expectedOrderedKeySha256": "8d5fd7bd4351bc64c5ee813f2e50196608869e165866f3202a312078732c2baf"
+    },
+    "src/i18n/locale/hi.json": {
+      "sha256": "07bebe128a555ed7294b3f6700a6cb068ec12ca9642ee5f532d9d2636656eb41",
+      "gitBlob": "ec020429be24626a67177cb88053f6ef8d8f267e",
+      "keyCount": 9494,
+      "orderedKeySha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+      "expectedKeyCount": 9494,
+      "expectedOrderedKeySha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072"
+    },
+    "src/i18n/locale/de.json": {
+      "sha256": "b5affa3766d8c4b168b1aa21f6ac162f3f61def303b77c484f43846d0bd897c5",
+      "gitBlob": "142f09bc1e468eed2f2a7744af2291f4d4b6e485",
+      "keyCount": 9494,
+      "orderedKeySha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+      "expectedKeyCount": 9494,
+      "expectedOrderedKeySha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072"
+    },
+    "src/i18n/locale/ja.json": {
+      "sha256": "b58ceb209f87359479c299bb930f7cd7b99a83e8adfe254ea36db2df8f470f59",
+      "gitBlob": "2a851ab76c2780487c0dd0898175db504e18d9eb",
+      "keyCount": 9494,
+      "orderedKeySha256": "8d5fd7bd4351bc64c5ee813f2e50196608869e165866f3202a312078732c2baf",
+      "expectedKeyCount": 9494,
+      "expectedOrderedKeySha256": "8d5fd7bd4351bc64c5ee813f2e50196608869e165866f3202a312078732c2baf"
+    },
+    "src/i18n/locale/fr.json": {
+      "sha256": "9da555dc2a0731d96b46eb6fb32f4f4ccec6272e5d032ba66077afabffc597fe",
+      "gitBlob": "a3f9c0d1ac5c266d5e0e50f09d8119d99d61b74a",
+      "keyCount": 9494,
+      "orderedKeySha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+      "expectedKeyCount": 9494,
+      "expectedOrderedKeySha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072"
+    },
+    "src/i18n/locale/pt_BR.json": {
+      "sha256": "93be97d99c356a5e7be7db0a52bb3a71544d74f61ec4047d8944495d984bd108",
+      "gitBlob": "e6f0094ad5854fdbf56521ac5ed353d74467fc21",
+      "keyCount": 9494,
+      "orderedKeySha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+      "expectedKeyCount": 9494,
+      "expectedOrderedKeySha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072"
+    },
+    "src/i18n/locale/ar.json": {
+      "sha256": "41ecf80a54d532c754be41d980b900333a517e0052b6c2dc7141ef4fb190addb",
+      "gitBlob": "27dbd82b235b1c69c10138fc65ae424856288b33",
+      "keyCount": 9494,
+      "orderedKeySha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+      "expectedKeyCount": 9494,
+      "expectedOrderedKeySha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072"
+    },
+    "src/i18n/locale/ko.json": {
+      "sha256": "cb71a97bb1a7814fa82d66a99472326cd0cfff49d43a5ef9318dbaa1cf1c90b4",
+      "gitBlob": "0269942318c6f141c621b33dc15997f4242b8e5e",
+      "keyCount": 9494,
+      "orderedKeySha256": "8d5fd7bd4351bc64c5ee813f2e50196608869e165866f3202a312078732c2baf",
+      "expectedKeyCount": 9494,
+      "expectedOrderedKeySha256": "8d5fd7bd4351bc64c5ee813f2e50196608869e165866f3202a312078732c2baf"
+    },
+    "src/i18n/locale/zh_Hant.json": {
+      "sha256": "e6cf1b51bf341a96fa3ddcb99bf6543c2e6b0643257ed1e27f0e9d4a4f6898c7",
+      "gitBlob": "a1475f5787fcded0c5b08a03f430a44e265962ba",
+      "keyCount": 9494,
+      "orderedKeySha256": "8d5fd7bd4351bc64c5ee813f2e50196608869e165866f3202a312078732c2baf",
+      "expectedKeyCount": 9494,
+      "expectedOrderedKeySha256": "8d5fd7bd4351bc64c5ee813f2e50196608869e165866f3202a312078732c2baf"
+    },
+    "src/i18n/locale/vi.json": {
+      "sha256": "fa806a479338779eff2215d4fc1a43afbe615a52d40b297ed88ac4ece27e538f",
+      "gitBlob": "8345fad0b59d3f9682b28c4680395dec0c53d8d3",
+      "keyCount": 9494,
+      "orderedKeySha256": "8d5fd7bd4351bc64c5ee813f2e50196608869e165866f3202a312078732c2baf",
+      "expectedKeyCount": 9494,
+      "expectedOrderedKeySha256": "8d5fd7bd4351bc64c5ee813f2e50196608869e165866f3202a312078732c2baf"
+    },
+    "src/i18n/locale/id.json": {
+      "sha256": "43fe16b9df02ab29eff4bbb289ecf174f0f1e2cf4ea08c2ce209229a40ba3fee",
+      "gitBlob": "e5ea7dede0dce8f8d35aa4db9180330fa86166dc",
+      "keyCount": 9494,
+      "orderedKeySha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+      "expectedKeyCount": 9494,
+      "expectedOrderedKeySha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072"
+    },
+    "src/i18n/locale/en.json": {
+      "sha256": "75ff3c90b52aedd636a506281ffbd6fb2d3739c61294b6008a517f17647e2316",
+      "gitBlob": "12e04a118c30b71b3714291adeaf9fdb2735cee4",
+      "keyCount": 9494,
+      "orderedKeySha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+      "expectedKeyCount": 9494,
+      "expectedOrderedKeySha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072"
+    }
+  },
+  "preflightErrors": 0,
+  "holds": 0,
+  "nativeSpeakerApproval": false,
+  "testsBuildsScansOrCiRun": false,
+  "workflowChanges": false,
+  "releasesMergesTags": false
+}

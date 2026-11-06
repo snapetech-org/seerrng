@@ -1,4 +1,4 @@
-import { IssueStatus, IssueTypeName } from '@server/constants/issue';
+import { IssueStatus } from '@server/constants/issue';
 import { getIntl } from '@server/i18n';
 import globalMessages from '@server/i18n/globalMessages';
 import {
@@ -19,7 +19,14 @@ import type { NotificationAgent, NotificationPayload } from './agent';
 import {
   BaseAgent,
   CONFIGURABLE_NOTIFICATION_HTTP_OPTIONS,
+  formatNotificationTitle,
+  getIssueTypeLabel,
+  getLocalizedNotificationPayload,
   getNotificationActionUrl,
+  getNotificationCommentFrom,
+  getNotificationContent,
+  getNotificationExtras,
+  isolateBidiText,
 } from './agent';
 
 interface GotifyPayload {
@@ -78,25 +85,26 @@ class GotifyAgent
   ): GotifyPayload {
     const settings = this.getSettings();
     const intl = getIntl(settings.options.locale);
+    payload = getLocalizedNotificationPayload(payload, intl);
+    const content = getNotificationContent(payload, intl);
+    const extras = getNotificationExtras(payload, intl);
     const { applicationUrl, applicationTitle } =
       getExternalRuntimeConfig().main;
     const embedPoster = settings.embedPoster;
     const priority = settings.options.priority ?? 1;
 
-    const title = payload.event
-      ? `${payload.event} - ${payload.subject}`
-      : payload.subject;
+    const title = formatNotificationTitle(content.event, payload.subject);
 
     let message =
-      payload.message && !payload.comment
-        ? `${escapeGotifyMarkdownText(payload.message)}  \n\n`
+      content.message && !payload.comment
+        ? `${escapeGotifyMarkdownText(content.message)}  \n\n`
         : '';
 
     if (payload.request) {
       message += `\n**${escapeGotifyMarkdownText(
         intl.formatMessage(globalMessages.requestedBy)
       )}:** ${escapeGotifyMarkdownText(
-        payload.request.requestedBy.displayName
+        isolateBidiText(payload.request.requestedBy.displayName)
       )}  `;
 
       let status = '';
@@ -129,15 +137,13 @@ class GotifyAgent
       }
     } else if (payload.comment) {
       message += `\n${escapeGotifyMarkdownText(
-        intl.formatMessage(globalMessages.commentFrom, {
-          userName: payload.comment.user.displayName,
-        })
+        getNotificationCommentFrom(payload.comment.user.displayName, intl)
       )}:\n${escapeGotifyMarkdownText(payload.comment.message)}  `;
     } else if (payload.issue) {
       message += `\n\n**${escapeGotifyMarkdownText(
         intl.formatMessage(globalMessages.reportedBy)
-      )}:** ${escapeGotifyMarkdownText(payload.issue.createdBy.displayName)}  `;
-      message += `\n**${intl.formatMessage(globalMessages.issueType)}:** ${IssueTypeName[payload.issue.issueType]}  `;
+      )}:** ${escapeGotifyMarkdownText(isolateBidiText(payload.issue.createdBy.displayName))}  `;
+      message += `\n**${intl.formatMessage(globalMessages.issueType)}:** ${getIssueTypeLabel(intl, payload.issue.issueType)}  `;
       message += `\n**${intl.formatMessage(globalMessages.issueStatus)}:** ${
         payload.issue.status === IssueStatus.OPEN
           ? intl.formatMessage(globalMessages.open)
@@ -145,7 +151,7 @@ class GotifyAgent
       }  `;
     }
 
-    for (const extra of payload.extra ?? []) {
+    for (const extra of extras) {
       message += `\n\n**${escapeGotifyMarkdownText(
         extra.name
       )}**\n${escapeGotifyMarkdownText(extra.value)}  `;

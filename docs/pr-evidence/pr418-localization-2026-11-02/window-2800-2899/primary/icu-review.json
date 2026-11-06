@@ -1,0 +1,1364 @@
+{
+  "invalid": [],
+  "profiles": [
+    {
+      "currentProfile": [
+        {
+          "branches": {
+            "few": "# عناصر",
+            "many": "# عنصرًا",
+            "one": "عنصر واحد",
+            "other": "# عنصر",
+            "two": "عنصرين",
+            "zero": "# عنصر"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "failure": null,
+      "finalProfile": [
+        {
+          "branches": {
+            "few": "# عناصر",
+            "many": "# عنصرًا",
+            "one": "عنصر واحد",
+            "other": "# عنصر",
+            "two": "عنصرين",
+            "zero": "# عنصر"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "locale": "ar",
+      "sourceId": "components.RequestModal.BulkRequestModal.requestitems",
+      "sourcePosition": 2861,
+      "sourceProfile": [
+        {
+          "branches": {
+            "one": "Item",
+            "other": "Items"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "valid": true
+    },
+    {
+      "currentProfile": [
+        {
+          "branches": {
+            "one": "Position",
+            "other": "Positionen"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "failure": null,
+      "finalProfile": [
+        {
+          "branches": {
+            "one": "Element",
+            "other": "Elemente"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "locale": "de",
+      "sourceId": "components.RequestModal.BulkRequestModal.requestitems",
+      "sourcePosition": 2861,
+      "sourceProfile": [
+        {
+          "branches": {
+            "one": "Item",
+            "other": "Items"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "valid": true
+    },
+    {
+      "currentProfile": [
+        {
+          "branches": {
+            "many": "Temas",
+            "one": "Tema",
+            "other": "Temas"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "failure": null,
+      "finalProfile": [
+        {
+          "branches": {
+            "one": "elemento",
+            "other": "elementos"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "locale": "es",
+      "sourceId": "components.RequestModal.BulkRequestModal.requestitems",
+      "sourcePosition": 2861,
+      "sourceProfile": [
+        {
+          "branches": {
+            "one": "Item",
+            "other": "Items"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "valid": true
+    },
+    {
+      "currentProfile": [
+        {
+          "branches": {
+            "many": "Éléments",
+            "one": "Point",
+            "other": "Éléments"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "failure": null,
+      "finalProfile": [
+        {
+          "branches": {
+            "one": "élément",
+            "other": "éléments"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "locale": "fr",
+      "sourceId": "components.RequestModal.BulkRequestModal.requestitems",
+      "sourcePosition": 2861,
+      "sourceProfile": [
+        {
+          "branches": {
+            "one": "Item",
+            "other": "Items"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "valid": true
+    },
+    {
+      "currentProfile": [
+        {
+          "branches": {
+            "one": "आइटम",
+            "other": "आइटम"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "failure": null,
+      "finalProfile": [
+        {
+          "branches": {
+            "one": "आइटम",
+            "other": "आइटम"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "locale": "hi",
+      "sourceId": "components.RequestModal.BulkRequestModal.requestitems",
+      "sourcePosition": 2861,
+      "sourceProfile": [
+        {
+          "branches": {
+            "one": "Item",
+            "other": "Items"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "valid": true
+    },
+    {
+      "currentProfile": [
+        {
+          "branches": {
+            "one": "Butir",
+            "other": "Objek"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "failure": null,
+      "finalProfile": [
+        {
+          "branches": {
+            "one": "item",
+            "other": "item"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "locale": "id",
+      "sourceId": "components.RequestModal.BulkRequestModal.requestitems",
+      "sourcePosition": 2861,
+      "sourceProfile": [
+        {
+          "branches": {
+            "one": "Item",
+            "other": "Items"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "valid": true
+    },
+    {
+      "currentProfile": [
+        {
+          "branches": {
+            "one": "項目",
+            "other": "項目"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "failure": null,
+      "finalProfile": [
+        {
+          "branches": {
+            "one": "項目",
+            "other": "項目"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "locale": "ja",
+      "sourceId": "components.RequestModal.BulkRequestModal.requestitems",
+      "sourcePosition": 2861,
+      "sourceProfile": [
+        {
+          "branches": {
+            "one": "Item",
+            "other": "Items"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "valid": true
+    },
+    {
+      "currentProfile": [
+        {
+          "branches": {
+            "one": "항목",
+            "other": "항목"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "failure": null,
+      "finalProfile": [
+        {
+          "branches": {
+            "one": "항목",
+            "other": "항목"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "locale": "ko",
+      "sourceId": "components.RequestModal.BulkRequestModal.requestitems",
+      "sourcePosition": 2861,
+      "sourceProfile": [
+        {
+          "branches": {
+            "one": "Item",
+            "other": "Items"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "valid": true
+    },
+    {
+      "currentProfile": [
+        {
+          "branches": {
+            "many": "Itens",
+            "one": "Item",
+            "other": "Itens"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "failure": null,
+      "finalProfile": [
+        {
+          "branches": {
+            "one": "item",
+            "other": "itens"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "locale": "pt_BR",
+      "sourceId": "components.RequestModal.BulkRequestModal.requestitems",
+      "sourcePosition": 2861,
+      "sourceProfile": [
+        {
+          "branches": {
+            "one": "Item",
+            "other": "Items"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "valid": true
+    },
+    {
+      "currentProfile": [
+        {
+          "branches": {
+            "one": "Mục",
+            "other": "Mục"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "failure": null,
+      "finalProfile": [
+        {
+          "branches": {
+            "one": "Mục",
+            "other": "Mục"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "locale": "vi",
+      "sourceId": "components.RequestModal.BulkRequestModal.requestitems",
+      "sourcePosition": 2861,
+      "sourceProfile": [
+        {
+          "branches": {
+            "one": "Item",
+            "other": "Items"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "valid": true
+    },
+    {
+      "currentProfile": [
+        {
+          "branches": {
+            "one": "项目",
+            "other": "项目"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "failure": null,
+      "finalProfile": [
+        {
+          "branches": {
+            "one": "项目",
+            "other": "项目"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "locale": "zh_Hans",
+      "sourceId": "components.RequestModal.BulkRequestModal.requestitems",
+      "sourcePosition": 2861,
+      "sourceProfile": [
+        {
+          "branches": {
+            "one": "Item",
+            "other": "Items"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "valid": true
+    },
+    {
+      "currentProfile": [
+        {
+          "branches": {
+            "one": "項目",
+            "other": "項目"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "failure": null,
+      "finalProfile": [
+        {
+          "branches": {
+            "one": "項目",
+            "other": "項目"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "locale": "zh_Hant",
+      "sourceId": "components.RequestModal.BulkRequestModal.requestitems",
+      "sourcePosition": 2861,
+      "sourceProfile": [
+        {
+          "branches": {
+            "one": "Item",
+            "other": "Items"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "valid": true
+    },
+    {
+      "currentProfile": [
+        {
+          "branches": {
+            "few": "# عناصر",
+            "many": "# عنصرًا",
+            "one": "عنصر واحد",
+            "other": "# عنصر",
+            "two": "عنصرين",
+            "zero": "# عنصر"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "failure": null,
+      "finalProfile": [
+        {
+          "branches": {
+            "few": "# عناصر",
+            "many": "# عنصرًا",
+            "one": "عنصر واحد",
+            "other": "# عنصر",
+            "two": "عنصرين",
+            "zero": "# عنصر"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "locale": "ar",
+      "sourceId": "components.RequestModal.BulkRequestModal.requestitemsFormat",
+      "sourcePosition": 2862,
+      "sourceProfile": [
+        {
+          "branches": {
+            "one": "Item",
+            "other": "Items"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "valid": true
+    },
+    {
+      "currentProfile": [
+        {
+          "branches": {
+            "one": "Position",
+            "other": "Positionen"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "failure": null,
+      "finalProfile": [
+        {
+          "branches": {
+            "one": "Element",
+            "other": "Elemente"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "locale": "de",
+      "sourceId": "components.RequestModal.BulkRequestModal.requestitemsFormat",
+      "sourcePosition": 2862,
+      "sourceProfile": [
+        {
+          "branches": {
+            "one": "Item",
+            "other": "Items"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "valid": true
+    },
+    {
+      "currentProfile": [
+        {
+          "branches": {
+            "many": "Temas",
+            "one": "Tema",
+            "other": "Temas"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "failure": null,
+      "finalProfile": [
+        {
+          "branches": {
+            "one": "elemento",
+            "other": "elementos"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "locale": "es",
+      "sourceId": "components.RequestModal.BulkRequestModal.requestitemsFormat",
+      "sourcePosition": 2862,
+      "sourceProfile": [
+        {
+          "branches": {
+            "one": "Item",
+            "other": "Items"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "valid": true
+    },
+    {
+      "currentProfile": [
+        {
+          "branches": {
+            "many": "Éléments",
+            "one": "Point",
+            "other": "Éléments"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "failure": null,
+      "finalProfile": [
+        {
+          "branches": {
+            "one": "élément",
+            "other": "éléments"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "locale": "fr",
+      "sourceId": "components.RequestModal.BulkRequestModal.requestitemsFormat",
+      "sourcePosition": 2862,
+      "sourceProfile": [
+        {
+          "branches": {
+            "one": "Item",
+            "other": "Items"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "valid": true
+    },
+    {
+      "currentProfile": [
+        {
+          "branches": {
+            "one": "आइटम",
+            "other": "आइटम"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "failure": null,
+      "finalProfile": [
+        {
+          "branches": {
+            "one": "आइटम",
+            "other": "आइटम"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "locale": "hi",
+      "sourceId": "components.RequestModal.BulkRequestModal.requestitemsFormat",
+      "sourcePosition": 2862,
+      "sourceProfile": [
+        {
+          "branches": {
+            "one": "Item",
+            "other": "Items"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "valid": true
+    },
+    {
+      "currentProfile": [
+        {
+          "branches": {
+            "one": "Butir",
+            "other": "Objek"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "failure": null,
+      "finalProfile": [
+        {
+          "branches": {
+            "one": "item",
+            "other": "item"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "locale": "id",
+      "sourceId": "components.RequestModal.BulkRequestModal.requestitemsFormat",
+      "sourcePosition": 2862,
+      "sourceProfile": [
+        {
+          "branches": {
+            "one": "Item",
+            "other": "Items"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "valid": true
+    },
+    {
+      "currentProfile": [
+        {
+          "branches": {
+            "one": "項目",
+            "other": "項目"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "failure": null,
+      "finalProfile": [
+        {
+          "branches": {
+            "one": "項目",
+            "other": "項目"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "locale": "ja",
+      "sourceId": "components.RequestModal.BulkRequestModal.requestitemsFormat",
+      "sourcePosition": 2862,
+      "sourceProfile": [
+        {
+          "branches": {
+            "one": "Item",
+            "other": "Items"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "valid": true
+    },
+    {
+      "currentProfile": [
+        {
+          "branches": {
+            "one": "항목",
+            "other": "항목"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "failure": null,
+      "finalProfile": [
+        {
+          "branches": {
+            "one": "항목",
+            "other": "항목"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "locale": "ko",
+      "sourceId": "components.RequestModal.BulkRequestModal.requestitemsFormat",
+      "sourcePosition": 2862,
+      "sourceProfile": [
+        {
+          "branches": {
+            "one": "Item",
+            "other": "Items"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "valid": true
+    },
+    {
+      "currentProfile": [
+        {
+          "branches": {
+            "many": "Itens",
+            "one": "Item",
+            "other": "Itens"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "failure": null,
+      "finalProfile": [
+        {
+          "branches": {
+            "one": "item",
+            "other": "itens"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "locale": "pt_BR",
+      "sourceId": "components.RequestModal.BulkRequestModal.requestitemsFormat",
+      "sourcePosition": 2862,
+      "sourceProfile": [
+        {
+          "branches": {
+            "one": "Item",
+            "other": "Items"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "valid": true
+    },
+    {
+      "currentProfile": [
+        {
+          "branches": {
+            "one": "Mục",
+            "other": "Mục"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "failure": null,
+      "finalProfile": [
+        {
+          "branches": {
+            "one": "mục",
+            "other": "mục"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "locale": "vi",
+      "sourceId": "components.RequestModal.BulkRequestModal.requestitemsFormat",
+      "sourcePosition": 2862,
+      "sourceProfile": [
+        {
+          "branches": {
+            "one": "Item",
+            "other": "Items"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "valid": true
+    },
+    {
+      "currentProfile": [
+        {
+          "branches": {
+            "one": "项目",
+            "other": "项目"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "failure": null,
+      "finalProfile": [
+        {
+          "branches": {
+            "one": "项目",
+            "other": "项目"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "locale": "zh_Hans",
+      "sourceId": "components.RequestModal.BulkRequestModal.requestitemsFormat",
+      "sourcePosition": 2862,
+      "sourceProfile": [
+        {
+          "branches": {
+            "one": "Item",
+            "other": "Items"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "valid": true
+    },
+    {
+      "currentProfile": [
+        {
+          "branches": {
+            "one": "項目",
+            "other": "項目"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "failure": null,
+      "finalProfile": [
+        {
+          "branches": {
+            "one": "個項目",
+            "other": "個項目"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "locale": "zh_Hant",
+      "sourceId": "components.RequestModal.BulkRequestModal.requestitemsFormat",
+      "sourcePosition": 2862,
+      "sourceProfile": [
+        {
+          "branches": {
+            "one": "Item",
+            "other": "Items"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "valid": true
+    },
+    {
+      "currentProfile": [
+        {
+          "branches": {
+            "few": "# عناصر",
+            "many": "# عنصرًا",
+            "one": "عنصر واحد",
+            "other": "# عنصر",
+            "two": "عنصران",
+            "zero": "# عنصر"
+          },
+          "kind": "plural",
+          "name": "total"
+        }
+      ],
+      "failure": null,
+      "finalProfile": [
+        {
+          "branches": {
+            "few": "# عناصر",
+            "many": "# عنصرًا",
+            "one": "عنصر واحد",
+            "other": "# عنصر",
+            "two": "عنصران",
+            "zero": "# عنصر"
+          },
+          "kind": "plural",
+          "name": "total"
+        }
+      ],
+      "locale": "ar",
+      "sourceId": "components.RequestModal.BulkRequestModal.submittingprogress",
+      "sourcePosition": 2867,
+      "sourceProfile": [
+        {
+          "branches": {
+            "one": "item",
+            "other": "items"
+          },
+          "kind": "plural",
+          "name": "total"
+        }
+      ],
+      "valid": true
+    },
+    {
+      "currentProfile": [
+        {
+          "branches": {
+            "one": "Eintrag",
+            "other": "Einträgen"
+          },
+          "kind": "plural",
+          "name": "total"
+        }
+      ],
+      "failure": null,
+      "finalProfile": [
+        {
+          "branches": {
+            "one": "Eintrag",
+            "other": "Einträgen"
+          },
+          "kind": "plural",
+          "name": "total"
+        }
+      ],
+      "locale": "de",
+      "sourceId": "components.RequestModal.BulkRequestModal.submittingprogress",
+      "sourcePosition": 2867,
+      "sourceProfile": [
+        {
+          "branches": {
+            "one": "item",
+            "other": "items"
+          },
+          "kind": "plural",
+          "name": "total"
+        }
+      ],
+      "valid": true
+    },
+    {
+      "currentProfile": [
+        {
+          "branches": {
+            "many": "# elementos",
+            "one": "# elemento",
+            "other": "# elementos"
+          },
+          "kind": "plural",
+          "name": "total"
+        }
+      ],
+      "failure": null,
+      "finalProfile": [
+        {
+          "branches": {
+            "many": "# elementos",
+            "one": "# elemento",
+            "other": "# elementos"
+          },
+          "kind": "plural",
+          "name": "total"
+        }
+      ],
+      "locale": "es",
+      "sourceId": "components.RequestModal.BulkRequestModal.submittingprogress",
+      "sourcePosition": 2867,
+      "sourceProfile": [
+        {
+          "branches": {
+            "one": "item",
+            "other": "items"
+          },
+          "kind": "plural",
+          "name": "total"
+        }
+      ],
+      "valid": true
+    },
+    {
+      "currentProfile": [
+        {
+          "branches": {
+            "many": "# éléments",
+            "one": "# élément",
+            "other": "# éléments"
+          },
+          "kind": "plural",
+          "name": "total"
+        }
+      ],
+      "failure": null,
+      "finalProfile": [
+        {
+          "branches": {
+            "many": "# éléments",
+            "one": "# élément",
+            "other": "# éléments"
+          },
+          "kind": "plural",
+          "name": "total"
+        }
+      ],
+      "locale": "fr",
+      "sourceId": "components.RequestModal.BulkRequestModal.submittingprogress",
+      "sourcePosition": 2867,
+      "sourceProfile": [
+        {
+          "branches": {
+            "one": "item",
+            "other": "items"
+          },
+          "kind": "plural",
+          "name": "total"
+        }
+      ],
+      "valid": true
+    },
+    {
+      "currentProfile": [
+        {
+          "branches": {
+            "one": "# आइटम",
+            "other": "# आइटम"
+          },
+          "kind": "plural",
+          "name": "total"
+        }
+      ],
+      "failure": null,
+      "finalProfile": [
+        {
+          "branches": {
+            "one": "# आइटम",
+            "other": "# आइटम"
+          },
+          "kind": "plural",
+          "name": "total"
+        }
+      ],
+      "locale": "hi",
+      "sourceId": "components.RequestModal.BulkRequestModal.submittingprogress",
+      "sourcePosition": 2867,
+      "sourceProfile": [
+        {
+          "branches": {
+            "one": "item",
+            "other": "items"
+          },
+          "kind": "plural",
+          "name": "total"
+        }
+      ],
+      "valid": true
+    },
+    {
+      "currentProfile": [
+        {
+          "branches": {
+            "one": "# item",
+            "other": "# item"
+          },
+          "kind": "plural",
+          "name": "total"
+        }
+      ],
+      "failure": null,
+      "finalProfile": [
+        {
+          "branches": {
+            "one": "# item",
+            "other": "# item"
+          },
+          "kind": "plural",
+          "name": "total"
+        }
+      ],
+      "locale": "id",
+      "sourceId": "components.RequestModal.BulkRequestModal.submittingprogress",
+      "sourcePosition": 2867,
+      "sourceProfile": [
+        {
+          "branches": {
+            "one": "item",
+            "other": "items"
+          },
+          "kind": "plural",
+          "name": "total"
+        }
+      ],
+      "valid": true
+    },
+    {
+      "currentProfile": [
+        {
+          "branches": {
+            "other": "#件"
+          },
+          "kind": "plural",
+          "name": "total"
+        }
+      ],
+      "failure": null,
+      "finalProfile": [
+        {
+          "branches": {
+            "other": "#件"
+          },
+          "kind": "plural",
+          "name": "total"
+        }
+      ],
+      "locale": "ja",
+      "sourceId": "components.RequestModal.BulkRequestModal.submittingprogress",
+      "sourcePosition": 2867,
+      "sourceProfile": [
+        {
+          "branches": {
+            "one": "item",
+            "other": "items"
+          },
+          "kind": "plural",
+          "name": "total"
+        }
+      ],
+      "valid": true
+    },
+    {
+      "currentProfile": [
+        {
+          "branches": {
+            "other": "#개 항목"
+          },
+          "kind": "plural",
+          "name": "total"
+        }
+      ],
+      "failure": null,
+      "finalProfile": [
+        {
+          "branches": {
+            "other": "#개 항목"
+          },
+          "kind": "plural",
+          "name": "total"
+        }
+      ],
+      "locale": "ko",
+      "sourceId": "components.RequestModal.BulkRequestModal.submittingprogress",
+      "sourcePosition": 2867,
+      "sourceProfile": [
+        {
+          "branches": {
+            "one": "item",
+            "other": "items"
+          },
+          "kind": "plural",
+          "name": "total"
+        }
+      ],
+      "valid": true
+    },
+    {
+      "currentProfile": [
+        {
+          "branches": {
+            "many": "# itens",
+            "one": "# item",
+            "other": "# itens"
+          },
+          "kind": "plural",
+          "name": "total"
+        }
+      ],
+      "failure": null,
+      "finalProfile": [
+        {
+          "branches": {
+            "many": "# itens",
+            "one": "# item",
+            "other": "# itens"
+          },
+          "kind": "plural",
+          "name": "total"
+        }
+      ],
+      "locale": "pt_BR",
+      "sourceId": "components.RequestModal.BulkRequestModal.submittingprogress",
+      "sourcePosition": 2867,
+      "sourceProfile": [
+        {
+          "branches": {
+            "one": "item",
+            "other": "items"
+          },
+          "kind": "plural",
+          "name": "total"
+        }
+      ],
+      "valid": true
+    },
+    {
+      "currentProfile": [
+        {
+          "branches": {
+            "other": "# mục"
+          },
+          "kind": "plural",
+          "name": "total"
+        }
+      ],
+      "failure": null,
+      "finalProfile": [
+        {
+          "branches": {
+            "other": "# mục"
+          },
+          "kind": "plural",
+          "name": "total"
+        }
+      ],
+      "locale": "vi",
+      "sourceId": "components.RequestModal.BulkRequestModal.submittingprogress",
+      "sourcePosition": 2867,
+      "sourceProfile": [
+        {
+          "branches": {
+            "one": "item",
+            "other": "items"
+          },
+          "kind": "plural",
+          "name": "total"
+        }
+      ],
+      "valid": true
+    },
+    {
+      "currentProfile": [
+        {
+          "branches": {
+            "other": "# 个项目"
+          },
+          "kind": "plural",
+          "name": "total"
+        }
+      ],
+      "failure": null,
+      "finalProfile": [
+        {
+          "branches": {
+            "other": "# 个项目"
+          },
+          "kind": "plural",
+          "name": "total"
+        }
+      ],
+      "locale": "zh_Hans",
+      "sourceId": "components.RequestModal.BulkRequestModal.submittingprogress",
+      "sourcePosition": 2867,
+      "sourceProfile": [
+        {
+          "branches": {
+            "one": "item",
+            "other": "items"
+          },
+          "kind": "plural",
+          "name": "total"
+        }
+      ],
+      "valid": true
+    },
+    {
+      "currentProfile": [
+        {
+          "branches": {
+            "other": "# 個項目"
+          },
+          "kind": "plural",
+          "name": "total"
+        }
+      ],
+      "failure": null,
+      "finalProfile": [
+        {
+          "branches": {
+            "other": "# 個項目"
+          },
+          "kind": "plural",
+          "name": "total"
+        }
+      ],
+      "locale": "zh_Hant",
+      "sourceId": "components.RequestModal.BulkRequestModal.submittingprogress",
+      "sourcePosition": 2867,
+      "sourceProfile": [
+        {
+          "branches": {
+            "one": "item",
+            "other": "items"
+          },
+          "kind": "plural",
+          "name": "total"
+        }
+      ],
+      "valid": true
+    }
+  ],
+  "validation": "ICU formatter root and required plural branches checked; raw placeholder profiles are reviewed separately for the documented ICU number-sign equivalences."
+}

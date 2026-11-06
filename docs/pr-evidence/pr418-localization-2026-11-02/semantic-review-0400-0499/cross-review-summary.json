@@ -1,0 +1,130 @@
+{
+  "blockers": [],
+  "crossReview": {
+    "countsByLocale": {
+      "ar": {
+        "accept-proposal": 46,
+        "hold": 0,
+        "refine-proposal": 0
+      },
+      "de": {
+        "accept-proposal": 10,
+        "hold": 0,
+        "refine-proposal": 1
+      },
+      "es": {
+        "accept-proposal": 30,
+        "hold": 0,
+        "refine-proposal": 2
+      },
+      "fr": {
+        "accept-proposal": 13,
+        "hold": 0,
+        "refine-proposal": 0
+      },
+      "hi": {
+        "accept-proposal": 18,
+        "hold": 0,
+        "refine-proposal": 0
+      },
+      "id": {
+        "accept-proposal": 25,
+        "hold": 0,
+        "refine-proposal": 0
+      },
+      "ja": {
+        "accept-proposal": 28,
+        "hold": 0,
+        "refine-proposal": 0
+      },
+      "ko": {
+        "accept-proposal": 32,
+        "hold": 0,
+        "refine-proposal": 1
+      },
+      "pt-BR": {
+        "accept-proposal": 29,
+        "hold": 0,
+        "refine-proposal": 4
+      },
+      "vi": {
+        "accept-proposal": 45,
+        "hold": 0,
+        "refine-proposal": 1
+      },
+      "zh-CN": {
+        "accept-proposal": 39,
+        "hold": 0,
+        "refine-proposal": 1
+      },
+      "zh-TW": {
+        "accept-proposal": 48,
+        "hold": 0,
+        "refine-proposal": 1
+      }
+    },
+    "coverageBoundary": "This cross-review adjudicates the 374 primary correction proposals only. It does not independently re-review the 816 primary accept-current cells.",
+    "decisionCounts": {
+      "accept-proposal": 363,
+      "hold": 0,
+      "refine-proposal": 11
+    },
+    "nativeSpeakerReviewRequired": true,
+    "proposalCount": 374
+  },
+  "directLocales": [
+    "ar",
+    "de",
+    "es",
+    "fr",
+    "hi",
+    "id",
+    "ja",
+    "ko",
+    "pt-BR",
+    "vi",
+    "zh-CN",
+    "zh-TW"
+  ],
+  "inputHashes": {
+    "packetManifestSha256": "3ea74cc6491aecddf9ffcedc69610f13d20b199059aef69bb3c2407feb0826ea",
+    "primaryLedgerSha256": "162ed7800e0ab4f720a8f061408bc0e4b0134174f58e2e12d9a2cc5228e7b2b6"
+  },
+  "liveHead": "aedb6f552bb9ad4a0d93a23f461e997a78163e33",
+  "liveTree": "8e666e5bf89b8888a37a914c6917d57347943ce8",
+  "outputHashes": {
+    "crossreviewLedgerSha256": "0f40bb555cdcef3b01588c6cc8a097a318b7789c8e105752320cf70912095cec",
+    "preservedPriorDispositionsSha256": "48b35733d59e98eab8a5fc825b70e50939ebe5e4f88386f8ef063487fc874bb2",
+    "reattestationSha256": "480352fabf9f5653af0e72e616e518b4ed727ffb39c5018f92761a9d9be96197"
+  },
+  "priorDispositions": {
+    "count": 10,
+    "file": "preserved-prior-dispositions.jsonl",
+    "preservation": "Copied byte-for-byte from the primary ledger; not re-adjudicated."
+  },
+  "pullRequest": 418,
+  "pullRequestState": "OPEN/DRAFT",
+  "pullRequestUrl": "https://github.com/snapetech-org/seerrng/pull/418",
+  "repository": "snapetech-org/seerrng",
+  "schemaVersion": 1,
+  "sourceCurrentTargetReattestation": {
+    "callerMismatches": 0,
+    "callerReferences": 8364,
+    "cells": 1200,
+    "evidenceFile": "re-attestation.json",
+    "sourceOrTargetHashMismatches": 0
+  },
+  "sourceIdPositionRange": {
+    "count": 100,
+    "startInclusive": 400,
+    "stopExclusive": 500
+  },
+  "validation": [
+    "Packet and primary-ledger SHA256SUMS verified before review.",
+    "Current live PR head/tree and all 1,200 source/current-target hashes re-attested.",
+    "All caller file blobs, exact source lines and adjacent context re-attested.",
+    "All 374 final strings pass source placeholder parity.",
+    "No tests, builds, CI, browser work, or PR mutations performed."
+  ],
+  "window": "W700-749"
+}

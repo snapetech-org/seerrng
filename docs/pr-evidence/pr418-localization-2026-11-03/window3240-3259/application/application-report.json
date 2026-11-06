@@ -1,0 +1,121 @@
+{
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "window": "W3240-W3259",
+  "reviewInputHead": "d514838bbcca18d7255ba04a0266c4a78b41a499",
+  "reviewInputTree": "3c90e26e7e04e4e008ed43f4004dbb0048357f92",
+  "exactBaseHead": "c335cbd29244207e534f8a4f0d1e139d12c104c0",
+  "exactBaseTree": "baa8c358f7e0e286ebd4209f4fca9b62f78be5f6",
+  "cells": 240,
+  "changedCells": 94,
+  "finalDispositions": {
+    "accept-current": 146,
+    "correction": 68,
+    "refinement": 26
+  },
+  "holds": 0,
+  "readbackCells": 240,
+  "readbackMismatches": 0,
+  "catalogKeySetsPreserved": true,
+  "catalogKeyOrderPreservedPerLocale": true,
+  "sourceCurrentAndFinalHashesVerified": true,
+  "placeholderMismatches": 0,
+  "protectedLiteralMismatches": 0,
+  "localesChanged": 12,
+  "catalogKeysPerLocale": 9494,
+  "postApplyLocaleCatalogs": {
+    "es": {
+      "path": "src/i18n/locale/es.json",
+      "sha256": "7aadca5cb0743604fdf9a129ef2bf9b9f2bdcf0efd989bc414a4990a93eef25b",
+      "gitBlob": "0eb241ac677895c11c40aed761219bde118e826b",
+      "keyCount": 9494,
+      "orderedKeySha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072"
+    },
+    "zh_Hans": {
+      "path": "src/i18n/locale/zh_Hans.json",
+      "sha256": "01273be2b8e406637bc08f54174ac0fdb11c2a3f8e89517c8d17ebe2fbca4604",
+      "gitBlob": "ba08057d8a01707497bb7c588d92321588a0a4e4",
+      "keyCount": 9494,
+      "orderedKeySha256": "8d5fd7bd4351bc64c5ee813f2e50196608869e165866f3202a312078732c2baf"
+    },
+    "hi": {
+      "path": "src/i18n/locale/hi.json",
+      "sha256": "ef78e439bd64f98de8c5fb38adc5aa7bcc7e9291daae001c1954425251479244",
+      "gitBlob": "901ddcf0586b6a8159e8d1d4a1758af4dc95b44d",
+      "keyCount": 9494,
+      "orderedKeySha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072"
+    },
+    "de": {
+      "path": "src/i18n/locale/de.json",
+      "sha256": "170cc3a4b03b39792e49ca6809a1e963f3b6d1c66dcf9dd75a6a4e0843d33929",
+      "gitBlob": "af0a88ee74bbdcb5bcb576b6efaa65026887a1d0",
+      "keyCount": 9494,
+      "orderedKeySha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072"
+    },
+    "ja": {
+      "path": "src/i18n/locale/ja.json",
+      "sha256": "7d5ab557747aad8a92f1950eed3ef189786b11e5f730714aabd22325a553cfe8",
+      "gitBlob": "df47e69b3d0865a1d2f1187b3acbd09a295cf605",
+      "keyCount": 9494,
+      "orderedKeySha256": "8d5fd7bd4351bc64c5ee813f2e50196608869e165866f3202a312078732c2baf"
+    },
+    "fr": {
+      "path": "src/i18n/locale/fr.json",
+      "sha256": "4b389d6c11c4322ea9eb38825f4f4a31bf9923b9ccf3d337ffc5f666e3c073e4",
+      "gitBlob": "74182d57f991adcfb56ebd91d85e4cddc225ee69",
+      "keyCount": 9494,
+      "orderedKeySha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072"
+    },
+    "pt_BR": {
+      "path": "src/i18n/locale/pt_BR.json",
+      "sha256": "364986b8d1614504eb598afe67cf4fee1290d614f640d11b15535b382b5eea0a",
+      "gitBlob": "0e92142b4ebdc2570c2fa9c6e113e1d98352d295",
+      "keyCount": 9494,
+      "orderedKeySha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072"
+    },
+    "ar": {
+      "path": "src/i18n/locale/ar.json",
+      "sha256": "a2a0a50a64e60f867d9fb56cae0e037cdbae0d356f00f523914e5c7575871abf",
+      "gitBlob": "bdfb8028be788654f99f6bf379e557e7c71f9561",
+      "keyCount": 9494,
+      "orderedKeySha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072"
+    },
+    "ko": {
+      "path": "src/i18n/locale/ko.json",
+      "sha256": "c8fbef1cf616ab93c418b0e079ba2fe90f89ed41ed18392d35685e33358de982",
+      "gitBlob": "a826c90e527d6ed29ff1bec92e006dcc9a9fe198",
+      "keyCount": 9494,
+      "orderedKeySha256": "8d5fd7bd4351bc64c5ee813f2e50196608869e165866f3202a312078732c2baf"
+    },
+    "zh_Hant": {
+      "path": "src/i18n/locale/zh_Hant.json",
+      "sha256": "6cf506932bb794a2fc4e4534fd2493b76d3c328964947669d245605feb4c8a96",
+      "gitBlob": "153aae440d92bddd35f7e837e6243651b053ec4b",
+      "keyCount": 9494,
+      "orderedKeySha256": "8d5fd7bd4351bc64c5ee813f2e50196608869e165866f3202a312078732c2baf"
+    },
+    "vi": {
+      "path": "src/i18n/locale/vi.json",
+      "sha256": "0d51aba3f6e674f3790d56408207a617cca51ad74ac7569b2fffd4b81177c36b",
+      "gitBlob": "3ccf6752e1ed535ff842e07509ff4e6e08f274ed",
+      "keyCount": 9494,
+      "orderedKeySha256": "8d5fd7bd4351bc64c5ee813f2e50196608869e165866f3202a312078732c2baf"
+    },
+    "id": {
+      "path": "src/i18n/locale/id.json",
+      "sha256": "67921c01c0da2337a91b6da2b6b29533592c2c4cadb5b932de04ce41e733abcd",
+      "gitBlob": "49f92dc728cee1f903bc6eda50e0aac4939de21a",
+      "keyCount": 9494,
+      "orderedKeySha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072"
+    }
+  },
+  "prHeadReattestedBeforeApply": "c335cbd29244207e534f8a4f0d1e139d12c104c0",
+  "prStateAtReattestation": "open",
+  "prDraftAtReattestation": true,
+  "callerFilesReattested": 6,
+  "callerContextRowsReattested": 108,
+  "nativeSpeakerApproval": false,
+  "testsBuildsScansOrCiRun": false,
+  "workflowChanges": false,
+  "releasesMergesTags": false
+}

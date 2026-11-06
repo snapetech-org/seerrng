@@ -1,0 +1,24 @@
+{
+  "inputHead": "ebebae19e24b9236192eda287938b65eabf29667",
+  "inputTree": "8e5ef5985dee40f5c1191dff794e323a851d3ef8",
+  "sourceRange": [
+    3100,
+    3119
+  ],
+  "sourceIds": 20,
+  "localeCount": 12,
+  "cellCount": 240,
+  "blindDispositionCounts": {
+    "accept-current": 159,
+    "correction": 47,
+    "refinement": 34,
+    "hold": 0
+  },
+  "independentCandidates": 81,
+  "callerIdsReattested": 20,
+  "callerLinesReattested": 189,
+  "placeholderMismatches": 0,
+  "markupMismatches": 0,
+  "primaryProposalFilesReadAtDecisionTime": false,
+  "nativeSpeakerApproval": false
+}

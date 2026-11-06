@@ -1,0 +1,505 @@
+{
+  "baseRef": "main",
+  "baseSha": "221d8e0d542802da7529cd272c928cc747677e5c",
+  "callerFilePins": {
+    "src/components/Requests/destructiveActions.tsx": {
+      "byteCount": 5369,
+      "gitBlob": "09884f99a738ce4402b5fb121d15022f0efc3a67",
+      "lineCount": 173,
+      "path": "src/components/Requests/destructiveActions.tsx",
+      "sha256": "16d562185c1e1f3a94398369b4ab3eec28085033dcc3465c32557752687d1d57"
+    },
+    "src/components/Requests/index.tsx": {
+      "byteCount": 100417,
+      "gitBlob": "84f6a19674b329df0ef6be6483d74bbaeb110ccb",
+      "lineCount": 3115,
+      "path": "src/components/Requests/index.tsx",
+      "sha256": "25b612dcda274fe2ea64b76f169587e153b04a675c9b8cd817814d9fbfde5360"
+    }
+  },
+  "callerReferenceCountsById": {
+    "components.Requests.requestTime": {
+      "contextResolution": "definition-only-or-shared-under-other-namespace",
+      "contextRowCount": 1,
+      "directMessagePropertyReferenceCount": 0,
+      "dynamicReferenceContextCount": 0
+    },
+    "components.Requests.requested": {
+      "contextResolution": "definition-only-or-shared-under-other-namespace",
+      "contextRowCount": 5,
+      "directMessagePropertyReferenceCount": 0,
+      "dynamicReferenceContextCount": 0
+    },
+    "components.Requests.requestedAt": {
+      "contextResolution": "definition-only-or-shared-under-other-namespace",
+      "contextRowCount": 1,
+      "directMessagePropertyReferenceCount": 0,
+      "dynamicReferenceContextCount": 0
+    },
+    "components.Requests.requestedBy": {
+      "contextResolution": "definition-only-or-shared-under-other-namespace",
+      "contextRowCount": 1,
+      "directMessagePropertyReferenceCount": 0,
+      "dynamicReferenceContextCount": 0
+    },
+    "components.Requests.requestedByLabel": {
+      "contextResolution": "direct-property-reference-found",
+      "contextRowCount": 2,
+      "directMessagePropertyReferenceCount": 1,
+      "dynamicReferenceContextCount": 0
+    },
+    "components.Requests.requestedDateTime": {
+      "contextResolution": "direct-property-reference-found",
+      "contextRowCount": 2,
+      "directMessagePropertyReferenceCount": 1,
+      "dynamicReferenceContextCount": 0
+    },
+    "components.Requests.retry": {
+      "contextResolution": "direct-property-reference-found",
+      "contextRowCount": 2,
+      "directMessagePropertyReferenceCount": 1,
+      "dynamicReferenceContextCount": 0
+    },
+    "components.Requests.retryFailed": {
+      "contextResolution": "direct-property-reference-found",
+      "contextRowCount": 2,
+      "directMessagePropertyReferenceCount": 1,
+      "dynamicReferenceContextCount": 0
+    },
+    "components.Requests.retryLoad": {
+      "contextResolution": "direct-property-reference-found",
+      "contextRowCount": 3,
+      "directMessagePropertyReferenceCount": 2,
+      "dynamicReferenceContextCount": 0
+    },
+    "components.Requests.retryLoadTooltip": {
+      "contextResolution": "direct-property-reference-found",
+      "contextRowCount": 3,
+      "directMessagePropertyReferenceCount": 2,
+      "dynamicReferenceContextCount": 0
+    },
+    "components.Requests.retrySuccess": {
+      "contextResolution": "direct-property-reference-found",
+      "contextRowCount": 2,
+      "directMessagePropertyReferenceCount": 1,
+      "dynamicReferenceContextCount": 0
+    },
+    "components.Requests.retryTooltip": {
+      "contextResolution": "direct-property-reference-found",
+      "contextRowCount": 2,
+      "directMessagePropertyReferenceCount": 1,
+      "dynamicReferenceContextCount": 0
+    },
+    "components.Requests.retrying": {
+      "contextResolution": "definition-only-or-shared-under-other-namespace",
+      "contextRowCount": 1,
+      "directMessagePropertyReferenceCount": 0,
+      "dynamicReferenceContextCount": 0
+    },
+    "components.Requests.romsModern": {
+      "contextResolution": "definition-only-or-shared-under-other-namespace",
+      "contextRowCount": 1,
+      "directMessagePropertyReferenceCount": 0,
+      "dynamicReferenceContextCount": 0
+    },
+    "components.Requests.romsRetro": {
+      "contextResolution": "definition-only-or-shared-under-other-namespace",
+      "contextRowCount": 1,
+      "directMessagePropertyReferenceCount": 0,
+      "dynamicReferenceContextCount": 0
+    },
+    "components.Requests.runtime": {
+      "contextResolution": "direct-property-reference-found",
+      "contextRowCount": 2,
+      "directMessagePropertyReferenceCount": 1,
+      "dynamicReferenceContextCount": 0
+    },
+    "components.Requests.scrollProgressLeft": {
+      "contextResolution": "direct-property-reference-found",
+      "contextRowCount": 2,
+      "directMessagePropertyReferenceCount": 1,
+      "dynamicReferenceContextCount": 0
+    },
+    "components.Requests.scrollProgressRight": {
+      "contextResolution": "direct-property-reference-found",
+      "contextRowCount": 2,
+      "directMessagePropertyReferenceCount": 1,
+      "dynamicReferenceContextCount": 0
+    },
+    "components.Requests.search": {
+      "contextResolution": "direct-property-reference-found",
+      "contextRowCount": 2,
+      "directMessagePropertyReferenceCount": 1,
+      "dynamicReferenceContextCount": 0
+    },
+    "components.Requests.searchRequests": {
+      "contextResolution": "direct-property-reference-found",
+      "contextRowCount": 3,
+      "directMessagePropertyReferenceCount": 2,
+      "dynamicReferenceContextCount": 0
+    }
+  },
+  "candidateFreeInputOnly": true,
+  "cellCount": 240,
+  "contextRows": 20,
+  "head": "fcbc579f724e50a07dc0e12b00127c4f6084c453",
+  "headRef": "codex/seerrng-localization-overhaul-20261028",
+  "liveDraft": true,
+  "livePrState": "OPEN",
+  "localeCatalogPins": {
+    "src/i18n/locale/ar.json": {
+      "gitBlob": "639419c162c7ee6b202f4224c36089016dda6744",
+      "keyCount": 9494,
+      "orderedKeySequenceSha256_lf_join_no_trailing_lf": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+      "sha256": "76a219d4c0fe2e2e1a8710599836a8b33707a1cc4dc203aaa7d8ef55c7403dea"
+    },
+    "src/i18n/locale/de.json": {
+      "gitBlob": "679cabe9207c76ec7164b57d8d9c4bb71fb1be2b",
+      "keyCount": 9494,
+      "orderedKeySequenceSha256_lf_join_no_trailing_lf": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+      "sha256": "a98548f3dde2a00cb1e53aa7e391b9f2f8c2bf263786bc497d95ee46ed35e96a"
+    },
+    "src/i18n/locale/en.json": {
+      "gitBlob": "12e04a118c30b71b3714291adeaf9fdb2735cee4",
+      "keyCount": 9494,
+      "orderedKeySequenceSha256_lf_join_no_trailing_lf": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+      "sha256": "75ff3c90b52aedd636a506281ffbd6fb2d3739c61294b6008a517f17647e2316"
+    },
+    "src/i18n/locale/es.json": {
+      "gitBlob": "da00a5d74c7bcb910464098211b7961020dc8ef5",
+      "keyCount": 9494,
+      "orderedKeySequenceSha256_lf_join_no_trailing_lf": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+      "sha256": "456eaf0736f3cfc792d394f26bed3ea40cb44f15ae7a46d7b45f3f56102a8756"
+    },
+    "src/i18n/locale/fr.json": {
+      "gitBlob": "08b008536e8193f76e14df2be7157d41e899307a",
+      "keyCount": 9494,
+      "orderedKeySequenceSha256_lf_join_no_trailing_lf": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+      "sha256": "4889cfc0fb774391bc8d14a3c10ef904a0497da8b7022ba131f1c21a7198772f"
+    },
+    "src/i18n/locale/hi.json": {
+      "gitBlob": "3fbff4dd1e9981627c991ee0187daa2e3aaf20ba",
+      "keyCount": 9494,
+      "orderedKeySequenceSha256_lf_join_no_trailing_lf": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+      "sha256": "7e26f179697ad38ac49d9951c987cc99543a8d16b27bc6f66db4e8dffa607f02"
+    },
+    "src/i18n/locale/id.json": {
+      "gitBlob": "2bc142e7b2da10ae4530e0d5cbe0b5a393aae916",
+      "keyCount": 9494,
+      "orderedKeySequenceSha256_lf_join_no_trailing_lf": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+      "sha256": "ba4acb04e057af1b0ee45861f0a56cec19eab03f002a2cc5352a3bc6fded8bfc"
+    },
+    "src/i18n/locale/ja.json": {
+      "gitBlob": "1e9ef9e0a6250a0a0b6c7003e7dc7b0e1e567b05",
+      "keyCount": 9494,
+      "orderedKeySequenceSha256_lf_join_no_trailing_lf": "8d5fd7bd4351bc64c5ee813f2e50196608869e165866f3202a312078732c2baf",
+      "sha256": "3779b08469021d3fe50b04f64c2f1ec97452a08ae053c41d12a3185a3ad654a8"
+    },
+    "src/i18n/locale/ko.json": {
+      "gitBlob": "3e3b1ac49745c98890e2fa859a15468dd02db6dd",
+      "keyCount": 9494,
+      "orderedKeySequenceSha256_lf_join_no_trailing_lf": "8d5fd7bd4351bc64c5ee813f2e50196608869e165866f3202a312078732c2baf",
+      "sha256": "0391217e08f36c4151976492eee35e8a984f9879705aa4356bbe41d126d721a8"
+    },
+    "src/i18n/locale/pt_BR.json": {
+      "gitBlob": "9270379d783907447794851105520be2edae1f96",
+      "keyCount": 9494,
+      "orderedKeySequenceSha256_lf_join_no_trailing_lf": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+      "sha256": "c092313df03696cdb45d146b1318050d0d7ace1f80d5e740143e8a0125aad85f"
+    },
+    "src/i18n/locale/vi.json": {
+      "gitBlob": "72ba3e94ff166f6651be14e00d95e7e54e787bdc",
+      "keyCount": 9494,
+      "orderedKeySequenceSha256_lf_join_no_trailing_lf": "8d5fd7bd4351bc64c5ee813f2e50196608869e165866f3202a312078732c2baf",
+      "sha256": "494bab742144750d6d646116092a9912f041d5ead17adc93076f6b1a571d103c"
+    },
+    "src/i18n/locale/zh_Hans.json": {
+      "gitBlob": "16c64a51477add58ded98dec8157912f9b690a49",
+      "keyCount": 9494,
+      "orderedKeySequenceSha256_lf_join_no_trailing_lf": "8d5fd7bd4351bc64c5ee813f2e50196608869e165866f3202a312078732c2baf",
+      "sha256": "b6e523c0fdb366c2a633a7dc1292e070e88c1be5b6ad5871e351940f946e4cdf"
+    },
+    "src/i18n/locale/zh_Hant.json": {
+      "gitBlob": "707e011d56b28ef6e9e0fc1a5fc0a093f6bf3a46",
+      "keyCount": 9494,
+      "orderedKeySequenceSha256_lf_join_no_trailing_lf": "8d5fd7bd4351bc64c5ee813f2e50196608869e165866f3202a312078732c2baf",
+      "sha256": "005fe69b448fbc51f727929812861f3ac613268e0f01a794cfa4f3437513546e"
+    }
+  },
+  "localeInfo": [
+    {
+      "catalogKey": "es",
+      "clientFile": "es.json",
+      "direction": "ltr",
+      "nativeName": "Español",
+      "reviewStatus": "unreviewed",
+      "tag": "es"
+    },
+    {
+      "catalogKey": "zh_Hans",
+      "clientFile": "zh_Hans.json",
+      "direction": "ltr",
+      "nativeName": "简体中文",
+      "reviewStatus": "unreviewed",
+      "tag": "zh-CN"
+    },
+    {
+      "catalogKey": "hi",
+      "clientFile": "hi.json",
+      "direction": "ltr",
+      "nativeName": "हिन्दी",
+      "reviewStatus": "unreviewed",
+      "tag": "hi"
+    },
+    {
+      "catalogKey": "de",
+      "clientFile": "de.json",
+      "direction": "ltr",
+      "nativeName": "Deutsch",
+      "reviewStatus": "unreviewed",
+      "tag": "de"
+    },
+    {
+      "catalogKey": "ja",
+      "clientFile": "ja.json",
+      "direction": "ltr",
+      "nativeName": "日本語",
+      "reviewStatus": "unreviewed",
+      "tag": "ja"
+    },
+    {
+      "catalogKey": "fr",
+      "clientFile": "fr.json",
+      "direction": "ltr",
+      "nativeName": "Français",
+      "reviewStatus": "unreviewed",
+      "tag": "fr"
+    },
+    {
+      "catalogKey": "pt_BR",
+      "clientFile": "pt_BR.json",
+      "direction": "ltr",
+      "nativeName": "Português (Brasil)",
+      "reviewStatus": "unreviewed",
+      "tag": "pt-BR"
+    },
+    {
+      "catalogKey": "ar",
+      "clientFile": "ar.json",
+      "direction": "rtl",
+      "nativeName": "العربية",
+      "reviewStatus": "unreviewed",
+      "tag": "ar"
+    },
+    {
+      "catalogKey": "ko",
+      "clientFile": "ko.json",
+      "direction": "ltr",
+      "nativeName": "한국어",
+      "reviewStatus": "unreviewed",
+      "tag": "ko"
+    },
+    {
+      "catalogKey": "zh_Hant",
+      "clientFile": "zh_Hant.json",
+      "direction": "ltr",
+      "nativeName": "繁體中文",
+      "reviewStatus": "unreviewed",
+      "tag": "zh-TW"
+    },
+    {
+      "catalogKey": "vi",
+      "clientFile": "vi.json",
+      "direction": "ltr",
+      "nativeName": "Tiếng Việt",
+      "reviewStatus": "unreviewed",
+      "tag": "vi"
+    },
+    {
+      "catalogKey": "id",
+      "clientFile": "id.json",
+      "direction": "ltr",
+      "nativeName": "Bahasa Indonesia",
+      "reviewStatus": "unreviewed",
+      "tag": "id"
+    }
+  ],
+  "localeOrder": [
+    "es",
+    "zh_Hans",
+    "hi",
+    "de",
+    "ja",
+    "fr",
+    "pt_BR",
+    "ar",
+    "ko",
+    "zh_Hant",
+    "vi",
+    "id"
+  ],
+  "nativeSpeakerApproval": false,
+  "proposedTranslationsIncluded": false,
+  "protectedTermScreeningSet": [
+    "Seerr",
+    "ChaptarrNG",
+    "Bindery",
+    "Bookshelf",
+    "Radarr",
+    "Sonarr",
+    "Plex",
+    "Emby",
+    "Jellyfin",
+    "TMDb",
+    "IMDb",
+    "Open Library",
+    "ComicVine",
+    "MusicBrainz",
+    "TheTVDB",
+    "Trakt",
+    "Letterboxd",
+    "Prowlarr",
+    "Bazarr",
+    "Lidarr",
+    "Readarr",
+    "Whisparr",
+    "Sportarr",
+    "Audiobookshelf"
+  ],
+  "pullRequest": 418,
+  "range": [
+    3400,
+    3419
+  ],
+  "remotePullRefHead": "fcbc579f724e50a07dc0e12b00127c4f6084c453",
+  "repository": "snapetech-org/seerrng",
+  "schemaVersion": 1,
+  "semanticReviewDecisionsIncluded": false,
+  "sourceCatalogKeyCount": 9494,
+  "sourceCatalogSha256": "75ff3c90b52aedd636a506281ffbd6fb2d3739c61294b6008a517f17647e2316",
+  "sourceIds": [
+    {
+      "position": 3400,
+      "source": "Time",
+      "sourceId": "components.Requests.requestTime",
+      "sourceSha256": "33b93476cf597a3330653b66a658983d892ac264b5d6029a2dc642b9b1f30870"
+    },
+    {
+      "position": 3401,
+      "source": "Requested",
+      "sourceId": "components.Requests.requested",
+      "sourceSha256": "2d9e28289facab94b41f9592b7f55bc4fc10fed54e789669468e8da31c9a5caf"
+    },
+    {
+      "position": 3402,
+      "source": "Requested {date}",
+      "sourceId": "components.Requests.requestedAt",
+      "sourceSha256": "ce6dd2e4522a71d2e7a72c6d89135681d3099de0ec4ffe602593451cd598be6c"
+    },
+    {
+      "position": 3403,
+      "source": "Requested by {user}",
+      "sourceId": "components.Requests.requestedBy",
+      "sourceSha256": "48656c3d79533e3be43c215de66290da77521102732eb8814679b3451f6e3394"
+    },
+    {
+      "position": 3404,
+      "source": "Requested By",
+      "sourceId": "components.Requests.requestedByLabel",
+      "sourceSha256": "80e37c7ff11cde00392c2efe89423254878e5a8002ab93691643a702fcd113ce"
+    },
+    {
+      "position": 3405,
+      "source": "Requested On",
+      "sourceId": "components.Requests.requestedDateTime",
+      "sourceSha256": "88e59c5e86c29b65ffd637cfc58d6ae0c2e8feb6d93d2257ff95b15a7f01ffa7"
+    },
+    {
+      "position": 3406,
+      "source": "Retry",
+      "sourceId": "components.Requests.retry",
+      "sourceSha256": "942087cc2d41e01304b7195558d093d10c72af8e838c7556d6a02d471ee71852"
+    },
+    {
+      "position": 3407,
+      "source": "Unable to retry this request.",
+      "sourceId": "components.Requests.retryFailed",
+      "sourceSha256": "e201643acbe56364c6e18e21f7fb13612b028f45442f88873acf6cf86b65d949"
+    },
+    {
+      "position": 3408,
+      "source": "Retry",
+      "sourceId": "components.Requests.retryLoad",
+      "sourceSha256": "942087cc2d41e01304b7195558d093d10c72af8e838c7556d6a02d471ee71852"
+    },
+    {
+      "position": 3409,
+      "source": "Reload request information from Seerr. This does not restart or download any media.",
+      "sourceId": "components.Requests.retryLoadTooltip",
+      "sourceSha256": "0753480495e1eae4eeb5722dbb84915a906bb92f6c16af3220a00748097d1549"
+    },
+    {
+      "position": 3410,
+      "source": "Request queued for another attempt.",
+      "sourceId": "components.Requests.retrySuccess",
+      "sourceSha256": "6ef1f01dd908e4726c458fbb578958c5662f2a8aaf0df82c41557c1c8f4dbd96"
+    },
+    {
+      "position": 3411,
+      "source": "Restart this failed request from approval.",
+      "sourceId": "components.Requests.retryTooltip",
+      "sourceSha256": "38f8c44aa1749ca7eb5870989529570429bfb5de278fddf526458878d0a3a8e8"
+    },
+    {
+      "position": 3412,
+      "source": "Retrying…",
+      "sourceId": "components.Requests.retrying",
+      "sourceSha256": "a16c8b1c95956fbabce3ed5506c7e1b4a2d10c86f7adfc7ae084f2d3df9f5174"
+    },
+    {
+      "position": 3413,
+      "source": "ROMs - Modern",
+      "sourceId": "components.Requests.romsModern",
+      "sourceSha256": "b11d4f35b6c77fd3162ce226123fa9821d0bda220ac28912f04712c2a82a2bc4"
+    },
+    {
+      "position": 3414,
+      "source": "ROMs - Retro",
+      "sourceId": "components.Requests.romsRetro",
+      "sourceSha256": "3b70bad7f07c14a7aa4ef43c2b191313e8b4bad277bad44678bde00245d1dd88"
+    },
+    {
+      "position": 3415,
+      "source": "Runtime",
+      "sourceId": "components.Requests.runtime",
+      "sourceSha256": "1093115897879aa3ad9511a1dc2850929cfb60ba45ec741605f69f5d20203472"
+    },
+    {
+      "position": 3416,
+      "source": "Scroll progress left",
+      "sourceId": "components.Requests.scrollProgressLeft",
+      "sourceSha256": "310d60aa7a6f43cd686429cee7130aae47f539b0ecbf2ae8b420027e97b499a5"
+    },
+    {
+      "position": 3417,
+      "source": "Scroll progress right",
+      "sourceId": "components.Requests.scrollProgressRight",
+      "sourceSha256": "b775edc09a433da5ec0083efea8bd5c0f98b2b7afe2b847f73398b902421f602"
+    },
+    {
+      "position": 3418,
+      "source": "Keyword Search",
+      "sourceId": "components.Requests.search",
+      "sourceSha256": "ec09661357211cb8739037eb9c976514fc448f407f603c4bca4e6a1f71facceb"
+    },
+    {
+      "position": 3419,
+      "source": "Search Requests",
+      "sourceId": "components.Requests.searchRequests",
+      "sourceSha256": "5eff1ccc63c2f223bc7d00518030922e17a9d35d0338bef2864b817d111c4cf7"
+    }
+  ],
+  "sourceOrderCount": 9494,
+  "sourceOrderSha256_lf_join_no_trailing_lf": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+  "tree": "30e1e5e610e88ba935e482fc7088311d00e214ae"
+}

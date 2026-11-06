@@ -1,0 +1,13 @@
+{
+  "crossReviewDisposition": "preserved-exact",
+  "crossReviewFinalTarget": "Tipo de problema",
+  "crossReviewFinalTargetHash": "1cd1be52b38250c8fbc651fc3038255e1f8862c0766fd5917af6a7621ebf4ca8",
+  "locale": "es",
+  "priorDisposition": "accept",
+  "priorFile": "docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-600-649/exact-hash-apply-plan.jsonl",
+  "priorFileSha256": "7d7f705289cf74d3e84b4bed7c1aedbf4cadf679c35939e3759c780e65877ad3",
+  "priorFinalTarget": "Tipo de problema",
+  "priorFinalTargetHash": "1cd1be52b38250c8fbc651fc3038255e1f8862c0766fd5917af6a7621ebf4ca8",
+  "priorRowSha256": "59ad0305b8643a3ad7c4509af10672f32b56f9817d76f57bb898764fdd6ddd55",
+  "sourceId": "components.IssueModal.CreateIssueModal.issueType"
+}

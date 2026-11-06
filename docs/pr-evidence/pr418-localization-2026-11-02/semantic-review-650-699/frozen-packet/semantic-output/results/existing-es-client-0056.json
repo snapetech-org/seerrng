@@ -1,0 +1,174 @@
+{
+  "schemaVersion": 1,
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "head": "5a4342176a8325c371a35d489cb01c58283bc983",
+  "tree": "98cd64952123c9b678e38250e7819cabb4476448",
+  "semanticManifestSha256": "3ea74cc6491aecddf9ffcedc69610f13d20b199059aef69bb3c2407feb0826ea",
+  "cellPlanSha256": "97c3402252a34aaa4f8f9f44a691281d9c35ff7b80d7edb3a26c752436af6558",
+  "retiredCellsSha256": "dc5ec05547e4da3079c0668f82a52da7999d89ef9d4f037c1cd72af9347ebd83",
+  "sourceBundleManifestSha256": "212491482d1b9207fed755af6e80ac80a97184ec8dbe84d0c4ad2bd711acae0d",
+  "sourceRowsSha256": "ad91236a31e32f199ff449f9ed4597ea6af0f5a4eff32772cefa84278cafb68c",
+  "sourceCellsSha256": "8bfcd1aa9b5d5aba4fb6317c194cd544d601543ebf250899a84a719b52e468e1",
+  "planRows": 115260,
+  "actions": {
+    "semantic-review-required": 114783,
+    "reuse-equivalence-decision": 477
+  },
+  "retiredRows": 48,
+  "reusableEquivalenceCells": 477,
+  "targetsApplied": false,
+  "batchId": "existing-es-client-0056",
+  "batchSha256": "0e6bfed6e62a3f80f80ffbf481375267b798dbc76f01b887b11ad855bcd3b27a",
+  "rowCount": 32,
+  "model": "qwen3.8-27b-heretic:q4km",
+  "attempt": 1,
+  "decisions": [
+    {
+      "id": "components.Layout.UserDropdown.MiniQuotaDisplay.musicrequests",
+      "verdict": "correct",
+      "target": "Solicitudes de música",
+      "confidence": "high",
+      "reason": "Consistency with 'Solicitudes de software' and natural phrasing; 'Music Solicitudes' is a calque."
+    },
+    {
+      "id": "components.Layout.UserDropdown.MiniQuotaDisplay.seriesrequests",
+      "verdict": "correct",
+      "target": "Solicitudes de series",
+      "confidence": "high",
+      "reason": "Consistency with sibling keys using 'Solicitudes' and standard UI terminology."
+    },
+    {
+      "id": "components.Layout.UserDropdown.MiniQuotaDisplay.softwarerequests",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.Layout.UserDropdown.myprofile",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.Layout.UserDropdown.requests",
+      "verdict": "correct",
+      "target": "Solicitudes",
+      "confidence": "high",
+      "reason": "Consistency with the 'Solicitudes' terminology used in the MiniQuotaDisplay sub-items."
+    },
+    {
+      "id": "components.Layout.UserDropdown.settings",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.Layout.UserDropdown.signout",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.Layout.UserDropdown.userMenu",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.Layout.UserWarnings.emailInvalid",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.Layout.UserWarnings.emailRequired",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.Layout.UserWarnings.passwordRequired",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.Layout.UserWarnings.profileIncomplete",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.Layout.VersionStatus.commitsbehind",
+      "verdict": "correct",
+      "target": "{commitsBehind} {commitsBehind, plural, one {cambio} other {cambios}} por detrás",
+      "confidence": "high",
+      "reason": "The source ICU plural syntax only defines 'one' and 'other'. The target incorrectly includes a 'many' category which is not present in the source and may cause rendering issues or inconsistency."
+    },
+    {
+      "id": "components.Layout.VersionStatus.outofdate",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.Layout.VersionStatus.streammain",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.Layout.VersionStatus.streamstable",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.Layout.VersionStatus.updateCheckUnavailable",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.ListView.continueSearch",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.LiveTv.FollowedTeams.choose",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.LiveTv.FollowedTeams.description",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.LiveTv.FollowedTeams.failed",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.LiveTv.FollowedTeams.follow",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.LiveTv.FollowedTeams.none",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.LiveTv.FollowedTeams.team",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.LiveTv.FollowedTeams.title",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.LiveTv.FollowedTeams.unavailable",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.LiveTv.FollowedTeams.unfollow",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.LiveTv.LiveTvButton.airingsTitle",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.LiveTv.LiveTvButton.airs",
+      "verdict": "correct",
+      "target": "Emisión",
+      "confidence": "high",
+      "reason": "'Aire' is a false friend for 'Airs' (broadcasts). 'Emisión' is the correct term for broadcast schedule in this context."
+    },
+    {
+      "id": "components.LiveTv.LiveTvButton.cannotRequest",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.LiveTv.LiveTvButton.channel",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.LiveTv.LiveTvButton.close",
+      "verdict": "keep"
+    }
+  ],
+  "decisionsSha256": "04118ee976a0cc6af256e2f3aaa2aa8c6ea26d37fc0644e011bbbac650e36966",
+  "rawResponseSha256": "38d2672490ddf821439be9c56b1ffdb802d0ad4dcbb8693b678e219b539460e9",
+  "rawResponseFile": "/mnt/disks/scratch/task-scratch/seerrng-review-window-650-700-422072-20261102/semantic-output/responses/existing-es-client-0056-attempt-1.json"
+}

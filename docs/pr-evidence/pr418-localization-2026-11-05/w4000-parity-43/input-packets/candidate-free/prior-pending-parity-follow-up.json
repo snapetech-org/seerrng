@@ -1,0 +1,57 @@
+{
+  "schema": "seerrng.localization.pending-catalog-parity-follow-up.v1",
+  "recordedAtWindow": "W4000-W4019",
+  "recordedAtHead": "ac193096ebfc0007183348b24e35bf6fee33f67a",
+  "currentEnglishSourceCount": 9496,
+  "status": "OPEN",
+  "reason": "English source IDs added by integrated main are absent from all non-English catalogs",
+  "selectionRule": "Translate these source IDs in their source-order window; preserve English key order and then reattest locale parity.",
+  "items": [
+    {
+      "sourceId": "discovery.accounts.traktCallbackFailed",
+      "sourceText": "Trakt did not return authorization to SeerrNG. Check the public HTTPS Application URL and registered callback URL in the Trakt application, then try again.",
+      "position": 6578,
+      "sourceIdSha256": "16980c8f0290e6e2184f21e0b0707fb31e3f270fbc32dbef4ee5a88d3a285e02",
+      "sourceTextSha256": "3510a66fb99198bc2f018b4a8671e4e0dd63f169385f7c9aa57167d5793a7f34",
+      "offsetInDueWindow": 18,
+      "dueWindow": "W6560-W6579",
+      "missingLocales": [
+        "es",
+        "zh-Hans",
+        "hi",
+        "de",
+        "ja",
+        "fr",
+        "pt-BR",
+        "ar",
+        "ko",
+        "zh-Hant",
+        "vi",
+        "id"
+      ]
+    },
+    {
+      "sourceId": "discovery.accounts.traktSetup",
+      "sourceText": "To connect Trakt, an administrator must set a public HTTPS Application URL in Settings → General and register that URL followed by /api/v1/integrations/discovery/trakt/callback in the Trakt application.",
+      "position": 6579,
+      "sourceIdSha256": "14741c2fa0ec19a7b7f71bc419490ed3d8c01f35547011391af6380b6b490b80",
+      "sourceTextSha256": "4e1206d043fa9d4e1794609c7601db66b28fbb63ec012f5bf3467424c4179ea2",
+      "offsetInDueWindow": 19,
+      "dueWindow": "W6560-W6579",
+      "missingLocales": [
+        "es",
+        "zh-Hans",
+        "hi",
+        "de",
+        "ja",
+        "fr",
+        "pt-BR",
+        "ar",
+        "ko",
+        "zh-Hant",
+        "vi",
+        "id"
+      ]
+    }
+  ]
+}

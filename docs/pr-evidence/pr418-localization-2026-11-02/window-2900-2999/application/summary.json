@@ -1,0 +1,21 @@
+{
+  "repository": "snapetech-org/SeerrNG",
+  "pullRequest": 418,
+  "head": "58697945e3d3fb44c37d49db0cc0f88e3af110cc",
+  "tree": "e3076937fe10b4dd3821ea573e8e5e21601fce7d",
+  "w2900CellsReviewed": 1200,
+  "w2900ApplyRows": 273,
+  "setupCellsReviewed": 12,
+  "setupAcceptedPrimaryRows": 3,
+  "setupAcceptedIndependentRefinements": 1,
+  "combinedApplyRows": 277,
+  "readbackRows": 1212,
+  "catalogs": 12,
+  "catalogKeyCountPerLocale": 9494,
+  "orderedKeysetsPreserved": true,
+  "allReadbackHashesMatch": true,
+  "spanish": "Conectar servicios",
+  "spanishHeadedFitReview": "Pending on final pushed application head",
+  "nativeSpeakerApproval": false,
+  "testsBuildScansCi": false
+}

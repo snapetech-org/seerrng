@@ -1,0 +1,15 @@
+{
+  "pullRequest": 418,
+  "state": "open",
+  "draft": true,
+  "apiHead": "a0104b4c84a9c4561020ca72062171b22ffc49f2",
+  "branchRefHead": "a0104b4c84a9c4561020ca72062171b22ffc49f2",
+  "pullRefHead": "a0104b4c84a9c4561020ca72062171b22ffc49f2",
+  "apiHeadTree": "aaa44c8019c58fde7ae796065e8aae7ac11d7a80",
+  "apiBase": "fa40534ccced75bde1125c14760514fcd5d7de4d",
+  "apiBaseTree": "729219c17bf8ca431d9682025256c584d67f081f",
+  "currentMain": "016bcf8db7475b2105b9b488ff67ed7d1c096508",
+  "currentMainTree": "be45de2c5ffc98098adcdc362b491717c05a48c2",
+  "attestedUtc": "2026-11-04 18:56:33 UTC",
+  "worktreeClean": true
+}

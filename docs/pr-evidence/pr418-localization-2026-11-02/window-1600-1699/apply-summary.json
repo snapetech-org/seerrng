@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "baseHead": "5aceef6ed6e865ee89383738212d1ce1a5c1f552",
+  "baseTree": "dd6e3495c44c2c14acf8a7a4b09a21e935ceb16d",
+  "sourcePositions": [
+    1600,
+    1699
+  ],
+  "sourceIds": 100,
+  "reviewedCells": 1200,
+  "changedCells": 192,
+  "changedPrimaryCandidatesAccepted": 186,
+  "additionalCorrections": 3,
+  "additionalRefinements": 3,
+  "preservedPriorSpanishDispositions": 10,
+  "placeholderMarkupProtectedLiteralFailures": 0,
+  "catalogFilesChanged": 12,
+  "keysPerLocale": 9494,
+  "catalogKeyParity": "pass",
+  "readbackCells": 192,
+  "definitionOnlyCallerGapKeys": [
+    "components.IssueDetails.IssueMediaSummary.minutes",
+    "components.IssueList.IssueItem.openarr"
+  ],
+  "nativeSpeakerReview": "outstanding",
+  "browserReview": "outstanding",
+  "testsBuildsScansCIWorkflowsReleasesTagsMergesRun": false,
+  "changedCatalogSha256": {
+    "src/i18n/locale/ar.json": "b31fe0e6b79865aa96a8ad0d0282b707efdccf3fa87d1543f76c0ee135e97339",
+    "src/i18n/locale/de.json": "262bb546d8c2e66a564e6ac98bc356b74768183b0cc11dbe2fcee1c230746e25",
+    "src/i18n/locale/vi.json": "77d0c900e52d3cff4200b2ab9026934cfe8fab83962967352f446cc0e29bed79",
+    "src/i18n/locale/zh_Hans.json": "9abf738a61c36d2b1681dd5f0ba609046fc3f13686eb2001b6dac717d0308c66",
+    "src/i18n/locale/zh_Hant.json": "c42125d4b874c208e738b0b2d056bfb50a23378d68ff12c3ec388b5e86c0b3b4",
+    "src/i18n/locale/es.json": "ea2f454f843e2bfc7778eb00b5014ad24c616be4f1f186e44aea2b1aca49fb49",
+    "src/i18n/locale/fr.json": "47b5062428b9ab6b30c3fb72768612fdccca2dc4c8dc8e55c5f9d9a9c77721b2",
+    "src/i18n/locale/hi.json": "6c2194cbf973610ffbcc1f0976e2aafd2acb0d861b2d6a8e352fe7675e9346a1",
+    "src/i18n/locale/id.json": "8c87c7cd0021e33523696407b0b09d0a81b755e91105a50cd831bd192d3b6951",
+    "src/i18n/locale/ja.json": "c3ef13bd596fd3ef49ecb081bae894bf3df0ece470aa3ce3dd438e418131e45f",
+    "src/i18n/locale/ko.json": "cfa686e722ad3061a4dc591e0e18c5228babf24b558a68fd5cc8ca543bb6f796",
+    "src/i18n/locale/pt_BR.json": "38022e5ed233504ded04aebdc74af492d7a02476c156ef38933650ea327b8c8a"
+  }
+}

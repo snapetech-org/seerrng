@@ -1,0 +1,23 @@
+{
+  "acceptCurrent": 205,
+  "baselineProtectedLiteralMismatches": 2,
+  "callerContextRecords": 20,
+  "callerReferences": 21,
+  "candidateFreeChecksumsAndVerifier": "PASS",
+  "cells": 240,
+  "head": "12bb562dc0eb27165cc2c6fbd1ff2628d5f8574e",
+  "holds": 0,
+  "livePRAtBothEnds": "OPEN/DRAFT exact head/tree; deployments 0",
+  "nativeOrBrowserReviewClaim": false,
+  "placeholderMarkupNumericParity": "PASS",
+  "proposals": 35,
+  "protectedLiteralParity": "PASS",
+  "range": [
+    3860,
+    3879
+  ],
+  "recommendedProtectedLiteralMismatches": 0,
+  "result": "PASS",
+  "reviseCurrent": 35,
+  "tree": "b288494aa5a0842affc4e900d6ccb6b57d99c493"
+}

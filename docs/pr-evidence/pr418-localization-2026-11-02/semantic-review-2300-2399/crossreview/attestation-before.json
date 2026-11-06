@@ -1,0 +1,38 @@
+{
+  "base": "221d8e0d542802da7529cd272c928cc747677e5c",
+  "branch": "codex/seerrng-localization-overhaul-20261028",
+  "callerFiles": 5,
+  "callerFilesMatchRecordedBlobAndSha256": true,
+  "callerRows": 100,
+  "checkedAtLocal": "2026-11-02T13:13:10.651611-06:00",
+  "draft": true,
+  "githubCommitTree": "cebcfc11e0ea37c42f5b6e979e96cca8c89c7814",
+  "head": "d49b44895d0ded9796f0c970ad09141212e9a98f",
+  "host": "kspld0",
+  "primaryInputChecksumValidation": {
+    "INPUT-SHA256SUMS": {
+      "entries": 5,
+      "manifestSha256": "4fb434a3307cae9faaa1a82b2e869c81685a5475b0b86649553c18bb46dbcf1b",
+      "valid": true
+    },
+    "SHA256SUMS": {
+      "entries": 17,
+      "manifestSha256": "1b330243b632d4d6f54596a60fdb6573bcdf222fae9d3e9696e29ba9ddaa7e15",
+      "valid": true
+    }
+  },
+  "primaryInputManifestSha256": "eeb9da58f529edb84e1442eddabc539b5d796dcd77b4d9bf922483ebcfe3ebec",
+  "primaryReviewLedgerSha256": "280c99807ec7fee935a28285346cd39970e317b05ae100580b791f563cefe01f",
+  "pullRequest": 418,
+  "remoteBranchHead": "d49b44895d0ded9796f0c970ad09141212e9a98f",
+  "repository": "snapetech-org/SeerrNG",
+  "sourceCatalogAnd12LocaleCatalogsMatchRecordedBlobAndSha256": true,
+  "state": "open",
+  "tree": "cebcfc11e0ea37c42f5b6e979e96cca8c89c7814",
+  "worktree": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng",
+  "worktreeState": {
+    "head": "d49b44895d0ded9796f0c970ad09141212e9a98f",
+    "status": "",
+    "tree": "cebcfc11e0ea37c42f5b6e979e96cca8c89c7814"
+  }
+}

@@ -1,0 +1,96 @@
+{
+  "artifact": "SeerrNG PR #418 W3460-W3479 independent blind semantic review",
+  "inputDirectory": "/mnt/disks/scratch/task-scratch/seerrng-pr418-w3460-3479-candidate-20261103/candidate-free-input",
+  "inputOnly": true,
+  "inputFiles": [
+    {
+      "path": "/mnt/disks/scratch/task-scratch/seerrng-pr418-w3460-3479-candidate-20261103/candidate-free-input/PR-attestation.json",
+      "bytes": 1126,
+      "sha256": "0d2da6526372f943450e9660812d5cf2a09da2f88b88377ffbdc9fb845b630ef",
+      "manifestSha256": "0d2da6526372f943450e9660812d5cf2a09da2f88b88377ffbdc9fb845b630ef"
+    },
+    {
+      "path": "/mnt/disks/scratch/task-scratch/seerrng-pr418-w3460-3479-candidate-20261103/candidate-free-input/README.txt",
+      "bytes": 1188,
+      "sha256": "047c5894b9f56543a8a49dedea4db417cfec3cb2f296edb5243481cfb78144d6",
+      "manifestSha256": "047c5894b9f56543a8a49dedea4db417cfec3cb2f296edb5243481cfb78144d6"
+    },
+    {
+      "path": "/mnt/disks/scratch/task-scratch/seerrng-pr418-w3460-3479-candidate-20261103/candidate-free-input/caller-context-blocks.jsonl",
+      "bytes": 82942,
+      "sha256": "5999b460e5a0b813b19b6a260e667b417d50050a91dd86a45be8a07757a82d56",
+      "manifestSha256": "5999b460e5a0b813b19b6a260e667b417d50050a91dd86a45be8a07757a82d56"
+    },
+    {
+      "path": "/mnt/disks/scratch/task-scratch/seerrng-pr418-w3460-3479-candidate-20261103/candidate-free-input/caller-contexts.jsonl",
+      "bytes": 21884,
+      "sha256": "8d441295a091122af35f09d5950e9d3883cc23983f161e149ce8129a37315eff",
+      "manifestSha256": "8d441295a091122af35f09d5950e9d3883cc23983f161e149ce8129a37315eff"
+    },
+    {
+      "path": "/mnt/disks/scratch/task-scratch/seerrng-pr418-w3460-3479-candidate-20261103/candidate-free-input/caller-resolution-findings.json",
+      "bytes": 187,
+      "sha256": "2cb22b49e21f0afc2407d7ecd9fed77057a4a277506d4bab0cda0ec8f7b7c9d0",
+      "manifestSha256": "2cb22b49e21f0afc2407d7ecd9fed77057a4a277506d4bab0cda0ec8f7b7c9d0"
+    },
+    {
+      "path": "/mnt/disks/scratch/task-scratch/seerrng-pr418-w3460-3479-candidate-20261103/candidate-free-input/current-target-cells.jsonl",
+      "bytes": 239810,
+      "sha256": "c2ce7d019f25e18351a0a338952dbe8a0bd524c6986774f46740c72d72d51e8e",
+      "manifestSha256": "c2ce7d019f25e18351a0a338952dbe8a0bd524c6986774f46740c72d72d51e8e"
+    },
+    {
+      "path": "/mnt/disks/scratch/task-scratch/seerrng-pr418-w3460-3479-candidate-20261103/candidate-free-input/file-pins.json",
+      "bytes": 6100,
+      "sha256": "748333e2e26056b0bb683d1669778a662aa62a76e92a5501c2b8ce3815520aea",
+      "manifestSha256": "748333e2e26056b0bb683d1669778a662aa62a76e92a5501c2b8ce3815520aea"
+    },
+    {
+      "path": "/mnt/disks/scratch/task-scratch/seerrng-pr418-w3460-3479-candidate-20261103/candidate-free-input/queue-status.json",
+      "bytes": 966,
+      "sha256": "e30674695cddee7956204abbf38089caf172e3e60c256642e7fcb940a43dac13",
+      "manifestSha256": "e30674695cddee7956204abbf38089caf172e3e60c256642e7fcb940a43dac13"
+    },
+    {
+      "path": "/mnt/disks/scratch/task-scratch/seerrng-pr418-w3460-3479-candidate-20261103/candidate-free-input/source-cells.jsonl",
+      "bytes": 8983,
+      "sha256": "069014999867627520249ead0d1e30922068ded13c558b4d611af514e43601bf",
+      "manifestSha256": "069014999867627520249ead0d1e30922068ded13c558b4d611af514e43601bf"
+    },
+    {
+      "path": "/mnt/disks/scratch/task-scratch/seerrng-pr418-w3460-3479-candidate-20261103/candidate-free-input/source-order.jsonl",
+      "bytes": 9234,
+      "sha256": "45eef4101ab17067db5e1305f8301778df84da03a581b7175077ea6acd335bf2",
+      "manifestSha256": "45eef4101ab17067db5e1305f8301778df84da03a581b7175077ea6acd335bf2"
+    },
+    {
+      "path": "/mnt/disks/scratch/task-scratch/seerrng-pr418-w3460-3479-candidate-20261103/candidate-free-input/window.json",
+      "bytes": 6311,
+      "sha256": "2c8ce153678937d69b835671d26f9658113f6aae516fb83e4eea5e9be4004bfa",
+      "manifestSha256": "2c8ce153678937d69b835671d26f9658113f6aae516fb83e4eea5e9be4004bfa"
+    }
+  ],
+  "head": "76fd466ba7e44ed9853115f8fb1f8ab8bec93c8e",
+  "tree": "00a72de46a40df893a24e0a93e85ec505e035a2d",
+  "sourceCount": 20,
+  "cellCount": 240,
+  "localeOrder": [
+    "es",
+    "zh_Hans",
+    "hi",
+    "de",
+    "ja",
+    "fr",
+    "pt_BR",
+    "ar",
+    "ko",
+    "zh_Hant",
+    "vi",
+    "id"
+  ],
+  "callerCountTotal": 24,
+  "callerContextBlocks": 47,
+  "reviewMethod": "Use only source strings, current locale targets, placeholder data, and same-namespace caller/context blocks from the candidate-free packet. No other review outputs or repository files were inspected.",
+  "protectedLiteralPolicy": "This window has no opaque brands/product literals in the English source strings. The numeric minimum of 8 is checked as a numeric value; Chinese 八 is accepted as the equivalent value.",
+  "scopeLimit": "Machine blind semantic review only; no qualified native-speaker approval is claimed."
+}

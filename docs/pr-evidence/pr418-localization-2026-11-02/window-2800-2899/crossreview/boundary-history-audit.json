@@ -1,0 +1,16 @@
+{
+  "sourceBoundaryRecords": 4,
+  "backwardReadbackPosition": 2799,
+  "forwardReadbackPosition": 2900,
+  "localizedReadbacks": 24,
+  "readbackFailures": 0,
+  "priorDisposition": {
+    "matchingPriorRows": 1200,
+    "exactLivePriorDispositionsReused": 0,
+    "priorPacketDirectoriesScanned": 61,
+    "selectedSourceIds": 100,
+    "priorFinalsReused": 0,
+    "continuityThroughPosition": 2799,
+    "classification": "Prior matching rows were review-required/proposed-only or did not exactly match both source and final target; no frozen disposition was reused."
+  }
+}

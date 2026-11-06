@@ -1,0 +1,35 @@
+{
+  "retrievedUtc": "2026-11-02T22:23:14.637332+00:00",
+  "sources": [
+    {
+      "id": "duden_name_compound",
+      "title": "Duden, Rechtschreibregeln: Namen, D146",
+      "url": "https://www.duden.de/sprachwissen/rechtschreibregeln/namen",
+      "claimVerified": "Duden D146 states that compounds with multiple or multi-part names use hyphens, and lists Rio-de-la-Plata-Bucht among examples. It appears in the geographic-names section; the broader official §50 rule below is the direct basis for applying the pattern to a proper product name plus ID.",
+      "verification": "Official Duden page opened; D146 section and example were present."
+    },
+    {
+      "id": "amtliches_regelwerk_2024_paragraph_50",
+      "title": "Rat für deutsche Rechtschreibung, Amtliches Regelwerk 2024, §50",
+      "url": "https://www.rechtschreibrat.com/DOX/RfdR_Amtliches-Regelwerk_2024.pdf",
+      "claimVerified": "§50 states that a hyphen is set between all components of multi-part compounds whose initial components are proper names. Examples include Albrecht-Dürer-Allee, Heinrich-Heine-Platz, and Elbe-Havel-Kanal. This more directly supports German Open-Library-ID as a compound built from the multi-part proper name Open Library plus ID.",
+      "verification": "Official PDF opened and §50 text/examples located."
+    },
+    {
+      "id": "openlibrary_official_brand",
+      "title": "Open Library official home page",
+      "url": "https://openlibrary.org/",
+      "claimVerified": "The official site uses “Open Library” as its two-word name in the page heading and project description.",
+      "verification": "Official home page opened; exact spelling observed."
+    }
+  ],
+  "determination": {
+    "protectedLiteral": "Open Library",
+    "sourceId": "components.RequestList.RequestItem.olid",
+    "locale": "de",
+    "currentAndFinalTarget": "Open-Library-ID",
+    "decision": "accept-current exception",
+    "reason": "The source is the exact two-word product name followed by ID. Hyphenated compounding retains the proper name components; the checker’s exact-space substring rule does not account for German compounding. Duden D146 supports the hyphen pattern by example, while official §50 supplies the broader proper-name rule."
+  },
+  "nativeSpeakerReviewStillOutstanding": true
+}

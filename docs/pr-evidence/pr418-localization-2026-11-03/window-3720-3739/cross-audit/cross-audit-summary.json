@@ -1,0 +1,72 @@
+{
+  "schema": "seerrng-cross-audit-summary/v1",
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "window": "W3720-W3739",
+  "head": "1ca6ec2d5a0e9ef8000c69997e75648a8ccaf06e",
+  "tree": "6a51f3fb1d1f65c12bfe82bf47834626aa364488",
+  "cellCount": 240,
+  "localeCount": 12,
+  "sourceCount": 20,
+  "primaryDecisionCounts": {
+    "correction": 35,
+    "refinement": 16,
+    "accept-current": 189
+  },
+  "blindDispositionCounts": {
+    "correction": 19,
+    "refinement": 9,
+    "accept-current": 212
+  },
+  "crossDispositionCounts": {
+    "correction": 34,
+    "refinement": 16,
+    "accept-current": 190
+  },
+  "primaryBlindTargetDisagreements": 46,
+  "primaryBlindDispositionDisagreements": 28,
+  "targetDisagreementsAlsoDispositionDisagreements": 28,
+  "primaryBlindSharedChangedTargets": 7,
+  "selectedTargetChanges": 50,
+  "retainedCurrent": 190,
+  "newWindowHolds": 0,
+  "selectionSourcesAllCells": {
+    "primary": 30,
+    "blind": 13,
+    "consensus": 194,
+    "current": 3
+  },
+  "selectionSourcesAmongTargetDisagreements": {
+    "primary": 30,
+    "blind": 13,
+    "current": 3
+  },
+  "carriedCallerlessHoldsReattested": 12,
+  "priorWindowSelectionsReattestedByInput": 3720,
+  "baselineTokenMismatches": {
+    "placeholder": 0,
+    "markup": 0,
+    "numeric": 0,
+    "protectedLiteral": 1
+  },
+  "selectedTokenOrProtectedLiteralFailures": {
+    "placeholder": 0,
+    "icuPluralCategories": 0,
+    "markup": 0,
+    "numeric": 0,
+    "protectedLiteral": 0
+  },
+  "namedBrandLiteralFailures": 0,
+  "localizedManageRequestsLabelFailures": 0,
+  "baselineProtectedLiteralCorrection": {
+    "position": 3724,
+    "locale": "hi",
+    "missingFromCurrent": [
+      "IP"
+    ],
+    "selectedTargetContainsIP": true
+  },
+  "nativeSpeakerReviewPerformed": false,
+  "browserReviewPerformed": false,
+  "confidence": "moderate; source/caller semantic audit, no qualified native-speaker signoff"
+}

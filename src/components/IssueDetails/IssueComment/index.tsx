@@ -150,7 +150,7 @@ const IssueComment = ({
             {comment.user.displayName}
           </Link>
           {edited && (
-            <span className="refreshed-detail-text-muted ml-1">
+            <span className="refreshed-detail-text-muted ms-1">
               ({intl.formatMessage(messages.edited)})
             </span>
           )}

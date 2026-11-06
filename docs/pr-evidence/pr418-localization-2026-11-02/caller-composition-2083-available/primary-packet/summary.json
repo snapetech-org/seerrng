@@ -1,0 +1,14 @@
+{
+  "task": "SeerrNG PR #418 source-position 2083 Arabic caller-composition follow-up",
+  "repository": "snapetech-org/seerrng",
+  "pull_request": 418,
+  "head": "3af7b753f5a7a8ce304e0c116dbce9a76328b3ad",
+  "tree": "56a5c443734cee77822fa2a23a2385b2e6dfcf3e",
+  "source_ids": 1,
+  "reviewed_cells": 1,
+  "proposal": "المتاحة",
+  "status": "primary proposal complete; independent cross-review required",
+  "no_repo_or_pr_edits": true,
+  "no_tests_builds_ci_browser_releases_tags_or_merges": true,
+  "native_speaker_approval": false
+}

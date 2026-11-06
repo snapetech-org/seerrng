@@ -1,0 +1,205 @@
+{
+  "allSevenPrStartSnapshot": [
+    {
+      "baseRefOid": "221d8e0d542802da7529cd272c928cc747677e5c",
+      "headRefName": "codex/seerrng-localization-overhaul-20261028",
+      "headRefOid": "58697945e3d3fb44c37d49db0cc0f88e3af110cc",
+      "isDraft": true,
+      "pullRequest": 418,
+      "repository": "SeerrNG",
+      "state": "OPEN",
+      "url": "https://github.com/snapetech-org/seerrng/pull/418"
+    },
+    {
+      "baseRefOid": "03274100af783fdffaca4dd8436e163dc6b18795",
+      "headRefName": "codex/chaptarrng-localization-complete-20261031",
+      "headRefOid": "873405e333415b41feb870c597ef71af9f3dd5b5",
+      "isDraft": true,
+      "pullRequest": 190,
+      "repository": "chaptarrng",
+      "state": "OPEN",
+      "url": "https://github.com/snapetech-org/chaptarrng/pull/190"
+    },
+    {
+      "baseRefOid": "e188cd0c74c73071c94b04915e1babac2d2bf386",
+      "headRefName": "codex/localization-foundations-20261028",
+      "headRefOid": "0ea966692f4dec72e8830ebc1f085549968c587e",
+      "isDraft": false,
+      "pullRequest": 155,
+      "repository": "QuestarrNG",
+      "state": "OPEN",
+      "url": "https://github.com/snapetech-org/QuestarrNG/pull/155"
+    },
+    {
+      "baseRefOid": "bcd1eb41b5cdf8202acb5cf8e365e14761b743b5",
+      "headRefName": "task/localization-translation-review-20261030",
+      "headRefOid": "6db0b917343fc9fb605f8a4ecfbf9b4c21cebd1b",
+      "isDraft": true,
+      "pullRequest": 70,
+      "repository": "ROMarrNG",
+      "state": "OPEN",
+      "url": "https://github.com/snapetech-org/ROMarrNG/pull/70"
+    },
+    {
+      "baseRefOid": "2a2b188f10b9460a15bc6d5c34e406b0193d51ba",
+      "headRefName": "codex/slskr-l10n-audit-20261030",
+      "headRefOid": "ca71c6c90cbe6c1fa9ef0307a57b214e61e022b5",
+      "isDraft": true,
+      "pullRequest": 204,
+      "repository": "slskr",
+      "state": "OPEN",
+      "url": "https://github.com/snapetech-org/slskr/pull/204"
+    },
+    {
+      "baseRefOid": "f25d263a2a7cdb2c8f76c40c346cb10f749a9356",
+      "headRefName": "codex/slskdn-oidc-tooltip-localization-20261030",
+      "headRefOid": "0a6cbdcb606de1888045df358427eb2b81c85546",
+      "isDraft": true,
+      "pullRequest": 409,
+      "repository": "slskdN",
+      "state": "OPEN",
+      "url": "https://github.com/snapetech-org/slskdN/pull/409"
+    },
+    {
+      "baseRefOid": "0de7ddcf2f16a4399da8fd7904dc35f458b4837c",
+      "headRefName": "codex/torrentng-localization-audit-20261030",
+      "headRefOid": "11ff6fa2618e842e92716b7e92867769200e32e5",
+      "isDraft": true,
+      "pullRequest": 243,
+      "repository": "TorrentNG",
+      "state": "OPEN",
+      "url": "https://github.com/snapetech-org/TorrentNG/pull/243"
+    }
+  ],
+  "callerContextRows": 100,
+  "callerFiles": 6,
+  "callerReferences": 351,
+  "callerRowsNotFound": 0,
+  "catalogKeyCounts": {
+    "ar": 9494,
+    "de": 9494,
+    "es": 9494,
+    "fr": 9494,
+    "hi": 9494,
+    "id": 9494,
+    "ja": 9494,
+    "ko": 9494,
+    "pt_BR": 9494,
+    "vi": 9494,
+    "zh_Hans": 9494,
+    "zh_Hant": 9494
+  },
+  "catalogKeySetsIdentical": true,
+  "cellCount": 1200,
+  "confidenceCounts": {
+    "high": 192,
+    "moderate": 1008
+  },
+  "dispositions": {
+    "accept-current": 929,
+    "propose-correction": 191,
+    "refinement": 80
+  },
+  "exactApplyRows": 273,
+  "exactHead": "58697945e3d3fb44c37d49db0cc0f88e3af110cc",
+  "exactTree": "e3076937fe10b4dd3821ea573e8e5e21601fce7d",
+  "forwardBoundaryRowsAtW3000": 12,
+  "icuCheckedCells": 60,
+  "icuInvalidCells": 0,
+  "independentReviewRows": 1200,
+  "independentReviewSummary": {
+    "exactHead": "58697945e3d3fb44c37d49db0cc0f88e3af110cc",
+    "exactTree": "e3076937fe10b4dd3821ea573e8e5e21601fce7d",
+    "finalProposalCount": 273,
+    "nativeSpeakerApprovalClaimed": false,
+    "newIndependentProposalsAdopted": 32,
+    "primaryCandidatesUpdatedAfterReview": 6,
+    "proposalsBeforeIndependentReviews": 241,
+    "pullRequest": 418,
+    "reconciliationOutcomes": {
+      "agrees-accept-current": 927,
+      "independently-concurs-with-primary": 235,
+      "new-independent-proposal-adopted": 31,
+      "new-proposal-adopted-rationale-narrowed-to-spacing-refinement": 1,
+      "primary-candidate-adjusted-after-independent-review": 6
+    },
+    "repository": "snapetech-org/SeerrNG",
+    "reviewArtifactHashes": {
+      "subreview-2900-2949.jsonl": "1b3cd513669e9814345243ea2dc7bf16d95b4564f6d702bef8f7957167c4ae51",
+      "subreview-2950-2999.jsonl": "d99f460bb3db1f5e5e4ddfc7ede1fef4883939432ed850eeca31a882b7736cc6"
+    },
+    "reviewerSignoff": "Machine-assisted primary plus two independent machine-assisted half-window reviews; qualified native-speaker signoff remains outstanding.",
+    "sourceLocaleRowsReviewed": 1200,
+    "structuralFailures": 0,
+    "unresolvedHolds": 0,
+    "windowHalves": {
+      "2900-2949": {
+        "accept": 454,
+        "correction": 105,
+        "refinement": 41
+      },
+      "2950-2999": {
+        "accept-current": 473,
+        "concur-primary-candidate": 107,
+        "recommend-new-proposal": 16,
+        "recommend-primary-candidate-adjustment": 4
+      }
+    }
+  },
+  "localeCount": 12,
+  "machineReviewHolds": [],
+  "markupEquivalenceExceptionCells": 8,
+  "markupMismatchesCurrent": 8,
+  "markupMismatchesFinal": 8,
+  "markupReviewHolds": [],
+  "markupUnresolvedSemanticGapCount": 0,
+  "matchingPriorRows": 1212,
+  "nativeSpeakerReviewOutstanding": true,
+  "nativeSpeakerSignoffClaimed": false,
+  "nestedIcuPlaceholderBranchMismatchesCurrent": 0,
+  "nestedIcuPlaceholderBranchMismatchesFinal": 0,
+  "overallConfidence": "moderate",
+  "placeholderEquivalenceExceptionBranches": 4,
+  "placeholderMismatchesCurrent": 0,
+  "placeholderMismatchesFinal": 0,
+  "placeholderReviewHolds": [],
+  "previousW2899AllLocaleFinalTargetsMatchCurrent": 12,
+  "priorExactDispositionsReused": 0,
+  "proposalConfidenceCounts": {
+    "high": 192,
+    "moderate": 81
+  },
+  "proposalCount": 273,
+  "proposalsByLocale": {
+    "ar": 32,
+    "de": 1,
+    "es": 12,
+    "fr": 10,
+    "hi": 25,
+    "id": 16,
+    "ja": 34,
+    "ko": 15,
+    "pt_BR": 22,
+    "vi": 38,
+    "zh_Hans": 29,
+    "zh_Hant": 39
+  },
+  "protectedLiteralMismatchCellsCurrent": 0,
+  "protectedLiteralMismatchCellsFinal": 0,
+  "protectedLiteralMismatchDetailsCurrent": [],
+  "protectedLiteralMismatchDetailsFinal": [],
+  "pullRequest": 418,
+  "remoteHead": "58697945e3d3fb44c37d49db0cc0f88e3af110cc",
+  "repository": "snapetech-org/SeerrNG",
+  "repositoryOrPrEdited": false,
+  "sourceCount": 100,
+  "sourcePositionRange": [
+    2900,
+    2999
+  ],
+  "spanishDirectAddressRows": 3,
+  "spanishInformalFinalRows": 0,
+  "spanishRows": 100,
+  "testsBuildsScansCiBrowser": false,
+  "trueUnmappedSourceCount": 0
+}

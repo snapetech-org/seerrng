@@ -1,0 +1,7 @@
+{
+  "batchId": "existing-es-client-0078",
+  "attempt": 1,
+  "error": "ValueError: components.QuotaSelector.software: correction changes ICU placeholder structure",
+  "rawResponseSha256": "69c6dacfb3a87e5341edaf0f9c91a175dea553d9b698d9a815277b6bceb4a4cf",
+  "rawResponseFile": "/mnt/disks/scratch/task-scratch/seerrng-review-window-650-700-422072-20261102/semantic-output/responses/existing-es-client-0078-attempt-1.json"
+}

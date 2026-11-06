@@ -1,0 +1,42 @@
+{
+  "artifact": "SeerrNG PR #418 W3400–W3419 independent blind semantic review",
+  "head": "fcbc579f724e50a07dc0e12b00127c4f6084c453",
+  "tree": "30e1e5e610e88ba935e482fc7088311d00e214ae",
+  "decisionCounts": {
+    "accept-current": 236,
+    "refinement": 2,
+    "correction": 2
+  },
+  "files": [
+    {
+      "path": "README.md",
+      "bytes": 1009,
+      "sha256": "bfdedf6270e4224adb215f0de466c84d99b1367977f6a73de1aab35f771dfe69"
+    },
+    {
+      "path": "blind-decisions.jsonl",
+      "bytes": 619768,
+      "sha256": "73fa2e07240e92164bc7fc1a01ce92259d32a8eb2bfc4f5a47ca1b3d7141d522"
+    },
+    {
+      "path": "build_blind_review.py",
+      "bytes": 13526,
+      "sha256": "83ef3307d74349b1a23922cb2a22a9d30e20369c29914778b43dfbf7dbe6abf8"
+    },
+    {
+      "path": "input-verification.json",
+      "bytes": 3729,
+      "sha256": "67c5b85f4966f9b5592a6f3294fe96026a1e1a4200b0ec41aaa8a7178d12e3f5"
+    },
+    {
+      "path": "live-pr-verification.json",
+      "bytes": 661,
+      "sha256": "cef84cd7d18623305a75aacc6a5e9274b92408cfea852aa551c408b2ba344484"
+    },
+    {
+      "path": "summary.json",
+      "bytes": 1334,
+      "sha256": "688a5ae4722f6958875cabe8f25729136a7d2826d4f3af24f8f45c4529735ae1"
+    }
+  ]
+}

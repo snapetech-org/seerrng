@@ -1,0 +1,59 @@
+{
+  "artifact": "SeerrNG PR #418 W3760-W3779 independent blind translation review",
+  "baseRef": "main",
+  "baseSha": "fa40534ccced75bde1125c14760514fcd5d7de4d",
+  "callerReferenceCount": 20,
+  "callerlessPositions": [],
+  "candidateFreeChecksumListSha256": "25114409119b732f30be4c73e7c1cff0dd788edcbc8151e2d3fe2cd48d582b83",
+  "candidateFreeInputPath": "../candidate-free-input/",
+  "candidateFreeManifestSha256": "956267d819adaabe54f75e7143b915b28afbe76d04a6d3ffa26288421dc8700c",
+  "cellCount": 240,
+  "decisionCounts": {
+    "accept-current": 228,
+    "correct": 9,
+    "refine": 3
+  },
+  "head": "d317a07ea0e5456b6d4660470c57d1f205cd0587",
+  "headRef": "codex/seerrng-localization-overhaul-20261028",
+  "independentFromPrimaryOutput": true,
+  "liveDeploymentsAfter": 0,
+  "liveDeploymentsBefore": 0,
+  "localeCount": 12,
+  "localeOrder": [
+    "es",
+    "zh-Hans",
+    "hi",
+    "de",
+    "ja",
+    "fr",
+    "pt-BR",
+    "ar",
+    "ko",
+    "zh-Hant",
+    "vi",
+    "id"
+  ],
+  "nativeSpeakerReviewPerformed": false,
+  "packetType": "blind-review",
+  "priorHoldHashReattestations": 12,
+  "priorHoldsUnchanged": 12,
+  "priorSelectionHashMismatches": 0,
+  "priorSelectionHashReattestations": 3760,
+  "proposalCount": 12,
+  "proposedTokenMismatchCounts": {
+    "markupTags": 0,
+    "numericTokens": 0,
+    "placeholders": 0,
+    "protectedLiterals": 0
+  },
+  "pullRequest": 418,
+  "range": [
+    3760,
+    3779
+  ],
+  "repository": "snapetech-org/SeerrNG",
+  "schemaVersion": 1,
+  "sourceCount": 20,
+  "tree": "c1383dfb6e6fd4e926f9c89d4ec6b7e8ea7d6008",
+  "window": "W3760-W3779"
+}

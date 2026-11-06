@@ -1,0 +1,141 @@
+{
+  "head": "ebebae19e24b9236192eda287938b65eabf29667",
+  "tree": "8e5ef5985dee40f5c1191dff794e323a851d3ef8",
+  "sourceOrderCount": 9494,
+  "range": [
+    3120,
+    3139
+  ],
+  "sourceIds": [
+    {
+      "position": 3120,
+      "id": "components.RequestModal.requestcollectiontitle",
+      "source": "Request Collection"
+    },
+    {
+      "position": 3121,
+      "id": "components.RequestModal.requested",
+      "source": "Requested"
+    },
+    {
+      "position": 3122,
+      "id": "components.RequestModal.requestedited",
+      "source": "Request for <strong>{title}</strong> edited successfully!"
+    },
+    {
+      "position": 3123,
+      "id": "components.RequestModal.requesterror",
+      "source": "Something went wrong while submitting the request."
+    },
+    {
+      "position": 3124,
+      "id": "components.RequestModal.requestfrom",
+      "source": "{username}'s request is pending approval."
+    },
+    {
+      "position": 3125,
+      "id": "components.RequestModal.requestmovie4ktitle",
+      "source": "Request Movie in 4K"
+    },
+    {
+      "position": 3126,
+      "id": "components.RequestModal.requestmovietitle",
+      "source": "Request Movie"
+    },
+    {
+      "position": 3127,
+      "id": "components.RequestModal.requestpartial",
+      "source": "{created} requested; {failed} failed."
+    },
+    {
+      "position": 3128,
+      "id": "components.RequestModal.requestseries4ktitle",
+      "source": "Request Series in 4K"
+    },
+    {
+      "position": 3129,
+      "id": "components.RequestModal.requestseriestitle",
+      "source": "Request Series"
+    },
+    {
+      "position": 3130,
+      "id": "components.RequestModal.retryWatchStatus",
+      "source": "Retry Playback Check"
+    },
+    {
+      "position": 3131,
+      "id": "components.RequestModal.runtime",
+      "source": "Runtime"
+    },
+    {
+      "position": 3132,
+      "id": "components.RequestModal.saveAndRetry",
+      "source": "Save and Retry"
+    },
+    {
+      "position": 3133,
+      "id": "components.RequestModal.season",
+      "source": "Season"
+    },
+    {
+      "position": 3134,
+      "id": "components.RequestModal.seasonWatchGateAccessApproved",
+      "source": "A user manager approved the rule for your account. Turn it on in your profile when you want it to apply to your TV requests."
+    },
+    {
+      "position": 3135,
+      "id": "components.RequestModal.seasonWatchGateAccessOff",
+      "source": "Want later seasons to unlock after you watch the previous one? Ask a user manager to enable the watch requirement for your account."
+    },
+    {
+      "position": 3136,
+      "id": "components.RequestModal.seasonWatchGateAccessPending",
+      "source": "Your request for TV season access is waiting for a user manager to review it."
+    },
+    {
+      "position": 3137,
+      "id": "components.RequestModal.seasonWatchGateAccountRequired",
+      "source": "Link your Plex, Jellyfin, or Emby account and add this series to its library before requesting a later season."
+    },
+    {
+      "position": 3138,
+      "id": "components.RequestModal.seasonWatchGateIncomplete",
+      "source": "Watch every episode of Season {requiredSeason} before requesting Season {requestedSeason}."
+    },
+    {
+      "position": 3139,
+      "id": "components.RequestModal.seasonWatchGateLibraryRequired",
+      "source": "Add this series to your linked Plex, Jellyfin, or Emby library and sync it before requesting a later season."
+    }
+  ],
+  "locales": [
+    "ar",
+    "de",
+    "es",
+    "fr",
+    "hi",
+    "id",
+    "ja",
+    "ko",
+    "pt_BR",
+    "vi",
+    "zh_Hans",
+    "zh_Hant"
+  ],
+  "cellCount": 240,
+  "catalogSha256": {
+    "en": "75ff3c90b52aedd636a506281ffbd6fb2d3739c61294b6008a517f17647e2316",
+    "ar": "16b41b8c7e7ed6e08922c02280f8fe432ecfc0494826744359ef5eb981db427b",
+    "de": "1dcbd484f94986c9993560c9bffd8b80537669c55544b5c1a4192d43332c53ad",
+    "es": "a74ea25d84e460573edc872a5481babe3d0f4ff2454eb0d08a121451c8d90de9",
+    "fr": "c6508fe27b741a0e0905caee6b521aee0fb1f95e1ca8a8f0e077a8a3e35b3d6d",
+    "hi": "19d144a73d3608e1ba66efdaa1bc04a322cf8882cd5b65edbcf104be7a69741a",
+    "id": "d9c3f2e05cc5e663592aaf51bcda76f505970c2c59ff70f8baca28d1146f431f",
+    "ja": "149aaca60094fcfad1ea83576a62b15afe085e49df747b6ef9b381f90cbe43c3",
+    "ko": "1ce2024f28298b1dd0d181002ac9bd0267dd2084efef8ad9ffaaa1e2d035c71d",
+    "pt_BR": "a92098ac095dbf553c71a8977d4999abd021d8fa2ab6987e00febd1a8139cd74",
+    "vi": "90e86e8cb91a4df6cd24226123f16350b6a3d6c9f4ad1aa871bd83e70e24469d",
+    "zh_Hans": "b986efa6177355f5bc3a3ef41e075bcdff3bea79255e37926e7403236475937f",
+    "zh_Hant": "a08f716bf1ac8aca5cf84e322ab041c6e845dd9bf6f52760bb7e3f8b72678bcc"
+  }
+}

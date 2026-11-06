@@ -1,0 +1,40 @@
+{
+  "artifact": "SeerrNG PR #418 W3400–W3419 independent blind semantic review",
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "branch": "codex/seerrng-localization-overhaul-20261028",
+  "head": "fcbc579f724e50a07dc0e12b00127c4f6084c453",
+  "tree": "30e1e5e610e88ba935e482fc7088311d00e214ae",
+  "state": "OPEN",
+  "isDraft": true,
+  "window": "W3400–W3419",
+  "reviewedCells": 240,
+  "sourceCount": 20,
+  "localeCount": 12,
+  "decisionCounts": {
+    "accept-current": 236,
+    "refinement": 2,
+    "correction": 2
+  },
+  "holds": 0,
+  "recommendationsByCell": {
+    "3409:id": "refinement",
+    "3411:vi": "correction",
+    "3413:ar": "correction",
+    "3415:zh_Hans": "refinement"
+  },
+  "structuralChecks": {
+    "placeholderMismatches": 0,
+    "markupMismatches": 0,
+    "numericTokenMismatches": 0,
+    "edgeWhitespaceMismatches": 0,
+    "protectedLiteralChecks": 12,
+    "protectedLiteralMismatches": 0
+  },
+  "primaryComparisonPerformed": false,
+  "disagreements": "Not assessed during blind review; no primary output was opened.",
+  "nativeSpeakerApproval": false,
+  "repositoryOrPREdited": false,
+  "testsBuildsScansCIWorkflowBrowserMergeReleaseOrTagActions": false,
+  "reviewLimit": "Machine-assisted independent semantic review against exact source and caller packets; not native-speaker approval."
+}

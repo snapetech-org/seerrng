@@ -1,4 +1,5 @@
 import ButtonWithLoader from '@app/components/Common/ButtonWithLoader';
+import defineMessages from '@app/utils/defineMessages';
 import { buildLoginPath, getSafeReturnPath } from '@app/utils/loginReturn';
 import {
   clearOidcReturnState,
@@ -14,6 +15,12 @@ import type { PublicOidcProvider } from '@server/lib/settings';
 import { useRouter } from 'next/router';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useIntl } from 'react-intl';
+
+const messages = defineMessages('components.Login.OidcLoginButton', {
+  setupGuide: 'Provider setup guide',
+  setupGuideLabel:
+    '{provider} identity provider setup guide (opens in a new tab)',
+});
 
 const getQueryValue = (value: string | string[] | undefined) =>
   Array.isArray(value) ? value[0] : value;
@@ -201,10 +208,10 @@ export default function OidcLoginButton({
             src={provider.logo}
             alt=""
             aria-hidden="true"
-            className="mr-2 max-h-5 w-5"
+            className="me-2 max-h-5 w-5"
           />
         ) : brand ? (
-          <svg aria-hidden="true" className="mr-2 h-5 w-5" viewBox="0 0 24 24">
+          <svg aria-hidden="true" className="me-2 h-5 w-5" viewBox="0 0 24 24">
             <use
               href={`${versionedAsset('/images/oidc-provider-icons.svg')}#oidc-${brand.icon}`}
             />
@@ -215,21 +222,24 @@ export default function OidcLoginButton({
             src={versionedAsset('/images/openid.svg')}
             alt=""
             aria-hidden="true"
-            className="mr-2 max-h-5 w-5"
+            className="me-2 max-h-5 w-5"
           />
         )}
         <span className="min-w-0 truncate">{provider.name}</span>
       </ButtonWithLoader>
       <a
         className="mt-1 block text-center text-xs text-gray-400 underline underline-offset-2"
-        aria-label={`${brand?.label ?? provider.name} identity provider setup guide (opens in a new tab)`}
+        aria-label={intl.formatMessage(messages.setupGuideLabel, {
+          provider: brand?.label ?? provider.name,
+        })}
         href={
           brand?.setupUrl ?? 'https://openid.net/developers/how-connect-works/'
         }
         target="_blank"
         rel="noopener noreferrer"
       >
-        Provider setup guide <span aria-hidden="true">↗</span>
+        {intl.formatMessage(messages.setupGuide)}{' '}
+        <span aria-hidden="true">↗</span>
       </a>
     </div>
   );

@@ -1,0 +1,5 @@
+# SeerrNG PR #418 W3340–W3359 clean review input
+
+Candidate-free input for 20 contiguous English source IDs and 240 existing targets across 12 direct locales, pinned to live PR head 266d8fff4beb56eab17c9de0f6560c619577e3de and tree 5da8f5e38b95b4287821b603c4686fe866b83760. The preceding W3320–W3339 source window was checksum-verified and all 20 source IDs/texts reattested at this head.
+
+W3340 begins at components.Requests.genres; W3359 ends at components.Requests.mediaAndFormat. Boundaries: W3339 components.Requests.fourK; W3340 components.Requests.genres; W3360 components.Requests.mediaFilters. This input contains no review decisions or proposed translations. It pins all 13 locale catalogs, code/caller files, exact caller context snippets, source/current hashes, placeholder schemas, and protected-literal occurrences. Caller context rows: 55; source-level caller-gate hold findings: 1; current placeholder-parity exceptions: 0. Caller context resolution is distinct from a field-specific production caller. This machine review is not native-speaker approval.

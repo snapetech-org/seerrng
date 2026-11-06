@@ -1,0 +1,617 @@
+{
+  "head": "6bc8d0bd3dfb4f8c87c307a3e562e0fd12474118",
+  "sourceCatalog": {
+    "blob": "12e04a118c30b71b3714291adeaf9fdb2735cee4",
+    "bytes": 835513,
+    "path": "src/i18n/locale/en.json",
+    "sha256": "75ff3c90b52aedd636a506281ffbd6fb2d3739c61294b6008a517f17647e2316"
+  },
+  "sourceCount": 100,
+  "sourceList": [
+    {
+      "position": 2700,
+      "source": "MusicBrainz ID",
+      "sourceHash": "32565e47be28019e58aa03f4552d83cc6defee2ce7b3de761bbb2bc2099e6866",
+      "sourceId": "components.RequestList.RequestItem.mbid"
+    },
+    {
+      "position": 2701,
+      "source": "{mediaType} Not Found",
+      "sourceHash": "674c8a4c7829b3d6988812d3d0c3645ef6c83b8712db48b0cc8346abc8fe4b21",
+      "sourceId": "components.RequestList.RequestItem.mediaerror"
+    },
+    {
+      "position": 2702,
+      "source": "Modified",
+      "sourceHash": "9c1c1e9c247f7553d1a37fcdcccf839c090114a2cbc98386cac545ebbec562e0",
+      "sourceId": "components.RequestList.RequestItem.modified"
+    },
+    {
+      "position": 2703,
+      "source": "{date} by {user}",
+      "sourceHash": "525e706966d76adee773bf3b349ccee100142354e6832426495d4c213eb05f7e",
+      "sourceId": "components.RequestList.RequestItem.modifieduserdate"
+    },
+    {
+      "position": 2704,
+      "source": "Open Library ID",
+      "sourceHash": "23225fe5fae85a711419e9d182a508b59eeeb27faf754cd31020a3e38c272951",
+      "sourceId": "components.RequestList.RequestItem.olid"
+    },
+    {
+      "position": 2705,
+      "source": "Over quota",
+      "sourceHash": "6e9b818285e742224c8b04674e4d3040ae3a6c727f012155b2f576112b9b682e",
+      "sourceId": "components.RequestList.RequestItem.overQuota"
+    },
+    {
+      "position": 2706,
+      "source": "Partial Bookshelf link",
+      "sourceHash": "fe8d7d3cb80826087521e500201b1c0d9533f3be8c257a12a5aa62a2a3a80c3a",
+      "sourceId": "components.RequestList.RequestItem.partialBookService"
+    },
+    {
+      "position": 2707,
+      "source": "Profile",
+      "sourceHash": "090fdf5d8a9dd1ad848cb0ff9a91872d71d8729d802b5c05858333f1a501ed28",
+      "sourceId": "components.RequestList.RequestItem.profileName"
+    },
+    {
+      "position": 2708,
+      "source": "Remove from {arr}",
+      "sourceHash": "f9f3f570facf0e2f2a13ad4af150030f799ee9fbd8021566c194f3e74d5af4ec",
+      "sourceId": "components.RequestList.RequestItem.removearr"
+    },
+    {
+      "position": 2709,
+      "source": "Something went wrong while removing the media.",
+      "sourceHash": "b961378372d1d4ff725be7bbee0ca791e43901df8194063ebae6f9a4468ebf95",
+      "sourceId": "components.RequestList.RequestItem.removemediaerror"
+    },
+    {
+      "position": 2710,
+      "source": "Requested",
+      "sourceHash": "087756a93082ab245992b6a3443cd22debc6aaafe0fcc78a3b6f1d8d6a47fde3",
+      "sourceId": "components.RequestList.RequestItem.requested"
+    },
+    {
+      "position": 2711,
+      "source": "Requested",
+      "sourceHash": "3a6204b440fb56f84fb685b7d3d528376cb6be3867d0a55d1dafff1330848f12",
+      "sourceId": "components.RequestList.RequestItem.requesteddate"
+    },
+    {
+      "position": 2712,
+      "source": "{seasonCount, plural, one {Season} other {Seasons}}",
+      "sourceHash": "ed957e621b4a24da5c2348eac186151f9fd88c68d05e90d6e05f265f46892340",
+      "sourceId": "components.RequestList.RequestItem.seasons"
+    },
+    {
+      "position": 2713,
+      "source": "TMDB ID",
+      "sourceHash": "34e43c8670c235711d758a480457b7c6b1c21a549a97509ad40706f4801022b5",
+      "sourceId": "components.RequestList.RequestItem.tmdbid"
+    },
+    {
+      "position": 2714,
+      "source": "TheTVDB ID",
+      "sourceHash": "928f56855989b3c90577b31d2d84fff7ace091123b19cc11501e20f796882b43",
+      "sourceId": "components.RequestList.RequestItem.tvdbid"
+    },
+    {
+      "position": 2715,
+      "source": "Unknown Title",
+      "sourceHash": "13446dd5cf506c576b68a244e2bc310bcb7c85b6a0d99e9a5d88632a85ab5b0c",
+      "sourceId": "components.RequestList.RequestItem.unknowntitle"
+    },
+    {
+      "position": 2716,
+      "source": "Episode Queue · {count, plural, one {# episode} other {# episodes}} by administrator",
+      "sourceHash": "604048c7bf5e361fbfaadc8eff1039cc76367fa18ae1b3c5206735a17a81845f",
+      "sourceId": "components.RequestList.RequestItem.watchAheadAssigned"
+    },
+    {
+      "position": 2717,
+      "source": "Auto-Queued",
+      "sourceHash": "7e75b5ddae831f67d685bea8397339d27c6237ec76071ec49707a44e2b42b53b",
+      "sourceId": "components.RequestList.RequestItem.watchAheadEpisodeBadge"
+    },
+    {
+      "position": 2718,
+      "source": "Automatically requested by the Episode Queue as playback progressed.",
+      "sourceHash": "515afdbb0b030708fc5cb03e04e4090f16008733bc75daf5d9b33afc2890a393",
+      "sourceId": "components.RequestList.RequestItem.watchAheadEpisodeBadgeTooltip"
+    },
+    {
+      "position": 2719,
+      "source": "Media Filters",
+      "sourceHash": "16761bfb6e4d609ae6f7e115920fcb1a055186b05e70a166840653e1db67b46d",
+      "sourceId": "components.RequestList.mediaFilters"
+    },
+    {
+      "position": 2720,
+      "source": "Media Type",
+      "sourceHash": "67ea5801975884a840dacbcc0a3a60f81b05736fe99ff6ede7423d92d3a551c0",
+      "sourceId": "components.RequestList.mediaType"
+    },
+    {
+      "position": 2721,
+      "source": "Requests",
+      "sourceHash": "6e7a83acbf5e391dfcba74e500ceeee219dbd8575dbb444a528a9012953535e0",
+      "sourceId": "components.RequestList.requests"
+    },
+    {
+      "position": 2722,
+      "source": "Series Monitoring Requests",
+      "sourceHash": "3ee655359df06d511afae180b239dbdb5070ec83b338bc40b3e741cd51cc35a5",
+      "sourceId": "components.RequestList.seriesMonitoring"
+    },
+    {
+      "position": 2723,
+      "source": "Show All Requests",
+      "sourceHash": "67a09de8bac74e5ee97146236496d1ad4361737759e35b9b74732757b5c461ff",
+      "sourceId": "components.RequestList.showallrequests"
+    },
+    {
+      "position": 2724,
+      "source": "Most Recent",
+      "sourceHash": "9f480adbd5c132a59c22a03272391c28799b51418962b6cc4db6aea523e5cd5b",
+      "sourceId": "components.RequestList.sortAdded"
+    },
+    {
+      "position": 2725,
+      "source": "Sort By",
+      "sourceHash": "a40e7a19ba34863e131e1a2cfec09be332e7862a344e183a3e7bf13fecd7e141",
+      "sourceId": "components.RequestList.sortBy"
+    },
+    {
+      "position": 2726,
+      "source": "Toggle Sort Direction",
+      "sourceHash": "f400effd2fe3e671332cc4b015e139d7bb4d99c10acaf1735f44d937a14d35c7",
+      "sourceId": "components.RequestList.sortDirection"
+    },
+    {
+      "position": 2727,
+      "source": "Last Modified",
+      "sourceHash": "d880b0ad1eb6960435d84db51494240a4104fcb721805c72a682e24af4040940",
+      "sourceId": "components.RequestList.sortModified"
+    },
+    {
+      "position": 2728,
+      "source": "Task Filters",
+      "sourceHash": "1c515607ac57ec48f6e97f18e78830dd863559b1d9617b8d96c83e56b7d8d70e",
+      "sourceId": "components.RequestList.taskFilters"
+    },
+    {
+      "position": 2729,
+      "source": "Unable to connect to {services}. Some information may be unavailable.",
+      "sourceHash": "6d21464a857b768ea49926c62ec82b548e4666c017f06b7b9ff01f7ba55666a2",
+      "sourceId": "components.RequestList.unableToConnect"
+    },
+    {
+      "position": 2730,
+      "source": "Your adult scene request was approved and is being processed.",
+      "sourceHash": "9795b47bba42d8c47ce5d6904f35a26d0f5c054138bb3f31c081b7c53a5b33af",
+      "sourceId": "components.RequestModal.Adult.approved"
+    },
+    {
+      "position": 2731,
+      "source": "This scene is already available on this server.",
+      "sourceHash": "b9fac65c4f38bd8737db701a81cb849b1b5357668042bccd969bed721a0622b4",
+      "sourceId": "components.RequestModal.Adult.available"
+    },
+    {
+      "position": 2732,
+      "source": "Whisparr could not accept this scene request. Check the service and try again.",
+      "sourceHash": "2f8e68e634bddb96a0e27fd1e4ceca007721ffb87a61481dbf26798b31099336",
+      "sourceId": "components.RequestModal.Adult.backendError"
+    },
+    {
+      "position": 2733,
+      "source": "Something went wrong while canceling the request.",
+      "sourceHash": "5905dc9dd4cef51bc9f3c2a6fe2003117266b2cae63371855eacad6154386617",
+      "sourceId": "components.RequestModal.Adult.cancelError"
+    },
+    {
+      "position": 2734,
+      "source": "Cancel request",
+      "sourceHash": "693959f5bea08e7d3cb8048142daff06e565c356e5609163e68a02c47d2595c4",
+      "sourceId": "components.RequestModal.Adult.cancelRequest"
+    },
+    {
+      "position": 2735,
+      "source": "Request for <strong>{title}</strong> canceled.",
+      "sourceHash": "34d3075de54e08ae942b17cd21e0db0dfe4e00eb298cc2a763f67041305a8c1f",
+      "sourceId": "components.RequestModal.Adult.cancelled"
+    },
+    {
+      "position": 2736,
+      "source": "Adult requests are disabled by the administrator.",
+      "sourceHash": "90437a7de55b369b7037aa17cc79e66f8c70dd67c6bf1b572e5931e57d4a0b88",
+      "sourceId": "components.RequestModal.Adult.categoryDisabled"
+    },
+    {
+      "position": 2737,
+      "source": "Default ({name})",
+      "sourceHash": "f543a49baee00ad25ee8852c04ac4a697523294fede9f06a479cd5a103999dbb",
+      "sourceId": "components.RequestModal.Adult.defaultService"
+    },
+    {
+      "position": 2738,
+      "source": "Whisparr scene details could not be loaded.",
+      "sourceHash": "c0b4ff319a1940bd7fa0c3ff6e2dae7a14cfcd9b9995be847375a52863c18c0f",
+      "sourceId": "components.RequestModal.Adult.detailsUnavailable"
+    },
+    {
+      "position": 2739,
+      "source": "No Whisparr server is configured.",
+      "sourceHash": "db3aa8a8ebdca581ae93f29d36a932ac9b649671b654eb42273d7da9e1f35c59",
+      "sourceId": "components.RequestModal.Adult.noService"
+    },
+    {
+      "position": 2740,
+      "source": "Your adult scene request is waiting for approval.",
+      "sourceHash": "a92b0082c255945d4dd72e0b37d920b15dc3fe7c00de4c67ee1beba2936da1a4",
+      "sourceId": "components.RequestModal.Adult.pending"
+    },
+    {
+      "position": 2741,
+      "source": "You do not have permission to request adult media.",
+      "sourceHash": "1920d6d2c613210c55413683d5e883080c2e1b106e145f2773904f4244736e27",
+      "sourceId": "components.RequestModal.Adult.permission"
+    },
+    {
+      "position": 2742,
+      "source": "This scene is already being processed on this server.",
+      "sourceHash": "cd2cfc2e7a773f12045e2560b035b9f69cce0af9fa93f0f235907aedb70c3c84",
+      "sourceId": "components.RequestModal.Adult.processing"
+    },
+    {
+      "position": 2743,
+      "source": "Your Adult request limit could not be checked. Try again in a moment.",
+      "sourceHash": "a1f36d1c188f93843eef42d2d1cae34fc167ae1e7555bc33ae42f70cdf49cb06",
+      "sourceId": "components.RequestModal.Adult.quotaUnavailable"
+    },
+    {
+      "position": 2744,
+      "source": "Request scene",
+      "sourceHash": "910704599f84322f77ebde65b6cf50cadfc70a33e90c7c9cae163ac07ebc3b1e",
+      "sourceId": "components.RequestModal.Adult.request"
+    },
+    {
+      "position": 2745,
+      "source": "{username}'s request is waiting for approval.",
+      "sourceHash": "b8fc9bf093f20cac94ade799b09211dc92612d7f24b4b6b5c94d633db5c6717d",
+      "sourceId": "components.RequestModal.Adult.requestFor"
+    },
+    {
+      "position": 2746,
+      "source": "{username}'s request was approved and is being processed.",
+      "sourceHash": "b287612cf197cbcc3156c098453b81c926dc5984578b2f4061fe87788be35928",
+      "sourceId": "components.RequestModal.Adult.requestForApproved"
+    },
+    {
+      "position": 2747,
+      "source": "Whisparr server",
+      "sourceHash": "82c4b2d9c607c3a52607a62b8476bf8758572ad32cfef2a5db833df2a571c439",
+      "sourceId": "components.RequestModal.Adult.service"
+    },
+    {
+      "position": 2748,
+      "source": "No usable Whisparr destination is available. Ask an administrator to check the service settings.",
+      "sourceHash": "2bb1a270c100ba41a0e4534b3699d13a0da281463afa8a2190d71243c7e48210",
+      "sourceId": "components.RequestModal.Adult.serviceUnavailable"
+    },
+    {
+      "position": 2749,
+      "source": "Studio",
+      "sourceHash": "e38d7152190d6f012fef037d427679292c4341b6078898ff9749c198f3adb039",
+      "sourceId": "components.RequestModal.Adult.studio"
+    },
+    {
+      "position": 2750,
+      "source": "Something went wrong while submitting the request.",
+      "sourceHash": "b5a112a3150f0fdaad25336334435a00bc543ec45818f2db4ddb5b45fe7b59b2",
+      "sourceId": "components.RequestModal.Adult.submitError"
+    },
+    {
+      "position": 2751,
+      "source": "<strong>{title}</strong> requested successfully.",
+      "sourceHash": "493987a5eabb3ebbb9e37df0443942a48555ccf05b7db239328cebe593199bba",
+      "sourceId": "components.RequestModal.Adult.success"
+    },
+    {
+      "position": 2752,
+      "source": "Year",
+      "sourceHash": "f28400fa109d9b300067f2f0f201ca5a0cc9f83a30f1179d9d33eb14e346f3bc",
+      "sourceId": "components.RequestModal.Adult.year"
+    },
+    {
+      "position": 2753,
+      "source": "Advanced Request",
+      "sourceHash": "a1676dad448c1bed1213c88ff3b2943f8b0a89ede69604de67a767a6b4c16d43",
+      "sourceId": "components.RequestModal.AdvancedRequester.advancedoptions"
+    },
+    {
+      "position": 2754,
+      "source": "* This series is an anime.",
+      "sourceHash": "54376641df85cf75fd2a2604abb9b450ef0c826ff33b4304f8a96f80736afcbc",
+      "sourceId": "components.RequestModal.AdvancedRequester.animenote"
+    },
+    {
+      "position": 2755,
+      "source": "Available Root Folders",
+      "sourceHash": "f20b92f5d4458192ddae6804578dc3f5b1b79d7ab263d331b0cdb23adb94cff8",
+      "sourceId": "components.RequestModal.AdvancedRequester.availableRootFolders"
+    },
+    {
+      "position": 2756,
+      "source": "Available Space",
+      "sourceHash": "eb05fb9baa60aa4664f3252e2d3979adb5dcaef9993d338e1a2af0251ca7a690",
+      "sourceId": "components.RequestModal.AdvancedRequester.availableSpace"
+    },
+    {
+      "position": 2757,
+      "source": "Bindery uses its own acquisition defaults for profiles, folders, and search.",
+      "sourceHash": "518fae67c98cb0e858712c827e68c53f889e019fac20fade1d0f1cb76dce23f6",
+      "sourceId": "components.RequestModal.AdvancedRequester.binderyDefaults"
+    },
+    {
+      "position": 2758,
+      "source": "Destination Server",
+      "sourceHash": "71474ea7e26c8822ad204f899a6243f76a2f2344c7d6fced8ff6a61d24d66510",
+      "sourceId": "components.RequestModal.AdvancedRequester.destinationserver"
+    },
+    {
+      "position": 2759,
+      "source": "{path} ({space})",
+      "sourceHash": "3bfc98f3159275bd82bc95655397cf42690244e02115927fcfcb28c0cc20684f",
+      "sourceId": "components.RequestModal.AdvancedRequester.folder"
+    },
+    {
+      "position": 2760,
+      "source": "This request will not count against the user's quota limits. Use with caution.",
+      "sourceHash": "4d233bf04e789f2783cebfba5ad04e445e674f962d14c9dbad26a6d99301f278",
+      "sourceId": "components.RequestModal.AdvancedRequester.ignoreQuotaDescription"
+    },
+    {
+      "position": 2761,
+      "source": "Bypass User Quota",
+      "sourceHash": "aae5f5e1075e8e0c1b971f6b425113ca335123d66eadd0752dd67a0d172f3286",
+      "sourceId": "components.RequestModal.AdvancedRequester.ignoreQuotaTitle"
+    },
+    {
+      "position": 2762,
+      "source": "Language Profile",
+      "sourceHash": "9f1bf2f81930e0892b140abe9df14973fbd4425fc7ab8f383d69afc55b13d5a0",
+      "sourceId": "components.RequestModal.AdvancedRequester.languageprofile"
+    },
+    {
+      "position": 2763,
+      "source": "Series metadata language",
+      "sourceHash": "51f06b12dc1146bad20587917cdb828836e22620ec6e29252a7a58252e6f70fc",
+      "sourceId": "components.RequestModal.AdvancedRequester.metadataLanguage"
+    },
+    {
+      "position": 2764,
+      "source": "Metadata Profile",
+      "sourceHash": "3351241c1d227a1892885fd055477e3e73c89537d297c801db757e38fcd3b7d1",
+      "sourceId": "components.RequestModal.AdvancedRequester.metadataprofile"
+    },
+    {
+      "position": 2765,
+      "source": "No tags",
+      "sourceHash": "320af6add8fe5928c57e097654d2dfb269436044c0994c5a2869624b3a2602da",
+      "sourceId": "components.RequestModal.AdvancedRequester.notagoptions"
+    },
+    {
+      "position": 2766,
+      "source": "Quality Profile",
+      "sourceHash": "76fd30ab06aaf3c4d4d1c7dd0d3b1d86358b27a3e76a91c0efc603e37ba9f85e",
+      "sourceId": "components.RequestModal.AdvancedRequester.qualityprofile"
+    },
+    {
+      "position": 2767,
+      "source": "Ready to Request",
+      "sourceHash": "f2d23e6520027d65397f22f502dcbd55b3c79f4b8f0507226d9cc35fca04c6ca",
+      "sourceId": "components.RequestModal.AdvancedRequester.ready"
+    },
+    {
+      "position": 2768,
+      "source": "Requested By",
+      "sourceHash": "5d909cd53a809c4f57c3a14eb1550b2ad06734988e6907d13b5f7b7ed188c288",
+      "sourceId": "components.RequestModal.AdvancedRequester.requestedBy"
+    },
+    {
+      "position": 2769,
+      "source": "Root Folder",
+      "sourceHash": "6f9e7faba152b644686cbaabb88b06aae61bd981dd3be0f38a8bc74a13d821f6",
+      "sourceId": "components.RequestModal.AdvancedRequester.rootfolder"
+    },
+    {
+      "position": 2770,
+      "source": "Series order",
+      "sourceHash": "25f89261c0cfc5661e5161906140973bf166a92e805328210a3212701e72c2ac",
+      "sourceId": "components.RequestModal.AdvancedRequester.seasonOrder"
+    },
+    {
+      "position": 2771,
+      "source": "Select tags",
+      "sourceHash": "24fb1357b9819edac0c8f24ef26ac059bb519c946a84031ff626c5ff0664aca5",
+      "sourceId": "components.RequestModal.AdvancedRequester.selecttags"
+    },
+    {
+      "position": 2772,
+      "source": "Service",
+      "sourceHash": "c4948e79d66b8ab63e9496b249988f6596a08de620986e6d6f68beea738f3333",
+      "sourceId": "components.RequestModal.AdvancedRequester.service"
+    },
+    {
+      "position": 2773,
+      "source": "Show Options",
+      "sourceHash": "463dded453fc4fcb39649ecfea5e3d3dc43590f5a654118cbb1b4094a3f6af44",
+      "sourceId": "components.RequestModal.AdvancedRequester.showOptions"
+    },
+    {
+      "position": 2774,
+      "source": "Sonarr default",
+      "sourceHash": "1107f0433ee31a6ac7bf3298fb10eb4fa4f15e46ea8f699443fa4ac0424fcaf6",
+      "sourceId": "components.RequestModal.AdvancedRequester.sonarrDefault"
+    },
+    {
+      "position": 2775,
+      "source": "Status",
+      "sourceHash": "28a35858b095dae8dcebdb08dc3748282de41e0816b23164f0e15a2bdfe99b4d",
+      "sourceId": "components.RequestModal.AdvancedRequester.status"
+    },
+    {
+      "position": 2776,
+      "source": "Tags",
+      "sourceHash": "e4e852355669417b0edc3a4d0464affc081f04b3472fadc832107e0afc85aeee",
+      "sourceId": "components.RequestModal.AdvancedRequester.tags"
+    },
+    {
+      "position": 2777,
+      "source": "Advanced Options",
+      "sourceHash": "f5f64083dbeaad5f5aaeac82f1c5b524f5aa91eb9cbee8dd56e46a499ada922a",
+      "sourceId": "components.RequestModal.Book.advancedOptions"
+    },
+    {
+      "position": 2778,
+      "source": "Approval",
+      "sourceHash": "552e39a184ddfbc7c66fbd695e6b5e6a07d7a98e76e5a8b92a7384a61ecd6be6",
+      "sourceId": "components.RequestModal.Book.approval"
+    },
+    {
+      "position": 2779,
+      "source": "Approve Request",
+      "sourceHash": "17ac336315d7487b55c70c79814be25921ab3ac9d22fda6d46d86a2dd559dc0f",
+      "sourceId": "components.RequestModal.Book.approve"
+    },
+    {
+      "position": 2780,
+      "source": "Audiobook",
+      "sourceHash": "9dbd1d1a06a732178d08adb21373fb52affbf8065ffd14e600786bc5ce3fd34c",
+      "sourceId": "components.RequestModal.Book.audiobook"
+    },
+    {
+      "position": 2781,
+      "source": "Author",
+      "sourceHash": "f209537f2fef96c574e14efc9fe940220f8c601efc4df13ce6bf19a0b8218db1",
+      "sourceId": "components.RequestModal.Book.author"
+    },
+    {
+      "position": 2782,
+      "source": "Automatic best match",
+      "sourceHash": "dddcdfc3b6483a999abd19610847c448a2ae828e41635cb8cf2f8aeae6223acf",
+      "sourceId": "components.RequestModal.Book.automaticEdition"
+    },
+    {
+      "position": 2783,
+      "source": "Automatic uses the first valid ISBN from Open Library. Pick a specific edition when testers report a mismatch.",
+      "sourceHash": "4becc4d2ccd0a3a3fa049f149d59e501159cd5752e20e16179442057622d41fc",
+      "sourceId": "components.RequestModal.Book.automaticEditionInfo"
+    },
+    {
+      "position": 2784,
+      "source": "The request was submitted, but Bookshelf rejected it while processing.",
+      "sourceHash": "7499892221e7aa8418a4f0dc576fed012f2841ecfc29dc4b282a4ab3380b6dc0",
+      "sourceId": "components.RequestModal.Book.backendRequestFailed"
+    },
+    {
+      "position": 2785,
+      "source": "Cancel Request",
+      "sourceHash": "12e05ed81fca480ee5584bf8b7f8cc5e190f0ff0b1fb8d1e15d03160420385b6",
+      "sourceId": "components.RequestModal.Book.cancel"
+    },
+    {
+      "position": 2786,
+      "source": "Close",
+      "sourceHash": "0ea7c1cadeffcc2ffaa913b3c2361f220d3696ebac4ef4843bfba6ae37ccce69",
+      "sourceId": "components.RequestModal.Book.close"
+    },
+    {
+      "position": 2787,
+      "source": "Book",
+      "sourceHash": "a579e2171bd6bcf2ae736ef1ae1f2b0e333dfe8494827c2521980059597d09dd",
+      "sourceId": "components.RequestModal.Book.ebook"
+    },
+    {
+      "position": 2788,
+      "source": "Edit Request",
+      "sourceHash": "9c9b4849edb21ef706d2b319810307e1b3884bb72739b16db9cf7ad27c1be06d",
+      "sourceId": "components.RequestModal.Book.edit"
+    },
+    {
+      "position": 2789,
+      "source": "Something went wrong while editing the request.",
+      "sourceHash": "7d0dd6a78f0c220f519aa7f4caf97526e68d953e6346c1b2c92ec7f8d090176d",
+      "sourceId": "components.RequestModal.Book.editerror"
+    },
+    {
+      "position": 2790,
+      "source": "Edition / ISBN",
+      "sourceHash": "69a3d9b8a478b24266377196dfe0c3eafb15dc60f75137f9a15c3fae661c4ed0",
+      "sourceId": "components.RequestModal.Book.edition"
+    },
+    {
+      "position": 2791,
+      "source": "First Published",
+      "sourceHash": "e82aad1aba4920f710a4a0953819fcf8df954841518b8dc69a0be21f647696e7",
+      "sourceId": "components.RequestModal.Book.firstPublished"
+    },
+    {
+      "position": 2792,
+      "source": "Format",
+      "sourceHash": "fab957653d0f1db8a8b2df7274a5d7801e1103179d730287e1ac5df6507863df",
+      "sourceId": "components.RequestModal.Book.format"
+    },
+    {
+      "position": 2793,
+      "source": "Genres",
+      "sourceHash": "b374a286afa127c1ea6e85d81d4597c1002e39b5e8f5b32df048a148b6612564",
+      "sourceId": "components.RequestModal.Book.genres"
+    },
+    {
+      "position": 2794,
+      "source": "Media & Format",
+      "sourceHash": "4120d2f9d7dc741d96ecacc4152b4af642ee494eae91f86448c631d3c2ee4d18",
+      "sourceId": "components.RequestModal.Book.mediaAndFormat"
+    },
+    {
+      "position": 2795,
+      "source": "No audiobook Bookshelf service is configured. Audiobook requests are unavailable.",
+      "sourceHash": "96a6a8a120b2346bad73697e00965c4689fa4f650ac6ac95d2bc7e00c2418b47",
+      "sourceId": "components.RequestModal.Book.noAudiobookServer"
+    },
+    {
+      "position": 2796,
+      "source": "No Book Bookshelf service is configured. Book requests are unavailable.",
+      "sourceHash": "1620d890d19dd974d07d1d48646430294f12d6f73f8f473f5b95c8d3adbde0cf",
+      "sourceId": "components.RequestModal.Book.noEbookServer"
+    },
+    {
+      "position": 2797,
+      "source": "No valid ISBN candidates were found. Bookshelf will fall back to title matching.",
+      "sourceHash": "9b6d40aef2a455f79c4db116389fda398fb3fa2301b1b8ec708005f5583f6233",
+      "sourceId": "components.RequestModal.Book.noIsbnCandidates"
+    },
+    {
+      "position": 2798,
+      "source": "Not Available",
+      "sourceHash": "5fe1f073f0a76531b141a75db06fb2d117594664f3b6ee2f362dd21bf276589b",
+      "sourceId": "components.RequestModal.Book.notAvailable"
+    },
+    {
+      "position": 2799,
+      "source": "Pages",
+      "sourceHash": "ba5736bc6e33dc6012d20be700852b42532520b9f3c98ab34cb06c4030aa5fdc",
+      "sourceId": "components.RequestModal.Book.pages"
+    }
+  ],
+  "sourcePositionRange": [
+    2700,
+    2799
+  ],
+  "tree": "44cf1a02d645026872759fa04a7506ee738381e5"
+}

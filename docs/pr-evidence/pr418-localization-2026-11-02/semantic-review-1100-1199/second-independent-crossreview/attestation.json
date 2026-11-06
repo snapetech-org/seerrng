@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "reviewHead": "c8f4b2f5f1f42730dcfa8d36214ee827a5d9395a",
+  "reviewTree": "0fe67d04abfd49681556b44e900aceec1b5a9a75",
+  "selectedRows": 27,
+  "sourceCurrentAndCandidateReattestation": "pass",
+  "currentTargetFilesAndHashes": "pass",
+  "firstReviewExactHashes": "pass",
+  "finalRecommendationExactHashes": "pass",
+  "callerFileBlobAndFileShaChecks": "pass",
+  "callerCurrentLineShaChecks": "pass",
+  "callerReferenceOccurrences": 67,
+  "uniqueCallerLines": 48,
+  "uniqueCallerFiles": 7,
+  "allRowsHaveSourceContext": "pass",
+  "placeholderAndMarkupParity": "pass",
+  "protectedLiteralParity": "pass",
+  "priorExactDispositionIntersection": 0,
+  "priorBoundaryEvidence": "cross-review packet shows six prior Spanish dispositions; none of these exact (sourceId, locale) rows intersects them",
+  "priorReviewerExposureRows": [
+    [
+      1169,
+      "components.EditionCompare.haveOwned",
+      "pt-BR"
+    ]
+  ],
+  "currentErrors": [],
+  "nativeSpeakerReviewPerformed": false
+}

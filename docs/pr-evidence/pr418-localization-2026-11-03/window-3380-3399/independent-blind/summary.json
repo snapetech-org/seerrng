@@ -1,0 +1,48 @@
+{
+  "artifact": "SeerrNG PR #418 independent blind semantic review W3380-W3399",
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "branch": "codex/seerrng-localization-overhaul-20261028",
+  "head": "4d7de2c41b0e6df6cd0b7f7075c9cddd1c6ce160",
+  "tree": "6fba2d5985869b4563955b2c338a93e82efb4b22",
+  "window": [
+    3380,
+    3399
+  ],
+  "inputPacketPath": "../candidate-free-input/",
+  "inputChecksumsVerified": 6,
+  "inputReviewSha256": "ddf0f11c3d98236bf8f4e61013e1c21558e81039e31f19c7777df055155c0873",
+  "callerContextsSha256": "185e2159757c129454cbea02f049f4d2aa823efc4cc9fa018f7312be7cf61698",
+  "reviewedCells": 240,
+  "decisionCounts": {
+    "accept-current": 110,
+    "correction": 8,
+    "refinement": 2,
+    "hold": 120
+  },
+  "proposals": {
+    "correction": 8,
+    "refinement": 2
+  },
+  "placeholderMarkupProtectedFailures": 0,
+  "contextHolds": {
+    "cells": 120,
+    "sourcePositions": [
+      3385,
+      3387,
+      3388,
+      3390,
+      3391,
+      3394,
+      3395,
+      3396,
+      3397,
+      3398
+    ]
+  },
+  "primaryOutputInspected": false,
+  "primaryProposalsCreated": false,
+  "nativeSpeakerApproval": false,
+  "testsBuildsCiOrRepositoryPrEdits": false,
+  "confidenceLimit": "Machine semantic review; locale fluency judgments remain unverified by native speakers. Hold cells have unresolved exact-key caller selection in the pinned context packet."
+}

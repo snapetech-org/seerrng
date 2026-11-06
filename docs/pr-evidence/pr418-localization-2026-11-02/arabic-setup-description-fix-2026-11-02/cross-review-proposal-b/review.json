@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 1,
+  "review": "Single-cell Arabic semantic cross-review",
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "pullRequestState": {
+    "baseRefOid": "221d8e0d542802da7529cd272c928cc747677e5c",
+    "headRefName": "codex/seerrng-localization-overhaul-20261028",
+    "headRefOid": "e32e1748e780740ae447dc5ab91eda5b5a9a79bb",
+    "isDraft": true,
+    "mergeStateStatus": "CLEAN",
+    "state": "OPEN"
+  },
+  "exactHead": "e32e1748e780740ae447dc5ab91eda5b5a9a79bb",
+  "exactTree": "15b64698e3e9f835e2dbde87ee9822bf8abce6d7",
+  "checkedAtUtc": "2026-11-02T11:30:02Z",
+  "cell": {
+    "sourcePosition": 5381,
+    "sourceId": "components.Setup.advancedSetupDescription",
+    "locale": "ar",
+    "source": "Skip the guided defaults and service choices. You’ll still connect your media server before setup can finish.",
+    "sourceSha256": "3328ec4efc40f35be20b9655b613e60e76e56011bae3a5bd3b620999d7567b81",
+    "currentTarget": "تخطَّ الإعدادات الافتراضية الموجهة واختيارات الخدمات. ستقوم لا يزال بتوصيل خادم الوسائط الخاص بك قبل اكتمال الإعداد.",
+    "currentTargetSha256": "f87fa1564c63d4aeef318e26032d4a89f57a03a0cdf4d33364385ff4109d4acc",
+    "primaryProposal": "تخطَّ الإعدادات الافتراضية الموجهة وخيارات الخدمات. ستظل بحاجة إلى توصيل خادم الوسائط قبل اكتمال الإعداد.",
+    "primaryProposalSha256": "b4bd6e3a4183a5f9a6ba6645c45f3f86df38046278be8d5aa40eafe706d1e3d7",
+    "crossReviewDisposition": "accept",
+    "crossReviewTarget": "تخطَّ الإعدادات الافتراضية الموجهة وخيارات الخدمات. ستظل بحاجة إلى توصيل خادم الوسائط قبل اكتمال الإعداد.",
+    "crossReviewTargetSha256": "b4bd6e3a4183a5f9a6ba6645c45f3f86df38046278be8d5aa40eafe706d1e3d7",
+    "rationale": "The caller presents this as the description beneath the guided/advanced setup choice. The current second sentence is ungrammatical (`ستقوم لا يزال بتوصيل`). The proposal replaces it with natural wording that preserves the source meaning: connecting the media server is still required before setup can finish. The first sentence is clear in this setup context; the proposal is accepted as written.",
+    "confidence": "high",
+    "nativeSpeakerApproval": false,
+    "placeholders": [],
+    "protectedLiterals": []
+  },
+  "pins": {
+    "sourceFile": "src/i18n/locale/en.json",
+    "sourceFileBlob": "12e04a118c30b71b3714291adeaf9fdb2735cee4",
+    "targetFile": "src/i18n/locale/ar.json",
+    "targetFileBlob": "03b7882a37c6505bbfe6c79a1dd29c300447c070",
+    "callerFile": "src/components/Setup/index.tsx",
+    "callerFileBlob": "5f740f73e4d22a1f7a01dd0d8e74a94e890b88f1",
+    "callerFileSha256": "7d24c14cc92343ecb5693cedf148d34e6d18adb467aeb867ef1ad8aafd47f836",
+    "callerLine": 573,
+    "callerLineText": "                  {intl.formatMessage(messages.advancedSetupDescription)}",
+    "callerLineSha256": "188a689870d06cb30e86ce6d8d0ffc215cfc16f508318998a890a448bb97c2b9"
+  },
+  "worktreeStatusAtReview": {
+    "status": "M AGENTS.md",
+    "unrelatedModifiedPath": "AGENTS.md",
+    "relevantSourceTargetCallerFilesMatchPinnedCommit": true,
+    "taskChangedRepository": false
+  },
+  "blockers": []
+}

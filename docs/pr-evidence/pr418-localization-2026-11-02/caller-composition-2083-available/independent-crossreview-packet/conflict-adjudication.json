@@ -1,0 +1,61 @@
+{
+  "sourceId": "components.MediaDetails.SeasonEpisodeTree.available",
+  "source": "available",
+  "sourcePositionZeroBased": 2083,
+  "earlierW2000Head": "d897f04661802d7f47446e46602f1b521d33c52f",
+  "earlierW2000Tree": "309b846c546923856ffde114fd3cf75a7c8de7a7",
+  "earlierPrimaryDisposition": "accept-current",
+  "earlierIndependentDisposition": "accept-current",
+  "earlierIndependentTarget": "متاحة",
+  "earlierTargetSha256": "bc4f4501a2b64496280c4e65f9a681b58ef3c5e51ce71e29d83417743063d88f",
+  "laterW2100Head": "404648643578992e8e12ce9dff47dd92d5ee7c1c",
+  "laterW2100Tree": "a17442223e33372e0cc16c3b8091e2515d5e39f3",
+  "laterDisposition": "queued-follow-up-outside-W2100-W2199",
+  "laterIndependentTarget": "المتاحة",
+  "laterIndependentTargetSha256": "a86435761b0d2bfa146f11438cf9e3e6baaf9bd4cec4fd417aa0ffd3866c066d",
+  "currentPrimaryTarget": "المتاحة",
+  "currentPrimaryTargetSha256": "a86435761b0d2bfa146f11438cf9e3e6baaf9bd4cec4fd417aa0ffd3866c066d",
+  "independentVerdict": "accept-proposal",
+  "independentTarget": "المتاحة",
+  "independentTargetSha256": "a86435761b0d2bfa146f11438cf9e3e6baaf9bd4cec4fd417aa0ffd3866c066d",
+  "adjudication": "Supersede the earlier accept-current verdict. The source and caller bytes are unchanged, but that review missed how this word is composed. Each Arabic selection label places the word after the definite noun كل الحلقات, making it an attributive feminine-singular adjective for a non-human plural. Current متاحة is indefinite and reads like a predicate after an imperative; proposed المتاحة is the grammatically integrated definite modifier. The later W2100 follow-up identified the same issue; this review resolves it in favor of the definite form.",
+  "sourceAndCallerStableAcrossHeads": [
+    {
+      "head": "d897f04661802d7f47446e46602f1b521d33c52f",
+      "tree": "309b846c546923856ffde114fd3cf75a7c8de7a7",
+      "callerFileSha256": "a2bf7c15654bfe4669dbea033151b13270591cf4246664026d58a0c5283eb577",
+      "englishCatalogSha256": "75ff3c90b52aedd636a506281ffbd6fb2d3739c61294b6008a517f17647e2316",
+      "arabicCurrent": "متاحة",
+      "sourceAndCallerUnchanged": true
+    },
+    {
+      "head": "404648643578992e8e12ce9dff47dd92d5ee7c1c",
+      "tree": "a17442223e33372e0cc16c3b8091e2515d5e39f3",
+      "callerFileSha256": "a2bf7c15654bfe4669dbea033151b13270591cf4246664026d58a0c5283eb577",
+      "englishCatalogSha256": "75ff3c90b52aedd636a506281ffbd6fb2d3739c61294b6008a517f17647e2316",
+      "arabicCurrent": "متاحة",
+      "sourceAndCallerUnchanged": true
+    },
+    {
+      "head": "3af7b753f5a7a8ce304e0c116dbce9a76328b3ad",
+      "tree": "56a5c443734cee77822fa2a23a2385b2e6dfcf3e",
+      "callerFileSha256": "a2bf7c15654bfe4669dbea033151b13270591cf4246664026d58a0c5283eb577",
+      "englishCatalogSha256": "75ff3c90b52aedd636a506281ffbd6fb2d3739c61294b6008a517f17647e2316",
+      "arabicCurrent": "متاحة",
+      "sourceAndCallerUnchanged": true
+    }
+  ],
+  "historicalPackets": [
+    {
+      "path": "/mnt/disks/scratch/task-scratch/seerrng-pr418-window-2000-2099-crossreview-independent-20261102",
+      "sha256SumsFileSha256": "b06610cc68b72f72d87d7451587d1a251ebd705cc9528644d384cfa9776b199d",
+      "filesVerified": 14
+    },
+    {
+      "path": "/mnt/disks/scratch/task-scratch/seerrng-pr418-window-2100-2199-crossreview-independent-20261102",
+      "sha256SumsFileSha256": "2906e1d4055b337769dc587f492dea2a0223c3c6ed8a7feb2aa520706ad4952b",
+      "filesVerified": 15
+    }
+  ],
+  "nativeSpeakerApproval": false
+}

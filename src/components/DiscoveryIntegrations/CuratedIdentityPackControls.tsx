@@ -1,3 +1,4 @@
+import ApiMessageText from '@app/components/Common/ApiMessageText';
 import Button from '@app/components/Common/Button';
 import defineMessages from '@app/utils/defineMessages';
 import axios from 'axios';
@@ -382,7 +383,7 @@ export default function CuratedIdentityPackControls() {
 
       {notice && (
         <p role="status" className="text-sm text-gray-200">
-          {notice}
+          {<ApiMessageText>{notice}</ApiMessageText>}
         </p>
       )}
     </section>

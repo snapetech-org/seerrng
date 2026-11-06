@@ -1,0 +1,171 @@
+{
+  "schemaVersion": 1,
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "head": "5a4342176a8325c371a35d489cb01c58283bc983",
+  "tree": "98cd64952123c9b678e38250e7819cabb4476448",
+  "semanticManifestSha256": "3ea74cc6491aecddf9ffcedc69610f13d20b199059aef69bb3c2407feb0826ea",
+  "cellPlanSha256": "97c3402252a34aaa4f8f9f44a691281d9c35ff7b80d7edb3a26c752436af6558",
+  "retiredCellsSha256": "dc5ec05547e4da3079c0668f82a52da7999d89ef9d4f037c1cd72af9347ebd83",
+  "sourceBundleManifestSha256": "212491482d1b9207fed755af6e80ac80a97184ec8dbe84d0c4ad2bd711acae0d",
+  "sourceRowsSha256": "ad91236a31e32f199ff449f9ed4597ea6af0f5a4eff32772cefa84278cafb68c",
+  "sourceCellsSha256": "8bfcd1aa9b5d5aba4fb6317c194cd544d601543ebf250899a84a719b52e468e1",
+  "planRows": 115260,
+  "actions": {
+    "semantic-review-required": 114783,
+    "reuse-equivalence-decision": 477
+  },
+  "retiredRows": 48,
+  "reusableEquivalenceCells": 477,
+  "targetsApplied": false,
+  "batchId": "existing-es-client-0076",
+  "batchSha256": "81749b4cace8d0d02eb2d4d331a86b64a1d638e496dc8e71aa0cfe40a8558ec3",
+  "rowCount": 32,
+  "model": "qwen3.8-27b-heretic:q4km",
+  "attempt": 1,
+  "decisions": [
+    {
+      "id": "components.PermissionEdit.managedownloadsDescription",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.PermissionEdit.manageissues",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.PermissionEdit.manageissuesDescription",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.PermissionEdit.managerequests",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.PermissionEdit.managerequestsDescription",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.PermissionEdit.request",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.PermissionEdit.request4k",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.PermissionEdit.request4kDescription",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.PermissionEdit.request4kMovies",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.PermissionEdit.request4kMoviesDescription",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.PermissionEdit.request4kTv",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.PermissionEdit.request4kTvDescription",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.PermissionEdit.requestAdult",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.PermissionEdit.requestAdultDescription",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.PermissionEdit.requestBooks",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.PermissionEdit.requestBooksDescription",
+      "verdict": "correct",
+      "target": "Concede permisos para presentar solicitudes de libros.",
+      "confidence": "high",
+      "reason": "The source word 'Done' is a typo for 'Concede' or 'Grant'. The translation 'Done permiso' is grammatically incorrect and semantically nonsensical in Spanish."
+    },
+    {
+      "id": "components.PermissionEdit.requestComics",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.PermissionEdit.requestComicsDescription",
+      "verdict": "correct",
+      "target": "Concede permisos para presentar solicitudes de cómics.",
+      "confidence": "high",
+      "reason": "The translation 'Permiso de concesión para presentar solicitudes cómicas' is awkward and grammatically incorrect ('solicitudes cómicas' implies the requests themselves are comic-like, rather than requests *for* comics). 'Concede permisos para presentar solicitudes de cómics' is the standard, natural phrasing consistent with other entries."
+    },
+    {
+      "id": "components.PermissionEdit.requestDescription",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.PermissionEdit.requestMagazines",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.PermissionEdit.requestMagazinesDescription",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.PermissionEdit.requestMovies",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.PermissionEdit.requestMoviesDescription",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.PermissionEdit.requestMusic",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.PermissionEdit.requestMusicDescription",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.PermissionEdit.requestSports",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.PermissionEdit.requestSportsDescription",
+      "verdict": "correct",
+      "target": "Concede permisos para presentar solicitudes de ligas deportivas a través de Sportarr.",
+      "confidence": "high",
+      "reason": "The translation 'Con permiso para...' is grammatically incorrect as an imperative instruction (it translates to 'With permission to...'). It should be 'Concede permisos para...' to match the source 'Grant permission to...' and other consistent entries."
+    },
+    {
+      "id": "components.PermissionEdit.requestTv",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.PermissionEdit.requestTvDescription",
+      "verdict": "correct",
+      "target": "Concede permisos para solicitar series que no sean 4K.",
+      "confidence": "high",
+      "reason": "The protected literal '4K' was translated as '4k' (lowercase k). The protected literal must be preserved exactly as '4K'."
+    },
+    {
+      "id": "components.PermissionEdit.users",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.PermissionEdit.usersDescription",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.PermissionEdit.viewblocklistedItems",
+      "verdict": "keep"
+    }
+  ],
+  "decisionsSha256": "7fc9ba6fd2c1569447dff1d54ed4971dcdd3686d3a72c97794d53dede627abd3",
+  "rawResponseSha256": "b2e1050cfda1b2e820d7c1061cc05ce466b3052ea6a40d692bb26405f8b6a73b",
+  "rawResponseFile": "/mnt/disks/scratch/task-scratch/seerrng-review-window-650-700-422072-20261102/semantic-output/responses/existing-es-client-0076-attempt-1.json"
+}

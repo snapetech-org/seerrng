@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "liveState": "OPEN/DRAFT/CLEAN",
+  "liveHead": "422072d585074bdd7f8dd3046cbacede69203d6d",
+  "liveTree": "c7f3bffb628464e98188f3c8f8c4950d6038cee6",
+  "window": "650-699",
+  "candidateRows": 283,
+  "heldUncertainRows": 6,
+  "totalRows": 289,
+  "candidateDecisionCounts": {
+    "accept": 236,
+    "refine": 47
+  },
+  "heldDecisionCounts": {
+    "acceptCurrent": 4,
+    "refine": 2
+  },
+  "catalogCellsChanged": 285,
+  "rootWorkingLedgerSha256": "b8133b55113c5a3399a4f1cffcadc5fed025610bea704a9339960f9f3f2ecdea",
+  "rootHeldSupplementSha256": "e4ea5a72f1aa4d980cc8f4b88605c0fe999e77b39a18bf97f535174b8334c84b",
+  "independentLedgerSha256": "27ed3f20354510d3e59f19f7e34470482bec9e554a32be5ec5f5590e6415ac5c",
+  "finalRootLedgerSha256": "ea1d5c7d5973a5b29e243dd94278cd32a021f15c3f26eb7e5f3d443504ad131f",
+  "independentRefinementsAdopted": 10,
+  "exactHeadAndCallerValidation": "independent row checks passed across 289 rows",
+  "catalogsModified": false,
+  "workflowsModified": false,
+  "testsBuildsScansCiReleasesTagsMerges": false,
+  "nativeSpeakerApproval": false
+}

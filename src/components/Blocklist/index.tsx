@@ -38,6 +38,7 @@ import {
 } from '@app/utils/apiPath';
 import defineMessages from '@app/utils/defineMessages';
 import { getTmdbPosterImageUrl } from '@app/utils/imageCache';
+import { formatDurationMinutes } from '@app/utils/numberHelpers';
 import {
   ArchiveBoxXMarkIcon,
   BarsArrowDownIcon,
@@ -192,12 +193,20 @@ const getYear = (title: BlocklistTitle): string | undefined => {
   return value?.slice(0, 4);
 };
 
-const getRuntime = (title: BlocklistTitle, unavailable: string): string => {
+const getRuntime = (
+  title: BlocklistTitle,
+  unavailable: string,
+  intl: ReturnType<typeof useIntl>
+): string => {
   if (isBook(title)) {
-    return title.numberOfPages?.toLocaleString() ?? unavailable;
+    return title.numberOfPages != null
+      ? intl.formatNumber(title.numberOfPages)
+      : unavailable;
   }
   if (isComic(title) || isMagazine(title)) {
-    return title.issueCount?.toLocaleString() ?? unavailable;
+    return title.issueCount != null
+      ? intl.formatNumber(title.issueCount)
+      : unavailable;
   }
   const minutes = isMovie(title)
     ? title.runtime
@@ -206,7 +215,7 @@ const getRuntime = (title: BlocklistTitle, unavailable: string): string => {
           title.tracks.reduce((total, track) => total + track.length, 0) / 60000
         )
       : title.episodeRunTime[0];
-  return minutes ? `${minutes.toLocaleString()} minutes` : unavailable;
+  return minutes ? formatDurationMinutes(minutes, intl.locale) : unavailable;
 };
 
 const getGenres = (title: BlocklistTitle): GenreLink[] => {
@@ -281,7 +290,14 @@ const getSecondaryDetails = (
       },
       {
         label: intl.formatMessage(messages.issueCount),
-        values: [{ name: title.issueCount?.toLocaleString() ?? unavailable }],
+        values: [
+          {
+            name:
+              title.issueCount != null
+                ? intl.formatNumber(title.issueCount)
+                : unavailable,
+          },
+        ],
       },
     ];
   }
@@ -293,7 +309,14 @@ const getSecondaryDetails = (
       },
       {
         label: intl.formatMessage(messages.issueCount),
-        values: [{ name: title.issueCount?.toLocaleString() ?? unavailable }],
+        values: [
+          {
+            name:
+              title.issueCount != null
+                ? intl.formatNumber(title.issueCount)
+                : unavailable,
+          },
+        ],
       },
     ];
   }
@@ -316,7 +339,7 @@ const getSecondaryDetails = (
       },
       {
         label: intl.formatMessage(messages.trackCount),
-        values: [{ name: title.tracks.length.toLocaleString() }],
+        values: [{ name: intl.formatNumber(title.tracks.length) }],
       },
     ];
   }
@@ -875,18 +898,22 @@ const BlocklistedItem = ({ item, revalidateList }: BlocklistedItemProps) => {
                 </dt>
                 <dd className="card:col-start-3 card:row-start-1 m-0 truncate">
                   {item.mediaType === 'tv'
-                    ? 'Series'
+                    ? intl.formatMessage(globalMessages.tvshow)
                     : item.mediaType === 'music'
-                      ? 'Music · Album'
+                      ? `${intl.formatMessage(globalMessages.music)} · ${intl.formatMessage(globalMessages.album)}`
                       : item.mediaType === 'book'
-                        ? 'Book'
+                        ? intl.formatMessage(globalMessages.book)
                         : item.mediaType === 'comic'
-                          ? 'Comic'
+                          ? intl.formatMessage(globalMessages.comic)
                           : item.mediaType === 'magazine'
-                            ? 'Magazine'
+                            ? intl.formatMessage(globalMessages.magazine)
                             : item.mediaType === 'movie'
-                              ? 'Movie'
-                              : item.mediaType}
+                              ? intl.formatMessage(globalMessages.movie)
+                              : item.mediaType === 'adult'
+                                ? intl.formatMessage(globalMessages.adult)
+                                : item.mediaType === 'sports'
+                                  ? intl.formatMessage(globalMessages.sports)
+                                  : item.mediaType}
                 </dd>
                 <dt className="card:col-start-1 card:row-start-2 font-medium text-gray-100">
                   {intl.formatMessage(
@@ -912,7 +939,7 @@ const BlocklistedItem = ({ item, revalidateList }: BlocklistedItemProps) => {
                   :
                 </dt>
                 <dd className="card:col-start-3 card:row-start-3 m-0 truncate">
-                  {title ? getRuntime(title, unavailable) : unavailable}
+                  {title ? getRuntime(title, unavailable, intl) : unavailable}
                 </dd>
                 <div className="media-detail-rows media-detail-column-divider card:col-span-1 card:col-start-5 card:row-span-3 card:row-start-1 col-span-2 grid min-w-0 grid-cols-[max-content_minmax(0,1fr)] content-start gap-x-3">
                   {secondaryDetails.map((detail) => (

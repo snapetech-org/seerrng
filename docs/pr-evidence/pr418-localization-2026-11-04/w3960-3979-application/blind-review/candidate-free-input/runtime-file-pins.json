@@ -1,0 +1,41 @@
+{
+  "head": "a456dd66aad34cb23f432cb3c189bb8083bbbe96",
+  "tree": "7a5447e5f08e84c392899a6e1400d1df73b1143b",
+  "files": [
+    {
+      "path": "config/i18n/locales.json",
+      "byteCount": 5394,
+      "lineCount": 45,
+      "sha256": "6e8ea070b441db9700325cf838d440dbbef1d1e5331e28332ed6c15cb789376a",
+      "gitBlob": "d699bd347f4fbad07bce14a743c884800d9d4a84"
+    },
+    {
+      "path": "src/components/Settings/Notifications/NotificationsSlack/index.tsx",
+      "byteCount": 17400,
+      "lineCount": 454,
+      "sha256": "ce67eaf2f9c20ed758ba89d3b65cf088480c0ca2f0055108c9b0988884852718",
+      "gitBlob": "a34deac9186a8879927cec623deee126382db48c"
+    },
+    {
+      "path": "src/components/Settings/Notifications/NotificationsWebPush/index.tsx",
+      "byteCount": 6576,
+      "lineCount": 188,
+      "sha256": "68a5abca591d75f7d46511ae94cc6a9be4f3798cd5ae189025557f2f1883d65b",
+      "gitBlob": "95622263cb0771b0dc2b7920bfa9a2eae73e8b1a"
+    },
+    {
+      "path": "src/pages/settings/notifications/slack.tsx",
+      "byteCount": 666,
+      "lineCount": 19,
+      "sha256": "768c4a6e21e5eb09b5c27afba43044ea0295f5d4eaf64e34d14e4d249bfdc75c",
+      "gitBlob": "1ee8a963ea7ff0b3cb468490b9e0e5990eff0bcc"
+    },
+    {
+      "path": "src/pages/settings/notifications/webpush.tsx",
+      "byteCount": 676,
+      "lineCount": 19,
+      "sha256": "b784536f1aaf12e7ab40cf5b2438119c01d2f0645c46ce9f0870ea10f4b44ef0",
+      "gitBlob": "cf2e2956821c3dd92cc68fa20074274bf2eeebc0"
+    }
+  ]
+}

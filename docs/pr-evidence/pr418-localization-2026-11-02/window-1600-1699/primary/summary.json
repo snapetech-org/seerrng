@@ -1,0 +1,56 @@
+{
+  "browserOrRepoMutations": false,
+  "callerContextsSha256": "589be8342d5978c9f6fca78516eaba6957a218fae366a2b4f246642782f01644",
+  "callerEvidencePaths": [
+    "src/components/IssueDetails/IssueDiscussion.tsx",
+    "src/components/IssueDetails/IssueMediaSummary.tsx",
+    "src/components/IssueList/FocusedIssue.tsx",
+    "src/components/IssueList/IssueItem/index.tsx",
+    "src/components/IssueList/IssueItem/issueAffectedSummary.ts",
+    "src/components/IssueList/index.tsx"
+  ],
+  "candidateRowCount": 186,
+  "dispositionCounts": {
+    "accept-current": 1004,
+    "preserved-prior-disposition": 10,
+    "propose-correction": 141,
+    "propose-refinement": 45
+  },
+  "holds": 0,
+  "liveHead": "5aceef6ed6e865ee89383738212d1ce1a5c1f552",
+  "livePullRequestDraft": true,
+  "livePullRequestState": "OPEN",
+  "liveTree": "dd6e3495c44c2c14acf8a7a4b09a21e935ceb16d",
+  "locales": [
+    "ar",
+    "de",
+    "es",
+    "fr",
+    "hi",
+    "id",
+    "ja",
+    "ko",
+    "pt_BR",
+    "vi",
+    "zh_Hans",
+    "zh_Hant"
+  ],
+  "manageLabelsSha256": "6c6f1c0232e626cb73674416f879fb1d146c449a2ababa3d6cc59548eb74f8a8",
+  "markupMismatches": 0,
+  "nativeSpeakerApproval": false,
+  "noDirectCallerSourceIds": [
+    "components.IssueDetails.IssueMediaSummary.minutes",
+    "components.IssueList.IssueItem.openarr"
+  ],
+  "placeholderCandidateMismatches": 0,
+  "placeholderCurrentMismatches": 0,
+  "priorFrozenCount": 10,
+  "protectedLiteralMismatches": 0,
+  "pullRequest": 418,
+  "repository": "snapetech-org/seerrng",
+  "rowCount": 1200,
+  "schemaVersion": 1,
+  "sourceCurrentInputSha256": "213dd5dd359b45eb3c51612fd3c4c3e3255b9313b6e65e4745bc7887189dbc93",
+  "sourceIds": 100,
+  "task": "SeerrNG PR #418 primary semantic review W1600–1699, 12 direct locales"
+}

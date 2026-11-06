@@ -1,0 +1,98 @@
+[
+  {
+    "path": "src/i18n/locale/ar.json",
+    "preSha256": "302c8b26b018b9e379b857e169956f938ef885c17c401a587f8566935fa1c9f9",
+    "preGitBlob": "539c0aa6902c635600c99523b95650a74854afa2",
+    "postSha256": "022eb1f569c3fb833f59e7a738ddb5b92e215956acc6bfd3465f000baca620c4",
+    "postGitBlob": "c8ef9f9a61082d54943432f1973613c60111b589",
+    "keyCount": 9494
+  },
+  {
+    "path": "src/i18n/locale/de.json",
+    "preSha256": "d7e871237de516616848816611f173d032c334e525df3d1833093641af3cf6f5",
+    "preGitBlob": "302c6aa97c43d564c3e8df6bfdfceb3fbad6befb",
+    "postSha256": "a40055bcbdfac8658e36c6984558aa8e465498582e05e2cd46e32290dbcfdfc5",
+    "postGitBlob": "096abb1c8e873c559e59d4c1291620bcb450f606",
+    "keyCount": 9494
+  },
+  {
+    "path": "src/i18n/locale/es.json",
+    "preSha256": "815cd726883a38cebb001b851c9952d82b6f9cd453d88593882a78ea89da7e46",
+    "preGitBlob": "08f9b947c21347b0be2375e1aaaa6e777c01f5e0",
+    "postSha256": "815cd726883a38cebb001b851c9952d82b6f9cd453d88593882a78ea89da7e46",
+    "postGitBlob": "08f9b947c21347b0be2375e1aaaa6e777c01f5e0",
+    "keyCount": 9494
+  },
+  {
+    "path": "src/i18n/locale/fr.json",
+    "preSha256": "81184df45fb257d5a2e307cf9d0c6f2ce6618852620dff04a7991034956eb692",
+    "preGitBlob": "dd30b373fe45a279bc5eabe2f0049083ceb6cd2e",
+    "postSha256": "029a3f727cf2cad302cd1739a388e8db504dfe680d534eaddf38b33377aa671b",
+    "postGitBlob": "eb130bed90995ca23ed898315c9c938e9918688f",
+    "keyCount": 9494
+  },
+  {
+    "path": "src/i18n/locale/hi.json",
+    "preSha256": "7e5aab2c46c22e0223961bea417661478452213b515b64681b6946833397c0b2",
+    "preGitBlob": "aaf06e4160ed6dcaf68a4231344551ab6acee328",
+    "postSha256": "acd175cfe9b1bc773243bd4ab6c490da05a89408ce2471eb60269ae23ad01578",
+    "postGitBlob": "318328b260de5b51fa6119297759242cf86250ac",
+    "keyCount": 9494
+  },
+  {
+    "path": "src/i18n/locale/id.json",
+    "preSha256": "91d0812d0853e4e41d0fe5fdd739441d934056bf511cdcd4a13157b3b8b2bbc1",
+    "preGitBlob": "bc782a27ef389b4465e2a626e7700907656cd16d",
+    "postSha256": "448c0042d7ee36980c2a4e589afa2ef81f1d4512ae5062f52574d853722b8c07",
+    "postGitBlob": "afc5f9ddcc544cf0a22c4758816506a158e94f01",
+    "keyCount": 9494
+  },
+  {
+    "path": "src/i18n/locale/ja.json",
+    "preSha256": "a573acbf404dff9eb4d54c55b9cf1b08c9ea71096f512c071516aaed923bd96c",
+    "preGitBlob": "e7da38823ba868a405a78d89e6d2fed94c0de3be",
+    "postSha256": "a573acbf404dff9eb4d54c55b9cf1b08c9ea71096f512c071516aaed923bd96c",
+    "postGitBlob": "e7da38823ba868a405a78d89e6d2fed94c0de3be",
+    "keyCount": 9494
+  },
+  {
+    "path": "src/i18n/locale/ko.json",
+    "preSha256": "07c870eb6703ca0db44fe36e89dffc31531725c6202e9db62f90e50cec19df1f",
+    "preGitBlob": "4e1e07695b3eb40c221da4ae416713d71eb27fe1",
+    "postSha256": "07c870eb6703ca0db44fe36e89dffc31531725c6202e9db62f90e50cec19df1f",
+    "postGitBlob": "4e1e07695b3eb40c221da4ae416713d71eb27fe1",
+    "keyCount": 9494
+  },
+  {
+    "path": "src/i18n/locale/pt_BR.json",
+    "preSha256": "4310ed81e47cb77c69dfe62e1b6f908bc791c8e88502ee2c933421cec842e3f7",
+    "preGitBlob": "7185bd2e89e35e9e0494f96807954aa7b7aba724",
+    "postSha256": "4310ed81e47cb77c69dfe62e1b6f908bc791c8e88502ee2c933421cec842e3f7",
+    "postGitBlob": "7185bd2e89e35e9e0494f96807954aa7b7aba724",
+    "keyCount": 9494
+  },
+  {
+    "path": "src/i18n/locale/vi.json",
+    "preSha256": "a54c08c339564e899113aa50090a6becd49c98646e3498df2504044b0f9153b1",
+    "preGitBlob": "346758ef5c202660263a74c41ddeb1fa3974da82",
+    "postSha256": "a54c08c339564e899113aa50090a6becd49c98646e3498df2504044b0f9153b1",
+    "postGitBlob": "346758ef5c202660263a74c41ddeb1fa3974da82",
+    "keyCount": 9494
+  },
+  {
+    "path": "src/i18n/locale/zh_Hans.json",
+    "preSha256": "a82c75e1bc7cdb851e85657fc47a50feaa5e79757e6634cd7035c2b2c5b9262c",
+    "preGitBlob": "52c6720c19b134be5375f25357e85ce602071339",
+    "postSha256": "a82c75e1bc7cdb851e85657fc47a50feaa5e79757e6634cd7035c2b2c5b9262c",
+    "postGitBlob": "52c6720c19b134be5375f25357e85ce602071339",
+    "keyCount": 9494
+  },
+  {
+    "path": "src/i18n/locale/zh_Hant.json",
+    "preSha256": "8dbf8559ff8a4bd70265f93ec9c07d9eaf17816d74418cb8683b966f6c5962c8",
+    "preGitBlob": "aef523a42104447b4f1b1199698325a4444c5271",
+    "postSha256": "53149384f1a5eda85b69df08f8d95f075ac39031eb960f34e710c16308c6d28d",
+    "postGitBlob": "5e842ce7a925a4f7fb5eeb105f587542b7c0527d",
+    "keyCount": 9494
+  }
+]

@@ -1,0 +1,22 @@
+{
+  "prHead": "d49b44895d0ded9796f0c970ad09141212e9a98f",
+  "tree": "cebcfc11e0ea37c42f5b6e979e96cca8c89c7814",
+  "branch": "codex/seerrng-localization-overhaul-20261028",
+  "prState": "OPEN",
+  "draft": true,
+  "worktreeClean": true,
+  "remoteMatches": true,
+  "primaryCells": 1200,
+  "crossReviewProposals": 169,
+  "finalChanges": 168,
+  "dispositions": {
+    "accept-primary-proposal": 149,
+    "retain-current": 1,
+    "revise-primary-proposal": 19
+  },
+  "catalogs": 12,
+  "keysPerCatalog": 9494,
+  "identicalCatalogKeySets": true,
+  "formattingStable": true,
+  "placeholderMarkupProtectedLiteralMismatches": 0
+}

@@ -1,0 +1,26 @@
+{
+  "branchApiHead": "a0104b4c84a9c4561020ca72062171b22ffc49f2",
+  "branchRef": "a0104b4c84a9c4561020ca72062171b22ffc49f2",
+  "pullRef": "a0104b4c84a9c4561020ca72062171b22ffc49f2",
+  "tree": "aaa44c8019c58fde7ae796065e8aae7ac11d7a80",
+  "deployments": [],
+  "deploymentsAtExpectedShaCount": 0,
+  "pullRequest": {
+    "number": 418,
+    "state": "OPEN",
+    "isDraft": true,
+    "headRefOid": "a0104b4c84a9c4561020ca72062171b22ffc49f2",
+    "headRefName": "codex/seerrng-localization-overhaul-20261028",
+    "baseRefOid": "fa40534ccced75bde1125c14760514fcd5d7de4d",
+    "baseRefName": "main",
+    "mergeable": "clean",
+    "url": "https://github.com/snapetech-org/seerrng/pull/418"
+  },
+  "remoteRefs": [
+    "a0104b4c84a9c4561020ca72062171b22ffc49f2\trefs/heads/codex/seerrng-localization-overhaul-20261028",
+    "a0104b4c84a9c4561020ca72062171b22ffc49f2\trefs/pull/418/head"
+  ],
+  "mainRefOid": "016bcf8db7475b2105b9b488ff67ed7d1c096508",
+  "mainTree": "be45de2c5ffc98098adcdc362b491717c05a48c2",
+  "attestedUtc": "2026-11-04 18:56:33 UTC"
+}

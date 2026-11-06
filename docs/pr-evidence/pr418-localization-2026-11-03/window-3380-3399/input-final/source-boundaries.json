@@ -1,0 +1,179 @@
+{
+  "boundaryAfter": {
+    "position": 3400,
+    "source": "Time",
+    "sourceId": "components.Requests.requestTime"
+  },
+  "boundaryBefore": {
+    "position": 3379,
+    "source": "Import attempt {attempt} of {maxAttempts}.",
+    "sourceId": "components.Requests.pendingImportAttempt"
+  },
+  "callerContextRows": 20,
+  "callerContextsFile": "caller-contexts.jsonl",
+  "callerContextsSource": "Exact matching source and caller lines from the two pinned production component files only; docs, evidence, ledgers, and proposal artifacts were not searched.",
+  "codeCallerFiles": {
+    "src/components/Requests/destructiveActions.tsx": {
+      "byteCount": 5369,
+      "gitBlob": "09884f99a738ce4402b5fb121d15022f0efc3a67",
+      "lineCount": 173,
+      "path": "src/components/Requests/destructiveActions.tsx",
+      "sha256": "16d562185c1e1f3a94398369b4ab3eec28085033dcc3465c32557752687d1d57"
+    },
+    "src/components/Requests/index.tsx": {
+      "byteCount": 100417,
+      "gitBlob": "84f6a19674b329df0ef6be6483d74bbaeb110ccb",
+      "lineCount": 3115,
+      "path": "src/components/Requests/index.tsx",
+      "sha256": "25b612dcda274fe2ea64b76f169587e153b04a675c9b8cd817814d9fbfde5360"
+    }
+  },
+  "head": "4d7de2c41b0e6df6cd0b7f7075c9cddd1c6ce160",
+  "localeRegistry": {
+    "byteCount": 5394,
+    "gitBlob": "d699bd347f4fbad07bce14a743c884800d9d4a84",
+    "lineCount": 45,
+    "path": "config/i18n/locales.json",
+    "sha256": "6e8ea070b441db9700325cf838d440dbbef1d1e5331e28332ed6c15cb789376a"
+  },
+  "pullRequest": 418,
+  "repository": "snapetech-org/seerrng",
+  "schemaVersion": 1,
+  "sourceCatalog": {
+    "byteCount": 835513,
+    "gitBlob": "12e04a118c30b71b3714291adeaf9fdb2735cee4",
+    "lineCount": 9496,
+    "path": "src/i18n/locale/en.json",
+    "sha256": "75ff3c90b52aedd636a506281ffbd6fb2d3739c61294b6008a517f17647e2316"
+  },
+  "sourceIds": [
+    {
+      "position": 3380,
+      "source": "Next retry: {time}.",
+      "sourceId": "components.Requests.pendingImportNextRetry",
+      "sourceSha256": "c38bacf52cbae21715d6ddf76258ceee57d7b8ba66f9b5b180055bae181d784a"
+    },
+    {
+      "position": 3381,
+      "source": "Import attempt {attempt}; retries will continue automatically.",
+      "sourceId": "components.Requests.pendingImportRetrying",
+      "sourceSha256": "d4a13b5f1174ece71af6910e989d300cd131040bf72a38883fa417aa5e1351ce"
+    },
+    {
+      "position": 3382,
+      "source": "ChaptarrNG is preparing this {format}.",
+      "sourceId": "components.Requests.pendingImportTitle",
+      "sourceSha256": "310dc6fb5256cfd6c2b4b4dd5559d5003adcba7422563a2efda26ed54052934e"
+    },
+    {
+      "position": 3383,
+      "source": "Processing",
+      "sourceId": "components.Requests.processing",
+      "sourceSha256": "c8e3e92a62ecf1811c7f4d5ec6efb3244e1bba785c5152b6cfac1af8eecbe2ae"
+    },
+    {
+      "position": 3384,
+      "source": "{percent}% complete",
+      "sourceId": "components.Requests.progressFrom",
+      "sourceSha256": "8a5bee8668ab03e6c6c8d94f1db2ffd82930df24928b682b45c0670a558204b8"
+    },
+    {
+      "position": 3385,
+      "source": "Download service did not provide progress data.",
+      "sourceId": "components.Requests.progressUnavailable",
+      "sourceSha256": "1b2a73312d195980c74e294dc8078d362c6d9b8e4a86c9aac910660f7c1406dc"
+    },
+    {
+      "position": 3386,
+      "source": "Publisher",
+      "sourceId": "components.Requests.publisher",
+      "sourceSha256": "21378545892f1fe2b0f70fd49b619f6c4b326f2748a03d23d9b0220053222d9c"
+    },
+    {
+      "position": 3387,
+      "source": "Refresh",
+      "sourceId": "components.Requests.refresh",
+      "sourceSha256": "0e91610117029a62a478b7fa7df0b8598bebe3ab1e192d4b1882e310719c9671"
+    },
+    {
+      "position": 3388,
+      "source": "Refreshing…",
+      "sourceId": "components.Requests.refreshing",
+      "sourceSha256": "1c0def7be0607b966b89e4974da38090472d8ada625f5b4c89f25b09d39683bd"
+    },
+    {
+      "position": 3389,
+      "source": "Release Date",
+      "sourceId": "components.Requests.releaseDate",
+      "sourceSha256": "1fb0ecfb5d039ebc6d64e5060590ee452634dab48921d1a8669804a8bb275f83"
+    },
+    {
+      "position": 3390,
+      "source": "Delete From Library",
+      "sourceId": "components.Requests.remove",
+      "sourceSha256": "a76fe56b21503e4eea5de327299c66c92c69248aae9912fdfd09f1bdbbb63a84"
+    },
+    {
+      "position": 3391,
+      "source": "This will permanently delete its media files and remove its library entry from {service}. This action cannot be undone from Seerr. Other quality versions remain. When the last movie or series copy is confirmed gone, library reconciliation also removes its requests and issues, but preserves blocklists and watchlists.",
+      "sourceId": "components.Requests.removeDescription",
+      "sourceSha256": "d2b13c42b54765877d90c1d50cb4fea3c1ccccf80de528470371097faccc8022"
+    },
+    {
+      "position": 3392,
+      "source": "Unable to delete this item from its library service.",
+      "sourceId": "components.Requests.removeFailed",
+      "sourceSha256": "6179bac4444705f0dbab1b381930c81f35a6bae03d3e74bece658269685658f1"
+    },
+    {
+      "position": 3393,
+      "source": "Item deleted from its library service.",
+      "sourceId": "components.Requests.removeSuccess",
+      "sourceSha256": "d5f4f5fc01d18a013cb1c96ef382b5c68d4365c0616e0ea53e2589371f3d4b3b"
+    },
+    {
+      "position": 3394,
+      "source": "Permanently Delete {title} from {service}?",
+      "sourceId": "components.Requests.removeTitle",
+      "sourceSha256": "d97889763834270b145ffc3a3a0325783520414d77215888c73d69d2aa8666a7"
+    },
+    {
+      "position": 3395,
+      "source": "The media and the library entry will both be deleted.",
+      "sourceId": "components.Requests.removeTooltip",
+      "sourceSha256": "e73d4b9bfdc903449eb72a24089c93768ff615d66df0f12753d297ac5058194c"
+    },
+    {
+      "position": 3396,
+      "source": "No linked library item is available to delete.",
+      "sourceId": "components.Requests.removeUnavailableTooltip",
+      "sourceSha256": "fbeedf76732812052c40546e51755180bfab726adb94da2d2c3aca2b0a9df747"
+    },
+    {
+      "position": 3397,
+      "source": "Deleting…",
+      "sourceId": "components.Requests.removing",
+      "sourceSha256": "43b5894c3e4e2b24f13c935f4fae0a0a8fbe7d7792750a09b88c2097fd9a32b8"
+    },
+    {
+      "position": 3398,
+      "source": "Date",
+      "sourceId": "components.Requests.requestDate",
+      "sourceSha256": "99c40ab405926cb5ad1def9cff4d7ce624f8f8abfff4e85f655347fcb949d08e"
+    },
+    {
+      "position": 3399,
+      "source": "Request Lifecycle",
+      "sourceId": "components.Requests.requestLifecycle",
+      "sourceSha256": "1dc0cfa9f3603d67834294799ac3d94814cf146e71413e65cf4f6571df18edee"
+    }
+  ],
+  "sourceSnapshot": {
+    "byteCount": 1133570,
+    "gitBlob": "73a858058155f8e0e829f613754309ed7c7d95c1",
+    "lineCount": 9612,
+    "path": "config/i18n/source-snapshot.json",
+    "sha256": "5c257941ea31099c324ac719a87f533b6e84b795ec8d8e3f7774981bf091a006"
+  },
+  "tree": "6fba2d5985869b4563955b2c338a93e82efb4b22"
+}

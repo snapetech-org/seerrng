@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 1,
+  "packetType": "primary-review",
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "window": "W3720-W3739",
+  "range": [
+    3720,
+    3739
+  ],
+  "head": "1ca6ec2d5a0e9ef8000c69997e75648a8ccaf06e",
+  "tree": "6a51f3fb1d1f65c12bfe82bf47834626aa364488",
+  "inputPacket": "candidate-free-input",
+  "inputManifestSha256": "c47eae81b8ff26211ae4bf30966d4ececf726a8eb3eb6008965a086a225192fc",
+  "cellCount": 240,
+  "carriedHoldCount": 12,
+  "decisionCounts": {
+    "accept-current": 189,
+    "correction": 35,
+    "refinement": 16,
+    "hold": 0
+  },
+  "files": [
+    {
+      "path": "README.md",
+      "sha256": "1db2d985635e4080ae2ec72bb87c304743104dd7c249d856b7232cd4f99dbc8c",
+      "byteCount": 1042
+    },
+    {
+      "path": "carried-holds-reattestation.jsonl",
+      "sha256": "579023f579611a1605ff8f25bd17ef80052f1dbd794c3457b67620c9e2084f8c",
+      "byteCount": 11066
+    },
+    {
+      "path": "make_primary.py",
+      "sha256": "509d0aedc6f55c2c3206acdef630bd3ac82eda0d810442b32e88dab06b75f41f",
+      "byteCount": 26771
+    },
+    {
+      "path": "primary-ledger.jsonl",
+      "sha256": "581c13a017804df4abbac5683750052336ebc945db5774f827f26ae0f8cdf076",
+      "byteCount": 1724259
+    },
+    {
+      "path": "summary.json",
+      "sha256": "0aff558f7643e507b186cbd649a535fcf548a2e7d571cfbbaf3d5234f8f60c1f",
+      "byteCount": 2293
+    },
+    {
+      "path": "verify_primary.py",
+      "sha256": "e32f0b03e1d99a8f9ab43a67d8548b457efe6a251183615832e97aa36df46901",
+      "byteCount": 9696
+    }
+  ]
+}

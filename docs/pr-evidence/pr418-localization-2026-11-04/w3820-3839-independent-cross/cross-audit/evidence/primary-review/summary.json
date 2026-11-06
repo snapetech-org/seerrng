@@ -1,0 +1,146 @@
+{
+  "artifact": "SeerrNG PR #418 W3820-W3839 primary semantic translation review",
+  "baseRef": "main",
+  "baseSha": "fa40534ccced75bde1125c14760514fcd5d7de4d",
+  "baselineTokenMismatchCounts": {
+    "markupTags": 0,
+    "numericTokens": 0,
+    "placeholders": 0,
+    "protectedLiterals": 2
+  },
+  "cellCount": 240,
+  "changedCells": 20,
+  "confidenceCounts": {
+    "high": 174,
+    "moderate": 66
+  },
+  "dispositionCounts": {
+    "accept-current": 220,
+    "correction": 7,
+    "hold": 0,
+    "refinement": 13
+  },
+  "dispositionCountsByLocale": {
+    "ar": {
+      "accept-current": 18,
+      "correction": 2,
+      "hold": 0,
+      "refinement": 0
+    },
+    "de": {
+      "accept-current": 20,
+      "correction": 0,
+      "hold": 0,
+      "refinement": 0
+    },
+    "es": {
+      "accept-current": 20,
+      "correction": 0,
+      "hold": 0,
+      "refinement": 0
+    },
+    "fr": {
+      "accept-current": 20,
+      "correction": 0,
+      "hold": 0,
+      "refinement": 0
+    },
+    "hi": {
+      "accept-current": 18,
+      "correction": 2,
+      "hold": 0,
+      "refinement": 0
+    },
+    "id": {
+      "accept-current": 18,
+      "correction": 1,
+      "hold": 0,
+      "refinement": 1
+    },
+    "ja": {
+      "accept-current": 15,
+      "correction": 2,
+      "hold": 0,
+      "refinement": 3
+    },
+    "ko": {
+      "accept-current": 19,
+      "correction": 0,
+      "hold": 0,
+      "refinement": 1
+    },
+    "pt-BR": {
+      "accept-current": 19,
+      "correction": 0,
+      "hold": 0,
+      "refinement": 1
+    },
+    "vi": {
+      "accept-current": 17,
+      "correction": 0,
+      "hold": 0,
+      "refinement": 3
+    },
+    "zh-Hans": {
+      "accept-current": 17,
+      "correction": 0,
+      "hold": 0,
+      "refinement": 3
+    },
+    "zh-Hant": {
+      "accept-current": 19,
+      "correction": 0,
+      "hold": 0,
+      "refinement": 1
+    }
+  },
+  "head": "6c489a64782d31fee70a6aeef386c88527b33083",
+  "holds": 0,
+  "inputCandidateFreeVerifierResult": "PASS",
+  "inputChecksumListSha256": "be3d86b61429fb0a4fb6e99e336cddefd446fbcee06792c71b4ed7d925908230",
+  "inputManifestSha256": "7ddddcd10536dbd6363814f61dda3dbc2d8629127624b01793589f5bde80e205",
+  "inputPath": "/home/keith/Documents/code/task-scratch/seerrng-pr418-w3820-candidate-free-20261104/candidate-free-input",
+  "ledger": "primary-ledger.jsonl",
+  "localeCount": 12,
+  "nativeSpeakerSignoff": "not claimed",
+  "otherProposalLedgersInspected": false,
+  "protectedLiteralBaselineMismatchCells": [
+    {
+      "disposition": "correction",
+      "locale": "hi",
+      "missing": [
+        "API"
+      ],
+      "position": 3824,
+      "sourceId": "components.Settings.MylarModal.apiKey"
+    },
+    {
+      "disposition": "correction",
+      "locale": "hi",
+      "missing": [
+        "IP"
+      ],
+      "position": 3836,
+      "sourceId": "components.Settings.MylarModal.hostname"
+    }
+  ],
+  "protectedLiteralMismatchesResolved": 2,
+  "pullRequest": 418,
+  "range": [
+    3820,
+    3839
+  ],
+  "repository": "snapetech-org/SeerrNG",
+  "reviewSource": "verified candidate-free input only",
+  "reviewedAtUTC": "2026-11-04T05:08:50.276706+00:00",
+  "reviewedTokenMismatchCounts": {
+    "markupTags": 0,
+    "numericTokens": 0,
+    "placeholders": 0,
+    "protectedLiterals": 0
+  },
+  "schemaVersion": 1,
+  "sourceCount": 20,
+  "tree": "9bbf55986a34e9a2bc0c4027205927df65f8754b",
+  "window": "W3820-W3839"
+}

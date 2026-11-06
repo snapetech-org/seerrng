@@ -1,0 +1,5 @@
+Verified candidate-free input checksums with sha256sum -c.
+Input packet manifest SHA-256: 822f5f75528a016494cade5f20d09b87eca6c484f51eea5b67ec61257c71fc5b
+Input head/tree: 9bb8fd4695b207165e4bb8e56c5239eb50cee37c / 74a4b0208108be4bc593c63c8ac55b4a2df74862
+Rows: 20 sources, 240 locale cells, 20 caller contexts.
+Placeholder mismatches: 0.

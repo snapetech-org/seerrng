@@ -1,0 +1,196 @@
+{
+  "schemaVersion": 1,
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "head": "5a4342176a8325c371a35d489cb01c58283bc983",
+  "tree": "98cd64952123c9b678e38250e7819cabb4476448",
+  "semanticManifestSha256": "3ea74cc6491aecddf9ffcedc69610f13d20b199059aef69bb3c2407feb0826ea",
+  "cellPlanSha256": "97c3402252a34aaa4f8f9f44a691281d9c35ff7b80d7edb3a26c752436af6558",
+  "retiredCellsSha256": "dc5ec05547e4da3079c0668f82a52da7999d89ef9d4f037c1cd72af9347ebd83",
+  "sourceBundleManifestSha256": "212491482d1b9207fed755af6e80ac80a97184ec8dbe84d0c4ad2bd711acae0d",
+  "sourceRowsSha256": "ad91236a31e32f199ff449f9ed4597ea6af0f5a4eff32772cefa84278cafb68c",
+  "sourceCellsSha256": "8bfcd1aa9b5d5aba4fb6317c194cd544d601543ebf250899a84a719b52e468e1",
+  "planRows": 115260,
+  "actions": {
+    "semantic-review-required": 114783,
+    "reuse-equivalence-decision": 477
+  },
+  "retiredRows": 48,
+  "reusableEquivalenceCells": 477,
+  "targetsApplied": false,
+  "batchId": "existing-es-client-0078",
+  "batchSha256": "237bd15bb7c183c4ee944caee53c469cf8ac33f4f4b2129cc7769620ddfa0e50",
+  "rowCount": 32,
+  "model": "qwen3.8-27b-heretic:q4km",
+  "attempt": 2,
+  "decisions": [
+    {
+      "id": "components.QuotaSelector.movieRequests",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.QuotaSelector.movies",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.QuotaSelector.musicRequests",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.QuotaSelector.seasons",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.QuotaSelector.software",
+      "verdict": "correct",
+      "target": "{count, plural, one {solicitud de software} other {solicitudes de software}}",
+      "confidence": "high",
+      "reason": "The source ICU structure only defines 'one' and 'other' categories. The previous target incorrectly added a 'many' category, which breaks the placeholder structure. Additionally, the plural form should be lowercase to match the singular form and standard UI conventions."
+    },
+    {
+      "id": "components.QuotaSelector.softwareRequests",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.QuotaSelector.tvRequests",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.QuotaSelector.unlimited",
+      "verdict": "uncertain",
+      "reason": "The source 'Unlimited' is gender-neutral, but the target 'Ilimitadas' is feminine plural. Without context on the specific noun it modifies (e.g., 'peticiones' vs 'películas'), the gender agreement cannot be verified."
+    },
+    {
+      "id": "components.ReaderDeliveryLink.audiobooks",
+      "verdict": "correct",
+      "target": "Abrir la biblioteca de audiolibros de Grimmory",
+      "confidence": "high",
+      "reason": "The source is an imperative action ('Open...'). The target 'Biblioteca... abierto' is a noun phrase with incorrect gender agreement ('abierto' vs 'Biblioteca'). The correction provides the correct imperative form and natural phrasing."
+    },
+    {
+      "id": "components.ReaderDeliveryLink.audiobooksBookOrbit",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.ReaderDeliveryLink.audiobooksBookOrbitHelp",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.ReaderDeliveryLink.audiobooksHelp",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.ReaderDeliveryLink.comics",
+      "verdict": "correct",
+      "target": "Explorar cómics en {serviceName}",
+      "confidence": "high",
+      "reason": "The source 'Browse' implies exploring or viewing a collection. The target 'Navega' (Navigate) is less precise for content browsing in this context, and 'Explorar' is the standard UI term for 'Browse' in Spanish."
+    },
+    {
+      "id": "components.ReaderDeliveryLink.comicsBookOrbitHelp",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.ReaderDeliveryLink.comicsGrimmoryHelp",
+      "verdict": "correct",
+      "target": "Abra la biblioteca de Grimmory en un navegador. Para la lectura de cómics página por página, copie la dirección Komga de Grimmory en Ajustes > Servicios > Aplicaciones de lectura en una aplicación compatible.",
+      "confidence": "high",
+      "reason": "The target contains grammatical errors ('copiar' should be imperative 'copie' to match 'Abra') and awkward phrasing ('lectura cómica'). The correction fixes the grammar and improves naturalness."
+    },
+    {
+      "id": "components.ReaderDeliveryLink.ebooks",
+      "verdict": "correct",
+      "target": "Explorar libros electrónicos en {serviceName}",
+      "confidence": "high",
+      "reason": "The source 'Browse' is best translated as 'Explorar' in a UI context. 'Buscar' (Search) implies a query action, which is different from browsing a library."
+    },
+    {
+      "id": "components.ReaderDeliveryLink.ebooksHelp",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.ReaderDeliveryLink.magazines",
+      "verdict": "correct",
+      "target": "Explorar PDF de revistas en {serviceName}",
+      "confidence": "high",
+      "reason": "The source 'Browse' should be 'Explorar'. 'Examine' is not a standard UI verb for browsing content and sounds unnatural."
+    },
+    {
+      "id": "components.ReaderDeliveryLink.magazinesHelp",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.ReaderDeliverySettings.address",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.ReaderDeliverySettings.addressDescription",
+      "verdict": "correct",
+      "target": "Introduzca la dirección que los lectores pueden abrir en un navegador. Incluya una ruta base de proxy inverso si utiliza uno. Puede pegar una dirección completa de OPDS o Grimmory Komga.",
+      "confidence": "high",
+      "reason": "The target 'Introduzca los lectores de direcciones' is grammatically incorrect and nonsensical. The correction fixes the syntax to 'Introduzca la dirección que los lectores pueden abrir' and improves the translation of 'reverse-proxy base path'."
+    },
+    {
+      "id": "components.ReaderDeliverySettings.addressPlaceholder",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.ReaderDeliverySettings.bookorbit",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.ReaderDeliverySettings.bookorbitDescription",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.ReaderDeliverySettings.bookorbitSetup",
+      "verdict": "correct",
+      "target": "Configuración de OPDS de BookOrbit",
+      "confidence": "high",
+      "reason": "The target 'BookOrbit OPDS Configuración' is a word salad. The correction provides a natural Spanish noun phrase structure."
+    },
+    {
+      "id": "components.ReaderDeliverySettings.cancel",
+      "verdict": "correct",
+      "target": "Descartar cambios",
+      "confidence": "high",
+      "reason": "The target 'Cambios de disco' is a mistranslation of 'Discard' (likely confused with 'disk'). 'Descartar cambios' is the correct UI term for discarding changes."
+    },
+    {
+      "id": "components.ReaderDeliverySettings.catalogAddress",
+      "verdict": "correct",
+      "target": "Dirección del catálogo OPDS",
+      "confidence": "high",
+      "reason": "The target 'OPDS Catálogo Dirección' is a word salad. The correction provides the correct Spanish word order."
+    },
+    {
+      "id": "components.ReaderDeliverySettings.catalogAddressLabel",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.ReaderDeliverySettings.clearCredentials",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.ReaderDeliverySettings.comicCatalogAddress",
+      "verdict": "correct",
+      "target": "Dirección del lector de cómics Komga",
+      "confidence": "high",
+      "reason": "The target 'Komga Comic Reader Dirección' is a word salad. The correction provides the correct Spanish word order."
+    },
+    {
+      "id": "components.ReaderDeliverySettings.comicCatalogAddressDescription",
+      "verdict": "correct",
+      "target": "Utilice esta dirección en una aplicación de cómics compatible con Komga para transmitir página por página. Habilite la API Komga de Grimmory y utilice las mismas credenciales de lector OPDS.",
+      "confidence": "high",
+      "reason": "The target contains untranslated English ('Enable', 'Grimmory's', 'API' is okay but the sentence structure is broken) and awkward phrasing ('aplicación cómica'). The correction translates the full sentence naturally."
+    },
+    {
+      "id": "components.ReaderDeliverySettings.confirmDeleteBookOrbitGrouping",
+      "verdict": "keep"
+    }
+  ],
+  "decisionsSha256": "8cbd6eb97859307d1105f50740199613989ca064fa7631abe5791a3420592726",
+  "rawResponseSha256": "9674f469c87e45ee18c43402163b57979e7d2fed242f7e9e45b331f24ea76039",
+  "rawResponseFile": "/mnt/disks/scratch/task-scratch/seerrng-review-window-650-700-422072-20261102/semantic-output/responses/existing-es-client-0078-attempt-2.json"
+}

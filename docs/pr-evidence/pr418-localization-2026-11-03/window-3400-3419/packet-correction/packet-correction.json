@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "sourceInputWasPreserved": true,
+  "correctionReason": "The original packet has incorrect adjacent boundary entries and omits exact dynamic render contexts for positions 3401, 3413, and 3414. The selected 20 source IDs still match the pinned English catalog order.",
+  "correctedBoundaryFile": "source-boundaries-corrected.json",
+  "supplementalCallerLines": "supplemental-dynamic-caller-lines.jsonl",
+  "callerGapPositions": [
+    3401,
+    3413,
+    3414
+  ],
+  "verifiedAgainstHead": "fcbc579f724e50a07dc0e12b00127c4f6084c453",
+  "verifiedAgainstTree": "30e1e5e610e88ba935e482fc7088311d00e214ae",
+  "additionalIndependentVerification": "independent-verification/report.md",
+  "correctedCallerLinesFile": "corrected-dynamic-caller-lines.jsonl",
+  "thirdAuditLine2894WasIncorrect": "The cited line renders task-filter options. The ROM media-filter label renders are at lines 2920 and 2929; exact hashes are in corrected-dynamic-caller-lines.jsonl.",
+  "independentVerificationAtUTC": "2026-11-03T08:38:37+00:00"
+}

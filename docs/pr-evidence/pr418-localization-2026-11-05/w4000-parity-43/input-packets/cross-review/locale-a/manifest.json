@@ -1,0 +1,43 @@
+{
+  "assignedLocales": [
+    "ar",
+    "de",
+    "es",
+    "fr",
+    "hi",
+    "id"
+  ],
+  "baseSha": "2647e15762de0c2285cd9d8ebc6d27ffafce6358",
+  "baseTree": "b6f4acb9debdc1b0a838b50d5ad88aaa467e429b",
+  "blindChecksumListSha256": "2a63c6b491d78a1f2165987b79a5b588fd32e9cf56dd7a9bd7310bea7a92046c",
+  "blindManifestSha256": "f11e36ec4ff044bb6d364e3cdae66b00340f41bf876db48490919b2b6eb597f1",
+  "blindPacketPath": "../blind-review-old-head",
+  "candidateFreeChecksumListSha256": "48e2ca2b249f3d7585ac64abb0ad316fdf865f1df976f745e05cdbfdbd1c2d8c",
+  "candidateFreeManifestSha256": "e30ca1699be1f8cf08c16f6cdd764b6b36dd85470ac9dce56975368409fa384c",
+  "candidateFreePacketPath": "../candidate-free",
+  "cells": 264,
+  "exactHead": "f48afa55ce2abeb00ee8b2dc66fa6d2df8f62ba4",
+  "exactTree": "f7ea727b0383397ec8d6220667b4abe151d43b46",
+  "oldReviewHead": "77d30ae742aad7245e6e419237fca6a544531e1f",
+  "oldReviewTree": "2c6fe4a0c1c33aa56b01f06a70702f68598509a7",
+  "packetType": "independent-cross-review",
+  "payloadFiles": [
+    "README.md",
+    "after-attestation.json",
+    "before-attestation.json",
+    "build_cross_review.py",
+    "cross-ledger.jsonl",
+    "summary.json",
+    "verify_cross_review.py"
+  ],
+  "primaryChecksumListSha256": "5fd8bfc4104c60b00d9c35fdaa1150ed9d932d11ba2b92dfa5370563dd8afe8d",
+  "primaryManifestSha256": "4eb5b8206b15bcabc0a1dfa922893fa40e2f4a0492438af5a832d50bc215fa76",
+  "primaryPacketPath": "../primary-review-old-head",
+  "pullRequest": 418,
+  "reattestationChecksumListSha256": "8fe4d4dacb13273188b0fc30714e767aa645bcbaf7afb1fa00bc34eab8c8b461",
+  "reattestationManifestSha256": "0d315e457f66c3de371c0841c0da5b3e607ba90e5e37cfb81cc9d9915de9adfb",
+  "reattestationPacketPath": "../reattestation",
+  "repository": "snapetech-org/seerrng",
+  "rootTaskManifestRebuildDeferredToParent": true,
+  "schemaVersion": 1
+}

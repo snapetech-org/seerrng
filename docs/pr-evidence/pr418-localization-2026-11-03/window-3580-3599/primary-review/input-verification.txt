@@ -1,0 +1,1 @@
+PASS: W3580-W3599 candidate-free packet reattaches to live PR/head/tree; 20 ordered sources, 240 exact current targets, 12 locale catalogs, direct caller snippets, prefix exclusion, source/catalog/runtime pins, and token checks verified. One baseline protected-literal mismatch is pinned at rank 3586 Hindi (IP).

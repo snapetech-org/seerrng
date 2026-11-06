@@ -94,14 +94,14 @@ const ErrorCard = ({ id, tmdbId, tvdbId, type }: ErrorCardProps) => {
               </h1>
               <div className="line-clamp-3 text-xs break-words whitespace-normal">
                 <div className="flex items-center">
-                  <span className="mr-2 font-bold text-gray-400">
+                  <span className="me-2 font-bold text-gray-400">
                     {intl.formatMessage(messages.tmdbid)}
                   </span>
                   {tmdbId}
                 </div>
                 {!!tvdbId && (
                   <div className="mt-2 flex items-center sm:mt-1">
-                    <span className="mr-2 font-bold text-gray-400">
+                    <span className="me-2 font-bold text-gray-400">
                       {intl.formatMessage(messages.tvdbid)}
                     </span>
                     {tvdbId}

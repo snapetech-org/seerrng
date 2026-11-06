@@ -1,0 +1,40 @@
+{
+  "adjudicatedBlindTargets": 6,
+  "adjudicatedPrimaryTargets": 15,
+  "applicationApproved": false,
+  "blindTargetChanges": 19,
+  "bothAcceptCurrentCells": 210,
+  "cellCount": 240,
+  "convergentProposalCells": 9,
+  "crossDispositions": {
+    "accept-current": 210,
+    "correction": 24,
+    "refinement": 6
+  },
+  "dispositionAgreementCells": 222,
+  "dispositionDifferences": 18,
+  "exactHeadBrowserReview": false,
+  "finalProposedChanges": 30,
+  "head": "265171657d48ef56ee81cc1c6a5c3d07abe5d07e",
+  "holds": 0,
+  "localeCount": 12,
+  "packetHashes": {
+    "blindReviewChecksumListSha256": "7efeee5cec4b85e3699aa12f6bdde5cf6d3f982df8b2c16eb0c9fcc934abad00",
+    "candidateFreeChecksumListSha256": "2c13436eb5d119231ce92a5ca8add130df8714a82a9b5243f22e24262957bb6d",
+    "candidateFreeManifestJsonSha256": "9e032c395028881ffe5273ae0d7d13668dd26e9cc7cd4b321a68d2cfee95dd63",
+    "primaryChecksumListSha256": "225c152bc63d8140ffb80d59fef7db8bf88053601fd8d3e613e97ffeca2d1471"
+  },
+  "placeholderMismatches": 0,
+  "primaryTargetChanges": 24,
+  "pullRequest": 418,
+  "qualifiedNativeSpeakerApproval": false,
+  "releaseApproved": false,
+  "repository": "snapetech-org/seerrng",
+  "schemaVersion": 1,
+  "sourceChangesMade": false,
+  "sourceCount": 20,
+  "targetAgreementCells": 219,
+  "targetDisagreements": 21,
+  "tree": "402984893883cf7afd106cd208f6027d7410f2fb",
+  "window": "W3520-W3539"
+}

@@ -1,0 +1,75 @@
+{
+  "baseRef": "main",
+  "baseSha": "fa40534ccced75bde1125c14760514fcd5d7de4d",
+  "baselineTokenDiagnostics": {
+    "markupTags": 0,
+    "numericTokens": 0,
+    "placeholders": 0,
+    "protectedLiterals": 2
+  },
+  "callerReferenceCount": 20,
+  "callerlessSourcePositions": [],
+  "catalogKeyCount": 9494,
+  "englishKeySequenceSha256": "2ece175c95fe56b427b65a1a46169f895a342887ed772e4e5729c32dd443ad7e",
+  "head": "6c489a64782d31fee70a6aeef386c88527b33083",
+  "localeInsertionOrderDifferencesFromEnglish": [
+    "zh-Hans",
+    "ja",
+    "ko",
+    "zh-Hant",
+    "vi"
+  ],
+  "localeOrder": [
+    "es",
+    "zh-Hans",
+    "hi",
+    "de",
+    "ja",
+    "fr",
+    "pt-BR",
+    "ar",
+    "ko",
+    "zh-Hant",
+    "vi",
+    "id"
+  ],
+  "nextBoundary": {
+    "hashOnly": true,
+    "position": 3840,
+    "sourceIdSha256": "08f4f9a9e751ba30eed6b7545363ed0395c6c24dd6beefd292da869da7c13127",
+    "sourceTextSha256": "5b4ac0100d56e721ace498e24429ee2761b22ea07bf8488ed132400f26f534fa"
+  },
+  "nextBoundaryPosition": 3840,
+  "previousBoundary": {
+    "hashOnly": true,
+    "position": 3819,
+    "sourceIdSha256": "2f829e4c57149433d9db05abc37c5e2766a4a6265d9461f7a2a28b8d0f255c15",
+    "sourceTextSha256": "237b9c82ff47de1cb5c8ce0152ac635fd377e2be98d7b7e60205724abbb26885"
+  },
+  "previousCompletedEndPosition": 3819,
+  "previousCompletedWindow": "W3800-W3819",
+  "priorHoldCount": 12,
+  "priorHoldPreservation": "hash-only current source and target hash comparison; held target strings excluded",
+  "priorHoldSourcePositions": [
+    3632
+  ],
+  "priorSelectedSourceIdCount": 3820,
+  "priorSelectedSourceIdHashSequenceSha256": "521b9e6cc05a220d6f4fe5e3b46daed6a8e97fe5e4bfdf280195b9c1ee967e98",
+  "priorSelectedSourceIdOrSourceTextHashMismatches": 0,
+  "priorSelectedSourceIdsReattested": 3820,
+  "pullRequest": 418,
+  "range": [
+    3820,
+    3839
+  ],
+  "repository": "snapetech-org/SeerrNG",
+  "selectedSourceCount": 20,
+  "selectedSourceIdOrderSha256": "2079f919241608515f62dad52697ab7d9e67a712a9a0f7daa7e86a4b5a2a8504",
+  "sortedKeySetParityWithEnglish": true,
+  "sourceIdOrderSha256": "2ece175c95fe56b427b65a1a46169f895a342887ed772e4e5729c32dd443ad7e",
+  "sourceOrderCount": 9494,
+  "sourceRecordOrderSha256": "3efb0ce7432eda01ceee9722cce22d1f8b3251d95bb70968afbbc8751b3fa356",
+  "sourceTextOrderSha256": "3a663a44b3f21ddf29b3b20ec85d166a4776e0b7ede1a8abf9d3c97c7110cf2b",
+  "tree": "9bbf55986a34e9a2bc0c4027205927df65f8754b",
+  "window": "W3820-W3839"
+}

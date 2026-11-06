@@ -1,0 +1,40 @@
+{
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "head": "4d7de2c41b0e6df6cd0b7f7075c9cddd1c6ce160",
+  "tree": "6fba2d5985869b4563955b2c338a93e82efb4b22",
+  "window": "W3380-W3399",
+  "sourceIds": 20,
+  "locales": 12,
+  "cells": 240,
+  "inputManifestSha256": "a9eb1a049de2233cf3f3c0d2d3d48abd6d27558e01927e1c58630a8b470d9ed0",
+  "inputChecksumListSha256": "c02b106002378057e7c3c43fe927632b5ab6762b744785e3509601a9435e8dc4",
+  "primaryLedgerSha256": "50305789e2e0f6bf7cc7d5513674e4d5720ae1ead9552e707c75f2a1356f2ac0",
+  "blindLedgerSha256": "55f51a336fa5e9465aa26ec2018429e686fe16871767d764eaa210e9ae3ccb51",
+  "crossAuditLedgerSha256": "886a00389ad2f669b394db2fdd479f284d97528d94471c79c0eebf6256393f06",
+  "rootCounts": {
+    "accept-current": 108,
+    "correction": 6,
+    "hold": 120,
+    "refinement": 6
+  },
+  "appliedChangesPlanned": 12,
+  "holdsByPosition": {
+    "3385": 12,
+    "3387": 12,
+    "3388": 12,
+    "3390": 12,
+    "3391": 12,
+    "3394": 12,
+    "3395": 12,
+    "3396": 12,
+    "3397": 12,
+    "3398": 12
+  },
+  "placeholderMarkupProtectedFailures": 0,
+  "nativeSpeakerApproval": false,
+  "browserAcceptance": false,
+  "repositoryOrPRChanged": false,
+  "testsBuildsScansCIOrWorkflowChanges": false,
+  "mergeReleaseTag": false
+}

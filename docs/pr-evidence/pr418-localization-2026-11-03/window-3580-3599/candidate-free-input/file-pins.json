@@ -1,0 +1,155 @@
+{
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "head": "30f626a4626d460f426666cde02f5c1ed17fa206",
+  "tree": "9b2616780791c73eb176aca6ad53061f1f3587d8",
+  "catalogFiles": {
+    "src/i18n/locale/en.json": {
+      "path": "src/i18n/locale/en.json",
+      "sha256": "75ff3c90b52aedd636a506281ffbd6fb2d3739c61294b6008a517f17647e2316",
+      "gitBlob": "12e04a118c30b71b3714291adeaf9fdb2735cee4",
+      "byteCount": 835513,
+      "lineCount": 9496,
+      "keyCount": 9494,
+      "orderedKeysSha256": "47d40a21145f2f198fadaa29baeef5461718c4b6365d564af60ee015f18f1974"
+    },
+    "src/i18n/locale/es.json": {
+      "path": "src/i18n/locale/es.json",
+      "sha256": "25125ca22fe04539f856a297717fdd036d46b8687821cc799c024ec11607eaee",
+      "gitBlob": "637a273c825c988b889d2e4d9872dfcdf8ae489f",
+      "byteCount": 922938,
+      "lineCount": 9496,
+      "keyCount": 9494,
+      "orderedKeysSha256": "47d40a21145f2f198fadaa29baeef5461718c4b6365d564af60ee015f18f1974"
+    },
+    "src/i18n/locale/zh_Hans.json": {
+      "path": "src/i18n/locale/zh_Hans.json",
+      "sha256": "d152c75bcba91c55677f2855698bce518f6c031323dc9de131cb451b073354c9",
+      "gitBlob": "cf7d3a9b8825cb0ad8c1de78189b30ef9d1ffadf",
+      "byteCount": 812904,
+      "lineCount": 9496,
+      "keyCount": 9494,
+      "orderedKeysSha256": "35faf7107f1be3900172b7c08ac7558b51f31d63b3b6c57eebe7710e8a81ca33"
+    },
+    "src/i18n/locale/hi.json": {
+      "path": "src/i18n/locale/hi.json",
+      "sha256": "35caf437117f905c6a00b0f7d6055beb4556293ca716bcdce533104afcc3ffb0",
+      "gitBlob": "41c579c1ec5f724720921a511ef1ee46324ebdab",
+      "byteCount": 1373426,
+      "lineCount": 9496,
+      "keyCount": 9494,
+      "orderedKeysSha256": "47d40a21145f2f198fadaa29baeef5461718c4b6365d564af60ee015f18f1974"
+    },
+    "src/i18n/locale/de.json": {
+      "path": "src/i18n/locale/de.json",
+      "sha256": "5a18d1f005385ec269c5a9b9526d43080db77f4c13fd125b50f8aaf70f28f329",
+      "gitBlob": "7fb6c5cf0a154ffbaaab1543890998bca2341eff",
+      "byteCount": 927193,
+      "lineCount": 9496,
+      "keyCount": 9494,
+      "orderedKeysSha256": "47d40a21145f2f198fadaa29baeef5461718c4b6365d564af60ee015f18f1974"
+    },
+    "src/i18n/locale/ja.json": {
+      "path": "src/i18n/locale/ja.json",
+      "sha256": "3323b7d65bda277fa2e2f894497aeb1aa09252725308230a232ff3509e193e4d",
+      "gitBlob": "a2e60b293bcb0a32ff1d4fe4b0c31a52f6f7edc1",
+      "byteCount": 1016418,
+      "lineCount": 9496,
+      "keyCount": 9494,
+      "orderedKeysSha256": "35faf7107f1be3900172b7c08ac7558b51f31d63b3b6c57eebe7710e8a81ca33"
+    },
+    "src/i18n/locale/fr.json": {
+      "path": "src/i18n/locale/fr.json",
+      "sha256": "9d4517c712565b4888f314187f470fa7e5f4a619a139e108fb83ec23ed3c8c5d",
+      "gitBlob": "867320b2fa2334587088b9e6b248a0634fa4059e",
+      "byteCount": 941100,
+      "lineCount": 9496,
+      "keyCount": 9494,
+      "orderedKeysSha256": "47d40a21145f2f198fadaa29baeef5461718c4b6365d564af60ee015f18f1974"
+    },
+    "src/i18n/locale/pt_BR.json": {
+      "path": "src/i18n/locale/pt_BR.json",
+      "sha256": "3d72c8d051a261e842c576ece7cfc085ff999be51006c3eaf615bcc5b6f8f406",
+      "gitBlob": "6dac2dc419c763e629ae825e9a5bab535a944f15",
+      "byteCount": 912328,
+      "lineCount": 9496,
+      "keyCount": 9494,
+      "orderedKeysSha256": "47d40a21145f2f198fadaa29baeef5461718c4b6365d564af60ee015f18f1974"
+    },
+    "src/i18n/locale/ar.json": {
+      "path": "src/i18n/locale/ar.json",
+      "sha256": "f10f9b72f50ee1ee8fcd34dee5e5d0680e71fefc5db07a4f620238cc6d0d951d",
+      "gitBlob": "7dfb3a03f48801947744107eac3ad941b90f8cde",
+      "byteCount": 1045087,
+      "lineCount": 9496,
+      "keyCount": 9494,
+      "orderedKeysSha256": "47d40a21145f2f198fadaa29baeef5461718c4b6365d564af60ee015f18f1974"
+    },
+    "src/i18n/locale/ko.json": {
+      "path": "src/i18n/locale/ko.json",
+      "sha256": "f454370c0d01e391f7f4b983b689be7cfc3de8cd65e95439d7aea6a32790cc0b",
+      "gitBlob": "3bb2791d74902d5fe3da136a59c52a63619b0489",
+      "byteCount": 934976,
+      "lineCount": 9496,
+      "keyCount": 9494,
+      "orderedKeysSha256": "35faf7107f1be3900172b7c08ac7558b51f31d63b3b6c57eebe7710e8a81ca33"
+    },
+    "src/i18n/locale/zh_Hant.json": {
+      "path": "src/i18n/locale/zh_Hant.json",
+      "sha256": "f284fc9df323316577b36111540a2c99c8350546f7f3a57d23bf900b26e5105c",
+      "gitBlob": "4e95b322ed921be21564c0a205c46c017c565ed6",
+      "byteCount": 814745,
+      "lineCount": 9496,
+      "keyCount": 9494,
+      "orderedKeysSha256": "35faf7107f1be3900172b7c08ac7558b51f31d63b3b6c57eebe7710e8a81ca33"
+    },
+    "src/i18n/locale/vi.json": {
+      "path": "src/i18n/locale/vi.json",
+      "sha256": "2de1f320f69630159a02b4522323f7a2d8d25069f8d615761f5297057a1d240f",
+      "gitBlob": "2e99bebd7c4258371b14301ccc834423b172f600",
+      "byteCount": 970594,
+      "lineCount": 9496,
+      "keyCount": 9494,
+      "orderedKeysSha256": "35faf7107f1be3900172b7c08ac7558b51f31d63b3b6c57eebe7710e8a81ca33"
+    },
+    "src/i18n/locale/id.json": {
+      "path": "src/i18n/locale/id.json",
+      "sha256": "e5c7ad78d22ef0a30fde0aa7f0d5738dd290d773b11dcf51ca703fee528f3aeb",
+      "gitBlob": "1a5f32fd737a91953349051d1876e47dc1ccab87",
+      "byteCount": 868510,
+      "lineCount": 9496,
+      "keyCount": 9494,
+      "orderedKeysSha256": "47d40a21145f2f198fadaa29baeef5461718c4b6365d564af60ee015f18f1974"
+    }
+  },
+  "runtimeFiles": {
+    "config/i18n/locales.json": {
+      "path": "config/i18n/locales.json",
+      "sha256": "6e8ea070b441db9700325cf838d440dbbef1d1e5331e28332ed6c15cb789376a",
+      "gitBlob": "d699bd347f4fbad07bce14a743c884800d9d4a84",
+      "byteCount": 5394,
+      "lineCount": 45
+    },
+    "src/components/Settings/BackIssueModal/index.tsx": {
+      "path": "src/components/Settings/BackIssueModal/index.tsx",
+      "sha256": "d153a91ffdf358112f7e6f85039a219f794704d4b52385e70d4238b8dfefba96",
+      "gitBlob": "9137db8536745ca5a94d249667ecd93c333573b7",
+      "byteCount": 15415,
+      "lineCount": 415
+    },
+    "src/components/Settings/BinderyModal/index.tsx": {
+      "path": "src/components/Settings/BinderyModal/index.tsx",
+      "sha256": "0d97baa5e4e175f9413bbc7309486cba8919a2611a2217c83529bc87c029860a",
+      "gitBlob": "901fba814f68bac8695e790718dfc55575a523df",
+      "byteCount": 18089,
+      "lineCount": 491
+    },
+    "src/components/Settings/SettingsServices.tsx": {
+      "path": "src/components/Settings/SettingsServices.tsx",
+      "sha256": "43e88ea339ecdf33b596c04e4a20097e67a84dffd54607a8068fbb7dd551d5f9",
+      "gitBlob": "7bf5662ffc7338c47de12413a8b55ffc1137c93f",
+      "byteCount": 109940,
+      "lineCount": 2805
+    }
+  }
+}

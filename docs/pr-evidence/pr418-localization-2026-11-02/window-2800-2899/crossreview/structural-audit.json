@@ -1,0 +1,76 @@
+{
+  "cellCount": 1200,
+  "sourceIds": 100,
+  "locales": 12,
+  "currentProtectedLiteralMissing": 7,
+  "currentProtectedLiteralDetails": [
+    {
+      "sourcePosition": 2848,
+      "sourceId": "components.RequestModal.BulkRequestModal.noEbookServer",
+      "locale": "hi",
+      "missing": [
+        "Bookshelf"
+      ]
+    },
+    {
+      "sourcePosition": 2848,
+      "sourceId": "components.RequestModal.BulkRequestModal.noEbookServer",
+      "locale": "vi",
+      "missing": [
+        "Bookshelf"
+      ]
+    },
+    {
+      "sourcePosition": 2849,
+      "sourceId": "components.RequestModal.BulkRequestModal.noMusicQualityServer",
+      "locale": "ar",
+      "missing": [
+        "FLAC",
+        "MP3"
+      ]
+    },
+    {
+      "sourcePosition": 2849,
+      "sourceId": "components.RequestModal.BulkRequestModal.noMusicQualityServer",
+      "locale": "hi",
+      "missing": [
+        "MP3"
+      ]
+    },
+    {
+      "sourcePosition": 2891,
+      "sourceId": "components.RequestModal.Comic.noComicsServer",
+      "locale": "hi",
+      "missing": [
+        "BackIssue"
+      ]
+    },
+    {
+      "sourcePosition": 2891,
+      "sourceId": "components.RequestModal.Comic.noComicsServer",
+      "locale": "zh_Hans",
+      "missing": [
+        "BackIssue"
+      ]
+    },
+    {
+      "sourcePosition": 2891,
+      "sourceId": "components.RequestModal.Comic.noComicsServer",
+      "locale": "zh_Hant",
+      "missing": [
+        "BackIssue"
+      ]
+    }
+  ],
+  "finalProtectedLiteralMissing": 0,
+  "finalProtectedLiteralDetails": [],
+  "placeholderProfileMismatches": 13,
+  "all13DocumentedAndEquivalent": true,
+  "placeholderExceptionCallerPinsReattested": 39,
+  "icuReviewedCells": 36,
+  "icuInvalid": 0,
+  "icuNameKindParityFailures": 0,
+  "markupFailures": 0,
+  "candidateRows": 365,
+  "candidatePlaceholderMarkupProtectedParityFailures": 0
+}

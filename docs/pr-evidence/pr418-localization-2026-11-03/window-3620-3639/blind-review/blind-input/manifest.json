@@ -1,0 +1,63 @@
+{
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "window": "W3620-W3639",
+  "head": "ebf1cb6082ef173688227c507acfdc04c3cf7ca7",
+  "tree": "e3c4d1d10f40ea078b66dfdf942e99c8189fee0c",
+  "locales": [
+    "es",
+    "zh_Hans",
+    "hi",
+    "de",
+    "ja",
+    "fr",
+    "pt_BR",
+    "ar",
+    "ko",
+    "zh_Hant",
+    "vi",
+    "id"
+  ],
+  "sourceOrderSha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+  "sourceCount": 20,
+  "cellCount": 240,
+  "callerlessPositions": [
+    3632
+  ],
+  "forbiddenFieldNames": [
+    "candidate",
+    "candidateText",
+    "catalogGitBlob",
+    "catalogPath",
+    "catalogSha256",
+    "currentTarget",
+    "currentTargetSha256",
+    "currentTranslation",
+    "disposition",
+    "proposal",
+    "proposedTarget",
+    "reviewDecision",
+    "selectedTarget",
+    "target",
+    "targetSha256",
+    "targetValue",
+    "translation"
+  ],
+  "files": [
+    {
+      "path": "README.md",
+      "bytes": 884,
+      "sha256": "69ddb1cfefb41769517379fa3b5af95885ad87a9ed8c5f8cb0ecb4d52b6d5d3c"
+    },
+    {
+      "path": "translation-prompts.jsonl",
+      "bytes": 1002740,
+      "sha256": "bde583ea5731184a2e9dfa249daf29a2163b37e56723a06a9a9a66851861aa70"
+    },
+    {
+      "path": "verify_blind_input.py",
+      "bytes": 1707,
+      "sha256": "2ea96b8844bde903150fa8435605b692d7bf0fa54ac182acf768b82cc11fe6d0"
+    }
+  ]
+}

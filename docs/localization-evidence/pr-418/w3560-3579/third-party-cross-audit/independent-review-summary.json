@@ -1,0 +1,15 @@
+{
+  "reviewedCells": 240,
+  "independentDispositions": {
+    "accept-current": 232,
+    "correction": 6,
+    "refinement": 2,
+    "hold": 0
+  },
+  "changeCount": 8,
+  "callerlessHolds": 0,
+  "candidateFreeManifestJsonSha256": "57c8bb96f21976482af691fa8549d63116fbc66bd30177c3eaa2cb7835996eed",
+  "candidateFreeChecksumListSha256": "5a73d23784f17cd51e186ad626cd6a952b12e2b801b36bf71dfde44b13fdd3e7",
+  "independence": "Independent recommendations recorded from candidate-free input before inspecting primary or blind ledgers.",
+  "nativeSpeakerApproval": false
+}

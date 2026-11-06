@@ -1,3 +1,4 @@
+import ApiMessageText from '@app/components/Common/ApiMessageText';
 import Button from '@app/components/Common/Button';
 import LoadingSpinner from '@app/components/Common/LoadingSpinner';
 import defineMessages from '@app/utils/defineMessages';
@@ -179,6 +180,8 @@ const SettingsGeneratedLoginLinks = () => {
             <input
               id="generated-login-link"
               readOnly
+              dir="ltr"
+              lang="und"
               value={generatedUrl}
               onFocus={(event) => event.currentTarget.select()}
             />
@@ -194,10 +197,12 @@ const SettingsGeneratedLoginLinks = () => {
       )}
       {message && (
         <p className="description" role="status">
-          {message}
+          {<ApiMessageText>{message}</ApiMessageText>}
         </p>
       )}
-      {error && <p className="error">{error}</p>}
+      {error && (
+        <p className="error">{<ApiMessageText>{error}</ApiMessageText>}</p>
+      )}
       {userId && (
         <>
           <h4 className="heading">{intl.formatMessage(messages.links)}</h4>
@@ -208,10 +213,10 @@ const SettingsGeneratedLoginLinks = () => {
           {links?.map((link) => (
             <div className="app-list-row" key={link.id}>
               <span className="app-list-value">
-                {new Intl.DateTimeFormat(undefined, {
+                {intl.formatDate(new Date(link.createdAt), {
                   dateStyle: 'medium',
                   timeStyle: 'short',
-                }).format(new Date(link.createdAt))}
+                })}
               </span>
               <span className="app-list-value">
                 {intl.formatMessage(messages[link.status])}

@@ -1,0 +1,105 @@
+{
+  "schemaVersion": 1,
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "head": "78a36214596544e1b3033c6a612ae5559db713e3",
+  "tree": "ef83a00d078f0a4aed6269b4c23282dbf91fd6f7",
+  "state": "OPEN",
+  "isDraft": true,
+  "scope": {
+    "positions": [
+      1800,
+      1899
+    ],
+    "sourceIds": 100,
+    "locales": [
+      "ar",
+      "de",
+      "es",
+      "fr",
+      "hi",
+      "id",
+      "ja",
+      "ko",
+      "pt_BR",
+      "vi",
+      "zh_Hans",
+      "zh_Hant"
+    ],
+    "cells": 1200
+  },
+  "primaryPacket": {
+    "path": "/mnt/disks/scratch/task-scratch/seerrng-pr418-window-1800-1899-primary-20261102",
+    "sha256sumsSha256": "ad5301642650e422b607bb052ac311511e2c344ce12bbc45b0bd5b66ddee575e",
+    "inputSha256sumsSha256": "5e965b373458798cff6613d4ffe3267c3f4b5a7c8d8ab07b14f0f80d16871f06",
+    "inputManifestSha256": "0a477cdd3f703d45ee7d220eb543fdb0ee9e6adb504bfcc32febd56e6bdfb6b4",
+    "ledgerSha256": "86d023c5b392fcfe6ad38abfd2d747f5caa52cc53ee9a1ef8e8191dd24c46430",
+    "sourceCellsSha256": "eb0f77e60bc33ac3e7dd20d277d6b51967f9ffcef7aea5bf1b2b843145fc2f1b",
+    "callerContextsSha256": "d9189c330c412fff8d5672bfad761e7710571d51bce86ba2ecdd31db3ef8e3f8"
+  },
+  "independentReattestation": {
+    "path": "crossreview-reattestation.json",
+    "sha256": "5c2344bb05ed1b7dedacd8bc101036667d70efd8b66169569323c287991365aa",
+    "checks": "pass"
+  },
+  "reviewCells": {
+    "path": "crossreview-cells.jsonl",
+    "rows": 1200,
+    "sha256": "90ed4cf6d9af8743fc7e523dbd3f2a2d271541ab61498b30d51d3418db0b3ec4",
+    "dispositions": {
+      "accept-current": 773,
+      "propose-correction": 353,
+      "propose-refinement": 74
+    }
+  },
+  "callerPins": {
+    "path": "crossreview-caller-pins.jsonl",
+    "rows": 100,
+    "sha256": "1e1340a21fde84b4e9a982db51fa9ff66d9dfce61b1acfbe7be27a66ccd0b0a2",
+    "sourceIds": 100,
+    "callerRefs": 371,
+    "callerFiles": 11
+  },
+  "findings": {
+    "path": "crossreview-findings.json",
+    "sha256": "6e06f6efc9e730922db55f93c23ee3d658c3d0f226444a0f3683ef9e7cb2a72b",
+    "overrides": 22
+  },
+  "summarySha256": "37af2c719866fae638b02384d5d199d1d53e725ad3f1193114b0b2753a8f342a",
+  "readmeSha256": "e6573887c4435a9327d80362f3255dbf87abcae637fd9ef669c1433235054348",
+  "builderSha256": "f4a4156e5dbb961210cf8f46100c0a89e0c450b2629fce624acf0e308390e365",
+  "artifactFiles": {
+    "README.md": {
+      "sha256": "e6573887c4435a9327d80362f3255dbf87abcae637fd9ef669c1433235054348",
+      "bytes": 1671
+    },
+    "build_crossreview_packet.py": {
+      "sha256": "f4a4156e5dbb961210cf8f46100c0a89e0c450b2629fce624acf0e308390e365",
+      "bytes": 25091
+    },
+    "crossreview-caller-pins.jsonl": {
+      "sha256": "1e1340a21fde84b4e9a982db51fa9ff66d9dfce61b1acfbe7be27a66ccd0b0a2",
+      "bytes": 219533
+    },
+    "crossreview-cells.jsonl": {
+      "sha256": "90ed4cf6d9af8743fc7e523dbd3f2a2d271541ab61498b30d51d3418db0b3ec4",
+      "bytes": 4723878
+    },
+    "crossreview-findings.json": {
+      "sha256": "6e06f6efc9e730922db55f93c23ee3d658c3d0f226444a0f3683ef9e7cb2a72b",
+      "bytes": 6872
+    },
+    "crossreview-reattestation.json": {
+      "sha256": "5c2344bb05ed1b7dedacd8bc101036667d70efd8b66169569323c287991365aa",
+      "bytes": 7002
+    },
+    "summary.json": {
+      "sha256": "37af2c719866fae638b02384d5d199d1d53e725ad3f1193114b0b2753a8f342a",
+      "bytes": 3624
+    }
+  },
+  "nativeSpeakerApproval": "outstanding",
+  "repositoryOrPrModified": false,
+  "testsBuildsScansCIorBrowserRun": false,
+  "workflowFilesTouched": false
+}

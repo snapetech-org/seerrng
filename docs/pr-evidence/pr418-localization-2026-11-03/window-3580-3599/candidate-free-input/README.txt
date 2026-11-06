@@ -1,0 +1,7 @@
+Candidate-free input for SeerrNG PR #418 W3580–W3599, pinned to exact open/draft PR head 30f626a4626d460f426666cde02f5c1ed17fa206 / tree 9b2616780791c73eb176aca6ad53061f1f3587d8.
+
+The packet contains 20 contiguous English source IDs and 240 current locale targets across 12 direct locales. Source positions are zero-based in the 9,494-key English catalog. The previous W3560–W3579 window ends at position 3579; its next source is components.Settings.BackIssueModal.baseUrlInvalid (URL Base must be a relative path.). This window starts with components.Settings.BackIssueModal.create (Add BackIssue Server) and ends at components.Settings.BinderyModal.add (Add Bindery). Position 3600 is the next boundary.
+
+The first 3,580 unique ordered source IDs are recorded as the prior-selected prefix; this window selects the following 20, with no overlap. The source catalog order hash and per-source ID/text hashes pin the queue. All twelve locale catalogs and caller source files are pinned by Git blob and SHA-256. Current targets contain no proposed translations or semantic dispositions.
+
+Caller paths and exact line spans, message definitions, direct property references, SettingsServices mounts, locale metadata, placeholders, markup, numeric tokens and protected literals are included. Prior W3560–W3579 application evidence reports 0 holds. No catalog values were changed; native-speaker approval is not represented.

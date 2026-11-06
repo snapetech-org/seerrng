@@ -1,0 +1,8 @@
+{
+  "historicalRowsExactLiveDisposition": 0,
+  "historicalRowsFound": 1200,
+  "interpretation": "historical rows are context only; no exact source+final-target disposition was reused",
+  "primaryPacketPath": "/mnt/disks/scratch/task-scratch/seerrng-pr418-window-2000-2099-primary-20261102/prior-disposition-boundary.json",
+  "priorPacketsScanned": 35,
+  "selectedSourceIds": 100
+}

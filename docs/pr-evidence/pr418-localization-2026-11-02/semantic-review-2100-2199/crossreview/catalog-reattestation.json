@@ -1,0 +1,117 @@
+{
+  "allLocaleKeyOrderMatchesEnglish": false,
+  "allLocaleKeySetsMatchEnglish": true,
+  "callerFilesVerified": 12,
+  "callerLinePinsVerified": 291,
+  "catalogs": {
+    "src/i18n/locale/ar.json": {
+      "blob": "169188bbddd74f0ab9abd0a1be4b55f488828797",
+      "bytes": 1043369,
+      "keyCount": 9494,
+      "orderedKeyListSha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+      "sha256": "3be1698950495dee0cdd4fce67ecc2ea359f76cd4812d6f5290a7c9ef4439e8b",
+      "sortedKeySetSha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072"
+    },
+    "src/i18n/locale/de.json": {
+      "blob": "8fe0c43cff97c712a15fc025ba62071a7bf818f5",
+      "bytes": 926665,
+      "keyCount": 9494,
+      "orderedKeyListSha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+      "sha256": "937f02c5aa7ef62bf203553d4c2251d53534da1d4fa8cf7c8864bbf17cbb8b5b",
+      "sortedKeySetSha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072"
+    },
+    "src/i18n/locale/es.json": {
+      "blob": "ea1292bb7c1fd5d75e0bb2b3b045492b27a7f68c",
+      "bytes": 922079,
+      "keyCount": 9494,
+      "orderedKeyListSha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+      "sha256": "51f5723ba766653e2e1e3c6a557e53d3905998a5b66e1a1f406ad2d821d2ef26",
+      "sortedKeySetSha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072"
+    },
+    "src/i18n/locale/fr.json": {
+      "blob": "9e29a430dda75b2fae31dcccd1aa7bc7e202f35d",
+      "bytes": 939493,
+      "keyCount": 9494,
+      "orderedKeyListSha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+      "sha256": "bf4933f78314055e801ca3b8d8ef12fa4ad0a24468751fad96255748edbbe53a",
+      "sortedKeySetSha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072"
+    },
+    "src/i18n/locale/hi.json": {
+      "blob": "231b833218f0eca35e0747ba9528df1e7209aefa",
+      "bytes": 1369359,
+      "keyCount": 9494,
+      "orderedKeyListSha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+      "sha256": "0e363b6e8d23052649689fdd7b4a16e1dcdcbcbf197772b8df0a8bcc6fc7e0ff",
+      "sortedKeySetSha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072"
+    },
+    "src/i18n/locale/id.json": {
+      "blob": "16675709383c086e6d5d925af26fe8b694db5937",
+      "bytes": 866860,
+      "keyCount": 9494,
+      "orderedKeyListSha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+      "sha256": "19e31f8e01495b1b61aba55b6e994407d1eb6e91f86bb1bf4c08cfc6fd221b09",
+      "sortedKeySetSha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072"
+    },
+    "src/i18n/locale/ja.json": {
+      "blob": "651a8373c815ed3590ba3a93c889245a5ca5f39a",
+      "bytes": 1015132,
+      "keyCount": 9494,
+      "orderedKeyListSha256": "8d5fd7bd4351bc64c5ee813f2e50196608869e165866f3202a312078732c2baf",
+      "sha256": "e5455107259f6c1af2c3b6d1910136884047d65e050f468b8c6c7b2c238fbf36",
+      "sortedKeySetSha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072"
+    },
+    "src/i18n/locale/ko.json": {
+      "blob": "b064dbe7930987b3af8a036ba4a63df2e34b9be9",
+      "bytes": 932735,
+      "keyCount": 9494,
+      "orderedKeyListSha256": "8d5fd7bd4351bc64c5ee813f2e50196608869e165866f3202a312078732c2baf",
+      "sha256": "5540fe77174d403d846c223fab60a991c3eed01212b1ed868f923a2a3551a2b6",
+      "sortedKeySetSha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072"
+    },
+    "src/i18n/locale/pt_BR.json": {
+      "blob": "bb15ef2cae07333ab4eede2e45877c59deba5533",
+      "bytes": 910559,
+      "keyCount": 9494,
+      "orderedKeyListSha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+      "sha256": "30168593a6115bd3c2a72bb161a2dd92e4ae1acdd281748a1fc12dc1f4eeb6dc",
+      "sortedKeySetSha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072"
+    },
+    "src/i18n/locale/vi.json": {
+      "blob": "ed37d59a310bfc8b31c073fcf8ebf44df81a20ab",
+      "bytes": 967825,
+      "keyCount": 9494,
+      "orderedKeyListSha256": "8d5fd7bd4351bc64c5ee813f2e50196608869e165866f3202a312078732c2baf",
+      "sha256": "0120a6af6d8c9954c17f259b812edf79e4d76185ead510410af9d98993dc71c2",
+      "sortedKeySetSha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072"
+    },
+    "src/i18n/locale/zh_Hans.json": {
+      "blob": "7fadc9fb5885abd1080d91a5006d06a2a811dccb",
+      "bytes": 811410,
+      "keyCount": 9494,
+      "orderedKeyListSha256": "8d5fd7bd4351bc64c5ee813f2e50196608869e165866f3202a312078732c2baf",
+      "sha256": "79827d1858ef827a3961fa40146f049f79976136a3280885d23ff411c7a15869",
+      "sortedKeySetSha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072"
+    },
+    "src/i18n/locale/zh_Hant.json": {
+      "blob": "946e212674c58b9157f5472ec5d6b32f4b1396e7",
+      "bytes": 812541,
+      "keyCount": 9494,
+      "orderedKeyListSha256": "8d5fd7bd4351bc64c5ee813f2e50196608869e165866f3202a312078732c2baf",
+      "sha256": "a2f6b8610e65dda41436223bea0ae5b153e4f89c0ef1b464c348d094d51476e9",
+      "sortedKeySetSha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072"
+    }
+  },
+  "currentCellPinsVerified": 1200,
+  "exactHead": "404648643578992e8e12ce9dff47dd92d5ee7c1c",
+  "exactTree": "a17442223e33372e0cc16c3b8091e2515d5e39f3",
+  "note": "All 12 locale catalogs have exactly the same key set as English. File insertion order differs and is not a catalog-parity requirement.",
+  "orderedKeyListParityRequired": false,
+  "sourceCatalog": {
+    "blob": "12e04a118c30b71b3714291adeaf9fdb2735cee4",
+    "bytes": 835513,
+    "keyCount": 9494,
+    "path": "src/i18n/locale/en.json",
+    "sha256": "75ff3c90b52aedd636a506281ffbd6fb2d3739c61294b6008a517f17647e2316",
+    "sortedKeySetSha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072"
+  }
+}

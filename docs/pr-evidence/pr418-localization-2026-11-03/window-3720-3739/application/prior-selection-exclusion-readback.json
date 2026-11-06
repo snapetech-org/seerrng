@@ -1,0 +1,6 @@
+{
+  "schema": "seerrng-w3720-prior-selection-exclusion-readback/v1",
+  "records": 3720,
+  "sha256": "283b0b1eeb1bd6c25dd4118e06dc195de0000eed40030970105208b229b10b17",
+  "allRecordsRemainInSealedCrossPacket": true
+}

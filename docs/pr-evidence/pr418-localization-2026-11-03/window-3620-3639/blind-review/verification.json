@@ -1,0 +1,14 @@
+{
+  "allProposedTokenChecksPass": true,
+  "blindInputChecksums": "PASS",
+  "blindInputVerifier": "PASS",
+  "callerlessHolds": 12,
+  "callerlessPosition": 3632,
+  "held": 12,
+  "inputChecksumListSha256": "1015c976ba3ce41f6ed6a04e955c8c4a6dbb13e0339f90d3a3d5f396c4ba95ec",
+  "inputManifestSha256": "911d0eece40ea0cb73f329a8b09157b6170425628d478171cef1984d97243c98",
+  "promptSha256": "bde583ea5731184a2e9dfa249daf29a2163b37e56723a06a9a9a66851861aa70",
+  "proposed": 228,
+  "result": "PASS",
+  "rows": 240
+}

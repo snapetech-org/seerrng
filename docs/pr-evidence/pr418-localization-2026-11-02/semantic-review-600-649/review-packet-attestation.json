@@ -1,0 +1,72 @@
+{
+  "schemaVersion": 1,
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "pullRequestUrl": "https://github.com/snapetech-org/seerrng/pull/418",
+  "liveState": "OPEN/DRAFT",
+  "liveHead": "2c5b7a5dcbe01707ac361e2d4ae06bf3681f99e2",
+  "liveTree": "9fc918e9247d7ceaec5f0744c13ada81f7e4ba21",
+  "remoteBranch": "codex/seerrng-localization-overhaul-20261028",
+  "sourceCommit": "affd7a87860e3613d5c6842c20eb0b45f3bd062f",
+  "sourceTree": "2471ca52d8b94504879e5842e8ffae920a22e180",
+  "frozenInputHead": "5a4342176a8325c371a35d489cb01c58283bc983",
+  "frozenInputTree": "98cd64952123c9b678e38250e7819cabb4476448",
+  "sourceCatalog": {
+    "path": "src/i18n/locale/en.json",
+    "blob": "12e04a118c30b71b3714291adeaf9fdb2735cee4",
+    "sha256": "75ff3c90b52aedd636a506281ffbd6fb2d3739c61294b6008a517f17647e2316"
+  },
+  "targetCatalog": {
+    "path": "src/i18n/locale/es.json",
+    "blob": "13be1899d2e913130ced5b8a6797642b55029cfe",
+    "sha256": "d7d75487002d2b97bb6397cda02f9de2a532ac673821cafd2aca8933cf78abae"
+  },
+  "originalWindowCandidateLedger": "/mnt/disks/scratch/task-worktrees/localization-20261030/semantic-results/seerrng-v13-5a434217-strict/manual-reconciliations/semantic-window-600-650-7a140ea/candidate-plan-for-root-cross-review.jsonl",
+  "originalCandidateLedgerSha256": "ddf433013a4a771001557da7579bf8732b16ad32d563d62f944c27f93f75d408",
+  "originalHeldLedger": "/mnt/disks/scratch/task-worktrees/localization-20261030/semantic-results/seerrng-v13-5a434217-strict/manual-reconciliations/semantic-window-600-650-7a140ea/held-uncertain-cells.jsonl",
+  "originalHeldLedgerSha256": "d3fe2dfe04843e46f26936b3963c5aec63447d43d5956df68e0b5f1a4f506bdd",
+  "originalRangeSummarySha256": "67206a01140c762c96272618f55373ee82b03e882cea8bd6b70b4ae20613bd52",
+  "selection": {
+    "batchesStart": 600,
+    "batchesStopExclusive": 650,
+    "batchCount": 50,
+    "cellCount": 1600,
+    "candidateCells": 224,
+    "heldCells": 5,
+    "candidateUniqueIds": 224,
+    "heldUniqueIds": 5,
+    "localeCounts": {
+      "es": 229
+    },
+    "domainCounts": {
+      "client": 229
+    }
+  },
+  "decisionCounts": {
+    "candidate": 224,
+    "heldUncertain": 5,
+    "machineKeepNotIncluded": 1371
+  },
+  "sourceContextCoverage": {
+    "uniqueSelectedIds": 229,
+    "withExactLiteralCallsite": 229,
+    "withoutExactLiteralCallsite": 0,
+    "uniqueCallsiteRows": 751
+  },
+  "verification": {
+    "allSourceValuesAndHashesMatchLive": true,
+    "allCurrentSpanishValuesAndHashesMatchLive": true,
+    "allCandidateTargetHashesValid": true,
+    "allRowsPreviouslyAttestedAt7a": true,
+    "codeTreeUnchanged7aTo2c": true,
+    "sourceTreeMatchesPinnedAppSource": true,
+    "catalogsModified": false,
+    "testsBuildsCiRun": false,
+    "nativeSpeakerApproval": false
+  },
+  "outputFiles": {
+    "candidates": "candidates-verified.jsonl",
+    "held": "held-verified.jsonl",
+    "sourceContexts": "source-contexts.jsonl"
+  }
+}

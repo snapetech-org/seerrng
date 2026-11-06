@@ -1,0 +1,183 @@
+{
+  "caller": {
+    "fileSha256": "7d24c14cc92343ecb5693cedf148d34e6d18adb467aeb867ef1ad8aafd47f836",
+    "gitBlob": "5f740f73e4d22a1f7a01dd0d8e74a94e890b88f1",
+    "path": "src/components/Setup/index.tsx",
+    "references": [
+      {
+        "file": "src/components/Setup/index.tsx",
+        "gitBlob": "5f740f73e4d22a1f7a01dd0d8e74a94e890b88f1",
+        "line": 67,
+        "lineSha256": "38d4b1b337cd01f31304a59d57a2ced9d08b4ef9d0e442a19a3a87891c1a3b88",
+        "lineText": "configureservices: 'Connect Services',"
+      },
+      {
+        "file": "src/components/Setup/index.tsx",
+        "gitBlob": "5f740f73e4d22a1f7a01dd0d8e74a94e890b88f1",
+        "line": 436,
+        "lineSha256": "b21d4ff08cb3d1891d76d49c737f62674f3eed1d5b0d5502302df8201d0e4945",
+        "lineText": "description={intl.formatMessage(messages.configureservices)}"
+      },
+      {
+        "file": "src/components/Setup/index.tsx",
+        "gitBlob": "5f740f73e4d22a1f7a01dd0d8e74a94e890b88f1",
+        "line": 465,
+        "lineSha256": "b21d4ff08cb3d1891d76d49c737f62674f3eed1d5b0d5502302df8201d0e4945",
+        "lineText": "description={intl.formatMessage(messages.configureservices)}"
+      },
+      {
+        "file": "src/components/Setup/index.tsx",
+        "gitBlob": "5f740f73e4d22a1f7a01dd0d8e74a94e890b88f1",
+        "line": 500,
+        "lineSha256": "b21d4ff08cb3d1891d76d49c737f62674f3eed1d5b0d5502302df8201d0e4945",
+        "lineText": "description={intl.formatMessage(messages.configureservices)}"
+      }
+    ]
+  },
+  "capturedAtUtc": "2026-11-02T23:20:51.407241+00:00",
+  "localHead": "58697945e3d3fb44c37d49db0cc0f88e3af110cc",
+  "localTree": "e3076937fe10b4dd3821ea573e8e5e21601fce7d",
+  "localeCatalogs": {
+    "ar": {
+      "bytes": 1044734,
+      "fileSha256": "e2878288b24c257618426ecb9211a317e6dd98bd0a92681f3ea8b12fa1e893f7",
+      "gitBlob": "abe9e8068ab6975b29320f515238b0697fbd429a",
+      "keyCount": 9494,
+      "path": "src/i18n/locale/ar.json",
+      "target": "إعداد الخدمات",
+      "targetSha256": "32765e12b67ab7b06f7905bec03a24637a4d0a238333eb88020bc63354997d0a"
+    },
+    "de": {
+      "bytes": 926897,
+      "fileSha256": "761c4bbeb65406b70453189414297d09549063197f0f09340488fbfae39f1769",
+      "gitBlob": "d4ccf71055e972b81be8d2d4cb199318bbadf0a3",
+      "keyCount": 9494,
+      "path": "src/i18n/locale/de.json",
+      "target": "Dienste konfigurieren",
+      "targetSha256": "d1aa30acddfa94e320ef5220190344a96c5f4b2da2cd9c28f91cdd001a619ecb"
+    },
+    "es": {
+      "bytes": 922586,
+      "fileSha256": "9f5a72a3f2ccda1cbea61dc173035ff97f65aa50294f86532b1a87b4f7e2e953",
+      "gitBlob": "0a6d66ba4f2319909f13d19a94293679f24ed71f",
+      "keyCount": 9494,
+      "path": "src/i18n/locale/es.json",
+      "target": "Conectar",
+      "targetSha256": "3b0b0fdfe2e3a691cd74f988612c6997feab43bb1fadd343a0616ef885349b3c"
+    },
+    "fr": {
+      "bytes": 940396,
+      "fileSha256": "136222e39d59412feb9e21680868dc348c3ae69e7f34c32933b2632848b9993f",
+      "gitBlob": "2795b590faa690c3bc9b9f4e8eb4892eccd2dd80",
+      "keyCount": 9494,
+      "path": "src/i18n/locale/fr.json",
+      "target": "Configurer les services",
+      "targetSha256": "87b4bbe84c5fe4fb69096f50d7f59279e7b23b47646b8d9ad2db346fc170024d"
+    },
+    "hi": {
+      "bytes": 1371851,
+      "fileSha256": "363d7cd84e10c901d159349db2bb3fba767b727062c37b54904db3431c2841ac",
+      "gitBlob": "2761a0533a50d71af60afdee802e360bca30dce0",
+      "keyCount": 9494,
+      "path": "src/i18n/locale/hi.json",
+      "target": "सेवाओं को कॉन्फ़िगर करना",
+      "targetSha256": "50ae228cc83aee92bcb9323cd91e9bd6067b88781a2bb8a9088bcf72f07a1b14"
+    },
+    "id": {
+      "bytes": 867838,
+      "fileSha256": "1c7a87cb85218464c71ceedc936810b1cd352cfcd7d35da18c0e2cb000edb84b",
+      "gitBlob": "74320769d2d4c2f0b18d9519e2135480b14e3d57",
+      "keyCount": 9494,
+      "path": "src/i18n/locale/id.json",
+      "target": "Atur Layanan",
+      "targetSha256": "782030991ff8f4d4dfc2dca345479bbf19dd5cbf5acc7d9b38f41555568c4d95"
+    },
+    "ja": {
+      "bytes": 1015876,
+      "fileSha256": "988c8296d007e79c2478b18dda9de113c42e21ffe5ffedf6d838612e6ae1e581",
+      "gitBlob": "49b8df39eccd20be1ff85c7be1e143bd90df8a2d",
+      "keyCount": 9494,
+      "path": "src/i18n/locale/ja.json",
+      "target": "連携サービスの設定",
+      "targetSha256": "3c4c533c43064cd2d9a11c80671ec93559086d7a9beb93e4f38904cf2434ea19"
+    },
+    "ko": {
+      "bytes": 934300,
+      "fileSha256": "3ff69507ad19e38385dca7083bfe98cc059159416c322ba98d42451fd1e8887d",
+      "gitBlob": "57787032828e746e6fb3d970304315abd55cb5f0",
+      "keyCount": 9494,
+      "path": "src/i18n/locale/ko.json",
+      "target": "서비스 구성",
+      "targetSha256": "7d945aef06c083cf04ed439e1aae1342099c11e8eb2aa7a5277626ae00d86b77"
+    },
+    "pt_BR": {
+      "bytes": 911591,
+      "fileSha256": "50f51950f11fe6f8535783979303ea409a0d825c0db057863537f3622afddda4",
+      "gitBlob": "4b1908352d29bd9a3a69e13656973ce2311d6398",
+      "keyCount": 9494,
+      "path": "src/i18n/locale/pt_BR.json",
+      "target": "Configurar Serviços",
+      "targetSha256": "7a20133175bea851c26045f9ae4cc5648deac9616ae46180ccfed473f123aab6"
+    },
+    "vi": {
+      "bytes": 969416,
+      "fileSha256": "5464f6e055a27c77c6a60eab8b831e4e7d91dfbb364f7e0bbc7af787752cffd6",
+      "gitBlob": "0d6990f5d662d56b970cb710b58fc129bebfff77",
+      "keyCount": 9494,
+      "path": "src/i18n/locale/vi.json",
+      "target": "Cấu hình Dịch vụName",
+      "targetSha256": "5bb62f6bdb5af3f96709230f73b7b98495cd9202382771a4e9bf64d7be313407"
+    },
+    "zh_Hans": {
+      "bytes": 812430,
+      "fileSha256": "8135e3260bac509915edf540488108b7c557a309d59e46930f2150f0cfd6ecb2",
+      "gitBlob": "7215c90c034b705fa71b513b0c5f0611bf457711",
+      "keyCount": 9494,
+      "path": "src/i18n/locale/zh_Hans.json",
+      "target": "配置服务器",
+      "targetSha256": "6121d0c5352ea54c62388935ede71161a16752ed192f1c0cd30065901f7f9e3d"
+    },
+    "zh_Hant": {
+      "bytes": 814010,
+      "fileSha256": "05fa4c84087252f27cb439ee33a972c397b801527cf87ef8b1d1d71c6c6b88b4",
+      "gitBlob": "45b188e3e02db1ab27522ff0af5fabf8080825fb",
+      "keyCount": 9494,
+      "path": "src/i18n/locale/zh_Hant.json",
+      "target": "設定伺服器",
+      "targetSha256": "e93482b888ee4facd98e123948dcc6cca26f6600dd780b02c44c5636924bdeb6"
+    }
+  },
+  "pr": {
+    "baseRefOid": "221d8e0d542802da7529cd272c928cc747677e5c",
+    "headRefName": "codex/seerrng-localization-overhaul-20261028",
+    "headRefOid": "58697945e3d3fb44c37d49db0cc0f88e3af110cc",
+    "isDraft": true,
+    "state": "OPEN",
+    "url": "https://github.com/snapetech-org/seerrng/pull/418"
+  },
+  "preservedExistingUntrackedStatus": [
+    "?? .next-webpack-dev"
+  ],
+  "primaryPacketFiles": {
+    "README.md": "e0f30956fb2433baf590466def1611397b52f9d8e248b56918e7680a3e1325c5",
+    "caller-context.json": "b54c03dd4bd0ec6f126f34ddd4d4aad203586348f78b2a9e5171af10ecff5344",
+    "primary-review.jsonl": "6c49ac14a8d16c7cb324437cb56a17a77b444d9c68fbfa0f819aac431a198753",
+    "summary.json": "fbd998e44af6e13a8518fc860f8c1508211d94675430f85ec49d62d6cfc6a70e"
+  },
+  "pullRequest": 418,
+  "remoteRefs": {
+    "refs/heads/codex/seerrng-localization-overhaul-20261028": "58697945e3d3fb44c37d49db0cc0f88e3af110cc",
+    "refs/pull/418/head": "58697945e3d3fb44c37d49db0cc0f88e3af110cc"
+  },
+  "repository": "snapetech-org/SeerrNG",
+  "sourceCatalog": {
+    "bytes": 835513,
+    "fileSha256": "75ff3c90b52aedd636a506281ffbd6fb2d3739c61294b6008a517f17647e2316",
+    "gitBlob": "12e04a118c30b71b3714291adeaf9fdb2735cee4",
+    "path": "src/i18n/locale/en.json",
+    "source": "Connect Services",
+    "sourceId": "components.Setup.configureservices",
+    "sourceSha256": "0479b0d72d394280859ac2b8c67e9e0379fe087696b399caa54676f65ebd265e"
+  },
+  "trackedRepositoryClean": true
+}

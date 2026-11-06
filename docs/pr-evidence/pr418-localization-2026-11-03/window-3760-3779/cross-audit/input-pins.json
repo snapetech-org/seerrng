@@ -1,0 +1,39 @@
+{
+  "candidateFree": {
+    "sourcePacketPath": "/home/keith/Documents/code/task-scratch/seerrng-pr418-w3760-3779-primary-20261103/candidate-free-input",
+    "manifestSha256": "956267d819adaabe54f75e7143b915b28afbe76d04a6d3ffa26288421dc8700c",
+    "checksumListSha256": "25114409119b732f30be4c73e7c1cff0dd788edcbc8151e2d3fe2cd48d582b83",
+    "copiedFiles": {
+      "manifest.json": "956267d819adaabe54f75e7143b915b28afbe76d04a6d3ffa26288421dc8700c",
+      "SHA256SUMS.txt": "25114409119b732f30be4c73e7c1cff0dd788edcbc8151e2d3fe2cd48d582b83",
+      "selected-source-cells.jsonl": "21303bb4a72ddb06e98966f93deab290624fb09ff65905cf463ee31b0e64ab9f",
+      "current-target-cells.jsonl": "410b3b0a77ea41ba1dbf41804c17e760a0edbd0aa429d6c1133dd2df5be539f0",
+      "caller-contexts.jsonl": "9cab47b51b953e33f51b3af70511817ad62cb7f3c7b137215a4b5285ea6f0847",
+      "caller-context-blocks.jsonl": "5d9f772c1ecfbfacc7592d3769dfa5785670098e5bb938c828be869f9fc0b9ca",
+      "catalog-file-pins.json": "67505899a7fd96215b170d53a135d63f4586c5b59cbb7d22f7ae3a1904d718e9",
+      "runtime-file-pins.json": "5c3d8c45bc25f0c4d0d71b58edfadf9386f7ab72c23b913cbbc771dd2dd3d8f6"
+    }
+  },
+  "primary": {
+    "sourcePacketPath": "/home/keith/Documents/code/task-scratch/seerrng-pr418-w3760-3779-primary-20261103/primary-review",
+    "manifestSha256": "c0098e47e24f86ed982fe30f402461cfd8e2fe6c0e928c8a637f5d1ac699b985",
+    "checksumListSha256": "7007f9548d814c1b6c8752acbd3100b8db35b6df584120d3805e58f5a758c987",
+    "copiedFiles": {
+      "manifest.json": "c0098e47e24f86ed982fe30f402461cfd8e2fe6c0e928c8a637f5d1ac699b985",
+      "SHA256SUMS.txt": "7007f9548d814c1b6c8752acbd3100b8db35b6df584120d3805e58f5a758c987",
+      "summary.json": "45737db0e4feaee447986cb125f5fafdc074a073eb947c8d2b445530c0291129",
+      "primary-ledger.jsonl": "58dc695d5403955d568fa7503e4acd772eba430c35c416cc830c8c5adb3ddc15"
+    }
+  },
+  "blind": {
+    "sourcePacketPath": "/home/keith/Documents/code/task-scratch/seerrng-pr418-w3760-3779-primary-20261103/blind-review",
+    "manifestSha256": "406ea368ec26ee66f1b3522bfd4bc44163abda0c9ebe198031ab58d421ce1ae6",
+    "checksumListSha256": "4abd4b67f88d4c2c12a127f4c7f230016bccddfa8ea6240e770d8320c22c098a",
+    "copiedFiles": {
+      "manifest.json": "406ea368ec26ee66f1b3522bfd4bc44163abda0c9ebe198031ab58d421ce1ae6",
+      "SHA256SUMS.txt": "4abd4b67f88d4c2c12a127f4c7f230016bccddfa8ea6240e770d8320c22c098a",
+      "summary.json": "ffe0de486aa69631040b460eee6bc5db49219b7b2ef761ddc78c3ed1667d2cf3",
+      "blind-ledger.jsonl": "d55783debb82bb5f17d19d842a6015852cd01023dd4719d57f608634f6d44986"
+    }
+  }
+}

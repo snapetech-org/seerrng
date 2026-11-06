@@ -16,7 +16,10 @@ const SEARCH_GIVE_UP_MS = 14 * 24 * 60 * 60 * 1000;
 export class TrackRequestError extends Error {
   constructor(
     message: string,
-    public readonly status: 400 | 403 | 404 | 409 | 502 | 503
+    public readonly status: 400 | 403 | 404 | 409 | 502 | 503,
+    public readonly messageKey?: string,
+    public readonly messageParams?: Record<string, string>,
+    public readonly messageOrigin: 'app' | 'opaque' = 'app'
   ) {
     super(message);
     this.name = 'TrackRequestError';
@@ -60,12 +63,22 @@ export interface TrackInput {
 
 const apiFor = () => new SlskdnAPI(getSettings().slskdn);
 
-const toRequestError = (error: unknown, fallback: string) =>
+const toRequestError = (
+  error: unknown,
+  fallback: string,
+  fallbackMessageKey?: string,
+  fallbackMessageParams?: Record<string, string>
+) =>
   error instanceof TrackRequestError
     ? error
     : new TrackRequestError(
         error instanceof SlskdnError ? error.message : fallback,
-        error instanceof SlskdnError && error.kind === 'unsupported' ? 503 : 502
+        error instanceof SlskdnError && error.kind === 'unsupported'
+          ? 503
+          : 502,
+        error instanceof SlskdnError ? undefined : fallbackMessageKey,
+        error instanceof SlskdnError ? undefined : fallbackMessageParams,
+        error instanceof SlskdnError ? 'opaque' : 'app'
       );
 
 /** Adds the wishlist item in slskdN and marks the request searching. */
@@ -81,8 +94,13 @@ export const startTrackSearch = async (
     request.wishlistItemId = item.id;
     request.status = 'searching';
     request.lastError = null;
+    request.lastErrorMessageKey = null;
   } catch (error) {
-    throw toRequestError(error, 'slskdN could not be reached to search.');
+    throw toRequestError(
+      error,
+      'slskdN could not be reached.',
+      'm2eeb1f304932d76ec6b7'
+    );
   }
   request.modifiedBy = approver;
   return getRepository(TrackRequest).save(request);
@@ -93,7 +111,11 @@ export const createTrackRequests = async (
   tracks: TrackInput[]
 ): Promise<TrackRequest[]> => {
   if (!isSlskdnConfigured()) {
-    throw new TrackRequestError('Soulseek requests are not set up.', 404);
+    throw new TrackRequestError(
+      'Soulseek requests are not set up.',
+      404,
+      'm7a81dd52d8b0d4400987'
+    );
   }
   const repository = getRepository(TrackRequest);
   const active = await repository.count({
@@ -102,7 +124,9 @@ export const createTrackRequests = async (
   if (active + tracks.length > MAX_ACTIVE_TRACK_REQUESTS_PER_USER) {
     throw new TrackRequestError(
       `You can have up to ${MAX_ACTIVE_TRACK_REQUESTS_PER_USER} active track requests.`,
-      409
+      409,
+      'm59a574094fb09d329119',
+      { value0: String(MAX_ACTIVE_TRACK_REQUESTS_PER_USER) }
     );
   }
 
@@ -149,6 +173,8 @@ export const createTrackRequests = async (
     } catch (error) {
       request.lastError =
         error instanceof Error ? error.message.slice(0, 500) : null;
+      request.lastErrorMessageKey =
+        error instanceof TrackRequestError ? (error.messageKey ?? null) : null;
       started.push(await repository.save(request));
     }
   }
@@ -160,7 +186,11 @@ export const declineTrackRequest = async (
   manager: User
 ) => {
   if (request.status !== 'pending') {
-    throw new TrackRequestError('Only pending requests can be declined.', 409);
+    throw new TrackRequestError(
+      'Only pending requests can be declined.',
+      409,
+      'm55b3b320c5aa37974ce4'
+    );
   }
   request.status = 'declined';
   request.modifiedBy = manager;
@@ -169,7 +199,11 @@ export const declineTrackRequest = async (
 
 export const cancelTrackRequest = async (request: TrackRequest, user: User) => {
   if (!ACTIVE_TRACK_STATUSES.includes(request.status)) {
-    throw new TrackRequestError('This request is no longer active.', 409);
+    throw new TrackRequestError(
+      'This request is no longer active.',
+      409,
+      'm98de0998408c22f6a317'
+    );
   }
   if (request.wishlistItemId) {
     try {
@@ -188,6 +222,7 @@ export interface TrackSyncUpdate {
   searchCount: number;
   lastMatchCount: number;
   lastError?: string | null;
+  lastErrorMessageKey?: string | null;
   removeWishlistItem: boolean;
 }
 
@@ -209,6 +244,7 @@ export const nextTrackStatus = (
       searchCount: 0,
       lastMatchCount: 0,
       lastError: 'The slskdN wishlist entry was removed.',
+      lastErrorMessageKey: 'm7444a3cd7f02872671b5',
       removeWishlistItem: false,
     };
   }
@@ -220,6 +256,7 @@ export const nextTrackStatus = (
       searchCount,
       lastMatchCount,
       lastError: null,
+      lastErrorMessageKey: null,
       removeWishlistItem: false,
     };
   }
@@ -232,6 +269,7 @@ export const nextTrackStatus = (
       searchCount,
       lastMatchCount,
       lastError: 'No downloadable copy was found on Soulseek within two weeks.',
+      lastErrorMessageKey: 'm359d92c8c887360aa27b',
       removeWishlistItem: true,
     };
   }
@@ -265,6 +303,9 @@ export const syncTrackRequests = async (): Promise<void> => {
       request.searchCount = update.searchCount;
       request.lastMatchCount = update.lastMatchCount;
       if (update.lastError !== undefined) request.lastError = update.lastError;
+      if (update.lastErrorMessageKey !== undefined) {
+        request.lastErrorMessageKey = update.lastErrorMessageKey;
+      }
       request.lastCheckedAt = now;
       await repository.save(request);
     }

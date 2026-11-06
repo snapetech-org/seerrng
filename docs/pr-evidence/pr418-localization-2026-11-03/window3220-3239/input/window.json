@@ -1,0 +1,193 @@
+{
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "head": "8dd70020ece19b467b31e8562274f3c5aafce895",
+  "tree": "1e7667a9a07c96c32c4cad5cdb19d2b0502ecbeb",
+  "sourceOrderCount": 9494,
+  "sourceOrderSha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+  "range": [
+    3220,
+    3239
+  ],
+  "previousRange": [
+    3200,
+    3219
+  ],
+  "sourceIds": [
+    {
+      "position": 3220,
+      "id": "components.RequestStatus.SoftwareRequests.removeFromRequestsTooltip",
+      "source": "Remove this request from SeerrNG without stopping a download already handed to ROMarrNG or a download client.",
+      "sourceSha256": "35127762a10f2d40e2eb226eaf16749444a07ccc444bee43eca87625205c7ab9"
+    },
+    {
+      "position": 3221,
+      "id": "components.RequestStatus.SoftwareRequests.requestedBy",
+      "source": "Requested by {user}",
+      "sourceSha256": "48656c3d79533e3be43c215de66290da77521102732eb8814679b3451f6e3394"
+    },
+    {
+      "position": 3222,
+      "id": "components.RequestStatus.SoftwareRequests.retro",
+      "source": "Retro",
+      "sourceSha256": "f41c7e0a6f974b849126ba9b962d290afd0c0b2069cc8a4d9885d1792418a97b"
+    },
+    {
+      "position": 3223,
+      "id": "components.RequestStatus.SoftwareRequests.retry",
+      "source": "Retry",
+      "sourceSha256": "942087cc2d41e01304b7195558d093d10c72af8e838c7556d6a02d471ee71852"
+    },
+    {
+      "position": 3224,
+      "id": "components.RequestStatus.SoftwareRequests.retryCheckRequired",
+      "source": "The provider cannot confirm whether the previous download started. Check the download client’s queue and history. Continue only if no matching download exists.",
+      "sourceSha256": "e9cfa812b5cac6f0c5e18918f4ef51be00fdbe406c459e66de3c4d91d4d4c30e"
+    },
+    {
+      "position": 3225,
+      "id": "components.RequestStatus.SoftwareRequests.rommPlacementPlaced",
+      "source": "In RomM Library",
+      "sourceSha256": "361ffa6acdff2e5b79fab77dbe7b648b111aca7010efb994ecaaea1db38ef3af"
+    },
+    {
+      "position": 3226,
+      "id": "components.RequestStatus.SoftwareRequests.searching",
+      "source": "Searching",
+      "sourceSha256": "03bd6fca9cf5c1fbb8ac32b7def4942459f0883a9adb4a210b81562cffab233d"
+    },
+    {
+      "position": 3227,
+      "id": "components.RequestStatus.SoftwareRequests.stage",
+      "source": "Stage: {stage}",
+      "sourceSha256": "bb4925172a73af40d58b49ee2a43ade59fea26f0d49b268a3b6c2c8972905e06"
+    },
+    {
+      "position": 3228,
+      "id": "components.RequestStatus.SoftwareRequests.submitted",
+      "source": "Requested {date}",
+      "sourceSha256": "ce6dd2e4522a71d2e7a72c6d89135681d3099de0ec4ffe602593451cd598be6c"
+    },
+    {
+      "position": 3229,
+      "id": "components.RequestStatus.SoftwareRequests.title",
+      "source": "Software Requests",
+      "sourceSha256": "8f5fbe06f5d77e4b54a764b3cfbc052745ff84c9ccdb65ed150443e90610e6b5"
+    },
+    {
+      "position": 3230,
+      "id": "components.RequestStatus.SoftwareRequests.universal",
+      "source": "Universal",
+      "sourceSha256": "b23b6b4d061476fd5593e7a314839fbe6e8039fcd59f2f31686b872625d900c8"
+    },
+    {
+      "position": 3231,
+      "id": "components.RequestStatus.SoftwareRequests.windows",
+      "source": "Windows",
+      "sourceSha256": "d598026a9cbc60505f138ce53ac78088d582100c196d0f70c7e2538d4a8d7e10"
+    },
+    {
+      "position": 3232,
+      "id": "components.RequestStatus.SoftwareRequests.withdraw",
+      "source": "Withdraw",
+      "sourceSha256": "164546a9c54814805d81b2474160728961ec0230d8efe0c5eb1626c7a2b55fe7"
+    },
+    {
+      "position": 3233,
+      "id": "components.RequestStatus.SoftwareRequests.x64",
+      "source": "x64",
+      "sourceSha256": "5609f728403e197bb255ef50c62aeabb1f93b09f7b7c379903440b65cd4319cb"
+    },
+    {
+      "position": 3234,
+      "id": "components.RequestStatus.SoftwareRequests.x86",
+      "source": "x86",
+      "sourceSha256": "13d6a668eb0789a68e20ff5b93a5fd42981d81c14f9fb6a0756a9368b8e2037e"
+    },
+    {
+      "position": 3235,
+      "id": "components.RequestStatus.addingToLibrary",
+      "source": "The media is being added to your library.",
+      "sourceSha256": "dcc213907a50814147fe2cdba1b2fce68b5dbe03933c43ff2507555966893860"
+    },
+    {
+      "position": 3236,
+      "id": "components.RequestStatus.adultCouldNotAccept",
+      "source": "Whisparr could not accept this scene request. Check the connection and scene metadata, then retry.",
+      "sourceSha256": "67e60d90cd859d58a4fc7f24ceeaff3450bb2a70ac66132fb9116ad2c57de8d2"
+    },
+    {
+      "position": 3237,
+      "id": "components.RequestStatus.adultQueueFailed",
+      "source": "Whisparr reported a download or import failure. Check its queue and logs, fix the issue there, then retry.",
+      "sourceSha256": "ac09e360588871bf8b9b2bfb34242882d54d938f6f3d9e30db94349e21285e4e"
+    },
+    {
+      "position": 3238,
+      "id": "components.RequestStatus.adultUnavailable",
+      "source": "Whisparr has not found a usable release for this adult scene yet. Check its indexer categories and acquisition settings, then retry.",
+      "sourceSha256": "8954cd2aee13650f5f547efcf2676374eee7b1d41e6a8df2f229c3e614a5b967"
+    },
+    {
+      "position": 3239,
+      "id": "components.RequestStatus.approvedForProcessing",
+      "source": "Approved for processing.",
+      "sourceSha256": "eca1dc265cab8995fd342f9f75f7202c1907557ca59c3a01d4e1cf5594c96548"
+    }
+  ],
+  "localeOrder": [
+    "es",
+    "zh_Hans",
+    "hi",
+    "de",
+    "ja",
+    "fr",
+    "pt_BR",
+    "ar",
+    "ko",
+    "zh_Hant",
+    "vi",
+    "id"
+  ],
+  "callerFiles": {
+    "src/components/RequestStatus/SoftwareRequests.tsx": {
+      "sha256": "50752a4099e6067a95a9278612bcb92e487de9fe6a6acbb8d05d64c7ba223a54",
+      "lineCount": 956
+    },
+    "src/components/RequestStatus/messages.tsx": {
+      "sha256": "5c7691636c95eed239cf012fa2e8bdc066ef773a8b4288bbd93fafddb15324eb",
+      "lineCount": 121
+    },
+    "server/lib/requestStatus.ts": {
+      "sha256": "63dd1b43e684a40eb82253a2942d7652cad63d87234b5c279d73af0b945b2d31",
+      "lineCount": 2328
+    },
+    "src/components/Requests/index.tsx": {
+      "sha256": "25b612dcda274fe2ea64b76f169587e153b04a675c9b8cd817814d9fbfde5360",
+      "lineCount": 3115
+    },
+    "server/subscriber/MediaRequestSubscriber.ts": {
+      "sha256": "0ffdfb179133d699b5237b9e1970db4898bfba5a189e7ad4fc9042fc20726d91",
+      "lineCount": 4189
+    }
+  },
+  "cellCount": 240,
+  "strictBlindInputOnly": true,
+  "nativeSpeakerApproval": false,
+  "livePrStart": {
+    "state": "open",
+    "draft": true,
+    "head": "8dd70020ece19b467b31e8562274f3c5aafce895",
+    "headRef": "codex/seerrng-localization-overhaul-20261028",
+    "baseRef": "main",
+    "tree": "1e7667a9a07c96c32c4cad5cdb19d2b0502ecbeb"
+  },
+  "livePrEnd": {
+    "state": "open",
+    "draft": true,
+    "head": "8dd70020ece19b467b31e8562274f3c5aafce895",
+    "headRef": "codex/seerrng-localization-overhaul-20261028",
+    "baseRef": "main",
+    "tree": "1e7667a9a07c96c32c4cad5cdb19d2b0502ecbeb"
+  }
+}

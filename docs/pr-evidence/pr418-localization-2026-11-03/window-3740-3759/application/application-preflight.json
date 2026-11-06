@@ -1,0 +1,20 @@
+{
+  "result": "PASS",
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "branch": "codex/seerrng-localization-overhaul-20261028",
+  "baseRefName": "main",
+  "state": "OPEN",
+  "draft": true,
+  "parentHead": "8d0273ebc5eb51e9d5fee0ac9a0eb022eeed06c4",
+  "parentTree": "163056b8255034e3ee3a99f25b63e190c88278ee",
+  "branchRef": "8d0273ebc5eb51e9d5fee0ac9a0eb022eeed06c4",
+  "pullRef": "8d0273ebc5eb51e9d5fee0ac9a0eb022eeed06c4",
+  "deploymentsForParentHead": 0,
+  "sourceEnglishCatalogReattested": true,
+  "catalogFilesReattested": 12,
+  "targetPreimagesReattested": 240,
+  "crossAuditPacketSha256": "f563f89b6b761b64d4d424b0d94df9e218df1cf1f9bdcdb27bcc1cbf2371a80c",
+  "crossAuditSelections": 54,
+  "noWorkflowPathsInCatalogCommit": true
+}

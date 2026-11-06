@@ -416,7 +416,7 @@ const MagazineDetails = () => {
                   <CogIcon />
                   <span>{intl.formatMessage(messages.manageMagazine)}</span>
                   {openIssues.length > 0 && (
-                    <span className="ml-1 rounded-full bg-red-600 px-1.5 text-xs font-semibold text-white">
+                    <span className="ms-1 rounded-full bg-red-600 px-1.5 text-xs font-semibold text-white">
                       {intl.formatNumber(openIssues.length)}
                     </span>
                   )}

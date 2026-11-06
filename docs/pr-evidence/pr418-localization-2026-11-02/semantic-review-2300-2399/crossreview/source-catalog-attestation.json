@@ -1,0 +1,208 @@
+{
+  "callerContextRows": 100,
+  "callerFileCount": 5,
+  "callerFiles": [
+    {
+      "expectedBlob": "edd79a4f0bd686a33801e3a87e405b5d78dab0b1",
+      "expectedSha256": "f67ce9dbab84638ba3a07992eb83898e775211344b5113d80829bec45b5e135b",
+      "observedBlob": "edd79a4f0bd686a33801e3a87e405b5d78dab0b1",
+      "observedSha256": "f67ce9dbab84638ba3a07992eb83898e775211344b5113d80829bec45b5e135b",
+      "path": "src/components/MediaDetails/OpenLibraryRating.tsx",
+      "verified": true
+    },
+    {
+      "expectedBlob": "394332521a2da57349f9f83d9f0dc38f6ba0fc6b",
+      "expectedSha256": "73de6d537e450fdc0311e0a98b18be18e62d503fe145ee5939b491df5ce9d184",
+      "observedBlob": "394332521a2da57349f9f83d9f0dc38f6ba0fc6b",
+      "observedSha256": "73de6d537e450fdc0311e0a98b18be18e62d503fe145ee5939b491df5ce9d184",
+      "path": "src/components/NotificationTypeSelector/index.tsx",
+      "verified": true
+    },
+    {
+      "expectedBlob": "03a15ce1530ae08156a01ac6608f52bf8d464ee4",
+      "expectedSha256": "0191907c104cc71c2edf85c8ac95af2645fbf2241d33a3cfdaea435e45ffe17b",
+      "observedBlob": "03a15ce1530ae08156a01ac6608f52bf8d464ee4",
+      "observedSha256": "0191907c104cc71c2edf85c8ac95af2645fbf2241d33a3cfdaea435e45ffe17b",
+      "path": "src/components/PatchProjects/PatchDiscovery.tsx",
+      "verified": true
+    },
+    {
+      "expectedBlob": "abfcd4a4f086069c79a3eccfc4a69ff818614475",
+      "expectedSha256": "ece9b6c56e7bbc2684278953e66d56f7a67989e17d3b754c46fb66ad1ad82084",
+      "observedBlob": "abfcd4a4f086069c79a3eccfc4a69ff818614475",
+      "observedSha256": "ece9b6c56e7bbc2684278953e66d56f7a67989e17d3b754c46fb66ad1ad82084",
+      "path": "src/components/PatchProjects/index.tsx",
+      "verified": true
+    },
+    {
+      "expectedBlob": "b855895aef185582581efe181d3a66294a4ca789",
+      "expectedSha256": "26d3635a638f61d02606f3b3a786cbdad06edcafe9c8ab0e893638becb48e091",
+      "observedBlob": "b855895aef185582581efe181d3a66294a4ca789",
+      "observedSha256": "26d3635a638f61d02606f3b3a786cbdad06edcafe9c8ab0e893638becb48e091",
+      "path": "src/components/PermissionEdit/index.tsx",
+      "verified": true
+    }
+  ],
+  "callerLineHashesAndTextVerified": true,
+  "head": "d49b44895d0ded9796f0c970ad09141212e9a98f",
+  "localeTargetCellsInWindow": 1200,
+  "pinnedCallerLineReferences": 340,
+  "pullRequest": 418,
+  "repository": "snapetech-org/SeerrNG",
+  "sourceCatalogAndLocaleFileCount": 13,
+  "sourceCatalogAndLocales": [
+    {
+      "expectedBlob": "12e04a118c30b71b3714291adeaf9fdb2735cee4",
+      "expectedBytes": 835513,
+      "expectedSha256": "75ff3c90b52aedd636a506281ffbd6fb2d3739c61294b6008a517f17647e2316",
+      "observedBlob": "12e04a118c30b71b3714291adeaf9fdb2735cee4",
+      "observedBytes": 835513,
+      "observedSha256": "75ff3c90b52aedd636a506281ffbd6fb2d3739c61294b6008a517f17647e2316",
+      "path": "src/i18n/locale/en.json",
+      "verified": true
+    },
+    {
+      "expectedBlob": "8e537ba5b8f3ea48605bfd398afa6d6502f5ac55",
+      "expectedBytes": 1043838,
+      "expectedSha256": "240ec7cf8fc137a25e3a7ec87e7f6d303b4623457a7a55210791d83c60f08c0a",
+      "observedBlob": "8e537ba5b8f3ea48605bfd398afa6d6502f5ac55",
+      "observedBytes": 1043838,
+      "observedSha256": "240ec7cf8fc137a25e3a7ec87e7f6d303b4623457a7a55210791d83c60f08c0a",
+      "path": "src/i18n/locale/ar.json",
+      "verified": true
+    },
+    {
+      "expectedBlob": "eabcfdcd9b1534168529b083ed1896468689d0b5",
+      "expectedBytes": 926695,
+      "expectedSha256": "a4c8a8078bd662b77965f7c136cdd2a5c6f77bc17d1a770806ff6f0e760c6414",
+      "observedBlob": "eabcfdcd9b1534168529b083ed1896468689d0b5",
+      "observedBytes": 926695,
+      "observedSha256": "a4c8a8078bd662b77965f7c136cdd2a5c6f77bc17d1a770806ff6f0e760c6414",
+      "path": "src/i18n/locale/de.json",
+      "verified": true
+    },
+    {
+      "expectedBlob": "c9cb1f0d377e3baba341467e10d17bd8af31d2ff",
+      "expectedBytes": 922110,
+      "expectedSha256": "3d71b3421c941993f2ebef5555518e8550f8c11c73388fcd7eb6f4a58ee5e8f1",
+      "observedBlob": "c9cb1f0d377e3baba341467e10d17bd8af31d2ff",
+      "observedBytes": 922110,
+      "observedSha256": "3d71b3421c941993f2ebef5555518e8550f8c11c73388fcd7eb6f4a58ee5e8f1",
+      "path": "src/i18n/locale/es.json",
+      "verified": true
+    },
+    {
+      "expectedBlob": "b57c1de1f205fc402ba8efe756ace7b62ad63048",
+      "expectedBytes": 939567,
+      "expectedSha256": "55f17f595673d16b3a37d43add40ff71a924bb4464c108b95101a605cbd0a327",
+      "observedBlob": "b57c1de1f205fc402ba8efe756ace7b62ad63048",
+      "observedBytes": 939567,
+      "observedSha256": "55f17f595673d16b3a37d43add40ff71a924bb4464c108b95101a605cbd0a327",
+      "path": "src/i18n/locale/fr.json",
+      "verified": true
+    },
+    {
+      "expectedBlob": "4fc1a5e904b1464abbc8af17683c4f2c91e64fd7",
+      "expectedBytes": 1370169,
+      "expectedSha256": "02baa50385b8257f6ac6516ac9f3c9a31f52d053bae9708c333ff9377d596628",
+      "observedBlob": "4fc1a5e904b1464abbc8af17683c4f2c91e64fd7",
+      "observedBytes": 1370169,
+      "observedSha256": "02baa50385b8257f6ac6516ac9f3c9a31f52d053bae9708c333ff9377d596628",
+      "path": "src/i18n/locale/hi.json",
+      "verified": true
+    },
+    {
+      "expectedBlob": "a05d67cefe0bc31ed2c320ef37df07b1592d6310",
+      "expectedBytes": 867030,
+      "expectedSha256": "c3e7d70e64fa341347116d814fee2f53ed25b047e516a05e6c4e7e74ff7bae47",
+      "observedBlob": "a05d67cefe0bc31ed2c320ef37df07b1592d6310",
+      "observedBytes": 867030,
+      "observedSha256": "c3e7d70e64fa341347116d814fee2f53ed25b047e516a05e6c4e7e74ff7bae47",
+      "path": "src/i18n/locale/id.json",
+      "verified": true
+    },
+    {
+      "expectedBlob": "66c9751b4de54094b5d6d284947a9f68063355d6",
+      "expectedBytes": 1015112,
+      "expectedSha256": "47c9e2ebb13f946f7a7e2c49939fa8b0275d45a8fc94075e9030046f704dd468",
+      "observedBlob": "66c9751b4de54094b5d6d284947a9f68063355d6",
+      "observedBytes": 1015112,
+      "observedSha256": "47c9e2ebb13f946f7a7e2c49939fa8b0275d45a8fc94075e9030046f704dd468",
+      "path": "src/i18n/locale/ja.json",
+      "verified": true
+    },
+    {
+      "expectedBlob": "507f2c474901e7db1d9c217d26aedd4c0c8424b3",
+      "expectedBytes": 932984,
+      "expectedSha256": "92cb44b4c6be19c83eb23de3c2bf7a5ad49a8ddba7f94785105dcd656c044922",
+      "observedBlob": "507f2c474901e7db1d9c217d26aedd4c0c8424b3",
+      "observedBytes": 932984,
+      "observedSha256": "92cb44b4c6be19c83eb23de3c2bf7a5ad49a8ddba7f94785105dcd656c044922",
+      "path": "src/i18n/locale/ko.json",
+      "verified": true
+    },
+    {
+      "expectedBlob": "0ed904e8aa987a340d90d5d8e308a85010e89568",
+      "expectedBytes": 910689,
+      "expectedSha256": "317b9d6b578e9df5fdbf6fb4dcda8758d0d41524afe8f0cc916ae3b98b24c66b",
+      "observedBlob": "0ed904e8aa987a340d90d5d8e308a85010e89568",
+      "observedBytes": 910689,
+      "observedSha256": "317b9d6b578e9df5fdbf6fb4dcda8758d0d41524afe8f0cc916ae3b98b24c66b",
+      "path": "src/i18n/locale/pt_BR.json",
+      "verified": true
+    },
+    {
+      "expectedBlob": "18a1ddc1ad26b5806c9c4852fbeb566f51bfe8f5",
+      "expectedBytes": 968326,
+      "expectedSha256": "9f896a7f441a94ba0efd0250caba32979c663d1068444dbe4d1ae3864fcf5ad2",
+      "observedBlob": "18a1ddc1ad26b5806c9c4852fbeb566f51bfe8f5",
+      "observedBytes": 968326,
+      "observedSha256": "9f896a7f441a94ba0efd0250caba32979c663d1068444dbe4d1ae3864fcf5ad2",
+      "path": "src/i18n/locale/vi.json",
+      "verified": true
+    },
+    {
+      "expectedBlob": "a75689ffcfb9c402fabf4211ea967c0a745b83f9",
+      "expectedBytes": 811529,
+      "expectedSha256": "4078270b69a39ec3445dacacf495b7dece126043e6c47a7eed7571250c8952ba",
+      "observedBlob": "a75689ffcfb9c402fabf4211ea967c0a745b83f9",
+      "observedBytes": 811529,
+      "observedSha256": "4078270b69a39ec3445dacacf495b7dece126043e6c47a7eed7571250c8952ba",
+      "path": "src/i18n/locale/zh_Hans.json",
+      "verified": true
+    },
+    {
+      "expectedBlob": "ac2189396f336543b0617abdcbb0739d647f1014",
+      "expectedBytes": 812768,
+      "expectedSha256": "0fe49b0e99702748123a92420c6a281cd0eae77a1fc80104fb879a781f618dba",
+      "observedBlob": "ac2189396f336543b0617abdcbb0739d647f1014",
+      "observedBytes": 812768,
+      "observedSha256": "0fe49b0e99702748123a92420c6a281cd0eae77a1fc80104fb879a781f618dba",
+      "path": "src/i18n/locale/zh_Hant.json",
+      "verified": true
+    }
+  ],
+  "sourceKeysInWindow": 100,
+  "sourceOrder": "zero-based insertion order in src/i18n/locale/en.json",
+  "sourcePositionRange": [
+    2300,
+    2399
+  ],
+  "sourceWindowBoundary": {
+    "first": {
+      "position": 2300,
+      "source": "Send notifications when media requests become available.",
+      "sourceHash": "23b36c741d0c1ef54f1a79f381f1dce88003b3d5934415d52d2b67fecbdd8d86",
+      "sourceId": "components.NotificationTypeSelector.mediaavailableDescription"
+    },
+    "last": {
+      "position": 2399,
+      "source": "Grant automatic approval for sports league requests.",
+      "sourceHash": "8f92fa08f4f5dc9b248b89bbfad2c89be7e92d1e6536dbe771d90ca2a4cd016f",
+      "sourceId": "components.PermissionEdit.autoapproveSportsDescription"
+    },
+    "nextPosition": 2400,
+    "nextSourceId": "components.PermissionEdit.autorequest"
+  },
+  "tree": "cebcfc11e0ea37c42f5b6e979e96cca8c89c7814"
+}

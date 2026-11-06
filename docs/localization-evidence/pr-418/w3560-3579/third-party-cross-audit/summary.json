@@ -1,0 +1,54 @@
+{
+  "artifact": "SeerrNG PR #418 W3560-W3579 independent third-party cross-audit",
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "window": "W3560-W3579",
+  "head": "351f2c09a4aaf6f223975fc1827cb9f77de7702d",
+  "tree": "3d88008f6ea7dc6cbef21333d29a032469cd60cf",
+  "sourceCount": 20,
+  "localeCount": 12,
+  "cellCount": 240,
+  "crossAuditDispositionCounts": {
+    "select-change": 32,
+    "accept-current": 208,
+    "hold": 0
+  },
+  "proposedChangeCount": 32,
+  "holds": 0,
+  "callerlessSources": 0,
+  "primaryDispositionCounts": {
+    "accept-current": 208,
+    "correction": 13,
+    "refinement": 19
+  },
+  "blindDispositionCounts": {
+    "propose": 5,
+    "retain": 235,
+    "hold": 0
+  },
+  "primaryBlindProposalAgreementCells": 5,
+  "primaryChangeBlindRetainDisagreements": 27,
+  "blindOnlyProposals": 0,
+  "conflictingProposalTargets": 0,
+  "unresolvedDisagreements": 0,
+  "independentFirstPassChanges": 8,
+  "independentFirstPassExactPrimaryTargetMatches": 6,
+  "independentFirstPassAlternateWordingCells": [
+    {
+      "position": 3561,
+      "locale": "hi"
+    },
+    {
+      "position": 3567,
+      "locale": "ja"
+    }
+  ],
+  "placeholderMismatches": 0,
+  "markupMismatches": 0,
+  "numericTokenMismatches": 0,
+  "protectedLiteralMismatches": 0,
+  "all240CallerContextsPinned": true,
+  "nativeSpeakerApproval": false,
+  "applicationAuthorizationCreated": false,
+  "applicationPlanIsProposalOnly": true
+}

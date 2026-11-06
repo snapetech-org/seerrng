@@ -1,0 +1,27 @@
+{
+  "inputHead": "ebebae19e24b9236192eda287938b65eabf29667",
+  "inputTree": "8e5ef5985dee40f5c1191dff794e323a851d3ef8",
+  "sourceRange": [
+    3120,
+    3139
+  ],
+  "sourceIds": 20,
+  "localeCount": 12,
+  "cellCount": 240,
+  "blindDispositionCounts": {
+    "accept-current": 173,
+    "correction": 40,
+    "refinement": 27,
+    "hold": 0
+  },
+  "independentCandidates": 67,
+  "callerIdsReattested": 20,
+  "callerLinesReattested": 271,
+  "placeholderMultisetMismatches": 0,
+  "markupMismatches": 0,
+  "localWorktreeHeadAtReview": "536dfdb7630d5f61fc8a90b82bc33234eb432c9f",
+  "localWorktreeState": "clean, one commit ahead of remote branch after root’s W3100-3119 local commit; current PR remote head remains the pinned commit",
+  "prRemoteHead": "ebebae19e24b9236192eda287938b65eabf29667",
+  "primaryProposalFilesReadAtDecisionTime": false,
+  "nativeSpeakerApproval": false
+}

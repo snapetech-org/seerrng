@@ -1,0 +1,42 @@
+{
+  "repository": "snapetech-org/SeerrNG",
+  "pullRequest": 418,
+  "exactHead": "0cc977d2dc5eff86eac49cdad3b9361bff5acd65",
+  "exactTree": "ce65000b9bebef1838f3dd0e1a3764f75e102876",
+  "window": [
+    3160,
+    3179
+  ],
+  "cells": 240,
+  "sourceOrderCount": 9494,
+  "catalogKeyCounts": {
+    "en": 9494,
+    "es": 9494,
+    "zh_Hans": 9494,
+    "hi": 9494,
+    "de": 9494,
+    "ja": 9494,
+    "fr": 9494,
+    "pt_BR": 9494,
+    "ar": 9494,
+    "ko": 9494,
+    "zh_Hant": 9494,
+    "vi": 9494,
+    "id": 9494
+  },
+  "allLocaleKeysetsMatchEnglish": true,
+  "callerIdsWithTargetedReferences": 20,
+  "callerLineCount": 40,
+  "sourceAndCurrentCellsReattestedAgainstNewHead": 240,
+  "sourceCurrentHashMismatches": 0,
+  "placeholderMismatches": 0,
+  "markupMismatches": 0,
+  "dispositions": {
+    "accept-current": 167,
+    "correction": 37,
+    "refinement": 36
+  },
+  "candidateCells": 73,
+  "nativeSpeakerApproval": false,
+  "reviewType": "primary machine-assisted semantic review"
+}

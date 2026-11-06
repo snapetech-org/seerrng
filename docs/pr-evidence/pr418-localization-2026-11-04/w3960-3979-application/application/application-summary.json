@@ -1,0 +1,51 @@
+{
+  "artifact": "SeerrNG PR #418 W3960-W3979 exact application readback",
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "window": "W3960-W3979",
+  "baseHead": "a456dd66aad34cb23f432cb3c189bb8083bbbe96",
+  "baseTree": "7a5447e5f08e84c392899a6e1400d1df73b1143b",
+  "sourceCount": 20,
+  "localeCount": 12,
+  "cellCount": 240,
+  "appliedUpdates": 10,
+  "retainedCurrent": 218,
+  "heldHashOnly": 12,
+  "changesByLocale": {
+    "ar": 5,
+    "de": 1,
+    "fr": 1,
+    "hi": 1,
+    "id": 1,
+    "zh-Hant": 1
+  },
+  "readbackMatches": 240,
+  "catalogPathsChanged": [
+    "src/i18n/locale/ar.json",
+    "src/i18n/locale/de.json",
+    "src/i18n/locale/fr.json",
+    "src/i18n/locale/hi.json",
+    "src/i18n/locale/id.json",
+    "src/i18n/locale/zh_Hant.json"
+  ],
+  "keyOrdersPreserved": true,
+  "unselectedValuesPreserved": true,
+  "protectedLiteralTokenCheckFailures": 0,
+  "testsBuildsScansCI": false,
+  "workflowsChanged": false,
+  "browserAcceptance": false,
+  "nativeSpeakerApproval": false,
+  "productCommit": "cb812bd21cf99964a4a7335830294ebdbdc6df34",
+  "productParent": "a456dd66aad34cb23f432cb3c189bb8083bbbe96",
+  "productTree": "c01f6290e7446bfc5f01ae5fe8d1e36b63fc25bf",
+  "changedPaths": [
+    "src/i18n/locale/ar.json",
+    "src/i18n/locale/de.json",
+    "src/i18n/locale/fr.json",
+    "src/i18n/locale/hi.json",
+    "src/i18n/locale/id.json",
+    "src/i18n/locale/zh_Hant.json"
+  ],
+  "preAppendPRBodySha256": "ff42a99517efbf6010a86682963b5d12fbcfb46f5c361405a972c6793737bd60",
+  "preAppendPRBodyChars": 117036
+}

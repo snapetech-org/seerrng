@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "checkedAtUtc": "2026-11-03T14:28:06.700203+00:00",
+  "catalogDiffCheck": {
+    "command": "git diff --cached --check -- src/i18n/locale",
+    "exitCode": 0,
+    "result": "PASS",
+    "output": ""
+  },
+  "fullStagedDiffCheck": {
+    "command": "git diff --cached --check",
+    "exitCode": 2,
+    "result": "WARN",
+    "output": "docs/pr-evidence/pr418-localization-2026-11-03/window-3580-3599/blind-review/build-blind-review.py:161: new blank line at EOF.\ndocs/pr-evidence/pr418-localization-2026-11-03/window-3580-3599/root-cross-audit/build-root-crossaudit.py:276: new blank line at EOF.\n",
+    "warningsArePreservedSealedPacketFiles": true,
+    "warningFiles": [
+      "blind-review/build-blind-review.py",
+      "root-cross-audit/build-root-crossaudit.py"
+    ],
+    "reason": "These exact builder files are preserved from checksum-verified review packets; their pre-existing extra blank line at EOF is retained to keep packet checksums valid."
+  }
+}

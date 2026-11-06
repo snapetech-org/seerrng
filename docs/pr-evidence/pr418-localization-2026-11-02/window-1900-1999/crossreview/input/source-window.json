@@ -1,0 +1,617 @@
+{
+  "head": "aab1928ff83728d30a864b1ff24c5c812c7ca040",
+  "sourceCatalog": {
+    "blob": "12e04a118c30b71b3714291adeaf9fdb2735cee4",
+    "bytes": 835513,
+    "path": "src/i18n/locale/en.json",
+    "sha256": "75ff3c90b52aedd636a506281ffbd6fb2d3739c61294b6008a517f17647e2316"
+  },
+  "sourceCount": 100,
+  "sourceList": [
+    {
+      "position": 1900,
+      "source": "Unable to complete sign-in.",
+      "sourceHash": "45ef9503c5f83aa7537776a0b9b8fe5888e080c226b143b0dfbe12830f6371f9",
+      "sourceId": "components.Login.signinFailed"
+    },
+    {
+      "position": 1901,
+      "source": "Signing In…",
+      "sourceHash": "0cb319154a92412292b231bda76c9def14d57ef7a0bb43fdd2e805922b851dcd",
+      "sourceId": "components.Login.signingin"
+    },
+    {
+      "position": 1902,
+      "source": "Sign in to continue",
+      "sourceHash": "607a80121c655651dc14cbb057e035943bed91077283e9c6b8d709db1e25ef7f",
+      "sourceId": "components.Login.signinheader"
+    },
+    {
+      "position": 1903,
+      "source": "Use your {mediaServerName} account",
+      "sourceHash": "83ff594f6235b69d6e73407d3ca474e487a802bc669ca5d6f78bc0aadf6cc6c7",
+      "sourceId": "components.Login.signinwithjellyfin"
+    },
+    {
+      "position": 1904,
+      "source": "Use your {applicationTitle} account",
+      "sourceHash": "ee4b95cfab428c2c0cc58d446db14fd9bb540abae7dc92c776ae8a0a63730bd1",
+      "sourceId": "components.Login.signinwithoverseerr"
+    },
+    {
+      "position": 1905,
+      "source": "Use your Plex account",
+      "sourceHash": "40f809528507ff561f3458c0889972298bff428368b30a25f5a2d5d0f00affa8",
+      "sourceId": "components.Login.signinwithplex"
+    },
+    {
+      "position": 1906,
+      "source": "The email ends with whitespace",
+      "sourceHash": "8d4cdd1e3baef9c3841e4cceb35942a129aceda86ad903331e3cea9a05953885",
+      "sourceId": "components.Login.tipEmailHasTrailingWhitespace"
+    },
+    {
+      "position": 1907,
+      "source": "The username ends with whitespace",
+      "sourceHash": "9112ceb393144b77b43c659ac3f403a278423f7bf79a53e0c7222971c0697767",
+      "sourceId": "components.Login.tipUsernameHasTrailingWhitespace"
+    },
+    {
+      "position": 1908,
+      "source": "Add Email",
+      "sourceHash": "63d8624cd3fc5327e7c1e33c2e7bdb72950ffdc77d58d82e3196f6fb82ec3278",
+      "sourceId": "components.Login.title"
+    },
+    {
+      "position": 1909,
+      "source": "URL Base",
+      "sourceHash": "ef6c0f00b8d75cf125f081ae3feb8ec9fb44933745e2889b678c62911989b6ef",
+      "sourceId": "components.Login.urlBase"
+    },
+    {
+      "position": 1910,
+      "source": "If you set a Base URL in Jellyfin (Dashboard > Networking), enter it here (e.g. /jellyfin). Leave blank otherwise.",
+      "sourceHash": "dfcdaa26b3d1891a245a03fbe3f116cd0b8d6a1c7c857c44fd17a4f9ebeb2c14",
+      "sourceId": "components.Login.urlBaseHelp"
+    },
+    {
+      "position": 1911,
+      "source": "Username",
+      "sourceHash": "e3b89e9d33f88e523083d8b4436adcc3726c89e97fd3179a2e102d765d1b16ed",
+      "sourceId": "components.Login.username"
+    },
+    {
+      "position": 1912,
+      "source": "Invalid email",
+      "sourceHash": "8864165e8b42303e0dec7d6835dccc1fcc3c2553d0a19f932d2dbfb42fb06f9f",
+      "sourceId": "components.Login.validationEmailFormat"
+    },
+    {
+      "position": 1913,
+      "source": "You must provide an email",
+      "sourceHash": "3443451630fa201c3420278f43c04a6cd1dbb9678bd65499eb615fa391c0e133",
+      "sourceId": "components.Login.validationEmailRequired"
+    },
+    {
+      "position": 1914,
+      "source": "You must provide a valid port number",
+      "sourceHash": "21fa9debbe0aee16c335033f8d6cd5d9759bb42cddb109b7ec143dcf3940205b",
+      "sourceId": "components.Login.validationPortRequired"
+    },
+    {
+      "position": 1915,
+      "source": "URL base must have a leading slash",
+      "sourceHash": "4c7a2fdaf35ddd810ed57e26f5dc994fc69fc75d5faf46786fc62829ccba038c",
+      "sourceId": "components.Login.validationUrlBaseLeadingSlash"
+    },
+    {
+      "position": 1916,
+      "source": "URL base must not end in a trailing slash",
+      "sourceHash": "0e05bf139e8a736d21f73d3fb6e77109c4aef32f3a752a0d26ba13f0f6201b1d",
+      "sourceId": "components.Login.validationUrlBaseTrailingSlash"
+    },
+    {
+      "position": 1917,
+      "source": "URL must not end in a trailing slash",
+      "sourceHash": "2ec9466ee0689b0e8d84afd820cf2ca7067ed4985c3016cd41b1b8ddb198202c",
+      "sourceId": "components.Login.validationUrlTrailingSlash"
+    },
+    {
+      "position": 1918,
+      "source": "Valid email required",
+      "sourceHash": "ac76eae021022d4a501e9f5748b51db4e380b55d53638634ec3b0089ac8cf2af",
+      "sourceId": "components.Login.validationemailformat"
+    },
+    {
+      "position": 1919,
+      "source": "You must provide a valid email address",
+      "sourceHash": "d51625c89575e883e6c475cee6b6014b682bf8c2ba08303a50b2d0d52c311f2c",
+      "sourceId": "components.Login.validationemailrequired"
+    },
+    {
+      "position": 1920,
+      "source": "Valid URL required",
+      "sourceHash": "dd8033c8cde72bd62fd825c29842dcac4d44a714e97c84c75bb8a68a66885dc7",
+      "sourceId": "components.Login.validationhostformat"
+    },
+    {
+      "position": 1921,
+      "source": "{mediaServerName} URL required",
+      "sourceHash": "78858f18790137eee0d4e06f8d18e6e0ee4748adc1ca4de5c95927102393c1a7",
+      "sourceId": "components.Login.validationhostrequired"
+    },
+    {
+      "position": 1922,
+      "source": "You must provide a password",
+      "sourceHash": "77a884af4bb24833ad7d74fcfe6f8b10a42d2bb6c8def9d3b7eb4a96ec94a51e",
+      "sourceId": "components.Login.validationpasswordrequired"
+    },
+    {
+      "position": 1923,
+      "source": "Please select a server type",
+      "sourceHash": "25ce09a9f308b23d838f3ece20881bb42cf363300f62186f148f16c737679370",
+      "sourceId": "components.Login.validationservertyperequired"
+    },
+    {
+      "position": 1924,
+      "source": "Username required",
+      "sourceHash": "08086257d7b167bdfe3b485ae5a7c4f3dc4b37a0f8aba5f6124402a4852caa05",
+      "sourceId": "components.Login.validationusernamerequired"
+    },
+    {
+      "position": 1925,
+      "source": "Add To Watchlist",
+      "sourceHash": "539c52b5297fff2def90ded80d9f04a0ada69dc70d4b220c1b44dbfd481b70ce",
+      "sourceId": "components.MagazineDetails.addToWatchlist"
+    },
+    {
+      "position": 1926,
+      "source": "Available",
+      "sourceHash": "e674447337e83c1346f6122ed69f35bf5526e2a11842b2f2b788f3fb67d714ca",
+      "sourceId": "components.MagazineDetails.issueAvailable"
+    },
+    {
+      "position": 1927,
+      "source": "Issues",
+      "sourceHash": "666067dd376e5d4553b8fd554f855855819ad213ae825022d2a32dfa28431115",
+      "sourceId": "components.MagazineDetails.issueCount"
+    },
+    {
+      "position": 1928,
+      "source": "Issue date",
+      "sourceHash": "f0a6c4753adfbd8c4cacfd961ae4c130c70f3d99142067875fa88cf96484643c",
+      "sourceId": "components.MagazineDetails.issueDate"
+    },
+    {
+      "position": 1929,
+      "source": "Known issues",
+      "sourceHash": "9e06846ba2df2bb2fb6494c1576cc9a2c882691c389d5d66ebb53f91d820a2fe",
+      "sourceId": "components.MagazineDetails.issueList"
+    },
+    {
+      "position": 1930,
+      "source": "Not available",
+      "sourceHash": "67a926f7008e2b0e7f2b3f7a4b37597834830110be1d51138f425d6f3449bc09",
+      "sourceId": "components.MagazineDetails.issueMissing"
+    },
+    {
+      "position": 1931,
+      "source": "Manage Magazine",
+      "sourceHash": "5742aae1599d16ffb994949082ad6aeda67c6a3090144394419c2d1f2a1f0e5c",
+      "sourceId": "components.MagazineDetails.manageMagazine"
+    },
+    {
+      "position": 1932,
+      "source": "LazyLibrarian has no issue details for this title yet.",
+      "sourceHash": "a5bebb3243bf2a5aec0839a721dac0045fdd49475d8e34dd07741069e0234d40",
+      "sourceId": "components.MagazineDetails.noIssues"
+    },
+    {
+      "position": 1933,
+      "source": "Not available",
+      "sourceHash": "67a926f7008e2b0e7f2b3f7a4b37597834830110be1d51138f425d6f3449bc09",
+      "sourceId": "components.MagazineDetails.notAvailable"
+    },
+    {
+      "position": 1934,
+      "source": "Open Issues",
+      "sourceHash": "4e2912a774ef86f873b79577123ae69c0c70b5de5a44dff560c027d61ff936de",
+      "sourceId": "components.MagazineDetails.openIssues"
+    },
+    {
+      "position": 1935,
+      "source": "Remove From Watchlist",
+      "sourceHash": "f290b6a116d3820bb1c1d301bf18615ac01bda0fcd99a58d2937d25e403742eb",
+      "sourceId": "components.MagazineDetails.removeFromWatchlist"
+    },
+    {
+      "position": 1936,
+      "source": "Report an Issue",
+      "sourceHash": "f6a30a10bc27be0af728295f9f11b6e9ec6f6dabd0c0651f77a28d4ffbc07ba4",
+      "sourceId": "components.MagazineDetails.reportIssue"
+    },
+    {
+      "position": 1937,
+      "source": "Request Magazine",
+      "sourceHash": "049664328d8d25529697f7e401a249e792d5c78d2f68cfde6b75636b604b9f9f",
+      "sourceId": "components.MagazineDetails.requestMagazine"
+    },
+    {
+      "position": 1938,
+      "source": "Request status",
+      "sourceHash": "a4a0d96f3d6a269e14cfeed62f7451f83696eedacecde57f86f503a20e88856c",
+      "sourceId": "components.MagazineDetails.status"
+    },
+    {
+      "position": 1939,
+      "source": "View Request",
+      "sourceHash": "a78659f02aa39deacf685da5ae1f417d2f888dd3440179cea5df1c7dbb73a74d",
+      "sourceId": "components.MagazineDetails.viewRequest"
+    },
+    {
+      "position": 1940,
+      "source": "<strong>{title}</strong> Removed from watchlist successfully!",
+      "sourceHash": "36179805528c49438c2afe77dc6e6d642fc5e656987a54efd7a2313429c8accc",
+      "sourceId": "components.MagazineDetails.watchlistDeleted"
+    },
+    {
+      "position": 1941,
+      "source": "Something went wrong. Please try again.",
+      "sourceHash": "3ccd9d6586ef9143f1e1cc09831532fc2342c50ee76e5cb3c151190acbc50b51",
+      "sourceId": "components.MagazineDetails.watchlistError"
+    },
+    {
+      "position": 1942,
+      "source": "<strong>{title}</strong> added to watchlist successfully!",
+      "sourceHash": "7674cb0696a21b0fa1cb75dd7006bc39c65579a2beecc5092033dbeffe31ebff",
+      "sourceId": "components.MagazineDetails.watchlistSuccess"
+    },
+    {
+      "position": 1943,
+      "source": "This title is already blocklisted.",
+      "sourceHash": "ab5c2f8ba84dd9008a798c43473e2a74307019fa5ac9e019f782646a85a47e60",
+      "sourceId": "components.ManageMediaActions.alreadyBlocklisted"
+    },
+    {
+      "position": 1944,
+      "source": "Audiobook",
+      "sourceHash": "8716cb3d8010144e1aa703eb837f23f79d34e9603b3e7173d6ce935cac473b74",
+      "sourceId": "components.ManageMediaActions.audiobook"
+    },
+    {
+      "position": 1945,
+      "source": "Blocklist Title",
+      "sourceHash": "c29bb6f0291ff2acc88813fbd12a735a22a3c43c56ae75ff9c1e8172f7d0f16f",
+      "sourceId": "components.ManageMediaActions.block"
+    },
+    {
+      "position": 1946,
+      "source": "Blocklist Title?",
+      "sourceHash": "fab4225166989d98f10c25379ad880b24bcc1b4f5fb9914168377f42cea3c397",
+      "sourceId": "components.ManageMediaActions.blockConfirm"
+    },
+    {
+      "position": 1947,
+      "source": "Add this title to the Seerr blocklist to prevent future requests. Existing library files are not deleted.",
+      "sourceHash": "b61a45dc9e86b1e48b52cd6b45e758db5759f61956d33ce9ab63f6a91e98ed70",
+      "sourceId": "components.ManageMediaActions.blockDescription"
+    },
+    {
+      "position": 1948,
+      "source": "Blocklist",
+      "sourceHash": "f8019af406d12fadf933c26e1dfe437d6527b0228da4820eeca44ffeb4be45d9",
+      "sourceId": "components.ManageMediaActions.blocklist"
+    },
+    {
+      "position": 1949,
+      "source": "Unable to check the blocklist. Reopen Manage to retry.",
+      "sourceHash": "a3e387ef0b8a55f160e37783a8bfb0731c6f5e70354fee0269df7472d8ba71d1",
+      "sourceId": "components.ManageMediaActions.blocklistCheckFailed"
+    },
+    {
+      "position": 1950,
+      "source": "You do not have permission to manage the blocklist.",
+      "sourceHash": "2c4341a700ec89d0da75c9c814b7c2299a8db51246576e74fe9bbb7ab27b4077",
+      "sourceId": "components.ManageMediaActions.blocklistPermission"
+    },
+    {
+      "position": 1951,
+      "source": "Book and Audiobook",
+      "sourceHash": "0eededa2adf309ec12f79c98d4f60b04666bd094318afba9f52879b9c52cc089",
+      "sourceId": "components.ManageMediaActions.both"
+    },
+    {
+      "position": 1952,
+      "source": "Cancel",
+      "sourceHash": "19766ed6ccb2f4a32778eed80d1928d2c87a18d7c275ccb163ec6709d3eb2e27",
+      "sourceId": "components.ManageMediaActions.cancel"
+    },
+    {
+      "position": 1953,
+      "source": "Checking whether this title is blocklisted.",
+      "sourceHash": "5709ea69b0a834b5857c9d3dacb7f77eaac7895b2bbc6ce3895906a6f3d8c42a",
+      "sourceId": "components.ManageMediaActions.checkingBlocklist"
+    },
+    {
+      "position": 1954,
+      "source": "Checking all configured library services for copies of this title.",
+      "sourceHash": "8d2144edfe77d51f336fe71a3923d24bae1696e03011d74ecd3ea80b5cc22503",
+      "sourceId": "components.ManageMediaActions.checkingLibraries"
+    },
+    {
+      "position": 1955,
+      "source": "Clear Stale {quality} Availability",
+      "sourceHash": "d6cd78ca022fad597504068c1d547e92496a4c1c41d6dedc202d96752a240922",
+      "sourceId": "components.ManageMediaActions.clearStaleAvailability"
+    },
+    {
+      "position": 1956,
+      "source": "Reset SeerrNG’s {quality} availability status to Unknown. The latest check found no copy in any configured {service} library. This does not delete files, requests, or issues. A media-server scan may report availability again if a copy remains.",
+      "sourceHash": "c31aa93381c85ccf25ec193d3d8f1cc7658f6714610e7e475df4053e91087486",
+      "sourceId": "components.ManageMediaActions.clearStaleAvailabilityExplanation"
+    },
+    {
+      "position": 1957,
+      "source": "Unable to clear stale availability.",
+      "sourceHash": "6a3b25eda42735338b2ea836857f630539689c804a631f8c02d6c3e7849c1b69",
+      "sourceId": "components.ManageMediaActions.clearStaleAvailabilityFailed"
+    },
+    {
+      "position": 1958,
+      "source": "Stale availability cleared.",
+      "sourceHash": "aff04571aa02bfe08bbbb3cfe78afba8e335e900ce4f8c224c4bf2c1b0451aa7",
+      "sourceId": "components.ManageMediaActions.clearStaleAvailabilitySuccess"
+    },
+    {
+      "position": 1959,
+      "source": "Clear Stale {quality} Availability?",
+      "sourceHash": "19c2c9c45b2df1fa41dfa6b5900cbb5e5ae313e32e015f585aded64a9a585add",
+      "sourceId": "components.ManageMediaActions.clearStaleAvailabilityTitle"
+    },
+    {
+      "position": 1960,
+      "source": "Close {count, plural, one {# open issue} other {# open issues}}?",
+      "sourceHash": "c59f24bbedeeb190c8a2c0f987795654c11086d4a5b1228d9ea2da0f3cfc249e",
+      "sourceId": "components.ManageMediaActions.closeConfirm"
+    },
+    {
+      "position": 1961,
+      "source": "Mark all currently open issues for this media as resolved. Keep their comments and history so they can still be viewed or reopened. Requests, library entries, and media files are not deleted. Issues for other media are not changed.",
+      "sourceHash": "b89f6af2719b8fceed9e851d05d4598a30a3135d747c2c95785fc3927acef3d0",
+      "sourceId": "components.ManageMediaActions.closeDescription"
+    },
+    {
+      "position": 1962,
+      "source": "Close Open Issues",
+      "sourceHash": "b3403c71c8c1433769af1e82281386b71332e887885f8d4f68e6d1f83e7ff9b4",
+      "sourceId": "components.ManageMediaActions.closeIssues"
+    },
+    {
+      "position": 1963,
+      "source": "Delete {count, plural, one {# issue} other {# issues}}?",
+      "sourceHash": "3ed56aaf9ecd61481d9397db9dc406c70d7422428f9bae033c32745c116d5ad1",
+      "sourceId": "components.ManageMediaActions.deleteConfirm"
+    },
+    {
+      "position": 1964,
+      "source": "These issues and all their comments will be permanently deleted. This cannot be undone.",
+      "sourceHash": "c5397eb54ca6cbad4564b5c1e9e8f95f7b81c91db222971b6ee58184a90718cb",
+      "sourceId": "components.ManageMediaActions.deleteDescription"
+    },
+    {
+      "position": 1965,
+      "source": "Delete All Issues",
+      "sourceHash": "6bfe5df333995c9a64eed0e4c8027f7529a1fd2948d29e2548a20c16818ca81d",
+      "sourceId": "components.ManageMediaActions.deleteIssues"
+    },
+    {
+      "position": 1966,
+      "source": "Delete Request",
+      "sourceHash": "4a5c7574b0adf7038202799a9e66fb54cff26a7c1bd3085b3eb6f61a629bbf9c",
+      "sourceId": "components.ManageMediaActions.deleteRequests"
+    },
+    {
+      "position": 1967,
+      "source": "Done",
+      "sourceHash": "11a6767d5674c7e45f7e00dc525762275b3a48491ad6045427d2609cc496c516",
+      "sourceId": "components.ManageMediaActions.done"
+    },
+    {
+      "position": 1968,
+      "source": "Book",
+      "sourceHash": "909cb81127c5e1944b16dc5944ade59facb822c7a3f250d1f0256293bfd3c055",
+      "sourceId": "components.ManageMediaActions.ebook"
+    },
+    {
+      "position": 1969,
+      "source": "Delete Request cancels identifiable active request work and removes the selected request and its history.",
+      "sourceHash": "cc8c6795093eda5e6a7c2576d7e1f5c7674b5120504f90e3add8108f8310515b",
+      "sourceId": "components.ManageMediaActions.explanation"
+    },
+    {
+      "position": 1970,
+      "source": "The action could not be completed. Status is being refreshed; some issues may already have been updated.",
+      "sourceHash": "1b4fdda33ca48974ecf46bc9824869799449ebd7594d23221022c07700216510",
+      "sourceId": "components.ManageMediaActions.failed"
+    },
+    {
+      "position": 1971,
+      "source": "Issue #{id} — {status}",
+      "sourceHash": "70c77dcc508d74c247c78b2886e7491860a84a18259c7ec555874ec1f11bce14",
+      "sourceId": "components.ManageMediaActions.issueLink"
+    },
+    {
+      "position": 1972,
+      "source": "Issues",
+      "sourceHash": "666067dd376e5d4553b8fd554f855855819ad213ae825022d2a32dfa28431115",
+      "sourceId": "components.ManageMediaActions.issues"
+    },
+    {
+      "position": 1973,
+      "source": "Close Open Issues marks its open issues as resolved and keeps their history. Delete All Issues permanently removes all its issues and their comments, including resolved issues.",
+      "sourceHash": "b635a0a00840929bb0d8bd9abc40f7ccacc485cda956ad2bcf9310d13f42f552",
+      "sourceId": "components.ManageMediaActions.issuesDescription"
+    },
+    {
+      "position": 1974,
+      "source": "Unable to verify all library services or identify this comic’s backend. Refresh its metadata or check service availability before deleting.",
+      "sourceHash": "3f96c8bb0ba1967a730c4d01ab47a252a854b0a60d4e4ecf79aa3857c6c70549",
+      "sourceId": "components.ManageMediaActions.libraryLookupFailed"
+    },
+    {
+      "position": 1975,
+      "source": "This title has no valid blocklist identifier.",
+      "sourceHash": "0bbf86f88ddd8a9ed1b0ac06f215024b0eb06e347b87847ee3590ac4d01de57a",
+      "sourceId": "components.ManageMediaActions.missingBlocklistId"
+    },
+    {
+      "position": 1976,
+      "source": "There are no issues for this media.",
+      "sourceHash": "2f8af6ee54986d7bb1fecfac3a21200bbba88c2e22a2367c38f0d2102358728d",
+      "sourceId": "components.ManageMediaActions.noIssues"
+    },
+    {
+      "position": 1977,
+      "source": "There are no open issues to close for this media.",
+      "sourceHash": "391b7895cebdd79c355bf3dadaaee9f330b2c5540ab5a0dfbaff0b1ba0e2bfe0",
+      "sourceId": "components.ManageMediaActions.noOpenIssues"
+    },
+    {
+      "position": 1978,
+      "source": "No request is linked to this title.",
+      "sourceHash": "3c0562813f87fd6e6e957c07e82e17a26569f1a21d91e942cfeb187e72981c4c",
+      "sourceId": "components.ManageMediaActions.noRequests"
+    },
+    {
+      "position": 1979,
+      "source": "This media is not currently blocklisted.",
+      "sourceHash": "dae8ebed580f18e32cbb3858f7bd5453e2419c9071dcce2e3aeb325afe141337",
+      "sourceId": "components.ManageMediaActions.notBlocklisted"
+    },
+    {
+      "position": 1980,
+      "source": "Open",
+      "sourceHash": "ed077f3d8125d60dca1979c7133601bd187d47c73ed9975028f677e49e709942",
+      "sourceId": "components.ManageMediaActions.open"
+    },
+    {
+      "position": 1981,
+      "source": "Open title in {service}",
+      "sourceHash": "817238ea56e19c93ea92d34c4a1cafbb28c270a2f27b2b8f45b497f0b0243fec",
+      "sourceId": "components.ManageMediaActions.openService"
+    },
+    {
+      "position": 1982,
+      "source": "Open this media’s page in {service} in a new browser tab or window.",
+      "sourceHash": "836dd872758d218bc0c36d3d321a02b75f3afb4f67a7d0e1e16c01beb88a0ba6",
+      "sourceId": "components.ManageMediaActions.openServiceTooltip"
+    },
+    {
+      "position": 1983,
+      "source": "Permanently delete all quality versions, their media files and library entries from every service listed below. This cannot be undone from Seerr. Once a movie or series has no remaining library copies, confirmed by library reconciliation, its requests and issues are also removed. Blocklists and watchlists remain. Other titles are unaffected.",
+      "sourceHash": "6a6774c7f8d7c1a992e92c31e9bd5487f2f4c92f64117ffe3e65d776fa1f63b8",
+      "sourceId": "components.ManageMediaActions.removeAllDescription"
+    },
+    {
+      "position": 1984,
+      "source": "Delete From Library?",
+      "sourceHash": "91a378b22f297f715b049f6454ea2fe0e81491ec2857f67ffeb180e6ac472c8b",
+      "sourceId": "components.ManageMediaActions.removeAllTitle"
+    },
+    {
+      "position": 1985,
+      "source": "Request #{id} — {user} — {format}",
+      "sourceHash": "06e78d5bff1c985e57acf276f8eba9b75dd3fab8d99817bd638c5cd844721cd1",
+      "sourceId": "components.ManageMediaActions.requestOption"
+    },
+    {
+      "position": 1986,
+      "source": "Request",
+      "sourceHash": "59f03d642b41e22f4575061e817f9e87c3ced5a0e77d5c92364bd45b7f90d0c9",
+      "sourceId": "components.ManageMediaActions.requests"
+    },
+    {
+      "position": 1987,
+      "source": "Resolved",
+      "sourceHash": "5be3c2c8354e1eb924b03a3dcc7fa4172e9aa0f4917b46b44fcc7daf8835d7a7",
+      "sourceId": "components.ManageMediaActions.resolved"
+    },
+    {
+      "position": 1988,
+      "source": "Retry Library Check",
+      "sourceHash": "c1d242803daaa1a65e6f0b33cb8b37f13fb94b1fa7b675c25182f8a783ae3838",
+      "sourceId": "components.ManageMediaActions.retryLibraries"
+    },
+    {
+      "position": 1989,
+      "source": "Library item to delete",
+      "sourceHash": "961165e28c7391601fdad9ef72048c2c9223829e2f2abaa8d551e667ffd1f1d9",
+      "sourceId": "components.ManageMediaActions.selectLibrary"
+    },
+    {
+      "position": 1990,
+      "source": "Request to delete",
+      "sourceHash": "f74a225ba4bffd8261f1848bb91488a63f37f216da65f859b0261c7eb41c4918",
+      "sourceId": "components.ManageMediaActions.selectRequest"
+    },
+    {
+      "position": 1991,
+      "source": "Service",
+      "sourceHash": "d677190e0a9990e7d5fa9e4c1bbde44271fb8959c4acb6d43e02ed991128b4bf",
+      "sourceId": "components.ManageMediaActions.services"
+    },
+    {
+      "position": 1992,
+      "source": "Delete From Library permanently removes all quality versions and library entries for this title from every service listed in the confirmation.",
+      "sourceHash": "3e7ff796e86e9d3359e1132d9181685974a35bede7d9e99dd6b3845a8e34576e",
+      "sourceId": "components.ManageMediaActions.servicesDescription"
+    },
+    {
+      "position": 1993,
+      "source": "{title} ({year})",
+      "sourceHash": "0b2793d5f0a36e1c7f54e92ae033f3e29b9624c9d1aabf41ffa3d9116ea58ae0",
+      "sourceId": "components.ManageMediaActions.titleWithYear"
+    },
+    {
+      "position": 1994,
+      "source": "Remove From Blocklist",
+      "sourceHash": "093d54792126e80e36c6dbe86044db4a3e09d9dc19101f05c883a3227107f2c7",
+      "sourceId": "components.ManageMediaActions.unblock"
+    },
+    {
+      "position": 1995,
+      "source": "Remove From Blocklist?",
+      "sourceHash": "641fa6cba37911e071e8c3cb897fe52257874f4a2ea01afcd2fc4d295e0c5b82",
+      "sourceId": "components.ManageMediaActions.unblockConfirm"
+    },
+    {
+      "position": 1996,
+      "source": "Remove From Blocklist allows this title to be requested again.",
+      "sourceHash": "98c4ed5aaa078b45a22dfd0daee3151170376c9fa7acf4c29414281acd240514",
+      "sourceId": "components.ManageMediaActions.unblockDescription"
+    },
+    {
+      "position": 1997,
+      "source": "Unknown user",
+      "sourceHash": "0bca69475fcfb2baa9aa2ceac4fc08be99c769c7f2f56998279fc337d8e2249f",
+      "sourceId": "components.ManageMediaActions.unknownUser"
+    },
+    {
+      "position": 1998,
+      "source": "Changes saved.",
+      "sourceHash": "12b3f1a3e924fd1367a937621d709aaab9a4ca4ec65b17b7045dcc8f2150413e",
+      "sourceId": "components.ManageMediaActions.updated"
+    },
+    {
+      "position": 1999,
+      "source": "View All Issues",
+      "sourceHash": "5ec95c502acaf1b098d1545799c26439e9fdcf296c22ab695955eb62f3fd688a",
+      "sourceId": "components.ManageMediaActions.viewIssues"
+    }
+  ],
+  "sourcePositionRange": [
+    1900,
+    1999
+  ],
+  "tree": "00901677a18e5ebf8d92a1f195668289f8a6f928"
+}

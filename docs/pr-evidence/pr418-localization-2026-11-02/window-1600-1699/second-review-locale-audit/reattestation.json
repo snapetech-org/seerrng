@@ -1,0 +1,67 @@
+{
+  "callerFileMismatches": 0,
+  "callerRefsReattested": 393,
+  "callerSourceIdsReattested": 100,
+  "cellMismatches": 0,
+  "currentCellsReattested": 500,
+  "definitionOnlyCallerGaps": [
+    "components.IssueDetails.IssueMediaSummary.minutes",
+    "components.IssueList.IssueItem.openarr"
+  ],
+  "head": "5aceef6ed6e865ee89383738212d1ce1a5c1f552",
+  "livePullRequest": {
+    "baseRefOid": "221d8e0d542802da7529cd272c928cc747677e5c",
+    "headRefName": "codex/seerrng-localization-overhaul-20261028",
+    "headRefOid": "5aceef6ed6e865ee89383738212d1ce1a5c1f552",
+    "isDraft": true,
+    "state": "OPEN",
+    "url": "https://github.com/snapetech-org/seerrng/pull/418"
+  },
+  "localeCatalogs": {
+    "src/i18n/locale/hi.json": {
+      "blob": "2d0d19c4a262b18f21e0787ffcdd82550df42f2d",
+      "bytes": 1368424,
+      "sha256": "f0a6d589c4fb12ff8ebacf11b2e5701a38ad0ede70b07cace5a1faabe3ee1f5f"
+    },
+    "src/i18n/locale/ja.json": {
+      "blob": "c94662de2ffde5defcb1ef43541f474870d98ff6",
+      "bytes": 1014554,
+      "sha256": "ed90126f5944b550bc45567e6b177bb613804940ba142cd8347a5b8f7329a63c"
+    },
+    "src/i18n/locale/ko.json": {
+      "blob": "0912b097736060291cb13452a085c2d747b5903b",
+      "bytes": 931698,
+      "sha256": "3d710d126fd985b1706ea0727fb7e0492fa08e40b3cf71467a5297d119199c2c"
+    },
+    "src/i18n/locale/zh_Hans.json": {
+      "blob": "5a31c779d607d3993d79d936542fad841d771ded",
+      "bytes": 810765,
+      "sha256": "4e9ea138cc9dd6477573c41fae702c749b3eabeebad0017b8b3dc0b4737a6ba2"
+    },
+    "src/i18n/locale/zh_Hant.json": {
+      "blob": "41e906876a66d2a849a909bcf72dc24e263b4a54",
+      "bytes": 811380,
+      "sha256": "e3526e4402ba2bd84101d90791b5207a7089367757a1654da94f20d9f116df30"
+    }
+  },
+  "manageLabelMismatches": 0,
+  "manageLabelsReattested": 5,
+  "markupMismatches": 0,
+  "placeholderMismatches": 0,
+  "primaryPacketSha256ManifestVerified": true,
+  "protectedLiteralMismatches": 0,
+  "pullRequest": 418,
+  "recheckedAtUtc": "2026-11-02T14:25:38Z",
+  "repository": "snapetech-org/seerrng",
+  "sourceCatalog": {
+    "blob": "12e04a118c30b71b3714291adeaf9fdb2735cee4",
+    "bytes": 835513,
+    "path": "src/i18n/locale/en.json",
+    "sha256": "75ff3c90b52aedd636a506281ffbd6fb2d3739c61294b6008a517f17647e2316"
+  },
+  "sourcePositionsReattested": 100,
+  "status": "pass",
+  "tree": "dd6e3495c44c2c14acf8a7a4b09a21e935ceb16d",
+  "worktree": "/mnt/disks/scratch/task-worktrees/localization-20261102/seerrng-pr418-w1400-1499",
+  "worktreeClean": true
+}

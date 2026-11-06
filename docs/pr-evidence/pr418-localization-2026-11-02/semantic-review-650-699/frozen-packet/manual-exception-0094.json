@@ -1,0 +1,68 @@
+{
+  "schemaVersion": 1,
+  "batchId": "existing-es-client-0094",
+  "liveHead": "422072d585074bdd7f8dd3046cbacede69203d6d",
+  "liveTree": "c7f3bffb628464e98188f3c8f8c4950d6038cee6",
+  "appSourceTree": "2471ca52d8b94504879e5842e8ffae920a22e180",
+  "selectedBatchIndex": 690,
+  "batchSha256": "69a61eb06f1353ab560e8d032706e6733703cbac778d1c843d6fb4446a982a3e",
+  "strictRunnerValidation": "failed after four attempts at one inline ProfileLink tag-boundary check",
+  "manualValidation": [
+    "exact request rows match the pinned frozen batch",
+    "all 32 response IDs are present exactly once",
+    "all verdict fields and high-confidence correction fields are structurally valid",
+    "all ICU signatures match the English source",
+    "all non-tag protected literals match exactly",
+    "all protected HTML tags match the source in order and multiplicity",
+    "no unresolved protected-token masks remain"
+  ],
+  "manualExceptionReason": "The strict literal matcher rejects inline HTML tags when adjacent translated text makes the tag fail its ASCII word-boundary condition. In the quotaLinkUser correction, both <ProfileLink> and </ProfileLink> are unchanged and in source order; the model proposal is retained only as a candidate for root cross-review.",
+  "attempts": [
+    {
+      "attempt": 1,
+      "requestPath": "semantic-output/requests/existing-es-client-0094-attempt-1.json",
+      "requestSha256": "0bf9a93d283439b4f8ca37c4f1cf83b5def6eb48f1327440b916f4eb48ab00dd",
+      "responsePath": "semantic-output/responses/existing-es-client-0094-attempt-1.json",
+      "responseSha256": "f37f4d351d0c08bb386f9a39afb6e49a83e32aee99afd0a59f1e94f2c3ca9ec3",
+      "errorPath": "semantic-output/errors/existing-es-client-0094-attempt-1.json",
+      "errorSha256": "a3b10ee1946c559add2279d026d8593c19dedb518cdbbd5cfee02a0e1f53a55e",
+      "error": "ValueError: components.RequestModal.QuotaDisplay.quotaLinkUser: correction changes a protected brand/URL/code/path"
+    },
+    {
+      "attempt": 2,
+      "requestPath": "semantic-output/requests/existing-es-client-0094-attempt-2.json",
+      "requestSha256": "d953aa5f9f6fc36e8c7e9c8840e7688edb0ef60ccc9c2cf0048a220e80bacdbd",
+      "responsePath": "semantic-output/responses/existing-es-client-0094-attempt-2.json",
+      "responseSha256": "d3bb01cede1412889a79dc8ae5fc317ef3eb9481b61ba1c4f36962a91ce50aac",
+      "errorPath": "semantic-output/errors/existing-es-client-0094-attempt-2.json",
+      "errorSha256": "d3d058c44074d3ecb79dba90262045abe8b6995498a15142d5512a07f0c9ae7a",
+      "error": "ValueError: components.RequestModal.QuotaDisplay.quotaLinkUser: correction changes a protected brand/URL/code/path"
+    },
+    {
+      "attempt": 3,
+      "requestPath": "semantic-output/requests/existing-es-client-0094-attempt-3.json",
+      "requestSha256": "d953aa5f9f6fc36e8c7e9c8840e7688edb0ef60ccc9c2cf0048a220e80bacdbd",
+      "responsePath": "semantic-output/responses/existing-es-client-0094-attempt-3.json",
+      "responseSha256": "619d41d0741686761a01a1f2e2ed4dfecc47cab71d7e3db9f4fca1db9cfcb818",
+      "errorPath": "semantic-output/errors/existing-es-client-0094-attempt-3.json",
+      "errorSha256": "15b699d7d74ef285796075fd50b7d3771261220c26c8621c48b44d9776c829f3",
+      "error": "ValueError: components.RequestModal.QuotaDisplay.quotaLinkUser: correction changes a protected brand/URL/code/path"
+    },
+    {
+      "attempt": 4,
+      "requestPath": "semantic-output/requests/existing-es-client-0094-attempt-4.json",
+      "requestSha256": "d953aa5f9f6fc36e8c7e9c8840e7688edb0ef60ccc9c2cf0048a220e80bacdbd",
+      "responsePath": "semantic-output/responses/existing-es-client-0094-attempt-4.json",
+      "responseSha256": "f6baf0fa9154d47f6aac100b43df6335fa0431c56d86380e0c846299c579f36f",
+      "errorPath": "semantic-output/errors/existing-es-client-0094-attempt-4.json",
+      "errorSha256": "a09fe29ea15ecc7991a0ce2cfa9a1d99629af679f3f75786cc52b268aa16f284",
+      "error": "ValueError: components.RequestModal.QuotaDisplay.quotaLinkUser: correction changes a protected brand/URL/code/path"
+    }
+  ],
+  "finalResponsePath": "semantic-output/responses/existing-es-client-0094-attempt-4.json",
+  "finalResponseSha256": "f6baf0fa9154d47f6aac100b43df6335fa0431c56d86380e0c846299c579f36f",
+  "finalRequestPath": "semantic-output/requests/existing-es-client-0094-attempt-4.json",
+  "finalRequestSha256": "d953aa5f9f6fc36e8c7e9c8840e7688edb0ef60ccc9c2cf0048a220e80bacdbd",
+  "nativeSpeakerApproval": false,
+  "catalogsModified": false
+}

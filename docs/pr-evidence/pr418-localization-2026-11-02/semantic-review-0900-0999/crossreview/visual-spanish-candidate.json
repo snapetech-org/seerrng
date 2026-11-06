@@ -1,0 +1,46 @@
+{
+  "caller": {
+    "definitionLine": 67,
+    "definitionText": "configureservices: 'Connect Services',",
+    "fileBlob": "5f740f73e4d22a1f7a01dd0d8e74a94e890b88f1",
+    "fileSha256": "7d24c14cc92343ecb5693cedf148d34e6d18adb467aeb867ef1ad8aafd47f836",
+    "path": "src/components/Setup/index.tsx",
+    "usageLines": [
+      {
+        "line": 436,
+        "text": "description={intl.formatMessage(messages.configureservices)}"
+      },
+      {
+        "line": 465,
+        "text": "description={intl.formatMessage(messages.configureservices)}"
+      },
+      {
+        "line": 500,
+        "text": "description={intl.formatMessage(messages.configureservices)}"
+      }
+    ]
+  },
+  "candidateLength": 18,
+  "candidateSpanish": "Conectar servicios",
+  "candidateSpanishSha256": "4dfc6f3f90c278f3f2508881ed323b59179c7b93eb1b768607befd1117371cfc",
+  "currentLength": 20,
+  "currentSpanish": "Configurar servicios",
+  "currentSpanishSha256": "3d5dc458ffe98f2676207ca11281fe668e5b12436a708a20ba6b518cacc17a12",
+  "decision": "accept candidate, confidence high",
+  "head": "18001c2d09d5d271bd4fe2ad22189c29d069a457",
+  "rationale": "The setup step connects service integrations. “Configurar” means configure and does not match the source action; “Conectar” is exact and shorter in this step header.",
+  "source": "Connect Services",
+  "sourceCatalogBlob": "12e04a118c30b71b3714291adeaf9fdb2735cee4",
+  "sourceCatalogSha256": "75ff3c90b52aedd636a506281ffbd6fb2d3739c61294b6008a517f17647e2316",
+  "sourceId": "components.Setup.configureservices",
+  "sourceSha256": "0479b0d72d394280859ac2b8c67e9e0379fe087696b399caa54676f65ebd265e",
+  "spanishCatalogBlob": "241862c71f1453c366a832456e417c1760a0e153",
+  "spanishCatalogSha256": "ee8a69a0b81c6b331313c20a1a6ef55167a5becb80812e44c65c5a63a2861318",
+  "tree": "7a9f3218d79501fb620329f0e53c1a0b3dd44508",
+  "visualEvidence": {
+    "finding": "In the saved Spanish setup screenshot, the Step 5 label “Configurar servicios” extends beyond the right edge of its step segment. “Conectar servicios” is the accurate infinitive translation of “Connect Services” and is two characters shorter, so it is a plausible fix for the observed width overflow.",
+    "postChangeVisualVerification": "not performed; no repository changes were permitted.",
+    "sha256": "6a1a3bc8e766a0cdd2a4ae771dd2518974970a465c31852a7a0b773361458efd",
+    "sourcePath": "docs/pr-evidence/pr418-localization-2026-11-02/agentvm-browser-review/spanish-setup-step1-before.png"
+  }
+}

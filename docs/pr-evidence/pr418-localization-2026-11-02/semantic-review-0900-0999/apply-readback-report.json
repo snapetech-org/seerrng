@@ -1,0 +1,111 @@
+{
+  "schemaVersion": 1,
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "inputHead": "18001c2d09d5d271bd4fe2ad22189c29d069a457",
+  "inputTree": "7a9f3218d79501fb620329f0e53c1a0b3dd44508",
+  "changedCells": 241,
+  "changedCatalogs": 12,
+  "allCatalogsRetain9494Keys": true,
+  "everyOldAndFinalTargetHashReattestedAgainstBaseAndWorktree": "PASS",
+  "renderedSpanishStepTarget": "Conectar",
+  "workflowOrSourceChanges": false,
+  "files": [
+    {
+      "path": "src/i18n/locale/ar.json",
+      "locale": "ar",
+      "cellsChanged": 27,
+      "keysAfter": 9494,
+      "beforeFileSha256": "a7fa374a00081799fdcc724af5df49d79814f79867815dd5c55bfa7eea79e78b",
+      "afterFileSha256": "f3e941d56ef7514be993a8e6e9f57bff0dc64e1aef6f69f0be0c955fe7a69454"
+    },
+    {
+      "path": "src/i18n/locale/de.json",
+      "locale": "de",
+      "cellsChanged": 7,
+      "keysAfter": 9494,
+      "beforeFileSha256": "2e3eb0d46ced7563ed5975f9df47eec18ac6bd2cc83db2396a5c9b4ac89f5e81",
+      "afterFileSha256": "cf51a0e67a5d5afd007d14d258a82aeec997eaadd3c8c7c32e5895f840f2dfae"
+    },
+    {
+      "path": "src/i18n/locale/es.json",
+      "locale": "es",
+      "cellsChanged": 7,
+      "keysAfter": 9494,
+      "beforeFileSha256": "ee8a69a0b81c6b331313c20a1a6ef55167a5becb80812e44c65c5a63a2861318",
+      "afterFileSha256": "6fa11a50d0ecf8bd670752d5127ffbc964771070d365037a442739034823a66b"
+    },
+    {
+      "path": "src/i18n/locale/fr.json",
+      "locale": "fr",
+      "cellsChanged": 17,
+      "keysAfter": 9494,
+      "beforeFileSha256": "bf07ff293bafec4947109cb24d9d547edd468f65b771b155f2f63c90c4624bc8",
+      "afterFileSha256": "e89c276c9ab229be9b86198ba15103bc51ef1aac11dc8a2ac02a249f75c4582b"
+    },
+    {
+      "path": "src/i18n/locale/hi.json",
+      "locale": "hi",
+      "cellsChanged": 24,
+      "keysAfter": 9494,
+      "beforeFileSha256": "12654eb65d95d6c8415af85ea53072a8da12fa233b440411efa90d9001a9cd70",
+      "afterFileSha256": "0344126b0a22c9f91d7721aefc03f6a08922f3a1d5253bbcdac89b8eeb226001"
+    },
+    {
+      "path": "src/i18n/locale/id.json",
+      "locale": "id",
+      "cellsChanged": 8,
+      "keysAfter": 9494,
+      "beforeFileSha256": "1c33c299a0e397c20327ea2bc1236a1688a58ef716e4cc7588847e90c8ac92b8",
+      "afterFileSha256": "e0ffd0263f45ef0c106cb082903eb6ec4de81851493fcd89c67ce8b1f747f0d9"
+    },
+    {
+      "path": "src/i18n/locale/ja.json",
+      "locale": "ja",
+      "cellsChanged": 18,
+      "keysAfter": 9494,
+      "beforeFileSha256": "2c71dfe570dccd9bf4f0e0818ef7a25baa7e0bc31148db9088d22141c8b47bfb",
+      "afterFileSha256": "6890e7261c4133ca75efdf9db3ce5d80275430269dc2e43fdb2d7b1a515a7d15"
+    },
+    {
+      "path": "src/i18n/locale/ko.json",
+      "locale": "ko",
+      "cellsChanged": 28,
+      "keysAfter": 9494,
+      "beforeFileSha256": "0babb93c02df47c84e745c86854eff6e4b1ffdb4a5d77c6b6096a80b87e12afd",
+      "afterFileSha256": "60033f7de448a2b5e6f07ddf7ab9c670cb9ca1aa79511b936abe32ffee28e4fe"
+    },
+    {
+      "path": "src/i18n/locale/pt_BR.json",
+      "locale": "pt-BR",
+      "cellsChanged": 16,
+      "keysAfter": 9494,
+      "beforeFileSha256": "08e8c67a4de8f98d5c4cd123626f3a021a97a46c62a3ee75aba4ac847d3fb7c4",
+      "afterFileSha256": "8ad00dbf71dc59659681e32778f6bd8c978c38d010f3fdba2ef244b3519de8ad"
+    },
+    {
+      "path": "src/i18n/locale/vi.json",
+      "locale": "vi",
+      "cellsChanged": 28,
+      "keysAfter": 9494,
+      "beforeFileSha256": "0746897a92ae762babc38a482c2aa07e104974123ba72c9229842cf4e8d81e3a",
+      "afterFileSha256": "ec56b7dd2196dc9a65885bf93fc9d45e918e499123e77345fb2509c151b04686"
+    },
+    {
+      "path": "src/i18n/locale/zh_Hans.json",
+      "locale": "zh-CN",
+      "cellsChanged": 28,
+      "keysAfter": 9494,
+      "beforeFileSha256": "ff4b35c759072307b02140e024d477c335511b8591aa94d53a7eae167eb3ecaa",
+      "afterFileSha256": "4aab74f529da76b417872e8a8d5f656160187b3109792405c86ec39a7998a3b6"
+    },
+    {
+      "path": "src/i18n/locale/zh_Hant.json",
+      "locale": "zh-TW",
+      "cellsChanged": 33,
+      "keysAfter": 9494,
+      "beforeFileSha256": "9805474a3c5632301693c8842cf6bfa2c15d1f8f67d02f7e0e81f30faa2d5fa5",
+      "afterFileSha256": "4986feaa9b6fab38219630627e1ccc51392430e858eab5526f6c224dfdc907ed"
+    }
+  ]
+}

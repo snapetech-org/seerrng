@@ -1,0 +1,497 @@
+{
+  "candidateDifferences": [
+    {
+      "currentTarget": "الطلب",
+      "independentTarget": "طلب قائمة إصدارات الفنان",
+      "locale": "ar",
+      "primaryDisposition": "propose-correction",
+      "primaryRationale": "This button requests an artist’s discography. Candidates restore an action in Spanish/Hindi and correct the Vietnamese “override” and Chinese “mapping” mistranslations.",
+      "primaryTarget": "اطلب قائمة إصدارات الفنان",
+      "source": "Request Discography",
+      "sourceId": "components.MusicDetails.requestdiscography",
+      "sourcePosition": 2270
+    },
+    {
+      "currentTarget": "{source}: {score}/{scale} से {votes} मत",
+      "independentTarget": "{source}: {score}/{scale} ({votes} वोटों से)।",
+      "locale": "hi",
+      "primaryDisposition": "propose-correction",
+      "primaryRationale": "This sentence reports a source score and scale from a vote count. Candidates correct the French singular, Japanese/Korean order, Vietnamese vote sense, and Chinese phrasing while preserving placeholders.",
+      "primaryTarget": "{source}: {score}/{scale} ({votes} वोटों के आधार पर)।",
+      "source": "{source}: {score}/{scale} from {votes} votes.",
+      "sourceId": "components.MusicRatings.score",
+      "sourcePosition": 2279
+    }
+  ],
+  "head": "8c27beb8086ea6f840bdcde4b915d83db27f81a3",
+  "independentAudit": {
+    "acceptCount": 284,
+    "cells": 400,
+    "checksumManifestSha256": "949a0fa452957221d9f236a1d01caf41f726ad70a7b3fd9312d35a75c891c009",
+    "checksumManifestValidated": true,
+    "holdCount": 0,
+    "locales": [
+      "ar",
+      "hi",
+      "id",
+      "vi"
+    ],
+    "nativeSpeakerReviewOutstanding": true,
+    "path": "/mnt/disks/scratch/task-scratch/seerrng-pr418-window-2200-2299-language-audit-agent-20261102",
+    "proposalCount": 116,
+    "scopePositions": [
+      2200,
+      2299
+    ]
+  },
+  "primaryAddedProposals": [
+    {
+      "currentTarget": "रनटाइम",
+      "independentDisposition": "accept-current",
+      "locale": "hi",
+      "primaryDisposition": "propose-refinement",
+      "primaryRationale": "This field is the movie running time. Hindi/Indonesian should express duration, Japanese should use film runtime, and Chinese should use film length rather than software runtime.",
+      "primaryTarget": "अवधि",
+      "priorDisposition": {
+        "exactLiveMatch": true,
+        "locale": "hi",
+        "path": "/mnt/disks/scratch/task-scratch/seerrng-pr418-window-2200-2299-language-audit-agent-20261102/cell-verdicts.jsonl",
+        "priorDisposition": "accept-current",
+        "priorFileSha256": "f7fe7a0b10d4ff2bbdc87a70116c147616f719f82d883022814a533b21f92370",
+        "priorFinalTarget": "रनटाइम",
+        "priorFinalTargetHash": "2d6e4eca6aa9565d1d61597a5744af7c963c8e5b5e102d29f9895037eb35d387",
+        "priorRowSha256": "9d25883538d1e5db9dde1995b2c8090800dd0724f6adeb928aabe387053ae43e",
+        "priorSource": "Runtime",
+        "sourceId": "components.MovieSummaryCard.runtime"
+      },
+      "source": "Runtime",
+      "sourceId": "components.MovieSummaryCard.runtime",
+      "sourcePosition": 2212
+    },
+    {
+      "currentTarget": "स्क्रीनप्ले",
+      "independentDisposition": "accept-current",
+      "locale": "hi",
+      "primaryDisposition": "propose-refinement",
+      "primaryRationale": "This is the film screenplay credit. Japanese/Korean loanword or screen senses and the Vietnamese “screen” translation do not express a screenplay; Hindi can use the standard script term.",
+      "primaryTarget": "पटकथा",
+      "priorDisposition": {
+        "exactLiveMatch": true,
+        "locale": "hi",
+        "path": "/mnt/disks/scratch/task-scratch/seerrng-pr418-window-2200-2299-language-audit-agent-20261102/cell-verdicts.jsonl",
+        "priorDisposition": "accept-current",
+        "priorFileSha256": "f7fe7a0b10d4ff2bbdc87a70116c147616f719f82d883022814a533b21f92370",
+        "priorFinalTarget": "स्क्रीनप्ले",
+        "priorFinalTargetHash": "07de1ca5abf028ced8c3c4b9c2c064045bcc476c8388c02a2c23840b4f5c4e3f",
+        "priorRowSha256": "5d0454925da8a7b203e3d59b65bfad0e353a6dca616a2b32dbd0dd7d8771118c",
+        "priorSource": "Screenplay",
+        "sourceId": "components.MovieSummaryCard.screenplay"
+      },
+      "source": "Screenplay",
+      "sourceId": "components.MovieSummaryCard.screenplay",
+      "sourcePosition": 2213
+    },
+    {
+      "currentTarget": "نوع البوم",
+      "independentDisposition": "accept-current",
+      "locale": "ar",
+      "primaryDisposition": "propose-refinement",
+      "primaryRationale": "This identifies an album type. Vietnamese currently says volume/episode, and Chinese currently says photo-album type; Arabic spelling is corrected.",
+      "primaryTarget": "نوع الألبوم",
+      "priorDisposition": {
+        "exactLiveMatch": true,
+        "locale": "ar",
+        "path": "/mnt/disks/scratch/task-scratch/seerrng-pr418-window-2200-2299-language-audit-agent-20261102/cell-verdicts.jsonl",
+        "priorDisposition": "accept-current",
+        "priorFileSha256": "f7fe7a0b10d4ff2bbdc87a70116c147616f719f82d883022814a533b21f92370",
+        "priorFinalTarget": "نوع البوم",
+        "priorFinalTargetHash": "16c2fbcc4a864b614a7094243850b8a985d8e78b2170c9396e730ebb7f6aaed1",
+        "priorRowSha256": "02523c6f395b7cb49213084ef3fd3f8d880e6dd2a62eb9ad948185c0304a2b52",
+        "priorSource": "Album Type",
+        "sourceId": "components.MusicDetails.Layout.albumType"
+      },
+      "source": "Album Type",
+      "sourceId": "components.MusicDetails.Layout.albumType",
+      "sourcePosition": 2234
+    },
+    {
+      "currentTarget": "Tập",
+      "independentDisposition": "accept-current",
+      "locale": "vi",
+      "primaryDisposition": "propose-correction",
+      "primaryRationale": "This identifies an album type. Vietnamese currently says volume/episode, and Chinese currently says photo-album type; Arabic spelling is corrected.",
+      "primaryTarget": "Loại album",
+      "priorDisposition": {
+        "exactLiveMatch": true,
+        "locale": "vi",
+        "path": "/mnt/disks/scratch/task-scratch/seerrng-pr418-window-2200-2299-language-audit-agent-20261102/cell-verdicts.jsonl",
+        "priorDisposition": "accept-current",
+        "priorFileSha256": "f7fe7a0b10d4ff2bbdc87a70116c147616f719f82d883022814a533b21f92370",
+        "priorFinalTarget": "Tập",
+        "priorFinalTargetHash": "c1fb55f3f905400b406bc89989cd5c734a95a9cfe33aae308c9a8e061ae0ca0e",
+        "priorRowSha256": "e852d2ced516726b8df88666c5562a30a9173d286c0b24d147203fe20db5f961",
+        "priorSource": "Album Type",
+        "sourceId": "components.MusicDetails.Layout.albumType"
+      },
+      "source": "Album Type",
+      "sourceId": "components.MusicDetails.Layout.albumType",
+      "sourcePosition": 2234
+    },
+    {
+      "currentTarget": "النوع الفني",
+      "independentDisposition": "accept-current",
+      "locale": "ar",
+      "primaryDisposition": "propose-correction",
+      "primaryRationale": "This field labels the kind/type of artist. The Arabic current wording means artistic type rather than artist type.",
+      "primaryTarget": "نوع الفنان",
+      "priorDisposition": {
+        "exactLiveMatch": true,
+        "locale": "ar",
+        "path": "/mnt/disks/scratch/task-scratch/seerrng-pr418-window-2200-2299-language-audit-agent-20261102/cell-verdicts.jsonl",
+        "priorDisposition": "accept-current",
+        "priorFileSha256": "f7fe7a0b10d4ff2bbdc87a70116c147616f719f82d883022814a533b21f92370",
+        "priorFinalTarget": "النوع الفني",
+        "priorFinalTargetHash": "406d66ecb9a5516ac912de3789b7c6be290825ebe5ada37b9f53dc84908151c0",
+        "priorRowSha256": "01add6c14b000508861dcd9717db53a1edc1480910ad6c0c69a455bba71ebca4",
+        "priorSource": "Artist Type",
+        "sourceId": "components.MusicDetails.Layout.artistType"
+      },
+      "source": "Artist Type",
+      "sourceId": "components.MusicDetails.Layout.artistType",
+      "sourcePosition": 2236
+    },
+    {
+      "currentTarget": "MusicBrainz التقييم: {score} من {votes} الأصوات",
+      "independentDisposition": "accept-current",
+      "locale": "ar",
+      "primaryDisposition": "propose-refinement",
+      "primaryRationale": "This value reports a MusicBrainz score from a vote count. Candidates correct reversed or malformed score/vote phrasing while preserving both placeholders and the MusicBrainz name.",
+      "primaryTarget": "تقييم MusicBrainz: {score} من {votes} صوتًا",
+      "priorDisposition": {
+        "exactLiveMatch": true,
+        "locale": "ar",
+        "path": "/mnt/disks/scratch/task-scratch/seerrng-pr418-window-2200-2299-language-audit-agent-20261102/cell-verdicts.jsonl",
+        "priorDisposition": "accept-current",
+        "priorFileSha256": "f7fe7a0b10d4ff2bbdc87a70116c147616f719f82d883022814a533b21f92370",
+        "priorFinalTarget": "MusicBrainz التقييم: {score} من {votes} الأصوات",
+        "priorFinalTargetHash": "9301420aca537181285cc8bd0150981234fe2c949cf156e70de2a8559b60c03b",
+        "priorRowSha256": "5bc2bfe9aedfbdd33d8980297f4a2d5e0eb7f1576ca3af90f804509461549c0a",
+        "priorSource": "MusicBrainz rating: {score} from {votes} votes",
+        "sourceId": "components.MusicDetails.Layout.musicBrainzRating"
+      },
+      "source": "MusicBrainz rating: {score} from {votes} votes",
+      "sourceId": "components.MusicDetails.Layout.musicBrainzRating",
+      "sourcePosition": 2244
+    },
+    {
+      "currentTarget": "रनटाइम",
+      "independentDisposition": "accept-current",
+      "locale": "hi",
+      "primaryDisposition": "propose-refinement",
+      "primaryRationale": "This field is the music runtime. Hindi/Indonesian should mean duration, Japanese should use music runtime, and Chinese should use album/track duration rather than software runtime.",
+      "primaryTarget": "अवधि",
+      "priorDisposition": {
+        "exactLiveMatch": true,
+        "locale": "hi",
+        "path": "/mnt/disks/scratch/task-scratch/seerrng-pr418-window-2200-2299-language-audit-agent-20261102/cell-verdicts.jsonl",
+        "priorDisposition": "accept-current",
+        "priorFileSha256": "f7fe7a0b10d4ff2bbdc87a70116c147616f719f82d883022814a533b21f92370",
+        "priorFinalTarget": "रनटाइम",
+        "priorFinalTargetHash": "2d6e4eca6aa9565d1d61597a5744af7c963c8e5b5e102d29f9895037eb35d387",
+        "priorRowSha256": "639da82531bb00778b1e4ea3c2b7754ae681527bd546ca31a1ebe369905accab",
+        "priorSource": "Runtime",
+        "sourceId": "components.MusicDetails.Layout.runtime"
+      },
+      "source": "Runtime",
+      "sourceId": "components.MusicDetails.Layout.runtime",
+      "sourcePosition": 2251
+    },
+    {
+      "currentTarget": "الموضوع",
+      "independentDisposition": "accept-current",
+      "locale": "ar",
+      "primaryDisposition": "propose-correction",
+      "primaryRationale": "This metadata label means subject/topic tags. Arabic omits tags, German reads like email subject tags, Korean means title tags, Vietnamese means object tags, and Traditional Chinese uses a less precise term.",
+      "primaryTarget": "وسوم الموضوع",
+      "priorDisposition": {
+        "exactLiveMatch": true,
+        "locale": "ar",
+        "path": "/mnt/disks/scratch/task-scratch/seerrng-pr418-window-2200-2299-language-audit-agent-20261102/cell-verdicts.jsonl",
+        "priorDisposition": "accept-current",
+        "priorFileSha256": "f7fe7a0b10d4ff2bbdc87a70116c147616f719f82d883022814a533b21f92370",
+        "priorFinalTarget": "الموضوع",
+        "priorFinalTargetHash": "909e8bcdc4aa3ffd12ce0ab90763fca2a0e71e49f41f032b40bacfd86e1a1fcb",
+        "priorRowSha256": "72bd7b3ec005fb999c21874a94f340cfacbd0a9229972e5aa4a89694e3c18087",
+        "priorSource": "Subject Tags",
+        "sourceId": "components.MusicDetails.Layout.subjectTags"
+      },
+      "source": "Subject Tags",
+      "sourceId": "components.MusicDetails.Layout.subjectTags",
+      "sourcePosition": 2254
+    },
+    {
+      "currentTarget": "Tambah Ke Watchlist",
+      "independentDisposition": "accept-current",
+      "locale": "id",
+      "primaryDisposition": "propose-refinement",
+      "primaryRationale": "This action adds a music title to the user’s watchlist. Candidates replace a Hindi checklist mistranslation and clarify the feature name where it is left in English or rendered as monitoring.",
+      "primaryTarget": "Tambahkan ke daftar tontonan",
+      "priorDisposition": {
+        "exactLiveMatch": true,
+        "locale": "id",
+        "path": "/mnt/disks/scratch/task-scratch/seerrng-pr418-window-2200-2299-language-audit-agent-20261102/cell-verdicts.jsonl",
+        "priorDisposition": "accept-current",
+        "priorFileSha256": "f7fe7a0b10d4ff2bbdc87a70116c147616f719f82d883022814a533b21f92370",
+        "priorFinalTarget": "Tambah Ke Watchlist",
+        "priorFinalTargetHash": "d69cf37b71a55f1f9017ba8a71bc50d871a0579321b2e957729c14671355fe0e",
+        "priorRowSha256": "b99060f816295ddcbdef1058f17444d789fef7686ae2c4f7c3f128187e380bd9",
+        "priorSource": "Add To Watchlist",
+        "sourceId": "components.MusicDetails.addtowatchlist"
+      },
+      "source": "Add To Watchlist",
+      "sourceId": "components.MusicDetails.addtowatchlist",
+      "sourcePosition": 2258
+    },
+    {
+      "currentTarget": "ولا توجد حاليا مسارات قابلة للعزف.",
+      "independentDisposition": "accept-current",
+      "locale": "ar",
+      "primaryDisposition": "propose-refinement",
+      "primaryRationale": "This empty state says no audio tracks can currently be played. Candidates avoid the “game playable” or “trace” readings and use playable music-track wording.",
+      "primaryTarget": "لا تتوفر حاليًا أي مقطوعات قابلة للتشغيل.",
+      "priorDisposition": {
+        "exactLiveMatch": true,
+        "locale": "ar",
+        "path": "/mnt/disks/scratch/task-scratch/seerrng-pr418-window-2200-2299-language-audit-agent-20261102/cell-verdicts.jsonl",
+        "priorDisposition": "accept-current",
+        "priorFileSha256": "f7fe7a0b10d4ff2bbdc87a70116c147616f719f82d883022814a533b21f92370",
+        "priorFinalTarget": "ولا توجد حاليا مسارات قابلة للعزف.",
+        "priorFinalTargetHash": "1606b9fd4ed8cfed9252b57ff56b1354c48a5ad7518355891ebf1100956accd8",
+        "priorRowSha256": "81b8408a69a03a19ef1df7369921a6b846df4e50770aa4b825474eecdd5d8465",
+        "priorSource": "No playable tracks are currently available.",
+        "sourceId": "components.MusicDetails.selectToPlay"
+      },
+      "source": "No playable tracks are currently available.",
+      "sourceId": "components.MusicDetails.selectToPlay",
+      "sourcePosition": 2271
+    },
+    {
+      "currentTarget": "{source}: {score}/{scale} من {votes} أصوات",
+      "independentDisposition": "accept-current",
+      "locale": "ar",
+      "primaryDisposition": "propose-refinement",
+      "primaryRationale": "This sentence reports a source score and scale from a vote count. Candidates correct the French singular, Japanese/Korean order, Vietnamese vote sense, and Chinese phrasing while preserving placeholders.",
+      "primaryTarget": "{source}: {score}/{scale} من {votes} صوتًا.",
+      "priorDisposition": {
+        "exactLiveMatch": true,
+        "locale": "ar",
+        "path": "/mnt/disks/scratch/task-scratch/seerrng-pr418-window-2200-2299-language-audit-agent-20261102/cell-verdicts.jsonl",
+        "priorDisposition": "accept-current",
+        "priorFileSha256": "f7fe7a0b10d4ff2bbdc87a70116c147616f719f82d883022814a533b21f92370",
+        "priorFinalTarget": "{source}: {score}/{scale} من {votes} أصوات",
+        "priorFinalTargetHash": "35f70a29c51a20079d3c5cbf921ed2263597a79c7d9833a4b5de8dcd8ab78417",
+        "priorRowSha256": "d752d42ab6d662937db891134ba8b6605e9b0db9f1ba1ce3424415e503c23859",
+        "priorSource": "{source}: {score}/{scale} from {votes} votes.",
+        "sourceId": "components.MusicRatings.score"
+      },
+      "source": "{source}: {score}/{scale} from {votes} votes.",
+      "sourceId": "components.MusicRatings.score",
+      "sourcePosition": 2279
+    },
+    {
+      "currentTarget": "النوع",
+      "independentDisposition": "accept-current",
+      "locale": "ar",
+      "primaryDisposition": "propose-correction",
+      "primaryRationale": "This control filters music by release type. Arabic and German current values suggest generic type/authorization, and Chinese uses the wrong “release/let go” sense and simplified glyphs.",
+      "primaryTarget": "نوع الإصدار",
+      "priorDisposition": {
+        "exactLiveMatch": true,
+        "locale": "ar",
+        "path": "/mnt/disks/scratch/task-scratch/seerrng-pr418-window-2200-2299-language-audit-agent-20261102/cell-verdicts.jsonl",
+        "priorDisposition": "accept-current",
+        "priorFileSha256": "f7fe7a0b10d4ff2bbdc87a70116c147616f719f82d883022814a533b21f92370",
+        "priorFinalTarget": "النوع",
+        "priorFinalTargetHash": "caa3f2bb4a36fda87b43750cdf669661e53353b7a1bbaefc39f0412d2ef1443b",
+        "priorRowSha256": "2131ee9d6eac85ed00a4432a79be6b001d466141e121c2a09cb3bf3b0eeb4037",
+        "priorSource": "Release Type",
+        "sourceId": "components.MusicReleaseTypeSelect.label"
+      },
+      "source": "Release Type",
+      "sourceId": "components.MusicReleaseTypeSelect.label",
+      "sourcePosition": 2281
+    },
+    {
+      "currentTarget": "Gửi thông báo khi các yêu cầu phương tiện được chấp nhận bằng tay.",
+      "independentDisposition": "accept-current",
+      "locale": "vi",
+      "primaryDisposition": "propose-refinement",
+      "primaryRationale": "This message concerns media requests approved manually. Japanese current particle is ungrammatical and Vietnamese “by hand” is awkward for manual approval.",
+      "primaryTarget": "Gửi thông báo khi các yêu cầu phương tiện được phê duyệt thủ công.",
+      "priorDisposition": {
+        "exactLiveMatch": true,
+        "locale": "vi",
+        "path": "/mnt/disks/scratch/task-scratch/seerrng-pr418-window-2200-2299-language-audit-agent-20261102/cell-verdicts.jsonl",
+        "priorDisposition": "accept-current",
+        "priorFileSha256": "f7fe7a0b10d4ff2bbdc87a70116c147616f719f82d883022814a533b21f92370",
+        "priorFinalTarget": "Gửi thông báo khi các yêu cầu phương tiện được chấp nhận bằng tay.",
+        "priorFinalTargetHash": "b9aad19ec19fdb63d6549a51b13a5d65e4c32daac18f2aaafaf08596f5402b91",
+        "priorRowSha256": "d508c175413f6cf63708ad4cc9d7d54a2aa65cfb649aab2d9bbf1c0a656adedf",
+        "priorSource": "Send notifications when media requests are manually approved.",
+        "sourceId": "components.NotificationTypeSelector.mediaapprovedDescription"
+      },
+      "source": "Send notifications when media requests are manually approved.",
+      "sourceId": "components.NotificationTypeSelector.mediaapprovedDescription",
+      "sourcePosition": 2296
+    },
+    {
+      "currentTarget": "Dapatkan diberitahu ketika permintaan media baru secara otomatis diajukan untuk butir di Watchlist Anda.",
+      "independentDisposition": "accept-current",
+      "locale": "id",
+      "primaryDisposition": "propose-refinement",
+      "primaryRationale": "This says users get notified when requests are automatically submitted for items on their media watchlist. Arabic mentions Plex wishes, Vietnamese mistranslates media as communications, and several candidates standardize the watchlist term.",
+      "primaryTarget": "Dapatkan pemberitahuan saat permintaan media baru otomatis diajukan untuk item di daftar tontonan Anda.",
+      "priorDisposition": {
+        "exactLiveMatch": true,
+        "locale": "id",
+        "path": "/mnt/disks/scratch/task-scratch/seerrng-pr418-window-2200-2299-language-audit-agent-20261102/cell-verdicts.jsonl",
+        "priorDisposition": "accept-current",
+        "priorFileSha256": "f7fe7a0b10d4ff2bbdc87a70116c147616f719f82d883022814a533b21f92370",
+        "priorFinalTarget": "Dapatkan diberitahu ketika permintaan media baru secara otomatis diajukan untuk butir di Watchlist Anda.",
+        "priorFinalTargetHash": "6ad543788608d2fdaa9fa851b40765092effd2f853d69bb4f38bc03674f3a864",
+        "priorRowSha256": "4441fb4b716abee0a9fb450a784832187db8b51f1bce706493c716f20a213a09",
+        "priorSource": "Get notified when new media requests are automatically submitted for items on Your Watchlist.",
+        "sourceId": "components.NotificationTypeSelector.mediaautorequestedDescription"
+      },
+      "source": "Get notified when new media requests are automatically submitted for items on Your Watchlist.",
+      "sourceId": "components.NotificationTypeSelector.mediaautorequestedDescription",
+      "sourcePosition": 2298
+    },
+    {
+      "currentTarget": "الطلب متاح",
+      "independentDisposition": "accept-current",
+      "locale": "ar",
+      "primaryDisposition": "propose-correction",
+      "primaryRationale": "The notification is for requested media becoming available, as confirmed by the adjacent mediaavailableDescription and the media-available notification ID. Candidates make the media item the thing available, avoiding the ambiguity that the request itself is available.",
+      "primaryTarget": "المحتوى المطلوب متاح",
+      "priorDisposition": {
+        "exactLiveMatch": true,
+        "locale": "ar",
+        "path": "/mnt/disks/scratch/task-scratch/seerrng-pr418-window-2200-2299-language-audit-agent-20261102/cell-verdicts.jsonl",
+        "priorDisposition": "accept-current",
+        "priorFileSha256": "f7fe7a0b10d4ff2bbdc87a70116c147616f719f82d883022814a533b21f92370",
+        "priorFinalTarget": "الطلب متاح",
+        "priorFinalTargetHash": "86e3fa88784a90f50aae49b0fa241d7da8ab5c00d78440eba4f238d760c1b897",
+        "priorRowSha256": "3b4a5dbd0f80f7b70e9529adfb433417d9e79b560d161e5fbd5527d0e9a8035d",
+        "priorSource": "Request Available",
+        "sourceId": "components.NotificationTypeSelector.mediaavailable"
+      },
+      "source": "Request Available",
+      "sourceId": "components.NotificationTypeSelector.mediaavailable",
+      "sourcePosition": 2299
+    },
+    {
+      "currentTarget": "उपलब्ध अनुरोध",
+      "independentDisposition": "accept-current",
+      "locale": "hi",
+      "primaryDisposition": "propose-correction",
+      "primaryRationale": "The notification is for requested media becoming available, as confirmed by the adjacent mediaavailableDescription and the media-available notification ID. Candidates make the media item the thing available, avoiding the ambiguity that the request itself is available.",
+      "primaryTarget": "अनुरोधित मीडिया उपलब्ध",
+      "priorDisposition": {
+        "exactLiveMatch": true,
+        "locale": "hi",
+        "path": "/mnt/disks/scratch/task-scratch/seerrng-pr418-window-2200-2299-language-audit-agent-20261102/cell-verdicts.jsonl",
+        "priorDisposition": "accept-current",
+        "priorFileSha256": "f7fe7a0b10d4ff2bbdc87a70116c147616f719f82d883022814a533b21f92370",
+        "priorFinalTarget": "उपलब्ध अनुरोध",
+        "priorFinalTargetHash": "5eed2924bf06d193d19829f955880dcd13a59401ad854c76d009285bd98757f5",
+        "priorRowSha256": "2127ffef20f3bbc2dc81be3a8b4b7903a8b0eb7643e3be2a51ba830bdf26bab5",
+        "priorSource": "Request Available",
+        "sourceId": "components.NotificationTypeSelector.mediaavailable"
+      },
+      "source": "Request Available",
+      "sourceId": "components.NotificationTypeSelector.mediaavailable",
+      "sourcePosition": 2299
+    },
+    {
+      "currentTarget": "Permintaan Tersedia",
+      "independentDisposition": "accept-current",
+      "locale": "id",
+      "primaryDisposition": "propose-correction",
+      "primaryRationale": "The notification is for requested media becoming available, as confirmed by the adjacent mediaavailableDescription and the media-available notification ID. Candidates make the media item the thing available, avoiding the ambiguity that the request itself is available.",
+      "primaryTarget": "Media yang diminta tersedia",
+      "priorDisposition": {
+        "exactLiveMatch": true,
+        "locale": "id",
+        "path": "/mnt/disks/scratch/task-scratch/seerrng-pr418-window-2200-2299-language-audit-agent-20261102/cell-verdicts.jsonl",
+        "priorDisposition": "accept-current",
+        "priorFileSha256": "f7fe7a0b10d4ff2bbdc87a70116c147616f719f82d883022814a533b21f92370",
+        "priorFinalTarget": "Permintaan Tersedia",
+        "priorFinalTargetHash": "0731831540036abd444840618bf43682c414064fb213e875b3a23c52aa49c1b7",
+        "priorRowSha256": "c1c796e6cd4d47a031211892166ad6d235d42130368d09cd57cb401bc5e09a0c",
+        "priorSource": "Request Available",
+        "sourceId": "components.NotificationTypeSelector.mediaavailable"
+      },
+      "source": "Request Available",
+      "sourceId": "components.NotificationTypeSelector.mediaavailable",
+      "sourcePosition": 2299
+    },
+    {
+      "currentTarget": "Yêu cầu sẵn sàng",
+      "independentDisposition": "accept-current",
+      "locale": "vi",
+      "primaryDisposition": "propose-correction",
+      "primaryRationale": "The notification is for requested media becoming available, as confirmed by the adjacent mediaavailableDescription and the media-available notification ID. Candidates make the media item the thing available, avoiding the ambiguity that the request itself is available.",
+      "primaryTarget": "Nội dung đã yêu cầu đã có sẵn",
+      "priorDisposition": {
+        "exactLiveMatch": true,
+        "locale": "vi",
+        "path": "/mnt/disks/scratch/task-scratch/seerrng-pr418-window-2200-2299-language-audit-agent-20261102/cell-verdicts.jsonl",
+        "priorDisposition": "accept-current",
+        "priorFileSha256": "f7fe7a0b10d4ff2bbdc87a70116c147616f719f82d883022814a533b21f92370",
+        "priorFinalTarget": "Yêu cầu sẵn sàng",
+        "priorFinalTargetHash": "3db95cebbdf89a5054037d4f91063123aa435790bcdf5481ab03ac3f50e23a47",
+        "priorRowSha256": "8a6152ba6797a4a05b13273c923eace2b9832ad42f39c69533c70cfbda71c8f6",
+        "priorSource": "Request Available",
+        "sourceId": "components.NotificationTypeSelector.mediaavailable"
+      },
+      "source": "Request Available",
+      "sourceId": "components.NotificationTypeSelector.mediaavailable",
+      "sourcePosition": 2299
+    }
+  ],
+  "pullRequest": 418,
+  "reconciliation": {
+    "comparedCells": 400,
+    "counts": {
+      "candidate_target_differs": 2,
+      "no_op_candidate_ignored": 1,
+      "primary_added_proposal": 18,
+      "same_candidate": 113,
+      "same_current_accept": 266
+    },
+    "exactCurrentPriorRowsFoundDuringFreeze": 285,
+    "note": "The independent audit included one correction record whose candidate equals the live current target; it was normalized to accept-current. Eighteen of its accept-current cells received additional primary correction/refinement recommendations; each is enumerated below with exact source/current/final targets and prior row provenance. Two differing non-current proposals were adjudicated below.",
+    "primaryLocaleDispositionTotals": {
+      "accept-current": 267,
+      "hold": 0,
+      "propose-correction": 123,
+      "propose-refinement": 10
+    },
+    "priorAcceptedRowsPreserved": 267,
+    "priorCurrentRowsOverridden": 18
+  },
+  "repository": "snapetech-org/SeerrNG",
+  "sameCurrentNoOpRecords": [
+    {
+      "candidateTarget": "تمت إضافة <strong>{title}</strong> إلى قائمة المتابعة بنجاح!",
+      "currentTarget": "تمت إضافة <strong>{title}</strong> إلى قائمة المتابعة بنجاح!",
+      "locale": "ar",
+      "primaryDisposition": "accept-current",
+      "sourceId": "components.MovieDetails.watchlistSuccess",
+      "sourcePosition": 2201
+    }
+  ],
+  "schemaVersion": 1,
+  "tree": "2951195dd04af87add189090756e0d0f43e8e031"
+}

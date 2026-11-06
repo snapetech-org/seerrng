@@ -1,0 +1,266 @@
+{
+  "argumentValueLine": 173,
+  "branchLine": 167,
+  "callerGuardLine": 238,
+  "callerGuardPin": {
+    "contextLines": [
+      {
+        "line": 236,
+        "text": "      dialogClass=\"app-card-main request-modal-site-surface sm:max-w-5xl\""
+      },
+      {
+        "line": 237,
+        "text": "    >"
+      },
+      {
+        "line": 238,
+        "text": "      {(quota?.magazine?.limit ?? 0) > 0 && ("
+      },
+      {
+        "line": 239,
+        "text": "        <QuotaDisplay mediaType=\"magazine\" quota={quota?.magazine} />"
+      },
+      {
+        "line": 240,
+        "text": "      )}"
+      }
+    ],
+    "contextStartLine": 236,
+    "fileSha256": "3302816c4320f46b44958fdc9386074876288341fb092a3acde594db41b5d2f3",
+    "gitBlob": "ee4654b84a200888a2e82da45f7ed5752f3cadc5",
+    "line": 238,
+    "lineSha256": "78ce4c57515832d267a0d0c5f0d96b4433c3bbc533b9ebfa89c8e7a8a276a4f0",
+    "lineText": "      {(quota?.magazine?.limit ?? 0) > 0 && (",
+    "path": "src/components/RequestModal/MagazineRequestModal.tsx"
+  },
+  "callerLine": 239,
+  "callerPin": {
+    "contextLines": [
+      {
+        "line": 236,
+        "text": "      dialogClass=\"app-card-main request-modal-site-surface sm:max-w-5xl\""
+      },
+      {
+        "line": 237,
+        "text": "    >"
+      },
+      {
+        "line": 238,
+        "text": "      {(quota?.magazine?.limit ?? 0) > 0 && ("
+      },
+      {
+        "line": 239,
+        "text": "        <QuotaDisplay mediaType=\"magazine\" quota={quota?.magazine} />"
+      },
+      {
+        "line": 240,
+        "text": "      )}"
+      },
+      {
+        "line": 241,
+        "text": "      {serviceUnavailable && ("
+      },
+      {
+        "line": 242,
+        "text": "        <div className=\"mb-3\">"
+      }
+    ],
+    "contextStartLine": 236,
+    "fileSha256": "3302816c4320f46b44958fdc9386074876288341fb092a3acde594db41b5d2f3",
+    "gitBlob": "ee4654b84a200888a2e82da45f7ed5752f3cadc5",
+    "line": 239,
+    "lineSha256": "0e4ccc1d876fd4a9cd674ec8076c39e97d19393a2bf4ac605c8596dd10c6b179",
+    "lineText": "        <QuotaDisplay mediaType=\"magazine\" quota={quota?.magazine} />",
+    "path": "src/components/RequestModal/MagazineRequestModal.tsx"
+  },
+  "collapsedMagazineUnitPin": {
+    "contextLines": [
+      {
+        "line": 115,
+        "text": "                              ? messages.comic"
+      },
+      {
+        "line": 116,
+        "text": "                              : mediaType === 'magazine'"
+      },
+      {
+        "line": 117,
+        "text": "                                ? messages.magazine"
+      },
+      {
+        "line": 118,
+        "text": "                                : mediaType === 'adult'"
+      },
+      {
+        "line": 119,
+        "text": "                                  ? messages.adult"
+      }
+    ],
+    "contextStartLine": 115,
+    "fileSha256": "7d565ede2570c1e4d899bb76d7be990824be6be422a9c1ea1be4592cd46d03dc",
+    "gitBlob": "fa059f7cfa5174ee6b215de11667cb2f3ea0a52c",
+    "line": 117,
+    "lineSha256": "40f479e99ee6e0008a81a4a49cdff9ba9ee6495ae8f7d16b31c5a0f9e738edf8",
+    "lineText": "                                ? messages.magazine",
+    "path": "src/components/RequestModal/QuotaDisplay/index.tsx"
+  },
+  "crossReviewConclusion": "Exact magazine branch now connects the caller to the previously held message key. The formatted plural argument is quota.limit and is structurally preserved in all 12 locale cells.",
+  "definitionLine": 17,
+  "diffSha256": "0abcadb7f62c74f60dff20311bdba1a3f93cad864c8e0dc095cc7a2d78b56f9f",
+  "enclosingAllowedRequestsPin": {
+    "contextLines": [
+      {
+        "line": 23,
+        "text": "  allowedRequests:"
+      },
+      {
+        "line": 24,
+        "text": "    'You are allowed to request <strong>{limit}</strong> {type}{days, plural, =0 {} one { every day} other { every <strong>{days}</strong> days}}.',"
+      },
+      {
+        "line": 25,
+        "text": "  allowedRequestsUser:"
+      }
+    ],
+    "contextStartLine": 23,
+    "fileSha256": "7d565ede2570c1e4d899bb76d7be990824be6be422a9c1ea1be4592cd46d03dc",
+    "gitBlob": "fa059f7cfa5174ee6b215de11667cb2f3ea0a52c",
+    "line": 24,
+    "lineSha256": "b268f5997052b6ab345f5c0cfd05413c451339391d6c30d9d1caef9e710d4005",
+    "lineText": "    'You are allowed to request <strong>{limit}</strong> {type}{days, plural, =0 {} one { every day} other { every <strong>{days}</strong> days}}.',",
+    "path": "src/components/RequestModal/QuotaDisplay/index.tsx"
+  },
+  "englishSource": "{limit, plural, one {magazine} other {magazines}}",
+  "englishSourceSha256": "b08a7c535a86ed183888e6080ad623187f9dbe0a7346ae15d60dd2654570d98b",
+  "formatterArgumentPin": {
+    "contextLines": [
+      {
+        "line": 171,
+        "text": "                                ? messages.adultlimit"
+      },
+      {
+        "line": 172,
+        "text": "                                : messages.seasonlimit,"
+      },
+      {
+        "line": 173,
+        "text": "                  { limit: quota?.limit }"
+      },
+      {
+        "line": 174,
+        "text": "                ),"
+      },
+      {
+        "line": 175,
+        "text": "                strong: (msg: React.ReactNode) => <strong>{msg}</strong>,"
+      }
+    ],
+    "contextStartLine": 171,
+    "fileSha256": "7d565ede2570c1e4d899bb76d7be990824be6be422a9c1ea1be4592cd46d03dc",
+    "gitBlob": "fa059f7cfa5174ee6b215de11667cb2f3ea0a52c",
+    "line": 173,
+    "lineSha256": "d0f517985d43f7cd774da7bd47ec286500332f02707f0421846c0c86b5773cbf",
+    "lineText": "                  { limit: quota?.limit }",
+    "path": "src/components/RequestModal/QuotaDisplay/index.tsx"
+  },
+  "formatterBranchPin": {
+    "contextLines": [
+      {
+        "line": 164,
+        "text": "                        : mediaType === 'comic'"
+      },
+      {
+        "line": 165,
+        "text": "                          ? messages.comiclimit"
+      },
+      {
+        "line": 166,
+        "text": "                          : mediaType === 'magazine'"
+      },
+      {
+        "line": 167,
+        "text": "                            ? messages.magazinelimit"
+      },
+      {
+        "line": 168,
+        "text": "                            : mediaType === 'software'"
+      },
+      {
+        "line": 169,
+        "text": "                              ? messages.softwarelimit"
+      },
+      {
+        "line": 170,
+        "text": "                              : mediaType === 'adult'"
+      }
+    ],
+    "contextStartLine": 164,
+    "fileSha256": "7d565ede2570c1e4d899bb76d7be990824be6be422a9c1ea1be4592cd46d03dc",
+    "gitBlob": "fa059f7cfa5174ee6b215de11667cb2f3ea0a52c",
+    "line": 167,
+    "lineSha256": "10d561ab2b00517940aac9b2135138b3ec10b3470ccb94a063f476781eaf4432",
+    "lineText": "                            ? messages.magazinelimit",
+    "path": "src/components/RequestModal/QuotaDisplay/index.tsx"
+  },
+  "localeFilesChangedBySourceFix": [],
+  "newHeadHasMagazineMessageReference": true,
+  "oldHeadHadNoProductionMessageReference": true,
+  "oldHeadMessageReferenceCount": 0,
+  "sourceFixCommitParent": "d3e97a0442420b66b0bf7f2cbaecc50423615e44",
+  "sourceId": "components.RequestModal.QuotaDisplay.magazinelimit",
+  "sourcePin": {
+    "contextLines": [
+      {
+        "line": 15,
+        "text": "  booklimit: '{limit, plural, one {book} other {books}}',"
+      },
+      {
+        "line": 16,
+        "text": "  comiclimit: '{limit, plural, one {comic} other {comics}}',"
+      },
+      {
+        "line": 17,
+        "text": "  magazinelimit: '{limit, plural, one {magazine} other {magazines}}',"
+      },
+      {
+        "line": 18,
+        "text": "  adultlimit: '{limit, plural, one {adult scene} other {adult scenes}}',"
+      },
+      {
+        "line": 19,
+        "text": "  softwarelimit:"
+      }
+    ],
+    "contextStartLine": 15,
+    "fileSha256": "7d565ede2570c1e4d899bb76d7be990824be6be422a9c1ea1be4592cd46d03dc",
+    "gitBlob": "fa059f7cfa5174ee6b215de11667cb2f3ea0a52c",
+    "line": 17,
+    "lineSha256": "cc686e41e64a9d9f961867c984a7cc8ad58c06565059b248c1b9046067dbf765",
+    "lineText": "  magazinelimit: '{limit, plural, one {magazine} other {magazines}}',",
+    "path": "src/components/RequestModal/QuotaDisplay/index.tsx"
+  },
+  "sourcePosition": 3001,
+  "surroundingDaysExactZeroPin": {
+    "contextLines": [
+      {
+        "line": 23,
+        "text": "  allowedRequests:"
+      },
+      {
+        "line": 24,
+        "text": "    'You are allowed to request <strong>{limit}</strong> {type}{days, plural, =0 {} one { every day} other { every <strong>{days}</strong> days}}.',"
+      },
+      {
+        "line": 25,
+        "text": "  allowedRequestsUser:"
+      }
+    ],
+    "contextStartLine": 23,
+    "fileSha256": "7d565ede2570c1e4d899bb76d7be990824be6be422a9c1ea1be4592cd46d03dc",
+    "gitBlob": "fa059f7cfa5174ee6b215de11667cb2f3ea0a52c",
+    "line": 24,
+    "lineSha256": "b268f5997052b6ab345f5c0cfd05413c451339391d6c30d9d1caef9e710d4005",
+    "lineText": "    'You are allowed to request <strong>{limit}</strong> {type}{days, plural, =0 {} one { every day} other { every <strong>{days}</strong> days}}.',",
+    "path": "src/components/RequestModal/QuotaDisplay/index.tsx"
+  }
+}

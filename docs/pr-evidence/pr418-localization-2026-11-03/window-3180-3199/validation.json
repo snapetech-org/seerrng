@@ -1,0 +1,80 @@
+{
+  "allLocaleKeySetsMatchEnglish": true,
+  "base": "221d8e0d542802da7529cd272c928cc747677e5c",
+  "blindChecksumFileSha256": "a0b55a51a0733f624e1b20250711fdb05fad28149ae6f8c6b247de20666de7cf",
+  "blindLedgerSha256": "dd54a1e3be6afc93a689870265ae542f30cecc8037a4f29f64602dd2e541544b",
+  "branch": "codex/seerrng-localization-overhaul-20261028",
+  "callerContextRecordsReattested": 45,
+  "callerFileHashMismatches": 0,
+  "catalogKeyCounts": {
+    "ar": 9494,
+    "de": 9494,
+    "es": 9494,
+    "fr": 9494,
+    "hi": 9494,
+    "id": 9494,
+    "ja": 9494,
+    "ko": 9494,
+    "pt_BR": 9494,
+    "vi": 9494,
+    "zh_Hans": 9494,
+    "zh_Hant": 9494
+  },
+  "cells": 240,
+  "dispositionDifferences": 45,
+  "draft": true,
+  "exactApplyPlanRows": 95,
+  "head": "c03816972aab761a69b343abcdfe8a10f85aeabb",
+  "independentBlindHoldCount": 1,
+  "independentDispositionCounts": {
+    "accept-current": 155,
+    "correction": 60,
+    "hold": 1,
+    "refinement": 24
+  },
+  "locales": [
+    "ar",
+    "de",
+    "es",
+    "fr",
+    "hi",
+    "id",
+    "ja",
+    "ko",
+    "pt_BR",
+    "vi",
+    "zh_Hans",
+    "zh_Hant"
+  ],
+  "markupMismatches": 0,
+  "nativeSpeakerApproval": false,
+  "pinMismatches": 0,
+  "placeholderMismatches": 0,
+  "primaryChecksumFileSha256": "74fa23d4123038bad04be9fd3f1ff9df120060704d5c7bfd007be367322c5993",
+  "primaryDispositionCounts": {
+    "accept-current": 147,
+    "correction": 55,
+    "refinement": 38
+  },
+  "primaryLedgerSha256": "a495bf61a1cba7a7539b4b2be604db500142b380005861410c886f5eb153749e",
+  "protectedLiteralMismatches": 0,
+  "pullRequest": 418,
+  "repository": "snapetech-org/SeerrNG",
+  "rootDispositionCounts": {
+    "accept-current": 145,
+    "correction": 69,
+    "refinement": 26
+  },
+  "rootHeldCount": 0,
+  "sourceCurrentPinsReattested": 240,
+  "sourceIds": 20,
+  "sourceOrderCount": 9494,
+  "state": "OPEN",
+  "targetTextDisagreements": 63,
+  "testsBuildsScansCIOrBrowserActionsRun": false,
+  "tree": "1ffc02d5d7dbbb14ab4706ce61bfcfda64592a01",
+  "window": [
+    3180,
+    3199
+  ]
+}

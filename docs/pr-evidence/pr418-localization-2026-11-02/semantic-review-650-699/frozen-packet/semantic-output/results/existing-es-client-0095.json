@@ -1,0 +1,183 @@
+{
+  "schemaVersion": 1,
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "head": "5a4342176a8325c371a35d489cb01c58283bc983",
+  "tree": "98cd64952123c9b678e38250e7819cabb4476448",
+  "semanticManifestSha256": "3ea74cc6491aecddf9ffcedc69610f13d20b199059aef69bb3c2407feb0826ea",
+  "cellPlanSha256": "97c3402252a34aaa4f8f9f44a691281d9c35ff7b80d7edb3a26c752436af6558",
+  "retiredCellsSha256": "dc5ec05547e4da3079c0668f82a52da7999d89ef9d4f037c1cd72af9347ebd83",
+  "sourceBundleManifestSha256": "212491482d1b9207fed755af6e80ac80a97184ec8dbe84d0c4ad2bd711acae0d",
+  "sourceRowsSha256": "ad91236a31e32f199ff449f9ed4597ea6af0f5a4eff32772cefa84278cafb68c",
+  "sourceCellsSha256": "8bfcd1aa9b5d5aba4fb6317c194cd544d601543ebf250899a84a719b52e468e1",
+  "planRows": 115260,
+  "actions": {
+    "semantic-review-required": 114783,
+    "reuse-equivalence-decision": 477
+  },
+  "retiredRows": 48,
+  "reusableEquivalenceCells": 477,
+  "targetsApplied": false,
+  "batchId": "existing-es-client-0095",
+  "batchSha256": "2cb1fd94a4af4af6ef7e3ea84058f82582e5fd7611c681a4739972250fedb459",
+  "rowCount": 32,
+  "model": "qwen3.8-27b-heretic:q4km",
+  "attempt": 1,
+  "decisions": [
+    {
+      "id": "components.RequestModal.SearchByNameModal.showmore",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.SeasonEpisodeSelector.availabilityLegend",
+      "verdict": "correct",
+      "target": "Marca de verificación verde brillante: totalmente disponible. Marca de verificación verde oscuro: parcialmente disponible. X roja: no disponible.",
+      "confidence": "high",
+      "reason": "'Cheque' refers to a financial check; the UI element is a checkmark (marca de verificación). 'Rojo X' is unnatural; 'X roja' is the correct adjective placement."
+    },
+    {
+      "id": "components.RequestModal.SeasonEpisodeSelector.clearAllEpisodes",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.SeasonEpisodeSelector.clearAllSeasons",
+      "verdict": "correct",
+      "target": "Limpiar todas las temporadas",
+      "confidence": "high",
+      "reason": "'Estaciones' means weather seasons or train stations; in the context of TV shows, 'temporadas' is the correct term."
+    },
+    {
+      "id": "components.RequestModal.SeasonEpisodeSelector.clearEpisodeNumber",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.SeasonEpisodeSelector.clearSeasonNumber",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.SeasonEpisodeSelector.clearSpecials",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.SeasonEpisodeSelector.episode",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.SeasonEpisodeSelector.episodeNumber",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.SeasonEpisodeSelector.episodes",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.SeasonEpisodeSelector.loadError",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.SeasonEpisodeSelector.season",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.SeasonEpisodeSelector.seasonNumber",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.SeasonEpisodeSelector.selectAllEpisodes",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.SeasonEpisodeSelector.selectAllSeasons",
+      "verdict": "correct",
+      "target": "Seleccione todas las temporadas",
+      "confidence": "high",
+      "reason": "'Estaciones' is incorrect for TV seasons; 'temporadas' is the standard term."
+    },
+    {
+      "id": "components.RequestModal.SeasonEpisodeSelector.selectEpisodeNumber",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.SeasonEpisodeSelector.selectSeason",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.SeasonEpisodeSelector.selectSeasonNumber",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.SeasonEpisodeSelector.selectSpecials",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.SeasonEpisodeSelector.specials",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.SeasonEpisodeSelector.title",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.SeasonEpisodeSelector.untitled",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.Sportarr.backendRequestFailed",
+      "verdict": "correct",
+      "target": "La solicitud fue guardada, pero Sportarr no pudo añadir esta liga. Revise la solicitud para obtener detalles y vuelva a intentarlo.",
+      "confidence": "high",
+      "reason": "'Salvada' is a calque of 'saved' (financial); 'guardada' is the correct term for data. 'Revise la solicitud de detalles' is ungrammatical; 'para obtener detalles' is natural."
+    },
+    {
+      "id": "components.RequestModal.Sportarr.cancelError",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.Sportarr.cancelRequest",
+      "verdict": "correct",
+      "target": "Cancelar solicitud",
+      "confidence": "high",
+      "reason": "'Solicitud de cancelación' means 'cancellation request' (a request to cancel), whereas the source 'Cancel request' is an action to cancel the request itself."
+    },
+    {
+      "id": "components.RequestModal.Sportarr.cancelSuccess",
+      "verdict": "correct",
+      "target": "La solicitud de {title} fue cancelada.",
+      "confidence": "high",
+      "reason": "Gender agreement: 'solicitud' is feminine, so 'cancelada' is required. The preposition 'de' is needed to link the title to the request."
+    },
+    {
+      "id": "components.RequestModal.Sportarr.close",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.Sportarr.countryLabel",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.Sportarr.defaultService",
+      "verdict": "correct",
+      "target": "Predeterminado ({name})",
+      "confidence": "high",
+      "reason": "The target had a broken placeholder syntax and mixed English/Spanish. 'Predeterminado' is the standard UI term for 'Default'."
+    },
+    {
+      "id": "components.RequestModal.Sportarr.monitored",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.Sportarr.noService",
+      "verdict": "correct",
+      "target": "No hay ningún servicio de Sportarr configurado.",
+      "confidence": "high",
+      "reason": "The original 'No se configura ningún servicio Sportarr' is passive and awkward. 'No hay ningún servicio de Sportarr configurado' is the natural way to express this state in Spanish UI."
+    },
+    {
+      "id": "components.RequestModal.Sportarr.notRequestable",
+      "verdict": "keep"
+    }
+  ],
+  "decisionsSha256": "69c8af36c52c4339329f1721a6a1c8f8ddf0b87e3cdea6309680403e8b85d1c6",
+  "rawResponseSha256": "30cd62f0ad2e1ea0bfac9a3fd8d5f0a2e9de3068b415b187f8c19d59c5f7c373",
+  "rawResponseFile": "/mnt/disks/scratch/task-scratch/seerrng-review-window-650-700-422072-20261102/semantic-output/responses/existing-es-client-0095-attempt-1.json"
+}

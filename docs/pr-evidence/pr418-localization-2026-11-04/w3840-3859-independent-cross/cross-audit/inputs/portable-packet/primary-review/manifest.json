@@ -1,0 +1,29 @@
+{
+  "artifact": "SeerrNG PR #418 W3840-W3859 primary review packet",
+  "candidateFreeInput": "../candidate-free-input",
+  "cellCount": 240,
+  "fileNames": [
+    "README.md",
+    "holds.jsonl",
+    "primary-ledger.jsonl",
+    "proposals.jsonl",
+    "summary.json",
+    "verify-primary-review.py"
+  ],
+  "head": "ba5bb93cdb4f107a8337aae228b7cd397e1140a6",
+  "holdCount": 0,
+  "inputChecksumListSha256": "e21a2a27a6c13cb8a6806fca5d6e2f96b2b5fe02980c5999684adbeae7940a48",
+  "inputManifestSha256": "9a9c05fbc403f745b87fd8df9ea51aef18c042fc4a82f03cbad7a322bc5f0295",
+  "localeCount": 12,
+  "proposalCount": 44,
+  "pullRequest": 418,
+  "range": [
+    3840,
+    3859
+  ],
+  "repository": "snapetech-org/seerrng",
+  "schemaVersion": 1,
+  "sourceCount": 20,
+  "tree": "5420ae8fa33bda3619650757a2930a0114dbe4d1",
+  "window": "W3840-W3859"
+}

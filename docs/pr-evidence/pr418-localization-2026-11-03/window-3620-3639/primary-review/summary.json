@@ -1,0 +1,180 @@
+{
+  "schemaVersion": 1,
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "window": "W3620-W3639",
+  "head": "ebf1cb6082ef173688227c507acfdc04c3cf7ca7",
+  "tree": "e3c4d1d10f40ea078b66dfdf942e99c8189fee0c",
+  "sourceCount": 20,
+  "localeCount": 12,
+  "cellCount": 240,
+  "decisionCounts": {
+    "accept-current": 197,
+    "refinement": 17,
+    "correction": 14,
+    "hold": 12
+  },
+  "confidenceCounts": {
+    "high": 225,
+    "moderate": 3,
+    "low": 12
+  },
+  "holdCount": 12,
+  "holdCells": [
+    {
+      "position": 3632,
+      "sourceId": "components.Settings.BookshelfPathMigration.author",
+      "locale": "es",
+      "rationale": "Hold: there is no direct message-property caller for this Author definition in the pinned component; the standalone noun's UI role is unresolved."
+    },
+    {
+      "position": 3632,
+      "sourceId": "components.Settings.BookshelfPathMigration.author",
+      "locale": "zh_Hans",
+      "rationale": "Hold: there is no direct message-property caller for this Author definition in the pinned component; the standalone noun's UI role is unresolved."
+    },
+    {
+      "position": 3632,
+      "sourceId": "components.Settings.BookshelfPathMigration.author",
+      "locale": "hi",
+      "rationale": "Hold: there is no direct message-property caller for this Author definition in the pinned component; the standalone noun's UI role is unresolved."
+    },
+    {
+      "position": 3632,
+      "sourceId": "components.Settings.BookshelfPathMigration.author",
+      "locale": "de",
+      "rationale": "Hold: there is no direct message-property caller for this Author definition in the pinned component; the standalone noun's UI role is unresolved."
+    },
+    {
+      "position": 3632,
+      "sourceId": "components.Settings.BookshelfPathMigration.author",
+      "locale": "ja",
+      "rationale": "Hold: there is no direct message-property caller for this Author definition in the pinned component; the standalone noun's UI role is unresolved."
+    },
+    {
+      "position": 3632,
+      "sourceId": "components.Settings.BookshelfPathMigration.author",
+      "locale": "fr",
+      "rationale": "Hold: there is no direct message-property caller for this Author definition in the pinned component; the standalone noun's UI role is unresolved."
+    },
+    {
+      "position": 3632,
+      "sourceId": "components.Settings.BookshelfPathMigration.author",
+      "locale": "pt_BR",
+      "rationale": "Hold: there is no direct message-property caller for this Author definition in the pinned component; the standalone noun's UI role is unresolved."
+    },
+    {
+      "position": 3632,
+      "sourceId": "components.Settings.BookshelfPathMigration.author",
+      "locale": "ar",
+      "rationale": "Hold: there is no direct message-property caller for this Author definition in the pinned component; the standalone noun's UI role is unresolved."
+    },
+    {
+      "position": 3632,
+      "sourceId": "components.Settings.BookshelfPathMigration.author",
+      "locale": "ko",
+      "rationale": "Hold: there is no direct message-property caller for this Author definition in the pinned component; the standalone noun's UI role is unresolved."
+    },
+    {
+      "position": 3632,
+      "sourceId": "components.Settings.BookshelfPathMigration.author",
+      "locale": "zh_Hant",
+      "rationale": "Hold: there is no direct message-property caller for this Author definition in the pinned component; the standalone noun's UI role is unresolved."
+    },
+    {
+      "position": 3632,
+      "sourceId": "components.Settings.BookshelfPathMigration.author",
+      "locale": "vi",
+      "rationale": "Hold: there is no direct message-property caller for this Author definition in the pinned component; the standalone noun's UI role is unresolved."
+    },
+    {
+      "position": 3632,
+      "sourceId": "components.Settings.BookshelfPathMigration.author",
+      "locale": "id",
+      "rationale": "Hold: there is no direct message-property caller for this Author definition in the pinned component; the standalone noun's UI role is unresolved."
+    }
+  ],
+  "callerlessPosition3632": {
+    "cells": 12,
+    "allHeld": true,
+    "sourceId": "components.Settings.BookshelfPathMigration.author"
+  },
+  "baselineDiagnostics": {
+    "placeholderMismatchCount": 0,
+    "placeholderSequenceMismatchCount": 0,
+    "icuPluralCategorySetDifferenceCount": 9,
+    "markupMismatchCount": 0,
+    "numericTokenMismatchCount": 8,
+    "protectedLiteralMismatchCount": 0
+  },
+  "reviewedDiagnostics": {
+    "placeholderMismatchCount": 0,
+    "placeholderSequenceMismatchCount": 0,
+    "icuPluralCategorySetDifferenceCount": 10,
+    "icuRuntimeCoverageFailureCount": 0,
+    "markupMismatchCount": 0,
+    "numericTokenSurfaceMismatchCount": 7,
+    "numericValueMismatchCount": 0,
+    "protectedLiteralMismatchCount": 0
+  },
+  "runtimePluralCategoryEvidence": {
+    "node": "v20.20.2",
+    "icu": "78.3",
+    "categories": {
+      "es": [
+        "many",
+        "one",
+        "other"
+      ],
+      "zh-CN": [
+        "other"
+      ],
+      "hi": [
+        "one",
+        "other"
+      ],
+      "de": [
+        "one",
+        "other"
+      ],
+      "ja": [
+        "other"
+      ],
+      "fr": [
+        "many",
+        "one",
+        "other"
+      ],
+      "pt-BR": [
+        "many",
+        "one",
+        "other"
+      ],
+      "ar": [
+        "few",
+        "many",
+        "one",
+        "other",
+        "two",
+        "zero"
+      ],
+      "ko": [
+        "other"
+      ],
+      "zh-TW": [
+        "other"
+      ],
+      "vi": [
+        "other"
+      ],
+      "id": [
+        "other"
+      ]
+    }
+  },
+  "priorImmediateWindowHoldCount": 0,
+  "candidateFreeInputVerified": "PASS",
+  "nativeSpeakerReview": "not performed",
+  "browserReview": "not performed",
+  "repositoryOrPRFilesEdited": false
+}

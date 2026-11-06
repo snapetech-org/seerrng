@@ -1,0 +1,57 @@
+{
+  "review": "Blind semantic cross-review of SeerrNG PR #418 W3140–W3159",
+  "head": "536dfdb7630d5f61fc8a90b82bc33234eb432c9f",
+  "tree": "a011ac81dabbcbc46a4a522f1355efc9025fadc1",
+  "livePR": {
+    "number": 418,
+    "state": "open",
+    "draft": true,
+    "head": "536dfdb7630d5f61fc8a90b82bc33234eb432c9f",
+    "branch": "codex/seerrng-localization-overhaul-20261028",
+    "base": "main"
+  },
+  "sourceOrderRange": [
+    3140,
+    3159
+  ],
+  "sourceRows": 20,
+  "targetCells": 240,
+  "localeOrder": [
+    "ar",
+    "de",
+    "es",
+    "fr",
+    "hi",
+    "id",
+    "ja",
+    "ko",
+    "pt_BR",
+    "vi",
+    "zh_Hans",
+    "zh_Hant"
+  ],
+  "primaryPacketChecksums": "SHA256SUMS.txt verified before review; primary decisions/candidates/README summary not opened before seal",
+  "inputPacketSha256": {
+    "window.json": "ebdfefcf240e8e61e2e1c47393a39c9edba3287c2f45b8742dc4518b1d61dae2",
+    "source-boundaries.json": "1c6f0486db7c391a5b141b3202b7b4e889bba1664eec8f900b91b17f400e2a0e",
+    "source-current-cells.jsonl": "29e900857d8c82ed84a9773b7a173650c745784f2440a5c731e1590111a93999",
+    "caller-contexts.jsonl": "80c2b73813b8220d46c42a1fb489d7ea9f356f1d8394b521174002713a9fb226",
+    "SHA256SUMS.txt": "ab7f2f6973e9798707865c20d602c3e788c3c58d1d8438e45b925dc7192ef936"
+  },
+  "reattestationSha256": "6a180b7f18cb9945992f758cda4e59de2903d707b186daa7bcff9d008b4c4b73",
+  "blindLedger": "blind-ledger.jsonl",
+  "blindLedgerSha256": "409e93ecc65018cd73b74c8afb022249c64da6767c89ce6f5bbee63949748084",
+  "structuralAuditSha256": "a9f30b86128b26fdb2daba26c9a6015522d7c9ac148ce37b72469ebe0c6a0ece",
+  "counts": {
+    "accept-current": 198,
+    "refinement": 22,
+    "correction": 20
+  },
+  "nativeSpeakerApproval": false,
+  "confidence": "moderate",
+  "deliberateLimits": [
+    "Non-English catalog-wide window hash metadata is stale or has an unspecified hash algorithm; per-cell exact-head values and hashes match.",
+    "Caller search scope is targeted and not a full dynamic call graph.",
+    "Machine review only; no native-speaker approval."
+  ]
+}

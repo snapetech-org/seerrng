@@ -1,0 +1,56 @@
+{
+  "positionBasis": "zero-based index in pinned English catalog key order",
+  "sourceOrderCount": 9494,
+  "sourceOrderSha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+  "expectedBefore": {
+    "position": 3399,
+    "sourceId": "components.Requests.requestLifecycle",
+    "source": "Request Lifecycle"
+  },
+  "providedBefore": {
+    "position": 3399,
+    "source": "Import attempt {attempt} of {maxAttempts}.",
+    "sourceId": "components.Requests.pendingImportAttempt"
+  },
+  "expectedAfter": {
+    "position": 3420,
+    "sourceId": "components.Requests.searching",
+    "source": "Searching"
+  },
+  "providedAfter": {
+    "position": 3420,
+    "source": "Time",
+    "sourceId": "components.Requests.requestTime"
+  },
+  "mismatches": [
+    {
+      "side": "boundaryBefore",
+      "expected": {
+        "position": 3399,
+        "sourceId": "components.Requests.requestLifecycle",
+        "source": "Request Lifecycle"
+      },
+      "provided": {
+        "position": 3399,
+        "source": "Import attempt {attempt} of {maxAttempts}.",
+        "sourceId": "components.Requests.pendingImportAttempt"
+      }
+    },
+    {
+      "side": "boundaryAfter",
+      "expected": {
+        "position": 3420,
+        "sourceId": "components.Requests.searching",
+        "source": "Searching"
+      },
+      "provided": {
+        "position": 3420,
+        "source": "Time",
+        "sourceId": "components.Requests.requestTime"
+      }
+    }
+  ],
+  "status": "FAIL",
+  "selectedTwentySourceIdsMatchCatalogPositions": true,
+  "impact": "The selected 20 IDs match positions 3400–3419, but both adjacent entries in source-boundaries.json are incorrect."
+}

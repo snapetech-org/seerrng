@@ -1,0 +1,166 @@
+{
+  "artifact": "SeerrNG PR #418 W3840-W3859 primary semantic translation review",
+  "baseRef": "main",
+  "baseSha": "fa40534ccced75bde1125c14760514fcd5d7de4d",
+  "baselineTokenMismatchCounts": {
+    "markupTags": 0,
+    "numericTokens": 0,
+    "placeholders": 0,
+    "protectedLiterals": 3
+  },
+  "cellCount": 240,
+  "changedCells": 44,
+  "confidenceCounts": {
+    "high": 31,
+    "moderate": 209
+  },
+  "dispositionCounts": {
+    "accept-current": 196,
+    "correction": 19,
+    "hold": 0,
+    "refinement": 25
+  },
+  "dispositionCountsByLocale": {
+    "ar": {
+      "accept-current": 16,
+      "correction": 4,
+      "hold": 0,
+      "refinement": 0
+    },
+    "de": {
+      "accept-current": 18,
+      "correction": 0,
+      "hold": 0,
+      "refinement": 2
+    },
+    "es": {
+      "accept-current": 17,
+      "correction": 2,
+      "hold": 0,
+      "refinement": 1
+    },
+    "fr": {
+      "accept-current": 19,
+      "correction": 1,
+      "hold": 0,
+      "refinement": 0
+    },
+    "hi": {
+      "accept-current": 15,
+      "correction": 5,
+      "hold": 0,
+      "refinement": 0
+    },
+    "id": {
+      "accept-current": 14,
+      "correction": 0,
+      "hold": 0,
+      "refinement": 6
+    },
+    "ja": {
+      "accept-current": 16,
+      "correction": 0,
+      "hold": 0,
+      "refinement": 4
+    },
+    "ko": {
+      "accept-current": 17,
+      "correction": 0,
+      "hold": 0,
+      "refinement": 3
+    },
+    "pt-BR": {
+      "accept-current": 17,
+      "correction": 2,
+      "hold": 0,
+      "refinement": 1
+    },
+    "vi": {
+      "accept-current": 14,
+      "correction": 5,
+      "hold": 0,
+      "refinement": 1
+    },
+    "zh-Hans": {
+      "accept-current": 16,
+      "correction": 0,
+      "hold": 0,
+      "refinement": 4
+    },
+    "zh-Hant": {
+      "accept-current": 17,
+      "correction": 0,
+      "hold": 0,
+      "refinement": 3
+    }
+  },
+  "head": "ba5bb93cdb4f107a8337aae228b7cd397e1140a6",
+  "holds": 0,
+  "inputCandidateFreeVerifierResult": "PASS",
+  "inputChecksumListSha256": "e21a2a27a6c13cb8a6806fca5d6e2f96b2b5fe02980c5999684adbeae7940a48",
+  "inputManifestSha256": "9a9c05fbc403f745b87fd8df9ea51aef18c042fc4a82f03cbad7a322bc5f0295",
+  "inputPath": "/home/keith/Documents/code/task-scratch/seerrng-pr418-w3840-3859-20261104/portable-packet/candidate-free-input",
+  "ledger": "primary-ledger.jsonl",
+  "localeCount": 12,
+  "nativeSpeakerSignoff": "not claimed",
+  "otherProposalLedgersInspected": false,
+  "priorContinuityReattested": {
+    "callerReferences": 20,
+    "callerlessSources": 0,
+    "catalogKeyOrders": 13,
+    "previousAppliedTargetHashes": 54,
+    "previousCatalogApplicationTargetHashes": 19,
+    "previousHoldHashes": 14,
+    "selectedSourceIdAndTextHashes": 3840
+  },
+  "proposalCount": 44,
+  "protectedLiteralBaselineMismatchCells": [
+    {
+      "disposition": "correction",
+      "locale": "hi",
+      "missing": [
+        "IP"
+      ],
+      "position": 3850,
+      "sourceId": "components.Settings.MylarModal.validationHostnameRequired"
+    },
+    {
+      "disposition": "correction",
+      "locale": "fr",
+      "missing": [
+        "ID"
+      ],
+      "position": 3856,
+      "sourceId": "components.Settings.NavidromeModal.intro"
+    },
+    {
+      "disposition": "correction",
+      "locale": "ar",
+      "missing": [
+        "ID"
+      ],
+      "position": 3856,
+      "sourceId": "components.Settings.NavidromeModal.intro"
+    }
+  ],
+  "protectedLiteralMismatchesResolved": 3,
+  "pullRequest": 418,
+  "range": [
+    3840,
+    3859
+  ],
+  "repository": "snapetech-org/SeerrNG",
+  "reviewSource": "verified candidate-free input only",
+  "reviewStage": "primary semantic review; independent blind and cross audit pending",
+  "reviewedAtUTC": "2026-11-04T06:58:50.882073+00:00",
+  "reviewedTokenMismatchCounts": {
+    "markupTags": 0,
+    "numericTokens": 0,
+    "placeholders": 0,
+    "protectedLiterals": 0
+  },
+  "schemaVersion": 1,
+  "sourceCount": 20,
+  "tree": "5420ae8fa33bda3619650757a2930a0114dbe4d1",
+  "window": "W3840-W3859"
+}

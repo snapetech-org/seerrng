@@ -514,11 +514,11 @@ const ComicDetails = () => {
                     className="relative"
                     aria-label={intl.formatMessage(messages.manage)}
                   >
-                    <CogIcon className="!mr-0" />
+                    <CogIcon className="!me-0" />
                     {openIssues.length > 0 && (
                       <>
-                        <span className="absolute -top-1 -right-1 h-3 w-3 rounded-full bg-red-600" />
-                        <span className="absolute -top-1 -right-1 h-3 w-3 animate-ping rounded-full bg-red-600" />
+                        <span className="absolute -end-1 -top-1 h-3 w-3 rounded-full bg-red-600" />
+                        <span className="absolute -end-1 -top-1 h-3 w-3 animate-ping rounded-full bg-red-600" />
                       </>
                     )}
                   </Button>

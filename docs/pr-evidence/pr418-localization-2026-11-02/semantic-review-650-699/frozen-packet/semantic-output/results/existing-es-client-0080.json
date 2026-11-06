@@ -1,0 +1,186 @@
+{
+  "schemaVersion": 1,
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "head": "5a4342176a8325c371a35d489cb01c58283bc983",
+  "tree": "98cd64952123c9b678e38250e7819cabb4476448",
+  "semanticManifestSha256": "3ea74cc6491aecddf9ffcedc69610f13d20b199059aef69bb3c2407feb0826ea",
+  "cellPlanSha256": "97c3402252a34aaa4f8f9f44a691281d9c35ff7b80d7edb3a26c752436af6558",
+  "retiredCellsSha256": "dc5ec05547e4da3079c0668f82a52da7999d89ef9d4f037c1cd72af9347ebd83",
+  "sourceBundleManifestSha256": "212491482d1b9207fed755af6e80ac80a97184ec8dbe84d0c4ad2bd711acae0d",
+  "sourceRowsSha256": "ad91236a31e32f199ff449f9ed4597ea6af0f5a4eff32772cefa84278cafb68c",
+  "sourceCellsSha256": "8bfcd1aa9b5d5aba4fb6317c194cd544d601543ebf250899a84a719b52e468e1",
+  "planRows": 115260,
+  "actions": {
+    "semantic-review-required": 114783,
+    "reuse-equivalence-decision": 477
+  },
+  "retiredRows": 48,
+  "reusableEquivalenceCells": 477,
+  "targetsApplied": false,
+  "batchId": "existing-es-client-0080",
+  "batchSha256": "649c41a1d00ea2b9e2f82a94856069c806b65ee0e43481fd26390273bc43f7ba",
+  "rowCount": 32,
+  "model": "qwen3.8-27b-heretic:q4km",
+  "attempt": 1,
+  "decisions": [
+    {
+      "id": "components.ReaderDeliverySettings.librarySetup",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.ReaderDeliverySettings.librarySetupDescription",
+      "verdict": "correct",
+      "target": "Importar o montar las mismas carpetas multimedia en Grimmory o BookOrbit y dejar que ese servicio las escanee. Utilice la ruta tal como aparece dentro del contenedor del servicio de lectura. Los escaneos programados son más confiables que los observadores del sistema de archivos en algunas unidades de red.",
+      "confidence": "high",
+      "reason": "Corrige 'camino' a 'ruta' (término estándar para paths), 'relojes' a 'observadores' (traducción correcta de 'watchers'), y 'acciones de la red' a 'unidades de red' (traducción correcta de 'network shares')."
+    },
+    {
+      "id": "components.ReaderDeliverySettings.loadError",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.ReaderDeliverySettings.noGroupings",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.ReaderDeliverySettings.opdsCredentials",
+      "verdict": "correct",
+      "target": "Conecta una cuenta de administrador para que SeerrNG pueda previsualizar, crear y actualizar los estantes de lectores. Las contraseñas se almacenan en la configuración protegida de la aplicación y nunca se devuelven por la API. Las credenciales de la app de lectura y OPDS permanecen separadas.",
+      "confidence": "high",
+      "reason": "Corrige 'configuración de aplicaciones protegidas' a 'configuración protegida de la aplicación' (claridad), 'nunca vuelven' a 'nunca se devuelven' (naturalidad), y 'Reader-app' a 'app de lectura' (consistencia con el resto de la UI)."
+    },
+    {
+      "id": "components.ReaderDeliverySettings.open",
+      "verdict": "correct",
+      "target": "Abrir {serviceName}",
+      "confidence": "high",
+      "reason": "El verbo debe estar en infinitivo ('Abrir') para una acción de botón, no en participio ('Abierto')."
+    },
+    {
+      "id": "components.ReaderDeliverySettings.password",
+      "verdict": "correct",
+      "target": "Contraseña de la cuenta de administrador",
+      "confidence": "high",
+      "reason": "El orden de las palabras en la traducción original ('Cuenta Administrador contraseña') es gramaticalmente incorrecto y confuso."
+    },
+    {
+      "id": "components.ReaderDeliverySettings.preferredReader",
+      "verdict": "correct",
+      "target": "App de lectura preferida",
+      "confidence": "high",
+      "reason": "El orden de las palabras en la traducción original ('Preferente App Reader') es gramaticalmente incorrecto."
+    },
+    {
+      "id": "components.ReaderDeliverySettings.preferredReaderDescription",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.ReaderDeliverySettings.privateVisibility",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.ReaderDeliverySettings.requestWorkflow",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.ReaderDeliverySettings.save",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.ReaderDeliverySettings.saveError",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.ReaderDeliverySettings.saved",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.ReaderDeliverySettings.savedPassword",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.ReaderDeliverySettings.saving",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.ReaderDeliverySettings.scopeVisibilityNote",
+      "verdict": "correct",
+      "target": "BookOrbit bloquea la visibilidad de SmartScope cuando se crea el alcance. Si la sincronización de Kobo está activada, SeerrNG también mantiene una Colección regular y reconcilia su membresía cada 15 minutos.",
+      "confidence": "high",
+      "reason": "La traducción original omitió la segunda oración completa y tradujo incorrectamente 'locks' como 'pone' y 'SmartScope visibility' como 'la visibilidad'. La corrección restaura el significado completo y preciso."
+    },
+    {
+      "id": "components.ReaderDeliverySettings.sharedVisibility",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.ReaderDeliverySettings.testSaveFirst",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.ReaderDeliverySettings.title",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.ReaderDeliverySettings.unsavedChanges",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.ReaderDeliverySettings.username",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.ReaderGroupingAction.action",
+      "verdict": "correct",
+      "target": "Crear estante de lector",
+      "confidence": "high",
+      "reason": "El orden de las palabras en la traducción original ('Crear lector estante') es gramaticalmente incorrecto."
+    },
+    {
+      "id": "components.ReaderGroupingAction.bookorbit",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.ReaderGroupingAction.close",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.ReaderGroupingAction.countPending",
+      "verdict": "correct",
+      "target": "Conteo de vista previa: {count}. El servicio de lectura aún no ha confirmado el conteo guardado.",
+      "confidence": "high",
+      "reason": "Corrige 'Cuenta previa' a 'Conteo de vista previa' (claridad) y reordena 'todavía' para mayor naturalidad."
+    },
+    {
+      "id": "components.ReaderGroupingAction.emptyOptIn",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.ReaderGroupingAction.grimmory",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.ReaderGroupingAction.grimmoryKobo",
+      "verdict": "correct",
+      "target": "La entrega de Grimmory Kobo utiliza su estante de inclusión separado. SeerrNG deja la configuración de ese proveedor sin cambios.",
+      "confidence": "high",
+      "reason": "Corrige 'plataforma de inclusión' a 'estante de inclusión' (traducción correcta de 'inclusion shelf') y 'deja a ese proveedor' a 'deja la configuración de ese proveedor' (claridad)."
+    },
+    {
+      "id": "components.ReaderGroupingAction.heading",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.ReaderGroupingAction.intro",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.ReaderGroupingAction.koboSyncReady",
+      "verdict": "keep"
+    }
+  ],
+  "decisionsSha256": "7013a060c9420d2d9742667b206cc5b2c511173b98e22e98f7194956b29b2d78",
+  "rawResponseSha256": "8e4adc2a4751183750f42239fe44318cf924ee9f63190e76dc3a9e78118a2af6",
+  "rawResponseFile": "/mnt/disks/scratch/task-scratch/seerrng-review-window-650-700-422072-20261102/semantic-output/responses/existing-es-client-0080-attempt-1.json"
+}

@@ -1,0 +1,37 @@
+{
+  "artifact": "Independent blind semantic review ledger for SeerrNG PR #418 W4000-W4019",
+  "cellCount": 240,
+  "dispositionCounts": {
+    "accept": 197,
+    "correction": 21,
+    "hold": 12,
+    "refinement": 10
+  },
+  "head": "ac193096ebfc0007183348b24e35bf6fee33f67a",
+  "holdPositions": [
+    4013
+  ],
+  "localeOrder": [
+    "es",
+    "zh-Hans",
+    "hi",
+    "de",
+    "ja",
+    "fr",
+    "pt-BR",
+    "ar",
+    "ko",
+    "zh-Hant",
+    "vi",
+    "id"
+  ],
+  "nativeSpeakerReviewClaimed": false,
+  "numericTokenExceptionCount": 1,
+  "proposalFilesOpenedBeforeBlindCompletion": false,
+  "pullRequest": 418,
+  "repository": "snapetech-org/seerrng",
+  "schemaVersion": 1,
+  "sourceCount": 20,
+  "tree": "93e71e7c52602ec3f8b76548fd12b2f5b4368b4c",
+  "window": "W4000-W4019"
+}

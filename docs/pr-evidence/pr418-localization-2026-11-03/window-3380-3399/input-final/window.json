@@ -1,0 +1,505 @@
+{
+  "baseRef": "main",
+  "baseSha": "221d8e0d542802da7529cd272c928cc747677e5c",
+  "callerFilePins": {
+    "src/components/Requests/destructiveActions.tsx": {
+      "byteCount": 5369,
+      "gitBlob": "09884f99a738ce4402b5fb121d15022f0efc3a67",
+      "lineCount": 173,
+      "path": "src/components/Requests/destructiveActions.tsx",
+      "sha256": "16d562185c1e1f3a94398369b4ab3eec28085033dcc3465c32557752687d1d57"
+    },
+    "src/components/Requests/index.tsx": {
+      "byteCount": 100417,
+      "gitBlob": "84f6a19674b329df0ef6be6483d74bbaeb110ccb",
+      "lineCount": 3115,
+      "path": "src/components/Requests/index.tsx",
+      "sha256": "25b612dcda274fe2ea64b76f169587e153b04a675c9b8cd817814d9fbfde5360"
+    }
+  },
+  "callerReferenceCountsById": {
+    "components.Requests.pendingImportNextRetry": {
+      "contextResolution": "direct-property-reference-found",
+      "contextRowCount": 2,
+      "directMessagePropertyReferenceCount": 1,
+      "dynamicReferenceContextCount": 0
+    },
+    "components.Requests.pendingImportRetrying": {
+      "contextResolution": "direct-property-reference-found",
+      "contextRowCount": 2,
+      "directMessagePropertyReferenceCount": 1,
+      "dynamicReferenceContextCount": 0
+    },
+    "components.Requests.pendingImportTitle": {
+      "contextResolution": "direct-property-reference-found",
+      "contextRowCount": 2,
+      "directMessagePropertyReferenceCount": 1,
+      "dynamicReferenceContextCount": 0
+    },
+    "components.Requests.processing": {
+      "contextResolution": "dynamic-reference-context-found",
+      "contextRowCount": 8,
+      "directMessagePropertyReferenceCount": 0,
+      "dynamicReferenceContextCount": 7
+    },
+    "components.Requests.progressFrom": {
+      "contextResolution": "direct-property-reference-found",
+      "contextRowCount": 2,
+      "directMessagePropertyReferenceCount": 1,
+      "dynamicReferenceContextCount": 0
+    },
+    "components.Requests.progressUnavailable": {
+      "contextResolution": "definition-only-or-shared-under-other-namespace",
+      "contextRowCount": 1,
+      "directMessagePropertyReferenceCount": 0,
+      "dynamicReferenceContextCount": 0
+    },
+    "components.Requests.publisher": {
+      "contextResolution": "direct-property-reference-found",
+      "contextRowCount": 3,
+      "directMessagePropertyReferenceCount": 2,
+      "dynamicReferenceContextCount": 0
+    },
+    "components.Requests.refresh": {
+      "contextResolution": "definition-only-or-shared-under-other-namespace",
+      "contextRowCount": 1,
+      "directMessagePropertyReferenceCount": 0,
+      "dynamicReferenceContextCount": 0
+    },
+    "components.Requests.refreshing": {
+      "contextResolution": "definition-only-or-shared-under-other-namespace",
+      "contextRowCount": 1,
+      "directMessagePropertyReferenceCount": 0,
+      "dynamicReferenceContextCount": 0
+    },
+    "components.Requests.releaseDate": {
+      "contextResolution": "direct-property-reference-found",
+      "contextRowCount": 2,
+      "directMessagePropertyReferenceCount": 1,
+      "dynamicReferenceContextCount": 0
+    },
+    "components.Requests.remove": {
+      "contextResolution": "dynamic-reference-context-found",
+      "contextRowCount": 3,
+      "directMessagePropertyReferenceCount": 0,
+      "dynamicReferenceContextCount": 2
+    },
+    "components.Requests.removeDescription": {
+      "contextResolution": "dynamic-reference-context-found",
+      "contextRowCount": 4,
+      "directMessagePropertyReferenceCount": 0,
+      "dynamicReferenceContextCount": 2
+    },
+    "components.Requests.removeFailed": {
+      "contextResolution": "direct-property-reference-found",
+      "contextRowCount": 4,
+      "directMessagePropertyReferenceCount": 3,
+      "dynamicReferenceContextCount": 0
+    },
+    "components.Requests.removeSuccess": {
+      "contextResolution": "direct-property-reference-found",
+      "contextRowCount": 2,
+      "directMessagePropertyReferenceCount": 1,
+      "dynamicReferenceContextCount": 0
+    },
+    "components.Requests.removeTitle": {
+      "contextResolution": "dynamic-reference-context-found",
+      "contextRowCount": 4,
+      "directMessagePropertyReferenceCount": 0,
+      "dynamicReferenceContextCount": 2
+    },
+    "components.Requests.removeTooltip": {
+      "contextResolution": "dynamic-reference-context-found",
+      "contextRowCount": 4,
+      "directMessagePropertyReferenceCount": 0,
+      "dynamicReferenceContextCount": 2
+    },
+    "components.Requests.removeUnavailableTooltip": {
+      "contextResolution": "dynamic-reference-context-found",
+      "contextRowCount": 4,
+      "directMessagePropertyReferenceCount": 0,
+      "dynamicReferenceContextCount": 2
+    },
+    "components.Requests.removing": {
+      "contextResolution": "dynamic-reference-context-found",
+      "contextRowCount": 3,
+      "directMessagePropertyReferenceCount": 0,
+      "dynamicReferenceContextCount": 2
+    },
+    "components.Requests.requestDate": {
+      "contextResolution": "definition-only-or-shared-under-other-namespace",
+      "contextRowCount": 1,
+      "directMessagePropertyReferenceCount": 0,
+      "dynamicReferenceContextCount": 0
+    },
+    "components.Requests.requestLifecycle": {
+      "contextResolution": "direct-property-reference-found",
+      "contextRowCount": 2,
+      "directMessagePropertyReferenceCount": 1,
+      "dynamicReferenceContextCount": 0
+    }
+  },
+  "candidateFreeInputOnly": true,
+  "cellCount": 240,
+  "contextRows": 20,
+  "head": "4d7de2c41b0e6df6cd0b7f7075c9cddd1c6ce160",
+  "headRef": "codex/seerrng-localization-overhaul-20261028",
+  "liveDraft": true,
+  "livePrState": "OPEN",
+  "localeCatalogPins": {
+    "src/i18n/locale/ar.json": {
+      "gitBlob": "d2a1eb96b5721f461007389fb863e10530d88779",
+      "keyCount": 9494,
+      "orderedKeySequenceSha256_lf_join_no_trailing_lf": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+      "sha256": "a5150426d4b2ce0c23754d549bed662e7c572285332618e526f4d77d99f8cea5"
+    },
+    "src/i18n/locale/de.json": {
+      "gitBlob": "60da5f57f3c5c4de7a1b1d3eeddd39b51684a8b7",
+      "keyCount": 9494,
+      "orderedKeySequenceSha256_lf_join_no_trailing_lf": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+      "sha256": "be8e0b8919b4c4602ba051ffa11014df23d53e13434fa6f261f2256213e774be"
+    },
+    "src/i18n/locale/en.json": {
+      "gitBlob": "12e04a118c30b71b3714291adeaf9fdb2735cee4",
+      "keyCount": 9494,
+      "orderedKeySequenceSha256_lf_join_no_trailing_lf": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+      "sha256": "75ff3c90b52aedd636a506281ffbd6fb2d3739c61294b6008a517f17647e2316"
+    },
+    "src/i18n/locale/es.json": {
+      "gitBlob": "b7a7f9513af8dc8764a3d577052f2a318909898a",
+      "keyCount": 9494,
+      "orderedKeySequenceSha256_lf_join_no_trailing_lf": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+      "sha256": "94ecb3f47273ae999d6cca37cde5e25dc89315f6647e861f2c876a1f57223641"
+    },
+    "src/i18n/locale/fr.json": {
+      "gitBlob": "f923664d7c44cfd6efff3db9cbe20ba4492816d1",
+      "keyCount": 9494,
+      "orderedKeySequenceSha256_lf_join_no_trailing_lf": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+      "sha256": "10a2bb2acef8355ea21c96fbd62da75f3582c8a7b353ef81fb1022d85ddbe84a"
+    },
+    "src/i18n/locale/hi.json": {
+      "gitBlob": "213fadaa0c1a6248e06f1328766e817339b0f714",
+      "keyCount": 9494,
+      "orderedKeySequenceSha256_lf_join_no_trailing_lf": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+      "sha256": "d828dfc8e5830a1d58118462bbb28a26830b247d61dd3f89098bcd1946c9a0da"
+    },
+    "src/i18n/locale/id.json": {
+      "gitBlob": "d0a5cbd90803b87ac110f8fff543dbf602aa3dce",
+      "keyCount": 9494,
+      "orderedKeySequenceSha256_lf_join_no_trailing_lf": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+      "sha256": "38100d22fe9bccba26efc1b9bbb6835bef5cb01af5e2dda2195b7ed20e21948c"
+    },
+    "src/i18n/locale/ja.json": {
+      "gitBlob": "3475cb78442f6c734eda21b4539648fb4fe61210",
+      "keyCount": 9494,
+      "orderedKeySequenceSha256_lf_join_no_trailing_lf": "8d5fd7bd4351bc64c5ee813f2e50196608869e165866f3202a312078732c2baf",
+      "sha256": "73d23da4f874c9edc21a8c6ddea60add5e34ae7cddda1527eb506ad42ffd0a9f"
+    },
+    "src/i18n/locale/ko.json": {
+      "gitBlob": "3e3b1ac49745c98890e2fa859a15468dd02db6dd",
+      "keyCount": 9494,
+      "orderedKeySequenceSha256_lf_join_no_trailing_lf": "8d5fd7bd4351bc64c5ee813f2e50196608869e165866f3202a312078732c2baf",
+      "sha256": "0391217e08f36c4151976492eee35e8a984f9879705aa4356bbe41d126d721a8"
+    },
+    "src/i18n/locale/pt_BR.json": {
+      "gitBlob": "7c4138572ee264847a57cdf58f0cbe048ebf9513",
+      "keyCount": 9494,
+      "orderedKeySequenceSha256_lf_join_no_trailing_lf": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+      "sha256": "d7d0c8736b3bac03fbcc507b8ddf22a35a2c23ada7311e4158fd9e1579fc41b3"
+    },
+    "src/i18n/locale/vi.json": {
+      "gitBlob": "72ba3e94ff166f6651be14e00d95e7e54e787bdc",
+      "keyCount": 9494,
+      "orderedKeySequenceSha256_lf_join_no_trailing_lf": "8d5fd7bd4351bc64c5ee813f2e50196608869e165866f3202a312078732c2baf",
+      "sha256": "494bab742144750d6d646116092a9912f041d5ead17adc93076f6b1a571d103c"
+    },
+    "src/i18n/locale/zh_Hans.json": {
+      "gitBlob": "16c64a51477add58ded98dec8157912f9b690a49",
+      "keyCount": 9494,
+      "orderedKeySequenceSha256_lf_join_no_trailing_lf": "8d5fd7bd4351bc64c5ee813f2e50196608869e165866f3202a312078732c2baf",
+      "sha256": "b6e523c0fdb366c2a633a7dc1292e070e88c1be5b6ad5871e351940f946e4cdf"
+    },
+    "src/i18n/locale/zh_Hant.json": {
+      "gitBlob": "707e011d56b28ef6e9e0fc1a5fc0a093f6bf3a46",
+      "keyCount": 9494,
+      "orderedKeySequenceSha256_lf_join_no_trailing_lf": "8d5fd7bd4351bc64c5ee813f2e50196608869e165866f3202a312078732c2baf",
+      "sha256": "005fe69b448fbc51f727929812861f3ac613268e0f01a794cfa4f3437513546e"
+    }
+  },
+  "localeInfo": [
+    {
+      "catalogKey": "es",
+      "clientFile": "es.json",
+      "direction": "ltr",
+      "nativeName": "Español",
+      "reviewStatus": "unreviewed",
+      "tag": "es"
+    },
+    {
+      "catalogKey": "zh_Hans",
+      "clientFile": "zh_Hans.json",
+      "direction": "ltr",
+      "nativeName": "简体中文",
+      "reviewStatus": "unreviewed",
+      "tag": "zh-CN"
+    },
+    {
+      "catalogKey": "hi",
+      "clientFile": "hi.json",
+      "direction": "ltr",
+      "nativeName": "हिन्दी",
+      "reviewStatus": "unreviewed",
+      "tag": "hi"
+    },
+    {
+      "catalogKey": "de",
+      "clientFile": "de.json",
+      "direction": "ltr",
+      "nativeName": "Deutsch",
+      "reviewStatus": "unreviewed",
+      "tag": "de"
+    },
+    {
+      "catalogKey": "ja",
+      "clientFile": "ja.json",
+      "direction": "ltr",
+      "nativeName": "日本語",
+      "reviewStatus": "unreviewed",
+      "tag": "ja"
+    },
+    {
+      "catalogKey": "fr",
+      "clientFile": "fr.json",
+      "direction": "ltr",
+      "nativeName": "Français",
+      "reviewStatus": "unreviewed",
+      "tag": "fr"
+    },
+    {
+      "catalogKey": "pt_BR",
+      "clientFile": "pt_BR.json",
+      "direction": "ltr",
+      "nativeName": "Português (Brasil)",
+      "reviewStatus": "unreviewed",
+      "tag": "pt-BR"
+    },
+    {
+      "catalogKey": "ar",
+      "clientFile": "ar.json",
+      "direction": "rtl",
+      "nativeName": "العربية",
+      "reviewStatus": "unreviewed",
+      "tag": "ar"
+    },
+    {
+      "catalogKey": "ko",
+      "clientFile": "ko.json",
+      "direction": "ltr",
+      "nativeName": "한국어",
+      "reviewStatus": "unreviewed",
+      "tag": "ko"
+    },
+    {
+      "catalogKey": "zh_Hant",
+      "clientFile": "zh_Hant.json",
+      "direction": "ltr",
+      "nativeName": "繁體中文",
+      "reviewStatus": "unreviewed",
+      "tag": "zh-TW"
+    },
+    {
+      "catalogKey": "vi",
+      "clientFile": "vi.json",
+      "direction": "ltr",
+      "nativeName": "Tiếng Việt",
+      "reviewStatus": "unreviewed",
+      "tag": "vi"
+    },
+    {
+      "catalogKey": "id",
+      "clientFile": "id.json",
+      "direction": "ltr",
+      "nativeName": "Bahasa Indonesia",
+      "reviewStatus": "unreviewed",
+      "tag": "id"
+    }
+  ],
+  "localeOrder": [
+    "es",
+    "zh_Hans",
+    "hi",
+    "de",
+    "ja",
+    "fr",
+    "pt_BR",
+    "ar",
+    "ko",
+    "zh_Hant",
+    "vi",
+    "id"
+  ],
+  "nativeSpeakerApproval": false,
+  "proposedTranslationsIncluded": false,
+  "protectedTermScreeningSet": [
+    "Seerr",
+    "ChaptarrNG",
+    "Bindery",
+    "Bookshelf",
+    "Radarr",
+    "Sonarr",
+    "Plex",
+    "Emby",
+    "Jellyfin",
+    "TMDb",
+    "IMDb",
+    "Open Library",
+    "ComicVine",
+    "MusicBrainz",
+    "TheTVDB",
+    "Trakt",
+    "Letterboxd",
+    "Prowlarr",
+    "Bazarr",
+    "Lidarr",
+    "Readarr",
+    "Whisparr",
+    "Sportarr",
+    "Audiobookshelf"
+  ],
+  "pullRequest": 418,
+  "range": [
+    3380,
+    3399
+  ],
+  "remotePullRefHead": "4d7de2c41b0e6df6cd0b7f7075c9cddd1c6ce160",
+  "repository": "snapetech-org/seerrng",
+  "schemaVersion": 1,
+  "semanticReviewDecisionsIncluded": false,
+  "sourceCatalogKeyCount": 9494,
+  "sourceCatalogSha256": "75ff3c90b52aedd636a506281ffbd6fb2d3739c61294b6008a517f17647e2316",
+  "sourceIds": [
+    {
+      "position": 3380,
+      "source": "Next retry: {time}.",
+      "sourceId": "components.Requests.pendingImportNextRetry",
+      "sourceSha256": "c38bacf52cbae21715d6ddf76258ceee57d7b8ba66f9b5b180055bae181d784a"
+    },
+    {
+      "position": 3381,
+      "source": "Import attempt {attempt}; retries will continue automatically.",
+      "sourceId": "components.Requests.pendingImportRetrying",
+      "sourceSha256": "d4a13b5f1174ece71af6910e989d300cd131040bf72a38883fa417aa5e1351ce"
+    },
+    {
+      "position": 3382,
+      "source": "ChaptarrNG is preparing this {format}.",
+      "sourceId": "components.Requests.pendingImportTitle",
+      "sourceSha256": "310dc6fb5256cfd6c2b4b4dd5559d5003adcba7422563a2efda26ed54052934e"
+    },
+    {
+      "position": 3383,
+      "source": "Processing",
+      "sourceId": "components.Requests.processing",
+      "sourceSha256": "c8e3e92a62ecf1811c7f4d5ec6efb3244e1bba785c5152b6cfac1af8eecbe2ae"
+    },
+    {
+      "position": 3384,
+      "source": "{percent}% complete",
+      "sourceId": "components.Requests.progressFrom",
+      "sourceSha256": "8a5bee8668ab03e6c6c8d94f1db2ffd82930df24928b682b45c0670a558204b8"
+    },
+    {
+      "position": 3385,
+      "source": "Download service did not provide progress data.",
+      "sourceId": "components.Requests.progressUnavailable",
+      "sourceSha256": "1b2a73312d195980c74e294dc8078d362c6d9b8e4a86c9aac910660f7c1406dc"
+    },
+    {
+      "position": 3386,
+      "source": "Publisher",
+      "sourceId": "components.Requests.publisher",
+      "sourceSha256": "21378545892f1fe2b0f70fd49b619f6c4b326f2748a03d23d9b0220053222d9c"
+    },
+    {
+      "position": 3387,
+      "source": "Refresh",
+      "sourceId": "components.Requests.refresh",
+      "sourceSha256": "0e91610117029a62a478b7fa7df0b8598bebe3ab1e192d4b1882e310719c9671"
+    },
+    {
+      "position": 3388,
+      "source": "Refreshing…",
+      "sourceId": "components.Requests.refreshing",
+      "sourceSha256": "1c0def7be0607b966b89e4974da38090472d8ada625f5b4c89f25b09d39683bd"
+    },
+    {
+      "position": 3389,
+      "source": "Release Date",
+      "sourceId": "components.Requests.releaseDate",
+      "sourceSha256": "1fb0ecfb5d039ebc6d64e5060590ee452634dab48921d1a8669804a8bb275f83"
+    },
+    {
+      "position": 3390,
+      "source": "Delete From Library",
+      "sourceId": "components.Requests.remove",
+      "sourceSha256": "a76fe56b21503e4eea5de327299c66c92c69248aae9912fdfd09f1bdbbb63a84"
+    },
+    {
+      "position": 3391,
+      "source": "This will permanently delete its media files and remove its library entry from {service}. This action cannot be undone from Seerr. Other quality versions remain. When the last movie or series copy is confirmed gone, library reconciliation also removes its requests and issues, but preserves blocklists and watchlists.",
+      "sourceId": "components.Requests.removeDescription",
+      "sourceSha256": "d2b13c42b54765877d90c1d50cb4fea3c1ccccf80de528470371097faccc8022"
+    },
+    {
+      "position": 3392,
+      "source": "Unable to delete this item from its library service.",
+      "sourceId": "components.Requests.removeFailed",
+      "sourceSha256": "6179bac4444705f0dbab1b381930c81f35a6bae03d3e74bece658269685658f1"
+    },
+    {
+      "position": 3393,
+      "source": "Item deleted from its library service.",
+      "sourceId": "components.Requests.removeSuccess",
+      "sourceSha256": "d5f4f5fc01d18a013cb1c96ef382b5c68d4365c0616e0ea53e2589371f3d4b3b"
+    },
+    {
+      "position": 3394,
+      "source": "Permanently Delete {title} from {service}?",
+      "sourceId": "components.Requests.removeTitle",
+      "sourceSha256": "d97889763834270b145ffc3a3a0325783520414d77215888c73d69d2aa8666a7"
+    },
+    {
+      "position": 3395,
+      "source": "The media and the library entry will both be deleted.",
+      "sourceId": "components.Requests.removeTooltip",
+      "sourceSha256": "e73d4b9bfdc903449eb72a24089c93768ff615d66df0f12753d297ac5058194c"
+    },
+    {
+      "position": 3396,
+      "source": "No linked library item is available to delete.",
+      "sourceId": "components.Requests.removeUnavailableTooltip",
+      "sourceSha256": "fbeedf76732812052c40546e51755180bfab726adb94da2d2c3aca2b0a9df747"
+    },
+    {
+      "position": 3397,
+      "source": "Deleting…",
+      "sourceId": "components.Requests.removing",
+      "sourceSha256": "43b5894c3e4e2b24f13c935f4fae0a0a8fbe7d7792750a09b88c2097fd9a32b8"
+    },
+    {
+      "position": 3398,
+      "source": "Date",
+      "sourceId": "components.Requests.requestDate",
+      "sourceSha256": "99c40ab405926cb5ad1def9cff4d7ce624f8f8abfff4e85f655347fcb949d08e"
+    },
+    {
+      "position": 3399,
+      "source": "Request Lifecycle",
+      "sourceId": "components.Requests.requestLifecycle",
+      "sourceSha256": "1dc0cfa9f3603d67834294799ac3d94814cf146e71413e65cf4f6571df18edee"
+    }
+  ],
+  "sourceOrderCount": 9494,
+  "sourceOrderSha256_lf_join_no_trailing_lf": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+  "tree": "6fba2d5985869b4563955b2c338a93e82efb4b22"
+}

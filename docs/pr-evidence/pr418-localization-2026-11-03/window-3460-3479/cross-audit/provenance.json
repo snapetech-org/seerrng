@@ -1,0 +1,14 @@
+{
+  "sourceOutput": "/mnt/disks/scratch/task-scratch/seerrng-pr418-w3460-3479-third-party-cross-audit-20261103",
+  "sourceOutputManifestSha256": "eb5489879424c341cbb9e05b1d8461cc02db1e54377ebbf90bb383b14758b03f",
+  "sourceLedgerSha256": "3cf4544db3b1907fc187d1dbbaceca932bc4b81f5da626733b71a6f0a663d00d",
+  "candidateFreeInputManifestSha256": "f581bcbce2ffd680ec43345aa0c1cbe8d8cb69d15270a4b1688475459132cfd4",
+  "primaryLedgerSha256": "788985a41355942e686cb60e81dceec73a294b0dddb38761dbea7e16a1c37df5",
+  "blindLedgerSha256": "386dfbff0281a1a2e2d5282c0b2802b1a778b063c64ee16685339a6ea7585215",
+  "packetCopiesIncludedAtSiblingPaths": [
+    "../candidate-free-input",
+    "../primary-review",
+    "../blind-review"
+  ],
+  "note": "The sealed source output contained copies of all packets; the repository evidence stores those packet copies once and retains the source output manifest hash."
+}

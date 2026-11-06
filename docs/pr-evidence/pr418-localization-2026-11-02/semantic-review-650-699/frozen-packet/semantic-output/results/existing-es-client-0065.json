@@ -1,0 +1,178 @@
+{
+  "schemaVersion": 1,
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "head": "5a4342176a8325c371a35d489cb01c58283bc983",
+  "tree": "98cd64952123c9b678e38250e7819cabb4476448",
+  "semanticManifestSha256": "3ea74cc6491aecddf9ffcedc69610f13d20b199059aef69bb3c2407feb0826ea",
+  "cellPlanSha256": "97c3402252a34aaa4f8f9f44a691281d9c35ff7b80d7edb3a26c752436af6558",
+  "retiredCellsSha256": "dc5ec05547e4da3079c0668f82a52da7999d89ef9d4f037c1cd72af9347ebd83",
+  "sourceBundleManifestSha256": "212491482d1b9207fed755af6e80ac80a97184ec8dbe84d0c4ad2bd711acae0d",
+  "sourceRowsSha256": "ad91236a31e32f199ff449f9ed4597ea6af0f5a4eff32772cefa84278cafb68c",
+  "sourceCellsSha256": "8bfcd1aa9b5d5aba4fb6317c194cd544d601543ebf250899a84a719b52e468e1",
+  "planRows": 115260,
+  "actions": {
+    "semantic-review-required": 114783,
+    "reuse-equivalence-decision": 477
+  },
+  "retiredRows": 48,
+  "reusableEquivalenceCells": 477,
+  "targetsApplied": false,
+  "batchId": "existing-es-client-0065",
+  "batchSha256": "e4077abe173241ace1973d0ca6df3273e88c36a825b833da75241adf11aa2057",
+  "rowCount": 32,
+  "model": "qwen3.8-27b-heretic:q4km",
+  "attempt": 1,
+  "decisions": [
+    {
+      "id": "components.MediaDetails.MetadataAttribution.tmdb",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MediaDetails.MetadataAttribution.tmdbTitle",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MediaDetails.MetadataAttribution.tvdb",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MediaDetails.MetadataAttribution.tvdbTitle",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MediaDetails.MetadataAttribution.tvmaze",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MediaDetails.MetadataAttribution.tvmazeTitle",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MediaDetails.MetadataAttribution.wikidata",
+      "verdict": "correct",
+      "target": "Wikidata",
+      "confidence": "high",
+      "reason": "Wikidata is a proper noun and brand name that should not be translated to 'Wikidatos' in UI contexts, especially when the title correctly uses 'Wikidata'."
+    },
+    {
+      "id": "components.MediaDetails.MetadataAttribution.wikidataTitle",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MediaDetails.PlaybackTrackList.audiobook",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MediaDetails.PlaybackTrackList.availabilityLegend",
+      "verdict": "correct",
+      "target": "Marca de verificación verde: disponible. X roja: no disponible.",
+      "confidence": "high",
+      "reason": "'Verificación verde' is an unnatural calque of 'Green check'. 'Marca de verificación' or simply 'Check' is more natural. 'Rojo X' is also awkward; 'X roja' is the standard Spanish phrasing for a red cross/X symbol."
+    },
+    {
+      "id": "components.MediaDetails.PlaybackTrackList.noTracks",
+      "verdict": "correct",
+      "target": "No hay pistas reproducibles disponibles.",
+      "confidence": "high",
+      "reason": "'Jugables' implies gaming. In media playback contexts, 'reproducibles' is the correct term for playable tracks."
+    },
+    {
+      "id": "components.MediaDetails.PlaybackTrackList.selection",
+      "verdict": "correct",
+      "target": "Seleccione elementos para reproducir",
+      "confidence": "high",
+      "reason": "'Jugar' is incorrect for media playback; 'reproducir' is the standard term. Also, 'Seleccione' (imperative) is more appropriate for UI instructions than 'Seleccionar' (infinitive), though both are sometimes used, imperative is preferred for direct actions."
+    },
+    {
+      "id": "components.MediaDetails.PlaybackTrackList.title",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MediaDetails.PlaybackTrackList.track",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MediaDetails.SeasonEpisodeTree.availability",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MediaDetails.SeasonEpisodeTree.availabilityTooltip",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MediaDetails.SeasonEpisodeTree.available",
+      "verdict": "uncertain",
+      "reason": "The source 'available' is a single word, likely a status label. The target 'están disponibles' is a full verb phrase. Without context on how this string is rendered (e.g., if it's part of a larger sentence like 'X episodes are [available]'), the translation might be grammatically correct but stylistically inconsistent with other status labels which are typically adjectives/nouns. However, if it's a standalone status, 'Disponible' or 'Disponibles' would be more consistent. Given the ambiguity of usage, it's uncertain."
+    },
+    {
+      "id": "components.MediaDetails.SeasonEpisodeTree.availableInLibrary",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MediaDetails.SeasonEpisodeTree.chooseStartingEpisode",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MediaDetails.SeasonEpisodeTree.clearSelection",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MediaDetails.SeasonEpisodeTree.clearSelectionAction",
+      "verdict": "correct",
+      "target": "Limpiar selección",
+      "confidence": "high",
+      "reason": "'Selección clara' is a literal translation of 'Clear Selection' but is not a standard UI term in Spanish. 'Limpiar selección' or 'Borrar selección' is the natural phrasing for clearing a selection."
+    },
+    {
+      "id": "components.MediaDetails.SeasonEpisodeTree.collapseAll",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MediaDetails.SeasonEpisodeTree.collapseSeason",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MediaDetails.SeasonEpisodeTree.deselect",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MediaDetails.SeasonEpisodeTree.deselectAllEpisodes",
+      "verdict": "uncertain",
+      "reason": "The source 'Deselect all {selectionDescription} episodes' implies {selectionDescription} is an adjective or modifier (e.g., 'available'). The target 'Deseleccionar todos los episodios que {selectionDescription}' assumes {selectionDescription} is a verb phrase or clause (e.g., 'están disponibles'). If {selectionDescription} is a simple adjective like 'disponibles', the target becomes 'Deseleccionar todos los episodios que disponibles' which is grammatically incorrect. The source structure suggests {selectionDescription} modifies 'episodes' directly. A safer translation might be 'Deseleccionar todos los episodios {selectionDescription}' if {selectionDescription} is an adjective, but without knowing the value of {selectionDescription}, it's uncertain. However, looking at other strings, 'available' is translated as 'están disponibles' in one place and 'disponible' in another. If {selectionDescription} is 'available', the source is 'Deselect all available episodes'. The target 'Deseleccionar todos los episodios que disponibles' is bad. It should likely be 'Deseleccionar todos los episodios disponibles'. But since {selectionDescription} is a placeholder, the translation must be robust. If {selectionDescription} is a verb phrase, 'que' is correct. If it's an adjective, it's wrong. Given the ambiguity, uncertain."
+    },
+    {
+      "id": "components.MediaDetails.SeasonEpisodeTree.deselectEpisode",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MediaDetails.SeasonEpisodeTree.deselectEveryEpisode",
+      "verdict": "uncertain",
+      "reason": "Similar to deselectAllEpisodes, the use of 'que {selectionDescription}' assumes a clause. If {selectionDescription} is an adjective, this is grammatically incorrect. Uncertain without knowing the placeholder content."
+    },
+    {
+      "id": "components.MediaDetails.SeasonEpisodeTree.deselectSeasonEpisodes",
+      "verdict": "uncertain",
+      "reason": "Similar issue with 'que {selectionDescription}'. If {selectionDescription} is an adjective, the grammar is broken. Uncertain."
+    },
+    {
+      "id": "components.MediaDetails.SeasonEpisodeTree.episodeListLabel",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MediaDetails.SeasonEpisodeTree.episodeNotWatched",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MediaDetails.SeasonEpisodeTree.episodeNumber",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MediaDetails.SeasonEpisodeTree.episodeNumberTooltip",
+      "verdict": "keep"
+    }
+  ],
+  "decisionsSha256": "3c64c8ed6ce16517e2c61591d5ead107edd1f64c4e1358f816f1a4eb6aefa920",
+  "rawResponseSha256": "c9aca73e1a8faf7f40cbbd7fe44971f8956192afa69d9372aa2ddc64e0b85ba8",
+  "rawResponseFile": "/mnt/disks/scratch/task-scratch/seerrng-review-window-650-700-422072-20261102/semantic-output/responses/existing-es-client-0065-attempt-1.json"
+}

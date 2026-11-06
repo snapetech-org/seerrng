@@ -1,0 +1,231 @@
+{
+  "schemaVersion": 1,
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "head": "6ff9de1c39a19fe9c508f09e0f6a885022632d8b",
+  "tree": "68d7525714b3628bbe7b69701d8be08add152832",
+  "branch": "codex/seerrng-localization-overhaul-20261028",
+  "baseHead": "221d8e0d542802da7529cd272c928cc747677e5c",
+  "livePullRequest": {
+    "state": "OPEN",
+    "isDraft": true,
+    "mergeStateStatus": "CLEAN",
+    "headRefOid": "6ff9de1c39a19fe9c508f09e0f6a885022632d8b",
+    "headRefName": "codex/seerrng-localization-overhaul-20261028",
+    "baseRefOid": "221d8e0d542802da7529cd272c928cc747677e5c"
+  },
+  "sourceCatalog": {
+    "path": "src/i18n/locale/en.json",
+    "blob": "12e04a118c30b71b3714291adeaf9fdb2735cee4",
+    "bytes": 835513,
+    "sha256": "75ff3c90b52aedd636a506281ffbd6fb2d3739c61294b6008a517f17647e2316",
+    "keyCount": 9494
+  },
+  "sourceIdPositionRange": [
+    1200,
+    1299
+  ],
+  "sourceIdCount": 100,
+  "sourceIdWindowBoundaryIds": {
+    "1200": "components.EditionCompare.unabridged",
+    "1299": "components.Franchise.open"
+  },
+  "previousWindow": {
+    "manifest": "/mnt/disks/scratch/task-scratch/seerrng-pr418-1000-1099-20261102/manifest.json",
+    "sourceIdPositionRange": [
+      1000,
+      1099
+    ],
+    "nonOverlapping": true
+  },
+  "targetLocales": [
+    "ar",
+    "de",
+    "es",
+    "fr",
+    "hi",
+    "id",
+    "ja",
+    "ko",
+    "pt-BR",
+    "vi",
+    "zh-CN",
+    "zh-TW"
+  ],
+  "targetCellCount": 1200,
+  "targetCatalogs": {
+    "ar": {
+      "path": "src/i18n/locale/ar.json",
+      "blob": "249629d14d44a0180403e4247f262497039476bf",
+      "bytes": 1041546,
+      "sha256": "819e321f5409ad397cb33755c59fb6f99260fe5419bc66b27240402010c3db6a",
+      "keyCount": 9494
+    },
+    "de": {
+      "path": "src/i18n/locale/de.json",
+      "blob": "9ff51fc138ffcdc5332c74b45463d09ef9cd0fe9",
+      "bytes": 926463,
+      "sha256": "4e06e3eba20964012e17582bdcc2f609c79a355dbc7c389211999cfd46e264c6",
+      "keyCount": 9494
+    },
+    "es": {
+      "path": "src/i18n/locale/es.json",
+      "blob": "a5c9a969195bb11fc9060ea27e6deaa2b0615306",
+      "bytes": 921875,
+      "sha256": "28d29829476c92c1cee713e17376c2fb72ed4bbc1e69cbfccbd50c76ff4ed383",
+      "keyCount": 9494
+    },
+    "fr": {
+      "path": "src/i18n/locale/fr.json",
+      "blob": "11a5e13a575c267c4abb568f36b428319f0ccf71",
+      "bytes": 938525,
+      "sha256": "0aa9776cea9a2567e08a838fc2ed52b578bdf779d1206625ca5244f25f4c3c37",
+      "keyCount": 9494
+    },
+    "hi": {
+      "path": "src/i18n/locale/hi.json",
+      "blob": "7f7686a0fbec241d50dab981fb90c35170775ad0",
+      "bytes": 1366890,
+      "sha256": "ec966dd59d51dc19627caa92348e7ce74d426f767bb0a255a9b9e70b65432ef4",
+      "keyCount": 9494
+    },
+    "id": {
+      "path": "src/i18n/locale/id.json",
+      "blob": "3b2693d67ab9b60203360c3f4004e9bd9642224b",
+      "bytes": 866243,
+      "sha256": "367b5f018482d7187cacbe814d747180b54687f0f6205eb13d5636b9d9dd87aa",
+      "keyCount": 9494
+    },
+    "ja": {
+      "path": "src/i18n/locale/ja.json",
+      "blob": "28c8eea927c17b42aca4ac0b741ae9057b906b85",
+      "bytes": 1014323,
+      "sha256": "1bffba3eead107cf83654e0db5001eb3278e18a1ab58095eb2554ba6bad54a6c",
+      "keyCount": 9494
+    },
+    "ko": {
+      "path": "src/i18n/locale/ko.json",
+      "blob": "864c07522a857cb95e94216d8ae541e01b650829",
+      "bytes": 930854,
+      "sha256": "c7515c726d1b14f64bef66d65416e5ac93c48ea87b651daae0fdd878cf425b87",
+      "keyCount": 9494
+    },
+    "pt-BR": {
+      "path": "src/i18n/locale/pt_BR.json",
+      "blob": "823f2ab837d29a1412f00754119868462b3dd596",
+      "bytes": 909678,
+      "sha256": "19b5a8e088ea4792bf131fede8ea644f8534a84b3b21e4dc85e81706045225d6",
+      "keyCount": 9494
+    },
+    "vi": {
+      "path": "src/i18n/locale/vi.json",
+      "blob": "61d66c3b569a2d268c239271881569bf8aab36df",
+      "bytes": 965642,
+      "sha256": "8fe938da34249088ee18525b756d7b6cb5e44d7c1f73738ed182766780fb7566",
+      "keyCount": 9494
+    },
+    "zh-CN": {
+      "path": "src/i18n/locale/zh_Hans.json",
+      "blob": "81d00f11a98565dba1e818566c1aa91d58e79f79",
+      "bytes": 810350,
+      "sha256": "9a3b27fe510d0fbc9c17f1e1d85717f1ce93e9c12d492d9b893753b1033e1b6e",
+      "keyCount": 9494
+    },
+    "zh-TW": {
+      "path": "src/i18n/locale/zh_Hant.json",
+      "blob": "f194c288a2ade925cace8808c43047573cbfc22a",
+      "bytes": 810845,
+      "sha256": "c3fc92210cf5cba48b6eafd02cf723b41879efb99849d9d049c9f07e513029ce",
+      "keyCount": 9494
+    }
+  },
+  "priorSpanishDispositionCount": 0,
+  "priorSpanishSourceIds": [],
+  "priorDispositionEvidence": "prior-disposition-boundary.json",
+  "sourceContextRows": 100,
+  "callerReferences": 207,
+  "uniqueCallerFiles": 5,
+  "uniqueCallerLines": 206,
+  "semanticDispositions": {
+    "counts": {
+      "accept-current": 1095,
+      "propose-correction": 78,
+      "propose-refinement": 27
+    },
+    "candidateCount": 105,
+    "byLocale": {
+      "ar": {
+        "accept-current": 87,
+        "propose-correction": 12,
+        "propose-refinement": 1
+      },
+      "de": {
+        "accept-current": 100
+      },
+      "es": {
+        "accept-current": 95,
+        "propose-correction": 5
+      },
+      "fr": {
+        "accept-current": 93,
+        "propose-correction": 6,
+        "propose-refinement": 1
+      },
+      "hi": {
+        "accept-current": 85,
+        "propose-correction": 10,
+        "propose-refinement": 5
+      },
+      "id": {
+        "accept-current": 94,
+        "propose-correction": 6
+      },
+      "ja": {
+        "accept-current": 83,
+        "propose-correction": 9,
+        "propose-refinement": 8
+      },
+      "ko": {
+        "accept-current": 90,
+        "propose-correction": 7,
+        "propose-refinement": 3
+      },
+      "pt-BR": {
+        "accept-current": 92,
+        "propose-correction": 3,
+        "propose-refinement": 5
+      },
+      "vi": {
+        "accept-current": 94,
+        "propose-correction": 2,
+        "propose-refinement": 4
+      },
+      "zh-CN": {
+        "accept-current": 92,
+        "propose-correction": 8
+      },
+      "zh-TW": {
+        "accept-current": 90,
+        "propose-correction": 10
+      }
+    },
+    "inputAttestationMismatches": 0,
+    "placeholderFailures": 0,
+    "markupFailures": 0,
+    "protectedLiteralFailures": 0
+  },
+  "definitionOnlySourceIds": [
+    "components.ExternalMediaManageSlideOver.book",
+    "components.ExternalMediaManageSlideOver.comic",
+    "components.ExternalMediaManageSlideOver.magazine",
+    "components.ExternalMediaManageSlideOver.manageModalIssues",
+    "components.ExternalMediaManageSlideOver.music",
+    "components.Following.FollowButton.unfollow"
+  ],
+  "definitionOnlyTargetCellCount": 72,
+  "localeReviewSubpackets": {
+    "locale-a": "ar,de,es,fr,hi,id",
+    "locale-b": "ja,ko,pt-BR,vi,zh-CN,zh-TW"
+  },
+  "narratorConsistencyAddendumRows": 12
+}

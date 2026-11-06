@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "head": "1ca6ec2d5a0e9ef8000c69997e75648a8ccaf06e",
+  "tree": "6a51f3fb1d1f65c12bfe82bf47834626aa364488",
+  "window": "W3720-W3739",
+  "count": 1,
+  "rows": [
+    {
+      "position": 3724,
+      "locale": "hi",
+      "sourceId": "components.Settings.KapowarrModal.hostname",
+      "requiredLiterals": [
+        "IP"
+      ],
+      "missingLiterals": [
+        "IP"
+      ]
+    }
+  ],
+  "note": "Baseline flags only; no replacement target or disposition is included."
+}

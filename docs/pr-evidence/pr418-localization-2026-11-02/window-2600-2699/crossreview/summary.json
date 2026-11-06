@@ -1,0 +1,124 @@
+{
+  "additionalCurrentValueFindings": 19,
+  "browserReviewPerformed": false,
+  "callerContextRows": 100,
+  "callerPinErrors": 0,
+  "callerReferenceCount": 369,
+  "crossReviewDispositionCounts": {
+    "accept-current": 120,
+    "accept-primary-proposal": 170,
+    "propose-correction": 15,
+    "propose-refinement": 4,
+    "revise-primary-proposal": 5
+  },
+  "crossreviewedRows": 314,
+  "draft": true,
+  "exactCatalogReadbacks": 1200,
+  "exactHead": "9242898e23f7f25d515d10b5b0b51df322e395fb",
+  "exactTree": "06cfd94ee611684c33e9e78af9d8bb60a2e98825",
+  "liveHeadTreeRemoteBranchAndWorktreeReattested": true,
+  "locales": [
+    "ar",
+    "de",
+    "es",
+    "fr",
+    "hi",
+    "id",
+    "ja",
+    "ko",
+    "pt_BR",
+    "vi",
+    "zh_Hans",
+    "zh_Hant"
+  ],
+  "nativeSpeakerReviewOutstanding": true,
+  "nativeSpeakerSignoffClaimed": false,
+  "outputDirectory": "/mnt/disks/scratch/task-scratch/seerrng-pr418-window-2600-2699-crossreview-20261102",
+  "perLocale": {
+    "ar": {
+      "accept-current": 10,
+      "accept-primary-proposal": 16,
+      "propose-correction": 1,
+      "revise-primary-proposal": 2
+    },
+    "de": {
+      "accept-current": 13,
+      "accept-primary-proposal": 1,
+      "propose-refinement": 1
+    },
+    "es": {
+      "accept-current": 11,
+      "accept-primary-proposal": 16,
+      "propose-correction": 1
+    },
+    "fr": {
+      "accept-current": 10,
+      "accept-primary-proposal": 8,
+      "propose-correction": 1
+    },
+    "hi": {
+      "accept-current": 10,
+      "accept-primary-proposal": 20,
+      "propose-correction": 2
+    },
+    "id": {
+      "accept-current": 10,
+      "accept-primary-proposal": 21,
+      "propose-correction": 1
+    },
+    "ja": {
+      "accept-current": 11,
+      "accept-primary-proposal": 10
+    },
+    "ko": {
+      "accept-current": 10,
+      "accept-primary-proposal": 19,
+      "propose-correction": 2
+    },
+    "pt_BR": {
+      "accept-current": 11,
+      "accept-primary-proposal": 13,
+      "propose-refinement": 1
+    },
+    "vi": {
+      "accept-current": 8,
+      "accept-primary-proposal": 24,
+      "propose-correction": 3,
+      "revise-primary-proposal": 2
+    },
+    "zh_Hans": {
+      "accept-current": 8,
+      "accept-primary-proposal": 10,
+      "propose-correction": 2,
+      "propose-refinement": 1
+    },
+    "zh_Hant": {
+      "accept-current": 8,
+      "accept-primary-proposal": 12,
+      "propose-correction": 2,
+      "propose-refinement": 1,
+      "revise-primary-proposal": 1
+    }
+  },
+  "placeholderOrMarkupFailures": 0,
+  "primaryPacketChecksumsValid": true,
+  "primaryProposalCells": 175,
+  "primaryProposalOutcomes": {
+    "accept-primary-proposal": 170,
+    "revise-primary-proposal": 5
+  },
+  "priorExactDispositionsReused": 0,
+  "protectedLiteralFailures": 0,
+  "pullRequest": 418,
+  "repository": "snapetech-org/SeerrNG",
+  "repositoryOrPrEdited": false,
+  "sourceBoundaryAndOrderVerified": true,
+  "sourceIds": 100,
+  "sourcePositions": [
+    2600,
+    2699
+  ],
+  "state": "OPEN",
+  "stratifiedAcceptCurrentSampleRows": 120,
+  "testsBuildsScansCiRun": false
+}

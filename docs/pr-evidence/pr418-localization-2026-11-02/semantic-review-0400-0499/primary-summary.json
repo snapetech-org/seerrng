@@ -1,0 +1,98 @@
+{
+  "blockers": [],
+  "cellCount": 1200,
+  "correctionTargetsProposed": 374,
+  "liveHead": "d1137d06ffb5af57ef599ac9bf495aff2a990a7b",
+  "liveTree": "0aa22f0bb43e3e30d216e2ae19939220e05f04f7",
+  "locales": [
+    "ar",
+    "de",
+    "es",
+    "fr",
+    "hi",
+    "id",
+    "ja",
+    "ko",
+    "pt-BR",
+    "vi",
+    "zh-CN",
+    "zh-TW"
+  ],
+  "nativeSpeakerReviewRequired": true,
+  "outputFiles": [
+    "semantic-review-ledger.jsonl",
+    "summary.json"
+  ],
+  "priorDispositionPreservedCount": 10,
+  "pullRequest": 418,
+  "pullRequestStateAtReview": "OPEN/DRAFT",
+  "repository": "snapetech-org/seerrng",
+  "reviewCountsByLocale": {
+    "ar": {
+      "accept-current": 54,
+      "correction-needed": 46
+    },
+    "de": {
+      "accept-current": 79,
+      "correction-needed": 11,
+      "prior-disposition-preserved": 10
+    },
+    "es": {
+      "accept-current": 68,
+      "correction-needed": 32
+    },
+    "fr": {
+      "accept-current": 87,
+      "correction-needed": 13
+    },
+    "hi": {
+      "accept-current": 82,
+      "correction-needed": 18
+    },
+    "id": {
+      "accept-current": 75,
+      "correction-needed": 25
+    },
+    "ja": {
+      "accept-current": 72,
+      "correction-needed": 28
+    },
+    "ko": {
+      "accept-current": 67,
+      "correction-needed": 33
+    },
+    "pt-BR": {
+      "accept-current": 67,
+      "correction-needed": 33
+    },
+    "vi": {
+      "accept-current": 54,
+      "correction-needed": 46
+    },
+    "zh-CN": {
+      "accept-current": 60,
+      "correction-needed": 40
+    },
+    "zh-TW": {
+      "accept-current": 51,
+      "correction-needed": 49
+    }
+  },
+  "reviewMethod": "Bounded semantic review against the packet's pinned English source, current target, exact caller context, and routing disposition. No catalog edits or PR actions.",
+  "reviewStatusCounts": {
+    "accept-current": 816,
+    "correction-needed": 374,
+    "prior-disposition-preserved": 10
+  },
+  "routingDispositions": {
+    "new-semantic-review-required": 1190,
+    "prior-correction-applied-exact-target-match": 10
+  },
+  "schemaVersion": 1,
+  "sourceIdPositions": {
+    "count": 100,
+    "startInclusive": 400,
+    "stopExclusive": 500
+  },
+  "window": "W700-749"
+}

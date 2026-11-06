@@ -537,7 +537,7 @@ const MovieDetailsLayout = ({
                     {featuredCrewGroups.map((group, groupIndex) => (
                       <dl
                         key={`featured-crew-${groupIndex}`}
-                        className={`media-detail-rows grid min-w-0 grid-cols-[max-content_minmax(0,1fr)] content-start gap-x-3 text-xs ${groupIndex > 0 ? `media-detail-column-divider ${groupIndex === 1 ? 'card:pr-3' : ''}` : 'card:pr-3'}`}
+                        className={`media-detail-rows grid min-w-0 grid-cols-[max-content_minmax(0,1fr)] content-start gap-x-3 text-xs ${groupIndex > 0 ? `media-detail-column-divider ${groupIndex === 1 ? 'card:pe-3' : ''}` : 'card:pe-3'}`}
                       >
                         {group.map((person) => (
                           <div

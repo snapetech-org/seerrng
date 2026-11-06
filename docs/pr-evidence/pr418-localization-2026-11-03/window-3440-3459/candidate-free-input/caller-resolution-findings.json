@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "head": "049b23526911e6cf6b1a0b2c397d155eb51d5ddf",
+  "tree": "0a83d4f6bcea1367f218efb3898b15d2b0f4f140",
+  "callerFile": "src/components/Requests/index.tsx",
+  "callerFileSha256": "25b612dcda274fe2ea64b76f169587e153b04a675c9b8cd817814d9fbfde5360",
+  "findings": [
+    {
+      "sourceId": "components.Requests.statusUpdated",
+      "sourceKey": "statusUpdated",
+      "directMessageReferences": [],
+      "dynamicLabelMappings": [],
+      "typedStageMappings": [],
+      "dynamicRendererReferences": [],
+      "resolution": "no direct or statically mapped rendering found in pinned Requests component",
+      "scope": "Pinned Requests component source only; this is caller evidence, not a translation disposition."
+    }
+  ]
+}

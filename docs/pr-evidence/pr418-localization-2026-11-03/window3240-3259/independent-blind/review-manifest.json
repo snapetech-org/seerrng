@@ -1,0 +1,15 @@
+{
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "window": "W3240-W3259",
+  "head": "d514838bbcca18d7255ba04a0266c4a78b41a499",
+  "tree": "3c90e26e7e04e4e008ed43f4004dbb0048357f92",
+  "blindInputManifestSha256": "7811e601bd41292c99066948f6807d390b90b12cc3e487b4074e0f8df5917b9b",
+  "sourceCurrentCellCount": 240,
+  "callerContextRows": 108,
+  "decisions": 240,
+  "primaryProposalsRead": false,
+  "repositoryOrApiInspected": false,
+  "nativeSpeakerApproval": false,
+  "blindInputChecksumListSha256": "cdb641f171f9118dc8080d0aab2d8df1b4a2acdceadbf3fbcafe39f6ecc7f84d"
+}

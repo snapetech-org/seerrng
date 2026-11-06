@@ -1,0 +1,56 @@
+{
+  "repository": "snapetech-org/SeerrNG",
+  "pullRequest": 418,
+  "head": "2be00354833160f0681d5cd779a1b1be37a63a4b",
+  "tree": "af588a1ee34f768ae37a29dccd5a508595b7199d",
+  "sourceOrderSha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+  "englishCatalogSha256": "75ff3c90b52aedd636a506281ffbd6fb2d3739c61294b6008a517f17647e2316",
+  "callerFileSha256": "50752a4099e6067a95a9278612bcb92e487de9fe6a6acbb8d05d64c7ba223a54",
+  "range": [
+    3200,
+    3219
+  ],
+  "localeOrder": [
+    "es",
+    "zh_Hans",
+    "hi",
+    "de",
+    "ja",
+    "fr",
+    "pt_BR",
+    "ar",
+    "ko",
+    "zh_Hant",
+    "vi",
+    "id"
+  ],
+  "previousWindow": {
+    "range": [
+      3180,
+      3199
+    ],
+    "completed": true,
+    "appliedRows": 95,
+    "readbackSha256": "3967b686a8cc5e93116aaedf5e97abcfa2d63ec6ae952e841836a7205d1a9774",
+    "appliedAtCommit": "c4b1ca046",
+    "verification": "root adjudication and apply-readback record; source window follows immediately"
+  },
+  "createdBy": "primary semantic review (machine-assisted)",
+  "nativeSpeakerApproval": false,
+  "livePrStart": {
+    "state": "open",
+    "draft": true,
+    "head": "2be00354833160f0681d5cd779a1b1be37a63a4b",
+    "headRef": "codex/seerrng-localization-overhaul-20261028",
+    "baseRef": "main",
+    "tree": "af588a1ee34f768ae37a29dccd5a508595b7199d"
+  },
+  "livePrEnd": {
+    "state": "open",
+    "draft": true,
+    "head": "2be00354833160f0681d5cd779a1b1be37a63a4b",
+    "headRef": "codex/seerrng-localization-overhaul-20261028",
+    "baseRef": "main",
+    "tree": "af588a1ee34f768ae37a29dccd5a508595b7199d"
+  }
+}

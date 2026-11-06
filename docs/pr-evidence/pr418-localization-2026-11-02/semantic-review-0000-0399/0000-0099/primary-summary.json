@@ -1,0 +1,37 @@
+{
+  "artifacts": {
+    "ledger": "/mnt/disks/scratch/task-scratch/seerrng-pr418-w700-749-review-20261102/reviews/agent-0000-0099/semantic-review-ledger.jsonl",
+    "summary": "/mnt/disks/scratch/task-scratch/seerrng-pr418-w700-749-review-20261102/reviews/agent-0000-0099/summary.json"
+  },
+  "cellRowCount": 1200,
+  "correctionCount": 373,
+  "correctionRows": 373,
+  "liveHead": "d1137d06ffb5af57ef599ac9bf495aff2a990a7b",
+  "liveTree": "0aa22f0bb43e3e30d216e2ae19939220e05f04f7",
+  "localeCount": 12,
+  "nativeSpeakerApproval": false,
+  "notes": [
+    "Rows routed before this bounded review are carried forward exactly and were not semantically adjudicated.",
+    "Caller contexts are copied from the pinned source-contexts.jsonl packet.",
+    "No repository files, workflows, catalogs, builds, tests, scans, CI, or external review surfaces were modified or invoked."
+  ],
+  "packetChecksumManifest": "/mnt/disks/scratch/task-scratch/seerrng-pr418-w700-749-review-20261102/output/SHA256SUMS",
+  "packetChecksumVerification": "passed",
+  "pullRequest": 418,
+  "pullRequestDraft": true,
+  "pullRequestState": "OPEN",
+  "repository": "snapetech-org/seerrng",
+  "reviewCounts": {
+    "accept-current": 797,
+    "correction-needed": 373,
+    "hold": 0,
+    "prior-disposition-preserved": 30
+  },
+  "schemaVersion": 1,
+  "sourceIdCount": 100,
+  "sourceIdPositions": [
+    0,
+    99
+  ],
+  "window": "W700-749"
+}

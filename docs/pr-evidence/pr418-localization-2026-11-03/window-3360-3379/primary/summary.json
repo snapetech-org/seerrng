@@ -1,0 +1,51 @@
+{
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "window": "W3360-W3379",
+  "exactHead": "1586a249e3f86deb7b9410cff50223e5f76209ff",
+  "exactTree": "d620a906353e9724ba28986103c76b7792c56099",
+  "inputManifestSha256": "791fb04394874e7a1bcc1bbcf726d7772b2039bc30815d44e769d60d05484a8f",
+  "sourceCount": 20,
+  "localeCount": 12,
+  "cellCount": 240,
+  "callerContextRows": 54,
+  "callerHoldIds": [
+    "components.Requests.mediaType",
+    "components.Requests.mediaTypeValue",
+    "components.Requests.minutes"
+  ],
+  "callerHoldCells": 36,
+  "dispositions": {
+    "accept-current": 190,
+    "correction": 5,
+    "hold-context": 36,
+    "refinement": 9
+  },
+  "changesByLocale": {
+    "ar": 3,
+    "fr": 2,
+    "id": 2,
+    "ja": 2,
+    "pt_BR": 2,
+    "zh_Hans": 2,
+    "zh_Hant": 1
+  },
+  "proposedChangeCount": 14,
+  "placeholderMismatches": 0,
+  "markupMismatches": 0,
+  "numericTokenMismatches": 0,
+  "icuStructureMismatches": 0,
+  "protectedLiteralMismatches": 0,
+  "allTargetHashesPinned": true,
+  "catalogKeyCount": 9494,
+  "catalogCountIncludingEnglish": 13,
+  "orderedLocaleKeySequencesMatch": false,
+  "orderedKeyHashGroupCount": 2,
+  "nativeSpeakerApproval": false,
+  "headedBrowserAcceptance": false,
+  "repositoryOrPullRequestMutated": false,
+  "testsBuildsScansCI": false,
+  "workflowChanges": false,
+  "mergeReleaseTag": false,
+  "reviewScope": "machine-assisted candidate-free primary semantic review; not qualified native-speaker approval"
+}

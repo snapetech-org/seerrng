@@ -1,4 +1,4 @@
-import { IssueStatus, IssueTypeName } from '@server/constants/issue';
+import { IssueStatus } from '@server/constants/issue';
 import { MediaStatus } from '@server/constants/media';
 import { getIntl } from '@server/i18n';
 import globalMessages from '@server/i18n/globalMessages';
@@ -24,8 +24,15 @@ import {
   BaseAgent,
   NOTIFICATION_DELIVERY_CONCURRENCY,
   NOTIFICATION_HTTP_OPTIONS,
+  formatNotificationTitle,
+  getIssueTypeLabel,
+  getLocalizedNotificationPayload,
   getNotificationActionLabel,
   getNotificationActionUrl,
+  getNotificationCommentFrom,
+  getNotificationContent,
+  getNotificationExtras,
+  isolateBidiText,
 } from './agent';
 
 interface TelegramMessagePayload {
@@ -103,6 +110,9 @@ class TelegramAgent
     locale?: AvailableLocale
   ): Partial<TelegramMessagePayload | TelegramPhotoPayload> {
     const intl = getIntl(locale);
+    payload = getLocalizedNotificationPayload(payload, intl);
+    const content = getNotificationContent(payload, intl);
+    const extras = getNotificationExtras(payload, intl);
     const { applicationUrl, applicationTitle } =
       getExternalRuntimeConfig().main;
     const { embedPoster } = this.getSettings();
@@ -134,12 +144,12 @@ class TelegramAgent
     /* eslint-disable no-useless-escape */
     appendEscaped(
       '\*',
-      payload.event ? `${payload.event} - ${payload.subject}` : payload.subject,
+      formatNotificationTitle(content.event, payload.subject),
       '\*',
       256
     );
-    if (payload.message && !payload.comment) {
-      appendEscaped('\n', payload.message, '', Math.max(1, maxLength - 512));
+    if (content.message && !payload.comment) {
+      appendEscaped('\n', content.message, '', Math.max(1, maxLength - 512));
     }
 
     if (payload.request) {
@@ -147,7 +157,7 @@ class TelegramAgent
         `\n\n\*${escapeTelegramMarkdownText(
           intl.formatMessage(globalMessages.requestedBy)
         )}:\* `,
-        payload.request.requestedBy.displayName
+        isolateBidiText(payload.request.requestedBy.displayName)
       );
 
       let status = '';
@@ -190,9 +200,7 @@ class TelegramAgent
     } else if (payload.comment) {
       appendEscaped(
         `\n\n\*${escapeTelegramMarkdownText(
-          intl.formatMessage(globalMessages.commentFrom, {
-            userName: payload.comment.user.displayName,
-          })
+          getNotificationCommentFrom(payload.comment.user.displayName, intl)
         )}:\* `,
         payload.comment.message,
         '',
@@ -203,13 +211,13 @@ class TelegramAgent
         `\n\n\*${escapeTelegramMarkdownText(
           intl.formatMessage(globalMessages.reportedBy)
         )}:\* `,
-        payload.issue.createdBy.displayName
+        isolateBidiText(payload.issue.createdBy.displayName)
       );
       appendEscaped(
         `\n\*${escapeTelegramMarkdownText(
           intl.formatMessage(globalMessages.issueType)
         )}:\* `,
-        IssueTypeName[payload.issue.issueType]
+        getIssueTypeLabel(intl, payload.issue.issueType)
       );
       appendEscaped(
         `\n\*${escapeTelegramMarkdownText(
@@ -221,7 +229,7 @@ class TelegramAgent
       );
     }
 
-    for (const extra of payload.extra ?? []) {
+    for (const extra of extras) {
       appendEscaped(
         `\n\*${escapeTelegramMarkdownText(extra.name, 128)}:\* `,
         extra.value,

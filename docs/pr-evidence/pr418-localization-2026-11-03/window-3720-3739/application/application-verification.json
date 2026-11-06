@@ -1,0 +1,18 @@
+{
+  "schema": "seerrng-w3720-application-result/v1",
+  "result": "PASS",
+  "parentHead": "1ca6ec2d5a0e9ef8000c69997e75648a8ccaf06e",
+  "parentTree": "6a51f3fb1d1f65c12bfe82bf47834626aa364488",
+  "cellsReadBack": 240,
+  "selectedChanges": 50,
+  "corrections": 34,
+  "refinements": 16,
+  "acceptCurrent": 190,
+  "newWindowHolds": 0,
+  "carriedHoldsPreserved": 12,
+  "catalogFilesChanged": 12,
+  "catalogKeyCountsAndOrderPreserved": true,
+  "nonTargetValuesPreserved": true,
+  "selectedTokenFailures": 0,
+  "workflowsChanged": false
+}

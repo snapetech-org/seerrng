@@ -1,0 +1,31 @@
+{
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "title": "feat(i18n): strengthen SeerrNG localization",
+  "state": "open",
+  "merged": false,
+  "draft": true,
+  "baseRef": "main",
+  "baseSha": "221d8e0d542802da7529cd272c928cc747677e5c",
+  "headRef": "codex/seerrng-localization-overhaul-20261028",
+  "head": "049b23526911e6cf6b1a0b2c397d155eb51d5ddf",
+  "headTree": "0a83d4f6bcea1367f218efb3898b15d2b0f4f140",
+  "remoteBranchRef": "refs/heads/codex/seerrng-localization-overhaul-20261028",
+  "remoteBranchHead": "049b23526911e6cf6b1a0b2c397d155eb51d5ddf",
+  "remotePullRef": "refs/pull/418/head",
+  "remotePullRefHead": "049b23526911e6cf6b1a0b2c397d155eb51d5ddf",
+  "pinsAgree": true,
+  "githubPullRequestApiHead": "049b23526911e6cf6b1a0b2c397d155eb51d5ddf",
+  "githubPullRequestApiState": "open",
+  "githubPullRequestApiDraft": true,
+  "githubPullRequestApiVerifiedAtUTC": "2026-11-03 09:23:05 UTC",
+  "verifiedAtUTC": "2026-11-03T09:23:16+00:00",
+  "verificationSources": [
+    "GitHub pull request API metadata",
+    "git ls-remote origin branch and pull refs",
+    "fresh detached worktree HEAD and tree"
+  ],
+  "worktree": "/mnt/disks/scratch/task-worktrees/localization-20261103/seerrng-pr418-w3440-3459-candidate-20261103",
+  "worktreeBranch": "detached",
+  "worktreeClean": true
+}

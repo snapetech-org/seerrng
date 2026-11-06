@@ -1,0 +1,27 @@
+{
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "productCommit": "cb812bd21cf99964a4a7335830294ebdbdc6df34",
+  "productParent": "a456dd66aad34cb23f432cb3c189bb8083bbbe96",
+  "productTree": "c01f6290e7446bfc5f01ae5fe8d1e36b63fc25bf",
+  "changedPaths": [
+    "src/i18n/locale/ar.json",
+    "src/i18n/locale/de.json",
+    "src/i18n/locale/fr.json",
+    "src/i18n/locale/hi.json",
+    "src/i18n/locale/id.json",
+    "src/i18n/locale/zh_Hant.json"
+  ],
+  "catalogOnly": true,
+  "targetCellCount": 240,
+  "updates": 10,
+  "retained": 218,
+  "hashOnlyHolds": 12,
+  "pushedToBranch": "codex/seerrng-localization-overhaul-20261028",
+  "apiBranchAndPullRefsMatch": true,
+  "checkRunCountAtProductHead": 0,
+  "workflowRunCountAtProductHead": 0,
+  "testsBuildsScansCi": false,
+  "workflowPathsChanged": false,
+  "releaseCreated": false
+}

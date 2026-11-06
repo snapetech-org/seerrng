@@ -1,0 +1,332 @@
+{
+  "candidates": {
+    "2300": {
+      "hi": "जब अनुरोधित मीडिया उपलब्ध हो जाए, तो सूचनाएँ भेजें।",
+      "id": "Kirim pemberitahuan saat media yang diminta tersedia.",
+      "ja": "リクエストされたメディアが利用可能になったときに通知を送信します。",
+      "ko": "요청한 미디어를 이용할 수 있게 되면 알림을 보냅니다.",
+      "vi": "Gửi thông báo khi nội dung được yêu cầu có sẵn.",
+      "zh_Hans": "当请求的媒体可用时发送通知。"
+    },
+    "2301": {
+      "hi": "अनुरोध अस्वीकार किया गया",
+      "id": "Permintaan Ditolak",
+      "vi": "Yêu cầu bị từ chối",
+      "zh_Hans": "请求已拒绝"
+    },
+    "2302": {
+      "hi": "जब मीडिया अनुरोध अस्वीकार किए जाएँ, तो सूचनाएँ भेजें।",
+      "zh_Hans": "当媒体请求被拒绝时发送通知。",
+      "zh_Hant": "當媒體請求遭拒時傳送通知。"
+    },
+    "2303": {
+      "id": "Pemrosesan Permintaan Gagal"
+    },
+    "2304": {
+      "hi": "जब मीडिया अनुरोध Radarr, Sonarr, Lidarr या Bookshelf में जोड़ने में विफल हों, तो सूचनाएँ भेजें।",
+      "id": "Kirim pemberitahuan saat permintaan media gagal ditambahkan ke Radarr, Sonarr, Lidarr, atau Bookshelf.",
+      "ja": "メディアリクエストを Radarr、Sonarr、Lidarr、または Bookshelf に追加できなかったときに通知を送信します。"
+    },
+    "2305": {
+      "hi": "अनुमोदन की प्रतीक्षा में अनुरोध",
+      "id": "Permintaan Menunggu Persetujuan"
+    },
+    "2306": {
+      "pt_BR": "Envie notificações quando os usuários enviarem novas solicitações de mídia que exijam aprovação.",
+      "vi": "Gửi thông báo khi người dùng gửi yêu cầu nội dung mới cần được phê duyệt.",
+      "zh_Hans": "当用户提交需要审批的新媒体请求时发送通知。",
+      "zh_Hant": "當使用者提交需要核准的新媒體請求時傳送通知。"
+    },
+    "2307": {
+      "vi": "Loại thông báo"
+    },
+    "2308": {
+      "ar": "تحديثات طلبات البرمجيات",
+      "hi": "सॉफ़्टवेयर अनुरोधों के अपडेट",
+      "ko": "소프트웨어 요청 업데이트",
+      "pt_BR": "Atualizações de solicitações de software",
+      "vi": "Cập nhật về các yêu cầu phần mềm"
+    },
+    "2309": {
+      "hi": "सॉफ़्टवेयर अनुरोधों के लंबित, स्वीकृत, अस्वीकृत या विफल होने पर सूचनाएँ भेजें।",
+      "ja": "承認待ち、承認済み、却下、または処理に失敗したソフトウェアリクエストの通知を送信します。",
+      "ko": "승인을 기다리거나 승인, 거절 또는 처리 실패 상태인 소프트웨어 요청에 대한 알림을 보냅니다.",
+      "vi": "Gửi thông báo về các yêu cầu phần mềm đang chờ phê duyệt, đã được phê duyệt, bị từ chối hoặc xử lý thất bại.",
+      "zh_Hant": "傳送軟體請求的通知：等待核准、已核准、遭拒或處理失敗。"
+    },
+    "2310": {
+      "ar": "البرمجيات المطلوبة متاحة",
+      "de": "Angeforderte Software verfügbar",
+      "hi": "अनुरोधित सॉफ़्टवेयर उपलब्ध",
+      "ja": "リクエストされたソフトウェアが利用可能",
+      "ko": "요청한 소프트웨어 사용 가능",
+      "zh_Hans": "所请求的软件已可用。",
+      "zh_Hant": "所請求的軟體已可用"
+    },
+    "2311": {
+      "ar": "أرسل إشعارًا عندما تكون ROMs وألعاب PC التي طلبتها جاهزة للتنزيل.",
+      "de": "Benachrichtigungen senden, wenn die angeforderten ROMs und PC-Spiele zum Download bereit sind.",
+      "fr": "Envoyer une notification lorsque les ROM et les jeux PC demandés sont prêts à être téléchargés.",
+      "hi": "जब अनुरोधित ROM और PC गेम डाउनलोड के लिए तैयार हों, तो सूचनाएँ भेजें।",
+      "id": "Kirim pemberitahuan ketika ROM dan game PC yang diminta siap diunduh.",
+      "ko": "요청한 ROM과 PC 게임을 다운로드할 수 있게 되면 알림을 보냅니다.",
+      "pt_BR": "Envie notificações quando os ROMs e jogos de PC solicitados estiverem prontos para download.",
+      "vi": "Gửi thông báo khi ROM và trò chơi PC bạn yêu cầu đã sẵn sàng để tải xuống.",
+      "zh_Hans": "当请求的 ROM 和 PC 游戏准备好下载时发送通知。",
+      "zh_Hant": "當您請求的 ROM 和 PC 遊戲準備好下載時傳送通知。"
+    },
+    "2312": {
+      "hi": "जब आपका सॉफ़्टवेयर अनुरोध अनुमोदन की प्रतीक्षा कर रहा हो या स्वीकृत, अस्वीकृत अथवा विफल हो जाए, तो आपको सूचना मिलेगी।",
+      "ja": "ソフトウェアリクエストが承認待ち、承認済み、却下、または処理失敗になったときに通知を受け取ります。",
+      "ko": "소프트웨어 요청이 승인을 기다리거나 승인, 거절 또는 처리 실패 상태가 되면 알림을 받습니다.",
+      "zh_Hant": "當您的軟體請求等待核准、已獲核准、遭拒或處理失敗時，您會收到通知。"
+    },
+    "2313": {
+      "hi": "आपके द्वारा रिपोर्ट की गई समस्याओं पर नई टिप्पणियाँ आने पर आपको सूचना मिलेगी।",
+      "ja": "自分が報告したチケットに新しいコメントが追加されたときに通知を受け取ります。"
+    },
+    "2315": {
+      "id": "Dapatkan pemberitahuan saat masalah yang Anda laporkan dibuka kembali."
+    },
+    "2316": {
+      "ar": "تلقَّ إشعارًا عند حل المشكلات التي أبلغت عنها.",
+      "hi": "जब आपके द्वारा रिपोर्ट की गई समस्याएँ हल हो जाएँ, तो आपको सूचना मिलेगी।",
+      "id": "Dapatkan pemberitahuan saat masalah yang Anda laporkan diselesaikan."
+    },
+    "2317": {
+      "vi": "Nhận thông báo khi người dùng khác gửi yêu cầu nội dung mới và các yêu cầu đó được tự động phê duyệt.",
+      "zh_Hans": "当其他用户提交新的媒体请求且这些请求自动获批时，您会收到通知。",
+      "zh_Hant": "當其他使用者提交新的媒體請求且這些請求自動獲准時，您會收到通知。"
+    },
+    "2318": {
+      "ar": "تلقَّ إشعارًا عند الموافقة على طلبات الوسائط الخاصة بك.",
+      "vi": "Nhận thông báo khi các yêu cầu nội dung của bạn được phê duyệt.",
+      "zh_Hans": "当您的媒体请求获批时，您会收到通知。",
+      "zh_Hant": "當您的媒體請求獲准時，您會收到通知。"
+    },
+    "2319": {
+      "ar": "تلقَّ إشعارًا عندما يصبح المحتوى الذي طلبته متاحًا.",
+      "ja": "リクエストしたメディアが利用可能になったときに通知を受け取ります。",
+      "vi": "Nhận thông báo khi nội dung bạn yêu cầu có sẵn.",
+      "zh_Hant": "當您請求的媒體可供使用時，您會收到通知。"
+    },
+    "2320": {
+      "hi": "जब आपका मीडिया अनुरोध अस्वीकार किया जाए, तो आपको सूचना मिलेगी।"
+    },
+    "2321": {
+      "hi": "जब मीडिया अनुरोध Radarr, Sonarr, Lidarr या Bookshelf में जोड़ने में विफल हों, तो आपको सूचना मिलेगी।",
+      "id": "Dapatkan pemberitahuan saat permintaan media gagal ditambahkan ke Radarr, Sonarr, Lidarr, atau Bookshelf.",
+      "ja": "メディアリクエストを Radarr、Sonarr、Lidarr、または Bookshelf に追加できなかったときに通知を受け取ります。"
+    },
+    "2322": {
+      "ar": "تلقَّ إشعارًا عندما يرسل مستخدمون آخرون طلبات وسائط جديدة تتطلب الموافقة.",
+      "hi": "जब अन्य उपयोगकर्ता नए मीडिया अनुरोध भेजें जिन्हें स्वीकृति की आवश्यकता हो, तो आपको सूचना मिलेगी।",
+      "vi": "Nhận thông báo khi người dùng khác gửi yêu cầu nội dung mới cần được phê duyệt.",
+      "zh_Hans": "当其他用户提交需要审批的新媒体请求时，您会收到通知。",
+      "zh_Hant": "當其他使用者提交需要核准的新媒體請求時，您會收到通知。"
+    },
+    "2323": {
+      "ar": "ستتلقى إشعارًا عندما تصبح ROMs وألعاب PC التي طلبتها جاهزة للتنزيل.",
+      "hi": "जब आपके द्वारा अनुरोधित ROM और PC गेम डाउनलोड के लिए तैयार हों, तो आपको सूचना मिलेगी।",
+      "id": "Dapatkan pemberitahuan saat ROM dan game PC yang Anda minta siap diunduh.",
+      "vi": "Nhận thông báo khi ROM và trò chơi PC bạn yêu cầu đã sẵn sàng để tải xuống."
+    },
+    "2324": {
+      "de": "Open Library-Bewertung: {score}/5 aus {votes} Bewertungen"
+    },
+    "2325": {
+      "zh_Hans": "已放弃"
+    },
+    "2346": {
+      "es": "Grado de finalización desconocido",
+      "pt_BR": "Grau de conclusão desconhecido",
+      "zh_Hans": "完成度未知",
+      "zh_Hant": "完成度未知"
+    },
+    "2347": {
+      "zh_Hans": "已放弃"
+    },
+    "2348": {
+      "ko": "이 버전에 필요한 기본 게임을 사용할 수 없어 아직 준비할 수 없습니다."
+    },
+    "2370": {
+      "es": "Grado de finalización desconocido",
+      "pt_BR": "Grau de conclusão desconhecido",
+      "zh_Hans": "完成度未知",
+      "zh_Hant": "完成度未知"
+    },
+    "2372": {
+      "ar": "مدير"
+    },
+    "2373": {
+      "ar": "صلاحيات إدارية كاملة. تتجاوز جميع عمليات التحقق من الأذونات الأخرى.",
+      "fr": "Accès administrateur complet. Contourne tous les autres contrôles d’autorisation.",
+      "vi": "Quyền quản trị đầy đủ. Bỏ qua mọi bước kiểm tra quyền khác."
+    },
+    "2375": {
+      "id": "Berikan izin untuk mengubah opsi lanjutan pada permintaan media.",
+      "vi": "Cho phép thay đổi các tùy chọn nâng cao cho yêu cầu nội dung.",
+      "zh_Hant": "授予修改進階媒體請求選項的權限。"
+    },
+    "2376": {
+      "hi": "स्वतः स्वीकृति",
+      "id": "Persetujuan Otomatis",
+      "vi": "Tự động phê duyệt"
+    },
+    "2377": {
+      "hi": "4K के लिए स्वतः स्वीकृति",
+      "id": "Persetujuan Otomatis 4K",
+      "vi": "Tự động phê duyệt 4K"
+    },
+    "2378": {
+      "vi": "Cho phép tự động phê duyệt tất cả các yêu cầu nội dung 4K."
+    },
+    "2379": {
+      "es": "Aprobación automática de películas 4K",
+      "hi": "4K फ़िल्मों की स्वतः स्वीकृति",
+      "id": "Persetujuan Otomatis Film 4K",
+      "ko": "4K 영화 자동 승인",
+      "vi": "Tự động phê duyệt phim 4K"
+    },
+    "2381": {
+      "ko": "4K 시리즈 자동 승인",
+      "vi": "Tự động phê duyệt phim bộ 4K"
+    },
+    "2383": {
+      "hi": "वयस्क सामग्री की स्वतः स्वीकृति"
+    },
+    "2384": {
+      "hi": "वयस्क दृश्यों के अनुरोधों को स्वतः मंज़ूरी दें। यह सामान्य स्वतः मंज़ूरी से अलग है।"
+    },
+    "2385": {
+      "hi": "किताबों के अनुरोधों को स्वतः मंज़ूरी दें",
+      "id": "Setujui permintaan buku secara otomatis",
+      "ko": "도서 자동 승인",
+      "vi": "Tự động phê duyệt sách",
+      "zh_Hans": "自动批准图书",
+      "zh_Hant": "自動核准書籍"
+    },
+    "2386": {
+      "es": "Concede aprobación automática para las solicitudes de libros.",
+      "ko": "책 요청을 자동 승인할 권한을 부여합니다."
+    },
+    "2387": {
+      "es": "Aprobación automática de cómics",
+      "hi": "कॉमिक्स की स्वतः स्वीकृति",
+      "id": "Persetujuan Otomatis Komik",
+      "ko": "만화 자동 승인",
+      "vi": "Tự động phê duyệt truyện tranh",
+      "zh_Hans": "自动批准漫画",
+      "zh_Hant": "自動核准漫畫"
+    },
+    "2388": {
+      "es": "Concede aprobación automática para las solicitudes de cómics.",
+      "ko": "만화 요청을 자동 승인할 권한을 부여합니다."
+    },
+    "2390": {
+      "fr": "Approbation automatique des magazines",
+      "hi": "पत्रिकाओं की स्वतः स्वीकृति",
+      "id": "Persetujuan Otomatis Majalah",
+      "ko": "잡지 자동 승인",
+      "vi": "Tự động phê duyệt tạp chí",
+      "zh_Hans": "自动批准杂志",
+      "zh_Hant": "自動核准雜誌"
+    },
+    "2392": {
+      "id": "Setujui film secara otomatis",
+      "ko": "영화 자동 승인",
+      "vi": "Tự động phê duyệt phim"
+    },
+    "2393": {
+      "vi": "Cho phép tự động phê duyệt các yêu cầu phim không phải 4K."
+    },
+    "2394": {
+      "id": "Persetujuan Otomatis Musik",
+      "ko": "음악 자동 승인",
+      "pt_BR": "Aprovação automática de música",
+      "vi": "Tự động phê duyệt âm nhạc",
+      "zh_Hans": "自动批准音乐",
+      "zh_Hant": "自動核准音樂"
+    },
+    "2395": {
+      "ko": "음악 요청을 자동 승인할 권한을 부여합니다."
+    },
+    "2396": {
+      "hi": "सीरीज़ की स्वतः स्वीकृति",
+      "id": "Setujui serial secara otomatis",
+      "vi": "Tự động phê duyệt phim bộ"
+    },
+    "2397": {
+      "vi": "Cho phép tự động phê duyệt các yêu cầu phim bộ không phải 4K."
+    },
+    "2398": {
+      "es": "Aprobación automática de solicitudes deportivas",
+      "id": "Persetujuan Otomatis Olahraga",
+      "ko": "스포츠 자동 승인",
+      "vi": "Tự động phê duyệt thể thao",
+      "zh_Hans": "自动批准体育项目",
+      "zh_Hant": "自動核准體育項目"
+    },
+    "2399": {
+      "ko": "스포츠 리그 요청을 자동 승인할 권한을 부여합니다.",
+      "vi": "Cho phép tự động phê duyệt các yêu cầu của giải đấu thể thao.",
+      "zh_Hans": "授予自动审批体育联赛请求的权限。",
+      "zh_Hant": "授予體育聯賽請求的自動核准權限。"
+    }
+  },
+  "rationales": {
+    "2300": "The notification concerns requested media becoming available; several current strings instead say the request itself becomes available, omit availability, or narrow availability to watchability.",
+    "2301": "The current Hindi, Indonesian, Vietnamese, and Simplified Chinese values say request/cancel or contain a malformed phrase rather than “request declined.”",
+    "2302": "Hindi uses “decrease” for declined, and both Chinese targets contain a malformed/repeated rejection phrase.",
+    "2303": "The Indonesian word order does not express “request processing failed”; the proposal uses the normal processing-of-request construction.",
+    "2304": "The proposals repair awkward Hindi and Indonesian and retain the service name Bookshelf verbatim alongside Radarr, Sonarr, and Lidarr.",
+    "2305": "Hindi currently means “to request,” and Indonesian incorrectly uses “time” in the pending-approval label.",
+    "2306": "The proposals repair Vietnamese wording, remove the unsupported “other users” in Brazilian Portuguese, and remove the unsupported administrator-only approval detail in Chinese.",
+    "2307": "Vietnamese “Thông báo dạng” is not the natural label “Notification Types.”",
+    "2308": "The proposals repair the Arabic software term, incomplete Hindi/Portuguese wording, mixed English/Korean, and Vietnamese’s implication that software itself is being updated.",
+    "2309": "The Hindi, Japanese, Korean, Vietnamese, and Traditional Chinese current sentences are ungrammatical or list request states incorrectly; the proposals preserve all four status meanings.",
+    "2310": "The Hindi and Arabic labels omit the request, German and Korean wording is mixed/awkward, and the Chinese labels misleadingly make the request itself available instead of the requested software.",
+    "2311": "Several current descriptions mistranslate ROMs, break the ready-to-download clause, or omit ROM/PC games; proposals correct those defects and preserve the exact ROM and PC literals.",
+    "2312": "The Hindi and Korean targets contain incorrect state wording, Japanese has a broken list, and Traditional Chinese ends with a dangling comma.",
+    "2313": "Hindi describes reporting issues rather than receiving comments; Japanese has a malformed particle around the new-comment event.",
+    "2315": "The Indonesian sentence is awkward and obscures that the user’s reported issues are reopened.",
+    "2316": "Arabic and Hindi are awkward or mistranslate the reported-issue relationship; Indonesian wording is repaired for clarity.",
+    "2317": "Vietnamese omits media requests, while Chinese omits the media-request object; proposals restore those details.",
+    "2318": "Arabic omits “your,” Vietnamese uses a word for communications rather than media content, and Chinese adds manual approval or drops the media object.",
+    "2319": "Arabic omits the media object, Japanese narrows “available” to “watchable,” Vietnamese mistranslates media, and Traditional Chinese similarly narrows availability.",
+    "2320": "Hindi uses a word meaning decline/decrease in the wrong construction; the proposal says the user’s media request is declined.",
+    "2321": "The proposals preserve the exact Bookshelf service name and fix Hindi/Indonesian/Japanese grammar while keeping Radarr, Sonarr, and Lidarr unchanged.",
+    "2322": "Arabic omits other users; Hindi and Vietnamese are awkward; Chinese invents administrator-specific approval. The proposals restore source scope without adding an actor.",
+    "2323": "Arabic mistranslates ROMs as read/write games, Hindi transliterates rather than preserves ROM, Indonesian reverses who requested the games, and Vietnamese omits PC games.",
+    "2324": "The German target hyphenates and alters the product name Open Library; the proposal preserves the exact catalog name and both placeholders.",
+    "2325": "Simplified Chinese currently means deprecated; the source status means abandoned.",
+    "2346": "Spanish and Brazilian Portuguese translate completeness as integrity, and Chinese uses the wrong integrity noun for project completion status.",
+    "2347": "Simplified Chinese currently means deprecated; the source status means abandoned.",
+    "2348": "The Korean current text reverses the dependency: it says the base game needs this version, while the source says this version needs the base game.",
+    "2370": "Spanish and Brazilian Portuguese translate completeness as integrity, and Chinese uses the wrong integrity noun for project completion status.",
+    "2372": "The Arabic current spelling is an adjective-like form; the proposal uses the concise role noun for Admin.",
+    "2373": "Arabic says no permissions are required instead of saying permission checks are bypassed; French invents selected/unselected detail; Vietnamese mistranslates permissions as licenses.",
+    "2375": "Indonesian uses “sophisticated” instead of advanced options, Vietnamese uses “high-level” rather than advanced, and Traditional Chinese says use instead of modify.",
+    "2376": "Hindi mixes English, Indonesian says submit automatically, and Vietnamese says auto-access rather than automatic approval.",
+    "2377": "Hindi and Indonesian mix English into the label, while Vietnamese translates approval as application; the proposals retain the protected 4K format literal.",
+    "2378": "The Vietnamese target has broken word order around all 4K media requests.",
+    "2379": "Spanish is an ungrammatical calque, Hindi and Indonesian mix English, Korean says accept, and Vietnamese says automatically display/project movies.",
+    "2381": "Korean names movies instead of series; Vietnamese uses a generic line/dòng rather than a TV series.",
+    "2383": "The Hindi target contains a malformed hybrid for automatic approval; the proposal uses a clear adult-content permission label.",
+    "2384": "Hindi repeats the malformed “auto-approved” hybrid and has awkward syntax; the proposal expresses the separate adult-scene approval permission clearly.",
+    "2385": "Hindi and Indonesian imply mixed-English or automatic submission, Korean says access, Vietnamese says print, and Chinese says verify/certify books.",
+    "2386": "Spanish says to accept automatic approval rather than grant it; Korean describes an assistant/secondary approval instead of permission for automatic book-request approval.",
+    "2387": "Spanish and Hindi/Indonesian/Korean mix English, Vietnamese says apply, and Chinese says verify/certify comics rather than automatically approve them.",
+    "2388": "Spanish awkwardly says to accept automatic approval; Korean describes an auxiliary approval. The proposals state permission for automatic comic-request approval.",
+    "2390": "French has the wrong attachment (“magazines of automatic approval”); Hindi/Indonesian/Korean mix English or use the wrong action; Vietnamese says apply and Chinese says verify/certify.",
+    "2392": "Indonesian mixes English, Korean says accept, and Vietnamese translates movies as photographs.",
+    "2393": "Vietnamese omits movies and non-4K from the description.",
+    "2394": "Indonesian/Korean mix English, Brazilian Portuguese describes music as already approved, Vietnamese says application, and Chinese says certify/prove music.",
+    "2395": "Korean says auxiliary approval rather than permission to auto-approve music requests.",
+    "2396": "Hindi/Indonesian mix English and Vietnamese translates series as a generic sequence; the proposals use natural series approval labels.",
+    "2397": "Vietnamese omits the series category and non-4K restriction.",
+    "2398": "Spanish is vague about the request being approved, Indonesian mixes English, Korean says access, Vietnamese says application, and Chinese says verify sports.",
+    "2399": "Korean describes auxiliary approval and Vietnamese calls leagues alliances; the Chinese proposals also make the request and automatic-approval permission explicit."
+  },
+  "schemaVersion": 1
+}

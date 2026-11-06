@@ -1,0 +1,88 @@
+{
+  "repoHead": "6bc8d0bd3dfb4f8c87c307a3e562e0fd12474118",
+  "repoTree": "44cf1a02d645026872759fa04a7506ee738381e5",
+  "exactPrimaryHead": "6bc8d0bd3dfb4f8c87c307a3e562e0fd12474118",
+  "exactPrimaryTree": "44cf1a02d645026872759fa04a7506ee738381e5",
+  "cells": 1200,
+  "uniqueCellKeys": 1200,
+  "proposals": 171,
+  "proposalDispositionCounts": {
+    "propose-correction": 147,
+    "refinement": 24
+  },
+  "primaryDispositionCounts": {
+    "accept-current": 1029,
+    "propose-correction": 147,
+    "refinement": 24
+  },
+  "sourceValuesAndHashesValidated": true,
+  "currentCatalogReadbackValidated": true,
+  "finalHashesValidated": true,
+  "callerContextRows": 100,
+  "callerReferences": 472,
+  "callerLineReferencesVerified": 472,
+  "callerFilePinsVerified": 6,
+  "callerContextMatrixVerified": true,
+  "placeholderParityCells": 1200,
+  "markupParityCells": 1200,
+  "protectedLiteralRowsValidated": 1200,
+  "currentProtectedLiteralMisses": [
+    [
+      2704,
+      "de",
+      "Open Library"
+    ],
+    [
+      2757,
+      "hi",
+      "Bindery"
+    ],
+    [
+      2796,
+      "hi",
+      "Bookshelf"
+    ],
+    [
+      2796,
+      "vi",
+      "Bookshelf"
+    ],
+    [
+      2797,
+      "ja",
+      "Bookshelf"
+    ],
+    [
+      2797,
+      "pt_BR",
+      "Bookshelf"
+    ],
+    [
+      2797,
+      "vi",
+      "Bookshelf"
+    ]
+  ],
+  "finalProtectedLiteralMisses": [
+    [
+      2704,
+      "de",
+      "Open Library"
+    ]
+  ],
+  "D146Exception": [
+    [
+      2704,
+      "de",
+      "Open Library"
+    ]
+  ],
+  "primaryManifestFiles": 27,
+  "primaryManifestFilesVerified": true,
+  "primarySha256SumsVerified": true,
+  "inputSha256SumsVerified": true,
+  "errorCount": 0,
+  "errors": [],
+  "callerReferenceCount": 472,
+  "callerLineHashNormalization": "lineText and adjacent lines are stored trimmed; lineSha256 is computed from the original source line including indentation."
+}

@@ -1,0 +1,23 @@
+{
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "window": "W3260-W3279",
+  "status": "sealed primary translation review; isolated to clean frozen input; no repository or PR changes",
+  "inputHead": "4cfcda2cb279ab056b46df4779aaadf8313c4594",
+  "inputTree": "4f6b1921a48aefe444c81d317a0f3ae265707bcc",
+  "inputWindowJsonSha256": "9dc3816bc7bbe26272c1b5c95e88429633fda7dbb2651c96aabdea7ec2d4e961",
+  "inputChecksumListSha256": "cba1a6c423bf5e1a9caf46d32962f92052b8ca6c24a2f149cfebf72ecdd8c0f0",
+  "cellCount": 240,
+  "sourceCount": 20,
+  "localeCount": 12,
+  "dispositions": {
+    "accept-current": 176,
+    "refinement": 35,
+    "correction": 29
+  },
+  "targetChanges": 64,
+  "placeholderParity": true,
+  "protectedProductNamesPreserved": true,
+  "nativeSpeakerReview": false,
+  "repoOrPrMutated": false
+}

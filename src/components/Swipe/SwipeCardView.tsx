@@ -1,5 +1,6 @@
 import Badge from '@app/components/Common/Badge';
 import CachedImage from '@app/components/Common/CachedImage';
+import OpaqueApiMessageText from '@app/components/Common/OpaqueApiMessageText';
 import type { SwipeCardData } from '@app/components/Swipe/swipeCatalog';
 import defineMessages from '@app/utils/defineMessages';
 import type { CSSProperties, PointerEvent } from 'react';
@@ -177,7 +178,11 @@ const SwipeCardView = ({
         </div>
         {card.subtitle && <p className="card-subheading">{card.subtitle}</p>}
         {(card.reason ?? card.because) && (
-          <p className="card-body-text">{card.reason ?? card.because}</p>
+          <p className="card-body-text">
+            <OpaqueApiMessageText>
+              {card.reason ?? card.because}
+            </OpaqueApiMessageText>
+          </p>
         )}
         {card.overview && <p className="card-body-text">{card.overview}</p>}
       </div>

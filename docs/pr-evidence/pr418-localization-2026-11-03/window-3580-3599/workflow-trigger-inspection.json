@@ -1,0 +1,327 @@
+{
+  "checkedAtUtc": "2026-11-03T14:24:28.486443+00:00",
+  "workflowFilesWithTriggerDeclarations": [
+    {
+      "path": ".github/workflows/android.yml",
+      "sha256": "c33b9ee0e65070c5a9c6cfb1e2e0ad92ab076973b85cbd0dc6435a0cb9ee268c",
+      "triggerLines": [
+        {
+          "line": 6,
+          "text": "  workflow_dispatch:"
+        }
+      ]
+    },
+    {
+      "path": ".github/workflows/ci.yml",
+      "sha256": "a6c1345bc67e294f6f6342fb21593798a54e87b501aadaf2041ab4b34b65719f",
+      "triggerLines": [
+        {
+          "line": 11,
+          "text": "  pull_request_target:"
+        },
+        {
+          "line": 14,
+          "text": "  workflow_dispatch:"
+        }
+      ]
+    },
+    {
+      "path": ".github/workflows/conflict_labeler.yml",
+      "sha256": "a6871dca3f5c9b1b7b4e467fd94f42b5e2ceb3963bcca3822a148176f2cd7023",
+      "triggerLines": [
+        {
+          "line": 8,
+          "text": "  workflow_dispatch:"
+        }
+      ]
+    },
+    {
+      "path": ".github/workflows/cypress.yml",
+      "sha256": "bb5ca96a266a3652bce21b8f90d5907c7287ec8049e40c53eca2ba3f6d16e424",
+      "triggerLines": [
+        {
+          "line": 8,
+          "text": "  workflow_call:"
+        },
+        {
+          "line": 17,
+          "text": "  workflow_dispatch:"
+        }
+      ]
+    },
+    {
+      "path": ".github/workflows/docs-link-check.yml",
+      "sha256": "c1b5e496855ddc2a2fcb8b6a883e0b24017629583ed46b3c27c18f7ccfcfab69",
+      "triggerLines": [
+        {
+          "line": 8,
+          "text": "  workflow_call:"
+        },
+        {
+          "line": 14,
+          "text": "  workflow_dispatch:"
+        }
+      ]
+    },
+    {
+      "path": ".github/workflows/fork-safe-validation.yml",
+      "sha256": "5f7ec91f8bfdd1920ed3fe56b74698510e995c817c28c9653d1fa7058e88f87d",
+      "triggerLines": [
+        {
+          "line": 4,
+          "text": "  workflow_call:"
+        }
+      ]
+    },
+    {
+      "path": ".github/workflows/gvisor-runner-smoke.yml",
+      "sha256": "438fb858503f1b3a0ffaa9030e5387a9f8caf752f7ee36f8a7d4942557954e68",
+      "triggerLines": [
+        {
+          "line": 5,
+          "text": "  workflow_dispatch:"
+        }
+      ]
+    },
+    {
+      "path": ".github/workflows/helm.yml",
+      "sha256": "fbbd9b85c41ec4bf050300ff80678c7ec7b5fefea3dcb8714fbdb5a7e4b00cad",
+      "triggerLines": [
+        {
+          "line": 8,
+          "text": "  workflow_dispatch:"
+        }
+      ]
+    },
+    {
+      "path": ".github/workflows/ios.yml",
+      "sha256": "1fe06557348362ebff1c905357c4a4f2d2b8b142c3d3dc4fd47686a72b30b4e2",
+      "triggerLines": [
+        {
+          "line": 6,
+          "text": "  workflow_dispatch:"
+        }
+      ]
+    },
+    {
+      "path": ".github/workflows/lint-helm-charts.yml",
+      "sha256": "429f9c9caf828a2f79bc09bae06887a86830fd8309a771e59654cf67e6911df2",
+      "triggerLines": [
+        {
+          "line": 7,
+          "text": "  workflow_call:"
+        }
+      ]
+    },
+    {
+      "path": ".github/workflows/package-smoke-disabled.yml",
+      "sha256": "0a1e156f8d50804eff2eee6bd5422c280388e529b3c8d3760d4458448c98dd70",
+      "triggerLines": [
+        {
+          "line": 6,
+          "text": "  workflow_dispatch:"
+        }
+      ]
+    },
+    {
+      "path": ".github/workflows/preview.yml",
+      "sha256": "bc05feaaa22a69ff3ed270d4949f0212d94b3ee82b44a4b1091e09100769cc1f",
+      "triggerLines": [
+        {
+          "line": 8,
+          "text": "  workflow_dispatch:"
+        },
+        {
+          "line": 124,
+          "text": "          push: true"
+        }
+      ]
+    },
+    {
+      "path": ".github/workflows/promote-container-aliases.yml",
+      "sha256": "97cd4ae94c621be9e212789359bf596c8351f6231b16f821b1f11c3413b5ffae",
+      "triggerLines": [
+        {
+          "line": 8,
+          "text": "  workflow_dispatch:"
+        }
+      ]
+    },
+    {
+      "path": ".github/workflows/public-fork-pr.yml",
+      "sha256": "6325f3bc77148d659a6ab6097dd94dffa67b276c31c286085c259dd686c925c3",
+      "triggerLines": [
+        {
+          "line": 3,
+          "text": "  pull_request:"
+        }
+      ]
+    },
+    {
+      "path": ".github/workflows/rebuild-issue-index.yml",
+      "sha256": "597c43300f517a4024474d60099e33e30f1c7d2789e20786f14fdb4eaf3bbb51",
+      "triggerLines": [
+        {
+          "line": 7,
+          "text": "  workflow_dispatch:"
+        }
+      ]
+    },
+    {
+      "path": ".github/workflows/release-assets.yml",
+      "sha256": "91a1f5257c6e1b5727bcc6cba134615a0ea061417f760d804cd6a10e748a8dbf",
+      "triggerLines": [
+        {
+          "line": 6,
+          "text": "  workflow_call:"
+        }
+      ]
+    },
+    {
+      "path": ".github/workflows/release-aur.yml",
+      "sha256": "de39874c22c50c997f6aece53b4016b263a66a82621ab54f8434e5107bdd2d4a",
+      "triggerLines": [
+        {
+          "line": 6,
+          "text": "  workflow_dispatch:"
+        }
+      ]
+    },
+    {
+      "path": ".github/workflows/release-chocolatey.yml",
+      "sha256": "db5895792264dde6f1a6c6cba5a75f9444be57c213f28e534acb97dd686cb2d9",
+      "triggerLines": [
+        {
+          "line": 7,
+          "text": "  workflow_dispatch:"
+        }
+      ]
+    },
+    {
+      "path": ".github/workflows/release-copr.yml",
+      "sha256": "2187dbad1fcd55833356fb84bdcdda3e31ac409d8060dd58b75fed8448db547f",
+      "triggerLines": [
+        {
+          "line": 6,
+          "text": "  workflow_dispatch:"
+        }
+      ]
+    },
+    {
+      "path": ".github/workflows/release-flatpak.yml",
+      "sha256": "5f886e87d3648d93cc6110e170f5281e3caa5fa325773c417267cdc29847b107",
+      "triggerLines": [
+        {
+          "line": 6,
+          "text": "  workflow_dispatch:"
+        }
+      ]
+    },
+    {
+      "path": ".github/workflows/release-linux-packages.yml",
+      "sha256": "6775fd1fbb2aa76a851139a79adacb7c2e179d2c9f5c496bdaec69dd27f8acd5",
+      "triggerLines": [
+        {
+          "line": 6,
+          "text": "  workflow_dispatch:"
+        }
+      ]
+    },
+    {
+      "path": ".github/workflows/release-ppa.yml",
+      "sha256": "05b561bdb5d37f91b09c1c7e61736f80255d10258bb5d7f2830c64708ce88dfc",
+      "triggerLines": [
+        {
+          "line": 6,
+          "text": "  workflow_dispatch:"
+        }
+      ]
+    },
+    {
+      "path": ".github/workflows/release-snap.yml",
+      "sha256": "970b1f0deff11d595c521f6b648688ab66e8b74cbdabb2610760aaa7d2cbf169",
+      "triggerLines": [
+        {
+          "line": 6,
+          "text": "  workflow_dispatch:"
+        }
+      ]
+    },
+    {
+      "path": ".github/workflows/release.yml",
+      "sha256": "70aa2fd2eaa8a4fda5818342126dbe9a39ba86e8f06a553730bed7f141cafbf0",
+      "triggerLines": [
+        {
+          "line": 9,
+          "text": "  workflow_dispatch:"
+        }
+      ]
+    },
+    {
+      "path": ".github/workflows/renovate-helm-custom-hooks.yml",
+      "sha256": "b5cf824034e329150a88b520dda63067afccce804b1ca19080bebf1598b6509f",
+      "triggerLines": [
+        {
+          "line": 8,
+          "text": "  workflow_dispatch:"
+        }
+      ]
+    },
+    {
+      "path": ".github/workflows/semgrep-community.yml",
+      "sha256": "76190e893c79af0df435aec47a5de3bd2935b1f09803dbc2313d9757defb6a85",
+      "triggerLines": [
+        {
+          "line": 6,
+          "text": "  workflow_dispatch:"
+        }
+      ]
+    },
+    {
+      "path": ".github/workflows/stale.yml",
+      "sha256": "1cddd9ef8916267c63d8ff0dc0700ccbc766d832889c677b0dd40500333835cb",
+      "triggerLines": [
+        {
+          "line": 8,
+          "text": "  workflow_dispatch:"
+        }
+      ]
+    },
+    {
+      "path": ".github/workflows/test-docs.yml",
+      "sha256": "0f253440897195148f85556f592bbc8530e322804c0674ee1e8ce16d4699c01c",
+      "triggerLines": [
+        {
+          "line": 6,
+          "text": "  workflow_call:"
+        }
+      ]
+    },
+    {
+      "path": ".github/workflows/trivy-filesystem.yml",
+      "sha256": "94161bdf6d61f94859191587960e86ddaaf1bbce8d34f73f9ed289e5e21ac081",
+      "triggerLines": [
+        {
+          "line": 6,
+          "text": "  workflow_dispatch:"
+        }
+      ]
+    },
+    {
+      "path": ".github/workflows/trivy-scan.yml",
+      "sha256": "58d88de0fdedeecad89cfdc86ae548e9a1b9ba4881bf31fde490b3a59c20a1e8",
+      "triggerLines": [
+        {
+          "line": 8,
+          "text": "  workflow_dispatch:"
+        }
+      ]
+    }
+  ],
+  "findings": [
+    "ci.yml pull_request_target is limited to labeled events; no push or synchronize trigger.",
+    "public-fork-pr.yml listens to opened/synchronize/reopened/ready_for_review, but its job condition requires a fork. PR #418 is same-org, so the job condition is false.",
+    "No workflow_dispatch or other manual workflow dispatch was invoked.",
+    "No workflow file is in the planned diff."
+  ]
+}

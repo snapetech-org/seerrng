@@ -1,0 +1,147 @@
+{
+  "callerEvidence": {
+    "callerReferences": 371,
+    "definitionOnlyOrSingleReferenceCells": 72,
+    "definitionOnlyOrSingleReferenceKeys": [
+      "components.LiveTv.RecordingList.oneAiring",
+      "components.Login.demoModeInfo",
+      "components.Login.initialsignin",
+      "components.Login.initialsigningin",
+      "components.Login.quickconnecterror",
+      "components.Login.servertype"
+    ],
+    "directOrHelperReferenceKeys": 94,
+    "sourceIds": 100,
+    "unclaimedCallerKeys": [
+      "components.LiveTv.RecordingList.oneAiring",
+      "components.Login.demoModeInfo",
+      "components.Login.initialsignin",
+      "components.Login.initialsigningin",
+      "components.Login.quickconnecterror",
+      "components.Login.servertype"
+    ],
+    "uniqueCallerFiles": 11
+  },
+  "cells": 1200,
+  "confidence": "moderate",
+  "confidenceNote": "Exact Git/source/caller and structural checks are high-confidence; semantic judgments are model-based and native-speaker approval remains outstanding.",
+  "correctionCandidateCount": 343,
+  "currentProtectedLiteralMismatchCells": [
+    {
+      "locale": "fr",
+      "missing": [
+        "IPTV Tunerr"
+      ],
+      "sourcePosition": 1836
+    }
+  ],
+  "currentProtectedLiteralMismatchCount": 1,
+  "dispositionCounts": {
+    "accept-current": 776,
+    "propose-correction": 343,
+    "propose-refinement": 81
+  },
+  "head": "78a36214596544e1b3033c6a612ae5559db713e3",
+  "historicalExactFinalTargetReferences": 0,
+  "historicalNonFinalReferenceRows": 2,
+  "holdCount": 0,
+  "holds": [],
+  "isDraft": true,
+  "locales": [
+    "ar",
+    "de",
+    "es",
+    "fr",
+    "hi",
+    "id",
+    "ja",
+    "ko",
+    "pt_BR",
+    "vi",
+    "zh_Hans",
+    "zh_Hant"
+  ],
+  "markupMismatchCount": 0,
+  "nativeSpeakerApproval": "outstanding",
+  "outputPath": "/mnt/disks/scratch/task-scratch/seerrng-pr418-window-1800-1899-primary-20261102",
+  "perLocale": {
+    "ar": {
+      "accept-current": 58,
+      "propose-correction": 34,
+      "propose-refinement": 8
+    },
+    "de": {
+      "accept-current": 92,
+      "propose-correction": 1,
+      "propose-refinement": 7
+    },
+    "es": {
+      "accept-current": 87,
+      "propose-correction": 3,
+      "propose-refinement": 10
+    },
+    "fr": {
+      "accept-current": 79,
+      "propose-correction": 12,
+      "propose-refinement": 9
+    },
+    "hi": {
+      "accept-current": 66,
+      "propose-correction": 29,
+      "propose-refinement": 5
+    },
+    "id": {
+      "accept-current": 64,
+      "propose-correction": 30,
+      "propose-refinement": 6
+    },
+    "ja": {
+      "accept-current": 63,
+      "propose-correction": 33,
+      "propose-refinement": 4
+    },
+    "ko": {
+      "accept-current": 54,
+      "propose-correction": 41,
+      "propose-refinement": 5
+    },
+    "pt_BR": {
+      "accept-current": 70,
+      "propose-correction": 17,
+      "propose-refinement": 13
+    },
+    "vi": {
+      "accept-current": 45,
+      "propose-correction": 49,
+      "propose-refinement": 6
+    },
+    "zh_Hans": {
+      "accept-current": 52,
+      "propose-correction": 44,
+      "propose-refinement": 4
+    },
+    "zh_Hant": {
+      "accept-current": 46,
+      "propose-correction": 50,
+      "propose-refinement": 4
+    }
+  },
+  "placeholderMismatchCount": 0,
+  "priorFrozenDispositionCount": 0,
+  "priorMatchingReviewRows": 1200,
+  "protectedLiteralMismatchCount": 0,
+  "pullRequest": 418,
+  "refinementCandidateCount": 81,
+  "repoOrPullRequestModified": false,
+  "repository": "snapetech-org/seerrng",
+  "schemaVersion": 1,
+  "sourceIds": 100,
+  "sourcePositionRange": [
+    1800,
+    1899
+  ],
+  "state": "OPEN",
+  "testsBuildsScansCIorBrowserRun": false,
+  "tree": "ef83a00d078f0a4aed6269b4c23282dbf91fd6f7",
+  "workflowFilesTouched": false
+}

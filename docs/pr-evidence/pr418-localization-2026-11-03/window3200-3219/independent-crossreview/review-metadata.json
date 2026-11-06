@@ -1,0 +1,125 @@
+{
+  "reviewerRole": "independent blind cross-review",
+  "method": "Independent per-cell assessment using only filtered source/current fields and exact pinned caller context, verified against locale catalogs at the live PR head.",
+  "livePrMetadata": {
+    "baseRefName": "main",
+    "headRefName": "codex/seerrng-localization-overhaul-20261028",
+    "headRefOid": "2be00354833160f0681d5cd779a1b1be37a63a4b",
+    "isDraft": true,
+    "state": "OPEN"
+  },
+  "exactHead": "2be00354833160f0681d5cd779a1b1be37a63a4b",
+  "exactTree": "af588a1ee34f768ae37a29dccd5a508595b7199d",
+  "remoteBranchHead": "2be00354833160f0681d5cd779a1b1be37a63a4b",
+  "worktreeClean": true,
+  "primaryInputs": {
+    "sourceCurrentFieldsPath": "/mnt/disks/scratch/task-scratch/seerrng-pr418-w3200-3219-primary-20261103/source-current-cells.jsonl",
+    "filteredProjectionSha256": "ad4f9864a955fe5ea75655e7016a85f703c3023d07b2ae1b149f9a7e8c9d1073",
+    "callerContextsPath": "/mnt/disks/scratch/task-scratch/seerrng-pr418-w3200-3219-primary-20261103/caller-contexts.jsonl",
+    "callerContextsSha256": "095188deaa3317cd89cfa72535a804b0fc72b2f2364eaa36773e0dd1194c2d21",
+    "filesUsed": [
+      "source-current-cells.jsonl",
+      "caller-contexts.jsonl"
+    ],
+    "candidateOrVerdictFieldsUsed": false,
+    "otherPrimaryFilesRead": false,
+    "prBodyRead": false
+  },
+  "reviewedCatalogFiles": {
+    "es": {
+      "path": "src/i18n/locale/es.json",
+      "sha256": "0e7ce42bc519d9e41f9110f32dd8a6b1f27d7e64ee91ca7ab89d9ec5e596ffe5",
+      "gitBlob": "c97d60975038ed081446188c49218eb75b5a3256"
+    },
+    "zh_Hans": {
+      "path": "src/i18n/locale/zh_Hans.json",
+      "sha256": "326cf9567a542d67ef00e6562cb46d2c661674cf06aa3e03d653650bac4e7f9d",
+      "gitBlob": "b63d16eb4e60b3655ad2425fb4539ecaf6aba1f4"
+    },
+    "hi": {
+      "path": "src/i18n/locale/hi.json",
+      "sha256": "d86666768623ba41f6b41ae5f9ccea40c33a3e19d58626005eb0516612e633aa",
+      "gitBlob": "9fdb7371dabd3dd7c0e8f9d3e297c0f794048393"
+    },
+    "de": {
+      "path": "src/i18n/locale/de.json",
+      "sha256": "1492d6d9bb1de20536377712c25dfcb1ec8d03e53acc63fc4cac6ead57a22e72",
+      "gitBlob": "acf05308fa8efcfa5a2174357c0f57241daf6393"
+    },
+    "ja": {
+      "path": "src/i18n/locale/ja.json",
+      "sha256": "f1e4c608a1ae04677b2c1b6517e8ad9bace2abcd0e20b2558af5ededefe605a4",
+      "gitBlob": "cc49ac3f3fae6c78c74276cafe8e64c07f0b18e5"
+    },
+    "fr": {
+      "path": "src/i18n/locale/fr.json",
+      "sha256": "caea7cf37ab60c16ea3fd3a602345f6fd7ba2eab7fe1d62860ec6428ef6eb674",
+      "gitBlob": "17326853ee5188bb33b072b0a9742904bfea41dd"
+    },
+    "pt_BR": {
+      "path": "src/i18n/locale/pt_BR.json",
+      "sha256": "cbcd7deb6dae0681ad4a8665932ea48fc3a3cb36a7b9b99cf3e946ba64631791",
+      "gitBlob": "7acf9cfa145ca2fcc74eacccc6b68a6f30a90055"
+    },
+    "ar": {
+      "path": "src/i18n/locale/ar.json",
+      "sha256": "a4851f852d0498b8c903e0a37e60eee3a972c103342c45dbb33a1912e830d352",
+      "gitBlob": "30f9139533029e8f6b26925536dab5b6505dfeb3"
+    },
+    "ko": {
+      "path": "src/i18n/locale/ko.json",
+      "sha256": "f9193bb78e514c2afd2effdef0901e79b3692c07b0d3dc30ab95abe855f72a44",
+      "gitBlob": "4bbad4734893c678cafc5558a375d370826f844c"
+    },
+    "zh_Hant": {
+      "path": "src/i18n/locale/zh_Hant.json",
+      "sha256": "1f46146e8f9395e29e2895565b130553863aeaffae82d9e91e95553e1158ec5c",
+      "gitBlob": "79a35b0149d586c5f136b0c7a9397bbc68b5ec52"
+    },
+    "vi": {
+      "path": "src/i18n/locale/vi.json",
+      "sha256": "44aaf43eca600e76717b08d781e8e9f2a3df23f1f1b04ec27e9d60dc0a16e4c4",
+      "gitBlob": "1fa22d9fc1ca420d33f3c018e9e8c14e9e285e0e"
+    },
+    "id": {
+      "path": "src/i18n/locale/id.json",
+      "sha256": "15898800711d569387fdba0908954d932e3cb608abbbad420b86bede58a5715b",
+      "gitBlob": "54ba268760d759d769df9e7a9525afcde6540e01"
+    }
+  },
+  "callerContextHashes": {
+    "components.RequestStatus.SoftwareRequests.history": "aad42b33d25a51d2d7793e19ebfbfd843e321a5371d68221ecd5887b92c4e5d1",
+    "components.RequestStatus.SoftwareRequests.historyError": "3310b58905caab7302e606045ef08ae20cbee89e77cc6d079b4e9ab944f22da8",
+    "components.RequestStatus.SoftwareRequests.historyLoading": "f82abf131b07a977160eb01a7a4c8477abe2935a72ddb875f35ee4f2b8efac45",
+    "components.RequestStatus.SoftwareRequests.importing": "0a084a28fd63a444a6aea7de176470346f23b80dc4c0f7f3fca1150b6e8dc9bb",
+    "components.RequestStatus.SoftwareRequests.linux": "012219870ceb1c177f7532a438d94c5e6011116f67f07d8507cf6fc281a5affc",
+    "components.RequestStatus.SoftwareRequests.loadError": "3784d3ee109b4ae5860f33853d8cd04d1859c60447355b3aec6a7774db7083fe",
+    "components.RequestStatus.SoftwareRequests.macos": "9585fee714e7d28cf3175d98890001254fb2ab7a9af5a7d642f44fd8cd6d9388",
+    "components.RequestStatus.SoftwareRequests.manageError": "a94ff26e56a5fba51f75117adcea232fe290b348d792478ab814d0e5a9a147ff",
+    "components.RequestStatus.SoftwareRequests.modern": "5c86b024501e4421fd4f02dfa55e43a1d5fa78796a0eec612dc827c5b6a8d5cf",
+    "components.RequestStatus.SoftwareRequests.noHistory": "5d89fa5a1e9c94fd26d861181ebd0f327d7b64d43e35bb4d93fe2ad6de22cbd7",
+    "components.RequestStatus.SoftwareRequests.noRequests": "9c81a577e63139f6c7f89c529e833be60b800fb6f4f1e2e8f5fde2ad521f9064",
+    "components.RequestStatus.SoftwareRequests.operatingSystem": "be606c6ee035620e3cc16a33a7259966f3192be43b78982e4953cf5360b06065",
+    "components.RequestStatus.SoftwareRequests.pending": "c11ee54c3c2ca3272fa3bb9261ff7a25823cecf440477c5c0ebc7b4409b22f55",
+    "components.RequestStatus.SoftwareRequests.progress": "649dd2e715751a5a178e7c3351331bab786757b6af89f270145bc1de2d78137e",
+    "components.RequestStatus.SoftwareRequests.quotaExceeded": "cd5764bda280e3e275f931005b4ceaede1678ec334e31e0a40b7681db82e1c67",
+    "components.RequestStatus.SoftwareRequests.removeFromRequests": "218713c9eee947bb669f0a01f975c3b83f18de54b7fd602f82d1923987967879",
+    "components.RequestStatus.SoftwareRequests.removeFromRequestsDescription": "5ca161781437c258df9a8168338fea834fa2061e841f28a7efa09b103bad57cd",
+    "components.RequestStatus.SoftwareRequests.removeFromRequestsFailed": "a803abe21c2f7ff6c414895dcc3924aefff8fdb056328a8c347355f6aa24523f",
+    "components.RequestStatus.SoftwareRequests.removeFromRequestsSuccess": "b61fcc837717f8792b00941a94bc01a82e4195b102e30718ae20a6acab8aecaa",
+    "components.RequestStatus.SoftwareRequests.removeFromRequestsTitle": "b659f659a4db3b0d416e68e3e917024a704f3c55dc21db410513eb977e2fd93a"
+  },
+  "blindness": {
+    "proposalLedgerRead": false,
+    "proposalFileRead": false,
+    "decisionLedgerRead": false,
+    "aggregateCountsRead": false,
+    "comparisonPerformed": false
+  },
+  "nativeSpeakerReview": false,
+  "browserReview": false,
+  "testsBuildScansCiRun": false,
+  "repositoryModified": false,
+  "remoteMutation": false,
+  "scratchOutputOnly": true
+}

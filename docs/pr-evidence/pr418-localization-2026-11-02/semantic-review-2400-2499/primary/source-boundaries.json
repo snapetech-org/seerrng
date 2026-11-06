@@ -1,0 +1,43 @@
+{
+  "definition": "zero-based insertion order after recursively flattening the English catalog in JSON property order",
+  "head": "f20893e57a89827095fa049d8e0475df7ec7170f",
+  "positions": [
+    {
+      "sourceCatalogBlob": "12e04a118c30b71b3714291adeaf9fdb2735cee4",
+      "sourceFileSha256": "75ff3c90b52aedd636a506281ffbd6fb2d3739c61294b6008a517f17647e2316",
+      "sourceId": "components.PermissionEdit.autoapproveSportsDescription",
+      "sourceIdSha256": "8f92fa08f4f5dc9b248b89bbfad2c89be7e92d1e6536dbe771d90ca2a4cd016f",
+      "sourcePosition": 2399,
+      "sourceText": "Grant automatic approval for sports league requests.",
+      "sourceTextSha256": "8987254062c6aaf52f8619c5219b38f4a2ffb928a972689c1439b58801638213"
+    },
+    {
+      "sourceCatalogBlob": "12e04a118c30b71b3714291adeaf9fdb2735cee4",
+      "sourceFileSha256": "75ff3c90b52aedd636a506281ffbd6fb2d3739c61294b6008a517f17647e2316",
+      "sourceId": "components.PermissionEdit.autorequest",
+      "sourceIdSha256": "0ff1d87c8a4618689b957ce1061093c281956d047a587f2e9fc0db96e5f7c7e8",
+      "sourcePosition": 2400,
+      "sourceText": "Auto-Request",
+      "sourceTextSha256": "a720a0e6c8641cdd9691022b4aa4472f8d8803a5224ba5481fd22e78b3180d42"
+    },
+    {
+      "sourceCatalogBlob": "12e04a118c30b71b3714291adeaf9fdb2735cee4",
+      "sourceFileSha256": "75ff3c90b52aedd636a506281ffbd6fb2d3739c61294b6008a517f17647e2316",
+      "sourceId": "components.ReaderDeliveryLink.comicsGrimmoryHelp",
+      "sourceIdSha256": "c3fb5ba79244c2e0d742a264fea5f03ce7567d59bb1e08ef8693087ca0365da2",
+      "sourcePosition": 2499,
+      "sourceText": "Open the Grimmory library in a browser. For page-by-page comic reading, copy Grimmory’s Komga address under Settings > Services > Reader Apps into a compatible app.",
+      "sourceTextSha256": "148d412b3cb387aa6290ff578c70a2072edb724b141078e6702f846aac602bd1"
+    },
+    {
+      "sourceCatalogBlob": "12e04a118c30b71b3714291adeaf9fdb2735cee4",
+      "sourceFileSha256": "75ff3c90b52aedd636a506281ffbd6fb2d3739c61294b6008a517f17647e2316",
+      "sourceId": "components.ReaderDeliveryLink.ebooks",
+      "sourceIdSha256": "b72a0ff2041f9b147f140fbc0cac1194916ec3b00c435da1f244a0bfb9ac083e",
+      "sourcePosition": 2500,
+      "sourceText": "Browse ebooks in {serviceName}",
+      "sourceTextSha256": "f87cf51392d901b263cfe685b5233373f50957613340c2bf4b030ad2788a054b"
+    }
+  ],
+  "tree": "b5a5952fb4f8a37ea5a39286295f153ce9504f52"
+}

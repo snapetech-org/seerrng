@@ -1,0 +1,129 @@
+{
+  "schemaVersion": 1,
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "prUrl": "https://github.com/snapetech-org/seerrng/pull/418",
+  "prState": "OPEN",
+  "isDraft": true,
+  "mergeStateStatus": "CLEAN",
+  "liveHead": "422072d585074bdd7f8dd3046cbacede69203d6d",
+  "liveTree": "c7f3bffb628464e98188f3c8f8c4950d6038cee6",
+  "sourceCatalogBlob": "12e04a118c30b71b3714291adeaf9fdb2735cee4",
+  "targetCatalogBlob": "bd957ccf3c2d3287aae2086c4c88a40f6c6c967a",
+  "candidateRowsReviewed": 283,
+  "heldRowsAdjudicated": 6,
+  "totalRows": 289,
+  "rootCandidateDispositionCounts": {
+    "accept": 246,
+    "refine": 37
+  },
+  "independentDispositionCounts": {
+    "candidate:accept": 273,
+    "candidate:refine": 10,
+    "held-uncertain-adjudication:accept": 6
+  },
+  "independentCandidateRefinements": [
+    {
+      "id": "components.LiveTv.RecordingList.requestedBy",
+      "target": "Solicitante",
+      "targetSha256": "ee4e6f46c9cc884217411836d63865f2911b2cc913b5800578fd1bcf83f516a8",
+      "rationale": "The exact caller renders this as a standalone field label before the requester’s name. “Solicitante” identifies the person and avoids the gendered passive participle in “Solicitado por”."
+    },
+    {
+      "id": "components.MagazineDetails.watchlistDeleted",
+      "target": "Se quitó <strong>{title}</strong> de la lista de seguimiento con éxito.",
+      "targetSha256": "4cf6956fb6c2ca6cc8f0ff10214d043063b4e959ae07d1de5620ccaa834b3037",
+      "rationale": "The exact target is a magazine title, whose grammatical gender may be feminine. The root target’s “eliminado” can disagree with {title}; the impersonal construction preserves the meaning and markup without gender agreement."
+    },
+    {
+      "id": "components.MagazineDetails.watchlistSuccess",
+      "target": "Se añadió <strong>{title}</strong> a la lista de seguimiento con éxito.",
+      "targetSha256": "dc286c2595bae5b2e6821fa9828710e8343594bd656e5886284f820e55ff3d37",
+      "rationale": "The exact target is a magazine title, whose grammatical gender may be feminine. The root target’s “añadido” can disagree with {title}; the impersonal construction preserves the meaning and markup without gender agreement."
+    },
+    {
+      "id": "components.MediaDetails.DetailDisclosure.pin",
+      "target": "Mantener abierta la sección {label} en todas las páginas de detalles.",
+      "targetSha256": "13c5fd6afe4b5ddbfab7d7ae33cf5880cbb42adaff5a9b0e661037e1ba6399b6",
+      "rationale": "The pinned component interpolates localized section labels such as “Etiquetas temáticas” and “Colección”. “Abierto” incorrectly imposes masculine singular agreement on {label}; making “la sección” the fixed subject avoids the mismatch while retaining the pinned-open behavior across detail pages."
+    },
+    {
+      "id": "components.RequestList.RequestItem.requested",
+      "target": "Fecha de solicitud",
+      "targetSha256": "858bf06bfe55deedc0975852acac319c54c28653dc3b6b9e17cececb486e5457",
+      "rationale": "The exact caller renders this as a field label immediately before the relative request date and requester. The source label is temporal; “Fecha de solicitud” is clear and avoids treating the request as a masculine-gendered item."
+    },
+    {
+      "id": "components.RequestModal.Magazine.requested",
+      "target": "Ya se solicitó",
+      "targetSha256": "ae0183789f72bfbaddff47f4f7bd597c7c1819528ff835254b87633133cb0df7",
+      "rationale": "The exact caller renders this as the status of a magazine request. The root target “Solicitado” uses masculine agreement for a feminine magazine; the impersonal status phrase preserves the requested state without gender mismatch."
+    },
+    {
+      "id": "components.RequestModal.RequestFooterStatus.requested",
+      "target": "Solicitud enviada",
+      "targetSha256": "19fb54f7ae4b3b3a853697825e1f796c65faf78bc40044526640d2f1bd70d7f7",
+      "rationale": "This shared footer status is rendered for book, comic, magazine, music, television, movie, and sports requests. The request itself is feminine; this noun phrase is clear and avoids agreement with the varied media titles."
+    },
+    {
+      "id": "components.RequestModal.requested",
+      "target": "Ya se solicitó",
+      "targetSha256": "ae0183789f72bfbaddff47f4f7bd597c7c1819528ff835254b87633133cb0df7",
+      "rationale": "The shared modal status is rendered for multiple media types with different grammatical genders. The root target “Solicitado” may disagree with titles such as a series; the impersonal form preserves the already-requested status."
+    },
+    {
+      "id": "components.RequestModal.requestpartial",
+      "target": "Solicitudes enviadas: {created}; solicitudes fallidas: {failed}.",
+      "targetSha256": "80f914988dac0ab16a71d74646ef1cf98dd37395c23ec0005a79fe312872a1eb",
+      "rationale": "The exact key is shared by movie, TV, and music collection modals. The values are numeric counts, so “solicitados/fallidos” leaves the implied noun ambiguous; explicit feminine “solicitudes” makes both counts grammatical and clear."
+    },
+    {
+      "id": "components.RequestStatus.SoftwareRequests.submitted",
+      "target": "Solicitud enviada el {date}",
+      "targetSha256": "4c735463a8e8119ae0a0b1f387af4454a81ea78d21535f72bef206a13c4bd24d",
+      "rationale": "The caller displays this in request metadata for PC games and ROMs. “Solicitado {date}” lacks a natural date preposition and can disagree with feminine ROM; the noun phrase is gender-neutral and identifies the request event."
+    }
+  ],
+  "heldIndependentOutcomes": [
+    {
+      "id": "components.MediaDetails.SeasonEpisodeTree.available",
+      "disposition": "accept",
+      "target": "están disponibles",
+      "targetSha256": "07c899d551b1a239b282cf3496c576848e3f4c404e0e4150edaebacae06174fc"
+    },
+    {
+      "id": "components.MediaDetails.SeasonEpisodeTree.deselectAllEpisodes",
+      "disposition": "accept",
+      "target": "Deseleccionar todos los episodios que {selectionDescription}",
+      "targetSha256": "46211ab83bc3adecc8875dcc0482e5073b432df8a9fb21530f497781b1cda716"
+    },
+    {
+      "id": "components.MediaDetails.SeasonEpisodeTree.deselectEveryEpisode",
+      "disposition": "accept",
+      "target": "Deseleccionar todos los episodios que {selectionDescription} en todas las temporadas, incluidas las contraídas.",
+      "targetSha256": "f5b12ec34a292160df392eaa363c0dabdd48f39dba1c1a9068b005f9b0083cae"
+    },
+    {
+      "id": "components.MediaDetails.SeasonEpisodeTree.deselectSeasonEpisodes",
+      "disposition": "accept",
+      "target": "Deseleccionar todos los episodios de {seasonName} que {selectionDescription}.",
+      "targetSha256": "b3782d3fd743b8b14abcd07252fee3f0f971f9571f4d38a7331d189db4d591b9"
+    },
+    {
+      "id": "components.QuotaSelector.unlimited",
+      "disposition": "accept",
+      "target": "Sin límite",
+      "targetSha256": "553f5b2ff5d004f1af4f494dc10643448f501c177a18ac20c133d5f148455d50"
+    },
+    {
+      "id": "components.RequestCard.TvSeasonMappingModal.description",
+      "disposition": "accept",
+      "target": "Asigna cada temporada solicitada. SeerrNG comprueba las opciones de orden estándar con TVDB y las de orden alternativo con la serie de Sonarr seleccionada.",
+      "targetSha256": "20e8baf6d48bbb3cb824394672a659d84e4236dc44f08af3b1b4f2d87d12985b"
+    }
+  ],
+  "validation": "All candidate and held source/current cells match the exact live catalog hashes; each caller context and referenced caller file is pinned to the live head; source/root-final/independent-final ICU signatures match; protected literals and inline tag order/multiplicity match. The single ProfileLink candidate used the packet’s manual exception; tags were checked explicitly in source order.",
+  "nativeSpeakerApproval": false,
+  "testsBuildsScansCiRun": false,
+  "repositoryFilesChanged": false
+}

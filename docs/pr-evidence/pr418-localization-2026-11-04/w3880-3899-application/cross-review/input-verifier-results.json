@@ -1,0 +1,11 @@
+{
+  "blindManifestSha256": "01fe435ebf8887306bcc166099bf112d5c3d24203e42163d07e8348de9bf0a61",
+  "blindReview": "PASS",
+  "candidateFree": "PASS",
+  "candidateFreeManifestSha256": "75131ec678d4cef05d846843c858f5fae71c9f8e96639bfe709d1558d6311fb1",
+  "primaryManifestSha256": "94417c0712372dc55d499f7e5fe26bff0c7874a359138ce08776250b1a8c312e",
+  "primaryReview": "PASS",
+  "sourceWorktreeClean": true,
+  "sourceWorktreeHead": "39d8ae36ba757532f947a9a15be22f0676e79075",
+  "sourceWorktreeTree": "45e3ada0f565a07c675d1d75096f4266c4ef691e"
+}

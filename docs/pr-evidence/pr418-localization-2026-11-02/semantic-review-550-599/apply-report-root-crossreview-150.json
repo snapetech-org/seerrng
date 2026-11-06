@@ -1,0 +1,65 @@
+{
+  "schemaVersion": 1,
+  "application": "SeerrNG",
+  "pullRequest": 418,
+  "reviewedHead": "7a140ea82cf6b93662e877ce5d129c30e9aa24c4",
+  "reviewedTree": "a48a7c509e537c99b5e277c86d71de64098a7432",
+  "applicationCodeTree": "2471ca52d8b94504879e5842e8ffae920a22e180",
+  "appliedAt": "2026-11-02",
+  "livePrState": "OPEN/DRAFT",
+  "plan": {
+    "path": "root-apply-plan-550-599.jsonl",
+    "sha256": "8ef19d3f1b5a472447d8a4842bff0b7e346844dc3bc9e69598c00596eba8d309",
+    "rows": 150,
+    "rootCrossReviewPath": "root-cross-review-550-599.jsonl",
+    "rootCrossReviewSha256": "670216e81517fbaf6e1247e13979811e3d446022b077ce8b8023b29f029c4e93",
+    "rootDecisionLedgerSha256": "670216e81517fbaf6e1247e13979811e3d446022b077ce8b8023b29f029c4e93",
+    "candidatePlanSha256": "92b098ef25a7a94dea4de7a74a9528a778aff6c22d27d3573155511e115d789b"
+  },
+  "rootCrossReviewDispositions": {
+    "apply": 150,
+    "already_applied_root_manual": 8,
+    "keep_current": 1
+  },
+  "appliedRows": 150,
+  "rootRefinementsFromOriginalProposal": 87,
+  "appliedLocales": {
+    "de": 150
+  },
+  "files": [
+    {
+      "path": "src/i18n/locale/de.json",
+      "beforeSha256": "e53c907bd9ae66e609f3cc0c513dd9642f8f35286fadabe8a998e94b8d187c7e",
+      "afterSha256": "448e99cedcf44b3df2dfd135dd6002c3b902f34fcbcd4185ddfe34270c389c25",
+      "changedKeys": 127,
+      "json": "valid, no duplicate keys",
+      "englishKeyParity": true
+    },
+    {
+      "path": "server/i18n/locale/de.json",
+      "beforeSha256": "31159b3543a73f0bb474066a60761fd908e420b7ad5416b993a9e41cde95551b",
+      "afterSha256": "a5a43aa0d6d4ecd307fcc369a7d132b96ce65ae8720f066a7d75602aba3450d9",
+      "changedKeys": 23,
+      "json": "valid, no duplicate keys",
+      "englishKeyParity": true
+    }
+  ],
+  "checks": {
+    "allExpectedCurrentTargetAndSourceHashesMatchedBeforeWrite": true,
+    "allReviewedOutputHashesMatchedAfterWrite": true,
+    "all150ChangedKeysExactlyMatchPlan": true,
+    "icuArgumentAndSelectorStructurePreserved": true,
+    "duplicateJsonKeys": "none in affected German catalogs and English references",
+    "englishKeyParity": "passed for affected src/server German catalogs",
+    "gitDiffCheck": "passed",
+    "workflowsChanged": false
+  },
+  "nativeSpeakerApproval": false,
+  "testsBuildsCiOrReleaseRun": false,
+  "localHooks": {
+    "preCommit": "skipped: Semgrep outside private ephemeral JIT",
+    "postCommit": "skipped: unrelated package-sync side effect",
+    "prePush": "skipped: packaging test outside private ephemeral JIT"
+  },
+  "catalogsEdited": true
+}

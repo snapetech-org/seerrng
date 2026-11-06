@@ -1,4 +1,5 @@
 import Alert from '@app/components/Common/Alert';
+import ApiMessageText from '@app/components/Common/ApiMessageText';
 import Header from '@app/components/Common/Header';
 import ListView from '@app/components/Common/ListView';
 import PageTitle from '@app/components/Common/PageTitle';
@@ -149,7 +150,11 @@ const DiscoverSports = () => {
       </div>
       {discover.error && (
         <Alert
-          title={errorMessage ?? intl.formatMessage(messages.unavailable)}
+          title={
+            <ApiMessageText>
+              {errorMessage ?? intl.formatMessage(messages.unavailable)}
+            </ApiMessageText>
+          }
           type="warning"
         >
           {intl.formatMessage(messages.unavailableHint)}

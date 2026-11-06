@@ -11,10 +11,10 @@ const Tag = memo(({ children, iconSvg }: TagProps) => {
     () =>
       iconSvg ? (
         React.cloneElement(iconSvg, {
-          className: 'mr-1 h-4 w-4',
+          className: 'me-1 h-4 w-4',
         })
       ) : (
-        <TagIcon className="mr-1 h-4 w-4" />
+        <TagIcon className="me-1 h-4 w-4" />
       ),
     [iconSvg]
   );

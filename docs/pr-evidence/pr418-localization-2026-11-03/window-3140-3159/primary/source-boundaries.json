@@ -1,0 +1,23 @@
+{
+  "repository": "snapetech-org/SeerrNG",
+  "pullRequest": 418,
+  "head": "536dfdb7630d5f61fc8a90b82bc33234eb432c9f",
+  "tree": "a011ac81dabbcbc46a4a522f1355efc9025fadc1",
+  "sourceOrderCount": 9494,
+  "range": [
+    3140,
+    3159
+  ],
+  "previousRange": [
+    3120,
+    3139
+  ],
+  "nextRange": [
+    3160,
+    3179
+  ],
+  "startId": "components.RequestModal.seasonWatchGateLinkAccount",
+  "endId": "components.RequestModal.watchAheadEpisodeOption",
+  "allIdsSequential": true,
+  "callerSearchScope": "Exact components.RequestModal message-group definitions and targeted use sites; not a full dynamic call graph."
+}

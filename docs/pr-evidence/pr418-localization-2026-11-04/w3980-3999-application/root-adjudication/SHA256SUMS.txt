@@ -1,0 +1,3 @@
+b3a612a49cb9d975dddc1cf11b6e4ddee3d8300b741329904ae4af8f4bf86a26  README.md
+5118ecb1b8423c75f1cc002c7f0aaabb109e0185ab0b2580292297b212ad0afb  root-adjudication.json
+cef79dcfd6accd827a4c986f700f76e66f9b39b9b777c03ce0318f444ac46d58  verify-root-adjudication.py

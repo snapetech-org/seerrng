@@ -1,0 +1,85 @@
+{
+  "schemaVersion": 1,
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "task": "Primary semantic review of SeerrNG PR #418 source positions 1200–1299 for ja/ko/pt-BR/vi/zh-CN/zh-TW",
+  "exactHead": "6ff9de1c39a19fe9c508f09e0f6a885022632d8b",
+  "exactTree": "68d7525714b3628bbe7b69701d8be08add152832",
+  "worktree": "/mnt/disks/scratch/task-worktrees/localization-20261102/seerrng-pr418-w1000-1099",
+  "input": {
+    "path": "/mnt/disks/scratch/task-scratch/seerrng-pr418-window-1200-1299-primary-20261102/review-input.jsonl",
+    "sha256": "f41fc3a49bdeea482f584fd287372935bb7a9d80faeeecc56ec1b41cd59634e9",
+    "packetRows": 1200,
+    "assignedRows": 600
+  },
+  "scope": {
+    "sourcePositions": [
+      1200,
+      1299
+    ],
+    "sourceIds": 100,
+    "locales": [
+      "ja",
+      "ko",
+      "pt-BR",
+      "vi",
+      "zh-CN",
+      "zh-TW"
+    ],
+    "cells": 600
+  },
+  "rowsReviewed": 600,
+  "counts": {
+    "accept-current": 547,
+    "propose-correction": 35,
+    "propose-refinement": 18
+  },
+  "countsByLocale": {
+    "ja": {
+      "accept-current": 85,
+      "propose-correction": 9,
+      "propose-refinement": 6
+    },
+    "ko": {
+      "propose-correction": 7,
+      "accept-current": 90,
+      "propose-refinement": 3
+    },
+    "pt-BR": {
+      "propose-refinement": 5,
+      "accept-current": 92,
+      "propose-correction": 3
+    },
+    "vi": {
+      "accept-current": 94,
+      "propose-correction": 2,
+      "propose-refinement": 4
+    },
+    "zh-CN": {
+      "accept-current": 94,
+      "propose-correction": 6
+    },
+    "zh-TW": {
+      "accept-current": 92,
+      "propose-correction": 8
+    }
+  },
+  "proposals": 53,
+  "frozenPriorSpanishCells": 0,
+  "inputAttestationMismatches": 0,
+  "blockedRows": [],
+  "proposalTargetHashes": "SHA-256 over exact UTF-8 replacement text",
+  "placeholderMismatches": 0,
+  "callerNotes": [
+    "Definition-only ExternalMediaManageSlideOver keys book/comic/magazine/music/manageModalIssues were checked against the slide-over flow. The media enum is passed to IssueMediaSummary and the modal uses separate *Title labels; the five catalog keys have no direct use in this component.",
+    "Following.FollowButton.unfollow is definition-only; the visible Following page action uses Following.stopFollowing.",
+    "The fullCastProduction caller maps the event only for audiobook editions whose production is classified full-cast.",
+    "External service link callers pass {arr} names Lidarr/Mylar/Kapowarr/Bookshelf, and openarrFormat also receives a runtime {format} label.",
+    "Following.howBody retains the product literal SeerrNG.",
+    "The newFranchiseRelation server adapter supplies a relation type for each new MediaRelation.",
+    "RelatedTools is rendered below the Places to start following heading."
+  ],
+  "nativeSpeakerSignoff": "not claimed",
+  "browserReviewPerformed": false,
+  "inputAttestationChecks": "all assigned current/source hashes, target catalog pins, and source/caller file/line hashes matched the pinned head/tree."
+}

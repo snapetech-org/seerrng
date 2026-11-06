@@ -881,7 +881,7 @@
   "components.UserList.deleteuser": "Видалити користувача",
   "components.UserList.edituser": "Змінити дозволи користувача",
   "components.UserList.email": "Адреса електронної пошти",
-  "components.UserList.importedfromplex": "{userCount, plural, one {# новий користувач} other {# нових користувачів} успішно імпортовані з Plex!",
+  "components.UserList.importedfromplex": "{userCount, plural, one {# новий користувач} other {# нових користувачів}} успішно імпортовані з Plex!",
   "components.UserList.importfrommediaserver": "Імпортувати користувачів з {mediaServerName}",
   "components.UserList.importfromplex": "Імпортувати користувачів з Plex",
   "components.UserList.importfromplexerror": "Щось пішло не так при імпорті користувачів з Plex.",

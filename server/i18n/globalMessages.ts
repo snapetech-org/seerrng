@@ -40,13 +40,17 @@ const globalMessages = defineMessages('notifications.common', {
   openIn: 'Open in {applicationTitle}',
   movie: 'movie',
   series: 'series',
+  sports: 'sports event',
   music: 'music',
   book: 'book',
   comic: 'comic',
   magazine: 'magazine',
   adult: 'adult scene',
   issue: 'issue',
-  issueTypeName: '{type} issue',
+  issueTypeLabel:
+    '{type, select, audio {Audio} video {Video} subtitles {Subtitle} other {Other}}',
+  issueTypeNameMessage:
+    '{type, select, audio {Audio issue} video {Video issue} subtitles {Subtitle issue} other {Issue}}',
 });
 
 export default globalMessages;

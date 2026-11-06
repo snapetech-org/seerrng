@@ -1,0 +1,51 @@
+{
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "window": "W3320-W3339",
+  "exactHead": "70caabc2f95df1a7de3f869111aea1df58522d96",
+  "exactTree": "daac9e9284adac648fd3f6147265c21c90cdddba",
+  "inputManifestSha256": "14ad0f598ffeb8fe4c7b42699fb0e230149ed3661b1a64c0641a6c0f1e6c8659",
+  "sourceCount": 20,
+  "localeCount": 12,
+  "cellCount": 240,
+  "callerContextRows": 51,
+  "callerHoldIds": [
+    "components.Requests.deleted",
+    "components.Requests.deleting",
+    "components.Requests.ebook",
+    "components.Requests.ebookAndAudiobook",
+    "components.Requests.format"
+  ],
+  "callerHoldCells": 60,
+  "dispositions": {
+    "accept-current": 163,
+    "correction": 8,
+    "hold-context": 60,
+    "refinement": 9
+  },
+  "changesByLocale": {
+    "ar": 2,
+    "de": 1,
+    "es": 1,
+    "fr": 1,
+    "hi": 1,
+    "id": 2,
+    "ja": 3,
+    "ko": 1,
+    "pt_BR": 2,
+    "vi": 2,
+    "zh_Hans": 1
+  },
+  "changedCells": 17,
+  "placeholderMismatches": 0,
+  "markupMismatches": 0,
+  "numericTokenMismatches": 0,
+  "protectedLiteralMismatches": 0,
+  "allTargetHashesPinned": true,
+  "orderedCatalogKeySequencesMatch": false,
+  "catalogKeyCount": 9494,
+  "catalogCountIncludingEnglish": 13,
+  "nativeSpeakerApproval": false,
+  "headedBrowserAcceptance": false,
+  "reviewScope": "machine-assisted primary semantic review; not qualified native-speaker approval"
+}

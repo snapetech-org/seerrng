@@ -1,0 +1,34 @@
+{
+  "repository": "snapetech-org/SeerrNG",
+  "pullRequest": 418,
+  "head": "154dbf7fd6b346d9c5bddf23c7c6283db9826313",
+  "tree": "a2f00bcc40b51a5643bbeb3e52ecdfc58a5718b9",
+  "window": "W3800-W3819",
+  "cells": 240,
+  "sourceIds": 20,
+  "primaryProposals": 26,
+  "independentBlindProposals": 27,
+  "proposalUnion": 36,
+  "acceptedCurrentWithoutProposal": 204,
+  "acceptedProposalNoOps": 1,
+  "selectedUpdates": 35,
+  "selectedDispositionCounts": {
+    "accept-current": 205,
+    "correction": 8,
+    "refinement": 27
+  },
+  "selectedFromCounts": {
+    "current": 204,
+    "independent-agreement": 4,
+    "independent-blind": 10,
+    "primary": 22
+  },
+  "protectedLiteralBaselineMismatches": 4,
+  "protectedLiteralMismatchesInSelectedTargets": 0,
+  "primaryReviewerLedgerSha256": "860c9ef6b0906073d9057ca552f4cd2a981688aaff39f89b752eb37e8c504164",
+  "independentBlindLedgerSha256": "6a045ae7ecc0bb2c6e0011dd5c426bba0ba324ceaf881b49d95cb59df4793b92",
+  "candidateFreeManifestSha256": "2031b37acfbfd25db3db5f90d6520d8ae9feb1f36ee78c7e72fb17ce250e2641",
+  "nativeSpeakerSignoff": "not claimed",
+  "exactHeadBrowserAcceptance": "not performed; deployment lookup at review returned zero",
+  "catalogApplication": "pending"
+}

@@ -5,12 +5,17 @@ import { UserType } from '@server/constants/user';
 import { getRepository } from '@server/datasource';
 import SoftwareRequest from '@server/entity/SoftwareRequest';
 import { Watchlist } from '@server/entity/Watchlist';
+import { defineMessages, getIntl } from '@server/i18n';
 import type { QuotaResponse } from '@server/interfaces/api/userInterfaces';
 import PreparedEmail from '@server/lib/email';
 import type { PermissionCheckOptions } from '@server/lib/permissions';
 import { Permission, hasPermission } from '@server/lib/permissions';
 import { getSettings } from '@server/lib/settings';
 import logger from '@server/logger';
+import {
+  getLocaleMetadata,
+  type AvailableLocale,
+} from '@server/types/languages';
 import { DbAwareColumn, resolveDbType } from '@server/utils/DbColumnHelper';
 import { AfterDate } from '@server/utils/dateHelpers';
 import { normalizeJellyfinGuid } from '@server/utils/jellyfin';
@@ -41,6 +46,17 @@ const permissionColumnTransformer = {
   to: (value?: number | null): number => value ?? 0,
   from: (value: string | number | null): number => Number(value ?? 0),
 };
+
+const resetPasswordEmailMessages = defineMessages('emails.resetPassword', {
+  subject: 'Set Your Password [{applicationTitle}]',
+  greeting: 'Hi, {recipientName}!',
+  instructions:
+    'Use the link below to choose a password for your {applicationTitle} account.',
+  action: 'Set Password',
+  expires: 'The above link will expire in 24 hours.',
+  ignore:
+    'If you did not initiate this request, you may safely disregard this message.',
+});
 
 @Entity()
 @Index('IDX_user_plex_id_unique', ['plexId'], { unique: true })
@@ -498,6 +514,9 @@ export class User {
       const userRepository = getRepository(User);
       const { applicationTitle, applicationUrl } = settings.main;
       const resetPasswordLink = `${applicationUrl}/resetpassword/${guid}`;
+      const intl = getIntl(this.settings?.locale as AvailableLocale);
+      const direction = getLocaleMetadata(intl.locale).direction;
+      const recipientName = this.displayName || this.username || this.email;
 
       try {
         logger.info(`Sending reset password email for ${this.email}`, {
@@ -510,10 +529,30 @@ export class User {
             to: this.email,
           },
           locals: {
+            subject: intl.formatMessage(resetPasswordEmailMessages.subject, {
+              applicationTitle,
+            }),
+            locale: intl.locale,
+            direction,
+            greeting:
+              recipientName !== this.email
+                ? intl.formatMessage(resetPasswordEmailMessages.greeting, {
+                    recipientName: `\u2068${recipientName}\u2069`,
+                  })
+                : undefined,
+            instructions: intl.formatMessage(
+              resetPasswordEmailMessages.instructions,
+              { applicationTitle }
+            ),
+            actionLabel: intl.formatMessage(resetPasswordEmailMessages.action),
+            expiresNotice: intl.formatMessage(
+              resetPasswordEmailMessages.expires
+            ),
+            ignoreNotice: intl.formatMessage(resetPasswordEmailMessages.ignore),
             resetPasswordLink,
             applicationUrl,
             applicationTitle,
-            recipientName: this.displayName || this.username || this.email,
+            recipientName,
             recipientEmail: this.email,
           },
         });

@@ -1,0 +1,104 @@
+[
+  {
+    "repository": "snapetech-org/chaptarrng",
+    "releaseRef": "v0.9.977",
+    "releaseCommit": "03fe58069880160276c90a8f8ded3b6ae8d205e0",
+    "locale": "ja",
+    "file": "src/NzbDrone.Core/Localization/Core/ja.json",
+    "fileBlob": "f5254c8e79663ab2e3dfcfda445e655a538fb00a",
+    "labels": {
+      "Settings": "設定",
+      "General": "一般",
+      "Security": "セキュリティ",
+      "ApiKey": "APIキー",
+      "Host": "ホスト",
+      "URLBase": "URLベース"
+    },
+    "sourceUrl": "https://github.com/snapetech-org/chaptarrng/blob/v0.9.977/src/NzbDrone.Core/Localization/Core/ja.json"
+  },
+  {
+    "repository": "snapetech-org/chaptarrng",
+    "releaseRef": "v0.9.977",
+    "releaseCommit": "03fe58069880160276c90a8f8ded3b6ae8d205e0",
+    "locale": "ko",
+    "file": "src/NzbDrone.Core/Localization/Core/ko.json",
+    "fileBlob": "20777fcca72c1dc03b35bb40e2aef0f4c2009022",
+    "labels": {
+      "Settings": "설정",
+      "General": "일반",
+      "Security": "보안",
+      "ApiKey": "API 키",
+      "Host": "주최자",
+      "URLBase": "URL베이스"
+    },
+    "sourceUrl": "https://github.com/snapetech-org/chaptarrng/blob/v0.9.977/src/NzbDrone.Core/Localization/Core/ko.json"
+  },
+  {
+    "repository": "snapetech-org/chaptarrng",
+    "releaseRef": "v0.9.977",
+    "releaseCommit": "03fe58069880160276c90a8f8ded3b6ae8d205e0",
+    "locale": "pt-BR",
+    "file": "src/NzbDrone.Core/Localization/Core/pt_BR.json",
+    "fileBlob": "54946138cc03ba5162e54a76a0cec8190d22e034",
+    "labels": {
+      "Settings": "Configurações",
+      "General": "Geral",
+      "Security": "Segurança",
+      "ApiKey": "Chave da API",
+      "Host": "Host.",
+      "URLBase": "URL base"
+    },
+    "sourceUrl": "https://github.com/snapetech-org/chaptarrng/blob/v0.9.977/src/NzbDrone.Core/Localization/Core/pt_BR.json"
+  },
+  {
+    "repository": "snapetech-org/chaptarrng",
+    "releaseRef": "v0.9.977",
+    "releaseCommit": "03fe58069880160276c90a8f8ded3b6ae8d205e0",
+    "locale": "vi",
+    "file": "src/NzbDrone.Core/Localization/Core/vi.json",
+    "fileBlob": "843e25c047be15dbb270338135a8604451af7a6b",
+    "labels": {
+      "Settings": "Cài đặt",
+      "General": "Chung",
+      "Security": "Bảo vệ",
+      "ApiKey": "Mã API",
+      "Host": "Tổ chức",
+      "URLBase": "Cơ sở URL"
+    },
+    "sourceUrl": "https://github.com/snapetech-org/chaptarrng/blob/v0.9.977/src/NzbDrone.Core/Localization/Core/vi.json"
+  },
+  {
+    "repository": "snapetech-org/chaptarrng",
+    "releaseRef": "v0.9.977",
+    "releaseCommit": "03fe58069880160276c90a8f8ded3b6ae8d205e0",
+    "locale": "zh-CN",
+    "file": "src/NzbDrone.Core/Localization/Core/zh_CN.json",
+    "fileBlob": "88ef299a306e64e9fbfed3f9001671fa655ed2f7",
+    "labels": {
+      "Settings": "设置",
+      "General": "通用",
+      "Security": "安全",
+      "ApiKey": "API 密钥",
+      "Host": "主机",
+      "URLBase": "基本URL"
+    },
+    "sourceUrl": "https://github.com/snapetech-org/chaptarrng/blob/v0.9.977/src/NzbDrone.Core/Localization/Core/zh_CN.json"
+  },
+  {
+    "repository": "snapetech-org/chaptarrng",
+    "releaseRef": "v0.9.977",
+    "releaseCommit": "03fe58069880160276c90a8f8ded3b6ae8d205e0",
+    "locale": "zh-TW",
+    "file": "src/NzbDrone.Core/Localization/Core/zh_TW.json",
+    "fileBlob": "9eb64757c8473a7261334eb8141edbe476ad8107",
+    "labels": {
+      "Settings": "設定",
+      "General": "一般",
+      "Security": "安全",
+      "ApiKey": "API密鑰",
+      "Host": "主機",
+      "URLBase": "URL 基底"
+    },
+    "sourceUrl": "https://github.com/snapetech-org/chaptarrng/blob/v0.9.977/src/NzbDrone.Core/Localization/Core/zh_TW.json"
+  }
+]

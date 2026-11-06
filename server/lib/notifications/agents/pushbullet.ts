@@ -1,4 +1,4 @@
-import { IssueStatus, IssueTypeName } from '@server/constants/issue';
+import { IssueStatus } from '@server/constants/issue';
 import { MediaStatus } from '@server/constants/media';
 import { getIntl } from '@server/i18n';
 import globalMessages from '@server/i18n/globalMessages';
@@ -21,6 +21,13 @@ import {
   BaseAgent,
   NOTIFICATION_DELIVERY_CONCURRENCY,
   NOTIFICATION_HTTP_OPTIONS,
+  formatNotificationTitle,
+  getIssueTypeLabel,
+  getLocalizedNotificationPayload,
+  getNotificationCommentFrom,
+  getNotificationContent,
+  getNotificationExtras,
+  isolateBidiText,
 } from './agent';
 
 interface PushbulletPayload {
@@ -52,13 +59,16 @@ class PushbulletAgent
     locale?: AvailableLocale
   ): PushbulletPayload {
     const intl = getIntl(locale);
-    const title = payload.event
-      ? `${payload.event} - ${payload.subject}`
-      : payload.subject;
-    let body = payload.message && !payload.comment ? payload.message : '';
+    payload = getLocalizedNotificationPayload(payload, intl);
+    const content = getNotificationContent(payload, intl);
+    const extras = getNotificationExtras(payload, intl);
+    const title = formatNotificationTitle(content.event, payload.subject);
+    let body = content.message && !payload.comment ? content.message : '';
 
     if (payload.request) {
-      body += `\n\n${intl.formatMessage(globalMessages.requestedBy)}: ${payload.request.requestedBy.displayName}`;
+      body += `\n\n${intl.formatMessage(globalMessages.requestedBy)}: ${isolateBidiText(
+        payload.request.requestedBy.displayName
+      )}`;
 
       let status = '';
       switch (type) {
@@ -93,10 +103,15 @@ class PushbulletAgent
         body += `\n${intl.formatMessage(globalMessages.requestStatus)}: ${status}`;
       }
     } else if (payload.comment) {
-      body += `\n\n${intl.formatMessage(globalMessages.commentFrom, { userName: payload.comment.user.displayName })}:\n${payload.comment.message}`;
+      body += `\n\n${getNotificationCommentFrom(
+        payload.comment.user.displayName,
+        intl
+      )}:\n${payload.comment.message}`;
     } else if (payload.issue) {
-      body += `\n\n${intl.formatMessage(globalMessages.reportedBy)}: ${payload.issue.createdBy.displayName}`;
-      body += `\n${intl.formatMessage(globalMessages.issueType)}: ${IssueTypeName[payload.issue.issueType]}`;
+      body += `\n\n${intl.formatMessage(globalMessages.reportedBy)}: ${isolateBidiText(
+        payload.issue.createdBy.displayName
+      )}`;
+      body += `\n${intl.formatMessage(globalMessages.issueType)}: ${getIssueTypeLabel(intl, payload.issue.issueType)}`;
       body += `\n${intl.formatMessage(globalMessages.issueStatus)}: ${
         payload.issue.status === IssueStatus.OPEN
           ? intl.formatMessage(globalMessages.open)
@@ -104,7 +119,7 @@ class PushbulletAgent
       }`;
     }
 
-    for (const extra of payload.extra ?? []) {
+    for (const extra of extras) {
       body += `\n${extra.name}: ${extra.value}`;
     }
 

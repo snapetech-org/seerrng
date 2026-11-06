@@ -1,0 +1,617 @@
+{
+  "head": "f20893e57a89827095fa049d8e0475df7ec7170f",
+  "sourceCatalog": {
+    "blob": "12e04a118c30b71b3714291adeaf9fdb2735cee4",
+    "bytes": 835513,
+    "path": "src/i18n/locale/en.json",
+    "sha256": "75ff3c90b52aedd636a506281ffbd6fb2d3739c61294b6008a517f17647e2316"
+  },
+  "sourceCount": 100,
+  "sourceList": [
+    {
+      "position": 2400,
+      "source": "Auto-Request",
+      "sourceHash": "0ff1d87c8a4618689b957ce1061093c281956d047a587f2e9fc0db96e5f7c7e8",
+      "sourceId": "components.PermissionEdit.autorequest"
+    },
+    {
+      "position": 2401,
+      "source": "Auto-Request Books",
+      "sourceHash": "70ddd17b68330f79fa4f3918eca6536ad348ba6ff75f7f7d853d507664bce9b1",
+      "sourceId": "components.PermissionEdit.autorequestBooks"
+    },
+    {
+      "position": 2402,
+      "source": "Grant permission to automatically submit book requests via watchlists.",
+      "sourceHash": "4bca1b9278f5ba2f0b33237fa28e8ce7594ec6d23dfb58f37f403a07e7062eee",
+      "sourceId": "components.PermissionEdit.autorequestBooksDescription"
+    },
+    {
+      "position": 2403,
+      "source": "Auto-Request Comics",
+      "sourceHash": "c2d43d8da3f0a0a1f78c0f79c1b6fb0492d4022c38bba18875a275083617b758",
+      "sourceId": "components.PermissionEdit.autorequestComics"
+    },
+    {
+      "position": 2404,
+      "source": "Grant permission to automatically submit comic requests via watchlists.",
+      "sourceHash": "a0ba079c89b8b1508133ad14dc63209b06ce48ac90854b21b07f20216466781b",
+      "sourceId": "components.PermissionEdit.autorequestComicsDescription"
+    },
+    {
+      "position": 2405,
+      "source": "Grant permission to automatically submit requests for non-4K media via watchlists.",
+      "sourceHash": "3716d8410b51ff290cb4674c436cb4406f74ca1d3ee62445411c610f4ca8dab8",
+      "sourceId": "components.PermissionEdit.autorequestDescription"
+    },
+    {
+      "position": 2406,
+      "source": "Auto-Request Magazines",
+      "sourceHash": "186a40eb8e0dd98a6085bec1d3439e6301dc5327fb2110f9acf19967db163c18",
+      "sourceId": "components.PermissionEdit.autorequestMagazines"
+    },
+    {
+      "position": 2407,
+      "source": "Grant permission to automatically submit magazine requests via watchlists.",
+      "sourceHash": "e141f55ca144baf31a78f586c90205c86a57e66e89cd6cf72305a375b64868cb",
+      "sourceId": "components.PermissionEdit.autorequestMagazinesDescription"
+    },
+    {
+      "position": 2408,
+      "source": "Auto-Request Movies",
+      "sourceHash": "b44cfb31eaca6edf0bb5e84f4a1e1e972980099013b3da5d5c6cb9ae217c043d",
+      "sourceId": "components.PermissionEdit.autorequestMovies"
+    },
+    {
+      "position": 2409,
+      "source": "Grant permission to automatically submit requests for non-4K movies via Plex Watchlist.",
+      "sourceHash": "5ef1884116bb3d61715590c07796eab8c47f0d1f9d46d276339ce039ae38c77e",
+      "sourceId": "components.PermissionEdit.autorequestMoviesDescription"
+    },
+    {
+      "position": 2410,
+      "source": "Auto-Request Music",
+      "sourceHash": "d9a202085c768cd38b5092cfc45be46aa77c66401b97eeb64cbaeb77da481e05",
+      "sourceId": "components.PermissionEdit.autorequestMusic"
+    },
+    {
+      "position": 2411,
+      "source": "Grant permission to automatically submit music requests via watchlists.",
+      "sourceHash": "1e9fa50d164c0dc47bc9966ea5ebb9648bab117f61e033d3e3935f8f5a18fba7",
+      "sourceId": "components.PermissionEdit.autorequestMusicDescription"
+    },
+    {
+      "position": 2412,
+      "source": "Auto-Request Series",
+      "sourceHash": "505afd84332326a38d288665f64273e2e01b185be6bce1ac39b44d2fef26adf0",
+      "sourceId": "components.PermissionEdit.autorequestSeries"
+    },
+    {
+      "position": 2413,
+      "source": "Grant permission to automatically submit requests for non-4K series via Plex Watchlist.",
+      "sourceHash": "a60de7f986c4c5ab5adc4966ba4dacc01d0662af7809eec93dc7ecb752902486",
+      "sourceId": "components.PermissionEdit.autorequestSeriesDescription"
+    },
+    {
+      "position": 2414,
+      "source": "Blocklist media.",
+      "sourceHash": "fe0dc453de28271278e516b44086f65fe8d5062716a55ae37313c680748b1cd0",
+      "sourceId": "components.PermissionEdit.blocklistedItems"
+    },
+    {
+      "position": 2415,
+      "source": "Grant permission to blocklist media.",
+      "sourceHash": "97640ebd0db8d23b9292460ccab38af7f0611fdad936dcec82263a97683b26b4",
+      "sourceId": "components.PermissionEdit.blocklistedItemsDescription"
+    },
+    {
+      "position": 2416,
+      "source": "Report Issues",
+      "sourceHash": "414daa4c41cf05b05cfaff95a66dc4bec1c44333c4c4c1178ae2680d56c5c41b",
+      "sourceId": "components.PermissionEdit.createissues"
+    },
+    {
+      "position": 2417,
+      "source": "Grant permission to report media issues.",
+      "sourceHash": "de7d816e5fb41b419d9bb3009b2a7b45df3531c6afe72a11ce61b0423eaa3360",
+      "sourceId": "components.PermissionEdit.createissuesDescription"
+    },
+    {
+      "position": 2418,
+      "source": "Manage Blocklist",
+      "sourceHash": "7cad5385a7e4e655b8c819d7181f21c384c8ac6ca02acf3eb4c1508f73171fb1",
+      "sourceId": "components.PermissionEdit.manageblocklist"
+    },
+    {
+      "position": 2419,
+      "source": "Grant permission to manage blocklisted media.",
+      "sourceHash": "112d7d340de1f4b18d18eb753d108e4510a450d158cd4174e57742a9297cd32f",
+      "sourceId": "components.PermissionEdit.manageblocklistDescription"
+    },
+    {
+      "position": 2420,
+      "source": "Manage Downloads",
+      "sourceHash": "8e5c5d305b083b3ee649c27a6b8bbbbfaf5d7d322c9bf55ada4aa3ac8f19f723",
+      "sourceId": "components.PermissionEdit.managedownloads"
+    },
+    {
+      "position": 2421,
+      "source": "View download warnings and history, manually import files, and reject or blocklist downloads in configured acquisition services.",
+      "sourceHash": "d34a783976bc8f80187b5fb1b2e9ef7e8ddae3d159822cb686e57d67638273ed",
+      "sourceId": "components.PermissionEdit.managedownloadsDescription"
+    },
+    {
+      "position": 2422,
+      "source": "Manage Issues",
+      "sourceHash": "946915bcbc4d27ca70e40a2f7d3bd4860c33cbb3d986b5ee6c97e1b30c347f68",
+      "sourceId": "components.PermissionEdit.manageissues"
+    },
+    {
+      "position": 2423,
+      "source": "Grant permission to manage media issues.",
+      "sourceHash": "1e92a004c0f04db8c89cddcdb480779714da7886cca155a716f9c18aaf828dab",
+      "sourceId": "components.PermissionEdit.manageissuesDescription"
+    },
+    {
+      "position": 2424,
+      "source": "Manage Requests",
+      "sourceHash": "da18e00b8298a1fcb3ce18bb1226354d70185e62134d33f79a57aed5dd6b3e64",
+      "sourceId": "components.PermissionEdit.managerequests"
+    },
+    {
+      "position": 2425,
+      "source": "Grant permission to manage media requests. All requests made by a user with this permission will be automatically approved.",
+      "sourceHash": "9e2e049eebe4aadbceb9ae48d4575d60b8991ba545870bf8cf5117d110859df4",
+      "sourceId": "components.PermissionEdit.managerequestsDescription"
+    },
+    {
+      "position": 2426,
+      "source": "Request",
+      "sourceHash": "f12dee1ae911b2679b34bb00470272b31302dea8953fb9de3e471ea19d9acb45",
+      "sourceId": "components.PermissionEdit.request"
+    },
+    {
+      "position": 2427,
+      "source": "Request 4K",
+      "sourceHash": "16e2fa6fb5cd0d6d35eb994485872626c1ec31db338d4024b3a1f64e565fbb89",
+      "sourceId": "components.PermissionEdit.request4k"
+    },
+    {
+      "position": 2428,
+      "source": "Grant permission to submit requests for 4K media.",
+      "sourceHash": "e81bf45bd6cbfd924b257432fb5ce64e0fe22d0ef55beae429b9d7c53113f06a",
+      "sourceId": "components.PermissionEdit.request4kDescription"
+    },
+    {
+      "position": 2429,
+      "source": "Request 4K Movies",
+      "sourceHash": "f4c1c6bc2ae01788e31c0c7a9c2a6f964cef6df386fe7c71519c2486a42be666",
+      "sourceId": "components.PermissionEdit.request4kMovies"
+    },
+    {
+      "position": 2430,
+      "source": "Grant permission to submit requests for 4K movies.",
+      "sourceHash": "c645ddc2deee95def29679475593658346ea8939261a792abdef9cd9cc9f4aef",
+      "sourceId": "components.PermissionEdit.request4kMoviesDescription"
+    },
+    {
+      "position": 2431,
+      "source": "Request 4K Series",
+      "sourceHash": "02c6cc47795734b11c90fe475de182c2e9378fd020aacc27ffc72ae152389c4d",
+      "sourceId": "components.PermissionEdit.request4kTv"
+    },
+    {
+      "position": 2432,
+      "source": "Grant permission to submit requests for 4K series.",
+      "sourceHash": "2070935983d77e9752d9321e30f47b115097e0d7ea4d1e5990a636d7bd316f06",
+      "sourceId": "components.PermissionEdit.request4kTvDescription"
+    },
+    {
+      "position": 2433,
+      "source": "Request Adult Media",
+      "sourceHash": "14ac36ab7e6fa2b47574a4068de056b801159ba5c1e48baf077cc0460315dabc",
+      "sourceId": "components.PermissionEdit.requestAdult"
+    },
+    {
+      "position": 2434,
+      "source": "Explicitly grant this user access to discover and request adult scenes through Whisparr.",
+      "sourceHash": "ccd2837800a7d0c31a5ab3c5058876affb27a6fad76666ecb5a44f6b945e8c89",
+      "sourceId": "components.PermissionEdit.requestAdultDescription"
+    },
+    {
+      "position": 2435,
+      "source": "Request Books",
+      "sourceHash": "908b6fb55b5cee92d6453f67e2f9e2c939bd1f8c548f01ca646ff8aabaf22e30",
+      "sourceId": "components.PermissionEdit.requestBooks"
+    },
+    {
+      "position": 2436,
+      "source": "Grant permission to submit book requests.",
+      "sourceHash": "73e9b2523086020b57ddddf7770c76145649f4e3f912ef656af336747ef415b4",
+      "sourceId": "components.PermissionEdit.requestBooksDescription"
+    },
+    {
+      "position": 2437,
+      "source": "Request Comics",
+      "sourceHash": "71b88d48fd69c2fd35dbe261a9757e82e913c7e676da7b44ff863e750393fbb0",
+      "sourceId": "components.PermissionEdit.requestComics"
+    },
+    {
+      "position": 2438,
+      "source": "Grant permission to submit comic requests.",
+      "sourceHash": "070c4b0c71510b29ec1966eccc0c172848ef97c644ecdd6f19daa788b2a7117b",
+      "sourceId": "components.PermissionEdit.requestComicsDescription"
+    },
+    {
+      "position": 2439,
+      "source": "Grant permission to submit requests for non-4K media.",
+      "sourceHash": "30c57a0064aa9d44e751624316eae1a8bfea0e3e4aa5240c68213cf9e5c4e2fd",
+      "sourceId": "components.PermissionEdit.requestDescription"
+    },
+    {
+      "position": 2440,
+      "source": "Request Magazines",
+      "sourceHash": "41d5857de898e0d550c76f061343ac4be586ff5a05b389d4d331701a1c42a5a6",
+      "sourceId": "components.PermissionEdit.requestMagazines"
+    },
+    {
+      "position": 2441,
+      "source": "Grant permission to submit magazine requests through LazyLibrarian.",
+      "sourceHash": "f784494b7d845ef2bd4cfd749be96114ac2ad9850dc561d7503926586db6515f",
+      "sourceId": "components.PermissionEdit.requestMagazinesDescription"
+    },
+    {
+      "position": 2442,
+      "source": "Request Movies",
+      "sourceHash": "d365af4e712a611515a8f76e7d4a95f566a56f9979233984c3725c50387be884",
+      "sourceId": "components.PermissionEdit.requestMovies"
+    },
+    {
+      "position": 2443,
+      "source": "Grant permission to submit requests for non-4K movies.",
+      "sourceHash": "15f0159ee4ad80688755dcfe21b5e423fb5345f7f5f485998c7db89bd1d24ed4",
+      "sourceId": "components.PermissionEdit.requestMoviesDescription"
+    },
+    {
+      "position": 2444,
+      "source": "Request Music",
+      "sourceHash": "a53db05313c1c8dba531a6456d62c108bbf780c7fe410b6beecbcb55984c13ba",
+      "sourceId": "components.PermissionEdit.requestMusic"
+    },
+    {
+      "position": 2445,
+      "source": "Grant permission to submit music requests.",
+      "sourceHash": "d03a02d37432981043ff9a3654d8e6f841898c101dfd9e5d76b52e589b9187c5",
+      "sourceId": "components.PermissionEdit.requestMusicDescription"
+    },
+    {
+      "position": 2446,
+      "source": "Request Sports",
+      "sourceHash": "ac8732689f3158b1307fc0a8191574e37c7e5d2ef3d15c88430fa3c651dd35ee",
+      "sourceId": "components.PermissionEdit.requestSports"
+    },
+    {
+      "position": 2447,
+      "source": "Grant permission to submit sports league requests through Sportarr.",
+      "sourceHash": "6479e0397f4f91f7ee3c4c5066933ec9ead5ec502a627ad2481c49662000b58e",
+      "sourceId": "components.PermissionEdit.requestSportsDescription"
+    },
+    {
+      "position": 2448,
+      "source": "Request Series",
+      "sourceHash": "db0b3296d0357f6be09a9feb1d29335a2e5f3a1d2d09d7695a092aa97fa8a8fb",
+      "sourceId": "components.PermissionEdit.requestTv"
+    },
+    {
+      "position": 2449,
+      "source": "Grant permission to submit requests for non-4K series.",
+      "sourceHash": "8d1ba6300c0a7671e45c9881074d6c71e022b5a8016262e71090a958fdcd3250",
+      "sourceId": "components.PermissionEdit.requestTvDescription"
+    },
+    {
+      "position": 2450,
+      "source": "Manage Users",
+      "sourceHash": "c06ecf019f76ada6795a26eb8da7846124fbaa59f353c5a975ad3f1f6119db81",
+      "sourceId": "components.PermissionEdit.users"
+    },
+    {
+      "position": 2451,
+      "source": "Grant permission to manage users. Users with this permission cannot modify users with or grant the Admin privilege.",
+      "sourceHash": "0a73d87adf0bc53a46dd9335bd5642bef8b278e0fae9c6bb8f977cf612475091",
+      "sourceId": "components.PermissionEdit.usersDescription"
+    },
+    {
+      "position": 2452,
+      "source": "View blocklisted media.",
+      "sourceHash": "b9930dd0d6e1bea24a65a37641a7cf99fc2f2ced8dd3520277561c77ff510b0c",
+      "sourceId": "components.PermissionEdit.viewblocklistedItems"
+    },
+    {
+      "position": 2453,
+      "source": "Grant permission to view blocklisted media.",
+      "sourceHash": "318b19cd721c2b283d3f5c20612bb4f37b17436f819ebf4b58e7dcc56b70e99d",
+      "sourceId": "components.PermissionEdit.viewblocklistedItemsDescription"
+    },
+    {
+      "position": 2454,
+      "source": "View Issues",
+      "sourceHash": "7784414d699d561bfda6e586b9c0b4333f6cf6cf5ec0ba5b549e8466b46addc5",
+      "sourceId": "components.PermissionEdit.viewissues"
+    },
+    {
+      "position": 2455,
+      "source": "Grant permission to view media issues reported by other users.",
+      "sourceHash": "e02fced0196ec904a2054ed1d4cb47990c2d8b458af61425ff86a48a719ab5e2",
+      "sourceId": "components.PermissionEdit.viewissuesDescription"
+    },
+    {
+      "position": 2456,
+      "source": "View Recently Added",
+      "sourceHash": "2183aa67b84b59f959bb26c3f55df82c3b418496ce3d06159b664c1ee715e6d1",
+      "sourceId": "components.PermissionEdit.viewrecent"
+    },
+    {
+      "position": 2457,
+      "source": "Grant permission to view the list of recently added media.",
+      "sourceHash": "2e00d28f3bd85f1d0aa3a2c771ae0f2507e8677e3c1d9efe4c23a81d4c6228a3",
+      "sourceId": "components.PermissionEdit.viewrecentDescription"
+    },
+    {
+      "position": 2458,
+      "source": "View Requests",
+      "sourceHash": "5d4d2b89a04481172d94e5de2f7bb81a55b50aad26acdd10d7b8ac4823342008",
+      "sourceId": "components.PermissionEdit.viewrequests"
+    },
+    {
+      "position": 2459,
+      "source": "Grant permission to view media requests submitted by other users.",
+      "sourceHash": "869035f644f8908b953c319a4d763ac1e77a291d4fa21a2aa1b62710f05f5732",
+      "sourceId": "components.PermissionEdit.viewrequestsDescription"
+    },
+    {
+      "position": 2460,
+      "source": "View Watchlists",
+      "sourceHash": "8a48175ada41e6269ab731d75d37ec536977baead49423203c7bc8c03d2127eb",
+      "sourceId": "components.PermissionEdit.viewwatchlists"
+    },
+    {
+      "position": 2461,
+      "source": "Grant permission to view other users' watchlists.",
+      "sourceHash": "8fff3243cc6e211e443e0ecca1d769b2e5e279c9cde006ee5501017aae45e3e5",
+      "sourceId": "components.PermissionEdit.viewwatchlistsDescription"
+    },
+    {
+      "position": 2462,
+      "source": "Also Known As: {names}",
+      "sourceHash": "3cb0f19d4d9eec27da7a49c57c706b8af6475b7ce6198895faa9d15f8268ee07",
+      "sourceId": "components.PersonDetails.alsoknownas"
+    },
+    {
+      "position": 2463,
+      "source": "Appearances",
+      "sourceHash": "b8554298554a8bbb605d3f27dfc3751de6a69ce6de491dbd7e929dfc9ad85e98",
+      "sourceId": "components.PersonDetails.appearsin"
+    },
+    {
+      "position": 2464,
+      "source": "as {character}",
+      "sourceHash": "4c1cea5e89d871c3246bee6a90b7d7dc7eb96ebaf734691a2d6ea0dbdab7ce35",
+      "sourceId": "components.PersonDetails.ascharacter"
+    },
+    {
+      "position": 2465,
+      "source": "Born {birthdate}",
+      "sourceHash": "40144e6c25afdc92661cfd163604ba78c908b2ccfe85438337aeafd96c51905d",
+      "sourceId": "components.PersonDetails.birthdate"
+    },
+    {
+      "position": 2466,
+      "source": "Crew",
+      "sourceHash": "b21029e83feecb3d65545b51d75e82aa0c54edb5db2aa0df3215e8e5c0fa8d30",
+      "sourceId": "components.PersonDetails.crewmember"
+    },
+    {
+      "position": 2467,
+      "source": "{birthdate} – {deathdate}",
+      "sourceHash": "03fb3a13b9a058e7d4f5371610bc705e45db98d9aa92a3c4160549de8494da5d",
+      "sourceId": "components.PersonDetails.lifespan"
+    },
+    {
+      "position": 2468,
+      "source": "Request All Movies",
+      "sourceHash": "dbd4804d160ad131a7a3c0e9469aba0e3a5d4eb1eaa20bfe485bce596e3063ea",
+      "sourceId": "components.PersonDetails.requestAllMovies"
+    },
+    {
+      "position": 2469,
+      "source": "Request All",
+      "sourceHash": "75cfef7a1ad95adeb290de91f11658bb2ffba3c1a742265d7b70da18504713ef",
+      "sourceId": "components.PersonDetails.requestAllMoviesConfirm"
+    },
+    {
+      "position": 2470,
+      "source": "Submit requests for {count} movies by {person}. Existing requests and blocklisted movies are skipped. Normal permissions and request quotas apply.",
+      "sourceHash": "5f017ab1c3d128ed51511423d1dca87575aa18220b311e0d9e92d5a90bc97ef8",
+      "sourceId": "components.PersonDetails.requestAllMoviesDescription"
+    },
+    {
+      "position": 2471,
+      "source": "Could not request movies by this person.",
+      "sourceHash": "02fc7d9e0ac880f7a76e16820b084280961b32281facf83adf18c42a514c7977",
+      "sourceId": "components.PersonDetails.requestAllMoviesFailure"
+    },
+    {
+      "position": 2472,
+      "source": "Submitted {created} movie requests. {skipped} skipped; {failed} failed.",
+      "sourceHash": "3cf43e0b16d8c81e09a06e25663ad898b58e55eb0206554b8641db67bcb56782",
+      "sourceId": "components.PersonDetails.requestAllMoviesSuccess"
+    },
+    {
+      "position": 2473,
+      "source": "Request All Movies by {person}",
+      "sourceHash": "5432464e25ffb1c78aa7088495e73ae9069591eb6e858155f807c7f176b16dc6",
+      "sourceId": "components.PersonDetails.requestAllMoviesTitle"
+    },
+    {
+      "position": 2474,
+      "source": "{count, plural, one {adult media request} other {adult media requests}}",
+      "sourceHash": "7e2b48041740b1b05d17d32c7d3e2dc7b9c94a3d4f3b40e48781d1771091740d",
+      "sourceId": "components.QuotaSelector.adultMedia"
+    },
+    {
+      "position": 2475,
+      "source": "{quotaLimit} <quotaUnits>{adultMedia} per {quotaDays} {days}</quotaUnits>",
+      "sourceHash": "fa179244ad084b2b51e4ce8d6f74dfdc313367f640d1486a8588a8ce5ba62b40",
+      "sourceId": "components.QuotaSelector.adultRequests"
+    },
+    {
+      "position": 2476,
+      "source": "{count, plural, one {album} other {albums}}",
+      "sourceHash": "9362a8e4e0057c9fef3d26adf0ca5709695c5116070c7fd083010777ef8a762f",
+      "sourceId": "components.QuotaSelector.albums"
+    },
+    {
+      "position": 2477,
+      "source": "{quotaLimit} <quotaUnits>{books} per {quotaDays} {days}</quotaUnits>",
+      "sourceHash": "ad1c3fdcd0f99988fa02fcd70769004daeb10da553562b80ce6d7bed02010dda",
+      "sourceId": "components.QuotaSelector.bookRequests"
+    },
+    {
+      "position": 2478,
+      "source": "{count, plural, one {book} other {books}}",
+      "sourceHash": "d25d93d8021ccb1562213d6c4589c13a844469c57fa8555170ba0c2ba9d6bd83",
+      "sourceId": "components.QuotaSelector.books"
+    },
+    {
+      "position": 2479,
+      "source": "{quotaLimit} <quotaUnits>{comics} per {quotaDays} {days}</quotaUnits>",
+      "sourceHash": "6baabcc51729bb1b90814c56b7adbcb206923febc368d49b96e6b83c8ff81164",
+      "sourceId": "components.QuotaSelector.comicRequests"
+    },
+    {
+      "position": 2480,
+      "source": "{count, plural, one {comic} other {comics}}",
+      "sourceHash": "81acfbdd759389aa737f1601852b0662eeebe11fecc97fa98645cd0fe4176d9d",
+      "sourceId": "components.QuotaSelector.comics"
+    },
+    {
+      "position": 2481,
+      "source": "{count, plural, one {day} other {days}}",
+      "sourceHash": "5a13cc26659348a548aae466ae661dfc276984b22a387c2ab10613c2bb75f36e",
+      "sourceId": "components.QuotaSelector.days"
+    },
+    {
+      "position": 2482,
+      "source": "Number of days for {label}",
+      "sourceHash": "cbb21c1550f3056032fff52c10ee751bbd19603e3cf5c5dfc693424d5a619e78",
+      "sourceId": "components.QuotaSelector.daysLabel"
+    },
+    {
+      "position": 2483,
+      "source": "{quotaLimit} <quotaUnits>{magazines} per {quotaDays} {days}</quotaUnits>",
+      "sourceHash": "cd73a52c3b1f2dc3398e47d6b1faaf14c106a5c59347738b95624949524b712f",
+      "sourceId": "components.QuotaSelector.magazineRequests"
+    },
+    {
+      "position": 2484,
+      "source": "{count, plural, one {magazine} other {magazines}}",
+      "sourceHash": "d0baf6fc2b48214aa9007c63409928432a90e7db37de0152a5c933e284b024f0",
+      "sourceId": "components.QuotaSelector.magazines"
+    },
+    {
+      "position": 2485,
+      "source": "{quotaLimit} <quotaUnits>{movies} per {quotaDays} {days}</quotaUnits>",
+      "sourceHash": "cfe3e670fd8d59a47b0961b67718a8b759f639ce082cf4d8aefcd25f3b16bb92",
+      "sourceId": "components.QuotaSelector.movieRequests"
+    },
+    {
+      "position": 2486,
+      "source": "{count, plural, one {movie} other {movies}}",
+      "sourceHash": "a529952f3d7b54f6aa1d2d9c1ff7673da086c1b47cbed5feeae9f29abc6e0c07",
+      "sourceId": "components.QuotaSelector.movies"
+    },
+    {
+      "position": 2487,
+      "source": "{quotaLimit} <quotaUnits>{albums} per {quotaDays} {days}</quotaUnits>",
+      "sourceHash": "668bcc98045091524d9152e46416e69a1050a059a8470d58a83ab67e93783db0",
+      "sourceId": "components.QuotaSelector.musicRequests"
+    },
+    {
+      "position": 2488,
+      "source": "{count, plural, one {season} other {seasons}}",
+      "sourceHash": "148be556b5e4ce416df20b577f4bf0362d3ac3d110a2cbfc6b6f90346dd005e3",
+      "sourceId": "components.QuotaSelector.seasons"
+    },
+    {
+      "position": 2489,
+      "source": "{count, plural, one {software request} other {software requests}}",
+      "sourceHash": "1811016eb118c8fceecaed834ddd63184f5b223f421fcf1810836073eb470084",
+      "sourceId": "components.QuotaSelector.software"
+    },
+    {
+      "position": 2490,
+      "source": "{quotaLimit} <quotaUnits>{software} per {quotaDays} {days}</quotaUnits>",
+      "sourceHash": "cb5413446375a743e2fb9db666c53fca1f151e35907a140a76aa60db96f7b253",
+      "sourceId": "components.QuotaSelector.softwareRequests"
+    },
+    {
+      "position": 2491,
+      "source": "{quotaLimit} <quotaUnits>{seasons} per {quotaDays} {days}</quotaUnits>",
+      "sourceHash": "27d2155174914e0fb2047a6ef5d33b0a1569e6ff9ccfe9be6a07f5b29363eb8a",
+      "sourceId": "components.QuotaSelector.tvRequests"
+    },
+    {
+      "position": 2492,
+      "source": "Unlimited",
+      "sourceHash": "c8ded4604204b3e8b0cb7a4ab3d8d6d0e213f088afae49457c7fd3b09114b056",
+      "sourceId": "components.QuotaSelector.unlimited"
+    },
+    {
+      "position": 2493,
+      "source": "Open Grimmory audiobook library",
+      "sourceHash": "ab5bb0776362b68b6c5ab93f62d21f912b5b7ed78ca81b3e86dacd3990bb972d",
+      "sourceId": "components.ReaderDeliveryLink.audiobooks"
+    },
+    {
+      "position": 2494,
+      "source": "Open audiobooks in BookOrbit",
+      "sourceHash": "46fcd8c4c9d16bbda6c9448620005402f084433fa30dbd5dd8f717da4b8bb7e3",
+      "sourceId": "components.ReaderDeliveryLink.audiobooksBookOrbit"
+    },
+    {
+      "position": 2495,
+      "source": "Open BookOrbit and choose an audiobook from its built-in player. The web player supports M4B, MP3, M4A, OPUS, OGG, and FLAC. OPDS apps do not stream audiobook files.",
+      "sourceHash": "f051fa1c49aac7b2f1f1d91ea787245538eeaa420eefa6c63391f7f3c7001915",
+      "sourceId": "components.ReaderDeliveryLink.audiobooksBookOrbitHelp"
+    },
+    {
+      "position": 2496,
+      "source": "Open Grimmory, then choose an audiobook from its library player. Audiobook progress and playback are managed by Grimmory.",
+      "sourceHash": "2a543958c2670acc72dc7cf9be2deaa8803de742570627203c6294e9677df76c",
+      "sourceId": "components.ReaderDeliveryLink.audiobooksHelp"
+    },
+    {
+      "position": 2497,
+      "source": "Browse comics in {serviceName}",
+      "sourceHash": "4eff0290b6e38bb44d6d9cd0bda19a85855c10f4e9ec6931823d75b5c0be22f9",
+      "sourceId": "components.ReaderDeliveryLink.comics"
+    },
+    {
+      "position": 2498,
+      "source": "Open the BookOrbit library and read CBZ, CBR, or CB7 files in its built-in comic reader. A compatible OPDS app can download CBZ or CBR archives; Grimmory Komga supports page-by-page streaming in comic apps.",
+      "sourceHash": "74c22c4fb5870b36ce36369d29c8ae3962293c1c351400fc082853b9dac65a15",
+      "sourceId": "components.ReaderDeliveryLink.comicsBookOrbitHelp"
+    },
+    {
+      "position": 2499,
+      "source": "Open the Grimmory library in a browser. For page-by-page comic reading, copy Grimmory’s Komga address under Settings > Services > Reader Apps into a compatible app.",
+      "sourceHash": "c3fb5ba79244c2e0d742a264fea5f03ce7567d59bb1e08ef8693087ca0365da2",
+      "sourceId": "components.ReaderDeliveryLink.comicsGrimmoryHelp"
+    }
+  ],
+  "sourcePositionRange": [
+    2400,
+    2499
+  ],
+  "tree": "b5a5952fb4f8a37ea5a39286295f153ce9504f52"
+}

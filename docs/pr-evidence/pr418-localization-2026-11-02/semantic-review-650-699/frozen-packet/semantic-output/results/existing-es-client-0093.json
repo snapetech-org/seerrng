@@ -1,0 +1,174 @@
+{
+  "schemaVersion": 1,
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "head": "5a4342176a8325c371a35d489cb01c58283bc983",
+  "tree": "98cd64952123c9b678e38250e7819cabb4476448",
+  "semanticManifestSha256": "3ea74cc6491aecddf9ffcedc69610f13d20b199059aef69bb3c2407feb0826ea",
+  "cellPlanSha256": "97c3402252a34aaa4f8f9f44a691281d9c35ff7b80d7edb3a26c752436af6558",
+  "retiredCellsSha256": "dc5ec05547e4da3079c0668f82a52da7999d89ef9d4f037c1cd72af9347ebd83",
+  "sourceBundleManifestSha256": "212491482d1b9207fed755af6e80ac80a97184ec8dbe84d0c4ad2bd711acae0d",
+  "sourceRowsSha256": "ad91236a31e32f199ff449f9ed4597ea6af0f5a4eff32772cefa84278cafb68c",
+  "sourceCellsSha256": "8bfcd1aa9b5d5aba4fb6317c194cd544d601543ebf250899a84a719b52e468e1",
+  "planRows": 115260,
+  "actions": {
+    "semantic-review-required": 114783,
+    "reuse-equivalence-decision": 477
+  },
+  "retiredRows": 48,
+  "reusableEquivalenceCells": 477,
+  "targetsApplied": false,
+  "batchId": "existing-es-client-0093",
+  "batchSha256": "dc67423313cb353f67dc4818e026aaedfadae8ffff05dcd2af6a8f1250d0a4b7",
+  "rowCount": 32,
+  "model": "qwen3.8-27b-heretic:q4km",
+  "attempt": 1,
+  "decisions": [
+    {
+      "id": "components.RequestModal.MusicCollection.hd",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.MusicCollection.notAvailable",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.MusicCollection.quality",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.MusicCollection.quotaRestricted",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.MusicCollection.releaseYear",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.MusicCollection.requestcollectiontitle",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.MusicCollection.requested",
+      "verdict": "correct",
+      "target": "Solicitado",
+      "confidence": "high",
+      "reason": "The source 'Requested' is a past participle indicating status, but the target 'Solicitudes' is a plural noun meaning 'Requests'. The correct translation for the status is 'Solicitado'."
+    },
+    {
+      "id": "components.RequestModal.MusicCollection.requesterror",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.MusicCollection.selectAll",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.MusicCollection.selectItemsToRequest",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.MusicCollection.selection",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.MusicCollection.serviceUnavailable",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.MusicCollection.summary",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.MusicCollection.ultraHd",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.MusicCollection.unknown",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.PlaylistImportModal.description",
+      "verdict": "correct",
+      "target": "Pegue un enlace de lista de reproducción de Spotify o YouTube. SeerrNG coincidirá sus canciones con los álbumes de MusicBrainz para su revisión antes de solicitar cualquier cosa.",
+      "confidence": "high",
+      "reason": "The source verb is 'Paste' (Pegar), but the target uses 'Pruebe' (Try/Test). Additionally, 'coincidirá con sus canciones a los álbumes' is grammatically awkward; 'coincidirá sus canciones con los álbumes' is the correct construction for matching items."
+    },
+    {
+      "id": "components.RequestModal.PlaylistImportModal.error",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.PlaylistImportModal.preview",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.PlaylistImportModal.resolving",
+      "verdict": "correct",
+      "target": "Coincidiendo lista de reproducción…",
+      "confidence": "high",
+      "reason": "The source 'Matching playlist…' describes the action of matching tracks. The target 'Lista de reproducción coincidente...' translates to 'Matching playlist...' (noun phrase), which is incorrect for a status indicator of an ongoing action. 'Coincidiendo' correctly conveys the progressive action."
+    },
+    {
+      "id": "components.RequestModal.PlaylistImportModal.spotifyConnect",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.PlaylistImportModal.spotifyDisconnect",
+      "verdict": "correct",
+      "target": "Desconectar Spotify",
+      "confidence": "high",
+      "reason": "The source 'Disconnect Spotify' is an imperative action (button label). The target 'Desconexión Spotify' is a noun ('Disconnection'). The correct imperative form is 'Desconectar'."
+    },
+    {
+      "id": "components.RequestModal.PlaylistImportModal.spotifyHelp",
+      "verdict": "correct",
+      "target": "Las importaciones de Spotify utilizan la cuenta conectada y solo incluyen listas de reproducción a las que la cuenta puede acceder.",
+      "confidence": "high",
+      "reason": "The phrase 'listas de reproducción que la cuenta puede acceder' is grammatically incorrect in Spanish; 'acceder' requires the preposition 'a'. The correct phrasing is 'a las que la cuenta puede acceder'."
+    },
+    {
+      "id": "components.RequestModal.PlaylistImportModal.spotifyReconnect",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.PlaylistImportModal.title",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.PlaylistImportModal.urlLabel",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.PlaylistImportModal.urlPlaceholder",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.PlaylistImportModal.youtubeHelp",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.QuotaDisplay.adult",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.QuotaDisplay.adultlimit",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.QuotaDisplay.allowedRequests",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.QuotaDisplay.allowedRequestsUser",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.QuotaDisplay.book",
+      "verdict": "keep"
+    }
+  ],
+  "decisionsSha256": "a73150e01914708926f475a1b4f9cae6528c4d8f73826bf7406baae09f3a8226",
+  "rawResponseSha256": "3d691c4bf895c93e2eb1da0473d31c9a26cb2714aa7c60997f66736d07559c89",
+  "rawResponseFile": "/mnt/disks/scratch/task-scratch/seerrng-review-window-650-700-422072-20261102/semantic-output/responses/existing-es-client-0093-attempt-1.json"
+}

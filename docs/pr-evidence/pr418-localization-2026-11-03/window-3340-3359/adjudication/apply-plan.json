@@ -1,0 +1,231 @@
+{
+  "title": "Exact-hash apply plan: SeerrNG PR #418 W3340-W3359",
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "head": "266d8fff4beb56eab17c9de0f6560c619577e3de",
+  "tree": "5da8f5e38b95b4287821b603c4686fe866b83760",
+  "window": "W3340-W3359",
+  "approvedChangeCount": 20,
+  "items": [
+    {
+      "position": 3344,
+      "id": "components.Requests.incomplete",
+      "locale": "ja",
+      "catalogPath": "src/i18n/locale/ja.json",
+      "currentTarget": "不完全な",
+      "currentTargetSha256": "0fa3dc2ee462d32dfcbc3096edbc19643b4ed9c223cd4d8bd0c420610cf399d0",
+      "target": "未完了",
+      "targetSha256": "cd65fd5142c84c9415647fb1c9952eadd5833cb3a152ebfe51b34e72f0892609",
+      "rootDisposition": "APPLY_BLIND_REFINEMENT"
+    },
+    {
+      "position": 3344,
+      "id": "components.Requests.incomplete",
+      "locale": "ko",
+      "catalogPath": "src/i18n/locale/ko.json",
+      "currentTarget": "불완전",
+      "currentTargetSha256": "2559b2f335d9a8c9b95f7778f071e7b116fd92bcc79ea996cf82843824460efb",
+      "target": "미완료",
+      "targetSha256": "987c6c1ea0e177fc05cd16e76fa1e89cdf6e02f7f59c6424ae366d266bd95936",
+      "rootDisposition": "APPLY_BLIND_REFINEMENT"
+    },
+    {
+      "position": 3346,
+      "id": "components.Requests.last14Days",
+      "locale": "hi",
+      "catalogPath": "src/i18n/locale/hi.json",
+      "currentTarget": "पिछले 14 दिनों",
+      "currentTargetSha256": "6cce36aa764d45cf6107a0898da9e117711ca840b99eb9bfeb4189f41962bdb7",
+      "target": "पिछले 14 दिन",
+      "targetSha256": "bfc583cb3f05fd360e744327eb11e57fd2e6217adfde1c6ca57d5cbac1e07639",
+      "rootDisposition": "APPLY_BLIND_REFINEMENT"
+    },
+    {
+      "position": 3346,
+      "id": "components.Requests.last14Days",
+      "locale": "ko",
+      "catalogPath": "src/i18n/locale/ko.json",
+      "currentTarget": "마지막 14 일",
+      "currentTargetSha256": "2f5d3cc8e31da99b496af988325b507de0a54f0ecef871deda0953fa9f5b428a",
+      "target": "최근 14일",
+      "targetSha256": "b7c851beaa9f24436ab049f66dd9c87194df5c9de3392fd3745583dedf7d15bd",
+      "rootDisposition": "APPLY_BLIND_REFINEMENT"
+    },
+    {
+      "position": 3347,
+      "id": "components.Requests.last30Days",
+      "locale": "hi",
+      "catalogPath": "src/i18n/locale/hi.json",
+      "currentTarget": "पिछले 30 दिनों",
+      "currentTargetSha256": "7155491454f7745d75067e67ed5e64f5a5fb3f6c49fea943951ce8ce2c40860f",
+      "target": "पिछले 30 दिन",
+      "targetSha256": "31ac6260724f20338490b168e9ba02ad3e54bf0a268384a548fdf28225ec46f9",
+      "rootDisposition": "APPLY_BLIND_REFINEMENT"
+    },
+    {
+      "position": 3347,
+      "id": "components.Requests.last30Days",
+      "locale": "ko",
+      "catalogPath": "src/i18n/locale/ko.json",
+      "currentTarget": "마지막 30 일",
+      "currentTargetSha256": "4a7f18b37782529c98a4465ee93184ea4a9f8d3424cab93adbd9c0318f53ea47",
+      "target": "최근 30일",
+      "targetSha256": "ccee8060d2cf4c7d68b85016f012daae9d486beaa93ec0eb5d33c358d0b69383",
+      "rootDisposition": "APPLY_BLIND_REFINEMENT"
+    },
+    {
+      "position": 3348,
+      "id": "components.Requests.last6Months",
+      "locale": "ar",
+      "catalogPath": "src/i18n/locale/ar.json",
+      "currentTarget": "الأشهر الستة الماضية",
+      "currentTargetSha256": "e2ba719ba0740f7a5e4f1d5b02d69edd69c33edbab4123b0a6f8ffbe56b90850",
+      "target": "آخر 6 أشهر",
+      "targetSha256": "67636ff4cd0e76579a4418c5752b1b6eb78247b983ff9bf7e0ca62aa19fcba63",
+      "rootDisposition": "APPLY_PRIMARY_CORRECTION"
+    },
+    {
+      "position": 3348,
+      "id": "components.Requests.last6Months",
+      "locale": "hi",
+      "catalogPath": "src/i18n/locale/hi.json",
+      "currentTarget": "पिछले 6 महीनों",
+      "currentTargetSha256": "5d81eb4ecd75cbc45f2e2d0f97432f52a1abb0c67db88798c8d1261d2060a364",
+      "target": "पिछले 6 महीने",
+      "targetSha256": "2f77eef57ca2413add780800b0b9dd0c0d65fd0c7b418a9ef7a2632ecfe0b092",
+      "rootDisposition": "APPLY_BLIND_REFINEMENT"
+    },
+    {
+      "position": 3348,
+      "id": "components.Requests.last6Months",
+      "locale": "ko",
+      "catalogPath": "src/i18n/locale/ko.json",
+      "currentTarget": "지난 6개월",
+      "currentTargetSha256": "780eb72db9c1904437f6c40021d1cb83ad8255613033f49ebdedff8e6a0e5ce9",
+      "target": "최근 6개월",
+      "targetSha256": "428f7b8ef4f610601b385b658ba791d24a68e06a0dff566787ddde34516012d1",
+      "rootDisposition": "APPLY_BLIND_REFINEMENT"
+    },
+    {
+      "position": 3349,
+      "id": "components.Requests.last7Days",
+      "locale": "hi",
+      "catalogPath": "src/i18n/locale/hi.json",
+      "currentTarget": "पिछले 7 दिनों",
+      "currentTargetSha256": "d2dac3c7064caf1277a4232e0dba3c73054e07f321c7d13ab87a8e35b74551d9",
+      "target": "पिछले 7 दिन",
+      "targetSha256": "5aa9846f027f736b96306cef7403e298065ae962a1d0ed62f62c3b9ac323b4ad",
+      "rootDisposition": "APPLY_BLIND_REFINEMENT"
+    },
+    {
+      "position": 3349,
+      "id": "components.Requests.last7Days",
+      "locale": "ko",
+      "catalogPath": "src/i18n/locale/ko.json",
+      "currentTarget": "마지막 7 일",
+      "currentTargetSha256": "0a9281e946ecbac77584bc0c5bbf7a3eaf202a106b6cc72942c54b852b90b8a1",
+      "target": "최근 7일",
+      "targetSha256": "4678be6aaf9939a9c44092932cfb3e5a3975fd4f2f8bbf318eb97514e5b54b1d",
+      "rootDisposition": "APPLY_BLIND_REFINEMENT"
+    },
+    {
+      "position": 3351,
+      "id": "components.Requests.library",
+      "locale": "ar",
+      "catalogPath": "src/i18n/locale/ar.json",
+      "currentTarget": "إضافة إلى المكتبة",
+      "currentTargetSha256": "afcbe178d1f63e165b84d4f0f13df9b0e59c7e25c953068db7586cff927bd6c4",
+      "target": "جارٍ الإضافة إلى المكتبة",
+      "targetSha256": "e2a19d5a4c67b8a29ca0acbc1651b64ea6f055c8f693a3014c54db311a334e34",
+      "rootDisposition": "APPLY_BLIND_REFINEMENT"
+    },
+    {
+      "position": 3351,
+      "id": "components.Requests.library",
+      "locale": "de",
+      "catalogPath": "src/i18n/locale/de.json",
+      "currentTarget": "Hinzufügen zur Bibliothek",
+      "currentTargetSha256": "95858d057606f8bb7f088515aa8d0c0fc3ebf14d49810d113692d01ca202e08e",
+      "target": "Wird zur Bibliothek hinzugefügt",
+      "targetSha256": "e28fd63323c89d59a909f5a83639ba6274e43307e3a47fea6af57eda403ba479",
+      "rootDisposition": "APPLY_BLIND_REFINEMENT"
+    },
+    {
+      "position": 3351,
+      "id": "components.Requests.library",
+      "locale": "es",
+      "catalogPath": "src/i18n/locale/es.json",
+      "currentTarget": "Añadir a la Biblioteca",
+      "currentTargetSha256": "853be0238398eba5a01c121658a4a8a67e4ef656d697e3e43072120870adfef2",
+      "target": "Añadiendo a la biblioteca",
+      "targetSha256": "25f73a9cd8fb5ae377ea953552078169020cfec6019ef098f84bfde112d1974a",
+      "rootDisposition": "APPLY_BLIND_REFINEMENT"
+    },
+    {
+      "position": 3351,
+      "id": "components.Requests.library",
+      "locale": "fr",
+      "catalogPath": "src/i18n/locale/fr.json",
+      "currentTarget": "Ajout à la bibliothèque",
+      "currentTargetSha256": "aa726a547e9a08f717feb02fee0bcab49935f0ad0741084fc86421c10b6d1cda",
+      "target": "Ajout à la bibliothèque en cours",
+      "targetSha256": "6bd39ecf277ecbda94b9d6c18f4721b8704be42d9ac504dc816bc3ccebcda132",
+      "rootDisposition": "APPLY_BLIND_REFINEMENT"
+    },
+    {
+      "position": 3351,
+      "id": "components.Requests.library",
+      "locale": "hi",
+      "catalogPath": "src/i18n/locale/hi.json",
+      "currentTarget": "लाइब्रेरी में जोड़ना",
+      "currentTargetSha256": "35cf3ca2a8f356c3d0aca8bad2182adb7e200cf7d27d0344b0bc05c911803f45",
+      "target": "लाइब्रेरी में जोड़ा जा रहा है",
+      "targetSha256": "fd0f55d88d85df27147f07a6514b8d5f0d7a7c36c77b79c9785956f9ceb98cd7",
+      "rootDisposition": "APPLY_BLIND_REFINEMENT"
+    },
+    {
+      "position": 3351,
+      "id": "components.Requests.library",
+      "locale": "ja",
+      "catalogPath": "src/i18n/locale/ja.json",
+      "currentTarget": "ライブラリに追加",
+      "currentTargetSha256": "3e6ab436ffdd2374bcd59f53116597e8a14ef718ac79d329871d6f8150a66354",
+      "target": "ライブラリに追加中",
+      "targetSha256": "368d838b48481a7bcf07eb958ff7e4dbc72c1db7a9b58f8df7fe95ac5069b1ac",
+      "rootDisposition": "APPLY_BLIND_REFINEMENT"
+    },
+    {
+      "position": 3351,
+      "id": "components.Requests.library",
+      "locale": "vi",
+      "catalogPath": "src/i18n/locale/vi.json",
+      "currentTarget": "Thêm vào thư viện",
+      "currentTargetSha256": "cc27dafcd99b8c74119d4285107ce3c34dbd57d7377f0abc9cb750c9474e3deb",
+      "target": "Đang thêm vào thư viện",
+      "targetSha256": "a18878c49083bd63500d818907f7ff6bac46953c8655a5c5ad64d2fdfd3945e0",
+      "rootDisposition": "APPLY_BLIND_REFINEMENT"
+    },
+    {
+      "position": 3355,
+      "id": "components.Requests.loadingTitle",
+      "locale": "es",
+      "catalogPath": "src/i18n/locale/es.json",
+      "currentTarget": "Cargando Título...",
+      "currentTargetSha256": "0f3b918603fb05357d8eaaddc097a85b8b687956fd85954b92fad228a123c12f",
+      "target": "Cargando título…",
+      "targetSha256": "a67e0795373cc62921870d453123d68e4e93b51d244c2487edd6c326c977a762",
+      "rootDisposition": "APPLY_BLIND_REFINEMENT"
+    },
+    {
+      "position": 3355,
+      "id": "components.Requests.loadingTitle",
+      "locale": "pt_BR",
+      "catalogPath": "src/i18n/locale/pt_BR.json",
+      "currentTarget": "Carregando Título...",
+      "currentTargetSha256": "980ff03a3e51c7ec439fff9e989128cdbe574efb3bfd835a37ad467a37fc59ea",
+      "target": "Carregando título…",
+      "targetSha256": "2b74207389f7b1626183b5fd94a2cfd4bed53cbae1b14fe57a336489128d1cdd",
+      "rootDisposition": "APPLY_BLIND_REFINEMENT"
+    }
+  ]
+}

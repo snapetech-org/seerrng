@@ -1,0 +1,33 @@
+{
+  "candidateFreeInput": {
+    "allChecksumsMatch": true,
+    "checksumEntries": 12,
+    "checksumListSha256": "2c13436eb5d119231ce92a5ca8add130df8714a82a9b5243f22e24262957bb6d",
+    "expectedChecksumListSha256": "2c13436eb5d119231ce92a5ca8add130df8714a82a9b5243f22e24262957bb6d",
+    "expectedManifestJsonSha256": "9e032c395028881ffe5273ae0d7d13668dd26e9cc7cd4b321a68d2cfee95dd63",
+    "manifestAndChecksumListHashesAreDistinct": true,
+    "manifestJsonSha256": "9e032c395028881ffe5273ae0d7d13668dd26e9cc7cd4b321a68d2cfee95dd63",
+    "path": "/mnt/disks/scratch/task-scratch/seerrng-pr418-w3520-3539-candidate-free-20261103/candidate-free-input"
+  },
+  "independentBlindReview": {
+    "allChecksumsMatch": true,
+    "blindLedgerCreatedBeforeComparison": true,
+    "cellCount": 240,
+    "checksumEntries": 6,
+    "checksumListSha256": "7efeee5cec4b85e3699aa12f6bdde5cf6d3f982df8b2c16eb0c9fcc934abad00",
+    "expectedChecksumListSha256": "7efeee5cec4b85e3699aa12f6bdde5cf6d3f982df8b2c16eb0c9fcc934abad00",
+    "ledgerSha256": "7431156405ee80ab225df4efb063d6dcb40e232dda935deade044d9696c6062c",
+    "path": "/mnt/disks/scratch/task-scratch/seerrng-pr418-w3520-3539-independent-blind-20261103/review",
+    "sealedPathOnly": true,
+    "unsealedDraftExcluded": true
+  },
+  "primaryReview": {
+    "allChecksumsMatch": true,
+    "cellCount": 240,
+    "checksumEntries": 7,
+    "checksumListSha256": "225c152bc63d8140ffb80d59fef7db8bf88053601fd8d3e613e97ffeca2d1471",
+    "expectedChecksumListSha256": "225c152bc63d8140ffb80d59fef7db8bf88053601fd8d3e613e97ffeca2d1471",
+    "ledgerSha256": "c258455e9923b98f5780f032ef25d7e355060d0be46d88a489f1d2ecc19d3a69",
+    "path": "/mnt/disks/scratch/task-scratch/seerrng-pr418-w3520-3539-primary-review-20261103"
+  }
+}

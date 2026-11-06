@@ -1,4 +1,6 @@
+import ApiMessageText from '@app/components/Common/ApiMessageText';
 import Button from '@app/components/Common/Button';
+import OpaqueApiMessageText from '@app/components/Common/OpaqueApiMessageText';
 import PageTitle from '@app/components/Common/PageTitle';
 import { Permission, useUser } from '@app/hooks/useUser';
 import defineMessages from '@app/utils/defineMessages';
@@ -286,7 +288,7 @@ export default function DownloadsPage() {
           </div>
           {notice && (
             <p role="status" className="mb-4 rounded-md bg-gray-800 p-4">
-              {notice}
+              {<ApiMessageText>{notice}</ApiMessageText>}
             </p>
           )}
           {error && <p role="alert">{intl.formatMessage(messages.failed)}</p>}
@@ -323,7 +325,9 @@ export default function DownloadsPage() {
                 </div>
                 <ul className="my-3 space-y-1 text-sm break-words text-yellow-200">
                   {warning.warnings.map((text: string, index: number) => (
-                    <li key={index}>{text}</li>
+                    <li key={index}>
+                      {<OpaqueApiMessageText>{text}</OpaqueApiMessageText>}
+                    </li>
                   ))}
                 </ul>
                 {warning.resolution && resolutions[warning.resolution] && (
@@ -569,7 +573,9 @@ export default function DownloadsPage() {
                                   key={index}
                                   className="block text-sm text-yellow-200"
                                 >
-                                  {reason}
+                                  <OpaqueApiMessageText>
+                                    {reason}
+                                  </OpaqueApiMessageText>
                                 </span>
                               ))}
                             </span>

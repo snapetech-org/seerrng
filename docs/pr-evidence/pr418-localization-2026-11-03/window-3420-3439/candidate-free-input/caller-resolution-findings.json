@@ -1,0 +1,16 @@
+{
+  "selectUser": {
+    "definitionLine": 107,
+    "sameComponentStaticMessageReferences": [],
+    "dynamicLabelKeyReferences": [],
+    "fullyQualifiedIdReferencesInSrc": [],
+    "resolution": "no production caller/reference resolved; hold pending caller identification"
+  },
+  "service": {
+    "definitionLine": 232,
+    "sameComponentStaticMessageReferences": [],
+    "dynamicLabelKeyReferences": [],
+    "fullyQualifiedIdReferencesInSrc": [],
+    "resolution": "no production caller/reference resolved; hold pending caller identification"
+  }
+}

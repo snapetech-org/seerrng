@@ -1,0 +1,69 @@
+{
+  "repository": "snapetech-org/seerrng",
+  "pull_request": 418,
+  "reviewed_input_head": "94bdd3f690fc54d37d17e04d29a443533af3fb0d",
+  "reviewed_input_tree": "17df3c6f626ac544990d2f8f2049daf95b4738ac",
+  "source_positions": [
+    1500,
+    1599
+  ],
+  "target_cells_reviewed": 1200,
+  "updates_applied": 326,
+  "unchanged_current_values": 509,
+  "held_cells": 329,
+  "held_reasons": {
+    "unsupported-caller": 286,
+    "reviewer-disagreement": 41,
+    "unsupported-current-caller-use": 2
+  },
+  "preserved_frozen_prior_cells": 36,
+  "frozen_prior_spanish_records": 38,
+  "updates_by_locale": {
+    "ar": 37,
+    "ja": 31,
+    "ko": 39,
+    "vi": 38,
+    "zh-TW": 43,
+    "de": 9,
+    "hi": 31,
+    "pt-BR": 25,
+    "zh-CN": 30,
+    "id": 19,
+    "fr": 22,
+    "es": 2
+  },
+  "catalog_key_counts_before": {
+    "src/i18n/locale/ar.json": 9494,
+    "src/i18n/locale/ja.json": 9494,
+    "src/i18n/locale/ko.json": 9494,
+    "src/i18n/locale/vi.json": 9494,
+    "src/i18n/locale/zh_Hant.json": 9494,
+    "src/i18n/locale/de.json": 9494,
+    "src/i18n/locale/hi.json": 9494,
+    "src/i18n/locale/pt_BR.json": 9494,
+    "src/i18n/locale/zh_Hans.json": 9494,
+    "src/i18n/locale/id.json": 9494,
+    "src/i18n/locale/fr.json": 9494,
+    "src/i18n/locale/es.json": 9494
+  },
+  "catalog_key_counts_after": {
+    "src/i18n/locale/ar.json": 9494,
+    "src/i18n/locale/ja.json": 9494,
+    "src/i18n/locale/ko.json": 9494,
+    "src/i18n/locale/vi.json": 9494,
+    "src/i18n/locale/zh_Hant.json": 9494,
+    "src/i18n/locale/de.json": 9494,
+    "src/i18n/locale/hi.json": 9494,
+    "src/i18n/locale/pt_BR.json": 9494,
+    "src/i18n/locale/zh_Hans.json": 9494,
+    "src/i18n/locale/id.json": 9494,
+    "src/i18n/locale/fr.json": 9494,
+    "src/i18n/locale/es.json": 9494
+  },
+  "source_current_target_and_caller_pins_reattested": true,
+  "caller_line_file_pins_reattested": 3909,
+  "placeholder_icu_markup_protected_literal_failures": 0,
+  "native_speaker_approval": false,
+  "browser_review": false,
+  "tests_builds_scans_ci_workflows_releases_tags_merges": false
+}

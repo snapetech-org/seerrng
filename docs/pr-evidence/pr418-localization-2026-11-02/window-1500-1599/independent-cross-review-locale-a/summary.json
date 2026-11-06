@@ -1,0 +1,92 @@
+{
+  "schemaVersion": 1,
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "state": "OPEN",
+  "isDraft": true,
+  "head": "94bdd3f690fc54d37d17e04d29a443533af3fb0d",
+  "tree": "17df3c6f626ac544990d2f8f2049daf95b4738ac",
+  "sourcePositions": [
+    1500,
+    1599
+  ],
+  "locales": [
+    "ar",
+    "de",
+    "es",
+    "fr",
+    "hi",
+    "id"
+  ],
+  "reviewRows": 562,
+  "uniqueSourceIds": 100,
+  "independentlyReattested": {
+    "targetCells": 562,
+    "catalogFiles": 6,
+    "sourceContextReferences": 921,
+    "uniqueSourceLines": 164,
+    "mismatches": 0
+  },
+  "crossreviewDispositions": {
+    "accept-proposal": 120,
+    "accept-current": 276,
+    "refine-proposal": 11,
+    "agree-hold": 142,
+    "missed-issue": 13
+  },
+  "countsByLocale": {
+    "ar": {
+      "accept-proposal": 37,
+      "accept-current": 36,
+      "agree-hold": 24,
+      "missed-issue": 3
+    },
+    "de": {
+      "accept-current": 66,
+      "accept-proposal": 9,
+      "agree-hold": 24,
+      "missed-issue": 1
+    },
+    "es": {
+      "accept-current": 33,
+      "agree-hold": 22,
+      "missed-issue": 4,
+      "accept-proposal": 2,
+      "refine-proposal": 1
+    },
+    "fr": {
+      "accept-current": 48,
+      "refine-proposal": 4,
+      "accept-proposal": 22,
+      "agree-hold": 24,
+      "missed-issue": 2
+    },
+    "hi": {
+      "accept-current": 41,
+      "accept-proposal": 31,
+      "refine-proposal": 3,
+      "agree-hold": 24,
+      "missed-issue": 1
+    },
+    "id": {
+      "accept-current": 52,
+      "refine-proposal": 3,
+      "accept-proposal": 19,
+      "agree-hold": 24,
+      "missed-issue": 2
+    }
+  },
+  "refinedPrimaryProposals": 11,
+  "missedPrimaryIssues": 13,
+  "priorSpanishDispositionsPreservedOutsideThisSubpacket": 38,
+  "placeholderFailures": 0,
+  "markupFailures": 0,
+  "protectedLiteralFailures": 0,
+  "nativeSpeakerReview": false,
+  "browserReview": false,
+  "notes": [
+    "The 38 frozen prior Spanish dispositions were excluded from this subpacket and left untouched.",
+    "Cells with definition-only or absent caller evidence remain held.",
+    "Machine-assisted cross-review only; this is not native-speaker signoff."
+  ]
+}

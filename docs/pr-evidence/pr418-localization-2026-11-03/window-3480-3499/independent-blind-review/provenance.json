@@ -1,0 +1,13 @@
+{
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "head": "e2de7357bad7c385bf710da0edee93927f494767",
+  "tree": "ca93443397e10cea0ed70cec67fcb2905955cbf2",
+  "window": "W3480-W3499",
+  "inputDirectory": "/mnt/disks/scratch/task-scratch/seerrng-pr418-w3480-3499-candidate-free-20261103/candidate-free-input",
+  "inputChecksumsFileSha256": "579134b7de18bffd724fad945ab50b1a3809a9cdc07c58be8585a674e28d7613",
+  "inputChecksumVerification": "pass",
+  "reviewedAtUTC": "2026-11-03T10:21:50.347100+00:00",
+  "reviewerType": "primary agent independent blind semantic review; no primary candidate ledger was consulted",
+  "candidateExposure": "none"
+}

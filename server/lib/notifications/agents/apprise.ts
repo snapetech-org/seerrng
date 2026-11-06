@@ -1,4 +1,4 @@
-import { IssueStatus, IssueTypeName } from '@server/constants/issue';
+import { IssueStatus } from '@server/constants/issue';
 import { getIntl } from '@server/i18n';
 import globalMessages from '@server/i18n/globalMessages';
 import {
@@ -20,7 +20,14 @@ import type { NotificationAgent, NotificationPayload } from './agent';
 import {
   BaseAgent,
   CONFIGURABLE_NOTIFICATION_HTTP_OPTIONS,
+  formatNotificationTitle,
+  getIssueTypeLabel,
+  getLocalizedNotificationPayload,
   getNotificationActionUrl,
+  getNotificationCommentFrom,
+  getNotificationContent,
+  getNotificationExtras,
+  isolateBidiText,
   truncateNotificationUtf8,
 } from './agent';
 
@@ -71,21 +78,26 @@ class AppriseAgent
   public buildPayload(type: Notification, payload: NotificationPayload) {
     const settings = this.getSettings();
     const intl = getIntl(settings.options.locale as AvailableLocale);
+    payload = getLocalizedNotificationPayload(payload, intl);
     const { applicationUrl } = getExternalRuntimeConfig().main;
+    const content = getNotificationContent(payload, intl);
+    const extras = getNotificationExtras(payload, intl);
 
     const title = truncateNotificationUtf8(
-      payload.event ? `${payload.event} - ${payload.subject}` : payload.subject,
+      formatNotificationTitle(content.event, payload.subject),
       APPRISE_TITLE_BYTE_LIMIT
     );
 
     const lines: string[] = [];
-    if (payload.message && !payload.comment) {
-      lines.push(payload.message);
+    if (content.message && !payload.comment) {
+      lines.push(content.message);
     }
 
     if (payload.request) {
       lines.push(
-        `${intl.formatMessage(globalMessages.requestedBy)}: ${payload.request.requestedBy.displayName}`
+        `${intl.formatMessage(globalMessages.requestedBy)}: ${isolateBidiText(
+          payload.request.requestedBy.displayName
+        )}`
       );
       const status = (() => {
         switch (type) {
@@ -113,15 +125,15 @@ class AppriseAgent
       }
     } else if (payload.comment) {
       lines.push(
-        `${intl.formatMessage(globalMessages.commentFrom, {
-          userName: payload.comment.user.displayName,
-        })}:`,
+        `${getNotificationCommentFrom(payload.comment.user.displayName, intl)}:`,
         payload.comment.message
       );
     } else if (payload.issue) {
       lines.push(
-        `${intl.formatMessage(globalMessages.reportedBy)}: ${payload.issue.createdBy.displayName}`,
-        `${intl.formatMessage(globalMessages.issueType)}: ${IssueTypeName[payload.issue.issueType]}`,
+        `${intl.formatMessage(globalMessages.reportedBy)}: ${isolateBidiText(
+          payload.issue.createdBy.displayName
+        )}`,
+        `${intl.formatMessage(globalMessages.issueType)}: ${getIssueTypeLabel(intl, payload.issue.issueType)}`,
         `${intl.formatMessage(globalMessages.issueStatus)}: ${
           payload.issue.status === IssueStatus.OPEN
             ? intl.formatMessage(globalMessages.open)
@@ -130,7 +142,7 @@ class AppriseAgent
       );
     }
 
-    for (const extra of payload.extra ?? []) {
+    for (const extra of extras) {
       lines.push(`${extra.name}: ${extra.value}`);
     }
 

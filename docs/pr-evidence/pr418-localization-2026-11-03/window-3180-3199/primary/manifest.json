@@ -1,0 +1,29 @@
+{
+  "repository": "snapetech-org/SeerrNG",
+  "pullRequest": 418,
+  "head": "c03816972aab761a69b343abcdfe8a10f85aeabb",
+  "tree": "1ffc02d5d7dbbb14ab4706ce61bfcfda64592a01",
+  "sourceOrderSha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+  "englishCatalogSha256": "75ff3c90b52aedd636a506281ffbd6fb2d3739c61294b6008a517f17647e2316",
+  "callerFileSha256": "50752a4099e6067a95a9278612bcb92e487de9fe6a6acbb8d05d64c7ba223a54",
+  "range": [
+    3180,
+    3199
+  ],
+  "localeOrder": [
+    "es",
+    "zh_Hans",
+    "hi",
+    "de",
+    "ja",
+    "fr",
+    "pt_BR",
+    "ar",
+    "ko",
+    "zh_Hant",
+    "vi",
+    "id"
+  ],
+  "createdBy": "primary semantic review (machine-assisted)",
+  "nativeSpeakerApproval": false
+}

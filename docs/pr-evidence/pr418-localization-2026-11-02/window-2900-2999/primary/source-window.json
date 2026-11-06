@@ -1,0 +1,617 @@
+{
+  "head": "58697945e3d3fb44c37d49db0cc0f88e3af110cc",
+  "sourceCatalog": {
+    "blob": "12e04a118c30b71b3714291adeaf9fdb2735cee4",
+    "bytes": 835513,
+    "path": "src/i18n/locale/en.json",
+    "sha256": "75ff3c90b52aedd636a506281ffbd6fb2d3739c61294b6008a517f17647e2316"
+  },
+  "sourceCount": 100,
+  "sourceList": [
+    {
+      "position": 2900,
+      "source": "Requested",
+      "sourceHash": "85305ea40c3f025be73334791921556e5f94fd5e589b7a4d7cbec89efb005c63",
+      "sourceId": "components.RequestModal.Comic.requested"
+    },
+    {
+      "position": 2901,
+      "source": "Something went wrong while submitting the request.",
+      "sourceHash": "fbdbed7697669e8d48db2fb57788dcd82ec630a8e88b833580272f55d6e079fb",
+      "sourceId": "components.RequestModal.Comic.requesterror"
+    },
+    {
+      "position": 2902,
+      "source": "{username}'s request is pending approval.",
+      "sourceHash": "da1932978225b4b995e87524f20167b82c63fde145211e3ddf684e98987185c7",
+      "sourceId": "components.RequestModal.Comic.requestfrom"
+    },
+    {
+      "position": 2903,
+      "source": "Kapowarr root folder",
+      "sourceHash": "3878ca20731ca8126ec8e48887e1d312aed5a6f2779ac601bf93729a1af67857",
+      "sourceId": "components.RequestModal.Comic.rootFolder"
+    },
+    {
+      "position": 2904,
+      "source": "Loading folders…",
+      "sourceHash": "ab81ca6bc7bb16c285d12186d1daf4a9e10564b9a5dd5988c8d5ca075160e000",
+      "sourceId": "components.RequestModal.Comic.rootFolderLoading"
+    },
+    {
+      "position": 2905,
+      "source": "Service",
+      "sourceHash": "1691d21b1942a907155d3730c8b0b8d747f36bcd0605953c39e1f76ffcc6bd8d",
+      "sourceId": "components.RequestModal.Comic.service"
+    },
+    {
+      "position": 2906,
+      "source": "Status",
+      "sourceHash": "d051920dc0edf432e6dae3475b551cb94d9a1e28656f31b4467c9f879a85b335",
+      "sourceId": "components.RequestModal.Comic.status"
+    },
+    {
+      "position": 2907,
+      "source": "Approval",
+      "sourceHash": "963490e07c0ca9cfa4c46a2434a6f50c9cf2836a7f3252862c3659b6eda902d6",
+      "sourceId": "components.RequestModal.Magazine.approval"
+    },
+    {
+      "position": 2908,
+      "source": "The request was submitted, but LazyLibrarian rejected it while processing.",
+      "sourceHash": "ea9f311cd4cf0e19f42ba2d08f44e7093ea07d4c9e39c3f385f666b14c9dd8db",
+      "sourceId": "components.RequestModal.Magazine.backendRequestFailed"
+    },
+    {
+      "position": 2909,
+      "source": "Cancel Request",
+      "sourceHash": "8cffa31e1c4f2824d949bf72d8be2396ee22a337b8c1f5aa0b7fb128d7a94dfd",
+      "sourceId": "components.RequestModal.Magazine.cancelRequest"
+    },
+    {
+      "position": 2910,
+      "source": "Close",
+      "sourceHash": "d94bc979d1c9429f97bcbe38b0fa180ac32c3a464d50efbb5f03774d44e3f240",
+      "sourceId": "components.RequestModal.Magazine.close"
+    },
+    {
+      "position": 2911,
+      "source": "Default ({name})",
+      "sourceHash": "cad74d86203c94bbe4345167542680b4142b9f91b0569bd7b8d98ad3ba618f5f",
+      "sourceId": "components.RequestModal.Magazine.defaultService"
+    },
+    {
+      "position": 2912,
+      "source": "Something went wrong while canceling the request.",
+      "sourceHash": "137d0739fc2edc8c5fcb4c19473e44ccc02dd7f0856928fcf49afda81564df7a",
+      "sourceId": "components.RequestModal.Magazine.editError"
+    },
+    {
+      "position": 2913,
+      "source": "Latest issue",
+      "sourceHash": "5710594670f894861e6ede2d1a2eccf29799df48a09d4d46d4cd274ffd256c2c",
+      "sourceId": "components.RequestModal.Magazine.latestIssue"
+    },
+    {
+      "position": 2914,
+      "source": "No LazyLibrarian service is configured. Magazine requests are unavailable.",
+      "sourceHash": "45f08788bb447647ef3962d1566b97a33932fb3e15648da796fa412b1c29ec2a",
+      "sourceId": "components.RequestModal.Magazine.noMagazineServer"
+    },
+    {
+      "position": 2915,
+      "source": "Not Available",
+      "sourceHash": "3cce284bd9b76a7c2f882063d2815a482627baf01c79f5757b3d369125f00ea3",
+      "sourceId": "components.RequestModal.Magazine.notAvailable"
+    },
+    {
+      "position": 2916,
+      "source": "Your request is pending approval.",
+      "sourceHash": "eb5985beeb174d05226190b615911f45d9df9fb7c04d97b18099d6c38ecf5712",
+      "sourceId": "components.RequestModal.Magazine.pendingApproval"
+    },
+    {
+      "position": 2917,
+      "source": "Pending Magazine Request",
+      "sourceHash": "186ea70c1063e7e6f9f1003b187e199d475da6f3c7e9c3b4a0b5b40b313542f3",
+      "sourceId": "components.RequestModal.Magazine.pendingRequest"
+    },
+    {
+      "position": 2918,
+      "source": "Ready to Request",
+      "sourceHash": "cf94238321968b25247f9f157089bbc571aea5cd472cc55fc1ffe19c0b9d86d3",
+      "sourceId": "components.RequestModal.Magazine.readyToRequest"
+    },
+    {
+      "position": 2919,
+      "source": "Request for <strong>{title}</strong> canceled.",
+      "sourceHash": "c661be4b36fea9d81a26b5a342125f74ded5756f1fe325c5a7684015141c931e",
+      "sourceId": "components.RequestModal.Magazine.requestCancel"
+    },
+    {
+      "position": 2920,
+      "source": "Something went wrong while submitting the request.",
+      "sourceHash": "d3bdb574010271936981aa31fa604b6758725e03ce86778c19fcff83bad3ab3e",
+      "sourceId": "components.RequestModal.Magazine.requestError"
+    },
+    {
+      "position": 2921,
+      "source": "{username}'s request is pending approval.",
+      "sourceHash": "bb1e740890336f20424b038221013e61517dcec02aeeac746bd76039ed1d48ad",
+      "sourceId": "components.RequestModal.Magazine.requestFrom"
+    },
+    {
+      "position": 2922,
+      "source": "Request Magazine",
+      "sourceHash": "2c145130fccccf00dbe201e81991b9cfbe167b392bb463237529384eb868490e",
+      "sourceId": "components.RequestModal.Magazine.requestMagazine"
+    },
+    {
+      "position": 2923,
+      "source": "<strong>{title}</strong> requested successfully!",
+      "sourceHash": "ab26c09dec52199eb4c8a2e1d88e46bc693d412b537b985a5ce3ecba478dfab3",
+      "sourceId": "components.RequestModal.Magazine.requestSuccess"
+    },
+    {
+      "position": 2924,
+      "source": "Requested",
+      "sourceHash": "d285cc64c2dc6540029356ae6547b83c6aced2c69b56a0aed252f7051f39c860",
+      "sourceId": "components.RequestModal.Magazine.requested"
+    },
+    {
+      "position": 2925,
+      "source": "Service",
+      "sourceHash": "8c7822f9a1052e08b553971a6d7a2bddd41c9a33c09fda51acf8b8719ca8f2bb",
+      "sourceId": "components.RequestModal.Magazine.service"
+    },
+    {
+      "position": 2926,
+      "source": "Status",
+      "sourceHash": "dc85b2d179023889072b40cdc0bd3d652a69a72656dc757bc64d97536f04897c",
+      "sourceId": "components.RequestModal.Magazine.status"
+    },
+    {
+      "position": 2927,
+      "source": "Advanced Options",
+      "sourceHash": "631d1e2eb743e638586b5233b7e4027a9857b36e80ba6f3ff979d698b2544371",
+      "sourceId": "components.RequestModal.Music.advancedOptions"
+    },
+    {
+      "position": 2928,
+      "source": "Album Type",
+      "sourceHash": "f81d4951cf8f65ea2880ffe407ff1d5bcf3f3aae5ff7acf085b9ffe74793ce8e",
+      "sourceId": "components.RequestModal.Music.albumType"
+    },
+    {
+      "position": 2929,
+      "source": "Approval",
+      "sourceHash": "cb6c4b3164b5903657cd0c9dbc7bdfd1859a54c8f4622e399a7294d1bc929981",
+      "sourceId": "components.RequestModal.Music.approval"
+    },
+    {
+      "position": 2930,
+      "source": "Approve Request",
+      "sourceHash": "a0b8de83b4c26b6b83a261406653f679dbbbc49e6e9b6198510025124931f1b8",
+      "sourceId": "components.RequestModal.Music.approve"
+    },
+    {
+      "position": 2931,
+      "source": "Artist",
+      "sourceHash": "517902553242d215e8d69eb74727ef8730c394695a1a81abc7641c00acae0681",
+      "sourceId": "components.RequestModal.Music.artist"
+    },
+    {
+      "position": 2932,
+      "source": "The request was submitted, but Lidarr rejected it while processing.",
+      "sourceHash": "0a95845d52e8d63f028e526879250f5cd5d680caafb9d4019aae3ae5667a0ed7",
+      "sourceId": "components.RequestModal.Music.backendRequestFailed"
+    },
+    {
+      "position": 2933,
+      "source": "Cancel Request",
+      "sourceHash": "1ee5b52c85ac8960d8f98e4df7f2d45f04297828d132a15f3bf4389811a81fea",
+      "sourceId": "components.RequestModal.Music.cancel"
+    },
+    {
+      "position": 2934,
+      "source": "Close",
+      "sourceHash": "dc6c5db979ce25d4b99683d5cbf57b92bab336f47de596790b96f0c22c554877",
+      "sourceId": "components.RequestModal.Music.close"
+    },
+    {
+      "position": 2935,
+      "source": "Edit Request",
+      "sourceHash": "ab795f76e35457d749cd013d584feff074a583ad3eb436c82989b22a075ced76",
+      "sourceId": "components.RequestModal.Music.edit"
+    },
+    {
+      "position": 2936,
+      "source": "Something went wrong while editing the request.",
+      "sourceHash": "3200421a0909014ca145e065dd206c6b6a6aff0138b0e1b2e0910a17896cd27d",
+      "sourceId": "components.RequestModal.Music.editerror"
+    },
+    {
+      "position": 2937,
+      "source": "This request includes the entire album.",
+      "sourceHash": "637a1806b098b542cb0c201b26d01f37f9209e180f35de7a912fc8c8405032bd",
+      "sourceId": "components.RequestModal.Music.entireAlbum"
+    },
+    {
+      "position": 2938,
+      "source": "Genres",
+      "sourceHash": "31ab859e7d990cdc012753d2e6d965482d8a4400ac9466b7238298797a74bb08",
+      "sourceId": "components.RequestModal.Music.genres"
+    },
+    {
+      "position": 2939,
+      "source": "Media & Format",
+      "sourceHash": "7781a9d336435d51cfef9f423a8977244895878e6a12a70f084f5ef8ffa67695",
+      "sourceId": "components.RequestModal.Music.mediaAndFormat"
+    },
+    {
+      "position": 2940,
+      "source": "No Lidarr service is configured. Music requests are unavailable.",
+      "sourceHash": "f68382a136257315e00ed1c3303186fe325c16acb2927a999c7519089963d71a",
+      "sourceId": "components.RequestModal.Music.noLidarrServer"
+    },
+    {
+      "position": 2941,
+      "source": "Not Available",
+      "sourceHash": "7a34577b32b9e8b01eb0018191018086a4ebea3c9fee52feda17edec653e9477",
+      "sourceId": "components.RequestModal.Music.notAvailable"
+    },
+    {
+      "position": 2942,
+      "source": "Your request is pending approval.",
+      "sourceHash": "3bf657a86262ce970f1475ba3c410e9c43cfe66c39be5de4974cfa2f071e6d1a",
+      "sourceId": "components.RequestModal.Music.pendingapproval"
+    },
+    {
+      "position": 2943,
+      "source": "Pending Music Request",
+      "sourceHash": "5476016d98970e950e6ad891ada553df40df333b1a99d55e287f94d16cfb946e",
+      "sourceId": "components.RequestModal.Music.pendingrequest"
+    },
+    {
+      "position": 2944,
+      "source": "Ready to Request",
+      "sourceHash": "4f021703da88f6d46777b4374d3744f5ac3dd95dedeb97e2f51902963f044583",
+      "sourceId": "components.RequestModal.Music.readyToRequest"
+    },
+    {
+      "position": 2945,
+      "source": "Release Date",
+      "sourceHash": "4d1192f0ca0d18824d2baa97d9c0c80b7f53180959b8ff7933ff2a3df177f02b",
+      "sourceId": "components.RequestModal.Music.releaseDate"
+    },
+    {
+      "position": 2946,
+      "source": "Request for <strong>{title}</strong> approved!",
+      "sourceHash": "89e797782c413ced40edf4a3fdb40a3fb9285a994131791cd8eef838a94c65a7",
+      "sourceId": "components.RequestModal.Music.requestApproved"
+    },
+    {
+      "position": 2947,
+      "source": "Request for <strong>{title}</strong> canceled.",
+      "sourceHash": "1d5083d36384fb7417e23ba9f863cc9f3d6a1790988d47e708eead1bfc61a2a5",
+      "sourceId": "components.RequestModal.Music.requestCancel"
+    },
+    {
+      "position": 2948,
+      "source": "Request for <strong>{title}</strong> edited successfully!",
+      "sourceHash": "46bf0601ec09d8620a2fb3f085d59f3cb5ad9fc670f80e15c5d200162b72115e",
+      "sourceId": "components.RequestModal.Music.requestEdited"
+    },
+    {
+      "position": 2949,
+      "source": "<strong>{title}</strong> requested successfully!",
+      "sourceHash": "05a9be50e0afb237e6b118cb1c340ce34ac6ff24a939a8bf0380e746380547a7",
+      "sourceId": "components.RequestModal.Music.requestSuccess"
+    },
+    {
+      "position": 2950,
+      "source": "Requested",
+      "sourceHash": "d0d33c767314d16e830071ec31830d58221e784cce12eda8b52002da9da4d627",
+      "sourceId": "components.RequestModal.Music.requested"
+    },
+    {
+      "position": 2951,
+      "source": "Something went wrong while submitting the request.",
+      "sourceHash": "c8eaa149ce578646542574a8850739f84b8122003aa4b9dffc22b2093c24a687",
+      "sourceId": "components.RequestModal.Music.requesterror"
+    },
+    {
+      "position": 2952,
+      "source": "{username}'s request is pending approval.",
+      "sourceHash": "1dca219599565cf5b771633a25ecad40d406f2389c15920ec7e141b5d3f2c332",
+      "sourceId": "components.RequestModal.Music.requestfrom"
+    },
+    {
+      "position": 2953,
+      "source": "Request Music",
+      "sourceHash": "46bc15cf8ce8ef72431107eef663b0fd84797f28c354ee7aa7aa10dab00f074f",
+      "sourceId": "components.RequestModal.Music.requestmusic"
+    },
+    {
+      "position": 2954,
+      "source": "Runtime",
+      "sourceHash": "cd7be04567d9bd242e7ae9ac3e918b7fb420ca4de9376db5aa590d07c037d6e5",
+      "sourceId": "components.RequestModal.Music.runtime"
+    },
+    {
+      "position": 2955,
+      "source": "Service",
+      "sourceHash": "bef8a5f05b27984c9dee164ffe4614c7e1c4eaac0c5eac0ecc385cfbcd31d88e",
+      "sourceId": "components.RequestModal.Music.service"
+    },
+    {
+      "position": 2956,
+      "source": "Status",
+      "sourceHash": "b3bc11f07a44160ecc1c1508235bc01bca618847342a832635ca0b47c126026f",
+      "sourceId": "components.RequestModal.Music.status"
+    },
+    {
+      "position": 2957,
+      "source": "Track Count",
+      "sourceHash": "a3f2f8e8de962fd99992c0922f0ca7fbb745dcac66448bf64e47a9f1eb01f514",
+      "sourceId": "components.RequestModal.Music.trackCount"
+    },
+    {
+      "position": 2958,
+      "source": "Advanced Options",
+      "sourceHash": "15f943e5e60c1766718c1bdbdc2144fade8828629bac57a698b6e607ba601a18",
+      "sourceId": "components.RequestModal.MusicCollection.advancedOptions"
+    },
+    {
+      "position": 2959,
+      "source": "Album",
+      "sourceHash": "78093a3f993a24f257394837b34b0def2abbaa33b57694242270bea0c02be0bb",
+      "sourceId": "components.RequestModal.MusicCollection.album"
+    },
+    {
+      "position": 2960,
+      "source": "Any",
+      "sourceHash": "76156259a4e33102520beff1aaf65edaa94463d7a384426dd7668f0fa6e63d96",
+      "sourceId": "components.RequestModal.MusicCollection.any"
+    },
+    {
+      "position": 2961,
+      "source": "Available",
+      "sourceHash": "6d2ba802916e3fa6f59bc91ec0b61e2cca172ede941c285df90d6052c8d93e03",
+      "sourceId": "components.RequestModal.MusicCollection.available"
+    },
+    {
+      "position": 2962,
+      "source": "Blocklisted",
+      "sourceHash": "b7d4b4549112fb436067fdfc80b2e7467fba216aa857b9660a03546fe0400472",
+      "sourceId": "components.RequestModal.MusicCollection.blocklisted"
+    },
+    {
+      "position": 2963,
+      "source": "Clear Filters",
+      "sourceHash": "327ae3b3abba22647a0851159bb2a4c2d17fb5abd9c92f861932e954d118cda8",
+      "sourceId": "components.RequestModal.MusicCollection.clearFilters"
+    },
+    {
+      "position": 2964,
+      "source": "Genres",
+      "sourceHash": "2a740e2b7c8fa0af3418f5696fa3b52cd2a0e83b64326edc803f43f370e70e6e",
+      "sourceId": "components.RequestModal.MusicCollection.genres"
+    },
+    {
+      "position": 2965,
+      "source": "MP3",
+      "sourceHash": "eb5542c4b620db2eb193cc97c6fd40fde16e011a72f01c77fe531e836f433f42",
+      "sourceId": "components.RequestModal.MusicCollection.hd"
+    },
+    {
+      "position": 2966,
+      "source": "Not Available",
+      "sourceHash": "6c749d299b95e6b5f98da54578ae9bc5633f8f6ff5a7e1a803f05305e357c3d4",
+      "sourceId": "components.RequestModal.MusicCollection.notAvailable"
+    },
+    {
+      "position": 2967,
+      "source": "Quality",
+      "sourceHash": "823dec4adc6c0a2018dc216221549dee5662a31b596ffbe0ec7144248dbf44a0",
+      "sourceId": "components.RequestModal.MusicCollection.quality"
+    },
+    {
+      "position": 2968,
+      "source": "The selected albums exceed the remaining music request quota.",
+      "sourceHash": "c0b9b8cd321517daa78601cf7c4a573b015a602f75905306f6d324ad4d57ce3d",
+      "sourceId": "components.RequestModal.MusicCollection.quotaRestricted"
+    },
+    {
+      "position": 2969,
+      "source": "Release Year",
+      "sourceHash": "aa32acd0b0a0babe17006a26ca4cc737378975b9871c9443630323a30ba77cf7",
+      "sourceId": "components.RequestModal.MusicCollection.releaseYear"
+    },
+    {
+      "position": 2970,
+      "source": "Request Collection",
+      "sourceHash": "7aaa95eba9d452b4e6a8dec72d88abfaa6c68aef8cc7dca3ff8fbf64b4beab56",
+      "sourceId": "components.RequestModal.MusicCollection.requestcollectiontitle"
+    },
+    {
+      "position": 2971,
+      "source": "Requested",
+      "sourceHash": "21bc043a086abef5cfc4a16b4614cc44ac68797d27893b9e917547f4853c949e",
+      "sourceId": "components.RequestModal.MusicCollection.requested"
+    },
+    {
+      "position": 2972,
+      "source": "Something went wrong while submitting the request.",
+      "sourceHash": "0cfab0cab374b9d1d4d48ab4ca92579ae9b8445c0a07c8347e6ae14f3935f51c",
+      "sourceId": "components.RequestModal.MusicCollection.requesterror"
+    },
+    {
+      "position": 2973,
+      "source": "Select every album that is ready to request",
+      "sourceHash": "8686839416bf7dbfe6d0713143b50a3d0323ceab6bda7df20c9aa8869bfc5870",
+      "sourceId": "components.RequestModal.MusicCollection.selectAll"
+    },
+    {
+      "position": 2974,
+      "source": "Select at least one album to request.",
+      "sourceHash": "58868fb7cbaaadc1eb1ff9ea7e655f4990b539b6c624546bbcd617f01f0dfb74",
+      "sourceId": "components.RequestModal.MusicCollection.selectItemsToRequest"
+    },
+    {
+      "position": 2975,
+      "source": "Select this album to request",
+      "sourceHash": "c0ce37320f3b76fe1faf27adab5932bb89e9d4aa824b20ba142b18b8ee0e33ad",
+      "sourceId": "components.RequestModal.MusicCollection.selection"
+    },
+    {
+      "position": 2976,
+      "source": "No matching music destination is configured.",
+      "sourceHash": "41219c02736a1e384b514edf9c31b2fc2465ea1cc01c91989f96b9ef393f8ba1",
+      "sourceId": "components.RequestModal.MusicCollection.serviceUnavailable"
+    },
+    {
+      "position": 2977,
+      "source": "{created} requested; {failed} failed.",
+      "sourceHash": "ce84e8d4931e9840187461f1ee416b84c03f820ed4e0990b0572219c175d3d8f",
+      "sourceId": "components.RequestModal.MusicCollection.summary"
+    },
+    {
+      "position": 2978,
+      "source": "FLAC",
+      "sourceHash": "e4efb6f3651d046b83b3cf79cf002fdc6d175a98eefd6079d0e50e0e1532ebb4",
+      "sourceId": "components.RequestModal.MusicCollection.ultraHd"
+    },
+    {
+      "position": 2979,
+      "source": "Unknown",
+      "sourceHash": "97ec1857b6b0ffce1887805e83200ba7b197b5aaf4b55f325c4575ea02b05701",
+      "sourceId": "components.RequestModal.MusicCollection.unknown"
+    },
+    {
+      "position": 2980,
+      "source": "Paste a Spotify or YouTube playlist link. SeerrNG will match its tracks to MusicBrainz albums for review before requesting anything.",
+      "sourceHash": "b1f8486aeb96fab9f47d5976501605a0d896c13632d7dde8ebf39a985c1a9618",
+      "sourceId": "components.RequestModal.PlaylistImportModal.description"
+    },
+    {
+      "position": 2981,
+      "source": "The playlist could not be resolved.",
+      "sourceHash": "039f645b1ea31eac37764b57c422dc125ce9688460a36e3d0b6a6fdb27a88b2f",
+      "sourceId": "components.RequestModal.PlaylistImportModal.error"
+    },
+    {
+      "position": 2982,
+      "source": "Preview Matches",
+      "sourceHash": "5b95688179e887d3ca931e14ba5ad5bdff0dd924a822cabc3793b99ff2f25d9f",
+      "sourceId": "components.RequestModal.PlaylistImportModal.preview"
+    },
+    {
+      "position": 2983,
+      "source": "Matching playlist…",
+      "sourceHash": "30a45b0d888979d1d62bc80f9abb457904ff2a0f121bad3b72671606191492d5",
+      "sourceId": "components.RequestModal.PlaylistImportModal.resolving"
+    },
+    {
+      "position": 2984,
+      "source": "Connect Spotify",
+      "sourceHash": "9663312e9262fd0a80a7b705027170c6ff9a4858a785707facc6a9754eea0d80",
+      "sourceId": "components.RequestModal.PlaylistImportModal.spotifyConnect"
+    },
+    {
+      "position": 2985,
+      "source": "Disconnect Spotify",
+      "sourceHash": "740455af43ed2a9595a142319d1080e18fca28098fae9fd44e145fef5d4648bd",
+      "sourceId": "components.RequestModal.PlaylistImportModal.spotifyDisconnect"
+    },
+    {
+      "position": 2986,
+      "source": "Spotify imports use the connected account and only include playlists that account can access.",
+      "sourceHash": "cea944b64a3579ecc055d9a4c72fd55d7195048194d39396c2ed2874f4ed4cfb",
+      "sourceId": "components.RequestModal.PlaylistImportModal.spotifyHelp"
+    },
+    {
+      "position": 2987,
+      "source": "Reconnect Spotify",
+      "sourceHash": "09b860bbee8b65a91b9f3636861ad24bd8051885e253d5045fa42e637703bb4a",
+      "sourceId": "components.RequestModal.PlaylistImportModal.spotifyReconnect"
+    },
+    {
+      "position": 2988,
+      "source": "Import Playlist",
+      "sourceHash": "985cbc97c45d7ebe7c2f04d284ee4839bc83d3104c8cb32b87e5050096be6413",
+      "sourceId": "components.RequestModal.PlaylistImportModal.title"
+    },
+    {
+      "position": 2989,
+      "source": "Playlist URL",
+      "sourceHash": "995b99a3463b8b6062148ad53de3b47b9f98640a87a6a17a52b6d696bb11d849",
+      "sourceId": "components.RequestModal.PlaylistImportModal.urlLabel"
+    },
+    {
+      "position": 2990,
+      "source": "https://open.spotify.com/playlist/...",
+      "sourceHash": "6efc290735e5056012ae426f73e0e1e64a5fc711309d19b74c8b546a770842d1",
+      "sourceId": "components.RequestModal.PlaylistImportModal.urlPlaceholder"
+    },
+    {
+      "position": 2991,
+      "source": "YouTube imports use public playlists configured by the administrator.",
+      "sourceHash": "a537f414c5ff0dc594e00f908f67afb2c330f4b241058ffc5ca36fab6f2626b0",
+      "sourceId": "components.RequestModal.PlaylistImportModal.youtubeHelp"
+    },
+    {
+      "position": 2992,
+      "source": "adult scene",
+      "sourceHash": "9e2bd921a5adf7d40e15b64cef784354f9bde94487d556efcee6951683126492",
+      "sourceId": "components.RequestModal.QuotaDisplay.adult"
+    },
+    {
+      "position": 2993,
+      "source": "{limit, plural, one {adult scene} other {adult scenes}}",
+      "sourceHash": "54eb4f27e6d7d4d5b333a8eca4b248acf7df2b29d581ff5fcad47e54dd9b2700",
+      "sourceId": "components.RequestModal.QuotaDisplay.adultlimit"
+    },
+    {
+      "position": 2994,
+      "source": "You are allowed to request <strong>{limit}</strong> {type}{days, plural, =0 {} one { every day} other { every <strong>{days}</strong> days}}.",
+      "sourceHash": "1b979001e2dc1bf8ac53cdf2fe9dbdf6b58bc6bcd16345489abd782ee4fee56c",
+      "sourceId": "components.RequestModal.QuotaDisplay.allowedRequests"
+    },
+    {
+      "position": 2995,
+      "source": "This user is allowed to request <strong>{limit}</strong> {type}{days, plural, =0 {} one { every day} other { every <strong>{days}</strong> days}}.",
+      "sourceHash": "ba20440768d52c8d50ab9792d1da4de6e1ee534109a856646132e590a234125b",
+      "sourceId": "components.RequestModal.QuotaDisplay.allowedRequestsUser"
+    },
+    {
+      "position": 2996,
+      "source": "book",
+      "sourceHash": "3b940ed78e459a54babe96cbd7ef484ac784b052895f9e6a39a5f516beb3dba4",
+      "sourceId": "components.RequestModal.QuotaDisplay.book"
+    },
+    {
+      "position": 2997,
+      "source": "{limit, plural, one {book} other {books}}",
+      "sourceHash": "d349d9c4b491befb677048a07f23858ed2b7468a5301f36546e829828cd2f2a1",
+      "sourceId": "components.RequestModal.QuotaDisplay.booklimit"
+    },
+    {
+      "position": 2998,
+      "source": "comic",
+      "sourceHash": "6754647ab57e88475bb2af8834ebff71e043870868dcb22d7e67fce21bee8428",
+      "sourceId": "components.RequestModal.QuotaDisplay.comic"
+    },
+    {
+      "position": 2999,
+      "source": "{limit, plural, one {comic} other {comics}}",
+      "sourceHash": "0fdaed635c12d8705f7df7bfeb22da8146aa5e5bca1801600ebf68315edc5c82",
+      "sourceId": "components.RequestModal.QuotaDisplay.comiclimit"
+    }
+  ],
+  "sourcePositionRange": [
+    2900,
+    2999
+  ],
+  "tree": "e3076937fe10b4dd3821ea573e8e5e21601fce7d"
+}

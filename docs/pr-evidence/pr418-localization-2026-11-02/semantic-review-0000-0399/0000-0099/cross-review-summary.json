@@ -1,0 +1,84 @@
+{
+  "crossReviewCounts": {
+    "accept-proposal": 363,
+    "refine-proposal": 10
+  },
+  "ledger": "cross-review-0000-0099.jsonl",
+  "ledgerSha256": "18bc31606bf4247884ea1d26e37b16f551fbd9dcd684ae81bfcb8d5a874ba4c2",
+  "liveHead": "d1137d06ffb5af57ef599ac9bf495aff2a990a7b",
+  "liveTree": "0aa22f0bb43e3e30d216e2ae19939220e05f04f7",
+  "nativeSpeakerApproval": false,
+  "notes": [
+    "Every primary correction-needed row was independently dispositioned; accept-current and prior-disposition rows were not re-reviewed.",
+    "Source and current-target hashes were recomputed; each proposed-target hash was verified; refined targets include exact UTF-8 SHA-256 hashes.",
+    "Caller contexts are preserved from the primary ledger pinned to the reviewed head/tree.",
+    "No repository, catalog, workflow, test, build, scan, CI, browser, push, or PR changes were made."
+  ],
+  "primaryLedger": "/mnt/disks/scratch/task-scratch/seerrng-pr418-w700-749-review-20261102/reviews/agent-0000-0099/semantic-review-ledger.jsonl",
+  "primaryLedgerSha256": "c94f38e0250a36c97ebea88d8504ab5f1c48cf1fb137e4a5702b4d5cfa3e283b",
+  "pullRequest": 418,
+  "pullRequestDraft": true,
+  "pullRequestState": "OPEN",
+  "refinedCandidates": [
+    {
+      "finalTarget": "Tải xuống bản sao",
+      "locale": "vi",
+      "sourceId": "components.Requests.downloadCopy"
+    },
+    {
+      "finalTarget": "{name} डाउनलोड करें",
+      "locale": "hi",
+      "sourceId": "components.Requests.downloadCopyFor"
+    },
+    {
+      "finalTarget": "पहली बार प्रकाशित होने की तारीख",
+      "locale": "hi",
+      "sourceId": "components.Requests.firstPublished"
+    },
+    {
+      "finalTarget": "आयात का प्रयास {attempt}/{maxAttempts}।",
+      "locale": "hi",
+      "sourceId": "components.Requests.pendingImportAttempt"
+    },
+    {
+      "finalTarget": "ChaptarrNG prépare l’{format}.",
+      "locale": "fr",
+      "sourceId": "components.Requests.pendingImportTitle"
+    },
+    {
+      "finalTarget": "ChaptarrNG यह {format} तैयार कर रहा है।",
+      "locale": "hi",
+      "sourceId": "components.Requests.pendingImportTitle"
+    },
+    {
+      "finalTarget": "ChaptarrNG está preparando este {format}.",
+      "locale": "pt-BR",
+      "sourceId": "components.Requests.pendingImportTitle"
+    },
+    {
+      "finalTarget": "ChaptarrNG 正在准备这个 {format}。",
+      "locale": "zh-CN",
+      "sourceId": "components.Requests.pendingImportTitle"
+    },
+    {
+      "finalTarget": "ChaptarrNG 正在準備這個 {format}。",
+      "locale": "zh-TW",
+      "sourceId": "components.Requests.pendingImportTitle"
+    },
+    {
+      "finalTarget": "Relancez cette demande qui a échoué depuis l’étape d’approbation.",
+      "locale": "fr",
+      "sourceId": "components.Requests.retryTooltip"
+    }
+  ],
+  "repository": "snapetech-org/seerrng",
+  "reviewedCorrectionCandidateCount": 373,
+  "reviewedSlice": {
+    "directLocaleCount": 12,
+    "sourceIdCount": 100,
+    "startInclusive": 0,
+    "stopExclusive": 100
+  },
+  "schemaVersion": 1,
+  "task": "Independent cross-review of SeerrNG PR #418 W700-749 correction candidates at sourceId positions 0 through 99"
+}

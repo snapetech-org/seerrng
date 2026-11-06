@@ -300,7 +300,7 @@ const NotificationsGotify = () => {
             />
             <div className="actions">
               <div className="flex justify-end">
-                <span className="ml-3 inline-flex rounded-md shadow-sm">
+                <span className="ms-3 inline-flex rounded-md shadow-sm">
                   <Button
                     buttonType="warning"
                     disabled={isSubmitting || !isValid || isTesting}
@@ -317,7 +317,7 @@ const NotificationsGotify = () => {
                     </span>
                   </Button>
                 </span>
-                <span className="ml-3 inline-flex rounded-md shadow-sm">
+                <span className="ms-3 inline-flex rounded-md shadow-sm">
                   <Button
                     buttonType="primary"
                     type="submit"

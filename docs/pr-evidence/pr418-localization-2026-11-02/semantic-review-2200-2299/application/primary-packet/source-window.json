@@ -1,0 +1,617 @@
+{
+  "head": "8c27beb8086ea6f840bdcde4b915d83db27f81a3",
+  "sourceCatalog": {
+    "blob": "12e04a118c30b71b3714291adeaf9fdb2735cee4",
+    "bytes": 835513,
+    "path": "src/i18n/locale/en.json",
+    "sha256": "75ff3c90b52aedd636a506281ffbd6fb2d3739c61294b6008a517f17647e2316"
+  },
+  "sourceCount": 100,
+  "sourceList": [
+    {
+      "position": 2200,
+      "source": "Something went wrong. Please try again.",
+      "sourceHash": "a66a4848de7668ce10e6ff423d148f3fdc8edfe502ef7aa8184343afccc6eaeb",
+      "sourceId": "components.MovieDetails.watchlistError"
+    },
+    {
+      "position": 2201,
+      "source": "<strong>{title}</strong> added to watchlist successfully!",
+      "sourceHash": "41cd4bd8a85cf8f8613c8b114bb8db38ab015f4afc5e256eb5e2111e0378df09",
+      "sourceId": "components.MovieDetails.watchlistSuccess"
+    },
+    {
+      "position": 2202,
+      "source": "Watch Trailer",
+      "sourceHash": "8fb4b4e0492bdf93f0c72af50b49e9659b86beb4c2f81c7047f7fb7730cce431",
+      "sourceId": "components.MovieDetails.watchtrailer"
+    },
+    {
+      "position": 2203,
+      "source": "Hidden",
+      "sourceHash": "07478c40811f5f50bd8b9063db8f7a2a39e3d260e99705b01664e8da6c2ae1ab",
+      "sourceId": "components.MovieSummaryCard.availabilityHidden"
+    },
+    {
+      "position": 2204,
+      "source": "Director",
+      "sourceHash": "0a3867fde889d6c9c681cb32fa178c40420a94b5a2c8657809009def77230392",
+      "sourceId": "components.MovieSummaryCard.director"
+    },
+    {
+      "position": 2205,
+      "source": "Genres",
+      "sourceHash": "937e1d93fb9c67796054fd874c3a0522ed2d740acaed85409ac3afb3d6cd209a",
+      "sourceId": "components.MovieSummaryCard.genres"
+    },
+    {
+      "position": 2206,
+      "source": "HD",
+      "sourceHash": "a32218ac174d4e696fd26d6616facff1951ee0da60959656b51247febb4353af",
+      "sourceId": "components.MovieSummaryCard.hd"
+    },
+    {
+      "position": 2207,
+      "source": "Media & Format",
+      "sourceHash": "90ce2e4945b7d0aeebe221092c2fc225d5da60e883c36439fbe4290d09a71888",
+      "sourceId": "components.MovieSummaryCard.mediaAndFormat"
+    },
+    {
+      "position": 2208,
+      "source": "{minutes} minutes",
+      "sourceHash": "255a35c3c0f5c14b364de26314395bacb2d954c343c31dac77a883e012c41828",
+      "sourceId": "components.MovieSummaryCard.minutes"
+    },
+    {
+      "position": 2209,
+      "source": "Not Available",
+      "sourceHash": "4c183d4c13f68f7f518bb25b1e4e906aaab1e6e7c5d6855e537b31f405ab2fc8",
+      "sourceId": "components.MovieSummaryCard.notAvailable"
+    },
+    {
+      "position": 2210,
+      "source": "Ratings",
+      "sourceHash": "faf9f6ad7ced060d171544f49c8dff78b7c56d9f92fac2b3c93eb9053920ad51",
+      "sourceId": "components.MovieSummaryCard.ratings"
+    },
+    {
+      "position": 2211,
+      "source": "Release Date",
+      "sourceHash": "d065ddb6b4c688ded4948d4502aa97cb61a47e78081dada0f2c58dff7bc78663",
+      "sourceId": "components.MovieSummaryCard.releaseDate"
+    },
+    {
+      "position": 2212,
+      "source": "Runtime",
+      "sourceHash": "88145001e5e640d200afc629ffb46f9425a6c8064a7da962dd3ec7cfa848a840",
+      "sourceId": "components.MovieSummaryCard.runtime"
+    },
+    {
+      "position": 2213,
+      "source": "Screenplay",
+      "sourceHash": "e39b9c3df3b7d81ecfa76175fd0f3b6b0fee3982512b693ee77327f4748e6aa6",
+      "sourceId": "components.MovieSummaryCard.screenplay"
+    },
+    {
+      "position": 2214,
+      "source": "Shared: {status}",
+      "sourceHash": "43e5271c6aa80ae0333071da20a6d75d7db43a8e95961e189e144aa1d9b3c836",
+      "sourceId": "components.MovieSummaryCard.sharedAvailability"
+    },
+    {
+      "position": 2215,
+      "source": "{quality} (shared)",
+      "sourceHash": "dd617bac4470e6f8eb18349700e28cebe00b733e2ece5508c89833994cfd8e8a",
+      "sourceId": "components.MovieSummaryCard.sharedFormat"
+    },
+    {
+      "position": 2216,
+      "source": "Studio",
+      "sourceHash": "44da82ed32fcfadbff373764a99a137fb43eee70c1f95298d56108685e8be954",
+      "sourceId": "components.MovieSummaryCard.studio"
+    },
+    {
+      "position": 2217,
+      "source": "4K",
+      "sourceHash": "734f4536b5e2cabc8c2fdb851d9a020f9804335a6b602f07b69194d0eb3ad143",
+      "sourceId": "components.MovieSummaryCard.ultraHd"
+    },
+    {
+      "position": 2218,
+      "source": "Watched",
+      "sourceHash": "adcfd44e2cb7ec6c104c54ebac4c916796f8668b6d5dd6165f8061f4db523e7b",
+      "sourceId": "components.MovieSummaryCard.watched"
+    },
+    {
+      "position": 2219,
+      "source": "Artist",
+      "sourceHash": "00a2f6943cb4da6fa3f6c4bea026b8159861c115a845c4c3aee6c508f483e529",
+      "sourceId": "components.MusicArtistFilter.artist"
+    },
+    {
+      "position": 2220,
+      "source": "No matching artists",
+      "sourceHash": "eff291e94dace56eddf5efdb68b68dec6a9f6337e6d356472d935b7ea14d5163",
+      "sourceId": "components.MusicArtistFilter.empty"
+    },
+    {
+      "position": 2221,
+      "source": "Artist search unavailable. Try again.",
+      "sourceHash": "d8325035136d5ae4f990e9cf7656db1c2e84cb3440bc6ad3d4e789db7ae79d59",
+      "sourceId": "components.MusicArtistFilter.failed"
+    },
+    {
+      "position": 2222,
+      "source": "Search artists…",
+      "sourceHash": "e4c72f1b03a903d1b9e038553002311c5f51d995131178848a573581947981bb",
+      "sourceId": "components.MusicArtistFilter.placeholder"
+    },
+    {
+      "position": 2223,
+      "source": "Start typing to search.",
+      "sourceHash": "47f3a4ab427313e0f6d1b1b90656dc46fa74101f56a1f2081346d5df4ae344ef",
+      "sourceId": "components.MusicArtistFilter.start"
+    },
+    {
+      "position": 2224,
+      "source": "Any",
+      "sourceHash": "0e5664c2ef042e9675fa6080ed495c24132cd954526b6255956ff4f48b850f37",
+      "sourceId": "components.MusicCollectionFilters.any"
+    },
+    {
+      "position": 2225,
+      "source": "Clear Filters",
+      "sourceHash": "17f7c995d4e221568d08ba0a8a1cd744cb05b76c37b5e261d667cdce26198cf9",
+      "sourceId": "components.MusicCollectionFilters.clear"
+    },
+    {
+      "position": 2226,
+      "source": "Genres",
+      "sourceHash": "9b62da4443ce416f2a414b620eb26a363ccca07863765e903e184d581827347b",
+      "sourceId": "components.MusicCollectionFilters.genre"
+    },
+    {
+      "position": 2227,
+      "source": "Collection filters",
+      "sourceHash": "78dcb5cae9803da11542d0a466d0b04e8a5323e57a94c2e6bf276323b4e93c8d",
+      "sourceId": "components.MusicCollectionFilters.label"
+    },
+    {
+      "position": 2228,
+      "source": "Loading...",
+      "sourceHash": "7c27b6fe33e1ca53ff24803e39b8f536ad714be684e1ac7782e4f50bf5c1045d",
+      "sourceId": "components.MusicCollectionFilters.loading"
+    },
+    {
+      "position": 2229,
+      "source": "Selection {selected}/{total}",
+      "sourceHash": "5b922c90d2c198838570f71a72f9b5b8035b52aa7d608d5b04b176ee9af79a8f",
+      "sourceId": "components.MusicCollectionFilters.selection"
+    },
+    {
+      "position": 2230,
+      "source": "Unknown",
+      "sourceHash": "a9af465aeb7eca87bb15063eee438214c47c24603ea2aaa5d90eb3d1206a2f2e",
+      "sourceId": "components.MusicCollectionFilters.unknown"
+    },
+    {
+      "position": 2231,
+      "source": "Release Year",
+      "sourceHash": "09fdd891e09defdb64cecb3f25a09c56d0ddc637ba6d225d6a0c0681127c9ed6",
+      "sourceId": "components.MusicCollectionFilters.year"
+    },
+    {
+      "position": 2232,
+      "source": "Album Artist",
+      "sourceHash": "3b34262807779e16a11d4583cbb901610efa0fd8822f72a0aab71971379027cf",
+      "sourceId": "components.MusicDetails.Layout.albumArtist"
+    },
+    {
+      "position": 2233,
+      "source": "Details",
+      "sourceHash": "8083525c28c5516215fdb8df93f03a0375826777b4327635f85df0e788624bf0",
+      "sourceId": "components.MusicDetails.Layout.albumDetails"
+    },
+    {
+      "position": 2234,
+      "source": "Album Type",
+      "sourceHash": "b07a1335f94473c24457f0cae409a4bf2eaf5beecf9d7df27eea364c0cb69e9e",
+      "sourceId": "components.MusicDetails.Layout.albumType"
+    },
+    {
+      "position": 2235,
+      "source": "Artist",
+      "sourceHash": "edaa430e655ffa9c26c9a83702e672bf12be36ff5ed975babcfe3c948626eec3",
+      "sourceId": "components.MusicDetails.Layout.artist"
+    },
+    {
+      "position": 2236,
+      "source": "Artist Type",
+      "sourceHash": "8ea9f2a4891e41151ae1090eea404538e6ce90bb70c41088c6b09d59052df0ad",
+      "sourceId": "components.MusicDetails.Layout.artistType"
+    },
+    {
+      "position": 2237,
+      "source": "Available",
+      "sourceHash": "e20f251efb42c956f4d918adb1060802bd8bd9769f07e8d96c25168703a70d8c",
+      "sourceId": "components.MusicDetails.Layout.available"
+    },
+    {
+      "position": 2238,
+      "source": "Full Artist List",
+      "sourceHash": "fef570fc07f3465a7ff4e6bb7ab9f773908f1eabce50f286eb1e4638cf140d12",
+      "sourceId": "components.MusicDetails.Layout.fullArtistList"
+    },
+    {
+      "position": 2239,
+      "source": "Genres",
+      "sourceHash": "54148b9d722ab102dc29eef0d9e129cc22e2cab84cb7ff934682746fb6a42e45",
+      "sourceId": "components.MusicDetails.Layout.genres"
+    },
+    {
+      "position": 2240,
+      "source": "Lidarr rating: {score} from {votes} votes",
+      "sourceHash": "41fbb751a2fd10d7838cb6f148f65c0a4d7fa667331784426babff14b3d5eea9",
+      "sourceId": "components.MusicDetails.Layout.lidarrRating"
+    },
+    {
+      "position": 2241,
+      "source": "Media & Format",
+      "sourceHash": "2b08b90c82ade20db0b6776e2712d8ed8baf80fa50f7a0f77e4fc60329af4aca",
+      "sourceId": "components.MusicDetails.Layout.mediaAndFormat"
+    },
+    {
+      "position": 2242,
+      "source": "{minutes} minutes",
+      "sourceHash": "681d5c581f6b78b3226cf1df78500b245057d9158502b87d78010fbdbbee9802",
+      "sourceId": "components.MusicDetails.Layout.minutes"
+    },
+    {
+      "position": 2243,
+      "source": "MusicBrainz",
+      "sourceHash": "859ee0dfc9af0396aba2a2fbe60dfa5a1d05f461e497b98f492ee32038d49ff9",
+      "sourceId": "components.MusicDetails.Layout.musicBrainz"
+    },
+    {
+      "position": 2244,
+      "source": "MusicBrainz rating: {score} from {votes} votes",
+      "sourceHash": "48cd5e37e42af515488de70468f0e31afd1685b763b83b54fd63f72ec94d40c5",
+      "sourceId": "components.MusicDetails.Layout.musicBrainzRating"
+    },
+    {
+      "position": 2245,
+      "source": "No artist information available",
+      "sourceHash": "7661a550a10d7bb2bd5c23dff36debb265ee068fbfe103d98aec7e604b506676",
+      "sourceId": "components.MusicDetails.Layout.noArtists"
+    },
+    {
+      "position": 2246,
+      "source": "No subject tags available",
+      "sourceHash": "27cdaff92e9184c40a37f8441da5710bd371c5e90a97da3797a222f78cfb8e1f",
+      "sourceId": "components.MusicDetails.Layout.noTags"
+    },
+    {
+      "position": 2247,
+      "source": "Not Available",
+      "sourceHash": "60cdf7971d370483e38f65052ea5fc98d1d304fb1dee5fc7e5037822f03d8f36",
+      "sourceId": "components.MusicDetails.Layout.notAvailable"
+    },
+    {
+      "position": 2248,
+      "source": "Origin",
+      "sourceHash": "4b02d1aefbd5a61e9bb99a64c4a68a07f0539e785876c46d430657e2f83dcfa0",
+      "sourceId": "components.MusicDetails.Layout.origin"
+    },
+    {
+      "position": 2249,
+      "source": "Quality",
+      "sourceHash": "4b5f38bbfcbe371e3f7c5f97985fa71d342d8b3468e2ac8c3477c48b2658f2c7",
+      "sourceId": "components.MusicDetails.Layout.quality"
+    },
+    {
+      "position": 2250,
+      "source": "Release Date",
+      "sourceHash": "bcd211bca44c61362da89b6f3a150bd5706c38cc4084b56c8e742292ca50b66a",
+      "sourceId": "components.MusicDetails.Layout.releaseDate"
+    },
+    {
+      "position": 2251,
+      "source": "Runtime",
+      "sourceHash": "09d1d0b2be2cbdeedd54071bda78531f61caf448ae07e39cba19bbc9c1d8ffb6",
+      "sourceId": "components.MusicDetails.Layout.runtime"
+    },
+    {
+      "position": 2252,
+      "source": "Similar Artists",
+      "sourceHash": "418bdd2ac2908a2306742afa0ecf3c10c24a0c4bd27506392d7102dd054f278b",
+      "sourceId": "components.MusicDetails.Layout.similarArtists"
+    },
+    {
+      "position": 2253,
+      "source": "Status",
+      "sourceHash": "77c2e1c970dc71990758ccd64a575f387a1f0d34acbd2bdd7a3d3e91ab3f659d",
+      "sourceId": "components.MusicDetails.Layout.status"
+    },
+    {
+      "position": 2254,
+      "source": "Subject Tags",
+      "sourceHash": "e33ae6f032f720a59d26a1c0e77581b7062c419d385d1436b250fff3438deadb",
+      "sourceId": "components.MusicDetails.Layout.subjectTags"
+    },
+    {
+      "position": 2255,
+      "source": "Track Artist",
+      "sourceHash": "d62c44c20524c0045657a2f02549d0c59aad7ba3f1d3d00b319b9bc4ffcb3843",
+      "sourceId": "components.MusicDetails.Layout.trackArtist"
+    },
+    {
+      "position": 2256,
+      "source": "Track Count",
+      "sourceHash": "b643cf566b486f6c360c5b8f0b998847958fc5c596ba35ac6110b4921a98b731",
+      "sourceId": "components.MusicDetails.Layout.trackCount"
+    },
+    {
+      "position": 2257,
+      "source": "Artists",
+      "sourceHash": "ade6a5231a2137d2dbd9850ab73a694c3cf3bb2db8455956ddc7cd13759bda75",
+      "sourceId": "components.MusicDetails.Layout.viewArtists"
+    },
+    {
+      "position": 2258,
+      "source": "Add To Watchlist",
+      "sourceHash": "3f7290d90016ddbb525399ed67b13269007a75116fe0b80fab6915ea754e6beb",
+      "sourceId": "components.MusicDetails.addtowatchlist"
+    },
+    {
+      "position": 2259,
+      "source": "This title is blocklisted.",
+      "sourceHash": "6127e3c61d0015b9cb05b3cd6940165c32403a1c013db5459f6079be8757a897",
+      "sourceId": "components.MusicDetails.blocklisted"
+    },
+    {
+      "position": 2260,
+      "source": "The FLAC version is already available.",
+      "sourceHash": "ea60315bccc30fb1a174b5b3b1c120468495db37ec787300f5aaf4d4de501858",
+      "sourceId": "components.MusicDetails.flacAvailable"
+    },
+    {
+      "position": 2261,
+      "source": "An open FLAC request already exists.",
+      "sourceHash": "dff734950a62b617b5487d43bec64bbb927cd9e1c70842c39aee482b0f74b0df",
+      "sourceId": "components.MusicDetails.flacPending"
+    },
+    {
+      "position": 2262,
+      "source": "No FLAC music service is configured.",
+      "sourceHash": "ead32ca76e4c7dd4bc97e88d24a20f54fb672da69bbd8af57881c21b076043b1",
+      "sourceId": "components.MusicDetails.flacServiceUnavailable"
+    },
+    {
+      "position": 2263,
+      "source": "Manage Music",
+      "sourceHash": "761dc1d05dabdafb0749e388f3ebd2929e0637d9e5c4335407999cdc6e580f31",
+      "sourceId": "components.MusicDetails.manage"
+    },
+    {
+      "position": 2264,
+      "source": "The MP3 version is already available.",
+      "sourceHash": "fcac20d5d2aa656ea71d9689ce4c661b4716918b3fd451bd299cefabd11fdd54",
+      "sourceId": "components.MusicDetails.mp3Available"
+    },
+    {
+      "position": 2265,
+      "source": "An open MP3 request already exists.",
+      "sourceHash": "3de2038f462424f345025e56341a1a38e8ab555d5bcef16432d6e859d833d848",
+      "sourceId": "components.MusicDetails.mp3Pending"
+    },
+    {
+      "position": 2266,
+      "source": "No MP3 music service is configured.",
+      "sourceHash": "c477e24148abd52d5d9b6e989021ca2ef52f99486ccd6386ccef34db39c9065f",
+      "sourceId": "components.MusicDetails.mp3ServiceUnavailable"
+    },
+    {
+      "position": 2267,
+      "source": "Open Issues",
+      "sourceHash": "11f27f4f18ee45c637128408569f3f6e4f9164752b7c5464a6299afafe9585e1",
+      "sourceId": "components.MusicDetails.openissues"
+    },
+    {
+      "position": 2268,
+      "source": "Remove From Watchlist",
+      "sourceHash": "c0ce91545f47d202fff9da6504ff63ebf7f1b894a6bcfe70937b5743613a8ea8",
+      "sourceId": "components.MusicDetails.removefromwatchlist"
+    },
+    {
+      "position": 2269,
+      "source": "Report an Issue",
+      "sourceHash": "71c3c608379e585fad2b6cd723cd5fe092f0797c732e6316624c11d75e6980ee",
+      "sourceId": "components.MusicDetails.reportissue"
+    },
+    {
+      "position": 2270,
+      "source": "Request Discography",
+      "sourceHash": "67b031f517c59da9b5097ae07c4476c1c104d24e6915073eacfa8376c8b0b14a",
+      "sourceId": "components.MusicDetails.requestdiscography"
+    },
+    {
+      "position": 2271,
+      "source": "No playable tracks are currently available.",
+      "sourceHash": "ba419b3955d05dca692abd5d7c5faec0cb5aaf57944eb81fde4ab9a28bea021b",
+      "sourceId": "components.MusicDetails.selectToPlay"
+    },
+    {
+      "position": 2272,
+      "source": "View Request",
+      "sourceHash": "610075455dd6744f653c6e4bb646c4716fc72de7831840118e11920f9c42a6d4",
+      "sourceId": "components.MusicDetails.viewrequest"
+    },
+    {
+      "position": 2273,
+      "source": "<strong>{title}</strong> Removed from watchlist successfully!",
+      "sourceHash": "e520ba9ec91206c093dc056b059cf9b30a0ddb1f4bc7d7077f12588d4db1f2ca",
+      "sourceId": "components.MusicDetails.watchlistDeleted"
+    },
+    {
+      "position": 2274,
+      "source": "Something went wrong. Please try again.",
+      "sourceHash": "f6cd9a17338b5d01d06063e97b4f000f6fb4d161fa3884057b9324039b73e3af",
+      "sourceId": "components.MusicDetails.watchlistError"
+    },
+    {
+      "position": 2275,
+      "source": "<strong>{title}</strong> added to watchlist successfully!",
+      "sourceHash": "fc9a74beb7d3b8012345df536efcc760a8ef3a1524e0ffbe0c8333d6b26a61c5",
+      "sourceId": "components.MusicDetails.watchlistSuccess"
+    },
+    {
+      "position": 2276,
+      "source": "{source}: no rating available.",
+      "sourceHash": "7ed3afc336ba429576c57ee951c263223c43e97134f87577d7b33908b36f2a7c",
+      "sourceId": "components.MusicRatings.absent"
+    },
+    {
+      "position": 2277,
+      "source": "{source}: {score}/{scale}, average of {count} rated albums out of {total}. Missing ratings are excluded.",
+      "sourceHash": "39aca13ad1ac81aa986ff7bb84c57eef73d041bb1381f8a9a0d01d1d1c31c12e",
+      "sourceId": "components.MusicRatings.average"
+    },
+    {
+      "position": 2278,
+      "source": "Discogs rating is for the linked release or the master entry’s main release, not every edition.",
+      "sourceHash": "226dc1c1e704cc1798bd17b047b82c2a538a30cc278222f8242bce68ed333b2b",
+      "sourceId": "components.MusicRatings.edition"
+    },
+    {
+      "position": 2279,
+      "source": "{source}: {score}/{scale} from {votes} votes.",
+      "sourceHash": "9aa898f65fd07fc25a85e8cb10cdd5d52e4d3710a3362028677e1a9095f4c059",
+      "sourceId": "components.MusicRatings.score"
+    },
+    {
+      "position": 2280,
+      "source": "Any",
+      "sourceHash": "3725ef68700c27576fb5db586a9ba3429ddc3d53a86c90c658256ba331b1c4b2",
+      "sourceId": "components.MusicReleaseTypeSelect.any"
+    },
+    {
+      "position": 2281,
+      "source": "Release Type",
+      "sourceHash": "67eee318e3d2ae6a62555a7c7cb32e7b88785b885d6b6f6312f8a11e12000cb3",
+      "sourceId": "components.MusicReleaseTypeSelect.label"
+    },
+    {
+      "position": 2282,
+      "source": "Get notified when other users comment on issues.",
+      "sourceHash": "98e052dbb6f7a3f9b637275442892b28e9f679fb2b95917254b22813c6d659ea",
+      "sourceId": "components.NotificationTypeSelector.adminissuecommentDescription"
+    },
+    {
+      "position": 2283,
+      "source": "Get notified when issues are reopened by other users.",
+      "sourceHash": "a1eab8d7088ff1f8503805397916a33e45b8726b7d23fcf2fb2431a7f1b5af72",
+      "sourceId": "components.NotificationTypeSelector.adminissuereopenedDescription"
+    },
+    {
+      "position": 2284,
+      "source": "Get notified when issues are resolved by other users.",
+      "sourceHash": "f5fcba30d0e39eb0d6be7b5b91a240046d7cd120a727af60b4db59118f644f47",
+      "sourceId": "components.NotificationTypeSelector.adminissueresolvedDescription"
+    },
+    {
+      "position": 2285,
+      "source": "Issue Comment",
+      "sourceHash": "74c7e0c681a281181476bcd07b5b03d4e6bc4455b56b264a31f154bd4da2445b",
+      "sourceId": "components.NotificationTypeSelector.issuecomment"
+    },
+    {
+      "position": 2286,
+      "source": "Send notifications when issues receive new comments.",
+      "sourceHash": "61fc67892cec4c44818f75e59b3e45c9933e23d16389f7d9bff61848d12ec074",
+      "sourceId": "components.NotificationTypeSelector.issuecommentDescription"
+    },
+    {
+      "position": 2287,
+      "source": "Issue Reported",
+      "sourceHash": "1dc2cfed8e2bdfcd93a39c980f0b4dbb9821fe535e7ceac6df7058e62bee6551",
+      "sourceId": "components.NotificationTypeSelector.issuecreated"
+    },
+    {
+      "position": 2288,
+      "source": "Send notifications when issues are reported.",
+      "sourceHash": "aec0e2fe4086bbb9b622d00812bc9d5f8c0c0310f6388a2f348890a8489f2204",
+      "sourceId": "components.NotificationTypeSelector.issuecreatedDescription"
+    },
+    {
+      "position": 2289,
+      "source": "Issue Reopened",
+      "sourceHash": "83ff8ccae3dc60cfd2b38780b1f504ccf3c7b1c27fd7e595007d98d89c04db64",
+      "sourceId": "components.NotificationTypeSelector.issuereopened"
+    },
+    {
+      "position": 2290,
+      "source": "Send notifications when issues are reopened.",
+      "sourceHash": "960f96ac7ec6492db401e232951f8be6a319c3e6b9699bb4716d7f5c30a6803b",
+      "sourceId": "components.NotificationTypeSelector.issuereopenedDescription"
+    },
+    {
+      "position": 2291,
+      "source": "Issue Resolved",
+      "sourceHash": "12698d8ae9d6027b22b87b25d29547ac5cb5a645e76b37280925de036a0e79aa",
+      "sourceId": "components.NotificationTypeSelector.issueresolved"
+    },
+    {
+      "position": 2292,
+      "source": "Send notifications when issues are resolved.",
+      "sourceHash": "864ae20e21dab9af8157a004a354ade0ba015698a68e1e62f69a3e730e6db528",
+      "sourceId": "components.NotificationTypeSelector.issueresolvedDescription"
+    },
+    {
+      "position": 2293,
+      "source": "Request Automatically Approved",
+      "sourceHash": "be0d3471912497d1ffd4f70c7de16dd1a24d678e58de0564614a27b0a31c9b13",
+      "sourceId": "components.NotificationTypeSelector.mediaAutoApproved"
+    },
+    {
+      "position": 2294,
+      "source": "Send notifications when users submit new media requests which are automatically approved.",
+      "sourceHash": "5738a89874e24053c247598e077bb606db30bab46290b8549a9fca66b5eeadf0",
+      "sourceId": "components.NotificationTypeSelector.mediaAutoApprovedDescription"
+    },
+    {
+      "position": 2295,
+      "source": "Request Approved",
+      "sourceHash": "337a83b912d5b5f3ba79d2fccdf63e0825cc988961ef4b4b35ca6408b684fb33",
+      "sourceId": "components.NotificationTypeSelector.mediaapproved"
+    },
+    {
+      "position": 2296,
+      "source": "Send notifications when media requests are manually approved.",
+      "sourceHash": "cf74953285b9a9d24e3e506512878cecaac4de849a93e750b6a9bbc5c3cb2458",
+      "sourceId": "components.NotificationTypeSelector.mediaapprovedDescription"
+    },
+    {
+      "position": 2297,
+      "source": "Request Automatically Submitted",
+      "sourceHash": "88ed69616f740c6f35ce87f6fbb8260d465fccf23cc2147f6a63295179491f24",
+      "sourceId": "components.NotificationTypeSelector.mediaautorequested"
+    },
+    {
+      "position": 2298,
+      "source": "Get notified when new media requests are automatically submitted for items on Your Watchlist.",
+      "sourceHash": "efb36943c8e408bdd1196f2bb86e76b4c1318ae51d0015ec045987de01386db7",
+      "sourceId": "components.NotificationTypeSelector.mediaautorequestedDescription"
+    },
+    {
+      "position": 2299,
+      "source": "Request Available",
+      "sourceHash": "c921acd10ddfc2473880e069fc9ffe51a43b35c558a64768b29c6347f915617c",
+      "sourceId": "components.NotificationTypeSelector.mediaavailable"
+    }
+  ],
+  "sourcePositionRange": [
+    2200,
+    2299
+  ],
+  "tree": "2951195dd04af87add189090756e0d0f43e8e031"
+}
