@@ -13,6 +13,9 @@ const messages = defineMessages('components.NotificationTypeSelector', {
     'Send notifications when users submit new media requests which require approval.',
   usermediarequestedDescription:
     'Get notified when other users submit new media requests which require approval.',
+  mediaPendingUpdated: 'Pending Request Updated',
+  mediaPendingUpdatedDescription:
+    'Send notifications when a pending request’s owner, selections, or acquisition options change.',
   mediaapproved: 'Request Approved',
   mediaapprovedDescription:
     'Send notifications when media requests are manually approved.',
@@ -117,6 +120,7 @@ export enum Notification {
   MEDIA_AUTO_REQUESTED = 4096,
   SOFTWARE_AVAILABLE = 8192,
   SOFTWARE_STATUS = 16384,
+  MEDIA_PENDING_UPDATED = 32768,
 }
 
 export const ALL_NOTIFICATIONS = Object.values(Notification)
@@ -253,6 +257,16 @@ const NotificationTypeSelector = ({
             : messages.mediarequestedDescription
         ),
         value: Notification.MEDIA_PENDING,
+        hasNotifyUser: false,
+        hidden: user && !hasPermission(Permission.MANAGE_REQUESTS),
+      },
+      {
+        id: 'media-pending-updated',
+        name: intl.formatMessage(messages.mediaPendingUpdated),
+        description: intl.formatMessage(
+          messages.mediaPendingUpdatedDescription
+        ),
+        value: Notification.MEDIA_PENDING_UPDATED,
         hasNotifyUser: false,
         hidden: user && !hasPermission(Permission.MANAGE_REQUESTS),
       },

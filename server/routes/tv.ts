@@ -14,8 +14,17 @@ import { MediaType } from '@server/constants/media';
 import { getRepository } from '@server/datasource';
 import Media from '@server/entity/Media';
 import { Watchlist } from '@server/entity/Watchlist';
+import {
+  getActiveEpisodeAvailabilitySources,
+  getEpisodeAvailability,
+} from '@server/lib/episodeAvailability';
+import { getExternalRuntimeConfig } from '@server/lib/externalRuntimeConfig';
 import { enqueueImageCacheWarm } from '@server/lib/imageCacheWarmer';
 import { upsertMediaSearchMetadata } from '@server/lib/mediaSearchMetadata';
+import {
+  getMediaServerAccessContext,
+  restrictEpisodeAvailabilityForUser,
+} from '@server/lib/mediaServerAvailability';
 import {
   getSettings,
   MetadataProviderType,
@@ -412,11 +421,12 @@ tvRoutes.get('/:id/season/:seasonNumber', async (req, res, next) => {
     ) {
       return next({ status: 404, message: 'Season not found.' });
     }
-    const metadataProvider = tmdbTv.keywords.results.some(
+    const isAnime = tmdbTv.keywords.results.some(
       (keyword: TmdbKeyword) => keyword.id === ANIME_KEYWORD_ID
-    )
-      ? await getMetadataProvider('anime')
-      : await getMetadataProvider('tv');
+    );
+    const metadataProvider = await getMetadataProvider(
+      isAnime ? 'anime' : 'tv'
+    );
 
     const season = await metadataProvider.getTvSeason({
       tvId,
@@ -424,7 +434,54 @@ tvRoutes.get('/:id/season/:seasonNumber', async (req, res, next) => {
       language,
     });
 
-    return res.status(200).json(mapSeasonWithEpisodes(season));
+    const mappedSeason = mapSeasonWithEpisodes(season);
+    const settings = getSettings();
+    const metadataSource = isAnime
+      ? settings.metadataSettings.anime
+      : settings.metadataSettings.tv;
+    if (settings.main.trackEpisodeAvailability) {
+      const availabilitySources = getActiveEpisodeAvailabilitySources(
+        metadataSource,
+        {
+          sonarr: getExternalRuntimeConfig().sonarr,
+          plex: settings.plex,
+          jellyfin: settings.jellyfin,
+          mediaServerType: settings.main.mediaServerType,
+        },
+        settings.main.enable4k
+      );
+      const availability = await getEpisodeAvailability(
+        tvId,
+        seasonNumber,
+        metadataSource,
+        availabilitySources,
+        settings.main.enable4k
+      );
+      await restrictEpisodeAvailabilityForUser(
+        availability,
+        await getRepository(Media).findOneBy({
+          tmdbId: tvId,
+          mediaType: MediaType.TV,
+        }),
+        await getMediaServerAccessContext(req.user),
+        seasonNumber
+      );
+      mappedSeason.episodes = mappedSeason.episodes.map((episode) => {
+        const episodeAvailability = availability.get(episode.episodeNumber);
+        if (!episodeAvailability) return episode;
+        return {
+          ...episode,
+          ...(episodeAvailability.sonarrAvailability
+            ? { sonarrAvailability: episodeAvailability.sonarrAvailability }
+            : {}),
+          ...(episodeAvailability.sources.length > 0
+            ? { availabilitySources: episodeAvailability.sources }
+            : {}),
+        };
+      });
+    }
+
+    return res.status(200).json(mappedSeason);
   } catch (e) {
     logger.debug('Something went wrong retrieving season', {
       label: 'API',

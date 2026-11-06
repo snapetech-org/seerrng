@@ -35,6 +35,10 @@ const messages = defineMessages('notifications.agents.email', {
     'A new request for the following {mediaType} is pending approval:',
   pendingRequest4k:
     'A new request for the following {mediaType} in 4K is pending approval:',
+  pendingRequestUpdated:
+    'The pending request for the following {mediaType} has been updated:',
+  pendingRequestUpdated4k:
+    'The pending request for the following {mediaType} in 4K has been updated:',
   autoRequested:
     'A new request for the following {mediaType} was automatically submitted:',
   autoRequested4k:
@@ -142,6 +146,14 @@ class EmailAgent
         case Notification.MEDIA_PENDING:
           body = intl.formatMessage(
             is4k ? messages.pendingRequest4k : messages.pendingRequest,
+            { mediaType }
+          );
+          break;
+        case Notification.MEDIA_PENDING_UPDATED:
+          body = intl.formatMessage(
+            is4k
+              ? messages.pendingRequestUpdated4k
+              : messages.pendingRequestUpdated,
             { mediaType }
           );
           break;

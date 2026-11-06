@@ -50,7 +50,9 @@ const overrideRuleBodyFields = new Set<keyof OverrideRuleBody>([
   'genre',
   'language',
   'keywords',
+  'productionCountries',
   'profileId',
+  'languageProfileId',
   'rootFolder',
   'tags',
   'radarrServiceId',
@@ -64,7 +66,9 @@ type OverrideRuleBody = {
   genre?: string | null;
   language?: string | null;
   keywords?: string | null;
+  productionCountries?: string | null;
   profileId?: number | null;
+  languageProfileId?: number | null;
   rootFolder?: string | null;
   tags?: string | null;
   radarrServiceId?: number | null;
@@ -78,7 +82,9 @@ type OverrideRulePatch = {
   genre?: string | null;
   language?: string | null;
   keywords?: string | null;
+  productionCountries?: string | null;
   profileId?: number | null;
+  languageProfileId?: number | null;
   rootFolder?: string | null;
   tags?: string | null;
   radarrServiceId?: number | null;
@@ -258,6 +264,30 @@ const parseOptionalRuleLanguageList = (
   return [...new Set(languages)].join('|');
 };
 
+const parseOptionalRuleCountryList = (
+  value: unknown
+): string | null | undefined | { error: string } => {
+  const parsed = parseOptionalRuleString(value, 'Production countries');
+  if (parsed === undefined || parsed === null || typeof parsed === 'object') {
+    return parsed;
+  }
+
+  const countries = parsed
+    .split('|')
+    .map((country) => country.trim().toUpperCase());
+  if (
+    countries.length === 0 ||
+    countries.length > MAX_OVERRIDE_RULE_LIST_ITEMS ||
+    countries.some((country) => !/^[A-Z]{2}$/.test(country))
+  ) {
+    return {
+      error: `Production countries must contain at most ${MAX_OVERRIDE_RULE_LIST_ITEMS} ISO 3166-1 alpha-2 codes.`,
+    };
+  }
+
+  return [...new Set(countries)].join('|');
+};
+
 const hasRuleValue = (value: unknown): boolean =>
   typeof value === 'string' ? value.trim().length > 0 : value != null;
 
@@ -290,17 +320,44 @@ const validateOverrideRuleShape = (
   }
 
   if (
-    ![rule.users, rule.genre, rule.language, rule.keywords].some(hasRuleValue)
+    ![
+      rule.users,
+      rule.genre,
+      rule.language,
+      rule.keywords,
+      rule.productionCountries,
+    ].some(hasRuleValue)
   ) {
     return { error: 'Override rules must define at least one condition.' };
   }
 
-  if (![rule.profileId, rule.rootFolder, rule.tags].some(hasRuleValue)) {
+  if (
+    ![rule.profileId, rule.languageProfileId, rule.rootFolder, rule.tags].some(
+      hasRuleValue
+    )
+  ) {
     return { error: 'Override rules must define at least one setting.' };
   }
 
   if (rule.lidarrServiceId != null && hasRuleValue(rule.language)) {
     return { error: 'Album language is not available for Lidarr rules.' };
+  }
+
+  if (
+    hasRuleValue(rule.productionCountries) &&
+    rule.radarrServiceId == null &&
+    rule.sonarrServiceId == null
+  ) {
+    return {
+      error:
+        'Production countries are only available for Radarr and Sonarr rules.',
+    };
+  }
+
+  if (hasRuleValue(rule.languageProfileId) && rule.sonarrServiceId == null) {
+    return {
+      error: 'Language profiles are only available for Sonarr rules.',
+    };
   }
 
   return undefined;
@@ -340,6 +397,22 @@ const parseOverrideRuleBody = (
   if (typeof language === 'object' && language && 'error' in language) {
     return language;
   }
+  const productionCountries = parseOptionalRuleCountryList(
+    bodyObject.productionCountries
+  );
+  if (
+    typeof productionCountries === 'object' &&
+    productionCountries &&
+    'error' in productionCountries
+  ) {
+    return productionCountries;
+  }
+  if (isCatalogRule && hasRuleValue(productionCountries)) {
+    return {
+      error:
+        'Production countries are only available for Radarr and Sonarr rules.',
+    };
+  }
   const keywords = isCatalogRule
     ? parseOptionalCatalogTerms(bodyObject.keywords, 'Keywords')
     : parseOptionalRuleIdList(bodyObject.keywords, 'Keywords');
@@ -364,6 +437,17 @@ const parseOverrideRuleBody = (
   );
   if (typeof profileId === 'object' && profileId && 'error' in profileId) {
     return profileId;
+  }
+  const languageProfileId = parseOptionalRuleInteger(
+    bodyObject.languageProfileId,
+    'Language profile ID'
+  );
+  if (
+    typeof languageProfileId === 'object' &&
+    languageProfileId &&
+    'error' in languageProfileId
+  ) {
+    return languageProfileId;
   }
   const radarrServiceId = parseOptionalRuleInteger(
     bodyObject.radarrServiceId,
@@ -415,7 +499,9 @@ const parseOverrideRuleBody = (
     genre,
     language,
     keywords,
+    productionCountries,
     profileId,
+    languageProfileId,
     rootFolder,
     tags,
     radarrServiceId,
@@ -660,6 +746,7 @@ overrideRuleRoutes.post<
         return res.status(200).json({
           rootFolder: null,
           profileId: null,
+          languageProfileId: null,
           tags: req.body.tags ?? null,
         });
       }

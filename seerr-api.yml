@@ -91,6 +91,11 @@ components:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
   schemas:
+    InterfaceThemeId:
+      type: string
+      maxLength: 48
+      pattern: '^(seerrOrig|seerrNGJ|persiusNG|[a-z0-9]+(?:-[a-z0-9]+)*)$'
+      description: A built-in or installed custom interface package identifier.
     ErrorResponse:
       type: object
       properties:
@@ -222,6 +227,9 @@ components:
         activeNavigationIcon:
           type: string
           enum: [outline, filled]
+        layout:
+          type: string
+          enum: [classic, persius]
     Follow:
       type: object
       properties:
@@ -2361,68 +2369,111 @@ components:
             $ref: '#/components/schemas/WatchlistListItem'
     User:
       type: object
+      description: User response. Provider credentials and password-reset tokens are never serialized.
       properties:
-        id:
-          type: integer
-          example: 1
-          readOnly: true
+        id: { type: integer, example: 1, readOnly: true }
+        displayName: { type: string, readOnly: true }
         email:
-          type: string
-          example: 'hey@itsme.com'
+          {
+            type: string,
+            nullable: true,
+            example: 'hey@itsme.com',
+            readOnly: true,
+          }
+        username: { type: string, nullable: true, readOnly: true }
+        plexUsername: { type: string, nullable: true, readOnly: true }
+        jellyfinUsername: { type: string, nullable: true, readOnly: true }
+        plexId: { type: integer, nullable: true, readOnly: true }
+        jellyfinUserId: { type: string, nullable: true, readOnly: true }
+        userType: { type: integer, example: 1, readOnly: true }
+        permissions: { type: integer, example: 0, readOnly: true }
+        contentRestricted: { type: boolean, nullable: true, readOnly: true }
+        requestServices:
+          type: array
+          description: Additional Radarr or Sonarr request destinations granted to this user.
           readOnly: true
-        username:
-          type: string
-        plexUsername:
-          type: string
+          items: { type: string, pattern: '^(radarr|sonarr):[0-9]{1,10}$' }
+        linkedAccounts:
+          type: array
           readOnly: true
-        plexToken:
-          type: string
+          items: { $ref: '#/components/schemas/LinkedAccount' }
+        settings:
+          allOf:
+            - { $ref: '#/components/schemas/UserSettings' }
+          description: Present on manager-authorized user responses; credential fields are omitted.
           readOnly: true
-        jellyfinAuthToken:
-          type: string
-          readOnly: true
-        userType:
-          type: integer
-          example: 1
-          readOnly: true
-        permissions:
-          type: number
-          example: 0
         tvSeasonWatchGateStatus:
           type: string
           enum: [off, pending, approved, enabled, denied]
           description: Private to the account owner and callers with `MANAGE_USERS` permission.
+          readOnly: true
         tvSeasonWatchGateRequestedAt:
           type: string
           format: date-time
           nullable: true
           description: Private to the account owner and callers with `MANAGE_USERS` permission.
-        requestServices:
+          readOnly: true
+        episodeQueueAccessStatus:
+          { type: string, enum: [off, approved], readOnly: true }
+        episodeQueueAccessRequestedAt:
+          { type: string, format: date-time, nullable: true, readOnly: true }
+        avatar: { type: string, readOnly: true }
+        avatarETag: { type: string, nullable: true, readOnly: true }
+        avatarVersion: { type: string, nullable: true, readOnly: true }
+        movieQuotaLimit: { type: number, nullable: true, readOnly: true }
+        movieQuotaDays: { type: number, nullable: true, readOnly: true }
+        tvQuotaLimit: { type: number, nullable: true, readOnly: true }
+        tvQuotaDays: { type: number, nullable: true, readOnly: true }
+        musicQuotaLimit: { type: number, nullable: true, readOnly: true }
+        musicQuotaDays: { type: number, nullable: true, readOnly: true }
+        bookQuotaLimit: { type: number, nullable: true, readOnly: true }
+        bookQuotaDays: { type: number, nullable: true, readOnly: true }
+        comicQuotaLimit: { type: number, nullable: true, readOnly: true }
+        comicQuotaDays: { type: number, nullable: true, readOnly: true }
+        magazineQuotaLimit: { type: number, nullable: true, readOnly: true }
+        magazineQuotaDays: { type: number, nullable: true, readOnly: true }
+        adultQuotaLimit: { type: number, nullable: true, readOnly: true }
+        adultQuotaDays: { type: number, nullable: true, readOnly: true }
+        softwareQuotaLimit: { type: number, nullable: true, readOnly: true }
+        softwareQuotaDays: { type: number, nullable: true, readOnly: true }
+        requestCount: { type: number, example: 5, readOnly: true }
+        warnings:
           type: array
-          description: Additional Radarr or Sonarr request destinations granted to this user.
-          items:
-            type: string
-            pattern: '^(radarr|sonarr):[0-9]{1,10}$'
-        avatar:
-          type: string
           readOnly: true
+          items: { type: string }
         createdAt:
-          type: string
-          example: '2020-09-02T05:02:23.000Z'
-          readOnly: true
+          {
+            type: string,
+            format: date-time,
+            example: '2020-09-02T05:02:23.000Z',
+            readOnly: true,
+          }
         updatedAt:
-          type: string
-          example: '2020-09-02T05:02:23.000Z'
-          readOnly: true
-        requestCount:
-          type: number
-          example: 5
-          readOnly: true
-      required:
-        - id
-        - email
-        - createdAt
-        - updatedAt
+          {
+            type: string,
+            format: date-time,
+            example: '2020-09-02T05:02:23.000Z',
+            readOnly: true,
+          }
+      required: [id, createdAt, updatedAt]
+    UserUpdatePayload:
+      type: object
+      description: Fields accepted by PUT /user/{userId}.
+      properties:
+        username:
+          {
+            type: string,
+            minLength: 1,
+            maxLength: 100,
+            description: Local username assigned to the user.,
+          }
+        permissions:
+          {
+            type: integer,
+            minimum: 0,
+            description: Permission bitmask assigned to the user.,
+          }
+      required: [username, permissions]
     PublicUser:
       type: object
       required: [id]
@@ -2483,6 +2534,8 @@ components:
     UserSettings:
       type: object
       properties:
+        interfaceTheme:
+          $ref: '#/components/schemas/InterfaceThemeId'
         themePalette:
           type: string
           description: Account theme preference. SeerrNG is adopted once on installation or upgrade; subsequent user choices survive later upgrades.
@@ -2689,41 +2742,33 @@ components:
         movieMaturityRatingLimit:
           type: string
           nullable: true
-          enum: [G, PG, PG-13, R, NC-17]
+          enum: ['G', 'PG', 'PG-13', 'R', 'NC-17', null]
         tvMaturityRatingLimit:
           type: string
           nullable: true
-          enum: [TV-Y, TV-Y7, TV-G, TV-PG, TV-14, TV-MA]
+          enum: ['TV-Y', 'TV-Y7', 'TV-G', 'TV-PG', 'TV-14', 'TV-MA', null]
     CardTextVisibilitySettings:
       type: object
       properties:
         movie:
           type: string
           nullable: true
-          enum:
-            - always
-            - hover
+          enum: ['always', 'hover', null]
           example: hover
         tv:
           type: string
           nullable: true
-          enum:
-            - always
-            - hover
+          enum: ['always', 'hover', null]
           example: hover
         album:
           type: string
           nullable: true
-          enum:
-            - always
-            - hover
+          enum: ['always', 'hover', null]
           example: always
         book:
           type: string
           nullable: true
-          enum:
-            - always
-            - hover
+          enum: ['always', 'hover', null]
           example: always
     DetailDisclosurePinSettings:
       type: object
@@ -2808,6 +2853,11 @@ components:
           example: 32
         enableSpecialEpisodes:
           type: boolean
+          example: false
+        trackEpisodeAvailability:
+          type: boolean
+          default: false
+          description: Records available TV episodes from synchronized Sonarr services. Tracking requires TheTVDB as the selected metadata provider for the series.
           example: false
         includeAdult:
           type: boolean
@@ -2961,6 +3011,10 @@ components:
         enabled:
           type: boolean
           example: false
+        episodeOrderProvider:
+          type: string
+          enum: [tmdb, tvdb]
+          description: Episode numbering order configured for this TV library.
         type:
           type: string
           enum: [show, movie, music, book]
@@ -3110,9 +3164,6 @@ components:
         sourceTitle:
           type: string
           example: 'xyzabc'
-        accessToken:
-          type: string
-          example: 'supersecretaccesstoken'
         publicAddress:
           type: string
           example: '127.0.0.1'
@@ -3164,6 +3215,10 @@ components:
         enabled:
           type: boolean
           example: false
+        episodeOrderProvider:
+          type: string
+          enum: [tmdb, tvdb]
+          description: Episode numbering order configured for this TV library.
         type:
           type: string
           enum: [show, movie, music, book]
@@ -3408,9 +3463,23 @@ components:
         syncEnabled:
           type: boolean
           example: false
+        syncExcludedTags:
+          type: array
+          maxItems: 100
+          items:
+            type: integer
+            minimum: 0
+            maximum: 1000000
+          description: Servarr tag IDs excluded from this Radarr library scan.
         preventSearch:
           type: boolean
           example: false
+        downloadQueueSize:
+          type: integer
+          minimum: 10
+          maximum: 10000
+          default: 1000
+          description: Maximum queue records included by Download Sync for this service instance.
       required:
         - name
         - hostname
@@ -3479,6 +3548,12 @@ components:
           type: boolean
         tagRequests:
           type: boolean
+        downloadQueueSize:
+          type: integer
+          minimum: 10
+          maximum: 10000
+          default: 1000
+          description: Maximum queue records included by Download Sync for this service instance.
         overrideRule:
           type: array
           items:
@@ -3917,9 +3992,23 @@ components:
         syncEnabled:
           type: boolean
           example: false
+        syncExcludedTags:
+          type: array
+          maxItems: 100
+          items:
+            type: integer
+            minimum: 0
+            maximum: 1000000
+          description: Servarr tag IDs excluded from this Sonarr library scan.
         preventSearch:
           type: boolean
           example: false
+        downloadQueueSize:
+          type: integer
+          minimum: 10
+          maximum: 10000
+          default: 1000
+          description: Maximum queue records included by Download Sync for this service instance.
       required:
         - name
         - hostname
@@ -4666,6 +4755,39 @@ components:
           type: string
         mediaInfo:
           $ref: '#/components/schemas/MediaInfo'
+    CollectionSearchResult:
+      type: object
+      required:
+        - id
+        - mediaType
+        - title
+        - originalTitle
+        - adult
+        - overview
+        - originalLanguage
+      properties:
+        id:
+          type: integer
+          example: 10
+        mediaType:
+          type: string
+          enum: [collection]
+        title:
+          type: string
+          example: Star Wars Collection
+        originalTitle:
+          type: string
+          example: Star Wars Collection
+        adult:
+          type: boolean
+        posterPath:
+          type: string
+        backdropPath:
+          type: string
+        overview:
+          type: string
+        originalLanguage:
+          type: string
     MusicResult:
       type: object
       required:
@@ -5438,6 +5560,48 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/BulkMediaRequestResult'
+    RequestTargetOptions:
+      type: object
+      description: >-
+        Effective profile, root folder, tags, and (for TV) language profile shown in the advanced request form. Accepted only when editing a movie or TV request with advanced request permission. These values keep the saved destination snapshot aligned with the form and are separate from explicit request overrides.
+      properties:
+        profileId:
+          type: integer
+          minimum: 0
+          nullable: true
+        rootFolder:
+          type: string
+          nullable: true
+        languageProfileId:
+          type: integer
+          minimum: 0
+          nullable: true
+          description: Required for TV requests; omit for movie requests.
+        tags:
+          type: array
+          nullable: true
+          items:
+            type: integer
+            minimum: 1
+      required:
+        - profileId
+        - rootFolder
+        - tags
+    RequesterSelectedOptions:
+      type: object
+      description: >-
+        Advanced fields explicitly selected by the requester. A selected field remains explicit even when its value equals the value already shown as the default, so a matching override rule does not replace that choice. Accepted only for new movie or TV requests with advanced request permission.
+      properties:
+        profile:
+          type: boolean
+        rootFolder:
+          type: boolean
+        languageProfile:
+          type: boolean
+          description: TV requests only.
+        tags:
+          type: boolean
+      additionalProperties: false
     PersonMovieBulkRequestResult:
       type: object
       properties:
@@ -5801,6 +5965,28 @@ components:
         stillPath:
           type: string
           nullable: true
+        sonarrAvailability:
+          type: object
+          description: Sonarr file availability by quality when individual episode tracking is enabled.
+          properties:
+            hd:
+              type: boolean
+            fourK:
+              type: boolean
+        availabilitySources:
+          type: array
+          description: File availability by configured Sonarr or media-server source and quality. Media-server file presence does not confirm access for a particular user.
+          items:
+            type: object
+            required: [sourceType, hd, fourK]
+            properties:
+              sourceType:
+                type: string
+                enum: [sonarr, plex, jellyfin, emby]
+              hd:
+                type: boolean
+              fourK:
+                type: boolean
         voteAverage:
           type: number
         voteCount:
@@ -6186,6 +6372,33 @@ components:
         - request
         - current
         - history
+    SeasonRequest:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        seasonNumber:
+          type: integer
+        status:
+          type: integer
+          enum: [1, 2, 3, 4, 5]
+          description: Request status for this season.
+        episodeNumbers:
+          type: array
+          nullable: true
+          description: Omitted or null means the entire season; otherwise contains selected episode numbers.
+          items:
+            type: integer
+            minimum: 1
+        createdAt:
+          type: string
+          format: date-time
+          readOnly: true
+        updatedAt:
+          type: string
+          format: date-time
+          readOnly: true
     MediaRequest:
       type: object
       properties:
@@ -6194,10 +6407,24 @@ components:
           example: 123
           readOnly: true
         status:
-          type: number
-          example: 0
-          description: Status of the request. 1 = PENDING APPROVAL, 2 = APPROVED, 3 = DECLINED
+          type: integer
+          enum: [1, 2, 3, 4, 5]
+          example: 1
+          description: Status of the request. 1 = PENDING, 2 = APPROVED, 3 = DECLINED, 4 = FAILED, 5 = COMPLETED.
           readOnly: true
+        type:
+          type: string
+          enum: [movie, tv, music, book, comic, magazine, adult, sports]
+          readOnly: true
+        seasonCount:
+          type: integer
+          minimum: 0
+          readOnly: true
+        seasons:
+          type: array
+          readOnly: true
+          items:
+            $ref: '#/components/schemas/SeasonRequest'
         failureReason:
           type: string
           enum:
@@ -6210,6 +6437,10 @@ components:
           nullable: true
           description: Stable, non-sensitive classification for the most recent failed movie or TV dispatch. Cleared when the request is retried or resubmitted.
           readOnly: true
+        monitorFutureSeasons:
+          type: boolean
+          nullable: true
+          description: TV-only future-season preference. Null inherits the service default. Episode Queue and season watch gates take priority.
         overrideTvdbId:
           type: integer
           minimum: 1
@@ -6242,6 +6473,7 @@ components:
             - $ref: '#/components/schemas/PublicUser'
             - type: string
               nullable: true
+              enum: [null]
         is4k:
           type: boolean
           example: false
@@ -6260,6 +6492,73 @@ components:
         serverId:
           type: number
           nullable: true
+        languageProfileId:
+          type: integer
+          nullable: true
+        serviceTargets:
+          type: array
+          nullable: true
+          items:
+            type: object
+            required: [serviceType, format, serverId]
+            properties:
+              serviceType:
+                type: string
+                enum:
+                  [
+                    radarr,
+                    sonarr,
+                    sportarr,
+                    lidarr,
+                    readarr,
+                    mylar,
+                    kapowarr,
+                    backissue,
+                    lazylibrarian,
+                    whisparr,
+                  ]
+              format:
+                type: string
+                enum:
+                  [
+                    standard,
+                    4k,
+                    music,
+                    ebook,
+                    audiobook,
+                    comic,
+                    magazine,
+                    sports,
+                    adult,
+                  ]
+              serverId:
+                type: integer
+              profileId:
+                type: integer
+                nullable: true
+              metadataProfileId:
+                type: integer
+                nullable: true
+              languageProfileId:
+                type: integer
+                nullable: true
+              rootFolder:
+                type: string
+                nullable: true
+              tags:
+                type: array
+                nullable: true
+                items:
+                  type: integer
+              externalServiceId:
+                type: integer
+                nullable: true
+              externalServiceSlug:
+                type: string
+                nullable: true
+              status:
+                type: integer
+                nullable: true
         profileId:
           type: number
           nullable: true
@@ -6276,8 +6575,24 @@ components:
             type: number
         bookFormat:
           type: string
-          enum: [ebook, audiobook, both]
+          enum: ['ebook', 'audiobook', 'both', null]
           nullable: true
+        preferredEditionId:
+          type: string
+          nullable: true
+        preferredIsbn13:
+          type: string
+          nullable: true
+        editionPolicy:
+          type: string
+          enum: ['only', 'either', 'alongside', null]
+          nullable: true
+        variantKey:
+          type: string
+          nullable: true
+        isAutoRequest:
+          type: boolean
+          readOnly: true
         ignoreQuota:
           type: boolean
           example: false
@@ -6290,6 +6605,53 @@ components:
       required:
         - id
         - status
+    DownloadProgressItem:
+      type: object
+      description: Live or tracked download state. Non-admin responses replace release titles and queue identifiers with empty or opaque values.
+      properties:
+        mediaType:
+          type: string
+          enum: [movie, tv, music, book, comic, magazine, adult, sports]
+        externalId:
+          type: integer
+        size:
+          type: number
+        sizeLeft:
+          type: number
+        status:
+          type: string
+        timeLeft:
+          type: string
+        estimatedCompletionTime:
+          type: string
+          format: date-time
+        title:
+          type: string
+        downloadId:
+          type: string
+          description: Opaque value for non-admin users; the raw downloader identifier is not exposed to them.
+        liveDownloadToken:
+          type: string
+          description: Short-lived user-scoped token for live progress.
+        percent:
+          type: number
+        trackedDownloadStatus:
+          type: string
+        trackedDownloadState:
+          type: string
+        protocol:
+          type: string
+          description: Available only to administrators.
+        downloadClient:
+          type: string
+          description: Available only to administrators.
+        episode:
+          type: object
+          properties:
+            seasonNumber:
+              type: integer
+            episodeNumber:
+              type: integer
     MediaInfo:
       type: object
       properties:
@@ -6304,26 +6666,44 @@ components:
           type: number
           readOnly: true
           nullable: true
+        imdbId:
+          type: string
+          readOnly: true
+          nullable: true
         mbId:
           type: string
           readOnly: true
           nullable: true
         mediaType:
           type: string
-          enum: [movie, tv, music, book, comic, magazine, sports]
+          enum: [movie, tv, music, book, comic, magazine, adult, sports]
         serviceId:
           type: number
           nullable: true
+        serviceId4k:
+          type: number
+          nullable: true
+        availableMusicServiceIds:
+          type: array
+          nullable: true
+          items:
+            type: integer
         externalServiceId:
           type: number
           nullable: true
         externalServiceSlug:
           type: string
           nullable: true
+        externalServiceId4k:
+          type: number
+          nullable: true
+        externalServiceSlug4k:
+          type: string
+          nullable: true
         serviceStatuses:
           type: array
           readOnly: true
-          description: Availability tracked independently for each Radarr or Sonarr instance and quality. For linked media-server users, a destination that cannot be matched to verified primary media-server access may be returned as Unknown.
+          description: Availability tracked independently for each Radarr, Sonarr, or Whisparr instance and format. For linked media-server users, a destination without verified primary media-server access may be returned as Unknown.
           items:
             type: object
             properties:
@@ -6333,14 +6713,15 @@ components:
                 type: integer
               serviceType:
                 type: string
-                enum: [radarr, sonarr]
+                enum: [radarr, sonarr, whisparr]
               serverId:
                 type: integer
               format:
                 type: string
-                enum: [standard, 4k]
+                enum: [standard, 4k, adult]
               status:
                 type: integer
+                enum: [1, 2, 3, 4, 5, 6, 7]
                 description: Instance availability status using the MediaStatus values.
               externalServiceId:
                 type: integer
@@ -6364,6 +6745,55 @@ components:
         audiobookExternalServiceSlug:
           type: string
           nullable: true
+        audiobookLibraryServiceId:
+          type: integer
+          nullable: true
+        audiobookLibraryItemId:
+          type: string
+          nullable: true
+        comicServiceType:
+          type: string
+          enum: ['mylar', 'kapowarr', 'backissue', null]
+          nullable: true
+        ratingKey:
+          type: string
+          nullable: true
+          description: Omitted from responses when the caller cannot manage requests.
+        ratingKey4k:
+          type: string
+          nullable: true
+          description: Omitted from responses when the caller cannot manage requests.
+        jellyfinMediaId:
+          type: string
+          nullable: true
+          description: Omitted from responses when the caller cannot manage requests.
+        jellyfinMediaId4k:
+          type: string
+          nullable: true
+          description: Omitted from responses when the caller cannot manage requests.
+        downloadStatus:
+          type: array
+          readOnly: true
+          items:
+            $ref: '#/components/schemas/DownloadProgressItem'
+        downloadStatus4k:
+          type: array
+          readOnly: true
+          items:
+            $ref: '#/components/schemas/DownloadProgressItem'
+        audiobookDownloadStatus:
+          type: array
+          readOnly: true
+          items:
+            $ref: '#/components/schemas/DownloadProgressItem'
+        mediaUrl:
+          type: string
+          nullable: true
+          readOnly: true
+        mediaUrl4k:
+          type: string
+          nullable: true
+          readOnly: true
         status:
           type: number
           example: 0
@@ -6521,7 +6951,7 @@ components:
           properties:
             musicQuality:
               type: string
-              enum: [mp3, flac]
+              enum: ['mp3', 'flac', null]
               nullable: true
             activeMetadataProfileId:
               type: number
@@ -7178,30 +7608,39 @@ components:
           example: 1
         name:
           type: string
+        birthday:
+          type: string
+          nullable: true
         deathday:
           type: string
+          nullable: true
         knownForDepartment:
           type: string
         alsoKnownAs:
           type: array
+          nullable: true
           items:
             type: string
         gender:
-          type: string
+          type: number
         biography:
           type: string
         popularity:
-          type: string
+          type: number
         placeOfBirth:
           type: string
+          nullable: true
         profilePath:
           type: string
+          nullable: true
         adult:
           type: boolean
         imdbId:
           type: string
+          nullable: true
         homepage:
           type: string
+          nullable: true
     CreditCast:
       type: object
       properties:
@@ -7639,23 +8078,24 @@ components:
         webpush:
           type: number
     WatchProviders:
-      type: array
-      items:
-        type: object
-        properties:
-          iso_3166_1:
-            type: string
-          link:
-            type: string
-          buy:
-            type: array
-            items:
-              $ref: '#/components/schemas/WatchProviderDetails'
-          flatrate:
-            items:
-              $ref: '#/components/schemas/WatchProviderDetails'
+      type: object
+      required: [iso_3166_1]
+      properties:
+        iso_3166_1:
+          type: string
+        link:
+          type: string
+        buy:
+          type: array
+          items:
+            $ref: '#/components/schemas/WatchProviderDetails'
+        flatrate:
+          type: array
+          items:
+            $ref: '#/components/schemas/WatchProviderDetails'
     WatchProviderDetails:
       type: object
+      required: [id, name]
       properties:
         displayPriority:
           type: number
@@ -7678,6 +8118,10 @@ components:
           type: string
           nullable: true
           example: missing_issue
+        status:
+          type: integer
+          enum: [1, 2]
+          description: 1 = open; 2 = resolved.
         problemSeason:
           type: number
           example: 2
@@ -7701,13 +8145,25 @@ components:
         media:
           $ref: '#/components/schemas/MediaInfo'
         createdBy:
-          $ref: '#/components/schemas/User'
+          $ref: '#/components/schemas/PublicUser'
         modifiedBy:
-          $ref: '#/components/schemas/User'
+          anyOf:
+            - $ref: '#/components/schemas/PublicUser'
+            - type: string
+              nullable: true
+              enum: [null]
         comments:
           type: array
           items:
             $ref: '#/components/schemas/IssueComment'
+        createdAt:
+          type: string
+          format: date-time
+          readOnly: true
+        updatedAt:
+          type: string
+          format: date-time
+          readOnly: true
     IssueComment:
       type: object
       properties:
@@ -7715,7 +8171,7 @@ components:
           type: number
           example: 1
         user:
-          $ref: '#/components/schemas/User'
+          $ref: '#/components/schemas/PublicUser'
         message:
           type: string
           example: A comment
@@ -7883,6 +8339,11 @@ components:
           minimum: 0
           maximum: 1000000000
           nullable: true
+        readarrServiceId:
+          type: integer
+          minimum: 0
+          maximum: 1000000000
+          nullable: true
         users:
           type: string
           maxLength: 500
@@ -7903,6 +8364,18 @@ components:
           maxLength: 500
           pattern: '^\d+(,\d+)*$'
           nullable: true
+        productionCountries:
+          type: string
+          nullable: true
+          maxLength: 500
+          pattern: '^\s*[A-Za-z]{2}\s*(\|\s*[A-Za-z]{2}\s*)*$'
+          description: Up to 100 pipe-separated ISO alpha-2 production countries; normalized to uppercase. Only Radarr and Sonarr rules support this condition.
+        languageProfileId:
+          type: integer
+          nullable: true
+          minimum: 0
+          maximum: 1000000000
+          description: Legacy Sonarr language profile, on service versions that expose it.
         profileId:
           type: integer
           minimum: 0
@@ -7926,7 +8399,7 @@ components:
     OverrideRuleWrite:
       type: object
       additionalProperties: false
-      description: Exactly one service, at least one condition, and at least one setting must be configured. Lidarr rules support only the users condition.
+      description: Exactly one Radarr, Sonarr, Lidarr, or Readarr service, at least one condition, and at least one setting must be configured. Lidarr rules support only the users condition.
       properties:
         radarrServiceId:
           type: integer
@@ -7939,6 +8412,11 @@ components:
           maximum: 1000000000
           nullable: true
         lidarrServiceId:
+          type: integer
+          minimum: 0
+          maximum: 1000000000
+          nullable: true
+        readarrServiceId:
           type: integer
           minimum: 0
           maximum: 1000000000
@@ -7963,6 +8441,18 @@ components:
           maxLength: 500
           pattern: '^\d+(,\d+)*$'
           nullable: true
+        productionCountries:
+          type: string
+          nullable: true
+          maxLength: 500
+          pattern: '^\s*[A-Za-z]{2}\s*(\|\s*[A-Za-z]{2}\s*)*$'
+          description: Up to 100 pipe-separated ISO alpha-2 production countries; normalized to uppercase. Only Radarr and Sonarr rules support this condition.
+        languageProfileId:
+          type: integer
+          nullable: true
+          minimum: 0
+          maximum: 1000000000
+          description: Legacy Sonarr language profile, on service versions that expose it.
         profileId:
           type: integer
           minimum: 0
@@ -8954,7 +9444,7 @@ paths:
                   $ref: '#/components/schemas/JellyfinLibrary'
     post:
       summary: Update Jellyfin libraries
-      description: Optionally synchronizes libraries and updates which libraries are enabled.
+      description: Synchronizes libraries or updates enabled libraries and the episode numbering order for a TV library. Omitted enable preserves current enabled state; an empty enable string disables all libraries. Episode order updates must be sent separately from library synchronization.
       tags:
         - settings
       requestBody:
@@ -8968,7 +9458,15 @@ paths:
                   type: boolean
                 enable:
                   type: string
-                  description: Comma-separated library IDs. Omitted or empty disables all libraries.
+                  description: Comma-separated library IDs. Omit to preserve enabled state; an empty string disables all libraries.
+                episodeOrderLibraryId:
+                  type: string
+                  maxLength: 128
+                  description: ID of the TV library whose episode numbering order is being updated.
+                episodeOrderProvider:
+                  type: string
+                  enum: [none, tmdb, tvdb]
+                  description: Set the library's episode numbering provider, or none to clear it. Send with episodeOrderLibraryId.
       responses:
         '200':
           description: 'Jellyfin libraries updated'
@@ -8978,6 +9476,8 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/JellyfinLibrary'
+        '400':
+          description: Invalid library update or episode-order selection.
   /settings/jellyfin/users:
     get:
       summary: Get Jellyfin Users
@@ -9123,7 +9623,7 @@ paths:
                   $ref: '#/components/schemas/PlexLibrary'
     post:
       summary: Update Plex libraries
-      description: Optionally synchronizes libraries and updates which libraries are enabled.
+      description: Synchronizes libraries or updates enabled libraries and the episode numbering order for a TV library. Omitted enable preserves current enabled state; an empty enable string disables all libraries. Episode order updates must be sent separately from library synchronization.
       tags:
         - settings
       requestBody:
@@ -9137,7 +9637,15 @@ paths:
                   type: boolean
                 enable:
                   type: string
-                  description: Comma-separated library IDs. Omitted or empty disables all libraries.
+                  description: Comma-separated library IDs. Omit to preserve enabled state; an empty string disables all libraries.
+                episodeOrderLibraryId:
+                  type: string
+                  maxLength: 128
+                  description: ID of the TV library whose episode numbering order is being updated.
+                episodeOrderProvider:
+                  type: string
+                  enum: [none, tmdb, tvdb]
+                  description: Set the library's episode numbering provider, or none to clear it. Send with episodeOrderLibraryId.
       responses:
         '200':
           description: 'Plex libraries updated'
@@ -9153,6 +9661,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+        '400':
+          description: Invalid library update or episode-order selection.
   /settings/plex/library/{libraryId}/type:
     put:
       summary: Reclassify a Plex artist library
@@ -12153,7 +12663,7 @@ paths:
   /editions/book:
     get:
       summary: Compare editions and narrations of a book
-      description: Returns comparable edition cards. Details the catalog does not provide are listed as unknown.
+      description: Returns comparable edition cards with exact edition ownership. Optional sampleUrl (HTTPS only) and editionLabel are present only when supplied by the provider. Details the catalog does not provide are listed as unknown.
       tags:
         - editions
       parameters:
@@ -12167,6 +12677,12 @@ paths:
           name: mediaId
           schema:
             type: integer
+        - in: query
+          name: serverId
+          description: Configured destination for this format. Edition ownership is evaluated on this destination.
+          schema:
+            type: integer
+            minimum: 0
         - in: query
           name: term
           allowReserved: true
@@ -12182,6 +12698,18 @@ paths:
           allowReserved: true
           schema:
             type: string
+        - in: query
+          name: bookId
+          description: Canonical catalog book identity. Selects its configured provider and exact work.
+          schema:
+            type: string
+            maxLength: 2048
+        - in: query
+          name: author
+          description: Expected author for a title lookup.
+          schema:
+            type: string
+            maxLength: 256
       responses:
         '200':
           description: Edition comparison
@@ -13596,7 +14124,7 @@ paths:
           schema:
             type: string
             nullable: true
-            enum: [debug, info, warn, error]
+            enum: ['debug', 'info', 'warn', 'error', null]
             default: debug
         - in: query
           name: search
@@ -15261,7 +15789,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/User'
+              $ref: '#/components/schemas/UserUpdatePayload'
       responses:
         '200':
           description: Successfully updated user details
@@ -16080,11 +16608,12 @@ paths:
                 movieMaturityRatingLimit:
                   type: string
                   nullable: true
-                  enum: [G, PG, PG-13, R, NC-17]
+                  enum: ['G', 'PG', 'PG-13', 'R', 'NC-17', null]
                 tvMaturityRatingLimit:
                   type: string
                   nullable: true
-                  enum: [TV-Y, TV-Y7, TV-G, TV-PG, TV-14, TV-MA]
+                  enum:
+                    ['TV-Y', 'TV-Y7', 'TV-G', 'TV-PG', 'TV-14', 'TV-MA', null]
       responses:
         '200':
           description: Updated user maturity limits returned
@@ -17044,8 +17573,8 @@ paths:
                     type: number
   /search:
     get:
-      summary: Search for movies, TV shows, people, music, books, authors, comics, and magazines
-      description: Returns movies, TV shows, people, music albums, artists, books, authors, and comics from TMDB, MusicBrainz, ListenBrainz, Open Library, configured Bookshelf services, and ComicVine, plus magazine titles from configured LazyLibrarian catalogs.
+      summary: Search for movies, TV shows, collections, people, music, books, authors, comics, and magazines
+      description: Returns movies, TV shows, movie collections and people from TMDB; music albums and artists from MusicBrainz; books and authors from Open Library and configured Bookshelf services; comics from ComicVine; and magazine titles from configured LazyLibrarian catalogs. TMDB collection results are included in global searches and omitted for users with a movie maturity limit because collection search does not provide member ratings.
       tags:
         - search
       parameters:
@@ -17138,6 +17667,7 @@ paths:
                       anyOf:
                         - $ref: '#/components/schemas/MovieResult'
                         - $ref: '#/components/schemas/TvResult'
+                        - $ref: '#/components/schemas/CollectionSearchResult'
                         - $ref: '#/components/schemas/PersonResult'
                         - $ref: '#/components/schemas/MusicResult'
                         - $ref: '#/components/schemas/ArtistResult'
@@ -21184,28 +21714,31 @@ paths:
             nullable: true
             enum:
               [
-                all,
-                recent,
-                approved,
-                available,
-                pending,
-                processing,
-                unavailable,
-                failed,
-                deleted,
-                completed,
+                'all',
+                'active',
+                'recent',
+                'approved',
+                'available',
+                'pending',
+                'processing',
+                'unavailable',
+                'failed',
+                'deleted',
+                'completed',
+                null,
               ]
         - in: query
           name: sort
+          description: Metadata-backed sort options require mediaType=movie or mediaType=tv.
           schema:
             type: string
-            enum: [added, modified]
+            enum: [added, modified, popularity, releaseDate, rating, title]
             default: added
         - in: query
           name: sortDirection
           schema:
             type: string
-            enum: [asc, desc]
+            enum: ['asc', 'desc', null]
             nullable: true
             default: desc
         - in: query
@@ -21218,7 +21751,18 @@ paths:
           name: mediaType
           schema:
             type: string
-            enum: [movie, tv, music, book, comic, magazine, sports, all]
+            enum:
+              [
+                'movie',
+                'tv',
+                'music',
+                'book',
+                'comic',
+                'magazine',
+                'sports',
+                'all',
+                null,
+              ]
             nullable: true
             default: all
         - in: query
@@ -21311,6 +21855,9 @@ paths:
                   minimum: 0
                   nullable: true
                   description: Sonarr v5 metadata language ID. Requires advanced request permission.
+                monitorFutureSeasons:
+                  type: boolean
+                  description: Monitor future TV seasons in Sonarr. False preserves existing Sonarr monitoring; true is unavailable under Episode Queue or a season watch gate.
                 sonarrSeasonType:
                   type: string
                   maxLength: 100
@@ -21323,6 +21870,8 @@ paths:
                   type: array
                   items:
                     type: number
+                requesterSelectedOptions:
+                  $ref: '#/components/schemas/RequesterSelectedOptions'
                 format:
                   type: string
                   enum: [ebook, audiobook, both]
@@ -22657,6 +23206,7 @@ paths:
                 status,
                 incomplete,
                 title,
+                popularity,
                 director,
                 writer,
                 rating,
@@ -22925,15 +23475,21 @@ paths:
                   type: number
                 profileId:
                   type: number
+                  nullable: true
                 rootFolder:
                   type: string
+                  nullable: true
                 languageProfileId:
                   type: number
+                  nullable: true
                 metadataLanguageId:
                   type: integer
                   minimum: 0
                   nullable: true
                   description: Sonarr v5 metadata language ID. Requires advanced request permission.
+                monitorFutureSeasons:
+                  type: boolean
+                  description: Monitor future TV seasons in Sonarr. False preserves existing Sonarr monitoring; true is unavailable under Episode Queue or a season watch gate.
                 sonarrSeasonType:
                   type: string
                   maxLength: 100
@@ -22944,8 +23500,11 @@ paths:
                   type: number
                 tags:
                   type: array
+                  nullable: true
                   items:
                     type: number
+                requestTargetOptions:
+                  $ref: '#/components/schemas/RequestTargetOptions'
                 format:
                   type: string
                   enum: [ebook, audiobook, both]
@@ -24122,13 +24681,14 @@ paths:
             nullable: true
             enum:
               [
-                all,
-                available,
-                partial,
-                allavailable,
-                processing,
-                pending,
-                deleted,
+                'all',
+                'available',
+                'partial',
+                'allavailable',
+                'processing',
+                'pending',
+                'deleted',
+                null,
               ]
         - in: query
           name: sort

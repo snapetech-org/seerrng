@@ -497,6 +497,8 @@ export interface AddSeriesOptions {
   seriesType: SonarrSeries['seriesType'];
   monitored?: boolean;
   monitorNewItems?: SonarrSeries['monitorNewItems'];
+  /** Explicit opt-in for an existing series; never unmonitors another request. */
+  enableFutureSeasons?: boolean;
   searchNow?: boolean;
 }
 
@@ -717,6 +719,7 @@ class SonarrAPI extends ServarrBase<{
     changes: {
       seasonType?: string;
       language?: SonarrMetadataLanguage;
+      monitorNewItems?: SonarrSeries['monitorNewItems'];
     }
   ): Promise<SonarrSeries> {
     const currentResponse = await this.request<unknown>(
@@ -744,7 +747,12 @@ class SonarrAPI extends ServarrBase<{
   public async getSeries({
     strict = false,
     tvdbId,
-  }: { strict?: boolean; tvdbId?: number } = {}): Promise<SonarrSeries[]> {
+    requireTvdbId = true,
+  }: {
+    strict?: boolean;
+    tvdbId?: number;
+    requireTvdbId?: boolean;
+  } = {}): Promise<SonarrSeries[]> {
     try {
       const response = await this.request<SonarrSeries[]>(
         'GET',
@@ -769,11 +777,11 @@ class SonarrAPI extends ServarrBase<{
           series.length !== response.data.length ||
           series.some(
             (item) =>
-              !Number.isSafeInteger(item.tvdbId) ||
-              item.tvdbId <= 0 ||
               typeof item.id !== 'number' ||
               !Number.isSafeInteger(item.id) ||
-              item.id <= 0
+              item.id <= 0 ||
+              (requireTvdbId &&
+                (!Number.isSafeInteger(item.tvdbId) || item.tvdbId <= 0))
           ))
       ) {
         throw new Error(
@@ -1062,11 +1070,16 @@ class SonarrAPI extends ServarrBase<{
       if (
         series.id &&
         apiVersion === 'v5' &&
-        (seasonTypeChanged || metadataLanguageChanged)
+        (seasonTypeChanged ||
+          metadataLanguageChanged ||
+          (options.enableFutureSeasons && series.monitorNewItems !== 'all'))
       ) {
         await this.updateSeriesV5Metadata(series.id, {
           ...(options.seasonType ? { seasonType: options.seasonType } : {}),
           ...(metadataLanguage ? { language: metadataLanguage } : {}),
+          ...(options.enableFutureSeasons
+            ? { monitorNewItems: 'all' as const }
+            : {}),
         });
         series = await this.getSeriesById(series.id);
       }
@@ -1079,6 +1092,7 @@ class SonarrAPI extends ServarrBase<{
       // If the series already exists, we will simply just update it
       if (series.id) {
         series.monitored = options.monitored ?? series.monitored;
+        if (options.enableFutureSeasons) series.monitorNewItems = 'all';
         series.tags = options.tags
           ? Array.from(new Set([...series.tags, ...options.tags]))
           : series.tags;

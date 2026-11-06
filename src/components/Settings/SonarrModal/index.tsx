@@ -1,9 +1,14 @@
 import Modal from '@app/components/Common/Modal';
 import SensitiveInput from '@app/components/Common/SensitiveInput';
+import ServarrDownloadQueueSizeField, {
+  createServarrDownloadQueueSizeSchema,
+  DEFAULT_SERVARR_DOWNLOAD_QUEUE_SIZE,
+} from '@app/components/Settings/ServarrDownloadQueueSizeField';
 import Field, {
   default as SettingsField,
 } from '@app/components/Settings/SettingsField';
 import type { SonarrTestResponse } from '@app/components/Settings/SettingsServices';
+import SyncExcludedTagsField from '@app/components/Settings/SyncExcludedTagsField';
 import { useSetupConnectionSuggestion } from '@app/context/SetupConnectionsContext';
 import useToasts from '@app/hooks/useToasts';
 import globalMessages from '@app/i18n/globalMessages';
@@ -120,6 +125,10 @@ const messages = defineMessages('components.Settings.SonarrModal', {
     'For clickable links on media pages when the hostname is not reachable from outside your network.',
   syncEnabledHelp:
     'Scan Sonarr for existing media and request status so users cannot request content already available.',
+  syncExcludedTags: 'Exclude Tags from Scan',
+  syncExcludedTagsHelp:
+    'Skip matching series during this Sonarr scan. Existing requests stay in SeerrNG, and a copy on another Sonarr instance can still count as available.',
+  selectSyncExcludedTags: 'Select tags to exclude',
   enableSearchHelp:
     'Automatically trigger a search in Sonarr when a request is approved.',
 });
@@ -145,6 +154,7 @@ const SonarrModal = ({ onClose, sonarr, onSave }: SonarrModalProps) => {
   });
 
   const SonarrSettingsSchema = Yup.object().shape({
+    downloadQueueSize: createServarrDownloadQueueSizeSchema(intl),
     name: Yup.string().required(
       intl.formatMessage(messages.validationNameRequired)
     ),
@@ -287,10 +297,13 @@ const SonarrModal = ({ onClose, sonarr, onSave }: SonarrModalProps) => {
           activeAnimeRootFolder: sonarr?.activeAnimeDirectory,
           tags: sonarr?.tags ?? [],
           animeTags: sonarr?.animeTags ?? [],
+          syncExcludedTags: sonarr?.syncExcludedTags ?? [],
           isDefault: sonarr?.isDefault ?? false,
           is4k: sonarr?.is4k ?? false,
           enableSeasonFolders: sonarr?.enableSeasonFolders ?? false,
           externalUrl: sonarr?.externalUrl,
+          downloadQueueSize:
+            sonarr?.downloadQueueSize ?? DEFAULT_SERVARR_DOWNLOAD_QUEUE_SIZE,
           syncEnabled: sonarr?.syncEnabled ?? false,
           enableSearch: !sonarr?.preventSearch,
           tagRequests: sonarr?.tagRequests ?? false,
@@ -349,10 +362,12 @@ const SonarrModal = ({ onClose, sonarr, onSave }: SonarrModalProps) => {
               activeAnimeDirectory: values.activeAnimeRootFolder,
               tags: values.tags,
               animeTags: values.animeTags,
+              syncExcludedTags: values.syncExcludedTags,
               is4k: values.is4k,
               isDefault: values.isDefault,
               enableSeasonFolders: values.enableSeasonFolders,
               externalUrl: values.externalUrl,
+              downloadQueueSize: Number(values.downloadQueueSize),
               syncEnabled: values.syncEnabled,
               preventSearch: !values.enableSearch,
               tagRequests: values.tagRequests,
@@ -1239,6 +1254,27 @@ const SonarrModal = ({ onClose, sonarr, onSave }: SonarrModalProps) => {
                     {intl.formatMessage(messages.syncEnabledHelp)}
                   </span>
                 </div>
+                <ServarrDownloadQueueSizeField />
+                <SyncExcludedTagsField
+                  id="syncExcludedTags"
+                  label={intl.formatMessage(messages.syncExcludedTags)}
+                  helpText={intl.formatMessage(messages.syncExcludedTagsHelp)}
+                  selectedTagIds={values.syncExcludedTags}
+                  tags={testResponse.tags}
+                  isValidated={isValidated}
+                  isTesting={isTesting}
+                  placeholder={
+                    !isValidated
+                      ? intl.formatMessage(messages.testFirstTags)
+                      : isTesting
+                        ? intl.formatMessage(messages.loadingTags)
+                        : intl.formatMessage(messages.selectSyncExcludedTags)
+                  }
+                  noOptionsText={intl.formatMessage(messages.notagoptions)}
+                  onChange={(tagIds) =>
+                    setFieldValue('syncExcludedTags', tagIds)
+                  }
+                />
                 <div className="form-row">
                   <label htmlFor="enableSearch" className="checkbox-label">
                     {intl.formatMessage(messages.enableSearch)}

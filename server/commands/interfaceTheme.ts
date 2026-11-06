@@ -3,6 +3,7 @@ import {
   INTERFACE_THEME_IDS,
   parseInterfaceTheme,
 } from '@server/utils/interfaceTheme';
+import { readInterfaceThemeFile } from '@server/utils/interfaceThemeFile';
 import {
   MAX_INSTALLED_INTERFACE_THEME_CSS_BYTES,
   MAX_INSTALLED_INTERFACE_THEMES,
@@ -10,18 +11,23 @@ import {
   MAX_INTERFACE_THEME_MANIFEST_BYTES,
   validateInterfaceThemePackage,
 } from '@server/utils/interfaceThemePackage';
-import { randomUUID } from 'node:crypto';
 import {
+  getInstalledInterfaceTheme,
+  listInstalledInterfaceThemes,
+} from '@server/utils/interfaceThemeRegistry';
+import { createHash, randomUUID } from 'node:crypto';
+import {
+  chmodSync,
   existsSync,
   lstatSync,
   mkdirSync,
   readdirSync,
-  readFileSync,
   renameSync,
   rmSync,
   writeFileSync,
 } from 'node:fs';
 import path from 'node:path';
+import { parseArgs } from 'node:util';
 
 const MAX_BUNDLE_BYTES = 2 * 1024 * 1024;
 const themeInstallRoot = path.join(appDataPath(), 'interface-themes');
@@ -31,21 +37,18 @@ const usage = (): never => {
   throw new Error(
     [
       'Usage:',
-      '  pnpm interface-theme:validate <theme-directory>',
-      '  pnpm interface-theme:pack <theme-directory> <output.seerrtheme>',
+      '  pnpm interface-theme:create <theme-id> [directory] [--from persiusNG] [--name Name] [--author Author]',
+      '  pnpm interface-theme:list',
+      '  pnpm interface-theme:inspect <directory|package.seerrtheme|installed-id>',
+      '  pnpm interface-theme:validate <directory|package.seerrtheme>',
+      '  pnpm interface-theme:pack <theme-directory> [output.seerrtheme]',
       '  pnpm interface-theme:install <package.seerrtheme> [--replace]',
       '  pnpm interface-theme:uninstall <custom-theme-id>',
     ].join('\n')
   );
 };
 
-const readRegularFile = (filename: string, maxBytes: number): string => {
-  const stat = lstatSync(filename);
-  if (stat.isSymbolicLink() || !stat.isFile() || stat.size > maxBytes) {
-    throw new Error(`Unsupported or oversized package file: ${filename}`);
-  }
-  return readFileSync(filename, 'utf8');
-};
+const readRegularFile = readInterfaceThemeFile;
 
 const readThemeDirectory = (directory: string) => {
   const stat = lstatSync(directory);
@@ -188,6 +191,8 @@ const installTheme = (filename: string, replace: boolean): void => {
   });
 
   try {
+    // Stylesheets are public data and must remain readable by the app worker.
+    chmodSync(staging, 0o755);
     if (targetExists) renameSync(target, backup);
     renameSync(staging, target);
     if (targetExists) rmSync(backup, { recursive: true });
@@ -200,33 +205,166 @@ const installTheme = (filename: string, replace: boolean): void => {
   console.log('Restart SeerrNG to load the package into the theme catalog.');
 };
 
+const serializeBundle = (
+  theme: ReturnType<typeof validateInterfaceThemePackage>
+): string =>
+  `${JSON.stringify({ formatVersion: 1, manifest: theme.manifest, css: theme.css }, null, 2)}\n`;
+
 const [command, ...arguments_] = process.argv.slice(2);
 try {
-  if (command === 'validate') {
-    const [directory, ...rest] = arguments_;
-    if (!directory || rest.length > 0) usage();
-    const theme = readThemeDirectory(path.resolve(directory));
-    console.log(
-      `Valid: ${theme.manifest.name} (${theme.manifest.id}) v${theme.manifest.version}`
-    );
-  } else if (command === 'pack') {
-    const [directory, output, ...rest] = arguments_;
-    if (!directory || !output || rest.length > 0) usage();
-    const theme = readThemeDirectory(path.resolve(directory));
-    const target = path.resolve(output);
-    if (existsSync(target)) {
-      throw new Error('Output already exists; choose a new package filename.');
+  if (command === 'create') {
+    const { values, positionals } = parseArgs({
+      args: arguments_,
+      allowPositionals: true,
+      options: {
+        from: { type: 'string', default: 'persiusNG' },
+        name: { type: 'string' },
+        author: { type: 'string' },
+      },
+    });
+    const [id, directory = id, ...rest] = positionals;
+    if (!id || rest.length || !parseInterfaceTheme(id) || builtInIds.has(id)) {
+      throw new Error('Choose a new lowercase kebab-case custom theme ID.');
     }
-    writeFileSync(
-      target,
-      `${JSON.stringify(
-        { formatVersion: 1, manifest: theme.manifest, css: theme.css },
+    const base = getInstalledInterfaceTheme(values.from);
+    if (!base) throw new Error(`Base theme "${values.from}" is not installed.`);
+    const css = base.css.split(base.manifest.id).join(id);
+    const manifest = {
+      ...base.manifest,
+      id,
+      name:
+        values.name ??
+        id
+          .split('-')
+          .map((word) => word[0].toUpperCase() + word.slice(1))
+          .join(' '),
+      description: `An independent stylesheet based on ${base.manifest.name}.`,
+      version: '0.1.0',
+      author: values.author ?? 'Your name',
+    };
+    const theme = validateInterfaceThemePackage(manifest, css, id);
+    const target = path.resolve(directory);
+    // mkdir is exclusive; even an empty existing source directory is preserved.
+    mkdirSync(target, { mode: 0o755 });
+    try {
+      writeFileSync(
+        path.join(target, 'manifest.json'),
+        `${JSON.stringify(theme.manifest, null, 2)}\n`,
+        { flag: 'wx' }
+      );
+      writeFileSync(path.join(target, 'theme.css'), theme.css, { flag: 'wx' });
+      writeFileSync(
+        path.join(target, 'README.md'),
+        [
+          `# ${theme.manifest.name}`,
+          '',
+          `Independent CSS theme derived from ${base.manifest.name} (${base.manifest.version}).`,
+          `Keep the original license and attribution when redistributing derived styles.`,
+          '',
+          `Edit manifest.json and theme.css. Every selector is already scoped to ${id}.`,
+          `The layout field selects native application markup; omit it for classic markup.`,
+          `Run the following from a SeerrNG checkout, substituting this directory's path:`,
+          '',
+          '```sh',
+          `pnpm interface-theme:validate ./path-to-theme`,
+          `pnpm interface-theme:pack ./path-to-theme`,
+          '```',
+          '',
+          `Publish source, the .seerrtheme bundle, its .sha256 file, license, screenshots and supported SeerrNG versions.`,
+          `See https://github.com/snapetech-org/seerrng/blob/main/docs/interface-themes/authoring.md`,
+          '',
+        ].join('\n'),
+        { flag: 'wx' }
+      );
+    } catch (error) {
+      rmSync(target, { recursive: true, force: true });
+      throw error;
+    }
+    console.log(
+      `Created ${target} from ${base.manifest.id}. Edit its manifest.json and theme.css, then validate and pack it.`
+    );
+  } else if (command === 'list') {
+    if (arguments_.length) usage();
+    console.log(
+      JSON.stringify(
+        listInstalledInterfaceThemes().map((manifest) => ({
+          ...manifest,
+          builtIn: builtInIds.has(manifest.id),
+        })),
         null,
         2
-      )}\n`,
-      { encoding: 'utf8', flag: 'wx', mode: 0o644 }
+      )
     );
+  } else if (command === 'inspect' || command === 'validate') {
+    const [input, ...rest] = arguments_;
+    if (!input || rest.length) usage();
+    const target = path.resolve(input);
+    const installed =
+      command === 'inspect' && !existsSync(target)
+        ? getInstalledInterfaceTheme(input)
+        : undefined;
+    const directory = !installed && lstatSync(target).isDirectory();
+    const theme =
+      installed ??
+      (directory ? readThemeDirectory(target) : readThemeBundle(target));
+    if (command === 'validate') {
+      console.log(
+        `Valid: ${theme.manifest.name} (${theme.manifest.id}) v${theme.manifest.version}`
+      );
+    } else {
+      const bundleText =
+        !installed && !directory
+          ? readRegularFile(target, MAX_BUNDLE_BYTES)
+          : serializeBundle(theme);
+      console.log(
+        JSON.stringify(
+          {
+            ...theme.manifest,
+            layout: theme.manifest.layout ?? 'classic',
+            cssBytes: Buffer.byteLength(theme.css, 'utf8'),
+            sha256: createHash('sha256').update(bundleText).digest('hex'),
+          },
+          null,
+          2
+        )
+      );
+    }
+  } else if (command === 'pack') {
+    const [directory, output, ...rest] = arguments_;
+    if (!directory || rest.length > 0) usage();
+    const theme = readThemeDirectory(path.resolve(directory));
+    const target = path.resolve(
+      output ?? `${theme.manifest.id}-${theme.manifest.version}.seerrtheme`
+    );
+    const checksumTarget = `${target}.sha256`;
+    if (
+      existsSync(target) ||
+      existsSync(checksumTarget) ||
+      /[\r\n]/.test(path.basename(target))
+    ) {
+      throw new Error(
+        'Output or checksum already exists, or the filename contains a line break; choose a new package filename.'
+      );
+    }
+    const contents = serializeBundle(theme);
+    const checksum = createHash('sha256').update(contents).digest('hex');
+    writeFileSync(target, contents, {
+      encoding: 'utf8',
+      flag: 'wx',
+      mode: 0o644,
+    });
+    try {
+      writeFileSync(checksumTarget, `${checksum}  ${path.basename(target)}\n`, {
+        encoding: 'utf8',
+        flag: 'wx',
+        mode: 0o644,
+      });
+    } catch (error) {
+      rmSync(target);
+      throw error;
+    }
     console.log(`Created ${target}`);
+    console.log(`SHA-256 ${checksum} (${checksumTarget})`);
   } else if (command === 'install') {
     const [filename, ...options] = arguments_;
     if (

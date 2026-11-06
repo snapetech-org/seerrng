@@ -40,6 +40,7 @@ import { isUserMediaCategoryEnabled } from '@server/lib/userMediaCategories';
 import {
   filterVideoResultsByMaturityPolicy,
   getUserVideoMaturityPolicy,
+  type UserVideoMaturityPolicy,
 } from '@server/lib/videoMaturityPolicy';
 import logger from '@server/logger';
 import {
@@ -521,6 +522,7 @@ searchRoutes.get('/', async (req, res, next) => {
     const tmdb = new TheMovieDb();
     const searchProvider = findSearchProvider(queryString.toLowerCase());
     let results: CombinedSearchResponse;
+    let maturityPolicyForSearch: UserVideoMaturityPolicy | undefined;
 
     if (searchProvider) {
       const [id] = queryString
@@ -543,11 +545,19 @@ searchRoutes.get('/', async (req, res, next) => {
       const coverArtArchive = new CoverArtArchive();
       const personMapper = new TmdbPersonMapper();
       const musicOffset = (page - 1) * 20;
+      maturityPolicyForSearch =
+        req.user && !typeFilter && moviesEnabled
+          ? await getUserVideoMaturityPolicy(req.user.id)
+          : undefined;
 
       const shouldSearchVideo =
         ((!typeFilter || typeFilter === 'movie' || typeFilter === 'tv') &&
           (moviesEnabled || seriesEnabled)) ||
         typeFilter === 'person';
+      const shouldSearchCollections =
+        !typeFilter &&
+        moviesEnabled &&
+        (!req.user || maturityPolicyForSearch?.movie === null);
       const shouldSearchMusic =
         !typeFilter ||
         typeFilter === 'album' ||
@@ -567,6 +577,7 @@ searchRoutes.get('/', async (req, res, next) => {
         'Bookshelf authors',
         'ComicVine',
         'LazyLibrarian magazines',
+        'TMDB collections',
       ];
       const providerPromises: Promise<unknown>[] = [
         shouldSearchVideo
@@ -659,12 +670,27 @@ searchRoutes.get('/', async (req, res, next) => {
               page
             )
           : Promise.resolve({ totalResults: 0, results: [] }),
+        shouldSearchCollections
+          ? tmdb.searchCollections({
+              query: queryString,
+              page,
+              language,
+            })
+          : Promise.resolve({
+              page,
+              total_pages: 1,
+              total_results: 0,
+              results: [],
+            }),
       ];
       type SearchProviderResult = {
         index: number;
         result: PromiseSettledResult<unknown>;
       };
       type TmdbSearchResults = Awaited<ReturnType<TheMovieDb['searchMulti']>>;
+      type CollectionSearchResults = Awaited<
+        ReturnType<TheMovieDb['searchCollections']>
+      >;
       type AlbumSearchResults = Awaited<
         ReturnType<MusicBrainz['searchAlbumWithTotal']>
       >;
@@ -864,12 +890,61 @@ searchRoutes.get('/', async (req, res, next) => {
         total_pages: 1,
         total_results: 0,
       });
+      const rawCollectionResults = getProviderValue<CollectionSearchResults>(
+        9,
+        {
+          page,
+          results: [],
+          total_pages: 1,
+          total_results: 0,
+        }
+      );
+      const seenCollectionIds = new Set(
+        rawTmdbResults.results
+          .filter((result) => result.media_type === 'collection')
+          .map((result) => result.id)
+      );
+      const collectionResults = capSearchProviderResults<
+        CollectionSearchResults['results'][number]
+      >(rawCollectionResults.results)
+        .filter((result) => {
+          if (
+            seenCollectionIds.has(result.id) ||
+            typeof result.name !== 'string' ||
+            result.name.trim().length === 0
+          ) {
+            return false;
+          }
+
+          seenCollectionIds.add(result.id);
+          return true;
+        })
+        .map((result) => ({
+          id: result.id,
+          media_type: 'collection' as const,
+          title: result.name.trim(),
+          original_title:
+            typeof result.original_name === 'string'
+              ? result.original_name
+              : result.name.trim(),
+          adult: result.adult === true,
+          poster_path: result.poster_path,
+          backdrop_path: result.backdrop_path,
+          overview: result.overview ?? '',
+          original_language: result.original_language ?? '',
+        }));
       const tmdbResults = {
         ...rawTmdbResults,
-        results: rawTmdbResults.results.slice(
-          0,
-          MAX_SEARCH_RESULTS_PER_PROVIDER
+        total_pages: Math.max(
+          rawTmdbResults.total_pages,
+          rawCollectionResults.total_pages
         ),
+        total_results:
+          rawTmdbResults.total_results + rawCollectionResults.total_results,
+        results: [
+          ...rawTmdbResults.results.slice(0, MAX_SEARCH_RESULTS_PER_PROVIDER),
+          ...collectionResults,
+        ],
       };
       const rawAlbumResults = getProviderValue<AlbumSearchResults>(1, {
         results: [],
@@ -1325,9 +1400,13 @@ searchRoutes.get('/', async (req, res, next) => {
     const hasVideoResults = qualityEnrichedResults.some(
       (result) => result.mediaType === 'movie' || result.mediaType === 'tv'
     );
+    const hasCollectionResults = qualityEnrichedResults.some(
+      (result) => result.mediaType === 'collection'
+    );
     const maturityPolicy =
-      req.user && hasVideoResults
-        ? await getUserVideoMaturityPolicy(req.user.id)
+      req.user && (hasVideoResults || hasCollectionResults)
+        ? (maturityPolicyForSearch ??
+          (await getUserVideoMaturityPolicy(req.user.id)))
         : { movie: null, tv: null };
     const [allowedMovieResults, allowedTvResults] = await Promise.all([
       filterVideoResultsByMaturityPolicy(
@@ -1356,6 +1435,7 @@ searchRoutes.get('/', async (req, res, next) => {
           musicEnabled) &&
           (result.mediaType !== 'movie' || moviesEnabled) &&
           (result.mediaType !== 'tv' || seriesEnabled) &&
+          (result.mediaType !== 'collection' || moviesEnabled) &&
           (result.mediaType !== 'book' || booksEnabled) &&
           (result.mediaType !== 'comic' || comicsEnabled) &&
           (result.mediaType !== 'magazine' || magazinesEnabled))
@@ -1363,8 +1443,9 @@ searchRoutes.get('/', async (req, res, next) => {
 
     const maturityFilteredResults = capabilityResults.filter(
       (result) =>
-        (result.mediaType !== 'movie' && result.mediaType !== 'tv') ||
-        allowedVideoKeys.has(`${result.mediaType}:${result.id}`)
+        (result.mediaType !== 'collection' || maturityPolicy.movie === null) &&
+        ((result.mediaType !== 'movie' && result.mediaType !== 'tv') ||
+          allowedVideoKeys.has(`${result.mediaType}:${result.id}`))
     );
 
     const filteredResults = typeFilter

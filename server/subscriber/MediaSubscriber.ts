@@ -11,6 +11,7 @@ import SeasonRequest, {
 } from '@server/entity/SeasonRequest';
 import { isRequestedBookFormatAvailable } from '@server/lib/bookAvailability';
 import logger from '@server/logger';
+import { isProviderBookEdition } from '@server/utils/bookEdition';
 import type {
   EntityManager,
   EntitySubscriberInterface,
@@ -79,6 +80,8 @@ export class MediaSubscriber implements EntitySubscriberInterface<Media> {
       return true;
     }
 
+    if (isProviderBookEdition(request.preferredEditionId))
+      return request.status === MediaRequestStatus.COMPLETED;
     return isRequestedBookFormatAvailable(media, request.bookFormat ?? 'ebook');
   }
 

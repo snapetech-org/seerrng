@@ -57,6 +57,7 @@ import {
   normalizeOpenLibraryWorkId,
 } from '@server/lib/externalIds';
 import { getExternalRuntimeConfig } from '@server/lib/externalRuntimeConfig';
+import { resolveFutureSeasonMonitoring } from '@server/lib/futureSeasonMonitoring';
 import { normalizeValidIsbn } from '@server/lib/isbn';
 import {
   cleanMagazineTitle,
@@ -89,7 +90,9 @@ import {
   type SonarrSettings,
 } from '@server/lib/settings';
 import { isSportarrLeagueExternalId } from '@server/lib/sportarrIdentity';
+import { isTvSeasonWatchGateEnabledForUser } from '@server/lib/tvSeasonWatchGate';
 import logger from '@server/logger';
+import { isProviderBookEdition } from '@server/utils/bookEdition';
 import { parseBookshelfBookId } from '@server/utils/bookshelfCatalog';
 import {
   hydrateBookshelfLookupResult,
@@ -1863,12 +1866,17 @@ export class MediaRequestSubscriber implements EntitySubscriberInterface<MediaRe
           seriesType,
           tags,
           monitored: true,
-          monitorNewItems: resolveSonarrMonitorNewItems(
-            sonarrSettings.monitorNewItems,
-            entity.seasons
-              .filter(isActiveSeasonRequest)
-              .map((season) => season.seasonNumber),
-            series.seasons.map((season) => season.season_number)
+          ...resolveFutureSeasonMonitoring(
+            entity.monitorFutureSeasons,
+            (entity.watchAheadEpisodeCount ?? 0) > 0 ||
+              isTvSeasonWatchGateEnabledForUser(entity.requestedBy),
+            resolveSonarrMonitorNewItems(
+              sonarrSettings.monitorNewItems,
+              entity.seasons
+                .filter(isActiveSeasonRequest)
+                .map((season) => season.seasonNumber),
+              series.seasons.map((season) => season.season_number)
+            )
           ),
           searchNow: !sonarrSettings.preventSearch,
         };
@@ -2270,7 +2278,11 @@ export class MediaRequestSubscriber implements EntitySubscriberInterface<MediaRe
         requestedBookFormat !== 'both' &&
         hasAvailableBookFormat(media, requestedBookFormat);
 
-      if (requestedBookFormat !== 'both' && bookFormatAlreadyAvailable) {
+      if (
+        requestedBookFormat !== 'both' &&
+        bookFormatAlreadyAvailable &&
+        !isProviderBookEdition(entity.preferredEditionId)
+      ) {
         logger.warn('Book already exists, marking request as COMPLETED', {
           label: 'Media Request',
           requestId: entity.id,
@@ -3098,7 +3110,9 @@ export class MediaRequestSubscriber implements EntitySubscriberInterface<MediaRe
           tags,
           externalServiceId: localBookId,
           externalServiceSlug: result.titleSlug ?? providerBookId,
-          status: media.status,
+          status: isProviderBookEdition(entity.preferredEditionId)
+            ? MediaStatus.PROCESSING
+            : media.status,
         });
 
         const resultIsbn =

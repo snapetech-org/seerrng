@@ -38,6 +38,8 @@ const fileNames = [
   'seerr-api.yml',
   'src/styles/globals.css',
   'src/styles/interfaceThemes/shared.css',
+  'themes/seerrOrig/theme.css',
+  'themes/seerrNGJ/theme.css',
   'src/styles/visual-lab.css',
   'public/visual-lab/visual-lab.css',
   'themes/seerrOrig/theme.css',

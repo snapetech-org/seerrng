@@ -5,6 +5,7 @@ import {
   type AvailableQualityFilter,
 } from '@app/utils/availabilityQuality';
 import { readDiscoverScrollEntry } from '@app/utils/discoverScrollRestoration';
+import { shouldHideRequestedMedia } from '@app/utils/requestVisibility';
 import {
   hasMoreSearchPages,
   MAX_SEARCH_PAGES,
@@ -13,6 +14,7 @@ import {
   setPersistentResponse,
   usePersistentResponse,
 } from '@app/utils/swrCache';
+import { getViewerAvailabilityPresentation } from '@app/utils/viewerAvailabilityPresentation';
 import { MediaRequestStatus, MediaStatus } from '@server/constants/media';
 import { buildDiscoverQueryString } from '@server/utils/discoverQuery';
 import axios from 'axios';
@@ -110,6 +112,8 @@ interface BaseMedia {
   mediaInfo?: {
     status: MediaStatus;
     status4k?: MediaStatus;
+    hasActiveRequest?: boolean;
+    viewerRequestCoverage?: { standard?: boolean; fourK?: boolean };
     serviceId?: number | null;
     externalServiceId?: number | null;
     audiobookServiceId?: number | null;
@@ -129,6 +133,7 @@ interface DiscoverResult<T, S> {
   isLoadingMore: boolean;
   isValidating: boolean;
   isSearchingAvailableQuality: boolean;
+  isSearchingFilteredResults: boolean;
   fetchMore: () => void;
   isEmpty: boolean;
   isReachingEnd: boolean;
@@ -232,6 +237,8 @@ const useDiscover = <
   {
     enabled = true,
     hideAvailable = true,
+    availabilityView,
+    availabilityBookFormat,
     hideBlocklisted = true,
     randomizeOrder = false,
     availableQuality,
@@ -244,6 +251,8 @@ const useDiscover = <
   }: {
     enabled?: boolean;
     hideAvailable?: boolean;
+    availabilityView?: 'all' | 'available' | 'missing';
+    availabilityBookFormat?: 'ebook' | 'audiobook' | 'all';
     hideBlocklisted?: boolean;
     randomizeOrder?: boolean;
     availableQuality?: AvailableQualityFilter;
@@ -257,6 +266,14 @@ const useDiscover = <
 ): DiscoverResult<T, S> => {
   const settings = useSettings();
   const { fetcher: defaultFetcher } = useSWRConfig();
+  const discoverOptions = (options ?? {}) as Record<string, unknown>;
+  // A title search remains a direct way to find requested media.
+  const hasExplicitSearch = ['search', 'query'].some((key) => {
+    const value = discoverOptions[key];
+    return typeof value === 'string' && value.trim().length > 0;
+  });
+  const shouldApplyHideRequested =
+    settings.currentSettings.hideRequested && !hasExplicitSearch;
   const { user, hasPermission } = useUser();
   const canManageBlocklist = hasPermission(Permission.MANAGE_BLOCKLIST);
   const { addToast } = useToasts();
@@ -395,6 +412,36 @@ const useDiscover = <
       );
     }
 
+    if (availabilityView && availabilityView !== 'all') {
+      filteredTitles = filteredTitles.filter((item) => {
+        const media = item.mediaInfo;
+        const available =
+          item.mediaType === 'book'
+            ? Boolean(
+                media &&
+                (availabilityBookFormat === 'ebook' ||
+                availabilityBookFormat === 'audiobook'
+                  ? hasLinkedBookFormat(media, availabilityBookFormat)
+                  : hasLinkedBookFormat(media, 'ebook') ||
+                    hasLinkedBookFormat(media, 'audiobook'))
+              )
+            : (['standard', 'fourK'] as const).some((quality) => {
+                const status =
+                  quality === 'standard' ? media?.status : media?.status4k;
+                return (
+                  (status === MediaStatus.AVAILABLE ||
+                    status === MediaStatus.PARTIALLY_AVAILABLE) &&
+                  !getViewerAvailabilityPresentation(
+                    status,
+                    settings.currentSettings.otherUsersAvailability,
+                    media?.viewerRequestCoverage?.[quality]
+                  ).hidden
+                );
+              });
+        return availabilityView === 'available' ? available : !available;
+      });
+    }
+
     if (settings.currentSettings.hideAvailable && hideAvailable) {
       filteredTitles = filteredTitles.filter(
         (i) =>
@@ -416,16 +463,40 @@ const useDiscover = <
       );
     }
 
+    filteredTitles = filteredTitles.filter(
+      (item) =>
+        !shouldHideRequestedMedia(
+          shouldApplyHideRequested,
+          item.mediaType,
+          item.mediaInfo?.hasActiveRequest
+        )
+    );
+
     return filteredTitles;
   }, [
     data,
     availableQuality,
+    availabilityView,
+    availabilityBookFormat,
+    settings.currentSettings.otherUsersAvailability,
     hideAvailable,
     hideBlocklisted,
     canManageBlocklist,
     settings.currentSettings.hideAvailable,
     settings.currentSettings.hideBlocklisted,
+    shouldApplyHideRequested,
   ]);
+
+  const hasMovieOrTvResults = (data ?? []).some((page) =>
+    page?.results?.some(
+      (item) =>
+        isDiscoverMediaResult(item) &&
+        (item.mediaType === 'movie' || item.mediaType === 'tv')
+    )
+  );
+  // Only backfill feeds that actually contain requestable media.
+  const shouldBackfillRequestedResults =
+    shouldApplyHideRequested && hasMovieOrTvResults;
 
   const lastResultPage = data?.[data.length - 1];
   const hasMoreUnfilteredResults = hasMoreSearchPages(
@@ -434,7 +505,12 @@ const useDiscover = <
   );
   const needsMoreFilteredResults =
     titles.length === 0 ||
-    Boolean(availableQuality && titles.length < FILTERED_PAGE_RESULT_TARGET);
+    Boolean(
+      (availableQuality ||
+        shouldBackfillRequestedResults ||
+        (availabilityView && availabilityView !== 'all')) &&
+      titles.length < FILTERED_PAGE_RESULT_TARGET
+    );
   const shouldScanNextFilteredPage =
     !isLoadingInitialData &&
     !isLoadingMore &&
@@ -449,6 +525,15 @@ const useDiscover = <
     !hasMoreUnfilteredResults;
   const isSearchingAvailableQuality = Boolean(
     availableQuality &&
+    (isLoadingInitialData ||
+      isLoadingMore ||
+      isValidating ||
+      shouldScanNextFilteredPage)
+  );
+  const isSearchingFilteredResults = Boolean(
+    (availableQuality ||
+      shouldBackfillRequestedResults ||
+      (availabilityView && availabilityView !== 'all')) &&
     (isLoadingInitialData ||
       isLoadingMore ||
       isValidating ||
@@ -502,6 +587,7 @@ const useDiscover = <
     isLoadingMore,
     isValidating,
     isSearchingAvailableQuality,
+    isSearchingFilteredResults,
     fetchMore,
     isEmpty,
     isReachingEnd,

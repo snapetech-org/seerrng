@@ -11,6 +11,7 @@ import {
   MediaType,
 } from '@server/constants/media';
 import { getRepository } from '@server/datasource';
+import EpisodeAvailability from '@server/entity/EpisodeAvailability';
 import Media from '@server/entity/Media';
 import MediaIdentifier, {
   MediaIdentifierProvider,
@@ -21,6 +22,7 @@ import MediaServiceStatus from '@server/entity/MediaServiceStatus';
 import Season from '@server/entity/Season';
 import SeasonRequest from '@server/entity/SeasonRequest';
 import { User } from '@server/entity/User';
+import { syncSonarrEpisodeAvailability } from '@server/lib/episodeAvailability';
 import requestDispatchManager from '@server/lib/requestDispatch';
 import { sonarrScanner } from '@server/lib/scanners/sonarr';
 import type { SonarrSettings } from '@server/lib/settings';
@@ -244,6 +246,38 @@ function configureSonarr(overrides: Partial<SonarrSettings>[] = [{}]): void {
 }
 
 describe('Sonarr Scanner', () => {
+  it('clears the scanned episode source when a series becomes explicitly tag-excluded', async () => {
+    configureSonarr([{ id: 0, syncExcludedTags: [11] }]);
+    getSettings().main.trackEpisodeAvailability = true;
+    const media = await getRepository(Media).save(
+      new Media({
+        tmdbId: 890999,
+        tvdbId: 100,
+        mediaType: MediaType.TV,
+        status: MediaStatus.AVAILABLE,
+      })
+    );
+    const season = await getRepository(Season).save(
+      new Season({
+        media: Promise.resolve(media),
+        seasonNumber: 1,
+        status: MediaStatus.AVAILABLE,
+      })
+    );
+    await syncSonarrEpisodeAvailability(0, 1, [
+      { seasonId: season.id, episodes: [{ episodeNumber: 1, is4k: false }] },
+    ]);
+    assert.equal(await getRepository(EpisodeAvailability).count(), 1);
+    getSeriesImpl = async () => [fakeSonarrSeries({ tags: [11] })];
+    try {
+      await runWithMockTimers(() => sonarrScanner.run());
+    } finally {
+      getSettings().main.trackEpisodeAvailability = false;
+    }
+    assert.equal(await getRepository(EpisodeAvailability).count(), 0);
+    assert.ok(await getRepository(Media).findOneBy({ id: media.id }));
+  });
+
   beforeEach(() => {
     getSeriesImpl = async () => [];
     getEpisodesImpl = async (seriesId) => {
@@ -266,6 +300,17 @@ describe('Sonarr Scanner', () => {
     getLibrarySeriesByTvdbIdImpl = async () => [];
     getShowByTvdbIdImpl = async () => fakeTmdbShow(1);
     getTvShowImpl = async () => fakeTmdbShow(1);
+  });
+
+  it('scans an enabled endpoint even when its first alias has sync disabled', async () => {
+    configureSonarr([{ syncEnabled: false }, { syncEnabled: true }]);
+    let reads = 0;
+    getSeriesImpl = async () => {
+      reads++;
+      return [];
+    };
+    await runWithMockTimers(() => sonarrScanner.run());
+    assert.equal(reads, 1);
   });
 
   it('detects mixed HD and 4K episode files in a single Sonarr library', async () => {

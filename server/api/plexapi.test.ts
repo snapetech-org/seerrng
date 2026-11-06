@@ -634,3 +634,48 @@ describe('Plex library response integrity', () => {
     assert.deepEqual(await plex.getLibraries(), []);
   });
 });
+
+describe('complete Plex episode reads', () => {
+  for (const [name, data, valid] of [
+    ['missing items', { MediaContainer: { size: 0 } }, false],
+    ['confirmed empty', { MediaContainer: { size: 0, Metadata: [] } }, true],
+    [
+      'partial page',
+      { MediaContainer: { size: 0, totalSize: 1, Metadata: [] } },
+      false,
+    ],
+    [
+      'malformed entry',
+      { MediaContainer: { size: 1, Metadata: [null] } },
+      false,
+    ],
+  ] as const) {
+    it(name, async () => {
+      const plex = new PlexAPI({
+        plexToken: 'fixture-only',
+        plexSettings: {
+          ...getSettings().plex,
+          ip: '127.0.0.1',
+          port: 32400,
+          useSsl: false,
+        },
+      });
+      const client = (
+        plex as unknown as {
+          axios: { get: (...args: unknown[]) => Promise<unknown> };
+        }
+      ).axios;
+      mock.method(client, 'get', async () => ({ data }));
+      if (valid)
+        assert.deepEqual(
+          await plex.getChildrenMetadata('42', { requireComplete: true }),
+          []
+        );
+      else
+        await assert.rejects(
+          plex.getChildrenMetadata('42', { requireComplete: true }),
+          /incomplete/
+        );
+    });
+  }
+});

@@ -73,10 +73,10 @@ it('uses only inline View Details with a separate red Open badge', () => {
   expect(html).not.toContain('View Issue');
   expect(html).toContain('compact-detail-status-badge-danger');
   expect(html).toMatch(
-    /<span class="[^"]*app-control-standard-radius[^"]*compact-detail-status-badge/
+    /<span\b[^>]*\bclass="[^"]*app-control-standard-radius[^"]*compact-detail-status-badge/
   );
   expect(html).not.toMatch(
-    /<span class="[^"]*rounded-full[^"]*compact-detail-status-badge/
+    /<span\b[^>]*\bclass="[^"]*rounded-full[^"]*compact-detail-status-badge/
   );
   expect(html).toContain('Status');
   expect(html).toContain('Open');
@@ -118,10 +118,10 @@ it('preserves standalone artwork and inline details for closed issues too', () =
   expect(html).not.toContain('href="/issues/7"');
   expect(html).toContain('compact-detail-status-badge-success');
   expect(html).toMatch(
-    /<span class="[^"]*app-control-standard-radius[^"]*compact-detail-status-badge/
+    /<span\b[^>]*\bclass="[^"]*app-control-standard-radius[^"]*compact-detail-status-badge/
   );
   expect(html).not.toMatch(
-    /<span class="[^"]*rounded-full[^"]*compact-detail-status-badge/
+    /<span\b[^>]*\bclass="[^"]*rounded-full[^"]*compact-detail-status-badge/
   );
   expect(html).toContain('Closed');
 });

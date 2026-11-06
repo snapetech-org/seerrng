@@ -4,9 +4,10 @@ import {
   getLibraryBookService,
   planSeriesWithNarrator,
 } from '@server/lib/editionCompare';
+import { getExternalRuntimeConfig } from '@server/lib/externalRuntimeConfig';
 import { Permission } from '@server/lib/permissions';
-import { getSettings } from '@server/lib/settings';
 import logger from '@server/logger';
+import { readarrServiceSupportsFormat } from '@server/utils/readarrService';
 import { Router } from 'express';
 import rateLimit from 'express-rate-limit';
 
@@ -43,12 +44,37 @@ editionRoutes.get('/book', async (req, res, next) => {
       .status(400)
       .json({ status: 400, message: 'format must be ebook or audiobook.' });
   }
+  const rawServerId = req.query.serverId;
+  const serverId =
+    typeof rawServerId === 'number' ||
+    (typeof rawServerId === 'string' && /^\d+$/.test(rawServerId))
+      ? Number(rawServerId)
+      : undefined;
+  if (
+    rawServerId !== undefined &&
+    (serverId === undefined ||
+      !Number.isSafeInteger(serverId) ||
+      serverId < 0 ||
+      !getExternalRuntimeConfig().readarr.some(
+        (server) =>
+          server.id === serverId &&
+          server.backend !== 'bindery' &&
+          readarrServiceSupportsFormat(server, format)
+      ))
+  ) {
+    return res
+      .status(400)
+      .json({ status: 400, message: 'Invalid edition destination.' });
+  }
   const term = str(req.query.term, 256);
   const foreignBookId = str(req.query.foreignBookId, 256);
   try {
     return res.status(200).json(
       await compareBookEditions({
         mediaId: parseId(req.query.mediaId),
+        bookId: str(req.query.bookId, 2048),
+        serverId,
+        author: str(req.query.author, 256),
         format,
         term,
         foreignBookId,
@@ -70,7 +96,7 @@ editionRoutes.get('/series-narrators', async (req, res, next) => {
   if (!title) {
     return res.status(400).json({ status: 400, message: 'title is required.' });
   }
-  const servers = getSettings().readarr.filter(
+  const servers = getExternalRuntimeConfig().readarr.filter(
     (server) =>
       server.backend !== 'bindery' && server.serviceType === 'audiobook'
   );
@@ -126,7 +152,7 @@ editionRoutes.post('/series-narrators/prefer', async (req, res) => {
       .status(400)
       .json({ error: 'A series and narrator are required.' });
   }
-  const servers = getSettings().readarr.filter(
+  const servers = getExternalRuntimeConfig().readarr.filter(
     (server) =>
       server.backend !== 'bindery' && server.serviceType === 'audiobook'
   );

@@ -40,6 +40,7 @@ export enum Notification {
   MEDIA_AUTO_REQUESTED = 4096,
   SOFTWARE_AVAILABLE = 8192,
   SOFTWARE_STATUS = 16384,
+  MEDIA_PENDING_UPDATED = 32768,
 }
 
 export const hasNotificationType = (
@@ -71,6 +72,7 @@ export const hasNotificationType = (
 export const getAdminPermission = (type: Notification): Permission => {
   switch (type) {
     case Notification.MEDIA_PENDING:
+    case Notification.MEDIA_PENDING_UPDATED:
     case Notification.MEDIA_APPROVED:
     case Notification.MEDIA_AVAILABLE:
     case Notification.MEDIA_FAILED:

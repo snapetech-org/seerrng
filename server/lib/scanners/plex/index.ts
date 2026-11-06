@@ -7,6 +7,7 @@ import MusicBrainz from '@server/api/musicbrainz';
 import OpenLibraryAPI from '@server/api/openlibrary';
 import PlexAPI, {
   MAX_PLEX_LIBRARY_ITEMS,
+  MAX_PLEX_METADATA_ITEMS,
   type PlexLibraryItem,
   type PlexMetadata,
 } from '@server/api/plexapi';
@@ -28,6 +29,13 @@ import {
   type ConfigurationAuthoritySnapshot,
 } from '@server/lib/configurationAdmission';
 import {
+  getPlexEpisodeAvailabilitySourceId,
+  removeMissingEpisodeAvailabilitySeries,
+  syncEpisodeAvailabilityForSeries,
+  type EpisodeAvailabilitySeasonSync,
+  type EpisodeAvailabilitySource,
+} from '@server/lib/episodeAvailability';
+import {
   isValidMusicBrainzResourceId,
   normalizeMusicBrainzId,
 } from '@server/lib/externalIds';
@@ -46,7 +54,7 @@ import type {
 } from '@server/lib/scanners/baseScanner';
 import BaseScanner from '@server/lib/scanners/baseScanner';
 import type { Library, PlexSettings } from '@server/lib/settings';
-import { getSettings } from '@server/lib/settings';
+import { MetadataProviderType, getSettings } from '@server/lib/settings';
 import { mapWithConcurrency } from '@server/utils/concurrency';
 import { getHttpErrorDetails } from '@server/utils/httpError';
 import { uniqWith } from 'lodash';
@@ -65,6 +73,34 @@ const plexCustomProviderRegex = new RegExp(
 const hamaTvdbRegex = new RegExp(/hama:\/\/tvdb[0-9]?-([0-9]+)/);
 const hamaAnidbRegex = new RegExp(/hama:\/\/anidb[0-9]?-([0-9]+)/);
 const HAMA_AGENT = 'com.plexapp.agents.hama';
+const episodeAvailabilityProviders = Object.values(MetadataProviderType);
+
+interface EpisodeAvailabilityCensus {
+  source: EpisodeAvailabilitySource;
+  presentSeriesIds: Map<MetadataProviderType, Set<number>>;
+  complete: Map<MetadataProviderType, boolean>;
+  declaredTotal?: number;
+}
+
+const getPlexMetadataProviderId = (
+  metadata: Pick<PlexMetadata, 'guid' | 'Guid'>,
+  provider: MetadataProviderType
+): number | undefined => {
+  const patterns =
+    provider === MetadataProviderType.TVDB
+      ? [tvdbRegex]
+      : [tmdbRegex, tmdbShowRegex];
+  const values = [metadata.guid, ...(metadata.Guid ?? []).map(({ id }) => id)];
+
+  for (const value of values) {
+    for (const pattern of patterns) {
+      const id = Number(value.match(pattern)?.[1]);
+      if (Number.isSafeInteger(id) && id > 0) return id;
+    }
+  }
+
+  return undefined;
+};
 export const PLEX_SCAN_PAGE_SIZE = 50;
 export const PLEX_SCAN_ITEM_CONCURRENCY = 10;
 
@@ -158,6 +194,7 @@ export class PlexScanner
   private configurationSnapshot: ConfigurationAuthoritySnapshot;
   private plexSettingsSnapshot: PlexSettings;
   private ownerAuthoritySnapshot: MediaServerUserAuthoritySnapshot;
+  private episodeAvailabilityCensus?: EpisodeAvailabilityCensus;
 
   public constructor(isRecentOnly = false) {
     super('Plex Scan', { bundleSize: PLEX_SCAN_PAGE_SIZE });
@@ -208,6 +245,87 @@ export class PlexScanner
       currentLibrary: this.currentLibrary,
       libraries: this.libraries,
     };
+  }
+
+  private beginEpisodeAvailabilityCensus(library: Library): void {
+    this.episodeAvailabilityCensus = undefined;
+    if (
+      !getSettings().main.trackEpisodeAvailability ||
+      library.type !== 'show' ||
+      !library.episodeOrderProvider
+    ) {
+      return;
+    }
+
+    const sourceId = getPlexEpisodeAvailabilitySourceId(
+      this.plexSettingsSnapshot,
+      library.id
+    );
+    if (!sourceId) return;
+
+    this.episodeAvailabilityCensus = {
+      source: { type: 'plex', id: sourceId },
+      presentSeriesIds: new Map(
+        episodeAvailabilityProviders.map((provider) => [provider, new Set()])
+      ),
+      complete: new Map(
+        episodeAvailabilityProviders.map((provider) => [
+          provider,
+          provider === library.episodeOrderProvider,
+        ])
+      ),
+    };
+  }
+
+  private markEpisodeAvailabilityCensusIncomplete(
+    provider?: MetadataProviderType
+  ): void {
+    if (!this.episodeAvailabilityCensus) return;
+
+    if (provider) {
+      this.episodeAvailabilityCensus.complete.set(provider, false);
+      return;
+    }
+
+    for (const metadataProvider of episodeAvailabilityProviders) {
+      this.episodeAvailabilityCensus.complete.set(metadataProvider, false);
+    }
+  }
+
+  private recordEpisodeAvailabilityCensusSeries(
+    provider: MetadataProviderType,
+    externalSeriesId: number
+  ): void {
+    const series =
+      this.episodeAvailabilityCensus?.presentSeriesIds.get(provider);
+    if (
+      series &&
+      Number.isSafeInteger(externalSeriesId) &&
+      externalSeriesId > 0
+    ) {
+      series.add(externalSeriesId);
+    }
+  }
+
+  private async finishEpisodeAvailabilityCensus(
+    confirmedInventoryComplete: boolean
+  ): Promise<void> {
+    const census = this.episodeAvailabilityCensus;
+    this.episodeAvailabilityCensus = undefined;
+    if (!census || !confirmedInventoryComplete) return;
+
+    await this.withOwnerAuthority(() =>
+      this.withConfigurationSnapshot(async () => {
+        for (const provider of episodeAvailabilityProviders) {
+          await removeMissingEpisodeAvailabilitySeries(
+            census.source,
+            provider,
+            [...(census.presentSeriesIds.get(provider) ?? [])],
+            census.complete.get(provider) === true
+          );
+        }
+      })
+    );
   }
 
   public async run(): Promise<void> {
@@ -295,8 +413,10 @@ export class PlexScanner
       } else {
         for (const library of this.libraries) {
           this.currentLibrary = library;
+          this.beginEpisodeAvailabilityCensus(library);
           this.log(`Beginning to process library: ${library.name}`, 'info');
           await this.paginateLibrary(library, { sessionId });
+          await this.finishEpisodeAvailabilityCensus(true);
         }
       }
       this.log(
@@ -313,6 +433,7 @@ export class PlexScanner
         currentLibrary: this.currentLibrary?.name,
       });
     } finally {
+      this.episodeAvailabilityCensus = undefined;
       this.endRun(sessionId);
     }
   }
@@ -337,10 +458,35 @@ export class PlexScanner
       })
     );
 
+    if (this.episodeAvailabilityCensus) {
+      if (Number.isSafeInteger(response.totalSize) && response.totalSize >= 0) {
+        const census = this.episodeAvailabilityCensus;
+        if (census.declaredTotal === undefined) {
+          census.declaredTotal = response.totalSize;
+        } else if (census.declaredTotal !== response.totalSize) {
+          this.markEpisodeAvailabilityCensusIncomplete();
+        }
+      }
+    }
+
+    if (
+      !Number.isSafeInteger(response.totalSize) ||
+      response.totalSize < 0 ||
+      response.totalSize > MAX_PLEX_LIBRARY_ITEMS
+    ) {
+      this.markEpisodeAvailabilityCensusIncomplete();
+    }
+
     const pageItems = preparePlexLibraryPageItems(
       response.items,
       this.protectedBundleSize
     );
+    if (
+      !Number.isSafeInteger(response.totalSize) ||
+      response.totalSize < start + pageItems.length
+    ) {
+      this.markEpisodeAvailabilityCensusIncomplete();
+    }
     this.progress = start;
     this.totalSize = getBoundedPlexScanTotal(
       response.totalSize,
@@ -350,6 +496,9 @@ export class PlexScanner
     );
 
     if (pageItems.length === 0) {
+      if (response.totalSize > start) {
+        this.markEpisodeAvailabilityCensusIncomplete();
+      }
       return;
     }
 
@@ -365,6 +514,18 @@ export class PlexScanner
       nextStart >= this.totalSize ||
       nextStart >= MAX_PLEX_LIBRARY_ITEMS
     ) {
+      if (
+        Number.isSafeInteger(response.totalSize) &&
+        response.totalSize > start + pageItems.length
+      ) {
+        this.markEpisodeAvailabilityCensusIncomplete();
+      }
+      if (
+        nextStart >= MAX_PLEX_LIBRARY_ITEMS &&
+        response.totalSize > nextStart
+      ) {
+        this.markEpisodeAvailabilityCensusIncomplete();
+      }
       return;
     }
 
@@ -398,6 +559,9 @@ export class PlexScanner
         }
       }
     } catch (e) {
+      if (this.currentLibrary?.type === 'show') {
+        this.markEpisodeAvailabilityCensusIncomplete();
+      }
       if (
         e instanceof ConfigurationAuthorityChangedError ||
         e instanceof MediaServerUserAuthorityChangedError
@@ -505,6 +669,7 @@ export class PlexScanner
     // If the media is from HAMA, and doesn't have a TVDb ID, we will treat it
     // as a special HAMA movie
     if (mediaIds.tmdbId && !mediaIds.tvdbId && mediaIds.isHama) {
+      this.markEpisodeAvailabilityCensusIncomplete();
       await this.processHamaMovie(metadata, mediaIds.tmdbId);
       return;
     }
@@ -512,6 +677,7 @@ export class PlexScanner
     // If the media is from HAMA and we have a TVDb ID, we will attempt
     // to process any specials that may exist
     if (mediaIds.tvdbId && mediaIds.isHama) {
+      this.markEpisodeAvailabilityCensusIncomplete();
       await this.processHamaSpecials(metadata, mediaIds.tvdbId);
     }
 
@@ -521,22 +687,85 @@ export class PlexScanner
 
     const seasons = tvShow.seasons;
     const processableSeasons: ProcessableSeason[] = [];
-
     const settings = getSettings();
+    const isAnime = tvShow.keywords.results.some(
+      (keyword) => keyword.id === ANIME_KEYWORD_ID
+    );
+    const episodeMetadataProvider = isAnime
+      ? settings.metadataSettings.anime
+      : settings.metadataSettings.tv;
+    const tracksEpisodeAvailability = Boolean(
+      settings.main.trackEpisodeAvailability &&
+      this.currentLibrary?.type === 'show' &&
+      this.currentLibrary.episodeOrderProvider === episodeMetadataProvider
+    );
+    if (
+      settings.main.trackEpisodeAvailability &&
+      this.currentLibrary?.type === 'show' &&
+      this.currentLibrary.episodeOrderProvider &&
+      this.currentLibrary.episodeOrderProvider !== episodeMetadataProvider
+    ) {
+      this.markEpisodeAvailabilityCensusIncomplete(
+        this.currentLibrary.episodeOrderProvider
+      );
+    }
+    const episodeAvailabilitySourceId = tracksEpisodeAvailability
+      ? getPlexEpisodeAvailabilitySourceId(
+          this.plexSettingsSnapshot,
+          this.currentLibrary!.id
+        )
+      : '';
+    const episodeAvailabilitySeriesId = tracksEpisodeAvailability
+      ? getPlexMetadataProviderId(metadata, episodeMetadataProvider)
+      : undefined;
+    const plexSeasonList = metadata.Children?.Metadata;
+    let episodeAvailabilityComplete = Boolean(
+      episodeAvailabilitySourceId &&
+      episodeAvailabilitySeriesId &&
+      Array.isArray(plexSeasonList) &&
+      plexSeasonList.length < MAX_PLEX_METADATA_ITEMS &&
+      metadata.Children?.size === plexSeasonList.length &&
+      plexSeasonList.every(
+        (item) =>
+          item.type === 'season' &&
+          Number.isSafeInteger(item.index) &&
+          item.index >= 0
+      ) &&
+      new Set(plexSeasonList.map((item) => item.index)).size ===
+        plexSeasonList.length
+    );
+    const episodeAvailabilitySeasons: EpisodeAvailabilitySeasonSync[] = [];
+
+    if (tracksEpisodeAvailability && !episodeAvailabilityComplete) {
+      this.markEpisodeAvailabilityCensusIncomplete(episodeMetadataProvider);
+    }
+
     const filteredSeasons = settings.main.enableSpecialEpisodes
       ? seasons
       : seasons.filter((sn) => sn.season_number !== 0);
 
     for (const season of filteredSeasons) {
-      const matchedPlexSeason = metadata.Children?.Metadata.find(
-        (md) => Number(md.index) === season.season_number
+      if (tracksEpisodeAvailability && season.episode_count <= 0) {
+        episodeAvailabilityComplete = false;
+      }
+
+      const matchedPlexSeason = plexSeasonList?.find(
+        (md) =>
+          md.type === 'season' && Number(md.index) === season.season_number
       );
 
       if (matchedPlexSeason) {
         // If we have a matched Plex season, get its children metadata so we can check details
         const episodes = await this.plexClient.getChildrenMetadata(
-          matchedPlexSeason.ratingKey
+          matchedPlexSeason.ratingKey,
+          { requireComplete: tracksEpisodeAvailability }
         );
+        if (
+          tracksEpisodeAvailability &&
+          episodes.length >= MAX_PLEX_METADATA_ITEMS
+        ) {
+          episodeAvailabilityComplete = false;
+        }
         // Total episodes that are in standard definition (not 4k)
         const totalStandard = episodes.filter((episode) =>
           !this.enable4kShow
@@ -557,6 +786,51 @@ export class PlexScanner
           episodes4k: total4k,
           totalEpisodes: season.episode_count,
         });
+
+        if (tracksEpisodeAvailability) {
+          const trackedEpisodes = new Map<
+            string,
+            { number: number; is4k: boolean }
+          >();
+          for (const episode of episodes) {
+            if (
+              !Number.isSafeInteger(episode.index) ||
+              episode.index < 1 ||
+              episode.index > season.episode_count ||
+              !Array.isArray(episode.Media)
+            ) {
+              episodeAvailabilityComplete = false;
+              continue;
+            }
+            if (episode.Media.length === 0) continue;
+
+            const has4k =
+              this.enable4kShow &&
+              episode.Media.some((media) => media.videoResolution === '4k');
+            const hasStandard = this.enable4kShow
+              ? episode.Media.some((media) => media.videoResolution !== '4k')
+              : true;
+            if (hasStandard) {
+              trackedEpisodes.set(`${episode.index}:false`, {
+                number: episode.index,
+                is4k: false,
+              });
+            }
+            if (has4k) {
+              trackedEpisodes.set(`${episode.index}:true`, {
+                number: episode.index,
+                is4k: true,
+              });
+            }
+          }
+          episodeAvailabilitySeasons.push({
+            seasonNumber: season.season_number,
+            episodes: [...trackedEpisodes.values()].map((episode) => ({
+              episodeNumber: episode.number,
+              is4k: episode.is4k,
+            })),
+          });
+        }
       } else {
         processableSeasons.push({
           seasonNumber: season.season_number,
@@ -564,6 +838,12 @@ export class PlexScanner
           episodes4k: 0,
           totalEpisodes: season.episode_count,
         });
+        if (tracksEpisodeAvailability) {
+          episodeAvailabilitySeasons.push({
+            seasonNumber: season.season_number,
+            episodes: [],
+          });
+        }
       }
     }
 
@@ -579,6 +859,38 @@ export class PlexScanner
         outerMutationGuard: (callback) => this.withOwnerAuthority(callback),
       }
     );
+
+    if (tracksEpisodeAvailability) {
+      if (
+        episodeAvailabilityComplete &&
+        episodeAvailabilitySeriesId &&
+        episodeAvailabilitySourceId
+      ) {
+        const source: EpisodeAvailabilitySource = {
+          type: 'plex',
+          id: episodeAvailabilitySourceId,
+        };
+        await this.asyncLock.dispatch(mediaIds.tmdbId, () =>
+          this.withOwnerAuthority(() =>
+            this.withConfigurationSnapshot(() =>
+              syncEpisodeAvailabilityForSeries({
+                source,
+                metadataProvider: episodeMetadataProvider,
+                externalSeriesId: episodeAvailabilitySeriesId,
+                tmdbId: mediaIds.tmdbId,
+                seasons: episodeAvailabilitySeasons,
+              })
+            )
+          )
+        );
+        this.recordEpisodeAvailabilityCensusSeries(
+          episodeMetadataProvider,
+          episodeAvailabilitySeriesId
+        );
+      } else {
+        this.markEpisodeAvailabilityCensusIncomplete(episodeMetadataProvider);
+      }
+    }
   }
 
   // Plex's music agent (unlike its movie/tv agents) puts a matched external

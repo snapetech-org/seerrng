@@ -206,6 +206,10 @@ const DiscoveryModeTabs = ({
       <Link
         href={discoverHref}
         prefetch={false}
+        aria-disabled={!router.isReady}
+        onClick={(event) => {
+          if (!router.isReady) event.preventDefault();
+        }}
         aria-current={selected === 'discover' ? 'page' : undefined}
         className={`${getFilterToggleButtonClass(
           selected === 'discover'
@@ -218,6 +222,10 @@ const DiscoveryModeTabs = ({
       <Link
         href={swipeHref}
         prefetch={false}
+        aria-disabled={!router.isReady}
+        onClick={(event) => {
+          if (!router.isReady) event.preventDefault();
+        }}
         aria-current={selected === 'swipe' ? 'page' : undefined}
         className={`${getFilterToggleButtonClass(
           selected === 'swipe'

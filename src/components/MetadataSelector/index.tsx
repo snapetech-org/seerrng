@@ -2,10 +2,7 @@ import defineMessages from '@app/utils/defineMessages';
 import { useIntl } from 'react-intl';
 import Select, { type StylesConfig } from 'react-select';
 
-enum MetadataProviderType {
-  TMDB = 'tmdb',
-  TVDB = 'tvdb',
-}
+import { MetadataProviderType } from '@server/constants/metadata';
 
 type MetadataProviderOptionType = {
   testId?: string;

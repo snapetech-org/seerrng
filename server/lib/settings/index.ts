@@ -7,6 +7,7 @@ import {
   type EnabledMediaCategories,
   type MediaCategoryKey,
 } from '@server/constants/mediaCategories';
+import { MetadataProviderType } from '@server/constants/metadata';
 import {
   defaultProwlarrCategoryMappings,
   type ProwlarrCategoryMappings,
@@ -31,6 +32,7 @@ import {
   withSettingsFileLock,
   writePrivateSettingsFile,
 } from './fileSecurity';
+export { MetadataProviderType } from '@server/constants/metadata';
 
 export { MAX_SETTINGS_FILE_BYTES, assertSettingsFileSize };
 
@@ -49,6 +51,7 @@ export interface Library {
   name: string;
   enabled: boolean;
   type: 'show' | 'movie' | 'music' | 'book';
+  episodeOrderProvider?: MetadataProviderType;
   lastScan?: number;
 }
 
@@ -377,6 +380,7 @@ export interface DVRSettings {
   preventSearch: boolean;
   tagRequests: boolean;
   overrideRule: number[];
+  downloadQueueSize?: number;
 }
 
 export interface ServiceRequestButtonSettings {
@@ -387,6 +391,8 @@ export interface ServiceRequestButtonSettings {
 export interface RadarrSettings
   extends DVRSettings, ServiceRequestButtonSettings {
   minimumAvailability: string;
+  /** Tags that exclude matching library entries from synchronization. */
+  syncExcludedTags?: number[];
 }
 
 /** Whisparr's scene-focused v3 API uses Radarr-shaped service settings. */
@@ -406,6 +412,8 @@ export interface SonarrSettings
   animeTags?: number[];
   enableSeasonFolders: boolean;
   monitorNewItems: 'all' | 'none' | 'latest';
+  /** Tags that exclude matching library entries from synchronization. */
+  syncExcludedTags?: number[];
 }
 
 export interface SportarrSettings {
@@ -493,11 +501,6 @@ export type LazyLibrarianSettings = CollectorServiceSettings;
 interface Quota {
   quotaLimit?: number;
   quotaDays?: number;
-}
-
-export enum MetadataProviderType {
-  TMDB = 'tmdb',
-  TVDB = 'tvdb',
 }
 
 export interface MetadataSettings {
@@ -590,6 +593,7 @@ export interface MainSettings {
   tvSeasonWatchGateEnabled: boolean;
   personMovieBulkRequestsEnabled: boolean;
   enableSpecialEpisodes: boolean;
+  trackEpisodeAvailability: boolean;
   locale: string;
   youtubeUrl: string;
   versionCheck: boolean;
@@ -1015,6 +1019,7 @@ class Settings {
         tvSeasonWatchGateEnabled: false,
         personMovieBulkRequestsEnabled: false,
         enableSpecialEpisodes: false,
+        trackEpisodeAvailability: false,
         locale: 'en',
         youtubeUrl: '',
         versionCheck: true,
@@ -2091,6 +2096,7 @@ class Settings {
         tvSeasonWatchGateEnabled: false,
         personMovieBulkRequestsEnabled: false,
         enableSpecialEpisodes: false,
+        trackEpisodeAvailability: false,
         locale: 'en',
         youtubeUrl: '',
         versionCheck: true,

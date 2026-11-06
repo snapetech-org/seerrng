@@ -20,6 +20,20 @@ Simply configure your desired notification agents in **Settings -> Notifications
 
 Users can customize their notification preferences in their own user notification settings.
 
+## Pending request edits
+
+Administrators can enable **Pending Request Updated** for each notification
+agent. SeerrNG queues this event only when an edit changes a pending request's
+owner, selected seasons or episodes, or saved acquisition options. Unchanged
+saves do not create this event, and request lifecycle transitions continue to
+use their existing event types. It uses the durable notification queue and is
+supported by webhook, ntfy, and the other configured notification agents.
+
+The webhook event is named `MEDIA_PENDING_UPDATED`. Webhook templates can use
+the existing `notification_type` and `event` values to distinguish it from a
+new pending request. Review each agent's saved event selection in **Settings →
+Notifications**; adding a new event does not change previously saved selections.
+
 ## Follow a movie or series request
 
 When another user has an active request for a movie or series, the title's

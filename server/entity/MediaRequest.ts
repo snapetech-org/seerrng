@@ -3,7 +3,7 @@ import ListenBrainzAPI from '@server/api/listenbrainz';
 import MusicBrainz from '@server/api/musicbrainz';
 import OpenLibraryAPI from '@server/api/openlibrary';
 import RadarrAPI from '@server/api/servarr/radarr';
-import SonarrAPI from '@server/api/servarr/sonarr';
+import SonarrAPI, { type LanguageProfile } from '@server/api/servarr/sonarr';
 import SportarrAPI from '@server/api/servarr/sportarr';
 import WhisparrAPI from '@server/api/servarr/whisparr';
 import TheMovieDb from '@server/api/themoviedb';
@@ -24,8 +24,10 @@ import MediaServiceStatus from '@server/entity/MediaServiceStatus';
 import OverrideRule from '@server/entity/OverrideRule';
 import type { MediaRequestBody } from '@server/interfaces/api/requestInterfaces';
 import type { SeasonEpisodeSelection } from '@server/interfaces/api/seasonInterfaces';
+import { compareBookEditions } from '@server/lib/editionCompare';
 import {
   normalizeMusicBrainzId,
+  normalizeOpenLibraryAuthorId,
   normalizeOpenLibraryEditionId,
   normalizeOpenLibraryWorkId,
 } from '@server/lib/externalIds';
@@ -93,6 +95,7 @@ import {
 } from '@server/lib/videoMaturityPolicy';
 import logger from '@server/logger';
 import AsyncLock from '@server/utils/asyncLock';
+import { isProviderBookEdition } from '@server/utils/bookEdition';
 import { parseBookshelfBookId } from '@server/utils/bookshelfCatalog';
 import { DbAwareColumn, resolveDbType } from '@server/utils/DbColumnHelper';
 import {
@@ -113,6 +116,7 @@ import {
   UpdateDateColumn,
   VirtualColumn,
   type EntityManager,
+  type QueryRunner,
 } from 'typeorm';
 import Media from './Media';
 import SeasonRequest, { isActiveSeasonRequest } from './SeasonRequest';
@@ -214,6 +218,19 @@ const getRequestMediaLockKey = (requestBody: MediaRequestBody): string =>
       ? normalizeMagazineTitle(String(requestBody.mediaId))
       : String(requestBody.mediaId).trim().toLowerCase(),
   ].join(':');
+
+const equalRequestTags = (
+  left: number[] | null | undefined,
+  right: number[] | null | undefined
+): boolean => {
+  const leftTags = [...new Set(left ?? [])].sort((a, b) => a - b);
+  const rightTags = [...new Set(right ?? [])].sort((a, b) => a - b);
+
+  return (
+    leftTags.length === rightTags.length &&
+    leftTags.every((tag, index) => tag === rightTags[index])
+  );
+};
 
 const canUseAdvancedRequestOptions = (user: User): boolean =>
   user.hasPermission(
@@ -1591,16 +1608,97 @@ export class MediaRequest {
               'request.metadataProfileId',
               'request.rootFolder',
               'request.bookFormat',
+              'request.preferredEditionId',
               'request.serviceTargets',
               'requestedBy.id',
             ])
             .where('request.media = :mediaId', { mediaId: media.id })
             .getMany()
         : [];
+      // Verify the exact performance at the resolved destination before bypassing
+      // work-level availability. Client edition IDs are never authority.
+      const preferredEditionId = requestBody.preferredEditionId;
+      if (
+        isProviderBookEdition(preferredEditionId) &&
+        requestedBookFormat === 'both'
+      ) {
+        throw new ServiceConfigurationError(
+          'A specific edition requires a single book format.'
+        );
+      }
+      const hasEditionChoice = isProviderBookEdition(preferredEditionId);
+      if (requestBody.editionPolicy === 'alongside' && !hasEditionChoice) {
+        throw new ServiceConfigurationError(
+          'Choose one book format and a specific edition to add alongside.'
+        );
+      }
+      if (hasEditionChoice) {
+        const expectedWork = parseBookshelfBookId(
+          requestBody.mediaId.toString()
+        )
+          ? undefined
+          : await openLibrary.getWork(openLibraryId);
+        const expectedTitle = expectedWork?.title;
+        const authorKey = expectedWork?.authors?.[0]?.author?.key;
+        const expectedAuthor = authorKey
+          ? (
+              await openLibrary.getAuthor(
+                normalizeOpenLibraryAuthorId(authorKey)
+              )
+            )?.name
+          : undefined;
+        const comparison = await compareBookEditions({
+          title: expectedTitle,
+          author: expectedAuthor,
+          mediaId: media.id,
+          bookId: requestBody.mediaId.toString(),
+          serverId: selectedReadarr?.id,
+          format: requestedServiceType,
+          term:
+            requestBody.preferredIsbn13 ||
+            requestBody.isbn13 ||
+            parseBookshelfBookId(requestBody.mediaId.toString())
+              ?.foreignBookId ||
+            expectedTitle ||
+            requestBody.mediaId.toString(),
+        });
+        const selectedEdition = comparison.editions.find(
+          (edition) => edition.id === preferredEditionId
+        );
+        if (!selectedEdition || selectedEdition.requestable === false)
+          throw new ServiceConfigurationError(
+            'The selected edition could not be verified for this book and destination.'
+          );
+        if (selectedEdition.owned)
+          throw new DuplicateMediaRequestError(
+            'This exact edition is already available.'
+          );
+        if (
+          requestBody.editionPolicy === 'alongside' &&
+          !comparison.supportsAlongside
+        ) {
+          throw new ServiceConfigurationError(
+            'This destination cannot keep another edition alongside the existing one.'
+          );
+        }
+      }
+      const editionRequests = hasEditionChoice
+        ? destinationRequests.filter(
+            (request) => request.preferredEditionId === preferredEditionId
+          )
+        : destinationRequests;
+      const blockingRequests = hasEditionChoice
+        ? destinationRequests.filter(
+            (request) =>
+              !isProviderBookEdition(request.preferredEditionId) ||
+              request.preferredEditionId === preferredEditionId
+          )
+        : destinationRequests;
       const isLegacyBookTargetAvailable = (
         target: MediaRequestServiceTarget
       ): boolean => {
         if (
+          hasEditionChoice ||
           media.status !== MediaStatus.AVAILABLE ||
           hasTrackedAvailableDestination(destinationRequests, target)
         ) {
@@ -1622,17 +1720,17 @@ export class MediaRequest {
       const uncoveredBookTargets = bookTargets.filter(
         (target) =>
           !isLegacyBookTargetAvailable(target) &&
-          !isDestinationAvailableInTargets(destinationRequests, target) &&
-          !isDestinationCoveredByActiveRequest(destinationRequests, target)
+          !isDestinationAvailableInTargets(editionRequests, target) &&
+          !isDestinationCoveredByActiveRequest(blockingRequests, target)
       );
 
       const unavailableBookTargets = bookTargets.filter(
         (target) =>
           !isLegacyBookTargetAvailable(target) &&
-          !isDestinationAvailableInTargets(destinationRequests, target)
+          !isDestinationAvailableInTargets(editionRequests, target)
       );
       const promotablePendingRequest = findPromotablePendingRequest(
-        destinationRequests,
+        editionRequests,
         unavailableBookTargets,
         user,
         MediaType.BOOK
@@ -1643,7 +1741,7 @@ export class MediaRequest {
 
       if (
         bookTargets.some((target) =>
-          isDestinationCoveredByActiveRequest(destinationRequests, target)
+          isDestinationCoveredByActiveRequest(blockingRequests, target)
         )
       ) {
         throw new DuplicateMediaRequestError(
@@ -2654,6 +2752,19 @@ export class MediaRequest {
     }
 
     const resolvedTvdbId = media.tvdbId ?? tvdbId;
+    const futureSeasonsRestricted =
+      watchAheadEpisodeCount > 0 ||
+      isTvSeasonWatchGateEnabledForUser(requestUser);
+    if (
+      requestBody.mediaType === MediaType.TV &&
+      requestBody.monitorFutureSeasons === true &&
+      futureSeasonsRestricted
+    ) {
+      throw new RequestPermissionError(
+        'Future seasons are managed by Episode Queue or the season watch gate.'
+      );
+    }
+
     if (watchAheadEpisodeCount > 0) {
       if (
         !Number.isSafeInteger(Number(resolvedTvdbId)) ||
@@ -2706,23 +2817,24 @@ export class MediaRequest {
       );
     }
     const selectedServer = requestedServer ?? defaultServer;
+    const tmdbKeywords = tmdbMedia.keywords;
+    const isAnimeRequest =
+      requestBody.mediaType === MediaType.TV &&
+      ('results' in tmdbKeywords
+        ? tmdbKeywords.results.some(
+            (keyword: TmdbKeyword) => keyword.id === ANIME_KEYWORD_ID
+          )
+        : 'keywords' in tmdbKeywords
+          ? tmdbKeywords.keywords.some(
+              (keyword: TmdbKeyword) => keyword.id === ANIME_KEYWORD_ID
+            )
+          : false);
     if (
       (requestBody.mediaType === MediaType.MOVIE ||
         requestBody.mediaType === MediaType.TV) &&
       selectedServer?.requestButtonAnimeOnly
     ) {
-      const keywords = tmdbMedia.keywords;
-      const isAnime =
-        'results' in keywords
-          ? keywords.results.some(
-              (keyword: TmdbKeyword) => keyword.id === ANIME_KEYWORD_ID
-            )
-          : 'keywords' in keywords
-            ? keywords.keywords.some(
-                (keyword: TmdbKeyword) => keyword.id === ANIME_KEYWORD_ID
-              )
-            : false;
-      if (!isAnime) {
+      if (!isAnimeRequest) {
         throw new RequestPermissionError(
           'The selected request destination is limited to anime titles.'
         );
@@ -2740,25 +2852,32 @@ export class MediaRequest {
       requestBody.mediaType === MediaType.TV
         ? (selectedServer as SonarrSettings)
         : undefined;
-
-    let rootFolder = useAdvancedOptions
-      ? (requestBody.rootFolder ??
-        requestRootFolder ??
-        selectedServer?.activeDirectory)
-      : (requestRootFolder ?? selectedServer?.activeDirectory);
-    let profileId = useAdvancedOptions
-      ? (requestBody.profileId ?? selectedServer?.activeProfileId)
+    const serviceDefaultRootFolder =
+      isAnimeRequest && selectedSonarr?.activeAnimeDirectory
+        ? selectedSonarr.activeAnimeDirectory
+        : selectedServer?.activeDirectory;
+    const serviceDefaultProfileId = isAnimeRequest
+      ? (selectedSonarr?.activeAnimeProfileId ??
+        selectedServer?.activeProfileId)
       : selectedServer?.activeProfileId;
-    let tags = useAdvancedOptions
-      ? (requestBody.tags ?? selectedServer?.tags)
-      : selectedServer?.tags;
+    const serviceDefaultTags = selectedSonarr
+      ? isAnimeRequest
+        ? (selectedSonarr.animeTags ?? [])
+        : (selectedSonarr.tags ?? [])
+      : (selectedServer?.tags ?? []);
+    const serviceDefaultLanguageProfileId = isAnimeRequest
+      ? (selectedSonarr?.activeAnimeLanguageProfileId ??
+        selectedSonarr?.activeLanguageProfileId)
+      : selectedSonarr?.activeLanguageProfileId;
+
+    let rootFolder = requestRootFolder ?? serviceDefaultRootFolder;
+    let profileId = serviceDefaultProfileId;
+    let tags = [...serviceDefaultTags];
     let languageProfileId =
       requestBody.mediaType === MediaType.TV
-        ? useAdvancedOptions
-          ? (requestBody.languageProfileId ??
-            selectedSonarr?.activeLanguageProfileId)
-          : selectedSonarr?.activeLanguageProfileId
+        ? serviceDefaultLanguageProfileId
         : undefined;
+    let sonarrLanguageProfiles: LanguageProfile[] | undefined;
     const metadataLanguageId =
       requestBody.mediaType === MediaType.TV && useAdvancedOptions
         ? requestBody.metadataLanguageId
@@ -2773,10 +2892,7 @@ export class MediaRequest {
       requestBody.mediaType === MediaType.MOVIE ? 'movie' : 'tv'
     );
     if (mediaLanguagePreference) {
-      if (
-        requestBody.mediaType === MediaType.MOVIE &&
-        !(useAdvancedOptions && requestBody.profileId != null)
-      ) {
+      if (requestBody.mediaType === MediaType.MOVIE && selectedServer) {
         const radarrServer = selectedServer as RadarrSettings | undefined;
         if (radarrServer) {
           try {
@@ -2805,28 +2921,27 @@ export class MediaRequest {
             apiKey: selectedSonarr.apiKey,
             url: SonarrAPI.buildUrl(selectedSonarr, '/api/v3'),
           });
-          if (!(useAdvancedOptions && requestBody.languageProfileId != null)) {
-            const languageProfiles = await sonarr
-              .getLanguageProfiles()
-              .catch(() => []);
-            const preferredProfile = languageProfiles.find(
-              (profile) =>
-                (profile.languages ?? []).some((language) =>
-                  languageNameMatchesCode(language, mediaLanguagePreference)
-                ) ||
-                languageNameMatchesCode(profile.name, mediaLanguagePreference)
-            );
-            if (preferredProfile) languageProfileId = preferredProfile.id;
+          const languageProfiles = await sonarr
+            .getLanguageProfiles()
+            .catch(() => []);
+          sonarrLanguageProfiles = languageProfiles;
+          const preferredLanguageProfile = languageProfiles.find(
+            (profile) =>
+              (profile.languages ?? []).some((language) =>
+                languageNameMatchesCode(language, mediaLanguagePreference)
+              ) ||
+              languageNameMatchesCode(profile.name, mediaLanguagePreference)
+          );
+          if (preferredLanguageProfile) {
+            languageProfileId = preferredLanguageProfile.id;
           }
 
-          if (!(useAdvancedOptions && requestBody.profileId != null)) {
-            const qualityProfiles = await sonarr.getProfiles();
-            const preferredQualityProfile = qualityProfiles.find((profile) =>
-              languageNameMatchesCode(profile.language, mediaLanguagePreference)
-            );
-            if (preferredQualityProfile) {
-              profileId = preferredQualityProfile.id;
-            }
+          const qualityProfiles = await sonarr.getProfiles();
+          const preferredQualityProfile = qualityProfiles.find((profile) =>
+            languageNameMatchesCode(profile.language, mediaLanguagePreference)
+          );
+          if (preferredQualityProfile) {
+            profileId = preferredQualityProfile.id;
           }
         } catch (error) {
           logger.debug(
@@ -2841,6 +2956,53 @@ export class MediaRequest {
       }
     }
 
+    const requestDefaultRootFolder = rootFolder;
+    const requestDefaultProfileId = profileId;
+    const requestDefaultTags = tags;
+    const requestDefaultLanguageProfileId = languageProfileId;
+    // Older API clients supplied explicit values without provenance flags.
+    const legacyExplicitOptions =
+      requestBody.requesterSelectedOptions === undefined;
+    const requesterSelectedRootFolder =
+      useAdvancedOptions &&
+      (requestBody.requesterSelectedOptions?.rootFolder === true ||
+        (requestBody.rootFolder != null &&
+          (legacyExplicitOptions ||
+            requestBody.rootFolder !== requestDefaultRootFolder)));
+    const requesterSelectedProfile =
+      useAdvancedOptions &&
+      (requestBody.requesterSelectedOptions?.profile === true ||
+        (requestBody.profileId != null &&
+          (legacyExplicitOptions ||
+            requestBody.profileId !== requestDefaultProfileId)));
+    const requesterSelectedTags =
+      useAdvancedOptions &&
+      (requestBody.requesterSelectedOptions?.tags === true ||
+        (requestBody.tags != null &&
+          (legacyExplicitOptions ||
+            !equalRequestTags(requestBody.tags, requestDefaultTags))));
+    const requesterSelectedLanguageProfile =
+      requestBody.mediaType === MediaType.TV &&
+      useAdvancedOptions &&
+      (requestBody.requesterSelectedOptions?.languageProfile === true ||
+        (requestBody.languageProfileId != null &&
+          (legacyExplicitOptions ||
+            requestBody.languageProfileId !==
+              requestDefaultLanguageProfileId)));
+
+    if (requesterSelectedRootFolder) {
+      rootFolder = requestBody.rootFolder ?? undefined;
+    }
+    if (requesterSelectedProfile) {
+      profileId = requestBody.profileId ?? undefined;
+    }
+    if (requesterSelectedTags) {
+      tags = requestBody.tags ?? [];
+    }
+    if (requesterSelectedLanguageProfile) {
+      languageProfileId = requestBody.languageProfileId ?? undefined;
+    }
+
     const overrideResult = selectedServer
       ? await evaluateOverrideRules({
           mediaType: requestBody.mediaType,
@@ -2853,20 +3015,38 @@ export class MediaRequest {
       : undefined;
 
     if (overrideResult) {
-      const requesterSelectedRootFolder =
-        useAdvancedOptions && requestBody.rootFolder !== undefined;
-      const requesterSelectedProfile =
-        useAdvancedOptions && requestBody.profileId !== undefined;
-      const requesterSelectedTags =
-        useAdvancedOptions && requestBody.tags !== undefined;
       const addedRuleTags =
         overrideResult.tags?.filter((tag) => !tags?.includes(tag)) ?? [];
+      let appliedRuleLanguageProfile = false;
 
       if (overrideResult.rootFolder && !requesterSelectedRootFolder) {
         rootFolder = overrideResult.rootFolder;
       }
       if (overrideResult.profileId !== null && !requesterSelectedProfile) {
         profileId = overrideResult.profileId;
+      }
+      if (
+        overrideResult.languageProfileId !== null &&
+        !requesterSelectedLanguageProfile &&
+        selectedSonarr
+      ) {
+        const languageProfiles =
+          sonarrLanguageProfiles ??
+          (await new SonarrAPI({
+            apiKey: selectedSonarr.apiKey,
+            url: SonarrAPI.buildUrl(selectedSonarr, '/api/v3'),
+          })
+            .getLanguageProfiles()
+            .catch(() => []));
+        if (
+          languageProfiles.some(
+            (languageProfile) =>
+              languageProfile.id === overrideResult.languageProfileId
+          )
+        ) {
+          languageProfileId = overrideResult.languageProfileId;
+          appliedRuleLanguageProfile = true;
+        }
       }
       if (!requesterSelectedTags && overrideResult.tags !== null) {
         tags = overrideResult.tags;
@@ -2875,6 +3055,7 @@ export class MediaRequest {
       if (
         (overrideResult.rootFolder && !requesterSelectedRootFolder) ||
         (overrideResult.profileId !== null && !requesterSelectedProfile) ||
+        appliedRuleLanguageProfile ||
         (addedRuleTags.length > 0 && !requesterSelectedTags)
       ) {
         logger.debug('Override rule applied.', {
@@ -2886,11 +3067,32 @@ export class MediaRequest {
             profileId: requesterSelectedProfile
               ? null
               : overrideResult.profileId,
+            languageProfileId: appliedRuleLanguageProfile
+              ? overrideResult.languageProfileId
+              : null,
             tags: requesterSelectedTags ? null : addedRuleTags,
           },
         });
       }
     }
+
+    const storedProfileId =
+      !requesterSelectedProfile && profileId === serviceDefaultProfileId
+        ? null
+        : (profileId ?? null);
+    const storedRootFolder =
+      !requesterSelectedRootFolder && rootFolder === serviceDefaultRootFolder
+        ? null
+        : (rootFolder ?? null);
+    const storedLanguageProfileId =
+      !requesterSelectedLanguageProfile &&
+      languageProfileId === serviceDefaultLanguageProfileId
+        ? null
+        : (languageProfileId ?? null);
+    const storedTags =
+      !requesterSelectedTags && equalRequestTags(tags, serviceDefaultTags)
+        ? null
+        : (tags ?? null);
 
     const selectedDestination: RequestDestination | undefined =
       serverId === undefined
@@ -3068,9 +3270,9 @@ export class MediaRequest {
         modifiedBy: autoApproved ? user : undefined,
         is4k: requestBody.is4k,
         serverId,
-        profileId: profileId,
-        rootFolder: rootFolder,
-        tags: tags,
+        profileId: storedProfileId,
+        rootFolder: storedRootFolder,
+        tags: storedTags,
         serviceTargets:
           serverId === undefined
             ? []
@@ -3359,14 +3561,17 @@ export class MediaRequest {
           modifiedBy: autoApproved ? user : undefined,
           is4k: requestBody.is4k,
           watchAheadEpisodeCount,
+          monitorFutureSeasons: futureSeasonsRestricted
+            ? false
+            : requestBody.monitorFutureSeasons,
           watchAheadUsesUserDefault,
           serverId,
-          profileId: profileId,
-          rootFolder: rootFolder,
-          languageProfileId,
+          profileId: storedProfileId,
+          rootFolder: storedRootFolder,
+          languageProfileId: storedLanguageProfileId,
           metadataLanguageId,
           sonarrSeasonType,
-          tags: tags,
+          tags: storedTags,
           serviceTargets:
             serverId === undefined
               ? []
@@ -3520,6 +3725,10 @@ export class MediaRequest {
   @Column({ default: false })
   public is4k: boolean;
 
+  /** Null preserves the service default for existing requests. */
+  @Column({ type: 'boolean', nullable: true })
+  public monitorFutureSeasons?: boolean | null;
+
   /** Number of upcoming unwatched episodes to keep requested automatically. */
   @Column({ type: 'integer', default: 0 })
   public watchAheadEpisodeCount = 0;
@@ -3555,14 +3764,14 @@ export class MediaRequest {
   @Column({ nullable: true })
   public serverId: number;
 
-  @Column({ nullable: true })
-  public profileId: number;
+  @Column({ type: 'integer', nullable: true })
+  public profileId: number | null;
 
-  @Column({ nullable: true })
-  public rootFolder: string;
+  @Column({ type: 'varchar', nullable: true })
+  public rootFolder: string | null;
 
-  @Column({ nullable: true })
-  public languageProfileId: number;
+  @Column({ type: 'integer', nullable: true })
+  public languageProfileId: number | null;
 
   @Column({ type: 'integer', nullable: true })
   public metadataLanguageId?: number | null;
@@ -3644,7 +3853,7 @@ export class MediaRequest {
       },
     },
   })
-  public tags?: number[];
+  public tags?: number[] | null;
 
   @Column({ default: false })
   public isAutoRequest: boolean;
@@ -3669,14 +3878,19 @@ export class MediaRequest {
   static async sendNotification(
     entity: MediaRequest,
     media: Media,
-    type: Notification
+    type: Notification,
+    queryRunner?: QueryRunner
   ) {
     try {
       if (Number.isSafeInteger(entity.id) && entity.id > 0) {
-        await notificationManager.sendNotificationIntent(type, {
-          kind: 'media-request',
-          requestId: entity.id,
-        });
+        await notificationManager.sendNotificationIntent(
+          type,
+          {
+            kind: 'media-request',
+            requestId: entity.id,
+          },
+          queryRunner
+        );
         return;
       }
       const { buildMediaRequestNotificationPayload } =
@@ -3686,7 +3900,7 @@ export class MediaRequest {
         media,
         type
       );
-      await notificationManager.sendNotification(type, payload);
+      await notificationManager.sendNotification(type, payload, queryRunner);
     } catch (e) {
       logger.error('Something went wrong sending media notification(s)', {
         label: 'Notifications',
@@ -3694,6 +3908,9 @@ export class MediaRequest {
         requestId: entity.id,
         mediaId: entity.media.id,
       });
+      if (queryRunner) {
+        throw e;
+      }
     }
   }
 }
