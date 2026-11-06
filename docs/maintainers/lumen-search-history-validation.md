@@ -19,7 +19,7 @@ Task evidence is retained under
 - `lumen-history-baseline.log`: both desktop regressions fail on the original
   production build: shared history appears and malformed JSON crashes Search.
 - `lumen-history-expanded.log`: all 36 built-frontend cases pass across desktop
-  1440×900, iPhone 390×664, Android 393×727 and tablet 834×1194 CSS viewports.
+  1440×900, iPhone 390×664, Android 412×839 and tablet 834×1194 CSS viewports.
   These include same-browser logout/login isolation, real input/Enter persistence,
   reload/readback, account-local clearing, legacy deletion, malformed JSON and
   denied storage, plus existing API-cache, request, Plex sign-in and device-link
