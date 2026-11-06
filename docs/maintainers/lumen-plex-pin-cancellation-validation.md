@@ -30,3 +30,9 @@ exchange and error state. Automatic closure of the remote Plex window is not
 claimed. PIN HTTP requests remain subject to the existing fetch behavior; this
 repair does not claim a new per-request timeout, live Plex approval, or physical
 mobile testing.
+
+Hosted CI initially passed 23 cases but failed a pre-login Android screenshot:
+it captured before the asynchronous authenticated-state check mounted the login
+form. Captures now wait for the actual Plex button and focus their own page.
+Sixteen repeated focused cases pass with all captures retained; the cancellation
+and token-exchange assertions are unchanged. Hosted revalidation is pending.

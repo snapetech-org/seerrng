@@ -37,6 +37,10 @@ for (const cancelled of [true, false]) {
       await route.fulfill({ json: { authToken: 'fixture-token' } });
     });
     await page.goto('/');
+    await expect(
+      page.getByRole('button', { name: 'Continue with Plex' })
+    ).toBeVisible();
+    await page.bringToFront();
     await page.screenshot({ path: info.outputPath('before-plex.png') });
     const popupOpened = page.waitForEvent('popup');
     await page.getByRole('button', { name: 'Continue with Plex' }).click();
@@ -62,6 +66,8 @@ for (const cancelled of [true, false]) {
         page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)
       )
       .toBe(true);
+    // Closing an emulated-mobile popup can leave its opener in the background.
+    await page.bringToFront();
     await page.screenshot({ path: info.outputPath('after-plex.png') });
   });
 }
