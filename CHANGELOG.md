@@ -9,6 +9,50 @@ v3.72.7 section consolidates changes from the requested v3.71.4 baseline
 through v3.72.7, including changes also represented by unpublished interim
 tags. The comparison link is the complete commit range.
 
+## [3.72.11](https://github.com/snapetech-org/seerrng/compare/v3.72.10..v3.72.11) - 2026-11-06
+
+Translation changes include machine-assisted corrections. Coverage and native-speaker review remain incomplete; missing or outdated values use the existing parent or English fallback.
+
+### User-facing changes
+
+#### Added
+
+- **Localization:** Choose a metadata language for media titles and search results independently of the interface language. The default follows the display language; explicit request language parameters retain precedence.
+- **Localization:** Choose date, time, number, and unit formatting independently of the interface language, or follow its default. Document language and direction follow the validated user or browser locale.
+- **Localization:** Notification event titles follow the delivery language, including user-profile language when enabled for Discord. Unsupported translations fall back to English. Adapted from Seerr [PR #3421](https://github.com/seerr-team/seerr/pull/3421).
+
+#### Changed
+
+- **Localization:** Reviewed translations for Bookshelf path migration status and related settings messages are clearer across the supported locales.
+- **Localization:** Spanish request, media, and detail labels now use wording matched to their component context, including shared statuses and titles with variable grammatical gender.
+- **Performance:** API message localization reuses its authored phrases for matching instead of downloading a second copy of every phrase. Message identities, captured provider values and translated output remain unchanged.
+- **Interface:** Corrects translated interface text and help content across the 12 supported locales.
+- **Interface:** Corrects translated settings labels and help text across the 12 supported locales.
+- **Interface:** Corrects translated interface text and help content across the 12 supported locales.
+- **Interface:** Corrects translated interface text and notification copy across the 12 supported locales.
+- **Localization:** Discover filters and sort labels now use clearer translations across twelve locales while preserving the intended media-status and sort meanings.
+
+#### Fixed
+
+- **Requests:** Magazine request quotas now use the magazine label and natural count forms across the supported locales.
+- **Notifications:** Notification settings now use clearer translated labels and descriptions, helping users choose which request and media status updates they receive.
+- **Permissions:** Translated permission labels and descriptions now cover request and auto-request access, blocklists, downloads, issues, and watchlists. Person request actions, quota labels, and comic and audiobook reader guidance also have more complete localized copy.
+- **Localization:** Expanded interface translations across twelve locales and corrected message arguments, quota periods, and fallback language metadata. Empty or outdated translations use the existing parent or English fallback while remaining visible as translation coverage gaps.
+- **Dependencies:** Update Next and its analyzer, Nodemailer, MIME lookup and ICU parsing dependencies. Align workspace overrides with the requested Next and Nodemailer versions so upgrades take effect in the installed application.
+- **Interface:** SeerrNGJ detail and request summaries reserve the full theme poster width before metadata. Collection rows retain their selection column, and SeerrOrig request dialogs use their established stacked phone layout. Posters no longer cover nearby text when opening dialogs or changing viewport width.
+- **Localization:** Arabic count messages now use the correct plural forms for durations, requests, media, library items, and notifications. Comic issue counts and scheduled job intervals also use their intended meanings.
+- **Localization:** Account email callers receive an initialized language formatter even before explicit startup initialization. Browser viewport and PWA metadata remain present while the interface language loads, and theme-color updates persist across palette changes and reloads.
+- **Localization:** Stable API results, persisted status messages, notification headings and fallback content now have locale-aware display boundaries. User comments, provider details, media values, and protocol data remain intact.
+- **Localization:** Bulk request labels, media-type fallbacks, confirmation buttons, tracking fallbacks, and request/settings notices now use localization messages. API notice helpers and client-created errors have source-bound catalog coverage.
+- **Lumen:** Closing the Plex sign-in popup now cancels a PIN poll even when its response contains an authentication token, preventing an unwanted sign-in after cancellation.
+- **Downloads:** Automatic download recovery leaves paused downloads alone, including those with old seedless or failure warnings. Paused time no longer consumes the retry stall window, giving resumed downloads time to make progress.
+- **Settings:** Searching Settings for API now opens and focuses the application API key instead of stopping at an unrelated service's API-key label. Exact indexed setting names take priority while ordinary local-label searches and the dedicated Prowlarr destination remain available.
+
+#### Security
+
+- **Books:** **Breaking:** Bindery requester-owned requests now require administrator-configured account ID mappings. Changing a display name or email cannot assign requests to another Bindery account. Missing or stale mappings stop dispatch; older backends without requester ownership keep their service-account behavior.
+  - **Action required:** Configure Requester Account Mappings in Bindery service settings when the backend supports requester-owned requests.
+
 ## [3.72.10](https://github.com/snapetech-org/seerrng/compare/v3.72.9..v3.72.10) - 2026-11-06
 
 ### User-facing changes
