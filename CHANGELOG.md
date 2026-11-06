@@ -19,6 +19,8 @@ tags. The comparison link is the complete commit range.
 - **Books:** Removing a manager copy preserves independent Audiobookshelf/Plex availability. Cancelling a mixed-format request leaves already-imported files intact while withdrawing pending work.
 - **Interface:** Phone request summaries give metadata the card width; search/manage controls wrap instead of covering request buttons. Music details and request dialogs show one readable track-list layout without empty columns.
 
+- **Discovery:** Restore Arabic carousel positions after Back navigation, accept empty public TMDB lists and enforce the provider's supported list-ID range.
+
 ### Operator and maintainer changes
 
 - **Action after upgrading:** Rescan enabled book services to populate imported-file observations for legacy records. Migration does not infer files from manager IDs; independent Audiobookshelf/Plex items are preserved.
