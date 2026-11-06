@@ -21,6 +21,7 @@ import {
   parseOptionalBoundedString,
   parseOptionalNonNegativeInteger,
 } from '@server/utils/validation';
+import { parseBinderyUserMappings } from './binderyUserMappings';
 import { REDACTED_SECRET, isValidHttpUrl } from './security';
 
 const MAX_SERVICE_STRING_LENGTH = 512;
@@ -720,11 +721,19 @@ export const parseReadarrSettings = (
     return { error: 'serviceType is invalid.' };
   }
 
+  const mappings = parseBinderyUserMappings(
+    settings.binderyUserMappings === undefined
+      ? (current?.binderyUserMappings ?? {})
+      : settings.binderyUserMappings
+  );
+  if ('error' in mappings) return mappings;
+
   return {
     value: {
       ...parsed.value,
       backend,
       serviceType,
+      ...(backend === 'bindery' ? { binderyUserMappings: mappings.value } : {}),
     },
   };
 };

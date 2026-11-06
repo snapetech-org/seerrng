@@ -61,10 +61,21 @@ shows which behavior the connected version supports.
 If Bindery advertises the `requestsForUser` capability in `/system/status`,
 SeerrNG creates a Bindery request for the matching user. During setup, **Test
 connection** reports whether that capability is available and how many user
-accounts Bindery returned. SeerrNG matches the requester's local username,
-Plex or Jellyfin username, or email to a Bindery username or email. Matching
-ignores letter case; a missing or ambiguous match stops dispatch rather than
-assigning the request to the wrong person.
+accounts Bindery returned. An administrator must set **Requester Account
+Mappings** in that Bindery service's connection dialog. Enter a JSON object
+whose keys are SeerrNG user IDs and whose values are Bindery user IDs; for
+example, `{"2": 7}` assigns requests from SeerrNG user 2 to Bindery account 7.
+Use the user's SeerrNG profile URL to identify the SeerrNG ID and Bindery's
+administrator user records to identify the Bindery ID. Configure each Bindery
+service separately.
+
+Display names and email addresses are not proof of account ownership and are
+never used for this association. Missing mappings or a mapped Bindery account
+that no longer exists stop dispatch with an administrator-action message.
+SeerrNG does not fall back to the API-key owner when requester-owned requests
+are advertised. Existing connections need this explicit mapping before sending
+new requester-owned requests; earlier name-based associations are not migrated
+because they were not verified identity links.
 
 Enable Bindery's **Auto-approve requests** option for each account whose
 SeerrNG-approved requests should start acquisition immediately. Without it,

@@ -7263,6 +7263,14 @@ components:
         - $ref: '#/components/schemas/LidarrSettings'
         - type: object
           properties:
+            binderyUserMappings:
+              type: object
+              description: Administrator-configured SeerrNG user ID to Bindery user ID links for requester-owned requests.
+              maxProperties: 1000
+              additionalProperties:
+                type: integer
+                minimum: 1
+                maximum: 2147483647
             serviceType:
               type: string
               enum: [ebook, audiobook, both]
