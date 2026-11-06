@@ -307,7 +307,11 @@ test('album and book supplemental details do not repeat summary fields', () => {
     ],
   ]) {
     const source = read(`../components/${file}`);
-    const details = source.slice(source.indexOf(`id="${id}"`));
+    const detailsNode = elements(source).find(
+      (node) => attribute(node, 'id') === id
+    );
+    assert.ok(detailsNode, `${file}: missing supplemental section`);
+    const details = detailsNode.getText();
     for (const field of removed)
       assert.ok(
         !details.includes(`messages.${field})`),
@@ -398,7 +402,7 @@ test('accepted series Overview shares disclosure ordering while movie overview p
     const disclosures = source.indexOf(
       file.startsWith('TvDetails')
         ? '<ReorderableDisclosureRow'
-        : 'media-detail-disclosure-row',
+        : '{movieDetailExtras}',
       overview
     );
     const following = source.indexOf(followingContent, disclosures);

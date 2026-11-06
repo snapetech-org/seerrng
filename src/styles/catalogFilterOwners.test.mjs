@@ -328,31 +328,61 @@ const verifyPermanentTitleBranches = (source) => {
       );
   }
 };
-const unwrapOptions = (expression) => {
-  if (ts.isJsxExpression(expression))
-    return unwrapOptions(expression.expression);
-  if (ts.isParenthesizedExpression(expression) || ts.isAsExpression(expression))
-    return unwrapOptions(expression.expression);
+const unwrapOptions = (expression, metadataSort = false) => {
+  if (
+    ts.isJsxExpression(expression) ||
+    ts.isParenthesizedExpression(expression) ||
+    ts.isAsExpression(expression) ||
+    ts.isSatisfiesExpression(expression)
+  )
+    return unwrapOptions(expression.expression, metadataSort);
   if (
     ts.isCallExpression(expression) &&
     ts.isPropertyAccessExpression(expression.expression) &&
     expression.expression.name.text === 'map'
   )
-    return unwrapOptions(expression.expression.expression);
+    return unwrapOptions(expression.expression.expression, metadataSort);
+  if (ts.isIdentifier(expression)) {
+    const declaration = collectNodes(
+      expression.getSourceFile(),
+      ts.isVariableDeclaration
+    ).find((node) => node.name.getText() === expression.text);
+    assert.ok(
+      declaration?.initializer,
+      'dropdown options remain source-backed'
+    );
+    return unwrapOptions(declaration.initializer, metadataSort);
+  }
+  if (ts.isConditionalExpression(expression)) {
+    assert.equal(
+      expression.condition.getText(),
+      'supportsMetadataSort',
+      'metadata-only choices retain their media-type gate'
+    );
+    return unwrapOptions(
+      metadataSort ? expression.whenTrue : expression.whenFalse,
+      metadataSort
+    );
+  }
   assert.ok(
     ts.isArrayLiteralExpression(expression),
     'dropdown options remain source-backed'
   );
-  return expression.elements.map((item) =>
-    ts.isArrayLiteralExpression(item)
-      ? item.elements[0].text
-      : item.properties.find(
-          (property) =>
-            ts.isPropertyAssignment(property) &&
-            property.name.getText() === 'value'
-        ).initializer.text
+  return expression.elements.flatMap((item) =>
+    ts.isSpreadElement(item)
+      ? unwrapOptions(item.expression, metadataSort)
+      : ts.isArrayLiteralExpression(item)
+        ? [item.elements[0].text]
+        : [
+            item.properties.find(
+              (property) =>
+                ts.isPropertyAssignment(property) &&
+                property.name.getText() === 'value'
+            ).initializer.text,
+          ]
   );
 };
+
 const verifyLegacyRequestControls = (source) => {
   const controls = consumerOpenings(source).filter(
     (node) => node.tagName.getText() === 'CompactSelect'
@@ -367,6 +397,7 @@ const verifyLegacyRequestControls = (source) => {
       0,
       'effectiveFilter',
       [
+        'active',
         'all',
         'pending',
         'approved',
@@ -385,7 +416,7 @@ const verifyLegacyRequestControls = (source) => {
       ['all', 'movie', 'tv', 'music', 'book', 'sports'],
       'setCurrentMediaType',
     ],
-    [2, 'currentSort', ['added', 'modified'], 'setCurrentSort'],
+    [2, 'effectiveSort', ['added', 'modified'], 'setCurrentSort'],
   ]) {
     assert.equal(
       consumerValue(controls[index], 'value'),
@@ -413,6 +444,16 @@ const verifyLegacyRequestControls = (source) => {
       'targeted-user navigation is retained'
     );
   }
+  assert.deepEqual(
+    unwrapOptions(consumerAttribute(controls[2], 'options').initializer, true),
+    ['added', 'modified', 'popularity', 'releaseDate', 'rating', 'title'],
+    'video-only metadata sort options remain available'
+  );
+  assert.match(
+    source,
+    /effectiveMediaType === 'movie' \|\| effectiveMediaType === 'tv'/,
+    'metadata sort options remain limited to video'
+  );
   assert.equal(
     consumerValue(controls[0], 'defaultValue'),
     'pending',
@@ -420,7 +461,7 @@ const verifyLegacyRequestControls = (source) => {
   );
   assert.match(
     source,
-    /setCurrentSortDirection\(\s*currentSortDirection === 'asc' \? 'desc' : 'asc'/,
+    /setCurrentSortDirection\(\s*effectiveSortDirection === 'asc' \? 'desc' : 'asc'/,
     'sort direction keeps its original toggle semantics'
   );
 };

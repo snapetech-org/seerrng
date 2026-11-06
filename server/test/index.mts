@@ -31,6 +31,7 @@ const parseTestConcurrency = (value: string) => {
 
 program
   .name('test')
+  .option('--list', 'List native test files as JSON without running them')
   .argument('[file...]', 'Test file(s) to run (default: all)')
   .option(
     '-m, --test-name-pattern <pattern>',
@@ -80,17 +81,22 @@ if (positionals.length > 0) {
   files = positionals.map((f) => resolve(f));
 } else {
   files = [];
-  for await (const entry of glob(join(BASE_DIR, 'server/**/*.test.ts'))) {
-    if (!(await isVitestFile(entry))) {
-      files.push(resolve(entry));
-    }
-  }
-  for await (const entry of glob(join(BASE_DIR, 'src/**/*.test.ts'))) {
-    if (!(await isVitestFile(entry))) {
-      files.push(resolve(entry));
+  for (const pattern of [
+    'server/**/*.test.ts',
+    'src/**/*.test.ts',
+    'server/**/*.test.mjs',
+    'src/**/*.test.mjs',
+  ]) {
+    for await (const entry of glob(join(BASE_DIR, pattern))) {
+      if (!(await isVitestFile(entry))) files.push(resolve(entry));
     }
   }
   files.sort();
+}
+
+if (opts.list) {
+  process.stdout.write(`${JSON.stringify(files)}\n`);
+  process.exit(0);
 }
 
 // @ts-expect-error Node's test runner needs this explicit test environment.

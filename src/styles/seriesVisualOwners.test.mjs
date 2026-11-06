@@ -25,10 +25,17 @@ const nativeRoles = [
 
 const verifyNativeOwners = (stylesheet) => {
   const root = postcss.parse(stylesheet);
+  const shared = postcss.parse(
+    readFileSync(
+      new URL('./interfaceThemes/shared.css', import.meta.url),
+      'utf8'
+    )
+  );
   const definitions = new Set();
-  root.walkDecls((decl) => {
-    if (decl.prop.startsWith('--')) definitions.add(decl.prop);
-  });
+  for (const stylesheetRoot of [shared, root])
+    stylesheetRoot.walkDecls((decl) => {
+      if (decl.prop.startsWith('--')) definitions.add(decl.prop);
+    });
   for (const role of nativeRoles) {
     let found = false;
     root.walkRules((rule) => {
