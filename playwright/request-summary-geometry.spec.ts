@@ -7,7 +7,7 @@ test.afterEach(async ({ page }) => restoreAdminPresentation(page));
 const baseline = process.env.SEERR_SUMMARY_BASELINE === 'true';
 
 for (const theme of ['seerrOrig', 'seerrNGJ']) {
-  for (const width of [390, 1440]) {
+  for (const width of [320, 390, 1440]) {
     for (const mediaType of ['movie', 'tv']) {
       test(`${theme} ${mediaType} request summary at ${width}px`, async ({
         page,

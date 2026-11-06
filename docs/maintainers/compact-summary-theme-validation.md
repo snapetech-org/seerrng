@@ -33,8 +33,8 @@ at its documented API boundary; screenshots render production components and
 actual theme stylesheets. No live provider mutations are used for visual QA.
 
 - Baseline request geometry: all eight strict regression cases fail on v3.72.15.
-- Candidate requests: eight cases pass, covering movie/series, both themes,
-  390px/1440px widths, compact geometry, retained primary-detail dimensions,
+- Candidate requests: 12 cases pass, covering movie/series, both themes,
+  320px/390px/1440px widths, compact geometry, retained primary-detail dimensions,
   disclosure icon geometry and expanded Advanced Options without overflow.
 - Focused style contracts: 76 passed.
 - Production build, lint and server/client type checks passed.
@@ -45,8 +45,30 @@ actual theme stylesheets. No live provider mutations are used for visual QA.
   authentication. The dynamic password-reset form is additionally captured
   anonymously. Wrapper/error boundaries are exercised through page consumers.
 
-Full candidate visual review, shared consumer checks, complete CI and release
-artifact acceptance are still in progress. A route screenshot or no-overflow
+The 584 matched signed-in route captures were compared with the immutable
+baseline; 453 were pixel-identical. Contact sheets for every candidate route,
+full-size changed request dialogs, populated request-status/history, issue
+list/focused issue and blocklist cards were inspected in both themes and widths.
+The ten anonymous form/callback/setup captures were also inspected. Pixel
+changes outside the repaired roles include live log/job/status data and tiny
+sidebar icon rasterization differences; these are not layout regressions.
+
+The 38 shared-consumer browser cases passed (books, collection summaries,
+primary media layouts, poster rating position and the original eight request
+cases), including English/Arabic and the existing third-theme controls. A
+further 16 request cases passed at 360, 640, 768 and 1024px. The added 320px
+movie case caught a 7px approval-value overflow in SeerrOrig. Attaching the
+existing `card-table-value` role, already used by TV, fixes it without another
+CSS owner. All 12 permanent request cases pass after this repair.
+
+Populated request status revealed a separate date defect: date-only
+`1999-10-15` displayed as October 14 in America/Regina. Only calendar release
+metadata now formats with UTC, matching the detail-page convention; request
+creation/history timestamps keep local-time behavior. Four rendered regression
+cases reproduce the old date failure in both themes and widths. All four candidate date cases and all 12 request-dialog cases pass together
+on the final rebuilt v3.72.16 candidate (16 total); their full-size screenshots
+were inspected in both themes. Complete CI and release artifact acceptance
+remain pending. A route screenshot or no-overflow
 assertion alone is not visual acceptance. Empty/error states caused by disabled
 offline providers are retained separately from populated model fixtures.
 Initial harness failures (incorrect similar/collection fixture shapes and one

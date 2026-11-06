@@ -1424,6 +1424,7 @@ const RequestStatusCard = ({
                 year: 'numeric',
                 month: 'short',
                 day: 'numeric',
+                timeZone: 'UTC',
               })
             : intl.formatMessage(messages.notAvailable);
         })()

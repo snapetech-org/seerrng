@@ -16,6 +16,7 @@ tags. The comparison link is the complete commit range.
 #### Fixed
 
 - **Interface:** Request dialogs, collections and compact list cards keep correctly sized posters and top-aligned details in SeerrOrig and SeerrNGJ. Advanced Options icons and labels fit their controls. Inconsistent page titles use the existing responsive style; large detail-page layouts retain their theme geometry.
+- **Requests:** Request status preserves calendar release dates in western time zones instead of displaying the previous day. Movie request approval values stay inside their table column on narrow phones.
 
 ### 🐛 Bug Fixes
 - *(interface)* Isolate compact summaries from detail theme geometry - ([38333c6](https://github.com/snapetech-org/seerrng/commit/38333c693bfa504210cde1cbde295d3a55b5d4a4))

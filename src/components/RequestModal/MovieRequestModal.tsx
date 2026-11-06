@@ -846,7 +846,7 @@ const MovieRequestModal = ({
                 <dt className="font-medium text-gray-100">
                   {intl.formatMessage(messages.approval)}:
                 </dt>
-                <dd className="m-0 min-w-0">
+                <dd className="card-table-value">
                   <RequestFooterStatus
                     available={
                       selectedDestinationAvailable && !requesterTagOnly
