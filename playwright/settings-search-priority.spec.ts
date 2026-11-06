@@ -1,6 +1,8 @@
 import { expect, test } from '@playwright/test';
+import { restoreAdminPresentation } from './helpers/presentation';
 
 test.use({ serviceWorkers: 'block', reducedMotion: 'reduce' });
+test.afterEach(async ({ page }) => restoreAdminPresentation(page));
 
 for (const theme of ['seerrNGJ', 'seerrOrig', 'persiusNG']) {
   for (const width of [390, 1440]) {

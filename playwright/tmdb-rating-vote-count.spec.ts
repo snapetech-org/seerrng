@@ -1,8 +1,10 @@
 import { expect, test, type Page } from '@playwright/test';
+import { restoreAdminPresentation } from './helpers/presentation';
 
 test.use({ serviceWorkers: 'block' });
 
 const loginAsAdmin = async (page: Page, baseURL: string | undefined) => {
+  await restoreAdminPresentation(page);
   expect(baseURL).toBeTruthy();
   const loginResponse = await page
     .context()

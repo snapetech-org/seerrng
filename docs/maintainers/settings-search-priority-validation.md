@@ -41,3 +41,6 @@ Evidence lives under
 `historical-series-destination-accepted*`. All runtime configs are isolated task
 fixtures, with the network guard explicitly enabled. Native Windows/Firefox
 select contrast and complete localization approval remain outside this check.
+
+
+The combined browser run exposed presentation state leaking from settings search into four later Orig filter cases. Search now restores seeded English/Orig after each case; rating/filter cases initialize that presentation explicitly. All 16 focused settings-search and rating/filter cases pass. The full-suite repeat is pending.
