@@ -690,7 +690,7 @@
   "components.Settings.mediaTypeSeries": "serija",
   "components.Settings.tautulliSettings": "Tautulli postavke",
   "components.Settings.validationUrlBaseLeadingSlash": "Osnovni URL mora početi s kosom crtom",
-  "components.Settings.webAppUrlTip": "Opcionalno usmjeri korisnike na web program na tvom poslužitelju umjesto na „hostirani” web program",
+  "components.Settings.webAppUrlTip": "Opcionalno usmjeri korisnike na web program na tvom poslužitelju umjesto na „hostirani” web program https://app.plex.tv/desktop",
   "components.StatusChecker.appUpdatedDescription": "Pritisni donji gumb za ponovno pokretanje programa.",
   "components.StatusChecker.restartRequiredDescription": "Ponovo pokreni poslužitelja kako bi se ažurirane postavke primijenile.",
   "components.TvDetails.episodeRuntime": "Trajanje epizode",

@@ -615,7 +615,7 @@
   "components.Setup.configureservices": "Διαμόρφωση υπηρεσιών",
   "components.Settings.webpush": "Web Push",
   "components.Settings.webhook": "Webhook",
-  "components.Settings.webAppUrlTip": "Προαιρετικά κατεύθυνε τους χρήστες στην εφαρμογή ιστού στον διακομιστή σας αντί για την εφαρμογή ιστού που \"φιλοξενείται\"",
+  "components.Settings.webAppUrlTip": "Προαιρετικά κατεύθυνε τους χρήστες στην εφαρμογή ιστού στον διακομιστή σας αντί για την εφαρμογή ιστού που \"φιλοξενείται\" https://app.plex.tv/desktop",
   "components.Settings.webAppUrl": "<WebAppLink>Web App</WebAppLink> διεύθυνση URL",
   "components.Settings.validationPortRequired": "Πρέπει να δώσεις έναν έγκυρο αριθμό θύρας",
   "components.Settings.toastPlexRefreshSuccess": "Η λίστα διακομιστών Plex ανακτήθηκε με επιτυχία!",

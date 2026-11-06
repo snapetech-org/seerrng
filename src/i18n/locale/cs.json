@@ -770,7 +770,7 @@
   "components.Settings.toastTautulliSettingsFailure": "Při ukládání nastavení Tautulli se něco pokazilo.",
   "components.Settings.webAppUrl": "Adresa URL <WebAppLink>webové aplikace</WebAppLink>",
   "components.Settings.validationUrlTrailingSlash": "Adresa URL nesmí končit lomítkem",
-  "components.Settings.webAppUrlTip": "Volitelně přesměrujte uživatele na webovou aplikaci na vašem serveru namísto „hostované“ webové aplikace",
+  "components.Settings.webAppUrlTip": "Volitelně přesměrujte uživatele na webovou aplikaci na vašem serveru namísto „hostované“ webové aplikace https://app.plex.tv/desktop",
   "components.Setup.welcome": "Vítejte v Seerr",
   "components.Setup.signinMessage": "Začněte přihlášením",
   "components.TvDetails.TvCrew.fullseriescrew": "Kompletní štáb seriálu",

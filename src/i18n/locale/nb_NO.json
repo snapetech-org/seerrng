@@ -905,7 +905,7 @@
   "components.Settings.Notifications.NotificationsWebhook.toastWebhookTestSending": "Webhook sender test-varsel…",
   "components.Settings.Notifications.pgpPrivateKeyTip": "Bruk<OpenPgpLink>OpenPGP</OpenPgpLink> til å signere krypterte E-postmeldinger",
   "components.Settings.Notifications.NotificationsPushover.validationUserTokenRequired": "Du må oppgi en gyldig bruker- eller gruppe nøkkel",
-  "components.Settings.webAppUrlTip": "Alternativt send brukerne direkte til Web-Tjenesten på din tjener istedenfor Plex sin Web-tjener",
+  "components.Settings.webAppUrlTip": "Alternativt send brukerne direkte til Web-Tjenesten på din tjener istedenfor Plex sin Web-tjener https://app.plex.tv/desktop",
   "components.Settings.webhook": "Webhook",
   "components.Settings.Notifications.NotificationsWebPush.httpsRequirement": "For å kunne sende Web Push varsler, må Seerr kommunisere over HTTPS.",
   "components.Settings.Notifications.toastTelegramTestSuccess": "Test-varsel ble sendt med Telegram!",

@@ -811,7 +811,7 @@
   "components.Settings.validationUrlBaseTrailingSlash": "База URL-адреси не має закінчуватися косою рискою",
   "components.Settings.validationUrlTrailingSlash": "URL-адреса не має закінчуватися косою рискою",
   "components.Settings.webAppUrl": "URL <WebAppLink>веб-програми</WebAppLink>",
-  "components.Settings.webAppUrlTip": "При необхідності надсилайте користувачів у веб-додаток на вашому сервері замість розміщеного на plex.tv",
+  "components.Settings.webAppUrlTip": "При необхідності надсилайте користувачів у веб-додаток на вашому сервері замість розміщеного на https://app.plex.tv/desktop",
   "components.Settings.webhook": "Веб-перехоплювач",
   "components.Settings.webpush": "Веб-push",
   "components.Setup.configureservices": "Налаштуйте служби",

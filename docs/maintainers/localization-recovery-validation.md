@@ -41,10 +41,18 @@ failures used the admin-only content selector on the profile page or required an
 explicit `dir=ltr` attribute absent from the baseline; those harness assumptions
 were corrected and their failure artifacts retained.
 
+Protected-token review repaired 18 real catalog defects, including Plex URLs,
+HTTP/HTTPS literals, code paths and Telegram commands. Six Japanese/Chinese URL
+examples differed only in sentence punctuation; the shared validator now permits
+that punctuation while its regression test still rejects changed hosts, ports,
+protocols and query values. Protected-token diagnostics are zero. The ordinary
+i18n check, focused URL regression and changed-file formatting passed. These
+latest catalog edits have not yet been rebuilt into the browser runtime.
+
 ## Remaining acceptance and exclusions
 
-- Resolve the remaining 159 argument/tag contract diagnostics and 24 protected
-  token diagnostics. Some plural differences may be valid grammar and require
+- Resolve the remaining 159 argument/tag contract diagnostics. Some plural
+  differences may be valid grammar and require
   caller-aware review; do not delete them merely to silence a validator.
 - Empty/obsolete keys, untranslated additions since the original branch, and
   plural/review coverage remain visible. Arabic captures contain English fallback

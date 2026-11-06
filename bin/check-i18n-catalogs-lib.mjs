@@ -1,5 +1,11 @@
 import path from 'node:path';
 
+/** Sentence full stops are not part of an unquoted example URL. */
+export const extractProtectedUrlTokens = (message) =>
+  (message.match(/https?:\/\/[^\s<>]+|\bhttps?\b/gi) ?? [])
+    .map((token) => token.replace(/[.。]+$/u, ''))
+    .sort();
+
 const fallbackKey = (domain, id) => `${domain}:${id}`;
 
 export const getFallbackEntry = (fallbackEntries, domain, id) =>

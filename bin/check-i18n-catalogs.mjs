@@ -15,6 +15,7 @@ import {
   isValidProvenanceEntry,
   matchesProvenanceFingerprints,
   matchesSourceCallsiteLine,
+  extractProtectedUrlTokens as urlTokens,
 } from './check-i18n-catalogs-lib.mjs';
 
 const require = createRequire(import.meta.url);
@@ -153,9 +154,6 @@ const collectContract = (
     plurals: contract.plurals,
   };
 };
-
-const urlTokens = (message) =>
-  (message.match(/https?:\/\/[^\s<>]+|\bhttps?\b/gi) || []).sort();
 
 const hashSource = (message) =>
   createHash('sha256').update(message, 'utf8').digest('hex');

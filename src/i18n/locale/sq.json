@@ -926,7 +926,7 @@
   "components.UserProfile.UserSettings.UserPasswordChange.nopermissionDescription": "Ju nuk keni leje për të modifikuar fjalëkalimin e këtij përdoruesi.",
   "components.UserProfile.UserSettings.UserPasswordChange.toastSettingsFailureVerifyCurrent": "Diçka shkoi keq duke ruajtur fjalëkalimin. A u fut fjalëkalimi në mënyrë korrekte?",
   "components.UserProfile.UserSettings.UserPermissions.toastSettingsFailure": "Diçka shkoi keq duke ruajtur cilësimet.",
-  "components.Settings.webAppUrlTip": "Në mënyrë opsionale drejto përdoruesit në aplikacionin web në serverin tënd në vend të atij web",
+  "components.Settings.webAppUrlTip": "Në mënyrë opsionale drejto përdoruesit në aplikacionin web në serverin tënd në vend të atij web https://app.plex.tv/desktop",
   "components.TvDetails.episodeRuntimeMinutes": "{runtime} minuta",
   "components.UserList.importfrommediaserver": "Importoni përdoruesit {mediaServerName}",
   "components.UserList.importfromplex": "Importoni përdoruesit Plex",

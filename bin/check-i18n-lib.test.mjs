@@ -13,6 +13,7 @@ import {
   isValidProvenanceEntry,
   matchesProvenanceFingerprints,
   matchesSourceCallsiteLine,
+  extractProtectedUrlTokens as urlTokens,
 } from './check-i18n-catalogs-lib.mjs';
 
 const require = createRequire(import.meta.url);
@@ -139,9 +140,6 @@ const inlineCodeValues = (nodes, values = []) => {
   }
   return values.sort();
 };
-
-const urlTokens = (message) =>
-  (message.match(/https?:\/\/[^\s<>]+|\bhttps?\b/gi) ?? []).sort();
 
 const assertNewClientMessages = () => {
   const extracted = JSON.parse(
@@ -437,4 +435,29 @@ test('reports added and removed message keys', () => {
 
 test('new request-status and advanced-theme messages are translated in every locale', () => {
   assertNewClientMessages();
+});
+
+test('protects URL destinations while allowing localized sentence full stops', () => {
+  assert.deepEqual(
+    urlTokens('For example, http://jellystat:3000.'),
+    urlTokens('例：http://jellystat:3000。')
+  );
+  assert.deepEqual(urlTokens('例如：http://navidrome:4533。'), [
+    'http://navidrome:4533',
+  ]);
+  assert.deepEqual(
+    urlTokens('https://example.com/v1.2/config.json?mode=read'),
+    ['https://example.com/v1.2/config.json?mode=read']
+  );
+  for (const changed of [
+    'https://attacker.example/v1.2/config.json?mode=read',
+    'https://example.com/v1.2/config.json?mode=write',
+    'https://example.com:8443/v1.2/config.json?mode=read',
+    'http://example.com/v1.2/config.json?mode=read',
+  ])
+    assert.notDeepEqual(
+      urlTokens(changed),
+      urlTokens('https://example.com/v1.2/config.json?mode=read')
+    );
+  assert.notDeepEqual(urlTokens('HTTP/HTTPS'), urlTokens('HTTPS'));
 });

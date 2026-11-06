@@ -1060,7 +1060,7 @@
   "components.Settings.tautulliSettingsDescription": "İsteğe bağlı olarak Tautulli sunucunuzun ayarlarını yapılandırın. Seerr, Plex medyanız için izleme geçmişi verilerini Tautulli'den çeker.",
   "components.Settings.validationApiKey": "Bir API anahtarı girmelisiniz",
   "components.Settings.validationUrlBaseLeadingSlash": "URL tabanı eğik çizgi ile başlamalıdır",
-  "components.Settings.webAppUrlTip": "İsteğe bağlı olarak kullanıcıları \"barındırılan\" web uygulaması yerine sunucunuzdaki web uygulamasına yönlendirin",
+  "components.Settings.webAppUrlTip": "İsteğe bağlı olarak kullanıcıları \"barındırılan\" web uygulaması yerine sunucunuzdaki web uygulamasına yönlendirin https://app.plex.tv/desktop",
   "components.Setup.signinWithJellyfin": "Jellyfin bilgilerinizi girin",
   "components.StatusBadge.playonplex": "{mediaServerName}'da Oynat",
   "components.StatusChecker.appUpdatedDescription": "Uygulamayı yeniden yüklemek için aşağıdaki düğmeye tıklayın.",

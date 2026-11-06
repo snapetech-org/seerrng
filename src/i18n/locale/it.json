@@ -751,7 +751,7 @@
   "components.Settings.Notifications.toastDiscordTestSuccess": "Notifica Discord di prova inviata!",
   "components.UserList.localLoginDisabled": "L'impostazione <strong>Abilita Accesso Locale</strong> è attualmente disabilitata.",
   "components.UserProfile.UserSettings.UserGeneralSettings.languageDefault": "Predefinito ({language})",
-  "components.Settings.webAppUrlTip": "Indirizza opzionalmente gli utenti alla web app sul tuo server invece che alla web app \"ospitata\"",
+  "components.Settings.webAppUrlTip": "Indirizza opzionalmente gli utenti alla web app sul tuo server invece che alla web app \"ospitata\" https://app.plex.tv/desktop",
   "components.Settings.webAppUrl": "URL <WebAppLink>Web App</WebAppLink>",
   "components.Settings.SettingsUsers.newPlexLoginTip": "Permetti agli utenti di {mediaServerName} di accedere senza essere prima importati",
   "components.Settings.SettingsUsers.newPlexLogin": "Abilita nuovo accesso con {mediaServerName}",

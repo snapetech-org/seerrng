@@ -742,7 +742,7 @@
   "components.PermissionEdit.requestMovies": "Pedir Filmes",
   "components.UserProfile.UserSettings.UserGeneralSettings.languageDefault": "Predefinido ({language})",
   "components.UserList.localLoginDisabled": "A configuração <strong>Ativar inicio de sessão Local</strong> está desativada de momento.",
-  "components.Settings.webAppUrlTip": "Opcionalmente direcionar os utilizadores para a aplicação de web app no seu servidor, em vez da aplicação de web app \"hospedada\"",
+  "components.Settings.webAppUrlTip": "Opcionalmente direcionar os utilizadores para a aplicação de web app no seu servidor, em vez da aplicação de web app \"hospedada\" https://app.plex.tv/desktop",
   "components.Settings.webAppUrl": "URL <WebAppLink>Web App</WebAppLink>",
   "components.Settings.Notifications.webhookUrlTip": "Criar um <DiscordWebhookLink>webhook de integração</DiscordWebhookLink> no seu servidor",
   "components.Settings.Notifications.encryptionTip": "Na maioria dos casos, o TLS implícito usa a porta 465 e o STARTTLS usa a porta 587",
