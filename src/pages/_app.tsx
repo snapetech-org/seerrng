@@ -65,10 +65,12 @@ const AppHead = () => {
   const { currentSettings } = useSettings();
 
   return (
-    <Head>
-      <title>{currentSettings.applicationTitle}</title>
+    <>
+      <Head>
+        <title>{currentSettings.applicationTitle}</title>
+      </Head>
       <PWAHeader applicationTitle={currentSettings.applicationTitle} />
-    </Head>
+    </>
   );
 };
 
@@ -167,29 +169,32 @@ const CoreApp = ({ Component, pageProps, router }: AppProps) => {
 
   if (!localeReady) {
     return (
-      <div
-        className="flex min-h-screen items-center justify-center"
-        role="status"
-        aria-live="polite"
-        aria-atomic="true"
-        aria-busy="true"
-      >
-        <progress
-          className="sr-only"
-          aria-label={
-            loadedMessages[globalMessages.loading.id] ??
-            globalMessages.loading.defaultMessage
-          }
-          lang={getCatalogMessageLanguage(
-            loadedMessages,
-            globalMessages.loading.id,
-            activeLocale
-          )}
-        />
-        <div aria-hidden="true">
-          <LoadingSpinner />
+      <>
+        <PWAHeader />
+        <div
+          className="flex min-h-screen items-center justify-center"
+          role="status"
+          aria-live="polite"
+          aria-atomic="true"
+          aria-busy="true"
+        >
+          <progress
+            className="sr-only"
+            aria-label={
+              loadedMessages[globalMessages.loading.id] ??
+              globalMessages.loading.defaultMessage
+            }
+            lang={getCatalogMessageLanguage(
+              loadedMessages,
+              globalMessages.loading.id,
+              activeLocale
+            )}
+          />
+          <div aria-hidden="true">
+            <LoadingSpinner />
+          </div>
         </div>
-      </div>
+      </>
     );
   }
 
@@ -235,12 +240,6 @@ const CoreApp = ({ Component, pageProps, router }: AppProps) => {
           <ThemeProvider>
             <SettingsProvider>
               <InteractionProvider>
-                <Head>
-                  <meta
-                    name="viewport"
-                    content="initial-scale=1, viewport-fit=cover, width=device-width"
-                  />
-                </Head>
                 <AppHead />
                 <StatusChecker />
                 <ServiceWorkerSetup />
