@@ -1912,7 +1912,7 @@ test('unavailable optional channels can be skipped without dropping required pac
   assert.ok(required && optional);
   for (const skip of ['false', 'true']) {
     const output = execFileSync(
-      '/bin/bash',
+      'bash',
       [
         '--noprofile',
         '--norc',
