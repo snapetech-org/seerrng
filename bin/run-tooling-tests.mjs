@@ -29,6 +29,7 @@ export function defaultToolingWorkers(parallelism = availableParallelism()) {
 }
 
 const portableTests = [
+  'bin/api-message-surface-order.test.mjs',
   'bin/e2e-network-guard.test.mjs',
   'scripts/interface-theme.test.mjs',
   'bin/interface-theme-postgres-migration.test.mjs',
