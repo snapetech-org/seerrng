@@ -50,6 +50,33 @@ The **SeerrNG** palette provides a separate navy, blue, and sky treatment. Theme
 
 These settings filter content shown on the "Discover" home page based on regional availability and original language, respectively. The Streaming Region filters the available streaming providers on the media page. Users can override these global settings by configuring these same options in their user settings.
 
+## Streaming Availability Request Policy
+
+Administrators can enable a rule for new movie and series requests based on
+each requester's selected streaming subscriptions and streaming region. Users
+choose their subscribed services under **Profile Settings > General**;
+administrators can set the same preferences from that user's **General**
+settings. Availability uses the user's Streaming Region, then the global
+Streaming Region, and defaults to US if neither is set.
+
+Choose whether the rule matches titles available on at least one selected
+service or titles unavailable on all selected services. Then choose to reject
+matching requests, leave them pending, or approve them automatically. A pending
+result can override a user's usual auto-approval
+permission. Automatic approval does not bypass request permissions or quotas;
+an over-quota request remains pending for quota review.
+
+The rule is disabled by default. It uses TMDB's subscription streaming
+(`Flatrate`) entries only; rent and buy listings are ignored. If the requester
+has no selected services or TMDB has no availability record for their region,
+the rule does not act on the request. A rejected request is stopped before it is
+created and displays the configured message. If requesters may override
+rejections, the request dialog offers a **Request anyway** action for each
+matching request.
+
+The optional rejection message accepts `{title}`, `{providers}`, and `{region}`
+placeholders. If the message is blank, SeerrNG shows a default explanation.
+
 ## Blocklist Region and Blocklist Language
 
 These settings control the region and language used specifically for blocklist content scanning. The **Process Blocklist Rules** job uses these settings to determine which content to scan for blocklisting, independent of the general Discover settings.

@@ -2682,6 +2682,14 @@ components:
           type: string
           nullable: true
           example: 'US'
+        streamingSubscriptionProviderIds:
+          type: array
+          maxItems: 500
+          uniqueItems: true
+          items:
+            type: integer
+            minimum: 1
+          description: TMDB provider IDs the user subscribes to, evaluated in their Streaming Region, then the global Streaming Region, then US.
         originalLanguage:
           type: string
           nullable: true
@@ -3022,6 +3030,30 @@ components:
         versionCheck:
           type: boolean
           example: false
+        streamingRequestPolicy:
+          type: object
+          description: Optional request-time rule for new movie and series requests. Uses the requester’s region and selected services, falls back from the user region to the global region and then US, and does not act when regional availability data is missing.
+          required:
+            [enabled, condition, action, rejectionMessage, allowUserOverride]
+          properties:
+            enabled:
+              type: boolean
+              default: false
+            condition:
+              type: string
+              enum: [available, unavailable]
+              description: Match when at least one selected service has a subscription listing, or when none do.
+            action:
+              type: string
+              enum: [reject, pending, approve]
+              description: Pending can supersede normal auto-approval. Automatic approval still requires permission and quota eligibility.
+            rejectionMessage:
+              type: string
+              maxLength: 1000
+              description: Optional rejection message. Supports {title}, {providers}, and {region} placeholders.
+            allowUserOverride:
+              type: boolean
+              description: Allow the requester to continue a matching request after a rejection; normal permissions and quotas still apply.
     SavedConnectionHost:
       type: object
       required:
@@ -22467,6 +22499,9 @@ paths:
                   type: boolean
                   example: true
                   description: Explicitly ask an administrator to review an over-quota movie or TV request. Only valid when creating a request for the signed-in user.
+                bypassStreamingRequestPolicy:
+                  type: boolean
+                  description: Continue after a matching rejection only when the administrator allows requesters to override the streaming policy. Only valid for a new movie or TV request for the signed-in user.
               required:
                 - mediaType
                 - mediaId
@@ -22479,6 +22514,22 @@ paths:
                 $ref: '#/components/schemas/MediaRequest'
         '403':
           description: Request permission denied, quota exceeded without approval, or a per-request Episode Queue value was supplied
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    example: 403
+                  code:
+                    type: string
+                    enum: [STREAMING_REQUEST_POLICY_REJECTED]
+                  message:
+                    type: string
+                  allowOverride:
+                    type: boolean
+                    description: True when this requester may retry once while bypassing this policy match.
         '409':
           description: Another quota exception for this media type is already awaiting review
   /request/bulk:

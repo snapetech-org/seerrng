@@ -220,6 +220,7 @@ Recent repository updates include:
   with Sonarr language-profile selection on service versions that expose those
   profiles. This adapts the use case in Seerr
   [issue #3439](https://github.com/seerr-team/seerr/issues/3439).
+  Administrators can also apply an optional per-user streaming-availability policy to movie and series requests, with reject, pending, automatic-approval, and per-request override choices.
 - **User workflows:** local watchlist filters, a browser-saved Subject Tags
   visibility preference, private one-time availability notices for followed
   requests, per-user shared-availability display choices, and opt-in

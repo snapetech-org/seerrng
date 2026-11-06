@@ -119,6 +119,7 @@ const messages = defineMessages('components.RequestModal', {
   requestcancelled: 'Request for <strong>{title}</strong> canceled.',
   autoapproval: 'Automatic Approval',
   requesterror: 'Something went wrong while submitting the request.',
+  requestAnyway: 'Request anyway',
   pendingapproval: 'Your request is pending approval.',
   quotaApprovalSubmitted:
     'Your over-quota request for <strong>{title}</strong> is waiting for administrator approval.',
@@ -231,6 +232,9 @@ const TvRequestModal = ({
   const settings = useSettings();
   const { user, hasPermission } = useUser();
   const [selectedIs4k, setSelectedIs4k] = useState(is4k);
+  const [streamingPolicyRejection, setStreamingPolicyRejection] =
+    useState<string>();
+  const [isSubmittingRequest, setIsSubmittingRequest] = useState(false);
   const [qualityRevision, setQualityRevision] = useState(0);
   const [requestServiceServerId, setRequestServiceServerId] = useState<
     number | undefined
@@ -698,8 +702,8 @@ const TvRequestModal = ({
     }
   };
 
-  const sendRequest = async () => {
-    if (requestDisabled || requesterTagOnlyUnavailable) {
+  const sendRequest = async (bypassStreamingRequestPolicy = false) => {
+    if (requestDisabled || requesterTagOnlyUnavailable || isSubmittingRequest) {
       return;
     }
 
@@ -707,6 +711,8 @@ const TvRequestModal = ({
       return;
     }
 
+    setStreamingPolicyRejection(undefined);
+    setIsSubmittingRequest(true);
     if (onUpdating) {
       onUpdating(true);
       mutate('/api/v1/request/count');
@@ -743,6 +749,8 @@ const TvRequestModal = ({
           ignoreQuota: requestOverrides?.ignoreQuota,
           requestQuotaApproval: requestQuotaApproval || undefined,
           requesterTagOnly: requesterTagOnly || undefined,
+          bypassStreamingRequestPolicy:
+            bypassStreamingRequestPolicy === true || undefined,
           seasons: requesterTagOnly
             ? 'all'
             : stagesFullSeriesThroughWatchGate
@@ -796,17 +804,33 @@ const TvRequestModal = ({
         { appearance: 'success', autoDismiss: true }
       );
     } catch (error) {
+      const responseData = axios.isAxiosError<{
+        message?: unknown;
+        code?: unknown;
+        allowOverride?: unknown;
+      }>(error)
+        ? error.response?.data
+        : undefined;
+      if (
+        responseData?.code === 'STREAMING_REQUEST_POLICY_REJECTED' &&
+        responseData.allowOverride === true &&
+        typeof responseData.message === 'string'
+      ) {
+        setStreamingPolicyRejection(responseData.message);
+        return;
+      }
       const serverMessage =
         axios.isAxiosError(error) &&
         (error.response?.status === 403 || error.response?.status === 503) &&
-        typeof error.response.data?.message === 'string'
-          ? error.response.data.message
+        typeof responseData?.message === 'string'
+          ? responseData.message
           : undefined;
       addToast(serverMessage ?? intl.formatMessage(messages.requesterror), {
         appearance: 'error',
         autoDismiss: true,
       });
     } finally {
+      setIsSubmittingRequest(false);
       if (onUpdating) {
         onUpdating(false);
       }
@@ -2031,6 +2055,23 @@ const TvRequestModal = ({
             )}
           </div>
           <div className="app-action-row" ref={setRequestedByPortal} />
+          {streamingPolicyRejection && (
+            <div
+              className="app-card-inset refreshed-inset-surface card-stack"
+              role="alert"
+            >
+              <p className="card-body-text">{streamingPolicyRejection}</p>
+              <Button
+                type="button"
+                disabled={isSubmittingRequest}
+                buttonType="warning"
+                buttonSize="standard"
+                onClick={() => void sendRequest(true)}
+              >
+                {intl.formatMessage(messages.requestAnyway)}
+              </Button>
+            </div>
+          )}
           {!persius && (
             <Button
               type="button"
@@ -2047,7 +2088,7 @@ const TvRequestModal = ({
           )}
           <Button
             type="button"
-            disabled={requestDisabled}
+            disabled={requestDisabled || isSubmittingRequest}
             disabledReason={requestDisabledReason}
             onClick={() => void submitAction()}
             data-testid="modal-ok-button"

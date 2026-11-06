@@ -1,3 +1,4 @@
+import Button from '@app/components/Common/Button';
 import CachedImage from '@app/components/Common/CachedImage';
 import Modal from '@app/components/Common/Modal';
 import MediaQualitySelect from '@app/components/MediaDetails/MediaQualitySelect';
@@ -71,6 +72,7 @@ const messages = defineMessages('components.RequestModal', {
   quotaApprovalSubmitted:
     'Your over-quota request for <strong>{title}</strong> is waiting for administrator approval.',
   requestQuotaApproval: 'Request approval',
+  requestAnyway: 'Request anyway',
   mediaAndFormat: 'Media & Format',
   releaseDate: 'Release Date',
   runtime: 'Runtime',
@@ -120,6 +122,8 @@ const MovieRequestModal = ({
     initialServerId ??
     (isRequesterTagOnlyRequest ? editRequest?.serverId : undefined);
   const [isUpdating, setIsUpdating] = useState(false);
+  const [streamingPolicyRejection, setStreamingPolicyRejection] =
+    useState<string>();
   const [selectedIs4k, setSelectedIs4k] = useState(is4k);
   const [qualityRevision, setQualityRevision] = useState(0);
   const [requestServiceServerId, setRequestServiceServerId] = useState<
@@ -295,100 +299,121 @@ const MovieRequestModal = ({
     }
   }, [isUpdating, onUpdating]);
 
-  const sendRequest = useCallback(async () => {
-    if (
-      requesterTagOnlyUnavailable ||
-      selectedDestinationCovered ||
-      requestDestinationSettingsLoading
-    ) {
-      return;
-    }
-
-    setIsUpdating(true);
-
-    try {
-      let overrideParams = {};
-      if (requestOverrides) {
-        overrideParams = {
-          serverId: requestOverrides.server,
-          profileId: requestOverrides.profile,
-          rootFolder: requestOverrides.folder,
-          userId: requestOverrides.user?.id,
-          tags: requestOverrides.tags,
-          requesterSelectedOptions: requestOverrides.requesterSelectedOptions,
-        };
+  const sendRequest = useCallback(
+    async (bypassStreamingRequestPolicy = false) => {
+      if (
+        isUpdating ||
+        requesterTagOnlyUnavailable ||
+        selectedDestinationCovered ||
+        requestDestinationSettingsLoading
+      ) {
+        return;
       }
-      const response = await axios.post<MediaRequest>('/api/v1/request', {
-        mediaId: data?.id,
-        mediaType: 'movie',
-        is4k: effectiveIs4k,
-        requestServiceServerId: canUseAdvancedOptions
-          ? undefined
-          : selectedRequestServiceServerId,
-        ignoreQuota: requestOverrides?.ignoreQuota,
-        requestQuotaApproval: requestQuotaApproval || undefined,
-        requesterTagOnly: requesterTagOnly || undefined,
-        ...overrideParams,
-      });
-      mutate('/api/v1/request?filter=all&take=10&sort=modified&skip=0');
-      mutate('/api/v1/request/count');
 
-      if (response.data) {
-        if (onComplete) {
-          onComplete(
-            response.data.media[effectiveIs4k ? 'status4k' : 'status'],
-            effectiveIs4k
+      setStreamingPolicyRejection(undefined);
+      setIsUpdating(true);
+
+      try {
+        let overrideParams = {};
+        if (requestOverrides) {
+          overrideParams = {
+            serverId: requestOverrides.server,
+            profileId: requestOverrides.profile,
+            rootFolder: requestOverrides.folder,
+            userId: requestOverrides.user?.id,
+            tags: requestOverrides.tags,
+            requesterSelectedOptions: requestOverrides.requesterSelectedOptions,
+          };
+        }
+        const response = await axios.post<MediaRequest>('/api/v1/request', {
+          mediaId: data?.id,
+          mediaType: 'movie',
+          is4k: effectiveIs4k,
+          requestServiceServerId: canUseAdvancedOptions
+            ? undefined
+            : selectedRequestServiceServerId,
+          ignoreQuota: requestOverrides?.ignoreQuota,
+          requestQuotaApproval: requestQuotaApproval || undefined,
+          requesterTagOnly: requesterTagOnly || undefined,
+          bypassStreamingRequestPolicy:
+            bypassStreamingRequestPolicy === true || undefined,
+          ...overrideParams,
+        });
+        mutate('/api/v1/request?filter=all&take=10&sort=modified&skip=0');
+        mutate('/api/v1/request/count');
+
+        if (response.data) {
+          if (onComplete) {
+            onComplete(
+              response.data.media[effectiveIs4k ? 'status4k' : 'status'],
+              effectiveIs4k
+            );
+          }
+          addToast(
+            <span>
+              {intl.formatMessage(
+                response.data.quotaException
+                  ? messages.quotaApprovalSubmitted
+                  : requesterTagOnly
+                    ? messages.requesterTagRequestSubmitted
+                    : messages.requestSuccess,
+                {
+                  title: data?.title,
+                  strong: (msg: React.ReactNode) => <strong>{msg}</strong>,
+                }
+              )}
+            </span>,
+            { appearance: 'success', autoDismiss: true }
           );
         }
-        addToast(
-          <span>
-            {intl.formatMessage(
-              response.data.quotaException
-                ? messages.quotaApprovalSubmitted
-                : requesterTagOnly
-                  ? messages.requesterTagRequestSubmitted
-                  : messages.requestSuccess,
-              {
-                title: data?.title,
-                strong: (msg: React.ReactNode) => <strong>{msg}</strong>,
-              }
-            )}
-          </span>,
-          { appearance: 'success', autoDismiss: true }
-        );
-      }
-    } catch (error) {
-      const responseMessage = axios.isAxiosError<{ message?: unknown }>(error)
-        ? error.response?.data?.message
-        : undefined;
-      const errorMessage =
-        typeof responseMessage === 'string' && responseMessage.length > 0
-          ? responseMessage
-          : intl.formatMessage(messages.requesterror);
+      } catch (error) {
+        const responseData = axios.isAxiosError<{
+          message?: unknown;
+          code?: unknown;
+          allowOverride?: unknown;
+        }>(error)
+          ? error.response?.data
+          : undefined;
+        if (
+          responseData?.code === 'STREAMING_REQUEST_POLICY_REJECTED' &&
+          responseData.allowOverride === true &&
+          typeof responseData.message === 'string'
+        ) {
+          setStreamingPolicyRejection(responseData.message);
+          return;
+        }
+        const responseMessage = responseData?.message;
+        const errorMessage =
+          typeof responseMessage === 'string' && responseMessage.length > 0
+            ? responseMessage
+            : intl.formatMessage(messages.requesterror);
 
-      addToast(errorMessage, {
-        appearance: 'error',
-        autoDismiss: true,
-      });
-    } finally {
-      setIsUpdating(false);
-    }
-  }, [
-    requestOverrides,
-    selectedRequestServiceServerId,
-    requestDestinationSettingsLoading,
-    canUseAdvancedOptions,
-    requestQuotaApproval,
-    requesterTagOnly,
-    requesterTagOnlyUnavailable,
-    data?.id,
-    data?.title,
-    effectiveIs4k,
-    selectedDestinationCovered,
-    onComplete,
-    addToast,
-    intl,
-  ]);
+        addToast(errorMessage, {
+          appearance: 'error',
+          autoDismiss: true,
+        });
+      } finally {
+        setIsUpdating(false);
+      }
+    },
+    [
+      isUpdating,
+      requestOverrides,
+      selectedRequestServiceServerId,
+      requestDestinationSettingsLoading,
+      canUseAdvancedOptions,
+      requestQuotaApproval,
+      requesterTagOnly,
+      requesterTagOnlyUnavailable,
+      data?.id,
+      data?.title,
+      effectiveIs4k,
+      selectedDestinationCovered,
+      onComplete,
+      addToast,
+      intl,
+    ]
+  );
 
   const cancelRequest = async () => {
     setIsUpdating(true);
@@ -589,7 +614,7 @@ const MovieRequestModal = ({
           }
           artworkType="tmdb"
         >
-          <div className="app-card-inset refreshed-inset-surface rounded-lg border border-gray-700 p-3">
+          <div className="app-card-inset refreshed-inset-surface card-stack">
             {isFailedManagerRepair
               ? intl.formatMessage(messages.repairFailedDescription)
               : isOwner
@@ -672,7 +697,7 @@ const MovieRequestModal = ({
       loading={(!data && !error) || !quota}
       backgroundClickable
       onCancel={onCancel}
-      onOk={sendRequest}
+      onOk={() => void sendRequest()}
       hideActions
       alignTop
       okDisabled={
@@ -937,6 +962,23 @@ const MovieRequestModal = ({
             className="compact-control flex items-center"
             ref={setRequestedByPortal}
           />
+          {streamingPolicyRejection && (
+            <div
+              className="app-card-inset refreshed-inset-surface card-stack"
+              role="alert"
+            >
+              <p className="card-body-text">{streamingPolicyRejection}</p>
+              <Button
+                type="button"
+                buttonType="warning"
+                buttonSize="standard"
+                disabled={isUpdating}
+                onClick={() => void sendRequest(true)}
+              >
+                {intl.formatMessage(messages.requestAnyway)}
+              </Button>
+            </div>
+          )}
           <button
             type="button"
             onClick={onCancel}

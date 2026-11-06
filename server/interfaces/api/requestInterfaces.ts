@@ -40,6 +40,12 @@ export type RequesterSelectedOptions = {
   languageProfile?: boolean;
   tags?: boolean;
 };
+export interface StreamingRequestPolicyRejectionResponse {
+  status: number;
+  code: 'STREAMING_REQUEST_POLICY_REJECTED';
+  message: string;
+  allowOverride: boolean;
+}
 
 export type MediaRequestBody = {
   mediaType: MediaType;
@@ -75,6 +81,7 @@ export type MediaRequestBody = {
   requesterTagOnly?: boolean;
   ignoreQuota?: boolean;
   requestQuotaApproval?: boolean;
+  bypassStreamingRequestPolicy?: boolean;
 };
 
 export type BulkMediaRequestItem = {
