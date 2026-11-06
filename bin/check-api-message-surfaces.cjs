@@ -11,6 +11,9 @@ const {
 const files = (dir) =>
   fs
     .readdirSync(dir, { withFileTypes: true })
+    .sort((left, right) =>
+      left.name < right.name ? -1 : left.name > right.name ? 1 : 0
+    )
     .flatMap((e) =>
       e.isDirectory()
         ? files(path.join(dir, e.name))
@@ -126,9 +129,13 @@ for (const file of files(W + '/src')) {
   visit(sf);
 }
 
-for (const entry of fs.readdirSync(path.join(W, 'server/templates/email'), {
-  withFileTypes: true,
-})) {
+for (const entry of fs
+  .readdirSync(path.join(W, 'server/templates/email'), {
+    withFileTypes: true,
+  })
+  .sort((left, right) =>
+    left.name < right.name ? -1 : left.name > right.name ? 1 : 0
+  )) {
   if (!entry.isDirectory()) continue;
   const file = path.join(
     W,
