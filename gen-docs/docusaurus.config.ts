@@ -42,6 +42,15 @@ const config: Config = {
           sidebarPath: './sidebars.ts',
           routeBasePath: '/',
           path: '../docs',
+          // Preserve the upstream exclusions and keep raw review artifacts out of
+          // the public documentation compiler. Evidence remains in the repository.
+          exclude: [
+            '**/_*.{js,jsx,ts,tsx,md,mdx}',
+            '**/_*/**',
+            '**/*.test.{js,jsx,ts,tsx}',
+            '**/__tests__/**',
+            '**/pr-evidence/**',
+          ],
           editUrl: 'https://github.com/snapetech-org/seerrng/edit/main/docs/',
           docItemComponent: '@theme/ApiItem',
           async sidebarItemsGenerator({

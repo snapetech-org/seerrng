@@ -1,1 +1,8 @@
-Users can choose a metadata language for media titles and search results independently of the interface language. The default follows the display language, and explicit per-request language parameters continue to take precedence.
+---
+category: added
+audience: users
+area: localization
+action: none
+breaking: false
+---
+Choose a metadata language for media titles and search results independently of the interface language. The default follows the display language; explicit request language parameters retain precedence.

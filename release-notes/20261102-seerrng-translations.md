@@ -1,11 +1,8 @@
 ---
 category: fixed
 audience: users
-area: interface
+area: localization
 action: none
 breaking: false
 ---
-Corrected 225 user-facing translations across Spanish, Simplified Chinese, Hindi, German, Japanese, French, Brazilian Portuguese, Arabic, Korean, Traditional Chinese, Vietnamese, and Indonesian. Also corrected Arabic episode-availability agreement in season-selection descriptions.
-
-
-Corrected 284 additional user-facing translation cells across the 12 direct locales after source-context and independent cross-review. The reviewed window covers watchlist, music details, collection filters, ratings, and notification labels; the Japanese music playback-duration label now uses `再生時間`. Native-speaker and current-head browser review remain pending.
+Expanded interface translations across twelve locales and corrected message arguments, quota periods, and fallback language metadata. Empty or outdated translations use the existing parent or English fallback while remaining visible as translation coverage gaps.

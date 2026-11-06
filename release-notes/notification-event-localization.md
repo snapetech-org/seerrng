@@ -1,1 +1,8 @@
-Notification event titles now follow each delivery's configured language. Discord can use the notified user's profile language when enabled. Movie, series, music, book, comic, magazine, adult-scene, and sports requests plus follower availability notices are localized; Movie and Series titles distinguish 4K requests. Untranslated messages fall back to English. Adapted from Seerr [PR #3421](https://github.com/seerr-team/seerr/pull/3421).
+---
+category: added
+audience: users
+area: localization
+action: none
+breaking: false
+---
+Notification event titles follow the delivery language, including user-profile language when enabled for Discord. Unsupported translations fall back to English. Adapted from Seerr [PR #3421](https://github.com/seerr-team/seerr/pull/3421).

@@ -67,10 +67,7 @@ describe('Book series carousel localization contract', () => {
       directNonEnglish.includes(tag)
     );
 
-    assert.deepEqual(
-      deltaManifest.localeAccounting.pendingDirectLocales,
-      []
-    );
+    assert.deepEqual(deltaManifest.localeAccounting.pendingDirectLocales, []);
     assert.equal(deltaManifest.localeAccounting.activeLocaleCount, 38);
     assert.equal(
       deltaManifest.localeAccounting.nonEnglishEffectiveLocaleCount,
