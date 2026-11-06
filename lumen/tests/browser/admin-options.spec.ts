@@ -553,3 +553,22 @@ test('fast typing in search keeps every letter', async ({ page }) => {
   await page.goto('/search?q=sintel');
   await expect(box).toHaveValue('sintel');
 });
+
+test('Back closes the request sheet and stays on the page', async ({
+  page,
+}) => {
+  await fixtures(page, { permissions: 2 });
+  await page.goto('/movies');
+  await quickRequest(page, 'Fresh Pick');
+  const sheet = page.getByRole('dialog');
+  await expect(sheet).toBeVisible();
+  await page.goBack();
+  await expect(sheet).toHaveCount(0);
+  await expect(page).toHaveURL(/\/movies$/);
+  // closing with Cancel leaves no extra history entry behind
+  await quickRequest(page, 'Fresh Pick');
+  await sheet.getByRole('button', { name: 'Cancel', exact: true }).click();
+  await expect(sheet).toHaveCount(0);
+  await page.waitForTimeout(300);
+  await expect(page).toHaveURL(/\/movies$/);
+});

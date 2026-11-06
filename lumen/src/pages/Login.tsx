@@ -9,7 +9,7 @@ import {
   useAuth,
 } from '../auth';
 import { BrandMark } from '../components/brand';
-import { mediaServer, site } from '../mediaServer';
+import { mediaServer, services, site } from '../mediaServer';
 
 type Mode = 'start' | 'server' | 'local' | 'quick';
 
@@ -147,7 +147,11 @@ export default function Login() {
         <div className="brand">
           <BrandMark />
         </div>
-        <h1>Sign in to request movies, series and books</h1>
+        <h1>
+          {services().books
+            ? 'Sign in to request movies, series and books'
+            : 'Sign in to request movies and series'}
+        </h1>
         {server.serverLogin && (
           <p className="sub">
             {family

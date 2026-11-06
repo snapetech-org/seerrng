@@ -6,6 +6,7 @@ import { initials, SEERR_PUBLIC_URL } from '../components/Shell';
 import { CAN_HOVER, useApi } from '../hooks';
 import { Icon } from '../icons';
 import { mediaServer, services } from '../mediaServer';
+import { canSeeRecent } from './Discover';
 import {
   DISCOVER_ROWS,
   discoverRowLabel,
@@ -186,14 +187,20 @@ export default function Me() {
 
       <Section title="Discover rows">
         <div className="setlist">
-          {(Object.keys(DISCOVER_ROWS) as DiscoverRow[]).map((r) => (
-            <Toggle
-              key={r}
-              path={`rows.${r}`}
-              on={prefs.rows[r]}
-              title={discoverRowLabel(r)}
-            />
-          ))}
+          {(Object.keys(DISCOVER_ROWS) as DiscoverRow[])
+            .filter(
+              (r) =>
+                (prefs.showBooks || (r !== 'books' && r !== 'audiobooks')) &&
+                (r !== 'newOnPlex' || canSeeRecent(user?.permissions))
+            )
+            .map((r) => (
+              <Toggle
+                key={r}
+                path={`rows.${r}`}
+                on={prefs.rows[r]}
+                title={discoverRowLabel(r)}
+              />
+            ))}
         </div>
         <button
           className="btn btn-quiet btn-sm"

@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { MediaStatus, type TitleResult } from '../api';
 import { MoreOnScroll, TitleCard } from '../components/cards';
+import { useAsksRequestOptions } from '../components/requestSheet';
 import { Avatar } from '../components/Shell';
 import { CAN_HOVER, useApi, usePaged } from '../hooks';
 import { Icon } from '../icons';
@@ -25,6 +26,7 @@ const SORTS = {
 export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
   const [p, setP] = useSearchParams();
   const { prefs } = usePrefs();
+  const asks = useAsksRequestOptions();
   // "plex" is the old name for "have", kept so saved links still work
   const show = p.get('show') === 'plex' ? 'have' : p.get('show') || 'all';
   const sort = p.get('sort') || 'popularity.desc';
@@ -102,7 +104,7 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
         </div>
         <p className="sub">
           {kind === 'movie'
-            ? `${!prefs.hoverRequest ? 'Open a poster to request it.' : CAN_HOVER ? 'Hover a poster to request in one click.' : 'Tap + on a poster to request in one tap.'} Everything on ${serverName()} has a green check.`
+            ? `${!prefs.hoverRequest ? 'Open a poster to request it.' : CAN_HOVER ? (asks ? 'Hover a poster to request it.' : 'Hover a poster to request in one click.') : asks ? 'Tap + on a poster to request it.' : 'Tap + on a poster to request in one tap.'} Everything on ${serverName()} has a green check.`
             : prefs.wholeSeriesDefault
               ? 'Requesting gets the whole show. Only want some? Untick seasons on the show’s page.'
               : 'Pick the seasons you want on each show’s page.'}

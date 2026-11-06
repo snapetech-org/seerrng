@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import {
   requestMovie,
@@ -40,6 +40,24 @@ export function RequestSheet({
     document.addEventListener('keydown', k);
     return () => document.removeEventListener('keydown', k);
   }, [onClose]);
+  // The phone's Back closes the sheet (like a native dialog) instead of leaving the page:
+  // the sheet adds a copy of the current history entry and closes when it's popped.
+  const closeRef = useRef(onClose);
+  closeRef.current = onClose;
+  useEffect(() => {
+    let popped = false;
+    window.history.pushState(window.history.state, '', window.location.href);
+    const onPop = () => {
+      popped = true;
+      closeRef.current();
+    };
+    window.addEventListener('popstate', onPop);
+    return () => {
+      window.removeEventListener('popstate', onPop);
+      // closed with a button: drop the extra entry so Back isn't needed twice
+      if (!popped) window.history.back();
+    };
+  }, []);
   const send = async () => {
     setBusy(true);
     setErr('');
