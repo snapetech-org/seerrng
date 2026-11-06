@@ -237,16 +237,31 @@ test('collection page overview is inside its first details table, not a separate
   assert.match(page, /collection-summary-poster-image/);
 });
 
-test('collection and media detail dividers use one global two-pixel width', () => {
+test('collection and media detail dividers consume the selected theme width', () => {
   const css = read('./globals.css');
-  assert.match(css, /:root\s*\{[^}]*--detail-divider-width: 2px;/);
+  assert.match(
+    read('./interfaceThemes/shared.css'),
+    /--detail-divider-width: var\(--interface-detail-divider-width\);/
+  );
+  for (const [theme, width] of [
+    ['seerrOrig', '2px'],
+    ['seerrNGJ', '2px'],
+    ['persiusNG', '1px'],
+  ]) {
+    assert.ok(
+      read(`../../themes/${theme}/theme.css`).includes(
+        `--interface-detail-divider-width: ${width};`
+      )
+    );
+  }
+  assert.doesNotMatch(css, /--detail-divider-width:\s*\d/);
   assert.match(
     css,
     /\.collection-summary-table::after\s*\{[^}]*width: var\(--detail-divider-width\)/
   );
   assert.match(
     css,
-    /\.media-detail-column-divider\s*\{[^}]*border-left-width: var\(--detail-divider-width\)/
+    /\.media-detail-column-divider\s*\{[^}]*border-top-width: var\(--detail-divider-width\)/
   );
   assert.doesNotMatch(css, /\.collection-summary-table::before/);
   assert.doesNotMatch(

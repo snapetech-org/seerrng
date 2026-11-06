@@ -141,6 +141,10 @@ const deps = {
     default: (_id, image) => image,
     __esModule: true,
   },
+  '@app/components/Persius/usePersius': {
+    default: () => false,
+    __esModule: true,
+  },
   '@app/hooks/useIsTouch': {
     useIsTouch: () => false,
   },

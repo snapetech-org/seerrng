@@ -104,7 +104,7 @@ const assertNativeDisclosureStates = (source) => {
     assert.equal(value(child, 'justify-content'), 'center');
   }
   assert.equal(
-    value('.detail-disclosure-pin', 'border-right-color'),
+    value('.detail-disclosure-pin', 'border-inline-end-color'),
     'color-mix( in oklab, var(--detail-disclosure-accent) 90%, transparent )'
   );
   assert.equal(
@@ -125,7 +125,7 @@ const assertNativeDisclosureStates = (source) => {
   assert.equal(
     value(
       '.pinned-filter-section .detail-disclosure-pin',
-      'border-right-color'
+      'border-inline-end-color'
     ),
     'color-mix( in srgb, var(--palette-blue) 90%, transparent )'
   );
