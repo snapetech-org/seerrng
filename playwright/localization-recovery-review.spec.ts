@@ -1,8 +1,10 @@
 import { expect, test } from '@playwright/test';
+import { restoreAdminPresentation } from './helpers/presentation';
 
 const baseline = process.env.SEERR_LOCALE_QA_BASELINE === 'true';
 const locales = baseline ? ['en'] : ['en', 'ar'];
 test.use({ serviceWorkers: 'block', reducedMotion: 'reduce' });
+test.afterEach(async ({ page }) => restoreAdminPresentation(page));
 
 for (const theme of ['seerrNGJ', 'seerrOrig', 'persiusNG']) {
   for (const width of [390, 1440]) {
