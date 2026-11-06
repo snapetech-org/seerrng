@@ -74,3 +74,39 @@ offline providers are retained separately from populated model fixtures.
 Initial harness failures (incorrect similar/collection fixture shapes and one
 server-readiness race) are retained in the evidence root, corrected and rerun;
 they are not attributed to product code.
+
+## Published v3.72.16 Verification
+
+The immutable image at
+`ghcr.io/snapetech-org/seerrng@sha256:b2bd0d2288898efcdb602f1f4863e86dff3fed1cfba5641d54072ab4702942fa`
+reports v3.72.16 and revision `f59078f413a9f790e5a5fdcd1744b324f2f02ac5`.
+It was started with real migrations on a separate fixture database. The final
+candidate CI run 42275431200 passed, including 4,636 native passes and five
+intentional skips. Release run 42284183094 completed successfully after retrying
+the timed-out Intel macOS archive job; the published release contains 29 assets.
+
+The actual image produced 584 signed-in route captures at 390px and 1440px in
+both account themes, plus ten shared anonymous captures. It passed 16 critical
+request/status tests and four populated request/issue/blocklist consumer groups.
+Theme picker clicks for both themes saved successfully and survived reload on
+both viewports. No container restart or OOM occurred. One initial gallery group
+hit a harness auth-response race; the harness now snapshots read-only auth
+responses, and that group passed on retry. The failed attempt is retained.
+
+Against the previously reviewed candidate, 489 captures are pixel-identical.
+The 95 differences were inspected in eight paired contact sheets: live version,
+jobs/logs, loading/error state timing, fixture images and small navigation/hover
+regions account for the differences. Seven additional contact sheets cover the
+actual packaged request dialogs and request status states. The narrow 320px
+summary checks verify geometry and overflow; long metadata values still use the
+existing truncation behavior at that width and need a separate readability fix.
+This is not acceptance of every possible provider, permission or failure state.
+Provider metadata fixtures and unconfigured-provider recovery states do not
+establish live acquisition or physical device acceptance.
+
+All 21 current and legacy registry references were independently read back at
+the image digest above. The first legacy check preceded completion of the
+workflow mirror; its log confirms successful promotion at 21:42:43 UTC. A local
+mirror repeated the same digest without changing the published artifact.
+Evidence includes `release16-alias-readback.json`, `release16-alias-job.log`,
+`published16-qa-summary.json`, the critical/theme-picker logs and screenshots.
