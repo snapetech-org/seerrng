@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
   Link,
   useLocation,
@@ -70,8 +70,15 @@ export default function Search() {
     (s) => prefs.showBooks || (s !== 'ebook' && s !== 'audio')
   );
 
+  // The box follows the address only when something else changed it (Back, a recent search,
+  // a link). Copying back our own typing raced fast keystrokes: an older address arriving
+  // after a newer key overwrote the box and letters went missing.
+  const typed = useRef(new Set<string>());
   useEffect(() => {
-    setQ(p.get('q') || '');
+    const fromUrl = p.get('q') || '';
+    if (typed.current.has(fromUrl)) return; // one of our own keystrokes, maybe an old one
+    typed.current.clear();
+    setQ(fromUrl);
   }, [p]);
   useEffect(() => {
     const term = (p.get('q') || '').trim();
@@ -166,6 +173,7 @@ export default function Search() {
             spellCheck={false}
             enterKeyHint="search"
             onChange={(e) => {
+              typed.current.add(e.target.value);
               setQ(e.target.value);
               setParam('q', e.target.value);
             }}

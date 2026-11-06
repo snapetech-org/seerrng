@@ -537,3 +537,18 @@ test('sign-in errors are written in words', async ({ page }) => {
     'That username or password isn’t right.'
   );
 });
+
+test('fast typing in search keeps every letter', async ({ page }) => {
+  // desktop searches from the top bar; this box is the phone/tablet one
+  test.skip(page.viewportSize()!.width >= 1040, 'phone and tablet search box');
+  await fixtures(page);
+  await page.goto('/search');
+  const box = page.locator('#sq');
+  await box.click();
+  await box.pressSequentially('night of the living dead', { delay: 0 });
+  await page.waitForTimeout(800);
+  await expect(box).toHaveValue('night of the living dead');
+  // Back to an empty search still clears the box (the address drives it then)
+  await page.goto('/search?q=sintel');
+  await expect(box).toHaveValue('sintel');
+});
