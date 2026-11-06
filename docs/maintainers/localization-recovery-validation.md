@@ -55,11 +55,26 @@ count. All 12 render with React Intl and supplied caller values; the Italian
 result displays the count. Contract diagnostics fell from 159 to 148, with no
 stale provenance records or invalid ICU syntax.
 
+A real loader/React Intl regression reproduced stale missing-tag/argument
+failures and hard-coded Plex playback text for Jellyfin. The repair backlog
+preserves 110 outdated translations with source/target hashes and specific
+reasons; those active entries now use the existing parent/English fallback.
+They remain coverage gaps, with no approval stamps or validator exceptions.
+Another 29 values retain translated prose while fixing zero-day quota windows,
+minute schedule arguments, missing language/provider/application values and
+count/negative emphasis. All 29 format with real caller values; the 22 quota
+messages were probed at 0, 1 and 7 days. Six permanent loader regressions pass.
+
+The nine remaining contract diagnostics are caller-verified numeric grammar
+variations: Czech day plurals, Danish/Norwegian ordinal interval wording,
+Hungarian season nouns and Italian remaining-count plurals. All nine format
+without errors at 1, 2, 7 and 30 and display their supplied count. Their original
+locale grammar is preserved. The strict validator still reports these differences;
+no comparison was weakened or exception added. This establishes formatting
+compatibility, not native-speaker approval.
+
 ## Remaining acceptance and exclusions
 
-- Resolve the remaining 148 argument/tag contract diagnostics. Some plural
-  differences may be valid grammar and require
-  caller-aware review; do not delete them merely to silence a validator.
 - Empty/obsolete keys, untranslated additions since the original branch, and
   plural/review coverage remain visible. Arabic captures contain English fallback
   for newer feature copy, including streaming-policy and some Persius labels.
