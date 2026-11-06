@@ -1,3 +1,4 @@
+import ApiMessageText from '@app/components/Common/ApiMessageText';
 import Button from '@app/components/Common/Button';
 import LoadingSpinner from '@app/components/Common/LoadingSpinner';
 import defineMessages from '@app/utils/defineMessages';
@@ -18,6 +19,7 @@ type Audiobook = {
 type RequestItem = Pick<ReadMeABookRequest, 'asin' | 'status'>;
 
 const messages = defineMessages('components.Discover.ReadMeABookHomeSection', {
+  requestedTitle: '{title} requested.',
   request: 'Request',
   requesting: 'Requesting…',
   requested: 'Requested',
@@ -58,7 +60,11 @@ const ReadMeABookHomeSection = ({ title, section, subject }: Props) => {
     setNotice(undefined);
     try {
       await axios.post('/api/v1/readmeabook/requests', book);
-      setNotice(`${book.title} requested.`);
+      setNotice(
+        intl.formatMessage(messages.requestedTitle, {
+          title: `\u2068${book.title}\u2069`,
+        })
+      );
       await mutate();
     } catch (caught) {
       setNotice(
@@ -81,7 +87,7 @@ const ReadMeABookHomeSection = ({ title, section, subject }: Props) => {
       )}
       {notice && (
         <p className="description" role="status">
-          {notice}
+          {<ApiMessageText>{notice}</ApiMessageText>}
         </p>
       )}
       {books?.length ? (

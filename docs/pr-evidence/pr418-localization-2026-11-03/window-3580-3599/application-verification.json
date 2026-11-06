@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 1,
+  "status": "PASS",
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "window": "W3580-W3599",
+  "parentHead": "30f626a4626d460f426666cde02f5c1ed17fa206",
+  "parentTree": "9b2616780791c73eb176aca6ad53061f1f3587d8",
+  "reviewedCells": 240,
+  "dispositions": {
+    "propose-update": 28,
+    "retain-current": 212,
+    "hold": 0
+  },
+  "appliedUpdates": 28,
+  "changedCatalogCount": 11,
+  "catalogInvariantCount": 13,
+  "orderedKeyAndCountChecks": "PASS",
+  "nonTargetValueChanges": 0,
+  "placeholderMismatches": 0,
+  "markupMismatches": 0,
+  "numericMismatches": 0,
+  "protectedLiteralMismatches": 0,
+  "livePrewriteRefsReattested": true,
+  "worktreeStatusBeforeCommit": [
+    "M src/i18n/locale/ar.json",
+    " M src/i18n/locale/de.json",
+    " M src/i18n/locale/es.json",
+    " M src/i18n/locale/fr.json",
+    " M src/i18n/locale/hi.json",
+    " M src/i18n/locale/id.json",
+    " M src/i18n/locale/ja.json",
+    " M src/i18n/locale/ko.json",
+    " M src/i18n/locale/vi.json",
+    " M src/i18n/locale/zh_Hans.json",
+    " M src/i18n/locale/zh_Hant.json",
+    "?? docs/pr-evidence/pr418-localization-2026-11-03/window-3580-3599/"
+  ],
+  "testsBuildsScansCiDispatchesRun": false,
+  "workflowFilesEdited": false,
+  "createdAtUtc": "2026-11-03T14:27:01.005034+00:00"
+}

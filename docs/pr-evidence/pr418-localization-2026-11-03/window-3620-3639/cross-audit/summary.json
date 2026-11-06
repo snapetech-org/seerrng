@@ -1,0 +1,211 @@
+{
+  "artifact": "SeerrNG PR #418 W3620-W3639 independent cross-audit ledger",
+  "blindDifferenceResolutionCounts": {
+    "adopt-blind-exact": 12,
+    "cross-audit-target": 15,
+    "retain-current": 74
+  },
+  "blindProposalDifferenceCount": 101,
+  "browserReview": "not performed",
+  "callerlessPosition3632": {
+    "allHeld": true,
+    "cells": 12,
+    "sourceId": "components.Settings.BookshelfPathMigration.author"
+  },
+  "cellCount": 240,
+  "changedTargetCount": 33,
+  "createdAtUTC": "2026-11-03T16:23:05.724873+00:00",
+  "distinctTargetDifferenceCells": 108,
+  "head": "ebf1cb6082ef173688227c507acfdc04c3cf7ca7",
+  "icuRuntimeCoverageByLocale": {
+    "ar": {
+      "runtimeCategories": [
+        "few",
+        "many",
+        "one",
+        "other",
+        "two",
+        "zero"
+      ],
+      "runtimeCovered": true,
+      "targetCategories": [
+        "few",
+        "many",
+        "one",
+        "other",
+        "two",
+        "zero"
+      ]
+    },
+    "de": {
+      "runtimeCategories": [
+        "one",
+        "other"
+      ],
+      "runtimeCovered": true,
+      "targetCategories": [
+        "one",
+        "other"
+      ]
+    },
+    "es": {
+      "runtimeCategories": [
+        "many",
+        "one",
+        "other"
+      ],
+      "runtimeCovered": true,
+      "targetCategories": [
+        "many",
+        "one",
+        "other"
+      ]
+    },
+    "fr": {
+      "runtimeCategories": [
+        "many",
+        "one",
+        "other"
+      ],
+      "runtimeCovered": true,
+      "targetCategories": [
+        "many",
+        "one",
+        "other"
+      ]
+    },
+    "hi": {
+      "runtimeCategories": [
+        "one",
+        "other"
+      ],
+      "runtimeCovered": true,
+      "targetCategories": [
+        "one",
+        "other"
+      ]
+    },
+    "id": {
+      "runtimeCategories": [
+        "other"
+      ],
+      "runtimeCovered": true,
+      "targetCategories": [
+        "other"
+      ]
+    },
+    "ja": {
+      "runtimeCategories": [
+        "other"
+      ],
+      "runtimeCovered": true,
+      "targetCategories": [
+        "other"
+      ]
+    },
+    "ko": {
+      "runtimeCategories": [
+        "other"
+      ],
+      "runtimeCovered": true,
+      "targetCategories": [
+        "other"
+      ]
+    },
+    "pt_BR": {
+      "runtimeCategories": [
+        "many",
+        "one",
+        "other"
+      ],
+      "runtimeCovered": true,
+      "targetCategories": [
+        "many",
+        "one",
+        "other"
+      ]
+    },
+    "vi": {
+      "runtimeCategories": [
+        "other"
+      ],
+      "runtimeCovered": true,
+      "targetCategories": [
+        "other"
+      ]
+    },
+    "zh_Hans": {
+      "runtimeCategories": [
+        "other"
+      ],
+      "runtimeCovered": true,
+      "targetCategories": [
+        "other"
+      ]
+    },
+    "zh_Hant": {
+      "runtimeCategories": [
+        "other"
+      ],
+      "runtimeCovered": true,
+      "targetCategories": [
+        "other"
+      ]
+    }
+  },
+  "inputVerification": {
+    "allThreePinnedToRequestedHeadAndTree": true,
+    "blindChecksums": "PASS",
+    "candidateFreeChecksums": "PASS",
+    "primaryChecksums": "PASS"
+  },
+  "localeCount": 12,
+  "localeOrder": [
+    "es",
+    "zh_Hans",
+    "hi",
+    "de",
+    "ja",
+    "fr",
+    "pt_BR",
+    "ar",
+    "ko",
+    "zh_Hant",
+    "vi",
+    "id"
+  ],
+  "nativeSpeakerApproval": "not claimed",
+  "primaryCorrectionOrRefinementCount": 31,
+  "primaryDifferentTargetHashCount": 31,
+  "primaryDifferentTargetHashNotSelectedCount": 13,
+  "primaryTargetHashMatchesResolvedCount": 224,
+  "pullRequest": 418,
+  "repository": "snapetech-org/seerrng",
+  "repositoryOrPrFilesEdited": false,
+  "resolutionCounts": {
+    "adopt-blind-proposal": 12,
+    "cross-audit-target": 21,
+    "hold": 12,
+    "retain-current": 195
+  },
+  "reviewLimit": "The primary ledger stores correction/refinement target hashes but omits target text. This cross-audit records which final choices match those hashes; every remaining difference is explicitly resolved by retaining current wording or selecting a row-bound cross-audit target.",
+  "rowBinding": {
+    "candidateProposalRowBinding": "PASS",
+    "crossLocaleProposalCopyCount": 0,
+    "sourceAndContextJoin": "PASS",
+    "unrelatedContextLeakCount": 0
+  },
+  "schemaVersion": 1,
+  "sealed": true,
+  "sourceCount": 20,
+  "tokenAudit": {
+    "icuRuntimeBranchCoverageFailureCount": 0,
+    "markupMismatchCount": 0,
+    "numericValueMismatchCount": 0,
+    "placeholderMismatchCount": 0,
+    "protectedLiteralMismatchCount": 0,
+    "status": "PASS"
+  },
+  "tree": "e3c4d1d10f40ea078b66dfdf942e99c8189fee0c",
+  "window": "W3620-W3639"
+}

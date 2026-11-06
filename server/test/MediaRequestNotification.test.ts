@@ -100,6 +100,7 @@ describe('MediaRequest.sendNotification', () => {
     assert.deepStrictEqual(payload.extra, [
       {
         name: 'Artist',
+        label: 'artist',
         value: 'Miles Davis',
       },
     ]);

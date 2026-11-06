@@ -1,0 +1,146 @@
+{
+  "allChangedSourceTargetTokenChecksMatch": true,
+  "changedSourceTargetParity": {
+    "icuExpressions": {
+      "matchingCells": 12,
+      "mismatchingLocales": []
+    },
+    "inlineCode": {
+      "matchingCells": 12,
+      "mismatchingLocales": []
+    },
+    "markupTags": {
+      "matchingCells": 12,
+      "mismatchingLocales": []
+    },
+    "numericTokens": {
+      "matchingCells": 12,
+      "mismatchingLocales": []
+    },
+    "placeholders": {
+      "matchingCells": 12,
+      "mismatchingLocales": []
+    },
+    "protectedLiterals": {
+      "matchingCells": 12,
+      "mismatchingLocales": []
+    }
+  },
+  "gapSourceTokenInventory": {
+    "icuExpressions": [
+      {
+        "position": 2714,
+        "sourceId": "components.RequestEpisodeQueueControl.watchAheadEpisodeOption",
+        "tokens": [
+          {
+            "argument": "count",
+            "formatType": "plural",
+            "raw": "{count, plural, one {# episode} other {# episodes}}",
+            "selectors": [
+              "one {",
+              "other {"
+            ],
+            "usesPound": true
+          }
+        ]
+      }
+    ],
+    "inlineCode": [],
+    "markupTags": [],
+    "numericTokens": [
+      {
+        "position": 515,
+        "sourceId": "components.CollectionQueue.one",
+        "tokens": [
+          "1"
+        ]
+      },
+      {
+        "position": 529,
+        "sourceId": "components.CollectionQueue.two",
+        "tokens": [
+          "2"
+        ]
+      },
+      {
+        "position": 5030,
+        "sourceId": "components.Settings.analyzeOnPlaybackTip",
+        "tokens": [
+          "30"
+        ]
+      }
+    ],
+    "placeholders": [
+      {
+        "position": 517,
+        "sourceId": "components.CollectionQueue.progress",
+        "tokens": [
+          "watched",
+          "requested",
+          "total"
+        ]
+      },
+      {
+        "position": 2721,
+        "sourceId": "components.RequestEpisodeQueueControl.watchAheadUseDefault",
+        "tokens": [
+          "count"
+        ]
+      },
+      {
+        "position": 3201,
+        "sourceId": "components.RequestModal.watchAheadOverrideDescription",
+        "tokens": [
+          "count"
+        ]
+      }
+    ],
+    "protectedLiterals": [
+      {
+        "position": 516,
+        "sourceId": "components.CollectionQueue.playback-unlinked",
+        "tokens": [
+          "Plex",
+          "Jellyfin",
+          "Emby"
+        ]
+      },
+      {
+        "position": 4486,
+        "sourceId": "components.Settings.SettingsJobsCache.plex-playback-analysis",
+        "tokens": [
+          "Plex"
+        ]
+      },
+      {
+        "position": 5030,
+        "sourceId": "components.Settings.analyzeOnPlaybackTip",
+        "tokens": [
+          "Plex",
+          "TV"
+        ]
+      },
+      {
+        "position": 6619,
+        "sourceId": "discovery.accounts.traktCallbackFailed",
+        "tokens": [
+          "Trakt",
+          "HTTPS",
+          "URL",
+          "SeerrNG",
+          "Seerr"
+        ]
+      },
+      {
+        "position": 6620,
+        "sourceId": "discovery.accounts.traktSetup",
+        "tokens": [
+          "Trakt",
+          "HTTPS",
+          "URL"
+        ]
+      }
+    ]
+  },
+  "gapTargetTokenParity": "not-applicable; all 516 target cells are absent"
+}

@@ -1,0 +1,1 @@
+PASS: Seerr PR #418 W4000 root readback before commit: 240 cells; 62 changed; 178 retained; 12 locale catalogs only; git diff --check clean.

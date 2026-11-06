@@ -1,0 +1,30 @@
+{
+  "baseRefName": "main",
+  "baseRefSha": "2647e15762de0c2285cd9d8ebc6d27ffafce6358",
+  "candidateFreeChecksumFileCount": 22,
+  "candidateFreeChecksumListSha256": "93629c99d76d0a6786f60a2d5600f01671e96ea51c1cbb9b9a76faf91890787c",
+  "candidateFreeVerifierResult": "PASS on isolated candidate-only copy with --repo /home/keith/Documents/code/seerrng",
+  "head": "77d30ae742aad7245e6e419237fca6a544531e1f",
+  "headRefName": "codex/seerrng-localization-overhaul-20261028",
+  "isDraft": true,
+  "localCheckoutClean": false,
+  "localRepoObjectPinResult": "PASS",
+  "observedAtUtc": "2026-11-05T08:06:15+00:00",
+  "phase": "before-blind-review",
+  "pullRequest": 418,
+  "remoteRefs": {
+    "refs/heads/codex/seerrng-localization-overhaul-20261028": "77d30ae742aad7245e6e419237fca6a544531e1f",
+    "refs/heads/main": "2647e15762de0c2285cd9d8ebc6d27ffafce6358",
+    "refs/pull/418/head": "77d30ae742aad7245e6e419237fca6a544531e1f"
+  },
+  "repository": "snapetech-org/seerrng",
+  "reviewScope": {
+    "callerlessCells": 0,
+    "changedSourceRefreshCells": 12,
+    "missingTargetCells": 516,
+    "totalCells": 528
+  },
+  "state": "OPEN",
+  "tree": "2c6fe4a0c1c33aa56b01f06a70702f68598509a7",
+  "url": "https://github.com/snapetech-org/seerrng/pull/418"
+}

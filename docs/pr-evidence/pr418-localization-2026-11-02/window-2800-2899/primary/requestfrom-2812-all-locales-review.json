@@ -1,0 +1,162 @@
+{
+  "callerContextSha256": "e9a6951c2d677dbf0fa90ca9d60bfe97e75c01613fc2cf9fa4e6a32a21b65b3c",
+  "callerPaths": [
+    "src/components/RequestModal/BookRequestModal.tsx"
+  ],
+  "englishSource": "{username}'s request is pending approval.",
+  "englishSourceHash": "42a1a31739f19b895ec8445a2cc2e4e045394f1a5e5e4253e1f171d4bf2139d8",
+  "exactHead": "7329f0ffb34d46042dbf1b165046e21c4f4d45e3",
+  "exactTree": "531e045f511ee9c46f4c7ed80d50f529c9c12000",
+  "finding": "The English source is valid and means that the named user’s request is pending approval. Indonesian current text mixes an English clause with Indonesian; Japanese changes pending approval to already requested; Hindi omits a clear possessive relationship and has no space after the placeholder; Vietnamese says my request and lacks spacing. Chinese current wording can mean merely processing, so proposals specify approval. Remaining locales were individually retained after checking meaning, grammar, and placeholder placement.",
+  "localeCount": 12,
+  "pullRequest": 418,
+  "repository": "snapetech-org/SeerrNG",
+  "rows": [
+    {
+      "callerContextSha256": "e9a6951c2d677dbf0fa90ca9d60bfe97e75c01613fc2cf9fa4e6a32a21b65b3c",
+      "callerReferenceCount": 2,
+      "confidence": "moderate",
+      "currentTarget": "{username} طلب هذا المستخدم معلق بانتظار الموافقة.",
+      "currentTargetHash": "2081e83fd8a246e3443442c7ef91371e2b860a03b82ca3fbec54fa0af9154073",
+      "disposition": "refinement",
+      "finalTarget": "طلب {username} معلّق بانتظار الموافقة.",
+      "finalTargetHash": "b578903beaca0549c3738a0a240d373f4d5972252f167aa1855d85086748707b",
+      "locale": "ar",
+      "rationale": "The current repeats 'this user' after the username placeholder; this states the named user's request is awaiting approval."
+    },
+    {
+      "callerContextSha256": "e9a6951c2d677dbf0fa90ca9d60bfe97e75c01613fc2cf9fa4e6a32a21b65b3c",
+      "callerReferenceCount": 2,
+      "confidence": "moderate",
+      "currentTarget": "Die Anfrage von {username} muss noch genehmigt werden.",
+      "currentTargetHash": "0456a64c23a9e6889632eee0f7381435201404cc822c9418c5cf7e40aa4a3ff1",
+      "disposition": "accept-current",
+      "finalTarget": "Die Anfrage von {username} muss noch genehmigt werden.",
+      "finalTargetHash": "0456a64c23a9e6889632eee0f7381435201404cc822c9418c5cf7e40aa4a3ff1",
+      "locale": "de",
+      "rationale": "Reviewed against the exact English source and pinned caller context; current wording is source-faithful and natural for its UI role. Placeholders, markup, and protected literals remain intact."
+    },
+    {
+      "callerContextSha256": "e9a6951c2d677dbf0fa90ca9d60bfe97e75c01613fc2cf9fa4e6a32a21b65b3c",
+      "callerReferenceCount": 2,
+      "confidence": "moderate",
+      "currentTarget": "La solicitud de {username} está pendiente de aprobación.",
+      "currentTargetHash": "3df0b431d85deaf86a35395a30f4b154fd06a2e5ed49a856955cdbe5be623369",
+      "disposition": "accept-current",
+      "finalTarget": "La solicitud de {username} está pendiente de aprobación.",
+      "finalTargetHash": "3df0b431d85deaf86a35395a30f4b154fd06a2e5ed49a856955cdbe5be623369",
+      "locale": "es",
+      "rationale": "Reviewed against the exact English source and pinned caller context; current wording is source-faithful and natural for its UI role. Placeholders, markup, and protected literals remain intact."
+    },
+    {
+      "callerContextSha256": "e9a6951c2d677dbf0fa90ca9d60bfe97e75c01613fc2cf9fa4e6a32a21b65b3c",
+      "callerReferenceCount": 2,
+      "confidence": "moderate",
+      "currentTarget": "La demande de {username} est en attente de validation.",
+      "currentTargetHash": "c1052aa9f3a5730ce9c9c850602ee13652e3f0585179d937aa899ecb16f69bb3",
+      "disposition": "accept-current",
+      "finalTarget": "La demande de {username} est en attente de validation.",
+      "finalTargetHash": "c1052aa9f3a5730ce9c9c850602ee13652e3f0585179d937aa899ecb16f69bb3",
+      "locale": "fr",
+      "rationale": "Reviewed against the exact English source and pinned caller context; current wording is source-faithful and natural for its UI role. Placeholders, markup, and protected literals remain intact."
+    },
+    {
+      "callerContextSha256": "e9a6951c2d677dbf0fa90ca9d60bfe97e75c01613fc2cf9fa4e6a32a21b65b3c",
+      "callerReferenceCount": 2,
+      "confidence": "moderate",
+      "currentTarget": "{username}अनुरोध लंबित अनुमोदन है।",
+      "currentTargetHash": "2f4d0d759b1d0963177b367920bf8ba2c00a4c0c425e8f265069f568785857ee",
+      "disposition": "propose-correction",
+      "finalTarget": "{username} का अनुरोध अनुमोदन की प्रतीक्षा में है।",
+      "finalTargetHash": "afa7ebc48af8fef5433338a4dd8d590d2cc70fe454bced1328326f75d172fdc6",
+      "locale": "hi",
+      "rationale": "The current omits the possessive marker and has no space after the placeholder."
+    },
+    {
+      "callerContextSha256": "e9a6951c2d677dbf0fa90ca9d60bfe97e75c01613fc2cf9fa4e6a32a21b65b3c",
+      "callerReferenceCount": 2,
+      "confidence": "high",
+      "currentTarget": "{username}'s request is tertunda persetujuan.",
+      "currentTargetHash": "e8f0a35c0a2baf3ed7e14a6dc4c59dd9dacb4b42fe170b59a7697784142a8700",
+      "disposition": "propose-correction",
+      "finalTarget": "Permintaan {username} sedang menunggu persetujuan.",
+      "finalTargetHash": "195fc4f71b0782475168d93865b3f3bc6abfac02936ae43ebe00a75ec383082c",
+      "locale": "id",
+      "rationale": "The current mixes an English clause with the Indonesian phrase tertunda persetujuan; this translates the full source naturally."
+    },
+    {
+      "callerContextSha256": "e9a6951c2d677dbf0fa90ca9d60bfe97e75c01613fc2cf9fa4e6a32a21b65b3c",
+      "callerReferenceCount": 2,
+      "confidence": "high",
+      "currentTarget": "{username} はすでにリクエストを上げています。",
+      "currentTargetHash": "fd58aac873a5bfa94a6b53bac92c52d08da28ca59e0ead45339ee742ec7c230f",
+      "disposition": "propose-correction",
+      "finalTarget": "{username}さんのリクエストは承認待ちです。",
+      "finalTargetHash": "010e577638e59b66561f76daf55168c292bd08399c0d0c7301fe38945ee81d41",
+      "locale": "ja",
+      "rationale": "The current says the user has already submitted a request; the source says the user's request awaits approval."
+    },
+    {
+      "callerContextSha256": "e9a6951c2d677dbf0fa90ca9d60bfe97e75c01613fc2cf9fa4e6a32a21b65b3c",
+      "callerReferenceCount": 2,
+      "confidence": "moderate",
+      "currentTarget": "{username}님의 요청이 승인 대기 중입니다.",
+      "currentTargetHash": "0a78aff305506faa8a2d77f4b73b701599df1af8447a7926c0254e96b4e13159",
+      "disposition": "accept-current",
+      "finalTarget": "{username}님의 요청이 승인 대기 중입니다.",
+      "finalTargetHash": "0a78aff305506faa8a2d77f4b73b701599df1af8447a7926c0254e96b4e13159",
+      "locale": "ko",
+      "rationale": "Reviewed against the exact English source and pinned caller context; current wording is source-faithful and natural for its UI role. Placeholders, markup, and protected literals remain intact."
+    },
+    {
+      "callerContextSha256": "e9a6951c2d677dbf0fa90ca9d60bfe97e75c01613fc2cf9fa4e6a32a21b65b3c",
+      "callerReferenceCount": 2,
+      "confidence": "moderate",
+      "currentTarget": "Existe uma solicitação pendente de {username}.",
+      "currentTargetHash": "992fe06f8cadfa5da89243392bb77217a3e5dffaedb1c601e2d48b42641df0b7",
+      "disposition": "accept-current",
+      "finalTarget": "Existe uma solicitação pendente de {username}.",
+      "finalTargetHash": "992fe06f8cadfa5da89243392bb77217a3e5dffaedb1c601e2d48b42641df0b7",
+      "locale": "pt_BR",
+      "rationale": "Reviewed against the exact English source and pinned caller context; current wording is source-faithful and natural for its UI role. Placeholders, markup, and protected literals remain intact."
+    },
+    {
+      "callerContextSha256": "e9a6951c2d677dbf0fa90ca9d60bfe97e75c01613fc2cf9fa4e6a32a21b65b3c",
+      "callerReferenceCount": 2,
+      "confidence": "high",
+      "currentTarget": "{username}Yêu cầu của tôi đang chờ phê chuẩn.",
+      "currentTargetHash": "3b550513544cbb28eab423705dbb04cef08ffd168ba96d7b8e831d2b0085026d",
+      "disposition": "propose-correction",
+      "finalTarget": "Yêu cầu của {username} đang chờ phê duyệt.",
+      "finalTargetHash": "826244568dfde827876da8dcf01a11af478fd053945de700ce69b717bcd01a56",
+      "locale": "vi",
+      "rationale": "The current omits the space after the placeholder and changes the request owner to 'me'."
+    },
+    {
+      "callerContextSha256": "e9a6951c2d677dbf0fa90ca9d60bfe97e75c01613fc2cf9fa4e6a32a21b65b3c",
+      "callerReferenceCount": 2,
+      "confidence": "high",
+      "currentTarget": "{username} 的请求待处理。",
+      "currentTargetHash": "920cd70a8749c5ec18cbb0f20f2a90b65029db68d7a35f94c0f5281b1bb850f9",
+      "disposition": "refinement",
+      "finalTarget": "{username} 的请求正在等待批准。",
+      "finalTargetHash": "29a294fb292825db154af670bce27d2e05607b0eae3eba04212203f9d6dde9f8",
+      "locale": "zh_Hans",
+      "rationale": "待处理 can mean simply being processed; the source specifies approval is pending."
+    },
+    {
+      "callerContextSha256": "e9a6951c2d677dbf0fa90ca9d60bfe97e75c01613fc2cf9fa4e6a32a21b65b3c",
+      "callerReferenceCount": 2,
+      "confidence": "high",
+      "currentTarget": "{username} 的請求待處理。",
+      "currentTargetHash": "78cabf916ae1842d75be203f69b9021b6867771fea6200a299d5bfa008646de1",
+      "disposition": "refinement",
+      "finalTarget": "{username} 的請求正在等待核准。",
+      "finalTargetHash": "cc15c11bf301945adbcd94accb8045cb8ad5ae4c86d8052eeceb702c17eb2ee1",
+      "locale": "zh_Hant",
+      "rationale": "待處理 can mean simply being processed; the source specifies approval is pending."
+    }
+  ],
+  "sourceId": "components.RequestModal.Book.requestfrom",
+  "sourcePosition": 2812
+}

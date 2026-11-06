@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "branch": "codex/seerrng-localization-overhaul-20261028",
+  "reviewedBaseHead": "ebf1cb6082ef173688227c507acfdc04c3cf7ca7",
+  "reviewedBaseTree": "e3c4d1d10f40ea078b66dfdf942e99c8189fee0c",
+  "status": "catalogs applied and pushed; commit pin recorded in application-verification.json",
+  "cells": 240,
+  "resolutions": {
+    "adopt-blind-proposal": 12,
+    "cross-audit-target": 21,
+    "hold": 12,
+    "retain-current": 195
+  },
+  "changedCells": 33,
+  "updatedCatalogs": 11,
+  "catalogs": {
+    "src/i18n/locale/ar.json": "3ee0f670843993fc99cac32869f363dfed60eafa5a5489507e3368473fe1c299",
+    "src/i18n/locale/de.json": "45339bd0d56131a2b6591d34c6cd7c0115489fea2ffb3468d5f0b573014c953e",
+    "src/i18n/locale/es.json": "b4772207f4f642a7e7f27e53374377af4e53049e20b7943809b287e9c9e4d559",
+    "src/i18n/locale/fr.json": "2a9f5263b47135f514e7a11d67471d417221c1dbba564445acba2fca15594564",
+    "src/i18n/locale/hi.json": "841f2fa1a6e9b92a139612bbfc9c9180d0002301e1959501c7f224136701113e",
+    "src/i18n/locale/id.json": "27732baf129134e109eb22d261478aa4dd63407c4bfbde9253295571b4ef7641",
+    "src/i18n/locale/ja.json": "f89adc08e75bbc71c60f07100728eafd2c87e3c413cfdc6074392719c58ae2ea",
+    "src/i18n/locale/ko.json": "add371a5564a2da329af21b43aec230762f96db1f0f7d236a45345e163ff7f11",
+    "src/i18n/locale/pt_BR.json": "7c01ec90db9c7308a0de21c4816cb9d9bbcdc154f46772ea4b0adf01c407f4e3",
+    "src/i18n/locale/vi.json": "d71b1516a1449c359bc9378838c70c2b3a289715a7ecde937567ce70fc893f91",
+    "src/i18n/locale/zh_Hans.json": "1e96d4e0c58ffb4310b710d6b96e3f370280bbd162204b4d100a2eb1be9ad3ac",
+    "src/i18n/locale/zh_Hant.json": "4388c3bd400e81c0053d305269fc6c1b6a701b4db85d530fb7fb93acc801e7e6"
+  },
+  "nonTargetChanges": 0,
+  "keyOrderPreserved": true,
+  "callerlessHolds": 12,
+  "workflowFilesTouched": false,
+  "testsBuildsScansCi": "not run",
+  "nativeSpeakerAndBrowserReview": "pending",
+  "mergeReleaseTag": "not performed"
+}

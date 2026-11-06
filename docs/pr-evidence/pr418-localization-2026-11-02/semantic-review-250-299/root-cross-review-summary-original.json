@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "liveHead": "2b40cb73e2d2f1b85b1532f0145c3f2f961f06b0",
+  "liveTree": "fdc5c1c42b0688c9c388adcd2b2996d00db99faf",
+  "window": [
+    250,
+    300
+  ],
+  "inputRows": 182,
+  "reviewedRows": 182,
+  "dispositions": {
+    "accepted-proposal": 177,
+    "refined": 4,
+    "accepted-current": 1
+  },
+  "correctionRows": 181,
+  "liveSourceTargetHashMismatches": 0,
+  "placeholderAndIcuReview": "preserved across all rows",
+  "nativeSpeakerReview": "not performed; still required",
+  "rootCrossReviewLedgerPath": "/mnt/disks/scratch/task-worktrees/localization-20261030/semantic-results/seerrng-v13-5a434217-strict/manual-reconciliations/independent-corrections-250-300-2026-11-02/root-independent-cross-review-250-299-2026-11-02.jsonl",
+  "rootCrossReviewLedgerSha256": "431745dedb2bebd4383b56486e3307e3720a5f596f05215dbf81fc0a36e95f35",
+  "exactHashApplyPlanPath": "/mnt/disks/scratch/task-worktrees/localization-20261030/semantic-results/seerrng-v13-5a434217-strict/manual-reconciliations/independent-corrections-250-300-2026-11-02/root-exact-hash-apply-plan-250-299-2026-11-02.jsonl",
+  "exactHashApplyPlanSha256": "683bb311b4483a393f7b39fe1300c3658290991f081a19d194a99a61ae642d1f"
+}

@@ -1,0 +1,26 @@
+{
+  "repository": "snapetech-org/SeerrNG",
+  "pullRequest": 418,
+  "state": "open",
+  "draft": true,
+  "branch": "codex/seerrng-localization-overhaul-20261028",
+  "prHead": "ebebae19e24b9236192eda287938b65eabf29667",
+  "remoteBranchHead": "ebebae19e24b9236192eda287938b65eabf29667",
+  "tree": "8e5ef5985dee40f5c1191dff794e323a851d3ef8",
+  "worktreeHead": "ebebae19e24b9236192eda287938b65eabf29667",
+  "worktreeTree": "8e5ef5985dee40f5c1191dff794e323a851d3ef8",
+  "changedWorkingFiles": [
+    "src/i18n/locale/ar.json",
+    "src/i18n/locale/de.json",
+    "src/i18n/locale/es.json",
+    "src/i18n/locale/fr.json",
+    "src/i18n/locale/hi.json",
+    "src/i18n/locale/id.json",
+    "src/i18n/locale/ja.json",
+    "src/i18n/locale/ko.json",
+    "src/i18n/locale/pt_BR.json",
+    "src/i18n/locale/vi.json",
+    "src/i18n/locale/zh_Hans.json",
+    "src/i18n/locale/zh_Hant.json"
+  ]
+}

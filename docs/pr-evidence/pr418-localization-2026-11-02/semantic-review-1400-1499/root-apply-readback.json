@@ -1,0 +1,4135 @@
+{
+  "schemaVersion": 1,
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "baseHead": "0773321829173ea9fe6c765d16335c27c06c57a2",
+  "sourcePositionStart": 1400,
+  "sourcePositionStopExclusive": 1500,
+  "catalogPinsAfter": {
+    "src/i18n/locale/ja.json": {
+      "sha256": "17de5b3c554bb7862ae36987feff287a833ebc28e217c498e3307adc083c407a",
+      "gitBlob": "c5d0ce50305d1e0a31452c68688681f9e6116e00",
+      "keys": 9494,
+      "edits": 53
+    },
+    "src/i18n/locale/ko.json": {
+      "sha256": "9e07da90e99ad9a3bdf40af719c8bd5f9bfe1f802dbdaf1852539199fefba2e7",
+      "gitBlob": "afeaaed4e13c3802fb0eaaef74018bae00859a56",
+      "keys": 9494,
+      "edits": 52
+    },
+    "src/i18n/locale/pt_BR.json": {
+      "sha256": "e5c4fec3313ec55a513a04562e525c7d5cc60ebcdee360e4d3e22a1fc6335898",
+      "gitBlob": "119f34ba4efe97207f8cc0c7d89fa76ae42e43df",
+      "keys": 9494,
+      "edits": 41
+    },
+    "src/i18n/locale/zh_Hans.json": {
+      "sha256": "797ca134d282fa97299357e10bc8e2d2a1fe8d427eade42b0d000a2394ac41df",
+      "gitBlob": "cc97a96d41c658b0c4f4c66798da62c834103baa",
+      "keys": 9494,
+      "edits": 55
+    },
+    "src/i18n/locale/zh_Hant.json": {
+      "sha256": "2565fe12dbe56cadc2ccd8964a1597c072eda8a2a0054d364a5c5f50b19373d9",
+      "gitBlob": "0bc947ac5e63ba4433a6f05825490ebf1a0c9aae",
+      "keys": 9494,
+      "edits": 54
+    },
+    "src/i18n/locale/ar.json": {
+      "sha256": "4b74008c2cc05a8da092cadc37c673bd8ae5310177ee430f1336df32a67155e9",
+      "gitBlob": "11490ad1fb0f2f720201ff60b8760d03760fada7",
+      "keys": 9494,
+      "edits": 38
+    },
+    "src/i18n/locale/hi.json": {
+      "sha256": "4c75114f5a1fc27f0807bbb4dc12ed65740eec494ef22f27a43936f8c0f21341",
+      "gitBlob": "660223abdffd19a86bf2492a9ee724a2d542dd46",
+      "keys": 9494,
+      "edits": 50
+    },
+    "src/i18n/locale/id.json": {
+      "sha256": "5986abc530277ae1b98695c8d09a60bf0690cb761bf9e2fbdc44514c0c9e24f4",
+      "gitBlob": "c24ff8fdecb33f5ee3b6fbb6fa1749021a145622",
+      "keys": 9494,
+      "edits": 15
+    },
+    "src/i18n/locale/vi.json": {
+      "sha256": "ecc55481acea8b1fa416c5e0f6a53f15af565909e564dc04863b3cbd50bc7027",
+      "gitBlob": "f214afe08f97221f5915d59144028863d6f2678d",
+      "keys": 9494,
+      "edits": 46
+    },
+    "src/i18n/locale/de.json": {
+      "sha256": "5a9ceaab0c5c4d816073b1e0082549eb2e540867381194a05765a67c3fcfe8a3",
+      "gitBlob": "9c3707df98c3ca8b1680bdfdc7d793a1c47a1af0",
+      "keys": 9494,
+      "edits": 5
+    },
+    "src/i18n/locale/fr.json": {
+      "sha256": "870aed3c40fbfcf72471c4eda312292e2c752085e5bb03b215162f93dd8113c0",
+      "gitBlob": "bd178854527e4b39faaf6ccf41b9509beabf6510",
+      "keys": 9494,
+      "edits": 29
+    },
+    "src/i18n/locale/es.json": {
+      "sha256": "e6ff1f2e8732e34bd4f8b46c96e70200c5ec2a9a328784da7490c171635bba85",
+      "gitBlob": "f62dc4b46878a9b826904f4d04dc903733783072",
+      "keys": 9494,
+      "edits": 12
+    }
+  },
+  "exactHashEditsApplied": 450,
+  "cells": [
+    {
+      "id": "components.GameLibrary.loadError",
+      "locale": "ja",
+      "targetFile": "src/i18n/locale/ja.json",
+      "expectedCurrentHash": "1ba3b22863ee6b7e6f53c7faa72ea80416f0442ba508c1530bc525b11ca82389",
+      "finalTarget": "ゲームライブラリを読み込めませんでした。",
+      "finalTargetHash": "c0ea9773edf3d6183c67ea6e9265caa54c8fd45972d745cdaf7488512297ad19",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.loadMore",
+      "locale": "ja",
+      "targetFile": "src/i18n/locale/ja.json",
+      "expectedCurrentHash": "a0b04acc32949ec155e40d5adfb5cb82293cb30c292624cebe6a0800a6bf1d67",
+      "finalTarget": "ゲームをさらに読み込む",
+      "finalTargetHash": "08d105913e036e660fea87bbb10afd7c8aee92462505bcd6cd0163dd8698f31d",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.loading",
+      "locale": "ja",
+      "targetFile": "src/i18n/locale/ja.json",
+      "expectedCurrentHash": "d4beff84cae399dc4f7a0320b70432e2b23fc2f839a62bab193f6a7fccbd88f3",
+      "finalTarget": "ゲームを読み込み中…",
+      "finalTargetHash": "353bc184913af5fbb038011ff8572d710e8849cede08e40060f34e9020d5934f",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.loadingMore",
+      "locale": "ja",
+      "targetFile": "src/i18n/locale/ja.json",
+      "expectedCurrentHash": "dc50c0d1a837eac129798481f33c8fc3346b20ca1345f9677cdd0145bf982652",
+      "finalTarget": "さらにゲームを読み込み中…",
+      "finalTargetHash": "a3e3582173a332249cf3476230b6bf1cd8abdc3c8a427e0fe7a40bf8ae936c63",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.manualAdded",
+      "locale": "ja",
+      "targetFile": "src/i18n/locale/ja.json",
+      "expectedCurrentHash": "77acf508a8a6d6ebd5d71831975fcd9586478168342b5febc548670d7eae7fa4",
+      "finalTarget": "ゲームをプライベートライブラリに追加しました。",
+      "finalTargetHash": "e9a5df83b0ba95260e3f74911cbf1c3fdd8daf557d408b521c84e571b57e33df",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.manualOwnership",
+      "locale": "ja",
+      "targetFile": "src/i18n/locale/ja.json",
+      "expectedCurrentHash": "4f7c6f3bccbfc6e7549ad45d431b83efd29f54f3928d0b5f7d885a9c5c433c0d",
+      "finalTarget": "Steam以外で所有しています",
+      "finalTargetHash": "dad5c308ded75a829733569919bbaca25a0efdf3dca737c373a8a155737b1aaa",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.matchGame",
+      "locale": "ja",
+      "targetFile": "src/i18n/locale/ja.json",
+      "expectedCurrentHash": "283e351d937f53b2ee3003a22a4b2aa04c4989635d3d3f6c5d830b09a0387ff5",
+      "finalTarget": "この対応付けを使用",
+      "finalTargetHash": "51a749842930b801108e3a983b4b0fbb42b60e24a46ee9b35cfa5ea06861c367",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.noCatalogMatches",
+      "locale": "ja",
+      "targetFile": "src/i18n/locale/ja.json",
+      "expectedCurrentHash": "3eb62dedae3a2e957e9d3d194df5a5dd97b5a9b8c3d2a09baca17f540b12c3b9",
+      "finalTarget": "一致するカタログ内のゲームが見つかりませんでした。",
+      "finalTargetHash": "f5fec8512ffa9da6a30e5fc36a820182ca513bd846452b7c6fa8dfbedd6d178b",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.noMatches",
+      "locale": "ja",
+      "targetFile": "src/i18n/locale/ja.json",
+      "expectedCurrentHash": "f40bc725240842d6cd7bcf65b4ddfdc400d0f43257ad11c53e1ea1a73cf4eac4",
+      "finalTarget": "これらのフィルターに一致するゲームはありません。",
+      "finalTargetHash": "740fed6cc0980be3179b17089883c69cc4a1ba7bbf3100fc9fed6f4a26fb6e87",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.noSharedGamesHelp",
+      "locale": "ja",
+      "targetFile": "src/i18n/locale/ja.json",
+      "expectedCurrentHash": "5877ece2fdb295f46c189a7b7119d124a57638a82ee5c7a0de8ac69047170361",
+      "finalTarget": "所有しているゲームで「世帯と共有」を選択してください。SeerrNGでは、ユーザーが明示的に共有したゲームのみが表示されます。",
+      "finalTargetHash": "933a6dc8bf4d95e78a7042955ae18fee8cac57d07827d415e3664a48388b8962",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.notMarkedOwned",
+      "locale": "ja",
+      "targetFile": "src/i18n/locale/ja.json",
+      "expectedCurrentHash": "08e5b63aeb6a5d12244f97d7631f8af12d23fa403c300adb475f5a268a7f9c25",
+      "finalTarget": "所有済みとしてマークされていません",
+      "finalTargetHash": "2da0cca856f01d6f2dc35685fa967421ee0726308eade6aecc72c5c52c36f48b",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.owned",
+      "locale": "ja",
+      "targetFile": "src/i18n/locale/ja.json",
+      "expectedCurrentHash": "1efce2496b251a41f10125f4cd30d0e6591d66674ceff9d3ea82ad3ac27b2647",
+      "finalTarget": "所有済み",
+      "finalTargetHash": "becff8f2629de7733c413835f1c026cd2dffe88630e8af4a3925c7c862247561",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.ownerCount",
+      "locale": "ja",
+      "targetFile": "src/i18n/locale/ja.json",
+      "expectedCurrentHash": "3ae20cd5fb5133dae126670b54a9dba1c1bc97399a5d3f282ef85b11eaae627c",
+      "finalTarget": "{count, plural, one {#人が所有しています} other {#人が所有しています}}",
+      "finalTargetHash": "95b93c9f3315a40f35811dfc9b3a940886aeb64678be3465ab3e865ccd4a0383",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.paused",
+      "locale": "ja",
+      "targetFile": "src/i18n/locale/ja.json",
+      "expectedCurrentHash": "83fdc4be2924075bba3223e85bc8719103e56c063a91bdeffaef19a7a4d446d3",
+      "finalTarget": "一時停止",
+      "finalTargetHash": "b8aaf2c6e030a4d9f47c0d48e88284bc38c394ce91402f634f60e7878edbd824",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.platformName",
+      "locale": "ja",
+      "targetFile": "src/i18n/locale/ja.json",
+      "expectedCurrentHash": "4ae070b7d7c950799957ce991fe6e417f787cadc048c5a50ce78138948f15be6",
+      "finalTarget": "プラットフォームまたはシステム",
+      "finalTargetHash": "9b679a652a6522cffe2c5de2a82a84b297742aac4eaa1be700bef0197191fc00",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.played",
+      "locale": "ja",
+      "targetFile": "src/i18n/locale/ja.json",
+      "expectedCurrentHash": "794b1572bfc4378e72cdb9be88b56fc66c48acfd77cf2c828137d5c755b741d0",
+      "finalTarget": "プレイ済み",
+      "finalTargetHash": "eecf0149de82184d79ed58ef3b70e6982a63587554c087fe75075a80b67f6aca",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.playing",
+      "locale": "ja",
+      "targetFile": "src/i18n/locale/ja.json",
+      "expectedCurrentHash": "17175951b51b709492076698d1286ca29890e101389d9b466519cab0e2cba5a0",
+      "finalTarget": "プレイ中",
+      "finalTargetHash": "80f3f9d8b15486ce6ff028e490a0c9ba20f8389a33116a3a0f0792a587fa7947",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.playtimeHours",
+      "locale": "ja",
+      "targetFile": "src/i18n/locale/ja.json",
+      "expectedCurrentHash": "38902bd84d294f6c5f6542f995540533346c1dbe584d481356abe3cb2a1f5a2d",
+      "finalTarget": "{hours}時間プレイ",
+      "finalTargetHash": "794fb1a5017cf280d3b12a2dd793a3b782be0129e44c3b9684d319872b892090",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.privateLibrary",
+      "locale": "ja",
+      "targetFile": "src/i18n/locale/ja.json",
+      "expectedCurrentHash": "516012d4f2ed1dc027db90293abf6117d946669d73412f75198b555adc0489ce",
+      "finalTarget": "あなた専用",
+      "finalTargetHash": "65a0229d0ad7fd1277e724af93d99dae01821eb42f1ca5b1d38b5db9a4d28d40",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.removeConfirm",
+      "locale": "ja",
+      "targetFile": "src/i18n/locale/ja.json",
+      "expectedCurrentHash": "3bf89add5efb7a47f49f18b4c78ce5cd54b1364254b3a84e70510adab88b7ff2",
+      "finalTarget": "「{title}」を個人のゲームライブラリから削除しますか？",
+      "finalTargetHash": "0e670086ee4abe4f1f1805b734f9de349187582a3c29dfb2337d0c9eefd8bd1c",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.requestCancelled",
+      "locale": "ja",
+      "targetFile": "src/i18n/locale/ja.json",
+      "expectedCurrentHash": "bca84ea5c65fee0eccd1f23a972b95cce908f83977c65b4e8b32ca72a772a9a5",
+      "finalTarget": "取り消し済み",
+      "finalTargetHash": "661c952e3965ab1996b0c83aa7121495493b0abf7eaed609b4e6a4a6605b32fe",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.requestDownloading",
+      "locale": "ja",
+      "targetFile": "src/i18n/locale/ja.json",
+      "expectedCurrentHash": "b85d7a94ae5775cf4becd9a65f79e5844d45d854bb92a29c88db65d609e6ff91",
+      "finalTarget": "ダウンロード中",
+      "finalTargetHash": "70319720e2ad4001b11671eebfcc5d25e696b21f0712e88cfd268490898039ea",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.requestGame",
+      "locale": "ja",
+      "targetFile": "src/i18n/locale/ja.json",
+      "expectedCurrentHash": "ae31902b997ff8cde477ae2694188df6fb065f3ec1171c051517b300c88b6dce",
+      "finalTarget": "このゲームをリクエストする",
+      "finalTargetHash": "a0d51370ce82d34069853c169d7f06da56605ccab25b3f8527d3617edbebd1f9",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.requestImporting",
+      "locale": "ja",
+      "targetFile": "src/i18n/locale/ja.json",
+      "expectedCurrentHash": "ad2c5e6338e68444fc28c1057737e9973ede1ad810d66c1754a022f003be1959",
+      "finalTarget": "インポート中",
+      "finalTargetHash": "e6a557084317f0c3439ebfaaaa9eb64962ddf452166c171b8f2dd021a51185aa",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.requestPending",
+      "locale": "ja",
+      "targetFile": "src/i18n/locale/ja.json",
+      "expectedCurrentHash": "0d175f198142efba4ee652a10e54498727c9bc013bb22dfc124c008cec8a89f0",
+      "finalTarget": "承認待ち",
+      "finalTargetHash": "de90bf305aaa0ddab65b55467fd9b73b71a1814702bd1c823f236bd2c3baff18",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.requestSearching",
+      "locale": "ja",
+      "targetFile": "src/i18n/locale/ja.json",
+      "expectedCurrentHash": "79cb208658c1ee578b4cddb2131b2415a2cdddb60f352f026f28eea9152d7f3e",
+      "finalTarget": "検索中",
+      "finalTargetHash": "13b33492fa9d7bcd92cd1c7b7b3371e037c980272befac3f1fec677044a22235",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.requestUnknown",
+      "locale": "ja",
+      "targetFile": "src/i18n/locale/ja.json",
+      "expectedCurrentHash": "f93a86abfcbf162e0cb3e29989295bd136bc36f9e62abe2dbc0346a2ca103723",
+      "finalTarget": "進行中",
+      "finalTargetHash": "e7e5869de581e0357ef5705abde0a59deded1684d94875b8f8ec40ef810ec2ef",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.saveError",
+      "locale": "ja",
+      "targetFile": "src/i18n/locale/ja.json",
+      "expectedCurrentHash": "99260c445e483282bab88e5cac7944b9cb98ab0c7b5bc21dec68be01c637d6e3",
+      "finalTarget": "ゲームの変更は保存できません。もう一度お試しください。",
+      "finalTargetHash": "3457b3d4948a9488e34a877172364e071ad19c63b05893cf3013f4c3a74d6e3c",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.shareHelp",
+      "locale": "ja",
+      "targetFile": "src/i18n/locale/ja.json",
+      "expectedCurrentHash": "2ec4f45b9eba07d25a1e29dac41cee180e853893f9ba78a927e9f79c21c48f6c",
+      "finalTarget": "共有されたゲームは、この SeerrNG サーバーにサインインしている他のユーザーに表示されます。",
+      "finalTargetHash": "ae2dfc5f317df953323c5fae58580d3d1f8b18b4bdaff4a92ca046c89fa51d2c",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.shareWithHousehold",
+      "locale": "ja",
+      "targetFile": "src/i18n/locale/ja.json",
+      "expectedCurrentHash": "37751ee2bf540f492e15d93b1c53cf1a4a697d65e543c3117295173ae6774bcc",
+      "finalTarget": "世帯と共有",
+      "finalTargetHash": "c50797f94974b7340894974756135f8e835b7175f32520444dc58798ade8430f",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.sharedBy",
+      "locale": "ja",
+      "targetFile": "src/i18n/locale/ja.json",
+      "expectedCurrentHash": "2eebd0eee43f19bc0df5fee7f5c998f244416266479ada72e1ba39a84245822f",
+      "finalTarget": "共有者: {owners}",
+      "finalTargetHash": "18a8382eeaf9e4fbf7f9477dbb8e5bbc1a8ded6972322906cb34e66fe4e50c21",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.sharedFilterLabel",
+      "locale": "ja",
+      "targetFile": "src/i18n/locale/ja.json",
+      "expectedCurrentHash": "16d6ef644a833471e73bbba549ed170440c27909525f08a14413d310bb048fc2",
+      "finalTarget": "所有者数",
+      "finalTargetHash": "19bf8dfb35a5c6c6dc9c186f2754de09a6d0d8556e99b2c3b56bc416d8780b0d",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.sharedIntro",
+      "locale": "ja",
+      "targetFile": "src/i18n/locale/ja.json",
+      "expectedCurrentHash": "726bd7d6fc174f545098116ad5f127c8ec239ffa37ca47a23cc1130e948e848f",
+      "finalTarget": "この SeerrNG サーバーのユーザーが共有を選んだゲームを探せます。個人用ライブラリの項目は表示されません。",
+      "finalTargetHash": "955bd6d2fd894ff02c1a02e41c292cfa28a657f98cf3069a48192c4c6a188aae",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.sharedOnly",
+      "locale": "ja",
+      "targetFile": "src/i18n/locale/ja.json",
+      "expectedCurrentHash": "f641efac62f11f9616865e1b07b17bd76995d80db5613039cc518aeeec3d01f3",
+      "finalTarget": "2人以上の所有者",
+      "finalTargetHash": "f5723c733b65c298bdcd53bac7d8c15809bf8b4fccb5821eff72178c8ae49de5",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.steamDisconnect",
+      "locale": "ja",
+      "targetFile": "src/i18n/locale/ja.json",
+      "expectedCurrentHash": "2507266714b5a135e72c82a257940c3526fce4c823a481e8b9f5f1039480de0f",
+      "finalTarget": "Steam アカウントの連携を解除",
+      "finalTargetHash": "edc57114c4f92b6c3059ec734d15df5960ab6feb8266ed7bafbce580ba919ecc",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.steamErrorMessage",
+      "locale": "ja",
+      "targetFile": "src/i18n/locale/ja.json",
+      "expectedCurrentHash": "e16b2955fecfa16f79e682a1bb49a25d07d47b1fed392493ec5fba2ade340cab",
+      "finalTarget": "Steam アカウントを連携できませんでした。もう一度お試しください。",
+      "finalTargetHash": "9e66d54408d71d4204f5d7cde1cad84ab933432ba6afe219e8ff9b704ed4129a",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.steamLastSynced",
+      "locale": "ja",
+      "targetFile": "src/i18n/locale/ja.json",
+      "expectedCurrentHash": "40fa1f6956de7f3716fe0dc513e7ebd43435287de1d73fbacd9e56c89335a5d8",
+      "finalTarget": "最終同期: {date} · {count}件のゲームが見つかりました",
+      "finalTargetHash": "f76253b4c4759b6daac23da6e41409df0e2c41c53f16428af407d7a9afca1dbb",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.steamNeverSynced",
+      "locale": "ja",
+      "targetFile": "src/i18n/locale/ja.json",
+      "expectedCurrentHash": "4e5710b5186d76e1c3a93b517426b625f01bb2366ca3e75d8baa1da231f691ac",
+      "finalTarget": "まだ同期されていません",
+      "finalTargetHash": "590d1bb154f62ebd1a8cf7c7b9f31a13eb95e6ffa0009023596731b2eed89365",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.steamSyncing",
+      "locale": "ja",
+      "targetFile": "src/i18n/locale/ja.json",
+      "expectedCurrentHash": "e86b8a0a1612ebed0955f56b2879f98bd1d3352d90472399f0045d0c075b7bfc",
+      "finalTarget": "Steam を同期中…",
+      "finalTargetHash": "eb356b5cc391c126e1466466b2b1efe1fc395126cb52a5e0dd667a70614e219a",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.steamUnlinked",
+      "locale": "ja",
+      "targetFile": "src/i18n/locale/ja.json",
+      "expectedCurrentHash": "ec159c42248561c639ff02d0703199ad6cdf73c6277476f92264cb5181ce6277",
+      "finalTarget": "Steam アカウントの連携が解除されました。インポートしたゲームとプレイ状況は残りますが、Steam の所有情報は削除されます。",
+      "finalTargetHash": "06c1aff4e004a0733571ad81b631e30875790ebe4e836bd4aedb0f068a54fae8",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.updateError",
+      "locale": "ja",
+      "targetFile": "src/i18n/locale/ja.json",
+      "expectedCurrentHash": "4b6bfcf7922450d3a5b3e7846a40029eaee722c9d1bc1f2e3d28a4c5678a329b",
+      "finalTarget": "このゲームを更新できませんでした。もう一度お試しください。",
+      "finalTargetHash": "6a34cbca26cdcbd3d0aae0634ed77065fe9299f235da57f557ffcc1636c3e7e5",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.IdentityMappingControls.change",
+      "locale": "ja",
+      "targetFile": "src/i18n/locale/ja.json",
+      "expectedCurrentHash": "bcae15cd4a4ef47c8157512feb75a1fbf69b0c5d56ed22a7ff86aa94521de6b9",
+      "finalTarget": "タイトルの対応付けを変更",
+      "finalTargetHash": "860ff947bf5edac4bbc25cc3a73354a1a88dfaae15a10ea4cd5e8efc97dbfadb",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.IdentityMappingControls.curatedMatch",
+      "locale": "ja",
+      "targetFile": "src/i18n/locale/ja.json",
+      "expectedCurrentHash": "adbef1b93a863f83b0962f97c273b2d75caaad67e9130ab7fd26dff955bfaa61",
+      "finalTarget": "この対応付けは管理者が管理する共有パックから提供されています。個人用の上書きを保存するには、別のタイトルを選択してください。",
+      "finalTargetHash": "4781955202380e7a92b8cfc99bbeadcd73ca35b55abce98872e83669f7838507",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.IdentityMappingControls.externalMatch",
+      "locale": "ja",
+      "targetFile": "src/i18n/locale/ja.json",
+      "expectedCurrentHash": "10a345346cc518c513c7b876994d0154661ea5400b8488f14a3c4f3e959aeae4",
+      "finalTarget": "この対応付けは正確な IMDb または TVDB ID によるものです。個人用の上書きを保存するには、別のタイトルを選択してください。",
+      "finalTargetHash": "ebcac3f0f25169f0012e7c0789048ccc0cd5ddc03d6c91bb27e5d385ab6b86d7",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.IdentityMappingControls.match",
+      "locale": "ja",
+      "targetFile": "src/i18n/locale/ja.json",
+      "expectedCurrentHash": "b22acab26e5499d49ef2125b8a9af4f6c52a67fb1dae932eecf268ec1ba29417",
+      "finalTarget": "カタログのタイトルと照合",
+      "finalTargetHash": "359bed90ed202e034373ed72c72241aa1693227f4fcb7da361bde0c99fe9ff19",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.IdentityMappingControls.mediaTypeLabel",
+      "locale": "ja",
+      "targetFile": "src/i18n/locale/ja.json",
+      "expectedCurrentHash": "b6ef613cd2de35794651a0098d83586a185087a0f35a9410d7040d742c9d2b82",
+      "finalTarget": "カタログのメディア種別",
+      "finalTargetHash": "a49768f1c3ab83eaa0f13cc98cc43b8c47a62442ababcf1a492792263281a6f1",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.IdentityMappingControls.noResults",
+      "locale": "ja",
+      "targetFile": "src/i18n/locale/ja.json",
+      "expectedCurrentHash": "4338ed5b514f2407b0b720fd0b44ffb265dbc2be1cea1c93d4700248e01882af",
+      "finalTarget": "一致するタイトルが見つかりませんでした。",
+      "finalTargetHash": "fece8002e5d9a322b4de0b1cff256b8fd7081472b48721739a7733a2ff0bd356",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.IdentityMappingControls.reset",
+      "locale": "ja",
+      "targetFile": "src/i18n/locale/ja.json",
+      "expectedCurrentHash": "b2a63fe97fd368876c30304a6feafff44a2243794752e9a70e8023cccf0a2a71",
+      "finalTarget": "タイトルの対応付けをリセット",
+      "finalTargetHash": "8a88475e27de5243676971f6caefc0757d7f2b5b04744c284390d5e19895642f",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.IdentityMappingControls.resetFailed",
+      "locale": "ja",
+      "targetFile": "src/i18n/locale/ja.json",
+      "expectedCurrentHash": "21746bacad4878a352c5fdc63a1843513a3cf236588b1ff8303c3f13761f309a",
+      "finalTarget": "対応付けをリセットできませんでした。もう一度お試しください。",
+      "finalTargetHash": "acc7e290c0c09677a4a5aa87f35ab761d734fdd89bac5533a780e091238a5a29",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.IdentityMappingControls.resetSaved",
+      "locale": "ja",
+      "targetFile": "src/i18n/locale/ja.json",
+      "expectedCurrentHash": "0be57daa1e039114a5602751a132a97e94b785e78a001140466040a5e202317c",
+      "finalTarget": "タイトルの対応付けをリセットしました。",
+      "finalTargetHash": "ddf6a0205e3c2dc1e1e7612d7bb882990d4504ebd97fe0c5fd5bc990ddc0699f",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.IdentityMappingControls.saveFailed",
+      "locale": "ja",
+      "targetFile": "src/i18n/locale/ja.json",
+      "expectedCurrentHash": "b08eb63707e0d1753c08358e5663397fff1b3a28fe3167112ca5e4bc3d8e9b7b",
+      "finalTarget": "対応付けを保存できませんでした。もう一度お試しください。",
+      "finalTargetHash": "42e805c3f6e5df2375197e989e35c20a1f00eae644f9f5253ce2080738c2bd18",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.IdentityMappingControls.saved",
+      "locale": "ja",
+      "targetFile": "src/i18n/locale/ja.json",
+      "expectedCurrentHash": "c6d3d0ae622d5006e33dde9c3eae0783a7a746dac52f33f308a56b0fe7f9c333",
+      "finalTarget": "タイトルの対応付けを保存しました。",
+      "finalTargetHash": "59155f1e870d74e0803380a335a5bcbc157e603d6f5df81c455fe292b8808b17",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.IdentityMappingControls.searchFailed",
+      "locale": "ja",
+      "targetFile": "src/i18n/locale/ja.json",
+      "expectedCurrentHash": "bc9762fa92732d874ca098b0d6eb3ac79d35129ea5eef9bf89a67d0f83db8f3f",
+      "finalTarget": "カタログの検索に失敗しました。もう一度お試しください。",
+      "finalTargetHash": "fba69aca05ff63ec3b1f597b05efb18ae50105fc27db84e6a6c1e928ac2d800f",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.loadError",
+      "locale": "ko",
+      "targetFile": "src/i18n/locale/ko.json",
+      "expectedCurrentHash": "79ef12d49a9b7188d990451674b7e18ec1d7c5baa92921a28c7e30fa4f135c36",
+      "finalTarget": "게임 라이브러리를 불러올 수 없습니다.",
+      "finalTargetHash": "6c519cd15a367ec483a583477f55fe9d7783bf42d11b2e7ea6c3eb15f6572f86",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.loadMore",
+      "locale": "ko",
+      "targetFile": "src/i18n/locale/ko.json",
+      "expectedCurrentHash": "adffbcc1e3ea107da9ee2499a7ef89d31c2ca4d50df055edf1c1b955bb404a15",
+      "finalTarget": "게임 더 불러오기",
+      "finalTargetHash": "89c99900e384f003b8cf7b3905049ad4da3e4834a8d83d96d7df73806d9fce7a",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.loading",
+      "locale": "ko",
+      "targetFile": "src/i18n/locale/ko.json",
+      "expectedCurrentHash": "e1c53b4d0886dc1cb28b3c58bd5a7057deba66073b6e9b6f2fe58da4f3b64163",
+      "finalTarget": "게임을 불러오는 중…",
+      "finalTargetHash": "ee7e83726e1020d9f82297ede6f4f6612fe498953322cc7b9d201ae8e95c3514",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.loadingMore",
+      "locale": "ko",
+      "targetFile": "src/i18n/locale/ko.json",
+      "expectedCurrentHash": "ea00713de317f576e0d108cc7a2746b20e46554e3daae3f142fd257e7a86e2c8",
+      "finalTarget": "게임 더 불러오는 중…",
+      "finalTargetHash": "70be80f3c597adb2c63a69efdba977fbebd461c8b2f4f8de6d684643f7a1a2d0",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.manualAdded",
+      "locale": "ko",
+      "targetFile": "src/i18n/locale/ko.json",
+      "expectedCurrentHash": "49d4b501080a83baab090362445b750fed19e41f2d542aaf2ffc70f63d86a923",
+      "finalTarget": "게임이 개인 라이브러리에 추가되었습니다.",
+      "finalTargetHash": "bb3a3093143c2ae445f875b4493d19a18319c9b3bc25cbc825c90020a66c9a93",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.manualOwnership",
+      "locale": "ko",
+      "targetFile": "src/i18n/locale/ko.json",
+      "expectedCurrentHash": "3d6e3765ac8fad6a1c019f18c556a018726ced2e0d13eb3a8271e71649e3214b",
+      "finalTarget": "Steam 외부에서 소유하고 있습니다",
+      "finalTargetHash": "63363bbaf5dfaf9bb8db636c4fd7a37ea9e8414bff60b6489e10f5028ec3dda9",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.matchGame",
+      "locale": "ko",
+      "targetFile": "src/i18n/locale/ko.json",
+      "expectedCurrentHash": "de689b4b7184d65fcdc3e030fdc61613044475333a32e746de9cd93d75751d3e",
+      "finalTarget": "이 일치 항목 사용",
+      "finalTargetHash": "1bde5028d08855e072c447015da835598f03bf85767a08303c4338ea993601e3",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.noMatches",
+      "locale": "ko",
+      "targetFile": "src/i18n/locale/ko.json",
+      "expectedCurrentHash": "2625bb3aac749e911cdbdeb6b4084bfe46a066867c99831884e968b45201eee9",
+      "finalTarget": "이 필터와 일치하는 게임이 없습니다.",
+      "finalTargetHash": "7606ced7ab4ca44c8a9832a04ac972b69e7c4c4f93f5c041568df6800ea4af4d",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.noSharedGames",
+      "locale": "ko",
+      "targetFile": "src/i18n/locale/ko.json",
+      "expectedCurrentHash": "69e3e6f856031a610686c6d8df335ba6a54b6fb406fa4e82cb97a7ac53b6d36a",
+      "finalTarget": "아직 공유된 게임이 없습니다.",
+      "finalTargetHash": "83b312492109d61e4f1c6053a0cc92815c9e714b9565d7892270e31de784eb1a",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.noSharedGamesHelp",
+      "locale": "ko",
+      "targetFile": "src/i18n/locale/ko.json",
+      "expectedCurrentHash": "d892e3331798283a44ee5a1949bb3e48faf0cf5bd210b89aac13409ebce50544",
+      "finalTarget": "소유한 게임에서 “가족과 공유”를 선택하세요. SeerrNG는 사용자가 명시적으로 공유한 게임만 표시합니다.",
+      "finalTargetHash": "10391bff4495c6e4747af1b3483c6cdd2764828cd892871cbc7f5fd3385464d1",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.notMarkedOwned",
+      "locale": "ko",
+      "targetFile": "src/i18n/locale/ko.json",
+      "expectedCurrentHash": "d989259aa1204d5e1febff018cb0e7208174ec753c65b67824165201ac8e5023",
+      "finalTarget": "소유한 것으로 표시되지 않음",
+      "finalTargetHash": "59897afe0d845b262e5e9e4bc9cb66e1efe1572f02b92fb298bd0dd4bbc0d150",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.openCatalog",
+      "locale": "ko",
+      "targetFile": "src/i18n/locale/ko.json",
+      "expectedCurrentHash": "7cff5d670e9b9a97c35ae9f793cae5f2d8a540b80caa3dc99212582fac1eaca1",
+      "finalTarget": "카탈로그에서 열기",
+      "finalTargetHash": "55231e1a1f86352b48b2d51a10bfddbebbcf4d8684760cea04e3e1e760d9a80e",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.paused",
+      "locale": "ko",
+      "targetFile": "src/i18n/locale/ko.json",
+      "expectedCurrentHash": "278e3c6c9071c98b0dc388bb195fb079161331025a324d249beb0010c868bee7",
+      "finalTarget": "일시 정지",
+      "finalTargetHash": "dec330ec318c8cb3cf59a9a71f81c2c62191dd8c090abe4862d64c0318ad8a27",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.played",
+      "locale": "ko",
+      "targetFile": "src/i18n/locale/ko.json",
+      "expectedCurrentHash": "cba05a1647a57abd171eedc2c942fbdcf9d657c147f3b0a0cef6a881e047627b",
+      "finalTarget": "플레이함",
+      "finalTargetHash": "f960206d383305f65cb5b7c606ccb6f6af9c49000911a1b1e55b0b82f7a7ad78",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.playing",
+      "locale": "ko",
+      "targetFile": "src/i18n/locale/ko.json",
+      "expectedCurrentHash": "0c73b0b91c1278c082ddd7e08f2ec9b014410507a908b9b94a58f0ca3fe825eb",
+      "finalTarget": "플레이 중",
+      "finalTargetHash": "1e10cfa4941baceabefd0dbd9a9062087138813c313acbd65b82c44ddcd932bd",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.playtimeHours",
+      "locale": "ko",
+      "targetFile": "src/i18n/locale/ko.json",
+      "expectedCurrentHash": "f873f73e75dd9403757110cd66bcd46ced2e7b857e62913835c9cdb6b3c59b4b",
+      "finalTarget": "{hours}시간 플레이",
+      "finalTargetHash": "cd0d77de9420de862c9f5aa15efdffcb7757e7810bec37ebd295a4793713c86b",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.playtimeHoursMinutes",
+      "locale": "ko",
+      "targetFile": "src/i18n/locale/ko.json",
+      "expectedCurrentHash": "e1f10ada3140e8944d4c5c7693ab8f448b9e80c87a8e3f2407a15c8c72e04117",
+      "finalTarget": "{hours}시간 {minutes}분 플레이",
+      "finalTargetHash": "cdd4e798378602a9cd914cec41ea4d495a74784d19438a9e45830e22d6806cc7",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.playtimeMinutes",
+      "locale": "ko",
+      "targetFile": "src/i18n/locale/ko.json",
+      "expectedCurrentHash": "7b4661ba9cbda9a09e771249e22d68a381f4fcfb24d8a70593460082decfe28c",
+      "finalTarget": "{minutes}분 플레이",
+      "finalTargetHash": "e17401efddbb2c68258ea01bb8835f5cfc9764d8cf55485dbbe464eee8bcc03b",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.privateLibrary",
+      "locale": "ko",
+      "targetFile": "src/i18n/locale/ko.json",
+      "expectedCurrentHash": "18f9875cca4046ff2d444a05cd2425f186965918d321dc87751ce33bd3c920b7",
+      "finalTarget": "나만 볼 수 있음",
+      "finalTargetHash": "5ab07742540319db0868c950ffd7646fc57c60ce95b09f718c6caec6db8a6ef6",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.removeConfirm",
+      "locale": "ko",
+      "targetFile": "src/i18n/locale/ko.json",
+      "expectedCurrentHash": "a483da18223c32889e63a9932ad8a985912223efc562c3ec8c266b81e7e8a112",
+      "finalTarget": "개인 게임 라이브러리에서 {title}을(를) 제거할까요?",
+      "finalTargetHash": "b55075146ff1dfd93edc20ee84850d91a42c8c4168f5a4c076d387a3007ee251",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.requestDownloading",
+      "locale": "ko",
+      "targetFile": "src/i18n/locale/ko.json",
+      "expectedCurrentHash": "0a4ca9bc91ee23b25beb7e5cce8e9f06e7f71dfc905a2d468bce88bcd13ee6bd",
+      "finalTarget": "다운로드 중",
+      "finalTargetHash": "0bdefe6f54fae1630f81aa3ed91ec66aa358eed404396208863800eff5d75175",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.requestGame",
+      "locale": "ko",
+      "targetFile": "src/i18n/locale/ko.json",
+      "expectedCurrentHash": "18b70159b8d273d4093149833c72271d0924fd6ab8c9c8b3813b6ca532ba0577",
+      "finalTarget": "이 게임 요청하기",
+      "finalTargetHash": "63218ff3a5eda5a4881a30d884184eca60f9248540de73a98e54305e1e9a9518",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.requestPending",
+      "locale": "ko",
+      "targetFile": "src/i18n/locale/ko.json",
+      "expectedCurrentHash": "df226e6f02c7cbd61a8a7edbd10d7dc7c25395fe59759a71038d5d61f9f32437",
+      "finalTarget": "승인 대기 중",
+      "finalTargetHash": "64d3291f9b4fa8b6ac1e37443eb005baddc661afd1dd00220c0513e9acb89d8f",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.requestSearching",
+      "locale": "ko",
+      "targetFile": "src/i18n/locale/ko.json",
+      "expectedCurrentHash": "3d118b47f1c6ffe27df39f875378ad8b33c652959c3771c3dddade302f136f27",
+      "finalTarget": "검색 중",
+      "finalTargetHash": "8b228a5f0bd1002b642b6449ff012ed13db00ced6426699deb50c965366990ab",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.requestStatus",
+      "locale": "ko",
+      "targetFile": "src/i18n/locale/ko.json",
+      "expectedCurrentHash": "0266de8f4a6f396c70ff227e0d62c0b58e9b994a3e872e88119ecb95d0ebed45",
+      "finalTarget": "요청: {status}",
+      "finalTargetHash": "77090d01e7afabf45a76739e1391ccdc95c1a583a87ab706ce4012c352ff9b68",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.saved",
+      "locale": "ko",
+      "targetFile": "src/i18n/locale/ko.json",
+      "expectedCurrentHash": "257e61d870f016bd825c1fa303e30343ec60ffc2dd1f8caf4bb403c23bfac2b2",
+      "finalTarget": "게임 라이브러리가 업데이트되었습니다.",
+      "finalTargetHash": "43ad93036d186437adb5d2ef66213abd5458d400acfa209f52f5c4ab6cdc103c",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.search",
+      "locale": "ko",
+      "targetFile": "src/i18n/locale/ko.json",
+      "expectedCurrentHash": "491c7d94c839c7f1eadd891ea166c5f8f75cc4a954434748ae239b8fa349ffc1",
+      "finalTarget": "내 게임 검색",
+      "finalTargetHash": "9a7d8022f3a14e1e39443687f37545e26b4ec335ee6241c02117b9d766119d75",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.searchPlaceholder",
+      "locale": "ko",
+      "targetFile": "src/i18n/locale/ko.json",
+      "expectedCurrentHash": "e09c67db7eaee3090333f807dd7155ff139ba2b7db47edcd95990e08b94cf31b",
+      "finalTarget": "게임 제목 검색",
+      "finalTargetHash": "17dc2d043dad6d7106ee69efda7c22062adc3ec97c1cb0c207a126da880b45c4",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.searchingCatalog",
+      "locale": "ko",
+      "targetFile": "src/i18n/locale/ko.json",
+      "expectedCurrentHash": "def03dc97279794372ec7fd1e4f54972fad303d9c941e5779659372ebadd631c",
+      "finalTarget": "검색 중…",
+      "finalTargetHash": "67e52d068800cf7846702c4a034ab916dabe40122fe50611c1a3ca228409e4bc",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.shareHelp",
+      "locale": "ko",
+      "targetFile": "src/i18n/locale/ko.json",
+      "expectedCurrentHash": "887b682cd782069d56aa6d328ee8a5913ed57efa27751d53ed27dad9f6ba8d6b",
+      "finalTarget": "공유한 게임은 이 SeerrNG 서버에 로그인한 다른 사용자에게 표시됩니다.",
+      "finalTargetHash": "6a3b8aed7f937699f9d93c8f4e3edabc553f31110d3cb7e61c9512b26856bc83",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.shareWithHousehold",
+      "locale": "ko",
+      "targetFile": "src/i18n/locale/ko.json",
+      "expectedCurrentHash": "573828edb14ef72bf0231c4b89fad8a60a007c1cbad267456f0a5e0e2b6de04e",
+      "finalTarget": "가족과 공유",
+      "finalTargetHash": "3aa4d35e6e87762f20993c1758c4cac10abf69631452ab06e0f7f3a2cc199151",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.sharedBy",
+      "locale": "ko",
+      "targetFile": "src/i18n/locale/ko.json",
+      "expectedCurrentHash": "89a08aa9cb62016c54a6f4957154c982babc173fb814035d32121527b29fb60e",
+      "finalTarget": "공유한 사람: {owners}",
+      "finalTargetHash": "717b78aa021524284d423285b844fbce3a237cd8fa918efba9cb65a664abb34b",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.sharedFilterLabel",
+      "locale": "ko",
+      "targetFile": "src/i18n/locale/ko.json",
+      "expectedCurrentHash": "6e5a317dffcdc2ab5c60fa7d956a5cc82d3ba7db43b5558c26aa68009d3f173e",
+      "finalTarget": "소유자 수",
+      "finalTargetHash": "bcafaa8c306aa1a37f00b995a22e9f7c3896b8dcadd5729ad0bb51be17b71ed9",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.sharedIntro",
+      "locale": "ko",
+      "targetFile": "src/i18n/locale/ko.json",
+      "expectedCurrentHash": "24a94780715d09a2e3408c96d6b9a5b065f93867546533bdbbc7b4960d8d7e38",
+      "finalTarget": "이 SeerrNG 서버에서 사용자가 공유하기로 선택한 게임을 찾아보세요. 개인 라이브러리 항목은 표시되지 않습니다.",
+      "finalTargetHash": "062470f4a754443449ea480018725b0da77c3e78cbb65ad7553eeabbb1ba9e93",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.sharedOnly",
+      "locale": "ko",
+      "targetFile": "src/i18n/locale/ko.json",
+      "expectedCurrentHash": "10c3a613d6c5901bb459fbad48093f4b350fc4305e232924693772df1aaf5914",
+      "finalTarget": "소유자 2명 이상",
+      "finalTargetHash": "076a5334376fa4e9c96ed33a846799bc6b99111785ad67904ac1cdf30881c5b6",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.steamErrorMessage",
+      "locale": "ko",
+      "targetFile": "src/i18n/locale/ko.json",
+      "expectedCurrentHash": "b06ec974b5c59496e22dd9b56900c17274a91b7067b8e4161cf9c824054661ac",
+      "finalTarget": "Steam을 연결할 수 없습니다. 다시 시도해 보세요.",
+      "finalTargetHash": "06f4853057a270538ef91f6cf6199549baf215cc7b2d7c3829c861a9518936b9",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.steamLastSynced",
+      "locale": "ko",
+      "targetFile": "src/i18n/locale/ko.json",
+      "expectedCurrentHash": "2a6a456d7a04a07ca0b8f2f60a77ac8c60c0dd5f9d8a7dea6e71f190bb6a492f",
+      "finalTarget": "마지막 동기화: {date} · 게임 {count}개를 찾았습니다",
+      "finalTargetHash": "8a8d40fe732b86ff0b32dc0c7bc52c358617bf89a90a11607a5ec7795c94d19a",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.steamTitle",
+      "locale": "ko",
+      "targetFile": "src/i18n/locale/ko.json",
+      "expectedCurrentHash": "0868bed012d110fcea78319dbd6c109b914240513fea9a8c1505b5e7b52f3aa6",
+      "finalTarget": "Steam 라이브러리 가져오기",
+      "finalTargetHash": "41b3ea8577a2c1d2e142b8ba751403f40f7083d77f33a5eb400382789697b47d",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.steamUnlinked",
+      "locale": "ko",
+      "targetFile": "src/i18n/locale/ko.json",
+      "expectedCurrentHash": "532782abab4c8ff4abb5f2daaee9dae85f92f50751c735acf7954bb24530a272",
+      "finalTarget": "Steam 계정 연결이 해제되었습니다. 가져온 게임과 진행 상황은 유지되지만 Steam 소유권 정보는 삭제됩니다.",
+      "finalTargetHash": "c330c9528ec0a92ccb5f9fbda7624b65513cffdd73513632a6ab7d3377b3da66",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.togetherTab",
+      "locale": "ko",
+      "targetFile": "src/i18n/locale/ko.json",
+      "expectedCurrentHash": "ab886497e53014be3ef578bd4a5db66e042ab6ad97c360f6cc256515cdc65e43",
+      "finalTarget": "함께 플레이",
+      "finalTargetHash": "a148375fd2926d6dbc09f200e0e72990d30393ee6c4028e1c67bdb8d5bd3a45f",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.updateError",
+      "locale": "ko",
+      "targetFile": "src/i18n/locale/ko.json",
+      "expectedCurrentHash": "3b5c3c7cb2fc4887f0850c4077a122a750f092981f21f1a2e894646d16059682",
+      "finalTarget": "이 게임을 업데이트할 수 없습니다. 다시 시도하세요.",
+      "finalTargetHash": "a1464f2bb4746cfc80f12f0a6b2541b9be3251e4939b671ff7b3b4806c5c1a86",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.IdentityMappingControls.change",
+      "locale": "ko",
+      "targetFile": "src/i18n/locale/ko.json",
+      "expectedCurrentHash": "21f7cd1e14c5bcf2407502e597905bd051d6bb591233fa8029a4a51ed71d9484",
+      "finalTarget": "제목 일치 항목 변경",
+      "finalTargetHash": "28fbdaf579cf49f7e0b8992cb80301de2b9157bfd923a8849940e85d13ae8634",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.IdentityMappingControls.curatedMatch",
+      "locale": "ko",
+      "targetFile": "src/i18n/locale/ko.json",
+      "expectedCurrentHash": "d61895c234aec8ed229ceea0b99751569c01c1953d26eeccbf69434ef07ea76c",
+      "finalTarget": "이 일치 항목은 관리자가 관리하는 공유 팩에서 제공됩니다. 비공개 재정의를 저장하려면 다른 제목을 선택하세요.",
+      "finalTargetHash": "074b48fd2494187116e2988cf4f70c0a108f42f741876a4f5db688c5938934c4",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.IdentityMappingControls.externalMatch",
+      "locale": "ko",
+      "targetFile": "src/i18n/locale/ko.json",
+      "expectedCurrentHash": "27a21082bfe115c0de7bb5fc73cf445ce1e36807edbd702511282d4ecc453627",
+      "finalTarget": "이 일치 항목은 정확한 IMDb 또는 TVDB ID에서 비롯되었습니다. 비공개 재정의를 저장하려면 다른 제목을 선택하세요.",
+      "finalTargetHash": "fd44385ee59b6a8b8d3afd622ca280e5c2aadd78642f8ce0f78679d3688bf27e",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.IdentityMappingControls.match",
+      "locale": "ko",
+      "targetFile": "src/i18n/locale/ko.json",
+      "expectedCurrentHash": "eeabbec8de1ef09fb61ceaf8358c08e0b2024c0486670c0eddd68af670f93a65",
+      "finalTarget": "카탈로그 제목과 일치시키기",
+      "finalTargetHash": "abdb96fe7dfc953ec7e728d9dee1824ad53ec6d29a3b930e53886b53b6a63e80",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.IdentityMappingControls.mediaTypeLabel",
+      "locale": "ko",
+      "targetFile": "src/i18n/locale/ko.json",
+      "expectedCurrentHash": "60b8167038c9fdce3aea36b346908908d1ebd133e131b39a20722a620cfef293",
+      "finalTarget": "카탈로그 미디어 유형",
+      "finalTargetHash": "73b210267d07905eae7d75ddbe5bea334d5b80689ba1854335e8b2ff261e8942",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.IdentityMappingControls.reset",
+      "locale": "ko",
+      "targetFile": "src/i18n/locale/ko.json",
+      "expectedCurrentHash": "51ef91e535a74079d05f84e033333dcf307f3323d860c83d6de18bd4e7df3d2b",
+      "finalTarget": "제목 일치 항목 재설정",
+      "finalTargetHash": "5fd37a8fe62c765105e0234a57e943540cabbe4481201ded3efd60072b102bf2",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.IdentityMappingControls.resetFailed",
+      "locale": "ko",
+      "targetFile": "src/i18n/locale/ko.json",
+      "expectedCurrentHash": "38897500f8a436a0acc067cf3e1ff83b4ce91012e643903cac849ebc5e9ae8e0",
+      "finalTarget": "일치 항목을 재설정할 수 없습니다. 다시 시도하세요.",
+      "finalTargetHash": "0d9511bb5277f1b0ff0f3cb6539c1dcc19ff294fcd5e29a326b46c2163aa4b16",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.IdentityMappingControls.resetSaved",
+      "locale": "ko",
+      "targetFile": "src/i18n/locale/ko.json",
+      "expectedCurrentHash": "4392fd9069dfe90121acc9d1d9b7b53aaadb72ffd904e4d08b9e5efbfb850cbd",
+      "finalTarget": "제목 일치 항목이 재설정되었습니다.",
+      "finalTargetHash": "72cb297fb7c661c70eeb87699685a582ccd14fdfc41d07fd0e583f42532530ce",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.IdentityMappingControls.saveFailed",
+      "locale": "ko",
+      "targetFile": "src/i18n/locale/ko.json",
+      "expectedCurrentHash": "965cc90b7577ec109afec3f7e0c69f0426ad708a850fcff7c1a25fb7d033ab3f",
+      "finalTarget": "일치 항목을 저장할 수 없습니다. 다시 시도하세요.",
+      "finalTargetHash": "e2f1c7eb49fea88b1e3c779b2a5db3440d8d73102be14b17c9afc2e05825e19c",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.IdentityMappingControls.saved",
+      "locale": "ko",
+      "targetFile": "src/i18n/locale/ko.json",
+      "expectedCurrentHash": "16d36458f1d954e5433d68b16799c0c87bdbfa335616082699fe7a6dfe011055",
+      "finalTarget": "제목 일치 항목이 저장되었습니다.",
+      "finalTargetHash": "bb414a353f412662bbddd5fe57a15fa9dd7f3469f42cc91cbba8363b723d732c",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.IdentityMappingControls.searchFailed",
+      "locale": "ko",
+      "targetFile": "src/i18n/locale/ko.json",
+      "expectedCurrentHash": "dce5501bb879879aaca1cb89763c0e2b1a2edf25f649562265a66e51347c10ec",
+      "finalTarget": "카탈로그 검색에 실패했습니다. 다시 시도하세요.",
+      "finalTargetHash": "f3b603489cb34ce795c7273b06dc2062917dc3e11eb3075fc7e2f05b26ff6b27",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.loadError",
+      "locale": "pt-BR",
+      "targetFile": "src/i18n/locale/pt_BR.json",
+      "expectedCurrentHash": "5e03f6ce6de842ce16625c6eab82df5a6fc7de4ac740f854bfcbb67c60bf797a",
+      "finalTarget": "Não foi possível carregar a biblioteca de jogos.",
+      "finalTargetHash": "334a09c32d7cea73cb5ff5a54bf957efe24955f9a1446c248efc7498fea9dbea",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.loading",
+      "locale": "pt-BR",
+      "targetFile": "src/i18n/locale/pt_BR.json",
+      "expectedCurrentHash": "d9e6bc9af35b3bbbe1beea4e25da3ef6b5ec88eec32e06230205d05cb3cc66af",
+      "finalTarget": "Carregando jogos…",
+      "finalTargetHash": "1d31889fc2f4b12151c56b49409ecdaf4bb04a01c85297dd5230ea8634b3a838",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.loadingMore",
+      "locale": "pt-BR",
+      "targetFile": "src/i18n/locale/pt_BR.json",
+      "expectedCurrentHash": "200062cd56f4b8c9e591fec5a9caaaa62a8e92f463079e6723202a2287e11e4a",
+      "finalTarget": "Carregando mais jogos…",
+      "finalTargetHash": "0eacb3a84caf2d18fb9e0d919ad64c14274fd7ccab204bdd3ffface94e1d0e9d",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.manualOwnership",
+      "locale": "pt-BR",
+      "targetFile": "src/i18n/locale/pt_BR.json",
+      "expectedCurrentHash": "ad99def77ef11849a34023c1cd2ca4642c55d288204045c98f1d9fae2629524e",
+      "finalTarget": "Tenho este jogo fora do Steam",
+      "finalTargetHash": "519b73e2d65e3e7cb36aa6e99392cd050030b4a43cc54820a049ba463b7f3edc",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.matchGame",
+      "locale": "pt-BR",
+      "targetFile": "src/i18n/locale/pt_BR.json",
+      "expectedCurrentHash": "6cb7058b26dc5936fdedbace97e430159595d7677beb0c1da53392b11dbef5c0",
+      "finalTarget": "Usar esta correspondência",
+      "finalTargetHash": "1b8d17b1d4cc6870da01d319120a2918e016068122f94c0bc863c898f16ca991",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.modern",
+      "locale": "pt-BR",
+      "targetFile": "src/i18n/locale/pt_BR.json",
+      "expectedCurrentHash": "2a6a435c37c48729d679dd37f5f4f845623471f8a9e30785a8226d9d8ff1625d",
+      "finalTarget": "Moderno",
+      "finalTargetHash": "35d9dfc22d5b90cf91f748a6a92b4f110d4a6c52cf181892de29fde61215c3ef",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.noSharedGames",
+      "locale": "pt-BR",
+      "targetFile": "src/i18n/locale/pt_BR.json",
+      "expectedCurrentHash": "4cbb7947e8a14fde7e1d0a68c254f82b51b9fce517b4eedc675b7306749af564",
+      "finalTarget": "Ainda não há jogos compartilhados.",
+      "finalTargetHash": "669702c1661d3f73ec51f07b89cf04da76e41ebba26ef3be0308d2ca9e236da2",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.notMarkedOwned",
+      "locale": "pt-BR",
+      "targetFile": "src/i18n/locale/pt_BR.json",
+      "expectedCurrentHash": "e0dcb04be79ce56bc849e18dc581f56a629aadff778af84ec0da37cae27d55e5",
+      "finalTarget": "Não marcado como de sua propriedade",
+      "finalTargetHash": "e238229752dbcba07d6e24b0e5c9a22a4a703a7b7a024b367ab5a83ec2becc9a",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.openCatalog",
+      "locale": "pt-BR",
+      "targetFile": "src/i18n/locale/pt_BR.json",
+      "expectedCurrentHash": "f4cd433e79d22b36cbea40bcb2c58ce8eb9e273e0d449525435eaee58b54ddc2",
+      "finalTarget": "Abrir no catálogo",
+      "finalTargetHash": "8a215ec3db32ff5f2a7df53deedec7c27a219cd1a28ded5c595561c7f15f199e",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.owned",
+      "locale": "pt-BR",
+      "targetFile": "src/i18n/locale/pt_BR.json",
+      "expectedCurrentHash": "8b38c3b70eb77f50102ba76814dd61249eda58b34c867c62303c88617a4a514f",
+      "finalTarget": "Possuído",
+      "finalTargetHash": "02eb1837340e3b45f693d59aaf9ea454065dded5e1ab3555e880db1459c86ec6",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.paused",
+      "locale": "pt-BR",
+      "targetFile": "src/i18n/locale/pt_BR.json",
+      "expectedCurrentHash": "9bd4d1e04ad51df3a378f6508defef66d33374ce17d74f35d25117d3ab85f50c",
+      "finalTarget": "Em pausa",
+      "finalTargetHash": "f5a924d3f076139b2bb618e57f5eaba7b785ef052ac4621bf493147a9748315b",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.playtimeHours",
+      "locale": "pt-BR",
+      "targetFile": "src/i18n/locale/pt_BR.json",
+      "expectedCurrentHash": "6858ff6cc8d372e7d34acf2275389b660bc6bcf18cb64d65a08762d715488d5e",
+      "finalTarget": "{hours} h de jogo",
+      "finalTargetHash": "eb8c94ac4d3812e0228c4bf1cc0086745b7df904ce91817f2a6b9ad23ea4b60e",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.playtimeHoursMinutes",
+      "locale": "pt-BR",
+      "targetFile": "src/i18n/locale/pt_BR.json",
+      "expectedCurrentHash": "05d54b2d12af0f4bb837f173b4c9fbd0fdc6628357d9eda5c77c102d0710bfa5",
+      "finalTarget": "{hours} h {minutes} min de jogo",
+      "finalTargetHash": "673d9a60a7eed0479ed7132e29b0ec0fad33149977e0d865e0e46bdf787304c0",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.playtimeMinutes",
+      "locale": "pt-BR",
+      "targetFile": "src/i18n/locale/pt_BR.json",
+      "expectedCurrentHash": "3a120ed69d41ee47c4e6afad595cc973155caf9eccbdbe6ed75b3cfa69a8c6d3",
+      "finalTarget": "{minutes} min de jogo",
+      "finalTargetHash": "222fbd61b5f5c1d41964c8261326384c04f516d35da785f63cdf16f31fb9499d",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.privateLibrary",
+      "locale": "pt-BR",
+      "targetFile": "src/i18n/locale/pt_BR.json",
+      "expectedCurrentHash": "0b04e14f9afeaa6c26bc399f2c96f5c4079256dd0f1b35585ead0bc09bf1aecc",
+      "finalTarget": "Visível só para você",
+      "finalTargetHash": "8c575b7fe953baab6de2d26422a5cf75d8dcaba001d93badc92f3e6cd2733a1f",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.removeConfirm",
+      "locale": "pt-BR",
+      "targetFile": "src/i18n/locale/pt_BR.json",
+      "expectedCurrentHash": "10179c12e47312acae878b5d1654e17c45009737e454f4e7b20de075a248f0c6",
+      "finalTarget": "Deseja remover {title} da sua biblioteca pessoal de jogos?",
+      "finalTargetHash": "ab223b20a7351786e75773fdb38fdb3fb54fa2753a64fffdf0cdf5fbfd5dbe9f",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.requestImporting",
+      "locale": "pt-BR",
+      "targetFile": "src/i18n/locale/pt_BR.json",
+      "expectedCurrentHash": "2f27b7b3070c603bb84b84f632bae9d541c678889b423dfe60b5908a03ce56ab",
+      "finalTarget": "Importando",
+      "finalTargetHash": "8ff2229fb5e961796ae4d8b88a43a2ad15a556f94f9a584844a201af47fd04bb",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.requestSearching",
+      "locale": "pt-BR",
+      "targetFile": "src/i18n/locale/pt_BR.json",
+      "expectedCurrentHash": "c67c15249ffa672713ae004763f479e23bda94805eae24fd43e4a4078e357db8",
+      "finalTarget": "Buscando…",
+      "finalTargetHash": "82d69149e2c13287824b548c4d3dbae047cfdcbfe367c14ec0999d5544581d42",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.requestUnknown",
+      "locale": "pt-BR",
+      "targetFile": "src/i18n/locale/pt_BR.json",
+      "expectedCurrentHash": "47d1c99cbe26a68b56fb4b2b892ed0de79e331732b3b604466d253e2bfd16954",
+      "finalTarget": "Em andamento",
+      "finalTargetHash": "d6f779583776b1e7816d95ef8057d506d7ce9136eccf3297e5824fe9a2eb4bec",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.requestWithdrawn",
+      "locale": "pt-BR",
+      "targetFile": "src/i18n/locale/pt_BR.json",
+      "expectedCurrentHash": "573c4a33b86c19b43f657912fd0b3db2ce95c115a3f64e085a764227e5c63081",
+      "finalTarget": "Retirado",
+      "finalTargetHash": "7652d92ac5750402b2d445c956cc224f9035f5d6fa1999a2032f9992f7eb6249",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.saveError",
+      "locale": "pt-BR",
+      "targetFile": "src/i18n/locale/pt_BR.json",
+      "expectedCurrentHash": "c8898c280c55d3d5651c854d623b534b2571ca86daf48279bdb5038d6794a4db",
+      "finalTarget": "Não foi possível salvar as alterações do jogo. Tente novamente.",
+      "finalTargetHash": "4f179dd7a45209bee93a921472de3b7d9b1228fde467a8add0fd943af2bae3a6",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.search",
+      "locale": "pt-BR",
+      "targetFile": "src/i18n/locale/pt_BR.json",
+      "expectedCurrentHash": "3ae58683501c97904539bdfcbc2295917e23877a06711fd84a30773f17881392",
+      "finalTarget": "Buscar meus jogos",
+      "finalTargetHash": "a327fd549b5a1d353cd0f92f557641be05c795915e49122d002e26c5e3da07e0",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.searchPlaceholder",
+      "locale": "pt-BR",
+      "targetFile": "src/i18n/locale/pt_BR.json",
+      "expectedCurrentHash": "c7efc77cf92f468d15d5542eb15fb1995d6fdc1dab4d97f6d2b06aa3708da407",
+      "finalTarget": "Buscar títulos",
+      "finalTargetHash": "d109954a3e952822f08b3deccc40690914ae9c9651b2df67d7af6e697c19feb6",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.searchingCatalog",
+      "locale": "pt-BR",
+      "targetFile": "src/i18n/locale/pt_BR.json",
+      "expectedCurrentHash": "0058595253a49743bb6303fc88d2c995bd0f71b17331836a86e197963b6f6e18",
+      "finalTarget": "Buscando…",
+      "finalTargetHash": "82d69149e2c13287824b548c4d3dbae047cfdcbfe367c14ec0999d5544581d42",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.shareHelp",
+      "locale": "pt-BR",
+      "targetFile": "src/i18n/locale/pt_BR.json",
+      "expectedCurrentHash": "d1e14dbde0dc1f1709ac8d82aec2f56f4c7f1b2506d2dfb2cde86ecb9a175972",
+      "finalTarget": "Os jogos compartilhados ficam visíveis para outros usuários conectados a este servidor SeerrNG.",
+      "finalTargetHash": "892f465554a044b5689b81b1bdfc82c6b33f028a22a4bf26f983bf827a3cbd32",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.sharedFilterLabel",
+      "locale": "pt-BR",
+      "targetFile": "src/i18n/locale/pt_BR.json",
+      "expectedCurrentHash": "4184e62b24fe7246197c6889a6c4009469849d292d1392195c8099b04517db4b",
+      "finalTarget": "Número de proprietários",
+      "finalTargetHash": "6c7c6e7ac9f1593a432d43dbfadfe7f05642596de55313a24b626b694efe9dc5",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.sharedIntro",
+      "locale": "pt-BR",
+      "targetFile": "src/i18n/locale/pt_BR.json",
+      "expectedCurrentHash": "56af1d7c0d3222b328017945f4e6bd03d7ebbfa17e5489be4455509c7bb13f95",
+      "finalTarget": "Encontre jogos que as pessoas deste servidor SeerrNG escolheram compartilhar. Os jogos das bibliotecas privadas permanecem ocultos.",
+      "finalTargetHash": "477d5bf4ea3253da484dcacd637e53b52a276144ea245b56aca944b9329c628a",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.sharedOnly",
+      "locale": "pt-BR",
+      "targetFile": "src/i18n/locale/pt_BR.json",
+      "expectedCurrentHash": "ffd4d742415bd7f9b3c605e1d5269074b9a4b72faaf9331ebde965faacb7b0e6",
+      "finalTarget": "2 ou mais proprietários",
+      "finalTargetHash": "e7db686cbdd50ed5e1c5c5ed0723cb0861730d4028c168602a006c65255833eb",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.steamLastSynced",
+      "locale": "pt-BR",
+      "targetFile": "src/i18n/locale/pt_BR.json",
+      "expectedCurrentHash": "bee925581531c67d241a62dc4b9598719a86eb765e0135e9d4bbb967ecdc8786",
+      "finalTarget": "Última sincronização: {date} · {count} jogos encontrados",
+      "finalTargetHash": "44a399ddf4d0fb726abb3278667c8c10c59d6da1f7a332255ddd4da682e72d07",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.steamUnlinked",
+      "locale": "pt-BR",
+      "targetFile": "src/i18n/locale/pt_BR.json",
+      "expectedCurrentHash": "97cb9a586a3aeeb4656503ae3c4cefca43531ec0b65aea783902d911ec576dfe",
+      "finalTarget": "A conta Steam foi desvinculada. Os jogos importados e o progresso permanecem, mas os dados de propriedade do Steam são apagados.",
+      "finalTargetHash": "f9fcb78616bcbe0820883f8711f77df830673c1bde5ac6a58e323988e44111a9",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.togetherTab",
+      "locale": "pt-BR",
+      "targetFile": "src/i18n/locale/pt_BR.json",
+      "expectedCurrentHash": "c8e357e9e079ef2e748c700b45f239ca9b5dbeaceb6459b82e39997ff8d73af0",
+      "finalTarget": "Jogar juntos",
+      "finalTargetHash": "ada954bddc6c215763a2b290a5e36d8911a528cfa3d41da13bc3cc2bb766e3a0",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.totalGames",
+      "locale": "pt-BR",
+      "targetFile": "src/i18n/locale/pt_BR.json",
+      "expectedCurrentHash": "71b0e655bb25f1ef7b2c77cc5d807b3820d993b7f713b7c8e17a2dc58aaeff23",
+      "finalTarget": "{count, plural, one {# jogo} many {# jogos} other {# jogos}}",
+      "finalTargetHash": "fb21a0b0e7cd2daf562ce709c09c1ac989a73461c8172083ba65beec7af5058b",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.IdentityMappingControls.change",
+      "locale": "pt-BR",
+      "targetFile": "src/i18n/locale/pt_BR.json",
+      "expectedCurrentHash": "6eb647dcbd739c24b0914f6037520070c067cd4e5822928d2449f0052403849e",
+      "finalTarget": "Alterar correspondência de título",
+      "finalTargetHash": "5aff2a896fcf2f82e88b7cfebdae0fa0b4f5ef4ff76ed1b51a198e99942af24d",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.IdentityMappingControls.curatedMatch",
+      "locale": "pt-BR",
+      "targetFile": "src/i18n/locale/pt_BR.json",
+      "expectedCurrentHash": "cc7fdacd1adb7f37b52b62da3142be0c80886ee1c3e3aaea15648c932d9b7027",
+      "finalTarget": "Esta correspondência vem de um pacote compartilhado gerenciado pelo administrador. Escolha outro título para salvar uma substituição privada.",
+      "finalTargetHash": "0c570d61431fd4c11a212f12cf3552feeba38b7755530378d41aead164d8e9d6",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.IdentityMappingControls.externalMatch",
+      "locale": "pt-BR",
+      "targetFile": "src/i18n/locale/pt_BR.json",
+      "expectedCurrentHash": "12e91cc157d1e38d636d4213c470e95160d201061d67f1831c4dd5b2e656ab9d",
+      "finalTarget": "Esta correspondência veio de um ID exato do IMDb ou TVDB. Escolha outro título para salvar uma substituição privada.",
+      "finalTargetHash": "09fcb722029bc0ffb21c011104a4fe3ef5b7b976d32513af06ee9c3f208ddaa1",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.IdentityMappingControls.match",
+      "locale": "pt-BR",
+      "targetFile": "src/i18n/locale/pt_BR.json",
+      "expectedCurrentHash": "36f9b6120951e0c285dcb03280aca8145ed8a8dec23c9cf5f0dd4149956fc319",
+      "finalTarget": "Associar ao título do catálogo",
+      "finalTargetHash": "7c289913be949d9a97dc81205cbc914eb996361859bc58426f89119670379e4f",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.IdentityMappingControls.reset",
+      "locale": "pt-BR",
+      "targetFile": "src/i18n/locale/pt_BR.json",
+      "expectedCurrentHash": "09a56668b65c5b3b1e4b1552cb30acbf443294903094ce707d6c9e4fc5a6ed26",
+      "finalTarget": "Redefinir correspondência de título",
+      "finalTargetHash": "63c89709a45e29ca18a1c055cb1306fb34ab64af44e8d783fdf9c28136e73d17",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.IdentityMappingControls.resetFailed",
+      "locale": "pt-BR",
+      "targetFile": "src/i18n/locale/pt_BR.json",
+      "expectedCurrentHash": "8308296a2d31c89783cc6c88bcbed5c06582e389a72c54756cad2a637ad4e4a3",
+      "finalTarget": "Não foi possível redefinir a correspondência. Tente novamente.",
+      "finalTargetHash": "60a376c16b600ef94fbfe21d028c005b9e58e26753e2582c29e421a428a195ad",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.IdentityMappingControls.resetSaved",
+      "locale": "pt-BR",
+      "targetFile": "src/i18n/locale/pt_BR.json",
+      "expectedCurrentHash": "ab0e50ae3b178042e6c36d0f98c99399b30726f48d3fe4fab4556b4464608c31",
+      "finalTarget": "A correspondência do título foi redefinida.",
+      "finalTargetHash": "b129fcad8b817b2d4aa313324e437f5a26c222c19faeae4feb64aee7bcbbdf10",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.IdentityMappingControls.saveFailed",
+      "locale": "pt-BR",
+      "targetFile": "src/i18n/locale/pt_BR.json",
+      "expectedCurrentHash": "dcf842a075ea9ff33b284c11faee6c857335f60d9d35354be4d6302d302c5ded",
+      "finalTarget": "Não foi possível salvar a correspondência. Tente novamente.",
+      "finalTargetHash": "dd5cf6f4eb6a5d5ab4a08788e3c3a417d62cd8c3b523b07448b84e0f1b60dd03",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.IdentityMappingControls.saved",
+      "locale": "pt-BR",
+      "targetFile": "src/i18n/locale/pt_BR.json",
+      "expectedCurrentHash": "d5d5b5951689cc62fed2ae862795feceaab3bd879206edbfde94337e4e0d6d40",
+      "finalTarget": "A correspondência de título foi salva.",
+      "finalTargetHash": "da209e7f5b92a5f6649d7c4b0f893f44c9eaa6544425c5ba4eedf4620b629b06",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.loadError",
+      "locale": "zh-CN",
+      "targetFile": "src/i18n/locale/zh_Hans.json",
+      "expectedCurrentHash": "fa7859805e0b674c65797242914aee066b5ff9310a5ef7b6a3532d4f62922309",
+      "finalTarget": "无法加载游戏库。",
+      "finalTargetHash": "97a710f0e4a009a8dfa4cb4434cedf06c1f28e71e2958a9e86dc8ace6a49fc2f",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.loadMore",
+      "locale": "zh-CN",
+      "targetFile": "src/i18n/locale/zh_Hans.json",
+      "expectedCurrentHash": "8a2e7e8199c8e90a6b9b3e206f437852d3f56b7b44f35370c07440520faf726a",
+      "finalTarget": "加载更多游戏",
+      "finalTargetHash": "5d8cb352ea2f0d6852b6c07743caa1456b920022fa382069d9e397e4f47cf8d4",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.loading",
+      "locale": "zh-CN",
+      "targetFile": "src/i18n/locale/zh_Hans.json",
+      "expectedCurrentHash": "de64dd75068d9fe74613990045970093a9e4441d663441807dbd50828b3b28c5",
+      "finalTarget": "正在加载游戏…",
+      "finalTargetHash": "097ebce449e14e9a1f074116c74ad4e02d8dcfaa9cbc70f83dfb1a667212ee2d",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.loadingMore",
+      "locale": "zh-CN",
+      "targetFile": "src/i18n/locale/zh_Hans.json",
+      "expectedCurrentHash": "871fa3fc3f653439713d28c5fa6c8ec05e4a7540b0a064ad1b9df039f8e1b0da",
+      "finalTarget": "正在加载更多游戏…",
+      "finalTargetHash": "8512664055735e9ccb6eb4c9d1fdd937a84306d73acdab7892daf6c963d3d108",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.manualAdded",
+      "locale": "zh-CN",
+      "targetFile": "src/i18n/locale/zh_Hans.json",
+      "expectedCurrentHash": "55f807a6e8a7cbf0da96d27c934c5d1ed49ebbf5efad17786cd70a9db05bcd1a",
+      "finalTarget": "游戏已添加到您的私人游戏库。",
+      "finalTargetHash": "aab9ef601e37a747d11755c3c3aee3758fb6a5051d1dddaaeab5e36728cb38bb",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.manualOwnership",
+      "locale": "zh-CN",
+      "targetFile": "src/i18n/locale/zh_Hans.json",
+      "expectedCurrentHash": "9cb27c11d6578b936afb70351870117dce30119c4ff6b32b4e653dd87d5b269e",
+      "finalTarget": "我在 Steam 以外拥有这款游戏",
+      "finalTargetHash": "f930f139b8de229a9a749239f4d28f305f28e4043b4f0fec666a4e1c544b34a5",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.manualTitleRequired",
+      "locale": "zh-CN",
+      "targetFile": "src/i18n/locale/zh_Hans.json",
+      "expectedCurrentHash": "1965fd834e1d9756c06efe38bd4a1d3022b5f829b83097b2df0409259a2b0632",
+      "finalTarget": "请输入游戏标题。",
+      "finalTargetHash": "56295426ca5238dbcc04649d3842e3331d5a4d36cff4da6d48d195a33fd3848b",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.matchGame",
+      "locale": "zh-CN",
+      "targetFile": "src/i18n/locale/zh_Hans.json",
+      "expectedCurrentHash": "f2f75e161616103de4cbe678e86a03fcb73b5d975afb9c78a1ce87617f4671db",
+      "finalTarget": "使用此匹配项",
+      "finalTargetHash": "0d9d3de172b47546e7a290085588b9a9d040cc17fadbadf349ba9a2f91be6f43",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.noCatalogMatches",
+      "locale": "zh-CN",
+      "targetFile": "src/i18n/locale/zh_Hans.json",
+      "expectedCurrentHash": "f6930056be4d599f824f2e23b9aff5a2cc47cd43e88f8ef3beaa2defc26ecb77",
+      "finalTarget": "未找到目录中匹配的游戏。",
+      "finalTargetHash": "8140c0068ea1c7b38bb8502e0cf25c957f8e1f3fddefd2cfe56854c821d3913c",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.noGames",
+      "locale": "zh-CN",
+      "targetFile": "src/i18n/locale/zh_Hans.json",
+      "expectedCurrentHash": "6cb1e82387b5e3ac39caa7a8a7e99ccf36f82c808c52a5294f1da7127550353e",
+      "finalTarget": "您的游戏库为空。",
+      "finalTargetHash": "6d87ff734f6b10bd879b9320896050f080bc7e2a603d3dcf02b06f27e38d55b8",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.noMatches",
+      "locale": "zh-CN",
+      "targetFile": "src/i18n/locale/zh_Hans.json",
+      "expectedCurrentHash": "b7a11d804f779e3e7fddbe6bb1636900650044b7562f9b72b1ffb1f9231b6434",
+      "finalTarget": "没有符合这些筛选条件的游戏。",
+      "finalTargetHash": "e7eef17b7af660b0a1d7b540c317ede405660bdd404c75acb24087e558b54129",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.noSharedGames",
+      "locale": "zh-CN",
+      "targetFile": "src/i18n/locale/zh_Hans.json",
+      "expectedCurrentHash": "bfccc142f03a635ca1438720443e44a524f02bcba829f864494211c42a5216d7",
+      "finalTarget": "还没有共享的游戏。",
+      "finalTargetHash": "661f624ac593a900a44a97a707ed84368cda572915250bfc3a89a085b8700dbf",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.noSharedGamesHelp",
+      "locale": "zh-CN",
+      "targetFile": "src/i18n/locale/zh_Hans.json",
+      "expectedCurrentHash": "9f21395950d70720321cf363409dc76372c549bc579ba3693ca263c5ca52a8be",
+      "finalTarget": "请在任意已拥有的游戏中选择“与家庭共享”。SeerrNG 只显示用户明确分享的游戏。",
+      "finalTargetHash": "32b767229a89871901e3ccba27fc151b8b29253b2d821d6b0ffe77b8cc9a09aa",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.openCatalog",
+      "locale": "zh-CN",
+      "targetFile": "src/i18n/locale/zh_Hans.json",
+      "expectedCurrentHash": "e402cd5f29db48e64935d95f8518f7a009bc7b05065a25f05a28abd37cec3bf1",
+      "finalTarget": "在游戏目录中打开",
+      "finalTargetHash": "49f164d16b05a70f0f5fe2287043875fd0e56a0a31f3a7b8347471eeb644088c",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.ownerCount",
+      "locale": "zh-CN",
+      "targetFile": "src/i18n/locale/zh_Hans.json",
+      "expectedCurrentHash": "e46cf12b2c5d25624e8787caed7c8f1ec1bef202969c7ac2f05833e493bfe30d",
+      "finalTarget": "{count, plural, one {已有#人拥有这款游戏} other {已有#人拥有这款游戏}}",
+      "finalTargetHash": "14fcab3f5fe34d27a7003353de0019df6201a52f9ea53f86adaabbf20adae8ba",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.played",
+      "locale": "zh-CN",
+      "targetFile": "src/i18n/locale/zh_Hans.json",
+      "expectedCurrentHash": "78c14b9426f6f81e250572fb88400c24a21fa46fc68ec9fdc96ec741c58b292e",
+      "finalTarget": "已游玩",
+      "finalTargetHash": "a80c0c9419f45d6bdd00ba18e34bbb7390cdc6e5511d4c6e5130800f0f7a4541",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.playing",
+      "locale": "zh-CN",
+      "targetFile": "src/i18n/locale/zh_Hans.json",
+      "expectedCurrentHash": "e6666b2eb3327899a00d3a789e435dd56a5fa7923629bca608ee2e1f580263ce",
+      "finalTarget": "正在游玩",
+      "finalTargetHash": "8a42dc3971ea07e460a3750298ccfb15ba09723360f080fee83c6d345e64d4b3",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.playtimeHours",
+      "locale": "zh-CN",
+      "targetFile": "src/i18n/locale/zh_Hans.json",
+      "expectedCurrentHash": "4620f9f048ffcf6582372ce277fcc55f97007df1565d8a436e32a6007503f130",
+      "finalTarget": "已游玩{hours}小时",
+      "finalTargetHash": "eddd56bfb47819dbea8b6f5a589491357d1fedc9d34a938c7491011d75739156",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.playtimeHoursMinutes",
+      "locale": "zh-CN",
+      "targetFile": "src/i18n/locale/zh_Hans.json",
+      "expectedCurrentHash": "3c4e11e5cb47edb2587bdc6dfa2b9f1be635ef4d42d9f13a089b076d7bcc329e",
+      "finalTarget": "已游玩{hours}小时{minutes}分钟",
+      "finalTargetHash": "35cd325769a9fdcb0d03b6bcd60965664e26e767ddfaa76e68851ed14c800a6b",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.playtimeMinutes",
+      "locale": "zh-CN",
+      "targetFile": "src/i18n/locale/zh_Hans.json",
+      "expectedCurrentHash": "4e3cdfccf14a284233de9b846957a4c445464cfda6c35da10e3cd1b228c5d185",
+      "finalTarget": "已游玩{minutes}分钟",
+      "finalTargetHash": "8a93978f3d4c55cb8c657687459f8fee2234fad25cb31c3f35cbd05725b5c124",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.privateLibrary",
+      "locale": "zh-CN",
+      "targetFile": "src/i18n/locale/zh_Hans.json",
+      "expectedCurrentHash": "b901e1630a3c761be644979823f867320fcee620f6aec9ee32dfa94af82926ff",
+      "finalTarget": "仅你可见",
+      "finalTargetHash": "e4e924464d58668d18586a6235313d388dd0be04590c11e28b0f2bde4bcfe7dd",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.removeConfirm",
+      "locale": "zh-CN",
+      "targetFile": "src/i18n/locale/zh_Hans.json",
+      "expectedCurrentHash": "a6f81a8981f356620db4b8ed9061c97873cf7e2df9d3e550e574b07deeabd86a",
+      "finalTarget": "要从您的个人游戏库中移除 {title} 吗？",
+      "finalTargetHash": "f8b89ff845ec1074aaf76b7a6200b7098ee592590ed46825a454f84dde4ccfba",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.requestDownloading",
+      "locale": "zh-CN",
+      "targetFile": "src/i18n/locale/zh_Hans.json",
+      "expectedCurrentHash": "4673a2306165612576462979eee34149329ab42aad9b580e726a1fae1ce7ab64",
+      "finalTarget": "下载中",
+      "finalTargetHash": "e2fc571a4cf00cebe5cc1a647892673d383d0c6beaf2c652f81301a7e5bd8955",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.requestImporting",
+      "locale": "zh-CN",
+      "targetFile": "src/i18n/locale/zh_Hans.json",
+      "expectedCurrentHash": "576d81bb0631b16569bcdc0dc7345292763e2bc5045d2f8b85599f830fdc45c2",
+      "finalTarget": "导入中",
+      "finalTargetHash": "3eda56709c1361352251da940121a0f76cd2c883630af14aaed3efb1d72391f3",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.requestStatus",
+      "locale": "zh-CN",
+      "targetFile": "src/i18n/locale/zh_Hans.json",
+      "expectedCurrentHash": "44ae2fa6738c4cc9751547b9462369c6bd3473afc9d16a3ddaab663203521d5b",
+      "finalTarget": "请求：{status}",
+      "finalTargetHash": "81691592c60514a6ee001494d62f81005c043fae4011e2aaca7ed4d14374785f",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.requestWithdrawn",
+      "locale": "zh-CN",
+      "targetFile": "src/i18n/locale/zh_Hans.json",
+      "expectedCurrentHash": "926a50b98ece2667069d47bd532e8ae1fb23218868a8f289c09937478f717c7a",
+      "finalTarget": "已撤回",
+      "finalTargetHash": "0462a8aa7036a3c48d0b06273dc04990a922b7f4ad04ae3cb2d77cf37033873a",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.retro",
+      "locale": "zh-CN",
+      "targetFile": "src/i18n/locale/zh_Hans.json",
+      "expectedCurrentHash": "3c287235833eb7f694c6a5ffa8ce8aac7453f744044457592691aa4f67a4b902",
+      "finalTarget": "复古",
+      "finalTargetHash": "9e0c5ae3a682f86a4b06d3aa049eaa040fa6e983f974ab9444fdc7b41fea2c6c",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.saveError",
+      "locale": "zh-CN",
+      "targetFile": "src/i18n/locale/zh_Hans.json",
+      "expectedCurrentHash": "12bb2de003559a4cb6ec7f88b254cf0aa48b7bc35433ed8ad810354df041201a",
+      "finalTarget": "无法保存游戏更改。请再试一次。",
+      "finalTargetHash": "15afa95a42fc62d1ed9d4ea3a7a513b799fdb47f3cc2d09d4b31d68f5582e627",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.saved",
+      "locale": "zh-CN",
+      "targetFile": "src/i18n/locale/zh_Hans.json",
+      "expectedCurrentHash": "da2d3636ce3533cc09cc17df5d96f0bdd5fca7d568dd9ecbea322db70db7007d",
+      "finalTarget": "游戏库已更新。",
+      "finalTargetHash": "3e5727961c3ffca09b38cfc30aea7bb1a369d95a5e6d319d0d639ae67a67ffb6",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.searchingCatalog",
+      "locale": "zh-CN",
+      "targetFile": "src/i18n/locale/zh_Hans.json",
+      "expectedCurrentHash": "db0756322d127eb9f1d3d121afb5390ca1ed801083c742641dbf70b7c9cbba8e",
+      "finalTarget": "正在搜索…",
+      "finalTargetHash": "c37059a3d9dfd5b1137818b7e8118e4f476fafb33e23f2815f040ea8533aceb2",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.shareHelp",
+      "locale": "zh-CN",
+      "targetFile": "src/i18n/locale/zh_Hans.json",
+      "expectedCurrentHash": "4eaf1924428eb7407284947bcb0c43883e7ac5dda49e469f5f2f88dc6d48e459",
+      "finalTarget": "共享游戏会显示给此 SeerrNG 服务器上已登录的其他用户。",
+      "finalTargetHash": "0eda19c627a8c2b34b439ccc28bfd9d1e50033cbd6dd8b7b8950059cc61e5ed5",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.shareWithHousehold",
+      "locale": "zh-CN",
+      "targetFile": "src/i18n/locale/zh_Hans.json",
+      "expectedCurrentHash": "4333ec1f4796e993c68f8b33b669ea7cd59c50537e7a2378a5599e605ca85caf",
+      "finalTarget": "与家庭共享",
+      "finalTargetHash": "126e3f526ac2a197ec139e536751eae4a2e50f6f371908bc62caae1361bf0c09",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.sharedBy",
+      "locale": "zh-CN",
+      "targetFile": "src/i18n/locale/zh_Hans.json",
+      "expectedCurrentHash": "0d78d6d5cb40b4f9e12a49a8fbc4b7a38f42f33ae496e6e735e9e2514ea24f0b",
+      "finalTarget": "由{owners}分享",
+      "finalTargetHash": "cdc1659b68378a97e7491a5ddcb1395af0d676abe8d487e8a75e5e578a41e90a",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.sharedFilterLabel",
+      "locale": "zh-CN",
+      "targetFile": "src/i18n/locale/zh_Hans.json",
+      "expectedCurrentHash": "f7db26cd8da9f104d956927f0de65e3c550fe66ffdfb8a5cda1ef361774a53db",
+      "finalTarget": "所有者数量",
+      "finalTargetHash": "daa1f9cc6facd071bdcba86788bd3fb39ac948f93c4b81db6ba7caca524946bb",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.sharedIntro",
+      "locale": "zh-CN",
+      "targetFile": "src/i18n/locale/zh_Hans.json",
+      "expectedCurrentHash": "2e5af57a41301cc3562c355621b9436ceafbec7ce79dea51341545ed54e761b6",
+      "finalTarget": "查找此 SeerrNG 服务器上用户选择分享的游戏。私人游戏库中的条目仍会隐藏。",
+      "finalTargetHash": "fbb04fd0441215b1cf4053c4998680cb9a2577cd25663f0866908a4b9f42034a",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.sharedOnly",
+      "locale": "zh-CN",
+      "targetFile": "src/i18n/locale/zh_Hans.json",
+      "expectedCurrentHash": "900806a1893fb8b7963992004877ae31540297a52a270d680f59f1a1d7fa6b2d",
+      "finalTarget": "2位以上的拥有者",
+      "finalTargetHash": "acc015b09105cf9d5fbf760ef136b00d5690f3b73283140aa90488b4d6249e43",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.steamErrorMessage",
+      "locale": "zh-CN",
+      "targetFile": "src/i18n/locale/zh_Hans.json",
+      "expectedCurrentHash": "263a45fe9599065bddaefcc9bf787b8f573755b68cd6db77c4ef35e9480470aa",
+      "finalTarget": "无法关联 Steam。请重试。",
+      "finalTargetHash": "1e8682b83897e464a088a2f6070c347ebf56bf1017a46bbab1dbd4825bc91805",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.steamLastSynced",
+      "locale": "zh-CN",
+      "targetFile": "src/i18n/locale/zh_Hans.json",
+      "expectedCurrentHash": "e099e0237ad9251e2b351e466027edaffe1e593a0b2d2f03e593c3c22779ef68",
+      "finalTarget": "上次同步：{date} · 找到{count}款游戏",
+      "finalTargetHash": "8443dd9e455fd071c64688cd060b208e73af7847370803dfe9fb2b218c360869",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.steamSyncSummary",
+      "locale": "zh-CN",
+      "targetFile": "src/i18n/locale/zh_Hans.json",
+      "expectedCurrentHash": "914aaa2759874d6b03dcb9d3c5571c17bca3cd82fb520cece75d2de866885daa",
+      "finalTarget": "Steam 同步完成：已添加{imported}款游戏，已更新{updated}款，共{total}款。",
+      "finalTargetHash": "26715831a0de66f31e24688e1c32cd7c0ff5a0a6ceaf3ced61bf7cc2e0b791f7",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.steamSyncing",
+      "locale": "zh-CN",
+      "targetFile": "src/i18n/locale/zh_Hans.json",
+      "expectedCurrentHash": "e86b8a0a1612ebed0955f56b2879f98bd1d3352d90472399f0045d0c075b7bfc",
+      "finalTarget": "正在同步 Steam…",
+      "finalTargetHash": "1094bea5b9d484bfe4cb4c1f6a959843947c59add7efde57e090c80ca6b0e3f6",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.steamTitle",
+      "locale": "zh-CN",
+      "targetFile": "src/i18n/locale/zh_Hans.json",
+      "expectedCurrentHash": "2088a966f0310762cff2dfdbdcd7bc49bb2271e8da728e13f1415ae82961d0e7",
+      "finalTarget": "导入 Steam 游戏库",
+      "finalTargetHash": "5950d260affe8958d2308badad579a03b09c435cf3d2eb5bd7e78ac660eb3553",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.steamUnlinked",
+      "locale": "zh-CN",
+      "targetFile": "src/i18n/locale/zh_Hans.json",
+      "expectedCurrentHash": "6afc51f99bcf667a0c65e89dcc01b892d24d63474d9504b303fa038b2475b1e3",
+      "finalTarget": "Steam 账号已取消关联。已导入的游戏和游玩进度仍会保留，但 Steam 所有权信息会被清除。",
+      "finalTargetHash": "229bd2d5a21b9259fb8a611d6d8142f845ea0f0bde61cee0943af6305293cde5",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.updateError",
+      "locale": "zh-CN",
+      "targetFile": "src/i18n/locale/zh_Hans.json",
+      "expectedCurrentHash": "bc4a68c76a2b035f1bc046ad2f14ed975529715f24691e46a92b355d718cfeba",
+      "finalTarget": "无法更新此游戏。请重试。",
+      "finalTargetHash": "1fad387e6a8843285be7d7acf99629d38d785ffae9281aeb46090c8ecd0badc0",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.IdentityMappingControls.change",
+      "locale": "zh-CN",
+      "targetFile": "src/i18n/locale/zh_Hans.json",
+      "expectedCurrentHash": "4e5d29753e448e1b232dbd7c11f574e9efe016f4d22e9097efda2863b71514c3",
+      "finalTarget": "更改匹配的标题",
+      "finalTargetHash": "5965f504bf35ac36a4560a1aa70408c3c474ed40b647f2923ec0794ed4df48d3",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.IdentityMappingControls.curatedMatch",
+      "locale": "zh-CN",
+      "targetFile": "src/i18n/locale/zh_Hans.json",
+      "expectedCurrentHash": "14ae8167c5f34e4cbdb28e7b8dc7333d556fcb10a1944a8981871fd56e0af58d",
+      "finalTarget": "此匹配项来自管理员管理的共享包。选择其他标题以保存私人覆盖项。",
+      "finalTargetHash": "401471623ab9bc75a47cf8b20605b7ed2048280c2a7d8a7f5c0f843daaae2620",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.IdentityMappingControls.externalMatch",
+      "locale": "zh-CN",
+      "targetFile": "src/i18n/locale/zh_Hans.json",
+      "expectedCurrentHash": "703d55605c89038ae634cce26bb4e3ce8b2fbc2900d1ced458cc68699fde6b54",
+      "finalTarget": "此匹配项来自精确的 IMDb 或 TVDB ID。选择其他标题以保存私人覆盖项。",
+      "finalTargetHash": "e9c9050fc7312e6d10510435b3e3dd2bd69ed7a22e3a4edb180f8c11572f1b61",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.IdentityMappingControls.match",
+      "locale": "zh-CN",
+      "targetFile": "src/i18n/locale/zh_Hans.json",
+      "expectedCurrentHash": "c267b187ea165fd4cb8764751cbcc5237c4e71a505145357e6715b6dad24dda2",
+      "finalTarget": "匹配目录中的标题",
+      "finalTargetHash": "1ed1da6bc64c3a90b9ad31fa86da0125093915b160babb6dcd794a42097117e8",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.IdentityMappingControls.mediaTypeLabel",
+      "locale": "zh-CN",
+      "targetFile": "src/i18n/locale/zh_Hans.json",
+      "expectedCurrentHash": "05d77904b5126f3741eda8caace36dac710bce7301a569923e464e2ed70030fe",
+      "finalTarget": "目录内容类型",
+      "finalTargetHash": "752822b4d00759e755a87f7ced765ad0d5bbb3e9c4061f3232e17d8b6c1be244",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.IdentityMappingControls.noResults",
+      "locale": "zh-CN",
+      "targetFile": "src/i18n/locale/zh_Hans.json",
+      "expectedCurrentHash": "2a60c48f4d863562e88d95389996e2162bd1b2ac5ad551331f16ed6a34c94c09",
+      "finalTarget": "未找到匹配的标题。",
+      "finalTargetHash": "cfc7a90c58f950b58ffa2c1bfb81868ad7b4dcfd4d24b0fac9df4d46f086dd81",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.IdentityMappingControls.reset",
+      "locale": "zh-CN",
+      "targetFile": "src/i18n/locale/zh_Hans.json",
+      "expectedCurrentHash": "8d864e95349b90c1c789cdefda885f97193704bb4d2e9d4b27a856830ca7b772",
+      "finalTarget": "重置标题匹配项",
+      "finalTargetHash": "94a0fad73703f1108981778d00c9844f5f4f8ecb02e885ef5c46b11a16a28948",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.IdentityMappingControls.resetFailed",
+      "locale": "zh-CN",
+      "targetFile": "src/i18n/locale/zh_Hans.json",
+      "expectedCurrentHash": "26bac7291a37a8e620f52a25aab236b60e627b0fb5fdb385c4ef4bec406f55b3",
+      "finalTarget": "无法重置匹配项。请重试。",
+      "finalTargetHash": "a389b5b095629712ae0818072454be903c22b5733bf1224f5e700611a28af552",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.IdentityMappingControls.resetSaved",
+      "locale": "zh-CN",
+      "targetFile": "src/i18n/locale/zh_Hans.json",
+      "expectedCurrentHash": "5619db95b3567d50ce260ea50d7701c2bbeda4ac240f7cee11c810f6d0122896",
+      "finalTarget": "标题匹配项已重置。",
+      "finalTargetHash": "f5d988f7f43cf370e2560116203a253d387643d4f994d8db067b9fbe042d8f20",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.IdentityMappingControls.saveFailed",
+      "locale": "zh-CN",
+      "targetFile": "src/i18n/locale/zh_Hans.json",
+      "expectedCurrentHash": "4f3940762d7a426709e1e9da5c1a1b7fc7e7d37d2fcb7194141aae9069c2e492",
+      "finalTarget": "无法保存匹配项。请重试。",
+      "finalTargetHash": "640eadc628e4107f4f62a54403291e51947ea89b53d67de58d39f313f87e6454",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.IdentityMappingControls.saved",
+      "locale": "zh-CN",
+      "targetFile": "src/i18n/locale/zh_Hans.json",
+      "expectedCurrentHash": "7fdff19817ac2a063f2e1884b493775cade6a078eec7688983163144fdd8ebe5",
+      "finalTarget": "标题匹配项已保存。",
+      "finalTargetHash": "c7c5e2602c4647b808d00247d9476864ede3022fc5e6a0ec28baeb377944ec9c",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.IdentityMappingControls.searchFailed",
+      "locale": "zh-CN",
+      "targetFile": "src/i18n/locale/zh_Hans.json",
+      "expectedCurrentHash": "7762052f43b3d9ae9c90f3d14027cedb24a8c60671213cf7b08294df20c94bdf",
+      "finalTarget": "目录搜索失败。请重试。",
+      "finalTargetHash": "f57907ff681eebefde917b26cb0b5a5044ce622336777540c91c4fdddf939dcd",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.loadError",
+      "locale": "zh-TW",
+      "targetFile": "src/i18n/locale/zh_Hant.json",
+      "expectedCurrentHash": "eaeb8e936e7657039ddc8b3f44687589855bf28d732cea2958e9dfb9d92cabe7",
+      "finalTarget": "遊戲庫無法載入。",
+      "finalTargetHash": "afb5f7842ed25259fb542df586e40aa33f424196adf84a605fef2502b3349821",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.manualAdded",
+      "locale": "zh-TW",
+      "targetFile": "src/i18n/locale/zh_Hant.json",
+      "expectedCurrentHash": "12f6efe9b95e920ec5d5c60ba019d4094575aa15474d1d297bdef204579c5245",
+      "finalTarget": "遊戲已新增至您的私人遊戲庫。",
+      "finalTargetHash": "a522e0f9d555383ba96e1a05ba2969cd7fefa7c019858a7a30bccfd3f0eb302f",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.manualOwnership",
+      "locale": "zh-TW",
+      "targetFile": "src/i18n/locale/zh_Hant.json",
+      "expectedCurrentHash": "31438bb806ce578facf257bc85e851be03c3fd6f850a1cfe6cf190cfc1ef72df",
+      "finalTarget": "我在 Steam 以外擁有這款遊戲",
+      "finalTargetHash": "32aa137494605c06ef13ef3691a52a75d29004b0b5082a8f45c9c1ea01f0c5f6",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.manualTitleRequired",
+      "locale": "zh-TW",
+      "targetFile": "src/i18n/locale/zh_Hant.json",
+      "expectedCurrentHash": "c63280b44de1bd3ec5b83207ee143d26451fc1ae09ba9a3b08130ee6c981e29d",
+      "finalTarget": "請輸入遊戲標題。",
+      "finalTargetHash": "3cb88ad7c1883b3bc9add12fa89f71183742efa5515cbd525486ee5ad43e71b9",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.matchGame",
+      "locale": "zh-TW",
+      "targetFile": "src/i18n/locale/zh_Hant.json",
+      "expectedCurrentHash": "f2f75e161616103de4cbe678e86a03fcb73b5d975afb9c78a1ce87617f4671db",
+      "finalTarget": "使用此配對項目",
+      "finalTargetHash": "2b39046ca348de14d27891e65e3b5b7d039d726baf29f60f3e403ce61a77dddf",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.noCatalogMatches",
+      "locale": "zh-TW",
+      "targetFile": "src/i18n/locale/zh_Hant.json",
+      "expectedCurrentHash": "1e8c275b4eb96679b41a11907b5df0125787370d105d5e3f69bc8fef90e37bfa",
+      "finalTarget": "目錄中找不到相符的遊戲。",
+      "finalTargetHash": "7d99aa371c922924ef7b4c71dc67c0ea06811bc18ab73aeba29efe7b150dc292",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.noGames",
+      "locale": "zh-TW",
+      "targetFile": "src/i18n/locale/zh_Hant.json",
+      "expectedCurrentHash": "0385f82684623294a547a332f703d2d2143693f885667a1d82ae42a1cd65351d",
+      "finalTarget": "您的遊戲庫為空。",
+      "finalTargetHash": "1a007e22d94976bdfca6deb38d3f8fc420a9d2156e2d064a4e603e48ea473fec",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.noGamesHelp",
+      "locale": "zh-TW",
+      "targetFile": "src/i18n/locale/zh_Hant.json",
+      "expectedCurrentHash": "01907daa18c181c2ab1f5b350aae134e789ef2c1a45bf1c30fbb12b3bd69c4cb",
+      "finalTarget": "瀏覽軟體目錄，新增 PC 遊戲或模擬器遊戲，也可以在下方匯入您的 Steam 遊戲庫。",
+      "finalTargetHash": "19bc817deaf59ec78833a695dd8afe2349cce3f99dee8312f8a28415dc687221",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.noMatches",
+      "locale": "zh-TW",
+      "targetFile": "src/i18n/locale/zh_Hant.json",
+      "expectedCurrentHash": "f0c88abcc8b5645e9bbff58a0f8aeddbad1e1ee002904fb241b1d860e64b0158",
+      "finalTarget": "沒有符合這些篩選條件的遊戲。",
+      "finalTargetHash": "e6e6eee1ad7b1707b66c5ce60eb41e051f7590fb67ad894ff7d3a4cb6ec94f82",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.noSharedGames",
+      "locale": "zh-TW",
+      "targetFile": "src/i18n/locale/zh_Hant.json",
+      "expectedCurrentHash": "0b97fc08d53346a3a9ac80075053054d3993a0775d865b5b74a97b11f2ded605",
+      "finalTarget": "目前還沒有分享的遊戲。",
+      "finalTargetHash": "033e51ef8a79301cf973ad9c238f478359d8caf5675ac792eb32a52f8cc85978",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.noSharedGamesHelp",
+      "locale": "zh-TW",
+      "targetFile": "src/i18n/locale/zh_Hant.json",
+      "expectedCurrentHash": "9f21395950d70720321cf363409dc76372c549bc579ba3693ca263c5ca52a8be",
+      "finalTarget": "請在您擁有的任何遊戲中選擇「與家庭分享」。SeerrNG 只會顯示使用者明確分享的遊戲。",
+      "finalTargetHash": "65d7af1ee26fa8b84ed8f4b536b92f9718a32997e78ec1ec50c4e81e510ec68e",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.notMarkedOwned",
+      "locale": "zh-TW",
+      "targetFile": "src/i18n/locale/zh_Hant.json",
+      "expectedCurrentHash": "daab4e82f15d1de7c6e754f579a33fdb4e29429a049356f5c99d58d7b2c99d1b",
+      "finalTarget": "未標示為已擁有",
+      "finalTargetHash": "314583e218362628333ab4e3192ae579bd8e43f0db2e92f71758cca36ef7227e",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.openCatalog",
+      "locale": "zh-TW",
+      "targetFile": "src/i18n/locale/zh_Hant.json",
+      "expectedCurrentHash": "d11d9be6532555c2ff11a6112c1bda28f2887de13891549a045a61463f463a1f",
+      "finalTarget": "在遊戲目錄中開啟",
+      "finalTargetHash": "f449440353b531b3503a981ffb580433b8b4afd6e0e1c8933752ccd67184a9ab",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.ownerCount",
+      "locale": "zh-TW",
+      "targetFile": "src/i18n/locale/zh_Hant.json",
+      "expectedCurrentHash": "4cf32e61a31f5f4673954890cbad4da146c2e10910ad93b26fd9931628dfb0fa",
+      "finalTarget": "{count, plural, one {已有#人擁有這款遊戲} other {已有#人擁有這款遊戲}}",
+      "finalTargetHash": "3469dc4b4395423d25773e117e8dff97de69599f544f4d1d63f583c32e3f64dd",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.played",
+      "locale": "zh-TW",
+      "targetFile": "src/i18n/locale/zh_Hant.json",
+      "expectedCurrentHash": "c3396195e91ccdd8468b38f08c58e5a7f13220f16ed29e668ffd4f58ef04f443",
+      "finalTarget": "已遊玩",
+      "finalTargetHash": "7c299a0fcaffc29601de2370e1489f38d0a836c7a34b052f4152e8b25516261d",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.playing",
+      "locale": "zh-TW",
+      "targetFile": "src/i18n/locale/zh_Hant.json",
+      "expectedCurrentHash": "e6666b2eb3327899a00d3a789e435dd56a5fa7923629bca608ee2e1f580263ce",
+      "finalTarget": "正在遊玩",
+      "finalTargetHash": "9d1d20215bd7ab3f9cadde10d5827136fa0d7ffb4f23a4b18ba2d8b26e55e311",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.playtimeHours",
+      "locale": "zh-TW",
+      "targetFile": "src/i18n/locale/zh_Hant.json",
+      "expectedCurrentHash": "5e758b022bb46611b0aea3b6c9e390c9eb7d15d02b8fa85414995e4746c42a79",
+      "finalTarget": "已遊玩{hours}小時",
+      "finalTargetHash": "abab1f4c062726c0248f1291f9f9ca8ac523fc6979609efdb3f3a8790df81b68",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.playtimeHoursMinutes",
+      "locale": "zh-TW",
+      "targetFile": "src/i18n/locale/zh_Hant.json",
+      "expectedCurrentHash": "0beeb5afab0aeb71c9c75801207b7cb9b54eb4fa2e92a1f725ca8c69e84c2887",
+      "finalTarget": "已遊玩{hours}小時{minutes}分鐘",
+      "finalTargetHash": "d6479b59df4387295797e0dda1415140f42af67cbcb3f84a738bc59058380154",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.playtimeMinutes",
+      "locale": "zh-TW",
+      "targetFile": "src/i18n/locale/zh_Hant.json",
+      "expectedCurrentHash": "3207ef428feb1f4e4acc27158112859033eec59d17ff11e0ba149608907b6989",
+      "finalTarget": "已遊玩{minutes}分鐘",
+      "finalTargetHash": "c60fc5359ebbe2a212861fdf039d64b0899e3bd961b655f59da303e1f8bba36c",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.privateLibrary",
+      "locale": "zh-TW",
+      "targetFile": "src/i18n/locale/zh_Hant.json",
+      "expectedCurrentHash": "d5523c65e364561ad3e360b42d7263a1069f41ee79f15cc5c05b2572b3b7ff45",
+      "finalTarget": "僅您可見",
+      "finalTargetHash": "65a3bb2f56c85793b3de4288e840195351693247d686fe2d273a69915b7a253f",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.removeConfirm",
+      "locale": "zh-TW",
+      "targetFile": "src/i18n/locale/zh_Hant.json",
+      "expectedCurrentHash": "1e2a72c08017b77f5b78a16f7e544bab6b1b156955796ea0f8f42d2d9cabed49",
+      "finalTarget": "要從您的個人遊戲庫中移除 {title} 嗎？",
+      "finalTargetHash": "438fdbd51eaf5c92420cb141c5c9c25eb7745f6d00967648a7e8c1f9481b1387",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.requestApproved",
+      "locale": "zh-TW",
+      "targetFile": "src/i18n/locale/zh_Hant.json",
+      "expectedCurrentHash": "855b0818886fbf34d22da580d1603a72c6f8f099b723433741dd029ab1cedd1f",
+      "finalTarget": "已核准",
+      "finalTargetHash": "1625f6ba5f2cce332a7a01c35960996c7662be708442e248685438392d8f694c",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.requestGame",
+      "locale": "zh-TW",
+      "targetFile": "src/i18n/locale/zh_Hant.json",
+      "expectedCurrentHash": "2829fc64b2fc13c79948f6b6e19206aa3818a7e81d64dc19a368810a32a8f812",
+      "finalTarget": "申請此遊戲",
+      "finalTargetHash": "0c9b6987aaf46624a441c28535a6e1f9be40b8e2d9a400eaa8f88b0dbb38363d",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.requestSearching",
+      "locale": "zh-TW",
+      "targetFile": "src/i18n/locale/zh_Hant.json",
+      "expectedCurrentHash": "03c481a6ab85c30da4de8b33ea31651a234100ae8c6d720b47966440901d642f",
+      "finalTarget": "搜尋中",
+      "finalTargetHash": "f4597bc5a2c96cc27d0745a4dfa16a24c6d35c7e5a63b2b865423cd6a4274289",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.requestStatus",
+      "locale": "zh-TW",
+      "targetFile": "src/i18n/locale/zh_Hant.json",
+      "expectedCurrentHash": "c4d3ae3a013a512bc68f3a5de256074c6c9feebf6d00ccf58d7f4b71ffd9fce2",
+      "finalTarget": "申請：{status}",
+      "finalTargetHash": "a7fdb70fd38b2238690c95861b361c68d2706242692abb07f92b3dbd39623092",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.retro",
+      "locale": "zh-TW",
+      "targetFile": "src/i18n/locale/zh_Hant.json",
+      "expectedCurrentHash": "32c274043d40e5dc94a96c4175f80165e46158d6009513bcfae986809d6b486f",
+      "finalTarget": "復古",
+      "finalTargetHash": "001a127cba885f9dea30d0ec5353bf28833a4365ce539be0f5c3dce6461da2b7",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.saveError",
+      "locale": "zh-TW",
+      "targetFile": "src/i18n/locale/zh_Hant.json",
+      "expectedCurrentHash": "f5be6535ffc6206d1fc1f4da53436d6b793054877e570ab5200bf5a96458755e",
+      "finalTarget": "無法儲存遊戲變更。請再試一次。",
+      "finalTargetHash": "cac4a44f3a5c3fd6cc686a309521ca07a4839733c6715de6b94792d2cd2e2289",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.saved",
+      "locale": "zh-TW",
+      "targetFile": "src/i18n/locale/zh_Hant.json",
+      "expectedCurrentHash": "11b4177cf10954d58c1bb1120059347725c7c829dc2c1193f7894fb8dc013dae",
+      "finalTarget": "遊戲庫已更新。",
+      "finalTargetHash": "20eb47cbe7c77f84f7f0b2072bdffa8e3cb14dd1568b4261b33baacc37a87ae9",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.searchingCatalog",
+      "locale": "zh-TW",
+      "targetFile": "src/i18n/locale/zh_Hant.json",
+      "expectedCurrentHash": "47a1fa6f0e1a0d32b3fef3b9320571404e259acc903333f4f80b6540e6d0f98d",
+      "finalTarget": "正在搜尋…",
+      "finalTargetHash": "d373df6e334eb7a64ad726e92543a8a0c457b6a5c0f836e70898760835df3416",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.shareHelp",
+      "locale": "zh-TW",
+      "targetFile": "src/i18n/locale/zh_Hant.json",
+      "expectedCurrentHash": "1d4bfda9e83e962b691204da0ae45ca5b5302f982414c012aa938184c2ada40e",
+      "finalTarget": "分享的遊戲會顯示給此 SeerrNG 伺服器上其他已登入的使用者。",
+      "finalTargetHash": "62458f4fe59c7cd1115e0d6ca2944a0f6c0525f3624d451c44f706d6aa294633",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.shareWithHousehold",
+      "locale": "zh-TW",
+      "targetFile": "src/i18n/locale/zh_Hant.json",
+      "expectedCurrentHash": "1dccbcbf716c317acff01acc5bc03239f19d408ec9a4a8c5069e32ef81934d4a",
+      "finalTarget": "與家庭分享",
+      "finalTargetHash": "99db796fdc24c2380c48a6b46e9e9ec33ab8e02d55fad5975ebca4b9a3336bdb",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.sharedBy",
+      "locale": "zh-TW",
+      "targetFile": "src/i18n/locale/zh_Hant.json",
+      "expectedCurrentHash": "fc75a3492bca8ae5000215186500313cc94db5fdc4dacb32dd2d28e83b3e5e87",
+      "finalTarget": "由{owners}分享",
+      "finalTargetHash": "cdc1659b68378a97e7491a5ddcb1395af0d676abe8d487e8a75e5e578a41e90a",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.sharedIntro",
+      "locale": "zh-TW",
+      "targetFile": "src/i18n/locale/zh_Hant.json",
+      "expectedCurrentHash": "28d95e8dfb6e4858f44626e91020b34d24d66d798578a2615c9409e57b19d213",
+      "finalTarget": "尋找此 SeerrNG 伺服器上使用者選擇分享的遊戲。個人遊戲庫中的項目仍會隱藏。",
+      "finalTargetHash": "ca93e1eb3c02615913ea3648e46d7472182736e914e5aa2ce5b3c3d6c38cef5a",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.sharedOnly",
+      "locale": "zh-TW",
+      "targetFile": "src/i18n/locale/zh_Hant.json",
+      "expectedCurrentHash": "75558af104985117accd77e93e138841433e56c44ca71c8abaac402dbe42524e",
+      "finalTarget": "2位以上的擁有者",
+      "finalTargetHash": "3f64e99084f7a3fef1f528205ed0a997f7b3e71c35fc362d917d84a33f9fe2ce",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.steamDisconnect",
+      "locale": "zh-TW",
+      "targetFile": "src/i18n/locale/zh_Hant.json",
+      "expectedCurrentHash": "2507266714b5a135e72c82a257940c3526fce4c823a481e8b9f5f1039480de0f",
+      "finalTarget": "解除 Steam 連結",
+      "finalTargetHash": "bb0b09a7b770f56470bbb231c1bd00c942d91e04d5a46e51f9ca3c4ec97ab8f6",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.steamErrorMessage",
+      "locale": "zh-TW",
+      "targetFile": "src/i18n/locale/zh_Hant.json",
+      "expectedCurrentHash": "0003d0f4d34f2109b82541807f701354b6fbe8ff7508bd860f86cc6d4c4528b3",
+      "finalTarget": "無法連結 Steam。請重試。",
+      "finalTargetHash": "e024de3cb9e41bb1e206be21c495d4d0dbfbba64272c288ae6fb341d17b233d3",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.steamLastSynced",
+      "locale": "zh-TW",
+      "targetFile": "src/i18n/locale/zh_Hant.json",
+      "expectedCurrentHash": "77d65e0546bee691022033ae5be5a9c28ba8ab24e06715cd03d3ff5cf5faad6c",
+      "finalTarget": "上次同步：{date} · 找到{count}款遊戲",
+      "finalTargetHash": "a68aabb5237a6207de4110db8ec8a388703cd04142b3e1b6b63cac59507a5550",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.steamSyncSummary",
+      "locale": "zh-TW",
+      "targetFile": "src/i18n/locale/zh_Hant.json",
+      "expectedCurrentHash": "7edcbb4350e3cc5916df7db371e0d2b21ba53ac2ef1a5a2ec83818e71223e705",
+      "finalTarget": "Steam 同步完成：已新增{imported}款遊戲，已更新{updated}款，總計{total}款。",
+      "finalTargetHash": "5e6b9eda9fc734aa4e84d03154c2f89c6a2bfc4e7905e4d453a09d2de139eba4",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.steamSyncing",
+      "locale": "zh-TW",
+      "targetFile": "src/i18n/locale/zh_Hant.json",
+      "expectedCurrentHash": "e86b8a0a1612ebed0955f56b2879f98bd1d3352d90472399f0045d0c075b7bfc",
+      "finalTarget": "正在同步 Steam…",
+      "finalTargetHash": "1094bea5b9d484bfe4cb4c1f6a959843947c59add7efde57e090c80ca6b0e3f6",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.steamTitle",
+      "locale": "zh-TW",
+      "targetFile": "src/i18n/locale/zh_Hant.json",
+      "expectedCurrentHash": "4b4ef1757486ddac919f45e2d8de4a1c50f6db59abdfb652c79572ed31a1d74a",
+      "finalTarget": "匯入 Steam 遊戲庫",
+      "finalTargetHash": "35e3f7af350e3e128e2491fa8c4c450308ad6d50433dad25b175ddfdbcb3e887",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.steamUnlinked",
+      "locale": "zh-TW",
+      "targetFile": "src/i18n/locale/zh_Hant.json",
+      "expectedCurrentHash": "ac9ac6695c53cda5e45f4720df12a8fb041048f1e952ff4411a241257edaccc1",
+      "finalTarget": "Steam 帳號已解除連結。匯入的遊戲及進度仍會保留，但 Steam 擁有權資訊已清除。",
+      "finalTargetHash": "3a77b02482c3156ea9aa3160b35188af2d183a48c86c24ffa24c66496181bea6",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.updateError",
+      "locale": "zh-TW",
+      "targetFile": "src/i18n/locale/zh_Hant.json",
+      "expectedCurrentHash": "9776cfe1c5f6ee0c5c40caf42435a659874303d6d3e2b87806631ab768575fb0",
+      "finalTarget": "此遊戲無法更新。請再試一次。",
+      "finalTargetHash": "bee2686042ce9500001404d3ab5a20c242904b973c4bd63245d0357eb1fecd79",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.IdentityMappingControls.change",
+      "locale": "zh-TW",
+      "targetFile": "src/i18n/locale/zh_Hant.json",
+      "expectedCurrentHash": "16d3e9f202250c42aaec049d09ed7ca7e9072839e918248470f3ed488a5da7ac",
+      "finalTarget": "變更配對的標題",
+      "finalTargetHash": "007e96fbb45c835c7251690c9008e621ff9951ad1a3090177b395f32906d3da6",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.IdentityMappingControls.curatedMatch",
+      "locale": "zh-TW",
+      "targetFile": "src/i18n/locale/zh_Hant.json",
+      "expectedCurrentHash": "3465282fc05542f44ff2348af6cd128663a49677632e4f5ca8a4bf69e57ba91f",
+      "finalTarget": "此配對項目來自管理員管理的共享套件。請選擇其他標題以儲存個人覆寫。",
+      "finalTargetHash": "fa4e46d8c3fed92a8ad4b5b530b1cc3f4fa15459d23a96abf007e7b16161ed82",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.IdentityMappingControls.externalMatch",
+      "locale": "zh-TW",
+      "targetFile": "src/i18n/locale/zh_Hant.json",
+      "expectedCurrentHash": "145fad477e16a0f44fe6c36da4b53d5531f98c120f80ed2bc1a7043c2a45fbe6",
+      "finalTarget": "此配對項目來自精確的 IMDb 或 TVDB ID。請選擇其他標題以儲存個人覆寫。",
+      "finalTargetHash": "b21f02eb7aecb29261197a3ab854902e06b332bf4c5b4fda84bd9eaf020ef07e",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.IdentityMappingControls.match",
+      "locale": "zh-TW",
+      "targetFile": "src/i18n/locale/zh_Hant.json",
+      "expectedCurrentHash": "48e4ffa5ba0a085ef084807e1afa9c7b56df21bc1261a70a133a805ac14bcad2",
+      "finalTarget": "比對目錄中的標題",
+      "finalTargetHash": "576b2fab46fb522002fd85498e1ef934936470332560b9d8c6c212f316a37c05",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.IdentityMappingControls.mediaTypeLabel",
+      "locale": "zh-TW",
+      "targetFile": "src/i18n/locale/zh_Hant.json",
+      "expectedCurrentHash": "ed55e2c3479f94112817d538dd941a08f94014c3eedec0c02dddf579988d80e9",
+      "finalTarget": "目錄內容類型",
+      "finalTargetHash": "714c7e0f79b39230fdd15d89a80d30abeb5fe1c206d4b3e3102deb3a5e82efff",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.IdentityMappingControls.noResults",
+      "locale": "zh-TW",
+      "targetFile": "src/i18n/locale/zh_Hant.json",
+      "expectedCurrentHash": "33950fd9073a44af6e86cb361a8973136d608ea3ec29759ad387ba7c2584afc5",
+      "finalTarget": "找不到相符的標題。",
+      "finalTargetHash": "d77cc11d7ddfd0ff503f56e4008a2cd835ff115ee97bd4deccadf1df613503bb",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.IdentityMappingControls.reset",
+      "locale": "zh-TW",
+      "targetFile": "src/i18n/locale/zh_Hant.json",
+      "expectedCurrentHash": "754a583b93f9356a41c78667ea430eb0e54aa48089233fe57e39418b36922e63",
+      "finalTarget": "重設標題配對",
+      "finalTargetHash": "e989f89ea7d2bafe707c3fa963a0632acd5f5eea46f8f7d5451cdae3ad675e73",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.IdentityMappingControls.resetFailed",
+      "locale": "zh-TW",
+      "targetFile": "src/i18n/locale/zh_Hant.json",
+      "expectedCurrentHash": "07af543d0e312df16e580af10008b3dbc909711cef4b477cc2edb350aa736abf",
+      "finalTarget": "無法重設配對項目。請再試一次。",
+      "finalTargetHash": "b7017794cace6976a7117442bed1d83a54c09ea4fb68bb0d8b6da21eae56817e",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.IdentityMappingControls.resetSaved",
+      "locale": "zh-TW",
+      "targetFile": "src/i18n/locale/zh_Hant.json",
+      "expectedCurrentHash": "b29e41a7999c07f9280da5ec0799f8e98c7a8d3ae604b8c5f62643504ff9374c",
+      "finalTarget": "標題配對已重設。",
+      "finalTargetHash": "5e8f92b58d625dcb92fe4b4ec7fd1acbb021ab66210e05b61524ffc7340b1952",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.IdentityMappingControls.saveFailed",
+      "locale": "zh-TW",
+      "targetFile": "src/i18n/locale/zh_Hant.json",
+      "expectedCurrentHash": "51ef9e0a76b415fe1b406acaa45bc07421a7168da70925d29df2f9d1845fd251",
+      "finalTarget": "無法儲存配對項目。請再試一次。",
+      "finalTargetHash": "937a72ce2355f94297beb98d87aefd807d8817d1c05d79802c79fb1fa794416a",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.IdentityMappingControls.saved",
+      "locale": "zh-TW",
+      "targetFile": "src/i18n/locale/zh_Hant.json",
+      "expectedCurrentHash": "11cdbbfa98d7442414d83aebe1cd2c8673da7e3e4b9e3e790bcb6b3fc7f6a863",
+      "finalTarget": "標題配對已儲存。",
+      "finalTargetHash": "76e64df2058888f006696d9a4a21bbd98c4ad2a375de5b8e054cd15d7b94a198",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.IdentityMappingControls.searchFailed",
+      "locale": "zh-TW",
+      "targetFile": "src/i18n/locale/zh_Hant.json",
+      "expectedCurrentHash": "c95361712157db9df0416168f8d37875d0479d33be386844c60f950643112cf2",
+      "finalTarget": "目錄搜尋失敗。請再試一次。",
+      "finalTargetHash": "f77289b81cabd6179cacfacf59d38174fecea0b3e82bb380c229fd63e7417ef5",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.loadMore",
+      "locale": "ar",
+      "targetFile": "src/i18n/locale/ar.json",
+      "expectedCurrentHash": "b88fc6908bd39eee72b847d479af84699ebdb7d35dbaf116e2d5cade04b790b3",
+      "finalTarget": "تحميل المزيد من الألعاب",
+      "finalTargetHash": "7ecff6be118a1848a2350cff5a46f46d172cca93f020bec6aad0163fb2f74838",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.loading",
+      "locale": "ar",
+      "targetFile": "src/i18n/locale/ar.json",
+      "expectedCurrentHash": "7917beb136fda5fa24ea670a8bd3864636d778657e1f100bba69bddfb5bf7c2a",
+      "finalTarget": "جارٍ تحميل الألعاب…",
+      "finalTargetHash": "70a203a44955574857b794bf90efc6caf4a5a3582986138a2c08510977325801",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.loadingMore",
+      "locale": "ar",
+      "targetFile": "src/i18n/locale/ar.json",
+      "expectedCurrentHash": "4751f2647574ab6d2dfa2ecea07c571ce3804526ca5b04ebee9826895234e595",
+      "finalTarget": "جارٍ تحميل المزيد من الألعاب…",
+      "finalTargetHash": "7903c0fa0362e2a8b9a2bfde0a412812932c35a7fb0813b52b15d3fffea2eadd",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.manualAdded",
+      "locale": "ar",
+      "targetFile": "src/i18n/locale/ar.json",
+      "expectedCurrentHash": "156fe6382991613b44d0a4fee1383fd36baca892acbffcf9bbb773608664bc7a",
+      "finalTarget": "تمت إضافة اللعبة إلى مكتبتك الخاصة.",
+      "finalTargetHash": "4c6dceba158794c88adeef0d97236b48e02263d54355b6fb09344ff7ec517a95",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.manualTitleRequired",
+      "locale": "ar",
+      "targetFile": "src/i18n/locale/ar.json",
+      "expectedCurrentHash": "4115e61172d52bc291b3ccdfd89755784acc1eb015ad77f8b09a5b58366c2c78",
+      "finalTarget": "أدخل عنوان اللعبة.",
+      "finalTargetHash": "6342743734f9c6d5d177ca4e7e5e0c42366d7e131a7a575105247539e33f7e88",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.matchGame",
+      "locale": "ar",
+      "targetFile": "src/i18n/locale/ar.json",
+      "expectedCurrentHash": "080010e24208c66c5b5e37829f85d1617f3fcb82eda0226aee42975fb35712c0",
+      "finalTarget": "استخدم هذه المطابقة",
+      "finalTargetHash": "52a953634c9c58af973f7d2826477d2b94e29e357ab5e3b6cb0ef681c4e4557f",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.noCatalogMatches",
+      "locale": "ar",
+      "targetFile": "src/i18n/locale/ar.json",
+      "expectedCurrentHash": "dcbda942b2e7f3c42b0898c3959193deef1931b07dd6e41779c93c943b4764d5",
+      "finalTarget": "لم يتم العثور على ألعاب مطابقة في الكتالوج.",
+      "finalTargetHash": "639f409c6d6e5188e5b968e703223b566bece050ce4debe0d94a5cfa434badb0",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.noMatches",
+      "locale": "ar",
+      "targetFile": "src/i18n/locale/ar.json",
+      "expectedCurrentHash": "0330af53a6585684f08867a58759abd68ef148f00d573fcbad2473a545976a4a",
+      "finalTarget": "لا توجد ألعاب تطابق هذه المرشّحات.",
+      "finalTargetHash": "4a953166f4621ca99d971e05045c71f613d5f8b4ae7d38e1a15c22fd432934be",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.noSharedGamesHelp",
+      "locale": "ar",
+      "targetFile": "src/i18n/locale/ar.json",
+      "expectedCurrentHash": "9de7e7c5d141e77906465171a746fa4f4bb184bb1bbe3b28d3f19c862d537806",
+      "finalTarget": "اختر خيار «المشاركة مع أفراد المنزل» لأي لعبة تملكها. لا يعرض SeerrNG إلا الألعاب التي يختار أصحابها مشاركتها صراحةً.",
+      "finalTargetHash": "9b3a60c71aa3d10a69bd59796d2dd6b52358f396d259c9b36815e41ea01ff3a4",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.openCatalog",
+      "locale": "ar",
+      "targetFile": "src/i18n/locale/ar.json",
+      "expectedCurrentHash": "50cf3d2567da6948b2a6d83882b4f3c23db070a856c5aa598d0d2d9885bb4584",
+      "finalTarget": "افتح في الكتالوج",
+      "finalTargetHash": "d2be8c7a37f83fec2c070662db7761953a6221161aa48c5e9f249d32a48cc1c2",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.owned",
+      "locale": "ar",
+      "targetFile": "src/i18n/locale/ar.json",
+      "expectedCurrentHash": "8215e9416d26b144195b0fdb9b4d8fe8e7d512980a52454ac4cac7911aaf9727",
+      "finalTarget": "مملوكة",
+      "finalTargetHash": "781df2aef51b2c3c76c1e49868fa4dec0b72d141957db064f559aed56a54edac",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.paused",
+      "locale": "ar",
+      "targetFile": "src/i18n/locale/ar.json",
+      "expectedCurrentHash": "75f7db4415ec9833b2b2ec4f2bbab3cd15c15289ac8560b97964c22161827e54",
+      "finalTarget": "متوقف مؤقتًا",
+      "finalTargetHash": "cacda677b3764a51b1dfddab21341f1b4b335efe98b07f64de6817e5995440b0",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.platform",
+      "locale": "ar",
+      "targetFile": "src/i18n/locale/ar.json",
+      "expectedCurrentHash": "98e096d719421ee531a2ca20b7e67302b282303db2dbba2e534b4b02002fc90d",
+      "finalTarget": "المنصة",
+      "finalTargetHash": "3b8dd2e812fd417c07c13fc45295420cba9d664e0164bdf6aaa60d0e1d8b4c29",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.platformName",
+      "locale": "ar",
+      "targetFile": "src/i18n/locale/ar.json",
+      "expectedCurrentHash": "632f10fc5361bbd34eabc925bf47f7c221f7b2659c746b8ace7d458f24ac3127",
+      "finalTarget": "المنصة أو النظام",
+      "finalTargetHash": "4258e1f890ad2233b9c88093dfe197ac8f5bfb871fa9b9e0ec7ad13324c91e22",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.played",
+      "locale": "ar",
+      "targetFile": "src/i18n/locale/ar.json",
+      "expectedCurrentHash": "ab9eab84ac89e94772c97dcf4a37a9c80b9c37bd0a2b57b4af1b0c6b49a8bd9d",
+      "finalTarget": "تم لعبها",
+      "finalTargetHash": "5c6a9dbaf8a4fe0285d74d93a891b4eed74e04eb3a740ac37cadb5275704e54f",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.playing",
+      "locale": "ar",
+      "targetFile": "src/i18n/locale/ar.json",
+      "expectedCurrentHash": "ab9eab84ac89e94772c97dcf4a37a9c80b9c37bd0a2b57b4af1b0c6b49a8bd9d",
+      "finalTarget": "قيد اللعب",
+      "finalTargetHash": "35557d3afaeca5800e0605ea7758f581b1c55157407ed77faf739549ccb83d66",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.playtimeHours",
+      "locale": "ar",
+      "targetFile": "src/i18n/locale/ar.json",
+      "expectedCurrentHash": "9f71a03f7920e2c499467a2c6a2ae3fd160aa545210ce1536ad839b98f0da11d",
+      "finalTarget": "وقت اللعب: {hours} س",
+      "finalTargetHash": "3812c169e0c5f9016908046ed1ac87e2f988913dea80845c13224a5fd06452a1",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.playtimeHoursMinutes",
+      "locale": "ar",
+      "targetFile": "src/i18n/locale/ar.json",
+      "expectedCurrentHash": "47e418cd4d1d7674fad12a7741697d3b9d010135d0db6bea6b06c340ec54a764",
+      "finalTarget": "وقت اللعب: {hours} س و{minutes} د",
+      "finalTargetHash": "3524d3e6463d657e9404f613aceec98628b9bcd9ee7ee27d2f0d51ebbdd1470f",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.playtimeMinutes",
+      "locale": "ar",
+      "targetFile": "src/i18n/locale/ar.json",
+      "expectedCurrentHash": "e06c963d528706eef7d3eb7a45512f13002ec04f47c687144595baf404a8b95e",
+      "finalTarget": "وقت اللعب: {minutes} د",
+      "finalTargetHash": "b767a8ed537576ecad0ee7e9059bee6857dce61d4ca4e632c0d60e2caa5c8709",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.removeConfirm",
+      "locale": "ar",
+      "targetFile": "src/i18n/locale/ar.json",
+      "expectedCurrentHash": "f59946791f16cd42fea8c9bc7ec49746dc103f83bdce0caa40582687a25e3b6b",
+      "finalTarget": "هل تريد إزالة {title} من مكتبة ألعابك الشخصية؟",
+      "finalTargetHash": "86a0e93de60e51810fc3c6cd774d41a310958cac966acff69ebcabe21e89ff8b",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.requestCancelled",
+      "locale": "ar",
+      "targetFile": "src/i18n/locale/ar.json",
+      "expectedCurrentHash": "3d9505aedffec6c401b039b8bdd730979edeac1425a67b7b1ef35d4cf00093e4",
+      "finalTarget": "ملغى",
+      "finalTargetHash": "ab7b6061c68c96c4111e9122c021f57d3ae31d651cfb35842d90f9777bc46b1c",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.requestDownloading",
+      "locale": "ar",
+      "targetFile": "src/i18n/locale/ar.json",
+      "expectedCurrentHash": "c12088789ff98ece3dbc93bb1f2fa429ee082a3f01f6e54cf9a0ee131a280e0b",
+      "finalTarget": "جارٍ التنزيل",
+      "finalTargetHash": "41cd4cf934be97ca181a24f35c3960b70dd3ae6179cd742783e8945081ec4bf3",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.requestGame",
+      "locale": "ar",
+      "targetFile": "src/i18n/locale/ar.json",
+      "expectedCurrentHash": "7b39691a24916b3099e1cb16605b75be53f3ab93e05b727a6217faaa5c4078a8",
+      "finalTarget": "اطلب هذه اللعبة",
+      "finalTargetHash": "1e4189fa34adbd5fc644a796a9b7eebef5cafec605738921a02d281334f51887",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.requestImporting",
+      "locale": "ar",
+      "targetFile": "src/i18n/locale/ar.json",
+      "expectedCurrentHash": "e065e0e134b6baa70ea5712910781076763bef175272f6224de52a87253cbc2c",
+      "finalTarget": "جارٍ الاستيراد",
+      "finalTargetHash": "4b84d7b7f4884d9fc20b9b6f5bebc972fa7080333edabe4c45f287420f811b97",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.requestSearching",
+      "locale": "ar",
+      "targetFile": "src/i18n/locale/ar.json",
+      "expectedCurrentHash": "41a3c0033a4243ce78b4cb133f41d9bf11c63c91f5e71941ff77dc488e9ff893",
+      "finalTarget": "جارٍ البحث",
+      "finalTargetHash": "ddbe4e081a51323284b6b3550100041957f38076b61f816b41f9c3ec26a5bf0c",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.requestWithdrawn",
+      "locale": "ar",
+      "targetFile": "src/i18n/locale/ar.json",
+      "expectedCurrentHash": "31453be72af8e3e2388effa27a38db456f9523a60a9c30a9fdcf9ca5655700f5",
+      "finalTarget": "مسحوب",
+      "finalTargetHash": "6899d076d0a95e4088455319ef6e7e3fd0734296b4135b1a5da109c210057dc6",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.searchPlaceholder",
+      "locale": "ar",
+      "targetFile": "src/i18n/locale/ar.json",
+      "expectedCurrentHash": "056a4d15efcf2748069f23d38851c052e67dbf19ecfa531e5e8ebeda730db752",
+      "finalTarget": "البحث عن العناوين",
+      "finalTargetHash": "2b4da92331bf50ccb651ca9025d0cf626284e76029c4598baa5376cceaf14fb0",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.shareWithHousehold",
+      "locale": "ar",
+      "targetFile": "src/i18n/locale/ar.json",
+      "expectedCurrentHash": "9ea1fe90595458d58481c0e68114856487abdbec7a3bb611eb7d4d08a623d49a",
+      "finalTarget": "المشاركة مع أفراد المنزل",
+      "finalTargetHash": "cb851845c1cc7e8f9983984f9a124a373776e6d4b446611a0d1402596b650f00",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.sharedOnly",
+      "locale": "ar",
+      "targetFile": "src/i18n/locale/ar.json",
+      "expectedCurrentHash": "d8231d75f2c38fb4064b6068ad48d3ecc5abf43c00ced9d639cad264f54e07b3",
+      "finalTarget": "مالكان أو أكثر",
+      "finalTargetHash": "1b20c72fda0dc08b3414715ddb8c6acc79d9ec6ea4092a394f3e0074c962a1f9",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.steamLastSynced",
+      "locale": "ar",
+      "targetFile": "src/i18n/locale/ar.json",
+      "expectedCurrentHash": "5b7632d794e47a5e670b96d4bf2b8e9f27757d63a5d9c59424882bfeea0520c3",
+      "finalTarget": "آخر مزامنة: {date} · عدد الألعاب التي عُثر عليها: {count}",
+      "finalTargetHash": "0837230fd235fedc3e90b4e628243c0c99260199a2562684a78e9699fbbe0a11",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.IdentityMappingControls.change",
+      "locale": "ar",
+      "targetFile": "src/i18n/locale/ar.json",
+      "expectedCurrentHash": "6be61174ed2ae72479aa9b78b6365d1f3110e37d8244e0b17093d9882d5e8aa3",
+      "finalTarget": "تغيير مطابقة العنوان",
+      "finalTargetHash": "b52a4cbe10fb7c2c765a576dd91dc3f9631cddef611a293b295b40086d4699ed",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.IdentityMappingControls.match",
+      "locale": "ar",
+      "targetFile": "src/i18n/locale/ar.json",
+      "expectedCurrentHash": "9ef4ecaa2432e747e18ce0cf1f22146a01fd3681818b21704c89cb6f23fcfb96",
+      "finalTarget": "طابق العنوان مع الكتالوج",
+      "finalTargetHash": "b5be5b4abe50f5a0159c09f8746cccd49650ebc6589b84837ad8dec95b85532b",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.IdentityMappingControls.reset",
+      "locale": "ar",
+      "targetFile": "src/i18n/locale/ar.json",
+      "expectedCurrentHash": "d6c79e72bdc9dc66857b2724c071d0cda76c535bf7e33cdcce83c7ed2a809bf0",
+      "finalTarget": "إعادة تعيين مطابقة العنوان",
+      "finalTargetHash": "c8461bf35f66abc1e1b59e03e3dd83afebb69feb27954e9f9a9cb7c53ebe937a",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.IdentityMappingControls.resetFailed",
+      "locale": "ar",
+      "targetFile": "src/i18n/locale/ar.json",
+      "expectedCurrentHash": "46afe538d23d66affb978c92c834297186f51804d34b8a96d6284366f09424c3",
+      "finalTarget": "تعذّرت إعادة تعيين مطابقة العنوان. حاول مرة أخرى.",
+      "finalTargetHash": "563c9b42fa31bb34e9590db7e2e9a6f27fcf31f020926718b57624b375f78b22",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.IdentityMappingControls.resetSaved",
+      "locale": "ar",
+      "targetFile": "src/i18n/locale/ar.json",
+      "expectedCurrentHash": "d6c79e72bdc9dc66857b2724c071d0cda76c535bf7e33cdcce83c7ed2a809bf0",
+      "finalTarget": "تمت إعادة تعيين مطابقة العنوان.",
+      "finalTargetHash": "80c727dfdfcc828829d052ed0bd331a6231f0cab6539a55e4380b26d8fa7404d",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.noGames",
+      "locale": "ar",
+      "targetFile": "src/i18n/locale/ar.json",
+      "expectedCurrentHash": "d8e35e21cb4780859d9a6696374935d0468671f6814a947b9118024aca919611",
+      "finalTarget": "مكتبة ألعابك فارغة.",
+      "finalTargetHash": "2e0c3f802b06086adc7bcd22191026e03cd3c241fe9554e928cdc27ecaaeaf76",
+      "recordType": "accept-current-exception"
+    },
+    {
+      "id": "components.IdentityMappingControls.noResults",
+      "locale": "ar",
+      "targetFile": "src/i18n/locale/ar.json",
+      "expectedCurrentHash": "fe7066a34063d6797ed4966474d85a45c26d9524e20c3c44fcd0ecdb133c6b81",
+      "finalTarget": "لم يتم العثور على عناوين مطابقة.",
+      "finalTargetHash": "477601efa611c483bcc9b737037571f1295863e32c24c49b207f21c4da25b0fc",
+      "recordType": "accept-current-exception"
+    },
+    {
+      "id": "components.IdentityMappingControls.searchFailed",
+      "locale": "ar",
+      "targetFile": "src/i18n/locale/ar.json",
+      "expectedCurrentHash": "1ae50ce80fd40d31df3c6882461861b11aed97b12f9a232577093f7fd2dd1c05",
+      "finalTarget": "فشل البحث في الكتالوج. حاول مرة أخرى.",
+      "finalTargetHash": "4817772cce48d43c3abecdf3aba44b5311825b614b220a21175926821bb4b12a",
+      "recordType": "accept-current-exception"
+    },
+    {
+      "id": "components.GameLibrary.loadMore",
+      "locale": "hi",
+      "targetFile": "src/i18n/locale/hi.json",
+      "expectedCurrentHash": "44199baa3492231875742ad13134f5a083a245d75d9457277a1f28755748152d",
+      "finalTarget": "और गेम लोड करें",
+      "finalTargetHash": "638be8fe59fc581d227cd1ce6df7cf5c3b6d17bbbd44cba0a4cc2d2795af0941",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.loading",
+      "locale": "hi",
+      "targetFile": "src/i18n/locale/hi.json",
+      "expectedCurrentHash": "706fca07b3263f9838e010a670b45a9e8afb08a4a3a7849099677864d91b114e",
+      "finalTarget": "गेम लोड हो रहे हैं…",
+      "finalTargetHash": "d43637f3318f7af7ca52ce6cc8d3d42351c54ca451f0690e89f0b89b3ff46908",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.loadingMore",
+      "locale": "hi",
+      "targetFile": "src/i18n/locale/hi.json",
+      "expectedCurrentHash": "2e646f7e740f49a37ecc6201d44278117e7840f0e82e402aef926ce9835d66ea",
+      "finalTarget": "और गेम लोड हो रहे हैं…",
+      "finalTargetHash": "9b03f22e1bf245663a8f6d01692ec64bd39ecd522c3a34b6206f7dabb3dfa3f4",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.manualOwnership",
+      "locale": "hi",
+      "targetFile": "src/i18n/locale/hi.json",
+      "expectedCurrentHash": "483b5dc560ec2720a88c6c3bd454ec485337db643ef4b136fc5746d8322624d4",
+      "finalTarget": "यह गेम मेरे पास Steam के बाहर भी है",
+      "finalTargetHash": "b198ed5917453b1d1cc04776db4400767e8e5dba13e02732a1df9334fbb3df8b",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.matchGame",
+      "locale": "hi",
+      "targetFile": "src/i18n/locale/hi.json",
+      "expectedCurrentHash": "71ff35b3e70a71e0311a2cfb24b6b64fa698f3bfb18a87a27043e7ccaa0f8517",
+      "finalTarget": "इस मिलान का उपयोग करें",
+      "finalTargetHash": "db56ddd4d8becb9981c9b87b18c601bfd8f1404b0eab7f7718b393a0cb66b581",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.noCatalogMatches",
+      "locale": "hi",
+      "targetFile": "src/i18n/locale/hi.json",
+      "expectedCurrentHash": "cbc17cf72fb799c031dac537356907927de77384878362c18941e276834ff13b",
+      "finalTarget": "कैटलॉग में कोई मेल खाता गेम नहीं मिला।",
+      "finalTargetHash": "626388e2aa02daf0563f518f9aa3332a1e3ef839c699f8124fceb62ce7b0456e",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.noGames",
+      "locale": "hi",
+      "targetFile": "src/i18n/locale/hi.json",
+      "expectedCurrentHash": "bed5836fb52680c59ce4899b56aebe4e1bf264635e3c98957bf9bf6bbfafb676",
+      "finalTarget": "आपकी गेम लाइब्रेरी खाली है।",
+      "finalTargetHash": "2bff2e2fc3b43089a7f40f6fc1f6a29ecc8ae1ca0f795eb0d5abff1061363d60",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.noMatches",
+      "locale": "hi",
+      "targetFile": "src/i18n/locale/hi.json",
+      "expectedCurrentHash": "011c506441db5b4b28fc589b43b2dfac4fdf4ea54ea2e7d244971c8d2d30c5f5",
+      "finalTarget": "इन फ़िल्टरों से कोई गेम मेल नहीं खाता।",
+      "finalTargetHash": "57012ec152059a2e41628df91148af896933ada24e17b68fc9c571e1b918d48a",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.noSharedGamesHelp",
+      "locale": "hi",
+      "targetFile": "src/i18n/locale/hi.json",
+      "expectedCurrentHash": "77cb68da4cfc5b3f8f4253e75d68d8f00306dcfed56a7c826848518494b32459",
+      "finalTarget": "अपने किसी भी गेम पर “घर के सदस्यों के साथ साझा करें” विकल्प चुनें। SeerrNG केवल वही गेम दिखाता है जिन्हें लोग स्पष्ट रूप से साझा करते हैं।",
+      "finalTargetHash": "6ffeceba5b2eb9ad7769cbc9369df6bb3681962aeb3b9092f7a393d8cf689228",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.openCatalog",
+      "locale": "hi",
+      "targetFile": "src/i18n/locale/hi.json",
+      "expectedCurrentHash": "0f0a0eb040fb9a19a3a15f82c04a0a8648c9ba0980f19c4ce96746488f96d329",
+      "finalTarget": "कैटलॉग में खोलें",
+      "finalTargetHash": "48922f04a8ae6d856fbf69f482987a4db818ddfd7843b07cfe6247d8672191ce",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.ownerCount",
+      "locale": "hi",
+      "targetFile": "src/i18n/locale/hi.json",
+      "expectedCurrentHash": "7c6d8ccb3406b0b70eb04973f44a8e8506f1d4fa7d29ff5267d9ebb7c9c1d453",
+      "finalTarget": "{count, plural, one {# व्यक्ति इस गेम का मालिक है} other {# लोग इस गेम के मालिक हैं}}",
+      "finalTargetHash": "319296b459e57676a20e95258fc2248592a4d0247af9008731f941f24eb90168",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.paused",
+      "locale": "hi",
+      "targetFile": "src/i18n/locale/hi.json",
+      "expectedCurrentHash": "e25c2a7dfa342bc5b506e1ba78cc0636f33639fce7b6b789fcbb88f854205f8d",
+      "finalTarget": "रुका हुआ",
+      "finalTargetHash": "791ce7a32c758994e24fad15d959eeb5e21d5bf135a1cb5436d946cb7394b7b5",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.platform",
+      "locale": "hi",
+      "targetFile": "src/i18n/locale/hi.json",
+      "expectedCurrentHash": "1c607b639f0f2acf20045061073de82679594b2582ccdae863bc05afb59ac9a2",
+      "finalTarget": "प्लैटफ़ॉर्म",
+      "finalTargetHash": "ec9f76c0580145b630a6bab9511d070ece959c3da06c3f84b1b1221b351809b8",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.platformName",
+      "locale": "hi",
+      "targetFile": "src/i18n/locale/hi.json",
+      "expectedCurrentHash": "5d8f479e04d5fa15e0007082d86918cf430e4c7743fffbf9b50825f317cfce55",
+      "finalTarget": "प्लैटफ़ॉर्म या सिस्टम",
+      "finalTargetHash": "4366ce909161d1d445a13626826c59139b3ff0a59497f06bcb3fc752a7e76ec1",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.playing",
+      "locale": "hi",
+      "targetFile": "src/i18n/locale/hi.json",
+      "expectedCurrentHash": "83215fbb684ee19bf9cff5e2399d05dd9ad200e0b67d10a23dc9de276ef9f098",
+      "finalTarget": "खेला जा रहा है",
+      "finalTargetHash": "12b4415a8224f7644132648b77789b0481ea59951891bc8ef2d50e2aca4c8a9d",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.playtimeHours",
+      "locale": "hi",
+      "targetFile": "src/i18n/locale/hi.json",
+      "expectedCurrentHash": "13bbe0cde4f7148d0f17e611f9221df46d87793654a0a945b696d250a35d0ed0",
+      "finalTarget": "खेलने का समय: {hours} घंटे",
+      "finalTargetHash": "09d19c3204f0542b4c616277ff2a1a234dfbaa0432fba0fd0472746e7914f8da",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.playtimeHoursMinutes",
+      "locale": "hi",
+      "targetFile": "src/i18n/locale/hi.json",
+      "expectedCurrentHash": "50a42c57a75bca743e767505d2e710060c78e7a0f1a80f8d07c1674cd64a8ffa",
+      "finalTarget": "खेलने का समय: {hours} घंटे {minutes} मिनट",
+      "finalTargetHash": "d0c4bc79a3800361c30ddbbb5e50654417bd1d1fb66465061a5ce8ee52a4a027",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.playtimeMinutes",
+      "locale": "hi",
+      "targetFile": "src/i18n/locale/hi.json",
+      "expectedCurrentHash": "78136d81b4f5c04e3741e8af8a3136ecc355297177c45c1c82b1c46d71e488c4",
+      "finalTarget": "खेलने का समय: {minutes} मिनट",
+      "finalTargetHash": "1674fca5a9aa32586c9791880c25ca5c771a610067eb591771e6843517b87cfc",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.removeConfirm",
+      "locale": "hi",
+      "targetFile": "src/i18n/locale/hi.json",
+      "expectedCurrentHash": "de5103d33b9d0056a62d21755534150969411891365b19ed7135ce11b7278a3f",
+      "finalTarget": "क्या आप {title} को अपनी निजी गेम लाइब्रेरी से हटाना चाहते हैं?",
+      "finalTargetHash": "b35ee920c0baf4af9a064dc12f1178fefecf0bac89319933e586bf4105a0dc50",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.requestCancelled",
+      "locale": "hi",
+      "targetFile": "src/i18n/locale/hi.json",
+      "expectedCurrentHash": "a2a15e14c0cbc3509c3330c0c96b6d91a8e4532001afce3e00869a0772dac228",
+      "finalTarget": "रद्द किया गया",
+      "finalTargetHash": "d48e6d80e4900f053afb3db3d09da0d8a627c6932a1bfc48ffa7a40de114dc60",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.requestDownloading",
+      "locale": "hi",
+      "targetFile": "src/i18n/locale/hi.json",
+      "expectedCurrentHash": "566035c0236a60ab3f0e4dc4f0d40ce9bb9b9af41cb3b68532df41a43870b361",
+      "finalTarget": "डाउनलोड हो रहा है",
+      "finalTargetHash": "fdd1877d828650cacac5a59c1fa9f22a2b5bc2c9aad3dc3cb2fd638b049cbd7f",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.requestImporting",
+      "locale": "hi",
+      "targetFile": "src/i18n/locale/hi.json",
+      "expectedCurrentHash": "2648bb7e517a40f29913e77a19e3a4716ecf50174eecbd29d48d84f9f583c668",
+      "finalTarget": "आयात हो रहा है",
+      "finalTargetHash": "112763dccf242c0e82c991980c8c246a8195748e3ec14dd2ce76598f901b096a",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.requestPending",
+      "locale": "hi",
+      "targetFile": "src/i18n/locale/hi.json",
+      "expectedCurrentHash": "4bfc1e14b52835a1fd81817f921cb0d2f9343e003ef00062389b81f5aab67579",
+      "finalTarget": "मंज़ूरी लंबित",
+      "finalTargetHash": "4702d194ff1165f746e91b88c7833693123d904dbbd8c42913051b2bf9ed5c59",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.requestSearching",
+      "locale": "hi",
+      "targetFile": "src/i18n/locale/hi.json",
+      "expectedCurrentHash": "8cbbc4d4057c21d04c67b7c75806e7e017665551e26b004eee0b7fac0768353a",
+      "finalTarget": "खोज जारी है",
+      "finalTargetHash": "7a4a8d8195227df3f6b0c3d384151f256173777e1478421f5b9e8ab66442dd95",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.requestWithdrawn",
+      "locale": "hi",
+      "targetFile": "src/i18n/locale/hi.json",
+      "expectedCurrentHash": "1153ae94878503de53e3235a4853e9484e7bd1346435bfeb9b5de64dfa028a96",
+      "finalTarget": "वापस लिया गया",
+      "finalTargetHash": "4abef1e06ad9650a9bd4aa1ac44abb4402eb6f282fa9cc870f5b67f8e90175a2",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.saveError",
+      "locale": "hi",
+      "targetFile": "src/i18n/locale/hi.json",
+      "expectedCurrentHash": "4adb10ad96443364f048fa00994dbc6d711f9c0d3821489a5141019ea9de4864",
+      "finalTarget": "गेम में किए गए बदलाव सहेजे नहीं जा सके। फिर से कोशिश करें।",
+      "finalTargetHash": "3e0762a262f0364898b8157749b597a0e7a858d6fd90cd6df3bc27148dc10889",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.saved",
+      "locale": "hi",
+      "targetFile": "src/i18n/locale/hi.json",
+      "expectedCurrentHash": "f6dfd7e1b202abed3e9fa1d89d01c6ecc8550bd78068eb50020c1816846e200b",
+      "finalTarget": "गेम लाइब्रेरी अपडेट हो गई।",
+      "finalTargetHash": "f7d967974287f939df82fa0a1086e3bfa01c0eca8b8907771f4fef821b233b5c",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.search",
+      "locale": "hi",
+      "targetFile": "src/i18n/locale/hi.json",
+      "expectedCurrentHash": "f3f093a4a80d7683f8a7130c5b6f86116b6fc97211d6b5327c109a88e857ac52",
+      "finalTarget": "मेरे गेम खोजें",
+      "finalTargetHash": "b8268dccd3b94135f7548454e743f462d4a943fb759b96cd5d3cd3727874d5eb",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.shareHelp",
+      "locale": "hi",
+      "targetFile": "src/i18n/locale/hi.json",
+      "expectedCurrentHash": "eee3a2edb74bad5d61029c445f09ff00893124aa9a9b52345c4a8901820fd4eb",
+      "finalTarget": "साझा किए गए गेम इस SeerrNG सर्वर के अन्य लॉग इन उपयोगकर्ताओं को दिखाई देते हैं।",
+      "finalTargetHash": "0cde809faea00410300717d03f37ec0df2b9a09a99568786073588b25f013e88",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.shareWithHousehold",
+      "locale": "hi",
+      "targetFile": "src/i18n/locale/hi.json",
+      "expectedCurrentHash": "132bbe8451d82f0d56e38a50ba6d141599f67d726125bce771a0e631903456db",
+      "finalTarget": "घर के सदस्यों के साथ साझा करें",
+      "finalTargetHash": "a608e1c3c7dab8f0995a1f429e35030e9e501e4544e85cbf2b83935f91ad2bf9",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.sharedBy",
+      "locale": "hi",
+      "targetFile": "src/i18n/locale/hi.json",
+      "expectedCurrentHash": "c6c5e5baa34ca6a4f22966b464258feab3035d3ff66712e3b9ab1613f568f9b6",
+      "finalTarget": "इन लोगों ने साझा किया: {owners}",
+      "finalTargetHash": "2eb0d3b4099ab31dc11024dcc99e00318f047b7c39ebc17884f2608f1763e969",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.sharedFilterLabel",
+      "locale": "hi",
+      "targetFile": "src/i18n/locale/hi.json",
+      "expectedCurrentHash": "420f33ef5399fa677136c497325ee93cb7edc17def83dab019996776ea6fba0f",
+      "finalTarget": "मालिकों की संख्या",
+      "finalTargetHash": "05ebf96ffede51f9edb1df97c7cec85d0e542b34c81082e19864b571752df3a8",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.sharedIntro",
+      "locale": "hi",
+      "targetFile": "src/i18n/locale/hi.json",
+      "expectedCurrentHash": "7a5c09c9793d2e2bb5d7ef5a9a7a1bccc6615293c56cdea3fac6306d7446cfc8",
+      "finalTarget": "इस SeerrNG सर्वर पर लोग जिन गेमों को साझा करने के लिए चुनते हैं, उन्हें खोजें। निजी लाइब्रेरी की प्रविष्टियाँ छिपी रहती हैं।",
+      "finalTargetHash": "76f4555628c89750ac38242bea61299ad0ddb95edf9ed2cfdcab28fb5bbb6658",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.steamDisconnect",
+      "locale": "hi",
+      "targetFile": "src/i18n/locale/hi.json",
+      "expectedCurrentHash": "1ea01386c9001c22ecdd8edda6d6a6d7e49b60855a8906c187a3297e4bf4d91e",
+      "finalTarget": "Steam खाता अनलिंक करें",
+      "finalTargetHash": "8fdb6c51fd070fe0166148afc061e16f4335bfec72ca6df7d4b39439716fec3e",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.steamErrorMessage",
+      "locale": "hi",
+      "targetFile": "src/i18n/locale/hi.json",
+      "expectedCurrentHash": "2b0782ec182798238e0fe4a2ead2f89001788873fa5b8f05da1dd90dd1070eaa",
+      "finalTarget": "Steam से लिंक नहीं किया जा सका। फिर से कोशिश करें।",
+      "finalTargetHash": "1ad14ef808f3ab01c2fd2289da2662c6835d779db34562e756c4f62cad1dd096",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.steamLastSynced",
+      "locale": "hi",
+      "targetFile": "src/i18n/locale/hi.json",
+      "expectedCurrentHash": "02599876ee13e8b62ff1ed0892aee87101d8dcd4551b749f1e4702e830e5b74f",
+      "finalTarget": "आखिरी सिंक: {date} · खोजे गए गेमों की संख्या: {count}",
+      "finalTargetHash": "8d76b327adca714bb2b3a2072cc4b11d7f63638b2801e6fad3ff8b1ac2b80227",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.steamUnlinked",
+      "locale": "hi",
+      "targetFile": "src/i18n/locale/hi.json",
+      "expectedCurrentHash": "6812e1cd2f9f553a6c0d37a470cda546ddad80c2ae7ab0505e64e5ae0fb80e38",
+      "finalTarget": "Steam खाता अनलिंक किया गया। आयातित गेम और उनकी प्रगति बनी रहती है, लेकिन Steam पर उनके स्वामित्व का निशान हटा दिया जाता है।",
+      "finalTargetHash": "e58e873d5bc71c830c741b13fb9a873d922f0ccee1f9664593a3b2737e627b29",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.title",
+      "locale": "hi",
+      "targetFile": "src/i18n/locale/hi.json",
+      "expectedCurrentHash": "11cdf23e37b3837d11e9224906b345538257661919ad510134c9222143f965e6",
+      "finalTarget": "मेरे गेम",
+      "finalTargetHash": "b38cc2be0c13093520cf3221d5001ea985a456fe4f00b93129220b77bfabcc4f",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.updateError",
+      "locale": "hi",
+      "targetFile": "src/i18n/locale/hi.json",
+      "expectedCurrentHash": "e644a37fd7b25b7cd209866a8e8ea7b220148ac69a84e250a1769cc267b43a01",
+      "finalTarget": "इस गेम को अपडेट नहीं किया जा सका। फिर से कोशिश करें।",
+      "finalTargetHash": "ec92fbb93f3b2fcb2e8b899c8bb547c9c96d955632727de0b29f4654ea1c125b",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.IdentityMappingControls.change",
+      "locale": "hi",
+      "targetFile": "src/i18n/locale/hi.json",
+      "expectedCurrentHash": "87e1eb8c4bf82ab0df7de87820eac5fbed4d58f3ef304c874690ba138cd3ef02",
+      "finalTarget": "शीर्षक मिलान बदलें",
+      "finalTargetHash": "56c00628d485e358f89cf44fe9a6f4bfff117dbcaf645ce978d46fa0883c9342",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.IdentityMappingControls.curatedMatch",
+      "locale": "hi",
+      "targetFile": "src/i18n/locale/hi.json",
+      "expectedCurrentHash": "9d3932cb415afd921a688e4ee400de4cab1f69867ab3f0d6c089b6d3e808b02c",
+      "finalTarget": "यह मिलान व्यवस्थापक द्वारा प्रबंधित साझा पैक से आया है। निजी ओवरराइड सहेजने के लिए कोई दूसरा शीर्षक चुनें।",
+      "finalTargetHash": "dfb6f9dfb46ae078423c62ad37a5f0bd2063b87b8f4f39685168cb9c53abf656",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.IdentityMappingControls.externalMatch",
+      "locale": "hi",
+      "targetFile": "src/i18n/locale/hi.json",
+      "expectedCurrentHash": "9cd7039f857608993e0db39f6a75e666f93d6146a7adeb316c9afb1a10de219b",
+      "finalTarget": "यह मिलान सटीक IMDb या TVDB ID से आया है। निजी ओवरराइड सहेजने के लिए कोई दूसरा शीर्षक चुनें।",
+      "finalTargetHash": "5744fd721d7e159930f9f2300ccbf487d7861eb7f7a130eeb5706e9b59c06602",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.IdentityMappingControls.match",
+      "locale": "hi",
+      "targetFile": "src/i18n/locale/hi.json",
+      "expectedCurrentHash": "5d84c310fd3b7a3e143afe845684ce0399b595436cad6027eb94f4ad7a97209f",
+      "finalTarget": "कैटलॉग के शीर्षक से मिलान करें",
+      "finalTargetHash": "068287913d1342c0e8b5cded8c724ba9f6d6bb86bbe9fe879d43b8a51d428095",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.IdentityMappingControls.noResults",
+      "locale": "hi",
+      "targetFile": "src/i18n/locale/hi.json",
+      "expectedCurrentHash": "961be5d373874e6b9f3eadfeb63165c604faf89625826c77393417c97509614d",
+      "finalTarget": "कोई मेल खाता शीर्षक नहीं मिला।",
+      "finalTargetHash": "6c3375f5ed6e0992fc81d5833088814a91ca527dd70a03111ce71626dd6fc219",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.IdentityMappingControls.reset",
+      "locale": "hi",
+      "targetFile": "src/i18n/locale/hi.json",
+      "expectedCurrentHash": "2cf0da1486be0ca7310b6585084d0e0d5655ca5fb4f581a90673971bf94387c1",
+      "finalTarget": "शीर्षक मिलान रीसेट करें",
+      "finalTargetHash": "cc9a220b9817582eb031cdf34c4c2c3687dd2b206394d07c911ad1c7a09a821a",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.IdentityMappingControls.resetFailed",
+      "locale": "hi",
+      "targetFile": "src/i18n/locale/hi.json",
+      "expectedCurrentHash": "c15641463033d2bb2576ac16e9fc02d213d74f4c1a678078c6b8805d360a755e",
+      "finalTarget": "शीर्षक मिलान रीसेट नहीं किया जा सका। फिर से कोशिश करें।",
+      "finalTargetHash": "c9d8f2ef8db7ac7b5a543f9d3c2de993d4e3a34b9516a176a357b2bbaf0050da",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.IdentityMappingControls.resetSaved",
+      "locale": "hi",
+      "targetFile": "src/i18n/locale/hi.json",
+      "expectedCurrentHash": "3c13ff025e40532fd3fcfdc428f64abec9db33680a3108f19dc51a51527df44d",
+      "finalTarget": "शीर्षक मिलान रीसेट हो गया।",
+      "finalTargetHash": "e1659d5161f6b2b67bb48640989c3746e2d0a57fb8fc835584a5d2c0727e3f95",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.IdentityMappingControls.saveFailed",
+      "locale": "hi",
+      "targetFile": "src/i18n/locale/hi.json",
+      "expectedCurrentHash": "61465c8e46e2c691ef52a8c3f0eb641ce9ac5ab1f15235d473ab15b3d3e2f9c9",
+      "finalTarget": "शीर्षक मिलान सहेजा नहीं जा सका। फिर से कोशिश करें।",
+      "finalTargetHash": "d0e3d444efcbf091909364791f9865ab9812c84101a725ada82e291ad011f30d",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.IdentityMappingControls.saved",
+      "locale": "hi",
+      "targetFile": "src/i18n/locale/hi.json",
+      "expectedCurrentHash": "2498b9cdbb984d2f1752c6747393f9439e38483c71c2c9bc9736271f808a560b",
+      "finalTarget": "शीर्षक मिलान सहेजा गया।",
+      "finalTargetHash": "8279e2283eebbc8a443ab0310d8cc4a0a4b56037874b46a9dbd71d24ead5a8fa",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.IdentityMappingControls.searchFailed",
+      "locale": "hi",
+      "targetFile": "src/i18n/locale/hi.json",
+      "expectedCurrentHash": "b4b6687d31073dd86d45a09182436fdb3e67e1d340924ac0d0b0ff57f69da935",
+      "finalTarget": "कैटलॉग में खोज विफल रही। फिर से कोशिश करें।",
+      "finalTargetHash": "323e6b29fee9f4abcb868e1580c7484024435a32f601483e2b7adb42ec79fd20",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.loadMore",
+      "locale": "id",
+      "targetFile": "src/i18n/locale/id.json",
+      "expectedCurrentHash": "bc23297fc58505ff7b48473aff18ff722ac23c2c49ff9f10b7165237f5f2b6b7",
+      "finalTarget": "Muat lebih banyak game",
+      "finalTargetHash": "d2227e346a44feb3cfad8cad336418461331c89e4c9ea70a5b12febbfeb65eea",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.noCatalogMatches",
+      "locale": "id",
+      "targetFile": "src/i18n/locale/id.json",
+      "expectedCurrentHash": "4896e5fbb087d7ca57a7276c0c6f229bc7c98eb85bf543660ea7016b5bf2d52e",
+      "finalTarget": "Tidak ditemukan game katalog yang cocok.",
+      "finalTargetHash": "be316d89a818f4e24381006bb96192e0ebd78ef1a7f0711de5bd73f19f149103",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.paused",
+      "locale": "id",
+      "targetFile": "src/i18n/locale/id.json",
+      "expectedCurrentHash": "b546f8c2c12396e7a8c08537745e08f6b64d21bb59ad985eb1c5bf639b862d0e",
+      "finalTarget": "Dijeda",
+      "finalTargetHash": "5aa225ad14b2806353f4647a954e8c25889fdec749bfa0f4ee9447496eafbc8f",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.played",
+      "locale": "id",
+      "targetFile": "src/i18n/locale/id.json",
+      "expectedCurrentHash": "4b9538333b7f6de14243f43723b7f790d55e759970e57424ab814ff9f61af261",
+      "finalTarget": "Dimainkan",
+      "finalTargetHash": "05363ad1c2ace30bd48e359a3e23fd871f5e36119ab10733d8847770d3cf7200",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.playing",
+      "locale": "id",
+      "targetFile": "src/i18n/locale/id.json",
+      "expectedCurrentHash": "af976181f3e76fa9fff0918be98a6ff35b5e745a408f5e2dbab7da743f7d3ad0",
+      "finalTarget": "Sedang dimainkan",
+      "finalTargetHash": "1a948df70518fd05ca383a3d2f848bea32d33e7708b00595b4f17d4ec3b5fe04",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.requestGame",
+      "locale": "id",
+      "targetFile": "src/i18n/locale/id.json",
+      "expectedCurrentHash": "2a529b349265029b1edefcda477a8736c67067e0750482192106ef48ec54a64d",
+      "finalTarget": "Minta game ini",
+      "finalTargetHash": "e5d868169a53a59c6326ac8b5d083a4d28068f29fb394afdf60738ee7e81c13e",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.sharedOnly",
+      "locale": "id",
+      "targetFile": "src/i18n/locale/id.json",
+      "expectedCurrentHash": "d5018c406a9cd26b1d2cb7942e85fc443c2d3898d5a4051afa3f7f7fc5e28719",
+      "finalTarget": "2+ pemilik",
+      "finalTargetHash": "898f47c93464e34bf57fec7f54ba4198ca6f176521e6a698618e0a489b1a6d00",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.steamSyncing",
+      "locale": "id",
+      "targetFile": "src/i18n/locale/id.json",
+      "expectedCurrentHash": "d1e9f4439bc165d6969636912b5e7ffb5f14c59541c20b7559fc58ac21eb8f2e",
+      "finalTarget": "Menyinkronkan Steam…",
+      "finalTargetHash": "d4dc9de3c6e8f0bedffd4858c06ddad424bad9dcc81499024bb91d902660a92c",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.IdentityMappingControls.curatedMatch",
+      "locale": "id",
+      "targetFile": "src/i18n/locale/id.json",
+      "expectedCurrentHash": "390cdb97a92d925271cd5acc8675f751440cd1ecc34f10b2f9b2eb3c70e03c1c",
+      "finalTarget": "Kecocokan ini berasal dari paket bersama yang dikelola administrator. Pilih judul lain untuk menyimpan penggantian pribadi.",
+      "finalTargetHash": "094cc896379b9ce1c5b4d03fdde7866c24131c159a58f5372f6e151d4cb39468",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.IdentityMappingControls.externalMatch",
+      "locale": "id",
+      "targetFile": "src/i18n/locale/id.json",
+      "expectedCurrentHash": "487d3e41aff83a339ac62e5e054e1a2e84ec8125acf892acc733bb0e22e2523b",
+      "finalTarget": "Kecocokan ini berasal dari ID IMDb atau TVDB yang sama persis. Pilih judul lain untuk menyimpan penggantian pribadi.",
+      "finalTargetHash": "108761d39c3282ea078c492b2c8019304001c872ca94075b3006778d5784ade0",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.IdentityMappingControls.match",
+      "locale": "id",
+      "targetFile": "src/i18n/locale/id.json",
+      "expectedCurrentHash": "2a691d93ffb6dd857a441c1016cf2a77a6fe44b6d10402814dcc290ba222abfd",
+      "finalTarget": "Cocokkan dengan judul di katalog",
+      "finalTargetHash": "ee10fa44b9278f816d9d6be4b9c09d303331ec3b986ef782dd53400cc100b8d5",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.IdentityMappingControls.resetFailed",
+      "locale": "id",
+      "targetFile": "src/i18n/locale/id.json",
+      "expectedCurrentHash": "703b8c5f4dc925275206e51085be970939d9f44c18ba842de053f252fdcbb1db",
+      "finalTarget": "Kecocokan judul tidak dapat diatur ulang. Coba lagi.",
+      "finalTargetHash": "565a4706ed8c953c77f106c5b4ebf5c891f797193c4ea5d2b5b270af461121f2",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.IdentityMappingControls.resetSaved",
+      "locale": "id",
+      "targetFile": "src/i18n/locale/id.json",
+      "expectedCurrentHash": "6eec7fbd75afa15aa7edc05b885ab6b7d9c9db42543a10c73cf5f5f3845d12d2",
+      "finalTarget": "Kecocokan judul berhasil diatur ulang.",
+      "finalTargetHash": "4bcbb597f71efa28e2bfa385d5d0f3ef233894d904984e67952661dec7539b01",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.IdentityMappingControls.saveFailed",
+      "locale": "id",
+      "targetFile": "src/i18n/locale/id.json",
+      "expectedCurrentHash": "e8bbd6dc06c48c5891de5b68ea2806c2c012115f5b09997a6367314722abcdd8",
+      "finalTarget": "Kecocokan judul tidak dapat disimpan. Coba lagi.",
+      "finalTargetHash": "3e8e6e0d5cd5e63b4c4529531e21fb91e62e27162884cc4833193cddb16e35aa",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.IdentityMappingControls.saved",
+      "locale": "id",
+      "targetFile": "src/i18n/locale/id.json",
+      "expectedCurrentHash": "2d7062338fdfac035e373e3b12ace68ca6f03272388b6c06dfe0084bebeecc8e",
+      "finalTarget": "Kecocokan judul berhasil disimpan.",
+      "finalTargetHash": "06a77f9f231ac22f6fdce6189744ecaba6d148822d3b5e26fc684bf1ed0a1c21",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.loadMore",
+      "locale": "vi",
+      "targetFile": "src/i18n/locale/vi.json",
+      "expectedCurrentHash": "7259a1536a145d715823a12b66e3315fdd4de7d90792cbea378928c10f855fe9",
+      "finalTarget": "Tải thêm trò chơi",
+      "finalTargetHash": "0589690a5fe28de9d06f43c717c68605513fddb40c1f04878c2f500fd82b6efd",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.manualAdded",
+      "locale": "vi",
+      "targetFile": "src/i18n/locale/vi.json",
+      "expectedCurrentHash": "3eac9d456fa2a73308c99cd3a1344ac29de867a7108618fa47dc58d3a08c1d30",
+      "finalTarget": "Đã thêm trò chơi vào thư viện riêng của bạn.",
+      "finalTargetHash": "b2f54696ade36acfdf305aa56275bed8b6865e1418107285458a95754e280118",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.manualCategory",
+      "locale": "vi",
+      "targetFile": "src/i18n/locale/vi.json",
+      "expectedCurrentHash": "497f02df421b3adb352a2c51027f6bb6abe31d1217182e63d0cd98d6f90df798",
+      "finalTarget": "Loại trò chơi",
+      "finalTargetHash": "432cd0e80ab7e97254e29f1a4f8d1c74349fd0aa70f55bf7506d8c9ab568bb09",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.matchGame",
+      "locale": "vi",
+      "targetFile": "src/i18n/locale/vi.json",
+      "expectedCurrentHash": "6cdebf75e8c67236ef72b942ce423d10ac388f99216e4b61207b27f7c9770a21",
+      "finalTarget": "Dùng kết quả phù hợp này",
+      "finalTargetHash": "9fbdb7011115cdefd8a1b79534d3e07284890bd57487088523fe2282064f69f0",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.noCatalogMatches",
+      "locale": "vi",
+      "targetFile": "src/i18n/locale/vi.json",
+      "expectedCurrentHash": "af4b725620460fae100d3e15b3c0e356cef6259300ebdd475cdf04e5919ebeeb",
+      "finalTarget": "Không tìm thấy trò chơi phù hợp trong danh mục.",
+      "finalTargetHash": "4c1466210930b7963e4018e9cffc8351bdf37d94fb92a04d612729213d6c6a67",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.noSharedGames",
+      "locale": "vi",
+      "targetFile": "src/i18n/locale/vi.json",
+      "expectedCurrentHash": "657ebce06737d9c2c4313c7e273d3d0da12290a9d28b13172fc1e9786cc09eb6",
+      "finalTarget": "Chưa có trò chơi nào được chia sẻ.",
+      "finalTargetHash": "b7ded9ba4a931657519dfd0f0bcf8127efe594530fd10157ef5e976b3cbdf8d6",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.noSharedGamesHelp",
+      "locale": "vi",
+      "targetFile": "src/i18n/locale/vi.json",
+      "expectedCurrentHash": "ecd1a82510ba019f3809d0e35b43353fb142e55cdabef5e35cbc13f1d7f3bb37",
+      "finalTarget": "Trên bất kỳ trò chơi nào bạn sở hữu, hãy chọn “Chia sẻ với gia đình”. SeerrNG chỉ hiển thị những trò chơi được người dùng chủ động chia sẻ.",
+      "finalTargetHash": "113250de306db36ae6ed6ef9b0419756e93a95f51bc02c30bf9a725378f4db39",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.notMarkedOwned",
+      "locale": "vi",
+      "targetFile": "src/i18n/locale/vi.json",
+      "expectedCurrentHash": "12bfa86fabfd02e2563e0679aaf1fde7b4d29db53c0c09346b35d7387d497177",
+      "finalTarget": "Chưa được đánh dấu là đã sở hữu",
+      "finalTargetHash": "42e81ea57bdf139d224772b9162ad21ca829272636e03b9d1c46415bcdc5eea0",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.openCatalog",
+      "locale": "vi",
+      "targetFile": "src/i18n/locale/vi.json",
+      "expectedCurrentHash": "7cf9acd0e865aec5334fc41d4fa6edd80ed8c2ea5d609e8362dbc3715c60aab0",
+      "finalTarget": "Mở trong danh mục",
+      "finalTargetHash": "0936290f5b07f909a7db30b7e8378cb09ec5123b885265ed6812f21874e2be5c",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.owned",
+      "locale": "vi",
+      "targetFile": "src/i18n/locale/vi.json",
+      "expectedCurrentHash": "64e26c5010b47c38073fe2a112cf14bec88f5cb9423e1d5d9c510a35ea9fdf90",
+      "finalTarget": "Đã sở hữu",
+      "finalTargetHash": "8226255b3f4bb999f184117737898dc17e62e9c58276be18e7d66fd7c351549f",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.ownerCount",
+      "locale": "vi",
+      "targetFile": "src/i18n/locale/vi.json",
+      "expectedCurrentHash": "9ab9318c765367ac19601ed48a4be6a9d5fd4f600b8b2427c5b9f14e78e83fe0",
+      "finalTarget": "{count, plural, one {# người sở hữu trò chơi này} other {# người sở hữu trò chơi này}}",
+      "finalTargetHash": "b1fefcc96ff2954be70cd90ec33e1d5e2a5850f62776e2a6012b7a853547ca73",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.paused",
+      "locale": "vi",
+      "targetFile": "src/i18n/locale/vi.json",
+      "expectedCurrentHash": "6763581534939faa023fb75594a51f083323ef5559cba49ef9a11529d83f4a7f",
+      "finalTarget": "Đã tạm dừng",
+      "finalTargetHash": "a919ce7fbdb6349827e149461b8ae96f0cb83c9ffcf29a526afd6030ad8141d1",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.played",
+      "locale": "vi",
+      "targetFile": "src/i18n/locale/vi.json",
+      "expectedCurrentHash": "343e7e486c7a028d35d798ec729e43c254cf8a4d6236aa79fe11d5d556ed4c5e",
+      "finalTarget": "Đã chơi",
+      "finalTargetHash": "03a449f342e002cb80d4a47d6de8e2bef5d6bfd131ff53462a4d21d4c7600d71",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.playing",
+      "locale": "vi",
+      "targetFile": "src/i18n/locale/vi.json",
+      "expectedCurrentHash": "ac2dd0c2c631bedcce04f1de8d09b5d2e074b381686f52c7e0ac97bad5da0568",
+      "finalTarget": "Đang chơi",
+      "finalTargetHash": "a1efb5faa2a5defcbed4bb14d89e9f32e4526be1a40b3fc40654bdfc1ae61ce8",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.playtimeHours",
+      "locale": "vi",
+      "targetFile": "src/i18n/locale/vi.json",
+      "expectedCurrentHash": "da1b3010c8a060fda55c35f6174df1d3b7d840fe54a773a9d6c24d87b2244c8f",
+      "finalTarget": "Đã chơi {hours} giờ",
+      "finalTargetHash": "b7bbb30473dfffea593950489fac3ae2a2f62ebd953829a1c1b3782707d56f75",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.playtimeHoursMinutes",
+      "locale": "vi",
+      "targetFile": "src/i18n/locale/vi.json",
+      "expectedCurrentHash": "3267e6c1c2f9ea5a03fee2ade04fac16de02086b94e6a9ba7e9d8fd58d04cecb",
+      "finalTarget": "Đã chơi {hours} giờ {minutes} phút",
+      "finalTargetHash": "b4ed5b5a38637dbaa979b873e567d4fa734de7df593d5d722b63f8b82db9d917",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.playtimeMinutes",
+      "locale": "vi",
+      "targetFile": "src/i18n/locale/vi.json",
+      "expectedCurrentHash": "49ed4121fc2c8e39ae550b6d4045ebc339684ae4d7acf9a69f394ccebb63c54e",
+      "finalTarget": "Đã chơi {minutes} phút",
+      "finalTargetHash": "a6962064700928b99fd68d01b6deaabe621060f28ec1539d514462e47bfdd2d5",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.privateLibrary",
+      "locale": "vi",
+      "targetFile": "src/i18n/locale/vi.json",
+      "expectedCurrentHash": "0b39a6d6d9b95180c695f440415a8cf37fc0ab8bfb08229f91ec11620135a9df",
+      "finalTarget": "Chỉ hiển thị với bạn",
+      "finalTargetHash": "974ab78b88a8aebec5fe0fe423967088a19299d1a3c7d8544648c690853e8adf",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.remove",
+      "locale": "vi",
+      "targetFile": "src/i18n/locale/vi.json",
+      "expectedCurrentHash": "e07d3f4db0577ce8c78fc706f96b5405d0f43789b3e655a3ea86f1f96b4ee5fb",
+      "finalTarget": "Gỡ",
+      "finalTargetHash": "f3243c3049a379dea3145592d942e6f8372aabe73c349a9e4619cbe8a7336ca3",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.removeConfirm",
+      "locale": "vi",
+      "targetFile": "src/i18n/locale/vi.json",
+      "expectedCurrentHash": "02a108b015b38877b06da7f61a196cc6c428a1dae27710ac0a9bf1e0eb1b0921",
+      "finalTarget": "Bạn có muốn gỡ {title} khỏi thư viện trò chơi cá nhân không?",
+      "finalTargetHash": "31679962ce2773d62393560ad8261119d988ec21c37b3ddce929cb57e0a2a859",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.removeConfirmTitle",
+      "locale": "vi",
+      "targetFile": "src/i18n/locale/vi.json",
+      "expectedCurrentHash": "d9843cee22899468a00e712f92d8be120474297c04c736ece9f9438f7fbd9584",
+      "finalTarget": "Gỡ trò chơi",
+      "finalTargetHash": "e37dda608f68e81ca672aa99bb4ff0b1d94661622fa2cd378ec1ceb2d3b4fa3a",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.requestImporting",
+      "locale": "vi",
+      "targetFile": "src/i18n/locale/vi.json",
+      "expectedCurrentHash": "ec4778ef2d285a0cedd58ac644186f1b851b7e358bf3becfde7de402ea4ca720",
+      "finalTarget": "Đang nhập",
+      "finalTargetHash": "df8c5f744740d3949c1bc6f29e53847f21229743a1420c1a870f6bcb58ed0999",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.requestPending",
+      "locale": "vi",
+      "targetFile": "src/i18n/locale/vi.json",
+      "expectedCurrentHash": "62df85b27775c581713e4aa6e1793f9747d4cb1fc45c3ed014d2dbbaf5cd2d41",
+      "finalTarget": "Đang chờ phê duyệt",
+      "finalTargetHash": "ea026ff9805ed2ce46efb269af53b292d3340680837f1ba228fda5d10cd608b7",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.requestSearching",
+      "locale": "vi",
+      "targetFile": "src/i18n/locale/vi.json",
+      "expectedCurrentHash": "87ae432c9f654c1e8fcb184465374b3d43f0b184b95db79921116bf3099c396d",
+      "finalTarget": "Đang tìm kiếm",
+      "finalTargetHash": "ee6c1bead109d29e849bd953d2627f870bc64707dc4b51926001d4b33f46d416",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.requestUnknown",
+      "locale": "vi",
+      "targetFile": "src/i18n/locale/vi.json",
+      "expectedCurrentHash": "30cef7da83e6fea64969b64eda58b239c340c9016681cf93324c09bc2e298810",
+      "finalTarget": "Đang xử lý",
+      "finalTargetHash": "e84898db736f9ec3480a491872188853c6b39c7a2a9170cf37f5ae05183b54f5",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.requestWithdrawn",
+      "locale": "vi",
+      "targetFile": "src/i18n/locale/vi.json",
+      "expectedCurrentHash": "dcb43c6496cd1f4ac88aa39c70afbf17730d2b124231db6a8f0de3bf944c1011",
+      "finalTarget": "Đã rút yêu cầu",
+      "finalTargetHash": "e1790fcdf1d9b54f20b395703aaa1d587bafb680cc752437a0db77ce3ee0f97a",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.saveError",
+      "locale": "vi",
+      "targetFile": "src/i18n/locale/vi.json",
+      "expectedCurrentHash": "d88a587ace9bc2aa9df6e548589e8c5de8826f5628b36a3f4a82f07aedd24c7c",
+      "finalTarget": "Không thể lưu các thay đổi của trò chơi. Vui lòng thử lại.",
+      "finalTargetHash": "9da0f01d57e55c01fe9b1d6b0f917bba0fc32c2a03512206ef8abb9d77360eed",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.saved",
+      "locale": "vi",
+      "targetFile": "src/i18n/locale/vi.json",
+      "expectedCurrentHash": "d27b4a0f05c23210bda5368436e9aeec15240162a6364586bc8196187fb0fd0c",
+      "finalTarget": "Đã cập nhật thư viện trò chơi.",
+      "finalTargetHash": "7e3b580ac876588dac7363487787354dfb27c933c44c3d1e61b31b20b729082d",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.searchingCatalog",
+      "locale": "vi",
+      "targetFile": "src/i18n/locale/vi.json",
+      "expectedCurrentHash": "72a9c0eb9b1ab425eaebabb55ce8ce65db24dfcfedae8810459c80472966c5a1",
+      "finalTarget": "Đang tìm kiếm…",
+      "finalTargetHash": "9fa4dc3e46cf7bcc735cd5fb858a3ae22ea038a057c54a5b6f3df14278bc7a1d",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.shareHelp",
+      "locale": "vi",
+      "targetFile": "src/i18n/locale/vi.json",
+      "expectedCurrentHash": "dd4ed1d7883be7f136213e1736d88e94f624ff6781d39fbbed8c6059c6baa5ea",
+      "finalTarget": "Những trò chơi được chia sẻ sẽ hiển thị với những người dùng khác đã đăng nhập vào máy chủ SeerrNG này.",
+      "finalTargetHash": "c38a41e4bf1895e3af227d3339be4dca46ae135a1d880a44e32da9ccc83ee3cd",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.sharedBy",
+      "locale": "vi",
+      "targetFile": "src/i18n/locale/vi.json",
+      "expectedCurrentHash": "72650652e24891fac4323b2203e6b7235619a17ca8b5247da473b78f5264dbc4",
+      "finalTarget": "Được chia sẻ bởi {owners}",
+      "finalTargetHash": "2f418bccd34d29ac1fcd1c76eed9b2d9ebf36c06fe8e6964cf22d2ccaa8e4933",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.sharedIntro",
+      "locale": "vi",
+      "targetFile": "src/i18n/locale/vi.json",
+      "expectedCurrentHash": "27085e46c2f853967b4e73b3dcbdbf2f8f5736a5bb95ebf0023ea3ad6035dc7b",
+      "finalTarget": "Tìm các trò chơi mà người dùng trên máy chủ SeerrNG này đã chọn chia sẻ. Các mục trong thư viện riêng vẫn bị ẩn.",
+      "finalTargetHash": "3c95ca1bcb57546235d5eb188f01bc165846632550dadb380e7a439e1dd7b1cc",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.steamErrorMessage",
+      "locale": "vi",
+      "targetFile": "src/i18n/locale/vi.json",
+      "expectedCurrentHash": "429e462060f61fcd3024698903a4b06414fc7d802899d9474d71d8999c18f32e",
+      "finalTarget": "Không thể liên kết Steam. Vui lòng thử lại.",
+      "finalTargetHash": "8e69df23605bf0dd565edc8abdf0872844f12eb2d0beca1ebe3d53b2e61805c2",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.steamLastSynced",
+      "locale": "vi",
+      "targetFile": "src/i18n/locale/vi.json",
+      "expectedCurrentHash": "155cf78b61311d9dc7af23613b8f1d17e4907d247189132aecd3cf383f456f1d",
+      "finalTarget": "Đồng bộ lần cuối: {date} · tìm thấy {count} trò chơi",
+      "finalTargetHash": "c017ed640562e8ea253f89861c76ced432ed110f4d5cc78a8bd447259fa1ec0d",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.updateError",
+      "locale": "vi",
+      "targetFile": "src/i18n/locale/vi.json",
+      "expectedCurrentHash": "73821d5542aa59556efd8909a3216e01335ca6708205633954fedad8200dd4b2",
+      "finalTarget": "Không thể cập nhật trò chơi này. Vui lòng thử lại.",
+      "finalTargetHash": "b2994c0e23b84022cfc1b489dee083254ffd1e14be4aeb5929285272d1253621",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.IdentityMappingControls.change",
+      "locale": "vi",
+      "targetFile": "src/i18n/locale/vi.json",
+      "expectedCurrentHash": "842f2bc31c885ec32422e63c38e68efb1ef5dedba02e0781671c5bb112b74e78",
+      "finalTarget": "Thay đổi kết quả khớp tiêu đề",
+      "finalTargetHash": "a1a0cc3779225539cf82d5135fce9469b45acbbf5aac8e8f2a4d886e766070e6",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.IdentityMappingControls.curatedMatch",
+      "locale": "vi",
+      "targetFile": "src/i18n/locale/vi.json",
+      "expectedCurrentHash": "2034ce762b828b1ee6b4c1a9aea4566c5b14233ea10889e05af0a8861b5b7a23",
+      "finalTarget": "Đối sánh này đến từ gói chia sẻ do quản trị viên quản lý. Hãy chọn tiêu đề khác để lưu bản ghi đè riêng tư.",
+      "finalTargetHash": "cbffc89cc5e6c9993ca27a6995bbd405221f0ea27367d72fb0f45daf33aae939",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.IdentityMappingControls.externalMatch",
+      "locale": "vi",
+      "targetFile": "src/i18n/locale/vi.json",
+      "expectedCurrentHash": "66297e6f992871dd7e1b8eeacf90d6dfa648e6d8feadc0591f0e8da049dd9757",
+      "finalTarget": "Đối sánh này đến từ ID IMDb hoặc TVDB chính xác. Hãy chọn tiêu đề khác để lưu bản ghi đè riêng tư.",
+      "finalTargetHash": "ff43035b6272dec5fbb916ec18490f5679704495ebc8d545e52137155b4bc94b",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.IdentityMappingControls.match",
+      "locale": "vi",
+      "targetFile": "src/i18n/locale/vi.json",
+      "expectedCurrentHash": "09b672fee49c028b7695deaf45eaa0526adf83519a7b6aae260471dab8910ff1",
+      "finalTarget": "Ghép với tiêu đề trong danh mục",
+      "finalTargetHash": "d448ed1bb986abb9bb2e4d79194d304003f64ac7033bbdd0f73009751d947fe3",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.IdentityMappingControls.mediaTypeLabel",
+      "locale": "vi",
+      "targetFile": "src/i18n/locale/vi.json",
+      "expectedCurrentHash": "5b432a0e5cbfc3ff9ea864c27efe34f3541e9ccb4de19d94368ed4fc9b429ab8",
+      "finalTarget": "Loại nội dung trong danh mục",
+      "finalTargetHash": "3cf65f5816e344fb1c6c8f67d1cffd0a539b4165b709b889bac196a3f5b46ad0",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.IdentityMappingControls.reset",
+      "locale": "vi",
+      "targetFile": "src/i18n/locale/vi.json",
+      "expectedCurrentHash": "51a46825d6cac68540745576130c9fc5304794c344d3bec64f8bb2f80a79ef7b",
+      "finalTarget": "Đặt lại kết quả khớp tiêu đề",
+      "finalTargetHash": "d3e598110e2359609b51794dc9dfac8f0149f73c13aa3eb25470c169ec188c9c",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.IdentityMappingControls.resetFailed",
+      "locale": "vi",
+      "targetFile": "src/i18n/locale/vi.json",
+      "expectedCurrentHash": "07b5a770b7b715043035b9b5cd9ff6d7a1ff764651ac5f73b37be8dc1ac274bf",
+      "finalTarget": "Không thể đặt lại kết quả đối chiếu. Vui lòng thử lại.",
+      "finalTargetHash": "9ff6bf9289164d66b64d60d39175e059381ae4a8a6079125d496584df0e77d84",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.IdentityMappingControls.resetSaved",
+      "locale": "vi",
+      "targetFile": "src/i18n/locale/vi.json",
+      "expectedCurrentHash": "7182b14f69209aafc96946463b8ae67ab2c020cb7b7f93411c7c05b2db80987d",
+      "finalTarget": "Đã đặt lại kết quả đối chiếu tiêu đề.",
+      "finalTargetHash": "3bec304253cdea55793f40abfffd29b6b7929d0444e669a5d4ffb588d1ac71ca",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.IdentityMappingControls.saveFailed",
+      "locale": "vi",
+      "targetFile": "src/i18n/locale/vi.json",
+      "expectedCurrentHash": "c38f14fbc897abb8e64b5bae4c325842944ee91b5c68a40710daa1d1915e2a37",
+      "finalTarget": "Không thể lưu kết quả đối chiếu. Vui lòng thử lại.",
+      "finalTargetHash": "37aee1af948877d6233ecf194ba083b139a37a485cd4314159d1582a04254d62",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.IdentityMappingControls.saved",
+      "locale": "vi",
+      "targetFile": "src/i18n/locale/vi.json",
+      "expectedCurrentHash": "09aca022b6813fc727120ac43a996a22b81cf6405dc022ad4e84bfa5582f82d8",
+      "finalTarget": "Đã lưu kết quả đối chiếu tiêu đề.",
+      "finalTargetHash": "5b2aca641cf19bf1b017bb3ae64a7918860729dae816c712f321f277d1c1d8aa",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.IdentityMappingControls.searchFailed",
+      "locale": "vi",
+      "targetFile": "src/i18n/locale/vi.json",
+      "expectedCurrentHash": "dfb671156a2d4a5e27df5e2ecb0c569e87ba4156e04c934e9b369d9b12f3c6b0",
+      "finalTarget": "Tìm kiếm trong danh mục không thành công. Vui lòng thử lại.",
+      "finalTargetHash": "d23a00c193166b66ffa9f226805e8241d7373f17b7075d0f567dfb9e3e0e413e",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.loadingMore",
+      "locale": "de",
+      "targetFile": "src/i18n/locale/de.json",
+      "expectedCurrentHash": "745884723c94bc7b72044c67705139fa91bd3efd12fe94b9d66986e53cac2ce9",
+      "finalTarget": "Weitere Spiele werden geladen …",
+      "finalTargetHash": "2136cdffe1db8776d922b6e44a43479b27608866e90c4d2f6e6ae41e067eb895",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.matchGame",
+      "locale": "de",
+      "targetFile": "src/i18n/locale/de.json",
+      "expectedCurrentHash": "c4cf0cdd21265e468eba303ba451263f6129326beb8ac042de04ac810094df13",
+      "finalTarget": "Diesen Treffer verwenden",
+      "finalTargetHash": "9b1b7cf2b8d28337454ed2db67478027b03bddfe3364d24d1e6ec158636fbc60",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.playing",
+      "locale": "de",
+      "targetFile": "src/i18n/locale/de.json",
+      "expectedCurrentHash": "58f8b16e5756c9b66e3342d6023d66b76a057c31b5fd34c20c951b1cae23ed02",
+      "finalTarget": "Wird gespielt",
+      "finalTargetHash": "55181fc47534227948e53210f8794825eb3fe3f9410e48dd7f65dd83e60a405e",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.requestDownloading",
+      "locale": "de",
+      "targetFile": "src/i18n/locale/de.json",
+      "expectedCurrentHash": "d6eafe82359100423c93c5ce53c352c1b51ca1e699215fcec3f5c5dd9bf12d24",
+      "finalTarget": "Wird heruntergeladen",
+      "finalTargetHash": "b06aa9caf38d813696b4fde63e2b614a7b3d824de73eedede661c95412688717",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.requestSearching",
+      "locale": "de",
+      "targetFile": "src/i18n/locale/de.json",
+      "expectedCurrentHash": "a4f2922e2d958e6a9389caa11ab521aabd1d88ac1488d201afc5615723829fba",
+      "finalTarget": "Suche läuft",
+      "finalTargetHash": "0f6aeeae46bfae5310748e059fb57fa7f5722841aed696ec38d988aaa763c955",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.manualAdd",
+      "locale": "fr",
+      "targetFile": "src/i18n/locale/fr.json",
+      "expectedCurrentHash": "f914960e5caade78b1b34feed258b05e2bba1b587a056f38cec823fc43484180",
+      "finalTarget": "Ajouter un jeu",
+      "finalTargetHash": "a60051686629e6bff704fb3773b81bc2ecdf3d37616aa914c9b698c167934057",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.noSharedGamesHelp",
+      "locale": "fr",
+      "targetFile": "src/i18n/locale/fr.json",
+      "expectedCurrentHash": "91749a6f8a376321dd999048b7ecadb7fb93a527ff7ee29bf8157de1b0fef07c",
+      "finalTarget": "Choisissez l’option « Partager avec le foyer » pour chaque jeu que vous possédez. SeerrNG n’affiche que les jeux que les utilisateurs choisissent explicitement de partager.",
+      "finalTargetHash": "b83ce4035b7d57cceb574e19a65ae08e48ef965000f4a1b5cfdd0b76e985dc4c",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.notMarkedOwned",
+      "locale": "fr",
+      "targetFile": "src/i18n/locale/fr.json",
+      "expectedCurrentHash": "f184a0dc7a7d4ad67f3315952993cdaca9a71ae4bd8d6bc639e222de558e4f7b",
+      "finalTarget": "Non indiqué comme possédé",
+      "finalTargetHash": "e3faf471eb129a264cd29e97c54b2f736a68e013f83780d49ce83bcaafc01646",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.owned",
+      "locale": "fr",
+      "targetFile": "src/i18n/locale/fr.json",
+      "expectedCurrentHash": "7900d8dc4b9952e087fd028daabfcbf6ff718aab4a8dacbc06505f9ebe0b0c7a",
+      "finalTarget": "Possédé",
+      "finalTargetHash": "20a9c27219dcfc8c573c125f79917202dac055ee7460b0f265af195af6f92d81",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.paused",
+      "locale": "fr",
+      "targetFile": "src/i18n/locale/fr.json",
+      "expectedCurrentHash": "6cbd8a58841f8808ce0aabd0f604e3f54257a6730bef18a9f46bda77e5d72a57",
+      "finalTarget": "En pause",
+      "finalTargetHash": "239c064e0d40ac4a4f71faffad317f0e7b3942eb3d22bede63fa5ab47369526d",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.playing",
+      "locale": "fr",
+      "targetFile": "src/i18n/locale/fr.json",
+      "expectedCurrentHash": "9afa5aa3a438b145617abb7a795c187c013d45f3a36c7eae79994e8257efd55b",
+      "finalTarget": "En cours de jeu",
+      "finalTargetHash": "1418f06e5e7bdc93a962172bf054617cb32ea69806ee90686ae0f25968e53cd8",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.privateLibrary",
+      "locale": "fr",
+      "targetFile": "src/i18n/locale/fr.json",
+      "expectedCurrentHash": "f15d5a3b3a3ac971109189f1948e0cf796bff657c220c3b69518d0fc9a4d05df",
+      "finalTarget": "Visible uniquement par vous",
+      "finalTargetHash": "f0b5a3d8c31376467150ce2bf0016cdbc7a7aa877a273ad3ba9121562cd44070",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.requestApproved",
+      "locale": "fr",
+      "targetFile": "src/i18n/locale/fr.json",
+      "expectedCurrentHash": "14d22432eb6d06cf8b4851485d9ceabc6818be966980cb5915dbcf83a58bbde4",
+      "finalTarget": "Validée",
+      "finalTargetHash": "d5b016fe997274bf9892506211944efca32d9b06e48dffa2e5e252a47cea51d4",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.requestCancelled",
+      "locale": "fr",
+      "targetFile": "src/i18n/locale/fr.json",
+      "expectedCurrentHash": "58524ce81f34c87956ac5d315f2b2b345ed6cd45774d5b55993fafbb288813a2",
+      "finalTarget": "Annulée",
+      "finalTargetHash": "2f7ea8495f4785522cd40fb488c04ba59ff4ae26fcb72792eb2ddc872f3df3e4",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.requestDeclined",
+      "locale": "fr",
+      "targetFile": "src/i18n/locale/fr.json",
+      "expectedCurrentHash": "44a10bad0bb2541c61a153f3ea18ec019d6fefc18d90ad93448b15f5fe6cf6bc",
+      "finalTarget": "Refusée",
+      "finalTargetHash": "b3573f3374d6fb825642e30cb5ce0c6da48f69e59b783336c412fd0b9d338342",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.requestDownloading",
+      "locale": "fr",
+      "targetFile": "src/i18n/locale/fr.json",
+      "expectedCurrentHash": "38858cd588e08c86790aa06619ce36bcf1d59d212801ba16b2def08ea60fb279",
+      "finalTarget": "Téléchargement en cours",
+      "finalTargetHash": "8fe494641266b1114fcddafaaa83e46d04050ffae4415f288295f2041eaf99e9",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.requestImporting",
+      "locale": "fr",
+      "targetFile": "src/i18n/locale/fr.json",
+      "expectedCurrentHash": "884e3e99ec1a1ca2d6a7784ecb16048533cd1ad9d44463f6953770bab86aa059",
+      "finalTarget": "Importation en cours",
+      "finalTargetHash": "76674ca92eb466ec376b546483301d72a3787dfd2089adabadd1ed565ca36b9e",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.requestSearching",
+      "locale": "fr",
+      "targetFile": "src/i18n/locale/fr.json",
+      "expectedCurrentHash": "a12b73cf58da594f6ff5bccdeac67fbe5a2b489a6946741013795562fbddb878",
+      "finalTarget": "Recherche en cours",
+      "finalTargetHash": "8b6e90fee2b2b94f44ef43e7d538550391d3cbaed39dc1e70f8022123a62af95",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.requestWithdrawn",
+      "locale": "fr",
+      "targetFile": "src/i18n/locale/fr.json",
+      "expectedCurrentHash": "61c7f9c25b467b272e81d228253a6bee1d6792760307e1f40d5346de7cd5e21b",
+      "finalTarget": "Retirée",
+      "finalTargetHash": "5cea3490a36410b3ad67771a36c83acb365b988e0a8ac29cde89821f9d92aae4",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.saveError",
+      "locale": "fr",
+      "targetFile": "src/i18n/locale/fr.json",
+      "expectedCurrentHash": "3cde5ebc9b0c361bbce593ae9a7a80231c4f36b0a0cdd5a3d4e509c67bedb847",
+      "finalTarget": "Les modifications du jeu n’ont pas pu être enregistrées. Veuillez réessayer.",
+      "finalTargetHash": "d7c269c708aa5091a2a66caae75925747578e5ee98de8d8155fcf07b47456da4",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.searchPlaceholder",
+      "locale": "fr",
+      "targetFile": "src/i18n/locale/fr.json",
+      "expectedCurrentHash": "a13959747d207d17f8b198454bf03be9422f1754a3788aa29ac3d7ded2987401",
+      "finalTarget": "Rechercher des titres",
+      "finalTargetHash": "d6d7510a26a86ff16abb3d59d766a11158392bf5a1a1641650220c5b76aa9405",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.shareWithHousehold",
+      "locale": "fr",
+      "targetFile": "src/i18n/locale/fr.json",
+      "expectedCurrentHash": "d3a864e44a4eb6c8576e284804a7637a88252d7471a84ac5ed85abe2b3212973",
+      "finalTarget": "Partager avec le foyer",
+      "finalTargetHash": "5ac142a0e864a79a07f0493dc718b435b975b3dab9226006eea45e66a53f090f",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.sharedOnly",
+      "locale": "fr",
+      "targetFile": "src/i18n/locale/fr.json",
+      "expectedCurrentHash": "803ac4ad1c99cd4188bb270207e6329e56d532e7d3fddacf493b27346d283006",
+      "finalTarget": "2 propriétaires ou plus",
+      "finalTargetHash": "f9f6901d48044412e958094423d3b529c84c38a54cba62c6842b5fea57708bb6",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.steamErrorMessage",
+      "locale": "fr",
+      "targetFile": "src/i18n/locale/fr.json",
+      "expectedCurrentHash": "2daabeb5d3e7cd25267197ef71e4cbe62c34979925ae79e4f6153f29b48414f4",
+      "finalTarget": "Steam n’a pas pu être lié. Réessayez.",
+      "finalTargetHash": "87e75aa32063750e7fb2ad68e6b5af5bd3a11ec014e4cba3635aa245d71c7878",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.steamUnlinked",
+      "locale": "fr",
+      "targetFile": "src/i18n/locale/fr.json",
+      "expectedCurrentHash": "ea9b6f5b844673df850601b2d578b5a8d7f2ff9d21df3c5af77741d8012af5de",
+      "finalTarget": "Compte Steam dissocié. Les jeux importés et leur progression sont conservés, mais leur statut de propriété Steam est supprimé.",
+      "finalTargetHash": "7b64dd99a8127e89969925af196ebb40834332cf8ab15da182acdf382c1cbc9a",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.updateError",
+      "locale": "fr",
+      "targetFile": "src/i18n/locale/fr.json",
+      "expectedCurrentHash": "8d77ac77c083adc6125be15e5c0e1674872ba6ef97243388d673f7d239bb7049",
+      "finalTarget": "Ce jeu n’a pas pu être mis à jour. Réessayez.",
+      "finalTargetHash": "43d13e83b6506ea6183f13ddb65745d7f31013113e15dfe35311e86a3163b798",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.IdentityMappingControls.change",
+      "locale": "fr",
+      "targetFile": "src/i18n/locale/fr.json",
+      "expectedCurrentHash": "b75fae0218f6583df9f2392ca976552904db0ad81e8ab13e745f98cba3c2bfba",
+      "finalTarget": "Modifier la correspondance de titre",
+      "finalTargetHash": "003bbf1ec788a1231afe3ff8f3c1a2754d71331a7b58f1ab645402981961dfab",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.IdentityMappingControls.curatedMatch",
+      "locale": "fr",
+      "targetFile": "src/i18n/locale/fr.json",
+      "expectedCurrentHash": "eed91e904870eee98ead3f8d9b83b11c7e1d9b480ca9a35513cd039e9bf9b467",
+      "finalTarget": "Cette correspondance provient d’un pack partagé géré par l’administrateur. Choisissez un autre titre pour enregistrer une dérogation privée.",
+      "finalTargetHash": "1cef6725f8bec19abaf8e1b872ba0ca4fbeecb3574a86ec80ef0c77a7f9b9db1",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.IdentityMappingControls.match",
+      "locale": "fr",
+      "targetFile": "src/i18n/locale/fr.json",
+      "expectedCurrentHash": "a392c80c8f4de87eafb41bcb3dd67a710c6386085824a1b9f7d693dc91d8cb7d",
+      "finalTarget": "Associer à un titre du catalogue",
+      "finalTargetHash": "b0f39e06fb3a9626d7e78da0de8039a30c6a5fe58e6f9f304be87dd2c5bb9343",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.IdentityMappingControls.mediaTypeLabel",
+      "locale": "fr",
+      "targetFile": "src/i18n/locale/fr.json",
+      "expectedCurrentHash": "ec95e572cbeaaa0b28f4f983adc8010a090e74d0f63e2a6d0e5e76ac521f6da6",
+      "finalTarget": "Type de média du catalogue",
+      "finalTargetHash": "7a1e8bcf46e93cd6e78c0ccd558a071577660e02226a81c90da503e880a70b90",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.IdentityMappingControls.resetFailed",
+      "locale": "fr",
+      "targetFile": "src/i18n/locale/fr.json",
+      "expectedCurrentHash": "6bc387ecf9c42f28907a66167c148c6f7cda4f765ee59a998a218f8406b58dbd",
+      "finalTarget": "La correspondance de titre n’a pas pu être réinitialisée. Réessayez.",
+      "finalTargetHash": "201a918181d9a3dd86fa2e64fe26723869a184464f557e32743837243507fb12",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.IdentityMappingControls.resetSaved",
+      "locale": "fr",
+      "targetFile": "src/i18n/locale/fr.json",
+      "expectedCurrentHash": "28fc387b4369b0d046f199676f99546767105d4ad90e9b796c6c406dc03764fe",
+      "finalTarget": "Correspondance de titre réinitialisée.",
+      "finalTargetHash": "f592aab9c07874cfea67a8961923ee94eb9489c91bd9fce315cbbb2f6e1bef9f",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.IdentityMappingControls.saveFailed",
+      "locale": "fr",
+      "targetFile": "src/i18n/locale/fr.json",
+      "expectedCurrentHash": "a81634feee3e6cdcfffde556ff465ed81b2de35164b64e8b16c5c762977226e3",
+      "finalTarget": "La correspondance de titre n’a pas pu être enregistrée. Réessayez.",
+      "finalTargetHash": "1229fc182b1db6fb6d972d9b81249c876357edd606f9057a8a7d320bf241ee1b",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.IdentityMappingControls.saved",
+      "locale": "fr",
+      "targetFile": "src/i18n/locale/fr.json",
+      "expectedCurrentHash": "a534bce68a646f6ab78730444040734a472618f069e78264c0bc420ac46ed14f",
+      "finalTarget": "Correspondance de titre enregistrée.",
+      "finalTargetHash": "cb9b383d8478be34ded47b80fbcb02b8d21799152edd13a304db0b2ba0d2cfd9",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.noCatalogMatches",
+      "locale": "es",
+      "targetFile": "src/i18n/locale/es.json",
+      "expectedCurrentHash": "f2be9273e58a521f53ccc7ef73c959e3de6eac5b59d06f0e32a91178f04ea1e6",
+      "finalTarget": "No se encontraron juegos del catálogo que coincidieran.",
+      "finalTargetHash": "2552a680fed9dfdfc6e84fda25fe9bdef51787dbe35fd4b02c14265d5b66a612",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.noSharedGamesHelp",
+      "locale": "es",
+      "targetFile": "src/i18n/locale/es.json",
+      "expectedCurrentHash": "b091f852fcad59cc8a7966cae5422889805737649284915b9eebc049e6d3c1e3",
+      "finalTarget": "Elige la opción «Compartir con el hogar» en cualquier juego que tengas. SeerrNG solo muestra los juegos que las personas eligen compartir explícitamente.",
+      "finalTargetHash": "2fde85e581120ebbd68c9848a848b93f104d3f010d6f2415043866808918db07",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.notMarkedOwned",
+      "locale": "es",
+      "targetFile": "src/i18n/locale/es.json",
+      "expectedCurrentHash": "05b11c339168db045a4e063fa2729a3654b36a657a3e80de21c3ed4aaedd6f09",
+      "finalTarget": "No marcado como propio",
+      "finalTargetHash": "6280c6de395e90fe43c9e3daa70ca83759ae9e4ea94eddd9b0687476ef050f74",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.owned",
+      "locale": "es",
+      "targetFile": "src/i18n/locale/es.json",
+      "expectedCurrentHash": "0cefd64415d26b0260bda8f09d04f01c28d01d81184036f4e016eeaa5d27443c",
+      "finalTarget": "Propio",
+      "finalTargetHash": "ee27f6a048e8e7de7d1d1d8e21e86256ca57660855683c78362a7f4948fdeb97",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.paused",
+      "locale": "es",
+      "targetFile": "src/i18n/locale/es.json",
+      "expectedCurrentHash": "9bd4d1e04ad51df3a378f6508defef66d33374ce17d74f35d25117d3ab85f50c",
+      "finalTarget": "En pausa",
+      "finalTargetHash": "c28d816de9826906782f2894238fb8c361cc1cfe888022469be0aed79fd001cf",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.requestApproved",
+      "locale": "es",
+      "targetFile": "src/i18n/locale/es.json",
+      "expectedCurrentHash": "be113ca8d997bbc828707ea6962f758cba5ea2ac39aabbd0aad93d091bf0691b",
+      "finalTarget": "Aprobada",
+      "finalTargetHash": "80b504a3cd9c2131396a140b6de9bc14709f8d486d629608546ea4dc3a0d2fe7",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.requestDeclined",
+      "locale": "es",
+      "targetFile": "src/i18n/locale/es.json",
+      "expectedCurrentHash": "71ed92a675af8343aceeeae28d8435d3d402cb6428bced5d8f0aa5abb98ecebd",
+      "finalTarget": "Rechazada",
+      "finalTargetHash": "ed91db3266d088f05469bb414f4549ca6c91c5addaa024d171dca97f2e856d34",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.requestDownloading",
+      "locale": "es",
+      "targetFile": "src/i18n/locale/es.json",
+      "expectedCurrentHash": "070700d144ab396b6848a0fe44c92797f384869edd6b982101cc28c4acc25fd0",
+      "finalTarget": "Descargando",
+      "finalTargetHash": "fa540e3582ca08dc397aee1e0710fc20dd7ba8d57ddf81bc9381ddec7c1f614d",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.requestFailed",
+      "locale": "es",
+      "targetFile": "src/i18n/locale/es.json",
+      "expectedCurrentHash": "6883aef403fc794a30a70476dc1b5d14288658f4c82c6120f136674152403661",
+      "finalTarget": "Fallida",
+      "finalTargetHash": "49f8da809ccd3d2060820565ea15d5b54eecb8a90e20ff36b582816dc8f9250a",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.requestGame",
+      "locale": "es",
+      "targetFile": "src/i18n/locale/es.json",
+      "expectedCurrentHash": "d3d49ba02ad74a8cb6321f8e537bedbb6760d5bb57e4cabe2d9d55beff370c50",
+      "finalTarget": "Solicita este juego",
+      "finalTargetHash": "fb17e29fe175fb340d5d3634ab13e5346b979e205b2d03be941c1f3240605527",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.requestImporting",
+      "locale": "es",
+      "targetFile": "src/i18n/locale/es.json",
+      "expectedCurrentHash": "ab42305e7571847eac4d2585d1c4ea670cb213323f96ef45a2f94b0aae152d64",
+      "finalTarget": "Importando",
+      "finalTargetHash": "8ff2229fb5e961796ae4d8b88a43a2ad15a556f94f9a584844a201af47fd04bb",
+      "recordType": "candidate-correction"
+    },
+    {
+      "id": "components.GameLibrary.requestSearching",
+      "locale": "es",
+      "targetFile": "src/i18n/locale/es.json",
+      "expectedCurrentHash": "d6f7feda7a7e2af72a7f76888a9a95104a627e54d63f1ecac62173f735c7af28",
+      "finalTarget": "Buscando",
+      "finalTargetHash": "f15c0f663dc4eb0b4a78360cf7942871149f7fc6e66d2f9122f3ba89d7156422",
+      "recordType": "candidate-correction"
+    }
+  ]
+}

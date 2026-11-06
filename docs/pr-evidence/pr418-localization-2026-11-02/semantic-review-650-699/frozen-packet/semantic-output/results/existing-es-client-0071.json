@@ -1,0 +1,174 @@
+{
+  "schemaVersion": 1,
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "head": "5a4342176a8325c371a35d489cb01c58283bc983",
+  "tree": "98cd64952123c9b678e38250e7819cabb4476448",
+  "semanticManifestSha256": "3ea74cc6491aecddf9ffcedc69610f13d20b199059aef69bb3c2407feb0826ea",
+  "cellPlanSha256": "97c3402252a34aaa4f8f9f44a691281d9c35ff7b80d7edb3a26c752436af6558",
+  "retiredCellsSha256": "dc5ec05547e4da3079c0668f82a52da7999d89ef9d4f037c1cd72af9347ebd83",
+  "sourceBundleManifestSha256": "212491482d1b9207fed755af6e80ac80a97184ec8dbe84d0c4ad2bd711acae0d",
+  "sourceRowsSha256": "ad91236a31e32f199ff449f9ed4597ea6af0f5a4eff32772cefa84278cafb68c",
+  "sourceCellsSha256": "8bfcd1aa9b5d5aba4fb6317c194cd544d601543ebf250899a84a719b52e468e1",
+  "planRows": 115260,
+  "actions": {
+    "semantic-review-required": 114783,
+    "reuse-equivalence-decision": 477
+  },
+  "retiredRows": 48,
+  "reusableEquivalenceCells": 477,
+  "targetsApplied": false,
+  "batchId": "existing-es-client-0071",
+  "batchSha256": "0f72e38510af0897b98cde89b1ad0caeb48731a3e92bf92a86d098c69aa33ee6",
+  "rowCount": 32,
+  "model": "qwen3.8-27b-heretic:q4km",
+  "attempt": 1,
+  "decisions": [
+    {
+      "id": "components.MusicDetails.flacPending",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MusicDetails.flacServiceUnavailable",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MusicDetails.manage",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MusicDetails.mp3Available",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MusicDetails.mp3Pending",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MusicDetails.mp3ServiceUnavailable",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MusicDetails.openissues",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MusicDetails.removefromwatchlist",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MusicDetails.reportissue",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MusicDetails.requestdiscography",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MusicDetails.selectToPlay",
+      "verdict": "correct",
+      "target": "Actualmente no hay pistas reproducibles disponibles.",
+      "confidence": "high",
+      "reason": "'Jugables' is a calque of 'playable' that is unnatural in Spanish UI contexts; 'reproducibles' is the standard term for media tracks."
+    },
+    {
+      "id": "components.MusicDetails.viewrequest",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MusicDetails.watchlistDeleted",
+      "verdict": "correct",
+      "target": "<strong>{title}</strong> eliminado de la lista de seguimiento con éxito.",
+      "confidence": "high",
+      "reason": "Inconsistent terminology ('lista de vigilancia' vs 'lista de seguimiento' in other strings) and unnatural phrasing ('Quitado'). 'Eliminado' is the standard UI term for removal, and the period is preferred over an exclamation mark in this context."
+    },
+    {
+      "id": "components.MusicDetails.watchlistError",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MusicDetails.watchlistSuccess",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MusicRatings.absent",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MusicRatings.average",
+      "verdict": "correct",
+      "target": "{source}: {score}/{scale}, promedio de {count} discos calificados de {total}. Las calificaciones faltantes se excluyen.",
+      "confidence": "high",
+      "reason": "The original translation had a missing space/punctuation error ('{total}Quedan') and used 'clasificados' (classified) instead of 'calificados' (rated) and 'perdidas' (lost) instead of 'faltantes' (missing), which misrepresents the meaning."
+    },
+    {
+      "id": "components.MusicRatings.edition",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MusicRatings.score",
+      "verdict": "correct",
+      "target": "{source}: {score}/{scale} basado en {votes} votos.",
+      "confidence": "high",
+      "reason": "'Desde' (from) is a literal translation that is semantically incorrect in this context; 'basado en' (based on) or 'de' is the natural way to express the source of a score in Spanish."
+    },
+    {
+      "id": "components.MusicReleaseTypeSelect.any",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MusicReleaseTypeSelect.label",
+      "verdict": "correct",
+      "target": "Tipo de lanzamiento",
+      "confidence": "high",
+      "reason": "'Liberación' is a false friend for 'release' in the context of music/software; 'lanzamiento' is the correct term for a product or album release."
+    },
+    {
+      "id": "components.NotificationTypeSelector.adminissuecommentDescription",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.NotificationTypeSelector.adminissuereopenedDescription",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.NotificationTypeSelector.adminissueresolvedDescription",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.NotificationTypeSelector.issuecomment",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.NotificationTypeSelector.issuecommentDescription",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.NotificationTypeSelector.issuecreated",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.NotificationTypeSelector.issuecreatedDescription",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.NotificationTypeSelector.issuereopened",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.NotificationTypeSelector.issuereopenedDescription",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.NotificationTypeSelector.issueresolved",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.NotificationTypeSelector.issueresolvedDescription",
+      "verdict": "keep"
+    }
+  ],
+  "decisionsSha256": "792e5d60c4c6c0c43b30b035936a4350334e760f6a3d44fe232b217caead611f",
+  "rawResponseSha256": "bb08b2141fba5aabc2cd80e605cea548393ac169aa7e19cf09fa7dd54fdffdd3",
+  "rawResponseFile": "/mnt/disks/scratch/task-scratch/seerrng-review-window-650-700-422072-20261102/semantic-output/responses/existing-es-client-0071-attempt-1.json"
+}

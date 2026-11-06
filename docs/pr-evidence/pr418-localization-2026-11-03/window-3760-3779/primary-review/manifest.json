@@ -1,0 +1,104 @@
+{
+  "artifact": "SeerrNG PR #418 W3760-W3779 primary translation review",
+  "baseRef": "main",
+  "baseSha": "fa40534ccced75bde1125c14760514fcd5d7de4d",
+  "browserReviewPerformed": false,
+  "callerReferenceCount": 240,
+  "callerlessPositions": [],
+  "candidateFreeChecksumListSha256": "25114409119b732f30be4c73e7c1cff0dd788edcbc8151e2d3fe2cd48d582b83",
+  "candidateFreeInputPath": "../candidate-free-input/",
+  "candidateFreeManifestSha256": "956267d819adaabe54f75e7143b915b28afbe76d04a6d3ffa26288421dc8700c",
+  "cellCount": 240,
+  "decisionCounts": {
+    "accept-current": 228,
+    "correct": 9,
+    "refine": 3
+  },
+  "decisionCountsByLocale": {
+    "ar": {
+      "accept-current": 20
+    },
+    "de": {
+      "accept-current": 20
+    },
+    "es": {
+      "accept-current": 19,
+      "correct": 1
+    },
+    "fr": {
+      "accept-current": 19,
+      "refine": 1
+    },
+    "hi": {
+      "accept-current": 16,
+      "correct": 4
+    },
+    "id": {
+      "accept-current": 18,
+      "correct": 1,
+      "refine": 1
+    },
+    "ja": {
+      "accept-current": 20
+    },
+    "ko": {
+      "accept-current": 18,
+      "correct": 1,
+      "refine": 1
+    },
+    "pt-BR": {
+      "accept-current": 20
+    },
+    "vi": {
+      "accept-current": 19,
+      "correct": 1
+    },
+    "zh-Hans": {
+      "accept-current": 20
+    },
+    "zh-Hant": {
+      "accept-current": 19,
+      "correct": 1
+    }
+  },
+  "head": "d317a07ea0e5456b6d4660470c57d1f205cd0587",
+  "headRef": "codex/seerrng-localization-overhaul-20261028",
+  "localeCount": 12,
+  "localeOrder": [
+    "es",
+    "zh-Hans",
+    "hi",
+    "de",
+    "ja",
+    "fr",
+    "pt-BR",
+    "ar",
+    "ko",
+    "zh-Hant",
+    "vi",
+    "id"
+  ],
+  "nativeSpeakerReviewPerformed": false,
+  "packetType": "primary-review",
+  "priorHoldHashReattestations": 12,
+  "priorHoldsUnchanged": 12,
+  "priorSelectedHashReattestations": 3760,
+  "priorSelectionHashMismatches": 0,
+  "proposalCount": 12,
+  "proposalTokenMismatchCounts": {
+    "markupTags": 0,
+    "numericTokens": 0,
+    "placeholders": 0,
+    "protectedLiterals": 0
+  },
+  "pullRequest": 418,
+  "range": [
+    3760,
+    3779
+  ],
+  "repository": "snapetech-org/SeerrNG",
+  "schemaVersion": 1,
+  "sourceCount": 20,
+  "tree": "c1383dfb6e6fd4e926f9c89d4ec6b7e8ea7d6008",
+  "window": "W3760-W3779"
+}

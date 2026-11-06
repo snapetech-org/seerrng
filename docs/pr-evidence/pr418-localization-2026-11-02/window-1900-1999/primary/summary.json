@@ -1,0 +1,119 @@
+{
+  "callerEvidence": {
+    "callerReferences": 382,
+    "definitionOnlyOrSingleReferenceCells": 108,
+    "definitionOnlyOrSingleReferenceKeys": 9,
+    "directOrHelperReferenceKeys": 91,
+    "sourceIds": 100,
+    "uniqueCallerFiles": 8
+  },
+  "cells": 1200,
+  "changedCandidates": 271,
+  "confidence": "moderate",
+  "confidenceNote": "Exact Git/source/caller and structural checks are high-confidence; semantic judgments are model-based and native-speaker approval remains outstanding.",
+  "correctionCandidateCount": 191,
+  "dispositionCounts": {
+    "accept-current": 929,
+    "propose-correction": 191,
+    "propose-refinement": 80
+  },
+  "head": "aab1928ff83728d30a864b1ff24c5c812c7ca040",
+  "historicalOverlappingRows": 365,
+  "holdCount": 0,
+  "isDraft": true,
+  "locales": [
+    "ar",
+    "de",
+    "es",
+    "fr",
+    "hi",
+    "id",
+    "ja",
+    "ko",
+    "pt_BR",
+    "vi",
+    "zh_Hans",
+    "zh_Hant"
+  ],
+  "markupMismatchCount": 0,
+  "nativeSpeakerApproval": "outstanding",
+  "outputPath": "/home/keith/Documents/code/.task-scratch/localization-20261102-seerrng/window-1900-1999-primary/packet",
+  "perLocale": {
+    "ar": {
+      "accept-current": 75,
+      "propose-correction": 17,
+      "propose-refinement": 8
+    },
+    "de": {
+      "accept-current": 95,
+      "propose-correction": 2,
+      "propose-refinement": 3
+    },
+    "es": {
+      "accept-current": 98,
+      "propose-refinement": 2
+    },
+    "fr": {
+      "accept-current": 85,
+      "propose-correction": 11,
+      "propose-refinement": 4
+    },
+    "hi": {
+      "accept-current": 69,
+      "propose-correction": 23,
+      "propose-refinement": 8
+    },
+    "id": {
+      "accept-current": 74,
+      "propose-correction": 20,
+      "propose-refinement": 6
+    },
+    "ja": {
+      "accept-current": 82,
+      "propose-correction": 13,
+      "propose-refinement": 5
+    },
+    "ko": {
+      "accept-current": 68,
+      "propose-correction": 22,
+      "propose-refinement": 10
+    },
+    "pt_BR": {
+      "accept-current": 77,
+      "propose-correction": 15,
+      "propose-refinement": 8
+    },
+    "vi": {
+      "accept-current": 63,
+      "propose-correction": 31,
+      "propose-refinement": 6
+    },
+    "zh_Hans": {
+      "accept-current": 76,
+      "propose-correction": 13,
+      "propose-refinement": 11
+    },
+    "zh_Hant": {
+      "accept-current": 67,
+      "propose-correction": 24,
+      "propose-refinement": 9
+    }
+  },
+  "placeholderMismatchCount": 0,
+  "priorExactDispositionCount": 0,
+  "protectedLiteralMismatchCount": 0,
+  "pullRequest": 418,
+  "refinementCandidateCount": 80,
+  "repoOrPullRequestModified": false,
+  "repository": "snapetech-org/seerrng",
+  "schemaVersion": 1,
+  "sourceIds": 100,
+  "sourcePositionRange": [
+    1900,
+    1999
+  ],
+  "state": "OPEN",
+  "testsBuildsScansCIorBrowserRun": false,
+  "tree": "00901677a18e5ebf8d92a1f195668289f8a6f928",
+  "workflowFilesTouched": false
+}

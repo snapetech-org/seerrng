@@ -1,0 +1,109 @@
+{
+  "schemaVersion": 1,
+  "task": "Third-party cross-audit of SeerrNG PR #418 localization W3600-W3619",
+  "createdOn": "2026-11-03",
+  "host": "kspls0",
+  "scratchDirectory": "/home/keith/Documents/code/task-scratch/seerrng-pr418-w3600-3619-crossaudit-20261103",
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "pullRequestStateAtReverification": "OPEN",
+  "pullRequestDraftAtReverification": true,
+  "head": "1fdec93d1b021e4ec7a7c2265230f59d81d2675e",
+  "tree": "6234854dc0b1e7aee17ef2e819ffc2b5b2e386ce",
+  "window": "W3600-W3619",
+  "sourceCount": 20,
+  "localeCount": 12,
+  "expectedCellCount": 240,
+  "crossAuditCellCount": 240,
+  "all240CellsCovered": true,
+  "primaryBlindComparison": {
+    "targetAgreements": 220,
+    "targetDisagreements": 20,
+    "dispositionAgreements": 228,
+    "dispositionDisagreements": 12,
+    "dispositionPairCounts": {
+      "accept-current -> accept-current": 215,
+      "correction -> accept-current": 1,
+      "correction -> correction": 10,
+      "refinement -> accept-current": 5,
+      "refinement -> correction": 6,
+      "refinement -> refinement": 3
+    }
+  },
+  "crossAuditResolution": {
+    "dispositions": {
+      "accept-current": 215,
+      "correction": 20,
+      "refinement": 5
+    },
+    "proposedChanges": 25,
+    "holds": 0,
+    "targetAgreementCellsRetained": 220,
+    "differingTargetsAdjudicated": 20,
+    "adjudicatedFromPrimary": 17,
+    "adjudicatedFromBlind": 3,
+    "consensusRows": 220,
+    "dispositionOverridesForSemanticSeverity": 9
+  },
+  "protectedLiteralAudit": {
+    "baselineMismatchCount": 8,
+    "baselineMismatchCells": [
+      {
+        "position": 3604,
+        "locale": "pt_BR"
+      },
+      {
+        "position": 3618,
+        "locale": "ar"
+      },
+      {
+        "position": 3618,
+        "locale": "de"
+      },
+      {
+        "position": 3618,
+        "locale": "ja"
+      },
+      {
+        "position": 3618,
+        "locale": "ko"
+      },
+      {
+        "position": 3618,
+        "locale": "vi"
+      },
+      {
+        "position": 3618,
+        "locale": "zh_Hans"
+      },
+      {
+        "position": 3618,
+        "locale": "zh_Hant"
+      }
+    ],
+    "finalMismatchCount": 0,
+    "allBaselineProtectedLiteralMismatchesResolved": true
+  },
+  "structuralTokenAudit": {
+    "placeholderMismatchCount": 0,
+    "markupMismatchCount": 0,
+    "numericMismatchCount": 0
+  },
+  "upstreamPacketVerifiers": {
+    "candidateFreeInput": "PASS",
+    "primaryReview": "PASS",
+    "blindReview": "PASS",
+    "details": "All three supplied verifier scripts reran on kspls0 immediately before this cross-audit output was created. The candidate-free verifier re-attested live PR refs/head/tree and exact source/catalog/caller evidence."
+  },
+  "reviewScope": {
+    "crossAuditType": "independent machine semantic and language-quality cross-audit, with all 20 target disagreements adjudicated explicitly",
+    "nativeSpeakerApproval": false,
+    "exactHeadBrowserReview": false,
+    "repositoryPrCatalogEditsMade": false,
+    "testsBuildsCiRun": false,
+    "workflowsChanged": false,
+    "holdsReason": "No source/caller ambiguity or token failure remained among the 240 reviewed cells. This does not claim native-speaker signoff."
+  },
+  "crossAuditVerifierStatus": "PASS",
+  "crossAuditVerifierUpstreamRerun": "PASS"
+}

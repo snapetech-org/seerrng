@@ -2454,7 +2454,7 @@ const validateCurrentBatchContract = (files) => {
   );
   requireText(
     globals,
-    '.media-scroll-grid-header {\n    padding-right: 0.875rem;',
+    '.media-scroll-grid-header {\n    padding-inline-end: 0.875rem;',
     'scrolling media table headers must reserve the shared thin scrollbar width'
   );
   requireCount(
@@ -2817,7 +2817,7 @@ const validateCurrentBatchContract = (files) => {
   );
   requirePublicCommand(
     'i18n:check',
-    'node bin/check-i18n.js',
+    'node bin/update-api-message-catalog.mjs --check && node bin/check-api-message-surfaces.cjs && node bin/check-i18n.js && node bin/generate-i18n-registry.js --check && node bin/check-i18n-catalogs.mjs',
     'the translation command must retain its actual validator'
   );
   if (
@@ -3101,7 +3101,7 @@ const validateCurrentBatchContract = (files) => {
       'margin-top: 0;',
       'padding-top: 0;',
       'border-top-width: 0;',
-      'border-left-width: var(--detail-divider-width);',
+      'border-inline-start-width: var(--detail-divider-width);',
     ],
     'detail columns must own their responsive vertical divider border'
   );
@@ -5317,7 +5317,7 @@ const validateCurrentBatchContract = (files) => {
   }
   for (const token of [
     'permission-option-row relative',
-    'permission-option-child pl-10',
+    'permission-option-child ps-10',
   ]) {
     requireText(
       'src/components/PermissionOption/index.tsx',
@@ -5549,7 +5549,7 @@ const validateCurrentBatchContract = (files) => {
     );
   }
   for (const token of [
-    'className="settings-service-card app-card-inset refreshed-inset-surface text-left"',
+    'className="settings-service-card app-card-inset refreshed-inset-surface text-start"',
     'className="settings-rule-card-content"',
     'className="settings-rule-subheading"',
   ]) {
@@ -7179,7 +7179,7 @@ const validateCurrentBatchContract = (files) => {
   );
   requireCssRule(
     '.detail-summary-footer',
-    ['text-align: right;', 'overflow-wrap: anywhere;'],
+    ['text-align: end;', 'overflow-wrap: anywhere;'],
     'association reasons must wrap in their bottom-right footer'
   );
   rejectText(

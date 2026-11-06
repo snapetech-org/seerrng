@@ -1,0 +1,114 @@
+{
+  "artifact": "SeerrNG PR #418 W3860-W3879 independent blind semantic review",
+  "candidateFreeExactHead": "12bb562dc0eb27165cc2c6fbd1ff2628d5f8574e",
+  "candidateFreeExactTree": "b288494aa5a0842affc4e900d6ccb6b57d99c493",
+  "candidateFreeManifestSha256": "7ba27c632da083ca311799acd445e3fe1af3b0b431ff5105bf551f8350b7eef0",
+  "candidateFreeSha256SumsSha256": "cfe7049a34c019bfa86d88a4bcb28171996aae78b4e170b783ecaaf5ed38d84b",
+  "candidateFreeVerifier": "PASS",
+  "counts": {
+    "acceptCurrent": 205,
+    "baselineOtherTokenMismatches": 0,
+    "baselineProtectedLiteralMismatches": 2,
+    "callerlessSources": 0,
+    "cells": 240,
+    "holds": 0,
+    "proposals": 35,
+    "recommendedProtectedLiteralMismatches": 0,
+    "reviseCurrent": 35,
+    "sourceMessages": 20,
+    "targetLocales": 12
+  },
+  "head": "12bb562dc0eb27165cc2c6fbd1ff2628d5f8574e",
+  "localeOrder": [
+    "es",
+    "zh-Hans",
+    "hi",
+    "de",
+    "ja",
+    "fr",
+    "pt-BR",
+    "ar",
+    "ko",
+    "zh-Hant",
+    "vi",
+    "id"
+  ],
+  "priorContinuity": "Input verifier passed; 3,860 prior source hashes, 100 applied target hashes, and 14 carried text-free holds reattest.",
+  "protectedLiteralCorrections": [
+    {
+      "locale": "ja",
+      "missing": [
+        "Navidrome"
+      ],
+      "position": 3863,
+      "sourceId": "components.Settings.NavidromeModal.testFailure"
+    },
+    {
+      "locale": "de",
+      "missing": [
+        "HTTPS",
+        "URL"
+      ],
+      "position": 3868,
+      "sourceId": "components.Settings.NavidromeModal.urlRequired"
+    }
+  ],
+  "range": [
+    3860,
+    3879
+  ],
+  "reviewLimitations": "Static blind semantic review only. No native-speaker or browser approval is claimed. All 12 cells for position 3874 include a source-rewrite suggestion because the English label conflicts with its help text.",
+  "revisedCellIds": [
+    "3860::zh-Hans",
+    "3860::fr",
+    "3860::zh-Hant",
+    "3862::ar",
+    "3863::ja",
+    "3864::fr",
+    "3864::zh-Hant",
+    "3866::vi",
+    "3867::zh-Hans",
+    "3867::ja",
+    "3867::zh-Hant",
+    "3868::zh-Hans",
+    "3868::de",
+    "3868::zh-Hant",
+    "3870::ko",
+    "3870::zh-Hant",
+    "3871::zh-Hans",
+    "3871::ar",
+    "3871::zh-Hant",
+    "3871::vi",
+    "3874::es",
+    "3874::zh-Hans",
+    "3874::hi",
+    "3874::de",
+    "3874::ja",
+    "3874::fr",
+    "3874::pt-BR",
+    "3874::ar",
+    "3874::ko",
+    "3874::zh-Hant",
+    "3874::vi",
+    "3874::id",
+    "3876::pt-BR",
+    "3878::fr",
+    "3879::fr"
+  ],
+  "revisionCountsByLocale": {
+    "ar": 3,
+    "de": 2,
+    "es": 1,
+    "fr": 5,
+    "hi": 1,
+    "id": 1,
+    "ja": 3,
+    "ko": 2,
+    "pt-BR": 2,
+    "vi": 3,
+    "zh-Hans": 5,
+    "zh-Hant": 7
+  },
+  "sourceContext": "Each source has a sealed source/caller record with definition block, direct message reference and route/render evidence; per-cell rows point to its hash.",
+  "tree": "b288494aa5a0842affc4e900d6ccb6b57d99c493"
+}

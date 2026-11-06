@@ -2,6 +2,7 @@ import Badge from '@app/components/Common/Badge';
 import Button from '@app/components/Common/Button';
 import LoadingSpinner from '@app/components/Common/LoadingSpinner';
 import Modal from '@app/components/Common/Modal';
+import OpaqueApiMessageText from '@app/components/Common/OpaqueApiMessageText';
 import Tooltip from '@app/components/Common/Tooltip';
 import useToasts from '@app/hooks/useToasts';
 import { Permission, useUser } from '@app/hooks/useUser';
@@ -187,7 +188,11 @@ const AlbumLibraryHealthButton = ({
                         <dd>{issue.status}</dd>
                       </dl>
                       {issue.reason && (
-                        <p className="card-body-text">{issue.reason}</p>
+                        <p className="card-body-text">
+                          <OpaqueApiMessageText>
+                            {issue.reason}
+                          </OpaqueApiMessageText>
+                        </p>
                       )}
                     </article>
                   </li>

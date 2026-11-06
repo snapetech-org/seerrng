@@ -1,0 +1,22 @@
+{
+  "cellCount": 240,
+  "currentTargetTextIncluded": false,
+  "files": {
+    "README.md": "a361bcbf5a5bb632e192ee896e783149be93f63e0d5ebf0808c07ace76474681",
+    "caller-context-blocks.jsonl": "c0d640a78ebcbe7c224f978eed3e3c8aae626aa5bc81d8744a824613e5738f67",
+    "caller-contexts.jsonl": "911693ad84f41616108005f9eb08dd17aab960a204c1742eb326596215203a20",
+    "source-cells.jsonl": "c6175b25bc2588160862be6efdf94b7d1b8cc892ccbb3ef1888db3aed87bd7b1",
+    "translation-prompts.jsonl": "0134d41c41da81aa7335b2c644e38c3be3cfdac6864546058df30564a4a298e3"
+  },
+  "head": "eb279fc80be656f379cd893642bf741ba0a24d85",
+  "localeCount": 12,
+  "packetType": "source-only-blind-input",
+  "primaryReviewOpened": false,
+  "pullRequest": 418,
+  "repository": "snapetech-org/seerrng",
+  "schemaInspectionNote": "One candidate-free current-target row for 3660/es was viewed before proposal generation while identifying input fields. Exposure could have influenced this cell wording and cannot be ruled out; it is marked target-exposure-limited. No primary candidate or decision was exposed.",
+  "schemaVersion": 1,
+  "sourceCount": 20,
+  "tree": "85a73172719b38e99a4e74c0ef9a303164cb4fcb",
+  "window": "W3660-W3679"
+}

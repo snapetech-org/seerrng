@@ -1,0 +1,51 @@
+{
+  "branch": "codex/seerrng-localization-overhaul-20261028",
+  "browserPool": {
+    "browserFallbackUsed": false,
+    "desktopQueueResult": "Agent Pool coordinator is unavailable"
+  },
+  "callerFileBlob": "5f740f73e4d22a1f7a01dd0d8e74a94e890b88f1",
+  "callerPinsReattested": 4,
+  "catalogKeysPerLocale": 9494,
+  "catalogsReattested": 12,
+  "cellCount": 12,
+  "confirmedProposals": {
+    "vi": "Kết nối dịch vụ",
+    "zh_Hans": "连接服务",
+    "zh_Hant": "連接服務"
+  },
+  "counts": {
+    "accept-primary-proposal": 3,
+    "retain-current": 8,
+    "retain-current-width-constrained": 1
+  },
+  "draft": true,
+  "inputHead": "58697945e3d3fb44c37d49db0cc0f88e3af110cc",
+  "inputTree": "e3076937fe10b4dd3821ea573e8e5e21601fce7d",
+  "liveState": "OPEN",
+  "markupMismatchCount": 0,
+  "nativeSpeakerReview": "outstanding; no approval claimed",
+  "noRepositoryOrPRChangesByReviewer": true,
+  "placeholderMismatchCount": 0,
+  "primaryPacketChecksumsPassed": 4,
+  "pullRequest": 418,
+  "repository": "snapetech-org/seerrng",
+  "source": "Connect Services",
+  "sourceKey": "components.Setup.configureservices",
+  "sourcePositionZeroBased": 5417,
+  "spanishWidthEvidence": {
+    "gitBlob": "6ca0de97fd4e7b15d6d258050163de6e86db0c16",
+    "historicalReviewHead": "18001c2d09d5d271bd4fe2ad22189c29d069a457",
+    "historicalReviewTree": "7a9f3218d79501fb620329f0e53c1a0b3dd44508",
+    "path": "docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-0900-0999/spanish-step5-refinement.json",
+    "priorWidthEstimatePx": {
+      "Conectar": 60.4,
+      "Conectar servicios": 122
+    },
+    "sameSetupCallerBlobAtInputHead": true,
+    "sha256": "20089386161799834435ece0a718ef003fe0166f806f3326e4cf24e57409abb9",
+    "visualBrowserRecheckPerformed": false
+  },
+  "testsBuildScansCiOrBrowserRun": false,
+  "worktreeStatusAtReview": "M src/i18n/locale/ar.json\n M src/i18n/locale/de.json\n M src/i18n/locale/es.json\n M src/i18n/locale/fr.json\n M src/i18n/locale/hi.json\n M src/i18n/locale/id.json\n M src/i18n/locale/ja.json\n M src/i18n/locale/ko.json\n M src/i18n/locale/pt_BR.json\n M src/i18n/locale/vi.json\n M src/i18n/locale/zh_Hans.json\n M src/i18n/locale/zh_Hant.json\n?? .next-webpack-dev\n?? docs/pr-evidence/pr418-localization-2026-11-02/setup-step5-5417/\n?? docs/pr-evidence/pr418-localization-2026-11-02/window-2900-2999/"
+}

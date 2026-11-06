@@ -1,0 +1,473 @@
+[
+  {
+    "callerContextSha256": "1d77ab0a7a54d0bab4ad40b1ca2acf7b22ec4d0a9c4f0278fa87734fe7a08023",
+    "confidence": "high",
+    "currentTarget": "إدخال واحد في كل سطر: معرّف مستخدم Slack=معرّف مستخدم SeerrNG. يجب أن يمتلك كل مستخدم SeerrNG مُعيّن إذن إدارة الطلبات.",
+    "currentTargetSha256": "1a77d3c8b483e2a342d3bff14e5ad8bc03d064399d275e3c84e1d9671911257f",
+    "locale": "ar",
+    "position": 3962,
+    "proposalId": "P01",
+    "proposedTarget": "إدخال واحد في كل سطر: معرّف مستخدم Slack (ID)=معرّف مستخدم SeerrNG (ID). يجب أن يمتلك كل مستخدم SeerrNG مُعيّن إذن إدارة الطلبات.",
+    "proposedTargetSha256": "f65c742840090e81edc6d7bf348c59daee3413668e929f4d0e13fa102158e591",
+    "proposedTargetTokens": {
+      "markupTags": [],
+      "numericTokens": [],
+      "placeholders": [],
+      "protectedLiterals": [
+        "ID"
+      ]
+    },
+    "proposedTokenChecks": {
+      "markupTags": {
+        "matches": true,
+        "source": [],
+        "target": []
+      },
+      "numericTokens": {
+        "matches": true,
+        "source": [],
+        "target": []
+      },
+      "placeholders": {
+        "matches": true,
+        "source": [],
+        "target": []
+      },
+      "protectedLiterals": {
+        "matches": true,
+        "missingFromTarget": [],
+        "source": [
+          "ID"
+        ],
+        "target": [
+          "ID"
+        ]
+      }
+    },
+    "rationale": "The current Arabic conveys “identifier” but drops protected literal “ID”. Keep the Arabic wording and include the exact literal in both sides of the mapping format.",
+    "sourceId": "components.Settings.Notifications.NotificationsSlack.requestManagerMappingsTip",
+    "sourceIdSha256": "5c6912c9f1f67fc6ca1cfa04e1e223a97c950fcb9c60302e323d37ec45404fd5",
+    "sourceText": "One per line: Slack user ID=SeerrNG user ID. Each mapped SeerrNG user must have request management permission.",
+    "sourceTextSha256": "9cb1677070d745a33e7c0d7a466552c2f4fd02d0b5564aff66497a78a9fde510"
+  },
+  {
+    "callerContextSha256": "161ba8a814be5c7246b302e998b9ab284481e5f0e8de006c8aed050dcbdc59f9",
+    "confidence": "high",
+    "currentTarget": "أدخل معرّف مساحة عمل Slack صالحًا",
+    "currentTargetSha256": "28d814b0269d872c257afae99515cb68438a9c85e910c4a9d502467de6599a44",
+    "locale": "ar",
+    "position": 3974,
+    "proposalId": "P02",
+    "proposedTarget": "أدخل معرّف مساحة عمل Slack (ID) صالحًا",
+    "proposedTargetSha256": "15ee1402983e0cbc82ffe070f6f5c70a6cecaf34af72457888bacd97120646e5",
+    "proposedTargetTokens": {
+      "markupTags": [],
+      "numericTokens": [],
+      "placeholders": [],
+      "protectedLiterals": [
+        "ID"
+      ]
+    },
+    "proposedTokenChecks": {
+      "markupTags": {
+        "matches": true,
+        "source": [],
+        "target": []
+      },
+      "numericTokens": {
+        "matches": true,
+        "source": [],
+        "target": []
+      },
+      "placeholders": {
+        "matches": true,
+        "source": [],
+        "target": []
+      },
+      "protectedLiterals": {
+        "matches": true,
+        "missingFromTarget": [],
+        "source": [
+          "ID"
+        ],
+        "target": [
+          "ID"
+        ]
+      }
+    },
+    "rationale": "The current Arabic translates ID but omits protected literal “ID”; include it alongside the Arabic descriptor.",
+    "sourceId": "components.Settings.Notifications.NotificationsSlack.validationWorkspaceId",
+    "sourceIdSha256": "5d8d5f74fdfb413a56c16918ba69f6327dbf7c42e8eb4af7184dba77f2e50b83",
+    "sourceText": "Enter a valid Slack workspace ID",
+    "sourceTextSha256": "6dde8de07359c015e9229a2987d1d7733d73897c5bd73a853cd7d0a2fa45af46"
+  },
+  {
+    "callerContextSha256": "64bb8f1195f37e244d3e3d82caaf863a0eabe0a0dbb84040053bc066d2738f27",
+    "confidence": "high",
+    "currentTarget": "網頁 URL",
+    "currentTargetSha256": "d513596ae50c20d6a7d23495c46b483d325338608e1ef0a3746e14a0b5519bea",
+    "locale": "zh-Hant",
+    "position": 3975,
+    "proposalId": "P03",
+    "proposedTarget": "Webhook 網址（URL）",
+    "proposedTargetSha256": "acd5a03c1c2524011abf7ad072953d7d104f3822107bf5d363d51496ec08de33",
+    "proposedTargetTokens": {
+      "markupTags": [],
+      "numericTokens": [],
+      "placeholders": [],
+      "protectedLiterals": [
+        "URL"
+      ]
+    },
+    "proposedTokenChecks": {
+      "markupTags": {
+        "matches": true,
+        "source": [],
+        "target": []
+      },
+      "numericTokens": {
+        "matches": true,
+        "source": [],
+        "target": []
+      },
+      "placeholders": {
+        "matches": true,
+        "source": [],
+        "target": []
+      },
+      "protectedLiterals": {
+        "matches": true,
+        "missingFromTarget": [],
+        "source": [
+          "URL"
+        ],
+        "target": [
+          "URL"
+        ]
+      }
+    },
+    "rationale": "“網頁 URL” means webpage URL and loses the Webhook concept. Retain the common technical term, translate URL as 網址, and preserve the protected literal URL.",
+    "sourceId": "components.Settings.Notifications.NotificationsSlack.webhookUrl",
+    "sourceIdSha256": "6c27c324f2c1ecb66b066db3872d4441403f22b88d4bcb453adda97561ffdb76",
+    "sourceText": "Webhook URL",
+    "sourceTextSha256": "84805a7574a82052bdd5b3b98119cfd838d04036ec4bd3d667a95698e7097ad6"
+  },
+  {
+    "callerContextSha256": "8056bc16f7791e49da3262a462a2debb321e475e28d424f85a875598002647db",
+    "confidence": "moderate",
+    "currentTarget": "बनाना <WebhookLink>आने वाले वेबहुक</WebhookLink> एकीकरण",
+    "currentTargetSha256": "07ca08d6b91a6c3b14d1b93fa2db850b34608c5de5531bfc4718f6d1b5e0f056",
+    "locale": "hi",
+    "position": 3976,
+    "proposalId": "P04",
+    "proposedTarget": "एक <WebhookLink>इनकमिंग वेबहुक</WebhookLink> इंटीग्रेशन बनाएं",
+    "proposedTargetSha256": "640f2213892a3c5c2470a72cc08e6e4940b12a3ec5cf048652f035bab401f92f",
+    "proposedTargetTokens": {
+      "markupTags": [
+        "<WebhookLink>",
+        "</WebhookLink>"
+      ],
+      "numericTokens": [],
+      "placeholders": [],
+      "protectedLiterals": []
+    },
+    "proposedTokenChecks": {
+      "markupTags": {
+        "matches": true,
+        "source": [
+          "<WebhookLink>",
+          "</WebhookLink>"
+        ],
+        "target": [
+          "<WebhookLink>",
+          "</WebhookLink>"
+        ]
+      },
+      "numericTokens": {
+        "matches": true,
+        "source": [],
+        "target": []
+      },
+      "placeholders": {
+        "matches": true,
+        "source": [],
+        "target": []
+      },
+      "protectedLiterals": {
+        "matches": true,
+        "missingFromTarget": [],
+        "source": [],
+        "target": []
+      }
+    },
+    "rationale": "The current word order (“बनाना … एकीकरण”) is ungrammatical for an instruction. This gives the link phrase a natural place while preserving the integration meaning and exact tag.",
+    "sourceId": "components.Settings.Notifications.NotificationsSlack.webhookUrlTip",
+    "sourceIdSha256": "cd4a8a8f8bae33ae2cc905df1d4e454872ae9a4850fb53548b892f61c2a77086",
+    "sourceText": "Create an <WebhookLink>Incoming Webhook</WebhookLink> integration",
+    "sourceTextSha256": "aed4e3b6133c8b83aec1d246f421f3ca510b3c72ffa18f745739950915075fcb"
+  },
+  {
+    "callerContextSha256": "8056bc16f7791e49da3262a462a2debb321e475e28d424f85a875598002647db",
+    "confidence": "moderate",
+    "currentTarget": "Erstelle eine <WebhookLink>eingehende Webhook</WebhookLink> Integration",
+    "currentTargetSha256": "da0f1a8573c42efc7a94ba3a36050867acf3867498e7d8ddd65e251437ff464a",
+    "locale": "de",
+    "position": 3976,
+    "proposalId": "P05",
+    "proposedTarget": "Erstelle eine Integration für einen <WebhookLink>eingehenden Webhook</WebhookLink>.",
+    "proposedTargetSha256": "0e2e365bc6495d89270ad5c4a10fbc7c8378f93fdb3599a846f41b29c225aeab",
+    "proposedTargetTokens": {
+      "markupTags": [
+        "<WebhookLink>",
+        "</WebhookLink>"
+      ],
+      "numericTokens": [],
+      "placeholders": [],
+      "protectedLiterals": []
+    },
+    "proposedTokenChecks": {
+      "markupTags": {
+        "matches": true,
+        "source": [
+          "<WebhookLink>",
+          "</WebhookLink>"
+        ],
+        "target": [
+          "<WebhookLink>",
+          "</WebhookLink>"
+        ]
+      },
+      "numericTokens": {
+        "matches": true,
+        "source": [],
+        "target": []
+      },
+      "placeholders": {
+        "matches": true,
+        "source": [],
+        "target": []
+      },
+      "protectedLiterals": {
+        "matches": true,
+        "missingFromTarget": [],
+        "source": [],
+        "target": []
+      }
+    },
+    "rationale": "The current linked phrase uses the wrong grammatical gender for masculine “Webhook” (“eingehende Webhook”). This wording is grammatical and keeps the exact link tag.",
+    "sourceId": "components.Settings.Notifications.NotificationsSlack.webhookUrlTip",
+    "sourceIdSha256": "cd4a8a8f8bae33ae2cc905df1d4e454872ae9a4850fb53548b892f61c2a77086",
+    "sourceText": "Create an <WebhookLink>Incoming Webhook</WebhookLink> integration",
+    "sourceTextSha256": "aed4e3b6133c8b83aec1d246f421f3ca510b3c72ffa18f745739950915075fcb"
+  },
+  {
+    "callerContextSha256": "8056bc16f7791e49da3262a462a2debb321e475e28d424f85a875598002647db",
+    "confidence": "moderate",
+    "currentTarget": "Créer une intégration <WebhookLink>webhook entrante</WebhookLink>",
+    "currentTargetSha256": "0bc8623e67aabd837ac020462b06aacf8d8459f262ee0d918c4865691cd93262",
+    "locale": "fr",
+    "position": 3976,
+    "proposalId": "P06",
+    "proposedTarget": "Créer une intégration avec un <WebhookLink>webhook entrant</WebhookLink>.",
+    "proposedTargetSha256": "54c67a164d916f5192b5ae0dd080c2020973920d5ae022c936f9cacadc6cf92e",
+    "proposedTargetTokens": {
+      "markupTags": [
+        "<WebhookLink>",
+        "</WebhookLink>"
+      ],
+      "numericTokens": [],
+      "placeholders": [],
+      "protectedLiterals": []
+    },
+    "proposedTokenChecks": {
+      "markupTags": {
+        "matches": true,
+        "source": [
+          "<WebhookLink>",
+          "</WebhookLink>"
+        ],
+        "target": [
+          "<WebhookLink>",
+          "</WebhookLink>"
+        ]
+      },
+      "numericTokens": {
+        "matches": true,
+        "source": [],
+        "target": []
+      },
+      "placeholders": {
+        "matches": true,
+        "source": [],
+        "target": []
+      },
+      "protectedLiterals": {
+        "matches": true,
+        "missingFromTarget": [],
+        "source": [],
+        "target": []
+      }
+    },
+    "rationale": "“Webhook” is masculine in French, so the current linked phrase “webhook entrante” has an agreement error. This keeps the Incoming Webhook link label and integration meaning.",
+    "sourceId": "components.Settings.Notifications.NotificationsSlack.webhookUrlTip",
+    "sourceIdSha256": "cd4a8a8f8bae33ae2cc905df1d4e454872ae9a4850fb53548b892f61c2a77086",
+    "sourceText": "Create an <WebhookLink>Incoming Webhook</WebhookLink> integration",
+    "sourceTextSha256": "aed4e3b6133c8b83aec1d246f421f3ca510b3c72ffa18f745739950915075fcb"
+  },
+  {
+    "callerContextSha256": "8056bc16f7791e49da3262a462a2debb321e475e28d424f85a875598002647db",
+    "confidence": "moderate",
+    "currentTarget": "Buat <WebhookLink>Webhook Masuk</WebhookLink> integrasi",
+    "currentTargetSha256": "43a321ee9a4900aa82933eda9a5aa97b030a7e4084efd6a7395233de29bc9c14",
+    "locale": "id",
+    "position": 3976,
+    "proposalId": "P07",
+    "proposedTarget": "Buat integrasi <WebhookLink>Webhook Masuk</WebhookLink>",
+    "proposedTargetSha256": "0e98ea19dfde0db2ecad0d688cd6590194947f954a80ca75c388cbcb2696f36e",
+    "proposedTargetTokens": {
+      "markupTags": [
+        "<WebhookLink>",
+        "</WebhookLink>"
+      ],
+      "numericTokens": [],
+      "placeholders": [],
+      "protectedLiterals": []
+    },
+    "proposedTokenChecks": {
+      "markupTags": {
+        "matches": true,
+        "source": [
+          "<WebhookLink>",
+          "</WebhookLink>"
+        ],
+        "target": [
+          "<WebhookLink>",
+          "</WebhookLink>"
+        ]
+      },
+      "numericTokens": {
+        "matches": true,
+        "source": [],
+        "target": []
+      },
+      "placeholders": {
+        "matches": true,
+        "source": [],
+        "target": []
+      },
+      "protectedLiterals": {
+        "matches": true,
+        "missingFromTarget": [],
+        "source": [],
+        "target": []
+      }
+    },
+    "rationale": "The current Indonesian order (“Webhook Masuk integrasi”) is not idiomatic. Put “integrasi” before the linked Incoming Webhook term.",
+    "sourceId": "components.Settings.Notifications.NotificationsSlack.webhookUrlTip",
+    "sourceIdSha256": "cd4a8a8f8bae33ae2cc905df1d4e454872ae9a4850fb53548b892f61c2a77086",
+    "sourceText": "Create an <WebhookLink>Incoming Webhook</WebhookLink> integration",
+    "sourceTextSha256": "aed4e3b6133c8b83aec1d246f421f3ca510b3c72ffa18f745739950915075fcb"
+  },
+  {
+    "callerContextSha256": "fbd48cd495004ccfa2699d941afdb1d695bde583482494afe0cdd810fb30de7c",
+    "confidence": "high",
+    "currentTarget": "معرّف مساحة عمل Slack",
+    "currentTargetSha256": "bd7b9a2cafda7ffbbee354c3a831a8f26839f341721bf36e2644e93d0169b25b",
+    "locale": "ar",
+    "position": 3977,
+    "proposalId": "P08",
+    "proposedTarget": "معرّف مساحة عمل Slack (ID)",
+    "proposedTargetSha256": "5f13f5bcc815abf5e642e33aa34875d7cff8c9490daf25990184ca02110a3851",
+    "proposedTargetTokens": {
+      "markupTags": [],
+      "numericTokens": [],
+      "placeholders": [],
+      "protectedLiterals": [
+        "ID"
+      ]
+    },
+    "proposedTokenChecks": {
+      "markupTags": {
+        "matches": true,
+        "source": [],
+        "target": []
+      },
+      "numericTokens": {
+        "matches": true,
+        "source": [],
+        "target": []
+      },
+      "placeholders": {
+        "matches": true,
+        "source": [],
+        "target": []
+      },
+      "protectedLiterals": {
+        "matches": true,
+        "missingFromTarget": [],
+        "source": [
+          "ID"
+        ],
+        "target": [
+          "ID"
+        ]
+      }
+    },
+    "rationale": "The current Arabic translates ID but omits protected literal “ID”; include it alongside the Arabic descriptor.",
+    "sourceId": "components.Settings.Notifications.NotificationsSlack.workspaceId",
+    "sourceIdSha256": "0b7c333e197199b4b8c9488e8a8f7020ead36cf1138f2caf4b17587860a1d190",
+    "sourceText": "Slack workspace ID",
+    "sourceTextSha256": "a0569d9ab72be8f8e3bd279999f267947375225bd03aa93621843b9feb027b10"
+  },
+  {
+    "callerContextSha256": "a2b03de7ba0bcdf8cb2cabb826020b4f89490d433c8125966d3b5531536cdd4b",
+    "confidence": "high",
+    "currentTarget": "معرّف مساحة العمل المالكة لتطبيق Slack هذا.",
+    "currentTargetSha256": "7c6361179a6c4fbed2eeb33cf35a15878d8f69c2a5eacd8eb4fac6642c0f78c7",
+    "locale": "ar",
+    "position": 3978,
+    "proposalId": "P09",
+    "proposedTarget": "المعرّف (ID) لمساحة العمل المالكة لتطبيق Slack هذا.",
+    "proposedTargetSha256": "1cb4affb4cbcacf2d476493631012ab96829430b145e60e4870450094561f1da",
+    "proposedTargetTokens": {
+      "markupTags": [],
+      "numericTokens": [],
+      "placeholders": [],
+      "protectedLiterals": [
+        "ID"
+      ]
+    },
+    "proposedTokenChecks": {
+      "markupTags": {
+        "matches": true,
+        "source": [],
+        "target": []
+      },
+      "numericTokens": {
+        "matches": true,
+        "source": [],
+        "target": []
+      },
+      "placeholders": {
+        "matches": true,
+        "source": [],
+        "target": []
+      },
+      "protectedLiterals": {
+        "matches": true,
+        "missingFromTarget": [],
+        "source": [
+          "ID"
+        ],
+        "target": [
+          "ID"
+        ]
+      }
+    },
+    "rationale": "The current Arabic translates ID but omits protected literal “ID”; include it alongside the Arabic descriptor.",
+    "sourceId": "components.Settings.Notifications.NotificationsSlack.workspaceIdTip",
+    "sourceIdSha256": "6f0b8960c307524f1e6e0f1e7e1526dd071ffcaeeeed9794914cd046aaf1462f",
+    "sourceText": "The workspace ID that owns this Slack app.",
+    "sourceTextSha256": "0f572969c5da1d45231af09ab1bd9a41e7c52583b145dce23d87d78c5ee96eb1"
+  }
+]

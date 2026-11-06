@@ -1,0 +1,41 @@
+{
+  "files": [
+    {
+      "byteCount": 5394,
+      "gitBlob": "d699bd347f4fbad07bce14a743c884800d9d4a84",
+      "lineCount": 45,
+      "path": "config/i18n/locales.json",
+      "sha256": "6e8ea070b441db9700325cf838d440dbbef1d1e5331e28332ed6c15cb789376a"
+    },
+    {
+      "byteCount": 8094,
+      "gitBlob": "7af46af3f1ca4536cb76a785ca51058b145a30d1",
+      "lineCount": 216,
+      "path": "src/components/Settings/NavidromeModal/index.tsx",
+      "sha256": "cd51caa1528b1b8b07b5c3ece6121728f5cefba32f66924aba507d1a5ac07b95"
+    },
+    {
+      "byteCount": 13906,
+      "gitBlob": "8d6f78cdc834165b40aaf558dbcfe01b98d27c87",
+      "lineCount": 389,
+      "path": "src/components/Settings/Notifications/NotificationsApprise/index.tsx",
+      "sha256": "a7d5f22d88e497133e0719a5ac0d63b0e8eea1a01e0d7dff812f7a74b5b4b504"
+    },
+    {
+      "byteCount": 109940,
+      "gitBlob": "7bf5662ffc7338c47de12413a8b55ffc1137c93f",
+      "lineCount": 2805,
+      "path": "src/components/Settings/SettingsServices.tsx",
+      "sha256": "43e88ea339ecdf33b596c04e4a20097e67a84dffd54607a8068fbb7dd551d5f9"
+    },
+    {
+      "byteCount": 662,
+      "gitBlob": "2ab65a42482e4e15c121baf5c8a2a8d605b6c6af",
+      "lineCount": 19,
+      "path": "src/pages/settings/notifications/apprise.tsx",
+      "sha256": "55fe9bcce2e3942b5baa0a863409ff50d6fb1311fbf0bbe5ad7f48680ed469b2"
+    }
+  ],
+  "head": "12bb562dc0eb27165cc2c6fbd1ff2628d5f8574e",
+  "tree": "b288494aa5a0842affc4e900d6ccb6b57d99c493"
+}

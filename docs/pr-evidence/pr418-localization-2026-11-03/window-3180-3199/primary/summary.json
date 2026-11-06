@@ -1,0 +1,28 @@
+{
+  "head": "c03816972aab761a69b343abcdfe8a10f85aeabb",
+  "tree": "1ffc02d5d7dbbb14ab4706ce61bfcfda64592a01",
+  "sourceIds": 20,
+  "cells": 240,
+  "dispositions": {
+    "accept-current": 147,
+    "correction": 55,
+    "refinement": 38,
+    "hold": 0
+  },
+  "changesByLocale": {
+    "hi": 11,
+    "ja": 9,
+    "fr": 9,
+    "ar": 11,
+    "pt_BR": 8,
+    "ko": 12,
+    "zh_Hans": 8,
+    "zh_Hant": 7,
+    "id": 5,
+    "vi": 7,
+    "es": 5,
+    "de": 1
+  },
+  "proposalCount": 93,
+  "nativeSpeakerApproval": false
+}

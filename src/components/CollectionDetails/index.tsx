@@ -491,7 +491,7 @@ const CollectionDetails = ({ collection }: CollectionDetailsProps) => {
                   onClick={() => setShowBlocklistModal(true)}
                   aria-label={intl.formatMessage(globalMessages.addToBlocklist)}
                 >
-                  <EyeSlashIcon className="!mr-0" />
+                  <EyeSlashIcon className="!me-0" />
                 </Button>
               </Tooltip>
             )}

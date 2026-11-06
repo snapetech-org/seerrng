@@ -1,0 +1,50 @@
+{
+  "schemaVersion": 1,
+  "baseHead": "7524d8f6e5a94c781104b2ddb05535c4bb788bd0",
+  "sourceLocale": "en",
+  "domain": "client",
+  "source": {
+    "id": "components.BookSeriesSearch.CoverCarousel.roleDescription",
+    "message": "carousel",
+    "sourceSha256": "7565e4480e567f25d965c3e92a3d1a69143e8b21f4a9538548673d7fd1734055",
+    "callsites": [
+      {
+        "path": "src/components/BookSeriesSearch/CoverCarousel.tsx",
+        "line": 19,
+        "kind": "accessible-role-description"
+      },
+      {
+        "path": "src/components/BookSeriesSearch/CoverCarousel.tsx",
+        "line": 120,
+        "kind": "aria-roledescription"
+      }
+    ]
+  },
+  "localeAccounting": {
+    "activeLocaleCount": 38,
+    "nonEnglishEffectiveLocaleCount": 37,
+    "rolloutDirectLocaleCount": 12,
+    "pendingDirectCellCount": 0,
+    "rolloutEffectiveLocaleCount": 13,
+    "outOfRolloutNonEnglishLocaleCount": 24,
+    "pendingDirectLocales": [],
+    "regionalInheritance": [
+      {
+        "tag": "es-MX",
+        "clientFile": "es_MX.json",
+        "inheritsFrom": "es",
+        "status": "resolved-via-parent",
+        "directCellRequired": false
+      }
+    ]
+  },
+  "translationCatalogsChanged": [
+    "src/i18n/locale/ar.json",
+    "src/i18n/locale/id.json",
+    "src/i18n/locale/ko.json",
+    "src/i18n/locale/pt_BR.json",
+    "src/i18n/locale/vi.json",
+    "src/i18n/locale/zh_Hans.json",
+    "src/i18n/locale/zh_Hant.json"
+  ]
+}

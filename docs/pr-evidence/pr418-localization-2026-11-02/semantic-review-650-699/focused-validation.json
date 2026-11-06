@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "catalogCommit": "617f4b8563fc0e43925977a95de38acdfc5debe0",
+  "catalogTree": "6febc0b63a9ffb79919e681994da1c17ab731a02",
+  "baseHead": "422072d585074bdd7f8dd3046cbacede69203d6d",
+  "changedPathAllowlist": [
+    "src/i18n/locale/es.json"
+  ],
+  "actualChangedPaths": [
+    "src/i18n/locale/es.json"
+  ],
+  "changedPathsMatchAllowlist": true,
+  "sourceCatalogBlobBefore": "12e04a118c30b71b3714291adeaf9fdb2735cee4",
+  "sourceCatalogBlobAfter": "12e04a118c30b71b3714291adeaf9fdb2735cee4",
+  "sourceCatalogUnchanged": true,
+  "targetCatalogBlobBefore": "bd957ccf3c2d3287aae2086c4c88a40f6c6c967a",
+  "targetCatalogBlobAfter": "887e33b2303d894c4335b1b246b6ab6c05448409",
+  "targetCatalogSha256Before": "19ab22d6398a536710a09a568043f9233f27cb7d09770cb6666430b674848c59",
+  "targetCatalogSha256After": "eadf9f4bf7f1b40dda15dcad373c0bb62be8f6cb13436571523ba26c2cfd7ed6",
+  "englishSpanishKeyParity": true,
+  "spanishKeyCount": 9494,
+  "duplicateJsonKeys": false,
+  "expectedChangedIds": 285,
+  "actualChangedIds": 285,
+  "changedIdSetMatchesPlan": true,
+  "finalReviewedTargetsMatchCatalog": true,
+  "independentFinalTargetsMatchRootFinal": 289,
+  "rootDecisions": {
+    "candidateAcceptedAsProposed": 236,
+    "candidateRefined": 47,
+    "heldKeptCurrent": 4,
+    "heldRefined": 2
+  },
+  "independentRefinementsAdopted": 10,
+  "independentFinalTargetDisagreements": 0,
+  "manualInlineTagBoundaryExceptionRows": 1,
+  "gitDiffCheck": "passed",
+  "testsBuildsScansCiRun": false,
+  "workflowFilesChanged": false,
+  "nativeSpeakerApproval": false
+}

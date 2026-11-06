@@ -1,0 +1,37 @@
+{
+  "batch": "batch-01",
+  "cells": 300,
+  "counts": {
+    "accept-current": 229,
+    "propose-correction": 71
+  },
+  "head": "0905d4be32d8b7ec3b1af701473a3fdf6e0f30a2",
+  "holds": 0,
+  "inputSha256": "2e356ddab0bd66171521a1ab92efe02e67f618e8743441fb7d8a9fe629bb959d",
+  "locales": [
+    "ar",
+    "de",
+    "es"
+  ],
+  "nativeSpeakerApproval": false,
+  "outputSha256": "a2b2e00c1b567d8fa5451db747141d3f1ccc3e3d1fc17dc84b9e5fd963ed019c",
+  "perLocale": {
+    "ar": {
+      "accept-current": 54,
+      "propose-correction": 46
+    },
+    "de": {
+      "accept-current": 88,
+      "propose-correction": 12
+    },
+    "es": {
+      "accept-current": 87,
+      "propose-correction": 13
+    }
+  },
+  "sourcePositions": [
+    2500,
+    2599
+  ],
+  "tree": "a09117211080bbd89d32959f17d93b02a82b966f"
+}

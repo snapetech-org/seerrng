@@ -1,0 +1,17 @@
+{
+  "allSevenCatalogsEnumerated": true,
+  "allSevenPrSnapshotsCaptured": true,
+  "expectedHead": "9242898e23f7f25d515d10b5b0b51df322e395fb",
+  "expectedTree": "06cfd94ee611684c33e9e78af9d8bb60a2e98825",
+  "liveHead": "9242898e23f7f25d515d10b5b0b51df322e395fb",
+  "liveIsDraft": true,
+  "liveState": "OPEN",
+  "liveTree": "06cfd94ee611684c33e9e78af9d8bb60a2e98825",
+  "localHead": "9242898e23f7f25d515d10b5b0b51df322e395fb",
+  "localTree": "06cfd94ee611684c33e9e78af9d8bb60a2e98825",
+  "pullRequest": 418,
+  "repository": "snapetech-org/SeerrNG",
+  "sealedAtUnix": 1793654756,
+  "worktreeClean": true,
+  "worktreeStatus": ""
+}

@@ -1,0 +1,84 @@
+{
+  "packet": "Independent SeerrNG PR #418 W2800-W2899 localization cross-review",
+  "primaryPacket": "/mnt/disks/scratch/task-scratch/seerrng-pr418-window-2800-2899-primary-20261102",
+  "crossReviewPacket": "/mnt/disks/scratch/task-scratch/seerrng-pr418-window-2800-2899-crossreview-20261102",
+  "exactHead": "7329f0ffb34d46042dbf1b165046e21c4f4d45e3",
+  "exactTree": "531e045f511ee9c46f4c7ed80d50f529c9c12000",
+  "worktreeClean": true,
+  "reviewedCells": 1200,
+  "sourceIds": 100,
+  "locales": 12,
+  "crossReviewCounts": {
+    "accept-current": 835,
+    "primary-proposals-confirmed-as-written": 364,
+    "primary-proposals-revised": 1,
+    "holds": 0
+  },
+  "primaryProposalCount": 365,
+  "proposalsAcceptedAsWritten": 364,
+  "proposalsRevised": 1,
+  "proposalsRejectedWithoutReplacement": 0,
+  "holds": 0,
+  "nativeSpeakerSignoff": false,
+  "nativeSpeakerReviewOutstanding": true,
+  "primaryProposalIssue": {
+    "sourcePosition": 2898,
+    "sourceId": "components.RequestModal.Comic.requestSuccess",
+    "locale": "pt_BR",
+    "issue": "refinement has finalTarget identical to currentTarget; the rationale claims punctuation is missing although both strings contain !",
+    "recommendedTarget": "Solicitação de <strong>{title}</strong> concluída com sucesso!"
+  },
+  "sourcesAndCatalogs": {
+    "sourceIdsPresent": 100,
+    "catalogLocales": 12,
+    "catalogKeysEach": 9494,
+    "allSourceAndCurrentHashesMatchPinnedHead": true
+  },
+  "callerPins": {
+    "files": 5,
+    "exactLineHashReferences": 335,
+    "placeholderExceptionCallerPinsReattested": 39,
+    "failures": 0,
+    "trueUnmappedSources": 0,
+    "extractorAliasesResolved": 11
+  },
+  "structure": {
+    "icuCellsReviewed": 36,
+    "icuInvalid": 0,
+    "placeholderEquivalenceExceptions": 13,
+    "unresolvedPlaceholderSemanticGaps": 0,
+    "markupFailures": 0,
+    "finalProtectedLiteralFailures": 0,
+    "currentProtectedLiteralFailures": 7
+  },
+  "exceptionsAndSpecialReviews": {
+    "arabicCountRenderingExceptionCells": 2,
+    "documentedEquivalentPlaceholderCells": 13,
+    "spanishDirectAddressRows": 5,
+    "spanishInformalFinalRows": 0,
+    "requestfromPosition2812AllLocalesReviewed": 12
+  },
+  "boundaries": {
+    "englishBoundarySourcesReattested": 4,
+    "localeBoundaryReadbacks": 24,
+    "failures": 0
+  },
+  "priorHistory": {
+    "matchingPriorRows": 1200,
+    "exactLivePriorDispositionsReused": 0,
+    "priorPacketDirectoriesScanned": 61,
+    "selectedSourceIds": 100,
+    "priorFinalsReused": 0,
+    "continuityThroughPosition": 2799,
+    "classification": "Prior matching rows were review-required/proposed-only or did not exactly match both source and final target; no frozen disposition was reused."
+  },
+  "blockers": [],
+  "limitations": [
+    "Machine-assisted language review only; qualified native-speaker signoff remains outstanding.",
+    "No tests, builds, browser work, CI, PR actions, or repository edits were performed."
+  ],
+  "confidence": {
+    "hashesPinsStructure": "high",
+    "languageJudgments": "moderate"
+  }
+}

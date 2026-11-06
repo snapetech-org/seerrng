@@ -39,7 +39,7 @@ const PlexLoginButton = ({
         <FormattedMessage
           {...messages.loginwithapp}
           values={{
-            appName: <PlexIcon className="mt-[2px] ml-[0.35em] w-8" />,
+            appName: <PlexIcon className="ms-[0.35em] mt-[2px] w-8" />,
           }}
         >
           {(chunks) => (

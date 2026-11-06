@@ -1,0 +1,711 @@
+{
+  "checkerInspection": {
+    "behavior": "Rich-text tags are compared as a set of tag names, not occurrence counts; inspected only, not run.",
+    "path": "bin/check-i18n-catalogs.mjs"
+  },
+  "exactHead": "58697945e3d3fb44c37d49db0cc0f88e3af110cc",
+  "exactTree": "e3076937fe10b4dd3821ea573e8e5e21601fce7d",
+  "pullRequest": 418,
+  "rawMarkupMismatchCountCurrent": 8,
+  "rawMarkupMismatchCountFinal": 8,
+  "repository": "snapetech-org/SeerrNG",
+  "rows": [
+    {
+      "applicationChecker": "bin/check-i18n-catalogs.mjs compares rich-text tag-name sets; inspected only, not run.",
+      "branchMarkup": {
+        "=0": [],
+        "few": [
+          "<strong>",
+          "</strong>"
+        ],
+        "many": [
+          "<strong>",
+          "</strong>"
+        ],
+        "one": [],
+        "other": [
+          "<strong>",
+          "</strong>"
+        ],
+        "two": [],
+        "zero": []
+      },
+      "callerContextSha256": "bfcc0cbf65dc1b9282f04f40b4aa36bd4879a84227ed96a0715493b33418a749",
+      "callerPaths": [
+        "src/components/RequestModal/QuotaDisplay/index.tsx"
+      ],
+      "callerPins": [
+        {
+          "file": "src/components/RequestModal/QuotaDisplay/index.tsx",
+          "line": 23,
+          "lineSha256": "9404af2e02a26b1bcd2e4b60d15781021a497d893545c4dcb8bdf14bca72cfcb",
+          "lineText": "allowedRequests:",
+          "nextLine": "'You are allowed to request <strong>{limit}</strong> {type}{days, plural, =0 {} one { every day} other { every <strong>{days}</strong> days}}.',",
+          "previousLine": "'{remaining, plural, one {One software request remains} other {# software requests remain}}',"
+        },
+        {
+          "file": "src/components/RequestModal/QuotaDisplay/index.tsx",
+          "line": 153,
+          "lineSha256": "580b759360e4f08f58aa5d8920cd03154ff6f08bf6a8583a1b7f748b96ad1f4c",
+          "lineText": ": messages.allowedRequests,",
+          "nextLine": "{",
+          "previousLine": "? messages.allowedRequestsUser"
+        }
+      ],
+      "currentTarget": "مسموح لك بطلب <strong>{limit}</strong> {type}{days, plural, =0 {} zero { كل يوم} one { كل يوم} two { كل يومين} few { كل <strong>{days}</strong> أيام} many { كل <strong>{days}</strong> يومًا} other { كل <strong>{days}</strong> يوم}}.",
+      "currentTargetHash": "de4105058f9211cfdf251750db24bdd8e1998b9d81109a93734a8d578b0b3bbe",
+      "disposition": "accept-current",
+      "finalMarkup": [
+        "<strong>",
+        "</strong>",
+        "<strong>",
+        "</strong>",
+        "<strong>",
+        "</strong>",
+        "<strong>",
+        "</strong>"
+      ],
+      "finalPluralProfile": [
+        {
+          "branches": {
+            "=0": "",
+            "few": " كل <strong>{days}</strong> أيام",
+            "many": " كل <strong>{days}</strong> يومًا",
+            "one": " كل يوم",
+            "other": " كل <strong>{days}</strong> يوم",
+            "two": " كل يومين",
+            "zero": " كل يوم"
+          },
+          "kind": "plural",
+          "name": "days"
+        }
+      ],
+      "finalTarget": "مسموح لك بطلب <strong>{limit}</strong> {type}{days, plural, =0 {} zero { كل يوم} one { كل يوم} two { كل يومين} few { كل <strong>{days}</strong> أيام} many { كل <strong>{days}</strong> يومًا} other { كل <strong>{days}</strong> يوم}}.",
+      "finalTargetHash": "de4105058f9211cfdf251750db24bdd8e1998b9d81109a93734a8d578b0b3bbe",
+      "locale": "ar",
+      "source": "You are allowed to request <strong>{limit}</strong> {type}{days, plural, =0 {} one { every day} other { every <strong>{days}</strong> days}}.",
+      "sourceHash": "dfb018d7a63b586ea6aa3bba17c9dd3e39387bce85f87dc0deced7aed380777b",
+      "sourceId": "components.RequestModal.QuotaDisplay.allowedRequests",
+      "sourceMarkup": [
+        "<strong>",
+        "</strong>",
+        "<strong>",
+        "</strong>"
+      ],
+      "sourcePluralProfile": [
+        {
+          "branches": {
+            "=0": "",
+            "one": " every day",
+            "other": " every <strong>{days}</strong> days"
+          },
+          "kind": "plural",
+          "name": "days"
+        }
+      ],
+      "sourcePosition": 2994
+    },
+    {
+      "applicationChecker": "bin/check-i18n-catalogs.mjs compares rich-text tag-name sets; inspected only, not run.",
+      "branchMarkup": {
+        "=0": [],
+        "many": [
+          "<strong>",
+          "</strong>"
+        ],
+        "one": [],
+        "other": [
+          "<strong>",
+          "</strong>"
+        ]
+      },
+      "callerContextSha256": "bfcc0cbf65dc1b9282f04f40b4aa36bd4879a84227ed96a0715493b33418a749",
+      "callerPaths": [
+        "src/components/RequestModal/QuotaDisplay/index.tsx"
+      ],
+      "callerPins": [
+        {
+          "file": "src/components/RequestModal/QuotaDisplay/index.tsx",
+          "line": 23,
+          "lineSha256": "9404af2e02a26b1bcd2e4b60d15781021a497d893545c4dcb8bdf14bca72cfcb",
+          "lineText": "allowedRequests:",
+          "nextLine": "'You are allowed to request <strong>{limit}</strong> {type}{days, plural, =0 {} one { every day} other { every <strong>{days}</strong> days}}.',",
+          "previousLine": "'{remaining, plural, one {One software request remains} other {# software requests remain}}',"
+        },
+        {
+          "file": "src/components/RequestModal/QuotaDisplay/index.tsx",
+          "line": 153,
+          "lineSha256": "580b759360e4f08f58aa5d8920cd03154ff6f08bf6a8583a1b7f748b96ad1f4c",
+          "lineText": ": messages.allowedRequests,",
+          "nextLine": "{",
+          "previousLine": "? messages.allowedRequestsUser"
+        }
+      ],
+      "currentTarget": "Se te permite solicitar <strong>{limit}</strong> {type}{days, plural, =0 {} one { cada día} many { cada <strong>{days}</strong> días} other { cada <strong>{days}</strong> días}}.",
+      "currentTargetHash": "d2a786cf6b97f2cbae99fc6e358728dc5d77c0fdce7f9c8547e8711ee25e4b82",
+      "disposition": "propose-correction",
+      "finalMarkup": [
+        "<strong>",
+        "</strong>",
+        "<strong>",
+        "</strong>",
+        "<strong>",
+        "</strong>"
+      ],
+      "finalPluralProfile": [
+        {
+          "branches": {
+            "=0": "",
+            "many": " cada <strong>{days}</strong> días",
+            "one": " cada día",
+            "other": " cada <strong>{days}</strong> días"
+          },
+          "kind": "plural",
+          "name": "days"
+        }
+      ],
+      "finalTarget": "Puede solicitar <strong>{limit}</strong> {type}{days, plural, =0 {} one { cada día} many { cada <strong>{days}</strong> días} other { cada <strong>{days}</strong> días}}.",
+      "finalTargetHash": "158d24d9ea989d01e1a6c889e4b081b28bf2076f1cb143df31d76265b2a068a9",
+      "locale": "es",
+      "source": "You are allowed to request <strong>{limit}</strong> {type}{days, plural, =0 {} one { every day} other { every <strong>{days}</strong> days}}.",
+      "sourceHash": "dfb018d7a63b586ea6aa3bba17c9dd3e39387bce85f87dc0deced7aed380777b",
+      "sourceId": "components.RequestModal.QuotaDisplay.allowedRequests",
+      "sourceMarkup": [
+        "<strong>",
+        "</strong>",
+        "<strong>",
+        "</strong>"
+      ],
+      "sourcePluralProfile": [
+        {
+          "branches": {
+            "=0": "",
+            "one": " every day",
+            "other": " every <strong>{days}</strong> days"
+          },
+          "kind": "plural",
+          "name": "days"
+        }
+      ],
+      "sourcePosition": 2994
+    },
+    {
+      "applicationChecker": "bin/check-i18n-catalogs.mjs compares rich-text tag-name sets; inspected only, not run.",
+      "branchMarkup": {
+        "=0": [],
+        "many": [
+          "<strong>",
+          "</strong>"
+        ],
+        "one": [],
+        "other": [
+          "<strong>",
+          "</strong>"
+        ]
+      },
+      "callerContextSha256": "bfcc0cbf65dc1b9282f04f40b4aa36bd4879a84227ed96a0715493b33418a749",
+      "callerPaths": [
+        "src/components/RequestModal/QuotaDisplay/index.tsx"
+      ],
+      "callerPins": [
+        {
+          "file": "src/components/RequestModal/QuotaDisplay/index.tsx",
+          "line": 23,
+          "lineSha256": "9404af2e02a26b1bcd2e4b60d15781021a497d893545c4dcb8bdf14bca72cfcb",
+          "lineText": "allowedRequests:",
+          "nextLine": "'You are allowed to request <strong>{limit}</strong> {type}{days, plural, =0 {} one { every day} other { every <strong>{days}</strong> days}}.',",
+          "previousLine": "'{remaining, plural, one {One software request remains} other {# software requests remain}}',"
+        },
+        {
+          "file": "src/components/RequestModal/QuotaDisplay/index.tsx",
+          "line": 153,
+          "lineSha256": "580b759360e4f08f58aa5d8920cd03154ff6f08bf6a8583a1b7f748b96ad1f4c",
+          "lineText": ": messages.allowedRequests,",
+          "nextLine": "{",
+          "previousLine": "? messages.allowedRequestsUser"
+        }
+      ],
+      "currentTarget": "Vous pouvez demander <strong>{limit}</strong> {type}{days, plural, =0 {} one { par jour} many { tous les <strong>{days}</strong> jours} other { tous les <strong>{days}</strong> jours}}.",
+      "currentTargetHash": "ce9acd04a2fd21e9ff2f18cca41d23d8cad7fa1a2f99562068d70d6ddf336c24",
+      "disposition": "accept-current",
+      "finalMarkup": [
+        "<strong>",
+        "</strong>",
+        "<strong>",
+        "</strong>",
+        "<strong>",
+        "</strong>"
+      ],
+      "finalPluralProfile": [
+        {
+          "branches": {
+            "=0": "",
+            "many": " tous les <strong>{days}</strong> jours",
+            "one": " par jour",
+            "other": " tous les <strong>{days}</strong> jours"
+          },
+          "kind": "plural",
+          "name": "days"
+        }
+      ],
+      "finalTarget": "Vous pouvez demander <strong>{limit}</strong> {type}{days, plural, =0 {} one { par jour} many { tous les <strong>{days}</strong> jours} other { tous les <strong>{days}</strong> jours}}.",
+      "finalTargetHash": "ce9acd04a2fd21e9ff2f18cca41d23d8cad7fa1a2f99562068d70d6ddf336c24",
+      "locale": "fr",
+      "source": "You are allowed to request <strong>{limit}</strong> {type}{days, plural, =0 {} one { every day} other { every <strong>{days}</strong> days}}.",
+      "sourceHash": "dfb018d7a63b586ea6aa3bba17c9dd3e39387bce85f87dc0deced7aed380777b",
+      "sourceId": "components.RequestModal.QuotaDisplay.allowedRequests",
+      "sourceMarkup": [
+        "<strong>",
+        "</strong>",
+        "<strong>",
+        "</strong>"
+      ],
+      "sourcePluralProfile": [
+        {
+          "branches": {
+            "=0": "",
+            "one": " every day",
+            "other": " every <strong>{days}</strong> days"
+          },
+          "kind": "plural",
+          "name": "days"
+        }
+      ],
+      "sourcePosition": 2994
+    },
+    {
+      "applicationChecker": "bin/check-i18n-catalogs.mjs compares rich-text tag-name sets; inspected only, not run.",
+      "branchMarkup": {
+        "=0": [],
+        "many": [
+          "<strong>",
+          "</strong>"
+        ],
+        "one": [],
+        "other": [
+          "<strong>",
+          "</strong>"
+        ]
+      },
+      "callerContextSha256": "bfcc0cbf65dc1b9282f04f40b4aa36bd4879a84227ed96a0715493b33418a749",
+      "callerPaths": [
+        "src/components/RequestModal/QuotaDisplay/index.tsx"
+      ],
+      "callerPins": [
+        {
+          "file": "src/components/RequestModal/QuotaDisplay/index.tsx",
+          "line": 23,
+          "lineSha256": "9404af2e02a26b1bcd2e4b60d15781021a497d893545c4dcb8bdf14bca72cfcb",
+          "lineText": "allowedRequests:",
+          "nextLine": "'You are allowed to request <strong>{limit}</strong> {type}{days, plural, =0 {} one { every day} other { every <strong>{days}</strong> days}}.',",
+          "previousLine": "'{remaining, plural, one {One software request remains} other {# software requests remain}}',"
+        },
+        {
+          "file": "src/components/RequestModal/QuotaDisplay/index.tsx",
+          "line": 153,
+          "lineSha256": "580b759360e4f08f58aa5d8920cd03154ff6f08bf6a8583a1b7f748b96ad1f4c",
+          "lineText": ": messages.allowedRequests,",
+          "nextLine": "{",
+          "previousLine": "? messages.allowedRequestsUser"
+        }
+      ],
+      "currentTarget": "Você pode pedir. <strong>{limit}</strong> {type}{days, plural, =0 {} one { todos os dias} many { Cada <strong>{days}</strong> dias} other { Cada <strong>{days}</strong> dias}}.",
+      "currentTargetHash": "20174f9c6fccec7892dc4cfdeecff9c6953aafb21c8f015076de87db5958b4b1",
+      "disposition": "propose-correction",
+      "finalMarkup": [
+        "<strong>",
+        "</strong>",
+        "<strong>",
+        "</strong>",
+        "<strong>",
+        "</strong>"
+      ],
+      "finalPluralProfile": [
+        {
+          "branches": {
+            "=0": "",
+            "many": " a cada <strong>{days}</strong> dias",
+            "one": " todos os dias",
+            "other": " a cada <strong>{days}</strong> dias"
+          },
+          "kind": "plural",
+          "name": "days"
+        }
+      ],
+      "finalTarget": "Você pode solicitar <strong>{limit}</strong> {type}{days, plural, =0 {} one { todos os dias} many { a cada <strong>{days}</strong> dias} other { a cada <strong>{days}</strong> dias}}.",
+      "finalTargetHash": "007629490ded9e85a5885e392802833e61df7d1ebc9dcb6bee0270cb2b0155cb",
+      "locale": "pt_BR",
+      "source": "You are allowed to request <strong>{limit}</strong> {type}{days, plural, =0 {} one { every day} other { every <strong>{days}</strong> days}}.",
+      "sourceHash": "dfb018d7a63b586ea6aa3bba17c9dd3e39387bce85f87dc0deced7aed380777b",
+      "sourceId": "components.RequestModal.QuotaDisplay.allowedRequests",
+      "sourceMarkup": [
+        "<strong>",
+        "</strong>",
+        "<strong>",
+        "</strong>"
+      ],
+      "sourcePluralProfile": [
+        {
+          "branches": {
+            "=0": "",
+            "one": " every day",
+            "other": " every <strong>{days}</strong> days"
+          },
+          "kind": "plural",
+          "name": "days"
+        }
+      ],
+      "sourcePosition": 2994
+    },
+    {
+      "applicationChecker": "bin/check-i18n-catalogs.mjs compares rich-text tag-name sets; inspected only, not run.",
+      "branchMarkup": {
+        "=0": [],
+        "few": [
+          "<strong>",
+          "</strong>"
+        ],
+        "many": [
+          "<strong>",
+          "</strong>"
+        ],
+        "one": [],
+        "other": [
+          "<strong>",
+          "</strong>"
+        ],
+        "two": [],
+        "zero": []
+      },
+      "callerContextSha256": "963f68b6176cd12d914ece1073231a72fb6a929a9382f2cce70268bcea9294cb",
+      "callerPaths": [
+        "src/components/RequestModal/QuotaDisplay/index.tsx"
+      ],
+      "callerPins": [
+        {
+          "file": "src/components/RequestModal/QuotaDisplay/index.tsx",
+          "line": 25,
+          "lineSha256": "6346d1e791b4da75cb0a9927e2a9d9707d78e601902dc1a5fc62494c10ff63f3",
+          "lineText": "allowedRequestsUser:",
+          "nextLine": "'This user is allowed to request <strong>{limit}</strong> {type}{days, plural, =0 {} one { every day} other { every <strong>{days}</strong> days}}.',",
+          "previousLine": "'You are allowed to request <strong>{limit}</strong> {type}{days, plural, =0 {} one { every day} other { every <strong>{days}</strong> days}}.',"
+        },
+        {
+          "file": "src/components/RequestModal/QuotaDisplay/index.tsx",
+          "line": 152,
+          "lineSha256": "88137e84fa0b78502fef1952e12a8f438b8b52cd7b3dabfcef5395f4ce50ca81",
+          "lineText": "? messages.allowedRequestsUser",
+          "nextLine": ": messages.allowedRequests,",
+          "previousLine": "userOverride"
+        }
+      ],
+      "currentTarget": "يُسمح لهذا المستخدم بطلب <strong>{limit}</strong> {type}{days, plural, =0 {} zero { كل يوم} one { كل يوم} two { كل يومين} few { كل <strong>{days}</strong> أيام} many { كل <strong>{days}</strong> يومًا} other { كل <strong>{days}</strong> يوم}}.",
+      "currentTargetHash": "1002e2ed5ea804ed5cac5d36775d98df51944f137030461c994ee1e2377c9054",
+      "disposition": "accept-current",
+      "finalMarkup": [
+        "<strong>",
+        "</strong>",
+        "<strong>",
+        "</strong>",
+        "<strong>",
+        "</strong>",
+        "<strong>",
+        "</strong>"
+      ],
+      "finalPluralProfile": [
+        {
+          "branches": {
+            "=0": "",
+            "few": " كل <strong>{days}</strong> أيام",
+            "many": " كل <strong>{days}</strong> يومًا",
+            "one": " كل يوم",
+            "other": " كل <strong>{days}</strong> يوم",
+            "two": " كل يومين",
+            "zero": " كل يوم"
+          },
+          "kind": "plural",
+          "name": "days"
+        }
+      ],
+      "finalTarget": "يُسمح لهذا المستخدم بطلب <strong>{limit}</strong> {type}{days, plural, =0 {} zero { كل يوم} one { كل يوم} two { كل يومين} few { كل <strong>{days}</strong> أيام} many { كل <strong>{days}</strong> يومًا} other { كل <strong>{days}</strong> يوم}}.",
+      "finalTargetHash": "1002e2ed5ea804ed5cac5d36775d98df51944f137030461c994ee1e2377c9054",
+      "locale": "ar",
+      "source": "This user is allowed to request <strong>{limit}</strong> {type}{days, plural, =0 {} one { every day} other { every <strong>{days}</strong> days}}.",
+      "sourceHash": "9b1eb2c5b78c8fca66d769557688c045c2e83d3297c60f1cbec81a356e03a42b",
+      "sourceId": "components.RequestModal.QuotaDisplay.allowedRequestsUser",
+      "sourceMarkup": [
+        "<strong>",
+        "</strong>",
+        "<strong>",
+        "</strong>"
+      ],
+      "sourcePluralProfile": [
+        {
+          "branches": {
+            "=0": "",
+            "one": " every day",
+            "other": " every <strong>{days}</strong> days"
+          },
+          "kind": "plural",
+          "name": "days"
+        }
+      ],
+      "sourcePosition": 2995
+    },
+    {
+      "applicationChecker": "bin/check-i18n-catalogs.mjs compares rich-text tag-name sets; inspected only, not run.",
+      "branchMarkup": {
+        "=0": [],
+        "many": [
+          "<strong>",
+          "</strong>"
+        ],
+        "one": [],
+        "other": [
+          "<strong>",
+          "</strong>"
+        ]
+      },
+      "callerContextSha256": "963f68b6176cd12d914ece1073231a72fb6a929a9382f2cce70268bcea9294cb",
+      "callerPaths": [
+        "src/components/RequestModal/QuotaDisplay/index.tsx"
+      ],
+      "callerPins": [
+        {
+          "file": "src/components/RequestModal/QuotaDisplay/index.tsx",
+          "line": 25,
+          "lineSha256": "6346d1e791b4da75cb0a9927e2a9d9707d78e601902dc1a5fc62494c10ff63f3",
+          "lineText": "allowedRequestsUser:",
+          "nextLine": "'This user is allowed to request <strong>{limit}</strong> {type}{days, plural, =0 {} one { every day} other { every <strong>{days}</strong> days}}.',",
+          "previousLine": "'You are allowed to request <strong>{limit}</strong> {type}{days, plural, =0 {} one { every day} other { every <strong>{days}</strong> days}}.',"
+        },
+        {
+          "file": "src/components/RequestModal/QuotaDisplay/index.tsx",
+          "line": 152,
+          "lineSha256": "88137e84fa0b78502fef1952e12a8f438b8b52cd7b3dabfcef5395f4ce50ca81",
+          "lineText": "? messages.allowedRequestsUser",
+          "nextLine": ": messages.allowedRequests,",
+          "previousLine": "userOverride"
+        }
+      ],
+      "currentTarget": "A este usuario se le permite solicitar <strong>{limit}</strong> {type}{days, plural, =0 {} one { cada día} many { cada <strong>{days}</strong> días} other { cada <strong>{days}</strong> días}}.",
+      "currentTargetHash": "07abac42b1cba3c448a4c4ca90b117c894252b647547c96e9df7423adcf37884",
+      "disposition": "accept-current",
+      "finalMarkup": [
+        "<strong>",
+        "</strong>",
+        "<strong>",
+        "</strong>",
+        "<strong>",
+        "</strong>"
+      ],
+      "finalPluralProfile": [
+        {
+          "branches": {
+            "=0": "",
+            "many": " cada <strong>{days}</strong> días",
+            "one": " cada día",
+            "other": " cada <strong>{days}</strong> días"
+          },
+          "kind": "plural",
+          "name": "days"
+        }
+      ],
+      "finalTarget": "A este usuario se le permite solicitar <strong>{limit}</strong> {type}{days, plural, =0 {} one { cada día} many { cada <strong>{days}</strong> días} other { cada <strong>{days}</strong> días}}.",
+      "finalTargetHash": "07abac42b1cba3c448a4c4ca90b117c894252b647547c96e9df7423adcf37884",
+      "locale": "es",
+      "source": "This user is allowed to request <strong>{limit}</strong> {type}{days, plural, =0 {} one { every day} other { every <strong>{days}</strong> days}}.",
+      "sourceHash": "9b1eb2c5b78c8fca66d769557688c045c2e83d3297c60f1cbec81a356e03a42b",
+      "sourceId": "components.RequestModal.QuotaDisplay.allowedRequestsUser",
+      "sourceMarkup": [
+        "<strong>",
+        "</strong>",
+        "<strong>",
+        "</strong>"
+      ],
+      "sourcePluralProfile": [
+        {
+          "branches": {
+            "=0": "",
+            "one": " every day",
+            "other": " every <strong>{days}</strong> days"
+          },
+          "kind": "plural",
+          "name": "days"
+        }
+      ],
+      "sourcePosition": 2995
+    },
+    {
+      "applicationChecker": "bin/check-i18n-catalogs.mjs compares rich-text tag-name sets; inspected only, not run.",
+      "branchMarkup": {
+        "=0": [],
+        "many": [
+          "<strong>",
+          "</strong>"
+        ],
+        "one": [],
+        "other": [
+          "<strong>",
+          "</strong>"
+        ]
+      },
+      "callerContextSha256": "963f68b6176cd12d914ece1073231a72fb6a929a9382f2cce70268bcea9294cb",
+      "callerPaths": [
+        "src/components/RequestModal/QuotaDisplay/index.tsx"
+      ],
+      "callerPins": [
+        {
+          "file": "src/components/RequestModal/QuotaDisplay/index.tsx",
+          "line": 25,
+          "lineSha256": "6346d1e791b4da75cb0a9927e2a9d9707d78e601902dc1a5fc62494c10ff63f3",
+          "lineText": "allowedRequestsUser:",
+          "nextLine": "'This user is allowed to request <strong>{limit}</strong> {type}{days, plural, =0 {} one { every day} other { every <strong>{days}</strong> days}}.',",
+          "previousLine": "'You are allowed to request <strong>{limit}</strong> {type}{days, plural, =0 {} one { every day} other { every <strong>{days}</strong> days}}.',"
+        },
+        {
+          "file": "src/components/RequestModal/QuotaDisplay/index.tsx",
+          "line": 152,
+          "lineSha256": "88137e84fa0b78502fef1952e12a8f438b8b52cd7b3dabfcef5395f4ce50ca81",
+          "lineText": "? messages.allowedRequestsUser",
+          "nextLine": ": messages.allowedRequests,",
+          "previousLine": "userOverride"
+        }
+      ],
+      "currentTarget": "Cet utilisateur peut demander <strong>{limit}</strong> {type}{days, plural, =0 {} one { par jour} many { tous les <strong>{days}</strong> jours} other { tous les <strong>{days}</strong> jours}}.",
+      "currentTargetHash": "c227bdefe5b958732b7c2eba4a3b2995751f9692aa4841a44694185be16308cc",
+      "disposition": "accept-current",
+      "finalMarkup": [
+        "<strong>",
+        "</strong>",
+        "<strong>",
+        "</strong>",
+        "<strong>",
+        "</strong>"
+      ],
+      "finalPluralProfile": [
+        {
+          "branches": {
+            "=0": "",
+            "many": " tous les <strong>{days}</strong> jours",
+            "one": " par jour",
+            "other": " tous les <strong>{days}</strong> jours"
+          },
+          "kind": "plural",
+          "name": "days"
+        }
+      ],
+      "finalTarget": "Cet utilisateur peut demander <strong>{limit}</strong> {type}{days, plural, =0 {} one { par jour} many { tous les <strong>{days}</strong> jours} other { tous les <strong>{days}</strong> jours}}.",
+      "finalTargetHash": "c227bdefe5b958732b7c2eba4a3b2995751f9692aa4841a44694185be16308cc",
+      "locale": "fr",
+      "source": "This user is allowed to request <strong>{limit}</strong> {type}{days, plural, =0 {} one { every day} other { every <strong>{days}</strong> days}}.",
+      "sourceHash": "9b1eb2c5b78c8fca66d769557688c045c2e83d3297c60f1cbec81a356e03a42b",
+      "sourceId": "components.RequestModal.QuotaDisplay.allowedRequestsUser",
+      "sourceMarkup": [
+        "<strong>",
+        "</strong>",
+        "<strong>",
+        "</strong>"
+      ],
+      "sourcePluralProfile": [
+        {
+          "branches": {
+            "=0": "",
+            "one": " every day",
+            "other": " every <strong>{days}</strong> days"
+          },
+          "kind": "plural",
+          "name": "days"
+        }
+      ],
+      "sourcePosition": 2995
+    },
+    {
+      "applicationChecker": "bin/check-i18n-catalogs.mjs compares rich-text tag-name sets; inspected only, not run.",
+      "branchMarkup": {
+        "=0": [],
+        "many": [
+          "<strong>",
+          "</strong>"
+        ],
+        "one": [],
+        "other": [
+          "<strong>",
+          "</strong>"
+        ]
+      },
+      "callerContextSha256": "963f68b6176cd12d914ece1073231a72fb6a929a9382f2cce70268bcea9294cb",
+      "callerPaths": [
+        "src/components/RequestModal/QuotaDisplay/index.tsx"
+      ],
+      "callerPins": [
+        {
+          "file": "src/components/RequestModal/QuotaDisplay/index.tsx",
+          "line": 25,
+          "lineSha256": "6346d1e791b4da75cb0a9927e2a9d9707d78e601902dc1a5fc62494c10ff63f3",
+          "lineText": "allowedRequestsUser:",
+          "nextLine": "'This user is allowed to request <strong>{limit}</strong> {type}{days, plural, =0 {} one { every day} other { every <strong>{days}</strong> days}}.',",
+          "previousLine": "'You are allowed to request <strong>{limit}</strong> {type}{days, plural, =0 {} one { every day} other { every <strong>{days}</strong> days}}.',"
+        },
+        {
+          "file": "src/components/RequestModal/QuotaDisplay/index.tsx",
+          "line": 152,
+          "lineSha256": "88137e84fa0b78502fef1952e12a8f438b8b52cd7b3dabfcef5395f4ce50ca81",
+          "lineText": "? messages.allowedRequestsUser",
+          "nextLine": ": messages.allowedRequests,",
+          "previousLine": "userOverride"
+        }
+      ],
+      "currentTarget": "Este usuário pode solicitar <strong>{limit}</strong> {type}{days, plural, =0 {} one { todos os dias} many { Cada <strong>{days}</strong> dias} other { Cada <strong>{days}</strong> dias}}.",
+      "currentTargetHash": "ad11ae3c78139e6e3f68627e8609785834356a5974b810a46169031e4962e0da",
+      "disposition": "refinement",
+      "finalMarkup": [
+        "<strong>",
+        "</strong>",
+        "<strong>",
+        "</strong>",
+        "<strong>",
+        "</strong>"
+      ],
+      "finalPluralProfile": [
+        {
+          "branches": {
+            "=0": "",
+            "many": " a cada <strong>{days}</strong> dias",
+            "one": " todos os dias",
+            "other": " a cada <strong>{days}</strong> dias"
+          },
+          "kind": "plural",
+          "name": "days"
+        }
+      ],
+      "finalTarget": "Este usuário pode solicitar <strong>{limit}</strong> {type}{days, plural, =0 {} one { todos os dias} many { a cada <strong>{days}</strong> dias} other { a cada <strong>{days}</strong> dias}}.",
+      "finalTargetHash": "28f91503947707d8a4040209ff678e899c3493ed7df838dc7db8395e48d025c5",
+      "locale": "pt_BR",
+      "source": "This user is allowed to request <strong>{limit}</strong> {type}{days, plural, =0 {} one { every day} other { every <strong>{days}</strong> days}}.",
+      "sourceHash": "9b1eb2c5b78c8fca66d769557688c045c2e83d3297c60f1cbec81a356e03a42b",
+      "sourceId": "components.RequestModal.QuotaDisplay.allowedRequestsUser",
+      "sourceMarkup": [
+        "<strong>",
+        "</strong>",
+        "<strong>",
+        "</strong>"
+      ],
+      "sourcePluralProfile": [
+        {
+          "branches": {
+            "=0": "",
+            "one": " every day",
+            "other": " every <strong>{days}</strong> days"
+          },
+          "kind": "plural",
+          "name": "days"
+        }
+      ],
+      "sourcePosition": 2995
+    }
+  ],
+  "rule": "Plural branches can repeat the same rich-text tags so each branch independently renders its variable in strong text. The English source has one number-rendering branch; locales with additional categories repeat the same wrapper in each cardinal branch.",
+  "semanticallyAccountedFor": 8,
+  "unresolvedMarkupGaps": 0
+}

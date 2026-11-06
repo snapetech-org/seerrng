@@ -1,0 +1,8 @@
+# SeerrNG PR #418 W1800–1899 independent cross-review
+
+- PR #418 remained OPEN/DRAFT at `78a36214596544e1b3033c6a612ae5559db713e3` / tree `ef83a00d078f0a4aed6269b4c23282dbf91fd6f7` before and after review.
+- Independently re-read the 100 source entries, all 1,200 current and candidate cells, 100 caller-context rows, 371 caller line pins, 11 caller files, and the source/12 locale catalog blobs at that exact tree.
+- Input packet SHA256SUMS and INPUT-SHA256SUMS passed before review. The primary packet had no frozen exact prior dispositions for this window; rows labeled `semantic-review-required` were not treated as final translations.
+- Cross-review dispositions: {'accept-current': 773, 'propose-correction': 353, 'propose-refinement': 74}. Primary wording was revised or rejected in 20 cells. The independent findings include a correction for the PT-BR repeat-airing option, two primary correction dispositions with unchanged targets, and the `Recorded` label: the caller displays it beside `recording.completedCount`, so date/time translations are incorrect.
+- Six keys have only definition/single-reference evidence in the targeted files: `components.LiveTv.RecordingList.oneAiring, components.Login.demoModeInfo, components.Login.initialsignin, components.Login.initialsigningin, components.Login.quickconnecterror, components.Login.servertype`. Their lexical review is recorded without claiming runtime rendering.
+- Final targets retain placeholder, markup, and protected-literal parity. Confidence is moderate; native-speaker approval remains outstanding. No repository/PR edits, tests, builds, scans, CI, browser actions, or workflow edits were performed.

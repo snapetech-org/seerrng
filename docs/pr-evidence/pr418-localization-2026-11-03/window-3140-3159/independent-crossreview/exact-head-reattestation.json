@@ -1,0 +1,165 @@
+{
+  "head": "536dfdb7630d5f61fc8a90b82bc33234eb432c9f",
+  "tree": "a011ac81dabbcbc46a4a522f1355efc9025fadc1",
+  "livePr": {
+    "number": 418,
+    "state": "open",
+    "draft": true,
+    "head": "536dfdb7630d5f61fc8a90b82bc33234eb432c9f",
+    "branch": "codex/seerrng-localization-overhaul-20261028",
+    "base": "main"
+  },
+  "sourceOrderCount": 9494,
+  "sourceOrderRange": [
+    3140,
+    3159
+  ],
+  "sourceRows": 20,
+  "targetCells": 240,
+  "locales": [
+    "ar",
+    "de",
+    "es",
+    "fr",
+    "hi",
+    "id",
+    "ja",
+    "ko",
+    "pt_BR",
+    "vi",
+    "zh_Hans",
+    "zh_Hant"
+  ],
+  "sourceCurrentStringAndHashMismatches": 0,
+  "callerRecordCount": 20,
+  "callerLineCount": 45,
+  "callerLineMismatches": 0,
+  "catalogFiles": {
+    "en": {
+      "path": "src/i18n/locale/en.json",
+      "rawSha256": "75ff3c90b52aedd636a506281ffbd6fb2d3739c61294b6008a517f17647e2316",
+      "keys": 9494
+    },
+    "ar": {
+      "path": "src/i18n/locale/ar.json",
+      "rawSha256": "a416e6c3df3c979f4538d4b9e505e64ac3ef3e48b332e8da0b00db14b81d0cc6",
+      "keys": 9494
+    },
+    "de": {
+      "path": "src/i18n/locale/de.json",
+      "rawSha256": "e83fdee00726fb2c8f6eba8d827679f30c62df4abc1cd908317594190591d954",
+      "keys": 9494
+    },
+    "es": {
+      "path": "src/i18n/locale/es.json",
+      "rawSha256": "f9d1cc4e3fed7db65ecd399aefcf73066dcc9c591ff6bb37a6ae9bd0b7213810",
+      "keys": 9494
+    },
+    "fr": {
+      "path": "src/i18n/locale/fr.json",
+      "rawSha256": "907ccc61f571529ca2374a5324bbee741cf65d43c7bf8f3aa3688a12d61899bf",
+      "keys": 9494
+    },
+    "hi": {
+      "path": "src/i18n/locale/hi.json",
+      "rawSha256": "819729e51abf620aed7faf305fd7a1023c55d105bec9d9f92dc8515b5436e564",
+      "keys": 9494
+    },
+    "id": {
+      "path": "src/i18n/locale/id.json",
+      "rawSha256": "f83af862a4737c9f49e13f8eb5c6bb8b84bd980370fd8fd8112c2ca7b5e5109d",
+      "keys": 9494
+    },
+    "ja": {
+      "path": "src/i18n/locale/ja.json",
+      "rawSha256": "f547f699096ebd6a9a2139d295dfe1bd7da6158c0e8efaf01adebc304fb3d9c6",
+      "keys": 9494
+    },
+    "ko": {
+      "path": "src/i18n/locale/ko.json",
+      "rawSha256": "95c9d86fc06560ea40ad531d14d9180a7bb13efb18d8249375a80432359118b4",
+      "keys": 9494
+    },
+    "pt_BR": {
+      "path": "src/i18n/locale/pt_BR.json",
+      "rawSha256": "b34343b469877c2b3973470e5d99ba21eda3a8264ca6fd6744f1da33192e1299",
+      "keys": 9494
+    },
+    "vi": {
+      "path": "src/i18n/locale/vi.json",
+      "rawSha256": "d3e777d611530d18541aed1ea7f300a0fb701ccd67fcc0ea1853f640ebe46715",
+      "keys": 9494
+    },
+    "zh_Hans": {
+      "path": "src/i18n/locale/zh_Hans.json",
+      "rawSha256": "a161e78836b1e3768232d6193c7b80f732ba88258d8205b1c0c37b4158c35c2c",
+      "keys": 9494
+    },
+    "zh_Hant": {
+      "path": "src/i18n/locale/zh_Hant.json",
+      "rawSha256": "fab2d574d6635db307f8eacd8f2cabc288aec0354ab3b188904aed8ef9271632",
+      "keys": 9494
+    }
+  },
+  "windowCatalogSha256RawFileMismatches": {
+    "ar": {
+      "window": "16b41b8c7e7ed6e08922c02280f8fe432ecfc0494826744359ef5eb981db427b",
+      "exactHeadRawSha256": "a416e6c3df3c979f4538d4b9e505e64ac3ef3e48b332e8da0b00db14b81d0cc6"
+    },
+    "de": {
+      "window": "1dcbd484f94986c9993560c9bffd8b80537669c55544b5c1a4192d43332c53ad",
+      "exactHeadRawSha256": "e83fdee00726fb2c8f6eba8d827679f30c62df4abc1cd908317594190591d954"
+    },
+    "es": {
+      "window": "a74ea25d84e460573edc872a5481babe3d0f4ff2454eb0d08a121451c8d90de9",
+      "exactHeadRawSha256": "f9d1cc4e3fed7db65ecd399aefcf73066dcc9c591ff6bb37a6ae9bd0b7213810"
+    },
+    "fr": {
+      "window": "c6508fe27b741a0e0905caee6b521aee0fb1f95e1ca8a8f0e077a8a3e35b3d6d",
+      "exactHeadRawSha256": "907ccc61f571529ca2374a5324bbee741cf65d43c7bf8f3aa3688a12d61899bf"
+    },
+    "hi": {
+      "window": "19d144a73d3608e1ba66efdaa1bc04a322cf8882cd5b65edbcf104be7a69741a",
+      "exactHeadRawSha256": "819729e51abf620aed7faf305fd7a1023c55d105bec9d9f92dc8515b5436e564"
+    },
+    "id": {
+      "window": "d9c3f2e05cc5e663592aaf51bcda76f505970c2c59ff70f8baca28d1146f431f",
+      "exactHeadRawSha256": "f83af862a4737c9f49e13f8eb5c6bb8b84bd980370fd8fd8112c2ca7b5e5109d"
+    },
+    "ja": {
+      "window": "149aaca60094fcfad1ea83576a62b15afe085e49df747b6ef9b381f90cbe43c3",
+      "exactHeadRawSha256": "f547f699096ebd6a9a2139d295dfe1bd7da6158c0e8efaf01adebc304fb3d9c6"
+    },
+    "ko": {
+      "window": "1ce2024f28298b1dd0d181002ac9bd0267dd2084efef8ad9ffaaa1e2d035c71d",
+      "exactHeadRawSha256": "95c9d86fc06560ea40ad531d14d9180a7bb13efb18d8249375a80432359118b4"
+    },
+    "pt_BR": {
+      "window": "a92098ac095dbf553c71a8977d4999abd021d8fa2ab6987e00febd1a8139cd74",
+      "exactHeadRawSha256": "b34343b469877c2b3973470e5d99ba21eda3a8264ca6fd6744f1da33192e1299"
+    },
+    "vi": {
+      "window": "90e86e8cb91a4df6cd24226123f16350b6a3d6c9f4ad1aa871bd83e70e24469d",
+      "exactHeadRawSha256": "d3e777d611530d18541aed1ea7f300a0fb701ccd67fcc0ea1853f640ebe46715"
+    },
+    "zh_Hans": {
+      "window": "b986efa6177355f5bc3a3ef41e075bcdff3bea79255e37926e7403236475937f",
+      "exactHeadRawSha256": "a161e78836b1e3768232d6193c7b80f732ba88258d8205b1c0c37b4158c35c2c"
+    },
+    "zh_Hant": {
+      "window": "a08f716bf1ac8aca5cf84e322ab041c6e845dd9bf6f52760bb7e3f8b72678bcc",
+      "exactHeadRawSha256": "fab2d574d6635db307f8eacd8f2cabc288aec0354ab3b188904aed8ef9271632"
+    }
+  },
+  "inputPacketSha256": {
+    "window.json": "ebdfefcf240e8e61e2e1c47393a39c9edba3287c2f45b8742dc4518b1d61dae2",
+    "source-boundaries.json": "1c6f0486db7c391a5b141b3202b7b4e889bba1664eec8f900b91b17f400e2a0e",
+    "source-current-cells.jsonl": "29e900857d8c82ed84a9773b7a173650c745784f2440a5c731e1590111a93999",
+    "caller-contexts.jsonl": "80c2b73813b8220d46c42a1fb489d7ea9f356f1d8394b521174002713a9fb226"
+  },
+  "callerSearchScope": "Exact components.RequestModal message-group definitions and targeted use sites; not a full dynamic call graph.",
+  "notes": [
+    "Exact per-cell source/target values and SHA-256 pins, source positions, locale keys, Git blobs, caller lines, and caller line SHA-256 pins match the exact head.",
+    "The non-English window.catalogSha256 fields are stale or use an unspecified algorithm; they do not equal raw exact-head locale-file SHA-256. Per-cell target pins were independently reattached directly to exact-head locale catalogs."
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "result": "APPLIED_AND_READ_BACK",
+  "pullRequest": 418,
+  "inputHead": "d49b44895d0ded9796f0c970ad09141212e9a98f",
+  "inputTree": "cebcfc11e0ea37c42f5b6e979e96cca8c89c7814",
+  "locales": 12,
+  "catalogKeyCount": 9494,
+  "proposalCells": 169,
+  "catalogValuesChanged": 168,
+  "retainedCurrent": 1,
+  "revisedByCrossReview": 19,
+  "acceptedPrimaryProposals": 149,
+  "allTargetsReadBack": true,
+  "catalogKeySetsPreserved": true,
+  "unplannedCatalogChanges": 0,
+  "testsBuildsCiRun": false
+}

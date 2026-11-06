@@ -1,0 +1,452 @@
+{
+  "3100:de": {
+    "confidence": "high",
+    "kind": "refinement",
+    "rationale": "German compounds 4K with Anfrage using a hyphen.",
+    "target": "Ausstehende 4K-Anfrage"
+  },
+  "3100:es": {
+    "confidence": "moderate",
+    "kind": "refinement",
+    "rationale": "Use standard Spanish sentence case in the modal label.",
+    "target": "Solicitud 4K pendiente"
+  },
+  "3100:id": {
+    "confidence": "high",
+    "kind": "correction",
+    "rationale": "“Terakhir” means “last”; it changes pending to last.",
+    "target": "Permintaan 4K tertunda"
+  },
+  "3100:pt_BR": {
+    "confidence": "high",
+    "kind": "correction",
+    "rationale": "The current word order is awkward and title-case capitalization is inconsistent for this label.",
+    "target": "Solicitação 4K pendente"
+  },
+  "3100:vi": {
+    "confidence": "high",
+    "kind": "correction",
+    "rationale": "The current wording does not state the pending status naturally.",
+    "target": "Yêu cầu 4K đang chờ xử lý"
+  },
+  "3101:ar": {
+    "confidence": "high",
+    "kind": "correction",
+    "rationale": "The target means waiting for the request, rather than a pending movie request.",
+    "target": "طلب فيلم مُعلّق"
+  },
+  "3101:ja": {
+    "confidence": "high",
+    "kind": "correction",
+    "rationale": "The current first word means finished/completed, the opposite of pending.",
+    "target": "保留中の映画リクエスト"
+  },
+  "3101:ko": {
+    "confidence": "high",
+    "kind": "correction",
+    "rationale": "Replace untranslated English “Pending” and correct the noun phrase.",
+    "target": "대기 중인 영화 요청"
+  },
+  "3101:zh_Hans": {
+    "confidence": "high",
+    "kind": "correction",
+    "rationale": "Use the standard pending-request term rather than the less suitable 待决.",
+    "target": "待处理的电影请求"
+  },
+  "3101:zh_Hant": {
+    "confidence": "high",
+    "kind": "correction",
+    "rationale": "Use the standard pending-request term and Traditional Chinese characters.",
+    "target": "待處理的電影請求"
+  },
+  "3102:de": {
+    "confidence": "high",
+    "kind": "correction",
+    "rationale": "The current sentence omits the approval state.",
+    "target": "Deine Anfrage wartet auf Genehmigung."
+  },
+  "3102:hi": {
+    "confidence": "high",
+    "kind": "correction",
+    "rationale": "The current Hindi predicate is incomplete and unnatural.",
+    "target": "आपका अनुरोध मंज़ूरी की प्रतीक्षा कर रहा है।"
+  },
+  "3102:id": {
+    "confidence": "high",
+    "kind": "correction",
+    "rationale": "Use idiomatic Indonesian for a request awaiting approval.",
+    "target": "Permintaan Anda sedang menunggu persetujuan."
+  },
+  "3102:ko": {
+    "confidence": "moderate",
+    "kind": "refinement",
+    "rationale": "Drop the unnecessary second-person pronoun and use a natural Korean sentence.",
+    "target": "요청이 승인을 기다리고 있습니다."
+  },
+  "3102:vi": {
+    "confidence": "high",
+    "kind": "correction",
+    "rationale": "Replace the gendered older-brother address with neutral product copy.",
+    "target": "Yêu cầu của bạn đang chờ phê duyệt."
+  },
+  "3102:zh_Hans": {
+    "confidence": "high",
+    "kind": "correction",
+    "rationale": "The current target adds an administrator that the English source does not specify.",
+    "target": "你的请求正在等待批准。"
+  },
+  "3102:zh_Hant": {
+    "confidence": "high",
+    "kind": "correction",
+    "rationale": "The current target adds an administrator that the English source does not specify.",
+    "target": "您的請求正在等待核准。"
+  },
+  "3103:vi": {
+    "confidence": "high",
+    "kind": "correction",
+    "rationale": "The current “đợi” fragment is not a complete, natural status label.",
+    "target": "Yêu cầu đang chờ xử lý"
+  },
+  "3104:de": {
+    "confidence": "high",
+    "kind": "correction",
+    "rationale": "The current infinitive “Verarbeiten” is an action, not a processing status.",
+    "target": "In Bearbeitung"
+  },
+  "3105:ar": {
+    "confidence": "moderate",
+    "kind": "refinement",
+    "rationale": "Use the standard Arabic UI term for quality.",
+    "target": "الجودة"
+  },
+  "3105:ja": {
+    "confidence": "high",
+    "kind": "correction",
+    "rationale": "The current Japanese means “FAQ”; it does not mean quality.",
+    "target": "品質"
+  },
+  "3105:ko": {
+    "confidence": "high",
+    "kind": "correction",
+    "rationale": "Remove “management,” which is absent from the source.",
+    "target": "품질"
+  },
+  "3106:hi": {
+    "confidence": "moderate",
+    "kind": "refinement",
+    "rationale": "Replace the awkward hybrid “कोटा-अधिक” with a grammatical expression for exceeding the quota.",
+    "target": "<strong>{title}</strong> के लिए आपका अनुरोध तय कोटे से अधिक है और व्यवस्थापक की मंज़ूरी की प्रतीक्षा कर रहा है।"
+  },
+  "3107:ja": {
+    "confidence": "high",
+    "kind": "correction",
+    "rationale": "Use natural Japanese for submitting movie requests; the current says to “make” requests.",
+    "target": "選択したユーザーは、これ以上映画をリクエストできません。"
+  },
+  "3107:vi": {
+    "confidence": "high",
+    "kind": "correction",
+    "rationale": "The current verb means “provide” and “phim ảnh” is unnecessary here.",
+    "target": "Người dùng đã chọn không thể gửi thêm yêu cầu phim."
+  },
+  "3107:zh_Hans": {
+    "confidence": "moderate",
+    "kind": "refinement",
+    "rationale": "Use natural Chinese wording and remove the space before the full stop.",
+    "target": "所选用户无法再提出更多电影请求。"
+  },
+  "3107:zh_Hant": {
+    "confidence": "moderate",
+    "kind": "refinement",
+    "rationale": "Use natural Traditional Chinese wording and remove the space before the full stop.",
+    "target": "選取的使用者無法再提出更多電影請求。"
+  },
+  "3108:de": {
+    "confidence": "moderate",
+    "kind": "refinement",
+    "rationale": "Use a complete, idiomatic German label.",
+    "target": "Bereit für eine Anfrage"
+  },
+  "3108:id": {
+    "confidence": "high",
+    "kind": "correction",
+    "rationale": "The current construction is ungrammatical; use the verb “submit/request.”",
+    "target": "Siap mengajukan permintaan"
+  },
+  "3108:ja": {
+    "confidence": "high",
+    "kind": "correction",
+    "rationale": "The current noun fragment says “preparation for a request,” not “ready to request.”",
+    "target": "リクエストする準備ができています"
+  },
+  "3108:pt_BR": {
+    "confidence": "moderate",
+    "kind": "refinement",
+    "rationale": "Remove sentence-final punctuation from the UI status label.",
+    "target": "Pronto para solicitar"
+  },
+  "3109:ar": {
+    "confidence": "high",
+    "kind": "correction",
+    "rationale": "The current target says only “date,” omitting release.",
+    "target": "تاريخ الإصدار"
+  },
+  "3109:vi": {
+    "confidence": "high",
+    "kind": "correction",
+    "rationale": "The current target says only “release,” omitting date.",
+    "target": "Ngày phát hành"
+  },
+  "3109:zh_Hant": {
+    "confidence": "high",
+    "kind": "correction",
+    "rationale": "Translate with Traditional Chinese characters; the current value is Simplified Chinese.",
+    "target": "發行日期"
+  },
+  "3110:ko": {
+    "confidence": "high",
+    "kind": "correction",
+    "rationale": "Replace untranslated English “resubmit” and use natural Korean instructions.",
+    "target": "이 실패한 요청을 다시 제출하려면 다른 서버를 선택하세요."
+  },
+  "3110:vi": {
+    "confidence": "high",
+    "kind": "correction",
+    "rationale": "The current target incorrectly says to restore a wrong request and mistranslates server.",
+    "target": "Chọn máy chủ khác để gửi lại yêu cầu không thành công này."
+  },
+  "3110:zh_Hans": {
+    "confidence": "moderate",
+    "kind": "refinement",
+    "rationale": "Use standard modal instruction wording and remove the space before the full stop.",
+    "target": "请选择其他服务器以重新提交此失败的请求。"
+  },
+  "3110:zh_Hant": {
+    "confidence": "moderate",
+    "kind": "refinement",
+    "rationale": "Use natural Traditional Chinese instruction wording and remove the space before the full stop.",
+    "target": "請選擇其他伺服器以重新提交這項失敗的請求。"
+  },
+  "3111:ar": {
+    "confidence": "high",
+    "kind": "correction",
+    "rationale": "The current sentence has agreement and spelling errors and does not express “will be kept” correctly.",
+    "target": "سيتم الاحتفاظ باختيارات الموسم والحلقات الأصلية."
+  },
+  "3111:hi": {
+    "confidence": "moderate",
+    "kind": "refinement",
+    "rationale": "Make the season/episode selections agree naturally.",
+    "target": "मूल सीज़न और एपिसोड के चयन बनाए रखे जाएंगे।"
+  },
+  "3111:id": {
+    "confidence": "high",
+    "kind": "correction",
+    "rationale": "“Pemilihan awal musim” reads as an initial season selection rather than preserving the original choices.",
+    "target": "Pilihan musim dan episode semula akan dipertahankan."
+  },
+  "3111:ja": {
+    "confidence": "moderate",
+    "kind": "refinement",
+    "rationale": "Use the natural Japanese word for the original selections.",
+    "target": "元のシーズンとエピソードの選択は保持されます。"
+  },
+  "3111:vi": {
+    "confidence": "high",
+    "kind": "correction",
+    "rationale": "The current target says “first season” and “selection phase,” changing the meaning.",
+    "target": "Các lựa chọn mùa và tập ban đầu sẽ được giữ nguyên."
+  },
+  "3111:zh_Hans": {
+    "confidence": "high",
+    "kind": "correction",
+    "rationale": "Replace the unnatural abbreviation for season and episode selections.",
+    "target": "原先选择的季数和剧集将予以保留。"
+  },
+  "3111:zh_Hant": {
+    "confidence": "high",
+    "kind": "correction",
+    "rationale": "State that the originally selected seasons and episodes will be preserved.",
+    "target": "原先選擇的季數和集數會予以保留。"
+  },
+  "3112:hi": {
+    "confidence": "high",
+    "kind": "correction",
+    "rationale": "Use a complete Hindi sentence for the approved request.",
+    "target": "<strong>{title}</strong> के लिए अनुरोध मंज़ूर हो गया!"
+  },
+  "3112:vi": {
+    "confidence": "high",
+    "kind": "correction",
+    "rationale": "The current “Đồng ý” means “agree,” not that the request was approved.",
+    "target": "Yêu cầu <strong>{title}</strong> đã được duyệt!"
+  },
+  "3113:ar": {
+    "confidence": "moderate",
+    "kind": "refinement",
+    "rationale": "Use grammatical Arabic word order and the correct hamza form.",
+    "target": "تم إلغاء طلب <strong>{title}</strong>."
+  },
+  "3113:fr": {
+    "confidence": "high",
+    "kind": "correction",
+    "rationale": "The current “refusée” means rejected/refused, not canceled.",
+    "target": "La demande pour <strong>{title}</strong> a été annulée."
+  },
+  "3113:hi": {
+    "confidence": "high",
+    "kind": "correction",
+    "rationale": "The current infinitive is an imperative-like fragment instead of a canceled-request status.",
+    "target": "<strong>{title}</strong> के लिए अनुरोध रद्द कर दिया गया।"
+  },
+  "3113:vi": {
+    "confidence": "moderate",
+    "kind": "refinement",
+    "rationale": "Use a complete canceled-request status sentence.",
+    "target": "Yêu cầu cho <strong>{title}</strong> đã bị hủy."
+  },
+  "3115:ar": {
+    "confidence": "moderate",
+    "kind": "refinement",
+    "rationale": "Clarify that the remaining quota is for requests, rather than one request.",
+    "target": "الحصة المتبقية من طلباتك غير كافية لهذا الاختيار."
+  },
+  "3115:id": {
+    "confidence": "moderate",
+    "kind": "refinement",
+    "rationale": "Capitalize the formal second-person pronoun and use the idiomatic “pilihan.”",
+    "target": "Kuota permintaan Anda yang tersisa tidak cukup untuk pilihan ini."
+  },
+  "3115:ja": {
+    "confidence": "high",
+    "kind": "correction",
+    "rationale": "The current target says the remaining requests are insufficient, rather than the request quota.",
+    "target": "残りのリクエスト枠では、この選択に必要な数に足りません。"
+  },
+  "3115:ko": {
+    "confidence": "high",
+    "kind": "correction",
+    "rationale": "Correct grammar and express insufficient remaining request quota.",
+    "target": "남은 요청 할당량으로는 이 선택에 필요한 수량을 충족할 수 없습니다."
+  },
+  "3115:pt_BR": {
+    "confidence": "moderate",
+    "kind": "refinement",
+    "rationale": "Prefer standard Portuguese “cota” and plural requests.",
+    "target": "Sua cota de solicitações restante não é suficiente para esta seleção."
+  },
+  "3115:vi": {
+    "confidence": "high",
+    "kind": "correction",
+    "rationale": "Replace the gendered address and unnatural quota term with neutral product copy.",
+    "target": "Hạn mức yêu cầu còn lại của bạn không đủ cho lựa chọn này."
+  },
+  "3115:zh_Hans": {
+    "confidence": "high",
+    "kind": "correction",
+    "rationale": "Complete the sentence and express that remaining quota cannot cover this selection.",
+    "target": "您剩余的请求配额不足以满足此次选择。"
+  },
+  "3115:zh_Hant": {
+    "confidence": "moderate",
+    "kind": "refinement",
+    "rationale": "Use natural Traditional Chinese and remove trailing whitespace.",
+    "target": "您的剩餘請求額度不足以滿足此項選擇。"
+  },
+  "3116:vi": {
+    "confidence": "high",
+    "kind": "correction",
+    "rationale": "“Phục hồi” means restore; this status means the request was resubmitted.",
+    "target": "Yêu cầu cho <strong>{title}</strong> đã được gửi lại."
+  },
+  "3116:zh_Hant": {
+    "confidence": "high",
+    "kind": "correction",
+    "rationale": "Use a natural Traditional Chinese status construction.",
+    "target": "已重新提交 <strong>{title}</strong> 的請求。"
+  },
+  "3117:id": {
+    "confidence": "high",
+    "kind": "correction",
+    "rationale": "The current “gagal” means “failed,” the opposite of successfully requested.",
+    "target": "Permintaan untuk <strong>{title}</strong> berhasil!"
+  },
+  "3117:ja": {
+    "confidence": "moderate",
+    "kind": "refinement",
+    "rationale": "Clarify that the request succeeded, not that some unspecified process completed.",
+    "target": "<strong>{title}</strong> のリクエストが成功しました！"
+  },
+  "3117:ko": {
+    "confidence": "moderate",
+    "kind": "refinement",
+    "rationale": "Use natural Korean word order for a successful request.",
+    "target": "<strong>{title}</strong> 요청이 성공적으로 완료되었습니다!"
+  },
+  "3117:vi": {
+    "confidence": "high",
+    "kind": "correction",
+    "rationale": "Use a natural Vietnamese success message rather than saying the title “has requested.”",
+    "target": "Đã yêu cầu <strong>{title}</strong> thành công!"
+  },
+  "3118:ar": {
+    "confidence": "moderate",
+    "kind": "refinement",
+    "rationale": "Use grammatical Arabic word order and the correct hamza form.",
+    "target": "تم إلغاء طلب <strong>{title}</strong>."
+  },
+  "3118:fr": {
+    "confidence": "high",
+    "kind": "correction",
+    "rationale": "The current “refusée” means rejected/refused, not canceled.",
+    "target": "La demande pour <strong>{title}</strong> a été annulée."
+  },
+  "3118:hi": {
+    "confidence": "high",
+    "kind": "correction",
+    "rationale": "The current infinitive is an imperative-like fragment instead of a canceled-request status.",
+    "target": "<strong>{title}</strong> के लिए अनुरोध रद्द कर दिया गया।"
+  },
+  "3118:vi": {
+    "confidence": "moderate",
+    "kind": "refinement",
+    "rationale": "Use a complete canceled-request status sentence.",
+    "target": "Yêu cầu cho <strong>{title}</strong> đã bị hủy."
+  },
+  "3119:ar": {
+    "confidence": "high",
+    "kind": "correction",
+    "rationale": "Remove an invented explanatory parenthetical and translate the modal title concisely.",
+    "target": "طلب مجموعة بدقة 4K"
+  },
+  "3119:es": {
+    "confidence": "moderate",
+    "kind": "refinement",
+    "rationale": "Use standard Spanish capitalization in this modal title.",
+    "target": "Solicitar colección en 4K"
+  },
+  "3119:hi": {
+    "confidence": "high",
+    "kind": "correction",
+    "rationale": "The current word order is ungrammatical and obscures that this is a request action.",
+    "target": "4K में संग्रह का अनुरोध करें"
+  },
+  "3119:id": {
+    "confidence": "high",
+    "kind": "correction",
+    "rationale": "Use an idiomatic Indonesian modal title; the current noun order is unnatural.",
+    "target": "Minta koleksi dalam 4K"
+  },
+  "3119:pt_BR": {
+    "confidence": "high",
+    "kind": "correction",
+    "rationale": "The current phrase is missing the action/preposition structure and is not grammatical Portuguese.",
+    "target": "Solicitar coleção em 4K"
+  },
+  "3119:vi": {
+    "confidence": "high",
+    "kind": "correction",
+    "rationale": "The current word order makes the collection sound like a request.",
+    "target": "Yêu cầu bộ sưu tập ở chất lượng 4K"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "cells": 240,
+  "placeholderCurrentAndReviewedPass": 240,
+  "markupCurrentAndReviewedPass": 240,
+  "icuPluralCells": 12,
+  "requiredPluralBranchSetsPresentInCurrentAndReviewed": 12,
+  "pluralMarkerReview": {
+    "sourceHashBranches": "one=# and other=#",
+    "localesWithLiteralHashMarkersPreserved": "11/12",
+    "arabic": "one branch lexicalizes the count as “one episode” and retains the ICU count selector; other branch retains #; locale-specific zero/two/few/many branches are present."
+  },
+  "markupTagsInScope": "No source or target message contains markup tags; all source/current/reviewed tag signatures match."
+}

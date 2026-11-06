@@ -1,0 +1,152 @@
+{
+  "schemaVersion": 1,
+  "artifact": "Primary semantic review — SeerrNG PR #418 W3420–W3439",
+  "reviewedAtUTC": "2026-11-03T08:47:26+00:00",
+  "reviewType": "primary",
+  "reviewerMode": "Candidate-free packet only; no primary/blind proposal artifacts were consulted.",
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "window": "W3420-W3439",
+  "head": "3f5ddfdddbeb77cf02cc9d14e00001c8d1aa61c6",
+  "tree": "1c48dc5ea6e8db6c2da546ec58e88d38eb8f9cc7",
+  "liveAttestation": {
+    "repository": "snapetech-org/seerrng",
+    "pullRequest": 418,
+    "state": "OPEN",
+    "draft": true,
+    "baseRef": "main",
+    "baseSha": "221d8e0d542802da7529cd272c928cc747677e5c",
+    "headRef": "codex/seerrng-localization-overhaul-20261028",
+    "head": "3f5ddfdddbeb77cf02cc9d14e00001c8d1aa61c6",
+    "remoteBranchRef": "refs/heads/codex/seerrng-localization-overhaul-20261028",
+    "remoteBranchHead": "3f5ddfdddbeb77cf02cc9d14e00001c8d1aa61c6",
+    "remotePullRef": "refs/pull/418/head",
+    "remotePullRefHead": "3f5ddfdddbeb77cf02cc9d14e00001c8d1aa61c6",
+    "commitTree": "1c48dc5ea6e8db6c2da546ec58e88d38eb8f9cc7",
+    "worktree": "/mnt/disks/scratch/task-worktrees/localization-20261103/seerrng-pr418-w3400-review-20261103",
+    "worktreeBranch": "detached",
+    "worktreeClean": true,
+    "verifiedAtUTC": "2026-11-03T08:45:28+00:00"
+  },
+  "candidateFreeInput": {
+    "path": "/mnt/disks/scratch/task-scratch/seerrng-pr418-w3420-3439-primary-20261103/candidate-free-input",
+    "sha256SumsFileSha256": "a4d0d9a498e8b199becc68bfb4882a755c0060279298a4fc13cb182e06c25e15",
+    "checksumsPass": true,
+    "files": {
+      "PR-attestation.json": "07b13d8d39cca2c4c277a446f84ded3e43d9577750430a2345a7384dd2cc9ea4",
+      "README.txt": "452abe0d070042f06244cf66227dca71d22339806b87e3291a50188a3a9523b7",
+      "caller-context-blocks.jsonl": "982e7d8141083bbae38f43866601ef0d9f19f34130cec6feb8cb4deaec32e0fb",
+      "caller-contexts.jsonl": "8651a6d2dc43477cecb590a8d35acb077e18807f29ffc6b26706a5413d15ca7f",
+      "caller-resolution-findings.json": "561d2d5481205e06725275ca642a03ae132642b5e0cc30bfad08184a2b4bd5ec",
+      "current-target-cells.jsonl": "4e39297b22a9c0745bdb8385c686bd8ac613a66552282019bbdcb3ee3ffe86f1",
+      "file-pins.json": "d69b8585d7ac0965d370ebbb2e313f1650529aeccfb61b02ae937a682ae0c7ce",
+      "source-cells.jsonl": "2ee55685e30f6bb2e22bb6c7aebb1240e9c10e8709d2b22800b5957af1228a53",
+      "source-order.jsonl": "bf213b66e864f0e31ab67122ca6c7229b6ace6785594a86ba9b891f5c4970f63",
+      "window.json": "1dcd83db7fe3d0dad72c2c81a0d5ea379f9480643916931bc1279bc440246471"
+    },
+    "sourceRows": 20,
+    "localeCount": 12,
+    "cellCount": 240
+  },
+  "counts": {
+    "totalCells": 240,
+    "acceptCurrent": 212,
+    "correction": 2,
+    "refinement": 2,
+    "hold": 24,
+    "nativeSpeakerApproval": false
+  },
+  "callerResolutionHolds": [
+    {
+      "position": 3421,
+      "sourceId": "components.Requests.selectUser",
+      "locales": [
+        "es",
+        "zh_Hans",
+        "hi",
+        "de",
+        "ja",
+        "fr",
+        "pt_BR",
+        "ar",
+        "ko",
+        "zh_Hant",
+        "vi",
+        "id"
+      ],
+      "reason": "The exact source key is present only as a message definition; no production direct reference or dynamic label mapping was resolved in the pinned Requests component. Hold pending caller identification."
+    },
+    {
+      "position": 3423,
+      "sourceId": "components.Requests.service",
+      "locales": [
+        "es",
+        "zh_Hans",
+        "hi",
+        "de",
+        "ja",
+        "fr",
+        "pt_BR",
+        "ar",
+        "ko",
+        "zh_Hant",
+        "vi",
+        "id"
+      ],
+      "reason": "The exact source key is present only as a message definition; no production direct reference or dynamic label mapping was resolved in the pinned Requests component. Hold pending caller identification."
+    }
+  ],
+  "proposals": [
+    {
+      "position": 3431,
+      "locale": "id",
+      "sourceId": "components.Requests.sortBy",
+      "currentTarget": "Urut menurut",
+      "proposedTarget": "Urutkan berdasarkan",
+      "verdict": "refinement",
+      "rationale": "“Urutkan berdasarkan” is the standard concise Indonesian UI phrasing for a sort control. The current “Urut menurut” is understandable but stilted in this section heading."
+    },
+    {
+      "position": 3434,
+      "locale": "ja",
+      "sourceId": "components.Requests.sortFirstPublished",
+      "currentTarget": "初公開",
+      "proposedTarget": "初版発行",
+      "verdict": "refinement",
+      "rationale": "The caller uses this sort label for book/audiobook and comic publication dates. “初版発行” is more specific to first publication than “初公開,” which suggests an initial public release."
+    },
+    {
+      "position": 3434,
+      "locale": "ko",
+      "sourceId": "components.Requests.sortFirstPublished",
+      "currentTarget": "첫 게시",
+      "proposedTarget": "최초 출판",
+      "verdict": "correction",
+      "rationale": "The caller uses this label for book/audiobook and comic publication dates. “게시” means posting, so the current wording can suggest an online post; “출판” restores publication meaning."
+    },
+    {
+      "position": 3434,
+      "locale": "pt_BR",
+      "sourceId": "components.Requests.sortFirstPublished",
+      "currentTarget": "Primeiro Publicado",
+      "proposedTarget": "Primeira publicação",
+      "verdict": "correction",
+      "rationale": "This is a book/comic sort label. The current masculine participle “Primeiro Publicado” is an awkward literal UI label; “Primeira publicação” is the natural noun phrase."
+    }
+  ],
+  "structuralReview": {
+    "placeholderTokenSetMismatches": 0,
+    "currentPlaceholderOrderDiffs": 3,
+    "markupMismatches": 0,
+    "numericTokenMismatches": 0,
+    "protectedLiteralMismatches": 0,
+    "edgeWhitespaceMismatches": 0
+  },
+  "scopeNotes": [
+    "Definitions for components.Requests.selectUser and components.Requests.service have no production caller in the pinned Requests source; held all locale cells pending caller identification.",
+    "For sizeProgress, Hindi/Japanese/Korean reorder complete and total placeholders; all named tokens are preserved.",
+    "Primary machine review only; no native speaker approval."
+  ],
+  "repoOrPrChanged": false,
+  "testsBuildsOrCiRun": false
+}

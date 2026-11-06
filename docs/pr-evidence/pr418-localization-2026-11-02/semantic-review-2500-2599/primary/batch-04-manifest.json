@@ -1,0 +1,19 @@
+{
+  "batch": "batch-04",
+  "cellCount": 300,
+  "glossarySha256": "14ae3b10b8632b4abaed66211b35e4f6aad9b444f4fbc73f6f92570189bd389b",
+  "head": "0905d4be32d8b7ec3b1af701473a3fdf6e0f30a2",
+  "inputFile": "batch-04-input.jsonl",
+  "inputSha256": "4dd0959520423527d791086be06f9193a7a3b3c1041c2f6e6745ceed4074ff32",
+  "locales": [
+    "vi",
+    "zh_Hans",
+    "zh_Hant"
+  ],
+  "sourceCount": 100,
+  "sourcePositions": [
+    2500,
+    2599
+  ],
+  "tree": "a09117211080bbd89d32959f17d93b02a82b966f"
+}

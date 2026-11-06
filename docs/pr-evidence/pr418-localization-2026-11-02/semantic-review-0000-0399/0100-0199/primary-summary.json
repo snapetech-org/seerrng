@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "task": "Independent semantic review of SeerrNG PR #418 W700-749 sourceIds positions 100 through 199",
+  "reviewSlice": {
+    "startInclusive": 100,
+    "stopExclusive": 200,
+    "sourceIdCount": 100,
+    "directLocaleCount": 12,
+    "eligibleCellCount": 1179
+  },
+  "pin": {
+    "pullRequest": 418,
+    "state": "OPEN",
+    "isDraft": true,
+    "head": "d1137d06ffb5af57ef599ac9bf495aff2a990a7b",
+    "tree": "0aa22f0bb43e3e30d216e2ae19939220e05f04f7"
+  },
+  "eligibleReviewStatusCounts": {
+    "correction-needed": 218,
+    "accept-current": 961
+  },
+  "correctionCount": 218,
+  "priorRoutedCellsExcludedWithoutAdjudication": 21,
+  "priorRoutingDispositionCounts": {
+    "prior-correction-applied-exact-target-match": 8,
+    "prior-equivalence-reviewed-target-matches-live": 13
+  },
+  "nativeSpeakerApproval": false,
+  "notes": [
+    "Only rows routed new-semantic-review-required received a new semantic disposition.",
+    "Prior exact equivalence and applied-correction rows are excluded from this ledger and were not re-adjudicated.",
+    "Every correction includes an exact proposed target and UTF-8 SHA-256 target hash.",
+    "Caller excerpts come from the packet source-contexts.jsonl pinned to the reviewed head/tree.",
+    "No source, catalog, workflow, or repository files were modified."
+  ],
+  "ledger": "semantic-review-0100-0199.jsonl"
+}

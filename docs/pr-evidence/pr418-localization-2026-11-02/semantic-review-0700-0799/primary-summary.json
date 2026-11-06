@@ -1,0 +1,216 @@
+{
+  "blockers": [],
+  "cellCount": 1200,
+  "confidence": "moderate",
+  "correctionCountsByLocale": {
+    "ar": 13,
+    "de": 0,
+    "es": 1,
+    "fr": 7,
+    "hi": 19,
+    "id": 15,
+    "ja": 3,
+    "ko": 21,
+    "pt-BR": 12,
+    "vi": 33,
+    "zh-CN": 20,
+    "zh-TW": 31
+  },
+  "correctionTargetsProposed": 175,
+  "coverageLimit": "The 12 routed prior cells were retained without re-adjudication; 1,188 new-routed cells were reviewed. Native-speaker review remains recommended.",
+  "directLocales": [
+    "ar",
+    "de",
+    "es",
+    "fr",
+    "hi",
+    "id",
+    "ja",
+    "ko",
+    "pt-BR",
+    "vi",
+    "zh-CN",
+    "zh-TW"
+  ],
+  "inputHashes": {
+    "input_cell-plan.jsonlSha256": "97c3402252a34aaa4f8f9f44a691281d9c35ff7b80d7edb3a26c752436af6558",
+    "input_manifest.jsonSha256": "3ea74cc6491aecddf9ffcedc69610f13d20b199059aef69bb3c2407feb0826ea",
+    "output_review-routing-ledger.jsonlSha256": "0897de9d5b65a5aaa8ac9b7caef27ca8076c9d0893acd7cd072292a5dc7440f2",
+    "output_selected-direct-locale-cells.jsonlSha256": "d64ab2d1ca7591934e407b82d1890c68edfac49cc85f92c40ccbc244067c70da",
+    "output_source-contexts.jsonlSha256": "fdc413fe369bf4f4793af12aabf2b54ce4a15d3bb2bb7ec8c9216515b9aeee29"
+  },
+  "liveHead": "d633a7ed184bc9571a1a805da1bd25cef28d1599",
+  "liveTree": "abb501be60a5208a720c053976e94df72af8117e",
+  "nativeSpeakerReviewRequired": true,
+  "newSemanticReviewCellCount": 1188,
+  "outputFiles": [
+    "semantic-review-ledger.jsonl",
+    "per-locale-summary.json",
+    "head-attestation.json",
+    "preserved-prior-routing-rows.jsonl",
+    "review-corrections.jsonl",
+    "README.md",
+    "build_semantic_review.py"
+  ],
+  "priorRoutedCellCount": 12,
+  "priorRowsPreservedByteForByte": 12,
+  "pullRequest": 418,
+  "pullRequestState": "OPEN/DRAFT",
+  "pullRequestUrl": "https://github.com/snapetech-org/seerrng/pull/418",
+  "repository": "snapetech-org/seerrng",
+  "reviewCountsByLocale": {
+    "ar": {
+      "acceptCurrent": 87,
+      "cellCount": 100,
+      "correctionNeeded": 13,
+      "newSemanticReviewRequired": 100,
+      "priorDispositionPreserved": 0,
+      "routingDispositions": {
+        "new-semantic-review-required": 100
+      }
+    },
+    "de": {
+      "acceptCurrent": 92,
+      "cellCount": 100,
+      "correctionNeeded": 0,
+      "newSemanticReviewRequired": 92,
+      "priorDispositionPreserved": 8,
+      "routingDispositions": {
+        "new-semantic-review-required": 92,
+        "prior-correction-applied-exact-target-match": 5,
+        "prior-equivalence-reviewed-target-matches-live": 2,
+        "prior-independent-accepted-current-needs-root-ledger-check": 1
+      }
+    },
+    "es": {
+      "acceptCurrent": 99,
+      "cellCount": 100,
+      "correctionNeeded": 1,
+      "newSemanticReviewRequired": 100,
+      "priorDispositionPreserved": 0,
+      "routingDispositions": {
+        "new-semantic-review-required": 100
+      }
+    },
+    "fr": {
+      "acceptCurrent": 90,
+      "cellCount": 100,
+      "correctionNeeded": 7,
+      "newSemanticReviewRequired": 97,
+      "priorDispositionPreserved": 3,
+      "routingDispositions": {
+        "new-semantic-review-required": 97,
+        "prior-equivalence-reviewed-target-matches-live": 3
+      }
+    },
+    "hi": {
+      "acceptCurrent": 81,
+      "cellCount": 100,
+      "correctionNeeded": 19,
+      "newSemanticReviewRequired": 100,
+      "priorDispositionPreserved": 0,
+      "routingDispositions": {
+        "new-semantic-review-required": 100
+      }
+    },
+    "id": {
+      "acceptCurrent": 84,
+      "cellCount": 100,
+      "correctionNeeded": 15,
+      "newSemanticReviewRequired": 99,
+      "priorDispositionPreserved": 1,
+      "routingDispositions": {
+        "new-semantic-review-required": 99,
+        "prior-equivalence-reviewed-target-matches-live": 1
+      }
+    },
+    "ja": {
+      "acceptCurrent": 97,
+      "cellCount": 100,
+      "correctionNeeded": 3,
+      "newSemanticReviewRequired": 100,
+      "priorDispositionPreserved": 0,
+      "routingDispositions": {
+        "new-semantic-review-required": 100
+      }
+    },
+    "ko": {
+      "acceptCurrent": 79,
+      "cellCount": 100,
+      "correctionNeeded": 21,
+      "newSemanticReviewRequired": 100,
+      "priorDispositionPreserved": 0,
+      "routingDispositions": {
+        "new-semantic-review-required": 100
+      }
+    },
+    "pt-BR": {
+      "acceptCurrent": 88,
+      "cellCount": 100,
+      "correctionNeeded": 12,
+      "newSemanticReviewRequired": 100,
+      "priorDispositionPreserved": 0,
+      "routingDispositions": {
+        "new-semantic-review-required": 100
+      }
+    },
+    "vi": {
+      "acceptCurrent": 67,
+      "cellCount": 100,
+      "correctionNeeded": 33,
+      "newSemanticReviewRequired": 100,
+      "priorDispositionPreserved": 0,
+      "routingDispositions": {
+        "new-semantic-review-required": 100
+      }
+    },
+    "zh-CN": {
+      "acceptCurrent": 80,
+      "cellCount": 100,
+      "correctionNeeded": 20,
+      "newSemanticReviewRequired": 100,
+      "priorDispositionPreserved": 0,
+      "routingDispositions": {
+        "new-semantic-review-required": 100
+      }
+    },
+    "zh-TW": {
+      "acceptCurrent": 69,
+      "cellCount": 100,
+      "correctionNeeded": 31,
+      "newSemanticReviewRequired": 100,
+      "priorDispositionPreserved": 0,
+      "routingDispositions": {
+        "new-semantic-review-required": 100
+      }
+    }
+  },
+  "reviewMethod": "Semantic review of all new-routed cells against the pinned English source, current target, stable source key, and recorded callers. Technical identifiers, product names, thread/topic semantics, PGP/SMTP/STARTTLS terms, and source placeholders were checked explicitly.",
+  "reviewStatusCounts": {
+    "accept-current": 1013,
+    "correction-needed": 175,
+    "prior-disposition-preserved": 11,
+    "prior-independent-accepted-current-needs-root-ledger-check": 1
+  },
+  "routingDispositions": {
+    "new-semantic-review-required": 1188,
+    "prior-correction-applied-exact-target-match": 5,
+    "prior-equivalence-reviewed-target-matches-live": 6,
+    "prior-independent-accepted-current-needs-root-ledger-check": 1
+  },
+  "schemaVersion": 1,
+  "sourceIdPositions": {
+    "count": 100,
+    "startInclusive": 700,
+    "stopExclusive": 800
+  },
+  "validation": [
+    "Packet source/checksum manifests verified before review.",
+    "All 1,200 source/current-target strings and SHA256 values re-attested at the current PR head.",
+    "All 344 source caller references re-attested at the current PR head.",
+    "All proposed corrections preserve source ICU and rich-text markup tokens.",
+    "All routed prior rows are copied byte-for-byte to preserved-prior-routing-rows.jsonl; their routing fields/evidence remain unchanged in the primary ledger.",
+    "No catalog/source edits, tests, builds, CI, browser work, or PR mutations were performed."
+  ],
+  "window": "W700-749"
+}

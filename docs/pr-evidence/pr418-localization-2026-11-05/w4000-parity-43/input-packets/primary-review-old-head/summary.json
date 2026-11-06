@@ -1,0 +1,54 @@
+{
+  "acceptedForProposal": 528,
+  "allPlaceholderIcuMarkupNumericProtectedLiteralChecksPass": true,
+  "baseSha": "2647e15762de0c2285cd9d8ebc6d27ffafce6358",
+  "baseTree": "b6f4acb9debdc1b0a838b50d5ad88aaa467e429b",
+  "callerContextsReviewed": 44,
+  "candidateFreeHead": "77d30ae742aad7245e6e419237fca6a544531e1f",
+  "candidateFreeVerifierAtTaskStart": {
+    "command": "python3 verify_candidate_free.py --repo /home/keith/Documents/code/seerrng",
+    "result": "PASS before primary-review/ was created"
+  },
+  "changedSourceId": "components.RequestModal.watchAheadActiveForRequest",
+  "changedSourceRefreshCells": 12,
+  "changedSourceRefreshIds": 1,
+  "confidence": {
+    "moderate": 528
+  },
+  "dispositions": {
+    "hold": 0,
+    "propose-insert": 516,
+    "propose-refresh": 12
+  },
+  "heldCells": 0,
+  "insertionGapCells": 516,
+  "insertionGapSourceIds": 43,
+  "nativeSpeakerReviewPerformed": false,
+  "noCatalogOrPrFilesEdited": true,
+  "noTestsBuildsScansOrCiRun": true,
+  "perLocaleCells": {
+    "ar": 44,
+    "de": 44,
+    "es": 44,
+    "fr": 44,
+    "hi": 44,
+    "id": 44,
+    "ja": 44,
+    "ko": 44,
+    "pt-BR": 44,
+    "vi": 44,
+    "zh-Hans": 44,
+    "zh-Hant": 44
+  },
+  "proposals": 528,
+  "reviewSourceIds": 44,
+  "schemaVersion": 1,
+  "semanticDispositions": {
+    "accept": 528,
+    "adjust": 0,
+    "hold": 0
+  },
+  "sourceHead": "77d30ae742aad7245e6e419237fca6a544531e1f",
+  "sourceTree": "2c6fe4a0c1c33aa56b01f06a70702f68598509a7",
+  "totalReviewedCells": 528
+}

@@ -1,0 +1,35 @@
+{
+  "acceptCurrent": 211,
+  "acceptedExpectedJapaneseNumberRendering": {
+    "locale": "ja",
+    "position": 3888
+  },
+  "artifact": "SeerrNG PR #418 W3880-W3899 primary review",
+  "baselineNumericTokenDiagnostics": 1,
+  "candidateFreeChecksumsSha256": "75131ec678d4cef05d846843c858f5fae71c9f8e96639bfe709d1558d6311fb1",
+  "candidateFreeManifestSha256": "b9479f618810fa5f80376fefe25ce0e1af4ad8b0abb93acf54c193b2dac42d46",
+  "cellCount": 240,
+  "corrections": 13,
+  "files": [
+    "README.md",
+    "holds.jsonl",
+    "primary-ledger.jsonl",
+    "proposals.jsonl",
+    "summary.json",
+    "verify-primary-review.py"
+  ],
+  "head": "39d8ae36ba757532f947a9a15be22f0676e79075",
+  "holds": 0,
+  "localeCount": 12,
+  "priorAppliedTargetHashesReattested": 136,
+  "priorHashOnlyHoldsPreserved": 14,
+  "priorSelectedSourcePositionsReattested": 3880,
+  "proposalCount": 29,
+  "pullRequest": 418,
+  "refinements": 16,
+  "repository": "snapetech-org/SeerrNG",
+  "schemaVersion": 1,
+  "sourceCount": 20,
+  "tree": "45e3ada0f565a07c675d1d75096f4266c4ef691e",
+  "window": "W3880-W3899"
+}

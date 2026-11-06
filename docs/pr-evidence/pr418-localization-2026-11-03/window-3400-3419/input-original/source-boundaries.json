@@ -1,0 +1,179 @@
+{
+  "boundaryAfter": {
+    "position": 3420,
+    "source": "Time",
+    "sourceId": "components.Requests.requestTime"
+  },
+  "boundaryBefore": {
+    "position": 3399,
+    "source": "Import attempt {attempt} of {maxAttempts}.",
+    "sourceId": "components.Requests.pendingImportAttempt"
+  },
+  "callerContextRows": 20,
+  "callerContextsFile": "caller-contexts.jsonl",
+  "callerContextsSource": "Exact matching source and caller lines from the two pinned production component files only; docs, evidence, ledgers, and proposal artifacts were not searched.",
+  "codeCallerFiles": {
+    "src/components/Requests/destructiveActions.tsx": {
+      "byteCount": 5369,
+      "gitBlob": "09884f99a738ce4402b5fb121d15022f0efc3a67",
+      "lineCount": 173,
+      "path": "src/components/Requests/destructiveActions.tsx",
+      "sha256": "16d562185c1e1f3a94398369b4ab3eec28085033dcc3465c32557752687d1d57"
+    },
+    "src/components/Requests/index.tsx": {
+      "byteCount": 100417,
+      "gitBlob": "84f6a19674b329df0ef6be6483d74bbaeb110ccb",
+      "lineCount": 3115,
+      "path": "src/components/Requests/index.tsx",
+      "sha256": "25b612dcda274fe2ea64b76f169587e153b04a675c9b8cd817814d9fbfde5360"
+    }
+  },
+  "head": "fcbc579f724e50a07dc0e12b00127c4f6084c453",
+  "localeRegistry": {
+    "byteCount": 5394,
+    "gitBlob": "d699bd347f4fbad07bce14a743c884800d9d4a84",
+    "lineCount": 45,
+    "path": "config/i18n/locales.json",
+    "sha256": "6e8ea070b441db9700325cf838d440dbbef1d1e5331e28332ed6c15cb789376a"
+  },
+  "pullRequest": 418,
+  "repository": "snapetech-org/seerrng",
+  "schemaVersion": 1,
+  "sourceCatalog": {
+    "byteCount": 835513,
+    "gitBlob": "12e04a118c30b71b3714291adeaf9fdb2735cee4",
+    "lineCount": 9496,
+    "path": "src/i18n/locale/en.json",
+    "sha256": "75ff3c90b52aedd636a506281ffbd6fb2d3739c61294b6008a517f17647e2316"
+  },
+  "sourceIds": [
+    {
+      "position": 3400,
+      "source": "Time",
+      "sourceId": "components.Requests.requestTime",
+      "sourceSha256": "33b93476cf597a3330653b66a658983d892ac264b5d6029a2dc642b9b1f30870"
+    },
+    {
+      "position": 3401,
+      "source": "Requested",
+      "sourceId": "components.Requests.requested",
+      "sourceSha256": "2d9e28289facab94b41f9592b7f55bc4fc10fed54e789669468e8da31c9a5caf"
+    },
+    {
+      "position": 3402,
+      "source": "Requested {date}",
+      "sourceId": "components.Requests.requestedAt",
+      "sourceSha256": "ce6dd2e4522a71d2e7a72c6d89135681d3099de0ec4ffe602593451cd598be6c"
+    },
+    {
+      "position": 3403,
+      "source": "Requested by {user}",
+      "sourceId": "components.Requests.requestedBy",
+      "sourceSha256": "48656c3d79533e3be43c215de66290da77521102732eb8814679b3451f6e3394"
+    },
+    {
+      "position": 3404,
+      "source": "Requested By",
+      "sourceId": "components.Requests.requestedByLabel",
+      "sourceSha256": "80e37c7ff11cde00392c2efe89423254878e5a8002ab93691643a702fcd113ce"
+    },
+    {
+      "position": 3405,
+      "source": "Requested On",
+      "sourceId": "components.Requests.requestedDateTime",
+      "sourceSha256": "88e59c5e86c29b65ffd637cfc58d6ae0c2e8feb6d93d2257ff95b15a7f01ffa7"
+    },
+    {
+      "position": 3406,
+      "source": "Retry",
+      "sourceId": "components.Requests.retry",
+      "sourceSha256": "942087cc2d41e01304b7195558d093d10c72af8e838c7556d6a02d471ee71852"
+    },
+    {
+      "position": 3407,
+      "source": "Unable to retry this request.",
+      "sourceId": "components.Requests.retryFailed",
+      "sourceSha256": "e201643acbe56364c6e18e21f7fb13612b028f45442f88873acf6cf86b65d949"
+    },
+    {
+      "position": 3408,
+      "source": "Retry",
+      "sourceId": "components.Requests.retryLoad",
+      "sourceSha256": "942087cc2d41e01304b7195558d093d10c72af8e838c7556d6a02d471ee71852"
+    },
+    {
+      "position": 3409,
+      "source": "Reload request information from Seerr. This does not restart or download any media.",
+      "sourceId": "components.Requests.retryLoadTooltip",
+      "sourceSha256": "0753480495e1eae4eeb5722dbb84915a906bb92f6c16af3220a00748097d1549"
+    },
+    {
+      "position": 3410,
+      "source": "Request queued for another attempt.",
+      "sourceId": "components.Requests.retrySuccess",
+      "sourceSha256": "6ef1f01dd908e4726c458fbb578958c5662f2a8aaf0df82c41557c1c8f4dbd96"
+    },
+    {
+      "position": 3411,
+      "source": "Restart this failed request from approval.",
+      "sourceId": "components.Requests.retryTooltip",
+      "sourceSha256": "38f8c44aa1749ca7eb5870989529570429bfb5de278fddf526458878d0a3a8e8"
+    },
+    {
+      "position": 3412,
+      "source": "Retrying…",
+      "sourceId": "components.Requests.retrying",
+      "sourceSha256": "a16c8b1c95956fbabce3ed5506c7e1b4a2d10c86f7adfc7ae084f2d3df9f5174"
+    },
+    {
+      "position": 3413,
+      "source": "ROMs - Modern",
+      "sourceId": "components.Requests.romsModern",
+      "sourceSha256": "b11d4f35b6c77fd3162ce226123fa9821d0bda220ac28912f04712c2a82a2bc4"
+    },
+    {
+      "position": 3414,
+      "source": "ROMs - Retro",
+      "sourceId": "components.Requests.romsRetro",
+      "sourceSha256": "3b70bad7f07c14a7aa4ef43c2b191313e8b4bad277bad44678bde00245d1dd88"
+    },
+    {
+      "position": 3415,
+      "source": "Runtime",
+      "sourceId": "components.Requests.runtime",
+      "sourceSha256": "1093115897879aa3ad9511a1dc2850929cfb60ba45ec741605f69f5d20203472"
+    },
+    {
+      "position": 3416,
+      "source": "Scroll progress left",
+      "sourceId": "components.Requests.scrollProgressLeft",
+      "sourceSha256": "310d60aa7a6f43cd686429cee7130aae47f539b0ecbf2ae8b420027e97b499a5"
+    },
+    {
+      "position": 3417,
+      "source": "Scroll progress right",
+      "sourceId": "components.Requests.scrollProgressRight",
+      "sourceSha256": "b775edc09a433da5ec0083efea8bd5c0f98b2b7afe2b847f73398b902421f602"
+    },
+    {
+      "position": 3418,
+      "source": "Keyword Search",
+      "sourceId": "components.Requests.search",
+      "sourceSha256": "ec09661357211cb8739037eb9c976514fc448f407f603c4bca4e6a1f71facceb"
+    },
+    {
+      "position": 3419,
+      "source": "Search Requests",
+      "sourceId": "components.Requests.searchRequests",
+      "sourceSha256": "5eff1ccc63c2f223bc7d00518030922e17a9d35d0338bef2864b817d111c4cf7"
+    }
+  ],
+  "sourceSnapshot": {
+    "byteCount": 1133570,
+    "gitBlob": "73a858058155f8e0e829f613754309ed7c7d95c1",
+    "lineCount": 9612,
+    "path": "config/i18n/source-snapshot.json",
+    "sha256": "5c257941ea31099c324ac719a87f533b6e84b795ec8d8e3f7774981bf091a006"
+  },
+  "tree": "30e1e5e610e88ba935e482fc7088311d00e214ae"
+}

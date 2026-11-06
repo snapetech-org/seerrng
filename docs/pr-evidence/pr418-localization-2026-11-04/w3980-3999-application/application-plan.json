@@ -1,0 +1,53 @@
+{
+  "schema": "seerrng.localization.application-plan.v1",
+  "window": "W3980-W3999",
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "sourcePinnedHead": "d9c5224dbce97e8ae6e72b0ad0bf401e65e215eb",
+  "sourcePinnedTree": "6578ebc4c8bd6c569fcea47978a2c47bd6e4bc8f",
+  "mainIntegrationCommit": "3e63e2b315859d8ca570530180dce1184083083a",
+  "mainIntegrationTree": "5e1dbdc959e3720e63183ef09d5592bca210a736",
+  "liveMainMerged": "2bb382cfeedc0af1aacda1851a2a469452eb7173",
+  "productCommit": "a9579faeac5657eb3a9f732cbb8e450790cb2c25",
+  "productTree": "da31b5613876fb635290cbb51c0f280870756e65",
+  "productFirstParent": "3e63e2b315859d8ca570530180dce1184083083a",
+  "rootAdjudicationSha256": "5118ecb1b8423c75f1cc002c7f0aaabb109e0185ab0b2580292297b212ad0afb",
+  "candidateFreeManifestSha256": "56d443524ad16c5e3c2e4a47f9521c8e5db733f2b4744f61401964460247d0e7",
+  "applicationPlanPath": "application-plan.jsonl",
+  "readbackPath": "readback-240-cells.jsonl",
+  "catalogKeyOrderReadbackPath": "catalog-key-order-readback.json",
+  "appliedCellCount": 43,
+  "acceptedCurrentCellCount": 185,
+  "heldCellCount": 12,
+  "changedCatalogPaths": [
+    "src/i18n/locale/ar.json",
+    "src/i18n/locale/de.json",
+    "src/i18n/locale/es.json",
+    "src/i18n/locale/fr.json",
+    "src/i18n/locale/hi.json",
+    "src/i18n/locale/id.json",
+    "src/i18n/locale/ja.json",
+    "src/i18n/locale/ko.json",
+    "src/i18n/locale/pt_BR.json",
+    "src/i18n/locale/zh_Hans.json",
+    "src/i18n/locale/zh_Hant.json"
+  ],
+  "productCommitChangedOnlyAffectedLocaleJsonCatalogs": true,
+  "all240ReadbackMatches": true,
+  "catalogKeyOrderPreserved": true,
+  "unselectedCellValuesUnchanged": true,
+  "sourceTokenChecksPass": true,
+  "heldScope": "All 12 position-3987 Enable Agent cells remain unchanged.",
+  "reviewLimitations": {
+    "browserReviewPerformed": false,
+    "nativeSpeakerSignoff": false,
+    "crossReviewerProcessExposure": "Cross reviewer saw primary and blind proposal content before full semantic audit; exposure and target influence are recorded in cross-review/cross-review.json and root adjudication."
+  },
+  "deliveryLimitations": {
+    "testsBuildsScansCiRun": false,
+    "workflowFilesEdited": false,
+    "mergeToMain": false,
+    "releaseOrTag": false,
+    "preCommitBypass": "HUSKY_BYPASS=1 was set only for the product commit because pre-commit runs attribution, lint-staged, and Semgrep security scan."
+  }
+}

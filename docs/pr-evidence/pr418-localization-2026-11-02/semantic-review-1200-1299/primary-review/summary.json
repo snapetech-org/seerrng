@@ -1,0 +1,126 @@
+{
+  "schemaVersion": 1,
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "state": "OPEN",
+  "isDraft": true,
+  "task": "Primary semantic review for SeerrNG PR #418 source positions 1200–1299 across all 12 direct locales",
+  "pin": {
+    "head": "6ff9de1c39a19fe9c508f09e0f6a885022632d8b",
+    "tree": "68d7525714b3628bbe7b69701d8be08add152832",
+    "branch": "codex/seerrng-localization-overhaul-20261028",
+    "baseRefOid": "221d8e0d542802da7529cd272c928cc747677e5c"
+  },
+  "sourceIdPositions": {
+    "count": 100,
+    "startInclusive": 1200,
+    "stopExclusive": 1300
+  },
+  "sourceIds": 100,
+  "locales": [
+    "ar",
+    "de",
+    "es",
+    "fr",
+    "hi",
+    "id",
+    "ja",
+    "ko",
+    "pt-BR",
+    "vi",
+    "zh-CN",
+    "zh-TW"
+  ],
+  "targetCells": 1200,
+  "rowsReviewed": 1200,
+  "priorSpanishDispositionsPreserved": 0,
+  "newSemanticRows": 1200,
+  "callerContextReferencesReattested": 207,
+  "uniqueCallerFiles": 5,
+  "uniqueCallerLines": 206,
+  "placeholderFailures": 0,
+  "markupFailures": 0,
+  "protectedLiteralFailures": 0,
+  "nativeSpeakerReviewPerformed": false,
+  "browserReviewPerformed": false,
+  "notes": [
+    "Source positions 1200–1299 use the exact insertion order of src/i18n/locale/en.json at the pinned head and are disjoint from reviewed positions 0–1199.",
+    "No frozen prior disposition intersects the 100 source IDs after checks of prior review/apply evidence.",
+    "All 1,200 source/current cells and caller pins were re-attested at the exact head/tree; 207 caller references across five files and 206 unique lines were pinned.",
+    "Six source IDs have definition-only coverage with no direct caller found on this head, totaling 72 locale cells; these received individual dispositions with the source limitation recorded.",
+    "All candidate/current/source placeholder names, markup tags, and the protected SeerrNG literal match.",
+    "Machine-assisted primary review only; native-speaker signoff and browser review are not claimed."
+  ],
+  "primaryDispositions": {
+    "accept-current": 1095,
+    "propose-correction": 78,
+    "propose-refinement": 27
+  },
+  "candidateCount": 105,
+  "primaryDispositionsByLocale": {
+    "ar": {
+      "accept-current": 87,
+      "propose-correction": 12,
+      "propose-refinement": 1
+    },
+    "de": {
+      "accept-current": 100
+    },
+    "es": {
+      "accept-current": 95,
+      "propose-correction": 5
+    },
+    "fr": {
+      "accept-current": 93,
+      "propose-correction": 6,
+      "propose-refinement": 1
+    },
+    "hi": {
+      "accept-current": 85,
+      "propose-correction": 10,
+      "propose-refinement": 5
+    },
+    "id": {
+      "accept-current": 94,
+      "propose-correction": 6
+    },
+    "ja": {
+      "accept-current": 83,
+      "propose-correction": 9,
+      "propose-refinement": 8
+    },
+    "ko": {
+      "accept-current": 90,
+      "propose-correction": 7,
+      "propose-refinement": 3
+    },
+    "pt-BR": {
+      "accept-current": 92,
+      "propose-correction": 3,
+      "propose-refinement": 5
+    },
+    "vi": {
+      "accept-current": 94,
+      "propose-correction": 2,
+      "propose-refinement": 4
+    },
+    "zh-CN": {
+      "accept-current": 92,
+      "propose-correction": 8
+    },
+    "zh-TW": {
+      "accept-current": 90,
+      "propose-correction": 10
+    }
+  },
+  "definitionOnlySourceIds": [
+    "components.ExternalMediaManageSlideOver.book",
+    "components.ExternalMediaManageSlideOver.comic",
+    "components.ExternalMediaManageSlideOver.magazine",
+    "components.ExternalMediaManageSlideOver.manageModalIssues",
+    "components.ExternalMediaManageSlideOver.music",
+    "components.Following.FollowButton.unfollow"
+  ],
+  "definitionOnlyTargetCellCount": 72,
+  "narratorConsistencyAddendumRows": 12
+}

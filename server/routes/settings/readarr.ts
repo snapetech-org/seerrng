@@ -646,6 +646,7 @@ readarrRoutes.post<
         ok: false,
         category: 'backend_unreachable',
         message: parsedReadarr.error,
+        messageOrigin: 'app',
       });
     }
 
@@ -654,6 +655,7 @@ readarrRoutes.post<
         ok: false,
         category: 'unsupported_operation',
         message: 'Readarr diagnostics are not available for Bindery.',
+        messageOrigin: 'app',
       });
     }
 
@@ -737,6 +739,7 @@ readarrRoutes.post<
           category: 'provider_failed',
           message:
             'The configured metadata provider failed this lookup. Check the Bookshelf provider logs and try again.',
+          messageOrigin: 'app',
           term: lookupTerm,
           provider,
           providerNotice,
@@ -751,6 +754,7 @@ readarrRoutes.post<
           ok: false,
           category: 'lookup_empty',
           message: 'Bookshelf lookup returned no results.',
+          messageOrigin: 'app',
           term: lookupTerm,
           system: {
             appName: status.appName,
@@ -837,6 +841,7 @@ readarrRoutes.post<
           message: authorLookupFailed
             ? 'Bookshelf found book results, but the metadata provider failed to resolve an author. Check provider logs and retry.'
             : 'Bookshelf lookup returned results, but none had usable author and edition metadata.',
+          messageOrigin: 'app',
           term: lookupTerm,
           provider,
           providerNotice,
@@ -879,6 +884,7 @@ readarrRoutes.post<
               category: 'invalid_request',
               message:
                 'Test add selections must match accessible Bookshelf profiles and root folders.',
+              messageOrigin: 'app',
             });
           }
 
@@ -911,11 +917,13 @@ readarrRoutes.post<
             return res.status(200).json({
               ok: false,
               category: 'backend_add_pending',
-              message: [
-                added.message ??
-                  'Chaptarr accepted the diagnostic add while preparing author metadata.',
+              message:
                 'The import remains queued because Chaptarr may share it with an active SeerrNG request. Check its status in Chaptarr and cancel it only when no request needs it.',
-              ].join(' '),
+              messageOrigin: 'app',
+              detailMessage:
+                added.message ??
+                'Chaptarr accepted the diagnostic add while preparing author metadata.',
+              detailMessageOrigin: added.message ? 'opaque' : 'app',
               term: lookupTerm,
               provider,
               providerNotice,
@@ -939,6 +947,7 @@ readarrRoutes.post<
                   cleanupError instanceof Error
                     ? cleanupError.message
                     : String(cleanupError),
+                messageOrigin: 'opaque',
                 term: lookupTerm,
                 provider,
                 providerNotice,
@@ -953,6 +962,7 @@ readarrRoutes.post<
             ok: false,
             category: 'backend_add_rejected',
             message: e instanceof Error ? e.message : String(e),
+            messageOrigin: 'opaque',
             term: lookupTerm,
             provider,
             providerNotice,
@@ -966,6 +976,7 @@ readarrRoutes.post<
         ok: true,
         category: 'ok',
         message: 'Bookshelf lookup returned usable metadata.',
+        messageOrigin: 'app',
         term: lookupTerm,
         provider,
         providerNotice,
@@ -989,6 +1000,7 @@ readarrRoutes.post<
         ok: false,
         category: 'backend_unreachable',
         message: e instanceof Error ? e.message : String(e),
+        messageOrigin: 'opaque',
         term: lookupTerm,
       });
     }

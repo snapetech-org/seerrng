@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "head": "ebf1cb6082ef173688227c507acfdc04c3cf7ca7",
+  "tree": "e3c4d1d10f40ea078b66dfdf942e99c8189fee0c",
+  "sourceCount": 20,
+  "callerlessSourcePositions": [
+    3632
+  ],
+  "findings": [
+    {
+      "position": 3632,
+      "sourceId": "components.Settings.BookshelfPathMigration.author",
+      "finding": "No direct messages.<key> use appears in the pinned production component; definition and related page context are included."
+    }
+  ]
+}

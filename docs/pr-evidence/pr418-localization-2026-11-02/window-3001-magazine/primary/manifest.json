@@ -1,0 +1,35 @@
+{
+  "repo": "snapetech-org/seerrng",
+  "pull_request": 418,
+  "branch": "codex/seerrng-localization-overhaul-20261028",
+  "head": "a1d39112a4e378a38640dc183e820c646b49665a",
+  "tree": "fa084f89e9ae90ca196a7201b91882a1fd9f9710",
+  "window": "W3001",
+  "cell_count": 12,
+  "disposition_counts": {
+    "accept-current": 10,
+    "correction": 2,
+    "refinement": 0,
+    "hold": 0
+  },
+  "source_path": "src/components/RequestModal/QuotaDisplay/index.tsx",
+  "source_sha256": "7d565ede2570c1e4d899bb76d7be990824be6be422a9c1ea1be4592cd46d03dc",
+  "caller_path": "src/components/RequestModal/MagazineRequestModal.tsx",
+  "caller_sha256": "3302816c4320f46b44958fdc9386074876288341fb092a3acde594db41b5d2f3",
+  "catalog_file_sha256": {
+    "src/i18n/locale/es.json": "ddc136552b9b31666233a65b165b1357264100ffe70a856c58884e517ad63fe4",
+    "src/i18n/locale/zh_Hans.json": "b986efa6177355f5bc3a3ef41e075bcdff3bea79255e37926e7403236475937f",
+    "src/i18n/locale/hi.json": "ffb29e99a802c1866e2fe217e05870150e13cefd62e527b19710df0236637e82",
+    "src/i18n/locale/de.json": "5369660611694fb79a48759946e2a31992636a8ad5080f32a3e02352f134d72b",
+    "src/i18n/locale/ja.json": "149aaca60094fcfad1ea83576a62b15afe085e49df747b6ef9b381f90cbe43c3",
+    "src/i18n/locale/fr.json": "c6508fe27b741a0e0905caee6b521aee0fb1f95e1ca8a8f0e077a8a3e35b3d6d",
+    "src/i18n/locale/pt_BR.json": "390ce5e3bc16d7ddaa14408a92ab546ded206883a03a23713fddedfde0dba09c",
+    "src/i18n/locale/ar.json": "16b41b8c7e7ed6e08922c02280f8fe432ecfc0494826744359ef5eb981db427b",
+    "src/i18n/locale/ko.json": "1ce2024f28298b1dd0d181002ac9bd0267dd2084efef8ad9ffaaa1e2d035c71d",
+    "src/i18n/locale/zh_Hant.json": "a08f716bf1ac8aca5cf84e322ab041c6e845dd9bf6f52760bb7e3f8b72678bcc",
+    "src/i18n/locale/vi.json": "90e86e8cb91a4df6cd24226123f16350b6a3d6c9f4ad1aa871bd83e70e24469d",
+    "src/i18n/locale/id.json": "d9c3f2e05cc5e663592aaf51bcda76f505970c2c59ff70f8baca28d1146f431f"
+  },
+  "code_change_at_head": "QuotaDisplay now maps mediaType=\"magazine\" to messages.magazinelimit in expanded allowedRequests formatting.",
+  "review_note": "Review is machine-authored primary semantic review, not qualified native-speaker approval."
+}

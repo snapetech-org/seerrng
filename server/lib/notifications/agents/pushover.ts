@@ -1,4 +1,4 @@
-import { IssueStatus, IssueTypeName } from '@server/constants/issue';
+import { IssueStatus } from '@server/constants/issue';
 import { MediaStatus } from '@server/constants/media';
 import { getIntl } from '@server/i18n';
 import globalMessages from '@server/i18n/globalMessages';
@@ -28,8 +28,14 @@ import {
   BaseAgent,
   NOTIFICATION_DELIVERY_CONCURRENCY,
   NOTIFICATION_HTTP_OPTIONS,
+  getIssueTypeLabel,
+  getLocalizedNotificationPayload,
   getNotificationActionLabel,
   getNotificationActionUrl,
+  getNotificationCommentFrom,
+  getNotificationContent,
+  getNotificationExtras,
+  isolateBidiText,
   truncateNotificationText,
 } from './agent';
 
@@ -182,28 +188,33 @@ class PushoverAgent
     locale?: AvailableLocale
   ): Promise<Partial<PushoverPayload>> {
     const intl = getIntl(locale);
+    payload = getLocalizedNotificationPayload(payload, intl);
+    const content = getNotificationContent(payload, intl);
+    const extras = getNotificationExtras(payload, intl);
     const { applicationUrl, applicationTitle } =
       getExternalRuntimeConfig().main;
     const { embedPoster } = this.getSettings();
     const escape = escapePushoverHtmlText;
 
     const title = truncateNotificationText(
-      payload.event ?? payload.subject,
+      content.event ?? isolateBidiText(payload.subject),
       PUSHOVER_TITLE_LIMIT
     );
-    let message = payload.event ? `<b>${escape(payload.subject)}</b>` : '';
+    let message = content.event
+      ? `<b>${escape(isolateBidiText(payload.subject))}</b>`
+      : '';
     let priority = 0;
 
-    if (payload.message && !payload.comment) {
+    if (content.message && !payload.comment) {
       message += `<small>${message ? '\n' : ''}${escape(
-        payload.message
+        content.message
       )}</small>`;
     }
 
     if (payload.request) {
       message += `<small>\n\n<b>${escape(
         intl.formatMessage(globalMessages.requestedBy)
-      )}:</b> ${escape(payload.request.requestedBy.displayName)}</small>`;
+      )}:</b> ${escape(isolateBidiText(payload.request.requestedBy.displayName))}</small>`;
 
       let status = '';
       switch (type) {
@@ -243,17 +254,15 @@ class PushoverAgent
       }
     } else if (payload.comment) {
       message += `<small>\n\n<b>${escape(
-        intl.formatMessage(globalMessages.commentFrom, {
-          userName: payload.comment.user.displayName,
-        })
+        getNotificationCommentFrom(payload.comment.user.displayName, intl)
       )}:</b> ${escape(payload.comment.message)}</small>`;
     } else if (payload.issue) {
       message += `<small>\n\n<b>${escape(
         intl.formatMessage(globalMessages.reportedBy)
-      )}:</b> ${escape(payload.issue.createdBy.displayName)}</small>`;
+      )}:</b> ${escape(isolateBidiText(payload.issue.createdBy.displayName))}</small>`;
       message += `<small>\n<b>${escape(
         intl.formatMessage(globalMessages.issueType)
-      )}:</b> ${escape(IssueTypeName[payload.issue.issueType])}</small>`;
+      )}:</b> ${escape(getIssueTypeLabel(intl, payload.issue.issueType))}</small>`;
       message += `<small>\n<b>${escape(
         intl.formatMessage(globalMessages.issueStatus)
       )}:</b> ${escape(
@@ -267,7 +276,7 @@ class PushoverAgent
       }
     }
 
-    for (const extra of payload.extra ?? []) {
+    for (const extra of extras) {
       message += `<small>\n<b>${escape(extra.name)}:</b> ${escape(
         extra.value
       )}</small>`;

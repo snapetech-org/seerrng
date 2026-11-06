@@ -1,0 +1,20 @@
+{
+  "catalogFilesWithOrderVerified": 13,
+  "changedCatalogFiles": [
+    "src/i18n/locale/ar.json",
+    "src/i18n/locale/hi.json",
+    "src/i18n/locale/id.json",
+    "src/i18n/locale/ja.json",
+    "src/i18n/locale/ko.json",
+    "src/i18n/locale/pt_BR.json",
+    "src/i18n/locale/vi.json",
+    "src/i18n/locale/zh_Hans.json",
+    "src/i18n/locale/zh_Hant.json"
+  ],
+  "plannedCells": 19,
+  "previousCatalogCommit": "3786de8f8334c6f69924e2f88e363f129d3b3943",
+  "previousCatalogTree": "b4fbc12bace0fc1ac6a650badc444fe3fa0e8724",
+  "previousWindow": "W3820-W3839",
+  "selectedTargetHashesReattested": 19,
+  "unselectedValuesPreserved": true
+}

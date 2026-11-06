@@ -1,0 +1,8 @@
+{
+  "recordCount": 3760,
+  "inputPath": "../candidate-free-input/prior-selection-hash-reattestation.jsonl",
+  "inputSha256": "af053619a394f9496d518f16620ca2cfc1b3ff5fae9bc5436a36d782e06c8173",
+  "allSourceIdAndEnglishHashesMatch": true,
+  "targetTextIncluded": false,
+  "hashOnly": true
+}

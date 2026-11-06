@@ -1,0 +1,8 @@
+[
+  {
+    "batchId": "existing-es-client-0094",
+    "attempts": 4,
+    "error": "RuntimeError: existing-es-client-0094 failed after 4 attempts: ValueError: components.RequestModal.QuotaDisplay.quotaLinkUser: correction changes a protected brand/URL/code/path",
+    "recordedAt": 1793596271
+  }
+]

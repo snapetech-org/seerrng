@@ -1,0 +1,27 @@
+{
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "title": "feat(i18n): strengthen SeerrNG localization",
+  "state": "open",
+  "merged": false,
+  "draft": true,
+  "baseRef": "main",
+  "baseSha": "221d8e0d542802da7529cd272c928cc747677e5c",
+  "headRef": "codex/seerrng-localization-overhaul-20261028",
+  "head": "265171657d48ef56ee81cc1c6a5c3d07abe5d07e",
+  "headTree": "402984893883cf7afd106cd208f6027d7410f2fb",
+  "remoteBranchRef": "refs/heads/codex/seerrng-localization-overhaul-20261028",
+  "remoteBranchHead": "265171657d48ef56ee81cc1c6a5c3d07abe5d07e",
+  "remotePullRef": "refs/pull/418/head",
+  "remotePullRefHead": "265171657d48ef56ee81cc1c6a5c3d07abe5d07e",
+  "pinsAgree": true,
+  "verifiedAtUTC": "2026-11-03T11:00:28.176116+00:00",
+  "verificationSources": [
+    "GitHub pull request API metadata",
+    "git ls-remote origin branch and pull refs",
+    "fresh clean branch worktree HEAD and tree"
+  ],
+  "worktree": "/mnt/disks/scratch/task-worktrees/localization-20261103/seerrng-pr418-w3500-apply-20261103",
+  "worktreeBranch": "codex/seerrng-localization-overhaul-20261028",
+  "worktreeClean": true
+}

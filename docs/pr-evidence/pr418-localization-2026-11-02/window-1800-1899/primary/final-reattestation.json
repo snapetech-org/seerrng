@@ -1,0 +1,53 @@
+{
+  "afterReview": {
+    "checkedAtUtc": "2026-11-02T15:39:41Z",
+    "livePullRequest": {
+      "baseRefOid": "221d8e0d542802da7529cd272c928cc747677e5c",
+      "headRefOid": "78a36214596544e1b3033c6a612ae5559db713e3",
+      "isDraft": true,
+      "state": "OPEN",
+      "url": "https://github.com/snapetech-org/seerrng/pull/418"
+    },
+    "worktree": {
+      "head": "78a36214596544e1b3033c6a612ae5559db713e3",
+      "status": "",
+      "tree": "ef83a00d078f0a4aed6269b4c23282dbf91fd6f7"
+    }
+  },
+  "beforeReview": {
+    "callerFilesReattested": 11,
+    "callerMismatches": 0,
+    "callerRefsReattested": 371,
+    "cellsReattested": 1200,
+    "checkedAtUtc": "2026-11-02T15:39:40Z",
+    "inputChecksums": "pass",
+    "livePullRequest": {
+      "baseRefOid": "221d8e0d542802da7529cd272c928cc747677e5c",
+      "headRefOid": "78a36214596544e1b3033c6a612ae5559db713e3",
+      "isDraft": true,
+      "state": "OPEN",
+      "url": "https://github.com/snapetech-org/seerrng/pull/418"
+    },
+    "priorExactDispositions": 0,
+    "sourceAndCellMismatches": 0,
+    "sourceIdsReattested": 100,
+    "worktree": {
+      "head": "78a36214596544e1b3033c6a612ae5559db713e3",
+      "status": "",
+      "tree": "ef83a00d078f0a4aed6269b4c23282dbf91fd6f7"
+    }
+  },
+  "callerFilesReattested": 11,
+  "callerMismatches": 0,
+  "callerRefsReattested": 371,
+  "cellsReattested": 1200,
+  "expectedHead": "78a36214596544e1b3033c6a612ae5559db713e3",
+  "expectedTree": "ef83a00d078f0a4aed6269b4c23282dbf91fd6f7",
+  "priorExactDispositions": 0,
+  "pullRequest": 418,
+  "repository": "snapetech-org/seerrng",
+  "repositoryModified": false,
+  "sourceAndCellMismatches": 0,
+  "sourceIdsReattested": 100,
+  "worktreeUnmodified": true
+}

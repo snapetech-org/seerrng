@@ -1,0 +1,42 @@
+{
+  "repository": "snapetech-org/SeerrNG",
+  "pullRequest": 418,
+  "head": "58697945e3d3fb44c37d49db0cc0f88e3af110cc",
+  "tree": "e3076937fe10b4dd3821ea573e8e5e21601fce7d",
+  "initialExtractorGapCount": 0,
+  "trueUnmappedSourceCount": 0,
+  "resolution": "No caller gaps were found in the initial source-group extraction; all 100 source rows have exact definition/use references. No extractor alias repair was needed for this window.",
+  "callerFiles": [
+    {
+      "blob": "b8108535f02a8d5a42df3fb25d6a3e48d0833746",
+      "fileSha256": "e2beaf7e25f0a0aa86b36909d469a2dc06915cc42a0f68f811ede3f12e46799d",
+      "path": "src/components/RequestModal/ComicRequestModal.tsx"
+    },
+    {
+      "blob": "ee4654b84a200888a2e82da45f7ed5752f3cadc5",
+      "fileSha256": "3302816c4320f46b44958fdc9386074876288341fb092a3acde594db41b5d2f3",
+      "path": "src/components/RequestModal/MagazineRequestModal.tsx"
+    },
+    {
+      "blob": "5802b65ea44971477ff78037efe6d07ab68f6495",
+      "fileSha256": "5aa28c753c3bde5f53f22a7d4df406b025dc53b6dfa8bbc7f5a0e6ab71c0785c",
+      "path": "src/components/RequestModal/MusicCollectionRequestModal.tsx"
+    },
+    {
+      "blob": "ce0402f5cef02cddac927d29d4bff4f12635f0e8",
+      "fileSha256": "9e517a3ed16c468c0877aeff9b3618818a4b5acd52aa37d3a44a7b6fdc05cd90",
+      "path": "src/components/RequestModal/MusicRequestModal.tsx"
+    },
+    {
+      "blob": "0e421e7e07adc0f558d9634d2822f3045576611f",
+      "fileSha256": "7c5985ee084f300da3defebaa712fbcadd87bd852b2602425b4f6a6f44c929ce",
+      "path": "src/components/RequestModal/PlaylistImportModal.tsx"
+    },
+    {
+      "blob": "04a3da7d068564eec5f3e2e1846b3f57044dbf86",
+      "fileSha256": "cc3b2d690a4325662124e06122e6198975e2e3bec490b3e6ca936d827937fbf3",
+      "path": "src/components/RequestModal/QuotaDisplay/index.tsx"
+    }
+  ],
+  "gaps": []
+}

@@ -1,0 +1,62 @@
+{
+  "packet": "Independent SeerrNG PR #418 W2800-W2899 localization cross-review",
+  "exactHead": "7329f0ffb34d46042dbf1b165046e21c4f4d45e3",
+  "exactTree": "531e045f511ee9c46f4c7ed80d50f529c9c12000",
+  "files": [
+    {
+      "path": "README.md",
+      "bytes": 2725,
+      "sha256": "aeb2a03c962d1977a367117c4f097d183e44466d57395f2c06fd700868a31760"
+    },
+    {
+      "path": "boundary-history-audit.json",
+      "bytes": 566,
+      "sha256": "9da7679366474153483870d28cfedfb1aae62558fdc9d971f88aa6f21b998dd0"
+    },
+    {
+      "path": "boundary-readbacks.jsonl",
+      "bytes": 5294,
+      "sha256": "bd03c1a4e2b5ae3aa9e850d37ea63ef8cac6b9162afaa163e63d90b07526c7ba"
+    },
+    {
+      "path": "build_crossreview.py",
+      "bytes": 27849,
+      "sha256": "30a9ad44556789de95f345e9a0e0b5659b15ab6abd5285493849fdf4c262eb39"
+    },
+    {
+      "path": "caller-pin-audit.jsonl",
+      "bytes": 94541,
+      "sha256": "3692dbfb17cfe58486b1ab81c657e08181f9d0958d4ece2049925512ad7c07fd"
+    },
+    {
+      "path": "cross-review-ledger.jsonl",
+      "bytes": 1813797,
+      "sha256": "145ba74cf53bc03676a346d43a5f5b74b45dad3bb4eee64164f60ea3315c4e14"
+    },
+    {
+      "path": "file-pin-audit.json",
+      "bytes": 6162,
+      "sha256": "b24d4a6b70658f04b1e80225053b0c47819b02501189d15067f653f8a1e452eb"
+    },
+    {
+      "path": "icu-equivalence-audit.jsonl",
+      "bytes": 7820,
+      "sha256": "65bdcb298069f7109715c2201fc66b081667063767f1df5fc175c67658ae8cfe"
+    },
+    {
+      "path": "proposal-review.jsonl",
+      "bytes": 555749,
+      "sha256": "65567fdc90cdaefbe9d02081a691c6a09d1c88b760b6f467dfdb50c4f6364342"
+    },
+    {
+      "path": "structural-audit.json",
+      "bytes": 1843,
+      "sha256": "75a3e7483e29d8842cb507b0c4ef8503e765677123b96b291c2cc1402f948247"
+    },
+    {
+      "path": "summary.json",
+      "bytes": 3023,
+      "sha256": "69ed3a41c2015e0b11de7576ed508c4e7c589696ce6eecd98557bce9804eef25"
+    }
+  ]
+}

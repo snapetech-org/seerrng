@@ -1,0 +1,62 @@
+{
+  "artifact": "SeerrNG PR #418 W3940-W3959 cross-review application summary",
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "window": "W3940-W3959",
+  "baseHead": "a0104b4c84a9c4561020ca72062171b22ffc49f2",
+  "baseTree": "aaa44c8019c58fde7ae796065e8aae7ac11d7a80",
+  "productCommit": "f1252f3058c3ce558fd99eb23dc0faa842826e58",
+  "productTree": "a06d8960e5b2d3600feceedbf88f1c9e1c0d22f8",
+  "productCommitMessage": "fix(i18n): apply reviewed translations W3940-W3959",
+  "reviewSourcePath": "/mnt/disks/scratch/task-worktrees/localization-20261104/seerrng-pr418-w3940-3959-source",
+  "reviewSourceCleanAtBase": true,
+  "reviewedCells": 240,
+  "appliedUpdates": 48,
+  "readbackCells": 240,
+  "changedCatalogPaths": [
+    "src/i18n/locale/ar.json",
+    "src/i18n/locale/de.json",
+    "src/i18n/locale/es.json",
+    "src/i18n/locale/fr.json",
+    "src/i18n/locale/hi.json",
+    "src/i18n/locale/id.json",
+    "src/i18n/locale/ko.json",
+    "src/i18n/locale/pt_BR.json",
+    "src/i18n/locale/vi.json",
+    "src/i18n/locale/zh_Hans.json",
+    "src/i18n/locale/zh_Hant.json"
+  ],
+  "changedCatalogCount": 11,
+  "unchangedCells": 192,
+  "noOpCells": 168,
+  "currentHashOnlyHolds": 24,
+  "crossDispositionCounts": {
+    "KEEP": 168,
+    "SELECT_PROPOSAL": 48,
+    "HOLD": 24
+  },
+  "selectedTargetOriginCounts": {
+    "primary": 17,
+    "primary+blind": 13,
+    "blind": 18
+  },
+  "proposalCandidatesAssessed": 76,
+  "proposalCandidateAssessments": {
+    "SELECTED": 61,
+    "NOT_SELECTED_ALTERNATIVE": 15
+  },
+  "catalogCount": 13,
+  "catalogKeyOrderPreserved": true,
+  "priorHashOnlyHoldCount": 26,
+  "priorAppliedTargetHashCount": 214,
+  "baselineNumericEquivalentAccepted": [
+    "3940::ja",
+    "3955::ja"
+  ],
+  "nativeSpeakerApproval": false,
+  "browserReview": false,
+  "testsBuildsScansCI": false,
+  "workflowChanges": false,
+  "repositoryEditsBeyondLocaleAndEvidence": false,
+  "applyStatus": "APPLIED_TO_PRODUCT_COMMIT_NOT_PUSHED"
+}

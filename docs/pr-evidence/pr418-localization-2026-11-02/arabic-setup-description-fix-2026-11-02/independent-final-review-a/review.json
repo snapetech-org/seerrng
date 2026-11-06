@@ -1,0 +1,110 @@
+{
+  "schemaVersion": 1,
+  "review": "Independent semantic review of the refined Arabic setup description",
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "livePullRequestVerification": {
+    "state": "OPEN",
+    "isDraft": true,
+    "headRefName": "codex/seerrng-localization-overhaul-20261028",
+    "headRefOid": "e32e1748e780740ae447dc5ab91eda5b5a9a79bb",
+    "url": "https://github.com/snapetech-org/seerrng/pull/418",
+    "verifiedAtUtc": "2026-11-02 11:36:53 UTC"
+  },
+  "exactHead": "e32e1748e780740ae447dc5ab91eda5b5a9a79bb",
+  "exactTree": "15b64698e3e9f835e2dbde87ee9822bf8abce6d7",
+  "worktree": "/mnt/disks/scratch/task-worktrees/localization-20261102/seerrng-pr418-w1000-1099",
+  "cell": {
+    "sourcePositionZeroBased": 5381,
+    "sourcePositionOneBased": 5382,
+    "sourceId": "components.Setup.advancedSetupDescription",
+    "locale": "ar",
+    "source": "Skip the guided defaults and service choices. You’ll still connect your media server before setup can finish.",
+    "sourceSha256": "3328ec4efc40f35be20b9655b613e60e76e56011bae3a5bd3b620999d7567b81",
+    "currentTarget": "تخطَّ الإعدادات الافتراضية الموجهة واختيارات الخدمات. ستقوم لا يزال بتوصيل خادم الوسائط الخاص بك قبل اكتمال الإعداد.",
+    "currentTargetSha256": "f87fa1564c63d4aeef318e26032d4a89f57a03a0cdf4d33364385ff4109d4acc",
+    "primaryProposalVariants": [
+      {
+        "origin": "seerrng-pr418-advancedsetup-ar-review-20261102/review.json",
+        "target": "تخطَّ الإعدادات الافتراضية الموجهة واختيارات الخدمات. ستظل بحاجة إلى توصيل خادم الوسائط قبل اكتمال الإعداد.",
+        "targetSha256": "472c1dbeca088abb3cb0a5f299ebb67ba06b5bb6adb282a092ff7065dc1e80ea"
+      },
+      {
+        "origin": "seerrng-pr418-arabic-setup-description-crossreview-20261102/review.json",
+        "target": "تخطَّ الإعدادات الافتراضية الموجهة وخيارات الخدمات. ستظل بحاجة إلى توصيل خادم الوسائط قبل اكتمال الإعداد.",
+        "targetSha256": "b4bd6e3a4183a5f9a6ba6645c45f3f86df38046278be8d5aa40eafe706d1e3d7"
+      }
+    ],
+    "refinedProposal": "تخطَّ الإعدادات الافتراضية الموجهة وخيارات الخدمات. ستظل بحاجة إلى توصيل خادم الوسائط الخاص بك قبل اكتمال الإعداد.",
+    "refinedProposalSha256": "5df014b6f5c51c63a3647dd59a598f8e15f424d0e9873bd5b3b5c6f4fe5e09b5",
+    "decision": "accept-refinement",
+    "rationale": "The refined wording preserves both setup choices the user skips: guided defaults and service options. “خيارات الخدمات” is natural UI wording for the service choices. “ستظل بحاجة إلى توصيل” clearly keeps the source requirement that setup still needs a media-server connection before it can finish, and “خادم الوسائط الخاص بك” preserves the possessive “your” omitted from the primary variants. The current Arabic “ستقوم لا يزال بتوصيل” is ungrammatical. In the caller, this sentence appears below the guided/advanced setup toggle; the advanced flow still requires a media server before continuing to service configuration.",
+    "confidence": "moderate",
+    "nativeSpeakerApproval": false
+  },
+  "callerContext": {
+    "file": "src/components/Setup/index.tsx",
+    "pins": [
+      {
+        "line": 72,
+        "lineText": "  advancedSetupDescription:",
+        "lineSha256": "c5bf15e9ced0c8851e0769cdce1115027332bcfe43ba4209978fa415b9c469ad",
+        "previousLine": "  useGuidedSetup: 'Use guided setup',",
+        "nextLine": "    'Skip the guided defaults and service choices. You’ll still connect your media server before setup can finish.',"
+      },
+      {
+        "line": 73,
+        "lineText": "    'Skip the guided defaults and service choices. You’ll still connect your media server before setup can finish.',",
+        "lineSha256": "b58021d12c3afad283ce6a9f1718af512d5d15c4719acd642a38cb8f7416ae10",
+        "previousLine": "  advancedSetupDescription:",
+        "nextLine": "  advancedSetupSelected:"
+      },
+      {
+        "line": 573,
+        "lineText": "                  {intl.formatMessage(messages.advancedSetupDescription)}",
+        "lineSha256": "188a689870d06cb30e86ce6d8d0ffc215cfc16f508318998a890a448bb97c2b9",
+        "previousLine": "                <p className=\"text-sm leading-5 text-gray-300\">",
+        "nextLine": "                </p>"
+      }
+    ],
+    "setupFlow": "The description is rendered below the “Skip the guide (advanced)” / “Use guided setup” toggle. Guided mode shows defaults and service choices; advanced mode skips those steps but the media-server step still disables Continue until its settings are complete."
+  },
+  "pins": {
+    "sourceCatalog": {
+      "path": "src/i18n/locale/en.json",
+      "sha256": "75ff3c90b52aedd636a506281ffbd6fb2d3739c61294b6008a517f17647e2316",
+      "blob": "12e04a118c30b71b3714291adeaf9fdb2735cee4",
+      "bytes": 835513,
+      "matchesHeadBytes": true
+    },
+    "targetCatalog": {
+      "path": "src/i18n/locale/ar.json",
+      "sha256": "c4cf9f9bd06199d5249c64dda69cdb3eecdd01247bc3ae4e51075be8f40a3edb",
+      "blob": "03b7882a37c6505bbfe6c79a1dd29c300447c070",
+      "bytes": 1041604,
+      "matchesHeadBytes": true
+    },
+    "callerFile": {
+      "path": "src/components/Setup/index.tsx",
+      "sha256": "7d24c14cc92343ecb5693cedf148d34e6d18adb467aeb867ef1ad8aafd47f836",
+      "blob": "5f740f73e4d22a1f7a01dd0d8e74a94e890b88f1",
+      "bytes": 36039,
+      "matchesHeadBytes": true
+    },
+    "sourceSnapshot": {
+      "path": "config/i18n/source-snapshot.json",
+      "sha256": "5c257941ea31099c324ac719a87f533b6e84b795ec8d8e3f7774981bf091a006",
+      "blob": "73a858058155f8e0e829f613754309ed7c7d95c1",
+      "bytes": 1133570,
+      "matchesHeadBytes": true
+    }
+  },
+  "worktreeStatusAtReview": {
+    "status": "M AGENTS.md",
+    "preExistingModifiedPath": "AGENTS.md",
+    "scopedSourceTargetCallerFilesMatchPinnedCommit": true,
+    "reviewerChangedRepository": false
+  },
+  "blockers": [],
+  "testsBuildsScansCiRun": false
+}

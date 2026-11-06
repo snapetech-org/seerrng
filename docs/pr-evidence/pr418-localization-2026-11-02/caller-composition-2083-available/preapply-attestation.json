@@ -1,0 +1,13 @@
+{
+  "pr_state": "open",
+  "draft": true,
+  "head": "3af7b753f5a7a8ce304e0c116dbce9a76328b3ad",
+  "tree": "56a5c443734cee77822fa2a23a2385b2e6dfcf3e",
+  "branch": "codex/seerrng-localization-overhaul-20261028",
+  "remote_branch_head": "3af7b753f5a7a8ce304e0c116dbce9a76328b3ad",
+  "source_file_sha256": "75ff3c90b52aedd636a506281ffbd6fb2d3739c61294b6008a517f17647e2316",
+  "caller_file_sha256": "a2bf7c15654bfe4669dbea033151b13270591cf4246664026d58a0c5283eb577",
+  "locale_catalogs_reattested": 12,
+  "all_local_catalog_hashes_and_blobs_match_crossreview": true,
+  "worktree_clean_before_application": true
+}

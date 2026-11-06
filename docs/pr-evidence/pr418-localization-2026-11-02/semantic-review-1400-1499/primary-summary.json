@@ -1,0 +1,189 @@
+{
+  "schemaVersion": 1,
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "state": "OPEN",
+  "isDraft": true,
+  "task": "Primary semantic review for SeerrNG PR #418 source positions 1400–1499 across all 12 direct locales",
+  "pin": {
+    "head": "0773321829173ea9fe6c765d16335c27c06c57a2",
+    "tree": "176872baf853ae7278c0c575111bb430026aa454",
+    "branch": "codex/seerrng-localization-overhaul-20261028",
+    "baseRefOid": "221d8e0d542802da7529cd272c928cc747677e5c"
+  },
+  "sourceIdPositions": {
+    "count": 100,
+    "startInclusive": 1400,
+    "stopExclusive": 1500
+  },
+  "sourceIds": 100,
+  "locales": [
+    "ar",
+    "de",
+    "es",
+    "fr",
+    "hi",
+    "id",
+    "ja",
+    "ko",
+    "pt-BR",
+    "vi",
+    "zh-CN",
+    "zh-TW"
+  ],
+  "targetCells": 1200,
+  "rowsReviewed": 1200,
+  "priorDispositionsPreserved": 0,
+  "newSemanticRows": 1179,
+  "callerContextReferencesReattested": 223,
+  "uniqueCallerFiles": 2,
+  "uniqueCallerLines": 221,
+  "placeholderFailures": 0,
+  "markupFailures": 0,
+  "protectedLiteralFailures": 0,
+  "nativeSpeakerReviewPerformed": false,
+  "browserReviewPerformed": false,
+  "notes": [
+    "Source positions 1400–1499 use the exact insertion order of src/i18n/locale/en.json at the pinned head.",
+    "After W1300–1399 applied at this head, all 1,200 W1400–1499 current locale values still matched the frozen semantic review and were re-attested.",
+    "The full tracked PR evidence inventory was searched by source ID. Twenty prior Spanish root-reviewed/applied decisions and one explicit Spanish hold were exact-hash matched and frozen.",
+    "All 1,200 current/source values and caller pins were attested at exact head/tree; definition-only cases remain individually marked.",
+    "Machine-assisted semantic review only; native-speaker signoff and browser review are not claimed.",
+    "Semantic decisions are recorded for 1,179 new cells; 21 Spanish cells retain their exact prior root cross-review/apply or hold disposition.",
+    "All proposals passed exact UTF-8 hash, placeholder, markup, and protected product-literal parity (SeerrNG, QuestarrNG, Steam).",
+    "Supplemental exact-hash decisions recorded: 0; all are included in the final candidate ledger."
+  ],
+  "priorDispositionCellsPreserved": 21,
+  "semanticReviewInputRows": 1179,
+  "priorSourceIdIntersectionsPreserved": 21,
+  "priorOverlaps": [
+    "components.GameLibrary.matchGame",
+    "components.GameLibrary.openCatalog",
+    "components.GameLibrary.playing",
+    "components.GameLibrary.removeConfirm",
+    "components.GameLibrary.saveError",
+    "components.GameLibrary.searchPlaceholder",
+    "components.GameLibrary.sharedFilterLabel",
+    "components.GameLibrary.steamErrorMessage",
+    "components.GameLibrary.steamSyncing",
+    "components.GameLibrary.steamUnlinked",
+    "components.GameLibrary.totalGames",
+    "components.IdentityMappingControls.change",
+    "components.IdentityMappingControls.curatedMatch",
+    "components.IdentityMappingControls.externalMatch",
+    "components.IdentityMappingControls.match",
+    "components.IdentityMappingControls.noResults",
+    "components.IdentityMappingControls.reset",
+    "components.IdentityMappingControls.resetFailed",
+    "components.IdentityMappingControls.resetSaved",
+    "components.IdentityMappingControls.saveFailed",
+    "components.IdentityMappingControls.saved"
+  ],
+  "priorDispositionTypes": {
+    "accept": 17,
+    "refine": 3,
+    "hold": 1
+  },
+  "definitionOnlySourceIds": [
+    "components.GameLibrary.platform",
+    "components.GameLibrary.playtimeHours",
+    "components.GameLibrary.playtimeHoursMinutes",
+    "components.GameLibrary.playtimeMinutes",
+    "components.GameLibrary.request",
+    "components.GameLibrary.steamNoAccount",
+    "components.GameLibrary.store"
+  ],
+  "definitionOnlyTargetCellCount": 84,
+  "primaryDispositions": {
+    "accept-current": 708,
+    "propose-correction": 365,
+    "propose-refinement": 82,
+    "preserved-prior-disposition": 21,
+    "hold": 24
+  },
+  "candidateCount": 447,
+  "countsByLocale": {
+    "ar": {
+      "accept-current": 63,
+      "propose-correction": 31,
+      "propose-refinement": 4,
+      "hold": 2
+    },
+    "de": {
+      "accept-current": 93,
+      "propose-refinement": 5,
+      "hold": 2
+    },
+    "es": {
+      "accept-current": 65,
+      "preserved-prior-disposition": 21,
+      "propose-refinement": 3,
+      "propose-correction": 9,
+      "hold": 2
+    },
+    "fr": {
+      "accept-current": 69,
+      "propose-correction": 23,
+      "propose-refinement": 6,
+      "hold": 2
+    },
+    "hi": {
+      "accept-current": 48,
+      "propose-correction": 37,
+      "propose-refinement": 13,
+      "hold": 2
+    },
+    "id": {
+      "accept-current": 83,
+      "propose-correction": 11,
+      "propose-refinement": 4,
+      "hold": 2
+    },
+    "ja": {
+      "propose-correction": 46,
+      "accept-current": 45,
+      "propose-refinement": 7,
+      "hold": 2
+    },
+    "ko": {
+      "propose-correction": 50,
+      "accept-current": 46,
+      "propose-refinement": 2,
+      "hold": 2
+    },
+    "pt-BR": {
+      "propose-correction": 24,
+      "accept-current": 57,
+      "propose-refinement": 17,
+      "hold": 2
+    },
+    "vi": {
+      "accept-current": 52,
+      "propose-correction": 35,
+      "propose-refinement": 11,
+      "hold": 2
+    },
+    "zh-CN": {
+      "propose-correction": 50,
+      "accept-current": 43,
+      "propose-refinement": 5,
+      "hold": 2
+    },
+    "zh-TW": {
+      "propose-correction": 49,
+      "accept-current": 44,
+      "propose-refinement": 5,
+      "hold": 2
+    }
+  },
+  "candidateCorrections": 365,
+  "candidateRefinements": 82,
+  "holds": 24,
+  "reviewInputChecksumsVerified": true,
+  "localeSubpacketRows": {
+    "locale-a": 579,
+    "locale-b": 600
+  },
+  "primarySupplementalRows": 0,
+  "preservedPriorHolds": 1
+}

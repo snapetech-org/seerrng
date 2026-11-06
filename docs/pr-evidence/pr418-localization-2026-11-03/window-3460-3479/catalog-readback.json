@@ -1,0 +1,156 @@
+{
+  "baseHead": "76fd466ba7e44ed9853115f8fb1f8ab8bec93c8e",
+  "catalogs": [
+    {
+      "path": "src/i18n/locale/en.json",
+      "baseSha256": "75ff3c90b52aedd636a506281ffbd6fb2d3739c61294b6008a517f17647e2316",
+      "readbackSha256": "75ff3c90b52aedd636a506281ffbd6fb2d3739c61294b6008a517f17647e2316",
+      "keyCount": 9494,
+      "keySetParityWithEnglish": true,
+      "orderPreservedWithinFile": true,
+      "changedKeys": []
+    },
+    {
+      "path": "src/i18n/locale/es.json",
+      "baseSha256": "6f9304fde8de58a73878bf64ba766aa8f3ce0510ce072312775a3ab2bd7af109",
+      "readbackSha256": "c691985a6e8b0b8ed3af85fd3e36efd3ee7ee0764ea6c152a8e0bc6f0713adf8",
+      "keyCount": 9494,
+      "keySetParityWithEnglish": true,
+      "orderPreservedWithinFile": true,
+      "changedKeys": [
+        "components.ResetPassword.passwordreset",
+        "components.ResetPassword.resetpassword",
+        "components.ResetPassword.resetpasswordsuccessmessage",
+        "components.ResetPassword.validationpasswordmatch"
+      ]
+    },
+    {
+      "path": "src/i18n/locale/zh_Hans.json",
+      "baseSha256": "bfc6ae367e9b0136f7cba43b350d557e22471736d72ee82fb6ae3dd86fc5d33e",
+      "readbackSha256": "0ad98f78e2704a55f09a165be1e9e90f166dc29c345150f9a4384f174060c6a2",
+      "keyCount": 9494,
+      "keySetParityWithEnglish": true,
+      "orderPreservedWithinFile": true,
+      "changedKeys": [
+        "components.Search.SoftwarePreview.available"
+      ]
+    },
+    {
+      "path": "src/i18n/locale/hi.json",
+      "baseSha256": "ece27a981e726f1fec33031143178c413148fdcb32d5e162cc679e5bb9d3e5c9",
+      "readbackSha256": "ece27a981e726f1fec33031143178c413148fdcb32d5e162cc679e5bb9d3e5c9",
+      "keyCount": 9494,
+      "keySetParityWithEnglish": true,
+      "orderPreservedWithinFile": true,
+      "changedKeys": []
+    },
+    {
+      "path": "src/i18n/locale/de.json",
+      "baseSha256": "974a40cad241b5e0c140d650785133889f17bcb9e8ada639cd094f450cefe69b",
+      "readbackSha256": "974a40cad241b5e0c140d650785133889f17bcb9e8ada639cd094f450cefe69b",
+      "keyCount": 9494,
+      "keySetParityWithEnglish": true,
+      "orderPreservedWithinFile": true,
+      "changedKeys": []
+    },
+    {
+      "path": "src/i18n/locale/ja.json",
+      "baseSha256": "16c6bb4d9c6484a93e1a8703f5b43c49fc3a3b1354df63d432767f66283ec62b",
+      "readbackSha256": "16c6bb4d9c6484a93e1a8703f5b43c49fc3a3b1354df63d432767f66283ec62b",
+      "keyCount": 9494,
+      "keySetParityWithEnglish": true,
+      "orderPreservedWithinFile": true,
+      "changedKeys": []
+    },
+    {
+      "path": "src/i18n/locale/fr.json",
+      "baseSha256": "4889cfc0fb774391bc8d14a3c10ef904a0497da8b7022ba131f1c21a7198772f",
+      "readbackSha256": "4889cfc0fb774391bc8d14a3c10ef904a0497da8b7022ba131f1c21a7198772f",
+      "keyCount": 9494,
+      "keySetParityWithEnglish": true,
+      "orderPreservedWithinFile": true,
+      "changedKeys": []
+    },
+    {
+      "path": "src/i18n/locale/pt_BR.json",
+      "baseSha256": "f5d65837ff170ef1dcd6cf22d8c80f2d43435a35f7772f9b08c0f7134530b2b5",
+      "readbackSha256": "e282573bf409671215d38c1f0b93574e62a9b9f6e9d8cf1aa3d1f976431ef8d2",
+      "keyCount": 9494,
+      "keySetParityWithEnglish": true,
+      "orderPreservedWithinFile": true,
+      "changedKeys": [
+        "components.ResetPassword.resetpassword"
+      ]
+    },
+    {
+      "path": "src/i18n/locale/ar.json",
+      "baseSha256": "5f03c14aa09bbf56c32573c7d9158f9b39ac8fe91e510f8e3a5ad5fb89e00c6b",
+      "readbackSha256": "5f03c14aa09bbf56c32573c7d9158f9b39ac8fe91e510f8e3a5ad5fb89e00c6b",
+      "keyCount": 9494,
+      "keySetParityWithEnglish": true,
+      "orderPreservedWithinFile": true,
+      "changedKeys": []
+    },
+    {
+      "path": "src/i18n/locale/ko.json",
+      "baseSha256": "7c16148ce58787e1a0e2a4906d04e159f32e95ff6bdec94eac665ae09aeefd94",
+      "readbackSha256": "bd0d067aacac72aeb7496bdf5e6e4a74dc0d3f1094570c752f6118ae15bcc345",
+      "keyCount": 9494,
+      "keySetParityWithEnglish": true,
+      "orderPreservedWithinFile": true,
+      "changedKeys": [
+        "components.ResetPassword.validationpasswordminchars"
+      ]
+    },
+    {
+      "path": "src/i18n/locale/zh_Hant.json",
+      "baseSha256": "851b2cd2d3e2d082ec04aab2e63a8d3c75fb382a9fde407b522a451e2643c968",
+      "readbackSha256": "ce4d58fd1c3cdc89348cd58020476650581ce836ceeeac9e17e865ae8243bcd7",
+      "keyCount": 9494,
+      "keySetParityWithEnglish": true,
+      "orderPreservedWithinFile": true,
+      "changedKeys": [
+        "components.Search.SoftwarePreview.available"
+      ]
+    },
+    {
+      "path": "src/i18n/locale/vi.json",
+      "baseSha256": "0fff0c5d0a2e3a1b891aab41d9aa773a07c53422e2be3a710fc2f56c98f1676d",
+      "readbackSha256": "70376b5f62c9be1a4478bb7e714947d73fec7892617eea081904547959ed082a",
+      "keyCount": 9494,
+      "keySetParityWithEnglish": true,
+      "orderPreservedWithinFile": true,
+      "changedKeys": [
+        "components.ResetPassword.validationpasswordmatch"
+      ]
+    },
+    {
+      "path": "src/i18n/locale/id.json",
+      "baseSha256": "2272f67ec266af7877e38110f3e4f4adc49f1c7cbab01bf492021c2fa52138c3",
+      "readbackSha256": "6e004a42998aa5e410f2f222bd40c4040315d04985b2b09ae8eb0718be4efb5b",
+      "keyCount": 9494,
+      "keySetParityWithEnglish": true,
+      "orderPreservedWithinFile": true,
+      "changedKeys": [
+        "components.ResetPassword.requestresetlinksuccessmessage",
+        "components.ResetPassword.resetpassword",
+        "components.ResetPassword.resetpasswordsuccessmessage",
+        "components.ResetPassword.validationpasswordmatch"
+      ]
+    }
+  ],
+  "catalogKeyCount": 9494,
+  "allCatalogKeySetsMatchEnglish": true,
+  "orderPreservedWithinEachFile": true,
+  "preexistingOrderSkewFromEnglish": [
+    "src/i18n/locale/zh_Hans.json",
+    "src/i18n/locale/ja.json",
+    "src/i18n/locale/ko.json",
+    "src/i18n/locale/zh_Hant.json",
+    "src/i18n/locale/vi.json"
+  ],
+  "crossCatalogOrderWasNotNormalized": true,
+  "changedTargetCount": 13,
+  "readbackCells": 240,
+  "holdsUnchanged": 7
+}

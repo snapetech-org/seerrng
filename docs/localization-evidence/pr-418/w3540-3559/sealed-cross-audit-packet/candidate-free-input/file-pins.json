@@ -1,0 +1,144 @@
+{
+  "catalogFiles": {
+    "src/i18n/locale/en.json": {
+      "keyCount": 9494,
+      "orderedKeysSha256": "47d40a21145f2f198fadaa29baeef5461718c4b6365d564af60ee015f18f1974",
+      "path": "src/i18n/locale/en.json",
+      "sha256": "75ff3c90b52aedd636a506281ffbd6fb2d3739c61294b6008a517f17647e2316",
+      "gitBlob": "12e04a118c30b71b3714291adeaf9fdb2735cee4",
+      "byteCount": 835513,
+      "lineCount": 9496
+    },
+    "src/i18n/locale/es.json": {
+      "keyCount": 9494,
+      "orderedKeysSha256": "47d40a21145f2f198fadaa29baeef5461718c4b6365d564af60ee015f18f1974",
+      "path": "src/i18n/locale/es.json",
+      "sha256": "0232649a7900c7aa02d929f2840a918b1cf69a881351de2247f22bbe55e10a72",
+      "gitBlob": "8f37da1469cc56a0dde8762cd9159b591aed88bb",
+      "byteCount": 922919,
+      "lineCount": 9496
+    },
+    "src/i18n/locale/zh_Hans.json": {
+      "keyCount": 9494,
+      "orderedKeysSha256": "35faf7107f1be3900172b7c08ac7558b51f31d63b3b6c57eebe7710e8a81ca33",
+      "path": "src/i18n/locale/zh_Hans.json",
+      "sha256": "560c3494e74b99822f385f33f519afaef64a087a37d3a8552c0458ea4caeb592",
+      "gitBlob": "3dc42c39961c740892f9508dde0f8f1224c99a9f",
+      "byteCount": 812898,
+      "lineCount": 9496
+    },
+    "src/i18n/locale/hi.json": {
+      "keyCount": 9494,
+      "orderedKeysSha256": "47d40a21145f2f198fadaa29baeef5461718c4b6365d564af60ee015f18f1974",
+      "path": "src/i18n/locale/hi.json",
+      "sha256": "361ecfb8d28bd8d80ee49f815a57c96587e325740f66224221e484b9748bbca4",
+      "gitBlob": "398ad00a41a65c8c7d827f3144e9e22501381d4e",
+      "byteCount": 1373418,
+      "lineCount": 9496
+    },
+    "src/i18n/locale/de.json": {
+      "keyCount": 9494,
+      "orderedKeysSha256": "47d40a21145f2f198fadaa29baeef5461718c4b6365d564af60ee015f18f1974",
+      "path": "src/i18n/locale/de.json",
+      "sha256": "158009cb83faab36d44ca6f554d75114422c4474a138f9ccabab855ba7685a64",
+      "gitBlob": "de4376433be540bf09f4a9e822817c6e02e02f0a",
+      "byteCount": 927141,
+      "lineCount": 9496
+    },
+    "src/i18n/locale/ja.json": {
+      "keyCount": 9494,
+      "orderedKeysSha256": "35faf7107f1be3900172b7c08ac7558b51f31d63b3b6c57eebe7710e8a81ca33",
+      "path": "src/i18n/locale/ja.json",
+      "sha256": "c4c3472a0a90247a024d569cdda71a8bf9f54d069687eb8efa2b0f961bafd538",
+      "gitBlob": "0a7a0ff327f5cdfb213d876136dbf566715ef76f",
+      "byteCount": 1016337,
+      "lineCount": 9496
+    },
+    "src/i18n/locale/fr.json": {
+      "keyCount": 9494,
+      "orderedKeysSha256": "47d40a21145f2f198fadaa29baeef5461718c4b6365d564af60ee015f18f1974",
+      "path": "src/i18n/locale/fr.json",
+      "sha256": "472e4cec8d561bb6955206c213938cd1dffd0a85e50015d89415339d32b97d2e",
+      "gitBlob": "9f81562ef7f6b649c7c371ed5d63272b59e8be33",
+      "byteCount": 941096,
+      "lineCount": 9496
+    },
+    "src/i18n/locale/pt_BR.json": {
+      "keyCount": 9494,
+      "orderedKeysSha256": "47d40a21145f2f198fadaa29baeef5461718c4b6365d564af60ee015f18f1974",
+      "path": "src/i18n/locale/pt_BR.json",
+      "sha256": "6cc7570d0f0fe703d2b4bc4f7987bd37d9c9993bdb9352eacc3d9e21989ccf63",
+      "gitBlob": "3fb4a9b6cc28ad0d1d027185bfcf4c491340a0fd",
+      "byteCount": 912318,
+      "lineCount": 9496
+    },
+    "src/i18n/locale/ar.json": {
+      "keyCount": 9494,
+      "orderedKeysSha256": "47d40a21145f2f198fadaa29baeef5461718c4b6365d564af60ee015f18f1974",
+      "path": "src/i18n/locale/ar.json",
+      "sha256": "7ac7740354531a2d9e4da9bc8c26a2fdcde173dd5b32f63646bbbc3423a4b38e",
+      "gitBlob": "e16bd912d396a5db1d57dbf88a73ea9d3fe85eb2",
+      "byteCount": 1045106,
+      "lineCount": 9496
+    },
+    "src/i18n/locale/ko.json": {
+      "keyCount": 9494,
+      "orderedKeysSha256": "35faf7107f1be3900172b7c08ac7558b51f31d63b3b6c57eebe7710e8a81ca33",
+      "path": "src/i18n/locale/ko.json",
+      "sha256": "ee93a17f1ce7fd2ff1c6b4cf5592037865b81aabfc8916faa11bb753de276778",
+      "gitBlob": "2c55c0d176924d10df5cc2a086fb4f439c380143",
+      "byteCount": 934957,
+      "lineCount": 9496
+    },
+    "src/i18n/locale/zh_Hant.json": {
+      "keyCount": 9494,
+      "orderedKeysSha256": "35faf7107f1be3900172b7c08ac7558b51f31d63b3b6c57eebe7710e8a81ca33",
+      "path": "src/i18n/locale/zh_Hant.json",
+      "sha256": "b43c6e670185c63398f1d12a10eef256719b2ad528edf0189edb55c7898d50a2",
+      "gitBlob": "ad147997210c773576ae0be6c0f3daaaa0a26d4a",
+      "byteCount": 814731,
+      "lineCount": 9496
+    },
+    "src/i18n/locale/vi.json": {
+      "keyCount": 9494,
+      "orderedKeysSha256": "35faf7107f1be3900172b7c08ac7558b51f31d63b3b6c57eebe7710e8a81ca33",
+      "path": "src/i18n/locale/vi.json",
+      "sha256": "4b2bfc9361c7decc8ef9fff5f5984a75b8af6afd97a26e632cc35971f960e59b",
+      "gitBlob": "dfe915643235a418c4cf3707c555f22765c5cf8e",
+      "byteCount": 970594,
+      "lineCount": 9496
+    },
+    "src/i18n/locale/id.json": {
+      "keyCount": 9494,
+      "orderedKeysSha256": "47d40a21145f2f198fadaa29baeef5461718c4b6365d564af60ee015f18f1974",
+      "path": "src/i18n/locale/id.json",
+      "sha256": "40e94b1ea5738647dcb04a7f3dcf21437e379ab4a30986b74677da5caa18e274",
+      "gitBlob": "952ac210c9121f446d19e9ed456af70248046e5e",
+      "byteCount": 868504,
+      "lineCount": 9496
+    }
+  },
+  "runtimeFiles": {
+    "config/i18n/locales.json": {
+      "path": "config/i18n/locales.json",
+      "sha256": "6e8ea070b441db9700325cf838d440dbbef1d1e5331e28332ed6c15cb789376a",
+      "gitBlob": "d699bd347f4fbad07bce14a743c884800d9d4a84",
+      "byteCount": 5394,
+      "lineCount": 45
+    },
+    "src/components/Selector/index.tsx": {
+      "path": "src/components/Selector/index.tsx",
+      "sha256": "47b340467b7d15887fa56c56247d2f747fada09001d2078012dfddd1e364a3b6",
+      "gitBlob": "854edec021c8140c408b8d4d9dc03d861880dcf4",
+      "byteCount": 24752,
+      "lineCount": 854
+    },
+    "src/components/Settings/AudiobookshelfModal/index.tsx": {
+      "path": "src/components/Settings/AudiobookshelfModal/index.tsx",
+      "sha256": "8d310ead3ac6a030d99b8b75299884ff047b3ddf291f195ae4e832a13bb35dcf",
+      "gitBlob": "6ddac18c5a1eaf56c2d82397a1b60c5682b5de8d",
+      "byteCount": 15006,
+      "lineCount": 399
+    }
+  }
+}

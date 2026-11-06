@@ -1,0 +1,7 @@
+{
+  "batchId": "existing-es-client-0094",
+  "attempt": 1,
+  "error": "ValueError: components.RequestModal.QuotaDisplay.quotaLinkUser: correction changes a protected brand/URL/code/path",
+  "rawResponseSha256": "f37f4d351d0c08bb386f9a39afb6e49a83e32aee99afd0a59f1e94f2c3ca9ec3",
+  "rawResponseFile": "/mnt/disks/scratch/task-scratch/seerrng-review-window-650-700-422072-20261102/semantic-output/responses/existing-es-client-0094-attempt-1.json"
+}

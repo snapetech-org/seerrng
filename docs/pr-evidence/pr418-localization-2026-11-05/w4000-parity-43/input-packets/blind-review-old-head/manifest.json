@@ -1,0 +1,30 @@
+{
+  "artifact": "SeerrNG PR #418 independent blind semantic localization review",
+  "baseRef": "main",
+  "baseSha": "2647e15762de0c2285cd9d8ebc6d27ffafce6358",
+  "branch": "codex/seerrng-localization-overhaul-20261028",
+  "callerlessCellCount": 0,
+  "candidateFreeChecksumListSha256": "93629c99d76d0a6786f60a2d5600f01671e96ea51c1cbb9b9a76faf91890787c",
+  "changedSourceRefreshCells": 12,
+  "checksums": "SHA256SUMS.txt",
+  "exactHead": "77d30ae742aad7245e6e419237fca6a544531e1f",
+  "exactTree": "2c6fe4a0c1c33aa56b01f06a70702f68598509a7",
+  "files": [
+    "README.md",
+    "head-attestation-before.json",
+    "head-attestation-after.json",
+    "ledger.jsonl",
+    "proposals.jsonl",
+    "holds.jsonl",
+    "summary.json",
+    "verify_blind_review.py"
+  ],
+  "holdCount": 0,
+  "missingTargetCells": 516,
+  "packetType": "independent-blind-review",
+  "proposalCount": 528,
+  "pullRequest": 418,
+  "repository": "snapetech-org/seerrng",
+  "schemaVersion": 1,
+  "totalReviewedCells": 528
+}

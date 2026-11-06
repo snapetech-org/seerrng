@@ -1,0 +1,87 @@
+{
+  "result": "PASS",
+  "inputHead": "ca2309e960733a7486c55b9a761d82771be97cde",
+  "inputTree": "8c5df06aaf1d703ff923bf1fdf8a21c901b9d26d",
+  "sourceIds": 8,
+  "locales": 12,
+  "targetCells": 96,
+  "allTargetKeysAbsent": true,
+  "targetCatalogsParse": true,
+  "sourceOrderedInsertionAnchorsFound": true,
+  "existingOrderPreserved": true,
+  "postInsertKeySetEqualsEnglish": true,
+  "files": [
+    {
+      "path": "src/i18n/locale/es.json",
+      "keysBefore": 9537,
+      "keysAfter": 9545,
+      "baseSha256": "b06a5d4019fdb46175a9f6e527f3c49e393d916a041b881e8a4385bd8b4e52c6"
+    },
+    {
+      "path": "src/i18n/locale/zh_Hans.json",
+      "keysBefore": 9537,
+      "keysAfter": 9545,
+      "baseSha256": "1b2874acce8f384a9490cce30a304800df7aca3e6b8474e67bd1e1332ccb6556"
+    },
+    {
+      "path": "src/i18n/locale/hi.json",
+      "keysBefore": 9537,
+      "keysAfter": 9545,
+      "baseSha256": "58c3d0e57477d12a6416bb1285a59ab6f14086c88445be3b6cb2cd8abfc35a7d"
+    },
+    {
+      "path": "src/i18n/locale/de.json",
+      "keysBefore": 9537,
+      "keysAfter": 9545,
+      "baseSha256": "559c2e09410f002f2e2d4e3fa271c6a486373e0001d2071971a22d3d5fbd9765"
+    },
+    {
+      "path": "src/i18n/locale/ja.json",
+      "keysBefore": 9537,
+      "keysAfter": 9545,
+      "baseSha256": "36717ee11939e4efa957d29a7f11a1ab8f865cdf228e5d0d7d1b9dd6ea2e6073"
+    },
+    {
+      "path": "src/i18n/locale/fr.json",
+      "keysBefore": 9537,
+      "keysAfter": 9545,
+      "baseSha256": "54f9e1f8b96cac614dc49559d627bf114fd309458e79e096a42be6cf13b18789"
+    },
+    {
+      "path": "src/i18n/locale/pt_BR.json",
+      "keysBefore": 9537,
+      "keysAfter": 9545,
+      "baseSha256": "c700bfc84097d20d41615605d9c71240f0e615ea3c52e04835719d9e356defbb"
+    },
+    {
+      "path": "src/i18n/locale/ar.json",
+      "keysBefore": 9537,
+      "keysAfter": 9545,
+      "baseSha256": "cc5681a4926e5a2ec1055c4c3618e26e03864a7fe00b735d0356f6082263e293"
+    },
+    {
+      "path": "src/i18n/locale/ko.json",
+      "keysBefore": 9537,
+      "keysAfter": 9545,
+      "baseSha256": "0c4c4a90eab37b6e666200ce611cc5bad59d1c6dfe776bf04b65a4d2a0125e06"
+    },
+    {
+      "path": "src/i18n/locale/zh_Hant.json",
+      "keysBefore": 9537,
+      "keysAfter": 9545,
+      "baseSha256": "ab793048838d228bf73f0e7669fb1764d09d57d4f21b2a7c0e2e83aee0fa8b3f"
+    },
+    {
+      "path": "src/i18n/locale/vi.json",
+      "keysBefore": 9537,
+      "keysAfter": 9545,
+      "baseSha256": "956ffa64ee5c82157b83b3b83db09a74476d2405dd412eddf093b424660aa83f"
+    },
+    {
+      "path": "src/i18n/locale/id.json",
+      "keysBefore": 9537,
+      "keysAfter": 9545,
+      "baseSha256": "0787b47e2ee9f0cb6f2688b4c4695d170bf633a7eb2c42766245eb2c243200a7"
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "observedAtUtc": "2026-11-04T01:45:01.109844+00:00",
+  "repository": "snapetech-org/SeerrNG",
+  "pullRequest": 418,
+  "pr": {
+    "state": "open",
+    "draft": true,
+    "head": "d317a07ea0e5456b6d4660470c57d1f205cd0587",
+    "headRef": "codex/seerrng-localization-overhaul-20261028",
+    "baseRef": "main",
+    "baseSha": "fa40534ccced75bde1125c14760514fcd5d7de4d"
+  },
+  "branchRef": {
+    "ref": "refs/heads/codex/seerrng-localization-overhaul-20261028",
+    "sha": "d317a07ea0e5456b6d4660470c57d1f205cd0587"
+  },
+  "pullRef": {
+    "ref": "refs/pull/418/head",
+    "sha": "d317a07ea0e5456b6d4660470c57d1f205cd0587"
+  },
+  "commitTree": {
+    "commit": "d317a07ea0e5456b6d4660470c57d1f205cd0587",
+    "tree": "c1383dfb6e6fd4e926f9c89d4ec6b7e8ea7d6008"
+  },
+  "deploymentsAtExpectedHead": {
+    "sha": "d317a07ea0e5456b6d4660470c57d1f205cd0587",
+    "count": 0
+  },
+  "expected": {
+    "state": "open",
+    "draft": true,
+    "head": "d317a07ea0e5456b6d4660470c57d1f205cd0587",
+    "headRef": "codex/seerrng-localization-overhaul-20261028",
+    "tree": "c1383dfb6e6fd4e926f9c89d4ec6b7e8ea7d6008",
+    "baseRef": "main",
+    "baseSha": "fa40534ccced75bde1125c14760514fcd5d7de4d"
+  },
+  "pinsMatched": true
+}

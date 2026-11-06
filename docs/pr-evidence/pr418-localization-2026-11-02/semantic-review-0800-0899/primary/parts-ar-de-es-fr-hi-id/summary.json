@@ -1,0 +1,92 @@
+{
+  "acceptCurrent": 468,
+  "attestationPath": "../live-re-attestation.json",
+  "attestationSha256": "9cd9fddfd0e66296c9959837e04df29d78a9922954a432898ea5c3cfb2f13418",
+  "blockers": [],
+  "callerContextMismatches": 0,
+  "callerContextsReattested": 547,
+  "confidence": "moderate",
+  "correctionNeeded": 118,
+  "correctionProposals": 118,
+  "countsByLocale": {
+    "ar": {
+      "accept-current": 57,
+      "correction-needed": 43
+    },
+    "de": {
+      "accept-current": 82,
+      "correction-needed": 4,
+      "prior-disposition-preserved": 14
+    },
+    "es": {
+      "accept-current": 80,
+      "correction-needed": 20
+    },
+    "fr": {
+      "accept-current": 87,
+      "correction-needed": 13
+    },
+    "hi": {
+      "accept-current": 78,
+      "correction-needed": 22
+    },
+    "id": {
+      "accept-current": 84,
+      "correction-needed": 16
+    }
+  },
+  "decisionCounts": {
+    "accept-current": 468,
+    "correction-needed": 118,
+    "prior-disposition-preserved": 14
+  },
+  "holds": 0,
+  "isDraft": true,
+  "ledger": "semantic-review-part.jsonl",
+  "ledgerSha256": "d4d462c39324005c6e6cb9d6423edb63575b739e107231635b1d3d23e0f9d230",
+  "locales": [
+    "ar",
+    "de",
+    "es",
+    "fr",
+    "hi",
+    "id"
+  ],
+  "nativeSpeakerReviewRequired": true,
+  "notes": [
+    "Only cells routed new-semantic-review-required were adjudicated. Existing routed rows and their prior evidence fields are preserved without re-adjudication.",
+    "The sourceIdPosition mapping uses first-seen unique IDs from the selected packet rows, confirmed against prior primary positions; windowIndex is retained separately and not used as sourceIdPosition.",
+    "Current source/current target strings and caller contexts were re-attested at the latest open PR head/tree; no mismatches.",
+    "No repository/catalog/PR changes, tests, builds, CI, or browser work were performed."
+  ],
+  "packetPrimaryPin": {
+    "head": "d1137d06ffb5af57ef599ac9bf495aff2a990a7b",
+    "tree": "0aa22f0bb43e3e30d216e2ae19939220e05f04f7"
+  },
+  "pin": {
+    "head": "d633a7ed184bc9571a1a805da1bd25cef28d1599",
+    "tree": "abb501be60a5208a720c053976e94df72af8117e"
+  },
+  "preservedPriorRoutingCounts": {
+    "prior-correction-applied-exact-target-match": 11,
+    "prior-held-awaiting-adjudication": 3
+  },
+  "pullRequest": 418,
+  "repository": "snapetech-org/seerrng",
+  "reviewedRows": 586,
+  "routedNewSemanticRows": 586,
+  "rowsIncludingPreservedPrior": 600,
+  "schemaVersion": 1,
+  "sourceCurrentMismatches": 0,
+  "sourceIdPositions": {
+    "count": 100,
+    "startInclusive": 800,
+    "stopExclusive": 900
+  },
+  "sourceRowsReattestedAcrossAllLocales": 100,
+  "state": "OPEN",
+  "targetCurrentMismatches": 0,
+  "targetRowsReattestedAcrossAllLocales": 1200,
+  "task": "Primary semantic review for SeerrNG PR #418 W700–749 source positions 800–899, locales ar/de/es/fr/hi/id",
+  "uniqueCallerFiles": 65
+}

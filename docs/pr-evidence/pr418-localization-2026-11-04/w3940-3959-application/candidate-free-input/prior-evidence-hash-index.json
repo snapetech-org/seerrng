@@ -1,0 +1,18 @@
+{
+  "previousCandidateFreeInputManifestSha256": "101cec2c680f439a022c24651f3c6909f96ee96efe4db0b2b7effa0ef5835b7c",
+  "previousCandidateFreeChecksumManifestSha256": "d01b87e88e5f651654bd7af0551af9aa3ccd83e9d9b8781e9ef3dfa0315792f3",
+  "previousApplicationEvidenceCommit": "a0104b4c84a9c4561020ca72062171b22ffc49f2",
+  "previousApplicationProductCommit": "df93035a71c4b08470b34ed00abadd443bbdd876",
+  "previousAppliedTargetHashRows": 214,
+  "previousAppliedTargetsUnchangedByHash": 214,
+  "previousCatalogApplicationCells": 179,
+  "previousCatalogApplicationFilesVerified": 13,
+  "previousCatalogApplicationTargetHashesMatched": 179,
+  "previousSelectedIdsAndSourceTextReattestedByHash": 3940,
+  "previousSelectedSourceIdCount": 3940,
+  "previousHoldCount": 26,
+  "previousHoldTargetsUnchangedByHash": 26,
+  "previousW3920CrossSummarySha256": "105db64bb85756cf8b92cf6c83a42bf7de747e79dfd66afd687d230a0d7b87d1",
+  "previousW3920ApplicationReadbackSha256": "e0b02fd0094fbba49b9c835ef443d6d1421aaa84fed803eaa5dfa3432ba8228c",
+  "previousW3920CurrentHoldLedgerSha256": "6e26270132d050cf35d264c63a84870b19d28eb6c7c17bb4f92bd5e77fbbf51c"
+}

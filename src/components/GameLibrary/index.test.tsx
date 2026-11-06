@@ -230,7 +230,7 @@ it('shows private Steam progress and household overlap with each owner’s statu
 
   expect(document.body.textContent).toContain('Stardew Valley');
   expect(document.body.textContent).toContain('In your Steam library');
-  expect(document.body.textContent).toContain('2h 5m played');
+  expect(document.body.textContent).toContain('2 hours and 5 minutes played');
   expect(document.body.textContent).toContain('Private to you');
   expect(
     document.querySelector('a[href="/seerr/api/v1/game-library/steam/connect"]')
@@ -241,7 +241,7 @@ it('shows private Steam progress and household overlap with each owner’s statu
   expect(document.body.textContent).toContain('Portal 2');
   expect(document.body.textContent).toContain('2 people own this');
   expect(document.body.textContent).toContain(
-    '5h 30m combined household playtime'
+    '5 hours and 30 minutes combined household playtime'
   );
   expect(document.body.textContent).toContain('Alex: Completed');
   expect(document.body.textContent).toContain('Sam: Playing');

@@ -1,0 +1,18 @@
+{
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "url": "https://github.com/snapetech-org/seerrng/pull/418",
+  "state": "OPEN",
+  "draft": true,
+  "headRefName": "codex/seerrng-localization-overhaul-20261028",
+  "headRefOid": "1586a249e3f86deb7b9410cff50223e5f76209ff",
+  "baseRefName": "main",
+  "tree": "d620a906353e9724ba28986103c76b7792c56099",
+  "inputManifestSha256": "791fb04394874e7a1bcc1bbcf726d7772b2039bc30815d44e769d60d05484a8f",
+  "primaryLedgerSha256": "d1d5e6039979f92630cd90b803bcecb0bc484d8112ca468b78f44a3e2fd57c91",
+  "blindLedgerSha256": "785609bede24b0c96fa03e80a7d82be70ae6a71c438fc10fc23708a65962b22e",
+  "thirdPartyLedgerSha256": "ce4f0f55aadb98a7561f8dfb16687a497bae750d3371bf97e42bb88b5014f24e",
+  "rootLedgerSha256": "fe29ad165e8038da536c65702bb29ee58704bfc485d0c1204187773945862f22",
+  "reattestedBeforeApply": true,
+  "testsBuildsScansCI": false
+}

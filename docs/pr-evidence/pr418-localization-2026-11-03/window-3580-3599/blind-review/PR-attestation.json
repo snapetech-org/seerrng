@@ -1,0 +1,16 @@
+{
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "head": "30f626a4626d460f426666cde02f5c1ed17fa206",
+  "tree": "9b2616780791c73eb176aca6ad53061f1f3587d8",
+  "branch": "codex/seerrng-localization-overhaul-20261028",
+  "state": "OPEN",
+  "draft": true,
+  "baseRef": "main",
+  "baseSha": "221d8e0d542802da7529cd272c928cc747677e5c",
+  "branchRef": "30f626a4626d460f426666cde02f5c1ed17fa206",
+  "pullRef": "30f626a4626d460f426666cde02f5c1ed17fa206",
+  "sourceAttestationPath": "/home/keith/Documents/code/task-scratch/seerrng-pr418-w3580-3599-primary-20261103/candidate-free-input/PR-attestation.json",
+  "sourceAttestationSha256": "0f5c438efea241bb5a97dac725bbd96d2528830e1378e98d90a3426d5a44d3f0",
+  "candidateFreeManifestSha256": "dd52b2201b0d8608edce6953542a6459a627a93647344ec7e009f87c65e1fe56"
+}

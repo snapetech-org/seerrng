@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "liveHead": "2b40cb73e2d2f1b85b1532f0145c3f2f961f06b0",
+  "liveTree": "fdc5c1c42b0688c9c388adcd2b2996d00db99faf",
+  "pullRequestState": "OPEN_DRAFT",
+  "frozenHead": "5a4342176a8325c371a35d489cb01c58283bc983",
+  "frozenTree": "98cd64952123c9b678e38250e7819cabb4476448",
+  "appSourceCodeTree": "2471ca52d8b94504879e5842e8ffae920a22e180",
+  "window": [
+    250,
+    300
+  ],
+  "inputRows": 182,
+  "reviewedRows": 182,
+  "counts": {
+    "correction-needed": 181,
+    "accepted": 1
+  },
+  "correctionByDomain": {
+    "client": 138,
+    "server": 43
+  },
+  "reviewLedgerPath": "/mnt/disks/scratch/task-worktrees/localization-20261030/semantic-results/seerrng-v13-5a434217-strict/manual-reconciliations/independent-corrections-250-300-2026-11-02/independent-cell-review.jsonl",
+  "reviewLedgerSha256": "06b367d98cf0c0d811ae0012c96462a274eec81da1e4bb06c2ca204df1bbbbac",
+  "candidateInputSha256": "f1b13f783a5635d78b0c090b4dabe64ea25e9d8e908370f2407f82794b0af8dd",
+  "reconciliationSha256": "ecbff5c06e418c21a7e38af9592e5f763988fe1eac5a72e7108f044164d31042",
+  "liveSourceTargetHashMismatches": 0,
+  "targetsApplied": false,
+  "nativeSpeakerReview": "not performed"
+}

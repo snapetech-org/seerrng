@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 1,
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "baseHead": "2c5b7a5dcbe01707ac361e2d4ae06bf3681f99e2",
+  "baseTree": "9fc918e9247d7ceaec5f0744c13ada81f7e4ba21",
+  "targetFile": "src/i18n/locale/es.json",
+  "targetFileBeforeSha256": "d7d75487002d2b97bb6397cda02f9de2a532ac673821cafd2aca8933cf78abae",
+  "targetFileAfterSha256": "19ab22d6398a536710a09a568043f9233f27cb7d09770cb6666430b674848c59",
+  "sourceFileSha256": "75ff3c90b52aedd636a506281ffbd6fb2d3739c61294b6008a517f17647e2316",
+  "reviewedDecisionRows": 224,
+  "rootDispositions": {
+    "accept": 152,
+    "refine": 70,
+    "keep": 2
+  },
+  "changedKeys": 222,
+  "unchangedKeepRows": 2,
+  "heldRowsUnchanged": 5,
+  "focusedChecks": {
+    "all224ReviewedFinalTargetsPresentAtExactIDs": true,
+    "all5HeldTargetsRemainExact": true,
+    "changedKeySetExactlyMatches222ReplaceActions": true,
+    "enEsFlatKeyParity": true,
+    "duplicateJsonKeysAbsent": true,
+    "formatArgumentNamesAndFormatterTypesPreserved": true,
+    "icuSelectorTypesAndBranchesPreserved": true,
+    "htmlTagsPreserved": true,
+    "sourceDigitLiteralsPreserved": true,
+    "sourceAcronymsAndBrandsPreserved": true,
+    "onlySpanishLocaleFileChanged": true,
+    "workflowFilesChanged": false,
+    "gitDiffCheck": "passed before evidence packaging; repeated after package creation",
+    "testsBuildsCi": false,
+    "nativeSpeakerApproval": false
+  },
+  "candidateInputSha256": "bde38aaddf962cacce826f2b343047fb6adb016e9e5e59aead6150634653710a",
+  "rootDecisionSha256": "8568d119f2b56b98ac7f93d3ab1db17c8e242aa85071902c8e4b5baf64e908ce",
+  "applyPlanSha256": "7d7f705289cf74d3e84b4bed7c1aedbf4cadf679c35939e3759c780e65877ad3"
+}

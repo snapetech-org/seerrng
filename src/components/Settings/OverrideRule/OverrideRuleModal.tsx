@@ -447,11 +447,13 @@ const OverrideRuleModal = ({
                             value={`readarr-${readarr.id}`}
                           >
                             {readarr.name} (
-                            {readarr.serviceType === 'both'
-                              ? 'Book + Audiobook'
-                              : readarr.serviceType === 'audiobook'
-                                ? 'Audiobook'
-                                : 'Book'}
+                            {intl.formatMessage(
+                              readarr.serviceType === 'both'
+                                ? globalMessages.ebookAndAudiobook
+                                : readarr.serviceType === 'audiobook'
+                                  ? globalMessages.audiobook
+                                  : globalMessages.ebook
+                            )}
                             )
                           </option>
                         ))}

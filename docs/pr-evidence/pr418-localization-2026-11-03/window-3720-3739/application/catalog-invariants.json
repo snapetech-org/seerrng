@@ -1,0 +1,231 @@
+{
+  "schema": "seerrng-w3720-catalog-invariants/v1",
+  "sourceEnglishCatalog": {
+    "path": "src/i18n/locale/en.json",
+    "sha256": "75ff3c90b52aedd636a506281ffbd6fb2d3739c61294b6008a517f17647e2316",
+    "gitBlob": "12e04a118c30b71b3714291adeaf9fdb2735cee4",
+    "keyCount": 9494,
+    "orderedKeysSha256": "47d40a21145f2f198fadaa29baeef5461718c4b6365d564af60ee015f18f1974",
+    "sourceOnly": true
+  },
+  "catalogs": [
+    {
+      "catalogPath": "src/i18n/locale/es.json",
+      "locale": "es",
+      "keyCount": 9494,
+      "orderedKeysSha256": "47d40a21145f2f198fadaa29baeef5461718c4b6365d564af60ee015f18f1974",
+      "beforeSha256": "c6a811bad005f4dc8ee6639a974c361902d6c580b8a0f6e0339edea0ee3b33fe",
+      "beforeGitBlob": "078e8cf3ad3e40c640f0c4800607ceea6a66edca",
+      "afterSha256": "6879b4230978ae2918993680b74da692acf80d5e4a5132e8e00f2a15377f6f56",
+      "afterGitBlob": "4d05dd2dc321c2a2b2140baf044041156b23f6e3",
+      "selectedKeyCount": 3,
+      "selectedKeys": [
+        "components.Settings.KapowarrModal.enableSearchHelp",
+        "components.Settings.KapowarrModal.toastKapowarrTestSuccess",
+        "components.Settings.KapowarrModal.validationApiKeyRequired"
+      ],
+      "nonTargetValuesPreserved": true
+    },
+    {
+      "catalogPath": "src/i18n/locale/zh_Hans.json",
+      "locale": "zh_Hans",
+      "keyCount": 9494,
+      "orderedKeysSha256": "35faf7107f1be3900172b7c08ac7558b51f31d63b3b6c57eebe7710e8a81ca33",
+      "beforeSha256": "1eaea27d7b5c2a5a883e2fa749c8e0d1999e715371df31bba72fd5f6ed56f960",
+      "beforeGitBlob": "6d984d120ef4ed0700b95e5d5322ee61b97cd282",
+      "afterSha256": "0aeaa0c64a37f8758de0e4992f23ed7923f4938113013ed35499dfb727415528",
+      "afterGitBlob": "8b69db077a2bfb7ec682a8b4c864679a50fc49ba",
+      "selectedKeyCount": 2,
+      "selectedKeys": [
+        "components.Settings.KapowarrModal.enableSearchHelp",
+        "components.Settings.KapowarrModal.externalUrlHelp"
+      ],
+      "nonTargetValuesPreserved": true
+    },
+    {
+      "catalogPath": "src/i18n/locale/hi.json",
+      "locale": "hi",
+      "keyCount": 9494,
+      "orderedKeysSha256": "47d40a21145f2f198fadaa29baeef5461718c4b6365d564af60ee015f18f1974",
+      "beforeSha256": "531805345a64092c224c5445f7bed1cceca13a1113c9d264c8876ed0a7b91045",
+      "beforeGitBlob": "456fb61d446c1b74bbbeee21223712576593e3e8",
+      "afterSha256": "b40b4d31a8ae066cc81e046b7685606855045f6196c7e732d5e382397ab38940",
+      "afterGitBlob": "ec0340d18428638342275fe38b3faf10a54602a4",
+      "selectedKeyCount": 6,
+      "selectedKeys": [
+        "components.Settings.KapowarrModal.enableSearchHelp",
+        "components.Settings.KapowarrModal.hostname",
+        "components.Settings.KapowarrModal.validationApiKeyRequired",
+        "components.Settings.KapowarrModal.validationApplicationUrlTrailingSlash",
+        "components.Settings.KapowarrModal.validationBaseUrlLeadingSlash",
+        "components.Settings.KapowarrModal.validationBaseUrlTrailingSlash"
+      ],
+      "nonTargetValuesPreserved": true
+    },
+    {
+      "catalogPath": "src/i18n/locale/de.json",
+      "locale": "de",
+      "keyCount": 9494,
+      "orderedKeysSha256": "47d40a21145f2f198fadaa29baeef5461718c4b6365d564af60ee015f18f1974",
+      "beforeSha256": "6eb292bc5d6cbdfff661a40400327a6860f49309e42b8c5e38eb020f56e308de",
+      "beforeGitBlob": "cc452e83f87335a5c04755aa00e3687f72ec9126",
+      "afterSha256": "f050fd707d7e9a3a6318e4dcc31eb151a3a54071904a67efdfb3427d936bb597",
+      "afterGitBlob": "7fa39c939d522d58fdde566038b1d7bc722ec97d",
+      "selectedKeyCount": 4,
+      "selectedKeys": [
+        "components.Settings.KapowarrModal.enableSearchHelp",
+        "components.Settings.KapowarrModal.toastKapowarrTestSuccess",
+        "components.Settings.KapowarrModal.validationBaseUrlLeadingSlash",
+        "components.Settings.KapowarrModal.validationBaseUrlTrailingSlash"
+      ],
+      "nonTargetValuesPreserved": true
+    },
+    {
+      "catalogPath": "src/i18n/locale/ja.json",
+      "locale": "ja",
+      "keyCount": 9494,
+      "orderedKeysSha256": "35faf7107f1be3900172b7c08ac7558b51f31d63b3b6c57eebe7710e8a81ca33",
+      "beforeSha256": "5856c67ee978ab56b809bcbf592c12655ac3a0aae3893a372bfabcf8777e681d",
+      "beforeGitBlob": "718fa98723515a56695bc3caf797af549b4bf1f4",
+      "afterSha256": "5ea98d866eae3fca2baae98239458bdd6ec5dbf0074fe49877d54ef3b4b96e24",
+      "afterGitBlob": "8c247d4c1482f2a2106b0df7292ba231674a19a0",
+      "selectedKeyCount": 4,
+      "selectedKeys": [
+        "components.Settings.KapowarrModal.enableSearchHelp",
+        "components.Settings.KapowarrModal.externalUrlHelp",
+        "components.Settings.KapowarrModal.hostname",
+        "components.Settings.KapowarrModal.validationApiKeyRequired"
+      ],
+      "nonTargetValuesPreserved": true
+    },
+    {
+      "catalogPath": "src/i18n/locale/fr.json",
+      "locale": "fr",
+      "keyCount": 9494,
+      "orderedKeysSha256": "47d40a21145f2f198fadaa29baeef5461718c4b6365d564af60ee015f18f1974",
+      "beforeSha256": "68320288e587402a6a3908227e4306a96ea662786ab4561295a859032bfeb0f0",
+      "beforeGitBlob": "6856f9ec214d206943da99b2f056412c0a782ca0",
+      "afterSha256": "264fe3d7bb4b3efa0c2c87ac7ebd11ae8065200bd84b1c45256173da314c3bda",
+      "afterGitBlob": "e51822c3bb598f6d971f7b3b67efe2eb88d4dfa7",
+      "selectedKeyCount": 4,
+      "selectedKeys": [
+        "components.Settings.KapowarrModal.enableSearchHelp",
+        "components.Settings.KapowarrModal.flaresolverrNote",
+        "components.Settings.KapowarrModal.syncEnabled",
+        "components.Settings.KapowarrModal.toastKapowarrTestSuccess"
+      ],
+      "nonTargetValuesPreserved": true
+    },
+    {
+      "catalogPath": "src/i18n/locale/pt_BR.json",
+      "locale": "pt_BR",
+      "keyCount": 9494,
+      "orderedKeysSha256": "47d40a21145f2f198fadaa29baeef5461718c4b6365d564af60ee015f18f1974",
+      "beforeSha256": "be408c92d6482f40493c49e6bd1c08d85bbc9c79492387255477faf89db3fa23",
+      "beforeGitBlob": "32bcdef837e0604101f4e5c29fd90debfbfca923",
+      "afterSha256": "2968076d1127a5844c62cecfeca00feceb5d4a167ca999ba2ccfcdcabad4a1aa",
+      "afterGitBlob": "bddc5b97e3c330852b84197f0d2846cbae94c8af",
+      "selectedKeyCount": 5,
+      "selectedKeys": [
+        "components.Settings.KapowarrModal.enableSearchHelp",
+        "components.Settings.KapowarrModal.validationApiKeyRequired",
+        "components.Settings.KapowarrModal.validationApplicationUrlTrailingSlash",
+        "components.Settings.KapowarrModal.validationBaseUrlLeadingSlash",
+        "components.Settings.KapowarrModal.validationBaseUrlTrailingSlash"
+      ],
+      "nonTargetValuesPreserved": true
+    },
+    {
+      "catalogPath": "src/i18n/locale/ar.json",
+      "locale": "ar",
+      "keyCount": 9494,
+      "orderedKeysSha256": "47d40a21145f2f198fadaa29baeef5461718c4b6365d564af60ee015f18f1974",
+      "beforeSha256": "c0026ce896e78ce7b445b9271385118cac18aab2f48ed5d8743d0efc7e1f054b",
+      "beforeGitBlob": "626a983c1f505b9524c362290bae64ace47ef6fe",
+      "afterSha256": "e8ae001d6369d76bd30fe5be82dfacb8c10b779f0f8343c29ef4d5fe38f2b677",
+      "afterGitBlob": "58fbf03cf167088735ce20697ed6ab20cea64a5f",
+      "selectedKeyCount": 3,
+      "selectedKeys": [
+        "components.Settings.KapowarrModal.enableSearchHelp",
+        "components.Settings.KapowarrModal.externalUrl",
+        "components.Settings.KapowarrModal.servername"
+      ],
+      "nonTargetValuesPreserved": true
+    },
+    {
+      "catalogPath": "src/i18n/locale/ko.json",
+      "locale": "ko",
+      "keyCount": 9494,
+      "orderedKeysSha256": "35faf7107f1be3900172b7c08ac7558b51f31d63b3b6c57eebe7710e8a81ca33",
+      "beforeSha256": "1137829c6977d48fdd5724ca1236fe3f2e5e122a41a5879b28d9bd989a1e7d90",
+      "beforeGitBlob": "8ba6e82a833ee6e386aef383a0972a5ea5e737b2",
+      "afterSha256": "ef67d38bb577a35720c22c9cbc8b3db042c74016f45abfa0c15b4dbc1aa962c6",
+      "afterGitBlob": "062e80142ddd3a4ab74572ffabccb837cd6ae87b",
+      "selectedKeyCount": 7,
+      "selectedKeys": [
+        "components.Settings.KapowarrModal.enableSearchHelp",
+        "components.Settings.KapowarrModal.externalUrl",
+        "components.Settings.KapowarrModal.hostname",
+        "components.Settings.KapowarrModal.rootFolderHelp",
+        "components.Settings.KapowarrModal.validationApplicationUrlTrailingSlash",
+        "components.Settings.KapowarrModal.validationBaseUrlLeadingSlash",
+        "components.Settings.KapowarrModal.validationBaseUrlTrailingSlash"
+      ],
+      "nonTargetValuesPreserved": true
+    },
+    {
+      "catalogPath": "src/i18n/locale/zh_Hant.json",
+      "locale": "zh_Hant",
+      "keyCount": 9494,
+      "orderedKeysSha256": "35faf7107f1be3900172b7c08ac7558b51f31d63b3b6c57eebe7710e8a81ca33",
+      "beforeSha256": "462f9c70597903c35bcaf56ff21c28dd5e58b2bf458217d6c6c02433ca518bca",
+      "beforeGitBlob": "40e25c574d09614947e3fe4e499f6b305a804904",
+      "afterSha256": "cfb641839ebd7f8ada3f2a599bfe9562153e8a8c5792d433f7a808f6eb1fe8ff",
+      "afterGitBlob": "cdfecef9bfd3f93d527048da0c8da2ceff826c99",
+      "selectedKeyCount": 3,
+      "selectedKeys": [
+        "components.Settings.KapowarrModal.enableSearchHelp",
+        "components.Settings.KapowarrModal.externalUrlHelp",
+        "components.Settings.KapowarrModal.validationApiKeyRequired"
+      ],
+      "nonTargetValuesPreserved": true
+    },
+    {
+      "catalogPath": "src/i18n/locale/vi.json",
+      "locale": "vi",
+      "keyCount": 9494,
+      "orderedKeysSha256": "35faf7107f1be3900172b7c08ac7558b51f31d63b3b6c57eebe7710e8a81ca33",
+      "beforeSha256": "b80d20c20730714a45abbb223fae27ae27f339497a84ae2208fb0044f5cbf160",
+      "beforeGitBlob": "199f79d2113a6761f3dda716712c1ac2e5483c94",
+      "afterSha256": "3d4f26ee22844a0e8667beec883969b8c3c611e35cba391842b5a11b6f18b4c5",
+      "afterGitBlob": "912557e9a095864925327bab6a857f4d7be555d9",
+      "selectedKeyCount": 4,
+      "selectedKeys": [
+        "components.Settings.KapowarrModal.enableSearchHelp",
+        "components.Settings.KapowarrModal.hostname",
+        "components.Settings.KapowarrModal.syncEnabled",
+        "components.Settings.KapowarrModal.validationApplicationUrl"
+      ],
+      "nonTargetValuesPreserved": true
+    },
+    {
+      "catalogPath": "src/i18n/locale/id.json",
+      "locale": "id",
+      "keyCount": 9494,
+      "orderedKeysSha256": "47d40a21145f2f198fadaa29baeef5461718c4b6365d564af60ee015f18f1974",
+      "beforeSha256": "1681900cc6297e71c1f4164bb0a4b41f3ac2c4d6f0be376ab3b10bba08581db1",
+      "beforeGitBlob": "93d5fa1c617bd0a9902c2937293be41c40c13b1c",
+      "afterSha256": "c58f72e33f83d826388dd4846b66875a1af670416e4b6d0a70c8960f7056c8a3",
+      "afterGitBlob": "f7648252392967ce0577d5616a01d0c96a34f489",
+      "selectedKeyCount": 5,
+      "selectedKeys": [
+        "components.Settings.KapowarrModal.enableSearchHelp",
+        "components.Settings.KapowarrModal.syncEnabled",
+        "components.Settings.KapowarrModal.validationApiKeyRequired",
+        "components.Settings.KapowarrModal.validationApplicationUrl",
+        "components.Settings.KapowarrModal.validationApplicationUrlTrailingSlash"
+      ],
+      "nonTargetValuesPreserved": true
+    }
+  ]
+}

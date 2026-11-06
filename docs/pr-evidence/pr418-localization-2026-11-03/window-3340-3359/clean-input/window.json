@@ -1,0 +1,423 @@
+{
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "head": "266d8fff4beb56eab17c9de0f6560c619577e3de",
+  "tree": "5da8f5e38b95b4287821b603c4686fe866b83760",
+  "range": [
+    3340,
+    3359
+  ],
+  "previousRange": [
+    3320,
+    3339
+  ],
+  "sourceOrderCount": 9494,
+  "sourceOrderSha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+  "cellCount": 240,
+  "contextRows": 55,
+  "localeOrder": [
+    "es",
+    "zh_Hans",
+    "hi",
+    "de",
+    "ja",
+    "fr",
+    "pt_BR",
+    "ar",
+    "ko",
+    "zh_Hant",
+    "vi",
+    "id"
+  ],
+  "localeCatalogPins": {
+    "src/i18n/locale/en.json": {
+      "sha256": "75ff3c90b52aedd636a506281ffbd6fb2d3739c61294b6008a517f17647e2316",
+      "gitBlob": "12e04a118c30b71b3714291adeaf9fdb2735cee4",
+      "keyCount": 9494,
+      "orderedKeySha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072"
+    },
+    "src/i18n/locale/es.json": {
+      "sha256": "fe353bf4e06f90656018775445620224287d257dfdbf0ce36fa67ef56d28d8ee",
+      "gitBlob": "108ef03287234f8406742921fc3c1104b28968ed",
+      "keyCount": 9494,
+      "orderedKeySha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072"
+    },
+    "src/i18n/locale/zh_Hans.json": {
+      "sha256": "f288d7e5f30368b812859107c2d4448601cb24b61bf987e3d1522da2d40fdf55",
+      "gitBlob": "08a42d3ab1d1a4f93ecf558ee310282b27354a57",
+      "keyCount": 9494,
+      "orderedKeySha256": "8d5fd7bd4351bc64c5ee813f2e50196608869e165866f3202a312078732c2baf"
+    },
+    "src/i18n/locale/hi.json": {
+      "sha256": "160e5d5bca422f27eb908994296ece2cc4fe325325b798e1ce128ac2a4bd7d75",
+      "gitBlob": "1db8cff4c0c901d4020d11e720a9c0108defcb70",
+      "keyCount": 9494,
+      "orderedKeySha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072"
+    },
+    "src/i18n/locale/de.json": {
+      "sha256": "56050127026c95225161d061deebacd87e38b0e03abbd9e1903310fa5df645d1",
+      "gitBlob": "d8759132874e26ca2e65bef38bac14c6c137baad",
+      "keyCount": 9494,
+      "orderedKeySha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072"
+    },
+    "src/i18n/locale/ja.json": {
+      "sha256": "7aa4b7c9edf5ccbc12347c65e5904a6b08a3e1d69851ad5674f44963fcf4cd39",
+      "gitBlob": "3dbad565950597aeac594e41ea7ec462c2b8b91f",
+      "keyCount": 9494,
+      "orderedKeySha256": "8d5fd7bd4351bc64c5ee813f2e50196608869e165866f3202a312078732c2baf"
+    },
+    "src/i18n/locale/fr.json": {
+      "sha256": "a28f27cd6fdf5f1ca5a85b9caece80ca18859a0af208cc02283fd63ecefe6f6c",
+      "gitBlob": "46dea32613fa9fce9cecee2ca46922ef42865b62",
+      "keyCount": 9494,
+      "orderedKeySha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072"
+    },
+    "src/i18n/locale/pt_BR.json": {
+      "sha256": "81adadf1c7e28aa4eec45be22cc7b00683d2d847b81bf7eea5fa4f3b8e146cf5",
+      "gitBlob": "cf0ebb5dd15cc268f3e258fce4f9b6cc9ffab104",
+      "keyCount": 9494,
+      "orderedKeySha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072"
+    },
+    "src/i18n/locale/ar.json": {
+      "sha256": "eae8e5d33910ac3c9f9699af3ec82041a67eecbd0a2afd90f9e487d35d4368e2",
+      "gitBlob": "6aabbaed97ca91f41ae72f84be9c93aafc57c850",
+      "keyCount": 9494,
+      "orderedKeySha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072"
+    },
+    "src/i18n/locale/ko.json": {
+      "sha256": "4a395384f0e65c07a500052d430bbb17c3c79619b2184d4668bc1c7024cf7182",
+      "gitBlob": "29164e7e54acb1262c4a6d01f519d84280aa78c7",
+      "keyCount": 9494,
+      "orderedKeySha256": "8d5fd7bd4351bc64c5ee813f2e50196608869e165866f3202a312078732c2baf"
+    },
+    "src/i18n/locale/zh_Hant.json": {
+      "sha256": "4f56a79a155cbb1ff3bd415dc38311e4983aee032fe72fa6f221050186b4e666",
+      "gitBlob": "b28d26d450f404d5c1369b5b7bc2af058d07f784",
+      "keyCount": 9494,
+      "orderedKeySha256": "8d5fd7bd4351bc64c5ee813f2e50196608869e165866f3202a312078732c2baf"
+    },
+    "src/i18n/locale/vi.json": {
+      "sha256": "8c36022c6ce900a93439d25c1d732ec92b5e2a3d4407b0f50657106345294c23",
+      "gitBlob": "71299a39d5690be9dcd1a0b565c60b5e605b39e4",
+      "keyCount": 9494,
+      "orderedKeySha256": "8d5fd7bd4351bc64c5ee813f2e50196608869e165866f3202a312078732c2baf"
+    },
+    "src/i18n/locale/id.json": {
+      "sha256": "da76620a8c449aefe8f5601c4fcddca9486efec010f00e4fbe4d924f4789cda1",
+      "gitBlob": "cfc0d6f00bf6c0f2ac33fb7ffd534b2302af9df1",
+      "keyCount": 9494,
+      "orderedKeySha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072"
+    }
+  },
+  "sourceCatalogSha256": "75ff3c90b52aedd636a506281ffbd6fb2d3739c61294b6008a517f17647e2316",
+  "sourceCatalogGitBlob": "12e04a118c30b71b3714291adeaf9fdb2735cee4",
+  "sourceCatalogKeyCount": 9494,
+  "callerFiles": {
+    "src/components/RequestStatus/messages.tsx": {
+      "sha256": "5c7691636c95eed239cf012fa2e8bdc066ef773a8b4288bbd93fafddb15324eb",
+      "gitBlob": "73f660f8595c193f4996c2720d0566212545f76c",
+      "lineCount": 121
+    },
+    "server/lib/requestStatus.ts": {
+      "sha256": "63dd1b43e684a40eb82253a2942d7652cad63d87234b5c279d73af0b945b2d31",
+      "gitBlob": "e75608e1c2921b5f7b3e822c25a690f8b1cc5e82",
+      "lineCount": 2328
+    },
+    "src/components/Requests/index.tsx": {
+      "sha256": "25b612dcda274fe2ea64b76f169587e153b04a675c9b8cd817814d9fbfde5360",
+      "gitBlob": "84f6a19674b329df0ef6be6483d74bbaeb110ccb",
+      "lineCount": 3115
+    },
+    "src/components/Requests/destructiveActions.tsx": {
+      "sha256": "16d562185c1e1f3a94398369b4ab3eec28085033dcc3465c32557752687d1d57",
+      "gitBlob": "09884f99a738ce4402b5fb121d15022f0efc3a67",
+      "lineCount": 173
+    },
+    "src/pages/requests/index.tsx": {
+      "sha256": "64273c876d30c6ee3ee1f7419f3376cd1849fcc6fbbc37cec781c340e3c6cb76",
+      "gitBlob": "17a3c44c6c3073fcaecd94cc77993a8bae3bdc4d",
+      "lineCount": 6
+    },
+    "src/utils/defineMessages.ts": {
+      "sha256": "761cb0362244e473b6993c78f4b852a6673c95e35da13990856e6a44c6d9169f",
+      "gitBlob": "bb8fadb4baf7764b0af8b1a2294bf43d4196aaaa",
+      "lineCount": 26
+    }
+  },
+  "orderedLocaleKeySequencesMatch": false,
+  "perLocaleOrderedKeyHashesPinned": true,
+  "strictBlindInputOnly": true,
+  "nativeSpeakerApproval": false,
+  "sourceIds": [
+    {
+      "position": 3340,
+      "id": "components.Requests.genres",
+      "source": "Genres",
+      "sourceSha256": "3561abfe8067f3c1cdec6de4240f041af78d44a6ba619deee9e1d0735fe73e1e"
+    },
+    {
+      "position": 3341,
+      "id": "components.Requests.hd",
+      "source": "HD",
+      "sourceSha256": "323e41792751e840ad9e398d5057120cb1f1b730acbb193ee6498eb3b481059c"
+    },
+    {
+      "position": 3342,
+      "id": "components.Requests.history",
+      "source": "History",
+      "sourceSha256": "0e769600933790607b2a13b33ddfade0fa17810eb62c3b28ee23e59516516491"
+    },
+    {
+      "position": 3343,
+      "id": "components.Requests.importing",
+      "source": "Importing",
+      "sourceSha256": "d252fffacbf0370776d720324538a0e7f77d2a01267bbeef6cd43378dc68605b"
+    },
+    {
+      "position": 3344,
+      "id": "components.Requests.incomplete",
+      "source": "Incomplete",
+      "sourceSha256": "75f33cdfc8e52098ea07f853e36473fe35bbe128d6c320019185bc888f9b3ca3"
+    },
+    {
+      "position": 3345,
+      "id": "components.Requests.issues",
+      "source": "Issues",
+      "sourceSha256": "666067dd376e5d4553b8fd554f855855819ad213ae825022d2a32dfa28431115"
+    },
+    {
+      "position": 3346,
+      "id": "components.Requests.last14Days",
+      "source": "Last 14 days",
+      "sourceSha256": "d9f1e16176a554790b3215a9bd1c9b5f4ffa38f7e670ecfa850932598ad02718"
+    },
+    {
+      "position": 3347,
+      "id": "components.Requests.last30Days",
+      "source": "Last 30 days",
+      "sourceSha256": "f8f03fb441b8b4ae1abf7d0f8dd534ae0244cd4b842d2c08e5d3530dcab04eed"
+    },
+    {
+      "position": 3348,
+      "id": "components.Requests.last6Months",
+      "source": "Last 6 months",
+      "sourceSha256": "87d3cac8d028044e7a952f1842bb05f9dd4e481a3ead4298a007677ec2c786c1"
+    },
+    {
+      "position": 3349,
+      "id": "components.Requests.last7Days",
+      "source": "Last 7 days",
+      "sourceSha256": "0603deca4fcb660f1c06a02621423721bd48084970ecf2b2de0e326dc783d191"
+    },
+    {
+      "position": 3350,
+      "id": "components.Requests.latestIssue",
+      "source": "Latest Issue",
+      "sourceSha256": "d7c23b9cddb3769440cf3b74cd51d736d5e074686956d2803acca60b21dce6b0"
+    },
+    {
+      "position": 3351,
+      "id": "components.Requests.library",
+      "source": "Adding to Library",
+      "sourceSha256": "d9ba1b46edbcf704334c055e80063849b6617f1af5a4164d1c492c35f97cd40c"
+    },
+    {
+      "position": 3352,
+      "id": "components.Requests.loadError",
+      "source": "Request Status Could Not Be Loaded",
+      "sourceSha256": "e516ec67860bbbbfdc37ba05c515a55e166f5ea78e285a825fc1e91b0aaf9599"
+    },
+    {
+      "position": 3353,
+      "id": "components.Requests.loadErrorHint",
+      "source": "The request service did not respond, please try again.",
+      "sourceSha256": "bf77a096686c67d0d94f5a973614ac5e7dcc7c6160f7862f04669b994e384041"
+    },
+    {
+      "position": 3354,
+      "id": "components.Requests.loading",
+      "source": "Loading Request Status",
+      "sourceSha256": "2c2f32bfe8632834de24403dbbf047224a2514dde4957be8cde921af098880e3"
+    },
+    {
+      "position": 3355,
+      "id": "components.Requests.loadingTitle",
+      "source": "Loading Title…",
+      "sourceSha256": "724b0c3d32e7bbb0d6e2fd02bdefc762ec751de4624b53aba5e101386001d518"
+    },
+    {
+      "position": 3356,
+      "id": "components.Requests.magazine",
+      "source": "Magazine",
+      "sourceSha256": "9042ee84d0a2ef41a9fce28391a3df9b6ca24986f980cdc07439ae33bb7441d2"
+    },
+    {
+      "position": 3357,
+      "id": "components.Requests.magazines",
+      "source": "Magazines",
+      "sourceSha256": "32f3d8e8827314cec2f849df23bc3ec576f7321797755678135504174c6a1200"
+    },
+    {
+      "position": 3358,
+      "id": "components.Requests.manageRequests",
+      "source": "Manage Requests",
+      "sourceSha256": "f7172efec99b064b8065e601edaa2e606a08500a67720d6a7a319df57c650a32"
+    },
+    {
+      "position": 3359,
+      "id": "components.Requests.mediaAndFormat",
+      "source": "Media & Format",
+      "sourceSha256": "b6136c0366498f839f4d77ebf3cde523c63aa7ce6e35a509dd086e72a5f7b96f"
+    }
+  ],
+  "callerContextHashesById": {
+    "components.Requests.genres": [
+      "b5369dd97fca2fc5a07ad68d9341e951636a0a81f18b5140793f7975e027c51e",
+      "2787af53aa3c0011a6dd93e08930359084365290853eec0c4057ee33b15ee378",
+      "42e2fab8166e7bcef98a717747efc7792cc57db55fb1eaa2ce578452f7a59c0e",
+      "bb061d005c289c28dce79d8826c028b3b6fa2d4593d58ae1c72b117eeec0c74b",
+      "75240bc2d7fe18337a5811c2bd01931395d53cd41d969cd2b1f3bc7a6d5848e2",
+      "aba4b3a00289e497b5c35acec0489816c1501e75943ef7ab543a2065f31afe2f",
+      "f3c64905d5cc88984ad4d383aafc299f4f8e6c839ea4c184edf0668046930210"
+    ],
+    "components.Requests.hd": [
+      "b67ab7351c53714bee021ca4ec311b628570f8981621a4001eb828e1e17e34da",
+      "97ccebacea4ba3c00eee26b6913ddd9992605b2cbd0c2619602351b0a71f1a41"
+    ],
+    "components.Requests.history": [
+      "b37378273014a8c5616aa16839a8df9b081312b1e6213543652d1686415384c3",
+      "6adfb69dfdee354d92f407548919bec2c60d23b838e6d55220e88fee0d0d688b",
+      "99a338174e207bf21d33c7d8d9341bd8991d470ccfe797c39b0e9704d836e14b",
+      "a92e82a9ae7d10307afe74e8e833d1cd9f7f6ea89535cbdf3f2c327b4794759f"
+    ],
+    "components.Requests.importing": [
+      "fa56fbf03fd79e72ca6778164c094cfde85f71fead9c95f2f9c74804822aef00",
+      "fe71359af76d726e0207a0d0d1d9ab74dfc03701b69c95cec4e2ef8cf80ea843",
+      "05bbaace55a212a357346ef3cac3aea2ba8557a6f7e17f8d28de21deb62a5e64",
+      "72285069badc02ca9eb09b7ca795ac399619b52c9118ed05a67efaf98ecaa376",
+      "d4814b129a07e938dfa01c47e9a6330b2596b2b3f797e7e993c5933559d03cf9",
+      "64dfe32c46e126eedd51525031983c0418b05c906a3f3f2e6d64b5eba918810c",
+      "8cf89181233ff99f17b1f816be924d20f2b94383fae51fd90abd50a6b6e1028e"
+    ],
+    "components.Requests.incomplete": [
+      "0029d73746a2103268ef0c446b6a6ef47cf387a4697c59d63c3810e3beb856ff",
+      "96959c90cd449b5e80c2fb6ebf22923bce34557de47af4842d0ea7eaeda47744"
+    ],
+    "components.Requests.issues": [
+      "1792e65b56ac2891c33b946000a3909808a4403be40a2b22152fc483d31fc2b9",
+      "e6929feea79fa5b3c6798754a529d8bb57a81ccbc8263c47536772b7b71649e7"
+    ],
+    "components.Requests.last14Days": [
+      "c783e09e910326c577536d8e500ad5ad1fc7f500c0062341504adaa85468799e",
+      "6ccb020896c66cf28e1cd2ecb5e3ee2bdc5315c2c5d271a6a5e151d31a2244a4"
+    ],
+    "components.Requests.last30Days": [
+      "881c9b9a5e039ccfe77e979cc9d5478f91ed6699849f9b17a99ef3067ea52da4",
+      "d5849fd8d5aa0e94951e113dfa0a5a9d037490eee2e7088cdb8b51e6724f4456"
+    ],
+    "components.Requests.last6Months": [
+      "3c253f2157a537e04255bc8d795aa8e789eaa54f538efa62922aaf44f98ab2f8",
+      "bef3d6309e2d2f08c65f183fe70aa2ca131bc66442bcba8cec911b8d6c0e505f"
+    ],
+    "components.Requests.last7Days": [
+      "21f9efd669b3f9c8ee3dd5381d0c743cbe1968d4d2fb4f927edc453fb8f2d875",
+      "09e8ebaea305d9b01998459b0ba836dab74d0e2349b1e3db2c6515fe61bd3db1"
+    ],
+    "components.Requests.latestIssue": [
+      "5b6419476a455ea455c17c5d468b2d5281bf4210c7acba3bc62b8beb7d3a6e99",
+      "a9976143662ab335457838e64f3840907a8458d568e39495889c606d86ee8875",
+      "af09f5af9fe7f79fb4d3209452df4e0d1c457cc3f6728c0fdfcf1470bb37c49d"
+    ],
+    "components.Requests.library": [
+      "031e8f6d7e9d2fe5a290ec96ba1162a81ec51cc00c0504fa84bf610585747bfa",
+      "cfecaefabb575811488f15d5eebdc98af732c9a8c6393ee27ce0b83193bd217d"
+    ],
+    "components.Requests.loadError": [
+      "d3693b1ec55da31635ec8e8340baf1dbfc4fd173e72878245505097c149c8af0",
+      "047dbd99b40ed4717ab89c19f0afb8dd185bb79c77d422874a0965342b2dc1b1",
+      "bd2af2f4140f75ec296ed435e744a8dece9a4eef583128f94f46eb2c4d8ffb6c"
+    ],
+    "components.Requests.loadErrorHint": [
+      "16e4ef2c6c5f006e4d08ef68bf7c32a10f864ebe2d908b4e0d0d6b7bfe169b44",
+      "a2fb351e50466faca8ef42f0ec9929a327d00b413bf0e7c7d74899071a7b4d79",
+      "a2fb351e50466faca8ef42f0ec9929a327d00b413bf0e7c7d74899071a7b4d79"
+    ],
+    "components.Requests.loading": [
+      "c99e2245d0371860ce68ddb5c5002b8180af5094d7fd31e1d486080f998fdea5",
+      "e4fb177d752bd962c11e10485c5a2b1559f1ef2cf7a4840ed6c9b960f86d0069"
+    ],
+    "components.Requests.loadingTitle": [
+      "cfa19a8390a2c67268ec7ed559230cd1c0371f2cdbe2fe6636a6fca6f6b1a588",
+      "563d6e38b984127971eaddfdf6248ea9c33baedbc12df4bc49ea54cdde12b186"
+    ],
+    "components.Requests.magazine": [
+      "3a20252b05929f3ca0f7f69762d9b8087ee9f2de3c7a2d6c3c024de734e82060",
+      "dc8a0198b1847e3f515e0301381ed9bd71dfe063ce074cb5fa917779982540fe",
+      "7a6120943d9052614b7259f906e23f67d01f7bff307254139cf388ebb3951a46"
+    ],
+    "components.Requests.magazines": [
+      "d5e570cbea2c04ecf60d57d43aa11f97571e615c6569c97bba39d1f32dc6b6b4",
+      "6dd2288cd66c53f2981d384a753758aab95ae99c46e852d324b23292565d006f"
+    ],
+    "components.Requests.manageRequests": [
+      "37ae9c34d15963bedd36abd8968aa1d91ac1d6ca4beb5ff02f6aac1e54030470"
+    ],
+    "components.Requests.mediaAndFormat": [
+      "9e71e0ab0fb942901dce3b50c478c2aab3d1c4ce6e328e1b2597b00b24f95b4f",
+      "a4293d2092c5470c8ef2872c22fa58bdd1ad21986efd096fa6e1a7bd895d8ef5"
+    ]
+  },
+  "callerHolds": [
+    {
+      "position": 3358,
+      "id": "components.Requests.manageRequests",
+      "reason": "no direct production reference to this components.Requests message ID was found; generic/dynamic RequestStatus rendering is context only",
+      "definitionsFound": 1,
+      "directMessageReferences": 0,
+      "source": "Manage Requests"
+    }
+  ],
+  "placeholderParityErrors": [],
+  "protectedTermsPolicy": [
+    "Seerr",
+    "ChaptarrNG",
+    "Bindery",
+    "Bookshelf",
+    "Radarr",
+    "Sonarr",
+    "Plex",
+    "Emby",
+    "Jellyfin",
+    "TMDb",
+    "IMDb",
+    "Open Library",
+    "ComicVine",
+    "MusicBrainz",
+    "TheTVDB",
+    "Trakt",
+    "Letterboxd",
+    "Prowlarr",
+    "Bazarr",
+    "Lidarr",
+    "Readarr",
+    "Whisparr",
+    "Sportarr",
+    "Audiobookshelf"
+  ],
+  "previousWindowInputManifestSha256": "14ad0f598ffeb8fe4c7b42699fb0e230149ed3661b1a64c0641a6c0f1e6c8659",
+  "previousWindowHead": "70caabc2f95df1a7de3f869111aea1df58522d96",
+  "previousWindowTree": "daac9e9284adac648fd3f6147265c21c90cdddba",
+  "livePr": {
+    "url": "https://github.com/snapetech-org/seerrng/pull/418",
+    "state": "OPEN",
+    "draft": true,
+    "head": "266d8fff4beb56eab17c9de0f6560c619577e3de",
+    "headRef": "codex/seerrng-localization-overhaul-20261028",
+    "baseRef": "main",
+    "baseOid": "221d8e0d542802da7529cd272c928cc747677e5c",
+    "title": "feat(i18n): strengthen SeerrNG localization",
+    "tree": "5da8f5e38b95b4287821b603c4686fe866b83760",
+    "commitTime": "2026-11-02T23:34:59-06:00",
+    "remotePullRefHead": "266d8fff4beb56eab17c9de0f6560c619577e3de"
+  }
+}

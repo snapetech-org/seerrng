@@ -1,0 +1,1845 @@
+{
+  "callerGapTriage": {
+    "gaps": [
+      {
+        "definitionAndUseRefs": [
+          {
+            "file": "src/components/RequestModal/VideoCollectionRequestFilters.tsx",
+            "line": 23,
+            "lineSha256": "362a5e4adac3f0fae22ea06698ea5172d6907da16735e489cb3690d0ef8701fb",
+            "lineText": "any: 'Any',",
+            "nextLine": "returningSeries: 'Returning Series',",
+            "previousLine": "language: 'Language',"
+          },
+          {
+            "file": "src/components/RequestModal/VideoCollectionRequestFilters.tsx",
+            "line": 84,
+            "lineSha256": "5c287f97393a2bc00cdb930bc3674d86760a5a972e5352013abeabf0fcd132bb",
+            "lineText": "label: intl.formatMessage(messages.any),",
+            "nextLine": "value: '',",
+            "previousLine": "const any: CompactSelectOption = {"
+          }
+        ],
+        "originalCandidatePaths": [
+          "src/utils/musicCollectionFilters.ts"
+        ],
+        "originalStatus": "caller-use-not-found",
+        "resolution": "extractor alias miss: source group components.RequestModal.CollectionFilters is defined and rendered in VideoCollectionRequestFilters.tsx; not an unmapped source",
+        "resolvedCallerPath": "src/components/RequestModal/VideoCollectionRequestFilters.tsx",
+        "source": "Any",
+        "sourceId": "components.RequestModal.CollectionFilters.any",
+        "sourcePosition": 2870
+      },
+      {
+        "definitionAndUseRefs": [
+          {
+            "file": "src/components/RequestModal/VideoCollectionRequestFilters.tsx",
+            "line": 28,
+            "lineSha256": "47e25876421bfcea62cef68b82b462180158dd69705df9c6635e862b7bd154d0",
+            "lineText": "canceled: 'Canceled',",
+            "nextLine": "pilot: 'Pilot',",
+            "previousLine": "ended: 'Ended',"
+          },
+          {
+            "file": "src/components/RequestModal/VideoCollectionRequestFilters.tsx",
+            "line": 158,
+            "lineSha256": "d9d6647e02b5e98f2e888a2a8edbfd84f92fa72b645b578db056b3e0330bef8a",
+            "lineText": "label: intl.formatMessage(messages.canceled),",
+            "nextLine": "value: 'Canceled',",
+            "previousLine": "{"
+          }
+        ],
+        "originalCandidatePaths": [
+          "src/utils/musicCollectionFilters.ts"
+        ],
+        "originalStatus": "caller-use-not-found",
+        "resolution": "extractor alias miss: source group components.RequestModal.CollectionFilters is defined and rendered in VideoCollectionRequestFilters.tsx; not an unmapped source",
+        "resolvedCallerPath": "src/components/RequestModal/VideoCollectionRequestFilters.tsx",
+        "source": "Canceled",
+        "sourceId": "components.RequestModal.CollectionFilters.canceled",
+        "sourcePosition": 2871
+      },
+      {
+        "definitionAndUseRefs": [
+          {
+            "file": "src/components/RequestModal/VideoCollectionRequestFilters.tsx",
+            "line": 17,
+            "lineSha256": "0f4ffdd02fc4c9c804542daccf7ba162d10740101d7b6045b105b09d2a217f8d",
+            "lineText": "clear: 'Clear Filters',",
+            "nextLine": "status: 'Status',",
+            "previousLine": "const messages = defineMessages('components.RequestModal.CollectionFilters', {"
+          },
+          {
+            "file": "src/components/RequestModal/VideoCollectionRequestFilters.tsx",
+            "line": 137,
+            "lineSha256": "41588008761c6c2dc793c210a0ae0558b36e525bbe85042f7167c5be4c5f0794",
+            "lineText": "label={intl.formatMessage(messages.clear)}",
+            "nextLine": "selected={!Object.values(filters).some(Boolean)}",
+            "previousLine": "<FilterResetButton"
+          }
+        ],
+        "originalCandidatePaths": [
+          "src/utils/musicCollectionFilters.ts"
+        ],
+        "originalStatus": "caller-use-not-found",
+        "resolution": "extractor alias miss: source group components.RequestModal.CollectionFilters is defined and rendered in VideoCollectionRequestFilters.tsx; not an unmapped source",
+        "resolvedCallerPath": "src/components/RequestModal/VideoCollectionRequestFilters.tsx",
+        "source": "Clear Filters",
+        "sourceId": "components.RequestModal.CollectionFilters.clear",
+        "sourcePosition": 2872
+      },
+      {
+        "definitionAndUseRefs": [
+          {
+            "file": "src/components/RequestModal/VideoCollectionRequestFilters.tsx",
+            "line": 27,
+            "lineSha256": "619d1a0078b239e89d80018dce85fe1767c67ff71ef705154d3357c3ed31b241",
+            "lineText": "ended: 'Ended',",
+            "nextLine": "canceled: 'Canceled',",
+            "previousLine": "inProduction: 'In Production',"
+          },
+          {
+            "file": "src/components/RequestModal/VideoCollectionRequestFilters.tsx",
+            "line": 156,
+            "lineSha256": "f0e314e5ca1a09b153b14808a74a51336083bc1f995e8715dfd2465de464ac74",
+            "lineText": "{ label: intl.formatMessage(messages.ended), value: 'Ended' },",
+            "nextLine": "{",
+            "previousLine": "},"
+          }
+        ],
+        "originalCandidatePaths": [
+          "src/utils/musicCollectionFilters.ts"
+        ],
+        "originalStatus": "caller-use-not-found",
+        "resolution": "extractor alias miss: source group components.RequestModal.CollectionFilters is defined and rendered in VideoCollectionRequestFilters.tsx; not an unmapped source",
+        "resolvedCallerPath": "src/components/RequestModal/VideoCollectionRequestFilters.tsx",
+        "source": "Ended",
+        "sourceId": "components.RequestModal.CollectionFilters.ended",
+        "sourcePosition": 2873
+      },
+      {
+        "definitionAndUseRefs": [
+          {
+            "file": "src/components/RequestModal/VideoCollectionRequestFilters.tsx",
+            "line": 26,
+            "lineSha256": "a9c244e2c615a9d962d6232f2d4558df0785f6671b549607266126e5d89175ba",
+            "lineText": "inProduction: 'In Production',",
+            "nextLine": "ended: 'Ended',",
+            "previousLine": "planned: 'Planned',"
+          },
+          {
+            "file": "src/components/RequestModal/VideoCollectionRequestFilters.tsx",
+            "line": 153,
+            "lineSha256": "ce52fa5d7c14b13b340c32f698816778eeeaa714f40fe6c0293fb5e5ca996bab",
+            "lineText": "label: intl.formatMessage(messages.inProduction),",
+            "nextLine": "value: 'In Production',",
+            "previousLine": "{"
+          }
+        ],
+        "originalCandidatePaths": [
+          "src/utils/musicCollectionFilters.ts"
+        ],
+        "originalStatus": "caller-use-not-found",
+        "resolution": "extractor alias miss: source group components.RequestModal.CollectionFilters is defined and rendered in VideoCollectionRequestFilters.tsx; not an unmapped source",
+        "resolvedCallerPath": "src/components/RequestModal/VideoCollectionRequestFilters.tsx",
+        "source": "In Production",
+        "sourceId": "components.RequestModal.CollectionFilters.inProduction",
+        "sourcePosition": 2875
+      },
+      {
+        "definitionAndUseRefs": [
+          {
+            "file": "src/components/RequestModal/VideoCollectionRequestFilters.tsx",
+            "line": 22,
+            "lineSha256": "fc737a7e0d5cce9513811ed88d18eec8b24801c8d2b2b4226aa855d89f3f7386",
+            "lineText": "language: 'Language',",
+            "nextLine": "any: 'Any',",
+            "previousLine": "rating: 'Rating',"
+          },
+          {
+            "file": "src/components/RequestModal/VideoCollectionRequestFilters.tsx",
+            "line": 45,
+            "lineSha256": "bdaf2d62824bbd67413990af6d2dafdcd648475c4ec08496ff5dc115a2761e5d",
+            "lineText": "language: '',",
+            "nextLine": "};",
+            "previousLine": "rating: '',"
+          },
+          {
+            "file": "src/components/RequestModal/VideoCollectionRequestFilters.tsx",
+            "line": 185,
+            "lineSha256": "09b62fcf0efb337b597d63fd1d541fb7f92ffea25211931ff34c28e8478cd6b1",
+            "lineText": "label={intl.formatMessage(messages.language)}",
+            "nextLine": "value={filters.language}",
+            "previousLine": "<CompactSelect"
+          }
+        ],
+        "originalCandidatePaths": [
+          "src/utils/musicCollectionFilters.ts"
+        ],
+        "originalStatus": "caller-use-not-found",
+        "resolution": "extractor alias miss: source group components.RequestModal.CollectionFilters is defined and rendered in VideoCollectionRequestFilters.tsx; not an unmapped source",
+        "resolvedCallerPath": "src/components/RequestModal/VideoCollectionRequestFilters.tsx",
+        "source": "Language",
+        "sourceId": "components.RequestModal.CollectionFilters.language",
+        "sourcePosition": 2876
+      },
+      {
+        "definitionAndUseRefs": [
+          {
+            "file": "src/components/RequestModal/VideoCollectionRequestFilters.tsx",
+            "line": 29,
+            "lineSha256": "4decb26bdb608cdc0b3f4c597e35879dc6a869e3ff6b7eaaf8f399c0067e25e0",
+            "lineText": "pilot: 'Pilot',",
+            "nextLine": "});",
+            "previousLine": "canceled: 'Canceled',"
+          },
+          {
+            "file": "src/components/RequestModal/VideoCollectionRequestFilters.tsx",
+            "line": 161,
+            "lineSha256": "7538f0c3e2116dd2b867e228ee0265f18557140df8365ca701a9d91b678b0d03",
+            "lineText": "{ label: intl.formatMessage(messages.pilot), value: 'Pilot' },",
+            "nextLine": "]}",
+            "previousLine": "},"
+          }
+        ],
+        "originalCandidatePaths": [
+          "src/utils/musicCollectionFilters.ts"
+        ],
+        "originalStatus": "caller-use-not-found",
+        "resolution": "extractor alias miss: source group components.RequestModal.CollectionFilters is defined and rendered in VideoCollectionRequestFilters.tsx; not an unmapped source",
+        "resolvedCallerPath": "src/components/RequestModal/VideoCollectionRequestFilters.tsx",
+        "source": "Pilot",
+        "sourceId": "components.RequestModal.CollectionFilters.pilot",
+        "sourcePosition": 2877
+      },
+      {
+        "definitionAndUseRefs": [
+          {
+            "file": "src/components/RequestModal/VideoCollectionRequestFilters.tsx",
+            "line": 25,
+            "lineSha256": "239ddf12e3bc748e0935fca35e6527e0ca80fa5cf987351688486ab795e1aaf3",
+            "lineText": "planned: 'Planned',",
+            "nextLine": "inProduction: 'In Production',",
+            "previousLine": "returningSeries: 'Returning Series',"
+          },
+          {
+            "file": "src/components/RequestModal/VideoCollectionRequestFilters.tsx",
+            "line": 151,
+            "lineSha256": "8fb4b708fc7ad5b0d0d0ce622075ffd85bd463f4ef9999055cf529699b1e1db8",
+            "lineText": "{ label: intl.formatMessage(messages.planned), value: 'Planned' },",
+            "nextLine": "{",
+            "previousLine": "},"
+          }
+        ],
+        "originalCandidatePaths": [
+          "src/utils/musicCollectionFilters.ts"
+        ],
+        "originalStatus": "caller-use-not-found",
+        "resolution": "extractor alias miss: source group components.RequestModal.CollectionFilters is defined and rendered in VideoCollectionRequestFilters.tsx; not an unmapped source",
+        "resolvedCallerPath": "src/components/RequestModal/VideoCollectionRequestFilters.tsx",
+        "source": "Planned",
+        "sourceId": "components.RequestModal.CollectionFilters.planned",
+        "sourcePosition": 2878
+      },
+      {
+        "definitionAndUseRefs": [
+          {
+            "file": "src/components/RequestModal/VideoCollectionRequestFilters.tsx",
+            "line": 21,
+            "lineSha256": "c8eef49da4dfebd31a4033870e237cf0829f601ebdb58f9b814cff0961519aba",
+            "lineText": "rating: 'Rating',",
+            "nextLine": "language: 'Language',",
+            "previousLine": "genres: 'Genres',"
+          },
+          {
+            "file": "src/components/RequestModal/VideoCollectionRequestFilters.tsx",
+            "line": 44,
+            "lineSha256": "d787ab552efc068d0bb36c123d066e8e20e9baf119d744bae14665ea2b6dc4ff",
+            "lineText": "rating: '',",
+            "nextLine": "language: '',",
+            "previousLine": "genre: '',"
+          },
+          {
+            "file": "src/components/RequestModal/VideoCollectionRequestFilters.tsx",
+            "line": 179,
+            "lineSha256": "7b646aee9700af4420db2204efd3dff4d59cf4ab696e1ae5d6a47e7cc232d0a8",
+            "lineText": "label={intl.formatMessage(messages.rating)}",
+            "nextLine": "value={filters.rating}",
+            "previousLine": "<CompactRatingSelect"
+          }
+        ],
+        "originalCandidatePaths": [
+          "src/utils/musicCollectionFilters.ts"
+        ],
+        "originalStatus": "caller-use-not-found",
+        "resolution": "extractor alias miss: source group components.RequestModal.CollectionFilters is defined and rendered in VideoCollectionRequestFilters.tsx; not an unmapped source",
+        "resolvedCallerPath": "src/components/RequestModal/VideoCollectionRequestFilters.tsx",
+        "source": "Rating",
+        "sourceId": "components.RequestModal.CollectionFilters.rating",
+        "sourcePosition": 2879
+      },
+      {
+        "definitionAndUseRefs": [
+          {
+            "file": "src/components/RequestModal/VideoCollectionRequestFilters.tsx",
+            "line": 24,
+            "lineSha256": "38d38207aa4b2644f3a15cab646b2b887a716b01e71fa5b4b31ab0e43e7615cb",
+            "lineText": "returningSeries: 'Returning Series',",
+            "nextLine": "planned: 'Planned',",
+            "previousLine": "any: 'Any',"
+          },
+          {
+            "file": "src/components/RequestModal/VideoCollectionRequestFilters.tsx",
+            "line": 148,
+            "lineSha256": "2a77ffbdb6c7d7c9ff44f3bf60a8d14d6d16d35e32b847130b3a115d16b74036",
+            "lineText": "label: intl.formatMessage(messages.returningSeries),",
+            "nextLine": "value: 'Returning Series',",
+            "previousLine": "{"
+          }
+        ],
+        "originalCandidatePaths": [
+          "src/utils/musicCollectionFilters.ts"
+        ],
+        "originalStatus": "caller-use-not-found",
+        "resolution": "extractor alias miss: source group components.RequestModal.CollectionFilters is defined and rendered in VideoCollectionRequestFilters.tsx; not an unmapped source",
+        "resolvedCallerPath": "src/components/RequestModal/VideoCollectionRequestFilters.tsx",
+        "source": "Returning Series",
+        "sourceId": "components.RequestModal.CollectionFilters.returningSeries",
+        "sourcePosition": 2881
+      },
+      {
+        "definitionAndUseRefs": [
+          {
+            "file": "src/components/RequestModal/VideoCollectionRequestFilters.tsx",
+            "line": 18,
+            "lineSha256": "4860d1d7ab7b6630118801fd654a508404433dfb6bf6810e962e792d09b75703",
+            "lineText": "status: 'Status',",
+            "nextLine": "releaseDate: 'Release Date',",
+            "previousLine": "clear: 'Clear Filters',"
+          },
+          {
+            "file": "src/components/RequestModal/VideoCollectionRequestFilters.tsx",
+            "line": 41,
+            "lineSha256": "70b70ddf667cbe890a4f1485f687b1519e77680e1b38930606c4c41addf66557",
+            "lineText": "status: '',",
+            "nextLine": "year: '',",
+            "previousLine": "export const EMPTY_VIDEO_COLLECTION_FILTERS: VideoCollectionFilters = {"
+          },
+          {
+            "file": "src/components/RequestModal/VideoCollectionRequestFilters.tsx",
+            "line": 143,
+            "lineSha256": "d1cf1555becd97e5aba790031cfd92de2bd9892b0221381dd98cc366e920d0da",
+            "lineText": "label={intl.formatMessage(messages.status)}",
+            "nextLine": "value={filters.status}",
+            "previousLine": "<CompactSelect"
+          }
+        ],
+        "originalCandidatePaths": [
+          "src/utils/musicCollectionFilters.ts"
+        ],
+        "originalStatus": "caller-use-not-found",
+        "resolution": "extractor alias miss: source group components.RequestModal.CollectionFilters is defined and rendered in VideoCollectionRequestFilters.tsx; not an unmapped source",
+        "resolvedCallerPath": "src/components/RequestModal/VideoCollectionRequestFilters.tsx",
+        "source": "Status",
+        "sourceId": "components.RequestModal.CollectionFilters.status",
+        "sourcePosition": 2882
+      }
+    ],
+    "head": "7329f0ffb34d46042dbf1b165046e21c4f4d45e3",
+    "initialExtractorGapCount": 11,
+    "pullRequest": 418,
+    "repository": "snapetech-org/seerrng",
+    "resolution": "Manual source-group alias added to the exact-head caller extractor. Every initial gap is defined in the direct component and has exact definition/use line references; no runtime call was inferred from the unrelated helper.",
+    "resolvedCallerFile": {
+      "blob": "d5c3e4b2e8e04f6175cf92bd53d2395dbc99d3e4",
+      "path": "src/components/RequestModal/VideoCollectionRequestFilters.tsx",
+      "sha256": "6ebb5029adb343521d7b1d78a7664e7e65254a4fd081edbf192544ee7f60b5b5"
+    },
+    "tree": "531e045f511ee9c46f4c7ed80d50f529c9c12000",
+    "trueUnmappedSourceCount": 0
+  },
+  "checks": {
+    "all100CallerRowsResolvedAndPinned": true,
+    "all1200ExactSourceAndCurrentTargetCells": true,
+    "allCandidateValuesHaveExactHashes": true,
+    "allCatalogKeySetsIdentical": true,
+    "allFinalMarkupParityExact": true,
+    "allFinalPlaceholderDifferencesAccountedFor": true,
+    "allFinalPlaceholderParityExact": false,
+    "allFinalProtectedLiteralsPresent": true,
+    "allICURootsAndRequiredBranchesValid": true,
+    "allPlaceholderDifferencesAreUnchangedAcceptedTargets": true,
+    "noUnresolvedExactPriorDispositionCollision": true,
+    "prHeadMatchesLocalAndRemote": true,
+    "sourceBoundaryVerified": true,
+    "spanishDirectAddressUsesFormalOrNeutral": true,
+    "worktreeClean": true
+  },
+  "icuProfiles": [
+    {
+      "currentProfile": [
+        {
+          "branches": {
+            "few": "# عناصر",
+            "many": "# عنصرًا",
+            "one": "عنصر واحد",
+            "other": "# عنصر",
+            "two": "عنصرين",
+            "zero": "# عنصر"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "failure": null,
+      "finalProfile": [
+        {
+          "branches": {
+            "few": "# عناصر",
+            "many": "# عنصرًا",
+            "one": "عنصر واحد",
+            "other": "# عنصر",
+            "two": "عنصرين",
+            "zero": "# عنصر"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "locale": "ar",
+      "sourceId": "components.RequestModal.BulkRequestModal.requestitems",
+      "sourcePosition": 2861,
+      "sourceProfile": [
+        {
+          "branches": {
+            "one": "Item",
+            "other": "Items"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "valid": true
+    },
+    {
+      "currentProfile": [
+        {
+          "branches": {
+            "one": "Position",
+            "other": "Positionen"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "failure": null,
+      "finalProfile": [
+        {
+          "branches": {
+            "one": "Element",
+            "other": "Elemente"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "locale": "de",
+      "sourceId": "components.RequestModal.BulkRequestModal.requestitems",
+      "sourcePosition": 2861,
+      "sourceProfile": [
+        {
+          "branches": {
+            "one": "Item",
+            "other": "Items"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "valid": true
+    },
+    {
+      "currentProfile": [
+        {
+          "branches": {
+            "many": "Temas",
+            "one": "Tema",
+            "other": "Temas"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "failure": null,
+      "finalProfile": [
+        {
+          "branches": {
+            "one": "elemento",
+            "other": "elementos"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "locale": "es",
+      "sourceId": "components.RequestModal.BulkRequestModal.requestitems",
+      "sourcePosition": 2861,
+      "sourceProfile": [
+        {
+          "branches": {
+            "one": "Item",
+            "other": "Items"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "valid": true
+    },
+    {
+      "currentProfile": [
+        {
+          "branches": {
+            "many": "Éléments",
+            "one": "Point",
+            "other": "Éléments"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "failure": null,
+      "finalProfile": [
+        {
+          "branches": {
+            "one": "élément",
+            "other": "éléments"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "locale": "fr",
+      "sourceId": "components.RequestModal.BulkRequestModal.requestitems",
+      "sourcePosition": 2861,
+      "sourceProfile": [
+        {
+          "branches": {
+            "one": "Item",
+            "other": "Items"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "valid": true
+    },
+    {
+      "currentProfile": [
+        {
+          "branches": {
+            "one": "आइटम",
+            "other": "आइटम"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "failure": null,
+      "finalProfile": [
+        {
+          "branches": {
+            "one": "आइटम",
+            "other": "आइटम"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "locale": "hi",
+      "sourceId": "components.RequestModal.BulkRequestModal.requestitems",
+      "sourcePosition": 2861,
+      "sourceProfile": [
+        {
+          "branches": {
+            "one": "Item",
+            "other": "Items"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "valid": true
+    },
+    {
+      "currentProfile": [
+        {
+          "branches": {
+            "one": "Butir",
+            "other": "Objek"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "failure": null,
+      "finalProfile": [
+        {
+          "branches": {
+            "one": "item",
+            "other": "item"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "locale": "id",
+      "sourceId": "components.RequestModal.BulkRequestModal.requestitems",
+      "sourcePosition": 2861,
+      "sourceProfile": [
+        {
+          "branches": {
+            "one": "Item",
+            "other": "Items"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "valid": true
+    },
+    {
+      "currentProfile": [
+        {
+          "branches": {
+            "one": "項目",
+            "other": "項目"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "failure": null,
+      "finalProfile": [
+        {
+          "branches": {
+            "one": "項目",
+            "other": "項目"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "locale": "ja",
+      "sourceId": "components.RequestModal.BulkRequestModal.requestitems",
+      "sourcePosition": 2861,
+      "sourceProfile": [
+        {
+          "branches": {
+            "one": "Item",
+            "other": "Items"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "valid": true
+    },
+    {
+      "currentProfile": [
+        {
+          "branches": {
+            "one": "항목",
+            "other": "항목"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "failure": null,
+      "finalProfile": [
+        {
+          "branches": {
+            "one": "항목",
+            "other": "항목"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "locale": "ko",
+      "sourceId": "components.RequestModal.BulkRequestModal.requestitems",
+      "sourcePosition": 2861,
+      "sourceProfile": [
+        {
+          "branches": {
+            "one": "Item",
+            "other": "Items"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "valid": true
+    },
+    {
+      "currentProfile": [
+        {
+          "branches": {
+            "many": "Itens",
+            "one": "Item",
+            "other": "Itens"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "failure": null,
+      "finalProfile": [
+        {
+          "branches": {
+            "one": "item",
+            "other": "itens"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "locale": "pt_BR",
+      "sourceId": "components.RequestModal.BulkRequestModal.requestitems",
+      "sourcePosition": 2861,
+      "sourceProfile": [
+        {
+          "branches": {
+            "one": "Item",
+            "other": "Items"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "valid": true
+    },
+    {
+      "currentProfile": [
+        {
+          "branches": {
+            "one": "Mục",
+            "other": "Mục"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "failure": null,
+      "finalProfile": [
+        {
+          "branches": {
+            "one": "Mục",
+            "other": "Mục"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "locale": "vi",
+      "sourceId": "components.RequestModal.BulkRequestModal.requestitems",
+      "sourcePosition": 2861,
+      "sourceProfile": [
+        {
+          "branches": {
+            "one": "Item",
+            "other": "Items"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "valid": true
+    },
+    {
+      "currentProfile": [
+        {
+          "branches": {
+            "one": "项目",
+            "other": "项目"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "failure": null,
+      "finalProfile": [
+        {
+          "branches": {
+            "one": "项目",
+            "other": "项目"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "locale": "zh_Hans",
+      "sourceId": "components.RequestModal.BulkRequestModal.requestitems",
+      "sourcePosition": 2861,
+      "sourceProfile": [
+        {
+          "branches": {
+            "one": "Item",
+            "other": "Items"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "valid": true
+    },
+    {
+      "currentProfile": [
+        {
+          "branches": {
+            "one": "項目",
+            "other": "項目"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "failure": null,
+      "finalProfile": [
+        {
+          "branches": {
+            "one": "項目",
+            "other": "項目"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "locale": "zh_Hant",
+      "sourceId": "components.RequestModal.BulkRequestModal.requestitems",
+      "sourcePosition": 2861,
+      "sourceProfile": [
+        {
+          "branches": {
+            "one": "Item",
+            "other": "Items"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "valid": true
+    },
+    {
+      "currentProfile": [
+        {
+          "branches": {
+            "few": "# عناصر",
+            "many": "# عنصرًا",
+            "one": "عنصر واحد",
+            "other": "# عنصر",
+            "two": "عنصرين",
+            "zero": "# عنصر"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "failure": null,
+      "finalProfile": [
+        {
+          "branches": {
+            "few": "# عناصر",
+            "many": "# عنصرًا",
+            "one": "عنصر واحد",
+            "other": "# عنصر",
+            "two": "عنصرين",
+            "zero": "# عنصر"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "locale": "ar",
+      "sourceId": "components.RequestModal.BulkRequestModal.requestitemsFormat",
+      "sourcePosition": 2862,
+      "sourceProfile": [
+        {
+          "branches": {
+            "one": "Item",
+            "other": "Items"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "valid": true
+    },
+    {
+      "currentProfile": [
+        {
+          "branches": {
+            "one": "Position",
+            "other": "Positionen"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "failure": null,
+      "finalProfile": [
+        {
+          "branches": {
+            "one": "Element",
+            "other": "Elemente"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "locale": "de",
+      "sourceId": "components.RequestModal.BulkRequestModal.requestitemsFormat",
+      "sourcePosition": 2862,
+      "sourceProfile": [
+        {
+          "branches": {
+            "one": "Item",
+            "other": "Items"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "valid": true
+    },
+    {
+      "currentProfile": [
+        {
+          "branches": {
+            "many": "Temas",
+            "one": "Tema",
+            "other": "Temas"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "failure": null,
+      "finalProfile": [
+        {
+          "branches": {
+            "one": "elemento",
+            "other": "elementos"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "locale": "es",
+      "sourceId": "components.RequestModal.BulkRequestModal.requestitemsFormat",
+      "sourcePosition": 2862,
+      "sourceProfile": [
+        {
+          "branches": {
+            "one": "Item",
+            "other": "Items"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "valid": true
+    },
+    {
+      "currentProfile": [
+        {
+          "branches": {
+            "many": "Éléments",
+            "one": "Point",
+            "other": "Éléments"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "failure": null,
+      "finalProfile": [
+        {
+          "branches": {
+            "one": "élément",
+            "other": "éléments"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "locale": "fr",
+      "sourceId": "components.RequestModal.BulkRequestModal.requestitemsFormat",
+      "sourcePosition": 2862,
+      "sourceProfile": [
+        {
+          "branches": {
+            "one": "Item",
+            "other": "Items"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "valid": true
+    },
+    {
+      "currentProfile": [
+        {
+          "branches": {
+            "one": "आइटम",
+            "other": "आइटम"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "failure": null,
+      "finalProfile": [
+        {
+          "branches": {
+            "one": "आइटम",
+            "other": "आइटम"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "locale": "hi",
+      "sourceId": "components.RequestModal.BulkRequestModal.requestitemsFormat",
+      "sourcePosition": 2862,
+      "sourceProfile": [
+        {
+          "branches": {
+            "one": "Item",
+            "other": "Items"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "valid": true
+    },
+    {
+      "currentProfile": [
+        {
+          "branches": {
+            "one": "Butir",
+            "other": "Objek"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "failure": null,
+      "finalProfile": [
+        {
+          "branches": {
+            "one": "item",
+            "other": "item"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "locale": "id",
+      "sourceId": "components.RequestModal.BulkRequestModal.requestitemsFormat",
+      "sourcePosition": 2862,
+      "sourceProfile": [
+        {
+          "branches": {
+            "one": "Item",
+            "other": "Items"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "valid": true
+    },
+    {
+      "currentProfile": [
+        {
+          "branches": {
+            "one": "項目",
+            "other": "項目"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "failure": null,
+      "finalProfile": [
+        {
+          "branches": {
+            "one": "項目",
+            "other": "項目"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "locale": "ja",
+      "sourceId": "components.RequestModal.BulkRequestModal.requestitemsFormat",
+      "sourcePosition": 2862,
+      "sourceProfile": [
+        {
+          "branches": {
+            "one": "Item",
+            "other": "Items"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "valid": true
+    },
+    {
+      "currentProfile": [
+        {
+          "branches": {
+            "one": "항목",
+            "other": "항목"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "failure": null,
+      "finalProfile": [
+        {
+          "branches": {
+            "one": "항목",
+            "other": "항목"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "locale": "ko",
+      "sourceId": "components.RequestModal.BulkRequestModal.requestitemsFormat",
+      "sourcePosition": 2862,
+      "sourceProfile": [
+        {
+          "branches": {
+            "one": "Item",
+            "other": "Items"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "valid": true
+    },
+    {
+      "currentProfile": [
+        {
+          "branches": {
+            "many": "Itens",
+            "one": "Item",
+            "other": "Itens"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "failure": null,
+      "finalProfile": [
+        {
+          "branches": {
+            "one": "item",
+            "other": "itens"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "locale": "pt_BR",
+      "sourceId": "components.RequestModal.BulkRequestModal.requestitemsFormat",
+      "sourcePosition": 2862,
+      "sourceProfile": [
+        {
+          "branches": {
+            "one": "Item",
+            "other": "Items"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "valid": true
+    },
+    {
+      "currentProfile": [
+        {
+          "branches": {
+            "one": "Mục",
+            "other": "Mục"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "failure": null,
+      "finalProfile": [
+        {
+          "branches": {
+            "one": "mục",
+            "other": "mục"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "locale": "vi",
+      "sourceId": "components.RequestModal.BulkRequestModal.requestitemsFormat",
+      "sourcePosition": 2862,
+      "sourceProfile": [
+        {
+          "branches": {
+            "one": "Item",
+            "other": "Items"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "valid": true
+    },
+    {
+      "currentProfile": [
+        {
+          "branches": {
+            "one": "项目",
+            "other": "项目"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "failure": null,
+      "finalProfile": [
+        {
+          "branches": {
+            "one": "项目",
+            "other": "项目"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "locale": "zh_Hans",
+      "sourceId": "components.RequestModal.BulkRequestModal.requestitemsFormat",
+      "sourcePosition": 2862,
+      "sourceProfile": [
+        {
+          "branches": {
+            "one": "Item",
+            "other": "Items"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "valid": true
+    },
+    {
+      "currentProfile": [
+        {
+          "branches": {
+            "one": "項目",
+            "other": "項目"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "failure": null,
+      "finalProfile": [
+        {
+          "branches": {
+            "one": "個項目",
+            "other": "個項目"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "locale": "zh_Hant",
+      "sourceId": "components.RequestModal.BulkRequestModal.requestitemsFormat",
+      "sourcePosition": 2862,
+      "sourceProfile": [
+        {
+          "branches": {
+            "one": "Item",
+            "other": "Items"
+          },
+          "kind": "plural",
+          "name": "count"
+        }
+      ],
+      "valid": true
+    },
+    {
+      "currentProfile": [
+        {
+          "branches": {
+            "few": "# عناصر",
+            "many": "# عنصرًا",
+            "one": "عنصر واحد",
+            "other": "# عنصر",
+            "two": "عنصران",
+            "zero": "# عنصر"
+          },
+          "kind": "plural",
+          "name": "total"
+        }
+      ],
+      "failure": null,
+      "finalProfile": [
+        {
+          "branches": {
+            "few": "# عناصر",
+            "many": "# عنصرًا",
+            "one": "عنصر واحد",
+            "other": "# عنصر",
+            "two": "عنصران",
+            "zero": "# عنصر"
+          },
+          "kind": "plural",
+          "name": "total"
+        }
+      ],
+      "locale": "ar",
+      "sourceId": "components.RequestModal.BulkRequestModal.submittingprogress",
+      "sourcePosition": 2867,
+      "sourceProfile": [
+        {
+          "branches": {
+            "one": "item",
+            "other": "items"
+          },
+          "kind": "plural",
+          "name": "total"
+        }
+      ],
+      "valid": true
+    },
+    {
+      "currentProfile": [
+        {
+          "branches": {
+            "one": "Eintrag",
+            "other": "Einträgen"
+          },
+          "kind": "plural",
+          "name": "total"
+        }
+      ],
+      "failure": null,
+      "finalProfile": [
+        {
+          "branches": {
+            "one": "Eintrag",
+            "other": "Einträgen"
+          },
+          "kind": "plural",
+          "name": "total"
+        }
+      ],
+      "locale": "de",
+      "sourceId": "components.RequestModal.BulkRequestModal.submittingprogress",
+      "sourcePosition": 2867,
+      "sourceProfile": [
+        {
+          "branches": {
+            "one": "item",
+            "other": "items"
+          },
+          "kind": "plural",
+          "name": "total"
+        }
+      ],
+      "valid": true
+    },
+    {
+      "currentProfile": [
+        {
+          "branches": {
+            "many": "# elementos",
+            "one": "# elemento",
+            "other": "# elementos"
+          },
+          "kind": "plural",
+          "name": "total"
+        }
+      ],
+      "failure": null,
+      "finalProfile": [
+        {
+          "branches": {
+            "many": "# elementos",
+            "one": "# elemento",
+            "other": "# elementos"
+          },
+          "kind": "plural",
+          "name": "total"
+        }
+      ],
+      "locale": "es",
+      "sourceId": "components.RequestModal.BulkRequestModal.submittingprogress",
+      "sourcePosition": 2867,
+      "sourceProfile": [
+        {
+          "branches": {
+            "one": "item",
+            "other": "items"
+          },
+          "kind": "plural",
+          "name": "total"
+        }
+      ],
+      "valid": true
+    },
+    {
+      "currentProfile": [
+        {
+          "branches": {
+            "many": "# éléments",
+            "one": "# élément",
+            "other": "# éléments"
+          },
+          "kind": "plural",
+          "name": "total"
+        }
+      ],
+      "failure": null,
+      "finalProfile": [
+        {
+          "branches": {
+            "many": "# éléments",
+            "one": "# élément",
+            "other": "# éléments"
+          },
+          "kind": "plural",
+          "name": "total"
+        }
+      ],
+      "locale": "fr",
+      "sourceId": "components.RequestModal.BulkRequestModal.submittingprogress",
+      "sourcePosition": 2867,
+      "sourceProfile": [
+        {
+          "branches": {
+            "one": "item",
+            "other": "items"
+          },
+          "kind": "plural",
+          "name": "total"
+        }
+      ],
+      "valid": true
+    },
+    {
+      "currentProfile": [
+        {
+          "branches": {
+            "one": "# आइटम",
+            "other": "# आइटम"
+          },
+          "kind": "plural",
+          "name": "total"
+        }
+      ],
+      "failure": null,
+      "finalProfile": [
+        {
+          "branches": {
+            "one": "# आइटम",
+            "other": "# आइटम"
+          },
+          "kind": "plural",
+          "name": "total"
+        }
+      ],
+      "locale": "hi",
+      "sourceId": "components.RequestModal.BulkRequestModal.submittingprogress",
+      "sourcePosition": 2867,
+      "sourceProfile": [
+        {
+          "branches": {
+            "one": "item",
+            "other": "items"
+          },
+          "kind": "plural",
+          "name": "total"
+        }
+      ],
+      "valid": true
+    },
+    {
+      "currentProfile": [
+        {
+          "branches": {
+            "one": "# item",
+            "other": "# item"
+          },
+          "kind": "plural",
+          "name": "total"
+        }
+      ],
+      "failure": null,
+      "finalProfile": [
+        {
+          "branches": {
+            "one": "# item",
+            "other": "# item"
+          },
+          "kind": "plural",
+          "name": "total"
+        }
+      ],
+      "locale": "id",
+      "sourceId": "components.RequestModal.BulkRequestModal.submittingprogress",
+      "sourcePosition": 2867,
+      "sourceProfile": [
+        {
+          "branches": {
+            "one": "item",
+            "other": "items"
+          },
+          "kind": "plural",
+          "name": "total"
+        }
+      ],
+      "valid": true
+    },
+    {
+      "currentProfile": [
+        {
+          "branches": {
+            "other": "#件"
+          },
+          "kind": "plural",
+          "name": "total"
+        }
+      ],
+      "failure": null,
+      "finalProfile": [
+        {
+          "branches": {
+            "other": "#件"
+          },
+          "kind": "plural",
+          "name": "total"
+        }
+      ],
+      "locale": "ja",
+      "sourceId": "components.RequestModal.BulkRequestModal.submittingprogress",
+      "sourcePosition": 2867,
+      "sourceProfile": [
+        {
+          "branches": {
+            "one": "item",
+            "other": "items"
+          },
+          "kind": "plural",
+          "name": "total"
+        }
+      ],
+      "valid": true
+    },
+    {
+      "currentProfile": [
+        {
+          "branches": {
+            "other": "#개 항목"
+          },
+          "kind": "plural",
+          "name": "total"
+        }
+      ],
+      "failure": null,
+      "finalProfile": [
+        {
+          "branches": {
+            "other": "#개 항목"
+          },
+          "kind": "plural",
+          "name": "total"
+        }
+      ],
+      "locale": "ko",
+      "sourceId": "components.RequestModal.BulkRequestModal.submittingprogress",
+      "sourcePosition": 2867,
+      "sourceProfile": [
+        {
+          "branches": {
+            "one": "item",
+            "other": "items"
+          },
+          "kind": "plural",
+          "name": "total"
+        }
+      ],
+      "valid": true
+    },
+    {
+      "currentProfile": [
+        {
+          "branches": {
+            "many": "# itens",
+            "one": "# item",
+            "other": "# itens"
+          },
+          "kind": "plural",
+          "name": "total"
+        }
+      ],
+      "failure": null,
+      "finalProfile": [
+        {
+          "branches": {
+            "many": "# itens",
+            "one": "# item",
+            "other": "# itens"
+          },
+          "kind": "plural",
+          "name": "total"
+        }
+      ],
+      "locale": "pt_BR",
+      "sourceId": "components.RequestModal.BulkRequestModal.submittingprogress",
+      "sourcePosition": 2867,
+      "sourceProfile": [
+        {
+          "branches": {
+            "one": "item",
+            "other": "items"
+          },
+          "kind": "plural",
+          "name": "total"
+        }
+      ],
+      "valid": true
+    },
+    {
+      "currentProfile": [
+        {
+          "branches": {
+            "other": "# mục"
+          },
+          "kind": "plural",
+          "name": "total"
+        }
+      ],
+      "failure": null,
+      "finalProfile": [
+        {
+          "branches": {
+            "other": "# mục"
+          },
+          "kind": "plural",
+          "name": "total"
+        }
+      ],
+      "locale": "vi",
+      "sourceId": "components.RequestModal.BulkRequestModal.submittingprogress",
+      "sourcePosition": 2867,
+      "sourceProfile": [
+        {
+          "branches": {
+            "one": "item",
+            "other": "items"
+          },
+          "kind": "plural",
+          "name": "total"
+        }
+      ],
+      "valid": true
+    },
+    {
+      "currentProfile": [
+        {
+          "branches": {
+            "other": "# 个项目"
+          },
+          "kind": "plural",
+          "name": "total"
+        }
+      ],
+      "failure": null,
+      "finalProfile": [
+        {
+          "branches": {
+            "other": "# 个项目"
+          },
+          "kind": "plural",
+          "name": "total"
+        }
+      ],
+      "locale": "zh_Hans",
+      "sourceId": "components.RequestModal.BulkRequestModal.submittingprogress",
+      "sourcePosition": 2867,
+      "sourceProfile": [
+        {
+          "branches": {
+            "one": "item",
+            "other": "items"
+          },
+          "kind": "plural",
+          "name": "total"
+        }
+      ],
+      "valid": true
+    },
+    {
+      "currentProfile": [
+        {
+          "branches": {
+            "other": "# 個項目"
+          },
+          "kind": "plural",
+          "name": "total"
+        }
+      ],
+      "failure": null,
+      "finalProfile": [
+        {
+          "branches": {
+            "other": "# 個項目"
+          },
+          "kind": "plural",
+          "name": "total"
+        }
+      ],
+      "locale": "zh_Hant",
+      "sourceId": "components.RequestModal.BulkRequestModal.submittingprogress",
+      "sourcePosition": 2867,
+      "sourceProfile": [
+        {
+          "branches": {
+            "one": "item",
+            "other": "items"
+          },
+          "kind": "plural",
+          "name": "total"
+        }
+      ],
+      "valid": true
+    }
+  ],
+  "inputHashVerification": "all source/current/caller rows rehashed from the frozen exact-head input before ledger emission",
+  "protectedLiteralMismatchDetailsCurrent": [
+    {
+      "locale": "hi",
+      "missing": [
+        "Bookshelf"
+      ],
+      "sourceId": "components.RequestModal.BulkRequestModal.noEbookServer",
+      "sourcePosition": 2848
+    },
+    {
+      "locale": "vi",
+      "missing": [
+        "Bookshelf"
+      ],
+      "sourceId": "components.RequestModal.BulkRequestModal.noEbookServer",
+      "sourcePosition": 2848
+    },
+    {
+      "locale": "ar",
+      "missing": [
+        "FLAC",
+        "MP3"
+      ],
+      "sourceId": "components.RequestModal.BulkRequestModal.noMusicQualityServer",
+      "sourcePosition": 2849
+    },
+    {
+      "locale": "hi",
+      "missing": [
+        "MP3"
+      ],
+      "sourceId": "components.RequestModal.BulkRequestModal.noMusicQualityServer",
+      "sourcePosition": 2849
+    },
+    {
+      "locale": "hi",
+      "missing": [
+        "BackIssue"
+      ],
+      "sourceId": "components.RequestModal.Comic.noComicsServer",
+      "sourcePosition": 2891
+    },
+    {
+      "locale": "zh_Hans",
+      "missing": [
+        "BackIssue"
+      ],
+      "sourceId": "components.RequestModal.Comic.noComicsServer",
+      "sourcePosition": 2891
+    },
+    {
+      "locale": "zh_Hant",
+      "missing": [
+        "BackIssue"
+      ],
+      "sourceId": "components.RequestModal.Comic.noComicsServer",
+      "sourcePosition": 2891
+    }
+  ],
+  "protectedLiteralMismatchDetailsFinal": [],
+  "sourceBoundaries": {
+    "boundaries": [
+      {
+        "position": 2799,
+        "source": "Pages",
+        "sourceHash": "ba5736bc6e33dc6012d20be700852b42532520b9f3c98ab34cb06c4030aa5fdc",
+        "sourceId": "components.RequestModal.Book.pages",
+        "sourceTextSha256": "9046da16aea909ba75a36cec13b56cb2144dc2ede45cde361e99a8d79802eabf"
+      },
+      {
+        "position": 2800,
+        "source": "Pending {format} Request",
+        "sourceHash": "e7d08c2c8a1be4598b54374973829a44c5c59cebfb035c43e6b4c01e40965a7d",
+        "sourceId": "components.RequestModal.Book.pendingRequestFormat",
+        "sourceTextSha256": "9ff9dd438db0e5bd3ac75d16571530332696d7580d4c7f2d19a8a7f5130ded53"
+      },
+      {
+        "position": 2899,
+        "source": "Request Comic",
+        "sourceHash": "3918565c8fbd6d23ae431d767712b6d5c5042943c0869f59b1e7a43a5c7df516",
+        "sourceId": "components.RequestModal.Comic.requestcomic",
+        "sourceTextSha256": "c542e3cc86b4d4ea5c898b26a64b92936ca2cc9dec5e420530b07994cb29039b"
+      },
+      {
+        "position": 2900,
+        "source": "Requested",
+        "sourceHash": "85305ea40c3f025be73334791921556e5f94fd5e589b7a4d7cbec89efb005c63",
+        "sourceId": "components.RequestModal.Comic.requested",
+        "sourceTextSha256": "2d9e28289facab94b41f9592b7f55bc4fc10fed54e789669468e8da31c9a5caf"
+      }
+    ],
+    "preservedPriorDispositionHistoryThrough": {
+      "evidence": "All previous primary packet directories scanned and exact-source/exact-final-target matching rows included in prior-disposition-boundary.json; previous window boundary independently reattested against this exact source catalog.",
+      "position": 2799
+    },
+    "sourceCatalogBlob": "12e04a118c30b71b3714291adeaf9fdb2735cee4",
+    "sourceCatalogSha256": "75ff3c90b52aedd636a506281ffbd6fb2d3739c61294b6008a517f17647e2316",
+    "windowEndsImmediatelyBefore": {
+      "position": 2900,
+      "sourceId": "components.RequestModal.Comic.requested"
+    },
+    "windowStartsImmediatelyAfter": {
+      "position": 2799,
+      "sourceId": "components.RequestModal.Book.pages"
+    }
+  }
+}

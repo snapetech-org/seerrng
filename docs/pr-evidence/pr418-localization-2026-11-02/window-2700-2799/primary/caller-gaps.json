@@ -1,0 +1,31 @@
+{
+  "boundedSearchLimitations": [
+    {
+      "callerPaths": [
+        "src/components/RequestModal/BookRequestModal.tsx"
+      ],
+      "callerUseStatus": "definition-only-or-single-reference",
+      "note": "Targeted search of the source group component file(s) at the exact PR tree; line refs include the exact key leaf. This is not a complete dynamic call graph.",
+      "sourceId": "components.RequestList.seriesMonitoring"
+    },
+    {
+      "callerPaths": [
+        "src/components/RequestModal/BookRequestModal.tsx"
+      ],
+      "callerUseStatus": "definition-only-or-single-reference",
+      "note": "Targeted search of the source group component file(s) at the exact PR tree; line refs include the exact key leaf. This is not a complete dynamic call graph.",
+      "sourceId": "components.RequestModal.Book.automaticEditionInfo"
+    },
+    {
+      "callerPaths": [
+        "src/components/RequestModal/BookRequestModal.tsx"
+      ],
+      "callerUseStatus": "definition-only-or-single-reference",
+      "note": "Targeted search of the source group component file(s) at the exact PR tree; line refs include the exact key leaf. This is not a complete dynamic call graph.",
+      "sourceId": "components.RequestModal.Book.noIsbnCandidates"
+    }
+  ],
+  "callerContextRows": 100,
+  "callerUseNotFound": [],
+  "note": "Caller refs are targeted source-group searches at the exact tree; they are not a complete dynamic call graph."
+}

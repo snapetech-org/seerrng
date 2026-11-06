@@ -1,0 +1,254 @@
+{
+  "exactHead": "58697945e3d3fb44c37d49db0cc0f88e3af110cc",
+  "exactTree": "e3076937fe10b4dd3821ea573e8e5e21601fce7d",
+  "holds": [],
+  "independentDifferencesAdded": [
+    {
+      "locale": "zh_Hans",
+      "new": {
+        "confidence": "moderate",
+        "kind": "refinement",
+        "locale": "zh_Hans",
+        "position": 2900,
+        "rationale": "The caller uses this as the requested-state label; a bare noun reads as “request.”",
+        "target": "已请求"
+      },
+      "position": 2900
+    },
+    {
+      "locale": "zh_Hant",
+      "new": {
+        "confidence": "moderate",
+        "kind": "refinement",
+        "locale": "zh_Hant",
+        "position": 2900,
+        "rationale": "The caller uses this as the requested-state label; use a completed/requested state rather than the bare noun.",
+        "target": "已提出請求"
+      },
+      "position": 2900
+    },
+    {
+      "locale": "ja",
+      "new": {
+        "confidence": "high",
+        "kind": "correction",
+        "locale": "ja",
+        "position": 2908,
+        "rationale": "The current makes LazyLibrarian the thing rejected; the source says the service rejected the submitted request.",
+        "target": "リクエストは送信されましたが、LazyLibrarian が処理中に拒否しました。"
+      },
+      "position": 2908
+    },
+    {
+      "locale": "zh_Hant",
+      "new": {
+        "confidence": "high",
+        "kind": "correction",
+        "locale": "zh_Hant",
+        "position": 2908,
+        "rationale": "The current omits that the request was submitted and leaves the rejected object unstated.",
+        "target": "請求已送出，但 LazyLibrarian 在處理時拒絕了該請求。"
+      },
+      "position": 2908
+    },
+    {
+      "locale": "zh_Hans",
+      "new": {
+        "confidence": "high",
+        "kind": "refinement",
+        "locale": "zh_Hans",
+        "position": 2912,
+        "rationale": "Remove the stray space before the full stop; the message otherwise matches the cancellation-error source.",
+        "target": "取消请求时出了点问题。"
+      },
+      "position": 2912
+    },
+    {
+      "locale": "zh_Hant",
+      "new": {
+        "confidence": "moderate",
+        "kind": "refinement",
+        "locale": "zh_Hant",
+        "position": 2912,
+        "rationale": "Use the standard Traditional Chinese form and remove the stray spacing; the source reports an error while canceling.",
+        "target": "取消請求時出了問題。"
+      },
+      "position": 2912
+    },
+    {
+      "locale": "es",
+      "new": {
+        "confidence": "moderate",
+        "kind": "refinement",
+        "locale": "es",
+        "position": 2914,
+        "rationale": "Make the missing service configuration explicit in natural Spanish and preserve magazine request unavailability.",
+        "target": "No hay ningún servicio de LazyLibrarian configurado. Las solicitudes de revistas no están disponibles."
+      },
+      "position": 2914
+    },
+    {
+      "locale": "ja",
+      "new": {
+        "confidence": "high",
+        "kind": "refinement",
+        "locale": "ja",
+        "position": 2914,
+        "rationale": "Normalize Japanese spacing around punctuation. The current already identifies magazine requests as unavailable; the independent reviewer overstated that scope as missing.",
+        "target": "LazyLibrarian サービスが設定されていません。雑誌のリクエストは利用できません。"
+      },
+      "position": 2914
+    },
+    {
+      "locale": "vi",
+      "new": {
+        "confidence": "moderate",
+        "kind": "refinement",
+        "locale": "vi",
+        "position": 2917,
+        "rationale": "Use a natural pending-state label rather than the literal “magazine request waiting.”",
+        "target": "Yêu cầu tạp chí đang chờ xử lý"
+      },
+      "position": 2917
+    },
+    {
+      "locale": "fr",
+      "new": {
+        "confidence": "moderate",
+        "kind": "refinement",
+        "locale": "fr",
+        "position": 2923,
+        "rationale": "Avoid assigning masculine agreement to a title placeholder; the source reports that its request succeeded.",
+        "target": "Demande pour <strong>{title}</strong> envoyée avec succès !"
+      },
+      "position": 2923
+    },
+    {
+      "locale": "pt_BR",
+      "new": {
+        "confidence": "moderate",
+        "kind": "refinement",
+        "locale": "pt_BR",
+        "position": 2923,
+        "rationale": "Use a natural gender-neutral success message for a magazine title placeholder.",
+        "target": "Solicitação para <strong>{title}</strong> enviada com sucesso!"
+      },
+      "position": 2923
+    },
+    {
+      "locale": "zh_Hans",
+      "new": {
+        "confidence": "moderate",
+        "kind": "refinement",
+        "locale": "zh_Hans",
+        "position": 2924,
+        "rationale": "The caller uses this as the requested-state label; a bare noun reads as “request.”",
+        "target": "已请求"
+      },
+      "position": 2924
+    },
+    {
+      "locale": "zh_Hant",
+      "new": {
+        "confidence": "moderate",
+        "kind": "refinement",
+        "locale": "zh_Hant",
+        "position": 2924,
+        "rationale": "The caller uses this as the requested-state label; use a completed/requested state rather than the bare noun.",
+        "target": "已提出請求"
+      },
+      "position": 2924
+    },
+    {
+      "locale": "es",
+      "new": {
+        "confidence": "high",
+        "kind": "refinement",
+        "locale": "es",
+        "position": 2932,
+        "rationale": "Repair the feminine pronoun agreement with “la solicitud” while preserving the source event.",
+        "target": "La solicitud se envió, pero Lidarr la rechazó durante el procesamiento."
+      },
+      "position": 2932
+    },
+    {
+      "locale": "ja",
+      "new": {
+        "confidence": "high",
+        "kind": "correction",
+        "locale": "ja",
+        "position": 2932,
+        "rationale": "The current makes Lidarr the thing rejected; the source says Lidarr rejected the submitted request.",
+        "target": "リクエストは送信されましたが、Lidarr が処理中に拒否しました。"
+      },
+      "position": 2932
+    },
+    {
+      "locale": "zh_Hans",
+      "new": {
+        "confidence": "moderate",
+        "kind": "refinement",
+        "locale": "zh_Hans",
+        "position": 2932,
+        "rationale": "Preserve the meaning and use standard Chinese punctuation and spacing.",
+        "target": "请求已提交，但 Lidarr 在处理过程中拒绝了该请求。"
+      },
+      "position": 2932
+    }
+  ],
+  "nativeSpeakerApprovalClaimed": false,
+  "primaryCandidatesReplacedOrAdjusted": [
+    {
+      "locale": "zh_Hans",
+      "new": {
+        "confidence": "moderate",
+        "kind": "refinement",
+        "locale": "zh_Hans",
+        "position": 2918,
+        "rationale": "The caller uses this for an available-to-request status; this is more natural than “prepare to request.”",
+        "target": "可申请"
+      },
+      "old": {
+        "confidence": "moderate",
+        "kind": "refinement",
+        "locale": "zh_Hans",
+        "position": 2918,
+        "rationale": "Use a natural ready-to-request status.",
+        "target": "可供请求"
+      },
+      "position": 2918
+    },
+    {
+      "locale": "zh_Hant",
+      "new": {
+        "confidence": "moderate",
+        "kind": "refinement",
+        "locale": "zh_Hant",
+        "position": 2918,
+        "rationale": "Use a natural available-to-request status label.",
+        "target": "可提出請求"
+      },
+      "old": {
+        "confidence": "moderate",
+        "kind": "refinement",
+        "locale": "zh_Hant",
+        "position": 2918,
+        "rationale": "Use a natural ready-to-request status in Traditional Chinese.",
+        "target": "可供提出請求"
+      },
+      "position": 2918
+    }
+  ],
+  "proposalCountAfter": 257,
+  "proposalCountBefore": 241,
+  "pullRequest": 418,
+  "repository": "snapetech-org/SeerrNG",
+  "reviewDecisions": {
+    "accept": 454,
+    "correction": 105,
+    "refinement": 41
+  },
+  "reviewRows": 600,
+  "reviewer": "independent-machine-assisted-semantic-review",
+  "status": "All independent findings were reconciled. 16 previously unproposed findings were added and two existing Chinese status candidates were replaced with the independent reviewer’s more natural candidates."
+}

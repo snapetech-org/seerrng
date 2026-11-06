@@ -23,6 +23,40 @@ const messages = defineMessages('components.VisualLab', {
   solidPalette: 'Solid',
   gradientPalette: 'Gradient',
   metallicPalette: 'Metallic',
+  demoPageTitleSample: 'Page Title',
+  demoCardTitleSample: 'Card Title',
+  demoCardHeadingSample: 'Card Heading',
+  demoButtonTextSample: 'Button Text',
+  demoLight: 'Light',
+  demoNormal: 'Normal',
+  demoDark: 'Dark',
+  demoDimmed: 'Dimmed',
+  demoActive: 'Active',
+  demoHover: 'Hover',
+  demoFamilyTitle: '{family} Title',
+  demoFamilyPaletteButtons: '{family} Palette Buttons',
+  demoMetallicBackgroundBorder: 'Metallic Background & Border',
+  demoFamilyBorder: '{family} Border',
+  demoMetallicBorderBackground: 'Metallic Border & Background',
+  demoStyleName: '{family} {variant}',
+  demoPaletteName: '{shade} {color} Palette',
+  demoColorPaletteName: '{color} Palette',
+  demoShadeColorName: '{shade} {color}',
+  demoSteel: 'Steel',
+  demoChrome: 'Chrome',
+  demoLiquid: 'Liquid',
+  demoGray: 'Gray',
+  demoBlack: 'Black',
+  demoRed: 'Red',
+  demoOrange: 'Orange',
+  demoYellow: 'Yellow',
+  demoLime: 'Lime',
+  demoGreen: 'Green',
+  demoAqua: 'Aqua',
+  demoBlue: 'Blue',
+  demoPurple: 'Purple',
+  demoPlum: 'Plum',
+  demoPink: 'Pink',
 });
 
 const formatTreatmentLabel = (treatmentClass: string) =>
@@ -332,6 +366,197 @@ const withPaletteFilterControls = (
     <button class="app-button button-md visual-lab-filter-button" type="button" data-palette-filter="metalic" aria-pressed="false">${escapeHtml(labels.metallicPalette)}</button>
   </nav>`
   );
+
+type VisualLabMessageKey = keyof typeof messages;
+type VisualLabFormatter = (
+  key: VisualLabMessageKey,
+  values?: Record<string, string>
+) => string;
+
+const sourceStyleName = (className: string) =>
+  className
+    .split('-')
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
+
+const styleMessageKeys: Record<string, VisualLabMessageKey> = {
+  solid: 'solidPalette',
+  gradiant: 'gradientPalette',
+  gradient: 'gradientPalette',
+  metalic: 'metallicPalette',
+  metallic: 'metallicPalette',
+  steel: 'demoSteel',
+  chrome: 'demoChrome',
+  liquid: 'demoLiquid',
+  gray: 'demoGray',
+  black: 'demoBlack',
+  red: 'demoRed',
+  orange: 'demoOrange',
+  yellow: 'demoYellow',
+  lime: 'demoLime',
+  green: 'demoGreen',
+  aqua: 'demoAqua',
+  blue: 'demoBlue',
+  purple: 'demoPurple',
+  plum: 'demoPlum',
+  pink: 'demoPink',
+};
+
+const translatedStyleName = (className: string, format: VisualLabFormatter) => {
+  const [familyToken, ...variantTokens] = className.split('-');
+  const familyKey = styleMessageKeys[familyToken];
+  const family = familyKey ? format(familyKey) : familyToken;
+  const shadeToken = variantTokens[0];
+  const colorToken = variantTokens[1];
+  const colorKey = colorToken ? styleMessageKeys[colorToken] : undefined;
+  let variant = variantTokens
+    .map((token) => {
+      const key = styleMessageKeys[token];
+      return key ? format(key) : token;
+    })
+    .join(' ');
+
+  if (
+    colorKey &&
+    (shadeToken === 'light' || shadeToken === 'dark') &&
+    variantTokens.length === 2
+  ) {
+    variant = format('demoShadeColorName', {
+      shade: format(shadeToken === 'light' ? 'demoLight' : 'demoDark'),
+      color: format(colorKey),
+    });
+  }
+
+  return format('demoStyleName', { family, variant });
+};
+
+const translatedPaletteName = (
+  className: string,
+  format: VisualLabFormatter
+) => {
+  const [shadeToken, colorToken] = className.split('-');
+  const colorKey = styleMessageKeys[colorToken ?? shadeToken];
+  const color = colorKey ? format(colorKey) : (colorToken ?? shadeToken);
+
+  if (colorToken && (shadeToken === 'light' || shadeToken === 'dark')) {
+    return format('demoPaletteName', {
+      shade: format(shadeToken === 'light' ? 'demoLight' : 'demoDark'),
+      color,
+    });
+  }
+
+  return format('demoColorPaletteName', { color });
+};
+
+const withVisualLabCopy = (document: string, format: VisualLabFormatter) => {
+  const replacements = new Map<string, string>();
+  const add = (source: string, target: string) =>
+    replacements.set(source, target);
+  const family = (key: VisualLabMessageKey) => format(key);
+
+  for (const [source, key] of [
+    ['Palette treatment filter', 'paletteTreatmentFilter'],
+    ['All', 'allPalettes'],
+    ['Solid', 'solidPalette'],
+    ['Gradient', 'gradientPalette'],
+    ['Gradiant', 'gradientPalette'],
+    ['Metallic', 'metallicPalette'],
+    ['Metalic', 'metallicPalette'],
+    ['Page Title', 'demoPageTitleSample'],
+    ['Card Title', 'demoCardTitleSample'],
+    ['Card Heading', 'demoCardHeadingSample'],
+    ['Button Text', 'demoButtonTextSample'],
+    ['Light', 'demoLight'],
+    ['Normal', 'demoNormal'],
+    ['Dark', 'demoDark'],
+    ['Dimmed', 'demoDimmed'],
+    ['Active', 'demoActive'],
+    ['Hover', 'demoHover'],
+  ] as const) {
+    add(source, format(key));
+  }
+
+  for (const [source, familyKey] of [
+    ['Solid', 'solidPalette'],
+    ['Gradiant', 'gradientPalette'],
+    ['Metalic', 'metallicPalette'],
+  ] as const) {
+    const translatedFamily = family(familyKey);
+    add(
+      `${source} Title`,
+      format('demoFamilyTitle', { family: translatedFamily })
+    );
+    add(
+      `${source} Palette Buttons`,
+      format('demoFamilyPaletteButtons', { family: translatedFamily })
+    );
+    add(
+      `${source} Border`,
+      format('demoFamilyBorder', { family: translatedFamily })
+    );
+  }
+
+  add(
+    'Metalic Background &amp; Border',
+    format('demoMetallicBackgroundBorder')
+  );
+  add(
+    'Metalic Border &amp; Background',
+    format('demoMetallicBorderBackground')
+  );
+
+  const paletteClasses = titlePaletteClasses.flat();
+  const styleClasses = [
+    'solid-steel',
+    'solid-metalic-chrome',
+    'solid-liquid-chrome',
+    'gradiant-steel',
+    'gradiant-metalic-chrome',
+    'gradiant-liquid-chrome',
+    'metalic-steel',
+    'metalic-chrome',
+    'liquid-chrome',
+    ...['solid', 'gradiant', 'metalic'].flatMap((familyToken) =>
+      paletteClasses.map((color) => `${familyToken}-${color}`)
+    ),
+  ];
+
+  for (const className of styleClasses) {
+    add(sourceStyleName(className), translatedStyleName(className, format));
+  }
+  for (const className of paletteClasses) {
+    add(
+      `${sourceStyleName(className)} Palette`,
+      translatedPaletteName(className, format)
+    );
+  }
+
+  const scriptBlocks: string[] = [];
+  const markup = document.replace(/<script\b[\s\S]*?<\/script>/gi, (script) => {
+    scriptBlocks.push(script);
+    return `__VISUAL_LAB_SCRIPT_${scriptBlocks.length - 1}__`;
+  });
+  const localizedMarkup = markup
+    .replace(/>([^<>]*?)</g, (match, content: string) => {
+      const text = content.trim();
+      const replacement = replacements.get(text);
+      if (!replacement) return match;
+      const leading = content.match(/^\s*/)?.[0] ?? '';
+      const trailing = content.match(/\s*$/)?.[0] ?? '';
+      return `>${leading}${escapeHtml(replacement)}${trailing}<`;
+    })
+    .replace(/(\baria-label=")([^"]*)(")/g, (match, before, value, after) => {
+      const replacement = replacements.get(value);
+      return replacement
+        ? `${before}${escapeHtml(replacement)}${after}`
+        : match;
+    });
+
+  return localizedMarkup.replace(
+    /__VISUAL_LAB_SCRIPT_(\d+)__/g,
+    (_match, index) => scriptBlocks[Number(index)]
+  );
+};
 
 const withDocumentLocale = (document: string, locale: string) => {
   const language = locale.replace(/_/g, '-');
@@ -749,6 +974,8 @@ const VisualLab = ({ view = 'index' }: VisualLabProps) => {
   // alternate palette pages cannot accidentally omit the admin redirect.
   useRouteGuard(Permission.ADMIN);
   const intl = useIntl();
+  const format: VisualLabFormatter = (key, values) =>
+    intl.formatMessage(messages[key], values);
   const pageTitle =
     view === 'title-text'
       ? intl.formatMessage(messages.titleText)
@@ -758,14 +985,24 @@ const VisualLab = ({ view = 'index' }: VisualLabProps) => {
           ? intl.formatMessage(messages.buttons)
           : intl.formatMessage(messages.title);
   const labels = Object.fromEntries(
-    Object.entries(messages).map(([key, message]) => [
-      key,
-      intl.formatMessage(message),
-    ])
+    Object.entries(messages)
+      .filter(
+        ([key]) =>
+          ![
+            'demoFamilyTitle',
+            'demoFamilyPaletteButtons',
+            'demoFamilyBorder',
+            'demoStyleName',
+            'demoPaletteName',
+            'demoColorPaletteName',
+            'demoShadeColorName',
+          ].includes(key)
+      )
+      .map(([key, message]) => [key, intl.formatMessage(message)])
   ) as Record<string, string>;
   labels.locale = intl.locale.replace(/_/g, '-');
   labels.direction = labels.locale.startsWith('ar') ? 'rtl' : 'ltr';
-  const document =
+  const document = withVisualLabCopy(
     view === 'title-text'
       ? withDocumentLocale(
           withPaletteFilterControls(
@@ -790,7 +1027,9 @@ const VisualLab = ({ view = 'index' }: VisualLabProps) => {
               ),
               intl.locale
             )
-          : visualLabIndexDocument(labels);
+          : visualLabIndexDocument(labels),
+    format
+  );
 
   return (
     <>

@@ -76,6 +76,11 @@ describe('Discover Back navigation geometry', () => {
   beforeEach(() => {
     cy.viewport(1440, 900);
     cy.loginAsAdmin();
+    // This geometry fixture measures Orig poster-only rows. Persius adds a
+    // caption below each poster and is not governed by this row aspect ratio.
+    cy.request('POST', '/api/v1/user/1/settings/interface-theme', {
+      theme: 'seerrOrig',
+    });
     cy.mockConfiguredMediaAvailability({ booksEnabled: true });
   });
 

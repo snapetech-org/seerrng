@@ -1,0 +1,23 @@
+{
+  "baseApiSha": "fa40534ccced75bde1125c14760514fcd5d7de4d",
+  "liveMainBeforeSha": "016bcf8db7475b2105b9b488ff67ed7d1c096508",
+  "liveMainAfterSha": "016bcf8db7475b2105b9b488ff67ed7d1c096508",
+  "liveMainBeforeTree": "be45de2c5ffc98098adcdc362b491717c05a48c2",
+  "liveMainAfterTree": "be45de2c5ffc98098adcdc362b491717c05a48c2",
+  "status": "ahead",
+  "aheadBy": 1,
+  "behindBy": 0,
+  "totalCommits": 1,
+  "files": [
+    {
+      "path": "docs/maintainers/github-free-organization-migration.md",
+      "status": "modified",
+      "additions": 13,
+      "deletions": 12,
+      "changes": 25
+    }
+  ],
+  "localizationOrCatalogChanges": false,
+  "attestedBeforeUtc": "2026-11-05 00:34:08 UTC",
+  "attestedAfterUtc": "2026-11-05 00:34:14 UTC"
+}

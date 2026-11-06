@@ -41,7 +41,7 @@ const ResetPassword = () => {
   return (
     <div className="relative flex min-h-screen flex-col bg-gray-900 py-14">
       <PageTitle title={intl.formatMessage(messages.passwordreset)} />
-      <div className="absolute top-4 right-4 z-50">
+      <div className="absolute end-4 top-4 z-50">
         <LanguagePicker />
       </div>
       <div className="relative z-40 mt-10 flex flex-col items-center px-4 sm:mx-auto sm:w-full sm:max-w-md">

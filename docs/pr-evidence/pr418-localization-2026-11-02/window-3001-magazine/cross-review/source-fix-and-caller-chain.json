@@ -1,0 +1,236 @@
+{
+  "allowedRequestsEnglish": {
+    "contextLines": [
+      {
+        "line": 23,
+        "text": "  allowedRequests:"
+      },
+      {
+        "line": 24,
+        "text": "    'You are allowed to request <strong>{limit}</strong> {type}{days, plural, =0 {} one { every day} other { every <strong>{days}</strong> days}}.',"
+      },
+      {
+        "line": 25,
+        "text": "  allowedRequestsUser:"
+      }
+    ],
+    "contextStartLine": 23,
+    "fileSha256": "7d565ede2570c1e4d899bb76d7be990824be6be422a9c1ea1be4592cd46d03dc",
+    "gitBlob": "fa059f7cfa5174ee6b215de11667cb2f3ea0a52c",
+    "line": 24,
+    "lineSha256": "b268f5997052b6ab345f5c0cfd05413c451339391d6c30d9d1caef9e710d4005",
+    "lineText": "    'You are allowed to request <strong>{limit}</strong> {type}{days, plural, =0 {} one { every day} other { every <strong>{days}</strong> days}}.',",
+    "path": "src/components/RequestModal/QuotaDisplay/index.tsx"
+  },
+  "collapsedMagazineUnitBranch": {
+    "contextLines": [
+      {
+        "line": 115,
+        "text": "                              ? messages.comic"
+      },
+      {
+        "line": 116,
+        "text": "                              : mediaType === 'magazine'"
+      },
+      {
+        "line": 117,
+        "text": "                                ? messages.magazine"
+      },
+      {
+        "line": 118,
+        "text": "                                : mediaType === 'adult'"
+      },
+      {
+        "line": 119,
+        "text": "                                  ? messages.adult"
+      }
+    ],
+    "contextStartLine": 115,
+    "fileSha256": "7d565ede2570c1e4d899bb76d7be990824be6be422a9c1ea1be4592cd46d03dc",
+    "gitBlob": "fa059f7cfa5174ee6b215de11667cb2f3ea0a52c",
+    "line": 117,
+    "lineSha256": "40f479e99ee6e0008a81a4a49cdff9ba9ee6495ae8f7d16b31c5a0f9e738edf8",
+    "lineText": "                                ? messages.magazine",
+    "path": "src/components/RequestModal/QuotaDisplay/index.tsx"
+  },
+  "commit": "a1d39112a4e378a38640dc183e820c646b49665a",
+  "englishLocaleSourcePin": {
+    "fileSha256": "75ff3c90b52aedd636a506281ffbd6fb2d3739c61294b6008a517f17647e2316",
+    "gitBlob": "12e04a118c30b71b3714291adeaf9fdb2735cee4",
+    "line": 3003,
+    "lineSha256": "ae3f6340488129b3713bd45a9fb540dd9bd78a58bb3d9e5bcfcae6cb3f63b540",
+    "lineText": "  \"components.RequestModal.QuotaDisplay.magazinelimit\": \"{limit, plural, one {magazine} other {magazines}}\",",
+    "path": "src/i18n/locale/en.json",
+    "value": "{limit, plural, one {magazine} other {magazines}}",
+    "valueSha256": "b08a7c535a86ed183888e6080ad623187f9dbe0a7346ae15d60dd2654570d98b"
+  },
+  "formatterArgumentBinding": {
+    "contextLines": [
+      {
+        "line": 171,
+        "text": "                                ? messages.adultlimit"
+      },
+      {
+        "line": 172,
+        "text": "                                : messages.seasonlimit,"
+      },
+      {
+        "line": 173,
+        "text": "                  { limit: quota?.limit }"
+      },
+      {
+        "line": 174,
+        "text": "                ),"
+      },
+      {
+        "line": 175,
+        "text": "                strong: (msg: React.ReactNode) => <strong>{msg}</strong>,"
+      }
+    ],
+    "contextStartLine": 171,
+    "fileSha256": "7d565ede2570c1e4d899bb76d7be990824be6be422a9c1ea1be4592cd46d03dc",
+    "gitBlob": "fa059f7cfa5174ee6b215de11667cb2f3ea0a52c",
+    "line": 173,
+    "lineSha256": "d0f517985d43f7cd774da7bd47ec286500332f02707f0421846c0c86b5773cbf",
+    "lineText": "                  { limit: quota?.limit }",
+    "path": "src/components/RequestModal/QuotaDisplay/index.tsx"
+  },
+  "formatterBranch": {
+    "contextLines": [
+      {
+        "line": 164,
+        "text": "                        : mediaType === 'comic'"
+      },
+      {
+        "line": 165,
+        "text": "                          ? messages.comiclimit"
+      },
+      {
+        "line": 166,
+        "text": "                          : mediaType === 'magazine'"
+      },
+      {
+        "line": 167,
+        "text": "                            ? messages.magazinelimit"
+      },
+      {
+        "line": 168,
+        "text": "                            : mediaType === 'software'"
+      },
+      {
+        "line": 169,
+        "text": "                              ? messages.softwarelimit"
+      },
+      {
+        "line": 170,
+        "text": "                              : mediaType === 'adult'"
+      }
+    ],
+    "contextStartLine": 164,
+    "fileSha256": "7d565ede2570c1e4d899bb76d7be990824be6be422a9c1ea1be4592cd46d03dc",
+    "gitBlob": "fa059f7cfa5174ee6b215de11667cb2f3ea0a52c",
+    "line": 167,
+    "lineSha256": "10d561ab2b00517940aac9b2135138b3ec10b3470ccb94a063f476781eaf4432",
+    "lineText": "                            ? messages.magazinelimit",
+    "path": "src/components/RequestModal/QuotaDisplay/index.tsx"
+  },
+  "independentConclusion": "New branch selects messages.magazinelimit only when mediaType is magazine; the adjacent default remains seasonlimit for TV/series cases. This fixes the identified magazine details fall-through.",
+  "interveningCommits": [
+    {
+      "commit": "d3e97a0442420b66b0bf7f2cbaecc50423615e44",
+      "subject": "[skip ci] fix(i18n): apply SeerrNG W3000-W3099 review"
+    },
+    {
+      "commit": "a1d39112a4e378a38640dc183e820c646b49665a",
+      "subject": "[skip ci] fix(i18n): map magazine quota limit label"
+    }
+  ],
+  "localePathsChangedBySourceFix": [],
+  "localePathsChangedSincePriorHoldHead": [
+    "src/i18n/locale/ar.json",
+    "src/i18n/locale/de.json",
+    "src/i18n/locale/es.json",
+    "src/i18n/locale/fr.json",
+    "src/i18n/locale/hi.json",
+    "src/i18n/locale/id.json",
+    "src/i18n/locale/ja.json",
+    "src/i18n/locale/ko.json",
+    "src/i18n/locale/pt_BR.json",
+    "src/i18n/locale/vi.json",
+    "src/i18n/locale/zh_Hans.json",
+    "src/i18n/locale/zh_Hant.json"
+  ],
+  "newProductionMessageKeyReferenceCount": 1,
+  "newProductionMessageKeyReferenceLine": 167,
+  "oldHead": "5df4c711f832f1f9a818c4d9cfca46661bff0835",
+  "oldMessagesMagazineLimitReferenceAbsentAt5df": true,
+  "oldMessagesMagazineLimitReferenceCountAt5df": 0,
+  "oldTree": "116ff2934d7eaf3d02f84f104621860c16babc01",
+  "parent": "d3e97a0442420b66b0bf7f2cbaecc50423615e44",
+  "path": "src/components/RequestModal/QuotaDisplay/index.tsx",
+  "pluralArgument": "limit",
+  "pluralSelectors": [
+    "one",
+    "other"
+  ],
+  "sourceDefinition": {
+    "contextLines": [
+      {
+        "line": 15,
+        "text": "  booklimit: '{limit, plural, one {book} other {books}}',"
+      },
+      {
+        "line": 16,
+        "text": "  comiclimit: '{limit, plural, one {comic} other {comics}}',"
+      },
+      {
+        "line": 17,
+        "text": "  magazinelimit: '{limit, plural, one {magazine} other {magazines}}',"
+      },
+      {
+        "line": 18,
+        "text": "  adultlimit: '{limit, plural, one {adult scene} other {adult scenes}}',"
+      },
+      {
+        "line": 19,
+        "text": "  softwarelimit:"
+      }
+    ],
+    "contextStartLine": 15,
+    "fileSha256": "7d565ede2570c1e4d899bb76d7be990824be6be422a9c1ea1be4592cd46d03dc",
+    "gitBlob": "fa059f7cfa5174ee6b215de11667cb2f3ea0a52c",
+    "line": 17,
+    "lineSha256": "cc686e41e64a9d9f961867c984a7cc8ad58c06565059b248c1b9046067dbf765",
+    "lineText": "  magazinelimit: '{limit, plural, one {magazine} other {magazines}}',",
+    "path": "src/components/RequestModal/QuotaDisplay/index.tsx"
+  },
+  "sourceFixCommitChangedPaths": [
+    "src/components/RequestModal/QuotaDisplay/index.tsx"
+  ],
+  "sourceId": "components.RequestModal.QuotaDisplay.magazinelimit",
+  "sourceString": "{limit, plural, one {magazine} other {magazines}}",
+  "surroundingDaysExactZeroSelector": {
+    "contextLines": [
+      {
+        "line": 23,
+        "text": "  allowedRequests:"
+      },
+      {
+        "line": 24,
+        "text": "    'You are allowed to request <strong>{limit}</strong> {type}{days, plural, =0 {} one { every day} other { every <strong>{days}</strong> days}}.',"
+      },
+      {
+        "line": 25,
+        "text": "  allowedRequestsUser:"
+      }
+    ],
+    "contextStartLine": 23,
+    "fileSha256": "7d565ede2570c1e4d899bb76d7be990824be6be422a9c1ea1be4592cd46d03dc",
+    "gitBlob": "fa059f7cfa5174ee6b215de11667cb2f3ea0a52c",
+    "line": 24,
+    "lineSha256": "b268f5997052b6ab345f5c0cfd05413c451339391d6c30d9d1caef9e710d4005",
+    "lineText": "    'You are allowed to request <strong>{limit}</strong> {type}{days, plural, =0 {} one { every day} other { every <strong>{days}</strong> days}}.',",
+    "path": "src/components/RequestModal/QuotaDisplay/index.tsx"
+  },
+  "tree": "fa084f89e9ae90ca196a7201b91882a1fd9f9710"
+}

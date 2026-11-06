@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "reviewHead": "18001c2d09d5d271bd4fe2ad22189c29d069a457",
+  "reviewTree": "7a9f3218d79501fb620329f0e53c1a0b3dd44508",
+  "sourceId": "components.Setup.configureservices",
+  "source": "Connect Services",
+  "sourceSha256": "0479b0d72d394280859ac2b8c67e9e0379fe087696b399caa54676f65ebd265e",
+  "caller": "src/components/Setup/index.tsx → SetupSteps Step 5",
+  "priorSpanishTarget": "Configurar servicios",
+  "priorSpanishTargetSha256": "3d5dc458ffe98f2676207ca11281fe668e5b12436a708a20ba6b518cacc17a12",
+  "crossReviewedCandidate": "Conectar servicios",
+  "crossReviewedCandidateSha256": "4dfc6f3f90c278f3f2508881ed323b59179c7b93eb1b768607befd1117371cfc",
+  "finalSpanishTarget": "Conectar",
+  "finalSpanishTargetSha256": "3b0b0fdfe2e3a691cd74f988612c6997feab43bb1fadd343a0616ef885349b3c",
+  "rootDisposition": "refine after rendered-width review",
+  "independentReview": "Conectar preserves the action and matches surrounding infinitive step labels; the service-connections content supplies the object. Approximate Noto Sans width is 60.4 px at 14 px medium weight, while full “Conectar servicios” is about 122 px. Inter Variable is not installed in the review environment, so browser capture is the final fit check.",
+  "semanticTradeoff": "“Services” is implicit in the step context; this preserves the connect action and avoids clipped text.",
+  "nativeSpeakerReviewRequired": true
+}

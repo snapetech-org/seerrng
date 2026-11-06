@@ -1,0 +1,64 @@
+{
+  "schemaVersion": 1,
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "liveHead": "422072d585074bdd7f8dd3046cbacede69203d6d",
+  "liveTree": "c7f3bffb628464e98188f3c8f8c4950d6038cee6",
+  "appSourceCommit": "affd7a87860e3613d5c6842c20eb0b45f3bd062f",
+  "appSourceTree": "2471ca52d8b94504879e5842e8ffae920a22e180",
+  "window": {
+    "batchStart": 650,
+    "batchStopExclusive": 700,
+    "batchCount": 50,
+    "cellCount": 1600
+  },
+  "selectedBatches": [
+    "existing-es-client-0054",
+    "existing-es-client-0103"
+  ],
+  "decisionCounts": {
+    "keep": 1311,
+    "correct": 283,
+    "uncertain": 6
+  },
+  "validation": {
+    "strictRunnerValidated": 49,
+    "manualExceptionValidated": 1,
+    "strictRunnerExhaustedBatches": 1,
+    "unresolvedBatchesAfterManualValidation": 0
+  },
+  "sourceContextCoverage": {
+    "candidateAndHeldIds": 289,
+    "withExactSourceLiteralCallsite": 289,
+    "withoutExactSourceLiteralCallsite": 0,
+    "callsiteRows": 949
+  },
+  "exactHeadAttestation": {
+    "selectedSourceRowsChecked": 1600,
+    "selectedSourceMismatchRows": [],
+    "selectedTargetRowsChecked": 1600,
+    "selectedTargetMismatchRows": [],
+    "sourceContextIdsChecked": 289,
+    "sourceContextIdsMissingExactCallsites": [],
+    "callerPathsChecked": 186,
+    "callerBlobMismatches": [],
+    "callerLineContextsChecked": 949
+  },
+  "manualException": {
+    "batch": "existing-es-client-0094",
+    "cellId": "components.RequestModal.QuotaDisplay.quotaLinkUser",
+    "path": "manual-exception-0094.json",
+    "strictRunnerValidation": "exhausted after four attempts on protected inline HTML tag boundary check"
+  },
+  "modelOutputCounts": {
+    "requests": 61,
+    "responses": 61,
+    "strictResults": 49,
+    "errors": 12,
+    "attemptsThisInvocation": 61
+  },
+  "nativeSpeakerApproval": false,
+  "targetsApplied": false,
+  "testsBuildsScansCiRun": false,
+  "rootCrossReview": "pending"
+}

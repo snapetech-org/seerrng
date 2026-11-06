@@ -1,0 +1,243 @@
+{
+  "task": "SeerrNG PR #418 strict-blind independent review W3180-3199",
+  "reviewer_role": "independent blind reviewer",
+  "repository": "snapetech-org/SeerrNG",
+  "pr": 418,
+  "state": "OPEN",
+  "isDraft": true,
+  "head": "c03816972aab761a69b343abcdfe8a10f85aeabb",
+  "tree": "1ffc02d5d7dbbb14ab4706ce61bfcfda64592a01",
+  "branch": "codex/seerrng-localization-overhaul-20261028",
+  "source_order": "JSON insertion order of client keys in config/i18n/source-snapshot.json",
+  "window": [
+    3180,
+    3199
+  ],
+  "source_ids": [
+    {
+      "ordinal": 3180,
+      "id": "components.RequestStatus.SoftwareRequests.cancelRetry",
+      "source": "Cancel",
+      "source_sha256": "19766ed6ccb2f4a32778eed80d1928d2c87a18d7c275ccb163ec6709d3eb2e27",
+      "source_snapshot_fingerprint": "19766ed6ccb2f4a32778eed80d1928d2c87a18d7c275ccb163ec6709d3eb2e27"
+    },
+    {
+      "ordinal": 3181,
+      "id": "components.RequestStatus.SoftwareRequests.cancelled",
+      "source": "Cancelled",
+      "source_sha256": "d353a99eb4556847ceeb3c306ac886cf6b4fa13043eb1864b9aeb0607fd5f2cc",
+      "source_snapshot_fingerprint": "d353a99eb4556847ceeb3c306ac886cf6b4fa13043eb1864b9aeb0607fd5f2cc"
+    },
+    {
+      "ordinal": 3182,
+      "id": "components.RequestStatus.SoftwareRequests.clearCancelled",
+      "source": "Clear cancelled request",
+      "source_sha256": "823440944824187c9e93c9172d8cad4811283a09d6452ee0b306ed9fcee654e1",
+      "source_snapshot_fingerprint": "823440944824187c9e93c9172d8cad4811283a09d6452ee0b306ed9fcee654e1"
+    },
+    {
+      "ordinal": 3183,
+      "id": "components.RequestStatus.SoftwareRequests.clearCancelledDescription",
+      "source": "This removes the cancelled request and its saved status history from Seerr. It does not delete installed software.",
+      "source_sha256": "b93e445535362cb78ba1c97559e2d4c2e5133bb1fc92593a83c3aba294a2e799",
+      "source_snapshot_fingerprint": "b93e445535362cb78ba1c97559e2d4c2e5133bb1fc92593a83c3aba294a2e799"
+    },
+    {
+      "ordinal": 3184,
+      "id": "components.RequestStatus.SoftwareRequests.clearCancelledTitle",
+      "source": "Clear This Cancelled Request?",
+      "source_sha256": "da2b8003321fe644fbabc88142e9a8b451b02921396f7ce45dc6a3f53a636646",
+      "source_snapshot_fingerprint": "da2b8003321fe644fbabc88142e9a8b451b02921396f7ce45dc6a3f53a636646"
+    },
+    {
+      "ordinal": 3185,
+      "id": "components.RequestStatus.SoftwareRequests.clearFailed",
+      "source": "Unable to clear this cancelled request.",
+      "source_sha256": "1793a250bdb8f13b0f2ec0df53e9a8bb305b85b05d57540e6dcfa13e7e36c51d",
+      "source_snapshot_fingerprint": "1793a250bdb8f13b0f2ec0df53e9a8bb305b85b05d57540e6dcfa13e7e36c51d"
+    },
+    {
+      "ordinal": 3186,
+      "id": "components.RequestStatus.SoftwareRequests.clearSuccess",
+      "source": "Cancelled request cleared.",
+      "source_sha256": "cea8d6ea0a9ba4edb2b2cd55fbdefb144372ea4588979d66ba6f24492ba8ac34",
+      "source_snapshot_fingerprint": "cea8d6ea0a9ba4edb2b2cd55fbdefb144372ea4588979d66ba6f24492ba8ac34"
+    },
+    {
+      "ordinal": 3187,
+      "id": "components.RequestStatus.SoftwareRequests.confirmAfterCheck",
+      "source": "I checked; continue",
+      "source_sha256": "058463a35981ec657fcf6ebe82e2df8e556016af4f98bf5abac29721c387e4bf",
+      "source_snapshot_fingerprint": "058463a35981ec657fcf6ebe82e2df8e556016af4f98bf5abac29721c387e4bf"
+    },
+    {
+      "ordinal": 3188,
+      "id": "components.RequestStatus.SoftwareRequests.datPartlyVerified",
+      "source": "{verified} of {total} DAT Verified",
+      "source_sha256": "0a911c38403869b2cdebf8e924050081757f188bb3b205ff9b83abc96c1d1914",
+      "source_snapshot_fingerprint": "0a911c38403869b2cdebf8e924050081757f188bb3b205ff9b83abc96c1d1914"
+    },
+    {
+      "ordinal": 3189,
+      "id": "components.RequestStatus.SoftwareRequests.datVerified",
+      "source": "DAT Verified",
+      "source_sha256": "1bdd129852cf9e77a69de51a9794b34c97ad53555fa9ea937641f4603c84114d",
+      "source_snapshot_fingerprint": "1bdd129852cf9e77a69de51a9794b34c97ad53555fa9ea937641f4603c84114d"
+    },
+    {
+      "ordinal": 3190,
+      "id": "components.RequestStatus.SoftwareRequests.decline",
+      "source": "Decline",
+      "source_sha256": "a2d285b352873457207a34a015267524bb4613c3e8c961c8998da4e08e0d5745",
+      "source_snapshot_fingerprint": "a2d285b352873457207a34a015267524bb4613c3e8c961c8998da4e08e0d5745"
+    },
+    {
+      "ordinal": 3191,
+      "id": "components.RequestStatus.SoftwareRequests.declined",
+      "source": "Declined",
+      "source_sha256": "dce083a2c47ffdc44982315487afb6e121e96cef2df6dc1ec11bac7ab5052142",
+      "source_snapshot_fingerprint": "dce083a2c47ffdc44982315487afb6e121e96cef2df6dc1ec11bac7ab5052142"
+    },
+    {
+      "ordinal": 3192,
+      "id": "components.RequestStatus.SoftwareRequests.downloadAllCopies",
+      "source": "Download all files",
+      "source_sha256": "21bcf9c7d4f1b5eee85f8beea6f1fc5e384c7eb8e9e22c2b6df0a45af58a8eb9",
+      "source_snapshot_fingerprint": "21bcf9c7d4f1b5eee85f8beea6f1fc5e384c7eb8e9e22c2b6df0a45af58a8eb9"
+    },
+    {
+      "ordinal": 3193,
+      "id": "components.RequestStatus.SoftwareRequests.downloadCopies",
+      "source": "Download copies",
+      "source_sha256": "900ba9bd447fcc05ff86bd23a4a5b64f5c3590c676ad1ece17b65fc4e9a675a4",
+      "source_snapshot_fingerprint": "900ba9bd447fcc05ff86bd23a4a5b64f5c3590c676ad1ece17b65fc4e9a675a4"
+    },
+    {
+      "ordinal": 3194,
+      "id": "components.RequestStatus.SoftwareRequests.downloadCopy",
+      "source": "Download copy",
+      "source_sha256": "e35dde6db75b453468347bdf512602a543e1a90c8e11301166c62da4359447ec",
+      "source_snapshot_fingerprint": "e35dde6db75b453468347bdf512602a543e1a90c8e11301166c62da4359447ec"
+    },
+    {
+      "ordinal": 3195,
+      "id": "components.RequestStatus.SoftwareRequests.downloadNamed",
+      "source": "Download {name}",
+      "source_sha256": "c807156b8e24f0a378cd22e57f3bddcd25555680645c9f0636d3b59d5e4563c3",
+      "source_snapshot_fingerprint": "c807156b8e24f0a378cd22e57f3bddcd25555680645c9f0636d3b59d5e4563c3"
+    },
+    {
+      "ordinal": 3196,
+      "id": "components.RequestStatus.SoftwareRequests.downloading",
+      "source": "Downloading",
+      "source_sha256": "37b345555d7ea6c1724d28076ce47b956d202574c211fefa36afba778f335373",
+      "source_snapshot_fingerprint": "37b345555d7ea6c1724d28076ce47b956d202574c211fefa36afba778f335373"
+    },
+    {
+      "ordinal": 3197,
+      "id": "components.RequestStatus.SoftwareRequests.failed",
+      "source": "Failed",
+      "source_sha256": "031a8f0f659df890dfd53c92e45295b0f14c997185bae46e168831e403b273f7",
+      "source_snapshot_fingerprint": "031a8f0f659df890dfd53c92e45295b0f14c997185bae46e168831e403b273f7"
+    },
+    {
+      "ordinal": 3198,
+      "id": "components.RequestStatus.SoftwareRequests.failureCode",
+      "source": "Failure code: {code}",
+      "source_sha256": "227b4042e83602c5ed869441f118c70f8d373e473933545f14ff40d0c1c647dd",
+      "source_snapshot_fingerprint": "227b4042e83602c5ed869441f118c70f8d373e473933545f14ff40d0c1c647dd"
+    },
+    {
+      "ordinal": 3199,
+      "id": "components.RequestStatus.SoftwareRequests.game",
+      "source": "PC Game",
+      "source_sha256": "bab750cf4dc3f6a154a1823249920711421f28672bf6c7504fe49a35dbd7db1a",
+      "source_snapshot_fingerprint": "bab750cf4dc3f6a154a1823249920711421f28672bf6c7504fe49a35dbd7db1a"
+    }
+  ],
+  "locale_order": [
+    "es",
+    "zh_Hans",
+    "hi",
+    "de",
+    "ja",
+    "fr",
+    "pt_BR",
+    "ar",
+    "ko",
+    "zh_Hant",
+    "vi",
+    "id"
+  ],
+  "cell_count": 240,
+  "decision_counts": {
+    "accept-current": 155,
+    "correction": 60,
+    "refinement": 24,
+    "hold": 1
+  },
+  "catalog_key_counts": {
+    "es": 9494,
+    "zh_Hans": 9494,
+    "hi": 9494,
+    "de": 9494,
+    "ja": 9494,
+    "fr": 9494,
+    "pt_BR": 9494,
+    "ar": 9494,
+    "ko": 9494,
+    "zh_Hant": 9494,
+    "vi": 9494,
+    "id": 9494
+  },
+  "ordered_key_parity_with_english": {
+    "es": true,
+    "zh_Hans": false,
+    "hi": true,
+    "de": true,
+    "ja": false,
+    "fr": true,
+    "pt_BR": true,
+    "ar": true,
+    "ko": false,
+    "zh_Hant": false,
+    "vi": false,
+    "id": true
+  },
+  "source_snapshot_sha256": "5c257941ea31099c324ac719a87f533b6e84b795ec8d8e3f7774981bf091a006",
+  "caller_file": "src/components/RequestStatus/SoftwareRequests.tsx",
+  "caller_file_sha256": "50752a4099e6067a95a9278612bcb92e487de9fe6a6acbb8d05d64c7ba223a54",
+  "caller_ranges": {
+    "message_definitions": "28-90",
+    "DAT_badge": "191-217",
+    "download_copy_actions": "219-294",
+    "clear_cancelled_flow": "409-426,563-568",
+    "dynamic_status_and_group": "514-518,610-616",
+    "failure_code": "664-665,924-925",
+    "decline_action": "737-738"
+  },
+  "method_note": "No PR body, primary proposals, or prior review packets were read. Review used only this exact source snapshot, current direct locale catalogs, and current caller code.",
+  "approval_note": "Machine-assisted independent linguistic review only; no native-speaker approval is claimed.",
+  "live_state_rechecked_before_seal": {
+    "state": "OPEN",
+    "isDraft": true,
+    "head": "c03816972aab761a69b343abcdfe8a10f85aeabb",
+    "branch": "codex/seerrng-localization-overhaul-20261028",
+    "tree": "1ffc02d5d7dbbb14ab4706ce61bfcfda64592a01"
+  },
+  "catalog_key_set_parity_with_english": {
+    "es": true,
+    "zh_Hans": true,
+    "hi": true,
+    "de": true,
+    "ja": true,
+    "fr": true,
+    "pt_BR": true,
+    "ar": true,
+    "ko": true,
+    "zh_Hant": true,
+    "vi": true,
+    "id": true
+  },
+  "blind_seal_note": "Decision ledger was checksummed before any comparison with another reviewer; PR body and all prior review packets remained unread."
+}

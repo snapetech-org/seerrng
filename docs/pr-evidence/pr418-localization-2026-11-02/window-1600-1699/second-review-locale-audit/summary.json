@@ -1,0 +1,71 @@
+{
+  "additionalFindings": [
+    {
+      "finalTargetHash": "07a7ce27c8e6d0d6b9cfd1f5aead54caeb0363205b04224dcbf8a969e6b94c74",
+      "locale": "ko",
+      "sourceId": "components.IssueDiscussion.saved",
+      "sourcePosition": 1626
+    },
+    {
+      "finalTargetHash": "f2056f68e3d1b068a3e34023072f891fa57c0377659c928e8e2a700700283ffc",
+      "locale": "ja",
+      "sourceId": "components.IssueList.FocusedIssue.unavailable",
+      "sourcePosition": 1629
+    }
+  ],
+  "auditCounts": {
+    "accepted-current": 403,
+    "accepted-primary-candidate": 95,
+    "additional-correction": 2
+  },
+  "callerEvidence": {
+    "definitionOnlyKeys": [
+      "components.IssueDetails.IssueMediaSummary.minutes",
+      "components.IssueList.IssueItem.openarr"
+    ],
+    "directRenderingClaimForDefinitionOnlyKeys": false,
+    "pinnedSourceIds": 100,
+    "uniqueCallerFiles": 6
+  },
+  "currentCellsReattested": 500,
+  "frozenSpanishDispositionRowsInSubset": 0,
+  "head": "5aceef6ed6e865ee89383738212d1ce1a5c1f552",
+  "isDraft": true,
+  "manageLabelsReattested": 5,
+  "markupMismatches": 0,
+  "nativeSpeakerApproval": false,
+  "placeholderMismatches": 0,
+  "primaryCandidatesAccepted": 95,
+  "primaryCountsForSubset": {
+    "accept-current": 405,
+    "propose-correction": 82,
+    "propose-refinement": 13
+  },
+  "primaryPacket": "/mnt/disks/scratch/task-scratch/seerrng-pr418-window-1600-1699-primary-20261102",
+  "primaryPacketSha256ManifestVerified": true,
+  "priorSpanishDispositionHandling": "No assigned locale is Spanish; all ten Spanish frozen rows remain outside this subset and were not changed.",
+  "protectedLiteralMismatches": 0,
+  "pullRequest": 418,
+  "repository": "snapetech-org/seerrng",
+  "repositoryOrPrModified": false,
+  "schemaVersion": 1,
+  "scope": {
+    "cells": 500,
+    "locales": [
+      "hi",
+      "ja",
+      "ko",
+      "zh_Hans",
+      "zh_Hant"
+    ],
+    "positions": [
+      1600,
+      1699
+    ],
+    "sourceIds": 100
+  },
+  "state": "OPEN",
+  "task": "Independent SeerrNG PR #418 W1600–1699 locale audit subset",
+  "testsBuildsScansCiBrowserWorkflowsReleasesTagsMerges": false,
+  "tree": "dd6e3495c44c2c14acf8a7a4b09a21e935ceb16d"
+}

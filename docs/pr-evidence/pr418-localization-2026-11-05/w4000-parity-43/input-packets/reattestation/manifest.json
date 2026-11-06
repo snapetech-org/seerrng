@@ -1,0 +1,26 @@
+{
+  "artifact": "SeerrNG PR #418 parity current-head candidate reattestation",
+  "baseSha": "2647e15762de0c2285cd9d8ebc6d27ffafce6358",
+  "blindRows": 528,
+  "cells": 528,
+  "checksums": "SHA256SUMS.txt",
+  "currentHead": "f48afa55ce2abeb00ee8b2dc66fa6d2df8f62ba4",
+  "currentTree": "f7ea727b0383397ec8d6220667b4abe151d43b46",
+  "files": [
+    "README.md",
+    "blind-reattestation.jsonl",
+    "build_reattestation.py",
+    "manifest.json",
+    "primary-reattestation.jsonl",
+    "summary.json"
+  ],
+  "oldReviewHead": "77d30ae742aad7245e6e419237fca6a544531e1f",
+  "oldReviewTree": "2c6fe4a0c1c33aa56b01f06a70702f68598509a7",
+  "packetType": "review-reattestation",
+  "primaryRows": 528,
+  "proposalTextsExcluded": true,
+  "pullRequest": 418,
+  "repository": "snapetech-org/seerrng",
+  "schemaVersion": 1,
+  "sourceIds": 44
+}

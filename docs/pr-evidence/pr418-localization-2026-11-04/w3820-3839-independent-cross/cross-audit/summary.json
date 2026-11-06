@@ -1,0 +1,66 @@
+{
+  "additionalCrossAuditHolds": [
+    {
+      "locale": "id",
+      "position": 3833,
+      "sourceId": "components.Settings.MylarModal.enableSearchHelp"
+    }
+  ],
+  "artifact": "SeerrNG PR #418 W3820-W3839 independent cross-audit",
+  "baseRef": "main",
+  "baseSha": "fa40534ccced75bde1125c14760514fcd5d7de4d",
+  "blindDecisionCounts": {
+    "accept": 232,
+    "hold": 8
+  },
+  "blindHoldCount": 8,
+  "blindHoldsRetained": 1,
+  "blindHoldsSupportedForCorrection": 7,
+  "callerContextsReconciled": 20,
+  "callerLineExcerptsReconciled": true,
+  "candidateFreeInputByteIdenticalToBlindCopy": true,
+  "cellCount": 240,
+  "crossDispositionCounts": {
+    "accept-current": 219,
+    "accept-primary-proposal": 19,
+    "hold-for-focused-review": 2
+  },
+  "currentTargetCellsMatchedToPinnedCatalogs": 240,
+  "englishSourceOrderRowsReconciled": 9494,
+  "head": "6c489a64782d31fee70a6aeef386c88527b33083",
+  "limitations": [
+    "Arabic terminology at W3828/ar remains held for qualified review.",
+    "Indonesian referent at W3833/id remains held for focused language review.",
+    "Translation review is not certified by native-speaker signoff."
+  ],
+  "localeCount": 12,
+  "nativeSpeakerSignoff": "not claimed",
+  "overallConfidence": "moderate",
+  "pinnedCatalogFilesVerified": 13,
+  "pinnedRuntimeFilesVerified": 4,
+  "placeholderMarkupNumericMismatches": {
+    "markupTags": 0,
+    "numericTokens": 0,
+    "placeholders": 0
+  },
+  "primaryDispositionCounts": {
+    "accept-current": 220,
+    "correction": 7,
+    "refinement": 13
+  },
+  "primaryProposalsAccepted": 19,
+  "protectedLiteralBaselineMismatches": 2,
+  "pullRequest": 418,
+  "range": [
+    3820,
+    3839
+  ],
+  "repository": "snapetech-org/SeerrNG",
+  "reviewedAtUtc": "2026-11-04T05:33:26Z",
+  "reviewedProtectedLiteralMismatches": 0,
+  "schemaVersion": 1,
+  "sourceCount": 20,
+  "sourceHeadAndTreeReproducedFromRemote": true,
+  "tree": "9bbf55986a34e9a2bc0c4027205927df65f8754b",
+  "window": "W3820-W3839"
+}

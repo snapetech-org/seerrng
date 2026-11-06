@@ -1,0 +1,174 @@
+{
+  "schemaVersion": 1,
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "head": "5a4342176a8325c371a35d489cb01c58283bc983",
+  "tree": "98cd64952123c9b678e38250e7819cabb4476448",
+  "semanticManifestSha256": "3ea74cc6491aecddf9ffcedc69610f13d20b199059aef69bb3c2407feb0826ea",
+  "cellPlanSha256": "97c3402252a34aaa4f8f9f44a691281d9c35ff7b80d7edb3a26c752436af6558",
+  "retiredCellsSha256": "dc5ec05547e4da3079c0668f82a52da7999d89ef9d4f037c1cd72af9347ebd83",
+  "sourceBundleManifestSha256": "212491482d1b9207fed755af6e80ac80a97184ec8dbe84d0c4ad2bd711acae0d",
+  "sourceRowsSha256": "ad91236a31e32f199ff449f9ed4597ea6af0f5a4eff32772cefa84278cafb68c",
+  "sourceCellsSha256": "8bfcd1aa9b5d5aba4fb6317c194cd544d601543ebf250899a84a719b52e468e1",
+  "planRows": 115260,
+  "actions": {
+    "semantic-review-required": 114783,
+    "reuse-equivalence-decision": 477
+  },
+  "retiredRows": 48,
+  "reusableEquivalenceCells": 477,
+  "targetsApplied": false,
+  "batchId": "existing-es-client-0054",
+  "batchSha256": "e8865e8e1b40f3c35b4ae21bed4312c5fa55a9ce2d0aafcaf3a7845121efbc90",
+  "rowCount": 32,
+  "model": "qwen3.8-27b-heretic:q4km",
+  "attempt": 1,
+  "decisions": [
+    {
+      "id": "components.IssueModal.CreateIssueModal.submitissue",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.IssueModal.CreateIssueModal.toastFailedCreate",
+      "verdict": "correct",
+      "target": "Algo salió mal al enviar la incidencia.",
+      "confidence": "high",
+      "reason": "The source uses 'went wrong' (salió mal), not 'was wrong' (fue mal). 'Algo fue mal' is a calque and less natural in Spanish UI contexts."
+    },
+    {
+      "id": "components.IssueModal.CreateIssueModal.toastSuccessCreate",
+      "verdict": "correct",
+      "target": "¡Incidencia de <strong>{title}</strong> enviada con éxito!",
+      "confidence": "high",
+      "reason": "The source says 'Issue report for [title]', implying the title is the subject of the report. 'Reportada por' implies the title is the reporter/author, which is semantically incorrect for a media item title."
+    },
+    {
+      "id": "components.IssueModal.CreateIssueModal.toastviewdetails",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.IssueModal.CreateIssueModal.ultraHd",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.IssueModal.CreateIssueModal.validationMessageLength",
+      "verdict": "correct",
+      "target": "La descripción debe tener {maxLength, number} caracteres o menos",
+      "confidence": "high",
+      "reason": "The source 'Description must be...' requires the definite article 'La' for natural Spanish phrasing. 'Debe ser' is a calque; 'debe tener' is the standard construction for length constraints."
+    },
+    {
+      "id": "components.IssueModal.CreateIssueModal.validationMessageRequired",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.IssueModal.CreateIssueModal.whatswrong",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.IssueModal.issueOther",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.IssueModal.issueReasonDamagedFile",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.IssueModal.issueReasonIncorrectMetadata",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.IssueModal.issueReasonMissingContent",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.IssueModal.issueReasonMissingIssue",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.IssueModal.issueReasonWrongEdition",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.IssueModal.issueReasonWrongIssue",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.IssueModal.issueSubtitles",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.IssueModal.issueVideo",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.LanguageSelector.any",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.LanguageSelector.languageServerDefault",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.LanguageSelector.originalLanguageDefault",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.Layout.LanguagePicker.displaylanguage",
+      "verdict": "correct",
+      "target": "Idioma de visualización",
+      "confidence": "high",
+      "reason": "'Mostrar idioma' is a verb phrase, but the source 'Display Language' is a noun phrase (label). 'Idioma de visualización' or 'Idioma de la interfaz' is the correct nominal translation for a UI setting label."
+    },
+    {
+      "id": "components.Layout.SearchInput.clearSearchText",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.Layout.SearchInput.searchLabel",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.Layout.SearchInput.searchPlaceholder",
+      "verdict": "correct",
+      "target": "Buscar películas, series, música, libros y personas",
+      "confidence": "high",
+      "reason": "The target omitted 'music, books, and people' from the source. The translation must reflect the full scope of the search functionality described in the source."
+    },
+    {
+      "id": "components.Layout.Sidebar.acquisitionTools",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.Layout.Sidebar.blocklist",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.Layout.Sidebar.bookRecommendations",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.Layout.Sidebar.browseadult",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.Layout.Sidebar.browseaudiobooks",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.Layout.Sidebar.browsebooks",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.Layout.Sidebar.browsecomics",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.Layout.Sidebar.browsemagazines",
+      "verdict": "keep"
+    }
+  ],
+  "decisionsSha256": "2d5759bf0b442603f67ba18a2358cc45a2932d2a77aad8b8ffb4495b3ff2b9a5",
+  "rawResponseSha256": "e517ce57522f3cdcb3dc02a9dc65e890a6add584a1cdb0e699259d9a10dbf193",
+  "rawResponseFile": "/mnt/disks/scratch/task-scratch/seerrng-review-window-650-700-422072-20261102/semantic-output/responses/existing-es-client-0054-attempt-1.json"
+}

@@ -1,0 +1,41 @@
+{
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "head": "7f652dc9b529506fded0064f73cf4a4d32dba1a9",
+  "tree": "9a42f2efdc0f64e99928a4994304413036b8a315",
+  "window": [
+    3300,
+    3319
+  ],
+  "reviewedCells": 240,
+  "decisionCounts": {
+    "accept-current": 139,
+    "hold-context": 60,
+    "correction": 25,
+    "refinement": 16
+  },
+  "proposalsByLocale": {
+    "ar": 6,
+    "de": 1,
+    "es": 1,
+    "fr": 3,
+    "hi": 4,
+    "id": 3,
+    "ja": 5,
+    "ko": 2,
+    "pt_BR": 3,
+    "vi": 6,
+    "zh_Hans": 3,
+    "zh_Hant": 4
+  },
+  "holdPositions": [
+    3301,
+    3314,
+    3315,
+    3318,
+    3319
+  ],
+  "inputSha256": "0d9870af463749b8b7252c0567442289034ad3d8c38cf97afed1043dfeeb4319",
+  "reviewer": "independent blind semantic review; primary ledger was not accessed before ledger sealing",
+  "limitations": "Machine review only; not native-speaker approval. Held cells were not linguistically adjudicated for application because no exact direct production caller was found."
+}

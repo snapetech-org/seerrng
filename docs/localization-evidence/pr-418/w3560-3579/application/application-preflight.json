@@ -1,0 +1,18 @@
+{
+  "applicationPlanSha256": "ddb697b97084a692107a2f3af5b098f50ed891ff87025ee597deccfd4a910f01",
+  "baseBranch": "main",
+  "branch": "codex/seerrng-localization-overhaul-20261028",
+  "branchRef": "351f2c09a4aaf6f223975fc1827cb9f77de7702d",
+  "draft": true,
+  "head": "351f2c09a4aaf6f223975fc1827cb9f77de7702d",
+  "inputManifestSha256": "57c8bb96f21976482af691fa8549d63116fbc66bd30177c3eaa2cb7835996eed",
+  "parentAuthorizationSha256": "fe13378814bb9bae6aab2d9dbc7a7077acbba8a470d5320a66b7783cb8573450",
+  "pullRef": "351f2c09a4aaf6f223975fc1827cb9f77de7702d",
+  "pullRequest": 418,
+  "repository": "snapetech-org/seerrng",
+  "schemaVersion": 1,
+  "state": "OPEN",
+  "tree": "3d88008f6ea7dc6cbef21333d29a032469cd60cf",
+  "verifiedAtUTC": "2026-11-03T13:18:23.753287+00:00",
+  "workingTreeCleanBeforeApplication": true
+}

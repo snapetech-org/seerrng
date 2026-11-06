@@ -1,0 +1,159 @@
+{
+  "schemaVersion": 1,
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "head": "5a4342176a8325c371a35d489cb01c58283bc983",
+  "tree": "98cd64952123c9b678e38250e7819cabb4476448",
+  "semanticManifestSha256": "3ea74cc6491aecddf9ffcedc69610f13d20b199059aef69bb3c2407feb0826ea",
+  "cellPlanSha256": "97c3402252a34aaa4f8f9f44a691281d9c35ff7b80d7edb3a26c752436af6558",
+  "retiredCellsSha256": "dc5ec05547e4da3079c0668f82a52da7999d89ef9d4f037c1cd72af9347ebd83",
+  "sourceBundleManifestSha256": "212491482d1b9207fed755af6e80ac80a97184ec8dbe84d0c4ad2bd711acae0d",
+  "sourceRowsSha256": "ad91236a31e32f199ff449f9ed4597ea6af0f5a4eff32772cefa84278cafb68c",
+  "sourceCellsSha256": "8bfcd1aa9b5d5aba4fb6317c194cd544d601543ebf250899a84a719b52e468e1",
+  "planRows": 115260,
+  "actions": {
+    "semantic-review-required": 114783,
+    "reuse-equivalence-decision": 477
+  },
+  "retiredRows": 48,
+  "reusableEquivalenceCells": 477,
+  "targetsApplied": false,
+  "batchId": "existing-es-client-0066",
+  "batchSha256": "ebe48e23b5f2247a5959520b88ecb8c5de2197a9d7b09db5356ba86a95646c20",
+  "rowCount": 32,
+  "model": "qwen3.8-27b-heretic:q4km",
+  "attempt": 1,
+  "decisions": [
+    {
+      "id": "components.MediaDetails.SeasonEpisodeTree.episodeSelectionLabel",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MediaDetails.SeasonEpisodeTree.episodeTitleTooltip",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MediaDetails.SeasonEpisodeTree.episodeUnavailableForPlayback",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MediaDetails.SeasonEpisodeTree.episodeUnavailableForRequest",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MediaDetails.SeasonEpisodeTree.episodeWatched",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MediaDetails.SeasonEpisodeTree.expandAll",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MediaDetails.SeasonEpisodeTree.expandSeason",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MediaDetails.SeasonEpisodeTree.hideEverySeason",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MediaDetails.SeasonEpisodeTree.hideSeasonEpisodes",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MediaDetails.SeasonEpisodeTree.mediaServer",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MediaDetails.SeasonEpisodeTree.mediaServerWatchStatus",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MediaDetails.SeasonEpisodeTree.noEpisodesAvailable",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MediaDetails.SeasonEpisodeTree.noSeasonEpisodesAvailable",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MediaDetails.SeasonEpisodeTree.releaseDate",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MediaDetails.SeasonEpisodeTree.releaseDateColumnTooltip",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MediaDetails.SeasonEpisodeTree.releaseDateLabel",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MediaDetails.SeasonEpisodeTree.releaseDateTooltip",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MediaDetails.SeasonEpisodeTree.releaseDateUnavailable",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MediaDetails.SeasonEpisodeTree.requestable",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MediaDetails.SeasonEpisodeTree.seasonSelectionLabel",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MediaDetails.SeasonEpisodeTree.seasonsAndEpisodes",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MediaDetails.SeasonEpisodeTree.select",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MediaDetails.SeasonEpisodeTree.selectAllEpisodes",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MediaDetails.SeasonEpisodeTree.selectEpisode",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MediaDetails.SeasonEpisodeTree.selectEveryEpisode",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MediaDetails.SeasonEpisodeTree.selectSeasonEpisodes",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MediaDetails.SeasonEpisodeTree.selected",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MediaDetails.SeasonEpisodeTree.selectionCount",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MediaDetails.SeasonEpisodeTree.showEverySeason",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MediaDetails.SeasonEpisodeTree.showSeasonEpisodes",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MediaDetails.SeasonEpisodeTree.title",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MediaDetails.SeasonEpisodeTree.unavailableInLibrary",
+      "verdict": "keep"
+    }
+  ],
+  "decisionsSha256": "1553b9bb469194bfa7109e258892ce652d859dbc9d4612e7f4b3fdbc21adbd9b",
+  "rawResponseSha256": "0b9357f7e32f93e9e9ea7b1f59d4b798f07bde1fe32bf5687e868702a515e696",
+  "rawResponseFile": "/mnt/disks/scratch/task-scratch/seerrng-review-window-650-700-422072-20261102/semantic-output/responses/existing-es-client-0066-attempt-1.json"
+}

@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "branch": "codex/seerrng-localization-overhaul-20261028",
+  "baseHead": "eb279fc80be656f379cd893642bf741ba0a24d85",
+  "baseTree": "85a73172719b38e99a4e74c0ef9a303164cb4fcb",
+  "window": "W3660-W3679",
+  "sourceCount": 20,
+  "localeCount": 12,
+  "reviewedCells": 240,
+  "updates": 47,
+  "noOps": 193,
+  "newHolds": 0,
+  "priorHoldReattestations": 12,
+  "selectedFrom": {
+    "strictlyBlind": 18,
+    "primaryBlindConvergent": 12,
+    "primaryWhereBlindDiffers": 17
+  },
+  "blindTargetExposureLimited": "3660/es excluded from selection",
+  "catalogCount": 12,
+  "catalogKeyCountPerFile": 9494,
+  "packetVerification": "candidate-free, primary, blind, and cross-audit verifiers and checksums passed before application",
+  "browserReview": "pending exact-head headed VM review",
+  "qualifiedNativeSpeakerReview": "pending",
+  "testsBuildsScansCI": "not run",
+  "releasesTagsMerges": "not performed",
+  "workflowFiles": "untouched"
+}

@@ -1,0 +1,152 @@
+{
+  "schemaVersion": 1,
+  "title": "SeerrNG PR #418 W3460–W3479 third-party cross-audit",
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "head": "76fd466ba7e44ed9853115f8fb1f8ab8bec93c8e",
+  "tree": "00a72de46a40df893a24e0a93e85ec505e035a2d",
+  "window": "W3460-W3479",
+  "sourceCount": 20,
+  "localeCount": 12,
+  "reviewedCellCount": 240,
+  "dispositions": {
+    "accept-current": 220,
+    "correction": 10,
+    "hold": 7,
+    "refinement": 3
+  },
+  "selectedTargetChanges": 13,
+  "holds": [
+    {
+      "position": 3463,
+      "sourceId": "components.ResetPassword.emailresetlink",
+      "locales": [
+        "hi",
+        "ko",
+        "id"
+      ],
+      "reason": "button action does not clearly express sending/emailing the recovery link"
+    },
+    {
+      "position": 3479,
+      "sourceId": "components.Search.SoftwarePreview.available",
+      "locales": [
+        "ar",
+        "hi",
+        "id",
+        "vi"
+      ],
+      "reason": "generic library term may imply a physical/public library rather than the game collection"
+    }
+  ],
+  "checks": {
+    "candidateFreeInputChecksumsPassed": 11,
+    "primaryPacketChecksumsPassed": 15,
+    "blindPacketChecksumsPassed": 5,
+    "sourceAndTargetHashesRecomputed": 240,
+    "primaryAndBlindRowsReconciled": 240,
+    "pinnedCatalogFilesVerified": 13,
+    "catalogKeySetParityPassed": true,
+    "catalogKeyCount": 9494,
+    "orderedCatalogComparison": {
+      "sameOrderAsEnglish": [
+        "src/i18n/locale/en.json",
+        "src/i18n/locale/es.json",
+        "src/i18n/locale/hi.json",
+        "src/i18n/locale/de.json",
+        "src/i18n/locale/fr.json",
+        "src/i18n/locale/pt_BR.json",
+        "src/i18n/locale/ar.json",
+        "src/i18n/locale/id.json"
+      ],
+      "differentOrderFromEnglish": [
+        "src/i18n/locale/zh_Hans.json",
+        "src/i18n/locale/ja.json",
+        "src/i18n/locale/ko.json",
+        "src/i18n/locale/zh_Hant.json",
+        "src/i18n/locale/vi.json"
+      ],
+      "perFile": {
+        "src/i18n/locale/en.json": {
+          "sameOrderAsEnglish": true,
+          "firstDifferenceIndex": null,
+          "mismatchIndexCount": 0
+        },
+        "src/i18n/locale/es.json": {
+          "sameOrderAsEnglish": true,
+          "firstDifferenceIndex": null,
+          "mismatchIndexCount": 0
+        },
+        "src/i18n/locale/zh_Hans.json": {
+          "sameOrderAsEnglish": false,
+          "firstDifferenceIndex": 350,
+          "mismatchIndexCount": 9144
+        },
+        "src/i18n/locale/hi.json": {
+          "sameOrderAsEnglish": true,
+          "firstDifferenceIndex": null,
+          "mismatchIndexCount": 0
+        },
+        "src/i18n/locale/de.json": {
+          "sameOrderAsEnglish": true,
+          "firstDifferenceIndex": null,
+          "mismatchIndexCount": 0
+        },
+        "src/i18n/locale/ja.json": {
+          "sameOrderAsEnglish": false,
+          "firstDifferenceIndex": 350,
+          "mismatchIndexCount": 9144
+        },
+        "src/i18n/locale/fr.json": {
+          "sameOrderAsEnglish": true,
+          "firstDifferenceIndex": null,
+          "mismatchIndexCount": 0
+        },
+        "src/i18n/locale/pt_BR.json": {
+          "sameOrderAsEnglish": true,
+          "firstDifferenceIndex": null,
+          "mismatchIndexCount": 0
+        },
+        "src/i18n/locale/ar.json": {
+          "sameOrderAsEnglish": true,
+          "firstDifferenceIndex": null,
+          "mismatchIndexCount": 0
+        },
+        "src/i18n/locale/ko.json": {
+          "sameOrderAsEnglish": false,
+          "firstDifferenceIndex": 350,
+          "mismatchIndexCount": 9144
+        },
+        "src/i18n/locale/zh_Hant.json": {
+          "sameOrderAsEnglish": false,
+          "firstDifferenceIndex": 350,
+          "mismatchIndexCount": 9144
+        },
+        "src/i18n/locale/vi.json": {
+          "sameOrderAsEnglish": false,
+          "firstDifferenceIndex": 350,
+          "mismatchIndexCount": 9144
+        },
+        "src/i18n/locale/id.json": {
+          "sameOrderAsEnglish": true,
+          "firstDifferenceIndex": null,
+          "mismatchIndexCount": 0
+        }
+      }
+    },
+    "currentTargetsMatchPinnedCatalogs": 240,
+    "sameNamespaceCallerContextsVerified": 20,
+    "exactCallerLineReferencesVerified": 24,
+    "placeholderMismatches": 0,
+    "markupMismatches": 0,
+    "numericValueMismatches": 0
+  },
+  "candidateFreeInputManifestSha256": "f581bcbce2ffd680ec43345aa0c1cbe8d8cb69d15270a4b1688475459132cfd4",
+  "primaryLedgerSha256": "788985a41355942e686cb60e81dceec73a294b0dddb38761dbea7e16a1c37df5",
+  "blindLedgerSha256": "386dfbff0281a1a2e2d5282c0b2802b1a778b063c64ee16685339a6ea7585215",
+  "nativeSpeakerApproval": false,
+  "releaseApprovalByThisReview": false,
+  "testsBuildsScansCIWorkflowsRun": false,
+  "repositoryOrPREdited": false,
+  "reviewLimit": "Machine semantic cross-audit; not qualified native-speaker or release approval."
+}

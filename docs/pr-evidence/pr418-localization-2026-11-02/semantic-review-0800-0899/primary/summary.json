@@ -1,0 +1,153 @@
+{
+  "acceptCurrent": 905,
+  "blockers": [],
+  "callerContextMismatches": 0,
+  "callerContextProofRows": 547,
+  "confidence": "moderate",
+  "correctionProposals": 281,
+  "countsByLocale": {
+    "ar": {
+      "accept-current": 57,
+      "correction-needed": 43
+    },
+    "de": {
+      "accept-current": 82,
+      "correction-needed": 4,
+      "prior-disposition-preserved": 14
+    },
+    "es": {
+      "accept-current": 80,
+      "correction-needed": 20
+    },
+    "fr": {
+      "accept-current": 87,
+      "correction-needed": 13
+    },
+    "hi": {
+      "accept-current": 78,
+      "correction-needed": 22
+    },
+    "id": {
+      "accept-current": 84,
+      "correction-needed": 16
+    },
+    "ja": {
+      "accept-current": 89,
+      "correction-needed": 11
+    },
+    "ko": {
+      "accept-current": 70,
+      "correction-needed": 30
+    },
+    "pt-BR": {
+      "accept-current": 81,
+      "correction-needed": 19
+    },
+    "vi": {
+      "accept-current": 72,
+      "correction-needed": 28
+    },
+    "zh-CN": {
+      "accept-current": 64,
+      "correction-needed": 36
+    },
+    "zh-TW": {
+      "accept-current": 61,
+      "correction-needed": 39
+    }
+  },
+  "decisionCountsIncludingPreserved": {
+    "accept-current": 905,
+    "correction-needed": 281,
+    "prior-disposition-preserved": 14
+  },
+  "isDraft": true,
+  "ledger": "semantic-review-ledger.jsonl",
+  "ledgerSha256": "e5aa2084709df04af2d22b057f74a218db4dee8759e3ce95bedc004b1673a4a1",
+  "liveReattestationPath": "live-re-attestation.json",
+  "liveReattestationSha256": "9cd9fddfd0e66296c9959837e04df29d78a9922954a432898ea5c3cfb2f13418",
+  "locales": [
+    "ar",
+    "de",
+    "es",
+    "fr",
+    "hi",
+    "id",
+    "ja",
+    "ko",
+    "pt-BR",
+    "vi",
+    "zh-CN",
+    "zh-TW"
+  ],
+  "nativeSpeakerReviewRequired": true,
+  "newSemanticDecisionCounts": {
+    "accept-current": 905,
+    "correction-needed": 281,
+    "hold": 0
+  },
+  "newSemanticHolds": 0,
+  "newSemanticRows": 1186,
+  "notes": [
+    "All 1,200 current source/target pairs were re-read from PR head d633a7ed and matched the packet exactly; 100 source IDs and 547 caller contexts matched with zero mismatches.",
+    "All 14 prior routed dispositions were preserved without re-adjudication: 11 applied exact-target matches and 3 prior holds.",
+    "Only the 1,186 cells routed new-semantic-review-required received a new semantic decision.",
+    "Correction proposals are review recommendations only; no catalog or repository changes were made.",
+    "No tests, builds, CI, browser work, commits, pushes, PR mutations, or releases were performed."
+  ],
+  "packetPrimaryPin": {
+    "head": "d1137d06ffb5af57ef599ac9bf495aff2a990a7b",
+    "tree": "0aa22f0bb43e3e30d216e2ae19939220e05f04f7"
+  },
+  "partitionLedgers": [
+    {
+      "path": "parts-ar-de-es-fr-hi-id/semantic-review-part.jsonl",
+      "sha256": "d4d462c39324005c6e6cb9d6423edb63575b739e107231635b1d3d23e0f9d230",
+      "summarySha256": "54ebc3c6d8891bc2a45235a2c86ebc015346236e9210e354cdb6bab9c5e83bed"
+    },
+    {
+      "path": "parts-ja-ko-pt-vi-zh/semantic-review-part.jsonl",
+      "sha256": "0e58946c6feca7fa54a09aee566157e9a60f11e7a725352f08ace3204a702d7d",
+      "summarySha256": "529513867ad61d65776431f522e905eab97a731e07b69cd06f13b4b6bea5014c"
+    }
+  ],
+  "pin": {
+    "head": "d633a7ed184bc9571a1a805da1bd25cef28d1599",
+    "tree": "abb501be60a5208a720c053976e94df72af8117e"
+  },
+  "placeholderParityFailures": 0,
+  "placeholderParityRowsChecked": 1200,
+  "preservedPriorRows": 14,
+  "priorDispositionCounts": {
+    "prior-correction-applied-exact-target-match": 11,
+    "prior-held-awaiting-adjudication": 3
+  },
+  "pullRequest": 418,
+  "repository": "snapetech-org/seerrng",
+  "routingCounts": {
+    "new-semantic-review-required": 1186,
+    "prior-correction-applied-exact-target-match": 11,
+    "prior-held-awaiting-adjudication": 3
+  },
+  "schemaVersion": 1,
+  "sourceCurrentMismatches": 0,
+  "sourceIdPositionCrosscheck": {
+    "positionIdMismatches": 0,
+    "positionsCovered": 100,
+    "priorLedger": "reviews/agent-0600-0699/semantic-review-ledger.jsonl",
+    "priorRowsChecked": 1200
+  },
+  "sourceIdPositionMethod": "Index of each unique source ID in first-seen order in selected-direct-locale-cells.jsonl; all 1,200 rows in prior source positions 600–699 matched their position/id in the prior primary ledger. windowIndex is retained separately and was not used as sourceIdPosition.",
+  "sourceIdPositions": {
+    "count": 100,
+    "startInclusive": 800,
+    "stopExclusive": 900
+  },
+  "sourceRowsReattested": 100,
+  "state": "OPEN",
+  "targetCells": 1200,
+  "targetCurrentMismatches": 0,
+  "targetRowsReattested": 1200,
+  "task": "Primary semantic review for SeerrNG PR #418 W700–749 source positions 800–899 across all 12 direct locales",
+  "uniqueCallerFiles": 65
+}

@@ -1,0 +1,922 @@
+{
+  "schema": "blind-focused-l10n-review/v1",
+  "binding": {
+    "repository": "snapetech-org/seerrng",
+    "pullRequest": 418,
+    "head": "d9c5224dbce97e8ae6e72b0ad0bf401e65e215eb",
+    "tree": "6578ebc4c8bd6c569fcea47978a2c47bd6e4bc8f",
+    "reviewInputSha256": "3935a6363ff952d9ee0270e5cf903d47354ccf858bae76368b37fa3d72fd3b44",
+    "inputChecksumListSha256": "652468ad51c53b130e80addd09bd82feb62b75fcb00b90fb0f2df2418238c037",
+    "inputFileSha256": {
+      "README.md": "cfe23a481bab950b37183568a9608fc8cb929f615accebac5b0859f20bc0d9bc",
+      "review-input.json": "3935a6363ff952d9ee0270e5cf903d47354ccf858bae76368b37fa3d72fd3b44",
+      "verify-focused-input.py": "25a8484d1c683df3f5161476b8687a07e821dd6deaa8f7cf1789549177adfeb8"
+    }
+  },
+  "method": {
+    "reviewScope": "All 49 cells assessed independently against source text and supplied caller context in review-input.json.",
+    "sourcesUsed": [
+      "README.md",
+      "review-input.json",
+      "SHA256SUMS.txt",
+      "verify-focused-input.py"
+    ],
+    "externalSourcesUsed": false,
+    "browserReview": false,
+    "nativeSpeakerSignoff": false,
+    "bundledVerifierExecuted": false,
+    "bundledVerifierNote": "Not executed because its code reads a candidate-free manifest and cell files outside this allowed packet. Input JSON and declared local checksums were checked directly."
+  },
+  "coverage": {
+    "cells": 49,
+    "sourceCount": 18,
+    "locales": {
+      "ar": 6,
+      "de": 6,
+      "es": 5,
+      "fr": 3,
+      "hi": 4,
+      "id": 5,
+      "ja": 3,
+      "ko": 2,
+      "pt-BR": 5,
+      "vi": 1,
+      "zh-Hans": 2,
+      "zh-Hant": 7
+    },
+    "cellsWithSuppliedCallerContext": 49,
+    "decisionCounts": {
+      "accept": 25,
+      "correction": 13,
+      "refinement": 11,
+      "hold": 0
+    },
+    "confidenceCounts": {
+      "high": 13,
+      "moderate": 36,
+      "low": 0
+    },
+    "overallConfidence": "moderate",
+    "confidenceBasis": "High confidence marks clear meaning, terminology, or orthographic issues grounded in the English source and caller. Moderate confidence applies to idiom and style choices without native-speaker review."
+  },
+  "reviewerExposure": "Static source/target and caller-snippet review only. This review does not claim browser use, native-speaker signoff, or repository validation.",
+  "cells": [
+    {
+      "position": 3981,
+      "locale": "de",
+      "sourceId": "components.Settings.Notifications.NotificationsWebPush.httpsRequirement",
+      "disposition": "refinement",
+      "confidence": "high",
+      "binding": {
+        "sourceTextSha256": "a16f529f753418912a9764861daaeb3b2b765346a108a3e9e88ce9d3a896c4b2",
+        "currentTargetSha256": "5aed5c45c6e2bf1653433c23a2d81c0ba5b91699cc18a69b9bc1c4582792d153",
+        "callerContextSha256": "12d94ad0945dc642845671a697473b996b24fa506b837e38cee4086c6ac7f23d",
+        "contextBlockIds": [
+          "w3980-3981-definition",
+          "w3980-3981-direct-01"
+        ]
+      },
+      "rationale": "The alert states a requirement for receiving web-push notifications. The current German is accurate, but “Web-Push Benachrichtigungen” breaks the compound; the proposed hyphenation reads as one compound.",
+      "proposedText": "Seerr muss über HTTPS bereitgestellt werden, damit Web-Push-Benachrichtigungen empfangen werden können."
+    },
+    {
+      "position": 3981,
+      "locale": "ja",
+      "sourceId": "components.Settings.Notifications.NotificationsWebPush.httpsRequirement",
+      "disposition": "refinement",
+      "confidence": "moderate",
+      "binding": {
+        "sourceTextSha256": "a16f529f753418912a9764861daaeb3b2b765346a108a3e9e88ce9d3a896c4b2",
+        "currentTargetSha256": "edaaed0b3a044957ede3838b477ff633bc6e36efd65399ad59e5aaebd86fd08e",
+        "callerContextSha256": "12d94ad0945dc642845671a697473b996b24fa506b837e38cee4086c6ac7f23d",
+        "contextBlockIds": [
+          "w3980-3981-definition",
+          "w3980-3981-direct-01"
+        ]
+      },
+      "rationale": "The supplied caller shows a warning when the page is not HTTPS. The current polite imperative is understandable, while the proposed declarative wording states the same serving requirement more directly.",
+      "proposedText": "Webプッシュ通知を受信するには、SeerrがHTTPS経由で配信されている必要があります。"
+    },
+    {
+      "position": 3982,
+      "locale": "de",
+      "sourceId": "components.Settings.Notifications.NotificationsWebPush.toastWebPushTestFailed",
+      "disposition": "correction",
+      "confidence": "high",
+      "binding": {
+        "sourceTextSha256": "da988b18d0a25c0d7a66646f0412f9fb6195d40ac47bf4a2b0c6f11cfe5965c8",
+        "currentTargetSha256": "f296e6f7f8d65021d02da5cb84eb7936dbbed64362d4395a072f1edcf8b35d4f",
+        "callerContextSha256": "19fe850a1536343707279f2b4fe01e9dc0cb595acef468842234d92d1583b295",
+        "contextBlockIds": [
+          "w3980-3982-definition",
+          "w3980-3982-direct-01"
+        ]
+      },
+      "rationale": "The error toast is for a send failure. The current target says the test notification failed, but omits that sending failed and uses an awkward English/German compound.",
+      "proposedText": "Web-Push-Testbenachrichtigung konnte nicht gesendet werden."
+    },
+    {
+      "position": 3982,
+      "locale": "zh-Hant",
+      "sourceId": "components.Settings.Notifications.NotificationsWebPush.toastWebPushTestFailed",
+      "disposition": "accept",
+      "confidence": "moderate",
+      "binding": {
+        "sourceTextSha256": "da988b18d0a25c0d7a66646f0412f9fb6195d40ac47bf4a2b0c6f11cfe5965c8",
+        "currentTargetSha256": "bbff5417c7f6e5eda132221226e91bb9ece99d42d8e4912a9e71c354e28d80e8",
+        "callerContextSha256": "19fe850a1536343707279f2b4fe01e9dc0cb595acef468842234d92d1583b295",
+        "contextBlockIds": [
+          "w3980-3982-definition",
+          "w3980-3982-direct-01"
+        ]
+      },
+      "rationale": "The target conveys that the web-push test notification failed to send, matching the error toast."
+    },
+    {
+      "position": 3983,
+      "locale": "hi",
+      "sourceId": "components.Settings.Notifications.NotificationsWebPush.toastWebPushTestSending",
+      "disposition": "refinement",
+      "confidence": "moderate",
+      "binding": {
+        "sourceTextSha256": "5a75f73b2919dda2994a2253fa43b0ee9e5e8c18b3bc0a6f9b956c09c090ea1f",
+        "currentTargetSha256": "0caaa676365be898c5dbad1b719ba9d53cfb94a859500502cf3d0ccd2fff96b2",
+        "callerContextSha256": "c214bf1e881c00d63eede78ca80e6d0621ecab86d1b47bf344e48c175d486af0",
+        "contextBlockIds": [
+          "w3980-3983-definition",
+          "w3980-3983-direct-01"
+        ]
+      },
+      "rationale": "This is a non-dismissing informational toast while the request is underway. The current infinitive “भेजना” is less clearly in progress; the proposed form states that it is being sent and preserves the ellipsis.",
+      "proposedText": "वेब पुश परीक्षण अधिसूचना भेजी जा रही है…"
+    },
+    {
+      "position": 3983,
+      "locale": "id",
+      "sourceId": "components.Settings.Notifications.NotificationsWebPush.toastWebPushTestSending",
+      "disposition": "correction",
+      "confidence": "high",
+      "binding": {
+        "sourceTextSha256": "5a75f73b2919dda2994a2253fa43b0ee9e5e8c18b3bc0a6f9b956c09c090ea1f",
+        "currentTargetSha256": "31e9ae774cd183e5028ae1ce9546fbda72db073cdb87185298770057c755729a",
+        "callerContextSha256": "c214bf1e881c00d63eede78ca80e6d0621ecab86d1b47bf344e48c175d486af0",
+        "contextBlockIds": [
+          "w3980-3983-definition",
+          "w3980-3983-direct-01"
+        ]
+      },
+      "rationale": "The caller displays an in-progress test toast. The current target says a web test notification is being sent but drops “push,” which identifies the notification type in this feature.",
+      "proposedText": "Mengirim notifikasi uji coba Web Push…"
+    },
+    {
+      "position": 3983,
+      "locale": "zh-Hant",
+      "sourceId": "components.Settings.Notifications.NotificationsWebPush.toastWebPushTestSending",
+      "disposition": "accept",
+      "confidence": "moderate",
+      "binding": {
+        "sourceTextSha256": "5a75f73b2919dda2994a2253fa43b0ee9e5e8c18b3bc0a6f9b956c09c090ea1f",
+        "currentTargetSha256": "129ad1926745465ef2b62f58cb8c6c053de91241694656f46fef2dcbf320b47b",
+        "callerContextSha256": "c214bf1e881c00d63eede78ca80e6d0621ecab86d1b47bf344e48c175d486af0",
+        "contextBlockIds": [
+          "w3980-3983-definition",
+          "w3980-3983-direct-01"
+        ]
+      },
+      "rationale": "The target expresses that the web-push test notification is being sent, consistent with the in-progress toast."
+    },
+    {
+      "position": 3984,
+      "locale": "zh-Hant",
+      "sourceId": "components.Settings.Notifications.NotificationsWebPush.toastWebPushTestSuccess",
+      "disposition": "accept",
+      "confidence": "moderate",
+      "binding": {
+        "sourceTextSha256": "840f4ef41ccb965a369f2c4c567788a915c72f9b88a42acd86b66ce0c6eeaf80",
+        "currentTargetSha256": "73f09643d6321914a8e308bcd485449ddab3974ed7f3ae84169937ea30aaf98e",
+        "callerContextSha256": "318d9a974a50ac8406e20485f4b29077b303137572431751ea421fc450d01f3e",
+        "contextBlockIds": [
+          "w3980-3984-definition",
+          "w3980-3984-direct-01"
+        ]
+      },
+      "rationale": "The target says the web-push test notification was sent, matching the success toast."
+    },
+    {
+      "position": 3985,
+      "locale": "de",
+      "sourceId": "components.Settings.Notifications.NotificationsWebPush.webpushsettingsfailed",
+      "disposition": "correction",
+      "confidence": "high",
+      "binding": {
+        "sourceTextSha256": "65fd7b2696e489b4cded6dc16e934bb2ee7f079ee1996808bc574d2d3c1cc9a9",
+        "currentTargetSha256": "b0bf16ba1a63403cd56ff7fdcf8b3c503e7bfaa76a3493b5929438af8256802e",
+        "callerContextSha256": "05c48d6c1afabd302727b26c4c4b5345752edbb74d92f997795a394389137519",
+        "contextBlockIds": [
+          "w3980-3985-definition",
+          "w3980-3985-direct-01"
+        ]
+      },
+      "rationale": "The target preserves the failed-save meaning. German compounds this technical modifier with the settings noun using hyphens; the current “Web push Benachrichtigungseinstellungen” is improperly separated.",
+      "proposedText": "Web-Push-Benachrichtigungseinstellungen konnten nicht gespeichert werden."
+    },
+    {
+      "position": 3985,
+      "locale": "zh-Hant",
+      "sourceId": "components.Settings.Notifications.NotificationsWebPush.webpushsettingsfailed",
+      "disposition": "accept",
+      "confidence": "moderate",
+      "binding": {
+        "sourceTextSha256": "65fd7b2696e489b4cded6dc16e934bb2ee7f079ee1996808bc574d2d3c1cc9a9",
+        "currentTargetSha256": "a2504d12de37cfa3405574dc168eab60885ffed66712731029a54e27757836c1",
+        "callerContextSha256": "05c48d6c1afabd302727b26c4c4b5345752edbb74d92f997795a394389137519",
+        "contextBlockIds": [
+          "w3980-3985-definition",
+          "w3980-3985-direct-01"
+        ]
+      },
+      "rationale": "The target states that web-push notification settings failed to save."
+    },
+    {
+      "position": 3986,
+      "locale": "de",
+      "sourceId": "components.Settings.Notifications.NotificationsWebPush.webpushsettingssaved",
+      "disposition": "correction",
+      "confidence": "high",
+      "binding": {
+        "sourceTextSha256": "d3e804d45f10a345d22c031dd1f275ca5d9d8b1a78e59cc0d7094cafb5d1a4b0",
+        "currentTargetSha256": "0d51851b28393b2242e29e257c9e7442d802767aadf413d35dcb71fce91273a2",
+        "callerContextSha256": "317f009efb37220b932714ada567894e59fb24346395caff8ac007129e3529fd",
+        "contextBlockIds": [
+          "w3980-3986-definition",
+          "w3980-3986-direct-01"
+        ]
+      },
+      "rationale": "The success toast is accurately translated, but the current German breaks the Web-Push compound. The proposed spelling joins the technical compound with hyphens.",
+      "proposedText": "Web-Push-Benachrichtigungseinstellungen wurden erfolgreich gespeichert!"
+    },
+    {
+      "position": 3986,
+      "locale": "hi",
+      "sourceId": "components.Settings.Notifications.NotificationsWebPush.webpushsettingssaved",
+      "disposition": "accept",
+      "confidence": "moderate",
+      "binding": {
+        "sourceTextSha256": "d3e804d45f10a345d22c031dd1f275ca5d9d8b1a78e59cc0d7094cafb5d1a4b0",
+        "currentTargetSha256": "a2e50230998a2aaddbb6f5bbbba8b74cc65bec26d2b978a82c8ccf0612070d14",
+        "callerContextSha256": "317f009efb37220b932714ada567894e59fb24346395caff8ac007129e3529fd",
+        "contextBlockIds": [
+          "w3980-3986-definition",
+          "w3980-3986-direct-01"
+        ]
+      },
+      "rationale": "The target says that the web-push notification settings were saved successfully."
+    },
+    {
+      "position": 3986,
+      "locale": "zh-Hant",
+      "sourceId": "components.Settings.Notifications.NotificationsWebPush.webpushsettingssaved",
+      "disposition": "accept",
+      "confidence": "moderate",
+      "binding": {
+        "sourceTextSha256": "d3e804d45f10a345d22c031dd1f275ca5d9d8b1a78e59cc0d7094cafb5d1a4b0",
+        "currentTargetSha256": "ca3d40b246947ae6cfec38773ec95b4cab5e9ef4c6ec151586740d2722ae5f93",
+        "callerContextSha256": "317f009efb37220b932714ada567894e59fb24346395caff8ac007129e3529fd",
+        "contextBlockIds": [
+          "w3980-3986-definition",
+          "w3980-3986-direct-01"
+        ]
+      },
+      "rationale": "The target says that web-push notification settings were saved successfully."
+    },
+    {
+      "position": 3987,
+      "locale": "ar",
+      "sourceId": "components.Settings.Notifications.NotificationsWebhook.agentenabled",
+      "disposition": "accept",
+      "confidence": "moderate",
+      "binding": {
+        "sourceTextSha256": "91d232f79a26c8106f6f292cba08ef9d8a74659aebd24576f3a70bb3611e8c21",
+        "currentTargetSha256": "8b966cfa6125d8df0f97fd11c138ac75be835a1606450b0823ac3d91373f3640",
+        "callerContextSha256": "f49c29a59a692d78c39d4a6fdd3c215da689e492d61c64804080b3eed0ea0e89",
+        "contextBlockIds": [
+          "w3980-3987-definition",
+          "w3980-3987-direct-01"
+        ]
+      },
+      "rationale": "The target is a concise checkbox label meaning “Enable the agent,” matching the supplied form context."
+    },
+    {
+      "position": 3987,
+      "locale": "de",
+      "sourceId": "components.Settings.Notifications.NotificationsWebhook.agentenabled",
+      "disposition": "correction",
+      "confidence": "high",
+      "binding": {
+        "sourceTextSha256": "91d232f79a26c8106f6f292cba08ef9d8a74659aebd24576f3a70bb3611e8c21",
+        "currentTargetSha256": "577f68ab586714c36eb404acf89279e77de57f44702306a9ad9f8ab60dc9ffaa",
+        "callerContextSha256": "f49c29a59a692d78c39d4a6fdd3c215da689e492d61c64804080b3eed0ea0e89",
+        "contextBlockIds": [
+          "w3980-3987-definition",
+          "w3980-3987-direct-01"
+        ]
+      },
+      "rationale": "The caller places this text on an “enabled” checkbox for the Agent setting. “Dienst aktivieren” changes the named Agent to a generic service; retaining “Agent” preserves the setting identity.",
+      "proposedText": "Agent aktivieren"
+    },
+    {
+      "position": 3987,
+      "locale": "es",
+      "sourceId": "components.Settings.Notifications.NotificationsWebhook.agentenabled",
+      "disposition": "refinement",
+      "confidence": "moderate",
+      "binding": {
+        "sourceTextSha256": "91d232f79a26c8106f6f292cba08ef9d8a74659aebd24576f3a70bb3611e8c21",
+        "currentTargetSha256": "e7c50bd2f160f74f3988bb9668b01ef8f7db80a3679686ea9e4caa20d45e60dc",
+        "callerContextSha256": "f49c29a59a692d78c39d4a6fdd3c215da689e492d61c64804080b3eed0ea0e89",
+        "contextBlockIds": [
+          "w3980-3987-definition",
+          "w3980-3987-direct-01"
+        ]
+      },
+      "rationale": "The target conveys the checkbox action. Lowercase “agente” follows Spanish sentence-case capitalization for this label; the current title-case noun is unnecessary.",
+      "proposedText": "Habilitar agente"
+    },
+    {
+      "position": 3987,
+      "locale": "fr",
+      "sourceId": "components.Settings.Notifications.NotificationsWebhook.agentenabled",
+      "disposition": "accept",
+      "confidence": "moderate",
+      "binding": {
+        "sourceTextSha256": "91d232f79a26c8106f6f292cba08ef9d8a74659aebd24576f3a70bb3611e8c21",
+        "currentTargetSha256": "51df5f54cabf366298504c2bd2f972c3b304d4076dc06767499393fc57d1ddb9",
+        "callerContextSha256": "f49c29a59a692d78c39d4a6fdd3c215da689e492d61c64804080b3eed0ea0e89",
+        "contextBlockIds": [
+          "w3980-3987-definition",
+          "w3980-3987-direct-01"
+        ]
+      },
+      "rationale": "The target directly and naturally labels the checkbox action “Enable the agent.”"
+    },
+    {
+      "position": 3987,
+      "locale": "hi",
+      "sourceId": "components.Settings.Notifications.NotificationsWebhook.agentenabled",
+      "disposition": "accept",
+      "confidence": "moderate",
+      "binding": {
+        "sourceTextSha256": "91d232f79a26c8106f6f292cba08ef9d8a74659aebd24576f3a70bb3611e8c21",
+        "currentTargetSha256": "fd9eb8c21884f1100c3cacfca4ebbe2848650eedd7c56fc16682a3f26a4f7d76",
+        "callerContextSha256": "f49c29a59a692d78c39d4a6fdd3c215da689e492d61c64804080b3eed0ea0e89",
+        "contextBlockIds": [
+          "w3980-3987-definition",
+          "w3980-3987-direct-01"
+        ]
+      },
+      "rationale": "The target directly expresses enabling the agent as a checkbox action."
+    },
+    {
+      "position": 3987,
+      "locale": "id",
+      "sourceId": "components.Settings.Notifications.NotificationsWebhook.agentenabled",
+      "disposition": "accept",
+      "confidence": "moderate",
+      "binding": {
+        "sourceTextSha256": "91d232f79a26c8106f6f292cba08ef9d8a74659aebd24576f3a70bb3611e8c21",
+        "currentTargetSha256": "4de0576e91b49ce0ab0778e1d5d076119e934117254ebad5c01bf4cc48cc40f3",
+        "callerContextSha256": "f49c29a59a692d78c39d4a6fdd3c215da689e492d61c64804080b3eed0ea0e89",
+        "contextBlockIds": [
+          "w3980-3987-definition",
+          "w3980-3987-direct-01"
+        ]
+      },
+      "rationale": "The target directly expresses enabling the agent in the checkbox context."
+    },
+    {
+      "position": 3987,
+      "locale": "ja",
+      "sourceId": "components.Settings.Notifications.NotificationsWebhook.agentenabled",
+      "disposition": "accept",
+      "confidence": "moderate",
+      "binding": {
+        "sourceTextSha256": "91d232f79a26c8106f6f292cba08ef9d8a74659aebd24576f3a70bb3611e8c21",
+        "currentTargetSha256": "adeb6d03058e1eeacc0a37b2178af230cafc9514fc732e2a5edeca053274890d",
+        "callerContextSha256": "f49c29a59a692d78c39d4a6fdd3c215da689e492d61c64804080b3eed0ea0e89",
+        "contextBlockIds": [
+          "w3980-3987-definition",
+          "w3980-3987-direct-01"
+        ]
+      },
+      "rationale": "The target is a clear Japanese checkbox label for enabling the agent."
+    },
+    {
+      "position": 3987,
+      "locale": "ko",
+      "sourceId": "components.Settings.Notifications.NotificationsWebhook.agentenabled",
+      "disposition": "accept",
+      "confidence": "moderate",
+      "binding": {
+        "sourceTextSha256": "91d232f79a26c8106f6f292cba08ef9d8a74659aebd24576f3a70bb3611e8c21",
+        "currentTargetSha256": "7179eaa9a63c68928c435994cdda73a7c18926c875063c919f387efa524bf4a5",
+        "callerContextSha256": "f49c29a59a692d78c39d4a6fdd3c215da689e492d61c64804080b3eed0ea0e89",
+        "contextBlockIds": [
+          "w3980-3987-definition",
+          "w3980-3987-direct-01"
+        ]
+      },
+      "rationale": "The target is a concise Korean checkbox label for enabling the agent."
+    },
+    {
+      "position": 3987,
+      "locale": "pt-BR",
+      "sourceId": "components.Settings.Notifications.NotificationsWebhook.agentenabled",
+      "disposition": "refinement",
+      "confidence": "moderate",
+      "binding": {
+        "sourceTextSha256": "91d232f79a26c8106f6f292cba08ef9d8a74659aebd24576f3a70bb3611e8c21",
+        "currentTargetSha256": "e7c50bd2f160f74f3988bb9668b01ef8f7db80a3679686ea9e4caa20d45e60dc",
+        "callerContextSha256": "f49c29a59a692d78c39d4a6fdd3c215da689e492d61c64804080b3eed0ea0e89",
+        "contextBlockIds": [
+          "w3980-3987-definition",
+          "w3980-3987-direct-01"
+        ]
+      },
+      "rationale": "The target preserves the checkbox meaning. “Ativar agente” is a more concise, natural Brazilian Portuguese UI label and uses sentence case.",
+      "proposedText": "Ativar agente"
+    },
+    {
+      "position": 3987,
+      "locale": "vi",
+      "sourceId": "components.Settings.Notifications.NotificationsWebhook.agentenabled",
+      "disposition": "accept",
+      "confidence": "moderate",
+      "binding": {
+        "sourceTextSha256": "91d232f79a26c8106f6f292cba08ef9d8a74659aebd24576f3a70bb3611e8c21",
+        "currentTargetSha256": "736cef914f33cf7fb6cc0b6fab3b59ece91d463599cf67c296fffa5d5fa8eec0",
+        "callerContextSha256": "f49c29a59a692d78c39d4a6fdd3c215da689e492d61c64804080b3eed0ea0e89",
+        "contextBlockIds": [
+          "w3980-3987-definition",
+          "w3980-3987-direct-01"
+        ]
+      },
+      "rationale": "The target expresses enabling the agent and fits the supplied checkbox context."
+    },
+    {
+      "position": 3987,
+      "locale": "zh-Hans",
+      "sourceId": "components.Settings.Notifications.NotificationsWebhook.agentenabled",
+      "disposition": "accept",
+      "confidence": "moderate",
+      "binding": {
+        "sourceTextSha256": "91d232f79a26c8106f6f292cba08ef9d8a74659aebd24576f3a70bb3611e8c21",
+        "currentTargetSha256": "2a93cbbab9f7f145b4dce6a525c77440adc08527b87242314f6ee6b14dfa5824",
+        "callerContextSha256": "f49c29a59a692d78c39d4a6fdd3c215da689e492d61c64804080b3eed0ea0e89",
+        "contextBlockIds": [
+          "w3980-3987-definition",
+          "w3980-3987-direct-01"
+        ]
+      },
+      "rationale": "The target is a concise label for enabling the agent."
+    },
+    {
+      "position": 3987,
+      "locale": "zh-Hant",
+      "sourceId": "components.Settings.Notifications.NotificationsWebhook.agentenabled",
+      "disposition": "accept",
+      "confidence": "moderate",
+      "binding": {
+        "sourceTextSha256": "91d232f79a26c8106f6f292cba08ef9d8a74659aebd24576f3a70bb3611e8c21",
+        "currentTargetSha256": "24b4f4c72cac4d9d46164d3a6e6ac2f9856e63fcef0e9b237e8d9d23dfa989dd",
+        "callerContextSha256": "f49c29a59a692d78c39d4a6fdd3c215da689e492d61c64804080b3eed0ea0e89",
+        "contextBlockIds": [
+          "w3980-3987-definition",
+          "w3980-3987-direct-01"
+        ]
+      },
+      "rationale": "The target is a concise label for enabling the agent."
+    },
+    {
+      "position": 3988,
+      "locale": "id",
+      "sourceId": "components.Settings.Notifications.NotificationsWebhook.authheader",
+      "disposition": "correction",
+      "confidence": "high",
+      "binding": {
+        "sourceTextSha256": "397ba39bef710f01aef683d2c0cd64ceb09c190d85349096dcde5b817b1fd415",
+        "currentTargetSha256": "e76833a61bc821a84cb1fd617b8d209a48003f2be3b8ac7f30d34aa43bc29297",
+        "callerContextSha256": "172bcc608f41758438db4e872b719105f01fca5eddae863c619a9c8715b259d4",
+        "contextBlockIds": [
+          "w3980-3988-definition",
+          "w3980-3988-direct-01"
+        ]
+      },
+      "rationale": "This is the label for the Authorization Header used by the webhook settings. “Kepala” means a person’s head and is not the HTTP header term; Indonesian technical UI commonly retains “Header.”",
+      "proposedText": "Header Otorisasi"
+    },
+    {
+      "position": 3988,
+      "locale": "ja",
+      "sourceId": "components.Settings.Notifications.NotificationsWebhook.authheader",
+      "disposition": "correction",
+      "confidence": "moderate",
+      "binding": {
+        "sourceTextSha256": "397ba39bef710f01aef683d2c0cd64ceb09c190d85349096dcde5b817b1fd415",
+        "currentTargetSha256": "22371d0782517bb06d6ba6f1fb73d58c37e173c01c158c5b8853cb36e93dc948",
+        "callerContextSha256": "172bcc608f41758438db4e872b719105f01fca5eddae863c619a9c8715b259d4",
+        "contextBlockIds": [
+          "w3980-3988-definition",
+          "w3980-3988-direct-01"
+        ]
+      },
+      "rationale": "The caller context places this beside custom webhook headers and an authorization-header conflict check. “認証” means authentication; preserving the literal HTTP header name “Authorization” distinguishes authorization from authentication.",
+      "proposedText": "Authorization ヘッダー"
+    },
+    {
+      "position": 3990,
+      "locale": "id",
+      "sourceId": "components.Settings.Notifications.NotificationsWebhook.customHeadersAdd",
+      "disposition": "correction",
+      "confidence": "high",
+      "binding": {
+        "sourceTextSha256": "6e8d71f69219ef2b008e59f4a81f1c26466524be6687364d6e37eb8c0a079b09",
+        "currentTargetSha256": "1b3756a9163212095c7e1d0bef9992a3fca2d761193d0b05c0be404cdd3420ad",
+        "callerContextSha256": "fab2f53d9066fcb4372dba5b6f810a852a95d6c7d14898742108cb8cabc251bd",
+        "contextBlockIds": [
+          "w3980-3990-definition",
+          "w3980-3990-direct-01"
+        ]
+      },
+      "rationale": "This button adds an HTTP header. “Tajuk” means a title or heading in Indonesian and does not identify the technical HTTP header field.",
+      "proposedText": "Tambahkan Header"
+    },
+    {
+      "position": 3991,
+      "locale": "ar",
+      "sourceId": "components.Settings.Notifications.NotificationsWebhook.customHeadersAuthConflict",
+      "disposition": "accept",
+      "confidence": "moderate",
+      "binding": {
+        "sourceTextSha256": "2f7c95787d307e939240add658fb56c7bad28d2f1f13ac4709c6b1a8584db7a2",
+        "currentTargetSha256": "7e862a33cb22b219483817e3f590987e1f4bb2960ba4ab3c08cadab7d801730b",
+        "callerContextSha256": "189e0810974d88e36cffe33b54fb821a62a658744ebfa07a782da3019a2036c4",
+        "contextBlockIds": [
+          "w3980-3991-definition",
+          "w3980-3991-direct-01"
+        ]
+      },
+      "rationale": "The target states that the authorization header and a custom authorization header cannot be used together and asks to remove one."
+    },
+    {
+      "position": 3991,
+      "locale": "de",
+      "sourceId": "components.Settings.Notifications.NotificationsWebhook.customHeadersAuthConflict",
+      "disposition": "refinement",
+      "confidence": "moderate",
+      "binding": {
+        "sourceTextSha256": "2f7c95787d307e939240add658fb56c7bad28d2f1f13ac4709c6b1a8584db7a2",
+        "currentTargetSha256": "da9d8e01512d9fe4012e97267fbe5e2db144a69c264f4de2f1eb9dd488f13bf3",
+        "callerContextSha256": "189e0810974d88e36cffe33b54fb821a62a658744ebfa07a782da3019a2036c4",
+        "contextBlockIds": [
+          "w3980-3991-definition",
+          "w3980-3991-direct-01"
+        ]
+      },
+      "rationale": "The target preserves the conflict and remedy. Recasting “Header Authorization” as “Authorization-Header” improves German technical phrasing while keeping the literal header name.",
+      "proposedText": "Der Authorization-Header kann nicht zusammen mit einem benutzerdefinierten Authorization-Header verwendet werden. Bitte entfernen Sie einen davon."
+    },
+    {
+      "position": 3991,
+      "locale": "es",
+      "sourceId": "components.Settings.Notifications.NotificationsWebhook.customHeadersAuthConflict",
+      "disposition": "correction",
+      "confidence": "high",
+      "binding": {
+        "sourceTextSha256": "2f7c95787d307e939240add658fb56c7bad28d2f1f13ac4709c6b1a8584db7a2",
+        "currentTargetSha256": "efea218ea124877f5396a8799ce275728558530c1e4b87c689005489ae0a851e",
+        "callerContextSha256": "189e0810974d88e36cffe33b54fb821a62a658744ebfa07a782da3019a2036c4",
+        "contextBlockIds": [
+          "w3980-3991-definition",
+          "w3980-3991-direct-01"
+        ]
+      },
+      "rationale": "The target conveys the conflict, but “simultaneamente” is missing its required accent (“simultáneamente”). The proposed version also uses a more natural “a la vez” construction while retaining the informal imperative already used.",
+      "proposedText": "No se pueden usar a la vez la cabecera de autorización y una cabecera de autorización personalizada. Por favor, elimina una."
+    },
+    {
+      "position": 3991,
+      "locale": "ko",
+      "sourceId": "components.Settings.Notifications.NotificationsWebhook.customHeadersAuthConflict",
+      "disposition": "accept",
+      "confidence": "moderate",
+      "binding": {
+        "sourceTextSha256": "2f7c95787d307e939240add658fb56c7bad28d2f1f13ac4709c6b1a8584db7a2",
+        "currentTargetSha256": "b6def6e4c6673f2bd890fd77929c1e7e5b83ebb4a8020ca59d18956e223e5b4c",
+        "callerContextSha256": "189e0810974d88e36cffe33b54fb821a62a658744ebfa07a782da3019a2036c4",
+        "contextBlockIds": [
+          "w3980-3991-definition",
+          "w3980-3991-direct-01"
+        ]
+      },
+      "rationale": "The target accurately says that both authorization-header forms cannot be used and asks to remove one."
+    },
+    {
+      "position": 3991,
+      "locale": "pt-BR",
+      "sourceId": "components.Settings.Notifications.NotificationsWebhook.customHeadersAuthConflict",
+      "disposition": "accept",
+      "confidence": "moderate",
+      "binding": {
+        "sourceTextSha256": "2f7c95787d307e939240add658fb56c7bad28d2f1f13ac4709c6b1a8584db7a2",
+        "currentTargetSha256": "c0d6055a0b7bfc5c3447b47c1ed229b2bce04c38ac8f724d4f8c88ee2bf039b1",
+        "callerContextSha256": "189e0810974d88e36cffe33b54fb821a62a658744ebfa07a782da3019a2036c4",
+        "contextBlockIds": [
+          "w3980-3991-definition",
+          "w3980-3991-direct-01"
+        ]
+      },
+      "rationale": "The target preserves the rule against using both header forms and the instruction to remove one."
+    },
+    {
+      "position": 3992,
+      "locale": "ar",
+      "sourceId": "components.Settings.Notifications.NotificationsWebhook.customHeadersIncomplete",
+      "disposition": "accept",
+      "confidence": "moderate",
+      "binding": {
+        "sourceTextSha256": "dd98eb5eed64df9b65b1222609f770b4f553843c60410f8541a9e073777ec7b5",
+        "currentTargetSha256": "72f262a0cdc18fadc0bdebaee9d3fcafe0219a22b6da68d8b94cfbe6e94cd6e4",
+        "callerContextSha256": "68aacbcfd1400c173047d142117849b7c28a4dbd84efcc132c231184429c4b0d",
+        "contextBlockIds": [
+          "w3980-3992-definition",
+          "w3980-3992-direct-01"
+        ]
+      },
+      "rationale": "The target says every header needs both a name and a value."
+    },
+    {
+      "position": 3993,
+      "locale": "ar",
+      "sourceId": "components.Settings.Notifications.NotificationsWebhook.customHeadersKey",
+      "disposition": "accept",
+      "confidence": "moderate",
+      "binding": {
+        "sourceTextSha256": "6e58dfc8e692ed92863fb0b9eea48f1e96dfb99370bfd2e9eaaf29cb3946937d",
+        "currentTargetSha256": "d6025ee98ced1ffd6dc428b322ad5a2c764d907e10b6af505c8b0c8d3b264906",
+        "callerContextSha256": "f564b1147841f9634c9d95d565ab96671ae86b415f0a686e4a0fa7a90a635931",
+        "contextBlockIds": [
+          "w3980-3993-definition",
+          "w3980-3993-direct-01"
+        ]
+      },
+      "rationale": "The target labels the HTTP header name field in the custom-header row context."
+    },
+    {
+      "position": 3994,
+      "locale": "pt-BR",
+      "sourceId": "components.Settings.Notifications.NotificationsWebhook.customHeadersRemove",
+      "disposition": "accept",
+      "confidence": "moderate",
+      "binding": {
+        "sourceTextSha256": "c3812fc4acb861d5182fc2b8155f327f736fbe5e5eb86a7bd7afcb6dc5497282",
+        "currentTargetSha256": "b05db386c9801b308937d9620734c7b09e988574267a81ba3defc3f2b82ca225",
+        "callerContextSha256": "3f516ab092a42872f5d6217dc1a5cc7f1266800f12c820d42245d3b711650634",
+        "contextBlockIds": [
+          "w3980-3994-definition",
+          "w3980-3994-direct-01"
+        ]
+      },
+      "rationale": "“Remova” is a valid imperative for the remove action shown by the trash-icon tooltip."
+    },
+    {
+      "position": 3995,
+      "locale": "ar",
+      "sourceId": "components.Settings.Notifications.NotificationsWebhook.customHeadersTip",
+      "disposition": "accept",
+      "confidence": "moderate",
+      "binding": {
+        "sourceTextSha256": "cf9069a22dcf5205803127380e5871f4c133aaccfdb61a0e3a3bad99c3a92fb4",
+        "currentTargetSha256": "43ec0cc627b5308ca47c9556018c7516d5623bee92d7a3c65d37bbeaa369497c",
+        "callerContextSha256": "8894c1aa796c63ac80208b765c8a64d7c779957a1967d7e4f7bdf61484103ae2",
+        "contextBlockIds": [
+          "w3980-3995-definition",
+          "w3980-3995-direct-01"
+        ]
+      },
+      "rationale": "The target instructs users to add custom HTTP headers to webhook requests."
+    },
+    {
+      "position": 3995,
+      "locale": "es",
+      "sourceId": "components.Settings.Notifications.NotificationsWebhook.customHeadersTip",
+      "disposition": "refinement",
+      "confidence": "moderate",
+      "binding": {
+        "sourceTextSha256": "cf9069a22dcf5205803127380e5871f4c133aaccfdb61a0e3a3bad99c3a92fb4",
+        "currentTargetSha256": "e1d964bb45b077c370201e5efcde7fb34ad29bb93d29b2ce5c3a8b5e9a7fa5cb",
+        "callerContextSha256": "8894c1aa796c63ac80208b765c8a64d7c779957a1967d7e4f7bdf61484103ae2",
+        "contextBlockIds": [
+          "w3980-3995-definition",
+          "w3980-3995-direct-01"
+        ]
+      },
+      "rationale": "The target is understandable, but “cabeceras de HTTP” and “incluir con las peticiones” are awkward. The proposed sentence states that the custom headers are added to webhook requests.",
+      "proposedText": "Añade cabeceras HTTP personalizadas a las solicitudes del webhook."
+    },
+    {
+      "position": 3995,
+      "locale": "pt-BR",
+      "sourceId": "components.Settings.Notifications.NotificationsWebhook.customHeadersTip",
+      "disposition": "correction",
+      "confidence": "high",
+      "binding": {
+        "sourceTextSha256": "cf9069a22dcf5205803127380e5871f4c133aaccfdb61a0e3a3bad99c3a92fb4",
+        "currentTargetSha256": "b00ea7c57f482071b68dccb985d47e0b54f917b8193971cdf88d48205746302b",
+        "callerContextSha256": "8894c1aa796c63ac80208b765c8a64d7c779957a1967d7e4f7bdf61484103ae2",
+        "contextBlockIds": [
+          "w3980-3995-definition",
+          "w3980-3995-direct-01"
+        ]
+      },
+      "rationale": "The helper text describes HTTP request headers. “Pedidos webhook” is awkward and can read as webhook orders; “requisições do webhook” identifies the HTTP requests intended here.",
+      "proposedText": "Adicione cabeçalhos HTTP personalizados às requisições do webhook."
+    },
+    {
+      "position": 3996,
+      "locale": "ar",
+      "sourceId": "components.Settings.Notifications.NotificationsWebhook.customHeadersValue",
+      "disposition": "accept",
+      "confidence": "moderate",
+      "binding": {
+        "sourceTextSha256": "f00c7870ced32cd0b572aa47985929b9d49efaefed1f91479e2e1257b12c1e47",
+        "currentTargetSha256": "cfc6b3ba90e2b7d8622b5cd1c8af73bdca319ab19860b586e43ab59856823e3a",
+        "callerContextSha256": "e964aef6dec6de38d828acd31424b395623f908fe58e9d918be2ed6e10abef96",
+        "contextBlockIds": [
+          "w3980-3996-definition",
+          "w3980-3996-direct-01"
+        ]
+      },
+      "rationale": "The target labels the value field of each custom HTTP header."
+    },
+    {
+      "position": 3996,
+      "locale": "id",
+      "sourceId": "components.Settings.Notifications.NotificationsWebhook.customHeadersValue",
+      "disposition": "correction",
+      "confidence": "high",
+      "binding": {
+        "sourceTextSha256": "f00c7870ced32cd0b572aa47985929b9d49efaefed1f91479e2e1257b12c1e47",
+        "currentTargetSha256": "cb9e5819ace0c45c840db8822814ed2cd9c8b965e207736b73f39fc9ce34747e",
+        "callerContextSha256": "e964aef6dec6de38d828acd31424b395623f908fe58e9d918be2ed6e10abef96",
+        "contextBlockIds": [
+          "w3980-3996-definition",
+          "w3980-3996-direct-01"
+        ]
+      },
+      "rationale": "The caller uses this as the value placeholder for a custom HTTP header. “Tajuk” means title/heading in Indonesian, not the HTTP header field.",
+      "proposedText": "Nilai Header"
+    },
+    {
+      "position": 3997,
+      "locale": "es",
+      "sourceId": "components.Settings.Notifications.NotificationsWebhook.customJson",
+      "disposition": "refinement",
+      "confidence": "moderate",
+      "binding": {
+        "sourceTextSha256": "f3dfbe52c97c110a5791de52dd76c14a001e31f1519049f39f0940fdc040dc93",
+        "currentTargetSha256": "379733d1a861949c786d1ba8ca24384946e9b9cdf63e1fd295ae0d329149bac1",
+        "callerContextSha256": "3b6179afb36ace8c9c8820fbaf328ddfa1491184e410d79f391d5a678e1a5917",
+        "contextBlockIds": [
+          "w3980-3997-definition",
+          "w3980-3997-direct-01"
+        ]
+      },
+      "rationale": "This is the label for the editable JSON payload field. “Payload de JSON” is an awkward English loan construction; “Carga útil JSON” localizes the technical label while preserving its meaning.",
+      "proposedText": "Carga útil JSON"
+    },
+    {
+      "position": 3998,
+      "locale": "fr",
+      "sourceId": "components.Settings.Notifications.NotificationsWebhook.resetPayload",
+      "disposition": "correction",
+      "confidence": "high",
+      "binding": {
+        "sourceTextSha256": "c0334bae10532242090727ce60382123981e61c854e8b29e78b787a71f48b898",
+        "currentTargetSha256": "33897972a9270a5a5695b466275178d9ff1d6ec26fd19775b3bedc10d11c4573",
+        "callerContextSha256": "83768e49ee74be7d05c6dcd6aa2baa07cc7554c37926c6bc68c3d982e385a9fc",
+        "contextBlockIds": [
+          "w3980-3998-definition",
+          "w3980-3998-direct-01"
+        ]
+      },
+      "rationale": "The caller uses this as the button that restores the JSON payload to its default. “Réinitialiser les données par défaut” reads as resetting default data, rather than restoring the current payload to the defaults.",
+      "proposedText": "Rétablir les valeurs par défaut"
+    },
+    {
+      "position": 3998,
+      "locale": "hi",
+      "sourceId": "components.Settings.Notifications.NotificationsWebhook.resetPayload",
+      "disposition": "correction",
+      "confidence": "high",
+      "binding": {
+        "sourceTextSha256": "c0334bae10532242090727ce60382123981e61c854e8b29e78b787a71f48b898",
+        "currentTargetSha256": "88834b7adc3fdb7ed9fe29ec2911da7e0e596ee355c4dfc1ce94f5c777a2acfc",
+        "callerContextSha256": "83768e49ee74be7d05c6dcd6aa2baa07cc7554c37926c6bc68c3d982e385a9fc",
+        "contextBlockIds": [
+          "w3980-3998-definition",
+          "w3980-3998-direct-01"
+        ]
+      },
+      "rationale": "The button restores the JSON payload to its default. “डिफ़ॉल्ट के लिए” is a literal “for default”; “डिफ़ॉल्ट पर” expresses “to default.”",
+      "proposedText": "डिफ़ॉल्ट पर रीसेट करें"
+    },
+    {
+      "position": 3998,
+      "locale": "zh-Hans",
+      "sourceId": "components.Settings.Notifications.NotificationsWebhook.resetPayload",
+      "disposition": "accept",
+      "confidence": "moderate",
+      "binding": {
+        "sourceTextSha256": "c0334bae10532242090727ce60382123981e61c854e8b29e78b787a71f48b898",
+        "currentTargetSha256": "08a815d9ce91a8ef3597b97ba04d5eb47b9c4024a3b3d96b9c40cf34f09e6682",
+        "callerContextSha256": "83768e49ee74be7d05c6dcd6aa2baa07cc7554c37926c6bc68c3d982e385a9fc",
+        "contextBlockIds": [
+          "w3980-3998-definition",
+          "w3980-3998-direct-01"
+        ]
+      },
+      "rationale": "The target directly expresses resetting to the default in the button context."
+    },
+    {
+      "position": 3998,
+      "locale": "zh-Hant",
+      "sourceId": "components.Settings.Notifications.NotificationsWebhook.resetPayload",
+      "disposition": "accept",
+      "confidence": "moderate",
+      "binding": {
+        "sourceTextSha256": "c0334bae10532242090727ce60382123981e61c854e8b29e78b787a71f48b898",
+        "currentTargetSha256": "3dee9c1dd93650e55a021bdd0c87547119903721065f337c92a223c0ff87fce6",
+        "callerContextSha256": "83768e49ee74be7d05c6dcd6aa2baa07cc7554c37926c6bc68c3d982e385a9fc",
+        "contextBlockIds": [
+          "w3980-3998-definition",
+          "w3980-3998-direct-01"
+        ]
+      },
+      "rationale": "The target directly expresses resetting to the default in the button context."
+    },
+    {
+      "position": 3999,
+      "locale": "es",
+      "sourceId": "components.Settings.Notifications.NotificationsWebhook.resetPayloadSuccess",
+      "disposition": "refinement",
+      "confidence": "moderate",
+      "binding": {
+        "sourceTextSha256": "0369706b867395db31430c30d3ce35fe6babc8a143494ed9b8855d2c234507c9",
+        "currentTargetSha256": "63dea3ba4f55c8d2d8ae5b3f96b3a733ec94fa4d88cdc072a3e2750a1a500e0a",
+        "callerContextSha256": "894f49c2f63aac79eb655d15cccbd18e055325c2ce3c7e2acb201c0cae8fa349",
+        "contextBlockIds": [
+          "w3980-3999-definition",
+          "w3980-3999-direct-01"
+        ]
+      },
+      "rationale": "This is a success toast after restoring the default payload. The current wording is understandable but uses the awkward loan construction “Payload de JSON”; the proposal uses natural Spanish and makes success explicit.",
+      "proposedText": "¡La carga útil JSON se restableció correctamente!"
+    },
+    {
+      "position": 3999,
+      "locale": "fr",
+      "sourceId": "components.Settings.Notifications.NotificationsWebhook.resetPayloadSuccess",
+      "disposition": "refinement",
+      "confidence": "moderate",
+      "binding": {
+        "sourceTextSha256": "0369706b867395db31430c30d3ce35fe6babc8a143494ed9b8855d2c234507c9",
+        "currentTargetSha256": "a8f4d51c54268dcb84b32d5b0c1ee42184d7fceca745eccbdbb25eb0ecbc4468",
+        "callerContextSha256": "894f49c2f63aac79eb655d15cccbd18e055325c2ce3c7e2acb201c0cae8fa349",
+        "contextBlockIds": [
+          "w3980-3999-definition",
+          "w3980-3999-direct-01"
+        ]
+      },
+      "rationale": "The toast follows restoring the default JSON payload. The current target communicates reset data but omits explicit success and uses a broader “data” label; the proposal states both the reset and its success.",
+      "proposedText": "Le contenu JSON a été réinitialisé avec succès !"
+    },
+    {
+      "position": 3999,
+      "locale": "pt-BR",
+      "sourceId": "components.Settings.Notifications.NotificationsWebhook.resetPayloadSuccess",
+      "disposition": "refinement",
+      "confidence": "moderate",
+      "binding": {
+        "sourceTextSha256": "0369706b867395db31430c30d3ce35fe6babc8a143494ed9b8855d2c234507c9",
+        "currentTargetSha256": "39c8c92206fb020138f07ebc8c46ab546f4b4383970f2346cef4fb8b42dbe3f4",
+        "callerContextSha256": "894f49c2f63aac79eb655d15cccbd18e055325c2ce3c7e2acb201c0cae8fa349",
+        "contextBlockIds": [
+          "w3980-3999-definition",
+          "w3980-3999-direct-01"
+        ]
+      },
+      "rationale": "The success toast follows restoring the default JSON payload. The current wording is understandable but elliptical and does not state success explicitly; the proposal makes the restoration and outcome clear.",
+      "proposedText": "O conteúdo JSON foi restaurado para o padrão com sucesso!"
+    }
+  ]
+}

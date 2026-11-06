@@ -1,4 +1,4 @@
-import { IssueStatus, IssueTypeName } from '@server/constants/issue';
+import { IssueStatus } from '@server/constants/issue';
 import { getIntl } from '@server/i18n';
 import globalMessages from '@server/i18n/globalMessages';
 import {
@@ -23,8 +23,14 @@ import type { NotificationAgent, NotificationPayload } from './agent';
 import {
   BaseAgent,
   CONFIGURABLE_NOTIFICATION_HTTP_OPTIONS,
+  getIssueTypeLabel,
+  getLocalizedNotificationPayload,
   getNotificationActionLabel,
   getNotificationActionUrl,
+  getNotificationCommentFrom,
+  getNotificationContent,
+  getNotificationExtras,
+  isolateBidiText,
 } from './agent';
 
 interface EmbedField {
@@ -152,6 +158,9 @@ class SlackAgent
   ): SlackBlockEmbed {
     const settings = this.getSettings();
     const intl = getIntl(settings.options.locale);
+    payload = getLocalizedNotificationPayload(payload, intl);
+    const content = getNotificationContent(payload, intl);
+    const extras = getNotificationExtras(payload, intl);
     const { applicationUrl, applicationTitle } =
       getExternalRuntimeConfig().main;
     const embedPoster = settings.embedPoster;
@@ -162,7 +171,7 @@ class SlackAgent
       fields.push(
         buildSlackField(
           intl.formatMessage(globalMessages.requestedBy),
-          payload.request.requestedBy.displayName
+          isolateBidiText(payload.request.requestedBy.displayName)
         )
       );
 
@@ -200,9 +209,7 @@ class SlackAgent
     } else if (payload.comment) {
       fields.push(
         buildSlackField(
-          intl.formatMessage(globalMessages.commentFrom, {
-            userName: payload.comment.user.displayName,
-          }),
+          getNotificationCommentFrom(payload.comment.user.displayName, intl),
           payload.comment.message
         )
       );
@@ -210,11 +217,11 @@ class SlackAgent
       fields.push(
         buildSlackField(
           intl.formatMessage(globalMessages.reportedBy),
-          payload.issue.createdBy.displayName
+          isolateBidiText(payload.issue.createdBy.displayName)
         ),
         buildSlackField(
           intl.formatMessage(globalMessages.issueType),
-          IssueTypeName[payload.issue.issueType]
+          getIssueTypeLabel(intl, payload.issue.issueType)
         ),
         buildSlackField(
           intl.formatMessage(globalMessages.issueStatus),
@@ -225,20 +232,20 @@ class SlackAgent
       );
     }
 
-    for (const extra of payload.extra ?? []) {
+    for (const extra of extras) {
       fields.push(buildSlackField(extra.name, extra.value));
     }
 
     const blocks: EmbedBlock[] = [];
 
-    if (payload.event) {
+    if (content.event) {
       blocks.push({
         type: 'context',
         elements: [
           {
             type: 'mrkdwn',
             text: `*${escapeSlackMrkdwnText(
-              payload.event,
+              content.event,
               SLACK_SECTION_TEXT_LIMIT - 2
             )}*`,
             verbatim: true,
@@ -251,17 +258,20 @@ class SlackAgent
       type: 'header',
       text: {
         type: 'plain_text',
-        text: truncateSlackText(payload.subject, SLACK_HEADER_TEXT_LIMIT),
+        text: truncateSlackText(
+          isolateBidiText(payload.subject),
+          SLACK_HEADER_TEXT_LIMIT
+        ),
       },
     });
 
-    if (payload.message) {
+    if (content.message) {
       blocks.push({
         type: 'section',
         text: {
           type: 'mrkdwn',
           text: escapeSlackMrkdwnText(
-            payload.message,
+            content.message,
             SLACK_SECTION_TEXT_LIMIT
           ),
           verbatim: true,
@@ -271,7 +281,7 @@ class SlackAgent
             ? {
                 type: 'image',
                 image_url: payload.image,
-                alt_text: payload.subject,
+                alt_text: isolateBidiText(payload.subject),
               }
             : undefined,
       });
@@ -377,7 +387,7 @@ class SlackAgent
 
     return {
       text: escapeSlackMrkdwnText(
-        payload.event ?? payload.subject,
+        content.event ?? isolateBidiText(payload.subject),
         SLACK_FALLBACK_TEXT_LIMIT
       ),
       blocks,

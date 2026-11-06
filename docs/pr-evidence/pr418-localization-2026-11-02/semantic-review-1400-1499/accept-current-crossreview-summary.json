@@ -1,0 +1,74 @@
+{
+  "schemaVersion": 1,
+  "task": "Independent cross-review of W1400–1499 accept-current cells",
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "prState": "OPEN",
+  "isDraft": true,
+  "pin": {
+    "head": "0773321829173ea9fe6c765d16335c27c06c57a2",
+    "tree": "176872baf853ae7278c0c575111bb430026aa454",
+    "baseRefOid": "221d8e0d542802da7529cd272c928cc747677e5c"
+  },
+  "worktree": "/mnt/disks/scratch/task-worktrees/localization-20261102/seerrng-pr418-w1400-1499",
+  "worktreeClean": true,
+  "inputPacket": "/mnt/disks/scratch/task-scratch/seerrng-pr418-window-1400-1499-primary-20261102",
+  "inputManifestSha256": "5b25ad7e2500acd67e289296922490611e62f30a757a116fa41d737aa36436cb",
+  "acceptCurrentRowsReviewed": 708,
+  "crossReviewDispositions": {
+    "accept": 705,
+    "missed-issue": 2,
+    "refinement": 1
+  },
+  "primaryHoldsPreserved": 24,
+  "priorDispositionRowsPreservedWithoutReconsideration": 21,
+  "exceptions": [
+    {
+      "id": "components.GameLibrary.noGames",
+      "locale": "ar",
+      "crossReviewDisposition": "refinement",
+      "currentTarget": "مكتبة لعبك فارغة",
+      "crossReviewTarget": "مكتبة ألعابك فارغة.",
+      "crossReviewTargetHash": "2e0c3f802b06086adc7bcd22191026e03cd3c241fe9554e928cdc27ecaaeaf76",
+      "confidence": "moderate",
+      "rationale": "The current phrase uses لعبك (“your play”) where the empty game-library heading calls for ألعابك (“your games”). The caller shows this as the zero-games empty state. The revised wording keeps that meaning and reads more naturally."
+    },
+    {
+      "id": "components.IdentityMappingControls.noResults",
+      "locale": "ar",
+      "crossReviewDisposition": "missed-issue",
+      "currentTarget": "لم يتم العثور على ألقاب مطابقة",
+      "crossReviewTarget": "لم يتم العثور على عناوين مطابقة.",
+      "crossReviewTargetHash": "477601efa611c483bcc9b737037571f1295863e32c24c49b207f21c4da25b0fc",
+      "confidence": "moderate",
+      "rationale": "In this catalog-title matching flow, ألقاب is read as epithets or honorific titles rather than media titles. عناوين expresses the searched catalog titles."
+    },
+    {
+      "id": "components.IdentityMappingControls.searchFailed",
+      "locale": "ar",
+      "crossReviewDisposition": "missed-issue",
+      "currentTarget": "لقد فشل البحث عن الكتالوج حاول مرة أخرى",
+      "crossReviewTarget": "فشل البحث في الكتالوج. حاول مرة أخرى.",
+      "crossReviewTargetHash": "4817772cce48d43c3abecdf3aba44b5311825b614b220a21175926821bb4b12a",
+      "confidence": "moderate",
+      "rationale": "The current البحث عن الكتالوج reads as searching for the catalog; the caller reports failure of a catalog search. في correctly marks a search in the catalog, and the sentence break preserves the retry instruction."
+    }
+  ],
+  "sourceCurrentCallerPinReattestation": {
+    "all1200InputCellsVerified": true,
+    "currentCatalogsReattested": true,
+    "callerLinesAndBlobsReattested": true,
+    "placeholderFailures": 0,
+    "markupFailures": 0,
+    "protectedLiteralFailures": 0,
+    "primaryHoldHashesReattested": true
+  },
+  "nativeSpeakerReviewPerformed": false,
+  "browserReviewPerformed": false,
+  "notes": [
+    "The 24 primary hold rows remain held and have no proposed targets.",
+    "The 21 frozen prior Spanish dispositions are copied unchanged and were not reconsidered.",
+    "All reviewed accept-current values were compared with exact source/current catalog text and pinned caller context.",
+    "No repository or PR files were modified; no tests/builds/scans/CI were run."
+  ]
+}

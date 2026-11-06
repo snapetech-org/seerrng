@@ -1,0 +1,131 @@
+{
+  "apiTree": "e3076937fe10b4dd3821ea573e8e5e21601fce7d",
+  "branch": "codex/seerrng-localization-overhaul-20261028",
+  "catalogs": {
+    "ar": {
+      "bytes": 1044734,
+      "currentTarget": "إعداد الخدمات",
+      "currentTargetSha256": "32765e12b67ab7b06f7905bec03a24637a4d0a238333eb88020bc63354997d0a",
+      "gitBlob": "abe9e8068ab6975b29320f515238b0697fbd429a",
+      "keyCount": 9494,
+      "path": "src/i18n/locale/ar.json",
+      "sha256": "e2878288b24c257618426ecb9211a317e6dd98bd0a92681f3ea8b12fa1e893f7"
+    },
+    "de": {
+      "bytes": 926897,
+      "currentTarget": "Dienste konfigurieren",
+      "currentTargetSha256": "d1aa30acddfa94e320ef5220190344a96c5f4b2da2cd9c28f91cdd001a619ecb",
+      "gitBlob": "d4ccf71055e972b81be8d2d4cb199318bbadf0a3",
+      "keyCount": 9494,
+      "path": "src/i18n/locale/de.json",
+      "sha256": "761c4bbeb65406b70453189414297d09549063197f0f09340488fbfae39f1769"
+    },
+    "es": {
+      "bytes": 922586,
+      "currentTarget": "Conectar",
+      "currentTargetSha256": "3b0b0fdfe2e3a691cd74f988612c6997feab43bb1fadd343a0616ef885349b3c",
+      "gitBlob": "0a6d66ba4f2319909f13d19a94293679f24ed71f",
+      "keyCount": 9494,
+      "path": "src/i18n/locale/es.json",
+      "sha256": "9f5a72a3f2ccda1cbea61dc173035ff97f65aa50294f86532b1a87b4f7e2e953"
+    },
+    "fr": {
+      "bytes": 940396,
+      "currentTarget": "Configurer les services",
+      "currentTargetSha256": "87b4bbe84c5fe4fb69096f50d7f59279e7b23b47646b8d9ad2db346fc170024d",
+      "gitBlob": "2795b590faa690c3bc9b9f4e8eb4892eccd2dd80",
+      "keyCount": 9494,
+      "path": "src/i18n/locale/fr.json",
+      "sha256": "136222e39d59412feb9e21680868dc348c3ae69e7f34c32933b2632848b9993f"
+    },
+    "hi": {
+      "bytes": 1371851,
+      "currentTarget": "सेवाओं को कॉन्फ़िगर करना",
+      "currentTargetSha256": "50ae228cc83aee92bcb9323cd91e9bd6067b88781a2bb8a9088bcf72f07a1b14",
+      "gitBlob": "2761a0533a50d71af60afdee802e360bca30dce0",
+      "keyCount": 9494,
+      "path": "src/i18n/locale/hi.json",
+      "sha256": "363d7cd84e10c901d159349db2bb3fba767b727062c37b54904db3431c2841ac"
+    },
+    "id": {
+      "bytes": 867838,
+      "currentTarget": "Atur Layanan",
+      "currentTargetSha256": "782030991ff8f4d4dfc2dca345479bbf19dd5cbf5acc7d9b38f41555568c4d95",
+      "gitBlob": "74320769d2d4c2f0b18d9519e2135480b14e3d57",
+      "keyCount": 9494,
+      "path": "src/i18n/locale/id.json",
+      "sha256": "1c7a87cb85218464c71ceedc936810b1cd352cfcd7d35da18c0e2cb000edb84b"
+    },
+    "ja": {
+      "bytes": 1015876,
+      "currentTarget": "連携サービスの設定",
+      "currentTargetSha256": "3c4c533c43064cd2d9a11c80671ec93559086d7a9beb93e4f38904cf2434ea19",
+      "gitBlob": "49b8df39eccd20be1ff85c7be1e143bd90df8a2d",
+      "keyCount": 9494,
+      "path": "src/i18n/locale/ja.json",
+      "sha256": "988c8296d007e79c2478b18dda9de113c42e21ffe5ffedf6d838612e6ae1e581"
+    },
+    "ko": {
+      "bytes": 934300,
+      "currentTarget": "서비스 구성",
+      "currentTargetSha256": "7d945aef06c083cf04ed439e1aae1342099c11e8eb2aa7a5277626ae00d86b77",
+      "gitBlob": "57787032828e746e6fb3d970304315abd55cb5f0",
+      "keyCount": 9494,
+      "path": "src/i18n/locale/ko.json",
+      "sha256": "3ff69507ad19e38385dca7083bfe98cc059159416c322ba98d42451fd1e8887d"
+    },
+    "pt_BR": {
+      "bytes": 911591,
+      "currentTarget": "Configurar Serviços",
+      "currentTargetSha256": "7a20133175bea851c26045f9ae4cc5648deac9616ae46180ccfed473f123aab6",
+      "gitBlob": "4b1908352d29bd9a3a69e13656973ce2311d6398",
+      "keyCount": 9494,
+      "path": "src/i18n/locale/pt_BR.json",
+      "sha256": "50f51950f11fe6f8535783979303ea409a0d825c0db057863537f3622afddda4"
+    },
+    "vi": {
+      "bytes": 969416,
+      "currentTarget": "Cấu hình Dịch vụName",
+      "currentTargetSha256": "5bb62f6bdb5af3f96709230f73b7b98495cd9202382771a4e9bf64d7be313407",
+      "gitBlob": "0d6990f5d662d56b970cb710b58fc129bebfff77",
+      "keyCount": 9494,
+      "path": "src/i18n/locale/vi.json",
+      "sha256": "5464f6e055a27c77c6a60eab8b831e4e7d91dfbb364f7e0bbc7af787752cffd6"
+    },
+    "zh_Hans": {
+      "bytes": 812430,
+      "currentTarget": "配置服务器",
+      "currentTargetSha256": "6121d0c5352ea54c62388935ede71161a16752ed192f1c0cd30065901f7f9e3d",
+      "gitBlob": "7215c90c034b705fa71b513b0c5f0611bf457711",
+      "keyCount": 9494,
+      "path": "src/i18n/locale/zh_Hans.json",
+      "sha256": "8135e3260bac509915edf540488108b7c557a309d59e46930f2150f0cfd6ecb2"
+    },
+    "zh_Hant": {
+      "bytes": 814010,
+      "currentTarget": "設定伺服器",
+      "currentTargetSha256": "e93482b888ee4facd98e123948dcc6cca26f6600dd780b02c44c5636924bdeb6",
+      "gitBlob": "45b188e3e02db1ab27522ff0af5fabf8080825fb",
+      "keyCount": 9494,
+      "path": "src/i18n/locale/zh_Hant.json",
+      "sha256": "05fa4c84087252f27cb439ee33a972c397b801527cf87ef8b1d1d71c6c6b88b4"
+    }
+  },
+  "inputHead": "58697945e3d3fb44c37d49db0cc0f88e3af110cc",
+  "inputTree": "e3076937fe10b4dd3821ea573e8e5e21601fce7d",
+  "livePR": {
+    "base": "221d8e0d542802da7529cd272c928cc747677e5c",
+    "branch": "codex/seerrng-localization-overhaul-20261028",
+    "draft": true,
+    "head": "58697945e3d3fb44c37d49db0cc0f88e3af110cc",
+    "state": "open"
+  },
+  "localCatalogsReadFrom": "git show 58697945e3d3fb44c37d49db0cc0f88e3af110cc:<path>",
+  "localHead": "58697945e3d3fb44c37d49db0cc0f88e3af110cc",
+  "localTree": "e3076937fe10b4dd3821ea573e8e5e21601fce7d",
+  "primaryPacketPath": "/mnt/disks/scratch/task-scratch/seerrng-pr418-configureservices-primary-20261102",
+  "primaryPacketSHA256SUMSsha256": "593e508e968bb4141260ee36b66f9a3a96f4a6ffa976f8b3db499e79fb9fd9f3",
+  "primaryPacketVerifiedEntries": 4,
+  "remoteBranchHead": "58697945e3d3fb44c37d49db0cc0f88e3af110cc",
+  "worktreeStatus": "M src/i18n/locale/ar.json\n M src/i18n/locale/de.json\n M src/i18n/locale/es.json\n M src/i18n/locale/fr.json\n M src/i18n/locale/hi.json\n M src/i18n/locale/id.json\n M src/i18n/locale/ja.json\n M src/i18n/locale/ko.json\n M src/i18n/locale/pt_BR.json\n M src/i18n/locale/vi.json\n M src/i18n/locale/zh_Hans.json\n M src/i18n/locale/zh_Hant.json\n?? .next-webpack-dev\n?? docs/pr-evidence/pr418-localization-2026-11-02/setup-step5-5417/\n?? docs/pr-evidence/pr418-localization-2026-11-02/window-2900-2999/"
+}

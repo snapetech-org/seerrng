@@ -1,0 +1,24 @@
+{
+  "window": "W3700-W3719",
+  "range": [
+    3700,
+    3719
+  ],
+  "sourceOrderSha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+  "candidateFreeManifestSha256": "6193b5634984f3a901f6c0b5283be589d2587349aed56ab863ddf1f3b406536e",
+  "applicationLedgerSha256": "b3a20d2b39c0865c3af40c961efdad74d63af4d420bd4c253951b26a2ae4bf9c",
+  "applicationReadbackSha256": "caf2b7dab34d359ff219104dde4099b6e942d87b5e58e49308ef213646784a16",
+  "applicationSummarySha256": "4e833259ebba5beb0e570f0801ff382af7d1d98bd596409a31302385c54ada32",
+  "applicationRows": 240,
+  "reattestedRows": 240,
+  "priorDispositionCounts": {
+    "correction": 48,
+    "accept-current": 155,
+    "refinement": 37
+  },
+  "appliedUpdateCount": 85,
+  "previousHead": "f4b796d4305f32e232d9f72ca93f23da775fd5c6",
+  "previousTree": "c4f1553c3342f787101832f4bcb3171744df58df",
+  "currentHead": "1ca6ec2d5a0e9ef8000c69997e75648a8ccaf06e",
+  "currentTree": "6a51f3fb1d1f65c12bfe82bf47834626aa364488"
+}

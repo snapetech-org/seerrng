@@ -1,0 +1,61 @@
+{
+  "artifact": "SeerrNG W2700-W2799 independent cross-review",
+  "createdUtc": "2026-11-02T22:24:00Z",
+  "files": [
+    {
+      "path": "README.md",
+      "bytes": 2622,
+      "sha256": "f1dae4d9684c154a7a184c4ae432ba633c8d6273e4c6c1c4e0bbd6b4fcaba30f"
+    },
+    {
+      "path": "caller-pin-reattestation.json",
+      "bytes": 191050,
+      "sha256": "940358e6eaf5fc81951d6f7692bb3500ee1cd777189679b6f3a742392fef268f"
+    },
+    {
+      "path": "cross-review-ledger.jsonl",
+      "bytes": 3020497,
+      "sha256": "98ac70c1fbd312fe85d164b2d9890e19c298430a971c99c02d6ad40c8345a1d2"
+    },
+    {
+      "path": "external-reference-checks.json",
+      "bytes": 2302,
+      "sha256": "788783dee8a96378bcff813dee2c8fe8a03f60c06cb835fc49c40cccb553fd0a"
+    },
+    {
+      "path": "helper-review-summary.json",
+      "bytes": 615,
+      "sha256": "4026bc111b588a7f3387045469e09626d9f613270a1d9e6af99dc3b8bb43d19f"
+    },
+    {
+      "path": "independent-findings.json",
+      "bytes": 7171,
+      "sha256": "8a261d6253645462dc8d2e24c3a60d3471a5c4f50aa595d7485f34db5c635edb"
+    },
+    {
+      "path": "input-attestation.json",
+      "bytes": 1947,
+      "sha256": "be5dc4fb31df91f80706514c202d34388d932c8146bfe681a312517148d8de31"
+    },
+    {
+      "path": "live-pr-snapshots-end.json",
+      "bytes": 2837,
+      "sha256": "dc604f4b6c41a4de17f3c0c64bd4a0c8aa7ed0ef6abb2547a4661d163f67f9ee"
+    },
+    {
+      "path": "live-pr-snapshots-start.json",
+      "bytes": 2837,
+      "sha256": "aef55b76f73eb4486c67922a92ca1baa84000330f43f51e4acf947ebb7752baf"
+    },
+    {
+      "path": "structural-audit.json",
+      "bytes": 1884,
+      "sha256": "7e476f5e761b9dadb648e34660abf83b65d8a40c872315766d400f00d6c33ee1"
+    },
+    {
+      "path": "summary.json",
+      "bytes": 2222,
+      "sha256": "af2f355773122bc45a9769fe9328f2f289f667ff74cc23bea323317a20b8a8a0"
+    }
+  ]
+}

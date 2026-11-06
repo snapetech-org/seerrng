@@ -1,0 +1,181 @@
+{
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "head": "266d8fff4beb56eab17c9de0f6560c619577e3de",
+  "tree": "5da8f5e38b95b4287821b603c4686fe866b83760",
+  "sourceOrderCount": 9494,
+  "sourceOrderSha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+  "before": {
+    "position": 3339,
+    "id": "components.Requests.fourK",
+    "source": "4K"
+  },
+  "first": {
+    "position": 3340,
+    "id": "components.Requests.genres",
+    "source": "Genres",
+    "sourceSha256": "3561abfe8067f3c1cdec6de4240f041af78d44a6ba619deee9e1d0735fe73e1e"
+  },
+  "last": {
+    "position": 3359,
+    "id": "components.Requests.mediaAndFormat",
+    "source": "Media & Format",
+    "sourceSha256": "b6136c0366498f839f4d77ebf3cde523c63aa7ce6e35a509dd086e72a5f7b96f"
+  },
+  "after": {
+    "position": 3360,
+    "id": "components.Requests.mediaFilters",
+    "source": "Media Filters"
+  },
+  "localeCatalogPins": {
+    "src/i18n/locale/en.json": {
+      "sha256": "75ff3c90b52aedd636a506281ffbd6fb2d3739c61294b6008a517f17647e2316",
+      "gitBlob": "12e04a118c30b71b3714291adeaf9fdb2735cee4",
+      "keyCount": 9494,
+      "orderedKeySha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072"
+    },
+    "src/i18n/locale/es.json": {
+      "sha256": "fe353bf4e06f90656018775445620224287d257dfdbf0ce36fa67ef56d28d8ee",
+      "gitBlob": "108ef03287234f8406742921fc3c1104b28968ed",
+      "keyCount": 9494,
+      "orderedKeySha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072"
+    },
+    "src/i18n/locale/zh_Hans.json": {
+      "sha256": "f288d7e5f30368b812859107c2d4448601cb24b61bf987e3d1522da2d40fdf55",
+      "gitBlob": "08a42d3ab1d1a4f93ecf558ee310282b27354a57",
+      "keyCount": 9494,
+      "orderedKeySha256": "8d5fd7bd4351bc64c5ee813f2e50196608869e165866f3202a312078732c2baf"
+    },
+    "src/i18n/locale/hi.json": {
+      "sha256": "160e5d5bca422f27eb908994296ece2cc4fe325325b798e1ce128ac2a4bd7d75",
+      "gitBlob": "1db8cff4c0c901d4020d11e720a9c0108defcb70",
+      "keyCount": 9494,
+      "orderedKeySha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072"
+    },
+    "src/i18n/locale/de.json": {
+      "sha256": "56050127026c95225161d061deebacd87e38b0e03abbd9e1903310fa5df645d1",
+      "gitBlob": "d8759132874e26ca2e65bef38bac14c6c137baad",
+      "keyCount": 9494,
+      "orderedKeySha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072"
+    },
+    "src/i18n/locale/ja.json": {
+      "sha256": "7aa4b7c9edf5ccbc12347c65e5904a6b08a3e1d69851ad5674f44963fcf4cd39",
+      "gitBlob": "3dbad565950597aeac594e41ea7ec462c2b8b91f",
+      "keyCount": 9494,
+      "orderedKeySha256": "8d5fd7bd4351bc64c5ee813f2e50196608869e165866f3202a312078732c2baf"
+    },
+    "src/i18n/locale/fr.json": {
+      "sha256": "a28f27cd6fdf5f1ca5a85b9caece80ca18859a0af208cc02283fd63ecefe6f6c",
+      "gitBlob": "46dea32613fa9fce9cecee2ca46922ef42865b62",
+      "keyCount": 9494,
+      "orderedKeySha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072"
+    },
+    "src/i18n/locale/pt_BR.json": {
+      "sha256": "81adadf1c7e28aa4eec45be22cc7b00683d2d847b81bf7eea5fa4f3b8e146cf5",
+      "gitBlob": "cf0ebb5dd15cc268f3e258fce4f9b6cc9ffab104",
+      "keyCount": 9494,
+      "orderedKeySha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072"
+    },
+    "src/i18n/locale/ar.json": {
+      "sha256": "eae8e5d33910ac3c9f9699af3ec82041a67eecbd0a2afd90f9e487d35d4368e2",
+      "gitBlob": "6aabbaed97ca91f41ae72f84be9c93aafc57c850",
+      "keyCount": 9494,
+      "orderedKeySha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072"
+    },
+    "src/i18n/locale/ko.json": {
+      "sha256": "4a395384f0e65c07a500052d430bbb17c3c79619b2184d4668bc1c7024cf7182",
+      "gitBlob": "29164e7e54acb1262c4a6d01f519d84280aa78c7",
+      "keyCount": 9494,
+      "orderedKeySha256": "8d5fd7bd4351bc64c5ee813f2e50196608869e165866f3202a312078732c2baf"
+    },
+    "src/i18n/locale/zh_Hant.json": {
+      "sha256": "4f56a79a155cbb1ff3bd415dc38311e4983aee032fe72fa6f221050186b4e666",
+      "gitBlob": "b28d26d450f404d5c1369b5b7bc2af058d07f784",
+      "keyCount": 9494,
+      "orderedKeySha256": "8d5fd7bd4351bc64c5ee813f2e50196608869e165866f3202a312078732c2baf"
+    },
+    "src/i18n/locale/vi.json": {
+      "sha256": "8c36022c6ce900a93439d25c1d732ec92b5e2a3d4407b0f50657106345294c23",
+      "gitBlob": "71299a39d5690be9dcd1a0b565c60b5e605b39e4",
+      "keyCount": 9494,
+      "orderedKeySha256": "8d5fd7bd4351bc64c5ee813f2e50196608869e165866f3202a312078732c2baf"
+    },
+    "src/i18n/locale/id.json": {
+      "sha256": "da76620a8c449aefe8f5601c4fcddca9486efec010f00e4fbe4d924f4789cda1",
+      "gitBlob": "cfc0d6f00bf6c0f2ac33fb7ffd534b2302af9df1",
+      "keyCount": 9494,
+      "orderedKeySha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072"
+    }
+  },
+  "callerFiles": {
+    "src/components/RequestStatus/messages.tsx": {
+      "sha256": "5c7691636c95eed239cf012fa2e8bdc066ef773a8b4288bbd93fafddb15324eb",
+      "gitBlob": "73f660f8595c193f4996c2720d0566212545f76c",
+      "lineCount": 121
+    },
+    "server/lib/requestStatus.ts": {
+      "sha256": "63dd1b43e684a40eb82253a2942d7652cad63d87234b5c279d73af0b945b2d31",
+      "gitBlob": "e75608e1c2921b5f7b3e822c25a690f8b1cc5e82",
+      "lineCount": 2328
+    },
+    "src/components/Requests/index.tsx": {
+      "sha256": "25b612dcda274fe2ea64b76f169587e153b04a675c9b8cd817814d9fbfde5360",
+      "gitBlob": "84f6a19674b329df0ef6be6483d74bbaeb110ccb",
+      "lineCount": 3115
+    },
+    "src/components/Requests/destructiveActions.tsx": {
+      "sha256": "16d562185c1e1f3a94398369b4ab3eec28085033dcc3465c32557752687d1d57",
+      "gitBlob": "09884f99a738ce4402b5fb121d15022f0efc3a67",
+      "lineCount": 173
+    },
+    "src/pages/requests/index.tsx": {
+      "sha256": "64273c876d30c6ee3ee1f7419f3376cd1849fcc6fbbc37cec781c340e3c6cb76",
+      "gitBlob": "17a3c44c6c3073fcaecd94cc77993a8bae3bdc4d",
+      "lineCount": 6
+    },
+    "src/utils/defineMessages.ts": {
+      "sha256": "761cb0362244e473b6993c78f4b852a6673c95e35da13990856e6a44c6d9169f",
+      "gitBlob": "bb8fadb4baf7764b0af8b1a2294bf43d4196aaaa",
+      "lineCount": 26
+    }
+  },
+  "orderedLocaleKeySequencesMatch": false,
+  "perLocaleOrderedKeyHashesPinned": true,
+  "callerHolds": [
+    {
+      "position": 3358,
+      "id": "components.Requests.manageRequests",
+      "reason": "no direct production reference to this components.Requests message ID was found; generic/dynamic RequestStatus rendering is context only",
+      "definitionsFound": 1,
+      "directMessageReferences": 0,
+      "source": "Manage Requests"
+    }
+  ],
+  "placeholderParityErrors": [],
+  "protectedTermsPolicy": [
+    "Seerr",
+    "ChaptarrNG",
+    "Bindery",
+    "Bookshelf",
+    "Radarr",
+    "Sonarr",
+    "Plex",
+    "Emby",
+    "Jellyfin",
+    "TMDb",
+    "IMDb",
+    "Open Library",
+    "ComicVine",
+    "MusicBrainz",
+    "TheTVDB",
+    "Trakt",
+    "Letterboxd",
+    "Prowlarr",
+    "Bazarr",
+    "Lidarr",
+    "Readarr",
+    "Whisparr",
+    "Sportarr",
+    "Audiobookshelf"
+  ]
+}

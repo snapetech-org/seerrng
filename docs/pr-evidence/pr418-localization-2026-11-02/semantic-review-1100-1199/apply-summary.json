@@ -1,0 +1,63 @@
+{
+  "repository": "snapetech-org/seerrng",
+  "pull_request": 418,
+  "input_head": "c8f4b2f5f1f42730dcfa8d36214ee827a5d9395a",
+  "input_tree": "0fe67d04abfd49681556b44e900aceec1b5a9a75",
+  "source_positions": [
+    1100,
+    1199
+  ],
+  "source_ids": 100,
+  "cells_reviewed": 1200,
+  "primary_candidates": 218,
+  "first_crossreview": {
+    "accepted_candidates": 198,
+    "refined": 20,
+    "missed": 7,
+    "held": 0
+  },
+  "second_crossreview": {
+    "rows": 27,
+    "accepted_first_target": 25,
+    "refined": 2,
+    "held": 0
+  },
+  "applied_corrections": 225,
+  "corrections_by_locale": {
+    "ar": 25,
+    "de": 13,
+    "es": 14,
+    "fr": 18,
+    "hi": 21,
+    "id": 23,
+    "ja": 8,
+    "ko": 13,
+    "pt-BR": 23,
+    "vi": 33,
+    "zh-CN": 17,
+    "zh-TW": 17
+  },
+  "catalog_keys_per_locale": {
+    "ar": 9494,
+    "de": 9494,
+    "es": 9494,
+    "fr": 9494,
+    "hi": 9494,
+    "id": 9494,
+    "ja": 9494,
+    "ko": 9494,
+    "pt_BR": 9494,
+    "vi": 9494,
+    "zh_Hans": 9494,
+    "zh_Hant": 9494
+  },
+  "source_current_target_hashes_reverified": true,
+  "exact_target_readbacks_passed": 225,
+  "all_231_caller_references_reverified_by_first_crossreview": true,
+  "second_review_caller_references_reattested": 67,
+  "placeholder_markup_parity": "pass",
+  "prior_root_dispositions_preserved": 6,
+  "native_speaker_approval": false,
+  "browser_review": false,
+  "tests_builds_scans_ci_workflows_releases_tags_merges": false
+}

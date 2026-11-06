@@ -47,7 +47,7 @@ const UserNotificationSettings = ({
       text: intl.formatMessage(messages.email),
       content: (
         <span className="flex items-center">
-          <EnvelopeIcon className="mr-2 h-4" />
+          <EnvelopeIcon className="me-2 h-4" />
           {intl.formatMessage(messages.email)}
         </span>
       ),
@@ -59,7 +59,7 @@ const UserNotificationSettings = ({
       text: intl.formatMessage(messages.webpush),
       content: (
         <span className="flex items-center">
-          <CloudIcon className="mr-2 h-4" />
+          <CloudIcon className="me-2 h-4" />
           {intl.formatMessage(messages.webpush)}
         </span>
       ),
@@ -71,7 +71,7 @@ const UserNotificationSettings = ({
       text: 'Discord',
       content: (
         <span className="flex items-center">
-          <DiscordLogo className="mr-2 h-4" />
+          <DiscordLogo className="me-2 h-4" />
           Discord
         </span>
       ),
@@ -82,7 +82,7 @@ const UserNotificationSettings = ({
       text: 'Pushbullet',
       content: (
         <span className="flex items-center">
-          <PushbulletLogo className="mr-2 h-4" />
+          <PushbulletLogo className="me-2 h-4" />
           Pushbullet
         </span>
       ),
@@ -93,7 +93,7 @@ const UserNotificationSettings = ({
       text: 'Pushover',
       content: (
         <span className="flex items-center">
-          <PushoverLogo className="mr-2 h-4" />
+          <PushoverLogo className="me-2 h-4" />
           Pushover
         </span>
       ),
@@ -104,7 +104,7 @@ const UserNotificationSettings = ({
       text: 'Telegram',
       content: (
         <span className="flex items-center">
-          <TelegramLogo className="mr-2 h-4" />
+          <TelegramLogo className="me-2 h-4" />
           Telegram
         </span>
       ),

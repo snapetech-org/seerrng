@@ -34,7 +34,7 @@ collectionRoutes.post<{ id: string }>(
       const status = await checkCollection(collectionId);
       const collection = await new TheMovieDb().getCollection({
         collectionId,
-        language: req.locale,
+        language: req.metadataLocale,
       });
       const media = await Media.getRelatedMedia(
         req.user,
@@ -165,7 +165,7 @@ collectionRoutes.get<{ id: string }>('/:id', async (req, res, next) => {
   if ('error' in parsedLanguage) {
     return res.status(400).json({ status: 400, message: parsedLanguage.error });
   }
-  const language = parsedLanguage.value ?? req.locale;
+  const language = parsedLanguage.value ?? req.metadataLocale;
 
   try {
     const collection = await tmdb.getCollection({

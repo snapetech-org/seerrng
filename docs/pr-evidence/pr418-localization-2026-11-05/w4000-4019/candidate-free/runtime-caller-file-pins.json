@@ -1,0 +1,62 @@
+{
+  "exactHead": "77d30ae742aad7245e6e419237fca6a544531e1f",
+  "exactTree": "2c6fe4a0c1c33aa56b01f06a70702f68598509a7",
+  "files": [
+    {
+      "byteCount": 16976,
+      "gitBlob": "1d1b8526c0534f203bf6f9f2ca88ad73ca7e9ff2",
+      "lineCount": 451,
+      "path": "src/components/Settings/Notifications/NotificationsDiscord.tsx",
+      "sha256": "3861b934babb0dbd8134058d6147a8637f223a4d3162d7d12873398c8a600b73"
+    },
+    {
+      "byteCount": 22012,
+      "gitBlob": "3781fde07e1ada5d76c60cd87b5eb5ed6e3b283e",
+      "lineCount": 570,
+      "path": "src/components/Settings/Notifications/NotificationsEmail.tsx",
+      "sha256": "45ca9601e807c0cc04d2bb26b5ba70928c21bad8fd82d12a5abc1412f3fdd1d0"
+    },
+    {
+      "byteCount": 15183,
+      "gitBlob": "a9f2883abd72a2605b3fa2955aea0d1ab340a111",
+      "lineCount": 408,
+      "path": "src/components/Settings/Notifications/NotificationsTelegram.tsx",
+      "sha256": "8191e7f5b1df13fce4750a2d39f973dd596442a6775123b108800abae52d2614"
+    },
+    {
+      "byteCount": 22779,
+      "gitBlob": "92fcdd07ebd0d605e540155d95601656a198b025",
+      "lineCount": 627,
+      "path": "src/components/Settings/Notifications/NotificationsWebhook/index.tsx",
+      "sha256": "cba9fff86bf560a8ca2e069d751dc4c1162731facf2a44f90130caabdc3d6cd5"
+    },
+    {
+      "byteCount": 662,
+      "gitBlob": "7a583a220bba307f0841dad83d70cec2b89492da",
+      "lineCount": 19,
+      "path": "src/pages/settings/notifications/discord.tsx",
+      "sha256": "f4d89a6ac1cb6c2243597f54e3d4d09e62eabf30f785bd68033f3288e4c1116a"
+    },
+    {
+      "byteCount": 656,
+      "gitBlob": "2193f17687523ac6c09c40c76d2252a745be2b8c",
+      "lineCount": 19,
+      "path": "src/pages/settings/notifications/email.tsx",
+      "sha256": "7fc588dca7d5694cb95d45a4d5eb88bc6f325b365d42b80a5fe5af4a2fb39e33"
+    },
+    {
+      "byteCount": 665,
+      "gitBlob": "e4d98d5c76913bd8c72cab6a6486ab9096a34e7f",
+      "lineCount": 19,
+      "path": "src/pages/settings/notifications/telegram.tsx",
+      "sha256": "12b5d26e0d0d68f80c4b683154c5af63ccff9bfc67611f1e6c6c216954d6e5c5"
+    },
+    {
+      "byteCount": 662,
+      "gitBlob": "52ce2e0116d0f8dd1bb96d02f3b4328ff8dc4968",
+      "lineCount": 19,
+      "path": "src/pages/settings/notifications/webhook.tsx",
+      "sha256": "cb689594c992ee3cc3e65892a6987aec0c245563f764e3cb11494e7af6822876"
+    }
+  ]
+}

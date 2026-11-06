@@ -1,0 +1,12 @@
+{
+  "artifact": "SeerrNG PR #418 W3940-W3959 PR body append prefix attestation",
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "preAppendBodyByteLength": 116210,
+  "preAppendBodySha256": "e7a86b34cc07105f88749f12dcb234c0af1ae18344d5cb8fe50b322556f592d6",
+  "appendTemplateByteLength": 1274,
+  "appendTemplateSha256": "dd734592f2fdc72c33f8bacec88eb9b6c33e6fb4e92f8e7a19246b98aeaadde4",
+  "expectedPostAppendBodyByteLength": 117484,
+  "expectedPostAppendBodySha256": "ff42a99517efbf6010a86682963b5d12fbcfb46f5c361405a972c6793737bd60",
+  "previousBodyIsByteForBytePrefix": true
+}

@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 1,
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "preApplyHead": "2b40cb73e2d2f1b85b1532f0145c3f2f961f06b0",
+  "preApplyTree": "fdc5c1c42b0688c9c388adcd2b2996d00db99faf",
+  "proposalLedgerSha256": "06b367d98cf0c0d811ae0012c96462a274eec81da1e4bb06c2ca204df1bbbbac",
+  "rootCrossReviewSha256": "94f9149a82d8abd64ce6caf26332451b3cb8958a0e2f9a0640fa38c5e7166cbd",
+  "rootApplyPlanSha256": "7d9e852345e8f7bee5ece17c92ec2b78de38eaba70cd951006a19421954b35f1",
+  "rowsApplied": 181,
+  "rootReviewCounts": {
+    "acceptedProposal": 176,
+    "refined": 5,
+    "acceptedCurrent": 1
+  },
+  "perFile": [
+    {
+      "path": "server/i18n/locale/ar.json",
+      "rowsApplied": 43,
+      "sha256": "ae3cc33d1352d57e6dcbaa6299a0ca655632cde41564696fdfcc33d5cf0205ee",
+      "gitBlob": "1a8b5c2265252fa8eccb274b29136feaee32b24e"
+    },
+    {
+      "path": "src/i18n/locale/ar.json",
+      "rowsApplied": 138,
+      "sha256": "d8b21c494d294d29647e667a7c77b96f6bbbe619ddb9d29721807297b19514f5",
+      "gitBlob": "9c2402951806abded20a178e6805fd262ceff734"
+    }
+  ],
+  "exactChangedKeyCoverage": "pass",
+  "englishCatalogParity": "pass",
+  "nonemptyStrings": "pass",
+  "placeholdersAndIcu": "pass",
+  "protectedLiterals": "pass",
+  "numericParity": "pass",
+  "duplicateJsonKeys": "none",
+  "gitDiffCheck": "pass",
+  "exactLiteralOnlyException": [
+    "utils.ApiMessage.ma64b218fa0087783f3e2"
+  ],
+  "nativeSpeakerApproval": false,
+  "testsBuildCiReleaseRun": false
+}

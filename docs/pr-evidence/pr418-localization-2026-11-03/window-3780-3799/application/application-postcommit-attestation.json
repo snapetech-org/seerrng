@@ -1,0 +1,17 @@
+{
+  "branchRef": "39b0010ce37725c7a35af9a5cbc9f0898edd1563",
+  "capturedAtUTC": "2026-11-04T02:53:49.773456+00:00",
+  "deployments": [],
+  "deploymentsAtCommit": 0,
+  "pullRef": "39b0010ce37725c7a35af9a5cbc9f0898edd1563",
+  "pullRequest": {
+    "baseRefName": "main",
+    "baseRefOid": "fa40534ccced75bde1125c14760514fcd5d7de4d",
+    "headRefName": "codex/seerrng-localization-overhaul-20261028",
+    "headRefOid": "39b0010ce37725c7a35af9a5cbc9f0898edd1563",
+    "isDraft": true,
+    "number": 418,
+    "state": "OPEN"
+  },
+  "tree": "d43e1eb52460e1911f856e024092c1dede0a665d"
+}

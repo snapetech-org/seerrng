@@ -1,0 +1,15 @@
+{
+  "repository": "snapetech-org/SeerrNG",
+  "pullRequest": 418,
+  "head": "6bc8d0bd3dfb4f8c87c307a3e562e0fd12474118",
+  "tree": "44cf1a02d645026872759fa04a7506ee738381e5",
+  "primaryPacket": "/mnt/disks/scratch/task-scratch/seerrng-pr418-window-2700-2799-primary-20261102",
+  "primaryChecksumSha256": "fc647876fc80da7b88144bc6fed1da4cb9bf94ff8776dbe266877a6763a4def4",
+  "crossReviewPacket": "/mnt/disks/scratch/task-scratch/seerrng-pr418-window-2700-2799-crossreview-20261102",
+  "crossReviewChecksumSha256": "aeab290d46a76f663fdd5ad101a9838e6d7b1e6a6cfecc02d6ba6c1f872615cb",
+  "allSevenPrSnapshotsStable": true,
+  "worktreeHeadAndTreeMatch": true,
+  "worktreeCleanBeforeApply": true,
+  "rowsAttested": 1200,
+  "callerReferences": 472
+}

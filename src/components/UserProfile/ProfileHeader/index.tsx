@@ -180,7 +180,7 @@ const ProfileHeader = ({ user, isSettingsPage }: ProfileHeaderProps) => {
               {user.displayName}
             </Link>
             {user.email && user.displayName.toLowerCase() !== user.email && (
-              <span className="text-sm text-gray-400 sm:ml-2 sm:text-lg">
+              <span className="text-sm text-gray-400 sm:ms-2 sm:text-lg">
                 ({user.email})
               </span>
             )}

@@ -1,0 +1,213 @@
+{
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "head": "7f652dc9b529506fded0064f73cf4a4d32dba1a9",
+  "tree": "9a42f2efdc0f64e99928a4994304413036b8a315",
+  "sourceOrderCount": 9494,
+  "sourceOrderSha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+  "before": {
+    "position": 3299,
+    "id": "components.Requests.available",
+    "source": "Available"
+  },
+  "first": {
+    "position": 3300,
+    "id": "components.Requests.book",
+    "source": "Book",
+    "sourceSha256": "909cb81127c5e1944b16dc5944ade59facb822c7a3f250d1f0256293bfd3c055"
+  },
+  "last": {
+    "position": 3319,
+    "id": "components.Requests.deleteTooltip",
+    "source": "Delete this request and its status history.",
+    "sourceSha256": "5224a9a9cab1036b5880e39953d92d309a73714c25ad0070bace608c168ad24e"
+  },
+  "after": {
+    "position": 3320,
+    "id": "components.Requests.deleted",
+    "source": "Deleted"
+  },
+  "localeCatalogPins": {
+    "src/i18n/locale/en.json": {
+      "sha256": "75ff3c90b52aedd636a506281ffbd6fb2d3739c61294b6008a517f17647e2316",
+      "gitBlob": "12e04a118c30b71b3714291adeaf9fdb2735cee4",
+      "keyCount": 9494,
+      "orderedKeySha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072"
+    },
+    "src/i18n/locale/es.json": {
+      "sha256": "17135f741910363fffbb2d6d2a14caf6c1e1e292cf9309bfa6c4827a7fd4f840",
+      "gitBlob": "f6e8ac0e08758288dbfba3fb57d6121716be4e5f",
+      "keyCount": 9494,
+      "orderedKeySha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072"
+    },
+    "src/i18n/locale/zh_Hans.json": {
+      "sha256": "73a1b7437b86cd8c97a922fd1dbf3edffd53ef1d0d09970f5a8792249b3168eb",
+      "gitBlob": "c9b267b1dec07aade73adef31e2a75d2df318b66",
+      "keyCount": 9494,
+      "orderedKeySha256": "8d5fd7bd4351bc64c5ee813f2e50196608869e165866f3202a312078732c2baf"
+    },
+    "src/i18n/locale/hi.json": {
+      "sha256": "638836be9fba03675a72a2b89b902b041e9ce2691284d3f8242566fcbc132707",
+      "gitBlob": "84e0b3c85523b10ed7b0e566feaab87cea470ed3",
+      "keyCount": 9494,
+      "orderedKeySha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072"
+    },
+    "src/i18n/locale/de.json": {
+      "sha256": "dae4f53c5a73bccfe5d35732bc601f3f694a2cfbd3b39044c536be15d2b8bdd1",
+      "gitBlob": "1d2b86ef91d93c976b72ea42bba6e1045d434001",
+      "keyCount": 9494,
+      "orderedKeySha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072"
+    },
+    "src/i18n/locale/ja.json": {
+      "sha256": "70c6177f76fbfd68b8059c198eca13a454943783ecf952c329529f6958234926",
+      "gitBlob": "ed545aca579d7be6e51169da0f9af3aa4ae01d2e",
+      "keyCount": 9494,
+      "orderedKeySha256": "8d5fd7bd4351bc64c5ee813f2e50196608869e165866f3202a312078732c2baf"
+    },
+    "src/i18n/locale/fr.json": {
+      "sha256": "75c7ba987aae70be2fd38cd769a8c4e9785185366c31a520b1f69a8c5396e2a7",
+      "gitBlob": "88adceb6d48fe3a6112f46e3f961f9e55d9bd711",
+      "keyCount": 9494,
+      "orderedKeySha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072"
+    },
+    "src/i18n/locale/pt_BR.json": {
+      "sha256": "cb9bb624dbe20edfa8a0a45fe3a5e6d1b86d3cccede82b99602535e1e263f21b",
+      "gitBlob": "c3e7b1feb89e95cd941c0a496bafeaef02bbe431",
+      "keyCount": 9494,
+      "orderedKeySha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072"
+    },
+    "src/i18n/locale/ar.json": {
+      "sha256": "3773e99db951277157279c89bf16fe510cba3badfd046c587fba6ace8096b50f",
+      "gitBlob": "f0a49d7cc0198363d64ef48c310c6e88ffc6bf2e",
+      "keyCount": 9494,
+      "orderedKeySha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072"
+    },
+    "src/i18n/locale/ko.json": {
+      "sha256": "7ba2aa394e9b81c0c2a4efde8668f2d068a8865675d04c119014e57798ee0032",
+      "gitBlob": "069bf54641e76a6675858526028a1e25a78763ec",
+      "keyCount": 9494,
+      "orderedKeySha256": "8d5fd7bd4351bc64c5ee813f2e50196608869e165866f3202a312078732c2baf"
+    },
+    "src/i18n/locale/zh_Hant.json": {
+      "sha256": "ed074a77cbe65ef6cb7ca85129e42090c02bef18cfd8b70266cd94e8fd64e845",
+      "gitBlob": "0a1b16c94a164560bea82fc3bcee41e4cb188a67",
+      "keyCount": 9494,
+      "orderedKeySha256": "8d5fd7bd4351bc64c5ee813f2e50196608869e165866f3202a312078732c2baf"
+    },
+    "src/i18n/locale/vi.json": {
+      "sha256": "4069d25fdb0a597e9f155c14925a71ae9c435c9cdfd5d1213bb61d53173f35c8",
+      "gitBlob": "09941d9e38bce0c3ba40fff623f919da4edae678",
+      "keyCount": 9494,
+      "orderedKeySha256": "8d5fd7bd4351bc64c5ee813f2e50196608869e165866f3202a312078732c2baf"
+    },
+    "src/i18n/locale/id.json": {
+      "sha256": "220d30fea08ffb02c057801560de6477725b79c0166c902b36a2df28d01d839d",
+      "gitBlob": "269f1289558494f0532eb2b304c4b354e133a5df",
+      "keyCount": 9494,
+      "orderedKeySha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072"
+    }
+  },
+  "callerFiles": {
+    "src/components/RequestStatus/messages.tsx": {
+      "sha256": "5c7691636c95eed239cf012fa2e8bdc066ef773a8b4288bbd93fafddb15324eb",
+      "gitBlob": "73f660f8595c193f4996c2720d0566212545f76c",
+      "lineCount": 121
+    },
+    "server/lib/requestStatus.ts": {
+      "sha256": "63dd1b43e684a40eb82253a2942d7652cad63d87234b5c279d73af0b945b2d31",
+      "gitBlob": "e75608e1c2921b5f7b3e822c25a690f8b1cc5e82",
+      "lineCount": 2328
+    },
+    "src/components/Requests/index.tsx": {
+      "sha256": "25b612dcda274fe2ea64b76f169587e153b04a675c9b8cd817814d9fbfde5360",
+      "gitBlob": "84f6a19674b329df0ef6be6483d74bbaeb110ccb",
+      "lineCount": 3115
+    },
+    "src/components/Requests/destructiveActions.tsx": {
+      "sha256": "16d562185c1e1f3a94398369b4ab3eec28085033dcc3465c32557752687d1d57",
+      "gitBlob": "09884f99a738ce4402b5fb121d15022f0efc3a67",
+      "lineCount": 173
+    },
+    "src/pages/requests/index.tsx": {
+      "sha256": "64273c876d30c6ee3ee1f7419f3376cd1849fcc6fbbc37cec781c340e3c6cb76",
+      "gitBlob": "17a3c44c6c3073fcaecd94cc77993a8bae3bdc4d",
+      "lineCount": 6
+    },
+    "src/utils/defineMessages.ts": {
+      "sha256": "761cb0362244e473b6993c78f4b852a6673c95e35da13990856e6a44c6d9169f",
+      "gitBlob": "bb8fadb4baf7764b0af8b1a2294bf43d4196aaaa",
+      "lineCount": 26
+    }
+  },
+  "orderedLocaleKeySequencesMatch": false,
+  "perLocaleOrderedKeyHashesPinned": true,
+  "callerHolds": [
+    {
+      "position": 3301,
+      "id": "components.Requests.bookAndAudiobook",
+      "reason": "no direct production reference to this components.Requests message ID was found; generic/dynamic RequestStatus action rendering is context only",
+      "definitionsFound": 1,
+      "directMessageReferences": 0,
+      "source": "Book + Audiobook"
+    },
+    {
+      "position": 3314,
+      "id": "components.Requests.delete",
+      "reason": "no direct production reference to this components.Requests message ID was found; generic/dynamic RequestStatus action rendering is context only",
+      "definitionsFound": 1,
+      "directMessageReferences": 0,
+      "source": "Delete"
+    },
+    {
+      "position": 3315,
+      "id": "components.Requests.deleteDescription",
+      "reason": "no direct production reference to this components.Requests message ID was found; generic/dynamic RequestStatus action rendering is context only",
+      "definitionsFound": 1,
+      "directMessageReferences": 0,
+      "source": "Seerr will cancel any active work it can identify, clean up temporary request records, and permanently remove this entry and its history."
+    },
+    {
+      "position": 3318,
+      "id": "components.Requests.deleteTitle",
+      "reason": "no direct production reference to this components.Requests message ID was found; generic/dynamic RequestStatus action rendering is context only",
+      "definitionsFound": 1,
+      "directMessageReferences": 0,
+      "source": "Delete Request Entry?"
+    },
+    {
+      "position": 3319,
+      "id": "components.Requests.deleteTooltip",
+      "reason": "no direct production reference to this components.Requests message ID was found; generic/dynamic RequestStatus action rendering is context only",
+      "definitionsFound": 1,
+      "directMessageReferences": 0,
+      "source": "Delete this request and its status history."
+    }
+  ],
+  "placeholderParityErrors": [],
+  "protectedTermsPolicy": [
+    "Seerr",
+    "ChaptarrNG",
+    "Bindery",
+    "Bookshelf",
+    "Radarr",
+    "Sonarr",
+    "Plex",
+    "Emby",
+    "Jellyfin",
+    "TMDb",
+    "IMDb",
+    "Open Library",
+    "ComicVine",
+    "MusicBrainz",
+    "TheTVDB",
+    "Trakt",
+    "Letterboxd",
+    "Prowlarr",
+    "Bazarr",
+    "Lidarr",
+    "Readarr",
+    "Whisparr",
+    "Sportarr",
+    "Audiobookshelf"
+  ]
+}

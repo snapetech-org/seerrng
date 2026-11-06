@@ -1,0 +1,165 @@
+{
+  "schemaVersion": 1,
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "head": "5a4342176a8325c371a35d489cb01c58283bc983",
+  "tree": "98cd64952123c9b678e38250e7819cabb4476448",
+  "semanticManifestSha256": "3ea74cc6491aecddf9ffcedc69610f13d20b199059aef69bb3c2407feb0826ea",
+  "cellPlanSha256": "97c3402252a34aaa4f8f9f44a691281d9c35ff7b80d7edb3a26c752436af6558",
+  "retiredCellsSha256": "dc5ec05547e4da3079c0668f82a52da7999d89ef9d4f037c1cd72af9347ebd83",
+  "sourceBundleManifestSha256": "212491482d1b9207fed755af6e80ac80a97184ec8dbe84d0c4ad2bd711acae0d",
+  "sourceRowsSha256": "ad91236a31e32f199ff449f9ed4597ea6af0f5a4eff32772cefa84278cafb68c",
+  "sourceCellsSha256": "8bfcd1aa9b5d5aba4fb6317c194cd544d601543ebf250899a84a719b52e468e1",
+  "planRows": 115260,
+  "actions": {
+    "semantic-review-required": 114783,
+    "reuse-equivalence-decision": 477
+  },
+  "retiredRows": 48,
+  "reusableEquivalenceCells": 477,
+  "targetsApplied": false,
+  "batchId": "existing-es-client-0098",
+  "batchSha256": "ed4a606f2f72376bb07c53c802c7102fa802c0f08dcb42e8aca495f94c218366",
+  "rowCount": 32,
+  "model": "qwen3.8-27b-heretic:q4km",
+  "attempt": 1,
+  "decisions": [
+    {
+      "id": "components.RequestModal.requestmovietitle",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.requestpartial",
+      "verdict": "correct",
+      "target": "{created} solicitados; {failed} fallidos.",
+      "confidence": "high",
+      "reason": "The source implies a plural count of items requested and failed. The current translation uses singular forms ('solicitado', 'falló') which is grammatically incorrect for a plural count placeholder context and inconsistent with standard UI localization for counts."
+    },
+    {
+      "id": "components.RequestModal.requestseries4ktitle",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.requestseriestitle",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.retryWatchStatus",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.runtime",
+      "verdict": "correct",
+      "target": "Duración",
+      "confidence": "high",
+      "reason": "'Hora de correr' is a literal and unnatural translation for 'Runtime' in the context of media metadata. 'Duración' is the standard and natural term in Latin American Spanish UIs for movie/series length."
+    },
+    {
+      "id": "components.RequestModal.saveAndRetry",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.season",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.seasonWatchGateAccessApproved",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.seasonWatchGateAccessOff",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.seasonWatchGateAccessPending",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.seasonWatchGateAccountRequired",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.seasonWatchGateIncomplete",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.seasonWatchGateLibraryRequired",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.seasonWatchGateLinkAccount",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.seasonWatchGateLoading",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.seasonWatchGateManageAccess",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.seasonWatchGateStaged",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.seasonWatchGateUnavailable",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.seasonWatchGateUnknownSeason",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.seasonnumber",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.selectAll",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.selectItemsToRequest",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.selectUnavailableItemsToRequest",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.selection",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.service",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.status",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.studio",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.ultraHd",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.watchAheadActiveForRequest",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.watchAheadAdminManaged",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestModal.watchAheadAssignedButUnavailable",
+      "verdict": "keep"
+    }
+  ],
+  "decisionsSha256": "e0cf74828dc32b69c697bb016df6cc36f48867a43342db847f1b104f70143b41",
+  "rawResponseSha256": "ea85e2dcbeb1e9efa76d7af2d8ba6aff98e46b7e925f6d7c7ae02abec4a4f0ed",
+  "rawResponseFile": "/mnt/disks/scratch/task-scratch/seerrng-review-window-650-700-422072-20261102/semantic-output/responses/existing-es-client-0098-attempt-1.json"
+}

@@ -1,0 +1,16 @@
+{
+  "baseRef": "main",
+  "baseSha": "fa40534ccced75bde1125c14760514fcd5d7de4d",
+  "deploymentCountFromCandidateFreeSnapshots": 0,
+  "draft": true,
+  "head": "12bb562dc0eb27165cc2c6fbd1ff2628d5f8574e",
+  "headRef": "codex/seerrng-localization-overhaul-20261028",
+  "observedFrom": "gh API pull request plus commit-tree query before candidate-free packet was opened",
+  "pullRequest": 418,
+  "repository": "snapetech-org/seerrng",
+  "result": "matches_candidate_free_manifest",
+  "snapshot": "first-live-reattestation-before-opening-input",
+  "state": "open",
+  "tree": "b288494aa5a0842affc4e900d6ccb6b57d99c493",
+  "url": "https://github.com/snapetech-org/seerrng/pull/418"
+}

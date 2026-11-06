@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "candidateFreeInputPath": "/home/keith/Documents/code/task-scratch/seerrng-pr418-w3600-3619-primary-20261103/candidate-free-input",
+  "candidateFreeChecksumListSha256": "fdffd9f94443ad5ac1604f4a1ba4790717ae54e900ce41b1c3a454aca19ab156",
+  "candidateFreeManifestJsonSha256": "1089646f93bfd96df0e5f0b820da76e9132cc859b6ed9db595c9a891dbcfcd9c",
+  "candidateFreeInputSha256sVerified": true,
+  "livePullRequest": {
+    "state": "OPEN",
+    "draft": true,
+    "headRef": "codex/seerrng-localization-overhaul-20261028",
+    "head": "1fdec93d1b021e4ec7a7c2265230f59d81d2675e",
+    "tree": "6234854dc0b1e7aee17ef2e819ffc2b5b2e386ce",
+    "branchRef": "1fdec93d1b021e4ec7a7c2265230f59d81d2675e",
+    "pullRef": "1fdec93d1b021e4ec7a7c2265230f59d81d2675e",
+    "attestation": "GitHub PR API, commit tree API, and git ls-remote branch/pull refs",
+    "result": "PASS"
+  },
+  "candidateFreeHead": "1fdec93d1b021e4ec7a7c2265230f59d81d2675e",
+  "candidateFreeTree": "6234854dc0b1e7aee17ef2e819ffc2b5b2e386ce"
+}

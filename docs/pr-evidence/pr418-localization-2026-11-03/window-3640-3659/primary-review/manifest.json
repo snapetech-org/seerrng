@@ -1,0 +1,76 @@
+{
+  "schemaVersion": 1,
+  "artifact": "SeerrNG PR #418 W3640-W3659 primary semantic review ledger",
+  "reviewType": "primary-semantic",
+  "sealed": true,
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "window": "W3640-W3659",
+  "head": "78efa0ef0410ebd8911026ecbbfe1f621d26770b",
+  "tree": "749819bc888fc400bbb185fc9310043ab45c0d5c",
+  "localeOrder": [
+    "es",
+    "zh_Hans",
+    "hi",
+    "de",
+    "ja",
+    "fr",
+    "pt_BR",
+    "ar",
+    "ko",
+    "zh_Hant",
+    "vi",
+    "id"
+  ],
+  "sourceCount": 20,
+  "localeCount": 12,
+  "cellCount": 240,
+  "inputPath": "/home/keith/Documents/code/task-scratch/seerrng-pr418-w3640-3659-primary-20261103/candidate-free-input",
+  "inputManifestSha256": "7f7ddb90b3a0fd25f8c99fbcfe4fe2a8815ce43f145d35b678b49edcfcf4d691",
+  "inputChecksumListSha256": "ef042985f75338bc95ab48178cba8437a041836b7a08a0dcdd8ffbf2af88fb2e",
+  "decisionCounts": {
+    "correction": 41,
+    "accept-current": 181,
+    "refinement": 18
+  },
+  "holdCount": 0,
+  "candidateFreeInputVerifier": "PASS",
+  "createdAtUtc": "2026-11-03T16:55:42.786055+00:00",
+  "files": [
+    {
+      "path": "README.md",
+      "byteCount": 990,
+      "sha256": "3ead2b6e8ccd06340aa2375a578a3644283ba90670d2f7d273cc6531780bf9ce"
+    },
+    {
+      "path": "build_primary.py",
+      "byteCount": 26855,
+      "sha256": "4e92179817b96647097d5b876e2f6ce2c338ddeea4977255a0c17bd9f627370f"
+    },
+    {
+      "path": "input-verification.txt",
+      "byteCount": 941,
+      "sha256": "d84995e2bf537c495798def9871641646383f42217dc0f9547f97c16f7375fe0"
+    },
+    {
+      "path": "primary-ledger.jsonl",
+      "byteCount": 1599358,
+      "sha256": "5c69a1c0c1681ad33fcfa63196fad8ed142c7d0d12fbcfc61553701072b7f722"
+    },
+    {
+      "path": "runtime-icu-categories.json",
+      "byteCount": 643,
+      "sha256": "fb4547b582ffaadbe0bfe7b854d04853ce23d2162de7c8ed9644c57fd534f0a8"
+    },
+    {
+      "path": "summary.json",
+      "byteCount": 2113,
+      "sha256": "afbbaada6c4f575a611849b2f29b07d3fa6fdf8d93d6c035dad15a1365762dab"
+    },
+    {
+      "path": "verify_primary.py",
+      "byteCount": 10675,
+      "sha256": "c49ec6ab724c7e37f77e8014707dbbc57608a3695d4cb4e28e8baa508cb0339b"
+    }
+  ]
+}

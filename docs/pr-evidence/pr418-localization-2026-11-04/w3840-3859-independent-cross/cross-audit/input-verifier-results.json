@@ -1,0 +1,83 @@
+{
+  "candidateFree": {
+    "result": "PASS",
+    "head": "ba5bb93cdb4f107a8337aae228b7cd397e1140a6",
+    "tree": "5420ae8fa33bda3619650757a2930a0114dbe4d1",
+    "window": [
+      3840,
+      3859
+    ],
+    "sourceCount": 20,
+    "localeCount": 12,
+    "cells": 240,
+    "priorSourceHashesReattested": 3840,
+    "priorAppliedTargetsReattested": 54,
+    "priorHoldsReattested": 14,
+    "priorCatalogApplicationTargets": 19,
+    "catalogFilesWithOrderVerified": 13,
+    "callerReferences": 20,
+    "callerlessSources": [],
+    "baselineTokenMismatchCounts": {
+      "markupTags": 0,
+      "numericTokens": 0,
+      "placeholders": 0,
+      "protectedLiterals": 3
+    },
+    "deployments": [
+      0,
+      0
+    ]
+  },
+  "primaryReview": {
+    "result": "PASS",
+    "head": "ba5bb93cdb4f107a8337aae228b7cd397e1140a6",
+    "tree": "5420ae8fa33bda3619650757a2930a0114dbe4d1",
+    "window": "W3840-W3859",
+    "cells": 240,
+    "dispositions": {
+      "accept-current": 196,
+      "correction": 19,
+      "refinement": 25
+    },
+    "proposals": 44,
+    "holds": 0,
+    "baselineTokenMismatches": {
+      "protectedLiterals": 3
+    },
+    "reviewedTokenMismatches": {},
+    "candidateFreeInputVerifier": "PASS",
+    "checksums": 7
+  },
+  "portablePacket": {
+    "result": "PASS",
+    "head": "ba5bb93cdb4f107a8337aae228b7cd397e1140a6",
+    "tree": "5420ae8fa33bda3619650757a2930a0114dbe4d1",
+    "candidateFreeInputVerifier": "PASS",
+    "primaryReviewVerifier": "PASS",
+    "cells": 240,
+    "dispositions": {
+      "accept-current": 196,
+      "correction": 19,
+      "refinement": 25
+    },
+    "proposals": 44,
+    "holds": 0,
+    "candidateFreeChecksums": 26,
+    "bundleFileChecksums": 36
+  },
+  "blindReview": {
+    "acceptCurrent": 217,
+    "browserApprovalClaimed": false,
+    "cells": 240,
+    "head": "ba5bb93cdb4f107a8337aae228b7cd397e1140a6",
+    "hold": 0,
+    "inputChecksumsVerified": true,
+    "nativeSpeakerApprovalClaimed": false,
+    "placeholdersMarkupNumericProtectedLiteralsPreserved": true,
+    "proposeCorrection": 15,
+    "proposeRefinement": 8,
+    "result": "PASS",
+    "sourceCurrentCallerCatalogHashesLinked": true,
+    "tree": "5420ae8fa33bda3619650757a2930a0114dbe4d1"
+  }
+}

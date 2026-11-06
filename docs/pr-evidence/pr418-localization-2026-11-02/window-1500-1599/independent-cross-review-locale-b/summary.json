@@ -1,0 +1,139 @@
+{
+  "schemaVersion": 1,
+  "task": "Independent locale-B cross-review for SeerrNG PR #418 W1500–1599",
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "state": "OPEN",
+  "isDraft": true,
+  "exactHead": "94bdd3f690fc54d37d17e04d29a443533af3fb0d",
+  "exactTree": "17df3c6f626ac544990d2f8f2049daf95b4738ac",
+  "locales": [
+    "ja",
+    "ko",
+    "pt-BR",
+    "vi",
+    "zh-CN",
+    "zh-TW"
+  ],
+  "sourcePositions": {
+    "startInclusive": 1500,
+    "endInclusive": 1599,
+    "sourceIdCount": 100,
+    "positionConvention": "zero-based English catalog insertion order"
+  },
+  "cells": 600,
+  "dispositionCounts": {
+    "accepted": 439,
+    "hold": 144,
+    "refine": 12,
+    "missed": 5
+  },
+  "acceptedCurrent": 233,
+  "acceptedPrimaryProposals": 206,
+  "refinements": 12,
+  "priorLocaleBRefinementsReviewedAndRetained": 9,
+  "additionalIndependentRefinements": 3,
+  "missed": 5,
+  "priorLocaleBMissedIssuesReviewedAndRetained": 4,
+  "additionalIndependentMisses": 1,
+  "holds": 144,
+  "byLocale": {
+    "ja": {
+      "accepted": 76,
+      "hold": 24
+    },
+    "ko": {
+      "accepted": 72,
+      "hold": 24,
+      "refine": 3,
+      "missed": 1
+    },
+    "pt-BR": {
+      "accepted": 73,
+      "hold": 24,
+      "refine": 3
+    },
+    "vi": {
+      "accepted": 72,
+      "hold": 24,
+      "refine": 2,
+      "missed": 2
+    },
+    "zh-CN": {
+      "accepted": 74,
+      "hold": 24,
+      "refine": 1,
+      "missed": 1
+    },
+    "zh-TW": {
+      "accepted": 72,
+      "hold": 24,
+      "missed": 1,
+      "refine": 3
+    }
+  },
+  "independentAdditionalFindings": [
+    {
+      "id": "components.IdentityMappingPackControls.privacy",
+      "locale": "zh-CN",
+      "disposition": "refine",
+      "targetHash": "60b42905f4a7ddf1d7384858eda6579da2567ae4315c621fd04c70962cb570b5",
+      "reason": "Clarifies provider item as a platform catalog item."
+    },
+    {
+      "id": "components.IdentityMappingPackControls.privacy",
+      "locale": "zh-TW",
+      "disposition": "missed",
+      "targetHash": "ddbf42c693b33069d08e171301b6fe16a21143a7feff4d9b0b8366fecb6bc4ca",
+      "reason": "Current sentence is fragmentary and awkward around account-credential exclusion."
+    },
+    {
+      "id": "components.IssueDetails.IssueComment.areyousuredelete",
+      "locale": "zh-TW",
+      "disposition": "refine",
+      "targetHash": "39ca039a368a4d96a24a0f1ae11b6571b7c15b1aeb5506dbdaaff2128c73f706",
+      "reason": "Aligns the comment term with neighboring 留言 labels."
+    },
+    {
+      "id": "components.IssueDetails.IssueComment.delete",
+      "locale": "zh-TW",
+      "disposition": "refine",
+      "targetHash": "aa8b369219c1d3fd512feb4d3df21f7493ea2a4c214e6da2313037e61a8cc083",
+      "reason": "Aligns destructive button label with the comment label/help text."
+    }
+  ],
+  "rechecks": {
+    "primaryPacketChecksumsVerified": true,
+    "primaryLocaleBChecksumsVerified": true,
+    "localeBCrossReviewPacketChecksumsVerified": true,
+    "sourceCurrentRowsReattested": 600,
+    "sourceCurrentCatalogMismatches": 0,
+    "sourceCurrentHashMismatches": 0,
+    "primaryProposalHashMismatches": 0,
+    "localeBCrossReviewTargetHashMismatches": 0,
+    "callerContextLinePinsReattested": 996,
+    "uniqueCallerContextReferences": 166,
+    "uniqueCallerFiles": 7,
+    "callerContextMismatches": 0,
+    "sourcePositionMismatches": 0,
+    "placeholderFailures": 0,
+    "icuPoundMarkerFailures": 0,
+    "markupFailures": 0,
+    "recommendedTargetProtectedLiteralFailures": 0,
+    "currentProtectedLiteralMismatches": 6
+  },
+  "knownProtectedLiteralNote": "The six existing protected-literal mismatches are all current requestStillUsesManager strings that omit SeerrNG and Prowlarr; the primary replacement restores both exact product names.",
+  "inputArtifacts": {
+    "primaryPacket": "/mnt/disks/scratch/task-scratch/seerrng-pr418-window-1500-1599-primary-20261102",
+    "primarySHA256SUMS": "9a90f7e896d3487edf1c7598c3339fcfa6180fb78c13ce18c6c1c2f3eb98f9b9",
+    "primaryINPUT_SHA256SUMS": "369041b07b1f649178e12eb94e3cbf6e5290f80dbb184a56d0191619e9a6e51d",
+    "localeBReviewInputSha256": "470292d41fdd1e9cc4037eddcb7eea8a8e25de252190d55a0f946d15bd279244",
+    "localeBCrossReviewPacket": "/mnt/disks/scratch/task-scratch/seerrng-pr418-window-1500-1599-crossreview-locale-b-by-b-20261102",
+    "localeBCrossReviewSHA256SUMS": "448cba71cdebbbfc955c05aef075c7aeb10e22b6cfedf7b96aff361aed48ec7a",
+    "localeBCrossReviewINPUT_SHA256SUMS": "c8cc6956fccdb12994dd0d6c49b8a8566babfee9f48addf68b56bd089fc7d77e"
+  },
+  "readOnly": true,
+  "nativeSpeakerApproval": false,
+  "browserReview": false,
+  "blockers": []
+}

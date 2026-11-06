@@ -1,0 +1,31 @@
+{
+  "result": "PASS",
+  "head": "8d0273ebc5eb51e9d5fee0ac9a0eb022eeed06c4",
+  "tree": "163056b8255034e3ee3a99f25b63e190c88278ee",
+  "pullRequest": 418,
+  "window": "W3740-W3759",
+  "cellsReviewed": 240,
+  "classificationCounts": {
+    "conflict": 20,
+    "both-accept": 186,
+    "primary-only": 20,
+    "blind-only": 5,
+    "both-changed-same": 9
+  },
+  "changeCount": 54,
+  "dispositionCounts": {
+    "correction": 29,
+    "accept-current": 186,
+    "refinement": 25
+  },
+  "conflictsResolved": 20,
+  "carriedHoldsHashOnly": 12,
+  "priorSelectionsHashOnly": 240,
+  "baselineProtectedLiteralFindings": 3,
+  "resolvedTokenOrProtectedLiteralFailures": 0,
+  "catalogValuesApplied": false,
+  "repoOrPRFilesChanged": false,
+  "testsOrBuildsOrScansOrCIOrBrowserRun": false,
+  "nativeSpeakerSignoff": false,
+  "reviewType": "machine cross-audit; qualified native-language review remains pending"
+}

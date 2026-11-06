@@ -1,0 +1,50 @@
+{
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "inputHead": "6ff9de1c39a19fe9c508f09e0f6a885022632d8b",
+  "inputTree": "68d7525714b3628bbe7b69701d8be08add152832",
+  "window": {
+    "sourcePositions": [
+      1200,
+      1299
+    ],
+    "sourceIds": 100,
+    "locales": 12,
+    "cells": 1200
+  },
+  "primaryReviewCells": 1200,
+  "independentCrossReviewCells": 1200,
+  "crossReviewDispositions": {
+    "acceptedCurrent": 1085,
+    "acceptedPrimaryProposal": 101,
+    "refinedPrimaryProposal": 4,
+    "missedCurrentIssue": 10
+  },
+  "rootReviewedChanges": 115,
+  "rootDisposition": "accept all independently cross-reviewed final targets",
+  "independentChecks": {
+    "sourcePositionOrder": true,
+    "sourceTargetHashAttestations": true,
+    "callerContextReattested": true,
+    "placeholderParity": true,
+    "markupParity": true,
+    "protectedLiteralParity": true,
+    "catalogKeySetParity": true,
+    "narratorAddendumMatchesCore": true
+  },
+  "localeCatalogOrderMismatchesObserved": [
+    "ja",
+    "ko",
+    "vi",
+    "zh-CN",
+    "zh-TW"
+  ],
+  "nativeSpeakerApproval": false,
+  "exactHeadBrowserReview": false,
+  "testsBuildsScansCIWorkflowsReleasesTagsMerges": false,
+  "notes": [
+    "All proposals and missed-current findings were independently cross-reviewed at the exact pinned head/tree.",
+    "The 12-row narrator addendum overlaps the core window and its final hashes match the core ledger; it creates no extra changes.",
+    "Five pre-existing catalog order mismatches were not changed."
+  ]
+}

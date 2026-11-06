@@ -1,0 +1,143 @@
+{
+  "head": "0905d4be32d8b7ec3b1af701473a3fdf6e0f30a2",
+  "tree": "a09117211080bbd89d32959f17d93b02a82b966f",
+  "scope": {
+    "positions": [
+      2500,
+      2599
+    ],
+    "rows": 1200,
+    "crossreviewLocales": [
+      "ar",
+      "de",
+      "es"
+    ],
+    "crossreviewRows": 300
+  },
+  "catalogKeySetParityWithEnglish": true,
+  "catalogs": {
+    "en": {
+      "path": "src/i18n/locale/en.json",
+      "blob": "12e04a118c30b71b3714291adeaf9fdb2735cee4",
+      "fileSha256": "75ff3c90b52aedd636a506281ffbd6fb2d3739c61294b6008a517f17647e2316",
+      "keyCount": 9494,
+      "keySetSha256": "2ece175c95fe56b427b65a1a46169f895a342887ed772e4e5729c32dd443ad7e",
+      "orderedKeySetSha256": "2ece175c95fe56b427b65a1a46169f895a342887ed772e4e5729c32dd443ad7e"
+    },
+    "ar": {
+      "path": "src/i18n/locale/ar.json",
+      "blob": "eaf1e0d9eeb9e2a59b10398a6ce7822e631412e6",
+      "fileSha256": "8dd336b81eebd01231e5e9a60c3fda79a368fa393455e86f2621288c39460cd9",
+      "keyCount": 9494,
+      "keySetSha256": "2ece175c95fe56b427b65a1a46169f895a342887ed772e4e5729c32dd443ad7e",
+      "orderedKeySetSha256": "2ece175c95fe56b427b65a1a46169f895a342887ed772e4e5729c32dd443ad7e"
+    },
+    "de": {
+      "path": "src/i18n/locale/de.json",
+      "blob": "9e81fb50a0cd555db6a81236e45e649342f8890e",
+      "fileSha256": "31a410371fd227677c76f64eaf8ebab424a2af7a6a10e482012aeb5e87425ae2",
+      "keyCount": 9494,
+      "keySetSha256": "2ece175c95fe56b427b65a1a46169f895a342887ed772e4e5729c32dd443ad7e",
+      "orderedKeySetSha256": "2ece175c95fe56b427b65a1a46169f895a342887ed772e4e5729c32dd443ad7e"
+    },
+    "es": {
+      "path": "src/i18n/locale/es.json",
+      "blob": "b5e769046a3026cade2776e1ac87dc9638c1542b",
+      "fileSha256": "b655287779aa271fb4eb465b15f8146d8b7c8e6f0037b27cf62e81b86fa96b9a",
+      "keyCount": 9494,
+      "keySetSha256": "2ece175c95fe56b427b65a1a46169f895a342887ed772e4e5729c32dd443ad7e",
+      "orderedKeySetSha256": "2ece175c95fe56b427b65a1a46169f895a342887ed772e4e5729c32dd443ad7e"
+    },
+    "fr": {
+      "path": "src/i18n/locale/fr.json",
+      "blob": "2e548febf6b8d6aeda45923dde864cf1bbac3b1f",
+      "fileSha256": "56450b996ad086465ed3c47667fec69c86fcf43e5fbce2de30e90943b0780d64",
+      "keyCount": 9494,
+      "keySetSha256": "2ece175c95fe56b427b65a1a46169f895a342887ed772e4e5729c32dd443ad7e",
+      "orderedKeySetSha256": "2ece175c95fe56b427b65a1a46169f895a342887ed772e4e5729c32dd443ad7e"
+    },
+    "hi": {
+      "path": "src/i18n/locale/hi.json",
+      "blob": "42ba0cd2535026b8261ede7f3259888a1fef546a",
+      "fileSha256": "48011ae4fb6a316e7b29e63991cd3dad54cf30be6f33914da82dec8ec64c720a",
+      "keyCount": 9494,
+      "keySetSha256": "2ece175c95fe56b427b65a1a46169f895a342887ed772e4e5729c32dd443ad7e",
+      "orderedKeySetSha256": "2ece175c95fe56b427b65a1a46169f895a342887ed772e4e5729c32dd443ad7e"
+    },
+    "id": {
+      "path": "src/i18n/locale/id.json",
+      "blob": "23e660533cf1ab938117c03f8a6077fd3f232c2f",
+      "fileSha256": "d80d4418ef6649e284495d04eb21e67b247429efbfce22384b589d60808af3b3",
+      "keyCount": 9494,
+      "keySetSha256": "2ece175c95fe56b427b65a1a46169f895a342887ed772e4e5729c32dd443ad7e",
+      "orderedKeySetSha256": "2ece175c95fe56b427b65a1a46169f895a342887ed772e4e5729c32dd443ad7e"
+    },
+    "ja": {
+      "path": "src/i18n/locale/ja.json",
+      "blob": "59d88a681446f83cb82ccba0c4fc1c1c8dbbbaf7",
+      "fileSha256": "18f9a00a99d7ef3f717243496cdf281432cf54fa22ddb2258c39912c2ba5b0bf",
+      "keyCount": 9494,
+      "keySetSha256": "2ece175c95fe56b427b65a1a46169f895a342887ed772e4e5729c32dd443ad7e",
+      "orderedKeySetSha256": "ce9283938f58388203f200fa08d6e3ed1265c3ed96ad35d014b0efa73fcadc90"
+    },
+    "ko": {
+      "path": "src/i18n/locale/ko.json",
+      "blob": "6d62743968c7e454c52d2ac4d59a5234bb05f442",
+      "fileSha256": "13c737e8fc41c4d6a7253a7b91d74d8c934eb4b05844d4430229bc7d716a5075",
+      "keyCount": 9494,
+      "keySetSha256": "2ece175c95fe56b427b65a1a46169f895a342887ed772e4e5729c32dd443ad7e",
+      "orderedKeySetSha256": "ce9283938f58388203f200fa08d6e3ed1265c3ed96ad35d014b0efa73fcadc90"
+    },
+    "pt_BR": {
+      "path": "src/i18n/locale/pt_BR.json",
+      "blob": "a48b1460e3295c63986cfca0cb329114be0b6517",
+      "fileSha256": "4b4ef4717cef765cad74e40da053738e7b2f966bb2db8d12611dcf60e5b98519",
+      "keyCount": 9494,
+      "keySetSha256": "2ece175c95fe56b427b65a1a46169f895a342887ed772e4e5729c32dd443ad7e",
+      "orderedKeySetSha256": "2ece175c95fe56b427b65a1a46169f895a342887ed772e4e5729c32dd443ad7e"
+    },
+    "vi": {
+      "path": "src/i18n/locale/vi.json",
+      "blob": "59ae3a53aa931ee26968d7902c189409c6990cc0",
+      "fileSha256": "ca6b1cac9c35b5a10473c54dc988827c7909d389807b8037b91606a4baf90260",
+      "keyCount": 9494,
+      "keySetSha256": "2ece175c95fe56b427b65a1a46169f895a342887ed772e4e5729c32dd443ad7e",
+      "orderedKeySetSha256": "ce9283938f58388203f200fa08d6e3ed1265c3ed96ad35d014b0efa73fcadc90"
+    },
+    "zh_Hans": {
+      "path": "src/i18n/locale/zh_Hans.json",
+      "blob": "fe06b511ee7aac420d0af515ddc55229542efa41",
+      "fileSha256": "fcbc44a0e4583105fd85b28ef31c04c957f1679dcaeffbed99129bf67ab806fb",
+      "keyCount": 9494,
+      "keySetSha256": "2ece175c95fe56b427b65a1a46169f895a342887ed772e4e5729c32dd443ad7e",
+      "orderedKeySetSha256": "ce9283938f58388203f200fa08d6e3ed1265c3ed96ad35d014b0efa73fcadc90"
+    },
+    "zh_Hant": {
+      "path": "src/i18n/locale/zh_Hant.json",
+      "blob": "0183de756ddb089a387b5494bcde3f89a607be8e",
+      "fileSha256": "cf6547fd16f6912c2d2ea4d2d8138565ee2ce49a9359ad8993a40590cf909aae",
+      "keyCount": 9494,
+      "keySetSha256": "2ece175c95fe56b427b65a1a46169f895a342887ed772e4e5729c32dd443ad7e",
+      "orderedKeySetSha256": "ce9283938f58388203f200fa08d6e3ed1265c3ed96ad35d014b0efa73fcadc90"
+    }
+  },
+  "sourceTargetsAndHashesReattested": 1200,
+  "callerContextSourceIdsReattested": 100,
+  "callerPinnedLinesReattested": 358,
+  "callerFiles": {
+    "src/components/Common/ReaderDeliveryLink.tsx": {
+      "blob": "3118aa92c2115a29e429c694b5f1a092094eb4d0",
+      "fileSha256": "99be3974eed581d02d7b732aad34d63f98eceb106070104fb209d06da8db2126"
+    },
+    "src/components/Settings/ReaderDeliverySettings.tsx": {
+      "blob": "12d4b8a05e6d79068bbfbfdeead5d0b0576b9ac6",
+      "fileSha256": "29f27a2966ae8d4a5d0fc6f8d3a5286c4a33f8e85c58bacf23e56cf4d24e91ac"
+    },
+    "src/components/Common/ReaderGroupingAction.tsx": {
+      "blob": "605dcb3f2141d78b0a3774b53c0a8944c72e24b0",
+      "fileSha256": "ecf999a3566a1718e40b401d536552e8e159c690b57904624b300a5969076692"
+    }
+  },
+  "callerPinIssues": [],
+  "nativeSpeakerApproval": "not performed; required separately"
+}

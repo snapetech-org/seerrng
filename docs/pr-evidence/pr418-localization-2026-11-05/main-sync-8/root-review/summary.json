@@ -1,0 +1,28 @@
+{
+  "result": "PASS",
+  "reviewHead": "ca2309e960733a7486c55b9a761d82771be97cde",
+  "reviewTree": "8c5df06aaf1d703ff923bf1fdf8a21c901b9d26d",
+  "sourceIds": 8,
+  "locales": 12,
+  "cells": 96,
+  "crossDispositions": {
+    "accept": 65,
+    "correction": 3,
+    "refinement": 28
+  },
+  "rootDispositions": {
+    "accept-blind": 65,
+    "refinement": 28,
+    "correction": 3
+  },
+  "selectedFromBlind": 93,
+  "rootManualRevisions": 3,
+  "allTargetsAbsentAtInput": true,
+  "technicalLiteralMismatches": 0,
+  "numericPlaceholderMarkupMismatches": 0,
+  "localizedNumeralNotes": "Japanese may use digit 1 for English word “one”; protected source numeric literals and examples are preserved.",
+  "nativeSpeakerApproval": false,
+  "exactTargetSelectedByCrossReview": false,
+  "rootSelectedAfterCrossReview": true,
+  "rationale": "Root selects independently drafted blind wording where cross-review accepts both variants; incorporates cross-review clarity refinements; corrects three primary Quick Connect tips with an extra Jellyfin literal; and manually clarifies the saved client address in Simplified Chinese and Hindi and localizes the reverse-proxy trust setting action in French."
+}

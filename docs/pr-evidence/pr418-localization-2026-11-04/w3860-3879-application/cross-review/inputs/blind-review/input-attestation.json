@@ -1,0 +1,38 @@
+{
+  "artifact": "SeerrNG PR #418 W3860-W3879 blind-review input attestation",
+  "baseRef": "main",
+  "baseSha": "fa40534ccced75bde1125c14760514fcd5d7de4d",
+  "branch": "codex/seerrng-localization-overhaul-20261028",
+  "browserOrNativeSpeakerReviewClaim": false,
+  "candidateFreeChecksumFileSha256": "cfe7049a34c019bfa86d88a4bcb28171996aae78b4e170b783ecaaf5ed38d84b",
+  "candidateFreeChecksums": "PASS",
+  "candidateFreeDispositionFields": false,
+  "candidateFreeInputPath": "/home/keith/Documents/code/task-scratch/seerrng-pr418-w3860-3879-primary-20261104/candidate-free-input",
+  "candidateFreeInputVerifier": "PASS",
+  "candidateFreeManifestCellCount": 240,
+  "candidateFreeManifestHead": "12bb562dc0eb27165cc2c6fbd1ff2628d5f8574e",
+  "candidateFreeManifestLocaleCount": 12,
+  "candidateFreeManifestSha256": "7ba27c632da083ca311799acd445e3fe1af3b0b431ff5105bf551f8350b7eef0",
+  "candidateFreeManifestSourceCount": 20,
+  "candidateFreeManifestTree": "b288494aa5a0842affc4e900d6ccb6b57d99c493",
+  "deploymentsAtExpectedHead": [
+    0,
+    0
+  ],
+  "exactHead": "12bb562dc0eb27165cc2c6fbd1ff2628d5f8574e",
+  "exactTree": "b288494aa5a0842affc4e900d6ccb6b57d99c493",
+  "liveSnapshotAfter": "live-pr-after-review.json",
+  "liveSnapshotBefore": "live-pr-first-reattestation.json",
+  "prIsDraft": true,
+  "prState": "OPEN",
+  "pullRequest": 418,
+  "range": [
+    3860,
+    3879
+  ],
+  "repository": "snapetech-org/seerrng",
+  "repositoryOrPRChangesMade": false,
+  "reviewSource": "candidate-free-input only; primary-review directory, builder, and previous window discussion not opened.",
+  "testsBuildsScansCIOrWorkflowChanges": false,
+  "window": "W3860-W3879"
+}

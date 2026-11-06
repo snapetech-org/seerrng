@@ -2771,6 +2771,19 @@ components:
           type: string
           nullable: true
           example: 'en'
+        metadataLocale:
+          type: string
+          nullable: true
+          maxLength: 35
+          description: Locale used for media metadata and search results. Null follows the display language.
+          example: 'fr'
+        formatRegion:
+          type: string
+          nullable: true
+          maxLength: 2
+          pattern: '^[A-Z]{2}$'
+          description: ISO 3166-1 alpha-2 region code used for date, time, number, and unit formatting.
+          example: 'US'
         discoverRegion:
           type: string
           nullable: true
@@ -7250,6 +7263,14 @@ components:
         - $ref: '#/components/schemas/LidarrSettings'
         - type: object
           properties:
+            binderyUserMappings:
+              type: object
+              description: Administrator-configured SeerrNG user ID to Bindery user ID links for requester-owned requests.
+              maxProperties: 1000
+              additionalProperties:
+                type: integer
+                minimum: 1
+                maximum: 2147483647
             serviceType:
               type: string
               enum: [ebook, audiobook, both]
@@ -23566,6 +23587,12 @@ paths:
           schema:
             type: integer
             minimum: 1
+        - in: query
+          name: category
+          description: Restrict results to a software acquisition category.
+          schema:
+            type: string
+            enum: [retro, modern, game]
         - in: query
           name: filter
           description: Filter software requests using the Requests page status groups. Groups without a software equivalent, such as incomplete and unavailable, return no software requests.

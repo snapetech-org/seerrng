@@ -1,0 +1,78 @@
+{
+  "artifact": "SeerrNG PR #418 W3580-W3599 independent blind review",
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "window": "W3580-W3599",
+  "pin": {
+    "head": "30f626a4626d460f426666cde02f5c1ed17fa206",
+    "tree": "9b2616780791c73eb176aca6ad53061f1f3587d8",
+    "branch": "codex/seerrng-localization-overhaul-20261028",
+    "state": "OPEN",
+    "draft": true,
+    "baseRef": "main",
+    "baseSha": "221d8e0d542802da7529cd272c928cc747677e5c"
+  },
+  "candidateFreeInput": {
+    "path": "/home/keith/Documents/code/task-scratch/seerrng-pr418-w3580-3599-primary-20261103/candidate-free-input",
+    "manifestSha256": "dd52b2201b0d8608edce6953542a6459a627a93647344ec7e009f87c65e1fe56",
+    "checksumListSha256": "2b54d35d48d2309346383371bf745d747fcd64b016e1e7b6a6d6242c747c67b5",
+    "packetType": "candidate-free-input"
+  },
+  "cells": 240,
+  "sourceCount": 20,
+  "localeCount": 12,
+  "localeOrder": [
+    "es",
+    "zh_Hans",
+    "hi",
+    "de",
+    "ja",
+    "fr",
+    "pt_BR",
+    "ar",
+    "ko",
+    "zh_Hant",
+    "vi",
+    "id"
+  ],
+  "counts": {
+    "propose": 16,
+    "retain": 224,
+    "hold": 0
+  },
+  "callerlessSourceCount": 0,
+  "callerlessHolds": 0,
+  "existingHoldsWithinWindow": 0,
+  "priorWindowHoldCount": 0,
+  "holdsPreservedOutsideWindow": true,
+  "baselineStructuralMismatchCounts": {
+    "placeholderMismatchCount": 0,
+    "markupMismatchCount": 0,
+    "numericTokenMismatchCount": 0,
+    "protectedLiteralMismatchCount": 1
+  },
+  "finalStructuralMismatchCounts": {
+    "placeholderMismatchCount": 0,
+    "markupMismatchCount": 0,
+    "numericTokenMismatchCount": 0,
+    "protectedLiteralMismatchCount": 0
+  },
+  "resolvedProtectedLiteralCell": [
+    {
+      "position": 3586,
+      "locale": "hi",
+      "sourceProtectedLiteral": "IP",
+      "target": "होस्टनाम या IP पता"
+    }
+  ],
+  "finalTargetsWithHiddenFormatCharacters": 0,
+  "createdAtUtc": "2026-11-03T14:02:38.557075+00:00",
+  "notPerformed": [
+    "repository or PR edits",
+    "tests",
+    "builds",
+    "scans",
+    "CI",
+    "review of primary packet"
+  ]
+}

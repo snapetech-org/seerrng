@@ -1,0 +1,158 @@
+{
+  "browserReview": false,
+  "callerFiles": 5,
+  "callerPinGaps": 0,
+  "callerRefs": 340,
+  "callerRows": 100,
+  "crossReviewDispositionCounts": {
+    "accept-primary-proposal": 149,
+    "retain-current": 1,
+    "revise-primary-proposal": 19
+  },
+  "currentTargetReadback": {
+    "callerFileHashesAndBlobsVerified": 5,
+    "callerRefsVerified": 340,
+    "catalogLocaleHashesAndBlobsVerified": 12,
+    "head": "d49b44895d0ded9796f0c970ad09141212e9a98f",
+    "matchedLiveCatalog": 169,
+    "mismatches": 0,
+    "proposalCells": 169,
+    "sourceCatalogHashAndBlobVerified": true
+  },
+  "decisionChangeRows": 20,
+  "draft": true,
+  "exactHead": "d49b44895d0ded9796f0c970ad09141212e9a98f",
+  "exactTree": "cebcfc11e0ea37c42f5b6e979e96cca8c89c7814",
+  "finalCurrentTargetReadbackMismatches": 0,
+  "finalReattestationPassed": true,
+  "finalRepositoryState": {
+    "head": "d49b44895d0ded9796f0c970ad09141212e9a98f",
+    "status": "",
+    "tree": "cebcfc11e0ea37c42f5b6e979e96cca8c89c7814"
+  },
+  "independentSubsetPacketChecksumsValidated": true,
+  "inputIntegrity": {
+    "primaryInputChecksumsValidated": true,
+    "primaryPacketChecksumsValidated": true,
+    "subsetInputChecksumsValidated": true,
+    "subsetPacketChecksumsValidated": true
+  },
+  "markupParityFailures": 0,
+  "nativeSpeakerApproval": false,
+  "nativeSpeakerReviewOutstanding": true,
+  "outputDirectory": "/mnt/disks/scratch/task-scratch/seerrng-pr418-window-2300-2399-crossreview-20261102",
+  "perLocale": {
+    "ar": {
+      "accept-primary-proposal": 9,
+      "revise-primary-proposal": 1
+    },
+    "de": {
+      "accept-primary-proposal": 3
+    },
+    "es": {
+      "accept-primary-proposal": 7
+    },
+    "fr": {
+      "accept-primary-proposal": 2,
+      "revise-primary-proposal": 1
+    },
+    "hi": {
+      "accept-primary-proposal": 23,
+      "revise-primary-proposal": 2
+    },
+    "id": {
+      "accept-primary-proposal": 15,
+      "revise-primary-proposal": 6
+    },
+    "ja": {
+      "accept-primary-proposal": 7,
+      "revise-primary-proposal": 1
+    },
+    "ko": {
+      "accept-primary-proposal": 19
+    },
+    "pt_BR": {
+      "accept-primary-proposal": 6
+    },
+    "vi": {
+      "accept-primary-proposal": 27,
+      "revise-primary-proposal": 2
+    },
+    "zh_Hans": {
+      "accept-primary-proposal": 15,
+      "retain-current": 1,
+      "revise-primary-proposal": 3
+    },
+    "zh_Hant": {
+      "accept-primary-proposal": 16,
+      "revise-primary-proposal": 3
+    }
+  },
+  "placeholderParityFailures": 0,
+  "primaryPacketChecksumsValidated": true,
+  "protectedLiteralFailures": 0,
+  "pullRequest": 418,
+  "pullRequestState": "OPEN",
+  "repository": "snapetech-org/SeerrNG",
+  "repositoryModified": false,
+  "reviewedTargetStructuralChecks": {
+    "markupMismatches": 0,
+    "placeholderMismatches": 0,
+    "protectedLiteralMismatches": 0
+  },
+  "schemaVersion": 1,
+  "scope": {
+    "locales": [
+      "ar",
+      "de",
+      "es",
+      "fr",
+      "hi",
+      "id",
+      "ja",
+      "ko",
+      "pt_BR",
+      "vi",
+      "zh_Hans",
+      "zh_Hant"
+    ],
+    "primaryProposalCells": 169,
+    "sourceIds": 100,
+    "sourcePositions": [
+      2300,
+      2399
+    ]
+  },
+  "sourceBoundaries": {
+    "firstPosition": 2300,
+    "firstSourceId": "components.NotificationTypeSelector.mediaavailableDescription",
+    "lastPosition": 2399,
+    "lastSourceId": "components.PermissionEdit.autoapproveSportsDescription",
+    "nextPosition": 2400,
+    "nextSourceId": "components.PermissionEdit.autorequest",
+    "previousPosition": 2299,
+    "previousSourceId": "components.NotificationTypeSelector.mediaavailable",
+    "sourceOrder": "zero-based insertion order in src/i18n/locale/en.json"
+  },
+  "subsetIndependentReview": {
+    "checksumValidation": {
+      "INPUT-SHA256SUMS": {
+        "entries": 26,
+        "manifestSha256": "4ef6c6734231a0e1d33c2a68cb7ea261721d25339cdfc408ee9d94e7aefc0e54",
+        "valid": true
+      },
+      "SHA256SUMS": {
+        "entries": 6,
+        "manifestSha256": "2365d85095484a76e8a902a8c9ce447bca7e59506b7315f77ee1713aecd27850",
+        "valid": true
+      }
+    },
+    "directory": "/mnt/disks/scratch/task-scratch/seerrng-pr418-window-2300-2399-subcrossreview-hidvi-20261102",
+    "inputManifestSha256": "b098630543b332942ef6b7afd2210e72fe0f269169c583a20640a9c120c84cc1",
+    "ledgerSha256": "5a876e340daaf68eb60e31c5d0e87da22969944e6c85441716b6e76070c75a74",
+    "rowCount": 75,
+    "summarySha256": "b8a92e8ed9e0e8ce00247ee21fd27a373da1ed3ac7c08f9fb85356bb975fcddf"
+  },
+  "testsBuildsCiRun": false,
+  "workflowFilesTouched": false
+}

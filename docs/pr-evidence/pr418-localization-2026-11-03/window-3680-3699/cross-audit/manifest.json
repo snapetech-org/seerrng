@@ -1,0 +1,110 @@
+{
+  "branch": "codex/seerrng-localization-overhaul-20261028",
+  "browserReview": false,
+  "carriedHoldCount": 12,
+  "cellCount": 240,
+  "files": [
+    {
+      "byteCount": 2128,
+      "path": "README.md",
+      "sha256": "12a5d798e86e28c9e90e97eeb9aa7579a1e99ad7be9c181d16bea5bd1fb00f94"
+    },
+    {
+      "byteCount": 987,
+      "path": "after-live-attestation.json",
+      "sha256": "3278ff4f0ef37b70b0c3e64730ba4917ddebf42e2aa69fbc9be6b22b48d84780"
+    },
+    {
+      "byteCount": 1043,
+      "path": "before-live-attestation.json",
+      "sha256": "9412e86f6dace1493a06cfa164c9db89ba2bcbadf158db39bd7fd17e5436a0f5"
+    },
+    {
+      "byteCount": 32665,
+      "path": "build-cross-audit.py",
+      "sha256": "04042d6c4e7d79e877fa46b95d9fdaa5cf3c8b367ddb6dfd4f890dfdec00b4b0"
+    },
+    {
+      "byteCount": 1783,
+      "path": "capture_live_attestation.py",
+      "sha256": "f6ca123e0eaf73b2f73798ed17eebb5f4b42792f6a3c847669cc417297a93954"
+    },
+    {
+      "byteCount": 987,
+      "path": "cross-audit-start-live-attestation.json",
+      "sha256": "26df9af880eb8c44b0bb2b8f2c239140e0bd59d89f438fe61a633ac92013a854"
+    },
+    {
+      "byteCount": 1535770,
+      "path": "cross-ledger.jsonl",
+      "sha256": "698d1196955d1a3c2c62649a0cd265af66494449f71bb20ee5eed0f1d1159aa7"
+    },
+    {
+      "byteCount": 233621,
+      "path": "no-op-plan.jsonl",
+      "sha256": "16e894e56b8e22c3d71acd90d32e31cf27520b5bef9c2599b61be36d6f780b2b"
+    },
+    {
+      "byteCount": 7801,
+      "path": "prior-hold-reattestation.jsonl",
+      "sha256": "366d811b5ed4f38c8547a2b5daa85afdc14a418a5a4c36e2a83400de3f70f21a"
+    },
+    {
+      "byteCount": 29192,
+      "path": "reviewer-disagreements.jsonl",
+      "sha256": "692dd42766d09bb4114570a72005b87c4a67c2b3d42f8549289f979861c7989d"
+    },
+    {
+      "byteCount": 2122,
+      "path": "summary.json",
+      "sha256": "5256eef880344f4810195b49c212715ca8dd6f74d2e6f2b595b842a01d34799c"
+    },
+    {
+      "byteCount": 40926,
+      "path": "update-plan.jsonl",
+      "sha256": "6a282412151ff85ffd26622ad0be58c8d7a37b3985789e83db9c7ed84f7f4f37"
+    },
+    {
+      "byteCount": 14946,
+      "path": "verify-cross-audit.py",
+      "sha256": "a942f93c3586beb5b4a385327300a41d1af4c813b41a201d74651d49a54139c8"
+    }
+  ],
+  "head": "a2f015c040f933eff38e6ef3d9b1ac6050c4957d",
+  "inputFileCounts": {
+    "blind": 7,
+    "candidateFree": 16,
+    "primary": 7
+  },
+  "inputHashes": {
+    "blindChecksumListSha256": "d14deb1be26e6c36801f721449d50eab7b36225993b189714687043089432c14",
+    "blindManifestSha256": "3e6126a409d48f06809d4b03e534815f2baee99e299ce042ecaff19773d13fc2",
+    "candidateFreeChecksumListSha256": "9f279b3525466058d23564a53f7b2c848052859d8dbfb82a8f7793061d8778d4",
+    "candidateFreeManifestSha256": "577ba2a857f59504ec2c2623b10ff0c7c7e8d1ef397dd8aac572441d2aadeee1",
+    "primaryChecksumListSha256": "f65ee543a7b7bceecce41483a4d2653e7a632bf078237e64d9b79f0b3bafef03",
+    "primaryManifestSha256": "8c1bdc06bd6174d0720bcf900027b24e2ed206800149b08547815477757766a0"
+  },
+  "liveAttestationFiles": [
+    "before-live-attestation.json",
+    "cross-audit-start-live-attestation.json",
+    "after-live-attestation.json"
+  ],
+  "localeCount": 12,
+  "nativeSpeakerApproval": false,
+  "noOpCount": 203,
+  "packetType": "sealed-independent-localization-cross-audit",
+  "pullRequest": 418,
+  "range": [
+    3680,
+    3699
+  ],
+  "repository": "snapetech-org/seerrng",
+  "repositoryOrPRFilesEdited": false,
+  "reviewerDisagreementCount": 38,
+  "schemaVersion": 1,
+  "sealedAtUTC": "2026-11-03T18:53:45.522203+00:00",
+  "sourceCount": 20,
+  "tree": "9cea70e57de0d65e78dd0cc6fab8f54dbb4e5cfe",
+  "updateCount": 37,
+  "window": "W3680-W3699"
+}

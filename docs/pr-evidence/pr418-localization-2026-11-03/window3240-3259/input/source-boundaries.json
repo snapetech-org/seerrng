@@ -1,0 +1,143 @@
+{
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "head": "d514838bbcca18d7255ba04a0266c4a78b41a499",
+  "tree": "3c90e26e7e04e4e008ed43f4004dbb0048357f92",
+  "sourceOrderCount": 9494,
+  "before": {
+    "position": 3239,
+    "id": "components.RequestStatus.approvedForProcessing",
+    "source": "Approved for processing."
+  },
+  "first": {
+    "position": 3240,
+    "id": "components.RequestStatus.approvedWaitingDispatch",
+    "source": "Your request was approved and is waiting to be dispatched."
+  },
+  "last": {
+    "position": 3259,
+    "id": "components.RequestStatus.deleting",
+    "source": "Deleting…"
+  },
+  "after": {
+    "position": 3260,
+    "id": "components.RequestStatus.downloadImportFailed",
+    "source": "The download or import failed."
+  },
+  "localeCatalogPins": {
+    "src/i18n/locale/en.json": {
+      "sha256": "75ff3c90b52aedd636a506281ffbd6fb2d3739c61294b6008a517f17647e2316",
+      "gitBlob": "12e04a118c30b71b3714291adeaf9fdb2735cee4",
+      "keyCount": 9494,
+      "orderedKeySha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072"
+    },
+    "src/i18n/locale/es.json": {
+      "sha256": "767bbacbf76aa0b424de72b8c0d788b441e0e07dd9071c6c535c1af957c63f20",
+      "gitBlob": "6fdf53b908e5c993807996df8482c6337e63ebdf",
+      "keyCount": 9494,
+      "orderedKeySha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072"
+    },
+    "src/i18n/locale/zh_Hans.json": {
+      "sha256": "506fb1cc45f6a716eec0b4dc9a2f945632d9406d6469ccfe5184c5692fadbbe9",
+      "gitBlob": "430fa8f5efba706edd7fc1e77cbcc4f319199c9b",
+      "keyCount": 9494,
+      "orderedKeySha256": "8d5fd7bd4351bc64c5ee813f2e50196608869e165866f3202a312078732c2baf"
+    },
+    "src/i18n/locale/hi.json": {
+      "sha256": "3d3d9d9c8e9036b353b1d45faed34f1df3c56f8ecd137f5edbb8117d3fa67c13",
+      "gitBlob": "4e3c653a7a623d930a0b12084a73504eb8893830",
+      "keyCount": 9494,
+      "orderedKeySha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072"
+    },
+    "src/i18n/locale/de.json": {
+      "sha256": "2830c95cff17a18099f48cce27f100191ecd23f9cc433e4e3f17b00ab59d0760",
+      "gitBlob": "4bb12c94fecb1b67ec3839def288405881f799f3",
+      "keyCount": 9494,
+      "orderedKeySha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072"
+    },
+    "src/i18n/locale/ja.json": {
+      "sha256": "369ec865b5ae1e5d0146b4430e380ac3bae9e466b89c51a9cb26336d5dd329e7",
+      "gitBlob": "73a6a877670d87992e43b046ceb6eef737d66808",
+      "keyCount": 9494,
+      "orderedKeySha256": "8d5fd7bd4351bc64c5ee813f2e50196608869e165866f3202a312078732c2baf"
+    },
+    "src/i18n/locale/fr.json": {
+      "sha256": "b01e0d8f7ea44800f584fd0f10acf7fbd64b2e29c074aca5f229fa936f87968b",
+      "gitBlob": "b64e9b2ffb952cf8f226f0bf3972fc90d92fc27b",
+      "keyCount": 9494,
+      "orderedKeySha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072"
+    },
+    "src/i18n/locale/pt_BR.json": {
+      "sha256": "f6a4f7356961c066dde3827f0a246ee5c4763ec1b3fcf3e6ccc89ef0b44c7ad1",
+      "gitBlob": "97aee8c80b5383e44ae341e340139b268f5b1c70",
+      "keyCount": 9494,
+      "orderedKeySha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072"
+    },
+    "src/i18n/locale/ar.json": {
+      "sha256": "b9496a62e2e7e8cfbafd50c99cc02291517b44253b91f1943c63730e28739817",
+      "gitBlob": "bcae24468e38fbba8d69187144755520495a921b",
+      "keyCount": 9494,
+      "orderedKeySha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072"
+    },
+    "src/i18n/locale/ko.json": {
+      "sha256": "a486197f19eab6eed71a31d98f061f8fbb1876f1bfe80bd0e479b3a63272c987",
+      "gitBlob": "d5bf4178a34953166b1ae3bc50ed5c4179a3ce97",
+      "keyCount": 9494,
+      "orderedKeySha256": "8d5fd7bd4351bc64c5ee813f2e50196608869e165866f3202a312078732c2baf"
+    },
+    "src/i18n/locale/zh_Hant.json": {
+      "sha256": "c0dff37ed26b1d5a8e924fb84aca89d2bb24aeac490f18e7129dbdc10e588149",
+      "gitBlob": "b5637870cef5a8ef2ce44af175aae739c463b1e0",
+      "keyCount": 9494,
+      "orderedKeySha256": "8d5fd7bd4351bc64c5ee813f2e50196608869e165866f3202a312078732c2baf"
+    },
+    "src/i18n/locale/vi.json": {
+      "sha256": "2011fcd8fbbe05f29519cd6fe491ca5752eb686e4ccf1ae8b3e82f8eee82cf9d",
+      "gitBlob": "d36856d199ebacec51ad7272d9a8e1fe0156b57c",
+      "keyCount": 9494,
+      "orderedKeySha256": "8d5fd7bd4351bc64c5ee813f2e50196608869e165866f3202a312078732c2baf"
+    },
+    "src/i18n/locale/id.json": {
+      "sha256": "df2ebd1bdadd3dab03dc0ac60f5e712074a5059955c35516cd39087425a1e131",
+      "gitBlob": "3655053f91725fe150d807950c91490cd1bea0d3",
+      "keyCount": 9494,
+      "orderedKeySha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072"
+    }
+  },
+  "sourceCatalogSha256": "75ff3c90b52aedd636a506281ffbd6fb2d3739c61294b6008a517f17647e2316",
+  "sourceOrderSha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+  "callerFiles": {
+    "src/components/RequestStatus/messages.tsx": {
+      "sha256": "5c7691636c95eed239cf012fa2e8bdc066ef773a8b4288bbd93fafddb15324eb",
+      "gitBlob": "73f660f8595c193f4996c2720d0566212545f76c",
+      "lineCount": 121
+    },
+    "src/components/Requests/index.tsx": {
+      "sha256": "25b612dcda274fe2ea64b76f169587e153b04a675c9b8cd817814d9fbfde5360",
+      "gitBlob": "84f6a19674b329df0ef6be6483d74bbaeb110ccb",
+      "lineCount": 3115
+    },
+    "src/components/Requests/destructiveActions.tsx": {
+      "sha256": "16d562185c1e1f3a94398369b4ab3eec28085033dcc3465c32557752687d1d57",
+      "gitBlob": "09884f99a738ce4402b5fb121d15022f0efc3a67",
+      "lineCount": 173
+    },
+    "src/components/ManageSlideOver/ManageMediaActions.tsx": {
+      "sha256": "a4caa2758953d8c791287d946e43fb37ea9bbd55d2d3b58cbab0a64ac868aac0",
+      "gitBlob": "699de06eb9f83f34fbfdda11553c46ae96388880",
+      "lineCount": 854
+    },
+    "server/lib/requestStatus.ts": {
+      "sha256": "63dd1b43e684a40eb82253a2942d7652cad63d87234b5c279d73af0b945b2d31",
+      "gitBlob": "e75608e1c2921b5f7b3e822c25a690f8b1cc5e82",
+      "lineCount": 2328
+    },
+    "server/subscriber/MediaRequestSubscriber.ts": {
+      "sha256": "0ffdfb179133d699b5237b9e1970db4898bfba5a189e7ad4fc9042fc20726d91",
+      "gitBlob": "080e6f0afd04f119b8e0f26798562aae22704561",
+      "lineCount": 4189
+    }
+  },
+  "orderedLocaleKeySequencesMatch": false,
+  "perLocaleOrderedKeyHashesPinned": true
+}

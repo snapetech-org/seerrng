@@ -1,0 +1,45 @@
+{
+  "schemaVersion": 1,
+  "review": "Primary semantic review of SeerrNG PR #418 source positions 1200-1299 for ar/de/es/fr/hi/id",
+  "exactHead": "6ff9de1c39a19fe9c508f09e0f6a885022632d8b",
+  "exactTree": "68d7525714b3628bbe7b69701d8be08add152832",
+  "worktree": "/mnt/disks/scratch/task-worktrees/localization-20261102/seerrng-pr418-w1000-1099",
+  "input": {
+    "path": "/mnt/disks/scratch/task-scratch/seerrng-pr418-window-1200-1299-primary-20261102/review-input.jsonl",
+    "sha256": "f41fc3a49bdeea482f584fd287372935bb7a9d80faeeecc56ec1b41cd59634e9",
+    "packetRows": 1200,
+    "assignedRows": 600
+  },
+  "scope": {
+    "sourcePositions": [
+      1200,
+      1299
+    ],
+    "sourceIds": 100,
+    "locales": [
+      "ar",
+      "de",
+      "es",
+      "fr",
+      "hi",
+      "id"
+    ],
+    "cells": 600
+  },
+  "counts": {
+    "propose-correction": 38,
+    "accept-current": 559,
+    "propose-refinement": 3
+  },
+  "proposals": 41,
+  "frozenPriorSpanishCells": 0,
+  "inputAttestationMismatches": 0,
+  "blockedRows": [],
+  "nativeSpeakerSignoff": "not claimed",
+  "validationNotes": [
+    "No repository/catalog files were modified.",
+    "No tests, builds, scans, CI jobs, workflows, releases, or browser/native reviews were run.",
+    "Source and current targets were re-read from the pinned English and locale JSON files; all provided source, target, and caller pins matched.",
+    "Every proposed replacement preserves the source named-placeholder set."
+  ]
+}

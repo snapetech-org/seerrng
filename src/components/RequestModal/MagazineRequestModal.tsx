@@ -294,7 +294,7 @@ const MagazineRequestModal = ({
               magazineServices &&
               magazineServices.length > 1 && (
                 <select
-                  className="request-form-control compact-control mr-auto rounded-md border px-2 text-[11px] font-medium"
+                  className="request-form-control compact-control me-auto rounded-md border px-2 text-[11px] font-medium"
                   value={selectedServerId ?? ''}
                   onChange={(event) =>
                     setSelectedServerId(
@@ -324,7 +324,7 @@ const MagazineRequestModal = ({
               onClick={onCancel}
               className="compact-control"
             >
-              <XMarkIcon className="mr-1 inline h-3.5 w-3.5" />
+              <XMarkIcon className="me-1 inline h-3.5 w-3.5" />
               {intl.formatMessage(globalMessages.cancel)}
             </button>
             <button

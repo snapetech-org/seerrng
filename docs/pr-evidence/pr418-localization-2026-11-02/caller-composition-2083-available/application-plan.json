@@ -1,0 +1,19 @@
+{
+  "repository": "snapetech-org/SeerrNG",
+  "pull_request": 418,
+  "input_head": "3af7b753f5a7a8ce304e0c116dbce9a76328b3ad",
+  "input_branch": "codex/seerrng-localization-overhaul-20261028",
+  "source_position_zero_based": 2083,
+  "source_id": "components.MediaDetails.SeasonEpisodeTree.available",
+  "source": "available",
+  "locale": "ar",
+  "expected_current_target": "متاحة",
+  "expected_current_sha256": "bc4f4501a2b64496280c4e65f9a681b58ef3c5e51ce71e29d83417743063d88f",
+  "accepted_target": "المتاحة",
+  "accepted_target_sha256": "a86435761b0d2bfa146f11438cf9e3e6baaf9bd4cec4fd417aa0ffd3866c066d",
+  "review_source": "independent-crossreview-packet/crossreview-summary.json",
+  "paths_changed": [
+    "src/i18n/locale/ar.json"
+  ],
+  "browser_visual_acceptance": "unverified; documented in visual-review.json"
+}

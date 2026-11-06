@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 1,
+  "algorithm": "SHA-256",
+  "sha256SumsFile": "SHA256SUMS.txt",
+  "sha256SumsSha256": "a5ceeda42893980fa86214bda3b7d32b0df2f1260534799340b24485d5b293b1",
+  "head": "fcbc579f724e50a07dc0e12b00127c4f6084c453",
+  "tree": "30e1e5e610e88ba935e482fc7088311d00e214ae",
+  "fileSha256": {
+    "verification.json": "9c37a30036a0734eb49f7ed210cd3819690a936b625abd323669737d37134003",
+    "report.md": "4d2d6eefa83a08e860bbdc749f7f7f8badf4eb0e20ac608d31bcc255f1fb8b47"
+  }
+}

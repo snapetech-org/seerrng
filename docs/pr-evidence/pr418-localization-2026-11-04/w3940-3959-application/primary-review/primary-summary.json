@@ -1,0 +1,102 @@
+{
+  "PRorCatalogEdits": false,
+  "baselineNumericTokenMismatchCount": 2,
+  "blindPacketGenerated": false,
+  "blindPacketInspected": false,
+  "browserAcceptance": false,
+  "callerReferences": 22,
+  "cells": 240,
+  "crossReviewPerformed": false,
+  "currentHashOnlyHolds": 24,
+  "dispositionCounts": {
+    "ACCEPT_CURRENT": 177,
+    "CORRECTION": 23,
+    "HOLD": 24,
+    "REFINEMENT": 16
+  },
+  "head": "a0104b4c84a9c4561020ca72062171b22ffc49f2",
+  "localeCount": 12,
+  "localeDispositionCounts": {
+    "ar": {
+      "ACCEPT_CURRENT": 11,
+      "CORRECTION": 6,
+      "HOLD": 2,
+      "REFINEMENT": 1
+    },
+    "de": {
+      "ACCEPT_CURRENT": 11,
+      "CORRECTION": 4,
+      "HOLD": 2,
+      "REFINEMENT": 3
+    },
+    "es": {
+      "ACCEPT_CURRENT": 14,
+      "CORRECTION": 3,
+      "HOLD": 2,
+      "REFINEMENT": 1
+    },
+    "fr": {
+      "ACCEPT_CURRENT": 14,
+      "CORRECTION": 4,
+      "HOLD": 2
+    },
+    "hi": {
+      "ACCEPT_CURRENT": 15,
+      "CORRECTION": 1,
+      "HOLD": 2,
+      "REFINEMENT": 2
+    },
+    "id": {
+      "ACCEPT_CURRENT": 16,
+      "HOLD": 2,
+      "REFINEMENT": 2
+    },
+    "ja": {
+      "ACCEPT_CURRENT": 18,
+      "HOLD": 2
+    },
+    "ko": {
+      "ACCEPT_CURRENT": 14,
+      "HOLD": 2,
+      "REFINEMENT": 4
+    },
+    "pt-BR": {
+      "ACCEPT_CURRENT": 14,
+      "CORRECTION": 2,
+      "HOLD": 2,
+      "REFINEMENT": 2
+    },
+    "vi": {
+      "ACCEPT_CURRENT": 18,
+      "HOLD": 2
+    },
+    "zh-Hans": {
+      "ACCEPT_CURRENT": 16,
+      "CORRECTION": 1,
+      "HOLD": 2,
+      "REFINEMENT": 1
+    },
+    "zh-Hant": {
+      "ACCEPT_CURRENT": 16,
+      "CORRECTION": 2,
+      "HOLD": 2
+    }
+  },
+  "nativeSpeakerApproval": false,
+  "numericMismatchDisposition": "The two Japanese “at least one” translations express the required minimum with 1つ以上; accept-current.",
+  "priorAppliedTargetHashesReattested": 214,
+  "priorHashOnlyHoldsReattested": 26,
+  "priorSelectedSourceIdsReattested": 3940,
+  "proposalCount": 39,
+  "proposalKindCounts": {
+    "CORRECTION": 23,
+    "REFINEMENT": 16
+  },
+  "repositoryEdits": false,
+  "result": "PASS",
+  "reviewMode": "primary semantic review only",
+  "sourceIds": 20,
+  "testsBuildsScansCI": false,
+  "tree": "aaa44c8019c58fde7ae796065e8aae7ac11d7a80",
+  "window": "W3940-W3959"
+}

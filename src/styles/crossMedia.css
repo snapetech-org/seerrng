@@ -149,7 +149,7 @@
   }
 
   .follow-unread-count {
-    margin-left: auto;
+    margin-inline-start: auto;
     min-width: 1.25rem;
     border-radius: 9999px;
     padding: 0 0.375rem;

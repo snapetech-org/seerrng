@@ -1,0 +1,111 @@
+{
+  "artifact": "Blind translation proposal and hold ledger",
+  "browserReview": "not performed",
+  "callerlessHolds": 12,
+  "callerlessPosition": 3632,
+  "candidateMaterialAccessed": false,
+  "cellCount": 240,
+  "currentTargetsAccessed": false,
+  "dispositions": {
+    "hold": 12,
+    "propose": 228
+  },
+  "glossaryAccessed": false,
+  "head": "ebf1cb6082ef173688227c507acfdc04c3cf7ca7",
+  "heldCells": 12,
+  "localeCount": 12,
+  "locales": [
+    "es",
+    "zh_Hans",
+    "hi",
+    "de",
+    "ja",
+    "fr",
+    "pt_BR",
+    "ar",
+    "ko",
+    "zh_Hant",
+    "vi",
+    "id"
+  ],
+  "nativeSpeakerReview": "not performed",
+  "perLocaleDispositions": {
+    "ar": {
+      "hold": 1,
+      "propose": 19
+    },
+    "de": {
+      "hold": 1,
+      "propose": 19
+    },
+    "es": {
+      "hold": 1,
+      "propose": 19
+    },
+    "fr": {
+      "hold": 1,
+      "propose": 19
+    },
+    "hi": {
+      "hold": 1,
+      "propose": 19
+    },
+    "id": {
+      "hold": 1,
+      "propose": 19
+    },
+    "ja": {
+      "hold": 1,
+      "propose": 19
+    },
+    "ko": {
+      "hold": 1,
+      "propose": 19
+    },
+    "pt_BR": {
+      "hold": 1,
+      "propose": 19
+    },
+    "vi": {
+      "hold": 1,
+      "propose": 19
+    },
+    "zh_Hans": {
+      "hold": 1,
+      "propose": 19
+    },
+    "zh_Hant": {
+      "hold": 1,
+      "propose": 19
+    }
+  },
+  "priorReviewsAccessed": false,
+  "proposedCells": 228,
+  "pullRequest": 418,
+  "repository": "snapetech-org/seerrng",
+  "repositoryOrPrEditsMade": false,
+  "repositoryOrPrFilesRead": false,
+  "reviewType": "blind source-and-caller-context translation review",
+  "rowsPerLocale": {
+    "ar": 20,
+    "de": 20,
+    "es": 20,
+    "fr": 20,
+    "hi": 20,
+    "id": 20,
+    "ja": 20,
+    "ko": 20,
+    "pt_BR": 20,
+    "vi": 20,
+    "zh_Hans": 20,
+    "zh_Hant": 20
+  },
+  "sealedBeforeCandidateBearingReview": true,
+  "sourceCount": 20,
+  "tokenCheckResults": {
+    "mismatches": 0,
+    "proposedRows": 228
+  },
+  "tree": "e3c4d1d10f40ea078b66dfdf942e99c8189fee0c",
+  "window": "W3620-W3639"
+}

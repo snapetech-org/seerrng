@@ -1,0 +1,171 @@
+{
+  "schemaVersion": 1,
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "head": "5a4342176a8325c371a35d489cb01c58283bc983",
+  "tree": "98cd64952123c9b678e38250e7819cabb4476448",
+  "semanticManifestSha256": "3ea74cc6491aecddf9ffcedc69610f13d20b199059aef69bb3c2407feb0826ea",
+  "cellPlanSha256": "97c3402252a34aaa4f8f9f44a691281d9c35ff7b80d7edb3a26c752436af6558",
+  "retiredCellsSha256": "dc5ec05547e4da3079c0668f82a52da7999d89ef9d4f037c1cd72af9347ebd83",
+  "sourceBundleManifestSha256": "212491482d1b9207fed755af6e80ac80a97184ec8dbe84d0c4ad2bd711acae0d",
+  "sourceRowsSha256": "ad91236a31e32f199ff449f9ed4597ea6af0f5a4eff32772cefa84278cafb68c",
+  "sourceCellsSha256": "8bfcd1aa9b5d5aba4fb6317c194cd544d601543ebf250899a84a719b52e468e1",
+  "planRows": 115260,
+  "actions": {
+    "semantic-review-required": 114783,
+    "reuse-equivalence-decision": 477
+  },
+  "retiredRows": 48,
+  "reusableEquivalenceCells": 477,
+  "targetsApplied": false,
+  "batchId": "existing-es-client-0103",
+  "batchSha256": "519a5c446956721bc7f989d130368460c5963df1169aa633854144d166b9f8f3",
+  "rowCount": 32,
+  "model": "qwen3.8-27b-heretic:q4km",
+  "attempt": 1,
+  "decisions": [
+    {
+      "id": "components.Requests.all",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.Requests.allMedia",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.Requests.allTime",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.Requests.allUsers",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.Requests.approve",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.Requests.approveTooltip",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.Requests.approved",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.Requests.artist",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.Requests.attention",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.Requests.audiobooks",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.Requests.author",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.Requests.available",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.Requests.book",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.Requests.bookAndAudiobook",
+      "verdict": "correct",
+      "target": "Libro + Audiolibro",
+      "confidence": "high",
+      "reason": "Source is singular 'Audiobook', target is plural 'Audiolibros'."
+    },
+    {
+      "id": "components.Requests.cancelled",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.Requests.changeServer",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.Requests.changeServerTooltip",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.Requests.clearFilters",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.Requests.comic",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.Requests.comics",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.Requests.completed",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.Requests.country",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.Requests.creator",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.Requests.decline",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.Requests.declineTooltip",
+      "verdict": "correct",
+      "target": "Rechazar esta solicitud pendiente.",
+      "confidence": "high",
+      "reason": "Source is 'Decline' (Rechazar), target is 'Declarar' (Declare), which is a mistranslation."
+    },
+    {
+      "id": "components.Requests.declined",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.Requests.delete",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.Requests.deleteDescription",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.Requests.deleteFailed",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.Requests.deleteSuccess",
+      "verdict": "correct",
+      "target": "Entrada de solicitud eliminada.",
+      "confidence": "high",
+      "reason": "Source is 'Request entry deleted', target is 'Solicitud de entrada eliminada' (Request for entry deleted), which is a mistranslation of the noun phrase."
+    },
+    {
+      "id": "components.Requests.deleteTitle",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.Requests.deleteTooltip",
+      "verdict": "correct",
+      "target": "Eliminar esta solicitud y su historial de estado.",
+      "confidence": "high",
+      "reason": "Source is 'Delete this request', target is 'Suprímase esta solicitud' (Let this request be deleted), which uses an unnatural passive/reflexive form for a UI action."
+    }
+  ],
+  "decisionsSha256": "a8a803facac5cfecf26ee08cd63740989ec28026a8cc9aa3764d06d916963630",
+  "rawResponseSha256": "5b926dd7151b8e36325d82144ad782f66af12b1238860e3980c3d435bf513841",
+  "rawResponseFile": "/mnt/disks/scratch/task-scratch/seerrng-review-window-650-700-422072-20261102/semantic-output/responses/existing-es-client-0103-attempt-1.json"
+}

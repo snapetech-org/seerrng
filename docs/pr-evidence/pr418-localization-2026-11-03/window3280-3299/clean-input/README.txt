@@ -1,0 +1,5 @@
+# SeerrNG PR #418 W3280–W3299 clean review input
+
+Candidate-free input for 20 sorted English source IDs and 240 existing targets across 12 direct locales, pinned to PR head 039fe9e04ea5cc6da314427fa25b0937ef8dd92b and tree b1338441dc47245b87ed77e8253843b66c367062. The source queue continues the frozen W3260–W3279 input, whose checksum manifest and source IDs were revalidated. This packet pins all 13 locale catalogs (including English), each catalog’s file hash, Git blob, 9,494-key count and ordered-key hash, plus message-definition, caller, renderer, and route context file/snippet hashes.
+
+W3280 begins at components.RequestStatus.waitingForBinderyApproval; W3299 ends at components.Requests.available. Adjacent source IDs are pinned in source-boundaries.json. The clean input contains no review decisions or proposed translations. Placeholder schemas and current-target parity are recorded for every cell. Context holds: 0. Current placeholder-parity exceptions: 0. Machine review is not native-speaker approval.

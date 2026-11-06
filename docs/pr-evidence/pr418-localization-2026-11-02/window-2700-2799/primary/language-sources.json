@@ -1,0 +1,62 @@
+{
+  "academie_queue": {
+    "supports": "Defines a queue as a line of people waiting their turn, supporting the French file d’attente wording.",
+    "title": "Académie française, Dictionnaire: queue",
+    "url": "https://www.dictionnaire-academie.fr/article/A9Q0204"
+  },
+  "arabic_media": {
+    "supports": "Defines وسائل الإعلام using newspapers, radio, television, and other mass communication outlets; it does not name a requested media item.",
+    "title": "Cairo Academy of the Arabic Language, Dictionary: وسائل الإعلام",
+    "url": "https://www.arabicacademy.gov.eg/ar/%D9%85%D8%AD%D8%B1%D9%83-%D8%A7%D9%84%D8%A8%D8%AD%D8%AB/media%2Beffects"
+  },
+  "arabic_space": {
+    "supports": "Defines المساحة as a measurable area; the caller shows storage capacity, so the candidate specifies storage.",
+    "title": "Cairo Academy of the Arabic Language, Dictionary: المساحة",
+    "url": "https://www.arabicacademy.gov.eg/ar/%D9%85%D8%AD%D8%B1%D9%83-%D8%A7%D9%84%D8%A8%D8%AD%D8%AB/%D8%A7%D9%84%D9%85%D9%90%D8%B3%D8%A7%D8%AD%D9%8E%D8%A9%D9%8F?exact_search=true"
+  },
+  "duden_name_compound": {
+    "supports": "D146 uses hyphens in compounds with multi-part names and gives “Rio-de-la-Plata-Bucht” as an example. This supports German “Open-Library-ID”; the checker requiring the exact space-separated phrase “Open Library” is overbroad for this compound.",
+    "title": "Duden, Rechtschreibregeln: Namen, D146",
+    "url": "https://www.duden.de/sprachwissen/rechtschreibregeln/namen"
+  },
+  "duden_storage": {
+    "supports": "Defines storage capacity as the capacity of a storage device, matching the root-folder table values.",
+    "title": "Duden, Speicherkapazität",
+    "url": "https://www.duden.de/rechtschreibung/Speicherkapazitaet"
+  },
+  "moe_houxuanren": {
+    "supports": "Defines 候選人 as a person awaiting votes, not an ISBN candidate item.",
+    "title": "Taiwan Ministry of Education, Revised Mandarin Chinese Dictionary: 候選人",
+    "url": "https://dict.revised.moe.edu.tw/dictView.jsp?ID=81557&la=0&powerMode=0"
+  },
+  "moe_ji": {
+    "supports": "Lists a television program example counted in seasons, supporting 季 for a television season.",
+    "title": "Taiwan Ministry of Education, Revised Mandarin Chinese Dictionary: 季",
+    "url": "https://dict.revised.moe.edu.tw/dictView.jsp?ID=5448&la=0&powerMode=0"
+  },
+  "moe_jijie": {
+    "supports": "Defines 季節 as a period in the year characterized by climate/agriculture, explaining why it is wrong for a TV series season.",
+    "title": "Taiwan Ministry of Education, Revised Mandarin Chinese Dictionary: 季節",
+    "url": "https://dict.revised.moe.edu.tw/dictView.jsp?ID=88724&la=0&powerMode=0"
+  },
+  "musicbrainz": {
+    "supports": "Official product spelling; preserve the product name and ID label.",
+    "title": "MusicBrainz official site",
+    "url": "https://musicbrainz.org/"
+  },
+  "openlibrary": {
+    "supports": "Official product spelling; preserve the two-word brand.",
+    "title": "Open Library official site",
+    "url": "https://openlibrary.org/"
+  },
+  "rae_partido": {
+    "supports": "In the automatic edition-matching context, partido means a sports/game match; coincidencia is the intended software match.",
+    "title": "Real Academia Española, Diccionario de la lengua española: partido, partida",
+    "url": "https://dle.rae.es/partido"
+  },
+  "rae_usted": {
+    "supports": "Spanish direct address in formal usted uses the usted verbal forms; the es proposals use Su and usted-form verbs.",
+    "title": "Real Academia Española, Gramática: treatment pronouns and agreement",
+    "url": "https://www.rae.es/gtg/docs/GTG_tablas_web.pdf"
+  }
+}

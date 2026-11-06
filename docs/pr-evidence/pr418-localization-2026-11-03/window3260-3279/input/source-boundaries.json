@@ -1,0 +1,266 @@
+{
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "head": "4cfcda2cb279ab056b46df4779aaadf8313c4594",
+  "tree": "4f6b1921a48aefe444c81d317a0f3ae265707bcc",
+  "sourceOrderCount": 9494,
+  "sourceOrderSha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+  "range": [
+    3260,
+    3279
+  ],
+  "before": {
+    "position": 3259,
+    "id": "components.RequestStatus.deleting",
+    "source": "Deleting…"
+  },
+  "first": {
+    "position": 3260,
+    "id": "components.RequestStatus.downloadImportFailed",
+    "source": "The download or import failed."
+  },
+  "last": {
+    "position": 3279,
+    "id": "components.RequestStatus.waitingForApproval",
+    "source": "Your request is waiting for approval."
+  },
+  "after": {
+    "position": 3280,
+    "id": "components.RequestStatus.waitingForBinderyApproval",
+    "source": "Waiting for Bindery to approve this request. Enable Auto-approve requests for this account in Bindery if acquisition should start immediately."
+  },
+  "localeCatalogPins": {
+    "src/i18n/locale/es.json": {
+      "sha256": "7aadca5cb0743604fdf9a129ef2bf9b9f2bdcf0efd989bc414a4990a93eef25b",
+      "gitBlob": "0eb241ac677895c11c40aed761219bde118e826b",
+      "keyCount": 9494,
+      "orderedKeySha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072"
+    },
+    "src/i18n/locale/zh_Hans.json": {
+      "sha256": "01273be2b8e406637bc08f54174ac0fdb11c2a3f8e89517c8d17ebe2fbca4604",
+      "gitBlob": "ba08057d8a01707497bb7c588d92321588a0a4e4",
+      "keyCount": 9494,
+      "orderedKeySha256": "8d5fd7bd4351bc64c5ee813f2e50196608869e165866f3202a312078732c2baf"
+    },
+    "src/i18n/locale/hi.json": {
+      "sha256": "ef78e439bd64f98de8c5fb38adc5aa7bcc7e9291daae001c1954425251479244",
+      "gitBlob": "901ddcf0586b6a8159e8d1d4a1758af4dc95b44d",
+      "keyCount": 9494,
+      "orderedKeySha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072"
+    },
+    "src/i18n/locale/de.json": {
+      "sha256": "170cc3a4b03b39792e49ca6809a1e963f3b6d1c66dcf9dd75a6a4e0843d33929",
+      "gitBlob": "af0a88ee74bbdcb5bcb576b6efaa65026887a1d0",
+      "keyCount": 9494,
+      "orderedKeySha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072"
+    },
+    "src/i18n/locale/ja.json": {
+      "sha256": "7d5ab557747aad8a92f1950eed3ef189786b11e5f730714aabd22325a553cfe8",
+      "gitBlob": "df47e69b3d0865a1d2f1187b3acbd09a295cf605",
+      "keyCount": 9494,
+      "orderedKeySha256": "8d5fd7bd4351bc64c5ee813f2e50196608869e165866f3202a312078732c2baf"
+    },
+    "src/i18n/locale/fr.json": {
+      "sha256": "4b389d6c11c4322ea9eb38825f4f4a31bf9923b9ccf3d337ffc5f666e3c073e4",
+      "gitBlob": "74182d57f991adcfb56ebd91d85e4cddc225ee69",
+      "keyCount": 9494,
+      "orderedKeySha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072"
+    },
+    "src/i18n/locale/pt_BR.json": {
+      "sha256": "364986b8d1614504eb598afe67cf4fee1290d614f640d11b15535b382b5eea0a",
+      "gitBlob": "0e92142b4ebdc2570c2fa9c6e113e1d98352d295",
+      "keyCount": 9494,
+      "orderedKeySha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072"
+    },
+    "src/i18n/locale/ar.json": {
+      "sha256": "a2a0a50a64e60f867d9fb56cae0e037cdbae0d356f00f523914e5c7575871abf",
+      "gitBlob": "bdfb8028be788654f99f6bf379e557e7c71f9561",
+      "keyCount": 9494,
+      "orderedKeySha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072"
+    },
+    "src/i18n/locale/ko.json": {
+      "sha256": "c8fbef1cf616ab93c418b0e079ba2fe90f89ed41ed18392d35685e33358de982",
+      "gitBlob": "a826c90e527d6ed29ff1bec92e006dcc9a9fe198",
+      "keyCount": 9494,
+      "orderedKeySha256": "8d5fd7bd4351bc64c5ee813f2e50196608869e165866f3202a312078732c2baf"
+    },
+    "src/i18n/locale/zh_Hant.json": {
+      "sha256": "6cf506932bb794a2fc4e4534fd2493b76d3c328964947669d245605feb4c8a96",
+      "gitBlob": "153aae440d92bddd35f7e837e6243651b053ec4b",
+      "keyCount": 9494,
+      "orderedKeySha256": "8d5fd7bd4351bc64c5ee813f2e50196608869e165866f3202a312078732c2baf"
+    },
+    "src/i18n/locale/vi.json": {
+      "sha256": "0d51aba3f6e674f3790d56408207a617cca51ad74ac7569b2fffd4b81177c36b",
+      "gitBlob": "3ccf6752e1ed535ff842e07509ff4e6e08f274ed",
+      "keyCount": 9494,
+      "orderedKeySha256": "8d5fd7bd4351bc64c5ee813f2e50196608869e165866f3202a312078732c2baf"
+    },
+    "src/i18n/locale/id.json": {
+      "sha256": "67921c01c0da2337a91b6da2b6b29533592c2c4cadb5b932de04ce41e733abcd",
+      "gitBlob": "49f92dc728cee1f903bc6eda50e0aac4939de21a",
+      "keyCount": 9494,
+      "orderedKeySha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072"
+    },
+    "src/i18n/locale/en.json": {
+      "sha256": "75ff3c90b52aedd636a506281ffbd6fb2d3739c61294b6008a517f17647e2316",
+      "gitBlob": "12e04a118c30b71b3714291adeaf9fdb2735cee4",
+      "keyCount": 9494,
+      "orderedKeySha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072"
+    }
+  },
+  "callerFiles": {
+    "src/components/RequestStatus/messages.tsx": {
+      "sha256": "5c7691636c95eed239cf012fa2e8bdc066ef773a8b4288bbd93fafddb15324eb",
+      "gitBlob": "73f660f8595c193f4996c2720d0566212545f76c",
+      "lineCount": 121
+    },
+    "src/components/Requests/index.tsx": {
+      "sha256": "25b612dcda274fe2ea64b76f169587e153b04a675c9b8cd817814d9fbfde5360",
+      "gitBlob": "84f6a19674b329df0ef6be6483d74bbaeb110ccb",
+      "lineCount": 3115
+    },
+    "src/components/Requests/destructiveActions.tsx": {
+      "sha256": "16d562185c1e1f3a94398369b4ab3eec28085033dcc3465c32557752687d1d57",
+      "gitBlob": "09884f99a738ce4402b5fb121d15022f0efc3a67",
+      "lineCount": 173
+    },
+    "src/components/ManageSlideOver/ManageMediaActions.tsx": {
+      "sha256": "a4caa2758953d8c791287d946e43fb37ea9bbd55d2d3b58cbab0a64ac868aac0",
+      "gitBlob": "699de06eb9f83f34fbfdda11553c46ae96388880",
+      "lineCount": 854
+    },
+    "server/lib/requestStatus.ts": {
+      "sha256": "63dd1b43e684a40eb82253a2942d7652cad63d87234b5c279d73af0b945b2d31",
+      "gitBlob": "e75608e1c2921b5f7b3e822c25a690f8b1cc5e82",
+      "lineCount": 2328
+    },
+    "server/subscriber/MediaRequestSubscriber.ts": {
+      "sha256": "0ffdfb179133d699b5237b9e1970db4898bfba5a189e7ad4fc9042fc20726d91",
+      "gitBlob": "080e6f0afd04f119b8e0f26798562aae22704561",
+      "lineCount": 4189
+    }
+  },
+  "sourceIds": [
+    {
+      "position": 3260,
+      "id": "components.RequestStatus.downloadImportFailed",
+      "source": "The download or import failed.",
+      "sourceSha256": "f0815638927c0fce54043d68e51a01320221a561906d3b4edc8f4c9cce2d68ca"
+    },
+    {
+      "position": 3261,
+      "id": "components.RequestStatus.downloading",
+      "source": "A usable release is downloading.",
+      "sourceSha256": "389af804829d830b62a77655a45ef9bb920ceddbaccb601ba95e6ad02e04e710"
+    },
+    {
+      "position": 3262,
+      "id": "components.RequestStatus.importing",
+      "source": "The download is being imported.",
+      "sourceSha256": "cf5bb7b7fcc5f0e3ba00ca5492e28e1ef635c224cb10091b9ba8712a226c1c5b"
+    },
+    {
+      "position": 3263,
+      "id": "components.RequestStatus.noReleaseFound",
+      "source": "No release found. Use an interactive search in Lidarr.",
+      "sourceSha256": "9735d8267d6a0503632a0c1a9e756c1a71e44e3b739a1b81722e019cb2542fc8"
+    },
+    {
+      "position": 3264,
+      "id": "components.RequestStatus.preparingAudiobook",
+      "source": "ChaptarrNG is preparing the requested audiobook while it imports the author.",
+      "sourceSha256": "8aeadc98721704a2b6a33a3b5bdff3fb8ecb20e6f716546d9b963029557f297b"
+    },
+    {
+      "position": 3265,
+      "id": "components.RequestStatus.preparingBookServiceAcquisition",
+      "source": "The connected book service is handling acquisition for this title. SeerrNG will update availability when the book appears in its library.",
+      "sourceSha256": "20aeff88d0a8cc4a0960b10e6ba0e60ff303c1213b645c8b1821d8473c5828e6"
+    },
+    {
+      "position": 3266,
+      "id": "components.RequestStatus.preparingBookshelfSearch",
+      "source": "SeerrNG is preparing a Bookshelf search for this title. Availability will update after a library scan finds the book.",
+      "sourceSha256": "8d625abc38fef1a9b4d93f7bdf73e3c66014032587bfe593ca5eccb204bb32e1"
+    },
+    {
+      "position": 3267,
+      "id": "components.RequestStatus.preparingEbook",
+      "source": "ChaptarrNG is preparing the requested ebook while it imports the author.",
+      "sourceSha256": "c7114dc5829c1face9271122728132e71628b9c7b7fa16e0e549926048a67e9d"
+    },
+    {
+      "position": 3268,
+      "id": "components.RequestStatus.remove",
+      "source": "Delete From Library",
+      "sourceSha256": "a76fe56b21503e4eea5de327299c66c92c69248aae9912fdfd09f1bdbbb63a84"
+    },
+    {
+      "position": 3269,
+      "id": "components.RequestStatus.removeDescription",
+      "source": "This will permanently delete its media files and remove its library entry from {service}. This action cannot be undone from Seerr. Other quality versions remain. When the last movie or series copy is confirmed gone, library reconciliation also removes its requests and issues, but preserves blocklists and watchlists.",
+      "sourceSha256": "d2b13c42b54765877d90c1d50cb4fea3c1ccccf80de528470371097faccc8022"
+    },
+    {
+      "position": 3270,
+      "id": "components.RequestStatus.removeFailed",
+      "source": "Unable to delete this item from its library service.",
+      "sourceSha256": "6179bac4444705f0dbab1b381930c81f35a6bae03d3e74bece658269685658f1"
+    },
+    {
+      "position": 3271,
+      "id": "components.RequestStatus.removeSuccess",
+      "source": "Item deleted from its library service.",
+      "sourceSha256": "d5f4f5fc01d18a013cb1c96ef382b5c68d4365c0616e0ea53e2589371f3d4b3b"
+    },
+    {
+      "position": 3272,
+      "id": "components.RequestStatus.removeTitle",
+      "source": "Permanently Delete {title} from {service}?",
+      "sourceSha256": "d97889763834270b145ffc3a3a0325783520414d77215888c73d69d2aa8666a7"
+    },
+    {
+      "position": 3273,
+      "id": "components.RequestStatus.removeTooltip",
+      "source": "The media and the library entry will both be deleted.",
+      "sourceSha256": "e73d4b9bfdc903449eb72a24089c93768ff615d66df0f12753d297ac5058194c"
+    },
+    {
+      "position": 3274,
+      "id": "components.RequestStatus.removeUnavailableTooltip",
+      "source": "No linked library item is available to delete.",
+      "sourceSha256": "fbeedf76732812052c40546e51755180bfab726adb94da2d2c3aca2b0a9df747"
+    },
+    {
+      "position": 3275,
+      "id": "components.RequestStatus.removing",
+      "source": "Deleting…",
+      "sourceSha256": "43b5894c3e4e2b24f13c935f4fae0a0a8fbe7d7792750a09b88c2097fd9a32b8"
+    },
+    {
+      "position": 3276,
+      "id": "components.RequestStatus.requestRetried",
+      "source": "The request was retried and is waiting to be dispatched.",
+      "sourceSha256": "feb49720d6e977114503b8ec139548e272d6d9d5155f2341ece72229b929e95d"
+    },
+    {
+      "position": 3277,
+      "id": "components.RequestStatus.searching",
+      "source": "Searching for a usable release.",
+      "sourceSha256": "352317b675b0e26a099869597c0e7960ee299c098dd5c8e2d0075f49858c4e74"
+    },
+    {
+      "position": 3278,
+      "id": "components.RequestStatus.unavailable",
+      "source": "No usable release is currently available.",
+      "sourceSha256": "d810d55874cfaa22a09f65a52d419f47ba224a1a162680c40d09924f7a66eb4d"
+    },
+    {
+      "position": 3279,
+      "id": "components.RequestStatus.waitingForApproval",
+      "source": "Your request is waiting for approval.",
+      "sourceSha256": "9d007e599c5ecbe0689888eb669e09b108fad8a2ed2435ea98b90c991562dbe8"
+    }
+  ]
+}

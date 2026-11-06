@@ -1,0 +1,137 @@
+{
+  "adjudicatedBlindTargets": 6,
+  "adjudicatedPrimaryTargets": 15,
+  "blindChangeCount": 19,
+  "bothAcceptCurrentCells": 210,
+  "byPosition": {
+    "3522": {
+      "locales": [
+        "es",
+        "fr",
+        "id",
+        "vi"
+      ],
+      "resolutions": {
+        "es": "adjudicated-primary-target",
+        "fr": "adjudicated-primary-target",
+        "id": "adjudicated-primary-target",
+        "vi": "adjudicated-primary-target"
+      },
+      "source": "Select a certification",
+      "sourceId": "components.Selector.CertificationSelector.selectCertification"
+    },
+    "3525": {
+      "locales": [
+        "ar",
+        "zh_Hans"
+      ],
+      "resolutions": {
+        "ar": "adjudicated-primary-target",
+        "zh_Hans": "adjudicated-primary-target"
+      },
+      "source": "All available providers are already selected.",
+      "sourceId": "components.Selector.allProvidersSelected"
+    },
+    "3527": {
+      "locales": [
+        "de",
+        "ja"
+      ],
+      "resolutions": {
+        "de": "adjudicated-blind-target",
+        "ja": "adjudicated-blind-target"
+      },
+      "source": "Canceled",
+      "sourceId": "components.Selector.canceled"
+    },
+    "3528": {
+      "locales": [
+        "id",
+        "vi"
+      ],
+      "resolutions": {
+        "id": "adjudicated-blind-target",
+        "vi": "adjudicated-blind-target"
+      },
+      "source": "Clear All",
+      "sourceId": "components.Selector.clearAll"
+    },
+    "3529": {
+      "locales": [
+        "ja"
+      ],
+      "resolutions": {
+        "ja": "adjudicated-primary-target"
+      },
+      "source": "Ended",
+      "sourceId": "components.Selector.ended"
+    },
+    "3531": {
+      "locales": [
+        "id"
+      ],
+      "resolutions": {
+        "id": "adjudicated-primary-target"
+      },
+      "source": "No providers are available in this region.",
+      "sourceId": "components.Selector.noProvidersAvailable"
+    },
+    "3532": {
+      "locales": [
+        "vi",
+        "zh_Hans",
+        "zh_Hant"
+      ],
+      "resolutions": {
+        "vi": "adjudicated-primary-target",
+        "zh_Hans": "adjudicated-primary-target",
+        "zh_Hant": "adjudicated-primary-target"
+      },
+      "source": "No providers are currently selected.",
+      "sourceId": "components.Selector.noProvidersSelected"
+    },
+    "3535": {
+      "locales": [
+        "fr",
+        "ja",
+        "vi",
+        "zh_Hant"
+      ],
+      "resolutions": {
+        "fr": "adjudicated-blind-target",
+        "ja": "adjudicated-primary-target",
+        "vi": "adjudicated-primary-target",
+        "zh_Hant": "adjudicated-primary-target"
+      },
+      "source": "Planned",
+      "sourceId": "components.Selector.planned"
+    },
+    "3536": {
+      "locales": [
+        "fr"
+      ],
+      "resolutions": {
+        "fr": "adjudicated-primary-target"
+      },
+      "source": "Returning Series",
+      "sourceId": "components.Selector.returningSeries"
+    },
+    "3539": {
+      "locales": [
+        "ko"
+      ],
+      "resolutions": {
+        "ko": "adjudicated-blind-target"
+      },
+      "source": "Select status...",
+      "sourceId": "components.Selector.searchStatus"
+    }
+  },
+  "convergentProposalCells": 9,
+  "dispositionDifferences": 18,
+  "holds": 0,
+  "primaryChangeCount": 24,
+  "targetAgreementCells": 219,
+  "targetDisagreementCount": 21,
+  "unresolvedDisagreements": 0
+}

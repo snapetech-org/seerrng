@@ -106,6 +106,13 @@ export class RecordingRequest {
   @Column({ type: 'varchar', length: 512, nullable: true })
   public lastError?: string | null;
 
+  /** Trusted app message descriptor; null keeps legacy/provider text opaque. */
+  @Column({ type: 'varchar', length: 64, nullable: true })
+  public lastErrorMessageKey?: string | null;
+
+  @Column({ type: 'simple-json', nullable: true })
+  public lastErrorMessageParams?: Record<string, string> | null;
+
   @DbAwareColumn({ type: 'datetime', nullable: true })
   public lastCheckedAt?: Date | null;
 

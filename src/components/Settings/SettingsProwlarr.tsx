@@ -1,3 +1,4 @@
+import ApiMessageText from '@app/components/Common/ApiMessageText';
 import SelectionCircle from '@app/components/Common/SelectionCircle';
 import { SavedServiceHostPicker } from '@app/components/Settings/SavedServiceHostPicker';
 import { useSetupConnectionSuggestion } from '@app/context/SetupConnectionsContext';
@@ -14,6 +15,7 @@ import { useIntl } from 'react-intl';
 import useSWR, { mutate } from 'swr';
 
 const messages = defineMessages('components.SettingsProwlarr', {
+  indexerCount: 'Indexers: {count, number}',
   title: 'Prowlarr indexers',
   description:
     'Optional: connect Prowlarr to run category-aware manual searches from SeerrNG. Approved requests continue through your configured media managers and software providers.',
@@ -565,7 +567,7 @@ const SettingsProwlarr = () => {
               >
                 <summary className="cursor-pointer text-sm font-medium text-gray-100">
                   {intl.formatMessage(messages[categoryMessages[category]])}
-                  <span className="ml-2 text-xs text-gray-400">
+                  <span className="ms-2 text-xs text-gray-400">
                     {intl.formatMessage(messages.selectedCategories, {
                       count: selectedIds.length,
                     })}
@@ -593,7 +595,7 @@ const SettingsProwlarr = () => {
                     <option key={option.id} value={option.id}>
                       {option.name} ({option.id})
                       {option.indexerCount
-                        ? ` · ${option.indexerCount} indexers`
+                        ? ` · ${intl.formatMessage(messages.indexerCount, { count: option.indexerCount })}`
                         : ''}
                     </option>
                   ))}
@@ -653,7 +655,7 @@ const SettingsProwlarr = () => {
                 >
                   <summary className="cursor-pointer text-sm font-medium text-gray-100">
                     {intl.formatMessage(messages[categoryMessages[category]])}
-                    <span className="ml-2 text-xs text-gray-400">
+                    <span className="ms-2 text-xs text-gray-400">
                       {intl.formatMessage(messages.selectedIndexers, {
                         count: selectedIds.length,
                       })}
@@ -794,17 +796,17 @@ const SettingsProwlarr = () => {
       </p>
       {connectionMessage && (
         <p className="mt-3 text-sm text-green-300" role="status">
-          {connectionMessage}
+          {<ApiMessageText>{connectionMessage}</ApiMessageText>}
         </p>
       )}
       {saveMessage && (
         <p className="mt-2 text-sm text-green-300" role="status">
-          {saveMessage}
+          {<ApiMessageText>{saveMessage}</ApiMessageText>}
         </p>
       )}
       {errorMessage && (
         <p className="mt-3 text-sm text-red-300" role="alert">
-          {errorMessage}
+          {<ApiMessageText>{errorMessage}</ApiMessageText>}
         </p>
       )}
 
@@ -875,7 +877,7 @@ const SettingsProwlarr = () => {
                           </p>
                           {item.error && (
                             <p className="mt-0.5 text-xs break-words text-amber-200">
-                              {item.error}
+                              {<ApiMessageText>{item.error}</ApiMessageText>}
                             </p>
                           )}
                           <DiagnosticDate

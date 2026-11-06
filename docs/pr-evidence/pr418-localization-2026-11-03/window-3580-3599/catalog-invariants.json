@@ -1,0 +1,218 @@
+{
+  "schemaVersion": 1,
+  "parentHead": "30f626a4626d460f426666cde02f5c1ed17fa206",
+  "catalogCount": 13,
+  "catalogs": [
+    {
+      "catalogPath": "src/i18n/locale/en.json",
+      "preApplySha256": "75ff3c90b52aedd636a506281ffbd6fb2d3739c61294b6008a517f17647e2316",
+      "postApplySha256": "75ff3c90b52aedd636a506281ffbd6fb2d3739c61294b6008a517f17647e2316",
+      "preApplyGitBlob": "12e04a118c30b71b3714291adeaf9fdb2735cee4",
+      "keyCount": 9494,
+      "orderedKeysSha256": "47d40a21145f2f198fadaa29baeef5461718c4b6365d564af60ee015f18f1974",
+      "keyOrderPreserved": true,
+      "changedKeys": [],
+      "changedValueCount": 0,
+      "expectedChangedValueCount": 0,
+      "nonTargetValuesPreserved": true
+    },
+    {
+      "catalogPath": "src/i18n/locale/es.json",
+      "preApplySha256": "25125ca22fe04539f856a297717fdd036d46b8687821cc799c024ec11607eaee",
+      "postApplySha256": "09eb25a0dfb22baa0924ec9581452b5fb965a4e19957b7c94ad2853edf22d29b",
+      "preApplyGitBlob": "637a273c825c988b889d2e4d9872dfcdf8ae489f",
+      "keyCount": 9494,
+      "orderedKeysSha256": "47d40a21145f2f198fadaa29baeef5461718c4b6365d564af60ee015f18f1974",
+      "keyOrderPreserved": true,
+      "changedKeys": [
+        "components.Settings.BackIssueModal.hostnameRequired",
+        "components.Settings.BackIssueModal.sync",
+        "components.Settings.BackIssueModal.syncHelp"
+      ],
+      "changedValueCount": 3,
+      "expectedChangedValueCount": 3,
+      "nonTargetValuesPreserved": true
+    },
+    {
+      "catalogPath": "src/i18n/locale/zh_Hans.json",
+      "preApplySha256": "d152c75bcba91c55677f2855698bce518f6c031323dc9de131cb451b073354c9",
+      "postApplySha256": "5f6b09117a3841c7f6d209140d5e1c8000ff6c7c43f2be93e58d7f3275171388",
+      "preApplyGitBlob": "cf7d3a9b8825cb0ad8c1de78189b30ef9d1ffadf",
+      "keyCount": 9494,
+      "orderedKeysSha256": "35faf7107f1be3900172b7c08ac7558b51f31d63b3b6c57eebe7710e8a81ca33",
+      "keyOrderPreserved": true,
+      "changedKeys": [
+        "components.Settings.BackIssueModal.nameRequired",
+        "components.Settings.BackIssueModal.sync",
+        "components.Settings.BackIssueModal.syncHelp"
+      ],
+      "changedValueCount": 3,
+      "expectedChangedValueCount": 3,
+      "nonTargetValuesPreserved": true
+    },
+    {
+      "catalogPath": "src/i18n/locale/hi.json",
+      "preApplySha256": "35caf437117f905c6a00b0f7d6055beb4556293ca716bcdce533104afcc3ffb0",
+      "postApplySha256": "6e1daf4c9500a1c97df8fd4e415350c529245982884122c007d70ad099dca8c7",
+      "preApplyGitBlob": "41c579c1ec5f724720921a511ef1ee46324ebdab",
+      "keyCount": 9494,
+      "orderedKeysSha256": "47d40a21145f2f198fadaa29baeef5461718c4b6365d564af60ee015f18f1974",
+      "keyOrderPreserved": true,
+      "changedKeys": [
+        "components.Settings.BackIssueModal.hostname"
+      ],
+      "changedValueCount": 1,
+      "expectedChangedValueCount": 1,
+      "nonTargetValuesPreserved": true
+    },
+    {
+      "catalogPath": "src/i18n/locale/de.json",
+      "preApplySha256": "5a18d1f005385ec269c5a9b9526d43080db77f4c13fd125b50f8aaf70f28f329",
+      "postApplySha256": "00d46880ccdb1c3a60a5468a7d7e4b96ba864f690e247617fbfcc63294403d80",
+      "preApplyGitBlob": "7fb6c5cf0a154ffbaaab1543890998bca2341eff",
+      "keyCount": 9494,
+      "orderedKeysSha256": "47d40a21145f2f198fadaa29baeef5461718c4b6365d564af60ee015f18f1974",
+      "keyOrderPreserved": true,
+      "changedKeys": [
+        "components.Settings.BackIssueModal.edit",
+        "components.Settings.BackIssueModal.intro"
+      ],
+      "changedValueCount": 2,
+      "expectedChangedValueCount": 2,
+      "nonTargetValuesPreserved": true
+    },
+    {
+      "catalogPath": "src/i18n/locale/ja.json",
+      "preApplySha256": "3323b7d65bda277fa2e2f894497aeb1aa09252725308230a232ff3509e193e4d",
+      "postApplySha256": "a6107e42f2e1e5ff081e7aff8deceee3d83edf61ac40e846a24e9df344341ed5",
+      "preApplyGitBlob": "a2e60b293bcb0a32ff1d4fe4b0c31a52f6f7edc1",
+      "keyCount": 9494,
+      "orderedKeysSha256": "35faf7107f1be3900172b7c08ac7558b51f31d63b3b6c57eebe7710e8a81ca33",
+      "keyOrderPreserved": true,
+      "changedKeys": [
+        "components.Settings.BackIssueModal.nameRequired",
+        "components.Settings.BackIssueModal.sync",
+        "components.Settings.BackIssueModal.syncHelp"
+      ],
+      "changedValueCount": 3,
+      "expectedChangedValueCount": 3,
+      "nonTargetValuesPreserved": true
+    },
+    {
+      "catalogPath": "src/i18n/locale/fr.json",
+      "preApplySha256": "9d4517c712565b4888f314187f470fa7e5f4a619a139e108fb83ec23ed3c8c5d",
+      "postApplySha256": "d76edf0d823c9c9c16e4cce4ee7c84c0bf58f988c3a2a27283bf6484344aa06d",
+      "preApplyGitBlob": "867320b2fa2334587088b9e6b248a0634fa4059e",
+      "keyCount": 9494,
+      "orderedKeysSha256": "47d40a21145f2f198fadaa29baeef5461718c4b6365d564af60ee015f18f1974",
+      "keyOrderPreserved": true,
+      "changedKeys": [
+        "components.Settings.BackIssueModal.intro",
+        "components.Settings.BackIssueModal.sync",
+        "components.Settings.BackIssueModal.syncHelp"
+      ],
+      "changedValueCount": 3,
+      "expectedChangedValueCount": 3,
+      "nonTargetValuesPreserved": true
+    },
+    {
+      "catalogPath": "src/i18n/locale/pt_BR.json",
+      "preApplySha256": "3d72c8d051a261e842c576ece7cfc085ff999be51006c3eaf615bcc5b6f8f406",
+      "postApplySha256": "3d72c8d051a261e842c576ece7cfc085ff999be51006c3eaf615bcc5b6f8f406",
+      "preApplyGitBlob": "6dac2dc419c763e629ae825e9a5bab535a944f15",
+      "keyCount": 9494,
+      "orderedKeysSha256": "47d40a21145f2f198fadaa29baeef5461718c4b6365d564af60ee015f18f1974",
+      "keyOrderPreserved": true,
+      "changedKeys": [],
+      "changedValueCount": 0,
+      "expectedChangedValueCount": 0,
+      "nonTargetValuesPreserved": true
+    },
+    {
+      "catalogPath": "src/i18n/locale/ar.json",
+      "preApplySha256": "f10f9b72f50ee1ee8fcd34dee5e5d0680e71fefc5db07a4f620238cc6d0d951d",
+      "postApplySha256": "790ba241a17e0ac40f6564ae495b0c2d167f080547e25ba049a93761866b02f4",
+      "preApplyGitBlob": "7dfb3a03f48801947744107eac3ad941b90f8cde",
+      "keyCount": 9494,
+      "orderedKeysSha256": "47d40a21145f2f198fadaa29baeef5461718c4b6365d564af60ee015f18f1974",
+      "keyOrderPreserved": true,
+      "changedKeys": [
+        "components.Settings.BackIssueModal.externalUrlHelp"
+      ],
+      "changedValueCount": 1,
+      "expectedChangedValueCount": 1,
+      "nonTargetValuesPreserved": true
+    },
+    {
+      "catalogPath": "src/i18n/locale/ko.json",
+      "preApplySha256": "f454370c0d01e391f7f4b983b689be7cfc3de8cd65e95439d7aea6a32790cc0b",
+      "postApplySha256": "9f1bb9d7d5785e8c6889b4789f7b1835ae1f9348effe6f81cc10d875fcaeb8a9",
+      "preApplyGitBlob": "3bb2791d74902d5fe3da136a59c52a63619b0489",
+      "keyCount": 9494,
+      "orderedKeysSha256": "35faf7107f1be3900172b7c08ac7558b51f31d63b3b6c57eebe7710e8a81ca33",
+      "keyOrderPreserved": true,
+      "changedKeys": [
+        "components.Settings.BackIssueModal.nameRequired",
+        "components.Settings.BackIssueModal.sync",
+        "components.Settings.BackIssueModal.toastTestFailure"
+      ],
+      "changedValueCount": 3,
+      "expectedChangedValueCount": 3,
+      "nonTargetValuesPreserved": true
+    },
+    {
+      "catalogPath": "src/i18n/locale/zh_Hant.json",
+      "preApplySha256": "f284fc9df323316577b36111540a2c99c8350546f7f3a57d23bf900b26e5105c",
+      "postApplySha256": "bef01fb550f590068bd58e01a4261a5d7ef4af96e24011eb5d8673b79ba47e9b",
+      "preApplyGitBlob": "4e95b322ed921be21564c0a205c46c017c565ed6",
+      "keyCount": 9494,
+      "orderedKeysSha256": "35faf7107f1be3900172b7c08ac7558b51f31d63b3b6c57eebe7710e8a81ca33",
+      "keyOrderPreserved": true,
+      "changedKeys": [
+        "components.Settings.BackIssueModal.externalUrlInvalid",
+        "components.Settings.BackIssueModal.nameRequired",
+        "components.Settings.BackIssueModal.sync"
+      ],
+      "changedValueCount": 3,
+      "expectedChangedValueCount": 3,
+      "nonTargetValuesPreserved": true
+    },
+    {
+      "catalogPath": "src/i18n/locale/vi.json",
+      "preApplySha256": "2de1f320f69630159a02b4522323f7a2d8d25069f8d615761f5297057a1d240f",
+      "postApplySha256": "47e8e76881ce603f3a0ab2939e2910b98b8a9a511313ea44adbd5223c4e86a35",
+      "preApplyGitBlob": "2e99bebd7c4258371b14301ccc834423b172f600",
+      "keyCount": 9494,
+      "orderedKeysSha256": "35faf7107f1be3900172b7c08ac7558b51f31d63b3b6c57eebe7710e8a81ca33",
+      "keyOrderPreserved": true,
+      "changedKeys": [
+        "components.Settings.BackIssueModal.intro"
+      ],
+      "changedValueCount": 1,
+      "expectedChangedValueCount": 1,
+      "nonTargetValuesPreserved": true
+    },
+    {
+      "catalogPath": "src/i18n/locale/id.json",
+      "preApplySha256": "e5c7ad78d22ef0a30fde0aa7f0d5738dd290d773b11dcf51ca703fee528f3aeb",
+      "postApplySha256": "078df4efc30ea47e2053d11e12fe9aea9b7fef32df8a2fc299b0fcf24c7660c9",
+      "preApplyGitBlob": "1a5f32fd737a91953349051d1876e47dc1ccab87",
+      "keyCount": 9494,
+      "orderedKeysSha256": "47d40a21145f2f198fadaa29baeef5461718c4b6365d564af60ee015f18f1974",
+      "keyOrderPreserved": true,
+      "changedKeys": [
+        "components.Settings.BackIssueModal.intro",
+        "components.Settings.BackIssueModal.portRequired",
+        "components.Settings.BackIssueModal.sync",
+        "components.Settings.BackIssueModal.syncHelp",
+        "components.Settings.BackIssueModal.toastSaveFailure"
+      ],
+      "changedValueCount": 5,
+      "expectedChangedValueCount": 5,
+      "nonTargetValuesPreserved": true
+    }
+  ],
+  "keyOrdersPreserved": true,
+  "nonTargetValuesPreserved": true,
+  "totalChangedCatalogValues": 28
+}

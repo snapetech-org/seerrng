@@ -1,0 +1,53 @@
+{
+  "callerFile": "src/components/Setup/index.tsx",
+  "callerFileBlob": "5f740f73e4d22a1f7a01dd0d8e74a94e890b88f1",
+  "callerFileSha256": "7d24c14cc92343ecb5693cedf148d34e6d18adb467aeb867ef1ad8aafd47f836",
+  "englishCatalogInsertionPositionOneBased": 5418,
+  "historicalWidthReview": {
+    "callerUnchanged": true,
+    "candidate": "Conectar servicios",
+    "currentCallerBlob": "5f740f73e4d22a1f7a01dd0d8e74a94e890b88f1",
+    "fileSha256": "20089386161799834435ece0a718ef003fe0166f806f3326e4cf24e57409abb9",
+    "final": "Conectar",
+    "gitBlob": "6ca0de97fd4e7b15d6d258050163de6e86db0c16",
+    "path": "docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-0900-0999/spanish-step5-refinement.json",
+    "priorConclusion": "retain shorter Conectar in narrow Step 5 navigation; services are implicit in context",
+    "reportedWidthsPx": {
+      "Conectar": 60.4,
+      "Conectar servicios": 122
+    },
+    "reviewHead": "18001c2d09d5d271bd4fe2ad22189c29d069a457",
+    "reviewHeadCallerBlob": "5f740f73e4d22a1f7a01dd0d8e74a94e890b88f1",
+    "reviewTree": "7a9f3218d79501fb620329f0e53c1a0b3dd44508"
+  },
+  "references": [
+    {
+      "line": 67,
+      "lineSha256": "38d4b1b337cd01f31304a59d57a2ced9d08b4ef9d0e442a19a3a87891c1a3b88",
+      "matchesFrozenCaller": true,
+      "text": "configureservices: 'Connect Services',"
+    },
+    {
+      "line": 436,
+      "lineSha256": "b21d4ff08cb3d1891d76d49c737f62674f3eed1d5b0d5502302df8201d0e4945",
+      "matchesFrozenCaller": true,
+      "text": "description={intl.formatMessage(messages.configureservices)}"
+    },
+    {
+      "line": 465,
+      "lineSha256": "b21d4ff08cb3d1891d76d49c737f62674f3eed1d5b0d5502302df8201d0e4945",
+      "matchesFrozenCaller": true,
+      "text": "description={intl.formatMessage(messages.configureservices)}"
+    },
+    {
+      "line": 500,
+      "lineSha256": "b21d4ff08cb3d1891d76d49c737f62674f3eed1d5b0d5502302df8201d0e4945",
+      "matchesFrozenCaller": true,
+      "text": "description={intl.formatMessage(messages.configureservices)}"
+    }
+  ],
+  "source": "Connect Services",
+  "sourceKey": "components.Setup.configureservices",
+  "sourcePositionZeroBased": 5417,
+  "sourceSha256": "0479b0d72d394280859ac2b8c67e9e0379fe087696b399caa54676f65ebd265e"
+}

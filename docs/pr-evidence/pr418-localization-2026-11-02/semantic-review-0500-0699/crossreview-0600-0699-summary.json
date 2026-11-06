@@ -1,0 +1,167 @@
+{
+  "callerContextAttestation": {
+    "changedPathsBetweenPrimaryAndCurrentHead": 0,
+    "citedCallerPathsChecked": 31,
+    "comparison": "d1137d06ffb5af57ef599ac9bf495aff2a990a7b to current head c40a8a7e9a9a0651c3109b1498881c08b4dbcd98",
+    "mismatches": 0
+  },
+  "candidateDispositions": {
+    "accept-proposal": 243,
+    "refine-proposal": 8
+  },
+  "candidatesByLocale": {
+    "ar": {
+      "accept-proposal": 33,
+      "hold": 0,
+      "refine-proposal": 3
+    },
+    "de": {
+      "accept-proposal": 2,
+      "hold": 0,
+      "refine-proposal": 1
+    },
+    "es": {
+      "accept-proposal": 2,
+      "hold": 0,
+      "refine-proposal": 0
+    },
+    "fr": {
+      "accept-proposal": 1,
+      "hold": 0,
+      "refine-proposal": 0
+    },
+    "hi": {
+      "accept-proposal": 34,
+      "hold": 0,
+      "refine-proposal": 2
+    },
+    "id": {
+      "accept-proposal": 19,
+      "hold": 0,
+      "refine-proposal": 1
+    },
+    "ja": {
+      "accept-proposal": 1,
+      "hold": 0,
+      "refine-proposal": 0
+    },
+    "ko": {
+      "accept-proposal": 12,
+      "hold": 0,
+      "refine-proposal": 0
+    },
+    "pt-BR": {
+      "accept-proposal": 8,
+      "hold": 0,
+      "refine-proposal": 0
+    },
+    "vi": {
+      "accept-proposal": 58,
+      "hold": 0,
+      "refine-proposal": 1
+    },
+    "zh-CN": {
+      "accept-proposal": 36,
+      "hold": 0,
+      "refine-proposal": 0
+    },
+    "zh-TW": {
+      "accept-proposal": 37,
+      "hold": 0,
+      "refine-proposal": 0
+    }
+  },
+  "confidence": "moderate",
+  "crossReviewLedgerSha256": "5d3a09e0ab8a509d999d1fccd65abd06a0c374c16594b04ea33a84bc0161c273",
+  "ledger": "reviews/crossreview-0600-0699/independent-cross-review.jsonl",
+  "liveHead": "c40a8a7e9a9a0651c3109b1498881c08b4dbcd98",
+  "liveTree": "30d77abfad45d6051e881b0a94cc0f68231b3615",
+  "nativeSpeakerApproval": false,
+  "newHeadAttestation": {
+    "artifact": "reviews/re-attestation-500-600-c40.jsonl",
+    "artifactSha256": "6ee859fe98c81edeeda390289b61a0f5f1a19660b1b3393a37795ddad4310ea0",
+    "head": "c40a8a7e9a9a0651c3109b1498881c08b4dbcd98",
+    "mismatches": 0,
+    "sourceCurrentRowsChecked": 1200,
+    "tree": "30d77abfad45d6051e881b0a94cc0f68231b3615"
+  },
+  "noOpCount": 0,
+  "noOpRows": [],
+  "packetChecksums": "passed",
+  "placeholderParityFailures": 0,
+  "primaryChecksums": "passed",
+  "primaryLedger": "reviews/agent-0600-0699/semantic-review-ledger.jsonl",
+  "primaryLedgerSha256": "a146de03d62db6d1667043534bbf49a34c4ee3544d27eeefc618a80a278d2b24",
+  "priorDispositionPreservedCount": 1,
+  "priorDispositionSourceId": "components.Settings.Notifications.NotificationsWebhook.customHeadersAuthConflict",
+  "priorDispositionSourceIdPosition": 666,
+  "proposalHashMismatches": 0,
+  "pullRequest": 418,
+  "pullRequestDraft": true,
+  "pullRequestState": "OPEN",
+  "refinements": [
+    {
+      "finalTarget": "Standardsound des Geräts",
+      "locale": "de",
+      "rationale": "The caller places this option under Notification Sound. The proposal means “default device”; the source means the sound default for the device. This wording makes that relation clear.",
+      "sourceId": "components.Settings.Notifications.NotificationsPushover.deviceDefault",
+      "sourceIdPosition": 619
+    },
+    {
+      "finalTarget": "डिवाइस की डिफ़ॉल्ट ध्वनि",
+      "locale": "hi",
+      "rationale": "The caller places this option under Notification Sound. The proposal means “default device”; the source means the sound default for the device. This wording makes that relation clear.",
+      "sourceId": "components.Settings.Notifications.NotificationsPushover.deviceDefault",
+      "sourceIdPosition": 619
+    },
+    {
+      "finalTarget": "Suara bawaan perangkat",
+      "locale": "id",
+      "rationale": "The caller places this option under Notification Sound. The proposal means “default device”; the source means the sound default for the device. This wording makes that relation clear.",
+      "sourceId": "components.Settings.Notifications.NotificationsPushover.deviceDefault",
+      "sourceIdPosition": 619
+    },
+    {
+      "finalTarget": "Âm thanh mặc định của thiết bị",
+      "locale": "vi",
+      "rationale": "The caller places this option under Notification Sound. The proposal means “default device”; the source means the sound default for the device. This wording makes that relation clear.",
+      "sourceId": "components.Settings.Notifications.NotificationsPushover.deviceDefault",
+      "sourceIdPosition": 619
+    },
+    {
+      "finalTarget": "कम से कम एक Slack उपयोगकर्ता को SeerrNG उपयोगकर्ता मैपिंग में जोड़ें।",
+      "locale": "hi",
+      "rationale": "The source asks the user to add a Slack user to the SeerrNG user mapping. The proposal’s case construction makes that relation hard to read; this states the requested action directly.",
+      "sourceId": "components.Settings.Notifications.NotificationsSlack.validationRequestManagerMappings",
+      "sourceIdPosition": 645
+    },
+    {
+      "finalTarget": "فشل إرسال إشعار Web Push التجريبي.",
+      "locale": "ar",
+      "rationale": "The proposal renders “push” as الدفع, which means payment in this Web Push toast context. Keeping Web Push as the technical term restores the failed-to-send notification meaning.",
+      "sourceId": "components.Settings.Notifications.NotificationsWebPush.toastWebPushTestFailed",
+      "sourceIdPosition": 657
+    },
+    {
+      "finalTarget": "جارٍ إرسال إشعار Web Push التجريبي…",
+      "locale": "ar",
+      "rationale": "The proposal renders “push” as الدفع, which means payment in this Web Push progress toast. Keeping Web Push as the technical term restores the notification-sending status.",
+      "sourceId": "components.Settings.Notifications.NotificationsWebPush.toastWebPushTestSending",
+      "sourceIdPosition": 658
+    },
+    {
+      "finalTarget": "تم إرسال إشعار Web Push التجريبي بنجاح!",
+      "locale": "ar",
+      "rationale": "The proposal renders “push” as الدفع, which means payment in this Web Push success toast. Keeping Web Push as the technical term restores the sent-notification meaning.",
+      "sourceId": "components.Settings.Notifications.NotificationsWebPush.toastWebPushTestSuccess",
+      "sourceIdPosition": 659
+    }
+  ],
+  "repository": "snapetech-org/seerrng",
+  "reviewedCorrectionCandidates": 251,
+  "rowsInLedger": 252,
+  "schemaVersion": 1,
+  "scope": "Review evidence only; no catalog, repository, or PR edits; no tests, builds, CI, or browser actions.",
+  "sourceCurrentHashMismatches": 0,
+  "task": "Cross-review of primary correction proposals, W700–749 sourceId positions 600–699 across all direct locales."
+}

@@ -1,0 +1,45 @@
+{
+  "schemaVersion": 1,
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "state": "OPEN",
+  "isDraft": true,
+  "head": "94bdd3f690fc54d37d17e04d29a443533af3fb0d",
+  "tree": "17df3c6f626ac544990d2f8f2049daf95b4738ac",
+  "sourcePositions": [
+    1500,
+    1599
+  ],
+  "sourceIds": 100,
+  "locales": [
+    "ar",
+    "de",
+    "es",
+    "fr",
+    "hi",
+    "id",
+    "ja",
+    "ko",
+    "pt-BR",
+    "vi",
+    "zh-CN",
+    "zh-TW"
+  ],
+  "cells": 1200,
+  "semanticReviewRows": 1162,
+  "priorDispositionCellsPreserved": 38,
+  "dispositions": {
+    "propose-correction": 303,
+    "accept-current": 537,
+    "preserved-prior-disposition": 38,
+    "propose-refinement": 36,
+    "hold": 286
+  },
+  "candidateCount": 339,
+  "candidatePacket": "candidate-proposals.jsonl",
+  "ledger": "primary-review-ledger.jsonl",
+  "holds": "holds.jsonl",
+  "readOnly": true,
+  "nativeSpeakerSignoff": false,
+  "browserReview": false
+}

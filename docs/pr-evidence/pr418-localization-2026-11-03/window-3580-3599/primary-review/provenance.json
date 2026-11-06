@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "window": "W3580-W3599",
+  "head": "30f626a4626d460f426666cde02f5c1ed17fa206",
+  "tree": "9b2616780791c73eb176aca6ad53061f1f3587d8",
+  "candidateFreeManifestJsonSha256": "dd52b2201b0d8608edce6953542a6459a627a93647344ec7e009f87c65e1fe56",
+  "candidateFreeChecksumListSha256": "2b54d35d48d2309346383371bf745d747fcd64b016e1e7b6a6d6242c747c67b5",
+  "candidateFreeHashFieldsIdentifySeparateFiles": true,
+  "reviewType": "primary semantic review only",
+  "all240CellsReviewed": true,
+  "callerContextsPinned": true,
+  "callerlessHolds": 0,
+  "baselineProtectedLiteralMismatches": [
+    {
+      "position": 3586,
+      "locale": "hi",
+      "sourceId": "components.Settings.BackIssueModal.hostname",
+      "sourceProtectedLiterals": [
+        "IP"
+      ],
+      "currentTarget": "होस्टनाम या आईपी पता",
+      "currentTargetSha256": "10bf4bf4240ddeb3fbc4c1ffd23918f010686d89c354971295dc524483b49ad1"
+    }
+  ],
+  "baselinePlaceholderMismatches": 0,
+  "baselineMarkupMismatches": 0,
+  "baselineNumericTokenMismatches": 0,
+  "nativeSpeakerApproval": false,
+  "exactHeadBrowserReview": false,
+  "blindReviewIncluded": false,
+  "reviewedAtUTC": "2026-11-03T13:47:51.854022+00:00"
+}

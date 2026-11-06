@@ -1,0 +1,17 @@
+{
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "window": "W3280-W3299",
+  "exactHead": "039fe9e04ea5cc6da314427fa25b0937ef8dd92b",
+  "exactTree": "b1338441dc47245b87ed77e8253843b66c367062",
+  "cleanInputManifestSha256": "d3a47dcb40bf869e4ad0f1bfe49858ebfec159ee0d066d84e1787c3a88474d9b",
+  "ledgerSha256": "9da96902cc68857ea46f37fdf001ec2231b80aa8b3a72d03725ddfb73f4f0e01",
+  "cells": 240,
+  "dispositions": {
+    "accept-current": 208,
+    "correction": 25,
+    "refinement": 7
+  },
+  "nativeSpeakerApproval": false,
+  "ledgerPath": "root-blind/ledger.jsonl"
+}

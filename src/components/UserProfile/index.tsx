@@ -103,7 +103,7 @@ const QuotaSummaryCard = ({
                 ((quota.remaining ?? 0) / quota.limit) * 100
               )}
               useHeatLevel
-              className="mr-2 h-8 w-8"
+              className="me-2 h-8 w-8"
             />
             <span className="text-3xl font-semibold">
               {intl.formatMessage(messages.limit, {
@@ -212,7 +212,7 @@ const UserProfile = () => {
     <>
       <PageTitle title={user.displayName} />
       {Object.keys(availableTitles).length > 0 && (
-        <div className="absolute -top-16 right-0 left-0 z-0 h-96">
+        <div className="absolute start-0 end-0 -top-16 z-0 h-96">
           <ImageFader
             key={user.id}
             isDarker
@@ -287,7 +287,7 @@ const UserProfile = () => {
                             100
                         )}
                         useHeatLevel
-                        className="mr-2 h-8 w-8"
+                        className="me-2 h-8 w-8"
                       />
                       <div>
                         {intl.formatMessage(messages.requestsperdays, {
@@ -342,7 +342,7 @@ const UserProfile = () => {
                             100
                         )}
                         useHeatLevel
-                        className="mr-2 h-8 w-8"
+                        className="me-2 h-8 w-8"
                       />
                       <div>
                         {intl.formatMessage(messages.requestsperdays, {
@@ -397,7 +397,7 @@ const UserProfile = () => {
                             100
                         )}
                         useHeatLevel
-                        className="mr-2 h-8 w-8"
+                        className="me-2 h-8 w-8"
                       />
                       <div>
                         {intl.formatMessage(messages.requestsperdays, {
@@ -452,7 +452,7 @@ const UserProfile = () => {
                             100
                         )}
                         useHeatLevel
-                        className="mr-2 h-8 w-8"
+                        className="me-2 h-8 w-8"
                       />
                       <div>
                         {intl.formatMessage(messages.requestsperdays, {

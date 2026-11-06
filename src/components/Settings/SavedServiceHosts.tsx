@@ -1,3 +1,4 @@
+import ApiMessageText from '@app/components/Common/ApiMessageText';
 import Button from '@app/components/Common/Button';
 import defineMessages from '@app/utils/defineMessages';
 import { MAX_SAVED_CONNECTION_HOSTS } from '@server/constants/connectionHosts';
@@ -99,7 +100,7 @@ const SavedServiceHosts = () => {
             >
               <span className="min-w-0 text-sm break-all text-white">
                 <strong>{host.name}</strong>
-                <span className="ml-2 text-gray-400">{host.hostname}</span>
+                <span className="ms-2 text-gray-400">{host.hostname}</span>
               </span>
               <Button
                 type="button"
@@ -190,7 +191,7 @@ const SavedServiceHosts = () => {
       </form>
       {saveError && (
         <p className="description mt-2" role="alert">
-          {saveError}
+          {<ApiMessageText>{saveError}</ApiMessageText>}
         </p>
       )}
     </section>

@@ -1,0 +1,57 @@
+{
+  "schemaVersion": 1,
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "window": "W3680-W3699",
+  "range": [
+    3680,
+    3699
+  ],
+  "head": "a2f015c040f933eff38e6ef3d9b1ac6050c4957d",
+  "tree": "9cea70e57de0d65e78dd0cc6fab8f54dbb4e5cfe",
+  "sourceCount": 20,
+  "localeCount": 12,
+  "cellCount": 240,
+  "decisionCounts": {
+    "accept-current": 202,
+    "correction": 27,
+    "refinement": 11
+  },
+  "confidenceCounts": {
+    "high": 165,
+    "moderate": 75
+  },
+  "holdCount": 0,
+  "holdCells": [],
+  "callerlessCellCount": 0,
+  "baselineDiagnostics": {
+    "placeholderMultisetMismatchCount": 0,
+    "placeholderSequenceDifferenceCount": 0,
+    "pluralCategoryMismatchCount": 0,
+    "markupMismatchCount": 0,
+    "numericTokenSurfaceMismatchCount": 12,
+    "protectedLiteralMismatchCount": 2
+  },
+  "baselineNumericValueMismatchCount": 0,
+  "reviewedDiagnostics": {
+    "placeholderMultisetMismatchCount": 0,
+    "placeholderSequenceDifferenceCount": 0,
+    "pluralCategoryMismatchCount": 0,
+    "markupMismatchCount": 0,
+    "numericTokenSurfaceMismatchCount": 12,
+    "numericValueMismatchCount": 0,
+    "protectedLiteralMismatchCount": 0
+  },
+  "validPlaceholderReorderings": [],
+  "carryForwardHoldCount": 12,
+  "carryForwardHoldPositions": [
+    3632
+  ],
+  "candidateFreeInputVerified": "PASS",
+  "candidateFreeInputManifestSha256": "577ba2a857f59504ec2c2623b10ff0c7c7e8d1ef397dd8aac572441d2aadeee1",
+  "candidateFreeInputChecksumListSha256": "9f279b3525466058d23564a53f7b2c848052859d8dbfb82a8f7793061d8778d4",
+  "nativeSpeakerReview": "not performed",
+  "browserReview": "not performed",
+  "crossAudit": "not performed",
+  "repositoryOrPRFilesEdited": false
+}

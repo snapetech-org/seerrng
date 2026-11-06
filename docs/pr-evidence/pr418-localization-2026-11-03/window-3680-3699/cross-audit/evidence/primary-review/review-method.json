@@ -1,0 +1,19 @@
+{
+  "reviewStage": "primary semantic review",
+  "input": "candidate-free input only",
+  "head": "a2f015c040f933eff38e6ef3d9b1ac6050c4957d",
+  "tree": "9cea70e57de0d65e78dd0cc6fab8f54dbb4e5cfe",
+  "window": "W3680-W3699",
+  "decisionDefinitions": {
+    "accept-current": "Current target preserves source meaning in the pinned caller context.",
+    "correction": "Current target contains a semantic, grammar, or technical-term error.",
+    "refinement": "Current target is understandable but has a clear locale or style improvement.",
+    "hold": "A source-bound ambiguity or unresolved callerless case; none in this window."
+  },
+  "placeholderPolicy": "Placeholder names and formatter signatures must be preserved as a multiset. No placeholder reordering is needed in this window.",
+  "protectedLiteralPolicy": "All protected source literals must remain present in reviewed targets. The candidate-free baseline exposed two Hindi API acronym omissions; both are corrected.",
+  "numericPolicy": "Localized thousands separators are accepted when normalized numeric values remain equal to the English source; raw punctuation differences are recorded separately.",
+  "priorHoldPolicy": "Carry twelve prior position-3632 hold fingerprints by hash only; do not reuse prior target text as proposals.",
+  "crossAudit": "not performed",
+  "nativeSpeakerApproval": "not claimed"
+}

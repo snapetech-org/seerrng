@@ -1,0 +1,18 @@
+{
+  "builderSha256": "8cfdcf34be75251117e3ad706803d9909bda51a20970e2abeb41a3efe7d1169b",
+  "candidateFreePacketSha256SumsFileSha256": "c0c925b92b7921c37c8ec85980420f0584fdf381d8c6a60f642124bea7c62246",
+  "head": "ac193096ebfc0007183348b24e35bf6fee33f67a",
+  "ledgerCellCount": 240,
+  "ledgerSha256": "2e84af30d1e2c190e0284f5e3039470c8fb59d39767f0b86d45fdd83f37dafc3",
+  "nativeSpeakerReviewClaimed": false,
+  "portableVerifierSha256": "670a453e465c31b599f4cfabd4a409f2fdd937f03b076b1c82e28dfb40c30b1a",
+  "proposalFilesOpenedBeforeBlindCompletion": false,
+  "proposalFilesOpenedBeforeSeal": false,
+  "pullRequest": 418,
+  "repository": "snapetech-org/seerrng",
+  "seal": "blind-completion",
+  "sealStatement": "The complete 240-cell decision ledger was written before any primary proposal packet or other review output was opened.",
+  "sealedDate": "2026-11-05",
+  "tree": "93e71e7c52602ec3f8b76548fd12b2f5b4368b4c",
+  "window": "W4000-W4019"
+}

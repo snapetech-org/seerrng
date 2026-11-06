@@ -265,7 +265,7 @@ const AssociationDetailCard = ({
           </Link>
 
           <div className="detail-card-heading-spacing detail-three-column-grid grid min-h-0 min-w-0 flex-1 items-stretch text-xs leading-4">
-            <dl className="media-detail-rows card:pr-3 grid min-w-0 grid-cols-[max-content_minmax(0,1fr)] content-start gap-x-3">
+            <dl className="media-detail-rows card:pe-3 grid min-w-0 grid-cols-[max-content_minmax(0,1fr)] content-start gap-x-3">
               <dt className="font-medium text-gray-100">
                 {intl.formatMessage(messages.mediaAndFormat)}:
               </dt>

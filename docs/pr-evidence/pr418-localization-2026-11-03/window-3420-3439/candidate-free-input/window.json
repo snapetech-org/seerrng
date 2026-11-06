@@ -1,0 +1,313 @@
+{
+  "schemaVersion": 1,
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "window": "W3420-W3439",
+  "range": [
+    3420,
+    3439
+  ],
+  "previousBoundary": {
+    "position": 3419,
+    "sourceId": "components.Requests.searchRequests",
+    "source": "Search Requests",
+    "sourceSha256": "5eff1ccc63c2f223bc7d00518030922e17a9d35d0338bef2864b817d111c4cf7"
+  },
+  "nextBoundary": {
+    "position": 3440,
+    "sourceId": "components.Requests.sortTitle",
+    "source": "Title",
+    "sourceSha256": "7e8cd2056da73a7fefb6cd91f4e5d199d08d9058c517b9a2476b1b520324d674"
+  },
+  "head": "3f5ddfdddbeb77cf02cc9d14e00001c8d1aa61c6",
+  "tree": "1c48dc5ea6e8db6c2da546ec58e88d38eb8f9cc7",
+  "baseRef": "main",
+  "baseSha": "221d8e0d542802da7529cd272c928cc747677e5c",
+  "sourceOrderCount": 9494,
+  "sourceOrderSha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+  "sourceRecordCount": 20,
+  "cellCount": 240,
+  "localeOrder": [
+    "es",
+    "zh_Hans",
+    "hi",
+    "de",
+    "ja",
+    "fr",
+    "pt_BR",
+    "ar",
+    "ko",
+    "zh_Hant",
+    "vi",
+    "id"
+  ],
+  "localeInfo": [
+    {
+      "catalogKey": "es",
+      "tag": "es",
+      "nativeName": "Español",
+      "direction": "ltr",
+      "clientFile": "es.json",
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "catalogKey": "zh_Hans",
+      "tag": "zh-CN",
+      "nativeName": "简体中文",
+      "direction": "ltr",
+      "clientFile": "zh_Hans.json",
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "catalogKey": "hi",
+      "tag": "hi",
+      "nativeName": "हिन्दी",
+      "direction": "ltr",
+      "clientFile": "hi.json",
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "catalogKey": "de",
+      "tag": "de",
+      "nativeName": "Deutsch",
+      "direction": "ltr",
+      "clientFile": "de.json",
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "catalogKey": "ja",
+      "tag": "ja",
+      "nativeName": "日本語",
+      "direction": "ltr",
+      "clientFile": "ja.json",
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "catalogKey": "fr",
+      "tag": "fr",
+      "nativeName": "Français",
+      "direction": "ltr",
+      "clientFile": "fr.json",
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "catalogKey": "pt_BR",
+      "tag": "pt-BR",
+      "nativeName": "Português (Brasil)",
+      "direction": "ltr",
+      "clientFile": "pt_BR.json",
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "catalogKey": "ar",
+      "tag": "ar",
+      "nativeName": "العربية",
+      "direction": "rtl",
+      "clientFile": "ar.json",
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "catalogKey": "ko",
+      "tag": "ko",
+      "nativeName": "한국어",
+      "direction": "ltr",
+      "clientFile": "ko.json",
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "catalogKey": "zh_Hant",
+      "tag": "zh-TW",
+      "nativeName": "繁體中文",
+      "direction": "ltr",
+      "clientFile": "zh_Hant.json",
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "catalogKey": "vi",
+      "tag": "vi",
+      "nativeName": "Tiếng Việt",
+      "direction": "ltr",
+      "clientFile": "vi.json",
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "catalogKey": "id",
+      "tag": "id",
+      "nativeName": "Bahasa Indonesia",
+      "direction": "ltr",
+      "clientFile": "id.json",
+      "reviewStatus": "unreviewed"
+    }
+  ],
+  "nativeSpeakerApproval": false,
+  "proposedTranslationsIncluded": false,
+  "semanticReviewIncluded": false,
+  "callerResolutionHoldKeys": [
+    "components.Requests.selectUser",
+    "components.Requests.service"
+  ],
+  "placeholderTokenSetMismatchCount": 0,
+  "placeholderOrderDiffCount": 3,
+  "selectedSourceIds": [
+    {
+      "position": 3420,
+      "sourceId": "components.Requests.searching",
+      "sourceKey": "searching",
+      "source": "Searching",
+      "sourceSha256": "03bd6fca9cf5c1fbb8ac32b7def4942459f0883a9adb4a210b81562cffab233d",
+      "sourceIdSha256": "999b787b52eca4b0252cb41009482d2b795950cfd4193fe75a2aabc65407b85a"
+    },
+    {
+      "position": 3421,
+      "sourceId": "components.Requests.selectUser",
+      "sourceKey": "selectUser",
+      "source": "Select User to View Requests",
+      "sourceSha256": "39acbbe6ea02ed0abfa1f1ac54455391c833ad61da396747cdef301920578113",
+      "sourceIdSha256": "fdb17c6d91f7baf9483b833b192d64cc2ab6d94d655f684a13a8a3c7a9357783"
+    },
+    {
+      "position": 3422,
+      "sourceId": "components.Requests.series",
+      "sourceKey": "series",
+      "source": "Series",
+      "sourceSha256": "a8295e08ff7a961c8983c52226d29cb036dbdb21e110a5988f6a461db5bdf366",
+      "sourceIdSha256": "a434af6a5f769e586188612d9218891d1e5ea45808e40cd7ac7e54b2e1d6e134"
+    },
+    {
+      "position": 3423,
+      "sourceId": "components.Requests.service",
+      "sourceKey": "service",
+      "source": "Service: {service}",
+      "sourceSha256": "3c2f59678e39a62f9c2aa857d6dc63e7dec314c3b927b30cab8aa019725163a1",
+      "sourceIdSha256": "6d9705991d6a3bb7989a17b780dd46f8e273d74c7047d29c12065e26cbcc7d69"
+    },
+    {
+      "position": 3424,
+      "sourceId": "components.Requests.serviceLabel",
+      "sourceKey": "serviceLabel",
+      "source": "Service",
+      "sourceSha256": "d677190e0a9990e7d5fa9e4c1bbde44271fb8959c4acb6d43e02ed991128b4bf",
+      "sourceIdSha256": "15f02cee88372656327fd20b2557445cd8c9e1184aebb4d1bb7476389d372ecd"
+    },
+    {
+      "position": 3425,
+      "sourceId": "components.Requests.showingFormat",
+      "sourceKey": "showingFormat",
+      "source": "Showing requests for",
+      "sourceSha256": "efcad4a2afa792f2b146e43363cdafe9f697b3f7c3c13292221275df0b1ce13d",
+      "sourceIdSha256": "ff2b96513783fca6f2930d18bb8bffe2917c388c17015c9fa0d667aa07395ba4"
+    },
+    {
+      "position": 3426,
+      "sourceId": "components.Requests.sizeProgress",
+      "sourceKey": "sizeProgress",
+      "source": "{complete} of {total}",
+      "sourceSha256": "4957b32ffd085523c228735e09e43328c765ca74d02a9d09d73fd64df35d8ec0",
+      "sourceIdSha256": "e63e0de02b71d39b6064871652e1b1d6318c28b68bcdd185036be41a8d2fa405"
+    },
+    {
+      "position": 3427,
+      "sourceId": "components.Requests.sortAdded",
+      "sourceKey": "sortAdded",
+      "source": "Date",
+      "sourceSha256": "99c40ab405926cb5ad1def9cff4d7ce624f8f8abfff4e85f655347fcb949d08e",
+      "sourceIdSha256": "56d7c6adb52e836b45590cfe7dcb44d840117056f9ea05790fdad70f4690f237"
+    },
+    {
+      "position": 3428,
+      "sourceId": "components.Requests.sortArtist",
+      "sourceKey": "sortArtist",
+      "source": "Artist",
+      "sourceSha256": "1d3981ba1e1892a87546666766b83d6a10a6341db303863a19fd63c2e90598e1",
+      "sourceIdSha256": "6e9229d0b3e0fb540b483a3a8372cc6f4f8174f90dae36be6ec8ccc4f3b60bbd"
+    },
+    {
+      "position": 3429,
+      "sourceId": "components.Requests.sortAscending",
+      "sourceKey": "sortAscending",
+      "source": "Ascending",
+      "sourceSha256": "77184595bde3befc7f5a20efc97caea43f4858e4c97cd2ee406af2c61db3266c",
+      "sourceIdSha256": "a3da8a57b010d0fee2105fb396b05de115feae4e04e4c9345de527540fb30511"
+    },
+    {
+      "position": 3430,
+      "sourceId": "components.Requests.sortAuthor",
+      "sourceKey": "sortAuthor",
+      "source": "Author",
+      "sourceSha256": "d95082a2ee57f3e40e3050662a346e26a872fd4d0baf57d293ac5a883f0f4ff5",
+      "sourceIdSha256": "316d59e5ec4ff50785db98f8636913a64f35fb80d3e07a1c6ec7015e71f65412"
+    },
+    {
+      "position": 3431,
+      "sourceId": "components.Requests.sortBy",
+      "sourceKey": "sortBy",
+      "source": "Sort By",
+      "sourceSha256": "6d2227555fccff99c70e5dcb281ee3a6ac06a7412d8ffa0e0cdd73c89c32dfe8",
+      "sourceIdSha256": "46d46c998ea0185c39a7d46425ab5dde6282fc23e53c59a50d07652652440800"
+    },
+    {
+      "position": 3432,
+      "sourceId": "components.Requests.sortDescending",
+      "sourceKey": "sortDescending",
+      "source": "Descending",
+      "sourceSha256": "79479a6c76d8416ab7839952a2f8222e350862464f4d02db13d8d8f9551dbf8e",
+      "sourceIdSha256": "7f57788d5d73c87088fae2a3ee880d0b996dda22cb0bb32cf7cab6a148478fbb"
+    },
+    {
+      "position": 3433,
+      "sourceId": "components.Requests.sortDirector",
+      "sourceKey": "sortDirector",
+      "source": "Director",
+      "sourceSha256": "c149bc14e45c0d92e0adae72d5dfa10ad2fde44aebb562d6c1fedebf30ceaca1",
+      "sourceIdSha256": "695e1f9951ad1b52e12fc49fc82cd01621dc1361a0fc27c9a81402b269ee1660"
+    },
+    {
+      "position": 3434,
+      "sourceId": "components.Requests.sortFirstPublished",
+      "sourceKey": "sortFirstPublished",
+      "source": "First Published",
+      "sourceSha256": "cf960540de47e88b9d49c13761166fe349c4ac4e9520594afb1b8e9b921a245d",
+      "sourceIdSha256": "565921b888fa54ece9dcd5fcfcbddd907041b9e5671cd4c5bd7da3ddcdcd5c91"
+    },
+    {
+      "position": 3435,
+      "sourceId": "components.Requests.sortModified",
+      "sourceKey": "sortModified",
+      "source": "Last Modified",
+      "sourceSha256": "593879218a5a79c5af96cde5db4e6722abb29b97b0425d3bc4f2fb622d2ceebf",
+      "sourceIdSha256": "bbe34fb7c371ae3cc446c3b4e2f0399e08c02407167b50cea348f0a6784aab84"
+    },
+    {
+      "position": 3436,
+      "sourceId": "components.Requests.sortPublisher",
+      "sourceKey": "sortPublisher",
+      "source": "Publisher",
+      "sourceSha256": "21378545892f1fe2b0f70fd49b619f6c4b326f2748a03d23d9b0220053222d9c",
+      "sourceIdSha256": "d35593164cdea93179b3c3c8bf6c1f481b35579e5506c732ddfcb604bb38c38c"
+    },
+    {
+      "position": 3437,
+      "sourceId": "components.Requests.sortRating",
+      "sourceKey": "sortRating",
+      "source": "Rating",
+      "sourceSha256": "9f29530464f730bd28f137cfc9ea941af137187b57c21e8ff5fefed520764d99",
+      "sourceIdSha256": "71b23d4f36c46f7092e3088688aa7096f2447fab3673f6639dbb63fd662e3982"
+    },
+    {
+      "position": 3438,
+      "sourceId": "components.Requests.sortReleaseDate",
+      "sourceKey": "sortReleaseDate",
+      "source": "Release Date",
+      "sourceSha256": "1fb0ecfb5d039ebc6d64e5060590ee452634dab48921d1a8669804a8bb275f83",
+      "sourceIdSha256": "ab4dee7134d2298c08d0ea3a49069c143a56b2d65adb36736165fa18df8506ce"
+    },
+    {
+      "position": 3439,
+      "sourceId": "components.Requests.sortStatus",
+      "sourceKey": "sortStatus",
+      "source": "Status",
+      "sourceSha256": "920e413c7d411b61ef3e8c63b1cb6ad058d5f95f8b481dbafe60248387d8c355",
+      "sourceIdSha256": "3d70e027ef10efde4a0d59fa8de3b2efa035829c0ce82dba0a1ff6417820a282"
+    }
+  ]
+}

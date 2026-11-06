@@ -1,5 +1,7 @@
+import ApiMessageText from '@app/components/Common/ApiMessageText';
 import Button from '@app/components/Common/Button';
 import LoadingSpinner from '@app/components/Common/LoadingSpinner';
+import OpaqueApiMessageText from '@app/components/Common/OpaqueApiMessageText';
 import defineMessages from '@app/utils/defineMessages';
 import type ReadMeABookRequest from '@server/entity/ReadMeABookRequest';
 import axios from 'axios';
@@ -26,6 +28,7 @@ type RemoteDetails = {
 };
 
 const messages = defineMessages('components.Discover.ReadMeABookSearch', {
+  requestedTitle: '{title} requested.',
   title: 'ReadMeABook',
   description: 'Search available audiobooks and request them through SeerrNG.',
   query: 'Title, author, or narrator',
@@ -79,7 +82,11 @@ const ReadMeABookSearch = () => {
     setNotice(undefined);
     try {
       await axios.post('/api/v1/readmeabook/requests', book);
-      setNotice(`${book.title} requested.`);
+      setNotice(
+        intl.formatMessage(messages.requestedTitle, {
+          title: `\u2068${book.title}\u2069`,
+        })
+      );
       await mutate();
     } catch (error) {
       setNotice(
@@ -140,7 +147,7 @@ const ReadMeABookSearch = () => {
       </form>
       {notice && (
         <p className="description" role="status">
-          {notice}
+          {<ApiMessageText>{notice}</ApiMessageText>}
         </p>
       )}
       {isSearching && <LoadingSpinner />}
@@ -183,7 +190,17 @@ const ReadMeABookSearch = () => {
             {item.status === 'awaiting_approval'
               ? intl.formatMessage(messages.pending)
               : item.status}
-            {item.statusMessage ? ` · ${item.statusMessage}` : ''}
+            {item.statusMessage ? (
+              <>
+                {' '}
+                ·{' '}
+                <OpaqueApiMessageText>
+                  {item.statusMessage}
+                </OpaqueApiMessageText>
+              </>
+            ) : (
+              ''
+            )}
           </span>
           {item.status !== 'awaiting_approval' && (
             <Button

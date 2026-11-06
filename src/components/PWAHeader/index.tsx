@@ -1,3 +1,5 @@
+import Head from 'next/head';
+
 interface PWAHeaderProps {
   applicationTitle?: string;
 }
@@ -7,7 +9,11 @@ const versionedAsset = (path: string): string => `${path}?v=${assetVersion}`;
 
 const PWAHeader = ({ applicationTitle = 'SeerrNG' }: PWAHeaderProps) => {
   return (
-    <>
+    <Head>
+      <meta
+        name="viewport"
+        content="initial-scale=1, viewport-fit=cover, width=device-width"
+      />
       <link
         rel="apple-touch-icon"
         sizes="180x180"
@@ -173,7 +179,7 @@ const PWAHeader = ({ applicationTitle = 'SeerrNG' }: PWAHeaderProps) => {
       <meta name="mobile-web-app-capable" content="yes" />
       <meta name="theme-color" content="#1f2937" />
       <meta name="application-name" content={applicationTitle} />
-    </>
+    </Head>
   );
 };
 

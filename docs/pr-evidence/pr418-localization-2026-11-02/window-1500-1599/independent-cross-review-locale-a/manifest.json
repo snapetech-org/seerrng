@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "task": "Independent cross-review of SeerrNG W1500–1599 locale-A primary packet",
+  "livePullRequestHead": "94bdd3f690fc54d37d17e04d29a443533af3fb0d",
+  "tree": "17df3c6f626ac544990d2f8f2049daf95b4738ac",
+  "inputPath": "/mnt/disks/scratch/task-scratch/seerrng-pr418-window-1500-1599-primary-20261102/locale-a/review-input.jsonl",
+  "inputSha256": "126044a7615ebd048d6ea897aae8ba1c9d8cab71ca909b211866f0c1e6a68e1e",
+  "primaryLedgerPath": "/mnt/disks/scratch/task-scratch/seerrng-pr418-window-1500-1599-primary-20261102/locale-a/review-by-agent-a.jsonl",
+  "primaryLedgerSha256": "7ca5e58d3d798345fb0cae64dbaa72078472e130d9a16ed15dcb812c0f427a6a",
+  "primaryLocaleASha256SumsVerified": true,
+  "worktree": "/mnt/disks/scratch/task-worktrees/localization-20261102/seerrng-pr418-w1400-1499",
+  "worktreeHead": "94bdd3f690fc54d37d17e04d29a443533af3fb0d",
+  "sourceAndCatalogReattestation": "pass",
+  "noRepositoryOrPullRequestEdits": true,
+  "reviewTaskScratch": "/mnt/disks/scratch/task-scratch/seerrng-pr418-window-1500-1599-crossreview-locale-a-20261102"
+}

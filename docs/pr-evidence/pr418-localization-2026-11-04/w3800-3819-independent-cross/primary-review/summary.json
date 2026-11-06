@@ -1,0 +1,87 @@
+{
+  "callerlessSourceCount": 0,
+  "cellCount": 240,
+  "decisionCounts": {
+    "accept-current": 214,
+    "correct": 8,
+    "refine": 18
+  },
+  "decisionCountsByLocale": {
+    "ar": {
+      "accept-current": 19,
+      "correct": 1
+    },
+    "de": {
+      "accept-current": 17,
+      "correct": 1,
+      "refine": 2
+    },
+    "es": {
+      "accept-current": 19,
+      "refine": 1
+    },
+    "fr": {
+      "accept-current": 19,
+      "correct": 1
+    },
+    "hi": {
+      "accept-current": 13,
+      "correct": 3,
+      "refine": 4
+    },
+    "id": {
+      "accept-current": 16,
+      "refine": 4
+    },
+    "ja": {
+      "accept-current": 20
+    },
+    "ko": {
+      "accept-current": 16,
+      "correct": 1,
+      "refine": 3
+    },
+    "pt-BR": {
+      "accept-current": 17,
+      "refine": 3
+    },
+    "vi": {
+      "accept-current": 19,
+      "refine": 1
+    },
+    "zh-Hans": {
+      "accept-current": 20
+    },
+    "zh-Hant": {
+      "accept-current": 19,
+      "correct": 1
+    }
+  },
+  "head": "154dbf7fd6b346d9c5bddf23c7c6283db9826313",
+  "nativeSpeakerReviewPerformed": false,
+  "priorHoldHashReattestations": 12,
+  "priorHoldsUnchanged": 12,
+  "priorSelectionHashMismatches": 0,
+  "priorSelectionHashReattestations": 3800,
+  "proposalCount": 26,
+  "proposalCountsByLocale": {
+    "ar": 1,
+    "de": 3,
+    "es": 1,
+    "fr": 1,
+    "hi": 7,
+    "id": 4,
+    "ko": 4,
+    "pt-BR": 3,
+    "vi": 1,
+    "zh-Hant": 1
+  },
+  "proposedTokenMismatchCounts": {
+    "markupTags": 0,
+    "numericTokens": 0,
+    "placeholders": 0,
+    "protectedLiterals": 0
+  },
+  "tree": "a2f00bcc40b51a5643bbeb3e52ecdfc58a5718b9",
+  "window": "W3800-W3819"
+}

@@ -1,0 +1,99 @@
+{
+  "additionalFindings": {
+    "path": "additional-findings.jsonl",
+    "rows": 6,
+    "sha256": "7dfad008aead05724307e6e5afbc5cf14bb0660c06922ce443ee8dc7942c8c4c"
+  },
+  "callerContextReattestations": {
+    "callerFiles": 6,
+    "path": "caller-context-reattestations.jsonl",
+    "rows": 100,
+    "sha256": "2c5804abbd8a15d84e5ce961f97548d5ff86f2e21d8653d4b5aea7c61b55c4d5"
+  },
+  "crossReview": {
+    "dispositions": {
+      "accepted-current": 998,
+      "accepted-primary-candidate": 186,
+      "additional-correction": 3,
+      "additional-refinement": 3,
+      "preserved-prior-disposition": 10
+    },
+    "path": "cross-review-cells.jsonl",
+    "rows": 1200,
+    "sha256": "6bbc45d73fb7a0612c1a920a5aef073e605b5acdb9c2dc14e81ce758a4904d30"
+  },
+  "frozenSpanishDispositions": {
+    "path": "frozen-spanish-dispositions.jsonl",
+    "rows": 10,
+    "sha256": "5a148029b88afed11f68437ee548697182a9e0a50d91a5a9fd6b160ea5506ee1",
+    "trackedPlanBlob": "e3fbf4e169f1d47edb51aa9650c7b1018ae235c4",
+    "trackedPlanSha256": "7d7f705289cf74d3e84b4bed7c1aedbf4cadf679c35939e3759c780e65877ad3"
+  },
+  "head": "5aceef6ed6e865ee89383738212d1ce1a5c1f552",
+  "integrityChecks": {
+    "markupMismatches": 0,
+    "path": "integrity-checks.jsonl",
+    "placeholderMismatches": 0,
+    "protectedLiteralMismatches": 0,
+    "rows": 1200,
+    "sha256": "53be731cc0e6321f75899a691d4cc75228a74ac459fc1d325e6361c9a404a31d"
+  },
+  "livePullRequest": {
+    "baseRefOid": "221d8e0d542802da7529cd272c928cc747677e5c",
+    "headRefName": "codex/seerrng-localization-overhaul-20261028",
+    "headRefOid": "5aceef6ed6e865ee89383738212d1ce1a5c1f552",
+    "isDraft": true,
+    "state": "OPEN",
+    "url": "https://github.com/snapetech-org/seerrng/pull/418"
+  },
+  "manageLabels": {
+    "path": "manage-labels.jsonl",
+    "rows": 12,
+    "sha256": "e6be3b76903374e26413da5fc0ebfce9ba6ff09c0bed08af8e1182f7d843b6e9"
+  },
+  "nativeSpeakerApproval": false,
+  "primaryPacket": {
+    "primaryLedgerSha256": "8dc30b4f2e7a863b47bad120a4c3fc9dea6b663954a43881eb35e7ddd996360d",
+    "sha256sumsVerified": true,
+    "sourceCurrentSha256": "213dd5dd359b45eb3c51612fd3c4c3e3255b9313b6e65e4745bc7887189dbc93"
+  },
+  "pullRequest": 418,
+  "reattestationSha256": "0af520d0d44d4eddcf7cefb35c51a53e1d2ffd62ae512592d926325e0aabbe87",
+  "repository": "snapetech-org/seerrng",
+  "repositoryModified": false,
+  "reviewerProvenanceSha256": "54d16a5a8a150355d6ce5d4da24134d5d2dd3f2121bdfacdf0412cd395e417cc",
+  "schemaVersion": 1,
+  "scope": {
+    "cells": 1200,
+    "locales": [
+      "ar",
+      "de",
+      "es",
+      "fr",
+      "hi",
+      "id",
+      "ja",
+      "ko",
+      "pt_BR",
+      "vi",
+      "zh_Hans",
+      "zh_Hant"
+    ],
+    "positions": [
+      1600,
+      1699
+    ],
+    "sourceIds": 100
+  },
+  "secondReviewerAudit": {
+    "additionalFindingAgreement": 2,
+    "path": "/mnt/disks/scratch/task-scratch/seerrng-pr418-window-1600-1699-independent-audit-by-root-child-20261102",
+    "rows": 500,
+    "rowsSha256": "57c724509ace916551b1fa2cbe973d99ae21b476c3be78354fac870fdbc5c066",
+    "summarySha256": "f5ea2d36a513b741ee9d0e482b421c7268a40458dc8e3e8f8f101dc6e7af7b10"
+  },
+  "summarySha256": "cf7462cf57a6f36c3deb75447bcd52370c3846cb918fc95760d89fc07c0de4e3",
+  "testsBuildsScansCiRun": false,
+  "tree": "dd6e3495c44c2c14acf8a7a4b09a21e935ceb16d",
+  "workflowsTouched": false
+}

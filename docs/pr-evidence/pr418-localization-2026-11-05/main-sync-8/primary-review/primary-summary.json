@@ -1,0 +1,26 @@
+{
+  "review_head": "ca2309e960733a7486c55b9a761d82771be97cde",
+  "review_tree": "8c5df06aaf1d703ff923bf1fdf8a21c901b9d26d",
+  "source_ids": 8,
+  "locales": [
+    "es",
+    "zh_Hans",
+    "hi",
+    "de",
+    "ja",
+    "fr",
+    "pt_BR",
+    "ar",
+    "ko",
+    "zh_Hant",
+    "vi",
+    "id"
+  ],
+  "cell_count": 96,
+  "dispositions": {
+    "insert-missing": 96
+  },
+  "technical_literal_failures": [],
+  "placeholders_expected": 0,
+  "machine_draft": true
+}

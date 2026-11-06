@@ -1,3 +1,4 @@
+import ApiMessageText from '@app/components/Common/ApiMessageText';
 import Button from '@app/components/Common/Button';
 import LoadingSpinner from '@app/components/Common/LoadingSpinner';
 import { SavedServiceHostPicker } from '@app/components/Settings/SavedServiceHostPicker';
@@ -38,6 +39,7 @@ const messages = defineMessages('components.Settings.SettingsReadMeABook', {
   apiKey: 'API token',
   savedToken: 'Saved token — leave empty to keep it',
   clearToken: 'Remove saved token',
+  saved: 'ReadMeABook settings saved.',
   save: 'Save settings',
   saving: 'Saving…',
   test: 'Test connection',
@@ -103,7 +105,7 @@ const SettingsReadMeABook = () => {
     setSaving(true);
     try {
       await axios.put('/api/v1/settings/readmeabook', payload());
-      setMessage('ReadMeABook settings saved.');
+      setMessage(intl.formatMessage(messages.saved));
       await mutate();
     } catch (caught) {
       setFailure(
@@ -251,10 +253,12 @@ const SettingsReadMeABook = () => {
       </form>
       {message && (
         <p className="description" role="status">
-          {message}
+          {<ApiMessageText>{message}</ApiMessageText>}
         </p>
       )}
-      {failure && <p className="error">{failure}</p>}
+      {failure && (
+        <p className="error">{<ApiMessageText>{failure}</ApiMessageText>}</p>
+      )}
       {draft.enabled && (
         <>
           <h4 className="heading">{intl.formatMessage(messages.approvals)}</h4>

@@ -1,0 +1,133 @@
+{
+  "schemaVersion": 1,
+  "reviewer": "agent-0300-0399",
+  "reviewDate": "2026-11-02",
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "head": "d1137d06ffb5af57ef599ac9bf495aff2a990a7b",
+  "tree": "0aa22f0bb43e3e30d216e2ae19939220e05f04f7",
+  "srcTree": "db8d479688d06980e63c5f71362d64f16efa50d8",
+  "window": "W700-749",
+  "sourceIdPositionStartInclusive": 300,
+  "sourceIdPositionStopExclusive": 400,
+  "sourceIdCount": 100,
+  "directLocales": [
+    "ar",
+    "de",
+    "es",
+    "fr",
+    "hi",
+    "id",
+    "ja",
+    "ko",
+    "pt-BR",
+    "vi",
+    "zh-CN",
+    "zh-TW"
+  ],
+  "cellCount": 1200,
+  "newSemanticReviewCellCount": 1172,
+  "preservedPriorCellCount": 28,
+  "countsByLocaleAndOriginalDisposition": {
+    "ar": {
+      "new-semantic-review-required": 100
+    },
+    "de": {
+      "new-semantic-review-required": 72,
+      "prior-correction-applied-exact-target-match": 28
+    },
+    "es": {
+      "new-semantic-review-required": 100
+    },
+    "fr": {
+      "new-semantic-review-required": 100
+    },
+    "hi": {
+      "new-semantic-review-required": 100
+    },
+    "id": {
+      "new-semantic-review-required": 100
+    },
+    "ja": {
+      "new-semantic-review-required": 100
+    },
+    "ko": {
+      "new-semantic-review-required": 100
+    },
+    "pt-BR": {
+      "new-semantic-review-required": 100
+    },
+    "vi": {
+      "new-semantic-review-required": 100
+    },
+    "zh-CN": {
+      "new-semantic-review-required": 100
+    },
+    "zh-TW": {
+      "new-semantic-review-required": 100
+    }
+  },
+  "countsByLocaleAndDecision": {
+    "ar": {
+      "accept-current": 71,
+      "correction-needed": 29
+    },
+    "de": {
+      "accept-current": 71,
+      "correction-needed": 1
+    },
+    "es": {
+      "accept-current": 77,
+      "correction-needed": 23
+    },
+    "fr": {
+      "accept-current": 87,
+      "correction-needed": 13
+    },
+    "hi": {
+      "accept-current": 85,
+      "correction-needed": 15
+    },
+    "id": {
+      "accept-current": 87,
+      "correction-needed": 13
+    },
+    "ja": {
+      "accept-current": 82,
+      "correction-needed": 18
+    },
+    "ko": {
+      "accept-current": 72,
+      "correction-needed": 28
+    },
+    "pt-BR": {
+      "accept-current": 82,
+      "correction-needed": 18
+    },
+    "vi": {
+      "accept-current": 80,
+      "correction-needed": 20
+    },
+    "zh-CN": {
+      "accept-current": 91,
+      "correction-needed": 9
+    },
+    "zh-TW": {
+      "accept-current": 89,
+      "correction-needed": 11
+    }
+  },
+  "correctionNeeded": 198,
+  "acceptCurrent": 974,
+  "hold": 0,
+  "placeholderMismatchesAmongNewRows": [],
+  "packetSha256SumsSha256": "c2944e555abc03d9760c81ebadab62cbd0530f2e8ac5084063f9b1f4c9c1ee0f",
+  "exactHeadAttestationSha256": "c8866bbd3dfaba67857a0830c09e5e2abd26e806f7f9f46c273b8277a0204f3f",
+  "decisionRowsWithSuggestedCorrections": 198,
+  "limitations": [
+    "This is a semantic source/cell review only; no catalog values were edited.",
+    "Only rows originally routed new-semantic-review-required received accept-current or correction-needed decisions; 28 previously applied German rows remain unchanged and unadjudicated.",
+    "No tests, builds, scans, CI, browser review, commits, pushes, or PR mutations were performed.",
+    "Review is not native-speaker certification. Suggested corrections are review candidates for the source-bound application pass."
+  ]
+}

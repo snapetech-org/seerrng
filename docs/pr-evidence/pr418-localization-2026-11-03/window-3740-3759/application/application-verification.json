@@ -1,0 +1,19 @@
+{
+  "result": "PASS",
+  "cellsReadBack": 240,
+  "selectedChanges": 54,
+  "corrections": 29,
+  "refinements": 25,
+  "acceptCurrent": 186,
+  "newWindowHolds": 0,
+  "carriedHoldsPreserved": 12,
+  "priorSelectionsReattestedHashOnly": 240,
+  "catalogFilesChanged": 11,
+  "directLocaleCatalogsReviewed": 12,
+  "catalogKeyCountsAndOrderPreserved": true,
+  "nonTargetValuesPreserved": true,
+  "selectedTokenFailures": 0,
+  "selectedProtectedLiteralFailures": 0,
+  "workflowsChanged": false,
+  "sourceEnglishCatalogUnchanged": true
+}

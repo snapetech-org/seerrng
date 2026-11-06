@@ -147,7 +147,8 @@ export const safeMessage = (value: unknown): string | undefined => {
 export class DownloadClientError extends Error {
   constructor(
     message: string,
-    public readonly kind: 'auth' | 'connection' | 'protocol'
+    public readonly kind: 'auth' | 'connection' | 'protocol',
+    public readonly messageOrigin: 'app' | 'opaque' = 'app'
   ) {
     super(message);
     this.name = 'DownloadClientError';

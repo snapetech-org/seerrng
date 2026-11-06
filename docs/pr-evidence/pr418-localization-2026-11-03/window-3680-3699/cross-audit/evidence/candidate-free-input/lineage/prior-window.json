@@ -1,0 +1,13 @@
+{
+  "window": "W3660-W3679",
+  "range": [
+    3660,
+    3679
+  ],
+  "head": "eb279fc80be656f379cd893642bf741ba0a24d85",
+  "tree": "85a73172719b38e99a4e74c0ef9a303164cb4fcb",
+  "sourceOrderSha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+  "selectedSourceIdOrderSha256": "3dfda187cce78a6cd533ae8fe19a62ba3d14ba1711844156e9453804445f9ec5",
+  "candidateFreeManifestSha256": "09c8ae082e01f16b8e512684f8ff9022afbf3331ea594edc063341644faea0e4",
+  "holdLineageSha256": "5db4c68148818015add5ad730db54131c7769166a53929266f83ba4acfae8d8f"
+}

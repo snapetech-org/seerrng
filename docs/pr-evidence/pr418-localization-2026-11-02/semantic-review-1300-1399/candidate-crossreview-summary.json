@@ -1,0 +1,82 @@
+{
+  "schemaVersion": 1,
+  "task": "Independent cross-review of the complete SeerrNG PR #418 W1300–1399 primary candidate set",
+  "repository": "snapetech-org/SeerrNG",
+  "pullRequest": 418,
+  "pin": {
+    "head": "52221fafe6b1934bd3b5b98369a8b1d04aadb9b4",
+    "tree": "1e0d32abef8f5f38c14562e59f584d8f58cab0bd",
+    "livePrState": "OPEN",
+    "livePrDraft": true
+  },
+  "reviewScope": {
+    "primaryProposalCount": 157,
+    "primarySupplementalCandidatesIncluded": 8,
+    "frozenSpanishPriorRowsPreserved": 5,
+    "ledgerRows": 162
+  },
+  "crossReviewDecisionCounts": {
+    "accept": 151,
+    "refine": 6,
+    "hold": 0,
+    "preserved-prior-disposition": 5
+  },
+  "refinements": [
+    {
+      "id": "components.GameLibrary.combinedPlaytimeHoursMinutes",
+      "locale": "zh-CN",
+      "finalTarget": "家庭合计游戏时长：{hours}小时{minutes}分钟"
+    },
+    {
+      "id": "components.GameLibrary.combinedPlaytimeMinutes",
+      "locale": "zh-CN",
+      "finalTarget": "家庭合计游戏时长：{minutes}分钟"
+    },
+    {
+      "id": "components.GameLibrary.combinedPlaytime",
+      "locale": "zh-TW",
+      "finalTarget": "家庭合計遊戲時數：{hours}小時"
+    },
+    {
+      "id": "components.GameLibrary.combinedPlaytimeHoursMinutes",
+      "locale": "zh-TW",
+      "finalTarget": "家庭合計遊戲時數：{hours}小時{minutes}分鐘"
+    },
+    {
+      "id": "components.GameLibrary.combinedPlaytimeMinutes",
+      "locale": "zh-TW",
+      "finalTarget": "家庭合計遊戲時數：{minutes}分鐘"
+    },
+    {
+      "id": "components.GameLibrary.completed",
+      "locale": "ja",
+      "finalTarget": "クリア済み"
+    }
+  ],
+  "validation": {
+    "broadInputChecksumManifestPassed": true,
+    "candidateFilesChecksummed": true,
+    "sourceAndCurrentCatalogValuesReattested": true,
+    "sourceAndTargetCatalogFileShaAndGitBlobPinsMatch": true,
+    "allCandidateSourceCurrentAndPrimaryHashesMatch": true,
+    "allFinalTargetHashesRecomputed": true,
+    "allPlaceholderChecksPassed": true,
+    "allMarkupChecksPassed": true,
+    "allProtectedLiteralChecksPassed": true,
+    "allCallerReferencesReattested": true,
+    "candidateRows": 157,
+    "callerReferencesReattested": 285,
+    "uniqueCallerLines": 94,
+    "worktree": "/mnt/disks/scratch/task-worktrees/localization-20261102/seerrng-pr418-w1000-1099",
+    "worktreeHead": "52221fafe6b1934bd3b5b98369a8b1d04aadb9b4",
+    "worktreeTree": "1e0d32abef8f5f38c14562e59f584d8f58cab0bd",
+    "worktreeStatus": [
+      " M AGENTS.md"
+    ],
+    "worktreeNote": "Only AGENTS.md is modified in this alternate exact-tree worktree; all source, catalog, and caller files used here match the pinned blobs and hashes. The original W1300–1399 worktree was no longer present.",
+    "priorSpanishCellsCurrentHashesMatchHistoricalFinals": true
+  },
+  "readOnly": true,
+  "testsBuildsScansCIOrBrowserWorkPerformed": false,
+  "nativeSpeakerSignoff": false
+}

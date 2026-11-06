@@ -1,0 +1,37 @@
+{
+  "crossReviewRecommendedTargetsWrittenToRepository": false,
+  "currentTargetReadbackMismatches": 0,
+  "finalWorktreeHead": "d49b44895d0ded9796f0c970ad09141212e9a98f",
+  "finalWorktreeStatus": "",
+  "finalWorktreeTree": "cebcfc11e0ea37c42f5b6e979e96cca8c89c7814",
+  "heldRows": 0,
+  "independentSubsetPacketChecksums": {
+    "INPUT-SHA256SUMS": {
+      "entries": 26,
+      "manifestSha256": "4ef6c6734231a0e1d33c2a68cb7ea261721d25339cdfc408ee9d94e7aefc0e54",
+      "valid": true
+    },
+    "SHA256SUMS": {
+      "entries": 6,
+      "manifestSha256": "2365d85095484a76e8a902a8c9ce447bca7e59506b7315f77ee1713aecd27850",
+      "valid": true
+    }
+  },
+  "note": "Readback verifies the frozen primary packet currentTarget against the live d49 locale catalogs. Cross-review recommendations are scratch-only and were not applied to the repository.",
+  "primaryCurrentTargetsReadBackFromLiveCatalog": 169,
+  "primaryPacketChecksums": {
+    "INPUT-SHA256SUMS": {
+      "entries": 5,
+      "manifestSha256": "4fb434a3307cae9faaa1a82b2e869c81685a5475b0b86649553c18bb46dbcf1b",
+      "valid": true
+    },
+    "SHA256SUMS": {
+      "entries": 17,
+      "manifestSha256": "1b330243b632d4d6f54596a60fdb6573bcdf222fae9d3e9696e29ba9ddaa7e15",
+      "valid": true
+    }
+  },
+  "proposalCells": 169,
+  "retainedCurrentRows": 1,
+  "revisedTargetRows": 19
+}

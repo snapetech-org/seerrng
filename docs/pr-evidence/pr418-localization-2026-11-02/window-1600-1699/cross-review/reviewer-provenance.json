@@ -1,0 +1,43 @@
+{
+  "browserReview": false,
+  "definitionOnlyCallerNote": "The minutes and openarr strings are present in the pinned component files, but no direct reference was found in those files; the packet makes no claim that they render.",
+  "exactHead": "5aceef6ed6e865ee89383738212d1ce1a5c1f552",
+  "exactTree": "dd6e3495c44c2c14acf8a7a4b09a21e935ceb16d",
+  "inputs": [
+    "English source catalog",
+    "12 direct locale catalogs",
+    "100 pinned component/helper definitions and caller references",
+    "Manage UI labels",
+    "all 1,200 primary ledger rows",
+    "tracked exact-hash Spanish decision plan",
+    "independent second review of 500 Hindi/Japanese/Korean/Simplified Chinese/Traditional Chinese cells"
+  ],
+  "nativeSpeakerApproval": false,
+  "repositoryOrPrEdits": false,
+  "reviewType": "independent adjudication of all frozen source/current/candidate cells against pinned caller context and exact prior Spanish dispositions",
+  "reviewerRole": "independent cross-reviewer",
+  "scope": {
+    "cells": 1200,
+    "locales": [
+      "ar",
+      "de",
+      "es",
+      "fr",
+      "hi",
+      "id",
+      "ja",
+      "ko",
+      "pt_BR",
+      "vi",
+      "zh_Hans",
+      "zh_Hant"
+    ],
+    "positions": [
+      1600,
+      1699
+    ],
+    "sourceIds": 100
+  },
+  "testsBuildsScansCiRun": false,
+  "workflowsTouched": false
+}

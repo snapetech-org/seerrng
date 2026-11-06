@@ -1,0 +1,47 @@
+{
+  "scope": {
+    "window": "W3740-W3759",
+    "sourceCount": 20,
+    "localeCount": 12,
+    "cellCount": 240,
+    "localeOrder": [
+      "es",
+      "zh_Hans",
+      "hi",
+      "de",
+      "ja",
+      "fr",
+      "pt_BR",
+      "ar",
+      "ko",
+      "zh_Hant",
+      "vi",
+      "id"
+    ]
+  },
+  "dispositionCounts": {
+    "accept-current": 206,
+    "correction": 15,
+    "refinement": 19,
+    "hold": 0
+  },
+  "changeCount": 34,
+  "holdCount": 0,
+  "currentInputFindings": {
+    "placeholderMismatchCount": 0,
+    "placeholderSequenceMismatchCount": 0,
+    "numericMismatchCount": 0,
+    "markupMismatchCount": 0,
+    "protectedLiteralMismatchCount": 3
+  },
+  "priorReattestation": {
+    "carriedHoldCount": 12,
+    "carriedHoldSha256": "3f2c2bfbc2e207e36ec7ee2b174a4fc4cdf27464303984dd38cb709faa72cd1b",
+    "priorSelectionCount": 240,
+    "priorSelectionSha256": "60bcc170eb745ccc06e4f90268fd7fd06e5b10cc2f557eea454571c78c4fea63",
+    "allTargetTextIncludedFalse": true
+  },
+  "nativeSpeakerSignoff": false,
+  "crossReviewPerformed": false,
+  "catalogValuesApplied": false
+}

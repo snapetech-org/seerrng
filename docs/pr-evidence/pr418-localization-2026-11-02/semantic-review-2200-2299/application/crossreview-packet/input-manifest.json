@@ -1,0 +1,18 @@
+{
+  "repository": "snapetech-org/SeerrNG",
+  "pullRequest": 418,
+  "head": "8c27beb8086ea6f840bdcde4b915d83db27f81a3",
+  "tree": "2951195dd04af87add189090756e0d0f43e8e031",
+  "reviewedAtUtc": "2026-11-02",
+  "primaryPacketPath": "/mnt/disks/scratch/task-scratch/seerrng-pr418-window-2200-2299-primary-20261102",
+  "primarySha256SumsSha256": "59734060e00bf0dc5688ee6b7d0aa23acdc835a446901f1c1c32e0f234bbfa2a",
+  "primaryInputSha256SumsSha256": "5c12908a4b1412b579be29808c1a611400d70e1e5c6a3f82d11a385c6dc605a8",
+  "languageAuditPath": "/mnt/disks/scratch/task-scratch/seerrng-pr418-window-2200-2299-language-audit-agent-20261102",
+  "languageAuditSha256SumsSha256": "949a0fa452957221d9f236a1d01caf41f726ad70a7b3fd9312d35a75c891c009",
+  "sourceFile": "src/i18n/locale/en.json",
+  "sourceFileSha256": "75ff3c90b52aedd636a506281ffbd6fb2d3739c61294b6008a517f17647e2316",
+  "crossreviewRows": 1200,
+  "crossreviewLedgerSha256": "6e4619695eaf10c06c1063bb428ba1486560acc8feba6a229bca1e2b42ca8596",
+  "crossreviewFindings": 23,
+  "explicitHolds": 0
+}

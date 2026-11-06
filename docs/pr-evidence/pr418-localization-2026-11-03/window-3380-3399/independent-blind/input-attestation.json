@@ -1,0 +1,27 @@
+{
+  "inputDirectory": "../candidate-free-input/",
+  "inputFileChecksums": {
+    "PR-attestation.json": "ff090497978768e68a6db94e226524bcc448c024d3cb8b59f28be73fb944442b",
+    "README.txt": "1917483df638fe4f2ac6626dd4dc4fbd60c2a0ac5103980aabf7ad363a4f3b17",
+    "caller-contexts.jsonl": "185e2159757c129454cbea02f049f4d2aa823efc4cc9fa018f7312be7cf61698",
+    "review-input.jsonl": "ddf0f11c3d98236bf8f4e61013e1c21558e81039e31f19c7777df055155c0873",
+    "source-boundaries.json": "0485bf67efe4224a61b64f9c998e786f19fd6485086f6aa403be487a71369549",
+    "window.json": "a9eb1a049de2233cf3f3c0d2d3d48abd6d27558e01927e1c58630a8b470d9ed0"
+  },
+  "inputManifestSha256": "c02b106002378057e7c3c43fe927632b5ab6762b744785e3509601a9435e8dc4",
+  "reviewInputSha256": "ddf0f11c3d98236bf8f4e61013e1c21558e81039e31f19c7777df055155c0873",
+  "callerContextsSha256": "185e2159757c129454cbea02f049f4d2aa823efc4cc9fa018f7312be7cf61698",
+  "livePr": {
+    "number": 418,
+    "state": "OPEN",
+    "isDraft": true,
+    "headRefName": "codex/seerrng-localization-overhaul-20261028",
+    "headRefOid": "4d7de2c41b0e6df6cd0b7f7075c9cddd1c6ce160",
+    "baseRefName": "main"
+  },
+  "remoteBranchHead": "4d7de2c41b0e6df6cd0b7f7075c9cddd1c6ce160",
+  "pinnedHead": "4d7de2c41b0e6df6cd0b7f7075c9cddd1c6ce160",
+  "pinnedTree": "6fba2d5985869b4563955b2c338a93e82efb4b22",
+  "verifiedAtUTC": "2026-11-03T07:12:36.246574+00:00",
+  "reviewBoundary": "Only candidate-free-input files, GitHub PR metadata, and the remote branch ref were read. No repository contents, PR body, or other review outputs were opened."
+}

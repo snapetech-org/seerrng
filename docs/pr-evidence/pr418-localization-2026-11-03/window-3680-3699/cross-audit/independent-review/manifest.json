@@ -1,0 +1,57 @@
+{
+  "base": "221d8e0d542802da7529cd272c928cc747677e5c",
+  "beforeLiveAttestationSha256": "9412e86f6dace1493a06cfa164c9db89ba2bcbadf158db39bd7fd17e5436a0f5",
+  "branch": "codex/seerrng-localization-overhaul-20261028",
+  "candidateFreeChecksumListSha256": "9f279b3525466058d23564a53f7b2c848052859d8dbfb82a8f7793061d8778d4",
+  "candidateFreeInputSnapshot": "../evidence/candidate-free-input",
+  "candidateFreeManifestSha256": "577ba2a857f59504ec2c2623b10ff0c7c7e8d1ef397dd8aac572441d2aadeee1",
+  "cellCount": 240,
+  "dispositions": {
+    "accept-current": 218,
+    "correction": 10,
+    "hold": 0,
+    "refinement": 12
+  },
+  "files": {
+    "blind-ledger.jsonl": "e733c371806d642c518dd0de5ebf7d04f910171b0a6808b3499c3f63ce1ae18b",
+    "prior-hold-reattestation.jsonl": "d9dc144d8b425e276af91702787dcf9205bff5ecc008fc09d8c8faa2d4a7a1b4",
+    "summary.json": "55b64e5fa31af33fbb37a54406b31381c5f3289d6e6287550dcbc3e6bbc6f0bf"
+  },
+  "head": "a2f015c040f933eff38e6ef3d9b1ac6050c4957d",
+  "inputRoot": "/home/keith/Documents/code/task-scratch/seerrng-pr418-w3680-3699-cross-audit-20261103/evidence/candidate-free-input",
+  "localeOrder": [
+    "es",
+    "zh_Hans",
+    "hi",
+    "de",
+    "ja",
+    "fr",
+    "pt_BR",
+    "ar",
+    "ko",
+    "zh_Hant",
+    "vi",
+    "id"
+  ],
+  "primaryCandidateOrDecisionExposed": false,
+  "primaryDirectoryOpened": false,
+  "priorHoldsReattested": 12,
+  "reviewSealState": "sealed before opening primary",
+  "selectedRange": [
+    3680,
+    3699
+  ],
+  "selectedSourceIdOrderSha256": "f1dbea615bbdbd371aaf01b68b8bece63b51465aad13d3c7de50cfaffba168af",
+  "sourceCount": 20,
+  "sourceOrderSha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+  "task": "SeerrNG PR #418 W3680-W3699 independent blind translation review",
+  "tokenFailureCounts": {
+    "icuCategoriesPreserved": 0,
+    "markupPreserved": 0,
+    "numericValuesMatch": 0,
+    "placeholderSequenceMatches": 0,
+    "protectedLiteralsPreserved": 0
+  },
+  "tree": "9cea70e57de0d65e78dd0cc6fab8f54dbb4e5cfe",
+  "unchangedPriorHolds": 12
+}

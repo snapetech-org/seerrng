@@ -1,0 +1,36 @@
+{
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "range": [
+    3300,
+    3319
+  ],
+  "head": "7f652dc9b529506fded0064f73cf4a4d32dba1a9",
+  "tree": "9a42f2efdc0f64e99928a4994304413036b8a315",
+  "inputManifestSha256": "8ecf0b1602efb5212d280ca82e551b533fc062c7fa45fecc3ebeb0b917598569",
+  "sourceCount": 20,
+  "localeCount": 12,
+  "cellCount": 240,
+  "decisionCounts": {
+    "accept-current": 137,
+    "hold-context": 60,
+    "correction": 20,
+    "refinement": 23
+  },
+  "proposalCount": 43,
+  "holdIds": {
+    "components.Requests.bookAndAudiobook": 12,
+    "components.Requests.delete": 12,
+    "components.Requests.deleteDescription": 12,
+    "components.Requests.deleteTitle": 12,
+    "components.Requests.deleteTooltip": 12
+  },
+  "callerContextHolds": 60,
+  "placeholderParityErrorsInInput": 0,
+  "protectedTermOccurrenceCount": 12,
+  "nativeSpeakerApproval": false,
+  "findings": "Machine-assisted primary review; held cells retain current values and have no candidate. Root/independent adjudication remains separate.",
+  "finalLivePrReattestationAt": "2026-11-03T04:52:31Z",
+  "finalLivePrHead": "7f652dc9b529506fded0064f73cf4a4d32dba1a9",
+  "validation": "static hash/readback verification passed; no build/test/scan/CI run"
+}

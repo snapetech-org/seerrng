@@ -1,0 +1,238 @@
+{
+  "baseHead": "a2f015c040f933eff38e6ef3d9b1ac6050c4957d",
+  "baseTree": "9cea70e57de0d65e78dd0cc6fab8f54dbb4e5cfe",
+  "catalogCount": 13,
+  "catalogs": [
+    {
+      "baseGitBlob": "fed460c9cd98fa538580d84af198b944b382b24e",
+      "baseSha256": "11ed682150402bc9b9c8f8e834af58599b946df2da8e4a82a3beee631a16511e",
+      "catalogPath": "src/i18n/locale/ar.json",
+      "changedCellCount": 0,
+      "changedSourceIds": [],
+      "keyCount": 9494,
+      "keyOrderPreserved": true,
+      "keySetPreserved": true,
+      "nonTargetValuesPreserved": true,
+      "orderedKeysSha256": "47d40a21145f2f198fadaa29baeef5461718c4b6365d564af60ee015f18f1974",
+      "resultGitBlob": "fed460c9cd98fa538580d84af198b944b382b24e",
+      "resultSha256": "11ed682150402bc9b9c8f8e834af58599b946df2da8e4a82a3beee631a16511e"
+    },
+    {
+      "baseGitBlob": "b9a8c475fa80390eec5d70ce17a41fe72d6c4dee",
+      "baseSha256": "bda1f533bb8b02b178535b8627c98693d9526d5e079ceb3b4fae2e6deab0aeca",
+      "catalogPath": "src/i18n/locale/de.json",
+      "changedCellCount": 0,
+      "changedSourceIds": [],
+      "keyCount": 9494,
+      "keyOrderPreserved": true,
+      "keySetPreserved": true,
+      "nonTargetValuesPreserved": true,
+      "orderedKeysSha256": "47d40a21145f2f198fadaa29baeef5461718c4b6365d564af60ee015f18f1974",
+      "resultGitBlob": "b9a8c475fa80390eec5d70ce17a41fe72d6c4dee",
+      "resultSha256": "bda1f533bb8b02b178535b8627c98693d9526d5e079ceb3b4fae2e6deab0aeca"
+    },
+    {
+      "baseGitBlob": "12e04a118c30b71b3714291adeaf9fdb2735cee4",
+      "baseSha256": "75ff3c90b52aedd636a506281ffbd6fb2d3739c61294b6008a517f17647e2316",
+      "catalogPath": "src/i18n/locale/en.json",
+      "changedCellCount": 0,
+      "changedSourceIds": [],
+      "keyCount": 9494,
+      "keyOrderPreserved": true,
+      "keySetPreserved": true,
+      "nonTargetValuesPreserved": true,
+      "orderedKeysSha256": "47d40a21145f2f198fadaa29baeef5461718c4b6365d564af60ee015f18f1974",
+      "resultGitBlob": "12e04a118c30b71b3714291adeaf9fdb2735cee4",
+      "resultSha256": "75ff3c90b52aedd636a506281ffbd6fb2d3739c61294b6008a517f17647e2316"
+    },
+    {
+      "baseGitBlob": "6129c775174361a5dccdd76762edeb2102d42b95",
+      "baseSha256": "8161e1a6e1c568157c2948837cf6579ebaf905fbff98532d540205dd557c84f5",
+      "catalogPath": "src/i18n/locale/es.json",
+      "changedCellCount": 2,
+      "changedSourceIds": [
+        "components.Settings.BookshelfPathMigration.startError",
+        "components.Settings.BookshelfPathMigration.starting"
+      ],
+      "keyCount": 9494,
+      "keyOrderPreserved": true,
+      "keySetPreserved": true,
+      "nonTargetValuesPreserved": true,
+      "orderedKeysSha256": "47d40a21145f2f198fadaa29baeef5461718c4b6365d564af60ee015f18f1974",
+      "resultGitBlob": "c05b5d4782b14406a0c8821d8d476a4891f7e0a4",
+      "resultSha256": "b66a189abd1e727ccbbb6160eea23e043fb6ddbeaa1f5feaaf3808984f5f2e42"
+    },
+    {
+      "baseGitBlob": "04eba5287209c5b7c0018b14e15185fc62501395",
+      "baseSha256": "31201b452bec6af121afa0fd332d5eb2cbf98a1b5d6ee336838c229c5efd55df",
+      "catalogPath": "src/i18n/locale/fr.json",
+      "changedCellCount": 6,
+      "changedSourceIds": [
+        "components.Settings.BookshelfPathMigration.start",
+        "components.Settings.BookshelfPathMigration.startError",
+        "components.Settings.BookshelfPathMigration.starting",
+        "components.Settings.BookshelfPathMigration.truncated",
+        "components.Settings.JellystatModal.add",
+        "components.Settings.JellystatModal.apiKeyHelp"
+      ],
+      "keyCount": 9494,
+      "keyOrderPreserved": true,
+      "keySetPreserved": true,
+      "nonTargetValuesPreserved": true,
+      "orderedKeysSha256": "47d40a21145f2f198fadaa29baeef5461718c4b6365d564af60ee015f18f1974",
+      "resultGitBlob": "5425e12149a1c8d55ff706687a24c597baa202b9",
+      "resultSha256": "2cc33b14faa2532a5fb4f369c6ab404d62ca40b36e10eb5b98b7d3b098ed2bc9"
+    },
+    {
+      "baseGitBlob": "b5a67daafffe9a7656e721285e2d723566460114",
+      "baseSha256": "c9c37440038bc8a7985af8ec4ca85b962b7c77dc41de4cd73be3e9f8178e72c0",
+      "catalogPath": "src/i18n/locale/hi.json",
+      "changedCellCount": 4,
+      "changedSourceIds": [
+        "components.Settings.BookshelfPathMigration.serviceHelp",
+        "components.Settings.BookshelfPathMigration.title",
+        "components.Settings.JellystatModal.apiKey",
+        "components.Settings.JellystatModal.apiKeyHelp"
+      ],
+      "keyCount": 9494,
+      "keyOrderPreserved": true,
+      "keySetPreserved": true,
+      "nonTargetValuesPreserved": true,
+      "orderedKeysSha256": "47d40a21145f2f198fadaa29baeef5461718c4b6365d564af60ee015f18f1974",
+      "resultGitBlob": "d66f9147573d478c61d2656a6eba7026e3bde764",
+      "resultSha256": "1bd945c04a1d856d6dcc4f95423fac4c384d154583e939cae1b1671b042050a3"
+    },
+    {
+      "baseGitBlob": "ec9066f9350664f3ec9f5e286ae14f17e72d6914",
+      "baseSha256": "3dede2d3a566d83c9fb034a31b022d84781543f6399e47e6097284effa66a733",
+      "catalogPath": "src/i18n/locale/id.json",
+      "changedCellCount": 3,
+      "changedSourceIds": [
+        "components.Settings.BookshelfPathMigration.sidecarFiles",
+        "components.Settings.BookshelfPathMigration.truncated",
+        "components.Settings.JellystatModal.add"
+      ],
+      "keyCount": 9494,
+      "keyOrderPreserved": true,
+      "keySetPreserved": true,
+      "nonTargetValuesPreserved": true,
+      "orderedKeysSha256": "47d40a21145f2f198fadaa29baeef5461718c4b6365d564af60ee015f18f1974",
+      "resultGitBlob": "7bffb65f847fce6e367b46053adb030a6fc6839e",
+      "resultSha256": "b098f86716ed5d24a6a36a3814be7203dc2944cc23a17e83475b18c0b75e2eee"
+    },
+    {
+      "baseGitBlob": "1e8ad0ef560fc49e8cac3febb8ee9c5729a041ed",
+      "baseSha256": "fcee34bc6ee1b095c2b998ca43a39f4ca075f42ae781dcb39dd91645cf9d4e71",
+      "catalogPath": "src/i18n/locale/ja.json",
+      "changedCellCount": 6,
+      "changedSourceIds": [
+        "components.Settings.BookshelfPathMigration.selected",
+        "components.Settings.BookshelfPathMigration.selectionHelp",
+        "components.Settings.BookshelfPathMigration.truncated",
+        "components.Settings.JellystatModal.addTitle",
+        "components.Settings.JellystatModal.apiKeyHelp",
+        "components.Settings.JellystatModal.apiKeyRequired"
+      ],
+      "keyCount": 9494,
+      "keyOrderPreserved": true,
+      "keySetPreserved": true,
+      "nonTargetValuesPreserved": true,
+      "orderedKeysSha256": "35faf7107f1be3900172b7c08ac7558b51f31d63b3b6c57eebe7710e8a81ca33",
+      "resultGitBlob": "bad0ba2b157cfca9438fc35b7e875b9d860c596a",
+      "resultSha256": "9bef83e94a017f6497d3455c76134f58f59003a8424cd47a44da58f76db6d965"
+    },
+    {
+      "baseGitBlob": "9aea4f9b5d86dbf11fb81ad0d02f3ce956e74a58",
+      "baseSha256": "664f4139bd699394d0bd78f641da4be169573c2e1a045c7ce0d31b639087a4fc",
+      "catalogPath": "src/i18n/locale/ko.json",
+      "changedCellCount": 5,
+      "changedSourceIds": [
+        "components.Settings.BookshelfPathMigration.selectionHelp",
+        "components.Settings.BookshelfPathMigration.startError",
+        "components.Settings.BookshelfPathMigration.truncated",
+        "components.Settings.JellystatModal.apiKeyHelp",
+        "components.Settings.JellystatModal.apiKeyRequired"
+      ],
+      "keyCount": 9494,
+      "keyOrderPreserved": true,
+      "keySetPreserved": true,
+      "nonTargetValuesPreserved": true,
+      "orderedKeysSha256": "35faf7107f1be3900172b7c08ac7558b51f31d63b3b6c57eebe7710e8a81ca33",
+      "resultGitBlob": "b6f9aa65b08501561014a04f8688094ab5027e90",
+      "resultSha256": "74fefa5c0d17f210c132f458347040a8b21e98dbbede76dce048838a11f25d31"
+    },
+    {
+      "baseGitBlob": "9f2661fbc2611816c18b6f98d4d40ca131700702",
+      "baseSha256": "03f243835453523623d05692d42a6c2921b9cb80eedbd158adb3bf5555e7bbfb",
+      "catalogPath": "src/i18n/locale/pt_BR.json",
+      "changedCellCount": 6,
+      "changedSourceIds": [
+        "components.Settings.BookshelfPathMigration.sidecarFiles",
+        "components.Settings.BookshelfPathMigration.starting",
+        "components.Settings.BookshelfPathMigration.truncated",
+        "components.Settings.JellystatModal.addTitle",
+        "components.Settings.JellystatModal.apiKeyHelp",
+        "components.Settings.JellystatModal.apiKeyRequired"
+      ],
+      "keyCount": 9494,
+      "keyOrderPreserved": true,
+      "keySetPreserved": true,
+      "nonTargetValuesPreserved": true,
+      "orderedKeysSha256": "47d40a21145f2f198fadaa29baeef5461718c4b6365d564af60ee015f18f1974",
+      "resultGitBlob": "ff32c63cb06af9542526413e70b00db2fb753c8d",
+      "resultSha256": "befa6fb9f588df1839b3b0d678f44bd1eff9b01524f01ac03a36c8e4ef47648a"
+    },
+    {
+      "baseGitBlob": "3fa2a4efb35982eeb9dda64eec66471c91531d9c",
+      "baseSha256": "b2129f82afccccd5fbe2156b3159cae282c2f8c828618f97bbc8cfd334320d72",
+      "catalogPath": "src/i18n/locale/vi.json",
+      "changedCellCount": 2,
+      "changedSourceIds": [
+        "components.Settings.BookshelfPathMigration.selected",
+        "components.Settings.JellystatModal.apiKeyHelp"
+      ],
+      "keyCount": 9494,
+      "keyOrderPreserved": true,
+      "keySetPreserved": true,
+      "nonTargetValuesPreserved": true,
+      "orderedKeysSha256": "35faf7107f1be3900172b7c08ac7558b51f31d63b3b6c57eebe7710e8a81ca33",
+      "resultGitBlob": "247323e0c22a587c000b37d93dd03671eee6d55d",
+      "resultSha256": "75e6f6e0caab247b3d6f3a56d70cc4b373b55cc27a0e640ad87a138dbd36cde0"
+    },
+    {
+      "baseGitBlob": "ad501d5959a29598cfb1fc8c05cfc17b2a719625",
+      "baseSha256": "2c551ec2396a5de08edd05f27218dd0d44e500be65452f7dc6b060aabadf7855",
+      "catalogPath": "src/i18n/locale/zh_Hans.json",
+      "changedCellCount": 0,
+      "changedSourceIds": [],
+      "keyCount": 9494,
+      "keyOrderPreserved": true,
+      "keySetPreserved": true,
+      "nonTargetValuesPreserved": true,
+      "orderedKeysSha256": "35faf7107f1be3900172b7c08ac7558b51f31d63b3b6c57eebe7710e8a81ca33",
+      "resultGitBlob": "ad501d5959a29598cfb1fc8c05cfc17b2a719625",
+      "resultSha256": "2c551ec2396a5de08edd05f27218dd0d44e500be65452f7dc6b060aabadf7855"
+    },
+    {
+      "baseGitBlob": "23387fa1a7bf947696ee152e6398d748d95d457c",
+      "baseSha256": "e12d784b2e862f9621f265ec5d0e6684be091268e7826eb269efbb356dc00174",
+      "catalogPath": "src/i18n/locale/zh_Hant.json",
+      "changedCellCount": 3,
+      "changedSourceIds": [
+        "components.Settings.BookshelfPathMigration.selected",
+        "components.Settings.JellystatModal.addTitle",
+        "components.Settings.JellystatModal.apiKeyRequired"
+      ],
+      "keyCount": 9494,
+      "keyOrderPreserved": true,
+      "keySetPreserved": true,
+      "nonTargetValuesPreserved": true,
+      "orderedKeysSha256": "35faf7107f1be3900172b7c08ac7558b51f31d63b3b6c57eebe7710e8a81ca33",
+      "resultGitBlob": "1b55f958882daad052ad1b83276e5e8f0be79eb6",
+      "resultSha256": "4b1120e3567cc44b3a385fd3ea34e4f1fba7221575ffbd1f4fdd737116b6115c"
+    }
+  ],
+  "nonTargetValuesPreserved": true,
+  "schemaVersion": 1,
+  "workflowFilesUntouched": true
+}

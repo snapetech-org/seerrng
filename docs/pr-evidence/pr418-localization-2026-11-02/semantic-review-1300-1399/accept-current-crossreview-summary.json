@@ -1,0 +1,320 @@
+{
+  "schemaVersion": 1,
+  "repository": "snapetech-org/SeerrNG",
+  "pullRequest": 418,
+  "livePullRequestState": "OPEN",
+  "livePullRequestDraft": true,
+  "exactHead": "52221fafe6b1934bd3b5b98369a8b1d04aadb9b4",
+  "exactTree": "1e0d32abef8f5f38c14562e59f584d8f58cab0bd",
+  "scope": "Independent review of the 1,038 primary accept-current cells in W1300–1399; five Spanish prior rows preserved separately and not reconsidered.",
+  "inputPacket": "/mnt/disks/scratch/task-scratch/seerrng-pr418-window-1300-1399-primary-20261102",
+  "inputChecksumManifest": "INPUT_SHA256SUMS verified in the packet directory before review.",
+  "worktreeUsed": "/mnt/disks/scratch/task-worktrees/localization-20261102/seerrng-pr418-w1000-1099",
+  "worktreeTreeVerified": true,
+  "preexistingWorktreeStatus": [
+    " M AGENTS.md"
+  ],
+  "worktreeChangesMade": false,
+  "rowsReviewed": 1038,
+  "dispositionCounts": {
+    "accept": 1007,
+    "missed-issue": 6,
+    "refinement": 25
+  },
+  "exceptionCount": 31,
+  "exceptions": [
+    {
+      "sourceIdPosition": 1321,
+      "id": "components.GameContent.summary",
+      "locale": "de",
+      "disposition": "refinement",
+      "target": "Was diese Anfrage enthält",
+      "targetSha256": "464546171958c24f9d522b732a332cb1400299b91747e666281be6c850cb6560",
+      "confidence": "moderate"
+    },
+    {
+      "sourceIdPosition": 1321,
+      "id": "components.GameContent.summary",
+      "locale": "es",
+      "disposition": "refinement",
+      "target": "Lo que incluye esta solicitud",
+      "targetSha256": "5cd36b68b4c62d6b4807a45c2b09a5d18b3525156c596e12810784eb793f7472",
+      "confidence": "moderate"
+    },
+    {
+      "sourceIdPosition": 1321,
+      "id": "components.GameContent.summary",
+      "locale": "hi",
+      "disposition": "refinement",
+      "target": "इस अनुरोध में क्या शामिल है",
+      "targetSha256": "a6088f8d6e265dc1487d3f6cd537e68dd63f1df190a182830e2c0861330f33e3",
+      "confidence": "moderate"
+    },
+    {
+      "sourceIdPosition": 1321,
+      "id": "components.GameContent.summary",
+      "locale": "zh-CN",
+      "disposition": "refinement",
+      "target": "此请求包含的内容",
+      "targetSha256": "8807a69b11d89b870efdca53f77eb3aaa7eff0e6fbb43de90ddc2f41716a1f76",
+      "confidence": "moderate"
+    },
+    {
+      "sourceIdPosition": 1324,
+      "id": "components.GameContent.summaryEdition",
+      "locale": "de",
+      "disposition": "missed-issue",
+      "target": "{title}, einschließlich allem, was du noch nicht hast.",
+      "targetSha256": "20971dc10a908efd03d6b4a3a8622d8457c71a4314a753fb25ab4d8be8255960",
+      "confidence": "high"
+    },
+    {
+      "sourceIdPosition": 1332,
+      "id": "components.GameContent.unknownContents",
+      "locale": "es",
+      "disposition": "refinement",
+      "target": "El catálogo no especifica qué contiene esta edición, así que no se sabe qué añade.",
+      "targetSha256": "78b55b059b8b9f0226d1382f49b393cda2099e41ba05ef79f3e3458173625591",
+      "confidence": "moderate"
+    },
+    {
+      "sourceIdPosition": 1332,
+      "id": "components.GameContent.unknownContents",
+      "locale": "ko",
+      "disposition": "missed-issue",
+      "target": "카탈로그에 이 에디션의 구성 내용이 나와 있지 않아 무엇이 추가되는지 알 수 없습니다.",
+      "targetSha256": "49d5d3b282089bba55aa2261d97cfd3a4bf88750ac8ec3b61f73fc2bc38c0ba8",
+      "confidence": "high"
+    },
+    {
+      "sourceIdPosition": 1333,
+      "id": "components.GameDiscovery.anyLength",
+      "locale": "ar",
+      "disposition": "refinement",
+      "target": "أي مدة",
+      "targetSha256": "e88e208620a579681a18040c8d1a020897894e231607fa594587cd052338507f",
+      "confidence": "moderate"
+    },
+    {
+      "sourceIdPosition": 1333,
+      "id": "components.GameDiscovery.anyLength",
+      "locale": "hi",
+      "disposition": "refinement",
+      "target": "कोई भी अवधि",
+      "targetSha256": "013e92283b66d05ffb7b351d4f441db008135652537099d35fb9c8656a764823",
+      "confidence": "moderate"
+    },
+    {
+      "sourceIdPosition": 1333,
+      "id": "components.GameDiscovery.anyLength",
+      "locale": "ja",
+      "disposition": "refinement",
+      "target": "クリア時間の制限なし",
+      "targetSha256": "2b836f152780977adee73e75544dc99dc3180e1005a9753f1e2ddeb6e4b040ff",
+      "confidence": "moderate"
+    },
+    {
+      "sourceIdPosition": 1333,
+      "id": "components.GameDiscovery.anyLength",
+      "locale": "ko",
+      "disposition": "refinement",
+      "target": "클리어 시간 제한 없음",
+      "targetSha256": "9c62bf22f8a846935be28d1f3f6eebca6ba696a4b7864e62aca9314d803576df",
+      "confidence": "moderate"
+    },
+    {
+      "sourceIdPosition": 1333,
+      "id": "components.GameDiscovery.anyLength",
+      "locale": "vi",
+      "disposition": "refinement",
+      "target": "Bất kỳ thời lượng nào",
+      "targetSha256": "648710c2dd1942ecd197d0d51e15e5d55bb19764405ed9ff8d062dda46c7f787",
+      "confidence": "moderate"
+    },
+    {
+      "sourceIdPosition": 1333,
+      "id": "components.GameDiscovery.anyLength",
+      "locale": "zh-TW",
+      "disposition": "refinement",
+      "target": "不限遊玩時長",
+      "targetSha256": "759094a6514748384322c8d6cbb260b13b1692e2b5dec041cce733cb1562d18f",
+      "confidence": "moderate"
+    },
+    {
+      "sourceIdPosition": 1349,
+      "id": "components.GameDiscovery.reasonGenre",
+      "locale": "ar",
+      "disposition": "missed-issue",
+      "target": "الأنواع: {values}",
+      "targetSha256": "23b7c4c9ea15128ba80a3d1bb1ded6125bbe709056cba0dda4119e7bb2557117",
+      "confidence": "moderate"
+    },
+    {
+      "sourceIdPosition": 1353,
+      "id": "components.GameDiscovery.reasonShort",
+      "locale": "ja",
+      "disposition": "refinement",
+      "target": "クリアまで約{values}時間",
+      "targetSha256": "c9d69223e11745f00aa7db0029646ec408cf93a451f4f33db9321be3270dbb5b",
+      "confidence": "moderate"
+    },
+    {
+      "sourceIdPosition": 1353,
+      "id": "components.GameDiscovery.reasonShort",
+      "locale": "zh-CN",
+      "disposition": "refinement",
+      "target": "通关时长约{values}小时",
+      "targetSha256": "d38213bb6ce549ca9aabb060f2be1c2856620698a1fd9941ab4c40735fb713f6",
+      "confidence": "moderate"
+    },
+    {
+      "sourceIdPosition": 1353,
+      "id": "components.GameDiscovery.reasonShort",
+      "locale": "zh-TW",
+      "disposition": "refinement",
+      "target": "通關約需{values}小時",
+      "targetSha256": "784d6c5e1c076a9708b5c791ae8886c74f35c2550a7cfc4ff7e1b0bfe5bc8b0b",
+      "confidence": "moderate"
+    },
+    {
+      "sourceIdPosition": 1357,
+      "id": "components.GameDiscovery.request",
+      "locale": "id",
+      "disposition": "refinement",
+      "target": "Buka untuk mengajukan permintaan",
+      "targetSha256": "2210818158924e2aafe815cd6c9a53ac57bd3dd28ab631fa8d86f0f213ca0919",
+      "confidence": "moderate"
+    },
+    {
+      "sourceIdPosition": 1357,
+      "id": "components.GameDiscovery.request",
+      "locale": "pt-BR",
+      "disposition": "refinement",
+      "target": "Acessar para solicitar",
+      "targetSha256": "27e4a7830666b9371970876a6f20024b4aa26227f08c3783425f91ef62ffc5df",
+      "confidence": "moderate"
+    },
+    {
+      "sourceIdPosition": 1357,
+      "id": "components.GameDiscovery.request",
+      "locale": "vi",
+      "disposition": "refinement",
+      "target": "Mở để gửi yêu cầu",
+      "targetSha256": "ab7dba43eb5f64704f4e9839adde3a0cdd455b27f9564eba615fb6050a35b62f",
+      "confidence": "moderate"
+    },
+    {
+      "sourceIdPosition": 1358,
+      "id": "components.GameDiscovery.results",
+      "locale": "hi",
+      "disposition": "missed-issue",
+      "target": "परिणाम",
+      "targetSha256": "7eec2627c6dda31092ae8b623404bffba8fd10c7ad550c122f2da7a784053d71",
+      "confidence": "moderate"
+    },
+    {
+      "sourceIdPosition": 1358,
+      "id": "components.GameDiscovery.results",
+      "locale": "id",
+      "disposition": "refinement",
+      "target": "Hasil Pencarian",
+      "targetSha256": "a4cd7b136b3082b1c51dc61a4164652490dcb796c3a2644499bfec5c7a2e5810",
+      "confidence": "moderate"
+    },
+    {
+      "sourceIdPosition": 1358,
+      "id": "components.GameDiscovery.results",
+      "locale": "zh-TW",
+      "disposition": "refinement",
+      "target": "搜尋結果",
+      "targetSha256": "0cbcf954d0cc8783538cca691d94cd0a5a38588cfa35349916d4529e96a7b3b1",
+      "confidence": "moderate"
+    },
+    {
+      "sourceIdPosition": 1359,
+      "id": "components.GameDiscovery.run",
+      "locale": "hi",
+      "disposition": "missed-issue",
+      "target": "परिणाम दिखाएँ",
+      "targetSha256": "49c0b3bd6a07c99d796d87433916748652c50f64a4134ed356ead27b1890633c",
+      "confidence": "moderate"
+    },
+    {
+      "sourceIdPosition": 1359,
+      "id": "components.GameDiscovery.run",
+      "locale": "zh-TW",
+      "disposition": "refinement",
+      "target": "顯示搜尋結果",
+      "targetSha256": "66af73c6b0df3a65cd0bde60bf24d4a8a8640f0bdc2d54ca570b96048319215c",
+      "confidence": "moderate"
+    },
+    {
+      "sourceIdPosition": 1374,
+      "id": "components.GameLibrary.addGameTitle",
+      "locale": "hi",
+      "disposition": "refinement",
+      "target": "मेरे खेलों में एक खेल जोड़ें",
+      "targetSha256": "08176d0c3111fc46d483f5e116742d82d11a5fa54f8b646898e0a86786e05bc6",
+      "confidence": "moderate"
+    },
+    {
+      "sourceIdPosition": 1377,
+      "id": "components.GameLibrary.allStatuses",
+      "locale": "ko",
+      "disposition": "refinement",
+      "target": "모든 진행 상황",
+      "targetSha256": "f184fd110b32e378f4a33a16d5d3be9266e8c7e71ee7fff5fea36ccd54012946",
+      "confidence": "moderate"
+    },
+    {
+      "sourceIdPosition": 1382,
+      "id": "components.GameLibrary.catalogMatchHelp",
+      "locale": "pt-BR",
+      "disposition": "refinement",
+      "target": "Associar uma entrada do catálogo vincula os jogos em comum entre os membros da família ao fluxo de solicitações existente. O Steam nunca adivinha correspondências.",
+      "targetSha256": "65bb0838ee560c88dd0b32cd5b716790e6c6fd7d8f2e38c9627d97a281eb521e",
+      "confidence": "moderate"
+    },
+    {
+      "sourceIdPosition": 1383,
+      "id": "components.GameLibrary.catalogSearch",
+      "locale": "ko",
+      "disposition": "missed-issue",
+      "target": "PC 게임 카탈로그 검색",
+      "targetSha256": "3ff3fd8cb787cb920b211c6fd6f3c601f4d29103bd9219a69906344c2972dd58",
+      "confidence": "high"
+    },
+    {
+      "sourceIdPosition": 1384,
+      "id": "components.GameLibrary.catalogSearchError",
+      "locale": "ko",
+      "disposition": "refinement",
+      "target": "소프트웨어 카탈로그를 검색할 수 없습니다.",
+      "targetSha256": "e37102af0a02ff54b6319b53f005f33326e3a27cbbbddfc542fdf3c19dbc5b6f",
+      "confidence": "moderate"
+    },
+    {
+      "sourceIdPosition": 1387,
+      "id": "components.GameLibrary.combinedPlaytimeHoursMinutes",
+      "locale": "ja",
+      "disposition": "refinement",
+      "target": "世帯の合計プレイ時間 {hours}時間{minutes}分",
+      "targetSha256": "557d088d097b4646851f783ba2e2a2deb7ac9034b47e83ab669a9060542ddd18",
+      "confidence": "moderate"
+    }
+  ],
+  "sourceTargetHashReattestation": "All 1,038 source/current strings matched the frozen input and exact pinned catalog JSON; SHA-256 values matched the primary ledger.",
+  "callerReattestation": "Every cited caller file blob, full-file SHA-256, line number, exact line text, and line SHA-256 was rechecked from the alternate worktree at the pinned head.",
+  "placeholderMarkupProtectedParity": "All final targets preserve source placeholder names, markup tags, and recorded protected-literal occurrences; zero mismatches.",
+  "preservedPriorSpanish": {
+    "count": 5,
+    "reconsidered": false,
+    "copiedVerbatimFrom": "/mnt/disks/scratch/task-scratch/seerrng-pr418-window-1300-1399-primary-20261102/preserved-prior-routing-rows.jsonl",
+    "sha256": "a8067a5b0fdca2c7f2f10e6c984797bf9af3326c4a47061d80df5a4558ab4d98"
+  },
+  "validationNotes": [
+    "The checked-in verify_inputs.py points to the removed original W1300 worktree; its evidence was re-attested directly against the alternate worktree at the exact same head/tree."
+  ],
+  "blockers": [],
+  "nativeSpeakerReviewRequired": true
+}

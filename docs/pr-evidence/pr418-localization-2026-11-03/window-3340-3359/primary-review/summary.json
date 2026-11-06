@@ -1,0 +1,44 @@
+{
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "window": "W3340-W3359",
+  "exactHead": "266d8fff4beb56eab17c9de0f6560c619577e3de",
+  "exactTree": "5da8f5e38b95b4287821b603c4686fe866b83760",
+  "inputManifestSha256": "040efb880c1355bf8ab10d555afe606e41771f7ed98ea4950a0e0fa1d6ddb4d2",
+  "sourceCount": 20,
+  "localeCount": 12,
+  "cellCount": 240,
+  "callerContextRows": 55,
+  "callerHoldIds": [
+    "components.Requests.manageRequests"
+  ],
+  "callerHoldCells": 12,
+  "dispositions": {
+    "accept-current": 218,
+    "correction": 5,
+    "hold-context": 12,
+    "refinement": 5
+  },
+  "changesByLocale": {
+    "ar": 1,
+    "de": 1,
+    "es": 1,
+    "hi": 1,
+    "ja": 2,
+    "ko": 3,
+    "vi": 1
+  },
+  "changedCells": 10,
+  "placeholderMismatches": 0,
+  "markupMismatches": 0,
+  "numericTokenMismatches": 0,
+  "protectedLiteralMismatches": 0,
+  "reviewProtectedTermMismatches": 0,
+  "allTargetHashesPinned": true,
+  "orderedCatalogKeySequencesMatch": false,
+  "catalogKeyCount": 9494,
+  "catalogCountIncludingEnglish": 13,
+  "nativeSpeakerApproval": false,
+  "headedBrowserAcceptance": false,
+  "reviewScope": "machine-assisted candidate-free primary semantic review; not qualified native-speaker approval"
+}

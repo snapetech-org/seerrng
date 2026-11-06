@@ -1,0 +1,25 @@
+{
+  "window": "W3720-W3739",
+  "range": [
+    3720,
+    3739
+  ],
+  "sourceOrderSha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+  "candidateFreeManifestSha256": "c47eae81b8ff26211ae4bf30966d4ececf726a8eb3eb6008965a086a225192fc",
+  "applicationPlanSha256": "32eb9f069dabd7c4a93e8ed5dcac9347b1fd81eec68ed9afe7e2bf1a45bdf027",
+  "applicationReadbackSha256": "66283c2f7d82c6f6ff123b5d1c73151861f753d3698189ef324874ddc9a7f4f7",
+  "applicationVerificationSha256": "57b1b8a0bec2f440c564553c75113d888d5f1490c15e7792fe59fb9dda66b6ce",
+  "applicationRows": 240,
+  "reattestedRows": 240,
+  "priorDispositionCounts": {
+    "correction": 34,
+    "refinement": 16,
+    "accept-current": 190
+  },
+  "appliedUpdateCount": 50,
+  "previousHead": "1ca6ec2d5a0e9ef8000c69997e75648a8ccaf06e",
+  "previousTree": "6a51f3fb1d1f65c12bfe82bf47834626aa364488",
+  "currentHead": "8d0273ebc5eb51e9d5fee0ac9a0eb022eeed06c4",
+  "currentTree": "163056b8255034e3ee3a99f25b63e190c88278ee",
+  "applicationHoldReadbackSha256": "89a64fa8fb01f03f753963aa6461d4a79caf1cc09c564e21270f3a833da20f8a"
+}

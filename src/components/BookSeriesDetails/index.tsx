@@ -47,6 +47,7 @@ import useSWR from 'swr';
 
 const messages = defineMessages('components.BookSeriesDetails', {
   collection: 'Collection',
+  collectionTitle: '{title} Collection',
   requestCollection: 'Request Collection',
   mediaType: 'Media Type',
   allBooks: 'All Books',
@@ -216,7 +217,11 @@ const BookSeriesDetails = ({ series }: { series?: BookSeriesDetailsType }) => {
 
   return (
     <>
-      <PageTitle title={`${data.title} Collection`} />
+      <PageTitle
+        title={intl.formatMessage(messages.collectionTitle, {
+          title: data.title,
+        })}
+      />
       {showRequest && (
         <BulkRequestModal
           show={showRequest}
@@ -355,7 +360,7 @@ const BookSeriesDetails = ({ series }: { series?: BookSeriesDetailsType }) => {
           <section className="card-spacing-before">
             <h2 className="page-heading">
               {intl.formatMessage(messages.collection)}
-              <span className="refreshed-detail-text-muted ml-2 text-sm">
+              <span className="refreshed-detail-text-muted ms-2 text-sm">
                 ({visibleBooks.length})
               </span>
             </h2>

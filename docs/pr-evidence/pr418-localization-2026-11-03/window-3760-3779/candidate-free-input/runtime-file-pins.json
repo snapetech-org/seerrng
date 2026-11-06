@@ -1,0 +1,34 @@
+{
+  "files": [
+    {
+      "byteCount": 5394,
+      "gitBlob": "d699bd347f4fbad07bce14a743c884800d9d4a84",
+      "lineCount": 45,
+      "path": "config/i18n/locales.json",
+      "sha256": "6e8ea070b441db9700325cf838d440dbbef1d1e5331e28332ed6c15cb789376a"
+    },
+    {
+      "byteCount": 17189,
+      "gitBlob": "9668a27d1c3b2e637cd07eed6da8f7d13f865ead",
+      "lineCount": 462,
+      "path": "src/components/Settings/LazyLibrarianModal/index.tsx",
+      "sha256": "a4ba7c62f7de2586e37aa9f6e69398166495fcf46a3bb906e238f0eb8cac1894"
+    },
+    {
+      "byteCount": 30762,
+      "gitBlob": "3de4516f3f8f0323496eea6e678ca4fe31f90fee",
+      "lineCount": 787,
+      "path": "src/components/Settings/LidarrModal/index.tsx",
+      "sha256": "2f22b87731d41f12e469334d94306327139dc3d67036c8cb429cb68c1cc43460"
+    },
+    {
+      "byteCount": 109940,
+      "gitBlob": "7bf5662ffc7338c47de12413a8b55ffc1137c93f",
+      "lineCount": 2805,
+      "path": "src/components/Settings/SettingsServices.tsx",
+      "sha256": "43e88ea339ecdf33b596c04e4a20097e67a84dffd54607a8068fbb7dd551d5f9"
+    }
+  ],
+  "head": "d317a07ea0e5456b6d4660470c57d1f205cd0587",
+  "tree": "c1383dfb6e6fd4e926f9c89d4ec6b7e8ea7d6008"
+}

@@ -653,7 +653,10 @@
 
 :is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
   .media-detail-card
-  .detail-summary-card:has([data-testid='media-details-poster']) {
+  .detail-summary-card:has(
+    [data-testid='media-details-poster'],
+    .detail-card-poster
+  ) {
   grid-template-columns: minmax(0, 1fr);
   justify-items: center;
   gap: 1rem;
@@ -761,8 +764,13 @@
       [data-interface-theme='seerrOrig']
     )
     .media-detail-card
-    .detail-summary-card:has([data-testid='media-details-poster']) {
-    grid-template-columns: minmax(12rem, 0.34fr) minmax(0, 1fr);
+    .detail-summary-card:has(
+      [data-testid='media-details-poster'],
+      .detail-card-poster
+    ) {
+    grid-template-columns:
+      var(--movie-summary-selection-track,) minmax(12rem, 0.34fr)
+      minmax(0, 1fr);
     align-items: end;
     justify-items: stretch;
     gap: 1.5rem;
@@ -773,8 +781,11 @@
       :root[data-interface-theme='seerrOrig'],
       [data-interface-theme='seerrOrig']
     )
-    .detail-summary-card:has([data-testid='media-details-poster'])
-    > :not([data-testid='media-details-poster']) {
+    .detail-summary-card:has(
+      [data-testid='media-details-poster'],
+      .detail-card-poster
+    )
+    > :not([data-testid='media-details-poster'], .detail-card-poster) {
     text-align: start;
   }
 

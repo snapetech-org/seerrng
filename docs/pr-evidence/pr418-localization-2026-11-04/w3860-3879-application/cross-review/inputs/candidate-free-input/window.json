@@ -1,0 +1,67 @@
+{
+  "baseRef": "main",
+  "baseSha": "fa40534ccced75bde1125c14760514fcd5d7de4d",
+  "baselineTokenDiagnostics": {
+    "markupTags": 0,
+    "numericTokens": 0,
+    "placeholders": 0,
+    "protectedLiterals": 2
+  },
+  "callerReferenceCount": 21,
+  "callerlessSourcePositions": [],
+  "catalogKeyCount": 9494,
+  "head": "12bb562dc0eb27165cc2c6fbd1ff2628d5f8574e",
+  "localeInsertionOrderDifferencesFromEnglish": [
+    "zh-Hans",
+    "ja",
+    "ko",
+    "zh-Hant",
+    "vi"
+  ],
+  "localeOrder": [
+    "es",
+    "zh-Hans",
+    "hi",
+    "de",
+    "ja",
+    "fr",
+    "pt-BR",
+    "ar",
+    "ko",
+    "zh-Hant",
+    "vi",
+    "id"
+  ],
+  "nextBoundary": {
+    "hashOnly": true,
+    "kind": "next-window-boundary",
+    "position": 3880,
+    "sourceIdSha256": "3a4862755ccebe767bed41464426fe854d2f4ba55c4e8b3a11bfc9e1896c2103",
+    "sourceTextSha256": "ca6a3cee6c9e59c560530ab5a4dc097287b18b173ad3effc9aeae872fdf814c3"
+  },
+  "nextBoundaryPosition": 3880,
+  "previousCompletedEndPosition": 3859,
+  "previousCompletedWindow": "W3840-W3859",
+  "priorAppliedTargetHashCount": 100,
+  "priorAppliedTargetHashMismatches": 0,
+  "priorCatalogApplicationCellsReattested": 65,
+  "priorHoldCount": 14,
+  "priorHoldHashMismatches": 0,
+  "priorSelectedSourceIdOrSourceTextHashMismatches": 0,
+  "priorSelectedSourceIdsReattested": 3860,
+  "pullRequest": 418,
+  "range": [
+    3860,
+    3879
+  ],
+  "repository": "snapetech-org/SeerrNG",
+  "selectedSourceCount": 20,
+  "selectedSourceIdOrderSha256": "71d49f84b27cdbe6d4f46c2491d418af0435b496ef0e0bf2d6ab005dbebeeff1",
+  "sourceIdOrderSha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+  "sourceOrderCount": 9494,
+  "sourceOrderHashesFull": true,
+  "sourceRecordOrderSha256": "591c6d9227ed09b95780dfdcc69267c1fa4536bf7bc33ecd5259230bba68ce02",
+  "sourceTextOrderSha256": "87bfb226c00566e4872459f1e1f44522158c34a946087b42d1e57fdf18904228",
+  "tree": "b288494aa5a0842affc4e900d6ccb6b57d99c493",
+  "window": "W3860-W3879"
+}

@@ -13,6 +13,7 @@ import {
   ExclamationTriangleIcon,
 } from '@heroicons/react/24/solid';
 import type { ReadarrSettings } from '@server/lib/settings';
+import { parseBinderyUserMappings } from '@server/utils/binderyUserMappings';
 import axios from 'axios';
 import { Formik } from 'formik';
 import {
@@ -33,7 +34,7 @@ const messages = defineMessages('components.Settings.BinderyModal', {
   ownerNote:
     'This Bindery version does not advertise per-user requests. SeerrNG will add approved books through the API key, so Bindery records the service account as owner.',
   ownerFeature:
-    'Per-user requests are supported. SeerrNG found {accountCount} Bindery accounts. It matches usernames, Plex or Jellyfin usernames, and email addresses without regard to case. Enable Auto-approve requests for each account in Bindery if acquisition should start without a second approval. For private user libraries, also enable BINDERY_ENFORCE_TENANCY in Bindery.',
+    'Per-user requests are supported. SeerrNG found {accountCount} Bindery accounts. Configure requester account mappings below. Enable Auto-approve requests for each mapped account in Bindery if acquisition should start without a second approval. For private user libraries, also enable BINDERY_ENFORCE_TENANCY in Bindery.',
   testSuccess: 'Bindery connection established.',
   testFailure: 'Could not connect to Bindery. Check the address and API key.',
   saveFailure: 'Could not save the Bindery connection.',
@@ -60,6 +61,11 @@ const messages = defineMessages('components.Settings.BinderyModal', {
   nameRequired: 'Enter a service name.',
   invalidUrl: 'Enter a valid external URL.',
   keepExisting: 'Keep existing',
+  requesterMappings: 'Requester Account Mappings',
+  requesterMappingsHelp:
+    'Map SeerrNG user IDs to Bindery user IDs as JSON. Required for requester-owned requests; display names and email addresses are never used to choose an account.',
+  requesterMappingsInvalid:
+    'Enter a JSON object mapping positive SeerrNG user IDs to positive Bindery user IDs.',
 });
 
 interface BinderyTestResponse {
@@ -111,6 +117,19 @@ const BinderyModal = ({ settings, onClose, onSave }: BinderyModalProps) => {
       'external-url',
       intl.formatMessage(messages.invalidUrl),
       isValidURL
+    ),
+    binderyUserMappings: Yup.string().test(
+      'requester-mappings',
+      intl.formatMessage(messages.requesterMappingsInvalid),
+      (value) => {
+        try {
+          return !(
+            'error' in parseBinderyUserMappings(JSON.parse(value || '{}'))
+          );
+        } catch {
+          return false;
+        }
+      }
     ),
     serviceType: Yup.mixed<'ebook' | 'audiobook' | 'both'>().oneOf([
       'ebook',
@@ -182,6 +201,11 @@ const BinderyModal = ({ settings, onClose, onSave }: BinderyModalProps) => {
     <Transition as="div" appear show>
       <Formik
         initialValues={{
+          binderyUserMappings: JSON.stringify(
+            settings?.binderyUserMappings ?? {},
+            null,
+            2
+          ),
           name: settings?.name ?? 'Bindery',
           hostname: settings?.hostname ?? '',
           port: settings?.port ?? 8787,
@@ -195,7 +219,12 @@ const BinderyModal = ({ settings, onClose, onSave }: BinderyModalProps) => {
         }}
         validationSchema={schema}
         onSubmit={async (values) => {
+          const mappings = parseBinderyUserMappings(
+            JSON.parse(values.binderyUserMappings || '{}')
+          );
+          if ('error' in mappings) return;
           const submission: Omit<ReadarrSettings, 'id'> = {
+            binderyUserMappings: mappings.value,
             backend: 'bindery',
             name: values.name.trim(),
             hostname: values.hostname.trim(),
@@ -277,7 +306,8 @@ const BinderyModal = ({ settings, onClose, onSave }: BinderyModalProps) => {
                   <p className="flex items-center gap-2 font-semibold">
                     <CheckCircleIcon className="h-5 w-5 text-green-400" />
                     {intl.formatMessage(messages.version)}:{' '}
-                    {testResult.system.version ?? 'unknown'}
+                    {testResult.system.version ??
+                      intl.formatMessage(globalMessages.unknown)}
                   </p>
                   <p className="mt-2 flex items-start gap-2">
                     {testResult.features.requestsForUser ? (
@@ -414,6 +444,31 @@ const BinderyModal = ({ settings, onClose, onSave }: BinderyModalProps) => {
                   <div className="error">{errors.baseUrl}</div>
                 )}
               </div>
+            </div>
+            <div className="form-row">
+              <label className="text-label" htmlFor="binderyUserMappings">
+                {intl.formatMessage(messages.requesterMappings)}
+              </label>
+              <div className="form-input-area">
+                <SettingsField
+                  as="textarea"
+                  id="binderyUserMappings"
+                  name="binderyUserMappings"
+                  rows={3}
+                  aria-describedby="bindery-requester-mappings-help"
+                />
+                {touched.binderyUserMappings &&
+                  typeof errors.binderyUserMappings === 'string' && (
+                    <div className="error">{errors.binderyUserMappings}</div>
+                  )}
+              </div>
+              <p
+                id="bindery-requester-mappings-help"
+                className="settings-form-row-description"
+              >
+                {intl.formatMessage(messages.requesterMappingsHelp)}{' '}
+                <code>{'{"2": 7}'}</code>
+              </p>
             </div>
             <div className="form-row">
               <label className="text-label" htmlFor="externalUrl">

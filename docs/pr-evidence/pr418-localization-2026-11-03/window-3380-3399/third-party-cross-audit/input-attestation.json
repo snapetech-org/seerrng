@@ -1,0 +1,41 @@
+{
+  "artifact": "SeerrNG PR #418 W3380-W3399 third-party cross-audit input attestation",
+  "candidateFreeInputChecksumsVerified": 6,
+  "candidateFreeChecksumListSha256": "c02b106002378057e7c3c43fe927632b5ab6762b744785e3509601a9435e8dc4",
+  "candidateFreeWindowSha256": "a9eb1a049de2233cf3f3c0d2d3d48abd6d27558e01927e1c58630a8b470d9ed0",
+  "candidateFreeReviewInputSha256": "ddf0f11c3d98236bf8f4e61013e1c21558e81039e31f19c7777df055155c0873",
+  "candidateFreeCallerContextsSha256": "185e2159757c129454cbea02f049f4d2aa823efc4cc9fa018f7312be7cf61698",
+  "primaryChecksumListSha256": "cabb275e6a4a37a7638ae1ca7fe54c0bfcffbfa1af91a8623c789006741e759c",
+  "primaryDecisionsSha256": "50305789e2e0f6bf7cc7d5513674e4d5720ae1ead9552e707c75f2a1356f2ac0",
+  "primarySummaryHead": "4d7de2c41b0e6df6cd0b7f7075c9cddd1c6ce160",
+  "primarySummaryTree": "6fba2d5985869b4563955b2c338a93e82efb4b22",
+  "blindChecksumListSha256": "2e6bd1d5d84b7cf8e7683c7f13157ac4b3987b14876caa90e66b24cb6794d604",
+  "blindLedgerSha256": "55f51a336fa5e9465aa26ec2018429e686fe16871767d764eaa210e9ae3ccb51",
+  "blindSummaryHead": "4d7de2c41b0e6df6cd0b7f7075c9cddd1c6ce160",
+  "blindSummaryTree": "6fba2d5985869b4563955b2c338a93e82efb4b22",
+  "livePR": {
+    "baseRefName": "main",
+    "headRefName": "codex/seerrng-localization-overhaul-20261028",
+    "headRefOid": "4d7de2c41b0e6df6cd0b7f7075c9cddd1c6ce160",
+    "isDraft": true,
+    "number": 418,
+    "state": "OPEN"
+  },
+  "remoteBranchHead": "4d7de2c41b0e6df6cd0b7f7075c9cddd1c6ce160",
+  "pinnedHead": "4d7de2c41b0e6df6cd0b7f7075c9cddd1c6ce160",
+  "pinnedTree": "6fba2d5985869b4563955b2c338a93e82efb4b22",
+  "rows": {
+    "input": 240,
+    "primary": 240,
+    "blind": 240,
+    "crossAudit": 240,
+    "uniqueCells": 240,
+    "sourceAndCurrentPinsMatched": 240
+  },
+  "candidateIntegrity": {
+    "primaryHashesVerified": 11,
+    "blindHashesVerified": 10,
+    "placeholderMarkupProtectedFailures": 0
+  },
+  "reviewBoundary": "Only the candidate-free packet, supplied primary decisions, supplied sealed blind packet, GitHub PR metadata, and remote branch ref were read. No repository contents or PR body were opened."
+}

@@ -1,0 +1,196 @@
+{
+  "schemaVersion": 1,
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "window": "W3540-W3559",
+  "range": [
+    3540,
+    3559
+  ],
+  "previousBoundary": {
+    "position": 3539,
+    "sourceId": "components.Selector.searchStatus",
+    "source": "Select status...",
+    "sourceSha256": "19a6960ca2200e75be3f1719736a319201fef144873f582c1f3cbd2975308dcc",
+    "sourceIdSha256": "90017dd2c5aa361903083f8b2dbef9aaf8d79ed0f4ba90b8f2c32e0cef87825f",
+    "sourceKey": "searchStatus",
+    "namespace": "components.Selector",
+    "boundaryKind": "previous",
+    "head": "f15ebead8af7bd09d81c4ea61e8cd3351a2ea66d",
+    "tree": "3ba2579c326f8dbac943ba43df77ddd5747a85a1"
+  },
+  "nextBoundary": {
+    "position": 3560,
+    "sourceId": "components.Settings.AudiobookshelfModal.name",
+    "source": "Connection name",
+    "sourceSha256": "686d4d5d8ecd1a794780995589b9ff883f601e3b208c45979ac509ce7d7bcdd1",
+    "sourceIdSha256": "b5630c79e3d0604f70eddbebc83deb073cc0e9285799920c2a06f37a8663f945",
+    "sourceKey": "name",
+    "namespace": "components.Settings.AudiobookshelfModal",
+    "boundaryKind": "next",
+    "head": "f15ebead8af7bd09d81c4ea61e8cd3351a2ea66d",
+    "tree": "3ba2579c326f8dbac943ba43df77ddd5747a85a1"
+  },
+  "head": "f15ebead8af7bd09d81c4ea61e8cd3351a2ea66d",
+  "tree": "3ba2579c326f8dbac943ba43df77ddd5747a85a1",
+  "baseRef": "main",
+  "baseSha": "221d8e0d542802da7529cd272c928cc747677e5c",
+  "sourceOrderCount": 9494,
+  "sourceOrderSha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+  "sourceOrderHashDerivation": "Inherited only after verifying the English catalog Git blob is unchanged from the W3520-W3539 packet.",
+  "englishCatalogGitBlob": "12e04a118c30b71b3714291adeaf9fdb2735cee4",
+  "remainingAtWindowStart": 5954,
+  "remainingAfterWindow": 5934,
+  "tail": {
+    "position": 9493,
+    "sourceId": "utils.oidc.oidcUnauthorized",
+    "source": "You do not have permission to sign in with {provider}.",
+    "sourceSha256": "7bd4a7ff8e1e269809b859adb6b9794334613437e4ab733e58496926542cabc9",
+    "sourceIdSha256": "5422247f67a57f1dab8789d0487585b8210c3321c5eef012a53b77753d865b0a"
+  },
+  "sourceRecordCount": 20,
+  "sourceOrderBoundaryRecordCount": 22,
+  "cellCount": 240,
+  "localeOrder": [
+    "es",
+    "zh_Hans",
+    "hi",
+    "de",
+    "ja",
+    "fr",
+    "pt_BR",
+    "ar",
+    "ko",
+    "zh_Hant",
+    "vi",
+    "id"
+  ],
+  "localeInfo": [
+    {
+      "catalogKey": "es",
+      "tag": "es",
+      "nativeName": "Español",
+      "direction": "ltr",
+      "clientFile": "es.json",
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "catalogKey": "zh_Hans",
+      "tag": "zh-CN",
+      "nativeName": "简体中文",
+      "direction": "ltr",
+      "clientFile": "zh_Hans.json",
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "catalogKey": "hi",
+      "tag": "hi",
+      "nativeName": "हिन्दी",
+      "direction": "ltr",
+      "clientFile": "hi.json",
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "catalogKey": "de",
+      "tag": "de",
+      "nativeName": "Deutsch",
+      "direction": "ltr",
+      "clientFile": "de.json",
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "catalogKey": "ja",
+      "tag": "ja",
+      "nativeName": "日本語",
+      "direction": "ltr",
+      "clientFile": "ja.json",
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "catalogKey": "fr",
+      "tag": "fr",
+      "nativeName": "Français",
+      "direction": "ltr",
+      "clientFile": "fr.json",
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "catalogKey": "pt_BR",
+      "tag": "pt-BR",
+      "nativeName": "Português (Brasil)",
+      "direction": "ltr",
+      "clientFile": "pt_BR.json",
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "catalogKey": "ar",
+      "tag": "ar",
+      "nativeName": "العربية",
+      "direction": "rtl",
+      "clientFile": "ar.json",
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "catalogKey": "ko",
+      "tag": "ko",
+      "nativeName": "한국어",
+      "direction": "ltr",
+      "clientFile": "ko.json",
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "catalogKey": "zh_Hant",
+      "tag": "zh-TW",
+      "nativeName": "繁體中文",
+      "direction": "ltr",
+      "clientFile": "zh_Hant.json",
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "catalogKey": "vi",
+      "tag": "vi",
+      "nativeName": "Tiếng Việt",
+      "direction": "ltr",
+      "clientFile": "vi.json",
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "catalogKey": "id",
+      "tag": "id",
+      "nativeName": "Bahasa Indonesia",
+      "direction": "ltr",
+      "clientFile": "id.json",
+      "reviewStatus": "unreviewed"
+    }
+  ],
+  "catalogKeySetEqualsEnglish": true,
+  "catalogOrderedKeyHashes": {
+    "en": "47d40a21145f2f198fadaa29baeef5461718c4b6365d564af60ee015f18f1974",
+    "es": "47d40a21145f2f198fadaa29baeef5461718c4b6365d564af60ee015f18f1974",
+    "zh_Hans": "35faf7107f1be3900172b7c08ac7558b51f31d63b3b6c57eebe7710e8a81ca33",
+    "hi": "47d40a21145f2f198fadaa29baeef5461718c4b6365d564af60ee015f18f1974",
+    "de": "47d40a21145f2f198fadaa29baeef5461718c4b6365d564af60ee015f18f1974",
+    "ja": "35faf7107f1be3900172b7c08ac7558b51f31d63b3b6c57eebe7710e8a81ca33",
+    "fr": "47d40a21145f2f198fadaa29baeef5461718c4b6365d564af60ee015f18f1974",
+    "pt_BR": "47d40a21145f2f198fadaa29baeef5461718c4b6365d564af60ee015f18f1974",
+    "ar": "47d40a21145f2f198fadaa29baeef5461718c4b6365d564af60ee015f18f1974",
+    "ko": "35faf7107f1be3900172b7c08ac7558b51f31d63b3b6c57eebe7710e8a81ca33",
+    "zh_Hant": "35faf7107f1be3900172b7c08ac7558b51f31d63b3b6c57eebe7710e8a81ca33",
+    "vi": "35faf7107f1be3900172b7c08ac7558b51f31d63b3b6c57eebe7710e8a81ca33",
+    "id": "47d40a21145f2f198fadaa29baeef5461718c4b6365d564af60ee015f18f1974"
+  },
+  "placeholderMismatchCount": 0,
+  "markupMismatchCount": 0,
+  "callerlessSourcePositions": [],
+  "priorWindow": {
+    "window": "W3520-W3539",
+    "endPosition": 3539,
+    "primaryDispositionCounts": {
+      "accept-current": 216,
+      "correction": 20,
+      "refinement": 4
+    },
+    "callerlessHolds": 0,
+    "checksumVerification": "candidate-free and primary packet checksums verified from pinned live PR tree"
+  }
+}

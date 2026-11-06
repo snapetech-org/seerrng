@@ -1,0 +1,56 @@
+{
+  "queriedAtUtc": "2026-11-02T21:45:47+00:00",
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "pullRequestSnapshot": {
+    "baseRefName": "main",
+    "baseRefOid": "221d8e0d542802da7529cd272c928cc747677e5c",
+    "headRefName": "codex/seerrng-localization-overhaul-20261028",
+    "headRefOid": "9242898e23f7f25d515d10b5b0b51df322e395fb",
+    "isDraft": true,
+    "state": "OPEN",
+    "updatedAt": "2026-11-02T21:07:35Z",
+    "url": "https://github.com/snapetech-org/seerrng/pull/418"
+  },
+  "expected": {
+    "baseCommit": "221d8e0d542802da7529cd272c928cc747677e5c",
+    "headCommit": "9242898e23f7f25d515d10b5b0b51df322e395fb",
+    "headTree": "06cfd94ee611684c33e9e78af9d8bb60a2e98825",
+    "headBranch": "codex/seerrng-localization-overhaul-20261028"
+  },
+  "localWorktree": {
+    "path": "/home/keith/Documents/code/task-worktrees/localization-20261102-seerrng",
+    "head": "9242898e23f7f25d515d10b5b0b51df322e395fb",
+    "tree": "06cfd94ee611684c33e9e78af9d8bb60a2e98825",
+    "branch": "codex/seerrng-localization-overhaul-20261028",
+    "porcelainStatus": ""
+  },
+  "canonicalGithubRemote": {
+    "remoteName": "github",
+    "branchRef": "refs/heads/codex/seerrng-localization-overhaul-20261028",
+    "branchHead": "9242898e23f7f25d515d10b5b0b51df322e395fb",
+    "apiRefHead": "9242898e23f7f25d515d10b5b0b51df322e395fb"
+  },
+  "headTreeFromGithubCommitApi": "06cfd94ee611684c33e9e78af9d8bb60a2e98825",
+  "baseTreeFromGithubCommitApi": "4e971fcd29e03f483167e1a2561b33e256d5de3e",
+  "localOriginMirrorRef": {
+    "remoteName": "origin",
+    "branchHead": "422072d585074bdd7f8dd3046cbacede69203d6d",
+    "isCanonical": false,
+    "note": "This worktree maps origin to a local bare mirror. Canonical PR/head re-attestation uses the github remote and GitHub API."
+  },
+  "matchesExpected": {
+    "prOpen": true,
+    "prDraft": true,
+    "baseCommit": true,
+    "headCommit": true,
+    "headBranch": true,
+    "localHead": true,
+    "localTree": true,
+    "localBranch": true,
+    "worktreeClean": true,
+    "githubRemoteBranch": true,
+    "githubApiRef": true,
+    "githubHeadTree": true
+  }
+}

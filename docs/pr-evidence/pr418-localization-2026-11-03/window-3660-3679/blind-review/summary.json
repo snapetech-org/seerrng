@@ -1,0 +1,50 @@
+{
+  "ambiguousCallerSourcePositions": [],
+  "browserReview": "not performed",
+  "callerlessSourcePositions": [],
+  "candidateFreeCurrentTargetSampleInspected": true,
+  "candidateFreeInputVerifier": "not provided; SHA256SUMS verified and blind verifier independently checks used input pins and packet coverage",
+  "confidenceCounts": {
+    "moderate": 240
+  },
+  "head": "eb279fc80be656f379cd893642bf741ba0a24d85",
+  "localeCount": 12,
+  "nativeSpeakerApproval": "not obtained",
+  "primaryCandidatesOrDecisionsOpened": false,
+  "primaryReviewOpened": false,
+  "priorHoldCount": 12,
+  "priorHoldTargetTextIncluded": false,
+  "proposalCells": 240,
+  "pullRequest": 418,
+  "repository": "snapetech-org/seerrng",
+  "repositoryOrCatalogFilesEdited": false,
+  "result": "PASS",
+  "reviewDispositionCounts": {
+    "proposal": 240
+  },
+  "schemaVersion": 1,
+  "sourceCount": 20,
+  "strictlyBlindProposalCellCount": 239,
+  "targetExposureCell": {
+    "locale": "es",
+    "position": 3660
+  },
+  "targetExposureLimitedProposalCellCount": 1,
+  "testsBuildsCiReleaseTagOrMergeRun": false,
+  "tokenCoverage": {
+    "icuPluralCategoryMismatchCount": 0,
+    "icuSourceCellCount": 0,
+    "markupMismatchCount": 0,
+    "markupSourceCellCount": 0,
+    "numericSourceCellCount": 0,
+    "numericTokenMismatchCount": 0,
+    "placeholderCellCount": 84,
+    "placeholderInstanceCount": 96,
+    "placeholderMismatchCount": 0,
+    "protectedLiteralCellCount": 72,
+    "protectedLiteralInstanceCount": 84,
+    "protectedLiteralMismatchCount": 0
+  },
+  "tree": "85a73172719b38e99a4e74c0ef9a303164cb4fcb",
+  "window": "W3660-W3679"
+}

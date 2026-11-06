@@ -1,0 +1,2785 @@
+{
+  "candidateCount": 347,
+  "candidateTargets": [
+    {
+      "candidateTarget": "Solicitar automáticamente",
+      "candidateTargetHash": "fb9a94aabb3a56db6350ebb629515ffef9c63a9c669fceed75166f84b5814c35",
+      "disposition": "propose-correction",
+      "locale": "es",
+      "sourceId": "components.PermissionEdit.autorequest",
+      "sourcePosition": 2400
+    },
+    {
+      "candidateTarget": "स्वचालित अनुरोध",
+      "candidateTargetHash": "cf8409ef7b3145bdc8274594693a1d7176838a45afddd4ca173005d5c8b2c9e4",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.PermissionEdit.autorequest",
+      "sourcePosition": 2400
+    },
+    {
+      "candidateTarget": "Tự động gửi yêu cầu",
+      "candidateTargetHash": "99ac5923bf5e1f845d7e9b2bc4962facfec969dc66334ebba684a9d721a0d738",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.PermissionEdit.autorequest",
+      "sourcePosition": 2400
+    },
+    {
+      "candidateTarget": "Demande automatique de livres",
+      "candidateTargetHash": "49971c5cde14508db810fe0ed121fd951d1aaf46ed79f33479e539d4392770b8",
+      "disposition": "propose-correction",
+      "locale": "fr",
+      "sourceId": "components.PermissionEdit.autorequestBooks",
+      "sourcePosition": 2401
+    },
+    {
+      "candidateTarget": "स्वचालित पुस्तक अनुरोध",
+      "candidateTargetHash": "c657001c55abc202a24e2dd5c5c49456277e23e6e5e115050a4a5976eb1d6319",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.PermissionEdit.autorequestBooks",
+      "sourcePosition": 2401
+    },
+    {
+      "candidateTarget": "Permintaan Buku Otomatis",
+      "candidateTargetHash": "4a08f37031fcb40388c0bd53c7315837f30d80e746b2fc34d6e8de9eac154408",
+      "disposition": "propose-correction",
+      "locale": "id",
+      "sourceId": "components.PermissionEdit.autorequestBooks",
+      "sourcePosition": 2401
+    },
+    {
+      "candidateTarget": "書籍の自動リクエスト",
+      "candidateTargetHash": "cb7b6c84d54784cee171a76b4808910fa24b4c1b634e0a796a90e5300ce6e6e5",
+      "disposition": "propose-correction",
+      "locale": "ja",
+      "sourceId": "components.PermissionEdit.autorequestBooks",
+      "sourcePosition": 2401
+    },
+    {
+      "candidateTarget": "책 자동 요청",
+      "candidateTargetHash": "6f3c07514191e35ec883f8a24d8487752904127d5cba642a9338ab8826018bbb",
+      "disposition": "propose-correction",
+      "locale": "ko",
+      "sourceId": "components.PermissionEdit.autorequestBooks",
+      "sourcePosition": 2401
+    },
+    {
+      "candidateTarget": "Solicitar livros automaticamente",
+      "candidateTargetHash": "a7da2f41804484087cf484397d74876591bd279cb99f59c8e7f86641dfe9930b",
+      "disposition": "propose-correction",
+      "locale": "pt_BR",
+      "sourceId": "components.PermissionEdit.autorequestBooks",
+      "sourcePosition": 2401
+    },
+    {
+      "candidateTarget": "Tự động gửi yêu cầu sách",
+      "candidateTargetHash": "f11201138c2b6d051fae5c94f5284a230aa288c5aacbc0ea3e06b6febc5e43c5",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.PermissionEdit.autorequestBooks",
+      "sourcePosition": 2401
+    },
+    {
+      "candidateTarget": "自动请求书籍",
+      "candidateTargetHash": "28d1d0be6c3b4774f5a52f50d198107ed4da4dcb83053ba7cf043b07e4571378",
+      "disposition": "propose-correction",
+      "locale": "zh_Hans",
+      "sourceId": "components.PermissionEdit.autorequestBooks",
+      "sourcePosition": 2401
+    },
+    {
+      "candidateTarget": "自動請求書籍",
+      "candidateTargetHash": "995bf8d46098b781f4432e9b41864461aced0606132c0e860191cf73a4d6f313",
+      "disposition": "propose-correction",
+      "locale": "zh_Hant",
+      "sourceId": "components.PermissionEdit.autorequestBooks",
+      "sourcePosition": 2401
+    },
+    {
+      "candidateTarget": "منح الإذن بإرسال طلبات الكتب تلقائيًا عبر قوائم المشاهدة.",
+      "candidateTargetHash": "7ab7e8e7465a5db6c26c85bc5fe6e43bd59ebcfc8936a608c53f4fe5dd23cf2c",
+      "disposition": "propose-correction",
+      "locale": "ar",
+      "sourceId": "components.PermissionEdit.autorequestBooksDescription",
+      "sourcePosition": 2402
+    },
+    {
+      "candidateTarget": "वॉचलिस्ट के ज़रिए पुस्तक अनुरोध अपने आप भेजने की अनुमति दें।",
+      "candidateTargetHash": "0828b7c3024144619d7ef3de2ca0df1462742c69f2c6c7e86c64f8381c0d1078",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.PermissionEdit.autorequestBooksDescription",
+      "sourcePosition": 2402
+    },
+    {
+      "candidateTarget": "관심 목록을 통해 도서 요청을 자동으로 제출할 수 있는 권한을 부여합니다.",
+      "candidateTargetHash": "bb9e5de689600cb4495369b241ef20a0afaabe0f3b25410312a779b417ed51d3",
+      "disposition": "propose-correction",
+      "locale": "ko",
+      "sourceId": "components.PermissionEdit.autorequestBooksDescription",
+      "sourcePosition": 2402
+    },
+    {
+      "candidateTarget": "授予通过关注列表自动提交图书请求的权限。",
+      "candidateTargetHash": "4da8e44d6c5b6a5983929abcf865ce68345391101432694a28b674905b99ec35",
+      "disposition": "propose-correction",
+      "locale": "zh_Hans",
+      "sourceId": "components.PermissionEdit.autorequestBooksDescription",
+      "sourcePosition": 2402
+    },
+    {
+      "candidateTarget": "授權透過追蹤清單自動提交書籍請求。",
+      "candidateTargetHash": "bc6a80458343c35bdd74c6c6a9684e8e34f7979613e4b2e25c605dd21efd3dc0",
+      "disposition": "propose-correction",
+      "locale": "zh_Hant",
+      "sourceId": "components.PermissionEdit.autorequestBooksDescription",
+      "sourcePosition": 2402
+    },
+    {
+      "candidateTarget": "طلب القصص المصوّرة تلقائيًا",
+      "candidateTargetHash": "aa4800047dddbb1e649d548b68b1fe554af7e47ad1a10bb7e2a43fceed2fe7ec",
+      "disposition": "propose-correction",
+      "locale": "ar",
+      "sourceId": "components.PermissionEdit.autorequestComics",
+      "sourcePosition": 2403
+    },
+    {
+      "candidateTarget": "स्वचालित कॉमिक अनुरोध",
+      "candidateTargetHash": "d53a6f89b260b615cafcfb6559f106cdfa859891ffe6d0da776867b3410672b9",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.PermissionEdit.autorequestComics",
+      "sourcePosition": 2403
+    },
+    {
+      "candidateTarget": "Permintaan Komik Otomatis",
+      "candidateTargetHash": "9934057842fa5ca5653e5b07af0f3ddb165498146e1c2a21a82e9d68ba269b11",
+      "disposition": "propose-correction",
+      "locale": "id",
+      "sourceId": "components.PermissionEdit.autorequestComics",
+      "sourcePosition": 2403
+    },
+    {
+      "candidateTarget": "만화 자동 요청",
+      "candidateTargetHash": "ee1427bd34194aff5a2456e05dbcb07b013b4951811c67d395d1be25dd88f9e0",
+      "disposition": "propose-correction",
+      "locale": "ko",
+      "sourceId": "components.PermissionEdit.autorequestComics",
+      "sourcePosition": 2403
+    },
+    {
+      "candidateTarget": "Solicitar quadrinhos automaticamente",
+      "candidateTargetHash": "b293c3c430ee3f656a40895c183e051ba1438c8e1348d7da985c91c7256dceda",
+      "disposition": "propose-correction",
+      "locale": "pt_BR",
+      "sourceId": "components.PermissionEdit.autorequestComics",
+      "sourcePosition": 2403
+    },
+    {
+      "candidateTarget": "Tự động gửi yêu cầu truyện tranh",
+      "candidateTargetHash": "aa189aa67d3279a273414ac1932be72097647466fbd5393fc38065e82976b91f",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.PermissionEdit.autorequestComics",
+      "sourcePosition": 2403
+    },
+    {
+      "candidateTarget": "自動請求漫畫",
+      "candidateTargetHash": "abc821910caeaa638b8c1af0898c53436a6ec614395b46a5b1565603793b92bd",
+      "disposition": "propose-correction",
+      "locale": "zh_Hant",
+      "sourceId": "components.PermissionEdit.autorequestComics",
+      "sourcePosition": 2403
+    },
+    {
+      "candidateTarget": "منح الإذن بإرسال طلبات القصص المصوّرة تلقائيًا عبر قوائم المشاهدة.",
+      "candidateTargetHash": "aa26aabb7f55ddbdeff9cb56b4fd2818707be1de0333f43f563bb08d78a7c2c3",
+      "disposition": "propose-correction",
+      "locale": "ar",
+      "sourceId": "components.PermissionEdit.autorequestComicsDescription",
+      "sourcePosition": 2404
+    },
+    {
+      "candidateTarget": "वॉचलिस्ट के ज़रिए कॉमिक अनुरोध अपने आप भेजने की अनुमति दें।",
+      "candidateTargetHash": "f087b9ec772a7643f6915c224e4935a7139a4c1f50f26a34edd6eb4e0d5ac7db",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.PermissionEdit.autorequestComicsDescription",
+      "sourcePosition": 2404
+    },
+    {
+      "candidateTarget": "Berikan izin untuk mengirim permintaan komik secara otomatis melalui watchlist.",
+      "candidateTargetHash": "e72ecc8f3026702be0e432d050a320a05be43c8a40e1d6e365e59a1092a0c057",
+      "disposition": "propose-correction",
+      "locale": "id",
+      "sourceId": "components.PermissionEdit.autorequestComicsDescription",
+      "sourcePosition": 2404
+    },
+    {
+      "candidateTarget": "관심 목록을 통해 만화 요청을 자동으로 제출할 수 있는 권한을 부여합니다.",
+      "candidateTargetHash": "d2f35dc0b7b00ccfbe412a307d310ff26f3cc0cec52966a36a6a3b1c57c5f97d",
+      "disposition": "propose-correction",
+      "locale": "ko",
+      "sourceId": "components.PermissionEdit.autorequestComicsDescription",
+      "sourcePosition": 2404
+    },
+    {
+      "candidateTarget": "授予通过关注列表自动提交漫画请求的权限。",
+      "candidateTargetHash": "16a7d14124117dfe516dae862a3bf1315afe64aa90965479940f4de6978c67f1",
+      "disposition": "propose-correction",
+      "locale": "zh_Hans",
+      "sourceId": "components.PermissionEdit.autorequestComicsDescription",
+      "sourcePosition": 2404
+    },
+    {
+      "candidateTarget": "授權透過追蹤清單自動提交漫畫請求。",
+      "candidateTargetHash": "74efc42a2ed4c22fa3296d534d2fb8393842fc11ac96dbf710dceb380ee0738c",
+      "disposition": "propose-correction",
+      "locale": "zh_Hant",
+      "sourceId": "components.PermissionEdit.autorequestComicsDescription",
+      "sourcePosition": 2404
+    },
+    {
+      "candidateTarget": "منح الإذن بإرسال طلبات تلقائية للوسائط غير 4K عبر قوائم المشاهدة.",
+      "candidateTargetHash": "0e3be5f477405952e2a93ae13749541017abf00e67dc2b2f0e39103422c7cda2",
+      "disposition": "propose-correction",
+      "locale": "ar",
+      "sourceId": "components.PermissionEdit.autorequestDescription",
+      "sourcePosition": 2405
+    },
+    {
+      "candidateTarget": "वॉचलिस्ट के ज़रिए गैर-4K मीडिया के अनुरोध अपने आप भेजने की अनुमति दें।",
+      "candidateTargetHash": "4ff37a77183c59e6640a97777076dfc90452e2e51b3378a72126a90537912cbf",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.PermissionEdit.autorequestDescription",
+      "sourcePosition": 2405
+    },
+    {
+      "candidateTarget": "Berikan izin untuk mengirim permintaan media non-4K secara otomatis melalui watchlist.",
+      "candidateTargetHash": "67d915b6ee1a59139ab94385d690e6a457b0bee290f7784e684eab14c972e7d3",
+      "disposition": "propose-correction",
+      "locale": "id",
+      "sourceId": "components.PermissionEdit.autorequestDescription",
+      "sourcePosition": 2405
+    },
+    {
+      "candidateTarget": "Demande automatique de magazines",
+      "candidateTargetHash": "17532f62a2af7e59faa36a5253a280b382dc728d279018f494a477a20341e97a",
+      "disposition": "propose-correction",
+      "locale": "fr",
+      "sourceId": "components.PermissionEdit.autorequestMagazines",
+      "sourcePosition": 2406
+    },
+    {
+      "candidateTarget": "स्वचालित पत्रिका अनुरोध",
+      "candidateTargetHash": "41ca19fe77e6de6a5680ad418d9d962dead0c9fe5e3aff8da78efeaedfe93091",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.PermissionEdit.autorequestMagazines",
+      "sourcePosition": 2406
+    },
+    {
+      "candidateTarget": "Permintaan Majalah Otomatis",
+      "candidateTargetHash": "6b9393a9bc2453df5d264227619f4e55664fb52ba37e94349cb062507370428a",
+      "disposition": "propose-correction",
+      "locale": "id",
+      "sourceId": "components.PermissionEdit.autorequestMagazines",
+      "sourcePosition": 2406
+    },
+    {
+      "candidateTarget": "잡지 자동 요청",
+      "candidateTargetHash": "2465d07063081241afe49a03eb7b3e27cb295a7afd73bc31e36a0487435f0110",
+      "disposition": "propose-correction",
+      "locale": "ko",
+      "sourceId": "components.PermissionEdit.autorequestMagazines",
+      "sourcePosition": 2406
+    },
+    {
+      "candidateTarget": "Solicitar revistas automaticamente",
+      "candidateTargetHash": "b129f625572f6f60dccf01a49ea77723128aa7d54d2cbdb9dcd5f814f86b3c73",
+      "disposition": "propose-correction",
+      "locale": "pt_BR",
+      "sourceId": "components.PermissionEdit.autorequestMagazines",
+      "sourcePosition": 2406
+    },
+    {
+      "candidateTarget": "Tự động gửi yêu cầu tạp chí",
+      "candidateTargetHash": "e90c776a036d86440d448954350c500bb02e54f9e6e0a04d260d2b8e811c1a6c",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.PermissionEdit.autorequestMagazines",
+      "sourcePosition": 2406
+    },
+    {
+      "candidateTarget": "منح الإذن بإرسال طلبات المجلات تلقائيًا عبر قوائم المشاهدة.",
+      "candidateTargetHash": "2ac00f399a86558f555e19d2f1c8c1432808f8e8a6194dfb452f282e60226252",
+      "disposition": "propose-correction",
+      "locale": "ar",
+      "sourceId": "components.PermissionEdit.autorequestMagazinesDescription",
+      "sourcePosition": 2407
+    },
+    {
+      "candidateTarget": "वॉचलिस्ट के ज़रिए पत्रिका अनुरोध अपने आप भेजने की अनुमति दें।",
+      "candidateTargetHash": "7f565a1e7c3a57ab3d1c39fd094c7e5cb17f207cb3aab9ae7652a424ea5b1956",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.PermissionEdit.autorequestMagazinesDescription",
+      "sourcePosition": 2407
+    },
+    {
+      "candidateTarget": "관심 목록을 통해 잡지 요청을 자동으로 제출할 수 있는 권한을 부여합니다.",
+      "candidateTargetHash": "35a387e635acdf8227a5ba199f27eccf3af4b401151c1865df782ad368b61ea6",
+      "disposition": "propose-correction",
+      "locale": "ko",
+      "sourceId": "components.PermissionEdit.autorequestMagazinesDescription",
+      "sourcePosition": 2407
+    },
+    {
+      "candidateTarget": "授予通过关注列表自动提交杂志请求的权限。",
+      "candidateTargetHash": "7eba27fbd4694fd183e2c9bdd392237df994e155c2c3118b3545076f3a0b44d6",
+      "disposition": "propose-correction",
+      "locale": "zh_Hans",
+      "sourceId": "components.PermissionEdit.autorequestMagazinesDescription",
+      "sourcePosition": 2407
+    },
+    {
+      "candidateTarget": "授權透過追蹤清單自動提交雜誌請求。",
+      "candidateTargetHash": "fa423a93275c4921a85f3f35c8fb4fe958745613331fdd0147903658cc119d01",
+      "disposition": "propose-correction",
+      "locale": "zh_Hant",
+      "sourceId": "components.PermissionEdit.autorequestMagazinesDescription",
+      "sourcePosition": 2407
+    },
+    {
+      "candidateTarget": "स्वचालित फ़िल्म अनुरोध",
+      "candidateTargetHash": "078ab6f6240bb1e48b1aedb7e7d56970f63332c39bd5706f7c6d03f643d0d9e2",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.PermissionEdit.autorequestMovies",
+      "sourcePosition": 2408
+    },
+    {
+      "candidateTarget": "Permintaan Film Otomatis",
+      "candidateTargetHash": "b344beac53469009a47cdc277f703c2435710c9f4d1b8a80b708e730d433d848",
+      "disposition": "propose-correction",
+      "locale": "id",
+      "sourceId": "components.PermissionEdit.autorequestMovies",
+      "sourcePosition": 2408
+    },
+    {
+      "candidateTarget": "Tự động gửi yêu cầu phim",
+      "candidateTargetHash": "7907374797d471239c466a6f592cee4f322c994d054d97c4f2e0aa3950414011",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.PermissionEdit.autorequestMovies",
+      "sourcePosition": 2408
+    },
+    {
+      "candidateTarget": "منح الإذن بإرسال طلبات تلقائية لأفلام غير 4K عبر قائمة مشاهدة Plex.",
+      "candidateTargetHash": "8a7cce1d55da4d8f4d12e0536fad03c4a3463ac6487919c82091900453e753c5",
+      "disposition": "propose-correction",
+      "locale": "ar",
+      "sourceId": "components.PermissionEdit.autorequestMoviesDescription",
+      "sourcePosition": 2409
+    },
+    {
+      "candidateTarget": "Plex Watchlist के ज़रिए गैर-4K फ़िल्मों के अनुरोध अपने आप भेजने की अनुमति दें।",
+      "candidateTargetHash": "8d0e3f8539288ffe197d9dfaec415e4422b24f6d68fdff1c6952124add4bd676",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.PermissionEdit.autorequestMoviesDescription",
+      "sourcePosition": 2409
+    },
+    {
+      "candidateTarget": "Berikan izin untuk mengirim permintaan film non-4K secara otomatis melalui Plex Watchlist.",
+      "candidateTargetHash": "74240dab6d776c7d7e6aae0f89872795bdfa7e6d2442a43984983756b70035df",
+      "disposition": "propose-correction",
+      "locale": "id",
+      "sourceId": "components.PermissionEdit.autorequestMoviesDescription",
+      "sourcePosition": 2409
+    },
+    {
+      "candidateTarget": "Cho phép tự động gửi yêu cầu phim không phải 4K qua Plex Watchlist.",
+      "candidateTargetHash": "809954c8c93d22b6c6cab4fdfef4e64ed47f7c44ec57a17fe21dbe3733f71d11",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.PermissionEdit.autorequestMoviesDescription",
+      "sourcePosition": 2409
+    },
+    {
+      "candidateTarget": "Demande automatique de musique",
+      "candidateTargetHash": "52f720542144246b023b18da310ddacb5c68843827ab8201c0e300dd7c619638",
+      "disposition": "propose-correction",
+      "locale": "fr",
+      "sourceId": "components.PermissionEdit.autorequestMusic",
+      "sourcePosition": 2410
+    },
+    {
+      "candidateTarget": "स्वचालित संगीत अनुरोध",
+      "candidateTargetHash": "fe3f0dffd4116820759f53b3e4b30d1e50004e8eaa3b5e4f1ddd51be3ce5b456",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.PermissionEdit.autorequestMusic",
+      "sourcePosition": 2410
+    },
+    {
+      "candidateTarget": "Permintaan Musik Otomatis",
+      "candidateTargetHash": "781caa02d509eee8db61854221d541ecd894cb99c318ab3ac101d6c61d98b631",
+      "disposition": "propose-correction",
+      "locale": "id",
+      "sourceId": "components.PermissionEdit.autorequestMusic",
+      "sourcePosition": 2410
+    },
+    {
+      "candidateTarget": "음악 자동 요청",
+      "candidateTargetHash": "84fea1bba7a4978bd32e344eae64a865e6b991a33b4d47fe72bc9abaded7a665",
+      "disposition": "propose-correction",
+      "locale": "ko",
+      "sourceId": "components.PermissionEdit.autorequestMusic",
+      "sourcePosition": 2410
+    },
+    {
+      "candidateTarget": "Solicitar música automaticamente",
+      "candidateTargetHash": "eebe85050c1c029a57e3e71dc5af3d3912a305725c2c145184675286d281d7c5",
+      "disposition": "propose-correction",
+      "locale": "pt_BR",
+      "sourceId": "components.PermissionEdit.autorequestMusic",
+      "sourcePosition": 2410
+    },
+    {
+      "candidateTarget": "Tự động gửi yêu cầu âm nhạc",
+      "candidateTargetHash": "7298a7fa64446e76f807604e7539bf3b09628a02ec345249abcfc9640ef1bd1a",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.PermissionEdit.autorequestMusic",
+      "sourcePosition": 2410
+    },
+    {
+      "candidateTarget": "منح الإذن بإرسال طلبات الموسيقى تلقائيًا عبر قوائم المشاهدة.",
+      "candidateTargetHash": "fd9f9279b07fd1d0744e2b9d9395196ee9c764688ba51c7b14a748a94ff0f2e4",
+      "disposition": "propose-correction",
+      "locale": "ar",
+      "sourceId": "components.PermissionEdit.autorequestMusicDescription",
+      "sourcePosition": 2411
+    },
+    {
+      "candidateTarget": "वॉचलिस्ट के ज़रिए संगीत अनुरोध अपने आप भेजने की अनुमति दें।",
+      "candidateTargetHash": "51dc6fbd1c03df57b8acf0ed7abfe26935469e5975132c15d410f7afeda04348",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.PermissionEdit.autorequestMusicDescription",
+      "sourcePosition": 2411
+    },
+    {
+      "candidateTarget": "Berikan izin untuk mengirim permintaan musik secara otomatis melalui watchlist.",
+      "candidateTargetHash": "ef209aabc7ac56b49183c612dd9c395d96f0de9bebad4a6aad6eebd817237cc4",
+      "disposition": "propose-correction",
+      "locale": "id",
+      "sourceId": "components.PermissionEdit.autorequestMusicDescription",
+      "sourcePosition": 2411
+    },
+    {
+      "candidateTarget": "관심 목록을 통해 음악 요청을 자동으로 제출할 수 있는 권한을 부여합니다.",
+      "candidateTargetHash": "ed16ee0ff98e044e9844bed170f2cd8fb651ce499df938d2a05d3f746c08116b",
+      "disposition": "propose-correction",
+      "locale": "ko",
+      "sourceId": "components.PermissionEdit.autorequestMusicDescription",
+      "sourcePosition": 2411
+    },
+    {
+      "candidateTarget": "授予通过关注列表自动提交音乐请求的权限。",
+      "candidateTargetHash": "c7ff1816f0a86072af08c6fe9af1c6179979616ef12304573b99b74d9fa5025c",
+      "disposition": "propose-correction",
+      "locale": "zh_Hans",
+      "sourceId": "components.PermissionEdit.autorequestMusicDescription",
+      "sourcePosition": 2411
+    },
+    {
+      "candidateTarget": "授權透過追蹤清單自動提交音樂請求。",
+      "candidateTargetHash": "d970074dae9221f1c565c9ed74e3d1759e0ce6b112ca8f28fd6e807815f0b977",
+      "disposition": "propose-correction",
+      "locale": "zh_Hant",
+      "sourceId": "components.PermissionEdit.autorequestMusicDescription",
+      "sourcePosition": 2411
+    },
+    {
+      "candidateTarget": "स्वचालित सीरीज़ अनुरोध",
+      "candidateTargetHash": "b02611bad79c1aad8334a65122e2af11a5e572acc3cd55cb8f13452de2b98bc3",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.PermissionEdit.autorequestSeries",
+      "sourcePosition": 2412
+    },
+    {
+      "candidateTarget": "Permintaan Serial Otomatis",
+      "candidateTargetHash": "f645847c033fb4624f282df3b896eaaa7296b295a02b6d6862ce3fb26442168d",
+      "disposition": "propose-correction",
+      "locale": "id",
+      "sourceId": "components.PermissionEdit.autorequestSeries",
+      "sourcePosition": 2412
+    },
+    {
+      "candidateTarget": "시리즈 자동 요청",
+      "candidateTargetHash": "9fd089d42c29a19b3f86b257194e9da97514867ff89bb61035be4902df3ff540",
+      "disposition": "propose-correction",
+      "locale": "ko",
+      "sourceId": "components.PermissionEdit.autorequestSeries",
+      "sourcePosition": 2412
+    },
+    {
+      "candidateTarget": "Tự động gửi yêu cầu phim bộ",
+      "candidateTargetHash": "54f649cdd290ab2e77fd2b2c75c42277111453faecdd126a75c5f5f0b9f63767",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.PermissionEdit.autorequestSeries",
+      "sourcePosition": 2412
+    },
+    {
+      "candidateTarget": "منح الإذن بإرسال طلبات تلقائية للمسلسلات غير 4K عبر قائمة مشاهدة Plex.",
+      "candidateTargetHash": "f052e49738c66e5a00dd3fb42549f865720a9b0baef9b17b422b93eb4c827a59",
+      "disposition": "propose-correction",
+      "locale": "ar",
+      "sourceId": "components.PermissionEdit.autorequestSeriesDescription",
+      "sourcePosition": 2413
+    },
+    {
+      "candidateTarget": "Plex Watchlist के ज़रिए गैर-4K सीरीज़ के अनुरोध अपने आप भेजने की अनुमति दें।",
+      "candidateTargetHash": "29167703640f1f41ef497df20cfb55bcceb78715660fd8a19845507fff8ae59c",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.PermissionEdit.autorequestSeriesDescription",
+      "sourcePosition": 2413
+    },
+    {
+      "candidateTarget": "Berikan izin untuk mengirim permintaan serial non-4K secara otomatis melalui Plex Watchlist.",
+      "candidateTargetHash": "4c294ec80cd60da22dd3611ee0bb0f6368201a5ca7a7e50ed4a4109cba020084",
+      "disposition": "propose-correction",
+      "locale": "id",
+      "sourceId": "components.PermissionEdit.autorequestSeriesDescription",
+      "sourcePosition": 2413
+    },
+    {
+      "candidateTarget": "Plex 관심 목록을 통해 4K가 아닌 시리즈 요청을 자동으로 제출할 수 있는 권한을 부여합니다.",
+      "candidateTargetHash": "e07c683b846a1aafab1aa406dfaa9e02bd1b2685162bd871122a38dd7dac6cc9",
+      "disposition": "propose-correction",
+      "locale": "ko",
+      "sourceId": "components.PermissionEdit.autorequestSeriesDescription",
+      "sourcePosition": 2413
+    },
+    {
+      "candidateTarget": "Cho phép tự động gửi yêu cầu phim bộ không phải 4K qua Plex Watchlist.",
+      "candidateTargetHash": "94774d2267c7a1773e7bef7a1eab94cac2e1fa141fd639f5fb9d7d819161249d",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.PermissionEdit.autorequestSeriesDescription",
+      "sourcePosition": 2413
+    },
+    {
+      "candidateTarget": "授權將媒體加入封鎖清單。",
+      "candidateTargetHash": "2aa02e74037f6f4edc365ef99063c4a6a3998a8e183901d778bd7660de37ab2c",
+      "disposition": "propose-correction",
+      "locale": "zh_Hant",
+      "sourceId": "components.PermissionEdit.blocklistedItemsDescription",
+      "sourcePosition": 2415
+    },
+    {
+      "candidateTarget": "Informar de problemas",
+      "candidateTargetHash": "52ba9a332b6f11fb9d75df1f66fc5b141815de973899e28e07c8291d55efcb7b",
+      "disposition": "propose-correction",
+      "locale": "es",
+      "sourceId": "components.PermissionEdit.createissues",
+      "sourcePosition": 2416
+    },
+    {
+      "candidateTarget": "समस्याओं की रिपोर्ट करें",
+      "candidateTargetHash": "95b15ad452400a9aa25f533ebf7d4491f14c00be4747f9a25126a58243eaa637",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.PermissionEdit.createissues",
+      "sourcePosition": 2416
+    },
+    {
+      "candidateTarget": "問題を報告",
+      "candidateTargetHash": "8a3ab721381a4bdb64e4197c25b1ac940c640f79e54eb614eec691542e3f1835",
+      "disposition": "propose-correction",
+      "locale": "ja",
+      "sourceId": "components.PermissionEdit.createissues",
+      "sourcePosition": 2416
+    },
+    {
+      "candidateTarget": "Báo cáo sự cố",
+      "candidateTargetHash": "0527866e22f11604def89a05a669fa8ab6627ce5b92d50f8c2ebb03c6d5fa490",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.PermissionEdit.createissues",
+      "sourcePosition": 2416
+    },
+    {
+      "candidateTarget": "मीडिया से जुड़ी समस्याओं की रिपोर्ट करने की अनुमति दें।",
+      "candidateTargetHash": "0aabb42719b9b118e3bf04c31171ed2a7f1a9a7cd249c2ffc2da5df465b0c950",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.PermissionEdit.createissuesDescription",
+      "sourcePosition": 2417
+    },
+    {
+      "candidateTarget": "メディアの問題を報告する権限を付与します。",
+      "candidateTargetHash": "bbbeec4c1d55af8bffbe40d0f132498b3cd8e5008a6be80b0b577ad31543027d",
+      "disposition": "propose-correction",
+      "locale": "ja",
+      "sourceId": "components.PermissionEdit.createissuesDescription",
+      "sourcePosition": 2417
+    },
+    {
+      "candidateTarget": "Cho phép báo cáo sự cố về nội dung.",
+      "candidateTargetHash": "dded81143bc6dd7eb1312f62e5b9f2f90d569f0e398fe5be7dc9a62ccd9f6df3",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.PermissionEdit.createissuesDescription",
+      "sourcePosition": 2417
+    },
+    {
+      "candidateTarget": "管理屏蔽列表",
+      "candidateTargetHash": "2428edaa285ce3c4540fa52b24d5367505d33f4a7d367c99c0777ba9bb676676",
+      "disposition": "propose-correction",
+      "locale": "zh_Hans",
+      "sourceId": "components.PermissionEdit.manageblocklist",
+      "sourcePosition": 2418
+    },
+    {
+      "candidateTarget": "ब्लॉकलिस्ट में शामिल मीडिया को प्रबंधित करने की अनुमति दें।",
+      "candidateTargetHash": "bb077150c171712d1818175a95420b208685326279b9da1f7621a279e7b748f0",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.PermissionEdit.manageblocklistDescription",
+      "sourcePosition": 2419
+    },
+    {
+      "candidateTarget": "Conceder permissão para gerenciar mídias na lista de bloqueio.",
+      "candidateTargetHash": "a313b88659a479221bc79148457db151770802b043e24a432cb26261c8f35791",
+      "disposition": "propose-correction",
+      "locale": "pt_BR",
+      "sourceId": "components.PermissionEdit.manageblocklistDescription",
+      "sourcePosition": 2419
+    },
+    {
+      "candidateTarget": "Cho phép quản lý danh sách chặn nội dung.",
+      "candidateTargetHash": "f95c0d60916887aa1b42522502ffb28dacfa521b786a94bc8f30b64eeba38805",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.PermissionEdit.manageblocklistDescription",
+      "sourcePosition": 2419
+    },
+    {
+      "candidateTarget": "إدارة التنزيلات",
+      "candidateTargetHash": "5678fe8c8884816bd733020e827a761fa978216eba56a5ed7b257aa84d99ac04",
+      "disposition": "propose-correction",
+      "locale": "ar",
+      "sourceId": "components.PermissionEdit.managedownloads",
+      "sourcePosition": 2420
+    },
+    {
+      "candidateTarget": "डाउनलोड प्रबंधित करें",
+      "candidateTargetHash": "ce18605d3258cf8d0e8ffe37ca275af4a6647e40ea3ed97616f533eff17d0084",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.PermissionEdit.managedownloads",
+      "sourcePosition": 2420
+    },
+    {
+      "candidateTarget": "Kelola Unduhan",
+      "candidateTargetHash": "cab2130e75737affa087188009bb43b85e3ed5cd222b2d76c718e1b7a7b15be7",
+      "disposition": "propose-correction",
+      "locale": "id",
+      "sourceId": "components.PermissionEdit.managedownloads",
+      "sourcePosition": 2420
+    },
+    {
+      "candidateTarget": "다운로드 관리",
+      "candidateTargetHash": "fb77fb532363a268638b9fbfc4234566f8ff0b25bfe78868fc343be4364e1e5d",
+      "disposition": "propose-correction",
+      "locale": "ko",
+      "sourceId": "components.PermissionEdit.managedownloads",
+      "sourcePosition": 2420
+    },
+    {
+      "candidateTarget": "Quản lý tải xuống",
+      "candidateTargetHash": "8100c024401dc722a82a83289459db1c46b83c20d0717bbc066d4d0714b803f6",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.PermissionEdit.managedownloads",
+      "sourcePosition": 2420
+    },
+    {
+      "candidateTarget": "عرض تحذيرات التنزيل وسجله، واستيراد الملفات يدويًا، ورفض التنزيلات أو إضافتها إلى قائمة الحظر في خدمات الاقتناء المهيأة.",
+      "candidateTargetHash": "11c457620f2df9b850d4d188ee86094d77c1337f639095478af4dd2a32af651f",
+      "disposition": "propose-correction",
+      "locale": "ar",
+      "sourceId": "components.PermissionEdit.managedownloadsDescription",
+      "sourcePosition": 2421
+    },
+    {
+      "candidateTarget": "Download-Warnungen und -Verlauf anzeigen, Dateien manuell importieren und Downloads in den konfigurierten Beschaffungsdiensten ablehnen oder auf die Sperrliste setzen.",
+      "candidateTargetHash": "57b8c1944696fb361c7fc4dd4035c02b5e8ebcc6a83a2cd88ab5a4c575d1bb93",
+      "disposition": "propose-correction",
+      "locale": "de",
+      "sourceId": "components.PermissionEdit.managedownloadsDescription",
+      "sourcePosition": 2421
+    },
+    {
+      "candidateTarget": "Ver las advertencias y el historial de descargas, importar archivos manualmente y rechazar descargas o añadirlas a la lista de bloqueo en los servicios de adquisición configurados.",
+      "candidateTargetHash": "115128efe97ff59a7722ff0e4beff09d06b2c8127ff948310d838f57e473b701",
+      "disposition": "propose-correction",
+      "locale": "es",
+      "sourceId": "components.PermissionEdit.managedownloadsDescription",
+      "sourcePosition": 2421
+    },
+    {
+      "candidateTarget": "डाउनलोड की चेतावनियाँ और इतिहास देखें, फ़ाइलें मैन्युअल रूप से आयात करें, और कॉन्फ़िगर की गई डाउनलोड सेवाओं में डाउनलोड अस्वीकार या ब्लॉकलिस्ट करें।",
+      "candidateTargetHash": "a14aff7d7d471b0677c6201260e5fd85a010eaad3fbed429b57d743eb349c997",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.PermissionEdit.managedownloadsDescription",
+      "sourcePosition": 2421
+    },
+    {
+      "candidateTarget": "ダウンロードの警告と履歴を確認し、ファイルを手動でインポートし、設定済みの取得サービスでダウンロードを却下したりブロックリストに登録したりできます。",
+      "candidateTargetHash": "1cc6fe784aa9803ad5ff080600c05f1c6c676f8360459ce282d876bd499c07cf",
+      "disposition": "propose-correction",
+      "locale": "ja",
+      "sourceId": "components.PermissionEdit.managedownloadsDescription",
+      "sourcePosition": 2421
+    },
+    {
+      "candidateTarget": "다운로드 경고와 기록을 확인하고, 파일을 직접 가져오며, 설정된 수집 서비스의 다운로드를 거부하거나 차단 목록에 추가할 수 있습니다.",
+      "candidateTargetHash": "7fd6e316cb5bddd5ac1e69083009fbd405d5082b2937f33c70580ae9e3bfa2a5",
+      "disposition": "propose-correction",
+      "locale": "ko",
+      "sourceId": "components.PermissionEdit.managedownloadsDescription",
+      "sourcePosition": 2421
+    },
+    {
+      "candidateTarget": "Permite ver avisos e o histórico de downloads, importar arquivos manualmente e rejeitar downloads ou adicioná-los à lista de bloqueio nos serviços de aquisição configurados.",
+      "candidateTargetHash": "7f4922b12a724a32b647c94ae72fdc23eb90e21cd71694d56d56558816eae0e5",
+      "disposition": "propose-correction",
+      "locale": "pt_BR",
+      "sourceId": "components.PermissionEdit.managedownloadsDescription",
+      "sourcePosition": 2421
+    },
+    {
+      "candidateTarget": "Xem cảnh báo và lịch sử tải xuống, nhập tệp theo cách thủ công, rồi từ chối hoặc đưa các lượt tải xuống vào danh sách chặn trong các dịch vụ tải nội dung đã cấu hình.",
+      "candidateTargetHash": "578121c28ab6a4128139c39f19e0bfd0bf0e3df42384888e120eabdc7ec2a3a1",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.PermissionEdit.managedownloadsDescription",
+      "sourcePosition": 2421
+    },
+    {
+      "candidateTarget": "檢視下載警告與歷史記錄、手動匯入檔案，並在已設定的取得服務中拒絕下載或將下載加入封鎖清單。",
+      "candidateTargetHash": "d02fa9328f6d119d2ec5c439b47e2ced755bff778ca78a967b9a27e47e435426",
+      "disposition": "propose-correction",
+      "locale": "zh_Hant",
+      "sourceId": "components.PermissionEdit.managedownloadsDescription",
+      "sourcePosition": 2421
+    },
+    {
+      "candidateTarget": "समस्याएँ प्रबंधित करें",
+      "candidateTargetHash": "197d27d961dfde6a659a938b1a1350f0ef4d3dfcc3d0dc343b16eaeaeeb39c56",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.PermissionEdit.manageissues",
+      "sourcePosition": 2422
+    },
+    {
+      "candidateTarget": "問題を管理",
+      "candidateTargetHash": "f41a7a0dd8558ad3b1799763734c50b85d968a10aa8701ffaa348a53460183e1",
+      "disposition": "propose-correction",
+      "locale": "ja",
+      "sourceId": "components.PermissionEdit.manageissues",
+      "sourcePosition": 2422
+    },
+    {
+      "candidateTarget": "मीडिया से जुड़ी समस्याओं को प्रबंधित करने की अनुमति दें।",
+      "candidateTargetHash": "bd00448d0ad872493fe7353fe845392aab9fd4d49e899d8892fadaf1d433d46c",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.PermissionEdit.manageissuesDescription",
+      "sourcePosition": 2423
+    },
+    {
+      "candidateTarget": "メディアの問題を管理する権限を付与します。",
+      "candidateTargetHash": "e2518aa4f82b28cb92311828fc532cf257b1125ee8406037c95b2605646a8e7e",
+      "disposition": "propose-correction",
+      "locale": "ja",
+      "sourceId": "components.PermissionEdit.manageissuesDescription",
+      "sourcePosition": 2423
+    },
+    {
+      "candidateTarget": "Cho phép quản lý sự cố về nội dung.",
+      "candidateTargetHash": "5b58aa03defd6ced4235b7fda4b31f71a6d32e5f0595bee48caec59e2369011c",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.PermissionEdit.manageissuesDescription",
+      "sourcePosition": 2423
+    },
+    {
+      "candidateTarget": "Concede permissão para gerenciar solicitações de mídia. Todas as solicitações feitas por um usuário com essa permissão serão aprovadas automaticamente.",
+      "candidateTargetHash": "c4cb8e716bc21e91800eb2b4e97979dcf36e2b60344954efbfd0125c16b8cddb",
+      "disposition": "propose-correction",
+      "locale": "pt_BR",
+      "sourceId": "components.PermissionEdit.managerequestsDescription",
+      "sourcePosition": 2425
+    },
+    {
+      "candidateTarget": "Cho phép quản lý yêu cầu về nội dung. Mọi yêu cầu do người dùng có quyền này gửi sẽ được tự động phê duyệt.",
+      "candidateTargetHash": "2a9f069922d8ee7d22cebb6819b7984e0d1f161f28ab5f4737a3a95f4e1c30d7",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.PermissionEdit.managerequestsDescription",
+      "sourcePosition": 2425
+    },
+    {
+      "candidateTarget": "授予管理媒體請求的權限。擁有此權限的使用者提出的所有請求都會自動核准。",
+      "candidateTargetHash": "1175b36383d3deed1a8aacdb2b8de04d4d6deab5f990d3999fc356944ba719ab",
+      "disposition": "propose-correction",
+      "locale": "zh_Hant",
+      "sourceId": "components.PermissionEdit.managerequestsDescription",
+      "sourcePosition": 2425
+    },
+    {
+      "candidateTarget": "طلب بجودة 4K",
+      "candidateTargetHash": "c671cb3ded02371670fc4baa15fa3080cf861bcee0d5f12fda5a0a79117301a1",
+      "disposition": "propose-correction",
+      "locale": "ar",
+      "sourceId": "components.PermissionEdit.request4k",
+      "sourcePosition": 2427
+    },
+    {
+      "candidateTarget": "4K के लिए अनुरोध करें",
+      "candidateTargetHash": "7e2ca557c1169c9c7e270dbd3248990d50c6d8bf2506c2d0edbc409b8ba96a10",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.PermissionEdit.request4k",
+      "sourcePosition": 2427
+    },
+    {
+      "candidateTarget": "منح الإذن بإرسال طلبات لوسائط بدقة 4K.",
+      "candidateTargetHash": "7639fa61653878cf9cf532b2424a836ae597ba6f47bc6bcbd57c06aaa029450e",
+      "disposition": "propose-correction",
+      "locale": "ar",
+      "sourceId": "components.PermissionEdit.request4kDescription",
+      "sourcePosition": 2428
+    },
+    {
+      "candidateTarget": "Berikan izin untuk mengajukan permintaan media 4K.",
+      "candidateTargetHash": "b98d142f32e6e819c4cd490ef6f4e680919b40f5c985a8de3887a9109eed8589",
+      "disposition": "propose-correction",
+      "locale": "id",
+      "sourceId": "components.PermissionEdit.request4kDescription",
+      "sourcePosition": 2428
+    },
+    {
+      "candidateTarget": "Cho phép gửi yêu cầu nội dung 4K.",
+      "candidateTargetHash": "884846b2d3e07beae8410b0982852fbc1d517e26e5b5661004cb39b07825e41f",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.PermissionEdit.request4kDescription",
+      "sourcePosition": 2428
+    },
+    {
+      "candidateTarget": "4K-Filme anfragen",
+      "candidateTargetHash": "f6f9c05d0ceda8c4c30435384fec7177ddca5d70095c838eafb526f4fc90800a",
+      "disposition": "propose-correction",
+      "locale": "de",
+      "sourceId": "components.PermissionEdit.request4kMovies",
+      "sourcePosition": 2429
+    },
+    {
+      "candidateTarget": "Solicitar películas 4K",
+      "candidateTargetHash": "312c5296eda7cc017f53c8cfa1c5028dbdbda58ee9c01967a58193bcaa5a1a4e",
+      "disposition": "propose-correction",
+      "locale": "es",
+      "sourceId": "components.PermissionEdit.request4kMovies",
+      "sourcePosition": 2429
+    },
+    {
+      "candidateTarget": "4K फ़िल्मों का अनुरोध करें",
+      "candidateTargetHash": "6a5263bb132a53159af6986e14b78ed9a974ed706dfe5489d20fd0fc9dbfc9a4",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.PermissionEdit.request4kMovies",
+      "sourcePosition": 2429
+    },
+    {
+      "candidateTarget": "Yêu cầu phim 4K",
+      "candidateTargetHash": "0567f5a582513c792d1899bd00e44461c8c0d0486bf4702f1d9859ea2940a7f5",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.PermissionEdit.request4kMovies",
+      "sourcePosition": 2429
+    },
+    {
+      "candidateTarget": "Berechtigung erteilen, Anfragen für 4K-Filme einzureichen.",
+      "candidateTargetHash": "a7bb28625f8dc0028cf00e1c09bc7156045b57e45ce33d8c2e5622874c024aed",
+      "disposition": "propose-correction",
+      "locale": "de",
+      "sourceId": "components.PermissionEdit.request4kMoviesDescription",
+      "sourcePosition": 2430
+    },
+    {
+      "candidateTarget": "Berikan izin untuk mengajukan permintaan film 4K.",
+      "candidateTargetHash": "bcb1e0a2c1b917add28e6f5268cec2d37646ced2896717861c12845f9e516599",
+      "disposition": "propose-correction",
+      "locale": "id",
+      "sourceId": "components.PermissionEdit.request4kMoviesDescription",
+      "sourcePosition": 2430
+    },
+    {
+      "candidateTarget": "Cho phép gửi yêu cầu phim 4K.",
+      "candidateTargetHash": "e0d103818e6db7de186aecc131fa21f54451c65657d7216caee45ecf74550404",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.PermissionEdit.request4kMoviesDescription",
+      "sourcePosition": 2430
+    },
+    {
+      "candidateTarget": "4K-Serien anfragen",
+      "candidateTargetHash": "ba4821401792440d4ae21d651421b20c90b70e38e6fd7d27f10b60e210176141",
+      "disposition": "propose-correction",
+      "locale": "de",
+      "sourceId": "components.PermissionEdit.request4kTv",
+      "sourcePosition": 2431
+    },
+    {
+      "candidateTarget": "Solicitar series en 4K",
+      "candidateTargetHash": "bccd0111bbcd5478ec1c712d65f176756c490cd73e1ecb912d3f4d0ca154b810",
+      "disposition": "propose-correction",
+      "locale": "es",
+      "sourceId": "components.PermissionEdit.request4kTv",
+      "sourcePosition": 2431
+    },
+    {
+      "candidateTarget": "4K सीरीज़ का अनुरोध करें",
+      "candidateTargetHash": "da1347d1c70d6f3eb9e786b4bcf6f4e99783fd313eb5e0727b47ce514d218aa8",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.PermissionEdit.request4kTv",
+      "sourcePosition": 2431
+    },
+    {
+      "candidateTarget": "Yêu cầu phim bộ 4K",
+      "candidateTargetHash": "38a10109085da9c1d03faa3a9facc14bfd337523f681ee8d5b518297442d59ca",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.PermissionEdit.request4kTv",
+      "sourcePosition": 2431
+    },
+    {
+      "candidateTarget": "Berechtigung erteilen, Anfragen für 4K-Serien einzureichen.",
+      "candidateTargetHash": "a9341bbf04deb86c9245fbee2ff2f2a8c47313d45caf852d915aafcb3877dab3",
+      "disposition": "propose-correction",
+      "locale": "de",
+      "sourceId": "components.PermissionEdit.request4kTvDescription",
+      "sourcePosition": 2432
+    },
+    {
+      "candidateTarget": "Berikan izin untuk mengajukan permintaan serial 4K.",
+      "candidateTargetHash": "89b845a60d0be0a63121d1fbb63d5db4dc8bc53feed04371090e8b131277ac58",
+      "disposition": "propose-correction",
+      "locale": "id",
+      "sourceId": "components.PermissionEdit.request4kTvDescription",
+      "sourcePosition": 2432
+    },
+    {
+      "candidateTarget": "Cho phép gửi yêu cầu phim bộ 4K.",
+      "candidateTargetHash": "840cb336d948abb6f8c28507018f6b0a627b69cba1197db95cbe36845954f37b",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.PermissionEdit.request4kTvDescription",
+      "sourcePosition": 2432
+    },
+    {
+      "candidateTarget": "Berikan pengguna ini akses secara eksplisit untuk menemukan dan meminta adegan dewasa melalui Whisparr.",
+      "candidateTargetHash": "1fd4c971f457628ab842218c73f2dd9de57fbb646651ae347b3db94f21b35c36",
+      "disposition": "propose-correction",
+      "locale": "id",
+      "sourceId": "components.PermissionEdit.requestAdultDescription",
+      "sourcePosition": 2434
+    },
+    {
+      "candidateTarget": "طلب الكتب",
+      "candidateTargetHash": "0242d098a7d42fa76fdc436784dc14062e379e7e90f2deec038d17d3effcfe5f",
+      "disposition": "propose-correction",
+      "locale": "ar",
+      "sourceId": "components.PermissionEdit.requestBooks",
+      "sourcePosition": 2435
+    },
+    {
+      "candidateTarget": "पुस्तकों का अनुरोध करें",
+      "candidateTargetHash": "9ec24f020d9f17d0aad8e2b66192ceec23938fd3c7995e8729d385acddd45731",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.PermissionEdit.requestBooks",
+      "sourcePosition": 2435
+    },
+    {
+      "candidateTarget": "書籍をリクエスト",
+      "candidateTargetHash": "0988517d4725221511c0afad2cba4b0da8df88b654ca748cef5cb7d1d935beb7",
+      "disposition": "propose-correction",
+      "locale": "ja",
+      "sourceId": "components.PermissionEdit.requestBooks",
+      "sourcePosition": 2435
+    },
+    {
+      "candidateTarget": "Solicitar livros",
+      "candidateTargetHash": "0e890a390c6123ddd11885609f1b867866b7ab0dbf2583250a39806ff8a4b6eb",
+      "disposition": "propose-correction",
+      "locale": "pt_BR",
+      "sourceId": "components.PermissionEdit.requestBooks",
+      "sourcePosition": 2435
+    },
+    {
+      "candidateTarget": "請求書籍",
+      "candidateTargetHash": "51836e5a8dd262947f8d0564fe7d5dcc4114327ded22c843f920be1f2d62d8e8",
+      "disposition": "propose-correction",
+      "locale": "zh_Hant",
+      "sourceId": "components.PermissionEdit.requestBooks",
+      "sourcePosition": 2435
+    },
+    {
+      "candidateTarget": "पुस्तकों के अनुरोध भेजने की अनुमति दें।",
+      "candidateTargetHash": "9840072145e127147bbdb5e7b65bf692653eb18b92d5bd1bb920535937f9c390",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.PermissionEdit.requestBooksDescription",
+      "sourcePosition": 2436
+    },
+    {
+      "candidateTarget": "Berikan izin untuk mengajukan permintaan buku.",
+      "candidateTargetHash": "af16348836411ac7b2a27b09784bf5e2cc25a56d221e5c5007e171cff4275be6",
+      "disposition": "propose-correction",
+      "locale": "id",
+      "sourceId": "components.PermissionEdit.requestBooksDescription",
+      "sourcePosition": 2436
+    },
+    {
+      "candidateTarget": "Cho phép gửi yêu cầu sách.",
+      "candidateTargetHash": "6f645bfe8cf01b9c23799cb0962fc79e24e407ddd8f845cfb0d41b8f7372b9a4",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.PermissionEdit.requestBooksDescription",
+      "sourcePosition": 2436
+    },
+    {
+      "candidateTarget": "授予提交图书请求的权限。",
+      "candidateTargetHash": "f0a96894a2efe34888e9d04dbec914b68f6a1f5d4be061f6877c999b9f78ff10",
+      "disposition": "propose-correction",
+      "locale": "zh_Hans",
+      "sourceId": "components.PermissionEdit.requestBooksDescription",
+      "sourcePosition": 2436
+    },
+    {
+      "candidateTarget": "طلب القصص المصوّرة",
+      "candidateTargetHash": "a1749dc3f966229ca4942a02fc8d4fc8c65c5ce5c0a7f309bc9f268b8ef54fc3",
+      "disposition": "propose-correction",
+      "locale": "ar",
+      "sourceId": "components.PermissionEdit.requestComics",
+      "sourcePosition": 2437
+    },
+    {
+      "candidateTarget": "कॉमिक्स का अनुरोध करें",
+      "candidateTargetHash": "17e2a6108b477f3f15b4a3ee6e24b155569a78760de0bb842a96b0e9574e165d",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.PermissionEdit.requestComics",
+      "sourcePosition": 2437
+    },
+    {
+      "candidateTarget": "Solicitar quadrinhos",
+      "candidateTargetHash": "ba48cd2ff53f41148730e8e0fbd9be1171a3193a3e6c39782dad9517d1a4d807",
+      "disposition": "propose-correction",
+      "locale": "pt_BR",
+      "sourceId": "components.PermissionEdit.requestComics",
+      "sourcePosition": 2437
+    },
+    {
+      "candidateTarget": "請求漫畫",
+      "candidateTargetHash": "1617f36420e1d2b345a1f726700145e43572aa9b90c3f29c44e7ddcc8f7b45ff",
+      "disposition": "propose-correction",
+      "locale": "zh_Hant",
+      "sourceId": "components.PermissionEdit.requestComics",
+      "sourcePosition": 2437
+    },
+    {
+      "candidateTarget": "कॉमिक्स के अनुरोध भेजने की अनुमति दें।",
+      "candidateTargetHash": "92b315fe6489fca788b59c3395977ad77029dc3d65de1e38cd9c93f8f3bea677",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.PermissionEdit.requestComicsDescription",
+      "sourcePosition": 2438
+    },
+    {
+      "candidateTarget": "Berikan izin untuk mengajukan permintaan komik.",
+      "candidateTargetHash": "26416f2b58956aaa7befc3171caddeca138f9653fc94365411be2ec0b2bfcaa1",
+      "disposition": "propose-correction",
+      "locale": "id",
+      "sourceId": "components.PermissionEdit.requestComicsDescription",
+      "sourcePosition": 2438
+    },
+    {
+      "candidateTarget": "Cho phép gửi yêu cầu truyện tranh.",
+      "candidateTargetHash": "ccb549c27f26bff3d4ae29a1dfa06c5b88f81aded6ea4b6f75c9aeb7ea6858c8",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.PermissionEdit.requestComicsDescription",
+      "sourcePosition": 2438
+    },
+    {
+      "candidateTarget": "منح الإذن بإرسال طلبات لوسائط غير 4K.",
+      "candidateTargetHash": "a4d556fdb2f17c3afcc35977433179fd0f939c0f9f20172047532f2cf87a20da",
+      "disposition": "propose-correction",
+      "locale": "ar",
+      "sourceId": "components.PermissionEdit.requestDescription",
+      "sourcePosition": 2439
+    },
+    {
+      "candidateTarget": "Berechtigung erteilen, Anfragen für Nicht-4K-Medien einzureichen.",
+      "candidateTargetHash": "d484d7722f32747270737407280340be9953499fdde7d6206dfc11097e7d4da2",
+      "disposition": "propose-correction",
+      "locale": "de",
+      "sourceId": "components.PermissionEdit.requestDescription",
+      "sourcePosition": 2439
+    },
+    {
+      "candidateTarget": "Berikan izin untuk mengajukan permintaan media non-4K.",
+      "candidateTargetHash": "9f26778364148f4de9e84a28a149e1f7b0a6ee69ff406aa71bd85e3be04cc846",
+      "disposition": "propose-correction",
+      "locale": "id",
+      "sourceId": "components.PermissionEdit.requestDescription",
+      "sourcePosition": 2439
+    },
+    {
+      "candidateTarget": "Cho phép gửi yêu cầu nội dung không phải 4K.",
+      "candidateTargetHash": "6d0cdebf29d0aa5f64e0a665fc2093915f77e2dbdd150c6fa29ab2aea4be6a97",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.PermissionEdit.requestDescription",
+      "sourcePosition": 2439
+    },
+    {
+      "candidateTarget": "Solicitar revistas",
+      "candidateTargetHash": "090116d4613daf16a121132ce7ab40f824040f8206fd79b31915ed8b82f9d58a",
+      "disposition": "propose-correction",
+      "locale": "es",
+      "sourceId": "components.PermissionEdit.requestMagazines",
+      "sourcePosition": 2440
+    },
+    {
+      "candidateTarget": "पत्रिकाओं का अनुरोध करें",
+      "candidateTargetHash": "6aeb6c5da7056ba2e4c288dbdefa418d1504944e83fb00cfc33c6313032d0473",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.PermissionEdit.requestMagazines",
+      "sourcePosition": 2440
+    },
+    {
+      "candidateTarget": "잡지 요청",
+      "candidateTargetHash": "0eb234fba0397188a70439477dd4272205618806f71e057cff92b6d8ab5f5b9b",
+      "disposition": "propose-correction",
+      "locale": "ko",
+      "sourceId": "components.PermissionEdit.requestMagazines",
+      "sourcePosition": 2440
+    },
+    {
+      "candidateTarget": "LazyLibrarian을 통해 잡지 요청을 제출할 권한을 부여합니다.",
+      "candidateTargetHash": "a4d705f8b5823a088cc8c60790842b47429f2f963f850714395e80c62191a5e2",
+      "disposition": "propose-correction",
+      "locale": "ko",
+      "sourceId": "components.PermissionEdit.requestMagazinesDescription",
+      "sourcePosition": 2441
+    },
+    {
+      "candidateTarget": "Cho phép gửi yêu cầu tạp chí qua LazyLibrarian.",
+      "candidateTargetHash": "885637a5910d383c4a2a35515da414fe3ba78062c23fbc2e09a509b2a46991e9",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.PermissionEdit.requestMagazinesDescription",
+      "sourcePosition": 2441
+    },
+    {
+      "candidateTarget": "फ़िल्मों का अनुरोध करें",
+      "candidateTargetHash": "c07ab12216116e3398cbb7f7073e74193a230be1de5d676ded40b565b5da8fd3",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.PermissionEdit.requestMovies",
+      "sourcePosition": 2442
+    },
+    {
+      "candidateTarget": "Yêu cầu phim",
+      "candidateTargetHash": "a2725eccf560b818d94283d5ca469ec329184f4dd626b66ff6a79dfac6b2471c",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.PermissionEdit.requestMovies",
+      "sourcePosition": 2442
+    },
+    {
+      "candidateTarget": "Berikan izin untuk mengajukan permintaan film non-4K.",
+      "candidateTargetHash": "8c36e22eeeda331c0d0fbfa47e6b0a065a24741d120da9fdecab6433c0ee95fe",
+      "disposition": "propose-correction",
+      "locale": "id",
+      "sourceId": "components.PermissionEdit.requestMoviesDescription",
+      "sourcePosition": 2443
+    },
+    {
+      "candidateTarget": "Concede permissão para solicitar mídias que não sejam 4K.",
+      "candidateTargetHash": "254034bbf1a9c3185f9dcbcead347be54d8d61dc3c6d3672cb081d09589bbfd4",
+      "disposition": "propose-correction",
+      "locale": "pt_BR",
+      "sourceId": "components.PermissionEdit.requestMoviesDescription",
+      "sourcePosition": 2443
+    },
+    {
+      "candidateTarget": "Cho phép gửi yêu cầu phim không phải 4K.",
+      "candidateTargetHash": "b542e4cae044132c8409d9c44b9e976450706ea1ba1fec662ee18e509cca7dfa",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.PermissionEdit.requestMoviesDescription",
+      "sourcePosition": 2443
+    },
+    {
+      "candidateTarget": "طلب الموسيقى",
+      "candidateTargetHash": "d301c9e935965ff0c64381bea1fd2984d910cc3fe5d311e199c557c406386697",
+      "disposition": "propose-correction",
+      "locale": "ar",
+      "sourceId": "components.PermissionEdit.requestMusic",
+      "sourcePosition": 2444
+    },
+    {
+      "candidateTarget": "संगीत का अनुरोध करें",
+      "candidateTargetHash": "c3cbaa325606b0034bda6e1a3dfa0973b866187f45dfbf28af6cd5c62847c521",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.PermissionEdit.requestMusic",
+      "sourcePosition": 2444
+    },
+    {
+      "candidateTarget": "音楽をリクエスト",
+      "candidateTargetHash": "db3db1c34f064017b07a54d3400518569e740cab267a9ade1780fb535ca73e90",
+      "disposition": "propose-correction",
+      "locale": "ja",
+      "sourceId": "components.PermissionEdit.requestMusic",
+      "sourcePosition": 2444
+    },
+    {
+      "candidateTarget": "음악 요청",
+      "candidateTargetHash": "0317832b65598a58fbd0876e7e14b713c5c9253f06ea004b3b28a897b7a84851",
+      "disposition": "propose-correction",
+      "locale": "ko",
+      "sourceId": "components.PermissionEdit.requestMusic",
+      "sourcePosition": 2444
+    },
+    {
+      "candidateTarget": "Berikan izin untuk mengajukan permintaan musik.",
+      "candidateTargetHash": "57f24e2f9195739402682c1b2e9928a06d3b598861133426311d02c2b3484cc4",
+      "disposition": "propose-correction",
+      "locale": "id",
+      "sourceId": "components.PermissionEdit.requestMusicDescription",
+      "sourcePosition": 2445
+    },
+    {
+      "candidateTarget": "音楽リクエストを提出する権限を付与します。",
+      "candidateTargetHash": "926dd21280a28f4d4f826e215784ca9b59f070a22ffbae6cd66f35c8dfa2b9b3",
+      "disposition": "propose-correction",
+      "locale": "ja",
+      "sourceId": "components.PermissionEdit.requestMusicDescription",
+      "sourcePosition": 2445
+    },
+    {
+      "candidateTarget": "Cho phép gửi yêu cầu âm nhạc.",
+      "candidateTargetHash": "3fe4c4bc37bbe01d5a510f1235ed43b64088265a862c47ef6c0add9ba6daf350",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.PermissionEdit.requestMusicDescription",
+      "sourcePosition": 2445
+    },
+    {
+      "candidateTarget": "Solicitar contenido deportivo",
+      "candidateTargetHash": "5a3b6d1cb78cd27fe5a98b88ada4aaa86552439c3ea46aa8a803d107a0f6f94a",
+      "disposition": "propose-correction",
+      "locale": "es",
+      "sourceId": "components.PermissionEdit.requestSports",
+      "sourcePosition": 2446
+    },
+    {
+      "candidateTarget": "Demander du contenu sportif",
+      "candidateTargetHash": "d0bd9e4ddf1369ad0877cf8e0edceaf80c2fbbd31074db741bc149a225de7ca9",
+      "disposition": "propose-correction",
+      "locale": "fr",
+      "sourceId": "components.PermissionEdit.requestSports",
+      "sourcePosition": 2446
+    },
+    {
+      "candidateTarget": "खेलों का अनुरोध करें",
+      "candidateTargetHash": "3067f77e0eaf810253602417a06d4a5c81bb7f5afec6de16955515932802935e",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.PermissionEdit.requestSports",
+      "sourcePosition": 2446
+    },
+    {
+      "candidateTarget": "스포츠 콘텐츠 요청",
+      "candidateTargetHash": "52c2391c03c5ab5875f4e86011b42d68204e66f2c748197776f0ae24a6b07b25",
+      "disposition": "propose-correction",
+      "locale": "ko",
+      "sourceId": "components.PermissionEdit.requestSports",
+      "sourcePosition": 2446
+    },
+    {
+      "candidateTarget": "Solicitar conteúdo esportivo",
+      "candidateTargetHash": "b3d9390e6c3c76319a7aec1c63643bccfae1efaf3bc4464e27d29e5724383c29",
+      "disposition": "propose-correction",
+      "locale": "pt_BR",
+      "sourceId": "components.PermissionEdit.requestSports",
+      "sourcePosition": 2446
+    },
+    {
+      "candidateTarget": "请求体育内容",
+      "candidateTargetHash": "fdd5a2c9128b282cf39069d3a90b04524744715e72e4ed131a646b429c753f04",
+      "disposition": "propose-correction",
+      "locale": "zh_Hans",
+      "sourceId": "components.PermissionEdit.requestSports",
+      "sourcePosition": 2446
+    },
+    {
+      "candidateTarget": "請求體育內容",
+      "candidateTargetHash": "e3630605b316d53fdf15c4ab202c89bb94df86e69835893ed9d9879cb1b0a506",
+      "disposition": "propose-correction",
+      "locale": "zh_Hant",
+      "sourceId": "components.PermissionEdit.requestSports",
+      "sourcePosition": 2446
+    },
+    {
+      "candidateTarget": "منح الإذن بتقديم طلبات الدوريات الرياضية عبر Sportarr.",
+      "candidateTargetHash": "057eafc34c3c2b7b4d3f5b698a7f3785e215ff93fc1826c4d75472e38ab563b1",
+      "disposition": "propose-correction",
+      "locale": "ar",
+      "sourceId": "components.PermissionEdit.requestSportsDescription",
+      "sourcePosition": 2447
+    },
+    {
+      "candidateTarget": "Accorder la permission de soumettre des demandes de ligues sportives via Sportarr.",
+      "candidateTargetHash": "724a7980f10c849c690cecc8e4348457ec52ccfc20bafed6725313d6e5ded43c",
+      "disposition": "propose-correction",
+      "locale": "fr",
+      "sourceId": "components.PermissionEdit.requestSportsDescription",
+      "sourcePosition": 2447
+    },
+    {
+      "candidateTarget": "Sportarr के ज़रिए खेल लीगों के अनुरोध भेजने की अनुमति दें।",
+      "candidateTargetHash": "b562d045a4b4cbac249f8f513bceca381d75ebfcbb02d85751017803395d63ea",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.PermissionEdit.requestSportsDescription",
+      "sourcePosition": 2447
+    },
+    {
+      "candidateTarget": "Berikan izin untuk mengajukan permintaan liga olahraga melalui Sportarr.",
+      "candidateTargetHash": "bfcef001ebe6c5d69b4953e585bec43a6a67ce8b2575973c2b324c3ebe90fcfa",
+      "disposition": "propose-correction",
+      "locale": "id",
+      "sourceId": "components.PermissionEdit.requestSportsDescription",
+      "sourcePosition": 2447
+    },
+    {
+      "candidateTarget": "Cho phép gửi yêu cầu cho các giải đấu thể thao qua Sportarr.",
+      "candidateTargetHash": "2c825f7df0933c6fa6958c03eb981148f747704e9999a6be09fd0b26f9266994",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.PermissionEdit.requestSportsDescription",
+      "sourcePosition": 2447
+    },
+    {
+      "candidateTarget": "सीरीज़ का अनुरोध करें",
+      "candidateTargetHash": "683da71aea493a047f93ca66d20974e463b756a330b062655ff83cc4ed84d830",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.PermissionEdit.requestTv",
+      "sourcePosition": 2448
+    },
+    {
+      "candidateTarget": "Ajukan Permintaan Serial",
+      "candidateTargetHash": "517b1d4c1d60592a75bbfdc7584d60d60a8b92b85a208a0d25f04df9ef7e69f5",
+      "disposition": "propose-correction",
+      "locale": "id",
+      "sourceId": "components.PermissionEdit.requestTv",
+      "sourcePosition": 2448
+    },
+    {
+      "candidateTarget": "Yêu cầu phim bộ",
+      "candidateTargetHash": "d2757783b1eaa20104168d7a43e953230aebe268a9f6a23a57ccda5b2820b04b",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.PermissionEdit.requestTv",
+      "sourcePosition": 2448
+    },
+    {
+      "candidateTarget": "منح الإذن بإرسال طلبات لمسلسلات غير 4K.",
+      "candidateTargetHash": "e8a2cfa9c68199f0285ce8baf07ff6816220f42122b0014b503bb5c743d4cc23",
+      "disposition": "propose-correction",
+      "locale": "ar",
+      "sourceId": "components.PermissionEdit.requestTvDescription",
+      "sourcePosition": 2449
+    },
+    {
+      "candidateTarget": "Berikan izin untuk mengajukan permintaan serial non-4K.",
+      "candidateTargetHash": "e9867c5f6381be14c241d67bc7321f4dc2b9bbfe94e45c95b9e2238c4acd1f96",
+      "disposition": "propose-correction",
+      "locale": "id",
+      "sourceId": "components.PermissionEdit.requestTvDescription",
+      "sourcePosition": 2449
+    },
+    {
+      "candidateTarget": "Concede permissão para solicitar séries que não sejam 4K.",
+      "candidateTargetHash": "6fe5581b7fbc2f902d7297557e93466cc2b714bf445214c0118d2ad15d3e517e",
+      "disposition": "propose-correction",
+      "locale": "pt_BR",
+      "sourceId": "components.PermissionEdit.requestTvDescription",
+      "sourcePosition": 2449
+    },
+    {
+      "candidateTarget": "Cho phép gửi yêu cầu phim bộ không phải 4K.",
+      "candidateTargetHash": "5762acd80e64b94ce9d19d54a0861a545abf7f45606d348ed5b373eedfca3c29",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.PermissionEdit.requestTvDescription",
+      "sourcePosition": 2449
+    },
+    {
+      "candidateTarget": "منح الإذن بإدارة المستخدمين. لا يمكن للمستخدمين الذين لديهم هذه الصلاحية تعديل المستخدمين ذوي صلاحية Admin أو منح صلاحية Admin.",
+      "candidateTargetHash": "c420eaac78a06180c978b0024b0d2c71e9e513c990c3eeca9b88ea08c8ad94fd",
+      "disposition": "propose-correction",
+      "locale": "ar",
+      "sourceId": "components.PermissionEdit.usersDescription",
+      "sourcePosition": 2451
+    },
+    {
+      "candidateTarget": "Concede permiso para gestionar usuarios. Los usuarios con este permiso no pueden modificar usuarios con el privilegio Admin ni conceder el privilegio Admin.",
+      "candidateTargetHash": "76bc0351a9fd5d00620a13fd92bf9e3013bd8eb6d4df06f1d65ec9d5feeac129",
+      "disposition": "propose-correction",
+      "locale": "es",
+      "sourceId": "components.PermissionEdit.usersDescription",
+      "sourcePosition": 2451
+    },
+    {
+      "candidateTarget": "Autorise à gérer les utilisateurs. Les utilisateurs avec cette autorisation ne peuvent ni modifier les utilisateurs ayant le privilège Admin, ni accorder ce privilège.",
+      "candidateTargetHash": "89fa1ef6b60eafe458af291510ad96bd249c838249e27afa487986d16b5e08c6",
+      "disposition": "propose-correction",
+      "locale": "fr",
+      "sourceId": "components.PermissionEdit.usersDescription",
+      "sourcePosition": 2451
+    },
+    {
+      "candidateTarget": "यह अनुमति उपयोगकर्ताओं को प्रबंधित करने देती है। इस अनुमति वाले उपयोगकर्ता, Admin अधिकार वाले उपयोगकर्ताओं के खाते नहीं बदल सकते और किसी को Admin अधिकार नहीं दे सकते।",
+      "candidateTargetHash": "2ce9de91dfb5767ed71ab425b3fb8ffaf1b1c40261b0e8ed199d4b59ef418d4c",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.PermissionEdit.usersDescription",
+      "sourcePosition": 2451
+    },
+    {
+      "candidateTarget": "Berikan izin untuk mengelola pengguna. Pengguna dengan izin ini tidak dapat mengubah akun pengguna yang memiliki hak istimewa Admin atau memberikan hak istimewa Admin kepada siapa pun.",
+      "candidateTargetHash": "d995f4db07a810e515fc99964bc161000470a6e73757f2668caef5476f558e74",
+      "disposition": "propose-correction",
+      "locale": "id",
+      "sourceId": "components.PermissionEdit.usersDescription",
+      "sourcePosition": 2451
+    },
+    {
+      "candidateTarget": "사용자 관리 권한을 부여합니다. 이 권한이 있는 사용자는 Admin 권한이 있는 사용자를 수정하거나 Admin 권한을 부여할 수 없습니다.",
+      "candidateTargetHash": "9cc8a535e4344030b8979f761522a898f63a90259f988604595238e13c397dce",
+      "disposition": "propose-correction",
+      "locale": "ko",
+      "sourceId": "components.PermissionEdit.usersDescription",
+      "sourcePosition": 2451
+    },
+    {
+      "candidateTarget": "Concede permissão para gerenciar usuários. Usuários com essa permissão não podem modificar usuários que tenham o privilégio Admin nem conceder esse privilégio.",
+      "candidateTargetHash": "eae03f24938a737e72ee297e5b7e2900351625f0d97523fa1b6af76a4bfb2f3d",
+      "disposition": "propose-correction",
+      "locale": "pt_BR",
+      "sourceId": "components.PermissionEdit.usersDescription",
+      "sourcePosition": 2451
+    },
+    {
+      "candidateTarget": "Cho phép quản lý người dùng. Người dùng có quyền này không thể sửa tài khoản của người dùng có quyền Admin hoặc cấp quyền Admin cho bất kỳ ai.",
+      "candidateTargetHash": "2a9552d43c2e94d4c65fb29a4c683bb85343041046affd475e65a8d8ba9061ed",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.PermissionEdit.usersDescription",
+      "sourcePosition": 2451
+    },
+    {
+      "candidateTarget": "授予管理用户的权限。拥有此权限的用户不能修改拥有 Admin 权限的用户，也不能授予 Admin 权限。",
+      "candidateTargetHash": "1c5bc114f1e1c618e9e1bc3c4ba1a3cf7f34b1f75554dd3a3db48f4e5b612775",
+      "disposition": "propose-correction",
+      "locale": "zh_Hans",
+      "sourceId": "components.PermissionEdit.usersDescription",
+      "sourcePosition": 2451
+    },
+    {
+      "candidateTarget": "授予管理使用者的權限。擁有此權限的使用者不能修改擁有 Admin 權限的使用者，也不能授予 Admin 權限。",
+      "candidateTargetHash": "28c9c0aa0cf6c346e9f4996c46586846acec3de17e5af57d8193edeb08667d84",
+      "disposition": "propose-correction",
+      "locale": "zh_Hant",
+      "sourceId": "components.PermissionEdit.usersDescription",
+      "sourcePosition": 2451
+    },
+    {
+      "candidateTarget": "Lihat media yang masuk daftar blokir.",
+      "candidateTargetHash": "53f5d25e574e009134e4abdcf683dd2d19ec2b88283f0801ab71c7dba5a7ad88",
+      "disposition": "propose-correction",
+      "locale": "id",
+      "sourceId": "components.PermissionEdit.viewblocklistedItems",
+      "sourcePosition": 2452
+    },
+    {
+      "candidateTarget": "Concede permiso para ver medios en la lista de bloqueo.",
+      "candidateTargetHash": "ad881c518f97a0c8daae9a5ca58a96eb953bf633f74cd48209d948970fbd5758",
+      "disposition": "propose-correction",
+      "locale": "es",
+      "sourceId": "components.PermissionEdit.viewblocklistedItemsDescription",
+      "sourcePosition": 2453
+    },
+    {
+      "candidateTarget": "ब्लॉकलिस्ट में शामिल मीडिया देखने की अनुमति दें।",
+      "candidateTargetHash": "3064af0cc302a6d1fe508248c65b8086cf825aacff8b0e21afea6bb57af0c766",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.PermissionEdit.viewblocklistedItemsDescription",
+      "sourcePosition": 2453
+    },
+    {
+      "candidateTarget": "Berikan izin untuk melihat media yang masuk daftar blokir.",
+      "candidateTargetHash": "649287bb428d16c279082404eedfa1d460542170001c8b7d73fe3238bb885eee",
+      "disposition": "propose-correction",
+      "locale": "id",
+      "sourceId": "components.PermissionEdit.viewblocklistedItemsDescription",
+      "sourcePosition": 2453
+    },
+    {
+      "candidateTarget": "Cho phép xem nội dung trong danh sách chặn.",
+      "candidateTargetHash": "de08fc89d3abd054798f877aa60f3064f662f14b0b468b06d022a8d0979b1801",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.PermissionEdit.viewblocklistedItemsDescription",
+      "sourcePosition": 2453
+    },
+    {
+      "candidateTarget": "問題を表示",
+      "candidateTargetHash": "7405ba064bd42a9f3894ade6401d8a4dfb2372badada2cdff02707c6fa75d6b5",
+      "disposition": "propose-correction",
+      "locale": "ja",
+      "sourceId": "components.PermissionEdit.viewissues",
+      "sourcePosition": 2454
+    },
+    {
+      "candidateTarget": "他のユーザーが報告したメディアの問題を表示する権限を付与します。",
+      "candidateTargetHash": "60c0ad47604d6d9250f029fec7938be9ce7af56d3a61a551e06f96f7bea38ce5",
+      "disposition": "propose-correction",
+      "locale": "ja",
+      "sourceId": "components.PermissionEdit.viewissuesDescription",
+      "sourcePosition": 2455
+    },
+    {
+      "candidateTarget": "Concede permissão para ver problemas de mídia relatados por outros usuários.",
+      "candidateTargetHash": "455ecfbb370fd4045e1c8333343e5eafec4ffd8842161e0ac26d8f51bf136a46",
+      "disposition": "propose-correction",
+      "locale": "pt_BR",
+      "sourceId": "components.PermissionEdit.viewissuesDescription",
+      "sourcePosition": 2455
+    },
+    {
+      "candidateTarget": "Cho phép xem các sự cố về nội dung do người dùng khác báo cáo.",
+      "candidateTargetHash": "32beee8ad253b6239fdce3063fed319df69a68963b232dadc295c8879a961d59",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.PermissionEdit.viewissuesDescription",
+      "sourcePosition": 2455
+    },
+    {
+      "candidateTarget": "Ver contenido añadido recientemente",
+      "candidateTargetHash": "5ae74460608aae411d699249a788f3c1a249deaaf9ca8d8c21394677ee73f833",
+      "disposition": "propose-correction",
+      "locale": "es",
+      "sourceId": "components.PermissionEdit.viewrecent",
+      "sourcePosition": 2456
+    },
+    {
+      "candidateTarget": "हाल में जोड़ी गई सामग्री देखें",
+      "candidateTargetHash": "90cebfae9439731dbfdcdc42f9864228a960019cc9a13269f31f6742139abc22",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.PermissionEdit.viewrecent",
+      "sourcePosition": 2456
+    },
+    {
+      "candidateTarget": "Lihat Media yang Baru Ditambahkan",
+      "candidateTargetHash": "28431f1bd302fe5fb973b6be88de7d0921b55458074684dbf9d64864e9ecfce1",
+      "disposition": "propose-correction",
+      "locale": "id",
+      "sourceId": "components.PermissionEdit.viewrecent",
+      "sourcePosition": 2456
+    },
+    {
+      "candidateTarget": "Xem nội dung mới được thêm gần đây",
+      "candidateTargetHash": "92a6963ef0bc545181080869880509eb3c36a2db52a914c9c614104e664bd0be",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.PermissionEdit.viewrecent",
+      "sourcePosition": 2456
+    },
+    {
+      "candidateTarget": "Berikan izin untuk melihat daftar media yang baru ditambahkan.",
+      "candidateTargetHash": "f5aa3b51d424da8799da2a11506ad5f6a6513844e8a5241dec4131a8d6c4c69e",
+      "disposition": "propose-correction",
+      "locale": "id",
+      "sourceId": "components.PermissionEdit.viewrecentDescription",
+      "sourcePosition": 2457
+    },
+    {
+      "candidateTarget": "Cho phép xem danh sách nội dung mới được thêm gần đây.",
+      "candidateTargetHash": "532df48534ea4245c6efe1c1a388cc5ade05b7f7b1ed64bd30d290b1a7806641",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.PermissionEdit.viewrecentDescription",
+      "sourcePosition": 2457
+    },
+    {
+      "candidateTarget": "Lihat Permintaan",
+      "candidateTargetHash": "3de595209af457865917f484e95707e49a884d7e957f262dfc45a7eca3d7c321",
+      "disposition": "propose-correction",
+      "locale": "id",
+      "sourceId": "components.PermissionEdit.viewrequests",
+      "sourcePosition": 2458
+    },
+    {
+      "candidateTarget": "Xem yêu cầu",
+      "candidateTargetHash": "c8961072a4720607b23fabdb53d8cb6439b41a09abc922e26fc511d60ad04ed0",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.PermissionEdit.viewrequests",
+      "sourcePosition": 2458
+    },
+    {
+      "candidateTarget": "Concede permissão para visualizar solicitações de mídia feitas por outros usuários.",
+      "candidateTargetHash": "87e150c8d975ab365140056550e057fabf1de9cc33c8c0e57655efa1e7634437",
+      "disposition": "propose-correction",
+      "locale": "pt_BR",
+      "sourceId": "components.PermissionEdit.viewrequestsDescription",
+      "sourcePosition": 2459
+    },
+    {
+      "candidateTarget": "अन्य उपयोगकर्ताओं की वॉचलिस्ट देखने की अनुमति दें।",
+      "candidateTargetHash": "09e0104a3e4136445682df770881a6d45ee89826b0058540466bc81684527dd2",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.PermissionEdit.viewwatchlistsDescription",
+      "sourcePosition": 2461
+    },
+    {
+      "candidateTarget": "授予查看其他用户关注列表的权限。",
+      "candidateTargetHash": "3d1cba9787fcdd8a3cf818bca1fc4847dd824bd3e2a3693a326410bd7062c72c",
+      "disposition": "propose-correction",
+      "locale": "zh_Hans",
+      "sourceId": "components.PermissionEdit.viewwatchlistsDescription",
+      "sourcePosition": 2461
+    },
+    {
+      "candidateTarget": "أسماء أخرى: {names}",
+      "candidateTargetHash": "ce71fe50a27f05f93d86b87ef3cf4e66d26a1eaae97d07b7b31fe0b5ceae14e1",
+      "disposition": "propose-correction",
+      "locale": "ar",
+      "sourceId": "components.PersonDetails.alsoknownas",
+      "sourcePosition": 2462
+    },
+    {
+      "candidateTarget": "अन्य नाम: {names}",
+      "candidateTargetHash": "bc436d7ffe70b90324c936c88f322ee86c6978f8afe1ff2437ed7168d8a80e3b",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.PersonDetails.alsoknownas",
+      "sourcePosition": 2462
+    },
+    {
+      "candidateTarget": "Juga dikenal sebagai: {names}",
+      "candidateTargetHash": "109e5176044dba92ac5624a4a9ef7811a57a984e1fbf05617280c768211613ee",
+      "disposition": "propose-correction",
+      "locale": "id",
+      "sourceId": "components.PersonDetails.alsoknownas",
+      "sourcePosition": 2462
+    },
+    {
+      "candidateTarget": "Còn được biết đến với tên: {names}",
+      "candidateTargetHash": "f3fa563b2c067e41feee335c0bbd2349ce604e3a9f811e2b544f4fa74d762d2f",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.PersonDetails.alsoknownas",
+      "sourcePosition": 2462
+    },
+    {
+      "candidateTarget": "अभिनय भूमिकाएँ",
+      "candidateTargetHash": "ddd32452ffadcd7f392206049ade4c83f245a35e4b47643c86994a26e2a87f43",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.PersonDetails.appearsin",
+      "sourcePosition": 2463
+    },
+    {
+      "candidateTarget": "Participações",
+      "candidateTargetHash": "5232924a4aff03e957762ff8c74067fa9e104f80941c3071267bf27e3f6e35eb",
+      "disposition": "propose-correction",
+      "locale": "pt_BR",
+      "sourceId": "components.PersonDetails.appearsin",
+      "sourcePosition": 2463
+    },
+    {
+      "candidateTarget": "Tác phẩm tham gia",
+      "candidateTargetHash": "c17386f24678c514fe57f1fb7d060f51711b7b60dfb756680089bd2255f4a707",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.PersonDetails.appearsin",
+      "sourcePosition": 2463
+    },
+    {
+      "candidateTarget": "بدور {character}",
+      "candidateTargetHash": "b6bae4e78329c89e62332b1af7857b22a5b5eea21ed1db33ed4b59cf9148ce4f",
+      "disposition": "propose-correction",
+      "locale": "ar",
+      "sourceId": "components.PersonDetails.ascharacter",
+      "sourcePosition": 2464
+    },
+    {
+      "candidateTarget": "के रूप में {character}",
+      "candidateTargetHash": "2d4f3468fe173f78d3b03df88bf23fbada70c74ad8ec67335e5e3f025a4d0097",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.PersonDetails.ascharacter",
+      "sourcePosition": 2464
+    },
+    {
+      "candidateTarget": "trong vai {character}",
+      "candidateTargetHash": "81b5650bada854b8854c80b825b785a7fb9793ac1553ef4c5484420905aca643",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.PersonDetails.ascharacter",
+      "sourcePosition": 2464
+    },
+    {
+      "candidateTarget": "تاريخ الميلاد: {birthdate}",
+      "candidateTargetHash": "6dfa01ef2bde3fe5e9dbbbff7ed6f18895d7ae934dba79f55dbfd0d8d8388dd1",
+      "disposition": "propose-correction",
+      "locale": "ar",
+      "sourceId": "components.PersonDetails.birthdate",
+      "sourcePosition": 2465
+    },
+    {
+      "candidateTarget": "Nació el {birthdate}",
+      "candidateTargetHash": "496fcdb542791f64a66d84012ec3c6dd4647e4aef2ae11d7817589f367ecb4e2",
+      "disposition": "propose-correction",
+      "locale": "es",
+      "sourceId": "components.PersonDetails.birthdate",
+      "sourcePosition": 2465
+    },
+    {
+      "candidateTarget": "生年月日：{birthdate}",
+      "candidateTargetHash": "3e85ceff928cf829949a021b03d59eeb5e8762bbe9416ab7dfe4c26634095de4",
+      "disposition": "propose-correction",
+      "locale": "ja",
+      "sourceId": "components.PersonDetails.birthdate",
+      "sourcePosition": 2465
+    },
+    {
+      "candidateTarget": "Sinh ngày {birthdate}",
+      "candidateTargetHash": "525eefd9296092103dd27e995732a51cdd845ec3f323736e3f8ed4646ec87939",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.PersonDetails.birthdate",
+      "sourcePosition": 2465
+    },
+    {
+      "candidateTarget": "出生日期：{birthdate}",
+      "candidateTargetHash": "cecfd00627f084b48790ab9b60e9d47259c41b42eaf91d7b6dc7f8f7869baa2e",
+      "disposition": "propose-correction",
+      "locale": "zh_Hans",
+      "sourceId": "components.PersonDetails.birthdate",
+      "sourcePosition": 2465
+    },
+    {
+      "candidateTarget": "出生日期：{birthdate}",
+      "candidateTargetHash": "cecfd00627f084b48790ab9b60e9d47259c41b42eaf91d7b6dc7f8f7869baa2e",
+      "disposition": "propose-correction",
+      "locale": "zh_Hant",
+      "sourceId": "components.PersonDetails.birthdate",
+      "sourcePosition": 2465
+    },
+    {
+      "candidateTarget": "طاقم العمل",
+      "candidateTargetHash": "cce791a01bae7da5d2357d67d226f74a9fb5b0cad7f35c4bc810bcd033496bbf",
+      "disposition": "propose-correction",
+      "locale": "ar",
+      "sourceId": "components.PersonDetails.crewmember",
+      "sourcePosition": 2466
+    },
+    {
+      "candidateTarget": "Filmcrew",
+      "candidateTargetHash": "7d1c21fd1e56bf0f85b7d69ca12f85a7b5acfa716bd08b00201d960babc19c7c",
+      "disposition": "propose-correction",
+      "locale": "de",
+      "sourceId": "components.PersonDetails.crewmember",
+      "sourcePosition": 2466
+    },
+    {
+      "candidateTarget": "Equipe técnica",
+      "candidateTargetHash": "6ac5bfbd0afa24d751b0426a132dc76127a65628c8ffc79f983861e4c12a6e6f",
+      "disposition": "propose-correction",
+      "locale": "pt_BR",
+      "sourceId": "components.PersonDetails.crewmember",
+      "sourcePosition": 2466
+    },
+    {
+      "candidateTarget": "طلب جميع الأفلام",
+      "candidateTargetHash": "6c4d969c5686a38c9d0793fb51ea5e97f0529ad6e12d43b36e8c8b9e80d34ae4",
+      "disposition": "propose-correction",
+      "locale": "ar",
+      "sourceId": "components.PersonDetails.requestAllMovies",
+      "sourcePosition": 2468
+    },
+    {
+      "candidateTarget": "Minta Semua Film",
+      "candidateTargetHash": "ed8766369dba7c0fe8ebe72049a0b37a1983e997fd23f7ad91c82d602e7061b4",
+      "disposition": "propose-correction",
+      "locale": "id",
+      "sourceId": "components.PersonDetails.requestAllMovies",
+      "sourcePosition": 2468
+    },
+    {
+      "candidateTarget": "모든 영화 요청",
+      "candidateTargetHash": "5a18bf3a3230d6c01a7cf99daeeb05bfc304e11f179c8acadf637ae8e6f36491",
+      "disposition": "propose-correction",
+      "locale": "ko",
+      "sourceId": "components.PersonDetails.requestAllMovies",
+      "sourcePosition": 2468
+    },
+    {
+      "candidateTarget": "Yêu cầu tất cả phim",
+      "candidateTargetHash": "ef8d715ccb5228b18fa251b13478bd6313b1fdab765c7d383410964e1535a313",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.PersonDetails.requestAllMovies",
+      "sourcePosition": 2468
+    },
+    {
+      "candidateTarget": "اطلب الكل",
+      "candidateTargetHash": "642fcf498cee02911b7b6e297b20d8ff2bc0d05af507a38c595cebaf9dd25c6c",
+      "disposition": "propose-correction",
+      "locale": "ar",
+      "sourceId": "components.PersonDetails.requestAllMoviesConfirm",
+      "sourcePosition": 2469
+    },
+    {
+      "candidateTarget": "Tout demander",
+      "candidateTargetHash": "6065e9df363e994754d53fe56e92d59830646f7d14272600da42b40d40a7ff7f",
+      "disposition": "propose-correction",
+      "locale": "fr",
+      "sourceId": "components.PersonDetails.requestAllMoviesConfirm",
+      "sourcePosition": 2469
+    },
+    {
+      "candidateTarget": "सभी का अनुरोध करें",
+      "candidateTargetHash": "8653257678863b50ecd3aa23f0c5bc568ebca008a28aa5659786feb5ac33f3e3",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.PersonDetails.requestAllMoviesConfirm",
+      "sourcePosition": 2469
+    },
+    {
+      "candidateTarget": "Minta Semua",
+      "candidateTargetHash": "96fbc6902c57b2a3706f525bcbef34680e5ee33c9b52ed7647a3203697cb9dd1",
+      "disposition": "propose-correction",
+      "locale": "id",
+      "sourceId": "components.PersonDetails.requestAllMoviesConfirm",
+      "sourcePosition": 2469
+    },
+    {
+      "candidateTarget": "すべてリクエスト",
+      "candidateTargetHash": "8f0ce009cd138056773df834f54894d15eba4714ac238f7b13274e4672782b18",
+      "disposition": "propose-correction",
+      "locale": "ja",
+      "sourceId": "components.PersonDetails.requestAllMoviesConfirm",
+      "sourcePosition": 2469
+    },
+    {
+      "candidateTarget": "모두 요청",
+      "candidateTargetHash": "c38aab470b51408bda3f595bd2938b07504c3ff52e37caf17351aecaae96dce3",
+      "disposition": "propose-correction",
+      "locale": "ko",
+      "sourceId": "components.PersonDetails.requestAllMoviesConfirm",
+      "sourcePosition": 2469
+    },
+    {
+      "candidateTarget": "Solicitar todos",
+      "candidateTargetHash": "f2a3bb24db45033713221ca354157d6556fa4ff03404f3e40f0ea2618a4eac7e",
+      "disposition": "propose-correction",
+      "locale": "pt_BR",
+      "sourceId": "components.PersonDetails.requestAllMoviesConfirm",
+      "sourcePosition": 2469
+    },
+    {
+      "candidateTarget": "إرسال طلبات لـ{count} من أفلام {person}. يتم تخطي الطلبات الموجودة والأفلام المدرجة في قائمة الحظر. تسري الأذونات المعتادة وحصص الطلبات.",
+      "candidateTargetHash": "4457554b137c6c0155ea6bba4b4198491eabed8b39f8df1dcb05327e254bc657",
+      "disposition": "propose-correction",
+      "locale": "ar",
+      "sourceId": "components.PersonDetails.requestAllMoviesDescription",
+      "sourcePosition": 2470
+    },
+    {
+      "candidateTarget": "Kirim permintaan untuk {count} film yang dibintangi {person}. Permintaan yang sudah ada dan film yang masuk daftar blokir akan dilewati. Izin dan kuota permintaan yang berlaku tetap diterapkan.",
+      "candidateTargetHash": "c16cc094f61683edc644c786b583a7038ea86d968a0cb6df0d7478e75a5ecf1d",
+      "disposition": "propose-correction",
+      "locale": "id",
+      "sourceId": "components.PersonDetails.requestAllMoviesDescription",
+      "sourcePosition": 2470
+    },
+    {
+      "candidateTarget": "Gửi yêu cầu cho {count} phim có sự tham gia của {person}. Các yêu cầu hiện có và phim trong danh sách chặn sẽ được bỏ qua. Các quyền và hạn mức yêu cầu thông thường vẫn được áp dụng.",
+      "candidateTargetHash": "91db5a2e76afaed1cb0bbc210aead27dfd591393f0eb26ccdc88756d00959a5d",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.PersonDetails.requestAllMoviesDescription",
+      "sourcePosition": 2470
+    },
+    {
+      "candidateTarget": "Impossible de demander les films de cette personne.",
+      "candidateTargetHash": "da09407cbf71e38d6059a470ab90ef08955883950fe658f068afaca2d9751a8e",
+      "disposition": "propose-correction",
+      "locale": "fr",
+      "sourceId": "components.PersonDetails.requestAllMoviesFailure",
+      "sourcePosition": 2471
+    },
+    {
+      "candidateTarget": "इस व्यक्ति की फ़िल्मों के अनुरोध नहीं भेजे जा सके।",
+      "candidateTargetHash": "7cc102baab8966cece8af29c7f39e2a6b1baee71c906a99870f6d92b04080ef1",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.PersonDetails.requestAllMoviesFailure",
+      "sourcePosition": 2471
+    },
+    {
+      "candidateTarget": "Tidak dapat mengajukan permintaan untuk film yang dibintangi orang ini.",
+      "candidateTargetHash": "431e1f2ebd307f2d5179bffa44b55a6668d98a498f1811e43761f3c57ce45e26",
+      "disposition": "propose-correction",
+      "locale": "id",
+      "sourceId": "components.PersonDetails.requestAllMoviesFailure",
+      "sourcePosition": 2471
+    },
+    {
+      "candidateTarget": "この人物の映画をリクエストできませんでした。",
+      "candidateTargetHash": "e9c8fe7776b06c74cf1951f1f5b2c901735dc192ac177a94329c79862176a416",
+      "disposition": "propose-correction",
+      "locale": "ja",
+      "sourceId": "components.PersonDetails.requestAllMoviesFailure",
+      "sourcePosition": 2471
+    },
+    {
+      "candidateTarget": "이 인물의 영화를 요청하지 못했습니다.",
+      "candidateTargetHash": "98b23bd95ab580b44f01b159d666dbf2f03e7cff02ff383f1f1253115d52e923",
+      "disposition": "propose-correction",
+      "locale": "ko",
+      "sourceId": "components.PersonDetails.requestAllMoviesFailure",
+      "sourcePosition": 2471
+    },
+    {
+      "candidateTarget": "Não foi possível solicitar filmes desta pessoa.",
+      "candidateTargetHash": "e652ed65d356a7c0ad7290a160dad7f6acbb1e9538aabede12cea20111034506",
+      "disposition": "propose-correction",
+      "locale": "pt_BR",
+      "sourceId": "components.PersonDetails.requestAllMoviesFailure",
+      "sourcePosition": 2471
+    },
+    {
+      "candidateTarget": "Không thể gửi yêu cầu cho các phim có sự tham gia của người này.",
+      "candidateTargetHash": "b2cbd5d1714083a533311f161dcb679159dae4c4bd72ae2c6ee4020c20f2f1a1",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.PersonDetails.requestAllMoviesFailure",
+      "sourcePosition": 2471
+    },
+    {
+      "candidateTarget": "无法请求这位人士的电影。",
+      "candidateTargetHash": "d321ec5d14edd5403dbba645c3aa956e3187f448400705759738ce285b682109",
+      "disposition": "propose-correction",
+      "locale": "zh_Hans",
+      "sourceId": "components.PersonDetails.requestAllMoviesFailure",
+      "sourcePosition": 2471
+    },
+    {
+      "candidateTarget": "無法提出這位人士電影的請求。",
+      "candidateTargetHash": "d6370317ede0ee010b81078a539e56f56333838adcd014db728530e5d1f83520",
+      "disposition": "propose-correction",
+      "locale": "zh_Hant",
+      "sourceId": "components.PersonDetails.requestAllMoviesFailure",
+      "sourcePosition": 2471
+    },
+    {
+      "candidateTarget": "تم إرسال {created} طلبات أفلام. تم تخطي {skipped}؛ وفشل {failed}.",
+      "candidateTargetHash": "c15a53940c6ac658f58afcff265de94b64d861491b5b0f1d33aec6593db582a2",
+      "disposition": "propose-correction",
+      "locale": "ar",
+      "sourceId": "components.PersonDetails.requestAllMoviesSuccess",
+      "sourcePosition": 2472
+    },
+    {
+      "candidateTarget": "Es wurden {created} Filmanfragen eingereicht. {skipped} übersprungen; {failed} fehlgeschlagen.",
+      "candidateTargetHash": "d55b884a236ea79b2ddde6e6913ca053c635639521bb27036e8ac533f7154b37",
+      "disposition": "propose-correction",
+      "locale": "de",
+      "sourceId": "components.PersonDetails.requestAllMoviesSuccess",
+      "sourcePosition": 2472
+    },
+    {
+      "candidateTarget": "Demandes de films envoyées : {created}. Ignorées : {skipped} ; échecs : {failed}.",
+      "candidateTargetHash": "a1135749ccadac7051daf312013eee772392b933a1d1710e417e842432df963f",
+      "disposition": "propose-correction",
+      "locale": "fr",
+      "sourceId": "components.PersonDetails.requestAllMoviesSuccess",
+      "sourcePosition": 2472
+    },
+    {
+      "candidateTarget": "फ़िल्मों के {created} अनुरोध भेजे गए। {skipped} छोड़ दिए गए; {failed} विफल रहे।",
+      "candidateTargetHash": "b2a4c19ab34d8768fe2a4b202ae2f8aec0eb8cd9a072736f80186435cebebdb0",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.PersonDetails.requestAllMoviesSuccess",
+      "sourcePosition": 2472
+    },
+    {
+      "candidateTarget": "Mengirim {created} permintaan film. {skipped} dilewati; {failed} gagal.",
+      "candidateTargetHash": "64ab7e38d0881424c051ac54c828243103b7932dc44916d312c8f63e1693fe40",
+      "disposition": "propose-correction",
+      "locale": "id",
+      "sourceId": "components.PersonDetails.requestAllMoviesSuccess",
+      "sourcePosition": 2472
+    },
+    {
+      "candidateTarget": "映画のリクエストを{created}件送信しました。{skipped}件をスキップし、{failed}件が失敗しました。",
+      "candidateTargetHash": "bc5e4f40960cbe4c85f7835d72c37397616035b0aca9495138ae8e18fb4f634f",
+      "disposition": "propose-correction",
+      "locale": "ja",
+      "sourceId": "components.PersonDetails.requestAllMoviesSuccess",
+      "sourcePosition": 2472
+    },
+    {
+      "candidateTarget": "영화 요청 {created}건을 제출했습니다. {skipped}건은 건너뛰었고 {failed}건은 실패했습니다.",
+      "candidateTargetHash": "c0c3e8abfbc4f49f51fb164a0afd38ce01d2966558d0e6f01768254d463860fa",
+      "disposition": "propose-correction",
+      "locale": "ko",
+      "sourceId": "components.PersonDetails.requestAllMoviesSuccess",
+      "sourcePosition": 2472
+    },
+    {
+      "candidateTarget": "Foram enviados {created} pedidos de filmes. {skipped} foram ignorados; {failed} falharam.",
+      "candidateTargetHash": "89dccb79579cd4837e4aa82b9da5bfb97dc2d2113a20b11dcfb54c8077606823",
+      "disposition": "propose-correction",
+      "locale": "pt_BR",
+      "sourceId": "components.PersonDetails.requestAllMoviesSuccess",
+      "sourcePosition": 2472
+    },
+    {
+      "candidateTarget": "Đã gửi {created} yêu cầu phim. Đã bỏ qua {skipped}; {failed} yêu cầu thất bại.",
+      "candidateTargetHash": "82adb0f1460fa4f7c2fab073e55355d1ae0e3acf71b53e6979d2a6aeb1cae332",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.PersonDetails.requestAllMoviesSuccess",
+      "sourcePosition": 2472
+    },
+    {
+      "candidateTarget": "已提交 {created} 个电影请求。跳过 {skipped} 个；{failed} 个失败。",
+      "candidateTargetHash": "80a28643cf167d041f32af60e2de23af77e01906fd0302d4d2e9074085681673",
+      "disposition": "propose-correction",
+      "locale": "zh_Hans",
+      "sourceId": "components.PersonDetails.requestAllMoviesSuccess",
+      "sourcePosition": 2472
+    },
+    {
+      "candidateTarget": "已提交 {created} 筆電影請求。略過 {skipped} 筆；{failed} 筆失敗。",
+      "candidateTargetHash": "cc583da8793e2755c5c4d346a351396d98ee892c7ff1bb68987eadb8edd390d0",
+      "disposition": "propose-correction",
+      "locale": "zh_Hant",
+      "sourceId": "components.PersonDetails.requestAllMoviesSuccess",
+      "sourcePosition": 2472
+    },
+    {
+      "candidateTarget": "طلب جميع أفلام {person}",
+      "candidateTargetHash": "1a4cd7f1132615353bd5b9cfd695c52ec06d8f7ee9039cfd62a1773486c8dd73",
+      "disposition": "propose-correction",
+      "locale": "ar",
+      "sourceId": "components.PersonDetails.requestAllMoviesTitle",
+      "sourcePosition": 2473
+    },
+    {
+      "candidateTarget": "Solicitar todas las películas de {person}",
+      "candidateTargetHash": "0cd72eea87fd573a8486af5eafbb5cde532b9881c8239f3d53fb2434c362a75c",
+      "disposition": "propose-correction",
+      "locale": "es",
+      "sourceId": "components.PersonDetails.requestAllMoviesTitle",
+      "sourcePosition": 2473
+    },
+    {
+      "candidateTarget": "Demander tous les films de {person}",
+      "candidateTargetHash": "47a17966cd688f657202a7416fa3ae926a720236e76fb84d3e696266a1cad27d",
+      "disposition": "propose-correction",
+      "locale": "fr",
+      "sourceId": "components.PersonDetails.requestAllMoviesTitle",
+      "sourcePosition": 2473
+    },
+    {
+      "candidateTarget": "{person} की सभी फ़िल्मों का अनुरोध करें",
+      "candidateTargetHash": "59e4657bddbdff019eba306386b5aed0d151ca83b6cd9916c2a0dbbde8765634",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.PersonDetails.requestAllMoviesTitle",
+      "sourcePosition": 2473
+    },
+    {
+      "candidateTarget": "Ajukan permintaan untuk semua film yang dibintangi {person}",
+      "candidateTargetHash": "cf1bb09beb0d0acff311bce4b6e9f0e118bfeaa798c8df96b49ee15206f9e64e",
+      "disposition": "propose-correction",
+      "locale": "id",
+      "sourceId": "components.PersonDetails.requestAllMoviesTitle",
+      "sourcePosition": 2473
+    },
+    {
+      "candidateTarget": "{person}のすべての映画をリクエスト",
+      "candidateTargetHash": "0f44573905eb49d43e6ab0d6b352c658f7833ca04bcb7d6a7870b2e356ddf60a",
+      "disposition": "propose-correction",
+      "locale": "ja",
+      "sourceId": "components.PersonDetails.requestAllMoviesTitle",
+      "sourcePosition": 2473
+    },
+    {
+      "candidateTarget": "{person}의 모든 영화 요청",
+      "candidateTargetHash": "8f073c83e9ad71c57e78366300fb61be8e3a89b1bf6b8f92c8ebfc365f833dd4",
+      "disposition": "propose-correction",
+      "locale": "ko",
+      "sourceId": "components.PersonDetails.requestAllMoviesTitle",
+      "sourcePosition": 2473
+    },
+    {
+      "candidateTarget": "Solicitar todos os filmes de {person}",
+      "candidateTargetHash": "fc958a0b538c100dbc49222986d7b3a987bf0435f933e971661eaab9bbb64181",
+      "disposition": "propose-correction",
+      "locale": "pt_BR",
+      "sourceId": "components.PersonDetails.requestAllMoviesTitle",
+      "sourcePosition": 2473
+    },
+    {
+      "candidateTarget": "Yêu cầu tất cả phim có sự tham gia của {person}",
+      "candidateTargetHash": "0ffb64e7cd3acd3d2fdd89fd167e17ac19180dd791d26f2c5507d0effdaec5d3",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.PersonDetails.requestAllMoviesTitle",
+      "sourcePosition": 2473
+    },
+    {
+      "candidateTarget": "请求{person}的所有电影",
+      "candidateTargetHash": "952b288668d3ede5f23822455f25fe811a9413fac51092f194f8797419a2f65c",
+      "disposition": "propose-correction",
+      "locale": "zh_Hans",
+      "sourceId": "components.PersonDetails.requestAllMoviesTitle",
+      "sourcePosition": 2473
+    },
+    {
+      "candidateTarget": "提出{person}所有電影的請求",
+      "candidateTargetHash": "14a0534820d5f1391627b6ed788a88b8385f882604d365d2360097d435f67a1d",
+      "disposition": "propose-correction",
+      "locale": "zh_Hant",
+      "sourceId": "components.PersonDetails.requestAllMoviesTitle",
+      "sourcePosition": 2473
+    },
+    {
+      "candidateTarget": "{count, plural, one {solicitud de contenido para adultos} many {solicitudes de contenido para adultos} other {solicitudes de contenido para adultos}}",
+      "candidateTargetHash": "693bb7c2b5232a80c96aed6d2e4566067eae88300e0920226ae8c43835db8ca7",
+      "disposition": "propose-correction",
+      "locale": "es",
+      "sourceId": "components.QuotaSelector.adultMedia",
+      "sourcePosition": 2474
+    },
+    {
+      "candidateTarget": "{count, plural, one {album} other {album}}",
+      "candidateTargetHash": "ae38af16a876fadc613deca958f8e4a1dffa49123867901662b63450f5635acf",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.QuotaSelector.albums",
+      "sourcePosition": 2476
+    },
+    {
+      "candidateTarget": "{count, plural, one {专辑} other {专辑}}",
+      "candidateTargetHash": "a2631a81ab1a65862f6cc02bced9b04ad4b0e29767b93ec3905310272b31d261",
+      "disposition": "propose-correction",
+      "locale": "zh_Hans",
+      "sourceId": "components.QuotaSelector.albums",
+      "sourcePosition": 2476
+    },
+    {
+      "candidateTarget": "{count, plural, one {專輯} other {專輯}}",
+      "candidateTargetHash": "5f08692609c20ac679e7f46ec6c7880ffc8f170a94d5ab12e8f349e824c0eee9",
+      "disposition": "propose-correction",
+      "locale": "zh_Hant",
+      "sourceId": "components.QuotaSelector.albums",
+      "sourcePosition": 2476
+    },
+    {
+      "candidateTarget": "{quotaLimit} <quotaUnits>每 {quotaDays} {days} {books}</quotaUnits>",
+      "candidateTargetHash": "02075e2766e5d2601522200da92a0f775c01c76d7b53cef8af4a4613a312a16b",
+      "disposition": "propose-correction",
+      "locale": "zh_Hans",
+      "sourceId": "components.QuotaSelector.bookRequests",
+      "sourcePosition": 2477
+    },
+    {
+      "candidateTarget": "{quotaLimit} <quotaUnits>每 {quotaDays} {days} {books}</quotaUnits>",
+      "candidateTargetHash": "02075e2766e5d2601522200da92a0f775c01c76d7b53cef8af4a4613a312a16b",
+      "disposition": "propose-correction",
+      "locale": "zh_Hant",
+      "sourceId": "components.QuotaSelector.bookRequests",
+      "sourcePosition": 2477
+    },
+    {
+      "candidateTarget": "{count, plural, one {पुस्तक} other {पुस्तकें}}",
+      "candidateTargetHash": "48370ec1f6ac098fa6911a4cb4bf17186ebb44a08113a1e1ebca14ae89f2a823",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.QuotaSelector.books",
+      "sourcePosition": 2478
+    },
+    {
+      "candidateTarget": "{quotaLimit} <quotaUnits>每 {quotaDays} {days} {comics}</quotaUnits>",
+      "candidateTargetHash": "f19bffe0e606bd666bfca1d24cf92d67a01415cc4404db6ee1931a3ee3b1b235",
+      "disposition": "propose-correction",
+      "locale": "zh_Hans",
+      "sourceId": "components.QuotaSelector.comicRequests",
+      "sourcePosition": 2479
+    },
+    {
+      "candidateTarget": "{quotaLimit} <quotaUnits>每 {quotaDays} {days} {comics}</quotaUnits>",
+      "candidateTargetHash": "f19bffe0e606bd666bfca1d24cf92d67a01415cc4404db6ee1931a3ee3b1b235",
+      "disposition": "propose-correction",
+      "locale": "zh_Hant",
+      "sourceId": "components.QuotaSelector.comicRequests",
+      "sourcePosition": 2479
+    },
+    {
+      "candidateTarget": "{count, plural, one {cómic} many {cómics} other {cómics}}",
+      "candidateTargetHash": "639fef7d9f455449be5f20fe716b1702b879295cccb50d4513d4a2f3f8bf0d8c",
+      "disposition": "propose-correction",
+      "locale": "es",
+      "sourceId": "components.QuotaSelector.comics",
+      "sourcePosition": 2480
+    },
+    {
+      "candidateTarget": "{count, plural, one {quadrinho} many {quadrinhos} other {quadrinhos}}",
+      "candidateTargetHash": "b00e9be340681bf533946d0dc38b2d389bfd9392d81907efefa91a121b1a7c60",
+      "disposition": "propose-correction",
+      "locale": "pt_BR",
+      "sourceId": "components.QuotaSelector.comics",
+      "sourcePosition": 2480
+    },
+    {
+      "candidateTarget": "{count, plural, one {天} other {天}}",
+      "candidateTargetHash": "6260694c87ec63439ca3e5c8b647d73cd0e1b9b49fe7ea9ecc43257ff6708a09",
+      "disposition": "propose-correction",
+      "locale": "zh_Hans",
+      "sourceId": "components.QuotaSelector.days",
+      "sourcePosition": 2481
+    },
+    {
+      "candidateTarget": "{quotaLimit} <quotaUnits>每 {quotaDays} {days} {magazines}</quotaUnits>",
+      "candidateTargetHash": "7c80bffbbf05ec4d46243920ac5386b65bbe44eea69dc51960ec993fa160783a",
+      "disposition": "propose-correction",
+      "locale": "zh_Hans",
+      "sourceId": "components.QuotaSelector.magazineRequests",
+      "sourcePosition": 2483
+    },
+    {
+      "candidateTarget": "{quotaLimit} <quotaUnits>每 {quotaDays} {days} {magazines}</quotaUnits>",
+      "candidateTargetHash": "7c80bffbbf05ec4d46243920ac5386b65bbe44eea69dc51960ec993fa160783a",
+      "disposition": "propose-correction",
+      "locale": "zh_Hant",
+      "sourceId": "components.QuotaSelector.magazineRequests",
+      "sourcePosition": 2483
+    },
+    {
+      "candidateTarget": "{quotaLimit} <quotaUnits>{quotaDays}{days}마다 {albums}</quotaUnits>",
+      "candidateTargetHash": "c655f39b0e22963d2f73ca4361826bac245de0a2ef87df290ff92b0de562ad0c",
+      "disposition": "propose-correction",
+      "locale": "ko",
+      "sourceId": "components.QuotaSelector.musicRequests",
+      "sourcePosition": 2487
+    },
+    {
+      "candidateTarget": "{quotaLimit} <quotaUnits>每 {quotaDays} {days} {albums}</quotaUnits>",
+      "candidateTargetHash": "c706d396387792451fb09463304368ae469a7e71c350376cf9bb923cb7c1d3e7",
+      "disposition": "propose-correction",
+      "locale": "zh_Hans",
+      "sourceId": "components.QuotaSelector.musicRequests",
+      "sourcePosition": 2487
+    },
+    {
+      "candidateTarget": "{quotaLimit} <quotaUnits>每 {quotaDays} {days} {albums}</quotaUnits>",
+      "candidateTargetHash": "c706d396387792451fb09463304368ae469a7e71c350376cf9bb923cb7c1d3e7",
+      "disposition": "propose-correction",
+      "locale": "zh_Hant",
+      "sourceId": "components.QuotaSelector.musicRequests",
+      "sourcePosition": 2487
+    },
+    {
+      "candidateTarget": "{count, plural, one {सीज़न} other {सीज़न}}",
+      "candidateTargetHash": "1db6adde5bf9c61d680f51feaa6613b5389583abd3fa48460e8755eb0e19a197",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.QuotaSelector.seasons",
+      "sourcePosition": 2488
+    },
+    {
+      "candidateTarget": "{count, plural, one {mùa phim} other {mùa phim}}",
+      "candidateTargetHash": "f518cf1d511e1b587dcc3f7e950dd8782a14173ea2e16dd646790f692f5b5465",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.QuotaSelector.seasons",
+      "sourcePosition": 2488
+    },
+    {
+      "candidateTarget": "{count, plural, one {季} other {季}}",
+      "candidateTargetHash": "2b74ff87cd775dc3f632aa2b8e89bf34e2dcdf6a3bddbd2d450dff7ca4c0e2dd",
+      "disposition": "propose-correction",
+      "locale": "zh_Hans",
+      "sourceId": "components.QuotaSelector.seasons",
+      "sourcePosition": 2488
+    },
+    {
+      "candidateTarget": "{count, plural, one {Softwareanfrage} other {Softwareanfragen}}",
+      "candidateTargetHash": "762c1f10199e3871ffec9299cbd810adfdafb6bd88712af66f749253ecebadfa",
+      "disposition": "propose-correction",
+      "locale": "de",
+      "sourceId": "components.QuotaSelector.software",
+      "sourcePosition": 2489
+    },
+    {
+      "candidateTarget": "{quotaLimit} <quotaUnits>每 {quotaDays} {days} {software}</quotaUnits>",
+      "candidateTargetHash": "91188d06eee23f5c685486b119bd8c4c5d1a72b03901c09a6abc427620e8904a",
+      "disposition": "propose-correction",
+      "locale": "zh_Hans",
+      "sourceId": "components.QuotaSelector.softwareRequests",
+      "sourcePosition": 2490
+    },
+    {
+      "candidateTarget": "{quotaLimit} <quotaUnits>每 {quotaDays} {days} {software}</quotaUnits>",
+      "candidateTargetHash": "91188d06eee23f5c685486b119bd8c4c5d1a72b03901c09a6abc427620e8904a",
+      "disposition": "propose-correction",
+      "locale": "zh_Hant",
+      "sourceId": "components.QuotaSelector.softwareRequests",
+      "sourcePosition": 2490
+    },
+    {
+      "candidateTarget": "{quotaLimit} <quotaUnits>每 {quotaDays} {days} {seasons}</quotaUnits>",
+      "candidateTargetHash": "3696a2c272791f2d612919e1b1736f871a0d0cdc79017111a1ad0298eef586eb",
+      "disposition": "propose-correction",
+      "locale": "zh_Hant",
+      "sourceId": "components.QuotaSelector.tvRequests",
+      "sourcePosition": 2491
+    },
+    {
+      "candidateTarget": "Sem limite",
+      "candidateTargetHash": "b669ba5781e9abf95b6ef3b6a44151b8243954245ef8134268814577e229e010",
+      "disposition": "propose-correction",
+      "locale": "pt_BR",
+      "sourceId": "components.QuotaSelector.unlimited",
+      "sourcePosition": 2492
+    },
+    {
+      "candidateTarget": "افتح مكتبة Grimmory للكتب الصوتية.",
+      "candidateTargetHash": "a8301d363d0c3c457bfe9c89dd111ecdc46cee15e5eda89293670262cd0c0374",
+      "disposition": "propose-correction",
+      "locale": "ar",
+      "sourceId": "components.ReaderDeliveryLink.audiobooks",
+      "sourcePosition": 2493
+    },
+    {
+      "candidateTarget": "Grimmory की ऑडियोबुक लाइब्रेरी खोलें",
+      "candidateTargetHash": "1f1ea357364ab3448036193e39c43ed604c9dd961e873a3f65471cac0cc47c13",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.ReaderDeliveryLink.audiobooks",
+      "sourcePosition": 2493
+    },
+    {
+      "candidateTarget": "Buka perpustakaan buku audio Grimmory",
+      "candidateTargetHash": "03102e53c9b8852f4b676ac1b27c547d8615f3961de878274bb6ea566ac8dfea",
+      "disposition": "propose-correction",
+      "locale": "id",
+      "sourceId": "components.ReaderDeliveryLink.audiobooks",
+      "sourcePosition": 2493
+    },
+    {
+      "candidateTarget": "Grimmoryのオーディオブックライブラリを開く",
+      "candidateTargetHash": "d24720427c56a718044d74a6be655d8f24e0336a690cf571ce8ec7128161bab9",
+      "disposition": "propose-correction",
+      "locale": "ja",
+      "sourceId": "components.ReaderDeliveryLink.audiobooks",
+      "sourcePosition": 2493
+    },
+    {
+      "candidateTarget": "Grimmory 오디오북 라이브러리 열기",
+      "candidateTargetHash": "9d9e95b9df6cfdfe75a13044dec0b9bce85e0369eb0d6affaa950b718236c64b",
+      "disposition": "propose-correction",
+      "locale": "ko",
+      "sourceId": "components.ReaderDeliveryLink.audiobooks",
+      "sourcePosition": 2493
+    },
+    {
+      "candidateTarget": "Abra a biblioteca de audiolivros do Grimmory.",
+      "candidateTargetHash": "852186e13a6f7805b71cad0ffdda7a64f9a7e622b72b9e936726a050d3fbf9a7",
+      "disposition": "propose-correction",
+      "locale": "pt_BR",
+      "sourceId": "components.ReaderDeliveryLink.audiobooks",
+      "sourcePosition": 2493
+    },
+    {
+      "candidateTarget": "Mở thư viện sách nói của Grimmory",
+      "candidateTargetHash": "bd96bb999b3addfdb9cefd00a35b4822a70874d0e84b19ff4e0770237a5d8670",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.ReaderDeliveryLink.audiobooks",
+      "sourcePosition": 2493
+    },
+    {
+      "candidateTarget": "打开 Grimmory 有声书库",
+      "candidateTargetHash": "842779b9fd2777559d2b7bc448afbc634081d56ff3e04a6767a894363bbef803",
+      "disposition": "propose-correction",
+      "locale": "zh_Hans",
+      "sourceId": "components.ReaderDeliveryLink.audiobooks",
+      "sourcePosition": 2493
+    },
+    {
+      "candidateTarget": "開啟 Grimmory 有聲書庫",
+      "candidateTargetHash": "67b400a148bd7b6d68eb8cf5d9e11c3277bc3fa53bbee910877852f1e3628366",
+      "disposition": "propose-correction",
+      "locale": "zh_Hant",
+      "sourceId": "components.ReaderDeliveryLink.audiobooks",
+      "sourcePosition": 2493
+    },
+    {
+      "candidateTarget": "Ouvrez BookOrbit et choisissez un livre audio dans son lecteur intégré. Le lecteur web prend en charge M4B, MP3, M4A, OPUS, OGG et FLAC. Les applications OPDS ne diffusent pas les fichiers de livres audio.",
+      "candidateTargetHash": "244e0b9121a879539ae9458bfba3bf96398550a173910e02051e792e3db25eb4",
+      "disposition": "propose-correction",
+      "locale": "fr",
+      "sourceId": "components.ReaderDeliveryLink.audiobooksBookOrbitHelp",
+      "sourcePosition": 2495
+    },
+    {
+      "candidateTarget": "BookOrbit खोलें और उसके अंतर्निर्मित प्लेयर से कोई ऑडियोबुक चुनें। वेब प्लेयर M4B, MP3, M4A, OPUS, OGG और FLAC फ़ॉर्मैट का समर्थन करता है। OPDS ऐप्स ऑडियोबुक फ़ाइलों को स्ट्रीम नहीं करते।",
+      "candidateTargetHash": "32f685ea88911761c195ce4479d98a7dbd93e7426e5f0f014aa0e4e6aec6a25d",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.ReaderDeliveryLink.audiobooksBookOrbitHelp",
+      "sourcePosition": 2495
+    },
+    {
+      "candidateTarget": "Buka BookOrbit dan pilih buku audio dari pemutar bawaannya. Pemutar web mendukung format M4B, MP3, M4A, OPUS, OGG, dan FLAC. Aplikasi OPDS tidak dapat melakukan streaming berkas buku audio.",
+      "candidateTargetHash": "303290a64dd43a6649a312cc5391c8dbfed45ff1ffa1dd77a33b812779e34a4a",
+      "disposition": "propose-correction",
+      "locale": "id",
+      "sourceId": "components.ReaderDeliveryLink.audiobooksBookOrbitHelp",
+      "sourcePosition": 2495
+    },
+    {
+      "candidateTarget": "Mở BookOrbit và chọn sách nói trong trình phát tích hợp. Trình phát trên web hỗ trợ M4B, MP3, M4A, OPUS, OGG và FLAC. Ứng dụng OPDS không phát trực tuyến được các tệp sách nói.",
+      "candidateTargetHash": "3e9dd077ca9928cbaa5715ca422c759cc67ef0f113dbdd46f10fddc699168be4",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.ReaderDeliveryLink.audiobooksBookOrbitHelp",
+      "sourcePosition": 2495
+    },
+    {
+      "candidateTarget": "打开 BookOrbit 并从其内置播放器中选择一本有声书。网页播放器支持 M4B、MP3、M4A、OPUS、OGG 和 FLAC。OPDS 应用不支持流式播放有声书文件。",
+      "candidateTargetHash": "cefdf3a92157875d9e2925deaa6ac92c9954256b878ec2bc982a07124c62d62e",
+      "disposition": "propose-correction",
+      "locale": "zh_Hans",
+      "sourceId": "components.ReaderDeliveryLink.audiobooksBookOrbitHelp",
+      "sourcePosition": 2495
+    },
+    {
+      "candidateTarget": "開啟 BookOrbit，並從內建播放器選擇一本有聲書。網頁播放器支援 M4B、MP3、M4A、OPUS、OGG 和 FLAC。OPDS 應用程式不會串流播放有聲書檔案。",
+      "candidateTargetHash": "2fbf45f8fa8dcc811f5da4417683aaf80a8b3b8c7a37683c6dc671a075358dba",
+      "disposition": "propose-correction",
+      "locale": "zh_Hant",
+      "sourceId": "components.ReaderDeliveryLink.audiobooksBookOrbitHelp",
+      "sourcePosition": 2495
+    },
+    {
+      "candidateTarget": "Abra Grimmory y elija un audiolibro en el reproductor de su biblioteca. Grimmory gestiona el progreso y la reproducción del audiolibro.",
+      "candidateTargetHash": "6397b60128dbc4c6e265d7ee46e871c0f600a06fe2a54dfce2df6fcaf6899607",
+      "disposition": "propose-correction",
+      "locale": "es",
+      "sourceId": "components.ReaderDeliveryLink.audiobooksHelp",
+      "sourcePosition": 2496
+    },
+    {
+      "candidateTarget": "Grimmory खोलें, फिर उसकी लाइब्रेरी के प्लेयर से ऑडियोबुक चुनें। ऑडियोबुक की प्रगति और प्लेबैक का प्रबंधन Grimmory करता है।",
+      "candidateTargetHash": "0abb592e6803c08ace7f9f7c4c3a95c208b88aad539ea1013acca6f88b60a825",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.ReaderDeliveryLink.audiobooksHelp",
+      "sourcePosition": 2496
+    },
+    {
+      "candidateTarget": "Buka Grimmory, lalu pilih buku audio dari pemutar perpustakaannya. Grimmory mengelola progres dan pemutaran buku audio.",
+      "candidateTargetHash": "c7ab92a8a6b54872376dee0336df6ac83fe4c6b933e03db0e6cd1bd724e837a2",
+      "disposition": "propose-correction",
+      "locale": "id",
+      "sourceId": "components.ReaderDeliveryLink.audiobooksHelp",
+      "sourcePosition": 2496
+    },
+    {
+      "candidateTarget": "Abra Grimmory e escolha um audiolivro no reprodutor da biblioteca. O progresso e a reprodução do audiolivro são gerenciados pelo Grimmory.",
+      "candidateTargetHash": "1d818ec389db15f6dcc99d93e47a5f2fc5f25004fdd1bfcfbe7c027c5c343efb",
+      "disposition": "propose-correction",
+      "locale": "pt_BR",
+      "sourceId": "components.ReaderDeliveryLink.audiobooksHelp",
+      "sourcePosition": 2496
+    },
+    {
+      "candidateTarget": "Mở Grimmory, rồi chọn sách nói từ trình phát trong thư viện. Grimmory quản lý tiến độ nghe và việc phát sách nói.",
+      "candidateTargetHash": "a32bf76b695054d8eb43f8d4e48ecda2c098081c86631b6457c76c5ffa74b322",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.ReaderDeliveryLink.audiobooksHelp",
+      "sourcePosition": 2496
+    },
+    {
+      "candidateTarget": "打开 Grimmory，然后从其图书馆播放器中选择一本有声书。有声书的进度和播放由 Grimmory 管理。",
+      "candidateTargetHash": "18dfe0e84ac5f0b5a8678c19162a561d118c12356f5c1a76ca480b4e4dee76eb",
+      "disposition": "propose-correction",
+      "locale": "zh_Hans",
+      "sourceId": "components.ReaderDeliveryLink.audiobooksHelp",
+      "sourcePosition": 2496
+    },
+    {
+      "candidateTarget": "開啟 Grimmory，然後從其圖書館播放器選擇一本有聲書。有聲書的進度與播放由 Grimmory 管理。",
+      "candidateTargetHash": "1ee96f143c64cbf6be7dd02749997d87327bf453d6770cb90eb6e9671cd8d427",
+      "disposition": "propose-correction",
+      "locale": "zh_Hant",
+      "sourceId": "components.ReaderDeliveryLink.audiobooksHelp",
+      "sourcePosition": 2496
+    },
+    {
+      "candidateTarget": "تصفّح القصص المصوّرة في {serviceName}",
+      "candidateTargetHash": "6d37ca9bbf9d0ba936220c6b8c48911ecfcffb38b69ab7b386b17b0ec206f45b",
+      "disposition": "propose-correction",
+      "locale": "ar",
+      "sourceId": "components.ReaderDeliveryLink.comics",
+      "sourcePosition": 2497
+    },
+    {
+      "candidateTarget": "{serviceName} में कॉमिक्स ब्राउज़ करें",
+      "candidateTargetHash": "33154e58cda0642ead55de6c43a319a54e11211cabf285671f0678681a8fb1e5",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.ReaderDeliveryLink.comics",
+      "sourcePosition": 2497
+    },
+    {
+      "candidateTarget": "{serviceName}에서 만화 둘러보기",
+      "candidateTargetHash": "9802f252c508f2db779d81b78acfb5e0487eb38011891d50abab6ee556114698",
+      "disposition": "propose-correction",
+      "locale": "ko",
+      "sourceId": "components.ReaderDeliveryLink.comics",
+      "sourcePosition": 2497
+    },
+    {
+      "candidateTarget": "Navegue por quadrinhos em {serviceName}",
+      "candidateTargetHash": "f3814c13e884332f086139d98d8db62ca6feeb41a3c4da047a255b6e691d9c39",
+      "disposition": "propose-correction",
+      "locale": "pt_BR",
+      "sourceId": "components.ReaderDeliveryLink.comics",
+      "sourcePosition": 2497
+    },
+    {
+      "candidateTarget": "Duyệt truyện tranh trên {serviceName}",
+      "candidateTargetHash": "f34265981cd77043d121dbfa611967d0711d293a901711928bc675087f18734f",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.ReaderDeliveryLink.comics",
+      "sourcePosition": 2497
+    },
+    {
+      "candidateTarget": "在 {serviceName} 中浏览漫画",
+      "candidateTargetHash": "5926dbf9bd36802669cd16b5ea9b0bed0437467d8e225ef3737c1a62495f33f4",
+      "disposition": "propose-correction",
+      "locale": "zh_Hans",
+      "sourceId": "components.ReaderDeliveryLink.comics",
+      "sourcePosition": 2497
+    },
+    {
+      "candidateTarget": "在 {serviceName} 中瀏覽漫畫",
+      "candidateTargetHash": "215b9988cf53003d537c8298e7020cc6506a3fba7db1e8f9856c184bb5677b3f",
+      "disposition": "propose-correction",
+      "locale": "zh_Hant",
+      "sourceId": "components.ReaderDeliveryLink.comics",
+      "sourcePosition": 2497
+    },
+    {
+      "candidateTarget": "Abra la biblioteca de BookOrbit y lea archivos CBZ, CBR o CB7 en su lector de cómics integrado. Una aplicación OPDS compatible puede descargar archivos CBZ o CBR; Grimmory Komga permite leer cómics página por página en aplicaciones de lectura.",
+      "candidateTargetHash": "b7e7f182b86af4673cca1cb5607512bfd9237086fbec1ad9ec8f5b2a02cf1c58",
+      "disposition": "propose-correction",
+      "locale": "es",
+      "sourceId": "components.ReaderDeliveryLink.comicsBookOrbitHelp",
+      "sourcePosition": 2498
+    },
+    {
+      "candidateTarget": "Ouvrez la bibliothèque BookOrbit et lisez les fichiers CBZ, CBR ou CB7 dans son lecteur de bandes dessinées intégré. Une application OPDS compatible peut télécharger les archives CBZ ou CBR ; Grimmory Komga permet la lecture en continu, page par page, dans les applications de lecture de BD.",
+      "candidateTargetHash": "9cdb6eccabff0d8e3625f55ea8576a1c6da5c977e91c18cfaba2076fc15a8136",
+      "disposition": "propose-correction",
+      "locale": "fr",
+      "sourceId": "components.ReaderDeliveryLink.comicsBookOrbitHelp",
+      "sourcePosition": 2498
+    },
+    {
+      "candidateTarget": "Buka perpustakaan BookOrbit dan baca berkas CBZ, CBR, atau CB7 di pembaca komik bawaannya. Aplikasi OPDS yang kompatibel dapat mengunduh arsip CBZ atau CBR; Grimmory Komga mendukung streaming halaman demi halaman di aplikasi komik.",
+      "candidateTargetHash": "28450bfd06009ffbb2393e3e9843bbed06882876fd0d0f28ccc399ae55227db7",
+      "disposition": "propose-correction",
+      "locale": "id",
+      "sourceId": "components.ReaderDeliveryLink.comicsBookOrbitHelp",
+      "sourcePosition": 2498
+    },
+    {
+      "candidateTarget": "BookOrbitライブラリを開き、内蔵のコミックリーダーでCBZ、CBR、CB7ファイルを読みます。互換性のあるOPDSアプリはCBZまたはCBRのアーカイブをダウンロードできます。Grimmory Komgaはコミックアプリでページごとのストリーミングをサポートしています。",
+      "candidateTargetHash": "ed77342f8f45823ffaf78bccb3adac2cb8e783d38850558b0632a319dd7cea97",
+      "disposition": "propose-correction",
+      "locale": "ja",
+      "sourceId": "components.ReaderDeliveryLink.comicsBookOrbitHelp",
+      "sourcePosition": 2498
+    },
+    {
+      "candidateTarget": "Abra a biblioteca BookOrbit e leia arquivos CBZ, CBR ou CB7 no leitor de quadrinhos integrado. Um aplicativo OPDS compatível pode baixar arquivos CBZ ou CBR. O Grimmory Komga oferece leitura página a página por streaming em aplicativos de quadrinhos.",
+      "candidateTargetHash": "e89870e66f0ce8e0e78ae168537ae63f3690a6919904c8280efc5ec0dcc3b868",
+      "disposition": "propose-correction",
+      "locale": "pt_BR",
+      "sourceId": "components.ReaderDeliveryLink.comicsBookOrbitHelp",
+      "sourcePosition": 2498
+    },
+    {
+      "candidateTarget": "Mở thư viện BookOrbit và đọc tệp CBZ, CBR hoặc CB7 bằng trình đọc truyện tranh tích hợp. Ứng dụng OPDS tương thích có thể tải xuống tệp lưu trữ CBZ hoặc CBR; Grimmory Komga hỗ trợ phát trực tuyến từng trang trong ứng dụng đọc truyện tranh.",
+      "candidateTargetHash": "59bfe77953fe728bb99bf57d9cb81876a30afaf304f7bf543777a3621f56b8f9",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.ReaderDeliveryLink.comicsBookOrbitHelp",
+      "sourcePosition": 2498
+    },
+    {
+      "candidateTarget": "打开 BookOrbit 图书馆，使用其内置漫画阅读器阅读 CBZ、CBR 或 CB7 文件。兼容的 OPDS 应用可以下载 CBZ 或 CBR 压缩包；Grimmory Komga 支持在漫画应用中逐页流式阅读。",
+      "candidateTargetHash": "177fdaf28f7163a93035890849823866410b9323d083438da42a10bfaf0b3b22",
+      "disposition": "propose-correction",
+      "locale": "zh_Hans",
+      "sourceId": "components.ReaderDeliveryLink.comicsBookOrbitHelp",
+      "sourcePosition": 2498
+    },
+    {
+      "candidateTarget": "開啟 BookOrbit 圖書館，使用內建漫畫閱讀器閱讀 CBZ、CBR 或 CB7 檔案。相容的 OPDS 應用程式可下載 CBZ 或 CBR 壓縮檔；Grimmory Komga 支援在漫畫應用程式中逐頁串流閱讀。",
+      "candidateTargetHash": "9bd5896fa9d5ebc2f4e39fd1f8e551089d5b28b3ccc3d0d0bc950716d5f0eb6d",
+      "disposition": "propose-correction",
+      "locale": "zh_Hant",
+      "sourceId": "components.ReaderDeliveryLink.comicsBookOrbitHelp",
+      "sourcePosition": 2498
+    },
+    {
+      "candidateTarget": "Ouvrez la bibliothèque Grimmory dans un navigateur. Pour lire des BD page par page, copiez l’adresse Komga de Grimmory dans Paramètres > Services > Applications pour lecteurs, puis collez-la dans une application compatible.",
+      "candidateTargetHash": "3ad684007c43815a8a821f5c1e366006d9c573253bc3b642defe2490d391c1b8",
+      "disposition": "propose-correction",
+      "locale": "fr",
+      "sourceId": "components.ReaderDeliveryLink.comicsGrimmoryHelp",
+      "sourcePosition": 2499
+    },
+    {
+      "candidateTarget": "ब्राउज़र में Grimmory लाइब्रेरी खोलें। पेज-दर-पेज कॉमिक पढ़ने के लिए, सेटिंग > सेवाएं > रीडर ऐप्स में Grimmory का Komga पता कॉपी करके किसी संगत ऐप में जोड़ें।",
+      "candidateTargetHash": "1e332834a812be7350df0312ca1fc217b613a960f14cac363a89e3862b83bd16",
+      "disposition": "propose-correction",
+      "locale": "hi",
+      "sourceId": "components.ReaderDeliveryLink.comicsGrimmoryHelp",
+      "sourcePosition": 2499
+    },
+    {
+      "candidateTarget": "Buka perpustakaan Grimmory di browser. Untuk membaca komik halaman demi halaman, salin alamat Komga milik Grimmory dari Pengaturan > Layanan > App Pembaca ke aplikasi yang kompatibel.",
+      "candidateTargetHash": "3b1f6bf975b72c280d0d5c6207573af11d89fba9e8f9c96ef5611f6bc73f2320",
+      "disposition": "propose-correction",
+      "locale": "id",
+      "sourceId": "components.ReaderDeliveryLink.comicsGrimmoryHelp",
+      "sourcePosition": 2499
+    },
+    {
+      "candidateTarget": "ブラウザでGrimmoryライブラリを開きます。コミックを1ページずつ読むには、設定 > サービス > 読者アプリでGrimmoryのKomgaアドレスをコピーし、対応アプリに貼り付けます。",
+      "candidateTargetHash": "413e3233261dae12ef3787228d54b58f94e8e471f4715ebb78d727e859fe308e",
+      "disposition": "propose-correction",
+      "locale": "ja",
+      "sourceId": "components.ReaderDeliveryLink.comicsGrimmoryHelp",
+      "sourcePosition": 2499
+    },
+    {
+      "candidateTarget": "브라우저에서 Grimmory 라이브러리를 엽니다. 만화를 페이지별로 읽으려면 계정 설정 > 서비스 > 리더 앱에서 Grimmory의 Komga 주소를 복사해 호환되는 앱에 붙여넣으세요.",
+      "candidateTargetHash": "cc2d7e1affa19ed44f5b69dfa48989fe066ef7a818e39de818287718c3e57cb2",
+      "disposition": "propose-correction",
+      "locale": "ko",
+      "sourceId": "components.ReaderDeliveryLink.comicsGrimmoryHelp",
+      "sourcePosition": 2499
+    },
+    {
+      "candidateTarget": "Abra a biblioteca Grimmory em um navegador. Para ler quadrinhos página por página, copie o endereço Komga do Grimmory em Configurações > Serviços > Aplicações do Leitor e cole-o em um aplicativo compatível.",
+      "candidateTargetHash": "7e8184614f03c25dd633b88f56b008cde5249c66e37a77bf0f769e9863df5226",
+      "disposition": "propose-correction",
+      "locale": "pt_BR",
+      "sourceId": "components.ReaderDeliveryLink.comicsGrimmoryHelp",
+      "sourcePosition": 2499
+    },
+    {
+      "candidateTarget": "Mở thư viện Grimmory trong trình duyệt. Để đọc truyện tranh từng trang, hãy sao chép địa chỉ Komga của Grimmory từ Thiết lập > Dịch vụ > Ứng dụng đọc vào một ứng dụng tương thích.",
+      "candidateTargetHash": "f6a472c2cc77adfe054ebb87d43f3e8a325e1889e93552dd8356e24a9e98ef16",
+      "disposition": "propose-correction",
+      "locale": "vi",
+      "sourceId": "components.ReaderDeliveryLink.comicsGrimmoryHelp",
+      "sourcePosition": 2499
+    },
+    {
+      "candidateTarget": "在浏览器中打开 Grimmory 图书馆。若要逐页阅读漫画，请前往“设置 > 服务器 > 阅读器应用程序”复制 Grimmory 的 Komga 地址，再粘贴到兼容的应用中。",
+      "candidateTargetHash": "efdcb9e9e30c1af6ef4efec3cc6d939c433b319e1c3c74752cfb7fb4ec8c797e",
+      "disposition": "propose-correction",
+      "locale": "zh_Hans",
+      "sourceId": "components.ReaderDeliveryLink.comicsGrimmoryHelp",
+      "sourcePosition": 2499
+    },
+    {
+      "candidateTarget": "在瀏覽器中開啟 Grimmory 圖書館。若要逐頁閱讀漫畫，請前往「設定值 > 伺服器 > 讀取器 Apps」複製 Grimmory 的 Komga 位址，再貼到相容的應用程式中。",
+      "candidateTargetHash": "07e2c10981f7525f0c467c9896e8a85b83bb4f831ef5a360170bb2d4205a4532",
+      "disposition": "propose-correction",
+      "locale": "zh_Hant",
+      "sourceId": "components.ReaderDeliveryLink.comicsGrimmoryHelp",
+      "sourcePosition": 2499
+    }
+  ],
+  "head": "f20893e57a89827095fa049d8e0475df7ec7170f",
+  "pullRequest": 418,
+  "repository": "snapetech-org/SeerrNG",
+  "tree": "b5a5952fb4f8a37ea5a39286295f153ce9504f52"
+}

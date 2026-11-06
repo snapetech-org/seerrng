@@ -11,6 +11,7 @@ export interface LiveTvStatus {
     channelCount: number;
     truncated: boolean;
     lastError?: string;
+    lastErrorOrigin?: 'app' | 'opaque';
   };
 }
 
@@ -50,6 +51,8 @@ export interface RecordingRequestView {
   completedCount: number;
   failedCount: number;
   lastError?: string;
+  lastErrorMessageKey?: string;
+  lastErrorMessageParams?: Record<string, string>;
   createdAt: string;
   requestedBy?: { id: number; displayName: string };
 }

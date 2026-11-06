@@ -1,0 +1,183 @@
+{
+  "schemaVersion": 1,
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "head": "5a4342176a8325c371a35d489cb01c58283bc983",
+  "tree": "98cd64952123c9b678e38250e7819cabb4476448",
+  "semanticManifestSha256": "3ea74cc6491aecddf9ffcedc69610f13d20b199059aef69bb3c2407feb0826ea",
+  "cellPlanSha256": "97c3402252a34aaa4f8f9f44a691281d9c35ff7b80d7edb3a26c752436af6558",
+  "retiredCellsSha256": "dc5ec05547e4da3079c0668f82a52da7999d89ef9d4f037c1cd72af9347ebd83",
+  "sourceBundleManifestSha256": "212491482d1b9207fed755af6e80ac80a97184ec8dbe84d0c4ad2bd711acae0d",
+  "sourceRowsSha256": "ad91236a31e32f199ff449f9ed4597ea6af0f5a4eff32772cefa84278cafb68c",
+  "sourceCellsSha256": "8bfcd1aa9b5d5aba4fb6317c194cd544d601543ebf250899a84a719b52e468e1",
+  "planRows": 115260,
+  "actions": {
+    "semantic-review-required": 114783,
+    "reuse-equivalence-decision": 477
+  },
+  "retiredRows": 48,
+  "reusableEquivalenceCells": 477,
+  "targetsApplied": false,
+  "batchId": "existing-es-client-0067",
+  "batchSha256": "4fa1e6d54aea9d56d0a0fa4b97a6818a7216f890df97d106014aef6efe9bad21",
+  "rowCount": 32,
+  "model": "qwen3.8-27b-heretic:q4km",
+  "attempt": 1,
+  "decisions": [
+    {
+      "id": "components.MediaDetails.SeasonEpisodeTree.unwatched",
+      "verdict": "correct",
+      "target": "Sin ver",
+      "confidence": "high",
+      "reason": "'Sin vigilancia' means 'under surveillance' or 'unmonitored', which is incorrect for media playback status. 'Sin ver' is the standard term for 'Unwatched'."
+    },
+    {
+      "id": "components.MediaDetails.SeasonEpisodeTree.watchStatusNotAvailable",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MediaDetails.SeasonEpisodeTree.watchStatusTooltip",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MediaDetails.SeasonEpisodeTree.watchStatusUnavailable",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MediaDetails.SeasonEpisodeTree.watched",
+      "verdict": "correct",
+      "target": "Visto",
+      "confidence": "high",
+      "reason": "'Vigilado' means 'watched over' or 'monitored', implying surveillance. 'Visto' is the correct term for content that has been watched."
+    },
+    {
+      "id": "components.MediaDetails.SeriesBrowser.loadError",
+      "verdict": "correct",
+      "target": "No se pudieron cargar los episodios",
+      "confidence": "high",
+      "reason": "The source is a title/case-sensitive error message. The target uses lowercase and passive voice which is less natural for UI titles. 'No se pudieron cargar los episodios' is the standard, natural phrasing for this error state."
+    },
+    {
+      "id": "components.MediaDetails.SeriesBrowser.loadErrorHint",
+      "verdict": "correct",
+      "target": "No se pudo obtener la información de los episodios. Inténtalo de nuevo.",
+      "confidence": "high",
+      "reason": "'Capturada' is an unnatural translation for 'fetched' in this context (should be 'obtenida'). 'Episodio' should be lowercase. 'Inténtalo' is more natural than 'inténtelo' in modern UI contexts unless strict formal register is required, but 'obtenida' is the critical fix."
+    },
+    {
+      "id": "components.MediaDetails.SeriesBrowser.noSeasons",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MediaDetails.SeriesBrowser.retryEpisodesTooltip",
+      "verdict": "correct",
+      "target": "Vuelve a obtener las temporadas y episodios sin cambiar tu selección de reproducción.",
+      "confidence": "high",
+      "reason": "'Traiga' is an unnatural command form for 'Fetch' in this context (should be 'Obtén' or 'Vuelve a obtener'). 'Estaciones' is a mistranslation of 'seasons' (TV series) as 'stations' (radio/TV broadcast stations). 'Temporadas' is the correct term."
+    },
+    {
+      "id": "components.MediaDetails.SeriesBrowser.seasonNumber",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MediaDetails.SeriesBrowser.specials",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MediaDetails.SeriesBrowser.untitled",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MediaDetails.SubjectTagVisibilityPanel.hide",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MediaDetails.SubjectTagVisibilityPanel.show",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MediaDetails.SubjectTagVisibilityPanel.visibility",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MediaSlider.ShowMoreCard.seemore",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MediaSlider.refreshTitle",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MediaSlider.showingSavedResults",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MediaSlider.tmdbUnavailable",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MediaSlider.tryAgain",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MetadataSelector.selectMetdataProvider",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MetadataSelector.tmdbLabel",
+      "verdict": "correct",
+      "target": "The Movie Database (TMDB)",
+      "confidence": "high",
+      "reason": "The protected literal 'The Movie Database' must be preserved exactly as per the instructions. Translating the brand name violates the protection constraint."
+    },
+    {
+      "id": "components.MetadataSelector.tvdbLabel",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MovieDetails.Layout.budget",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MovieDetails.Layout.country",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MovieDetails.Layout.digital",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MovieDetails.Layout.fullCastList",
+      "verdict": "correct",
+      "target": "Lista completa del reparto",
+      "confidence": "high",
+      "reason": "'Fundición' means 'casting' (the process) or 'founding' (of a company), not the cast of actors. 'Reparto' is the correct term for the cast list."
+    },
+    {
+      "id": "components.MovieDetails.Layout.fullCrewList",
+      "verdict": "correct",
+      "target": "Lista completa del equipo",
+      "confidence": "high",
+      "reason": "'Lista completa' is too vague and loses the specific meaning of 'Crew'. 'Equipo' or 'staff' is the correct translation for crew in film production contexts."
+    },
+    {
+      "id": "components.MovieDetails.Layout.genres",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MovieDetails.Layout.hd",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MovieDetails.Layout.language",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.MovieDetails.Layout.mediaAndFormat",
+      "verdict": "keep"
+    }
+  ],
+  "decisionsSha256": "d08f7dcca867641cc927e46f9630228e5da014827d00fd22413da241c8859725",
+  "rawResponseSha256": "5a1126609f8356e2f33f33b2c5bd10444a2c07e560c31b081b150a9b06609946",
+  "rawResponseFile": "/mnt/disks/scratch/task-scratch/seerrng-review-window-650-700-422072-20261102/semantic-output/responses/existing-es-client-0067-attempt-1.json"
+}

@@ -323,6 +323,13 @@ const notifySoftwareAvailable = async (
         mediaUrl: `/requests/status?softwareRequestId=${request.id}`,
         message: intl.formatMessage(globalMessages.softwareAvailableMessage),
         image: request.coverUrl ?? undefined,
+        softwareRequestStatus: 'available',
+        extra: [
+          {
+            name: intl.formatMessage(globalMessages.requestedBy),
+            value: requester.displayName,
+          },
+        ],
       }
     );
   } catch (error) {
@@ -374,6 +381,7 @@ export const notifySoftwareRequestStatus = async (
       mediaUrl: `/requests/status?softwareRequestId=${request.id}`,
       message,
       image: request.coverUrl ?? undefined,
+      softwareRequestStatus: status,
       extra: [
         {
           name: intl.formatMessage(globalMessages.requestedBy),

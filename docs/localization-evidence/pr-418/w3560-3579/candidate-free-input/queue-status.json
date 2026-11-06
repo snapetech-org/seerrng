@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "head": "351f2c09a4aaf6f223975fc1827cb9f77de7702d",
+  "tree": "3d88008f6ea7dc6cbef21333d29a032469cd60cf",
+  "sourceCatalogPath": "src/i18n/locale/en.json",
+  "sourceOrderCount": 9494,
+  "sourceOrderSha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+  "previousCompletedWindow": "W3540-W3559",
+  "previousCompletedEndPosition": 3559,
+  "previousCompletedHoldCount": 0,
+  "nextWindow": "W3560-W3579",
+  "nextWindowRangeInclusive": [
+    3560,
+    3579
+  ],
+  "remainingAtWindowStart": 5934,
+  "selectedSourceCount": 20,
+  "remainingAfterWindow": 5914,
+  "callerlessSourcePositions": [],
+  "priorHoldPreservation": "No catalog values are changed by this candidate-free/primary-only task. Existing hold records and their targets outside positions 3560–3579 are not reconsidered.",
+  "previousWindowLineage": {
+    "window": "W3540-W3559",
+    "head": "f15ebead8af7bd09d81c4ea61e8cd3351a2ea66d",
+    "tree": "3ba2579c326f8dbac943ba43df77ddd5747a85a1",
+    "applicationVerificationPath": "docs/localization-evidence/pr-418/w3540-3559/application-verification.json",
+    "applicationEvidenceHead": "351f2c09a4aaf6f223975fc1827cb9f77de7702d",
+    "applicationEvidenceTree": "3d88008f6ea7dc6cbef21333d29a032469cd60cf",
+    "applicationVerificationGitBlob": "38b4cd5bceddad3b949b34f0afd65508f89d1d6f",
+    "applicationVerificationSha256": "2f9408f574c2fdf814930d9c7d44e1cbaff10d7c795b09ed84399ffe5d007ffd",
+    "applicationVerificationStatus": "PASS",
+    "holds": 0,
+    "priorHoldsOutsideThisWindowUntouched": true
+  }
+}

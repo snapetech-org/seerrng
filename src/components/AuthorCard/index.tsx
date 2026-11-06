@@ -74,7 +74,7 @@ const AuthorCard = ({ author }: AuthorCardProps) => {
               </div>
             )}
             <div
-              className={`pointer-events-none absolute right-0 bottom-0 left-0 h-12 rounded-b-xl bg-gradient-to-t ${
+              className={`pointer-events-none absolute start-0 end-0 bottom-0 h-12 rounded-b-xl bg-gradient-to-t ${
                 isHovered ? 'from-gray-800' : 'from-gray-900'
               }`}
             />

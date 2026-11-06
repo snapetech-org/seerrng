@@ -1,0 +1,209 @@
+{
+  "schemaVersion": 1,
+  "artifact": "Cross-audit — SeerrNG PR #418 W3420–W3439",
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "window": "W3420-W3439",
+  "head": "3f5ddfdddbeb77cf02cc9d14e00001c8d1aa61c6",
+  "tree": "1c48dc5ea6e8db6c2da546ec58e88d38eb8f9cc7",
+  "sourceCount": 20,
+  "localeCount": 12,
+  "cellCount": 240,
+  "inputs": {
+    "candidateFreePacketPath": "/mnt/disks/scratch/task-scratch/seerrng-pr418-w3420-3439-primary-20261103/candidate-free-input",
+    "candidateFreePacketManifestSha256": "a4d0d9a498e8b199becc68bfb4882a755c0060279298a4fc13cb182e06c25e15",
+    "candidateFreePacketChecksumFilesVerified": 10,
+    "primaryReviewPath": "/mnt/disks/scratch/task-scratch/seerrng-pr418-w3420-3439-primary-20261103/primary-review",
+    "primaryReviewManifestSha256SumsFile": "c455fee007b28fe3af8b9a35fc9b0173a330821e1bf32fdaea8bc080a399da1b",
+    "primaryReviewOutputFilesVerified": 5,
+    "primarySealVerified": true,
+    "primaryOutputManifestVerified": true,
+    "primaryInputManifestPinMatchesPacket": true,
+    "blindReviewPath": "/mnt/disks/scratch/task-scratch/seerrng-pr418-w3420-3439-blind-translation-review-20261103",
+    "blindReviewManifestSha256SumsFile": "40395679128ad20df119b8a172b23dc4284b61b5ae0e127d546341f2dc1f1191",
+    "blindReviewOutputFilesVerified": 4,
+    "blindAttestationMatchesPacketAndHead": true,
+    "candidateFreePacketFiles": [
+      {
+        "path": "PR-attestation.json",
+        "sha256": "07b13d8d39cca2c4c277a446f84ded3e43d9577750430a2345a7384dd2cc9ea4",
+        "verified": true
+      },
+      {
+        "path": "README.txt",
+        "sha256": "452abe0d070042f06244cf66227dca71d22339806b87e3291a50188a3a9523b7",
+        "verified": true
+      },
+      {
+        "path": "caller-context-blocks.jsonl",
+        "sha256": "982e7d8141083bbae38f43866601ef0d9f19f34130cec6feb8cb4deaec32e0fb",
+        "verified": true
+      },
+      {
+        "path": "caller-contexts.jsonl",
+        "sha256": "8651a6d2dc43477cecb590a8d35acb077e18807f29ffc6b26706a5413d15ca7f",
+        "verified": true
+      },
+      {
+        "path": "caller-resolution-findings.json",
+        "sha256": "561d2d5481205e06725275ca642a03ae132642b5e0cc30bfad08184a2b4bd5ec",
+        "verified": true
+      },
+      {
+        "path": "current-target-cells.jsonl",
+        "sha256": "4e39297b22a9c0745bdb8385c686bd8ac613a66552282019bbdcb3ee3ffe86f1",
+        "verified": true
+      },
+      {
+        "path": "file-pins.json",
+        "sha256": "d69b8585d7ac0965d370ebbb2e313f1650529aeccfb61b02ae937a682ae0c7ce",
+        "verified": true
+      },
+      {
+        "path": "source-cells.jsonl",
+        "sha256": "2ee55685e30f6bb2e22bb6c7aebb1240e9c10e8709d2b22800b5957af1228a53",
+        "verified": true
+      },
+      {
+        "path": "source-order.jsonl",
+        "sha256": "bf213b66e864f0e31ab67122ca6c7229b6ace6785594a86ba9b891f5c4970f63",
+        "verified": true
+      },
+      {
+        "path": "window.json",
+        "sha256": "1dcd83db7fe3d0dad72c2c81a0d5ea379f9480643916931bc1279bc440246471",
+        "verified": true
+      }
+    ],
+    "primaryReviewFiles": {
+      "primary-decisions.jsonl": "2d0717792f91ed988f620196d621169827eaf252f182a25d5b89c008851b3d91",
+      "summary.json": "c74df541aabac2f3af2d343c32c5bc2180778ea68b24221a2ac8b82dfb7b79ac",
+      "README.md": "284f969a313c9f867e5a3a3332139208e343bb60ac561207834b6e920bd834e8",
+      "build_review.py": "a0bebe04449702aadb9160b5c38a0e0c9f355c39f2eb46017a381c556b3aec6a"
+    }
+  },
+  "pinVerification": {
+    "taskHeadMatchesPacketPrimaryAndBlind": true,
+    "treeMatchesPacketPrimaryAndBlind": true,
+    "sourceRecordsHashChecked": 20,
+    "sourceOrderRowsAligned": 20,
+    "currentTargetHashesChecked": 240,
+    "catalogFilePinMatches": 240,
+    "primaryCallerEvidenceRowsVerified": 240,
+    "blindCallerContextRowsAligned": 240,
+    "sourceAndCallerKeysAlignedAcrossAll240Cells": true,
+    "placeholderTokenSetMismatches": 0,
+    "placeholderOrderDifferences": 3,
+    "placeholderOrderDifferenceLocales": [
+      "hi",
+      "ja",
+      "ko"
+    ],
+    "callerResolutionFindings": {
+      "selectUser": {
+        "definitionLine": 107,
+        "sameComponentStaticMessageReferences": [],
+        "dynamicLabelKeyReferences": [],
+        "fullyQualifiedIdReferencesInSrc": [],
+        "resolution": "no production caller/reference resolved; hold pending caller identification"
+      },
+      "service": {
+        "definitionLine": 232,
+        "sameComponentStaticMessageReferences": [],
+        "dynamicLabelKeyReferences": [],
+        "fullyQualifiedIdReferencesInSrc": [],
+        "resolution": "no production caller/reference resolved; hold pending caller identification"
+      }
+    }
+  },
+  "comparison": {
+    "exactDecisionAgreements": 231,
+    "differingDispositionOrTargetCells": 9,
+    "primaryCounts": {
+      "accept-current": 212,
+      "hold": 24,
+      "refinement": 2,
+      "correction": 2
+    },
+    "blindCounts": {
+      "accept-current": 205,
+      "hold": 24,
+      "refinement": 8,
+      "correction": 3
+    },
+    "reconciledCounts": {
+      "accept-current": 210,
+      "hold": 24,
+      "refinement": 3,
+      "correction": 3
+    },
+    "callerAbsentHoldsPreserved": 24,
+    "heldSourceIds": [
+      "components.Requests.selectUser",
+      "components.Requests.service"
+    ],
+    "differenceRows": "cross-audit-differences.jsonl",
+    "allCellRows": "cross-audit-decisions.jsonl"
+  },
+  "adjudicationSummary": [
+    {
+      "cell": "3422/es",
+      "result": "accept-current Serie",
+      "reason": "The same label is used for a singular TV request badge and a filter category."
+    },
+    {
+      "cell": "3422/hi",
+      "result": "accept-current श्रृंखला",
+      "reason": "Pinned TV callers make the referent clear; the current term accurately names a series."
+    },
+    {
+      "cell": "3429/zh_Hant",
+      "result": "refinement 升序",
+      "reason": "Pairs consistently with the current descending label 降序."
+    },
+    {
+      "cell": "3434/de",
+      "result": "accept-current Erstmals veröffentlicht",
+      "reason": "Faithful, clear field wording; the proposed noun is stylistic."
+    },
+    {
+      "cell": "3434/hi",
+      "result": "accept-current प्रथम प्रकाशित",
+      "reason": "Clear compact field wording; the alternative is a style variant."
+    },
+    {
+      "cell": "3434/id",
+      "result": "accept-current Pertama Diterbitkan",
+      "reason": "Directly preserves first-published meaning; the alternative offers no necessary accuracy gain."
+    },
+    {
+      "cell": "3434/ja",
+      "result": "correction 初版発行日",
+      "reason": "The current wording suggests a public debut; the selected wording explicitly names first-edition publication date."
+    },
+    {
+      "cell": "3434/ko",
+      "result": "correction 최초 발행",
+      "reason": "The current wording suggests an online post; the selected wording conveys publication across books/audiobooks/comics."
+    },
+    {
+      "cell": "3434/zh_Hans",
+      "result": "refinement 首次出版",
+      "reason": "More specific to the book/comic publication-date callers than 首次发表."
+    }
+  ],
+  "unresolvedItems": [
+    {
+      "cell": "3434/ko",
+      "topic": "Residual Korean terminology preference",
+      "selectedTarget": "최초 발행",
+      "alternative": "최초 출판",
+      "status": "Decision recorded; native-speaker style confirmation remains useful. Both preserve publication meaning, and the pinned context alone does not settle the preferred house term."
+    }
+  ],
+  "inputIntegrityProblems": [],
+  "nativeSpeakerApproval": false,
+  "repoFilesChanged": false,
+  "prQueriedOrMutated": false,
+  "testsBuildsOrCiRun": false
+}

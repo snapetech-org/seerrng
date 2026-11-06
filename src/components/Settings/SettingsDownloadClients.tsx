@@ -1,6 +1,8 @@
 import Alert from '@app/components/Common/Alert';
+import ApiMessageText from '@app/components/Common/ApiMessageText';
 import Button from '@app/components/Common/Button';
 import LoadingSpinner from '@app/components/Common/LoadingSpinner';
+import OpaqueApiMessageText from '@app/components/Common/OpaqueApiMessageText';
 import { SavedServiceHostPicker } from '@app/components/Settings/SavedServiceHostPicker';
 import SettingsField from '@app/components/Settings/SettingsField';
 import {
@@ -9,6 +11,7 @@ import {
   type SetupDownloadProfile,
 } from '@app/components/Setup/setupDownloadClients';
 import useToasts from '@app/hooks/useToasts';
+import { formatApiMessage } from '@app/utils/apiMessage';
 import defineMessages from '@app/utils/defineMessages';
 import type {
   DownloadClientSettings,
@@ -104,12 +107,22 @@ interface LiveDownloadSettingsResponse {
 }
 
 interface StatusResponse {
-  clients: { clientId: number; ok: boolean; error?: string }[];
+  clients: {
+    clientId: number;
+    ok: boolean;
+    error?: string;
+    errorOrigin?: 'app' | 'opaque';
+  }[];
 }
 
 type TestState =
   | { key: string; ok: true; version?: string }
-  | { key: string; ok: false; error: string };
+  | {
+      key: string;
+      ok: false;
+      error: string;
+      errorOrigin: 'app' | 'opaque';
+    };
 
 let draftKeyCounter = 0;
 const nextKey = () => `client-${(draftKeyCounter += 1)}`;
@@ -152,6 +165,14 @@ const errorMessage = (error: unknown): string | undefined => {
     if (typeof data?.error === 'string') return data.error;
   }
   return undefined;
+};
+
+const errorOrigin = (error: unknown): 'app' | 'opaque' => {
+  if (axios.isAxiosError(error)) {
+    const data = error.response?.data as { errorOrigin?: unknown } | undefined;
+    if (data?.errorOrigin === 'opaque') return 'opaque';
+  }
+  return 'app';
 };
 
 const SettingsDownloadClients = ({
@@ -306,6 +327,9 @@ const SettingsDownloadClients = ({
         error:
           errorMessage(testFailure) ??
           intl.formatMessage(messages.testFailure, { name: client.name }),
+        errorOrigin: errorMessage(testFailure)
+          ? errorOrigin(testFailure)
+          : 'app',
       });
     } finally {
       setTesting(undefined);
@@ -597,7 +621,14 @@ const SettingsDownloadClients = ({
               <Alert
                 type="warning"
                 title={intl.formatMessage(messages.lastCheckFailed, {
-                  error: health.error,
+                  error:
+                    health.errorOrigin === 'opaque' ? (
+                      <OpaqueApiMessageText>
+                        {health.error}
+                      </OpaqueApiMessageText>
+                    ) : (
+                      <ApiMessageText>{health.error}</ApiMessageText>
+                    ),
                 })}
               />
             )}
@@ -606,15 +637,38 @@ const SettingsDownloadClients = ({
                 <Alert type="info">
                   {result.version
                     ? intl.formatMessage(messages.testSuccessVersion, {
-                        name: client.name,
-                        version: result.version,
+                        name: (
+                          <bdi dir="auto" lang="und">
+                            {client.name}
+                          </bdi>
+                        ),
+                        version: (
+                          <bdi dir="ltr" lang="und">
+                            {result.version}
+                          </bdi>
+                        ),
                       })
                     : intl.formatMessage(messages.testSuccess, {
-                        name: client.name,
+                        name: (
+                          <bdi dir="auto" lang="und">
+                            {client.name}
+                          </bdi>
+                        ),
                       })}
                 </Alert>
               ) : (
-                <Alert type="error" title={result.error} />
+                <Alert
+                  type="error"
+                  title={
+                    result.errorOrigin === 'opaque' ? (
+                      <OpaqueApiMessageText>
+                        {result.error}
+                      </OpaqueApiMessageText>
+                    ) : (
+                      <ApiMessageText>{result.error}</ApiMessageText>
+                    )
+                  }
+                />
               ))}
             <div className="settings-card-actions">
               <Button
@@ -659,7 +713,9 @@ const SettingsDownloadClients = ({
         )}
         {data && draft && !error && (
           <form onSubmit={(event) => void submit(event)}>
-            {saveError && <Alert type="error" title={saveError} />}
+            {saveError && (
+              <Alert type="error" title={formatApiMessage(intl, saveError)} />
+            )}
             {draft.clients.length === 0 ? (
               <p className="settings-group-description">
                 {intl.formatMessage(messages.noClients)}

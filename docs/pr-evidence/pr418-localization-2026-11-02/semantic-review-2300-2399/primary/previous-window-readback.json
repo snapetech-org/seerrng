@@ -1,0 +1,55 @@
+{
+  "boundary": {
+    "currentEnglishInsertionOrderVerified": true,
+    "nextId": "components.NotificationTypeSelector.mediaavailableDescription",
+    "nextPosition": 2300,
+    "previousLastId": "components.NotificationTypeSelector.mediaavailable",
+    "previousLastPosition": 2299
+  },
+  "currentReadbackHead": "d49b44895d0ded9796f0c970ad09141212e9a98f",
+  "currentReadbackTree": "cebcfc11e0ea37c42f5b6e979e96cca8c89c7814",
+  "previousFinalTargets": {
+    "evidencePath": "/mnt/disks/scratch/task-scratch/seerrng-pr418-window-2200-2299-crossreview-20261102/crossreview-ledger.jsonl",
+    "evidenceSha256": "6e4619695eaf10c06c1063bb428ba1486560acc8feba6a229bca1e2b42ca8596",
+    "liveCatalogReadbacksVerified": true,
+    "localeCount": 12,
+    "mismatchCount": 0,
+    "mismatches": [],
+    "rowCount": 1200,
+    "targetField": "crossReviewTarget"
+  },
+  "priorPackets": {
+    "priorCrossReview": {
+      "checksumManifestSha256": "a600be5be958238b6fa8e15ce33d223f022e021b97f922fb3b42cb126abb9534",
+      "directory": "/mnt/disks/scratch/task-scratch/seerrng-pr418-window-2200-2299-crossreview-20261102",
+      "entries": 4,
+      "manifestValidated": true
+    },
+    "priorLanguageAudit": {
+      "checksumManifestSha256": "949a0fa452957221d9f236a1d01caf41f726ad70a7b3fd9312d35a75c891c009",
+      "directory": "/mnt/disks/scratch/task-scratch/seerrng-pr418-window-2200-2299-language-audit-agent-20261102",
+      "entries": 7,
+      "manifestValidated": true
+    },
+    "priorPrimary": {
+      "checksumManifestSha256": "59734060e00bf0dc5688ee6b7d0aa23acdc835a446901f1c1c32e0f234bbfa2a",
+      "directory": "/mnt/disks/scratch/task-scratch/seerrng-pr418-window-2200-2299-primary-20261102",
+      "entries": 18,
+      "manifestValidated": true
+    }
+  },
+  "priorWindow": {
+    "head": "8c27beb8086ea6f840bdcde4b915d83db27f81a3",
+    "lastSource": "Request Available",
+    "lastSourceId": "components.NotificationTypeSelector.mediaavailable",
+    "positions": [
+      2200,
+      2299
+    ],
+    "sourceCount": 100,
+    "sourceListSha256": "8f62620863f998c4daa3b7c6584159b335df41edd5ec950c641718f59ca1d46c",
+    "tree": "2951195dd04af87add189090756e0d0f43e8e031"
+  },
+  "pullRequest": 418,
+  "repository": "snapetech-org/SeerrNG"
+}

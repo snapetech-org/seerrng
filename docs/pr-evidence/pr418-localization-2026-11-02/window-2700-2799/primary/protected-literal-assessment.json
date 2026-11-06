@@ -1,0 +1,240 @@
+{
+  "allCasesClassified": true,
+  "assessments": [
+    {
+      "callerContextRef": "components.RequestList.RequestItem.olid",
+      "callerContextSha256": "ca07fa0d1effae8972cc89a27c4289c47797f5ee38158aa7d1edddfa650ea0a3",
+      "callerLineReferences": [
+        {
+          "file": "src/components/RequestList/RequestItem/index.tsx",
+          "line": 88,
+          "lineSha256": "200b65e005a1aab549b5115a78581e7c7c2cb197e8c5e4ceb8d469b581b2092d",
+          "lineText": "olid: 'Open Library ID',"
+        },
+        {
+          "file": "src/components/RequestList/RequestItem/index.tsx",
+          "line": 361,
+          "lineSha256": "78ec1f27e302352c463f509027391654a6607d2b80d9bc25217517bb19a0ad03",
+          "lineText": "{intl.formatMessage(messages.olid)}"
+        }
+      ],
+      "callerPaths": [
+        "src/components/RequestList/RequestItem/index.tsx"
+      ],
+      "callerUseStatus": "direct-or-helper-reference-found",
+      "currentTarget": "Open-Library-ID",
+      "currentTargetHash": "2a471729855b089cf30a8eebde68390026f9e949abb67beebed40b3e723087bd",
+      "determination": "overbroad-literal-rule",
+      "externalEvidenceRefs": [
+        "duden_name_compound",
+        "openlibrary"
+      ],
+      "hold": false,
+      "locale": "de",
+      "proposedTarget": "Open-Library-ID",
+      "protectedLiteral": "Open Library",
+      "reason": "Keep the current target. Duden D146 calls for hyphens in compounds with multi-part names and gives “Rio-de-la-Plata-Bucht” as an example; Open-Library-ID follows that pattern. The checker’s exact-space requirement for “Open Library” is overbroad in German compounding; the translation itself is supported.",
+      "source": "Open Library ID",
+      "sourceHash": "23225fe5fae85a711419e9d182a508b59eeeb27faf754cd31020a3e38c272951",
+      "sourceId": "components.RequestList.RequestItem.olid",
+      "sourcePosition": 2704
+    },
+    {
+      "callerContextRef": "components.RequestModal.AdvancedRequester.binderyDefaults",
+      "callerContextSha256": "0e9a9f7e22e7143c2641a23d5e8e37c71614f1b90eebcedc8bca8ad218d2a762",
+      "callerLineReferences": [
+        {
+          "file": "src/components/RequestModal/AdvancedRequester/index.tsx",
+          "line": 160,
+          "lineSha256": "7619b6df4bcd873bf62bd90b843cb0b343aa514a5f74da5775b4213615b16295",
+          "lineText": "binderyDefaults:"
+        },
+        {
+          "file": "src/components/RequestModal/AdvancedRequester/index.tsx",
+          "line": 1070,
+          "lineSha256": "20e9c83ffeaef44d4193d1934da578c0805d5009383b1de7a941886c658877f1",
+          "lineText": "{intl.formatMessage(messages.binderyDefaults)}"
+        }
+      ],
+      "callerPaths": [
+        "src/components/RequestModal/AdvancedRequester/index.tsx"
+      ],
+      "callerUseStatus": "direct-or-helper-reference-found",
+      "currentTarget": "बाइंडरी प्रोफ़ाइल, फ़ोल्डर और खोज के लिए अपने स्वयं के अधिग्रहण डिफ़ॉल्ट का उपयोग करता है।",
+      "currentTargetHash": "0771e11b52bfdb382ea95e01662e9524621cd1333d63d26856982906bb1dd307",
+      "determination": "true-target-defect",
+      "externalEvidenceRefs": [],
+      "hold": false,
+      "locale": "hi",
+      "proposedTarget": "Bindery प्रोफ़ाइल, फ़ोल्डर और खोज के लिए अपनी अलग डिफ़ॉल्ट अधिग्रहण सेटिंग्स इस्तेमाल करता है।",
+      "protectedLiteral": "Bindery",
+      "reason": "The current transliterates the service name. Source caller code tests `selectedIsBindery` and conditionally presents this description for that service; retaining Bindery preserves which service the UI refers to. Not an overbroad literal rule.",
+      "source": "Bindery uses its own acquisition defaults for profiles, folders, and search.",
+      "sourceHash": "518fae67c98cb0e858712c827e68c53f889e019fac20fade1d0f1cb76dce23f6",
+      "sourceId": "components.RequestModal.AdvancedRequester.binderyDefaults",
+      "sourcePosition": 2757
+    },
+    {
+      "callerContextRef": "components.RequestModal.Book.noEbookServer",
+      "callerContextSha256": "768db5ac25c33ba8a6566ea1ae09054b48cfc0c271a5b782776c77c5fc4f014f",
+      "callerLineReferences": [
+        {
+          "file": "src/components/RequestModal/BookRequestModal.tsx",
+          "line": 83,
+          "lineSha256": "b340e625f182f089ca0f8ba0d520dd6ef0a4de9b2839feb3d567efe864fcf54e",
+          "lineText": "noEbookServer:"
+        },
+        {
+          "file": "src/components/RequestModal/BookRequestModal.tsx",
+          "line": 525,
+          "lineSha256": "5cdff2dd5987d9fc88d932a53a52d2b3b26b0648f7a2734cb3e2e1c174a3342f",
+          "lineText": "? messages.noEbookServer"
+        }
+      ],
+      "callerPaths": [
+        "src/components/RequestModal/BookRequestModal.tsx"
+      ],
+      "callerUseStatus": "direct-or-helper-reference-found",
+      "currentTarget": "कोई बुक बुकशेल्फ़ सेवा कॉन्फ़िगर नहीं की गई है. पुस्तक अनुरोध अनुपलब्ध हैं.",
+      "currentTargetHash": "8ea5fdd6792d3ba7ca140a69dba0e88ab283fe91115f4b38f0326cbf918242ba",
+      "determination": "true-target-defect",
+      "externalEvidenceRefs": [],
+      "hold": false,
+      "locale": "hi",
+      "proposedTarget": "पुस्तकों के लिए कोई Bookshelf सेवा कॉन्फ़िगर नहीं है। पुस्तकों के अनुरोध उपलब्ध नहीं हैं।",
+      "protectedLiteral": "Bookshelf",
+      "reason": "The source identifies the named Bookshelf service; the current transliterates the service brand and redundantly says book/bookshelf. The source caller is the missing-ebook-service message in the book request modal. Not an overbroad literal rule.",
+      "source": "No Book Bookshelf service is configured. Book requests are unavailable.",
+      "sourceHash": "1620d890d19dd974d07d1d48646430294f12d6f73f8f473f5b95c8d3adbde0cf",
+      "sourceId": "components.RequestModal.Book.noEbookServer",
+      "sourcePosition": 2796
+    },
+    {
+      "callerContextRef": "components.RequestModal.Book.noEbookServer",
+      "callerContextSha256": "768db5ac25c33ba8a6566ea1ae09054b48cfc0c271a5b782776c77c5fc4f014f",
+      "callerLineReferences": [
+        {
+          "file": "src/components/RequestModal/BookRequestModal.tsx",
+          "line": 83,
+          "lineSha256": "b340e625f182f089ca0f8ba0d520dd6ef0a4de9b2839feb3d567efe864fcf54e",
+          "lineText": "noEbookServer:"
+        },
+        {
+          "file": "src/components/RequestModal/BookRequestModal.tsx",
+          "line": 525,
+          "lineSha256": "5cdff2dd5987d9fc88d932a53a52d2b3b26b0648f7a2734cb3e2e1c174a3342f",
+          "lineText": "? messages.noEbookServer"
+        }
+      ],
+      "callerPaths": [
+        "src/components/RequestModal/BookRequestModal.tsx"
+      ],
+      "callerUseStatus": "direct-or-helper-reference-found",
+      "currentTarget": "Không có dịch vụ Giá sách Sách nào được định cấu hình. Yêu cầu sách không có sẵn.",
+      "currentTargetHash": "2d3b00c123db986b4ad8f8d57381a2deb8e9647588e2c38e8fa81034a7166c1a",
+      "determination": "true-target-defect",
+      "externalEvidenceRefs": [],
+      "hold": false,
+      "locale": "vi",
+      "proposedTarget": "Chưa cấu hình dịch vụ Bookshelf cho sách. Yêu cầu sách không khả dụng.",
+      "protectedLiteral": "Bookshelf",
+      "reason": "The current translates the named Bookshelf service as “bookshelf” and repeats the generic book noun. The source caller selects this message for a missing ebook service in the book request modal. Not an overbroad literal rule.",
+      "source": "No Book Bookshelf service is configured. Book requests are unavailable.",
+      "sourceHash": "1620d890d19dd974d07d1d48646430294f12d6f73f8f473f5b95c8d3adbde0cf",
+      "sourceId": "components.RequestModal.Book.noEbookServer",
+      "sourcePosition": 2796
+    },
+    {
+      "callerContextRef": "components.RequestModal.Book.noIsbnCandidates",
+      "callerContextSha256": "57c1d981b85048ed62586378a9248f3b1be68762a994247bf86a9b7cb966890a",
+      "callerLineReferences": [
+        {
+          "file": "src/components/RequestModal/BookRequestModal.tsx",
+          "line": 81,
+          "lineSha256": "de63839b67881f108cee5f98a014748f672b482f0e4d7a2384a31e5d480ddbfe",
+          "lineText": "noIsbnCandidates:"
+        }
+      ],
+      "callerPaths": [
+        "src/components/RequestModal/BookRequestModal.tsx"
+      ],
+      "callerUseStatus": "definition-only-or-single-reference",
+      "currentTarget": "有効な ISBN 候補が見つかりませんでした。本棚はタイトル マッチングに戻ります。",
+      "currentTargetHash": "908341cfb6bcaba42bf671dc739664651f9e3216a5cc8cf89b606adb9f17acdc",
+      "determination": "true-target-defect",
+      "externalEvidenceRefs": [],
+      "hold": false,
+      "locale": "ja",
+      "proposedTarget": "有効な ISBN 候補が見つかりませんでした。Bookshelfはタイトルとの照合に切り替えます。",
+      "protectedLiteral": "Bookshelf",
+      "reason": "The source names Bookshelf as the service that switches to title matching; the current 本棚 means a physical shelf and loses the service identity. Not an overbroad literal rule.",
+      "source": "No valid ISBN candidates were found. Bookshelf will fall back to title matching.",
+      "sourceHash": "9b6d40aef2a455f79c4db116389fda398fb3fa2301b1b8ec708005f5583f6233",
+      "sourceId": "components.RequestModal.Book.noIsbnCandidates",
+      "sourcePosition": 2797
+    },
+    {
+      "callerContextRef": "components.RequestModal.Book.noIsbnCandidates",
+      "callerContextSha256": "57c1d981b85048ed62586378a9248f3b1be68762a994247bf86a9b7cb966890a",
+      "callerLineReferences": [
+        {
+          "file": "src/components/RequestModal/BookRequestModal.tsx",
+          "line": 81,
+          "lineSha256": "de63839b67881f108cee5f98a014748f672b482f0e4d7a2384a31e5d480ddbfe",
+          "lineText": "noIsbnCandidates:"
+        }
+      ],
+      "callerPaths": [
+        "src/components/RequestModal/BookRequestModal.tsx"
+      ],
+      "callerUseStatus": "definition-only-or-single-reference",
+      "currentTarget": "Nenhum candidato válido a ISBN foi encontrado. A estante voltará à correspondência de títulos.",
+      "currentTargetHash": "e48226a42b5e0cb860f6c03e968303b1ec3fac0f8d27049a930ab7358d716e46",
+      "determination": "true-target-defect",
+      "externalEvidenceRefs": [],
+      "hold": false,
+      "locale": "pt_BR",
+      "proposedTarget": "Nenhum candidato válido a ISBN foi encontrado. O Bookshelf usará a correspondência por título como alternativa.",
+      "protectedLiteral": "Bookshelf",
+      "reason": "The source names the Bookshelf service; the current translates it as estante and makes the service itself appear to be a physical shelf. Not an overbroad literal rule.",
+      "source": "No valid ISBN candidates were found. Bookshelf will fall back to title matching.",
+      "sourceHash": "9b6d40aef2a455f79c4db116389fda398fb3fa2301b1b8ec708005f5583f6233",
+      "sourceId": "components.RequestModal.Book.noIsbnCandidates",
+      "sourcePosition": 2797
+    },
+    {
+      "callerContextRef": "components.RequestModal.Book.noIsbnCandidates",
+      "callerContextSha256": "57c1d981b85048ed62586378a9248f3b1be68762a994247bf86a9b7cb966890a",
+      "callerLineReferences": [
+        {
+          "file": "src/components/RequestModal/BookRequestModal.tsx",
+          "line": 81,
+          "lineSha256": "de63839b67881f108cee5f98a014748f672b482f0e4d7a2384a31e5d480ddbfe",
+          "lineText": "noIsbnCandidates:"
+        }
+      ],
+      "callerPaths": [
+        "src/components/RequestModal/BookRequestModal.tsx"
+      ],
+      "callerUseStatus": "definition-only-or-single-reference",
+      "currentTarget": "Không tìm thấy ứng cử viên ISBN hợp lệ nào. Giá sách sẽ quay lại khớp tiêu đề.",
+      "currentTargetHash": "ee0337b6ae29f4e7707faa789ee40b7a0d749398b9f48eb013572a4b2b65950a",
+      "determination": "true-target-defect",
+      "externalEvidenceRefs": [],
+      "hold": false,
+      "locale": "vi",
+      "proposedTarget": "Không tìm thấy ứng viên ISBN hợp lệ nào. Bookshelf sẽ chuyển sang đối sánh theo tiêu đề.",
+      "protectedLiteral": "Bookshelf",
+      "reason": "The source names the Bookshelf service; the current translates it as Giá sách (“bookshelf”) and says it “returns” to title matching. The proposal preserves the service identity and describes the fallback. Not an overbroad literal rule.",
+      "source": "No valid ISBN candidates were found. Bookshelf will fall back to title matching.",
+      "sourceHash": "9b6d40aef2a455f79c4db116389fda398fb3fa2301b1b8ec708005f5583f6233",
+      "sourceId": "components.RequestModal.Book.noIsbnCandidates",
+      "sourcePosition": 2797
+    }
+  ],
+  "count": 7,
+  "holds": 0,
+  "overbroadLiteralRules": 1,
+  "schemaVersion": 1,
+  "trueTargetDefects": 6
+}

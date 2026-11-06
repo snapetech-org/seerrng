@@ -1,0 +1,111 @@
+{
+  "repository": "snapetech-org/seerrng",
+  "pull_request": 418,
+  "branch": "codex/seerrng-localization-overhaul-20261028",
+  "base": "main",
+  "review_head": "a1d39112a4e378a38640dc183e820c646b49665a",
+  "review_tree": "fa084f89e9ae90ca196a7201b91882a1fd9f9710",
+  "source_fix_commit": "a1d39112a4e378a38640dc183e820c646b49665a",
+  "window": "W3001",
+  "cell_count": 12,
+  "final_dispositions": {
+    "correction": 4,
+    "accept-current": 8
+  },
+  "source_id": "components.RequestModal.QuotaDisplay.magazinelimit",
+  "source_file": "src/components/RequestModal/QuotaDisplay/index.tsx",
+  "source_file_sha256": "7d565ede2570c1e4d899bb76d7be990824be6be422a9c1ea1be4592cd46d03dc",
+  "caller_file": "src/components/RequestModal/MagazineRequestModal.tsx",
+  "caller_file_sha256": "3302816c4320f46b44958fdc9386074876288341fb092a3acde594db41b5d2f3",
+  "primary_packet_sha256": "86bb7a6e8edda8e5285c814d1b6e9e3172042722f0ab25d0518e221532ec56ee",
+  "independent_cross_review_packet_sha256": "00c20534bcc31bb27f067a48fc624459c2f89b9fbf2d5bd7d57d0629c64fc2c4",
+  "catalog_results": {
+    "es": {
+      "before_sha256": "ddc136552b9b31666233a65b165b1357264100ffe70a856c58884e517ad63fe4",
+      "after_sha256": "a74ea25d84e460573edc872a5481babe3d0f4ff2454eb0d08a121451c8d90de9",
+      "key_count": 9494,
+      "readback": "pass"
+    },
+    "zh_Hans": {
+      "before_sha256": "b986efa6177355f5bc3a3ef41e075bcdff3bea79255e37926e7403236475937f",
+      "after_sha256": "b986efa6177355f5bc3a3ef41e075bcdff3bea79255e37926e7403236475937f",
+      "key_count": 9494,
+      "readback": "pass"
+    },
+    "hi": {
+      "before_sha256": "ffb29e99a802c1866e2fe217e05870150e13cefd62e527b19710df0236637e82",
+      "after_sha256": "19d144a73d3608e1ba66efdaa1bc04a322cf8882cd5b65edbcf104be7a69741a",
+      "key_count": 9494,
+      "readback": "pass"
+    },
+    "de": {
+      "before_sha256": "5369660611694fb79a48759946e2a31992636a8ad5080f32a3e02352f134d72b",
+      "after_sha256": "1dcbd484f94986c9993560c9bffd8b80537669c55544b5c1a4192d43332c53ad",
+      "key_count": 9494,
+      "readback": "pass"
+    },
+    "ja": {
+      "before_sha256": "149aaca60094fcfad1ea83576a62b15afe085e49df747b6ef9b381f90cbe43c3",
+      "after_sha256": "149aaca60094fcfad1ea83576a62b15afe085e49df747b6ef9b381f90cbe43c3",
+      "key_count": 9494,
+      "readback": "pass"
+    },
+    "fr": {
+      "before_sha256": "c6508fe27b741a0e0905caee6b521aee0fb1f95e1ca8a8f0e077a8a3e35b3d6d",
+      "after_sha256": "c6508fe27b741a0e0905caee6b521aee0fb1f95e1ca8a8f0e077a8a3e35b3d6d",
+      "key_count": 9494,
+      "readback": "pass"
+    },
+    "pt_BR": {
+      "before_sha256": "390ce5e3bc16d7ddaa14408a92ab546ded206883a03a23713fddedfde0dba09c",
+      "after_sha256": "a92098ac095dbf553c71a8977d4999abd021d8fa2ab6987e00febd1a8139cd74",
+      "key_count": 9494,
+      "readback": "pass"
+    },
+    "ar": {
+      "before_sha256": "16b41b8c7e7ed6e08922c02280f8fe432ecfc0494826744359ef5eb981db427b",
+      "after_sha256": "16b41b8c7e7ed6e08922c02280f8fe432ecfc0494826744359ef5eb981db427b",
+      "key_count": 9494,
+      "readback": "pass"
+    },
+    "ko": {
+      "before_sha256": "1ce2024f28298b1dd0d181002ac9bd0267dd2084efef8ad9ffaaa1e2d035c71d",
+      "after_sha256": "1ce2024f28298b1dd0d181002ac9bd0267dd2084efef8ad9ffaaa1e2d035c71d",
+      "key_count": 9494,
+      "readback": "pass"
+    },
+    "zh_Hant": {
+      "before_sha256": "a08f716bf1ac8aca5cf84e322ab041c6e845dd9bf6f52760bb7e3f8b72678bcc",
+      "after_sha256": "a08f716bf1ac8aca5cf84e322ab041c6e845dd9bf6f52760bb7e3f8b72678bcc",
+      "key_count": 9494,
+      "readback": "pass"
+    },
+    "vi": {
+      "before_sha256": "90e86e8cb91a4df6cd24226123f16350b6a3d6c9f4ad1aa871bd83e70e24469d",
+      "after_sha256": "90e86e8cb91a4df6cd24226123f16350b6a3d6c9f4ad1aa871bd83e70e24469d",
+      "key_count": 9494,
+      "readback": "pass"
+    },
+    "id": {
+      "before_sha256": "d9c3f2e05cc5e663592aaf51bcda76f505970c2c59ff70f8baca28d1146f431f",
+      "after_sha256": "d9c3f2e05cc5e663592aaf51bcda76f505970c2c59ff70f8baca28d1146f431f",
+      "key_count": 9494,
+      "readback": "pass"
+    }
+  },
+  "status": "readback verified at working tree derived from exact review head a1d39112a4e378a38640dc183e820c646b49665a; commit/push pending",
+  "native_speaker_approval": false,
+  "browser_acceptance": "unverified: the headed Agentic VM review inspected Setup, not the request modal at this head; no current-head request-modal rendering evidence is recorded.",
+  "tests_builds_scans_ci": "not run for this milestone",
+  "workflow_changes": false,
+  "release_merge_tag": false,
+  "readback": {
+    "cells": 12,
+    "corrections": 4,
+    "unchanged": 8,
+    "unexpected_catalog_differences": 0,
+    "ordered_key_sets_preserved": 12,
+    "keys_per_catalog": 9494,
+    "structural_mismatches": 0
+  }
+}

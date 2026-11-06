@@ -1,0 +1,12 @@
+{
+  "rae_usted": {
+    "supports": "Formal Spanish direct-address wording in this window follows the established usted register recorded in the prior SeerrNG review.",
+    "title": "Real Academia Española, Gramática: treatment pronouns and agreement",
+    "url": "https://www.rae.es/gtg/docs/GTG_tablas_web.pdf"
+  },
+  "source_and_caller_pins": {
+    "supports": "Caller lines show each message role and metadata field at the exact PR head; review decisions cite those pinned contexts.",
+    "title": "Exact-head source and caller records",
+    "url": "docs/pr-evidence/pr418-localization-2026-11-02/window-2800-2899-primary/source-current-cells.jsonl"
+  }
+}

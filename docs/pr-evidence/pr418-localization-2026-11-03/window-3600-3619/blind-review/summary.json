@@ -1,0 +1,68 @@
+{
+  "schemaVersion": 1,
+  "packetType": "independent-blind-review",
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "window": "W3600-W3619",
+  "head": "1fdec93d1b021e4ec7a7c2265230f59d81d2675e",
+  "tree": "6234854dc0b1e7aee17ef2e819ffc2b5b2e386ce",
+  "sourcePositions": {
+    "startInclusive": 3600,
+    "endInclusive": 3619,
+    "count": 20
+  },
+  "localeOrder": [
+    "es",
+    "zh_Hans",
+    "hi",
+    "de",
+    "ja",
+    "fr",
+    "pt_BR",
+    "ar",
+    "ko",
+    "zh_Hant",
+    "vi",
+    "id"
+  ],
+  "cellCount": 240,
+  "dispositions": {
+    "accept-current": 221,
+    "correction": 16,
+    "refinement": 3,
+    "hold": 0
+  },
+  "selectedTargetsByLocale": {
+    "es": 1,
+    "zh_Hans": 1,
+    "hi": 1,
+    "de": 4,
+    "ja": 2,
+    "fr": 1,
+    "pt_BR": 2,
+    "ar": 1,
+    "ko": 2,
+    "zh_Hant": 1,
+    "vi": 2,
+    "id": 1
+  },
+  "holds": [],
+  "placeholderMismatchCount": 0,
+  "markupTokenMismatchCount": 0,
+  "numericTokenMismatchCount": 0,
+  "protectedLiteralMismatchCount": 0,
+  "priorWindowHolds": 0,
+  "priorHoldsOutsideWindowPreserved": true,
+  "primaryReviewDirectoryAccessed": false,
+  "candidateFreeChecksumListSha256": "fdffd9f94443ad5ac1604f4a1ba4790717ae54e900ce41b1c3a454aca19ab156",
+  "candidateFreeManifestJsonSha256": "1089646f93bfd96df0e5f0b820da76e9132cc859b6ed9db595c9a891dbcfcd9c",
+  "candidateFreeInputSha256sVerified": true,
+  "livePRRefsReattested": true,
+  "catalogEditsMade": false,
+  "notes": [
+    "No primary review or proposal data was read during this blind review.",
+    "All 20 source positions have direct caller references; all 240 locale targets were reviewed.",
+    "The protected Bindery control label and URL token are restored in selected targets where currently translated or omitted.",
+    "Native-speaker approval remains a separate review gate."
+  ]
+}

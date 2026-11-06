@@ -321,7 +321,7 @@ const RequestItemError = ({
   return (
     <div className="flex h-64 w-full flex-col justify-center rounded-xl bg-gray-800 py-4 text-gray-400 shadow-md ring-1 ring-red-500 xl:h-28 xl:flex-row">
       <div className="flex w-full flex-col justify-between overflow-hidden sm:flex-row">
-        <div className="flex w-full flex-col justify-center overflow-hidden pr-4 pl-4 sm:pr-0 xl:w-7/12 2xl:w-2/3">
+        <div className="flex w-full flex-col justify-center overflow-hidden ps-4 pe-4 sm:pe-0 xl:w-7/12 2xl:w-2/3">
           <div className="flex text-lg font-bold text-white xl:text-xl">
             {intl.formatMessage(messages.mediaerror, {
               mediaType: intl.formatMessage(
@@ -392,7 +392,7 @@ const RequestItemError = ({
             </>
           )}
         </div>
-        <div className="mt-4 ml-4 flex w-full flex-col justify-center overflow-hidden pr-4 text-sm sm:mt-0 sm:ml-2 xl:flex-1 xl:pr-0">
+        <div className="ms-4 mt-4 flex w-full flex-col justify-center overflow-hidden pe-4 text-sm sm:ms-2 sm:mt-0 xl:flex-1 xl:pe-0">
           {requestData && (
             <>
               <div className="card-field">
@@ -480,7 +480,7 @@ const RequestItemError = ({
                             href={`/users/${requestData.requestedBy.id}`}
                             className="group flex items-center truncate"
                           >
-                            <span className="avatar-sm ml-1.5">
+                            <span className="avatar-sm ms-1.5">
                               <CachedImage
                                 type="avatar"
                                 src={requestData.requestedBy.avatar}
@@ -543,7 +543,7 @@ const RequestItemError = ({
                           href={`/users/${requestData.modifiedBy.id}`}
                           className="group flex items-center truncate"
                         >
-                          <span className="avatar-sm ml-1.5">
+                          <span className="avatar-sm ms-1.5">
                             <CachedImage
                               type="avatar"
                               src={requestData.modifiedBy.avatar}
@@ -566,7 +566,7 @@ const RequestItemError = ({
           )}
         </div>
       </div>
-      <div className="z-10 mt-4 flex w-full flex-col justify-center pr-4 pl-4 xl:mt-0 xl:w-96 xl:items-end xl:pl-0">
+      <div className="z-10 mt-4 flex w-full flex-col justify-center ps-4 pe-4 xl:mt-0 xl:w-96 xl:items-end xl:ps-0">
         {hasPermission(Permission.MANAGE_REQUESTS) && requestData?.media.id && (
           <Button
             className="w-full"
@@ -1486,7 +1486,7 @@ const RequestItem = ({ request, revalidateList }: RequestItemProps) => {
                           href={`/users/${requestData.modifiedBy.id}`}
                           className="group flex items-center truncate"
                         >
-                          <span className="avatar-sm ml-1.5">
+                          <span className="avatar-sm ms-1.5">
                             <CachedImage
                               type="avatar"
                               src={requestData.modifiedBy.avatar}

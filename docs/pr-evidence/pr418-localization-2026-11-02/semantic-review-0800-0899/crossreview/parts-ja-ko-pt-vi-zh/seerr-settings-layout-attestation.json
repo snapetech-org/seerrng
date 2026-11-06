@@ -1,0 +1,19 @@
+{
+  "repository": "snapetech-org/seerrng",
+  "head": "85188b1964b6bf473219c566b196d5eda94396e3",
+  "tree": "50bb1f456e29259dfe6dd022cea11da625a6cca6",
+  "file": "src/components/Settings/SettingsLayout.tsx",
+  "fileBlobAtPin": "0eb626cea57400090d82a51fd80d4fb5a627f5d2",
+  "menuLabelDefinitionLine": 29,
+  "menuLabelDefinition": "menuGeneralSettings: 'General',",
+  "routeEntryStartLine": 133,
+  "routeEntryLines": [
+    "const settingsRoutes: SettingsRoute[] = [",
+    "{",
+    "text: intl.formatMessage(messages.menuGeneralSettings),",
+    "route: '/settings/main',",
+    "regex: /^\\/settings(\\/main)?$/,",
+    "},"
+  ],
+  "meaning": "/settings/main uses the General tab label; the English Main breadcrumb is stale for the live Seerr UI."
+}

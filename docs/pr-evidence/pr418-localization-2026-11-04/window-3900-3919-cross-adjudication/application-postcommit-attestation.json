@@ -1,0 +1,22 @@
+{
+  "recordedAt": "2026-11-04T15:10:20Z",
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "state": "open",
+  "draft": true,
+  "mergeable": true,
+  "mergeableState": "clean",
+  "headRef": "codex/seerrng-localization-overhaul-20261028",
+  "productCommit": "71adf95f2c98fd46a075a04f743018b522c2aed0",
+  "headTree": "89c89736e142e21101e6e6cecec5929a4ab19f53",
+  "branchRefSha": "71adf95f2c98fd46a075a04f743018b522c2aed0",
+  "pullRefSha": "71adf95f2c98fd46a075a04f743018b522c2aed0",
+  "baseRef": "main",
+  "pullApiBaseSha": "fa40534ccced75bde1125c14760514fcd5d7de4d",
+  "liveMainSha": "016bcf8db7475b2105b9b488ff67ed7d1c096508",
+  "liveMainTree": "be45de2c5ffc98098adcdc362b491717c05a48c2",
+  "note": "PR API base trails live main; API reports mergeable and clean. No rebase or base change was made.",
+  "noPushHookChecksReported": true,
+  "noWorkflowChange": true,
+  "noReleaseMergeOrTag": true
+}

@@ -1,0 +1,88 @@
+{
+  "candidateFreeChecksumListSha256": "be3d86b61429fb0a4fb6e99e336cddefd446fbcee06792c71b4ed7d925908230",
+  "candidateFreeManifestSha256": "7ddddcd10536dbd6363814f61dda3dbc2d8629127624b01793589f5bde80e205",
+  "candidateFreeRelevantChecks": {
+    "manifest.json": {
+      "actualSha256": "7ddddcd10536dbd6363814f61dda3dbc2d8629127624b01793589f5bde80e205",
+      "expectedSha256": "7ddddcd10536dbd6363814f61dda3dbc2d8629127624b01793589f5bde80e205",
+      "matches": true
+    },
+    "prior-hold-hash-reattestation.jsonl": {
+      "actualSha256": "08faea92e3efb48c728f9257243ea5eaace903870f283f1b9d3399828d0cf650",
+      "expectedSha256": "08faea92e3efb48c728f9257243ea5eaace903870f283f1b9d3399828d0cf650",
+      "matches": true
+    },
+    "prior-selection-hash-reattestation.jsonl": {
+      "actualSha256": "b2ea74ed18681f58f5171157b9dc02e6817fc7bf433842cb4d9d0ad6e9fb3ea5",
+      "expectedSha256": "b2ea74ed18681f58f5171157b9dc02e6817fc7bf433842cb4d9d0ad6e9fb3ea5",
+      "matches": true
+    },
+    "selected-source-cells.jsonl": {
+      "actualSha256": "3ed73561e8cadd53e1e7d8fcce1efd743a98a9715df02015ec53506642bee9e9",
+      "expectedSha256": "3ed73561e8cadd53e1e7d8fcce1efd743a98a9715df02015ec53506642bee9e9",
+      "matches": true
+    },
+    "window.json": {
+      "actualSha256": "bccd09bd52dc7df725ead6c32a6850d4f26721b2dabc742eeada4459d2f7e559",
+      "expectedSha256": "bccd09bd52dc7df725ead6c32a6850d4f26721b2dabc742eeada4459d2f7e559",
+      "matches": true
+    }
+  },
+  "olderApplicationChecksumsVerified": 4,
+  "olderApplicationManifestSha256": "e2dff6f673cb1bd8fab3ed7a92d7a252f8939edd0e8a6249f3fca9d681e64e87",
+  "olderAppliedTargetRows": 35,
+  "previousApplicationChecksumListSha256": "73244abc8a5e9a1509593ca7191be2a104a2f8204340f4179ecd2e8f867893ac",
+  "previousApplicationCommit": "3786de8f8334c6f69924e2f88e363f129d3b3943",
+  "previousApplicationManifestSha256": "491dab45a16161700f110f4978ec83293c1ca7b1ea9b5810066dab149ee7b9cd",
+  "previousApplicationPath": "/home/keith/Documents/code/task-scratch/seerrng-pr418-w3840-3859-20261104/repo-checkout/docs/pr-evidence/pr418-localization-2026-11-04/w3820-3839-independent-cross/application",
+  "previousApplicationReadbackMismatches": 0,
+  "previousApplicationReadbackRows": 240,
+  "previousApplicationRelevantChecks": {
+    "application-manifest.json": {
+      "actualSha256": "491dab45a16161700f110f4978ec83293c1ca7b1ea9b5810066dab149ee7b9cd",
+      "expectedSha256": "491dab45a16161700f110f4978ec83293c1ca7b1ea9b5810066dab149ee7b9cd",
+      "matches": true
+    },
+    "application-readback.jsonl": {
+      "actualSha256": "ec162d2f614f28839891b6b3e73b09b11687120e743aba11662d4f78659c3831",
+      "expectedSha256": "ec162d2f614f28839891b6b3e73b09b11687120e743aba11662d4f78659c3831",
+      "matches": true
+    },
+    "apply-plan.jsonl": {
+      "actualSha256": "359fb8e051f28847bdf1719eb1a2a6108dde6944868813ec21fc18fadfc4eaee",
+      "expectedSha256": "359fb8e051f28847bdf1719eb1a2a6108dde6944868813ec21fc18fadfc4eaee",
+      "matches": true
+    }
+  },
+  "previousApplicationTree": "b4fbc12bace0fc1ac6a650badc444fe3fa0e8724",
+  "previousAppliedTargetHashRows": 54,
+  "previousAppliedTargetsUnchangedByHash": 54,
+  "previousCandidateFreePath": "/home/keith/Documents/code/task-scratch/seerrng-pr418-w3840-3859-20261104/repo-checkout/docs/pr-evidence/pr418-localization-2026-11-04/w3820-3839-independent-cross/cross-audit/evidence/candidate-free-input",
+  "previousCatalogApplicationCells": 19,
+  "previousCatalogApplicationFilesVerified": 13,
+  "previousCatalogApplicationTargetHashesMatched": 19,
+  "previousCrossChecksumFilesVerified": 83,
+  "previousCrossChecksumListSha256": "cf41839b8360a74f98ebacc207885142b83b8c35b913f9bd835cb8eb29464bac",
+  "previousCrossHoldDispositionCount": 2,
+  "previousCrossRelevantChecks": {
+    "summary.json": {
+      "actualSha256": "5cce844618c6942963e3758839c50096a89602d069c5837901b58ad2dcb30128",
+      "expectedSha256": "5cce844618c6942963e3758839c50096a89602d069c5837901b58ad2dcb30128",
+      "matches": true
+    }
+  },
+  "previousCrossSummaryPath": "/home/keith/Documents/code/task-scratch/seerrng-pr418-w3840-3859-20261104/repo-checkout/docs/pr-evidence/pr418-localization-2026-11-04/w3820-3839-independent-cross/cross-audit/summary.json",
+  "previousCrossSummarySha256": "5cce844618c6942963e3758839c50096a89602d069c5837901b58ad2dcb30128",
+  "previousHead": "6c489a64782d31fee70a6aeef386c88527b33083",
+  "previousHoldCount": 14,
+  "previousHoldHashReattestationCount": 14,
+  "previousHoldTargetsUnchangedByHash": 14,
+  "previousOlderApplicationPath": "/home/keith/Documents/code/task-scratch/seerrng-pr418-w3840-3859-20261104/repo-checkout/docs/pr-evidence/pr418-localization-2026-11-04/w3800-3819-independent-cross",
+  "previousSelectedIdsAndSourceTextReattestedByHash": 3840,
+  "previousSelectedSourceIdCount": 3840,
+  "previousSelectionHashRows": 3820,
+  "previousTree": "9bbf55986a34e9a2bc0c4027205927df65f8754b",
+  "previousWindow": "W3820-W3839",
+  "previousWindowSelectionRows": 20,
+  "sourceOrderChangedFromPriorFullContentHash": false
+}

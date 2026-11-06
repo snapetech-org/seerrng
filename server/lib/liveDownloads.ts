@@ -25,6 +25,7 @@ export interface LiveDownloadClientHealth {
   ok: boolean;
   checkedAt: string;
   error?: string;
+  errorOrigin?: 'app' | 'opaque';
 }
 
 type Listener = (
@@ -167,6 +168,8 @@ export class LiveDownloadMonitor {
             error instanceof DownloadClientError
               ? error.message
               : 'The download client could not be reached.';
+          const errorOrigin =
+            error instanceof DownloadClientError ? error.messageOrigin : 'app';
           const previous = this.health.get(client.id);
           if (!previous || previous.ok || previous.error !== message) {
             logger.warn('Live download progress unavailable', {
@@ -180,6 +183,7 @@ export class LiveDownloadMonitor {
             ok: false,
             checkedAt: observedAt,
             error: message,
+            errorOrigin,
           });
           return [];
         }

@@ -1,0 +1,49 @@
+{
+  "childAttestationSha256": "f5413ac68f52b94c80e4518123042253c4da8bb0be367afc00207cd36bd52d7a",
+  "childInputManifestSha256": "b59ca200cdb2832205bc4084d1de5308e3379ed833c8c2b9a7aca3bd27443cb0",
+  "childInputSumsFileSha256": "43f1a98ea29f2918278042f800227fd5c0fb80931aaf5f92d3f9b73b0134cca4",
+  "childLedgerSha256": "9083d739a4c2ac45974fbdf24285328fee92ebe381294e41828f1cac333abf2c",
+  "childPacketDirectory": "/mnt/disks/scratch/task-scratch/seerrng-pr418-window-2400-2499-hidvi-primary-20261102",
+  "counts": {
+    "accept-current": 152,
+    "propose-replacement": 148
+  },
+  "currentInputManifestSha256": "b59ca200cdb2832205bc4084d1de5308e3379ed833c8c2b9a7aca3bd27443cb0",
+  "currentInputSumsFileSha256": "8061bced02de0cb00f7768343051268f522ecd1a89383cd2090535be162d0f95",
+  "failedChecks": [],
+  "head": "f20893e57a89827095fa049d8e0475df7ec7170f",
+  "importAccepted": true,
+  "perLocaleRows": {
+    "hi": 100,
+    "id": 100,
+    "vi": 100
+  },
+  "reconciledRows": 300,
+  "reconciliation": "The child-provided window list had stale 2300-series position labels, so its 300 ledger rows were imported only after each scopePosition/sourceId/source-text/current-target/source+locale catalog/caller hash matched the corrected current root inputs. The child input manifest hash exactly matches the current regenerated input manifest; the sum-file hash differs because the current source-window list is corrected. Three proposed targets were byte-identical to current values and are revised to accept-current.",
+  "revisedNoOpProposals": [
+    {
+      "currentTargetHash": "3ac076720c4f52f437432f8cd58fe40d6b8565f63d33b9e985fdd45e5cd0c956",
+      "locale": "vi",
+      "note": "Reviewed target is byte-identical to current; revised no-op proposal to accept-current.",
+      "sourceId": "components.PermissionEdit.autorequestComicsDescription",
+      "sourcePosition": 2404
+    },
+    {
+      "currentTargetHash": "ac283dfbe1b3aa9d383aed6513280dfe4e960d03420ac7f052de4e2cf287c981",
+      "locale": "vi",
+      "note": "Reviewed target is byte-identical to current; revised no-op proposal to accept-current.",
+      "sourceId": "components.QuotaSelector.books",
+      "sourcePosition": 2478
+    },
+    {
+      "currentTargetHash": "5c2f217ed5f7e99d4e00250f56f0d5bd022c2a4e3d45f83e05e959c81e8f599b",
+      "locale": "hi",
+      "note": "Reviewed target is byte-identical to current; revised no-op proposal to accept-current.",
+      "sourceId": "components.QuotaSelector.tvRequests",
+      "sourcePosition": 2491
+    }
+  ],
+  "rowLevelReconciliationSha256": "4845e3bb00e2c1004bfeed170fd15ead3b7d6d2f90a4597265af4d4d62a19513",
+  "sourceWindowPositionDefectDetected": true,
+  "tree": "b5a5952fb4f8a37ea5a39286295f153ce9504f52"
+}

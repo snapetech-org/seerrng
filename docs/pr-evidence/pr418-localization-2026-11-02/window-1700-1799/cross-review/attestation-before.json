@@ -1,0 +1,3910 @@
+{
+  "allCallerLinesAndNeighborsMatch": true,
+  "allManifestFileChecksMatched": true,
+  "callerContextHashes": [
+    {
+      "contextSha256": "67d7d0afefe60f00e052a68b0a5ec615064617e995681e45b5548fb5aa9f4bb5",
+      "ledgerSha256": "67d7d0afefe60f00e052a68b0a5ec615064617e995681e45b5548fb5aa9f4bb5",
+      "matches": true,
+      "sourceId": "components.IssueList.subtitle"
+    },
+    {
+      "contextSha256": "7b31f5ee07f7139f8d68167e4deea6be0dfa9a301d3b84de1e2015c45d95f348",
+      "ledgerSha256": "7b31f5ee07f7139f8d68167e4deea6be0dfa9a301d3b84de1e2015c45d95f348",
+      "matches": true,
+      "sourceId": "components.IssueList.taskFilters"
+    },
+    {
+      "contextSha256": "a3f97e1903d97f273fb224256b2b4a8466217261ac0a709f945b6416dd44003d",
+      "ledgerSha256": "a3f97e1903d97f273fb224256b2b4a8466217261ac0a709f945b6416dd44003d",
+      "matches": true,
+      "sourceId": "components.IssueList.thirtyDays"
+    },
+    {
+      "contextSha256": "5ddc064553b1c2e905b78739f92fdb953c48592ce8bec2d8939dda0123679e85",
+      "ledgerSha256": "5ddc064553b1c2e905b78739f92fdb953c48592ce8bec2d8939dda0123679e85",
+      "matches": true,
+      "sourceId": "components.IssueList.timePeriod"
+    },
+    {
+      "contextSha256": "780b362d6242da782d80888d520a84e9c971b4477e7fe734e2c39d5dd1ef05c7",
+      "ledgerSha256": "780b362d6242da782d80888d520a84e9c971b4477e7fe734e2c39d5dd1ef05c7",
+      "matches": true,
+      "sourceId": "components.IssueList.video"
+    },
+    {
+      "contextSha256": "8f5a5253e9ac4f54ee0436cc6e5566ebd319aa76f00526ac50a1bb45ef0105f7",
+      "ledgerSha256": "8f5a5253e9ac4f54ee0436cc6e5566ebd319aa76f00526ac50a1bb45ef0105f7",
+      "matches": true,
+      "sourceId": "components.IssueModal.CreateIssueModal.hd"
+    },
+    {
+      "contextSha256": "eeee0d62ea38e470f0eaac879abb0323219c9870e405ebffe4265c5d79647c10",
+      "ledgerSha256": "eeee0d62ea38e470f0eaac879abb0323219c9870e405ebffe4265c5d79647c10",
+      "matches": true,
+      "sourceId": "components.IssueModal.CreateIssueModal.issueReason"
+    },
+    {
+      "contextSha256": "3e15524166aad3cd79427ea6ecf4674d24b627b6a9ecd51139158848ce7707dd",
+      "ledgerSha256": "3e15524166aad3cd79427ea6ecf4674d24b627b6a9ecd51139158848ce7707dd",
+      "matches": true,
+      "sourceId": "components.IssueModal.CreateIssueModal.issueType"
+    },
+    {
+      "contextSha256": "4b1598cf18d6b097cc8bbb7678173acb8ee38c583166964fafeefdd34788eb71",
+      "ledgerSha256": "4b1598cf18d6b097cc8bbb7678173acb8ee38c583166964fafeefdd34788eb71",
+      "matches": true,
+      "sourceId": "components.IssueModal.CreateIssueModal.noAvailableQuality"
+    },
+    {
+      "contextSha256": "426f5ab9a3504b9ee9c4bdbb9276d8bfb30a57faccede96e00b82fd795cc4bb8",
+      "ledgerSha256": "426f5ab9a3504b9ee9c4bdbb9276d8bfb30a57faccede96e00b82fd795cc4bb8",
+      "matches": true,
+      "sourceId": "components.IssueModal.CreateIssueModal.providedetail"
+    },
+    {
+      "contextSha256": "0b5c1364ca0bbb25269264599550d9e0e2de83b5ca91b42548c5a3333216aedd",
+      "ledgerSha256": "0b5c1364ca0bbb25269264599550d9e0e2de83b5ca91b42548c5a3333216aedd",
+      "matches": true,
+      "sourceId": "components.IssueModal.CreateIssueModal.quality"
+    },
+    {
+      "contextSha256": "7e07fbbfae0cce5dbe6aac2515dc9bec43c2ae264a5cf8119d850dc51ac835af",
+      "ledgerSha256": "7e07fbbfae0cce5dbe6aac2515dc9bec43c2ae264a5cf8119d850dc51ac835af",
+      "matches": true,
+      "sourceId": "components.IssueModal.CreateIssueModal.reportissue"
+    },
+    {
+      "contextSha256": "9687a111a9f6f69f9610b54b6d0b2deb297577fd2f27e88387d09c37fd27cde1",
+      "ledgerSha256": "9687a111a9f6f69f9610b54b6d0b2deb297577fd2f27e88387d09c37fd27cde1",
+      "matches": true,
+      "sourceId": "components.IssueModal.CreateIssueModal.selectepisode"
+    },
+    {
+      "contextSha256": "f63a2305a1d8ed4691487ac08bcef4c15501559552282d9e165fdc48ccfd796e",
+      "ledgerSha256": "f63a2305a1d8ed4691487ac08bcef4c15501559552282d9e165fdc48ccfd796e",
+      "matches": true,
+      "sourceId": "components.IssueModal.CreateIssueModal.submitissue"
+    },
+    {
+      "contextSha256": "cc0b2a4035500b200f8f71d0b5b40aa57200a96e7e21be54fc65f201953301e3",
+      "ledgerSha256": "cc0b2a4035500b200f8f71d0b5b40aa57200a96e7e21be54fc65f201953301e3",
+      "matches": true,
+      "sourceId": "components.IssueModal.CreateIssueModal.toastFailedCreate"
+    },
+    {
+      "contextSha256": "255b6e8ca2cb945eacb0dfc29cc4c6ea8c47c09d63541ef0e7307a8311bb5e41",
+      "ledgerSha256": "255b6e8ca2cb945eacb0dfc29cc4c6ea8c47c09d63541ef0e7307a8311bb5e41",
+      "matches": true,
+      "sourceId": "components.IssueModal.CreateIssueModal.toastSuccessCreate"
+    },
+    {
+      "contextSha256": "501e9d89a1140122011070567bac8a1a87f2dad7bf0fe9109d0bd331b5a20be7",
+      "ledgerSha256": "501e9d89a1140122011070567bac8a1a87f2dad7bf0fe9109d0bd331b5a20be7",
+      "matches": true,
+      "sourceId": "components.IssueModal.CreateIssueModal.toastviewdetails"
+    },
+    {
+      "contextSha256": "334258d4eb48fe7fa6ec2a732ebee25a1d3aa93ab6ce4feff6d05259185925af",
+      "ledgerSha256": "334258d4eb48fe7fa6ec2a732ebee25a1d3aa93ab6ce4feff6d05259185925af",
+      "matches": true,
+      "sourceId": "components.IssueModal.CreateIssueModal.ultraHd"
+    },
+    {
+      "contextSha256": "449bd7a00455151ecf31030824a320a94510bfceebbd2cb438833c0c7cedb000",
+      "ledgerSha256": "449bd7a00455151ecf31030824a320a94510bfceebbd2cb438833c0c7cedb000",
+      "matches": true,
+      "sourceId": "components.IssueModal.CreateIssueModal.validationMessageLength"
+    },
+    {
+      "contextSha256": "f2ec85a04c66ca5a14628d28afdea37179b45727cc2be97d1df85c169e87afc4",
+      "ledgerSha256": "f2ec85a04c66ca5a14628d28afdea37179b45727cc2be97d1df85c169e87afc4",
+      "matches": true,
+      "sourceId": "components.IssueModal.CreateIssueModal.validationMessageRequired"
+    },
+    {
+      "contextSha256": "dc2906354edf9bbba989283e9263184d147f3183488065b8c3d47aa093faf0d2",
+      "ledgerSha256": "dc2906354edf9bbba989283e9263184d147f3183488065b8c3d47aa093faf0d2",
+      "matches": true,
+      "sourceId": "components.IssueModal.CreateIssueModal.whatswrong"
+    },
+    {
+      "contextSha256": "6c388eb687c38fbbbdb3d58a57addb9da392248bb0b712001a7f52832e601b38",
+      "ledgerSha256": "6c388eb687c38fbbbdb3d58a57addb9da392248bb0b712001a7f52832e601b38",
+      "matches": true,
+      "sourceId": "components.IssueModal.issueAudio"
+    },
+    {
+      "contextSha256": "8613dbb3af7b1d6e31c2dda1c2d7c555a8d90f0faf47cae43316d5c76d36c8f2",
+      "ledgerSha256": "8613dbb3af7b1d6e31c2dda1c2d7c555a8d90f0faf47cae43316d5c76d36c8f2",
+      "matches": true,
+      "sourceId": "components.IssueModal.issueOther"
+    },
+    {
+      "contextSha256": "8add5b94cf1d22fb057ccefe2acb57f7a6c9b2df88cede051888752daba94160",
+      "ledgerSha256": "8add5b94cf1d22fb057ccefe2acb57f7a6c9b2df88cede051888752daba94160",
+      "matches": true,
+      "sourceId": "components.IssueModal.issueReasonDamagedFile"
+    },
+    {
+      "contextSha256": "22b8ef1bb019f34e480345f31ab0c384c77050f6cd5f11992ca11c928bffbf76",
+      "ledgerSha256": "22b8ef1bb019f34e480345f31ab0c384c77050f6cd5f11992ca11c928bffbf76",
+      "matches": true,
+      "sourceId": "components.IssueModal.issueReasonIncorrectMetadata"
+    },
+    {
+      "contextSha256": "48b37e6d26a676f554be7e2655aee0fd925dfe31bbcce5f26aa2811239c6a775",
+      "ledgerSha256": "48b37e6d26a676f554be7e2655aee0fd925dfe31bbcce5f26aa2811239c6a775",
+      "matches": true,
+      "sourceId": "components.IssueModal.issueReasonMissingContent"
+    },
+    {
+      "contextSha256": "5f7b8a0aeaaa0fdbec898e39de12c2e3e0966576ef5e15e051585942854cdf0c",
+      "ledgerSha256": "5f7b8a0aeaaa0fdbec898e39de12c2e3e0966576ef5e15e051585942854cdf0c",
+      "matches": true,
+      "sourceId": "components.IssueModal.issueReasonMissingIssue"
+    },
+    {
+      "contextSha256": "2f906bf419f5f6d29983b7e9955d1fb2dd247d74753f88b6bd47ba533162c7c2",
+      "ledgerSha256": "2f906bf419f5f6d29983b7e9955d1fb2dd247d74753f88b6bd47ba533162c7c2",
+      "matches": true,
+      "sourceId": "components.IssueModal.issueReasonWrongEdition"
+    },
+    {
+      "contextSha256": "8a1210235e23010989aaf1c8a22d72a2baa38ea495e55613ca7a26d8fe6799d6",
+      "ledgerSha256": "8a1210235e23010989aaf1c8a22d72a2baa38ea495e55613ca7a26d8fe6799d6",
+      "matches": true,
+      "sourceId": "components.IssueModal.issueReasonWrongIssue"
+    },
+    {
+      "contextSha256": "bba86b31c7be5a9ab961ac584dd7f6a6bcef5a14b354347ee048ff4ceeb96bc8",
+      "ledgerSha256": "bba86b31c7be5a9ab961ac584dd7f6a6bcef5a14b354347ee048ff4ceeb96bc8",
+      "matches": true,
+      "sourceId": "components.IssueModal.issueSubtitles"
+    },
+    {
+      "contextSha256": "8df7b3b3f0b96d80bd0be501b313ff923c74f6651c063603434ade625b3caf10",
+      "ledgerSha256": "8df7b3b3f0b96d80bd0be501b313ff923c74f6651c063603434ade625b3caf10",
+      "matches": true,
+      "sourceId": "components.IssueModal.issueVideo"
+    },
+    {
+      "contextSha256": "bbc848a707613f2fd5664653301504346df313c2af3e376c86f5c8b12a755c30",
+      "ledgerSha256": "bbc848a707613f2fd5664653301504346df313c2af3e376c86f5c8b12a755c30",
+      "matches": true,
+      "sourceId": "components.LanguageSelector.any"
+    },
+    {
+      "contextSha256": "4f4b52f6b9e897793289c255df5456d21d261cbad66a68b5b72c1ef131110eff",
+      "ledgerSha256": "4f4b52f6b9e897793289c255df5456d21d261cbad66a68b5b72c1ef131110eff",
+      "matches": true,
+      "sourceId": "components.LanguageSelector.languageServerDefault"
+    },
+    {
+      "contextSha256": "291fc6c04c0c83615222cc3de0274afbbedbef9d7c45e7ca703bbcc51e8c33fd",
+      "ledgerSha256": "291fc6c04c0c83615222cc3de0274afbbedbef9d7c45e7ca703bbcc51e8c33fd",
+      "matches": true,
+      "sourceId": "components.LanguageSelector.originalLanguageDefault"
+    },
+    {
+      "contextSha256": "87cca707d262036a761f41a0699b1d49445e5074601100af4682ddb3f23bd98b",
+      "ledgerSha256": "87cca707d262036a761f41a0699b1d49445e5074601100af4682ddb3f23bd98b",
+      "matches": true,
+      "sourceId": "components.Layout.LanguagePicker.displaylanguage"
+    },
+    {
+      "contextSha256": "96192023a883f78e7c2b3c989e5e5c5d1c0071216adbb06381322afff158f114",
+      "ledgerSha256": "96192023a883f78e7c2b3c989e5e5c5d1c0071216adbb06381322afff158f114",
+      "matches": true,
+      "sourceId": "components.Layout.SearchInput.clearSearchText"
+    },
+    {
+      "contextSha256": "6f028a4a0ccf1e3517f8a1a33607a7649a21c64376d50d19fff6e871794a0122",
+      "ledgerSha256": "6f028a4a0ccf1e3517f8a1a33607a7649a21c64376d50d19fff6e871794a0122",
+      "matches": true,
+      "sourceId": "components.Layout.SearchInput.searchLabel"
+    },
+    {
+      "contextSha256": "c19cf45a68843022395e1f85b31a8fa50326f2eb5a6c19d9f29549c0bf22d466",
+      "ledgerSha256": "c19cf45a68843022395e1f85b31a8fa50326f2eb5a6c19d9f29549c0bf22d466",
+      "matches": true,
+      "sourceId": "components.Layout.SearchInput.searchPlaceholder"
+    },
+    {
+      "contextSha256": "64bb03aa6f74af809214f016365e85bf84e89cf94baf5f643da6721004799b89",
+      "ledgerSha256": "64bb03aa6f74af809214f016365e85bf84e89cf94baf5f643da6721004799b89",
+      "matches": true,
+      "sourceId": "components.Layout.Sidebar.acquisitionTools"
+    },
+    {
+      "contextSha256": "ebb1fb6c5df379ebcd4888a8b4321a66e15f2555e48e0baf99a75a44c1bfc00e",
+      "ledgerSha256": "ebb1fb6c5df379ebcd4888a8b4321a66e15f2555e48e0baf99a75a44c1bfc00e",
+      "matches": true,
+      "sourceId": "components.Layout.Sidebar.blocklist"
+    },
+    {
+      "contextSha256": "408e46b2063bd1f5a3f17381ea29b30c5092c4d3670f4f2670fbbea01f1874b7",
+      "ledgerSha256": "408e46b2063bd1f5a3f17381ea29b30c5092c4d3670f4f2670fbbea01f1874b7",
+      "matches": true,
+      "sourceId": "components.Layout.Sidebar.bookRecommendations"
+    },
+    {
+      "contextSha256": "3963290cd7af23e253ab66281cb4f41a28fdbc041913068d51787184a64d57e8",
+      "ledgerSha256": "3963290cd7af23e253ab66281cb4f41a28fdbc041913068d51787184a64d57e8",
+      "matches": true,
+      "sourceId": "components.Layout.Sidebar.browseadult"
+    },
+    {
+      "contextSha256": "b2e39d77a6b0e740ea4ae0a914f1701c1eb32c73e0dd9871e928b77c15cea6b0",
+      "ledgerSha256": "b2e39d77a6b0e740ea4ae0a914f1701c1eb32c73e0dd9871e928b77c15cea6b0",
+      "matches": true,
+      "sourceId": "components.Layout.Sidebar.browseaudiobooks"
+    },
+    {
+      "contextSha256": "85d316bbce1ee572a48c26a36513435a7f1b589995f7b0f576d6fa6245d2c8ca",
+      "ledgerSha256": "85d316bbce1ee572a48c26a36513435a7f1b589995f7b0f576d6fa6245d2c8ca",
+      "matches": true,
+      "sourceId": "components.Layout.Sidebar.browsebooks"
+    },
+    {
+      "contextSha256": "7c231a94cc335bdbf2b3aa70ef4b60dbe270544f6b17bb227dff02d31d7deedb",
+      "ledgerSha256": "7c231a94cc335bdbf2b3aa70ef4b60dbe270544f6b17bb227dff02d31d7deedb",
+      "matches": true,
+      "sourceId": "components.Layout.Sidebar.browsecomics"
+    },
+    {
+      "contextSha256": "6a42d47b70198d5b17d3ca082c686d628aa8fc9679ebad17209193b940e53b05",
+      "ledgerSha256": "6a42d47b70198d5b17d3ca082c686d628aa8fc9679ebad17209193b940e53b05",
+      "matches": true,
+      "sourceId": "components.Layout.Sidebar.browsemagazines"
+    },
+    {
+      "contextSha256": "05116f3baa38e6e8ce37271f934e2a4095aa5895225a9d89ecce58ef73ee1b08",
+      "ledgerSha256": "05116f3baa38e6e8ce37271f934e2a4095aa5895225a9d89ecce58ef73ee1b08",
+      "matches": true,
+      "sourceId": "components.Layout.Sidebar.browsemovies"
+    },
+    {
+      "contextSha256": "1c3ae4efb9542deb1a396309aebcef01f425abb16bd9a121abdd19f31e69a1ae",
+      "ledgerSha256": "1c3ae4efb9542deb1a396309aebcef01f425abb16bd9a121abdd19f31e69a1ae",
+      "matches": true,
+      "sourceId": "components.Layout.Sidebar.browsemusic"
+    },
+    {
+      "contextSha256": "77be0d2a6e43684d4a3b8aa6c4d77d36922a73bb05f0c3ba9e546164640e86d1",
+      "ledgerSha256": "77be0d2a6e43684d4a3b8aa6c4d77d36922a73bb05f0c3ba9e546164640e86d1",
+      "matches": true,
+      "sourceId": "components.Layout.Sidebar.browsesoftware"
+    },
+    {
+      "contextSha256": "7baddd8a3bbfaa8142f8510a600fd35ef8b98f3813950900ff0fb2162db02c28",
+      "ledgerSha256": "7baddd8a3bbfaa8142f8510a600fd35ef8b98f3813950900ff0fb2162db02c28",
+      "matches": true,
+      "sourceId": "components.Layout.Sidebar.browsesports"
+    },
+    {
+      "contextSha256": "0ddb10137241589cbcad02cce4a3ef47fb61ff6e5a1596626eba002a91953cf3",
+      "ledgerSha256": "0ddb10137241589cbcad02cce4a3ef47fb61ff6e5a1596626eba002a91953cf3",
+      "matches": true,
+      "sourceId": "components.Layout.Sidebar.browsetv"
+    },
+    {
+      "contextSha256": "4690443f3ea587d4cd6c603288a7f4e68a88622d88bf8fdc4fcbc92b4c345fee",
+      "ledgerSha256": "4690443f3ea587d4cd6c603288a7f4e68a88622d88bf8fdc4fcbc92b4c345fee",
+      "matches": true,
+      "sourceId": "components.Layout.Sidebar.calendar"
+    },
+    {
+      "contextSha256": "3e2da10df3d26285b64da48d943d676ddd0f2456ae6235f81d4015d47a68f781",
+      "ledgerSha256": "3e2da10df3d26285b64da48d943d676ddd0f2456ae6235f81d4015d47a68f781",
+      "matches": true,
+      "sourceId": "components.Layout.Sidebar.collectorPicks"
+    },
+    {
+      "contextSha256": "e8cf8fcf51a04365c9ff29c1d10f9967b91816c8e7bc0966f29a2cfeee82b497",
+      "ledgerSha256": "e8cf8fcf51a04365c9ff29c1d10f9967b91816c8e7bc0966f29a2cfeee82b497",
+      "matches": true,
+      "sourceId": "components.Layout.Sidebar.discover"
+    },
+    {
+      "contextSha256": "a51618fb790e4e9ed2f7a36768f258b13b72d7257792f13d66f8d1344a891986",
+      "ledgerSha256": "a51618fb790e4e9ed2f7a36768f258b13b72d7257792f13d66f8d1344a891986",
+      "matches": true,
+      "sourceId": "components.Layout.Sidebar.downloads"
+    },
+    {
+      "contextSha256": "ddbba96741b79865adabee7cbe8f833dc4a176e7fab60e5a608553b3343fefd9",
+      "ledgerSha256": "ddbba96741b79865adabee7cbe8f833dc4a176e7fab60e5a608553b3343fefd9",
+      "matches": true,
+      "sourceId": "components.Layout.Sidebar.following"
+    },
+    {
+      "contextSha256": "df25dd4a05e04413a513de05c43189c92d0dc3f1dc559d9980cd4a63eaff932d",
+      "ledgerSha256": "df25dd4a05e04413a513de05c43189c92d0dc3f1dc559d9980cd4a63eaff932d",
+      "matches": true,
+      "sourceId": "components.Layout.Sidebar.gameFinder"
+    },
+    {
+      "contextSha256": "d7b93752a7936be0c92435c83a3189e0a388dd6af818210767bb7c4559a92e19",
+      "ledgerSha256": "d7b93752a7936be0c92435c83a3189e0a388dd6af818210767bb7c4559a92e19",
+      "matches": true,
+      "sourceId": "components.Layout.Sidebar.gamesLibrary"
+    },
+    {
+      "contextSha256": "818bb0f6c64ef18a5df3de87b64cb1a7fb541cc8b11b7cc5477a4f28ddf2b839",
+      "ledgerSha256": "818bb0f6c64ef18a5df3de87b64cb1a7fb541cc8b11b7cc5477a4f28ddf2b839",
+      "matches": true,
+      "sourceId": "components.Layout.Sidebar.indexerSearch"
+    },
+    {
+      "contextSha256": "f5c3d340ff670123061336191ff194e7e6d852d52efc9541080d1d9c3d3c937b",
+      "ledgerSha256": "f5c3d340ff670123061336191ff194e7e6d852d52efc9541080d1d9c3d3c937b",
+      "matches": true,
+      "sourceId": "components.Layout.Sidebar.issues"
+    },
+    {
+      "contextSha256": "0f09dfcfa99de78c88c3f9e00dfe33b7ed7ef4e49d60e12d9832d32e3892bfbf",
+      "ledgerSha256": "0f09dfcfa99de78c88c3f9e00dfe33b7ed7ef4e49d60e12d9832d32e3892bfbf",
+      "matches": true,
+      "sourceId": "components.Layout.Sidebar.library"
+    },
+    {
+      "contextSha256": "3053a2f805b1e6820a48507a52a0b241352f89c1f2e9fe2bae3ff265b0e1130e",
+      "ledgerSha256": "3053a2f805b1e6820a48507a52a0b241352f89c1f2e9fe2bae3ff265b0e1130e",
+      "matches": true,
+      "sourceId": "components.Layout.Sidebar.myMedia"
+    },
+    {
+      "contextSha256": "b738d89666e3bfbbb3322ca30b308fc0576a02251915964881b68f807189df0f",
+      "ledgerSha256": "b738d89666e3bfbbb3322ca30b308fc0576a02251915964881b68f807189df0f",
+      "matches": true,
+      "sourceId": "components.Layout.Sidebar.patches"
+    },
+    {
+      "contextSha256": "ace57a731d88d0cea3d94122e208cf00b8828f9f8ea0cedb4234b31b30783d33",
+      "ledgerSha256": "ace57a731d88d0cea3d94122e208cf00b8828f9f8ea0cedb4234b31b30783d33",
+      "matches": true,
+      "sourceId": "components.Layout.Sidebar.requests"
+    },
+    {
+      "contextSha256": "d8004d58c560ce52ad2ee284f8ee974edde07f35925b542a0753656404115715",
+      "ledgerSha256": "d8004d58c560ce52ad2ee284f8ee974edde07f35925b542a0753656404115715",
+      "matches": true,
+      "sourceId": "components.Layout.Sidebar.settings"
+    },
+    {
+      "contextSha256": "b4730821a185ebe2147e1b3e1630364a48d471c1d6e4072525f43589b66d6387",
+      "ledgerSha256": "b4730821a185ebe2147e1b3e1630364a48d471c1d6e4072525f43589b66d6387",
+      "matches": true,
+      "sourceId": "components.Layout.Sidebar.share"
+    },
+    {
+      "contextSha256": "841b28ef02c2dca688b284e38c257e3fe115b9ea06d742908e7d074207f1aa9b",
+      "ledgerSha256": "841b28ef02c2dca688b284e38c257e3fe115b9ea06d742908e7d074207f1aa9b",
+      "matches": true,
+      "sourceId": "components.Layout.Sidebar.swipe"
+    },
+    {
+      "contextSha256": "ca74ab395cbde22452dee1cf7326d9ba4877cad88642d0c8842aded0bc474805",
+      "ledgerSha256": "ca74ab395cbde22452dee1cf7326d9ba4877cad88642d0c8842aded0bc474805",
+      "matches": true,
+      "sourceId": "components.Layout.Sidebar.users"
+    },
+    {
+      "contextSha256": "1850f22790d02fdf198b5fa1dc2cbbd62decf445d3d9d812261f3eb1cffae36d",
+      "ledgerSha256": "1850f22790d02fdf198b5fa1dc2cbbd62decf445d3d9d812261f3eb1cffae36d",
+      "matches": true,
+      "sourceId": "components.Layout.ThemePicker.colorPalette"
+    },
+    {
+      "contextSha256": "1b10f44b420c460218784c9b3e79734b907c3987ebb4a08aac2029385c857a85",
+      "ledgerSha256": "1b10f44b420c460218784c9b3e79734b907c3987ebb4a08aac2029385c857a85",
+      "matches": true,
+      "sourceId": "components.Layout.ThemePicker.darkMode"
+    },
+    {
+      "contextSha256": "85e635a56af5853e23e2360c0eafd6f89fa58bb6e13c0dd6304b112369997ed5",
+      "ledgerSha256": "85e635a56af5853e23e2360c0eafd6f89fa58bb6e13c0dd6304b112369997ed5",
+      "matches": true,
+      "sourceId": "components.Layout.ThemePicker.interfaceDesign"
+    },
+    {
+      "contextSha256": "12774ab7810492338740a5dfe29d222b7c66d711ef3592196f780a852f2506c6",
+      "ledgerSha256": "12774ab7810492338740a5dfe29d222b7c66d711ef3592196f780a852f2506c6",
+      "matches": true,
+      "sourceId": "components.Layout.ThemePicker.lightMode"
+    },
+    {
+      "contextSha256": "45e986388b5e77475c50c78054dd243a213553a4b43b67708d24893780177be1",
+      "ledgerSha256": "45e986388b5e77475c50c78054dd243a213553a4b43b67708d24893780177be1",
+      "matches": true,
+      "sourceId": "components.Layout.ThemePicker.saveError"
+    },
+    {
+      "contextSha256": "02931901d227cae4908a82e329697a8093e7d3c6945e2854fa97ebb4590b91eb",
+      "ledgerSha256": "02931901d227cae4908a82e329697a8093e7d3c6945e2854fa97ebb4590b91eb",
+      "matches": true,
+      "sourceId": "components.Layout.ThemePicker.themePicker"
+    },
+    {
+      "contextSha256": "889583cfdd42811facbc84506d41c5e6219d34a714b4719603cfd93d0e5c9fb8",
+      "ledgerSha256": "889583cfdd42811facbc84506d41c5e6219d34a714b4719603cfd93d0e5c9fb8",
+      "matches": true,
+      "sourceId": "components.Layout.ThemePicker.toggle"
+    },
+    {
+      "contextSha256": "239bceae6a5d7636cb2a5b466bd21d38dd768bacce02e92894efe528336da089",
+      "ledgerSha256": "239bceae6a5d7636cb2a5b466bd21d38dd768bacce02e92894efe528336da089",
+      "matches": true,
+      "sourceId": "components.Layout.UserDropdown.MiniQuotaDisplay.bookrequests"
+    },
+    {
+      "contextSha256": "97528d332668f95468483231114cf6b88f153b2780a24d8f149d6ecca68de520",
+      "ledgerSha256": "97528d332668f95468483231114cf6b88f153b2780a24d8f149d6ecca68de520",
+      "matches": true,
+      "sourceId": "components.Layout.UserDropdown.MiniQuotaDisplay.comicrequests"
+    },
+    {
+      "contextSha256": "d39677aa85493a1a3a8179673d64292d3eecc1f58d21de1d6264385b41d29d5f",
+      "ledgerSha256": "d39677aa85493a1a3a8179673d64292d3eecc1f58d21de1d6264385b41d29d5f",
+      "matches": true,
+      "sourceId": "components.Layout.UserDropdown.MiniQuotaDisplay.magazinerequests"
+    },
+    {
+      "contextSha256": "e244a406dbbc9a797e688c1b871b9e379cb066078bc6fed24b524138d42f222e",
+      "ledgerSha256": "e244a406dbbc9a797e688c1b871b9e379cb066078bc6fed24b524138d42f222e",
+      "matches": true,
+      "sourceId": "components.Layout.UserDropdown.MiniQuotaDisplay.movierequests"
+    },
+    {
+      "contextSha256": "5f4035a33dbf686094fa0f9d2885cad042e016298dfc12ff9e60fa6b982a4fe3",
+      "ledgerSha256": "5f4035a33dbf686094fa0f9d2885cad042e016298dfc12ff9e60fa6b982a4fe3",
+      "matches": true,
+      "sourceId": "components.Layout.UserDropdown.MiniQuotaDisplay.musicrequests"
+    },
+    {
+      "contextSha256": "a86a8d9fd2f3d727344e8de786bff3405315562ec3dbc57aed06e49f474e8971",
+      "ledgerSha256": "a86a8d9fd2f3d727344e8de786bff3405315562ec3dbc57aed06e49f474e8971",
+      "matches": true,
+      "sourceId": "components.Layout.UserDropdown.MiniQuotaDisplay.seriesrequests"
+    },
+    {
+      "contextSha256": "e664cc8ebdfe73d4fe673edac833db3816e7f83865a15a2542c27189e608fbc4",
+      "ledgerSha256": "e664cc8ebdfe73d4fe673edac833db3816e7f83865a15a2542c27189e608fbc4",
+      "matches": true,
+      "sourceId": "components.Layout.UserDropdown.MiniQuotaDisplay.softwarerequests"
+    },
+    {
+      "contextSha256": "6dfb1d17fef48365c6e42b43b91be3c7781f7cde2946e11897a42026950e5974",
+      "ledgerSha256": "6dfb1d17fef48365c6e42b43b91be3c7781f7cde2946e11897a42026950e5974",
+      "matches": true,
+      "sourceId": "components.Layout.UserDropdown.myprofile"
+    },
+    {
+      "contextSha256": "af696d21dc1269cbbbe6ff14b80299a4742a533d9be1ecf6b7dfeb57bc908f31",
+      "ledgerSha256": "af696d21dc1269cbbbe6ff14b80299a4742a533d9be1ecf6b7dfeb57bc908f31",
+      "matches": true,
+      "sourceId": "components.Layout.UserDropdown.requests"
+    },
+    {
+      "contextSha256": "b6db6ef0528722c02e4c1cafac2841195c33fef014eb13a95020f997765e19f1",
+      "ledgerSha256": "b6db6ef0528722c02e4c1cafac2841195c33fef014eb13a95020f997765e19f1",
+      "matches": true,
+      "sourceId": "components.Layout.UserDropdown.settings"
+    },
+    {
+      "contextSha256": "7282f7148df40223f29377c4d2e69f578cc8485c219ec6faf80fbca8989707d9",
+      "ledgerSha256": "7282f7148df40223f29377c4d2e69f578cc8485c219ec6faf80fbca8989707d9",
+      "matches": true,
+      "sourceId": "components.Layout.UserDropdown.signout"
+    },
+    {
+      "contextSha256": "2758c6b7f747927312ea7fcbfc4515c4fa01346810fe7f555762b4111ba03cc4",
+      "ledgerSha256": "2758c6b7f747927312ea7fcbfc4515c4fa01346810fe7f555762b4111ba03cc4",
+      "matches": true,
+      "sourceId": "components.Layout.UserDropdown.userMenu"
+    },
+    {
+      "contextSha256": "cba1fbe692ef287be12981ffc2a8afa46426c8bcdb89622d7692ac25b19a7495",
+      "ledgerSha256": "cba1fbe692ef287be12981ffc2a8afa46426c8bcdb89622d7692ac25b19a7495",
+      "matches": true,
+      "sourceId": "components.Layout.UserWarnings.emailInvalid"
+    },
+    {
+      "contextSha256": "f198eb601dca734601d874a07deb861fca03add4ede5e15a5a1f056cd9a90459",
+      "ledgerSha256": "f198eb601dca734601d874a07deb861fca03add4ede5e15a5a1f056cd9a90459",
+      "matches": true,
+      "sourceId": "components.Layout.UserWarnings.emailRequired"
+    },
+    {
+      "contextSha256": "44ee5271e7a0a95f88588d67b7378ef2a9dc58bcff0ac2e9bea221090cc01d2c",
+      "ledgerSha256": "44ee5271e7a0a95f88588d67b7378ef2a9dc58bcff0ac2e9bea221090cc01d2c",
+      "matches": true,
+      "sourceId": "components.Layout.UserWarnings.passwordRequired"
+    },
+    {
+      "contextSha256": "434d212906f2c049115e4d5cea727a3f110f5df403cef1547178ffdbbc701a3e",
+      "ledgerSha256": "434d212906f2c049115e4d5cea727a3f110f5df403cef1547178ffdbbc701a3e",
+      "matches": true,
+      "sourceId": "components.Layout.UserWarnings.profileIncomplete"
+    },
+    {
+      "contextSha256": "23e36295a224487d97720312258ad69e943dd952f2477bc792ab2a3fcdd0f9d3",
+      "ledgerSha256": "23e36295a224487d97720312258ad69e943dd952f2477bc792ab2a3fcdd0f9d3",
+      "matches": true,
+      "sourceId": "components.Layout.VersionStatus.commitsbehind"
+    },
+    {
+      "contextSha256": "c7ff263e7bb844897416cf714358e6466a34bfa23306fd92d2692b9490af476d",
+      "ledgerSha256": "c7ff263e7bb844897416cf714358e6466a34bfa23306fd92d2692b9490af476d",
+      "matches": true,
+      "sourceId": "components.Layout.VersionStatus.outofdate"
+    },
+    {
+      "contextSha256": "419ccf6754f89aab5bbd8cb7c22b85c38710c0f7bcfa81b6124b97bbdc626cc1",
+      "ledgerSha256": "419ccf6754f89aab5bbd8cb7c22b85c38710c0f7bcfa81b6124b97bbdc626cc1",
+      "matches": true,
+      "sourceId": "components.Layout.VersionStatus.streammain"
+    },
+    {
+      "contextSha256": "c07c3985db4203437bafdbe637695bf072b54a11b1491565e2e8d2e34efb96d4",
+      "ledgerSha256": "c07c3985db4203437bafdbe637695bf072b54a11b1491565e2e8d2e34efb96d4",
+      "matches": true,
+      "sourceId": "components.Layout.VersionStatus.streamstable"
+    },
+    {
+      "contextSha256": "304b0f4c393c3d67471ed7121ca5bad54f23d839ff911200754c628832d739a8",
+      "ledgerSha256": "304b0f4c393c3d67471ed7121ca5bad54f23d839ff911200754c628832d739a8",
+      "matches": true,
+      "sourceId": "components.Layout.VersionStatus.updateCheckUnavailable"
+    },
+    {
+      "contextSha256": "da6b998704bc52142296f5602fa15f02c38bb854ae71052519837da908b934e9",
+      "ledgerSha256": "da6b998704bc52142296f5602fa15f02c38bb854ae71052519837da908b934e9",
+      "matches": true,
+      "sourceId": "components.ListView.continueSearch"
+    },
+    {
+      "contextSha256": "511ccc098fb0ed13c8c0f12cf74df4a7763f20a4e238fca1aed8938e07d8def7",
+      "ledgerSha256": "511ccc098fb0ed13c8c0f12cf74df4a7763f20a4e238fca1aed8938e07d8def7",
+      "matches": true,
+      "sourceId": "components.LiveTv.FollowedTeams.choose"
+    },
+    {
+      "contextSha256": "36e0f6b5443208eb79002e03b55e9305a9a3245f2d4f1249465f45797201b025",
+      "ledgerSha256": "36e0f6b5443208eb79002e03b55e9305a9a3245f2d4f1249465f45797201b025",
+      "matches": true,
+      "sourceId": "components.LiveTv.FollowedTeams.description"
+    },
+    {
+      "contextSha256": "584a4768c21b900bcf7466d261231f88c80623e8e018ea784456afe28f825956",
+      "ledgerSha256": "584a4768c21b900bcf7466d261231f88c80623e8e018ea784456afe28f825956",
+      "matches": true,
+      "sourceId": "components.LiveTv.FollowedTeams.failed"
+    }
+  ],
+  "callerContextHashesAllMatchLedger": true,
+  "callerContextRows": 100,
+  "callerLineChecks": [
+    {
+      "file": "src/components/IssueList/index.tsx",
+      "line": 82,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.IssueList.subtitle"
+    },
+    {
+      "file": "src/components/IssueList/index.tsx",
+      "line": 93,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.IssueList.subtitle"
+    },
+    {
+      "file": "src/components/IssueList/index.tsx",
+      "line": 257,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.IssueList.subtitle"
+    },
+    {
+      "file": "src/components/IssueList/index.tsx",
+      "line": 45,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.IssueList.taskFilters"
+    },
+    {
+      "file": "src/components/IssueList/index.tsx",
+      "line": 290,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.IssueList.taskFilters"
+    },
+    {
+      "file": "src/components/IssueList/index.tsx",
+      "line": 291,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.IssueList.taskFilters"
+    },
+    {
+      "file": "src/components/IssueList/index.tsx",
+      "line": 56,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.IssueList.thirtyDays"
+    },
+    {
+      "file": "src/components/IssueList/index.tsx",
+      "line": 264,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.IssueList.thirtyDays"
+    },
+    {
+      "file": "src/components/IssueList/index.tsx",
+      "line": 53,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.IssueList.timePeriod"
+    },
+    {
+      "file": "src/components/IssueList/index.tsx",
+      "line": 395,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.IssueList.timePeriod"
+    },
+    {
+      "file": "src/components/IssueList/index.tsx",
+      "line": 81,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.IssueList.video"
+    },
+    {
+      "file": "src/components/IssueList/index.tsx",
+      "line": 93,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.IssueList.video"
+    },
+    {
+      "file": "src/components/IssueList/index.tsx",
+      "line": 256,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.IssueList.video"
+    },
+    {
+      "file": "src/components/IssueModal/CreateIssueModal/index.tsx",
+      "line": 52,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.IssueModal.CreateIssueModal.hd"
+    },
+    {
+      "file": "src/components/IssueModal/CreateIssueModal/index.tsx",
+      "line": 183,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.IssueModal.CreateIssueModal.hd"
+    },
+    {
+      "file": "src/components/IssueModal/CreateIssueModal/index.tsx",
+      "line": 187,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.IssueModal.CreateIssueModal.hd"
+    },
+    {
+      "file": "src/components/IssueModal/CreateIssueModal/index.tsx",
+      "line": 354,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.IssueModal.CreateIssueModal.hd"
+    },
+    {
+      "file": "src/components/IssueModal/CreateIssueModal/index.tsx",
+      "line": 367,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.IssueModal.CreateIssueModal.hd"
+    },
+    {
+      "file": "src/components/IssueModal/CreateIssueModal/index.tsx",
+      "line": 51,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.IssueModal.CreateIssueModal.issueReason"
+    },
+    {
+      "file": "src/components/IssueModal/CreateIssueModal/index.tsx",
+      "line": 317,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.IssueModal.CreateIssueModal.issueReason"
+    },
+    {
+      "file": "src/components/IssueModal/CreateIssueModal/index.tsx",
+      "line": 50,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.IssueModal.CreateIssueModal.issueType"
+    },
+    {
+      "file": "src/components/IssueModal/CreateIssueModal/index.tsx",
+      "line": 162,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.IssueModal.CreateIssueModal.issueType"
+    },
+    {
+      "file": "src/components/IssueModal/CreateIssueModal/index.tsx",
+      "line": 163,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.IssueModal.CreateIssueModal.issueType"
+    },
+    {
+      "file": "src/components/IssueModal/CreateIssueModal/index.tsx",
+      "line": 168,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.IssueModal.CreateIssueModal.issueType"
+    },
+    {
+      "file": "src/components/IssueModal/CreateIssueModal/index.tsx",
+      "line": 195,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.IssueModal.CreateIssueModal.issueType"
+    },
+    {
+      "file": "src/components/IssueModal/CreateIssueModal/index.tsx",
+      "line": 196,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.IssueModal.CreateIssueModal.issueType"
+    },
+    {
+      "file": "src/components/IssueModal/CreateIssueModal/index.tsx",
+      "line": 228,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.IssueModal.CreateIssueModal.issueType"
+    },
+    {
+      "file": "src/components/IssueModal/CreateIssueModal/index.tsx",
+      "line": 239,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.IssueModal.CreateIssueModal.issueType"
+    },
+    {
+      "file": "src/components/IssueModal/CreateIssueModal/index.tsx",
+      "line": 306,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.IssueModal.CreateIssueModal.issueType"
+    },
+    {
+      "file": "src/components/IssueModal/CreateIssueModal/index.tsx",
+      "line": 307,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.IssueModal.CreateIssueModal.issueType"
+    },
+    {
+      "file": "src/components/IssueModal/CreateIssueModal/index.tsx",
+      "line": 309,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.IssueModal.CreateIssueModal.issueType"
+    },
+    {
+      "file": "src/components/IssueModal/CreateIssueModal/index.tsx",
+      "line": 310,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.IssueModal.CreateIssueModal.issueType"
+    },
+    {
+      "file": "src/components/IssueModal/CreateIssueModal/index.tsx",
+      "line": 54,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.IssueModal.CreateIssueModal.noAvailableQuality"
+    },
+    {
+      "file": "src/components/IssueModal/CreateIssueModal/index.tsx",
+      "line": 355,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.IssueModal.CreateIssueModal.noAvailableQuality"
+    },
+    {
+      "file": "src/components/IssueModal/CreateIssueModal/index.tsx",
+      "line": 47,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.IssueModal.CreateIssueModal.providedetail"
+    },
+    {
+      "file": "src/components/IssueModal/CreateIssueModal/index.tsx",
+      "line": 440,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.IssueModal.CreateIssueModal.providedetail"
+    },
+    {
+      "file": "src/components/IssueModal/CreateIssueModal/index.tsx",
+      "line": 49,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.IssueModal.CreateIssueModal.quality"
+    },
+    {
+      "file": "src/components/IssueModal/CreateIssueModal/index.tsx",
+      "line": 54,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.IssueModal.CreateIssueModal.quality"
+    },
+    {
+      "file": "src/components/IssueModal/CreateIssueModal/index.tsx",
+      "line": 179,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.IssueModal.CreateIssueModal.quality"
+    },
+    {
+      "file": "src/components/IssueModal/CreateIssueModal/index.tsx",
+      "line": 183,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.IssueModal.CreateIssueModal.quality"
+    },
+    {
+      "file": "src/components/IssueModal/CreateIssueModal/index.tsx",
+      "line": 184,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.IssueModal.CreateIssueModal.quality"
+    },
+    {
+      "file": "src/components/IssueModal/CreateIssueModal/index.tsx",
+      "line": 185,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.IssueModal.CreateIssueModal.quality"
+    },
+    {
+      "file": "src/components/IssueModal/CreateIssueModal/index.tsx",
+      "line": 187,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.IssueModal.CreateIssueModal.quality"
+    },
+    {
+      "file": "src/components/IssueModal/CreateIssueModal/index.tsx",
+      "line": 366,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.IssueModal.CreateIssueModal.quality"
+    },
+    {
+      "file": "src/components/IssueModal/CreateIssueModal/index.tsx",
+      "line": 369,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.IssueModal.CreateIssueModal.quality"
+    },
+    {
+      "file": "src/components/IssueModal/CreateIssueModal/index.tsx",
+      "line": 370,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.IssueModal.CreateIssueModal.quality"
+    },
+    {
+      "file": "src/components/IssueModal/CreateIssueModal/index.tsx",
+      "line": 60,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.IssueModal.CreateIssueModal.reportissue"
+    },
+    {
+      "file": "src/components/IssueModal/CreateIssueModal/index.tsx",
+      "line": 331,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.IssueModal.CreateIssueModal.reportissue"
+    },
+    {
+      "file": "src/components/IssueModal/CreateIssueModal/index.tsx",
+      "line": 55,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.IssueModal.CreateIssueModal.selectepisode"
+    },
+    {
+      "file": "src/components/IssueModal/CreateIssueModal/index.tsx",
+      "line": 220,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.IssueModal.CreateIssueModal.selectepisode"
+    },
+    {
+      "file": "src/components/IssueModal/CreateIssueModal/index.tsx",
+      "line": 61,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.IssueModal.CreateIssueModal.submitissue"
+    },
+    {
+      "file": "src/components/IssueModal/CreateIssueModal/index.tsx",
+      "line": 477,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.IssueModal.CreateIssueModal.submitissue"
+    },
+    {
+      "file": "src/components/IssueModal/CreateIssueModal/index.tsx",
+      "line": 58,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.IssueModal.CreateIssueModal.toastFailedCreate"
+    },
+    {
+      "file": "src/components/IssueModal/CreateIssueModal/index.tsx",
+      "line": 288,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.IssueModal.CreateIssueModal.toastFailedCreate"
+    },
+    {
+      "file": "src/components/IssueModal/CreateIssueModal/index.tsx",
+      "line": 56,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.IssueModal.CreateIssueModal.toastSuccessCreate"
+    },
+    {
+      "file": "src/components/IssueModal/CreateIssueModal/index.tsx",
+      "line": 259,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.IssueModal.CreateIssueModal.toastSuccessCreate"
+    },
+    {
+      "file": "src/components/IssueModal/CreateIssueModal/index.tsx",
+      "line": 59,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.IssueModal.CreateIssueModal.toastviewdetails"
+    },
+    {
+      "file": "src/components/IssueModal/CreateIssueModal/index.tsx",
+      "line": 270,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.IssueModal.CreateIssueModal.toastviewdetails"
+    },
+    {
+      "file": "src/components/IssueModal/CreateIssueModal/index.tsx",
+      "line": 53,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.IssueModal.CreateIssueModal.ultraHd"
+    },
+    {
+      "file": "src/components/IssueModal/CreateIssueModal/index.tsx",
+      "line": 187,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.IssueModal.CreateIssueModal.ultraHd"
+    },
+    {
+      "file": "src/components/IssueModal/CreateIssueModal/index.tsx",
+      "line": 353,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.IssueModal.CreateIssueModal.ultraHd"
+    },
+    {
+      "file": "src/components/IssueModal/CreateIssueModal/index.tsx",
+      "line": 44,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.IssueModal.CreateIssueModal.validationMessageLength"
+    },
+    {
+      "file": "src/components/IssueModal/CreateIssueModal/index.tsx",
+      "line": 206,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.IssueModal.CreateIssueModal.validationMessageLength"
+    },
+    {
+      "file": "src/components/IssueModal/CreateIssueModal/index.tsx",
+      "line": 43,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.IssueModal.CreateIssueModal.validationMessageRequired"
+    },
+    {
+      "file": "src/components/IssueModal/CreateIssueModal/index.tsx",
+      "line": 210,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.IssueModal.CreateIssueModal.validationMessageRequired"
+    },
+    {
+      "file": "src/components/IssueModal/CreateIssueModal/index.tsx",
+      "line": 46,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.IssueModal.CreateIssueModal.whatswrong"
+    },
+    {
+      "file": "src/components/IssueModal/CreateIssueModal/index.tsx",
+      "line": 431,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.IssueModal.CreateIssueModal.whatswrong"
+    },
+    {
+      "file": "src/components/IssueModal/constants.ts",
+      "line": 6,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.IssueModal.issueAudio"
+    },
+    {
+      "file": "src/components/IssueModal/constants.ts",
+      "line": 30,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.IssueModal.issueAudio"
+    },
+    {
+      "file": "src/components/IssueModal/constants.ts",
+      "line": 9,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.IssueModal.issueOther"
+    },
+    {
+      "file": "src/components/IssueModal/constants.ts",
+      "line": 38,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.IssueModal.issueOther"
+    },
+    {
+      "file": "src/components/IssueModal/constants.ts",
+      "line": 85,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.IssueModal.issueOther"
+    },
+    {
+      "file": "src/components/IssueModal/constants.ts",
+      "line": 95,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.IssueModal.issueOther"
+    },
+    {
+      "file": "src/components/IssueModal/constants.ts",
+      "line": 105,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.IssueModal.issueOther"
+    },
+    {
+      "file": "src/components/IssueModal/constants.ts",
+      "line": 14,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.IssueModal.issueReasonDamagedFile"
+    },
+    {
+      "file": "src/components/IssueModal/constants.ts",
+      "line": 80,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.IssueModal.issueReasonDamagedFile"
+    },
+    {
+      "file": "src/components/IssueModal/constants.ts",
+      "line": 90,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.IssueModal.issueReasonDamagedFile"
+    },
+    {
+      "file": "src/components/IssueModal/constants.ts",
+      "line": 100,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.IssueModal.issueReasonDamagedFile"
+    },
+    {
+      "file": "src/components/IssueModal/constants.ts",
+      "line": 15,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.IssueModal.issueReasonIncorrectMetadata"
+    },
+    {
+      "file": "src/components/IssueModal/constants.ts",
+      "line": 83,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.IssueModal.issueReasonIncorrectMetadata"
+    },
+    {
+      "file": "src/components/IssueModal/constants.ts",
+      "line": 93,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.IssueModal.issueReasonIncorrectMetadata"
+    },
+    {
+      "file": "src/components/IssueModal/constants.ts",
+      "line": 103,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.IssueModal.issueReasonIncorrectMetadata"
+    },
+    {
+      "file": "src/components/IssueModal/constants.ts",
+      "line": 10,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.IssueModal.issueReasonMissingContent"
+    },
+    {
+      "file": "src/components/IssueModal/constants.ts",
+      "line": 78,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.IssueModal.issueReasonMissingContent"
+    },
+    {
+      "file": "src/components/IssueModal/constants.ts",
+      "line": 11,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.IssueModal.issueReasonMissingIssue"
+    },
+    {
+      "file": "src/components/IssueModal/constants.ts",
+      "line": 88,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.IssueModal.issueReasonMissingIssue"
+    },
+    {
+      "file": "src/components/IssueModal/constants.ts",
+      "line": 98,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.IssueModal.issueReasonMissingIssue"
+    },
+    {
+      "file": "src/components/IssueModal/constants.ts",
+      "line": 12,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.IssueModal.issueReasonWrongEdition"
+    },
+    {
+      "file": "src/components/IssueModal/constants.ts",
+      "line": 79,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.IssueModal.issueReasonWrongEdition"
+    },
+    {
+      "file": "src/components/IssueModal/constants.ts",
+      "line": 89,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.IssueModal.issueReasonWrongEdition"
+    },
+    {
+      "file": "src/components/IssueModal/constants.ts",
+      "line": 13,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.IssueModal.issueReasonWrongIssue"
+    },
+    {
+      "file": "src/components/IssueModal/constants.ts",
+      "line": 99,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.IssueModal.issueReasonWrongIssue"
+    },
+    {
+      "file": "src/components/IssueModal/constants.ts",
+      "line": 8,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.IssueModal.issueSubtitles"
+    },
+    {
+      "file": "src/components/IssueModal/constants.ts",
+      "line": 34,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.IssueModal.issueSubtitles"
+    },
+    {
+      "file": "src/components/IssueModal/constants.ts",
+      "line": 7,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.IssueModal.issueVideo"
+    },
+    {
+      "file": "src/components/IssueModal/constants.ts",
+      "line": 26,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.IssueModal.issueVideo"
+    },
+    {
+      "file": "src/components/LanguageSelector/index.tsx",
+      "line": 11,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.LanguageSelector.any"
+    },
+    {
+      "file": "src/components/LanguageSelector/index.tsx",
+      "line": 90,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.LanguageSelector.any"
+    },
+    {
+      "file": "src/components/LanguageSelector/index.tsx",
+      "line": 115,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.LanguageSelector.any"
+    },
+    {
+      "file": "src/components/LanguageSelector/index.tsx",
+      "line": 12,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.LanguageSelector.languageServerDefault"
+    },
+    {
+      "file": "src/components/LanguageSelector/index.tsx",
+      "line": 70,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.LanguageSelector.languageServerDefault"
+    },
+    {
+      "file": "src/components/LanguageSelector/index.tsx",
+      "line": 122,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.LanguageSelector.languageServerDefault"
+    },
+    {
+      "file": "src/components/LanguageSelector/index.tsx",
+      "line": 10,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.LanguageSelector.originalLanguageDefault"
+    },
+    {
+      "file": "src/components/LanguageSelector/index.tsx",
+      "line": 81,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.LanguageSelector.originalLanguageDefault"
+    },
+    {
+      "file": "src/components/LanguageSelector/index.tsx",
+      "line": 90,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.LanguageSelector.originalLanguageDefault"
+    },
+    {
+      "file": "src/components/LanguageSelector/index.tsx",
+      "line": 115,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.LanguageSelector.originalLanguageDefault"
+    },
+    {
+      "file": "src/components/LanguageSelector/index.tsx",
+      "line": 133,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.LanguageSelector.originalLanguageDefault"
+    },
+    {
+      "file": "src/components/Layout/LanguagePicker/index.tsx",
+      "line": 13,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.LanguagePicker.displaylanguage"
+    },
+    {
+      "file": "src/components/Layout/LanguagePicker/index.tsx",
+      "line": 56,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.LanguagePicker.displaylanguage"
+    },
+    {
+      "file": "src/components/Layout/SearchInput/index.tsx",
+      "line": 12,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.SearchInput.clearSearchText"
+    },
+    {
+      "file": "src/components/Layout/SearchInput/index.tsx",
+      "line": 57,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.SearchInput.clearSearchText"
+    },
+    {
+      "file": "src/components/Layout/SearchInput/index.tsx",
+      "line": 10,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.SearchInput.searchLabel"
+    },
+    {
+      "file": "src/components/Layout/SearchInput/index.tsx",
+      "line": 35,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.SearchInput.searchLabel"
+    },
+    {
+      "file": "src/components/Layout/SearchInput/index.tsx",
+      "line": 11,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.SearchInput.searchPlaceholder"
+    },
+    {
+      "file": "src/components/Layout/SearchInput/index.tsx",
+      "line": 44,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.SearchInput.searchPlaceholder"
+    },
+    {
+      "file": "src/components/Layout/Sidebar/navigation.tsx",
+      "line": 53,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.Sidebar.acquisitionTools"
+    },
+    {
+      "file": "src/components/Layout/Sidebar/navigation.tsx",
+      "line": 311,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.Sidebar.acquisitionTools"
+    },
+    {
+      "file": "src/components/Layout/Sidebar/navigation.tsx",
+      "line": 76,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.Sidebar.blocklist"
+    },
+    {
+      "file": "src/components/Layout/Sidebar/navigation.tsx",
+      "line": 360,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.Sidebar.blocklist"
+    },
+    {
+      "file": "src/components/Layout/Sidebar/navigation.tsx",
+      "line": 361,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.Sidebar.blocklist"
+    },
+    {
+      "file": "src/components/Layout/Sidebar/navigation.tsx",
+      "line": 362,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.Sidebar.blocklist"
+    },
+    {
+      "file": "src/components/Layout/Sidebar/navigation.tsx",
+      "line": 365,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.Sidebar.blocklist"
+    },
+    {
+      "file": "src/components/Layout/Sidebar/index.tsx",
+      "line": 71,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.Sidebar.blocklist"
+    },
+    {
+      "file": "src/components/Layout/Sidebar/navigation.tsx",
+      "line": 61,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.Sidebar.bookRecommendations"
+    },
+    {
+      "file": "src/components/Layout/Sidebar/navigation.tsx",
+      "line": 188,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.Sidebar.bookRecommendations"
+    },
+    {
+      "file": "src/components/Layout/Sidebar/navigation.tsx",
+      "line": 72,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.Sidebar.browseadult"
+    },
+    {
+      "file": "src/components/Layout/Sidebar/navigation.tsx",
+      "line": 244,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.Sidebar.browseadult"
+    },
+    {
+      "file": "src/components/Layout/Sidebar/navigation.tsx",
+      "line": 68,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.Sidebar.browseaudiobooks"
+    },
+    {
+      "file": "src/components/Layout/Sidebar/navigation.tsx",
+      "line": 145,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.Sidebar.browseaudiobooks"
+    },
+    {
+      "file": "src/components/Layout/Sidebar/navigation.tsx",
+      "line": 67,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.Sidebar.browsebooks"
+    },
+    {
+      "file": "src/components/Layout/Sidebar/navigation.tsx",
+      "line": 137,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.Sidebar.browsebooks"
+    },
+    {
+      "file": "src/components/Layout/Sidebar/navigation.tsx",
+      "line": 70,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.Sidebar.browsecomics"
+    },
+    {
+      "file": "src/components/Layout/Sidebar/navigation.tsx",
+      "line": 228,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.Sidebar.browsecomics"
+    },
+    {
+      "file": "src/components/Layout/Sidebar/navigation.tsx",
+      "line": 71,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.Sidebar.browsemagazines"
+    },
+    {
+      "file": "src/components/Layout/Sidebar/navigation.tsx",
+      "line": 236,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.Sidebar.browsemagazines"
+    },
+    {
+      "file": "src/components/Layout/Sidebar/navigation.tsx",
+      "line": 65,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.Sidebar.browsemovies"
+    },
+    {
+      "file": "src/components/Layout/Sidebar/navigation.tsx",
+      "line": 121,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.Sidebar.browsemovies"
+    },
+    {
+      "file": "src/components/Layout/Sidebar/navigation.tsx",
+      "line": 66,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.Sidebar.browsemusic"
+    },
+    {
+      "file": "src/components/Layout/Sidebar/navigation.tsx",
+      "line": 162,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.Sidebar.browsemusic"
+    },
+    {
+      "file": "src/components/Layout/Sidebar/navigation.tsx",
+      "line": 69,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.Sidebar.browsesoftware"
+    },
+    {
+      "file": "src/components/Layout/Sidebar/navigation.tsx",
+      "line": 170,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.Sidebar.browsesoftware"
+    },
+    {
+      "file": "src/components/Layout/Sidebar/navigation.tsx",
+      "line": 73,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.Sidebar.browsesports"
+    },
+    {
+      "file": "src/components/Layout/Sidebar/navigation.tsx",
+      "line": 258,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.Sidebar.browsesports"
+    },
+    {
+      "file": "src/components/Layout/Sidebar/navigation.tsx",
+      "line": 74,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.Sidebar.browsetv"
+    },
+    {
+      "file": "src/components/Layout/Sidebar/navigation.tsx",
+      "line": 129,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.Sidebar.browsetv"
+    },
+    {
+      "file": "src/components/Layout/Sidebar/navigation.tsx",
+      "line": 51,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.Sidebar.calendar"
+    },
+    {
+      "file": "src/components/Layout/Sidebar/navigation.tsx",
+      "line": 299,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.Sidebar.calendar"
+    },
+    {
+      "file": "src/components/Layout/Sidebar/navigation.tsx",
+      "line": 300,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.Sidebar.calendar"
+    },
+    {
+      "file": "src/components/Layout/Sidebar/navigation.tsx",
+      "line": 301,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.Sidebar.calendar"
+    },
+    {
+      "file": "src/components/Layout/Sidebar/navigation.tsx",
+      "line": 304,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.Sidebar.calendar"
+    },
+    {
+      "file": "src/components/Layout/Sidebar/navigation.tsx",
+      "line": 62,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.Sidebar.collectorPicks"
+    },
+    {
+      "file": "src/components/Layout/Sidebar/navigation.tsx",
+      "line": 198,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.Sidebar.collectorPicks"
+    },
+    {
+      "file": "src/components/Layout/Sidebar/navigation.tsx",
+      "line": 50,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.Sidebar.discover"
+    },
+    {
+      "file": "src/components/Layout/Sidebar/navigation.tsx",
+      "line": 107,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.Sidebar.discover"
+    },
+    {
+      "file": "src/components/Layout/Sidebar/navigation.tsx",
+      "line": 108,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.Sidebar.discover"
+    },
+    {
+      "file": "src/components/Layout/Sidebar/navigation.tsx",
+      "line": 111,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.Sidebar.discover"
+    },
+    {
+      "file": "src/components/Layout/Sidebar/navigation.tsx",
+      "line": 113,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.Sidebar.discover"
+    },
+    {
+      "file": "src/components/Layout/Sidebar/navigation.tsx",
+      "line": 116,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.Sidebar.discover"
+    },
+    {
+      "file": "src/components/Layout/Sidebar/navigation.tsx",
+      "line": 120,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.Sidebar.discover"
+    },
+    {
+      "file": "src/components/Layout/Sidebar/navigation.tsx",
+      "line": 124,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.Sidebar.discover"
+    },
+    {
+      "file": "src/components/Layout/Sidebar/navigation.tsx",
+      "line": 128,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.Sidebar.discover"
+    },
+    {
+      "file": "src/components/Layout/Sidebar/navigation.tsx",
+      "line": 132,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.Sidebar.discover"
+    },
+    {
+      "file": "src/components/Layout/Sidebar/navigation.tsx",
+      "line": 136,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.Sidebar.discover"
+    },
+    {
+      "file": "src/components/Layout/Sidebar/navigation.tsx",
+      "line": 140,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.Sidebar.discover"
+    },
+    {
+      "file": "src/components/Layout/Sidebar/navigation.tsx",
+      "line": 144,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.Sidebar.discover"
+    },
+    {
+      "file": "src/components/Layout/Sidebar/navigation.tsx",
+      "line": 148,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.Sidebar.discover"
+    },
+    {
+      "file": "src/components/Layout/Sidebar/navigation.tsx",
+      "line": 161,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.Sidebar.discover"
+    },
+    {
+      "file": "src/components/Layout/Sidebar/navigation.tsx",
+      "line": 165,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.Sidebar.discover"
+    },
+    {
+      "file": "src/components/Layout/Sidebar/navigation.tsx",
+      "line": 187,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.Sidebar.discover"
+    },
+    {
+      "file": "src/components/Layout/Sidebar/navigation.tsx",
+      "line": 191,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.Sidebar.discover"
+    },
+    {
+      "file": "src/components/Layout/Sidebar/navigation.tsx",
+      "line": 197,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.Sidebar.discover"
+    },
+    {
+      "file": "src/components/Layout/Sidebar/navigation.tsx",
+      "line": 201,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.Sidebar.discover"
+    },
+    {
+      "file": "src/components/Layout/Sidebar/navigation.tsx",
+      "line": 207,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.Sidebar.discover"
+    },
+    {
+      "file": "src/components/Layout/Sidebar/navigation.tsx",
+      "line": 211,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.Sidebar.discover"
+    },
+    {
+      "file": "src/components/Layout/Sidebar/navigation.tsx",
+      "line": 217,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.Sidebar.discover"
+    },
+    {
+      "file": "src/components/Layout/Sidebar/navigation.tsx",
+      "line": 221,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.Sidebar.discover"
+    },
+    {
+      "file": "src/components/Layout/Sidebar/navigation.tsx",
+      "line": 227,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.Sidebar.discover"
+    },
+    {
+      "file": "src/components/Layout/Sidebar/navigation.tsx",
+      "line": 231,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.Sidebar.discover"
+    },
+    {
+      "file": "src/components/Layout/Sidebar/navigation.tsx",
+      "line": 235,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.Sidebar.discover"
+    },
+    {
+      "file": "src/components/Layout/Sidebar/navigation.tsx",
+      "line": 239,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.Sidebar.discover"
+    },
+    {
+      "file": "src/components/Layout/Sidebar/navigation.tsx",
+      "line": 243,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.Sidebar.discover"
+    },
+    {
+      "file": "src/components/Layout/Sidebar/navigation.tsx",
+      "line": 247,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.Sidebar.discover"
+    },
+    {
+      "file": "src/components/Layout/Sidebar/navigation.tsx",
+      "line": 52,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.Sidebar.downloads"
+    },
+    {
+      "file": "src/components/Layout/Sidebar/navigation.tsx",
+      "line": 314,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.Sidebar.downloads"
+    },
+    {
+      "file": "src/components/Layout/Sidebar/navigation.tsx",
+      "line": 315,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.Sidebar.downloads"
+    },
+    {
+      "file": "src/components/Layout/Sidebar/navigation.tsx",
+      "line": 316,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.Sidebar.downloads"
+    },
+    {
+      "file": "src/components/Layout/Sidebar/navigation.tsx",
+      "line": 319,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.Sidebar.downloads"
+    },
+    {
+      "file": "src/components/Layout/Sidebar/navigation.tsx",
+      "line": 59,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.Sidebar.following"
+    },
+    {
+      "file": "src/components/Layout/Sidebar/navigation.tsx",
+      "line": 289,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.Sidebar.following"
+    },
+    {
+      "file": "src/components/Layout/Sidebar/navigation.tsx",
+      "line": 290,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.Sidebar.following"
+    },
+    {
+      "file": "src/components/Layout/Sidebar/navigation.tsx",
+      "line": 291,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.Sidebar.following"
+    },
+    {
+      "file": "src/components/Layout/Sidebar/navigation.tsx",
+      "line": 294,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.Sidebar.following"
+    },
+    {
+      "file": "src/components/Layout/Sidebar/index.tsx",
+      "line": 130,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.Sidebar.following"
+    },
+    {
+      "file": "src/components/Layout/Sidebar/navigation.tsx",
+      "line": 60,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.Sidebar.gameFinder"
+    },
+    {
+      "file": "src/components/Layout/Sidebar/navigation.tsx",
+      "line": 208,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.Sidebar.gameFinder"
+    },
+    {
+      "file": "src/components/Layout/Sidebar/navigation.tsx",
+      "line": 56,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.Sidebar.gamesLibrary"
+    },
+    {
+      "file": "src/components/Layout/Sidebar/navigation.tsx",
+      "line": 282,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.Sidebar.gamesLibrary"
+    },
+    {
+      "file": "src/components/Layout/Sidebar/navigation.tsx",
+      "line": 64,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.Sidebar.indexerSearch"
+    },
+    {
+      "file": "src/components/Layout/Sidebar/navigation.tsx",
+      "line": 325,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.Sidebar.indexerSearch"
+    },
+    {
+      "file": "src/components/Layout/Sidebar/navigation.tsx",
+      "line": 77,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.Sidebar.issues"
+    },
+    {
+      "file": "src/components/Layout/Sidebar/navigation.tsx",
+      "line": 346,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.Sidebar.issues"
+    },
+    {
+      "file": "src/components/Layout/Sidebar/navigation.tsx",
+      "line": 347,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.Sidebar.issues"
+    },
+    {
+      "file": "src/components/Layout/Sidebar/navigation.tsx",
+      "line": 348,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.Sidebar.issues"
+    },
+    {
+      "file": "src/components/Layout/Sidebar/navigation.tsx",
+      "line": 351,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.Sidebar.issues"
+    },
+    {
+      "file": "src/components/Layout/Sidebar/index.tsx",
+      "line": 148,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.Sidebar.issues"
+    },
+    {
+      "file": "src/components/Layout/Sidebar/navigation.tsx",
+      "line": 54,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.Sidebar.library"
+    },
+    {
+      "file": "src/components/Layout/Sidebar/navigation.tsx",
+      "line": 266,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.Sidebar.library"
+    },
+    {
+      "file": "src/components/Layout/Sidebar/navigation.tsx",
+      "line": 267,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.Sidebar.library"
+    },
+    {
+      "file": "src/components/Layout/Sidebar/navigation.tsx",
+      "line": 268,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.Sidebar.library"
+    },
+    {
+      "file": "src/components/Layout/Sidebar/navigation.tsx",
+      "line": 272,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.Sidebar.library"
+    },
+    {
+      "file": "src/components/Layout/Sidebar/navigation.tsx",
+      "line": 276,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.Sidebar.library"
+    },
+    {
+      "file": "src/components/Layout/Sidebar/navigation.tsx",
+      "line": 280,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.Sidebar.library"
+    },
+    {
+      "file": "src/components/Layout/Sidebar/navigation.tsx",
+      "line": 55,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.Sidebar.myMedia"
+    },
+    {
+      "file": "src/components/Layout/Sidebar/navigation.tsx",
+      "line": 273,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.Sidebar.myMedia"
+    },
+    {
+      "file": "src/components/Layout/Sidebar/navigation.tsx",
+      "line": 63,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.Sidebar.patches"
+    },
+    {
+      "file": "src/components/Layout/Sidebar/navigation.tsx",
+      "line": 216,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.Sidebar.patches"
+    },
+    {
+      "file": "src/components/Layout/Sidebar/navigation.tsx",
+      "line": 217,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.Sidebar.patches"
+    },
+    {
+      "file": "src/components/Layout/Sidebar/navigation.tsx",
+      "line": 218,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.Sidebar.patches"
+    },
+    {
+      "file": "src/components/Layout/Sidebar/navigation.tsx",
+      "line": 221,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.Sidebar.patches"
+    },
+    {
+      "file": "src/components/Layout/Sidebar/navigation.tsx",
+      "line": 75,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.Sidebar.requests"
+    },
+    {
+      "file": "src/components/Layout/Sidebar/navigation.tsx",
+      "line": 334,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.Sidebar.requests"
+    },
+    {
+      "file": "src/components/Layout/Sidebar/navigation.tsx",
+      "line": 335,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.Sidebar.requests"
+    },
+    {
+      "file": "src/components/Layout/Sidebar/navigation.tsx",
+      "line": 338,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.Sidebar.requests"
+    },
+    {
+      "file": "src/components/Layout/Sidebar/navigation.tsx",
+      "line": 339,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.Sidebar.requests"
+    },
+    {
+      "file": "src/components/Layout/Sidebar/navigation.tsx",
+      "line": 340,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.Sidebar.requests"
+    },
+    {
+      "file": "src/components/Layout/Sidebar/navigation.tsx",
+      "line": 343,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.Sidebar.requests"
+    },
+    {
+      "file": "src/components/Layout/Sidebar/index.tsx",
+      "line": 132,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.Sidebar.requests"
+    },
+    {
+      "file": "src/components/Layout/Sidebar/navigation.tsx",
+      "line": 79,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.Sidebar.settings"
+    },
+    {
+      "file": "src/components/Layout/Sidebar/navigation.tsx",
+      "line": 375,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.Sidebar.settings"
+    },
+    {
+      "file": "src/components/Layout/Sidebar/navigation.tsx",
+      "line": 376,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.Sidebar.settings"
+    },
+    {
+      "file": "src/components/Layout/Sidebar/navigation.tsx",
+      "line": 379,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.Sidebar.settings"
+    },
+    {
+      "file": "src/components/Layout/Sidebar/navigation.tsx",
+      "line": 380,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.Sidebar.settings"
+    },
+    {
+      "file": "src/components/Layout/Sidebar/navigation.tsx",
+      "line": 381,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.Sidebar.settings"
+    },
+    {
+      "file": "src/components/Layout/Sidebar/navigation.tsx",
+      "line": 384,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.Sidebar.settings"
+    },
+    {
+      "file": "src/components/Layout/Sidebar/navigation.tsx",
+      "line": 386,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.Sidebar.settings"
+    },
+    {
+      "file": "src/components/Layout/Sidebar/index.tsx",
+      "line": 56,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.Sidebar.settings"
+    },
+    {
+      "file": "src/components/Layout/Sidebar/navigation.tsx",
+      "line": 58,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.Sidebar.share"
+    },
+    {
+      "file": "src/components/Layout/Sidebar/navigation.tsx",
+      "line": 176,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.Sidebar.share"
+    },
+    {
+      "file": "src/components/Layout/Sidebar/navigation.tsx",
+      "line": 177,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.Sidebar.share"
+    },
+    {
+      "file": "src/components/Layout/Sidebar/navigation.tsx",
+      "line": 178,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.Sidebar.share"
+    },
+    {
+      "file": "src/components/Layout/Sidebar/navigation.tsx",
+      "line": 181,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.Sidebar.share"
+    },
+    {
+      "file": "src/components/Layout/Sidebar/navigation.tsx",
+      "line": 57,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.Sidebar.swipe"
+    },
+    {
+      "file": "src/components/Layout/Sidebar/navigation.tsx",
+      "line": 151,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.Sidebar.swipe"
+    },
+    {
+      "file": "src/components/Layout/Sidebar/navigation.tsx",
+      "line": 152,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.Sidebar.swipe"
+    },
+    {
+      "file": "src/components/Layout/Sidebar/navigation.tsx",
+      "line": 153,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.Sidebar.swipe"
+    },
+    {
+      "file": "src/components/Layout/Sidebar/navigation.tsx",
+      "line": 156,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.Sidebar.swipe"
+    },
+    {
+      "file": "src/components/Layout/Sidebar/navigation.tsx",
+      "line": 78,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.Sidebar.users"
+    },
+    {
+      "file": "src/components/Layout/Sidebar/navigation.tsx",
+      "line": 389,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.Sidebar.users"
+    },
+    {
+      "file": "src/components/Layout/Sidebar/navigation.tsx",
+      "line": 390,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.Sidebar.users"
+    },
+    {
+      "file": "src/components/Layout/Sidebar/navigation.tsx",
+      "line": 391,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.Sidebar.users"
+    },
+    {
+      "file": "src/components/Layout/Sidebar/navigation.tsx",
+      "line": 394,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.Sidebar.users"
+    },
+    {
+      "file": "src/components/Layout/Sidebar/navigation.tsx",
+      "line": 396,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.Sidebar.users"
+    },
+    {
+      "file": "src/components/Layout/ThemePicker/index.tsx",
+      "line": 18,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.ThemePicker.colorPalette"
+    },
+    {
+      "file": "src/components/Layout/ThemePicker/index.tsx",
+      "line": 141,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.ThemePicker.colorPalette"
+    },
+    {
+      "file": "src/components/Layout/ThemePicker/index.tsx",
+      "line": 19,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.ThemePicker.darkMode"
+    },
+    {
+      "file": "src/components/Layout/ThemePicker/index.tsx",
+      "line": 96,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.ThemePicker.darkMode"
+    },
+    {
+      "file": "src/components/Layout/ThemePicker/index.tsx",
+      "line": 17,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.ThemePicker.interfaceDesign"
+    },
+    {
+      "file": "src/components/Layout/ThemePicker/index.tsx",
+      "line": 104,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.ThemePicker.interfaceDesign"
+    },
+    {
+      "file": "src/components/Layout/ThemePicker/index.tsx",
+      "line": 20,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.ThemePicker.lightMode"
+    },
+    {
+      "file": "src/components/Layout/ThemePicker/index.tsx",
+      "line": 97,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.ThemePicker.lightMode"
+    },
+    {
+      "file": "src/components/Layout/ThemePicker/index.tsx",
+      "line": 22,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.ThemePicker.saveError"
+    },
+    {
+      "file": "src/components/Layout/ThemePicker/index.tsx",
+      "line": 47,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.ThemePicker.saveError"
+    },
+    {
+      "file": "src/components/Layout/ThemePicker/index.tsx",
+      "line": 64,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.ThemePicker.saveError"
+    },
+    {
+      "file": "src/components/Layout/ThemePicker/index.tsx",
+      "line": 16,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.ThemePicker.themePicker"
+    },
+    {
+      "file": "src/components/Layout/ThemePicker/index.tsx",
+      "line": 78,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.ThemePicker.themePicker"
+    },
+    {
+      "file": "src/components/Layout/ThemePicker/index.tsx",
+      "line": 21,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.ThemePicker.toggle"
+    },
+    {
+      "file": "src/components/Layout/ThemePicker/index.tsx",
+      "line": 100,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.ThemePicker.toggle"
+    },
+    {
+      "file": "src/components/Layout/UserDropdown/MiniQuotaDisplay/index.tsx",
+      "line": 16,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.UserDropdown.MiniQuotaDisplay.bookrequests"
+    },
+    {
+      "file": "src/components/Layout/UserDropdown/MiniQuotaDisplay/index.tsx",
+      "line": 57,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.UserDropdown.MiniQuotaDisplay.bookrequests"
+    },
+    {
+      "file": "src/components/Layout/UserDropdown/MiniQuotaDisplay/index.tsx",
+      "line": 17,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.UserDropdown.MiniQuotaDisplay.comicrequests"
+    },
+    {
+      "file": "src/components/Layout/UserDropdown/MiniQuotaDisplay/index.tsx",
+      "line": 62,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.UserDropdown.MiniQuotaDisplay.comicrequests"
+    },
+    {
+      "file": "src/components/Layout/UserDropdown/MiniQuotaDisplay/index.tsx",
+      "line": 18,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.UserDropdown.MiniQuotaDisplay.magazinerequests"
+    },
+    {
+      "file": "src/components/Layout/UserDropdown/MiniQuotaDisplay/index.tsx",
+      "line": 67,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.UserDropdown.MiniQuotaDisplay.magazinerequests"
+    },
+    {
+      "file": "src/components/Layout/UserDropdown/MiniQuotaDisplay/index.tsx",
+      "line": 13,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.UserDropdown.MiniQuotaDisplay.movierequests"
+    },
+    {
+      "file": "src/components/Layout/UserDropdown/MiniQuotaDisplay/index.tsx",
+      "line": 42,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.UserDropdown.MiniQuotaDisplay.movierequests"
+    },
+    {
+      "file": "src/components/Layout/UserDropdown/MiniQuotaDisplay/index.tsx",
+      "line": 15,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.UserDropdown.MiniQuotaDisplay.musicrequests"
+    },
+    {
+      "file": "src/components/Layout/UserDropdown/MiniQuotaDisplay/index.tsx",
+      "line": 52,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.UserDropdown.MiniQuotaDisplay.musicrequests"
+    },
+    {
+      "file": "src/components/Layout/UserDropdown/MiniQuotaDisplay/index.tsx",
+      "line": 14,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.UserDropdown.MiniQuotaDisplay.seriesrequests"
+    },
+    {
+      "file": "src/components/Layout/UserDropdown/MiniQuotaDisplay/index.tsx",
+      "line": 47,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.UserDropdown.MiniQuotaDisplay.seriesrequests"
+    },
+    {
+      "file": "src/components/Layout/UserDropdown/MiniQuotaDisplay/index.tsx",
+      "line": 19,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.UserDropdown.MiniQuotaDisplay.softwarerequests"
+    },
+    {
+      "file": "src/components/Layout/UserDropdown/MiniQuotaDisplay/index.tsx",
+      "line": 72,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.UserDropdown.MiniQuotaDisplay.softwarerequests"
+    },
+    {
+      "file": "src/components/Layout/UserDropdown/index.tsx",
+      "line": 27,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.UserDropdown.myprofile"
+    },
+    {
+      "file": "src/components/Layout/UserDropdown/index.tsx",
+      "line": 154,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.UserDropdown.myprofile"
+    },
+    {
+      "file": "src/components/Layout/UserDropdown/index.tsx",
+      "line": 29,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.UserDropdown.requests"
+    },
+    {
+      "file": "src/components/Layout/UserDropdown/index.tsx",
+      "line": 161,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.UserDropdown.requests"
+    },
+    {
+      "file": "src/components/Layout/UserDropdown/index.tsx",
+      "line": 167,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.UserDropdown.requests"
+    },
+    {
+      "file": "src/components/Layout/UserDropdown/index.tsx",
+      "line": 170,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.UserDropdown.requests"
+    },
+    {
+      "file": "src/components/Layout/UserDropdown/index.tsx",
+      "line": 28,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.UserDropdown.settings"
+    },
+    {
+      "file": "src/components/Layout/UserDropdown/index.tsx",
+      "line": 177,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.UserDropdown.settings"
+    },
+    {
+      "file": "src/components/Layout/UserDropdown/index.tsx",
+      "line": 183,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.UserDropdown.settings"
+    },
+    {
+      "file": "src/components/Layout/UserDropdown/index.tsx",
+      "line": 186,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.UserDropdown.settings"
+    },
+    {
+      "file": "src/components/Layout/UserDropdown/index.tsx",
+      "line": 30,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.UserDropdown.signout"
+    },
+    {
+      "file": "src/components/Layout/UserDropdown/index.tsx",
+      "line": 202,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.UserDropdown.signout"
+    },
+    {
+      "file": "src/components/Layout/UserDropdown/index.tsx",
+      "line": 31,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.UserDropdown.userMenu"
+    },
+    {
+      "file": "src/components/Layout/UserDropdown/index.tsx",
+      "line": 101,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.UserDropdown.userMenu"
+    },
+    {
+      "file": "src/components/Layout/UserWarnings/index.tsx",
+      "line": 13,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.UserWarnings.emailInvalid"
+    },
+    {
+      "file": "src/components/Layout/UserWarnings/index.tsx",
+      "line": 12,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.UserWarnings.emailRequired"
+    },
+    {
+      "file": "src/components/Layout/UserWarnings/index.tsx",
+      "line": 33,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.UserWarnings.emailRequired"
+    },
+    {
+      "file": "src/components/Layout/UserWarnings/index.tsx",
+      "line": 14,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.UserWarnings.passwordRequired"
+    },
+    {
+      "file": "src/components/Layout/UserWarnings/index.tsx",
+      "line": 15,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.UserWarnings.profileIncomplete"
+    },
+    {
+      "file": "src/components/Layout/UserWarnings/index.tsx",
+      "line": 61,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.UserWarnings.profileIncomplete"
+    },
+    {
+      "file": "src/components/Layout/VersionStatus/index.tsx",
+      "line": 20,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.VersionStatus.commitsbehind"
+    },
+    {
+      "file": "src/components/Layout/VersionStatus/index.tsx",
+      "line": 104,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.VersionStatus.commitsbehind"
+    },
+    {
+      "file": "src/components/Layout/VersionStatus/index.tsx",
+      "line": 18,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.VersionStatus.outofdate"
+    },
+    {
+      "file": "src/components/Layout/VersionStatus/index.tsx",
+      "line": 108,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.VersionStatus.outofdate"
+    },
+    {
+      "file": "src/components/Layout/VersionStatus/index.tsx",
+      "line": 16,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.VersionStatus.streammain"
+    },
+    {
+      "file": "src/components/Layout/VersionStatus/index.tsx",
+      "line": 66,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.VersionStatus.streammain"
+    },
+    {
+      "file": "src/components/Layout/VersionStatus/index.tsx",
+      "line": 17,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.VersionStatus.streamstable"
+    },
+    {
+      "file": "src/components/Layout/VersionStatus/index.tsx",
+      "line": 67,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.VersionStatus.streamstable"
+    },
+    {
+      "file": "src/components/Layout/VersionStatus/index.tsx",
+      "line": 19,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.VersionStatus.updateCheckUnavailable"
+    },
+    {
+      "file": "src/components/Layout/VersionStatus/index.tsx",
+      "line": 97,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.Layout.VersionStatus.updateCheckUnavailable"
+    },
+    {
+      "file": "src/components/Common/ListView/index.tsx",
+      "line": 77,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.ListView.continueSearch"
+    },
+    {
+      "file": "src/components/Common/ListView/index.tsx",
+      "line": 506,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.ListView.continueSearch"
+    },
+    {
+      "file": "src/components/LiveTv/FollowedTeams.tsx",
+      "line": 27,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.LiveTv.FollowedTeams.choose"
+    },
+    {
+      "file": "src/components/LiveTv/FollowedTeams.tsx",
+      "line": 125,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.LiveTv.FollowedTeams.choose"
+    },
+    {
+      "file": "src/components/LiveTv/FollowedTeams.tsx",
+      "line": 23,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.LiveTv.FollowedTeams.description"
+    },
+    {
+      "file": "src/components/LiveTv/FollowedTeams.tsx",
+      "line": 82,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.LiveTv.FollowedTeams.description"
+    },
+    {
+      "file": "src/components/LiveTv/FollowedTeams.tsx",
+      "line": 32,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.LiveTv.FollowedTeams.failed"
+    },
+    {
+      "file": "src/components/LiveTv/FollowedTeams.tsx",
+      "line": 67,
+      "lineSha256Matches": true,
+      "lineTextMatches": true,
+      "nextLineMatches": true,
+      "previousLineMatches": true,
+      "sourceId": "components.LiveTv.FollowedTeams.failed"
+    }
+  ],
+  "callerLineReferenceCount": 319,
+  "exactPinMatched": true,
+  "expectedHead": "670d1a213179dcc690f27a8b92c2372dba699091",
+  "expectedTree": "be2a8a70ef7f86f3499be7c2190a07b3d2d78036",
+  "historicalCellPlanFileChecks": [
+    {
+      "bytes": 74253083,
+      "exists": true,
+      "path": "/mnt/disks/scratch/task-scratch/seerrng-pr418-w700-749-review-20261102/input/cell-plan.jsonl",
+      "sha256": "97c3402252a34aaa4f8f9f44a691281d9c35ff7b80d7edb3a26c752436af6558"
+    }
+  ],
+  "historicalEquivalenceProofPath": "/mnt/disks/scratch/task-worktrees/localization-20261030/seerrng-review/checks/locale-equivalents-reviewed-final29.json",
+  "historicalEquivalenceProofSha256": "56493dd797eaf4011e40372115caf0a65ba8343c334a7e198ae858b1ad501621",
+  "historicalReuseReferenceCount": 12,
+  "historicalReuseReferences": [
+    {
+      "locale": "de",
+      "path": "/mnt/disks/scratch/task-scratch/seerrng-pr418-w700-749-review-20261102/input/cell-plan.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.IssueList.video",
+      "sourcePosition": 1704
+    },
+    {
+      "locale": "id",
+      "path": "/mnt/disks/scratch/task-scratch/seerrng-pr418-w700-749-review-20261102/input/cell-plan.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.IssueList.video",
+      "sourcePosition": 1704
+    },
+    {
+      "locale": "de",
+      "path": "/mnt/disks/scratch/task-scratch/seerrng-pr418-w700-749-review-20261102/input/cell-plan.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.IssueModal.issueAudio",
+      "sourcePosition": 1721
+    },
+    {
+      "locale": "es",
+      "path": "/mnt/disks/scratch/task-scratch/seerrng-pr418-w700-749-review-20261102/input/cell-plan.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.IssueModal.issueAudio",
+      "sourcePosition": 1721
+    },
+    {
+      "locale": "fr",
+      "path": "/mnt/disks/scratch/task-scratch/seerrng-pr418-w700-749-review-20261102/input/cell-plan.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.IssueModal.issueAudio",
+      "sourcePosition": 1721
+    },
+    {
+      "locale": "id",
+      "path": "/mnt/disks/scratch/task-scratch/seerrng-pr418-w700-749-review-20261102/input/cell-plan.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.IssueModal.issueAudio",
+      "sourcePosition": 1721
+    },
+    {
+      "locale": "de",
+      "path": "/mnt/disks/scratch/task-scratch/seerrng-pr418-w700-749-review-20261102/input/cell-plan.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.IssueModal.issueVideo",
+      "sourcePosition": 1730
+    },
+    {
+      "locale": "id",
+      "path": "/mnt/disks/scratch/task-scratch/seerrng-pr418-w700-749-review-20261102/input/cell-plan.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.IssueModal.issueVideo",
+      "sourcePosition": 1730
+    },
+    {
+      "locale": "de",
+      "path": "/mnt/disks/scratch/task-scratch/seerrng-pr418-w700-749-review-20261102/input/cell-plan.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.Layout.Sidebar.browsecomics",
+      "sourcePosition": 1744
+    },
+    {
+      "locale": "de",
+      "path": "/mnt/disks/scratch/task-scratch/seerrng-pr418-w700-749-review-20261102/input/cell-plan.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.Layout.Sidebar.browsesoftware",
+      "sourcePosition": 1748
+    },
+    {
+      "locale": "es",
+      "path": "/mnt/disks/scratch/task-scratch/seerrng-pr418-w700-749-review-20261102/input/cell-plan.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.Layout.Sidebar.browsesoftware",
+      "sourcePosition": 1748
+    },
+    {
+      "locale": "fr",
+      "path": "/mnt/disks/scratch/task-scratch/seerrng-pr418-w700-749-review-20261102/input/cell-plan.jsonl",
+      "priorFinalTargetHash": null,
+      "sourceId": "components.Layout.Sidebar.browsesports",
+      "sourcePosition": 1749
+    }
+  ],
+  "inputManifestHead": "670d1a213179dcc690f27a8b92c2372dba699091",
+  "inputManifestTree": "be2a8a70ef7f86f3499be7c2190a07b3d2d78036",
+  "primaryPacketChecksumsVerified": true,
+  "pullRequest": {
+    "baseRefName": "main",
+    "baseRefOid": "221d8e0d542802da7529cd272c928cc747677e5c",
+    "headRefName": "codex/seerrng-localization-overhaul-20261028",
+    "headRefOid": "670d1a213179dcc690f27a8b92c2372dba699091",
+    "isDraft": true,
+    "state": "OPEN",
+    "title": "feat(i18n): strengthen SeerrNG localization",
+    "url": "https://github.com/snapetech-org/seerrng/pull/418"
+  },
+  "repository": "snapetech-org/SeerrNG",
+  "scope": "read-only; no tests/builds/scans/CI/browser/workflow work or repository/PR edits",
+  "sourceLocaleCallerAndPriorFileChecks": [
+    {
+      "actualBlob": "12e04a118c30b71b3714291adeaf9fdb2735cee4",
+      "actualBytes": 835513,
+      "actualSha256": "75ff3c90b52aedd636a506281ffbd6fb2d3739c61294b6008a517f17647e2316",
+      "expectedBlob": "12e04a118c30b71b3714291adeaf9fdb2735cee4",
+      "expectedBytes": 835513,
+      "expectedSha256": "75ff3c90b52aedd636a506281ffbd6fb2d3739c61294b6008a517f17647e2316",
+      "kind": "catalog",
+      "matched": true,
+      "path": "src/i18n/locale/en.json"
+    },
+    {
+      "actualBlob": "eff528448ef06390a1c3be401c79e2e1c7ba086a",
+      "actualBytes": 1042651,
+      "actualSha256": "b31fe0e6b79865aa96a8ad0d0282b707efdccf3fa87d1543f76c0ee135e97339",
+      "expectedBlob": "eff528448ef06390a1c3be401c79e2e1c7ba086a",
+      "expectedBytes": 1042651,
+      "expectedSha256": "b31fe0e6b79865aa96a8ad0d0282b707efdccf3fa87d1543f76c0ee135e97339",
+      "kind": "catalog",
+      "matched": true,
+      "path": "src/i18n/locale/ar.json"
+    },
+    {
+      "actualBlob": "08bca7b1692cb5f3009a15eac9ea3bd728185e2c",
+      "actualBytes": 926565,
+      "actualSha256": "262bb546d8c2e66a564e6ac98bc356b74768183b0cc11dbe2fcee1c230746e25",
+      "expectedBlob": "08bca7b1692cb5f3009a15eac9ea3bd728185e2c",
+      "expectedBytes": 926565,
+      "expectedSha256": "262bb546d8c2e66a564e6ac98bc356b74768183b0cc11dbe2fcee1c230746e25",
+      "kind": "catalog",
+      "matched": true,
+      "path": "src/i18n/locale/de.json"
+    },
+    {
+      "actualBlob": "aa15c76541cef8d4c8330c3fb05735c9a31dc099",
+      "actualBytes": 921978,
+      "actualSha256": "ea2f454f843e2bfc7778eb00b5014ad24c616be4f1f186e44aea2b1aca49fb49",
+      "expectedBlob": "aa15c76541cef8d4c8330c3fb05735c9a31dc099",
+      "expectedBytes": 921978,
+      "expectedSha256": "ea2f454f843e2bfc7778eb00b5014ad24c616be4f1f186e44aea2b1aca49fb49",
+      "kind": "catalog",
+      "matched": true,
+      "path": "src/i18n/locale/es.json"
+    },
+    {
+      "actualBlob": "3eda8d2f889a03765fe182c7cc8fccc2bdbb9afd",
+      "actualBytes": 939059,
+      "actualSha256": "47b5062428b9ab6b30c3fb72768612fdccca2dc4c8dc8e55c5f9d9a9c77721b2",
+      "expectedBlob": "3eda8d2f889a03765fe182c7cc8fccc2bdbb9afd",
+      "expectedBytes": 939059,
+      "expectedSha256": "47b5062428b9ab6b30c3fb72768612fdccca2dc4c8dc8e55c5f9d9a9c77721b2",
+      "kind": "catalog",
+      "matched": true,
+      "path": "src/i18n/locale/fr.json"
+    },
+    {
+      "actualBlob": "65b7db617e13da0a420cf8a7be7d62f190bfc887",
+      "actualBytes": 1368675,
+      "actualSha256": "6c2194cbf973610ffbcc1f0976e2aafd2acb0d861b2d6a8e352fe7675e9346a1",
+      "expectedBlob": "65b7db617e13da0a420cf8a7be7d62f190bfc887",
+      "expectedBytes": 1368675,
+      "expectedSha256": "6c2194cbf973610ffbcc1f0976e2aafd2acb0d861b2d6a8e352fe7675e9346a1",
+      "kind": "catalog",
+      "matched": true,
+      "path": "src/i18n/locale/hi.json"
+    },
+    {
+      "actualBlob": "739ceaaf4b6c807c13c066d771ef259998309be4",
+      "actualBytes": 866458,
+      "actualSha256": "8c87c7cd0021e33523696407b0b09d0a81b755e91105a50cd831bd192d3b6951",
+      "expectedBlob": "739ceaaf4b6c807c13c066d771ef259998309be4",
+      "expectedBytes": 866458,
+      "expectedSha256": "8c87c7cd0021e33523696407b0b09d0a81b755e91105a50cd831bd192d3b6951",
+      "kind": "catalog",
+      "matched": true,
+      "path": "src/i18n/locale/id.json"
+    },
+    {
+      "actualBlob": "19d07668dfd784bac3fc52bc87ca37af2b2849e5",
+      "actualBytes": 1014597,
+      "actualSha256": "c3ef13bd596fd3ef49ecb081bae894bf3df0ece470aa3ce3dd438e418131e45f",
+      "expectedBlob": "19d07668dfd784bac3fc52bc87ca37af2b2849e5",
+      "expectedBytes": 1014597,
+      "expectedSha256": "c3ef13bd596fd3ef49ecb081bae894bf3df0ece470aa3ce3dd438e418131e45f",
+      "kind": "catalog",
+      "matched": true,
+      "path": "src/i18n/locale/ja.json"
+    },
+    {
+      "actualBlob": "56bd797909960d0beb5c49f27e88b444624b3377",
+      "actualBytes": 931796,
+      "actualSha256": "cfa686e722ad3061a4dc591e0e18c5228babf24b558a68fd5cc8ca543bb6f796",
+      "expectedBlob": "56bd797909960d0beb5c49f27e88b444624b3377",
+      "expectedBytes": 931796,
+      "expectedSha256": "cfa686e722ad3061a4dc591e0e18c5228babf24b558a68fd5cc8ca543bb6f796",
+      "kind": "catalog",
+      "matched": true,
+      "path": "src/i18n/locale/ko.json"
+    },
+    {
+      "actualBlob": "95f1a53fb94d26dbae10f375372e7eefcbfc53e5",
+      "actualBytes": 910189,
+      "actualSha256": "38022e5ed233504ded04aebdc74af492d7a02476c156ef38933650ea327b8c8a",
+      "expectedBlob": "95f1a53fb94d26dbae10f375372e7eefcbfc53e5",
+      "expectedBytes": 910189,
+      "expectedSha256": "38022e5ed233504ded04aebdc74af492d7a02476c156ef38933650ea327b8c8a",
+      "kind": "catalog",
+      "matched": true,
+      "path": "src/i18n/locale/pt_BR.json"
+    },
+    {
+      "actualBlob": "970fdfb3e5240c3f4e68f3534401ece694f637d5",
+      "actualBytes": 966861,
+      "actualSha256": "77d0c900e52d3cff4200b2ab9026934cfe8fab83962967352f446cc0e29bed79",
+      "expectedBlob": "970fdfb3e5240c3f4e68f3534401ece694f637d5",
+      "expectedBytes": 966861,
+      "expectedSha256": "77d0c900e52d3cff4200b2ab9026934cfe8fab83962967352f446cc0e29bed79",
+      "kind": "catalog",
+      "matched": true,
+      "path": "src/i18n/locale/vi.json"
+    },
+    {
+      "actualBlob": "769f41823ec75356f7910c3da15d91735376d52e",
+      "actualBytes": 810800,
+      "actualSha256": "9abf738a61c36d2b1681dd5f0ba609046fc3f13686eb2001b6dac717d0308c66",
+      "expectedBlob": "769f41823ec75356f7910c3da15d91735376d52e",
+      "expectedBytes": 810800,
+      "expectedSha256": "9abf738a61c36d2b1681dd5f0ba609046fc3f13686eb2001b6dac717d0308c66",
+      "kind": "catalog",
+      "matched": true,
+      "path": "src/i18n/locale/zh_Hans.json"
+    },
+    {
+      "actualBlob": "8ef7bdde6dbd0f7a566080bc309fa24cc06b8969",
+      "actualBytes": 811503,
+      "actualSha256": "c42125d4b874c208e738b0b2d056bfb50a23378d68ff12c3ec388b5e86c0b3b4",
+      "expectedBlob": "8ef7bdde6dbd0f7a566080bc309fa24cc06b8969",
+      "expectedBytes": 811503,
+      "expectedSha256": "c42125d4b874c208e738b0b2d056bfb50a23378d68ff12c3ec388b5e86c0b3b4",
+      "kind": "catalog",
+      "matched": true,
+      "path": "src/i18n/locale/zh_Hant.json"
+    },
+    {
+      "actualBlob": "930f25e6f3669e491ee2b71e52e09e7755c9998f",
+      "actualSha256": "0329a944a5878d992e531f8918c6d80e51bbccddc59cc245fee716fff323a2a5",
+      "expectedBlob": "930f25e6f3669e491ee2b71e52e09e7755c9998f",
+      "expectedSha256": "0329a944a5878d992e531f8918c6d80e51bbccddc59cc245fee716fff323a2a5",
+      "kind": "caller",
+      "matched": true,
+      "path": "src/components/IssueList/index.tsx"
+    },
+    {
+      "actualBlob": "73800de214d5781b1ccdcf0baae3b42190ac609f",
+      "actualSha256": "dd5b5a56a48451b52798a2e7e85edaf84cf58a561074a6fdafdc6906b11ca206",
+      "expectedBlob": "73800de214d5781b1ccdcf0baae3b42190ac609f",
+      "expectedSha256": "dd5b5a56a48451b52798a2e7e85edaf84cf58a561074a6fdafdc6906b11ca206",
+      "kind": "caller",
+      "matched": true,
+      "path": "src/components/IssueModal/CreateIssueModal/index.tsx"
+    },
+    {
+      "actualBlob": "8fcb7ffd480750b6b727485e3ec05f5a4f9a0824",
+      "actualSha256": "6853c308e67b9e19c533673fe55e7a2ced216a8aa469c6f1076f1cc804551ebb",
+      "expectedBlob": "8fcb7ffd480750b6b727485e3ec05f5a4f9a0824",
+      "expectedSha256": "6853c308e67b9e19c533673fe55e7a2ced216a8aa469c6f1076f1cc804551ebb",
+      "kind": "caller",
+      "matched": true,
+      "path": "src/components/IssueModal/CreateIssueModal/SeriesEpisodeSelector.tsx"
+    },
+    {
+      "actualBlob": "b6167c9a1c87147d65e48fdc68d4c2be542d9125",
+      "actualSha256": "27f63f0d0777904f6b50a2b5322aea21959b31ae5b86c5432e540413cd815902",
+      "expectedBlob": "b6167c9a1c87147d65e48fdc68d4c2be542d9125",
+      "expectedSha256": "27f63f0d0777904f6b50a2b5322aea21959b31ae5b86c5432e540413cd815902",
+      "kind": "caller",
+      "matched": true,
+      "path": "src/components/IssueModal/index.tsx"
+    },
+    {
+      "actualBlob": "1705c84d09d3bf21e7fba0d41280ec14de183c96",
+      "actualSha256": "fb6cc777cc406beec91aab557080b858fb42d5f00b70d91834d0f511d6fbbb84",
+      "expectedBlob": "1705c84d09d3bf21e7fba0d41280ec14de183c96",
+      "expectedSha256": "fb6cc777cc406beec91aab557080b858fb42d5f00b70d91834d0f511d6fbbb84",
+      "kind": "caller",
+      "matched": true,
+      "path": "src/components/IssueModal/constants.ts"
+    },
+    {
+      "actualBlob": "a99382fd5631bc58533f3212f3959738e054e64a",
+      "actualSha256": "6d65cd7b9b0d46b56de44062cc7b12e64ccb975fc070e66b415c6e9010dc5d48",
+      "expectedBlob": "a99382fd5631bc58533f3212f3959738e054e64a",
+      "expectedSha256": "6d65cd7b9b0d46b56de44062cc7b12e64ccb975fc070e66b415c6e9010dc5d48",
+      "kind": "caller",
+      "matched": true,
+      "path": "src/components/LanguageSelector/index.tsx"
+    },
+    {
+      "actualBlob": "e203b4d7e4a36ff9898cbc4a3dc699a57949d6cb",
+      "actualSha256": "e5cb66076b07818f4a0b390c05111ef216cb35768e7d9cfec72ff4a3efe8cd8d",
+      "expectedBlob": "e203b4d7e4a36ff9898cbc4a3dc699a57949d6cb",
+      "expectedSha256": "e5cb66076b07818f4a0b390c05111ef216cb35768e7d9cfec72ff4a3efe8cd8d",
+      "kind": "caller",
+      "matched": true,
+      "path": "src/components/Layout/LanguagePicker/index.tsx"
+    },
+    {
+      "actualBlob": "2d1a1b7ec873459b9a84a01c7942c7419012e879",
+      "actualSha256": "741570b285a2cc5c6cf98a35d29dbf54298adcf40dc648b2b158bbb4655ced6e",
+      "expectedBlob": "2d1a1b7ec873459b9a84a01c7942c7419012e879",
+      "expectedSha256": "741570b285a2cc5c6cf98a35d29dbf54298adcf40dc648b2b158bbb4655ced6e",
+      "kind": "caller",
+      "matched": true,
+      "path": "src/components/Layout/SearchInput/index.tsx"
+    },
+    {
+      "actualBlob": "95f1bcdba5b3f69e971489e661c7e4c41ac8eeaf",
+      "actualSha256": "c721a044caf0af3743f949776b19a98b15522a2572144ed76414262bd9c7398a",
+      "expectedBlob": "95f1bcdba5b3f69e971489e661c7e4c41ac8eeaf",
+      "expectedSha256": "c721a044caf0af3743f949776b19a98b15522a2572144ed76414262bd9c7398a",
+      "kind": "caller",
+      "matched": true,
+      "path": "src/components/Layout/Sidebar/navigation.tsx"
+    },
+    {
+      "actualBlob": "d58975c5979a511d0dc7f8ac3b226867b6c920c4",
+      "actualSha256": "2054e30c23fa04f891e53c98519e83d2796d5f0d7f003bc3618af808a5d7d28a",
+      "expectedBlob": "d58975c5979a511d0dc7f8ac3b226867b6c920c4",
+      "expectedSha256": "2054e30c23fa04f891e53c98519e83d2796d5f0d7f003bc3618af808a5d7d28a",
+      "kind": "caller",
+      "matched": true,
+      "path": "src/components/Layout/Sidebar/index.tsx"
+    },
+    {
+      "actualBlob": "b54984b573aa02a3567f8b843ec8b3fa4415783b",
+      "actualSha256": "6418ce5b8f977f59a84b355d6fb3e2aa1ba60796fd00cc8862de74958e78c30a",
+      "expectedBlob": "b54984b573aa02a3567f8b843ec8b3fa4415783b",
+      "expectedSha256": "6418ce5b8f977f59a84b355d6fb3e2aa1ba60796fd00cc8862de74958e78c30a",
+      "kind": "caller",
+      "matched": true,
+      "path": "src/components/Layout/ThemePicker/index.tsx"
+    },
+    {
+      "actualBlob": "1ff32d644c1771e63675d9a54b3611f67301c3c8",
+      "actualSha256": "f8b01d457132d43300b40d47dc96285b2a4464d71712866ecb03266f5af0dfa4",
+      "expectedBlob": "1ff32d644c1771e63675d9a54b3611f67301c3c8",
+      "expectedSha256": "f8b01d457132d43300b40d47dc96285b2a4464d71712866ecb03266f5af0dfa4",
+      "kind": "caller",
+      "matched": true,
+      "path": "src/components/Layout/UserDropdown/MiniQuotaDisplay/index.tsx"
+    },
+    {
+      "actualBlob": "a17039934a7469c57e85654c0654c397780ec316",
+      "actualSha256": "7ca25347b5bb65b99399a986b2731d641d29fc09d40bbc9a87f44f5153c20ef5",
+      "expectedBlob": "a17039934a7469c57e85654c0654c397780ec316",
+      "expectedSha256": "7ca25347b5bb65b99399a986b2731d641d29fc09d40bbc9a87f44f5153c20ef5",
+      "kind": "caller",
+      "matched": true,
+      "path": "src/components/Layout/UserDropdown/index.tsx"
+    },
+    {
+      "actualBlob": "04adacfc9f5e4173f2823b1b8dad199e2fc07b21",
+      "actualSha256": "0961d38ba6b13cbb25ffcd71baf034f99c15e107119b4bdec768897daf685be6",
+      "expectedBlob": "04adacfc9f5e4173f2823b1b8dad199e2fc07b21",
+      "expectedSha256": "0961d38ba6b13cbb25ffcd71baf034f99c15e107119b4bdec768897daf685be6",
+      "kind": "caller",
+      "matched": true,
+      "path": "src/components/Layout/UserWarnings/index.tsx"
+    },
+    {
+      "actualBlob": "c0f1ee925d88bf759ef9684904071d3a6c25072f",
+      "actualSha256": "45c577c884375d9877455865a8ca16cddfee329d48c68c1cd04e48a3d12b84a4",
+      "expectedBlob": "c0f1ee925d88bf759ef9684904071d3a6c25072f",
+      "expectedSha256": "45c577c884375d9877455865a8ca16cddfee329d48c68c1cd04e48a3d12b84a4",
+      "kind": "caller",
+      "matched": true,
+      "path": "src/components/Layout/VersionStatus/index.tsx"
+    },
+    {
+      "actualBlob": "a3ffa13b9d51de9ba25d3f359e35894764048bdf",
+      "actualSha256": "6bc51ad00fc887789eca6d7f8d802a981d57741f9329b9b10dfbe442757c2181",
+      "expectedBlob": "a3ffa13b9d51de9ba25d3f359e35894764048bdf",
+      "expectedSha256": "6bc51ad00fc887789eca6d7f8d802a981d57741f9329b9b10dfbe442757c2181",
+      "kind": "caller",
+      "matched": true,
+      "path": "src/components/Common/ListView/index.tsx"
+    },
+    {
+      "actualBlob": "ea2fa91c606e193070cc943de9ffe7a2fe1be5b6",
+      "actualSha256": "c82d484a1a835633b7bc506d436eea9f65b4ab628a0f03039d97482c53bd170c",
+      "expectedBlob": "ea2fa91c606e193070cc943de9ffe7a2fe1be5b6",
+      "expectedSha256": "c82d484a1a835633b7bc506d436eea9f65b4ab628a0f03039d97482c53bd170c",
+      "kind": "caller",
+      "matched": true,
+      "path": "src/components/LiveTv/FollowedTeams.tsx"
+    },
+    {
+      "actualBlob": "e3fbf4e169f1d47edb51aa9650c7b1018ae235c4",
+      "actualSha256": "7d7f705289cf74d3e84b4bed7c1aedbf4cadf679c35939e3759c780e65877ad3",
+      "expectedBlob": "e3fbf4e169f1d47edb51aa9650c7b1018ae235c4",
+      "expectedSha256": "7d7f705289cf74d3e84b4bed7c1aedbf4cadf679c35939e3759c780e65877ad3",
+      "kind": "prior-ledger",
+      "matched": true,
+      "path": "docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-600-649/exact-hash-apply-plan.jsonl"
+    }
+  ],
+  "stage": "before-cross-review",
+  "verifiedAtUtc": "2026-11-02T15:08:53.975480+00:00",
+  "worktree": "/mnt/disks/scratch/task-worktrees/localization-20261102/seerrng-pr418-w1400-1499",
+  "worktreeHead": "670d1a213179dcc690f27a8b92c2372dba699091",
+  "worktreeStatusShort": "",
+  "worktreeTree": "be2a8a70ef7f86f3499be7c2190a07b3d2d78036"
+}

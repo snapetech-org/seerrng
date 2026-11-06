@@ -1,0 +1,67 @@
+{
+  "artifact": "SeerrNG PR #418 W3940-W3959 independent cross-audit summary",
+  "reviewedAtUtc": "2026-11-04T19:32:07Z",
+  "head": "a0104b4c84a9c4561020ca72062171b22ffc49f2",
+  "tree": "aaa44c8019c58fde7ae796065e8aae7ac11d7a80",
+  "sourceCount": 20,
+  "localeCount": 12,
+  "cellCount": 240,
+  "primaryProposalCount": 39,
+  "blindProposalCount": 37,
+  "proposalCandidateCount": 76,
+  "proposalCandidateAssessments": {
+    "SELECTED": 61,
+    "NOT_SELECTED_ALTERNATIVE": 15
+  },
+  "crossDispositionCounts": {
+    "KEEP": 168,
+    "SELECT_PROPOSAL": 48,
+    "HOLD": 24
+  },
+  "selectedProposalCount": 48,
+  "selectedTargetOriginCounts": {
+    "primary": 17,
+    "primary+blind": 13,
+    "blind": 18
+  },
+  "noOpCount": 168,
+  "currentHashOnlyHoldCount": 24,
+  "resolvedBlindHoldCount": 0,
+  "priorHashOnlyHoldCount": 26,
+  "priorAppliedTargetHashCount": 214,
+  "callerCoverage": {
+    "sourceContexts": 20,
+    "directCallerReferences": 22,
+    "callerlessSourceCount": 0
+  },
+  "tokenIntegrity": {
+    "selectedProposalsPass": {
+      "placeholders": true,
+      "markupTags": true,
+      "numericTokens": true,
+      "protectedLiterals": true
+    },
+    "baselineNumericEquivalentAccepted": [
+      "3940::ja",
+      "3955::ja"
+    ],
+    "otherBaselineMismatchCounts": {
+      "markupTags": 0,
+      "numericTokens": 0,
+      "placeholders": 0,
+      "protectedLiterals": 0
+    }
+  },
+  "unresolvedHoldPositions": [
+    3943,
+    3957
+  ],
+  "holdDisposition": "All 24 current Enable Agent cells remain hash-only because caller context does not establish the product meaning of Agent.",
+  "historicalHashContinuity": "Prior 26 hold rows and 214 applied-target rows are copied byte-for-byte from candidate-free input.",
+  "applyPlanStatus": "PREPARED_NOT_APPLIED",
+  "nativeSpeakerApproval": false,
+  "browserReview": false,
+  "repositoryEdits": false,
+  "testsBuildsScansCi": false,
+  "reviewMode": "Independent AI semantic cross-audit using pinned caller context; not native-speaker or browser validation."
+}

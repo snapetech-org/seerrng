@@ -1,0 +1,90 @@
+{
+  "callerFiles": 5,
+  "callerRows": 100,
+  "head": "d49b44895d0ded9796f0c970ad09141212e9a98f",
+  "independentSubsetCrossReview": {
+    "directory": "/mnt/disks/scratch/task-scratch/seerrng-pr418-window-2300-2399-subcrossreview-hidvi-20261102",
+    "dispositions": {
+      "accept-proposal": 65,
+      "revise-proposal": 10
+    },
+    "inputChecksumManifestSha256": "4ef6c6734231a0e1d33c2a68cb7ea261721d25339cdfc408ee9d94e7aefc0e54",
+    "inputChecksumsValidated": true,
+    "inputManifestSha256": "b098630543b332942ef6b7afd2210e72fe0f269169c583a20640a9c120c84cc1",
+    "ledgerSha256": "5a876e340daaf68eb60e31c5d0e87da22969944e6c85441716b6e76070c75a74",
+    "packetChecksumManifestSha256": "2365d85095484a76e8a902a8c9ce447bca7e59506b7315f77ee1713aecd27850",
+    "packetChecksumsValidated": true,
+    "proposalCellsReviewed": 75,
+    "scopeLocales": [
+      "hi",
+      "id",
+      "vi"
+    ],
+    "summarySha256": "b8a92e8ed9e0e8ce00247ee21fd27a373da1ed3ac7c08f9fb85356bb975fcddf"
+  },
+  "independentSubsetPacketChecksumValidation": {
+    "INPUT-SHA256SUMS": {
+      "entries": 26,
+      "manifestSha256": "4ef6c6734231a0e1d33c2a68cb7ea261721d25339cdfc408ee9d94e7aefc0e54",
+      "valid": true
+    },
+    "SHA256SUMS": {
+      "entries": 6,
+      "manifestSha256": "2365d85095484a76e8a902a8c9ce447bca7e59506b7315f77ee1713aecd27850",
+      "valid": true
+    }
+  },
+  "locales": [
+    "ar",
+    "de",
+    "es",
+    "fr",
+    "hi",
+    "id",
+    "ja",
+    "ko",
+    "pt_BR",
+    "vi",
+    "zh_Hans",
+    "zh_Hant"
+  ],
+  "primaryPacketChecksumValidation": {
+    "INPUT-SHA256SUMS": {
+      "entries": 5,
+      "manifestSha256": "4fb434a3307cae9faaa1a82b2e869c81685a5475b0b86649553c18bb46dbcf1b",
+      "valid": true
+    },
+    "SHA256SUMS": {
+      "entries": 17,
+      "manifestSha256": "1b330243b632d4d6f54596a60fdb6573bcdf222fae9d3e9696e29ba9ddaa7e15",
+      "valid": true
+    }
+  },
+  "primaryPacketChecksums": {
+    "INPUT-SHA256SUMS": {
+      "entries": 5,
+      "manifestSha256": "4fb434a3307cae9faaa1a82b2e869c81685a5475b0b86649553c18bb46dbcf1b",
+      "valid": true
+    },
+    "SHA256SUMS": {
+      "entries": 17,
+      "manifestSha256": "1b330243b632d4d6f54596a60fdb6573bcdf222fae9d3e9696e29ba9ddaa7e15",
+      "valid": true
+    }
+  },
+  "primaryPacketDirectory": "/mnt/disks/scratch/task-scratch/seerrng-pr418-window-2300-2399-primary-20261102",
+  "primaryPacketInputManifestSha256": "eeb9da58f529edb84e1442eddabc539b5d796dcd77b4d9bf922483ebcfe3ebec",
+  "primaryReviewLedgerSha256": "280c99807ec7fee935a28285346cd39970e317b05ae100580b791f563cefe01f",
+  "proposalCount": 169,
+  "pullRequest": 418,
+  "repository": "snapetech-org/SeerrNG",
+  "repositoryNotModified": true,
+  "reviewedProposedCells": 169,
+  "sourceCatalogAttestationSha256": "c5232af13c5161f0574acacd0308006216dbcc5f4290c1f8e36de5ab177754f0",
+  "sourceIdPositions": [
+    2300,
+    2399
+  ],
+  "sourceIds": 100,
+  "tree": "cebcfc11e0ea37c42f5b6e979e96cca8c89c7814"
+}

@@ -460,7 +460,7 @@ const NotificationsEmail = () => {
             </div>
             <div className="form-row">
               <label htmlFor="pgpPrivateKey" className="text-label">
-                <span className="mr-2">
+                <span className="me-2">
                   {intl.formatMessage(messages.pgpPrivateKey)}
                 </span>
                 <SettingsBadge badgeType="advanced" />
@@ -495,7 +495,7 @@ const NotificationsEmail = () => {
             </div>
             <div className="form-row">
               <label htmlFor="pgpPassword" className="text-label">
-                <span className="mr-2">
+                <span className="me-2">
                   {intl.formatMessage(messages.pgpPassword)}
                 </span>
                 <SettingsBadge badgeType="advanced" />
@@ -527,7 +527,7 @@ const NotificationsEmail = () => {
             </div>
             <div className="actions">
               <div className="flex justify-end">
-                <span className="ml-3 inline-flex rounded-md shadow-sm">
+                <span className="ms-3 inline-flex rounded-md shadow-sm">
                   <Button
                     buttonType="warning"
                     disabled={isSubmitting || !isValid || isTesting}
@@ -544,7 +544,7 @@ const NotificationsEmail = () => {
                     </span>
                   </Button>
                 </span>
-                <span className="ml-3 inline-flex rounded-md shadow-sm">
+                <span className="ms-3 inline-flex rounded-md shadow-sm">
                   <Button
                     buttonType="primary"
                     type="submit"

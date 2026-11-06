@@ -1,0 +1,17 @@
+{
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "window": "W3500-W3519",
+  "head": "9bb8fd4695b207165e4bb8e56c5239eb50cee37c",
+  "tree": "74a4b0208108be4bc593c63c8ac55b4a2df74862",
+  "candidateFreeInputSha256": "822f5f75528a016494cade5f20d09b87eca6c484f51eea5b67ec61257c71fc5b",
+  "blindLedgerSha256": "2eeebab06fbe3a546e0a28ca228ed11dbcd881966b7bde10e53bd98add1bf837",
+  "cellCount": 240,
+  "dispositionCounts": {
+    "accept-current": 224,
+    "correction": 9,
+    "refinement": 7
+  },
+  "recommendedChangedCells": 16,
+  "primaryReviewNotConsulted": true
+}

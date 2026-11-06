@@ -1,0 +1,33 @@
+{
+  "allTargetsPresent": true,
+  "baseSha": "2647e15762de0c2285cd9d8ebc6d27ffafce6358",
+  "baseTree": "b6f4acb9debdc1b0a838b50d5ad88aaa467e429b",
+  "callerContextCount": 20,
+  "callerReferenceCount": 25,
+  "callerlessSources": 0,
+  "catalogCount": 13,
+  "cellCount": 240,
+  "currentPositions": [
+    4037,
+    4056
+  ],
+  "exactHead": "77d30ae742aad7245e6e419237fca6a544531e1f",
+  "exactTree": "2c6fe4a0c1c33aa56b01f06a70702f68598509a7",
+  "localeCount": 12,
+  "previousCandidateFreeHead": "ac193096ebfc0007183348b24e35bf6fee33f67a",
+  "previousPositions": [
+    4000,
+    4019
+  ],
+  "primaryOrBlindProposalsRead": false,
+  "proposalCount": 0,
+  "repositoryOrPrEdited": false,
+  "result": "PASS",
+  "selectedSourceCount": 20,
+  "sourceTextChangesSincePreviousPacket": 0,
+  "targetCellValuesChangedSincePreviousPacket": 0,
+  "tokenMismatchCounts": {
+    "numericTokens": 1
+  },
+  "window": "W4000-W4019"
+}

@@ -1,0 +1,670 @@
+{
+  "allCatalogsValidJson": true,
+  "allMissingIdsMissingFromEveryTargetLocale": true,
+  "catalogCount": 13,
+  "catalogDuplicates": {
+    "ar": 0,
+    "de": 0,
+    "en": 0,
+    "es": 0,
+    "fr": 0,
+    "hi": 0,
+    "id": 0,
+    "ja": 0,
+    "ko": 0,
+    "pt-BR": 0,
+    "vi": 0,
+    "zh-Hans": 0,
+    "zh-Hant": 0
+  },
+  "catalogPins": {
+    "ar": {
+      "byteCount": 1045279,
+      "gitBlob": "e0077006eeb9d36f6597a705ac08453fbd57f620",
+      "lineCount": 9496,
+      "path": "src/i18n/locale/ar.json",
+      "sha256": "cc2e349a6bd826b1522f508e1f29aed2442f7ea8ac42ecf46fcab53f248d8ae3"
+    },
+    "de": {
+      "byteCount": 927543,
+      "gitBlob": "f96da4e3145abb8e9ec0025d7c14bdc3e2375869",
+      "lineCount": 9496,
+      "path": "src/i18n/locale/de.json",
+      "sha256": "e83a88be2abf095849cd6c683076563874e358da72f258f2292e8d5c6440fa8f"
+    },
+    "en": {
+      "byteCount": 839919,
+      "gitBlob": "6874e897d0c02d9e8155f555a07f0ee73b662909",
+      "lineCount": 9539,
+      "path": "src/i18n/locale/en.json",
+      "sha256": "66c6196ec67cedb0f35c50ce38fb5a7ddda08b8eb2dd5ca9cd24c1617ecd3223"
+    },
+    "es": {
+      "byteCount": 923274,
+      "gitBlob": "f35ccaa61082cfa764f8805ec0a3dab6ab23b761",
+      "lineCount": 9496,
+      "path": "src/i18n/locale/es.json",
+      "sha256": "36438d7488a8c88772adc386bc75def8a76fa8f28054b084414e3fe774e69915"
+    },
+    "fr": {
+      "byteCount": 941554,
+      "gitBlob": "cfc64f161ef37ebc1ed0528e180da28225878c5d",
+      "lineCount": 9496,
+      "path": "src/i18n/locale/fr.json",
+      "sha256": "2411fbf175517401514ad10ede7b8852cdf3180f6945ade4d202e1fbfb569b6a"
+    },
+    "hi": {
+      "byteCount": 1373634,
+      "gitBlob": "57c8988729fd500d83a61baf4c30fbd955db15d6",
+      "lineCount": 9496,
+      "path": "src/i18n/locale/hi.json",
+      "sha256": "c6947f9e78cf7b09d05e5f1c7d865438ca09f647f84c7e1c04becb9751cf69cd"
+    },
+    "id": {
+      "byteCount": 868611,
+      "gitBlob": "f32484a86b5f03e0427f78845cb598d8927922ba",
+      "lineCount": 9496,
+      "path": "src/i18n/locale/id.json",
+      "sha256": "84656e77120c57d9a2f2fb39900a236ed11f3a095e2b0789724d5d1f9f411e18"
+    },
+    "ja": {
+      "byteCount": 1016649,
+      "gitBlob": "847d603d12798c4a06c7ac46ff7255eebcf4cfdd",
+      "lineCount": 9496,
+      "path": "src/i18n/locale/ja.json",
+      "sha256": "620840916233ef180a39a8e681cd527730f3ab1c181dece59b2e8042b5eadde1"
+    },
+    "ko": {
+      "byteCount": 935220,
+      "gitBlob": "2da03d5e5734336c855866a3e2cfd3b58b2dbb87",
+      "lineCount": 9496,
+      "path": "src/i18n/locale/ko.json",
+      "sha256": "142adfe2d7209a6bb159eaa0579a79e8353af6ed4847f71f261002f520b704c1"
+    },
+    "pt-BR": {
+      "byteCount": 912733,
+      "gitBlob": "0fb008785c891cb07113a2c0d257f257252c6564",
+      "lineCount": 9496,
+      "path": "src/i18n/locale/pt_BR.json",
+      "sha256": "335867ce2e14615170a883162e4157b3a3ea015880100d0431df57cd8968e0bb"
+    },
+    "vi": {
+      "byteCount": 970771,
+      "gitBlob": "6357a90caec13156608cdb3c82bc7318b398e2b9",
+      "lineCount": 9496,
+      "path": "src/i18n/locale/vi.json",
+      "sha256": "be6c8d777c2af7b8f793be6a72e55278d3e0777dc75cd6eee3165fd804b94682"
+    },
+    "zh-Hans": {
+      "byteCount": 813085,
+      "gitBlob": "87daebd2271056a132b6f07d5926c11f99f01918",
+      "lineCount": 9496,
+      "path": "src/i18n/locale/zh_Hans.json",
+      "sha256": "74374b5c7818c1b80594c9d74ec4a45f2d48cef40a9aaa9c5f375a7d4507827d"
+    },
+    "zh-Hant": {
+      "byteCount": 814904,
+      "gitBlob": "f8c3acdcf88f1ed6b4c25266fc46e55d7ce66ddd",
+      "lineCount": 9496,
+      "path": "src/i18n/locale/zh_Hant.json",
+      "sha256": "e1f7383a6a19748d20c9f3b78e9f79bd35f41b41abb159fefae3bc697bcd0f90"
+    }
+  },
+  "currentMainSourceKeyCount": 6880,
+  "localeRegistryFile": {
+    "byteCount": 5394,
+    "configuredLocaleEntryCount": 38,
+    "gitBlob": "d699bd347f4fbad07bce14a743c884800d9d4a84",
+    "inactiveCatalogs": [
+      "eu",
+      "kab",
+      "sk",
+      "sl"
+    ],
+    "lineCount": 45,
+    "path": "config/i18n/locales.json",
+    "scopedLocaleRegistryMapping": {
+      "ar": {
+        "clientFile": "ar.json",
+        "registryTag": "ar",
+        "reviewLocale": "ar",
+        "reviewStatus": "unreviewed",
+        "serverFile": "ar.json"
+      },
+      "de": {
+        "clientFile": "de.json",
+        "registryTag": "de",
+        "reviewLocale": "de",
+        "reviewStatus": "unreviewed",
+        "serverFile": "de.json"
+      },
+      "es": {
+        "clientFile": "es.json",
+        "registryTag": "es",
+        "reviewLocale": "es",
+        "reviewStatus": "unreviewed",
+        "serverFile": "es.json"
+      },
+      "fr": {
+        "clientFile": "fr.json",
+        "registryTag": "fr",
+        "reviewLocale": "fr",
+        "reviewStatus": "unreviewed",
+        "serverFile": "fr.json"
+      },
+      "hi": {
+        "clientFile": "hi.json",
+        "registryTag": "hi",
+        "reviewLocale": "hi",
+        "reviewStatus": "unreviewed",
+        "serverFile": "hi.json"
+      },
+      "id": {
+        "clientFile": "id.json",
+        "registryTag": "id",
+        "reviewLocale": "id",
+        "reviewStatus": "unreviewed",
+        "serverFile": "id.json"
+      },
+      "ja": {
+        "clientFile": "ja.json",
+        "registryTag": "ja",
+        "reviewLocale": "ja",
+        "reviewStatus": "unreviewed",
+        "serverFile": "ja.json"
+      },
+      "ko": {
+        "clientFile": "ko.json",
+        "registryTag": "ko",
+        "reviewLocale": "ko",
+        "reviewStatus": "unreviewed",
+        "serverFile": "ko.json"
+      },
+      "pt-BR": {
+        "clientFile": "pt_BR.json",
+        "registryTag": "pt-BR",
+        "reviewLocale": "pt-BR",
+        "reviewStatus": "unreviewed",
+        "serverFile": "pt-BR.json"
+      },
+      "vi": {
+        "clientFile": "vi.json",
+        "registryTag": "vi",
+        "reviewLocale": "vi",
+        "reviewStatus": "unreviewed",
+        "serverFile": "vi.json"
+      },
+      "zh-Hans": {
+        "clientFile": "zh_Hans.json",
+        "registryTag": "zh-CN",
+        "reviewLocale": "zh-Hans",
+        "reviewStatus": "unreviewed",
+        "serverFile": "zh-Hans.json"
+      },
+      "zh-Hant": {
+        "clientFile": "zh_Hant.json",
+        "registryTag": "zh-TW",
+        "reviewLocale": "zh-Hant",
+        "reviewStatus": "unreviewed",
+        "serverFile": "zh-Hant.json"
+      }
+    },
+    "sha256": "6e8ea070b441db9700325cf838d440dbbef1d1e5331e28332ed6c15cb789376a"
+  },
+  "missingIdSetSha256": "ee84b5110023b3db7f1704140c7899ba8d6a7ecdb17f87a6f4befba45cf8c5d9",
+  "missingTargetIdsCount": 43,
+  "orderAudit": {
+    "ar": {
+      "catalogPath": "src/i18n/locale/ar.json",
+      "catalogSha256": "cc2e349a6bd826b1522f508e1f29aed2442f7ea8ac42ecf46fcab53f248d8ae3",
+      "expectedEnglishSubsetOrderSha256": "a55c70b5ec64b3074e1424754f346c58b3bec60dfdfc5a78f2c7d8c02f6e6c51",
+      "firstMismatchExamples": [],
+      "keyCount": 9494,
+      "keyOrderHammingMismatchPositions": 0,
+      "keyOrderMatchesEnglishSubset": true,
+      "keyOrderSha256": "a55c70b5ec64b3074e1424754f346c58b3bec60dfdfc5a78f2c7d8c02f6e6c51",
+      "keySetSha256": "aaaaf595cfcefcd4f6a078a37c7fb92569a49d6e4379d7e51a7c1127fda485ab"
+    },
+    "de": {
+      "catalogPath": "src/i18n/locale/de.json",
+      "catalogSha256": "e83a88be2abf095849cd6c683076563874e358da72f258f2292e8d5c6440fa8f",
+      "expectedEnglishSubsetOrderSha256": "a55c70b5ec64b3074e1424754f346c58b3bec60dfdfc5a78f2c7d8c02f6e6c51",
+      "firstMismatchExamples": [],
+      "keyCount": 9494,
+      "keyOrderHammingMismatchPositions": 0,
+      "keyOrderMatchesEnglishSubset": true,
+      "keyOrderSha256": "a55c70b5ec64b3074e1424754f346c58b3bec60dfdfc5a78f2c7d8c02f6e6c51",
+      "keySetSha256": "aaaaf595cfcefcd4f6a078a37c7fb92569a49d6e4379d7e51a7c1127fda485ab"
+    },
+    "es": {
+      "catalogPath": "src/i18n/locale/es.json",
+      "catalogSha256": "36438d7488a8c88772adc386bc75def8a76fa8f28054b084414e3fe774e69915",
+      "expectedEnglishSubsetOrderSha256": "a55c70b5ec64b3074e1424754f346c58b3bec60dfdfc5a78f2c7d8c02f6e6c51",
+      "firstMismatchExamples": [],
+      "keyCount": 9494,
+      "keyOrderHammingMismatchPositions": 0,
+      "keyOrderMatchesEnglishSubset": true,
+      "keyOrderSha256": "a55c70b5ec64b3074e1424754f346c58b3bec60dfdfc5a78f2c7d8c02f6e6c51",
+      "keySetSha256": "aaaaf595cfcefcd4f6a078a37c7fb92569a49d6e4379d7e51a7c1127fda485ab"
+    },
+    "fr": {
+      "catalogPath": "src/i18n/locale/fr.json",
+      "catalogSha256": "2411fbf175517401514ad10ede7b8852cdf3180f6945ade4d202e1fbfb569b6a",
+      "expectedEnglishSubsetOrderSha256": "a55c70b5ec64b3074e1424754f346c58b3bec60dfdfc5a78f2c7d8c02f6e6c51",
+      "firstMismatchExamples": [],
+      "keyCount": 9494,
+      "keyOrderHammingMismatchPositions": 0,
+      "keyOrderMatchesEnglishSubset": true,
+      "keyOrderSha256": "a55c70b5ec64b3074e1424754f346c58b3bec60dfdfc5a78f2c7d8c02f6e6c51",
+      "keySetSha256": "aaaaf595cfcefcd4f6a078a37c7fb92569a49d6e4379d7e51a7c1127fda485ab"
+    },
+    "hi": {
+      "catalogPath": "src/i18n/locale/hi.json",
+      "catalogSha256": "c6947f9e78cf7b09d05e5f1c7d865438ca09f647f84c7e1c04becb9751cf69cd",
+      "expectedEnglishSubsetOrderSha256": "a55c70b5ec64b3074e1424754f346c58b3bec60dfdfc5a78f2c7d8c02f6e6c51",
+      "firstMismatchExamples": [],
+      "keyCount": 9494,
+      "keyOrderHammingMismatchPositions": 0,
+      "keyOrderMatchesEnglishSubset": true,
+      "keyOrderSha256": "a55c70b5ec64b3074e1424754f346c58b3bec60dfdfc5a78f2c7d8c02f6e6c51",
+      "keySetSha256": "aaaaf595cfcefcd4f6a078a37c7fb92569a49d6e4379d7e51a7c1127fda485ab"
+    },
+    "id": {
+      "catalogPath": "src/i18n/locale/id.json",
+      "catalogSha256": "84656e77120c57d9a2f2fb39900a236ed11f3a095e2b0789724d5d1f9f411e18",
+      "expectedEnglishSubsetOrderSha256": "a55c70b5ec64b3074e1424754f346c58b3bec60dfdfc5a78f2c7d8c02f6e6c51",
+      "firstMismatchExamples": [],
+      "keyCount": 9494,
+      "keyOrderHammingMismatchPositions": 0,
+      "keyOrderMatchesEnglishSubset": true,
+      "keyOrderSha256": "a55c70b5ec64b3074e1424754f346c58b3bec60dfdfc5a78f2c7d8c02f6e6c51",
+      "keySetSha256": "aaaaf595cfcefcd4f6a078a37c7fb92569a49d6e4379d7e51a7c1127fda485ab"
+    },
+    "ja": {
+      "catalogPath": "src/i18n/locale/ja.json",
+      "catalogSha256": "620840916233ef180a39a8e681cd527730f3ab1c181dece59b2e8042b5eadde1",
+      "expectedEnglishSubsetOrderSha256": "a55c70b5ec64b3074e1424754f346c58b3bec60dfdfc5a78f2c7d8c02f6e6c51",
+      "firstMismatchExamples": [
+        {
+          "actualKeySha256": "99b03237254436a728d3627b924fb65d32178b258d02b39c7a0fcb7a836413cd",
+          "expectedKeySha256": "fd194b1219b985af0304638a5e1a05f8b13865b9930d1d1d3525e74078c9acc6",
+          "position": 350
+        },
+        {
+          "actualKeySha256": "35c49ebe7c7907811ae11d8f363a9cb6856ff24c37817e25cd264b56dcba471a",
+          "expectedKeySha256": "99b03237254436a728d3627b924fb65d32178b258d02b39c7a0fcb7a836413cd",
+          "position": 351
+        },
+        {
+          "actualKeySha256": "51880d9220a7dd238b439b2e694c48a49c2902e7d78b99d8f7ed5c4bb7082683",
+          "expectedKeySha256": "35c49ebe7c7907811ae11d8f363a9cb6856ff24c37817e25cd264b56dcba471a",
+          "position": 352
+        },
+        {
+          "actualKeySha256": "e39730e8ee6b7844bbb4dc1eaa94e2a0a2d0b225a61a43a35610f61865c4c0e0",
+          "expectedKeySha256": "51880d9220a7dd238b439b2e694c48a49c2902e7d78b99d8f7ed5c4bb7082683",
+          "position": 353
+        },
+        {
+          "actualKeySha256": "0181effe1e7640b39e99be48e30d16010db91565e808f2143096f17affb785b0",
+          "expectedKeySha256": "e39730e8ee6b7844bbb4dc1eaa94e2a0a2d0b225a61a43a35610f61865c4c0e0",
+          "position": 354
+        },
+        {
+          "actualKeySha256": "7a48dbda27e2571b5f6d7ec6e4c5bf35f78a0b14ea8a773395bf5d92be249040",
+          "expectedKeySha256": "0181effe1e7640b39e99be48e30d16010db91565e808f2143096f17affb785b0",
+          "position": 355
+        },
+        {
+          "actualKeySha256": "829ddd1ec36802d824e4bc1b8b43479d487e240aa4c51047b530e028f63befb3",
+          "expectedKeySha256": "7a48dbda27e2571b5f6d7ec6e4c5bf35f78a0b14ea8a773395bf5d92be249040",
+          "position": 356
+        },
+        {
+          "actualKeySha256": "44e0f6da1d1cba183eb88c6acb994fbd217e4980161833895ad67cb4b34589b5",
+          "expectedKeySha256": "829ddd1ec36802d824e4bc1b8b43479d487e240aa4c51047b530e028f63befb3",
+          "position": 357
+        },
+        {
+          "actualKeySha256": "3365db09595f95ea9fce72f4570abd4c24461c2e56c9361a17ed9cf12e42fc93",
+          "expectedKeySha256": "44e0f6da1d1cba183eb88c6acb994fbd217e4980161833895ad67cb4b34589b5",
+          "position": 358
+        },
+        {
+          "actualKeySha256": "9cc244c2fbd4b6e5a6bb1848b12045ebb95c31ec81d68339b811949fda3a5bc4",
+          "expectedKeySha256": "3365db09595f95ea9fce72f4570abd4c24461c2e56c9361a17ed9cf12e42fc93",
+          "position": 359
+        }
+      ],
+      "keyCount": 9494,
+      "keyOrderHammingMismatchPositions": 9144,
+      "keyOrderMatchesEnglishSubset": false,
+      "keyOrderSha256": "60ab15decdf72e20525efd0de9e7c1ed31cfc7f2887ad9f1e675d49f65034904",
+      "keySetSha256": "aaaaf595cfcefcd4f6a078a37c7fb92569a49d6e4379d7e51a7c1127fda485ab"
+    },
+    "ko": {
+      "catalogPath": "src/i18n/locale/ko.json",
+      "catalogSha256": "142adfe2d7209a6bb159eaa0579a79e8353af6ed4847f71f261002f520b704c1",
+      "expectedEnglishSubsetOrderSha256": "a55c70b5ec64b3074e1424754f346c58b3bec60dfdfc5a78f2c7d8c02f6e6c51",
+      "firstMismatchExamples": [
+        {
+          "actualKeySha256": "99b03237254436a728d3627b924fb65d32178b258d02b39c7a0fcb7a836413cd",
+          "expectedKeySha256": "fd194b1219b985af0304638a5e1a05f8b13865b9930d1d1d3525e74078c9acc6",
+          "position": 350
+        },
+        {
+          "actualKeySha256": "35c49ebe7c7907811ae11d8f363a9cb6856ff24c37817e25cd264b56dcba471a",
+          "expectedKeySha256": "99b03237254436a728d3627b924fb65d32178b258d02b39c7a0fcb7a836413cd",
+          "position": 351
+        },
+        {
+          "actualKeySha256": "51880d9220a7dd238b439b2e694c48a49c2902e7d78b99d8f7ed5c4bb7082683",
+          "expectedKeySha256": "35c49ebe7c7907811ae11d8f363a9cb6856ff24c37817e25cd264b56dcba471a",
+          "position": 352
+        },
+        {
+          "actualKeySha256": "e39730e8ee6b7844bbb4dc1eaa94e2a0a2d0b225a61a43a35610f61865c4c0e0",
+          "expectedKeySha256": "51880d9220a7dd238b439b2e694c48a49c2902e7d78b99d8f7ed5c4bb7082683",
+          "position": 353
+        },
+        {
+          "actualKeySha256": "0181effe1e7640b39e99be48e30d16010db91565e808f2143096f17affb785b0",
+          "expectedKeySha256": "e39730e8ee6b7844bbb4dc1eaa94e2a0a2d0b225a61a43a35610f61865c4c0e0",
+          "position": 354
+        },
+        {
+          "actualKeySha256": "7a48dbda27e2571b5f6d7ec6e4c5bf35f78a0b14ea8a773395bf5d92be249040",
+          "expectedKeySha256": "0181effe1e7640b39e99be48e30d16010db91565e808f2143096f17affb785b0",
+          "position": 355
+        },
+        {
+          "actualKeySha256": "829ddd1ec36802d824e4bc1b8b43479d487e240aa4c51047b530e028f63befb3",
+          "expectedKeySha256": "7a48dbda27e2571b5f6d7ec6e4c5bf35f78a0b14ea8a773395bf5d92be249040",
+          "position": 356
+        },
+        {
+          "actualKeySha256": "44e0f6da1d1cba183eb88c6acb994fbd217e4980161833895ad67cb4b34589b5",
+          "expectedKeySha256": "829ddd1ec36802d824e4bc1b8b43479d487e240aa4c51047b530e028f63befb3",
+          "position": 357
+        },
+        {
+          "actualKeySha256": "3365db09595f95ea9fce72f4570abd4c24461c2e56c9361a17ed9cf12e42fc93",
+          "expectedKeySha256": "44e0f6da1d1cba183eb88c6acb994fbd217e4980161833895ad67cb4b34589b5",
+          "position": 358
+        },
+        {
+          "actualKeySha256": "9cc244c2fbd4b6e5a6bb1848b12045ebb95c31ec81d68339b811949fda3a5bc4",
+          "expectedKeySha256": "3365db09595f95ea9fce72f4570abd4c24461c2e56c9361a17ed9cf12e42fc93",
+          "position": 359
+        }
+      ],
+      "keyCount": 9494,
+      "keyOrderHammingMismatchPositions": 9144,
+      "keyOrderMatchesEnglishSubset": false,
+      "keyOrderSha256": "60ab15decdf72e20525efd0de9e7c1ed31cfc7f2887ad9f1e675d49f65034904",
+      "keySetSha256": "aaaaf595cfcefcd4f6a078a37c7fb92569a49d6e4379d7e51a7c1127fda485ab"
+    },
+    "pt-BR": {
+      "catalogPath": "src/i18n/locale/pt_BR.json",
+      "catalogSha256": "335867ce2e14615170a883162e4157b3a3ea015880100d0431df57cd8968e0bb",
+      "expectedEnglishSubsetOrderSha256": "a55c70b5ec64b3074e1424754f346c58b3bec60dfdfc5a78f2c7d8c02f6e6c51",
+      "firstMismatchExamples": [],
+      "keyCount": 9494,
+      "keyOrderHammingMismatchPositions": 0,
+      "keyOrderMatchesEnglishSubset": true,
+      "keyOrderSha256": "a55c70b5ec64b3074e1424754f346c58b3bec60dfdfc5a78f2c7d8c02f6e6c51",
+      "keySetSha256": "aaaaf595cfcefcd4f6a078a37c7fb92569a49d6e4379d7e51a7c1127fda485ab"
+    },
+    "vi": {
+      "catalogPath": "src/i18n/locale/vi.json",
+      "catalogSha256": "be6c8d777c2af7b8f793be6a72e55278d3e0777dc75cd6eee3165fd804b94682",
+      "expectedEnglishSubsetOrderSha256": "a55c70b5ec64b3074e1424754f346c58b3bec60dfdfc5a78f2c7d8c02f6e6c51",
+      "firstMismatchExamples": [
+        {
+          "actualKeySha256": "99b03237254436a728d3627b924fb65d32178b258d02b39c7a0fcb7a836413cd",
+          "expectedKeySha256": "fd194b1219b985af0304638a5e1a05f8b13865b9930d1d1d3525e74078c9acc6",
+          "position": 350
+        },
+        {
+          "actualKeySha256": "35c49ebe7c7907811ae11d8f363a9cb6856ff24c37817e25cd264b56dcba471a",
+          "expectedKeySha256": "99b03237254436a728d3627b924fb65d32178b258d02b39c7a0fcb7a836413cd",
+          "position": 351
+        },
+        {
+          "actualKeySha256": "51880d9220a7dd238b439b2e694c48a49c2902e7d78b99d8f7ed5c4bb7082683",
+          "expectedKeySha256": "35c49ebe7c7907811ae11d8f363a9cb6856ff24c37817e25cd264b56dcba471a",
+          "position": 352
+        },
+        {
+          "actualKeySha256": "e39730e8ee6b7844bbb4dc1eaa94e2a0a2d0b225a61a43a35610f61865c4c0e0",
+          "expectedKeySha256": "51880d9220a7dd238b439b2e694c48a49c2902e7d78b99d8f7ed5c4bb7082683",
+          "position": 353
+        },
+        {
+          "actualKeySha256": "0181effe1e7640b39e99be48e30d16010db91565e808f2143096f17affb785b0",
+          "expectedKeySha256": "e39730e8ee6b7844bbb4dc1eaa94e2a0a2d0b225a61a43a35610f61865c4c0e0",
+          "position": 354
+        },
+        {
+          "actualKeySha256": "7a48dbda27e2571b5f6d7ec6e4c5bf35f78a0b14ea8a773395bf5d92be249040",
+          "expectedKeySha256": "0181effe1e7640b39e99be48e30d16010db91565e808f2143096f17affb785b0",
+          "position": 355
+        },
+        {
+          "actualKeySha256": "829ddd1ec36802d824e4bc1b8b43479d487e240aa4c51047b530e028f63befb3",
+          "expectedKeySha256": "7a48dbda27e2571b5f6d7ec6e4c5bf35f78a0b14ea8a773395bf5d92be249040",
+          "position": 356
+        },
+        {
+          "actualKeySha256": "44e0f6da1d1cba183eb88c6acb994fbd217e4980161833895ad67cb4b34589b5",
+          "expectedKeySha256": "829ddd1ec36802d824e4bc1b8b43479d487e240aa4c51047b530e028f63befb3",
+          "position": 357
+        },
+        {
+          "actualKeySha256": "3365db09595f95ea9fce72f4570abd4c24461c2e56c9361a17ed9cf12e42fc93",
+          "expectedKeySha256": "44e0f6da1d1cba183eb88c6acb994fbd217e4980161833895ad67cb4b34589b5",
+          "position": 358
+        },
+        {
+          "actualKeySha256": "9cc244c2fbd4b6e5a6bb1848b12045ebb95c31ec81d68339b811949fda3a5bc4",
+          "expectedKeySha256": "3365db09595f95ea9fce72f4570abd4c24461c2e56c9361a17ed9cf12e42fc93",
+          "position": 359
+        }
+      ],
+      "keyCount": 9494,
+      "keyOrderHammingMismatchPositions": 9144,
+      "keyOrderMatchesEnglishSubset": false,
+      "keyOrderSha256": "60ab15decdf72e20525efd0de9e7c1ed31cfc7f2887ad9f1e675d49f65034904",
+      "keySetSha256": "aaaaf595cfcefcd4f6a078a37c7fb92569a49d6e4379d7e51a7c1127fda485ab"
+    },
+    "zh-Hans": {
+      "catalogPath": "src/i18n/locale/zh_Hans.json",
+      "catalogSha256": "74374b5c7818c1b80594c9d74ec4a45f2d48cef40a9aaa9c5f375a7d4507827d",
+      "expectedEnglishSubsetOrderSha256": "a55c70b5ec64b3074e1424754f346c58b3bec60dfdfc5a78f2c7d8c02f6e6c51",
+      "firstMismatchExamples": [
+        {
+          "actualKeySha256": "99b03237254436a728d3627b924fb65d32178b258d02b39c7a0fcb7a836413cd",
+          "expectedKeySha256": "fd194b1219b985af0304638a5e1a05f8b13865b9930d1d1d3525e74078c9acc6",
+          "position": 350
+        },
+        {
+          "actualKeySha256": "35c49ebe7c7907811ae11d8f363a9cb6856ff24c37817e25cd264b56dcba471a",
+          "expectedKeySha256": "99b03237254436a728d3627b924fb65d32178b258d02b39c7a0fcb7a836413cd",
+          "position": 351
+        },
+        {
+          "actualKeySha256": "51880d9220a7dd238b439b2e694c48a49c2902e7d78b99d8f7ed5c4bb7082683",
+          "expectedKeySha256": "35c49ebe7c7907811ae11d8f363a9cb6856ff24c37817e25cd264b56dcba471a",
+          "position": 352
+        },
+        {
+          "actualKeySha256": "e39730e8ee6b7844bbb4dc1eaa94e2a0a2d0b225a61a43a35610f61865c4c0e0",
+          "expectedKeySha256": "51880d9220a7dd238b439b2e694c48a49c2902e7d78b99d8f7ed5c4bb7082683",
+          "position": 353
+        },
+        {
+          "actualKeySha256": "0181effe1e7640b39e99be48e30d16010db91565e808f2143096f17affb785b0",
+          "expectedKeySha256": "e39730e8ee6b7844bbb4dc1eaa94e2a0a2d0b225a61a43a35610f61865c4c0e0",
+          "position": 354
+        },
+        {
+          "actualKeySha256": "7a48dbda27e2571b5f6d7ec6e4c5bf35f78a0b14ea8a773395bf5d92be249040",
+          "expectedKeySha256": "0181effe1e7640b39e99be48e30d16010db91565e808f2143096f17affb785b0",
+          "position": 355
+        },
+        {
+          "actualKeySha256": "829ddd1ec36802d824e4bc1b8b43479d487e240aa4c51047b530e028f63befb3",
+          "expectedKeySha256": "7a48dbda27e2571b5f6d7ec6e4c5bf35f78a0b14ea8a773395bf5d92be249040",
+          "position": 356
+        },
+        {
+          "actualKeySha256": "44e0f6da1d1cba183eb88c6acb994fbd217e4980161833895ad67cb4b34589b5",
+          "expectedKeySha256": "829ddd1ec36802d824e4bc1b8b43479d487e240aa4c51047b530e028f63befb3",
+          "position": 357
+        },
+        {
+          "actualKeySha256": "3365db09595f95ea9fce72f4570abd4c24461c2e56c9361a17ed9cf12e42fc93",
+          "expectedKeySha256": "44e0f6da1d1cba183eb88c6acb994fbd217e4980161833895ad67cb4b34589b5",
+          "position": 358
+        },
+        {
+          "actualKeySha256": "9cc244c2fbd4b6e5a6bb1848b12045ebb95c31ec81d68339b811949fda3a5bc4",
+          "expectedKeySha256": "3365db09595f95ea9fce72f4570abd4c24461c2e56c9361a17ed9cf12e42fc93",
+          "position": 359
+        }
+      ],
+      "keyCount": 9494,
+      "keyOrderHammingMismatchPositions": 9144,
+      "keyOrderMatchesEnglishSubset": false,
+      "keyOrderSha256": "60ab15decdf72e20525efd0de9e7c1ed31cfc7f2887ad9f1e675d49f65034904",
+      "keySetSha256": "aaaaf595cfcefcd4f6a078a37c7fb92569a49d6e4379d7e51a7c1127fda485ab"
+    },
+    "zh-Hant": {
+      "catalogPath": "src/i18n/locale/zh_Hant.json",
+      "catalogSha256": "e1f7383a6a19748d20c9f3b78e9f79bd35f41b41abb159fefae3bc697bcd0f90",
+      "expectedEnglishSubsetOrderSha256": "a55c70b5ec64b3074e1424754f346c58b3bec60dfdfc5a78f2c7d8c02f6e6c51",
+      "firstMismatchExamples": [
+        {
+          "actualKeySha256": "99b03237254436a728d3627b924fb65d32178b258d02b39c7a0fcb7a836413cd",
+          "expectedKeySha256": "fd194b1219b985af0304638a5e1a05f8b13865b9930d1d1d3525e74078c9acc6",
+          "position": 350
+        },
+        {
+          "actualKeySha256": "35c49ebe7c7907811ae11d8f363a9cb6856ff24c37817e25cd264b56dcba471a",
+          "expectedKeySha256": "99b03237254436a728d3627b924fb65d32178b258d02b39c7a0fcb7a836413cd",
+          "position": 351
+        },
+        {
+          "actualKeySha256": "51880d9220a7dd238b439b2e694c48a49c2902e7d78b99d8f7ed5c4bb7082683",
+          "expectedKeySha256": "35c49ebe7c7907811ae11d8f363a9cb6856ff24c37817e25cd264b56dcba471a",
+          "position": 352
+        },
+        {
+          "actualKeySha256": "e39730e8ee6b7844bbb4dc1eaa94e2a0a2d0b225a61a43a35610f61865c4c0e0",
+          "expectedKeySha256": "51880d9220a7dd238b439b2e694c48a49c2902e7d78b99d8f7ed5c4bb7082683",
+          "position": 353
+        },
+        {
+          "actualKeySha256": "0181effe1e7640b39e99be48e30d16010db91565e808f2143096f17affb785b0",
+          "expectedKeySha256": "e39730e8ee6b7844bbb4dc1eaa94e2a0a2d0b225a61a43a35610f61865c4c0e0",
+          "position": 354
+        },
+        {
+          "actualKeySha256": "7a48dbda27e2571b5f6d7ec6e4c5bf35f78a0b14ea8a773395bf5d92be249040",
+          "expectedKeySha256": "0181effe1e7640b39e99be48e30d16010db91565e808f2143096f17affb785b0",
+          "position": 355
+        },
+        {
+          "actualKeySha256": "829ddd1ec36802d824e4bc1b8b43479d487e240aa4c51047b530e028f63befb3",
+          "expectedKeySha256": "7a48dbda27e2571b5f6d7ec6e4c5bf35f78a0b14ea8a773395bf5d92be249040",
+          "position": 356
+        },
+        {
+          "actualKeySha256": "44e0f6da1d1cba183eb88c6acb994fbd217e4980161833895ad67cb4b34589b5",
+          "expectedKeySha256": "829ddd1ec36802d824e4bc1b8b43479d487e240aa4c51047b530e028f63befb3",
+          "position": 357
+        },
+        {
+          "actualKeySha256": "3365db09595f95ea9fce72f4570abd4c24461c2e56c9361a17ed9cf12e42fc93",
+          "expectedKeySha256": "44e0f6da1d1cba183eb88c6acb994fbd217e4980161833895ad67cb4b34589b5",
+          "position": 358
+        },
+        {
+          "actualKeySha256": "9cc244c2fbd4b6e5a6bb1848b12045ebb95c31ec81d68339b811949fda3a5bc4",
+          "expectedKeySha256": "3365db09595f95ea9fce72f4570abd4c24461c2e56c9361a17ed9cf12e42fc93",
+          "position": 359
+        }
+      ],
+      "keyCount": 9494,
+      "keyOrderHammingMismatchPositions": 9144,
+      "keyOrderMatchesEnglishSubset": false,
+      "keyOrderSha256": "60ab15decdf72e20525efd0de9e7c1ed31cfc7f2887ad9f1e675d49f65034904",
+      "keySetSha256": "aaaaf595cfcefcd4f6a078a37c7fb92569a49d6e4379d7e51a7c1127fda485ab"
+    }
+  },
+  "partialMissingIdsCount": 0,
+  "priorSourceHeadKeyCount": 9496,
+  "schemaVersion": 1,
+  "scope": "frontend src/i18n/locale: English plus the 12 direct target locales pinned by prior W4000",
+  "sourceCatalogPath": "src/i18n/locale/en.json",
+  "sourceKeyCount": 9537,
+  "sourceOrderHashFileSha256": "6d0e9150e73038f1d8aec6a4c66de38da03e6a236e4bddb8af7aac3d55333959",
+  "sourceOrderHashOfRows": "6d0e9150e73038f1d8aec6a4c66de38da03e6a236e4bddb8af7aac3d55333959",
+  "sourceOrderLength": 9537,
+  "targetExtraKeyCounts": {
+    "ar": 0,
+    "de": 0,
+    "es": 0,
+    "fr": 0,
+    "hi": 0,
+    "id": 0,
+    "ja": 0,
+    "ko": 0,
+    "pt-BR": 0,
+    "vi": 0,
+    "zh-Hans": 0,
+    "zh-Hant": 0
+  },
+  "targetKeyCounts": {
+    "ar": 9494,
+    "de": 9494,
+    "es": 9494,
+    "fr": 9494,
+    "hi": 9494,
+    "id": 9494,
+    "ja": 9494,
+    "ko": 9494,
+    "pt-BR": 9494,
+    "vi": 9494,
+    "zh-Hans": 9494,
+    "zh-Hant": 9494
+  },
+  "targetLocales": [
+    "es",
+    "zh-Hans",
+    "hi",
+    "de",
+    "ja",
+    "fr",
+    "pt-BR",
+    "ar",
+    "ko",
+    "zh-Hant",
+    "vi",
+    "id"
+  ],
+  "targetMissingCounts": {
+    "ar": 43,
+    "de": 43,
+    "es": 43,
+    "fr": 43,
+    "hi": 43,
+    "id": 43,
+    "ja": 43,
+    "ko": 43,
+    "pt-BR": 43,
+    "vi": 43,
+    "zh-Hans": 43,
+    "zh-Hant": 43
+  }
+}

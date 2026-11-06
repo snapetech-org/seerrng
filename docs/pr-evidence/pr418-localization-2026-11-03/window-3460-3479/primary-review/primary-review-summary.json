@@ -1,0 +1,141 @@
+{
+  "title": "SeerrNG PR #418 W3460–W3479 primary semantic review",
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "head": "76fd466ba7e44ed9853115f8fb1f8ab8bec93c8e",
+  "tree": "00a72de46a40df893a24e0a93e85ec505e035a2d",
+  "candidateFreePacketManifestSha256": "2c8ce153678937d69b835671d26f9658113f6aae516fb83e4eea5e9be4004bfa",
+  "packetChecksumsSha256": "f581bcbce2ffd680ec43345aa0c1cbe8d8cb69d15270a4b1688475459132cfd4",
+  "reviewedCells": 240,
+  "sourceIds": 20,
+  "locales": 12,
+  "dispositions": {
+    "SEMANTIC_PASS": 228,
+    "HOLD_BUTTON_ACTION_UNCLEAR": 3,
+    "HOLD_RESET_VS_CHANGE": 1,
+    "HOLD_RESET_TERMINOLOGY": 1,
+    "HOLD_CHARACTER_UNIT": 1,
+    "HOLD_LIBRARY_SENSE": 6
+  },
+  "perPositionDispositions": {
+    "3460": {
+      "SEMANTIC_PASS": 12
+    },
+    "3461": {
+      "SEMANTIC_PASS": 12
+    },
+    "3462": {
+      "SEMANTIC_PASS": 12
+    },
+    "3463": {
+      "SEMANTIC_PASS": 9,
+      "HOLD_BUTTON_ACTION_UNCLEAR": 3
+    },
+    "3464": {
+      "SEMANTIC_PASS": 12
+    },
+    "3465": {
+      "SEMANTIC_PASS": 12
+    },
+    "3466": {
+      "SEMANTIC_PASS": 12
+    },
+    "3467": {
+      "SEMANTIC_PASS": 12
+    },
+    "3468": {
+      "SEMANTIC_PASS": 11,
+      "HOLD_RESET_VS_CHANGE": 1
+    },
+    "3469": {
+      "HOLD_RESET_TERMINOLOGY": 1,
+      "SEMANTIC_PASS": 11
+    },
+    "3470": {
+      "SEMANTIC_PASS": 12
+    },
+    "3471": {
+      "SEMANTIC_PASS": 12
+    },
+    "3472": {
+      "SEMANTIC_PASS": 11,
+      "HOLD_CHARACTER_UNIT": 1
+    },
+    "3473": {
+      "SEMANTIC_PASS": 12
+    },
+    "3474": {
+      "SEMANTIC_PASS": 12
+    },
+    "3475": {
+      "SEMANTIC_PASS": 12
+    },
+    "3476": {
+      "SEMANTIC_PASS": 12
+    },
+    "3477": {
+      "SEMANTIC_PASS": 12
+    },
+    "3478": {
+      "SEMANTIC_PASS": 12
+    },
+    "3479": {
+      "SEMANTIC_PASS": 6,
+      "HOLD_LIBRARY_SENSE": 6
+    }
+  },
+  "qualifiedHumanReviewRequired": 12,
+  "releaseApprovedByThisReview": 0,
+  "structuralChecks": {
+    "allSourceAndTargetHashesRecomputed": true,
+    "candidateFreePacketContainsNoProposals": true,
+    "placeholderSequenceMismatches": 0,
+    "placeholderSetMismatches": 0,
+    "sourceIdsAndLocalesUnique": true,
+    "minimumEightCharactersConceptPreserved": 12,
+    "sourceAndTargetCellCountMatchesWindow": true
+  },
+  "notableFindings": [
+    {
+      "sourceId": "components.ResetPassword.emailresetlink",
+      "locales": [
+        "hi",
+        "ko",
+        "id"
+      ],
+      "finding": "Button targets name a recovery link but do not clearly express sending/emailing it."
+    },
+    {
+      "sourceId": "components.ResetPassword.resetpassword",
+      "locale": "pt_BR",
+      "finding": "“Alterar” means change the password, differing from reset in the unauthenticated recovery flow."
+    },
+    {
+      "sourceId": "components.ResetPassword.resetpasswordsuccessmessage",
+      "locale": "es",
+      "finding": "“Reiniciada” may read as restarted/rebooted; confirm reset terminology."
+    },
+    {
+      "sourceId": "components.ResetPassword.validationpasswordminchars",
+      "locale": "ko",
+      "finding": "“8자리” can indicate eight digits/places, while caller enforces eight string characters."
+    },
+    {
+      "sourceId": "components.Search.SoftwarePreview.available",
+      "locales": [
+        "zh_Hans",
+        "hi",
+        "ar",
+        "zh_Hant",
+        "vi",
+        "id"
+      ],
+      "finding": "Generic library terms may suggest a physical/public library rather than the user’s game collection."
+    }
+  ],
+  "sourceCallerEvidence": "All 20 message definitions and same-namespace direct caller contexts are included by context block ID and exact file/line references. No same-named cross-namespace caller was used.",
+  "otherReviewLedgersConsulted": false,
+  "repositoryOrPREdited": false,
+  "testsBuildsScansCIWorkflowsRun": false,
+  "reviewLimit": "Semantic machine review; not qualified native-speaker approval. No proposed translations were supplied or generated."
+}

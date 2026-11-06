@@ -1,0 +1,7 @@
+{
+  "sourceId": "components.Setup.advancedSetupDescription",
+  "locale": "ar",
+  "target": "تخطَّ الإعدادات الافتراضية الموجهة وخيارات الخدمات. ستظل بحاجة إلى توصيل خادم الوسائط الخاص بك قبل اكتمال الإعداد.",
+  "targetSha256": "5df014b6f5c51c63a3647dd59a598f8e15f424d0e9873bd5b3b5c6f4fe5e09b5",
+  "readbackMatches": true
+}

@@ -1,0 +1,58 @@
+{
+  "artifact": "SeerrNG PR #418 W3960-W3979 independent cross-review",
+  "baselineTokenDiagnostics": {
+    "markupTags": 0,
+    "numericTokens": 3,
+    "placeholders": 0,
+    "protectedLiterals": 4
+  },
+  "browserAcceptance": false,
+  "candidateCounts": {
+    "blind": 9,
+    "combined": 17,
+    "primary": 8,
+    "uniqueAffectedCells": 10
+  },
+  "cellCount": 240,
+  "crossDispositionCounts": {
+    "HOLD_HASH_ONLY": 12,
+    "KEEP_CURRENT": 218,
+    "SELECT_UPDATE": 10
+  },
+  "head": "a456dd66aad34cb23f432cb3c189bb8083bbbe96",
+  "holdCallerStatus": "verified caller exists; product term Agent remains undefined in the pinned UI/source context",
+  "holdCellCount": 12,
+  "holdPosition": 3979,
+  "liveApiHeadAndBaseUnchanged": true,
+  "localeCount": 12,
+  "nativeSpeakerApproval": false,
+  "numericEquivalentsAccepted": [
+    "3962::ja",
+    "3970::ja",
+    "3972::ja"
+  ],
+  "priorLineageCopiedByteIdentically": [
+    "prior-selection-hash-reattestation.jsonl",
+    "prior-applied-target-hash-reattestation.jsonl",
+    "prior-hold-hash-reattestation.jsonl",
+    "prior-evidence-hash-index.json",
+    "prior-catalog-application-summary.json"
+  ],
+  "proposalResolutionCounts": {
+    "NOT_SELECTED_ALTERNATIVE": 8,
+    "SELECTED": 9
+  },
+  "pullRequest": 418,
+  "remainingNumericDiagnostics": "Three Japanese digit 1 targets are accepted semantic equivalents for one; all four Arabic protected ID omissions are corrected by selected targets.",
+  "repository": "snapetech-org/seerrng",
+  "repositoryOrPrModified": false,
+  "selectedKindCounts": {
+    "CORRECTION": 8,
+    "REFINEMENT": 2
+  },
+  "selectedTargetTokenCheckFailures": 0,
+  "sourceCount": 20,
+  "testsBuildsScansCI": false,
+  "tree": "7a5447e5f08e84c392899a6e1400d1df73b1143b",
+  "window": "W3960-W3979"
+}

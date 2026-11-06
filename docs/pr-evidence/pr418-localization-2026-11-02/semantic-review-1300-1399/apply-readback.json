@@ -1,0 +1,1732 @@
+{
+  "schemaVersion": 1,
+  "repository": "snapetech-org/SeerrNG",
+  "pullRequest": 418,
+  "inputHead": "52221fafe6b1934bd3b5b98369a8b1d04aadb9b4",
+  "inputTree": "1e0d32abef8f5f38c14562e59f584d8f58cab0bd",
+  "cellsApplied": 188,
+  "catalogKeyCounts": {
+    "src/i18n/locale/ar.json": 9494,
+    "src/i18n/locale/de.json": 9494,
+    "src/i18n/locale/es.json": 9494,
+    "src/i18n/locale/fr.json": 9494,
+    "src/i18n/locale/hi.json": 9494,
+    "src/i18n/locale/id.json": 9494,
+    "src/i18n/locale/ja.json": 9494,
+    "src/i18n/locale/ko.json": 9494,
+    "src/i18n/locale/pt_BR.json": 9494,
+    "src/i18n/locale/vi.json": 9494,
+    "src/i18n/locale/zh_Hans.json": 9494,
+    "src/i18n/locale/zh_Hant.json": 9494
+  },
+  "catalogFileSha256": {
+    "src/i18n/locale/ar.json": "d9014b1085cc7135b9364497cb6f40ebb69bdf5540aa85706578cdbd8b42b9e0",
+    "src/i18n/locale/de.json": "493c7571b2f0befff9ba98a5665d5b640421b152de15f3eaa56e681f44577f8c",
+    "src/i18n/locale/es.json": "5a648a9bfe016dbb257b8609a83f2fe5cc8cd301b3afbcfe326c6cd7c4004b96",
+    "src/i18n/locale/fr.json": "b328aa47a8a235ccab68558351cc60d37ed7a7cbd0935aa82a06f8f1ae8ba297",
+    "src/i18n/locale/hi.json": "8f6fa822d65b3cbb6c6627fb1a1c25fdf16fad03afdf7a8ca7c14d69cd9c713f",
+    "src/i18n/locale/id.json": "7ae6fb82fe2d115a4e46ec76a874e624f3c3af99ca3880dc5a65fd4eef781992",
+    "src/i18n/locale/ja.json": "f3a36218918269343972ea61c28ae9b9ed21ab2d3d71b942375092add18ad610",
+    "src/i18n/locale/ko.json": "906bc66c3d87f1421c94673bfb3b5f9379e6be2109d85e1d4c563313d26f3e07",
+    "src/i18n/locale/pt_BR.json": "8ad7dfa38e8ff859af1ccee8043e99f5218b8401017e1f3c8578cd30200c08f5",
+    "src/i18n/locale/vi.json": "d360e08c70a9dbee38b7a0bc998c14acd811bebea995fb5ec620d574dfd4cf51",
+    "src/i18n/locale/zh_Hans.json": "8f696e49e1f9411fd8e06ba46af711ff10016f9ef20ed36c7b13fb9488c36849",
+    "src/i18n/locale/zh_Hant.json": "b5673fa0163393ec0e828bbe6fef2b1c00426ad42f1fe08e5326e3a32a4d5ed1"
+  },
+  "allReadbacksMatchFinalHashes": true,
+  "testsBuildsScansCIOrWorkflowsRun": false,
+  "rows": [
+    {
+      "targetFile": "src/i18n/locale/ar.json",
+      "id": "components.Franchise.title",
+      "locale": "ar",
+      "sourceIdPosition": 1300,
+      "beforeSha256": "aba316f6a70b25f22f63c5a9938f9ef9b2562b1bcbb32a1bc97479f7220d986f",
+      "afterSha256": "877ba993eb7073920655be4b4b8b1187b9e9863137cb81878e6b477c33c6e227",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/vi.json",
+      "id": "components.Franchise.title",
+      "locale": "vi",
+      "sourceIdPosition": 1300,
+      "beforeSha256": "39fd582202858dccbf50f3796afdef72a0470fe55662152b4f29b472e777b38c",
+      "afterSha256": "a51ca7d8674a4d6cddf52a669e82c26e3f4560b58cc00c125118e00d6c58da4c",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/ar.json",
+      "id": "components.Franchise.titled",
+      "locale": "ar",
+      "sourceIdPosition": 1301,
+      "beforeSha256": "52c90ed6bcdf23e8fe8f0c99ade592969ac24022d5669dd7c6a84d27f562fa43",
+      "afterSha256": "a3b8d312bbd459a17a9693f6fbf49a49d754b08a56e2ad70ea3199e5b3c4e00c",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/vi.json",
+      "id": "components.Franchise.titled",
+      "locale": "vi",
+      "sourceIdPosition": 1301,
+      "beforeSha256": "ed37df40950fce811c3c8d43b602b78d8affbeea66274d38d6d62a4a4c021e13",
+      "afterSha256": "32f71da096e9ee9f518cd4dbaccda8eb916b6ffeeeedd66306025b7e367aa840",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/ar.json",
+      "id": "components.GameContent.adds",
+      "locale": "ar",
+      "sourceIdPosition": 1304,
+      "beforeSha256": "4474c4337611cb01b63efb88a87515eb891c20cea54e50431400aa243c6fa9fd",
+      "afterSha256": "e154fa838733bfa45fe9db066d73771df74fec95a25379bb68fca7082ca15e4c",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/de.json",
+      "id": "components.GameContent.adds",
+      "locale": "de",
+      "sourceIdPosition": 1304,
+      "beforeSha256": "004ec3f45b412f44749f34abb0600dd5d46ff0f1185bd5abe81f4682b2055a1f",
+      "afterSha256": "81692bd6e34238efb7e711e73311777b6f40a3f23f501d27003e85256855d895",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/hi.json",
+      "id": "components.GameContent.adds",
+      "locale": "hi",
+      "sourceIdPosition": 1304,
+      "beforeSha256": "d80e03d66afbb1a3d9352d8d081dd14e2228325f275c5aeaaa9cfe0cbd03f80b",
+      "afterSha256": "cc0b982ceaa03b2c0515fb5385206720389dbab7b96319c7df5946645927ada2",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/ar.json",
+      "id": "components.GameContent.addsNothing",
+      "locale": "ar",
+      "sourceIdPosition": 1305,
+      "beforeSha256": "f95cfb638c2ffb5ff9ba90a43270c88b588ab2a75d7b365fbabc49c3acdcb487",
+      "afterSha256": "e665802987e909478cfab86a21710f51f3e33b1989fb330c53f597f0ebf10190",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/hi.json",
+      "id": "components.GameContent.chooseAddons",
+      "locale": "hi",
+      "sourceIdPosition": 1309,
+      "beforeSha256": "d3c44102470b60bffca1030c496e453cc52bbdf6a23e18c45a8f08b6bb6d9bbe",
+      "afterSha256": "5dfc153dcd8eac04d7718585c70f6c4c07996e3edabb65c3c91d275dafc7e6cf",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/ar.json",
+      "id": "components.GameContent.cosmetic",
+      "locale": "ar",
+      "sourceIdPosition": 1311,
+      "beforeSha256": "1b3f01f6065610e8830e2c96ff9d8ab1c69d64d12d7bcfed817a5c194a9c5762",
+      "afterSha256": "332019d4c2bd082f48cf8af8b59b4acc48304969f2e25926d44a72cd5bfd5981",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/vi.json",
+      "id": "components.GameContent.cosmetic",
+      "locale": "vi",
+      "sourceIdPosition": 1311,
+      "beforeSha256": "0813b59ef278e385d852380de21643d0d8d00ede7856ea319ef9b121c70f805e",
+      "afterSha256": "19a35bc132abdaf7a0ca5c85b6a17ee179c60c77238ec0616fd069cc3aa1eb31",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/hi.json",
+      "id": "components.GameContent.followContent",
+      "locale": "hi",
+      "sourceIdPosition": 1313,
+      "beforeSha256": "3ae8f52fee0c4112fe5d16e847674a01f73dd1348dcd074a8c3dabfc3373cf30",
+      "afterSha256": "9cc17c86b86475fa05a9afec6dad656502247323a0f2dcbcb83846d6a79e01f5",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/ja.json",
+      "id": "components.GameContent.followContent",
+      "locale": "ja",
+      "sourceIdPosition": 1313,
+      "beforeSha256": "acbf42cc68a4764b8d7447fb73b0b778a269d0f8d3828ebd96145f8bb5a72041",
+      "afterSha256": "41d949c95fd1c1de60218364b94a88ac97194214c9feac1f72a184651f28babf",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/ko.json",
+      "id": "components.GameContent.followContent",
+      "locale": "ko",
+      "sourceIdPosition": 1313,
+      "beforeSha256": "5d3b72a471fe8080eedad2bbd06dd7e840a9a0059a5af27e58f777a290c1ebf7",
+      "afterSha256": "2aec73a56f97ef78fc370c03c25dd42866f7fe61b3e38c3060b09ab12f6893f0",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/hi.json",
+      "id": "components.GameContent.includes",
+      "locale": "hi",
+      "sourceIdPosition": 1315,
+      "beforeSha256": "586262d7a361b9df0b4f0847507bda201bc6ab753658ecf9673797539dec7f66",
+      "afterSha256": "1937bff306ede50cdc7e1f52e5bf3804aeab9a78c13d0ca7c682f82ddb990010",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/hi.json",
+      "id": "components.GameContent.missingSelected",
+      "locale": "hi",
+      "sourceIdPosition": 1317,
+      "beforeSha256": "8dbc43976abaaad4603c2d0666fbc2294c4b16f4c1bcf2aabd5015316cb5e759",
+      "afterSha256": "27bb861e212faf28efa1314e291f52c5468dee862ce45d815dedb1e9b6b89bef",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/fr.json",
+      "id": "components.GameContent.story",
+      "locale": "fr",
+      "sourceIdPosition": 1320,
+      "beforeSha256": "d90a31d7b5657632f290514d1273afed379ab8dd94a74aeddb757d91db2421d6",
+      "afterSha256": "7c574fe25d60550a761cfd7c2e3a1c46b8656913a9f26bb72dac406bf8774229",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/pt_BR.json",
+      "id": "components.GameContent.summary",
+      "locale": "pt-BR",
+      "sourceIdPosition": 1321,
+      "beforeSha256": "83250ba9ae1dbbfb1fc82536520ac4ce475f090811a6b6439a90f10ed57f3e15",
+      "afterSha256": "220d0f4ec0493eccc64087b53302bf6cc064a75b6f8d6d38e855bca9b9fc1994",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/vi.json",
+      "id": "components.GameContent.summary",
+      "locale": "vi",
+      "sourceIdPosition": 1321,
+      "beforeSha256": "2aadeb0e138d64b09b168444b803a9e91ba6d4ce16817979799946cef5e0dd42",
+      "afterSha256": "82aa7bfd7ce617d9d39e8375c4822fd7383380e8440298faa3bc0c061d64e390",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/zh_Hant.json",
+      "id": "components.GameContent.summary",
+      "locale": "zh-TW",
+      "sourceIdPosition": 1321,
+      "beforeSha256": "33892de0f5d7502d1a0e27f5591815eaa9506cd76698ed90c8f91dd49731f573",
+      "afterSha256": "505afaca74ab3b4017ee8e8b7c58ed9a0b91eb4453560d2905390fea71d9763a",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/hi.json",
+      "id": "components.GameContent.summaryEdition",
+      "locale": "hi",
+      "sourceIdPosition": 1324,
+      "beforeSha256": "601f81f1c09b19377441c3cc1c65cc9116dde5a3ffe73684a18f21f44b08cee8",
+      "afterSha256": "5308c07c563628230c2ef67b3d400923f8ec4c1d13803d9b9ac7d7f35e08404a",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/ar.json",
+      "id": "components.GameContent.typeCosmetic",
+      "locale": "ar",
+      "sourceIdPosition": 1326,
+      "beforeSha256": "1b3f01f6065610e8830e2c96ff9d8ab1c69d64d12d7bcfed817a5c194a9c5762",
+      "afterSha256": "332019d4c2bd082f48cf8af8b59b4acc48304969f2e25926d44a72cd5bfd5981",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/vi.json",
+      "id": "components.GameContent.typeCosmetic",
+      "locale": "vi",
+      "sourceIdPosition": 1326,
+      "beforeSha256": "0813b59ef278e385d852380de21643d0d8d00ede7856ea319ef9b121c70f805e",
+      "afterSha256": "19a35bc132abdaf7a0ca5c85b6a17ee179c60c77238ec0616fd069cc3aa1eb31",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/ar.json",
+      "id": "components.GameContent.typeSeasonPass",
+      "locale": "ar",
+      "sourceIdPosition": 1329,
+      "beforeSha256": "8f677989e97a94b90942c63251b6795bbc0de4c9a2230832c1e86073ba9232a3",
+      "afterSha256": "6df0b0137c3dd29108b96a788b1c7a731f679659e05a0ad98b9733956d6ba420",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/vi.json",
+      "id": "components.GameContent.typeSeasonPass",
+      "locale": "vi",
+      "sourceIdPosition": 1329,
+      "beforeSha256": "341184ba8f309ef9f51bae1d75a9147256b318a4360f21d54e81a2edc4cea559",
+      "afterSha256": "e64e6a4fad6195306b59848e13a300308a2f0cd72323fc1c83490124dc22b5c5",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/hi.json",
+      "id": "components.GameContent.unknownContents",
+      "locale": "hi",
+      "sourceIdPosition": 1332,
+      "beforeSha256": "b0040fc74c0fe5fbbd9b3d1aebe3a0cdce444028c7f2e97f9788fa827caf23bc",
+      "afterSha256": "0f2277a53f64338ada5fe2249f2a8c81bce0cc7289ef2aba6f6751e3d11ed4e1",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/ar.json",
+      "id": "components.GameDiscovery.description",
+      "locale": "ar",
+      "sourceIdPosition": 1335,
+      "beforeSha256": "eed5d43cc4c0974e9c09b67b17655966caa99d9e1929efd0fed2df01ce3c192a",
+      "afterSha256": "bed274cdecf22e0ac7c675e8dd9108f6f652d3875b14e0d183e215d5ff18210c",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/es.json",
+      "id": "components.GameDiscovery.description",
+      "locale": "es",
+      "sourceIdPosition": 1335,
+      "beforeSha256": "899d0e60a3f23e64b8fe262e63badc39a9ae6e8318fa2303070259f6986e6d6b",
+      "afterSha256": "258a0e1e3a9c9335ce6f99c47bc5c5bf3e1e26dbc29e77005fbed88d984467e2",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/hi.json",
+      "id": "components.GameDiscovery.description",
+      "locale": "hi",
+      "sourceIdPosition": 1335,
+      "beforeSha256": "477e197f30ecd2a66d20b858acd29614818adc30f9d9e2fb2b85d08c067d92dd",
+      "afterSha256": "9fc43b4ec251f1ddaa135ce55ae53459f58a9659420e21b1334d2977a7f6cdf9",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/id.json",
+      "id": "components.GameDiscovery.description",
+      "locale": "id",
+      "sourceIdPosition": 1335,
+      "beforeSha256": "f0264aafbf89cb380da9fd3817a886522b292cf67beb3d930513b7ef096e531b",
+      "afterSha256": "890705212e3767ba4010ba300687b521edd5629399bd42d2763d5e22935d28f6",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/ja.json",
+      "id": "components.GameDiscovery.description",
+      "locale": "ja",
+      "sourceIdPosition": 1335,
+      "beforeSha256": "8c4ae85329d95c77b0a26ca3458222448d5ec98de7f921e38168d306d5a42531",
+      "afterSha256": "6529e04f811dfab0b697cc4bffbda6d235bdc729803cf5880e7687025da6c155",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/ko.json",
+      "id": "components.GameDiscovery.description",
+      "locale": "ko",
+      "sourceIdPosition": 1335,
+      "beforeSha256": "c8b434702f1cab2ceeab32d49859c6145372a9ed3c30ab69ac96f93c22132020",
+      "afterSha256": "0793fa5a9e43eda6ef4a1f4d763d01342c75b47fe9c764ad5e1e23ff81d180c4",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/pt_BR.json",
+      "id": "components.GameDiscovery.description",
+      "locale": "pt-BR",
+      "sourceIdPosition": 1335,
+      "beforeSha256": "b962f01a3d6302094b1285740d9b329d76e1bc9a4a2973ef821e3728cda2b5bc",
+      "afterSha256": "e65b89fe77657863ab2ddc75e6927341efef1cf848c4120e53abd80e9996fc88",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/de.json",
+      "id": "components.GameDiscovery.failed",
+      "locale": "de",
+      "sourceIdPosition": 1338,
+      "beforeSha256": "f2df7e9f146027624ea5f825c495baa91f343c3598fea36c60a9a54ff7da70d8",
+      "afterSha256": "3d1f1bc48194ca90ab6cd148d184117d62cfa3728a18aff596c461dd85e382a6",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/hi.json",
+      "id": "components.GameDiscovery.keywordsPlaceholder",
+      "locale": "hi",
+      "sourceIdPosition": 1340,
+      "beforeSha256": "1b4a40b90d41a3341f10c254316a1079ad1f21bbc0ffb98da271be3aff7be76a",
+      "afterSha256": "282506047b22da840498390dbb915b3d345baeccee7fed8aa053927bcf0c26d2",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/ja.json",
+      "id": "components.GameDiscovery.maxHours",
+      "locale": "ja",
+      "sourceIdPosition": 1343,
+      "beforeSha256": "c039700ed9a401023e604a73edf4f605fb8b1969f9106243a10ef4c2a33a1ea7",
+      "afterSha256": "6529265f96588d4abe875b245053463f2f82fbba0a8b48d6ef91f749580364a0",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/ko.json",
+      "id": "components.GameDiscovery.maxHours",
+      "locale": "ko",
+      "sourceIdPosition": 1343,
+      "beforeSha256": "f1d9e12737e32e90ea868b1c24904a4d2de8ff097525a32e295a3c08c1f38d8e",
+      "afterSha256": "412e71259f8fbb9f13d66598e5220e636401e244789093462ddc069b223d9d49",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/hi.json",
+      "id": "components.GameDiscovery.minYear",
+      "locale": "hi",
+      "sourceIdPosition": 1344,
+      "beforeSha256": "209636cf4623bdbe34b81523d26cd77491f985adf789ea409896eebc41c10c8b",
+      "afterSha256": "2704a155b1b4b1e0798e8018b3c682e5e6f06d8ef470c82ab8550546609e3519",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/ko.json",
+      "id": "components.GameDiscovery.minYear",
+      "locale": "ko",
+      "sourceIdPosition": 1344,
+      "beforeSha256": "5e96795b7219d82439c21afa882475dfd134e697d1f83070edbe9f1dffa36285",
+      "afterSha256": "3c2ebc1d8ae393a31c7fe58f58203dddce0d500d9dcd3d617c69ac4e453a635c",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/hi.json",
+      "id": "components.GameDiscovery.none",
+      "locale": "hi",
+      "sourceIdPosition": 1347,
+      "beforeSha256": "0bcf6678cc273ed6e5c7753f19bbec089eb8b94696237673369d8688c0ef798f",
+      "afterSha256": "938e282687ca11d49f0be2e9bd5e750af2e47c2f93ce6a2a3cee536331f6ad9b",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/hi.json",
+      "id": "components.GameDiscovery.reasonYear",
+      "locale": "hi",
+      "sourceIdPosition": 1355,
+      "beforeSha256": "77df34c82bdb61b09a4063999b59ce60a3cb2fbcbecbbee50ce4d42e0e7f27ed",
+      "afterSha256": "1f7c31c326c4c5652f25eb05339a78c2a754f3c65a509ac6fb654154867f168d",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/ja.json",
+      "id": "components.GameDiscovery.results",
+      "locale": "ja",
+      "sourceIdPosition": 1358,
+      "beforeSha256": "f6dee597bf2bffb5c693edc9234788e06853c7827531a09d3a8f77528a4fcd88",
+      "afterSha256": "5b324b5831f49c5c2bfd8b99941beaa6707bbce29235929c17bdea7093f87490",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/ko.json",
+      "id": "components.GameDiscovery.results",
+      "locale": "ko",
+      "sourceIdPosition": 1358,
+      "beforeSha256": "3b3fa9a3f69c11ae02ba9b9712d6723e81700cd7f424b4ab68b8aec02568ae59",
+      "afterSha256": "7b003a42adfba433141807ba34c9bae272dab2a824880f235c1154e1b4b1af3b",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/pt_BR.json",
+      "id": "components.GameDiscovery.results",
+      "locale": "pt-BR",
+      "sourceIdPosition": 1358,
+      "beforeSha256": "c979abed2efe84c9076622db6fc0bf47d3bcca91324c4dd3623a76fd9e3f7d9a",
+      "afterSha256": "31056106ce607411c6d2f655db895f5435047319a852d9b577e885caac2ceada",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/ja.json",
+      "id": "components.GameDiscovery.run",
+      "locale": "ja",
+      "sourceIdPosition": 1359,
+      "beforeSha256": "24f18dd6b3c25c18502244c428c43648a341d85c71f56ed56425faea1bc6955a",
+      "afterSha256": "b059c79ee5c38789d83c8f1bb08a78e9becd3d1f1bf78bd8bedb878762012c95",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/ko.json",
+      "id": "components.GameDiscovery.run",
+      "locale": "ko",
+      "sourceIdPosition": 1359,
+      "beforeSha256": "09b2c4837c5aef7393d072e20afc777547a005c1646fe0f8cd9a03932ec50e3d",
+      "afterSha256": "4d55ae9341fa0865b6cd0c3eceba60f0bfe155ac3da4656890ca35856392326d",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/pt_BR.json",
+      "id": "components.GameDiscovery.run",
+      "locale": "pt-BR",
+      "sourceIdPosition": 1359,
+      "beforeSha256": "639d5624a36f764de6e00a839139f1b75813160bbe425ef448a28d04e1cbce1f",
+      "afterSha256": "6847eef331a966dadefbf442b7b2a18db1a4cc73b976adae22352ed6f3db47b2",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/hi.json",
+      "id": "components.GameDiscovery.saveNotify",
+      "locale": "hi",
+      "sourceIdPosition": 1364,
+      "beforeSha256": "9779cc5a508c5239d1b83b85ec910db7ac50a9dc2b2c88c92f98e19a5312f17c",
+      "afterSha256": "32854c26f1ee7776fb27d4a239c095bd0d85f0c2da7731390cf1a32f4d95ffb2",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/ja.json",
+      "id": "components.GameDiscovery.saveNotify",
+      "locale": "ja",
+      "sourceIdPosition": 1364,
+      "beforeSha256": "391de8a7e9db5c8f29c4293fc72d62a69e2ecce18af55487614ac042cee9d4c9",
+      "afterSha256": "46a532f2cad3a0d2c3737aef02f7decb2b451cdaba8cd6d604edf76314bb4d39",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/ko.json",
+      "id": "components.GameDiscovery.saveNotify",
+      "locale": "ko",
+      "sourceIdPosition": 1364,
+      "beforeSha256": "ebf3bce54979c6df5813a534c20039c63dadcb05e24545f2a4b258cdc233e5e3",
+      "afterSha256": "abddd196fee5c4e9b85310d2b87fdffe34fd67a45e6a350b11bb7dc323aad5c7",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/pt_BR.json",
+      "id": "components.GameDiscovery.saveNotify",
+      "locale": "pt-BR",
+      "sourceIdPosition": 1364,
+      "beforeSha256": "ae60eabc394fc83c3ecc57345c5e5c52a25f88b46314e0403ec1e4a80a371a3f",
+      "afterSha256": "20e01d3fd37d6908c591026ed01e02f48175e4a79e50e9e2abcc79294619d2ab",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/zh_Hant.json",
+      "id": "components.GameDiscovery.saveNotify",
+      "locale": "zh-TW",
+      "sourceIdPosition": 1364,
+      "beforeSha256": "f2e7fe321b8ba56d15c10149908e5422e7e3cb07326ae1e176ad29301ade1189",
+      "afterSha256": "550251ec5c9f88374a64476044f9e7305d447f97903ff123dfda2949518a5a0b",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/de.json",
+      "id": "components.GameDiscovery.unavailable",
+      "locale": "de",
+      "sourceIdPosition": 1371,
+      "beforeSha256": "14776c502b3478be02d92eb25e758cb635defef94e6d76f3cd831a296f994e02",
+      "afterSha256": "da1748d1bd872acc09eb0b394e7a9e8889284a03049adc62380f449b197a0f8b",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/hi.json",
+      "id": "components.GameDiscovery.unavailable",
+      "locale": "hi",
+      "sourceIdPosition": 1371,
+      "beforeSha256": "32df1fbf50d4d3aac22f351f49dcffbc3d525ac0cfedfa3513516f4f20733d47",
+      "afterSha256": "c2e0ca6816abf50a62f23b55dc5976888c83c7ae73beaef315c6e918e1c143d3",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/hi.json",
+      "id": "components.GameDiscovery.why",
+      "locale": "hi",
+      "sourceIdPosition": 1372,
+      "beforeSha256": "08b9101d11e5b828a912ab046c0071c579b524ddf8d24250c1e008dc89405295",
+      "afterSha256": "973ad67398d73a331850fe5569ede0bdaa3181a37ac72db902f10a7088a5dadf",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/fr.json",
+      "id": "components.GameLibrary.addGame",
+      "locale": "fr",
+      "sourceIdPosition": 1373,
+      "beforeSha256": "f914960e5caade78b1b34feed258b05e2bba1b587a056f38cec823fc43484180",
+      "afterSha256": "a60051686629e6bff704fb3773b81bc2ecdf3d37616aa914c9b698c167934057",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/id.json",
+      "id": "components.GameLibrary.addGame",
+      "locale": "id",
+      "sourceIdPosition": 1373,
+      "beforeSha256": "10569844d37f5b11e583ecd6b0466cb9c2ea89eac46085c880bce40c3412d075",
+      "afterSha256": "e21acd39d9716556fc9e41677f911075254962f6eda126c5a68ac94765aa3fda",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/ar.json",
+      "id": "components.GameLibrary.allCategories",
+      "locale": "ar",
+      "sourceIdPosition": 1375,
+      "beforeSha256": "a4b2383cc3a1468af5a1af57d32a787e3f7e59a5f9f34231f45e91d52e80e6b7",
+      "afterSha256": "f5d3c78beb765a69761809d80b2109fd3b584896f8b68a99c70db2d337915ef4",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/ja.json",
+      "id": "components.GameLibrary.allCategories",
+      "locale": "ja",
+      "sourceIdPosition": 1375,
+      "beforeSha256": "d9d74bd35c3b0291205540d0e09c380efe4a53cc7c7ad790b0ff955585319c6f",
+      "afterSha256": "fab412ad3eef48c381dcaff74fcf9ff51d148457f7af5beb0bde0ef8e053db45",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/ar.json",
+      "id": "components.GameLibrary.allStatuses",
+      "locale": "ar",
+      "sourceIdPosition": 1377,
+      "beforeSha256": "fdea62ad115993038cd9199630732a3b8a470ee767f320dd5a3e20a1f50de009",
+      "afterSha256": "13847281500588f21ef1017933b130dda888b8ea97d06c8d3519666a71ce0dde",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/ar.json",
+      "id": "components.GameLibrary.backlog",
+      "locale": "ar",
+      "sourceIdPosition": 1379,
+      "beforeSha256": "49ed4149e51cb7d3d2537b272354b25cec9a37b7e58e2cc6627241e567b27f3a",
+      "afterSha256": "10519e01d525baaa623ba9f44f68f9acfdd4fe0139f023ba3f2162f4642a01fd",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/de.json",
+      "id": "components.GameLibrary.backlog",
+      "locale": "de",
+      "sourceIdPosition": 1379,
+      "beforeSha256": "d583c44fbc0bf83080066b36e55554d0f7766b66a46f350d28b02165a26bec31",
+      "afterSha256": "7024b55ce8cf266eef36549f7740d2d9885341e1d10b6ed2e7c8c8392e4148a4",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/fr.json",
+      "id": "components.GameLibrary.backlog",
+      "locale": "fr",
+      "sourceIdPosition": 1379,
+      "beforeSha256": "d826eabfc49df2e27b08cb4a426867b010b6311c653460a3eca389e3dc7a91b5",
+      "afterSha256": "338217db3c452befb7850d3d8e895a2f1cc575c94e1febf3317e26ebbe923856",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/id.json",
+      "id": "components.GameLibrary.backlog",
+      "locale": "id",
+      "sourceIdPosition": 1379,
+      "beforeSha256": "f52bd6492e184462f49579a1634709e75b5af65d2c79918ab822afa26fd3c38c",
+      "afterSha256": "bfb4cfdc64027b505377eebceb249b769608b24ad69338247bd565fb3b43318c",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/ja.json",
+      "id": "components.GameLibrary.backlog",
+      "locale": "ja",
+      "sourceIdPosition": 1379,
+      "beforeSha256": "ec4c7460c2f57edcbf97649ac0c425f195c4a3204380eca6a88b1975df883339",
+      "afterSha256": "92ea0a02e339008bffdb10b7c3cc7c8cb623459fc6f53bb6571ed13c123ca02f",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/ko.json",
+      "id": "components.GameLibrary.backlog",
+      "locale": "ko",
+      "sourceIdPosition": 1379,
+      "beforeSha256": "365f37a6c15c99d00cb9e4117df40b2f0096f196cc71c3f67ff1ba01b3cfff86",
+      "afterSha256": "ea1a2cd02402b12d39489c4fcbf49f8bc2fbf77e9c93c6e2e13b988cec6c2dff",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/vi.json",
+      "id": "components.GameLibrary.backlog",
+      "locale": "vi",
+      "sourceIdPosition": 1379,
+      "beforeSha256": "7c2cb2c2496d18685a90536e024a2c0c42484a622d4132819334624b739c116f",
+      "afterSha256": "50a7e4d805935e13002fd77ee836079a4e9f6edd65b66f41046e38db9306609c",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/zh_Hans.json",
+      "id": "components.GameLibrary.backlog",
+      "locale": "zh-CN",
+      "sourceIdPosition": 1379,
+      "beforeSha256": "70e372abbae5f619b7e4987ad1f48103f10060cc48f5333d37cdbade10051a5b",
+      "afterSha256": "33fa0bb89c108f17012861afb248891fe9a1a3d439777ca21cf6af5ccfe9c267",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/zh_Hant.json",
+      "id": "components.GameLibrary.backlog",
+      "locale": "zh-TW",
+      "sourceIdPosition": 1379,
+      "beforeSha256": "bff9f97692315eb7dfd0f9e86c9279195ff61bffc61538b0c8376e16a66f40bf",
+      "afterSha256": "33fa0bb89c108f17012861afb248891fe9a1a3d439777ca21cf6af5ccfe9c267",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/fr.json",
+      "id": "components.GameLibrary.catalogMatch",
+      "locale": "fr",
+      "sourceIdPosition": 1381,
+      "beforeSha256": "88788044785d4009259ec4ea52e21904f9b0f6910a40667abf854aa222b77e76",
+      "afterSha256": "955cb666b29c24c345e24f81894c52219bd880008273c7aeedf7273e5596b845",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/hi.json",
+      "id": "components.GameLibrary.catalogMatch",
+      "locale": "hi",
+      "sourceIdPosition": 1381,
+      "beforeSha256": "effb2fecb297456ab36b4281cd020f094d6e6e2ce497f10c6875b52adc5d440e",
+      "afterSha256": "68a1b340c559961a487a9f121ca1a011241f75d445dc2df78ba8c65b12654aea",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/ar.json",
+      "id": "components.GameLibrary.catalogSearch",
+      "locale": "ar",
+      "sourceIdPosition": 1383,
+      "beforeSha256": "df951512bb2ab41bf64f3df0b988e6421b0ab5a4f3aa14476822cf2e071706d7",
+      "afterSha256": "557e3c98a377a554149eef8efb32bf747587095520d409971f58acaa6564937a",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/fr.json",
+      "id": "components.GameLibrary.catalogSearch",
+      "locale": "fr",
+      "sourceIdPosition": 1383,
+      "beforeSha256": "1766707551a54942888240f5f2a35d6eec07b0db762c7cdd99efd63fa06b116b",
+      "afterSha256": "ab17bf0104a45b829a025a28e40ef2087d5b692df881cf4f153f897f600bc769",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/vi.json",
+      "id": "components.GameLibrary.catalogSearchError",
+      "locale": "vi",
+      "sourceIdPosition": 1384,
+      "beforeSha256": "bc040e02ffa2427d9c0c86828baf2efb39e16447ecd0353ced465770a8f5c899",
+      "afterSha256": "d8652ac7a12091c54cc56cf6a029b0c0056657ab2616c8c0b0248647c2fa8db7",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/zh_Hans.json",
+      "id": "components.GameLibrary.catalogSearchError",
+      "locale": "zh-CN",
+      "sourceIdPosition": 1384,
+      "beforeSha256": "e8e6c274f998471269e3d21f2cfd04ab6e71499fa8f6742b97a12c5e3a525b9a",
+      "afterSha256": "32aef192696430dc189bd0f9c5fcba0a06c9b08e3ecc9617bf9f2873b6e4fbc3",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/zh_Hant.json",
+      "id": "components.GameLibrary.catalogSearchError",
+      "locale": "zh-TW",
+      "sourceIdPosition": 1384,
+      "beforeSha256": "a82d9f20d9a653735fe87b0c7e75cb18876751e26466401ad194799ad53852f7",
+      "afterSha256": "8b6ee90fe8e8533272c8b40b59b9c8da7453fa5534faf26460aad554a19c65bd",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/ar.json",
+      "id": "components.GameLibrary.catalogSearchPlaceholder",
+      "locale": "ar",
+      "sourceIdPosition": 1385,
+      "beforeSha256": "4115e61172d52bc291b3ccdfd89755784acc1eb015ad77f8b09a5b58366c2c78",
+      "afterSha256": "aedae11377c7c5e4e8acdac72148c416cc43bfd8260acf75d74aab398eb88fd9",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/es.json",
+      "id": "components.GameLibrary.catalogSearchPlaceholder",
+      "locale": "es",
+      "sourceIdPosition": 1385,
+      "beforeSha256": "d4b251f4a46516cfd2abd760432cbeb538443cebbf7df68c187d9ca304fff9b9",
+      "afterSha256": "c0f9ab38983979e811de74b0bd81c8c1f78acde76794da748f24c8c193638f15",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/ar.json",
+      "id": "components.GameLibrary.combinedPlaytime",
+      "locale": "ar",
+      "sourceIdPosition": 1386,
+      "beforeSha256": "900a72794440742a49b6b899742e2b2c8d37b646791564bf8a0e08f237d46224",
+      "afterSha256": "b50a864ca3646ef479794849923b75b790cb4f8b407f06625e6fe828a0590769",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/es.json",
+      "id": "components.GameLibrary.combinedPlaytime",
+      "locale": "es",
+      "sourceIdPosition": 1386,
+      "beforeSha256": "f5028cbf17dc817d6108cf333af8c2feee784ed31cc9065fd8428531fa3537f4",
+      "afterSha256": "9382f955f93712b951b5d5c12e67b1c4e3c31e73f69c8e9d5c10674c91140fa8",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/fr.json",
+      "id": "components.GameLibrary.combinedPlaytime",
+      "locale": "fr",
+      "sourceIdPosition": 1386,
+      "beforeSha256": "0c73401d8999b4ac940a0cee1b6984c39ad50cf788ebedbda6d426ad9be60d1c",
+      "afterSha256": "61dec80bd996d9a84c213fa9ca0e76923a798b1814aeaeaa4cc320e267eb367d",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/hi.json",
+      "id": "components.GameLibrary.combinedPlaytime",
+      "locale": "hi",
+      "sourceIdPosition": 1386,
+      "beforeSha256": "07100bccabb18efec3bf6116fe0d3e940480b0a801f3a0e00c5fa54983000ace",
+      "afterSha256": "4c45db18db0375be58d7eba68b766fc9a2515bd8cc2a43a81ad782b3e3eb8959",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/id.json",
+      "id": "components.GameLibrary.combinedPlaytime",
+      "locale": "id",
+      "sourceIdPosition": 1386,
+      "beforeSha256": "a1ef6b8b3c33708066ddaceab86afeca59fc492e044ec10184bedc276bb79ff5",
+      "afterSha256": "2aa78ce8c126a10e6222e8e291eee259c4b03a38c425c1cb157d39ea6b01ce3a",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/ja.json",
+      "id": "components.GameLibrary.combinedPlaytime",
+      "locale": "ja",
+      "sourceIdPosition": 1386,
+      "beforeSha256": "d8b31a2f8af38102b91a8701a4c826a80db6517b0c07b87bea3425f622735abe",
+      "afterSha256": "c2da07879179506a64be9eb8eb12f65d151c1753c9fb1edd278ad2ed1a2ad481",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/ko.json",
+      "id": "components.GameLibrary.combinedPlaytime",
+      "locale": "ko",
+      "sourceIdPosition": 1386,
+      "beforeSha256": "e5515f1ac95c7fb6740b5d991e13d1dd33073b34170ecc123e609dfd0e8c17ae",
+      "afterSha256": "e5f22632f8b89d55d51ab51e82526409e1675bfe27f5f14ddcf259493260d90a",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/pt_BR.json",
+      "id": "components.GameLibrary.combinedPlaytime",
+      "locale": "pt-BR",
+      "sourceIdPosition": 1386,
+      "beforeSha256": "3ee33eab244af7a61da4c3b4f9516f99959bf427dc077a9d786b7fb28817424a",
+      "afterSha256": "3575bb3854d2947ad681e0ec64d181d5f94a3236a76bcfb7f600ca3aa22e6777",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/vi.json",
+      "id": "components.GameLibrary.combinedPlaytime",
+      "locale": "vi",
+      "sourceIdPosition": 1386,
+      "beforeSha256": "3b4faa900e335ebffa6902109b24a0f4cf3a8e070c0b25a4baddc6b555575db7",
+      "afterSha256": "d8d82d4b6bbfc76ceba5e12ce01fd90f9c953a837480887422ae05315c5d210e",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/zh_Hant.json",
+      "id": "components.GameLibrary.combinedPlaytime",
+      "locale": "zh-TW",
+      "sourceIdPosition": 1386,
+      "beforeSha256": "9366f91e6f286a5b1e10bb605473ef0764474b622dbb55b786f3c5861ebc5916",
+      "afterSha256": "ed46afb7fc83dc6d68ddb310fa59dcf89b7629b2ba627531625c18299a6d1349",
+      "crossReviewDisposition": "refine"
+    },
+    {
+      "targetFile": "src/i18n/locale/ar.json",
+      "id": "components.GameLibrary.combinedPlaytimeHoursMinutes",
+      "locale": "ar",
+      "sourceIdPosition": 1387,
+      "beforeSha256": "335c31be5f029c06f58dbebcf342a1e5944482388ba9bbd09191980885cea34e",
+      "afterSha256": "2c0f6cbb25213b63e07a32d546cb3150f6d528d2635296f5dc5371b8e5ce851c",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/es.json",
+      "id": "components.GameLibrary.combinedPlaytimeHoursMinutes",
+      "locale": "es",
+      "sourceIdPosition": 1387,
+      "beforeSha256": "923aa4e60c8bed75eca1f8f48529834e05fe12ec194f9d6bbbf2454724432d82",
+      "afterSha256": "244c64784ccfa650a92bbd2093013eb10a73138678a817dd9a82cec06fe47e4b",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/fr.json",
+      "id": "components.GameLibrary.combinedPlaytimeHoursMinutes",
+      "locale": "fr",
+      "sourceIdPosition": 1387,
+      "beforeSha256": "a5face8d0a708ff60435606358e1c60d2e52bf26bb96ee318ee098fc60243c4d",
+      "afterSha256": "2ece01f8035affe7d589652ba96fcd24d4fa44e7fb5d95125ecf5e659e0c3f86",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/hi.json",
+      "id": "components.GameLibrary.combinedPlaytimeHoursMinutes",
+      "locale": "hi",
+      "sourceIdPosition": 1387,
+      "beforeSha256": "3fee90bfe09b002ec5c2744d1fc46d89835778adb587475292c0c11bae3d6765",
+      "afterSha256": "24654988ea38e5b6f69947e7837ddace23ecaf3e866360f58de8d33c2edc8c4a",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/id.json",
+      "id": "components.GameLibrary.combinedPlaytimeHoursMinutes",
+      "locale": "id",
+      "sourceIdPosition": 1387,
+      "beforeSha256": "0038337a143765aa14a30ce6613c841278a0940de4776f171b983d34a9988b6b",
+      "afterSha256": "bb568ff49701d76150d050798e14607c113be6f66b0760b05175bd6e13afa87c",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/ko.json",
+      "id": "components.GameLibrary.combinedPlaytimeHoursMinutes",
+      "locale": "ko",
+      "sourceIdPosition": 1387,
+      "beforeSha256": "145864eac4143ee53c136d341c412b4d46fc49d60cc6c16016d81ccf53960632",
+      "afterSha256": "31ad5b4acffb38bb5d6cb739f7813da7991b1fcb0a673351c9ec88ff11d411a2",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/pt_BR.json",
+      "id": "components.GameLibrary.combinedPlaytimeHoursMinutes",
+      "locale": "pt-BR",
+      "sourceIdPosition": 1387,
+      "beforeSha256": "1c9b17e05e3649675253177278e6a3b7197499cabe124c8bcee67aea26714dcc",
+      "afterSha256": "2d7caf80e5b040b6cf5f76d9c0da7d8debaf8c8c0c1ae423eb031b13dcb4d606",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/vi.json",
+      "id": "components.GameLibrary.combinedPlaytimeHoursMinutes",
+      "locale": "vi",
+      "sourceIdPosition": 1387,
+      "beforeSha256": "3a0e400d1b2ec8acb259fb254521f28955b8874c698c5a96cf51aa8fb5116725",
+      "afterSha256": "5d643718509a03c3d208097ae7414bc6702224af2efcf4e30a60e5e173215313",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/zh_Hans.json",
+      "id": "components.GameLibrary.combinedPlaytimeHoursMinutes",
+      "locale": "zh-CN",
+      "sourceIdPosition": 1387,
+      "beforeSha256": "8d41808c4a8a4dabda4aa429304654beaceb9747d84e18fb0fd970ec310b1d0a",
+      "afterSha256": "b408352dd1d058c552ee31f48a95c801787f2085f5b12808a3707034ed9560aa",
+      "crossReviewDisposition": "refine"
+    },
+    {
+      "targetFile": "src/i18n/locale/zh_Hant.json",
+      "id": "components.GameLibrary.combinedPlaytimeHoursMinutes",
+      "locale": "zh-TW",
+      "sourceIdPosition": 1387,
+      "beforeSha256": "12bf8885d52c7a7fef74686953f93eac8a5d814945b70eb776a4138654d75f7c",
+      "afterSha256": "81b4a1ca9e9d491b48f535c316062e1c8acdc90be64e4b0a084b1fd60d961900",
+      "crossReviewDisposition": "refine"
+    },
+    {
+      "targetFile": "src/i18n/locale/ar.json",
+      "id": "components.GameLibrary.combinedPlaytimeMinutes",
+      "locale": "ar",
+      "sourceIdPosition": 1388,
+      "beforeSha256": "06fd003a249b7192e37e8aebe4b1f4ce95de940f6781f6d92de5fc4337c969d0",
+      "afterSha256": "e968d11c9aeff2906a47d42002796506fed034fde700fe2b4dae2a796cca9a32",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/es.json",
+      "id": "components.GameLibrary.combinedPlaytimeMinutes",
+      "locale": "es",
+      "sourceIdPosition": 1388,
+      "beforeSha256": "46ca0192145115df1737a2643b1ad0d69e7dfa61a0fa9b584ec12757075485e1",
+      "afterSha256": "5806f4191f5fca75290d00c65a39100b44c7413b0e59eb24672ec2e52d0c069b",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/fr.json",
+      "id": "components.GameLibrary.combinedPlaytimeMinutes",
+      "locale": "fr",
+      "sourceIdPosition": 1388,
+      "beforeSha256": "1ca7bbbf39fdf1933961846de01965297d3b26fa999ebbdde5f151a1a4e08a7c",
+      "afterSha256": "af673cdf0e8ad65b7a9663202d2aaa6916ce99f5a1b9a58fbc6e42945d1c5eb2",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/hi.json",
+      "id": "components.GameLibrary.combinedPlaytimeMinutes",
+      "locale": "hi",
+      "sourceIdPosition": 1388,
+      "beforeSha256": "1349d433e5559008a01c0e7628c8adec2e3b56918879a814b5c15f2620763e85",
+      "afterSha256": "5655ae5e119bb969373a057f2e56c33d5533a846f8b3c55483147a6a8c4d371b",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/id.json",
+      "id": "components.GameLibrary.combinedPlaytimeMinutes",
+      "locale": "id",
+      "sourceIdPosition": 1388,
+      "beforeSha256": "8f8bb018f2bf4d7a2c8b4d8356bb5ef0ea994a9cfad352d92aa098cea563ffc9",
+      "afterSha256": "8d40cb18b74cf140c63c3ffa65dac46be3bad0f0135ffcbb0e07f3fbcb812eb6",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/ja.json",
+      "id": "components.GameLibrary.combinedPlaytimeMinutes",
+      "locale": "ja",
+      "sourceIdPosition": 1388,
+      "beforeSha256": "c48bf573431174297c206e56a644798d65bf52732720578fa58115bb15bf2947",
+      "afterSha256": "a392111f6dd31e7d89a78d0e43deb808a84c0ab44767a1e8ead04eb6144e8fe1",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/ko.json",
+      "id": "components.GameLibrary.combinedPlaytimeMinutes",
+      "locale": "ko",
+      "sourceIdPosition": 1388,
+      "beforeSha256": "6c2f6679259c411ad3db86125b170c7af92b22c80a8fe9d0a8e9808b26e64d55",
+      "afterSha256": "6eb515d9ef3c397b76d4986b914057d4c08e6b7e216768de2ccde41fb6018a6b",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/pt_BR.json",
+      "id": "components.GameLibrary.combinedPlaytimeMinutes",
+      "locale": "pt-BR",
+      "sourceIdPosition": 1388,
+      "beforeSha256": "48267e0553b4310d538c94632ee91efe26b82abde7b8d92eebde0ccdfa826211",
+      "afterSha256": "645862dad9ea64c1923562696258fc8ef8dffdbfe18ff9e1eeeb523a78575229",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/vi.json",
+      "id": "components.GameLibrary.combinedPlaytimeMinutes",
+      "locale": "vi",
+      "sourceIdPosition": 1388,
+      "beforeSha256": "427d6a601c5ecf362af4c0b30d92c7f3a1e31d909fb5934ef32958c5161eec1b",
+      "afterSha256": "432a9395f4f4248730694c6c53a2d9a0373b2b8cd7d68a25335c6e89f735e46f",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/zh_Hans.json",
+      "id": "components.GameLibrary.combinedPlaytimeMinutes",
+      "locale": "zh-CN",
+      "sourceIdPosition": 1388,
+      "beforeSha256": "560c1b0e19dc8c835a8f9845e91a13f86256fe374689ebc7e0c94a93e5f40315",
+      "afterSha256": "5e7bd147a28c2ea63c23e6af204f4569be3635003b64436c6813daf23ff80eb4",
+      "crossReviewDisposition": "refine"
+    },
+    {
+      "targetFile": "src/i18n/locale/zh_Hant.json",
+      "id": "components.GameLibrary.combinedPlaytimeMinutes",
+      "locale": "zh-TW",
+      "sourceIdPosition": 1388,
+      "beforeSha256": "9868e845f0786b68df9d238356d95b39ab5bec7b93188effb813c4dbb5ecb1d1",
+      "afterSha256": "960b636c465db9d99dbc331aeb473a11c724ec893567503faf82f2a78f3999a4",
+      "crossReviewDisposition": "refine"
+    },
+    {
+      "targetFile": "src/i18n/locale/ja.json",
+      "id": "components.GameLibrary.completed",
+      "locale": "ja",
+      "sourceIdPosition": 1389,
+      "beforeSha256": "f1740133c82e02f7c84f64abf9d5f4b0933005c027b122136f3c7b70c220d961",
+      "afterSha256": "7a66f930459ab87f34a2af411e15dc6d86f3d0889211faf079e02fbd25d8daac",
+      "crossReviewDisposition": "refine"
+    },
+    {
+      "targetFile": "src/i18n/locale/ar.json",
+      "id": "components.GameLibrary.copyGame",
+      "locale": "ar",
+      "sourceIdPosition": 1390,
+      "beforeSha256": "1b29762bdf705fbd68098aa0b91d591649cf5deccb5847cdc9f1121c7aee0ea8",
+      "afterSha256": "7c67d122a071bc563111235ae2d61b3853523edb7bc04f6a01b18b195eb44cbf",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/fr.json",
+      "id": "components.GameLibrary.copyGame",
+      "locale": "fr",
+      "sourceIdPosition": 1390,
+      "beforeSha256": "0a1510da568ebe5ead05d6736f9905a93bf21c6f7698236a2e1e217898774301",
+      "afterSha256": "98c4c7fa47ebb7c8719aca49a9e9ecba2a5b4f071fdd8f5934ca3b899497faf5",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/ja.json",
+      "id": "components.GameLibrary.copyGame",
+      "locale": "ja",
+      "sourceIdPosition": 1390,
+      "beforeSha256": "da75a4f8053496be727e155f50e17e758b4703958e4871acea5e2b7feebd144f",
+      "afterSha256": "e6cc22d92d8b3da26827297a124f1547052022792a84462c73b3f472aa677f65",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/ko.json",
+      "id": "components.GameLibrary.copyGame",
+      "locale": "ko",
+      "sourceIdPosition": 1390,
+      "beforeSha256": "b8c690dfa3d1dd57b90afb7f932f98e095e948114356b3765e5f7fe0bd61379e",
+      "afterSha256": "9d181b6267d9a93fd507648264b26ebb5545ecb00ed3ef9d204eabeb4a1ed0a9",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/pt_BR.json",
+      "id": "components.GameLibrary.copyGame",
+      "locale": "pt-BR",
+      "sourceIdPosition": 1390,
+      "beforeSha256": "2668766bd4aee63312b58392b89f3fc7bc0550348111e1db6c25dde1becd3d5c",
+      "afterSha256": "5bd9d8b6bd7fc78ab0346b5804cb2014f86ad4eaaf74acd90202985c4fb714bb",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/vi.json",
+      "id": "components.GameLibrary.copyGame",
+      "locale": "vi",
+      "sourceIdPosition": 1390,
+      "beforeSha256": "947c68ebe2f24c36666ac7e08cbbd6c4560799c2e14a18e1c2f8b89aebd4b313",
+      "afterSha256": "e009dabf68bb5a63ca19d6ac07f4a986001ccd77729ef774963238ae77f93538",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/zh_Hans.json",
+      "id": "components.GameLibrary.copyGame",
+      "locale": "zh-CN",
+      "sourceIdPosition": 1390,
+      "beforeSha256": "0e3c4c4fe69c46f0e869e30080c778bf4f5cc09c5e3fca56aff255390eb14cf4",
+      "afterSha256": "fa1df704753216c6213fc69f8929f40d4603ca1fe10b63bb675c2babb514cd9b",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/zh_Hant.json",
+      "id": "components.GameLibrary.copyGame",
+      "locale": "zh-TW",
+      "sourceIdPosition": 1390,
+      "beforeSha256": "0e3c4c4fe69c46f0e869e30080c778bf4f5cc09c5e3fca56aff255390eb14cf4",
+      "afterSha256": "ccc359aaea8a2eb98f816ab1db0a72a0ab8aa38c666b7ecf40c32c8342d111c9",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/ar.json",
+      "id": "components.GameLibrary.dropped",
+      "locale": "ar",
+      "sourceIdPosition": 1391,
+      "beforeSha256": "daba309a0c6c78773bf460b6e03d6885246287aa5a11952aee7d311e2f3dc773",
+      "afterSha256": "037b35c7f1273941974c896d273bacd2cc5c33a6f53a666eb9875589af243f3f",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/es.json",
+      "id": "components.GameLibrary.dropped",
+      "locale": "es",
+      "sourceIdPosition": 1391,
+      "beforeSha256": "07f2a5790143ddbef4f966bec9009cf4242afbd1c4420f074d6af2ad4d9fcd87",
+      "afterSha256": "e4fefe2440ce6c5f50a2e8db7858827e50cd083186a568ddd11bfc8a7436d99a",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/fr.json",
+      "id": "components.GameLibrary.dropped",
+      "locale": "fr",
+      "sourceIdPosition": 1391,
+      "beforeSha256": "7a4e636d3b46174179e507062d72e8f2d5ca88ccbb1b5328090bf5ed83f98ace",
+      "afterSha256": "c6054d4636ddae9bd9c29559202d07ba70e0fa4b2abfb701240667cff363f0ee",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/hi.json",
+      "id": "components.GameLibrary.dropped",
+      "locale": "hi",
+      "sourceIdPosition": 1391,
+      "beforeSha256": "880b2772a286b5064f0ae213e7791e114a950f3487c769e63c6f86987a228f1c",
+      "afterSha256": "d8dd767282643fafc1c34ac3ce0192cac96913a5cdd2748f9e98930738063b8a",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/id.json",
+      "id": "components.GameLibrary.dropped",
+      "locale": "id",
+      "sourceIdPosition": 1391,
+      "beforeSha256": "3b136f99d6a48ee499eb0a2833c33e1599689e46dd75edb4d5f0a8f3a8e74f23",
+      "afterSha256": "9dacb56d96e9de1699755d9f7c0c8c02e7451cb4151aeed6b18f4a26052f459d",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/ja.json",
+      "id": "components.GameLibrary.dropped",
+      "locale": "ja",
+      "sourceIdPosition": 1391,
+      "beforeSha256": "b2eed77ecef2b0d2cac595706624445eb4cea00b276a4b1a8966e61e8c8908e6",
+      "afterSha256": "28102d98a25dfe9801b1a14344fa6848cbac0f768745c908c382f8b4d1b56a72",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/pt_BR.json",
+      "id": "components.GameLibrary.dropped",
+      "locale": "pt-BR",
+      "sourceIdPosition": 1391,
+      "beforeSha256": "ea28c1a052088ea2d1868e42ac213f3a37de43870e6594d919e81a1a2737d6c4",
+      "afterSha256": "e4fefe2440ce6c5f50a2e8db7858827e50cd083186a568ddd11bfc8a7436d99a",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/vi.json",
+      "id": "components.GameLibrary.dropped",
+      "locale": "vi",
+      "sourceIdPosition": 1391,
+      "beforeSha256": "e07d3f4db0577ce8c78fc706f96b5405d0f43789b3e655a3ea86f1f96b4ee5fb",
+      "afterSha256": "64b72c25fb542ea18d9a591825ceb9405d0c14f5b3f3c8b18627fe58a9896cad",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/zh_Hans.json",
+      "id": "components.GameLibrary.dropped",
+      "locale": "zh-CN",
+      "sourceIdPosition": 1391,
+      "beforeSha256": "ba23cebddcfc66d1781238612123ac28c0795dcd168f616c2e97e68694b19826",
+      "afterSha256": "b6719689189554a458cc745ac0051ebeede07f521c877e117f54172e6475e21d",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/zh_Hant.json",
+      "id": "components.GameLibrary.dropped",
+      "locale": "zh-TW",
+      "sourceIdPosition": 1391,
+      "beforeSha256": "394552b9193fc07f66b0e5d8a0274831439a0b100a14e4fab19c74c6c015d70d",
+      "afterSha256": "1b8382afbd7324027ef31360345fd06ef6da6775a2b101e198697f4f175496fd",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/pt_BR.json",
+      "id": "components.GameLibrary.formattedCombinedPlaytime",
+      "locale": "pt-BR",
+      "sourceIdPosition": 1393,
+      "beforeSha256": "893e41a353d6401cde097630e0a8d41f06572c1f3d324cdcbc4005775c4c3821",
+      "afterSha256": "5f42a88844b69ae05cf88efc33732bd2d8d19a694784f871b20234b3c206a951",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/ko.json",
+      "id": "components.GameLibrary.formattedPlaytime",
+      "locale": "ko",
+      "sourceIdPosition": 1394,
+      "beforeSha256": "b9a581e600a680a1001708a494bd42a0b309051e7236c2a0711f25b2dc5149d4",
+      "afterSha256": "d66e968cc0f1819c3112bfce3c6dbced4980c10a7bd9916641bca62fb33723a7",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/pt_BR.json",
+      "id": "components.GameLibrary.formattedPlaytime",
+      "locale": "pt-BR",
+      "sourceIdPosition": 1394,
+      "beforeSha256": "0b5e33b3c9d7a5d08b329c10a08299b69d8b07d71ae78578e8730efb9f4f019d",
+      "afterSha256": "69ad946f4ca3d18f561c47eab38453e89cff7b58f96530e28397161e178d3166",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/ar.json",
+      "id": "components.GameLibrary.gameMatched",
+      "locale": "ar",
+      "sourceIdPosition": 1396,
+      "beforeSha256": "ab2a8fbd5e3a39f9d14a64908b945575a28b03729c287277741e49c60d5ad512",
+      "afterSha256": "64c0f58618416abda814879f41ea9f5c67f9d4a282c611fec3dbe3414ed4b2b7",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/vi.json",
+      "id": "components.GameLibrary.gameMatched",
+      "locale": "vi",
+      "sourceIdPosition": 1396,
+      "beforeSha256": "6cffb4d16084d658c84220da47e228413b10756d7930265adb43ced9fab7a418",
+      "afterSha256": "de69c7e00c4e885a8cc6b7fe9f0add4417bd1730aadac040f176b4dc76727855",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/zh_Hans.json",
+      "id": "components.GameLibrary.gameMatched",
+      "locale": "zh-CN",
+      "sourceIdPosition": 1396,
+      "beforeSha256": "e70b8d0966214c8b7d2e230f0bf25e82351212ea586813436c7233ddf2d191ca",
+      "afterSha256": "94313c86ec0d5b803740b73e52d2011da3644bef40a40f1314363ffa7d541fc6",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/zh_Hant.json",
+      "id": "components.GameLibrary.gameMatched",
+      "locale": "zh-TW",
+      "sourceIdPosition": 1396,
+      "beforeSha256": "23b27cf8540cc26ef29a5931d4a2119621acef58cf0a6afcf3dbf67f37b91317",
+      "afterSha256": "5c74345e7f4f6df95f14cd12308a549896032c394d2c31d4e5721adf2f66a3bc",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/es.json",
+      "id": "components.GameLibrary.gameProgress",
+      "locale": "es",
+      "sourceIdPosition": 1397,
+      "beforeSha256": "6b0f1cbe4c66e389105d5bb84e0df3a7b07e3ed5a776aac03e6468fb2e975ffb",
+      "afterSha256": "1d4a9eeb215d2221d780d66b3eb3647601bcf75678f088a92fdbad82b9b62a89",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/ja.json",
+      "id": "components.GameLibrary.gameProgress",
+      "locale": "ja",
+      "sourceIdPosition": 1397,
+      "beforeSha256": "71bdfa9821cbca1b9acfc6994792c179eab005ef179a8fd4649c905a805b41a7",
+      "afterSha256": "f93a86abfcbf162e0cb3e29989295bd136bc36f9e62abe2dbc0346a2ca103723",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/ko.json",
+      "id": "components.GameLibrary.gameProgress",
+      "locale": "ko",
+      "sourceIdPosition": 1397,
+      "beforeSha256": "bbf6eec55e19be312ccf4c08885f1a5ba71097a43c975acf05239546a2aca624",
+      "afterSha256": "9c044ef9124b6800eabc1222318f25ebb53dd2ab4b443417849d6cc9feb2ca3d",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/vi.json",
+      "id": "components.GameLibrary.gameProgress",
+      "locale": "vi",
+      "sourceIdPosition": 1397,
+      "beforeSha256": "90681c0deb260cd814b337338c1581272f8d8632e6c10de7aec1b7e77efdcb34",
+      "afterSha256": "e59478450504f4b852ad9cd0341ff76f2ce0c55eea42221117d306da89f1fd9a",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/ar.json",
+      "id": "components.GameLibrary.intro",
+      "locale": "ar",
+      "sourceIdPosition": 1398,
+      "beforeSha256": "cc0a8ea07537dac8a37efd8ca1b2b9b7f9b021f1a37f69a2a7a2eb9e015f1154",
+      "afterSha256": "acfc3b9021830fe64ef8c54b0f5f487b58ec486f7134e888e1af4be617fffce6",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/es.json",
+      "id": "components.GameLibrary.intro",
+      "locale": "es",
+      "sourceIdPosition": 1398,
+      "beforeSha256": "493f30ffffa84fb91b418153b95dd7dff11138a41391e2c0346d8b2c08156aaf",
+      "afterSha256": "61cb1fdbfaf02da671c2e28a7b26bc2872b4f58ab094736fab2c97b57af0f970",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/fr.json",
+      "id": "components.GameLibrary.intro",
+      "locale": "fr",
+      "sourceIdPosition": 1398,
+      "beforeSha256": "e37463a22f65700fbcecb022ef4797306a799752f932d5d522a8f4e79e71256d",
+      "afterSha256": "f690ee91cafcaff790b6e401a51259c8fa712aef3997d23a24d45528b3cd98ff",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/hi.json",
+      "id": "components.GameLibrary.intro",
+      "locale": "hi",
+      "sourceIdPosition": 1398,
+      "beforeSha256": "6402e83ec4b29cd5548b7aa675eb04e9ddc12820db5f9c9bbbfd124c41933752",
+      "afterSha256": "8d7bc282ea6692a0ace45a55843d7655dbf28bb0f9bd977badd7efc93a739ea3",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/id.json",
+      "id": "components.GameLibrary.intro",
+      "locale": "id",
+      "sourceIdPosition": 1398,
+      "beforeSha256": "50507a75cffe880252230b736b489d86a97d0978e92c22e28ebecd5ec6b371f8",
+      "afterSha256": "75964330e031792e360501aa54274e5a87e26080e0bda3ea9d98d84514ba6d3a",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/ja.json",
+      "id": "components.GameLibrary.intro",
+      "locale": "ja",
+      "sourceIdPosition": 1398,
+      "beforeSha256": "a552764702d24b7169a0ba27d406f2e7518488a9fbcd48cb5ced0744664aa6db",
+      "afterSha256": "8107811f9d962605900f8f8655b4c4cb7616b52056a780651f4548f1f68440c3",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/ko.json",
+      "id": "components.GameLibrary.intro",
+      "locale": "ko",
+      "sourceIdPosition": 1398,
+      "beforeSha256": "8c572e12a1cc468b029b010c15fd00caa5181dc1a8d28d682a6b603d5f73e4f5",
+      "afterSha256": "e35b8e3f0cc99e2ce1096990a3c482fa5fc453016fb5b7048d77c21a8bfcace7",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/pt_BR.json",
+      "id": "components.GameLibrary.intro",
+      "locale": "pt-BR",
+      "sourceIdPosition": 1398,
+      "beforeSha256": "039607336c2a8557b96205f6f9e8765ae2397651bb4fcb40fec5a49b22a3ebd9",
+      "afterSha256": "0e96ecfdc690da139a6ef28ec26f4be61d6133274d26c4e1ca72a5b76740dd6b",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/vi.json",
+      "id": "components.GameLibrary.intro",
+      "locale": "vi",
+      "sourceIdPosition": 1398,
+      "beforeSha256": "a1e192c4d3a514da1b46f44fdf7485aa68451e95dba93691323b173ed283ee11",
+      "afterSha256": "fffc1b7303dab1f1aeb1ec302b5c2a4e08dbfaf22939dc1a8d4cfd45f0ecde20",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/zh_Hans.json",
+      "id": "components.GameLibrary.intro",
+      "locale": "zh-CN",
+      "sourceIdPosition": 1398,
+      "beforeSha256": "9bba69f3890f9b33d9b1c432c85e6b10d915c1d69192d1f3dd6194934b91bb66",
+      "afterSha256": "a93aa0056efb99f56cb0b05b9dd929402d194f902a7d06eaa14261358f1054be",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/zh_Hant.json",
+      "id": "components.GameLibrary.intro",
+      "locale": "zh-TW",
+      "sourceIdPosition": 1398,
+      "beforeSha256": "5eaf1387628526d54dbb9439f619710bc621ee2bdb3dcfd496fdf0d54129d1df",
+      "afterSha256": "c80af68b8d3775eae6196989543968c78c647681ed5a6c2bb868c946c018f356",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/ar.json",
+      "id": "components.GameLibrary.libraryTab",
+      "locale": "ar",
+      "sourceIdPosition": 1399,
+      "beforeSha256": "34159a6bae7dba857d8205202988bb534bc5c532e3b46d3ca421e8b245fe9671",
+      "afterSha256": "74d2ff4b5a4126d54209677d4efcbca95bf59f2089e5936c03342a37a978a0fa",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/id.json",
+      "id": "components.GameLibrary.libraryTab",
+      "locale": "id",
+      "sourceIdPosition": 1399,
+      "beforeSha256": "7cc7841a14b18a3a5c1cd51dc02792931334a4b2e51b656cc51ff870a71b4330",
+      "afterSha256": "a94a40ba69c2c46f506707ca1af9ba29635f253daf400a00e45e25b5221652ed",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/ja.json",
+      "id": "components.GameLibrary.libraryTab",
+      "locale": "ja",
+      "sourceIdPosition": 1399,
+      "beforeSha256": "c206cd17f944dcea97b335a5f59938f41e7aab7509cb0ca449492c42262736e2",
+      "afterSha256": "b3b5a41d614f532b68d50f7d5919c4082575c3e693dc03198cd0d9398948ec25",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/ko.json",
+      "id": "components.GameLibrary.libraryTab",
+      "locale": "ko",
+      "sourceIdPosition": 1399,
+      "beforeSha256": "d0275c5c2e3a7adddb05e889a88ab16e1bf56cecfdfa2e5cd9b2a7ef510e8efa",
+      "afterSha256": "0c6524a5e1759f657b91d3b28b941e1d23edc518b4fe0b7d6ffe74a988b61406",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/vi.json",
+      "id": "components.GameLibrary.libraryTab",
+      "locale": "vi",
+      "sourceIdPosition": 1399,
+      "beforeSha256": "aa719218ac0b956df5c5ec808d82d8933f89114fdf0efb080ab61bdffda46e1f",
+      "afterSha256": "3a20c99690037b8383b761aef51269719398dd79794cde1e204847390c23302f",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/zh_Hans.json",
+      "id": "components.GameLibrary.libraryTab",
+      "locale": "zh-CN",
+      "sourceIdPosition": 1399,
+      "beforeSha256": "e2c1cf1bb755e460a3fc154f85ddfeb10573efc096767f6a2d0c000b8c4f12f3",
+      "afterSha256": "b3b6e55ae380b601e3f5fb5a1f341c4319600af162dadb55e6708900db887448",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/zh_Hant.json",
+      "id": "components.GameLibrary.libraryTab",
+      "locale": "zh-TW",
+      "sourceIdPosition": 1399,
+      "beforeSha256": "73b540afb274ee244affaa01266d161bb040f846453adbee0e66875e009009eb",
+      "afterSha256": "d34675e54fb1b8a336acc6dd908855cd39159e96e712db7f80a299464c82f4c3",
+      "crossReviewDisposition": "accept"
+    },
+    {
+      "targetFile": "src/i18n/locale/de.json",
+      "id": "components.GameContent.summary",
+      "locale": "de",
+      "sourceIdPosition": 1321,
+      "beforeSha256": "267ea589c5e04f126b87f1a84eede8b5373301794e8576a9346cd32d2c037132",
+      "afterSha256": "464546171958c24f9d522b732a332cb1400299b91747e666281be6c850cb6560",
+      "crossReviewDisposition": "refinement"
+    },
+    {
+      "targetFile": "src/i18n/locale/es.json",
+      "id": "components.GameContent.summary",
+      "locale": "es",
+      "sourceIdPosition": 1321,
+      "beforeSha256": "345ab83f9e9e721373716089d45785ecf411ab8bb588ec3d5fa14dd590a83374",
+      "afterSha256": "5cd36b68b4c62d6b4807a45c2b09a5d18b3525156c596e12810784eb793f7472",
+      "crossReviewDisposition": "refinement"
+    },
+    {
+      "targetFile": "src/i18n/locale/hi.json",
+      "id": "components.GameContent.summary",
+      "locale": "hi",
+      "sourceIdPosition": 1321,
+      "beforeSha256": "f8721f9eef2bd75193943138311ad53e70c2905b78cfd84ad6a707794ad92316",
+      "afterSha256": "a6088f8d6e265dc1487d3f6cd537e68dd63f1df190a182830e2c0861330f33e3",
+      "crossReviewDisposition": "refinement"
+    },
+    {
+      "targetFile": "src/i18n/locale/zh_Hans.json",
+      "id": "components.GameContent.summary",
+      "locale": "zh-CN",
+      "sourceIdPosition": 1321,
+      "beforeSha256": "9172f403ab4fea67738201f2e8a61dce4dd4d2cabda7b8129633684200473bab",
+      "afterSha256": "8807a69b11d89b870efdca53f77eb3aaa7eff0e6fbb43de90ddc2f41716a1f76",
+      "crossReviewDisposition": "refinement"
+    },
+    {
+      "targetFile": "src/i18n/locale/de.json",
+      "id": "components.GameContent.summaryEdition",
+      "locale": "de",
+      "sourceIdPosition": 1324,
+      "beforeSha256": "5915de0d723c78a7f37aa01ee191644f6d9147cf7e72262b97964069b65f91a2",
+      "afterSha256": "20971dc10a908efd03d6b4a3a8622d8457c71a4314a753fb25ab4d8be8255960",
+      "crossReviewDisposition": "missed-issue"
+    },
+    {
+      "targetFile": "src/i18n/locale/es.json",
+      "id": "components.GameContent.unknownContents",
+      "locale": "es",
+      "sourceIdPosition": 1332,
+      "beforeSha256": "8dbe2b5fe13c53700c1a167b35395fb704e51ebf3b7d7006f7256f921c32ff9f",
+      "afterSha256": "78b55b059b8b9f0226d1382f49b393cda2099e41ba05ef79f3e3458173625591",
+      "crossReviewDisposition": "refinement"
+    },
+    {
+      "targetFile": "src/i18n/locale/ko.json",
+      "id": "components.GameContent.unknownContents",
+      "locale": "ko",
+      "sourceIdPosition": 1332,
+      "beforeSha256": "1756c147a7bd711c974d01091ce1a38770d6c6eae8166466f8abc02e4dfb3f4f",
+      "afterSha256": "49d5d3b282089bba55aa2261d97cfd3a4bf88750ac8ec3b61f73fc2bc38c0ba8",
+      "crossReviewDisposition": "missed-issue"
+    },
+    {
+      "targetFile": "src/i18n/locale/ar.json",
+      "id": "components.GameDiscovery.anyLength",
+      "locale": "ar",
+      "sourceIdPosition": 1333,
+      "beforeSha256": "171bc9f6318ad9e5475ad639c5ddcf9585dd49a5337af57113b416bdb02e30a1",
+      "afterSha256": "e88e208620a579681a18040c8d1a020897894e231607fa594587cd052338507f",
+      "crossReviewDisposition": "refinement"
+    },
+    {
+      "targetFile": "src/i18n/locale/hi.json",
+      "id": "components.GameDiscovery.anyLength",
+      "locale": "hi",
+      "sourceIdPosition": 1333,
+      "beforeSha256": "5191b49a68069d2ab34316a9f92be7ae387b2b87da19c1086cc8dbfb5b3bdd4f",
+      "afterSha256": "013e92283b66d05ffb7b351d4f441db008135652537099d35fb9c8656a764823",
+      "crossReviewDisposition": "refinement"
+    },
+    {
+      "targetFile": "src/i18n/locale/ja.json",
+      "id": "components.GameDiscovery.anyLength",
+      "locale": "ja",
+      "sourceIdPosition": 1333,
+      "beforeSha256": "62dc551e994bbea630b3ff9c4329f514a382147382ab4df8dacbe50b353fca45",
+      "afterSha256": "2b836f152780977adee73e75544dc99dc3180e1005a9753f1e2ddeb6e4b040ff",
+      "crossReviewDisposition": "refinement"
+    },
+    {
+      "targetFile": "src/i18n/locale/ko.json",
+      "id": "components.GameDiscovery.anyLength",
+      "locale": "ko",
+      "sourceIdPosition": 1333,
+      "beforeSha256": "fc17b82f9f8041752000a72e7b072ca93b73801621d9addf9f27991b441c1989",
+      "afterSha256": "9c62bf22f8a846935be28d1f3f6eebca6ba696a4b7864e62aca9314d803576df",
+      "crossReviewDisposition": "refinement"
+    },
+    {
+      "targetFile": "src/i18n/locale/vi.json",
+      "id": "components.GameDiscovery.anyLength",
+      "locale": "vi",
+      "sourceIdPosition": 1333,
+      "beforeSha256": "e44ff9c52515c8bfaf66fef18c3f694d6c036bfd7b6f91f32064bd7922bc90b9",
+      "afterSha256": "648710c2dd1942ecd197d0d51e15e5d55bb19764405ed9ff8d062dda46c7f787",
+      "crossReviewDisposition": "refinement"
+    },
+    {
+      "targetFile": "src/i18n/locale/zh_Hant.json",
+      "id": "components.GameDiscovery.anyLength",
+      "locale": "zh-TW",
+      "sourceIdPosition": 1333,
+      "beforeSha256": "d3fc107523396fae6014d9bdefb035d9a45b305bb0b05a620548857c2a9a29bb",
+      "afterSha256": "759094a6514748384322c8d6cbb260b13b1692e2b5dec041cce733cb1562d18f",
+      "crossReviewDisposition": "refinement"
+    },
+    {
+      "targetFile": "src/i18n/locale/ar.json",
+      "id": "components.GameDiscovery.reasonGenre",
+      "locale": "ar",
+      "sourceIdPosition": 1349,
+      "beforeSha256": "fe14b6fa65a86c1b770e9e6ce4e69c3271b50476424d5b777fe88ea8d89e4eb8",
+      "afterSha256": "23b7c4c9ea15128ba80a3d1bb1ded6125bbe709056cba0dda4119e7bb2557117",
+      "crossReviewDisposition": "missed-issue"
+    },
+    {
+      "targetFile": "src/i18n/locale/ja.json",
+      "id": "components.GameDiscovery.reasonShort",
+      "locale": "ja",
+      "sourceIdPosition": 1353,
+      "beforeSha256": "f7d883ff462ba6f249ef492778488ac71c5c470d7556c0b317333e04a6f383e2",
+      "afterSha256": "c9d69223e11745f00aa7db0029646ec408cf93a451f4f33db9321be3270dbb5b",
+      "crossReviewDisposition": "refinement"
+    },
+    {
+      "targetFile": "src/i18n/locale/zh_Hans.json",
+      "id": "components.GameDiscovery.reasonShort",
+      "locale": "zh-CN",
+      "sourceIdPosition": 1353,
+      "beforeSha256": "28b2b03fa7e841c2c2bcaf5d31bbda0a29f31096f64840d02114eb37474abf93",
+      "afterSha256": "d38213bb6ce549ca9aabb060f2be1c2856620698a1fd9941ab4c40735fb713f6",
+      "crossReviewDisposition": "refinement"
+    },
+    {
+      "targetFile": "src/i18n/locale/zh_Hant.json",
+      "id": "components.GameDiscovery.reasonShort",
+      "locale": "zh-TW",
+      "sourceIdPosition": 1353,
+      "beforeSha256": "3691ecb58dc00ca0fab212f8e1c63f3faf4b6d535be7ef87e4a8fa605b6dd1c3",
+      "afterSha256": "784d6c5e1c076a9708b5c791ae8886c74f35c2550a7cfc4ff7e1b0bfe5bc8b0b",
+      "crossReviewDisposition": "refinement"
+    },
+    {
+      "targetFile": "src/i18n/locale/id.json",
+      "id": "components.GameDiscovery.request",
+      "locale": "id",
+      "sourceIdPosition": 1357,
+      "beforeSha256": "4a7151c0e65bf900413943d051cc2d11f3b857d5d92977b46b563cc56b57b15e",
+      "afterSha256": "2210818158924e2aafe815cd6c9a53ac57bd3dd28ab631fa8d86f0f213ca0919",
+      "crossReviewDisposition": "refinement"
+    },
+    {
+      "targetFile": "src/i18n/locale/pt_BR.json",
+      "id": "components.GameDiscovery.request",
+      "locale": "pt-BR",
+      "sourceIdPosition": 1357,
+      "beforeSha256": "66c76645c3348df70b5ddbf29e98c366064e9e38b3b737572bf3e0b1d75261a9",
+      "afterSha256": "27e4a7830666b9371970876a6f20024b4aa26227f08c3783425f91ef62ffc5df",
+      "crossReviewDisposition": "refinement"
+    },
+    {
+      "targetFile": "src/i18n/locale/vi.json",
+      "id": "components.GameDiscovery.request",
+      "locale": "vi",
+      "sourceIdPosition": 1357,
+      "beforeSha256": "08c925e1e4b054580beb54281a8b74dd54bea7b6ef201b3057859e511eec3450",
+      "afterSha256": "ab7dba43eb5f64704f4e9839adde3a0cdd455b27f9564eba615fb6050a35b62f",
+      "crossReviewDisposition": "refinement"
+    },
+    {
+      "targetFile": "src/i18n/locale/hi.json",
+      "id": "components.GameDiscovery.results",
+      "locale": "hi",
+      "sourceIdPosition": 1358,
+      "beforeSha256": "15ba70959c67ae842127675e945102bfacd48b5c9320af59ac57872a854d70da",
+      "afterSha256": "7eec2627c6dda31092ae8b623404bffba8fd10c7ad550c122f2da7a784053d71",
+      "crossReviewDisposition": "missed-issue"
+    },
+    {
+      "targetFile": "src/i18n/locale/id.json",
+      "id": "components.GameDiscovery.results",
+      "locale": "id",
+      "sourceIdPosition": 1358,
+      "beforeSha256": "4c39ccd3feef348e462dc548b3a9cebea56136504f9b29e19510b804c1325225",
+      "afterSha256": "a4cd7b136b3082b1c51dc61a4164652490dcb796c3a2644499bfec5c7a2e5810",
+      "crossReviewDisposition": "refinement"
+    },
+    {
+      "targetFile": "src/i18n/locale/zh_Hant.json",
+      "id": "components.GameDiscovery.results",
+      "locale": "zh-TW",
+      "sourceIdPosition": 1358,
+      "beforeSha256": "0b303a57af56824bb9f905f5438eca59578280495f4d05113e736cb36d2a2ba8",
+      "afterSha256": "0cbcf954d0cc8783538cca691d94cd0a5a38588cfa35349916d4529e96a7b3b1",
+      "crossReviewDisposition": "refinement"
+    },
+    {
+      "targetFile": "src/i18n/locale/hi.json",
+      "id": "components.GameDiscovery.run",
+      "locale": "hi",
+      "sourceIdPosition": 1359,
+      "beforeSha256": "ebef51e99861156f5a7e355db14d9712f230b51627e5d08d2237ad39de5f798a",
+      "afterSha256": "49c0b3bd6a07c99d796d87433916748652c50f64a4134ed356ead27b1890633c",
+      "crossReviewDisposition": "missed-issue"
+    },
+    {
+      "targetFile": "src/i18n/locale/zh_Hant.json",
+      "id": "components.GameDiscovery.run",
+      "locale": "zh-TW",
+      "sourceIdPosition": 1359,
+      "beforeSha256": "f0d5c32fbc95bafdb19b5f9f9dd49054a460feef48378ef367c4b4476c092aa0",
+      "afterSha256": "66af73c6b0df3a65cd0bde60bf24d4a8a8640f0bdc2d54ca570b96048319215c",
+      "crossReviewDisposition": "refinement"
+    },
+    {
+      "targetFile": "src/i18n/locale/hi.json",
+      "id": "components.GameLibrary.addGameTitle",
+      "locale": "hi",
+      "sourceIdPosition": 1374,
+      "beforeSha256": "905402ae7c687dcd11807783cba68fe3918a1713fd98163a1cc4a6b22ae04ecc",
+      "afterSha256": "08176d0c3111fc46d483f5e116742d82d11a5fa54f8b646898e0a86786e05bc6",
+      "crossReviewDisposition": "refinement"
+    },
+    {
+      "targetFile": "src/i18n/locale/ko.json",
+      "id": "components.GameLibrary.allStatuses",
+      "locale": "ko",
+      "sourceIdPosition": 1377,
+      "beforeSha256": "d8c1393c0ea8e0068fed3717d0cba5f7fcf8f34fb7584f2d0794c99b759d0839",
+      "afterSha256": "f184fd110b32e378f4a33a16d5d3be9266e8c7e71ee7fff5fea36ccd54012946",
+      "crossReviewDisposition": "refinement"
+    },
+    {
+      "targetFile": "src/i18n/locale/pt_BR.json",
+      "id": "components.GameLibrary.catalogMatchHelp",
+      "locale": "pt-BR",
+      "sourceIdPosition": 1382,
+      "beforeSha256": "4de1ea8a1ac3ef268abf3747fe1ab75b13f01c09f68bf483f323c41b194b1118",
+      "afterSha256": "65bb0838ee560c88dd0b32cd5b716790e6c6fd7d8f2e38c9627d97a281eb521e",
+      "crossReviewDisposition": "refinement"
+    },
+    {
+      "targetFile": "src/i18n/locale/ko.json",
+      "id": "components.GameLibrary.catalogSearch",
+      "locale": "ko",
+      "sourceIdPosition": 1383,
+      "beforeSha256": "55d8b115dab985ddceafb5b513ee75db0e734e72dbc20a46fdf3ba450d8bfac7",
+      "afterSha256": "3ff3fd8cb787cb920b211c6fd6f3c601f4d29103bd9219a69906344c2972dd58",
+      "crossReviewDisposition": "missed-issue"
+    },
+    {
+      "targetFile": "src/i18n/locale/ko.json",
+      "id": "components.GameLibrary.catalogSearchError",
+      "locale": "ko",
+      "sourceIdPosition": 1384,
+      "beforeSha256": "221b1e8149465725a882be8e8be5db2b58df6c1bd1be50a0ffbafd3bd8e23243",
+      "afterSha256": "e37102af0a02ff54b6319b53f005f33326e3a27cbbbddfc542fdf3c19dbc5b6f",
+      "crossReviewDisposition": "refinement"
+    },
+    {
+      "targetFile": "src/i18n/locale/ja.json",
+      "id": "components.GameLibrary.combinedPlaytimeHoursMinutes",
+      "locale": "ja",
+      "sourceIdPosition": 1387,
+      "beforeSha256": "82acdf0739f61fc3726e053ebf4679ca0a89e9b4008bc111f31497e87a053523",
+      "afterSha256": "557d088d097b4646851f783ba2e2a2deb7ac9034b47e83ab669a9060542ddd18",
+      "crossReviewDisposition": "refinement"
+    }
+  ]
+}

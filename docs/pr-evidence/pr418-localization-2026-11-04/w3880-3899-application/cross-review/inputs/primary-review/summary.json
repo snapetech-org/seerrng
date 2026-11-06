@@ -1,0 +1,27 @@
+{
+  "acceptCurrent": 211,
+  "acceptedBaselineDiagnostic": {
+    "locale": "ja",
+    "position": 3888,
+    "reason": "English “one” is correctly rendered as Japanese digit 1 in “1つ.”"
+  },
+  "baselineNumericTokenDiagnostics": 1,
+  "browserReview": false,
+  "callerlessSources": 0,
+  "cells": 240,
+  "corrections": 13,
+  "head": "39d8ae36ba757532f947a9a15be22f0676e79075",
+  "holds": 0,
+  "localeCount": 12,
+  "nativeSpeakerApproval": false,
+  "priorAppliedTargetHashesReattested": 136,
+  "priorHashOnlyHoldsPreserved": 14,
+  "priorSelectedSourcePositionsReattested": 3880,
+  "proposalCount": 29,
+  "proposedTargetPlaceholderMarkupNumericProtectedLiteralMismatches": 0,
+  "refinements": 16,
+  "schemaVersion": 1,
+  "sourceCount": 20,
+  "tree": "45e3ada0f565a07c675d1d75096f4266c4ef691e",
+  "window": "W3880-W3899"
+}

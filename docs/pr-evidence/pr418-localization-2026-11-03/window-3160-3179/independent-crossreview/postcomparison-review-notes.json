@@ -1,0 +1,43 @@
+{
+  "status": "Post-comparison audit notes; these do not alter the precomparison-sealed independent decisions.",
+  "independentSealSha256": "5e92e8647b7793887e251ebefb834ed7476cb165922c935d00350fa00a0389a6",
+  "observations": [
+    {
+      "sourceId": "components.RequestModal.watchAheadLabel",
+      "locale": "fr",
+      "primaryTarget": "File d’épisodes",
+      "independentTarget": "File d’attente des épisodes",
+      "note": "On re-examining the difference, French “file” can mean a queue; the primary target can express an episode queue. The sealed independent rationale incorrectly said it means an episode request. Treat this as a wording choice, not a clear primary defect."
+    },
+    {
+      "sourceId": "components.RequestModal.watchAheadLinkAccount",
+      "locale": "ar",
+      "primaryTarget": "اربط الحساب",
+      "independentTarget": "ربط الحساب",
+      "note": "The primary imperative is more direct for the button action. The independent nominal label remains understandable, but the primary phrasing is preferable."
+    },
+    {
+      "sourceId": "components.RequestModal.watchAheadUnavailableSonarr",
+      "locale": "ar",
+      "primaryTarget": "اختر خادم Sonarr أو اضبطه لجودة التلفاز المحددة لاستخدام قائمة انتظار الحلقات.",
+      "independentTarget": "اختر خادم Sonarr أو أعد إعداده لجودة التلفاز المحددة لاستخدام قائمة انتظار الحلقات.",
+      "note": "The independent wording says to configure the server again; the source asks users to choose or configure one. The primary wording is more faithful."
+    },
+    {
+      "sourceId": "components.RequestStatus.SoftwareRequests.approved",
+      "locale": "es",
+      "primaryTarget": "Aprobado",
+      "independentTarget": "Aprobada",
+      "note": "The status is attached to a software request, which supports feminine agreement with solicitud, but a standalone status badge can use a default form. This remains a language review question rather than a high-confidence defect."
+    },
+    {
+      "sourceId": "components.RequestStatus.SoftwareRequests.approved",
+      "locale": "fr",
+      "primaryTarget": "Validé",
+      "independentTarget": "Approuvée",
+      "note": "The independent version is more literal for an approved demande and agrees in gender. The primary version is understandable in a standalone status context, but may read as “validated.” Flag for language review if exact terminology is required."
+    }
+  ],
+  "countsInterpretation": "The comparison file records 240 cells. 183 exact target strings agree; 57 differ. 35 cells differ in normalized disposition or target, because some targets differ even when both reviewers propose revision. All source/current/caller/catalog pins and all placeholder/markup structural comparisons agree. Rationale wording differs by design because the review rationales were independently written.",
+  "limitations": "No native-speaker validation is claimed. Confidence reflects the text and exact caller evidence available in this review."
+}

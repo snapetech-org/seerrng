@@ -1,0 +1,51 @@
+{
+  "repository": "snapetech-org/SeerrNG",
+  "pullRequest": 418,
+  "head": "0cc977d2dc5eff86eac49cdad3b9361bff5acd65",
+  "tree": "ce65000b9bebef1838f3dd0e1a3764f75e102876",
+  "window": [
+    3160,
+    3179
+  ],
+  "sourceOrderCount": 9494,
+  "catalogKeyCounts": {
+    "en": 9494,
+    "es": 9494,
+    "zh_Hans": 9494,
+    "hi": 9494,
+    "de": 9494,
+    "ja": 9494,
+    "fr": 9494,
+    "pt_BR": 9494,
+    "ar": 9494,
+    "ko": 9494,
+    "zh_Hant": 9494,
+    "vi": 9494,
+    "id": 9494
+  },
+  "sourceCatalogBlob": "12e04a118c30b71b3714291adeaf9fdb2735cee4",
+  "localeCatalogBlobs": {
+    "es": "243ee14ff610a5b8881fb3ada22a0fadc49f9cd5",
+    "zh_Hans": "919766623cec1ba411036783193fe13b214de12f",
+    "hi": "7d3d9d8d98bb7ba9e66e69aab75f85de0c1dc3af",
+    "de": "90fc3124fdd7abce61ae962379f861930d76513e",
+    "ja": "f937b234fc611441b353c2eca1da5288bad08012",
+    "fr": "ef0a3d31028e82445c8929f768d6661029e1398a",
+    "pt_BR": "22d49988aa35c45bfd765c29dd9abb4c04e389d1",
+    "ar": "5dee95c501d253bd5806137031e426f7b5cb6b8c",
+    "ko": "c0cb6b642afafd2839ce8a39bed52eb745751a6d",
+    "zh_Hant": "d5379127e548dbd2b917bf60904bd38614df1e62",
+    "vi": "3ab9400e5f866290f98d23daceaa2605699ec966",
+    "id": "3306a7929d4bb9560dcce9cee1469d8974ef793d"
+  },
+  "cellCount": 240,
+  "callerIdCount": 20,
+  "callerLineCount": 40,
+  "dispositions": {
+    "accept-current": 167,
+    "correction": 37,
+    "refinement": 36
+  },
+  "candidateCells": 73,
+  "nativeSpeakerApproval": false
+}

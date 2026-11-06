@@ -1,0 +1,110 @@
+{
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "pullRequestState": "OPEN",
+  "pullRequestDraft": true,
+  "baseCommit": "221d8e0d542802da7529cd272c928cc747677e5c",
+  "headCommit": "9242898e23f7f25d515d10b5b0b51df322e395fb",
+  "headTree": "06cfd94ee611684c33e9e78af9d8bb60a2e98825",
+  "headBranch": "codex/seerrng-localization-overhaul-20261028",
+  "cellCount": 1200,
+  "uniqueCellKeys": 1200,
+  "duplicateCellKeys": 0,
+  "conflictingCellKeys": 0,
+  "primaryAcceptCurrentCells": 1025,
+  "primaryProposalCells": 175,
+  "proposalTypes": {
+    "propose-correction": 165,
+    "refinement": 10
+  },
+  "independentAcceptCurrentSampleCells": 120,
+  "sampleCoverage": {
+    "stratified": 109,
+    "expandedContext": 11
+  },
+  "additionalCurrentFindings": {
+    "total": 19,
+    "acceptedCorrections": 15,
+    "acceptedRefinements": 4,
+    "rejected": 0
+  },
+  "primaryProposalAdjudication": {
+    "acceptedPrimaryTargets": 170,
+    "adoptedCrossReviewTextRevisions": 4,
+    "rejectedPrimaryProposals": 1,
+    "rejectionCell": {
+      "sourcePosition": 2627,
+      "locale": "ar",
+      "sourceId": "components.RequestButton.requestupdatesfailed"
+    },
+    "note": "The sole rejection is a primary proposal cross-review had accepted; it is separate from the 19 additional current-value findings, all of which are accepted."
+  },
+  "finalDispositionCounts": {
+    "accept-additional-correction": 15,
+    "accept-additional-refinement": 4,
+    "accept-current-independent-sample": 120,
+    "accept-current-primary-review": 886,
+    "accept-primary-proposal": 170,
+    "adopt-cross-review-revision": 4,
+    "reject-primary-proposal-retain-current": 1
+  },
+  "allSevenPrHeadSnapshot": {
+    "file": "all-seven-pr-head-snapshot.json",
+    "queriedAtUtc": "2026-11-02T21:45:30+00:00",
+    "pullRequests": 7
+  },
+  "expectedChangedCells": 193,
+  "changedPrimaryProposalCells": 174,
+  "changedAdditionalCurrentFindingCells": 19,
+  "expectedUnchangedCells": 1007,
+  "changedCellsByLocale": {
+    "ar": 18,
+    "de": 2,
+    "es": 17,
+    "fr": 9,
+    "hi": 22,
+    "id": 22,
+    "ja": 10,
+    "ko": 21,
+    "pt_BR": 14,
+    "vi": 29,
+    "zh_Hans": 13,
+    "zh_Hant": 16
+  },
+  "readback": {
+    "requiredForCells": 1200,
+    "changedTargetsToVerify": 193,
+    "unchangedCellsToGuard": 1007,
+    "exactComparison": "read each sourceId from the locale JSON at the applied commit; compare exact Unicode string and SHA-256 of UTF-8 bytes",
+    "catalogKey": "sourceId is the exact flattened locale JSON key"
+  },
+  "sourceValidation": {
+    "baseCatalogSourceAndCurrentValuesMatched": true,
+    "catalogBlobAndFileShaPinsMatched": true,
+    "crossReviewPrimaryAndSourcePinsMatched": true,
+    "adjudicationRowPointersMatched": true,
+    "placeholderNameSetMismatches": 0,
+    "markupTagSetMismatches": 0,
+    "missingProtectedLiterals": 0,
+    "independentStringHashChecks": 1200,
+    "sourceAndCurrentTargetHashesValid": true,
+    "primaryCallerPinsPresent": 1200,
+    "crossReviewCallerPinsVerified": 314
+  },
+  "nativeSpeakerApproval": false,
+  "browserReview": false,
+  "repositoryOrPrEdited": false,
+  "testsBuildsScansCiBrowserRun": false,
+  "releasesTagsMergesRun": false,
+  "outputFiles": [
+    "README.md",
+    "build_application_plan.py",
+    "cell-application-plan.jsonl",
+    "expected-changes.jsonl",
+    "all-seven-pr-head-snapshot.json",
+    "input-manifest.json",
+    "reattestation.json",
+    "readback-checklist.jsonl",
+    "summary.json"
+  ]
+}

@@ -1,0 +1,64 @@
+{
+  "repository": "snapetech-org/SeerrNG",
+  "pullRequest": 418,
+  "state": "OPEN",
+  "draft": true,
+  "baseHead": "9242898e23f7f25d515d10b5b0b51df322e395fb",
+  "baseTree": "06cfd94ee611684c33e9e78af9d8bb60a2e98825",
+  "primaryPacket": "/mnt/disks/scratch/task-scratch/seerrng-pr418-window-2600-2699-primary-20261102",
+  "primaryPacketSha256SumsFileSha256": "b9afc1853264242a797b1680fc938ca3992de8f13acb905c7a13ca854dae9366",
+  "crossReviewPacket": "/mnt/disks/scratch/task-scratch/seerrng-pr418-window-2600-2699-crossreview-20261102",
+  "crossReviewPacketSha256SumsFileSha256": "2898735c6134f7cc44f0f22a6a44f30edc0622e29a132583766ba0f242688181",
+  "flaggedFindingsReviewed": 24,
+  "additionalCrossReviewAcceptanceRechecked": 1,
+  "totalAdjudicatedRows": 25,
+  "flaggedRecommendationCounts": {
+    "primaryRevision": 5,
+    "additionalCurrentCorrections": 15,
+    "additionalCurrentRefinements": 4
+  },
+  "adjudicatorDispositionCounts": {
+    "adopt-cross-review-revision": 4,
+    "accept-primary-proposal": 1,
+    "accept-additional-correction": 15,
+    "accept-additional-refinement": 4,
+    "reject-primary-proposal-and-cross-review-acceptance": 1
+  },
+  "primaryRevisedProposalTextMatchesPrimaryForOneRow": true,
+  "structuralEvidence": {
+    "primaryAllCells": 1200,
+    "sourceIds": 100,
+    "locales": 12,
+    "callerRefs": 369,
+    "callerGaps": 0,
+    "placeholderMarkupProtectedLiteralFailures": 0
+  },
+  "qualifiedNativeSpeakerApproval": false,
+  "browserReviewPerformed": false,
+  "repositoryOrPrEdited": false,
+  "testsBuildsScansCiRun": false,
+  "workflowReleaseTagMergeChanges": false,
+  "languageSourceUrls": [
+    "https://www.duden.de/rechtschreibung/Hoerbuch",
+    "https://dict.concised.moe.edu.tw/dictView.jsp?ID=26678&la=1&powerMode=0",
+    "https://download4.epson.biz/sec_pubs/es-c380w/useg/ar/GUID-80D01288-F98B-481D-BD33-B609EA7E14E3.htm",
+    "https://www.larousse.fr/dictionnaires/college/livre/24042"
+  ],
+  "livePrSnapshotFile": "live-pr-snapshot.json",
+  "livePrSnapshotQueriedAtUtc": "2026-11-02T21:38:38+00:00",
+  "livePrsRequeriedAtSeal": 7,
+  "sourceRevalidation": {
+    "adjudicationRows": 25,
+    "inputRowAndDigestReferencesVerified": true,
+    "sourceAndCurrentTargetsMatchExactBaseCatalogs": true,
+    "exactBaseHeadAndTreeReverified": true,
+    "repositoryHead": "9242898e23f7f25d515d10b5b0b51df322e395fb",
+    "repositoryTree": "06cfd94ee611684c33e9e78af9d8bb60a2e98825"
+  },
+  "sealedPacketFiles": [
+    "README.md",
+    "adjudication-ledger.jsonl",
+    "live-pr-snapshot.json",
+    "summary.json"
+  ]
+}

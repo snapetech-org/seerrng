@@ -1,0 +1,111 @@
+{
+  "window": "W4000-W4019",
+  "head": "ac193096ebfc0007183348b24e35bf6fee33f67a",
+  "tree": "93e71e7c52602ec3f8b76548fd12b2f5b4368b4c",
+  "cells": 240,
+  "sourceIds": 20,
+  "localeCount": 12,
+  "callerReferences": 25,
+  "priorSelectedSourceIds": 4000,
+  "priorAppliedTargetHashes": 315,
+  "priorHashOnlyHolds": 74,
+  "dispositionCounts": {
+    "REFINEMENT": 7,
+    "ACCEPT_CURRENT": 194,
+    "CORRECTION": 27,
+    "HOLD": 12
+  },
+  "proposalCount": 34,
+  "currentHashOnlyHolds": 12,
+  "localeDispositionCounts": {
+    "es": {
+      "REFINEMENT": 2,
+      "ACCEPT_CURRENT": 16,
+      "HOLD": 1,
+      "CORRECTION": 1
+    },
+    "zh-Hans": {
+      "ACCEPT_CURRENT": 19,
+      "HOLD": 1
+    },
+    "hi": {
+      "CORRECTION": 5,
+      "ACCEPT_CURRENT": 13,
+      "HOLD": 1,
+      "REFINEMENT": 1
+    },
+    "de": {
+      "ACCEPT_CURRENT": 18,
+      "CORRECTION": 1,
+      "HOLD": 1
+    },
+    "ja": {
+      "CORRECTION": 2,
+      "ACCEPT_CURRENT": 17,
+      "HOLD": 1
+    },
+    "fr": {
+      "CORRECTION": 1,
+      "ACCEPT_CURRENT": 18,
+      "HOLD": 1
+    },
+    "pt-BR": {
+      "ACCEPT_CURRENT": 16,
+      "REFINEMENT": 1,
+      "CORRECTION": 2,
+      "HOLD": 1
+    },
+    "ar": {
+      "ACCEPT_CURRENT": 14,
+      "CORRECTION": 5,
+      "HOLD": 1
+    },
+    "ko": {
+      "ACCEPT_CURRENT": 16,
+      "CORRECTION": 2,
+      "REFINEMENT": 1,
+      "HOLD": 1
+    },
+    "zh-Hant": {
+      "ACCEPT_CURRENT": 17,
+      "CORRECTION": 1,
+      "HOLD": 1,
+      "REFINEMENT": 1
+    },
+    "vi": {
+      "ACCEPT_CURRENT": 16,
+      "CORRECTION": 3,
+      "HOLD": 1
+    },
+    "id": {
+      "CORRECTION": 4,
+      "ACCEPT_CURRENT": 14,
+      "REFINEMENT": 1,
+      "HOLD": 1
+    }
+  },
+  "baselineTokenMismatchCounts": {
+    "markupTags": 0,
+    "numericTokens": 1,
+    "placeholders": 0,
+    "protectedLiterals": 0
+  },
+  "acceptedJapaneseNumericEquivalent": {
+    "position": 4007,
+    "locale": "ja",
+    "meaningPreserved": true
+  },
+  "unresolvedTerminologyHold": {
+    "position": 4013,
+    "cells": 12,
+    "term": "Agent"
+  },
+  "blindPacketInspected": false,
+  "crossReviewPerformed": false,
+  "rootAdjudicationPerformed": false,
+  "nativeSpeakerApproval": false,
+  "browserAcceptance": false,
+  "PRorCatalogEdits": false,
+  "testsBuildsScansCI": false,
+  "reviewMode": "primary semantic review only"
+}

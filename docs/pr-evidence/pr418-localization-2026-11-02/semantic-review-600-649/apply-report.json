@@ -1,0 +1,53 @@
+{
+  "schemaVersion": 1,
+  "application": "SeerrNG",
+  "pullRequest": 418,
+  "reviewedHead": "2c5b7a5dcbe01707ac361e2d4ae06bf3681f99e2",
+  "reviewedTree": "9fc918e9247d7ceaec5f0744c13ada81f7e4ba21",
+  "appliedTo": "src/i18n/locale/es.json",
+  "appliedAt": "2026-11-02",
+  "rootDecisionLedger": {
+    "path": "root-cross-review.jsonl",
+    "sha256": "8568d119f2b56b98ac7f93d3ab1db17c8e242aa85071902c8e4b5baf64e908ce",
+    "rows": 224,
+    "dispositions": {
+      "accept": 152,
+      "refine": 70,
+      "keep": 2
+    }
+  },
+  "candidatePacket": {
+    "path": "candidate-ledger.jsonl",
+    "sha256": "bde38aaddf962cacce826f2b343047fb6adb016e9e5e59aead6150634653710a",
+    "rows": 224
+  },
+  "heldPacket": {
+    "path": "held-uncertain-cells.jsonl",
+    "sha256": "8d5f4438a5aa3c64d63006025cc417ea33d6e0114b8173bddd2e8eec9642eaa9",
+    "rows": 5
+  },
+  "applyPlan": {
+    "path": "exact-hash-apply-plan.jsonl",
+    "sha256": "7d7f705289cf74d3e84b4bed7c1aedbf4cadf679c35939e3759c780e65877ad3",
+    "rows": 224
+  },
+  "preapplyAttestation": {
+    "path": "preapply-attestation.json",
+    "sha256": "38fb63a1647ef523514b683527456237e9013d2383185fc4a01af2073158674e"
+  },
+  "changedCatalog": {
+    "path": "src/i18n/locale/es.json",
+    "beforeSha256": "d7d75487002d2b97bb6397cda02f9de2a532ac673821cafd2aca8933cf78abae",
+    "afterSha256": "19ab22d6398a536710a09a568043f9233f27cb7d09770cb6666430b674848c59",
+    "changedKeys": 222
+  },
+  "unchanged": {
+    "rootKeepCurrentRows": 2,
+    "heldUncertainCells": 5,
+    "heldValuesEdited": 0
+  },
+  "nativeSpeakerApproval": false,
+  "testsBuildsCiOrReleasesRun": false,
+  "workflowsChanged": false,
+  "gitDiffCheck": "passed before evidence packaging; repeated after package creation"
+}

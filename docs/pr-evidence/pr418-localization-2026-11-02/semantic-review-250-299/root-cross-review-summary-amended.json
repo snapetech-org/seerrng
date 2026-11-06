@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "liveHead": "2b40cb73e2d2f1b85b1532f0145c3f2f961f06b0",
+  "liveTree": "fdc5c1c42b0688c9c388adcd2b2996d00db99faf",
+  "window": [
+    250,
+    300
+  ],
+  "inputRows": 182,
+  "reviewedRows": 182,
+  "dispositions": {
+    "accepted-proposal": 176,
+    "refined": 5,
+    "accepted-current": 1
+  },
+  "correctionRows": 181,
+  "liveSourceTargetHashMismatches": 0,
+  "placeholderAndIcuReview": "preserved across all rows",
+  "nativeSpeakerReview": "not performed; still required",
+  "rootCrossReviewLedgerPath": "/mnt/disks/scratch/task-worktrees/localization-20261030/semantic-results/seerrng-v13-5a434217-strict/manual-reconciliations/independent-corrections-250-300-2026-11-02/root-independent-cross-review-250-299-2026-11-02.jsonl",
+  "rootCrossReviewLedgerSha256": "94f9149a82d8abd64ce6caf26332451b3cb8958a0e2f9a0640fa38c5e7166cbd",
+  "exactHashApplyPlanPath": "/mnt/disks/scratch/task-worktrees/localization-20261030/semantic-results/seerrng-v13-5a434217-strict/manual-reconciliations/independent-corrections-250-300-2026-11-02/root-exact-hash-apply-plan-250-299-2026-11-02.jsonl",
+  "exactHashApplyPlanSha256": "7d9e852345e8f7bee5ece17c92ec2b78de38eaba70cd951006a19421954b35f1",
+  "refinedRows": [
+    "utils.ApiMessage.m963eed8cd67c17346d18",
+    "utils.ApiMessage.md2db54c3c3a0ae5a7d8a",
+    "utils.ApiMessage.me80e014dbcf50f58f26f",
+    "notifications.agents.email.availableRequest",
+    "notifications.agents.email.availableRequest4k"
+  ],
+  "reviewNote": "Independent cross-review additionally enforced protected technical literals; native-speaker review remains outstanding."
+}

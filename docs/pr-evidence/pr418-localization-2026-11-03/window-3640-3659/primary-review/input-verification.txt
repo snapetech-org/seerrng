@@ -1,0 +1,31 @@
+Candidate-free packet verifier ran before primary review generation.
+
+{
+  "result": "PASS",
+  "head": "78efa0ef0410ebd8911026ecbbfe1f621d26770b",
+  "tree": "749819bc888fc400bbb185fc9310043ab45c0d5c",
+  "range": [
+    3640,
+    3659
+  ],
+  "sourceCount": 20,
+  "cellCount": 240,
+  "priorExcludedSourceIds": 3640,
+  "priorHoldsReattested": 12,
+  "previousBoundary": "components.Settings.BookshelfPathMigration.commandStatus",
+  "nextBoundary": "components.Settings.BookshelfPathMigration.mediaFiles",
+  "callerlessPositions": [],
+  "baselineTokenDiagnostics": {
+    "placeholderMismatchCount": 0,
+    "placeholderSequenceMismatchCount": 0,
+    "icuPluralCategorySetDifferenceCount": 0,
+    "markupMismatchCount": 0,
+    "numericTokenMismatchCount": 0,
+    "protectedLiteralMismatchCount": 0
+  },
+  "currentHeadCatalogPins": 13,
+  "runtimeFilePins": 3,
+  "livePR": "OPEN/DRAFT",
+  "candidateProposalsIncluded": false,
+  "checksumEntries": 22
+}

@@ -1,0 +1,49 @@
+{
+  "artifact": "SeerrNG PR #418 W3560-W3579 independent blind review",
+  "window": {
+    "firstPosition": 3560,
+    "lastPosition": 3579,
+    "positioning": "zero-based English catalog positions",
+    "sourceCount": 20,
+    "localeCount": 12,
+    "cellCount": 240
+  },
+  "pin": {
+    "head": "351f2c09a4aaf6f223975fc1827cb9f77de7702d",
+    "tree": "3d88008f6ea7dc6cbef21333d29a032469cd60cf",
+    "branch": "codex/seerrng-localization-overhaul-20261028",
+    "base": "main"
+  },
+  "input": {
+    "path": "/home/keith/Documents/code/task-scratch/seerrng-pr418-w3560-3579-primary-20261103/candidate-free-input",
+    "candidateFreeOnly": true,
+    "checksumListSha256": "5a73d23784f17cd51e186ad626cd6a952b12e2b801b36bf71dfde44b13fdd3e7",
+    "manifestSha256": "57c8bb96f21976482af691fa8549d63116fbc66bd30177c3eaa2cb7835996eed"
+  },
+  "counts": {
+    "propose": 5,
+    "retain": 235,
+    "hold": 0
+  },
+  "holdCells": [],
+  "verifiedChecks": {
+    "inputIntegrity": "All candidate-free packet SHA256SUMS entries pass; packet structure verifier passes.",
+    "sourceCoverage": "20 contiguous source positions, 3560-3579, plus exact previous/next boundaries.",
+    "cellCoverage": "All 240 source x locale cells represented once in packet and ledger.",
+    "callers": "All 20 source records have direct message-property callers and pinned context blocks; no callerless findings.",
+    "placeholders": "0 mismatches; exact placeholder sequences retained.",
+    "markup": "0 mismatches; exact markup token sequences retained.",
+    "numeric": "0 mismatches; current values preserve numeric tokens.",
+    "protectedLiterals": "0 mismatches; current values preserve protected technical literals.",
+    "catalogPins": "All 12 locale files have 9,494 catalog keys; each current-target record matches its pinned catalog path, hash, and blob.",
+    "livePR": "PR, branch ref, pull ref, and commit tree re-attested at the expected open/draft head."
+  },
+  "notPerformed": [
+    "repository or PR edits",
+    "tests",
+    "builds",
+    "scans",
+    "CI"
+  ],
+  "createdAtUTC": "2026-11-03T12:59:46.924704+00:00"
+}

@@ -1,0 +1,98 @@
+{
+  "window": "W3980-W3999",
+  "head": "d9c5224dbce97e8ae6e72b0ad0bf401e65e215eb",
+  "tree": "6578ebc4c8bd6c569fcea47978a2c47bd6e4bc8f",
+  "cells": 240,
+  "sourceIds": 20,
+  "localeCount": 12,
+  "callerReferences": 20,
+  "priorSelectedSourceIds": 3980,
+  "priorAppliedTargetHashes": 272,
+  "priorHashOnlyHolds": 62,
+  "dispositionCounts": {
+    "CORRECTION": 14,
+    "ACCEPT_CURRENT": 204,
+    "REFINEMENT": 10,
+    "HOLD": 12
+  },
+  "proposalCount": 24,
+  "currentHashOnlyHolds": 12,
+  "localeDispositionCounts": {
+    "es": {
+      "CORRECTION": 4,
+      "ACCEPT_CURRENT": 14,
+      "HOLD": 1,
+      "REFINEMENT": 1
+    },
+    "zh-Hans": {
+      "ACCEPT_CURRENT": 17,
+      "HOLD": 1,
+      "REFINEMENT": 1,
+      "CORRECTION": 1
+    },
+    "hi": {
+      "ACCEPT_CURRENT": 17,
+      "CORRECTION": 2,
+      "HOLD": 1
+    },
+    "de": {
+      "ACCEPT_CURRENT": 19,
+      "HOLD": 1
+    },
+    "ja": {
+      "ACCEPT_CURRENT": 19,
+      "HOLD": 1
+    },
+    "fr": {
+      "ACCEPT_CURRENT": 18,
+      "HOLD": 1,
+      "CORRECTION": 1
+    },
+    "pt-BR": {
+      "CORRECTION": 4,
+      "ACCEPT_CURRENT": 13,
+      "HOLD": 1,
+      "REFINEMENT": 2
+    },
+    "ar": {
+      "ACCEPT_CURRENT": 18,
+      "HOLD": 1,
+      "CORRECTION": 1
+    },
+    "ko": {
+      "ACCEPT_CURRENT": 19,
+      "HOLD": 1
+    },
+    "zh-Hant": {
+      "ACCEPT_CURRENT": 12,
+      "REFINEMENT": 6,
+      "HOLD": 1,
+      "CORRECTION": 1
+    },
+    "vi": {
+      "ACCEPT_CURRENT": 19,
+      "HOLD": 1
+    },
+    "id": {
+      "ACCEPT_CURRENT": 19,
+      "HOLD": 1
+    }
+  },
+  "baselineTokenMismatchCounts": {
+    "cellCount": 240,
+    "markupTags": 0,
+    "numericTokens": 0,
+    "placeholders": 0,
+    "protectedLiterals": 0,
+    "mismatchExamples": []
+  },
+  "acceptedJapaneseNumericEquivalents": [],
+  "blindPacketInspected": false,
+  "blindPacketGenerated": false,
+  "crossReviewPerformed": false,
+  "nativeSpeakerApproval": false,
+  "browserAcceptance": false,
+  "PRorCatalogEdits": false,
+  "testsBuildsScansCI": false,
+  "reviewMode": "primary semantic review only"
+}

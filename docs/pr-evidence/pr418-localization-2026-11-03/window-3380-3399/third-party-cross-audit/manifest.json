@@ -1,0 +1,37 @@
+{
+  "artifact": "SeerrNG PR #418 W3380-W3399 third-party cross-audit",
+  "sealed": true,
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "head": "4d7de2c41b0e6df6cd0b7f7075c9cddd1c6ce160",
+  "tree": "6fba2d5985869b4563955b2c338a93e82efb4b22",
+  "rowCount": 240,
+  "decisionCounts": {
+    "accept-current": 108,
+    "refinement": 6,
+    "correction": 6,
+    "hold": 120
+  },
+  "files": [
+    {
+      "name": "README.md",
+      "bytes": 1644,
+      "sha256": "ac5172a8dde800b4ceb87d8b23287b8e7a7e5b968faabb5c4282dc5131a5198d"
+    },
+    {
+      "name": "input-attestation.json",
+      "bytes": 2132,
+      "sha256": "9f44571b21385a5dc6c6b2c802c4526eea517337a445eb847f4c41faf1db461a"
+    },
+    {
+      "name": "summary.json",
+      "bytes": 2394,
+      "sha256": "26d5f24a8199823c1f4116580d3d854bdb5db796c00e6892f6f9e2738c052233"
+    },
+    {
+      "name": "third-party-ledger.jsonl",
+      "bytes": 822776,
+      "sha256": "886a00389ad2f669b394db2fdd479f284d97528d94471c79c0eebf6256393f06"
+    }
+  ]
+}

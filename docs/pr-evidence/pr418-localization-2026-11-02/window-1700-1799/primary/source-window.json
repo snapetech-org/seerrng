@@ -1,0 +1,617 @@
+{
+  "head": "670d1a213179dcc690f27a8b92c2372dba699091",
+  "sourceCatalog": {
+    "blob": "12e04a118c30b71b3714291adeaf9fdb2735cee4",
+    "bytes": 835513,
+    "path": "src/i18n/locale/en.json",
+    "sha256": "75ff3c90b52aedd636a506281ffbd6fb2d3739c61294b6008a517f17647e2316"
+  },
+  "sourceCount": 100,
+  "sourceList": [
+    {
+      "position": 1700,
+      "source": "Subtitle",
+      "sourceHash": "383cd6c0b871980d579d75d2c15fd0ac6cc3bac78c9a1dbb98224971db1df4d4",
+      "sourceId": "components.IssueList.subtitle"
+    },
+    {
+      "position": 1701,
+      "source": "Task Filters",
+      "sourceHash": "b8e73d0597149a9d48d037dee69da139c306e9508b6400cb47a96271fcd1daaf",
+      "sourceId": "components.IssueList.taskFilters"
+    },
+    {
+      "position": 1702,
+      "source": "Last 30 Days",
+      "sourceHash": "e9ddf63b389d248ef56f10050707d604731594e13098cd4d98587aa1e63f3259",
+      "sourceId": "components.IssueList.thirtyDays"
+    },
+    {
+      "position": 1703,
+      "source": "Time Period",
+      "sourceHash": "0e3bdc3ea0f98fa263fc02a378744848d4b570fb4012182fe43933b739cbbfa6",
+      "sourceId": "components.IssueList.timePeriod"
+    },
+    {
+      "position": 1704,
+      "source": "Video",
+      "sourceHash": "d534be829e32196b4d1e53b67103cf1e376b1d60071857572598c196abfefbc6",
+      "sourceId": "components.IssueList.video"
+    },
+    {
+      "position": 1705,
+      "source": "HD",
+      "sourceHash": "323e41792751e840ad9e398d5057120cb1f1b730acbb193ee6498eb3b481059c",
+      "sourceId": "components.IssueModal.CreateIssueModal.hd"
+    },
+    {
+      "position": 1706,
+      "source": "Reason",
+      "sourceHash": "f81ab834de5f84918dc040b884267c2b61cb1a52d46442de10e97f35a94d0500",
+      "sourceId": "components.IssueModal.CreateIssueModal.issueReason"
+    },
+    {
+      "position": 1707,
+      "source": "Issue Type",
+      "sourceHash": "7339880032815e531d8b14c516b5078e9b760a9ecf053809167e1c525a7d5885",
+      "sourceId": "components.IssueModal.CreateIssueModal.issueType"
+    },
+    {
+      "position": 1708,
+      "source": "No available quality",
+      "sourceHash": "c3ad0d3789f308303fd60122d38e4cd673b791f7e842c6e922135fa00ade5f7e",
+      "sourceId": "components.IssueModal.CreateIssueModal.noAvailableQuality"
+    },
+    {
+      "position": 1709,
+      "source": "Please provide a detailed explanation of the issue you encountered.",
+      "sourceHash": "3c5dce9f820b50b2d93f65fc066f94209f615a041c180caa970778dfc622a269",
+      "sourceId": "components.IssueModal.CreateIssueModal.providedetail"
+    },
+    {
+      "position": 1710,
+      "source": "Quality",
+      "sourceHash": "1b2c08a8733d7ff1d06e726107a977124929c975066a3a606d19055dfd4e3dbd",
+      "sourceId": "components.IssueModal.CreateIssueModal.quality"
+    },
+    {
+      "position": 1711,
+      "source": "Report an Issue",
+      "sourceHash": "f6a30a10bc27be0af728295f9f11b6e9ec6f6dabd0c0651f77a28d4ffbc07ba4",
+      "sourceId": "components.IssueModal.CreateIssueModal.reportissue"
+    },
+    {
+      "position": 1712,
+      "source": "Select at least one affected season or episode",
+      "sourceHash": "254ce9baff5d12dd718b0d978d091bd6a0f47adb1ee55ab1521dcbbf160ba47d",
+      "sourceId": "components.IssueModal.CreateIssueModal.selectepisode"
+    },
+    {
+      "position": 1713,
+      "source": "Submit Issue",
+      "sourceHash": "16a7466b7cf4392236c9f0fcc915d28884341c48a3260bbae5f57d8d6a532c7f",
+      "sourceId": "components.IssueModal.CreateIssueModal.submitissue"
+    },
+    {
+      "position": 1714,
+      "source": "Something went wrong while submitting the issue.",
+      "sourceHash": "ee95dc236cd9f4ff4f237c48df59ecc7a89a75fbc04eb39d4324500efdb5bfa2",
+      "sourceId": "components.IssueModal.CreateIssueModal.toastFailedCreate"
+    },
+    {
+      "position": 1715,
+      "source": "Issue report for <strong>{title}</strong> submitted successfully!",
+      "sourceHash": "730210a4cc53c56945676e833b69a27a32a32b29799e0629d5e0cc2695823eaf",
+      "sourceId": "components.IssueModal.CreateIssueModal.toastSuccessCreate"
+    },
+    {
+      "position": 1716,
+      "source": "View Details",
+      "sourceHash": "90789c12d0731b4405f2065d3dc5a31651f31ff7c84edef11c0e9c97eab4a75b",
+      "sourceId": "components.IssueModal.CreateIssueModal.toastviewdetails"
+    },
+    {
+      "position": 1717,
+      "source": "4K",
+      "sourceHash": "cc1e5d5a9c88e51f820aa0ea398b7195da9ae54fcd2a34a1fc9124fde6d4a9a8",
+      "sourceId": "components.IssueModal.CreateIssueModal.ultraHd"
+    },
+    {
+      "position": 1718,
+      "source": "Description must be {maxLength, number} characters or fewer",
+      "sourceHash": "bd0a2d22ecf613dcecd675a3cb7982c22ee3973480d9e38d724feb6595f851aa",
+      "sourceId": "components.IssueModal.CreateIssueModal.validationMessageLength"
+    },
+    {
+      "position": 1719,
+      "source": "You must provide a description",
+      "sourceHash": "659645bb76b1ceb73b0c93d52db2e683f995743a5580727e512774d50bb9dd4b",
+      "sourceId": "components.IssueModal.CreateIssueModal.validationMessageRequired"
+    },
+    {
+      "position": 1720,
+      "source": "What's wrong?",
+      "sourceHash": "9cbeb17283aa7ebdb8434e4922bdbf196f95b26742b4acbadd25b696e870f5e5",
+      "sourceId": "components.IssueModal.CreateIssueModal.whatswrong"
+    },
+    {
+      "position": 1721,
+      "source": "Audio",
+      "sourceHash": "bc1b88907d3b748af99cb9d4ffc07a0118dad5dab21a9dbdcc5a17a09641364a",
+      "sourceId": "components.IssueModal.issueAudio"
+    },
+    {
+      "position": 1722,
+      "source": "Other",
+      "sourceHash": "f97e9da0e3b879f0a9df979ae260a5f7e1371edb127c1862d4f861981166cdc1",
+      "sourceId": "components.IssueModal.issueOther"
+    },
+    {
+      "position": 1723,
+      "source": "Damaged or unreadable file",
+      "sourceHash": "53223e801f8e9ed0df8d1369207c0cd838c2b0fc9fe22370c50eff129c7cd1de",
+      "sourceId": "components.IssueModal.issueReasonDamagedFile"
+    },
+    {
+      "position": 1724,
+      "source": "Incorrect title or metadata",
+      "sourceHash": "6a2688eecf4e68da2f0cbbb2a672bb7f8f061ae7898c7f295288e48dc370e3cc",
+      "sourceId": "components.IssueModal.issueReasonIncorrectMetadata"
+    },
+    {
+      "position": 1725,
+      "source": "Missing content",
+      "sourceHash": "de4038270afdc683707f1e24cd3d0f01f60c1d91f805f7aa9a75477bf4885cb1",
+      "sourceId": "components.IssueModal.issueReasonMissingContent"
+    },
+    {
+      "position": 1726,
+      "source": "Missing issue",
+      "sourceHash": "986293689439d3b658f56541965bfb390f0748e12f3f4270cf9acac492d4097e",
+      "sourceId": "components.IssueModal.issueReasonMissingIssue"
+    },
+    {
+      "position": 1727,
+      "source": "Wrong edition or variant",
+      "sourceHash": "7ab4feb8660e39fee8f0198a4590eeb52ad47d7187b0cd4ba3420ea2852753ac",
+      "sourceId": "components.IssueModal.issueReasonWrongEdition"
+    },
+    {
+      "position": 1728,
+      "source": "Wrong issue or date",
+      "sourceHash": "519ce831b072b10f1623b19394331739b01388f5d4adc8c9be763a770b99cc15",
+      "sourceId": "components.IssueModal.issueReasonWrongIssue"
+    },
+    {
+      "position": 1729,
+      "source": "Subtitle",
+      "sourceHash": "383cd6c0b871980d579d75d2c15fd0ac6cc3bac78c9a1dbb98224971db1df4d4",
+      "sourceId": "components.IssueModal.issueSubtitles"
+    },
+    {
+      "position": 1730,
+      "source": "Video",
+      "sourceHash": "d534be829e32196b4d1e53b67103cf1e376b1d60071857572598c196abfefbc6",
+      "sourceId": "components.IssueModal.issueVideo"
+    },
+    {
+      "position": 1731,
+      "source": "Any",
+      "sourceHash": "2b505597daa736f13c2910c260e8deb1af3b20ffe375eb5e01a003e92f541db9",
+      "sourceId": "components.LanguageSelector.any"
+    },
+    {
+      "position": 1732,
+      "source": "Default ({language})",
+      "sourceHash": "9ce9f7fcd577c8f3e4d590f620dbb063fb317158f79af61ca0e0989b56762dfb",
+      "sourceId": "components.LanguageSelector.languageServerDefault"
+    },
+    {
+      "position": 1733,
+      "source": "All Languages",
+      "sourceHash": "42f129fe19edbbe38c90921c693840f0eabfb9c5cd202374db7cf7e4f8118036",
+      "sourceId": "components.LanguageSelector.originalLanguageDefault"
+    },
+    {
+      "position": 1734,
+      "source": "Display Language",
+      "sourceHash": "ad152fb20a857b3b5e8ef6e71aa54bfbe051bbe5545ee024b222b92226ae08fa",
+      "sourceId": "components.Layout.LanguagePicker.displaylanguage"
+    },
+    {
+      "position": 1735,
+      "source": "Clear the search text",
+      "sourceHash": "5d0d6a833cc060ac86402f29f62aceb254510a727338df6574b9a43eb272adbd",
+      "sourceId": "components.Layout.SearchInput.clearSearchText"
+    },
+    {
+      "position": 1736,
+      "source": "Search",
+      "sourceHash": "49c266baaaa70981ea188fa714d5c40cf13830d786a861c9943ae0d26a7f3fe9",
+      "sourceId": "components.Layout.SearchInput.searchLabel"
+    },
+    {
+      "position": 1737,
+      "source": "Search movies, series, music, books, and people",
+      "sourceHash": "e8d3253033e0607460a0f4e3ff14e156a5915bac0b9a3c3e3beae9059760e558",
+      "sourceId": "components.Layout.SearchInput.searchPlaceholder"
+    },
+    {
+      "position": 1738,
+      "source": "Acquisition Tools",
+      "sourceHash": "207465036c2b7ac5c6ece4daccea67cfb023ddef7cfbf858e2c6b37db49f701e",
+      "sourceId": "components.Layout.Sidebar.acquisitionTools"
+    },
+    {
+      "position": 1739,
+      "source": "Blocklist",
+      "sourceHash": "f8019af406d12fadf933c26e1dfe437d6527b0228da4820eeca44ffeb4be45d9",
+      "sourceId": "components.Layout.Sidebar.blocklist"
+    },
+    {
+      "position": 1740,
+      "source": "Book Recommendations",
+      "sourceHash": "8e9a21ad8395fcbf8ec875979d143173748b66465ecba602494cc61af4a037f8",
+      "sourceId": "components.Layout.Sidebar.bookRecommendations"
+    },
+    {
+      "position": 1741,
+      "source": "Adult",
+      "sourceHash": "ad08defcbfea908e4c8d6b3097b6f2c96572a09a779bf322cee503554fad0006",
+      "sourceId": "components.Layout.Sidebar.browseadult"
+    },
+    {
+      "position": 1742,
+      "source": "Audiobooks",
+      "sourceHash": "a01be1671e8272084901c592024bcb8272e2b81fc895178358d107c5de99e4cb",
+      "sourceId": "components.Layout.Sidebar.browseaudiobooks"
+    },
+    {
+      "position": 1743,
+      "source": "Books",
+      "sourceHash": "9da7f76bc81d2f4e5ee6a83817f7a1db2aadbc9ca13726b0c40b6ace756dce0c",
+      "sourceId": "components.Layout.Sidebar.browsebooks"
+    },
+    {
+      "position": 1744,
+      "source": "Comics",
+      "sourceHash": "faa92591e60533999b900614debc689c196ac4575ea9994079d2d7febc24ff6c",
+      "sourceId": "components.Layout.Sidebar.browsecomics"
+    },
+    {
+      "position": 1745,
+      "source": "Magazines",
+      "sourceHash": "32f3d8e8827314cec2f849df23bc3ec576f7321797755678135504174c6a1200",
+      "sourceId": "components.Layout.Sidebar.browsemagazines"
+    },
+    {
+      "position": 1746,
+      "source": "Movies",
+      "sourceHash": "dff924b69f9678928e4bde2a5e1bfa9a2341dbe09c0eab0cd2de4b149de5abc1",
+      "sourceId": "components.Layout.Sidebar.browsemovies"
+    },
+    {
+      "position": 1747,
+      "source": "Music",
+      "sourceHash": "6eb00b4b2614a144d41ccdf709017a675953fae2df6cfd6b397bd9e4d8708461",
+      "sourceId": "components.Layout.Sidebar.browsemusic"
+    },
+    {
+      "position": 1748,
+      "source": "Software",
+      "sourceHash": "9b3289a385a5301eea0c04a06fde98bc542113ab4ed24c47c9b9771984869a31",
+      "sourceId": "components.Layout.Sidebar.browsesoftware"
+    },
+    {
+      "position": 1749,
+      "source": "Sports",
+      "sourceHash": "9b1f5daf0a3d610e5a819b6c7664ffde2ea2f299fb1cacedfc6d1b68bed5e351",
+      "sourceId": "components.Layout.Sidebar.browsesports"
+    },
+    {
+      "position": 1750,
+      "source": "Series",
+      "sourceHash": "a8295e08ff7a961c8983c52226d29cb036dbdb21e110a5988f6a461db5bdf366",
+      "sourceId": "components.Layout.Sidebar.browsetv"
+    },
+    {
+      "position": 1751,
+      "source": "Calendar",
+      "sourceHash": "d5d0a30b517e3beab07609d7e54c378db5e15066f22280af453f587f7eec7474",
+      "sourceId": "components.Layout.Sidebar.calendar"
+    },
+    {
+      "position": 1752,
+      "source": "Collector Picks",
+      "sourceHash": "bc7c6de9fdab37e57719f3c1e3b68b0d1bc843e77714608f9f07df3d4c272f00",
+      "sourceId": "components.Layout.Sidebar.collectorPicks"
+    },
+    {
+      "position": 1753,
+      "source": "Discover",
+      "sourceHash": "d4a33d5b78bccebe3f16843dc30e6c0f73b4eb6efb4e7114ddfebde7fa2c9954",
+      "sourceId": "components.Layout.Sidebar.discover"
+    },
+    {
+      "position": 1754,
+      "source": "Download Inbox",
+      "sourceHash": "c29c6b468490033bd35f53c4123d37e75f2adb64c0ba213d5cc911c8737264b0",
+      "sourceId": "components.Layout.Sidebar.downloads"
+    },
+    {
+      "position": 1755,
+      "source": "Following",
+      "sourceHash": "344b4271ca012d1881fe2d824ab33350ad11725311cd3ba6c7a75adc1241d58b",
+      "sourceId": "components.Layout.Sidebar.following"
+    },
+    {
+      "position": 1756,
+      "source": "Game Finder",
+      "sourceHash": "4c22936b113948568299f0a2548927f1982bf82185836a7d7bb784aeb8ca54fb",
+      "sourceId": "components.Layout.Sidebar.gameFinder"
+    },
+    {
+      "position": 1757,
+      "source": "My Games",
+      "sourceHash": "a8bc5a6f383da3c04e6ee77276ab9a32603831c64a885d18bc0c2474f0fd0c22",
+      "sourceId": "components.Layout.Sidebar.gamesLibrary"
+    },
+    {
+      "position": 1758,
+      "source": "Indexer Search",
+      "sourceHash": "60fb4b1c978f5a519ab0e2cc1b1265718fa54f6dcc26e9e558a1da53750b3415",
+      "sourceId": "components.Layout.Sidebar.indexerSearch"
+    },
+    {
+      "position": 1759,
+      "source": "Issues",
+      "sourceHash": "666067dd376e5d4553b8fd554f855855819ad213ae825022d2a32dfa28431115",
+      "sourceId": "components.Layout.Sidebar.issues"
+    },
+    {
+      "position": 1760,
+      "source": "My Library",
+      "sourceHash": "d931dbac74f5e1e9ba8b83d8bac6c77bce2ead5271419a48a22721c0e19665ea",
+      "sourceId": "components.Layout.Sidebar.library"
+    },
+    {
+      "position": 1761,
+      "source": "My Media",
+      "sourceHash": "6db1e866711a40348f34573ce95ec106e58f946457c85969e769c4d9c588568a",
+      "sourceId": "components.Layout.Sidebar.myMedia"
+    },
+    {
+      "position": 1762,
+      "source": "Translations & Hacks",
+      "sourceHash": "27e38a778d89cf77ce5c48c743e49f153d1846fe29c13d79b9fc4f60998332cf",
+      "sourceId": "components.Layout.Sidebar.patches"
+    },
+    {
+      "position": 1763,
+      "source": "Requests",
+      "sourceHash": "ada27592c9578e9072b465934a474d7e2c7a3d057db04101550a3cd4ac93fb0d",
+      "sourceId": "components.Layout.Sidebar.requests"
+    },
+    {
+      "position": 1764,
+      "source": "Settings",
+      "sourceHash": "74a883a037bc227f91891ab654a753d3a99f31ab06ae5b5d2b6e594a692b41f8",
+      "sourceId": "components.Layout.Sidebar.settings"
+    },
+    {
+      "position": 1765,
+      "source": "Share & Identify",
+      "sourceHash": "b72f1126edce3ae0f86f472263e18322f56a42f58c64d0a40d94054cdb1fbf6c",
+      "sourceId": "components.Layout.Sidebar.share"
+    },
+    {
+      "position": 1766,
+      "source": "Swipe",
+      "sourceHash": "3f275d858425700456cc0acbc2c3ee28a7ac38148288438596f9a3d0115048a0",
+      "sourceId": "components.Layout.Sidebar.swipe"
+    },
+    {
+      "position": 1767,
+      "source": "User List",
+      "sourceHash": "b08c0af3db5b1fb0974cef98243a7d34b1f9bddd8a22e6fda42204ddecaa7322",
+      "sourceId": "components.Layout.Sidebar.users"
+    },
+    {
+      "position": 1768,
+      "source": "Colour palette",
+      "sourceHash": "698d86b0a3fb01ece8c19d72663abe499de18678017faaa1f0681da20edbc8b4",
+      "sourceId": "components.Layout.ThemePicker.colorPalette"
+    },
+    {
+      "position": 1769,
+      "source": "Dark mode",
+      "sourceHash": "9b7878aef90b527c22be169ed4ab97a5e216b6a1c719dc779883ef64eb85520b",
+      "sourceId": "components.Layout.ThemePicker.darkMode"
+    },
+    {
+      "position": 1770,
+      "source": "Interface design",
+      "sourceHash": "7bea759936a1332bf7e0f2e9e4dfb6440affe27892d577589bf0fac97a3eb210",
+      "sourceId": "components.Layout.ThemePicker.interfaceDesign"
+    },
+    {
+      "position": 1771,
+      "source": "Light mode",
+      "sourceHash": "b4fcfbee4fb937d7eae39abddc0a90b66b8ec543e00b68f357a99a9e6775f809",
+      "sourceId": "components.Layout.ThemePicker.lightMode"
+    },
+    {
+      "position": 1772,
+      "source": "Could not save your theme. Please try again.",
+      "sourceHash": "c48066830ea0e5a1f60dccdd1e4d8797c893416c88a8686dfa85d2f41e88e057",
+      "sourceId": "components.Layout.ThemePicker.saveError"
+    },
+    {
+      "position": 1773,
+      "source": "Theme picker",
+      "sourceHash": "da1f9d70109c1f5df00191a297a5d039f2e3d536eb31d246c5daf3c378627b7c",
+      "sourceId": "components.Layout.ThemePicker.themePicker"
+    },
+    {
+      "position": 1774,
+      "source": "Toggle",
+      "sourceHash": "3d03a1dea561d0dbeadf0694dd44a3398e3e0bfecbb88bcf7d4a6d9e8b91e409",
+      "sourceId": "components.Layout.ThemePicker.toggle"
+    },
+    {
+      "position": 1775,
+      "source": "Book Requests",
+      "sourceHash": "e091608694781a89946e80e7d79e7b4d280e8e940c13cfde29032fd80eb75d1e",
+      "sourceId": "components.Layout.UserDropdown.MiniQuotaDisplay.bookrequests"
+    },
+    {
+      "position": 1776,
+      "source": "Comic Requests",
+      "sourceHash": "9d634a2fdfda1497687461fed3333b68abbd05ad5d55ac7f699e400f420124de",
+      "sourceId": "components.Layout.UserDropdown.MiniQuotaDisplay.comicrequests"
+    },
+    {
+      "position": 1777,
+      "source": "Magazine Requests",
+      "sourceHash": "6939144a43a215362bb0967ade18da36d9de19a8b5bb4591c9cbddf2d29cb80d",
+      "sourceId": "components.Layout.UserDropdown.MiniQuotaDisplay.magazinerequests"
+    },
+    {
+      "position": 1778,
+      "source": "Movie Requests",
+      "sourceHash": "311730c8863e0b4da379268c976f0f65f34bdc597baad4b74062061f26399fde",
+      "sourceId": "components.Layout.UserDropdown.MiniQuotaDisplay.movierequests"
+    },
+    {
+      "position": 1779,
+      "source": "Music Requests",
+      "sourceHash": "a124b53dae3ac5dafaf63fccef0a08ebdee6b3e5a9daab040bec2f51af9696f0",
+      "sourceId": "components.Layout.UserDropdown.MiniQuotaDisplay.musicrequests"
+    },
+    {
+      "position": 1780,
+      "source": "Series Requests",
+      "sourceHash": "94e6d6f847bb7728be9d9a19f62390dbb2796aedfcd72560052e687dd5d0ae98",
+      "sourceId": "components.Layout.UserDropdown.MiniQuotaDisplay.seriesrequests"
+    },
+    {
+      "position": 1781,
+      "source": "Software Requests",
+      "sourceHash": "8f5fbe06f5d77e4b54a764b3cfbc052745ff84c9ccdb65ed150443e90610e6b5",
+      "sourceId": "components.Layout.UserDropdown.MiniQuotaDisplay.softwarerequests"
+    },
+    {
+      "position": 1782,
+      "source": "Profile",
+      "sourceHash": "d696a35bdd1883da07a8d6c41bb7a3153381b23aa197629ee273479a6eaa5a9c",
+      "sourceId": "components.Layout.UserDropdown.myprofile"
+    },
+    {
+      "position": 1783,
+      "source": "Requests",
+      "sourceHash": "ada27592c9578e9072b465934a474d7e2c7a3d057db04101550a3cd4ac93fb0d",
+      "sourceId": "components.Layout.UserDropdown.requests"
+    },
+    {
+      "position": 1784,
+      "source": "Settings",
+      "sourceHash": "74a883a037bc227f91891ab654a753d3a99f31ab06ae5b5d2b6e594a692b41f8",
+      "sourceId": "components.Layout.UserDropdown.settings"
+    },
+    {
+      "position": 1785,
+      "source": "Sign Out",
+      "sourceHash": "0b184bc5d53419982a5a51e0283555322b055f14adbb6d6ea2ef1fffdbe8beb0",
+      "sourceId": "components.Layout.UserDropdown.signout"
+    },
+    {
+      "position": 1786,
+      "source": "User menu",
+      "sourceHash": "6fa25be1c50b44b22f1c1d55c9104329f4854e5717f5e83d350882a605f3a693",
+      "sourceId": "components.Layout.UserDropdown.userMenu"
+    },
+    {
+      "position": 1787,
+      "source": "Email address is invalid.",
+      "sourceHash": "7c9ccf430ae61739d3451283f424d46dd008150e233b12246592e10237770c74",
+      "sourceId": "components.Layout.UserWarnings.emailInvalid"
+    },
+    {
+      "position": 1788,
+      "source": "An email address is required.",
+      "sourceHash": "41d97dc01c857e450190865b8e0a616479363a796777453d2e4109a969bed3e7",
+      "sourceId": "components.Layout.UserWarnings.emailRequired"
+    },
+    {
+      "position": 1789,
+      "source": "A password is required.",
+      "sourceHash": "8a7f1b84725ed531025d8ef6a5a920aafcb5e05ba167ef119f32c5a753d722d0",
+      "sourceId": "components.Layout.UserWarnings.passwordRequired"
+    },
+    {
+      "position": 1790,
+      "source": "Profile is incomplete",
+      "sourceHash": "c6c570ccdc10f296deed0c7334b4e5fc35a8e30ea4d025e5480c34ef4dbbba3b",
+      "sourceId": "components.Layout.UserWarnings.profileIncomplete"
+    },
+    {
+      "position": 1791,
+      "source": "{commitsBehind} {commitsBehind, plural, one {commit} other {commits}} behind",
+      "sourceHash": "f2a72e4f2693f559a16fff4645088179ea9220dd8e2e76df8abc0da6c314e686",
+      "sourceId": "components.Layout.VersionStatus.commitsbehind"
+    },
+    {
+      "position": 1792,
+      "source": "Out of Date",
+      "sourceHash": "0ac1740cb66b2c1da62cc767110e3d13e1dcba750ca7cdef8f5133d47bc92e28",
+      "sourceId": "components.Layout.VersionStatus.outofdate"
+    },
+    {
+      "position": 1793,
+      "source": "SeerrNG Main",
+      "sourceHash": "f83a4c9ac1c2405b140e9356cc71dd4ae4c81fd7e1f67dc3b730f3954e9f353f",
+      "sourceId": "components.Layout.VersionStatus.streammain"
+    },
+    {
+      "position": 1794,
+      "source": "SeerrNG Stable",
+      "sourceHash": "231d27db949fed105842b1fe107e6610a44c44b9dde73d619d68c427f0ac9398",
+      "sourceId": "components.Layout.VersionStatus.streamstable"
+    },
+    {
+      "position": 1795,
+      "source": "Update check unavailable",
+      "sourceHash": "82eaeb1f5cdd1d29056108cdbbb9772495e110095479ce1be284474e908191af",
+      "sourceId": "components.Layout.VersionStatus.updateCheckUnavailable"
+    },
+    {
+      "position": 1796,
+      "source": "Continue Search",
+      "sourceHash": "41c187aaaea91f0565088ed09dda333f9caad7cce1a5e927e55ad999116defcc",
+      "sourceId": "components.ListView.continueSearch"
+    },
+    {
+      "position": 1797,
+      "source": "Choose a team",
+      "sourceHash": "518a3d1bb0e796c5a0ab075be94de7c4dd9de60265f0e029e8af4cec88a4ac75",
+      "sourceId": "components.LiveTv.FollowedTeams.choose"
+    },
+    {
+      "position": 1798,
+      "source": "SeerrNG requests a recording of each upcoming game for these teams when Tunerr finds it in the guide. Recordings follow the usual approval rules.",
+      "sourceHash": "dabc5974d62364c3912c5202ae28088a4b44d86c4dafb0d92b351f17547882f9",
+      "sourceId": "components.LiveTv.FollowedTeams.description"
+    },
+    {
+      "position": 1799,
+      "source": "The team could not be updated.",
+      "sourceHash": "eefc641cacd97e52c2ca6d006698bad10dc9f414c7d713925e36be74fc0f0beb",
+      "sourceId": "components.LiveTv.FollowedTeams.failed"
+    }
+  ],
+  "sourcePositionRange": [
+    1700,
+    1799
+  ],
+  "tree": "be2a8a70ef7f86f3499be7c2190a07b3d2d78036"
+}

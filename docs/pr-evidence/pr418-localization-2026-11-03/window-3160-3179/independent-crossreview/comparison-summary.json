@@ -1,0 +1,563 @@
+{
+  "primaryDecisionSha256": "3a73aa19f12ab16f996d855ca114848fc7f6db02934b8140a1b04c4d183378d1",
+  "independentSealSha256": "5e92e8647b7793887e251ebefb834ed7476cb165922c935d00350fa00a0389a6",
+  "cellsCompared": 240,
+  "cellKeyMismatches": 0,
+  "primaryExactHeadTreeCatalogAndCellPinMismatchCount": 0,
+  "sourcePlaceholderAgreements": 240,
+  "targetPlaceholderAgreements": 240,
+  "sourceMarkupAgreements": 240,
+  "targetMarkupAgreements": 240,
+  "independentDispositionCounts": {
+    "revise": 66,
+    "retain": 174
+  },
+  "primaryDispositionCounts": {
+    "correction": 37,
+    "accept-current": 167,
+    "refinement": 36
+  },
+  "semanticDispositionAgreements": 205,
+  "exactDispositionLabelAgreements": 0,
+  "targetTextAgreements": 183,
+  "targetHashAgreements": 183,
+  "exactRationaleAgreements": 0,
+  "confidenceAgreements": 57,
+  "cellsWithAnyRecordedDifference": 240,
+  "cellsWithDispositionOrTargetDifference": 57,
+  "differenceFieldCounts": {
+    "dispositionLabel": 240,
+    "rationale": 240,
+    "confidence": 183,
+    "targetText": 57,
+    "targetTextSha256": 57,
+    "semanticDisposition": 35
+  },
+  "independentTargetPrimaryTargetDifferences": [
+    {
+      "position": 3160,
+      "sourceId": "components.RequestModal.watchAheadLabel",
+      "locale": "fr",
+      "independent": "File d’attente des épisodes",
+      "primary": "File d’épisodes",
+      "independentDisposition": "revise",
+      "primaryDisposition": "correction"
+    },
+    {
+      "position": 3160,
+      "sourceId": "components.RequestModal.watchAheadLabel",
+      "locale": "hi",
+      "independent": "एपिसोड की कतार",
+      "primary": "एपिसोड कतार",
+      "independentDisposition": "revise",
+      "primaryDisposition": "correction"
+    },
+    {
+      "position": 3160,
+      "sourceId": "components.RequestModal.watchAheadLabel",
+      "locale": "ko",
+      "independent": "에피소드 대기열",
+      "primary": "에피소드 큐",
+      "independentDisposition": "revise",
+      "primaryDisposition": "correction"
+    },
+    {
+      "position": 3160,
+      "sourceId": "components.RequestModal.watchAheadLabel",
+      "locale": "vi",
+      "independent": "Hàng đợi tập phim",
+      "primary": "Hàng đợi Tập phim",
+      "independentDisposition": "revise",
+      "primaryDisposition": "correction"
+    },
+    {
+      "position": 3161,
+      "sourceId": "components.RequestModal.watchAheadLearnMore",
+      "locale": "fr",
+      "independent": "Comment fonctionne la file d’attente des épisodes",
+      "primary": "Fonctionnement de la file d’épisodes",
+      "independentDisposition": "revise",
+      "primaryDisposition": "correction"
+    },
+    {
+      "position": 3161,
+      "sourceId": "components.RequestModal.watchAheadLearnMore",
+      "locale": "hi",
+      "independent": "एपिसोड की कतार कैसे काम करती है",
+      "primary": "एपिसोड कतार कैसे काम करती है",
+      "independentDisposition": "revise",
+      "primaryDisposition": "correction"
+    },
+    {
+      "position": 3161,
+      "sourceId": "components.RequestModal.watchAheadLearnMore",
+      "locale": "id",
+      "independent": "Cara kerja antrean episode",
+      "primary": "Cara kerja Antrian Episode",
+      "independentDisposition": "revise",
+      "primaryDisposition": "correction"
+    },
+    {
+      "position": 3161,
+      "sourceId": "components.RequestModal.watchAheadLearnMore",
+      "locale": "ko",
+      "independent": "에피소드 대기열 작동 방식",
+      "primary": "에피소드 큐 작동 방식",
+      "independentDisposition": "revise",
+      "primaryDisposition": "correction"
+    },
+    {
+      "position": 3161,
+      "sourceId": "components.RequestModal.watchAheadLearnMore",
+      "locale": "zh_Hans",
+      "independent": "剧集队列的运作方式",
+      "primary": "剧集队列如何运作",
+      "independentDisposition": "revise",
+      "primaryDisposition": "correction"
+    },
+    {
+      "position": 3161,
+      "sourceId": "components.RequestModal.watchAheadLearnMore",
+      "locale": "zh_Hant",
+      "independent": "集數佇列的運作方式",
+      "primary": "集數佇列運作方式",
+      "independentDisposition": "revise",
+      "primaryDisposition": "correction"
+    },
+    {
+      "position": 3162,
+      "sourceId": "components.RequestModal.watchAheadLinkAccount",
+      "locale": "ar",
+      "independent": "ربط الحساب",
+      "primary": "اربط الحساب",
+      "independentDisposition": "revise",
+      "primaryDisposition": "correction"
+    },
+    {
+      "position": 3162,
+      "sourceId": "components.RequestModal.watchAheadLinkAccount",
+      "locale": "fr",
+      "independent": "Associer le compte",
+      "primary": "Lier le compte",
+      "independentDisposition": "revise",
+      "primaryDisposition": "correction"
+    },
+    {
+      "position": 3162,
+      "sourceId": "components.RequestModal.watchAheadLinkAccount",
+      "locale": "id",
+      "independent": "Hubungkan akun",
+      "primary": "Tautkan akun",
+      "independentDisposition": "revise",
+      "primaryDisposition": "correction"
+    },
+    {
+      "position": 3163,
+      "sourceId": "components.RequestModal.watchAheadLoadError",
+      "locale": "es",
+      "independent": "No se pudo cargar tu configuración de Cola de Episodios. Inténtalo de nuevo antes de enviar esta solicitud.",
+      "primary": "No se pudo cargar tu configuración de la cola de episodios. Inténtalo de nuevo antes de enviar esta solicitud.",
+      "independentDisposition": "retain",
+      "primaryDisposition": "refinement"
+    },
+    {
+      "position": 3163,
+      "sourceId": "components.RequestModal.watchAheadLoadError",
+      "locale": "fr",
+      "independent": "Impossible de charger le paramètre de votre file d’attente des épisodes. Réessayez avant de soumettre cette demande.",
+      "primary": "Impossible de charger le paramètre de votre file d’épisodes. Réessayez avant de soumettre cette demande.",
+      "independentDisposition": "revise",
+      "primaryDisposition": "refinement"
+    },
+    {
+      "position": 3163,
+      "sourceId": "components.RequestModal.watchAheadLoadError",
+      "locale": "hi",
+      "independent": "आपकी एपिसोड कतार सेटिंग लोड नहीं हो सकी। इस अनुरोध को सबमिट करने से पहले पुनः प्रयास करें।",
+      "primary": "आपकी एपिसोड कतार की सेटिंग लोड नहीं हो सकी। इस अनुरोध को सबमिट करने से पहले फिर से प्रयास करें।",
+      "independentDisposition": "retain",
+      "primaryDisposition": "refinement"
+    },
+    {
+      "position": 3163,
+      "sourceId": "components.RequestModal.watchAheadLoadError",
+      "locale": "vi",
+      "independent": "Không thể tải cài đặt Hàng đợi Tập phim của bạn. Hãy thử lại trước khi gửi yêu cầu này.",
+      "primary": "Không thể tải cài đặt hàng đợi tập phim của bạn. Hãy thử lại trước khi gửi yêu cầu này.",
+      "independentDisposition": "retain",
+      "primaryDisposition": "refinement"
+    },
+    {
+      "position": 3164,
+      "sourceId": "components.RequestModal.watchAheadLoading",
+      "locale": "es",
+      "independent": "Cargando tu configuración de Cola de Episodios…",
+      "primary": "Cargando tu configuración de la cola de episodios…",
+      "independentDisposition": "retain",
+      "primaryDisposition": "refinement"
+    },
+    {
+      "position": 3164,
+      "sourceId": "components.RequestModal.watchAheadLoading",
+      "locale": "fr",
+      "independent": "Chargement du paramètre de votre file d’attente des épisodes…",
+      "primary": "Chargement du paramètre de votre file d’épisodes…",
+      "independentDisposition": "revise",
+      "primaryDisposition": "refinement"
+    },
+    {
+      "position": 3164,
+      "sourceId": "components.RequestModal.watchAheadLoading",
+      "locale": "hi",
+      "independent": "आपकी एपिसोड कतार सेटिंग लोड हो रही है…",
+      "primary": "आपकी एपिसोड कतार की सेटिंग लोड हो रही है…",
+      "independentDisposition": "retain",
+      "primaryDisposition": "refinement"
+    },
+    {
+      "position": 3164,
+      "sourceId": "components.RequestModal.watchAheadLoading",
+      "locale": "vi",
+      "independent": "Đang tải cài đặt Hàng đợi Tập phim của bạn…",
+      "primary": "Đang tải cài đặt hàng đợi tập phim của bạn…",
+      "independentDisposition": "retain",
+      "primaryDisposition": "refinement"
+    },
+    {
+      "position": 3164,
+      "sourceId": "components.RequestModal.watchAheadLoading",
+      "locale": "zh_Hans",
+      "independent": "正在加载您的剧集排队设置…",
+      "primary": "正在加载您的剧集队列设置…",
+      "independentDisposition": "retain",
+      "primaryDisposition": "refinement"
+    },
+    {
+      "position": 3165,
+      "sourceId": "components.RequestModal.watchAheadOffForAccount",
+      "locale": "ar",
+      "independent": "طابور الحلقات معطّل لطلبات {owner} التلفزيونية. يتحكم مدير المستخدم في هذا الإعداد.",
+      "primary": "قائمة انتظار الحلقات معطلة لطلبات {owner} التلفزيونية. ويتحكم مسؤول المستخدمين في هذا الإعداد.",
+      "independentDisposition": "retain",
+      "primaryDisposition": "refinement"
+    },
+    {
+      "position": 3165,
+      "sourceId": "components.RequestModal.watchAheadOffForAccount",
+      "locale": "es",
+      "independent": "La Cola de Episodios está desactivada para solicitudes de TV de {owner}. Un administrador de usuarios controla esta configuración.",
+      "primary": "La cola de episodios está desactivada para las solicitudes de TV de {owner}. Un administrador de usuarios controla esta configuración.",
+      "independentDisposition": "retain",
+      "primaryDisposition": "refinement"
+    },
+    {
+      "position": 3165,
+      "sourceId": "components.RequestModal.watchAheadOffForAccount",
+      "locale": "fr",
+      "independent": "La file d’attente des épisodes est désactivée pour les demandes de séries TV de {owner}. Un gestionnaire des utilisateurs contrôle ce paramètre.",
+      "primary": "La file d'épisodes est désactivée pour les demandes de TV de {owner}. Un gestionnaire d'utilisateurs contrôle ce paramètre.",
+      "independentDisposition": "revise",
+      "primaryDisposition": "accept-current"
+    },
+    {
+      "position": 3165,
+      "sourceId": "components.RequestModal.watchAheadOffForAccount",
+      "locale": "hi",
+      "independent": "{owner} टीवी अनुरोधों के लिए एपिसोड कतार बंद है। एक उपयोगकर्ता प्रबंधक इस सेटिंग को नियंत्रित करता है।",
+      "primary": "एपिसोड कतार {owner} के टीवी अनुरोधों के लिए बंद है। इस सेटिंग को उपयोगकर्ता प्रबंधक नियंत्रित करता है।",
+      "independentDisposition": "retain",
+      "primaryDisposition": "refinement"
+    },
+    {
+      "position": 3165,
+      "sourceId": "components.RequestModal.watchAheadOffForAccount",
+      "locale": "id",
+      "independent": "Antrean episode nonaktif untuk permintaan TV {owner}. Pengaturan ini dikendalikan oleh manajer pengguna.",
+      "primary": "Antrian Episode nonaktif untuk permintaan TV {owner}. Pengaturan ini dikendalikan oleh manajer pengguna.",
+      "independentDisposition": "revise",
+      "primaryDisposition": "accept-current"
+    },
+    {
+      "position": 3165,
+      "sourceId": "components.RequestModal.watchAheadOffForAccount",
+      "locale": "ko",
+      "independent": "{owner}의 TV 요청에 대해 에피소드 대기열이 꺼져 있습니다. 사용자 관리자가 이 설정을 제어합니다.",
+      "primary": "{owner}의 TV 요청에 대해 에피소드 큐가 꺼져 있습니다. 사용자 관리자가 이 설정을 제어합니다.",
+      "independentDisposition": "revise",
+      "primaryDisposition": "accept-current"
+    },
+    {
+      "position": 3165,
+      "sourceId": "components.RequestModal.watchAheadOffForAccount",
+      "locale": "vi",
+      "independent": "Hàng đợi Tập phim đang tắt cho các yêu cầu TV của {owner}. Người quản lý người dùng kiểm soát cài đặt này.",
+      "primary": "Hàng đợi tập phim đã tắt đối với các yêu cầu TV của {owner}. Người quản lý người dùng kiểm soát cài đặt này.",
+      "independentDisposition": "retain",
+      "primaryDisposition": "refinement"
+    },
+    {
+      "position": 3165,
+      "sourceId": "components.RequestModal.watchAheadOffForAccount",
+      "locale": "zh_Hans",
+      "independent": "{owner} 的电视剧请求未启用剧集队列。此设置由用户管理员控制。",
+      "primary": "已为{owner}的电视剧请求关闭剧集队列。此设置由用户管理员控制。",
+      "independentDisposition": "revise",
+      "primaryDisposition": "refinement"
+    },
+    {
+      "position": 3165,
+      "sourceId": "components.RequestModal.watchAheadOffForAccount",
+      "locale": "zh_Hant",
+      "independent": "{owner} 的電視節目請求未啟用集數佇列。此設定由使用者管理者控制。",
+      "primary": "已為{owner}的電視節目請求關閉集數佇列。此設定由使用者管理員控制。",
+      "independentDisposition": "revise",
+      "primaryDisposition": "refinement"
+    },
+    {
+      "position": 3168,
+      "sourceId": "components.RequestModal.watchAheadUnavailableIdentity",
+      "locale": "hi",
+      "independent": "प्लेबैक को Sonarr से जोड़ने से पहले एपिसोड की कतार के लिए TVDB में इस सीरीज़ का मिलान ज़रूरी है।",
+      "primary": "प्लेबैक को Sonarr से जोड़ने से पहले एपिसोड कतार को TVDB में इस सीरीज़ का मिलान चाहिए।",
+      "independentDisposition": "revise",
+      "primaryDisposition": "accept-current"
+    },
+    {
+      "position": 3168,
+      "sourceId": "components.RequestModal.watchAheadUnavailableIdentity",
+      "locale": "ko",
+      "independent": "에피소드 대기열에서 재생을 Sonarr에 연결하려면 먼저 TVDB에서 이 시리즈를 찾아야 합니다.",
+      "primary": "에피소드 큐에서 재생을 Sonarr에 연결하려면 먼저 TVDB에서 이 시리즈와 일치하는 항목을 찾아야 합니다.",
+      "independentDisposition": "retain",
+      "primaryDisposition": "refinement"
+    },
+    {
+      "position": 3168,
+      "sourceId": "components.RequestModal.watchAheadUnavailableIdentity",
+      "locale": "vi",
+      "independent": "Hàng đợi tập cần tìm thấy phim bộ này trên TVDB trước khi liên kết nội dung đang phát với Sonarr.",
+      "primary": "Hàng đợi tập phim cần tìm thấy phim bộ này trên TVDB trước khi có thể kết nối nội dung đang phát với Sonarr.",
+      "independentDisposition": "retain",
+      "primaryDisposition": "refinement"
+    },
+    {
+      "position": 3170,
+      "sourceId": "components.RequestModal.watchAheadUnavailableOtherLink",
+      "locale": "ar",
+      "independent": "يجب على مالك الطلب ربط حساب {mediaServer} الخاص به قبل أن تعمل قائمة انتظار الحلقات.",
+      "primary": "يجب على مالك الطلب ربط حساب {mediaServer} الخاص به قبل تشغيل قائمة انتظار الحلقات.",
+      "independentDisposition": "revise",
+      "primaryDisposition": "refinement"
+    },
+    {
+      "position": 3170,
+      "sourceId": "components.RequestModal.watchAheadUnavailableOtherLink",
+      "locale": "es",
+      "independent": "El propietario de la solicitud debe vincular su cuenta de {mediaServer} antes de que la Cola de Episodios pueda ejecutarse.",
+      "primary": "El propietario de la solicitud debe vincular su cuenta de {mediaServer} antes de que la cola de episodios pueda ejecutarse.",
+      "independentDisposition": "retain",
+      "primaryDisposition": "refinement"
+    },
+    {
+      "position": 3170,
+      "sourceId": "components.RequestModal.watchAheadUnavailableOtherLink",
+      "locale": "fr",
+      "independent": "Le propriétaire de la demande doit associer son compte {mediaServer} avant que la file d’attente des épisodes puisse fonctionner.",
+      "primary": "Le propriétaire de la demande doit lier son compte {mediaServer} avant que la file d'épisodes puisse s'exécuter.",
+      "independentDisposition": "revise",
+      "primaryDisposition": "accept-current"
+    },
+    {
+      "position": 3170,
+      "sourceId": "components.RequestModal.watchAheadUnavailableOtherLink",
+      "locale": "hi",
+      "independent": "एपिसोड की कतार चालू होने से पहले अनुरोध के मालिक को अपना {mediaServer} खाता लिंक करना होगा।",
+      "primary": "एपिसोड कतार चालू होने से पहले अनुरोध मालिक को अपने {mediaServer} खाते को लिंक करना होगा।",
+      "independentDisposition": "revise",
+      "primaryDisposition": "accept-current"
+    },
+    {
+      "position": 3170,
+      "sourceId": "components.RequestModal.watchAheadUnavailableOtherLink",
+      "locale": "id",
+      "independent": "Pemilik permintaan harus menghubungkan akun {mediaServer} mereka sebelum antrean episode dapat dijalankan.",
+      "primary": "Pemilik permintaan harus menghubungkan akun {mediaServer} mereka sebelum Antrian Episode dapat dijalankan.",
+      "independentDisposition": "revise",
+      "primaryDisposition": "accept-current"
+    },
+    {
+      "position": 3170,
+      "sourceId": "components.RequestModal.watchAheadUnavailableOtherLink",
+      "locale": "ko",
+      "independent": "에피소드 대기열이 실행되려면 요청 소유자가 {mediaServer} 계정을 연결해야 합니다.",
+      "primary": "에피소드 큐가 실행되려면 요청 소유자가 {mediaServer} 계정을 연결해야 합니다.",
+      "independentDisposition": "revise",
+      "primaryDisposition": "accept-current"
+    },
+    {
+      "position": 3170,
+      "sourceId": "components.RequestModal.watchAheadUnavailableOtherLink",
+      "locale": "vi",
+      "independent": "Chủ sở hữu yêu cầu phải liên kết tài khoản {mediaServer} của họ trước khi Hàng đợi Tập phim có thể chạy.",
+      "primary": "Chủ sở hữu yêu cầu phải liên kết tài khoản {mediaServer} của họ trước khi hàng đợi tập phim có thể chạy.",
+      "independentDisposition": "retain",
+      "primaryDisposition": "refinement"
+    },
+    {
+      "position": 3170,
+      "sourceId": "components.RequestModal.watchAheadUnavailableOtherLink",
+      "locale": "zh_Hans",
+      "independent": "请求所有者必须关联其 {mediaServer} 账户后，剧集队列才能运行。",
+      "primary": "请求所有者必须先关联其 {mediaServer} 账户，剧集队列才能运行。",
+      "independentDisposition": "revise",
+      "primaryDisposition": "refinement"
+    },
+    {
+      "position": 3171,
+      "sourceId": "components.RequestModal.watchAheadUnavailablePermission",
+      "locale": "hi",
+      "independent": "एपिसोड की कतार का उपयोग करने के लिए आपको चुनी गई TV गुणवत्ता का अनुरोध करने की अनुमति होनी चाहिए।",
+      "primary": "एपिसोड कतार का उपयोग करने के लिए आपके पास चुनी गई TV गुणवत्ता का अनुरोध करने की अनुमति होनी चाहिए।",
+      "independentDisposition": "revise",
+      "primaryDisposition": "accept-current"
+    },
+    {
+      "position": 3171,
+      "sourceId": "components.RequestModal.watchAheadUnavailablePermission",
+      "locale": "ko",
+      "independent": "에피소드 대기열을 사용하려면 선택한 TV 화질을 요청할 권한이 있어야 합니다.",
+      "primary": "에피소드 큐를 사용하려면 선택한 TV 품질을 요청할 권한이 있어야 합니다.",
+      "independentDisposition": "retain",
+      "primaryDisposition": "refinement"
+    },
+    {
+      "position": 3171,
+      "sourceId": "components.RequestModal.watchAheadUnavailablePermission",
+      "locale": "vi",
+      "independent": "Bạn cần có quyền yêu cầu chất lượng TV đã chọn để sử dụng hàng đợi tập.",
+      "primary": "Bạn cần có quyền yêu cầu chất lượng TV đã chọn để sử dụng hàng đợi tập phim.",
+      "independentDisposition": "retain",
+      "primaryDisposition": "refinement"
+    },
+    {
+      "position": 3172,
+      "sourceId": "components.RequestModal.watchAheadUnavailableServer",
+      "locale": "hi",
+      "independent": "एपिसोड की कतार के लिए Plex, Jellyfin या Emby से प्लेबैक ट्रैकिंग आवश्यक है।",
+      "primary": "एपिसोड कतार के लिए Plex, Jellyfin या Emby से प्लेबैक ट्रैकिंग आवश्यक है।",
+      "independentDisposition": "revise",
+      "primaryDisposition": "accept-current"
+    },
+    {
+      "position": 3172,
+      "sourceId": "components.RequestModal.watchAheadUnavailableServer",
+      "locale": "ko",
+      "independent": "에피소드 대기열을 사용하려면 Plex, Jellyfin 또는 Emby의 재생 추적이 필요합니다.",
+      "primary": "에피소드 큐를 사용하려면 Plex, Jellyfin 또는 Emby의 재생 추적이 필요합니다.",
+      "independentDisposition": "retain",
+      "primaryDisposition": "refinement"
+    },
+    {
+      "position": 3172,
+      "sourceId": "components.RequestModal.watchAheadUnavailableServer",
+      "locale": "vi",
+      "independent": "Hàng đợi tập cần theo dõi phát lại từ Plex, Jellyfin hoặc Emby.",
+      "primary": "Hàng đợi tập phim cần có tính năng theo dõi nội dung đang phát từ Plex, Jellyfin hoặc Emby.",
+      "independentDisposition": "retain",
+      "primaryDisposition": "refinement"
+    },
+    {
+      "position": 3173,
+      "sourceId": "components.RequestModal.watchAheadUnavailableSonarr",
+      "locale": "ar",
+      "independent": "اختر خادم Sonarr أو أعد إعداده لجودة التلفاز المحددة لاستخدام قائمة انتظار الحلقات.",
+      "primary": "اختر خادم Sonarr أو اضبطه لجودة التلفاز المحددة لاستخدام قائمة انتظار الحلقات.",
+      "independentDisposition": "revise",
+      "primaryDisposition": "correction"
+    },
+    {
+      "position": 3173,
+      "sourceId": "components.RequestModal.watchAheadUnavailableSonarr",
+      "locale": "es",
+      "independent": "Elige o configura un servidor de Sonarr para la calidad de TV seleccionada para usar la cola de episodios.",
+      "primary": "Elige o configura un servidor Sonarr para la calidad de TV seleccionada y así poder usar la cola de episodios.",
+      "independentDisposition": "revise",
+      "primaryDisposition": "refinement"
+    },
+    {
+      "position": 3173,
+      "sourceId": "components.RequestModal.watchAheadUnavailableSonarr",
+      "locale": "hi",
+      "independent": "एपिसोड की कतार का उपयोग करने के लिए चुनी गई TV गुणवत्ता हेतु Sonarr सर्वर चुनें या कॉन्फ़िगर करें।",
+      "primary": "एपिसोड कतार का उपयोग करने के लिए चुनी गई TV गुणवत्ता हेतु Sonarr सर्वर चुनें या कॉन्फ़िगर करें।",
+      "independentDisposition": "revise",
+      "primaryDisposition": "accept-current"
+    },
+    {
+      "position": 3173,
+      "sourceId": "components.RequestModal.watchAheadUnavailableSonarr",
+      "locale": "ko",
+      "independent": "에피소드 대기열을 사용하려면 선택한 TV 화질에 사용할 Sonarr 서버를 선택하거나 구성하세요.",
+      "primary": "에피소드 큐를 사용하려면 선택한 TV 품질에 사용할 Sonarr 서버를 선택하거나 구성하세요.",
+      "independentDisposition": "retain",
+      "primaryDisposition": "refinement"
+    },
+    {
+      "position": 3173,
+      "sourceId": "components.RequestModal.watchAheadUnavailableSonarr",
+      "locale": "vi",
+      "independent": "Hãy chọn hoặc cấu hình máy chủ Sonarr cho chất lượng TV đã chọn để sử dụng hàng đợi tập.",
+      "primary": "Hãy chọn hoặc cấu hình máy chủ Sonarr cho chất lượng TV đã chọn để sử dụng hàng đợi tập phim.",
+      "independentDisposition": "retain",
+      "primaryDisposition": "refinement"
+    },
+    {
+      "position": 3173,
+      "sourceId": "components.RequestModal.watchAheadUnavailableSonarr",
+      "locale": "zh_Hant",
+      "independent": "若要使用集數佇列，請為所選電視畫質選擇或設定 Sonarr 伺服器。",
+      "primary": "若要使用集數佇列，請為所選的電視畫質選擇或設定 Sonarr 伺服器。",
+      "independentDisposition": "revise",
+      "primaryDisposition": "refinement"
+    },
+    {
+      "position": 3174,
+      "sourceId": "components.RequestStatus.SoftwareRequests.approve",
+      "locale": "fr",
+      "independent": "Approuver",
+      "primary": "Valider",
+      "independentDisposition": "revise",
+      "primaryDisposition": "accept-current"
+    },
+    {
+      "position": 3175,
+      "sourceId": "components.RequestStatus.SoftwareRequests.approved",
+      "locale": "es",
+      "independent": "Aprobada",
+      "primary": "Aprobado",
+      "independentDisposition": "revise",
+      "primaryDisposition": "accept-current"
+    },
+    {
+      "position": 3175,
+      "sourceId": "components.RequestStatus.SoftwareRequests.approved",
+      "locale": "fr",
+      "independent": "Approuvée",
+      "primary": "Validé",
+      "independentDisposition": "revise",
+      "primaryDisposition": "accept-current"
+    }
+  ],
+  "markupMismatches": [],
+  "records": "primary-comparison.jsonl records each of the 240 cells and exact differences in disposition label/meaning, target/hash, rationale, confidence, placeholder and markup structure.",
+  "cellsWithDecisionDifference": 57,
+  "cellsWithAnyPinOrStructuralProblem": 0,
+  "independentPrimaryDispositionCrossTab": {
+    "retain vs retain": 153,
+    "retain vs revise": 21,
+    "revise vs retain": 14,
+    "revise vs revise": 52
+  },
+  "cellsWithReviewerRationaleTextDifference": 240,
+  "cellsWithConfidenceDifference": 183
+}

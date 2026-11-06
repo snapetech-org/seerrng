@@ -1,0 +1,3369 @@
+{
+  "callerGapTriage": {
+    "callerFiles": [
+      {
+        "blob": "b8108535f02a8d5a42df3fb25d6a3e48d0833746",
+        "fileSha256": "e2beaf7e25f0a0aa86b36909d469a2dc06915cc42a0f68f811ede3f12e46799d",
+        "path": "src/components/RequestModal/ComicRequestModal.tsx"
+      },
+      {
+        "blob": "ee4654b84a200888a2e82da45f7ed5752f3cadc5",
+        "fileSha256": "3302816c4320f46b44958fdc9386074876288341fb092a3acde594db41b5d2f3",
+        "path": "src/components/RequestModal/MagazineRequestModal.tsx"
+      },
+      {
+        "blob": "5802b65ea44971477ff78037efe6d07ab68f6495",
+        "fileSha256": "5aa28c753c3bde5f53f22a7d4df406b025dc53b6dfa8bbc7f5a0e6ab71c0785c",
+        "path": "src/components/RequestModal/MusicCollectionRequestModal.tsx"
+      },
+      {
+        "blob": "ce0402f5cef02cddac927d29d4bff4f12635f0e8",
+        "fileSha256": "9e517a3ed16c468c0877aeff9b3618818a4b5acd52aa37d3a44a7b6fdc05cd90",
+        "path": "src/components/RequestModal/MusicRequestModal.tsx"
+      },
+      {
+        "blob": "0e421e7e07adc0f558d9634d2822f3045576611f",
+        "fileSha256": "7c5985ee084f300da3defebaa712fbcadd87bd852b2602425b4f6a6f44c929ce",
+        "path": "src/components/RequestModal/PlaylistImportModal.tsx"
+      },
+      {
+        "blob": "04a3da7d068564eec5f3e2e1846b3f57044dbf86",
+        "fileSha256": "cc3b2d690a4325662124e06122e6198975e2e3bec490b3e6ca936d827937fbf3",
+        "path": "src/components/RequestModal/QuotaDisplay/index.tsx"
+      }
+    ],
+    "gaps": [],
+    "head": "58697945e3d3fb44c37d49db0cc0f88e3af110cc",
+    "initialExtractorGapCount": 0,
+    "pullRequest": 418,
+    "repository": "snapetech-org/SeerrNG",
+    "resolution": "No caller gaps were found in the initial source-group extraction; all 100 source rows have exact definition/use references. No extractor alias repair was needed for this window.",
+    "tree": "e3076937fe10b4dd3821ea573e8e5e21601fce7d",
+    "trueUnmappedSourceCount": 0
+  },
+  "checks": {
+    "all100CallerContextsPinnedAndRehashed": true,
+    "all1200ExactSourceAndCurrentTargetRowsReattested": true,
+    "all1200IndependentReviewRowsReconciled": true,
+    "allCandidateValuesKeepExactTopLevelPlaceholdersAndAccountForICUBranchEncoding": true,
+    "allCatalogKeySetsIdentical": true,
+    "allFinalMarkupDifferencesArePluralBranchRepetition": true,
+    "allFinalProtectedLiteralsPresent": true,
+    "allICURootsAndPluralCategoriesValid": true,
+    "exactApplyListMatchesEveryCandidate": true,
+    "forwardW3000All12ReadBacksPresent": true,
+    "noTrackedRepositoryChanges": true,
+    "noUnresolvedExactPriorDispositionCollision": true,
+    "onlyPreservedSharedUntrackedSymlink": true,
+    "prHeadMatchesLocalAndOfficialRemote": true,
+    "previousWindowW2899All12TargetsMatchCurrent": true,
+    "sourceBoundaryVerified": true,
+    "spanishDirectAddressFormalOrNeutral": true
+  },
+  "icuProfiles": [
+    {
+      "currentProfile": [
+        {
+          "branches": {
+            "few": "مشاهد للبالغين",
+            "many": "مشهد للبالغين",
+            "one": "مشهد للبالغين",
+            "other": "مشهد للبالغين",
+            "two": "مشهدان للبالغين",
+            "zero": "مشهد للبالغين"
+          },
+          "kind": "plural",
+          "name": "limit"
+        }
+      ],
+      "failure": null,
+      "finalProfile": [
+        {
+          "branches": {
+            "few": "مشاهد للبالغين",
+            "many": "مشهد للبالغين",
+            "one": "مشهد للبالغين",
+            "other": "مشهد للبالغين",
+            "two": "مشهدان للبالغين",
+            "zero": "مشهد للبالغين"
+          },
+          "kind": "plural",
+          "name": "limit"
+        }
+      ],
+      "locale": "ar",
+      "sourceId": "components.RequestModal.QuotaDisplay.adultlimit",
+      "sourcePosition": 2993,
+      "sourceProfile": [
+        {
+          "branches": {
+            "one": "adult scene",
+            "other": "adult scenes"
+          },
+          "kind": "plural",
+          "name": "limit"
+        }
+      ],
+      "valid": true
+    },
+    {
+      "currentProfile": [
+        {
+          "branches": {
+            "one": "Szene für Erwachsene",
+            "other": "Szenen für Erwachsene"
+          },
+          "kind": "plural",
+          "name": "limit"
+        }
+      ],
+      "failure": null,
+      "finalProfile": [
+        {
+          "branches": {
+            "one": "Szene für Erwachsene",
+            "other": "Szenen für Erwachsene"
+          },
+          "kind": "plural",
+          "name": "limit"
+        }
+      ],
+      "locale": "de",
+      "sourceId": "components.RequestModal.QuotaDisplay.adultlimit",
+      "sourcePosition": 2993,
+      "sourceProfile": [
+        {
+          "branches": {
+            "one": "adult scene",
+            "other": "adult scenes"
+          },
+          "kind": "plural",
+          "name": "limit"
+        }
+      ],
+      "valid": true
+    },
+    {
+      "currentProfile": [
+        {
+          "branches": {
+            "many": "escenas para adultos",
+            "one": "escena para adultos",
+            "other": "escenas para adultos"
+          },
+          "kind": "plural",
+          "name": "limit"
+        }
+      ],
+      "failure": null,
+      "finalProfile": [
+        {
+          "branches": {
+            "many": "escenas para adultos",
+            "one": "escena para adultos",
+            "other": "escenas para adultos"
+          },
+          "kind": "plural",
+          "name": "limit"
+        }
+      ],
+      "locale": "es",
+      "sourceId": "components.RequestModal.QuotaDisplay.adultlimit",
+      "sourcePosition": 2993,
+      "sourceProfile": [
+        {
+          "branches": {
+            "one": "adult scene",
+            "other": "adult scenes"
+          },
+          "kind": "plural",
+          "name": "limit"
+        }
+      ],
+      "valid": true
+    },
+    {
+      "currentProfile": [
+        {
+          "branches": {
+            "many": "scènes pour adultes",
+            "one": "scène pour adultes",
+            "other": "scènes pour adultes"
+          },
+          "kind": "plural",
+          "name": "limit"
+        }
+      ],
+      "failure": null,
+      "finalProfile": [
+        {
+          "branches": {
+            "many": "scènes pour adultes",
+            "one": "scène pour adultes",
+            "other": "scènes pour adultes"
+          },
+          "kind": "plural",
+          "name": "limit"
+        }
+      ],
+      "locale": "fr",
+      "sourceId": "components.RequestModal.QuotaDisplay.adultlimit",
+      "sourcePosition": 2993,
+      "sourceProfile": [
+        {
+          "branches": {
+            "one": "adult scene",
+            "other": "adult scenes"
+          },
+          "kind": "plural",
+          "name": "limit"
+        }
+      ],
+      "valid": true
+    },
+    {
+      "currentProfile": [
+        {
+          "branches": {
+            "one": "एडल्ट सीन",
+            "other": "एडल्ट सीन"
+          },
+          "kind": "plural",
+          "name": "limit"
+        }
+      ],
+      "failure": null,
+      "finalProfile": [
+        {
+          "branches": {
+            "one": "एडल्ट सीन",
+            "other": "एडल्ट सीन"
+          },
+          "kind": "plural",
+          "name": "limit"
+        }
+      ],
+      "locale": "hi",
+      "sourceId": "components.RequestModal.QuotaDisplay.adultlimit",
+      "sourcePosition": 2993,
+      "sourceProfile": [
+        {
+          "branches": {
+            "one": "adult scene",
+            "other": "adult scenes"
+          },
+          "kind": "plural",
+          "name": "limit"
+        }
+      ],
+      "valid": true
+    },
+    {
+      "currentProfile": [
+        {
+          "branches": {
+            "one": "scene dewasa",
+            "other": "scene dewasa"
+          },
+          "kind": "plural",
+          "name": "limit"
+        }
+      ],
+      "failure": null,
+      "finalProfile": [
+        {
+          "branches": {
+            "one": "scene dewasa",
+            "other": "scene dewasa"
+          },
+          "kind": "plural",
+          "name": "limit"
+        }
+      ],
+      "locale": "id",
+      "sourceId": "components.RequestModal.QuotaDisplay.adultlimit",
+      "sourcePosition": 2993,
+      "sourceProfile": [
+        {
+          "branches": {
+            "one": "adult scene",
+            "other": "adult scenes"
+          },
+          "kind": "plural",
+          "name": "limit"
+        }
+      ],
+      "valid": true
+    },
+    {
+      "currentProfile": [
+        {
+          "branches": {
+            "other": "アダルトシーン"
+          },
+          "kind": "plural",
+          "name": "limit"
+        }
+      ],
+      "failure": null,
+      "finalProfile": [
+        {
+          "branches": {
+            "other": "アダルトシーン"
+          },
+          "kind": "plural",
+          "name": "limit"
+        }
+      ],
+      "locale": "ja",
+      "sourceId": "components.RequestModal.QuotaDisplay.adultlimit",
+      "sourcePosition": 2993,
+      "sourceProfile": [
+        {
+          "branches": {
+            "one": "adult scene",
+            "other": "adult scenes"
+          },
+          "kind": "plural",
+          "name": "limit"
+        }
+      ],
+      "valid": true
+    },
+    {
+      "currentProfile": [
+        {
+          "branches": {
+            "other": "성인 장면"
+          },
+          "kind": "plural",
+          "name": "limit"
+        }
+      ],
+      "failure": null,
+      "finalProfile": [
+        {
+          "branches": {
+            "other": "성인 장면"
+          },
+          "kind": "plural",
+          "name": "limit"
+        }
+      ],
+      "locale": "ko",
+      "sourceId": "components.RequestModal.QuotaDisplay.adultlimit",
+      "sourcePosition": 2993,
+      "sourceProfile": [
+        {
+          "branches": {
+            "one": "adult scene",
+            "other": "adult scenes"
+          },
+          "kind": "plural",
+          "name": "limit"
+        }
+      ],
+      "valid": true
+    },
+    {
+      "currentProfile": [
+        {
+          "branches": {
+            "many": "cenas adultas",
+            "one": "cena adulta",
+            "other": "cenas adultas"
+          },
+          "kind": "plural",
+          "name": "limit"
+        }
+      ],
+      "failure": null,
+      "finalProfile": [
+        {
+          "branches": {
+            "many": "cenas adultas",
+            "one": "cena adulta",
+            "other": "cenas adultas"
+          },
+          "kind": "plural",
+          "name": "limit"
+        }
+      ],
+      "locale": "pt_BR",
+      "sourceId": "components.RequestModal.QuotaDisplay.adultlimit",
+      "sourcePosition": 2993,
+      "sourceProfile": [
+        {
+          "branches": {
+            "one": "adult scene",
+            "other": "adult scenes"
+          },
+          "kind": "plural",
+          "name": "limit"
+        }
+      ],
+      "valid": true
+    },
+    {
+      "currentProfile": [
+        {
+          "branches": {
+            "one": "cảnh người lớn",
+            "other": "cảnh người lớn"
+          },
+          "kind": "plural",
+          "name": "limit"
+        }
+      ],
+      "failure": null,
+      "finalProfile": [
+        {
+          "branches": {
+            "one": "cảnh người lớn",
+            "other": "cảnh người lớn"
+          },
+          "kind": "plural",
+          "name": "limit"
+        }
+      ],
+      "locale": "vi",
+      "sourceId": "components.RequestModal.QuotaDisplay.adultlimit",
+      "sourcePosition": 2993,
+      "sourceProfile": [
+        {
+          "branches": {
+            "one": "adult scene",
+            "other": "adult scenes"
+          },
+          "kind": "plural",
+          "name": "limit"
+        }
+      ],
+      "valid": true
+    },
+    {
+      "currentProfile": [
+        {
+          "branches": {
+            "other": "成人场景"
+          },
+          "kind": "plural",
+          "name": "limit"
+        }
+      ],
+      "failure": null,
+      "finalProfile": [
+        {
+          "branches": {
+            "other": "成人场景"
+          },
+          "kind": "plural",
+          "name": "limit"
+        }
+      ],
+      "locale": "zh_Hans",
+      "sourceId": "components.RequestModal.QuotaDisplay.adultlimit",
+      "sourcePosition": 2993,
+      "sourceProfile": [
+        {
+          "branches": {
+            "one": "adult scene",
+            "other": "adult scenes"
+          },
+          "kind": "plural",
+          "name": "limit"
+        }
+      ],
+      "valid": true
+    },
+    {
+      "currentProfile": [
+        {
+          "branches": {
+            "other": "成人場景"
+          },
+          "kind": "plural",
+          "name": "limit"
+        }
+      ],
+      "failure": null,
+      "finalProfile": [
+        {
+          "branches": {
+            "other": "成人場景"
+          },
+          "kind": "plural",
+          "name": "limit"
+        }
+      ],
+      "locale": "zh_Hant",
+      "sourceId": "components.RequestModal.QuotaDisplay.adultlimit",
+      "sourcePosition": 2993,
+      "sourceProfile": [
+        {
+          "branches": {
+            "one": "adult scene",
+            "other": "adult scenes"
+          },
+          "kind": "plural",
+          "name": "limit"
+        }
+      ],
+      "valid": true
+    },
+    {
+      "currentProfile": [
+        {
+          "branches": {
+            "=0": "",
+            "few": " كل <strong>{days}</strong> أيام",
+            "many": " كل <strong>{days}</strong> يومًا",
+            "one": " كل يوم",
+            "other": " كل <strong>{days}</strong> يوم",
+            "two": " كل يومين",
+            "zero": " كل يوم"
+          },
+          "kind": "plural",
+          "name": "days"
+        }
+      ],
+      "failure": null,
+      "finalProfile": [
+        {
+          "branches": {
+            "=0": "",
+            "few": " كل <strong>{days}</strong> أيام",
+            "many": " كل <strong>{days}</strong> يومًا",
+            "one": " كل يوم",
+            "other": " كل <strong>{days}</strong> يوم",
+            "two": " كل يومين",
+            "zero": " كل يوم"
+          },
+          "kind": "plural",
+          "name": "days"
+        }
+      ],
+      "locale": "ar",
+      "sourceId": "components.RequestModal.QuotaDisplay.allowedRequests",
+      "sourcePosition": 2994,
+      "sourceProfile": [
+        {
+          "branches": {
+            "=0": "",
+            "one": " every day",
+            "other": " every <strong>{days}</strong> days"
+          },
+          "kind": "plural",
+          "name": "days"
+        }
+      ],
+      "valid": true
+    },
+    {
+      "currentProfile": [
+        {
+          "branches": {
+            "=0": "",
+            "one": " pro Tag",
+            "other": " alle <strong>{days}</strong> Tage"
+          },
+          "kind": "plural",
+          "name": "days"
+        }
+      ],
+      "failure": null,
+      "finalProfile": [
+        {
+          "branches": {
+            "=0": "",
+            "one": " pro Tag",
+            "other": " alle <strong>{days}</strong> Tage"
+          },
+          "kind": "plural",
+          "name": "days"
+        }
+      ],
+      "locale": "de",
+      "sourceId": "components.RequestModal.QuotaDisplay.allowedRequests",
+      "sourcePosition": 2994,
+      "sourceProfile": [
+        {
+          "branches": {
+            "=0": "",
+            "one": " every day",
+            "other": " every <strong>{days}</strong> days"
+          },
+          "kind": "plural",
+          "name": "days"
+        }
+      ],
+      "valid": true
+    },
+    {
+      "currentProfile": [
+        {
+          "branches": {
+            "=0": "",
+            "many": " cada <strong>{days}</strong> días",
+            "one": " cada día",
+            "other": " cada <strong>{days}</strong> días"
+          },
+          "kind": "plural",
+          "name": "days"
+        }
+      ],
+      "failure": null,
+      "finalProfile": [
+        {
+          "branches": {
+            "=0": "",
+            "many": " cada <strong>{days}</strong> días",
+            "one": " cada día",
+            "other": " cada <strong>{days}</strong> días"
+          },
+          "kind": "plural",
+          "name": "days"
+        }
+      ],
+      "locale": "es",
+      "sourceId": "components.RequestModal.QuotaDisplay.allowedRequests",
+      "sourcePosition": 2994,
+      "sourceProfile": [
+        {
+          "branches": {
+            "=0": "",
+            "one": " every day",
+            "other": " every <strong>{days}</strong> days"
+          },
+          "kind": "plural",
+          "name": "days"
+        }
+      ],
+      "valid": true
+    },
+    {
+      "currentProfile": [
+        {
+          "branches": {
+            "=0": "",
+            "many": " tous les <strong>{days}</strong> jours",
+            "one": " par jour",
+            "other": " tous les <strong>{days}</strong> jours"
+          },
+          "kind": "plural",
+          "name": "days"
+        }
+      ],
+      "failure": null,
+      "finalProfile": [
+        {
+          "branches": {
+            "=0": "",
+            "many": " tous les <strong>{days}</strong> jours",
+            "one": " par jour",
+            "other": " tous les <strong>{days}</strong> jours"
+          },
+          "kind": "plural",
+          "name": "days"
+        }
+      ],
+      "locale": "fr",
+      "sourceId": "components.RequestModal.QuotaDisplay.allowedRequests",
+      "sourcePosition": 2994,
+      "sourceProfile": [
+        {
+          "branches": {
+            "=0": "",
+            "one": " every day",
+            "other": " every <strong>{days}</strong> days"
+          },
+          "kind": "plural",
+          "name": "days"
+        }
+      ],
+      "valid": true
+    },
+    {
+      "currentProfile": [
+        {
+          "branches": {
+            "=0": "",
+            "one": " हर दिन",
+            "other": " हर <strong>{days}</strong> दिन"
+          },
+          "kind": "plural",
+          "name": "days"
+        }
+      ],
+      "failure": null,
+      "finalProfile": [
+        {
+          "branches": {
+            "=0": "",
+            "one": " हर दिन",
+            "other": " हर <strong>{days}</strong> दिन"
+          },
+          "kind": "plural",
+          "name": "days"
+        }
+      ],
+      "locale": "hi",
+      "sourceId": "components.RequestModal.QuotaDisplay.allowedRequests",
+      "sourcePosition": 2994,
+      "sourceProfile": [
+        {
+          "branches": {
+            "=0": "",
+            "one": " every day",
+            "other": " every <strong>{days}</strong> days"
+          },
+          "kind": "plural",
+          "name": "days"
+        }
+      ],
+      "valid": true
+    },
+    {
+      "currentProfile": [
+        {
+          "branches": {
+            "=0": "",
+            "one": " setiap hari",
+            "other": " setiap <strong>{days}</strong> hari"
+          },
+          "kind": "plural",
+          "name": "days"
+        }
+      ],
+      "failure": null,
+      "finalProfile": [
+        {
+          "branches": {
+            "=0": "",
+            "one": " setiap hari",
+            "other": " setiap <strong>{days}</strong> hari"
+          },
+          "kind": "plural",
+          "name": "days"
+        }
+      ],
+      "locale": "id",
+      "sourceId": "components.RequestModal.QuotaDisplay.allowedRequests",
+      "sourcePosition": 2994,
+      "sourceProfile": [
+        {
+          "branches": {
+            "=0": "",
+            "one": " every day",
+            "other": " every <strong>{days}</strong> days"
+          },
+          "kind": "plural",
+          "name": "days"
+        }
+      ],
+      "valid": true
+    },
+    {
+      "currentProfile": [
+        {
+          "branches": {
+            "=0": "",
+            "one": "を毎日",
+            "other": "を<strong>{days}</strong>日ごとに"
+          },
+          "kind": "plural",
+          "name": "days"
+        }
+      ],
+      "failure": null,
+      "finalProfile": [
+        {
+          "branches": {
+            "=0": "",
+            "one": "を毎日",
+            "other": "を<strong>{days}</strong>日ごとに"
+          },
+          "kind": "plural",
+          "name": "days"
+        }
+      ],
+      "locale": "ja",
+      "sourceId": "components.RequestModal.QuotaDisplay.allowedRequests",
+      "sourcePosition": 2994,
+      "sourceProfile": [
+        {
+          "branches": {
+            "=0": "",
+            "one": " every day",
+            "other": " every <strong>{days}</strong> days"
+          },
+          "kind": "plural",
+          "name": "days"
+        }
+      ],
+      "valid": true
+    },
+    {
+      "currentProfile": [
+        {
+          "branches": {
+            "=0": "",
+            "one": "을 매일",
+            "other": "을 <strong>{days}</strong>일마다"
+          },
+          "kind": "plural",
+          "name": "days"
+        }
+      ],
+      "failure": null,
+      "finalProfile": [
+        {
+          "branches": {
+            "=0": "",
+            "one": "을 매일",
+            "other": "을 <strong>{days}</strong>일마다"
+          },
+          "kind": "plural",
+          "name": "days"
+        }
+      ],
+      "locale": "ko",
+      "sourceId": "components.RequestModal.QuotaDisplay.allowedRequests",
+      "sourcePosition": 2994,
+      "sourceProfile": [
+        {
+          "branches": {
+            "=0": "",
+            "one": " every day",
+            "other": " every <strong>{days}</strong> days"
+          },
+          "kind": "plural",
+          "name": "days"
+        }
+      ],
+      "valid": true
+    },
+    {
+      "currentProfile": [
+        {
+          "branches": {
+            "=0": "",
+            "many": " Cada <strong>{days}</strong> dias",
+            "one": " todos os dias",
+            "other": " Cada <strong>{days}</strong> dias"
+          },
+          "kind": "plural",
+          "name": "days"
+        }
+      ],
+      "failure": null,
+      "finalProfile": [
+        {
+          "branches": {
+            "=0": "",
+            "many": " a cada <strong>{days}</strong> dias",
+            "one": " todos os dias",
+            "other": " a cada <strong>{days}</strong> dias"
+          },
+          "kind": "plural",
+          "name": "days"
+        }
+      ],
+      "locale": "pt_BR",
+      "sourceId": "components.RequestModal.QuotaDisplay.allowedRequests",
+      "sourcePosition": 2994,
+      "sourceProfile": [
+        {
+          "branches": {
+            "=0": "",
+            "one": " every day",
+            "other": " every <strong>{days}</strong> days"
+          },
+          "kind": "plural",
+          "name": "days"
+        }
+      ],
+      "valid": true
+    },
+    {
+      "currentProfile": [
+        {
+          "branches": {
+            "=0": "",
+            "one": " Mỗi ngày",
+            "other": " mỗi <strong>{days}</strong> ngày"
+          },
+          "kind": "plural",
+          "name": "days"
+        }
+      ],
+      "failure": null,
+      "finalProfile": [
+        {
+          "branches": {
+            "=0": "",
+            "one": " Mỗi ngày",
+            "other": " mỗi <strong>{days}</strong> ngày"
+          },
+          "kind": "plural",
+          "name": "days"
+        }
+      ],
+      "locale": "vi",
+      "sourceId": "components.RequestModal.QuotaDisplay.allowedRequests",
+      "sourcePosition": 2994,
+      "sourceProfile": [
+        {
+          "branches": {
+            "=0": "",
+            "one": " every day",
+            "other": " every <strong>{days}</strong> days"
+          },
+          "kind": "plural",
+          "name": "days"
+        }
+      ],
+      "valid": true
+    },
+    {
+      "currentProfile": [
+        {
+          "branches": {
+            "=0": "",
+            "one": " 每天都会",
+            "other": " 每个 <strong>{days}</strong> 天数"
+          },
+          "kind": "plural",
+          "name": "days"
+        }
+      ],
+      "failure": null,
+      "finalProfile": [
+        {
+          "branches": {
+            "=0": "",
+            "one": "每天",
+            "other": "每 <strong>{days}</strong>天"
+          },
+          "kind": "plural",
+          "name": "days"
+        }
+      ],
+      "locale": "zh_Hans",
+      "sourceId": "components.RequestModal.QuotaDisplay.allowedRequests",
+      "sourcePosition": 2994,
+      "sourceProfile": [
+        {
+          "branches": {
+            "=0": "",
+            "one": " every day",
+            "other": " every <strong>{days}</strong> days"
+          },
+          "kind": "plural",
+          "name": "days"
+        }
+      ],
+      "valid": true
+    },
+    {
+      "currentProfile": [
+        {
+          "branches": {
+            "=0": "",
+            "one": " 每天",
+            "other": " 每 <strong>{days}</strong> 天"
+          },
+          "kind": "plural",
+          "name": "days"
+        }
+      ],
+      "failure": null,
+      "finalProfile": [
+        {
+          "branches": {
+            "=0": "",
+            "one": "每天",
+            "other": "每 <strong>{days}</strong>天"
+          },
+          "kind": "plural",
+          "name": "days"
+        }
+      ],
+      "locale": "zh_Hant",
+      "sourceId": "components.RequestModal.QuotaDisplay.allowedRequests",
+      "sourcePosition": 2994,
+      "sourceProfile": [
+        {
+          "branches": {
+            "=0": "",
+            "one": " every day",
+            "other": " every <strong>{days}</strong> days"
+          },
+          "kind": "plural",
+          "name": "days"
+        }
+      ],
+      "valid": true
+    },
+    {
+      "currentProfile": [
+        {
+          "branches": {
+            "=0": "",
+            "few": " كل <strong>{days}</strong> أيام",
+            "many": " كل <strong>{days}</strong> يومًا",
+            "one": " كل يوم",
+            "other": " كل <strong>{days}</strong> يوم",
+            "two": " كل يومين",
+            "zero": " كل يوم"
+          },
+          "kind": "plural",
+          "name": "days"
+        }
+      ],
+      "failure": null,
+      "finalProfile": [
+        {
+          "branches": {
+            "=0": "",
+            "few": " كل <strong>{days}</strong> أيام",
+            "many": " كل <strong>{days}</strong> يومًا",
+            "one": " كل يوم",
+            "other": " كل <strong>{days}</strong> يوم",
+            "two": " كل يومين",
+            "zero": " كل يوم"
+          },
+          "kind": "plural",
+          "name": "days"
+        }
+      ],
+      "locale": "ar",
+      "sourceId": "components.RequestModal.QuotaDisplay.allowedRequestsUser",
+      "sourcePosition": 2995,
+      "sourceProfile": [
+        {
+          "branches": {
+            "=0": "",
+            "one": " every day",
+            "other": " every <strong>{days}</strong> days"
+          },
+          "kind": "plural",
+          "name": "days"
+        }
+      ],
+      "valid": true
+    },
+    {
+      "currentProfile": [
+        {
+          "branches": {
+            "=0": "",
+            "one": " pro Tag",
+            "other": " alle <strong>{days}</strong> Tage"
+          },
+          "kind": "plural",
+          "name": "days"
+        }
+      ],
+      "failure": null,
+      "finalProfile": [
+        {
+          "branches": {
+            "=0": "",
+            "one": " pro Tag",
+            "other": " alle <strong>{days}</strong> Tage"
+          },
+          "kind": "plural",
+          "name": "days"
+        }
+      ],
+      "locale": "de",
+      "sourceId": "components.RequestModal.QuotaDisplay.allowedRequestsUser",
+      "sourcePosition": 2995,
+      "sourceProfile": [
+        {
+          "branches": {
+            "=0": "",
+            "one": " every day",
+            "other": " every <strong>{days}</strong> days"
+          },
+          "kind": "plural",
+          "name": "days"
+        }
+      ],
+      "valid": true
+    },
+    {
+      "currentProfile": [
+        {
+          "branches": {
+            "=0": "",
+            "many": " cada <strong>{days}</strong> días",
+            "one": " cada día",
+            "other": " cada <strong>{days}</strong> días"
+          },
+          "kind": "plural",
+          "name": "days"
+        }
+      ],
+      "failure": null,
+      "finalProfile": [
+        {
+          "branches": {
+            "=0": "",
+            "many": " cada <strong>{days}</strong> días",
+            "one": " cada día",
+            "other": " cada <strong>{days}</strong> días"
+          },
+          "kind": "plural",
+          "name": "days"
+        }
+      ],
+      "locale": "es",
+      "sourceId": "components.RequestModal.QuotaDisplay.allowedRequestsUser",
+      "sourcePosition": 2995,
+      "sourceProfile": [
+        {
+          "branches": {
+            "=0": "",
+            "one": " every day",
+            "other": " every <strong>{days}</strong> days"
+          },
+          "kind": "plural",
+          "name": "days"
+        }
+      ],
+      "valid": true
+    },
+    {
+      "currentProfile": [
+        {
+          "branches": {
+            "=0": "",
+            "many": " tous les <strong>{days}</strong> jours",
+            "one": " par jour",
+            "other": " tous les <strong>{days}</strong> jours"
+          },
+          "kind": "plural",
+          "name": "days"
+        }
+      ],
+      "failure": null,
+      "finalProfile": [
+        {
+          "branches": {
+            "=0": "",
+            "many": " tous les <strong>{days}</strong> jours",
+            "one": " par jour",
+            "other": " tous les <strong>{days}</strong> jours"
+          },
+          "kind": "plural",
+          "name": "days"
+        }
+      ],
+      "locale": "fr",
+      "sourceId": "components.RequestModal.QuotaDisplay.allowedRequestsUser",
+      "sourcePosition": 2995,
+      "sourceProfile": [
+        {
+          "branches": {
+            "=0": "",
+            "one": " every day",
+            "other": " every <strong>{days}</strong> days"
+          },
+          "kind": "plural",
+          "name": "days"
+        }
+      ],
+      "valid": true
+    },
+    {
+      "currentProfile": [
+        {
+          "branches": {
+            "=0": "",
+            "one": " हर दिन",
+            "other": " हर <strong>{days}</strong> दिन"
+          },
+          "kind": "plural",
+          "name": "days"
+        }
+      ],
+      "failure": null,
+      "finalProfile": [
+        {
+          "branches": {
+            "=0": "",
+            "one": " हर दिन",
+            "other": " हर <strong>{days}</strong> दिन"
+          },
+          "kind": "plural",
+          "name": "days"
+        }
+      ],
+      "locale": "hi",
+      "sourceId": "components.RequestModal.QuotaDisplay.allowedRequestsUser",
+      "sourcePosition": 2995,
+      "sourceProfile": [
+        {
+          "branches": {
+            "=0": "",
+            "one": " every day",
+            "other": " every <strong>{days}</strong> days"
+          },
+          "kind": "plural",
+          "name": "days"
+        }
+      ],
+      "valid": true
+    },
+    {
+      "currentProfile": [
+        {
+          "branches": {
+            "=0": "",
+            "one": " setiap hari",
+            "other": " setiap <strong>{days}</strong> hari"
+          },
+          "kind": "plural",
+          "name": "days"
+        }
+      ],
+      "failure": null,
+      "finalProfile": [
+        {
+          "branches": {
+            "=0": "",
+            "one": " setiap hari",
+            "other": " setiap <strong>{days}</strong> hari"
+          },
+          "kind": "plural",
+          "name": "days"
+        }
+      ],
+      "locale": "id",
+      "sourceId": "components.RequestModal.QuotaDisplay.allowedRequestsUser",
+      "sourcePosition": 2995,
+      "sourceProfile": [
+        {
+          "branches": {
+            "=0": "",
+            "one": " every day",
+            "other": " every <strong>{days}</strong> days"
+          },
+          "kind": "plural",
+          "name": "days"
+        }
+      ],
+      "valid": true
+    },
+    {
+      "currentProfile": [
+        {
+          "branches": {
+            "=0": "",
+            "one": "を毎日",
+            "other": "を<strong>{days}</strong>日ごとに"
+          },
+          "kind": "plural",
+          "name": "days"
+        }
+      ],
+      "failure": null,
+      "finalProfile": [
+        {
+          "branches": {
+            "=0": "",
+            "one": "を毎日",
+            "other": "を<strong>{days}</strong>日ごとに"
+          },
+          "kind": "plural",
+          "name": "days"
+        }
+      ],
+      "locale": "ja",
+      "sourceId": "components.RequestModal.QuotaDisplay.allowedRequestsUser",
+      "sourcePosition": 2995,
+      "sourceProfile": [
+        {
+          "branches": {
+            "=0": "",
+            "one": " every day",
+            "other": " every <strong>{days}</strong> days"
+          },
+          "kind": "plural",
+          "name": "days"
+        }
+      ],
+      "valid": true
+    },
+    {
+      "currentProfile": [
+        {
+          "branches": {
+            "=0": "",
+            "one": "을 매일",
+            "other": "을 <strong>{days}</strong>일마다"
+          },
+          "kind": "plural",
+          "name": "days"
+        }
+      ],
+      "failure": null,
+      "finalProfile": [
+        {
+          "branches": {
+            "=0": "",
+            "one": "을 매일",
+            "other": "을 <strong>{days}</strong>일마다"
+          },
+          "kind": "plural",
+          "name": "days"
+        }
+      ],
+      "locale": "ko",
+      "sourceId": "components.RequestModal.QuotaDisplay.allowedRequestsUser",
+      "sourcePosition": 2995,
+      "sourceProfile": [
+        {
+          "branches": {
+            "=0": "",
+            "one": " every day",
+            "other": " every <strong>{days}</strong> days"
+          },
+          "kind": "plural",
+          "name": "days"
+        }
+      ],
+      "valid": true
+    },
+    {
+      "currentProfile": [
+        {
+          "branches": {
+            "=0": "",
+            "many": " Cada <strong>{days}</strong> dias",
+            "one": " todos os dias",
+            "other": " Cada <strong>{days}</strong> dias"
+          },
+          "kind": "plural",
+          "name": "days"
+        }
+      ],
+      "failure": null,
+      "finalProfile": [
+        {
+          "branches": {
+            "=0": "",
+            "many": " a cada <strong>{days}</strong> dias",
+            "one": " todos os dias",
+            "other": " a cada <strong>{days}</strong> dias"
+          },
+          "kind": "plural",
+          "name": "days"
+        }
+      ],
+      "locale": "pt_BR",
+      "sourceId": "components.RequestModal.QuotaDisplay.allowedRequestsUser",
+      "sourcePosition": 2995,
+      "sourceProfile": [
+        {
+          "branches": {
+            "=0": "",
+            "one": " every day",
+            "other": " every <strong>{days}</strong> days"
+          },
+          "kind": "plural",
+          "name": "days"
+        }
+      ],
+      "valid": true
+    },
+    {
+      "currentProfile": [
+        {
+          "branches": {
+            "=0": "",
+            "one": " Mỗi ngày",
+            "other": " mỗi <strong>{days}</strong> ngày"
+          },
+          "kind": "plural",
+          "name": "days"
+        }
+      ],
+      "failure": null,
+      "finalProfile": [
+        {
+          "branches": {
+            "=0": "",
+            "one": " mỗi ngày",
+            "other": " mỗi <strong>{days}</strong> ngày"
+          },
+          "kind": "plural",
+          "name": "days"
+        }
+      ],
+      "locale": "vi",
+      "sourceId": "components.RequestModal.QuotaDisplay.allowedRequestsUser",
+      "sourcePosition": 2995,
+      "sourceProfile": [
+        {
+          "branches": {
+            "=0": "",
+            "one": " every day",
+            "other": " every <strong>{days}</strong> days"
+          },
+          "kind": "plural",
+          "name": "days"
+        }
+      ],
+      "valid": true
+    },
+    {
+      "currentProfile": [
+        {
+          "branches": {
+            "=0": "",
+            "one": " 每天都会",
+            "other": " 每个 <strong>{days}</strong> 天数"
+          },
+          "kind": "plural",
+          "name": "days"
+        }
+      ],
+      "failure": null,
+      "finalProfile": [
+        {
+          "branches": {
+            "=0": "",
+            "one": "每天",
+            "other": "每 <strong>{days}</strong>天"
+          },
+          "kind": "plural",
+          "name": "days"
+        }
+      ],
+      "locale": "zh_Hans",
+      "sourceId": "components.RequestModal.QuotaDisplay.allowedRequestsUser",
+      "sourcePosition": 2995,
+      "sourceProfile": [
+        {
+          "branches": {
+            "=0": "",
+            "one": " every day",
+            "other": " every <strong>{days}</strong> days"
+          },
+          "kind": "plural",
+          "name": "days"
+        }
+      ],
+      "valid": true
+    },
+    {
+      "currentProfile": [
+        {
+          "branches": {
+            "=0": "",
+            "one": " 每天",
+            "other": " 每 <strong>{days}</strong> 天"
+          },
+          "kind": "plural",
+          "name": "days"
+        }
+      ],
+      "failure": null,
+      "finalProfile": [
+        {
+          "branches": {
+            "=0": "",
+            "one": "每天",
+            "other": "每 <strong>{days}</strong>天"
+          },
+          "kind": "plural",
+          "name": "days"
+        }
+      ],
+      "locale": "zh_Hant",
+      "sourceId": "components.RequestModal.QuotaDisplay.allowedRequestsUser",
+      "sourcePosition": 2995,
+      "sourceProfile": [
+        {
+          "branches": {
+            "=0": "",
+            "one": " every day",
+            "other": " every <strong>{days}</strong> days"
+          },
+          "kind": "plural",
+          "name": "days"
+        }
+      ],
+      "valid": true
+    },
+    {
+      "currentProfile": [
+        {
+          "branches": {
+            "few": "كتب",
+            "many": "كتابًا",
+            "one": "كتاب",
+            "other": "كتاب",
+            "two": "كتابين",
+            "zero": "كتاب"
+          },
+          "kind": "plural",
+          "name": "limit"
+        }
+      ],
+      "failure": null,
+      "finalProfile": [
+        {
+          "branches": {
+            "few": "كتب",
+            "many": "كتابًا",
+            "one": "كتاب",
+            "other": "كتاب",
+            "two": "كتابين",
+            "zero": "كتاب"
+          },
+          "kind": "plural",
+          "name": "limit"
+        }
+      ],
+      "locale": "ar",
+      "sourceId": "components.RequestModal.QuotaDisplay.booklimit",
+      "sourcePosition": 2997,
+      "sourceProfile": [
+        {
+          "branches": {
+            "one": "book",
+            "other": "books"
+          },
+          "kind": "plural",
+          "name": "limit"
+        }
+      ],
+      "valid": true
+    },
+    {
+      "currentProfile": [
+        {
+          "branches": {
+            "one": "Buch",
+            "other": "Bücher"
+          },
+          "kind": "plural",
+          "name": "limit"
+        }
+      ],
+      "failure": null,
+      "finalProfile": [
+        {
+          "branches": {
+            "one": "Buch",
+            "other": "Bücher"
+          },
+          "kind": "plural",
+          "name": "limit"
+        }
+      ],
+      "locale": "de",
+      "sourceId": "components.RequestModal.QuotaDisplay.booklimit",
+      "sourcePosition": 2997,
+      "sourceProfile": [
+        {
+          "branches": {
+            "one": "book",
+            "other": "books"
+          },
+          "kind": "plural",
+          "name": "limit"
+        }
+      ],
+      "valid": true
+    },
+    {
+      "currentProfile": [
+        {
+          "branches": {
+            "many": "libros",
+            "one": "libro",
+            "other": "libros"
+          },
+          "kind": "plural",
+          "name": "limit"
+        }
+      ],
+      "failure": null,
+      "finalProfile": [
+        {
+          "branches": {
+            "many": "libros",
+            "one": "libro",
+            "other": "libros"
+          },
+          "kind": "plural",
+          "name": "limit"
+        }
+      ],
+      "locale": "es",
+      "sourceId": "components.RequestModal.QuotaDisplay.booklimit",
+      "sourcePosition": 2997,
+      "sourceProfile": [
+        {
+          "branches": {
+            "one": "book",
+            "other": "books"
+          },
+          "kind": "plural",
+          "name": "limit"
+        }
+      ],
+      "valid": true
+    },
+    {
+      "currentProfile": [
+        {
+          "branches": {
+            "many": "livres",
+            "one": "livre",
+            "other": "livres"
+          },
+          "kind": "plural",
+          "name": "limit"
+        }
+      ],
+      "failure": null,
+      "finalProfile": [
+        {
+          "branches": {
+            "many": "livres",
+            "one": "livre",
+            "other": "livres"
+          },
+          "kind": "plural",
+          "name": "limit"
+        }
+      ],
+      "locale": "fr",
+      "sourceId": "components.RequestModal.QuotaDisplay.booklimit",
+      "sourcePosition": 2997,
+      "sourceProfile": [
+        {
+          "branches": {
+            "one": "book",
+            "other": "books"
+          },
+          "kind": "plural",
+          "name": "limit"
+        }
+      ],
+      "valid": true
+    },
+    {
+      "currentProfile": [
+        {
+          "branches": {
+            "one": "पुस्तक",
+            "other": "किताबें"
+          },
+          "kind": "plural",
+          "name": "limit"
+        }
+      ],
+      "failure": null,
+      "finalProfile": [
+        {
+          "branches": {
+            "one": "पुस्तक",
+            "other": "किताबें"
+          },
+          "kind": "plural",
+          "name": "limit"
+        }
+      ],
+      "locale": "hi",
+      "sourceId": "components.RequestModal.QuotaDisplay.booklimit",
+      "sourcePosition": 2997,
+      "sourceProfile": [
+        {
+          "branches": {
+            "one": "book",
+            "other": "books"
+          },
+          "kind": "plural",
+          "name": "limit"
+        }
+      ],
+      "valid": true
+    },
+    {
+      "currentProfile": [
+        {
+          "branches": {
+            "one": "buku",
+            "other": "buku"
+          },
+          "kind": "plural",
+          "name": "limit"
+        }
+      ],
+      "failure": null,
+      "finalProfile": [
+        {
+          "branches": {
+            "one": "buku",
+            "other": "buku"
+          },
+          "kind": "plural",
+          "name": "limit"
+        }
+      ],
+      "locale": "id",
+      "sourceId": "components.RequestModal.QuotaDisplay.booklimit",
+      "sourcePosition": 2997,
+      "sourceProfile": [
+        {
+          "branches": {
+            "one": "book",
+            "other": "books"
+          },
+          "kind": "plural",
+          "name": "limit"
+        }
+      ],
+      "valid": true
+    },
+    {
+      "currentProfile": [
+        {
+          "branches": {
+            "one": "書籍",
+            "other": "書籍"
+          },
+          "kind": "plural",
+          "name": "limit"
+        }
+      ],
+      "failure": null,
+      "finalProfile": [
+        {
+          "branches": {
+            "one": "書籍",
+            "other": "書籍"
+          },
+          "kind": "plural",
+          "name": "limit"
+        }
+      ],
+      "locale": "ja",
+      "sourceId": "components.RequestModal.QuotaDisplay.booklimit",
+      "sourcePosition": 2997,
+      "sourceProfile": [
+        {
+          "branches": {
+            "one": "book",
+            "other": "books"
+          },
+          "kind": "plural",
+          "name": "limit"
+        }
+      ],
+      "valid": true
+    },
+    {
+      "currentProfile": [
+        {
+          "branches": {
+            "one": "도서",
+            "other": "도서"
+          },
+          "kind": "plural",
+          "name": "limit"
+        }
+      ],
+      "failure": null,
+      "finalProfile": [
+        {
+          "branches": {
+            "one": "도서",
+            "other": "도서"
+          },
+          "kind": "plural",
+          "name": "limit"
+        }
+      ],
+      "locale": "ko",
+      "sourceId": "components.RequestModal.QuotaDisplay.booklimit",
+      "sourcePosition": 2997,
+      "sourceProfile": [
+        {
+          "branches": {
+            "one": "book",
+            "other": "books"
+          },
+          "kind": "plural",
+          "name": "limit"
+        }
+      ],
+      "valid": true
+    },
+    {
+      "currentProfile": [
+        {
+          "branches": {
+            "many": "livros",
+            "one": "livro",
+            "other": "livros"
+          },
+          "kind": "plural",
+          "name": "limit"
+        }
+      ],
+      "failure": null,
+      "finalProfile": [
+        {
+          "branches": {
+            "many": "livros",
+            "one": "livro",
+            "other": "livros"
+          },
+          "kind": "plural",
+          "name": "limit"
+        }
+      ],
+      "locale": "pt_BR",
+      "sourceId": "components.RequestModal.QuotaDisplay.booklimit",
+      "sourcePosition": 2997,
+      "sourceProfile": [
+        {
+          "branches": {
+            "one": "book",
+            "other": "books"
+          },
+          "kind": "plural",
+          "name": "limit"
+        }
+      ],
+      "valid": true
+    },
+    {
+      "currentProfile": [
+        {
+          "branches": {
+            "one": "sách",
+            "other": "sách"
+          },
+          "kind": "plural",
+          "name": "limit"
+        }
+      ],
+      "failure": null,
+      "finalProfile": [
+        {
+          "branches": {
+            "one": "sách",
+            "other": "sách"
+          },
+          "kind": "plural",
+          "name": "limit"
+        }
+      ],
+      "locale": "vi",
+      "sourceId": "components.RequestModal.QuotaDisplay.booklimit",
+      "sourcePosition": 2997,
+      "sourceProfile": [
+        {
+          "branches": {
+            "one": "book",
+            "other": "books"
+          },
+          "kind": "plural",
+          "name": "limit"
+        }
+      ],
+      "valid": true
+    },
+    {
+      "currentProfile": [
+        {
+          "branches": {
+            "one": "书本",
+            "other": "书籍"
+          },
+          "kind": "plural",
+          "name": "limit"
+        }
+      ],
+      "failure": null,
+      "finalProfile": [
+        {
+          "branches": {
+            "one": "书本",
+            "other": "书籍"
+          },
+          "kind": "plural",
+          "name": "limit"
+        }
+      ],
+      "locale": "zh_Hans",
+      "sourceId": "components.RequestModal.QuotaDisplay.booklimit",
+      "sourcePosition": 2997,
+      "sourceProfile": [
+        {
+          "branches": {
+            "one": "book",
+            "other": "books"
+          },
+          "kind": "plural",
+          "name": "limit"
+        }
+      ],
+      "valid": true
+    },
+    {
+      "currentProfile": [
+        {
+          "branches": {
+            "one": "書",
+            "other": "書"
+          },
+          "kind": "plural",
+          "name": "limit"
+        }
+      ],
+      "failure": null,
+      "finalProfile": [
+        {
+          "branches": {
+            "one": "書",
+            "other": "書"
+          },
+          "kind": "plural",
+          "name": "limit"
+        }
+      ],
+      "locale": "zh_Hant",
+      "sourceId": "components.RequestModal.QuotaDisplay.booklimit",
+      "sourcePosition": 2997,
+      "sourceProfile": [
+        {
+          "branches": {
+            "one": "book",
+            "other": "books"
+          },
+          "kind": "plural",
+          "name": "limit"
+        }
+      ],
+      "valid": true
+    },
+    {
+      "currentProfile": [
+        {
+          "branches": {
+            "few": "قصص مصوّرة",
+            "many": "قصة مصوّرة",
+            "one": "قصة مصوّرة",
+            "other": "قصة مصوّرة",
+            "two": "قصتين مصوّرتين",
+            "zero": "قصة مصوّرة"
+          },
+          "kind": "plural",
+          "name": "limit"
+        }
+      ],
+      "failure": null,
+      "finalProfile": [
+        {
+          "branches": {
+            "few": "قصص مصوّرة",
+            "many": "قصة مصوّرة",
+            "one": "قصة مصوّرة",
+            "other": "قصة مصوّرة",
+            "two": "قصتين مصوّرتين",
+            "zero": "قصة مصوّرة"
+          },
+          "kind": "plural",
+          "name": "limit"
+        }
+      ],
+      "locale": "ar",
+      "sourceId": "components.RequestModal.QuotaDisplay.comiclimit",
+      "sourcePosition": 2999,
+      "sourceProfile": [
+        {
+          "branches": {
+            "one": "comic",
+            "other": "comics"
+          },
+          "kind": "plural",
+          "name": "limit"
+        }
+      ],
+      "valid": true
+    },
+    {
+      "currentProfile": [
+        {
+          "branches": {
+            "one": "Comic",
+            "other": "Comics"
+          },
+          "kind": "plural",
+          "name": "limit"
+        }
+      ],
+      "failure": null,
+      "finalProfile": [
+        {
+          "branches": {
+            "one": "Comic",
+            "other": "Comics"
+          },
+          "kind": "plural",
+          "name": "limit"
+        }
+      ],
+      "locale": "de",
+      "sourceId": "components.RequestModal.QuotaDisplay.comiclimit",
+      "sourcePosition": 2999,
+      "sourceProfile": [
+        {
+          "branches": {
+            "one": "comic",
+            "other": "comics"
+          },
+          "kind": "plural",
+          "name": "limit"
+        }
+      ],
+      "valid": true
+    },
+    {
+      "currentProfile": [
+        {
+          "branches": {
+            "many": "cómics",
+            "one": "cómico",
+            "other": "cómics"
+          },
+          "kind": "plural",
+          "name": "limit"
+        }
+      ],
+      "failure": null,
+      "finalProfile": [
+        {
+          "branches": {
+            "many": "cómics",
+            "one": "cómic",
+            "other": "cómics"
+          },
+          "kind": "plural",
+          "name": "limit"
+        }
+      ],
+      "locale": "es",
+      "sourceId": "components.RequestModal.QuotaDisplay.comiclimit",
+      "sourcePosition": 2999,
+      "sourceProfile": [
+        {
+          "branches": {
+            "one": "comic",
+            "other": "comics"
+          },
+          "kind": "plural",
+          "name": "limit"
+        }
+      ],
+      "valid": true
+    },
+    {
+      "currentProfile": [
+        {
+          "branches": {
+            "many": "BD",
+            "one": "BD",
+            "other": "BD"
+          },
+          "kind": "plural",
+          "name": "limit"
+        }
+      ],
+      "failure": null,
+      "finalProfile": [
+        {
+          "branches": {
+            "many": "BD",
+            "one": "BD",
+            "other": "BD"
+          },
+          "kind": "plural",
+          "name": "limit"
+        }
+      ],
+      "locale": "fr",
+      "sourceId": "components.RequestModal.QuotaDisplay.comiclimit",
+      "sourcePosition": 2999,
+      "sourceProfile": [
+        {
+          "branches": {
+            "one": "comic",
+            "other": "comics"
+          },
+          "kind": "plural",
+          "name": "limit"
+        }
+      ],
+      "valid": true
+    },
+    {
+      "currentProfile": [
+        {
+          "branches": {
+            "one": "कॉमिक",
+            "other": "कॉमिक्स"
+          },
+          "kind": "plural",
+          "name": "limit"
+        }
+      ],
+      "failure": null,
+      "finalProfile": [
+        {
+          "branches": {
+            "one": "कॉमिक",
+            "other": "कॉमिक्स"
+          },
+          "kind": "plural",
+          "name": "limit"
+        }
+      ],
+      "locale": "hi",
+      "sourceId": "components.RequestModal.QuotaDisplay.comiclimit",
+      "sourcePosition": 2999,
+      "sourceProfile": [
+        {
+          "branches": {
+            "one": "comic",
+            "other": "comics"
+          },
+          "kind": "plural",
+          "name": "limit"
+        }
+      ],
+      "valid": true
+    },
+    {
+      "currentProfile": [
+        {
+          "branches": {
+            "one": "komik",
+            "other": "komik"
+          },
+          "kind": "plural",
+          "name": "limit"
+        }
+      ],
+      "failure": null,
+      "finalProfile": [
+        {
+          "branches": {
+            "one": "komik",
+            "other": "komik"
+          },
+          "kind": "plural",
+          "name": "limit"
+        }
+      ],
+      "locale": "id",
+      "sourceId": "components.RequestModal.QuotaDisplay.comiclimit",
+      "sourcePosition": 2999,
+      "sourceProfile": [
+        {
+          "branches": {
+            "one": "comic",
+            "other": "comics"
+          },
+          "kind": "plural",
+          "name": "limit"
+        }
+      ],
+      "valid": true
+    },
+    {
+      "currentProfile": [
+        {
+          "branches": {
+            "one": "漫画",
+            "other": "漫画"
+          },
+          "kind": "plural",
+          "name": "limit"
+        }
+      ],
+      "failure": null,
+      "finalProfile": [
+        {
+          "branches": {
+            "one": "漫画",
+            "other": "漫画"
+          },
+          "kind": "plural",
+          "name": "limit"
+        }
+      ],
+      "locale": "ja",
+      "sourceId": "components.RequestModal.QuotaDisplay.comiclimit",
+      "sourcePosition": 2999,
+      "sourceProfile": [
+        {
+          "branches": {
+            "one": "comic",
+            "other": "comics"
+          },
+          "kind": "plural",
+          "name": "limit"
+        }
+      ],
+      "valid": true
+    },
+    {
+      "currentProfile": [
+        {
+          "branches": {
+            "one": "만화",
+            "other": "만화"
+          },
+          "kind": "plural",
+          "name": "limit"
+        }
+      ],
+      "failure": null,
+      "finalProfile": [
+        {
+          "branches": {
+            "one": "만화",
+            "other": "만화"
+          },
+          "kind": "plural",
+          "name": "limit"
+        }
+      ],
+      "locale": "ko",
+      "sourceId": "components.RequestModal.QuotaDisplay.comiclimit",
+      "sourcePosition": 2999,
+      "sourceProfile": [
+        {
+          "branches": {
+            "one": "comic",
+            "other": "comics"
+          },
+          "kind": "plural",
+          "name": "limit"
+        }
+      ],
+      "valid": true
+    },
+    {
+      "currentProfile": [
+        {
+          "branches": {
+            "many": "HQs",
+            "one": "Cômico",
+            "other": "HQs"
+          },
+          "kind": "plural",
+          "name": "limit"
+        }
+      ],
+      "failure": null,
+      "finalProfile": [
+        {
+          "branches": {
+            "many": "quadrinhos",
+            "one": "quadrinho",
+            "other": "quadrinhos"
+          },
+          "kind": "plural",
+          "name": "limit"
+        }
+      ],
+      "locale": "pt_BR",
+      "sourceId": "components.RequestModal.QuotaDisplay.comiclimit",
+      "sourcePosition": 2999,
+      "sourceProfile": [
+        {
+          "branches": {
+            "one": "comic",
+            "other": "comics"
+          },
+          "kind": "plural",
+          "name": "limit"
+        }
+      ],
+      "valid": true
+    },
+    {
+      "currentProfile": [
+        {
+          "branches": {
+            "one": "Truyện tranh",
+            "other": "Truyện tranh"
+          },
+          "kind": "plural",
+          "name": "limit"
+        }
+      ],
+      "failure": null,
+      "finalProfile": [
+        {
+          "branches": {
+            "one": "Truyện tranh",
+            "other": "Truyện tranh"
+          },
+          "kind": "plural",
+          "name": "limit"
+        }
+      ],
+      "locale": "vi",
+      "sourceId": "components.RequestModal.QuotaDisplay.comiclimit",
+      "sourcePosition": 2999,
+      "sourceProfile": [
+        {
+          "branches": {
+            "one": "comic",
+            "other": "comics"
+          },
+          "kind": "plural",
+          "name": "limit"
+        }
+      ],
+      "valid": true
+    },
+    {
+      "currentProfile": [
+        {
+          "branches": {
+            "one": "漫画",
+            "other": "漫画"
+          },
+          "kind": "plural",
+          "name": "limit"
+        }
+      ],
+      "failure": null,
+      "finalProfile": [
+        {
+          "branches": {
+            "one": "漫画",
+            "other": "漫画"
+          },
+          "kind": "plural",
+          "name": "limit"
+        }
+      ],
+      "locale": "zh_Hans",
+      "sourceId": "components.RequestModal.QuotaDisplay.comiclimit",
+      "sourcePosition": 2999,
+      "sourceProfile": [
+        {
+          "branches": {
+            "one": "comic",
+            "other": "comics"
+          },
+          "kind": "plural",
+          "name": "limit"
+        }
+      ],
+      "valid": true
+    },
+    {
+      "currentProfile": [
+        {
+          "branches": {
+            "one": "漫畫",
+            "other": "漫畫"
+          },
+          "kind": "plural",
+          "name": "limit"
+        }
+      ],
+      "failure": null,
+      "finalProfile": [
+        {
+          "branches": {
+            "one": "漫畫",
+            "other": "漫畫"
+          },
+          "kind": "plural",
+          "name": "limit"
+        }
+      ],
+      "locale": "zh_Hant",
+      "sourceId": "components.RequestModal.QuotaDisplay.comiclimit",
+      "sourcePosition": 2999,
+      "sourceProfile": [
+        {
+          "branches": {
+            "one": "comic",
+            "other": "comics"
+          },
+          "kind": "plural",
+          "name": "limit"
+        }
+      ],
+      "valid": true
+    }
+  ],
+  "independentReviewSummary": {
+    "exactHead": "58697945e3d3fb44c37d49db0cc0f88e3af110cc",
+    "exactTree": "e3076937fe10b4dd3821ea573e8e5e21601fce7d",
+    "finalProposalCount": 273,
+    "nativeSpeakerApprovalClaimed": false,
+    "newIndependentProposalsAdopted": 32,
+    "primaryCandidatesUpdatedAfterReview": 6,
+    "proposalsBeforeIndependentReviews": 241,
+    "pullRequest": 418,
+    "reconciliationOutcomes": {
+      "agrees-accept-current": 927,
+      "independently-concurs-with-primary": 235,
+      "new-independent-proposal-adopted": 31,
+      "new-proposal-adopted-rationale-narrowed-to-spacing-refinement": 1,
+      "primary-candidate-adjusted-after-independent-review": 6
+    },
+    "repository": "snapetech-org/SeerrNG",
+    "reviewArtifactHashes": {
+      "subreview-2900-2949.jsonl": "1b3cd513669e9814345243ea2dc7bf16d95b4564f6d702bef8f7957167c4ae51",
+      "subreview-2950-2999.jsonl": "d99f460bb3db1f5e5e4ddfc7ede1fef4883939432ed850eeca31a882b7736cc6"
+    },
+    "reviewerSignoff": "Machine-assisted primary plus two independent machine-assisted half-window reviews; qualified native-speaker signoff remains outstanding.",
+    "sourceLocaleRowsReviewed": 1200,
+    "structuralFailures": 0,
+    "unresolvedHolds": 0,
+    "windowHalves": {
+      "2900-2949": {
+        "accept": 454,
+        "correction": 105,
+        "refinement": 41
+      },
+      "2950-2999": {
+        "accept-current": 473,
+        "concur-primary-candidate": 107,
+        "recommend-new-proposal": 16,
+        "recommend-primary-candidate-adjustment": 4
+      }
+    }
+  },
+  "inputHashVerification": "All source/current/caller rows rehashed against the frozen exact-head source catalog and caller files; all 351 pinned caller lines rehashed.",
+  "markupEquivalenceRows": [
+    {
+      "applicationChecker": "bin/check-i18n-catalogs.mjs compares rich-text tag-name sets; inspected only, not run.",
+      "branchMarkup": {
+        "=0": [],
+        "few": [
+          "<strong>",
+          "</strong>"
+        ],
+        "many": [
+          "<strong>",
+          "</strong>"
+        ],
+        "one": [],
+        "other": [
+          "<strong>",
+          "</strong>"
+        ],
+        "two": [],
+        "zero": []
+      },
+      "callerContextSha256": "bfcc0cbf65dc1b9282f04f40b4aa36bd4879a84227ed96a0715493b33418a749",
+      "callerPaths": [
+        "src/components/RequestModal/QuotaDisplay/index.tsx"
+      ],
+      "callerPins": [
+        {
+          "file": "src/components/RequestModal/QuotaDisplay/index.tsx",
+          "line": 23,
+          "lineSha256": "9404af2e02a26b1bcd2e4b60d15781021a497d893545c4dcb8bdf14bca72cfcb",
+          "lineText": "allowedRequests:",
+          "nextLine": "'You are allowed to request <strong>{limit}</strong> {type}{days, plural, =0 {} one { every day} other { every <strong>{days}</strong> days}}.',",
+          "previousLine": "'{remaining, plural, one {One software request remains} other {# software requests remain}}',"
+        },
+        {
+          "file": "src/components/RequestModal/QuotaDisplay/index.tsx",
+          "line": 153,
+          "lineSha256": "580b759360e4f08f58aa5d8920cd03154ff6f08bf6a8583a1b7f748b96ad1f4c",
+          "lineText": ": messages.allowedRequests,",
+          "nextLine": "{",
+          "previousLine": "? messages.allowedRequestsUser"
+        }
+      ],
+      "currentTarget": "مسموح لك بطلب <strong>{limit}</strong> {type}{days, plural, =0 {} zero { كل يوم} one { كل يوم} two { كل يومين} few { كل <strong>{days}</strong> أيام} many { كل <strong>{days}</strong> يومًا} other { كل <strong>{days}</strong> يوم}}.",
+      "currentTargetHash": "de4105058f9211cfdf251750db24bdd8e1998b9d81109a93734a8d578b0b3bbe",
+      "disposition": "accept-current",
+      "finalMarkup": [
+        "<strong>",
+        "</strong>",
+        "<strong>",
+        "</strong>",
+        "<strong>",
+        "</strong>",
+        "<strong>",
+        "</strong>"
+      ],
+      "finalPluralProfile": [
+        {
+          "branches": {
+            "=0": "",
+            "few": " كل <strong>{days}</strong> أيام",
+            "many": " كل <strong>{days}</strong> يومًا",
+            "one": " كل يوم",
+            "other": " كل <strong>{days}</strong> يوم",
+            "two": " كل يومين",
+            "zero": " كل يوم"
+          },
+          "kind": "plural",
+          "name": "days"
+        }
+      ],
+      "finalTarget": "مسموح لك بطلب <strong>{limit}</strong> {type}{days, plural, =0 {} zero { كل يوم} one { كل يوم} two { كل يومين} few { كل <strong>{days}</strong> أيام} many { كل <strong>{days}</strong> يومًا} other { كل <strong>{days}</strong> يوم}}.",
+      "finalTargetHash": "de4105058f9211cfdf251750db24bdd8e1998b9d81109a93734a8d578b0b3bbe",
+      "locale": "ar",
+      "source": "You are allowed to request <strong>{limit}</strong> {type}{days, plural, =0 {} one { every day} other { every <strong>{days}</strong> days}}.",
+      "sourceHash": "dfb018d7a63b586ea6aa3bba17c9dd3e39387bce85f87dc0deced7aed380777b",
+      "sourceId": "components.RequestModal.QuotaDisplay.allowedRequests",
+      "sourceMarkup": [
+        "<strong>",
+        "</strong>",
+        "<strong>",
+        "</strong>"
+      ],
+      "sourcePluralProfile": [
+        {
+          "branches": {
+            "=0": "",
+            "one": " every day",
+            "other": " every <strong>{days}</strong> days"
+          },
+          "kind": "plural",
+          "name": "days"
+        }
+      ],
+      "sourcePosition": 2994
+    },
+    {
+      "applicationChecker": "bin/check-i18n-catalogs.mjs compares rich-text tag-name sets; inspected only, not run.",
+      "branchMarkup": {
+        "=0": [],
+        "many": [
+          "<strong>",
+          "</strong>"
+        ],
+        "one": [],
+        "other": [
+          "<strong>",
+          "</strong>"
+        ]
+      },
+      "callerContextSha256": "bfcc0cbf65dc1b9282f04f40b4aa36bd4879a84227ed96a0715493b33418a749",
+      "callerPaths": [
+        "src/components/RequestModal/QuotaDisplay/index.tsx"
+      ],
+      "callerPins": [
+        {
+          "file": "src/components/RequestModal/QuotaDisplay/index.tsx",
+          "line": 23,
+          "lineSha256": "9404af2e02a26b1bcd2e4b60d15781021a497d893545c4dcb8bdf14bca72cfcb",
+          "lineText": "allowedRequests:",
+          "nextLine": "'You are allowed to request <strong>{limit}</strong> {type}{days, plural, =0 {} one { every day} other { every <strong>{days}</strong> days}}.',",
+          "previousLine": "'{remaining, plural, one {One software request remains} other {# software requests remain}}',"
+        },
+        {
+          "file": "src/components/RequestModal/QuotaDisplay/index.tsx",
+          "line": 153,
+          "lineSha256": "580b759360e4f08f58aa5d8920cd03154ff6f08bf6a8583a1b7f748b96ad1f4c",
+          "lineText": ": messages.allowedRequests,",
+          "nextLine": "{",
+          "previousLine": "? messages.allowedRequestsUser"
+        }
+      ],
+      "currentTarget": "Se te permite solicitar <strong>{limit}</strong> {type}{days, plural, =0 {} one { cada día} many { cada <strong>{days}</strong> días} other { cada <strong>{days}</strong> días}}.",
+      "currentTargetHash": "d2a786cf6b97f2cbae99fc6e358728dc5d77c0fdce7f9c8547e8711ee25e4b82",
+      "disposition": "propose-correction",
+      "finalMarkup": [
+        "<strong>",
+        "</strong>",
+        "<strong>",
+        "</strong>",
+        "<strong>",
+        "</strong>"
+      ],
+      "finalPluralProfile": [
+        {
+          "branches": {
+            "=0": "",
+            "many": " cada <strong>{days}</strong> días",
+            "one": " cada día",
+            "other": " cada <strong>{days}</strong> días"
+          },
+          "kind": "plural",
+          "name": "days"
+        }
+      ],
+      "finalTarget": "Puede solicitar <strong>{limit}</strong> {type}{days, plural, =0 {} one { cada día} many { cada <strong>{days}</strong> días} other { cada <strong>{days}</strong> días}}.",
+      "finalTargetHash": "158d24d9ea989d01e1a6c889e4b081b28bf2076f1cb143df31d76265b2a068a9",
+      "locale": "es",
+      "source": "You are allowed to request <strong>{limit}</strong> {type}{days, plural, =0 {} one { every day} other { every <strong>{days}</strong> days}}.",
+      "sourceHash": "dfb018d7a63b586ea6aa3bba17c9dd3e39387bce85f87dc0deced7aed380777b",
+      "sourceId": "components.RequestModal.QuotaDisplay.allowedRequests",
+      "sourceMarkup": [
+        "<strong>",
+        "</strong>",
+        "<strong>",
+        "</strong>"
+      ],
+      "sourcePluralProfile": [
+        {
+          "branches": {
+            "=0": "",
+            "one": " every day",
+            "other": " every <strong>{days}</strong> days"
+          },
+          "kind": "plural",
+          "name": "days"
+        }
+      ],
+      "sourcePosition": 2994
+    },
+    {
+      "applicationChecker": "bin/check-i18n-catalogs.mjs compares rich-text tag-name sets; inspected only, not run.",
+      "branchMarkup": {
+        "=0": [],
+        "many": [
+          "<strong>",
+          "</strong>"
+        ],
+        "one": [],
+        "other": [
+          "<strong>",
+          "</strong>"
+        ]
+      },
+      "callerContextSha256": "bfcc0cbf65dc1b9282f04f40b4aa36bd4879a84227ed96a0715493b33418a749",
+      "callerPaths": [
+        "src/components/RequestModal/QuotaDisplay/index.tsx"
+      ],
+      "callerPins": [
+        {
+          "file": "src/components/RequestModal/QuotaDisplay/index.tsx",
+          "line": 23,
+          "lineSha256": "9404af2e02a26b1bcd2e4b60d15781021a497d893545c4dcb8bdf14bca72cfcb",
+          "lineText": "allowedRequests:",
+          "nextLine": "'You are allowed to request <strong>{limit}</strong> {type}{days, plural, =0 {} one { every day} other { every <strong>{days}</strong> days}}.',",
+          "previousLine": "'{remaining, plural, one {One software request remains} other {# software requests remain}}',"
+        },
+        {
+          "file": "src/components/RequestModal/QuotaDisplay/index.tsx",
+          "line": 153,
+          "lineSha256": "580b759360e4f08f58aa5d8920cd03154ff6f08bf6a8583a1b7f748b96ad1f4c",
+          "lineText": ": messages.allowedRequests,",
+          "nextLine": "{",
+          "previousLine": "? messages.allowedRequestsUser"
+        }
+      ],
+      "currentTarget": "Vous pouvez demander <strong>{limit}</strong> {type}{days, plural, =0 {} one { par jour} many { tous les <strong>{days}</strong> jours} other { tous les <strong>{days}</strong> jours}}.",
+      "currentTargetHash": "ce9acd04a2fd21e9ff2f18cca41d23d8cad7fa1a2f99562068d70d6ddf336c24",
+      "disposition": "accept-current",
+      "finalMarkup": [
+        "<strong>",
+        "</strong>",
+        "<strong>",
+        "</strong>",
+        "<strong>",
+        "</strong>"
+      ],
+      "finalPluralProfile": [
+        {
+          "branches": {
+            "=0": "",
+            "many": " tous les <strong>{days}</strong> jours",
+            "one": " par jour",
+            "other": " tous les <strong>{days}</strong> jours"
+          },
+          "kind": "plural",
+          "name": "days"
+        }
+      ],
+      "finalTarget": "Vous pouvez demander <strong>{limit}</strong> {type}{days, plural, =0 {} one { par jour} many { tous les <strong>{days}</strong> jours} other { tous les <strong>{days}</strong> jours}}.",
+      "finalTargetHash": "ce9acd04a2fd21e9ff2f18cca41d23d8cad7fa1a2f99562068d70d6ddf336c24",
+      "locale": "fr",
+      "source": "You are allowed to request <strong>{limit}</strong> {type}{days, plural, =0 {} one { every day} other { every <strong>{days}</strong> days}}.",
+      "sourceHash": "dfb018d7a63b586ea6aa3bba17c9dd3e39387bce85f87dc0deced7aed380777b",
+      "sourceId": "components.RequestModal.QuotaDisplay.allowedRequests",
+      "sourceMarkup": [
+        "<strong>",
+        "</strong>",
+        "<strong>",
+        "</strong>"
+      ],
+      "sourcePluralProfile": [
+        {
+          "branches": {
+            "=0": "",
+            "one": " every day",
+            "other": " every <strong>{days}</strong> days"
+          },
+          "kind": "plural",
+          "name": "days"
+        }
+      ],
+      "sourcePosition": 2994
+    },
+    {
+      "applicationChecker": "bin/check-i18n-catalogs.mjs compares rich-text tag-name sets; inspected only, not run.",
+      "branchMarkup": {
+        "=0": [],
+        "many": [
+          "<strong>",
+          "</strong>"
+        ],
+        "one": [],
+        "other": [
+          "<strong>",
+          "</strong>"
+        ]
+      },
+      "callerContextSha256": "bfcc0cbf65dc1b9282f04f40b4aa36bd4879a84227ed96a0715493b33418a749",
+      "callerPaths": [
+        "src/components/RequestModal/QuotaDisplay/index.tsx"
+      ],
+      "callerPins": [
+        {
+          "file": "src/components/RequestModal/QuotaDisplay/index.tsx",
+          "line": 23,
+          "lineSha256": "9404af2e02a26b1bcd2e4b60d15781021a497d893545c4dcb8bdf14bca72cfcb",
+          "lineText": "allowedRequests:",
+          "nextLine": "'You are allowed to request <strong>{limit}</strong> {type}{days, plural, =0 {} one { every day} other { every <strong>{days}</strong> days}}.',",
+          "previousLine": "'{remaining, plural, one {One software request remains} other {# software requests remain}}',"
+        },
+        {
+          "file": "src/components/RequestModal/QuotaDisplay/index.tsx",
+          "line": 153,
+          "lineSha256": "580b759360e4f08f58aa5d8920cd03154ff6f08bf6a8583a1b7f748b96ad1f4c",
+          "lineText": ": messages.allowedRequests,",
+          "nextLine": "{",
+          "previousLine": "? messages.allowedRequestsUser"
+        }
+      ],
+      "currentTarget": "Você pode pedir. <strong>{limit}</strong> {type}{days, plural, =0 {} one { todos os dias} many { Cada <strong>{days}</strong> dias} other { Cada <strong>{days}</strong> dias}}.",
+      "currentTargetHash": "20174f9c6fccec7892dc4cfdeecff9c6953aafb21c8f015076de87db5958b4b1",
+      "disposition": "propose-correction",
+      "finalMarkup": [
+        "<strong>",
+        "</strong>",
+        "<strong>",
+        "</strong>",
+        "<strong>",
+        "</strong>"
+      ],
+      "finalPluralProfile": [
+        {
+          "branches": {
+            "=0": "",
+            "many": " a cada <strong>{days}</strong> dias",
+            "one": " todos os dias",
+            "other": " a cada <strong>{days}</strong> dias"
+          },
+          "kind": "plural",
+          "name": "days"
+        }
+      ],
+      "finalTarget": "Você pode solicitar <strong>{limit}</strong> {type}{days, plural, =0 {} one { todos os dias} many { a cada <strong>{days}</strong> dias} other { a cada <strong>{days}</strong> dias}}.",
+      "finalTargetHash": "007629490ded9e85a5885e392802833e61df7d1ebc9dcb6bee0270cb2b0155cb",
+      "locale": "pt_BR",
+      "source": "You are allowed to request <strong>{limit}</strong> {type}{days, plural, =0 {} one { every day} other { every <strong>{days}</strong> days}}.",
+      "sourceHash": "dfb018d7a63b586ea6aa3bba17c9dd3e39387bce85f87dc0deced7aed380777b",
+      "sourceId": "components.RequestModal.QuotaDisplay.allowedRequests",
+      "sourceMarkup": [
+        "<strong>",
+        "</strong>",
+        "<strong>",
+        "</strong>"
+      ],
+      "sourcePluralProfile": [
+        {
+          "branches": {
+            "=0": "",
+            "one": " every day",
+            "other": " every <strong>{days}</strong> days"
+          },
+          "kind": "plural",
+          "name": "days"
+        }
+      ],
+      "sourcePosition": 2994
+    },
+    {
+      "applicationChecker": "bin/check-i18n-catalogs.mjs compares rich-text tag-name sets; inspected only, not run.",
+      "branchMarkup": {
+        "=0": [],
+        "few": [
+          "<strong>",
+          "</strong>"
+        ],
+        "many": [
+          "<strong>",
+          "</strong>"
+        ],
+        "one": [],
+        "other": [
+          "<strong>",
+          "</strong>"
+        ],
+        "two": [],
+        "zero": []
+      },
+      "callerContextSha256": "963f68b6176cd12d914ece1073231a72fb6a929a9382f2cce70268bcea9294cb",
+      "callerPaths": [
+        "src/components/RequestModal/QuotaDisplay/index.tsx"
+      ],
+      "callerPins": [
+        {
+          "file": "src/components/RequestModal/QuotaDisplay/index.tsx",
+          "line": 25,
+          "lineSha256": "6346d1e791b4da75cb0a9927e2a9d9707d78e601902dc1a5fc62494c10ff63f3",
+          "lineText": "allowedRequestsUser:",
+          "nextLine": "'This user is allowed to request <strong>{limit}</strong> {type}{days, plural, =0 {} one { every day} other { every <strong>{days}</strong> days}}.',",
+          "previousLine": "'You are allowed to request <strong>{limit}</strong> {type}{days, plural, =0 {} one { every day} other { every <strong>{days}</strong> days}}.',"
+        },
+        {
+          "file": "src/components/RequestModal/QuotaDisplay/index.tsx",
+          "line": 152,
+          "lineSha256": "88137e84fa0b78502fef1952e12a8f438b8b52cd7b3dabfcef5395f4ce50ca81",
+          "lineText": "? messages.allowedRequestsUser",
+          "nextLine": ": messages.allowedRequests,",
+          "previousLine": "userOverride"
+        }
+      ],
+      "currentTarget": "يُسمح لهذا المستخدم بطلب <strong>{limit}</strong> {type}{days, plural, =0 {} zero { كل يوم} one { كل يوم} two { كل يومين} few { كل <strong>{days}</strong> أيام} many { كل <strong>{days}</strong> يومًا} other { كل <strong>{days}</strong> يوم}}.",
+      "currentTargetHash": "1002e2ed5ea804ed5cac5d36775d98df51944f137030461c994ee1e2377c9054",
+      "disposition": "accept-current",
+      "finalMarkup": [
+        "<strong>",
+        "</strong>",
+        "<strong>",
+        "</strong>",
+        "<strong>",
+        "</strong>",
+        "<strong>",
+        "</strong>"
+      ],
+      "finalPluralProfile": [
+        {
+          "branches": {
+            "=0": "",
+            "few": " كل <strong>{days}</strong> أيام",
+            "many": " كل <strong>{days}</strong> يومًا",
+            "one": " كل يوم",
+            "other": " كل <strong>{days}</strong> يوم",
+            "two": " كل يومين",
+            "zero": " كل يوم"
+          },
+          "kind": "plural",
+          "name": "days"
+        }
+      ],
+      "finalTarget": "يُسمح لهذا المستخدم بطلب <strong>{limit}</strong> {type}{days, plural, =0 {} zero { كل يوم} one { كل يوم} two { كل يومين} few { كل <strong>{days}</strong> أيام} many { كل <strong>{days}</strong> يومًا} other { كل <strong>{days}</strong> يوم}}.",
+      "finalTargetHash": "1002e2ed5ea804ed5cac5d36775d98df51944f137030461c994ee1e2377c9054",
+      "locale": "ar",
+      "source": "This user is allowed to request <strong>{limit}</strong> {type}{days, plural, =0 {} one { every day} other { every <strong>{days}</strong> days}}.",
+      "sourceHash": "9b1eb2c5b78c8fca66d769557688c045c2e83d3297c60f1cbec81a356e03a42b",
+      "sourceId": "components.RequestModal.QuotaDisplay.allowedRequestsUser",
+      "sourceMarkup": [
+        "<strong>",
+        "</strong>",
+        "<strong>",
+        "</strong>"
+      ],
+      "sourcePluralProfile": [
+        {
+          "branches": {
+            "=0": "",
+            "one": " every day",
+            "other": " every <strong>{days}</strong> days"
+          },
+          "kind": "plural",
+          "name": "days"
+        }
+      ],
+      "sourcePosition": 2995
+    },
+    {
+      "applicationChecker": "bin/check-i18n-catalogs.mjs compares rich-text tag-name sets; inspected only, not run.",
+      "branchMarkup": {
+        "=0": [],
+        "many": [
+          "<strong>",
+          "</strong>"
+        ],
+        "one": [],
+        "other": [
+          "<strong>",
+          "</strong>"
+        ]
+      },
+      "callerContextSha256": "963f68b6176cd12d914ece1073231a72fb6a929a9382f2cce70268bcea9294cb",
+      "callerPaths": [
+        "src/components/RequestModal/QuotaDisplay/index.tsx"
+      ],
+      "callerPins": [
+        {
+          "file": "src/components/RequestModal/QuotaDisplay/index.tsx",
+          "line": 25,
+          "lineSha256": "6346d1e791b4da75cb0a9927e2a9d9707d78e601902dc1a5fc62494c10ff63f3",
+          "lineText": "allowedRequestsUser:",
+          "nextLine": "'This user is allowed to request <strong>{limit}</strong> {type}{days, plural, =0 {} one { every day} other { every <strong>{days}</strong> days}}.',",
+          "previousLine": "'You are allowed to request <strong>{limit}</strong> {type}{days, plural, =0 {} one { every day} other { every <strong>{days}</strong> days}}.',"
+        },
+        {
+          "file": "src/components/RequestModal/QuotaDisplay/index.tsx",
+          "line": 152,
+          "lineSha256": "88137e84fa0b78502fef1952e12a8f438b8b52cd7b3dabfcef5395f4ce50ca81",
+          "lineText": "? messages.allowedRequestsUser",
+          "nextLine": ": messages.allowedRequests,",
+          "previousLine": "userOverride"
+        }
+      ],
+      "currentTarget": "A este usuario se le permite solicitar <strong>{limit}</strong> {type}{days, plural, =0 {} one { cada día} many { cada <strong>{days}</strong> días} other { cada <strong>{days}</strong> días}}.",
+      "currentTargetHash": "07abac42b1cba3c448a4c4ca90b117c894252b647547c96e9df7423adcf37884",
+      "disposition": "accept-current",
+      "finalMarkup": [
+        "<strong>",
+        "</strong>",
+        "<strong>",
+        "</strong>",
+        "<strong>",
+        "</strong>"
+      ],
+      "finalPluralProfile": [
+        {
+          "branches": {
+            "=0": "",
+            "many": " cada <strong>{days}</strong> días",
+            "one": " cada día",
+            "other": " cada <strong>{days}</strong> días"
+          },
+          "kind": "plural",
+          "name": "days"
+        }
+      ],
+      "finalTarget": "A este usuario se le permite solicitar <strong>{limit}</strong> {type}{days, plural, =0 {} one { cada día} many { cada <strong>{days}</strong> días} other { cada <strong>{days}</strong> días}}.",
+      "finalTargetHash": "07abac42b1cba3c448a4c4ca90b117c894252b647547c96e9df7423adcf37884",
+      "locale": "es",
+      "source": "This user is allowed to request <strong>{limit}</strong> {type}{days, plural, =0 {} one { every day} other { every <strong>{days}</strong> days}}.",
+      "sourceHash": "9b1eb2c5b78c8fca66d769557688c045c2e83d3297c60f1cbec81a356e03a42b",
+      "sourceId": "components.RequestModal.QuotaDisplay.allowedRequestsUser",
+      "sourceMarkup": [
+        "<strong>",
+        "</strong>",
+        "<strong>",
+        "</strong>"
+      ],
+      "sourcePluralProfile": [
+        {
+          "branches": {
+            "=0": "",
+            "one": " every day",
+            "other": " every <strong>{days}</strong> days"
+          },
+          "kind": "plural",
+          "name": "days"
+        }
+      ],
+      "sourcePosition": 2995
+    },
+    {
+      "applicationChecker": "bin/check-i18n-catalogs.mjs compares rich-text tag-name sets; inspected only, not run.",
+      "branchMarkup": {
+        "=0": [],
+        "many": [
+          "<strong>",
+          "</strong>"
+        ],
+        "one": [],
+        "other": [
+          "<strong>",
+          "</strong>"
+        ]
+      },
+      "callerContextSha256": "963f68b6176cd12d914ece1073231a72fb6a929a9382f2cce70268bcea9294cb",
+      "callerPaths": [
+        "src/components/RequestModal/QuotaDisplay/index.tsx"
+      ],
+      "callerPins": [
+        {
+          "file": "src/components/RequestModal/QuotaDisplay/index.tsx",
+          "line": 25,
+          "lineSha256": "6346d1e791b4da75cb0a9927e2a9d9707d78e601902dc1a5fc62494c10ff63f3",
+          "lineText": "allowedRequestsUser:",
+          "nextLine": "'This user is allowed to request <strong>{limit}</strong> {type}{days, plural, =0 {} one { every day} other { every <strong>{days}</strong> days}}.',",
+          "previousLine": "'You are allowed to request <strong>{limit}</strong> {type}{days, plural, =0 {} one { every day} other { every <strong>{days}</strong> days}}.',"
+        },
+        {
+          "file": "src/components/RequestModal/QuotaDisplay/index.tsx",
+          "line": 152,
+          "lineSha256": "88137e84fa0b78502fef1952e12a8f438b8b52cd7b3dabfcef5395f4ce50ca81",
+          "lineText": "? messages.allowedRequestsUser",
+          "nextLine": ": messages.allowedRequests,",
+          "previousLine": "userOverride"
+        }
+      ],
+      "currentTarget": "Cet utilisateur peut demander <strong>{limit}</strong> {type}{days, plural, =0 {} one { par jour} many { tous les <strong>{days}</strong> jours} other { tous les <strong>{days}</strong> jours}}.",
+      "currentTargetHash": "c227bdefe5b958732b7c2eba4a3b2995751f9692aa4841a44694185be16308cc",
+      "disposition": "accept-current",
+      "finalMarkup": [
+        "<strong>",
+        "</strong>",
+        "<strong>",
+        "</strong>",
+        "<strong>",
+        "</strong>"
+      ],
+      "finalPluralProfile": [
+        {
+          "branches": {
+            "=0": "",
+            "many": " tous les <strong>{days}</strong> jours",
+            "one": " par jour",
+            "other": " tous les <strong>{days}</strong> jours"
+          },
+          "kind": "plural",
+          "name": "days"
+        }
+      ],
+      "finalTarget": "Cet utilisateur peut demander <strong>{limit}</strong> {type}{days, plural, =0 {} one { par jour} many { tous les <strong>{days}</strong> jours} other { tous les <strong>{days}</strong> jours}}.",
+      "finalTargetHash": "c227bdefe5b958732b7c2eba4a3b2995751f9692aa4841a44694185be16308cc",
+      "locale": "fr",
+      "source": "This user is allowed to request <strong>{limit}</strong> {type}{days, plural, =0 {} one { every day} other { every <strong>{days}</strong> days}}.",
+      "sourceHash": "9b1eb2c5b78c8fca66d769557688c045c2e83d3297c60f1cbec81a356e03a42b",
+      "sourceId": "components.RequestModal.QuotaDisplay.allowedRequestsUser",
+      "sourceMarkup": [
+        "<strong>",
+        "</strong>",
+        "<strong>",
+        "</strong>"
+      ],
+      "sourcePluralProfile": [
+        {
+          "branches": {
+            "=0": "",
+            "one": " every day",
+            "other": " every <strong>{days}</strong> days"
+          },
+          "kind": "plural",
+          "name": "days"
+        }
+      ],
+      "sourcePosition": 2995
+    },
+    {
+      "applicationChecker": "bin/check-i18n-catalogs.mjs compares rich-text tag-name sets; inspected only, not run.",
+      "branchMarkup": {
+        "=0": [],
+        "many": [
+          "<strong>",
+          "</strong>"
+        ],
+        "one": [],
+        "other": [
+          "<strong>",
+          "</strong>"
+        ]
+      },
+      "callerContextSha256": "963f68b6176cd12d914ece1073231a72fb6a929a9382f2cce70268bcea9294cb",
+      "callerPaths": [
+        "src/components/RequestModal/QuotaDisplay/index.tsx"
+      ],
+      "callerPins": [
+        {
+          "file": "src/components/RequestModal/QuotaDisplay/index.tsx",
+          "line": 25,
+          "lineSha256": "6346d1e791b4da75cb0a9927e2a9d9707d78e601902dc1a5fc62494c10ff63f3",
+          "lineText": "allowedRequestsUser:",
+          "nextLine": "'This user is allowed to request <strong>{limit}</strong> {type}{days, plural, =0 {} one { every day} other { every <strong>{days}</strong> days}}.',",
+          "previousLine": "'You are allowed to request <strong>{limit}</strong> {type}{days, plural, =0 {} one { every day} other { every <strong>{days}</strong> days}}.',"
+        },
+        {
+          "file": "src/components/RequestModal/QuotaDisplay/index.tsx",
+          "line": 152,
+          "lineSha256": "88137e84fa0b78502fef1952e12a8f438b8b52cd7b3dabfcef5395f4ce50ca81",
+          "lineText": "? messages.allowedRequestsUser",
+          "nextLine": ": messages.allowedRequests,",
+          "previousLine": "userOverride"
+        }
+      ],
+      "currentTarget": "Este usuário pode solicitar <strong>{limit}</strong> {type}{days, plural, =0 {} one { todos os dias} many { Cada <strong>{days}</strong> dias} other { Cada <strong>{days}</strong> dias}}.",
+      "currentTargetHash": "ad11ae3c78139e6e3f68627e8609785834356a5974b810a46169031e4962e0da",
+      "disposition": "refinement",
+      "finalMarkup": [
+        "<strong>",
+        "</strong>",
+        "<strong>",
+        "</strong>",
+        "<strong>",
+        "</strong>"
+      ],
+      "finalPluralProfile": [
+        {
+          "branches": {
+            "=0": "",
+            "many": " a cada <strong>{days}</strong> dias",
+            "one": " todos os dias",
+            "other": " a cada <strong>{days}</strong> dias"
+          },
+          "kind": "plural",
+          "name": "days"
+        }
+      ],
+      "finalTarget": "Este usuário pode solicitar <strong>{limit}</strong> {type}{days, plural, =0 {} one { todos os dias} many { a cada <strong>{days}</strong> dias} other { a cada <strong>{days}</strong> dias}}.",
+      "finalTargetHash": "28f91503947707d8a4040209ff678e899c3493ed7df838dc7db8395e48d025c5",
+      "locale": "pt_BR",
+      "source": "This user is allowed to request <strong>{limit}</strong> {type}{days, plural, =0 {} one { every day} other { every <strong>{days}</strong> days}}.",
+      "sourceHash": "9b1eb2c5b78c8fca66d769557688c045c2e83d3297c60f1cbec81a356e03a42b",
+      "sourceId": "components.RequestModal.QuotaDisplay.allowedRequestsUser",
+      "sourceMarkup": [
+        "<strong>",
+        "</strong>",
+        "<strong>",
+        "</strong>"
+      ],
+      "sourcePluralProfile": [
+        {
+          "branches": {
+            "=0": "",
+            "one": " every day",
+            "other": " every <strong>{days}</strong> days"
+          },
+          "kind": "plural",
+          "name": "days"
+        }
+      ],
+      "sourcePosition": 2995
+    }
+  ],
+  "nestedIcuPlaceholderBranchMismatchesCurrent": [],
+  "nestedIcuPlaceholderBranchMismatchesFinal": [],
+  "placeholderEquivalenceRows": [
+    {
+      "accounting": "The exact =0 selector is preserved as empty and takes precedence for numeric zero; the additional CLDR zero branch is not selected for zero input.",
+      "branch": "zero",
+      "callerContextRef": "components.RequestModal.QuotaDisplay.allowedRequests",
+      "callerContextSha256": "bfcc0cbf65dc1b9282f04f40b4aa36bd4879a84227ed96a0715493b33418a749",
+      "currentTargetHash": "de4105058f9211cfdf251750db24bdd8e1998b9d81109a93734a8d578b0b3bbe",
+      "finalTargetHash": "de4105058f9211cfdf251750db24bdd8e1998b9d81109a93734a8d578b0b3bbe",
+      "locale": "ar",
+      "localeBranchProfile": [],
+      "sourceBranchProfile": [
+        {
+          "kind": "simple",
+          "name": "days"
+        }
+      ],
+      "sourceId": "components.RequestModal.QuotaDisplay.allowedRequests",
+      "sourcePosition": 2994,
+      "sourceTextSha256": "dfb018d7a63b586ea6aa3bba17c9dd3e39387bce85f87dc0deced7aed380777b",
+      "stage": "current"
+    },
+    {
+      "accounting": "Arabic dual morphology in يومين explicitly encodes two days, so the English numeric {days} variable is realized in the word form rather than repeated as a placeholder.",
+      "branch": "two",
+      "callerContextRef": "components.RequestModal.QuotaDisplay.allowedRequests",
+      "callerContextSha256": "bfcc0cbf65dc1b9282f04f40b4aa36bd4879a84227ed96a0715493b33418a749",
+      "currentTargetHash": "de4105058f9211cfdf251750db24bdd8e1998b9d81109a93734a8d578b0b3bbe",
+      "finalTargetHash": "de4105058f9211cfdf251750db24bdd8e1998b9d81109a93734a8d578b0b3bbe",
+      "locale": "ar",
+      "localeBranchProfile": [],
+      "sourceBranchProfile": [
+        {
+          "kind": "simple",
+          "name": "days"
+        }
+      ],
+      "sourceId": "components.RequestModal.QuotaDisplay.allowedRequests",
+      "sourcePosition": 2994,
+      "sourceTextSha256": "dfb018d7a63b586ea6aa3bba17c9dd3e39387bce85f87dc0deced7aed380777b",
+      "stage": "current"
+    },
+    {
+      "accounting": "The exact =0 selector is preserved as empty and takes precedence for numeric zero; the additional CLDR zero branch is not selected for zero input.",
+      "branch": "zero",
+      "callerContextRef": "components.RequestModal.QuotaDisplay.allowedRequests",
+      "callerContextSha256": "bfcc0cbf65dc1b9282f04f40b4aa36bd4879a84227ed96a0715493b33418a749",
+      "currentTargetHash": "de4105058f9211cfdf251750db24bdd8e1998b9d81109a93734a8d578b0b3bbe",
+      "finalTargetHash": "de4105058f9211cfdf251750db24bdd8e1998b9d81109a93734a8d578b0b3bbe",
+      "locale": "ar",
+      "localeBranchProfile": [],
+      "sourceBranchProfile": [
+        {
+          "kind": "simple",
+          "name": "days"
+        }
+      ],
+      "sourceId": "components.RequestModal.QuotaDisplay.allowedRequests",
+      "sourcePosition": 2994,
+      "sourceTextSha256": "dfb018d7a63b586ea6aa3bba17c9dd3e39387bce85f87dc0deced7aed380777b",
+      "stage": "final"
+    },
+    {
+      "accounting": "Arabic dual morphology in يومين explicitly encodes two days, so the English numeric {days} variable is realized in the word form rather than repeated as a placeholder.",
+      "branch": "two",
+      "callerContextRef": "components.RequestModal.QuotaDisplay.allowedRequests",
+      "callerContextSha256": "bfcc0cbf65dc1b9282f04f40b4aa36bd4879a84227ed96a0715493b33418a749",
+      "currentTargetHash": "de4105058f9211cfdf251750db24bdd8e1998b9d81109a93734a8d578b0b3bbe",
+      "finalTargetHash": "de4105058f9211cfdf251750db24bdd8e1998b9d81109a93734a8d578b0b3bbe",
+      "locale": "ar",
+      "localeBranchProfile": [],
+      "sourceBranchProfile": [
+        {
+          "kind": "simple",
+          "name": "days"
+        }
+      ],
+      "sourceId": "components.RequestModal.QuotaDisplay.allowedRequests",
+      "sourcePosition": 2994,
+      "sourceTextSha256": "dfb018d7a63b586ea6aa3bba17c9dd3e39387bce85f87dc0deced7aed380777b",
+      "stage": "final"
+    },
+    {
+      "accounting": "The exact =0 selector is preserved as empty and takes precedence for numeric zero; the additional CLDR zero branch is not selected for zero input.",
+      "branch": "zero",
+      "callerContextRef": "components.RequestModal.QuotaDisplay.allowedRequestsUser",
+      "callerContextSha256": "963f68b6176cd12d914ece1073231a72fb6a929a9382f2cce70268bcea9294cb",
+      "currentTargetHash": "1002e2ed5ea804ed5cac5d36775d98df51944f137030461c994ee1e2377c9054",
+      "finalTargetHash": "1002e2ed5ea804ed5cac5d36775d98df51944f137030461c994ee1e2377c9054",
+      "locale": "ar",
+      "localeBranchProfile": [],
+      "sourceBranchProfile": [
+        {
+          "kind": "simple",
+          "name": "days"
+        }
+      ],
+      "sourceId": "components.RequestModal.QuotaDisplay.allowedRequestsUser",
+      "sourcePosition": 2995,
+      "sourceTextSha256": "9b1eb2c5b78c8fca66d769557688c045c2e83d3297c60f1cbec81a356e03a42b",
+      "stage": "current"
+    },
+    {
+      "accounting": "Arabic dual morphology in يومين explicitly encodes two days, so the English numeric {days} variable is realized in the word form rather than repeated as a placeholder.",
+      "branch": "two",
+      "callerContextRef": "components.RequestModal.QuotaDisplay.allowedRequestsUser",
+      "callerContextSha256": "963f68b6176cd12d914ece1073231a72fb6a929a9382f2cce70268bcea9294cb",
+      "currentTargetHash": "1002e2ed5ea804ed5cac5d36775d98df51944f137030461c994ee1e2377c9054",
+      "finalTargetHash": "1002e2ed5ea804ed5cac5d36775d98df51944f137030461c994ee1e2377c9054",
+      "locale": "ar",
+      "localeBranchProfile": [],
+      "sourceBranchProfile": [
+        {
+          "kind": "simple",
+          "name": "days"
+        }
+      ],
+      "sourceId": "components.RequestModal.QuotaDisplay.allowedRequestsUser",
+      "sourcePosition": 2995,
+      "sourceTextSha256": "9b1eb2c5b78c8fca66d769557688c045c2e83d3297c60f1cbec81a356e03a42b",
+      "stage": "current"
+    },
+    {
+      "accounting": "The exact =0 selector is preserved as empty and takes precedence for numeric zero; the additional CLDR zero branch is not selected for zero input.",
+      "branch": "zero",
+      "callerContextRef": "components.RequestModal.QuotaDisplay.allowedRequestsUser",
+      "callerContextSha256": "963f68b6176cd12d914ece1073231a72fb6a929a9382f2cce70268bcea9294cb",
+      "currentTargetHash": "1002e2ed5ea804ed5cac5d36775d98df51944f137030461c994ee1e2377c9054",
+      "finalTargetHash": "1002e2ed5ea804ed5cac5d36775d98df51944f137030461c994ee1e2377c9054",
+      "locale": "ar",
+      "localeBranchProfile": [],
+      "sourceBranchProfile": [
+        {
+          "kind": "simple",
+          "name": "days"
+        }
+      ],
+      "sourceId": "components.RequestModal.QuotaDisplay.allowedRequestsUser",
+      "sourcePosition": 2995,
+      "sourceTextSha256": "9b1eb2c5b78c8fca66d769557688c045c2e83d3297c60f1cbec81a356e03a42b",
+      "stage": "final"
+    },
+    {
+      "accounting": "Arabic dual morphology in يومين explicitly encodes two days, so the English numeric {days} variable is realized in the word form rather than repeated as a placeholder.",
+      "branch": "two",
+      "callerContextRef": "components.RequestModal.QuotaDisplay.allowedRequestsUser",
+      "callerContextSha256": "963f68b6176cd12d914ece1073231a72fb6a929a9382f2cce70268bcea9294cb",
+      "currentTargetHash": "1002e2ed5ea804ed5cac5d36775d98df51944f137030461c994ee1e2377c9054",
+      "finalTargetHash": "1002e2ed5ea804ed5cac5d36775d98df51944f137030461c994ee1e2377c9054",
+      "locale": "ar",
+      "localeBranchProfile": [],
+      "sourceBranchProfile": [
+        {
+          "kind": "simple",
+          "name": "days"
+        }
+      ],
+      "sourceId": "components.RequestModal.QuotaDisplay.allowedRequestsUser",
+      "sourcePosition": 2995,
+      "sourceTextSha256": "9b1eb2c5b78c8fca66d769557688c045c2e83d3297c60f1cbec81a356e03a42b",
+      "stage": "final"
+    }
+  ],
+  "placeholderMismatchesCurrent": [],
+  "placeholderMismatchesFinal": [],
+  "protectedLiteralMismatchDetailsCurrent": [],
+  "protectedLiteralMismatchDetailsFinal": [],
+  "sourceBoundaries": {
+    "boundaries": [
+      {
+        "position": 2899,
+        "source": "Request Comic",
+        "sourceHash": "3918565c8fbd6d23ae431d767712b6d5c5042943c0869f59b1e7a43a5c7df516",
+        "sourceId": "components.RequestModal.Comic.requestcomic",
+        "sourceTextSha256": "c542e3cc86b4d4ea5c898b26a64b92936ca2cc9dec5e420530b07994cb29039b"
+      },
+      {
+        "position": 2900,
+        "source": "Requested",
+        "sourceHash": "85305ea40c3f025be73334791921556e5f94fd5e589b7a4d7cbec89efb005c63",
+        "sourceId": "components.RequestModal.Comic.requested",
+        "sourceTextSha256": "2d9e28289facab94b41f9592b7f55bc4fc10fed54e789669468e8da31c9a5caf"
+      },
+      {
+        "position": 2999,
+        "source": "{limit, plural, one {comic} other {comics}}",
+        "sourceHash": "0fdaed635c12d8705f7df7bfeb22da8146aa5e5bca1801600ebf68315edc5c82",
+        "sourceId": "components.RequestModal.QuotaDisplay.comiclimit",
+        "sourceTextSha256": "48e93505bdd1e19cbd758c2e3ab1c15549d07fffaa673cc83e8918bab47c86b9"
+      },
+      {
+        "position": 3000,
+        "source": "magazine",
+        "sourceHash": "410c055361f3e843e74d8e90d84ac37b7ba8f78662325873cbccaabbef83e8f3",
+        "sourceId": "components.RequestModal.QuotaDisplay.magazine",
+        "sourceTextSha256": "208be34b55c3475df168f93331e3c32b718fab092c6dfa72d31464a710a6c8d9"
+      }
+    ],
+    "preservedPriorDispositionHistoryThrough": {
+      "evidence": "All previous primary packet directories scanned and exact-source/exact-final-target matching rows included in prior-disposition-boundary.json; previous window boundary independently reattested against this exact source catalog.",
+      "position": 2899
+    },
+    "sourceCatalogBlob": "12e04a118c30b71b3714291adeaf9fdb2735cee4",
+    "sourceCatalogSha256": "75ff3c90b52aedd636a506281ffbd6fb2d3739c61294b6008a517f17647e2316",
+    "windowEndsImmediatelyBefore": {
+      "position": 3000,
+      "sourceId": "components.RequestModal.QuotaDisplay.magazine"
+    },
+    "windowStartsImmediatelyAfter": {
+      "position": 2899,
+      "sourceId": "components.RequestModal.Comic.requestcomic"
+    }
+  }
+}

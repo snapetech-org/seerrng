@@ -306,7 +306,7 @@ const AdultDetails = () => {
                 priority
               />
               <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-gray-950/80 to-transparent" />
-              <div className="absolute bottom-3 left-3">
+              <div className="absolute start-3 bottom-3">
                 <MediaTypeBadge mediaType="adult" variant="compact" />
               </div>
             </div>

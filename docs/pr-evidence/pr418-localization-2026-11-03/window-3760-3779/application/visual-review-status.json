@@ -1,0 +1,10 @@
+{
+  "visualAcceptance": "unverified",
+  "reason": "The pinned baseline and catalog application commit have zero deployments, so there is no exact-head product browser target for a baseline/candidate rendered comparison.",
+  "persistentAgenticVmStatus": "setup screen only; no setup state was changed",
+  "headedBrowserReviewPerformed": false,
+  "nativeSpeakerReviewPerformed": false,
+  "nativeSpeakerApproval": "pending",
+  "browserAcceptance": "pending",
+  "catalogCommitDeploymentCount": 0
+}

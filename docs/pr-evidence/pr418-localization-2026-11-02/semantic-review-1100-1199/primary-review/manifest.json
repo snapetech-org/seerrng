@@ -1,0 +1,176 @@
+{
+  "schemaVersion": 1,
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "head": "c8f4b2f5f1f42730dcfa8d36214ee827a5d9395a",
+  "tree": "0fe67d04abfd49681556b44e900aceec1b5a9a75",
+  "branch": "codex/seerrng-localization-overhaul-20261028",
+  "baseHead": "221d8e0d542802da7529cd272c928cc747677e5c",
+  "livePullRequest": {
+    "state": "OPEN",
+    "isDraft": true,
+    "mergeStateStatus": "CLEAN",
+    "headRefOid": "c8f4b2f5f1f42730dcfa8d36214ee827a5d9395a",
+    "headRefName": "codex/seerrng-localization-overhaul-20261028",
+    "baseRefOid": "221d8e0d542802da7529cd272c928cc747677e5c"
+  },
+  "sourceCatalog": {
+    "path": "src/i18n/locale/en.json",
+    "blob": "12e04a118c30b71b3714291adeaf9fdb2735cee4",
+    "bytes": 835513,
+    "sha256": "75ff3c90b52aedd636a506281ffbd6fb2d3739c61294b6008a517f17647e2316",
+    "keyCount": 9494
+  },
+  "sourceIdPositionRange": [
+    1100,
+    1199
+  ],
+  "sourceIdCount": 100,
+  "sourceIdWindowBoundaryIds": {
+    "1100": "components.Discover.createnewslider",
+    "1199": "components.EditionCompare.tracks"
+  },
+  "previousWindow": {
+    "manifest": "/mnt/disks/scratch/task-scratch/seerrng-pr418-1000-1099-20261102/manifest.json",
+    "sourceIdPositionRange": [
+      1000,
+      1099
+    ],
+    "nonOverlapping": true
+  },
+  "targetLocales": [
+    "ar",
+    "de",
+    "es",
+    "fr",
+    "hi",
+    "id",
+    "ja",
+    "ko",
+    "pt-BR",
+    "vi",
+    "zh-CN",
+    "zh-TW"
+  ],
+  "targetCellCount": 1200,
+  "targetCatalogs": {
+    "ar": {
+      "path": "src/i18n/locale/ar.json",
+      "blob": "1feed2328961f29aa5fa5e9ef642ed1c699de7e1",
+      "bytes": 1041357,
+      "sha256": "2b43f95a9a73ebaf2b1a7e353fc51cd1ef635889b7b2f46bc9875e2599bbca0d",
+      "keyCount": 9494
+    },
+    "de": {
+      "path": "src/i18n/locale/de.json",
+      "blob": "1ee6d2eb33fb623bf3a742535190c8ea076c0215",
+      "bytes": 926368,
+      "sha256": "c7633935a6241c6ca275fa60e1fd6ea77246208c41a36c3a1ad9bd6f3198c42e",
+      "keyCount": 9494
+    },
+    "es": {
+      "path": "src/i18n/locale/es.json",
+      "blob": "15fcd554098cbd33aaec4f2a458551d860442e79",
+      "bytes": 921792,
+      "sha256": "2cf237ae362a9fd5bce172221c755ad134508e50e788d2e03d3965cef2dd4aae",
+      "keyCount": 9494
+    },
+    "fr": {
+      "path": "src/i18n/locale/fr.json",
+      "blob": "2118dec300d15a468a727f1f36725ee610103d5f",
+      "bytes": 938375,
+      "sha256": "7912cc7bef1345ccb9d39184f7223d9330bdecba6a0806424519b802dfcb4807",
+      "keyCount": 9494
+    },
+    "hi": {
+      "path": "src/i18n/locale/hi.json",
+      "blob": "eeab6d4bfac72f796835fb0e412ce4d8fa3038c3",
+      "bytes": 1366623,
+      "sha256": "aa219ba1ccd4996db71d4689a65ae88c3e22fc428778f57d1baed2b74f75ce08",
+      "keyCount": 9494
+    },
+    "id": {
+      "path": "src/i18n/locale/id.json",
+      "blob": "0cced5d31666476a873f08f8cee5815cb73f0941",
+      "bytes": 866093,
+      "sha256": "7ea3af837998adf638a21781a9ea614bf6ebb37a8fed95db8428cefb419d1b55",
+      "keyCount": 9494
+    },
+    "ja": {
+      "path": "src/i18n/locale/ja.json",
+      "blob": "c1327b530fb9cafb400ff0ff233cbf93bcd237b8",
+      "bytes": 1014272,
+      "sha256": "deb93509f6d6a67948932c0a4be22e9b5a1ecae7a207c50cdf07418dffd917e9",
+      "keyCount": 9494
+    },
+    "ko": {
+      "path": "src/i18n/locale/ko.json",
+      "blob": "e5221385d5fb8288feb6159326ea85c32e1210d5",
+      "bytes": 930819,
+      "sha256": "b59b2e38a142181025202918a04c3a6fa58d840b9128afcf10bd4e001ab192fe",
+      "keyCount": 9494
+    },
+    "pt-BR": {
+      "path": "src/i18n/locale/pt_BR.json",
+      "blob": "c8fe5d21d541428e5342c848e9e3b70c06db3864",
+      "bytes": 909491,
+      "sha256": "948bb11d6e809140f03f2b20f49db1150ac19c64c51303ac0c8afb6377ee2ace",
+      "keyCount": 9494
+    },
+    "vi": {
+      "path": "src/i18n/locale/vi.json",
+      "blob": "e85542e8b5775679514be333e4c4774a80d47e03",
+      "bytes": 965364,
+      "sha256": "dad1e871bf3d7f6a5b2e1b811fdfeff5686bae263c2b233847bc60a6f189c8a6",
+      "keyCount": 9494
+    },
+    "zh-CN": {
+      "path": "src/i18n/locale/zh_Hans.json",
+      "blob": "ce208d868745b3fd3544fd8f70d1aee9357e97da",
+      "bytes": 810248,
+      "sha256": "2fa504104eecf86d9b7a93d73919269cc57bde9433a9a76548b9a59096a656c1",
+      "keyCount": 9494
+    },
+    "zh-TW": {
+      "path": "src/i18n/locale/zh_Hant.json",
+      "blob": "1e3431ff36398b9b21c9a5fa5a8c9a455477b408",
+      "bytes": 810765,
+      "sha256": "ec6d2ed55791389580fcc2f74a6c1551bd46f7b96491de48d95b8161d15a1a1f",
+      "keyCount": 9494
+    }
+  },
+  "priorSpanishDispositionCount": 6,
+  "priorSpanishSourceIds": [
+    "components.Discover.listenbrainzmusicchart",
+    "components.DownloadBlock.failAndSearch",
+    "components.DownloadBlock.failAndSearchError",
+    "components.DownloadBlock.failAndSearchSuccess",
+    "components.DownloadBlock.failingDownload",
+    "components.DownloadBlock.liveStalled"
+  ],
+  "priorDispositionEvidence": "docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-600-649/root-cross-review.jsonl",
+  "sourceContextRows": 100,
+  "callerReferences": 231,
+  "uniqueCallerFiles": 10,
+  "uniqueCallerLines": 229,
+  "semanticDispositionCounts": {
+    "accept-current": 976,
+    "propose-correction": 206,
+    "preserved-prior-disposition": 6,
+    "propose-refinement": 12
+  },
+  "primaryCandidateCount": 218,
+  "primaryProposalLedger": "candidate-proposals.jsonl",
+  "candidateHashIndex": "candidate-hashes.jsonl",
+  "primaryCrossReviewStatus": "awaiting independent cross-review",
+  "priorDispositionBoundaryScan": {
+    "evidenceDirectory": "docs/pr-evidence/pr418-localization-2026-11-02",
+    "intersectingPriorDispositionCount": 6,
+    "onlyIntersectingEvidence": "semantic-review-600-649/root-cross-review.jsonl",
+    "allIntersectingRowsPreserved": true,
+    "allSixLocales": [
+      "es"
+    ],
+    "noOtherIntersectingDispositionFiles": true
+  }
+}

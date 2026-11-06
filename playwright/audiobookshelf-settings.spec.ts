@@ -1,5 +1,12 @@
 import { expect, test } from '@playwright/test';
 
+// This test owns the connection it creates in the seeded disposable app.
+test.afterEach(async ({ page }) => {
+  expect(
+    (await page.request.delete('/api/v1/settings/audiobookshelf')).status()
+  ).toBe(204);
+});
+
 test('admins can connect a read-only Audiobookshelf book library', async ({
   page,
   baseURL,
@@ -33,6 +40,10 @@ test('admins can connect a read-only Audiobookshelf book library', async ({
       sameSite: 'Lax',
     },
   ]);
+
+  expect(
+    (await page.request.delete('/api/v1/settings/audiobookshelf')).status()
+  ).toBe(204);
 
   await page.route('**/api/v1/settings/audiobookshelf/test', async (route) => {
     await route.fulfill({

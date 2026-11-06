@@ -1,0 +1,435 @@
+{
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "head": "1586a249e3f86deb7b9410cff50223e5f76209ff",
+  "tree": "d620a906353e9724ba28986103c76b7792c56099",
+  "range": [
+    3360,
+    3379
+  ],
+  "previousRange": [
+    3340,
+    3359
+  ],
+  "sourceOrderCount": 9494,
+  "sourceOrderSha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+  "cellCount": 240,
+  "contextRows": 54,
+  "localeOrder": [
+    "es",
+    "zh_Hans",
+    "hi",
+    "de",
+    "ja",
+    "fr",
+    "pt_BR",
+    "ar",
+    "ko",
+    "zh_Hant",
+    "vi",
+    "id"
+  ],
+  "localeCatalogPins": {
+    "src/i18n/locale/en.json": {
+      "sha256": "75ff3c90b52aedd636a506281ffbd6fb2d3739c61294b6008a517f17647e2316",
+      "gitBlob": "12e04a118c30b71b3714291adeaf9fdb2735cee4",
+      "keyCount": 9494,
+      "orderedKeySha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072"
+    },
+    "src/i18n/locale/es.json": {
+      "sha256": "94ecb3f47273ae999d6cca37cde5e25dc89315f6647e861f2c876a1f57223641",
+      "gitBlob": "b7a7f9513af8dc8764a3d577052f2a318909898a",
+      "keyCount": 9494,
+      "orderedKeySha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072"
+    },
+    "src/i18n/locale/zh_Hans.json": {
+      "sha256": "f288d7e5f30368b812859107c2d4448601cb24b61bf987e3d1522da2d40fdf55",
+      "gitBlob": "08a42d3ab1d1a4f93ecf558ee310282b27354a57",
+      "keyCount": 9494,
+      "orderedKeySha256": "8d5fd7bd4351bc64c5ee813f2e50196608869e165866f3202a312078732c2baf"
+    },
+    "src/i18n/locale/hi.json": {
+      "sha256": "d828dfc8e5830a1d58118462bbb28a26830b247d61dd3f89098bcd1946c9a0da",
+      "gitBlob": "213fadaa0c1a6248e06f1328766e817339b0f714",
+      "keyCount": 9494,
+      "orderedKeySha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072"
+    },
+    "src/i18n/locale/de.json": {
+      "sha256": "516308d2885e89fce7b51d14407312ed7e30166e7b9764a086beb6991e8c2428",
+      "gitBlob": "a0504068fc9cfed3980ecfc48a2693aee0b802ae",
+      "keyCount": 9494,
+      "orderedKeySha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072"
+    },
+    "src/i18n/locale/ja.json": {
+      "sha256": "446d8784c7ae872fb6279c93665295fe71c34b7711421fa5bf890d2799b95021",
+      "gitBlob": "e62d0f6ad9181c9f5ec8b777f6f8597b9aeb1ba7",
+      "keyCount": 9494,
+      "orderedKeySha256": "8d5fd7bd4351bc64c5ee813f2e50196608869e165866f3202a312078732c2baf"
+    },
+    "src/i18n/locale/fr.json": {
+      "sha256": "3a06f06095edc87f4bd11623064882bf73f6558e296e97b3f9273d40390cbc85",
+      "gitBlob": "1b94cbd5514086adbc47746ea1eb7b648652a75e",
+      "keyCount": 9494,
+      "orderedKeySha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072"
+    },
+    "src/i18n/locale/pt_BR.json": {
+      "sha256": "a990e7e10c2bfd0b0932e5dabf2d415039359187b93a11500d5330bdc8b40db8",
+      "gitBlob": "8f91911035ab068078ffc2e6b1d797412eca3889",
+      "keyCount": 9494,
+      "orderedKeySha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072"
+    },
+    "src/i18n/locale/ar.json": {
+      "sha256": "439879bb58e6516e071522e314bbed9d85bc160ed187a2005f261ab0a1394334",
+      "gitBlob": "72a1e283d3525c8dc79f3678038d1fe55ff25c7d",
+      "keyCount": 9494,
+      "orderedKeySha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072"
+    },
+    "src/i18n/locale/ko.json": {
+      "sha256": "310dcfc458700ed535dedb93b1894aab7df091b17a7371ff84f85354b88a9fc1",
+      "gitBlob": "ff3d892af9e835048cf51424554e42f691a129e2",
+      "keyCount": 9494,
+      "orderedKeySha256": "8d5fd7bd4351bc64c5ee813f2e50196608869e165866f3202a312078732c2baf"
+    },
+    "src/i18n/locale/zh_Hant.json": {
+      "sha256": "4f56a79a155cbb1ff3bd415dc38311e4983aee032fe72fa6f221050186b4e666",
+      "gitBlob": "b28d26d450f404d5c1369b5b7bc2af058d07f784",
+      "keyCount": 9494,
+      "orderedKeySha256": "8d5fd7bd4351bc64c5ee813f2e50196608869e165866f3202a312078732c2baf"
+    },
+    "src/i18n/locale/vi.json": {
+      "sha256": "826d50349d2269c5e34c4a3b6b711ee8970b461df9b40c6eee88caaa8e125edb",
+      "gitBlob": "2edd007d1d36eb2f33ce119d5a55090dee25fbb5",
+      "keyCount": 9494,
+      "orderedKeySha256": "8d5fd7bd4351bc64c5ee813f2e50196608869e165866f3202a312078732c2baf"
+    },
+    "src/i18n/locale/id.json": {
+      "sha256": "da76620a8c449aefe8f5601c4fcddca9486efec010f00e4fbe4d924f4789cda1",
+      "gitBlob": "cfc0d6f00bf6c0f2ac33fb7ffd534b2302af9df1",
+      "keyCount": 9494,
+      "orderedKeySha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072"
+    }
+  },
+  "sourceCatalogSha256": "75ff3c90b52aedd636a506281ffbd6fb2d3739c61294b6008a517f17647e2316",
+  "sourceCatalogKeyCount": 9494,
+  "callerFiles": {
+    "src/components/RequestStatus/messages.tsx": {
+      "sha256": "5c7691636c95eed239cf012fa2e8bdc066ef773a8b4288bbd93fafddb15324eb",
+      "gitBlob": "73f660f8595c193f4996c2720d0566212545f76c",
+      "lineCount": 121
+    },
+    "server/lib/requestStatus.ts": {
+      "sha256": "63dd1b43e684a40eb82253a2942d7652cad63d87234b5c279d73af0b945b2d31",
+      "gitBlob": "e75608e1c2921b5f7b3e822c25a690f8b1cc5e82",
+      "lineCount": 2328
+    },
+    "src/components/Requests/index.tsx": {
+      "sha256": "25b612dcda274fe2ea64b76f169587e153b04a675c9b8cd817814d9fbfde5360",
+      "gitBlob": "84f6a19674b329df0ef6be6483d74bbaeb110ccb",
+      "lineCount": 3115
+    },
+    "src/components/Requests/destructiveActions.tsx": {
+      "sha256": "16d562185c1e1f3a94398369b4ab3eec28085033dcc3465c32557752687d1d57",
+      "gitBlob": "09884f99a738ce4402b5fb121d15022f0efc3a67",
+      "lineCount": 173
+    },
+    "src/pages/requests/index.tsx": {
+      "sha256": "64273c876d30c6ee3ee1f7419f3376cd1849fcc6fbbc37cec781c340e3c6cb76",
+      "gitBlob": "17a3c44c6c3073fcaecd94cc77993a8bae3bdc4d",
+      "lineCount": 6
+    },
+    "src/utils/defineMessages.ts": {
+      "sha256": "761cb0362244e473b6993c78f4b852a6673c95e35da13990856e6a44c6d9169f",
+      "gitBlob": "bb8fadb4baf7764b0af8b1a2294bf43d4196aaaa",
+      "lineCount": 26
+    }
+  },
+  "orderedLocaleKeySequencesMatch": false,
+  "perLocaleOrderedKeyHashesPinned": true,
+  "strictBlindInputOnly": true,
+  "nativeSpeakerApproval": false,
+  "sourceIds": [
+    {
+      "position": 3360,
+      "id": "components.Requests.mediaFilters",
+      "source": "Media Filters",
+      "sourceSha256": "3e03da79a6a6c127f58fa8b3e71a1a6f9dfc0c702cbeaa23605d487630dacf4f"
+    },
+    {
+      "position": 3361,
+      "id": "components.Requests.mediaType",
+      "source": "Media Type",
+      "sourceSha256": "67b0e5cab1f1085436fa4fbae85240f936d4e4f7e60e923c43d07b31b8badf28"
+    },
+    {
+      "position": 3362,
+      "id": "components.Requests.mediaTypeValue",
+      "source": "Media Type",
+      "sourceSha256": "67b0e5cab1f1085436fa4fbae85240f936d4e4f7e60e923c43d07b31b8badf28"
+    },
+    {
+      "position": 3363,
+      "id": "components.Requests.minutes",
+      "source": "{count} minutes",
+      "sourceSha256": "1c3c36c66261bf9af63991152e1614e01e671babf7eea271434dd5e8d124a348"
+    },
+    {
+      "position": 3364,
+      "id": "components.Requests.modifyFailed",
+      "source": "Unable to update this request.",
+      "sourceSha256": "7b4966a2546fd4764543586f3dddd07dc77ec9146a372b687868d66dcfd563fd"
+    },
+    {
+      "position": 3365,
+      "id": "components.Requests.movie",
+      "source": "Movie",
+      "sourceSha256": "941de4447b2ec0d282b3bc0070cb8fb3b08085ebe8745c59d78bf4e7db453e35"
+    },
+    {
+      "position": 3366,
+      "id": "components.Requests.movies",
+      "source": "Movies",
+      "sourceSha256": "dff924b69f9678928e4bde2a5e1bfa9a2341dbe09c0eab0cd2de4b149de5abc1"
+    },
+    {
+      "position": 3367,
+      "id": "components.Requests.music",
+      "source": "Music",
+      "sourceSha256": "6eb00b4b2614a144d41ccdf709017a675953fae2df6cfd6b397bd9e4d8708461"
+    },
+    {
+      "position": 3368,
+      "id": "components.Requests.musicFormat",
+      "source": "Music",
+      "sourceSha256": "6eb00b4b2614a144d41ccdf709017a675953fae2df6cfd6b397bd9e4d8708461"
+    },
+    {
+      "position": 3369,
+      "id": "components.Requests.network",
+      "source": "Network",
+      "sourceSha256": "1744b96470b51bf30935e2748b237a708d226a0430063f92accf90961cd28d86"
+    },
+    {
+      "position": 3370,
+      "id": "components.Requests.noHistory",
+      "source": "No status history has been recorded yet",
+      "sourceSha256": "da07ffd4610192ccd4f034951f88040666568942b0efe5e2269549a95fed8d4b"
+    },
+    {
+      "position": 3371,
+      "id": "components.Requests.noMediaResults",
+      "source": "No movie, show, music, book, comic, magazine, or adult requests match these filters.",
+      "sourceSha256": "4e0a9857f49049eb09458e8b2726abb9472814c38bfa9f300e1fa06cadd233f0"
+    },
+    {
+      "position": 3372,
+      "id": "components.Requests.noReleaseFoundFilter",
+      "source": "No Release Found",
+      "sourceSha256": "7fcfce9347cddbac73809291f8aa79b72986d0837277d0b1bc116cc4b5661a3d"
+    },
+    {
+      "position": 3373,
+      "id": "components.Requests.noResults",
+      "source": "No requests match these filters",
+      "sourceSha256": "4fc37818e165a2f372c259221809aba501dae1890adba8c2ab232f00732b2d95"
+    },
+    {
+      "position": 3374,
+      "id": "components.Requests.notAvailable",
+      "source": "Not available",
+      "sourceSha256": "67a926f7008e2b0e7f2b3f7a4b37597834830110be1d51138f425d6f3449bc09"
+    },
+    {
+      "position": 3375,
+      "id": "components.Requests.olderRequests",
+      "source": "{count, plural, =1 {# older request is outside this window.} other {# older requests are outside this window.}}",
+      "sourceSha256": "f42eb8268b6cdd015ae8c54b072567e2d79a8d1c69070e6820cddb32cd86f542"
+    },
+    {
+      "position": 3376,
+      "id": "components.Requests.pages",
+      "source": "Pages",
+      "sourceSha256": "9046da16aea909ba75a36cec13b56cb2144dc2ede45cde361e99a8d79802eabf"
+    },
+    {
+      "position": 3377,
+      "id": "components.Requests.pcGames",
+      "source": "PC Games",
+      "sourceSha256": "79cc56ae9635385afd61ee5620a4482a5c34683064d03376407604f2dcff3390"
+    },
+    {
+      "position": 3378,
+      "id": "components.Requests.pending",
+      "source": "Pending",
+      "sourceSha256": "331551b0de4157c9abc7b72b61b96a2a928fd6db3cdf029c1fc44b08ad633aa6"
+    },
+    {
+      "position": 3379,
+      "id": "components.Requests.pendingImportAttempt",
+      "source": "Import attempt {attempt} of {maxAttempts}.",
+      "sourceSha256": "96768d2a147232b2a5dbd8f0e69454b44fe200f634942377513225914977a5f9"
+    }
+  ],
+  "callerContextHashesById": {
+    "components.Requests.mediaFilters": [
+      "31eab96daefb93289ecc5af74cbd9f7cabe365507382802c92421ccc0b9e736b",
+      "9099c8425de190a36bacf3c865c02238e719f7d29c028e5e5f06e5624b1ed202",
+      "42e2fab8166e7bcef98a717747efc7792cc57db55fb1eaa2ce578452f7a59c0e",
+      "bb061d005c289c28dce79d8826c028b3b6fa2d4593d58ae1c72b117eeec0c74b",
+      "75240bc2d7fe18337a5811c2bd01931395d53cd41d969cd2b1f3bc7a6d5848e2",
+      "aba4b3a00289e497b5c35acec0489816c1501e75943ef7ab543a2065f31afe2f",
+      "f3c64905d5cc88984ad4d383aafc299f4f8e6c839ea4c184edf0668046930210"
+    ],
+    "components.Requests.mediaType": [
+      "e16f3f7d04c677d3def6d89864eca88eeaa20484f5e11bcc568f4fec021f7dda"
+    ],
+    "components.Requests.mediaTypeValue": [
+      "ecfd862b9856f241a5b92a8207c76fe5a204f95f89a18f7f69ab5deac2e0283d"
+    ],
+    "components.Requests.minutes": [
+      "f089539a9bf45a7308d7a4aa700ef832dcb143886b7475db555a1a52635c6a3e"
+    ],
+    "components.Requests.modifyFailed": [
+      "c6f0a81d93dbb6434b746e496fe640796a4beefdb6beb1cfb4f38d35dcac12c0",
+      "e326dcf7c08ef49a1e9a841a5f0462f1a4b27fe57fc5590231851173480b9304"
+    ],
+    "components.Requests.movie": [
+      "041a252dea90ed0b102b60eb96939bf1fd4a855b7167eaa2a781b89b2f18ca38",
+      "01bc318f53e328bbc090a0bb79cb238eb7a98c9c7201b3dfd09e30116f75960a"
+    ],
+    "components.Requests.movies": [
+      "3b746eae3445ad38d6be265276b164d08c522e08f2a14dd95129142f5ee03807",
+      "896882ac0f2c421c582e7ee8ec066ce423766d388461864452a93de4644489ff",
+      "05bbaace55a212a357346ef3cac3aea2ba8557a6f7e17f8d28de21deb62a5e64",
+      "72285069badc02ca9eb09b7ca795ac399619b52c9118ed05a67efaf98ecaa376",
+      "d4814b129a07e938dfa01c47e9a6330b2596b2b3f797e7e993c5933559d03cf9",
+      "64dfe32c46e126eedd51525031983c0418b05c906a3f3f2e6d64b5eba918810c",
+      "8cf89181233ff99f17b1f816be924d20f2b94383fae51fd90abd50a6b6e1028e"
+    ],
+    "components.Requests.music": [
+      "bfdcafd8baae99e8d6e0c439f55e3837046559ceee60c52a74aa34f5ad1a4cfa",
+      "41259d08139c87c3dc0e88ca82b27e9f7249d6a6440dfc8651ba4d59b339f266"
+    ],
+    "components.Requests.musicFormat": [
+      "78cfa4b1eafab50c2a67630c3a244b87f62ca18d0dde4e5cfe221a160ac3160e",
+      "4cd28e01922a0133f52d7b8d4a48a1f25ddae3d2581850f74798f18cb2e95e56"
+    ],
+    "components.Requests.network": [
+      "525da7895efbda75ca0196a3371ef4dcf9ec8904f5eddb2e025a37761e5f9ee8",
+      "c17785f4484810654e45e3baa608dfbf215471ca53e08f5eb101fdbbe7df50b3"
+    ],
+    "components.Requests.noHistory": [
+      "b690b9e6c778461eeb61f6d75ea6f069a335d419f95c1e5088c2b2ab99ac8192",
+      "167cbd1ca4d2a561606b78cabee1bedfe920c83a08d3fbbe0823b420a9870fc8"
+    ],
+    "components.Requests.noMediaResults": [
+      "5dbb6989c33b743fcab7cf91003d88bb578a3d4c9d8084e73106b855a1ea2034",
+      "3e89c2a6ac747af7222bb228258c056f00086da98b92a9ce88081e97b528c27c"
+    ],
+    "components.Requests.noReleaseFoundFilter": [
+      "c6afdf8eb5baa7c49897bc799f36525d638d6814621b01fd9f598e94d66def0c",
+      "0f9e0133432dc0c7ec643c8d9f5764b696645c8c65be6edd868c02188f3885c7"
+    ],
+    "components.Requests.noResults": [
+      "6671d0bbdb920be151f80c5b2f1d61a2266734820b2e96a588e5accb92d31d26",
+      "9f88f950540864870ad363c11d71cc6d1f6ce8a0fc29f83c8c29e7f2f2b78125"
+    ],
+    "components.Requests.notAvailable": [
+      "ac200d81faaa20b47bad954ca9d2aedb49b2fe34d7ad82e1c1a1837d33358f22",
+      "ef7d6c697f3abae4fc025fca8cc48a9979778835228c3bc3028eb9033cab01d4",
+      "6597b41896d591bed6f3d5d961a93006862c722f311c16208d9986cc17941b86",
+      "94b47742c9e3e2153a83ccf509933567a57518e673b73e5c57ad550f48fcd524",
+      "bee915b560818c8c895c391752557c09db323d25584c6485ff570421cd7ecc08",
+      "2860923ff900a9dda2ee40af1a11268e30f837f97d2e8b5c98802f7c0df326e5",
+      "947a75102986a045997b5e050dea4997fe7d10e539c6bcb88e65e5d5dee54045",
+      "a6495aca351f221c31fb21116a15c2f19ff38592a11522a0456cbfae525d3275",
+      "0e3fe57fe9e220ca6f22d68ba74bb8b8a33bdcdccde6d1da9f0368b29324d372"
+    ],
+    "components.Requests.olderRequests": [
+      "b472aebcf2f42db385ce07d15e887e12da2c16f601a50e4a10fded2d36c00078",
+      "b49f7cc6dc434a8aea89370e859b3d0d3edbf5fda55c895b98ed5400b147d1ad"
+    ],
+    "components.Requests.pages": [
+      "6b903ded198c618551cd14dd05c0fb434e01c64a3994897e0f02d6d6d4d1e08f",
+      "a71a572af49d29cad6b46440d7bb6c3a1a8961e78faff32ee432b1a663c06b7e"
+    ],
+    "components.Requests.pcGames": [
+      "c30582a585d5b625bdead07bbdb411fc4cc32c9ab4a6173a9ce1ede06bea3f34",
+      "4c2b0dd4821fbbefb5a1e288061a2f58b9a9e36cb12aaa95acb2f18acbe6e698"
+    ],
+    "components.Requests.pending": [
+      "710ed8d4d6ff9e8a8f06b1922e585930df1b41eb7e6bf35d14c90615ef200e1a",
+      "b7eceefb4cfae6c78a030cda8a6be48be1e2ac2e3fcbbae71c1457ef03e0b993"
+    ],
+    "components.Requests.pendingImportAttempt": [
+      "0f44838b6ed7d0fb68665c54635a7c5ce6140ac14d5311ac782507caa4d73b71",
+      "60581a36184060fe3447df8eae8548f6f25953e80d27f15477e9651b44b4513c"
+    ]
+  },
+  "callerHolds": [
+    {
+      "position": 3361,
+      "id": "components.Requests.mediaType",
+      "reason": "no direct production reference to this components.Requests message ID was found in pinned caller files; generic or dynamic rendering is context only",
+      "definitionsFound": 1,
+      "directMessageReferences": 0,
+      "source": "Media Type"
+    },
+    {
+      "position": 3362,
+      "id": "components.Requests.mediaTypeValue",
+      "reason": "no direct production reference to this components.Requests message ID was found in pinned caller files; generic or dynamic rendering is context only",
+      "definitionsFound": 1,
+      "directMessageReferences": 0,
+      "source": "Media Type"
+    },
+    {
+      "position": 3363,
+      "id": "components.Requests.minutes",
+      "reason": "no direct production reference to this components.Requests message ID was found in pinned caller files; generic or dynamic rendering is context only",
+      "definitionsFound": 1,
+      "directMessageReferences": 0,
+      "source": "{count} minutes"
+    }
+  ],
+  "placeholderParityErrors": [],
+  "protectedTermsPolicy": [
+    "Seerr",
+    "ChaptarrNG",
+    "Bindery",
+    "Bookshelf",
+    "Radarr",
+    "Sonarr",
+    "Plex",
+    "Emby",
+    "Jellyfin",
+    "TMDb",
+    "IMDb",
+    "Open Library",
+    "ComicVine",
+    "MusicBrainz",
+    "TheTVDB",
+    "Trakt",
+    "Letterboxd",
+    "Prowlarr",
+    "Bazarr",
+    "Lidarr",
+    "Readarr",
+    "Whisparr",
+    "Sportarr",
+    "Audiobookshelf"
+  ],
+  "previousWindowInputManifestSha256": "040efb880c1355bf8ab10d555afe606e41771f7ed98ea4950a0e0fa1d6ddb4d2",
+  "livePr": {
+    "repository": "snapetech-org/seerrng",
+    "pullRequest": 418,
+    "url": "https://github.com/snapetech-org/seerrng/pull/418",
+    "state": "OPEN",
+    "draft": true,
+    "headRefName": "codex/seerrng-localization-overhaul-20261028",
+    "headRefOid": "1586a249e3f86deb7b9410cff50223e5f76209ff",
+    "baseRefName": "main",
+    "baseRefOid": "38d87ac1142e1c81ad4e4b6715d0376a4526c799",
+    "tree": "d620a906353e9724ba28986103c76b7792c56099",
+    "remotePullRefHead": "1586a249e3f86deb7b9410cff50223e5f76209ff"
+  }
+}

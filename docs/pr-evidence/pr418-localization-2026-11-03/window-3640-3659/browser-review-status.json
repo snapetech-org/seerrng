@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "expectedHead": "78efa0ef0410ebd8911026ecbbfe1f621d26770b",
+  "reviewScope": "headed browser review of exact PR head and rendered settings localization surface",
+  "poolQueue": "empty at reservation time",
+  "poolHostService": "active",
+  "poolGuestHealth": "HTTP 200 status ok",
+  "browser": "Chrome",
+  "authMode": "independent",
+  "taskId": "localization-seerrng-pr418-w3640-3659-browser-review-20261103",
+  "result": "unverified",
+  "observations": [
+    "The isolated desktop was provisioned and its first screenshot showed Chrome on an extension-onboarding page.",
+    "After bounded waits, Chrome moved to a public SeerrNG PR #41 page unrelated to this review.",
+    "Address-bar and tab input actions returned accepted, but screenshots continued to show PR #41 after further bounded waits.",
+    "The browser could not be brought to PR #418 or an exact-head application preview. No login, workflow, or profile modification occurred.",
+    "The desktop lease was released normally; no screenshot was retained because the visible page was unrelated."
+  ],
+  "acceptance": "headed visual review remains pending",
+  "evidenceLimit": "Pool health and desktop provisioning succeeded; exact-head browser review did not."
+}

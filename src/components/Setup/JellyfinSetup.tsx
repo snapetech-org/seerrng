@@ -202,7 +202,9 @@ function JellyfinSetup({
                 <div className="mt-1 mb-2 sm:col-span-2 sm:mt-0 sm:mb-0">
                   <div className="flex rounded-md shadow-sm">
                     <span className="inline-flex cursor-default items-center rounded-s-md border border-e-0 border-gray-500 bg-gray-800 px-3 text-gray-100 sm:text-sm">
-                      {values.useSsl ? 'https://' : 'http://'}
+                      <bdi dir="ltr">
+                        {values.useSsl ? 'https://' : 'http://'}
+                      </bdi>
                     </span>
                     <Field
                       id="hostname"

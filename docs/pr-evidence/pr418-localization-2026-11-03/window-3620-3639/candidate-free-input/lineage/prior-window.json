@@ -1,0 +1,197 @@
+{
+  "schemaVersion": 1,
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "window": "W3600-W3619",
+  "range": [
+    3600,
+    3619
+  ],
+  "head": "1fdec93d1b021e4ec7a7c2265230f59d81d2675e",
+  "tree": "6234854dc0b1e7aee17ef2e819ffc2b5b2e386ce",
+  "baseRef": "main",
+  "baseSha": "221d8e0d542802da7529cd272c928cc747677e5c",
+  "sourceCatalogPath": "src/i18n/locale/en.json",
+  "englishCatalogGitBlob": "12e04a118c30b71b3714291adeaf9fdb2735cee4",
+  "sourceOrderCount": 9494,
+  "sourceOrderSha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+  "sourceOrderHashDerivation": "Computed from the ordered English catalog keys pinned by Git blob at this head.",
+  "priorSelectedSourceIdCount": 3600,
+  "priorSelectedSourceIdPrefixSha256": "01432a58360b523c54a3cbfe41f4cc196cc1d146e647ae7507e5716e7f534f5f",
+  "selectedSourceIdOrderSha256": "dc00bdaa06ec62fac025f92269119d254c92b1f27de53ba36c0cc2b2dca80042",
+  "previousBoundary": {
+    "position": 3599,
+    "sourceId": "components.Settings.BinderyModal.add",
+    "source": "Add Bindery",
+    "sourceSha256": "097948ef72fdf1674244b69410c9106ad74b164286474de221e037963a04c224",
+    "sourceIdSha256": "58a93a48ddd7722494f549c37ad2ea734ee7966fa73bf0bafeb45280dfbfdd69",
+    "boundaryKind": "previous",
+    "head": "1fdec93d1b021e4ec7a7c2265230f59d81d2675e",
+    "tree": "6234854dc0b1e7aee17ef2e819ffc2b5b2e386ce"
+  },
+  "nextBoundary": {
+    "position": 3620,
+    "sourceId": "components.Settings.BinderyModal.port",
+    "source": "Port",
+    "sourceSha256": "72e9a59f5a1d6289dbacb35df897d6c007c55a27e77018455c37e7b372668475",
+    "sourceIdSha256": "9ba5756120c4eee62772459503cd1271be92aec30d0d5fdd5ee7eb49f5099c65",
+    "boundaryKind": "next",
+    "head": "1fdec93d1b021e4ec7a7c2265230f59d81d2675e",
+    "tree": "6234854dc0b1e7aee17ef2e819ffc2b5b2e386ce"
+  },
+  "remainingAtWindowStart": 5894,
+  "selectedSourceCount": 20,
+  "remainingAfterWindow": 5874,
+  "sourceRecordCount": 20,
+  "sourceOrderBoundaryRecordCount": 22,
+  "cellCount": 240,
+  "localeOrder": [
+    "es",
+    "zh_Hans",
+    "hi",
+    "de",
+    "ja",
+    "fr",
+    "pt_BR",
+    "ar",
+    "ko",
+    "zh_Hant",
+    "vi",
+    "id"
+  ],
+  "localeInfo": [
+    {
+      "catalogKey": "es",
+      "tag": "es",
+      "nativeName": "Español",
+      "direction": "ltr",
+      "clientFile": "es.json",
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "catalogKey": "zh_Hans",
+      "tag": "zh-CN",
+      "nativeName": "简体中文",
+      "direction": "ltr",
+      "clientFile": "zh_Hans.json",
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "catalogKey": "hi",
+      "tag": "hi",
+      "nativeName": "हिन्दी",
+      "direction": "ltr",
+      "clientFile": "hi.json",
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "catalogKey": "de",
+      "tag": "de",
+      "nativeName": "Deutsch",
+      "direction": "ltr",
+      "clientFile": "de.json",
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "catalogKey": "ja",
+      "tag": "ja",
+      "nativeName": "日本語",
+      "direction": "ltr",
+      "clientFile": "ja.json",
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "catalogKey": "fr",
+      "tag": "fr",
+      "nativeName": "Français",
+      "direction": "ltr",
+      "clientFile": "fr.json",
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "catalogKey": "pt_BR",
+      "tag": "pt-BR",
+      "nativeName": "Português (Brasil)",
+      "direction": "ltr",
+      "clientFile": "pt_BR.json",
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "catalogKey": "ar",
+      "tag": "ar",
+      "nativeName": "العربية",
+      "direction": "rtl",
+      "clientFile": "ar.json",
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "catalogKey": "ko",
+      "tag": "ko",
+      "nativeName": "한국어",
+      "direction": "ltr",
+      "clientFile": "ko.json",
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "catalogKey": "zh_Hant",
+      "tag": "zh-TW",
+      "nativeName": "繁體中文",
+      "direction": "ltr",
+      "clientFile": "zh_Hant.json",
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "catalogKey": "vi",
+      "tag": "vi",
+      "nativeName": "Tiếng Việt",
+      "direction": "ltr",
+      "clientFile": "vi.json",
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "catalogKey": "id",
+      "tag": "id",
+      "nativeName": "Bahasa Indonesia",
+      "direction": "ltr",
+      "clientFile": "id.json",
+      "reviewStatus": "unreviewed"
+    }
+  ],
+  "catalogKeySetEqualsEnglish": true,
+  "catalogOrderedKeyHashes": {
+    "en": "47d40a21145f2f198fadaa29baeef5461718c4b6365d564af60ee015f18f1974",
+    "es": "47d40a21145f2f198fadaa29baeef5461718c4b6365d564af60ee015f18f1974",
+    "zh_Hans": "35faf7107f1be3900172b7c08ac7558b51f31d63b3b6c57eebe7710e8a81ca33",
+    "hi": "47d40a21145f2f198fadaa29baeef5461718c4b6365d564af60ee015f18f1974",
+    "de": "47d40a21145f2f198fadaa29baeef5461718c4b6365d564af60ee015f18f1974",
+    "ja": "35faf7107f1be3900172b7c08ac7558b51f31d63b3b6c57eebe7710e8a81ca33",
+    "fr": "47d40a21145f2f198fadaa29baeef5461718c4b6365d564af60ee015f18f1974",
+    "pt_BR": "47d40a21145f2f198fadaa29baeef5461718c4b6365d564af60ee015f18f1974",
+    "ar": "47d40a21145f2f198fadaa29baeef5461718c4b6365d564af60ee015f18f1974",
+    "ko": "35faf7107f1be3900172b7c08ac7558b51f31d63b3b6c57eebe7710e8a81ca33",
+    "zh_Hant": "35faf7107f1be3900172b7c08ac7558b51f31d63b3b6c57eebe7710e8a81ca33",
+    "vi": "35faf7107f1be3900172b7c08ac7558b51f31d63b3b6c57eebe7710e8a81ca33",
+    "id": "47d40a21145f2f198fadaa29baeef5461718c4b6365d564af60ee015f18f1974"
+  },
+  "placeholderMismatchCount": 0,
+  "markupMismatchCount": 0,
+  "numericTokenMismatchCount": 0,
+  "protectedLiteralMismatchCount": 8,
+  "callerlessSourcePositions": [],
+  "previousCompletedWindow": "W3580-W3599",
+  "previousWindowHoldCount": 0,
+  "previousWindowLineage": {
+    "window": "W3580-W3599",
+    "head": "30f626a4626d460f426666cde02f5c1ed17fa206",
+    "tree": "9b2616780791c73eb176aca6d53061f1f3587d8",
+    "applicationVerificationPath": "docs/pr-evidence/pr418-localization-2026-11-03/window-3580-3599/application-verification.json",
+    "applicationEvidenceHead": "1fdec93d1b021e4ec7a7c2265230f59d81d2675e",
+    "applicationEvidenceTree": "6234854dc0b1e7aee17ef2e819ffc2b5b2e386ce",
+    "applicationVerificationGitBlob": "c710757847c823b9d0a4751232a0a0be7ad19936",
+    "applicationVerificationSha256": "97d2358e4f90c14795f59e531f4148329289d121c9703c0019a7507690183a8d",
+    "applicationVerificationStatus": "PASS",
+    "holds": 0,
+    "priorHoldsOutsideThisWindowUntouched": true
+  },
+  "priorHoldPreservation": "No source or catalog values are changed by this candidate-free/primary-only task. Prior holds outside positions 3580–3599 remain untouched."
+}

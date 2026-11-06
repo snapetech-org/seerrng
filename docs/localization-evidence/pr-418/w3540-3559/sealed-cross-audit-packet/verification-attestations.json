@@ -1,0 +1,50 @@
+{
+  "blindVerifierOnCopiedPackets": "{\"candidateFreeChecksumListSha256\": \"6b8b67e58028a0af79afad9a115a42b49233df18d2469227fe4153bece68ddb8\", \"cells\": 240, \"head\": \"f15ebead8af7bd09d81c4ea61e8cd3351a2ea66d\", \"holds\": 0, \"proposals\": 8, \"retains\": 232, \"sourceOrderSha256\": \"550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072\", \"status\": \"PASS\", \"tree\": \"3ba2579c326f8dbac943ba43df77ddd5747a85a1\"}",
+  "candidateFreeVerifier": {
+    "callerlessRows": 0,
+    "candidateFreeChecksumEntries": 12,
+    "candidateFreeChecksumListSha256": "6b8b67e58028a0af79afad9a115a42b49233df18d2469227fe4153bece68ddb8",
+    "candidateFreeManifestJsonSha256": "14d7c9313f4b1eb7a0160712c87bd07089a719bcb05c64fbd8493a31f143a102",
+    "catalogKeySetsVerified": 13,
+    "catalogOrderHashesVerified": 13,
+    "cellRows": 240,
+    "head": "f15ebead8af7bd09d81c4ea61e8cd3351a2ea66d",
+    "localeCount": 12,
+    "markupMismatches": 0,
+    "placeholderMismatches": 0,
+    "result": "PASS",
+    "sourceRows": 20,
+    "tree": "3ba2579c326f8dbac943ba43df77ddd5747a85a1"
+  },
+  "primaryVerifier": {
+    "callerlessHolds": 0,
+    "candidateFreeChecksumListSha256": "6b8b67e58028a0af79afad9a115a42b49233df18d2469227fe4153bece68ddb8",
+    "candidateFreeManifestJsonSha256": "14d7c9313f4b1eb7a0160712c87bd07089a719bcb05c64fbd8493a31f143a102",
+    "cells": 240,
+    "dispositions": {
+      "accept-current": 217,
+      "correction": 9,
+      "refinement": 14
+    },
+    "head": "f15ebead8af7bd09d81c4ea61e8cd3351a2ea66d",
+    "placeholderMarkupProtectedLiteralMismatches": 0,
+    "primaryChecksumEntries": 8,
+    "primaryChecksumListSha256": "2875b7e3151a2009b8c24a79434cf70ce79483af9faba23ddb4827ee7c222337",
+    "result": "PASS",
+    "selectedChanges": 23,
+    "tree": "3ba2579c326f8dbac943ba43df77ddd5747a85a1"
+  },
+  "sealedBlindVerifierOnOriginalKspld0Paths": {
+    "command": "python3 independent-blind-review/verify.py",
+    "output": {
+      "cells": 240,
+      "head": "f15ebead8af7bd09d81c4ea61e8cd3351a2ea66d",
+      "holds": 0,
+      "proposals": 8,
+      "retains": 232,
+      "tree": "3ba2579c326f8dbac943ba43df77ddd5747a85a1"
+    },
+    "path": "/mnt/disks/scratch/task-scratch/seerrng-pr418-w3540-3559-blind-20261103/independent-blind-review/verify.py",
+    "status": "PASS"
+  }
+}

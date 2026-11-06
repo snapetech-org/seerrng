@@ -1,0 +1,43 @@
+{
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "window": "W3280-W3299",
+  "status": "sealed primary translation review based only on frozen candidate-free input",
+  "exactHead": "039fe9e04ea5cc6da314427fa25b0937ef8dd92b",
+  "exactTree": "b1338441dc47245b87ed77e8253843b66c367062",
+  "cleanInputManifestSha256": "d3a47dcb40bf869e4ad0f1bfe49858ebfec159ee0d066d84e1787c3a88474d9b",
+  "sourceIds": 20,
+  "locales": 12,
+  "cells": 240,
+  "callerContextRows": 185,
+  "contextHolds": 0,
+  "currentPlaceholderParityErrors": 0,
+  "primaryDispositions": {
+    "accept-current": 176,
+    "correction": 33,
+    "refinement": 31
+  },
+  "proposedTargetChanges": 64,
+  "changedByLocale": {
+    "ar": 9,
+    "de": 1,
+    "es": 3,
+    "fr": 5,
+    "hi": 6,
+    "id": 3,
+    "ja": 3,
+    "ko": 3,
+    "pt_BR": 11,
+    "vi": 9,
+    "zh_Hans": 5,
+    "zh_Hant": 6
+  },
+  "proposedPlaceholderMismatches": 0,
+  "protectedLiteralMismatches": 0,
+  "sourceCurrentAndProposedHashesVerified": true,
+  "canonicalTranslationHashAlgorithm": "sha256 of compact UTF-8 JSON array [id, locale, source, target]",
+  "orderedCatalogs": "all 13 locale catalogs retain their own pinned 9,494-key set/order",
+  "independentBlindReview": "not opened; primary ledger kept separate",
+  "nativeSpeakerApproval": false,
+  "repositoryOrPrMutated": false
+}

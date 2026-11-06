@@ -1,0 +1,206 @@
+{
+  "schemaVersion": 1,
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "window": "W3460-W3479",
+  "range": [
+    3460,
+    3479
+  ],
+  "previousBoundary": {
+    "position": 3459,
+    "boundaryKind": "previous",
+    "sourceId": "components.Requests.writer",
+    "source": "Writer",
+    "sourceSha256": "0e3c5fe00f66cc415be9a7b7c02cfb5939929ad13182177bfdf8d37bfa6b048e",
+    "sourceIdSha256": "b1ffa531eb97c67c4be3cf2a328ee3690dce830902df66e160f418e2cb146779",
+    "head": "76fd466ba7e44ed9853115f8fb1f8ab8bec93c8e",
+    "tree": "00a72de46a40df893a24e0a93e85ec505e035a2d"
+  },
+  "nextBoundary": {
+    "position": 3480,
+    "boundaryKind": "next",
+    "sourceId": "components.Search.SoftwarePreview.seeAll",
+    "source": "See all software results",
+    "sourceSha256": "7e3a487ebd3813ea15546f66d0a6367d15cf6dec7fa398116f775749fdbf9a42",
+    "sourceIdSha256": "e4ae29475460db70aebef2f72745d5e14519f61a6513dff07380bb8b2435e8f6",
+    "head": "76fd466ba7e44ed9853115f8fb1f8ab8bec93c8e",
+    "tree": "00a72de46a40df893a24e0a93e85ec505e035a2d"
+  },
+  "head": "76fd466ba7e44ed9853115f8fb1f8ab8bec93c8e",
+  "tree": "00a72de46a40df893a24e0a93e85ec505e035a2d",
+  "baseRef": "main",
+  "baseSha": "221d8e0d542802da7529cd272c928cc747677e5c",
+  "sourceOrderCount": 9494,
+  "sourceOrderSha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+  "remainingAtWindowStart": 6034,
+  "remainingAfterWindow": 6014,
+  "tail": {
+    "position": 9493,
+    "sourceId": "utils.oidc.oidcUnauthorized",
+    "source": "You do not have permission to sign in with {provider}.",
+    "sourceSha256": "7bd4a7ff8e1e269809b859adb6b9794334613437e4ab733e58496926542cabc9",
+    "sourceIdSha256": "5422247f67a57f1dab8789d0487585b8210c3321c5eef012a53b77753d865b0a"
+  },
+  "sourceRecordCount": 20,
+  "sourceOrderBoundaryRecordCount": 22,
+  "cellCount": 240,
+  "localeOrder": [
+    "es",
+    "zh_Hans",
+    "hi",
+    "de",
+    "ja",
+    "fr",
+    "pt_BR",
+    "ar",
+    "ko",
+    "zh_Hant",
+    "vi",
+    "id"
+  ],
+  "localeInfo": [
+    {
+      "catalogKey": "es",
+      "tag": "es",
+      "nativeName": "Español",
+      "direction": "ltr",
+      "clientFile": "es.json",
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "catalogKey": "zh_Hans",
+      "tag": "zh-CN",
+      "nativeName": "简体中文",
+      "direction": "ltr",
+      "clientFile": "zh_Hans.json",
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "catalogKey": "hi",
+      "tag": "hi",
+      "nativeName": "हिन्दी",
+      "direction": "ltr",
+      "clientFile": "hi.json",
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "catalogKey": "de",
+      "tag": "de",
+      "nativeName": "Deutsch",
+      "direction": "ltr",
+      "clientFile": "de.json",
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "catalogKey": "ja",
+      "tag": "ja",
+      "nativeName": "日本語",
+      "direction": "ltr",
+      "clientFile": "ja.json",
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "catalogKey": "fr",
+      "tag": "fr",
+      "nativeName": "Français",
+      "direction": "ltr",
+      "clientFile": "fr.json",
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "catalogKey": "pt_BR",
+      "tag": "pt-BR",
+      "nativeName": "Português (Brasil)",
+      "direction": "ltr",
+      "clientFile": "pt_BR.json",
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "catalogKey": "ar",
+      "tag": "ar",
+      "nativeName": "العربية",
+      "direction": "rtl",
+      "clientFile": "ar.json",
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "catalogKey": "ko",
+      "tag": "ko",
+      "nativeName": "한국어",
+      "direction": "ltr",
+      "clientFile": "ko.json",
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "catalogKey": "zh_Hant",
+      "tag": "zh-TW",
+      "nativeName": "繁體中文",
+      "direction": "ltr",
+      "clientFile": "zh_Hant.json",
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "catalogKey": "vi",
+      "tag": "vi",
+      "nativeName": "Tiếng Việt",
+      "direction": "ltr",
+      "clientFile": "vi.json",
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "catalogKey": "id",
+      "tag": "id",
+      "nativeName": "Bahasa Indonesia",
+      "direction": "ltr",
+      "clientFile": "id.json",
+      "reviewStatus": "unreviewed"
+    }
+  ],
+  "callerFiles": {
+    "src/components/Requests/index.tsx": {
+      "path": "src/components/Requests/index.tsx",
+      "sha256": "25b612dcda274fe2ea64b76f169587e153b04a675c9b8cd817814d9fbfde5360",
+      "gitBlob": "84f6a19674b329df0ef6be6483d74bbaeb110ccb",
+      "byteCount": 100417,
+      "lineCount": 3115,
+      "namespace": "components.Requests"
+    },
+    "src/components/ResetPassword/index.tsx": {
+      "path": "src/components/ResetPassword/index.tsx",
+      "sha256": "5470cf5d941d478950925f3137e273c4241a9dd6f5e147b35e6191a061af6fc7",
+      "gitBlob": "14928cdde52efd76601bdda45c69d63b73d9df2b",
+      "byteCount": 8127,
+      "lineCount": 193,
+      "namespace": "components.ResetPassword"
+    },
+    "src/components/ResetPassword/RequestResetLink.tsx": {
+      "path": "src/components/ResetPassword/RequestResetLink.tsx",
+      "sha256": "7a23cf9896ccf55ea5044cc5e2357549898beb90595e8070b087d8eb0790434f",
+      "gitBlob": "d12c381becba3b5b4485895e08a47522cb50f6e5",
+      "byteCount": 6083,
+      "lineCount": 151,
+      "namespace": "components.ResetPassword"
+    },
+    "src/components/Search/ContextualSearchFilters.tsx": {
+      "path": "src/components/Search/ContextualSearchFilters.tsx",
+      "sha256": "8ba9db7fe47c121a39ead574114d8f097f9dfae291ca8776cc776d33c6c152c9",
+      "gitBlob": "3c619590f88fda6aa442d5c96b89a990b91233e0",
+      "byteCount": 8126,
+      "lineCount": 263,
+      "namespace": "components.Search.ContextualFilters"
+    },
+    "src/components/Search/SoftwareSearchPreview.tsx": {
+      "path": "src/components/Search/SoftwareSearchPreview.tsx",
+      "sha256": "8e32ea846a19cec7e1267a80a8b50d4414a9eb29ef5823d335ed6130d0a60f5a",
+      "gitBlob": "bd30e906d0f3ff5e54685dc3166c27dbfa923fa3",
+      "byteCount": 4711,
+      "lineCount": 136,
+      "namespace": "components.Search.SoftwarePreview"
+    }
+  },
+  "candidateFreeInputOnly": true,
+  "semanticReviewDecisionsIncluded": false,
+  "proposedTranslationsIncluded": false,
+  "qualifiedNativeSpeakerApproval": false
+}

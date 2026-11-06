@@ -1,0 +1,113 @@
+{
+  "byLocale": {
+    "ar": 46,
+    "de": 11,
+    "es": 32,
+    "fr": 13,
+    "hi": 18,
+    "id": 25,
+    "ja": 28,
+    "ko": 33,
+    "pt-BR": 33,
+    "vi": 46,
+    "zh-CN": 40,
+    "zh-TW": 49
+  },
+  "catalogCellsChanged": 374,
+  "catalogs": {
+    "src/i18n/locale/ar.json": {
+      "afterSha256": "ccbafb34493cedbcc127a995e968c25497a63fb2bcab6d38ee07936d8ff3c678",
+      "beforeSha256": "67e04a2db5c18b810db03044ffbe0811e58ec4872c81cc6adfce89892b932914",
+      "cellsChanged": 46,
+      "keyCount": 9494
+    },
+    "src/i18n/locale/de.json": {
+      "afterSha256": "09e2ec7a53f4e1bef1c34e4093b2fd82e692edf0681288675a092a21db3a58ce",
+      "beforeSha256": "4bd3c1b2b3cc8940b5221d3ccc496a3a49b778317fa6495c42ca1a1bca18dc01",
+      "cellsChanged": 11,
+      "keyCount": 9494
+    },
+    "src/i18n/locale/es.json": {
+      "afterSha256": "19bf208b75d2c0ea084186827ab8835803101db7629e624cef2a1ddcb5b9bc92",
+      "beforeSha256": "5c60699f21f638edaae3f8ed548b1b1387c9fd4eed6409c5dd0f774362e3f851",
+      "cellsChanged": 32,
+      "keyCount": 9494
+    },
+    "src/i18n/locale/fr.json": {
+      "afterSha256": "9580878dc4060399cf05111dbb1d6fffa4e57c935aac6f5d2e602af354126941",
+      "beforeSha256": "98ada3ff5936acd8e7ae7f86542e3eb91bae95a19e29c79e7c489a263abf7b15",
+      "cellsChanged": 13,
+      "keyCount": 9494
+    },
+    "src/i18n/locale/hi.json": {
+      "afterSha256": "03bcfe334ce4c58a59b625b837eb463110a386d6f6578e919830b3bd1cf3c10d",
+      "beforeSha256": "1879b0e7121201a8b460cff81ab16d22fb6c9b896ef6a6e047dac50ffeee8b50",
+      "cellsChanged": 18,
+      "keyCount": 9494
+    },
+    "src/i18n/locale/id.json": {
+      "afterSha256": "4518c328cab3cd5bb3b70985787eb069a2e6367efd06e2a3995d21c7facbe914",
+      "beforeSha256": "2f3d566de1c93ba25f5f9fc08580d54697bbff8d931edbb4401cb8e1db044a30",
+      "cellsChanged": 25,
+      "keyCount": 9494
+    },
+    "src/i18n/locale/ja.json": {
+      "afterSha256": "4832057cefb594467ca5c3fcb6e6d1a854b19ad49f7f3823b1361e75df73fecb",
+      "beforeSha256": "f17ce27476b2ac47e26b1297133bf9ce46217fcd4ffdaa66cf2a03861129f849",
+      "cellsChanged": 28,
+      "keyCount": 9494
+    },
+    "src/i18n/locale/ko.json": {
+      "afterSha256": "b4513a80bc44ca33b91b142c13f90e1953fec0ce75f7b664244a034c4dc30bb1",
+      "beforeSha256": "65362d1f0b641b6a8d9c61ab15d6c016135860acbd793022b10c7176ca9a9c0b",
+      "cellsChanged": 33,
+      "keyCount": 9494
+    },
+    "src/i18n/locale/pt_BR.json": {
+      "afterSha256": "c47f09357958fb6407202da4250d139a5d86941c858e4bc017f10f79edc0d116",
+      "beforeSha256": "9dbbee3101df712ed413207577da7732d7a8fba893a18973decd059ee9ecffd3",
+      "cellsChanged": 33,
+      "keyCount": 9494
+    },
+    "src/i18n/locale/vi.json": {
+      "afterSha256": "8be894bd076678087ead4bbcbfc55731947038ea138296ad7d2d4cd4f4e97026",
+      "beforeSha256": "921690e91208a3088b9037d6d879a91f87d7f5ab223fe8b7ebf90dc7205a9e4b",
+      "cellsChanged": 46,
+      "keyCount": 9494
+    },
+    "src/i18n/locale/zh_Hans.json": {
+      "afterSha256": "37622aff5911ea0aee6354fe4c84263c4298c262965d79ef0ca553aced50efea",
+      "beforeSha256": "cc9b1099f2f3dd1bcf83c338016319e25db79268fb539ab3172fcbde93006078",
+      "cellsChanged": 40,
+      "keyCount": 9494
+    },
+    "src/i18n/locale/zh_Hant.json": {
+      "afterSha256": "2a20bc65982463d7ae00a613d5c92da5bf8800f46ad19bc9ae1c8dfc4ad94bcf",
+      "beforeSha256": "4c31460559f8782de7709268aa7f6c28c8a4659accecbef214d364fc331fa15e",
+      "cellsChanged": 49,
+      "keyCount": 9494
+    }
+  },
+  "crossReviewDispositionCounts": {
+    "accept-proposal": 363,
+    "refine-proposal": 11
+  },
+  "crossReviewedCorrectionCandidates": 374,
+  "currentHeadReattestation": "all 1,200 source/current-target cell hashes and 8,364 caller references matched PR head aedb6f552bb9ad4a0d93a23f461e997a78163e33 / tree 8e666e5bf89b8888a37a914c6917d57347943ce8",
+  "nativeSpeakerApproval": false,
+  "noOpCandidates": 0,
+  "preApplyHead": "aedb6f552bb9ad4a0d93a23f461e997a78163e33",
+  "preApplyTree": "8e666e5bf89b8888a37a914c6917d57347943ce8",
+  "primaryAcceptCurrentCellsNotIndependentlyCrossReviewed": 816,
+  "priorDispositionsPreservedWithoutReadjudication": 10,
+  "pullRequest": 418,
+  "releaseCreated": false,
+  "repository": "snapetech-org/seerrng",
+  "schemaVersion": 1,
+  "sourceIdPositions": "400-499",
+  "sourceTree": "db8d479688d06980e63c5f71362d64f16efa50d8",
+  "testsBuildsScansCI": "not run",
+  "visualAcceptance": "unverified; no rendered comparison was completed for this batch",
+  "window": "W700-749",
+  "workflowsChanged": false
+}

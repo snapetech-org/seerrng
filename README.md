@@ -184,7 +184,7 @@ For local MCP access, see the [SnapeTech MCP integration guide](./docs/integrati
 - Movie and Series Subject Tags can be hidden with a browser-saved preference shared across both detail pages.
 - Authenticated **Download copy** links in Request Status for verified movie, TV, book, comic, magazine, ROM, and PC game files.
 - Movie and TV request history can be sorted by title, release date, TMDB rating, and popularity across the full filtered history; other media keep date-based sorting.
-- Request lifecycle tracking and availability notifications link users back to the matching Request Status item, where available files can be selected and saved.
+- Request lifecycle tracking and availability notifications link users back to the matching Request Status item, where available files can be selected and saved. Media-request titles and follower availability notices follow each notification delivery's language; Discord can use the recipient's profile language. See the [notification guide](./docs/using-seerr/notifications/index.mdx).
 - Generic webhook notifications support bounded JSON templates, custom headers, and allowlisted lowercase, URL-encoding, and slugification filters. See the [webhook guide](./docs/using-seerr/notifications/webhook.md#json-payload).
 - Signed-in household members can follow another user's active movie or series request for a one-time availability notice through their own configured notification channels.
 - Administrators can opt into a separate **Pending Request Updated** notification when an edit changes a pending request's owner, selected seasons or episodes, or acquisition options. The webhook event is `MEDIA_PENDING_UPDATED`; see the [notification guide](./docs/using-seerr/notifications/index.mdx#pending-request-edits).

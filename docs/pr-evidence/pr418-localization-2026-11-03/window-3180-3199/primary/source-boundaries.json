@@ -1,0 +1,74 @@
+{
+  "repository": "snapetech-org/SeerrNG",
+  "pullRequest": 418,
+  "head": "c03816972aab761a69b343abcdfe8a10f85aeabb",
+  "tree": "1ffc02d5d7dbbb14ab4706ce61bfcfda64592a01",
+  "englishKeyCount": 9494,
+  "range": [
+    3180,
+    3199
+  ],
+  "selectedKeyCount": 20,
+  "selectedCellCount": 240,
+  "catalogs": {
+    "src/i18n/locale/es.json": {
+      "sha256": "187665bcc839433f0768a89e5773cd83fde1c8fabcc257478bcd549f64fb1b65",
+      "keys": 9494
+    },
+    "src/i18n/locale/zh_Hans.json": {
+      "sha256": "9d1cb0dce169c286c2c25664a5899686c98f56b14ad9b884ff4c8bf2a8bbcdf1",
+      "keys": 9494
+    },
+    "src/i18n/locale/hi.json": {
+      "sha256": "a6c4181a18a69b468a5d8b600bdc8d8928c8d0dd8c99e55386710131cb8a73e7",
+      "keys": 9494
+    },
+    "src/i18n/locale/de.json": {
+      "sha256": "0ed1113535515d421b928c2313d65d3e029de53e1863e7fcb3b3916f30ac720d",
+      "keys": 9494
+    },
+    "src/i18n/locale/ja.json": {
+      "sha256": "27e79ad3c9dab01ab7278893c9965965db410886af795ebb75174325f76bf4d1",
+      "keys": 9494
+    },
+    "src/i18n/locale/fr.json": {
+      "sha256": "f868b0e0f75d9f72071370f296eaf168b7261e3ca7f5a9c301aa0b23b88b22a2",
+      "keys": 9494
+    },
+    "src/i18n/locale/pt_BR.json": {
+      "sha256": "7323a618c84dcc6726323be31fde7bb955af44609d707755020ff762eb22147a",
+      "keys": 9494
+    },
+    "src/i18n/locale/ar.json": {
+      "sha256": "cbbfc7c0613ee6c80f0fec6df229d3b73b01790fcb86f66f27ae7f6abf981f65",
+      "keys": 9494
+    },
+    "src/i18n/locale/ko.json": {
+      "sha256": "2d38240056ca3ab0c74bff9b832769fd74771a76fafe9838a9aebcf96a147dbb",
+      "keys": 9494
+    },
+    "src/i18n/locale/zh_Hant.json": {
+      "sha256": "e007bccbfd1bf2a6c1dc769e600482c17101301d4e827c1a12e24652097372af",
+      "keys": 9494
+    },
+    "src/i18n/locale/vi.json": {
+      "sha256": "aaa02fb9a53da458a9457042b8c0436cc2f3a41d070628063b4136a81675ffd6",
+      "keys": 9494
+    },
+    "src/i18n/locale/id.json": {
+      "sha256": "ee53f2573b5414995373d28386136c21d35f2d83b752eada75733285fc57bb0f",
+      "keys": 9494
+    },
+    "src/i18n/locale/en.json": {
+      "sha256": "75ff3c90b52aedd636a506281ffbd6fb2d3739c61294b6008a517f17647e2316",
+      "keys": 9494
+    }
+  },
+  "callerFiles": {
+    "src/components/RequestStatus/SoftwareRequests.tsx": {
+      "sha256": "50752a4099e6067a95a9278612bcb92e487de9fe6a6acbb8d05d64c7ba223a54",
+      "lineCount": 956
+    }
+  },
+  "callerSearchScope": "Message definitions and statically named uses in SoftwareRequests.tsx, plus dynamic status-label map for cancelled/declined/downloading/failed."
+}

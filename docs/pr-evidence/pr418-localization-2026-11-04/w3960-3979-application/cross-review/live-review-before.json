@@ -1,0 +1,12 @@
+{
+  "apiBase": "fa40534ccced75bde1125c14760514fcd5d7de4d",
+  "apiBaseRef": "main",
+  "apiHead": "a456dd66aad34cb23f432cb3c189bb8083bbbe96",
+  "apiHeadRef": "codex/seerrng-localization-overhaul-20261028",
+  "draft": true,
+  "pullRequest": 418,
+  "queriedAtUtc": "2026-11-04 20:47:17 UTC",
+  "repository": "snapetech-org/seerrng",
+  "state": "open",
+  "url": "https://github.com/snapetech-org/seerrng/pull/418"
+}

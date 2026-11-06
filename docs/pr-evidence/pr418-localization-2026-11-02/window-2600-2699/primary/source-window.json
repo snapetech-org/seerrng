@@ -1,0 +1,617 @@
+{
+  "head": "9242898e23f7f25d515d10b5b0b51df322e395fb",
+  "sourceCatalog": {
+    "blob": "12e04a118c30b71b3714291adeaf9fdb2735cee4",
+    "bytes": 835513,
+    "path": "src/i18n/locale/en.json",
+    "sha256": "75ff3c90b52aedd636a506281ffbd6fb2d3739c61294b6008a517f17647e2316"
+  },
+  "sourceCount": 100,
+  "sourceList": [
+    {
+      "position": 2600,
+      "source": "Update reader shelf",
+      "sourceHash": "d93f616a0324c33bc29bc0ff91e8df2870786ed2e4a8d8b56ce6a3802c3fa164",
+      "sourceId": "components.ReaderGroupingAction.updateAction"
+    },
+    {
+      "position": 2601,
+      "source": "BookOrbit locks visibility when the scope is created. Change it in BookOrbit or remove and recreate the managed scope.",
+      "sourceHash": "6b0cf1b0cb1ec55e4f87d10c6d47268f059f66794d06efb9d530a80447c2b60e",
+      "sourceId": "components.ReaderGroupingAction.visibilityLocked"
+    },
+    {
+      "position": 2602,
+      "source": "The shelf was saved, but the service has not confirmed its current item count. Open the service and refresh the shelf to check it.",
+      "sourceHash": "cb9cd1f940d08113692671d71348363cb3a262dcb59534779149590bbbc74378",
+      "sourceId": "components.ReaderGroupingAction.warning"
+    },
+    {
+      "position": 2603,
+      "source": "All Regions",
+      "sourceHash": "98f16521dba06949a047b2da929231c79cc6a25375fb5959f8b5dba2a3cb6911",
+      "sourceId": "components.RegionSelector.regionDefault"
+    },
+    {
+      "position": 2604,
+      "source": "Default ({region})",
+      "sourceHash": "53697b873f730f7c0194232ff3a10351245a2561f876153b226517daa3e920fe",
+      "sourceId": "components.RegionSelector.regionServerDefault"
+    },
+    {
+      "position": 2605,
+      "source": "Approve Request",
+      "sourceHash": "87b9c5966917ae9076d95358362a1bd92aba139e1fa9df06b7af637f83395752",
+      "sourceId": "components.RequestBlock.approve"
+    },
+    {
+      "position": 2606,
+      "source": "Format",
+      "sourceHash": "36dab988186a80dda0c7aaaf914f8744f5076591f9df5948e9e8f28b71f31087",
+      "sourceId": "components.RequestBlock.bookFormat"
+    },
+    {
+      "position": 2607,
+      "source": "Decline Request",
+      "sourceHash": "c48f5f81c14aab074c2937834f7d8567897c0ec3bf09bf22a88e59d79d17f341",
+      "sourceId": "components.RequestBlock.decline"
+    },
+    {
+      "position": 2608,
+      "source": "Delete Request",
+      "sourceHash": "0762591ac9f6d5a5be666ef09426302e28e55f81164a26d517f6bc4cf5800727",
+      "sourceId": "components.RequestBlock.delete"
+    },
+    {
+      "position": 2609,
+      "source": "Edit Request",
+      "sourceHash": "1387d95319a1300680482a8c811b2d66cf52d670b58509d2f10f7eef200160f2",
+      "sourceId": "components.RequestBlock.edit"
+    },
+    {
+      "position": 2610,
+      "source": "Language Profile",
+      "sourceHash": "9a0361da295de71fe24be1ad5a5749c9be450377b6be7b11afd95df2b7239bbe",
+      "sourceId": "components.RequestBlock.languageprofile"
+    },
+    {
+      "position": 2611,
+      "source": "Last Modified By",
+      "sourceHash": "52393edf53ea6c56a8999a8216a0dc65f79994b8dd1f4a53bde3bb83f4038b72",
+      "sourceId": "components.RequestBlock.lastmodifiedby"
+    },
+    {
+      "position": 2612,
+      "source": "Metadata Profile",
+      "sourceHash": "7d132aaad674511120e64e0dc3b81ed2318282179b98143fa65828bf306bca05",
+      "sourceId": "components.RequestBlock.metadataprofilechanged"
+    },
+    {
+      "position": 2613,
+      "source": "Quality Profile",
+      "sourceHash": "6e150fe6e2620ea797f411f6f018a882d527747333c71948a6212ad826396c12",
+      "sourceId": "components.RequestBlock.profilechanged"
+    },
+    {
+      "position": 2614,
+      "source": "Request Date",
+      "sourceHash": "292fca02e4c976079fee2646c0244cb47dd9532a97b14f0a0be96ecfb64f0112",
+      "sourceId": "components.RequestBlock.requestdate"
+    },
+    {
+      "position": 2615,
+      "source": "Requested By",
+      "sourceHash": "7c18260d83a5ae35553291e3e722868009cfb250c2fb0b56d9466f13a9d21b93",
+      "sourceId": "components.RequestBlock.requestedby"
+    },
+    {
+      "position": 2616,
+      "source": "Request Overrides",
+      "sourceHash": "75be8ecad0c176492bd87cfe5dba5d6025310c5afd49b84cd94b4acc8155549e",
+      "sourceId": "components.RequestBlock.requestoverrides"
+    },
+    {
+      "position": 2617,
+      "source": "Root Folder",
+      "sourceHash": "a7805c5bcbba280a2ae3a30864cf32f61025300ea9ce6dce70f5dc908f5faacd",
+      "sourceId": "components.RequestBlock.rootfolder"
+    },
+    {
+      "position": 2618,
+      "source": "{seasonCount, plural, one {Season} other {Seasons}}",
+      "sourceHash": "a0e1b568f4ed6076f8e5ed36dea3c35a812c23f3acada5831599b6e6425514c7",
+      "sourceId": "components.RequestBlock.seasons"
+    },
+    {
+      "position": 2619,
+      "source": "Destination Server",
+      "sourceHash": "3f10dfddd35176e668b95c3123a4581af634a63d5cb5b5e90d1075e34390f619",
+      "sourceId": "components.RequestBlock.server"
+    },
+    {
+      "position": 2620,
+      "source": "This format is already available.",
+      "sourceHash": "a031c5971775a38cadb6fcc72b80d88f18b81d7a29ffaa283bb86fabda4b8230",
+      "sourceId": "components.RequestButton.availableFormat"
+    },
+    {
+      "position": 2621,
+      "source": "This title is blocklisted.",
+      "sourceHash": "c8c17a807a53804509bd6573f25c56d3d24515e16c4e71fd14d639dad802efeb",
+      "sourceId": "components.RequestButton.blocklisted"
+    },
+    {
+      "position": 2622,
+      "source": "HD",
+      "sourceHash": "e48aa848db9d2b73faecbf33d2996e70cca39c4441329077575902adb0baa841",
+      "sourceId": "components.RequestButton.hd"
+    },
+    {
+      "position": 2623,
+      "source": "No service is configured for this format.",
+      "sourceHash": "2c71a2e14ce50599c0410001d1e001b8d887a0d61e7590da1e1adf63b0063401",
+      "sourceId": "components.RequestButton.noService"
+    },
+    {
+      "position": 2624,
+      "source": "An open pending request already exists for this format.",
+      "sourceHash": "fcc524b0837fc6853f7ac6f49e84b8cdb90ae6322d236f725d299793ffc9ecb3",
+      "sourceId": "components.RequestButton.pendingFormat"
+    },
+    {
+      "position": 2625,
+      "source": "Request More",
+      "sourceHash": "53b49182e8b7aacfd3b9fff41e2fc25953ae0d3dd3ae7a3913ec9b68868e2800",
+      "sourceId": "components.RequestButton.requestmore"
+    },
+    {
+      "position": 2626,
+      "source": "Request More in 4K",
+      "sourceHash": "656a9fc1b6439bf2841bdc34dad492d9aad3fb74e5dd5bbb2319089cfeadfc0c",
+      "sourceId": "components.RequestButton.requestmore4k"
+    },
+    {
+      "position": 2627,
+      "source": "{failed, plural, one {One request could not be updated.} other {{failed} requests could not be updated.}}",
+      "sourceHash": "35f08c96e4dacfd28e7a6f5f97e0466087135f677a8f113df4aac808de3ad852",
+      "sourceId": "components.RequestButton.requestupdatesfailed"
+    },
+    {
+      "position": 2628,
+      "source": "This format cannot be requested in the current state.",
+      "sourceHash": "87762f0d0e0446471cb44c436d7663546d6f26d1abfde0a2c91f281da35dffc1",
+      "sourceId": "components.RequestButton.unavailableFormat"
+    },
+    {
+      "position": 2629,
+      "source": "View Request",
+      "sourceHash": "90a593b4947fccda891b55fa3ebb9cb98f88b9a625f6e979651ef2c8f4687612",
+      "sourceId": "components.RequestButton.viewrequest"
+    },
+    {
+      "position": 2630,
+      "source": "View 4K Request",
+      "sourceHash": "be8906a4e540870eca0dd1bdbecaa5189ab04ec55547804e68249e7cce1fca51",
+      "sourceId": "components.RequestButton.viewrequest4k"
+    },
+    {
+      "position": 2631,
+      "source": "Anime IDs: MAL {malIds}; AniList {aniListIds}",
+      "sourceHash": "3b09ac1520ad42b13ff0367fc17839d2450414ed464a3a3a8afbd223a445b238",
+      "sourceId": "components.RequestCard.TvSeasonMappingModal.animeIdentifiers"
+    },
+    {
+      "position": 2632,
+      "source": "Map every requested season. SeerrNG checks standard-order choices against TVDB and alternate-order choices against the selected Sonarr series.",
+      "sourceHash": "7295667a1572a5048bbe11f41b93b1068a9b9321d0006c1749491e0f4f7d6542",
+      "sourceId": "components.RequestCard.TvSeasonMappingModal.description"
+    },
+    {
+      "position": 2633,
+      "source": "Season numbering can differ between TMDB and TVDB. SeerrNG will use only the mappings you select here.",
+      "sourceHash": "57fa78a40f2abc4adb8776001f5a39db0db7c4097ea30f73b925e93d10e36cd3",
+      "sourceId": "components.RequestCard.TvSeasonMappingModal.explanation"
+    },
+    {
+      "position": 2634,
+      "source": "Unable to save the season mapping or retry the request.",
+      "sourceHash": "54f1d936a7f1f4897975750f1f0960a4a8ad86336f5a95081c23617de49d443d",
+      "sourceId": "components.RequestCard.TvSeasonMappingModal.failed"
+    },
+    {
+      "position": 2635,
+      "source": "{event} · {date}",
+      "sourceHash": "47cec4dbee370ebf6a8497e3b34f9b357880f8495a56e617512b3f70f3bbcfc4",
+      "sourceId": "components.RequestCard.TvSeasonMappingModal.historyItem"
+    },
+    {
+      "position": 2636,
+      "source": "Unable to load Sonarr series for this request destination.",
+      "sourceHash": "3c7ee310083eb7d7e9b06791932f372d6d954633236e988bcbdd11a0e07b9f2b",
+      "sourceId": "components.RequestCard.TvSeasonMappingModal.lookupFailed"
+    },
+    {
+      "position": 2637,
+      "source": "Map seasons and retry",
+      "sourceHash": "913849b2c0ccbb3c45a192f21fd71fa9739ca51bfe154ba63c4b8331f63c52b4",
+      "sourceId": "components.RequestCard.TvSeasonMappingModal.mapAndRetry"
+    },
+    {
+      "position": 2638,
+      "source": "No recent Sonarr activity was returned.",
+      "sourceHash": "5b4951cceaec0a8ccb84f5354e5d25ac846dd8d2b9adff728f5e928c73a719e1",
+      "sourceId": "components.RequestCard.TvSeasonMappingModal.noHistory"
+    },
+    {
+      "position": 2639,
+      "source": "No matching Sonarr series was found for this request destination.",
+      "sourceHash": "f769222937060a1b264f6b08fcc6dd1a2497d33db4abed116c158b8fcc600459",
+      "sourceId": "components.RequestCard.TvSeasonMappingModal.noSeries"
+    },
+    {
+      "position": 2640,
+      "source": "Season {season}",
+      "sourceHash": "95d4dc76e72c14b6c0828b5da47b66ddf4418eaf974f29cf3d0bc8778a1a1db1",
+      "sourceId": "components.RequestCard.TvSeasonMappingModal.numberedSeason"
+    },
+    {
+      "position": 2641,
+      "source": "Sonarr series order",
+      "sourceHash": "ed9eeb0d6721cd00d4b906aff3198fb10befea4ab861dc543f11524af4aff26f",
+      "sourceId": "components.RequestCard.TvSeasonMappingModal.order"
+    },
+    {
+      "position": 2642,
+      "source": "Original country: {country}",
+      "sourceHash": "451f725271f26cb699fffd0c16f1dfa8b1099bbad255558d784b96b6d2214e93",
+      "sourceId": "components.RequestCard.TvSeasonMappingModal.originalCountry"
+    },
+    {
+      "position": 2643,
+      "source": "Recent Sonarr activity",
+      "sourceHash": "c8bbe67dc90e8c9f036640afeaa5ee032b6643236ca283fe8e386427d9998e59",
+      "sourceId": "components.RequestCard.TvSeasonMappingModal.recentHistory"
+    },
+    {
+      "position": 2644,
+      "source": "TMDB season {season}",
+      "sourceHash": "da127becc7a1033805942beaad80fc57a4e6467b45f9452c463d937c8f8a6dab",
+      "sourceId": "components.RequestCard.TvSeasonMappingModal.season"
+    },
+    {
+      "position": 2645,
+      "source": "Unable to verify the official TVDB season list.",
+      "sourceHash": "ad63a8584754087548a25fccfe4aa8385448b79bd9c4543ec18d734a4bff8ecc",
+      "sourceId": "components.RequestCard.TvSeasonMappingModal.seasonLoadFailed"
+    },
+    {
+      "position": 2646,
+      "source": "Loading official TVDB seasons…",
+      "sourceHash": "1acebeeef462c665b35e5a229d12685f07cc14f495a0e8c3cca00660f09997aa",
+      "sourceId": "components.RequestCard.TvSeasonMappingModal.seasonLoading"
+    },
+    {
+      "position": 2647,
+      "source": "{season} ({year})",
+      "sourceHash": "61f2213954bd54c4b5a70db78180233b0f54dce44745bf99661b35c90adcd464",
+      "sourceId": "components.RequestCard.TvSeasonMappingModal.seasonYear"
+    },
+    {
+      "position": 2648,
+      "source": "Choose a TVDB season",
+      "sourceHash": "9287c655f7d6317baaac4deab250ddfeb69135b96db1a82b928005433f978ee2",
+      "sourceId": "components.RequestCard.TvSeasonMappingModal.selectSeason"
+    },
+    {
+      "position": 2649,
+      "source": "Choose a Sonarr series",
+      "sourceHash": "284dcee19ac5f9eb85c0820368c99b69f509a340e0c76b05594523069238239e",
+      "sourceId": "components.RequestCard.TvSeasonMappingModal.selectSeries"
+    },
+    {
+      "position": 2650,
+      "source": "Choose a Sonarr season",
+      "sourceHash": "5057041aa3fa7252b568c5fba13139c59e1da6a98397d4676a42f193c724c0d2",
+      "sourceId": "components.RequestCard.TvSeasonMappingModal.selectSonarrSeason"
+    },
+    {
+      "position": 2651,
+      "source": "Sonarr series",
+      "sourceHash": "85434add83fa2b6eb350e5bf205dc1d356cdc64dbe375770558ecde9097cff5b",
+      "sourceId": "components.RequestCard.TvSeasonMappingModal.series"
+    },
+    {
+      "position": 2652,
+      "source": "{files} of {total} episodes downloaded ({percent}%)",
+      "sourceHash": "071671d7209ca5e3a54ca97fc0f01f7e53e4b4a1b7913f75524194edf2eae58d",
+      "sourceId": "components.RequestCard.TvSeasonMappingModal.seriesProgress"
+    },
+    {
+      "position": 2653,
+      "source": "Sonarr season {season}",
+      "sourceHash": "79ec49689fda9cde71e4ebf40914755ff5dc20a832192b6f41dd2e79a087fc40",
+      "sourceId": "components.RequestCard.TvSeasonMappingModal.sonarrSeason"
+    },
+    {
+      "position": 2654,
+      "source": "Season 0 (Specials)",
+      "sourceHash": "1202c727b6cbbe5991401be967771596c88703a90446f80da089d3437bc43985",
+      "sourceId": "components.RequestCard.TvSeasonMappingModal.specials"
+    },
+    {
+      "position": 2655,
+      "source": "Map TV seasons",
+      "sourceHash": "95bcaf6087d022ecc94ac655b3e3e9b23042117be94f0c2a64fc1618394efa62",
+      "sourceId": "components.RequestCard.TvSeasonMappingModal.title"
+    },
+    {
+      "position": 2656,
+      "source": "Approve Request",
+      "sourceHash": "28fddeedc9d0402487e9626686695ea69ae96a235eadf2f8aabf16ade8b08692",
+      "sourceId": "components.RequestCard.approverequest"
+    },
+    {
+      "position": 2657,
+      "source": "Audiobook",
+      "sourceHash": "ff6c3a2709f9da905cf9768b16b973cb48c71b057ca3dd4f9a0603dc42a52f7d",
+      "sourceId": "components.RequestCard.audiobook"
+    },
+    {
+      "position": 2658,
+      "source": "Format",
+      "sourceHash": "190c47abf7a74459338edfeecac42cbb9c94601156907c25706d6bbc07da1834",
+      "sourceId": "components.RequestCard.bookFormat"
+    },
+    {
+      "position": 2659,
+      "source": "Both",
+      "sourceHash": "30841132ec03133f06f12cd1c23d0143f0908788e74628aed639264df0b2c4db",
+      "sourceId": "components.RequestCard.both"
+    },
+    {
+      "position": 2660,
+      "source": "Cancel Request",
+      "sourceHash": "e79704e3a17b5b594341817f9d3b76639400a6d20d758f1233d30496c67dd7b6",
+      "sourceId": "components.RequestCard.cancelrequest"
+    },
+    {
+      "position": 2661,
+      "source": "Decline Request",
+      "sourceHash": "a03178849f0ba898397f1c0f883ead66c66ab48dcc7004f43c9e45f5dd66f58b",
+      "sourceId": "components.RequestCard.declinerequest"
+    },
+    {
+      "position": 2662,
+      "source": "Delete Request",
+      "sourceHash": "9fdbf2e7f82da7add5f7eaa1afa6438efe99dbdc126dc18d0464914c0b82c133",
+      "sourceId": "components.RequestCard.deleterequest"
+    },
+    {
+      "position": 2663,
+      "source": "Book",
+      "sourceHash": "71948c3706d791666d7c2a88052dd66831056d001b3267fbeb765aedbdad57f9",
+      "sourceId": "components.RequestCard.ebook"
+    },
+    {
+      "position": 2664,
+      "source": "Edit Request",
+      "sourceHash": "e93d0a50acd675c938b2915a6a0f76c335e797ad0f3c46825d2a86ced7c0e064",
+      "sourceId": "components.RequestCard.editrequest"
+    },
+    {
+      "position": 2665,
+      "source": "Something went wrong while modifying the request.",
+      "sourceHash": "7d0ca43c17f62d2b2d4ed424278b01204d893521aff3f0876eec1471050f78a8",
+      "sourceId": "components.RequestCard.failedmodify"
+    },
+    {
+      "position": 2666,
+      "source": "Something went wrong while retrying the request.",
+      "sourceHash": "e9b170ace17e9b89c4f7a19cea0a34d3154cde40f08a0bd57e3c7443ee720eb7",
+      "sourceId": "components.RequestCard.failedretry"
+    },
+    {
+      "position": 2667,
+      "source": "Map TV seasons",
+      "sourceHash": "6d726e0e9265996a45d1ceeea1f7a5cc3c4709229fa8037707c6e334d9184518",
+      "sourceId": "components.RequestCard.mapTvSeasons"
+    },
+    {
+      "position": 2668,
+      "source": "{mediaType} Not Found",
+      "sourceHash": "b6286ad406f38130a9fde85645d17c6bbb7f6e1bab8d64766f9394fb17c45a76",
+      "sourceId": "components.RequestCard.mediaerror"
+    },
+    {
+      "position": 2669,
+      "source": "Partial Bookshelf link",
+      "sourceHash": "d3125d558e293c2120250f2d4be179c7dfdbe3fc36a0dac3c81612d909b806bb",
+      "sourceId": "components.RequestCard.partialBookService"
+    },
+    {
+      "position": 2670,
+      "source": "Retry",
+      "sourceHash": "233ff86e0e0ce125799b39208a0ebb7a2961de3bcd1441d03efa0fe0ba8af2ee",
+      "sourceId": "components.RequestCard.retry"
+    },
+    {
+      "position": 2671,
+      "source": "Retry this request",
+      "sourceHash": "ea62a0ff7d5660fecf65dd86821f783b67d2222e1b651b4f51bb5e228b67a55f",
+      "sourceId": "components.RequestCard.retryRequest"
+    },
+    {
+      "position": 2672,
+      "source": "TMDB ID",
+      "sourceHash": "71541e6f89e81ad5c1539040e94daf892caaade5fe520dae24e2b5e64e647051",
+      "sourceId": "components.RequestCard.tmdbid"
+    },
+    {
+      "position": 2673,
+      "source": "TheTVDB ID",
+      "sourceHash": "bdafc171f27b3c183dadbe9ec26324586a06da7c4488bb78052bd5e0c1e01a4c",
+      "sourceId": "components.RequestCard.tvdbid"
+    },
+    {
+      "position": 2674,
+      "source": "Unknown Title",
+      "sourceHash": "c673a346a7eb2a1f6a848383e2918291e987b31b8641aa73450e29b8fb01350d",
+      "sourceId": "components.RequestCard.unknowntitle"
+    },
+    {
+      "position": 2675,
+      "source": "Download audiobook",
+      "sourceHash": "06a7e8b38adf9d78bb03752644675e787f43c3a0f743792759aa19f3b7735ab6",
+      "sourceId": "components.RequestDownloadAction.audiobook"
+    },
+    {
+      "position": 2676,
+      "source": "Checking for available files…",
+      "sourceHash": "4ef165d8f48048fb0f857aa914e3a505f837e74aae8d8b558f1dc0071d22a2d4",
+      "sourceId": "components.RequestDownloadAction.checking"
+    },
+    {
+      "position": 2677,
+      "source": "Choose an audiobook file",
+      "sourceHash": "c5edb3b859ecd041c53fbc9856dde2440b714c39298786fe716baa09120dba58",
+      "sourceId": "components.RequestDownloadAction.chooseAudiobooks"
+    },
+    {
+      "position": 2678,
+      "source": "Choose comic issues",
+      "sourceHash": "16c05ae8f0fe3a08ec947e563cfb7f8c3c2df81c8621bae3b5cec65882b31866",
+      "sourceId": "components.RequestDownloadAction.chooseComics"
+    },
+    {
+      "position": 2679,
+      "source": "Choose an ebook file",
+      "sourceHash": "1f27d81f695ea59e35532834d4fc251ead46dfdd312e7b59b1d6fa6afab8d536",
+      "sourceId": "components.RequestDownloadAction.chooseEbooks"
+    },
+    {
+      "position": 2680,
+      "source": "Choose magazine issues",
+      "sourceHash": "3eba1adcf5c7bc3d9d1c93db8a440026b0a9f7a032e40c7991320a20799d6142",
+      "sourceId": "components.RequestDownloadAction.chooseMagazines"
+    },
+    {
+      "position": 2681,
+      "source": "Download comic",
+      "sourceHash": "f8f59bcf83c1601afe3bd2d5ef990c83c607cfaac6acdcc70410061cb463c9f7",
+      "sourceId": "components.RequestDownloadAction.comic"
+    },
+    {
+      "position": 2682,
+      "source": "Download {name}",
+      "sourceHash": "d6d1c0afe435b0a49299ce20550372269cd3c510e165c95ea568f5e8188d55da",
+      "sourceId": "components.RequestDownloadAction.downloadFor"
+    },
+    {
+      "position": 2683,
+      "source": "Downloads this available file to the device using this browser. Open it in a compatible reader app.",
+      "sourceHash": "29f6bb5fe6ea51cb8fd17bde94b03c3005f36169c70ad38d8d56487202746a2f",
+      "sourceId": "components.RequestDownloadAction.downloadHelp"
+    },
+    {
+      "position": 2684,
+      "source": "Download ebook",
+      "sourceHash": "bce429136dfa67ba8dbc3559893578caccb8f4cfef6d936a8d682723305b255a",
+      "sourceId": "components.RequestDownloadAction.ebook"
+    },
+    {
+      "position": 2685,
+      "source": "Download issue",
+      "sourceHash": "fea353e386d2313176c8aeacbb6d40817e596e4674d2e328e187fa8798299f14",
+      "sourceId": "components.RequestDownloadAction.magazine"
+    },
+    {
+      "position": 2686,
+      "source": "No downloadable copy was found. Review Request Status and check that the file is present in its media service.",
+      "sourceHash": "de870ac1ab0527d06bea95dcdd0883909b95bd3027226c4bf62fe44e83f3a872",
+      "sourceId": "components.RequestDownloadAction.notFound"
+    },
+    {
+      "position": 2687,
+      "source": "Some files could not be checked. Review this title in Request Status for other copies.",
+      "sourceHash": "768fbefcdbfae0f1cb0b7da51be4fb5d83452cd43d8e809b65af66e4f687dc67",
+      "sourceId": "components.RequestDownloadAction.partiallyAvailable"
+    },
+    {
+      "position": 2688,
+      "source": "Request Status",
+      "sourceHash": "53d58ad022fc2a722efd07cd0768816e8a0eea581fab8551aa6ff5c70f321cb5",
+      "sourceId": "components.RequestDownloadAction.requestStatus"
+    },
+    {
+      "position": 2689,
+      "source": "Could not check these downloads. Review this title in Request Status and try again.",
+      "sourceHash": "c74f13a90753fc9128faff521eddc60566b840fa5e65172d77a4f656db691c43",
+      "sourceId": "components.RequestDownloadAction.unavailable"
+    },
+    {
+      "position": 2690,
+      "source": "Audiobook",
+      "sourceHash": "b04a9c9f2ed131d708d3c380967491d3b3ec8cf500a2a516f7527e23d0ac6ce8",
+      "sourceId": "components.RequestList.RequestItem.audiobook"
+    },
+    {
+      "position": 2691,
+      "source": "Format",
+      "sourceHash": "44c713bb09756274e387e3f139f29c843b0e1b6263381eb7386a09d80b647226",
+      "sourceId": "components.RequestList.RequestItem.bookFormat"
+    },
+    {
+      "position": 2692,
+      "source": "Both",
+      "sourceHash": "cb68506d3f6c8673cb3608185f0747bc65bae6ca2942e201776ef05199b5eea8",
+      "sourceId": "components.RequestList.RequestItem.both"
+    },
+    {
+      "position": 2693,
+      "source": "Cancel Request",
+      "sourceHash": "94b3a0570a504015e3d0789d24fae1cd29b52e2a0b3829b92f190cbec1deb408",
+      "sourceId": "components.RequestList.RequestItem.cancelRequest"
+    },
+    {
+      "position": 2694,
+      "source": "Delete Request",
+      "sourceHash": "ee87eb195f17f0ee0f5b59815334f154f5e34c336178097ca9b7212b7d4e7e28",
+      "sourceId": "components.RequestList.RequestItem.deleterequest"
+    },
+    {
+      "position": 2695,
+      "source": "Book",
+      "sourceHash": "237affffa46714a19908d69c19c546929230a1755d478b8c167937f33d3722ba",
+      "sourceId": "components.RequestList.RequestItem.ebook"
+    },
+    {
+      "position": 2696,
+      "source": "Edit Request",
+      "sourceHash": "56e36def74a1e79df168b29ff9fc8b1f32157b8d4e9a830f98fad84af671c6f8",
+      "sourceId": "components.RequestList.RequestItem.editrequest"
+    },
+    {
+      "position": 2697,
+      "source": "Something went wrong while modifying the request.",
+      "sourceHash": "4c15ac62b6ee3eff8a929d8b585c757227498ac8457e110eee52d02751616e78",
+      "sourceId": "components.RequestList.RequestItem.failedmodify"
+    },
+    {
+      "position": 2698,
+      "source": "Something went wrong while retrying the request.",
+      "sourceHash": "2ca7235f52965541ede0bdcd68d9791728278f6edc126f3c1aad80c2152dd41e",
+      "sourceId": "components.RequestList.RequestItem.failedretry"
+    },
+    {
+      "position": 2699,
+      "source": "Map TV seasons",
+      "sourceHash": "847edcbbbf95e5ebfc9257df2a328074ce73317aa14bf6af634784c2125e89d0",
+      "sourceId": "components.RequestList.RequestItem.mapTvSeasons"
+    }
+  ],
+  "sourcePositionRange": [
+    2600,
+    2699
+  ],
+  "tree": "06cfd94ee611684c33e9e78af9d8bb60a2e98825"
+}

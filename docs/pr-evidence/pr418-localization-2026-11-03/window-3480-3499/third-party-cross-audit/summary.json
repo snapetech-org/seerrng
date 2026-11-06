@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "repository": "snapetech-org/SeerrNG",
+  "pullRequest": 418,
+  "head": "e2de7357bad7c385bf710da0edee93927f494767",
+  "tree": "ca93443397e10cea0ed70cec67fcb2905955cbf2",
+  "window": "W3480-W3499",
+  "sourceCount": 20,
+  "localeCount": 12,
+  "cellCount": 240,
+  "directCallerSources": 20,
+  "dispositions": {
+    "accept-current": 234,
+    "correction": 3,
+    "hold": 1,
+    "refinement": 2
+  },
+  "selectedChanges": 5,
+  "primaryBlindDispositionDisagreements": 4,
+  "primaryBlindTargetDisagreements": 3,
+  "commonProposalsRatified": 3,
+  "primaryOnlyRefinementsSelected": 2,
+  "localePreferenceHoldCount": 1,
+  "holdPositions": [
+    3484
+  ],
+  "changedLocales": {
+    "pt_BR": 2,
+    "ko": 1,
+    "zh_Hant": 1,
+    "id": 1
+  },
+  "placeholdersPresent": false,
+  "callerlessHolds": 0,
+  "qualifiedNativeSpeakerApproval": false,
+  "exactHeadBrowserReview": false,
+  "releaseApproved": false,
+  "inputPacketSha256": "579134b7de18bffd724fad945ab50b1a3809a9cdc07c58be8585a674e28d7613",
+  "primaryLedgerSha256": "5362a4dd8aec466c58fdd1ffd48ff8930114aa6983cb13e19ce61ec3bc1b069e",
+  "blindLedgerSha256": "9bf10056d3eceaae0a237b19ad786db27edc9e029e273ef88e53f49e18b15f95"
+}

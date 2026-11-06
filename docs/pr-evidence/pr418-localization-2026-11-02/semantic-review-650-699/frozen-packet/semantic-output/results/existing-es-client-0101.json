@@ -1,0 +1,162 @@
+{
+  "schemaVersion": 1,
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "head": "5a4342176a8325c371a35d489cb01c58283bc983",
+  "tree": "98cd64952123c9b678e38250e7819cabb4476448",
+  "semanticManifestSha256": "3ea74cc6491aecddf9ffcedc69610f13d20b199059aef69bb3c2407feb0826ea",
+  "cellPlanSha256": "97c3402252a34aaa4f8f9f44a691281d9c35ff7b80d7edb3a26c752436af6558",
+  "retiredCellsSha256": "dc5ec05547e4da3079c0668f82a52da7999d89ef9d4f037c1cd72af9347ebd83",
+  "sourceBundleManifestSha256": "212491482d1b9207fed755af6e80ac80a97184ec8dbe84d0c4ad2bd711acae0d",
+  "sourceRowsSha256": "ad91236a31e32f199ff449f9ed4597ea6af0f5a4eff32772cefa84278cafb68c",
+  "sourceCellsSha256": "8bfcd1aa9b5d5aba4fb6317c194cd544d601543ebf250899a84a719b52e468e1",
+  "planRows": 115260,
+  "actions": {
+    "semantic-review-required": 114783,
+    "reuse-equivalence-decision": 477
+  },
+  "retiredRows": 48,
+  "reusableEquivalenceCells": 477,
+  "targetsApplied": false,
+  "batchId": "existing-es-client-0101",
+  "batchSha256": "ee3ef21769d7618571c60659bc6eb663756478fee98413346187b16f4159768d",
+  "rowCount": 32,
+  "model": "qwen3.8-27b-heretic:q4km",
+  "attempt": 1,
+  "decisions": [
+    {
+      "id": "components.RequestStatus.SoftwareRequests.retry",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestStatus.SoftwareRequests.retryCheckRequired",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestStatus.SoftwareRequests.rommPlacementPlaced",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestStatus.SoftwareRequests.searching",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestStatus.SoftwareRequests.stage",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestStatus.SoftwareRequests.submitted",
+      "verdict": "correct",
+      "target": "Solicitado {date}",
+      "confidence": "high",
+      "reason": "The source 'Requested {date}' indicates a past action (status). The target 'Solicitudes {date}' translates to 'Requests {date}' (noun), which is grammatically incorrect and semantically wrong for a status message. 'Solicitado' correctly conveys the past participle status."
+    },
+    {
+      "id": "components.RequestStatus.SoftwareRequests.title",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestStatus.SoftwareRequests.windows",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestStatus.SoftwareRequests.withdraw",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestStatus.SoftwareRequests.x64",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestStatus.SoftwareRequests.x86",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestStatus.addingToLibrary",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestStatus.adultCouldNotAccept",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestStatus.adultQueueFailed",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestStatus.adultUnavailable",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestStatus.approvedForProcessing",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestStatus.approvedWaitingDispatch",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestStatus.available",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestStatus.binderyDeclined",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestStatus.binderyRequestMissing",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestStatus.bookCouldNotAccept",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestStatus.bookQueueFailed",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestStatus.bookUnavailable",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestStatus.cancelled",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestStatus.comicCouldNotAccept",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestStatus.comicQueueFailed",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestStatus.comicUnavailable",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestStatus.couldNotComplete",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestStatus.declined",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestStatus.delete",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestStatus.deleteDescription",
+      "verdict": "keep"
+    },
+    {
+      "id": "components.RequestStatus.deleteFailed",
+      "verdict": "keep"
+    }
+  ],
+  "decisionsSha256": "fd6bf13135c27d69198c30de08788fa79ec906b0fffbfbbe4a5d41be9c2c1cd9",
+  "rawResponseSha256": "7fe4c00c0590c4af2e0c5c9e3465a96f03d80365cd768e672256380a32292dc2",
+  "rawResponseFile": "/mnt/disks/scratch/task-scratch/seerrng-review-window-650-700-422072-20261102/semantic-output/responses/existing-es-client-0101-attempt-1.json"
+}

@@ -7,6 +7,7 @@ import CachedImage from '@app/components/Common/CachedImage';
 import SelectionCircle from '@app/components/Common/SelectionCircle';
 import { encodeApiPathSegment } from '@app/utils/apiPath';
 import defineMessages from '@app/utils/defineMessages';
+import { formatDurationMinutes } from '@app/utils/numberHelpers';
 import type { BookDetails } from '@server/models/Book';
 import type { MusicDetails } from '@server/models/Music';
 import axios from 'axios';
@@ -104,9 +105,7 @@ export default function BulkRequestItemCard({
       mediaType === 'book'
         ? book?.numberOfPages
         : duration
-          ? intl.formatMessage(messages.minutes, {
-              minutes: Math.round(duration / 60000),
-            })
+          ? formatDurationMinutes(Math.round(duration / 60000), intl.locale)
           : missing,
     ],
   ] as const;

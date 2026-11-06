@@ -1,0 +1,139 @@
+{
+  "window": "W3960-W3979",
+  "head": "a456dd66aad34cb23f432cb3c189bb8083bbbe96",
+  "tree": "7a5447e5f08e84c392899a6e1400d1df73b1143b",
+  "cells": 240,
+  "sourceIds": 20,
+  "localeCount": 12,
+  "callerReferences": 24,
+  "priorSelectedSourceIds": 3960,
+  "priorAppliedTargetHashes": 262,
+  "priorHashOnlyHolds": 50,
+  "dispositionCounts": {
+    "ACCEPT_CURRENT": 220,
+    "CORRECTION": 6,
+    "REFINEMENT": 2,
+    "HOLD": 12
+  },
+  "proposalCount": 8,
+  "currentHashOnlyHolds": 12,
+  "localeDispositionCounts": {
+    "es": {
+      "ACCEPT_CURRENT": 19,
+      "HOLD": 1
+    },
+    "zh-Hans": {
+      "ACCEPT_CURRENT": 19,
+      "HOLD": 1
+    },
+    "hi": {
+      "ACCEPT_CURRENT": 18,
+      "REFINEMENT": 1,
+      "HOLD": 1
+    },
+    "de": {
+      "ACCEPT_CURRENT": 18,
+      "CORRECTION": 1,
+      "HOLD": 1
+    },
+    "ja": {
+      "ACCEPT_CURRENT": 19,
+      "HOLD": 1
+    },
+    "fr": {
+      "ACCEPT_CURRENT": 19,
+      "HOLD": 1
+    },
+    "pt-BR": {
+      "ACCEPT_CURRENT": 19,
+      "HOLD": 1
+    },
+    "ar": {
+      "ACCEPT_CURRENT": 14,
+      "CORRECTION": 4,
+      "REFINEMENT": 1,
+      "HOLD": 1
+    },
+    "ko": {
+      "ACCEPT_CURRENT": 19,
+      "HOLD": 1
+    },
+    "zh-Hant": {
+      "ACCEPT_CURRENT": 18,
+      "CORRECTION": 1,
+      "HOLD": 1
+    },
+    "vi": {
+      "ACCEPT_CURRENT": 19,
+      "HOLD": 1
+    },
+    "id": {
+      "ACCEPT_CURRENT": 19,
+      "HOLD": 1
+    }
+  },
+  "baselineTokenMismatchCounts": {
+    "cellCount": 240,
+    "markupTags": 0,
+    "numericTokens": 3,
+    "placeholders": 0,
+    "protectedLiterals": 4,
+    "mismatchExamples": [
+      {
+        "position": 3962,
+        "sourceIdSha256": "5c6912c9f1f67fc6ca1cfa04e1e223a97c950fcb9c60302e323d37ec45404fd5",
+        "locale": "ja",
+        "kind": "numericTokens"
+      },
+      {
+        "position": 3962,
+        "sourceIdSha256": "5c6912c9f1f67fc6ca1cfa04e1e223a97c950fcb9c60302e323d37ec45404fd5",
+        "locale": "ar",
+        "kind": "protectedLiterals"
+      },
+      {
+        "position": 3970,
+        "sourceIdSha256": "d6d5da8c8e2a8cd57df98aa0a495f22de3b4807c511e8f4120b3a66d78b9b0ba",
+        "locale": "ja",
+        "kind": "numericTokens"
+      },
+      {
+        "position": 3972,
+        "sourceIdSha256": "0bd3994c0a80cbbdfcdd1a8dce10f74ca6f0d7014b389b9e354097d82405983d",
+        "locale": "ja",
+        "kind": "numericTokens"
+      },
+      {
+        "position": 3974,
+        "sourceIdSha256": "5d8d5f74fdfb413a56c16918ba69f6327dbf7c42e8eb4af7184dba77f2e50b83",
+        "locale": "ar",
+        "kind": "protectedLiterals"
+      },
+      {
+        "position": 3977,
+        "sourceIdSha256": "0b7c333e197199b4b8c9488e8a8f7020ead36cf1138f2caf4b17587860a1d190",
+        "locale": "ar",
+        "kind": "protectedLiterals"
+      },
+      {
+        "position": 3978,
+        "sourceIdSha256": "6f0b8960c307524f1e6e0f1e7e1526dd071ffcaeeeed9794914cd046aaf1462f",
+        "locale": "ar",
+        "kind": "protectedLiterals"
+      }
+    ]
+  },
+  "acceptedJapaneseNumericEquivalents": [
+    "3962::ja",
+    "3970::ja",
+    "3972::ja"
+  ],
+  "blindPacketInspected": false,
+  "blindPacketGenerated": false,
+  "crossReviewPerformed": false,
+  "nativeSpeakerApproval": false,
+  "browserAcceptance": false,
+  "PRorCatalogEdits": false,
+  "testsBuildsScansCI": false,
+  "reviewMode": "primary semantic review only"
+}

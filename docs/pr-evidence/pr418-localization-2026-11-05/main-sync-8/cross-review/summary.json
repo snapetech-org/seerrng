@@ -1,0 +1,39 @@
+{
+  "all_target_cells_missing_at_input": 96,
+  "artifact": "SeerrNG PR #418 main-sync independent cross-review",
+  "blind_checksum_and_verifier_pass": true,
+  "blind_exact_literal_count_mismatch_cells": 0,
+  "blind_proposals_audited": 96,
+  "candidate_free_checksum_pass": true,
+  "candidate_free_primary_bundled_verifiers_available": false,
+  "catalog_value_applied": false,
+  "cells": 96,
+  "confidence": "moderate",
+  "cross_disposition_counts": {
+    "accept": 65,
+    "correction": 3,
+    "refinement": 28
+  },
+  "cross_token_failure_cells": 0,
+  "disposition_notes": {
+    "correction": "3 primary Jellyfin Quick Connect tip cells contain three Jellyfin occurrences where the pinned exact-literal audit expects two; reconcile the overcount without choosing a target here.",
+    "refinement": "28 cells have clarity/naturalness refinements; notes identify wording direction only, not a selected translation."
+  },
+  "exact_target_selected": false,
+  "head": "ca2309e960733a7486c55b9a761d82771be97cde",
+  "locales": 12,
+  "native_speaker_review_performed": false,
+  "numeric_placeholder_markup_failures": 0,
+  "primary_blind_proposal_texts_different": 68,
+  "primary_blind_proposal_texts_equal": 28,
+  "primary_checksum_pass": true,
+  "primary_exact_literal_count_mismatch_cells": 3,
+  "primary_proposals_audited": 96,
+  "pull_request": 418,
+  "repository": "snapetech-org/seerrng",
+  "repository_edited": false,
+  "result": "PASS",
+  "source_ids": 8,
+  "tests_builds_scans_ci_browser_run": false,
+  "tree": "8c5df06aaf1d703ff923bf1fdf8a21c901b9d26d"
+}

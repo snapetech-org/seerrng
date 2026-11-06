@@ -1,0 +1,20 @@
+{
+  "result": "pass",
+  "reviewCells": 240,
+  "uniqueCells": 240,
+  "sourcePositions": [
+    3180,
+    3199
+  ],
+  "changedCells": 93,
+  "placeholderMismatches": 0,
+  "emptyTargets": 0,
+  "sourceCurrentTargetHashMismatches": 0,
+  "catalogKeySetMismatches": 0,
+  "callerFileHashMatches": true,
+  "liveHeadMatches": true,
+  "head": "c03816972aab761a69b343abcdfe8a10f85aeabb",
+  "tree": "1ffc02d5d7dbbb14ab4706ce61bfcfda64592a01",
+  "nativeSpeakerApproval": false,
+  "checks": "Exact PR/worktree head and tree; sorted source positions; exact source/current/proposed UTF-8 hashes; duplicate-cell absence; nonempty targets; placeholder parity; DAT literal retention except CJK scripts; pinned caller-file hash."
+}

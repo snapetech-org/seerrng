@@ -1,0 +1,5 @@
+# SeerrNG PR #418 W3360–W3379 clean review input
+
+Candidate-free input for 20 contiguous English source IDs and 240 existing targets across 12 direct locales, pinned to live open/draft PR head 1586a249e3f86deb7b9410cff50223e5f76209ff and tree d620a906353e9724ba28986103c76b7792c56099. The prior W3340–W3359 source queue is checksum-verified and all 20 source IDs/texts were reattested.
+
+W3360 begins at `components.Requests.mediaFilters`; W3379 ends at `components.Requests.pendingImportAttempt`. Boundaries: W3359 `components.Requests.mediaAndFormat`; W3360 `components.Requests.mediaFilters`; W3379 `components.Requests.pendingImportAttempt`; W3380 `components.Requests.pendingImportNextRetry`. The input contains no review decisions or proposed translations. It pins all 13 locale catalogs, exact source/current hashes, placeholders, protected literals, and caller contexts. Caller context rows: 54; source-level caller-gate findings: 3; current placeholder-parity exceptions: 0. Context resolution is distinct from a field-specific production caller. This machine review is not native-speaker approval.

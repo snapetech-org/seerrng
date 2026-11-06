@@ -1,0 +1,17 @@
+{
+  "inputDirectory": "/mnt/disks/scratch/task-scratch/seerrng-pr418-w3360-3379-primary-20261103/input-final",
+  "sealedManifest": "window.json",
+  "sealedManifestSha256": "0372879919ded50193d3106935567b83f099b4c4fde7f1b7939e64d8bd48d8b8",
+  "checksumFileSha256": "791fb04394874e7a1bcc1bbcf726d7772b2039bc30815d44e769d60d05484a8f",
+  "verifiedSealedInputs": {
+    "PR-attestation.json": "be12b70f83e45f31ee6820f84957c967b286d0f29a462ae0239f331834435bdf",
+    "README.txt": "82e4e1251be381b35bbcce6fc25a9cb16dd76bd9a9068f8123013ba06e9ba99f",
+    "caller-contexts.jsonl": "4234105e212796763c8f4b40861856692c39208e2e4ff4b035c00e998941a3c9",
+    "review-input.jsonl": "8cb2de359dcfd8500f72ccdd70e1447e29835b8db5c83547224b9cc9791b6d73",
+    "source-boundaries.json": "e75d7535cfecdbf090a22f1906cd17b494085635425be022f3952d76b8c9f511",
+    "window.json": "0372879919ded50193d3106935567b83f099b4c4fde7f1b7939e64d8bd48d8b8"
+  },
+  "reviewInputSha256": "8cb2de359dcfd8500f72ccdd70e1447e29835b8db5c83547224b9cc9791b6d73",
+  "callerContextsSha256": "4234105e212796763c8f4b40861856692c39208e2e4ff4b035c00e998941a3c9",
+  "blindBoundary": "No primary-review output and no current PR body were opened or used."
+}

@@ -1,0 +1,11 @@
+{
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "branch": "codex/seerrng-localization-overhaul-20261028",
+  "parentHead": "8d0273ebc5eb51e9d5fee0ac9a0eb022eeed06c4",
+  "parentTree": "163056b8255034e3ee3a99f25b63e190c88278ee",
+  "catalogCommit": "b703ef4c13fee64d71aab8180531ff15de9a738e",
+  "catalogTree": "9626c77fc17fec31bdab8f34a9faf148a6187096",
+  "applicationCommitMessage": "fix(i18n): reconcile SeerrNG W3740-3759 localization",
+  "catalogScope": "11 target locale catalogs; 12 direct locales reviewed; English source catalog unchanged"
+}

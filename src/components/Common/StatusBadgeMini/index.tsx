@@ -206,7 +206,7 @@ const StatusBadgeMini = memo(
         aria-label={label || undefined}
       >
         <div className={badgeStyle.join(' ')}>{indicatorIcon}</div>
-        {quality && <span className="pr-2 pl-1 text-gray-200">{quality}</span>}
+        {quality && <span className="ps-1 pe-2 text-gray-200">{quality}</span>}
       </div>
     );
 

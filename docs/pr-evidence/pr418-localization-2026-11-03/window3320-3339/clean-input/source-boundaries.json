@@ -1,0 +1,213 @@
+{
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "head": "70caabc2f95df1a7de3f869111aea1df58522d96",
+  "tree": "daac9e9284adac648fd3f6147265c21c90cdddba",
+  "sourceOrderCount": 9494,
+  "sourceOrderSha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+  "before": {
+    "position": 3319,
+    "id": "components.Requests.deleteTooltip",
+    "source": "Delete this request and its status history."
+  },
+  "first": {
+    "position": 3320,
+    "id": "components.Requests.deleted",
+    "source": "Deleted",
+    "sourceSha256": "b48ff39c2e0f5451b9b29b09c2a74d2760db230749ffd48a6e901cc91fef9a8d"
+  },
+  "last": {
+    "position": 3339,
+    "id": "components.Requests.fourK",
+    "source": "4K",
+    "sourceSha256": "cc1e5d5a9c88e51f820aa0ea398b7195da9ae54fcd2a34a1fc9124fde6d4a9a8"
+  },
+  "after": {
+    "position": 3340,
+    "id": "components.Requests.genres",
+    "source": "Genres"
+  },
+  "localeCatalogPins": {
+    "src/i18n/locale/en.json": {
+      "sha256": "75ff3c90b52aedd636a506281ffbd6fb2d3739c61294b6008a517f17647e2316",
+      "gitBlob": "12e04a118c30b71b3714291adeaf9fdb2735cee4",
+      "keyCount": 9494,
+      "orderedKeySha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072"
+    },
+    "src/i18n/locale/es.json": {
+      "sha256": "2e7f07bdd9fd065b4d0b7bce2daa29737ca53204b30661c8220c0e5eb1b85e31",
+      "gitBlob": "f4a6163f3734bad6de43e9a2e311c5c9678d04f1",
+      "keyCount": 9494,
+      "orderedKeySha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072"
+    },
+    "src/i18n/locale/zh_Hans.json": {
+      "sha256": "3ad05768c92a05d611f3f352f29ee5690e03db8ae32792e46b4c9fc0c1b67d2d",
+      "gitBlob": "f61ab8d03cda1368c4b71a06a7b340b16fa05f16",
+      "keyCount": 9494,
+      "orderedKeySha256": "8d5fd7bd4351bc64c5ee813f2e50196608869e165866f3202a312078732c2baf"
+    },
+    "src/i18n/locale/hi.json": {
+      "sha256": "e7da5f164b7dccfe2e215b577602784de32ee816080351bd3bc5790d339c594a",
+      "gitBlob": "566dd504424f0c8645d1a534bb1299e7530cf3b4",
+      "keyCount": 9494,
+      "orderedKeySha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072"
+    },
+    "src/i18n/locale/de.json": {
+      "sha256": "c56178d5f9cb3e0aba319b5bca8834fe0ff9ed5d7e23ec14b2d5618c01868b59",
+      "gitBlob": "7948bd26fb3d32f55f78d116821f5ac000bbcfcb",
+      "keyCount": 9494,
+      "orderedKeySha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072"
+    },
+    "src/i18n/locale/ja.json": {
+      "sha256": "3bd9c061b359dd0dbc2c84ab6dfc5647f60a2e4c0824f50206dd1768f950955c",
+      "gitBlob": "f51905099b46a9bd739afa6cc8c78a5be4bde8f0",
+      "keyCount": 9494,
+      "orderedKeySha256": "8d5fd7bd4351bc64c5ee813f2e50196608869e165866f3202a312078732c2baf"
+    },
+    "src/i18n/locale/fr.json": {
+      "sha256": "6e68785eceb0460aac64ce4cfa5631f4ec248854cdf445e18fbb598162091606",
+      "gitBlob": "ec0766a52873c18b33722337091ca19adcd4c5d6",
+      "keyCount": 9494,
+      "orderedKeySha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072"
+    },
+    "src/i18n/locale/pt_BR.json": {
+      "sha256": "5562ff6176559cc31318486990af7534c66c7cd154542530fac643b366ee1cc2",
+      "gitBlob": "ee235f368361dd25d1ab74aa45dbba1838737c1e",
+      "keyCount": 9494,
+      "orderedKeySha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072"
+    },
+    "src/i18n/locale/ar.json": {
+      "sha256": "6b7bb09290bfe8ada47c6a3ddad10cc60e6c5475920bca73b59fdefa50aed5e9",
+      "gitBlob": "8aa38024c2f6ec3e4c47da640009e3097ac7f196",
+      "keyCount": 9494,
+      "orderedKeySha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072"
+    },
+    "src/i18n/locale/ko.json": {
+      "sha256": "b84ac1107622f5c377911b88a006e3212a0af500bcf770132bb50e5a7a6942ae",
+      "gitBlob": "de337a47e3f7c3281b5dcfda9f9a653c7c921491",
+      "keyCount": 9494,
+      "orderedKeySha256": "8d5fd7bd4351bc64c5ee813f2e50196608869e165866f3202a312078732c2baf"
+    },
+    "src/i18n/locale/zh_Hant.json": {
+      "sha256": "4f56a79a155cbb1ff3bd415dc38311e4983aee032fe72fa6f221050186b4e666",
+      "gitBlob": "b28d26d450f404d5c1369b5b7bc2af058d07f784",
+      "keyCount": 9494,
+      "orderedKeySha256": "8d5fd7bd4351bc64c5ee813f2e50196608869e165866f3202a312078732c2baf"
+    },
+    "src/i18n/locale/vi.json": {
+      "sha256": "b0b979fddf1992e8d8827facdb2a6c75855b7a07eb85c00de258860bff4ccea3",
+      "gitBlob": "3b4473059d7890862069493a680c522108184563",
+      "keyCount": 9494,
+      "orderedKeySha256": "8d5fd7bd4351bc64c5ee813f2e50196608869e165866f3202a312078732c2baf"
+    },
+    "src/i18n/locale/id.json": {
+      "sha256": "db89c48664d4e2eb4790cfd9e1e42d30605bf6ca595fa49e831ca7a6a618337b",
+      "gitBlob": "32a20ad956d77cb50d06f9dd6ba90290bd4baad4",
+      "keyCount": 9494,
+      "orderedKeySha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072"
+    }
+  },
+  "callerFiles": {
+    "src/components/RequestStatus/messages.tsx": {
+      "sha256": "5c7691636c95eed239cf012fa2e8bdc066ef773a8b4288bbd93fafddb15324eb",
+      "gitBlob": "73f660f8595c193f4996c2720d0566212545f76c",
+      "lineCount": 121
+    },
+    "server/lib/requestStatus.ts": {
+      "sha256": "63dd1b43e684a40eb82253a2942d7652cad63d87234b5c279d73af0b945b2d31",
+      "gitBlob": "e75608e1c2921b5f7b3e822c25a690f8b1cc5e82",
+      "lineCount": 2328
+    },
+    "src/components/Requests/index.tsx": {
+      "sha256": "25b612dcda274fe2ea64b76f169587e153b04a675c9b8cd817814d9fbfde5360",
+      "gitBlob": "84f6a19674b329df0ef6be6483d74bbaeb110ccb",
+      "lineCount": 3115
+    },
+    "src/components/Requests/destructiveActions.tsx": {
+      "sha256": "16d562185c1e1f3a94398369b4ab3eec28085033dcc3465c32557752687d1d57",
+      "gitBlob": "09884f99a738ce4402b5fb121d15022f0efc3a67",
+      "lineCount": 173
+    },
+    "src/pages/requests/index.tsx": {
+      "sha256": "64273c876d30c6ee3ee1f7419f3376cd1849fcc6fbbc37cec781c340e3c6cb76",
+      "gitBlob": "17a3c44c6c3073fcaecd94cc77993a8bae3bdc4d",
+      "lineCount": 6
+    },
+    "src/utils/defineMessages.ts": {
+      "sha256": "761cb0362244e473b6993c78f4b852a6673c95e35da13990856e6a44c6d9169f",
+      "gitBlob": "bb8fadb4baf7764b0af8b1a2294bf43d4196aaaa",
+      "lineCount": 26
+    }
+  },
+  "orderedLocaleKeySequencesMatch": false,
+  "perLocaleOrderedKeyHashesPinned": true,
+  "callerHolds": [
+    {
+      "position": 3320,
+      "id": "components.Requests.deleted",
+      "reason": "no direct production reference to this components.Requests message ID was found; generic/dynamic RequestStatus action rendering is context only",
+      "definitionsFound": 1,
+      "directMessageReferences": 0,
+      "source": "Deleted"
+    },
+    {
+      "position": 3321,
+      "id": "components.Requests.deleting",
+      "reason": "no direct production reference to this components.Requests message ID was found; generic/dynamic RequestStatus action rendering is context only",
+      "definitionsFound": 1,
+      "directMessageReferences": 0,
+      "source": "Deleting…"
+    },
+    {
+      "position": 3327,
+      "id": "components.Requests.ebook",
+      "reason": "no direct production reference to this components.Requests message ID was found; generic/dynamic RequestStatus action rendering is context only",
+      "definitionsFound": 1,
+      "directMessageReferences": 0,
+      "source": "Book"
+    },
+    {
+      "position": 3328,
+      "id": "components.Requests.ebookAndAudiobook",
+      "reason": "no direct production reference to this components.Requests message ID was found; generic/dynamic RequestStatus action rendering is context only",
+      "definitionsFound": 1,
+      "directMessageReferences": 0,
+      "source": "Book + Audiobook"
+    },
+    {
+      "position": 3338,
+      "id": "components.Requests.format",
+      "reason": "no direct production reference to this components.Requests message ID was found; generic/dynamic RequestStatus action rendering is context only",
+      "definitionsFound": 1,
+      "directMessageReferences": 0,
+      "source": "Format"
+    }
+  ],
+  "placeholderParityErrors": [],
+  "protectedTermsPolicy": [
+    "Seerr",
+    "ChaptarrNG",
+    "Bindery",
+    "Bookshelf",
+    "Radarr",
+    "Sonarr",
+    "Plex",
+    "Emby",
+    "Jellyfin",
+    "TMDb",
+    "IMDb",
+    "Open Library",
+    "ComicVine",
+    "MusicBrainz",
+    "TheTVDB",
+    "Trakt",
+    "Letterboxd",
+    "Prowlarr",
+    "Bazarr",
+    "Lidarr",
+    "Readarr",
+    "Whisparr",
+    "Sportarr",
+    "Audiobookshelf"
+  ]
+}

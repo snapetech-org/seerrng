@@ -1,0 +1,14 @@
+{
+  "result": "PASS",
+  "head": "351f2c09a4aaf6f223975fc1827cb9f77de7702d",
+  "tree": "3d88008f6ea7dc6cbef21333d29a032469cd60cf",
+  "sources": 20,
+  "cells": 240,
+  "callers": 20,
+  "callerless": 0,
+  "placeholderMarkupNumericProtectedMismatches": 0,
+  "priorWindowHolds": 0,
+  "manifestJsonSha256": "57c8bb96f21976482af691fa8549d63116fbc66bd30177c3eaa2cb7835996eed",
+  "checksumListSha256": "5a73d23784f17cd51e186ad626cd6a952b12e2b801b36bf71dfde44b13fdd3e7",
+  "checksumEntries": 12
+}

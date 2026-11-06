@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 1,
+  "task": "Independent cross-review of SeerrNG PR #418 W700-749 sourceId positions 100-199 correction proposals",
+  "pin": {
+    "pullRequest": 418,
+    "state": "OPEN",
+    "isDraft": true,
+    "head": "d1137d06ffb5af57ef599ac9bf495aff2a990a7b",
+    "tree": "0aa22f0bb43e3e30d216e2ae19939220e05f04f7"
+  },
+  "primaryLedger": "reviews/review-slice-0100-0199-kspld0-20261102/semantic-review-0100-0199.jsonl",
+  "primaryLedgerSha256": "0741b796f9da2d9826ccca11095ac6f3003dfcc6a5ee97e94fba71859dc6e630",
+  "reviewedCorrectionCandidates": 218,
+  "crossReviewDispositionCounts": {
+    "accept-proposal": 215,
+    "refine-proposal": 3
+  },
+  "refinements": [
+    {
+      "sourceId": "components.Requests.showingFormat",
+      "locale": "hi",
+      "finalTarget": "इस प्रारूप के अनुरोध दिखाए जा रहे हैं:",
+      "rationale": "The primary wording refers vaguely to “these.” The source is a prefix immediately before an inline BookFormatBadge, so this names the format whose requests are being shown."
+    },
+    {
+      "sourceId": "components.Requests.showingFormat",
+      "locale": "ja",
+      "finalTarget": "この形式のリクエストを表示中：",
+      "rationale": "The primary noun phrase “リクエストの表示対象” is stiff and ambiguous. The source is a prefix immediately before an inline BookFormatBadge, so this states that requests for this format are being displayed."
+    },
+    {
+      "sourceId": "components.Requests.showingFormat",
+      "locale": "zh-TW",
+      "finalTarget": "正在顯示以下格式的請求：",
+      "rationale": "Refined “要求” to the more consistent user-request term “請求” used across this locale. The source is a prefix immediately before an inline BookFormatBadge."
+    }
+  ],
+  "sourceAndCurrentTargetAttestation": {
+    "primaryRowsCheckedAgainstExactHead": 1179,
+    "mismatches": 0
+  },
+  "callerContextAttestation": {
+    "callerLinesCheckedAgainstExactHead": 8564,
+    "mismatches": 0,
+    "uniqueCallerFiles": 150
+  },
+  "nativeSpeakerApproval": false,
+  "notes": [
+    "Every correction-needed candidate in the primary slice was independently reviewed; accept-current and prior-disposition rows were not re-adjudicated.",
+    "Final target hashes are SHA-256 of exact UTF-8 strings.",
+    "No catalog, source, workflow, or repository files were modified.",
+    "No tests, builds, scans, or CI were run."
+  ],
+  "ledger": "semantic-crossreview-0100-0199.jsonl"
+}

@@ -1,0 +1,78 @@
+{
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "window": "W3940-W3959",
+  "head": "a0104b4c84a9c4561020ca72062171b22ffc49f2",
+  "tree": "aaa44c8019c58fde7ae796065e8aae7ac11d7a80",
+  "baseRef": "main",
+  "baseSha": "fa40534ccced75bde1125c14760514fcd5d7de4d",
+  "headRef": "codex/seerrng-localization-overhaul-20261028",
+  "range": [
+    3940,
+    3959
+  ],
+  "previousCompletedWindow": "W3920-W3939",
+  "previousCompletedEndPosition": 3939,
+  "nextBoundaryPosition": 3940,
+  "nextBoundary": {
+    "kind": "next-window-boundary",
+    "position": 3940,
+    "sourceIdSha256": "a28cf4229f67859aba909679120b3f2b326cc7739da5bfc7653c4f83f0940e97",
+    "sourceTextSha256": "95026ecf1a7fe911e5a4e23d1ccecb28e02232c3b75d68ba5380cb6e3f8e19ce",
+    "hashOnly": true
+  },
+  "nextUnselectedBoundaryPosition": 3960,
+  "nextUnselectedBoundary": {
+    "position": 3960,
+    "sourceIdSha256": "ff432ee6c391df8e4ba4c2bd93a2fd18a3c2afbafd34831f8ab87e7096f1d3fd",
+    "sourceTextSha256": "191ca7e8796246ae89097addb0ac31722ec2bd5713c3441af8b9f684fe31cf57",
+    "hashOnly": true
+  },
+  "selectedSourceCount": 20,
+  "localeOrder": [
+    "es",
+    "zh-Hans",
+    "hi",
+    "de",
+    "ja",
+    "fr",
+    "pt-BR",
+    "ar",
+    "ko",
+    "zh-Hant",
+    "vi",
+    "id"
+  ],
+  "catalogKeyCount": 9494,
+  "priorSelectedSourceIdCount": 3940,
+  "priorAppliedTargetHashCount": 214,
+  "priorHoldCount": 26,
+  "priorCatalogApplicationCellsReattested": 179,
+  "priorHoldHashMismatches": 0,
+  "priorAppliedTargetHashMismatches": 0,
+  "sourceOrderCount": 9494,
+  "sourceIdOrderSha256": "1a1bb7d7be68bbe1795d16955e86f6f02422f35ffd8263f6ee6ed70516502b0d",
+  "sourceTextOrderSha256": "c790969d05948f9ccf365e41ca409f055293b965e0fe64b3f25d7d3e02e2a694",
+  "sourceRecordOrderSha256": "66c8b6bfe5545e7bfb2b370b074e79d58648103699be29a7db5009660e98aeec",
+  "sourceOrderHashesFull": true,
+  "callerlessSourcePositions": [],
+  "baselineTokenDiagnostics": {
+    "markupTags": 0,
+    "numericTokens": 2,
+    "placeholders": 0,
+    "protectedLiterals": 0
+  },
+  "callerReferenceCount": 22,
+  "previousCrossHoldCells": 4,
+  "previousApplicationTargetRows": 17,
+  "localeInsertionOrderDifferencesFromEnglish": [
+    "zh-Hans",
+    "ja",
+    "ko",
+    "zh-Hant",
+    "vi"
+  ],
+  "candidateFreeInputOnly": true,
+  "proposalCount": 0,
+  "dispositionFieldsIncluded": false
+}

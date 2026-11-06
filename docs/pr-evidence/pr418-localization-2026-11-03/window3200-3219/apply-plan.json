@@ -1,0 +1,691 @@
+{
+  "sourceHead": "2be00354833160f0681d5cd779a1b1be37a63a4b",
+  "sourceTree": "af588a1ee34f768ae37a29dccd5a508595b7199d",
+  "plannedCells": 76,
+  "changes": [
+    {
+      "catalogPath": "src/i18n/locale/es.json",
+      "id": "components.RequestStatus.SoftwareRequests.history",
+      "locale": "es",
+      "expectedCurrentSha256": "47980267f3cdbed093e7f3e659ca3ec37bf07c64009c690a69f2c76bd2af7432",
+      "target": "Historial",
+      "targetSha256": "995c071dfaee74ce844faf499d47b08cc5be2046dda10d232fc882d1dbdf5251",
+      "disposition": "refinement"
+    },
+    {
+      "catalogPath": "src/i18n/locale/zh_Hans.json",
+      "id": "components.RequestStatus.SoftwareRequests.history",
+      "locale": "zh_Hans",
+      "expectedCurrentSha256": "b0385cfe4b424d835963f2ce8a27a7fec98018affaf7c44645933266b8869727",
+      "target": "历史记录",
+      "targetSha256": "5467922dce50a319ceab2a260f383d888febef5bcff5a255ed20d3423b983208",
+      "disposition": "refinement"
+    },
+    {
+      "catalogPath": "src/i18n/locale/ar.json",
+      "id": "components.RequestStatus.SoftwareRequests.history",
+      "locale": "ar",
+      "expectedCurrentSha256": "d90c384199acedcac5bba8019d614cf32813767d8a5f05aa1c20d21d9305a3fe",
+      "target": "سجل الحالة",
+      "targetSha256": "1eed0733d7c6f9931cbe47c1a14711d8daf89da4a95e8bd44e83f95a5e089726",
+      "disposition": "refinement"
+    },
+    {
+      "catalogPath": "src/i18n/locale/ko.json",
+      "id": "components.RequestStatus.SoftwareRequests.history",
+      "locale": "ko",
+      "expectedCurrentSha256": "6c110e28574e8137b64e0297241363f8f57e4754e9f44a6799d313c7529f0510",
+      "target": "이력",
+      "targetSha256": "39e7ffe391b3c808f8296ce8e73e18c713adf808d96e74967cc568fffbf2c842",
+      "disposition": "correction"
+    },
+    {
+      "catalogPath": "src/i18n/locale/es.json",
+      "id": "components.RequestStatus.SoftwareRequests.historyError",
+      "locale": "es",
+      "expectedCurrentSha256": "6bd05596200ae64fe57b4e47a16e5dce781efad1fcb2c82930ad7ddb8618e92e",
+      "target": "No se pudo cargar el historial de estados.",
+      "targetSha256": "7745ed7aea3c526aa1b7dadd79b9b015d31b20854412c3e276275eaf60bd5957",
+      "disposition": "correction"
+    },
+    {
+      "catalogPath": "src/i18n/locale/zh_Hans.json",
+      "id": "components.RequestStatus.SoftwareRequests.historyError",
+      "locale": "zh_Hans",
+      "expectedCurrentSha256": "8063c8354d56f844478606b73e1a9217264a3af6973bdbb4ccc3559ea8346001",
+      "target": "无法加载状态历史记录。",
+      "targetSha256": "0fdee076c60924813d0e2c29fb2476471ec28334882da7fd1d9840d4b22f52ea",
+      "disposition": "correction"
+    },
+    {
+      "catalogPath": "src/i18n/locale/hi.json",
+      "id": "components.RequestStatus.SoftwareRequests.historyError",
+      "locale": "hi",
+      "expectedCurrentSha256": "dea17e1eb6829587fd2cd9b878c0ddcb0cbdf4d37de961d7e3f86c8d70a63b9a",
+      "target": "स्थिति इतिहास लोड नहीं हो सका।",
+      "targetSha256": "f3da7dad584f2de8fd45b6826457cbc54abf9e51e7759795bef8d6c105bf0d4f",
+      "disposition": "correction"
+    },
+    {
+      "catalogPath": "src/i18n/locale/ja.json",
+      "id": "components.RequestStatus.SoftwareRequests.historyError",
+      "locale": "ja",
+      "expectedCurrentSha256": "95d5a71fdb2477aff5c757dc49d1077a0a82aff7617df3e99ac5eeac9766b0c6",
+      "target": "ステータス履歴を読み込めませんでした。",
+      "targetSha256": "8636187e15500ea5ff89db5b96d8f8ef2546d031c6aa48dd66ba7062d3543ae4",
+      "disposition": "correction"
+    },
+    {
+      "catalogPath": "src/i18n/locale/pt_BR.json",
+      "id": "components.RequestStatus.SoftwareRequests.historyError",
+      "locale": "pt_BR",
+      "expectedCurrentSha256": "7366a30142e295a4690b05fb1be2fb65c9862147c03e0a66bf2be44443030572",
+      "target": "Não foi possível carregar o histórico de status.",
+      "targetSha256": "d626f55445464b84b073653133ddf32221886507095593c9fcaa67c5701a794d",
+      "disposition": "refinement"
+    },
+    {
+      "catalogPath": "src/i18n/locale/ar.json",
+      "id": "components.RequestStatus.SoftwareRequests.historyError",
+      "locale": "ar",
+      "expectedCurrentSha256": "32601b6f6b5ad7799d494eeaa14cfa9d5eac458b61c1b75863b16f43ff3bad59",
+      "target": "تعذّر تحميل سجل الحالة.",
+      "targetSha256": "f8248493411001fa8db84b4db52731062abc7f125cbb89a2230718e79ac11643",
+      "disposition": "correction"
+    },
+    {
+      "catalogPath": "src/i18n/locale/ko.json",
+      "id": "components.RequestStatus.SoftwareRequests.historyError",
+      "locale": "ko",
+      "expectedCurrentSha256": "dabc34246609aad7a2afa2bd5a627c3b88eec8974f3e6297495d6745c09c74f8",
+      "target": "상태 기록을 불러오지 못했습니다.",
+      "targetSha256": "0c32f63198e310def337cbc30e6ad796ffb4c13404489818018dcb09bd2cd872",
+      "disposition": "correction"
+    },
+    {
+      "catalogPath": "src/i18n/locale/zh_Hant.json",
+      "id": "components.RequestStatus.SoftwareRequests.historyError",
+      "locale": "zh_Hant",
+      "expectedCurrentSha256": "805da0bbd458d2199670fdf6f3d3a65ff9b1bfe6dc039e15be687aa52a3b8eb1",
+      "target": "無法載入狀態歷史記錄。",
+      "targetSha256": "a464242451e0c611509d8632a344ced25f4ca21debf9a39f9620e0ff3ed40943",
+      "disposition": "correction"
+    },
+    {
+      "catalogPath": "src/i18n/locale/zh_Hans.json",
+      "id": "components.RequestStatus.SoftwareRequests.historyLoading",
+      "locale": "zh_Hans",
+      "expectedCurrentSha256": "81ea1c025f85719ca8f9f4a585881213cc93e58a7310ba7224d87fac1e302f8c",
+      "target": "正在加载状态历史…",
+      "targetSha256": "8f8e556ab5cab79dd4b4eb103a00ef944bf0278a4351a2f23ffe0ef7ce6b55a9",
+      "disposition": "correction"
+    },
+    {
+      "catalogPath": "src/i18n/locale/ja.json",
+      "id": "components.RequestStatus.SoftwareRequests.historyLoading",
+      "locale": "ja",
+      "expectedCurrentSha256": "0feb2753f46bd074bfbb7190a2dea02cab87d21ca06decf37809e838d1f6fda3",
+      "target": "ステータス履歴を読み込んでいます…",
+      "targetSha256": "0f6f95afa498fd1b59140e4f2f39a90b2895f14311362c3a73e19d88c87d82e2",
+      "disposition": "correction"
+    },
+    {
+      "catalogPath": "src/i18n/locale/ar.json",
+      "id": "components.RequestStatus.SoftwareRequests.historyLoading",
+      "locale": "ar",
+      "expectedCurrentSha256": "88e48df068954ef0d561ca75becc9c8a310e0106d69838b1b843880be1856d4c",
+      "target": "جارٍ تحميل سجل الحالة…",
+      "targetSha256": "c92ba85e8ba103681d81f269d66c6417afd06dc7517f5252e5be057b7ad18264",
+      "disposition": "correction"
+    },
+    {
+      "catalogPath": "src/i18n/locale/ko.json",
+      "id": "components.RequestStatus.SoftwareRequests.historyLoading",
+      "locale": "ko",
+      "expectedCurrentSha256": "ddbe150651ea0ee2d58537bfdcefac3e086f2a61de295467239f7a2d7bd18307",
+      "target": "상태 기록을 불러오는 중…",
+      "targetSha256": "6e243fa65b7bcf6e6baadb57f8fbc5428fcc34970ea829127c23b0112327495d",
+      "disposition": "correction"
+    },
+    {
+      "catalogPath": "src/i18n/locale/zh_Hant.json",
+      "id": "components.RequestStatus.SoftwareRequests.historyLoading",
+      "locale": "zh_Hant",
+      "expectedCurrentSha256": "02b7b4fd2f1f5c2cee78b57ab583a3851105a6e8c30c25e8180347c0a197d8a0",
+      "target": "正在載入狀態歷史…",
+      "targetSha256": "49f93c78bb20ac49f01821042e0d063d2b9038212c13028637b51bc4050e8ef0",
+      "disposition": "refinement"
+    },
+    {
+      "catalogPath": "src/i18n/locale/hi.json",
+      "id": "components.RequestStatus.SoftwareRequests.importing",
+      "locale": "hi",
+      "expectedCurrentSha256": "70cd1bc670918f312053bdbf3a2dc45aeaf250d3bbb8bc4c5922505904fc848b",
+      "target": "आयात का सत्यापन हो रहा है",
+      "targetSha256": "8d88c0d82e2738d52c8e6403d752f3264293644d6f4208f0dffbbfba694b8bb5",
+      "disposition": "correction"
+    },
+    {
+      "catalogPath": "src/i18n/locale/ar.json",
+      "id": "components.RequestStatus.SoftwareRequests.importing",
+      "locale": "ar",
+      "expectedCurrentSha256": "d89c77c8d9460ad78038ba129984f224144d52cc3dac5bbeceb2912acb5b3c00",
+      "target": "جارٍ التحقق من الاستيراد",
+      "targetSha256": "e5053321bd3f0de860cc34486deeeae88d343af564397744ecdff01f4066ce36",
+      "disposition": "correction"
+    },
+    {
+      "catalogPath": "src/i18n/locale/ko.json",
+      "id": "components.RequestStatus.SoftwareRequests.importing",
+      "locale": "ko",
+      "expectedCurrentSha256": "72f143d71777614c6ce459891f19d05781b1607a5cc8cc31fa9639567a68b5f1",
+      "target": "가져오기 검증 중",
+      "targetSha256": "eba651c4c6b8468786a1a26da5cbf0bb83f1a99adba6ce5186b555b2b9c088f1",
+      "disposition": "correction"
+    },
+    {
+      "catalogPath": "src/i18n/locale/zh_Hant.json",
+      "id": "components.RequestStatus.SoftwareRequests.importing",
+      "locale": "zh_Hant",
+      "expectedCurrentSha256": "4634a9c45d6df7bc8f9348f542f2b753a54dcc599a1745e9afdd297f80ef574a",
+      "target": "正在驗證匯入",
+      "targetSha256": "3ed9feed37c78fd93ba2119e47f4698994c686c97ba82c4cdc23f4fe2760ec6f",
+      "disposition": "refinement"
+    },
+    {
+      "catalogPath": "src/i18n/locale/vi.json",
+      "id": "components.RequestStatus.SoftwareRequests.importing",
+      "locale": "vi",
+      "expectedCurrentSha256": "3b9e8ce2b123fa4b754eb82120995f1dc8d3e4c053808a3c271e14161303e389",
+      "target": "Đang xác minh dữ liệu nhập",
+      "targetSha256": "456d3e7eee37c14481cbc230a0cdaad264d3020060d5ec2bebc798eec6ad43c2",
+      "disposition": "correction"
+    },
+    {
+      "catalogPath": "src/i18n/locale/id.json",
+      "id": "components.RequestStatus.SoftwareRequests.importing",
+      "locale": "id",
+      "expectedCurrentSha256": "eabb26b8959c000bba29ae5b49f5832d94d5afcd000524c5be520b572ee27e7f",
+      "target": "Memverifikasi impor",
+      "targetSha256": "336b7d11dad59522715c82ff1a7cba24c109385afa52652be80a0fbff794917e",
+      "disposition": "refinement"
+    },
+    {
+      "catalogPath": "src/i18n/locale/es.json",
+      "id": "components.RequestStatus.SoftwareRequests.loadError",
+      "locale": "es",
+      "expectedCurrentSha256": "abe87cae70a2b02fb2219b81da3054e7f9e70c270a9a993dc48238d8852f09db",
+      "target": "No se pudo cargar el estado de las solicitudes de software.",
+      "targetSha256": "6b64991837f23efb362b8e59b9f8e9951242e047e37116cd7c510a0c6bdb1f72",
+      "disposition": "correction"
+    },
+    {
+      "catalogPath": "src/i18n/locale/zh_Hans.json",
+      "id": "components.RequestStatus.SoftwareRequests.loadError",
+      "locale": "zh_Hans",
+      "expectedCurrentSha256": "b8b7b144dee9a97fb7367df26bce17fd4a42a5e2831ab8381a8c198fe6a5f0f6",
+      "target": "无法加载软件请求状态。",
+      "targetSha256": "74c4054251abd51ddef9bcadfcb62b18aea8236419187977dd6091ce807070c5",
+      "disposition": "correction"
+    },
+    {
+      "catalogPath": "src/i18n/locale/hi.json",
+      "id": "components.RequestStatus.SoftwareRequests.loadError",
+      "locale": "hi",
+      "expectedCurrentSha256": "79c53718c7825b8cbda5bc9440a14fadb212799d364dc04ea823be09aaee5b93",
+      "target": "सॉफ़्टवेयर अनुरोध की स्थिति लोड नहीं की जा सकी।",
+      "targetSha256": "2da6485e996bbfc238fdf523ea266ca90a3b7432927bd97aa84ffc7bac8ec7a1",
+      "disposition": "correction"
+    },
+    {
+      "catalogPath": "src/i18n/locale/de.json",
+      "id": "components.RequestStatus.SoftwareRequests.loadError",
+      "locale": "de",
+      "expectedCurrentSha256": "d0a61e4fb8eb6c6423dcb4264b69f4bd28852072cad7e49108330f1f26485744",
+      "target": "Der Status der Softwareanfrage konnte nicht geladen werden.",
+      "targetSha256": "7e5746f1c0c78a57c7eec319caf58ae0e604520356a25ff1a16211e075e9ac5d",
+      "disposition": "correction"
+    },
+    {
+      "catalogPath": "src/i18n/locale/ja.json",
+      "id": "components.RequestStatus.SoftwareRequests.loadError",
+      "locale": "ja",
+      "expectedCurrentSha256": "b857d29fbabed562e9f6b6d034b9c08f65e9815b6ae5293c975d2244bff4a83b",
+      "target": "ソフトウェアリクエストの状態を読み込めませんでした。",
+      "targetSha256": "928a991e6265fa34fad83fc1ea9b90ad6cf015cc271d452fc282d87243fec10f",
+      "disposition": "correction"
+    },
+    {
+      "catalogPath": "src/i18n/locale/ar.json",
+      "id": "components.RequestStatus.SoftwareRequests.loadError",
+      "locale": "ar",
+      "expectedCurrentSha256": "aa37eca48c12466016d0c60c511219b0007ffbab9cf30164a4d8be947ef782cb",
+      "target": "تعذّر تحميل حالة طلب البرنامج.",
+      "targetSha256": "8afdc46b6d9b16410bde14b95f6f42d5fa11b336d59e3c74ab2b41bc49d48835",
+      "disposition": "correction"
+    },
+    {
+      "catalogPath": "src/i18n/locale/ko.json",
+      "id": "components.RequestStatus.SoftwareRequests.loadError",
+      "locale": "ko",
+      "expectedCurrentSha256": "09c5902546c0db4a0a698a870f16945bc1984b64ecfbdba1411941023ceabbb1",
+      "target": "소프트웨어 요청 상태를 불러오지 못했습니다.",
+      "targetSha256": "a7ffcc0c1e0fff490ae6925d64d2f8bf874e4767b658c2836ac32959e12e2721",
+      "disposition": "correction"
+    },
+    {
+      "catalogPath": "src/i18n/locale/zh_Hant.json",
+      "id": "components.RequestStatus.SoftwareRequests.loadError",
+      "locale": "zh_Hant",
+      "expectedCurrentSha256": "a4476a4fef74aad4ea637630fea85411ca98fa10b27f06e85d25161d011887c6",
+      "target": "無法載入軟體請求狀態。",
+      "targetSha256": "3f5716e6872277df6ea7f91de79c4dad42805d8aba5ff802d978c03869f0b677",
+      "disposition": "correction"
+    },
+    {
+      "catalogPath": "src/i18n/locale/es.json",
+      "id": "components.RequestStatus.SoftwareRequests.manageError",
+      "locale": "es",
+      "expectedCurrentSha256": "48972e99e969df7cdc273037a644d4ee1c92a253324aba5e5769482c9b481c75",
+      "target": "No se pudo actualizar esta solicitud de software.",
+      "targetSha256": "47e4cd6084b989b9d6f67e5ea49922a931525d595c1af1cad55df603f2ce88e7",
+      "disposition": "correction"
+    },
+    {
+      "catalogPath": "src/i18n/locale/zh_Hans.json",
+      "id": "components.RequestStatus.SoftwareRequests.manageError",
+      "locale": "zh_Hans",
+      "expectedCurrentSha256": "6e996ffcdc2942f3eac1450250f1d35a21c5eff87a1a4b69118fe2eff5804f09",
+      "target": "此软件请求无法更新。",
+      "targetSha256": "f0d3c0c278f5b273843e12b10e2595148bb92aa1469f0d13f3a058b231fc03ff",
+      "disposition": "refinement"
+    },
+    {
+      "catalogPath": "src/i18n/locale/hi.json",
+      "id": "components.RequestStatus.SoftwareRequests.manageError",
+      "locale": "hi",
+      "expectedCurrentSha256": "eca1705a7b99da19124696b78790907b034cf39f70e1ff4366cd45c544d40bbc",
+      "target": "यह सॉफ़्टवेयर अनुरोध अपडेट नहीं किया जा सका।",
+      "targetSha256": "989151f1fd855406406bad74c3cda157c7d301a911aac404bbb15bbd4723d6a7",
+      "disposition": "refinement"
+    },
+    {
+      "catalogPath": "src/i18n/locale/de.json",
+      "id": "components.RequestStatus.SoftwareRequests.manageError",
+      "locale": "de",
+      "expectedCurrentSha256": "7d437204d1aaa3a548e98d4b14028dccb5a959722ca49b8c255d72d5e299b463",
+      "target": "Diese Softwareanfrage konnte nicht aktualisiert werden.",
+      "targetSha256": "97497b2e7622edad05d068037a3b342b80cfef0cc6826590258daa04f42cec80",
+      "disposition": "correction"
+    },
+    {
+      "catalogPath": "src/i18n/locale/ja.json",
+      "id": "components.RequestStatus.SoftwareRequests.manageError",
+      "locale": "ja",
+      "expectedCurrentSha256": "200c5ad3ac999db9716321eaade4b57aa892a839859f8f5dce620120bfbcc1fd",
+      "target": "このソフトウェアリクエストを更新できませんでした。",
+      "targetSha256": "967d3ebdd4b71829410eb0f2f26768b469a81ba966f4f8cbe81b7e1574707848",
+      "disposition": "correction"
+    },
+    {
+      "catalogPath": "src/i18n/locale/ko.json",
+      "id": "components.RequestStatus.SoftwareRequests.manageError",
+      "locale": "ko",
+      "expectedCurrentSha256": "f4c8fc50d725fdb3b6ccc406cef2ae2c0ab188f73c942bfdab227d28ed76fcf4",
+      "target": "이 소프트웨어 요청을 업데이트하지 못했습니다.",
+      "targetSha256": "c5b43dadb46bcb9a4be1999f674e0a1e7b30dfb2b66dee8a8351d06ff59c5c38",
+      "disposition": "correction"
+    },
+    {
+      "catalogPath": "src/i18n/locale/zh_Hant.json",
+      "id": "components.RequestStatus.SoftwareRequests.manageError",
+      "locale": "zh_Hant",
+      "expectedCurrentSha256": "3302b298de107bea66f89a1b4b325a04681a2e550f3c2a68312a72762e5dcdae",
+      "target": "此軟體請求無法更新。",
+      "targetSha256": "d0341b666eeb0c9f179f855370bd4440fbcc2c996043609725d4482020748790",
+      "disposition": "refinement"
+    },
+    {
+      "catalogPath": "src/i18n/locale/pt_BR.json",
+      "id": "components.RequestStatus.SoftwareRequests.modern",
+      "locale": "pt_BR",
+      "expectedCurrentSha256": "2a6a435c37c48729d679dd37f5f4f845623471f8a9e30785a8226d9d8ff1625d",
+      "target": "Moderno",
+      "targetSha256": "35d9dfc22d5b90cf91f748a6a92b4f110d4a6c52cf181892de29fde61215c3ef",
+      "disposition": "correction"
+    },
+    {
+      "catalogPath": "src/i18n/locale/zh_Hans.json",
+      "id": "components.RequestStatus.SoftwareRequests.noHistory",
+      "locale": "zh_Hans",
+      "expectedCurrentSha256": "58cb67ad0e8cdd7059fb273f0770621c414b018571641e8cd0e6ab41e840fd66",
+      "target": "没有可用的已保存状态更新。",
+      "targetSha256": "025afc241b24dc566f3b4b13df6262102f64267c9b34250ff28e7abdd352051b",
+      "disposition": "correction"
+    },
+    {
+      "catalogPath": "src/i18n/locale/hi.json",
+      "id": "components.RequestStatus.SoftwareRequests.noHistory",
+      "locale": "hi",
+      "expectedCurrentSha256": "4e0790d06c71c79a17052ef8df1be68cb2f361238a703ed375a4a6c5a367be6e",
+      "target": "स्थिति के कोई सहेजे गए अपडेट उपलब्ध नहीं हैं।",
+      "targetSha256": "02904e2a500feb1c0987cc6325f73a1509805cdb24e5983d83e538c504cb80b5",
+      "disposition": "correction"
+    },
+    {
+      "catalogPath": "src/i18n/locale/ja.json",
+      "id": "components.RequestStatus.SoftwareRequests.noHistory",
+      "locale": "ja",
+      "expectedCurrentSha256": "4c4102eec5d8f3555e18391a94dc1cc339d39ea2eb229a99f8a710b017a393e6",
+      "target": "保存済みのステータス更新はありません。",
+      "targetSha256": "7f542b750d8d697f867a4dc29ef8b21d6683b478f1fa2c52564b35f6753222a1",
+      "disposition": "correction"
+    },
+    {
+      "catalogPath": "src/i18n/locale/ar.json",
+      "id": "components.RequestStatus.SoftwareRequests.noHistory",
+      "locale": "ar",
+      "expectedCurrentSha256": "43991ed79873503de7f47112d3146881bc908fb1eb8dcef86d7ec1a7d7c97829",
+      "target": "لا تتوفر تحديثات حالة محفوظة.",
+      "targetSha256": "015eef86a5e85c655be519d666959ede9fa257e3df67984e5fd17e95006a0f9b",
+      "disposition": "correction"
+    },
+    {
+      "catalogPath": "src/i18n/locale/zh_Hant.json",
+      "id": "components.RequestStatus.SoftwareRequests.noHistory",
+      "locale": "zh_Hant",
+      "expectedCurrentSha256": "ff7e504e1cba8c69feb4e150ff2cbddcff3cf9e2112466a5f6044e2df704802b",
+      "target": "目前沒有可用的已儲存狀態更新。",
+      "targetSha256": "20485ba47f1e71a0cc6444387f640cd6096354c0472af26c9c0e9c896291b66d",
+      "disposition": "correction"
+    },
+    {
+      "catalogPath": "src/i18n/locale/id.json",
+      "id": "components.RequestStatus.SoftwareRequests.noHistory",
+      "locale": "id",
+      "expectedCurrentSha256": "5d27e307eff4209c805f305aa522d4d6d615d32339a5eebb0405cff5cd70c251",
+      "target": "Tidak ada pembaruan status tersimpan yang tersedia.",
+      "targetSha256": "aa4cf42d02b569c7510f2f387769f3aaad2d80468e6a0621c0d3153b1ec879a2",
+      "disposition": "correction"
+    },
+    {
+      "catalogPath": "src/i18n/locale/zh_Hans.json",
+      "id": "components.RequestStatus.SoftwareRequests.noRequests",
+      "locale": "zh_Hans",
+      "expectedCurrentSha256": "134e2aadb791a7526c5b2194e296d9f7a23cf028b10f9190304e8ccdc3b97739",
+      "target": "还没有软件请求。",
+      "targetSha256": "fc4e59a9b9c7350e7ccdb8ba53863765b34ec76eda58d1e223d2f6a51dcbf2f8",
+      "disposition": "refinement"
+    },
+    {
+      "catalogPath": "src/i18n/locale/pt_BR.json",
+      "id": "components.RequestStatus.SoftwareRequests.noRequests",
+      "locale": "pt_BR",
+      "expectedCurrentSha256": "625ca87df88bfcaa6120c2c81f9c25212c4ef0e716bd60cfc978a1294ef44658",
+      "target": "Ainda não há pedidos de software.",
+      "targetSha256": "b4339787bab076d258b77949311504e2d714c2ce20efa5f9bd4e710a91e53077",
+      "disposition": "refinement"
+    },
+    {
+      "catalogPath": "src/i18n/locale/ar.json",
+      "id": "components.RequestStatus.SoftwareRequests.noRequests",
+      "locale": "ar",
+      "expectedCurrentSha256": "378b671ef68bf68df8bd3b0fc68d3fc0b7a1a7dd5dffe4046eadd4e66dd5c0e9",
+      "target": "لا توجد طلبات برامج بعد.",
+      "targetSha256": "447109efdbede54f9d4a16cb9b9785c5ccd2145773f1be85857202ec5c665dfc",
+      "disposition": "correction"
+    },
+    {
+      "catalogPath": "src/i18n/locale/zh_Hant.json",
+      "id": "components.RequestStatus.SoftwareRequests.noRequests",
+      "locale": "zh_Hant",
+      "expectedCurrentSha256": "faf81ef97e41e8216f2061f17850e8aa8a0d90f584acb07b16590f72be02bce0",
+      "target": "尚未有軟體要求。",
+      "targetSha256": "02ace8525e6ce5aa4f62ed28f84bca529a12c5ba80249514775d9d44f88ba8b2",
+      "disposition": "refinement"
+    },
+    {
+      "catalogPath": "src/i18n/locale/zh_Hans.json",
+      "id": "components.RequestStatus.SoftwareRequests.operatingSystem",
+      "locale": "zh_Hans",
+      "expectedCurrentSha256": "ebec7681e80d9e679018ed957bee96f91d687b00535373dea44835f2fdac7bc4",
+      "target": "操作系统：{value}",
+      "targetSha256": "c7916b525bc5e2b06b7c00698c6bd52a46b0baaf0be959e69d7b83e5ddef3059",
+      "disposition": "refinement"
+    },
+    {
+      "catalogPath": "src/i18n/locale/ja.json",
+      "id": "components.RequestStatus.SoftwareRequests.operatingSystem",
+      "locale": "ja",
+      "expectedCurrentSha256": "0e8e5530920002ead6971d3a60fa265de46e205d2c4aef66af655168aef37a3d",
+      "target": "オペレーティングシステム：{value}",
+      "targetSha256": "664cb763fd12530a53a9bbdcb727fc83f2f3b131ed81e6077ff5f5e76329ee9a",
+      "disposition": "refinement"
+    },
+    {
+      "catalogPath": "src/i18n/locale/ko.json",
+      "id": "components.RequestStatus.SoftwareRequests.operatingSystem",
+      "locale": "ko",
+      "expectedCurrentSha256": "7933ea5863396f509fc3078179de41775217b876b35c7767b689c04a33278fa7",
+      "target": "운영 체제: {value}",
+      "targetSha256": "3ecd34404671a7a93b932b929361004ddf46716194538ce0c2a79601df5164b9",
+      "disposition": "correction"
+    },
+    {
+      "catalogPath": "src/i18n/locale/zh_Hant.json",
+      "id": "components.RequestStatus.SoftwareRequests.operatingSystem",
+      "locale": "zh_Hant",
+      "expectedCurrentSha256": "0a7d7b46053e62adfb779f83e1a22d39615970b7a600001b7a408a0bbb9034ad",
+      "target": "作業系統：{value}",
+      "targetSha256": "fa4a4ff31ae80442d4888cacdc7946657b1aa5e3eb0d97ffab0bbc6296260388",
+      "disposition": "correction"
+    },
+    {
+      "catalogPath": "src/i18n/locale/ja.json",
+      "id": "components.RequestStatus.SoftwareRequests.pending",
+      "locale": "ja",
+      "expectedCurrentSha256": "5954e510c786d575e4384bcb44ee6fc4eabf7e265bc1f39c454428b29b85bf2f",
+      "target": "承認待ち",
+      "targetSha256": "de90bf305aaa0ddab65b55467fd9b73b71a1814702bd1c823f236bd2c3baff18",
+      "disposition": "correction"
+    },
+    {
+      "catalogPath": "src/i18n/locale/fr.json",
+      "id": "components.RequestStatus.SoftwareRequests.pending",
+      "locale": "fr",
+      "expectedCurrentSha256": "e67b4451669dfe49ffc30e2331be2ad594d72dd74cf91e63b4253a057cb23ba5",
+      "target": "En attente d’approbation",
+      "targetSha256": "298920ced8fbaf6b4843e04892b373a2f0052c1ae2b42a37b2854a4c887911af",
+      "disposition": "correction"
+    },
+    {
+      "catalogPath": "src/i18n/locale/ar.json",
+      "id": "components.RequestStatus.SoftwareRequests.pending",
+      "locale": "ar",
+      "expectedCurrentSha256": "afb56db3d85c8594db01478d76d8f418ca8df871e8f685184b2b526f826be9a5",
+      "target": "في انتظار الموافقة",
+      "targetSha256": "16494285129c66a9ed06a49ef750a1120421a3169d9fa390318a03b092907926",
+      "disposition": "refinement"
+    },
+    {
+      "catalogPath": "src/i18n/locale/ko.json",
+      "id": "components.RequestStatus.SoftwareRequests.pending",
+      "locale": "ko",
+      "expectedCurrentSha256": "df226e6f02c7cbd61a8a7edbd10d7dc7c25395fe59759a71038d5d61f9f32437",
+      "target": "승인 대기 중",
+      "targetSha256": "64d3291f9b4fa8b6ac1e37443eb005baddc661afd1dd00220c0513e9acb89d8f",
+      "disposition": "correction"
+    },
+    {
+      "catalogPath": "src/i18n/locale/vi.json",
+      "id": "components.RequestStatus.SoftwareRequests.pending",
+      "locale": "vi",
+      "expectedCurrentSha256": "d1c50c1c8edad1e8a4dc8c7b121e9435fc4569303e8c71f7787171355b98a4ac",
+      "target": "Đang chờ phê duyệt",
+      "targetSha256": "ea026ff9805ed2ce46efb269af53b292d3340680837f1ba228fda5d10cd608b7",
+      "disposition": "correction"
+    },
+    {
+      "catalogPath": "src/i18n/locale/zh_Hans.json",
+      "id": "components.RequestStatus.SoftwareRequests.progress",
+      "locale": "zh_Hans",
+      "expectedCurrentSha256": "27da2117904d8b054721ee1f7af78c79688b4a971fbf833d508fe808d73aff00",
+      "target": "{percent}% 已下载",
+      "targetSha256": "8f2a83348f327fbfbee66dfa9ed03a6b8f00514645162fb00813682cc2057210",
+      "disposition": "correction"
+    },
+    {
+      "catalogPath": "src/i18n/locale/hi.json",
+      "id": "components.RequestStatus.SoftwareRequests.progress",
+      "locale": "hi",
+      "expectedCurrentSha256": "8a358f83f9d53d341ec8001a311fa06fc89468c05195d8ee821d5efb22076fa9",
+      "target": "{percent}% डाउनलोड हो चुका है",
+      "targetSha256": "10a1fd82a3c3ef0fe0eadcc6e2c7c9eb63960fae0e973714c7b11870b819c11e",
+      "disposition": "correction"
+    },
+    {
+      "catalogPath": "src/i18n/locale/ja.json",
+      "id": "components.RequestStatus.SoftwareRequests.progress",
+      "locale": "ja",
+      "expectedCurrentSha256": "d8eae870c247a5584bb9d8db116eccbcde9a754f78b7c80ac8ab0f01d7984bb0",
+      "target": "{percent}%ダウンロード済み",
+      "targetSha256": "c4859994c94e2dc68f5662ee3ce33963642f501a51ce35d91c8e6b8bbfb378f9",
+      "disposition": "correction"
+    },
+    {
+      "catalogPath": "src/i18n/locale/fr.json",
+      "id": "components.RequestStatus.SoftwareRequests.progress",
+      "locale": "fr",
+      "expectedCurrentSha256": "9560494863f9929d87eb86703102b37c1919eebacab12b41da4d7a1a749209e4",
+      "target": "{percent} % téléchargé",
+      "targetSha256": "3cae636e8ba1ab681455712c00e348be518c137dfe07a4f13051b1b1f4d50c89",
+      "disposition": "refinement"
+    },
+    {
+      "catalogPath": "src/i18n/locale/ar.json",
+      "id": "components.RequestStatus.SoftwareRequests.progress",
+      "locale": "ar",
+      "expectedCurrentSha256": "9f9cc33f2a2eb639938a501ddf0652ae48ffebe8513b20a75030068896cd512a",
+      "target": "تم تنزيل {percent}٪",
+      "targetSha256": "e58b4c280819ae6afc87feccbd56ef8aba00fdf0a057bc649a0bfed96c9806a2",
+      "disposition": "correction"
+    },
+    {
+      "catalogPath": "src/i18n/locale/ko.json",
+      "id": "components.RequestStatus.SoftwareRequests.progress",
+      "locale": "ko",
+      "expectedCurrentSha256": "6fa59930e68b1b0fd7eb44512b96bfb49ba0c22209c8230b950d5169afff7489",
+      "target": "{percent}% 다운로드됨",
+      "targetSha256": "2dce8bdf6464e4f11d441d5324b84a90f487d871808a6143dc292f4dbb13ad76",
+      "disposition": "correction"
+    },
+    {
+      "catalogPath": "src/i18n/locale/zh_Hant.json",
+      "id": "components.RequestStatus.SoftwareRequests.progress",
+      "locale": "zh_Hant",
+      "expectedCurrentSha256": "3352b2144f67c5daf8cfe9fcc583b29169bddd0f63768309305dde67608d99e0",
+      "target": "{percent}% 已下載",
+      "targetSha256": "8598fe6aa111b846125461518dcf0b919540a6ef0a5ed5d17bdfedc13a4ef9fd",
+      "disposition": "correction"
+    },
+    {
+      "catalogPath": "src/i18n/locale/vi.json",
+      "id": "components.RequestStatus.SoftwareRequests.progress",
+      "locale": "vi",
+      "expectedCurrentSha256": "bac979a03bda5c63684be9c7016c9e0cbc9896d7d15e5d19f5ce6f6836cd1fd3",
+      "target": "Đã tải xuống {percent}%",
+      "targetSha256": "42892013bf40c80b0a6165f389a287fdbf73038b5bce8ba48d791336cf81ce4b",
+      "disposition": "correction"
+    },
+    {
+      "catalogPath": "src/i18n/locale/es.json",
+      "id": "components.RequestStatus.SoftwareRequests.quotaExceeded",
+      "locale": "es",
+      "expectedCurrentSha256": "35da3662a2b93f1a85534812d872ac3d8d1d82c99c53cae789aa588bb9d2a8f3",
+      "target": "Has alcanzado el límite de solicitudes de software.",
+      "targetSha256": "8671265692b97a01db09fe3b55af49a7486441624e6092bffa16629ce9842f95",
+      "disposition": "correction"
+    },
+    {
+      "catalogPath": "src/i18n/locale/zh_Hans.json",
+      "id": "components.RequestStatus.SoftwareRequests.quotaExceeded",
+      "locale": "zh_Hans",
+      "expectedCurrentSha256": "095675208372a0b195b7d6a6e2d9fecfc50c52716ac667cfe60a4a92436a6dc8",
+      "target": "您的软件请求数量已达上限。",
+      "targetSha256": "22ad0b361ce8b1fd381deb240e869b0d4c47c414ac312644c8127a348613f7e2",
+      "disposition": "correction"
+    },
+    {
+      "catalogPath": "src/i18n/locale/de.json",
+      "id": "components.RequestStatus.SoftwareRequests.quotaExceeded",
+      "locale": "de",
+      "expectedCurrentSha256": "ac29b2c1e374524af21f9252598cd47d3f870b3eed338aa4bd059920c15bf111",
+      "target": "Ihr Limit für Softwareanfragen wurde erreicht.",
+      "targetSha256": "b44813e5a68b2107e8394789c768a4500922e91093d30b382a2f4eeda2fa5b0d",
+      "disposition": "correction"
+    },
+    {
+      "catalogPath": "src/i18n/locale/fr.json",
+      "id": "components.RequestStatus.SoftwareRequests.quotaExceeded",
+      "locale": "fr",
+      "expectedCurrentSha256": "242b532326f0f7d2176ede18c8f962a03d2461a1d3c3e8fe1721807d40b95f38",
+      "target": "Vous avez atteint votre limite de demandes de logiciels.",
+      "targetSha256": "33f770e9c2e259c0cb7b2e031636d206849025efc11e72ad6503756ec64ee0e9",
+      "disposition": "correction"
+    },
+    {
+      "catalogPath": "src/i18n/locale/pt_BR.json",
+      "id": "components.RequestStatus.SoftwareRequests.quotaExceeded",
+      "locale": "pt_BR",
+      "expectedCurrentSha256": "e614bd19553025e804d65feebe850f62a43ba49f66238bd48654ed9be634df94",
+      "target": "Você atingiu o limite de solicitações de software.",
+      "targetSha256": "6c5561b844d59472b9f0d0593dca789589911d9573e19575098af255ea3d9efd",
+      "disposition": "correction"
+    },
+    {
+      "catalogPath": "src/i18n/locale/ar.json",
+      "id": "components.RequestStatus.SoftwareRequests.quotaExceeded",
+      "locale": "ar",
+      "expectedCurrentSha256": "2038b6cd6f6e8b3918500b4924529e75007fd0462df2783ebb174edacdb8845c",
+      "target": "لقد بلغت الحد الأقصى لطلبات البرامج.",
+      "targetSha256": "634b2113fc95e417477965dbb268ffc2e00c54d8700efcd2612bac3cdbbbc764",
+      "disposition": "refinement"
+    },
+    {
+      "catalogPath": "src/i18n/locale/zh_Hant.json",
+      "id": "components.RequestStatus.SoftwareRequests.quotaExceeded",
+      "locale": "zh_Hant",
+      "expectedCurrentSha256": "2f5c865ff881f6efb54d7e8728d4d2821da59b313ff7f6cbce6e4f34acd91cbc",
+      "target": "您的軟體請求已達上限。",
+      "targetSha256": "82eaaf03a81d5c4cd089c2de6c8351dc08f21267b192578b93b43c4091113035",
+      "disposition": "correction"
+    },
+    {
+      "catalogPath": "src/i18n/locale/es.json",
+      "id": "components.RequestStatus.SoftwareRequests.removeFromRequestsDescription",
+      "locale": "es",
+      "expectedCurrentSha256": "ca571207855fd5273cb768e8de2d565299152f5a3d451bf5c672f2e3b1cddf72",
+      "target": "Esto elimina la solicitud y su historial de estado guardado de SeerrNG. Cualquier descarga ya enviada a ROMarrNG o a un cliente de descargas seguirá en curso; cancélala allí si quieres detenerla. SeerrNG dejará de mostrar el progreso y enviar actualizaciones de esta solicitud. Si vuelves a solicitar el mismo título antes de que termine esta transferencia, podría iniciarse una segunda adquisición. El software instalado no se elimina.",
+      "targetSha256": "735e0f576efca440751dea69f39f5a752ad25c00d3ccbb7769579016ac941719",
+      "disposition": "refinement"
+    },
+    {
+      "catalogPath": "src/i18n/locale/vi.json",
+      "id": "components.RequestStatus.SoftwareRequests.removeFromRequestsDescription",
+      "locale": "vi",
+      "expectedCurrentSha256": "c8cb7ffb0241118fab67e18ee8b64cc615b3d58a13d2c43cd1b9cc58bcac7e8f",
+      "target": "Thao tác này xóa yêu cầu và lịch sử trạng thái đã lưu khỏi SeerrNG. Tác vụ tải xuống đã được chuyển cho ROMarrNG hoặc trình tải xuống vẫn tiếp tục; hãy hủy tại đó nếu bạn muốn dừng. SeerrNG sẽ ngừng hiển thị tiến độ và gửi cập nhật cho yêu cầu này. Nếu bạn yêu cầu lại cùng tiêu đề trước khi lượt tải này hoàn tất, một lượt tải thứ hai có thể bắt đầu. Phần mềm đã cài đặt sẽ không bị xóa.",
+      "targetSha256": "54e886f6b1ee8a5ca5eb088e8d08ec376ef0bc313881cff21ec5288dea20a409",
+      "disposition": "correction"
+    },
+    {
+      "catalogPath": "src/i18n/locale/ar.json",
+      "id": "components.RequestStatus.SoftwareRequests.removeFromRequestsTitle",
+      "locale": "ar",
+      "expectedCurrentSha256": "635c8366eedb1c08b1c1e7517b58bd6dcbad2e9d51f179a74271e0009b7b55d8",
+      "target": "هل تريد إزالة هذا الطلب من SeerrNG؟",
+      "targetSha256": "64d9b53d979f430c67840fde08df443979130b86a8306064dc120fd3ff4ba01c",
+      "disposition": "refinement"
+    }
+  ]
+}

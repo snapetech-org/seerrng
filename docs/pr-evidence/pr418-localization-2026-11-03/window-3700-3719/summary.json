@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "window": "W3700-W3719",
+  "baseHead": "96d040b6a4abfec7764c3addfe35b395b8fe5c67",
+  "baseTree": "e93626b0974ba419044ec76d32018fdc122d9e19",
+  "crossAuditSummarySha256": "61a9537ef3e51a9126d7f5391a19374c7f6e67eecdfc5711d7a00c00cb2a98e0",
+  "crossAuditLedgerSha256": "127cfa2394f4e448218b1c8b6ba740e4808595ba2f945c2476e0c9f79c480451",
+  "reattestSummarySha256": "8b628e4f020a89cc4034edd5016e6214c809161d0394358ac1bd96a7386ac70e",
+  "reattestCellsSha256": "9fd86a19617a7f6947ee6e77f202a1b80fc3e80c6b52ae783d33c066cd498a14",
+  "cellCount": 240,
+  "selectedChanges": 85,
+  "dispositions": {
+    "accept-current": 155,
+    "correction": 48,
+    "refinement": 37
+  },
+  "localeCatalogCount": 12,
+  "priorHoldsVerified": 12,
+  "allUnselectedCatalogKeysUnchanged": true,
+  "nativeSpeakerBrowserReviewPerformed": false,
+  "evidenceFiles": [
+    "README.md",
+    "application-ledger.jsonl",
+    "carried-holds.jsonl",
+    "readback.jsonl",
+    "catalog-readback.json",
+    "summary.json",
+    "verify_application.py",
+    "SHA256SUMS.txt"
+  ]
+}

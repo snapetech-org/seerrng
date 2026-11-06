@@ -1,6 +1,8 @@
 import Alert from '@app/components/Common/Alert';
+import ApiMessageText from '@app/components/Common/ApiMessageText';
 import Button from '@app/components/Common/Button';
 import LoadingSpinner from '@app/components/Common/LoadingSpinner';
+import OpaqueApiMessageText from '@app/components/Common/OpaqueApiMessageText';
 import SettingsField from '@app/components/Settings/SettingsField';
 import useToasts from '@app/hooks/useToasts';
 import defineMessages from '@app/utils/defineMessages';
@@ -71,7 +73,7 @@ const SettingsSwipe = () => {
   const [saveError, setSaveError] = useState<string>();
   const [testing, setTesting] = useState(false);
   const [testResult, setTestResult] = useState<
-    { ok: true } | { ok: false; error: string }
+    { ok: true } | { ok: false; error: string; errorOrigin: 'app' | 'opaque' }
   >();
 
   useEffect(() => {
@@ -126,6 +128,11 @@ const SettingsSwipe = () => {
       setTestResult({
         ok: false,
         error: failureText(failure, intl.formatMessage(messages.saveError)),
+        errorOrigin:
+          axios.isAxiosError(failure) &&
+          failure.response?.data?.errorOrigin === 'opaque'
+            ? 'opaque'
+            : 'app',
       });
     } finally {
       setTesting(false);
@@ -151,7 +158,12 @@ const SettingsSwipe = () => {
         )}
         {data && draft && !error && (
           <form onSubmit={(event) => void submit(event)}>
-            {saveError && <Alert type="error" title={saveError} />}
+            {saveError && (
+              <Alert
+                type="error"
+                title={<ApiMessageText>{saveError}</ApiMessageText>}
+              />
+            )}
             <div className="form-row">
               <label htmlFor="swipe-enabled">
                 {intl.formatMessage(messages.enabled)}
@@ -363,7 +375,18 @@ const SettingsSwipe = () => {
                       )}
                     </Alert>
                   ) : (
-                    <Alert type="error" title={testResult.error} />
+                    <Alert
+                      type="error"
+                      title={
+                        testResult.errorOrigin === 'opaque' ? (
+                          <OpaqueApiMessageText>
+                            {testResult.error}
+                          </OpaqueApiMessageText>
+                        ) : (
+                          <ApiMessageText>{testResult.error}</ApiMessageText>
+                        )
+                      }
+                    />
                   ))}
               </>
             )}

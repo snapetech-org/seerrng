@@ -1,0 +1,2251 @@
+{
+  "schemaVersion": 1,
+  "headBeforeApply": "fcbc579f724e50a07dc0e12b00127c4f6084c453",
+  "treeBeforeApply": "30e1e5e610e88ba935e482fc7088311d00e214ae",
+  "cells": 240,
+  "targetsReadBack": 240,
+  "mismatches": 0,
+  "changedCells": 4,
+  "heldCells": 0,
+  "dispositions": {
+    "accept-current": 236,
+    "refinement": 2,
+    "correction": 2
+  },
+  "catalogKeyOrder": [
+    {
+      "locale": "es",
+      "keyCount": 9494,
+      "keyOrderSha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+      "preserved": true
+    },
+    {
+      "locale": "zh_Hans",
+      "keyCount": 9494,
+      "keyOrderSha256": "8d5fd7bd4351bc64c5ee813f2e50196608869e165866f3202a312078732c2baf",
+      "preserved": true
+    },
+    {
+      "locale": "hi",
+      "keyCount": 9494,
+      "keyOrderSha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+      "preserved": true
+    },
+    {
+      "locale": "de",
+      "keyCount": 9494,
+      "keyOrderSha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+      "preserved": true
+    },
+    {
+      "locale": "ja",
+      "keyCount": 9494,
+      "keyOrderSha256": "8d5fd7bd4351bc64c5ee813f2e50196608869e165866f3202a312078732c2baf",
+      "preserved": true
+    },
+    {
+      "locale": "fr",
+      "keyCount": 9494,
+      "keyOrderSha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+      "preserved": true
+    },
+    {
+      "locale": "pt_BR",
+      "keyCount": 9494,
+      "keyOrderSha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+      "preserved": true
+    },
+    {
+      "locale": "ar",
+      "keyCount": 9494,
+      "keyOrderSha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+      "preserved": true
+    },
+    {
+      "locale": "ko",
+      "keyCount": 9494,
+      "keyOrderSha256": "8d5fd7bd4351bc64c5ee813f2e50196608869e165866f3202a312078732c2baf",
+      "preserved": true
+    },
+    {
+      "locale": "zh_Hant",
+      "keyCount": 9494,
+      "keyOrderSha256": "8d5fd7bd4351bc64c5ee813f2e50196608869e165866f3202a312078732c2baf",
+      "preserved": true
+    },
+    {
+      "locale": "vi",
+      "keyCount": 9494,
+      "keyOrderSha256": "8d5fd7bd4351bc64c5ee813f2e50196608869e165866f3202a312078732c2baf",
+      "preserved": true
+    },
+    {
+      "locale": "id",
+      "keyCount": 9494,
+      "keyOrderSha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+      "preserved": true
+    }
+  ],
+  "rows": [
+    {
+      "position": 3400,
+      "locale": "ar",
+      "sourceId": "components.Requests.requestTime",
+      "catalogPath": "src/i18n/locale/ar.json",
+      "finalTarget": "الوقت",
+      "finalTargetSha256": "a3a18dc9c6f19c8ff663f394eb3c5e48f8327d9ae25e98daced2398948720678",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3400,
+      "locale": "de",
+      "sourceId": "components.Requests.requestTime",
+      "catalogPath": "src/i18n/locale/de.json",
+      "finalTarget": "Uhrzeit",
+      "finalTargetSha256": "317f0a69e9cc6367f17903ba36a6bbf3466eec27f04321afd62f62c0aaaa7551",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3400,
+      "locale": "es",
+      "sourceId": "components.Requests.requestTime",
+      "catalogPath": "src/i18n/locale/es.json",
+      "finalTarget": "Hora",
+      "finalTargetSha256": "503f312cde03e217a6b37c352c149ff9d2094bca6bee4806d4f5b31e134f3c55",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3400,
+      "locale": "fr",
+      "sourceId": "components.Requests.requestTime",
+      "catalogPath": "src/i18n/locale/fr.json",
+      "finalTarget": "Heure",
+      "finalTargetSha256": "56ff9400e9277cd20ca9f55c733d4b0d55ca1e907c7c672ef2a1552ad75d1be9",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3400,
+      "locale": "hi",
+      "sourceId": "components.Requests.requestTime",
+      "catalogPath": "src/i18n/locale/hi.json",
+      "finalTarget": "समय",
+      "finalTargetSha256": "6c8b6e94d3301a9d317854317d30e18ccd5a92fed58d8ea9f9e6b8ffd8adf394",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3400,
+      "locale": "id",
+      "sourceId": "components.Requests.requestTime",
+      "catalogPath": "src/i18n/locale/id.json",
+      "finalTarget": "Waktu",
+      "finalTargetSha256": "6986e0f0a5d89f216a2dd6f4fe32a1ac0a1422037ebe6120fb7f66ceddbbedf7",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3400,
+      "locale": "ja",
+      "sourceId": "components.Requests.requestTime",
+      "catalogPath": "src/i18n/locale/ja.json",
+      "finalTarget": "時刻",
+      "finalTargetSha256": "20d2bb9aec981e4310a50dbd202c8d530f582db07ca9dcb23d2e52316fb6e9e7",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3400,
+      "locale": "ko",
+      "sourceId": "components.Requests.requestTime",
+      "catalogPath": "src/i18n/locale/ko.json",
+      "finalTarget": "시간",
+      "finalTargetSha256": "4692cef5ac69eb37bd5301ef63f765f04421250f52b6eee6c966e0b1840395a9",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3400,
+      "locale": "pt_BR",
+      "sourceId": "components.Requests.requestTime",
+      "catalogPath": "src/i18n/locale/pt_BR.json",
+      "finalTarget": "Horário",
+      "finalTargetSha256": "9e7e28fffd0d3aee49ed68ce0fa5cd6f693148eb615ea5b11f7271efde9a760a",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3400,
+      "locale": "vi",
+      "sourceId": "components.Requests.requestTime",
+      "catalogPath": "src/i18n/locale/vi.json",
+      "finalTarget": "Thời gian",
+      "finalTargetSha256": "b295fd620d82e277ea7abeeeae34b51902f315253d428d01f50ee20fdcd71091",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3400,
+      "locale": "zh_Hans",
+      "sourceId": "components.Requests.requestTime",
+      "catalogPath": "src/i18n/locale/zh_Hans.json",
+      "finalTarget": "时间",
+      "finalTargetSha256": "8b6ff498515bcc2ffdefa4f7b2efbe5edfcf8ba146e99308bc72024b52349ba0",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3400,
+      "locale": "zh_Hant",
+      "sourceId": "components.Requests.requestTime",
+      "catalogPath": "src/i18n/locale/zh_Hant.json",
+      "finalTarget": "時間",
+      "finalTargetSha256": "bf6267da6077b6bedde993a6ec599e9d5474eef12284b6823ef8dd0facc08f40",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3401,
+      "locale": "ar",
+      "sourceId": "components.Requests.requested",
+      "catalogPath": "src/i18n/locale/ar.json",
+      "finalTarget": "تم طلبه",
+      "finalTargetSha256": "04839c13c6dbb03825cb4e8fb4eecf293f4849b3472aea335074be92917830d7",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3401,
+      "locale": "de",
+      "sourceId": "components.Requests.requested",
+      "catalogPath": "src/i18n/locale/de.json",
+      "finalTarget": "Angefragt",
+      "finalTargetSha256": "f3683ed5bb6c99b9383bd810ed4ed33980f8910911e98bd548f2c2ef335e1e04",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3401,
+      "locale": "es",
+      "sourceId": "components.Requests.requested",
+      "catalogPath": "src/i18n/locale/es.json",
+      "finalTarget": "Solicitado",
+      "finalTargetSha256": "d81de4ca85de373719e8fe44652f174afdaef56b24054a107b7bbd9dc12a2d9f",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3401,
+      "locale": "fr",
+      "sourceId": "components.Requests.requested",
+      "catalogPath": "src/i18n/locale/fr.json",
+      "finalTarget": "Demandé",
+      "finalTargetSha256": "6b6f5b80db324a370950d5292329369188399e1ccdca2cdb88edf845a96fd588",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3401,
+      "locale": "hi",
+      "sourceId": "components.Requests.requested",
+      "catalogPath": "src/i18n/locale/hi.json",
+      "finalTarget": "अनुरोधित",
+      "finalTargetSha256": "6983450406a58b24363cdbf410ba93161a5f2a84b0ecdc1ec0383b1a7505457b",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3401,
+      "locale": "id",
+      "sourceId": "components.Requests.requested",
+      "catalogPath": "src/i18n/locale/id.json",
+      "finalTarget": "Diminta",
+      "finalTargetSha256": "c6a11baa186f6db8d7ccc7dae4db4d52efcaa4cc71e2bc5906ef9e72f3e5d065",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3401,
+      "locale": "ja",
+      "sourceId": "components.Requests.requested",
+      "catalogPath": "src/i18n/locale/ja.json",
+      "finalTarget": "リクエスト済み",
+      "finalTargetSha256": "2829f837dcabc3033ceadfb7ee5d75cb90ad2eab922470123071d6501f009f5e",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3401,
+      "locale": "ko",
+      "sourceId": "components.Requests.requested",
+      "catalogPath": "src/i18n/locale/ko.json",
+      "finalTarget": "요청됨",
+      "finalTargetSha256": "4f815258a77ad003a035f5ed86f13ec0359ff04fa120a88c76efb6710003df57",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3401,
+      "locale": "pt_BR",
+      "sourceId": "components.Requests.requested",
+      "catalogPath": "src/i18n/locale/pt_BR.json",
+      "finalTarget": "Solicitado",
+      "finalTargetSha256": "d81de4ca85de373719e8fe44652f174afdaef56b24054a107b7bbd9dc12a2d9f",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3401,
+      "locale": "vi",
+      "sourceId": "components.Requests.requested",
+      "catalogPath": "src/i18n/locale/vi.json",
+      "finalTarget": "Đã yêu cầu",
+      "finalTargetSha256": "521b08cfb3123df524a2e22f09d12d6099b697f87bb2478c840dd4f7940b0817",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3401,
+      "locale": "zh_Hans",
+      "sourceId": "components.Requests.requested",
+      "catalogPath": "src/i18n/locale/zh_Hans.json",
+      "finalTarget": "已提出请求",
+      "finalTargetSha256": "4be1f9d596986253c7e4c7843ceef7df580de432f996d7663541fa23cc0acb37",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3401,
+      "locale": "zh_Hant",
+      "sourceId": "components.Requests.requested",
+      "catalogPath": "src/i18n/locale/zh_Hant.json",
+      "finalTarget": "已提出請求",
+      "finalTargetSha256": "0f8e17443f3f4bbcf827d2947d31e18d1592f160e7fdb3a8dfe0ee1f40ea39ad",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3402,
+      "locale": "ar",
+      "sourceId": "components.Requests.requestedAt",
+      "catalogPath": "src/i18n/locale/ar.json",
+      "finalTarget": "طُلب في {date}",
+      "finalTargetSha256": "38d6f7588548a22ed028d1db871b817fa9d67fff66c8f1c4de66ab1f38ca0ba3",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3402,
+      "locale": "de",
+      "sourceId": "components.Requests.requestedAt",
+      "catalogPath": "src/i18n/locale/de.json",
+      "finalTarget": "Angefragt am {date}",
+      "finalTargetSha256": "fbf7d1e13b4ac201568793fe669653b380c2e224d797f933c841f078cba60089",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3402,
+      "locale": "es",
+      "sourceId": "components.Requests.requestedAt",
+      "catalogPath": "src/i18n/locale/es.json",
+      "finalTarget": "Solicitado el {date}",
+      "finalTargetSha256": "d2a1fdf5460d75132727bb8abd4ce660e616bdd79f62f8cbfc728bb7f9824ed8",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3402,
+      "locale": "fr",
+      "sourceId": "components.Requests.requestedAt",
+      "catalogPath": "src/i18n/locale/fr.json",
+      "finalTarget": "Demandé le {date}",
+      "finalTargetSha256": "f8e21453f26e7b1be81384533cb0f365327c22c87cb1d682cadbd764d3c640c6",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3402,
+      "locale": "hi",
+      "sourceId": "components.Requests.requestedAt",
+      "catalogPath": "src/i18n/locale/hi.json",
+      "finalTarget": "अनुरोध किया गया: {date}",
+      "finalTargetSha256": "38b27affc893fa3b53f24941dbab2997fc6f09b7e45ef141ddf0a4bea4ec9f10",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3402,
+      "locale": "id",
+      "sourceId": "components.Requests.requestedAt",
+      "catalogPath": "src/i18n/locale/id.json",
+      "finalTarget": "Diminta {date}",
+      "finalTargetSha256": "a30fa9fa426521a26611a8aa474497e17dedfe0d72153d610fe8b28f74da219b",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3402,
+      "locale": "ja",
+      "sourceId": "components.Requests.requestedAt",
+      "catalogPath": "src/i18n/locale/ja.json",
+      "finalTarget": "{date}にリクエストされました",
+      "finalTargetSha256": "bf7d751b903b9ffa2f319587bbf7c3d439cc1fb5fc84bfd3ef71d5e02141a985",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3402,
+      "locale": "ko",
+      "sourceId": "components.Requests.requestedAt",
+      "catalogPath": "src/i18n/locale/ko.json",
+      "finalTarget": "{date}에 요청됨",
+      "finalTargetSha256": "7ca4e8af20deeed060efa7c8a3aa38216976f482f6e205879843a91a43a98183",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3402,
+      "locale": "pt_BR",
+      "sourceId": "components.Requests.requestedAt",
+      "catalogPath": "src/i18n/locale/pt_BR.json",
+      "finalTarget": "Solicitado em {date}",
+      "finalTargetSha256": "d57ed2b5f85ab3bbbdaaa55c789cabaec1110375ecd358ecb7b5d809dd2dd8dd",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3402,
+      "locale": "vi",
+      "sourceId": "components.Requests.requestedAt",
+      "catalogPath": "src/i18n/locale/vi.json",
+      "finalTarget": "Được yêu cầu vào {date}",
+      "finalTargetSha256": "d22e79ea244ee569b8a852500a984de87802f505e3b0e804be4eee0af061edc0",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3402,
+      "locale": "zh_Hans",
+      "sourceId": "components.Requests.requestedAt",
+      "catalogPath": "src/i18n/locale/zh_Hans.json",
+      "finalTarget": "于 {date} 提出请求",
+      "finalTargetSha256": "9a4f4b52a79c73c3d0d3f22f28f8e852e460e423bae0d2554d83ef57081d72f2",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3402,
+      "locale": "zh_Hant",
+      "sourceId": "components.Requests.requestedAt",
+      "catalogPath": "src/i18n/locale/zh_Hant.json",
+      "finalTarget": "於 {date} 提出請求",
+      "finalTargetSha256": "48150db4134c8369f64b111b693509502dd468f843fed58fb7945b564869d4d9",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3403,
+      "locale": "ar",
+      "sourceId": "components.Requests.requestedBy",
+      "catalogPath": "src/i18n/locale/ar.json",
+      "finalTarget": "طلب مقدم من {user}",
+      "finalTargetSha256": "db481593775a8bc47fd3990911f84d3b99e6a6625ebed474fa706490081f8f61",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3403,
+      "locale": "de",
+      "sourceId": "components.Requests.requestedBy",
+      "catalogPath": "src/i18n/locale/de.json",
+      "finalTarget": "Angefragt von {user}",
+      "finalTargetSha256": "db94c7f44375be1e3d5c955a141043df3285be2a7b279ae24f5a41b45b42047d",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3403,
+      "locale": "es",
+      "sourceId": "components.Requests.requestedBy",
+      "catalogPath": "src/i18n/locale/es.json",
+      "finalTarget": "Solicitada por {user}",
+      "finalTargetSha256": "5e4694750d00530b36b5f1611177a961073f082f6c5b97d9510a7d3e1d14f0d6",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3403,
+      "locale": "fr",
+      "sourceId": "components.Requests.requestedBy",
+      "catalogPath": "src/i18n/locale/fr.json",
+      "finalTarget": "Demande présentée par {user}",
+      "finalTargetSha256": "59ce043520088f15b7c16b80d66d026651ce5f796380b797d4035fd0c8e97774",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3403,
+      "locale": "hi",
+      "sourceId": "components.Requests.requestedBy",
+      "catalogPath": "src/i18n/locale/hi.json",
+      "finalTarget": "अनुरोधकर्ता: {user}",
+      "finalTargetSha256": "cd800bb849ee54ed3212911e170c876a0ee9bb2b150c269e1d68b29ddf3875e4",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3403,
+      "locale": "id",
+      "sourceId": "components.Requests.requestedBy",
+      "catalogPath": "src/i18n/locale/id.json",
+      "finalTarget": "Diminta oleh {user}",
+      "finalTargetSha256": "6101e8cdcc47757281e986d0d871efe47d4ebe8248aa3c504d4b4bae6d50270a",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3403,
+      "locale": "ja",
+      "sourceId": "components.Requests.requestedBy",
+      "catalogPath": "src/i18n/locale/ja.json",
+      "finalTarget": "リクエストしたユーザー: {user}",
+      "finalTargetSha256": "be376c98b4d9fadd6e47512e1f1e147334d3f908d366b476093a05bc00e36fd2",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3403,
+      "locale": "ko",
+      "sourceId": "components.Requests.requestedBy",
+      "catalogPath": "src/i18n/locale/ko.json",
+      "finalTarget": "요청자: {user}",
+      "finalTargetSha256": "6b28f3745af43f9599e27f47fd52e7199dca6f746a704e631a62ce551bc74f0d",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3403,
+      "locale": "pt_BR",
+      "sourceId": "components.Requests.requestedBy",
+      "catalogPath": "src/i18n/locale/pt_BR.json",
+      "finalTarget": "Solicitado por {user}",
+      "finalTargetSha256": "0367452b42c5898b6417b2b9458bf150a58d36f850f183075752e9db7c9740f2",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3403,
+      "locale": "vi",
+      "sourceId": "components.Requests.requestedBy",
+      "catalogPath": "src/i18n/locale/vi.json",
+      "finalTarget": "Người yêu cầu: {user}",
+      "finalTargetSha256": "5500f5149795cfaee9c37028b8171902d54cb8ec82590a240ee808bcbe4c9141",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3403,
+      "locale": "zh_Hans",
+      "sourceId": "components.Requests.requestedBy",
+      "catalogPath": "src/i18n/locale/zh_Hans.json",
+      "finalTarget": "请求者：{user}",
+      "finalTargetSha256": "e4717113cbc80e1fe291abc9c804aaa352454688bd0ebba896dbd779c90b3b23",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3403,
+      "locale": "zh_Hant",
+      "sourceId": "components.Requests.requestedBy",
+      "catalogPath": "src/i18n/locale/zh_Hant.json",
+      "finalTarget": "請求者：{user}",
+      "finalTargetSha256": "65785de7af3bd3a8684df76440b325258b5722474208dab2bdc607c69a8216e2",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3404,
+      "locale": "ar",
+      "sourceId": "components.Requests.requestedByLabel",
+      "catalogPath": "src/i18n/locale/ar.json",
+      "finalTarget": "مقدّم الطلب",
+      "finalTargetSha256": "3ecebc84fdf3ea85566cfc30f3f7a13662ed7e2f2180836b0105ffa11f6eedaa",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3404,
+      "locale": "de",
+      "sourceId": "components.Requests.requestedByLabel",
+      "catalogPath": "src/i18n/locale/de.json",
+      "finalTarget": "Angefragt von",
+      "finalTargetSha256": "fd58ce68cea140ad3963a54c13f5ff1a3d99e2644998d405535b7ef03c76b5a8",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3404,
+      "locale": "es",
+      "sourceId": "components.Requests.requestedByLabel",
+      "catalogPath": "src/i18n/locale/es.json",
+      "finalTarget": "Solicitado por",
+      "finalTargetSha256": "0a133a02bec69210b39b63da6c99a0df85f10ceb3ef1b767698816a444c24d56",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3404,
+      "locale": "fr",
+      "sourceId": "components.Requests.requestedByLabel",
+      "catalogPath": "src/i18n/locale/fr.json",
+      "finalTarget": "Demandé par",
+      "finalTargetSha256": "71584256f02f989e82ceb3a71aa5b74a5e306f8c6dc95266da44addbca77917b",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3404,
+      "locale": "hi",
+      "sourceId": "components.Requests.requestedByLabel",
+      "catalogPath": "src/i18n/locale/hi.json",
+      "finalTarget": "अनुरोधकर्ता",
+      "finalTargetSha256": "a06a1dd36eb064f5af42df0268994fb555dcb989a8bb5c9ea247e5c8ecbb3a4b",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3404,
+      "locale": "id",
+      "sourceId": "components.Requests.requestedByLabel",
+      "catalogPath": "src/i18n/locale/id.json",
+      "finalTarget": "Diminta Oleh",
+      "finalTargetSha256": "a25ebd89a1eb508d69ef95c3ad3a3021a0c8b6098d3e95f405d7a13f0cf7f5d9",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3404,
+      "locale": "ja",
+      "sourceId": "components.Requests.requestedByLabel",
+      "catalogPath": "src/i18n/locale/ja.json",
+      "finalTarget": "リクエスト者",
+      "finalTargetSha256": "c36d20e592d0a0c898fc771fdca4c1d4fe910c79f29a0fbaf409670b279d9d3c",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3404,
+      "locale": "ko",
+      "sourceId": "components.Requests.requestedByLabel",
+      "catalogPath": "src/i18n/locale/ko.json",
+      "finalTarget": "요청자",
+      "finalTargetSha256": "16bf0f071c4059f86b5227dfb95289cac8039f38fc57ae337de7087e36611177",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3404,
+      "locale": "pt_BR",
+      "sourceId": "components.Requests.requestedByLabel",
+      "catalogPath": "src/i18n/locale/pt_BR.json",
+      "finalTarget": "Solicitado por",
+      "finalTargetSha256": "0a133a02bec69210b39b63da6c99a0df85f10ceb3ef1b767698816a444c24d56",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3404,
+      "locale": "vi",
+      "sourceId": "components.Requests.requestedByLabel",
+      "catalogPath": "src/i18n/locale/vi.json",
+      "finalTarget": "Người yêu cầu",
+      "finalTargetSha256": "37d59fd4024bd15175bbebd6e5352c4c6034a68a9f54e555cfd66a88a109f435",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3404,
+      "locale": "zh_Hans",
+      "sourceId": "components.Requests.requestedByLabel",
+      "catalogPath": "src/i18n/locale/zh_Hans.json",
+      "finalTarget": "请求者",
+      "finalTargetSha256": "c24b4fa02522bd7fe00283ececf4b15f4af5ef2dffbb4c7660f4f2587b184ee3",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3404,
+      "locale": "zh_Hant",
+      "sourceId": "components.Requests.requestedByLabel",
+      "catalogPath": "src/i18n/locale/zh_Hant.json",
+      "finalTarget": "請求者",
+      "finalTargetSha256": "6c584ccb2ff381023fd7ad6954110debd24d6a731eebfb778895be42539132c4",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3405,
+      "locale": "ar",
+      "sourceId": "components.Requests.requestedDateTime",
+      "catalogPath": "src/i18n/locale/ar.json",
+      "finalTarget": "تاريخ الطلب",
+      "finalTargetSha256": "cbbed919a6d98029486d747bf175deb3a0489ac698871de73ba40dcb8c84a7ec",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3405,
+      "locale": "de",
+      "sourceId": "components.Requests.requestedDateTime",
+      "catalogPath": "src/i18n/locale/de.json",
+      "finalTarget": "Angefragt am",
+      "finalTargetSha256": "4d1feefb7b4e72e43b09baedf3710ab3c453ed7ecd9562c72a20ae3c61f31458",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3405,
+      "locale": "es",
+      "sourceId": "components.Requests.requestedDateTime",
+      "catalogPath": "src/i18n/locale/es.json",
+      "finalTarget": "Fecha de la solicitud",
+      "finalTargetSha256": "2e97222a5bcd2d2161cfcb168551e8f82658ed907bc7102fd99c6b98181d42b1",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3405,
+      "locale": "fr",
+      "sourceId": "components.Requests.requestedDateTime",
+      "catalogPath": "src/i18n/locale/fr.json",
+      "finalTarget": "Date de la demande",
+      "finalTargetSha256": "91a95b1611420f024b093cb3de5d1e3bbe14877d56f3ebb57266d29c1bc969e6",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3405,
+      "locale": "hi",
+      "sourceId": "components.Requests.requestedDateTime",
+      "catalogPath": "src/i18n/locale/hi.json",
+      "finalTarget": "अनुरोध की तारीख",
+      "finalTargetSha256": "6a5ae7c7ddd5a5c6a5c674577d00f9a37ae3a10d2744add36d90ea937d46aa1f",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3405,
+      "locale": "id",
+      "sourceId": "components.Requests.requestedDateTime",
+      "catalogPath": "src/i18n/locale/id.json",
+      "finalTarget": "Diminta Pada",
+      "finalTargetSha256": "aca0c7513e590159ac5f4aef3e9c7e636001cdcaf1842442b6022b4c8ad234bc",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3405,
+      "locale": "ja",
+      "sourceId": "components.Requests.requestedDateTime",
+      "catalogPath": "src/i18n/locale/ja.json",
+      "finalTarget": "リクエスト日時",
+      "finalTargetSha256": "1d4e6ae75c5851cb204d76c70b99a3844b4221d2f3d7b702c0141eb446833dd2",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3405,
+      "locale": "ko",
+      "sourceId": "components.Requests.requestedDateTime",
+      "catalogPath": "src/i18n/locale/ko.json",
+      "finalTarget": "요청 날짜",
+      "finalTargetSha256": "043db57459575f8e8aedc90d5eea8e7956536369265ad1de65764aa392d0b1e0",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3405,
+      "locale": "pt_BR",
+      "sourceId": "components.Requests.requestedDateTime",
+      "catalogPath": "src/i18n/locale/pt_BR.json",
+      "finalTarget": "Data da solicitação",
+      "finalTargetSha256": "e39e5b39424a9b8077b6c9017f83570554e688f78657f74af9da91126eeca88c",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3405,
+      "locale": "vi",
+      "sourceId": "components.Requests.requestedDateTime",
+      "catalogPath": "src/i18n/locale/vi.json",
+      "finalTarget": "Ngày yêu cầu",
+      "finalTargetSha256": "b8280de16ca69f8b9f273f490afbf7c492deb3de2edfb8f5ad71d564c8b665c1",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3405,
+      "locale": "zh_Hans",
+      "sourceId": "components.Requests.requestedDateTime",
+      "catalogPath": "src/i18n/locale/zh_Hans.json",
+      "finalTarget": "请求日期",
+      "finalTargetSha256": "71042429b3950775fd04ae803626eadc0ec11ea05acb80ddb9283eaa14c3757e",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3405,
+      "locale": "zh_Hant",
+      "sourceId": "components.Requests.requestedDateTime",
+      "catalogPath": "src/i18n/locale/zh_Hant.json",
+      "finalTarget": "請求日期",
+      "finalTargetSha256": "89c221dbfbc927858bb453f71f9961e9b7a61ba1c75433224b017bd326cafe04",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3406,
+      "locale": "ar",
+      "sourceId": "components.Requests.retry",
+      "catalogPath": "src/i18n/locale/ar.json",
+      "finalTarget": "إعادة المحاولة",
+      "finalTargetSha256": "14d5786f2e6476da0fa99621512ab34225b46bd0c76a831f7a2c66936b6f1442",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3406,
+      "locale": "de",
+      "sourceId": "components.Requests.retry",
+      "catalogPath": "src/i18n/locale/de.json",
+      "finalTarget": "Erneut versuchen",
+      "finalTargetSha256": "948643cb59e8274f40500593ac6029afcf419fc434c870fb8177b5185e0a2e9b",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3406,
+      "locale": "es",
+      "sourceId": "components.Requests.retry",
+      "catalogPath": "src/i18n/locale/es.json",
+      "finalTarget": "Reintentar",
+      "finalTargetSha256": "a9254c5f812829afde4d8579f6a2b763d3f285adf993cbf0247b00cabac5fb2e",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3406,
+      "locale": "fr",
+      "sourceId": "components.Requests.retry",
+      "catalogPath": "src/i18n/locale/fr.json",
+      "finalTarget": "Réessayer",
+      "finalTargetSha256": "af273d956b5bec8dce62f9ad74dd744ded027486ea69dbb724e246fa9aabe692",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3406,
+      "locale": "hi",
+      "sourceId": "components.Requests.retry",
+      "catalogPath": "src/i18n/locale/hi.json",
+      "finalTarget": "पुनः प्रयास करें",
+      "finalTargetSha256": "798d8e45bab88322473d8e0c5f59038b3a745d7e43aa64e6550b35e66f0aa720",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3406,
+      "locale": "id",
+      "sourceId": "components.Requests.retry",
+      "catalogPath": "src/i18n/locale/id.json",
+      "finalTarget": "Coba lagi",
+      "finalTargetSha256": "e87c4533e7a0cdf14f9811879f7d7825669df5810939ff7a91dfb43315ffaa56",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3406,
+      "locale": "ja",
+      "sourceId": "components.Requests.retry",
+      "catalogPath": "src/i18n/locale/ja.json",
+      "finalTarget": "再試行",
+      "finalTargetSha256": "fb6cc190949da044499f8bcfc763929640af9ae3a3e929b2d230f4e423b6482b",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3406,
+      "locale": "ko",
+      "sourceId": "components.Requests.retry",
+      "catalogPath": "src/i18n/locale/ko.json",
+      "finalTarget": "다시 시도",
+      "finalTargetSha256": "196856a662bd90843ddb2e1f68e1cc74617b43b35778c7b5f520c38ea80038e1",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3406,
+      "locale": "pt_BR",
+      "sourceId": "components.Requests.retry",
+      "catalogPath": "src/i18n/locale/pt_BR.json",
+      "finalTarget": "Tentar novamente",
+      "finalTargetSha256": "b9e10688be012d8bc2adc6ec05146367b389f70d59ac274dfe32361ba63956a5",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3406,
+      "locale": "vi",
+      "sourceId": "components.Requests.retry",
+      "catalogPath": "src/i18n/locale/vi.json",
+      "finalTarget": "Thử lại",
+      "finalTargetSha256": "c58d068c7e8848577ba9fa2a3997ead249c4059d1fe0a83d06be9f56c5376940",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3406,
+      "locale": "zh_Hans",
+      "sourceId": "components.Requests.retry",
+      "catalogPath": "src/i18n/locale/zh_Hans.json",
+      "finalTarget": "重试",
+      "finalTargetSha256": "b8784c8dd5636ff231b121892144e4a3977d5b874f21934c53f850cde7bac0ea",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3406,
+      "locale": "zh_Hant",
+      "sourceId": "components.Requests.retry",
+      "catalogPath": "src/i18n/locale/zh_Hant.json",
+      "finalTarget": "重試",
+      "finalTargetSha256": "7e59d0f162931a5dd57bd27f0ad05cb09f6cc588b5831bd53312bbb7ac618f6e",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3407,
+      "locale": "ar",
+      "sourceId": "components.Requests.retryFailed",
+      "catalogPath": "src/i18n/locale/ar.json",
+      "finalTarget": "تعذّر إعادة محاولة هذا الطلب.",
+      "finalTargetSha256": "96bfb1306d4a1753807c70595dc8192938c683369e2381606795ea2268938128",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3407,
+      "locale": "de",
+      "sourceId": "components.Requests.retryFailed",
+      "catalogPath": "src/i18n/locale/de.json",
+      "finalTarget": "Diese Anfrage kann nicht wiederholt werden.",
+      "finalTargetSha256": "6c91469b36b890dd534d2b534c5e1e65f1610f8fb720a5afa2655332ad00a2a6",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3407,
+      "locale": "es",
+      "sourceId": "components.Requests.retryFailed",
+      "catalogPath": "src/i18n/locale/es.json",
+      "finalTarget": "No se pudo volver a intentar esta solicitud.",
+      "finalTargetSha256": "900f0f36c4b0be3aa5f0acc233592953bf09bae7d2618bf49669d3bcc7e67ecc",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3407,
+      "locale": "fr",
+      "sourceId": "components.Requests.retryFailed",
+      "catalogPath": "src/i18n/locale/fr.json",
+      "finalTarget": "Impossible de réessayer cette requête.",
+      "finalTargetSha256": "188b93d24f778e9dbde76f16e50fded35ddb3e95d6083362b0f1a549bbc91a57",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3407,
+      "locale": "hi",
+      "sourceId": "components.Requests.retryFailed",
+      "catalogPath": "src/i18n/locale/hi.json",
+      "finalTarget": "इस अनुरोध के लिए पुनः प्रयास नहीं किया जा सकता।",
+      "finalTargetSha256": "2469a00d070b8499caf32ae8690dc528fbef95635fe03454ce1db3cd40fc4e75",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3407,
+      "locale": "id",
+      "sourceId": "components.Requests.retryFailed",
+      "catalogPath": "src/i18n/locale/id.json",
+      "finalTarget": "Tak bisa mengulang permintaan ini.",
+      "finalTargetSha256": "6e7d459acea681e3b5f980d979dd5ba51035ee627cb3e8e8a7e55aefe49d47a2",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3407,
+      "locale": "ja",
+      "sourceId": "components.Requests.retryFailed",
+      "catalogPath": "src/i18n/locale/ja.json",
+      "finalTarget": "リクエストを再試行できません。",
+      "finalTargetSha256": "41bc3df07076d93b934cfb6b4bab956319161d4a79ef5842dfffe20d6de3ec70",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3407,
+      "locale": "ko",
+      "sourceId": "components.Requests.retryFailed",
+      "catalogPath": "src/i18n/locale/ko.json",
+      "finalTarget": "이 요청을 다시 시도할 수 없습니다.",
+      "finalTargetSha256": "4c5795d4f7755d4b11feb1b37c6e9d8aaaac6fc4703fe9252cddc4d7396d33f0",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3407,
+      "locale": "pt_BR",
+      "sourceId": "components.Requests.retryFailed",
+      "catalogPath": "src/i18n/locale/pt_BR.json",
+      "finalTarget": "Não foi possível tentar este pedido novamente.",
+      "finalTargetSha256": "5c358134156fff1475cc24865b1ddcab61af39b722ace849ec5449e044216b93",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3407,
+      "locale": "vi",
+      "sourceId": "components.Requests.retryFailed",
+      "catalogPath": "src/i18n/locale/vi.json",
+      "finalTarget": "Không thể thử lại yêu cầu này.",
+      "finalTargetSha256": "e248b888204b5c34174ee8bb297e80845d81a7a27476b288b0fb0f267c87d905",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3407,
+      "locale": "zh_Hans",
+      "sourceId": "components.Requests.retryFailed",
+      "catalogPath": "src/i18n/locale/zh_Hans.json",
+      "finalTarget": "无法重试此请求。",
+      "finalTargetSha256": "439754487bc18a4c7d22554d4dd5369c6daea4865ce98ddff9cea5a756e177fe",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3407,
+      "locale": "zh_Hant",
+      "sourceId": "components.Requests.retryFailed",
+      "catalogPath": "src/i18n/locale/zh_Hant.json",
+      "finalTarget": "無法重試此要求。",
+      "finalTargetSha256": "7b26140ebf9236dba9fa9ced59c739e870374874f2fda5955e4d889579f61f6f",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3408,
+      "locale": "ar",
+      "sourceId": "components.Requests.retryLoad",
+      "catalogPath": "src/i18n/locale/ar.json",
+      "finalTarget": "إعادة المحاولة",
+      "finalTargetSha256": "14d5786f2e6476da0fa99621512ab34225b46bd0c76a831f7a2c66936b6f1442",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3408,
+      "locale": "de",
+      "sourceId": "components.Requests.retryLoad",
+      "catalogPath": "src/i18n/locale/de.json",
+      "finalTarget": "Erneut versuchen",
+      "finalTargetSha256": "948643cb59e8274f40500593ac6029afcf419fc434c870fb8177b5185e0a2e9b",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3408,
+      "locale": "es",
+      "sourceId": "components.Requests.retryLoad",
+      "catalogPath": "src/i18n/locale/es.json",
+      "finalTarget": "Reintentar",
+      "finalTargetSha256": "a9254c5f812829afde4d8579f6a2b763d3f285adf993cbf0247b00cabac5fb2e",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3408,
+      "locale": "fr",
+      "sourceId": "components.Requests.retryLoad",
+      "catalogPath": "src/i18n/locale/fr.json",
+      "finalTarget": "Réessayer",
+      "finalTargetSha256": "af273d956b5bec8dce62f9ad74dd744ded027486ea69dbb724e246fa9aabe692",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3408,
+      "locale": "hi",
+      "sourceId": "components.Requests.retryLoad",
+      "catalogPath": "src/i18n/locale/hi.json",
+      "finalTarget": "पुनः प्रयास करें",
+      "finalTargetSha256": "798d8e45bab88322473d8e0c5f59038b3a745d7e43aa64e6550b35e66f0aa720",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3408,
+      "locale": "id",
+      "sourceId": "components.Requests.retryLoad",
+      "catalogPath": "src/i18n/locale/id.json",
+      "finalTarget": "Coba lagi",
+      "finalTargetSha256": "e87c4533e7a0cdf14f9811879f7d7825669df5810939ff7a91dfb43315ffaa56",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3408,
+      "locale": "ja",
+      "sourceId": "components.Requests.retryLoad",
+      "catalogPath": "src/i18n/locale/ja.json",
+      "finalTarget": "再試行",
+      "finalTargetSha256": "fb6cc190949da044499f8bcfc763929640af9ae3a3e929b2d230f4e423b6482b",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3408,
+      "locale": "ko",
+      "sourceId": "components.Requests.retryLoad",
+      "catalogPath": "src/i18n/locale/ko.json",
+      "finalTarget": "다시 시도",
+      "finalTargetSha256": "196856a662bd90843ddb2e1f68e1cc74617b43b35778c7b5f520c38ea80038e1",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3408,
+      "locale": "pt_BR",
+      "sourceId": "components.Requests.retryLoad",
+      "catalogPath": "src/i18n/locale/pt_BR.json",
+      "finalTarget": "Tentar novamente",
+      "finalTargetSha256": "b9e10688be012d8bc2adc6ec05146367b389f70d59ac274dfe32361ba63956a5",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3408,
+      "locale": "vi",
+      "sourceId": "components.Requests.retryLoad",
+      "catalogPath": "src/i18n/locale/vi.json",
+      "finalTarget": "Thử lại",
+      "finalTargetSha256": "c58d068c7e8848577ba9fa2a3997ead249c4059d1fe0a83d06be9f56c5376940",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3408,
+      "locale": "zh_Hans",
+      "sourceId": "components.Requests.retryLoad",
+      "catalogPath": "src/i18n/locale/zh_Hans.json",
+      "finalTarget": "重试",
+      "finalTargetSha256": "b8784c8dd5636ff231b121892144e4a3977d5b874f21934c53f850cde7bac0ea",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3408,
+      "locale": "zh_Hant",
+      "sourceId": "components.Requests.retryLoad",
+      "catalogPath": "src/i18n/locale/zh_Hant.json",
+      "finalTarget": "重試",
+      "finalTargetSha256": "7e59d0f162931a5dd57bd27f0ad05cb09f6cc588b5831bd53312bbb7ac618f6e",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3409,
+      "locale": "ar",
+      "sourceId": "components.Requests.retryLoadTooltip",
+      "catalogPath": "src/i18n/locale/ar.json",
+      "finalTarget": "أعد تحميل معلومات الطلب من Seerr. لا يؤدي ذلك إلى إعادة تشغيل أي وسائط أو تنزيلها.",
+      "finalTargetSha256": "fde1cd1a9171838fb730c5e29905467ffa4be91d6c7f7db9d548f3c37d821327",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3409,
+      "locale": "de",
+      "sourceId": "components.Requests.retryLoadTooltip",
+      "catalogPath": "src/i18n/locale/de.json",
+      "finalTarget": "Laden Sie Anfrageinformationen von Seerr neu. Dadurch werden keine Medien neu gestartet oder heruntergeladen.",
+      "finalTargetSha256": "6a75439cf62ce34f023d557b2c5dfbe3c1475cbeab1ce127d97d336cb991328f",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3409,
+      "locale": "es",
+      "sourceId": "components.Requests.retryLoadTooltip",
+      "catalogPath": "src/i18n/locale/es.json",
+      "finalTarget": "Recargar información de solicitud de Seerr. Esto no reinicia ni descarga ningún medio.",
+      "finalTargetSha256": "0ac043306d8926cd44a9f8e561ae3a2b2493ce92a856d8e29d9cbc16f69d8283",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3409,
+      "locale": "fr",
+      "sourceId": "components.Requests.retryLoadTooltip",
+      "catalogPath": "src/i18n/locale/fr.json",
+      "finalTarget": "Rechargez les informations de demande de Seerr. Cela ne redémarre ni ne télécharge aucun média.",
+      "finalTargetSha256": "4754b9314a7846e34c39bc70887aadedf3856a7e2955717296d61acce2158aef",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3409,
+      "locale": "hi",
+      "sourceId": "components.Requests.retryLoadTooltip",
+      "catalogPath": "src/i18n/locale/hi.json",
+      "finalTarget": "Seerr से अनुरोध की जानकारी फिर से लोड करें। इससे मीडिया दोबारा शुरू या डाउनलोड नहीं होगा।",
+      "finalTargetSha256": "549845e8f3b19727c56436184c34883e715e206176f75ade770fa629f448a155",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3409,
+      "locale": "id",
+      "sourceId": "components.Requests.retryLoadTooltip",
+      "catalogPath": "src/i18n/locale/id.json",
+      "finalTarget": "Muat ulang informasi permintaan dari Seerr. Tindakan ini tidak memulai ulang atau mengunduh media apa pun.",
+      "finalTargetSha256": "46c6151ccf69a07bf51481b02225ce43b2ee49a73ca6d7814f1afc831a9d4662",
+      "decision": "refinement"
+    },
+    {
+      "position": 3409,
+      "locale": "ja",
+      "sourceId": "components.Requests.retryLoadTooltip",
+      "catalogPath": "src/i18n/locale/ja.json",
+      "finalTarget": "Seerrからリクエスト情報を再読み込みします。メディアの再起動やダウンロードは行いません。",
+      "finalTargetSha256": "996a810ebc453d35f297d9b49dfee577eb022fd7bee25c794082a0c67a827e6a",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3409,
+      "locale": "ko",
+      "sourceId": "components.Requests.retryLoadTooltip",
+      "catalogPath": "src/i18n/locale/ko.json",
+      "finalTarget": "Seerr에서 요청 정보를 다시 불러옵니다. 미디어를 다시 시작하거나 다운로드하지는 않습니다.",
+      "finalTargetSha256": "46fa44b233a2ea14b949bb23000a815a3bfb2e066b932bd6a04ce7df323fce7d",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3409,
+      "locale": "pt_BR",
+      "sourceId": "components.Requests.retryLoadTooltip",
+      "catalogPath": "src/i18n/locale/pt_BR.json",
+      "finalTarget": "Recarregue as informações da solicitação pelo Seerr. Isso não reinicia nem baixa nenhuma mídia.",
+      "finalTargetSha256": "74f628c70b7b24fb0323ca876f874a438be00b5657c5238315e31f749def7ecf",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3409,
+      "locale": "vi",
+      "sourceId": "components.Requests.retryLoadTooltip",
+      "catalogPath": "src/i18n/locale/vi.json",
+      "finalTarget": "Tải lại thông tin yêu cầu từ Seerr. Thao tác này không khởi động lại hay tải xuống bất kỳ nội dung nào.",
+      "finalTargetSha256": "465f5eea2b3a82c8e24d384b17ab861d6a1f5391a89a053b48f04d35832930d3",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3409,
+      "locale": "zh_Hans",
+      "sourceId": "components.Requests.retryLoadTooltip",
+      "catalogPath": "src/i18n/locale/zh_Hans.json",
+      "finalTarget": "从 Seerr 重新加载请求信息。此操作不会重新启动或下载任何媒体。",
+      "finalTargetSha256": "fa8806805cd1db83a745e2409a3321e78d4dbcb2259a69418ecc901a2a701703",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3409,
+      "locale": "zh_Hant",
+      "sourceId": "components.Requests.retryLoadTooltip",
+      "catalogPath": "src/i18n/locale/zh_Hant.json",
+      "finalTarget": "從 Seerr 重新載入請求資訊。此操作不會重新啟動或下載任何媒體。",
+      "finalTargetSha256": "fa5d941f4ee32c402bcbde0dbbeb37a12dc9354866c754da73e386f407b96f65",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3410,
+      "locale": "ar",
+      "sourceId": "components.Requests.retrySuccess",
+      "catalogPath": "src/i18n/locale/ar.json",
+      "finalTarget": "تم وضع الطلب في قائمة الانتظار لمحاولة أخرى.",
+      "finalTargetSha256": "ff744fd9b88e4e5899637620ea11721a87879f43c98a79760f8f34c767e195e7",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3410,
+      "locale": "de",
+      "sourceId": "components.Requests.retrySuccess",
+      "catalogPath": "src/i18n/locale/de.json",
+      "finalTarget": "Anfrage steht für einen weiteren Versuch in der Warteschlange.",
+      "finalTargetSha256": "a58095566d45a47dcbc9d525d801036527e07e5bc890cb7025ab3ecc30b62ade",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3410,
+      "locale": "es",
+      "sourceId": "components.Requests.retrySuccess",
+      "catalogPath": "src/i18n/locale/es.json",
+      "finalTarget": "La solicitud se puso en cola para volver a intentarlo.",
+      "finalTargetSha256": "7f9fbb28dc748cb9cb75c40d90f70d0553e232894cc733ce687d6dbd22d1f218",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3410,
+      "locale": "fr",
+      "sourceId": "components.Requests.retrySuccess",
+      "catalogPath": "src/i18n/locale/fr.json",
+      "finalTarget": "Demande mise en file d’attente pour une nouvelle tentative.",
+      "finalTargetSha256": "59140ede8785687c557e3d3c15f38a617ef51130bd12fb3dfda78d5cfa9840e8",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3410,
+      "locale": "hi",
+      "sourceId": "components.Requests.retrySuccess",
+      "catalogPath": "src/i18n/locale/hi.json",
+      "finalTarget": "अनुरोध को एक और प्रयास के लिए कतार में रखा गया है।",
+      "finalTargetSha256": "9101d76ff8488b915c131a2e5f9dd7fbdf69277961bf66d00280fb8da61d3cf0",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3410,
+      "locale": "id",
+      "sourceId": "components.Requests.retrySuccess",
+      "catalogPath": "src/i18n/locale/id.json",
+      "finalTarget": "Permintaan dimasukkan ke antrean untuk dicoba lagi.",
+      "finalTargetSha256": "d63604d2bd22fc3f21f01e959dc70712668c0bd6511b508bdf775257939f99d3",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3410,
+      "locale": "ja",
+      "sourceId": "components.Requests.retrySuccess",
+      "catalogPath": "src/i18n/locale/ja.json",
+      "finalTarget": "リクエストを再試行キューに登録しました。",
+      "finalTargetSha256": "1e3d81fe6901d2f06e8a0f09fe51e08d2c879dea0cd321bcf15635262fe0d437",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3410,
+      "locale": "ko",
+      "sourceId": "components.Requests.retrySuccess",
+      "catalogPath": "src/i18n/locale/ko.json",
+      "finalTarget": "요청이 재시도 대기열에 추가되었습니다.",
+      "finalTargetSha256": "ebb0af091182045bdb6533e545a57051b050b47cbe2285d7511a90406f2f6337",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3410,
+      "locale": "pt_BR",
+      "sourceId": "components.Requests.retrySuccess",
+      "catalogPath": "src/i18n/locale/pt_BR.json",
+      "finalTarget": "Pedido na fila para outra tentativa.",
+      "finalTargetSha256": "8b5f8e7af93b30a4cef1ff9d3d1e98fc7f3c792d986cbce46be49406243b4c74",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3410,
+      "locale": "vi",
+      "sourceId": "components.Requests.retrySuccess",
+      "catalogPath": "src/i18n/locale/vi.json",
+      "finalTarget": "Yêu cầu đã được đưa vào hàng đợi để thử lại.",
+      "finalTargetSha256": "858e760ad7c04aecb4acaadb28eef679e9311204c89abc5d19dd29ced8606d55",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3410,
+      "locale": "zh_Hans",
+      "sourceId": "components.Requests.retrySuccess",
+      "catalogPath": "src/i18n/locale/zh_Hans.json",
+      "finalTarget": "请求已排入队列，等待再次尝试。",
+      "finalTargetSha256": "4d3f77bb56a6c65f484b6413243c58d3fbb9c604c4f6c1d37580c7036c39d21b",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3410,
+      "locale": "zh_Hant",
+      "sourceId": "components.Requests.retrySuccess",
+      "catalogPath": "src/i18n/locale/zh_Hant.json",
+      "finalTarget": "請求已排入佇列，等待再次嘗試。",
+      "finalTargetSha256": "05a646c7fcb14d91641e3380227a7603b005904dd15946ecbf33e30fc717ed05",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3411,
+      "locale": "ar",
+      "sourceId": "components.Requests.retryTooltip",
+      "catalogPath": "src/i18n/locale/ar.json",
+      "finalTarget": "أعِد هذا الطلب الفاشل بدءًا من خطوة الموافقة.",
+      "finalTargetSha256": "b9828fc8e24684ec3f523ddda8254548d570392a981c69a6ad14cba1c7e3a66a",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3411,
+      "locale": "de",
+      "sourceId": "components.Requests.retryTooltip",
+      "catalogPath": "src/i18n/locale/de.json",
+      "finalTarget": "Starten Sie diese fehlgeschlagene Anfrage erneut ab dem Genehmigungsschritt.",
+      "finalTargetSha256": "b685a31f067395fa3a9aba08cd28528eadc3479c34566c6987f97da4541edb82",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3411,
+      "locale": "es",
+      "sourceId": "components.Requests.retryTooltip",
+      "catalogPath": "src/i18n/locale/es.json",
+      "finalTarget": "Reinicia esta solicitud fallida desde la etapa de aprobación.",
+      "finalTargetSha256": "36f774750fd3be4f90e0ea59c0c22f9bb4bfcf44b3a5830337940bd7db218bb6",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3411,
+      "locale": "fr",
+      "sourceId": "components.Requests.retryTooltip",
+      "catalogPath": "src/i18n/locale/fr.json",
+      "finalTarget": "Relancez cette demande qui a échoué depuis l’étape d’approbation.",
+      "finalTargetSha256": "842551eca7681ba4b17026a54664d48ae092452b8010694794979c09f802d514",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3411,
+      "locale": "hi",
+      "sourceId": "components.Requests.retryTooltip",
+      "catalogPath": "src/i18n/locale/hi.json",
+      "finalTarget": "इस विफल अनुरोध को अनुमोदन चरण से फिर शुरू करें।",
+      "finalTargetSha256": "ef9ea57bda7a4b839ad035aa90d227892a98200c506966b1dbd5d66ba12de827",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3411,
+      "locale": "id",
+      "sourceId": "components.Requests.retryTooltip",
+      "catalogPath": "src/i18n/locale/id.json",
+      "finalTarget": "Ulangi permintaan gagal ini dari persetujuan.",
+      "finalTargetSha256": "1701a7a2e5230ac1a1fdc3361c9de795da59d7352e0f0ce1b637804393d1ea6d",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3411,
+      "locale": "ja",
+      "sourceId": "components.Requests.retryTooltip",
+      "catalogPath": "src/i18n/locale/ja.json",
+      "finalTarget": "承認からこの失敗したリクエストを再起動します。",
+      "finalTargetSha256": "de97f6a4fcc2b402d2b516f8f447f9e777ef73d7c3c3161a9ae7f010ae4ca67f",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3411,
+      "locale": "ko",
+      "sourceId": "components.Requests.retryTooltip",
+      "catalogPath": "src/i18n/locale/ko.json",
+      "finalTarget": "실패한 요청을 승인 단계부터 다시 시작합니다.",
+      "finalTargetSha256": "435e5fca27238dd40f7a802defff99201a166e531dc9a65f2c065b41788f5825",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3411,
+      "locale": "pt_BR",
+      "sourceId": "components.Requests.retryTooltip",
+      "catalogPath": "src/i18n/locale/pt_BR.json",
+      "finalTarget": "Reinicie este pedido com falha a partir da etapa de aprovação.",
+      "finalTargetSha256": "3253dfe33f73e891c1ae377d388483889ce3722db5615c1b25668a7490061528",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3411,
+      "locale": "vi",
+      "sourceId": "components.Requests.retryTooltip",
+      "catalogPath": "src/i18n/locale/vi.json",
+      "finalTarget": "Khởi động lại yêu cầu không thành công này từ bước phê duyệt.",
+      "finalTargetSha256": "5ef2718902d06120c302b79d144a75619a2d658fcbfe319ea3bedb572794d0cb",
+      "decision": "correction"
+    },
+    {
+      "position": 3411,
+      "locale": "zh_Hans",
+      "sourceId": "components.Requests.retryTooltip",
+      "catalogPath": "src/i18n/locale/zh_Hans.json",
+      "finalTarget": "从审批步骤重新启动此失败的请求。",
+      "finalTargetSha256": "1212dc1c3395c896a73a20af4b070c8ab6cc88a8478fd81dea00a0c1cbc12424",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3411,
+      "locale": "zh_Hant",
+      "sourceId": "components.Requests.retryTooltip",
+      "catalogPath": "src/i18n/locale/zh_Hant.json",
+      "finalTarget": "從核准步驟重新啟動此失敗的請求。",
+      "finalTargetSha256": "4a955ec851febe9faacfbb0b2b19d72015dc4f9355c92cdb5c64c8b2a81dd8a1",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3412,
+      "locale": "ar",
+      "sourceId": "components.Requests.retrying",
+      "catalogPath": "src/i18n/locale/ar.json",
+      "finalTarget": "جاري إعادة المحاولة…",
+      "finalTargetSha256": "5ce3b1794add4414a6b5df653977f8aed37e307ddf855c5347b096733a6e6c64",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3412,
+      "locale": "de",
+      "sourceId": "components.Requests.retrying",
+      "catalogPath": "src/i18n/locale/de.json",
+      "finalTarget": "Wird erneut versucht…",
+      "finalTargetSha256": "4d99fdca1e1e5e8c640a08319b741840ce8fb00ef8e34d825523cce49ff648fe",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3412,
+      "locale": "es",
+      "sourceId": "components.Requests.retrying",
+      "catalogPath": "src/i18n/locale/es.json",
+      "finalTarget": "Reintentando…",
+      "finalTargetSha256": "91e32b71891f11eced99ac0b38fccc6591d788c6f969d2240c8d4c7292218818",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3412,
+      "locale": "fr",
+      "sourceId": "components.Requests.retrying",
+      "catalogPath": "src/i18n/locale/fr.json",
+      "finalTarget": "Nouvelle tentative…",
+      "finalTargetSha256": "b933e3036cb26493d592dde64d485747706bc8a8a798546759c8f972dcef2342",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3412,
+      "locale": "hi",
+      "sourceId": "components.Requests.retrying",
+      "catalogPath": "src/i18n/locale/hi.json",
+      "finalTarget": "फिर कोशिश की जा रही है…",
+      "finalTargetSha256": "6ec2402ad103121c6ebae9ae124fbb5d37e16969e658b92289360e08cf7d13b8",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3412,
+      "locale": "id",
+      "sourceId": "components.Requests.retrying",
+      "catalogPath": "src/i18n/locale/id.json",
+      "finalTarget": "Mencoba lagi…",
+      "finalTargetSha256": "371b4052d408958068483efa7a83f501ad2c58c2e2a564235b9efc539036aa27",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3412,
+      "locale": "ja",
+      "sourceId": "components.Requests.retrying",
+      "catalogPath": "src/i18n/locale/ja.json",
+      "finalTarget": "再試行中…",
+      "finalTargetSha256": "573b4ce61dd60f96e1d0b2d1c4cb5eb2675fb8528754460f086fc72da52a4a5c",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3412,
+      "locale": "ko",
+      "sourceId": "components.Requests.retrying",
+      "catalogPath": "src/i18n/locale/ko.json",
+      "finalTarget": "다시 시도 중…",
+      "finalTargetSha256": "23a9ea5480ed9250e0e37834d443246f458fa6c600070485d45f0b733c6367a9",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3412,
+      "locale": "pt_BR",
+      "sourceId": "components.Requests.retrying",
+      "catalogPath": "src/i18n/locale/pt_BR.json",
+      "finalTarget": "Tentando Novamente…",
+      "finalTargetSha256": "bbc684a2f640e0c8bac825f0fa5beb4c5efacb7a198182c8c3da1a07eea43813",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3412,
+      "locale": "vi",
+      "sourceId": "components.Requests.retrying",
+      "catalogPath": "src/i18n/locale/vi.json",
+      "finalTarget": "Đang thử lại…",
+      "finalTargetSha256": "b4e73c423a83ec7e5a052b71d3cb56e244a0cc54353171ce72fec2db66fd67be",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3412,
+      "locale": "zh_Hans",
+      "sourceId": "components.Requests.retrying",
+      "catalogPath": "src/i18n/locale/zh_Hans.json",
+      "finalTarget": "重试中…",
+      "finalTargetSha256": "ed1410cd5b1f1bf176d1e226aa68e455af62024241a36f2d52e23f12d1269f32",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3412,
+      "locale": "zh_Hant",
+      "sourceId": "components.Requests.retrying",
+      "catalogPath": "src/i18n/locale/zh_Hant.json",
+      "finalTarget": "重試中…",
+      "finalTargetSha256": "481a0bfaee8c1f91e0de24c9246cf09fa59ba1d0a615de33c365fcd9b06071fe",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3413,
+      "locale": "ar",
+      "sourceId": "components.Requests.romsModern",
+      "catalogPath": "src/i18n/locale/ar.json",
+      "finalTarget": "ROMs - حديثة",
+      "finalTargetSha256": "f76d57d0c8c18a03a526c323a953f8488878f76af32efc2b6f8811483463362a",
+      "decision": "correction"
+    },
+    {
+      "position": 3413,
+      "locale": "de",
+      "sourceId": "components.Requests.romsModern",
+      "catalogPath": "src/i18n/locale/de.json",
+      "finalTarget": "Moderne ROMs",
+      "finalTargetSha256": "116b4a5cc9c6ec34f7f67ee1df177bdb80b15ab027feb03015e5d854412bd83b",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3413,
+      "locale": "es",
+      "sourceId": "components.Requests.romsModern",
+      "catalogPath": "src/i18n/locale/es.json",
+      "finalTarget": "ROMs modernas",
+      "finalTargetSha256": "47ffc09fd0eb68e69871c08dd481915b1dcb2f1847cc9182b99c98a4b563a2c1",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3413,
+      "locale": "fr",
+      "sourceId": "components.Requests.romsModern",
+      "catalogPath": "src/i18n/locale/fr.json",
+      "finalTarget": "ROMs modernes",
+      "finalTargetSha256": "acafd9a59680e8ef3a21ff715295a1ceb64e478075e080eda0974ba90af993d2",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3413,
+      "locale": "hi",
+      "sourceId": "components.Requests.romsModern",
+      "catalogPath": "src/i18n/locale/hi.json",
+      "finalTarget": "ROM - आधुनिक",
+      "finalTargetSha256": "ce2aa7772925134c17532ae38d54463477c63d7be496f9faca25a31498ffa2b1",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3413,
+      "locale": "id",
+      "sourceId": "components.Requests.romsModern",
+      "catalogPath": "src/i18n/locale/id.json",
+      "finalTarget": "ROM modern",
+      "finalTargetSha256": "3f7298eec6b3ade52a75d59e3169871a4cbd6a9eb74412bef4b06f5fcd13d3f4",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3413,
+      "locale": "ja",
+      "sourceId": "components.Requests.romsModern",
+      "catalogPath": "src/i18n/locale/ja.json",
+      "finalTarget": "ROM - モダン",
+      "finalTargetSha256": "ca3a41420af1425c16f1ec23e97504151e1f3fdaabbe90eaf3d19721551d5831",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3413,
+      "locale": "ko",
+      "sourceId": "components.Requests.romsModern",
+      "catalogPath": "src/i18n/locale/ko.json",
+      "finalTarget": "ROMs - 현대",
+      "finalTargetSha256": "344b9b9d7e93ad12870469a8a26793db91d0d361c7f05cc03f848ed3de29afb5",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3413,
+      "locale": "pt_BR",
+      "sourceId": "components.Requests.romsModern",
+      "catalogPath": "src/i18n/locale/pt_BR.json",
+      "finalTarget": "ROMs - Modernos",
+      "finalTargetSha256": "e6f38ce861a6ec20e30d176dc14c5f1856f51003b1195de8aa26a11ca0a12d52",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3413,
+      "locale": "vi",
+      "sourceId": "components.Requests.romsModern",
+      "catalogPath": "src/i18n/locale/vi.json",
+      "finalTarget": "ROM - Hiện đại",
+      "finalTargetSha256": "3485fd2924babe087b026a343616aaf6e6959db230bdae6c1573557eba7d2637",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3413,
+      "locale": "zh_Hans",
+      "sourceId": "components.Requests.romsModern",
+      "catalogPath": "src/i18n/locale/zh_Hans.json",
+      "finalTarget": "ROMs - 现代",
+      "finalTargetSha256": "b4f9c3dccb0002b63048a51329e7ab0c611fded4eccda3c5bf0ee392cea89c8b",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3413,
+      "locale": "zh_Hant",
+      "sourceId": "components.Requests.romsModern",
+      "catalogPath": "src/i18n/locale/zh_Hant.json",
+      "finalTarget": "ROMs - 現代",
+      "finalTargetSha256": "e9cc0e8a64aebfcf1398a760283e7b203020d1c20f11d28584f8bb3a0ccea396",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3414,
+      "locale": "ar",
+      "sourceId": "components.Requests.romsRetro",
+      "catalogPath": "src/i18n/locale/ar.json",
+      "finalTarget": "ألعاب ROM الكلاسيكية",
+      "finalTargetSha256": "a67116092217d517a66b45468f206af225652ffdb3a7207ab2a006831bc27c80",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3414,
+      "locale": "de",
+      "sourceId": "components.Requests.romsRetro",
+      "catalogPath": "src/i18n/locale/de.json",
+      "finalTarget": "Retro-ROMs",
+      "finalTargetSha256": "5dc6c7f533317c246016e6666e0b944f9f98ff492107b30f5a64dc79aefd3a8b",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3414,
+      "locale": "es",
+      "sourceId": "components.Requests.romsRetro",
+      "catalogPath": "src/i18n/locale/es.json",
+      "finalTarget": "ROMs retro",
+      "finalTargetSha256": "43f6f95f4f4ef3afb346c55efa6a69e79c223096f8825c7eea0d0fcc5c938584",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3414,
+      "locale": "fr",
+      "sourceId": "components.Requests.romsRetro",
+      "catalogPath": "src/i18n/locale/fr.json",
+      "finalTarget": "ROMs rétro",
+      "finalTargetSha256": "079e97f5ce0fe3652873d191baee5d75045dc8dda4d796056df17dc7cbbdee5d",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3414,
+      "locale": "hi",
+      "sourceId": "components.Requests.romsRetro",
+      "catalogPath": "src/i18n/locale/hi.json",
+      "finalTarget": "ROM - रेट्रो",
+      "finalTargetSha256": "0ec2efb3f107dc0e497580528a0c7d91a7bc3df8d0706392dfe26bd378b3a716",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3414,
+      "locale": "id",
+      "sourceId": "components.Requests.romsRetro",
+      "catalogPath": "src/i18n/locale/id.json",
+      "finalTarget": "ROM retro",
+      "finalTargetSha256": "4232ab63c56fb403e42b2da490dcf5db33d319f5e27dcb83216364f9b975088f",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3414,
+      "locale": "ja",
+      "sourceId": "components.Requests.romsRetro",
+      "catalogPath": "src/i18n/locale/ja.json",
+      "finalTarget": "ROM - レトロ",
+      "finalTargetSha256": "9a3cd8ecb2e5e9ef422ab0b05920b17b098bd61042e6e64149a54cb31d8b2cd0",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3414,
+      "locale": "ko",
+      "sourceId": "components.Requests.romsRetro",
+      "catalogPath": "src/i18n/locale/ko.json",
+      "finalTarget": "ROMs - 레트로",
+      "finalTargetSha256": "0c7482bf34db62cdfa7e8ffa28f0e4a61606dbb9d5f7fd3e96329bba7c2d49f6",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3414,
+      "locale": "pt_BR",
+      "sourceId": "components.Requests.romsRetro",
+      "catalogPath": "src/i18n/locale/pt_BR.json",
+      "finalTarget": "ROMs - Retrô",
+      "finalTargetSha256": "184d3e3e2bcc09b2139595214213dbf92dd25159b0fb559f524dac356300223e",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3414,
+      "locale": "vi",
+      "sourceId": "components.Requests.romsRetro",
+      "catalogPath": "src/i18n/locale/vi.json",
+      "finalTarget": "ROM - Cổ điển",
+      "finalTargetSha256": "b575c3bba7263f3903e2cb9344e29cac766869dd1b462a7926b7258e659522be",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3414,
+      "locale": "zh_Hans",
+      "sourceId": "components.Requests.romsRetro",
+      "catalogPath": "src/i18n/locale/zh_Hans.json",
+      "finalTarget": "ROMs - 复古",
+      "finalTargetSha256": "47a17cd7c40994cb8cff02d26fcea3aebe58594919cf74a0a32358edbd88ef9d",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3414,
+      "locale": "zh_Hant",
+      "sourceId": "components.Requests.romsRetro",
+      "catalogPath": "src/i18n/locale/zh_Hant.json",
+      "finalTarget": "ROMs - 復古",
+      "finalTargetSha256": "10e5703a7bbc847a6fcdce2139c11a33df38db3415e5984491080f7e699144a1",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3415,
+      "locale": "ar",
+      "sourceId": "components.Requests.runtime",
+      "catalogPath": "src/i18n/locale/ar.json",
+      "finalTarget": "المدة",
+      "finalTargetSha256": "a7947509c35014807e7ed2453b17f60a07b3a381c1cc6808e0db348987df1b3a",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3415,
+      "locale": "de",
+      "sourceId": "components.Requests.runtime",
+      "catalogPath": "src/i18n/locale/de.json",
+      "finalTarget": "Laufzeit",
+      "finalTargetSha256": "956ba2f5f97188e6209b7816eb89dc1c495c25bf020b2532356a55b77ff3e15a",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3415,
+      "locale": "es",
+      "sourceId": "components.Requests.runtime",
+      "catalogPath": "src/i18n/locale/es.json",
+      "finalTarget": "Duración",
+      "finalTargetSha256": "d5a804455b3392ca88333e92191b96b51f59b644511a73ee3d478fb14d9175d5",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3415,
+      "locale": "fr",
+      "sourceId": "components.Requests.runtime",
+      "catalogPath": "src/i18n/locale/fr.json",
+      "finalTarget": "Durée",
+      "finalTargetSha256": "71d0bad42af1144fec4d19620d2d5e12cae2fd451b398967eba200724984a1da",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3415,
+      "locale": "hi",
+      "sourceId": "components.Requests.runtime",
+      "catalogPath": "src/i18n/locale/hi.json",
+      "finalTarget": "रनटाइम",
+      "finalTargetSha256": "2d6e4eca6aa9565d1d61597a5744af7c963c8e5b5e102d29f9895037eb35d387",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3415,
+      "locale": "id",
+      "sourceId": "components.Requests.runtime",
+      "catalogPath": "src/i18n/locale/id.json",
+      "finalTarget": "Durasi",
+      "finalTargetSha256": "dd22ab55ef76e02df5d4af06bdcd447b6d8b6581fa2df9d1b54afab09f03f8d0",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3415,
+      "locale": "ja",
+      "sourceId": "components.Requests.runtime",
+      "catalogPath": "src/i18n/locale/ja.json",
+      "finalTarget": "再生時間",
+      "finalTargetSha256": "16f8131b361ae6635d68439b9eb591d9716d6fa800df181270a67ddb35763a9f",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3415,
+      "locale": "ko",
+      "sourceId": "components.Requests.runtime",
+      "catalogPath": "src/i18n/locale/ko.json",
+      "finalTarget": "재생 시간",
+      "finalTargetSha256": "7b3005520190f200d1b84e52a46a1b304098efb04a2194e75b61cad97be7030c",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3415,
+      "locale": "pt_BR",
+      "sourceId": "components.Requests.runtime",
+      "catalogPath": "src/i18n/locale/pt_BR.json",
+      "finalTarget": "Duração",
+      "finalTargetSha256": "6cecb49a79df408dd57102c0ef7f925c3695c1c77e29ba079a53ce94ae22620e",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3415,
+      "locale": "vi",
+      "sourceId": "components.Requests.runtime",
+      "catalogPath": "src/i18n/locale/vi.json",
+      "finalTarget": "Thời lượng",
+      "finalTargetSha256": "c580ed7790896d6f8f485925accda611f0aba20a16203fa1ae2165b3187ed0a1",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3415,
+      "locale": "zh_Hans",
+      "sourceId": "components.Requests.runtime",
+      "catalogPath": "src/i18n/locale/zh_Hans.json",
+      "finalTarget": "时长",
+      "finalTargetSha256": "04a95e0654d3cec7038912d0d48e53ee4615dc6aa77a9bc5d2da9cd6f8532d8d",
+      "decision": "refinement"
+    },
+    {
+      "position": 3415,
+      "locale": "zh_Hant",
+      "sourceId": "components.Requests.runtime",
+      "catalogPath": "src/i18n/locale/zh_Hant.json",
+      "finalTarget": "播放時長",
+      "finalTargetSha256": "c5e9b087ba060d6e54346e740284738df9c4b9c668daa3b533ec010e58c0efb9",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3416,
+      "locale": "ar",
+      "sourceId": "components.Requests.scrollProgressLeft",
+      "catalogPath": "src/i18n/locale/ar.json",
+      "finalTarget": "مرّر المخطط الزمني إلى اليسار",
+      "finalTargetSha256": "e015b36c3e5f28645acef2c02c1bc4235756385762ae764ceb9d15e97fee49a2",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3416,
+      "locale": "de",
+      "sourceId": "components.Requests.scrollProgressLeft",
+      "catalogPath": "src/i18n/locale/de.json",
+      "finalTarget": "Zeitachse nach links scrollen",
+      "finalTargetSha256": "b913cc385cdd5b33ed84e205dedb2578373514199ceae955d61d6e743f0f900d",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3416,
+      "locale": "es",
+      "sourceId": "components.Requests.scrollProgressLeft",
+      "catalogPath": "src/i18n/locale/es.json",
+      "finalTarget": "Desplazar la línea de tiempo hacia la izquierda",
+      "finalTargetSha256": "c0ca80151a85cc426fd9934a3fdb0cf910c23d22bd5edc55eb1987f4e7032712",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3416,
+      "locale": "fr",
+      "sourceId": "components.Requests.scrollProgressLeft",
+      "catalogPath": "src/i18n/locale/fr.json",
+      "finalTarget": "Faire défiler la chronologie vers la gauche",
+      "finalTargetSha256": "1bd53eed71c59bd50f63c7d3488b7e1f4d0a6b4a3c06170f09f087fc30320013",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3416,
+      "locale": "hi",
+      "sourceId": "components.Requests.scrollProgressLeft",
+      "catalogPath": "src/i18n/locale/hi.json",
+      "finalTarget": "समयरेखा को बाईं ओर स्क्रॉल करें",
+      "finalTargetSha256": "3f8fedd3103cd2d78c89ed835fed98c5327e8ba401b8e998f4be934c2fae4257",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3416,
+      "locale": "id",
+      "sourceId": "components.Requests.scrollProgressLeft",
+      "catalogPath": "src/i18n/locale/id.json",
+      "finalTarget": "Gulir linimasa ke kiri",
+      "finalTargetSha256": "b58f37dd30322f5e1efc56748f6cde7aaebfe156d7493fd3bd49c0e50047896d",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3416,
+      "locale": "ja",
+      "sourceId": "components.Requests.scrollProgressLeft",
+      "catalogPath": "src/i18n/locale/ja.json",
+      "finalTarget": "タイムラインを左にスクロール",
+      "finalTargetSha256": "963cfb778705faad6c99c57ed833a225507eea781639310d2068b0277171f510",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3416,
+      "locale": "ko",
+      "sourceId": "components.Requests.scrollProgressLeft",
+      "catalogPath": "src/i18n/locale/ko.json",
+      "finalTarget": "타임라인을 왼쪽으로 스크롤",
+      "finalTargetSha256": "1b562519787c79df07ed1e7d0862143d6b0eea33da1c85702989292f557586a9",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3416,
+      "locale": "pt_BR",
+      "sourceId": "components.Requests.scrollProgressLeft",
+      "catalogPath": "src/i18n/locale/pt_BR.json",
+      "finalTarget": "Rolar a linha do tempo para a esquerda",
+      "finalTargetSha256": "eca0761ca62de55fb4a80ca56e7f364d090efc17f2d4313816715874c736a2fe",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3416,
+      "locale": "vi",
+      "sourceId": "components.Requests.scrollProgressLeft",
+      "catalogPath": "src/i18n/locale/vi.json",
+      "finalTarget": "Cuộn dòng thời gian sang trái",
+      "finalTargetSha256": "3ee37f934abfc6dc33e265eaf58071c9ecff0a051e0b8a4c193722151e6c7912",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3416,
+      "locale": "zh_Hans",
+      "sourceId": "components.Requests.scrollProgressLeft",
+      "catalogPath": "src/i18n/locale/zh_Hans.json",
+      "finalTarget": "向左滚动时间线",
+      "finalTargetSha256": "61430d21ae1318c702cc2729b43f04bba9f834d81ad0e9a60579b63f32f5f172",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3416,
+      "locale": "zh_Hant",
+      "sourceId": "components.Requests.scrollProgressLeft",
+      "catalogPath": "src/i18n/locale/zh_Hant.json",
+      "finalTarget": "向左捲動時間軸",
+      "finalTargetSha256": "1bac070555326a6362983839fb5f11e7987cc8f0ec9797ef6bc5dd6a0bbec3a8",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3417,
+      "locale": "ar",
+      "sourceId": "components.Requests.scrollProgressRight",
+      "catalogPath": "src/i18n/locale/ar.json",
+      "finalTarget": "مرّر المخطط الزمني إلى اليمين",
+      "finalTargetSha256": "88434cca3a6dc0daf25d7517f43fed4e05dda22510d211ca80d0731143a9646c",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3417,
+      "locale": "de",
+      "sourceId": "components.Requests.scrollProgressRight",
+      "catalogPath": "src/i18n/locale/de.json",
+      "finalTarget": "Zeitachse nach rechts scrollen",
+      "finalTargetSha256": "ee37b93d09c8943e68e5708814cdc7e73f0da0a118bd3d354a7beb03fb0921bc",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3417,
+      "locale": "es",
+      "sourceId": "components.Requests.scrollProgressRight",
+      "catalogPath": "src/i18n/locale/es.json",
+      "finalTarget": "Desplazar la línea de tiempo hacia la derecha",
+      "finalTargetSha256": "a58601f613aa5f4a0f374245d4fe85ceeb4210622d81e9cc4ec223b4a952195e",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3417,
+      "locale": "fr",
+      "sourceId": "components.Requests.scrollProgressRight",
+      "catalogPath": "src/i18n/locale/fr.json",
+      "finalTarget": "Faire défiler la chronologie vers la droite",
+      "finalTargetSha256": "96261cad7609302dfefc7b69dcace5dd170f710818ae9eebbe577b06b8359b93",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3417,
+      "locale": "hi",
+      "sourceId": "components.Requests.scrollProgressRight",
+      "catalogPath": "src/i18n/locale/hi.json",
+      "finalTarget": "समयरेखा को दाईं ओर स्क्रॉल करें",
+      "finalTargetSha256": "097453416c831dbe63b0b968512e0ad269add224ea8a5d395a23963cf64aa287",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3417,
+      "locale": "id",
+      "sourceId": "components.Requests.scrollProgressRight",
+      "catalogPath": "src/i18n/locale/id.json",
+      "finalTarget": "Gulir linimasa ke kanan",
+      "finalTargetSha256": "f313b50090b5139f5cb9dfaeeccdcdc3e20041e6b41eac5013fb0077ad8107bb",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3417,
+      "locale": "ja",
+      "sourceId": "components.Requests.scrollProgressRight",
+      "catalogPath": "src/i18n/locale/ja.json",
+      "finalTarget": "タイムラインを右にスクロール",
+      "finalTargetSha256": "081c85eab2e2755bf5ec0afd4a3cbb67e731f8e02c43619ac7161df24ceec0e2",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3417,
+      "locale": "ko",
+      "sourceId": "components.Requests.scrollProgressRight",
+      "catalogPath": "src/i18n/locale/ko.json",
+      "finalTarget": "타임라인을 오른쪽으로 스크롤",
+      "finalTargetSha256": "891035648283d5f888a867d63c167a7a344213b7d12d6fc57696978ef71e03d9",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3417,
+      "locale": "pt_BR",
+      "sourceId": "components.Requests.scrollProgressRight",
+      "catalogPath": "src/i18n/locale/pt_BR.json",
+      "finalTarget": "Rolar a linha do tempo para a direita",
+      "finalTargetSha256": "8a6c445efcfe7ea87ef11770bc61a4e83e2138aec1d96e94345a9e8e75110589",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3417,
+      "locale": "vi",
+      "sourceId": "components.Requests.scrollProgressRight",
+      "catalogPath": "src/i18n/locale/vi.json",
+      "finalTarget": "Cuộn dòng thời gian sang phải",
+      "finalTargetSha256": "0c8efdd40887738c65745b88d93b9370213955457f1c1cef5e9a0ad0f4734ab8",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3417,
+      "locale": "zh_Hans",
+      "sourceId": "components.Requests.scrollProgressRight",
+      "catalogPath": "src/i18n/locale/zh_Hans.json",
+      "finalTarget": "向右滚动时间线",
+      "finalTargetSha256": "34b9f477b7ed79c359eaad42c198887b539398c3a6b070bf85487d2aa94e1315",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3417,
+      "locale": "zh_Hant",
+      "sourceId": "components.Requests.scrollProgressRight",
+      "catalogPath": "src/i18n/locale/zh_Hant.json",
+      "finalTarget": "向右捲動時間軸",
+      "finalTargetSha256": "4811534afd2b012150c2bb4cb9c8cf2d6427e700230d5d7a955b8abcb35b33fb",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3418,
+      "locale": "ar",
+      "sourceId": "components.Requests.search",
+      "catalogPath": "src/i18n/locale/ar.json",
+      "finalTarget": "البحث عن الكلمات الرئيسية",
+      "finalTargetSha256": "24b961c554e845ed0b7aeba6fbdde41c65c681ea1f89949cca593e91e2c05212",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3418,
+      "locale": "de",
+      "sourceId": "components.Requests.search",
+      "catalogPath": "src/i18n/locale/de.json",
+      "finalTarget": "Stichwortsuche",
+      "finalTargetSha256": "60e9aa5164a8cb23f9d7c44d1ffc94529cfe8c6ba529b7f43f9d656bcbcf1ba4",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3418,
+      "locale": "es",
+      "sourceId": "components.Requests.search",
+      "catalogPath": "src/i18n/locale/es.json",
+      "finalTarget": "Búsqueda de palabras clave",
+      "finalTargetSha256": "f0287f950ff852736954ab465cc5ae69db3967189a6abc1f509ea4ee317983d0",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3418,
+      "locale": "fr",
+      "sourceId": "components.Requests.search",
+      "catalogPath": "src/i18n/locale/fr.json",
+      "finalTarget": "Recherche de mots clés",
+      "finalTargetSha256": "b2f2fda5115f7ac37056c79a17233f15f7bed464d7302cb5eb3688e4820a106c",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3418,
+      "locale": "hi",
+      "sourceId": "components.Requests.search",
+      "catalogPath": "src/i18n/locale/hi.json",
+      "finalTarget": "कीवर्ड खोज",
+      "finalTargetSha256": "41cda3280574650327309ad1d888aa0dcd0aea3cc14ae3707c7022dcb695ede0",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3418,
+      "locale": "id",
+      "sourceId": "components.Requests.search",
+      "catalogPath": "src/i18n/locale/id.json",
+      "finalTarget": "Pencarian Kata Kunci",
+      "finalTargetSha256": "5d5b6cfb5f5710f514872285bab65465bf74cdb8cd036c62790c2fc062851569",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3418,
+      "locale": "ja",
+      "sourceId": "components.Requests.search",
+      "catalogPath": "src/i18n/locale/ja.json",
+      "finalTarget": "キーワード検索",
+      "finalTargetSha256": "7377377dfb0fbec248efea2e8c2667c126147d7fec894884a6e0a3afc28f8855",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3418,
+      "locale": "ko",
+      "sourceId": "components.Requests.search",
+      "catalogPath": "src/i18n/locale/ko.json",
+      "finalTarget": "키워드 검색",
+      "finalTargetSha256": "ab2a38c6afeb295a3d2dad0af96eac15af84e1289f1dc7ca238f3f7a38cd2778",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3418,
+      "locale": "pt_BR",
+      "sourceId": "components.Requests.search",
+      "catalogPath": "src/i18n/locale/pt_BR.json",
+      "finalTarget": "Busca de palavras-chave",
+      "finalTargetSha256": "f9b3ef5883d5501e4d0d668e8e6743ae2dd05afaf3c7086703a330f481ba906b",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3418,
+      "locale": "vi",
+      "sourceId": "components.Requests.search",
+      "catalogPath": "src/i18n/locale/vi.json",
+      "finalTarget": "Tìm kiếm từ khoá",
+      "finalTargetSha256": "aef5ec7a98c712df1d4ce0a2f569b18e23e9cb269abcc95e3c93958b7c3643eb",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3418,
+      "locale": "zh_Hans",
+      "sourceId": "components.Requests.search",
+      "catalogPath": "src/i18n/locale/zh_Hans.json",
+      "finalTarget": "关键字搜索",
+      "finalTargetSha256": "ba4e4765a5d4390161f0c1767e216417af9bcb3c74ebab49953f7e3ccefcfb6d",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3418,
+      "locale": "zh_Hant",
+      "sourceId": "components.Requests.search",
+      "catalogPath": "src/i18n/locale/zh_Hant.json",
+      "finalTarget": "關鍵字搜尋",
+      "finalTargetSha256": "01a187b844b0498d204f3067fad0b1236527c1a5bb93136c3ccd775177b5935f",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3419,
+      "locale": "ar",
+      "sourceId": "components.Requests.searchRequests",
+      "catalogPath": "src/i18n/locale/ar.json",
+      "finalTarget": "البحث عن الطلبات",
+      "finalTargetSha256": "5412eec379c3c9e64ddfa7910dbf15165bf7f6efd3d13e6cf8c5dafb7a4301d5",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3419,
+      "locale": "de",
+      "sourceId": "components.Requests.searchRequests",
+      "catalogPath": "src/i18n/locale/de.json",
+      "finalTarget": "Anfragen durchsuchen",
+      "finalTargetSha256": "5b46cc9df77ff6a872c748ecad81491fcaf46b771c4241cebaa16437d278f052",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3419,
+      "locale": "es",
+      "sourceId": "components.Requests.searchRequests",
+      "catalogPath": "src/i18n/locale/es.json",
+      "finalTarget": "Buscar solicitudes",
+      "finalTargetSha256": "0aba2c378b1f63f07ba44de793464155fd8529eb4aab693de43f8374a8913a5f",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3419,
+      "locale": "fr",
+      "sourceId": "components.Requests.searchRequests",
+      "catalogPath": "src/i18n/locale/fr.json",
+      "finalTarget": "Rechercher des demandes",
+      "finalTargetSha256": "a7f789ad2e8f7c012c9cd1198baddf2d1fbcfe35a32b1612d69f665dacb257c2",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3419,
+      "locale": "hi",
+      "sourceId": "components.Requests.searchRequests",
+      "catalogPath": "src/i18n/locale/hi.json",
+      "finalTarget": "अनुरोध खोजें",
+      "finalTargetSha256": "b408ee215fe155dfbabf0d3298f70075fa96279de381490447a267cf8b81fc7c",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3419,
+      "locale": "id",
+      "sourceId": "components.Requests.searchRequests",
+      "catalogPath": "src/i18n/locale/id.json",
+      "finalTarget": "Cari permintaan",
+      "finalTargetSha256": "27a9546b26d1da2f67e9ea22d6c1373485da049525bdad731696aa64ea15ad2a",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3419,
+      "locale": "ja",
+      "sourceId": "components.Requests.searchRequests",
+      "catalogPath": "src/i18n/locale/ja.json",
+      "finalTarget": "リクエストを検索する",
+      "finalTargetSha256": "648e87448667844c1c2e13c0d8cb654e9105080506308b04ef1b2bf0c5f10b0b",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3419,
+      "locale": "ko",
+      "sourceId": "components.Requests.searchRequests",
+      "catalogPath": "src/i18n/locale/ko.json",
+      "finalTarget": "요청 검색",
+      "finalTargetSha256": "8bf21caad9a5cc339d9fce4ce73acb138de9acb1a497d11ff6268549f287c8c4",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3419,
+      "locale": "pt_BR",
+      "sourceId": "components.Requests.searchRequests",
+      "catalogPath": "src/i18n/locale/pt_BR.json",
+      "finalTarget": "Buscar solicitações",
+      "finalTargetSha256": "b44a8220edd1916a28628adbcab6fb5cb976a4e6ea6c60644f2d28f6ba1052af",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3419,
+      "locale": "vi",
+      "sourceId": "components.Requests.searchRequests",
+      "catalogPath": "src/i18n/locale/vi.json",
+      "finalTarget": "Tìm kiếm yêu cầu",
+      "finalTargetSha256": "4b37b32eaacebb0ae11e3c0ba21096c89ce3b10769fa1c86277e97c6533b543a",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3419,
+      "locale": "zh_Hans",
+      "sourceId": "components.Requests.searchRequests",
+      "catalogPath": "src/i18n/locale/zh_Hans.json",
+      "finalTarget": "搜索请求",
+      "finalTargetSha256": "8e355d054967c047a143459adcc375eec918962e0f42bfb68294328344820ddf",
+      "decision": "accept-current"
+    },
+    {
+      "position": 3419,
+      "locale": "zh_Hant",
+      "sourceId": "components.Requests.searchRequests",
+      "catalogPath": "src/i18n/locale/zh_Hant.json",
+      "finalTarget": "搜尋請求",
+      "finalTargetSha256": "e0855d306bc8397dbf3d039746e66cba90eb634bbbabb0c0fd2426681f5f2913",
+      "decision": "accept-current"
+    }
+  ]
+}

@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "artifact": "SeerrNG PR #418 W3840-W3859 independent cross-audit",
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "pullRequestUrl": "https://github.com/snapetech-org/seerrng/pull/418",
+  "head": "ba5bb93cdb4f107a8337aae228b7cd397e1140a6",
+  "tree": "5420ae8fa33bda3619650757a2930a0114dbe4d1",
+  "prState": "OPEN",
+  "draft": true,
+  "mergeStateStatus": "CLEAN",
+  "window": [
+    3840,
+    3859
+  ],
+  "sourceCount": 20,
+  "localeCount": 12,
+  "cellCount": 240,
+  "proposalCounts": {
+    "primary": 44,
+    "blind": 23,
+    "union": 46,
+    "overlap": 21,
+    "sameTargetOverlap": 6,
+    "differentTargetOverlap": 15,
+    "primaryOnly": 23,
+    "blindOnly": 2
+  },
+  "crossDispositions": {
+    "accept-current": 194,
+    "correction": 24,
+    "refinement": 22,
+    "hold": 0
+  },
+  "selectedProposalUnion": 46,
+  "primaryTargetsRejectedAsIncomplete": 3,
+  "baselineProtectedLiteralMismatches": 3,
+  "resolvedProtectedLiteralMismatches": 3,
+  "selectedTargetTokenMismatches": 0,
+  "callerlessCells": 0,
+  "inputVerifiers": {
+    "candidateFree": "PASS",
+    "primary": "PASS",
+    "portablePacket": "PASS",
+    "blind": "PASS"
+  },
+  "nativeSpeakerSignoff": false,
+  "browserApproval": false,
+  "repoOrPrEdited": false,
+  "crossReviewMethod": "Independent source/context and current-cell audit followed by per-cell primary/blind proposal adjudication",
+  "crossReviewedAtUTC": "2026-11-04T07:46:49.240790+00:00"
+}

@@ -1,0 +1,27 @@
+{
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "window": "W3300-W3319",
+  "inputHead": "7f652dc9b529506fded0064f73cf4a4d32dba1a9",
+  "inputTree": "9a42f2efdc0f64e99928a4994304413036b8a315",
+  "reviewedCells": 240,
+  "dispositions": {
+    "accept-current": 131,
+    "hold-context": 60,
+    "correction": 24,
+    "refinement": 25
+  },
+  "appliedChanges": 49,
+  "alreadyAppliedOnRerun": 49,
+  "changedCatalogs": 12,
+  "catalogKeyCount": 9494,
+  "exactKeySetParity": true,
+  "perCatalogKeyOrderPreserved": true,
+  "readbackRows": 240,
+  "readbackMismatches": 0,
+  "heldCellsUnchanged": 60,
+  "testsBuildsScansCI": false,
+  "workflowFilesChanged": false,
+  "nativeSpeakerApproval": false,
+  "headedBrowserAcceptance": false
+}

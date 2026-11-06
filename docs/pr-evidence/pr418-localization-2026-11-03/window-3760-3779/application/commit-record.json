@@ -1,0 +1,18 @@
+{
+  "parentHead": "d317a07ea0e5456b6d4660470c57d1f205cd0587",
+  "parentTree": "c1383dfb6e6fd4e926f9c89d4ec6b7e8ea7d6008",
+  "catalogCommit": "61bc396b1bb4d79a96b5dedcf294fa44d3eeeb75",
+  "catalogTree": "6ef5db45f9ddf444e056aabcfde5bcbe1d2623f7",
+  "catalogCommitParent": "d317a07ea0e5456b6d4660470c57d1f205cd0587",
+  "branch": "codex/seerrng-localization-overhaul-20261028",
+  "selectedTargetCount": 12,
+  "catalogFilesChanged": [
+    "src/i18n/locale/es.json",
+    "src/i18n/locale/fr.json",
+    "src/i18n/locale/hi.json",
+    "src/i18n/locale/id.json",
+    "src/i18n/locale/ko.json",
+    "src/i18n/locale/vi.json",
+    "src/i18n/locale/zh_Hant.json"
+  ]
+}

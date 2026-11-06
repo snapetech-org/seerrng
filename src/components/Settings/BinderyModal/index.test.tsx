@@ -59,6 +59,7 @@ vi.mock('@app/components/Common/Modal', async () => {
               void setValues({
                 ...values,
                 name: 'Bindery',
+                binderyUserMappings: '{"2":7}',
                 serviceType: 'both',
                 hostname: 'bindery.example',
                 port: '13380',
@@ -161,6 +162,7 @@ it('saves a tested both-format connection without the read-only ID', async () =>
   expect(saved).toEqual(
     expect.objectContaining({
       backend: 'bindery',
+      binderyUserMappings: { '2': 7 },
       serviceType: 'both',
       port: 13380,
     })

@@ -1,0 +1,50 @@
+{
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "window": "W3380-W3399",
+  "inputHead": "4d7de2c41b0e6df6cd0b7f7075c9cddd1c6ce160",
+  "inputTree": "6fba2d5985869b4563955b2c338a93e82efb4b22",
+  "cleanInputManifestSha256": "a9eb1a049de2233cf3f3c0d2d3d48abd6d27558e01927e1c58630a8b470d9ed0",
+  "cleanInputChecksumListSha256": "c02b106002378057e7c3c43fe927632b5ab6762b744785e3509601a9435e8dc4",
+  "sourceCount": 20,
+  "localeCount": 12,
+  "cellCount": 240,
+  "callerReferenceCount": 144,
+  "dispositions": {
+    "accept-current": 181,
+    "correction": 7,
+    "hold": 48,
+    "refinement": 4
+  },
+  "proposedChanges": 11,
+  "changesByPosition": {
+    "3382": 5,
+    "3392": 1,
+    "3394": 1,
+    "3395": 1,
+    "3399": 3
+  },
+  "changesByLocale": {
+    "ar": 3,
+    "de": 1,
+    "es": 1,
+    "fr": 2,
+    "id": 2,
+    "ja": 1,
+    "pt_BR": 1
+  },
+  "holdsByPosition": {
+    "3385": 12,
+    "3387": 12,
+    "3388": 12,
+    "3398": 12
+  },
+  "placeholderMismatches": 0,
+  "markupMismatches": 0,
+  "protectedLiteralMismatches": 0,
+  "confidence": "moderate",
+  "nativeSpeakerReview": false,
+  "independentBlindReview": false,
+  "repositoryOrPRChanged": false,
+  "testsBuildsScansCIOrWorkflowChanges": false
+}

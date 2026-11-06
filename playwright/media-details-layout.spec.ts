@@ -5,28 +5,28 @@ import type { TvDetails } from '@server/models/Tv';
 test.use({ serviceWorkers: 'block' });
 
 const loginAsAdmin = async (page: Page, baseURL: string | undefined) => {
-  const response = await page
-    .context()
-    .request.post(`${baseURL}/api/v1/auth/local`, {
-      data: { email: 'admin@seerr.dev', password: 'test1234' },
-      headers: { 'X-Forwarded-Proto': 'https' },
-    });
+  const response = await page.request.post(`${baseURL}/api/v1/auth/local`, {
+    data: { email: 'admin@seerr.dev', password: 'test1234' },
+  });
   expect(response.status()).toBe(200);
-  const sid = response
-    .headersArray()
-    .find((header) => header.name.toLowerCase() === 'set-cookie')
-    ?.value.match(/^connect\.sid=([^;]+)/)?.[1];
-  expect(sid).toBeTruthy();
-  await page.context().addCookies([
-    {
-      name: 'connect.sid',
-      value: sid!,
-      url: baseURL!,
-      httpOnly: true,
-      secure: false,
-      sameSite: 'Lax',
-    },
-  ]);
+  const user = await response.json();
+  expect(
+    (
+      await page.request.post(`/api/v1/user/${user.id}/settings/main`, {
+        data: { locale: 'en' },
+      })
+    ).status()
+  ).toBe(200);
+  expect(
+    (
+      await page.request.post(
+        `/api/v1/user/${user.id}/settings/interface-theme`,
+        {
+          data: { theme: 'seerrNGJ' },
+        }
+      )
+    ).status()
+  ).toBe(200);
 };
 
 const movie: MovieDetails = {
@@ -195,6 +195,22 @@ const mockMediaNavigation = async (
   expect(detailsFixtureApplied).toBe(true);
   for (const width of [320, 360, 375, 390, 412, 768, 1024, 1440, 1920]) {
     await page.setViewportSize({ width, height: 900 });
+    for (const summary of await page.locator('.movie-summary-card').all()) {
+      const overlap = await summary.evaluate((node) => {
+        const poster = node.querySelector(
+          '[data-testid="media-details-poster"]'
+        );
+        const copy = node.querySelector(':scope > .relative');
+        if (!poster || !copy) return false;
+        const a = poster.getBoundingClientRect();
+        const b = copy.getBoundingClientRect();
+        return (
+          Math.min(a.right, b.right) - Math.max(a.left, b.left) > 1 &&
+          Math.min(a.bottom, b.bottom) - Math.max(a.top, b.top) > 1
+        );
+      });
+      expect(overlap, `poster and copy overlap at ${width}px`).toBe(false);
+    }
     const horizontalOverflow = await page.evaluate(
       () => document.documentElement.scrollWidth - window.innerWidth
     );

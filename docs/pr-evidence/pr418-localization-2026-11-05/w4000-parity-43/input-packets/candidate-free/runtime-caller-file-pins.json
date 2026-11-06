@@ -1,0 +1,84 @@
+{
+  "exactHead": "f48afa55ce2abeb00ee8b2dc66fa6d2df8f62ba4",
+  "exactTree": "f7ea727b0383397ec8d6220667b4abe151d43b46",
+  "files": [
+    {
+      "byteCount": 7640,
+      "gitBlob": "62f6639be149396f7984939aaf53be30a3a0f66d",
+      "lineCount": 216,
+      "path": "src/components/CollectionDetails/CollectionQueueModal.tsx",
+      "sha256": "62fdfc5b70b1ea1d4a0df6b66550861a99c6acfb2334f5f785cc89e35c0a3a5c"
+    },
+    {
+      "byteCount": 23564,
+      "gitBlob": "3400580339bfbab93c1206692163939ce9c1465a",
+      "lineCount": 629,
+      "path": "src/components/CollectionDetails/index.tsx",
+      "sha256": "7d6de0cb49b5f8a432bd32586e80e2f7903c7968c83648f52c0eb3e64f9a606c"
+    },
+    {
+      "byteCount": 11284,
+      "gitBlob": "70afe626a883ebd977b7be43532d239714432818",
+      "lineCount": 321,
+      "path": "src/components/DiscoveryIntegrations/Accounts.tsx",
+      "sha256": "cf885c5e86f977141ca475a8f69d96830893d136ec95a96a329dfee7fad18878"
+    },
+    {
+      "byteCount": 5498,
+      "gitBlob": "5b3aeaa1ea9c5acb48e4f4d9880ade785702d0e8",
+      "lineCount": 99,
+      "path": "src/components/DiscoveryIntegrations/messages.ts",
+      "sha256": "887938cc3e7901421f0a95c565db8cffbb00f4a46c503c54b9ff31f8db91fb22"
+    },
+    {
+      "byteCount": 4277,
+      "gitBlob": "157854e4315c0ef381a9f3203882a50f55df156d",
+      "lineCount": 120,
+      "path": "src/components/RequestModal/RequestEpisodeQueueControl.tsx",
+      "sha256": "1771e9266254e1d75fef0296223508ad253eff212a884b9e4f08310718311537"
+    },
+    {
+      "byteCount": 1447,
+      "gitBlob": "4e49720a6d7d158434474733437e8b986f794be0",
+      "lineCount": 48,
+      "path": "src/components/RequestModal/RequestEpisodeQueueModal.tsx",
+      "sha256": "7d491d87e63c3effe9791045be66bbbe9e7e07af0f88145ede80904986b36723"
+    },
+    {
+      "byteCount": 68960,
+      "gitBlob": "1f5e756a384113f50cd78a95d958008bab7ed655",
+      "lineCount": 1818,
+      "path": "src/components/RequestModal/TvRequestModal.tsx",
+      "sha256": "e75fa9eec6e3211220bd6176ed628f7f21e30d37ad1df2030d2e4a61c7a56e97"
+    },
+    {
+      "byteCount": 101338,
+      "gitBlob": "0469e5a48b02176db36c6f3d36a796e9d12c8c61",
+      "lineCount": 3141,
+      "path": "src/components/Requests/index.tsx",
+      "sha256": "7c9d244356f758a293cd755a9262762e618e05e18c4b5bfa863b4778ec2b6997"
+    },
+    {
+      "byteCount": 29799,
+      "gitBlob": "579b1f07884869ccabb2e067531f06bf2211fe5d",
+      "lineCount": 849,
+      "path": "src/components/Settings/SettingsJobsCache/index.tsx",
+      "sha256": "dd23d364ee5673c8ea764ff41de2bc46265726d2cfe478171f834916d5f28f4c"
+    },
+    {
+      "byteCount": 2467,
+      "gitBlob": "171cf5bffc27ed881e4d057a26266515b319bd06",
+      "lineCount": 64,
+      "path": "src/components/Settings/SettingsJobsCache/jobMessages.ts",
+      "sha256": "436643044d319818ebd765c2a5ccea40278c046d9c9040dfdd4a439d58f6f64a"
+    },
+    {
+      "byteCount": 41541,
+      "gitBlob": "901419980a939498bf5d00123e5e2fa44bc85e6b",
+      "lineCount": 1124,
+      "path": "src/components/Settings/SettingsPlex.tsx",
+      "sha256": "83fbe2962b45caefc1991ec7a5ccbf3530639051e3dc3cdf1c8a84c0295aa60b"
+    }
+  ],
+  "scope": "src TypeScript/TSX caller and message definition files for 44 reviewed IDs"
+}

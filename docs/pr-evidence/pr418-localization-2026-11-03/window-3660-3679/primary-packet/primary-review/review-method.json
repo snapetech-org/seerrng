@@ -1,0 +1,18 @@
+{
+  "reviewStage": "primary semantic review",
+  "input": "candidate-free input only",
+  "head": "eb279fc80be656f379cd893642bf741ba0a24d85",
+  "tree": "85a73172719b38e99a4e74c0ef9a303164cb4fcb",
+  "window": "W3660-W3679",
+  "decisionDefinitions": {
+    "accept-current": "Current target preserves source meaning in the pinned caller context.",
+    "correction": "Current target contains a semantic, grammar, or technical-term error.",
+    "refinement": "Current target is understandable but has a clear locale or style improvement.",
+    "hold": "A source-bound ambiguity or unresolved callerless case; none in this window."
+  },
+  "placeholderPolicy": "Placeholder names and formatter signatures must be preserved as a multiset. Natural target-language reordering is allowed and recorded; two valid page/pages reorderings are present.",
+  "protectedLiteralPolicy": "All protected source literals must remain present in reviewed targets.",
+  "priorHoldPolicy": "Carry twelve prior position-3632 hold fingerprints by hash only; do not reuse prior target text as proposals.",
+  "crossAudit": "not performed",
+  "nativeSpeakerApproval": "not claimed"
+}

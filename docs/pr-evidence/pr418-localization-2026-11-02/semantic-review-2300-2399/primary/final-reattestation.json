@@ -1,0 +1,28 @@
+{
+  "callerDefinitionOnly": [
+    {
+      "sourceId": "components.PatchProjects.PatchDiscovery.loadMore",
+      "status": "definition-only-or-single-reference"
+    }
+  ],
+  "callerFiles": 5,
+  "callerGaps": [],
+  "callerRefs": 340,
+  "candidateCount": 169,
+  "exactHead": "d49b44895d0ded9796f0c970ad09141212e9a98f",
+  "exactTree": "cebcfc11e0ea37c42f5b6e979e96cca8c89c7814",
+  "headRefName": "codex/seerrng-localization-overhaul-20261028",
+  "isDraft": true,
+  "localeCells": 1200,
+  "passed": true,
+  "pullRequestState": "OPEN",
+  "remoteHead": "d49b44895d0ded9796f0c970ad09141212e9a98f",
+  "repositoryState": {
+    "head": "d49b44895d0ded9796f0c970ad09141212e9a98f",
+    "status": "",
+    "tree": "cebcfc11e0ea37c42f5b6e979e96cca8c89c7814"
+  },
+  "sourceIdListSha256": "b4ecd5c9567f63efdca50cb7f241ed43c5f6f60a0d7f7354d5811ec6d1587e1f",
+  "sourceIds": 100,
+  "sourceTextHashes": 100
+}

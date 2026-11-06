@@ -1,0 +1,34 @@
+{
+  "catalogCountIncludingEnglish": 13,
+  "catalogKeyCounts": [
+    9494
+  ],
+  "keyCountParity": true,
+  "sourceOrderSha256": "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072",
+  "orderedSequenceParityAcrossAllCatalogs": false,
+  "orderedHashGroups": {
+    "550bcdface2a223025a3be16f61af52d387a96f99acfb601f9f55c5b14c8c072": [
+      "src/i18n/locale/ar.json",
+      "src/i18n/locale/de.json",
+      "src/i18n/locale/en.json",
+      "src/i18n/locale/es.json",
+      "src/i18n/locale/fr.json",
+      "src/i18n/locale/hi.json",
+      "src/i18n/locale/id.json",
+      "src/i18n/locale/pt_BR.json"
+    ],
+    "8d5fd7bd4351bc64c5ee813f2e50196608869e165866f3202a312078732c2baf": [
+      "src/i18n/locale/ja.json",
+      "src/i18n/locale/ko.json",
+      "src/i18n/locale/vi.json",
+      "src/i18n/locale/zh_Hans.json",
+      "src/i18n/locale/zh_Hant.json"
+    ]
+  },
+  "windowKeyMatrixCells": 240,
+  "windowPositionCount": 20,
+  "windowLocaleCount": 12,
+  "windowKeyIdParity": true,
+  "fullCatalogKeySetParityVerifiedFromAvailableArtifacts": false,
+  "note": "The corrected input supplies catalog key counts and ordered-sequence hashes, not full key lists. All catalogs have the same key count and the 20 reviewed IDs occur exactly once at matching positions in all 12 locales. Ordered sequence hashes differ for the five listed CJK/Vietnamese catalogs, so global order equality is not established; full key-set equality cannot be independently recomputed from hash-only pins."
+}

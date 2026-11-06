@@ -1,0 +1,158 @@
+{
+  "allSelectedSourceAndCurrentValuesMatch": true,
+  "allSourceAndCallerPinsMatch": true,
+  "branchRefHead": "f20893e57a89827095fa049d8e0475df7ec7170f",
+  "callerReferenceRows": 262,
+  "callerRows": 100,
+  "exactPriorTerminalDispositions": 0,
+  "githubTree": "b5a5952fb4f8a37ea5a39286295f153ce9504f52",
+  "head": "f20893e57a89827095fa049d8e0475df7ec7170f",
+  "inputManifestSha256": "b59ca200cdb2832205bc4084d1de5308e3379ed833c8c2b9a7aca3bd27443cb0",
+  "inputSumManifest": {
+    "checkedFiles": 5,
+    "files": [
+      "source-window.json",
+      "source-current-cells.jsonl",
+      "caller-contexts.jsonl",
+      "prior-disposition-boundary.json",
+      "input-manifest.json"
+    ],
+    "path": "INPUT-SHA256SUMS",
+    "sha256": "8061bced02de0cb00f7768343051268f522ecd1a89383cd2090535be162d0f95"
+  },
+  "livePullRequest": {
+    "headRefName": "codex/seerrng-localization-overhaul-20261028",
+    "headRefOid": "f20893e57a89827095fa049d8e0475df7ec7170f",
+    "isDraft": true,
+    "number": 418,
+    "state": "OPEN",
+    "url": "https://github.com/snapetech-org/seerrng/pull/418"
+  },
+  "localeCatalogsReattested": [
+    {
+      "blob": "6da389417dda30be34b0314282948c5970a3c92d",
+      "keyCount": 9494,
+      "keySetParity": true,
+      "locale": "ar",
+      "path": "src/i18n/locale/ar.json",
+      "sha256": "37977b1659507f11e83a8ab5a030c034e2d1b1bc51766a54c1deb1d09449df17"
+    },
+    {
+      "blob": "1e556f85e1175bd8c3beb3d5edce3c4d2992d3c3",
+      "keyCount": 9494,
+      "keySetParity": true,
+      "locale": "de",
+      "path": "src/i18n/locale/de.json",
+      "sha256": "b8afb63d799119717b826aa94b7a4b41d939a306b06b2022502041eebef3f62f"
+    },
+    {
+      "blob": "6bbc6e805a77e558522100dbcd01da4a3024a9ff",
+      "keyCount": 9494,
+      "keySetParity": true,
+      "locale": "es",
+      "path": "src/i18n/locale/es.json",
+      "sha256": "ef56abb8996a3399c17f9beabf56edeb3761ac51ead4de4dc7a824bad6769d13"
+    },
+    {
+      "blob": "70cc4d8bc54e2f0d7ec2754a334665c86970a03a",
+      "keyCount": 9494,
+      "keySetParity": true,
+      "locale": "fr",
+      "path": "src/i18n/locale/fr.json",
+      "sha256": "e2dcfce417a035b24ea56c50c8cd7f458eca0414b5bd864430fe120b79bd9034"
+    },
+    {
+      "blob": "f4a3b052517728a1eff56fc8d349a96498157872",
+      "keyCount": 9494,
+      "keySetParity": true,
+      "locale": "hi",
+      "path": "src/i18n/locale/hi.json",
+      "sha256": "c7eda422d36f9c2241ef8cc283d549ec77128e6495365e35bfd89602da477e5e"
+    },
+    {
+      "blob": "7140c119098d27eb8450247a45c4377985106c84",
+      "keyCount": 9494,
+      "keySetParity": true,
+      "locale": "id",
+      "path": "src/i18n/locale/id.json",
+      "sha256": "606b57c7f1985c48e42d6d3e2ed85e3e5eaf86c052381713b08da7e121ba060a"
+    },
+    {
+      "blob": "aeeb9bf400346bc602339b67c6802abe6472daf9",
+      "keyCount": 9494,
+      "keySetParity": true,
+      "locale": "ja",
+      "path": "src/i18n/locale/ja.json",
+      "sha256": "b94708857f56e3e795933fe4895adc18818cc6394becd398a4b4ce0c980e8fd6"
+    },
+    {
+      "blob": "a4d89f54a409c681f6676b3a6094ceb6ec9e903a",
+      "keyCount": 9494,
+      "keySetParity": true,
+      "locale": "ko",
+      "path": "src/i18n/locale/ko.json",
+      "sha256": "cce60de387663f13e2c49bef23f02ee3aa6121c50d122c2b28de23a116f642fa"
+    },
+    {
+      "blob": "29254a8da1b04949fcc142a31e8cbd73c321926b",
+      "keyCount": 9494,
+      "keySetParity": true,
+      "locale": "pt_BR",
+      "path": "src/i18n/locale/pt_BR.json",
+      "sha256": "1a87ccba24694c3a8c9ff6a578135b6c7d8ddb1e93fa3f847f0d41c93fffe900"
+    },
+    {
+      "blob": "0eb9b41697a59b7f5d850944026b4bacd882ee43",
+      "keyCount": 9494,
+      "keySetParity": true,
+      "locale": "vi",
+      "path": "src/i18n/locale/vi.json",
+      "sha256": "60741eeb2d37ee500818acb532457df54ebdb186ed7162f0f43207f5bd4601b5"
+    },
+    {
+      "blob": "776b471f968d2074f48128ffcfa3c6220ec48cd7",
+      "keyCount": 9494,
+      "keySetParity": true,
+      "locale": "zh_Hans",
+      "path": "src/i18n/locale/zh_Hans.json",
+      "sha256": "c2332522cba52af5208efe595ee504088253f727d56f85de76d4fc53e114093f"
+    },
+    {
+      "blob": "3bf6f1bcea3bf0dfc32d78c11293774f9423e6b0",
+      "keyCount": 9494,
+      "keySetParity": true,
+      "locale": "zh_Hant",
+      "path": "src/i18n/locale/zh_Hant.json",
+      "sha256": "b9eecdaa6ea61144369ec01ad5688c17f61ec3c6cc939085efc5d9085b8ec73b"
+    }
+  ],
+  "passed": true,
+  "primaryReviewRows": 300,
+  "primarySumManifest": {
+    "checkedFiles": 3,
+    "files": [
+      "primary-review.jsonl",
+      "attestation.json",
+      "README.md"
+    ],
+    "path": "SHA256SUMS",
+    "sha256": "2fb456bca680afffc776c73c6a0eb82bc114798af6ab29dd1052bbd4ffd73941"
+  },
+  "priorMatchingRows": 1200,
+  "remoteBranchHead": "f20893e57a89827095fa049d8e0475df7ec7170f",
+  "sourceCurrentCellRows": 1200,
+  "sourceWindowRows": 100,
+  "tree": "b5a5952fb4f8a37ea5a39286295f153ce9504f52",
+  "worktreeAfter": {
+    "branch": "codex/seerrng-localization-overhaul-20261028",
+    "head": "f20893e57a89827095fa049d8e0475df7ec7170f",
+    "status": "",
+    "tree": "b5a5952fb4f8a37ea5a39286295f153ce9504f52"
+  },
+  "worktreeBefore": {
+    "branch": "codex/seerrng-localization-overhaul-20261028",
+    "head": "f20893e57a89827095fa049d8e0475df7ec7170f",
+    "status": "",
+    "tree": "b5a5952fb4f8a37ea5a39286295f153ce9504f52"
+  }
+}

@@ -1,0 +1,1408 @@
+{
+  "head": "9242898e23f7f25d515d10b5b0b51df322e395fb",
+  "pullRequest": 418,
+  "repository": "snapetech-org/SeerrNG",
+  "targets": [
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "تحديث رف القارئ",
+      "finalTargetHash": "f7c8fe7824702f3044ab016a8bb19869a87454ffb81757041e62f99419947495",
+      "locale": "ar",
+      "sourceId": "components.ReaderGroupingAction.updateAction",
+      "sourcePosition": 2600
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "Actualizar la estantería de lectura",
+      "finalTargetHash": "b281adfc30df67ba001c25ab9388e6ae16fddbdb7816a53b5eb89e573e0dbaa3",
+      "locale": "es",
+      "sourceId": "components.ReaderGroupingAction.updateAction",
+      "sourcePosition": 2600
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "Mettre à jour l’étagère de lecture",
+      "finalTargetHash": "3d575184488cd9f157d298d0dab0c0c8105f992531151f776e2d2857284e3521",
+      "locale": "fr",
+      "sourceId": "components.ReaderGroupingAction.updateAction",
+      "sourcePosition": 2600
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "रीडर शेल्फ़ अपडेट करें",
+      "finalTargetHash": "509513b17c785e13c730cb7c75aa9416eda8cf6f5cf2d09010dd60d4e5181677",
+      "locale": "hi",
+      "sourceId": "components.ReaderGroupingAction.updateAction",
+      "sourcePosition": 2600
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "Perbarui rak pembaca",
+      "finalTargetHash": "660a1665a34cd406dbf9a6dd22a63e78ad8ea762b59933e4b46f8c494111143e",
+      "locale": "id",
+      "sourceId": "components.ReaderGroupingAction.updateAction",
+      "sourcePosition": 2600
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "리더 선반 업데이트",
+      "finalTargetHash": "a10e7cfe49058fe22e365447c1db5f8e6d654a2837c0b93bad4be49483837d69",
+      "locale": "ko",
+      "sourceId": "components.ReaderGroupingAction.updateAction",
+      "sourcePosition": 2600
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "Cập nhật giá sách của trình đọc",
+      "finalTargetHash": "4a368bbaede630ded06fc1b7d16c0372ca5ca350518c85664656a280189c402e",
+      "locale": "vi",
+      "sourceId": "components.ReaderGroupingAction.updateAction",
+      "sourcePosition": 2600
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "更新阅读书架",
+      "finalTargetHash": "5f97854b5c4ad1d0214f37544640621a3790b7b143b1b7bcc4b0ff3ab3dce4b9",
+      "locale": "zh_Hans",
+      "sourceId": "components.ReaderGroupingAction.updateAction",
+      "sourcePosition": 2600
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "更新閱讀書架",
+      "finalTargetHash": "6797647d1720eebd58061319a639cb9c904bc3b1d35174de4c15e8c8ba0516c3",
+      "locale": "zh_Hant",
+      "sourceId": "components.ReaderGroupingAction.updateAction",
+      "sourcePosition": 2600
+    },
+    {
+      "disposition": "refinement",
+      "finalTarget": "BookOrbit bloquea la visibilidad cuando se crea el alcance. Cámbiela en BookOrbit o elimine el alcance gestionado y vuelva a crearlo.",
+      "finalTargetHash": "fb6ed22ebc08ae0e5fdd278f817a447b6360f613f66f9431d24af44511943eb7",
+      "locale": "es",
+      "sourceId": "components.ReaderGroupingAction.visibilityLocked",
+      "sourcePosition": 2601
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "BookOrbit स्कोप बनाते समय दृश्यता लॉक करता है। इसे BookOrbit में बदलें, या प्रबंधित स्कोप हटाकर फिर से बनाएँ।",
+      "finalTargetHash": "6b4e0903de2cf4925f7628834e52cc2270b4a6730e22d3a058ad52e0efb2a2e9",
+      "locale": "hi",
+      "sourceId": "components.ReaderGroupingAction.visibilityLocked",
+      "sourcePosition": 2601
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "BookOrbit mengunci visibilitas saat scope dibuat. Ubah visibilitasnya di BookOrbit atau hapus scope terkelola, lalu buat ulang.",
+      "finalTargetHash": "91537a38eb7cff18d46728c0b5fff1c3184400ab4a30afd33e5e8838d85f51af",
+      "locale": "id",
+      "sourceId": "components.ReaderGroupingAction.visibilityLocked",
+      "sourcePosition": 2601
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "BookOrbit는 범위를 만들 때 표시 여부를 잠급니다. BookOrbit에서 이를 변경하거나 관리 범위를 삭제한 뒤 다시 만드세요.",
+      "finalTargetHash": "85007f5499b31c5966c80c28a0206d8a8bc5cacc134199136284a382632377b9",
+      "locale": "ko",
+      "sourceId": "components.ReaderGroupingAction.visibilityLocked",
+      "sourcePosition": 2601
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "BookOrbit khóa chế độ hiển thị khi tạo phạm vi. Hãy thay đổi chế độ này trong BookOrbit, hoặc xóa phạm vi được quản lý rồi tạo lại.",
+      "finalTargetHash": "0fc5fe1a8cbec9de2369ce9a8dc7d9a03eae6677220fc69957ada2a93c4a1167",
+      "locale": "vi",
+      "sourceId": "components.ReaderGroupingAction.visibilityLocked",
+      "sourcePosition": 2601
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "BookOrbit 会在创建范围时锁定可见性。请在 BookOrbit 中更改可见性，或删除并重新创建受管理的范围。",
+      "finalTargetHash": "a213fdd17749d48b7c1b3b84cf1513b955d5c0b79f3fbd27f4a77d67e2f98b3d",
+      "locale": "zh_Hans",
+      "sourceId": "components.ReaderGroupingAction.visibilityLocked",
+      "sourcePosition": 2601
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "BookOrbit 會在建立範圍時鎖定可見性。請在 BookOrbit 中變更可見性，或刪除並重新建立受管理的範圍。",
+      "finalTargetHash": "dcbe20a73fb64c21e8dcd6eec61b8d13cd7f42dbb174c25de6212de923467761",
+      "locale": "zh_Hant",
+      "sourceId": "components.ReaderGroupingAction.visibilityLocked",
+      "sourcePosition": 2601
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "शेल्फ़ सहेज दी गई, लेकिन सेवा ने मौजूदा आइटम संख्या की पुष्टि नहीं की है। सेवा खोलें और जाँचने के लिए शेल्फ़ रीफ़्रेश करें।",
+      "finalTargetHash": "6116444bd34d25417645a4141fca116bdf136c0c581310ed49169a4640a43e6a",
+      "locale": "hi",
+      "sourceId": "components.ReaderGroupingAction.warning",
+      "sourcePosition": 2602
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "棚は保存されましたが、サービスは現在の項目数をまだ確認していません。サービスを開き、棚を更新して確認してください。",
+      "finalTargetHash": "2d14cc3f42ca5661a3ef71de9447e3208f0262a3d4a92b5cd050a497e83de49a",
+      "locale": "ja",
+      "sourceId": "components.ReaderGroupingAction.warning",
+      "sourcePosition": 2602
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "선반은 저장되었지만 서비스에서 현재 항목 수를 확인하지 않았습니다. 서비스를 열고 선반을 새로 고쳐 확인하세요.",
+      "finalTargetHash": "84549ab4ab851a756715e562004c99393cce5b648233be1aad7164d1ca4ffecc",
+      "locale": "ko",
+      "sourceId": "components.ReaderGroupingAction.warning",
+      "sourcePosition": 2602
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "Kệ đã được lưu nhưng dịch vụ chưa xác nhận số lượng mục hiện tại. Hãy mở dịch vụ và làm mới kệ để kiểm tra.",
+      "finalTargetHash": "19359fac63770973b1592f8992f9a3e1b27bead60821baafcecc22e3352ac7db",
+      "locale": "vi",
+      "sourceId": "components.ReaderGroupingAction.warning",
+      "sourcePosition": 2602
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "书架已保存，但服务尚未确认当前条目数量。请打开服务并刷新书架进行检查。",
+      "finalTargetHash": "f3007ebefad4db858f03de75a1795bcf3cc5b604c1e84df780039fe23e791179",
+      "locale": "zh_Hans",
+      "sourceId": "components.ReaderGroupingAction.warning",
+      "sourcePosition": 2602
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "書架已儲存，但服務尚未確認目前的項目數量。請開啟服務並重新整理書架以確認。",
+      "finalTargetHash": "4a4f9fb3e397b208572d13f129c2dffbf0165d95b6ef745fcf3a406d98e7e927",
+      "locale": "zh_Hant",
+      "sourceId": "components.ReaderGroupingAction.warning",
+      "sourcePosition": 2602
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "Toutes les régions",
+      "finalTargetHash": "4e86886c77d4b7a8999ac980097d784b903943816885845ba0bd56bb4477c2e2",
+      "locale": "fr",
+      "sourceId": "components.RegionSelector.regionDefault",
+      "sourcePosition": 2603
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "Semua wilayah",
+      "finalTargetHash": "71bca61230bc84b2e57a17a0a9613d56e62799fa64642b12972726b123a41c99",
+      "locale": "id",
+      "sourceId": "components.RegionSelector.regionDefault",
+      "sourcePosition": 2603
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "Todas as regiões",
+      "finalTargetHash": "8286a9ba411c4dcdf634d0a82130dc2654941bc4ff85707b40258f6af7026c17",
+      "locale": "pt_BR",
+      "sourceId": "components.RegionSelector.regionDefault",
+      "sourcePosition": 2603
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "Tất cả khu vực",
+      "finalTargetHash": "dbcc82a240d639eb904c05e3b7e30995a5c0db082157606edbd5691b427f26f2",
+      "locale": "vi",
+      "sourceId": "components.RegionSelector.regionDefault",
+      "sourcePosition": 2603
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "डिफ़ॉल्ट ({region})",
+      "finalTargetHash": "98540048e96473ff4bc4c123e6cb81ef4901de79e330dbcb7e74fe83147e3c2a",
+      "locale": "hi",
+      "sourceId": "components.RegionSelector.regionServerDefault",
+      "sourcePosition": 2604
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "Bawaan ({region})",
+      "finalTargetHash": "c209848322657c1485270e476ff8d8ed4878ec19b7b24913b1708e5b27aee642",
+      "locale": "id",
+      "sourceId": "components.RegionSelector.regionServerDefault",
+      "sourcePosition": 2604
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "Mặc định ({region})",
+      "finalTargetHash": "882452243b626c4e76c90177879a8c6dd6d0bb29ecd62c2750c5b5c8015c61bd",
+      "locale": "vi",
+      "sourceId": "components.RegionSelector.regionServerDefault",
+      "sourcePosition": 2604
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "अनुरोध स्वीकार करें",
+      "finalTargetHash": "bd6ab03d102ded0fc0f5d437f410d96a0b5ba90618dfff18e3fb8cedc5eee800",
+      "locale": "hi",
+      "sourceId": "components.RequestBlock.approve",
+      "sourcePosition": 2605
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "Setujui Permintaan",
+      "finalTargetHash": "3c7488c9a5bc702c7a0c41ee403a378a9ca6849466bf7c8f4d20659c488bd254",
+      "locale": "id",
+      "sourceId": "components.RequestBlock.approve",
+      "sourcePosition": 2605
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "Chấp thuận yêu cầu",
+      "finalTargetHash": "8770a10fdfa2a3c6d5e68285de637dde26bb791bc808e181521f0c919c54c5d1",
+      "locale": "vi",
+      "sourceId": "components.RequestBlock.approve",
+      "sourcePosition": 2605
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "अनुरोध अस्वीकार करें",
+      "finalTargetHash": "dcceeadac2df2d2f63e608f865414caec1845547de0459b5bb7d98fe1547dc11",
+      "locale": "hi",
+      "sourceId": "components.RequestBlock.decline",
+      "sourcePosition": 2607
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "Tolak Permintaan",
+      "finalTargetHash": "0496f62a7b03896c5223f083626c5d6e182705ea96c55e1c8c4e255fea15b6d8",
+      "locale": "id",
+      "sourceId": "components.RequestBlock.decline",
+      "sourcePosition": 2607
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "Từ chối yêu cầu",
+      "finalTargetHash": "3b00d31ce7594a8b5dca7c22cfc10693e209cfb4e6d1ee57654cbd1e415a6f33",
+      "locale": "vi",
+      "sourceId": "components.RequestBlock.decline",
+      "sourcePosition": 2607
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "ملف اللغة",
+      "finalTargetHash": "efcccba4b1f4d88d08b7a42d7e45d266349606175daaada379dcf02064de8520",
+      "locale": "ar",
+      "sourceId": "components.RequestBlock.languageprofile",
+      "sourcePosition": 2610
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "Perfil de idioma",
+      "finalTargetHash": "2627151c6cc48ed10e59e5676f4ea2ba4017ec70facca3f6a2dc4037f5b3fd22",
+      "locale": "es",
+      "sourceId": "components.RequestBlock.languageprofile",
+      "sourcePosition": 2610
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "语言配置方案",
+      "finalTargetHash": "45b6e43cbef9b6d44db63f2a97f17f0ff5c246b223645d86eebc8e0884c3dd52",
+      "locale": "zh_Hans",
+      "sourceId": "components.RequestBlock.languageprofile",
+      "sourcePosition": 2610
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "語言設定檔",
+      "finalTargetHash": "bf4f248cdc6e09380dc8f59cfe07a3b03cd8a7a2c8d450cea33bd62ebed44ce9",
+      "locale": "zh_Hant",
+      "sourceId": "components.RequestBlock.languageprofile",
+      "sourcePosition": 2610
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "آخر تعديل بواسطة",
+      "finalTargetHash": "9768f7d4b8cd486f3da1824a666ea1a433dee0a39cd15df8e37e535b9cb9ab6e",
+      "locale": "ar",
+      "sourceId": "components.RequestBlock.lastmodifiedby",
+      "sourcePosition": 2611
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "अंतिम बार संशोधित करने वाला",
+      "finalTargetHash": "5a67df7cf85e502d509bcb623d1313ea1169d6279efa2ea5f4a54403c2557754",
+      "locale": "hi",
+      "sourceId": "components.RequestBlock.lastmodifiedby",
+      "sourcePosition": 2611
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "ملف البيانات الوصفية",
+      "finalTargetHash": "48815ce3deafbc81dc26cc0e14754efa5fbead6f1719e49f6553c80570437e1a",
+      "locale": "ar",
+      "sourceId": "components.RequestBlock.metadataprofilechanged",
+      "sourcePosition": 2612
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "메타데이터 프로필",
+      "finalTargetHash": "9285396ec887cabd2319ed6c9af4396dcf857265cc31b8ef13f93f1e8af96d7f",
+      "locale": "ko",
+      "sourceId": "components.RequestBlock.metadataprofilechanged",
+      "sourcePosition": 2612
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "品質プロファイル",
+      "finalTargetHash": "6fd1ebc699520e5fa83871be399f304b6467c844dd54f5cf8d9b59640f680f0c",
+      "locale": "ja",
+      "sourceId": "components.RequestBlock.profilechanged",
+      "sourcePosition": 2613
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "अनुरोधकर्ता",
+      "finalTargetHash": "a06a1dd36eb064f5af42df0268994fb555dcb989a8bb5c9ea247e5c8ecbb3a4b",
+      "locale": "hi",
+      "sourceId": "components.RequestBlock.requestedby",
+      "sourcePosition": 2615
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "استثناءات الطلب",
+      "finalTargetHash": "5e7640a67a3b6a1d1a02d296a84f8e79684e0141f69f6060ea64a0e8a22a5eee",
+      "locale": "ar",
+      "sourceId": "components.RequestBlock.requestoverrides",
+      "sourcePosition": 2616
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "Anfrageüberschreibungen",
+      "finalTargetHash": "ac48de1d67dbce171a4c301fa605e1bf1bbda5192b27667701549a97017c8bbe",
+      "locale": "de",
+      "sourceId": "components.RequestBlock.requestoverrides",
+      "sourcePosition": 2616
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "Penggantian pengaturan permintaan",
+      "finalTargetHash": "c86c6b62583827e2952d62ed4afe6ed019f155da957c97d41548a7d5e8fa27fb",
+      "locale": "id",
+      "sourceId": "components.RequestBlock.requestoverrides",
+      "sourcePosition": 2616
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "リクエスト設定の上書き",
+      "finalTargetHash": "b7a7b4cfb7a98a6cef89b5155ed21f09cad17234fff04d05b793dcb00d1e0272",
+      "locale": "ja",
+      "sourceId": "components.RequestBlock.requestoverrides",
+      "sourcePosition": 2616
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "요청 설정 재정의",
+      "finalTargetHash": "1afbc4e240dd88df398d9720979f208098ce8e79a8f62893f7f6a27259a61074",
+      "locale": "ko",
+      "sourceId": "components.RequestBlock.requestoverrides",
+      "sourcePosition": 2616
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "Substituições da solicitação",
+      "finalTargetHash": "174121f6374486401547db988b89d54dea205a9166af44f17c66f2299d17dec7",
+      "locale": "pt_BR",
+      "sourceId": "components.RequestBlock.requestoverrides",
+      "sourcePosition": 2616
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "Ghi đè tùy chọn yêu cầu",
+      "finalTargetHash": "7e167cb9afcc746cc98cde9174a3ccd5e4d7b4eb5cbe977322f7e7d0cc3ba595",
+      "locale": "vi",
+      "sourceId": "components.RequestBlock.requestoverrides",
+      "sourcePosition": 2616
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "请求设置覆盖项",
+      "finalTargetHash": "b15b39040730f703c655bc5de2509ba33980fdeee8f76f3bfde6347b6af824dd",
+      "locale": "zh_Hans",
+      "sourceId": "components.RequestBlock.requestoverrides",
+      "sourcePosition": 2616
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "要求設定覆寫項",
+      "finalTargetHash": "59129fb40cc71ba4b040cc07946394737c0464f68dc1c85fb3fb9aa75e010579",
+      "locale": "zh_Hant",
+      "sourceId": "components.RequestBlock.requestoverrides",
+      "sourcePosition": 2616
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "{seasonCount, plural, zero {لا مواسم} one {موسم} two {موسمان} few {مواسم} many {موسمًا} other {موسم}}",
+      "finalTargetHash": "01c3267c45adee17e59cd98cbd7bdd751593091ae5b54e4c0c317d94ba52fe47",
+      "locale": "ar",
+      "sourceId": "components.RequestBlock.seasons",
+      "sourcePosition": 2618
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "{seasonCount, plural, one {シーズン} other {シーズン}}",
+      "finalTargetHash": "e20aa5f7f41db41ef23f6e74bf822af2bafc97af601d79c39222b5cad4454209",
+      "locale": "ja",
+      "sourceId": "components.RequestBlock.seasons",
+      "sourcePosition": 2618
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "{seasonCount, plural, one {Mùa} other {Các mùa}}",
+      "finalTargetHash": "5e7f8ea31688fca9ab8a37909dbd39cfed6a5264785e1556596085b29727f868",
+      "locale": "vi",
+      "sourceId": "components.RequestBlock.seasons",
+      "sourcePosition": 2618
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "{seasonCount, plural, one {季節} other {季節}}",
+      "finalTargetHash": "218572da41ad6351944b7d484b17d4e07d75483d5854f5a52f81a070d660e3c8",
+      "locale": "zh_Hant",
+      "sourceId": "components.RequestBlock.seasons",
+      "sourcePosition": 2618
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "الخادم الوجهة",
+      "finalTargetHash": "6ed9c305c33e0afb9ce50648a96967a2c7e546dbb4dda055007749d2baae9eb4",
+      "locale": "ar",
+      "sourceId": "components.RequestBlock.server",
+      "sourcePosition": 2619
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "هذا التنسيق متاح بالفعل.",
+      "finalTargetHash": "63277d2ba38384bc99141914c13e53d5185e76b04310b35d4a7d1a955809aa5c",
+      "locale": "ar",
+      "sourceId": "components.RequestButton.availableFormat",
+      "sourcePosition": 2620
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "Định dạng này đã có sẵn.",
+      "finalTargetHash": "31228f0b402097d25b835c277e04be2543668c1e11bad3002e30ecda3e1157ce",
+      "locale": "vi",
+      "sourceId": "components.RequestButton.availableFormat",
+      "sourcePosition": 2620
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "هذا العنوان مدرج في قائمة الحظر.",
+      "finalTargetHash": "a1718293ee21bfb299f20ee193d68f7b83eb2d06cc03ea2a9642277d934c5b76",
+      "locale": "ar",
+      "sourceId": "components.RequestButton.blocklisted",
+      "sourcePosition": 2621
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "このタイトルはブロックリストに登録されています。",
+      "finalTargetHash": "e0c96662f6a3cc409da01eba3324b11eeb4e6d846a194d9bb52859025aadf4a1",
+      "locale": "ja",
+      "sourceId": "components.RequestButton.blocklisted",
+      "sourcePosition": 2621
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "Este título está na lista de bloqueio.",
+      "finalTargetHash": "358a87735db402eca73354a8f557474705c11deb8f1909997f131263a346b6d0",
+      "locale": "pt_BR",
+      "sourceId": "components.RequestButton.blocklisted",
+      "sourcePosition": 2621
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "No hay ningún servicio configurado para este formato.",
+      "finalTargetHash": "1221654621a91f179d4b0cb3da85f6d79ff3810d441005b113be00cc77b22924",
+      "locale": "es",
+      "sourceId": "components.RequestButton.noService",
+      "sourcePosition": 2623
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "इस फ़ॉर्मैट के लिए कोई सेवा कॉन्फ़िगर नहीं है।",
+      "finalTargetHash": "8a6fa25c7a7d373fc5dcfa9624d2e3f1d03bc9ff551abbf3dfb5cce210812a3e",
+      "locale": "hi",
+      "sourceId": "components.RequestButton.noService",
+      "sourcePosition": 2623
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "この形式に対応するサービスは設定されていません。",
+      "finalTargetHash": "2395486a755fc01ca002280411d1ece5459a91955790b2d7226cbb1f994bfa27",
+      "locale": "ja",
+      "sourceId": "components.RequestButton.noService",
+      "sourcePosition": 2623
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "이 형식에 구성된 서비스가 없습니다.",
+      "finalTargetHash": "f49ab7073cf6a09a8821d889d854c82a976569e8c88d9ed7f483b99bc657f727",
+      "locale": "ko",
+      "sourceId": "components.RequestButton.noService",
+      "sourcePosition": 2623
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "Ya existe una solicitud pendiente abierta para este formato.",
+      "finalTargetHash": "2d5a7a9e7cce86283f5f772e9dffcf5c4143ac4cd77cb073368f8411ba36f988",
+      "locale": "es",
+      "sourceId": "components.RequestButton.pendingFormat",
+      "sourcePosition": 2624
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "Sudah ada permintaan terbuka yang masih tertunda untuk format ini.",
+      "finalTargetHash": "9932dd96474936e06a43bac8f047fd9c64a329038da1dac2cf09eefc11f72f39",
+      "locale": "id",
+      "sourceId": "components.RequestButton.pendingFormat",
+      "sourcePosition": 2624
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "この形式には、すでに処理待ちのリクエストがあります。",
+      "finalTargetHash": "6166cd1a483dce6d0dc1512018a02bbfa66a8a948c526608f7104413e1535cd0",
+      "locale": "ja",
+      "sourceId": "components.RequestButton.pendingFormat",
+      "sourcePosition": 2624
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "이 형식에 대해 이미 처리 대기 중인 요청이 있습니다.",
+      "finalTargetHash": "b39d059ad78bb6a2c50a87cd4c02d14ad3314a6b8cdf0e3d49b9df4ddcc0df9d",
+      "locale": "ko",
+      "sourceId": "components.RequestButton.pendingFormat",
+      "sourcePosition": 2624
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "Đã có yêu cầu đang chờ xử lý cho định dạng này.",
+      "finalTargetHash": "68249802feeec491c4b843de9d371e3b8cd8c665d837c2fe4cf3589c8c45c4dd",
+      "locale": "vi",
+      "sourceId": "components.RequestButton.pendingFormat",
+      "sourcePosition": 2624
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "अधिक सामग्री का अनुरोध करें",
+      "finalTargetHash": "8c7ecd9a5a65ef85e98b04acbb80130ba0a1df00ac0e16920e158ac8fdabf3dc",
+      "locale": "hi",
+      "sourceId": "components.RequestButton.requestmore",
+      "sourcePosition": 2625
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "Ajukan permintaan tambahan",
+      "finalTargetHash": "16ecd07e505139e5d9487d8f861ff0e48cdff62ec72d1ff5afb0fd4a490887f8",
+      "locale": "id",
+      "sourceId": "components.RequestButton.requestmore",
+      "sourcePosition": 2625
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "{failed, plural, zero {تعذّر تحديث أي طلب.} one {تعذّر تحديث طلب واحد.} two {تعذّر تحديث طلبين.} few {تعذّر تحديث {failed} طلبات.} many {تعذّر تحديث {failed} طلبًا.} other {تعذّر تحديث {failed} طلب.}}",
+      "finalTargetHash": "350532ab5786fd5da3b2867803f5969489e16a5956087a30c9afffe705bfc355",
+      "locale": "ar",
+      "sourceId": "components.RequestButton.requestupdatesfailed",
+      "sourcePosition": 2627
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "{failed, plural, one {No se pudo actualizar una solicitud.} many {{failed} solicitudes no pudieron actualizarse.} other {{failed} solicitudes no pudieron actualizarse.}}",
+      "finalTargetHash": "5eac3c964cb8b8d12d9b42660a823a34b5938ca285247d67633bdcbc359415a2",
+      "locale": "es",
+      "sourceId": "components.RequestButton.requestupdatesfailed",
+      "sourcePosition": 2627
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "{failed, plural, one {Une demande n’a pas pu être mise à jour.} many {{failed} demandes n’ont pas pu être mises à jour.} other {{failed} demandes n’ont pas pu être mises à jour.}}",
+      "finalTargetHash": "505f2d8a0b25ebb644456d06ffaf4e5d78f542b017c8fbe776f608ee5e88c4ae",
+      "locale": "fr",
+      "sourceId": "components.RequestButton.requestupdatesfailed",
+      "sourcePosition": 2627
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "{failed, plural, one {एक अनुरोध अपडेट नहीं हो सका।} other {{failed} अनुरोध अपडेट नहीं हो सके।}}",
+      "finalTargetHash": "591ec002b4cc2a84ae6bab9836a7605b872eb07044bd4406bcc2f2308bdc1ce6",
+      "locale": "hi",
+      "sourceId": "components.RequestButton.requestupdatesfailed",
+      "sourcePosition": 2627
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "{failed, plural, one {1件のリクエストを更新できませんでした。} other {{failed}件のリクエストを更新できませんでした。}}",
+      "finalTargetHash": "7912e4cff45ed7aa8c952d435fbe8c6ab511c191a279e06c91a8c058ca21ac64",
+      "locale": "ja",
+      "sourceId": "components.RequestButton.requestupdatesfailed",
+      "sourcePosition": 2627
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "{failed, plural, one {요청 한 건을 업데이트하지 못했습니다.} other {요청 {failed}건을 업데이트하지 못했습니다.}}",
+      "finalTargetHash": "a86d0ff7587b7f7709a780d9ba85cf3212481c7bb51ac22accf33588f40f449c",
+      "locale": "ko",
+      "sourceId": "components.RequestButton.requestupdatesfailed",
+      "sourcePosition": 2627
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "{failed, plural, one {Não foi possível atualizar uma solicitação.} many {Não foi possível atualizar {failed} solicitações.} other {Não foi possível atualizar {failed} solicitações.}}",
+      "finalTargetHash": "978d05a894403d64c4115958f0a2c05d75dc2d5ca7e4b46ba8b78dee15ba3ca6",
+      "locale": "pt_BR",
+      "sourceId": "components.RequestButton.requestupdatesfailed",
+      "sourcePosition": 2627
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "{failed, plural, one {Không thể cập nhật một yêu cầu.} other {Không thể cập nhật {failed} yêu cầu.}}",
+      "finalTargetHash": "f297c2be9d13b6f079f9125bdf4b9a966136b8ca61159f09242ca09caeb77775",
+      "locale": "vi",
+      "sourceId": "components.RequestButton.requestupdatesfailed",
+      "sourcePosition": 2627
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "Xem yêu cầu",
+      "finalTargetHash": "c8961072a4720607b23fabdb53d8cb6439b41a09abc922e26fc511d60ad04ed0",
+      "locale": "vi",
+      "sourceId": "components.RequestButton.viewrequest",
+      "sourcePosition": 2629
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "Lihat permintaan 4K",
+      "finalTargetHash": "a41c0030684875ce3761e3a8ffb72452db9d13c196e6fe824a8c9fb0a7288f64",
+      "locale": "id",
+      "sourceId": "components.RequestButton.viewrequest4k",
+      "sourcePosition": 2630
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "Xem yêu cầu 4K",
+      "finalTargetHash": "96d659a9b8aa01263b9fe69653c5fcaee49fcf30ecc2727476bdfb662c79a4fd",
+      "locale": "vi",
+      "sourceId": "components.RequestButton.viewrequest4k",
+      "sourcePosition": 2630
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "عيّن كل موسم مطلوب. يقارن SeerrNG خيارات الترتيب القياسي بـ TVDB، وخيارات الترتيب البديل بمسلسل Sonarr المحدد.",
+      "finalTargetHash": "478c084fcb28caeb22e3f50a2dda134db1b95d4ea00522306a9c62325d3eaa07",
+      "locale": "ar",
+      "sourceId": "components.RequestCard.TvSeasonMappingModal.description",
+      "sourcePosition": 2632
+    },
+    {
+      "disposition": "refinement",
+      "finalTarget": "Asigne cada temporada solicitada. SeerrNG compara las opciones en orden estándar con TVDB y las opciones en orden alternativo con la serie de Sonarr seleccionada.",
+      "finalTargetHash": "ceb4c93fe0609152a075d02a26c49c5a1ce8a09ffa708b3539154f24970540a7",
+      "locale": "es",
+      "sourceId": "components.RequestCard.TvSeasonMappingModal.description",
+      "sourcePosition": 2632
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "Associez chaque saison demandée. SeerrNG compare les choix d’ordre standard à TVDB et les choix d’ordre alternatif à la série sélectionnée dans Sonarr.",
+      "finalTargetHash": "3055205bacf4185c5c168a9bd9c22998350240f1be9c9924ca8e56290d0ea5d9",
+      "locale": "fr",
+      "sourceId": "components.RequestCard.TvSeasonMappingModal.description",
+      "sourcePosition": 2632
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "अनुरोध किए गए हर सीज़न को मैप करें। SeerrNG मानक क्रम वाले विकल्पों की जाँच TVDB से और वैकल्पिक क्रम वाले विकल्पों की जाँच चुनी गई Sonarr सीरीज़ से करता है।",
+      "finalTargetHash": "17d9f46516cf9f2378f31ab8cfa985e1acd632ecf6bc7951d18af1775abd239d",
+      "locale": "hi",
+      "sourceId": "components.RequestCard.TvSeasonMappingModal.description",
+      "sourcePosition": 2632
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "Petakan setiap musim yang diminta. SeerrNG mencocokkan pilihan urutan standar dengan TVDB dan pilihan urutan alternatif dengan serial Sonarr yang dipilih.",
+      "finalTargetHash": "023d9bc79af2fc769df855c7b1dde543d1829682cd3b74092b2ce8b466d860ec",
+      "locale": "id",
+      "sourceId": "components.RequestCard.TvSeasonMappingModal.description",
+      "sourcePosition": 2632
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "リクエストされたすべてのシーズンを対応付けます。SeerrNG は標準順の選択肢を TVDB と、別順の選択肢を選択した Sonarr シリーズと照合します。",
+      "finalTargetHash": "bd7f372360cc274bb4f556a04ad45921c369d738682a4f506ed21a4bb4029a1e",
+      "locale": "ja",
+      "sourceId": "components.RequestCard.TvSeasonMappingModal.description",
+      "sourcePosition": 2632
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "요청된 모든 시즌을 매핑하세요. SeerrNG는 표준 순서 선택 항목은 TVDB와, 대체 순서 선택 항목은 선택한 Sonarr 시리즈와 대조합니다.",
+      "finalTargetHash": "841a225deb5201b31e0a3e0b8e57a537be0ad3bff5c4effe203e81ecc1b2e22e",
+      "locale": "ko",
+      "sourceId": "components.RequestCard.TvSeasonMappingModal.description",
+      "sourcePosition": 2632
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "Mapeie todas as temporadas solicitadas. O SeerrNG compara as opções em ordem padrão com TVDB e as opções em ordem alternativa com a série selecionada no Sonarr.",
+      "finalTargetHash": "0f640caaa0781e7657fd95afb74ff850364ac6819e8ee90045104bcdb787187b",
+      "locale": "pt_BR",
+      "sourceId": "components.RequestCard.TvSeasonMappingModal.description",
+      "sourcePosition": 2632
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "Ánh xạ mọi mùa được yêu cầu. SeerrNG đối chiếu các lựa chọn theo thứ tự chuẩn với TVDB và các lựa chọn theo thứ tự thay thế với bộ phim trong Sonarr đã chọn.",
+      "finalTargetHash": "8b936925716bfd4f16873bda845264a4f7144d52ec1f8bcd69e3c3f2b068c01c",
+      "locale": "vi",
+      "sourceId": "components.RequestCard.TvSeasonMappingModal.description",
+      "sourcePosition": 2632
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "映射所有已请求的季。SeerrNG 会将标准顺序选项与 TVDB 对照，并将替代顺序选项与所选的 Sonarr 剧集对照。",
+      "finalTargetHash": "d59f4ddc73dc7553658240d173809963a3929701b80dcefae5fcaf3630998c8d",
+      "locale": "zh_Hans",
+      "sourceId": "components.RequestCard.TvSeasonMappingModal.description",
+      "sourcePosition": 2632
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "對應所有已要求的季。SeerrNG 會將標準順序選項與 TVDB 對照，並將替代順序選項與選取的 Sonarr 影集對照。",
+      "finalTargetHash": "24d49e90ef2e5faafeb0f80931c40c237ca7b06ec2aee5c29121458d1242fe6b",
+      "locale": "zh_Hant",
+      "sourceId": "components.RequestCard.TvSeasonMappingModal.description",
+      "sourcePosition": 2632
+    },
+    {
+      "disposition": "refinement",
+      "finalTarget": "Elija una temporada de TVDB",
+      "finalTargetHash": "9bcc6d1659c4e8bd4e69ae42c14e3010f3e837ab115d8fc0357a133a59608fa4",
+      "locale": "es",
+      "sourceId": "components.RequestCard.TvSeasonMappingModal.selectSeason",
+      "sourcePosition": 2648
+    },
+    {
+      "disposition": "refinement",
+      "finalTarget": "Elija una serie de Sonarr",
+      "finalTargetHash": "59094b1daadff7eb1d5c7dd8116c26eabf7db2dee10f35a97249b7b63238d4ce",
+      "locale": "es",
+      "sourceId": "components.RequestCard.TvSeasonMappingModal.selectSeries",
+      "sourcePosition": 2649
+    },
+    {
+      "disposition": "refinement",
+      "finalTarget": "Elija una temporada de Sonarr",
+      "finalTargetHash": "269090e5a7785998370607f1767bb390be67bde9cf2817feb1e710ef5760d3a2",
+      "locale": "es",
+      "sourceId": "components.RequestCard.TvSeasonMappingModal.selectSonarrSeason",
+      "sourcePosition": 2650
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "अनुरोध स्वीकार करें",
+      "finalTargetHash": "bd6ab03d102ded0fc0f5d437f410d96a0b5ba90618dfff18e3fb8cedc5eee800",
+      "locale": "hi",
+      "sourceId": "components.RequestCard.approverequest",
+      "sourcePosition": 2656
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "Setujui Permintaan",
+      "finalTargetHash": "3c7488c9a5bc702c7a0c41ee403a378a9ca6849466bf7c8f4d20659c488bd254",
+      "locale": "id",
+      "sourceId": "components.RequestCard.approverequest",
+      "sourcePosition": 2656
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "Chấp thuận yêu cầu",
+      "finalTargetHash": "8770a10fdfa2a3c6d5e68285de637dde26bb791bc808e181521f0c919c54c5d1",
+      "locale": "vi",
+      "sourceId": "components.RequestCard.approverequest",
+      "sourcePosition": 2656
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "Hủy yêu cầu",
+      "finalTargetHash": "59bd0b6b7701c0b61a0aaa9a2def42854449a59cd50def1bbb9bf3549c2851e7",
+      "locale": "vi",
+      "sourceId": "components.RequestCard.cancelrequest",
+      "sourcePosition": 2660
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "अनुरोध अस्वीकार करें",
+      "finalTargetHash": "dcceeadac2df2d2f63e608f865414caec1845547de0459b5bb7d98fe1547dc11",
+      "locale": "hi",
+      "sourceId": "components.RequestCard.declinerequest",
+      "sourcePosition": 2661
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "Tolak Permintaan",
+      "finalTargetHash": "0496f62a7b03896c5223f083626c5d6e182705ea96c55e1c8c4e255fea15b6d8",
+      "locale": "id",
+      "sourceId": "components.RequestCard.declinerequest",
+      "sourcePosition": 2661
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "Từ chối yêu cầu",
+      "finalTargetHash": "3b00d31ce7594a8b5dca7c22cfc10693e209cfb4e6d1ee57654cbd1e415a6f33",
+      "locale": "vi",
+      "sourceId": "components.RequestCard.declinerequest",
+      "sourcePosition": 2661
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "删除请求",
+      "finalTargetHash": "84b29c4d4cf3ccd76519ef2024ba400e7e3994e84d702d756386660f8a7d5d1a",
+      "locale": "zh_Hans",
+      "sourceId": "components.RequestCard.deleterequest",
+      "sourcePosition": 2662
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "حدث خطأ ما أثناء إعادة محاولة إرسال الطلب.",
+      "finalTargetHash": "e55012407579038759df9e9ff70b17fd47e1df5b530e069f90d219a387786539",
+      "locale": "ar",
+      "sourceId": "components.RequestCard.failedretry",
+      "sourcePosition": 2666
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "अनुरोध को दोबारा भेजने की कोशिश के दौरान कुछ गड़बड़ हुई।",
+      "finalTargetHash": "6aff1107bd73daede053876adfb8450ee26046689368b6e324b0c8a86e0e948c",
+      "locale": "hi",
+      "sourceId": "components.RequestCard.failedretry",
+      "sourcePosition": 2666
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "Terjadi kesalahan saat mencoba kembali permintaan.",
+      "finalTargetHash": "4cbd14138809ed48a4a4d9fb09d4587eca77029da2ff77e85fee50e658ecf0b0",
+      "locale": "id",
+      "sourceId": "components.RequestCard.failedretry",
+      "sourcePosition": 2666
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "Algo deu errado ao tentar enviar a solicitação novamente.",
+      "finalTargetHash": "2f360ccc0043d82040e23ba1b17e960c4a281eacf5933f4de475a8757e996df9",
+      "locale": "pt_BR",
+      "sourceId": "components.RequestCard.failedretry",
+      "sourcePosition": 2666
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "इस अनुरोध को फिर से आज़माएँ",
+      "finalTargetHash": "99de9c4cc6d922f4766cc781201ea2541a576b19359cf0667bff6c86f4077c13",
+      "locale": "hi",
+      "sourceId": "components.RequestCard.retryRequest",
+      "sourcePosition": 2671
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "Ulangi permintaan ini",
+      "finalTargetHash": "bd9f82c0174b6633aa21688fa9932aba3a850a531b46bb4b416f2830e625dbee",
+      "locale": "id",
+      "sourceId": "components.RequestCard.retryRequest",
+      "sourcePosition": 2671
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "이 요청을 다시 시도하세요.",
+      "finalTargetHash": "e3e1899717fd2dcc0536357b8e99bd894e876ebc4150fc4b18bed92211da195c",
+      "locale": "ko",
+      "sourceId": "components.RequestCard.retryRequest",
+      "sourcePosition": 2671
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "تنزيل كتاب صوتي",
+      "finalTargetHash": "01285cee690fdd3d1dcf55e16155be7d594588b4344a0a8397b1ffd1b99f7804",
+      "locale": "ar",
+      "sourceId": "components.RequestDownloadAction.audiobook",
+      "sourcePosition": 2675
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "Descargar audiolibro",
+      "finalTargetHash": "fd92e366640b6def229d034a29f08eec8d2af2760ff35cb4eadaa8d185023d8f",
+      "locale": "es",
+      "sourceId": "components.RequestDownloadAction.audiobook",
+      "sourcePosition": 2675
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "오디오북 다운로드",
+      "finalTargetHash": "a8d6b30150ee5d9b5dd5efb35ad397d3b0a7667b0c912098d2f58a674b7dcb67",
+      "locale": "ko",
+      "sourceId": "components.RequestDownloadAction.audiobook",
+      "sourcePosition": 2675
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "Tải sách nói xuống",
+      "finalTargetHash": "fe773cf1aa4003bcb691a076b7249ae05e2741d57b277a7c11e0d40159101b14",
+      "locale": "vi",
+      "sourceId": "components.RequestDownloadAction.audiobook",
+      "sourcePosition": 2675
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "下載有聲書",
+      "finalTargetHash": "5746c785f395a9939b81cff204cac44c975ab4af667f076f4cce6341b9711efd",
+      "locale": "zh_Hant",
+      "sourceId": "components.RequestDownloadAction.audiobook",
+      "sourcePosition": 2675
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "اختر ملف كتاب صوتي",
+      "finalTargetHash": "8aa8bdbbf9b35e5871e75929c2b5cbd50e5da81c301771b9a71df4dc31f90014",
+      "locale": "ar",
+      "sourceId": "components.RequestDownloadAction.chooseAudiobooks",
+      "sourcePosition": 2677
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "Elija un archivo de audiolibro",
+      "finalTargetHash": "a62f733ff00378478524594b9f47e6a473a487018ea0435d73ca3f97985aae62",
+      "locale": "es",
+      "sourceId": "components.RequestDownloadAction.chooseAudiobooks",
+      "sourcePosition": 2677
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "Sélectionnez un fichier de livre audio",
+      "finalTargetHash": "6324c0149322e5ac23ba3e9120055060638b527a282bd6067cd3f2cc089449fa",
+      "locale": "fr",
+      "sourceId": "components.RequestDownloadAction.chooseAudiobooks",
+      "sourcePosition": 2677
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "Pilih berkas buku audio",
+      "finalTargetHash": "ec1e7d8ce64d1f9b46e0bfc77a0a226b37a8a73dbb499c9e48b674de86681578",
+      "locale": "id",
+      "sourceId": "components.RequestDownloadAction.chooseAudiobooks",
+      "sourcePosition": 2677
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "오디오북 파일을 선택하세요.",
+      "finalTargetHash": "e1ae63639b9ac82588b851642566a87dd8378d61c8656e2a1d2a6423256a8ffb",
+      "locale": "ko",
+      "sourceId": "components.RequestDownloadAction.chooseAudiobooks",
+      "sourcePosition": 2677
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "Chọn một tệp sách nói",
+      "finalTargetHash": "5d1a7d2915043aabcb44e04789b9b68328a52e4488d6a42b2e70bef48c255599",
+      "locale": "vi",
+      "sourceId": "components.RequestDownloadAction.chooseAudiobooks",
+      "sourcePosition": 2677
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "選擇有聲書檔案",
+      "finalTargetHash": "690cdbcf931cfd0a7890ffda542946211271ae704c0a81d615aaa2243fc48ba5",
+      "locale": "zh_Hant",
+      "sourceId": "components.RequestDownloadAction.chooseAudiobooks",
+      "sourcePosition": 2677
+    },
+    {
+      "disposition": "refinement",
+      "finalTarget": "Elija los números del cómic",
+      "finalTargetHash": "ebed0209c5c66d91acfda26fee30588d45aec29b4f937cf81b80658b0e5b6e82",
+      "locale": "es",
+      "sourceId": "components.RequestDownloadAction.chooseComics",
+      "sourcePosition": 2678
+    },
+    {
+      "disposition": "refinement",
+      "finalTarget": "Elija un archivo de libro electrónico",
+      "finalTargetHash": "77a376da4418f754f277bda562eae318d335d12e6b84c95ed77f9fd6f27d174b",
+      "locale": "es",
+      "sourceId": "components.RequestDownloadAction.chooseEbooks",
+      "sourcePosition": 2679
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "Choisir un fichier de livre numérique",
+      "finalTargetHash": "b8778dab207748e3f32e161ae05a34a5fd8fcd40754c54b6e59c6e6fea6581bf",
+      "locale": "fr",
+      "sourceId": "components.RequestDownloadAction.chooseEbooks",
+      "sourcePosition": 2679
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "전자책 파일을 선택하세요.",
+      "finalTargetHash": "3df5c3f9f09589a51a04f7d6ed3ffec7297de74e443353eb3efaed3364378594",
+      "locale": "ko",
+      "sourceId": "components.RequestDownloadAction.chooseEbooks",
+      "sourcePosition": 2679
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "選擇電子書檔案",
+      "finalTargetHash": "7a338345b7add5191fa6120cf3cdae517ca0658995da9003cfad866b7a7ec81c",
+      "locale": "zh_Hant",
+      "sourceId": "components.RequestDownloadAction.chooseEbooks",
+      "sourcePosition": 2679
+    },
+    {
+      "disposition": "refinement",
+      "finalTarget": "Elija los números de la revista",
+      "finalTargetHash": "947ff8a76c92986dc66fc135cd82c377d43ae48f7ef7f0eedaed8b339f9bf808",
+      "locale": "es",
+      "sourceId": "components.RequestDownloadAction.chooseMagazines",
+      "sourcePosition": 2680
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "تنزيل القصص المصوّرة",
+      "finalTargetHash": "3a5453072e848a7785739fcd2152d62faddb88aecbc59b4a14fbcfc24f7982c5",
+      "locale": "ar",
+      "sourceId": "components.RequestDownloadAction.comic",
+      "sourcePosition": 2681
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "कॉमिक डाउनलोड करें",
+      "finalTargetHash": "3880238c1c8d3d8e9663210a2de9385a03a852957be0ae23c1c8cb038b97ce59",
+      "locale": "hi",
+      "sourceId": "components.RequestDownloadAction.comic",
+      "sourcePosition": 2681
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "만화를 다운로드하세요.",
+      "finalTargetHash": "34e7bb9b2fbb5584b4c770e47af09d6fd10d1ea3802826486208b8dd53757bdd",
+      "locale": "ko",
+      "sourceId": "components.RequestDownloadAction.comic",
+      "sourcePosition": 2681
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "Baixar quadrinhos",
+      "finalTargetHash": "63a74198372be27ee88e51affb47bc44d3af6c1ea62c450eb5b3811314cbbd00",
+      "locale": "pt_BR",
+      "sourceId": "components.RequestDownloadAction.comic",
+      "sourcePosition": 2681
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "Tải truyện tranh xuống",
+      "finalTargetHash": "2bac455dcac3d492530c65256ca757ad44dcf7bdc5f64da53dfb5ad26461b197",
+      "locale": "vi",
+      "sourceId": "components.RequestDownloadAction.comic",
+      "sourcePosition": 2681
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "نزّل هذا الملف المتاح على جهازك باستخدام هذا المتصفح. افتحه في تطبيق قراءة متوافق.",
+      "finalTargetHash": "48e7e720cd6484ebad7cc069c3ae00fca031abfc39e8906ea14e7559e08864a8",
+      "locale": "ar",
+      "sourceId": "components.RequestDownloadAction.downloadHelp",
+      "sourcePosition": 2683
+    },
+    {
+      "disposition": "refinement",
+      "finalTarget": "Descargue este archivo en su dispositivo con este navegador. Ábralo en una aplicación de lectura compatible.",
+      "finalTargetHash": "1b3844ec8fc728b593704b30df4112d208d10e9126a1e0d5d98536420bc40d41",
+      "locale": "es",
+      "sourceId": "components.RequestDownloadAction.downloadHelp",
+      "sourcePosition": 2683
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "इस ब्राउज़र का उपयोग करके यह उपलब्ध फ़ाइल अपने डिवाइस पर डाउनलोड करें। इसे किसी संगत रीडर ऐप में खोलें।",
+      "finalTargetHash": "9d1dc5a02b7546e913e53c788cbe312744a52f1c15617a5f1e4b6ec1566dcf4a",
+      "locale": "hi",
+      "sourceId": "components.RequestDownloadAction.downloadHelp",
+      "sourcePosition": 2683
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "Unduh berkas yang tersedia ini ke perangkat menggunakan peramban ini. Buka berkas tersebut dengan aplikasi pembaca yang kompatibel.",
+      "finalTargetHash": "793b786d4cdf5f70576664781706ab3c3833057061382bbbaafc9267ddb7f1af",
+      "locale": "id",
+      "sourceId": "components.RequestDownloadAction.downloadHelp",
+      "sourcePosition": 2683
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "이 브라우저를 사용해 기기에 이 파일을 다운로드하세요. 호환되는 리더 앱에서 파일을 여세요.",
+      "finalTargetHash": "4bd3f6415b01f44d305250b8e86558dd69b54b66aa705864dbf381e743a521d1",
+      "locale": "ko",
+      "sourceId": "components.RequestDownloadAction.downloadHelp",
+      "sourcePosition": 2683
+    },
+    {
+      "disposition": "refinement",
+      "finalTarget": "Baixe este arquivo no dispositivo usando este navegador. Abra-o em um aplicativo de leitura compatível.",
+      "finalTargetHash": "ea20dd25f3e77fbd3c2e13d7ac67332ba0b5d36da69231559f37f18fed102518",
+      "locale": "pt_BR",
+      "sourceId": "components.RequestDownloadAction.downloadHelp",
+      "sourcePosition": 2683
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "Tải tệp này xuống thiết bị bằng trình duyệt này. Mở tệp bằng ứng dụng đọc tương thích.",
+      "finalTargetHash": "95cba760f7ec987c41363b5c630be5c385f3d541ac29e118725174d6d77668cf",
+      "locale": "vi",
+      "sourceId": "components.RequestDownloadAction.downloadHelp",
+      "sourcePosition": 2683
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "使用此浏览器将此可用文件下载到设备上。请在兼容的阅读器应用中打开此文件。",
+      "finalTargetHash": "71d676a7b10288959eb29bec7cacfb4e28b27d85d54ba2b5bb03f6c887b76dde",
+      "locale": "zh_Hans",
+      "sourceId": "components.RequestDownloadAction.downloadHelp",
+      "sourcePosition": 2683
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "使用此瀏覽器將此可用檔案下載到裝置上。請在相容的閱讀器應用程式中開啟此檔案。",
+      "finalTargetHash": "5da28abb70167e07af45aa5fc893198225d8a1af024b0f00c5281f4eda389a9d",
+      "locale": "zh_Hant",
+      "sourceId": "components.RequestDownloadAction.downloadHelp",
+      "sourcePosition": 2683
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "Aucune copie téléchargeable n’a été trouvée. Consultez l’état de la demande et vérifiez que le fichier est présent dans le service multimédia associé.",
+      "finalTargetHash": "093d6b7b2a0d102b0f6e83ff037219f046832da494c9e64fe443446326b311a9",
+      "locale": "fr",
+      "sourceId": "components.RequestDownloadAction.notFound",
+      "sourcePosition": 2686
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "Tidak ditemukan salinan yang dapat diunduh. Tinjau Status Permintaan dan periksa apakah berkas tersebut tersedia di layanan medianya.",
+      "finalTargetHash": "ed536911e33ade3931b4ae8e8318290c626278f439a1b924d5b7649fbfae22df",
+      "locale": "id",
+      "sourceId": "components.RequestDownloadAction.notFound",
+      "sourcePosition": 2686
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "다운로드할 수 있는 사본을 찾지 못했습니다. 요청 상태에서 이 항목을 확인하고 미디어 서비스에 파일이 있는지 확인하세요.",
+      "finalTargetHash": "001de4905792d119bf28c33189c799542dd3cf35d557c4e61c7b512522c1c09d",
+      "locale": "ko",
+      "sourceId": "components.RequestDownloadAction.notFound",
+      "sourcePosition": 2686
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "Nenhuma cópia disponível para download foi encontrada. Confira o status da solicitação e verifique se o arquivo está presente no serviço de mídia associado.",
+      "finalTargetHash": "a6de07a0a8235f968fbb38ea5678497df8dc56d49026a38628c869d3ef1ca474",
+      "locale": "pt_BR",
+      "sourceId": "components.RequestDownloadAction.notFound",
+      "sourcePosition": 2686
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "Không tìm thấy bản sao có thể tải xuống. Hãy xem Trạng thái yêu cầu và kiểm tra xem tệp có trong dịch vụ đa phương tiện tương ứng hay không.",
+      "finalTargetHash": "20d79eaabe9b7aeb521a671ecee7c5ea83b3b0c5e25f90f2566b56b3ed87ec14",
+      "locale": "vi",
+      "sourceId": "components.RequestDownloadAction.notFound",
+      "sourcePosition": 2686
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "Certains fichiers n’ont pas pu être vérifiés. Consultez ce titre dans l’état de la demande pour trouver d’autres copies.",
+      "finalTargetHash": "e33ab8d07ddba1281461641268c9a9609f01aea2d0e095ed6fd0f3d5afa075b0",
+      "locale": "fr",
+      "sourceId": "components.RequestDownloadAction.partiallyAvailable",
+      "sourcePosition": 2687
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "Beberapa berkas tidak dapat diperiksa. Periksa judul ini di Status Permintaan untuk mencari salinan lain.",
+      "finalTargetHash": "20e4d7feb25e7a574c9c06a151318a1aae9d75f3263aea64cee8b5fce0605d09",
+      "locale": "id",
+      "sourceId": "components.RequestDownloadAction.partiallyAvailable",
+      "sourcePosition": 2687
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "一部のファイルを確認できませんでした。ほかのコピーがないか、リクエストステータスでこのタイトルを確認してください。",
+      "finalTargetHash": "489be382c4bd091979e91203a8c614613442d48fd84c072f061910db2f5f227b",
+      "locale": "ja",
+      "sourceId": "components.RequestDownloadAction.partiallyAvailable",
+      "sourcePosition": 2687
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "일부 파일을 확인할 수 없습니다. 다른 사본이 있는지 요청 상태에서 이 항목을 확인하세요.",
+      "finalTargetHash": "580944ad3d11a8f8d705fe3150d21059ceb54a508c713612a14e967e511b5f7a",
+      "locale": "ko",
+      "sourceId": "components.RequestDownloadAction.partiallyAvailable",
+      "sourcePosition": 2687
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "Não foi possível verificar alguns arquivos. Confira este título no status da solicitação para encontrar outras cópias.",
+      "finalTargetHash": "35ebb3c7fa9e263002e0843017c04b710c97f07ca96aac8648a6a9d186a509cd",
+      "locale": "pt_BR",
+      "sourceId": "components.RequestDownloadAction.partiallyAvailable",
+      "sourcePosition": 2687
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "Không thể kiểm tra một số tệp. Hãy xem mục này trong Trạng thái yêu cầu để tìm các bản sao khác.",
+      "finalTargetHash": "3a815107ff0b6412dd2326508e632ce958947ff7427391790c5dde7e89cb2728",
+      "locale": "vi",
+      "sourceId": "components.RequestDownloadAction.partiallyAvailable",
+      "sourcePosition": 2687
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "有些文件无法检查。请在请求状态中查看此标题，查找其他副本。",
+      "finalTargetHash": "182c050058537d58fdd9f173d3ad0abed30919d10201249bfd6cc18c56e9b072",
+      "locale": "zh_Hans",
+      "sourceId": "components.RequestDownloadAction.partiallyAvailable",
+      "sourcePosition": 2687
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "有些檔案無法檢查。請在要求狀態中查看此標題，尋找其他副本。",
+      "finalTargetHash": "37344ea2596db97f9ef6d6f214f3780699321582877423d44bc22d22645100a8",
+      "locale": "zh_Hant",
+      "sourceId": "components.RequestDownloadAction.partiallyAvailable",
+      "sourcePosition": 2687
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "حالة الطلب",
+      "finalTargetHash": "f64c293b15d495aec4b976a3a01fc4a20a86e1947c12208455639ff55d0c293d",
+      "locale": "ar",
+      "sourceId": "components.RequestDownloadAction.requestStatus",
+      "sourcePosition": 2688
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "요청 상태",
+      "finalTargetHash": "6b720b2146a263b0a23987b962cabc358956f84708a5dfb05b2c294b4b16a4c2",
+      "locale": "ko",
+      "sourceId": "components.RequestDownloadAction.requestStatus",
+      "sourcePosition": 2688
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "Status da solicitação",
+      "finalTargetHash": "296de6eda153993497a291ca3d28adf11559bfbad45673620bfeb7dd8dcce987",
+      "locale": "pt_BR",
+      "sourceId": "components.RequestDownloadAction.requestStatus",
+      "sourcePosition": 2688
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "इन डाउनलोड की जाँच नहीं हो सकी। अनुरोध की स्थिति में इस शीर्षक को देखें और फिर से प्रयास करें।",
+      "finalTargetHash": "0245bdf333f42e039c9ca007be25a646d4a67dddfee90885978394ac257b562e",
+      "locale": "hi",
+      "sourceId": "components.RequestDownloadAction.unavailable",
+      "sourcePosition": 2689
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "Unduhan ini tidak dapat diperiksa. Periksa judul ini di Status Permintaan, lalu coba lagi.",
+      "finalTargetHash": "7481d192de62fd9d51180a0b8023030ba8465ed50400668a9316e9af208ed989",
+      "locale": "id",
+      "sourceId": "components.RequestDownloadAction.unavailable",
+      "sourcePosition": 2689
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "이 다운로드를 확인할 수 없습니다. 요청 상태에서 이 항목을 확인하고 다시 시도하세요.",
+      "finalTargetHash": "714db84831e71b1f1a49b471839204ffda9d08ef04f4d1e8a0e0d1cb260b5cb2",
+      "locale": "ko",
+      "sourceId": "components.RequestDownloadAction.unavailable",
+      "sourcePosition": 2689
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "Não foi possível verificar estes downloads. Confira este título no status da solicitação e tente novamente.",
+      "finalTargetHash": "dfcd56f33c1894f92c71d17a0216d4ecb639017edad791b750e68c89d1bbc142",
+      "locale": "pt_BR",
+      "sourceId": "components.RequestDownloadAction.unavailable",
+      "sourcePosition": 2689
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "Không thể kiểm tra các tệp tải xuống này. Hãy xem mục này trong Trạng thái yêu cầu và thử lại.",
+      "finalTargetHash": "bf9c100030a9b02ad188513eff3ab5a60bfd41a20c9cbbdfd794d898d651dffd",
+      "locale": "vi",
+      "sourceId": "components.RequestDownloadAction.unavailable",
+      "sourcePosition": 2689
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "無法檢查這些下載。請在要求狀態中查看此標題，然後再試一次。",
+      "finalTargetHash": "5481c0f5058ce2c338633f932c2dc79e46ea5c00adf846ce866eceb5f41a12ed",
+      "locale": "zh_Hant",
+      "sourceId": "components.RequestDownloadAction.unavailable",
+      "sourcePosition": 2689
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "Hủy yêu cầu",
+      "finalTargetHash": "59bd0b6b7701c0b61a0aaa9a2def42854449a59cd50def1bbb9bf3549c2851e7",
+      "locale": "vi",
+      "sourceId": "components.RequestList.RequestItem.cancelRequest",
+      "sourcePosition": 2693
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "删除请求",
+      "finalTargetHash": "84b29c4d4cf3ccd76519ef2024ba400e7e3994e84d702d756386660f8a7d5d1a",
+      "locale": "zh_Hans",
+      "sourceId": "components.RequestList.RequestItem.deleterequest",
+      "sourcePosition": 2694
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "حدث خطأ ما أثناء إعادة محاولة إرسال الطلب.",
+      "finalTargetHash": "e55012407579038759df9e9ff70b17fd47e1df5b530e069f90d219a387786539",
+      "locale": "ar",
+      "sourceId": "components.RequestList.RequestItem.failedretry",
+      "sourcePosition": 2698
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "अनुरोध को दोबारा भेजने की कोशिश के दौरान कुछ गड़बड़ हुई।",
+      "finalTargetHash": "6aff1107bd73daede053876adfb8450ee26046689368b6e324b0c8a86e0e948c",
+      "locale": "hi",
+      "sourceId": "components.RequestList.RequestItem.failedretry",
+      "sourcePosition": 2698
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "Terjadi kesalahan saat mencoba kembali permintaan.",
+      "finalTargetHash": "4cbd14138809ed48a4a4d9fb09d4587eca77029da2ff77e85fee50e658ecf0b0",
+      "locale": "id",
+      "sourceId": "components.RequestList.RequestItem.failedretry",
+      "sourcePosition": 2698
+    },
+    {
+      "disposition": "propose-correction",
+      "finalTarget": "Algo deu errado ao tentar enviar a solicitação novamente.",
+      "finalTargetHash": "2f360ccc0043d82040e23ba1b17e960c4a281eacf5933f4de475a8757e996df9",
+      "locale": "pt_BR",
+      "sourceId": "components.RequestList.RequestItem.failedretry",
+      "sourcePosition": 2698
+    }
+  ],
+  "tree": "06cfd94ee611684c33e9e78af9d8bb60a2e98825"
+}

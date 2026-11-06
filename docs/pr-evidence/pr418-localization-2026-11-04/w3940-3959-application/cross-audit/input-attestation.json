@@ -1,0 +1,42 @@
+{
+  "artifact": "SeerrNG PR #418 W3940-W3959 cross-review input attestation",
+  "reviewMode": "independent exact-head primary/blind cross-audit",
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "window": "W3940-W3959",
+  "head": "a0104b4c84a9c4561020ca72062171b22ffc49f2",
+  "tree": "aaa44c8019c58fde7ae796065e8aae7ac11d7a80",
+  "candidateFreeInput": {
+    "path": "/home/keith/Documents/code/task-scratch/seerrng-pr418-w3940-3959-primary-20261104/candidate-free-input",
+    "manifestSha256": "f610e66ce6edbb91457c74d004e19b5827beb62bfac0a190a8cf8156b6eda476",
+    "checksumManifestSha256": "13da3064a35f468831635d255627649df1893a858523451700f4a518e65354f1",
+    "verifier": "PASS",
+    "manifestCellCount": 240
+  },
+  "primaryReview": {
+    "path": "/home/keith/Documents/code/task-scratch/seerrng-pr418-w3940-3959-primary-20261104/primary-review",
+    "manifestSha256": "bd3b2f12ebc29f13741107506bd54bd4aa1f1417c4e42136a805da51423c095f",
+    "checksumManifestSha256": "56464453a2848bc103f8c035964b562f3566a4d9d327ecc96e0290c2d3bc4b00",
+    "verifier": "PASS",
+    "manifestCellCount": 240,
+    "proposalCount": 39
+  },
+  "blindReview": {
+    "path": "/home/keith/Documents/code/task-scratch/seerrng-pr418-w3940-3959-blind-root-20261104/decisions-packet",
+    "manifestSha256": "59762b40e30b8b1d9d6c61f47d1d22466751eaa828a998e75644f157423207e4",
+    "checksumManifestSha256": "8d507a98537bd4687767b8d56efa9c94a0745fffc76648324bad4f6980f5abb3",
+    "verifier": "PASS",
+    "manifestCellCount": 240,
+    "proposalCount": 37,
+    "providedPromptChecksumDigest": "152887e469d8ee7f989a9961e78f9140307f2ef3a7bb5e6a21f0dfc580a03fe8",
+    "authoritativeCurrentChecksumDigest": "8d507a98537bd4687767b8d56efa9c94a0745fffc76648324bad4f6980f5abb3",
+    "digestReconciliation": "Root confirmed the supplied prompt digest was stale after final checksum regeneration; the current packet bytes are stable and pass both SHA256SUMS and its portable verifier."
+  },
+  "inputVerifierCommands": [
+    "python3 verify-candidate-free.py --source-worktree <source-worktree>",
+    "python3 verify-primary.py --candidate-free <candidate-free-input>",
+    "python3 verify_blind_packet.py"
+  ],
+  "sourceWorktree": "/mnt/disks/scratch/task-worktrees/localization-20261104/seerrng-pr418-w3940-3959-source",
+  "sourceWorktreeStatus": "CLEAN"
+}

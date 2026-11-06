@@ -1,0 +1,39 @@
+{
+  "baseRef": "main",
+  "baseSha": "fa40534ccced75bde1125c14760514fcd5d7de4d",
+  "cellCount": 240,
+  "decisionCounts": {
+    "hold": 4,
+    "keep": 218,
+    "propose": 18
+  },
+  "format": "seerrng-blind-review-packet/v1",
+  "head": "39d8ae36ba757532f947a9a15be22f0676e79075",
+  "inputSha256ManifestSha256": "75131ec678d4cef05d846843c858f5fae71c9f8e96639bfe709d1558d6311fb1",
+  "localeOrder": [
+    "es",
+    "zh-Hans",
+    "hi",
+    "de",
+    "ja",
+    "fr",
+    "pt-BR",
+    "ar",
+    "ko",
+    "zh-Hant",
+    "vi",
+    "id"
+  ],
+  "priorHoldCountPreserved": 14,
+  "pullRequest": 418,
+  "range": [
+    3880,
+    3899
+  ],
+  "repository": "snapetech-org/SeerrNG",
+  "reviewBasis": "Current targets and exact source/caller context from the sealed candidate-free input packet.",
+  "reviewDate": "2026-11-04",
+  "sourceCount": 20,
+  "tree": "45e3ada0f565a07c675d1d75096f4266c4ef691e",
+  "window": "W3880-W3899"
+}

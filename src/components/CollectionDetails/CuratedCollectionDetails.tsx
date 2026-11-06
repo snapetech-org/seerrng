@@ -655,7 +655,7 @@ export default function CuratedCollectionDetails({
                         : messages.blocklistAll
                     )}
                   >
-                    <EyeSlashIcon className="!mr-0" />
+                    <EyeSlashIcon className="!me-0" />
                   </Button>
                 </Tooltip>
               )}

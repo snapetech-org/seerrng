@@ -1,0 +1,117 @@
+{
+  "schemaVersion": 1,
+  "overrides": {
+    "1814|pt_BR": {
+      "disposition": "propose-refinement",
+      "target": "Em breve na TV ao vivo — assista ou grave.",
+      "rationale": "The current “Logo na TV ao vivo” is understandable but awkward. This concise phrase preserves the near-future timing and the watch-or-record choice in the live-TV card."
+    },
+    "1816|pt_BR": {
+      "disposition": "propose-correction",
+      "target": "Gravar todas as exibições",
+      "rationale": "The current target leaves “airing” in English. The RecordingList option is a repeat-record action, so “exibições” expresses each broadcast."
+    },
+    "1817|fr": {
+      "disposition": "propose-correction",
+      "target": "Enregistre ce titre à chaque diffusion tant que la demande est active.",
+      "rationale": "The source describes a title being broadcast; current French makes the title itself the broadcaster. The candidate uses a natural passive broadcast construction."
+    },
+    "1822|hi": {
+      "disposition": "accept-current",
+      "target": null,
+      "rationale": "The current Hindi means “view my recordings” and fits the button. The primary marked a correction but supplied the unchanged current target."
+    },
+    "1824|fr": {
+      "disposition": "propose-correction",
+      "target": "Enregistrements actifs uniquement",
+      "rationale": "This is the Active Only filter for recordings. Current French is singular and the primary candidate has feminine agreement for masculine plural “enregistrements”."
+    },
+    "1837|hi": {
+      "disposition": "propose-correction",
+      "target": "एक प्रसारण",
+      "rationale": "The primary candidate is Arabic script in the Hindi cell. “एक प्रसारण” is a Hindi rendering of the unclaimed “One Airing” label; runtime use remains unverified."
+    },
+    "1837|vi": {
+      "disposition": "accept-current",
+      "target": null,
+      "rationale": "“Một lần phát sóng” is a sound Vietnamese rendering. The primary marked a correction but supplied the unchanged current target; this key remains unclaimed by the targeted caller scan."
+    },
+    "1838|ar": {
+      "disposition": "propose-correction",
+      "target": "التسجيلات",
+      "rationale": "RecordingList renders this label beside recording.completedCount, so it names the recordings counted, not a date. The current participle is awkward as a count label."
+    },
+    "1838|de": {
+      "disposition": "propose-correction",
+      "target": "Aufnahmen",
+      "rationale": "RecordingList renders this label beside recording.completedCount, so it names the completed recordings, not a recording date."
+    },
+    "1838|es": {
+      "disposition": "propose-correction",
+      "target": "Grabaciones",
+      "rationale": "RecordingList renders this label beside recording.completedCount, so it names the recordings counted, not their date."
+    },
+    "1838|fr": {
+      "disposition": "propose-correction",
+      "target": "Enregistrements",
+      "rationale": "RecordingList renders this label beside recording.completedCount, so it names the completed recordings, not a recording date."
+    },
+    "1838|hi": {
+      "disposition": "propose-correction",
+      "target": "रिकॉर्डिंग",
+      "rationale": "RecordingList renders this label beside recording.completedCount, so it names the recordings counted. The current “अभिलेख” means records/documents."
+    },
+    "1838|id": {
+      "disposition": "propose-correction",
+      "target": "Rekaman",
+      "rationale": "RecordingList renders this label beside recording.completedCount, so it names recordings, not a date. The current passive verb does not work as the count label."
+    },
+    "1838|ja": {
+      "disposition": "propose-correction",
+      "target": "録画数",
+      "rationale": "RecordingList renders this label beside recording.completedCount, so it denotes the number of completed video recordings, not the recording time."
+    },
+    "1838|ko": {
+      "disposition": "propose-correction",
+      "target": "녹화 건수",
+      "rationale": "RecordingList renders this label beside recording.completedCount, so it denotes a count of completed recordings, not recording time."
+    },
+    "1838|pt_BR": {
+      "disposition": "propose-correction",
+      "target": "Gravações",
+      "rationale": "RecordingList renders this label beside recording.completedCount, so it names the recordings counted, not a recording date."
+    },
+    "1838|vi": {
+      "disposition": "propose-correction",
+      "target": "Số bản ghi hình",
+      "rationale": "RecordingList renders this label beside recording.completedCount, so it denotes the number of completed video recordings, not the recording date."
+    },
+    "1838|zh_Hans": {
+      "disposition": "propose-correction",
+      "target": "已录制",
+      "rationale": "RecordingList renders this label beside recording.completedCount, so it describes completed recordings, not a timestamp."
+    },
+    "1838|zh_Hant": {
+      "disposition": "accept-current",
+      "target": null,
+      "rationale": "The current “已錄製” describes the completed recordings counted by recording.completedCount. The primary candidate incorrectly changes it to “recording time”."
+    },
+    "1894|vi": {
+      "disposition": "propose-refinement",
+      "target": "Loại máy chủ",
+      "rationale": "The source is a server-type field in the login setup screen. “Loại máy chủ” is the usual Vietnamese interface term; current wording literally describes a serving machine."
+    },
+    "1896|ja": {
+      "disposition": "propose-correction",
+      "target": "ログインには成功しましたが、SeerrNG はブラウザーセッションを確立できませんでした。HTTPS を使用するか、認証済み HTTP セッションを有効にしてから、もう一度お試しください。",
+      "rationale": "The primary candidate omits the final instruction to try again. This target preserves the browser-session failure and both recovery choices, then includes the retry instruction."
+    },
+    "1898|es": {
+      "disposition": "propose-correction",
+      "target": "La configuración de Jellyfin se guardó, pero SeerrNG no pudo establecer una sesión del navegador. Reinicie SeerrNG después de cambiar la configuración del transporte y luego use HTTPS o habilite las sesiones HTTP autenticadas.",
+      "rationale": "The accepted current Spanish uses “se salvó”, which suggests rescue rather than saving configuration. This target uses the standard software term “se guardó”."
+    }
+  },
+  "overrideCount": 22,
+  "reviewNote": "Findings arise from independent source/caller review; source 1838 is specifically interpreted with the adjacent recording.completedCount value."
+}

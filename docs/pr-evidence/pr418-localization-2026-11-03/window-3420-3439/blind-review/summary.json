@@ -1,0 +1,99 @@
+{
+  "schemaVersion": 1,
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "window": "W3420-W3439",
+  "head": "3f5ddfdddbeb77cf02cc9d14e00001c8d1aa61c6",
+  "tree": "1c48dc5ea6e8db6c2da546ec58e88d38eb8f9cc7",
+  "reviewedCells": 240,
+  "sourceCount": 20,
+  "localeCount": 12,
+  "dispositionCounts": {
+    "accept-current": 205,
+    "correction": 3,
+    "refinement": 8,
+    "hold": 24
+  },
+  "dispositionCountsByLocale": {
+    "es": {
+      "accept-current": 17,
+      "correction": 0,
+      "refinement": 1,
+      "hold": 2
+    },
+    "zh_Hans": {
+      "accept-current": 17,
+      "correction": 0,
+      "refinement": 1,
+      "hold": 2
+    },
+    "hi": {
+      "accept-current": 16,
+      "correction": 0,
+      "refinement": 2,
+      "hold": 2
+    },
+    "de": {
+      "accept-current": 17,
+      "correction": 0,
+      "refinement": 1,
+      "hold": 2
+    },
+    "ja": {
+      "accept-current": 17,
+      "correction": 1,
+      "refinement": 0,
+      "hold": 2
+    },
+    "fr": {
+      "accept-current": 18,
+      "correction": 0,
+      "refinement": 0,
+      "hold": 2
+    },
+    "pt_BR": {
+      "accept-current": 17,
+      "correction": 1,
+      "refinement": 0,
+      "hold": 2
+    },
+    "ar": {
+      "accept-current": 18,
+      "correction": 0,
+      "refinement": 0,
+      "hold": 2
+    },
+    "ko": {
+      "accept-current": 17,
+      "correction": 1,
+      "refinement": 0,
+      "hold": 2
+    },
+    "zh_Hant": {
+      "accept-current": 17,
+      "correction": 0,
+      "refinement": 1,
+      "hold": 2
+    },
+    "vi": {
+      "accept-current": 18,
+      "correction": 0,
+      "refinement": 0,
+      "hold": 2
+    },
+    "id": {
+      "accept-current": 16,
+      "correction": 0,
+      "refinement": 2,
+      "hold": 2
+    }
+  },
+  "heldSourceIds": [
+    "components.Requests.selectUser",
+    "components.Requests.service"
+  ],
+  "correctionCount": 3,
+  "refinementCount": 8,
+  "nativeSpeakerApproval": false,
+  "candidateFreeReview": true
+}

@@ -68,11 +68,11 @@ const AdultSceneCard = ({
           className="object-cover transition duration-300 group-hover:scale-[1.02]"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-gray-950/90 via-transparent to-gray-950/10" />
-        <div className="absolute top-3 left-3">
+        <div className="absolute start-3 top-3">
           <MediaTypeBadge mediaType="adult" variant="compact" />
         </div>
         {statusLabel && (
-          <span className="absolute bottom-3 left-3 rounded-full border border-white/15 bg-gray-950/80 px-2.5 py-1 text-xs font-medium text-white shadow-lg">
+          <span className="absolute start-3 bottom-3 rounded-full border border-white/15 bg-gray-950/80 px-2.5 py-1 text-xs font-medium text-white shadow-lg">
             {intl.formatMessage(statusLabel)}
           </span>
         )}

@@ -1,0 +1,46 @@
+{
+  "artifact": "SeerrNG PR #418 W3840-W3859 clean-blind semantic review",
+  "baselineProtectedLiteralMismatchesAddressed": 3,
+  "browserApprovalClaimed": false,
+  "browserApprovalCount": 0,
+  "cellCount": 240,
+  "decisionCounts": {
+    "accept-current": 217,
+    "propose-correction": 15,
+    "propose-refinement": 8
+  },
+  "head": "ba5bb93cdb4f107a8337aae228b7cd397e1140a6",
+  "inputChecksumListSha256": "e21a2a27a6c13cb8a6806fca5d6e2f96b2b5fe02980c5999684adbeae7940a48",
+  "inputCopyPath": "/home/keith/Documents/code/task-scratch/seerrng-pr418-w3840-3859-blind-20261104/portable-packet/candidate-free-input",
+  "inputManifestSha256": "9a9c05fbc403f745b87fd8df9ea51aef18c042fc4a82f03cbad7a322bc5f0295",
+  "limitations": "This is a non-native semantic review. No native-speaker or browser approval is claimed.",
+  "localeCount": 12,
+  "nativeSpeakerApprovalCount": 0,
+  "nativeSpeakerSignoffClaimed": false,
+  "proposalCount": 23,
+  "proposalCountsByLocale": {
+    "ar": 3,
+    "de": 1,
+    "fr": 1,
+    "hi": 2,
+    "id": 2,
+    "ja": 2,
+    "ko": 1,
+    "pt-BR": 1,
+    "vi": 6,
+    "zh-Hans": 2,
+    "zh-Hant": 2
+  },
+  "protectedLiteralBaselineMismatchCount": 3,
+  "pullRequest": 418,
+  "repository": "snapetech-org/SeerrNG",
+  "repositoryOrPRInspected": false,
+  "sourceCount": 20,
+  "testsBuildsScansCiRun": false,
+  "textFreeHoldCount": 0,
+  "tree": "5420ae8fa33bda3619650757a2930a0114dbe4d1",
+  "window": [
+    3840,
+    3859
+  ]
+}

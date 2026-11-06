@@ -1,0 +1,18 @@
+{
+  "source_id": "components.MediaDetails.SeasonEpisodeTree.available",
+  "source_position_zero_based_in_en_catalog": 2083,
+  "source": "available",
+  "source_sha256_utf8": "ddd9818abacfde7afed60c93129175401439367a77e69ea93e0ddb3bb38e0bd9",
+  "source_snapshot_entry_matches": true,
+  "source_file": "src/i18n/locale/en.json",
+  "source_file_sha256": "75ff3c90b52aedd636a506281ffbd6fb2d3739c61294b6008a517f17647e2316",
+  "source_blob_oid": "12e04a118c30b71b3714291adeaf9fdb2735cee4",
+  "caller_path": "src/components/MediaDetails/SeasonEpisodeTree.tsx",
+  "caller_file_sha256": "a2bf7c15654bfe4669dbea033151b13270591cf4246664026d58a0c5283eb577",
+  "caller_blob_oid": "eb13fc4a4ecc3a82543304675ad0879ac85740eb",
+  "caller_context_summary": "The localized word is inserted as selectionDescription after the Arabic noun phrase كل الحلقات in season, all-season, and accessibility selection labels. In this composition, the feminine singular adjective must agree with الحلقات and take the definite article. The sibling requestable target is القابلة للطلب.",
+  "context_hash_sha256": "d50cc095ae20ee9aa75675d62780dcec7caea3db1e0ebf703ce1be033ef7d6a2",
+  "source_placeholders": [],
+  "source_markup": [],
+  "protected_literals": []
+}

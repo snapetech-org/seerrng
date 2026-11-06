@@ -1,0 +1,30 @@
+{
+  "artifact": "SeerrNG PR #418 main-sync independent cross-review",
+  "catalog_value_applied": false,
+  "cell_count": 96,
+  "cross_disposition_counts": {
+    "accept": 65,
+    "correction": 3,
+    "refinement": 28
+  },
+  "exact_target_selected": false,
+  "files": {
+    "README.md": "cf18877ca9a7ac06e37b43d2423ea2890f3f91e0fb6435c31c9815a1a3ec46a3",
+    "blind-SHA256SUMS.txt": "656585c5440005127083c608e7e2abc2299ffc405f19cd79e268bbabce93c002",
+    "build_cross_review.py": "fbbf8e98d8e4dbd7d53c7923509bf2cb0d18e27a76f56025b4d1a864538fa9ec",
+    "candidate-free-SHA256SUMS.txt": "6153dcd86c8cdf5feec7689c14a0cfeb31ec40688f80f79101f488ea51ebface",
+    "candidate-free-source-callers.jsonl": "807a273055c784ba4eb80130247b02e071d61988d0f7e9beeda040269dd7eae4",
+    "cross-ledger.jsonl": "0af8415c3d58984a02d40455908784881f769af0fe8915a9eac3bbecf3d240fa",
+    "input-pins.json": "4eb62fb6f62ee476fa4b857b98d4956d34fb20a143a7ce869881c3424f5d97d3",
+    "primary-SHA256SUMS.txt": "b1c3becff785d5352611f8558834d96075c32e0884b21df132f30bcb5a946bba",
+    "summary.json": "95d1ab339790eb79ab5601e25334ddad7495eca3280ee5767f589fdce765e95d",
+    "verify_cross_review.py": "fa799b7b33668cc6fe14c0a123481836c8ea391285d9aa31c3bbdacc935b90e3"
+  },
+  "head": "ca2309e960733a7486c55b9a761d82771be97cde",
+  "locale_count": 12,
+  "pull_request": 418,
+  "repository": "snapetech-org/seerrng",
+  "schema_version": 1,
+  "source_ids": 8,
+  "tree": "8c5df06aaf1d703ff923bf1fdf8a21c901b9d26d"
+}

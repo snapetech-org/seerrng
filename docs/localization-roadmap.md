@@ -1,66 +1,141 @@
 # UI localization roadmap
 
-## Current catalog state
+## Locale inventory and fallback
 
-SeerrNG uses FormatJS client catalogs, server notification catalogs, a language
-picker, and English fallback for missing messages. Catalog files exist for 42
-client locales and 42 server locales, but file presence does not mean the locale
-is complete.
+`config/i18n/locales.json` is the source of truth for canonical tags, native
+language names, direction, catalog filenames, locale selection, and deliberate
+fallback relationships. It currently registers 38 locales, including English.
+The four client catalog files `eu`, `kab`, `sk`, and `sl` are inactive and are
+not supported language-picker choices. Catalog file presence does not mean a
+locale is complete.
 
-The following snapshot was measured from SeerrNG `main` at
-`221d8e0d542802da7529cd272c928cc747677e5c` on 2026-11-01:
+English is the fallback for missing translations. Regional relationships are
+explicit: `es-MX` inherits from `es`; `zh-CN` and `zh-TW` map to their
+Simplified and Traditional Chinese catalogs; Norwegian Bokmål and Portuguese
+regional tags retain their canonical API and stored codes. Do not copy English
+strings into translation files to make coverage appear complete.
 
-| Catalog | English keys | Indonesian keys | Missing English keys | Indonesian-only keys |
-| --- | ---: | ---: | ---: | ---: |
-| Client UI | 6,837 | 5,660 | 1,203 | 26 |
-| Server notifications | 79 | 76 | 3 | 0 |
+Run `pnpm i18n:check` to check extracted English sources, generated registry
+artifacts, server message surfaces, and catalog structure. Its report describes
+direct translations, inherited values, review states, approved English
+fallback, unaccounted gaps, and plural warnings. The ordinary check does not
+make a locale complete or certify translation quality. Previous dated coverage
+counts are historical; use the exact current tree when reporting new totals.
 
-The previous 5,506-client-key and 71-server-key completion claim is stale. The
-current `pnpm i18n:check` verifies that the extracted English catalogs match
-their sources; it does not require translated catalogs to cover every English
-key. Missing Indonesian messages continue to use English fallback.
+## Translation scope and source integrity
 
-## Upstream comparison
+Translate application labels, help, accessibility text, dialogs, empty, error,
+and success states, workflow labels, and server notification copy. Keep
+user-supplied titles, names and paths, sample data, product names, commands,
+protocol/API identifiers, and provider values unchanged. Preserve fork-specific
+keys and their existing values when updating catalogs.
 
-Seerr [PR #3667](https://github.com/seerr-team/seerr/pull/3667) is an open
-attempt to complete the upstream Indonesian catalog. Its 1,714 message IDs do
-not overlap SeerrNG's current English catalog, and SeerrNG already has an
-Indonesian locale and language-picker entry. The upstream file is therefore not
-a drop-in translation update. Identical English labels can also have different
-Indonesian translations in SeerrNG depending on context, so text-only matching
-is not enough to select a translation safely.
+English client and server messages have per-message SHA-256 source
+fingerprints. After an intentional English source change, update the source
+snapshot and matching runtime/source registries; refreshing fingerprints does
+not review or approve translations. Keep API-only dynamic values and unknown
+provider text opaque.
 
-## Translation scope and review
+`config/i18n/catalog-provenance.json` records translation review state by
+source and translated-text hashes. A text edit invalidates the existing record.
+Entries remain `unreviewed` until qualified linguistic review is recorded; a
+machine draft or structural check is not a human review. The English fallback
+manifest contains only explicit temporary exceptions with an owner, reason,
+expiry, source hash, and catalog domain.
 
-Translations cover application labels, help, accessibility text, dialogs,
-empty/error/success states, workflow labels, and server notification copy.
-User-supplied titles, names and paths, sample data, product names, commands, and
-protocol/API identifiers remain unchanged. Keep fork-specific keys and their
-existing values when catalogs are updated.
+## Coverage and review gates
 
-Before a locale is described as complete, verify every source key has a
-non-empty target, preserve placeholders, ICU argument names and types,
-rich-text tags, URLs, inline code, protocol literals, and plural behavior, and
-obtain fluent-speaker review. Static checks establish catalog structure, not
-translation quality. Visual review must also check longer translated copy at
-desktop and narrow viewports; the existing Arabic `/setup` and `/calendar`
-inspection does not certify other routes or locales.
+For each direct locale, check source coverage, key parity, non-empty targets,
+placeholders, ICU arguments and types, rich-text tags, URLs, inline code,
+protocol literals, and plural behavior. Text-only similarity is not enough to
+select a translation when the same English label appears in different contexts.
 
-A targeted scan of the Indonesian client catalog found no remaining Arabic,
-Devanagari, Japanese, or CJK text in its existing values. That check does not
-replace a fluent-speaker review or establish coverage of missing keys.
+- `pnpm i18n:catalogs:strict` rejects unaccounted missing or English-identical
+  values, malformed ICU, argument/tag/token mismatches, unregistered catalogs,
+  and incomplete plural categories.
+- `pnpm i18n:catalogs:review` is the message-level human-review gate. It remains
+  incomplete until every translation has a current review record.
+- `pnpm i18n:registry` regenerates server locale types and the lazy client
+  loader; `pnpm i18n:registry:check` verifies generated files are current.
+- `pnpm i18n:snapshot` refreshes source fingerprints after an intentional
+  English source update; it does not mark translations reviewed.
 
-## Language metadata and RTL
+Structural checks establish catalog consistency, not meaning, tone,
+accessibility, or fit. Review translated copy with its production caller,
+including placeholders, markup, capitalization, punctuation, and fragment
+composition. Keep previously correct locale-specific wording when it fits the
+caller.
 
-The document `lang` follows the successfully loaded catalog, and Arabic sets `dir="rtl"`. Failed or superseded locale loads cannot roll back a newer selection. Shared navigation, the setup flow, calendar controls, and common grouped inputs use logical direction-aware layout rules.
+## Direction, bidi, and formatting
 
-The Agent VM browser review on 2026-10-13 verified Arabic `/setup` and `/calendar` at 1280×900 and 390×844. Both pages rendered Arabic with `lang="ar"` and `dir="rtl"`; the calendar controls and empty state fit at both widths. The browser-native month input kept its English month name. The calendar fixture had no release data.
+The client derives document direction from the locale registry after a locale
+loads. Arabic and Hebrew are RTL. `BidiText` isolates external mixed-direction
+text without altering stored values. A per-user regional format preference
+controls React Intl dates, numbers, and byte units while preserving the
+interface language; metadata language remains a separate preference.
 
-Arabic remains selectable, but this review does not certify every feature page for RTL. The source still contains physical left/right layout rules outside the reviewed shared-shell, setup, calendar, and grouped-input paths. Those routes need an RTL audit before claiming app-wide visual acceptance.
+The server-rendered document uses a validated locale-hint cookie, then
+`Accept-Language`, to choose `lang` and `dir`. The cookie is a presentation hint,
+not authentication state. A blank per-user display-language preference follows
+`navigator.languages`; inferred values are not written back as explicit user
+settings. The Next page renderer does not load the authenticated user session,
+and app translations still load client-side, so this does not guarantee the
+saved locale on the first request or translated server rendering. Full
+authenticated SSR locale hydration remains open.
 
-## Follow-up
+Runtime durations, playtime, byte quantities, numeric metrics, and selected
+natural-language lists use shared Intl/CLDR formatting. Canonical API, storage,
+and provider values remain unchanged.
 
-1. Close the 1,203 client and three server Indonesian gaps only with context-checked translations and fluent-speaker review; retain the 26 Indonesian-only client keys until their use is understood.
-2. Inventory coverage for every locale file and distinguish complete, partial, and fallback-only catalogs rather than treating file presence as support.
-3. Convert remaining feature layouts to logical positioning and verify representative Arabic workflows at narrow and desktop widths before claiming app-wide RTL acceptance.
-4. Keep new UI strings in the existing FormatJS source catalog and check source-key and placeholder parity in CI.
+Shared layouts should use logical inline alignment, spacing, borders, and menu
+anchoring. Mirror directional affordances only; preserve media timelines and
+numeric control semantics. Email templates declare recipient language and
+direction and isolate mixed-script content, but still need rendered RTL review.
+
+## Browser and release acceptance
+
+Before describing a locale as complete, review translated copy in the running
+application at desktop and narrow widths. Check accessible names, announcements,
+keyboard and focus order, screen-reader reading order, text expansion, CJK,
+200% text, and both interface themes. A browser check of setup or calendar does
+not certify other routes. The document direction attribute alone does not
+establish correct RTL layout.
+
+Machine-assisted translation and semantic review do not establish
+qualified-speaker approval. Record language-specific reviewer evidence and
+current source/text hashes. Keep browser acceptance, visual RTL review, and
+native-speaker approval as separate gates. Do not claim release readiness from
+catalog parity or a passing structural check.
+
+## Current-main recovery validation (2026-11-06)
+
+The historical localization branch is being integrated with the current shared
+UI owners and three built-in themes. This integration is not accepted or released
+yet. A passing ordinary catalog check is not full translation acceptance.
+
+Expired source/target or callsite evidence has been removed from 576 provenance
+and 120 equivalence records, with originals retained in the recovery evidence.
+Those translations remain unreviewed; no approval hashes were restamped.
+English source fingerprints were regenerated after incorporating current main.
+
+The integration repaired 20 malformed ICU values without rewriting translated
+prose, quarantined one corrupt model value containing `<unk>` to English fallback,
+and restored 15 caller-provided argument names or escaping contracts. The source
+and target values for every repair are retained. Remaining argument/tag and
+protected-token mismatches still require review; grammatical plural differences
+must be checked against their callers instead of discarded automatically.
+
+Locale fallback now retains message-language metadata per loaded catalog, so
+English fallback API text is labeled English instead of the selected interface
+language. Blank translations inherit their parent or English value. Opaque
+provider text with explicit null provenance remains unchanged even if it matches
+an application-authored phrase. Four component rendering cases pass. These
+results do not claim native-speaker review or completed browser/RTL acceptance.
+
+The first integrated production build passes after extending the shared contract
+checks to the same dimensioned logical CSS properties and the complete fail-closed
+i18n command chain. All 46 contract mutation tests and 73 shared visual checks
+pass. The first headless runtime case saves browser-default Arabic, reloads,
+verifies Arabic/RTL document metadata, and checks overflow at 1280×900 and
+390×844. This is initial runtime evidence, not acceptance of every affected
+route, theme, language, or translation.

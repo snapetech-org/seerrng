@@ -1,0 +1,84 @@
+{
+  "schemaVersion": 1,
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "liveState": "OPEN",
+  "isDraft": true,
+  "task": "Independent cross-review of SeerrNG PR #418 W1100–1199 primary localization packet",
+  "pin": {
+    "head": "c8f4b2f5f1f42730dcfa8d36214ee827a5d9395a",
+    "tree": "0fe67d04abfd49681556b44e900aceec1b5a9a75",
+    "base": "221d8e0d542802da7529cd272c928cc747677e5c"
+  },
+  "primaryCandidates": 218,
+  "primaryCandidateKinds": {
+    "correction": 206,
+    "refinement": 12
+  },
+  "candidateDispositions": {
+    "accepted": 198,
+    "refined": 20
+  },
+  "candidateDispositionsByPrimaryKind": {
+    "correction": {
+      "accepted": 186,
+      "refined": 20
+    },
+    "refinement": {
+      "accepted": 12
+    }
+  },
+  "candidateRefinedCount": 20,
+  "candidateHoldCount": 0,
+  "candidateNoOpCount": 0,
+  "missedCorrectionCount": 7,
+  "currentDispositionCounts": {
+    "accept-current": 969,
+    "accepted": 198,
+    "refined": 20,
+    "missed": 7,
+    "preserved-prior": 6
+  },
+  "rowsWithExactSourceCurrentCallerPins": 1200,
+  "sourceRowsReattested": 100,
+  "currentCellsReattested": 1200,
+  "callerReferencesReattested": 231,
+  "uniqueCallerFiles": 10,
+  "uniqueCallerLines": 229,
+  "hashOrCallerMismatchCount": 0,
+  "primaryCurrentSourceHashMismatchCount": 0,
+  "candidateHashIndexMismatchCount": 0,
+  "placeholderMarkupParityFailures": 0,
+  "preservedPriorRootDispositionRows": 6,
+  "priorDispositionFilesScanned": 369,
+  "priorRootRowsFound": 6,
+  "priorWindowRange": [
+    1000,
+    1099
+  ],
+  "priorWindowNonOverlapping": true,
+  "priorReviewerExposure": {
+    "positions": [
+      1151,
+      1199
+    ],
+    "locales": [
+      "de",
+      "es",
+      "fr",
+      "pt-BR"
+    ],
+    "disclosure": "The reviewer previously reviewed this edition-comparison subset; those 12 primary refinements are not blind and were reused then independently rechecked against current source, caller, and exact-hash context."
+  },
+  "nativeSpeakerReviewPerformed": false,
+  "browserReviewPerformed": false,
+  "testsBuildsSecurityScansOrCiRun": false,
+  "priorEvidenceInventoryScanPerformed": true,
+  "repoOrPrEdited": false,
+  "worktreeClean": true,
+  "notes": [
+    "Candidate hashes equal SHA-256 of each exact proposed target and match the primary candidate hash index.",
+    "All candidate current/source hashes and caller references were re-attested at the exact live PR head/tree.",
+    "The six prior Spanish root dispositions were preserved at their already-applied exact target values."
+  ]
+}

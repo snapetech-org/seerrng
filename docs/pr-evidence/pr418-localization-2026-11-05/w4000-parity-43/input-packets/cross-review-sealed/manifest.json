@@ -1,0 +1,99 @@
+{
+  "artifact": "SeerrNG PR #418 W4000 lineage parity cross-review, all locales",
+  "baseRef": "main",
+  "baseSha": "2647e15762de0c2285cd9d8ebc6d27ffafce6358",
+  "baseTree": "b6f4acb9debdc1b0a838b50d5ad88aaa467e429b",
+  "blindChecksumListSha256": "2a63c6b491d78a1f2165987b79a5b588fd32e9cf56dd7a9bd7310bea7a92046c",
+  "blindManifestSha256": "f11e36ec4ff044bb6d364e3cdae66b00340f41bf876db48490919b2b6eb597f1",
+  "blindPacketPath": "../blind-review-old-head",
+  "branch": "codex/seerrng-localization-overhaul-20261028",
+  "candidateFreeChecksumListSha256": "48e2ca2b249f3d7585ac64abb0ad316fdf865f1df976f745e05cdbfdbd1c2d8c",
+  "candidateFreeManifestSha256": "e30ca1699be1f8cf08c16f6cdd764b6b36dd85470ac9dce56975368409fa384c",
+  "candidateFreePacketPath": "../candidate-free",
+  "cells": 528,
+  "changedSourceRefreshCells": 12,
+  "exactHead": "f48afa55ce2abeb00ee8b2dc66fa6d2df8f62ba4",
+  "exactTree": "f7ea727b0383397ec8d6220667b4abe151d43b46",
+  "insertionGapCells": 516,
+  "laneArtifacts": {
+    "locale-a": {
+      "ledgerFile": "cross-ledger.jsonl",
+      "ledgerSha256": "585641b7f8262b05359268c3134930bed49a59f4d72cfb87eb92831702c99937",
+      "locales": [
+        "ar",
+        "de",
+        "es",
+        "fr",
+        "hi",
+        "id"
+      ],
+      "manifestSha256": "9357b249d53593a51b3c8aeb784774e0b375ea2beb6f2730f5c6d6976c1b3836",
+      "path": "../cross-review/locale-a",
+      "sha256sumListSha256": "7d7da38aebb80691807fe3e9688c3b3034d3501148a3a4f401cff1e62065638d",
+      "summarySha256": "3163fc7e687b36f58c035c40e4c40a7c66501732200779516dd735b72606c443"
+    },
+    "locale-b": {
+      "ledgerFile": "ledger.jsonl",
+      "ledgerSha256": "d70da1f333c5aa6349a60d10336be7815ca6598f37d565d3d7c4939bdee784e6",
+      "locales": [
+        "vi",
+        "zh-Hans",
+        "zh-Hant"
+      ],
+      "manifestSha256": "df572d38eb7f34350ae4c14109c81da445ef48a3c03e6bc942faaf8cd9dc3dde",
+      "path": "../cross-review/locale-b",
+      "sha256sumListSha256": "2dc958dd2bc0055894e4f6ac6a7ea82f36706fd592d1116f7a8400d8cf88aca0",
+      "summarySha256": "e35580c996b0d49883b8fd806c33e056b808ab00be4d5468013dfa040a9c1407"
+    },
+    "locale-c": {
+      "ledgerFile": "cross-ledger.jsonl",
+      "ledgerSha256": "c18f743f17e41160fbecc4d56bc4b3e37b0107660639c5c4c704ab25962acf61",
+      "locales": [
+        "ja",
+        "ko",
+        "pt-BR"
+      ],
+      "manifestSha256": "e43cd6a523defa1206112c1532b5a977e6f10e7f459fa1ba3472da30998f278f",
+      "path": "../cross-review/locale-c",
+      "sha256sumListSha256": "e0af860a7b02f1a4ff3486c907f2fddf33fde5d3af197cf675467acdcb9a3dba",
+      "summarySha256": "acf83523e4e51b2cd2cb2dd954115f0d416b376d9dc1b105714ff50f2f3862a2"
+    }
+  },
+  "locales": [
+    "ar",
+    "de",
+    "es",
+    "fr",
+    "hi",
+    "id",
+    "ja",
+    "ko",
+    "pt-BR",
+    "vi",
+    "zh-Hans",
+    "zh-Hant"
+  ],
+  "oldReviewHead": "77d30ae742aad7245e6e419237fca6a544531e1f",
+  "oldReviewTree": "2c6fe4a0c1c33aa56b01f06a70702f68598509a7",
+  "packetType": "independent-cross-review",
+  "payloadFiles": [
+    "README.md",
+    "after-attestation.json",
+    "before-attestation.json",
+    "build_cross_review.py",
+    "cross-ledger.jsonl",
+    "manifest.json",
+    "summary.json",
+    "verify_cross_review.py"
+  ],
+  "primaryChecksumListSha256": "5fd8bfc4104c60b00d9c35fdaa1150ed9d932d11ba2b92dfa5370563dd8afe8d",
+  "primaryManifestSha256": "4eb5b8206b15bcabc0a1dfa922893fa40e2f4a0492438af5a832d50bc215fa76",
+  "primaryPacketPath": "../primary-review-old-head",
+  "pullRequest": 418,
+  "reattestationChecksumListSha256": "8fe4d4dacb13273188b0fc30714e767aa645bcbaf7afb1fa00bc34eab8c8b461",
+  "reattestationManifestSha256": "0d315e457f66c3de371c0841c0da5b3e607ba90e5e37cfb81cc9d9915de9adfb",
+  "reattestationPacketPath": "../reattestation",
+  "repository": "snapetech-org/seerrng",
+  "schemaVersion": 1,
+  "sourceIds": 44
+}

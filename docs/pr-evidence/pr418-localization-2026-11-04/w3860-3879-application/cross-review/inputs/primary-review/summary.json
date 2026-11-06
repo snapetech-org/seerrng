@@ -1,0 +1,21 @@
+{
+  "acceptCurrent": 224,
+  "baselineProtectedLiteralMismatchCount": 2,
+  "browserReview": false,
+  "callerlessSources": 0,
+  "cells": 240,
+  "confidence": "moderate",
+  "corrections": 5,
+  "head": "12bb562dc0eb27165cc2c6fbd1ff2628d5f8574e",
+  "holds": 0,
+  "localeCount": 12,
+  "nativeSpeakerApproval": false,
+  "proposals": 16,
+  "refinements": 11,
+  "resolvedBaselineProtectedLiteralMismatchCount": 2,
+  "reviewedSelectedTargetsPreservePlaceholdersMarkupNumbersAndProtectedLiterals": true,
+  "schemaVersion": 1,
+  "sourceCount": 20,
+  "tree": "b288494aa5a0842affc4e900d6ccb6b57d99c493",
+  "window": "W3860-W3879"
+}

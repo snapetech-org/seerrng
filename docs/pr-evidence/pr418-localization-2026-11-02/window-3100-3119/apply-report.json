@@ -1,0 +1,45 @@
+{
+  "headBeforeApply": "ebebae19e24b9236192eda287938b65eabf29667",
+  "treeBeforeApply": "8e5ef5985dee40f5c1191dff794e323a851d3ef8",
+  "changedTargetCount": 82,
+  "changedFiles": [
+    "src/i18n/locale/ar.json",
+    "src/i18n/locale/de.json",
+    "src/i18n/locale/es.json",
+    "src/i18n/locale/fr.json",
+    "src/i18n/locale/hi.json",
+    "src/i18n/locale/id.json",
+    "src/i18n/locale/ja.json",
+    "src/i18n/locale/ko.json",
+    "src/i18n/locale/pt_BR.json",
+    "src/i18n/locale/vi.json",
+    "src/i18n/locale/zh_Hans.json",
+    "src/i18n/locale/zh_Hant.json"
+  ],
+  "readback": {
+    "cells": 240,
+    "exactMatches": 240,
+    "mismatches": 0,
+    "changedTargets": 82,
+    "catalogKeySetsMatch": true,
+    "catalogKeysPerLocale": {
+      "ar": 9494,
+      "de": 9494,
+      "es": 9494,
+      "fr": 9494,
+      "hi": 9494,
+      "id": 9494,
+      "ja": 9494,
+      "ko": 9494,
+      "pt_BR": 9494,
+      "vi": 9494,
+      "zh_Hans": 9494,
+      "zh_Hant": 9494
+    },
+    "head": "ebebae19e24b9236192eda287938b65eabf29667",
+    "tree": "8e5ef5985dee40f5c1191dff794e323a851d3ef8"
+  },
+  "placeholderAndMarkupParity": 0,
+  "testsBuildsScansCI": false,
+  "worktreeAfterCatalogApply": "dirty only in the 12 intended locale catalogs"
+}

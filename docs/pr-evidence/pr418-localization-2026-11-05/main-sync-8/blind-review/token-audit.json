@@ -1,0 +1,1266 @@
+{
+  "packet": "SeerrNG PR #418 main-sync independent blind token audit",
+  "head": "ca2309e960733a7486c55b9a761d82771be97cde",
+  "tree": "8c5df06aaf1d703ff923bf1fdf8a21c901b9d26d",
+  "input_hashes": {
+    "README.md": "4b094890f197a95f49ce6d48242a0ea4d2e09fcca3c5f4ac9f27d0cbed27061b",
+    "manifest.json": "c9b97c2b7122cd2f74a291ed7b0cecd3a272752be96d5e7c7b8f6b4575c081a7",
+    "candidate-free.jsonl": "807a273055c784ba4eb80130247b02e071d61988d0f7e9beeda040269dd7eae4",
+    "SHA256SUMS.txt": "6153dcd86c8cdf5feec7689c14a0cfeb31ec40688f80f79101f488ea51ebface"
+  },
+  "cells": 96,
+  "required_exact_literals": {
+    "administratorSignInAllowedNetworksTip": [
+      "100 (2 occurrences)",
+      "IPv4",
+      "IPv6",
+      "CIDR",
+      "4096",
+      "192.168.0.0/16",
+      "100.64.0.0/10"
+    ],
+    "administratorSignInProxyWarning": [
+      "SeerrNG (2 occurrences)",
+      "X-Forwarded-For"
+    ],
+    "administratorSignInRestrictionTip": [
+      "API"
+    ],
+    "jellyfinQuickConnectOnly": [
+      "Jellyfin",
+      "Quick Connect"
+    ],
+    "jellyfinQuickConnectOnlyTip": [
+      "Jellyfin (2 occurrences)",
+      "Quick Connect"
+    ]
+  },
+  "localized_setting_concept": "Trust Reverse Proxy is translated by meaning; its English label is not treated as an immutable literal.",
+  "results": [
+    {
+      "source_id": "components.Settings.SettingsNetwork.administratorSignInAllowedNetworks",
+      "locale": "es",
+      "expected_counts": {},
+      "actual_counts": {},
+      "missing_counts": {},
+      "result": "pass"
+    },
+    {
+      "source_id": "components.Settings.SettingsNetwork.administratorSignInAllowedNetworks",
+      "locale": "zh_Hans",
+      "expected_counts": {},
+      "actual_counts": {},
+      "missing_counts": {},
+      "result": "pass"
+    },
+    {
+      "source_id": "components.Settings.SettingsNetwork.administratorSignInAllowedNetworks",
+      "locale": "hi",
+      "expected_counts": {},
+      "actual_counts": {},
+      "missing_counts": {},
+      "result": "pass"
+    },
+    {
+      "source_id": "components.Settings.SettingsNetwork.administratorSignInAllowedNetworks",
+      "locale": "de",
+      "expected_counts": {},
+      "actual_counts": {},
+      "missing_counts": {},
+      "result": "pass"
+    },
+    {
+      "source_id": "components.Settings.SettingsNetwork.administratorSignInAllowedNetworks",
+      "locale": "ja",
+      "expected_counts": {},
+      "actual_counts": {},
+      "missing_counts": {},
+      "result": "pass"
+    },
+    {
+      "source_id": "components.Settings.SettingsNetwork.administratorSignInAllowedNetworks",
+      "locale": "fr",
+      "expected_counts": {},
+      "actual_counts": {},
+      "missing_counts": {},
+      "result": "pass"
+    },
+    {
+      "source_id": "components.Settings.SettingsNetwork.administratorSignInAllowedNetworks",
+      "locale": "pt_BR",
+      "expected_counts": {},
+      "actual_counts": {},
+      "missing_counts": {},
+      "result": "pass"
+    },
+    {
+      "source_id": "components.Settings.SettingsNetwork.administratorSignInAllowedNetworks",
+      "locale": "ar",
+      "expected_counts": {},
+      "actual_counts": {},
+      "missing_counts": {},
+      "result": "pass"
+    },
+    {
+      "source_id": "components.Settings.SettingsNetwork.administratorSignInAllowedNetworks",
+      "locale": "ko",
+      "expected_counts": {},
+      "actual_counts": {},
+      "missing_counts": {},
+      "result": "pass"
+    },
+    {
+      "source_id": "components.Settings.SettingsNetwork.administratorSignInAllowedNetworks",
+      "locale": "zh_Hant",
+      "expected_counts": {},
+      "actual_counts": {},
+      "missing_counts": {},
+      "result": "pass"
+    },
+    {
+      "source_id": "components.Settings.SettingsNetwork.administratorSignInAllowedNetworks",
+      "locale": "vi",
+      "expected_counts": {},
+      "actual_counts": {},
+      "missing_counts": {},
+      "result": "pass"
+    },
+    {
+      "source_id": "components.Settings.SettingsNetwork.administratorSignInAllowedNetworks",
+      "locale": "id",
+      "expected_counts": {},
+      "actual_counts": {},
+      "missing_counts": {},
+      "result": "pass"
+    },
+    {
+      "source_id": "components.Settings.SettingsNetwork.administratorSignInAllowedNetworksTip",
+      "locale": "es",
+      "expected_counts": {
+        "100": 2,
+        "IPv4": 1,
+        "IPv6": 1,
+        "CIDR": 1,
+        "4096": 1,
+        "192.168.0.0/16": 1,
+        "100.64.0.0/10": 1
+      },
+      "actual_counts": {
+        "100": 2,
+        "IPv4": 1,
+        "IPv6": 1,
+        "CIDR": 1,
+        "4096": 1,
+        "192.168.0.0/16": 1,
+        "100.64.0.0/10": 1
+      },
+      "missing_counts": {},
+      "result": "pass"
+    },
+    {
+      "source_id": "components.Settings.SettingsNetwork.administratorSignInAllowedNetworksTip",
+      "locale": "zh_Hans",
+      "expected_counts": {
+        "100": 2,
+        "IPv4": 1,
+        "IPv6": 1,
+        "CIDR": 1,
+        "4096": 1,
+        "192.168.0.0/16": 1,
+        "100.64.0.0/10": 1
+      },
+      "actual_counts": {
+        "100": 2,
+        "IPv4": 1,
+        "IPv6": 1,
+        "CIDR": 1,
+        "4096": 1,
+        "192.168.0.0/16": 1,
+        "100.64.0.0/10": 1
+      },
+      "missing_counts": {},
+      "result": "pass"
+    },
+    {
+      "source_id": "components.Settings.SettingsNetwork.administratorSignInAllowedNetworksTip",
+      "locale": "hi",
+      "expected_counts": {
+        "100": 2,
+        "IPv4": 1,
+        "IPv6": 1,
+        "CIDR": 1,
+        "4096": 1,
+        "192.168.0.0/16": 1,
+        "100.64.0.0/10": 1
+      },
+      "actual_counts": {
+        "100": 2,
+        "IPv4": 1,
+        "IPv6": 1,
+        "CIDR": 1,
+        "4096": 1,
+        "192.168.0.0/16": 1,
+        "100.64.0.0/10": 1
+      },
+      "missing_counts": {},
+      "result": "pass"
+    },
+    {
+      "source_id": "components.Settings.SettingsNetwork.administratorSignInAllowedNetworksTip",
+      "locale": "de",
+      "expected_counts": {
+        "100": 2,
+        "IPv4": 1,
+        "IPv6": 1,
+        "CIDR": 1,
+        "4096": 1,
+        "192.168.0.0/16": 1,
+        "100.64.0.0/10": 1
+      },
+      "actual_counts": {
+        "100": 2,
+        "IPv4": 1,
+        "IPv6": 1,
+        "CIDR": 1,
+        "4096": 1,
+        "192.168.0.0/16": 1,
+        "100.64.0.0/10": 1
+      },
+      "missing_counts": {},
+      "result": "pass"
+    },
+    {
+      "source_id": "components.Settings.SettingsNetwork.administratorSignInAllowedNetworksTip",
+      "locale": "ja",
+      "expected_counts": {
+        "100": 2,
+        "IPv4": 1,
+        "IPv6": 1,
+        "CIDR": 1,
+        "4096": 1,
+        "192.168.0.0/16": 1,
+        "100.64.0.0/10": 1
+      },
+      "actual_counts": {
+        "100": 2,
+        "IPv4": 1,
+        "IPv6": 1,
+        "CIDR": 1,
+        "4096": 1,
+        "192.168.0.0/16": 1,
+        "100.64.0.0/10": 1
+      },
+      "missing_counts": {},
+      "result": "pass"
+    },
+    {
+      "source_id": "components.Settings.SettingsNetwork.administratorSignInAllowedNetworksTip",
+      "locale": "fr",
+      "expected_counts": {
+        "100": 2,
+        "IPv4": 1,
+        "IPv6": 1,
+        "CIDR": 1,
+        "4096": 1,
+        "192.168.0.0/16": 1,
+        "100.64.0.0/10": 1
+      },
+      "actual_counts": {
+        "100": 2,
+        "IPv4": 1,
+        "IPv6": 1,
+        "CIDR": 1,
+        "4096": 1,
+        "192.168.0.0/16": 1,
+        "100.64.0.0/10": 1
+      },
+      "missing_counts": {},
+      "result": "pass"
+    },
+    {
+      "source_id": "components.Settings.SettingsNetwork.administratorSignInAllowedNetworksTip",
+      "locale": "pt_BR",
+      "expected_counts": {
+        "100": 2,
+        "IPv4": 1,
+        "IPv6": 1,
+        "CIDR": 1,
+        "4096": 1,
+        "192.168.0.0/16": 1,
+        "100.64.0.0/10": 1
+      },
+      "actual_counts": {
+        "100": 2,
+        "IPv4": 1,
+        "IPv6": 1,
+        "CIDR": 1,
+        "4096": 1,
+        "192.168.0.0/16": 1,
+        "100.64.0.0/10": 1
+      },
+      "missing_counts": {},
+      "result": "pass"
+    },
+    {
+      "source_id": "components.Settings.SettingsNetwork.administratorSignInAllowedNetworksTip",
+      "locale": "ar",
+      "expected_counts": {
+        "100": 2,
+        "IPv4": 1,
+        "IPv6": 1,
+        "CIDR": 1,
+        "4096": 1,
+        "192.168.0.0/16": 1,
+        "100.64.0.0/10": 1
+      },
+      "actual_counts": {
+        "100": 2,
+        "IPv4": 1,
+        "IPv6": 1,
+        "CIDR": 1,
+        "4096": 1,
+        "192.168.0.0/16": 1,
+        "100.64.0.0/10": 1
+      },
+      "missing_counts": {},
+      "result": "pass"
+    },
+    {
+      "source_id": "components.Settings.SettingsNetwork.administratorSignInAllowedNetworksTip",
+      "locale": "ko",
+      "expected_counts": {
+        "100": 2,
+        "IPv4": 1,
+        "IPv6": 1,
+        "CIDR": 1,
+        "4096": 1,
+        "192.168.0.0/16": 1,
+        "100.64.0.0/10": 1
+      },
+      "actual_counts": {
+        "100": 2,
+        "IPv4": 1,
+        "IPv6": 1,
+        "CIDR": 1,
+        "4096": 1,
+        "192.168.0.0/16": 1,
+        "100.64.0.0/10": 1
+      },
+      "missing_counts": {},
+      "result": "pass"
+    },
+    {
+      "source_id": "components.Settings.SettingsNetwork.administratorSignInAllowedNetworksTip",
+      "locale": "zh_Hant",
+      "expected_counts": {
+        "100": 2,
+        "IPv4": 1,
+        "IPv6": 1,
+        "CIDR": 1,
+        "4096": 1,
+        "192.168.0.0/16": 1,
+        "100.64.0.0/10": 1
+      },
+      "actual_counts": {
+        "100": 2,
+        "IPv4": 1,
+        "IPv6": 1,
+        "CIDR": 1,
+        "4096": 1,
+        "192.168.0.0/16": 1,
+        "100.64.0.0/10": 1
+      },
+      "missing_counts": {},
+      "result": "pass"
+    },
+    {
+      "source_id": "components.Settings.SettingsNetwork.administratorSignInAllowedNetworksTip",
+      "locale": "vi",
+      "expected_counts": {
+        "100": 2,
+        "IPv4": 1,
+        "IPv6": 1,
+        "CIDR": 1,
+        "4096": 1,
+        "192.168.0.0/16": 1,
+        "100.64.0.0/10": 1
+      },
+      "actual_counts": {
+        "100": 2,
+        "IPv4": 1,
+        "IPv6": 1,
+        "CIDR": 1,
+        "4096": 1,
+        "192.168.0.0/16": 1,
+        "100.64.0.0/10": 1
+      },
+      "missing_counts": {},
+      "result": "pass"
+    },
+    {
+      "source_id": "components.Settings.SettingsNetwork.administratorSignInAllowedNetworksTip",
+      "locale": "id",
+      "expected_counts": {
+        "100": 2,
+        "IPv4": 1,
+        "IPv6": 1,
+        "CIDR": 1,
+        "4096": 1,
+        "192.168.0.0/16": 1,
+        "100.64.0.0/10": 1
+      },
+      "actual_counts": {
+        "100": 2,
+        "IPv4": 1,
+        "IPv6": 1,
+        "CIDR": 1,
+        "4096": 1,
+        "192.168.0.0/16": 1,
+        "100.64.0.0/10": 1
+      },
+      "missing_counts": {},
+      "result": "pass"
+    },
+    {
+      "source_id": "components.Settings.SettingsNetwork.administratorSignInProxyWarning",
+      "locale": "es",
+      "expected_counts": {
+        "SeerrNG": 2,
+        "X-Forwarded-For": 1
+      },
+      "actual_counts": {
+        "SeerrNG": 2,
+        "X-Forwarded-For": 1
+      },
+      "missing_counts": {},
+      "result": "pass"
+    },
+    {
+      "source_id": "components.Settings.SettingsNetwork.administratorSignInProxyWarning",
+      "locale": "zh_Hans",
+      "expected_counts": {
+        "SeerrNG": 2,
+        "X-Forwarded-For": 1
+      },
+      "actual_counts": {
+        "SeerrNG": 2,
+        "X-Forwarded-For": 1
+      },
+      "missing_counts": {},
+      "result": "pass"
+    },
+    {
+      "source_id": "components.Settings.SettingsNetwork.administratorSignInProxyWarning",
+      "locale": "hi",
+      "expected_counts": {
+        "SeerrNG": 2,
+        "X-Forwarded-For": 1
+      },
+      "actual_counts": {
+        "SeerrNG": 2,
+        "X-Forwarded-For": 1
+      },
+      "missing_counts": {},
+      "result": "pass"
+    },
+    {
+      "source_id": "components.Settings.SettingsNetwork.administratorSignInProxyWarning",
+      "locale": "de",
+      "expected_counts": {
+        "SeerrNG": 2,
+        "X-Forwarded-For": 1
+      },
+      "actual_counts": {
+        "SeerrNG": 2,
+        "X-Forwarded-For": 1
+      },
+      "missing_counts": {},
+      "result": "pass"
+    },
+    {
+      "source_id": "components.Settings.SettingsNetwork.administratorSignInProxyWarning",
+      "locale": "ja",
+      "expected_counts": {
+        "SeerrNG": 2,
+        "X-Forwarded-For": 1
+      },
+      "actual_counts": {
+        "SeerrNG": 2,
+        "X-Forwarded-For": 1
+      },
+      "missing_counts": {},
+      "result": "pass"
+    },
+    {
+      "source_id": "components.Settings.SettingsNetwork.administratorSignInProxyWarning",
+      "locale": "fr",
+      "expected_counts": {
+        "SeerrNG": 2,
+        "X-Forwarded-For": 1
+      },
+      "actual_counts": {
+        "SeerrNG": 2,
+        "X-Forwarded-For": 1
+      },
+      "missing_counts": {},
+      "result": "pass"
+    },
+    {
+      "source_id": "components.Settings.SettingsNetwork.administratorSignInProxyWarning",
+      "locale": "pt_BR",
+      "expected_counts": {
+        "SeerrNG": 2,
+        "X-Forwarded-For": 1
+      },
+      "actual_counts": {
+        "SeerrNG": 2,
+        "X-Forwarded-For": 1
+      },
+      "missing_counts": {},
+      "result": "pass"
+    },
+    {
+      "source_id": "components.Settings.SettingsNetwork.administratorSignInProxyWarning",
+      "locale": "ar",
+      "expected_counts": {
+        "SeerrNG": 2,
+        "X-Forwarded-For": 1
+      },
+      "actual_counts": {
+        "SeerrNG": 2,
+        "X-Forwarded-For": 1
+      },
+      "missing_counts": {},
+      "result": "pass"
+    },
+    {
+      "source_id": "components.Settings.SettingsNetwork.administratorSignInProxyWarning",
+      "locale": "ko",
+      "expected_counts": {
+        "SeerrNG": 2,
+        "X-Forwarded-For": 1
+      },
+      "actual_counts": {
+        "SeerrNG": 2,
+        "X-Forwarded-For": 1
+      },
+      "missing_counts": {},
+      "result": "pass"
+    },
+    {
+      "source_id": "components.Settings.SettingsNetwork.administratorSignInProxyWarning",
+      "locale": "zh_Hant",
+      "expected_counts": {
+        "SeerrNG": 2,
+        "X-Forwarded-For": 1
+      },
+      "actual_counts": {
+        "SeerrNG": 2,
+        "X-Forwarded-For": 1
+      },
+      "missing_counts": {},
+      "result": "pass"
+    },
+    {
+      "source_id": "components.Settings.SettingsNetwork.administratorSignInProxyWarning",
+      "locale": "vi",
+      "expected_counts": {
+        "SeerrNG": 2,
+        "X-Forwarded-For": 1
+      },
+      "actual_counts": {
+        "SeerrNG": 2,
+        "X-Forwarded-For": 1
+      },
+      "missing_counts": {},
+      "result": "pass"
+    },
+    {
+      "source_id": "components.Settings.SettingsNetwork.administratorSignInProxyWarning",
+      "locale": "id",
+      "expected_counts": {
+        "SeerrNG": 2,
+        "X-Forwarded-For": 1
+      },
+      "actual_counts": {
+        "SeerrNG": 2,
+        "X-Forwarded-For": 1
+      },
+      "missing_counts": {},
+      "result": "pass"
+    },
+    {
+      "source_id": "components.Settings.SettingsNetwork.administratorSignInRestrictionTip",
+      "locale": "es",
+      "expected_counts": {
+        "API": 1
+      },
+      "actual_counts": {
+        "API": 1
+      },
+      "missing_counts": {},
+      "result": "pass"
+    },
+    {
+      "source_id": "components.Settings.SettingsNetwork.administratorSignInRestrictionTip",
+      "locale": "zh_Hans",
+      "expected_counts": {
+        "API": 1
+      },
+      "actual_counts": {
+        "API": 1
+      },
+      "missing_counts": {},
+      "result": "pass"
+    },
+    {
+      "source_id": "components.Settings.SettingsNetwork.administratorSignInRestrictionTip",
+      "locale": "hi",
+      "expected_counts": {
+        "API": 1
+      },
+      "actual_counts": {
+        "API": 1
+      },
+      "missing_counts": {},
+      "result": "pass"
+    },
+    {
+      "source_id": "components.Settings.SettingsNetwork.administratorSignInRestrictionTip",
+      "locale": "de",
+      "expected_counts": {
+        "API": 1
+      },
+      "actual_counts": {
+        "API": 1
+      },
+      "missing_counts": {},
+      "result": "pass"
+    },
+    {
+      "source_id": "components.Settings.SettingsNetwork.administratorSignInRestrictionTip",
+      "locale": "ja",
+      "expected_counts": {
+        "API": 1
+      },
+      "actual_counts": {
+        "API": 1
+      },
+      "missing_counts": {},
+      "result": "pass"
+    },
+    {
+      "source_id": "components.Settings.SettingsNetwork.administratorSignInRestrictionTip",
+      "locale": "fr",
+      "expected_counts": {
+        "API": 1
+      },
+      "actual_counts": {
+        "API": 1
+      },
+      "missing_counts": {},
+      "result": "pass"
+    },
+    {
+      "source_id": "components.Settings.SettingsNetwork.administratorSignInRestrictionTip",
+      "locale": "pt_BR",
+      "expected_counts": {
+        "API": 1
+      },
+      "actual_counts": {
+        "API": 1
+      },
+      "missing_counts": {},
+      "result": "pass"
+    },
+    {
+      "source_id": "components.Settings.SettingsNetwork.administratorSignInRestrictionTip",
+      "locale": "ar",
+      "expected_counts": {
+        "API": 1
+      },
+      "actual_counts": {
+        "API": 1
+      },
+      "missing_counts": {},
+      "result": "pass"
+    },
+    {
+      "source_id": "components.Settings.SettingsNetwork.administratorSignInRestrictionTip",
+      "locale": "ko",
+      "expected_counts": {
+        "API": 1
+      },
+      "actual_counts": {
+        "API": 1
+      },
+      "missing_counts": {},
+      "result": "pass"
+    },
+    {
+      "source_id": "components.Settings.SettingsNetwork.administratorSignInRestrictionTip",
+      "locale": "zh_Hant",
+      "expected_counts": {
+        "API": 1
+      },
+      "actual_counts": {
+        "API": 1
+      },
+      "missing_counts": {},
+      "result": "pass"
+    },
+    {
+      "source_id": "components.Settings.SettingsNetwork.administratorSignInRestrictionTip",
+      "locale": "vi",
+      "expected_counts": {
+        "API": 1
+      },
+      "actual_counts": {
+        "API": 1
+      },
+      "missing_counts": {},
+      "result": "pass"
+    },
+    {
+      "source_id": "components.Settings.SettingsNetwork.administratorSignInRestrictionTip",
+      "locale": "id",
+      "expected_counts": {
+        "API": 1
+      },
+      "actual_counts": {
+        "API": 1
+      },
+      "missing_counts": {},
+      "result": "pass"
+    },
+    {
+      "source_id": "components.Settings.SettingsNetwork.restrictAdministratorSignInToNetworks",
+      "locale": "es",
+      "expected_counts": {},
+      "actual_counts": {},
+      "missing_counts": {},
+      "result": "pass"
+    },
+    {
+      "source_id": "components.Settings.SettingsNetwork.restrictAdministratorSignInToNetworks",
+      "locale": "zh_Hans",
+      "expected_counts": {},
+      "actual_counts": {},
+      "missing_counts": {},
+      "result": "pass"
+    },
+    {
+      "source_id": "components.Settings.SettingsNetwork.restrictAdministratorSignInToNetworks",
+      "locale": "hi",
+      "expected_counts": {},
+      "actual_counts": {},
+      "missing_counts": {},
+      "result": "pass"
+    },
+    {
+      "source_id": "components.Settings.SettingsNetwork.restrictAdministratorSignInToNetworks",
+      "locale": "de",
+      "expected_counts": {},
+      "actual_counts": {},
+      "missing_counts": {},
+      "result": "pass"
+    },
+    {
+      "source_id": "components.Settings.SettingsNetwork.restrictAdministratorSignInToNetworks",
+      "locale": "ja",
+      "expected_counts": {},
+      "actual_counts": {},
+      "missing_counts": {},
+      "result": "pass"
+    },
+    {
+      "source_id": "components.Settings.SettingsNetwork.restrictAdministratorSignInToNetworks",
+      "locale": "fr",
+      "expected_counts": {},
+      "actual_counts": {},
+      "missing_counts": {},
+      "result": "pass"
+    },
+    {
+      "source_id": "components.Settings.SettingsNetwork.restrictAdministratorSignInToNetworks",
+      "locale": "pt_BR",
+      "expected_counts": {},
+      "actual_counts": {},
+      "missing_counts": {},
+      "result": "pass"
+    },
+    {
+      "source_id": "components.Settings.SettingsNetwork.restrictAdministratorSignInToNetworks",
+      "locale": "ar",
+      "expected_counts": {},
+      "actual_counts": {},
+      "missing_counts": {},
+      "result": "pass"
+    },
+    {
+      "source_id": "components.Settings.SettingsNetwork.restrictAdministratorSignInToNetworks",
+      "locale": "ko",
+      "expected_counts": {},
+      "actual_counts": {},
+      "missing_counts": {},
+      "result": "pass"
+    },
+    {
+      "source_id": "components.Settings.SettingsNetwork.restrictAdministratorSignInToNetworks",
+      "locale": "zh_Hant",
+      "expected_counts": {},
+      "actual_counts": {},
+      "missing_counts": {},
+      "result": "pass"
+    },
+    {
+      "source_id": "components.Settings.SettingsNetwork.restrictAdministratorSignInToNetworks",
+      "locale": "vi",
+      "expected_counts": {},
+      "actual_counts": {},
+      "missing_counts": {},
+      "result": "pass"
+    },
+    {
+      "source_id": "components.Settings.SettingsNetwork.restrictAdministratorSignInToNetworks",
+      "locale": "id",
+      "expected_counts": {},
+      "actual_counts": {},
+      "missing_counts": {},
+      "result": "pass"
+    },
+    {
+      "source_id": "components.Settings.SettingsNetwork.validationAdministratorSignInNetworksRequired",
+      "locale": "es",
+      "expected_counts": {},
+      "actual_counts": {},
+      "missing_counts": {},
+      "result": "pass"
+    },
+    {
+      "source_id": "components.Settings.SettingsNetwork.validationAdministratorSignInNetworksRequired",
+      "locale": "zh_Hans",
+      "expected_counts": {},
+      "actual_counts": {},
+      "missing_counts": {},
+      "result": "pass"
+    },
+    {
+      "source_id": "components.Settings.SettingsNetwork.validationAdministratorSignInNetworksRequired",
+      "locale": "hi",
+      "expected_counts": {},
+      "actual_counts": {},
+      "missing_counts": {},
+      "result": "pass"
+    },
+    {
+      "source_id": "components.Settings.SettingsNetwork.validationAdministratorSignInNetworksRequired",
+      "locale": "de",
+      "expected_counts": {},
+      "actual_counts": {},
+      "missing_counts": {},
+      "result": "pass"
+    },
+    {
+      "source_id": "components.Settings.SettingsNetwork.validationAdministratorSignInNetworksRequired",
+      "locale": "ja",
+      "expected_counts": {},
+      "actual_counts": {},
+      "missing_counts": {},
+      "result": "pass"
+    },
+    {
+      "source_id": "components.Settings.SettingsNetwork.validationAdministratorSignInNetworksRequired",
+      "locale": "fr",
+      "expected_counts": {},
+      "actual_counts": {},
+      "missing_counts": {},
+      "result": "pass"
+    },
+    {
+      "source_id": "components.Settings.SettingsNetwork.validationAdministratorSignInNetworksRequired",
+      "locale": "pt_BR",
+      "expected_counts": {},
+      "actual_counts": {},
+      "missing_counts": {},
+      "result": "pass"
+    },
+    {
+      "source_id": "components.Settings.SettingsNetwork.validationAdministratorSignInNetworksRequired",
+      "locale": "ar",
+      "expected_counts": {},
+      "actual_counts": {},
+      "missing_counts": {},
+      "result": "pass"
+    },
+    {
+      "source_id": "components.Settings.SettingsNetwork.validationAdministratorSignInNetworksRequired",
+      "locale": "ko",
+      "expected_counts": {},
+      "actual_counts": {},
+      "missing_counts": {},
+      "result": "pass"
+    },
+    {
+      "source_id": "components.Settings.SettingsNetwork.validationAdministratorSignInNetworksRequired",
+      "locale": "zh_Hant",
+      "expected_counts": {},
+      "actual_counts": {},
+      "missing_counts": {},
+      "result": "pass"
+    },
+    {
+      "source_id": "components.Settings.SettingsNetwork.validationAdministratorSignInNetworksRequired",
+      "locale": "vi",
+      "expected_counts": {},
+      "actual_counts": {},
+      "missing_counts": {},
+      "result": "pass"
+    },
+    {
+      "source_id": "components.Settings.SettingsNetwork.validationAdministratorSignInNetworksRequired",
+      "locale": "id",
+      "expected_counts": {},
+      "actual_counts": {},
+      "missing_counts": {},
+      "result": "pass"
+    },
+    {
+      "source_id": "components.Settings.SettingsUsers.jellyfinQuickConnectOnly",
+      "locale": "es",
+      "expected_counts": {
+        "Jellyfin": 1,
+        "Quick Connect": 1
+      },
+      "actual_counts": {
+        "Jellyfin": 1,
+        "Quick Connect": 1
+      },
+      "missing_counts": {},
+      "result": "pass"
+    },
+    {
+      "source_id": "components.Settings.SettingsUsers.jellyfinQuickConnectOnly",
+      "locale": "zh_Hans",
+      "expected_counts": {
+        "Jellyfin": 1,
+        "Quick Connect": 1
+      },
+      "actual_counts": {
+        "Jellyfin": 1,
+        "Quick Connect": 1
+      },
+      "missing_counts": {},
+      "result": "pass"
+    },
+    {
+      "source_id": "components.Settings.SettingsUsers.jellyfinQuickConnectOnly",
+      "locale": "hi",
+      "expected_counts": {
+        "Jellyfin": 1,
+        "Quick Connect": 1
+      },
+      "actual_counts": {
+        "Jellyfin": 1,
+        "Quick Connect": 1
+      },
+      "missing_counts": {},
+      "result": "pass"
+    },
+    {
+      "source_id": "components.Settings.SettingsUsers.jellyfinQuickConnectOnly",
+      "locale": "de",
+      "expected_counts": {
+        "Jellyfin": 1,
+        "Quick Connect": 1
+      },
+      "actual_counts": {
+        "Jellyfin": 1,
+        "Quick Connect": 1
+      },
+      "missing_counts": {},
+      "result": "pass"
+    },
+    {
+      "source_id": "components.Settings.SettingsUsers.jellyfinQuickConnectOnly",
+      "locale": "ja",
+      "expected_counts": {
+        "Jellyfin": 1,
+        "Quick Connect": 1
+      },
+      "actual_counts": {
+        "Jellyfin": 1,
+        "Quick Connect": 1
+      },
+      "missing_counts": {},
+      "result": "pass"
+    },
+    {
+      "source_id": "components.Settings.SettingsUsers.jellyfinQuickConnectOnly",
+      "locale": "fr",
+      "expected_counts": {
+        "Jellyfin": 1,
+        "Quick Connect": 1
+      },
+      "actual_counts": {
+        "Jellyfin": 1,
+        "Quick Connect": 1
+      },
+      "missing_counts": {},
+      "result": "pass"
+    },
+    {
+      "source_id": "components.Settings.SettingsUsers.jellyfinQuickConnectOnly",
+      "locale": "pt_BR",
+      "expected_counts": {
+        "Jellyfin": 1,
+        "Quick Connect": 1
+      },
+      "actual_counts": {
+        "Jellyfin": 1,
+        "Quick Connect": 1
+      },
+      "missing_counts": {},
+      "result": "pass"
+    },
+    {
+      "source_id": "components.Settings.SettingsUsers.jellyfinQuickConnectOnly",
+      "locale": "ar",
+      "expected_counts": {
+        "Jellyfin": 1,
+        "Quick Connect": 1
+      },
+      "actual_counts": {
+        "Jellyfin": 1,
+        "Quick Connect": 1
+      },
+      "missing_counts": {},
+      "result": "pass"
+    },
+    {
+      "source_id": "components.Settings.SettingsUsers.jellyfinQuickConnectOnly",
+      "locale": "ko",
+      "expected_counts": {
+        "Jellyfin": 1,
+        "Quick Connect": 1
+      },
+      "actual_counts": {
+        "Jellyfin": 1,
+        "Quick Connect": 1
+      },
+      "missing_counts": {},
+      "result": "pass"
+    },
+    {
+      "source_id": "components.Settings.SettingsUsers.jellyfinQuickConnectOnly",
+      "locale": "zh_Hant",
+      "expected_counts": {
+        "Jellyfin": 1,
+        "Quick Connect": 1
+      },
+      "actual_counts": {
+        "Jellyfin": 1,
+        "Quick Connect": 1
+      },
+      "missing_counts": {},
+      "result": "pass"
+    },
+    {
+      "source_id": "components.Settings.SettingsUsers.jellyfinQuickConnectOnly",
+      "locale": "vi",
+      "expected_counts": {
+        "Jellyfin": 1,
+        "Quick Connect": 1
+      },
+      "actual_counts": {
+        "Jellyfin": 1,
+        "Quick Connect": 1
+      },
+      "missing_counts": {},
+      "result": "pass"
+    },
+    {
+      "source_id": "components.Settings.SettingsUsers.jellyfinQuickConnectOnly",
+      "locale": "id",
+      "expected_counts": {
+        "Jellyfin": 1,
+        "Quick Connect": 1
+      },
+      "actual_counts": {
+        "Jellyfin": 1,
+        "Quick Connect": 1
+      },
+      "missing_counts": {},
+      "result": "pass"
+    },
+    {
+      "source_id": "components.Settings.SettingsUsers.jellyfinQuickConnectOnlyTip",
+      "locale": "es",
+      "expected_counts": {
+        "Jellyfin": 2,
+        "Quick Connect": 1
+      },
+      "actual_counts": {
+        "Jellyfin": 2,
+        "Quick Connect": 1
+      },
+      "missing_counts": {},
+      "result": "pass"
+    },
+    {
+      "source_id": "components.Settings.SettingsUsers.jellyfinQuickConnectOnlyTip",
+      "locale": "zh_Hans",
+      "expected_counts": {
+        "Jellyfin": 2,
+        "Quick Connect": 1
+      },
+      "actual_counts": {
+        "Jellyfin": 2,
+        "Quick Connect": 1
+      },
+      "missing_counts": {},
+      "result": "pass"
+    },
+    {
+      "source_id": "components.Settings.SettingsUsers.jellyfinQuickConnectOnlyTip",
+      "locale": "hi",
+      "expected_counts": {
+        "Jellyfin": 2,
+        "Quick Connect": 1
+      },
+      "actual_counts": {
+        "Jellyfin": 2,
+        "Quick Connect": 1
+      },
+      "missing_counts": {},
+      "result": "pass"
+    },
+    {
+      "source_id": "components.Settings.SettingsUsers.jellyfinQuickConnectOnlyTip",
+      "locale": "de",
+      "expected_counts": {
+        "Jellyfin": 2,
+        "Quick Connect": 1
+      },
+      "actual_counts": {
+        "Jellyfin": 2,
+        "Quick Connect": 1
+      },
+      "missing_counts": {},
+      "result": "pass"
+    },
+    {
+      "source_id": "components.Settings.SettingsUsers.jellyfinQuickConnectOnlyTip",
+      "locale": "ja",
+      "expected_counts": {
+        "Jellyfin": 2,
+        "Quick Connect": 1
+      },
+      "actual_counts": {
+        "Jellyfin": 2,
+        "Quick Connect": 1
+      },
+      "missing_counts": {},
+      "result": "pass"
+    },
+    {
+      "source_id": "components.Settings.SettingsUsers.jellyfinQuickConnectOnlyTip",
+      "locale": "fr",
+      "expected_counts": {
+        "Jellyfin": 2,
+        "Quick Connect": 1
+      },
+      "actual_counts": {
+        "Jellyfin": 2,
+        "Quick Connect": 1
+      },
+      "missing_counts": {},
+      "result": "pass"
+    },
+    {
+      "source_id": "components.Settings.SettingsUsers.jellyfinQuickConnectOnlyTip",
+      "locale": "pt_BR",
+      "expected_counts": {
+        "Jellyfin": 2,
+        "Quick Connect": 1
+      },
+      "actual_counts": {
+        "Jellyfin": 2,
+        "Quick Connect": 1
+      },
+      "missing_counts": {},
+      "result": "pass"
+    },
+    {
+      "source_id": "components.Settings.SettingsUsers.jellyfinQuickConnectOnlyTip",
+      "locale": "ar",
+      "expected_counts": {
+        "Jellyfin": 2,
+        "Quick Connect": 1
+      },
+      "actual_counts": {
+        "Jellyfin": 2,
+        "Quick Connect": 1
+      },
+      "missing_counts": {},
+      "result": "pass"
+    },
+    {
+      "source_id": "components.Settings.SettingsUsers.jellyfinQuickConnectOnlyTip",
+      "locale": "ko",
+      "expected_counts": {
+        "Jellyfin": 2,
+        "Quick Connect": 1
+      },
+      "actual_counts": {
+        "Jellyfin": 2,
+        "Quick Connect": 1
+      },
+      "missing_counts": {},
+      "result": "pass"
+    },
+    {
+      "source_id": "components.Settings.SettingsUsers.jellyfinQuickConnectOnlyTip",
+      "locale": "zh_Hant",
+      "expected_counts": {
+        "Jellyfin": 2,
+        "Quick Connect": 1
+      },
+      "actual_counts": {
+        "Jellyfin": 2,
+        "Quick Connect": 1
+      },
+      "missing_counts": {},
+      "result": "pass"
+    },
+    {
+      "source_id": "components.Settings.SettingsUsers.jellyfinQuickConnectOnlyTip",
+      "locale": "vi",
+      "expected_counts": {
+        "Jellyfin": 2,
+        "Quick Connect": 1
+      },
+      "actual_counts": {
+        "Jellyfin": 2,
+        "Quick Connect": 1
+      },
+      "missing_counts": {},
+      "result": "pass"
+    },
+    {
+      "source_id": "components.Settings.SettingsUsers.jellyfinQuickConnectOnlyTip",
+      "locale": "id",
+      "expected_counts": {
+        "Jellyfin": 2,
+        "Quick Connect": 1
+      },
+      "actual_counts": {
+        "Jellyfin": 2,
+        "Quick Connect": 1
+      },
+      "missing_counts": {},
+      "result": "pass"
+    }
+  ],
+  "pass": true
+}

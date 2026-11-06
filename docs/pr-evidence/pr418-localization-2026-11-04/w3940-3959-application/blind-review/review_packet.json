@@ -1,0 +1,160 @@
+{
+  "schemaVersion": 1,
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "window": "W3940-W3959",
+  "range": [
+    3940,
+    3959
+  ],
+  "head": "a0104b4c84a9c4561020ca72062171b22ffc49f2",
+  "tree": "aaa44c8019c58fde7ae796065e8aae7ac11d7a80",
+  "baseRef": "main",
+  "baseSha": "fa40534ccced75bde1125c14760514fcd5d7de4d",
+  "candidateFreeInputOnly": true,
+  "primaryOutputAccessed": false,
+  "inputSha256ManifestSha256": "13da3064a35f468831635d255627649df1893a858523451700f4a518e65354f1",
+  "inputManifestSha256": "f610e66ce6edbb91457c74d004e19b5827beb62bfac0a190a8cf8156b6eda476",
+  "selectedSourceCellsSha256": "01bdf8f04a79841d845e1d8f5d2ca08fe1a94e3e0c1b6cccdc40f59a5998ba9e",
+  "currentTargetCellsSha256": "3afd00d26d3b2cf3669c3fe1249430af43496cdc6249c4df7225f89ff6bf65da",
+  "callerContextsSha256": "d0c47d2b83014a039114b906421de3261ca5ac0828bfca767423de4c9d4ce04d",
+  "callerContextBlocksSha256": "d9361105c6bd6923ebf0725f682f36436b8c05a64553797c7e0a6f292102ee1a",
+  "predecessorWindow": "W3920-W3939",
+  "predecessorEndPosition": 3939,
+  "priorSelectedSourceHashesReattested": 3940,
+  "priorAppliedTargetHashesReattested": 214,
+  "priorHoldRowsSha256": "f40590b3fbbd2e5a626dbecb7fa5bf2d1f9ebe1e95659d2b6600ec7df920c5d1",
+  "priorHoldCountPreserved": 26,
+  "priorCurrentWindowHashOnlyHolds": 4,
+  "candidateFreeBaselineTokenMismatches": {
+    "markupTags": 0,
+    "numericTokens": 2,
+    "placeholders": 0,
+    "protectedLiterals": 0
+  },
+  "decisionCounts": {
+    "keep": 179,
+    "propose": 37,
+    "hold": 24
+  },
+  "heldCells": [
+    {
+      "position": 3943,
+      "locale": "es"
+    },
+    {
+      "position": 3943,
+      "locale": "zh-Hans"
+    },
+    {
+      "position": 3943,
+      "locale": "hi"
+    },
+    {
+      "position": 3943,
+      "locale": "de"
+    },
+    {
+      "position": 3943,
+      "locale": "ja"
+    },
+    {
+      "position": 3943,
+      "locale": "fr"
+    },
+    {
+      "position": 3943,
+      "locale": "pt-BR"
+    },
+    {
+      "position": 3943,
+      "locale": "ar"
+    },
+    {
+      "position": 3943,
+      "locale": "ko"
+    },
+    {
+      "position": 3943,
+      "locale": "zh-Hant"
+    },
+    {
+      "position": 3943,
+      "locale": "vi"
+    },
+    {
+      "position": 3943,
+      "locale": "id"
+    },
+    {
+      "position": 3957,
+      "locale": "es"
+    },
+    {
+      "position": 3957,
+      "locale": "zh-Hans"
+    },
+    {
+      "position": 3957,
+      "locale": "hi"
+    },
+    {
+      "position": 3957,
+      "locale": "de"
+    },
+    {
+      "position": 3957,
+      "locale": "ja"
+    },
+    {
+      "position": 3957,
+      "locale": "fr"
+    },
+    {
+      "position": 3957,
+      "locale": "pt-BR"
+    },
+    {
+      "position": 3957,
+      "locale": "ar"
+    },
+    {
+      "position": 3957,
+      "locale": "ko"
+    },
+    {
+      "position": 3957,
+      "locale": "zh-Hant"
+    },
+    {
+      "position": 3957,
+      "locale": "vi"
+    },
+    {
+      "position": 3957,
+      "locale": "id"
+    }
+  ],
+  "currentHashOnlyHolds": 24,
+  "numericEquivalentAccepted": [
+    "3940::ja",
+    "3955::ja"
+  ],
+  "liveAttestation": {
+    "headSha": "a0104b4c84a9c4561020ca72062171b22ffc49f2",
+    "branchRefSha": "a0104b4c84a9c4561020ca72062171b22ffc49f2",
+    "pullRefSha": "a0104b4c84a9c4561020ca72062171b22ffc49f2",
+    "headTree": "aaa44c8019c58fde7ae796065e8aae7ac11d7a80",
+    "prApiBaseSha": "fa40534ccced75bde1125c14760514fcd5d7de4d",
+    "prApiBaseTree": "729219c17bf8ca431d9682025256c584d67f081f",
+    "liveBaseBranchSha": "016bcf8db7475b2105b9b488ff67ed7d1c096508",
+    "liveBaseBranchTree": "be45de2c5ffc98098adcdc362b491717c05a48c2",
+    "baseDiffersFromCurrentMain": true,
+    "baseDriftSinceInputAttestation": false,
+    "attestationBeforeReviewSha256": "6f5f4157815245d00548c03ed2cbe6532f0224d579cc7d362f0a95214677a24b",
+    "attestationAfterReviewSha256": "0591c54ade7eefd910dc05ff6109b34f82acf11bfac8334259956b33da7d8f9f"
+  },
+  "nativeSpeakerValidation": false,
+  "reviewer": "root independent blind review",
+  "createdFrom": "candidate-free input only; primary cells were not opened"
+}

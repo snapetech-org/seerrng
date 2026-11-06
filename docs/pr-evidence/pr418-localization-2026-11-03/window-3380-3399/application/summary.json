@@ -1,0 +1,15 @@
+{
+  "repository": "snapetech-org/seerrng",
+  "pullRequest": 418,
+  "window": "W3380-W3399",
+  "inputHead": "4d7de2c41b0e6df6cd0b7f7075c9cddd1c6ce160",
+  "inputTree": "6fba2d5985869b4563955b2c338a93e82efb4b22",
+  "changedCells": 12,
+  "changedCatalogs": 8,
+  "readbackCells": 240,
+  "directLocaleCatalogs": 12,
+  "catalogKeyCountPerDirectLocale": 9494,
+  "orderedKeySequenceChecks": "Each catalog key order matches its exact input file pin; locales with different native orderings retain their own order.",
+  "testsBuildsScansCIOrWorkflowChanges": false,
+  "commit": "the commit containing this evidence and the 12 locale changes"
+}

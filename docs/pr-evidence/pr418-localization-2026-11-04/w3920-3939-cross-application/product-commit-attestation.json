@@ -1,0 +1,21 @@
+{
+  "addedLines": 17,
+  "changedPathCount": 9,
+  "changedPaths": [
+    "src/i18n/locale/ar.json",
+    "src/i18n/locale/de.json",
+    "src/i18n/locale/es.json",
+    "src/i18n/locale/fr.json",
+    "src/i18n/locale/hi.json",
+    "src/i18n/locale/id.json",
+    "src/i18n/locale/ko.json",
+    "src/i18n/locale/pt_BR.json",
+    "src/i18n/locale/vi.json"
+  ],
+  "commit": "df93035a71c4b08470b34ed00abadd443bbdd876",
+  "commitScope": "locale catalog targets only",
+  "expectedParent": "c989e745a64743a45282a7a2704713945d8406d8",
+  "parent": "c989e745a64743a45282a7a2704713945d8406d8",
+  "removedLines": 17,
+  "tree": "a5455231951450556d5d94cfd8d9f66bfe1c6301"
+}

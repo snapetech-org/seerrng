@@ -1,7 +1,10 @@
 # Dependency refresh validation
 
 This follow-up recovers the original histories of PRs #567–#571. It is separate
-from the v3.72.10 tag and remains unmerged until its final source checks pass.
+from the v3.72.10 tag. PR #573 merged into main at
+8b47a4238d9fe4729efb54c034b0888ebf040098 after full CI 42158970687 passed
+on exact head ca5766128b8f95975b12799593e45924704ea73d. All five original
+PRs are GitHub MERGED, with their final heads preserved in main ancestry.
 
 ## Repairs and provenance
 
@@ -50,4 +53,7 @@ or live provider interactions. No live SMTP account or notification was used.
 Logs, source patches, package metadata and image comparison records are retained
 in `/mnt/disks/scratch/task-deliverables/seerrng-contribution-recovery-20261105/`
 under `dependency-refresh-*` and `dependency-pr-source/567` through `571`.
-Full CI and the final merge receipt must be added before claiming delivery.
+The final CI and merge receipts are dependency-refresh-final-ci.json,
+dependency-refresh-merged.json and dependency-refresh-original-merge-receipts.json.
+These changes require a subsequent release; the immutable v3.72.10 tag excludes
+this follow-up.

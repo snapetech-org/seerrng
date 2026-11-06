@@ -1,4 +1,4 @@
-import { IssueStatus, IssueTypeName } from '@server/constants/issue';
+import { IssueStatus } from '@server/constants/issue';
 import { getIntl } from '@server/i18n';
 import globalMessages from '@server/i18n/globalMessages';
 import {
@@ -20,7 +20,14 @@ import type { NotificationAgent, NotificationPayload } from './agent';
 import {
   BaseAgent,
   CONFIGURABLE_NOTIFICATION_HTTP_OPTIONS,
+  formatNotificationTitle,
+  getIssueTypeLabel,
+  getLocalizedNotificationPayload,
   getNotificationActionUrl,
+  getNotificationCommentFrom,
+  getNotificationContent,
+  getNotificationExtras,
+  isolateBidiText,
   truncateNotificationUtf8,
 } from './agent';
 
@@ -48,6 +55,9 @@ class NtfyAgent
   public buildPayload(type: Notification, payload: NotificationPayload) {
     const settings = this.getSettings();
     const intl = getIntl(settings.options.locale as AvailableLocale);
+    payload = getLocalizedNotificationPayload(payload, intl);
+    const content = getNotificationContent(payload, intl);
+    const extras = getNotificationExtras(payload, intl);
     const { applicationUrl } = getExternalRuntimeConfig().main;
     const embedPoster = settings.embedPoster;
 
@@ -59,18 +69,18 @@ class NtfyAgent
     const priority = settings.options.priority ?? 3;
 
     const title = truncateNotificationUtf8(
-      payload.event ? `${payload.event} - ${payload.subject}` : payload.subject,
+      formatNotificationTitle(content.event, payload.subject),
       NTFY_TITLE_BYTE_LIMIT
     );
     let message =
-      payload.message && !payload.comment
-        ? escapeNtfyMarkdownText(payload.message)
+      content.message && !payload.comment
+        ? escapeNtfyMarkdownText(content.message)
         : '';
 
     if (payload.request) {
       message += `${message ? '\n\n' : ''}**${escapeNtfyMarkdownText(
         intl.formatMessage(globalMessages.requestedBy)
-      )}:** ${escapeNtfyMarkdownText(payload.request.requestedBy.displayName)}`;
+      )}:** ${escapeNtfyMarkdownText(isolateBidiText(payload.request.requestedBy.displayName))}`;
 
       let status = '';
       switch (type) {
@@ -100,13 +110,13 @@ class NtfyAgent
       }
     } else if (payload.comment) {
       message += `\n**${escapeNtfyMarkdownText(
-        intl.formatMessage(globalMessages.commentFrom, {
-          userName: payload.comment.user.displayName,
-        })
+        getNotificationCommentFrom(payload.comment.user.displayName, intl)
       )}:**\n${escapeNtfyMarkdownText(payload.comment.message)}`;
     } else if (payload.issue) {
-      message += `\n\n**${intl.formatMessage(globalMessages.reportedBy)}:** ${escapeNtfyMarkdownText(payload.issue.createdBy.displayName)}`;
-      message += `\n**${intl.formatMessage(globalMessages.issueType)}:** ${IssueTypeName[payload.issue.issueType]}`;
+      message += `\n\n**${intl.formatMessage(globalMessages.reportedBy)}:** ${escapeNtfyMarkdownText(
+        isolateBidiText(payload.issue.createdBy.displayName)
+      )}`;
+      message += `\n**${intl.formatMessage(globalMessages.issueType)}:** ${getIssueTypeLabel(intl, payload.issue.issueType)}`;
       message += `\n**${intl.formatMessage(globalMessages.issueStatus)}:** ${
         payload.issue.status === IssueStatus.OPEN
           ? intl.formatMessage(globalMessages.open)
@@ -114,7 +124,7 @@ class NtfyAgent
       }`;
     }
 
-    for (const extra of payload.extra ?? []) {
+    for (const extra of extras) {
       message += `\n\n**${escapeNtfyMarkdownText(
         extra.name
       )}**\n${escapeNtfyMarkdownText(extra.value)}`;

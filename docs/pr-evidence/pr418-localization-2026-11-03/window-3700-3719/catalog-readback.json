@@ -1,0 +1,131 @@
+{
+  "baseHead": "96d040b6a4abfec7764c3addfe35b395b8fe5c67",
+  "baseTree": "e93626b0974ba419044ec76d32018fdc122d9e19",
+  "catalogs": [
+    {
+      "catalogPath": "src/i18n/locale/ar.json",
+      "baselineBlob": "fed460c9cd98fa538580d84af198b944b382b24e",
+      "beforeJsonKeys": 9494,
+      "afterJsonKeys": 9494,
+      "actualChangedKeys": 9,
+      "expectedChangedKeys": 9,
+      "allUnselectedKeysUnchanged": true,
+      "fileSha256": "c0026ce896e78ce7b445b9271385118cac18aab2f48ed5d8743d0efc7e1f054b"
+    },
+    {
+      "catalogPath": "src/i18n/locale/de.json",
+      "baselineBlob": "b9a8c475fa80390eec5d70ce17a41fe72d6c4dee",
+      "beforeJsonKeys": 9494,
+      "afterJsonKeys": 9494,
+      "actualChangedKeys": 4,
+      "expectedChangedKeys": 4,
+      "allUnselectedKeysUnchanged": true,
+      "fileSha256": "6eb292bc5d6cbdfff661a40400327a6860f49309e42b8c5e38eb020f56e308de"
+    },
+    {
+      "catalogPath": "src/i18n/locale/es.json",
+      "baselineBlob": "c05b5d4782b14406a0c8821d8d476a4891f7e0a4",
+      "beforeJsonKeys": 9494,
+      "afterJsonKeys": 9494,
+      "actualChangedKeys": 7,
+      "expectedChangedKeys": 7,
+      "allUnselectedKeysUnchanged": true,
+      "fileSha256": "c6a811bad005f4dc8ee6639a974c361902d6c580b8a0f6e0339edea0ee3b33fe"
+    },
+    {
+      "catalogPath": "src/i18n/locale/fr.json",
+      "baselineBlob": "5425e12149a1c8d55ff706687a24c597baa202b9",
+      "beforeJsonKeys": 9494,
+      "afterJsonKeys": 9494,
+      "actualChangedKeys": 3,
+      "expectedChangedKeys": 3,
+      "allUnselectedKeysUnchanged": true,
+      "fileSha256": "68320288e587402a6a3908227e4306a96ea662786ab4561295a859032bfeb0f0"
+    },
+    {
+      "catalogPath": "src/i18n/locale/hi.json",
+      "baselineBlob": "d66f9147573d478c61d2656a6eba7026e3bde764",
+      "beforeJsonKeys": 9494,
+      "afterJsonKeys": 9494,
+      "actualChangedKeys": 9,
+      "expectedChangedKeys": 9,
+      "allUnselectedKeysUnchanged": true,
+      "fileSha256": "531805345a64092c224c5445f7bed1cceca13a1113c9d264c8876ed0a7b91045"
+    },
+    {
+      "catalogPath": "src/i18n/locale/id.json",
+      "baselineBlob": "7bffb65f847fce6e367b46053adb030a6fc6839e",
+      "beforeJsonKeys": 9494,
+      "afterJsonKeys": 9494,
+      "actualChangedKeys": 11,
+      "expectedChangedKeys": 11,
+      "allUnselectedKeysUnchanged": true,
+      "fileSha256": "1681900cc6297e71c1f4164bb0a4b41f3ac2c4d6f0be376ab3b10bba08581db1"
+    },
+    {
+      "catalogPath": "src/i18n/locale/ja.json",
+      "baselineBlob": "bad0ba2b157cfca9438fc35b7e875b9d860c596a",
+      "beforeJsonKeys": 9494,
+      "afterJsonKeys": 9494,
+      "actualChangedKeys": 10,
+      "expectedChangedKeys": 10,
+      "allUnselectedKeysUnchanged": true,
+      "fileSha256": "5856c67ee978ab56b809bcbf592c12655ac3a0aae3893a372bfabcf8777e681d"
+    },
+    {
+      "catalogPath": "src/i18n/locale/ko.json",
+      "baselineBlob": "b6f9aa65b08501561014a04f8688094ab5027e90",
+      "beforeJsonKeys": 9494,
+      "afterJsonKeys": 9494,
+      "actualChangedKeys": 6,
+      "expectedChangedKeys": 6,
+      "allUnselectedKeysUnchanged": true,
+      "fileSha256": "1137829c6977d48fdd5724ca1236fe3f2e5e122a41a5879b28d9bd989a1e7d90"
+    },
+    {
+      "catalogPath": "src/i18n/locale/pt_BR.json",
+      "baselineBlob": "ff32c63cb06af9542526413e70b00db2fb753c8d",
+      "beforeJsonKeys": 9494,
+      "afterJsonKeys": 9494,
+      "actualChangedKeys": 10,
+      "expectedChangedKeys": 10,
+      "allUnselectedKeysUnchanged": true,
+      "fileSha256": "be408c92d6482f40493c49e6bd1c08d85bbc9c79492387255477faf89db3fa23"
+    },
+    {
+      "catalogPath": "src/i18n/locale/vi.json",
+      "baselineBlob": "247323e0c22a587c000b37d93dd03671eee6d55d",
+      "beforeJsonKeys": 9494,
+      "afterJsonKeys": 9494,
+      "actualChangedKeys": 4,
+      "expectedChangedKeys": 4,
+      "allUnselectedKeysUnchanged": true,
+      "fileSha256": "b80d20c20730714a45abbb223fae27ae27f339497a84ae2208fb0044f5cbf160"
+    },
+    {
+      "catalogPath": "src/i18n/locale/zh_Hans.json",
+      "baselineBlob": "ad501d5959a29598cfb1fc8c05cfc17b2a719625",
+      "beforeJsonKeys": 9494,
+      "afterJsonKeys": 9494,
+      "actualChangedKeys": 6,
+      "expectedChangedKeys": 6,
+      "allUnselectedKeysUnchanged": true,
+      "fileSha256": "1eaea27d7b5c2a5a883e2fa749c8e0d1999e715371df31bba72fd5f6ed56f960"
+    },
+    {
+      "catalogPath": "src/i18n/locale/zh_Hant.json",
+      "baselineBlob": "1b55f958882daad052ad1b83276e5e8f0be79eb6",
+      "beforeJsonKeys": 9494,
+      "afterJsonKeys": 9494,
+      "actualChangedKeys": 6,
+      "expectedChangedKeys": 6,
+      "allUnselectedKeysUnchanged": true,
+      "fileSha256": "462f9c70597903c35bcaf56ff21c28dd5e58b2bf458217d6c6c02433ca518bca"
+    }
+  ],
+  "allUnselectedKeysUnchanged": true,
+  "localeCatalogCount": 12,
+  "changedCellCount": 85,
+  "readbackCellCount": 240,
+  "priorHoldCount": 12
+}

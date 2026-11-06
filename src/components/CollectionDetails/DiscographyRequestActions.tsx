@@ -1,3 +1,4 @@
+import ApiMessageText from '@app/components/Common/ApiMessageText';
 import Button from '@app/components/Common/Button';
 import FormatRequestControl from '@app/components/Common/FormatRequestControl';
 import { Permission, useUser } from '@app/hooks/useUser';
@@ -165,7 +166,8 @@ export default function DiscographyRequestActions({
           })}
           {[...result.skipped, ...result.failed].map((item) => (
             <div key={item.mediaId}>
-              {item.title ?? item.mediaId}: {item.reason}
+              {item.title ?? item.mediaId}:{' '}
+              <ApiMessageText>{item.reason}</ApiMessageText>
             </div>
           ))}
         </div>

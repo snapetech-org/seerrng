@@ -1,0 +1,23 @@
+{
+  "boundedSearchLimitations": [
+    {
+      "callerEvidenceNote": "Targeted search of the source group component file(s) at the exact PR tree; line refs include the exact key leaf. This is not a complete dynamic call graph.",
+      "callerPaths": [
+        "src/components/RequestCard/index.tsx"
+      ],
+      "callerUseStatus": "definition-only-or-single-reference",
+      "sourceId": "components.RequestCard.tmdbid"
+    },
+    {
+      "callerEvidenceNote": "Targeted search of the source group component file(s) at the exact PR tree; line refs include the exact key leaf. This is not a complete dynamic call graph.",
+      "callerPaths": [
+        "src/components/RequestCard/index.tsx"
+      ],
+      "callerUseStatus": "definition-only-or-single-reference",
+      "sourceId": "components.RequestCard.tvdbid"
+    }
+  ],
+  "callerContextRows": 100,
+  "callerUseNotFound": [],
+  "note": "No dynamic call graph is claimed; the caller-context rows record targeted source-group references at the exact Seerr PR tree."
+}
