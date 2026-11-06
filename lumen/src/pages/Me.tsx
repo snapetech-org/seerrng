@@ -110,7 +110,7 @@ export default function Me() {
         <div className="quota">
           {q('movie', 'Movies')}
           {q('tv', 'Seasons')}
-          {q('book', 'Books')}
+          {prefs.showBooks && q('book', 'Books')}
         </div>
       </Section>
 

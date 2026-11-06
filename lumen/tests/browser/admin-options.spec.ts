@@ -522,6 +522,7 @@ test('categories without a connected service stay out of the menus', async ({
   expect(extraCalls).toEqual([]);
   await page.goto('/me');
   await expect(page.getByText('Show books and audiobooks')).toHaveCount(0);
+  await expect(page.locator('.quota').getByText('Books')).toHaveCount(0);
 });
 
 test('sign-in errors are written in words', async ({ page }) => {
