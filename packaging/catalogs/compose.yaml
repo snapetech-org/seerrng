@@ -1,0 +1,30 @@
+services:
+  seerrng:
+    image: ghcr.io/snapetech-org/seerrng:v3.72.16@sha256:b2bd0d2288898efcdb602f1f4863e86dff3fed1cfba5641d54072ab4702942fa
+    restart: unless-stopped
+    init: true
+    user: '1000:1000'
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    environment:
+      LOG_LEVEL: info
+      HOST: 0.0.0.0
+      PORT: '5055'
+      CONFIG_DIRECTORY: /app/config
+    ports:
+      - '${SEERRNG_BIND_ADDRESS:-127.0.0.1}:${SEERRNG_HTTP_PORT:-5055}:5055/tcp'
+    volumes:
+      - seerrng-config:/app/config
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,nodev,size=64m,uid=1000,gid=1000,mode=1777
+      - /app/.next/cache:rw,noexec,nosuid,nodev,size=256m,uid=1000,gid=1000,mode=0700
+    healthcheck:
+      test: [CMD, node, /app/scripts/healthcheck.mjs]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 30s
+
+volumes:
+  seerrng-config:

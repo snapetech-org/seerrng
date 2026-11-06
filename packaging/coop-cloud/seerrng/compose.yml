@@ -1,0 +1,47 @@
+services:
+  app:
+    image: ghcr.io/snapetech-org/seerrng:v3.72.16@sha256:b2bd0d2288898efcdb602f1f4863e86dff3fed1cfba5641d54072ab4702942fa
+    entrypoint: [node, /app/scripts/start-proxy.cjs]
+    command: []
+    read_only: true
+    cap_drop: [ALL]
+    environment:
+      LOG_LEVEL: info
+      PORT: '5055'
+      HOST: 0.0.0.0
+      CONFIG_DIRECTORY: /app/config
+      SEERR_PUBLIC_ORIGIN: https://${DOMAIN}
+    volumes:
+      - seerrng_config:/app/config
+    configs:
+      - source: seerrng-startup
+        target: /app/scripts/start-proxy.cjs
+        mode: 0444
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,nodev,mode=1777
+      - /app/.next/cache:rw,noexec,nosuid,nodev,mode=1777
+    networks:
+      - proxy
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+      labels:
+        - 'traefik.enable=true'
+        - 'traefik.docker.network=proxy'
+        - 'traefik.http.services.${STACK_NAME}.loadbalancer.server.port=5055'
+        - 'traefik.http.routers.${STACK_NAME}.rule=Host(`${DOMAIN}`${EXTRA_DOMAINS})'
+        - 'traefik.http.routers.${STACK_NAME}.entrypoints=web-secure'
+        - 'traefik.http.routers.${STACK_NAME}.tls.certresolver=${LETS_ENCRYPT_ENV}'
+        - 'coop-cloud.${STACK_NAME}.version=v3.72.16'
+
+volumes:
+  seerrng_config:
+
+networks:
+  proxy:
+    external: true
+
+configs:
+  seerrng-startup:
+    file: ./start-proxy.cjs

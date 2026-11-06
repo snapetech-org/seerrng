@@ -1,0 +1,26 @@
+{
+  "id": "tech.snapetech.seerrng",
+  "title": "SeerrNG",
+  "description": "Self-hosted media requests and discovery for Plex, Jellyfin, and Emby across movies, TV, music, ebooks, and audiobooks.",
+  "tagline": "Media requests and discovery across movies, TV, music, and books",
+  "version": "0.1.0",
+  "upstreamVersion": "v3.72.16",
+  "healthCheckPath": "/api/v1/status",
+  "httpPort": 5055,
+  "addons": {
+    "localstorage": {
+      "sqlite": {
+        "paths": ["/app/data/db/db.sqlite3"]
+      }
+    }
+  },
+  "manifestVersion": 2,
+  "website": "https://github.com/snapetech-org/seerrng",
+  "documentationUrl": "https://snapetech-org.github.io/seerrng/",
+  "packageUrl": "https://github.com/snapetech-org/seerrng/tree/main/packaging/cloudron",
+  "iconUrl": "https://raw.githubusercontent.com/snapetech-org/seerrng/main/public/android-chrome-512x512.png",
+  "tags": ["media", "requests", "plex", "jellyfin", "emby"],
+  "minBoxVersion": "10.0.0",
+  "packagerName": "Snapetech",
+  "packagerUrl": "https://github.com/snapetech-org"
+}

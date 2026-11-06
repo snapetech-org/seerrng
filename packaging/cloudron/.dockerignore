@@ -1,0 +1,4 @@
+*
+!Dockerfile
+!start-cloudron.cjs
+!CloudronManifest.json
