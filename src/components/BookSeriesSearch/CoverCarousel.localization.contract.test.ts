@@ -55,7 +55,7 @@ describe('Book series carousel localization contract', () => {
     assert.equal(deltaManifest.source.sourceSha256, sourceHash);
   });
 
-  it('tracks the 12 direct rollout locales and es-MX parent inheritance', () => {
+  it('tracks completed translations for the 12 direct rollout locales', () => {
     const locales = localeConfig.locales;
     const directNonEnglish = locales
       .filter(
@@ -63,21 +63,21 @@ describe('Book series carousel localization contract', () => {
           locale.tag !== localeConfig.baseLocale && !locale.fallback
       )
       .map((locale: { tag: string }) => locale.tag);
-    const manifestDirect = deltaManifest.localeAccounting.pendingDirectLocales
-      .map((locale: { tag: string }) => locale.tag)
-      .sort();
     const directTarget = rolloutLocales.filter((tag) =>
       directNonEnglish.includes(tag)
     );
 
-    assert.deepEqual(manifestDirect, [...directTarget].sort());
+    assert.deepEqual(
+      deltaManifest.localeAccounting.pendingDirectLocales,
+      []
+    );
     assert.equal(deltaManifest.localeAccounting.activeLocaleCount, 38);
     assert.equal(
       deltaManifest.localeAccounting.nonEnglishEffectiveLocaleCount,
       37
     );
     assert.equal(deltaManifest.localeAccounting.rolloutDirectLocaleCount, 12);
-    assert.equal(deltaManifest.localeAccounting.pendingDirectCellCount, 12);
+    assert.equal(deltaManifest.localeAccounting.pendingDirectCellCount, 0);
     assert.equal(
       deltaManifest.localeAccounting.rolloutEffectiveLocaleCount,
       13
@@ -91,7 +91,7 @@ describe('Book series carousel localization contract', () => {
         tag: 'es-MX',
         clientFile: 'es_MX.json',
         inheritsFrom: 'es',
-        status: 'pending-via-parent',
+        status: 'resolved-via-parent',
         directCellRequired: false,
       },
     ]);
@@ -102,12 +102,26 @@ describe('Book series carousel localization contract', () => {
       const target = JSON.parse(
         fs.readFileSync(path.join('src/i18n/locale', locale.clientFile), 'utf8')
       );
-      assert.equal(
-        Object.hasOwn(target, messageId),
-        false,
-        `${locale.tag} translation must remain pending in this source-only change`
-      );
+      if (directTarget.includes(locale.tag)) {
+        assert.equal(typeof target[messageId], 'string');
+        assert.ok(target[messageId].trim());
+        assert.notEqual(target[messageId], englishMessages[messageId]);
+      } else {
+        assert.equal(
+          Object.hasOwn(target, messageId),
+          false,
+          `${locale.tag} remains outside direct translation scope`
+        );
+      }
     }
-    assert.deepEqual(deltaManifest.translationCatalogsChanged, []);
+    assert.deepEqual(deltaManifest.translationCatalogsChanged, [
+      'src/i18n/locale/ar.json',
+      'src/i18n/locale/id.json',
+      'src/i18n/locale/ko.json',
+      'src/i18n/locale/pt_BR.json',
+      'src/i18n/locale/vi.json',
+      'src/i18n/locale/zh_Hans.json',
+      'src/i18n/locale/zh_Hant.json',
+    ]);
   });
 });

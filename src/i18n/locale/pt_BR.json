@@ -383,7 +383,7 @@
   "components.BookSeriesSearch.CoverCarousel.next": "Próximas capas de livros",
   "components.BookSeriesSearch.CoverCarousel.open": "Abrir {series}: {book}",
   "components.BookSeriesSearch.CoverCarousel.previous": "Capas de livros anteriores",
-  "components.BookSeriesSearch.CoverCarousel.roleDescription": "Carrosão",
+  "components.BookSeriesSearch.CoverCarousel.roleDescription": "carrossel",
   "components.BookSeriesSearch.InlineResults.browse": "Ver todos os resultados de séries",
   "components.BookSeriesSearch.InlineResults.catalog": "Outras correspondências de catálogo",
   "components.BookSeriesSearch.InlineResults.catalogHint": "Explore outras entradas de catálogo para esta série. Suas listas de livros podem diferir do seu servidor de livros.",

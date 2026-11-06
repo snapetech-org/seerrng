@@ -6932,7 +6932,7 @@
   "components.VisualLab.demoPlum": "플럼",
   "components.VisualLab.demoPink": "분홍",
   "components.BookSeriesDetails.collectionTitle": "{title} 수집",
-  "components.BookSeriesSearch.CoverCarousel.roleDescription": "카루세일",
+  "components.BookSeriesSearch.CoverCarousel.roleDescription": "캐러셀",
   "components.Discover.ReadMeABookHomeSection.requestedTitle": "{title}이(가) 요청되었습니다.",
   "components.Discover.ReadMeABookSearch.requestedTitle": "{title} 요청.",
   "components.Login.OidcLoginButton.setupGuide": "ID 공급자 설정 가이드",
