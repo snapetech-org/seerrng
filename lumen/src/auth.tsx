@@ -9,6 +9,7 @@ import {
   type ReactNode,
 } from 'react';
 import { api, ApiError, type User } from './api';
+import { serverName } from './mediaServer';
 import { resetSessionState } from './sessionState';
 
 interface AuthState {
@@ -22,6 +23,7 @@ const Ctx = createContext<AuthState>({
   signOut: async () => {},
 });
 export const useAuth = () => useContext(Ctx);
+export const useMediaServerName = () => serverName();
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null | undefined>(undefined);
@@ -128,4 +130,82 @@ async function plexPinFlow(win: Window | null): Promise<void> {
     if (win?.closed) break;
   }
   throw new Error('Plex sign-in was cancelled or timed out.');
+}
+
+// ---- Jellyfin / Emby sign-in: SeerrNG checks the account against the media server ----
+export async function signInWithJellyfin(
+  username: string,
+  password: string
+): Promise<void> {
+  await api('/auth/jellyfin', {
+    method: 'POST',
+    // SeerrNG's own login sends the username as the email too (used for new accounts)
+    body: JSON.stringify({ username, password, email: username }),
+  });
+}
+
+// Jellyfin Quick Connect: show a code, the person approves it in a signed-in Jellyfin
+// app, then SeerrNG trades the secret for a session. Same endpoints as SeerrNG's modal.
+export async function startQuickConnect(signal?: AbortSignal): Promise<{
+  code: string;
+  secret: string;
+}> {
+  return api('/auth/jellyfin/quickconnect/initiate', {
+    method: 'POST',
+    signal,
+  });
+}
+
+export async function finishQuickConnect(
+  secret: string,
+  cancelled: () => boolean,
+  signal?: AbortSignal
+): Promise<void> {
+  const deadline = Date.now() + 10 * 60_000;
+  let errors = 0;
+  while (Date.now() < deadline) {
+    await new Promise<void>((resolve) => {
+      if (signal?.aborted) {
+        resolve();
+        return;
+      }
+      const finish = () => {
+        clearTimeout(timer);
+        signal?.removeEventListener('abort', finish);
+        resolve();
+      };
+      const timer = window.setTimeout(finish, 2000);
+      signal?.addEventListener('abort', finish, { once: true });
+    });
+    if (cancelled() || signal?.aborted) throw new QuickConnectCancelled();
+    let ok = false;
+    try {
+      const r = await api<{ authenticated: boolean }>(
+        `/auth/jellyfin/quickconnect/check?secret=${encodeURIComponent(secret)}`,
+        { signal }
+      );
+      ok = r.authenticated;
+      errors = 0;
+    } catch (e) {
+      if (cancelled() || signal?.aborted) throw new QuickConnectCancelled();
+      if (e instanceof ApiError && e.status === 404)
+        throw new Error('This code has expired. Try again for a new one.');
+      if (++errors >= 5) throw e;
+    }
+    if (cancelled() || signal?.aborted) throw new QuickConnectCancelled();
+    if (ok) {
+      await api('/auth/jellyfin/quickconnect/authenticate', {
+        method: 'POST',
+        signal,
+        body: JSON.stringify({ secret }),
+      });
+      return;
+    }
+  }
+  throw new Error('This code has expired. Try again for a new one.');
+}
+export class QuickConnectCancelled extends Error {
+  constructor() {
+    super('Quick Connect was cancelled.');
+  }
 }

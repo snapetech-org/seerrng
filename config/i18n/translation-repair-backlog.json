@@ -1343,6 +1343,149 @@
       "sourceHash": "566ef2c7445f34e0212d2b5947df3731f1304c2629554afda23d8a7d4ab150b5",
       "targetHash": "894dcb622dccb4b3051943808520092b3557d1a1495be81df9b2f6269a2a1b76",
       "reason": "Obsolete account-name/email matching instructions conflict with explicit administrator-owned Bindery requester mappings. Use parent/English fallback until reviewed translation is available."
+    },
+    {
+      "domain": "client",
+      "locale": "ar",
+      "id": "components.Settings.ReadarrModal.apiKeyHelp",
+      "status": "needs-update",
+      "source": "For ChaptarrNG 0.9.941+, create a separate random service key, set {variable} to that value on the ChaptarrNG container, then recreate the container and paste the same value here. Use two underscores between CHAPTARR, AUTH, and SEERRAPIKEY. This restricted key is different from the administrator API key shown under Settings > General > Security > API Key. Older ChaptarrNG and existing BookshelfNG connections can keep their current key. No variable is needed on SeerrNG.",
+      "previousTranslation": "اعثر على المفتاح في ChaptarrNG ضمن الإعدادات > عام > الأمان > مفتاح API. في ChaptarrNG 0.9.941+، عيّن CHAPTARR__AUTH__SEERRAPIKEY في حاوية ChaptarrNG واستخدم هنا المفتاح المخصّص لـ SeerrNG لتقييد الوصول إلى عمليات خدمة الكتب. تحتفظ اتصالات BookshelfNG الحالية بمفاتيحها أثناء الترحيل.",
+      "sourceHash": "4898b3cbf61766767b91e95ac3f3f5827f0c4be8cb82c31a3fd934ebb895a833",
+      "targetHash": "1ce783007b144116363ec3ecf72c2437835705084db4c01f1dafb1ff23bfb66a",
+      "reason": "Updated instructions distinguish a separate restricted key and preserve the literal double-underscore variable through a rich-text argument."
+    },
+    {
+      "domain": "client",
+      "locale": "de",
+      "id": "components.Settings.ReadarrModal.apiKeyHelp",
+      "status": "needs-update",
+      "source": "For ChaptarrNG 0.9.941+, create a separate random service key, set {variable} to that value on the ChaptarrNG container, then recreate the container and paste the same value here. Use two underscores between CHAPTARR, AUTH, and SEERRAPIKEY. This restricted key is different from the administrator API key shown under Settings > General > Security > API Key. Older ChaptarrNG and existing BookshelfNG connections can keep their current key. No variable is needed on SeerrNG.",
+      "previousTranslation": "Den Schlüssel finden Sie in ChaptarrNG unter Einstellungen > Allgemein > Sicherheit > API-Schlüssel. Ab ChaptarrNG 0.9.941+ setzen Sie CHAPTARR__AUTH__SEERRAPIKEY im ChaptarrNG-Container und verwenden hier diesen nur für SeerrNG bestimmten Schlüssel, um den Zugriff auf Buchdienst-Funktionen zu beschränken. Bestehende BookshelfNG-Verbindungen behalten während der Migration ihren aktuellen Schlüssel.",
+      "sourceHash": "4898b3cbf61766767b91e95ac3f3f5827f0c4be8cb82c31a3fd934ebb895a833",
+      "targetHash": "ab0bec8e06d0b0904194103f1f81550cc53df151c3c739e8ceedd1eb178ab31b",
+      "reason": "Updated instructions distinguish a separate restricted key and preserve the literal double-underscore variable through a rich-text argument."
+    },
+    {
+      "domain": "client",
+      "locale": "es",
+      "id": "components.Settings.ReadarrModal.apiKeyHelp",
+      "status": "needs-update",
+      "source": "For ChaptarrNG 0.9.941+, create a separate random service key, set {variable} to that value on the ChaptarrNG container, then recreate the container and paste the same value here. Use two underscores between CHAPTARR, AUTH, and SEERRAPIKEY. This restricted key is different from the administrator API key shown under Settings > General > Security > API Key. Older ChaptarrNG and existing BookshelfNG connections can keep their current key. No variable is needed on SeerrNG.",
+      "previousTranslation": "Encuentra la clave en ChaptarrNG en Ajustes > General > Seguridad > Clave API. Para ChaptarrNG 0.9.941+, configura CHAPTARR__AUTH__SEERRAPIKEY en el contenedor de ChaptarrNG y usa aquí esa clave específica de SeerrNG para limitar el acceso a las operaciones del servicio de libros. Las conexiones existentes de BookshelfNG conservan su clave actual durante la migración.",
+      "sourceHash": "4898b3cbf61766767b91e95ac3f3f5827f0c4be8cb82c31a3fd934ebb895a833",
+      "targetHash": "ea3d6a4e2c5bb3e92b7b8cb14f885df2270e1f96683d8eceb2c3be70278a521d",
+      "reason": "Updated instructions distinguish a separate restricted key and preserve the literal double-underscore variable through a rich-text argument."
+    },
+    {
+      "domain": "client",
+      "locale": "es_MX",
+      "id": "components.Settings.ReadarrModal.apiKeyHelp",
+      "status": "needs-update",
+      "source": "For ChaptarrNG 0.9.941+, create a separate random service key, set {variable} to that value on the ChaptarrNG container, then recreate the container and paste the same value here. Use two underscores between CHAPTARR, AUTH, and SEERRAPIKEY. This restricted key is different from the administrator API key shown under Settings > General > Security > API Key. Older ChaptarrNG and existing BookshelfNG connections can keep their current key. No variable is needed on SeerrNG.",
+      "previousTranslation": "Encuentra la clave en Bookshelf o Readarr bajo Ajustes √Īo General  Confesar API Key. Para ChaptarrNG 0.9.941+, establece CHAPTARR  AUTH    SEERRAPIKEY en el contenedor ChaptarrNG y utilice la clave específica de SeerrNG aquí para limitar el acceso a las operaciones de servicio de libros.",
+      "sourceHash": "4898b3cbf61766767b91e95ac3f3f5827f0c4be8cb82c31a3fd934ebb895a833",
+      "targetHash": "f7c546dc6cc55db1ffe9ed7c93039442427d56cc36589e9fccc227468d06e4e8",
+      "reason": "Updated instructions distinguish a separate restricted key and preserve the literal double-underscore variable through a rich-text argument."
+    },
+    {
+      "domain": "client",
+      "locale": "fr",
+      "id": "components.Settings.ReadarrModal.apiKeyHelp",
+      "status": "needs-update",
+      "source": "For ChaptarrNG 0.9.941+, create a separate random service key, set {variable} to that value on the ChaptarrNG container, then recreate the container and paste the same value here. Use two underscores between CHAPTARR, AUTH, and SEERRAPIKEY. This restricted key is different from the administrator API key shown under Settings > General > Security > API Key. Older ChaptarrNG and existing BookshelfNG connections can keep their current key. No variable is needed on SeerrNG.",
+      "previousTranslation": "Trouvez la clé dans ChaptarrNG sous Paramètres > Général > Sécurité > Clé API. Pour ChaptarrNG 0.9.941+, définissez CHAPTARR__AUTH__SEERRAPIKEY dans le conteneur ChaptarrNG et utilisez ici cette clé propre à SeerrNG pour limiter l’accès aux opérations du service de livres. Les connexions BookshelfNG existantes conservent leur clé actuelle pendant la migration.",
+      "sourceHash": "4898b3cbf61766767b91e95ac3f3f5827f0c4be8cb82c31a3fd934ebb895a833",
+      "targetHash": "1b42843240e45a87d1c5269701c3b22cdf35f204f016645f8af6895d1771e521",
+      "reason": "Updated instructions distinguish a separate restricted key and preserve the literal double-underscore variable through a rich-text argument."
+    },
+    {
+      "domain": "client",
+      "locale": "hi",
+      "id": "components.Settings.ReadarrModal.apiKeyHelp",
+      "status": "needs-update",
+      "source": "For ChaptarrNG 0.9.941+, create a separate random service key, set {variable} to that value on the ChaptarrNG container, then recreate the container and paste the same value here. Use two underscores between CHAPTARR, AUTH, and SEERRAPIKEY. This restricted key is different from the administrator API key shown under Settings > General > Security > API Key. Older ChaptarrNG and existing BookshelfNG connections can keep their current key. No variable is needed on SeerrNG.",
+      "previousTranslation": "ChaptarrNG में समायोजन > आम > सुरक्षा > API कुंजी के अंतर्गत कुंजी ढूंढें। ChaptarrNG 0.9.941+ के लिए, ChaptarrNG कंटेनर में CHAPTARR__AUTH__SEERRAPIKEY सेट करें और पुस्तक-सेवा कार्रवाइयों तक पहुंच सीमित करने के लिए यहां उसी SeerrNG-विशिष्ट कुंजी का उपयोग करें। माइग्रेशन के दौरान मौजूदा BookshelfNG कनेक्शन अपनी वर्तमान कुंजी बनाए रखते हैं।",
+      "sourceHash": "4898b3cbf61766767b91e95ac3f3f5827f0c4be8cb82c31a3fd934ebb895a833",
+      "targetHash": "2b8cb9cab0103b63f3f86a9def2daca0320d97d8ab0f699e3e50e47030ee90e3",
+      "reason": "Updated instructions distinguish a separate restricted key and preserve the literal double-underscore variable through a rich-text argument."
+    },
+    {
+      "domain": "client",
+      "locale": "id",
+      "id": "components.Settings.ReadarrModal.apiKeyHelp",
+      "status": "needs-update",
+      "source": "For ChaptarrNG 0.9.941+, create a separate random service key, set {variable} to that value on the ChaptarrNG container, then recreate the container and paste the same value here. Use two underscores between CHAPTARR, AUTH, and SEERRAPIKEY. This restricted key is different from the administrator API key shown under Settings > General > Security > API Key. Older ChaptarrNG and existing BookshelfNG connections can keep their current key. No variable is needed on SeerrNG.",
+      "previousTranslation": "Temukan kunci di ChaptarrNG pada Pengaturan > Umum > Keamanan > Kunci API. Untuk ChaptarrNG 0.9.941+, tetapkan CHAPTARR__AUTH__SEERRAPIKEY di kontainer ChaptarrNG dan gunakan kunci khusus SeerrNG ini di sini untuk membatasi akses ke operasi layanan buku. Koneksi BookshelfNG yang sudah ada tetap menggunakan kuncinya saat ini selama migrasi.",
+      "sourceHash": "4898b3cbf61766767b91e95ac3f3f5827f0c4be8cb82c31a3fd934ebb895a833",
+      "targetHash": "918dfe8f5c84a9fab65bba2c8602c672777b7ff4362bcb19675d41b0472819d0",
+      "reason": "Updated instructions distinguish a separate restricted key and preserve the literal double-underscore variable through a rich-text argument."
+    },
+    {
+      "domain": "client",
+      "locale": "ja",
+      "id": "components.Settings.ReadarrModal.apiKeyHelp",
+      "status": "needs-update",
+      "source": "For ChaptarrNG 0.9.941+, create a separate random service key, set {variable} to that value on the ChaptarrNG container, then recreate the container and paste the same value here. Use two underscores between CHAPTARR, AUTH, and SEERRAPIKEY. This restricted key is different from the administrator API key shown under Settings > General > Security > API Key. Older ChaptarrNG and existing BookshelfNG connections can keep their current key. No variable is needed on SeerrNG.",
+      "previousTranslation": "ChaptarrNG の［設定］→［一般］→［セキュリティ］→［APIキー］でキーを確認してください。ChaptarrNG 0.9.941 以降では、ChaptarrNG コンテナーに CHAPTARR__AUTH__SEERRAPIKEY を設定し、ここでは SeerrNG 専用のキーを使うと、書籍サービスの操作だけにアクセスを制限できます。移行中も既存の BookshelfNG 接続では現在のキーが保持されます。",
+      "sourceHash": "4898b3cbf61766767b91e95ac3f3f5827f0c4be8cb82c31a3fd934ebb895a833",
+      "targetHash": "7d4bca153b7b940cdf115391a13d478f0c06f26b50b1f7604f1110af64200534",
+      "reason": "Updated instructions distinguish a separate restricted key and preserve the literal double-underscore variable through a rich-text argument."
+    },
+    {
+      "domain": "client",
+      "locale": "ko",
+      "id": "components.Settings.ReadarrModal.apiKeyHelp",
+      "status": "needs-update",
+      "source": "For ChaptarrNG 0.9.941+, create a separate random service key, set {variable} to that value on the ChaptarrNG container, then recreate the container and paste the same value here. Use two underscores between CHAPTARR, AUTH, and SEERRAPIKEY. This restricted key is different from the administrator API key shown under Settings > General > Security > API Key. Older ChaptarrNG and existing BookshelfNG connections can keep their current key. No variable is needed on SeerrNG.",
+      "previousTranslation": "ChaptarrNG의 설정 > 일반 > 보안 > API 키에서 키를 확인하세요. ChaptarrNG 0.9.941 이상에서는 ChaptarrNG 컨테이너에 CHAPTARR__AUTH__SEERRAPIKEY를 설정하고, 여기에는 SeerrNG 전용 키를 사용해 도서 서비스 작업에 대한 접근을 제한하세요. 마이그레이션 중에도 기존 BookshelfNG 연결은 현재 키를 유지합니다.",
+      "sourceHash": "4898b3cbf61766767b91e95ac3f3f5827f0c4be8cb82c31a3fd934ebb895a833",
+      "targetHash": "9467dd3728842f780df2b1993e8dbd71082d9acdb5b3dd10fcac64a4a7336f9e",
+      "reason": "Updated instructions distinguish a separate restricted key and preserve the literal double-underscore variable through a rich-text argument."
+    },
+    {
+      "domain": "client",
+      "locale": "pt_BR",
+      "id": "components.Settings.ReadarrModal.apiKeyHelp",
+      "status": "needs-update",
+      "source": "For ChaptarrNG 0.9.941+, create a separate random service key, set {variable} to that value on the ChaptarrNG container, then recreate the container and paste the same value here. Use two underscores between CHAPTARR, AUTH, and SEERRAPIKEY. This restricted key is different from the administrator API key shown under Settings > General > Security > API Key. Older ChaptarrNG and existing BookshelfNG connections can keep their current key. No variable is needed on SeerrNG.",
+      "previousTranslation": "Encontre a chave no ChaptarrNG em Configurações > Geral > Segurança > Chave da API. No ChaptarrNG 0.9.941 ou posterior, defina CHAPTARR__AUTH__SEERRAPIKEY no contêiner do ChaptarrNG e use aqui essa chave exclusiva do SeerrNG para limitar o acesso às operações do serviço de livros. Durante a migração, as conexões existentes do BookshelfNG mantêm a chave atual.",
+      "sourceHash": "4898b3cbf61766767b91e95ac3f3f5827f0c4be8cb82c31a3fd934ebb895a833",
+      "targetHash": "2c31037052f319969ab17fcec4cbd39754811b2050d84a4860b479f28da1f794",
+      "reason": "Updated instructions distinguish a separate restricted key and preserve the literal double-underscore variable through a rich-text argument."
+    },
+    {
+      "domain": "client",
+      "locale": "vi",
+      "id": "components.Settings.ReadarrModal.apiKeyHelp",
+      "status": "needs-update",
+      "source": "For ChaptarrNG 0.9.941+, create a separate random service key, set {variable} to that value on the ChaptarrNG container, then recreate the container and paste the same value here. Use two underscores between CHAPTARR, AUTH, and SEERRAPIKEY. This restricted key is different from the administrator API key shown under Settings > General > Security > API Key. Older ChaptarrNG and existing BookshelfNG connections can keep their current key. No variable is needed on SeerrNG.",
+      "previousTranslation": "Tìm khóa trong ChaptarrNG tại Cài đặt > Chung > Bảo vệ > Mã API. Với ChaptarrNG 0.9.941 trở lên, hãy đặt CHAPTARR__AUTH__SEERRAPIKEY trong container ChaptarrNG và dùng khóa riêng cho SeerrNG ở đây để giới hạn quyền truy cập vào các thao tác của dịch vụ sách. Các kết nối BookshelfNG hiện có vẫn giữ khóa hiện tại trong quá trình di chuyển.",
+      "sourceHash": "4898b3cbf61766767b91e95ac3f3f5827f0c4be8cb82c31a3fd934ebb895a833",
+      "targetHash": "a9f8cbe49953c2bf3b35d7c34b1d490bb6a8da0ef664cfda3c347bea93b3f8d5",
+      "reason": "Updated instructions distinguish a separate restricted key and preserve the literal double-underscore variable through a rich-text argument."
+    },
+    {
+      "domain": "client",
+      "locale": "zh_Hans",
+      "id": "components.Settings.ReadarrModal.apiKeyHelp",
+      "status": "needs-update",
+      "source": "For ChaptarrNG 0.9.941+, create a separate random service key, set {variable} to that value on the ChaptarrNG container, then recreate the container and paste the same value here. Use two underscores between CHAPTARR, AUTH, and SEERRAPIKEY. This restricted key is different from the administrator API key shown under Settings > General > Security > API Key. Older ChaptarrNG and existing BookshelfNG connections can keep their current key. No variable is needed on SeerrNG.",
+      "previousTranslation": "请在 ChaptarrNG 的“设置 > 通用 > 安全 > API 密钥”中查找密钥。对于 ChaptarrNG 0.9.941 及以上版本，请在 ChaptarrNG 容器中设置 CHAPTARR__AUTH__SEERRAPIKEY，并在此处使用 SeerrNG 专用密钥，以限制对图书服务操作的访问。迁移期间，现有 BookshelfNG 连接会保留当前密钥。",
+      "sourceHash": "4898b3cbf61766767b91e95ac3f3f5827f0c4be8cb82c31a3fd934ebb895a833",
+      "targetHash": "b7abd688e035a5ed53deb01f80c5237be7e3a0ad34242e5f0535902dace39b41",
+      "reason": "Updated instructions distinguish a separate restricted key and preserve the literal double-underscore variable through a rich-text argument."
+    },
+    {
+      "domain": "client",
+      "locale": "zh_Hant",
+      "id": "components.Settings.ReadarrModal.apiKeyHelp",
+      "status": "needs-update",
+      "source": "For ChaptarrNG 0.9.941+, create a separate random service key, set {variable} to that value on the ChaptarrNG container, then recreate the container and paste the same value here. Use two underscores between CHAPTARR, AUTH, and SEERRAPIKEY. This restricted key is different from the administrator API key shown under Settings > General > Security > API Key. Older ChaptarrNG and existing BookshelfNG connections can keep their current key. No variable is needed on SeerrNG.",
+      "previousTranslation": "請在 ChaptarrNG 的「設定 > 一般 > 安全 > API密鑰」中尋找金鑰。若使用 ChaptarrNG 0.9.941 或更新版本，請在 ChaptarrNG 容器中設定 CHAPTARR__AUTH__SEERRAPIKEY，並在此處使用 SeerrNG 專用金鑰，以限制對圖書服務操作的存取。移轉期間，既有 BookshelfNG 連線會保留目前使用的金鑰。",
+      "sourceHash": "4898b3cbf61766767b91e95ac3f3f5827f0c4be8cb82c31a3fd934ebb895a833",
+      "targetHash": "9cb637cda92547ed41578efbab94313e4b878e954d6ed6fe804ebe71c2cc4c21",
+      "reason": "Updated instructions distinguish a separate restricted key and preserve the literal double-underscore variable through a rich-text argument."
     }
   ]
 }

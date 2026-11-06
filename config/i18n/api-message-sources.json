@@ -8502,7 +8502,7 @@
       "callsites": [
         {
           "path": "server/routes/book.ts",
-          "line": 327,
+          "line": 373,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Book not found'",
@@ -8510,7 +8510,7 @@
         },
         {
           "path": "server/routes/book.ts",
-          "line": 357,
+          "line": 403,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Book not found'",
@@ -8518,7 +8518,7 @@
         },
         {
           "path": "server/routes/book.ts",
-          "line": 471,
+          "line": 517,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Book not found'",
@@ -8526,7 +8526,7 @@
         },
         {
           "path": "server/routes/book.ts",
-          "line": 511,
+          "line": 557,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Book not found'",
@@ -10921,7 +10921,7 @@
         },
         {
           "path": "server/routes/book.ts",
-          "line": 303,
+          "line": 349,
           "kind": "authored-message-field",
           "field": "errorMessage",
           "expression": "e instanceof Error ? e.message : 'Unknown error'",
@@ -10929,7 +10929,7 @@
         },
         {
           "path": "server/routes/book.ts",
-          "line": 448,
+          "line": 494,
           "kind": "authored-message-field",
           "field": "errorMessage",
           "expression": "e instanceof Error ? e.message : 'Unknown error'",
@@ -10937,7 +10937,7 @@
         },
         {
           "path": "server/routes/book.ts",
-          "line": 503,
+          "line": 549,
           "kind": "authored-message-field",
           "field": "errorMessage",
           "expression": "error instanceof Error ? error.message : 'Unknown error'",
@@ -10945,7 +10945,7 @@
         },
         {
           "path": "server/routes/book.ts",
-          "line": 526,
+          "line": 572,
           "kind": "authored-message-field",
           "field": "errorMessage",
           "expression": "error instanceof Error ? error.message : 'Unknown error'",
@@ -10953,7 +10953,7 @@
         },
         {
           "path": "server/routes/book.ts",
-          "line": 579,
+          "line": 625,
           "kind": "authored-message-field",
           "field": "errorMessage",
           "expression": "e instanceof Error ? e.message : 'Unknown error'",
@@ -14645,7 +14645,7 @@
       "callsites": [
         {
           "path": "server/routes/book.ts",
-          "line": 65,
+          "line": 111,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Book ID is invalid.'",
@@ -14653,7 +14653,7 @@
         },
         {
           "path": "server/routes/book.ts",
-          "line": 94,
+          "line": 140,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'Book ID is invalid.'",
@@ -15483,7 +15483,7 @@
       "callsites": [
         {
           "path": "server/api/audiobookshelf.ts",
-          "line": 96,
+          "line": 98,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Audiobookshelf page request is invalid.'",
@@ -16526,7 +16526,7 @@
       "callsites": [
         {
           "path": "server/lib/scanners/audiobookshelf/index.ts",
-          "line": 72,
+          "line": 76,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`Audiobookshelf library exceeds the ${AUDIOBOOKSHELF_MAX_LIBRARY_ITEMS}-item scan limit. Orphan cleanup was skipped.`",
@@ -21120,7 +21120,7 @@
       "callsites": [
         {
           "path": "server/routes/book.ts",
-          "line": 72,
+          "line": 118,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Book series metadata is unavailable.'",
@@ -23632,7 +23632,7 @@
       "callsites": [
         {
           "path": "server/lib/scanners/audiobookshelf/index.ts",
-          "line": 79,
+          "line": 83,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Audiobookshelf library changed during the scan. Orphan cleanup was skipped; the next scan will retry.'",
@@ -24398,7 +24398,7 @@
       "callsites": [
         {
           "path": "server/routes/book.ts",
-          "line": 531,
+          "line": 577,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to retrieve book ratings.'",
@@ -25859,7 +25859,7 @@
       "callsites": [
         {
           "path": "server/lib/scanners/audiobookshelf/index.ts",
-          "line": 84,
+          "line": 88,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Audiobookshelf returned more items than its reported library total. Orphan cleanup was skipped.'",
@@ -30464,6 +30464,14 @@
       "parts": ["Invalid book format."],
       "parameterCount": 0,
       "callsites": [
+        {
+          "path": "server/routes/book.ts",
+          "line": 68,
+          "kind": "authored-message-field",
+          "field": "message",
+          "expression": "'Invalid book format.'",
+          "captured": []
+        },
         {
           "path": "server/routes/overrideRule.ts",
           "line": 654,
@@ -35909,7 +35917,7 @@
       "callsites": [
         {
           "path": "server/routes/book.ts",
-          "line": 451,
+          "line": 497,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to retrieve book details.'",
@@ -40281,7 +40289,7 @@
       "callsites": [
         {
           "path": "server/routes/book.ts",
-          "line": 306,
+          "line": 352,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to search books.'",
@@ -41750,7 +41758,7 @@
       "callsites": [
         {
           "path": "server/api/audiobookshelf.ts",
-          "line": 113,
+          "line": 115,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Audiobookshelf returned an invalid library page.'",
@@ -41947,7 +41955,7 @@
       "callsites": [
         {
           "path": "server/routes/book.ts",
-          "line": 539,
+          "line": 585,
           "kind": "response-body",
           "field": "body",
           "expression": "'Book cover not found'",
@@ -41955,7 +41963,7 @@
         },
         {
           "path": "server/routes/book.ts",
-          "line": 549,
+          "line": 595,
           "kind": "response-body",
           "field": "body",
           "expression": "'Book cover not found'",
@@ -41963,7 +41971,7 @@
         },
         {
           "path": "server/routes/book.ts",
-          "line": 558,
+          "line": 604,
           "kind": "response-body",
           "field": "body",
           "expression": "'Book cover not found'",
@@ -41971,7 +41979,7 @@
         },
         {
           "path": "server/routes/book.ts",
-          "line": 581,
+          "line": 627,
           "kind": "response-body",
           "field": "body",
           "expression": "'Book cover not found'",
@@ -42921,6 +42929,25 @@
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Sign out before using a sign-in link.'",
+          "captured": []
+        }
+      ]
+    },
+    {
+      "key": "mab4ffc1b9163b46c1ece",
+      "id": "utils.ApiMessage.mab4ffc1b9163b46c1ece",
+      "source": "Media category is disabled.",
+      "defaultMessage": "Media category is disabled.",
+      "sourceHash": "ab4ffc1b9163b46c1ecec34adedf42c9930beffc121759a1214d8df2d248c3d5",
+      "parts": ["Media category is disabled."],
+      "parameterCount": 0,
+      "callsites": [
+        {
+          "path": "server/routes/book.ts",
+          "line": 70,
+          "kind": "authored-message-field",
+          "field": "message",
+          "expression": "'Media category is disabled.'",
           "captured": []
         }
       ]
@@ -45427,7 +45454,7 @@
       "callsites": [
         {
           "path": "server/lib/scanners/audiobookshelf/index.ts",
-          "line": 103,
+          "line": 107,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Audiobookshelf returned an incomplete or duplicated library scan. Orphan cleanup was skipped.'",
@@ -50437,7 +50464,7 @@
       "callsites": [
         {
           "path": "server/lib/scanners/audiobookshelf/index.ts",
-          "line": 92,
+          "line": 96,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Audiobookshelf returned an incomplete library scan. Orphan cleanup was skipped.'",
@@ -54826,7 +54853,7 @@
       "callsites": [
         {
           "path": "server/api/audiobookshelf.ts",
-          "line": 60,
+          "line": 62,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Audiobookshelf service URL is invalid.'",
@@ -56294,7 +56321,7 @@
       "callsites": [
         {
           "path": "server/api/audiobookshelf.ts",
-          "line": 80,
+          "line": 82,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Audiobookshelf returned an invalid library list.'",
@@ -59558,6 +59585,25 @@
       ]
     },
     {
+      "key": "mee6fe7fd1bb12f3e8eec",
+      "id": "utils.ApiMessage.mee6fe7fd1bb12f3e8eec",
+      "source": "Book library is unavailable. Please try again.",
+      "defaultMessage": "Book library is unavailable. Please try again.",
+      "sourceHash": "ee6fe7fd1bb12f3e8eec6204869b3dd1287e6112da1740da286d8d7f665b8a8d",
+      "parts": ["Book library is unavailable. Please try again."],
+      "parameterCount": 0,
+      "callsites": [
+        {
+          "path": "server/routes/book.ts",
+          "line": 104,
+          "kind": "authored-message-field",
+          "field": "message",
+          "expression": "'Book library is unavailable. Please try again.'",
+          "captured": []
+        }
+      ]
+    },
+    {
       "key": "mee780f4f88b170253d85",
       "id": "utils.ApiMessage.mee780f4f88b170253d85",
       "source": "Adult request is missing its StashDB scene ID.",
@@ -61923,7 +61969,7 @@
       "callsites": [
         {
           "path": "server/utils/bookshelfCatalog.ts",
-          "line": 676,
+          "line": 682,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Configured audiobook catalogs are unavailable.'",
@@ -61931,7 +61977,7 @@
         },
         {
           "path": "server/utils/bookshelfCatalog.ts",
-          "line": 712,
+          "line": 721,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Configured audiobook catalogs are unavailable.'",
@@ -61939,7 +61985,7 @@
         },
         {
           "path": "server/utils/bookshelfCatalog.ts",
-          "line": 757,
+          "line": 766,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Configured audiobook catalogs are unavailable.'",
@@ -72143,16 +72189,16 @@
     },
     {
       "path": "server/lib/scanners/audiobookshelf/index.ts",
-      "line": 40,
+      "line": 42,
       "kind": "message-helper-return",
       "field": "message",
-      "expression": "{\n      running: this.running,\n      progress: this.progress,\n      total: this.items.length,\n    }",
+      "expression": "{\n      running: this.running,\n      progress: this.progress,\n      total: this.items.length,\n      unmatchedItems: this.unmatchedItems,\n    }",
       "source": "{value0}",
       "reason": "dynamic/provider/user value"
     },
     {
       "path": "server/lib/scanners/audiobookshelf/index.ts",
-      "line": 118,
+      "line": 135,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -72161,7 +72207,7 @@
     },
     {
       "path": "server/lib/scanners/audiobookshelf/index.ts",
-      "line": 118,
+      "line": 135,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -72485,7 +72531,7 @@
     },
     {
       "path": "server/lib/scanners/readarr/index.ts",
-      "line": 52,
+      "line": 55,
       "kind": "authored-message-variable",
       "field": "isSqliteBusyError",
       "expression": "(error: unknown): boolean =>\n  error instanceof Error &&\n  (error.message.includes('SQLITE_BUSY') ||\n    error.message.includes('database is locked'))",
@@ -72494,7 +72540,7 @@
     },
     {
       "path": "server/lib/scanners/readarr/index.ts",
-      "line": 53,
+      "line": 56,
       "kind": "message-helper-expression",
       "field": "message",
       "expression": "error instanceof Error &&\n  (error.message.includes('SQLITE_BUSY') ||\n    error.message.includes('database is locked'))",
@@ -72503,7 +72549,7 @@
     },
     {
       "path": "server/lib/scanners/readarr/index.ts",
-      "line": 76,
+      "line": 79,
       "kind": "message-helper-return",
       "field": "message",
       "expression": "{\n      running: this.running,\n      progress: this.progress,\n      total: this.items.length,\n      currentServer: this.currentServer,\n      servers: this.servers,\n    }",
@@ -72512,7 +72558,7 @@
     },
     {
       "path": "server/lib/scanners/readarr/index.ts",
-      "line": 317,
+      "line": 326,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "e.message",
@@ -72521,7 +72567,7 @@
     },
     {
       "path": "server/lib/scanners/readarr/index.ts",
-      "line": 405,
+      "line": 414,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -72530,7 +72576,7 @@
     },
     {
       "path": "server/lib/scanners/readarr/index.ts",
-      "line": 405,
+      "line": 414,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -74753,7 +74799,25 @@
     },
     {
       "path": "server/routes/book.ts",
-      "line": 231,
+      "line": 100,
+      "kind": "authored-message-field",
+      "field": "errorMessage",
+      "expression": "error instanceof Error ? error.message : String(error)",
+      "source": "{value0}",
+      "reason": "dynamic/provider/user value"
+    },
+    {
+      "path": "server/routes/book.ts",
+      "line": 100,
+      "kind": "authored-message-field",
+      "field": "errorMessage",
+      "expression": "error instanceof Error ? error.message : String(error)",
+      "source": "{value0}",
+      "reason": "dynamic/provider/user value"
+    },
+    {
+      "path": "server/routes/book.ts",
+      "line": 277,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "parsedQuery.error",
@@ -74762,7 +74826,7 @@
     },
     {
       "path": "server/routes/book.ts",
-      "line": 303,
+      "line": 349,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "e instanceof Error ? e.message : 'Unknown error'",
@@ -74771,7 +74835,7 @@
     },
     {
       "path": "server/routes/book.ts",
-      "line": 318,
+      "line": 364,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "lookupTitle.error",
@@ -74780,7 +74844,7 @@
     },
     {
       "path": "server/routes/book.ts",
-      "line": 448,
+      "line": 494,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "e instanceof Error ? e.message : 'Unknown error'",
@@ -74789,7 +74853,7 @@
     },
     {
       "path": "server/routes/book.ts",
-      "line": 462,
+      "line": 508,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "lookupTitle.error",
@@ -74798,16 +74862,7 @@
     },
     {
       "path": "server/routes/book.ts",
-      "line": 503,
-      "kind": "authored-message-field",
-      "field": "errorMessage",
-      "expression": "error instanceof Error ? error.message : 'Unknown error'",
-      "source": "{value0}",
-      "reason": "dynamic/provider/user value"
-    },
-    {
-      "path": "server/routes/book.ts",
-      "line": 526,
+      "line": 549,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : 'Unknown error'",
@@ -74817,6 +74872,15 @@
     {
       "path": "server/routes/book.ts",
       "line": 572,
+      "kind": "authored-message-field",
+      "field": "errorMessage",
+      "expression": "error instanceof Error ? error.message : 'Unknown error'",
+      "source": "{value0}",
+      "reason": "dynamic/provider/user value"
+    },
+    {
+      "path": "server/routes/book.ts",
+      "line": 618,
       "kind": "response-body",
       "field": "body",
       "expression": "cover.imageBuffer",
@@ -74825,7 +74889,7 @@
     },
     {
       "path": "server/routes/book.ts",
-      "line": 579,
+      "line": 625,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "e instanceof Error ? e.message : 'Unknown error'",

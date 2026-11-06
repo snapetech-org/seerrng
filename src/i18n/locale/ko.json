@@ -4195,7 +4195,6 @@
   "components.Settings.RadarrModal.validationRootFolderRequired": "루트 폴더를 선택해야 합니다",
   "components.Settings.ReadarrModal.add": "서버 추가",
   "components.Settings.ReadarrModal.apiKey": "API 키",
-  "components.Settings.ReadarrModal.apiKeyHelp": "ChaptarrNG의 설정 > 일반 > 보안 > API 키에서 키를 확인하세요. ChaptarrNG 0.9.941 이상에서는 ChaptarrNG 컨테이너에 CHAPTARR__AUTH__SEERRAPIKEY를 설정하고, 여기에는 SeerrNG 전용 키를 사용해 도서 서비스 작업에 대한 접근을 제한하세요. 마이그레이션 중에도 기존 BookshelfNG 연결은 현재 키를 유지합니다.",
   "components.Settings.ReadarrModal.audiobook": "오디오북",
   "components.Settings.ReadarrModal.baseUrl": "기본 URL",
   "components.Settings.ReadarrModal.baseUrlHelp": "Bookshelf, Chaptarr 또는 Readarr의 Settings > General > Host에서 URL Base를 설정했다면(예: /bookshelf) 여기에 입력하세요. 그렇지 않으면 비워 두세요. Chaptarr 사용자는 서비스별 URL Base를 설정할 필요가 없습니다.",

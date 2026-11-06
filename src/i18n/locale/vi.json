@@ -4195,7 +4195,6 @@
   "components.Settings.RadarrModal.validationRootFolderRequired": "Bạn cần phải chọn thư mục gốc",
   "components.Settings.ReadarrModal.add": "Thêm máy phục vụ",
   "components.Settings.ReadarrModal.apiKey": "Khóa API",
-  "components.Settings.ReadarrModal.apiKeyHelp": "Tìm khóa trong ChaptarrNG tại Cài đặt > Chung > Bảo vệ > Mã API. Với ChaptarrNG 0.9.941 trở lên, hãy đặt CHAPTARR__AUTH__SEERRAPIKEY trong container ChaptarrNG và dùng khóa riêng cho SeerrNG ở đây để giới hạn quyền truy cập vào các thao tác của dịch vụ sách. Các kết nối BookshelfNG hiện có vẫn giữ khóa hiện tại trong quá trình di chuyển.",
   "components.Settings.ReadarrModal.audiobook": "Sách nói",
   "components.Settings.ReadarrModal.baseUrl": "Cơ sở URL",
   "components.Settings.ReadarrModal.baseUrlHelp": "Nếu bạn đã đặt URL Base trong Bookshelf, Chaptarr hoặc Readarr (Settings > General > Host), hãy nhập vào đây (ví dụ: /bookshelf). Nếu không, hãy để trống. Người dùng Chaptarr không cần đặt URL Base riêng cho từng nhà cung cấp.",

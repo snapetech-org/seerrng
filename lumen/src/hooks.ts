@@ -126,9 +126,9 @@ export function usePaged<T>(base: string) {
 }
 
 // ---- book library state ----
-// SeerrNG's book lists carry no library status, and its media list has no book ids. Its request
-// list has both, so one call tells us which works are in the library or requested, per format.
-export type BookState = { ebook?: number; audiobook?: number }; // media status per format
+// Active requests supplement the native book response while acquisition is pending.
+// Availability always comes from scanned, format-specific library evidence.
+export type BookState = { ebook?: number; audiobook?: number };
 let bookStates: Promise<Map<string, BookState>> | null = null;
 let bookStatesAt = 0;
 export function loadBookStates(): Promise<Map<string, BookState>> {
@@ -144,19 +144,16 @@ export function loadBookStates(): Promise<Map<string, BookState>> {
     .then((d) => {
       const m = new Map<string, BookState>();
       for (const r of d.results) {
-        if (r.status === 3) continue; // declined
+        // Request history is not file availability. Completed/declined/failed
+        // requests must not turn deleted or other-format files into ownership.
+        if (r.status !== 1 && r.status !== 2) continue;
         for (const i of r.media.identifiers || []) {
-          const work = i.value.startsWith('bookshelf:')
-            ? workOf(i.value)
-            : null;
-          if (!work) continue;
-          const f =
-            r.bookFormat === 'audiobook' || i.value.startsWith('bookshelf:1:')
-              ? 'audiobook'
-              : 'ebook';
+          if (!i.value.startsWith('bookshelf:') && !/^OL\d+W$/.test(i.value))
+            continue;
+          const work = i.value;
+          const f = r.bookFormat === 'audiobook' ? 'audiobook' : 'ebook';
           const cur = m.get(work) || {};
-          // failed requests don't count as requested
-          const st = r.status === 4 ? 0 : r.media.status === 5 ? 5 : 2;
+          const st = 2;
           cur[f] = Math.max(cur[f] || 0, st);
           m.set(work, cur);
         }
@@ -168,16 +165,6 @@ export function loadBookStates(): Promise<Map<string, BookState>> {
 }
 export const dropBookStates = () => {
   bookStates = null;
-};
-const workOf = (id: string) => {
-  try {
-    return atob(id.split(':')[2].replace(/-/g, '+').replace(/_/g, '/')).replace(
-      /^hc:/,
-      ''
-    );
-  } catch {
-    return null;
-  }
 };
 export function useBookStates() {
   const [m, setM] = useState<Map<string, BookState> | null>(null);

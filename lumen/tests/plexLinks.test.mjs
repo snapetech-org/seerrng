@@ -1,6 +1,28 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { plexLink, plexPlatform } from '../src/plexLinks.ts';
+import { mediaLink, plexLink, plexPlatform } from '../src/plexLinks.ts';
+
+test('Jellyfin and Emby ignore stale Plex app metadata and keep safe server URLs', () => {
+  for (const name of ['Jellyfin', 'Emby']) {
+    assert.equal(
+      mediaLink(
+        {
+          mediaUrl: 'https://media.example/web/#!/details?id=1',
+          iOSPlexUrl: 'plex://preplay/?server=old',
+        },
+        false,
+        'movie',
+        name
+      ).href,
+      'https://media.example/web/#!/details?id=1'
+    );
+    for (const url of ['javascript:alert(1)', 'https://secret@media.example/'])
+      assert.equal(
+        mediaLink({ mediaUrl: url }, false, 'movie', name).href,
+        undefined
+      );
+  }
+});
 const links = {
   mediaUrl: 'https://app.plex.tv/desktop/#!/server/server/details?key=1',
   mediaUrl4k: 'https://app.plex.tv/desktop/#!/server/server/details?key=2',

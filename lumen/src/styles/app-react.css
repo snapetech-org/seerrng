@@ -57,9 +57,36 @@
   margin: 0;
   color: var(--ink-2);
 }
-.login-plex {
+.login-primary {
   min-height: 48px;
   font-size: 16px;
+}
+.login-links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 6px;
+}
+.login-quick {
+  display: grid;
+  gap: 10px;
+  justify-items: start;
+}
+.login-code {
+  font-size: 34px;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  font-variant-numeric: tabular-nums;
+  padding: 10px 16px;
+  border-radius: 14px;
+  background: var(--surface-2);
+  box-shadow: 0 0 0 1px var(--line);
+  user-select: all;
+}
+.login-wait {
+  margin: 0;
+  color: var(--ink-2);
+  font-size: 14px;
 }
 .login-local {
   display: grid;

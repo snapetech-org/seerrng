@@ -1,10 +1,11 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 import {
+  bookMediaForFormat,
   englishAudioEdition,
   hardcoverWorkId,
+  mediaLink,
   MediaStatus,
-  plexLink,
   plexUrl,
   requestBook,
   requestMovie,
@@ -16,6 +17,7 @@ import {
   type MediaInfo,
   type TitleResult,
 } from '../api';
+import { useMediaServerName } from '../auth';
 import { dropBookStates, useBookStates } from '../hooks';
 import { Icon, type IconName } from '../icons';
 import { usePrefs } from '../settings';
@@ -27,12 +29,20 @@ export type Stat = {
   word: string;
   ico: IconName;
 } | null;
-export function statusOf(mi: MediaInfo | undefined, book = false): Stat {
+export function statusOf(
+  mi: MediaInfo | undefined,
+  book = false,
+  serverName = 'Plex'
+): Stat {
   const s = mi?.status;
   if (s === MediaStatus.AVAILABLE)
-    return { k: 'ok', word: book ? 'In library' : 'On Plex', ico: 'check' };
+    return {
+      k: 'ok',
+      word: book ? 'In library' : `On ${serverName}`,
+      ico: 'check',
+    };
   if (s === MediaStatus.PARTIAL)
-    return { k: 'ok', word: 'Partly on Plex', ico: 'check' };
+    return { k: 'ok', word: `Partly on ${serverName}`, ico: 'check' };
   // processing = handed to Radarr/Sonarr/ChaptarrNG; it's only "downloading" once a download shows up
   if (s === MediaStatus.PROCESSING) {
     const d = mi?.downloadStatus?.[0];
@@ -108,18 +118,23 @@ export const shortDate = (d?: string) =>
 
 // local request state so a card flips to "Requested" straight away
 function useRequested(initial: Stat) {
-  const [s, setS] = useState<Stat>(initial);
+  const [requested, setRequested] = useState(false);
   return [
-    s,
-    () => setS({ k: 'wait', word: 'Requested', ico: 'clock' }),
+    requested && initial?.k !== 'ok'
+      ? ({ k: 'wait', word: 'Requested', ico: 'clock' } as const)
+      : initial,
+    () => setRequested(true),
   ] as const;
 }
 
 export function TitleCard({ it, meta }: { it: TitleResult; meta?: string }) {
+  const serverName = useMediaServerName();
   const toast = useToast();
   const { prefs } = usePrefs();
   const tv = it.mediaType === 'tv';
-  const [s, markRequested] = useRequested(statusOf(it.mediaInfo));
+  const [s, markRequested] = useRequested(
+    statusOf(it.mediaInfo, false, serverName)
+  );
   const date = it.releaseDate || it.firstAirDate;
   const unreleased = !!date && date > TODAY;
   const href = `/${tv ? 'tv' : 'movie'}/${it.id}`;
@@ -149,15 +164,15 @@ export function TitleCard({ it, meta }: { it: TitleResult; meta?: string }) {
     qb = plex ? (
       <a
         className="qbtn okb"
-        {...plexLink(it.mediaInfo, false, tv ? 'tv' : 'movie')}
+        {...mediaLink(it.mediaInfo, false, tv ? 'tv' : 'movie', serverName)}
       >
         <Icon name="play" size="sm" />
-        Watch on Plex
+        Watch on {serverName}
       </a>
     ) : (
       <Link className="qbtn okb" to={href}>
         <Icon name="play" size="sm" />
-        On Plex
+        On {serverName}
       </Link>
     );
   else if (s)
@@ -226,17 +241,18 @@ export function BookCard({ b }: { b: BookResult }) {
   const { prefs } = usePrefs();
   const toast = useToast();
   const states = useBookStates();
-  const known = states?.get(hardcoverWorkId(b.id) || '')?.[
-    audio ? 'audiobook' : 'ebook'
-  ];
-  const [s0, markRequested] = useRequested(statusOf(b.mediaInfo, true));
+  const known = states?.get(b.id)?.[audio ? 'audiobook' : 'ebook'];
+  const [s0, markRequested] = useRequested(
+    statusOf(
+      bookMediaForFormat(b.mediaInfo, audio ? 'audiobook' : 'ebook'),
+      true
+    )
+  );
   const s =
     s0 ||
-    (known === 5
-      ? statusOf({ status: 5 }, true)
-      : known
-        ? { k: 'wait' as const, word: 'Requested', ico: 'clock' as const }
-        : null);
+    (known
+      ? { k: 'wait' as const, word: 'Requested', ico: 'clock' as const }
+      : null);
   // narrator choice off (admin or personal setting) = one straight request, no picker
   const straight = !audio || !prefs.narratorChoice;
   const go = async () => {
@@ -335,8 +351,9 @@ export function FeatCard({
   eyebrow: string;
   lazy?: boolean;
 }) {
+  const serverName = useMediaServerName();
   const tv = it.mediaType === 'tv';
-  const s = statusOf(it.mediaInfo);
+  const s = statusOf(it.mediaInfo, false, serverName);
   const toast = useToast();
   const { prefs } = usePrefs();
   const [done, setDone] = useState(false);
@@ -378,7 +395,12 @@ export function FeatCard({
             plexUrl(it.mediaInfo) ? (
               <a
                 className="btn go"
-                {...plexLink(it.mediaInfo, false, tv ? 'tv' : 'movie')}
+                {...mediaLink(
+                  it.mediaInfo,
+                  false,
+                  tv ? 'tv' : 'movie',
+                  serverName
+                )}
               >
                 <Icon name="play" size="sm" />
                 Watch

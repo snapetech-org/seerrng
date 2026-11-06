@@ -27,6 +27,7 @@ export enum MediaIdentifierProvider {
   OPENLIBRARY = 'openlibrary',
   OPENLIBRARY_EDITION = 'openlibrary_edition',
   ISBN = 'isbn',
+  ASIN = 'asin',
   READARR = 'readarr',
   LIDARR = 'lidarr',
   BOOKSHELF = 'bookshelf',

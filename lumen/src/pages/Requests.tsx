@@ -4,16 +4,15 @@ import {
   api,
   ApiError,
   cancelRequest,
-  hardcoverEbookId,
+  mediaLink,
   MediaStatus,
-  plexLink,
   plexUrl,
   tmdbImg,
   type BookResult,
   type RequestItem,
   type TvDetails,
 } from '../api';
-import { useAuth } from '../auth';
+import { useAuth, useMediaServerName } from '../auth';
 import { shortDate } from '../components/cards';
 import { Pill } from '../components/detail';
 import { Avatar } from '../components/Shell';
@@ -91,7 +90,10 @@ function seasonList(ns: number[]) {
   return `${ns.length === 1 ? 'Season' : 'Seasons'} ${runs.join(', ')}`;
 }
 
-function state(x: Row): {
+function state(
+  x: Row,
+  serverName = 'Plex'
+): {
   k: 'ok' | 'dl' | 'wait' | 'bad';
   word: string;
   ico: IconName;
@@ -121,8 +123,8 @@ function state(x: Row): {
         r.type !== 'movie' && r.type !== 'tv'
           ? 'In library'
           : r.is4k
-            ? '4K on Plex'
-            : 'On Plex',
+            ? `4K on ${serverName}`
+            : `On ${serverName}`,
       ico: 'check',
       active: false,
     };
@@ -151,7 +153,7 @@ function state(x: Row): {
     return missing && !missing.length
       ? {
           k: 'ok',
-          word: r.is4k ? '4K on Plex' : 'On Plex',
+          word: r.is4k ? `4K on ${serverName}` : `On ${serverName}`,
           ico: 'check',
           active: false,
           detail:
@@ -163,7 +165,7 @@ function state(x: Row): {
         }
       : {
           k: 'ok',
-          word: 'Partly on Plex',
+          word: `Partly on ${serverName}`,
           ico: 'check',
           active: true,
           detail: missing?.length
@@ -274,7 +276,7 @@ function titlePlaceholder(r: RequestItem): Row {
 }
 function bookPlaceholder(r: RequestItem): Row {
   const id = bookId(r);
-  const audio = r.bookFormat === 'audiobook' || id.startsWith('bookshelf:1:');
+  const audio = r.bookFormat === 'audiobook';
   return {
     r,
     title: 'Book',
@@ -297,7 +299,7 @@ async function describeOnce(r: RequestItem): Promise<Row> {
   const generation = sessionGeneration();
   if (r.type === 'book') {
     const id = bookId(r);
-    const audio = r.bookFormat === 'audiobook' || id.startsWith('bookshelf:1:');
+    const audio = r.bookFormat === 'audiobook';
     // a 404 is permanent (kept, so it isn't asked again); a 429 or outage is retried next visit
     const look = async (bid: string) => {
       const { b, st } = await fetchBook(bid);
@@ -307,13 +309,7 @@ async function describeOnce(r: RequestItem): Promise<Row> {
       }
       return b;
     };
-    let b = id && !bookLimited ? await look(id) : null;
-    // ebooks: newer SeerrNG looks plain ids up on Goodreads; name Hardcover like the book page does
-    const alt =
-      generation === sessionGeneration() && !b && !audio && !bookLimited
-        ? hardcoverEbookId(id)
-        : null;
-    if (alt && !retryLater.has(r.id)) b = await look(alt);
+    const b = id && !bookLimited ? await look(id) : null;
     if (bookLimited) retryLater.add(r.id);
     return {
       r,
@@ -464,6 +460,7 @@ function gameRow(g: SoftwareRequest): Row {
 }
 
 export default function Requests() {
+  const serverName = useMediaServerName();
   const { user } = useAuth();
   const toast = useToast();
   const [p, setP] = useSearchParams();
@@ -504,15 +501,17 @@ export default function Requests() {
   }, [user, tick, extras.games.length]);
 
   // keep download percentages moving while anything is downloading
-  const busy = (rows || []).some((x) => state(x).pct != null);
+  const busy = (rows || []).some((x) => state(x, serverName).pct != null);
   useEffect(() => {
     if (!busy) return;
     const t = window.setInterval(() => setTick((n) => n + 1), 30_000);
     return () => window.clearInterval(t);
   }, [busy]);
   const all = rows || [];
-  const act = all.filter((x) => state(x).active);
-  const ready = all.filter((x) => state(x).k === 'ok' && !state(x).active);
+  const act = all.filter((x) => state(x, serverName).active);
+  const ready = all.filter(
+    (x) => state(x, serverName).k === 'ok' && !state(x, serverName).active
+  );
   const list = tab === 'ready' ? ready : tab === 'all' ? all : act;
   const cancel = async (id: number) => {
     try {
@@ -588,7 +587,7 @@ export default function Requests() {
       )}
       <div className="rqlist">
         {list.map((x) => {
-          const st = state(x);
+          const st = state(x, serverName);
           return (
             <div className="rq" key={x.r.id}>
               <div className={`art ${x.cover ? 'cover' : ''}`}>
@@ -632,12 +631,12 @@ export default function Requests() {
                   plexUrl(x.r.media, x.r.is4k) ? (
                     <a
                       className="btn btn-sm btn-ok"
-                      {...plexLink(x.r.media, x.r.is4k, x.r.type)}
+                      {...mediaLink(x.r.media, x.r.is4k, x.r.type, serverName)}
                     >
                       <Icon name="play" size="sm" />
                       {x.r.type === 'music'
-                        ? 'Listen on Plex'
-                        : 'Watch on Plex'}
+                        ? `Listen on ${serverName}`
+                        : `Watch on ${serverName}`}
                     </a>
                   ) : x.r.status === 1 ? (
                     <button

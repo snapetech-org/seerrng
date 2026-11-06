@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import {
+  mediaLink,
   MediaStatus,
-  plexLink,
   requestSeries,
   tmdbImg,
   type Paged,
@@ -10,6 +10,7 @@ import {
   type TitleResult,
   type TvDetails,
 } from '../api';
+import { useMediaServerName } from '../auth';
 import { Rail, Section, shortDate, TitleCard } from '../components/cards';
 import {
   ActionBar,
@@ -36,6 +37,7 @@ const stateOf = (status?: number): SeasonState =>
         : 'none';
 
 export default function TvDetail() {
+  const serverName = useMediaServerName();
   const { id } = useParams();
   const loc = useLocation();
   const { data: t, error, reload } = useApi<TvDetails>(`/tv/${id}`);
@@ -139,7 +141,7 @@ export default function TvDetail() {
     (r) => r.iso_3166_1 === 'US'
   )?.rating;
   const statusLine = have
-    ? `${have === seasons.length ? 'Every season' : `${have} of ${seasons.length} seasons`} on Plex`
+    ? `${have === seasons.length ? 'Every season' : `${have} of ${seasons.length} seasons`} on ${serverName}`
     : '';
   const main = missing.length ? (
     <button className="btn btn-primary" disabled={!n || busy} onClick={request}>
@@ -147,9 +149,12 @@ export default function TvDetail() {
       {label}
     </button>
   ) : (
-    <a className="btn btn-primary" {...plexLink(t.mediaInfo, false, 'tv')}>
+    <a
+      className="btn btn-primary"
+      {...mediaLink(t.mediaInfo, false, 'tv', serverName)}
+    >
       <Icon name="play" />
-      Watch on Plex
+      Watch on {serverName}
     </a>
   );
   const asked = seasons.filter(
@@ -199,10 +204,10 @@ export default function TvDetail() {
           {have > 0 && missing.length > 0 && (
             <a
               className="btn btn-quiet"
-              {...plexLink(t.mediaInfo, false, 'tv')}
+              {...mediaLink(t.mediaInfo, false, 'tv', serverName)}
             >
               <Icon name="play" />
-              Watch on Plex
+              Watch on {serverName}
             </a>
           )}
         </div>
@@ -287,12 +292,12 @@ export default function TvDetail() {
                       </span>
                       {st === 'have' && (
                         <Pill k="ok" icon="check">
-                          On Plex
+                          On {serverName}
                         </Pill>
                       )}
                       {st === 'part' && (
                         <Pill k="ok" icon="check">
-                          Partly on Plex
+                          Partly on {serverName}
                         </Pill>
                       )}
                       {st === 'asked' && (

@@ -4214,7 +4214,6 @@
   "components.Settings.RadarrModal.validationRootFolderRequired": "Anda harus memilih folder root",
   "components.Settings.ReadarrModal.add": "Tambah Server",
   "components.Settings.ReadarrModal.apiKey": "Kunci API",
-  "components.Settings.ReadarrModal.apiKeyHelp": "Temukan kunci di ChaptarrNG pada Pengaturan > Umum > Keamanan > Kunci API. Untuk ChaptarrNG 0.9.941+, tetapkan CHAPTARR__AUTH__SEERRAPIKEY di kontainer ChaptarrNG dan gunakan kunci khusus SeerrNG ini di sini untuk membatasi akses ke operasi layanan buku. Koneksi BookshelfNG yang sudah ada tetap menggunakan kuncinya saat ini selama migrasi.",
   "components.Settings.ReadarrModal.audiobook": "Buku audio",
   "components.Settings.ReadarrModal.baseUrl": "Basis URL",
   "components.Settings.ReadarrModal.baseUrlHelp": "Jika Anda menetapkan Basis URL di Bookshelf, Chaptarr, atau Readarr (Pengaturan > Umum > Host), masukkan di sini (misalnya /bookshelf). Biarkan kosong jika tidak. Pengguna Chaptarr tidak memerlukan Basis URL khusus penyedia.",

@@ -4214,7 +4214,6 @@
   "components.Settings.RadarrModal.validationRootFolderRequired": "يجب اختيار المجلد الجذري.",
   "components.Settings.ReadarrModal.add": "إضافة سيرفر",
   "components.Settings.ReadarrModal.apiKey": "مفتاح API",
-  "components.Settings.ReadarrModal.apiKeyHelp": "اعثر على المفتاح في ChaptarrNG ضمن الإعدادات > عام > الأمان > مفتاح API. في ChaptarrNG 0.9.941+، عيّن CHAPTARR__AUTH__SEERRAPIKEY في حاوية ChaptarrNG واستخدم هنا المفتاح المخصّص لـ SeerrNG لتقييد الوصول إلى عمليات خدمة الكتب. تحتفظ اتصالات BookshelfNG الحالية بمفاتيحها أثناء الترحيل.",
   "components.Settings.ReadarrModal.audiobook": "كتاب صوتي",
   "components.Settings.ReadarrModal.baseUrl": "قاعدة URL",
   "components.Settings.ReadarrModal.baseUrlHelp": "إذا قمت بتعيين قاعدة URL في Bookshelf أو Chaptarr أو Readarr (الإعدادات > عام > المضيف)، فأدخلها هنا (على سبيل المثال، /bookshelf). اتركه فارغا خلاف ذلك. لا يحتاج مستخدمو Chaptarr إلى قاعدة عناوين URL خاصة بالموفر.",

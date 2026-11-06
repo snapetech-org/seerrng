@@ -148477,17 +148477,6 @@
     {
       "domain": "client",
       "locale": "ar",
-      "id": "components.Settings.ReadarrModal.apiKeyHelp",
-      "status": "draft",
-      "provenance": "machine-draft",
-      "source": "Codex contextual manual semantic correction; generated 2026-10-31; unverified",
-      "sourceHash": "458f8854baa6997fbbb0f14ef5746412ae70310f34eb3cf80efcc078b858c3f3",
-      "targetHash": "1ce783007b144116363ec3ecf72c2437835705084db4c01f1dafb1ff23bfb66a",
-      "correctionReason": "Arabic contextual correction of an incomplete, malformed, misleading, or visibly untranslated app-owned message; preserves source meaning and protected literals. Machine-draft, generated 2026-10-31; not native-reviewed or RTL-reviewed."
-    },
-    {
-      "domain": "client",
-      "locale": "ar",
       "id": "components.Settings.Notifications.NotificationsSlack.webhookUrlTip",
       "status": "draft",
       "provenance": "machine-draft",

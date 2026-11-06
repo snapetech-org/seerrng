@@ -655,13 +655,15 @@ export const searchBookshelfCatalogs = async (
   return [...deduped.values()];
 };
 
-export const getBookshelfAudiobookLibrary = async (
-  servers: ReadarrSettings[]
+export const getBookshelfBookLibrary = async (
+  servers: ReadarrSettings[],
+  format: 'ebook' | 'audiobook' = 'audiobook',
+  requireComplete = false
 ): Promise<BookResult[]> => {
   const audiobookServers = servers.filter(
     (server) =>
       server.backend !== 'bindery' &&
-      readarrServiceSupportsFormat(server, 'audiobook')
+      readarrServiceSupportsFormat(server, format)
   );
   if (!audiobookServers.length) return [];
 
@@ -672,7 +674,11 @@ export const getBookshelfAudiobookLibrary = async (
         .map((book) => mapBookshelfBook(book, server.id, server))
     )
   );
-  if (responses.every((response) => response.status === 'rejected')) {
+  if (
+    responses.every((response) => response.status === 'rejected') ||
+    (requireComplete &&
+      responses.some((response) => response.status === 'rejected'))
+  ) {
     throw new Error('Configured audiobook catalogs are unavailable.');
   }
 
@@ -684,6 +690,9 @@ export const getBookshelfAudiobookLibrary = async (
   }
   return [...deduped.values()];
 };
+
+export const getBookshelfAudiobookLibrary = (servers: ReadarrSettings[]) =>
+  getBookshelfBookLibrary(servers, 'audiobook');
 
 export const getBookshelfAudiobookLibraryPage = async (
   servers: ReadarrSettings[],

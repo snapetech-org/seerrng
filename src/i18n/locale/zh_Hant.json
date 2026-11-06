@@ -4195,7 +4195,6 @@
   "components.Settings.RadarrModal.validationRootFolderRequired": "請選擇根資料夾。",
   "components.Settings.ReadarrModal.add": "新增伺服器",
   "components.Settings.ReadarrModal.apiKey": "API 金鑰",
-  "components.Settings.ReadarrModal.apiKeyHelp": "請在 ChaptarrNG 的「設定 > 一般 > 安全 > API密鑰」中尋找金鑰。若使用 ChaptarrNG 0.9.941 或更新版本，請在 ChaptarrNG 容器中設定 CHAPTARR__AUTH__SEERRAPIKEY，並在此處使用 SeerrNG 專用金鑰，以限制對圖書服務操作的存取。移轉期間，既有 BookshelfNG 連線會保留目前使用的金鑰。",
   "components.Settings.ReadarrModal.audiobook": "有聲書",
   "components.Settings.ReadarrModal.baseUrl": "URL 基底",
   "components.Settings.ReadarrModal.baseUrlHelp": "如果您已在 Bookshelf、Chaptarr 或 Readarr（Settings > General > Host）中設定 URL Base（例如 /bookshelf），請在此輸入。否則請留空。Chaptarr 使用者不需要設定服務專屬的 URL Base。",

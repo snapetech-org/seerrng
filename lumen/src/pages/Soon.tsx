@@ -7,6 +7,7 @@ import {
   type Paged,
   type TitleResult,
 } from '../api';
+import { useMediaServerName } from '../auth';
 import { statusOf } from '../components/cards';
 import { Pill } from '../components/detail';
 import { Avatar } from '../components/Shell';
@@ -31,6 +32,7 @@ const MONTHS = [
 
 // upcoming movies and series, grouped by month, requestable ahead of release
 export default function Soon() {
+  const serverName = useMediaServerName();
   const movies = useApi<Paged<TitleResult>>('/discover/movies/upcoming').data;
   const tv = useApi<Paged<TitleResult>>('/discover/tv/upcoming').data;
   const toast = useToast();
@@ -95,7 +97,7 @@ export default function Soon() {
           <div className="sl">
             {list.map((it) => {
               const s =
-                statusOf(it.mediaInfo) ||
+                statusOf(it.mediaInfo, false, serverName) ||
                 (asked.has(it.mediaType + it.id)
                   ? ({ k: 'wait', word: 'Requested', ico: 'clock' } as const)
                   : null);

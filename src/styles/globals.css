@@ -6673,6 +6673,8 @@
 
   .poster-rating-popover {
     width: max-content;
+    /* Theme motion duration must not animate measured viewport coordinates. */
+    transition-property: background-color, border-color, color, box-shadow;
     box-sizing: border-box;
     background-color: rgb(var(--theme-overlay-main) / 0.88);
     border: 1px solid rgb(var(--color-gray-500) / 0.65);

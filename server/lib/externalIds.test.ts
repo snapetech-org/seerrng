@@ -7,8 +7,32 @@ import {
   MAX_MUSICBRAINZ_BATCH_IDS,
   isValidExternalMediaId,
   normalizeExternalMediaId,
+  normalizeValidAsin,
   prepareMusicBrainzBatchIds,
 } from './externalIds';
+
+describe('ASIN identity normalization', () => {
+  it('accepts only complete bounded ASIN values and preserves their provider', () => {
+    assert.equal(normalizeValidAsin(' b012345678 '), 'B012345678');
+    for (const value of [
+      null,
+      12,
+      '',
+      'B01234567',
+      '../1234567',
+      'B0123456789',
+    ])
+      assert.equal(normalizeValidAsin(value), undefined);
+    assert.equal(
+      normalizeExternalMediaId(
+        ' b012345678 ',
+        MediaType.BOOK,
+        MediaIdentifierProvider.ASIN
+      ),
+      'B012345678'
+    );
+  });
+});
 
 describe('prepareMusicBrainzBatchIds', () => {
   it('normalizes, deduplicates, validates, and caps SQL-bound IDs', () => {

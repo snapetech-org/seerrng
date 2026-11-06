@@ -15,7 +15,7 @@ Plex app and device settings; a browser link is also available.
 Lumen doesn't replace SeerrNG. It runs **in front of** SeerrNG and only talks to
 SeerrNG's API.
 
-- **Your users** sign in to Lumen with the same Plex or local account as before.
+- **Your users** sign in to Lumen with the same Plex, Jellyfin, Emby, or local account as before.
   Their requests, permissions and request limits don't change.
 - **You, the admin**, keep using full SeerrNG for setup and settings: Sonarr,
   Radarr, users, notifications and so on. Lumen has no settings pages of its own.
@@ -116,7 +116,8 @@ docker compose ps
 ### 5. Set up SeerrNG
 
 Open `http://<this-machine>:5055` and complete SeerrNG's setup wizard: sign in with
-Plex, connect your Plex server, and add Sonarr and Radarr. The
+your configured Plex, Jellyfin, or Emby account, connect that media server, and
+add Sonarr and Radarr. The
 [getting started guide](../getting-started/index.mdx) walks through it.
 
 ### 6. Turn on Trust Reverse Proxy
@@ -133,6 +134,19 @@ docker compose restart seerrng
 ### 7. Open Lumen
 
 Go to `http://<this-machine>:5080` and sign in. Share this address with your users.
+
+Lumen reads SeerrNG's enabled sign-in methods. Jellyfin users can use their
+Jellyfin username/password or Quick Connect; a Quick Connect-only policy hides
+password sign-in. Emby uses its username/password flow. Local SeerrNG accounts
+remain available when enabled. Playback buttons open the configured media
+server; Plex app links remain specific to Plex.
+
+Books and Audiobooks use the format-specific SeerrNG feeds and preserve each
+returned provider/service ID. **In library** reads scanned book-service inventory,
+including ChaptarrNG titles matched to Audiobookshelf, rather than filtering
+only popular titles. Book search and ordinary requests do not require the
+optional companion. Configure and scan both formats as described in
+[book services](settings/services.md).
 
 If you want people to reach it from outside your home, continue with
 [Put Lumen behind your reverse proxy or tunnel](#put-lumen-behind-your-reverse-proxy-or-tunnel).
@@ -325,6 +339,7 @@ and showing books at all. You can set the defaults, and lock any of them, with a
    ```json
    {
      "seerrPublicUrl": "https://seerr.example.com",
+     "mediaServer": "auto",
      "defaults": {
        "narratorChoice": true,
        "hoverRequest": true,
@@ -346,6 +361,28 @@ and showing books at all. You can set the defaults, and lock any of them, with a
 
 Create the file **before** you uncomment those lines. If the file is missing, Docker
 creates a folder with that name instead, and Lumen ignores it.
+
+## Choosing Plex, Jellyfin, or Emby
+
+By default, Lumen follows `mediaServerType` from SeerrNG's public settings.
+The `mediaServer` key in `lumen-config.json` can be `auto`, `plex`, `jellyfin`,
+or `emby`. An explicit choice controls Lumen's labels and offered server
+sign-in; it does not reconfigure SeerrNG or bypass its authentication policy.
+The You page shows the selected server and whether it follows SeerrNG or an
+administrator override. Reload after changing this configuration.
+
+Jellyfin supports username/password and Quick Connect; Quick Connect-only
+policy goes directly to a code. Emby supports username/password. The recovery
+link uses the configured password-reset URL or the server's own reset page.
+Recovery URLs must use HTTP(S) without embedded credentials. If public settings
+cannot load, Lumen offers Retry instead of guessing which sign-ins are enabled.
+
+If Lumen names the wrong server, check SeerrNG's selected media server and any
+`mediaServer` override. Expired Quick Connect codes can be retried with a new
+code. Cancel stops polling, including a request still waiting for a response.
+The Movies/Series availability filter uses `show=have`; old `show=plex` links
+remain supported. The saved `newOnPlex` preference key is retained for existing
+preferences and administrator locks.
 
 ## Updating
 

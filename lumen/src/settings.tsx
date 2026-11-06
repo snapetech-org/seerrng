@@ -8,6 +8,7 @@ import {
   type ReactNode,
 } from 'react';
 import { useAuth } from './auth';
+import { serverName, type MediaServerSetting } from './mediaServer';
 
 // Every switchable part of Lumen. Admins set defaults (and can lock them) in
 // lumen-config.json next to the app; each person can change whatever isn't locked.
@@ -22,6 +23,9 @@ export const DISCOVER_ROWS = {
   genres: 'Browse by genre',
 } as const;
 export type DiscoverRow = keyof typeof DISCOVER_ROWS;
+// the "newOnPlex" key predates Jellyfin support; it stays so saved prefs and locks still apply
+export const discoverRowLabel = (r: DiscoverRow): string =>
+  r === 'newOnPlex' ? `New on ${serverName()}` : DISCOVER_ROWS[r];
 
 export interface Prefs {
   rows: Record<DiscoverRow, boolean>;
@@ -56,6 +60,7 @@ interface AdminConfig {
   };
   locked?: string[]; // e.g. ["narratorChoice", "rows.genres"]
   seerrPublicUrl?: string;
+  mediaServer?: MediaServerSetting; // read by mediaServer.tsx before sign-in
 }
 
 interface Ctx {

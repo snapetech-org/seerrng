@@ -1,5 +1,6 @@
 {
   "seerrPublicUrl": "https://seerr.example.com",
+  "mediaServer": "auto",
   "defaults": {
     "narratorChoice": true,
     "hoverRequest": true,

@@ -9,6 +9,26 @@ v3.72.7 section consolidates changes from the requested v3.71.4 baseline
 through v3.72.7, including changes also represented by unpublished interim
 tags. The comparison link is the complete commit range.
 
+## [3.72.15](https://github.com/snapetech-org/seerrng/compare/v3.72.14..v3.72.15) - 2026-11-06
+
+Additional fixes for book availability, Lumen media-server access, and floating rating bars reported after v3.72.14.
+
+### User-facing changes
+
+#### Fixed
+
+- **Books:** Downloaded unmonitored ebooks and audiobooks remain available. Audiobookshelf can match ASIN-only items to exactly one known scanned edition; ambiguous matches stay unmatched and are reported. Missing/invalid items clear stale availability.
+- **Lumen books:** Preserve native service/provider IDs, use format-specific native discovery and search without requiring a companion, and load scanned inventory for In Library instead of filtering the popular feed. Missing artwork no longer hides titles, and completed request history no longer proves current ownership.
+- **ChaptarrNG setup:** Clearly distinguish a separate restricted service key from the administrator key and show the literal `CHAPTARR__AUTH__SEERRAPIKEY` variable with double underscores.
+- **Lumen sign-in:** Support Jellyfin password and Quick Connect authentication and Emby password authentication through SeerrNG. Honor disabled methods and Quick Connect-only policy, cancel late authentication after cancellation, and return authenticated /login visits to Discover. Playback links and labels follow the configured server. Administrator overrides, safe recovery links and failed-settings Retry are included from ncbudd’s contribution.
+- **Interface:** Rating bars remain anchored during hover/content updates. Theme motion no longer animates their measured screen coordinates.
+
+### Operator actions
+
+- Update SeerrNG, then rebuild/recreate Lumen for its frontend changes.
+- Enable book-service scans; scan ChaptarrNG/Bookshelf before Audiobookshelf for exact ASIN matching. Configure a SeerrNG service entry for each requested book format.
+- The API-key help changed; outdated translations use fallback pending translation repair. No native-speaker review is claimed.
+
 ## [3.72.14](https://github.com/snapetech-org/seerrng/compare/v3.72.13..v3.72.14) - 2026-11-06
 
 Includes the earlier contribution recovery and application security fixes. This section records the additional Lumen production-image dependency repair and its ongoing image-scan gate.

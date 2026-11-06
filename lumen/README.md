@@ -27,7 +27,7 @@ docker run -d -p 5080:80 \
 
 The container runs as the unprivileged `nginx` user; its static app remains read-only, and only its generated proxy configuration, cache and temporary PID location are writable.
 
-Open `http://<host>:5080` and sign in with Plex or a SeerrNG local account. Point your public hostname at Lumen instead of SeerrNG if you want it to be the default. Lumen and SeerrNG share one origin through Lumen's nginx, so SeerrNG's sign-in cookie works unchanged.
+Open `http://<host>:5080` and sign in with Plex, Jellyfin, Emby or a SeerrNG local account. Lumen follows the media server SeerrNG is set up with; set `"mediaServer"` in `lumen-config.json` (`"auto"`, `"plex"`, `"jellyfin"` or `"emby"`) to override it. Point your public hostname at Lumen instead of SeerrNG if you want it to be the default. Lumen and SeerrNG share one origin through Lumen's nginx, so SeerrNG's sign-in cookie works unchanged.
 
 | Variable | What it is |
 | --- | --- |

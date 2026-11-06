@@ -115,6 +115,50 @@ async function seedBook(identifier: string, status = MediaStatus.PROCESSING) {
 }
 
 describe('Readarr Scanner', () => {
+  for (const serviceType of ['ebook', 'audiobook'] as const) {
+    it(`keeps downloaded unmonitored ${serviceType} books available`, async () => {
+      configureReadarr([{ serviceType }]);
+      getBooksImpl = async () => [
+        fakeReadarrBook({
+          monitored: false,
+          editions: [
+            {
+              foreignEditionId: 'edition-id',
+              title: 'Test Book',
+              isbn13: '9780306406157',
+              asin: 'b012345678',
+              monitored: false,
+            },
+          ],
+          statistics: {
+            bookFileCount: 0,
+            ebookFileCount: serviceType === 'ebook' ? 1 : 0,
+            audiobookFileCount: serviceType === 'audiobook' ? 1 : 0,
+            totalBookCount: 1,
+          },
+        }),
+      ];
+      await readarrScanner.run();
+      const media = await getRepository(Media).findOneOrFail({
+        where: { mediaType: MediaType.BOOK },
+      });
+      assert.strictEqual(media.status, MediaStatus.AVAILABLE);
+      assert.strictEqual(
+        serviceType === 'ebook'
+          ? media.externalServiceId
+          : media.audiobookExternalServiceId,
+        1
+      );
+      assert.ok(
+        await getRepository(MediaIdentifier).findOneBy({
+          provider: MediaIdentifierProvider.ASIN,
+          value: 'B012345678',
+          media: { id: media.id },
+        })
+      );
+    });
+  }
+
   beforeEach(() => {
     mock.restoreAll();
     mock.method(OpenLibraryAPI.prototype, 'searchBooks', async () => ({

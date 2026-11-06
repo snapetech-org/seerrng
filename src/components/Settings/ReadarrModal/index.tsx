@@ -78,7 +78,7 @@ const messages = defineMessages('components.Settings.ReadarrModal', {
     'Hardcover is used by default for new installs. Existing Goodreads/softcover libraries remain supported. Migration to Hardcover is optional; use the migration guide if you choose to move provider-specific metadata IDs.',
   migrationGuide: 'Bookshelf Hardcover migration guide',
   apiKeyHelp:
-    'Find the key in ChaptarrNG under Settings > General > Security > API Key. For ChaptarrNG 0.9.941+, set CHAPTARR__AUTH__SEERRAPIKEY in the ChaptarrNG container and use that SeerrNG-specific key here to limit access to book-service operations. Existing BookshelfNG connections keep their current key during migration.',
+    'For ChaptarrNG 0.9.941+, create a separate random service key, set {variable} to that value on the ChaptarrNG container, then recreate the container and paste the same value here. Use two underscores between CHAPTARR, AUTH, and SEERRAPIKEY. This restricted key is different from the administrator API key shown under Settings > General > Security > API Key. Older ChaptarrNG and existing BookshelfNG connections can keep their current key. No variable is needed on SeerrNG.',
   baseUrlHelp:
     'If you set a URL Base in Bookshelf, Chaptarr, or Readarr (Settings > General > Host), enter it here (e.g. /bookshelf). Leave blank otherwise. Chaptarr users do not need a provider-specific URL Base.',
   externalUrlHelp:
@@ -793,7 +793,9 @@ const ReadarrModal = ({
                     )}
                 </div>
                 <span className="settings-form-row-description">
-                  {intl.formatMessage(messages.apiKeyHelp)}
+                  {intl.formatMessage(messages.apiKeyHelp, {
+                    variable: <code>CHAPTARR__AUTH__SEERRAPIKEY</code>,
+                  })}
                 </span>
               </div>
               <div className="form-row">

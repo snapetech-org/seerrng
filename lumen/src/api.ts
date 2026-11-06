@@ -42,6 +42,10 @@ export const MediaStatus = {
 } as const;
 
 export interface MediaInfo {
+  externalServiceId?: number | null;
+  audiobookExternalServiceId?: number | null;
+  audiobookLibraryServiceId?: number | null;
+  audiobookLibraryItemId?: string | null;
   downloadStatus?: { size: number; sizeLeft: number }[];
   status?: number;
   status4k?: number;
@@ -51,7 +55,7 @@ export interface MediaInfo {
   iOSPlexUrl?: string;
   iOSPlexUrl4k?: string;
 }
-export { plexLink, plexUrl } from './plexLinks';
+export { mediaLink, plexLink, plexUrl } from './plexLinks';
 export interface TitleResult {
   id: number;
   mediaType: 'movie' | 'tv' | 'person';
@@ -256,35 +260,31 @@ export const narratorKey = (names?: (string | null | undefined)[] | null) =>
     .sort()
     .join('|');
 
-// ---- book ids: bookshelf:<server>:<base64 work id>; server 0 = ebooks, 1 = audiobooks ----
+// Book identities belong to SeerrNG's configured provider and service, not a
+// frontend-assigned format/server number. Keep opaque IDs byte-for-byte.
 export const isBookshelf = (id: string) => id.startsWith('bookshelf:');
-const b64url = (s: string) =>
-  btoa(s).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+export const bookIdFor = (id: string, _format: 'ebook' | 'audiobook') => id;
 export const hardcoverWorkId = (id: string) => {
   if (!isBookshelf(id)) return null;
   try {
-    const raw = atob(
-      id.split(':')[2].replace(/-/g, '+').replace(/_/g, '/')
-    ).replace(/^hc:/, '');
-    return /^\d+$/.test(raw) ? raw : null;
+    const raw = atob(id.split(':')[2].replace(/-/g, '+').replace(/_/g, '/'));
+    return /^hc:(\d+)$/.exec(raw)?.[1] ?? null;
   } catch {
     return null;
   }
 };
-// Ids stay in SeerrNG's plain form (bookshelf:<server>:<base64 work id>) so they match the
-// media it already has. Newer SeerrNG builds look plain ebook ids up in the Goodreads catalogue
-// (404); hardcoverEbookId() is the fallback that names Hardcover explicitly.
-export const bookIdFor = (id: string, format: 'ebook' | 'audiobook') => {
-  if (!isBookshelf(id)) return id;
-  const work = hardcoverWorkId(id);
-  const server = format === 'audiobook' ? 1 : 0;
-  return work
-    ? `bookshelf:${server}:${b64url(work)}`
-    : id.replace(/^bookshelf:\d+:/, `bookshelf:${server}:`);
-};
-export const hardcoverEbookId = (id: string) => {
-  const work = hardcoverWorkId(id);
-  return work ? `bookshelf:0:${b64url('hc:' + work)}` : null;
+export const bookMediaForFormat = (
+  media: MediaInfo | undefined,
+  format: 'ebook' | 'audiobook'
+): MediaInfo | undefined => {
+  if (!media || media.status !== MediaStatus.AVAILABLE) return media;
+  const available =
+    format === 'ebook'
+      ? media.externalServiceId != null
+      : media.audiobookExternalServiceId != null ||
+        (media.audiobookLibraryServiceId != null &&
+          media.audiobookLibraryItemId != null);
+  return available ? media : { ...media, status: undefined };
 };
 
 // ---- detail shapes ----
@@ -395,79 +395,6 @@ export interface RequestItem {
   };
 }
 
-// ---- book search through the companion (ChaptarrNG's Hardcover search) ----
-// SeerrNG's book search mixes Open Library listings with ChaptarrNG works keyed by Goodreads
-// numbers, so narrators, library status and request ids come out wrong. ChaptarrNG's own
-// Hardcover search returns Hardcover ids and knows which copies the library has.
-export interface HcBook {
-  work: string;
-  title: string;
-  author?: string;
-  year?: number;
-  cover?: string;
-  ebook?: number; // 5 in library, 2 requested
-  audiobook?: number;
-}
-const JUNK =
-  /\b(trivia|lined journal|journal|summary|summaries|study guide|workbook|colou?ring|notebook|fan ?fiction|pov|split edition|dramati[sz]ed adaptation|part \d+ of \d+|box ?set|boxed set|collection set)\b/i;
-const localState = (copies?: { hasFiles: boolean; monitored?: boolean }[]) =>
-  copies?.some((c) => c.hasFiles)
-    ? 5
-    : copies?.some((c) => c.monitored)
-      ? 2
-      : undefined;
-
-export async function hcBookSearch(q: string): Promise<HcBook[] | null> {
-  const res = await fetch(
-    `/seerr-classic/hcsearch?q=${encodeURIComponent(q)}`,
-    { credentials: 'same-origin', cache: 'no-cache' }
-  ).catch(() => null);
-  if (!res || !res.ok) return null;
-  const rows:
-    | {
-        book?: {
-          foreignBookId?: string;
-          title?: string;
-          releaseDate?: string;
-          author?: { authorName?: string };
-          localAudiobookBooks?: { hasFiles: boolean; monitored?: boolean }[];
-          localEbookBooks?: { hasFiles: boolean; monitored?: boolean }[];
-        };
-      }[]
-    | null = await res.json().catch(() => null);
-  // no companion: the path falls through to the app page, which isn't JSON
-  if (!Array.isArray(rows)) return null;
-  const askedForJunk = JUNK.test(q);
-  const seen = new Set<string>();
-  const books: HcBook[] = [];
-  for (const r of rows) {
-    const b = r.book;
-    const work = /^hc:(\d+)$/.exec(b?.foreignBookId || '')?.[1];
-    if (!b || !work || !b.title) continue;
-    if (!askedForJunk && JUNK.test(b.title)) continue;
-    const key =
-      b.title
-        .toLowerCase()
-        .replace(/[^a-z0-9]+/g, ' ')
-        .trim() +
-      '|' +
-      (b.author?.authorName || '').toLowerCase();
-    if (seen.has(key)) continue;
-    seen.add(key);
-    books.push({
-      work,
-      title: b.title,
-      author: b.author?.authorName,
-      year: b.releaseDate ? +b.releaseDate.slice(0, 4) : undefined,
-      ebook: localState(b.localEbookBooks),
-      audiobook: localState(b.localAudiobookBooks),
-    });
-  }
-  const covers = await hcCovers(books.map((b) => b.work));
-  for (const b of books) b.cover = covers.get(b.work);
-  return books;
-}
-
 // Hardcover book covers through the companion (one GraphQL call per 30 ids, images cached on
 // the server). Ebook lists otherwise show square audiobook art cropped into a book shape.
 const coverCache = new Map<string, string | undefined>();
@@ -500,16 +427,3 @@ export async function hcCovers(
   }
   return new Map(works.map((w) => [w, coverCache.get(w)]));
 }
-export const hcBookToResult = (
-  b: HcBook,
-  format: 'ebook' | 'audiobook'
-): BookResult => ({
-  id: `bookshelf:${format === 'audiobook' ? 1 : 0}:${b64url(b.work)}`,
-  mediaType: 'book',
-  title: b.title,
-  author: b.author,
-  posterPath: b.cover || null,
-  bookFormat: format,
-  firstPublishYear: b.year,
-  mediaInfo: b[format] ? { status: b[format] } : undefined,
-});
