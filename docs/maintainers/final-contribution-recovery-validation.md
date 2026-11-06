@@ -88,10 +88,16 @@ real UI controls and pass without production-source changes.
 
 Visual review also reproduced a misleading future-season acquisition toggle in the
 Persius tag-only TV dialog. Tag-only mode now omits that control; the ordinary request
-toggle is preserved. The new browser assertion fails against the prior production
-build and passes after rebuilding. `final-features-tag-control-production-build.log`
-records the complete accepted build; `final-features-tag-control-accepted-*-browser.log`
-records ten request/provider cases per theme. A direct startup attempt against the
+toggle is preserved. A second rendered check found an empty duplicate acquisition
+disclosure in the same mode; tag-only requests now omit the entire empty options
+section. Both assertions fail against their respective prior builds and pass on
+the final candidate. The new browser assertion fails against the prior production
+build and passes after rebuilding. `final-features-tag-disclosure-production-build.log`
+records the complete final accepted build; `final-features-final-accepted-*-browser.log`
+records ten request/provider cases per theme. Full repository formatting, ESLint/Next
+lint and server/client typechecks pass. The hosted formatting gate found two
+previously committed files omitted from the focused formatter check; both were
+formatted and the full formatting check then passed. A direct startup attempt against the
 seeded fixture database tried production migrations; it was stopped by the existing
 schema and replaced with the documented `pnpm cypress:start` fixture launcher,
 which skips migrations and enables the offline network guard. No live configuration
@@ -101,3 +107,15 @@ Full integration-head CI is required before merge. Browser metadata and provider
 mutations are intercepted fixtures; no live household provider mutations or live
 PostgreSQL validation are claimed. CodeQL remains disabled under the owner directive;
 historical findings remain in the separate security ledger.
+
+## Settings submission regression found by complete Cypress
+
+The complete Cypress suite passed200 cases with32 pending and found one actual
+form regression: `rejectionMessage` was marked required even though its documented
+default is empty and the message is optional. This blocked unrelated settings saves
+while policy was disabled, as well as an enabled policy using its default message.
+The schema now retains the1000-character bound and accepts an empty message. Two
+headless baseline cases fail before the repair and pass after the complete production
+build. The existing strict application-URL and permissive trailing-slash YouTube URL
+validation is preserved. Logs: `final-features-optional-message-{baseline,accepted}.log`
+and `final-features-optional-message-production-build.log`.

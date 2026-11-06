@@ -10226,13 +10226,11 @@ describe('streaming policy admission', () => {
       .send({ mediaType: 'movie', mediaId: 978001 });
     assert.equal(rejected.status, 403);
     assert.equal(rejected.body.allowOverride, true);
-    const res = await agent
-      .post('/request')
-      .send({
-        mediaType: 'movie',
-        mediaId: 978001,
-        bypassStreamingRequestPolicy: true,
-      });
+    const res = await agent.post('/request').send({
+      mediaType: 'movie',
+      mediaId: 978001,
+      bypassStreamingRequestPolicy: true,
+    });
     assert.equal(res.status, 201, res.body.message);
     assert.equal(res.body.status, MediaRequestStatus.PENDING);
   });

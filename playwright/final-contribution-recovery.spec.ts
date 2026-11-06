@@ -520,6 +520,8 @@ for (const width of [390, 1440]) {
             })
           ).toBeVisible();
           await expect(dialog.getByTestId('modal-ok-button')).toBeEnabled();
+          if (mediaType === 'tv' && theme === 'persiusNG')
+            await expect(dialog.locator('summary')).toHaveCount(1);
           if (mediaType === 'tv')
             await expect(
               dialog.getByText('Get new seasons automatically', { exact: true })
@@ -658,5 +660,46 @@ for (const width of [390, 1440]) {
         () => document.documentElement.scrollWidth <= innerWidth
       )
     ).toBe(true);
+  });
+}
+
+for (const enabled of [false, true]) {
+  test(`saves main settings with an empty optional streaming message (${enabled ? 'enabled' : 'disabled'})`, async ({
+    page,
+  }) => {
+    test.skip(baseline);
+    await login(page);
+    const submissions: Record<string, unknown>[] = [];
+    await page.route('**/api/v1/settings/main', async (route) => {
+      if (route.request().method() === 'POST') {
+        submissions.push(route.request().postDataJSON());
+        return route.fulfill({ json: {} });
+      }
+      const response = await route.fetch();
+      return route.fulfill({
+        json: {
+          ...(await response.json()),
+          applicationUrl: '',
+          youtubeUrl: '',
+          streamingRequestPolicy: {
+            enabled,
+            condition: 'available',
+            action: 'reject',
+            allowUserOverride: false,
+            rejectionMessage: '',
+          },
+        },
+      });
+    });
+    await page.goto('/settings/main');
+    await page.locator('#applicationTitle').fill('Policy validation fixture');
+    await page
+      .locator('[data-testid="settings-main-form"]')
+      .evaluate((form) => (form as HTMLFormElement).requestSubmit());
+    await expect.poll(() => submissions.length).toBe(1);
+    expect(submissions[0].streamingRequestPolicy).toMatchObject({
+      enabled,
+      rejectionMessage: '',
+    });
   });
 }
