@@ -792,21 +792,15 @@ class MainActivity : Activity() {
     // Only ever starts a browsable activity: the page can't name a component or grant URI
     // access, and when no app handles the link the intent's own http(s) fallback opens.
     private fun openIntentLink(url: String) {
-        val intent = runCatching { Intent.parseUri(url, Intent.URI_INTENT_SCHEME) }.getOrNull()
-        if (intent == null) {
+        val target = AppLinkIntent.parse(url)
+        if (target == null) {
             Toast.makeText(this, R.string.connection_error, Toast.LENGTH_SHORT).show()
             return
         }
-        intent.addCategory(Intent.CATEGORY_BROWSABLE)
-        intent.component = null
-        intent.selector = null
-        intent.flags = intent.flags and URI_GRANT_FLAGS.inv()
         try {
-            startActivity(intent)
+            startActivity(target.intent)
         } catch (_: ActivityNotFoundException) {
-            val fallback = intent.getStringExtra("browser_fallback_url")
-                ?.let(Uri::parse)
-                ?.takeIf { it.scheme?.lowercase() == "http" || it.scheme?.lowercase() == "https" }
+            val fallback = target.fallback
             if (fallback != null) {
                 openExternal(fallback)
             } else {
@@ -990,9 +984,5 @@ class MainActivity : Activity() {
 
         // App links a page may hand off with a tap (http(s), mail and maps are handled separately)
         val APP_LINK_SCHEMES = setOf("plex")
-        const val URI_GRANT_FLAGS = Intent.FLAG_GRANT_READ_URI_PERMISSION or
-            Intent.FLAG_GRANT_WRITE_URI_PERMISSION or
-            Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION or
-            Intent.FLAG_GRANT_PREFIX_URI_PERMISSION
     }
 }
