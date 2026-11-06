@@ -88,7 +88,7 @@ const settingsSearchTargets = [
     route: '/settings/main',
     targetId: 'apiKey',
     terms: ['api', 'api key', 'apikey', 'application api key'],
-    adminOnly: false,
+    adminOnly: true,
   },
 ] as const;
 
@@ -415,7 +415,9 @@ const SettingsLayout = ({ children }: SettingsLayoutProps) => {
     );
 
     if (
-      indexedTarget?.targetId === 'prowlarr-settings-title' &&
+      indexedTarget &&
+      (indexedTarget.targetId === 'prowlarr-settings-title' ||
+        indexedTarget.terms.some((term) => term === normalizedQuery)) &&
       indexedTarget.route !== router.pathname
     ) {
       navigateToSettingsSearchDestination({
