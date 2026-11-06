@@ -50,7 +50,24 @@ server {
     proxy_set_header Forwarded "";
     proxy_set_header X-Forwarded-Proto $lumen_forwarded_proto;
   }
+  # Companion services must still enforce their own per-user permissions and quotas.
+  # Check the current SeerrNG session before forwarding any companion request.
+  location = /_lumen_session_check {
+    internal;
+    proxy_pass ${SEERR_URL}/api/v1/auth/me;
+    proxy_method GET;
+    proxy_pass_request_body off;
+    proxy_set_header Content-Length "";
+    proxy_set_header Cookie $http_cookie;
+    proxy_set_header Host $host;
+    proxy_set_header X-Forwarded-For $remote_addr;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header CF-Connecting-IP "";
+    proxy_set_header Forwarded "";
+    proxy_set_header X-Forwarded-Proto $lumen_forwarded_proto;
+  }
   location /seerr-classic/ {
+    auth_request /_lumen_session_check;
     proxy_pass ${SEERR_EXTRAS_URL};
     proxy_set_header Host $host;
     proxy_set_header X-Forwarded-For $remote_addr;
