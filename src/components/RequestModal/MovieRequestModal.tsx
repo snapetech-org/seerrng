@@ -741,7 +741,7 @@ const MovieRequestModal = ({
         }
         artworkType="tmdb"
       >
-        <div className="app-card-inset refreshed-inset-surface detail-summary-card grid min-w-0 grid-cols-[64px_minmax(0,1fr)] gap-3 sm:grid-cols-[80px_minmax(0,1fr)]">
+        <div className="app-card-inset refreshed-inset-surface detail-summary-card app-detail-summary-grid">
           <div className="detail-card-poster relative overflow-hidden rounded-lg ring-1 ring-gray-600">
             <CachedImage
               type="tmdb"
@@ -756,7 +756,7 @@ const MovieRequestModal = ({
             />
           </div>
 
-          <div className="flex min-w-0 flex-col">
+          <div>
             <h3 className="detail-summary-title truncate text-lg leading-5 font-semibold text-white">
               {data?.title}
               {releaseYear ? ` (${releaseYear})` : ''}

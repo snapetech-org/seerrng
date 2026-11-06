@@ -2357,10 +2357,10 @@ const validateCurrentBatchContract = (files) => {
     [
       'display: flex;',
       'width: 100%;',
-      'flex-wrap: nowrap;',
+      'flex-wrap: wrap;',
       'align-items: center;',
     ],
-    'detail Search Prowlarr and Request controls must share one non-wrapping row'
+    'detail Search Prowlarr and Request controls must wrap safely within one shared action group'
   );
   requireCssRule(
     '.media-request-submit-action',

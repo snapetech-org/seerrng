@@ -230,6 +230,13 @@ for (const theme of ['seerrOrig', 'seerrNGJ']) {
             summaryWidth: node.getBoundingClientRect().width,
             summaryOverflow: node.scrollWidth - node.clientWidth,
             disclosureIcons,
+            values: [...node.querySelectorAll('dd')].map((value) => ({
+              text: value.textContent,
+              width: value.clientWidth,
+              scrollWidth: value.scrollWidth,
+              height: value.clientHeight,
+              scrollHeight: value.scrollHeight,
+            })),
           };
         });
         writeFileSync(
@@ -248,6 +255,14 @@ for (const theme of ['seerrOrig', 'seerrNGJ']) {
             Math.abs(geometry.title.y - geometry.poster.y)
           ).toBeLessThanOrEqual(2);
           expect(geometry.summaryOverflow).toBeLessThanOrEqual(1);
+          for (const value of geometry.values) {
+            expect(value.scrollWidth, value.text ?? '').toBeLessThanOrEqual(
+              value.width + 1
+            );
+            expect(value.scrollHeight, value.text ?? '').toBeLessThanOrEqual(
+              value.height + 1
+            );
+          }
           for (const icon of geometry.disclosureIcons) {
             expect(icon.width).toBe(14);
             expect(icon.height).toBe(14);

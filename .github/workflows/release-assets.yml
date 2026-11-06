@@ -182,7 +182,7 @@ jobs:
 
       - name: Pnpm Setup
         if: inputs.reuse_from_run_id == '' || (matrix.os == 'windows' && matrix.arch == 'x64' && inputs.reuse_windows_x64_artifact != true) || (matrix.os == 'windows' && matrix.arch == 'arm64' && inputs.reuse_windows_arm64_artifact != true)
-        uses: pnpm/action-setup@0977fd99725f1db4007ccb2928dbb4e90d06cc86 # v6.0.10
+        uses: pnpm/action-setup@73e46992e05b19abd31f2f3c20e0e7370d762115 # v6.1.1
         with:
           version: ${{ matrix.pnpm_version }}
           package_json_file: ${{ matrix.os == 'windows' && '.github/release-pnpm-tooling.json' || 'package.json' }}

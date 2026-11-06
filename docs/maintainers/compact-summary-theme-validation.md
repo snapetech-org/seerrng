@@ -110,3 +110,48 @@ workflow mirror; its log confirms successful promotion at 21:42:43 UTC. A local
 mirror repeated the same digest without changing the published artifact.
 Evidence includes `release16-alias-readback.json`, `release16-alias-job.log`,
 `published16-qa-summary.json`, the critical/theme-picker logs and screenshots.
+
+## Narrow-screen metadata and request action follow-up
+
+The retained 320px failure is now repaired in the shared compact summary owner.
+At phone widths, poster/title retain their compact first row while metadata uses
+the card width below them. Movie, book and music request dialogs now consume
+`app-detail-summary-grid`; their duplicate grid/flex utilities were removed.
+Primary detail variants retain their existing theme-specific layouts.
+
+A second real interaction defect was found during music dialog checks: the
+shared request action row forced search/manage and request groups onto one line.
+At320px, the search controls covered the FLAC request button and intercepted
+ordinary clicks. The shared row and search group now wrap without changing
+button geometry, palette or typography.
+
+Production client compilation and73 shared contracts pass. Matched published16
+and candidate movie/TV requests were captured at320/360/390/1440px in SeerrOrig
+and SeerrNGJ:16 cases pass and all metadata values have zero horizontal or
+vertical clipping. The320px comparisons were visually inspected. A further28
+checks pass for request summaries/status and book disclosures, including Arabic
+and the existing Persius consumer. Six music checks at320/390/1440px pass with
+ordinary FLAC clicks, enabled submission and fully readable summary values.
+The permanent browser assertions now check value clipping and music requests.
+
+The visual review also exposed a separate AlbumTrackList issue: both responsive
+layouts render in the music dialog, leaving narrow duplicated columns. The
+summary and action repairs do not resolve that track-table defect; acceptance of
+the complete music dialog remains incomplete until its shared owner is repaired.
+Fixture provider failures and the initial harness errors are retained; they are
+not live-provider acceptance evidence. Evidence: `readability-final-consumers`,
+`candidate-qualified-readability`, `music-readable-accepted` and their logs in
+the theme QA deliverable directory.
+
+The AlbumTrackList follow-up is now repaired. Its shared semantic layout owns
+responsive visibility and columns; phone layouts use one track column, desktop
+layouts preserve the supported two/three-column variants, and empty sections
+are omitted. The existing168px scrolling viewport and selection behavior remain.
+The previous duplicate visibility utilities are removed. Both album details and
+the request dialog pass six final production-browser cases across both themes
+at320/390/1440px. Each visible track layout is unique, has one populated section
+for the one-track fixture and stays within its bounds. Final dialog and primary
+track screenshots were reviewed; the duplicate columns and overlap are gone.
+The existing album-selection unit test and all73 shared contracts pass. The
+obsolete contract requiring a nonwrapping request row now requires safe wrapping;
+the ordinary-click browser regression supplies behavioral verification.

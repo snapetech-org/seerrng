@@ -654,7 +654,7 @@
       "callsites": [
         {
           "path": "server/lib/requestWorkCleanup.ts",
-          "line": 347,
+          "line": 350,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Seerr cannot safely remove an untracked empty Bookshelf entry.'",
@@ -2418,7 +2418,7 @@
         },
         {
           "path": "server/routes/media.ts",
-          "line": 1471,
+          "line": 1476,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Media does not exist.'",
@@ -2426,7 +2426,7 @@
         },
         {
           "path": "server/routes/media.ts",
-          "line": 1479,
+          "line": 1484,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Media does not exist.'",
@@ -2434,7 +2434,7 @@
         },
         {
           "path": "server/routes/media.ts",
-          "line": 1482,
+          "line": 1487,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Media does not exist.'",
@@ -2442,7 +2442,7 @@
         },
         {
           "path": "server/routes/media.ts",
-          "line": 1581,
+          "line": 1586,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Media does not exist.'",
@@ -2450,7 +2450,7 @@
         },
         {
           "path": "server/routes/media.ts",
-          "line": 1588,
+          "line": 1593,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Media does not exist.'",
@@ -7248,7 +7248,7 @@
       "callsites": [
         {
           "path": "server/lib/requestWorkCleanup.ts",
-          "line": 256,
+          "line": 259,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Bookshelf has not finished its search command and cannot confirm cancellation yet.'",
@@ -7702,7 +7702,7 @@
         },
         {
           "path": "server/routes/media.ts",
-          "line": 938,
+          "line": 943,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'You no longer have permission to modify media.'",
@@ -7710,7 +7710,7 @@
         },
         {
           "path": "server/routes/media.ts",
-          "line": 1449,
+          "line": 1454,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'You no longer have permission to modify media.'",
@@ -8445,7 +8445,7 @@
       "callsites": [
         {
           "path": "server/lib/requestWorkCleanup.ts",
-          "line": 264,
+          "line": 267,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Bookshelf request tracking is incomplete, so Seerr cannot confirm cancellation yet.'",
@@ -9584,7 +9584,7 @@
       "callsites": [
         {
           "path": "server/routes/media.ts",
-          "line": 1593,
+          "line": 1598,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Jellystat is not configured.'",
@@ -11357,7 +11357,7 @@
         },
         {
           "path": "server/routes/media.ts",
-          "line": 959,
+          "line": 964,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Media not found'",
@@ -11365,7 +11365,7 @@
         },
         {
           "path": "server/routes/media.ts",
-          "line": 966,
+          "line": 971,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Media not found'",
@@ -11373,7 +11373,7 @@
         },
         {
           "path": "server/routes/media.ts",
-          "line": 1453,
+          "line": 1458,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Media not found'",
@@ -11381,7 +11381,7 @@
         },
         {
           "path": "server/routes/media.ts",
-          "line": 1460,
+          "line": 1465,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Media not found'",
@@ -11916,7 +11916,7 @@
       "callsites": [
         {
           "path": "server/routes/media.ts",
-          "line": 1491,
+          "line": 1496,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Tautulli API not configured.'",
@@ -12754,7 +12754,7 @@
       "callsites": [
         {
           "path": "server/lib/requestWorkCleanup.ts",
-          "line": 383,
+          "line": 386,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Mylar3 does not support cancelling an individual comic download through its API.'",
@@ -13434,7 +13434,7 @@
       "callsites": [
         {
           "path": "server/lib/requestWorkCleanup.ts",
-          "line": 486,
+          "line": 489,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'The selected download service is unavailable for cleanup.'",
@@ -15304,7 +15304,7 @@
       "callsites": [
         {
           "path": "server/routes/media.ts",
-          "line": 1269,
+          "line": 1274,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Bookshelf ebook server not configured'",
@@ -19678,7 +19678,7 @@
       "callsites": [
         {
           "path": "server/routes/media.ts",
-          "line": 1571,
+          "line": 1576,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Failed to fetch watch data.'",
@@ -21675,7 +21675,7 @@
       "callsites": [
         {
           "path": "server/routes/media.ts",
-          "line": 1178,
+          "line": 1183,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "`${serviceName} server not configured.`",
@@ -21803,7 +21803,7 @@
       "callsites": [
         {
           "path": "server/routes/media.ts",
-          "line": 924,
+          "line": 929,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "removed\n                      ? `${removed} library copy/copies were deleted before an error. Remaining copies were not deleted. Refresh and review a new confirmation.`\n                      : 'Library verification changed or deletion failed. No successful deletions were recorded. Refresh and review a new confirmation.'",
@@ -22003,7 +22003,7 @@
       "callsites": [
         {
           "path": "server/routes/media.ts",
-          "line": 1178,
+          "line": 1183,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "`${serviceName} server not configured.`",
@@ -23449,7 +23449,7 @@
       "callsites": [
         {
           "path": "server/lib/requestWorkCleanup.ts",
-          "line": 74,
+          "line": 77,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'The selected Bookshelf service is unavailable for cleanup.'",
@@ -23457,7 +23457,7 @@
         },
         {
           "path": "server/lib/requestWorkCleanup.ts",
-          "line": 329,
+          "line": 332,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'The selected Bookshelf service is unavailable for cleanup.'",
@@ -27542,7 +27542,7 @@
       "callsites": [
         {
           "path": "server/lib/requestWorkCleanup.ts",
-          "line": 82,
+          "line": 85,
           "kind": "authored-message-variable",
           "field": "withdrawalReason",
           "expression": "'Withdrawn in SeerrNG.'",
@@ -31894,7 +31894,7 @@
       "callsites": [
         {
           "path": "server/routes/media.ts",
-          "line": 1613,
+          "line": 1618,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "error instanceof Error\n            ? error.message\n            : 'Could not read watch statistics from Jellystat.'",
@@ -32136,7 +32136,7 @@
         },
         {
           "path": "server/routes/media.ts",
-          "line": 941,
+          "line": 946,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Media not found.'",
@@ -32144,7 +32144,7 @@
         },
         {
           "path": "server/routes/media.ts",
-          "line": 1010,
+          "line": 1015,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Media not found.'",
@@ -32793,7 +32793,7 @@
       "callsites": [
         {
           "path": "server/routes/media.ts",
-          "line": 1405,
+          "line": 1410,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'LazyLibrarian magazine title not found'",
@@ -34774,7 +34774,7 @@
       "callsites": [
         {
           "path": "server/routes/media.ts",
-          "line": 1600,
+          "line": 1605,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'This title is not linked to a Jellyfin item.'",
@@ -34841,7 +34841,7 @@
       "callsites": [
         {
           "path": "server/lib/requestWorkCleanup.ts",
-          "line": 374,
+          "line": 377,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'LazyLibrarian does not support cancelling an individual magazine search through its API.'",
@@ -35353,7 +35353,7 @@
       "callsites": [
         {
           "path": "server/routes/media.ts",
-          "line": 1178,
+          "line": 1183,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "`${serviceName} server not configured.`",
@@ -35374,7 +35374,7 @@
       "callsites": [
         {
           "path": "server/lib/requestWorkCleanup.ts",
-          "line": 120,
+          "line": 123,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Bindery did not confirm the request withdrawal. The request may still be pending there.'",
@@ -36287,7 +36287,7 @@
       "callsites": [
         {
           "path": "server/routes/media.ts",
-          "line": 1415,
+          "line": 1420,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'TVDB ID not found'",
@@ -37261,7 +37261,7 @@
       "callsites": [
         {
           "path": "server/routes/media.ts",
-          "line": 1178,
+          "line": 1183,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "`${serviceName} server not configured.`",
@@ -37954,7 +37954,7 @@
       "callsites": [
         {
           "path": "server/routes/media.ts",
-          "line": 1225,
+          "line": 1230,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Lidarr album ID not found'",
@@ -40270,7 +40270,7 @@
       "callsites": [
         {
           "path": "server/routes/media.ts",
-          "line": 1398,
+          "line": 1403,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Kapowarr has a queued or running task for this comic. Wait for it to finish, then try again.'",
@@ -41798,7 +41798,7 @@
       "callsites": [
         {
           "path": "server/lib/requestWorkCleanup.ts",
-          "line": 129,
+          "line": 132,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'SeerrNG could not confirm cancellation in Bindery. Check Bindery before retrying.'",
@@ -41806,7 +41806,7 @@
         },
         {
           "path": "server/lib/requestWorkCleanup.ts",
-          "line": 136,
+          "line": 139,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'SeerrNG could not confirm cancellation in Bindery. Check Bindery before retrying.'",
@@ -44913,7 +44913,7 @@
       "callsites": [
         {
           "path": "server/routes/media.ts",
-          "line": 945,
+          "line": 950,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to verify all library services. No deletion has started.'",
@@ -45619,7 +45619,7 @@
       "callsites": [
         {
           "path": "server/routes/media.ts",
-          "line": 1178,
+          "line": 1183,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "`${serviceName} server not configured.`",
@@ -47581,7 +47581,7 @@
       "callsites": [
         {
           "path": "server/routes/media.ts",
-          "line": 1178,
+          "line": 1183,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "`${serviceName} server not configured.`",
@@ -49565,7 +49565,7 @@
       "callsites": [
         {
           "path": "server/lib/requestWorkCleanup.ts",
-          "line": 89,
+          "line": 92,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Bindery could not confirm the request status. Refresh and try again.'",
@@ -52396,7 +52396,7 @@
       "callsites": [
         {
           "path": "server/routes/media.ts",
-          "line": 1178,
+          "line": 1183,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "`${serviceName} server not configured.`",
@@ -55712,7 +55712,7 @@
       "callsites": [
         {
           "path": "server/routes/media.ts",
-          "line": 924,
+          "line": 929,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "removed\n                      ? `${removed} library copy/copies were deleted before an error. Remaining copies were not deleted. Refresh and review a new confirmation.`\n                      : 'Library verification changed or deletion failed. No successful deletions were recorded. Refresh and review a new confirmation.'",
@@ -55739,7 +55739,7 @@
       "callsites": [
         {
           "path": "server/routes/media.ts",
-          "line": 1102,
+          "line": 1107,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Removing a Bindery book through this action is not supported.'",
@@ -60984,7 +60984,7 @@
       "callsites": [
         {
           "path": "server/routes/media.ts",
-          "line": 1375,
+          "line": 1380,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Comic backend ID not found'",
@@ -62681,7 +62681,7 @@
       "callsites": [
         {
           "path": "server/routes/media.ts",
-          "line": 1323,
+          "line": 1328,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Bookshelf audiobook server not configured'",
@@ -63312,7 +63312,7 @@
       "callsites": [
         {
           "path": "server/routes/media.ts",
-          "line": 1371,
+          "line": 1376,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Bookshelf book ID not found'",
@@ -63532,7 +63532,7 @@
       "callsites": [
         {
           "path": "server/routes/media.ts",
-          "line": 1178,
+          "line": 1183,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "`${serviceName} server not configured.`",
@@ -77329,7 +77329,7 @@
     },
     {
       "path": "server/routes/media.ts",
-      "line": 983,
+      "line": 988,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "parsedIs4k.error",
@@ -77338,7 +77338,7 @@
     },
     {
       "path": "server/routes/media.ts",
-      "line": 1000,
+      "line": 1005,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "parsedBookFormat.error",
@@ -77347,7 +77347,7 @@
     },
     {
       "path": "server/routes/media.ts",
-      "line": 1458,
+      "line": 1463,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "e.message",
@@ -77356,7 +77356,7 @@
     },
     {
       "path": "server/routes/media.ts",
-      "line": 1568,
+      "line": 1573,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "e.message",
@@ -77365,7 +77365,7 @@
     },
     {
       "path": "server/routes/media.ts",
-      "line": 1613,
+      "line": 1618,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "error instanceof Error\n            ? error.message\n            : 'Could not read watch statistics from Jellystat.'",
