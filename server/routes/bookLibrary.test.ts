@@ -81,6 +81,7 @@ async function availableBook(audio = false) {
       status: MediaStatus.AVAILABLE,
       status4k: MediaStatus.UNKNOWN,
       externalServiceId: audio ? null : 12,
+      availableEbookServiceIds: audio ? [] : [7],
       audiobookLibraryServiceId: audio ? 9 : null,
       audiobookLibraryItemId: audio ? 'abs-owned' : null,
       identifiers: [
@@ -115,6 +116,14 @@ describe('GET /book/library', () => {
     assert.equal(ebook.body.totalResults, 0);
   });
   it('does not turn an unscanned catalogue entry into availability', async () => {
+    const res = await request(app).get('/book/library?format=ebook');
+    assert.equal(res.status, 200);
+    assert.equal(res.body.totalResults, 0);
+  });
+  it('excludes manager-only records even when legacy aggregate availability says available', async () => {
+    const media = await availableBook();
+    media.availableEbookServiceIds = [];
+    await getRepository(Media).save(media);
     const res = await request(app).get('/book/library?format=ebook');
     assert.equal(res.status, 200);
     assert.equal(res.body.totalResults, 0);
@@ -170,6 +179,7 @@ describe('GET /book/library', () => {
             status: MediaStatus.AVAILABLE,
             status4k: MediaStatus.UNKNOWN,
             externalServiceId: i + 1,
+            availableEbookServiceIds: [7],
             identifiers: [
               new MediaIdentifier({
                 provider: MediaIdentifierProvider.BOOKSHELF,
