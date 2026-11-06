@@ -166,3 +166,13 @@ The first Next16.4.3 browser repeat started before its runtime had finished
 loading and failed with connection-refused errors. It is retained as a harness
 startup failure, not product acceptance; the next run must wait for HTTP
 readiness explicitly.
+
+## Automatic recovery integration
+
+PR576's focused download-recovery repair is included with its original commit
+afcb0d6b8. Explicit pauses take precedence over stale failure/seedless warnings
+and refresh the stall observation so resuming gets a fresh window. Two real
+SQLite baseline tests attempted removal before repair. Four repaired scenarios
+and eight existing recovery tests pass, along with server types. The combined
+server build passed; regenerated API inventory changes only callsite locations.
+Full combined CI remains required before merge.

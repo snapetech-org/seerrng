@@ -16652,7 +16652,7 @@
       "callsites": [
         {
           "path": "server/lib/downloadRecovery.ts",
-          "line": 513,
+          "line": 522,
           "kind": "authored-message-field",
           "field": "reason",
           "expression": "'download warning is retryable'",
@@ -16965,7 +16965,7 @@
       "callsites": [
         {
           "path": "server/lib/downloadRecovery.ts",
-          "line": 487,
+          "line": 496,
           "kind": "authored-message-field",
           "field": "reason",
           "expression": "'import failed with a path, permission, or storage error'",
@@ -24371,7 +24371,7 @@
       "callsites": [
         {
           "path": "server/lib/downloadRecovery.ts",
-          "line": 526,
+          "line": 535,
           "kind": "authored-message-field",
           "field": "reason",
           "expression": "'download had no seeds for 2 hours'",
@@ -37744,7 +37744,7 @@
       "callsites": [
         {
           "path": "server/lib/downloadRecovery.ts",
-          "line": 506,
+          "line": 515,
           "kind": "authored-message-field",
           "field": "reason",
           "expression": "'download failed or was rejected'",
@@ -38514,7 +38514,7 @@
       "callsites": [
         {
           "path": "server/lib/downloadRecovery.ts",
-          "line": 494,
+          "line": 503,
           "kind": "authored-message-field",
           "field": "reason",
           "expression": "'import failed with retryable error'",
@@ -49872,7 +49872,7 @@
       "callsites": [
         {
           "path": "server/lib/downloadRecovery.ts",
-          "line": 498,
+          "line": 507,
           "kind": "authored-message-field",
           "field": "reason",
           "expression": "'import failure is not classified'",
@@ -68795,7 +68795,7 @@
     },
     {
       "path": "server/lib/downloadRecovery.ts",
-      "line": 160,
+      "line": 164,
       "kind": "message-helper-return",
       "field": "message",
       "expression": "{ running: this.running }",
@@ -68804,7 +68804,7 @@
     },
     {
       "path": "server/lib/downloadRecovery.ts",
-      "line": 295,
+      "line": 299,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "e instanceof Error ? e.message : String(e)",
@@ -68813,7 +68813,7 @@
     },
     {
       "path": "server/lib/downloadRecovery.ts",
-      "line": 295,
+      "line": 299,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "e instanceof Error ? e.message : String(e)",
@@ -68822,7 +68822,7 @@
     },
     {
       "path": "server/lib/downloadRecovery.ts",
-      "line": 338,
+      "line": 342,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "e instanceof Error ? e.message : String(e)",
@@ -68831,7 +68831,7 @@
     },
     {
       "path": "server/lib/downloadRecovery.ts",
-      "line": 338,
+      "line": 342,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "e instanceof Error ? e.message : String(e)",
@@ -68840,7 +68840,7 @@
     },
     {
       "path": "server/lib/downloadRecovery.ts",
-      "line": 403,
+      "line": 408,
       "kind": "persisted-message-assignment",
       "field": "lastReason",
       "expression": "decision.reason",
@@ -68849,7 +68849,7 @@
     },
     {
       "path": "server/lib/downloadRecovery.ts",
-      "line": 410,
+      "line": 415,
       "kind": "persisted-message-assignment",
       "field": "lastReason",
       "expression": "decision.reason",
@@ -68858,7 +68858,7 @@
     },
     {
       "path": "server/lib/downloadRecovery.ts",
-      "line": 418,
+      "line": 423,
       "kind": "authored-message-field",
       "field": "reason",
       "expression": "decision.reason",
@@ -68867,7 +68867,7 @@
     },
     {
       "path": "server/lib/downloadRecovery.ts",
-      "line": 435,
+      "line": 440,
       "kind": "persisted-message-assignment",
       "field": "lastReason",
       "expression": "decision.reason",
@@ -68876,7 +68876,7 @@
     },
     {
       "path": "server/lib/downloadRecovery.ts",
-      "line": 444,
+      "line": 449,
       "kind": "authored-message-field",
       "field": "reason",
       "expression": "decision.reason",
@@ -68885,7 +68885,7 @@
     },
     {
       "path": "server/lib/downloadRecovery.ts",
-      "line": 458,
+      "line": 463,
       "kind": "persisted-message-assignment",
       "field": "lastReason",
       "expression": "decision.reason",
@@ -68894,7 +68894,7 @@
     },
     {
       "path": "server/lib/downloadRecovery.ts",
-      "line": 468,
+      "line": 473,
       "kind": "authored-message-field",
       "field": "reason",
       "expression": "decision.reason",
