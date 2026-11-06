@@ -3654,7 +3654,6 @@
   "components.Settings.BinderyModal.keepExisting": "Vorhandene beibehalten",
   "components.Settings.BinderyModal.name": "Dienstname",
   "components.Settings.BinderyModal.nameRequired": "Geben Sie einen Dienstnamen ein.",
-  "components.Settings.BinderyModal.ownerFeature": "Anfragen pro Benutzer werden unterstützt. SeerrNG hat {accountCount} Bindery-Konten gefunden. SeerrNG gleicht Benutzernamen, Plex- oder Jellyfin-Benutzernamen und E-Mail-Adressen ohne Berücksichtigung der Groß- und Kleinschreibung ab. Aktivieren Sie in Bindery für jedes Konto „Auto-approve requests“, wenn die Beschaffung ohne zweite Genehmigung beginnen soll. Aktivieren Sie für private Benutzerbibliotheken außerdem BINDERY_ENFORCE_TENANCY in Bindery.",
   "components.Settings.BinderyModal.ownerNote": "Diese Bindery-Version weist nicht auf die Unterstützung von Anfragen pro Benutzer hin. SeerrNG fügt genehmigte Bücher über den API-Schlüssel hinzu, sodass Bindery das Dienstkonto als Eigentümer erfasst.",
   "components.Settings.BinderyModal.port": "Port",
   "components.Settings.BinderyModal.portRequired": "Gib einen gültigen Port ein.",

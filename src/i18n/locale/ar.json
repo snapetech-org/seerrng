@@ -3654,7 +3654,6 @@
   "components.Settings.BinderyModal.keepExisting": "الإبقاء على مفتاح API الحالي",
   "components.Settings.BinderyModal.name": "اسم الخدمة",
   "components.Settings.BinderyModal.nameRequired": "أدخل اسم الخدمة.",
-  "components.Settings.BinderyModal.ownerFeature": "تدعم الطلبات لكل مستخدم. عثر SeerrNG على {accountCount} حسابًا في Bindery. يطابق التطبيق أسماء المستخدمين وأسماء Plex أو Jellyfin وعناوين البريد الإلكتروني دون تمييز بين حالة الأحرف. فعّل خيار «Auto-approve requests» لكل حساب في Bindery إذا أردت بدء الاقتناء دون موافقة ثانية. وإذا كانت مكتبات المستخدمين خاصة، فعّل أيضًا BINDERY_ENFORCE_TENANCY في Bindery.",
   "components.Settings.BinderyModal.ownerNote": "هذا الإصدار من Bindery لا يعلن عن دعم الطلبات لكل مستخدم. سيضيف SeerrNG الكتب المعتمدة عبر مفتاح API، لذا يسجّل Bindery حساب الخدمة بصفته المالك.",
   "components.Settings.BinderyModal.port": "المنفذ",
   "components.Settings.BinderyModal.portRequired": "أدخل منفذاً صالحاً.",

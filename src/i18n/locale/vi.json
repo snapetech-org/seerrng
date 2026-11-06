@@ -3635,7 +3635,6 @@
   "components.Settings.BinderyModal.keepExisting": "Giữ khóa API hiện có",
   "components.Settings.BinderyModal.name": "Tên dịch vụ",
   "components.Settings.BinderyModal.nameRequired": "Nhập tên dịch vụ.",
-  "components.Settings.BinderyModal.ownerFeature": "Hỗ trợ yêu cầu theo từng người dùng. SeerrNG tìm thấy {accountCount} tài khoản Bindery. Tên người dùng, tên người dùng Plex hoặc Jellyfin và địa chỉ email được đối chiếu không phân biệt chữ hoa chữ thường. Bật mục “Auto-approve requests” cho từng tài khoản trong Bindery nếu cần bắt đầu thu mua mà không cần phê duyệt lần hai. Đối với thư viện người dùng riêng tư, hãy bật thêm BINDERY_ENFORCE_TENANCY trong Bindery.",
   "components.Settings.BinderyModal.ownerNote": "Phiên bản Bindery này không cho biết tính năng yêu cầu theo từng người dùng có được hỗ trợ hay không. SeerrNG sẽ thêm sách đã được phê duyệt thông qua khóa API, vì vậy Bindery ghi nhận tài khoản dịch vụ là chủ sở hữu.",
   "components.Settings.BinderyModal.port": "Cổng",
   "components.Settings.BinderyModal.portRequired": "Nhập cổng hợp lệ.",

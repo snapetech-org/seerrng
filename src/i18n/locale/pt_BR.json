@@ -3654,7 +3654,6 @@
   "components.Settings.BinderyModal.keepExisting": "Manter a chave de API atual",
   "components.Settings.BinderyModal.name": "Nome do serviço",
   "components.Settings.BinderyModal.nameRequired": "Insira um nome de serviço.",
-  "components.Settings.BinderyModal.ownerFeature": "Solicitações por usuário são compatíveis. SeerrNG encontrou {accountCount} contas do Bindery. O SeerrNG compara nomes de usuário, nomes de usuário do Plex ou Jellyfin e endereços de e-mail sem diferenciar maiúsculas de minúsculas. Ative a opção “Auto-approve requests” para cada conta no Bindery se a aquisição precisar começar sem uma segunda aprovação. Para bibliotecas privadas de usuários, ative também BINDERY_ENFORCE_TENANCY no Bindery.",
   "components.Settings.BinderyModal.ownerNote": "Esta versão do Bindery não informa se há suporte a solicitações por usuário. O SeerrNG adicionará os livros aprovados por meio da chave de API, então o Bindery registrará a conta de serviço como proprietária.",
   "components.Settings.BinderyModal.port": "Porta",
   "components.Settings.BinderyModal.portRequired": "Insira uma porta válida.",

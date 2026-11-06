@@ -1211,6 +1211,138 @@
       "sourceHash": "41778ec73a530e3fba11d660b8f5988ba24cac7a82d28bcfef6bc881bc2d2082",
       "targetHash": "35705d99bfe9d8d7e20267aa4574c782a6d531890cd885eedd2385e2867c50e2",
       "reason": "Old request-specific/untyped error copy omits the mediaType value in the current source message."
+    },
+    {
+      "domain": "client",
+      "locale": "ar",
+      "id": "components.Settings.BinderyModal.ownerFeature",
+      "status": "needs-update",
+      "source": "Per-user requests are supported. SeerrNG found {accountCount} Bindery accounts. Configure requester account mappings below. Enable Auto-approve requests for each mapped account in Bindery if acquisition should start without a second approval. For private user libraries, also enable BINDERY_ENFORCE_TENANCY in Bindery.",
+      "previousTranslation": "تدعم الطلبات لكل مستخدم. عثر SeerrNG على {accountCount} حسابًا في Bindery. يطابق التطبيق أسماء المستخدمين وأسماء Plex أو Jellyfin وعناوين البريد الإلكتروني دون تمييز بين حالة الأحرف. فعّل خيار «Auto-approve requests» لكل حساب في Bindery إذا أردت بدء الاقتناء دون موافقة ثانية. وإذا كانت مكتبات المستخدمين خاصة، فعّل أيضًا BINDERY_ENFORCE_TENANCY في Bindery.",
+      "sourceHash": "566ef2c7445f34e0212d2b5947df3731f1304c2629554afda23d8a7d4ab150b5",
+      "targetHash": "78041a0d3eda2d0889639ebb4292f3b7dded98f5f5c8b74a71439021855632e2",
+      "reason": "Obsolete account-name/email matching instructions conflict with explicit administrator-owned Bindery requester mappings. Use parent/English fallback until reviewed translation is available."
+    },
+    {
+      "domain": "client",
+      "locale": "de",
+      "id": "components.Settings.BinderyModal.ownerFeature",
+      "status": "needs-update",
+      "source": "Per-user requests are supported. SeerrNG found {accountCount} Bindery accounts. Configure requester account mappings below. Enable Auto-approve requests for each mapped account in Bindery if acquisition should start without a second approval. For private user libraries, also enable BINDERY_ENFORCE_TENANCY in Bindery.",
+      "previousTranslation": "Anfragen pro Benutzer werden unterstützt. SeerrNG hat {accountCount} Bindery-Konten gefunden. SeerrNG gleicht Benutzernamen, Plex- oder Jellyfin-Benutzernamen und E-Mail-Adressen ohne Berücksichtigung der Groß- und Kleinschreibung ab. Aktivieren Sie in Bindery für jedes Konto „Auto-approve requests“, wenn die Beschaffung ohne zweite Genehmigung beginnen soll. Aktivieren Sie für private Benutzerbibliotheken außerdem BINDERY_ENFORCE_TENANCY in Bindery.",
+      "sourceHash": "566ef2c7445f34e0212d2b5947df3731f1304c2629554afda23d8a7d4ab150b5",
+      "targetHash": "9d84f370514a9c0c827f914c1616cc67523beb18d40fd15727d6f227148179c1",
+      "reason": "Obsolete account-name/email matching instructions conflict with explicit administrator-owned Bindery requester mappings. Use parent/English fallback until reviewed translation is available."
+    },
+    {
+      "domain": "client",
+      "locale": "es",
+      "id": "components.Settings.BinderyModal.ownerFeature",
+      "status": "needs-update",
+      "source": "Per-user requests are supported. SeerrNG found {accountCount} Bindery accounts. Configure requester account mappings below. Enable Auto-approve requests for each mapped account in Bindery if acquisition should start without a second approval. For private user libraries, also enable BINDERY_ENFORCE_TENANCY in Bindery.",
+      "previousTranslation": "Se admiten las solicitudes por usuario. SeerrNG encontró {accountCount} cuentas de Bindery. SeerrNG compara nombres de usuario, nombres de usuario de Plex o Jellyfin y direcciones de correo electrónico sin distinguir mayúsculas de minúsculas. Habilita la opción «Auto-approve requests» para cada cuenta en Bindery si la adquisición debe comenzar sin una segunda aprobación. Para bibliotecas de usuario privadas, habilita también BINDERY_ENFORCE_TENANCY en Bindery.",
+      "sourceHash": "566ef2c7445f34e0212d2b5947df3731f1304c2629554afda23d8a7d4ab150b5",
+      "targetHash": "7d65cee9ff661a91524a6d21d9465240a2da58da64cbed67632207ccd8fca01c",
+      "reason": "Obsolete account-name/email matching instructions conflict with explicit administrator-owned Bindery requester mappings. Use parent/English fallback until reviewed translation is available."
+    },
+    {
+      "domain": "client",
+      "locale": "fr",
+      "id": "components.Settings.BinderyModal.ownerFeature",
+      "status": "needs-update",
+      "source": "Per-user requests are supported. SeerrNG found {accountCount} Bindery accounts. Configure requester account mappings below. Enable Auto-approve requests for each mapped account in Bindery if acquisition should start without a second approval. For private user libraries, also enable BINDERY_ENFORCE_TENANCY in Bindery.",
+      "previousTranslation": "Les demandes par utilisateur sont prises en charge. SeerrNG a trouvé {accountCount} comptes Bindery. SeerrNG fait correspondre les noms d’utilisateur, les noms d’utilisateur Plex ou Jellyfin et les adresses e-mail sans distinction de casse. Activez l’option « Auto-approve requests » pour chaque compte dans Bindery si l’acquisition doit démarrer sans seconde approbation. Pour les bibliothèques privées des utilisateurs, activez également BINDERY_ENFORCE_TENANCY dans Bindery.",
+      "sourceHash": "566ef2c7445f34e0212d2b5947df3731f1304c2629554afda23d8a7d4ab150b5",
+      "targetHash": "6abde1399d033e0ad5aef865c71ff6b9866e02a96d3c3d2181ccdd6520f46ce7",
+      "reason": "Obsolete account-name/email matching instructions conflict with explicit administrator-owned Bindery requester mappings. Use parent/English fallback until reviewed translation is available."
+    },
+    {
+      "domain": "client",
+      "locale": "hi",
+      "id": "components.Settings.BinderyModal.ownerFeature",
+      "status": "needs-update",
+      "source": "Per-user requests are supported. SeerrNG found {accountCount} Bindery accounts. Configure requester account mappings below. Enable Auto-approve requests for each mapped account in Bindery if acquisition should start without a second approval. For private user libraries, also enable BINDERY_ENFORCE_TENANCY in Bindery.",
+      "previousTranslation": "प्रति-उपयोगकर्ता अनुरोध समर्थित हैं। SeerrNG को {accountCount} Bindery खाते मिले। SeerrNG उपयोगकर्ता नाम, Plex या Jellyfin उपयोगकर्ता नाम और ईमेल पतों का मिलान बड़े और छोटे अक्षरों का भेद किए बिना करता है। यदि बिना दूसरी मंज़ूरी के अधिग्रहण शुरू करना हो, तो Bindery में हर खाते के लिए “Auto-approve requests” सक्षम करें। निजी उपयोगकर्ता लाइब्रेरी के लिए Bindery में BINDERY_ENFORCE_TENANCY भी सक्षम करें।",
+      "sourceHash": "566ef2c7445f34e0212d2b5947df3731f1304c2629554afda23d8a7d4ab150b5",
+      "targetHash": "78c8da927a721b266179ef9c9877fb570303deeb68a23e6dda8755cc817cb50f",
+      "reason": "Obsolete account-name/email matching instructions conflict with explicit administrator-owned Bindery requester mappings. Use parent/English fallback until reviewed translation is available."
+    },
+    {
+      "domain": "client",
+      "locale": "id",
+      "id": "components.Settings.BinderyModal.ownerFeature",
+      "status": "needs-update",
+      "source": "Per-user requests are supported. SeerrNG found {accountCount} Bindery accounts. Configure requester account mappings below. Enable Auto-approve requests for each mapped account in Bindery if acquisition should start without a second approval. For private user libraries, also enable BINDERY_ENFORCE_TENANCY in Bindery.",
+      "previousTranslation": "Permintaan per pengguna didukung. SeerrNG menemukan {accountCount} akun Bindery. SeerrNG mencocokkan nama pengguna, nama pengguna Plex atau Jellyfin, dan alamat email tanpa membedakan huruf besar/kecil. Aktifkan opsi “Auto-approve requests” untuk setiap akun di Bindery jika akuisisi perlu dimulai tanpa persetujuan kedua. Untuk pustaka pengguna pribadi, aktifkan juga BINDERY_ENFORCE_TENANCY di Bindery.",
+      "sourceHash": "566ef2c7445f34e0212d2b5947df3731f1304c2629554afda23d8a7d4ab150b5",
+      "targetHash": "5635a28908142a73c03e06d15c8c884d2e81667f23f337f9c946e148b80efa2b",
+      "reason": "Obsolete account-name/email matching instructions conflict with explicit administrator-owned Bindery requester mappings. Use parent/English fallback until reviewed translation is available."
+    },
+    {
+      "domain": "client",
+      "locale": "ja",
+      "id": "components.Settings.BinderyModal.ownerFeature",
+      "status": "needs-update",
+      "source": "Per-user requests are supported. SeerrNG found {accountCount} Bindery accounts. Configure requester account mappings below. Enable Auto-approve requests for each mapped account in Bindery if acquisition should start without a second approval. For private user libraries, also enable BINDERY_ENFORCE_TENANCY in Bindery.",
+      "previousTranslation": "ユーザーごとのリクエストがサポートされています。SeerrNG は {accountCount} 個の Bindery アカウントを検出しました。ユーザー名、Plex または Jellyfin のユーザー名、およびメールアドレスは大文字小文字を区別せずに照合します。取得を2段階目の承認なしで開始する場合、Bindery で各アカウントの「Auto-approve requests」を有効にしてください。プライベートなユーザーライブラリの場合、Bindery で BINDERY_ENFORCE_TENANCY も有効にしてください。",
+      "sourceHash": "566ef2c7445f34e0212d2b5947df3731f1304c2629554afda23d8a7d4ab150b5",
+      "targetHash": "8ab96b7fb772735aa8a876b54260aae2a23fa8cbc01162e31c835b334255e3da",
+      "reason": "Obsolete account-name/email matching instructions conflict with explicit administrator-owned Bindery requester mappings. Use parent/English fallback until reviewed translation is available."
+    },
+    {
+      "domain": "client",
+      "locale": "ko",
+      "id": "components.Settings.BinderyModal.ownerFeature",
+      "status": "needs-update",
+      "source": "Per-user requests are supported. SeerrNG found {accountCount} Bindery accounts. Configure requester account mappings below. Enable Auto-approve requests for each mapped account in Bindery if acquisition should start without a second approval. For private user libraries, also enable BINDERY_ENFORCE_TENANCY in Bindery.",
+      "previousTranslation": "사용자별 요청이 지원됩니다. SeerrNG에서 {accountCount}개의 Bindery 계정을 찾았습니다. 이는 사용자 이름, Plex 또는 Jellyfin 사용자 이름, 그리고 대소문자를 구분하지 않는 이메일 주소와 일치합니다. 취득이 두 번째 승인 없이 시작되도록 하려면 Bindery에서 각 계정에 대해 ‘Auto-approve requests’를 활성화하세요. 개인 사용자 라이브러리의 경우, Bindery에서 BINDERY_ENFORCE_TENANCY도 활성화해야 합니다.",
+      "sourceHash": "566ef2c7445f34e0212d2b5947df3731f1304c2629554afda23d8a7d4ab150b5",
+      "targetHash": "a5eaf1c30535f195d13d5213cb5b6e231ba09a529ddfca4cadc49d741b42d655",
+      "reason": "Obsolete account-name/email matching instructions conflict with explicit administrator-owned Bindery requester mappings. Use parent/English fallback until reviewed translation is available."
+    },
+    {
+      "domain": "client",
+      "locale": "pt_BR",
+      "id": "components.Settings.BinderyModal.ownerFeature",
+      "status": "needs-update",
+      "source": "Per-user requests are supported. SeerrNG found {accountCount} Bindery accounts. Configure requester account mappings below. Enable Auto-approve requests for each mapped account in Bindery if acquisition should start without a second approval. For private user libraries, also enable BINDERY_ENFORCE_TENANCY in Bindery.",
+      "previousTranslation": "Solicitações por usuário são compatíveis. SeerrNG encontrou {accountCount} contas do Bindery. O SeerrNG compara nomes de usuário, nomes de usuário do Plex ou Jellyfin e endereços de e-mail sem diferenciar maiúsculas de minúsculas. Ative a opção “Auto-approve requests” para cada conta no Bindery se a aquisição precisar começar sem uma segunda aprovação. Para bibliotecas privadas de usuários, ative também BINDERY_ENFORCE_TENANCY no Bindery.",
+      "sourceHash": "566ef2c7445f34e0212d2b5947df3731f1304c2629554afda23d8a7d4ab150b5",
+      "targetHash": "b2fd550c21a44b808aee155598b58eb63cc1bc5d57c0c9314117f95af92bd77d",
+      "reason": "Obsolete account-name/email matching instructions conflict with explicit administrator-owned Bindery requester mappings. Use parent/English fallback until reviewed translation is available."
+    },
+    {
+      "domain": "client",
+      "locale": "vi",
+      "id": "components.Settings.BinderyModal.ownerFeature",
+      "status": "needs-update",
+      "source": "Per-user requests are supported. SeerrNG found {accountCount} Bindery accounts. Configure requester account mappings below. Enable Auto-approve requests for each mapped account in Bindery if acquisition should start without a second approval. For private user libraries, also enable BINDERY_ENFORCE_TENANCY in Bindery.",
+      "previousTranslation": "Hỗ trợ yêu cầu theo từng người dùng. SeerrNG tìm thấy {accountCount} tài khoản Bindery. Tên người dùng, tên người dùng Plex hoặc Jellyfin và địa chỉ email được đối chiếu không phân biệt chữ hoa chữ thường. Bật mục “Auto-approve requests” cho từng tài khoản trong Bindery nếu cần bắt đầu thu mua mà không cần phê duyệt lần hai. Đối với thư viện người dùng riêng tư, hãy bật thêm BINDERY_ENFORCE_TENANCY trong Bindery.",
+      "sourceHash": "566ef2c7445f34e0212d2b5947df3731f1304c2629554afda23d8a7d4ab150b5",
+      "targetHash": "d4d6f37694b7b2b3d9a4aaac80cd50b5e05443f55b0c324cc1650f5d27d16c61",
+      "reason": "Obsolete account-name/email matching instructions conflict with explicit administrator-owned Bindery requester mappings. Use parent/English fallback until reviewed translation is available."
+    },
+    {
+      "domain": "client",
+      "locale": "zh_Hans",
+      "id": "components.Settings.BinderyModal.ownerFeature",
+      "status": "needs-update",
+      "source": "Per-user requests are supported. SeerrNG found {accountCount} Bindery accounts. Configure requester account mappings below. Enable Auto-approve requests for each mapped account in Bindery if acquisition should start without a second approval. For private user libraries, also enable BINDERY_ENFORCE_TENANCY in Bindery.",
+      "previousTranslation": "支持按用户发起请求。SeerrNG 检测到 {accountCount} 个 Bindery 账户。匹配规则不区分大小写，包括用户名、Plex 或 Jellyfin 用户名以及电子邮件地址。若希望获取流程无需二次审批即可开始，请在 Bindery 中为每个账户启用“Auto-approve requests”。对于私有用户库，还需在 Bindery 中启用 BINDERY_ENFORCE_TENANCY。",
+      "sourceHash": "566ef2c7445f34e0212d2b5947df3731f1304c2629554afda23d8a7d4ab150b5",
+      "targetHash": "1814605f839b4106cabde0b89cbb324a57f801d927b8c1ccb6b282c661bec411",
+      "reason": "Obsolete account-name/email matching instructions conflict with explicit administrator-owned Bindery requester mappings. Use parent/English fallback until reviewed translation is available."
+    },
+    {
+      "domain": "client",
+      "locale": "zh_Hant",
+      "id": "components.Settings.BinderyModal.ownerFeature",
+      "status": "needs-update",
+      "source": "Per-user requests are supported. SeerrNG found {accountCount} Bindery accounts. Configure requester account mappings below. Enable Auto-approve requests for each mapped account in Bindery if acquisition should start without a second approval. For private user libraries, also enable BINDERY_ENFORCE_TENANCY in Bindery.",
+      "previousTranslation": "支援個別使用者的請求。SeerrNG 找到 {accountCount} 個 Bindery 帳戶。它會比對使用者名稱、Plex 或 Jellyfin 的使用者名稱，以及電子郵件地址（不分大小寫）。如果希望獲取流程無需二次核准即可開始，請在 Bindery 中為每個帳戶啟用「Auto-approve requests」。對於私人使用者資料庫，也請在 Bindery 中啟用 BINDERY_ENFORCE_TENANCY。",
+      "sourceHash": "566ef2c7445f34e0212d2b5947df3731f1304c2629554afda23d8a7d4ab150b5",
+      "targetHash": "894dcb622dccb4b3051943808520092b3557d1a1495be81df9b2f6269a2a1b76",
+      "reason": "Obsolete account-name/email matching instructions conflict with explicit administrator-owned Bindery requester mappings. Use parent/English fallback until reviewed translation is available."
     }
   ]
 }

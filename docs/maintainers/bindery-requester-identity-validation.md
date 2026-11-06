@@ -51,3 +51,14 @@ acquisition submissions, or physical mobile devices were used.
 The combined recovery CI/main merge and next release remain required. This
 checkpoint does not claim those delivery gates or the entire issue audit are
 complete.
+
+Combined recovery integration regenerates the source-bound API catalog (2733
+messages) and fingerprints after reviewing the changed English messages. Twelve
+obsolete ownership translations are preserved as `needs-update` backlog entries
+and removed from active catalogs; parent/English fallback now gives correct
+mapping instructions. This grants no translation approval. Ordinary i18n checks,
+production compilation, nine focused native ownership/pause/validation cases,
+eight client formatter/component cases and formatting pass. The unchanged bundle
+budget passes at 946.2KB for the application chunk. The prior complete application
+browser suite passed 216 cases with one intentional skip; final combined browser
+and CI validation must include the new mapping cases.

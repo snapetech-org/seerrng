@@ -3654,7 +3654,6 @@
   "components.Settings.BinderyModal.keepExisting": "मौजूदा रखें",
   "components.Settings.BinderyModal.name": "सेवा का नाम",
   "components.Settings.BinderyModal.nameRequired": "सेवा का नाम दर्ज करें।",
-  "components.Settings.BinderyModal.ownerFeature": "प्रति-उपयोगकर्ता अनुरोध समर्थित हैं। SeerrNG को {accountCount} Bindery खाते मिले। SeerrNG उपयोगकर्ता नाम, Plex या Jellyfin उपयोगकर्ता नाम और ईमेल पतों का मिलान बड़े और छोटे अक्षरों का भेद किए बिना करता है। यदि बिना दूसरी मंज़ूरी के अधिग्रहण शुरू करना हो, तो Bindery में हर खाते के लिए “Auto-approve requests” सक्षम करें। निजी उपयोगकर्ता लाइब्रेरी के लिए Bindery में BINDERY_ENFORCE_TENANCY भी सक्षम करें।",
   "components.Settings.BinderyModal.ownerNote": "यह Bindery संस्करण प्रति-उपयोगकर्ता अनुरोधों के समर्थन का संकेत नहीं देता। SeerrNG API कुंजी के माध्यम से स्वीकृत पुस्तकें जोड़ेगा, इसलिए Bindery सेवा खाते को स्वामी के रूप में दर्ज करेगा।",
   "components.Settings.BinderyModal.port": "पोर्ट",
   "components.Settings.BinderyModal.portRequired": "मान्य पोर्ट दर्ज करें।",

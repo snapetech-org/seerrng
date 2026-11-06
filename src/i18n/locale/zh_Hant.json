@@ -3635,7 +3635,6 @@
   "components.Settings.BinderyModal.keepExisting": "保留目前的 API 金鑰",
   "components.Settings.BinderyModal.name": "服務名稱",
   "components.Settings.BinderyModal.nameRequired": "請輸入服務名稱。",
-  "components.Settings.BinderyModal.ownerFeature": "支援個別使用者的請求。SeerrNG 找到 {accountCount} 個 Bindery 帳戶。它會比對使用者名稱、Plex 或 Jellyfin 的使用者名稱，以及電子郵件地址（不分大小寫）。如果希望獲取流程無需二次核准即可開始，請在 Bindery 中為每個帳戶啟用「Auto-approve requests」。對於私人使用者資料庫，也請在 Bindery 中啟用 BINDERY_ENFORCE_TENANCY。",
   "components.Settings.BinderyModal.ownerNote": "此 Bindery 版本未宣稱支援個別使用者的請求。SeerrNG 將透過 API 金鑰新增已核准的書籍，因此 Bindery 會將服務帳戶記錄為擁有者。",
   "components.Settings.BinderyModal.port": "連接埠",
   "components.Settings.BinderyModal.portRequired": "請輸入有效的連接埠。",

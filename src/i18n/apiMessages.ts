@@ -25,8 +25,6 @@ export const apiMessages: Record<
   m016fcf2e8d8f71ad9900: 'Issue user not found',
   m01754239bc7ce586eb4e: 'Plex returned invalid metadata',
   m017b64ce175c7b9bd5b1: 'Google Books returned an invalid search response.',
-  m019ec2599c14d243de4f:
-    'Bindery supports requester-owned requests, but no Bindery account matches this SeerrNG user.',
   m01fa077e8d619f1a6b97: 'You do not have permission to delete this issue.',
   m02020623bc1911706b85: 'Steam Web API key is invalid.',
   m0225805c01f096cbc694: 'This user sort is available only to user managers.',
@@ -117,6 +115,8 @@ export const apiMessages: Record<
   m08ba96e55bd9ebd45b22: '{value0} must be {value1} characters or fewer.',
   m08d431e37c89e1e5c398: 'Media data not found.',
   m094db48ba873c52368df: 'Invalid series watch request.',
+  m098c48366843b3a8bfbc:
+    'Bindery requester mappings require positive integer user IDs.',
   m099df06244ec46806aa1:
     'ROMarrNG rejected the API key (HTTP {value0}) during the {value1}.',
   m09a43d72f03bfd4aee24: 'PORT is invalid.',
@@ -581,6 +581,7 @@ export const apiMessages: Record<
   m2b41eb0a454df0abf769: 'Image cache write capacity exceeded.',
   m2b581dfbfd4b8c5c0fd3: 'Theme package is not valid JSON.',
   m2b8a2e218a181f7196c0: 'Could not remove the session member.',
+  m2ba0b8fb35a4333ce664: 'Bindery requester mappings must be an object.',
   m2bb0cc9094010589d1d9: 'Anthropic returned HTTP {value0}.',
   m2bbb9fea1aafe158b7ee: 'Session is unavailable.',
   m2bf0d95f28f5ac32a2e5:
@@ -713,6 +714,8 @@ export const apiMessages: Record<
   m36eb596843a46a39b3ba: 'That recommendation feed was not found.',
   m36f0c312ddf0edd8c67e: 'defaultQuotas must be an object.',
   m36f3acd8dec99b29b8d6: '[Sonarr] Failed to retrieve series: {value0}',
+  m370fd7b95e8ea5d501be:
+    'The configured Bindery requester account is unavailable. Ask an administrator to update the account mapping.',
   m37ad1cac693301ccb59f: 'qBittorrent rejected the username or password.',
   m37c7a8f268190e8e815c: 'Unable to retrieve series.',
   m37d11ec043657c9568e7: 'notificationTypes.{value0} must be valid.',
@@ -924,6 +927,8 @@ export const apiMessages: Record<
   m45d45131c2bfd0107267: 'bypassStreamingRequestPolicy must be a boolean.',
   m45d64fefe45b42234403: 'Bindery request IDs are invalid.',
   m45eb7f9bea657da8e4a2: 'Choose movies, series, or books.',
+  m45f45b21f5c5e488777e:
+    'At most 1000 Bindery requester mappings may be configured.',
   m4608365512423e45226e: 'SMTP connection timed out',
   m46254b1452cb394b727c: 'Search request must be an object.',
   m46483ed43e8fe1041f56: 'BackIssue did not return the added series ID.',
@@ -1795,6 +1800,8 @@ export const apiMessages: Record<
     '[{value0}] Monitored download refresh failed ({value1}): {value2}',
   m853dab7af8d8ec9a4ac2: 'This album is blocklisted.',
   m85578f5ed58bd5aadc12: 'Could not connect to Audiobookshelf.',
+  m857cb31fce8f6c2b89ba:
+    'Ask an administrator to map this SeerrNG user to a Bindery account in the Bindery service settings.',
   m858a7fd40bcc8e7c4666: 'Failed to send Telegram notification.',
   m8596b999f64a034fceeb: 'The media selection is not playable.',
   m85b3604610b7f920bd33: 'Could not load your session ballots.',
@@ -2610,8 +2617,6 @@ export const apiMessages: Record<
   mc5087828b3deda3ed148:
     '[Sportarr] Failed to retrieve cover for league {value0}: {value1}',
   mc57c0dee8e070f33b1cb: 'Each problem episode selection must be an object.',
-  mc58e622fdac7b5e77b5c:
-    'More than one Bindery account matches this SeerrNG user. Use matching unique usernames.',
   mc5c0e5c35fa06242f5d9: 'QuestarrNG is not configured.',
   mc5dfd2c09704f103cb1b: 'Invalid Plex season identity',
   mc5e5cc04361f4c09fc2b: 'Selection must be an object.',
