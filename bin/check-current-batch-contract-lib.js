@@ -3047,8 +3047,13 @@ const validateCurrentBatchContract = (files) => {
   );
   requireText(
     globals,
+    '.react-select-container .react-select__option--is-selected',
+    'searchable dropdowns must retain the shared selected option treatment'
+  );
+  rejectText(
+    globals,
     '.discover-compact-select\n    .react-select__option--is-selected',
-    'Discover searchable dropdowns must use the Runtime-style selected option treatment'
+    'Discover searchable dropdowns must inherit shared option colors'
   );
   requireText(
     globals,
