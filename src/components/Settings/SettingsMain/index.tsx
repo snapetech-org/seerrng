@@ -241,7 +241,7 @@ const SettingsMain = () => {
       enabled: Yup.boolean().required(),
       condition: Yup.string().oneOf(['available', 'unavailable']).required(),
       action: Yup.string().oneOf(['reject', 'pending', 'approve']).required(),
-      rejectionMessage: Yup.string().max(1000).required(),
+      rejectionMessage: Yup.string().max(1000),
       allowUserOverride: Yup.boolean().required(),
     }),
   });

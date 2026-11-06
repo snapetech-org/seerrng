@@ -107,3 +107,15 @@ Full integration-head CI is required before merge. Browser metadata and provider
 mutations are intercepted fixtures; no live household provider mutations or live
 PostgreSQL validation are claimed. CodeQL remains disabled under the owner directive;
 historical findings remain in the separate security ledger.
+
+## Settings submission regression found by complete Cypress
+
+The complete Cypress suite passed200 cases with32 pending and found one actual
+form regression: `rejectionMessage` was marked required even though its documented
+default is empty and the message is optional. This blocked unrelated settings saves
+while policy was disabled, as well as an enabled policy using its default message.
+The schema now retains the1000-character bound and accepts an empty message. Two
+headless baseline cases fail before the repair and pass after the complete production
+build. The existing strict application-URL and permissive trailing-slash YouTube URL
+validation is preserved. Logs: `final-features-optional-message-{baseline,accepted}.log`
+and `final-features-optional-message-production-build.log`.
