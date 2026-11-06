@@ -1,9 +1,22 @@
 import { apiMessagePatterns, apiMessages } from '@app/i18n/apiMessages';
+import { readFileSync } from 'node:fs';
 import { createIntl, createIntlCache } from 'react-intl';
 import { describe, expect, it } from 'vitest';
 import { formatApiMessage, matchApiMessage } from './apiMessage';
 
 describe('API message catalog and formatting', () => {
+  it('retains the exact matching boundaries of every source template', () => {
+    const source = JSON.parse(
+      readFileSync(
+        new URL('../../config/i18n/api-message-sources.json', import.meta.url),
+        'utf8'
+      )
+    ) as { entries: { key: string; parts: string[] }[] };
+    expect(apiMessagePatterns).toEqual(
+      source.entries.map(({ key, parts }) => [key, parts])
+    );
+  });
+
   it('preserves authored English text and every captured value through ICU formatting', () => {
     const intl = createIntl(
       {

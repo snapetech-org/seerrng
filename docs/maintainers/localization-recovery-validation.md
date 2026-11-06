@@ -149,3 +149,20 @@ provider health traffic to become idle.
 The explicit guarded repeat also passed all ten Cypress layout/theme cases.
 The DOM-ready settings harness then passed twelve English/Arabic local cases
 and six English cases against the actual published v3.72.10 container.
+
+## Bundle-budget regression
+
+Combined CI 42166116020 rejected the 1145.8KB shared app entry against the
+unchanged 1024KB limit. The generated API catalog duplicated all authored
+phrases as matcher literals. Matching boundaries now derive from those same
+authored defaults using the generator's literal-quoting rules; translations and
+provider text never enter that decoder. A permanent test compares every one of
+the 2730 reconstructed boundaries with the source manifest. All eleven matcher,
+formatter and rendered API-message cases pass. The production rebuild passes
+the original budget: app entry 946.0KB, shared total7.44MB, with38on-demand
+translation chunks reported separately. No budget or coverage threshold changed.
+
+The first Next16.4.3 browser repeat started before its runtime had finished
+loading and failed with connection-refused errors. It is retained as a harness
+startup failure, not product acceptance; the next run must wait for HTTP
+readiness explicitly.

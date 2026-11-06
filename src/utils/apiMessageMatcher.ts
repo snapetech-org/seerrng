@@ -8,6 +8,34 @@ export type ApiMessagePattern<Key extends string = string> = readonly [
   readonly string[],
 ];
 
+/** Decode only the literal quoting and ordered placeholders emitted by our
+ * source catalog generator. Never pass translated or provider-authored text. */
+export const getGeneratedApiMessageParts = (message: string): string[] => {
+  const parts = [''];
+  for (let offset = 0; offset < message.length;) {
+    if (message.startsWith("''", offset)) {
+      parts[parts.length - 1] += "'";
+      offset += 2;
+    } else if (
+      message[offset] === "'" &&
+      ['{', '}', '<'].includes(message[offset + 1]) &&
+      message[offset + 2] === "'"
+    ) {
+      parts[parts.length - 1] += message[offset + 1];
+      offset += 3;
+    } else {
+      const placeholder = `{value${parts.length - 1}}`;
+      if (message.startsWith(placeholder, offset)) {
+        parts.push('');
+        offset += placeholder.length;
+      } else {
+        parts[parts.length - 1] += message[offset++];
+      }
+    }
+  }
+  return parts;
+};
+
 type TemplateCapture =
   { state: 'matched'; values: string[] } | { state: 'ambiguous' };
 
