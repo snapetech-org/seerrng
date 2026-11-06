@@ -1,4 +1,5 @@
 import Button, { type ButtonType } from '@app/components/Common/Button';
+import type { FormatRequestOption } from '@app/components/Common/FormatRequestControl';
 import FormatRequestControl from '@app/components/Common/FormatRequestControl';
 import { isVideoQualityAvailable } from '@app/components/RequestModal/requestAvailability';
 import useSettings from '@app/hooks/useSettings';
@@ -12,7 +13,6 @@ import { MediaRequestStatus, MediaStatus } from '@server/constants/media';
 import type Media from '@server/entity/Media';
 import type { MediaRequest } from '@server/entity/MediaRequest';
 import type { ServiceCommonServer } from '@server/interfaces/api/serviceInterfaces';
-import type { FormatRequestOption } from '@app/components/Common/FormatRequestControl';
 import { hasAutoApprovePermission } from '@server/lib/permissions';
 import axios from 'axios';
 import dynamic from 'next/dynamic';

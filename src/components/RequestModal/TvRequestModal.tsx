@@ -1800,214 +1800,220 @@ const TvRequestModal = ({
               </div>
             )}
 
-          <OptionalDisclosure enabled={persius}>
-            <div className="request-selection-options">
-              {!editRequest && !requesterTagOnlyMode && (
-                <MediaQualitySelect
-                  value={effectiveIs4k ? '4k' : 'hd'}
-                  options={[
-                    { label: 'HD', value: 'hd' },
-                    { label: '4K', value: '4k' },
-                  ]}
-                  onChange={(quality) => {
-                    setSelectedIs4k(quality === '4k');
-                    setRequestServiceServerId(undefined);
-                    setRequestOverrides(null);
-                    setQualityRevision((current) => current + 1);
-                  }}
-                  label={intl.formatMessage(messages.quality)}
-                  autoSelectAvailable={false}
-                  purpose="request"
-                />
-              )}
-              {!editRequest &&
-                !requesterTagOnlyMode &&
-                !canUseAdvancedOptions &&
-                requestServiceOptions.length > 0 &&
-                (fallbackService || requestServiceOptions.length > 1) && (
-                  <RequestListboxControl
-                    id="tv-request-destination"
-                    label={intl.formatMessage(messages.destination)}
-                    value={selectedRequestServiceServerId ?? -1}
+          {!requesterTagOnlyMode && (
+            <OptionalDisclosure enabled={persius}>
+              <div className="request-selection-options">
+                {!editRequest && !requesterTagOnlyMode && (
+                  <MediaQualitySelect
+                    value={effectiveIs4k ? '4k' : 'hd'}
                     options={[
-                      ...(fallbackService
-                        ? [
-                            {
-                              value: -1,
-                              label: intl.formatMessage(
-                                messages.defaultDestination,
-                                { name: fallbackService.name }
-                              ),
-                            },
-                          ]
-                        : []),
-                      ...requestServiceOptions.map((server) => ({
-                        value: server.id,
-                        label: `${server.requestButtonLabel} (${server.name})`,
-                      })),
+                      { label: 'HD', value: 'hd' },
+                      { label: '4K', value: '4k' },
                     ]}
-                    onChange={(serverId) => {
-                      setRequestServiceServerId(
-                        serverId < 0 ? undefined : serverId
-                      );
+                    onChange={(quality) => {
+                      setSelectedIs4k(quality === '4k');
+                      setRequestServiceServerId(undefined);
                       setRequestOverrides(null);
+                      setQualityRevision((current) => current + 1);
                     }}
-                    disabled={Boolean(editRequest)}
-                    loadingLabel={intl.formatMessage(messages.destination)}
+                    label={intl.formatMessage(messages.quality)}
+                    autoSelectAvailable={false}
+                    purpose="request"
                   />
                 )}
-              {watchAheadCardVisible && !requesterTagOnlyMode && (
-                <section
-                  className="app-card-inset refreshed-inset-surface detail-item-padded request-episode-queue"
-                  aria-labelledby="tv-episode-queue-heading"
-                >
-                  <div className="request-episode-queue-header">
-                    <h3
-                      id="tv-episode-queue-heading"
-                      className="request-episode-queue-title"
-                    >
-                      {intl.formatMessage(messages.watchAheadLabel)}
-                    </h3>
-                    {episodeQueueAccess && (
-                      <Badge
-                        badgeType={
-                          defaultWatchAheadEpisodeCount > 0
-                            ? 'success'
-                            : 'default'
-                        }
+                {!editRequest &&
+                  !requesterTagOnlyMode &&
+                  !canUseAdvancedOptions &&
+                  requestServiceOptions.length > 0 &&
+                  (fallbackService || requestServiceOptions.length > 1) && (
+                    <RequestListboxControl
+                      id="tv-request-destination"
+                      label={intl.formatMessage(messages.destination)}
+                      value={selectedRequestServiceServerId ?? -1}
+                      options={[
+                        ...(fallbackService
+                          ? [
+                              {
+                                value: -1,
+                                label: intl.formatMessage(
+                                  messages.defaultDestination,
+                                  { name: fallbackService.name }
+                                ),
+                              },
+                            ]
+                          : []),
+                        ...requestServiceOptions.map((server) => ({
+                          value: server.id,
+                          label: `${server.requestButtonLabel} (${server.name})`,
+                        })),
+                      ]}
+                      onChange={(serverId) => {
+                        setRequestServiceServerId(
+                          serverId < 0 ? undefined : serverId
+                        );
+                        setRequestOverrides(null);
+                      }}
+                      disabled={Boolean(editRequest)}
+                      loadingLabel={intl.formatMessage(messages.destination)}
+                    />
+                  )}
+                {watchAheadCardVisible && !requesterTagOnlyMode && (
+                  <section
+                    className="app-card-inset refreshed-inset-surface detail-item-padded request-episode-queue"
+                    aria-labelledby="tv-episode-queue-heading"
+                  >
+                    <div className="request-episode-queue-header">
+                      <h3
+                        id="tv-episode-queue-heading"
+                        className="request-episode-queue-title"
                       >
-                        {intl.formatMessage(messages.watchAheadAdminManaged)}
-                      </Badge>
-                    )}
-                  </div>
-                  <p className="request-episode-queue-description refreshed-detail-text-muted">
-                    {editRequest && savedQueueOverride >= 0
-                      ? intl.formatMessage(
-                          messages.watchAheadOverrideDescription,
-                          {
-                            count:
-                              savedQueueOverride === 0
-                                ? intl.formatMessage(messages.watchAheadOff)
-                                : intl.formatMessage(
-                                    messages.watchAheadEpisodeOption,
-                                    { count: savedQueueOverride }
-                                  ),
+                        {intl.formatMessage(messages.watchAheadLabel)}
+                      </h3>
+                      {episodeQueueAccess && (
+                        <Badge
+                          badgeType={
+                            defaultWatchAheadEpisodeCount > 0
+                              ? 'success'
+                              : 'default'
                           }
-                        )
-                      : episodeQueueAccess
-                        ? defaultWatchAheadEpisodeCount > 0
-                          ? editRequest && watchAheadEpisodeCount > 0
-                            ? intl.formatMessage(
-                                messages.watchAheadActiveForRequest,
+                        >
+                          {intl.formatMessage(messages.watchAheadAdminManaged)}
+                        </Badge>
+                      )}
+                    </div>
+                    <p className="request-episode-queue-description refreshed-detail-text-muted">
+                      {editRequest && savedQueueOverride >= 0
+                        ? intl.formatMessage(
+                            messages.watchAheadOverrideDescription,
+                            {
+                              count:
+                                savedQueueOverride === 0
+                                  ? intl.formatMessage(messages.watchAheadOff)
+                                  : intl.formatMessage(
+                                      messages.watchAheadEpisodeOption,
+                                      { count: savedQueueOverride }
+                                    ),
+                            }
+                          )
+                        : episodeQueueAccess
+                          ? defaultWatchAheadEpisodeCount > 0
+                            ? editRequest && watchAheadEpisodeCount > 0
+                              ? intl.formatMessage(
+                                  messages.watchAheadActiveForRequest,
+                                  {
+                                    count: intl.formatMessage(
+                                      messages.watchAheadEpisodeOption,
+                                      { count: watchAheadEpisodeCount }
+                                    ),
+                                  }
+                                )
+                              : !editRequest && watchAheadAppliesToRequest
+                                ? intl.formatMessage(
+                                    messages.watchAheadEnabledForAccount,
+                                    {
+                                      owner: watchAheadOwnerLabel,
+                                      count: intl.formatMessage(
+                                        messages.watchAheadEpisodeOption,
+                                        { count: defaultWatchAheadEpisodeCount }
+                                      ),
+                                    }
+                                  )
+                                : intl.formatMessage(
+                                    messages.watchAheadAssignedButUnavailable,
+                                    {
+                                      owner: watchAheadOwnerLabel,
+                                      count: intl.formatMessage(
+                                        messages.watchAheadEpisodeOption,
+                                        { count: defaultWatchAheadEpisodeCount }
+                                      ),
+                                    }
+                                  )
+                            : intl.formatMessage(
+                                messages.watchAheadOffForAccount,
                                 {
-                                  count: intl.formatMessage(
-                                    messages.watchAheadEpisodeOption,
-                                    { count: watchAheadEpisodeCount }
-                                  ),
+                                  owner: watchAheadOwnerLabel,
                                 }
                               )
-                            : !editRequest && watchAheadAppliesToRequest
-                              ? intl.formatMessage(
-                                  messages.watchAheadEnabledForAccount,
-                                  {
-                                    owner: watchAheadOwnerLabel,
-                                    count: intl.formatMessage(
-                                      messages.watchAheadEpisodeOption,
-                                      { count: defaultWatchAheadEpisodeCount }
-                                    ),
-                                  }
-                                )
-                              : intl.formatMessage(
-                                  messages.watchAheadAssignedButUnavailable,
-                                  {
-                                    owner: watchAheadOwnerLabel,
-                                    count: intl.formatMessage(
-                                      messages.watchAheadEpisodeOption,
-                                      { count: defaultWatchAheadEpisodeCount }
-                                    ),
-                                  }
-                                )
-                          : intl.formatMessage(
-                              messages.watchAheadOffForAccount,
-                              {
-                                owner: watchAheadOwnerLabel,
-                              }
-                            )
-                        : episodeQueueAccessError
-                          ? intl.formatMessage(messages.watchAheadLoadError)
-                          : intl.formatMessage(messages.watchAheadLoading)}
-                  </p>
-                  {episodeQueueAccess &&
-                    watchAheadEpisodeCount > 0 &&
-                    !editRequest && (
-                      <p className="request-episode-queue-description refreshed-detail-text-muted">
-                        {intl.formatMessage(
-                          messages.watchAheadStartingEpisode,
-                          {
-                            owner: watchAheadOwnerLabel,
-                          }
-                        )}
+                          : episodeQueueAccessError
+                            ? intl.formatMessage(messages.watchAheadLoadError)
+                            : intl.formatMessage(messages.watchAheadLoading)}
+                    </p>
+                    {episodeQueueAccess &&
+                      watchAheadEpisodeCount > 0 &&
+                      !editRequest && (
+                        <p className="request-episode-queue-description refreshed-detail-text-muted">
+                          {intl.formatMessage(
+                            messages.watchAheadStartingEpisode,
+                            {
+                              owner: watchAheadOwnerLabel,
+                            }
+                          )}
+                        </p>
+                      )}
+                    {watchAheadUnavailableMessage && (
+                      <p
+                        className="request-episode-queue-description refreshed-detail-text-muted"
+                        role="status"
+                      >
+                        {watchAheadUnavailableMessage}
                       </p>
                     )}
-                  {watchAheadUnavailableMessage && (
-                    <p
-                      className="request-episode-queue-description refreshed-detail-text-muted"
-                      role="status"
-                    >
-                      {watchAheadUnavailableMessage}
-                    </p>
-                  )}
-                  {editRequest &&
-                    !editRequest.watchAheadParentRequestId &&
-                    hasPermission(Permission.ADMIN) && (
-                      <RequestEpisodeQueueControl
-                        requestId={editRequest.id}
-                        episodeCount={editRequest.watchAheadEpisodeCount}
-                        usesUserDefault={editRequest.watchAheadUsesUserDefault}
-                        defaultEpisodeCount={defaultWatchAheadEpisodeCount}
-                        onSaved={(setting) => {
-                          setSavedQueueOverride(
-                            setting.usesUserDefault ? -1 : setting.episodeCount
-                          );
-                          setWatchAheadEpisodeCount(setting.episodeCount);
-                          void mutate(`/api/v1/tv/${tmdbId}`);
-                        }}
-                      />
+                    {editRequest &&
+                      !editRequest.watchAheadParentRequestId &&
+                      hasPermission(Permission.ADMIN) && (
+                        <RequestEpisodeQueueControl
+                          requestId={editRequest.id}
+                          episodeCount={editRequest.watchAheadEpisodeCount}
+                          usesUserDefault={
+                            editRequest.watchAheadUsesUserDefault
+                          }
+                          defaultEpisodeCount={defaultWatchAheadEpisodeCount}
+                          onSaved={(setting) => {
+                            setSavedQueueOverride(
+                              setting.usesUserDefault
+                                ? -1
+                                : setting.episodeCount
+                            );
+                            setWatchAheadEpisodeCount(setting.episodeCount);
+                            void mutate(`/api/v1/tv/${tmdbId}`);
+                          }}
+                        />
+                      )}
+                    {needsWatchAheadAccountLink && (
+                      <Button
+                        as="a"
+                        href="/profile/settings/linked-accounts"
+                        buttonType="ghost"
+                        buttonSize="sm"
+                      >
+                        {intl.formatMessage(messages.watchAheadLinkAccount)}
+                      </Button>
                     )}
-                  {needsWatchAheadAccountLink && (
+                    {episodeQueueAccessError && (
+                      <Button
+                        type="button"
+                        buttonType="ghost"
+                        buttonSize="sm"
+                        onClick={() => void refreshEpisodeQueueAccess()}
+                      >
+                        {intl.formatMessage(messages.watchAheadRetry)}
+                      </Button>
+                    )}
                     <Button
                       as="a"
-                      href="/profile/settings/linked-accounts"
+                      href="https://github.com/snapetech-org/seerrng/blob/main/docs/using-seerr/jellyfin-watch-ahead.md"
+                      target="_blank"
+                      rel="noreferrer"
                       buttonType="ghost"
                       buttonSize="sm"
                     >
-                      {intl.formatMessage(messages.watchAheadLinkAccount)}
+                      {intl.formatMessage(messages.watchAheadLearnMore)}
                     </Button>
-                  )}
-                  {episodeQueueAccessError && (
-                    <Button
-                      type="button"
-                      buttonType="ghost"
-                      buttonSize="sm"
-                      onClick={() => void refreshEpisodeQueueAccess()}
-                    >
-                      {intl.formatMessage(messages.watchAheadRetry)}
-                    </Button>
-                  )}
-                  <Button
-                    as="a"
-                    href="https://github.com/snapetech-org/seerrng/blob/main/docs/using-seerr/jellyfin-watch-ahead.md"
-                    target="_blank"
-                    rel="noreferrer"
-                    buttonType="ghost"
-                    buttonSize="sm"
-                  >
-                    {intl.formatMessage(messages.watchAheadLearnMore)}
-                  </Button>
-                </section>
-              )}
-            </div>
-          </OptionalDisclosure>
+                  </section>
+                )}
+              </div>
+            </OptionalDisclosure>
+          )}
         </div>
         {canUseAdvancedOptions && !requesterTagOnlyMode && (
           <AdvancedRequester

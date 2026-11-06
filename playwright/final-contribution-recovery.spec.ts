@@ -520,6 +520,8 @@ for (const width of [390, 1440]) {
             })
           ).toBeVisible();
           await expect(dialog.getByTestId('modal-ok-button')).toBeEnabled();
+          if (mediaType === 'tv' && theme === 'persiusNG')
+            await expect(dialog.locator('summary')).toHaveCount(1);
           if (mediaType === 'tv')
             await expect(
               dialog.getByText('Get new seasons automatically', { exact: true })
