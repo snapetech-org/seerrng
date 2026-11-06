@@ -80,6 +80,45 @@ describe('Per-service movie and series request destinations', () => {
     });
   });
 
+  for (const width of [390, 1280]) {
+    it(`switches to a granted Sonarr instance at ${width}px`, () => {
+      cy.viewport(width, 900);
+      requestServices(['sonarr:2', 'sonarr:3']);
+      videoServices('sonarr');
+      openTitleDetailsFromSearch({
+        id: 1399,
+        mediaType: 'tv',
+        title: 'Series destination fixture',
+        date: '2011-04-17',
+        details: {
+          externalIds: { tvdbId: 121361, imdbId: 'tt0944947' },
+          numberOfSeasons: 1,
+          seasons: [
+            {
+              id: 1,
+              seasonNumber: 1,
+              name: 'Season 1',
+              episodeCount: 10,
+              airDate: '2011-04-17',
+            },
+          ],
+        },
+      });
+      openRequestDialog('tv');
+      cy.get('#tv-request-destination').click();
+      cy.contains('[role="option"]', 'Archive (Sonarr 2)').click();
+      cy.get('#tv-request-destination')
+        .should('be.visible')
+        .and('contain.text', 'Archive (Sonarr 2)');
+      cy.get('[role="dialog"]').then(($dialog) => {
+        expect($dialog[0].getBoundingClientRect().width).to.be.at.most(width);
+      });
+      cy.screenshot(`request-destination-series-${width}`, {
+        capture: 'viewport',
+      });
+    });
+  }
+
   it('shows only the granted, eligible movie destinations', () => {
     cy.viewport(1280, 900);
     openTitleDetailsFromSearch({

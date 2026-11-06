@@ -1,6 +1,10 @@
 describe('Book discovery formats', () => {
   beforeEach(() => {
     cy.loginAsAdmin();
+    // Exercise the Orig disclosure owner regardless of prior saved preferences.
+    cy.request('POST', '/api/v1/user/1/settings/interface-theme', {
+      theme: 'seerrOrig',
+    });
     cy.mockConfiguredMediaAvailability({ booksEnabled: true });
   });
 
