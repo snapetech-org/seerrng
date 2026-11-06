@@ -44,3 +44,11 @@ select contrast and complete localization approval remain outside this check.
 
 
 The combined browser run exposed presentation state leaking from settings search into four later Orig filter cases. Search now restores seeded English/Orig after each case; rating/filter cases initialize that presentation explicitly. All 16 focused settings-search and rating/filter cases pass. The full-suite repeat is pending.
+
+The combined full browser run passed 215 cases and skipped one; its only failure
+was the first Audiobookshelf case encountering the connection persisted by an
+earlier local run. That case now removes its own seeded disposable connection
+before and after saving. Two consecutive real-API runs pass. No product
+assertion was removed. The shortened poster release-note fragment also passes
+the unchanged contract (23 fragments validated). The combined CI repeat is still
+required at the final commit; this is not a claim that the full suite is green.
