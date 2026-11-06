@@ -1931,6 +1931,56 @@ describe('PUT /request/:requestId (failed TV recovery)', () => {
 });
 
 describe('GET /request', () => {
+  it('hydrates canonical book identifiers in list responses for request cards', async () => {
+    const requestedBy = await getRepository(User).findOneByOrFail({
+      email: 'admin@seerr.dev',
+    });
+    const media = await getRepository(Media).save(
+      new Media({
+        mediaType: MediaType.BOOK,
+        tmdbId: 0,
+        status: MediaStatus.UNKNOWN,
+        status4k: MediaStatus.UNKNOWN,
+      })
+    );
+    await getRepository(MediaIdentifier).save(
+      new MediaIdentifier({
+        media,
+        provider: MediaIdentifierProvider.OPENLIBRARY,
+        value: 'OL97000001W',
+        canonical: true,
+      })
+    );
+    const created = await getRepository(MediaRequest).save(
+      new MediaRequest({
+        type: MediaType.BOOK,
+        status: MediaRequestStatus.PENDING,
+        media,
+        requestedBy,
+        bookFormat: 'ebook',
+        is4k: false,
+      })
+    );
+    const agent = await loginAs('admin@seerr.dev', 'test1234');
+    const response = await agent.get('/request');
+    assert.strictEqual(response.status, 200);
+    const row = response.body.results.find(
+      (item: { id: number }) => item.id === created.id
+    );
+    assert.ok(row, 'the book request must be listed');
+    assert.ok(
+      Array.isArray(row.media.identifiers),
+      'list hydration must include media identifiers'
+    );
+    assert.ok(
+      row.media.identifiers.some(
+        (identifier: { provider: string; value: string }) =>
+          identifier.provider === MediaIdentifierProvider.OPENLIBRARY &&
+          identifier.value === 'OL97000001W'
+      )
+    );
+  });
+
   it('bounds service profile hydration concurrency', () => {
     assert.strictEqual(REQUEST_SERVICE_PROFILE_CONCURRENCY, 10);
   });
