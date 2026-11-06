@@ -1,5 +1,9 @@
-import { MediaRequestStatus, MediaStatus } from '@server/constants/media';
+import { MediaStatus } from '@server/constants/media';
 import type Media from '@server/entity/Media';
+import {
+  hasAvailableBookFormat,
+  isActiveBookFormatRequest,
+} from '@server/lib/bookAvailability';
 
 type BookMediaInfo = {
   mediaInfo?: Media;
@@ -14,25 +18,14 @@ export const canRequestMissingBookFormat = (title: BookMediaInfo) => {
     return false;
   }
 
-  const hasEbookServiceLink =
-    title.mediaInfo.serviceId !== null &&
-    title.mediaInfo.serviceId !== undefined &&
-    title.mediaInfo.externalServiceId !== null &&
-    title.mediaInfo.externalServiceId !== undefined;
-  const hasAudiobookServiceLink =
-    (title.mediaInfo.audiobookServiceId !== null &&
-      title.mediaInfo.audiobookServiceId !== undefined &&
-      title.mediaInfo.audiobookExternalServiceId !== null &&
-      title.mediaInfo.audiobookExternalServiceId !== undefined) ||
-    (title.mediaInfo.audiobookLibraryServiceId !== null &&
-      title.mediaInfo.audiobookLibraryServiceId !== undefined &&
-      !!title.mediaInfo.audiobookLibraryItemId);
+  const hasEbookServiceLink = hasAvailableBookFormat(title.mediaInfo, 'ebook');
+  const hasAudiobookServiceLink = hasAvailableBookFormat(
+    title.mediaInfo,
+    'audiobook'
+  );
   const activeBookRequests =
-    title.mediaInfo.requests?.filter(
-      (request) =>
-        request.status !== MediaRequestStatus.DECLINED &&
-        request.status !== MediaRequestStatus.FAILED &&
-        request.status !== MediaRequestStatus.COMPLETED
+    title.mediaInfo.requests?.filter((request) =>
+      isActiveBookFormatRequest(request)
     ) ?? [];
   const hasActiveEbookRequest = activeBookRequests.some(
     (request) =>

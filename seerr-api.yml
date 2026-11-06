@@ -6978,6 +6978,20 @@ components:
         serviceId4k:
           type: number
           nullable: true
+        availableEbookServiceIds:
+          type: array
+          nullable: true
+          description: Book service IDs whose scans or acquisition tracking confirmed ebook files; manager IDs alone are not file evidence.
+          items:
+            type: integer
+            minimum: 0
+        availableAudiobookServiceIds:
+          type: array
+          nullable: true
+          description: Book service IDs whose scans or acquisition tracking confirmed audiobook files; Audiobookshelf and Plex library links remain independent audio evidence.
+          items:
+            type: integer
+            minimum: 0
         availableMusicServiceIds:
           type: array
           nullable: true

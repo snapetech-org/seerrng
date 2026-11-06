@@ -5,6 +5,10 @@ import { MediaStatus, MediaType } from '@server/constants/media';
 import { getRepository } from '@server/datasource';
 import Media from '@server/entity/Media';
 import { MediaIdentifierProvider } from '@server/entity/MediaIdentifier';
+import {
+  getBookAvailabilityStatus,
+  recordBookFileAvailability,
+} from '@server/lib/bookAvailability';
 import { resolveOpenLibraryIdentifiersForReadarrBook } from '@server/lib/bookIdentifierResolver';
 import {
   normalizeExternalBookId,
@@ -69,6 +73,8 @@ class ReadarrScanner
   private readarrApi: ReadarrAPI;
   private binderyPrimaryProvider?: string;
   private scannedIdentifierKeys: Set<string> = new Set();
+  private scannedFormatKeys = new Set<string>();
+  private scanItemsComplete = true;
   private didScan = false;
 
   constructor() {
@@ -92,7 +98,9 @@ class ReadarrScanner
       return;
     }
     this.scannedIdentifierKeys.clear();
+    this.scannedFormatKeys.clear();
     this.didScan = false;
+    this.scanItemsComplete = true;
 
     try {
       this.servers = uniqWith(
@@ -157,7 +165,10 @@ class ReadarrScanner
         }
       }
 
-      if (!this.servers.every((server) => server.syncEnabled)) {
+      if (
+        !this.scanItemsComplete ||
+        !this.servers.every((server) => server.syncEnabled)
+      ) {
         this.didScan = false;
       }
 
@@ -189,6 +200,7 @@ class ReadarrScanner
           .find((isbn): isbn is string => !!isbn) ?? readarrBook.foreignBookId;
 
       if (!identifier) {
+        this.scanItemsComplete = false;
         this.log(
           'No supported identifier found for this book. Skipping item.',
           'debug',
@@ -266,12 +278,24 @@ class ReadarrScanner
 
       const serviceType =
         this.currentServer.serviceType === 'audiobook' ? 'audiobook' : 'ebook';
-      const bookFileCount =
+      for (const item of [
+        { provider, value: identifier },
+        ...secondaryIdentifiers,
+      ]) {
+        this.scannedFormatKeys.add(
+          `${this.currentServer.id}:${serviceType}:${getBookIdentifierKey(item.provider, item.value)}`
+        );
+      }
+      const observedFileCount =
         (serviceType === 'audiobook'
           ? readarrBook.statistics?.audiobookFileCount
           : readarrBook.statistics?.ebookFileCount) ??
-        readarrBook.statistics?.bookFileCount ??
-        0;
+        readarrBook.statistics?.bookFileCount;
+      const bookFileObservationKnown =
+        typeof observedFileCount === 'number' &&
+        Number.isFinite(observedFileCount) &&
+        observedFileCount >= 0;
+      const bookFileCount = bookFileObservationKnown ? observedFileCount : 0;
       const hasFile = bookFileCount > 0;
       const totalBooks = readarrBook.statistics?.totalBookCount ?? 1;
 
@@ -286,6 +310,7 @@ class ReadarrScanner
             ? new Date(readarrBook.added)
             : undefined,
           hasFile: false,
+          bookFileObservationKnown,
           secondaryIdentifiers,
           processing: false,
           bookServiceType: serviceType,
@@ -308,6 +333,7 @@ class ReadarrScanner
           ? new Date(readarrBook.added)
           : undefined,
         hasFile,
+        bookFileObservationKnown,
         secondaryIdentifiers,
         bookServiceType: serviceType,
         processing:
@@ -321,6 +347,7 @@ class ReadarrScanner
           ),
       });
     } catch (e) {
+      this.scanItemsComplete = false;
       if (e instanceof ServarrServiceAuthorityChangedError) throw e;
       this.log('Failed to process Bookshelf media', 'error', {
         errorMessage: e.message,
@@ -356,6 +383,7 @@ class ReadarrScanner
       const identifier = foreignBookId ?? primaryIsbn ?? isbns[0];
 
       if (!identifier) {
+        this.scanItemsComplete = false;
         this.log(
           'No supported Bindery book identifier found. Skipping item.',
           'debug',
@@ -392,6 +420,14 @@ class ReadarrScanner
           )
       );
 
+      for (const item of [
+        { provider, value: identifier },
+        ...secondaryIdentifiers,
+      ]) {
+        this.scannedFormatKeys.add(
+          `${this.currentServer.id}:${book.binderyFormat}:${getBookIdentifierKey(item.provider, item.value)}`
+        );
+      }
       await this.processBookWithRetry(provider, identifier, {
         serviceId: this.currentServer.id,
         externalServiceId: book.id,
@@ -409,6 +445,7 @@ class ReadarrScanner
           ),
       });
     } catch (error) {
+      this.scanItemsComplete = false;
       if (error instanceof ServarrServiceAuthorityChangedError) throw error;
       this.log('Failed to process Bindery media', 'error', {
         errorMessage: error instanceof Error ? error.message : String(error),
@@ -448,16 +485,34 @@ class ReadarrScanner
     }
 
     await forEachMediaCleanupBatch(
-      { mediaType: MediaType.BOOK, status: MediaStatus.PROCESSING },
+      { mediaType: MediaType.BOOK },
       async (media) => {
         const identifierKeys = (media.identifiers ?? []).map((identifier) =>
           getBookIdentifierKey(identifier.provider, identifier.value)
         );
 
-        if (
+        const missingSources = (['ebook', 'audiobook'] as const).flatMap(
+          (format) =>
+            (format === 'ebook'
+              ? (media.availableEbookServiceIds ?? [])
+              : (media.availableAudiobookServiceIds ?? [])
+            )
+              .filter(
+                (serviceId) =>
+                  this.servers.some(
+                    (server) => server.id === serviceId && server.syncEnabled
+                  ) &&
+                  !identifierKeys.some((key) =>
+                    this.scannedFormatKeys.has(`${serviceId}:${format}:${key}`)
+                  )
+              )
+              .map((serviceId) => ({ format, serviceId }))
+        );
+        const orphanedProcessing =
+          media.status === MediaStatus.PROCESSING &&
           identifierKeys.length > 0 &&
-          !identifierKeys.some((key) => this.scannedIdentifierKeys.has(key))
-        ) {
+          !identifierKeys.some((key) => this.scannedIdentifierKeys.has(key));
+        if (missingSources.length || orphanedProcessing) {
           const changed = await runMediaEntityMutation(media, () =>
             runWithServarrServiceSnapshots(
               'readarr',
@@ -467,10 +522,14 @@ class ReadarrScanner
                   where: { id: media.id },
                   relations: { identifiers: true },
                 });
-                if (!current || current.status !== MediaStatus.PROCESSING) {
-                  return false;
-                }
-                current.status = MediaStatus.UNKNOWN;
+                if (!current) return false;
+                for (const { format, serviceId } of missingSources)
+                  recordBookFileAvailability(current, format, serviceId, false);
+                current.status = getBookAvailabilityStatus(
+                  current,
+                  !orphanedProcessing &&
+                    current.status === MediaStatus.PROCESSING
+                );
                 await mediaRepository.save(current);
                 return true;
               },
@@ -482,7 +541,7 @@ class ReadarrScanner
           );
           if (changed) {
             this.log(
-              `Book ${identifierKeys[0]} not found in any Bookshelf server. Status reset to UNKNOWN.`,
+              `Book ${identifierKeys[0]} not found in any Bookshelf server. File availability refreshed.`,
               'info'
             );
           }

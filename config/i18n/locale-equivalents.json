@@ -180,7 +180,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/AuthorDetails/AuthorWorkCard.tsx",
-          "line": 20,
+          "line": 24,
           "defaultMessage": "'Genres'"
         }
       ],
@@ -1566,7 +1566,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/RequestCard/index.tsx",
-          "line": 90,
+          "line": 91,
           "defaultMessage": "'Format'"
         }
       ],
@@ -1646,7 +1646,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/RequestModal/BulkRequestModal.tsx",
-          "line": 103,
+          "line": 107,
           "defaultMessage": "'Format'"
         }
       ],
@@ -1666,7 +1666,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/RequestModal/BulkRequestModal.tsx",
-          "line": 116,
+          "line": 120,
           "defaultMessage": "'Genres'"
         }
       ],
@@ -4314,7 +4314,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/RequestCard/index.tsx",
-          "line": 90,
+          "line": 91,
           "defaultMessage": "'Format'"
         }
       ],
@@ -4394,7 +4394,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/RequestModal/BulkRequestModal.tsx",
-          "line": 103,
+          "line": 107,
           "defaultMessage": "'Format'"
         }
       ],
@@ -5854,7 +5854,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/RequestCard/index.tsx",
-          "line": 90,
+          "line": 91,
           "defaultMessage": "'Format'"
         }
       ],
@@ -5914,7 +5914,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/RequestModal/BulkRequestModal.tsx",
-          "line": 103,
+          "line": 107,
           "defaultMessage": "'Format'"
         }
       ],

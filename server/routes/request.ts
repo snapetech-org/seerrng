@@ -51,7 +51,11 @@ import type {
   StreamingRequestPolicyRejectionResponse,
 } from '@server/interfaces/api/requestInterfaces';
 import type { SeasonEpisodeSelection } from '@server/interfaces/api/seasonInterfaces';
-import { hasAvailableBookFormat } from '@server/lib/bookAvailability';
+import {
+  hasAvailableBookFormat,
+  isActiveBookFormatRequest,
+  isBookRequestFileAvailable,
+} from '@server/lib/bookAvailability';
 import {
   BookRequestEditConflictError,
   planBookRequestEdit,
@@ -2124,8 +2128,18 @@ const hasActiveOverlappingBookRequest = async (
   let query = getRepository(MediaRequest)
     .createQueryBuilder('request')
     .where('request.media = :mediaId', { mediaId })
-    .andWhere('request.status NOT IN (:...inactiveStatuses)', {
-      inactiveStatuses: inactiveMediaRequestStatuses,
+    .select([
+      'request.id',
+      'request.status',
+      'request.bookFormat',
+      'request.serviceTargets',
+    ])
+    .andWhere('request.status IN (:...bookActiveCandidates)', {
+      bookActiveCandidates: [
+        MediaRequestStatus.PENDING,
+        MediaRequestStatus.APPROVED,
+        MediaRequestStatus.COMPLETED,
+      ],
     });
   if (format === 'ebook') {
     query = query.andWhere(
@@ -2135,7 +2149,9 @@ const hasActiveOverlappingBookRequest = async (
     query = query.andWhere(`request.bookFormat IN ('audiobook', 'both')`);
   }
 
-  return query.getExists();
+  return (await query.getMany()).some((request) =>
+    isActiveBookFormatRequest(request, format === 'both' ? undefined : format)
+  );
 };
 
 const getBulkCoveredReason = async (
@@ -3627,16 +3643,7 @@ requestRoutes.get('/count', async (req, res, next) => {
         )
         .addSelect(
           `SUM(CASE WHEN request.status = :approved AND (
-          (request.type = :book AND (
-            (COALESCE(request.bookFormat, 'ebook') = 'both'
-              AND media.externalServiceId IS NOT NULL
-              AND media.audiobookExternalServiceId IS NOT NULL)
-            OR (request.bookFormat = 'audiobook'
-              AND media.audiobookExternalServiceId IS NOT NULL)
-            OR (COALESCE(request.bookFormat, 'ebook') = 'ebook'
-              AND media.externalServiceId IS NOT NULL)
-          ))
-          OR (request.type != :book AND request.is4k = :is4k
+          (request.type != :book AND request.is4k = :is4k
             AND media.status4k = :available)
           OR (request.type != :book AND request.is4k = :not4k
             AND media.status = :available)
@@ -3683,7 +3690,37 @@ requestRoutes.get('/count', async (req, res, next) => {
         await countQuery.getRawOne<Record<string, string | number | null>>();
 
       const count = (key: string): number => Number(counts?.[key] ?? 0);
-      const availableCount = count('available');
+      // Use the same file/recording proof as status projection. Bounded batches
+      // preserve the count query's viewer filters without JSON-dialect guesses.
+      let bookAvailableCount = 0;
+      let afterBookRequestId = 0;
+      for (;;) {
+        const batch = await countQuery
+          .clone()
+          .select('request')
+          .innerJoinAndMapOne(
+            'request.media',
+            'request.media',
+            'countBookMedia'
+          )
+          .andWhere(
+            'request.type = :countBookType AND request.status = :countBookStatus AND request.id > :afterBookRequestId',
+            {
+              countBookType: MediaType.BOOK,
+              countBookStatus: MediaRequestStatus.APPROVED,
+              afterBookRequestId,
+            }
+          )
+          .orderBy('request.id', 'ASC')
+          .take(100)
+          .getMany();
+        for (const request of batch)
+          if (isBookRequestFileAvailable(request.media, request))
+            bookAvailableCount++;
+        if (batch.length < 100) break;
+        afterBookRequestId = batch[batch.length - 1].id;
+      }
+      const availableCount = count('available') + bookAvailableCount;
       const processingCount = count('approved') - availableCount;
 
       return res.status(200).json({

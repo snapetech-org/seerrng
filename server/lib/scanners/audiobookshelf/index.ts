@@ -7,9 +7,11 @@ import Media from '@server/entity/Media';
 import MediaIdentifier, {
   MediaIdentifierProvider,
 } from '@server/entity/MediaIdentifier';
+import { getBookAvailabilityStatus } from '@server/lib/bookAvailability';
 import { normalizeValidAsin } from '@server/lib/externalIds';
 import { getExternalRuntimeConfig } from '@server/lib/externalRuntimeConfig';
 import { normalizeValidIsbn } from '@server/lib/isbn';
+import { runMediaEntityMutation } from '@server/lib/mediaMutation';
 import {
   AUDIOBOOKSHELF_MAX_LIBRARY_ITEMS,
   AUDIOBOOKSHELF_MAX_LIBRARY_PAGES,
@@ -210,26 +212,34 @@ class AudiobookshelfScanner
     });
 
     for (const media of tracked) {
-      const itemId = media.audiobookLibraryItemId;
-      if (!itemId || this.seenItemIds.has(itemId)) continue;
-
-      media.audiobookLibraryServiceId = null;
-      media.audiobookLibraryItemId = null;
-      if (
-        media.status === MediaStatus.AVAILABLE &&
-        media.externalServiceId == null &&
-        media.audiobookExternalServiceId == null
-      ) {
-        media.status = MediaStatus.UNKNOWN;
-      }
-
-      await mediaRepository.save(media);
-      const sourceIdentifier = media.identifiers?.find(
-        (identifier) =>
-          identifier.provider === MediaIdentifierProvider.AUDIOBOOKSHELF &&
-          identifier.value === itemId
-      );
-      if (sourceIdentifier) await identifierRepository.remove(sourceIdentifier);
+      await runMediaEntityMutation(media, async () => {
+        const current = await mediaRepository.findOne({
+          where: { id: media.id },
+          relations: { identifiers: true },
+        });
+        const itemId = current?.audiobookLibraryItemId;
+        if (
+          !current ||
+          current.audiobookLibraryServiceId !== this.serviceId ||
+          !itemId ||
+          this.seenItemIds.has(itemId)
+        )
+          return;
+        current.audiobookLibraryServiceId = null;
+        current.audiobookLibraryItemId = null;
+        current.status = getBookAvailabilityStatus(
+          current,
+          current.status === MediaStatus.PROCESSING
+        );
+        await mediaRepository.save(current);
+        const sourceIdentifier = current.identifiers?.find(
+          (identifier) =>
+            identifier.provider === MediaIdentifierProvider.AUDIOBOOKSHELF &&
+            identifier.value === itemId
+        );
+        if (sourceIdentifier)
+          await identifierRepository.remove(sourceIdentifier);
+      });
     }
   }
 }

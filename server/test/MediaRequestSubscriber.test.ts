@@ -4343,132 +4343,137 @@ describe('MediaRequestSubscriber service dispatch', () => {
     assert.equal(savedRequest.status, MediaRequestStatus.FAILED);
   });
 
-  it('skips an existing ebook link when retrying a partial both-format book request', async () => {
-    const settings = getSettings();
-    settings.readarr = [
-      {
-        id: 20,
-        name: 'Ebook Bookshelf',
-        hostname: 'ebooks.local',
-        port: 8787,
-        apiKey: 'ebook-key',
-        useSsl: false,
-        activeProfileId: 11,
-        activeProfileName: 'Ebooks',
-        activeMetadataProfileId: 12,
-        activeMetadataProfileName: 'Standard',
-        activeDirectory: '/ebooks',
-        tags: [4],
-        is4k: false,
-        isDefault: true,
-        syncEnabled: true,
-        preventSearch: false,
-        tagRequests: false,
-        overrideRule: [],
-        serviceType: 'ebook',
-      },
-      {
-        id: 21,
-        name: 'Audio Bookshelf',
-        hostname: 'audio.local',
-        port: 8787,
-        apiKey: 'audio-key',
-        useSsl: false,
-        activeProfileId: 31,
-        activeProfileName: 'Audiobooks',
-        activeMetadataProfileId: 32,
-        activeMetadataProfileName: 'Audio Standard',
-        activeDirectory: '/audiobooks',
-        tags: [9],
-        is4k: false,
-        isDefault: true,
-        syncEnabled: true,
-        preventSearch: false,
-        tagRequests: false,
-        overrideRule: [],
-        serviceType: 'audiobook',
-      },
-    ];
-
-    const requestedBy = await getRequester();
-    const media = await getRepository(Media).save(
-      new Media({
-        mediaType: MediaType.BOOK,
-        tmdbId: 0,
-        status: MediaStatus.PENDING,
-        status4k: MediaStatus.UNKNOWN,
-        serviceId: 20,
-        externalServiceId: 40,
-        externalServiceSlug: 'left-hand-darkness-ebook',
-        identifiers: [
-          new MediaIdentifier({
-            provider: MediaIdentifierProvider.ISBN,
-            value: '9780441478125',
-            canonical: false,
-          }),
-        ],
-      })
-    );
-    const request = await createApprovedRequest(media, requestedBy);
-    request.bookFormat = 'both';
-
-    mock.method(ReadarrAPI.prototype, 'lookupBook', async () => {
-      return [
+  for (const imported of [false, true])
+    it(`retries a partial both-format book request with imported ebook=${imported}`, async () => {
+      const settings = getSettings();
+      settings.readarr = [
         {
-          title: 'The Left Hand of Darkness',
-          foreignBookId: 'readarr-work-id',
-          titleSlug: 'left-hand-darkness',
-          author: {
-            foreignAuthorId: 'le-guin-author-id',
-            authorName: 'Ursula K. Le Guin',
-          },
-          editions: [
-            {
-              foreignEditionId: 'edition-id',
-              title: 'The Left Hand of Darkness',
-              isbn13: '9780441478125',
-              monitored: false,
-            },
-          ],
+          id: 20,
+          name: 'Ebook Bookshelf',
+          hostname: 'ebooks.local',
+          port: 8787,
+          apiKey: 'ebook-key',
+          useSsl: false,
+          activeProfileId: 11,
+          activeProfileName: 'Ebooks',
+          activeMetadataProfileId: 12,
+          activeMetadataProfileName: 'Standard',
+          activeDirectory: '/ebooks',
+          tags: [4],
+          is4k: false,
+          isDefault: true,
+          syncEnabled: true,
+          preventSearch: false,
+          tagRequests: false,
+          overrideRule: [],
+          serviceType: 'ebook',
         },
-      ] as ReadarrBookLookupResult[];
+        {
+          id: 21,
+          name: 'Audio Bookshelf',
+          hostname: 'audio.local',
+          port: 8787,
+          apiKey: 'audio-key',
+          useSsl: false,
+          activeProfileId: 31,
+          activeProfileName: 'Audiobooks',
+          activeMetadataProfileId: 32,
+          activeMetadataProfileName: 'Audio Standard',
+          activeDirectory: '/audiobooks',
+          tags: [9],
+          is4k: false,
+          isDefault: true,
+          syncEnabled: true,
+          preventSearch: false,
+          tagRequests: false,
+          overrideRule: [],
+          serviceType: 'audiobook',
+        },
+      ];
+
+      const requestedBy = await getRequester();
+      const media = await getRepository(Media).save(
+        new Media({
+          mediaType: MediaType.BOOK,
+          tmdbId: 0,
+          status: imported ? MediaStatus.AVAILABLE : MediaStatus.PENDING,
+          availableEbookServiceIds: imported ? [20] : [],
+          status4k: MediaStatus.UNKNOWN,
+          serviceId: 20,
+          externalServiceId: 40,
+          externalServiceSlug: 'left-hand-darkness-ebook',
+          identifiers: [
+            new MediaIdentifier({
+              provider: MediaIdentifierProvider.ISBN,
+              value: '9780441478125',
+              canonical: false,
+            }),
+          ],
+        })
+      );
+      const request = await createApprovedRequest(media, requestedBy);
+      request.bookFormat = 'both';
+
+      mock.method(ReadarrAPI.prototype, 'lookupBook', async () => {
+        return [
+          {
+            title: 'The Left Hand of Darkness',
+            foreignBookId: 'readarr-work-id',
+            titleSlug: 'left-hand-darkness',
+            author: {
+              foreignAuthorId: 'le-guin-author-id',
+              authorName: 'Ursula K. Le Guin',
+            },
+            editions: [
+              {
+                foreignEditionId: 'edition-id',
+                title: 'The Left Hand of Darkness',
+                isbn13: '9780441478125',
+                monitored: false,
+              },
+            ],
+          },
+        ] as ReadarrBookLookupResult[];
+      });
+
+      const addPayloads: ReadarrBookOptions[] = [];
+      mock.method(
+        ReadarrAPI.prototype,
+        'addBook',
+        async (payload: ReadarrBookOptions) => {
+          addPayloads.push(payload);
+          return {
+            ...payload,
+            id: 41,
+            titleSlug: 'left-hand-darkness-audio',
+          } as Awaited<ReturnType<ReadarrAPI['addBook']>>;
+        }
+      );
+
+      await new MediaRequestSubscriber().sendToReadarr(request);
+
+      assert.deepEqual(
+        addPayloads.map((payload) => payload.rootFolderPath),
+        imported ? ['/audiobooks'] : ['/ebooks', '/audiobooks']
+      );
+
+      const savedMedia = await getRepository(Media).findOneByOrFail({
+        id: media.id,
+      });
+      assert.equal(savedMedia.serviceId, 20);
+      assert.equal(savedMedia.externalServiceId, imported ? 40 : 41);
+      assert.equal(
+        savedMedia.externalServiceSlug,
+        imported ? 'left-hand-darkness-ebook' : 'left-hand-darkness-audio'
+      );
+      assert.equal(savedMedia.audiobookServiceId, 21);
+      assert.equal(savedMedia.audiobookExternalServiceId, 41);
+
+      const savedRequest = await getRepository(MediaRequest).findOneByOrFail({
+        id: request.id,
+      });
+      assert.equal(savedRequest.status, MediaRequestStatus.COMPLETED);
     });
-
-    const addPayloads: ReadarrBookOptions[] = [];
-    mock.method(
-      ReadarrAPI.prototype,
-      'addBook',
-      async (payload: ReadarrBookOptions) => {
-        addPayloads.push(payload);
-        return {
-          ...payload,
-          id: 41,
-          titleSlug: 'left-hand-darkness-audio',
-        } as Awaited<ReturnType<ReadarrAPI['addBook']>>;
-      }
-    );
-
-    await new MediaRequestSubscriber().sendToReadarr(request);
-
-    assert.deepEqual(
-      addPayloads.map((payload) => payload.rootFolderPath),
-      ['/audiobooks']
-    );
-
-    const savedMedia = await getRepository(Media).findOneByOrFail({
-      id: media.id,
-    });
-    assert.equal(savedMedia.serviceId, 20);
-    assert.equal(savedMedia.externalServiceId, 40);
-    assert.equal(savedMedia.externalServiceSlug, 'left-hand-darkness-ebook');
-    assert.equal(savedMedia.audiobookServiceId, 21);
-    assert.equal(savedMedia.audiobookExternalServiceId, 41);
-
-    const savedRequest = await getRepository(MediaRequest).findOneByOrFail({
-      id: request.id,
-    });
-    assert.equal(savedRequest.status, MediaRequestStatus.COMPLETED);
-  });
 
   it('resets stale music processing status when the last request is declined', async () => {
     const requestedBy = await getRequester();

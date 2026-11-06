@@ -21,9 +21,11 @@ import {
   runWithRequestAdmission,
   type MediaRequestServiceTarget,
 } from '@server/entity/MediaRequest';
+import { recordBookFileAvailability } from '@server/lib/bookAvailability';
 import { hasRequestedEditionFiles } from '@server/lib/editionCompare/availability';
 import { getExternalRuntimeConfig } from '@server/lib/externalRuntimeConfig';
 import { normalizeValidIsbn } from '@server/lib/isbn';
+import { runMediaEntityMutation } from '@server/lib/mediaMutation';
 import {
   RequestStatusStage,
   recordRequestStatusOverride,
@@ -187,6 +189,9 @@ class BookRequestSearchManager {
         operation.bookId = imported.id;
         operation.binderyRequestId = null;
         operation.state = 'available';
+        await this.publishAvailableOperations(operation.request.media.id, [
+          operation,
+        ]);
         await this.storeBinderyBookServiceLink(operation, imported.id);
         await this.finalizeRequest(operation.requestId);
         return;
@@ -1001,6 +1006,35 @@ class BookRequestSearchManager {
       updatedAt: new Date(),
     });
     operation.state = state;
+    if (state === 'available')
+      await this.publishAvailableOperations(operation.request.media.id, [
+        operation,
+      ]);
+  }
+
+  private async publishAvailableOperations(
+    mediaId: number,
+    operations: BookRequestSearch[]
+  ): Promise<Media> {
+    const repository = getRepository(Media);
+    const media = await repository.findOneOrFail({
+      where: { id: mediaId },
+      relations: { identifiers: true },
+    });
+    return runMediaEntityMutation(media, async () => {
+      const current = await repository.findOneByOrFail({ id: mediaId });
+      for (const operation of operations) {
+        if (operation.state === 'available')
+          recordBookFileAvailability(
+            current,
+            operation.format,
+            operation.serviceId,
+            true
+          );
+      }
+      current.status = MediaStatus.AVAILABLE;
+      return repository.save(current);
+    });
   }
 
   private async finishWithoutRelease(
@@ -1103,10 +1137,13 @@ class BookRequestSearchManager {
     const unavailable = operations.find((item) => item.state === 'unavailable');
     const terminalFailure = failed ?? unavailable;
     if (!terminalFailure) {
-      if (
-        isProviderBookEdition(request.preferredEditionId) &&
-        request.status === MediaRequestStatus.APPROVED
-      ) {
+      // The full media save publishes file observations before request history
+      // and notifications inspect the selected recording's completion.
+      request.media = await this.publishAvailableOperations(
+        request.media.id,
+        operations
+      );
+      if (isProviderBookEdition(request.preferredEditionId)) {
         request.status = MediaRequestStatus.COMPLETED;
         request.failureReason = null;
         request.serviceTargets = request.serviceTargets?.map((target) =>
@@ -1127,9 +1164,6 @@ class BookRequestSearchManager {
       // Publish availability before removing the operation. Otherwise the
       // status projection loses its authoritative tracking state and falls
       // back to "Adding to library" until the next availability scan.
-      await getRepository(Media).update(request.media.id, {
-        status: MediaStatus.AVAILABLE,
-      });
       await getRepository(BookRequestSearch).delete({ requestId });
       return;
     }

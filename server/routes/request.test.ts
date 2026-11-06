@@ -609,6 +609,7 @@ describe('GET /request/count', () => {
         tmdbId: 0,
         status: MediaStatus.PARTIALLY_AVAILABLE,
         status4k: MediaStatus.UNKNOWN,
+        availableEbookServiceIds: [0],
         externalServiceId: 101,
         audiobookExternalServiceId: null,
       })
@@ -619,6 +620,8 @@ describe('GET /request/count', () => {
         tmdbId: 0,
         status: MediaStatus.AVAILABLE,
         status4k: MediaStatus.UNKNOWN,
+        availableEbookServiceIds: [0],
+        availableAudiobookServiceIds: [1],
         externalServiceId: 201,
         audiobookExternalServiceId: 202,
       })
@@ -627,7 +630,9 @@ describe('GET /request/count', () => {
       new Media({
         mediaType: MediaType.BOOK,
         tmdbId: 0,
-        status: MediaStatus.PENDING,
+        status: MediaStatus.AVAILABLE,
+        externalServiceId: 301,
+        audiobookExternalServiceId: 302,
         status4k: MediaStatus.UNKNOWN,
       })
     );
@@ -698,6 +703,53 @@ describe('GET /request/count', () => {
         res.body.completed,
       res.body.total
     );
+  });
+  it('counts file-backed books beyond the first bounded batch without treating a pending exact recording as available', async () => {
+    const user = await getRepository(User).findOneByOrFail({
+      email: 'friend@seerr.dev',
+    });
+    const media = await getRepository(Media).save(
+      new Media({
+        mediaType: MediaType.BOOK,
+        tmdbId: 0,
+        status: MediaStatus.AVAILABLE,
+        status4k: MediaStatus.UNKNOWN,
+        availableEbookServiceIds: [0],
+      })
+    );
+    await getRepository(MediaRequest).insert(
+      Array.from({ length: 105 }, () => ({
+        type: MediaType.BOOK,
+        status: MediaRequestStatus.APPROVED,
+        bookFormat: 'ebook' as const,
+        is4k: false,
+        media,
+        requestedBy: user,
+      }))
+    );
+    await getRepository(MediaRequest).insert({
+      type: MediaType.BOOK,
+      status: MediaRequestStatus.APPROVED,
+      bookFormat: 'ebook',
+      preferredEditionId: 'provider-recording-2',
+      is4k: false,
+      media,
+      requestedBy: user,
+      serviceTargets: [
+        {
+          serviceType: 'readarr',
+          format: 'ebook',
+          serverId: 0,
+          status: MediaStatus.PROCESSING,
+        },
+      ],
+    });
+    const agent = await loginAs('friend@seerr.dev', 'test1234');
+    const result = await agent.get('/request/count');
+    assert.equal(result.status, 200);
+    assert.equal(result.body.book, 106);
+    assert.equal(result.body.available, 105);
+    assert.equal(result.body.processing, 1);
   });
 });
 
@@ -943,6 +995,7 @@ describe('GET /request/status', () => {
         status4k: MediaStatus.UNKNOWN,
         serviceId: 1,
         externalServiceId: 101,
+        availableEbookServiceIds: [1],
       }),
       new Media({
         mediaType: MediaType.BOOK,
@@ -951,6 +1004,7 @@ describe('GET /request/status', () => {
         status4k: MediaStatus.UNKNOWN,
         serviceId: 1,
         externalServiceId: 102,
+        availableEbookServiceIds: [1],
       }),
     ]);
     const [targetRequest, siblingRequest] = await requestRepo.save([
@@ -5536,109 +5590,152 @@ describe('POST /request', () => {
     assert.strictEqual(await getRepository(MediaRequest).count(), 2);
   });
 
-  it('allows a complementary audiobook request when an ebook request already exists', async (t) => {
-    const settings = getSettings();
-    settings.readarr = [
-      {
-        id: 21,
-        name: 'Audio Bookshelf',
-        hostname: 'audio.local',
-        port: 8787,
-        apiKey: 'audio-key',
-        useSsl: false,
-        activeProfileId: 31,
-        activeProfileName: 'Audiobooks',
-        activeMetadataProfileId: 32,
-        activeMetadataProfileName: 'Audio Standard',
-        activeDirectory: '/audiobooks',
-        tags: [],
-        is4k: false,
-        isDefault: true,
-        syncEnabled: true,
-        preventSearch: false,
-        tagRequests: false,
-        overrideRule: [],
-        serviceType: 'audiobook',
-      },
-    ];
-    const userRepo = getRepository(User);
-    const mediaRepo = getRepository(Media);
-    const requestRepo = getRepository(MediaRequest);
-    const requestedBy = await userRepo.findOneOrFail({
-      where: { email: 'friend@seerr.dev' },
-    });
-    const existingMedia = await mediaRepo.save(
-      new Media({
-        mediaType: MediaType.BOOK,
-        tmdbId: 0,
-        status: MediaStatus.PENDING,
-        status4k: MediaStatus.UNKNOWN,
-        identifiers: [
-          new MediaIdentifier({
-            provider: MediaIdentifierProvider.OPENLIBRARY,
-            value: 'OL45804W',
-            canonical: true,
-          }),
-          new MediaIdentifier({
-            provider: MediaIdentifierProvider.ISBN,
-            value: '9780441478125',
-            canonical: false,
-          }),
-        ],
-      })
-    );
-    await requestRepo.save(
-      new MediaRequest({
-        type: MediaType.BOOK,
-        media: existingMedia,
-        requestedBy,
-        status: MediaRequestStatus.PENDING,
-        is4k: false,
-        bookFormat: 'ebook',
-      })
-    );
-
-    const getWorkMock = mock.method(
-      OpenLibraryAPI.prototype,
-      'getWork',
-      async () =>
-        ({
-          key: '/works/OL999W',
-          title: 'Complementary Format Book',
-        }) as Awaited<ReturnType<OpenLibraryAPI['getWork']>>
-    );
-    const getWorkEditionsMock = mock.method(
-      OpenLibraryAPI.prototype,
-      'getWorkEditions',
-      async () =>
-        ({
-          size: 1,
-          entries: [
-            {
-              key: '/books/OL999M',
-              isbn_13: ['9780441478125'],
-            },
+  for (const state of [
+    'pending-ebook',
+    'imported-ebook',
+    'removed-audio-history',
+  ])
+    it(`allows missing audiobook admission with ${state}`, async (t) => {
+      const settings = getSettings();
+      settings.readarr = [
+        {
+          id: 21,
+          name: 'Audio Bookshelf',
+          hostname: 'audio.local',
+          port: 8787,
+          apiKey: 'audio-key',
+          useSsl: false,
+          activeProfileId: 31,
+          activeProfileName: 'Audiobooks',
+          activeMetadataProfileId: 32,
+          activeMetadataProfileName: 'Audio Standard',
+          activeDirectory: '/audiobooks',
+          tags: [],
+          is4k: false,
+          isDefault: true,
+          syncEnabled: true,
+          preventSearch: false,
+          tagRequests: false,
+          overrideRule: [],
+          serviceType: 'audiobook',
+        },
+      ];
+      const userRepo = getRepository(User);
+      const mediaRepo = getRepository(Media);
+      const requestRepo = getRepository(MediaRequest);
+      const requestedBy = await userRepo.findOneOrFail({
+        where: { email: 'friend@seerr.dev' },
+      });
+      const existingMedia = await mediaRepo.save(
+        new Media({
+          mediaType: MediaType.BOOK,
+          tmdbId: 0,
+          status:
+            state === 'pending-ebook'
+              ? MediaStatus.PENDING
+              : MediaStatus.AVAILABLE,
+          serviceId: 20,
+          externalServiceId: 40,
+          audiobookServiceId: 21,
+          audiobookExternalServiceId: 41,
+          availableEbookServiceIds: state === 'pending-ebook' ? [] : [20],
+          availableAudiobookServiceIds: [],
+          status4k: MediaStatus.UNKNOWN,
+          identifiers: [
+            new MediaIdentifier({
+              provider: MediaIdentifierProvider.OPENLIBRARY,
+              value: 'OL45804W',
+              canonical: true,
+            }),
+            new MediaIdentifier({
+              provider: MediaIdentifierProvider.ISBN,
+              value: '9780441478125',
+              canonical: false,
+            }),
           ],
-        }) as Awaited<ReturnType<OpenLibraryAPI['getWorkEditions']>>
-    );
-    t.after(() => {
-      getWorkMock.mock.restore();
-      getWorkEditionsMock.mock.restore();
-      settings.readarr = [];
-    });
+        })
+      );
+      await requestRepo.save(
+        new MediaRequest({
+          type: MediaType.BOOK,
+          media: existingMedia,
+          requestedBy,
+          status:
+            state === 'pending-ebook'
+              ? MediaRequestStatus.PENDING
+              : MediaRequestStatus.COMPLETED,
+          is4k: false,
+          bookFormat: 'ebook',
+        })
+      );
 
-    const agent = await loginAs('friend@seerr.dev', 'test1234');
-    const res = await agent.post('/request').send({
-      mediaType: MediaType.BOOK,
-      mediaId: 'OL999W',
-      isbn13: '9780441478125',
-      format: 'audiobook',
-    });
+      if (state === 'removed-audio-history')
+        await requestRepo.save(
+          new MediaRequest({
+            type: MediaType.BOOK,
+            media: existingMedia,
+            requestedBy,
+            status: MediaRequestStatus.COMPLETED,
+            is4k: false,
+            bookFormat: 'audiobook',
+            serviceTargets: [
+              {
+                serviceType: 'readarr',
+                format: 'audiobook',
+                serverId: 21,
+                profileId: 31,
+                metadataProfileId: 32,
+                rootFolder: '/audiobooks',
+                status: MediaStatus.AVAILABLE,
+              },
+            ],
+          })
+        );
 
-    assert.strictEqual(res.status, 201);
-    assert.strictEqual(res.body.bookFormat, 'audiobook');
-    assert.strictEqual(await requestRepo.count(), 2);
-  });
+      const getWorkMock = mock.method(
+        OpenLibraryAPI.prototype,
+        'getWork',
+        async () =>
+          ({
+            key: '/works/OL999W',
+            title: 'Complementary Format Book',
+          }) as Awaited<ReturnType<OpenLibraryAPI['getWork']>>
+      );
+      const getWorkEditionsMock = mock.method(
+        OpenLibraryAPI.prototype,
+        'getWorkEditions',
+        async () =>
+          ({
+            size: 1,
+            entries: [
+              {
+                key: '/books/OL999M',
+                isbn_13: ['9780441478125'],
+              },
+            ],
+          }) as Awaited<ReturnType<OpenLibraryAPI['getWorkEditions']>>
+      );
+      t.after(() => {
+        getWorkMock.mock.restore();
+        getWorkEditionsMock.mock.restore();
+        settings.readarr = [];
+      });
+
+      const agent = await loginAs('friend@seerr.dev', 'test1234');
+      const res = await agent.post('/request').send({
+        mediaType: MediaType.BOOK,
+        mediaId: 'OL999W',
+        isbn13: '9780441478125',
+        format: 'audiobook',
+      });
+
+      assert.strictEqual(res.status, 201);
+      assert.strictEqual(res.body.bookFormat, 'audiobook');
+      assert.strictEqual(
+        await requestRepo.count(),
+        state === 'removed-audio-history' ? 3 : 2
+      );
+    });
 
   it('blocks a both-formats book request when either format already has an active request', async (t) => {
     const settings = getSettings();
@@ -8749,6 +8846,7 @@ describe('POST /request/bulk', () => {
         status: MediaStatus.AVAILABLE,
         status4k: MediaStatus.UNKNOWN,
         externalServiceId: 123,
+        availableEbookServiceIds: [10],
       })
     );
     await getRepository(MediaIdentifier).save(

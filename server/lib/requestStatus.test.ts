@@ -669,6 +669,8 @@ test('movie, series, music, ebook, audiobook, and mixed book requests share the 
     ...request().media,
     mediaType: MediaType.BOOK,
     status: MediaStatus.AVAILABLE,
+    availableEbookServiceIds: [10],
+    availableAudiobookServiceIds: [11],
     serviceId: 10,
     externalServiceId: 20,
     audiobookServiceId: 11,
@@ -696,6 +698,7 @@ test('movie, series, music, ebook, audiobook, and mixed book requests share the 
         type: MediaType.BOOK,
         media: {
           ...bookBase,
+          availableAudiobookServiceIds: [],
           audiobookServiceId: null,
           audiobookExternalServiceId: null,
         },
@@ -824,4 +827,73 @@ test('request failures and declines remain visible as terminal attention states'
   );
   assert.equal(deleted.stage, RequestStatusStage.UNAVAILABLE);
   assert.equal(deleted.needsAttention, true);
+});
+
+test('a global available book with two manager records does not complete the missing format', () => {
+  const media = {
+    ...request().media,
+    mediaType: MediaType.BOOK,
+    status: MediaStatus.AVAILABLE,
+    availableEbookServiceIds: [10],
+    availableAudiobookServiceIds: [],
+    audiobookServiceId: 11,
+    audiobookExternalServiceId: 21,
+  };
+  for (const bookFormat of ['audiobook', 'both'])
+    assert.notEqual(
+      getRequestStatus(
+        request({
+          type: MediaType.BOOK,
+          status: MediaRequestStatus.COMPLETED,
+          bookFormat,
+          media,
+        }),
+        { downloads: [] }
+      ).stage,
+      RequestStatusStage.AVAILABLE
+    );
+});
+test('a provider recording stays incomplete until its exact target confirms imported files', () => {
+  const media = {
+    ...request().media,
+    mediaType: MediaType.BOOK,
+    status: MediaStatus.AVAILABLE,
+    availableEbookServiceIds: [10],
+  };
+  const pending = request({
+    type: MediaType.BOOK,
+    status: MediaRequestStatus.COMPLETED,
+    preferredEditionId: 'provider-recording-1',
+    bookFormat: 'ebook',
+    media,
+    serviceTargets: [
+      {
+        serviceType: 'readarr',
+        format: 'ebook',
+        serverId: 10,
+        status: MediaStatus.PROCESSING,
+      },
+    ],
+  });
+  assert.notEqual(
+    getRequestStatus(pending, { downloads: [] }).stage,
+    RequestStatusStage.AVAILABLE
+  );
+  assert.equal(
+    getRequestStatus(
+      {
+        ...pending,
+        serviceTargets: [
+          {
+            serviceType: 'readarr',
+            format: 'ebook',
+            serverId: 10,
+            status: MediaStatus.AVAILABLE,
+          },
+        ],
+      },
+      { downloads: [] }
+    ).stage,
+    RequestStatusStage.AVAILABLE
+  );
 });

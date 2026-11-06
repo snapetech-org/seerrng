@@ -1,4 +1,5 @@
 import { MediaRequestStatus, MediaStatus } from '@server/constants/media';
+import { isPendingBookAcquisitionTarget } from '@server/lib/bookAvailability';
 
 export type RequestServiceType =
   | 'radarr'
@@ -168,15 +169,15 @@ export const getActiveRequestForDestination = <
   selected: RequestDestination
 ): T | undefined =>
   (requests ?? []).find((request) => {
-    if (!isActiveRequestStatus(request.status)) {
-      return false;
-    }
-
     const { targets, legacy } = getStoredRequestDestinations(request);
-    return targets.some((target) =>
-      legacy
-        ? legacyRequestDestinationCovers(target, selected)
-        : isExactRequestDestination(target, selected)
+    return targets.some(
+      (target) =>
+        (isActiveRequestStatus(request.status) ||
+          (request.status === MediaRequestStatus.COMPLETED &&
+            isPendingBookAcquisitionTarget(target))) &&
+        (legacy
+          ? legacyRequestDestinationCovers(target, selected)
+          : isExactRequestDestination(target, selected))
     );
   });
 

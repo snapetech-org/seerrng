@@ -3389,9 +3389,9 @@ export class MediaRequestSubscriber implements EntitySubscriberInterface<MediaRe
           tags,
           externalServiceId: localBookId,
           externalServiceSlug: result.titleSlug ?? providerBookId,
-          status: isProviderBookEdition(entity.preferredEditionId)
-            ? MediaStatus.PROCESSING
-            : media.status,
+          status: hasAvailableBookFormat(media, serviceType)
+            ? MediaStatus.AVAILABLE
+            : MediaStatus.PROCESSING,
         });
 
         const resultIsbn =
@@ -3467,11 +3467,8 @@ export class MediaRequestSubscriber implements EntitySubscriberInterface<MediaRe
             ? (['audiobook'] as const)
             : (['ebook'] as const);
       let lookupTerm: string | undefined;
-      const formatsToDispatch = targetFormats.filter((serviceType) =>
-        serviceType === 'audiobook'
-          ? media.audiobookServiceId === null ||
-            media.audiobookExternalServiceId === null
-          : media.serviceId === null || media.externalServiceId === null
+      const formatsToDispatch = targetFormats.filter(
+        (serviceType) => !hasAvailableBookFormat(media, serviceType)
       );
       const selectedTargets = formatsToDispatch.map((serviceType) => ({
         serviceType,

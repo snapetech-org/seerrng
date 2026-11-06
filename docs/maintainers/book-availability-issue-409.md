@@ -52,7 +52,7 @@ manifest, contact sheets and full-size comparisons. Initial harness failures
 are retained separately; corrected checks use the actual title including its
 publication year and the documented media-list sort parameter.
 
-## Still Required Before Closing 409
+## Initial Milestone Limitation (Superseded by the Candidate Below)
 
 The aggregate media status cannot reliably distinguish an imported ebook from a
 queued audiobook when both manager record IDs exist. The shared availability
@@ -66,3 +66,48 @@ This milestone repairs cancellation and incorrect detail labels; it does not
 claim that the entire mixed-format availability report is fixed. Publication
 of this follow-up must be recorded separately from the frozen v3.72.16 UI
 replacement candidate.
+
+## Per-format File Evidence Fix
+
+The follow-up records `availableEbookServiceIds` and
+`availableAudiobookServiceIds` separately from manager record IDs. Readarr,
+Chaptarr and Bindery scans and successful acquisition tracking publish actual
+file observations. Each destination can remove only its own observation.
+Incomplete file statistics preserve a previous observation. Audiobookshelf
+and Plex library evidence remains independent, and ABS cleanup reloads the
+media row under its mutation lock before changing availability.
+
+Dispatch, completion/history, format labels, request cards, author/series work
+cards, library eligibility, discovery and default-format selection use this
+file-backed state. A completed provider handoff with an acquiring target remains requested without becoming available or enabling a duplicate request. Confirmed removal clears the removed destination's evidence.
+Exact provider recordings additionally require their selected target to report
+imported files; a manager handoff does not establish recording availability.
+
+SQLite and PostgreSQL migrations add nullable text observations without deriving
+file evidence from existing IDs. Legacy manager-only AVAILABLE rows become
+UNKNOWN until the next enabled availability scan. Operators should rescan their
+enabled book services after upgrading. Migration reruns preserve positive
+observations; rollback removes the new columns without resurrecting the old
+unverified availability claims. Native PostgreSQL 16 migration up, repeat and down checks passed on an isolated local database.
+
+Local qualification is complete; #409 stays open pending CI on the committed
+main revision. The production server/client build, prebuild contracts and lint
+(no errors) pass. The final admission/helper suite passes 257 tests, including
+full request routes, stale completion, mixed-format files and alternate profiles.
+Earlier focused scanner, subscriber, cleanup, notification and tracking suites
+passed; SQLite and isolated PostgreSQL 16 migration up/repeat/down checks pass.
+
+Headless Chromium against the production build passes eight book states across
+SeerrOrig and SeerrNGJ at 390×900 and 1440×900. The checks exercise missing-format
+requests, bibliography selection, acquiring-target duplicate protection and
+alternate-profile requests. Author, series, profile, request-list and discovery
+pages pass another four browser groups (20 captures). Matched published-v16
+and candidate screenshots were visually inspected: 32 book summary captures,
+20 shared consumer pairs and request dialogs retain their geometry while
+correcting availability and request eligibility. Provider responses are fixtures;
+this is not a claim of live Chaptarr/ABS acquisition acceptance.
+
+The new migration intentionally requires an enabled service rescan to populate
+legacy file observations. The separate compact-summary readability problem at
+320px remains tracked in `compact-summary-theme-validation.md`; no CSS is
+changed by this availability milestone.

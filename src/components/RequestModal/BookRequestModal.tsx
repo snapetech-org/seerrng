@@ -18,7 +18,6 @@ import RequestMediaCard from '@app/components/RequestModal/RequestMediaCard';
 import {
   canPromotePendingDestinationRequests,
   createRequestDestination,
-  isRequestDestinationAvailable,
   isRequestDestinationRequested,
 } from '@app/components/RequestModal/requestAvailability';
 import useAdvancedOptionsDisclosure from '@app/hooks/useAdvancedOptionsDisclosure';
@@ -44,6 +43,11 @@ import type { NonFunctionProperties } from '@server/interfaces/api/common';
 import type { ServiceCommonServer } from '@server/interfaces/api/serviceInterfaces';
 import type { QuotaResponse } from '@server/interfaces/api/userInterfaces';
 import type { UserPreferredLanguages } from '@server/interfaces/api/userSettingsInterfaces';
+import {
+  hasAvailableBookFormat,
+  isActiveBookFormatRequest,
+} from '@server/lib/bookAvailability';
+import { isBookDestinationFileAvailable } from '@server/lib/bookRequestDestination';
 import { Permission, hasAutoApprovePermission } from '@server/lib/permissions';
 import type { BookDetails } from '@server/models/Book';
 import { isProviderBookEdition } from '@server/utils/bookEdition';
@@ -295,32 +299,13 @@ const BookRequestModal = ({
         !editionComparison?.supportsAlongside));
   const selectedDestinations =
     bookFormat === 'audiobook' ? [audiobookDestination] : [ebookDestination];
-  const destinationAvailable = (format: 'ebook' | 'audiobook') => {
-    const target = format === 'ebook' ? ebookDestination : audiobookDestination;
-    const externalServiceId =
-      format === 'ebook'
-        ? data?.mediaInfo?.externalServiceId
-        : data?.mediaInfo?.audiobookExternalServiceId;
-    const serviceId =
-      format === 'ebook'
-        ? data?.mediaInfo?.serviceId
-        : data?.mediaInfo?.audiobookServiceId;
-
-    return isRequestDestinationAvailable(
-      data?.mediaInfo
-        ? {
-            ...data.mediaInfo,
-            status:
-              data.mediaInfo.status === MediaStatus.AVAILABLE &&
-              externalServiceId != null
-                ? MediaStatus.AVAILABLE
-                : MediaStatus.UNKNOWN,
-            serviceId,
-          }
-        : undefined,
-      target
+  const destinationAvailable = (format: 'ebook' | 'audiobook') =>
+    !!data?.mediaInfo &&
+    isBookDestinationFileAvailable(
+      data.mediaInfo,
+      format === 'ebook' ? ebookDestination : audiobookDestination,
+      data.mediaInfo.requests
     );
-  };
   const selectedDestinationAvailable =
     !editRequest &&
     selectedDestinations.length > 0 &&
@@ -514,22 +499,14 @@ const BookRequestModal = ({
       return;
     }
 
-    const hasEbookServiceLink =
-      data.mediaInfo.serviceId !== null &&
-      data.mediaInfo.serviceId !== undefined &&
-      data.mediaInfo.externalServiceId !== null &&
-      data.mediaInfo.externalServiceId !== undefined;
-    const hasAudiobookServiceLink =
-      data.mediaInfo.audiobookServiceId !== null &&
-      data.mediaInfo.audiobookServiceId !== undefined &&
-      data.mediaInfo.audiobookExternalServiceId !== null &&
-      data.mediaInfo.audiobookExternalServiceId !== undefined;
+    const hasEbookServiceLink = hasAvailableBookFormat(data.mediaInfo, 'ebook');
+    const hasAudiobookServiceLink = hasAvailableBookFormat(
+      data.mediaInfo,
+      'audiobook'
+    );
     const activeRequests =
-      data.mediaInfo.requests?.filter(
-        (request) =>
-          request.status !== MediaRequestStatus.DECLINED &&
-          request.status !== MediaRequestStatus.FAILED &&
-          request.status !== MediaRequestStatus.COMPLETED
+      data.mediaInfo.requests?.filter((request) =>
+        isActiveBookFormatRequest(request)
       ) ?? [];
     const hasActiveEbookRequest = activeRequests.some(
       (request) =>

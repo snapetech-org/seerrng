@@ -289,6 +289,9 @@ describe('Audiobookshelf Scanner', () => {
       status: MediaStatus.AVAILABLE,
       ebookServiceId: 3,
     });
+    await getRepository(Media).update(multiServiceBook.id, {
+      availableEbookServiceIds: [3],
+    });
 
     await audiobookshelfScanner.run();
 

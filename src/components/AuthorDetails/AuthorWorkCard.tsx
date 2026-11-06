@@ -4,7 +4,11 @@ import AvailabilityValue from '@app/components/MediaDetails/AvailabilityValue';
 import globalMessages from '@app/i18n/globalMessages';
 import { encodeApiPathSegment } from '@app/utils/apiPath';
 import defineMessages from '@app/utils/defineMessages';
-import { MediaRequestStatus, MediaStatus } from '@server/constants/media';
+import { MediaStatus } from '@server/constants/media';
+import {
+  hasAvailableBookFormat,
+  isActiveBookFormatRequest,
+} from '@server/lib/bookAvailability';
 import type { BookResult } from '@server/models/Book';
 import Link from 'next/link';
 import { useIntl } from 'react-intl';
@@ -25,19 +29,10 @@ export const getBookFormatState = (
   format: 'ebook' | 'audiobook'
 ): 'available' | 'requested' | 'unavailable' => {
   const media = work.mediaInfo;
-  const available =
-    format === 'ebook'
-      ? media?.serviceId != null && media.externalServiceId != null
-      : media?.audiobookServiceId != null &&
-        media.audiobookExternalServiceId != null;
+  const available = !!media && hasAvailableBookFormat(media, format);
   if (available) return 'available';
-  const requested = (media?.requests ?? []).some(
-    (request) =>
-      request.status !== MediaRequestStatus.DECLINED &&
-      request.status !== MediaRequestStatus.FAILED &&
-      request.status !== MediaRequestStatus.COMPLETED &&
-      (request.bookFormat === 'both' ||
-        (request.bookFormat ?? 'ebook') === format)
+  const requested = (media?.requests ?? []).some((request) =>
+    isActiveBookFormatRequest(request, format)
   );
   return requested ? 'requested' : 'unavailable';
 };

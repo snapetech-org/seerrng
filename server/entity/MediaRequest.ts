@@ -24,6 +24,7 @@ import MediaServiceStatus from '@server/entity/MediaServiceStatus';
 import OverrideRule from '@server/entity/OverrideRule';
 import type { MediaRequestBody } from '@server/interfaces/api/requestInterfaces';
 import type { SeasonEpisodeSelection } from '@server/interfaces/api/seasonInterfaces';
+import { isBookDestinationFileAvailable } from '@server/lib/bookRequestDestination';
 import { compareBookEditions } from '@server/lib/editionCompare';
 import {
   normalizeMusicBrainzId,
@@ -1733,38 +1734,17 @@ export class MediaRequest {
         : destinationRequests;
       const isLegacyBookTargetAvailable = (
         target: MediaRequestServiceTarget
-      ): boolean => {
-        if (
-          hasEditionChoice ||
-          media.status !== MediaStatus.AVAILABLE ||
-          hasTrackedAvailableDestination(destinationRequests, target)
-        ) {
-          return false;
-        }
-
-        const isAudiobook = target.format === 'audiobook';
-        const externalServiceId = isAudiobook
-          ? media.audiobookExternalServiceId
-          : media.externalServiceId;
-        const serviceId = isAudiobook
-          ? media.audiobookServiceId
-          : media.serviceId;
-        return (
-          externalServiceId != null &&
-          (serviceId == null || serviceId === target.serverId)
-        );
-      };
+      ): boolean =>
+        !hasEditionChoice &&
+        isBookDestinationFileAvailable(media, target, destinationRequests);
       const uncoveredBookTargets = bookTargets.filter(
         (target) =>
           !isLegacyBookTargetAvailable(target) &&
-          !isDestinationAvailableInTargets(editionRequests, target) &&
           !isDestinationCoveredByActiveRequest(blockingRequests, target)
       );
 
       const unavailableBookTargets = bookTargets.filter(
-        (target) =>
-          !isLegacyBookTargetAvailable(target) &&
-          !isDestinationAvailableInTargets(editionRequests, target)
+        (target) => !isLegacyBookTargetAvailable(target)
       );
       const promotablePendingRequest = findPromotablePendingRequest(
         editionRequests,

@@ -18,6 +18,7 @@ import { getRepository } from '@server/datasource';
 import { Blocklist } from '@server/entity/Blocklist';
 import type { User } from '@server/entity/User';
 import { Watchlist } from '@server/entity/Watchlist';
+import { bookFileServiceIdsTransformer } from '@server/lib/bookAvailability';
 import type { DownloadingItem } from '@server/lib/downloadtracker';
 import downloadTracker from '@server/lib/downloadtracker';
 import { normalizeMusicBrainzId } from '@server/lib/externalIds';
@@ -344,6 +345,20 @@ class Media {
   })
   public availableMusicServiceIds?: number[] | null;
 
+  @Column({
+    type: 'text',
+    nullable: true,
+    transformer: bookFileServiceIdsTransformer,
+  })
+  public availableEbookServiceIds?: number[] | null;
+
+  @Column({
+    type: 'text',
+    nullable: true,
+    transformer: bookFileServiceIdsTransformer,
+  })
+  public availableAudiobookServiceIds?: number[] | null;
+
   @Column({ nullable: true, type: 'int' })
   public serviceId4k?: number | null;
 
@@ -446,6 +461,7 @@ class Media {
 
     this.serviceId = null;
     this.availableMusicServiceIds = null;
+    this.availableEbookServiceIds = null;
     this.externalServiceId = null;
     this.externalServiceSlug = null;
     this.comicServiceType = null;
@@ -462,6 +478,7 @@ class Media {
   public resetServiceData(): void {
     this.resetServiceDataForResolution(false);
     this.resetServiceDataForResolution(true);
+    this.availableAudiobookServiceIds = null;
     this.audiobookServiceId = null;
     this.audiobookExternalServiceId = null;
     this.audiobookExternalServiceSlug = null;

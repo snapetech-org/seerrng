@@ -21,6 +21,10 @@ import SeasonRequest, {
 } from '@server/entity/SeasonRequest';
 import type { AudioPlaybackFormat } from '@server/lib/audioPlaybackFormat';
 import {
+  getBookAvailabilityStatus,
+  recordBookFileAvailability,
+} from '@server/lib/bookAvailability';
+import {
   normalizeExternalBookId,
   normalizeMusicBrainzId,
 } from '@server/lib/externalIds';
@@ -93,6 +97,7 @@ export interface ProcessOptions {
   title?: string;
   processing?: boolean;
   hasFile?: boolean;
+  bookFileObservationKnown?: boolean;
   deferStatusReset?: boolean;
   preserveInactiveServiceIdentity?: boolean;
   secondaryIdentifiers?: {
@@ -973,6 +978,7 @@ class BaseScanner<T> {
       processing = false,
       title = 'Unknown Book',
       hasFile = true,
+      bookFileObservationKnown = true,
       secondaryIdentifiers = [],
       bookServiceType = 'ebook',
       audiobookLibrarySource,
@@ -1047,39 +1053,20 @@ class BaseScanner<T> {
                 if (existing) {
                   let changedExisting = false;
                   const previousStatus = existing.status;
-                  const hasAvailableOtherBookFormat =
-                    previousStatus === MediaStatus.AVAILABLE &&
-                    processing &&
-                    (bookServiceType === 'audiobook'
-                      ? existing.serviceId != null &&
-                        existing.externalServiceId != null
-                      : (existing.audiobookServiceId != null &&
-                          existing.audiobookExternalServiceId != null) ||
-                        (existing.audiobookLibraryServiceId != null &&
-                          existing.audiobookLibraryItemId != null));
-
-                  existing.status =
-                    !processing && hasFile
-                      ? MediaStatus.AVAILABLE
-                      : !processing &&
-                          !hasFile &&
-                          previousStatus === MediaStatus.PROCESSING
-                        ? MediaStatus.UNKNOWN
-                        : processing
-                          ? hasAvailableOtherBookFormat
-                            ? MediaStatus.AVAILABLE
-                            : previousStatus === MediaStatus.DELETED
-                              ? MediaStatus.DELETED
-                              : MediaStatus.PROCESSING
-                          : previousStatus;
-
-                  if (existing.status !== previousStatus) {
-                    changedExisting = true;
-                    if (mediaAddedAt) {
-                      existing.mediaAddedAt = mediaAddedAt;
-                    }
+                  if (
+                    bookFileObservationKnown &&
+                    serviceId !== undefined &&
+                    !audiobookLibrarySource &&
+                    ratingKey === undefined
+                  ) {
+                    changedExisting =
+                      recordBookFileAvailability(
+                        existing,
+                        bookServiceType,
+                        serviceId,
+                        hasFile
+                      ) || changedExisting;
                   }
-
                   if (!existing.mediaAddedAt && mediaAddedAt) {
                     existing.mediaAddedAt = mediaAddedAt;
                     changedExisting = true;
@@ -1154,6 +1141,15 @@ class BaseScanner<T> {
                   ) {
                     existing.ratingKey = ratingKey;
                     changedExisting = true;
+                  }
+
+                  existing.status = getBookAvailabilityStatus(
+                    existing,
+                    processing
+                  );
+                  if (existing.status !== previousStatus) {
+                    changedExisting = true;
+                    if (mediaAddedAt) existing.mediaAddedAt = mediaAddedAt;
                   }
 
                   if (changedExisting) {
@@ -1237,12 +1233,25 @@ class BaseScanner<T> {
                       audiobookLibraryServiceId:
                         audiobookLibrarySource?.serviceId,
                       audiobookLibraryItemId: audiobookLibrarySource?.itemId,
-                      status:
-                        !processing && hasFile
-                          ? MediaStatus.AVAILABLE
-                          : processing
-                            ? MediaStatus.PROCESSING
-                            : MediaStatus.UNKNOWN,
+                      availableEbookServiceIds:
+                        bookServiceType === 'ebook' &&
+                        serviceId !== undefined &&
+                        hasFile
+                          ? [serviceId]
+                          : [],
+                      availableAudiobookServiceIds:
+                        bookServiceType === 'audiobook' &&
+                        serviceId !== undefined &&
+                        hasFile &&
+                        !audiobookLibrarySource &&
+                        ratingKey === undefined
+                          ? [serviceId]
+                          : [],
+                      status: hasFile
+                        ? MediaStatus.AVAILABLE
+                        : processing
+                          ? MediaStatus.PROCESSING
+                          : MediaStatus.UNKNOWN,
                       status4k: MediaStatus.UNKNOWN,
                     })
                   );

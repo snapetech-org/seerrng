@@ -15,7 +15,12 @@ import {
   usePersistentResponse,
 } from '@app/utils/swrCache';
 import { getViewerAvailabilityPresentation } from '@app/utils/viewerAvailabilityPresentation';
-import { MediaRequestStatus, MediaStatus } from '@server/constants/media';
+import { MediaStatus, type MediaRequestStatus } from '@server/constants/media';
+import type { MediaRequestServiceTarget } from '@server/entity/MediaRequest';
+import {
+  hasAvailableBookFormat,
+  isActiveBookFormatRequest,
+} from '@server/lib/bookAvailability';
 import { buildDiscoverQueryString } from '@server/utils/discoverQuery';
 import axios from 'axios';
 import { useRouter } from 'next/router';
@@ -114,6 +119,9 @@ interface BaseMedia {
     status4k?: MediaStatus;
     hasActiveRequest?: boolean;
     viewerRequestCoverage?: { standard?: boolean; fourK?: boolean };
+    availableEbookServiceIds?: number[] | null;
+    availableAudiobookServiceIds?: number[] | null;
+    ratingKey?: string | null;
     serviceId?: number | null;
     externalServiceId?: number | null;
     audiobookServiceId?: number | null;
@@ -123,6 +131,9 @@ interface BaseMedia {
     requests?: {
       status: MediaRequestStatus;
       bookFormat?: 'ebook' | 'audiobook' | 'both' | null;
+      serviceTargets?:
+        | Pick<MediaRequestServiceTarget, 'serviceType' | 'format' | 'status'>[]
+        | null;
     }[];
   };
   availableQualities?: ('MP3' | 'FLAC')[];
@@ -153,44 +164,16 @@ const hasLinkedBookFormat = (
   mediaInfo: NonNullable<BaseMedia['mediaInfo']>,
   format: 'ebook' | 'audiobook'
 ) => {
-  if (format === 'audiobook') {
-    return (
-      (mediaInfo.audiobookServiceId !== null &&
-        mediaInfo.audiobookServiceId !== undefined &&
-        mediaInfo.audiobookExternalServiceId !== null &&
-        mediaInfo.audiobookExternalServiceId !== undefined) ||
-      (mediaInfo.audiobookLibraryServiceId !== null &&
-        mediaInfo.audiobookLibraryServiceId !== undefined &&
-        !!mediaInfo.audiobookLibraryItemId)
-    );
-  }
-
-  return (
-    mediaInfo.serviceId !== null &&
-    mediaInfo.serviceId !== undefined &&
-    mediaInfo.externalServiceId !== null &&
-    mediaInfo.externalServiceId !== undefined
-  );
+  return hasAvailableBookFormat(mediaInfo, format);
 };
 
 const hasActiveBookRequest = (
   mediaInfo: NonNullable<BaseMedia['mediaInfo']>,
   format: 'ebook' | 'audiobook'
-) => {
-  return (mediaInfo.requests ?? []).some((request) => {
-    if (
-      request.status === MediaRequestStatus.DECLINED ||
-      request.status === MediaRequestStatus.FAILED ||
-      request.status === MediaRequestStatus.COMPLETED
-    ) {
-      return false;
-    }
-
-    const requestFormat = request.bookFormat ?? 'ebook';
-
-    return requestFormat === 'both' || requestFormat === format;
-  });
-};
+) =>
+  (mediaInfo.requests ?? []).some((request) =>
+    isActiveBookFormatRequest(request, format)
+  );
 
 const isMissingBookFormat = (item: BaseMedia) => {
   if (

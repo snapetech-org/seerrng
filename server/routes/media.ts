@@ -22,6 +22,10 @@ import type {
   MediaResultsResponse,
   MediaWatchDataResponse,
 } from '@server/interfaces/api/mediaInterfaces';
+import {
+  hasBookFileEvidence,
+  recordBookFileAvailability,
+} from '@server/lib/bookAvailability';
 import { runWithConfigurationAdmission } from '@server/lib/configurationAdmission';
 import { getExternalRuntimeConfig } from '@server/lib/externalRuntimeConfig';
 import {
@@ -881,6 +885,14 @@ mediaRoutes.delete(
                         media.status = MediaStatus.DELETED;
                         media.resetServiceData();
                       } else if (media.mediaType === MediaType.BOOK) {
+                        recordBookFileAvailability(
+                          media,
+                          target.quality === 'Audiobook'
+                            ? 'audiobook'
+                            : 'ebook',
+                          target.serviceId,
+                          false
+                        );
                         if (
                           target.quality === 'Book' &&
                           !remaining.some((copy) => copy.quality === 'Book')
@@ -892,11 +904,16 @@ mediaRoutes.delete(
                             (copy) => copy.quality === 'Audiobook'
                           )
                         ) {
+                          media.availableAudiobookServiceIds = [];
                           media.audiobookServiceId = null;
                           media.audiobookExternalServiceId = null;
                           media.audiobookExternalServiceSlug = null;
                         }
-                        media.status = MediaStatus.PARTIALLY_AVAILABLE;
+                        media.status =
+                          hasBookFileEvidence(media, 'ebook') ||
+                          hasBookFileEvidence(media, 'audiobook')
+                            ? MediaStatus.PARTIALLY_AVAILABLE
+                            : MediaStatus.UNKNOWN;
                       }
                       await repository.save(media);
                     }
@@ -1227,19 +1244,11 @@ mediaRoutes.delete(
                   const bookRemovalErrors: unknown[] = [];
 
                   const updateBookStatus = async () => {
-                    const hasRemainingBookServiceLink =
-                      (media.serviceId !== null &&
-                        media.serviceId !== undefined &&
-                        media.externalServiceId !== null &&
-                        media.externalServiceId !== undefined) ||
-                      (media.audiobookServiceId !== null &&
-                        media.audiobookServiceId !== undefined &&
-                        media.audiobookExternalServiceId !== null &&
-                        media.audiobookExternalServiceId !== undefined);
-
-                    media.status = hasRemainingBookServiceLink
-                      ? MediaStatus.PARTIALLY_AVAILABLE
-                      : MediaStatus.DELETED;
+                    media.status =
+                      hasBookFileEvidence(media, 'ebook') ||
+                      hasBookFileEvidence(media, 'audiobook')
+                        ? MediaStatus.PARTIALLY_AVAILABLE
+                        : MediaStatus.DELETED;
                     await mediaRepository.save(media);
                   };
 
@@ -1282,6 +1291,12 @@ mediaRoutes.delete(
                         }
                       }
                       removedBookFormat = true;
+                      recordBookFileAvailability(
+                        media,
+                        'ebook',
+                        media.serviceId,
+                        false
+                      );
                       media.serviceId = null;
                       media.externalServiceId = null;
                       media.externalServiceSlug = null;
@@ -1334,6 +1349,12 @@ mediaRoutes.delete(
                         }
                       }
                       removedBookFormat = true;
+                      recordBookFileAvailability(
+                        media,
+                        'audiobook',
+                        media.audiobookServiceId,
+                        false
+                      );
                       media.audiobookServiceId = null;
                       media.audiobookExternalServiceId = null;
                       media.audiobookExternalServiceSlug = null;

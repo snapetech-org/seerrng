@@ -59,6 +59,10 @@ import type {
 } from '@server/interfaces/api/requestInterfaces';
 import type { ServiceCommonServer } from '@server/interfaces/api/serviceInterfaces';
 import type { QuotaResponse } from '@server/interfaces/api/userInterfaces';
+import {
+  hasAvailableBookFormat,
+  isActiveBookFormatRequest,
+} from '@server/lib/bookAvailability';
 import type {
   AuthorDetails,
   BookResult,
@@ -312,31 +316,14 @@ const chunkItems = <T,>(sourceItems: T[], chunkSize: number): T[][] => {
 const hasBookFormat = (
   media: Media | undefined,
   format: 'ebook' | 'audiobook'
-) => {
-  if (!media) {
-    return false;
-  }
-
-  return format === 'ebook'
-    ? media.externalServiceId !== null && media.externalServiceId !== undefined
-    : media.audiobookExternalServiceId !== null &&
-        media.audiobookExternalServiceId !== undefined;
-};
-
+) => !!media && hasAvailableBookFormat(media, format);
 const hasBookRequest = (
   media: Media | undefined,
   format: 'ebook' | 'audiobook'
 ) =>
-  (media?.requests ?? []).some((request) => {
-    if (!isActiveRequest(request.status)) {
-      return false;
-    }
-
-    return (
-      request.bookFormat === 'both' ||
-      (request.bookFormat ?? 'ebook') === format
-    );
-  });
+  (media?.requests ?? []).some((request) =>
+    isActiveBookFormatRequest(request, format)
+  );
 
 const getBookIneligibleReason = (
   item: BulkItem,

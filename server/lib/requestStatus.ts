@@ -13,6 +13,7 @@ import MediaRequestStatusEvent from '@server/entity/MediaRequestStatusEvent';
 import { RequestDispatchOutbox } from '@server/entity/RequestDispatchOutbox';
 import { isActiveSeasonRequest } from '@server/entity/SeasonRequest';
 import type { User } from '@server/entity/User';
+import { isBookRequestFileAvailable } from '@server/lib/bookAvailability';
 import type {
   DownloadingItem,
   ServarrHistoryEvidence,
@@ -25,7 +26,6 @@ import {
   reconcileRequestedMusicAvailability,
 } from '@server/lib/musicAvailability';
 import logger from '@server/logger';
-import { isProviderBookEdition } from '@server/utils/bookEdition';
 import { readarrServiceSupportsFormat } from '@server/utils/readarrService';
 import type { EntityManager, Repository } from 'typeorm';
 import { In, MoreThan } from 'typeorm';
@@ -187,6 +187,9 @@ type RequestMediaLike = {
   mediaType: MediaType;
   status: MediaStatus;
   status4k: MediaStatus;
+  availableEbookServiceIds?: number[] | null;
+  availableAudiobookServiceIds?: number[] | null;
+  ratingKey?: string | null;
   serviceId?: number | null;
   serviceId4k?: number | null;
   externalServiceId?: number | null;
@@ -423,23 +426,8 @@ const isRequestSatisfied = (request: RequestLike): boolean => {
     return false;
   }
 
-  if (request.type === MediaType.BOOK) {
-    if (isProviderBookEdition(request.preferredEditionId))
-      return request.status === MediaRequestStatus.COMPLETED;
-    if (!isAvailableStatus(mediaStatus)) {
-      return false;
-    }
-    if (request.bookFormat === 'audiobook') {
-      return hasRequestedBookFormat(request.media, 'audiobook');
-    }
-    if (request.bookFormat === 'both') {
-      return (
-        hasRequestedBookFormat(request.media, 'ebook') &&
-        hasRequestedBookFormat(request.media, 'audiobook')
-      );
-    }
-    return hasRequestedBookFormat(request.media, 'ebook');
-  }
+  if (request.type === MediaType.BOOK)
+    return isBookRequestFileAvailable(request.media, request);
 
   if (request.type === MediaType.TV && request.seasons?.length) {
     const seasonStatus = request.is4k ? 'status4k' : 'status';

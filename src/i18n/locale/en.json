@@ -8884,6 +8884,7 @@
   "utils.ApiMessage.m993cdaff70de0c2740f6": "Invalid TMDB TV response",
   "utils.ApiMessage.m9943ae441ce7ed4904cc": "import failed with retryable error",
   "utils.ApiMessage.m9992ab85d5d02d4d10fd": "ROMarrNG request contract v{value0} is not supported",
+  "utils.ApiMessage.m99a305719d8f34ccc749": "A valid book service ID is required.",
   "utils.ApiMessage.m99b640461f5f2ec4713d": "tags must contain positive integers no greater than {value0}.",
   "utils.ApiMessage.m9a0592b739db24da9f2f": "Could not start the collection queue. Try again later.",
   "utils.ApiMessage.m9aa12d6ba1cebc834ab3": "Provided URL is not a Jellyfin avatar.",

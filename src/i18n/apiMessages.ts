@@ -2034,6 +2034,7 @@ export const apiMessages: Record<
   m993cdaff70de0c2740f6: 'Invalid TMDB TV response',
   m9943ae441ce7ed4904cc: 'import failed with retryable error',
   m9992ab85d5d02d4d10fd: 'ROMarrNG request contract v{value0} is not supported',
+  m99a305719d8f34ccc749: 'A valid book service ID is required.',
   m99b640461f5f2ec4713d:
     'tags must contain positive integers no greater than {value0}.',
   m9a0592b739db24da9f2f:

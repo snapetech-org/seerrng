@@ -50,6 +50,7 @@ import {
 import type { MediaRequest } from '@server/entity/MediaRequest';
 import type { NonFunctionProperties } from '@server/interfaces/api/common';
 import type { RequestResultsResponse } from '@server/interfaces/api/requestInterfaces';
+import { hasAvailableBookFormat } from '@server/lib/bookAvailability';
 import type { BookDetails } from '@server/models/Book';
 import type { ComicDetails } from '@server/models/Comic';
 import type { MagazineDetails } from '@server/models/Magazine';
@@ -243,22 +244,14 @@ const getRequestServiceUrl = (request: NonFunctionProperties<MediaRequest>) => {
   return request.is4k ? request.media.serviceUrl4k : request.media.serviceUrl;
 };
 
-const hasBookFormat = (
+// Removal targets manager records, including pending records with no files.
+const hasManagedBookFormat = (
   request: NonFunctionProperties<MediaRequest>,
   format: 'ebook' | 'audiobook'
-) => {
-  if (format === 'audiobook') {
-    return (
-      request.media.audiobookExternalServiceId !== null &&
-      request.media.audiobookExternalServiceId !== undefined
-    );
-  }
-
-  return (
-    request.media.externalServiceId !== null &&
-    request.media.externalServiceId !== undefined
-  );
-};
+) =>
+  format === 'ebook'
+    ? request.media.externalServiceId != null
+    : request.media.audiobookExternalServiceId != null;
 
 const getRequestMediaStatus = (
   request: NonFunctionProperties<MediaRequest>
@@ -268,14 +261,16 @@ const getRequestMediaStatus = (
   }
 
   if (request.bookFormat === 'audiobook') {
-    return hasBookFormat(request, 'audiobook')
+    return hasAvailableBookFormat(request.media, 'audiobook')
       ? MediaStatus.AVAILABLE
-      : request.media.status;
+      : request.media.status === MediaStatus.AVAILABLE
+        ? MediaStatus.UNKNOWN
+        : request.media.status;
   }
 
   if (request.bookFormat === 'both') {
-    const hasEbook = hasBookFormat(request, 'ebook');
-    const hasAudiobook = hasBookFormat(request, 'audiobook');
+    const hasEbook = hasAvailableBookFormat(request.media, 'ebook');
+    const hasAudiobook = hasAvailableBookFormat(request.media, 'audiobook');
 
     if (hasEbook && hasAudiobook) {
       return MediaStatus.AVAILABLE;
@@ -285,12 +280,16 @@ const getRequestMediaStatus = (
       return MediaStatus.PARTIALLY_AVAILABLE;
     }
 
-    return request.media.status;
+    return request.media.status === MediaStatus.AVAILABLE
+      ? MediaStatus.UNKNOWN
+      : request.media.status;
   }
 
-  return hasBookFormat(request, 'ebook')
+  return hasAvailableBookFormat(request.media, 'ebook')
     ? MediaStatus.AVAILABLE
-    : request.media.status;
+    : request.media.status === MediaStatus.AVAILABLE
+      ? MediaStatus.UNKNOWN
+      : request.media.status;
 };
 
 interface RequestItemErrorProps {
@@ -686,13 +685,13 @@ const RequestItem = ({ request, revalidateList }: RequestItemProps) => {
   >(null);
   const hasPartialBookService =
     requestData?.type === 'book' && requestData.bookFormat === 'both'
-      ? hasBookFormat(requestData, 'ebook') !==
-        hasBookFormat(requestData, 'audiobook')
+      ? hasManagedBookFormat(requestData, 'ebook') !==
+        hasManagedBookFormat(requestData, 'audiobook')
       : false;
   const removableBookFormat =
     requestData?.type === 'book' && requestData.bookFormat === 'both'
       ? hasPartialBookService
-        ? hasBookFormat(requestData, 'ebook')
+        ? hasManagedBookFormat(requestData, 'ebook')
           ? 'ebook'
           : 'audiobook'
         : 'both'

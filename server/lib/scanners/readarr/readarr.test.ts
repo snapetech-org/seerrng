@@ -425,6 +425,7 @@ describe('Readarr Scanner', () => {
     media.serviceId = 10;
     media.externalServiceId = 100;
     media.externalServiceSlug = 'ebook-slug';
+    media.availableEbookServiceIds = [10];
     await getRepository(Media).save(media);
 
     configureReadarr([
@@ -583,6 +584,7 @@ describe('Readarr Scanner', () => {
   it('keeps an available ebook available while audiobook is still processing', async () => {
     const media = await seedBook('9780000000007', MediaStatus.AVAILABLE);
     media.serviceId = 10;
+    media.availableEbookServiceIds = [10];
     media.externalServiceId = 100;
     media.externalServiceSlug = 'ebook-slug';
     await getRepository(Media).save(media);
@@ -778,5 +780,23 @@ describe('Readarr Scanner', () => {
     assert.strictEqual(readarrIdentifiers.length, 1);
     assert.strictEqual(readarrIdentifiers[0].media.id, readarrMedia.id);
     assert.strictEqual(updatedIsbnMedia.externalServiceSlug, 'test-book');
+  });
+  it('preserves confirmed files when an item metadata failure makes the scan incomplete', async () => {
+    const media = await seedBook('9780261103573', MediaStatus.AVAILABLE);
+    media.serviceId = 10;
+    media.externalServiceId = 100;
+    media.availableEbookServiceIds = [10];
+    await getRepository(Media).save(media);
+    configureReadarr([{ id: 10, serviceType: 'ebook' }]);
+    getBooksImpl = async () => [fakeReadarrBook({ editions: [] })];
+    getEditionsImpl = async () => {
+      throw new Error('fixture metadata unavailable');
+    };
+    await readarrScanner.run();
+    const updated = await getRepository(Media).findOneByOrFail({
+      id: media.id,
+    });
+    assert.equal(updated.status, MediaStatus.AVAILABLE);
+    assert.deepEqual(updated.availableEbookServiceIds, [10]);
   });
 });

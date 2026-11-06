@@ -1150,7 +1150,9 @@ describe('BookRequestSearchManager', () => {
     });
     assert.equal(updatedMedia.externalServiceId, null);
     assert.equal(updatedMedia.audiobookExternalServiceId, 66);
-    assert.equal(updatedMedia.status, MediaStatus.PROCESSING);
+    assert.equal(updatedMedia.status, MediaStatus.AVAILABLE);
+    assert.deepEqual(updatedMedia.availableAudiobookServiceIds, [21]);
+    assert.deepEqual(updatedMedia.availableEbookServiceIds ?? [], []);
     const updatedRequest = await getRepository(MediaRequest).findOneByOrFail({
       id: request.id,
     });
