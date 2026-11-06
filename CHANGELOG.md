@@ -41,6 +41,7 @@ tags. The comparison link is the complete commit range.
 - **Media Server:** The Plex settings guide now shows a complete self-hosted Plex Web App URL, including the web app path used by Play on Plex links.
 - **Api:** Clients can validate watchlist requests and responses for all six SeerrNG media types. The contract documents guaranteed response fields, the public requester, and optional media IDs. Adapted from Seerr [#3298](https://github.com/seerr-team/seerr/issues/3298), [#3425](https://github.com/seerr-team/seerr/pull/3425), and [#3635](https://github.com/seerr-team/seerr/pull/3635).
 - **Servarr:** Administrators can exclude tagged Radarr or Sonarr library entries from scans while SeerrNG preserves existing requests and still recognizes non-excluded copies on other configured services.
+- **Release Pipeline:** Release publishing can explicitly skip optional Snap and Chocolatey uploads while their accounts are unavailable. Required packages, release assets, image signing and verification still run.
 - **Dependencies:** Update the HTTP client, scheduler, internationalization and navigation progress libraries, along with Cypress and pinned CI actions. Preserve existing message defaults with the new internationalization types and retain restricted workflow permissions and registry credential handling.
 
 #### Fixed
@@ -123,6 +124,7 @@ tags. The comparison link is the complete commit range.
 - *(e2e)* Document and exercise public theme routes - ([89fec72](https://github.com/snapetech-org/seerrng/commit/89fec725c98b201b0629deb4ced664d5c8562cc0))
 - *(media)* Verify viewer availability identity and unify Quick Connect policy - ([7878d9b](https://github.com/snapetech-org/seerrng/commit/7878d9b1dcf82be9e7429cbedfeeaf7f3cec6905))
 - *(migration)* Honor CI Postgres test URL - ([09b9fc6](https://github.com/snapetech-org/seerrng/commit/09b9fc648f2e6ad1f9c8e8fb41431810c08519ee))
+- *(release)* Allow unavailable optional publishing accounts to be skipped - ([31e5f8b](https://github.com/snapetech-org/seerrng/commit/31e5f8bfe7371208b47f14e3a8d99d34f84a943b))
 - *(release)* Accept Discord embed whitespace normalization - ([824b2cb](https://github.com/snapetech-org/seerrng/commit/824b2cba3933a251bce1b4beba16bcdfa99b5ef7))
 - *(release)* Validate recovered media access release fragments - ([459cbb8](https://github.com/snapetech-org/seerrng/commit/459cbb8471c457787fb8460dd78cfeb547c88ed7))
 - *(release)* Keep Xcode build data on local APFS - ([826054b](https://github.com/snapetech-org/seerrng/commit/826054b7048c43cfa643912e370aa26041768835))
