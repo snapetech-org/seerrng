@@ -109,11 +109,14 @@ async function plexPinFlow(win: Window | null): Promise<void> {
   const deadline = Date.now() + 5 * 60_000;
   while (Date.now() < deadline) {
     await new Promise((r) => setTimeout(r, 1500));
+    if (win?.closed) break;
     const p = await (
       await fetch(`https://plex.tv/api/v2/pins/${pin.id}`, {
         headers: PLEX_HEADERS(),
       })
     ).json();
+    // Closing Plex cancels even when an already-started poll returns a token.
+    if (win?.closed) break;
     if (p.authToken) {
       win?.close();
       await api('/auth/plex', {
