@@ -29,6 +29,7 @@ connects to.
 - [Per-user movie and TV availability](/using-seerr/media-server-access/)
 - [Customize Discover shelves and navigation](/using-seerr/discover/)
 - [Filter and sort local watchlists](/using-seerr/plex/watchlist-auto-request/#find-items-in-your-watchlist)
+- [Create a private movie watch session](/using-seerr/watch-sessions/)
 - [Follow another user's active request](/using-seerr/notifications/#follow-a-movie-or-series-request)
 - [Approve or decline requests from Slack](/using-seerr/notifications/slack/#approve-or-decline-requests-from-slack)
 - [Hide Subject Tags on movie and series pages](/using-seerr/media-details-and-playback/#hide-subject-tags)

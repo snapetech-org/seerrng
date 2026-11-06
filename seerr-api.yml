@@ -20,6 +20,8 @@ tags:
     description: Soulseek track requests, library-health fixes, and SongID through slskdN.
   - name: swipe
     description: Swipe discovery decks and swipe decisions.
+  - name: watch-sessions
+    description: Private, invite-only movie sessions with separate group ballots.
   - name: resolve
     description: Turn links, ISBNs, lists, and images into requestable matches.
   - name: continuation
@@ -145,6 +147,118 @@ components:
         reason:
           type: string
           description: AI explanation when an AI provider ranked the deck.
+    WatchSessionFilters:
+      type: object
+      required: [genreIds, ranking]
+      additionalProperties: false
+      properties:
+        genreIds:
+          type: array
+          maxItems: 5
+          uniqueItems: true
+          items:
+            type: integer
+            minimum: 1
+            maximum: 10000
+        ranking:
+          type: string
+          enum: [popularity.desc, vote_average.desc, primary_release_date.desc]
+        releaseYearFrom:
+          type: integer
+          minimum: 1870
+          maximum: 2100
+        releaseYearTo:
+          type: integer
+          minimum: 1870
+          maximum: 2100
+        minimumRating:
+          type: number
+          minimum: 0
+          maximum: 9.9
+    WatchSession:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        status:
+          type: string
+          enum: [draft, active]
+        filters:
+          $ref: '#/components/schemas/WatchSessionFilters'
+        ownerId:
+          type: integer
+        ownerName:
+          type: string
+        memberCount:
+          type: integer
+        expiresAt:
+          type: string
+          format: date-time
+        createdAt:
+          type: string
+          format: date-time
+        startedAt:
+          type: string
+          format: date-time
+          nullable: true
+        ownPreferences:
+          type: object
+          properties:
+            includeWatchlistContributions:
+              type: boolean
+        members:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+              displayName:
+                type: string
+              avatar:
+                type: string
+                nullable: true
+              isOwner:
+                type: boolean
+    WatchSessionMovie:
+      type: object
+      properties:
+        candidateId:
+          type: integer
+        id:
+          type: integer
+        title:
+          type: string
+        posterPath:
+          type: string
+        backdropPath:
+          type: string
+        releaseDate:
+          type: string
+        overview:
+          type: string
+        voteAverage:
+          type: number
+        genres:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+              name:
+                type: string
+    WatchSessionBallot:
+      allOf:
+        - $ref: '#/components/schemas/WatchSessionMovie'
+        - type: object
+          required: [decision]
+          properties:
+            decision:
+              type: string
+              enum: [want, pass]
     RecognitionSettings:
       type: object
       properties:
@@ -16321,6 +16435,412 @@ paths:
           description: Successfully removed collection from blocklist
         '500':
           description: Error removing collection from blocklist
+  /watch-sessions:
+    get:
+      summary: List the signed-in user's active movie sessions
+      tags: [watch-sessions]
+      responses:
+        '200':
+          description: Sessions where the signed-in user is an active member
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sessions:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/WatchSession'
+    post:
+      summary: Create a private movie session
+      tags: [watch-sessions]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [title, filters]
+              additionalProperties: false
+              properties:
+                title:
+                  type: string
+                  minLength: 1
+                  maxLength: 80
+                filters:
+                  $ref: '#/components/schemas/WatchSessionFilters'
+      responses:
+        '201':
+          description: Created session; its owner is the first accepted member
+        '400':
+          description: Invalid title or filters
+        '403':
+          description: Movie request access is required
+        '409':
+          description: The owner already has the maximum number of open sessions
+  /watch-sessions/invites/accept:
+    post:
+      summary: Accept a one-use private session invitation
+      tags: [watch-sessions]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [token]
+              additionalProperties: false
+              properties:
+                token:
+                  type: string
+                  minLength: 43
+                  maxLength: 43
+                  pattern: '^[A-Za-z0-9_-]{43}$'
+      responses:
+        '200':
+          description: Invitation accepted
+        '404':
+          description: Invitation is invalid, revoked, expired, or unavailable
+        '409':
+          description: Account already joined or the session is full
+  /watch-sessions/{id}:
+    get:
+      summary: Get a session and its accepted members
+      tags: [watch-sessions]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+      responses:
+        '200':
+          description: Session details; member ballots are never included
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  session:
+                    $ref: '#/components/schemas/WatchSession'
+        '404':
+          description: Session not found
+    put:
+      summary: Update a draft session's title and discovery filters
+      tags: [watch-sessions]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [title, filters]
+              additionalProperties: false
+              properties:
+                title:
+                  type: string
+                  minLength: 1
+                  maxLength: 80
+                filters:
+                  $ref: '#/components/schemas/WatchSessionFilters'
+      responses:
+        '200':
+          description: Updated draft session
+        '400':
+          description: Invalid title or filters
+        '403':
+          description: Only the session owner can update it
+        '409':
+          description: Filters are locked after the session starts
+    delete:
+      summary: Close and permanently remove a session
+      description: Deletes its invitations, candidate IDs, and private ballots.
+      tags: [watch-sessions]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+      responses:
+        '200':
+          description: Session closed
+        '403':
+          description: Only the session owner can close it
+        '404':
+          description: Session not found
+  /watch-sessions/{id}/preferences:
+    put:
+      summary: Set the signed-in member's private watchlist contribution preference
+      tags: [watch-sessions]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [includeWatchlistContributions]
+              additionalProperties: false
+              properties:
+                includeWatchlistContributions:
+                  type: boolean
+      responses:
+        '200':
+          description: Saved; this preference is not visible to other members
+        '409':
+          description: Preferences are locked after the session starts
+  /watch-sessions/{id}/invites:
+    get:
+      summary: List invite-link status without revealing bearer tokens
+      tags: [watch-sessions]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+      responses:
+        '200':
+          description: Invitation status list for the session owner
+    post:
+      summary: Create a one-use invitation link
+      description: The raw token is returned once; only its SHA-256 digest is stored.
+      tags: [watch-sessions]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+      responses:
+        '201':
+          description: One-use invite token and its expiration
+        '403':
+          description: Only the session owner can invite members
+        '409':
+          description: Session member or invitation limit reached
+  /watch-sessions/{id}/invites/{inviteId}:
+    delete:
+      summary: Revoke an unclaimed invitation link
+      tags: [watch-sessions]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+        - in: path
+          name: inviteId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+      responses:
+        '200':
+          description: Invitation revoked
+        '404':
+          description: Open invitation not found
+  /watch-sessions/{id}/start:
+    post:
+      summary: Start a draft session after at least two people have joined
+      tags: [watch-sessions]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+      responses:
+        '200':
+          description: Session started; remaining unused invite links are revoked
+        '409':
+          description: Session already started or fewer than two eligible members
+  /watch-sessions/{id}/members/me:
+    delete:
+      summary: Leave a session; the owner closes it by using the session delete action
+      tags: [watch-sessions]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+      responses:
+        '200':
+          description: Membership removed and the user's private ballots deleted
+  /watch-sessions/{id}/members/{memberId}:
+    delete:
+      summary: Remove an accepted member and delete their private ballots
+      tags: [watch-sessions]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+        - in: path
+          name: memberId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+      responses:
+        '200':
+          description: Member removed
+        '403':
+          description: Only the owner can remove another member
+        '404':
+          description: Active member not found
+  /watch-sessions/{id}/deck:
+    get:
+      summary: Load up to twenty unvoted movies for the signed-in member
+      tags: [watch-sessions]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+      responses:
+        '200':
+          description: Movie cards filtered by every active member's maturity policy
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  candidates:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/WatchSessionMovie'
+                  hasMore:
+                    type: boolean
+        '409':
+          description: Session is still a draft
+  /watch-sessions/{id}/candidates/{candidateId}/ballot:
+    put:
+      summary: Save or change the signed-in member's private movie ballot
+      tags: [watch-sessions]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+        - in: path
+          name: candidateId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [decision]
+              additionalProperties: false
+              properties:
+                decision:
+                  type: string
+                  enum: [want, pass]
+      responses:
+        '200':
+          description: Private ballot saved
+        '404':
+          description: Session or movie not found
+  /watch-sessions/{id}/my-ballots:
+    get:
+      summary: List only the signed-in member's private ballots
+      description: No other member's ballots or vote totals are returned.
+      tags: [watch-sessions]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+      responses:
+        '200':
+          description: The member's own ballots, with safe movie details
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ballots:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/WatchSessionBallot'
+        '404':
+          description: Session not found
+        '409':
+          description: Session is still a draft
+  /watch-sessions/{id}/matches:
+    get:
+      summary: List movies unanimously approved by every active member
+      tags: [watch-sessions]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+        - in: query
+          name: take
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 20
+            default: 20
+        - in: query
+          name: skip
+          schema:
+            type: integer
+            minimum: 0
+            maximum: 500
+            default: 0
+      responses:
+        '200':
+          description: Unanimous results; no individual ballots or counts are included
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  matches:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/WatchSessionMovie'
+                  hasMore:
+                    type: boolean
   /watchlist:
     post:
       summary: Add media to watchlist

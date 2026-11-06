@@ -110,6 +110,7 @@ import sportarrRoutes from './sportarr';
 import swipeRoutes from './swipe';
 import tvRoutes from './tv';
 import user from './user';
+import watchSessionRoutes from './watchSessions';
 
 const router = Router();
 const maxTmdbId = 1_000_000_000;
@@ -431,6 +432,7 @@ router.use('/live', isAuthenticated(), liveRoutes);
 router.use('/live-tv', isAuthenticated(), liveTvRoutes);
 router.use('/soulseek', isAuthenticated(), soulseekRoutes);
 router.use('/swipe', isAuthenticated(), swipeRoutes);
+router.use('/watch-sessions', isAuthenticated(), watchSessionRoutes);
 router.use('/resolve', isAuthenticated(), resolveRoutes);
 router.use('/continuation', isAuthenticated(), continuationRoutes);
 router.use('/editions', isAuthenticated(), editionRoutes);

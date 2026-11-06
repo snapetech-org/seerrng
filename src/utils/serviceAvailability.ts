@@ -160,7 +160,9 @@ export const isOptionalCatalogPathEnabled = (
   if (
     path === '/discover/movies' ||
     path.startsWith('/discover/movies/') ||
-    path.startsWith('/movie/')
+    path.startsWith('/movie/') ||
+    path === '/watch-sessions' ||
+    path.startsWith('/watch-sessions/')
   ) {
     return isConfiguredMediaCategoryEnabled('movie', availability);
   }
