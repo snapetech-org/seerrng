@@ -1,0 +1,45 @@
+# ng-runner-policy: github-hosted-primary-v1
+name: Cross-platform localization preflight
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'bin/**'
+      - 'config/i18n/**'
+      - 'server/**'
+      - 'src/**'
+      - 'package.json'
+      - 'pnpm-lock.yaml'
+      - '.github/workflows/i18n-platforms.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: i18n-platforms-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: false
+jobs:
+  preflight:
+    name: Localization and source contracts (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: package.json
+          package-manager-cache: false
+      - uses: pnpm/action-setup@0977fd99725f1db4007ccb2928dbb4e90d06cc86 # v6.0.10
+        with:
+          version: 10.24.0
+      - name: Install checker dependencies without lifecycle scripts
+        run: pnpm install --frozen-lockfile --ignore-scripts
+      - name: Test locale and source-path guard boundaries
+        run: node --test bin/check-i18n-lib.test.mjs bin/api-message-surface-order.test.mjs
+      - name: Validate complete localization and source contracts
+        run: pnpm prebuild

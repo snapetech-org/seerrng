@@ -343,6 +343,23 @@ test('locale-equivalence source paths stay inside the repository source roots', 
   assert.equal(isSafeSourceRelativePath('src/../../outside.tsx', 'src'), false);
   assert.equal(isSafeSourceRelativePath('/tmp/escape.tsx', 'src'), false);
   assert.equal(isSafeSourceRelativePath('src\\\\outside.tsx', 'src'), false);
+  assert.equal(
+    isSafeSourceRelativePath('server/routes/auth.ts', 'server'),
+    true
+  );
+  for (const candidate of [
+    'src//components/index.tsx',
+    'src/./components/index.tsx',
+    'src/components/../index.tsx',
+    'src/components/index.tsx:alternate-stream',
+    'src/components/invalid\0.tsx',
+    'C:/src/components/index.tsx',
+    'C:\\src\\components\\index.tsx',
+    '//host/share/src/components/index.tsx',
+    '\\\\host\\share\\src\\components\\index.tsx',
+  ]) {
+    assert.equal(isSafeSourceRelativePath(candidate, 'src'), false, candidate);
+  }
 });
 
 test('unlisted English and empty values remain explicit coverage gaps', () => {
