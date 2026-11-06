@@ -6692,8 +6692,8 @@ const validateCurrentBatchContract = (files) => {
   );
   requireText(
     'src/pages/discover/books/index.tsx',
-    '<DiscoverBooks format="all" />',
-    'Books discovery must default to All Books'
+    '<DiscoverBooks format="ebook" />',
+    'Books navigation must default to ebooks while retaining All Books in Media Filters'
   );
   requireOrder(
     'src/components/Discover/DiscoverBooks/index.tsx',
