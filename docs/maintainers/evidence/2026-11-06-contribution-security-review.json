@@ -1,0 +1,716 @@
+{
+  "checkpoint": "2026-11-06",
+  "scope": "Security-relevant production and operational boundaries for all54 historical human contribution PRs; not exhaustive upstream-package or historical CSS acceptance. Evidence filenames refer to the retained recovery audit archive. Later delivery state is separate from the source-review record.",
+  "reviews": [
+    {
+      "number": 32,
+      "source_patch": "third-party-pr-source/32.patch",
+      "sha256": "fdcef7bfe9bc06643ca243075a15c8e5d177d73da887cd20cad0d59fb06d3308",
+      "review": "source patch and current relevant owner inspected",
+      "disposition": "Search-input lifecycle and routing use scalar query values and internal Next router destinations. Current hydration, clearing, cancellation and route-synchronization behavior passed mounted React/JSDOM tests; no new external origin, secret or HTML sink.",
+      "evidence": [
+        "third-party-search-and-book-migration-regressions.log",
+        "third-party-servarr-connection-review-regressions.log",
+        "third-party-failed-book-retry-regressions.log"
+      ],
+      "pull_request": "https://github.com/snapetech-org/seerrng/pull/32"
+    },
+    {
+      "number": 33,
+      "source_patch": "third-party-pr-source/33.patch",
+      "sha256": "e323f11117fb9f46e29827ec2fab2c2e50c6039d04c12506dcd13be0b65aee3d",
+      "review": "source patch and current relevant owner inspected",
+      "disposition": "Bookshelf connection-only validation permits testing before profile selection while retaining administrator authorization, normalized origin/port, and destination-bound reuse of redacted stored secrets. API schema and modal save/test paths inspected; current settings/parser regressions pass.",
+      "evidence": [
+        "third-party-search-and-book-migration-regressions.log",
+        "third-party-servarr-connection-review-regressions.log",
+        "third-party-failed-book-retry-regressions.log"
+      ],
+      "pull_request": "https://github.com/snapetech-org/seerrng/pull/33"
+    },
+    {
+      "number": 35,
+      "source_patch": "third-party-pr-source/35.patch",
+      "sha256": "7cca06b4149815b5290742b96db102788586ee702b87ecc83b72dc06ad9c6ba5",
+      "review": "Original production/API/cache changes across all five commits read; current worker, manifest/snapshot storage, user-scoped state queries inspected.",
+      "disposition": "Current cache owners supersede original unsafe stale/private caching and storage assumptions: no-store responses rejected, no-cache revalidated, public artwork requires explicit public image response, denied/deleted responses evict cache, worker partitions include user/permissions/type and validate origin. Manifest parsing is bounded; snapshot storage serializes per key, retries IDB open and tolerates denied storage. Overlay request/watchlist SQL remains authenticated-owner scoped with strict100-item input and no raw user SQL. Existing browser account isolation and worker freshness regressions pass. Category/maturity visibility of status-only batch overlays remains a separate policy-depth consideration; no new exploit confirmed from this review.",
+      "evidence": [
+        "third-party-progressive-artwork-regressions.log",
+        "final-integrated-browser.log"
+      ],
+      "pull_request": "https://github.com/snapetech-org/seerrng/pull/35"
+    },
+    {
+      "number": 40,
+      "source_patch": "third-party-pr-source/40.patch",
+      "sha256": "06fae67df8119cbb85171822019d3f498096ff3fe4218598255287359551278f",
+      "review": "Original production server changes, client/API/docs changes, and current authentication boundary owners inspected. Lockfile metadata does not constitute an upstream-package source audit.",
+      "disposition": "Useful OIDC contribution is on main. Original flexible callback origin, email provisioning/session promotion, discovery transport and wildcard redirect guidance are superseded by current exact callback/issuer/identity correlation, verified email and explicit account linking, regenerated sessions, bounded safe HTTP transport with DNS checks, and exact redirect documentation. Original UI automatic provider query login was removed by contributor follow-up. No new unremediated exploit identified in inspected source. Physical provider login and native UI acceptance are not claimed.",
+      "evidence": [
+        "third-party-pr-source/40.production-review.patch",
+        "third-party-pr-source/40.client-api-review.patch",
+        "historical-oidc-auth-boundary-regressions.log",
+        "historical-oidc-full-auth-flow-regressions.log",
+        "historical-oidc-and-category-policy-regressions.log"
+      ],
+      "pull_request": "https://github.com/snapetech-org/seerrng/pull/40"
+    },
+    {
+      "number": 41,
+      "source_patch": "third-party-pr-source/41.patch",
+      "sha256": "82ea268cbc5cc090910c6334a32e2123d668c1aad543de374c43450403637953",
+      "review": "original production patch and current relevant owner inspected",
+      "disposition": "Production patch centralizes the existing 20-title cap and Show More decision; no new network host, credentials, HTML or storage. Current mediaSlider helper retains those bounds and helper regressions pass.",
+      "evidence": [
+        "third-party-cache-retry-sqlite-regressions.log",
+        "historical-plex-fixed-origin-regressions.log",
+        "historical-image-proxy-security-regressions.log",
+        "historical-control-flow-regressions.log"
+      ],
+      "pull_request": "https://github.com/snapetech-org/seerrng/pull/41"
+    },
+    {
+      "number": 42,
+      "source_patch": "third-party-pr-source/42.patch",
+      "sha256": "440644dfa44fa1b669b73eb162afe08b497e53dc08f6a6211e9105282e861695",
+      "review": "original production patch and current relevant owner inspected",
+      "disposition": "Production patch uses stable media-type/ID keys, disables first-page refresh when appending, keys restored state by the requested cache key and preloads one viewport early. Current persistent cache rejects malformed/future/expired records. The later account navigation boundary repair is still required for global SWR state; this PR alone did not establish cross-account isolation.",
+      "evidence": [
+        "third-party-cache-retry-sqlite-regressions.log",
+        "historical-plex-fixed-origin-regressions.log",
+        "historical-image-proxy-security-regressions.log",
+        "historical-control-flow-regressions.log"
+      ],
+      "pull_request": "https://github.com/snapetech-org/seerrng/pull/42"
+    },
+    {
+      "number": 43,
+      "source_patch": "third-party-pr-source/43.patch",
+      "sha256": "5d31002a1af6dc006672f5865a2ec7dd9a9f3b6e13f1a68a73c13f33e1f90fb8",
+      "review": "Original production diff and current relevant owners inspected; focused evidence bounded below.",
+      "disposition": "Image cache and avatar source changes inspected against current owners. Known hosts remain exact/suffix-bound HTTPS without userinfo; safe image transport and bounded memory/disk/pending writes remain current. Plex retry map now has a1000entry cap and background stale refresh uses tracked task handling. Cached fallback does not widen remote destinations. No unremediated exploit identified in this source review.",
+      "evidence": [
+        "historical-image-proxy-security-regressions.log"
+      ],
+      "pull_request": "https://github.com/snapetech-org/seerrng/pull/43"
+    },
+    {
+      "number": 44,
+      "source_patch": "third-party-pr-source/44.patch",
+      "sha256": "4695c9e841a082553eb7ff54a215d85c4cbc3027688bcfc095d5a2caa07be757",
+      "review": "original production patch and current relevant owner inspected",
+      "disposition": "Production patch adds at-most-two transient retries to existing Plex/image requests and logs sanitized HTTP details rather than request configs. Current fixed-origin and safe-image protections remain; 50 Plex/ExternalAPI and 106 image tests plus HTTP retry regressions pass.",
+      "evidence": [
+        "third-party-cache-retry-sqlite-regressions.log",
+        "historical-plex-fixed-origin-regressions.log",
+        "historical-image-proxy-security-regressions.log",
+        "historical-control-flow-regressions.log"
+      ],
+      "pull_request": "https://github.com/snapetech-org/seerrng/pull/44"
+    },
+    {
+      "number": 45,
+      "source_patch": "third-party-pr-source/45.patch",
+      "sha256": "4d0320d91c4ce77293cc9651dbd1fa8ae9f1d4af499cf0cdf68c34c0c700ec40",
+      "review": "source patch and current relevant owner inspected",
+      "disposition": "Patch admits added sort alongside modified; current route uses enumerated sort fields and fixed query-builder ordering. Existing request integration297-pass suite covers default sort.",
+      "evidence": [
+        "third-party-small-contribution-boundary-regressions.log",
+        "historical-file-tooling-regressions.log"
+      ],
+      "pull_request": "https://github.com/snapetech-org/seerrng/pull/45"
+    },
+    {
+      "number": 54,
+      "source_patch": "third-party-pr-source/54.patch",
+      "sha256": "5eefeaa96a4932b797d293ca333bc10c9c81fe1e1affe4b80355dcce85e29e35",
+      "review": "Original production diff and current relevant owners inspected; focused evidence bounded below.",
+      "disposition": "Production diff inspected: optional service capability booleans do not expose credentials, search navigation stays on internal fixed paths, subscriber query is bound through ORM, and permission predicates remain conjunctive with service visibility. Current serviceAvailability owner additionally enforces configured categories and user preferences. Search and migration focused evidence from this session covers related current behavior; no new exploit found.",
+      "evidence": [
+        "third-party-search-and-book-migration-regressions.log",
+        "historical-regressions-final-ci.json"
+      ],
+      "pull_request": "https://github.com/snapetech-org/seerrng/pull/54"
+    },
+    {
+      "number": 55,
+      "source_patch": "third-party-pr-source/55.patch",
+      "sha256": "d6d7bc7194c0b9fb2bd0e8bc53fd01b219808d0cc08eff3f2fa6d2e4733fcb56",
+      "review": "source patch and current relevant owner inspected",
+      "disposition": "Failed-book recovery seeds only missing failed-book outbox rows, preserves existing attempts, uses bounded retry delay and avoids synthetic provider identifiers. SQLite migration and focused subscriber retry cases pass. No live PostgreSQL migration claimed.",
+      "evidence": [
+        "third-party-search-and-book-migration-regressions.log",
+        "third-party-servarr-connection-review-regressions.log",
+        "third-party-failed-book-retry-regressions.log"
+      ],
+      "pull_request": "https://github.com/snapetech-org/seerrng/pull/55"
+    },
+    {
+      "number": 56,
+      "source_patch": "third-party-pr-source/56.patch",
+      "sha256": "e32e866706e97f5eb69dc43e4bfe798ba4f20e8dd297a9a16b144b248c371c06",
+      "review": "source patch and current relevant owner inspected",
+      "disposition": "Radarr/Sonarr/Lidarr test routes retain authorized administrator mutation and normalized connection validation. OpenAPI changes share the connection schema; save payload defaults are explicit. Current service/settings and secret-binding regressions pass.",
+      "evidence": [
+        "third-party-search-and-book-migration-regressions.log",
+        "third-party-servarr-connection-review-regressions.log",
+        "third-party-failed-book-retry-regressions.log"
+      ],
+      "pull_request": "https://github.com/snapetech-org/seerrng/pull/56"
+    },
+    {
+      "number": 66,
+      "source_patch": "third-party-pr-source/66.patch",
+      "sha256": "854478927383cd82fc322b0b2fcd78bb2819cdfcc5350be863f3f5d7eacd87b1",
+      "review": "source patch and current relevant owner inspected",
+      "disposition": "Failed-book retry continuation retains durable queue identity, bounded six-hour failed-request delay and suppresses duplicate failure notification. Current SQLite migration and focused subscriber retry cases pass. No live PostgreSQL migration claimed.",
+      "evidence": [
+        "third-party-search-and-book-migration-regressions.log",
+        "third-party-servarr-connection-review-regressions.log",
+        "third-party-failed-book-retry-regressions.log"
+      ],
+      "pull_request": "https://github.com/snapetech-org/seerrng/pull/66"
+    },
+    {
+      "number": 67,
+      "source_patch": "third-party-pr-source/67.patch",
+      "sha256": "8f7c169fdc20e8b24051709227143377d9797495a327b19767f217ee63412a27",
+      "review": "original production patch and current relevant owner inspected",
+      "disposition": "Production patch only fixes missing whitespace when joining fixed spinner/rotation class tokens. Current owner retains separated tokens; no untrusted class interpolation, HTML execution or new network surface. No new visual acceptance is claimed.",
+      "evidence": [
+        "third-party-cache-retry-sqlite-regressions.log",
+        "historical-plex-fixed-origin-regressions.log",
+        "historical-image-proxy-security-regressions.log",
+        "historical-control-flow-regressions.log"
+      ],
+      "pull_request": "https://github.com/snapetech-org/seerrng/pull/67"
+    },
+    {
+      "number": 68,
+      "source_patch": "third-party-pr-source/68.patch",
+      "sha256": "c4c91dc8285e12af8b52af9ab0cad70cbeb9f0e1e332188244146cf43b5b4cf8",
+      "review": "Original production/API changes read across all seven commits; current transport/cover owners inspected. Test changes supported by recorded regressions.",
+      "disposition": "Historical remote-cover prefix credential/SSRF flaw is superseded: current isServarrServiceUrl compares exact parsed origins and rejects userinfo, external covers use DNS-safe bounded fetchSafeRemoteImage, local covers use origin-bound Servarr transport and bounded raster normalization. Original automatic local poster substitutions were removed in the contributor followup. Book cover path/media identity is not matched like movie/TV; retain as follow-up correctness/access-boundary review, not yet a confirmed exploit.",
+      "evidence": [
+        "historical-image-proxy-security-regressions.log",
+        "third-party-servarr-connection-review-regressions.log"
+      ],
+      "pull_request": "https://github.com/snapetech-org/seerrng/pull/68"
+    },
+    {
+      "number": 69,
+      "source_patch": "third-party-pr-source/69.patch",
+      "sha256": "023946b78dbe4f412caf4c5d0fbc0756eb7dc3b6744f9cf238dab18b0576f025",
+      "review": "source patch and current relevant owner inspected",
+      "disposition": "Uses matching packaged Undici fetch/Agent with bounded request/response, manual redirect and safe DNS lookup; global fetch is test-only. Current54-case boundary suite passes relevant network cases.",
+      "evidence": [
+        "third-party-small-contribution-boundary-regressions.log",
+        "historical-file-tooling-regressions.log"
+      ],
+      "pull_request": "https://github.com/snapetech-org/seerrng/pull/69"
+    },
+    {
+      "number": 70,
+      "source_patch": "third-party-pr-source/70.patch",
+      "sha256": "50a1ace5b556820e388713e0c4e2b12f427199f7124691ad9a94ed365a265684",
+      "review": "source patch and current relevant owner inspected",
+      "disposition": "Patch adds string/appearance toast deduplication only; rendered messages stay React nodes, no HTML execution. Current owner matches reviewed semantics; regression passes.",
+      "evidence": [
+        "third-party-small-contribution-boundary-regressions.log",
+        "historical-file-tooling-regressions.log"
+      ],
+      "pull_request": "https://github.com/snapetech-org/seerrng/pull/70"
+    },
+    {
+      "number": 71,
+      "source_patch": "third-party-pr-source/71.patch",
+      "sha256": "260f4ba1cbd21cdca4b33fe4ba4c7b105426e59ee3baea4eeb827cddd860caa8",
+      "review": "Original production source and current relevant owners inspected.",
+      "disposition": "Complete production source review found a current destructive recovery bug: explicit paused torrents could be removed after an old seedless warning aged two hours. PR576 commit afcb0d6b8 repairs pause precedence and resets the stall timer. Real SQLite tests reproduce two baseline removals; four repaired scenarios plus eight existing cases pass. Server types pass. Repair is committed/pushed but not yet on main; planned combined CI through575. Existing current owner already deduplicates downloads, serializes same-media recovery and bounds concurrent media. No malicious payload attribution is made.",
+      "evidence": [
+        "third-party-pr-source/71.production-review.patch",
+        "download-recovery-paused-baseline.log",
+        "download-recovery-paused-final.log",
+        "download-recovery-paused-server-types.log"
+      ],
+      "pull_request": "https://github.com/snapetech-org/seerrng/pull/71"
+    },
+    {
+      "number": 72,
+      "source_patch": "third-party-pr-source/72.patch",
+      "sha256": "d031f985267fa46610185a301787b94a28ee429cd71fb32720a9442d512b2641",
+      "review": "source patch and current relevant owner inspected",
+      "disposition": "Patch extends only fixed managed log-symlink names. Current owner rejects absolute/traversing/nested targets and nonregular/hard-linked targets;13 filesystem/permission cases included in54-case boundary suite.",
+      "evidence": [
+        "third-party-small-contribution-boundary-regressions.log",
+        "historical-file-tooling-regressions.log"
+      ],
+      "pull_request": "https://github.com/snapetech-org/seerrng/pull/72"
+    },
+    {
+      "number": 73,
+      "source_patch": "third-party-pr-source/73.patch",
+      "sha256": "c56f74654c0053fc036524dd6e23c25900d635f8a09d77a0f840a53bfc4b732e",
+      "review": "production patch and current relevant owner inspected; test/source evidence reviewed",
+      "disposition": "Original production patch removes orphaned identifiers before matching and guards missing media. Current scanner retains scoped canonical identifiers and same-service request matching. Full current Readarr scanner regressions pass; no arbitrary deletion of linked identifiers was introduced.",
+      "evidence": [
+        "third-party-book-and-api-contribution-regressions.log",
+        "third-party-audiobookshelf-port-regressions.log",
+        "historical-issue-matching-availability-navigation.log",
+        "issue-382-scoped-catalog-final-regressions.log",
+        "issue-409-http-facade-regressions.log",
+        "historical-oidc-full-auth-flow-regressions.log"
+      ],
+      "pull_request": "https://github.com/snapetech-org/seerrng/pull/73"
+    },
+    {
+      "number": 74,
+      "source_patch": "third-party-pr-source/74.patch",
+      "sha256": "795161555e5dee15d9210a935d3fef56ab17f97eb7b74632485be3f76bf62a30",
+      "review": "source patch and current relevant owner inspected",
+      "disposition": "Patch preserves versioned base path while retaining allowed origin validation. Current ExternalAPI normalizes/restricts request targets before network dispatch; credential and path normalization cases pass.",
+      "evidence": [
+        "third-party-small-contribution-boundary-regressions.log",
+        "historical-file-tooling-regressions.log"
+      ],
+      "pull_request": "https://github.com/snapetech-org/seerrng/pull/74"
+    },
+    {
+      "number": 75,
+      "source_patch": "third-party-pr-source/75.patch",
+      "sha256": "e98e58515e8f1779a3fd94f5822f68c3c8f80ed7a6b130e91fb9580b50b04d8b",
+      "review": "source patch and current relevant owner inspected",
+      "disposition": "Chart appVersion metadata update is superseded by current release version/validated Helm contract; no executable or credentials change.",
+      "evidence": [
+        "third-party-small-contribution-boundary-regressions.log",
+        "historical-file-tooling-regressions.log"
+      ],
+      "pull_request": "https://github.com/snapetech-org/seerrng/pull/75"
+    },
+    {
+      "number": 76,
+      "source_patch": "third-party-pr-source/76.patch",
+      "sha256": "19512f79507972e5b1ae43499f4cb6d22e5a5a7f5c4855dfa1d49e398e846e50",
+      "review": "source patch and current relevant owner inspected",
+      "disposition": "Patch adds guarded missing SQLite routing columns and reversible fixture; current migration is present and reversible regression passes. No interpolated untrusted SQL.",
+      "evidence": [
+        "third-party-small-contribution-boundary-regressions.log",
+        "historical-file-tooling-regressions.log"
+      ],
+      "pull_request": "https://github.com/snapetech-org/seerrng/pull/76"
+    },
+    {
+      "number": 77,
+      "source_patch": "third-party-pr-source/77.patch",
+      "sha256": "5bd8da1bb232e12c84e8183c055321fec5ce996027ca0ebd828b53e3df9b9e47",
+      "review": "source patch and current relevant owner inspected",
+      "disposition": "Patch only revalidates the exact qualified status SWR key; current main and network settings retain that key. No access-control, network-origin or credential-boundary change.",
+      "evidence": [
+        "third-party-small-contribution-boundary-regressions.log",
+        "historical-file-tooling-regressions.log"
+      ],
+      "pull_request": "https://github.com/snapetech-org/seerrng/pull/77"
+    },
+    {
+      "number": 78,
+      "source_patch": "third-party-pr-source/78.patch",
+      "sha256": "b3db091ffaedc11f018c5bea88eff585a0c0108430ee3f8ec744ea51b563890e",
+      "review": "source patch and current relevant owner inspected",
+      "disposition": "Only extends old CI test timeout; superseded by current runner/workflow definitions. No trust widening or code execution added.",
+      "evidence": [
+        "third-party-small-contribution-boundary-regressions.log",
+        "historical-file-tooling-regressions.log"
+      ],
+      "pull_request": "https://github.com/snapetech-org/seerrng/pull/78"
+    },
+    {
+      "number": 90,
+      "source_patch": "third-party-pr-source/90.patch",
+      "sha256": "d5f73f6d4e290042079dac84dd118a740544a40b080e247ae8cf58bc27938395",
+      "review": "source patch and current relevant owner inspected",
+      "disposition": "Original unconditional forwarding-protocol trust was unsafe; current source delegates entirely to Express req.secure and configured trust-proxy policy. HTTP/HTTPS/forged-header CSRF regressions pass. Historical unsafe behavior is already repaired, not preserved.",
+      "evidence": [
+        "third-party-small-contribution-boundary-regressions.log",
+        "historical-file-tooling-regressions.log"
+      ],
+      "pull_request": "https://github.com/snapetech-org/seerrng/pull/90"
+    },
+    {
+      "number": 93,
+      "source_patch": "third-party-pr-source/93.patch",
+      "sha256": "25ccd66205743bfedf832653614a89cc334a76711999a69fe1a39077f741b2f2",
+      "review": "source patch and current relevant owner inspected",
+      "disposition": "Original discovery scroll hook and persistence helpers reviewed. Current owner retains matching history-entry/path checks, validates finite offsets/counts and bounded seeds, catches unavailable storage, and cancels both scheduled animation frames. Seven current history/scroll regressions pass. It stores navigation metadata rather than credentials and introduces no external network destination.",
+      "evidence": [
+        "third-party-discovery-scroll-regressions.log"
+      ],
+      "pull_request": "https://github.com/snapetech-org/seerrng/pull/93"
+    },
+    {
+      "number": 94,
+      "source_patch": "third-party-pr-source/94.patch",
+      "sha256": "e94c5324e81a7e7430f7e3be12270c8471d6565032e2d46ef4207b207039cd5a",
+      "review": "production patch and current relevant owner inspected; test/source evidence reviewed",
+      "disposition": "Original patch tightens release admission to main dispatch/tag refs; remaining changes are test expectation and formatting. Current dispatch-only release source verifies main ancestry and normal checks have run on public runners. No original change grants additional write permissions or introduces a new remote action.",
+      "evidence": [
+        "third-party-book-and-api-contribution-regressions.log",
+        "third-party-audiobookshelf-port-regressions.log",
+        "historical-issue-matching-availability-navigation.log",
+        "issue-382-scoped-catalog-final-regressions.log",
+        "issue-409-http-facade-regressions.log",
+        "historical-oidc-full-auth-flow-regressions.log"
+      ],
+      "pull_request": "https://github.com/snapetech-org/seerrng/pull/94"
+    },
+    {
+      "number": 97,
+      "source_patch": "third-party-pr-source/97.patch",
+      "sha256": "7d63cf4d8a64790c3876edd9036dcb7cf2e32abc4d584997d017fc9b822c7802",
+      "review": "source patch and current relevant owner inspected",
+      "disposition": "Original multiarch workflow patch reviewed: expands only supported platform matrix/cache scopes, uses pinned Docker actions, and verifies registry SHA-256 before pulling the digest. Current main has superseding runner/admission routing and real amd64/arm64 release manifest validation; no contributor-origin credential exposure added. Current release/CI workflow contracts pass. Live v3.72.10 release image jobs both succeeded; publication still gated separately.",
+      "evidence": [
+        "third-party-multiarch-workflow-regressions.log"
+      ],
+      "pull_request": "https://github.com/snapetech-org/seerrng/pull/97"
+    },
+    {
+      "number": 103,
+      "source_patch": "third-party-pr-source/103.patch",
+      "sha256": "bfabc7a7c9a0437261d05aaee16478325cb534fdcca636deedb05c017fab729d",
+      "review": "source patch and current relevant owner inspected",
+      "disposition": "Original patch declares existing Spotify/playlist routes and schemas rather than bypassing application authorization. Current router remains authenticated; OAuth connect requires matching browser session, callback consumes expiring random session state, and disconnect/status target current-user settings. Resolve retains rate limiting and supported-provider URL parsing. All12current playlist/route matching tests pass behind real OpenAPI middleware. No live Spotify account claim.",
+      "evidence": [
+        "third-party-playlist-openapi-regressions.log"
+      ],
+      "pull_request": "https://github.com/snapetech-org/seerrng/pull/103"
+    },
+    {
+      "number": 106,
+      "source_patch": "third-party-pr-source/106.patch",
+      "sha256": "beda330b3c32d3881505acf92421a397da9f3254abe87d94c9147c43ea04bf57",
+      "review": "Original production changes across sixteen commits read, excluding duplicate deleted-body repetition already read; current search and cookie owners inspected.",
+      "disposition": "Search types/formats/sort options are allowlisted and URL values encoded; current provider payloads and credit enrichment are bounded/concurrency-limited. Request-status SQL uses authenticated actor ownership and bound parameters; real PostgreSQL request-status queries/HTTP pass. The temporary cookie-forwarding internal request-status proxy and comparison routes were removed by contributor commit b4752ef before final head, and have no current runtime owner. Direct-HTTP cookie compatibility change belongs to owner snapetech commit80e97bf, not the contributor, and current allowHttpAuth policy remains deliberate. Existing browser format/back-navigation cases pass; no new exploit confirmed in this review.",
+      "evidence": [
+        "historical-themed-fixtures-accepted.log",
+        "postgres-current-head-acceptance.log",
+        "postgres-request-status-http.json",
+        "final-repeatable-browser.log"
+      ],
+      "pull_request": "https://github.com/snapetech-org/seerrng/pull/106"
+    },
+    {
+      "number": 107,
+      "source_patch": "third-party-pr-source/107.patch",
+      "sha256": "5ac24d618dc33e3543b38c07b1fa9f2b222c5cb094c006bd753adba772f532a5",
+      "review": "Complete production diff inspected, separating contributor scroll restoration from owner badge follow-up. Current relevant owners inspected.",
+      "disposition": "Persisted restoration accepts only bounded numeric offsets/counts and seed strings, catches storage failures and cancels both animation frames; current discovery response cache key includes user identity. Saved state supplies a seed/scroll position, not authorization or executable content. Badge follow-up uses closed enums and React text without new network sinks. Existing seven scroll regressions pass; source review found no new unremediated exploit. Pixel-perfect whole-site visual acceptance is not implied.",
+      "evidence": [
+        "third-party-pr-source/107.production-review.patch",
+        "third-party-discovery-scroll-regressions.log"
+      ],
+      "pull_request": "https://github.com/snapetech-org/seerrng/pull/107"
+    },
+    {
+      "number": 108,
+      "source_patch": "third-party-pr-source/108.patch",
+      "sha256": "1ac566f3b3926b8988b3351b220e70bd23762df56e70becc2710ef685564b80c",
+      "review": "Original production diff and current relevant owners inspected; focused evidence bounded below.",
+      "disposition": "Complete patch inspected: shared poster-grid row sizing fixes back-navigation geometry; screenshot harness waits only on visible images. Public status rate-limit bypass is conditioned on explicit test/E2E environment and does not change production default. Current owner uses semantic poster aspect ratio and width. Existing full CI includes the four Cypress navigation/resize cases; no new security boundary found.",
+      "evidence": [
+        "historical-regressions-final-ci.json"
+      ],
+      "pull_request": "https://github.com/snapetech-org/seerrng/pull/108"
+    },
+    {
+      "number": 109,
+      "source_patch": "third-party-pr-source/109.patch",
+      "sha256": "ea60ddeec2f0ce9829adc01e22469dccef4f3fa8f2cce3131ae87575a0bbcba1",
+      "review": "Complete production patch inspected: worker freshness, cover URLs, shared image constants, variant lifecycle and registry. Current image/worker boundaries inspected.",
+      "disposition": "Public artwork cache hits require image responses marked public and reject private/no-cache/no-store; age/freshness remains bounded. Authenticated data is separately user-partitioned, and avatars are excluded from progressive registry use. Explicit same-artwork variants keep query identity, cancel observers on disposal and ignore stale identity completions. Registry stores metadata only, caps successful/failure entries at512, and times pending loads out after30seconds. Archive hosts are fixed and path segments encoded; current server transport retains safe image network/filesystem limits. No new unremediated exploit found in this source review.",
+      "evidence": [
+        "third-party-pr-source/109.production-review.patch",
+        "third-party-progressive-artwork-regressions.log",
+        "historical-image-proxy-security-regressions.log"
+      ],
+      "pull_request": "https://github.com/snapetech-org/seerrng/pull/109"
+    },
+    {
+      "number": 117,
+      "source_patch": "third-party-pr-source/117.original-source.patch",
+      "sha256": "d09355b4403f75f9224e10d485305cc0338d998793336a2ee8347440f7503000",
+      "review": "Historical source security-sensitive flows and current playback authority reviewed; scoped API/storage/SQL/credential and client action review, not exhaustive historical styling acceptance.",
+      "disposition": "Found a current playback authority race: single-media and collection playlist writes survived permission revocation, account unlinking and credential changes during provider catalog reads. Six real SQLite regression cases returned 200 on baseline. Repair bdb026d31 in PR584 now checks fresh actor permissions/native credential pair/version plus original session/API-key context under the shared security coordinator before external mutation. Expanded 60 focused checks and server types pass; merge/release remain pending. Reviewed bounded avatar upload/storage, escaped parameterized search filters, authenticated mounts, request moderation and encoded client action paths; no malicious intent inferred.",
+      "evidence": [
+        "playback-authority-baseline.log",
+        "playback-authority-final.log",
+        "playback-authority-server-types.log",
+        "final-historical-boundary-review-regressions.log"
+      ],
+      "pull_request": "https://github.com/snapetech-org/seerrng/pull/117"
+    },
+    {
+      "number": 118,
+      "source_patch": "third-party-pr-source/118.original-source.patch",
+      "sha256": "3047bf7c41c6299a178ed86705afc69518c6f34d46297edff96550755d98919f",
+      "review": "Security-sensitive production diff/context and current disclosure/request ownership boundaries reviewed; validation-owner changes inspected for execution/network entrypoints, not a full historical visual-design reapproval.",
+      "disposition": "Scoped disclosure state persists only through bounded media-role keys and own-profile/security-actor handlers; cross-user administrative updates retain current actor checks and protected-owner rules. Request-on-behalf eligibility is enforced by the server, not the visible controls. Live availability uses configured provider adapters and bounded filtering; issue metadata terms remain escaped bound SQL parameters. Explicit movie cover hints stay tied to current configured service identity/external ID through the reviewed safe image pipeline. Checked-in migrations use literal schema operations. No additional active exploit confirmed within these boundaries; current library/provider checks are controlled fixtures, not live server acceptance.",
+      "evidence": [
+        "final-historical-boundary-review-regressions.log",
+        "historical-image-proxy-security-regressions.log",
+        "release-3.72.11-final-browser.log"
+      ],
+      "pull_request": "https://github.com/snapetech-org/seerrng/pull/118"
+    },
+    {
+      "number": 138,
+      "source_patch": "third-party-pr-source/138.original-source.patch",
+      "sha256": "7740eb5770a1b3bcc4fdab0fac5909c7df068ec32d7a13b1912298b7b2d3c23b",
+      "review": "Security-relevant API additions, library destruction/download boundaries, external metadata origins, persisted preference and client mutation callsites reviewed against current owners. Not an exhaustive review of every historical CSS line or upstream package.",
+      "disposition": "Library deletion requires current administrator admission and an exact fresh removal plan; target identity, service configuration and remaining-copy reconciliation are bounded and validated. Download assets retain opened-descriptor/canonical-root containment. Artist metadata adapters use explicit HTTPS origin/identity allowlists; Mylar filename parsing is bounded. Collection server writes remain administrative, request-on-behalf fields remain server-authorized, preference writes use own-user/current actor policy, and user/provider text stays React data or safe-link rendering. Playback changes share the confirmed stale-authority finding tracked/fixed in PR584; no separate malicious behavior inferred. 179 targeted current boundary regressions pass, including removal, avatars, downloads, collection and settings owners; real PostgreSQL migration proof is recorded separately.",
+      "evidence": [
+        "final-historical-boundary-review-regressions.log",
+        "playback-authority-final.log",
+        "postgres-current-head-acceptance.log",
+        "historical-image-proxy-security-regressions.log"
+      ],
+      "pull_request": "https://github.com/snapetech-org/seerrng/pull/138"
+    },
+    {
+      "number": 145,
+      "source_patch": "third-party-pr-source/145.patch",
+      "sha256": "23ac8a6b169aba4babdf676de93bc847018a3b7b1ef29f2df94fd85e646e3ea1",
+      "review": "Complete production diff inspected: Plex adapter, request policy, episode dispatch, settings migrations, own-profile API, theme validator/context and opt-in editor. Current effective dispatch/admission owners inspected.",
+      "disposition": "Theme overrides use a bounded allowlist, strict hex/numeric/percentage/enum values and own-profile writes, preventing arbitrary CSS URL/script sinks. Original user-specific playback matching is superseded by deliberate household playback commit ce9258b5c; current dispatch uses captured owner media-server authority and rechecks each enrolled parent grant, approval, TV permission and destination under request/user admission. The old username helper has no runtime caller in current episode dispatch. No new active exploit identified; live Plex sessions and PostgreSQL migration boot were not used.",
+      "evidence": [
+        "third-party-pr-source/145.production-review.patch",
+        "historical-regressions-final-ci.json"
+      ],
+      "pull_request": "https://github.com/snapetech-org/seerrng/pull/145"
+    },
+    {
+      "number": 148,
+      "source_patch": "third-party-pr-source/148.original-source.patch",
+      "sha256": "9713af6a15afdbb3eb2d91cdfee8f5c3cf0f9c66d068d65b2436d573c4e1924b",
+      "review": "Security-relevant production changes and current owners reviewed; component sink scan and action/caller diffs inspected. Not an exhaustive visual acceptance of historical CSS.",
+      "disposition": "Notification intent hydration now drops deleted records rather than retrying stale data; dispatch handler registration remains fixed module-owned code, not user selected. UI actions retain existing request/report/blocklist permission owners; rating links retain safe-href handling. Historical ratingsReview hardcoded scores were found in the original patch and are absent from current production source (values remain only in test fixtures). No new production exploit confirmed in this scoped review.",
+      "evidence": [
+        "148.sensitive-production-review.patch",
+        "148.components-review.patch",
+        "148.security-sinks-review.txt",
+        "historical-file-tooling-regressions.log",
+        "release-3.72.11-final-browser.log"
+      ],
+      "pull_request": "https://github.com/snapetech-org/seerrng/pull/148"
+    },
+    {
+      "number": 158,
+      "source_patch": "third-party-pr-source/158.original-source.patch",
+      "sha256": "f25c2646e3939818db32d28ac22266b16ab1eae547ae953dc38970b6b25325f0",
+      "review": "Historical local validation execution/cleanup boundaries and production cache/native-account persistence/API/client authority flows reviewed; scoped security review, not a distributed-runtime or physical-player proof.",
+      "disposition": "Native saved items and TV collection writes use the current own-user credential pair, never shared administrator fallback, with current authority revalidation after provider reads and serialized writes. Jellyfin verifies token-self identity; Emby requires the persisted pair from one native authentication result. Provider transport/diagnostics are bounded and sanitized. Shared movie-feed caching binds language/adult context, excludes unsupported filtered requests, and re-applies viewer policy at rendering boundaries. Disclosure ordering is account-scoped and validated; software category SQL uses validated bound parameters. Historical local validation uses argv without a shell, isolated environment and contained owned temporary paths; archived engine/wrapper retirement remains authoritative and is not reversed. Current owners pass the 179-case boundary run and existing authority regressions; no additional active exploit confirmed within this scope.",
+      "evidence": [
+        "final-historical-boundary-review-regressions.log",
+        "playback-authority-final.log",
+        "158.security-sinks-review.txt"
+      ],
+      "pull_request": "https://github.com/snapetech-org/seerrng/pull/158"
+    },
+    {
+      "number": 162,
+      "source_patch": "third-party-pr-source/162.patch",
+      "sha256": "354ae2d35f44cebfbf6059b6cdfefd6f8c2069d114da5b0bc30fded417b5a5d1",
+      "review": "Final production API diff, original migration, theme persistence and mutation boundaries inspected; obsolete engine bindings distinguished from current code.",
+      "disposition": "Theme values are fixed allowlist IDs, not executable CSS or arbitrary template input. The one-time adoption migration exits when its column exists. Current middleware isOwnProfile requires exact actor/profile ID before the credential-version-aware mutation. Delayed client saves check current user identity, and Watchlist mutations retain backend authorization plus confirmation/double-submit protection. Original engine maintenance language/archive is superseded by owner removal265d4696; CodeQL remains disabled. Four current account-theme/interface tests pass and all three current themes have browser acceptance in222-case suite. No additional active security issue confirmed in this scope.",
+      "evidence": [
+        "162.final-production-api-diff.patch",
+        "third-party-theme-account-regressions.log",
+        "release-3.72.11-final-browser.log",
+        "postgres-current-head-acceptance.log"
+      ],
+      "pull_request": "https://github.com/snapetech-org/seerrng/pull/162"
+    },
+    {
+      "number": 163,
+      "source_patch": "third-party-pr-source/163.patch",
+      "sha256": "37d9ff6e8c1b1bbd185006beba984e2e2c3f6c5e1e4c0e184e1cb16a689921cb",
+      "review": "Historical process/log/dependency/source-containment boundaries and retirement inspected; not exhaustive scheduler algorithm verification.",
+      "disposition": "The staged engine checks read-only matching dependency mounts, bounded workers and output, shell-free argv spawning, exclusive private logs, and owned process/scratch cleanup. Test setup strips production DB/config variables and uses task temporary roots. Owner commit265d4696ebe870ee28ab67790ff0fd56f2ee6670 removed the custom engine and its archived execution bindings; current git inventory contains none of tools/validation-engine, local-validation wrappers or engine-isolate setup. PR163 remains obsolete under that explicit owner decision, not an unmerged feature to resurrect. Oldhead is not main ancestor; retirement is the supersession evidence. Current native CI and disabled-CodeQL policy remain authoritative. No active engine execution surface remains; historical runtime not executed for this audit.",
+      "evidence": [
+        "163.tooling-boundary-review.patch",
+        "163.sensitive-production-review.patch",
+        "163.security-sinks-review.txt",
+        "265d4696ebe870ee28ab67790ff0fd56f2ee6670"
+      ],
+      "pull_request": "https://github.com/snapetech-org/seerrng/pull/163"
+    },
+    {
+      "number": 173,
+      "source_patch": "third-party-pr-source/173.original-source.patch",
+      "sha256": "c5299a7f766db7ce81d8d58def32132e6adff96e94199e74335b40c2fdb06ef4",
+      "review": "Historical operational-script diffs, orchestration secret/execution boundaries, transport authentication and current retirement inspected; not an exhaustive distributed-scheduler correctness proof.",
+      "disposition": "Engine network messages use HMAC with sender/recipient/request binding, bounded bodies, timestamps/nonces and replay checks; child argv avoids shell execution. Mode3 was explicitly dormant and is removed now. Current source has no archived worker/engine bindings. Historical native adapters inherited selected execution environment; no removed engine is restored or run. Retained operational changes use literal argv, quoted path arguments, owner/private-directory checks, exclusive temporary writes and argument arrays; inspected AUR SSH pinning/COPR stdin-secret transport do not introduce a new credential destination. Historical Cypress recording env is push-only at the reusable workflow boundary. CodeQL invocation is obsolete and remains disabled. No additional active exploit confirmed within these reviewed boundaries.",
+      "evidence": [
+        "173.operational-review.patch",
+        "173.workflow-review.patch",
+        "173.engine-trust-boundary-context.txt",
+        "265d4696ebe870ee28ab67790ff0fd56f2ee6670"
+      ],
+      "pull_request": "https://github.com/snapetech-org/seerrng/pull/173"
+    },
+    {
+      "number": 371,
+      "source_patch": "third-party-pr-source/371.patch",
+      "sha256": "acd3d56479e7ff13daba2de29f54bf5401c969d4a97ed61eacb235f0bad6b5cc",
+      "review": "Original auth/API/UI changes and owner hardening followups read; current PKCE completion boundary inspected. Static icon payloads scanned for active-content references.",
+      "disposition": "Original callback trusted forwarding headers and performed cross-site authenticated completion. Owner hardening uses configured HTTPS application URL, signed HttpOnly Secure short-lived handoff cookie, session-bound random state+PKCE, same-site POST completion with user/client/URL binding and one-time consumption. Current source retains these protections; eighteen native PKCE/API cases pass. Legacy secret migration projects only supported fields. Related adult-cover/default-comics followups use bounded service selection and parameterized catalog queries; no new executable SVG/remote-script sink identified. No live Trakt account authorization claimed.",
+      "evidence": [
+        "third-party-trakt-pkce-source-regressions.log",
+        "historical-internal-and-servarr-network-regressions.log"
+      ],
+      "pull_request": "https://github.com/snapetech-org/seerrng/pull/371"
+    },
+    {
+      "number": 406,
+      "source_patch": "third-party-pr-source/406.patch",
+      "sha256": "0b85967f41f3c4ea9456529be67df3a55db66b543861c07bfe334fb01269735c",
+      "review": "Original production source and current relevant owners inspected.",
+      "disposition": "Production server/API/UI diff inspected against current owners. Sonarr v5 new-series defaults retain explicit request precedence, preserve existing-series metadata, and retain legacy v3/v4 controls. Settings mutations remain ADMIN-authorized, optional IDs and order values are parsed, and service transport remains origin-bound. No new unremediated exploit identified; live Sonarr was not used. Existing full CI and Servarr network/connection regressions support current boundaries.",
+      "evidence": [
+        "historical-regressions-final-ci.json",
+        "third-party-servarr-connection-review-regressions.log"
+      ],
+      "pull_request": "https://github.com/snapetech-org/seerrng/pull/406"
+    },
+    {
+      "number": 410,
+      "source_patch": "third-party-pr-source/410.patch",
+      "sha256": "fc496fbd984f3ae38bda40b273d7b8ea442ed1e7a7fae85fa54e4ee2ed4e2bf0",
+      "review": "production patch and current relevant owner inspected; test/source evidence reviewed",
+      "disposition": "Original lookup patch carries provider-qualified hc/gr identities through facade negotiation; no new network host or credentials introduced. Recovery added real capability-negotiation HTTP cases across both dialects and both formats; provider identity is retained on current source.",
+      "evidence": [
+        "third-party-book-and-api-contribution-regressions.log",
+        "third-party-audiobookshelf-port-regressions.log",
+        "historical-issue-matching-availability-navigation.log",
+        "issue-382-scoped-catalog-final-regressions.log",
+        "issue-409-http-facade-regressions.log",
+        "historical-oidc-full-auth-flow-regressions.log"
+      ],
+      "pull_request": "https://github.com/snapetech-org/seerrng/pull/410"
+    },
+    {
+      "number": 411,
+      "source_patch": "third-party-pr-source/411.patch",
+      "sha256": "acb203a95b8fb54a7fa253f2812bc1e265fbff6eaafb003bb50780bcc7b2c615",
+      "review": "original production patch and current relevant owner inspected",
+      "disposition": "Production patch avoids reopening an initialized SQLite database, because closing another file descriptor can release POSIX locks. It creates missing DB exclusively/private before initialization and preserves no-symlink checks. Current SQLite file-security and migration regressions pass.",
+      "evidence": [
+        "third-party-cache-retry-sqlite-regressions.log",
+        "historical-plex-fixed-origin-regressions.log",
+        "historical-image-proxy-security-regressions.log",
+        "historical-control-flow-regressions.log"
+      ],
+      "pull_request": "https://github.com/snapetech-org/seerrng/pull/411"
+    },
+    {
+      "number": 458,
+      "source_patch": "third-party-pr-source/458.patch",
+      "sha256": "371730f01edb7fce32951ff45ba1960d286966127cd9d9e19b1baa8b4227c99d",
+      "review": "Authentication, account-cache ownership, API/network calls, deployment proxy, playback targets, storage and executable client sinks reviewed. External companion implementation and upstream package source are outside this source-review scope.",
+      "disposition": "Review found real popup-cancellation, shared recent-search privacy, malformed-storage crash and missing optional-companion ingress session boundaries. Popup cancellation is repaired in PR578, integrated into577; remaining search/proxy repairs are committed/pushed in PR580 with36 browser and11 real proxy/native-link checks passing. These repairs are awaiting main delivery; no claim every external companion enforces request policy or physical Plex handoff.",
+      "evidence": [
+        "lumen-pin-cancel-baseline-direct.log",
+        "lumen-history-baseline.log",
+        "lumen-history-expanded.log",
+        "lumen-companion-session-baseline.log",
+        "lumen-companion-session-final.log"
+      ],
+      "pull_request": "https://github.com/snapetech-org/seerrng/pull/458"
+    },
+    {
+      "number": 506,
+      "source_patch": "third-party-pr-source/506.patch",
+      "sha256": "ec121b75ae9ef4a23dde603dfe77a9c5499973829de4b9f5a16c752571e00615",
+      "review": "production patch and current relevant owner inspected; test/source evidence reviewed",
+      "disposition": "Original executable contract change only adds allowReserved to free-text book search fields. It does not remove field types, length limits, authentication or permission checks. Current OpenAPI book-query regression suite accepts spaces/colons with normal route validation.",
+      "evidence": [
+        "third-party-book-and-api-contribution-regressions.log",
+        "third-party-audiobookshelf-port-regressions.log",
+        "historical-issue-matching-availability-navigation.log",
+        "issue-382-scoped-catalog-final-regressions.log",
+        "issue-409-http-facade-regressions.log",
+        "historical-oidc-full-auth-flow-regressions.log"
+      ],
+      "pull_request": "https://github.com/snapetech-org/seerrng/pull/506"
+    },
+    {
+      "number": 507,
+      "source_patch": "third-party-pr-source/507.patch",
+      "sha256": "279f695eba325fadb937f8ee9119d853f95611a1b665556577678d33098f7d25",
+      "review": "production patch and current relevant owner inspected; test/source evidence reviewed",
+      "disposition": "Original executable contract change documents bounded optional returnTo with allowReserved. Current route validates same-origin return paths; validator integration accepts query/hash and missing returnTo. Earlier full OIDC flow tests cover correlation and redirect policy.",
+      "evidence": [
+        "third-party-book-and-api-contribution-regressions.log",
+        "third-party-audiobookshelf-port-regressions.log",
+        "historical-issue-matching-availability-navigation.log",
+        "issue-382-scoped-catalog-final-regressions.log",
+        "issue-409-http-facade-regressions.log",
+        "historical-oidc-full-auth-flow-regressions.log"
+      ],
+      "pull_request": "https://github.com/snapetech-org/seerrng/pull/507"
+    },
+    {
+      "number": 508,
+      "source_patch": "third-party-pr-source/508.patch",
+      "sha256": "1e92877366c9149f6fbc50036bde4bf9b06dfe9142bc41e0b0225830387c2c11",
+      "review": "Complete original OpenAPI/tests/release fragment patch and current route guards inspected.",
+      "disposition": "Adds missing contract paths, not bypasses to route handlers. Current interface-theme updates remain self-profile only; Jellystat remains ADMIN; advanced override requires REQUEST_ADVANCED or MANAGE_REQUESTS and validates target-user authority; jobs remain behind administrator settings routing. Library stale-availability remains an authorized token/quality-bound operation. Ten current contract regressions pass. Original OpenAPI-only tests demonstrate reachability, not authorization; application guards were inspected separately. Contribution is genuinely superseded by delivered #514/#515 contract repair.",
+      "evidence": [
+        "third-party-missing-ui-api-contract-regressions.log"
+      ],
+      "pull_request": "https://github.com/snapetech-org/seerrng/pull/508"
+    },
+    {
+      "number": 509,
+      "source_patch": "third-party-pr-source/509.patch",
+      "sha256": "b7599e4d12b1cb4b960acc5e5feaec65bde1162e55a2815ef2e011d80cc25eb7",
+      "review": "production patch and current relevant owner inspected; test/source evidence reviewed",
+      "disposition": "Original modal change converts the typed port to Number for the connection-test payload, matching save behavior. Current source and actual modal rendering test confirm numeric port; it does not weaken backend numeric/range validation.",
+      "evidence": [
+        "third-party-book-and-api-contribution-regressions.log",
+        "third-party-audiobookshelf-port-regressions.log",
+        "historical-issue-matching-availability-navigation.log",
+        "issue-382-scoped-catalog-final-regressions.log",
+        "issue-409-http-facade-regressions.log",
+        "historical-oidc-full-auth-flow-regressions.log"
+      ],
+      "pull_request": "https://github.com/snapetech-org/seerrng/pull/509"
+    },
+    {
+      "number": 510,
+      "source_patch": "third-party-pr-source/510.patch",
+      "sha256": "3a2ed72d13c26c4e5274e2f07cdea6e287f61cf82f2c375a222bc41e7fc9d194",
+      "review": "production patch and current relevant owner inspected; test/source evidence reviewed",
+      "disposition": "Original scanner fallback matches an existing request by both configured service ID and external Bookshelf book ID, separately for ebook/audiobook. Current source includes stronger scoped matching. Six real SQLite matcher cases and full scanner regressions pass.",
+      "evidence": [
+        "third-party-book-and-api-contribution-regressions.log",
+        "third-party-audiobookshelf-port-regressions.log",
+        "historical-issue-matching-availability-navigation.log",
+        "issue-382-scoped-catalog-final-regressions.log",
+        "issue-409-http-facade-regressions.log",
+        "historical-oidc-full-auth-flow-regressions.log"
+      ],
+      "pull_request": "https://github.com/snapetech-org/seerrng/pull/510"
+    },
+    {
+      "number": 545,
+      "source_patch": "third-party-pr-source/545.patch",
+      "sha256": "6373d571cd5396da8ade6fb92ce50c234939530009fde5cef65788b625427d94",
+      "review": "Original production diff and current relevant owners inspected; focused evidence bounded below.",
+      "disposition": "Complete docs/compose patches inspected. Compose runs only SeerrNG and Lumen, builds official repository source, mounts scoped config only, and defaults Lumen trust list empty. Documentation explicitly restricts proxy trust and backend public exposure; no secrets, privileged host mounts, or injected shell payload found. Real nginx header-boundary regression covers documented trust behavior; no physical Plex app launch is claimed.",
+      "evidence": [
+        "third-party-lumen-proxy-and-mobile-link-regressions.log"
+      ],
+      "pull_request": "https://github.com/snapetech-org/seerrng/pull/545"
+    }
+  ]
+}
