@@ -148,10 +148,14 @@ const isProgressState = (item: RecoveryQueueItem): boolean => {
   const status = normalize(item.status);
   const trackedState = normalize(item.trackedDownloadState);
 
-  return ['downloading', 'queued', 'paused', 'stalled'].some(
+  return ['downloading', 'queued', 'stalled'].some(
     (value) => status === value || trackedState === value
   );
 };
+
+const isPausedDownload = (item: RecoveryQueueItem): boolean =>
+  normalize(item.status) === 'paused' ||
+  normalize(item.trackedDownloadState) === 'paused';
 
 class DownloadRecovery {
   private running = false;
@@ -385,7 +389,8 @@ class DownloadRecovery {
       state.releaseTitle = item.title;
       state.lastSizeLeft = sizeLeft;
 
-      if (sizeChanged) {
+      // Time deliberately spent paused must not consume the stall window.
+      if (sizeChanged || isPausedDownload(item)) {
         state.lastProgressAt = now;
       }
 
@@ -475,6 +480,10 @@ class DownloadRecovery {
     state: DownloadRecoveryState,
     now: Date
   ): RecoveryDecision {
+    // Clients can retain a stale seedless/failure warning while paused.
+    // An explicit pause takes priority over every automatic retry reason.
+    if (isPausedDownload(item)) return { action: 'track' };
+
     const fingerprint = getQueueFingerprint(item);
     const trackedState = normalize(item.trackedDownloadState);
     const trackedStatus = normalize(item.trackedDownloadStatus);
