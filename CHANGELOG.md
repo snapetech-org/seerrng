@@ -9,6 +9,17 @@ v3.72.7 section consolidates changes from the requested v3.71.4 baseline
 through v3.72.7, including changes also represented by unpublished interim
 tags. The comparison link is the complete commit range.
 
+## [3.72.16](https://github.com/snapetech-org/seerrng/compare/v3.72.15..v3.72.16) - 2026-11-06
+
+### User-facing changes
+
+#### Fixed
+
+- **Interface:** Request dialogs, collections and compact list cards keep correctly sized posters and top-aligned details in SeerrOrig and SeerrNGJ. Advanced Options icons and labels fit their controls. Inconsistent page titles use the existing responsive style; large detail-page layouts retain their theme geometry.
+
+### 🐛 Bug Fixes
+- *(interface)* Isolate compact summaries from detail theme geometry - ([38333c6](https://github.com/snapetech-org/seerrng/commit/38333c693bfa504210cde1cbde295d3a55b5d4a4))
+
 ## [3.72.15](https://github.com/snapetech-org/seerrng/compare/v3.72.14..v3.72.15) - 2026-11-06
 
 Additional fixes for book availability, Lumen media-server access, and floating rating bars reported after v3.72.14.
