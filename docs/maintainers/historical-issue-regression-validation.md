@@ -76,3 +76,24 @@ and pending reload cleanup are retained. This is React/JSDOM evidence, not a
 physical iPhone/Safari test. Issue #192's eight filter tests verify the default
 fifty-vote threshold for rating sorts and preservation of an explicit zero-vote
 choice; no live TMDB ranking comparison is claimed.
+
+## Category layout and typed Jellyfin port follow-up
+
+Reports #236 and #237 were checked against their original attached screenshots.
+Six headless cases cover Media Categories in all three themes at 390×900 and
+1440×900. Desktop selection buttons align with label centers within 3px;
+phone controls follow the existing stacked form layout. Descriptions remain
+beneath their own labels, inside their rows, and aligned to the label edge.
+Clicking each tested label toggles its associated selection button, and the
+Movies state is restored without saving. All six cases pass, and the six
+current screenshots were visually inspected against the historical reports.
+Initial harness failures counted an unrelated compact row, assumed native
+checkbox inputs, or assumed desktop geometry on phones; those artifacts remain.
+No production layout changes were needed. Native Firefox/Windows rendering is
+not claimed by this Chromium/Linux run.
+
+Report #96 also passes an actual browser submission: type 8097 into Jellyfin's
+port field and save; the intercepted request contains numeric integer 8097.
+The initial harness expected “Save Changes” instead of the actual “Save” label.
+No live Jellyfin connection was made; the previously recorded 17 server/API
+cases cover server-side validation separately.
