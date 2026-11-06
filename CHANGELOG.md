@@ -20,6 +20,7 @@ tags. The comparison link is the complete commit range.
 - **Interface:** Phone request summaries give metadata the card width; search/manage controls wrap instead of covering request buttons. Music details and request dialogs show one readable track-list layout without empty columns.
 
 - **Discovery:** Restore Arabic carousel positions after Back navigation, accept empty public TMDB lists and enforce the provider's supported list-ID range.
+- **Library access:** Search and discovery agree with title details for viewer-accessible Plex, Jellyfin and Emby copies, including4K. Private server identifiers remain hidden and inaccessible copies remain unavailable.
 
 ### Operator and maintainer changes
 
