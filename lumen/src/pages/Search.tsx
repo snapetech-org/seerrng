@@ -18,6 +18,11 @@ import { BookCard, Section, TitleCard } from '../components/cards';
 import { useExtras } from '../extras';
 import { useApi } from '../hooks';
 import { Icon } from '../icons';
+import {
+  clearRecentSearches,
+  readRecentSearches,
+  saveRecentSearches,
+} from '../recentSearches';
 import { usePrefs } from '../settings';
 
 const SCOPES = {
@@ -28,7 +33,6 @@ const SCOPES = {
   audio: 'Audiobooks',
 } as const;
 type Scope = keyof typeof SCOPES;
-const RECENT_KEY = 'lumen-recent-searches';
 
 // Search stays in the section you came from (?f=movie|tv|ebook|audio); "All" widens it
 export default function Search() {
@@ -38,9 +42,7 @@ export default function Search() {
   const f = ((p.get('f') as Scope) in SCOPES ? p.get('f') : 'all') as Scope;
   const [titles, setTitles] = useState<TitleResult[] | null>(null);
   const [books, setBooks] = useState<BookResult[] | null>(null);
-  const [recent, setRecent] = useState<string[]>(() =>
-    JSON.parse(localStorage.getItem(RECENT_KEY) || '[]')
-  );
+  const [recent, setRecent] = useState<string[]>(readRecentSearches);
   const [searching, setSearching] = useState(false);
   const navType = useNavigationType();
   // a new key per history entry, even when Enter pushes the same URL typing already showed
@@ -58,13 +60,13 @@ export default function Search() {
     if (t.length < 2) return;
     setRecent((cur) => {
       const next = [t, ...cur.filter((r) => r !== t)].slice(0, 6);
-      localStorage.setItem(RECENT_KEY, JSON.stringify(next));
+      saveRecentSearches(next);
       return next;
     });
   };
   const forget = () => {
     setRecent([]);
-    localStorage.removeItem(RECENT_KEY);
+    clearRecentSearches();
   };
   // Enter in the desktop search bar opens /search?q= as a new history entry (typing only replaces
   // it), so a pushed query counts as a finished search, also when already on this page

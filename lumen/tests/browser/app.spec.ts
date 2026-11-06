@@ -329,3 +329,165 @@ test('series details use the Android series route and retain iOS and desktop lin
   expect(fixture.errors).toEqual([]);
   expect(fixture.unknown).toEqual([]);
 });
+
+test('recent searches discard shared history and stay with their account', async ({
+  page,
+}, info) => {
+  const fixture = await fixtures(page);
+  await page.addInitScript(() => {
+    if (!localStorage.getItem('history-fixture-seeded')) {
+      localStorage.setItem('history-fixture-seeded', 'true');
+      localStorage.setItem(
+        'lumen-recent-searches',
+        JSON.stringify(['Legacy private query'])
+      );
+      localStorage.setItem(
+        'lumen-recent-searches:1',
+        JSON.stringify(['Owner private query'])
+      );
+      localStorage.setItem(
+        'lumen-recent-searches:2',
+        JSON.stringify(['Friend private query'])
+      );
+    }
+  });
+  await page.goto('/search');
+  await expect(
+    page.getByRole('heading', { name: 'Search', exact: true })
+  ).toBeVisible();
+  await expect(
+    page.getByRole('button', { name: 'Legacy private query', exact: true })
+  ).toHaveCount(0);
+  await expect(
+    page.getByRole('button', { name: 'Owner private query', exact: true })
+  ).toBeVisible();
+  await page.screenshot({
+    path: info.outputPath('owner-search.png'),
+    animations: 'disabled',
+  });
+  await profile(page);
+  await page.getByRole('button', { name: 'Sign out', exact: true }).click();
+  await page
+    .getByRole('button', { name: 'Use an email and password instead' })
+    .click();
+  await page.getByLabel('Email', { exact: true }).fill('friend@example.test');
+  await page.getByLabel('Password', { exact: true }).fill('fixture-only');
+  await page.getByRole('button', { name: 'Sign in', exact: true }).click();
+  await expect(
+    page.getByRole('heading', { name: 'You', exact: true })
+  ).toBeVisible();
+  await page.goto('/search');
+  await expect(
+    page.getByRole('button', { name: 'Friend private query', exact: true })
+  ).toBeVisible();
+  await expect(
+    page.getByRole('button', { name: 'Owner private query', exact: true })
+  ).toHaveCount(0);
+  await expect(
+    page.getByRole('button', { name: 'Legacy private query', exact: true })
+  ).toHaveCount(0);
+  await page.route('**/api/v1/search?**', (route) =>
+    route.fulfill({ json: paged([]) })
+  );
+  await page.route('**/seerr-classic/hcsearch?**', (route) =>
+    route.fulfill({ json: [] })
+  );
+  const search = page
+    .locator('input[type="search"]')
+    .filter({ visible: true })
+    .first();
+  await search.fill('Friend new query');
+  await search.press('Enter');
+  await expect
+    .poll(() =>
+      page.evaluate(() =>
+        JSON.parse(localStorage.getItem('lumen-recent-searches:2') || '[]')
+      )
+    )
+    .toEqual(['Friend new query', 'Friend private query']);
+  await page.goto('/search');
+  await expect(
+    page.getByRole('button', { name: 'Friend new query', exact: true })
+  ).toBeVisible();
+  await page.getByRole('button', { name: 'Clear', exact: true }).click();
+  await expect(
+    page.getByRole('heading', { name: 'Recent searches', exact: true })
+  ).toHaveCount(0);
+  expect(
+    await page.evaluate(() => localStorage.getItem('lumen-recent-searches:1'))
+  ).toContain('Owner private query');
+  expect(
+    await page.evaluate(() => localStorage.getItem('lumen-recent-searches'))
+  ).toBeNull();
+  await page.screenshot({
+    path: info.outputPath('friend-cleared-search.png'),
+    animations: 'disabled',
+  });
+  expect(fixture.errors).toEqual([]);
+  expect(fixture.unknown).toEqual([]);
+});
+
+test('malformed recent search storage does not crash Search', async ({
+  page,
+}) => {
+  const fixture = await fixtures(page);
+  await page.addInitScript(() => {
+    localStorage.setItem('lumen-recent-searches', '{broken');
+    localStorage.setItem('lumen-recent-searches:1', '{broken');
+  });
+  await page.goto('/search');
+  await expect(
+    page.getByRole('heading', { name: 'Search', exact: true })
+  ).toBeVisible();
+  await expect(
+    page.getByRole('heading', { name: 'Browse', exact: true })
+  ).toBeVisible();
+  expect(fixture.errors).toEqual([]);
+});
+
+test('unavailable history storage still permits searching', async ({
+  page,
+}) => {
+  const fixture = await fixtures(page);
+  await page.addInitScript(() => {
+    const originalGet = Storage.prototype.getItem;
+    const originalSet = Storage.prototype.setItem;
+    const originalRemove = Storage.prototype.removeItem;
+    Storage.prototype.getItem = function (key) {
+      if (key.startsWith('lumen-recent-searches'))
+        throw new DOMException('Blocked fixture storage', 'SecurityError');
+      return originalGet.call(this, key);
+    };
+    Storage.prototype.setItem = function (key, value) {
+      if (key.startsWith('lumen-recent-searches'))
+        throw new DOMException('Blocked fixture storage', 'SecurityError');
+      originalSet.call(this, key, value);
+    };
+    Storage.prototype.removeItem = function (key) {
+      if (key.startsWith('lumen-recent-searches'))
+        throw new DOMException('Blocked fixture storage', 'SecurityError');
+      originalRemove.call(this, key);
+    };
+  });
+  await page.route('**/api/v1/search?**', (route) =>
+    route.fulfill({ json: paged([]) })
+  );
+  await page.route('**/seerr-classic/hcsearch?**', (route) =>
+    route.fulfill({ json: [] })
+  );
+  await page.goto('/search');
+  await expect(
+    page.getByRole('heading', { name: 'Search', exact: true })
+  ).toBeVisible();
+  const search = page
+    .locator('input[type="search"]')
+    .filter({ visible: true })
+    .first();
+  await search.fill('Available search');
+  await search.press('Enter');
+  await expect(page).toHaveURL(/q=Available/);
+  await expect(
+    page.getByRole('heading', { name: 'Search', exact: true })
+  ).toBeVisible();
+  expect(fixture.errors).toEqual([]);
+});
