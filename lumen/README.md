@@ -73,6 +73,8 @@ A few book features need ChaptarrNG data that SeerrNG's API doesn't expose yet. 
 | `GET /seerr-classic/lookup?f=audiobook&d=hc&id=` | Every narration of a book, for the narrator picker |
 | `POST /seerr-classic/narration` | "Request another narrator" for a book already in the library |
 
+Lumen checks the current SeerrNG session before forwarding companion calls. The companion must also validate the caller’s identity, category permissions, request approval rules and quotas; a successful session check does not authorize every action. Do not expose an unauthenticated acquisition service as this upstream.
+
 Without the companion, search falls back to SeerrNG's own book search and the narrator picker shows what SeerrNG returns. Native SeerrNG endpoints for these would remove the need for it.
 
 ## Validate

@@ -33,3 +33,26 @@ Task evidence is retained under
 Browser device emulation does not establish physical-device behavior. The
 principal-scoped key separates accounts using Lumen's interface; browser profile
 storage is not an encrypted vault against someone with local developer access.
+
+## Companion proxy authentication boundary
+
+The same contribution review found that the optional `/seerr-classic/` proxy
+forwarded both reads and narration POSTs without consulting SeerrNG's session.
+A real nginx baseline with a permissive fixture companion returned 200 for an
+anonymous request (`lumen-companion-session-baseline.log`). This demonstrates
+the missing ingress boundary; it does not establish that every external
+companion implementation lacks its own authorization.
+
+The production nginx template now uses an internal-only `auth_request` against
+SeerrNG `/api/v1/auth/me`, forced to GET with no request body. The original
+companion request retains its method and JSON body after successful verification.
+All eleven proxy/device-link checks pass (`lumen-companion-session-final.log`):
+missing/expired sessions return 401, forbidden sessions return 403, unavailable
+authentication fails closed, no rejected request reaches the companion, and the
+internal check cannot be called externally. Existing forwarding-header trust
+checks still pass. Each test removes its owned nginx container after use.
+
+A valid SeerrNG session is an ingress requirement, not authorization to bypass
+per-user category permissions, request approval or quotas. An optional companion
+must enforce those rules for its own endpoints. No live companion acquisition
+was attempted, and this change does not claim to implement its application policy.
