@@ -150,9 +150,11 @@ export const isAnySoftwareCategoryEnabled = (
   );
 
 export const isOptionalCatalogPathEnabled = (
-  path: string,
+  href: string,
   availability: OptionalServiceAvailability
 ): boolean => {
+  // Navigation can select a format without changing the catalog's availability.
+  const path = href.split(/[?#]/, 1)[0];
   if (path === '/swipe' || path.startsWith('/swipe/')) {
     return availability.swipeEnabled !== false;
   }

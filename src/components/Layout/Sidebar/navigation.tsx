@@ -137,7 +137,7 @@ export const navigationSections: NavigationSection[] = [
       },
       {
         id: 'books',
-        href: '/discover/books',
+        href: '/discover/books?format=ebook',
         messagesKey: 'browsebooks',
         svgIcon: <BookOpenIcon aria-hidden="true" />,
         svgIconSelected: <FilledBookOpenIcon aria-hidden="true" />,
