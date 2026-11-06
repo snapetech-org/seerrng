@@ -56,6 +56,7 @@ const portableTests = [
   'scripts/backissue-service.test.mjs',
   'scripts/check-helm-security.test.mjs',
   'scripts/check-workflow-boundaries.test.mjs',
+  'scripts/issue-resolution-policy.test.mjs',
   'scripts/copy-server-assets.test.mjs',
   'scripts/update-helm-release-metadata.test.mjs',
   'scripts/release-notes.test.mjs',
