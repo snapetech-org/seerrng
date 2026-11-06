@@ -1,6 +1,8 @@
 import { expect, test, type Page } from '@playwright/test';
+import { restoreAdminPresentation } from './helpers/presentation';
 
 test.use({ locale: 'ar-EG', serviceWorkers: 'block' });
+test.afterEach(async ({ page }) => restoreAdminPresentation(page));
 
 const loginAsAdmin = async (page: Page, baseURL: string | undefined) => {
   expect(baseURL).toBeTruthy();

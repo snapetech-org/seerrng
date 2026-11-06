@@ -1,7 +1,9 @@
 import { expect, test, type Page } from '@playwright/test';
 import type { MovieDetails } from '@server/models/Movie';
+import { restoreAdminPresentation } from './helpers/presentation';
 
 test.use({ serviceWorkers: 'block' });
+test.afterEach(async ({ page }) => restoreAdminPresentation(page));
 
 const loginAsAdmin = async (page: Page, baseURL: string | undefined) => {
   const response = await page.request.post(`${baseURL}/api/v1/auth/local`, {
