@@ -51,11 +51,13 @@ export const matchesSourceCallsiteLine = ({
 export const isSafeSourceRelativePath = (value, sourcePrefix) =>
   typeof value === 'string' &&
   typeof sourcePrefix === 'string' &&
-  !path.isAbsolute(value) &&
+  !path.posix.isAbsolute(value) &&
+  !path.win32.isAbsolute(value) &&
   value.startsWith(`${sourcePrefix}/`) &&
   !value.split(/[\\/]+/).includes('..') &&
   !value.includes('\\') &&
-  path.normalize(value) === value;
+  !/[\0:]/.test(value) &&
+  path.posix.normalize(value) === value;
 
 export const classifyCatalogEntry = ({
   hasValue,
