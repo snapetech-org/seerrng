@@ -7,4 +7,6 @@
     <color name="white">#FFFFFF</color>
     <color name="warning">#9C3D22</color>
     <color name="line">#D7DEE8</color>
+    <!-- cards, toolbars and secondary buttons; dark in values-night -->
+    <color name="surface">#FFFFFF</color>
 </resources>

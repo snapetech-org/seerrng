@@ -1,0 +1,23 @@
+<resources>
+    <style name="AppTheme" parent="android:style/Theme.Material.NoActionBar">
+        <item name="android:fontFamily">sans</item>
+        <item name="android:colorAccent">@color/brand_blue</item>
+        <item name="android:statusBarColor">@color/paper</item>
+        <item name="android:navigationBarColor">@color/paper</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowActionModeOverlay">true</item>
+        <item name="android:windowBackground">@color/paper</item>
+    </style>
+
+    <style name="PrimaryButton" parent="android:style/Widget.Material.Button">
+        <item name="android:backgroundTint">@color/brand_blue</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textAllCaps">false</item>
+    </style>
+
+    <style name="SecondaryButton" parent="android:style/Widget.Material.Button">
+        <item name="android:backgroundTint">@color/surface</item>
+        <item name="android:textColor">@color/brand_blue_dark</item>
+        <item name="android:textAllCaps">false</item>
+    </style>
+</resources>
