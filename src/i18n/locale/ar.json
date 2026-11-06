@@ -383,7 +383,7 @@
   "components.BookSeriesSearch.CoverCarousel.next": "أغلفة الكتب التالية",
   "components.BookSeriesSearch.CoverCarousel.open": "فتح {series}: {book}",
   "components.BookSeriesSearch.CoverCarousel.previous": "أغلفة الكتب السابقة",
-  "components.BookSeriesSearch.CoverCarousel.roleDescription": "شريط تمرير",
+  "components.BookSeriesSearch.CoverCarousel.roleDescription": "عرض دوّار",
   "components.BookSeriesSearch.InlineResults.browse": "عرض جميع نتائج السلاسل",
   "components.BookSeriesSearch.InlineResults.catalog": "مطابقات كتالوج أخرى",
   "components.BookSeriesSearch.InlineResults.catalogHint": "استكشف إدخالات الكتالوج الأخرى لهذه السلسلة. قد تختلف قوائم الكتب عن خادم الكتب الخاص بك.",

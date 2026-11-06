@@ -150662,6 +150662,126 @@
       "sourceHash": "976f635a570bd70f0ff82c6a77027c2a633078a4e0a99517bd3d0bd4d417033f",
       "targetHash": "0824a508c61a7a35cc452ccfabd2dd04e8079b2526c06bf7014990ee6e8045f2",
       "correctionReason": "Contextual Arabic machine-draft correction: six cardinal categories and the source screen meaning are reviewed; dynamic argument names, exact selectors, rich-text tags, and protocol/product names are preserved. Fluency and full RTL acceptance remain unverified."
+    },
+    {
+      "domain": "client",
+      "locale": "ar",
+      "id": "components.BookSeriesSearch.CoverCarousel.roleDescription",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "Codex contextual semantic review of the Book Series carousel aria-roledescription; 2026-11-05; native-speaker review not performed",
+      "sourceHash": "7565e4480e567f25d965c3e92a3d1a69143e8b21f4a9538548673d7fd1734055",
+      "targetHash": "89da3f03399ca14615d5ca57182cc68531469862dda7954521e29cf3e6f7ca5c"
+    },
+    {
+      "domain": "client",
+      "locale": "de",
+      "id": "components.BookSeriesSearch.CoverCarousel.roleDescription",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "Codex contextual semantic review of the Book Series carousel aria-roledescription; 2026-11-05; native-speaker review not performed",
+      "sourceHash": "7565e4480e567f25d965c3e92a3d1a69143e8b21f4a9538548673d7fd1734055",
+      "targetHash": "84c4560bdafe059f9bfdac8e2786dc7284d948048192bb29de32593033e8f8eb"
+    },
+    {
+      "domain": "client",
+      "locale": "es",
+      "id": "components.BookSeriesSearch.CoverCarousel.roleDescription",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "Codex contextual semantic review of the Book Series carousel aria-roledescription; 2026-11-05; native-speaker review not performed",
+      "sourceHash": "7565e4480e567f25d965c3e92a3d1a69143e8b21f4a9538548673d7fd1734055",
+      "targetHash": "b6dc1db05616b22440f02f6775609802cac95eed7ec0ee0ea580930fba96110c"
+    },
+    {
+      "domain": "client",
+      "locale": "fr",
+      "id": "components.BookSeriesSearch.CoverCarousel.roleDescription",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "Codex contextual semantic review of the Book Series carousel aria-roledescription; 2026-11-05; native-speaker review not performed",
+      "sourceHash": "7565e4480e567f25d965c3e92a3d1a69143e8b21f4a9538548673d7fd1734055",
+      "targetHash": "547efbc38007998ec166aad9cbc294beafdc60f79991ea9a2154d0c6c8b4e6de"
+    },
+    {
+      "domain": "client",
+      "locale": "hi",
+      "id": "components.BookSeriesSearch.CoverCarousel.roleDescription",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "Codex contextual semantic review of the Book Series carousel aria-roledescription; 2026-11-05; native-speaker review not performed",
+      "sourceHash": "7565e4480e567f25d965c3e92a3d1a69143e8b21f4a9538548673d7fd1734055",
+      "targetHash": "fae9503e8411cc240f99773060653dc18d42a4fcd61a1268e85b4784bfed3fbc"
+    },
+    {
+      "domain": "client",
+      "locale": "id",
+      "id": "components.BookSeriesSearch.CoverCarousel.roleDescription",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "Codex contextual semantic review of the Book Series carousel aria-roledescription; 2026-11-05; native-speaker review not performed",
+      "sourceHash": "7565e4480e567f25d965c3e92a3d1a69143e8b21f4a9538548673d7fd1734055",
+      "targetHash": "97e0bd321e79fd5298c599a30c7f9ef0d53a1d1f8f11a35f14cef04e23a7ccc5"
+    },
+    {
+      "domain": "client",
+      "locale": "ja",
+      "id": "components.BookSeriesSearch.CoverCarousel.roleDescription",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "Codex contextual semantic review of the Book Series carousel aria-roledescription; 2026-11-05; native-speaker review not performed",
+      "sourceHash": "7565e4480e567f25d965c3e92a3d1a69143e8b21f4a9538548673d7fd1734055",
+      "targetHash": "4c67b5f267a39184ee64fcb0225d2127de85c54c09855382d24c96e95bff656d"
+    },
+    {
+      "domain": "client",
+      "locale": "ko",
+      "id": "components.BookSeriesSearch.CoverCarousel.roleDescription",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "Codex contextual semantic review of the Book Series carousel aria-roledescription; 2026-11-05; native-speaker review not performed",
+      "sourceHash": "7565e4480e567f25d965c3e92a3d1a69143e8b21f4a9538548673d7fd1734055",
+      "targetHash": "589cbeff0ac72f215d0a4b39fb55a2ca2a1836a50e2b1b479b4ce9ed3b08d365"
+    },
+    {
+      "domain": "client",
+      "locale": "pt-BR",
+      "id": "components.BookSeriesSearch.CoverCarousel.roleDescription",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "Codex contextual semantic review of the Book Series carousel aria-roledescription; 2026-11-05; native-speaker review not performed",
+      "sourceHash": "7565e4480e567f25d965c3e92a3d1a69143e8b21f4a9538548673d7fd1734055",
+      "targetHash": "0eb1b0feadd0874a7cc7855e0bcef1032f81b9498f5247d1130e0bd643cb66f1"
+    },
+    {
+      "domain": "client",
+      "locale": "vi",
+      "id": "components.BookSeriesSearch.CoverCarousel.roleDescription",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "Codex contextual semantic review of the Book Series carousel aria-roledescription; 2026-11-05; native-speaker review not performed",
+      "sourceHash": "7565e4480e567f25d965c3e92a3d1a69143e8b21f4a9538548673d7fd1734055",
+      "targetHash": "f03d6bde7af5df4da51b414d60a6ae3a3e33b2912ff05c2e6b40d6c32defc888"
+    },
+    {
+      "domain": "client",
+      "locale": "zh-CN",
+      "id": "components.BookSeriesSearch.CoverCarousel.roleDescription",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "Codex contextual semantic review of the Book Series carousel aria-roledescription; 2026-11-05; native-speaker review not performed",
+      "sourceHash": "7565e4480e567f25d965c3e92a3d1a69143e8b21f4a9538548673d7fd1734055",
+      "targetHash": "ba310ee92dbe737cffdb1801a61298154e1249583187f252c604a22307092b98"
+    },
+    {
+      "domain": "client",
+      "locale": "zh-TW",
+      "id": "components.BookSeriesSearch.CoverCarousel.roleDescription",
+      "status": "draft",
+      "provenance": "machine-draft",
+      "source": "Codex contextual semantic review of the Book Series carousel aria-roledescription; 2026-11-05; native-speaker review not performed",
+      "sourceHash": "7565e4480e567f25d965c3e92a3d1a69143e8b21f4a9538548673d7fd1734055",
+      "targetHash": "ee37a804cbc6d0157b5b9ca10251eb2c09b5b4c253188e143d923b2fd35c241c"
     }
   ]
 }

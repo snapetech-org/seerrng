@@ -6932,7 +6932,7 @@
   "components.VisualLab.demoPlum": "李子色",
   "components.VisualLab.demoPink": "粉色",
   "components.BookSeriesDetails.collectionTitle": "{title} 收藏",
-  "components.BookSeriesSearch.CoverCarousel.roleDescription": "卡路里",
+  "components.BookSeriesSearch.CoverCarousel.roleDescription": "轮播图",
   "components.Discover.ReadMeABookHomeSection.requestedTitle": "已请求 {title}。",
   "components.Discover.ReadMeABookSearch.requestedTitle": "{title} 已要求。",
   "components.Login.OidcLoginButton.setupGuide": "身份提供者设置指南",

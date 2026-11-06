@@ -6932,7 +6932,7 @@
   "components.VisualLab.demoPlum": "Mận",
   "components.VisualLab.demoPink": "Hồng",
   "components.BookSeriesDetails.collectionTitle": "{title} Bộ sưu tập",
-  "components.BookSeriesSearch.CoverCarousel.roleDescription": "Carousel",
+  "components.BookSeriesSearch.CoverCarousel.roleDescription": "băng chuyền",
   "components.Discover.ReadMeABookHomeSection.requestedTitle": "{title} được yêu cầu.",
   "components.Discover.ReadMeABookSearch.requestedTitle": "{title} được yêu cầu.",
   "components.Login.OidcLoginButton.setupGuide": "Hướng dẫn thiết lập nhà cung cấp danh tính",

@@ -383,7 +383,7 @@
   "components.BookSeriesSearch.CoverCarousel.next": "Sampul buku berikutnya",
   "components.BookSeriesSearch.CoverCarousel.open": "Buka {series}: {book}",
   "components.BookSeriesSearch.CoverCarousel.previous": "Sampul buku sebelumnya",
-  "components.BookSeriesSearch.CoverCarousel.roleDescription": "Karusela",
+  "components.BookSeriesSearch.CoverCarousel.roleDescription": "karusel",
   "components.BookSeriesSearch.InlineResults.browse": "Lihat semua hasil seri",
   "components.BookSeriesSearch.InlineResults.catalog": "Kecocokan Katalog Lainnya",
   "components.BookSeriesSearch.InlineResults.catalogHint": "Jelajahi entri katalog lain untuk seri ini. Daftar bukunya mungkin berbeda dari server buku Anda.",
