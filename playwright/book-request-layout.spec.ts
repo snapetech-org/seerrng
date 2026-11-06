@@ -1,7 +1,17 @@
 import { expect, test } from '@playwright/test';
 import { restoreAdminPresentation } from './helpers/presentation';
+import { getSelectOptionContrast } from './helpers/selectContrast';
 test.use({ serviceWorkers: 'block', reducedMotion: 'reduce' });
-test.afterEach(async ({ page }) => restoreAdminPresentation(page));
+test.afterEach(async ({ page }) => {
+  expect(
+    (
+      await page.request.post('/api/v1/user/1/settings/theme', {
+        data: { palette: 'seerr' },
+      })
+    ).status()
+  ).toBe(200);
+  await restoreAdminPresentation(page);
+});
 for (const theme of ['seerrNGJ', 'seerrOrig', 'persiusNG'])
   for (const locale of ['en', 'ar'])
     for (const width of [390, 1440]) {
@@ -27,6 +37,13 @@ for (const theme of ['seerrNGJ', 'seerrOrig', 'persiusNG'])
           (
             await page.request.post('/api/v1/user/1/settings/interface-theme', {
               data: { theme },
+            })
+          ).status()
+        ).toBe(200);
+        expect(
+          (
+            await page.request.post('/api/v1/user/1/settings/theme', {
+              data: { palette: 'lagoon' },
             })
           ).status()
         ).toBe(200);
@@ -66,7 +83,10 @@ for (const theme of ['seerrNGJ', 'seerrOrig', 'persiusNG'])
               server: service,
               profiles: [{ id: 1, name: 'Default' }],
               rootFolders: [{ id: 1, path: '/books' }],
-              tags: [],
+              tags: [
+                { id: 1, label: 'Fixture first tag' },
+                { id: 2, label: 'Fixture second tag' },
+              ],
             },
           })
         );
@@ -160,6 +180,29 @@ for (const theme of ['seerrNGJ', 'seerrOrig', 'persiusNG'])
         await expect(button).toHaveAttribute('aria-expanded', 'false');
         await button.click();
         await expect(button).toHaveAttribute('aria-expanded', 'true');
+        const tags = dialog.locator('.react-select-container-dark');
+        expect(
+          await tags
+            .locator('.react-select__control')
+            .evaluate((element) => getComputedStyle(element).backgroundColor)
+        ).not.toBe('rgb(255, 255, 255)');
+        await tags.locator('[role="combobox"]').click();
+        const options = page.locator('.react-select__menu [role="option"]');
+        await expect(options.first()).toBeVisible();
+        const contrast = await getSelectOptionContrast(options);
+        for (const item of contrast)
+          expect(item.contrast, JSON.stringify(item)).toBeGreaterThanOrEqual(
+            4.5
+          );
+        await info.attach('request-tag-contrast.json', {
+          body: JSON.stringify(contrast, null, 2),
+          contentType: 'application/json',
+        });
+        await page.screenshot({
+          path: info.outputPath('request-tags.png'),
+          fullPage: true,
+        });
+        await tags.locator('[role="combobox"]').press('Escape');
         await page.screenshot({
           path: info.outputPath('expanded.png'),
           fullPage: true,
