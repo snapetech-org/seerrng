@@ -30,6 +30,10 @@ services:
       LUMEN_REAL_IP_HEADER: X-Forwarded-For
     ports:
       - 5080:80
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
     # Optional admin defaults for every user (see lumen/public/lumen-config.example.json).
     # Create the file first, then remove the # from the two lines below.
     # volumes:
