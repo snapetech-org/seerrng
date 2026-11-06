@@ -50,6 +50,8 @@ Translation changes include machine-assisted corrections. Coverage and native-sp
 
 #### Security
 
+- **Lumen:** Recent searches now stay with the signed-in Lumen account. Legacy shared history is discarded, and malformed or unavailable browser storage no longer prevents searching.
+- **Lumen:** Lumen now verifies the current SeerrNG session before forwarding optional companion requests, blocking anonymous or expired sessions and failing closed if authentication is unavailable.
 - **Books:** **Breaking:** Bindery requester-owned requests now require administrator-configured account ID mappings. Changing a display name or email cannot assign requests to another Bindery account. Missing or stale mappings stop dispatch; older backends without requester ownership keep their service-account behavior.
   - **Action required:** Configure Requester Account Mappings in Bindery service settings when the backend supports requester-owned requests.
 

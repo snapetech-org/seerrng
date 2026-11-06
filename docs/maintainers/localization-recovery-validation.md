@@ -217,3 +217,7 @@ The affected shared-consumer rerun passed all 34 cases: collection cards across
 three themes/two directions/two widths, movie/TV detail layouts at nine widths,
 and the feature-recovery settings, follow, movie/TV request-dialog and subscription
 checks. Movie and TV requester/streaming dialogs cover 390 and 1440px in NGJ.
+
+## Final native TypeScript fixtures
+
+Hosted native validation found two test files that did not compile under the production formatter and media enum types. The fixtures now instantiate `createIntl<unknown>` to match `IntlInstance` and use `MediaType` enum members, retaining every behavioral assertion. Both files fail before repair and all29notification cases pass afterward. Evidence: `notification-native-types-baseline.log`, `notification-native-types-candidate.log` and `ci-42172934651-failed-native.log` in the retained task evidence directory. No production formatter type was weakened.
