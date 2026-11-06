@@ -156,7 +156,7 @@
     "@commitlint/config-conventional": "21.2.4",
     "@eslint-community/eslint-utils": "4.10.1",
     "@eslint/js": "10.0.1",
-    "@formatjs/icu-messageformat-parser": "3.5.21",
+    "@formatjs/icu-messageformat-parser": "3.5.22",
     "@next/bundle-analyzer": "^16.4.0",
     "@playwright/test": "^1.63.0",
     "@svgr/webpack": "8.1.0",
