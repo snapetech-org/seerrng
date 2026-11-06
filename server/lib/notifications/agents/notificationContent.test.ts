@@ -1,5 +1,6 @@
 import { createIntl } from '@formatjs/intl';
 import { IssueType } from '@server/constants/issue';
+import { MediaType } from '@server/constants/media';
 import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
 import {
@@ -26,7 +27,7 @@ const base: NotificationPayload = {
 // of the shipped catalog, which is checked separately by the catalog audit.
 describe('notification content descriptors', () => {
   it('maps numeric issue types to canonical ICU selector keys', () => {
-    const intl = createIntl({
+    const intl = createIntl<unknown>({
       locale: 'en',
       messages: {
         'notifications.common.issueTypeLabel':
@@ -66,7 +67,7 @@ describe('notification content descriptors', () => {
 
   it('isolates dynamic names inside localized comment labels', () => {
     const userName = 'alice אבג';
-    const intl = createIntl({
+    const intl = createIntl<unknown>({
       locale: 'ar',
       messages: { 'notifications.common.commentFrom': 'تعليق من {userName}' },
     });
@@ -85,7 +86,7 @@ describe('notification content descriptors', () => {
   });
 
   it('resolves fixed content for each recipient without mutating stored or dynamic text', () => {
-    const intl = createIntl({
+    const intl = createIntl<unknown>({
       locale: 'fr',
       messages: {
         'notifications.event.available':
@@ -96,7 +97,11 @@ describe('notification content descriptors', () => {
     });
     const payload: NotificationPayload = {
       ...base,
-      eventMessage: { kind: 'available', mediaType: 'book', is4k: false },
+      eventMessage: {
+        kind: 'available',
+        mediaType: MediaType.BOOK,
+        is4k: false,
+      },
       bodyMessage: 'comicRequestDetails',
       extra: [
         { name: 'Publisher', label: 'publisher', value: 'Publisher <raw>' },
@@ -114,7 +119,7 @@ describe('notification content descriptors', () => {
   });
 
   it('preserves custom and legacy text and translates only explicit subject/issue descriptors', () => {
-    const intl = createIntl({
+    const intl = createIntl<unknown>({
       locale: 'ar',
       messages: {
         'notifications.content.bookRequest': 'طلب كتاب',
@@ -140,7 +145,7 @@ describe('notification content descriptors', () => {
   });
 
   it('formats every canonical media-event branch including quality and fallback', () => {
-    const intl = createIntl({ locale: 'en', messages: {} });
+    const intl = createIntl<unknown>({ locale: 'en', messages: {} });
     const kinds: NotificationEventKind[] = [
       'available',
       'approved',
@@ -150,16 +155,7 @@ describe('notification content descriptors', () => {
       'autoApproved',
       'failed',
     ];
-    const mediaTypes = [
-      'movie',
-      'tv',
-      'music',
-      'book',
-      'comic',
-      'magazine',
-      'adult',
-      'sports',
-    ] as const;
+    const mediaTypes = Object.values(MediaType);
     for (const kind of kinds) {
       for (const mediaType of mediaTypes) {
         for (const is4k of [false, true]) {

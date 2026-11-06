@@ -385,7 +385,11 @@ describe('NotificationManager delivery lifecycle', () => {
     const original: NotificationPayload = {
       ...payload,
       event: 'Comic Request Approved',
-      eventMessage: { kind: 'approved', mediaType: 'comic', is4k: false },
+      eventMessage: {
+        kind: 'approved',
+        mediaType: MediaType.COMIC,
+        is4k: false,
+      },
       issueEventMessage: { kind: 'comment', issueType: 'video' },
       bodyMessage: 'comicRequestDetails',
       subjectMessage: 'bookRequest',
