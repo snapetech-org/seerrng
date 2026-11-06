@@ -33,6 +33,7 @@ import {
   MediaRequest,
 } from '@server/entity/MediaRequest';
 import MediaRequestStatusEvent from '@server/entity/MediaRequestStatusEvent';
+import MediaServiceStatus from '@server/entity/MediaServiceStatus';
 import { NotificationOutbox } from '@server/entity/NotificationOutbox';
 import OverrideRule from '@server/entity/OverrideRule';
 import Season from '@server/entity/Season';
@@ -10036,5 +10037,268 @@ describe('DELETE /request/:requestId, orphaned season status reset', () => {
     const updated = await mediaRepo.findOneOrFail({ where: { id: media.id } });
     assert.strictEqual(updated.seasons[0].status, MediaStatus.UNKNOWN);
     assert.strictEqual(updated.seasons[0].status4k, MediaStatus.PROCESSING);
+  });
+});
+
+describe('requester-tag-only admission', () => {
+  const availableMovie = async (status = MediaStatus.AVAILABLE) => {
+    const media = await getRepository(Media).save(
+      new Media({
+        tmdbId: 977001,
+        mediaType: MediaType.MOVIE,
+        status: MediaStatus.AVAILABLE,
+        status4k: MediaStatus.UNKNOWN,
+      })
+    );
+    await getRepository(MediaServiceStatus).save(
+      new MediaServiceStatus({
+        mediaId: media.id,
+        serviceType: 'radarr',
+        serverId: 0,
+        format: 'standard',
+        status,
+        externalServiceId: 42,
+      })
+    );
+    return media;
+  };
+  it('admits a pending tag-only request on the exact available default service, including service zero', async () => {
+    configureRadarr([{ tagRequests: true }]);
+    const media = await availableMovie();
+    const agent = await loginAs('friend@seerr.dev', 'test1234');
+    const res = await agent.post('/request').send({
+      mediaType: 'movie',
+      mediaId: media.tmdbId,
+      requesterTagOnly: true,
+    });
+    assert.equal(res.status, 201, res.body.message);
+    const stored = await getRepository(MediaRequest).findOneByOrFail({
+      id: res.body.id,
+    });
+    assert.equal(stored.status, MediaRequestStatus.PENDING);
+    assert.equal(stored.serviceTargets?.[0].requesterTagOnly, true);
+    assert.equal(stored.serviceTargets?.[0].externalServiceId, 42);
+    assert.equal(stored.serviceTargets?.[0].serverId, 0);
+    assert.equal(stored.serviceTargets?.[0].status, MediaStatus.AVAILABLE);
+    assert.equal(
+      (await getRepository(Media).findOneByOrFail({ id: media.id })).status,
+      MediaStatus.AVAILABLE
+    );
+  });
+  it('rejects tag-only intent when the destination disables requester tags', async () => {
+    configureRadarr([{ tagRequests: false }]);
+    const media = await availableMovie();
+    const res = await (
+      await loginAs('friend@seerr.dev', 'test1234')
+    )
+      .post('/request')
+      .send({
+        mediaType: 'movie',
+        mediaId: media.tmdbId,
+        requesterTagOnly: true,
+      });
+    assert.equal(res.status, 400);
+    assert.match(res.body.message, /tags.*not enabled/i);
+  });
+  it('rejects tag-only intent without confirmed destination availability', async () => {
+    configureRadarr([{ tagRequests: true }]);
+    const media = await availableMovie(MediaStatus.UNKNOWN);
+    const res = await (
+      await loginAs('friend@seerr.dev', 'test1234')
+    )
+      .post('/request')
+      .send({
+        mediaType: 'movie',
+        mediaId: media.tmdbId,
+        requesterTagOnly: true,
+      });
+    assert.equal(res.status, 409);
+    assert.equal(
+      await getRepository(MediaRequest).countBy({
+        type: MediaType.MOVIE,
+        media: { id: media.id },
+      }),
+      0
+    );
+  });
+  it('rejects partial-series tag-only selections before admission', async () => {
+    configureSonarr([{ tagRequests: true }]);
+    const res = await (
+      await loginAs('friend@seerr.dev', 'test1234')
+    )
+      .post('/request')
+      .send({
+        mediaType: 'tv',
+        mediaId: 977001,
+        requesterTagOnly: true,
+        seasons: [1],
+      });
+    assert.equal(res.status, 400);
+    assert.match(res.body.message, /full.series/i);
+  });
+});
+
+describe('streaming policy admission', () => {
+  const configurePolicy = async (
+    action: 'reject' | 'pending' | 'approve',
+    allowUserOverride = false,
+    knownRegion = true
+  ) => {
+    const settings = getSettings();
+    settings.main.streamingRequestPolicy = {
+      enabled: true,
+      condition: 'available',
+      action,
+      allowUserOverride,
+      rejectionMessage: 'Already on {providers} in {region}: {title}',
+    };
+    configureRadarr([{}]);
+    const user = await getRepository(User).findOneByOrFail({
+      email: 'friend@seerr.dev',
+    });
+    await getRepository(UserSettings).save({
+      user,
+      streamingRegion: 'US',
+      streamingSubscriptionProviderIds: [8],
+    });
+    Object.defineProperty(TheMovieDb.prototype, 'getMovie', {
+      configurable: true,
+      get() {
+        return async ({ movieId }: { movieId: number }) => ({
+          ...fakeTmdbMovie(movieId),
+          title: 'Policy fixture',
+          'watch/providers': {
+            results: knownRegion
+              ? {
+                  US: {
+                    flatrate: [
+                      { provider_id: 8, provider_name: 'Fixture Streaming' },
+                    ],
+                  },
+                }
+              : {},
+          },
+        });
+      },
+      set() {},
+    });
+    return user;
+  };
+  beforeEach(() => {
+    getSettings().main.streamingRequestPolicy = {
+      enabled: false,
+      condition: 'available',
+      action: 'reject',
+      allowUserOverride: false,
+      rejectionMessage: '',
+    };
+  });
+  afterEach(() => {
+    getSettings().main.streamingRequestPolicy = {
+      enabled: false,
+      condition: 'available',
+      action: 'reject',
+      allowUserOverride: false,
+      rejectionMessage: '',
+    };
+  });
+  it('rejects matched subscriptions without creating a request', async () => {
+    await configurePolicy('reject');
+    const res = await (
+      await loginAs('friend@seerr.dev', 'test1234')
+    )
+      .post('/request')
+      .send({ mediaType: 'movie', mediaId: 978001 });
+    assert.equal(res.status, 403);
+    assert.equal(res.body.code, 'STREAMING_REQUEST_POLICY_REJECTED');
+    assert.equal(res.body.allowOverride, false);
+    assert.match(res.body.message, /Fixture Streaming.*US.*Policy fixture/);
+    assert.equal(
+      await getRepository(MediaRequest).countBy({ media: { tmdbId: 978001 } }),
+      0
+    );
+  });
+  it('admits only an explicitly permitted own-user override', async () => {
+    await configurePolicy('reject', true);
+    const agent = await loginAs('friend@seerr.dev', 'test1234');
+    const rejected = await agent
+      .post('/request')
+      .send({ mediaType: 'movie', mediaId: 978001 });
+    assert.equal(rejected.status, 403);
+    assert.equal(rejected.body.allowOverride, true);
+    const res = await agent.post('/request').send({
+      mediaType: 'movie',
+      mediaId: 978001,
+      bypassStreamingRequestPolicy: true,
+    });
+    assert.equal(res.status, 201, res.body.message);
+    assert.equal(res.body.status, MediaRequestStatus.PENDING);
+  });
+  it('does not accept an override when the administrator disables it', async () => {
+    await configurePolicy('reject');
+    const res = await (
+      await loginAs('friend@seerr.dev', 'test1234')
+    )
+      .post('/request')
+      .send({
+        mediaType: 'movie',
+        mediaId: 978001,
+        bypassStreamingRequestPolicy: true,
+      });
+    assert.equal(res.status, 403);
+    assert.equal(
+      await getRepository(MediaRequest).countBy({ media: { tmdbId: 978001 } }),
+      0
+    );
+  });
+  it('keeps matching requests pending even for an otherwise auto-approved account', async () => {
+    const user = await configurePolicy('pending');
+    await getRepository(User).update(user.id, {
+      permissions: user.permissions + Permission.AUTO_APPROVE_MOVIE,
+    });
+    const res = await (
+      await loginAs('friend@seerr.dev', 'test1234')
+    )
+      .post('/request')
+      .send({ mediaType: 'movie', mediaId: 978001 });
+    assert.equal(res.status, 201, res.body.message);
+    assert.equal(res.body.status, MediaRequestStatus.PENDING);
+  });
+  it('approves a matched subscription under the configured administrator policy', async () => {
+    await configurePolicy('approve');
+    const res = await (
+      await loginAs('friend@seerr.dev', 'test1234')
+    )
+      .post('/request')
+      .send({ mediaType: 'movie', mediaId: 978001 });
+    assert.equal(res.status, 201, res.body.message);
+    assert.equal(res.body.status, MediaRequestStatus.APPROVED);
+  });
+  it('leaves unknown regional availability on the ordinary request path', async () => {
+    await configurePolicy('reject', false, false);
+    const res = await (
+      await loginAs('friend@seerr.dev', 'test1234')
+    )
+      .post('/request')
+      .send({ mediaType: 'movie', mediaId: 978001 });
+    assert.equal(res.status, 201, res.body.message);
+    assert.equal(res.body.status, MediaRequestStatus.PENDING);
+  });
+  it('does not let automatic approval bypass account quota', async () => {
+    await configurePolicy('approve');
+    await seedUser('friend@seerr.dev', { movieQuotaLimit: 1 });
+    await seedRequest(
+      MediaRequestStatus.COMPLETED,
+      undefined,
+      978000,
+      'friend@seerr.dev'
+    );
+    const res = await (
+      await loginAs('friend@seerr.dev', 'test1234')
+    )
+      .post('/request')
+      .send({ mediaType: 'movie', mediaId: 978001 });
+    assert.equal(res.status, 403);
+    assert.match(res.body.message, /quota/i);
   });
 });

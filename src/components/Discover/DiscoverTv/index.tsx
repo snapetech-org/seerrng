@@ -12,6 +12,7 @@ import {
 } from '@app/components/Discover/constants';
 import MediaDiscoveryControls from '@app/components/Discover/MediaDiscoveryControls';
 import { tvNetworks } from '@app/components/Discover/NetworkSlider';
+import FollowButton from '@app/components/Following/FollowButton';
 import CatalogControls, {
   libraryView,
 } from '@app/components/Persius/CatalogControls';
@@ -20,6 +21,7 @@ import usePersius from '@app/components/Persius/usePersius';
 import useDiscover from '@app/hooks/useDiscover';
 import useDiscoverScrollRestoration from '@app/hooks/useDiscoverScrollRestoration';
 import { useSearchActivityReporter } from '@app/hooks/useSearchActivity';
+import { Permission, useUser } from '@app/hooks/useUser';
 import defineMessages from '@app/utils/defineMessages';
 import { StarIcon } from '@heroicons/react/24/outline';
 import type { TvNetwork } from '@server/models/common';
@@ -57,6 +59,7 @@ const DiscoverTv = ({
   const intl = useIntl();
   const persius = usePersius();
   const router = useRouter();
+  const { hasPermission } = useUser();
   const watchlistPreview =
     process.env.NODE_ENV === 'development' &&
     router.pathname === '/discover/tv';
@@ -125,6 +128,18 @@ const DiscoverTv = ({
               alt={network?.name ?? ''}
               data-logo-tone={curatedNetwork?.logoTone}
               fill
+            />
+          </div>
+        )}
+        {network && hasPermission(Permission.REQUEST) && (
+          <div className="app-action-row" data-action-placement="leading">
+            <FollowButton
+              input={{
+                kind: 'tmdb-network',
+                subjectKey: `tmdb:network:${network.id}`,
+                subjectLabel: network.name,
+                conditions: { ref: { tmdbId: network.id } },
+              }}
             />
           </div>
         )}

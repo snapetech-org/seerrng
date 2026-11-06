@@ -10,6 +10,7 @@ import { getQuestarrOrUndefined } from '@server/lib/gameDiscovery';
 import { normalizeTitle } from '@server/lib/resolve/match';
 import { getSettings } from '@server/lib/settings';
 import { searchBookshelfCatalogs } from '@server/utils/bookshelfCatalog';
+import { tmdbGenre, tmdbNetwork, tmdbPerson, tmdbStudio } from './tmdbAdapters';
 import {
   capIds,
   knownIds,
@@ -25,7 +26,7 @@ const today = () => {
   return now.getFullYear() * 10000 + (now.getMonth() + 1) * 100 + now.getDate();
 };
 
-/** Returns events for ids not seen before; the first run only records. */
+/** Returns new events while recording a first-run baseline without history. */
 const diff = (
   follow: Follow,
   current: { id: string; event: NewFollowEvent }[],
@@ -305,4 +306,8 @@ export const FOLLOW_ADAPTERS: Record<Follow['kind'], FollowAdapter> = {
   'patch-project': patchProject,
   franchise,
   'saved-discovery': savedDiscovery,
+  'tmdb-person': tmdbPerson,
+  'tmdb-studio': tmdbStudio,
+  'tmdb-network': tmdbNetwork,
+  'tmdb-genre': tmdbGenre,
 };

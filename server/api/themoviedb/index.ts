@@ -882,6 +882,8 @@ interface DiscoverTvOptions {
   genre?: string;
   excludeGenre?: boolean;
   network?: number;
+  studio?: string;
+  excludeStudio?: boolean;
   country?: string;
   keywords?: string;
   excludeKeywords?: string;
@@ -1697,6 +1699,8 @@ class TheMovieDb extends ExternalAPI implements TvShowProvider {
     genre,
     excludeGenre,
     network,
+    studio,
+    excludeStudio,
     country,
     keywords,
     excludeKeywords,
@@ -1758,6 +1762,8 @@ class TheMovieDb extends ExternalAPI implements TvShowProvider {
           with_genres: excludeGenre ? undefined : genre,
           without_genres: excludeGenre ? genre : undefined,
           with_networks: network,
+          with_companies: excludeStudio ? undefined : studio,
+          without_companies: excludeStudio ? studio : undefined,
           with_origin_country: country,
           with_keywords: keywords,
           without_keywords: excludeKeywords,

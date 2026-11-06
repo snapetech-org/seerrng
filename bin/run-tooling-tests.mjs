@@ -4,6 +4,8 @@ import { resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { withGitBashOnPath } from './platform-tools.mjs';
 
+const MAX_DEFAULT_WORKERS = 2;
+
 export function parseToolingWorkers(args) {
   if (!Array.isArray(args) || args.some((arg) => typeof arg !== 'string'))
     throw new Error('Tooling options must be argument strings');
@@ -18,10 +20,19 @@ export function parseToolingWorkers(args) {
   return workers;
 }
 
+export function defaultToolingWorkers(parallelism = availableParallelism()) {
+  if (!Number.isSafeInteger(parallelism) || parallelism < 1) {
+    throw new Error('Available tooling parallelism must be a positive integer');
+  }
+
+  return Math.min(MAX_DEFAULT_WORKERS, parallelism);
+}
+
 const portableTests = [
   'bin/e2e-network-guard.test.mjs',
   'scripts/interface-theme.test.mjs',
   'bin/interface-theme-postgres-migration.test.mjs',
+  'bin/run-tooling-tests.test.mjs',
   'bin/check-current-batch-contract-lib.test.mjs',
   'bin/check-i18n-lib.test.mjs',
   'bin/extract-messages-lib.test.mjs',
@@ -81,8 +92,11 @@ if (
   import.meta.url === pathToFileURL(resolve(process.argv[1])).href
 ) {
   const workers =
-    parseToolingWorkers(process.argv.slice(2)) ??
-    Math.max(1, Math.min(8, availableParallelism()));
+    parseToolingWorkers(process.argv.slice(2)) ?? defaultToolingWorkers();
+
+  console.log(
+    `Running ${tests.length} tooling suites with ${workers} worker${workers === 1 ? '' : 's'}.`
+  );
 
   if (process.platform === 'win32') {
     console.log(

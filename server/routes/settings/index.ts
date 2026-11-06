@@ -12,8 +12,10 @@ import {
 } from '@server/constants/ageGate';
 import { OtherUserAvailabilityMode } from '@server/constants/availability';
 import {
+  MAX_BLOCKLISTED_GENRE_IDS,
   MAX_BLOCKLISTED_TAG_IDS,
   MAX_BLOCKLISTED_TAG_PAGES,
+  MAX_TMDB_GENRE_ID,
   MAX_TMDB_KEYWORD_ID,
 } from '@server/constants/blocklist';
 import { ApiErrorCode } from '@server/constants/error';
@@ -27,6 +29,11 @@ import {
   SETTINGS_LIBRARY_ROUTE_PATHS,
   SETTINGS_PLEX_LIBRARY_TYPE_ROUTE_PATH,
 } from '@server/constants/settingsLibraryApi';
+import {
+  MAX_STREAMING_REQUEST_REJECTION_MESSAGE_LENGTH,
+  type StreamingRequestAvailabilityCondition,
+  type StreamingRequestPolicyAction,
+} from '@server/constants/streamingRequestPolicy';
 import { getRepository } from '@server/datasource';
 import Media from '@server/entity/Media';
 import { MediaRequest } from '@server/entity/MediaRequest';
@@ -1184,6 +1191,41 @@ const parseMainSettingsBody = (
     value.blocklistedTags = [...new Set(tags)].join(',');
   }
 
+  for (const fieldName of [
+    'blocklistedGenresMovie',
+    'blocklistedGenresTv',
+  ] as const) {
+    const parsedGenres = parsePatchBoundedString(body, fieldName, {
+      fieldName,
+      maxLength: MAX_BLOCKLISTED_TAGS_LENGTH,
+      allowEmpty: true,
+    });
+    if ('error' in parsedGenres) {
+      return parsedGenres;
+    }
+    if (parsedGenres.value === undefined) {
+      continue;
+    }
+
+    const genres = parsedGenres.value
+      ? parsedGenres.value.split(',').map((genre) => genre.trim())
+      : [];
+    if (
+      genres.length > MAX_BLOCKLISTED_GENRE_IDS ||
+      genres.some(
+        (genre) =>
+          !/^\d+$/.test(genre) ||
+          Number(genre) < 1 ||
+          Number(genre) > MAX_TMDB_GENRE_ID
+      )
+    ) {
+      return {
+        error: `${fieldName} must contain at most ${MAX_BLOCKLISTED_GENRE_IDS} valid genre IDs.`,
+      };
+    }
+    value[fieldName] = [...new Set(genres)].join(',');
+  }
+
   if (body.enabledMediaCategories !== undefined) {
     const categories = body.enabledMediaCategories;
     if (
@@ -1461,6 +1503,71 @@ const parseMainSettingsBody = (
             : 'downloadPathMappings must contain valid path mappings.',
       };
     }
+  }
+
+  if (body.streamingRequestPolicy !== undefined) {
+    const incoming = body.streamingRequestPolicy;
+    if (!incoming || typeof incoming !== 'object' || Array.isArray(incoming)) {
+      return { error: 'streamingRequestPolicy must be an object.' };
+    }
+
+    const policy = incoming as Record<string, unknown>;
+    const allowedConditions: StreamingRequestAvailabilityCondition[] = [
+      'available',
+      'unavailable',
+    ];
+    const allowedActions: StreamingRequestPolicyAction[] = [
+      'reject',
+      'pending',
+      'approve',
+    ];
+    if (typeof policy.enabled !== 'boolean') {
+      return { error: 'streamingRequestPolicy.enabled must be a boolean.' };
+    }
+    if (
+      typeof policy.condition !== 'string' ||
+      !allowedConditions.includes(
+        policy.condition as StreamingRequestAvailabilityCondition
+      )
+    ) {
+      return {
+        error:
+          'streamingRequestPolicy.condition must be available or unavailable.',
+      };
+    }
+    if (
+      typeof policy.action !== 'string' ||
+      !allowedActions.includes(policy.action as StreamingRequestPolicyAction)
+    ) {
+      return {
+        error:
+          'streamingRequestPolicy.action must be reject, pending, or approve.',
+      };
+    }
+    if (typeof policy.allowUserOverride !== 'boolean') {
+      return {
+        error: 'streamingRequestPolicy.allowUserOverride must be a boolean.',
+      };
+    }
+
+    const rejectionMessage = parseOptionalBoundedString(
+      policy.rejectionMessage,
+      {
+        fieldName: 'streamingRequestPolicy.rejectionMessage',
+        maxLength: MAX_STREAMING_REQUEST_REJECTION_MESSAGE_LENGTH,
+      }
+    );
+    if ('error' in rejectionMessage) {
+      return rejectionMessage;
+    }
+
+    value.streamingRequestPolicy = {
+      enabled: policy.enabled,
+      condition: policy.condition as StreamingRequestAvailabilityCondition,
+      action: policy.action as StreamingRequestPolicyAction,
+      allowUserOverride: policy.allowUserOverride,
+      rejectionMessage: rejectionMessage.value ?? '',
+    };
   }
 
   return { value };

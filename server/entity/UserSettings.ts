@@ -138,6 +138,9 @@ export class UserSettings {
   @Column({ nullable: true })
   public streamingRegion?: string;
 
+  @Column({ type: 'simple-json', nullable: true })
+  public streamingSubscriptionProviderIds?: number[] | null;
+
   @Column({ nullable: true })
   public originalLanguage?: string;
 

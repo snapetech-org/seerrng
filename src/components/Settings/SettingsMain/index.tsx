@@ -5,6 +5,7 @@ import PageTitle from '@app/components/Common/PageTitle';
 import SensitiveInput from '@app/components/Common/SensitiveInput';
 import LanguageSelector from '@app/components/LanguageSelector';
 import RegionSelector from '@app/components/RegionSelector';
+import { GenreSelector } from '@app/components/Selector';
 import CopyButton from '@app/components/Settings/CopyButton';
 import SettingsBadge from '@app/components/Settings/SettingsBadge';
 import Field, {
@@ -21,6 +22,7 @@ import { isValidURL } from '@app/utils/urlValidationHelper';
 import { ArrowDownOnSquareIcon } from '@heroicons/react/24/outline';
 import { ArrowPathIcon } from '@heroicons/react/24/solid';
 import { OtherUserAvailabilityMode } from '@server/constants/availability';
+import { DEFAULT_STREAMING_REQUEST_POLICY } from '@server/constants/streamingRequestPolicy';
 import type { UserSettingsGeneralResponse } from '@server/interfaces/api/userSettingsInterfaces';
 import type { MainSettings } from '@server/lib/settings';
 import type { AvailableLocale } from '@server/types/languages';
@@ -62,12 +64,34 @@ const messages = defineMessages('components.Settings.SettingsMain', {
     'Language used for blocklist content scanning (independent of discover settings)',
   blocklistedTags: 'Blocklist Content with Tags',
   blocklistedTagsTip:
-    'Automatically add content with tags to the blocklist using the "Process Blocklisted Tags" job',
-  blocklistedTagsLimit: 'Limit Content Blocklisted per Tag',
+    'Automatically add content with tags to the blocklist using the "Process Blocklist Rules" job',
+  blocklistedGenresMovie: 'Blocklist Movies by Genre',
+  blocklistedGenresMovieTip:
+    'Automatically add movies in these genres to the blocklist using the "Process Blocklist Rules" job',
+  blocklistedGenresTv: 'Blocklist Series by Genre',
+  blocklistedGenresTvTip:
+    'Automatically add series in these genres to the blocklist using the "Process Blocklist Rules" job',
+  blocklistedTagsLimit: 'Limit Pages per Blocklist Tag or Genre',
   blocklistedTagsLimitTip:
-    'The "Process Blocklisted Tags" job will blocklist this many pages into each sort. Larger numbers will create a more accurate blocklist, but use more space.',
+    'The "Process Blocklist Rules" job scans this many pages per tag or genre for each sort. Larger limits cover more titles but take longer to process.',
   streamingRegion: 'Streaming Region',
   streamingRegionTip: 'Show streaming sites by regional availability',
+  streamingPolicy: 'Streaming Availability Request Policy',
+  streamingPolicyTip:
+    'Apply an optional movie and series request rule to each requester’s selected streaming subscriptions. Use the user’s Streaming Region, then the global Streaming Region, then US. Only TMDB subscription streaming (Flatrate) availability counts; rent, buy, and missing regional data do not trigger the rule.',
+  streamingPolicyCondition: 'When the Title Is',
+  streamingPolicyAvailable: 'Available on a Selected Service',
+  streamingPolicyUnavailable: 'Not Available on Selected Services',
+  streamingPolicyAction: 'Matching Request Behavior',
+  streamingPolicyReject: 'Reject the Request',
+  streamingPolicyPending: 'Leave the Request Pending',
+  streamingPolicyApprove: 'Approve the Request Automatically',
+  streamingPolicyMessage: 'Rejection Message',
+  streamingPolicyMessageTip:
+    'Optional. Use {title}, {providers}, and {region} to include request details.',
+  streamingPolicyAllowOverride: 'Allow Users to Request Anyway',
+  streamingPolicyAllowOverrideTip:
+    'Show the requester a per-request option to continue after a policy rejection. Normal permissions and quotas still apply.',
   hideBlocklisted: 'Hide Blocklisted Items',
   hideBlocklistedTip:
     'Hide blocklisted items from discover pages for all users with the "Manage Blocklist" permission',
@@ -213,6 +237,13 @@ const SettingsMain = () => {
         }
       }
     ),
+    streamingRequestPolicy: Yup.object().shape({
+      enabled: Yup.boolean().required(),
+      condition: Yup.string().oneOf(['available', 'unavailable']).required(),
+      action: Yup.string().oneOf(['reject', 'pending', 'approve']).required(),
+      rejectionMessage: Yup.string().max(1000),
+      allowUserOverride: Yup.boolean().required(),
+    }),
   });
 
   const regenerate = async () => {
@@ -256,10 +287,16 @@ const SettingsMain = () => {
           discoverRegion: data?.discoverRegion,
           originalLanguage: data?.originalLanguage,
           streamingRegion: data?.streamingRegion || 'US',
+          streamingRequestPolicy: {
+            ...DEFAULT_STREAMING_REQUEST_POLICY,
+            ...data?.streamingRequestPolicy,
+          },
           blocklistRegion: data?.blocklistRegion || '',
           blocklistLanguage: data?.blocklistLanguage || '',
           blocklistedTags: data?.blocklistedTags,
-          blocklistedTagsLimit: data?.blocklistedTagsLimit || 50,
+          blocklistedGenresMovie: data?.blocklistedGenresMovie ?? '',
+          blocklistedGenresTv: data?.blocklistedGenresTv ?? '',
+          blocklistedTagsLimit: data?.blocklistedTagsLimit ?? 50,
           partialRequestsEnabled: data?.partialRequestsEnabled,
           enable4k: data?.enable4k ?? true,
           tvSeasonWatchGateEnabled: data?.tvSeasonWatchGateEnabled ?? false,
@@ -296,10 +333,13 @@ const SettingsMain = () => {
               locale: values.locale,
               discoverRegion: values.discoverRegion,
               streamingRegion: values.streamingRegion,
+              streamingRequestPolicy: values.streamingRequestPolicy,
               originalLanguage: values.originalLanguage,
               blocklistRegion: values.blocklistRegion,
               blocklistLanguage: values.blocklistLanguage,
               blocklistedTags: values.blocklistedTags,
+              blocklistedGenresMovie: values.blocklistedGenresMovie,
+              blocklistedGenresTv: values.blocklistedGenresTv,
               blocklistedTagsLimit: values.blocklistedTagsLimit,
               partialRequestsEnabled: values.partialRequestsEnabled,
               enable4k: values.enable4k,
@@ -520,7 +560,7 @@ const SettingsMain = () => {
                       messages.originallanguageTip
                     )}
                   >
-                    <div className="form-input-field relative z-30">
+                    <div className="form-input-field">
                       <LanguageSelector
                         setFieldValue={setFieldValue}
                         value={values.originalLanguage}
@@ -535,7 +575,7 @@ const SettingsMain = () => {
                       messages.streamingRegionTip
                     )}
                   >
-                    <div className="form-input-field relative">
+                    <div className="form-input-field">
                       <RegionSelector
                         value={values.streamingRegion}
                         name="streamingRegion"
@@ -545,6 +585,129 @@ const SettingsMain = () => {
                       />
                     </div>
                   </SettingsFormRow>
+                  <SettingsFormRow
+                    htmlFor="streamingRequestPolicy.enabled"
+                    label={intl.formatMessage(messages.streamingPolicy)}
+                    description={intl.formatMessage(
+                      messages.streamingPolicyTip
+                    )}
+                    labelClassName="checkbox-label"
+                  >
+                    <SettingsField
+                      type="checkbox"
+                      id="streamingRequestPolicy.enabled"
+                      name="streamingRequestPolicy.enabled"
+                      onChange={() => {
+                        setFieldValue(
+                          'streamingRequestPolicy.enabled',
+                          !values.streamingRequestPolicy.enabled
+                        );
+                      }}
+                    />
+                  </SettingsFormRow>
+                  {values.streamingRequestPolicy.enabled && (
+                    <>
+                      <SettingsFormRow
+                        htmlFor="streamingRequestPolicy.condition"
+                        label={intl.formatMessage(
+                          messages.streamingPolicyCondition
+                        )}
+                      >
+                        <div className="form-input-field">
+                          <Field
+                            as="select"
+                            id="streamingRequestPolicy.condition"
+                            name="streamingRequestPolicy.condition"
+                          >
+                            <option value="available">
+                              {intl.formatMessage(
+                                messages.streamingPolicyAvailable
+                              )}
+                            </option>
+                            <option value="unavailable">
+                              {intl.formatMessage(
+                                messages.streamingPolicyUnavailable
+                              )}
+                            </option>
+                          </Field>
+                        </div>
+                      </SettingsFormRow>
+                      <SettingsFormRow
+                        htmlFor="streamingRequestPolicy.action"
+                        label={intl.formatMessage(
+                          messages.streamingPolicyAction
+                        )}
+                      >
+                        <div className="form-input-field">
+                          <Field
+                            as="select"
+                            id="streamingRequestPolicy.action"
+                            name="streamingRequestPolicy.action"
+                          >
+                            <option value="reject">
+                              {intl.formatMessage(
+                                messages.streamingPolicyReject
+                              )}
+                            </option>
+                            <option value="pending">
+                              {intl.formatMessage(
+                                messages.streamingPolicyPending
+                              )}
+                            </option>
+                            <option value="approve">
+                              {intl.formatMessage(
+                                messages.streamingPolicyApprove
+                              )}
+                            </option>
+                          </Field>
+                        </div>
+                      </SettingsFormRow>
+                      {values.streamingRequestPolicy.action === 'reject' && (
+                        <>
+                          <SettingsFormRow
+                            htmlFor="streamingRequestPolicy.rejectionMessage"
+                            label={intl.formatMessage(
+                              messages.streamingPolicyMessage
+                            )}
+                            description={intl.formatMessage(
+                              messages.streamingPolicyMessageTip
+                            )}
+                          >
+                            <Field
+                              as="textarea"
+                              id="streamingRequestPolicy.rejectionMessage"
+                              name="streamingRequestPolicy.rejectionMessage"
+                              maxLength={1000}
+                              rows={3}
+                            />
+                          </SettingsFormRow>
+                          <SettingsFormRow
+                            htmlFor="streamingRequestPolicy.allowUserOverride"
+                            label={intl.formatMessage(
+                              messages.streamingPolicyAllowOverride
+                            )}
+                            description={intl.formatMessage(
+                              messages.streamingPolicyAllowOverrideTip
+                            )}
+                            labelClassName="checkbox-label"
+                          >
+                            <SettingsField
+                              type="checkbox"
+                              id="streamingRequestPolicy.allowUserOverride"
+                              name="streamingRequestPolicy.allowUserOverride"
+                              onChange={() => {
+                                setFieldValue(
+                                  'streamingRequestPolicy.allowUserOverride',
+                                  !values.streamingRequestPolicy
+                                    .allowUserOverride
+                                );
+                              }}
+                            />
+                          </SettingsFormRow>
+                        </>
+                      )}
+                    </>
+                  )}
                   <SettingsFormRow
                     htmlFor="blocklistRegion"
                     label={intl.formatMessage(messages.blocklistRegion)}
@@ -568,7 +731,7 @@ const SettingsMain = () => {
                       messages.blocklistLanguageTip
                     )}
                   >
-                    <div className="form-input-field relative z-20">
+                    <div className="form-input-field">
                       <LanguageSelector
                         setFieldValue={setFieldValue}
                         serverValue={data?.blocklistLanguage}
@@ -584,9 +747,53 @@ const SettingsMain = () => {
                       messages.blocklistedTagsTip
                     )}
                   >
-                    <div className="form-input-field relative z-10">
+                    <div className="form-input-field">
                       <BlocklistedTagsSelector
                         defaultValue={values.blocklistedTags}
+                      />
+                    </div>
+                  </SettingsFormRow>
+                  <SettingsFormRow
+                    htmlFor="blocklistedGenresMovie"
+                    label={intl.formatMessage(messages.blocklistedGenresMovie)}
+                    description={intl.formatMessage(
+                      messages.blocklistedGenresMovieTip
+                    )}
+                  >
+                    <div className="form-input-field">
+                      <GenreSelector
+                        type="movie"
+                        inputId="blocklistedGenresMovie"
+                        isMulti
+                        defaultValue={values.blocklistedGenresMovie}
+                        onChange={(genres) =>
+                          setFieldValue(
+                            'blocklistedGenresMovie',
+                            (genres ?? []).map((genre) => genre.value).join(',')
+                          )
+                        }
+                      />
+                    </div>
+                  </SettingsFormRow>
+                  <SettingsFormRow
+                    htmlFor="blocklistedGenresTv"
+                    label={intl.formatMessage(messages.blocklistedGenresTv)}
+                    description={intl.formatMessage(
+                      messages.blocklistedGenresTvTip
+                    )}
+                  >
+                    <div className="form-input-field">
+                      <GenreSelector
+                        type="tv"
+                        inputId="blocklistedGenresTv"
+                        isMulti
+                        defaultValue={values.blocklistedGenresTv}
+                        onChange={(genres) =>
+                          setFieldValue(
+                            'blocklistedGenresTv',
+                            (genres ?? []).map((genre) => genre.value).join(',')
+                          )
+                        }
                       />
                     </div>
                   </SettingsFormRow>

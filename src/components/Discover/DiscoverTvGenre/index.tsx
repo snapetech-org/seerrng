@@ -1,7 +1,9 @@
 import Header from '@app/components/Common/Header';
 import ListView from '@app/components/Common/ListView';
 import PageTitle from '@app/components/Common/PageTitle';
+import FollowButton from '@app/components/Following/FollowButton';
 import useDiscover from '@app/hooks/useDiscover';
+import { Permission, useUser } from '@app/hooks/useUser';
 import globalMessages from '@app/i18n/globalMessages';
 import ErrorPage from '@app/pages/_error';
 import defineMessages from '@app/utils/defineMessages';
@@ -16,6 +18,7 @@ const messages = defineMessages('components.Discover.DiscoverTvGenre', {
 const DiscoverTvGenre = () => {
   const router = useRouter();
   const intl = useIntl();
+  const { hasPermission } = useUser();
   const genreId =
     typeof router.query.genreId === 'string' ? router.query.genreId : '';
 
@@ -56,6 +59,23 @@ const DiscoverTvGenre = () => {
       <PageTitle title={title} />
       <div>
         <Header>{title}</Header>
+        {firstResultData?.genre && hasPermission(Permission.REQUEST) && (
+          <div className="app-action-row" data-action-placement="leading">
+            <FollowButton
+              input={{
+                kind: 'tmdb-genre',
+                subjectKey: `tmdb:genre:tv:${firstResultData.genre.id}`,
+                subjectLabel: firstResultData.genre.name,
+                conditions: {
+                  ref: {
+                    genreId: firstResultData.genre.id,
+                    mediaType: 'tv',
+                  },
+                },
+              }}
+            />
+          </div>
+        )}
       </div>
       <ListView
         enableDiscoverNavigation

@@ -3722,6 +3722,26 @@
     @apply border-red-500 !text-red-300;
   }
 
+  /* Shared blocklist source geometry, also used by manual source badges. */
+  .blocklist-source-badge {
+    align-items: center;
+    max-width: 100%;
+    gap: 0.125rem;
+  }
+
+  .blocklist-source-badge > svg {
+    flex-shrink: 0;
+    width: 0.625rem;
+    height: 0.625rem;
+  }
+
+  .blocklist-source-badge > span {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
   .compact-detail-status-badge-success {
     @apply border-emerald-500 !text-emerald-300;
   }
@@ -7865,6 +7885,11 @@
   .settings-page-content .form-row,
   .settings-page-content .form-group {
     @apply mt-[5px] sm:mt-[5px];
+  }
+
+  .settings-page-content .settings-form-row:focus-within {
+    position: relative;
+    z-index: 1;
   }
 
   .settings-page-content .form-row > label,

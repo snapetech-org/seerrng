@@ -351,6 +351,22 @@ components:
           type: integer
         kind:
           type: string
+          enum:
+            [
+              narrator,
+              author,
+              series-language,
+              edition,
+              expansion,
+              artist-release-type,
+              patch-project,
+              franchise,
+              saved-discovery,
+              tmdb-person,
+              tmdb-studio,
+              tmdb-network,
+              tmdb-genre,
+            ]
         subjectKey:
           type: string
         subjectLabel:
@@ -358,6 +374,7 @@ components:
         conditions:
           type: object
           nullable: true
+          description: TMDB follows use ref.tmdbId for person, company, or network IDs. Genre follows use ref.genreId and ref.mediaType (movie or tv).
           additionalProperties: true
         notify:
           type: boolean
@@ -370,6 +387,86 @@ components:
         createdAt:
           type: string
           format: date-time
+    FollowEvent:
+      type: object
+      required:
+        [id, reasonKey, reasonValues, title, target, seen, createdAt, follow]
+      properties:
+        id:
+          type: integer
+        reasonKey:
+          type: string
+          enum:
+            [
+              nextVolumeAnnounced,
+              newVolumeReleased,
+              newNarrationAvailable,
+              fullCastProduction,
+              newBookByNarrator,
+              newBookByAuthor,
+              newExpansion,
+              newPatchVersion,
+              newArtistRelease,
+              newFranchiseRelation,
+              savedDiscoveryMatch,
+              collectorsAreSharing,
+              newVideoTitle,
+              upcomingVideoTitle,
+              videoReleaseDateReached,
+            ]
+          description: Stable key for the localized explanation of this event.
+        reasonValues:
+          type: object
+          additionalProperties:
+            type: string
+        title:
+          type: string
+        imageUrl:
+          type: string
+          nullable: true
+        target:
+          type: object
+          nullable: true
+          properties:
+            mediaType:
+              type: string
+            id:
+              type: string
+            variantKey:
+              type: string
+        seen:
+          type: boolean
+        createdAt:
+          type: string
+          format: date-time
+        follow:
+          type: object
+          required: [id, kind, subjectLabel, autoRequest]
+          properties:
+            id:
+              type: integer
+            kind:
+              type: string
+              enum:
+                [
+                  narrator,
+                  author,
+                  series-language,
+                  edition,
+                  expansion,
+                  artist-release-type,
+                  patch-project,
+                  franchise,
+                  saved-discovery,
+                  tmdb-person,
+                  tmdb-studio,
+                  tmdb-network,
+                  tmdb-genre,
+                ]
+            subjectLabel:
+              type: string
+            autoRequest:
+              type: boolean
     SwipeSettings:
       type: object
       properties:
@@ -2286,6 +2383,16 @@ components:
     Blocklist:
       type: object
       properties:
+        blocklistedTags:
+          type: string
+          nullable: true
+          readOnly: true
+          description: Comma-padded keyword IDs that currently match automatic blocklist settings.
+        blocklistedGenres:
+          type: string
+          nullable: true
+          readOnly: true
+          description: Comma-padded movie or TV genre IDs that currently match automatic blocklist settings.
         tmdbId:
           type: number
           example: 1
@@ -2672,6 +2779,14 @@ components:
           type: string
           nullable: true
           example: 'US'
+        streamingSubscriptionProviderIds:
+          type: array
+          maxItems: 500
+          uniqueItems: true
+          items:
+            type: integer
+            minimum: 1
+          description: TMDB provider IDs the user subscribes to, evaluated in their Streaming Region, then the global Streaming Region, then US.
         originalLanguage:
           type: string
           nullable: true
@@ -2976,6 +3091,35 @@ components:
         includeAdult:
           type: boolean
           example: false
+        blocklistRegion:
+          type: string
+          description: Region used when scanning tags and genres for automatic blocklist rules.
+          example: US
+        blocklistLanguage:
+          type: string
+          description: Original language used when scanning tags and genres for automatic blocklist rules.
+          example: en
+        blocklistedTags:
+          type: string
+          maxLength: 4096
+          description: Comma-separated TMDB keyword IDs, up to 100. Empty disables keyword rules.
+          example: 123,456
+        blocklistedGenresMovie:
+          type: string
+          maxLength: 4096
+          description: Comma-separated TMDB movie genre IDs, up to 100. Empty disables movie genre rules.
+          example: 28,878
+        blocklistedGenresTv:
+          type: string
+          maxLength: 4096
+          description: Comma-separated TMDB TV genre IDs, up to 100. Empty disables TV genre rules.
+          example: 10759,16
+        blocklistedTagsLimit:
+          type: integer
+          minimum: 0
+          maximum: 250
+          description: Scan depth used by automatic blocklist rules.
+          example: 50
         openIdProviders:
           type: array
           items:
@@ -2983,6 +3127,30 @@ components:
         versionCheck:
           type: boolean
           example: false
+        streamingRequestPolicy:
+          type: object
+          description: Optional request-time rule for new movie and series requests. Uses the requester’s region and selected services, falls back from the user region to the global region and then US, and does not act when regional availability data is missing.
+          required:
+            [enabled, condition, action, rejectionMessage, allowUserOverride]
+          properties:
+            enabled:
+              type: boolean
+              default: false
+            condition:
+              type: string
+              enum: [available, unavailable]
+              description: Match when at least one selected service has a subscription listing, or when none do.
+            action:
+              type: string
+              enum: [reject, pending, approve]
+              description: Pending can supersede normal auto-approval. Automatic approval still requires permission and quota eligibility.
+            rejectionMessage:
+              type: string
+              maxLength: 1000
+              description: Optional rejection message. Supports {title}, {providers}, and {region} placeholders.
+            allowUserOverride:
+              type: boolean
+              description: Allow the requester to continue a matching request after a rejection; normal permissions and quotas still apply.
     SavedConnectionHost:
       type: object
       required:
@@ -12922,8 +13090,8 @@ paths:
                     items:
                       $ref: '#/components/schemas/Follow'
     post:
-      summary: Follow a narrator, series, game, artist, or project
-      description: Idempotent for the same subject. The first evaluation records a baseline so only later changes become news.
+      summary: Follow a person, production company, network, genre, narrator, series, game, artist, or project
+      description: Idempotent for the same subject. Person, production-company, and network follows require conditions.ref.tmdbId to match the ID in subjectKey (tmdb:person:{id}, tmdb:studio:{id}, or tmdb:network:{id}). Genre follows require conditions.ref.genreId and conditions.ref.mediaType and a matching subjectKey (tmdb:genre:{mediaType}:{id}). For TMDB follows, the first evaluation records a baseline with a small set of current upcoming titles. Checks are bounded and respect the user's video maturity limits. Automatic requests are not available for TMDB follows.
       tags:
         - follow
       requestBody:
@@ -12946,6 +13114,10 @@ paths:
                       artist-release-type,
                       patch-project,
                       franchise,
+                      tmdb-person,
+                      tmdb-studio,
+                      tmdb-network,
+                      tmdb-genre,
                     ]
                 subjectKey:
                   type: string
@@ -12953,6 +13125,7 @@ paths:
                   type: string
                 conditions:
                   type: object
+                  description: TMDB person, studio, and network follows use ref.tmdbId; genre follows use ref.genreId and ref.mediaType (movie or tv).
                   additionalProperties: true
                 notify:
                   type: boolean
@@ -13040,7 +13213,15 @@ paths:
             application/json:
               schema:
                 type: object
-                additionalProperties: true
+                required: [total, results]
+                properties:
+                  total:
+                    type: integer
+                    minimum: 0
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/FollowEvent'
   /follow/events/count:
     get:
       summary: Unseen personal news count
@@ -16099,7 +16280,7 @@ paths:
           name: filter
           schema:
             type: string
-            enum: [all, manual, blocklistedTags]
+            enum: [all, manual, blocklistedTags, blocklistedGenres]
             default: all
         - in: query
           name: timeFrame
@@ -16137,13 +16318,15 @@ paths:
                     $ref: '#/components/schemas/PageInfo'
                   counts:
                     type: object
-                    required: [all, manual, blocklistedTags]
+                    required: [all, manual, blocklistedTags, blocklistedGenres]
                     properties:
                       all:
                         type: integer
                       manual:
                         type: integer
                       blocklistedTags:
+                        type: integer
+                      blocklistedGenres:
                         type: integer
                   results:
                     type: array
@@ -16167,6 +16350,14 @@ paths:
                         tmdbId:
                           type: number
                           example: 438631
+                        blocklistedTags:
+                          type: string
+                          nullable: true
+                          readOnly: true
+                        blocklistedGenres:
+                          type: string
+                          nullable: true
+                          readOnly: true
     post:
       summary: Add media to blocklist
       tags:
@@ -16281,7 +16472,7 @@ paths:
           name: filter
           schema:
             type: string
-            enum: [all, manual, blocklistedTags]
+            enum: [all, manual, blocklistedTags, blocklistedGenres]
             default: manual
       responses:
         '200':
@@ -22418,6 +22609,9 @@ paths:
                   type: boolean
                   example: true
                   description: Explicitly ask an administrator to review an over-quota movie or TV request. Only valid when creating a request for the signed-in user.
+                bypassStreamingRequestPolicy:
+                  type: boolean
+                  description: Continue after a matching rejection only when the administrator allows requesters to override the streaming policy. Only valid for a new movie or TV request for the signed-in user.
               required:
                 - mediaType
                 - mediaId
@@ -22430,6 +22624,22 @@ paths:
                 $ref: '#/components/schemas/MediaRequest'
         '403':
           description: Request permission denied, quota exceeded without approval, or a per-request Episode Queue value was supplied
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    example: 403
+                  code:
+                    type: string
+                    enum: [STREAMING_REQUEST_POLICY_REJECTED]
+                  message:
+                    type: string
+                  allowOverride:
+                    type: boolean
+                    description: True when this requester may retry once while bypassing this policy match.
         '409':
           description: Another quota exception for this media type is already awaiting review
   /request/bulk:

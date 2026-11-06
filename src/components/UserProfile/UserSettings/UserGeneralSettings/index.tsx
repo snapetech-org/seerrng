@@ -7,6 +7,7 @@ import PageTitle from '@app/components/Common/PageTitle';
 import LanguageSelector from '@app/components/LanguageSelector';
 import QuotaSelector from '@app/components/QuotaSelector';
 import RegionSelector from '@app/components/RegionSelector';
+import { WatchProviderSelector } from '@app/components/Selector';
 import BookHomeSections from '@app/components/UserProfile/UserSettings/UserGeneralSettings/BookHomeSections';
 import ExternalRequestLists from '@app/components/UserProfile/UserSettings/UserGeneralSettings/ExternalRequestLists';
 import RequestRootFolderSettings from '@app/components/UserProfile/UserSettings/UserGeneralSettings/RequestRootFolderSettings';
@@ -65,6 +66,9 @@ const messages = defineMessages(
     originallanguageTip: 'Filter content by original language',
     streamingRegion: 'Streaming Region',
     streamingRegionTip: 'Show streaming sites by regional availability',
+    streamingSubscriptions: 'Streaming Subscriptions',
+    streamingSubscriptionsTip:
+      'Select the services this user subscribes to. Request rules use this user’s Streaming Region, then the global Streaming Region, then US. Rent and buy listings do not count.',
     movierequestlimit: 'Movie Request Limit',
     seriesrequestlimit: 'Series Request Limit',
     musicrequestlimit: 'Music Request Limit',
@@ -297,6 +301,8 @@ const UserGeneralSettings = () => {
           preferredLanguageBook: preferredLanguageFieldValue('book'),
           discoverRegion: data?.discoverRegion,
           streamingRegion: data?.streamingRegion,
+          streamingSubscriptionProviderIds:
+            data?.streamingSubscriptionProviderIds ?? [],
           originalLanguage: data?.originalLanguage,
           movieQuotaLimit: data?.movieQuotaLimit,
           movieQuotaDays: data?.movieQuotaDays,
@@ -371,6 +377,8 @@ const UserGeneralSettings = () => {
               },
               discoverRegion: values.discoverRegion,
               streamingRegion: values.streamingRegion,
+              streamingSubscriptionProviderIds:
+                values.streamingSubscriptionProviderIds,
               originalLanguage: values.originalLanguage,
               movieQuotaLimit: movieQuotaEnabled
                 ? values.movieQuotaLimit
@@ -727,6 +735,41 @@ const UserGeneralSettings = () => {
                       disableAll
                     />
                   </div>
+                </div>
+              </div>
+              <div className="form-row">
+                <div className="text-label">
+                  <span>
+                    {intl.formatMessage(messages.streamingSubscriptions)}
+                  </span>
+                  <span className="label-tip">
+                    {intl.formatMessage(messages.streamingSubscriptionsTip)}
+                  </span>
+                </div>
+                <div className="form-input-area">
+                  <WatchProviderSelector
+                    key={
+                      values.streamingRegion ||
+                      currentSettings.streamingRegion ||
+                      'US'
+                    }
+                    type="both"
+                    region={
+                      values.streamingRegion ||
+                      currentSettings.streamingRegion ||
+                      'US'
+                    }
+                    activeProviders={
+                      values.streamingSubscriptionProviderIds ?? []
+                    }
+                    showRegionSelector={false}
+                    onChange={(_region, providerIds) => {
+                      void setFieldValue(
+                        'streamingSubscriptionProviderIds',
+                        providerIds
+                      );
+                    }}
+                  />
                 </div>
               </div>
               {currentHasPermission(Permission.MANAGE_USERS) &&

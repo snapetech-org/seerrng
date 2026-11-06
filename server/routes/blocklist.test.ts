@@ -757,6 +757,7 @@ describe('GET and DELETE /blocklist/:id', () => {
       all: 2,
       manual: 1,
       blocklistedTags: 1,
+      blocklistedGenres: 0,
     });
     assert.deepStrictEqual(
       response.body.results.map(({ tmdbId }: { tmdbId: number }) => tmdbId),
@@ -795,6 +796,7 @@ describe('GET and DELETE /blocklist/:id', () => {
       all: 1,
       manual: 0,
       blocklistedTags: 1,
+      blocklistedGenres: 0,
     });
     assert.notStrictEqual(movie.tmdbId, series.tmdbId);
   });

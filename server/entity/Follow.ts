@@ -18,7 +18,11 @@ export type FollowKind =
   | 'artist-release-type'
   | 'patch-project'
   | 'franchise'
-  | 'saved-discovery';
+  | 'saved-discovery'
+  | 'tmdb-person'
+  | 'tmdb-studio'
+  | 'tmdb-network'
+  | 'tmdb-genre';
 
 export const FOLLOW_KINDS: FollowKind[] = [
   'narrator',
@@ -30,6 +34,10 @@ export const FOLLOW_KINDS: FollowKind[] = [
   'patch-project',
   'franchise',
   'saved-discovery',
+  'tmdb-person',
+  'tmdb-studio',
+  'tmdb-network',
+  'tmdb-genre',
 ];
 
 export interface FollowConditions {
@@ -46,7 +54,7 @@ export interface FollowConditions {
 }
 
 /**
- * A user's standing interest in future work: a narrator, a translated series,
+ * A user's standing interest in future work: a creator, a translated series,
  * a game's expansions, a patch project. Evaluated by lib/follow.
  */
 @Entity()

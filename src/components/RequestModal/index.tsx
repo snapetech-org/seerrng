@@ -65,6 +65,7 @@ interface RequestModalProps {
   adultRequestId?: number;
   adultRequestStatus?: MediaRequestStatus;
   initialServerId?: number;
+  requesterTagOnly?: boolean;
   sportarrLeagueId?: string;
   sportarrTitle?: string;
   initialBookFormat?: 'ebook' | 'audiobook' | 'both';
@@ -91,6 +92,7 @@ const RequestModal = ({
   adultRequestId,
   adultRequestStatus,
   initialServerId,
+  requesterTagOnly = false,
   sportarrLeagueId,
   sportarrTitle,
   initialBookFormat,
@@ -202,6 +204,8 @@ const RequestModal = ({
           onComplete={onComplete}
           onCancel={onCancel}
           tmdbId={tmdbId}
+          initialServerId={initialServerId}
+          requesterTagOnly={requesterTagOnly}
           onUpdating={onUpdating}
           is4k={modalIs4k}
           editRequest={editRequest}
@@ -212,6 +216,8 @@ const RequestModal = ({
           onComplete={onComplete}
           onCancel={onCancel}
           tmdbId={tmdbId}
+          initialServerId={initialServerId}
+          requesterTagOnly={requesterTagOnly}
           onUpdating={onUpdating}
           is4k={modalIs4k}
           editRequest={editRequest}

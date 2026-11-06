@@ -271,9 +271,10 @@ test('poster badge roles inherit the shared poster-control geometry', () => {
 });
 
 test('Blocklist source and Issues status badges use the standard radius', () => {
+  assert.match(component('BlocklistedTagsBadge/index.tsx'), /shape="standard"/);
   assert.match(
-    component('BlocklistedTagsBadge/index.tsx'),
-    /shape=\{compact \? 'standard' : 'pill'\}/
+    component('BlocklistedGenresBadge/index.tsx'),
+    /shape="standard"/
   );
   assert.match(component('IssueList/IssueItem/index.tsx'), /shape="standard"/);
 });

@@ -44,6 +44,7 @@ For local MCP access, see the [SnapeTech MCP integration guide](./docs/integrati
   - [Global Search](./docs/using-seerr/search.md)
   - [Private movie watch sessions](./docs/using-seerr/watch-sessions.md)
   - [Choose request destinations](./docs/using-seerr/settings/services.md#request-destination-label-optional)
+  - [Add your requester tag to available media](./docs/using-seerr/requester-tags.md)
   - [Require previous-season watch progress](./docs/using-seerr/settings/general.md#require-the-previous-season-to-be-watched)
   - [Hide subject tags](./docs/using-seerr/media-details-and-playback.md#hide-subject-tags)
   - [Filter and sort local watchlists](./docs/using-seerr/plex/watchlist-auto-request.md#find-items-in-your-watchlist)
@@ -108,6 +109,8 @@ For local MCP access, see the [SnapeTech MCP integration guide](./docs/integrati
 - Movie and TV title cards show standard and 4K availability separately across search, Discover, collections, people, and list views, so a 4K-only copy is visible as 4K.
 - Sign-in returns users to a validated in-app destination across local, media-server, and OIDC login, and sign-out clears the previous return destination. OIDC account provisioning requires a verified email and applies the configured account-admission and role rules.
 - Long-running TV details and request pages stay responsive when a series has many stored and requested seasons.
+- Users can request their own requester tag on an already available movie or fully available series. The tag action follows normal request permissions, quotas, and approval without starting another acquisition; SeerrNG adapts the idea discussed in [Seerr PR #3423](https://github.com/seerr-team/seerr/pull/3423).
+- Administrators can automatically blocklist movies and series by TMDB keyword or type-specific genre. Source filters distinguish automatic rules from manual entries, and removing a rule preserves manual blocks and restores saved media status. See the [automatic blocklist settings guide](./docs/using-seerr/settings/general.md#automatic-blocklist-rules). This SeerrNG adaptation is attributed to closed Seerr [PR #3318](https://github.com/seerr-team/seerr/pull/3318).
 - Automation service integration with Radarr, Sonarr, Lidarr, and Bookshelf/Readarr-compatible APIs.
 - SeerrNG [PR #446](https://github.com/snapetech-org/seerrng/pull/446) proposes bounded, paginated Servarr queue tracking with refresh-completion checks and a per-service Download Queue Size control. It covers 10–10,000 items per service, defaults to 1,000, and keeps recovery on strict complete snapshots. Source context: closed, unmerged Seerr [PR #3473](https://github.com/seerr-team/seerr/pull/3473) and open Seerr [PR #3535](https://github.com/seerr-team/seerr/pull/3535).
 - Notifications for email, Discord, Slack, Telegram, Gotify, ntfy, Pushover, Pushbullet, Apprise, Web Push, and custom webhooks, with provider-specific poster, priority, sound, and email transport options documented in the [notification guides](./docs/using-seerr/notifications/index.mdx).
@@ -165,7 +168,7 @@ For local MCP access, see the [SnapeTech MCP integration guide](./docs/integrati
 - **Editions and narrations:** compare narrators, full-cast and solo, abridged and unabridged, and keep a second performance alongside the first (ChaptarrNG); compare a series by narrator; request a specific standard, deluxe, or remastered album release.
 - **Games and patches:** compare game editions and request only the expansions you choose (QuestarrNG), find games by theme, mode, perspective, and language with saved searches, and request exact translation or ROM-hack versions with the original kept alongside (ROMarrNG).
 - **Discovery you steer:** Hardcover book recommendations with standalone, first-in-series, and less-popular filters; Collector Picks from slskdN with the reason each appeared.
-- **Following:** follow narrators, authors, series, game content, artists, and patch projects and read personal news that says why each item appeared; optional auto-request is limited to books.
+- **Following:** follow cast and crew, production companies, TV networks, movie or series genres, narrators, authors, series, game content, artists, and patch projects. The personal feed explains each recent or upcoming update; automatic requests remain limited to supported book follows. See the [Following guide](docs/using-seerr/following.md) for date bounds, baseline behavior, maturity limits, and notification scope.
 - A standalone [SeerrNG Companion browser extension](https://github.com/snapetech-org/seerrng-companion) for requesting from IMDb, Letterboxd, Steam, Goodreads, AniList, and more.
 - Catalog browsing and requests for Retro and Modern emulation systems and PC games for Windows, Linux, and macOS, with QuestarrNG and ROMarrNG handling acquisition.
 - Administrator-controlled availability switches for each supported category, including separate ebook, audiobook, Retro, Modern, and PC Games controls.
@@ -201,7 +204,8 @@ Recent repository updates include:
   from a title.
 - **Requests:** per-user access to labeled Radarr/Sonarr destinations, quota
   exception approvals, optional Slack approval actions, an optional
-  previous-season watch gate, and Sonarr monitoring for future seasons when
+  previous-season watch gate, requester-tag actions for already available
+  movies and complete series, and Sonarr monitoring for future seasons when
   the latest regular season was requested. Failed TV requests retain their
   context and support verified season mapping; missing movie or TV service
   destinations fail promptly with a retry path, and bounded failure
@@ -216,6 +220,7 @@ Recent repository updates include:
   with Sonarr language-profile selection on service versions that expose those
   profiles. This adapts the use case in Seerr
   [issue #3439](https://github.com/seerr-team/seerr/issues/3439).
+  Administrators can also apply an optional per-user streaming-availability policy to movie and series requests, with reject, pending, automatic-approval, and per-request override choices.
 - **User workflows:** local watchlist filters, a browser-saved Subject Tags
   visibility preference, private one-time availability notices for followed
   requests, per-user shared-availability display choices, and opt-in
@@ -305,6 +310,7 @@ SeerrNG documentation is maintained in the [docs folder](https://github.com/snap
 - [Track individual TV episode availability](./docs/using-seerr/individual-episode-availability.md)
 - [Require previous-season watch progress](./docs/using-seerr/settings/general.md#require-the-previous-season-to-be-watched)
 - [Choose movie and TV request destinations](./docs/using-seerr/settings/services.md#request-destination-label-optional)
+- [Add your requester tag to available media](./docs/using-seerr/requester-tags.md)
 - [Filter and sort local watchlists](./docs/using-seerr/plex/watchlist-auto-request.md#find-items-in-your-watchlist)
 - [Follow another user's request](./docs/using-seerr/notifications/index.mdx#follow-a-movie-or-series-request)
 - [Hide Subject Tags](./docs/using-seerr/media-details-and-playback.md#hide-subject-tags)
@@ -329,7 +335,7 @@ SeerrNG documentation is maintained in the [docs folder](https://github.com/snap
 - [Configure notifications](./docs/using-seerr/notifications/index.mdx)
 - [Slack notification settings](./docs/using-seerr/notifications/slack.md)
 - [Telegram notification settings](./docs/using-seerr/notifications/telegram.md)
-- [Hide requested or available media](./docs/using-seerr/settings/general.md)
+- [Configure automatic blocklist rules and global media visibility](./docs/using-seerr/settings/general.md)
 - [Choose which media categories are available](./docs/using-seerr/settings/media-categories.md)
 - [Configure Bookshelf](./docs/using-seerr/bookshelf-backend.md)
 - [Move ebook or audiobook files between Bookshelf root folders](./docs/using-seerr/bookshelf-media-path-migration.md)
