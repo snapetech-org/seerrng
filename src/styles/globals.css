@@ -8540,25 +8540,26 @@
   }
 
   .react-select-container .react-select__control {
-    @apply rounded-md border text-white;
-    border-color: rgb(var(--theme-control-border) / 0.75);
-    background-color: rgb(var(--theme-control-surface) / 0.78);
+    @apply rounded-md border;
+    border-color: rgb(var(--theme-control-border) / 0.75) !important;
+    background-color: rgb(var(--theme-control-surface) / 0.78) !important;
+    color: rgb(var(--theme-control-text)) !important;
   }
 
   .react-select-container-dark .react-select__control {
-    border-color: rgb(var(--theme-control-border) / 0.75);
-    background-color: rgb(var(--theme-control-surface) / 0.78);
+    border-color: rgb(var(--theme-control-border) / 0.75) !important;
+    background-color: rgb(var(--theme-control-surface) / 0.78) !important;
   }
 
   .react-select-container .react-select__control--is-focused {
-    @apply rounded-md border text-white shadow;
-    border-color: rgb(var(--theme-control-border));
-    background-color: rgb(var(--theme-control-surface-hover) / 0.82);
+    @apply rounded-md border shadow;
+    border-color: rgb(var(--theme-control-border)) !important;
+    background-color: rgb(var(--theme-control-surface-hover) / 0.82) !important;
   }
 
   .react-select-container-dark .react-select__control--is-focused {
-    border-color: rgb(var(--theme-control-border));
-    background-color: rgb(var(--theme-control-surface-hover) / 0.82);
+    border-color: rgb(var(--theme-control-border)) !important;
+    background-color: rgb(var(--theme-control-surface-hover) / 0.82) !important;
   }
 
   .react-select-container .react-select__menu {
@@ -8577,14 +8578,12 @@
   }
 
   .react-select-container .react-select__option--is-focused {
-    @apply bg-indigo-600 text-white;
-    background-color: rgb(var(--color-indigo-600)) !important;
+    background-color: rgb(var(--color-indigo-700)) !important;
     color: white !important;
   }
 
   .react-select-container .react-select__option--is-selected {
-    @apply bg-indigo-600 text-white;
-    background-color: rgb(var(--color-indigo-600)) !important;
+    background-color: rgb(var(--color-indigo-700)) !important;
     color: white !important;
   }
 
@@ -8594,14 +8593,12 @@
   }
 
   .react-select-container-dark .react-select__option--is-focused {
-    @apply bg-indigo-600 text-white;
-    background-color: rgb(var(--color-indigo-600)) !important;
+    background-color: rgb(var(--color-indigo-700)) !important;
     color: white !important;
   }
 
   .react-select-container-dark .react-select__option--is-selected {
-    @apply bg-indigo-600 text-white;
-    background-color: rgb(var(--color-indigo-600)) !important;
+    background-color: rgb(var(--color-indigo-700)) !important;
     color: white !important;
   }
 
@@ -8858,16 +8855,6 @@
 
   .discover-filter-control .discover-compact-select .react-select__option {
     @apply min-h-0 py-1 pr-2 pl-7 text-xs leading-4;
-  }
-
-  .discover-filter-control
-    .discover-compact-select
-    .react-select__option--is-focused,
-  .discover-filter-control
-    .discover-compact-select
-    .react-select__option--is-selected {
-    @apply bg-indigo-600 text-white;
-    background-color: rgb(var(--color-indigo-600)) !important;
   }
 
   .discover-filter-control .discover-compact-select .react-select__input {

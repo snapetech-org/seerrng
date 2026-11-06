@@ -21,6 +21,9 @@ const themes = {
 const rootVariables = (stylesheet) => {
   const variables = new Map();
   postcss.parse(stylesheet).walkRules((rule) => {
+    for (let parent = rule.parent; parent; parent = parent.parent) {
+      if (parent.type === 'atrule' && parent.name === 'media') return;
+    }
     if (!rule.selectors.some((selector) => selector.includes(':root'))) return;
     for (const node of rule.nodes ?? []) {
       if (node.type === 'decl') variables.set(node.prop, node.value);

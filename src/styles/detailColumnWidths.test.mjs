@@ -74,7 +74,23 @@ for (const file of files)
 test('paired spans share intrinsic parent tracks without fixed proportions', () => {
   const css = read('./globals.css');
   verifyPairedTracks(css);
-  assert.match(css, /\.detail-paired-column-span\s*\{\s*padding-right: 0;/);
+  const span = postcss
+    .parse(css)
+    .nodes.flatMap((node) => node.nodes ?? [])
+    .find(
+      (node) =>
+        node.type === 'rule' &&
+        node.selectors?.includes('.detail-paired-column-span')
+    );
+  assert.ok(span);
+  for (const declaration of span.nodes.filter(
+    (node) => node.type === 'decl' && /^padding(?:-|$)/.test(node.prop)
+  ))
+    assert.equal(
+      declaration.value,
+      '0',
+      'paired spans must not add padding to shared parent tracks'
+    );
   assert.match(
     css,
     /\.collection-summary-table\s*\{\s*grid-template-columns:\s*max-content minmax\(0, 1fr\)\s+fit-content\(\s*var\(--detail-last-column-limit\)\s*\)/

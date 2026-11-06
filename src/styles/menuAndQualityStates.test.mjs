@@ -48,7 +48,10 @@ test('request dialogs use shared semantic action controls and the global disable
     if (media === 'Tv') {
       assert.match(submit, /buttonType="success"/);
       assert.match(submit, /buttonSize="standard"/);
-      assert.match(submit, /disabled=\{requestDisabled\}/);
+      assert.match(
+        submit,
+        /disabled=\{requestDisabled \|\| isSubmittingRequest\}/
+      );
       assert.match(submit, /onClick=\{\(\) => void submitAction\(\)\}/);
     } else {
       const roles = submit.match(/className="([^"]+)"/)?.[1].split(/\s+/);
