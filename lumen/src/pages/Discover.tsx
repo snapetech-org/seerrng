@@ -24,6 +24,7 @@ import { useExtras } from '../extras';
 import { useEbookCovers } from '../hooks';
 import { Icon, type IconName } from '../icons';
 import { usePrefs } from '../settings';
+import { serverName } from '../mediaServer';
 
 function useApi<T>(path: string) {
   const [data, setData] = useState<T | null>(null);
@@ -40,7 +41,7 @@ function useApi<T>(path: string) {
   return { data, error };
 }
 
-// "New on Plex": SeerrNG lists recently added media by id, so look up each title's details
+// "New on Plex" / "New on Jellyfin": SeerrNG lists recently added media by id, so look up each title's details
 function useNewOnPlex() {
   const [items, setItems] = useState<
     (TitleResult & { added?: string })[] | null
@@ -198,7 +199,10 @@ export default function Discover() {
       )}
 
       {on.newOnPlex && (
-        <Section title="New on Plex" link={['See all', '/movies?show=plex']}>
+        <Section
+          title={`New on ${serverName()}`}
+          link={['See all', '/movies?show=have']}
+        >
           {fresh ? (
             <Rail>
               {fresh.map((m) => (

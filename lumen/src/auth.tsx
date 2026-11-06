@@ -129,3 +129,62 @@ async function plexPinFlow(win: Window | null): Promise<void> {
   }
   throw new Error('Plex sign-in was cancelled or timed out.');
 }
+
+// ---- Jellyfin / Emby sign-in: SeerrNG checks the account against the media server ----
+export async function signInWithJellyfin(
+  username: string,
+  password: string
+): Promise<void> {
+  await api('/auth/jellyfin', {
+    method: 'POST',
+    // SeerrNG's own login sends the username as the email too (used for new accounts)
+    body: JSON.stringify({ username, password, email: username }),
+  });
+}
+
+// Jellyfin Quick Connect: show a code, the person approves it in a signed-in Jellyfin
+// app, then SeerrNG trades the secret for a session. Same endpoints as SeerrNG's modal.
+export async function startQuickConnect(): Promise<{
+  code: string;
+  secret: string;
+}> {
+  return api('/auth/jellyfin/quickconnect/initiate', { method: 'POST' });
+}
+
+export async function finishQuickConnect(
+  secret: string,
+  cancelled: () => boolean
+): Promise<void> {
+  const deadline = Date.now() + 10 * 60_000;
+  let errors = 0;
+  while (Date.now() < deadline) {
+    await new Promise((r) => setTimeout(r, 2000));
+    if (cancelled()) throw new QuickConnectCancelled();
+    let ok = false;
+    try {
+      const r = await api<{ authenticated: boolean }>(
+        `/auth/jellyfin/quickconnect/check?secret=${encodeURIComponent(secret)}`
+      );
+      ok = r.authenticated;
+      errors = 0;
+    } catch (e) {
+      if (e instanceof ApiError && e.status === 404)
+        throw new Error('This code has expired. Try again for a new one.');
+      if (++errors >= 5) throw e;
+    }
+    if (cancelled()) throw new QuickConnectCancelled();
+    if (ok) {
+      await api('/auth/jellyfin/quickconnect/authenticate', {
+        method: 'POST',
+        body: JSON.stringify({ secret }),
+      });
+      return;
+    }
+  }
+  throw new Error('This code has expired. Try again for a new one.');
+}
+export class QuickConnectCancelled extends Error {
+  constructor() {
+    super('Quick Connect was cancelled.');
+  }
+}

@@ -20,6 +20,7 @@ import { dropBookStates, useBookStates } from '../hooks';
 import { Icon, type IconName } from '../icons';
 import { usePrefs } from '../settings';
 import { useToast } from './toast';
+import { serverName } from '../mediaServer';
 
 // one status vocabulary everywhere (same as the mockup)
 export type Stat = {
@@ -30,9 +31,13 @@ export type Stat = {
 export function statusOf(mi: MediaInfo | undefined, book = false): Stat {
   const s = mi?.status;
   if (s === MediaStatus.AVAILABLE)
-    return { k: 'ok', word: book ? 'In library' : 'On Plex', ico: 'check' };
+    return {
+      k: 'ok',
+      word: book ? 'In library' : `On ${serverName()}`,
+      ico: 'check',
+    };
   if (s === MediaStatus.PARTIAL)
-    return { k: 'ok', word: 'Partly on Plex', ico: 'check' };
+    return { k: 'ok', word: `Partly on ${serverName()}`, ico: 'check' };
   // processing = handed to Radarr/Sonarr/ChaptarrNG; it's only "downloading" once a download shows up
   if (s === MediaStatus.PROCESSING) {
     const d = mi?.downloadStatus?.[0];
@@ -152,12 +157,12 @@ export function TitleCard({ it, meta }: { it: TitleResult; meta?: string }) {
         {...plexLink(it.mediaInfo, false, tv ? 'tv' : 'movie')}
       >
         <Icon name="play" size="sm" />
-        Watch on Plex
+        Watch on {serverName()}
       </a>
     ) : (
       <Link className="qbtn okb" to={href}>
         <Icon name="play" size="sm" />
-        On Plex
+        On {serverName()}
       </Link>
     );
   else if (s)
@@ -374,7 +379,7 @@ export function FeatCard({
         <span className="row">
           <span className="mm">{mm}</span>
           {s?.k === 'ok' ? (
-            // this button used to do nothing: open Plex when we have a link, else the title page
+            // this button used to do nothing: open the media server when we have a link, else the title page
             plexUrl(it.mediaInfo) ? (
               <a
                 className="btn go"

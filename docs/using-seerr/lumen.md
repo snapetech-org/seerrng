@@ -8,15 +8,20 @@ sidebar_position: 12
 
 Lumen is a separate, simpler front end for SeerrNG. It has the screens your users
 actually use: Discover, Movies, Series, Books, Audiobooks, Search, Requests and
-their profile. It works well on phones, and **Watch on Plex** offers a link to the
-Plex app on supported phones and tablets. App handoff depends on the installed
-Plex app and device settings; a browser link is also available.
+their profile. It works well on phones, and works with whichever media server
+SeerrNG uses: **Plex**, **Jellyfin** or **Emby**. Lumen reads that from SeerrNG, so
+every label matches your server ("On Jellyfin", "Watch on Plex"…).
+
+**Watch on Plex** offers a link to the Plex app on supported phones and tablets. App
+handoff depends on the installed Plex app and device settings; a browser link is also
+available. **Watch on Jellyfin** and **Watch on Emby** open the title in your server's
+web app.
 
 Lumen doesn't replace SeerrNG. It runs **in front of** SeerrNG and only talks to
 SeerrNG's API.
 
-- **Your users** sign in to Lumen with the same Plex or local account as before.
-  Their requests, permissions and request limits don't change.
+- **Your users** sign in to Lumen with the same Plex, Jellyfin, Emby or local
+  account as before. Their requests, permissions and request limits don't change.
 - **You, the admin**, keep using full SeerrNG for setup and settings: Sonarr,
   Radarr, users, notifications and so on. Lumen has no settings pages of its own.
   It sends anyone who opens a settings link to full SeerrNG.
@@ -24,7 +29,7 @@ SeerrNG's API.
   SeerrNG carries on exactly as before.
 
 ```text
- browser / phone ──► Lumen (port 5080) ──► SeerrNG (port 5055) ──► Plex, Sonarr, Radarr…
+ browser / phone ──► Lumen (port 5080) ──► SeerrNG (port 5055) ──► Plex or Jellyfin, Sonarr, Radarr…
  admin ──────────────────────────────────► SeerrNG (port 5055)
 ```
 
@@ -116,7 +121,8 @@ docker compose ps
 ### 5. Set up SeerrNG
 
 Open `http://<this-machine>:5055` and complete SeerrNG's setup wizard: sign in with
-Plex, connect your Plex server, and add Sonarr and Radarr. The
+Plex, Jellyfin or Emby, connect your media server, and add Sonarr and Radarr. Lumen
+picks up whichever server you choose here. The
 [getting started guide](../getting-started/index.mdx) walks through it.
 
 ### 6. Turn on Trust Reverse Proxy
@@ -325,6 +331,7 @@ and showing books at all. You can set the defaults, and lock any of them, with a
    ```json
    {
      "seerrPublicUrl": "https://seerr.example.com",
+     "mediaServer": "auto",
      "defaults": {
        "narratorChoice": true,
        "hoverRequest": true,
@@ -338,6 +345,10 @@ and showing books at all. You can set the defaults, and lock any of them, with a
    ```
 
    - `seerrPublicUrl` is the full-SeerrNG link shown on the **You** page.
+   - `mediaServer` picks the media server Lumen signs people in with and names in
+     its labels. Leave it at `"auto"` to follow SeerrNG's own setting (see
+     [Plex, Jellyfin and Emby](#plex-jellyfin-and-emby)), or set `"plex"`,
+     `"jellyfin"` or `"emby"`.
    - Put setting names in `locked` to stop users changing them, for example
      `"locked": ["showBooks"]`.
 
@@ -346,6 +357,34 @@ and showing books at all. You can set the defaults, and lock any of them, with a
 
 Create the file **before** you uncomment those lines. If the file is missing, Docker
 creates a folder with that name instead, and Lumen ignores it.
+
+## Plex, Jellyfin and Emby
+
+Lumen asks SeerrNG which media server it uses and follows it. That's the server
+SeerrNG was set up with during its setup wizard (its connection settings are under
+**Settings → Plex** or **Settings → Jellyfin** in full SeerrNG). Nothing needs
+setting up in Lumen.
+
+What changes with the server:
+
+| | Plex | Jellyfin | Emby |
+| --- | --- | --- | --- |
+| Sign-in button | Continue with Plex (Plex pop-up) | Continue with Jellyfin (username and password) | Continue with Emby (username and password) |
+| Quick Connect | – | Yes: Lumen shows a code to enter in a signed-in Jellyfin app | – |
+| Labels | On Plex, Watch on Plex, New on Plex | On Jellyfin, Watch on Jellyfin, New on Jellyfin | On Emby, Watch on Emby, New on Emby |
+| Watch button opens | The Plex app on phones and tablets, Plex Web elsewhere | Jellyfin's web app | Emby's web app |
+
+Lumen also follows SeerrNG's sign-in switches in **Settings → Users**: if local
+(email and password) sign-in is off, Lumen hides it; if Jellyfin is set to Quick
+Connect only, Lumen goes straight to the code. The **Forgot password?** link on the
+Jellyfin and Emby sign-in uses SeerrNG's Jellyfin forgot-password URL, or your
+server's own reset page.
+
+To override what SeerrNG reports (for example while you move from Plex to Jellyfin),
+set `"mediaServer"` in [`lumen-config.json`](#admin-defaults-for-everyone-optional).
+This only changes Lumen's sign-in and labels: people can only sign in with a server
+that SeerrNG is connected to. The **You** page shows which server Lumen is using and
+whether it came from SeerrNG or from `lumen-config.json`.
 
 ## Updating
 
@@ -419,6 +458,16 @@ Then change the `build:` line to `build: ./seerrng/lumen`.
 
 **Watch on Plex opens the Plex home screen instead of the title.**
 Update Lumen. Older builds used a link the Android Plex app ignores.
+
+**Lumen says Plex but you use Jellyfin (or the other way round).**
+Check which server tab full SeerrNG's **Settings** shows (Plex or Jellyfin), and check that
+`lumen-config.json` doesn't set `"mediaServer"` to something else. Lumen reads both
+when the page loads, so reload after changing either.
+
+**Jellyfin Quick Connect says the code expired.**
+Codes last a few minutes. Make sure Quick Connect is turned on in Jellyfin's
+**Dashboard → General**, then press **Use Quick Connect instead** again for a new
+code.
 
 ## Unraid without Compose
 

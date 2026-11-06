@@ -30,6 +30,7 @@ import {
 import { useToast } from '../components/toast';
 import { dropCache, useApi, usePublicSettings } from '../hooks';
 import { Icon } from '../icons';
+import { serverName } from '../mediaServer';
 
 const cert = (m: MovieDetails) =>
   m.releases?.results
@@ -87,7 +88,7 @@ export default function MovieDetail() {
     s?.k === 'ok' ? (
       <a className="btn btn-primary" {...plexLink(m.mediaInfo)}>
         <Icon name="play" />
-        Watch on Plex
+        Watch on {serverName()}
       </a>
     ) : s ? (
       <button className="btn btn-tonal" disabled>
@@ -156,7 +157,7 @@ export default function MovieDetail() {
           )}
           {s4k === MediaStatus.AVAILABLE && (
             <Pill k="ok" icon="check">
-              4K on Plex
+              4K on {serverName()}
             </Pill>
           )}
           {(s4k === MediaStatus.PENDING || s4k === MediaStatus.PROCESSING) && (
@@ -208,7 +209,7 @@ export default function MovieDetail() {
                   '4K',
                   pub?.movie4kEnabled
                     ? s4k === MediaStatus.AVAILABLE
-                      ? 'On Plex'
+                      ? `On ${serverName()}`
                       : 'Not yet'
                     : '',
                 ],

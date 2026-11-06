@@ -11,6 +11,7 @@ import { ComicDetail, Comics, MagazineDetail, Magazines } from './pages/Comics';
 import Discover from './pages/Discover';
 import { GameDetail, Games } from './pages/Games';
 import Login from './pages/Login';
+import { MediaServerProvider } from './mediaServer';
 import Me from './pages/Me';
 import MovieDetail from './pages/MovieDetail';
 import { AlbumDetail, Artist, Music } from './pages/Music';
@@ -89,13 +90,15 @@ if ('caches' in window) {
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <BrowserRouter>
-      <AuthProvider>
-        <PrefsProvider>
-          <ToastProvider>
-            <App />
-          </ToastProvider>
-        </PrefsProvider>
-      </AuthProvider>
+      <MediaServerProvider>
+        <AuthProvider>
+          <PrefsProvider>
+            <ToastProvider>
+              <App />
+            </ToastProvider>
+          </PrefsProvider>
+        </AuthProvider>
+      </MediaServerProvider>
     </BrowserRouter>
   </StrictMode>
 );

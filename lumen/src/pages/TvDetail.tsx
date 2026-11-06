@@ -24,6 +24,7 @@ import { useToast } from '../components/toast';
 import { dropCache, useApi, usePublicSettings } from '../hooks';
 import { Icon } from '../icons';
 import { usePrefs } from '../settings';
+import { serverName } from '../mediaServer';
 
 type SeasonState = 'have' | 'part' | 'asked' | 'none';
 const stateOf = (status?: number): SeasonState =>
@@ -139,7 +140,7 @@ export default function TvDetail() {
     (r) => r.iso_3166_1 === 'US'
   )?.rating;
   const statusLine = have
-    ? `${have === seasons.length ? 'Every season' : `${have} of ${seasons.length} seasons`} on Plex`
+    ? `${have === seasons.length ? 'Every season' : `${have} of ${seasons.length} seasons`} on ${serverName()}`
     : '';
   const main = missing.length ? (
     <button className="btn btn-primary" disabled={!n || busy} onClick={request}>
@@ -149,7 +150,7 @@ export default function TvDetail() {
   ) : (
     <a className="btn btn-primary" {...plexLink(t.mediaInfo, false, 'tv')}>
       <Icon name="play" />
-      Watch on Plex
+      Watch on {serverName()}
     </a>
   );
   const asked = seasons.filter(
@@ -202,7 +203,7 @@ export default function TvDetail() {
               {...plexLink(t.mediaInfo, false, 'tv')}
             >
               <Icon name="play" />
-              Watch on Plex
+              Watch on {serverName()}
             </a>
           )}
         </div>
@@ -287,12 +288,12 @@ export default function TvDetail() {
                       </span>
                       {st === 'have' && (
                         <Pill k="ok" icon="check">
-                          On Plex
+                          On {serverName()}
                         </Pill>
                       )}
                       {st === 'part' && (
                         <Pill k="ok" icon="check">
-                          Partly on Plex
+                          Partly on {serverName()}
                         </Pill>
                       )}
                       {st === 'asked' && (

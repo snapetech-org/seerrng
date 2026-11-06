@@ -6,6 +6,7 @@ import { Avatar } from '../components/Shell';
 import { CAN_HOVER, useApi, usePaged } from '../hooks';
 import { Icon } from '../icons';
 import { usePrefs } from '../settings';
+import { serverName } from '../mediaServer';
 
 const SORTS = {
   movie: [
@@ -24,7 +25,8 @@ const SORTS = {
 export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
   const [p, setP] = useSearchParams();
   const { prefs } = usePrefs();
-  const show = p.get('show') || 'all';
+  // "plex" is the old name for "have", kept so saved links still work
+  const show = p.get('show') === 'plex' ? 'have' : p.get('show') || 'all';
   const sort = p.get('sort') || 'popularity.desc';
   // several genres can be picked; "any" (default) or "all" of them
   const picked = (p.get('genre') || '').split(',').filter(Boolean);
@@ -43,11 +45,11 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
   const list = usePaged<TitleResult>(
     `/discover/${kind === 'movie' ? 'movies' : 'tv'}?${q}`
   );
-  const onPlex = (x: TitleResult) =>
+  const onServer = (x: TitleResult) =>
     x.mediaInfo?.status === MediaStatus.AVAILABLE ||
     x.mediaInfo?.status === MediaStatus.PARTIAL;
   const items = list.items.filter((x) =>
-    show === 'plex' ? onPlex(x) : show === 'not' ? !onPlex(x) : true
+    show === 'have' ? onServer(x) : show === 'not' ? !onServer(x) : true
   );
   // availability is filtered here, not by the API: keep loading pages until the screen fills
   useEffect(() => {
@@ -88,7 +90,7 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
         </div>
         <p className="sub">
           {kind === 'movie'
-            ? `${!prefs.hoverRequest ? 'Open a poster to request it.' : CAN_HOVER ? 'Hover a poster to request in one click.' : 'Tap + on a poster to request in one tap.'} Everything on Plex has a green check.`
+            ? `${!prefs.hoverRequest ? 'Open a poster to request it.' : CAN_HOVER ? 'Hover a poster to request in one click.' : 'Tap + on a poster to request in one tap.'} Everything on ${serverName()} has a green check.`
             : prefs.wholeSeriesDefault
               ? 'Requesting gets the whole show. Only want some? Untick seasons on the show’s page.'
               : 'Pick the seasons you want on each show’s page.'}
@@ -102,8 +104,8 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
         <div className="seg" role="group" aria-label="Availability">
           {[
             ['all', 'All'],
-            ['plex', 'On Plex'],
-            ['not', 'Not on Plex'],
+            ['have', `On ${serverName()}`],
+            ['not', `Not on ${serverName()}`],
           ].map(([v, t]) => (
             <button
               key={v}

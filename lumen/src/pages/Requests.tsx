@@ -35,6 +35,7 @@ import {
   sessionGeneration,
   sessionUserId,
 } from '../sessionState';
+import { serverName } from '../mediaServer';
 
 interface Row {
   r: RequestItem;
@@ -61,8 +62,8 @@ function eta(t?: string) {
 }
 
 // a series request is done once every requested season that has aired is at least partly on
-// Plex: ongoing shows stay partial for good, and new episodes are fetched as they air.
-// Returns the requested, aired seasons with nothing on Plex yet (null if not a series).
+// Plex/Jellyfin: ongoing shows stay partial for good, and new episodes are fetched as they air.
+// Returns the requested, aired seasons with nothing on the media server yet (null if not a series).
 function seasonsMissing(x: Row) {
   const r = x.r;
   if (r.type !== 'tv' || !r.seasons?.length) return null;
@@ -100,7 +101,7 @@ function state(x: Row): {
   detail?: string;
 } {
   const r = x.r;
-  // a 4K request follows the 4K copy, not the HD one already on Plex
+  // a 4K request follows the 4K copy, not the HD one already on the media server
   const ms = r.is4k ? r.media.status4k : r.media.status;
   const dls =
     (r.is4k
@@ -121,8 +122,8 @@ function state(x: Row): {
         r.type !== 'movie' && r.type !== 'tv'
           ? 'In library'
           : r.is4k
-            ? '4K on Plex'
-            : 'On Plex',
+            ? `4K on ${serverName()}`
+            : `On ${serverName()}`,
       ico: 'check',
       active: false,
     };
@@ -151,7 +152,7 @@ function state(x: Row): {
     return missing && !missing.length
       ? {
           k: 'ok',
-          word: r.is4k ? '4K on Plex' : 'On Plex',
+          word: r.is4k ? `4K on ${serverName()}` : `On ${serverName()}`,
           ico: 'check',
           active: false,
           detail:
@@ -163,7 +164,7 @@ function state(x: Row): {
         }
       : {
           k: 'ok',
-          word: 'Partly on Plex',
+          word: `Partly on ${serverName()}`,
           ico: 'check',
           active: true,
           detail: missing?.length
@@ -636,8 +637,8 @@ export default function Requests() {
                     >
                       <Icon name="play" size="sm" />
                       {x.r.type === 'music'
-                        ? 'Listen on Plex'
-                        : 'Watch on Plex'}
+                        ? `Listen on ${serverName()}`
+                        : `Watch on ${serverName()}`}
                     </a>
                   ) : x.r.status === 1 ? (
                     <button
