@@ -6,9 +6,4 @@ action: none
 breaking: false
 ---
 
-Recover requester tags for existing movies and complete series, automatic genre
-blocklisting, per-user streaming subscription request policies and TMDB follows.
-Enforce current viewer age and category policies when generating and reading follow
-updates, retry failed event writes safely, and load updates beyond the first hundred.
-Preserve existing request approval, quota and destination rules, including service ID
-zero, and restore shared card and source-badge styling across the built-in themes.
+Restore requester tags for available movies and complete series, genre blocklisting, streaming subscription request policies and TMDB follows. Follow updates enforce current viewer restrictions, safely retry failed writes and load beyond item 100. Preserve request quota, approval and service-zero handling.
