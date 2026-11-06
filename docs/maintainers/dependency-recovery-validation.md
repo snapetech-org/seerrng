@@ -39,6 +39,9 @@ advisory and no moderate/high/critical findings; the repository's vendor patch
 remains required. This is not a zero-vulnerability claim.
 
 Upstream action comparisons and independently resolved release tags are retained
-in `dependency-upstream-action-review/`. Final source integration, browser/native
-CI and production build validation remain required before merging. CodeQL stays
+in `dependency-upstream-action-review/`. The integrated production build passes with the full recovered theme, policy,
+episode and discovery source. Seven headless browser cases pass at desktop and
+phone widths, including theme persistence and explicit Search. Seven focused
+component/credit cases and five deepmerge exploit probes pass. Full native and
+browser CI remains required before merging. CodeQL stays
 disabled under the owner directive; runner routing is unchanged.
