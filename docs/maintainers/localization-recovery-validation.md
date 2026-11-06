@@ -213,7 +213,7 @@ Evidence is retained in task deliverables as `book-poster-{baseline,candidate}`,
 style contracts pass. Provider responses are deterministic fixtures; these cases
 do not submit real book requests or prove live provider operation.
 
-The affected shared-consumer rerun passed all 32 cases: collection cards across
+The affected shared-consumer rerun passed all 34 cases: collection cards across
 three themes/two directions/two widths, movie/TV detail layouts at nine widths,
 and the feature-recovery settings, follow, movie/TV request-dialog and subscription
 checks. Movie and TV requester/streaming dialogs cover 390 and 1440px in NGJ.
