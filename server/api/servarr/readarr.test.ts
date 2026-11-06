@@ -2491,3 +2491,92 @@ describe('ReadarrAPI Bookshelf media moves', () => {
     );
   });
 });
+
+// Exercise the real HTTP path: mocking lookupBook itself cannot prove that a
+// numeric catalog identity reaches the selected format facade correctly.
+describe('Chaptarr catalog provider identity HTTP contract (issue #409)', () => {
+  for (const dialect of ['hc', 'gr'] as const) {
+    for (const mediaType of ['ebook', 'audiobook'] as const) {
+      it(`uses ${dialect} provider identity on the ${mediaType} facade`, async () => {
+        const seen: { path: string; term: string | null }[] = [];
+        const server = createServer((request, response) => {
+          const url = new URL(request.url ?? '/', 'http://localhost');
+          seen.push({ path: url.pathname, term: url.searchParams.get('term') });
+          response.setHeader('content-type', 'application/json');
+          if (url.pathname === '/api/v1/system/status') {
+            response.end(
+              JSON.stringify({ appName: 'Chaptarr', version: '0.9.977.0' })
+            );
+          } else if (url.pathname === '/api/v1/system/capabilities') {
+            response.end(
+              JSON.stringify({
+                contract: 'chaptarrng-seerr-bookshelf',
+                contractVersion: 1,
+                providerIdDialect: dialect,
+                mediaTypes: ['ebook', 'audiobook'],
+                features: {
+                  formatScopedFacade: true,
+                  providerScopedEditionIdentity: true,
+                  restrictedServiceApiKey: true,
+                },
+              })
+            );
+          } else if (
+            url.pathname ===
+              `/readarr/${dialect}/${mediaType}/api/v1/book/lookup` &&
+            url.searchParams.get('term') === `${dialect}:79106958`
+          ) {
+            response.end(
+              JSON.stringify([
+                {
+                  title: 'Project Hail Mary',
+                  foreignBookId: '79106958',
+                  mediaType,
+                  author: { authorName: 'Andy Weir', foreignAuthorId: '123' },
+                  editions: [
+                    {
+                      title: 'Project Hail Mary',
+                      foreignEditionId: '456',
+                      monitored: true,
+                    },
+                  ],
+                },
+              ])
+            );
+          } else {
+            response.statusCode = 404;
+            response.end(
+              JSON.stringify({ message: 'Unexpected fixture endpoint' })
+            );
+          }
+        });
+        server.listen(0, '127.0.0.1');
+        await once(server, 'listening');
+        const address = server.address();
+        assert.ok(address && typeof address !== 'string');
+        try {
+          const api = new ReadarrAPI({
+            url: `http://127.0.0.1:${address.port}/api/v1`,
+            apiKey: 'test-scoped-key',
+            mediaType,
+          });
+          const result = await api.lookupBookByProviderIdentity('79106958');
+          assert.equal(result?.foreignBookId, `${dialect}:79106958`);
+          assert.equal(result?.mediaType, mediaType);
+          assert.deepEqual(
+            seen.filter((request) => request.path.endsWith('/book/lookup')),
+            [
+              {
+                path: `/readarr/${dialect}/${mediaType}/api/v1/book/lookup`,
+                term: `${dialect}:79106958`,
+              },
+            ]
+          );
+        } finally {
+          server.close();
+          await once(server, 'close');
+        }
+      });
+    }
+  }
+});
