@@ -59,3 +59,41 @@ describe('public interface theme package routes', () => {
     );
   });
 });
+
+describe('public interface theme routes behind the OpenAPI validator', () => {
+  const app = express();
+  app.use(
+    OpenApiValidator.middleware({
+      apiSpec: path.join(process.cwd(), 'seerr-api.yml'),
+      validateRequests: true,
+      validateSecurity: false,
+    })
+  );
+  app.use('/api/v1/interface-themes', themeRoutes);
+  app.use(
+    (
+      error: { status?: number; message?: string },
+      _req: express.Request,
+      res: express.Response,
+      _next: express.NextFunction
+    ) => {
+      void _next;
+      res.status(error.status ?? 500).json(error);
+    }
+  );
+
+  it('allows the public manifest and CSS endpoints through validation', async () => {
+    const list = await request(app).get('/api/v1/interface-themes');
+    assert.equal(list.status, 200);
+    assert.deepEqual(
+      list.body.themes.map(({ id }: { id: string }) => id),
+      ['seerrOrig', 'seerrNGJ']
+    );
+
+    const stylesheet = await request(app).get(
+      '/api/v1/interface-themes/seerrOrig/theme.css'
+    );
+    assert.equal(stylesheet.status, 200);
+    assert.match(stylesheet.headers['content-type'], /^text\/css/);
+  });
+});
