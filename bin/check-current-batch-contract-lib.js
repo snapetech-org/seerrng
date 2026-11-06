@@ -6692,8 +6692,13 @@ const validateCurrentBatchContract = (files) => {
   );
   requireText(
     'src/pages/discover/books/index.tsx',
-    '<DiscoverBooks format="all" />',
-    'Books discovery must default to All Books'
+    '<DiscoverBooks format="ebook" />',
+    'Books discovery must default to the Books format'
+  );
+  requireText(
+    'src/components/Layout/Sidebar/navigation.tsx',
+    "href: '/discover/books?format=ebook'",
+    'Books navigation must explicitly select its format ahead of saved pins'
   );
   requireOrder(
     'src/components/Discover/DiscoverBooks/index.tsx',

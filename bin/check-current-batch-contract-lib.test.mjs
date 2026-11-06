@@ -2177,3 +2177,33 @@ test('compact inputs consume theme tokens and retain both built-in sizes', () =>
     );
   }
 });
+
+test('Books navigation keeps the route default and explicit sidebar format aligned', () => {
+  const page = 'src/pages/discover/books/index.tsx';
+  const navigation = 'src/components/Layout/Sidebar/navigation.tsx';
+  for (const [file, before, after, reason] of [
+    [
+      page,
+      'format="ebook"',
+      'format="all"',
+      'Books discovery must default to the Books format',
+    ],
+    [
+      navigation,
+      "href: '/discover/books?format=ebook'",
+      "href: '/discover/books'",
+      'Books navigation must explicitly select its format ahead of saved pins',
+    ],
+  ]) {
+    const source = repositoryFilesWith()[file];
+    assert.ok(
+      source.includes(before),
+      `${file} contains the expected navigation boundary`
+    );
+    assert.ok(
+      validateCurrentBatchContract(
+        repositoryFilesWith({ [file]: source.replace(before, after) })
+      ).some((error) => error.includes(reason))
+    );
+  }
+});

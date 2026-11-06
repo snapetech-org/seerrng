@@ -44,3 +44,10 @@ CodeQL default setup is unconfigured; no executable CodeQL workflow remains. Exi
 - Live GitHub readback: no open PRs, no non-main owned branch, no open Dependabot/code-scanning/secret-scanning alerts and no triage/draft private advisory.
 
 This work did not run a complete production release, publish a new version or claim every possible vulnerability is absent. Security remediation is committed on main; release qualification and older installed binaries remain separate. Existing shared-checkout documentation edits and all unrelated worktree files were preserved.
+
+
+## Final build-contract correction
+
+Full CI on the session-fix source exposed a stale rule requiring Books to default to All Books, and missing structured headers in the two new release-note fragments. The rule now enforces the requested ebook default plus explicit sidebar format; negative tests prevent either boundary from regressing. Existing All Books selection/order coverage is retained. The unshipped fragments now carry valid categories, audiences, areas and upgrade actions.
+
+Local production build and full lint passed. The complete tooling run passed369 tests, with four PostgreSQL integration cases skipped locally because no disposable PostgreSQL fixture was configured. Current-batch/UI checks passed73 tests. Both fragments passed the release-note parser. Full hosted CI remains separate evidence; no old failed run was represented as validation of the correction.
