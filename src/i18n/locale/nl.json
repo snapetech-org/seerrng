@@ -589,7 +589,7 @@
   "components.Settings.enablessl": "SSL gebruiken",
   "components.UserList.nouserstoimport": "Er zijn geen Plex-gebruikers om te importeren.",
   "components.PersonDetails.lifespan": "{birthdate} – {deathdate}",
-  "components.PersonDetails.birthdate": "Geboren op {geboortedatum}",
+  "components.PersonDetails.birthdate": "Geboren op {birthdate}",
   "components.PersonDetails.alsoknownas": "Ook bekend als: {names}",
   "i18n.delimitedlist": "{a}, {b}",
   "components.UserProfile.unlimited": "Onbeperkt",

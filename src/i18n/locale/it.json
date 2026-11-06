@@ -613,7 +613,7 @@
   "components.UserProfile.unlimited": "Illimitato",
   "components.UserProfile.totalrequests": "Richieste Totali",
   "components.UserProfile.seriesrequest": "Richieste Serie",
-  "components.UserProfile.requestsperdays": "{limit, plural, one {rimanente} other {rimanenti}}",
+  "components.UserProfile.requestsperdays": "{limit, plural, one {# rimanente} other {# rimanenti}}",
   "components.UserProfile.pastdays": "{type} (ultimi {days} giorni)",
   "components.UserProfile.movierequests": "Richieste Film",
   "components.UserProfile.limit": "{remaining} di {limit}",

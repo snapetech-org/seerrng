@@ -277,7 +277,7 @@
   "components.Settings.SettingsAbout.documentation": "Documentação",
   "components.Settings.SettingsAbout.Releases.viewongithub": "Ver no GitHub",
   "components.Settings.SettingsAbout.Releases.viewchangelog": "Ver Mudanças",
-  "components.Settings.SettingsAbout.Releases.versionChangelog": "Mudanças Nesta Versão",
+  "components.Settings.SettingsAbout.Releases.versionChangelog": "{version} Mudanças Nesta Versão",
   "components.Settings.SettingsAbout.Releases.releases": "Versões",
   "components.Settings.SettingsAbout.Releases.releasedataMissing": "Os dados de versão estão atualmente indisponíveis.",
   "components.Settings.SettingsAbout.Releases.latestversion": "Última Versão",

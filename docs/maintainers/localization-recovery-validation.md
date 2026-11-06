@@ -49,9 +49,15 @@ protocols and query values. Protected-token diagnostics are zero. The ordinary
 i18n check, focused URL regression and changed-file formatting passed. These
 latest catalog edits have not yet been rebuilt into the browser runtime.
 
+A subsequent caller-argument pass repaired 12 values: translated identifiers,
+omitted dates/version numbers, and an Italian plural that omitted its visible
+count. All 12 render with React Intl and supplied caller values; the Italian
+result displays the count. Contract diagnostics fell from 159 to 148, with no
+stale provenance records or invalid ICU syntax.
+
 ## Remaining acceptance and exclusions
 
-- Resolve the remaining 159 argument/tag contract diagnostics. Some plural
+- Resolve the remaining 148 argument/tag contract diagnostics. Some plural
   differences may be valid grammar and require
   caller-aware review; do not delete them merely to silence a validator.
 - Empty/obsolete keys, untranslated additions since the original branch, and

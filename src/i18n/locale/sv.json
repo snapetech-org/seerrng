@@ -1156,7 +1156,7 @@
   "components.Discover.resetsuccess": "Anpassningarna för Upptäck har återställts.",
   "components.Discover.resettodefault": "Återställ till standardinställningar",
   "components.Discover.updatefailed": "Något gick fel när inställningarna för anpassning av Upptäck skulle uppdateras..",
-  "components.DownloadBlock.formattedTitle": "{titel}: säsong {seasonNumber}, avsnitt {episodeNumber}",
+  "components.DownloadBlock.formattedTitle": "{title}: säsong {seasonNumber}, avsnitt {episodeNumber}",
   "components.StatusBadge.seasonepisodenumber": "S{seasonNumber}E{episodeNumber}",
   "components.RequestCard.unknowntitle": "Okänd titel",
   "components.RequestList.RequestItem.unknowntitle": "Okänd titel",
