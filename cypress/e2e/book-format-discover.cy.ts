@@ -34,11 +34,19 @@ describe('Book discovery formats', () => {
     });
 
     cy.visit('/discover/books?subject=fantasy&sortBy=rating');
+    cy.wait('@discoverEbooks')
+      .its('request.url')
+      .should('include', 'format=ebook');
+    cy.contains('[data-testid=page-header]', 'Books').should('be.visible');
+    cy.contains('button', 'Media Filters').click();
+    cy.get('[data-testid=book-format-tab-ebook]')
+      .should('have.attr', 'aria-current', 'page')
+      .and('contain', 'Books');
+
+    cy.get('[data-testid=book-format-tab-all]').click();
     cy.wait('@discoverBooks')
       .its('request.url')
       .should('not.include', 'format=');
-    cy.contains('[data-testid=page-header]', 'Books').should('be.visible');
-    cy.contains('button', 'Media Filters').click();
     cy.get('[data-testid=book-format-tab-all]')
       .should('have.attr', 'aria-current', 'page')
       .and('contain', 'All Books');
