@@ -9,6 +9,7 @@ import {
 } from '@app/components/Discover/constants';
 import MediaDiscoveryControls from '@app/components/Discover/MediaDiscoveryControls';
 import { studios } from '@app/components/Discover/StudioSlider';
+import FollowButton from '@app/components/Following/FollowButton';
 import CatalogControls, {
   libraryView,
 } from '@app/components/Persius/CatalogControls';
@@ -17,6 +18,7 @@ import usePersius from '@app/components/Persius/usePersius';
 import useDiscover from '@app/hooks/useDiscover';
 import useDiscoverScrollRestoration from '@app/hooks/useDiscoverScrollRestoration';
 import { useSearchActivityReporter } from '@app/hooks/useSearchActivity';
+import { Permission, useUser } from '@app/hooks/useUser';
 import ErrorPage from '@app/pages/_error';
 import defineMessages from '@app/utils/defineMessages';
 import type { ProductionCompany } from '@server/models/common';
@@ -48,6 +50,7 @@ const DiscoverMovies = ({
   const intl = useIntl();
   const persius = usePersius();
   const router = useRouter();
+  const { hasPermission } = useUser();
   const preparedFilters = withDefaultTmdbRatingMinimumVotes({
     ...initialFilters,
     ...prepareFilterValues(router.query),
@@ -122,6 +125,18 @@ const DiscoverMovies = ({
                 curatedStudio?.logoTone === 'white' ? 'brightness-0 invert' : ''
               }`}
               fill
+            />
+          </div>
+        )}
+        {studio && hasPermission(Permission.REQUEST) && (
+          <div className="app-action-row" data-action-placement="leading">
+            <FollowButton
+              input={{
+                kind: 'tmdb-studio',
+                subjectKey: `tmdb:studio:${studio.id}`,
+                subjectLabel: studio.name,
+                conditions: { ref: { tmdbId: studio.id } },
+              }}
             />
           </div>
         )}

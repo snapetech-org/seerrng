@@ -9,6 +9,7 @@ import FollowEvent from '@server/entity/FollowEvent';
 import MediaRequest from '@server/entity/MediaRequest';
 import { syncSavedDiscoveries } from '@server/lib/gameDiscovery';
 import logger from '@server/logger';
+import { isUniqueConstraintError } from '@server/utils/databaseError';
 import { FOLLOW_ADAPTERS } from './adapters';
 import type { NewFollowEvent } from './types';
 
@@ -123,8 +124,18 @@ export const evaluateFollow = async (follow: Follow): Promise<number> => {
       );
       created += 1;
       await autoRequest(follow, event);
-    } catch {
-      // The dedupe index rejects an event already recorded.
+    } catch (error) {
+      // Only an existing event is safe to consume without writing it again.
+      if (
+        !isUniqueConstraintError(error) ||
+        !(await eventRepository.exists({
+          where: {
+            follow: { id: follow.id },
+            dedupeKey: event.dedupeKey.slice(0, 255),
+          },
+        }))
+      )
+        throw error;
     }
   }
   follow.cursor = result.cursor;

@@ -1,3 +1,5 @@
+import TheMovieDb from '@server/api/themoviedb';
+import { MediaType } from '@server/constants/media';
 import { getRepository } from '@server/datasource';
 import Follow, {
   type FollowConditions,
@@ -10,9 +12,10 @@ import {
   MAX_FOLLOWS_PER_USER,
   upsertFollow,
 } from '@server/lib/follow';
+import { filterFollowVideoItems } from '@server/lib/follow/videoPolicy';
 import { Permission } from '@server/lib/permissions';
 import logger from '@server/logger';
-import { parsePositiveInt } from '@server/utils/pagination';
+import { parsePageParams } from '@server/utils/pagination';
 import { Router } from 'express';
 import rateLimit from 'express-rate-limit';
 import { In } from 'typeorm';
@@ -133,6 +136,46 @@ followRoutes.post('/', async (req, res) => {
       .status(400)
       .json({ error: 'The follow conditions are invalid.' });
   }
+  if (
+    body.kind === 'tmdb-person' ||
+    body.kind === 'tmdb-studio' ||
+    body.kind === 'tmdb-network'
+  ) {
+    const tmdbId = conditions?.ref?.tmdbId;
+    const subjectType =
+      body.kind === 'tmdb-person'
+        ? 'person'
+        : body.kind === 'tmdb-studio'
+          ? 'studio'
+          : 'network';
+    if (
+      typeof tmdbId !== 'number' ||
+      !Number.isSafeInteger(tmdbId) ||
+      tmdbId <= 0 ||
+      tmdbId > 1_000_000_000 ||
+      subjectKey !== `tmdb:${subjectType}:${tmdbId}`
+    ) {
+      return res.status(400).json({
+        error: 'Choose a valid TMDB person, production company, or network.',
+      });
+    }
+  }
+  if (body.kind === 'tmdb-genre') {
+    const genreId = conditions?.ref?.genreId;
+    const mediaType = conditions?.ref?.mediaType;
+    if (
+      typeof genreId !== 'number' ||
+      !Number.isSafeInteger(genreId) ||
+      genreId <= 0 ||
+      genreId > 1_000_000_000 ||
+      (mediaType !== 'movie' && mediaType !== 'tv') ||
+      subjectKey !== `tmdb:genre:${mediaType}:${genreId}`
+    ) {
+      return res.status(400).json({
+        error: 'Choose a valid movie or series genre.',
+      });
+    }
+  }
   const autoRequest = body.autoRequest === true;
   if (autoRequest && !AUTO_REQUEST_KINDS.includes(body.kind)) {
     return res
@@ -155,7 +198,7 @@ followRoutes.post('/', async (req, res) => {
     notify: body.notify !== false,
     autoRequest,
   });
-  // Record a baseline now so only future changes become news.
+  // Start a baseline now; TMDB adapters may include a small upcoming set.
   const hydrated = await repository.findOne({
     where: { id: follow.id },
     relations: { user: true },
@@ -207,8 +250,10 @@ followRoutes.delete<{ id: string }>('/:id', async (req, res) => {
 /** "Following" page: personal news with the reason for each item. */
 followRoutes.get('/events', async (req, res) => {
   if (!req.user) return res.status(401).json({ error: 'Sign in.' });
-  const take = parsePositiveInt(req.query.take, 30, 100);
-  const skip = Math.max(0, Number(req.query.skip) || 0);
+  const { pageSize: take, skip } = parsePageParams(req.query, {
+    take: 30,
+    maxTake: 100,
+  });
   const [rows, total] = await getRepository(FollowEvent).findAndCount({
     where: {
       user: { id: req.user.id },
@@ -219,9 +264,39 @@ followRoutes.get('/events', async (req, res) => {
     take,
     skip,
   });
+  const videoItems = rows.flatMap<{
+    id: string;
+    mediaType: MediaType.MOVIE | MediaType.TV;
+    eventId: number;
+  }>((row) =>
+    row.target &&
+    (row.target.mediaType === MediaType.MOVIE ||
+      row.target.mediaType === MediaType.TV)
+      ? [
+          {
+            id: row.target.id,
+            mediaType: row.target.mediaType,
+            eventId: row.id,
+          },
+        ]
+      : []
+  );
+  const allowed = await filterFollowVideoItems(
+    new TheMovieDb(),
+    req.user,
+    videoItems
+  );
+  const allowedIds = new Set(allowed.map((item) => item.eventId));
+  const visibleRows = rows.filter(
+    (row) =>
+      !row.target ||
+      (row.target.mediaType !== MediaType.MOVIE &&
+        row.target.mediaType !== MediaType.TV) ||
+      allowedIds.has(row.id)
+  );
   return res.status(200).json({
     total,
-    results: rows.map((row) => ({
+    results: visibleRows.map((row) => ({
       id: row.id,
       reasonKey: row.reasonKey,
       reasonValues: row.reasonValues ?? {},
