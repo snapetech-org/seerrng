@@ -124,3 +124,12 @@ while initiation is stalled, before the held response is released. The seven
 inventory boundary tests pass, including pagination and partial-provider outage.
 The combined source retains the previously verified root rating/help repairs;
 final-head hosted CI remains the merge gate.
+
+CI follow-through: regenerated chart documentation using the pinned helm-docs
+image and formatted the auto-merged entrypoint. The full Cypress run also found
+one stale assertion expecting the old API-key instructions. The assertion now
+checks the separate service key, administrator-key distinction, double-underscore
+wording, and exact code token while retaining the existing geometry checks.
+The complete local `library-discover-parity` spec passes all 27 cases against
+the production fixture; logs/video are in `cypress-repair/` and
+`cypress-repair.log`. The corrected production build and Helm job pass in CI.

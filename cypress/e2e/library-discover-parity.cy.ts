@@ -805,12 +805,18 @@ describe('Books and Music discover parity', () => {
     cy.get('select[name=serviceType]').should('be.visible');
     assertDialogFieldDescription(
       'API Key',
-      'Find the key in ChaptarrNG under Settings > General > Security > API Key'
+      'create a separate random service key'
     );
     assertDialogFieldDescription(
       'API Key',
-      'For ChaptarrNG 0.9.941+, set CHAPTARR__AUTH__SEERRAPIKEY in the ChaptarrNG container'
+      'This restricted key is different from the administrator API key'
     );
+    assertDialogFieldDescription('API Key', 'Use two underscores');
+    cy.get('[role="dialog"]')
+      .contains('label', 'API Key')
+      .closest('.form-row')
+      .find('code')
+      .should('have.text', 'CHAPTARR__AUTH__SEERRAPIKEY');
     assertDialogFieldDescription(
       'URL Base',
       'If you set a URL Base in Bookshelf, Chaptarr, or Readarr'
