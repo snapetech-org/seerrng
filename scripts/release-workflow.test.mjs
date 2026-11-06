@@ -1,5 +1,6 @@
 import * as yaml from 'js-yaml';
 import assert from 'node:assert/strict';
+import { execFileSync } from 'node:child_process';
 import fs from 'node:fs';
 import { createRequire } from 'node:module';
 import path from 'node:path';
@@ -1882,4 +1883,64 @@ test('git-cliff uses stable semantic-version tags as release boundaries', () => 
   assert.equal(matchesTag.test('3.63.0'), true);
   assert.equal(matchesTag.test('mobile-v3.63.0-ci.36'), false);
   assert.equal(matchesTag.test('v3.63.0-rc.1'), false);
+});
+
+test('unavailable optional channels can be skipped without dropping required packages', () => {
+  const release = readWorkflow('release.yml');
+  assert.equal(
+    release.on.workflow_dispatch.inputs.skip_unavailable_optional_channels
+      .default,
+    false
+  );
+  assert.match(
+    release.jobs['dispatch-chocolatey'].if,
+    /inputs\.skip_unavailable_optional_channels != true/u
+  );
+  const step = release.jobs['dispatch-package-channels'].steps.find(
+    (step) => step.name === 'Dispatch package workflows'
+  );
+  assert.match(
+    step.env.SKIP_UNAVAILABLE_OPTIONAL_CHANNELS,
+    /inputs\.skip_unavailable_optional_channels/u
+  );
+  const required = step.run.match(
+    /required_workflows=\([\s\S]*?\n[ \t]*\)/u
+  )?.[0];
+  const optional = step.run.match(
+    /optional_workflows=\(\)[\s\S]*?\n[ \t]*fi/u
+  )?.[0];
+  assert.ok(required && optional);
+  for (const skip of ['false', 'true']) {
+    const output = execFileSync(
+      'bash',
+      [
+        '--noprofile',
+        '--norc',
+        '-euc',
+        `${required}\n${optional}\nfor workflow in "\${required_workflows[@]}"; do printf 'required:%s\\n' "$workflow"; done\nfor workflow in "\${optional_workflows[@]}"; do printf 'optional:%s\\n' "$workflow"; done`,
+      ],
+      {
+        encoding: 'utf8',
+        env: {
+          PATH: process.env.PATH,
+          SKIP_UNAVAILABLE_OPTIONAL_CHANNELS: skip,
+        },
+      }
+    )
+      .trim()
+      .split('\n');
+    assert.deepEqual(
+      output.filter((line) => line.startsWith('required:')),
+      [
+        'required:release-linux-packages.yml',
+        'required:release-flatpak.yml',
+        'required:release-aur.yml',
+        'required:release-copr.yml',
+      ]
+    );
+    assert.deepEqual(
+      output.filter((line) => line.startsWith('optional:')),
+      skip === 'true' ? [] : ['optional:release-snap.yml']
+    );
+  }
 });

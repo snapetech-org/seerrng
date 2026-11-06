@@ -38,6 +38,11 @@ on:
         required: false
         type: string
         default: '{}'
+      skip_unavailable_optional_channels:
+        description: Skip Snap and Chocolatey while their publishing accounts are unavailable
+        required: false
+        type: boolean
+        default: false
       skip_launchpad_dispatch:
         description: Skip starting another PPA run when one is already handling this tag
         required: false
@@ -1104,7 +1109,7 @@ jobs:
 
   dispatch-chocolatey:
     name: Dispatch Chocolatey after publication
-    if: (github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && inputs.reuse_from_run_id == '' && inputs.announce_security_correction != true))
+    if: inputs.skip_unavailable_optional_channels != true && (github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && inputs.reuse_from_run_id == '' && inputs.announce_security_correction != true))
     needs: [publish-release]
     timeout-minutes: 5
     runs-on: ubuntu-24.04
@@ -1209,6 +1214,7 @@ jobs:
           TAG: ${{ inputs.tag || github.ref_name }}
           REUSE_FROM_RUN_ID: ${{ inputs.reuse_from_run_id || '' }}
           REUSE_PACKAGE_WORKFLOW_RUNS: ${{ inputs.reuse_package_workflow_runs || '{}' }}
+          SKIP_UNAVAILABLE_OPTIONAL_CHANNELS: ${{ inputs.skip_unavailable_optional_channels == true && 'true' || 'false' }}
         run: |
           set -euo pipefail
           if [[ "$TAG" == *-* ]]; then
@@ -1223,9 +1229,12 @@ jobs:
           )
           # release-chocolatey.yml is dispatched after the public-release gate.
           # Launchpad is dispatched after publication and the Discord announcement below.
-          optional_workflows=(
-            release-snap.yml
-          )
+          optional_workflows=()
+          if [[ "$SKIP_UNAVAILABLE_OPTIONAL_CHANNELS" != 'true' ]]; then
+            optional_workflows=(release-snap.yml)
+          else
+            echo 'Skipping optional Snap and Chocolatey publication because their accounts are unavailable.'
+          fi
           declare -A dispatch_started=()
           required_names=()
           required_run_ids=()

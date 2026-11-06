@@ -244,3 +244,11 @@ missing source-publication record is not by itself evidence that an upload
 failed, so the workflow keeps waiting until its monitoring timeout instead of
 creating a duplicate source version. If that timeout expires, the package
 channel stays red and points to the Launchpad logs for operator review.
+
+When Snap or Chocolatey publishing access is known to be unavailable, dispatch a
+new release with `-f skip_unavailable_optional_channels=true`. This explicitly
+skips those two optional account-dependent channels while retaining Linux
+packages, Flatpak, AUR, COPR, release assets, image signing and verification.
+Record the account blocker and the skipped channels in delivery evidence. The
+default remains to dispatch both optional channels. This switch does not skip
+Launchpad or bypass a required package failure.
