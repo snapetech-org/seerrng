@@ -48,7 +48,7 @@ const checkRequestAllowed = async (
 
 /** Catalog, detail, and request surfaces that can expose mature titles. */
 const restrictedPathPattern =
-  /^\/(?:discover|search|movie|tv|music|artist|book|author|comic|magazine|sportarr|series|collection|collection-catalog|person|watchlist|swipe|association|playlist|calendar|request|media|software|game-library|live|live-tv)(?:\/|$)/;
+  /^\/(?:discover|search|movie|tv|music|artist|book|author|comic|magazine|sportarr|series|collection|collection-catalog|person|watchlist|swipe|watch-sessions|association|playlist|calendar|request|media|software|game-library|live|live-tv)(?:\/|$)/;
 
 /**
  * Enforces the age gate server-side for restricted accounts: upstream TMDB

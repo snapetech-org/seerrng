@@ -110,7 +110,7 @@ jobs:
 
       - name: Run Cypress suite with Cypress Cloud
         if: steps.cypress-recording.outputs.enabled == 'true'
-        uses: cypress-io/github-action@c541a95ea92d9239347a2355f2e895cd4b3f8060 # v7.4.6
+        uses: cypress-io/github-action@4ce68f262a3888d22cf3175d62010a145ba737ee # v7.4.8
         with:
           install: false
           start: env E2E_TESTS=true pnpm start
@@ -132,7 +132,7 @@ jobs:
 
       - name: Run Cypress suite without Cypress Cloud
         if: steps.cypress-recording.outputs.enabled != 'true'
-        uses: cypress-io/github-action@c541a95ea92d9239347a2355f2e895cd4b3f8060 # v7.4.6
+        uses: cypress-io/github-action@4ce68f262a3888d22cf3175d62010a145ba737ee # v7.4.8
         with:
           install: false
           start: env E2E_TESTS=true pnpm start
