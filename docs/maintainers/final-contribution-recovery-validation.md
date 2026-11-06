@@ -81,7 +81,8 @@ Movie and TV request dialogs pass tag-only service-zero submission and explicit
 streaming-rejection override at both widths. Own-user provider selections retain
 independent movie and TV providers. The first harness runs had incomplete fixtures:
 TV lacked TVDB identity and season metadata; button selectors assumed exact labels
-without format suffixes, and the tag-only season payload was incorrectly expected
+without format suffixes, TV fixtures accidentally included movie-only title fields,
+and the tag-only season payload was incorrectly expected
 to be an array rather than the documented `all`. Corrected fixture runs retain the
 real UI controls and pass without production-source changes.
 

@@ -359,6 +359,10 @@ for (const width of [390, 1440]) {
             ? { ...movie, mediaInfo }
             : {
                 ...movie,
+                title: undefined,
+                originalTitle: undefined,
+                releaseDate: undefined,
+                runtime: undefined,
                 name: movie.title,
                 originalName: movie.title,
                 firstAirDate: movie.releaseDate,
@@ -489,6 +493,10 @@ for (const width of [390, 1440]) {
         const errors: string[] = [];
         page.on('pageerror', (error) => errors.push(error.message));
         await page.goto(`/discover/${mediaType === 'movie' ? 'movies' : 'tv'}`);
+        await expect(page.locator('html')).toHaveAttribute(
+          'data-interface-theme',
+          theme
+        );
         const card = page.getByTestId('title-card').first();
         await card.hover();
         await card.locator('[data-poster-region="detail-link"]').click();
