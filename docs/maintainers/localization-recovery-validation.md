@@ -89,3 +89,9 @@ Evidence and screenshots are retained under
 including `localization-*-visual-review.jpg`, browser logs/traces, repair ledgers,
 and `localization-english-baseline-candidate-diagnostics.json`. Pixel differences
 are diagnostics, not automatic acceptance thresholds.
+
+The complete tooling run after these repairs passed 366 tests with four skips
+and no failures. Client types also passed. The first combined build stopped
+on stale API source line references after merging the Plex PIN hardening;
+regeneration updated only callsite locations in the source-bound inventory.
+The next combined production build remains the acceptance gate.
