@@ -139,9 +139,7 @@ const AdvancedThemePage = () => {
     <UserSettings>
       <main className="mx-auto w-full max-w-4xl px-4 py-8 sm:px-6">
         <section className="rounded-lg border border-gray-700 bg-gray-900 p-5 shadow-lg sm:p-7">
-          <h1 className="text-2xl font-bold text-gray-100">
-            {intl.formatMessage(messages.title)}
-          </h1>
+          <h1 className="page-title">{intl.formatMessage(messages.title)}</h1>
           <p className="mt-2 text-sm text-gray-300">
             {intl.formatMessage(messages.description)}
           </p>

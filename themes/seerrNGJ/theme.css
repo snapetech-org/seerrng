@@ -725,7 +725,7 @@
 
 :is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
   .media-detail-card
-  .detail-summary-card:has(
+  .detail-summary-card[data-summary-layout='detail']:has(
     [data-testid='media-details-poster'],
     .detail-card-poster
   ) {
@@ -739,7 +739,7 @@
 }
 
 :is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
-  .detail-summary-card
+  .detail-summary-card[data-summary-layout='detail']
   [data-testid='media-details-poster'] {
   width: 5rem;
   height: 7.5rem;
@@ -750,7 +750,7 @@
 
 :is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
   .media-detail-card
-  .app-detail-summary-grid {
+  .app-detail-summary-grid[data-summary-layout='detail'] {
   grid-template-columns: 5rem minmax(0, 1fr);
   align-items: start;
   gap: 1rem;
@@ -758,13 +758,14 @@
 }
 
 :is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
-  .app-detail-summary-grid
+  .app-detail-summary-grid[data-summary-layout='detail']
   > :nth-child(2) {
   min-width: 0;
   text-align: start;
 }
 
 :is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
+  [data-summary-layout='detail']
   :is(.detail-card-poster, .app-detail-poster-frame) {
   width: 5rem;
   height: 7.5rem;
@@ -870,7 +871,7 @@
 
   :is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
     .media-detail-card
-    .detail-summary-card:has(
+    .detail-summary-card[data-summary-layout='detail']:has(
       [data-testid='media-details-poster'],
       .detail-card-poster
     ) {
@@ -882,7 +883,7 @@
   }
 
   :is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
-    .detail-summary-card
+    .detail-summary-card[data-summary-layout='detail']
     [data-testid='media-details-poster'] {
     width: 8.5rem;
     height: 12.75rem;
@@ -890,13 +891,14 @@
 
   :is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
     .media-detail-card
-    .app-detail-summary-grid {
+    .app-detail-summary-grid[data-summary-layout='detail'] {
     grid-template-columns: 8.5rem minmax(0, 1fr);
     align-items: start;
     gap: 1.25rem;
   }
 
   :is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
+    [data-summary-layout='detail']
     :is(.detail-card-poster, .app-detail-poster-frame) {
     width: 8.5rem;
     height: 12.75rem;

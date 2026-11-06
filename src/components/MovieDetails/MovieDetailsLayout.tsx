@@ -504,6 +504,7 @@ const MovieDetailsLayout = ({
 
         <div className="relative z-10">
           <MovieSummaryCard
+            presentation="detail"
             data={data}
             sortedCrew={sortedCrew}
             supplementalDirectors={data.supplementalMetadata?.directors}

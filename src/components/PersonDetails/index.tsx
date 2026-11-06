@@ -459,7 +459,7 @@ const PersonDetails = () => {
         )}
         <div className="w-full text-center text-gray-300 lg:text-start">
           <div className="flex w-full items-center justify-center lg:justify-between">
-            <h1 className="text-3xl text-white lg:text-4xl">{data.name}</h1>
+            <h1 className="page-title">{data.name}</h1>
             <div className="hidden flex-shrink-0 lg:block">{creditFilters}</div>
           </div>
           <div className="flex w-full items-center justify-center lg:justify-between">

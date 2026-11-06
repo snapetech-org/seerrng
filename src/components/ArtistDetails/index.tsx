@@ -239,9 +239,7 @@ const ArtistDetails = () => {
         <div className="min-w-0 text-center lg:text-start">
           <div className="flex min-w-0 flex-wrap items-center justify-center gap-3 lg:justify-start">
             <MediaTypeBadge mediaType="artist" variant="inline" />
-            <h1 className="min-w-0 text-3xl font-bold break-words text-white lg:text-5xl">
-              {artistName}
-            </h1>
+            <h1 className="page-title min-w-0 break-words">{artistName}</h1>
             {artistId && (
               <div className="flex-shrink-0">
                 <AssociationBadge

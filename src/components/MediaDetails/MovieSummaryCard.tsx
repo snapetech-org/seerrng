@@ -78,6 +78,7 @@ const MovieSummaryCard = ({
   artwork,
   supplementalDirectors = [],
   supplementalWriters = [],
+  presentation = 'compact',
 }: {
   data: MovieSummaryData;
   sortedCrew: MovieDetails['credits']['crew'];
@@ -92,6 +93,7 @@ const MovieSummaryCard = ({
   artwork?: ReactNode;
   supplementalDirectors?: string[];
   supplementalWriters?: string[];
+  presentation?: 'compact' | 'detail';
 }) => {
   const intl = useIntl();
   const settings = useSettings();
@@ -151,6 +153,7 @@ const MovieSummaryCard = ({
   const Title = href ? 'h3' : 'h1';
   return (
     <div
+      data-summary-layout={presentation}
       className={`detail-summary-card movie-summary-card ${selection ? 'movie-summary-card-with-selection' : ''} ${standalone ? 'detail-summary-standalone app-card-main refreshed-card-surface' : ratings ? 'app-card-sub detail-item-surface movie-summary-with-ratings' : 'app-card-inset refreshed-inset-surface'}`}
     >
       {artwork}

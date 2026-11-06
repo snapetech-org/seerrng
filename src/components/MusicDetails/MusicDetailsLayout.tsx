@@ -240,7 +240,10 @@ const MusicDetailsLayout = ({
         {backdrop && <MediaDetailArtwork type="music" src={backdrop} />}
 
         <div className="relative z-10">
-          <div className="app-card-inset refreshed-inset-surface detail-summary-card grid min-w-0 grid-cols-[64px_minmax(0,1fr)] gap-3 sm:grid-cols-[80px_minmax(0,1fr)]">
+          <div
+            data-summary-layout="detail"
+            className="app-card-inset refreshed-inset-surface detail-summary-card grid min-w-0 grid-cols-[64px_minmax(0,1fr)] gap-3 sm:grid-cols-[80px_minmax(0,1fr)]"
+          >
             <div
               className="relative h-24 w-16 overflow-hidden rounded-lg ring-1 ring-gray-600 sm:h-[120px] sm:w-20"
               data-testid="media-details-poster"

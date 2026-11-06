@@ -377,7 +377,7 @@ const BookshelfPathMigration = () => {
   return (
     <div className="text-gray-100">
       <PageTitle title={intl.formatMessage(messages.title)} />
-      <h1 className="heading">{intl.formatMessage(messages.title)}</h1>
+      <h1 className="page-title">{intl.formatMessage(messages.title)}</h1>
       <p className="description mb-4">
         {intl.formatMessage(messages.description)}
       </p>

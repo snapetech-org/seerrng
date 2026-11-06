@@ -90,7 +90,7 @@ export default function ProviderDiscoverPage() {
       <PageTitle
         title={intl.formatMessage(discoveryMessages['providers.title'])}
       />
-      <h1 className="heading">
+      <h1 className="page-title">
         <FormattedMessage {...discoveryMessages['providers.title']} />
       </h1>
       <p className="description mb-6">

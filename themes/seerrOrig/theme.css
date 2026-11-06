@@ -653,7 +653,7 @@
 
 :is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
   .media-detail-card
-  .detail-summary-card:has(
+  .detail-summary-card[data-summary-layout='detail']:has(
     [data-testid='media-details-poster'],
     .detail-card-poster
   ) {
@@ -664,7 +664,7 @@
 }
 
 :is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
-  .detail-summary-card
+  .detail-summary-card[data-summary-layout='detail']
   [data-testid='media-details-poster'] {
   width: 8rem;
   height: 12rem;
@@ -674,7 +674,7 @@
 
 :is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
   .media-detail-card
-  .app-detail-summary-grid {
+  .app-detail-summary-grid[data-summary-layout='detail'] {
   grid-template-columns: minmax(0, 1fr);
   justify-items: center;
   gap: 1rem;
@@ -682,7 +682,7 @@
 }
 
 :is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
-  .app-detail-summary-grid
+  .app-detail-summary-grid[data-summary-layout='detail']
   > :nth-child(2) {
   min-width: 0;
   width: 100%;
@@ -690,6 +690,7 @@
 }
 
 :is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  [data-summary-layout='detail']
   :is(.detail-card-poster, .app-detail-poster-frame) {
   width: 8rem;
   height: 12rem;
@@ -764,7 +765,7 @@
       [data-interface-theme='seerrOrig']
     )
     .media-detail-card
-    .detail-summary-card:has(
+    .detail-summary-card[data-summary-layout='detail']:has(
       [data-testid='media-details-poster'],
       .detail-card-poster
     ) {
@@ -781,7 +782,7 @@
       :root[data-interface-theme='seerrOrig'],
       [data-interface-theme='seerrOrig']
     )
-    .detail-summary-card:has(
+    .detail-summary-card[data-summary-layout='detail']:has(
       [data-testid='media-details-poster'],
       .detail-card-poster
     )
@@ -793,7 +794,7 @@
       :root[data-interface-theme='seerrOrig'],
       [data-interface-theme='seerrOrig']
     )
-    .detail-summary-card
+    .detail-summary-card[data-summary-layout='detail']
     [data-testid='media-details-poster'] {
     width: 12rem;
     height: 18rem;
@@ -804,7 +805,7 @@
       [data-interface-theme='seerrOrig']
     )
     .media-detail-card
-    .app-detail-summary-grid {
+    .app-detail-summary-grid[data-summary-layout='detail'] {
     grid-template-columns: minmax(12rem, 0.34fr) minmax(0, 1fr);
     align-items: end;
     justify-items: stretch;
@@ -816,7 +817,7 @@
       :root[data-interface-theme='seerrOrig'],
       [data-interface-theme='seerrOrig']
     )
-    .app-detail-summary-grid
+    .app-detail-summary-grid[data-summary-layout='detail']
     > :nth-child(2) {
     text-align: start;
   }
@@ -825,6 +826,7 @@
       :root[data-interface-theme='seerrOrig'],
       [data-interface-theme='seerrOrig']
     )
+    [data-summary-layout='detail']
     :is(.detail-card-poster, .app-detail-poster-frame) {
     width: 12rem;
     height: 18rem;

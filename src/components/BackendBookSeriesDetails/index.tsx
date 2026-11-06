@@ -144,7 +144,7 @@ export default function BookSeriesDetails() {
         <p className="text-sm text-gray-400">
           {intl.formatMessage(messages.series)}
         </p>
-        <h1 className="text-3xl font-bold text-white">{data.title}</h1>
+        <h1 className="page-title">{data.title}</h1>
         <Link
           className="inline-block text-indigo-300 hover:underline"
           href={{ pathname: '/book-series', query: { format: data.format } }}

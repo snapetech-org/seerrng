@@ -62,10 +62,7 @@ test('the Request Book Advanced Options control stays readable on narrow cards',
     assert.equal(contract.declaration(control, 'min-width'), '12rem');
     assert.equal(contract.declaration(control, 'height'), '2rem');
     assert.equal(
-      contract.declaration(
-        `${control} .detail-disclosure-button`,
-        'white-space'
-      ),
+      contract.declaration('.detail-disclosure-button', 'white-space'),
       'nowrap',
       `${filename} keeps the Advanced Options label on one line`
     );

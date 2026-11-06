@@ -229,7 +229,10 @@ const SportarrDetailsPage = () => {
               </div>
             )}
             <div data-card-part="content">
-              <div className="app-card-inset refreshed-inset-surface detail-summary-card app-detail-summary-grid">
+              <div
+                data-summary-layout="detail"
+                className="app-card-inset refreshed-inset-surface detail-summary-card app-detail-summary-grid"
+              >
                 <div className="app-detail-poster-frame detail-card-poster sportarr-detail-poster">
                   <CachedImage
                     type="tmdb"

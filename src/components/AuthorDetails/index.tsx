@@ -86,9 +86,7 @@ const AuthorDetails = () => {
           </div>
         )}
         <div className="min-w-0 text-center lg:text-start">
-          <h1 className="text-3xl font-bold break-words text-white lg:text-5xl">
-            {data.name}
-          </h1>
+          <h1 className="page-title break-words">{data.name}</h1>
           <div className="mt-3 flex flex-wrap justify-center gap-x-4 gap-y-2 text-sm lg:justify-start">
             {data.birthDate && (
               <span>

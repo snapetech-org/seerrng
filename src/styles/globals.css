@@ -6646,6 +6646,13 @@
   .detail-disclosure-button {
     padding-inline: var(--button-padding-x);
     column-gap: var(--button-content-gap);
+    white-space: nowrap;
+  }
+
+  .detail-disclosure-button > svg:not(.disclosure-chevron) {
+    width: var(--action-control-content-height);
+    height: var(--action-control-content-height);
+    flex-shrink: 0;
   }
 
   .detail-disclosure-control[data-control-variant='book-request-advanced-options'] {
@@ -6656,11 +6663,6 @@
     max-height: 2rem;
     font-size: 0.8125rem;
     line-height: 1.75rem;
-  }
-
-  .detail-disclosure-control[data-control-variant='book-request-advanced-options']
-    .detail-disclosure-button {
-    white-space: nowrap;
   }
 
   @media (prefers-reduced-motion: reduce) {

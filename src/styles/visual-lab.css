@@ -2717,11 +2717,6 @@
     line-height: 1.75rem;
   }
 
-  .detail-disclosure-control[data-control-variant='book-request-advanced-options']
-    .detail-disclosure-button {
-    white-space: nowrap;
-  }
-
   .detail-disclosure-control:focus-within {
     @apply border-violet-300;
   }
@@ -2747,6 +2742,13 @@
   .detail-disclosure-button {
     @apply gap-1.5;
     padding-inline: var(--compact-button-padding-x);
+    white-space: nowrap;
+  }
+
+  .detail-disclosure-button > svg:not(.disclosure-chevron) {
+    width: var(--action-control-content-height);
+    height: var(--action-control-content-height);
+    flex-shrink: 0;
   }
 
   .media-rating-row {
