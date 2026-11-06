@@ -21,4 +21,9 @@ COPY deploy/nginx.conf.template /etc/nginx/templates/default.conf.template
 COPY deploy/15-lumen-trusted-proxies.sh /docker-entrypoint.d/15-lumen-trusted-proxies.sh
 RUN chmod 755 /docker-entrypoint.d/15-lumen-trusted-proxies.sh
 COPY --from=build /app/dist /usr/share/nginx/html
+# The entrypoint renders only proxy configuration. Keep the static app read-only
+# while allowing the unprivileged master to write its config, cache and PID.
+RUN sed -i 's@/run/nginx.pid@/tmp/nginx.pid@' /etc/nginx/nginx.conf && \
+    chown -R nginx:nginx /etc/nginx/conf.d /var/cache/nginx
+USER nginx
 EXPOSE 80

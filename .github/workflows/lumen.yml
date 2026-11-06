@@ -35,7 +35,7 @@ jobs:
       - name: Build Lumen
         working-directory: lumen
         run: npm run build
-      - name: Test real nginx forwarding and Plex links
+      - name: Test built unprivileged nginx, forwarding and Plex links
         working-directory: lumen
         run: npm test
       - name: Install Chromium
