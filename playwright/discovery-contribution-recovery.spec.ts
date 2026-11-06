@@ -96,7 +96,11 @@ for (const width of [1440, 390]) {
     ).toBeVisible();
     const cards = page.locator('ul.cards-vertical > li');
     await expect(cards).toHaveCount(baseline ? 1 : 2);
-    await expect(page.getByText(/First role, Second role/)).toBeVisible();
+    await expect(
+      page.getByText(
+        baseline ? /First role, Second role/ : /First role and Second role/
+      )
+    ).toBeVisible();
     if (!baseline) {
       await page
         .getByRole('button', { name: 'Sort credits', exact: true })

@@ -725,7 +725,10 @@
 
 :is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
   .media-detail-card
-  .detail-summary-card:has([data-testid='media-details-poster']) {
+  .detail-summary-card:has(
+    [data-testid='media-details-poster'],
+    .detail-card-poster
+  ) {
   grid-template-columns: var(--movie-summary-selection-track,) 5rem minmax(
       0,
       1fr
@@ -867,7 +870,10 @@
 
   :is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
     .media-detail-card
-    .detail-summary-card:has([data-testid='media-details-poster']) {
+    .detail-summary-card:has(
+      [data-testid='media-details-poster'],
+      .detail-card-poster
+    ) {
     grid-template-columns: var(--movie-summary-selection-track,) 8.5rem minmax(
         0,
         1fr

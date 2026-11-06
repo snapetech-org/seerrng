@@ -176,3 +176,44 @@ SQLite baseline tests attempted removal before repair. Four repaired scenarios
 and eight existing recovery tests pass, along with server types. The combined
 server build passed; regenerated API inventory changes only callsite locations.
 Full combined CI remains required before merge.
+
+
+## Combined browser acceptance and request summaries
+
+The complete combined browser run passed 198 checks, skipped one, and exposed six
+fixture/expectation failures. Person credit roles now use the locale conjunction
+(`First role and Second role` in English); the recovery check retains its exact
+combined-role assertion with the current formatter. Settings search left the
+shared fixture in Persius, causing four subsequent Orig-specific filter checks
+to fail. Settings search now restores seeded presentation after each case, and
+rating/filter checks explicitly initialize it. All 16 search/rating checks pass.
+Locale and collection cases also restore English/Orig after their deliberate
+Arabic/theme mutations. A final complete-suite rerun remains required.
+
+Eight additional real preference saves/reloads pass: French/Canada,
+German/Switzerland, Japanese/Japan, and Portuguese-Brazil/Portugal, each at
+390 and 1440 CSS pixels, with independently persisted Spanish metadata language.
+This verifies preference mechanics and formatting-region persistence, not native
+speaker approval of these catalogs.
+
+Request dialogs exposed another shared-owner mismatch: `.detail-card-poster`
+was omitted from the existing theme summary-grid selectors. The base 64/80px
+tracks could not hold theme posters of 80/136px (NGJ) or 128/192px (Orig).
+The selectors now include that existing poster role without adding dimensions.
+All 12 book-dialog cases (three themes, English/Arabic, 390/1440x900) pass poster
+non-overlap, dialog bounds, 32px disclosure height, minimum 192px disclosure width,
+label fit, expand/collapse, and no submission. Eight baseline cases fail the new
+non-overlap assertion. Matching baseline/candidate contact sheets at both widths
+were visually inspected for all three themes; Orig uses its existing stacked
+phone and proportional desktop rules, and Persius remains unchanged.
+
+Evidence is retained in task deliverables as `book-poster-{baseline,candidate}`,
+`book-poster-comparison-{390,1440}.jpg`, and
+`settings-theme-isolation-focused.log`. The production build and all 73 shared
+style contracts pass. Provider responses are deterministic fixtures; these cases
+do not submit real book requests or prove live provider operation.
+
+The affected shared-consumer rerun passed all 32 cases: collection cards across
+three themes/two directions/two widths, movie/TV detail layouts at nine widths,
+and the feature-recovery settings, follow, movie/TV request-dialog and subscription
+checks. Movie and TV requester/streaming dialogs cover 390 and 1440px in NGJ.
