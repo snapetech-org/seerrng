@@ -12,6 +12,7 @@ import { ComicDetail, Comics, MagazineDetail, Magazines } from './pages/Comics';
 import Discover from './pages/Discover';
 import { GameDetail, Games } from './pages/Games';
 import Login from './pages/Login';
+import LumenSettings from './pages/LumenSettings';
 import Me from './pages/Me';
 import MovieDetail from './pages/MovieDetail';
 import { AlbumDetail, Artist, Music } from './pages/Music';
@@ -62,6 +63,7 @@ function App() {
         <Route path="/requests" element={<Requests />} />
         <Route path="/soon" element={<Soon />} />
         <Route path="/me" element={<Me />} />
+        <Route path="/me/lumen" element={<LumenSettings />} />
         <Route path="*" element={<Placeholder title="Page not found" />} />
       </Routes>
     </Shell>

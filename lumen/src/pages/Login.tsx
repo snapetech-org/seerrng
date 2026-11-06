@@ -8,8 +8,8 @@ import {
   startQuickConnect,
   useAuth,
 } from '../auth';
-import { Icon } from '../icons';
-import { mediaServer } from '../mediaServer';
+import { BrandMark } from '../components/brand';
+import { mediaServer, site } from '../mediaServer';
 
 type Mode = 'start' | 'server' | 'local' | 'quick';
 
@@ -18,12 +18,20 @@ export default function Login() {
   const server = mediaServer();
   const plex = server.kind === 'plex';
   const passwordForm = !plex && !server.quickConnectOnly;
+  // "loginStyle": "form": the username + password boxes are the sign-in page, with no
+  // media server names, for families who don't know or care what Jellyfin is
+  const family = site().loginForm && passwordForm && server.serverLogin;
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState('');
   // nothing to choose between: open the only form straight away
   const [mode, setMode] = useState<Mode>(
-    !server.serverLogin && server.localLogin ? 'local' : 'start'
+    family
+      ? 'server'
+      : !server.serverLogin && server.localLogin
+        ? 'local'
+        : 'start'
   );
+  const home: Mode = family ? 'server' : 'start';
   const [code, setCode] = useState('');
   const quickRun = useRef(0);
   const quickAbort = useRef<AbortController | null>(null);
@@ -94,7 +102,7 @@ export default function Login() {
         );
       } catch (e) {
         if (runId !== quickRun.current) throw new QuickConnectCancelled();
-        if (runId === quickRun.current) setMode('start');
+        if (runId === quickRun.current) setMode(home);
         throw e;
       }
     });
@@ -102,7 +110,7 @@ export default function Login() {
   const cancelQuick = () => {
     quickRun.current++;
     quickAbort.current?.abort();
-    setMode('start');
+    setMode(home);
     setCode('');
   };
   const primary = () => {
@@ -115,14 +123,15 @@ export default function Login() {
     <div className="login">
       <div className="login-card">
         <div className="brand">
-          <span className="mark">
-            <Icon name="play" size="sm" />
-          </span>
-          SeerrNG
+          <BrandMark />
         </div>
         <h1>Sign in to request movies, series and books</h1>
         {server.serverLogin && (
-          <p className="sub">Use the same account you use for {server.name}.</p>
+          <p className="sub">
+            {family
+              ? 'Use the username and password you watch with.'
+              : `Use the same account you use for ${server.name}.`}
+          </p>
         )}
 
         {mode === 'quick' ? (
@@ -146,7 +155,7 @@ export default function Login() {
         ) : mode === 'server' ? (
           <form className="login-local" onSubmit={jellyfin}>
             <label>
-              {server.name} username
+              {family ? 'Username' : `${server.name} username`}
               <input
                 name="username"
                 autoComplete="username"
@@ -168,7 +177,7 @@ export default function Login() {
               />
             </label>
             <button className="btn btn-primary login-primary" disabled={busy}>
-              Sign in with {server.name}
+              {family ? 'Sign in' : `Sign in with ${server.name}`}
             </button>
             <div className="login-links">
               {server.quickConnect && (
@@ -178,7 +187,7 @@ export default function Login() {
                   disabled={busy}
                   onClick={quick}
                 >
-                  Use Quick Connect instead
+                  {family ? 'Sign in with a code' : 'Use Quick Connect instead'}
                 </button>
               )}
               {server.forgotPasswordUrl && (
@@ -240,9 +249,9 @@ export default function Login() {
               <button
                 className="btn btn-quiet btn-sm"
                 disabled={busy}
-                onClick={() => setMode('start')}
+                onClick={() => setMode(home)}
               >
-                Use your {server.name} account instead
+                {family ? 'Back' : `Use your ${server.name} account instead`}
               </button>
             )
           ) : (

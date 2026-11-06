@@ -332,7 +332,16 @@ Lumen still reaches SeerrNG over their shared Docker network.
 Each user can turn parts of Lumen on and off on their **You** page: Discover rows,
 quick request on posters, whole-series requests, narrator choice for audiobooks,
 and showing books at all. You can set the defaults, and lock any of them, with a
-`lumen-config.json` file:
+`lumen-config.json` file. The same file sets the sign-in page, the logo and the
+browser tab icon.
+
+The easiest way to write it: sign in to Lumen as an admin, open **You → Lumen
+settings for everyone**, pick what you want, and press **Download
+lumen-config.json**. The page starts from the file you already have. Lumen is
+plain files with no database, so it can't save settings itself; you put the
+downloaded file in place as below.
+
+To set it up:
 
 1. Save this as `lumen-config.json` next to `compose.yaml`, and change what you like:
 
@@ -340,11 +349,18 @@ and showing books at all. You can set the defaults, and lock any of them, with a
    {
      "seerrPublicUrl": "https://seerr.example.com",
      "mediaServer": "auto",
+     "loginStyle": "form",
+     "branding": {
+       "name": "Movie Night",
+       "logo": "/branding/logo.png",
+       "icon": "/branding/icon.png"
+     },
      "defaults": {
        "narratorChoice": true,
        "hoverRequest": true,
        "wholeSeriesDefault": true,
        "showBooks": true,
+       "requestOptions": true,
        "theme": "dark",
        "rows": { "genres": true, "comingSoon": true }
      },
@@ -353,10 +369,25 @@ and showing books at all. You can set the defaults, and lock any of them, with a
    ```
 
    - `seerrPublicUrl` is the full-SeerrNG link shown on the **You** page.
+   - `loginStyle`: `"form"` puts the username and password boxes straight on the
+     sign-in page for Jellyfin and Emby, with no media server names, so family
+     members just type their details. Leave it out for the usual
+     **Continue with Jellyfin** button. Plex always uses its pop-up.
+   - `branding`: `name` replaces "SeerrNG" next to the logo and in the browser
+     tab (`""` hides the text; without it Lumen uses SeerrNG's application title).
+     `logo` replaces the round play mark, and `icon` is the browser tab and iOS
+     home-screen icon. Use files you mount into Lumen (step 2) or `https://`
+     addresses.
+   - `requestOptions`: admins and request managers get a sheet to pick the
+     Radarr/Sonarr server, quality and folder when they use **Request** on a
+     poster. Set it to `false` for one-click requests for them too. Everyone else
+     always gets one-click requests.
    - Put setting names in `locked` to stop users changing them, for example
      `"locked": ["showBooks"]`.
 
 2. In `compose.yaml`, remove the `#` from the two `volumes:` lines under `lumen`.
+   For your own logo and icon, put the images in a `branding` folder next to
+   `compose.yaml` and also uncomment the `./branding` line.
 3. Run `docker compose up -d`.
 
 Create the file **before** you uncomment those lines. If the file is missing, Docker

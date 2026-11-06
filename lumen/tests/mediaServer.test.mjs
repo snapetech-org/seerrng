@@ -112,3 +112,48 @@ test('unavailable settings and an unconfigured server do not enable media sign-i
     false
   );
 });
+
+test('branding and sign-in style come from lumen-config.json', async () => {
+  const { resolveSite } = await import('../src/mediaServer.ts');
+  assert.deepEqual(resolveSite(null, null), {
+    name: 'SeerrNG',
+    logo: undefined,
+    icon: undefined,
+    loginForm: false,
+  });
+  // SeerrNG's application title is used unless it's the stock "Seerr"
+  assert.equal(resolveSite({}, { applicationTitle: 'Seerr' }).name, 'SeerrNG');
+  assert.equal(
+    resolveSite({}, { applicationTitle: 'Family Films' }).name,
+    'Family Films'
+  );
+  const s = resolveSite(
+    {
+      loginStyle: 'form',
+      branding: {
+        name: 'Movie Night',
+        logo: '/branding/logo.png',
+        icon: 'https://cdn.example.com/i.png',
+      },
+    },
+    { applicationTitle: 'Family Films' }
+  );
+  assert.equal(s.name, 'Movie Night');
+  assert.equal(s.logo, '/branding/logo.png');
+  assert.equal(s.icon, 'https://cdn.example.com/i.png');
+  assert.equal(s.loginForm, true);
+  assert.equal(resolveSite({ branding: { name: '' } }, null).name, '');
+  for (const bad of [
+    'javascript:alert(1)',
+    '//evil.example/x.png',
+    'http://plain.example/x.png',
+    'https://user:pw@example.com/x.png',
+    '/\\evil',
+    42,
+  ])
+    assert.equal(
+      resolveSite({ branding: { logo: bad } }, null).logo,
+      undefined
+    );
+  assert.equal(resolveSite({ loginStyle: 'other' }, null).loginForm, false);
+});

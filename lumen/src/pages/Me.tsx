@@ -1,5 +1,7 @@
 import { useAuth } from '../auth';
+import { Link } from 'react-router-dom';
 import { Section } from '../components/cards';
+import { canChooseRequestOptions } from '../components/detail';
 import { initials, SEERR_PUBLIC_URL } from '../components/Shell';
 import { CAN_HOVER, useApi } from '../hooks';
 import { Icon } from '../icons';
@@ -58,6 +60,7 @@ export default function Me() {
   const { prefs, set, reset, locked, seerrPublicUrl } = usePrefs();
   const quota = useApi<Quota>(user ? `/user/${user.id}/quota` : null).data;
   const full = seerrPublicUrl || SEERR_PUBLIC_URL;
+  const isAdmin = ((user?.permissions ?? 0) & 2) !== 0;
   const q = (k: string, label: string) => {
     const x = quota?.[k];
     if (!x) return null;
@@ -162,6 +165,14 @@ export default function Me() {
             title="Choose audiobook narrators"
             sub="Off: one straight Request button, best available recording"
           />
+          {canChooseRequestOptions(user?.permissions) && (
+            <Toggle
+              path="requestOptions"
+              on={prefs.requestOptions}
+              title="Choose server and folder on quick requests"
+              sub="Off: poster Request buttons use the default server, quality and folder"
+            />
+          )}
           <Toggle
             path="showBooks"
             on={prefs.showBooks}
@@ -203,6 +214,19 @@ export default function Me() {
               </small>
             </span>
           </div>
+          {isAdmin && (
+            <div className="set">
+              <span>
+                <b>Lumen settings for everyone</b>
+                <small>
+                  Defaults, locks, sign-in, media server, logo and tab icon
+                </small>
+              </span>
+              <Link className="go" to="/me/lumen">
+                Open <Icon name="chev" size="sm" />
+              </Link>
+            </div>
+          )}
           <div className="set">
             <span>
               <b>Full SeerrNG</b>

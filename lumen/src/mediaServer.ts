@@ -36,6 +36,7 @@ const FROM_SEERRNG: Record<number, MediaServerKind> = {
 };
 
 export interface ServerPublicSettings {
+  applicationTitle?: string;
   mediaServerType?: number;
   localLogin?: boolean;
   mediaServerLogin?: boolean;
@@ -97,10 +98,74 @@ export function resolveMediaServer(
   };
 }
 
+// Look and sign-in style, also from lumen-config.json:
+//   "branding": { "name": "Movie Night", "logo": "/branding/logo.png", "icon": "/branding/icon.png" }
+//   "loginStyle": "form"  (Jellyfin/Emby: username + password on the sign-in page itself)
+export interface Site {
+  name: string; // shown next to the logo and in the tab title; "" hides the text
+  logo?: string; // replaces the round play mark
+  icon?: string; // browser tab icon (and iOS home-screen icon)
+  loginForm: boolean;
+}
+// only this site's own files or https images (the CSP allows nothing else for images)
+const assetUrl = (v: unknown): string | undefined => {
+  if (typeof v !== 'string' || !v || v.length > 2048) return undefined;
+  if (v.startsWith('/') && !v.startsWith('//') && !v.includes('\\')) return v;
+  try {
+    const u = new URL(v);
+    return u.protocol === 'https:' && !u.username && !u.password
+      ? u.href
+      : undefined;
+  } catch {
+    return undefined;
+  }
+};
+export function resolveSite(
+  config: unknown,
+  pub: ServerPublicSettings | null
+): Site {
+  const c =
+    config && typeof config === 'object' && !Array.isArray(config)
+      ? (config as Record<string, unknown>)
+      : {};
+  const b =
+    c.branding && typeof c.branding === 'object' && !Array.isArray(c.branding)
+      ? (c.branding as Record<string, unknown>)
+      : {};
+  // SeerrNG's application title, unless it's still the stock "Seerr"
+  const title = pub?.applicationTitle?.trim();
+  const fallback = title && title !== 'Seerr' ? title : 'SeerrNG';
+  const name =
+    typeof b.name === 'string' ? b.name.trim().slice(0, 60) : fallback;
+  return {
+    name,
+    logo: assetUrl(b.logo),
+    icon: assetUrl(b.icon),
+    loginForm: c.loginStyle === 'form',
+  };
+}
+
 // Plain module state so non-hook helpers (status words, labels) can read it. The provider
 // resolves it once, before anything else renders.
 let current: MediaServer = resolveMediaServer('auto', null);
+let currentSite: Site = resolveSite(null, null);
 export const mediaServer = () => current;
+export const site = () => currentSite;
+
+function applySite(s: Site) {
+  const title = s.name || 'SeerrNG';
+  document.title = title;
+  document
+    .querySelector('meta[name="apple-mobile-web-app-title"]')
+    ?.setAttribute('content', title);
+  if (s.icon)
+    for (const rel of ['icon', 'apple-touch-icon']) {
+      const link = document.querySelector(`link[rel="${rel}"]`);
+      link?.setAttribute('href', s.icon);
+      link?.removeAttribute('type');
+      link?.removeAttribute('sizes');
+    }
+}
 export const serverName = () => current.name;
 
 export function MediaServerProvider({ children }: { children: ReactNode }) {
@@ -131,6 +196,8 @@ export function MediaServerProvider({ children }: { children: ReactNode }) {
           config?.mediaServer,
           pub as ServerPublicSettings | null
         );
+        currentSite = resolveSite(config, pub as ServerPublicSettings);
+        applySite(currentSite);
         setServer(current);
       })
       .catch(() => live && setFailed(true))

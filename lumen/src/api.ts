@@ -47,6 +47,7 @@ export interface MediaInfo {
   audiobookLibraryServiceId?: number | null;
   audiobookLibraryItemId?: string | null;
   downloadStatus?: { size: number; sizeLeft: number }[];
+  downloadStatus4k?: { size: number; sizeLeft: number }[];
   status?: number;
   status4k?: number;
   mediaAddedAt?: string;

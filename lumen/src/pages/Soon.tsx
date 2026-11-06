@@ -10,6 +10,10 @@ import {
 import { useMediaServerName } from '../auth';
 import { statusOf } from '../components/cards';
 import { Pill } from '../components/detail';
+import {
+  RequestSheet,
+  useAsksRequestOptions,
+} from '../components/requestSheet';
 import { Avatar } from '../components/Shell';
 import { useToast } from '../components/toast';
 import { useApi } from '../hooks';
@@ -37,6 +41,8 @@ export default function Soon() {
   const tv = useApi<Paged<TitleResult>>('/discover/tv/upcoming').data;
   const toast = useToast();
   const [asked, setAsked] = useState<Set<string>>(new Set());
+  const asks = useAsksRequestOptions();
+  const [choosing, setChoosing] = useState<TitleResult | null>(null);
   const items = [
     ...(movies?.results || []).map((m) => ({
       ...m,
@@ -89,6 +95,19 @@ export default function Soon() {
         <p className="sub">Request ahead and it downloads the day it’s out.</p>
       </header>
       {!movies && !tv && <p className="note">Loading…</p>}
+      {choosing && (
+        <RequestSheet
+          it={choosing}
+          onClose={() => setChoosing(null)}
+          onDone={() => {
+            setAsked((a) => new Set(a).add(choosing.mediaType + choosing.id));
+            toast(
+              `Requested ${choosing.title || choosing.name}. It downloads when it’s out.`
+            );
+            setChoosing(null);
+          }}
+        />
+      )}
       {[...months].map(([k, list]) => (
         <section className="month" key={k}>
           <h2>
@@ -137,7 +156,7 @@ export default function Soon() {
                       ) : (
                         <button
                           className="btn btn-sm btn-tonal"
-                          onClick={() => req(it)}
+                          onClick={() => (asks ? setChoosing(it) : req(it))}
                         >
                           <Icon name="plus" size="sm" />
                           Request

@@ -153,19 +153,25 @@ interface ServerDetail {
   server: { activeProfileId: number; activeDirectory: string };
 }
 
+// who may pick the Radarr/Sonarr server, quality and folder for a request
+export const canChooseRequestOptions = (permissions?: number) =>
+  ((permissions ?? 0) & MANAGE) !== 0;
+
 export function AdvancedOptions({
   kind,
   is4k,
   onChange,
+  inline = false,
 }: {
   kind: 'movie' | 'tv';
   is4k: boolean;
   onChange: (o: RequestOptions) => void;
+  inline?: boolean; // always open, no "Advanced" toggle (the quick-request sheet)
 }) {
   const { user } = useAuth();
-  const allowed = !!user && (user.permissions & MANAGE) !== 0;
+  const allowed = canChooseRequestOptions(user?.permissions);
   const svc = kind === 'movie' ? 'radarr' : 'sonarr';
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(inline);
   const [servers, setServers] = useState<Server[] | null>(null);
   const [detail, setDetail] = useState<ServerDetail | null>(null);
   const [err, setErr] = useState('');
@@ -203,16 +209,10 @@ export function AdvancedOptions({
   useEffect(() => onChange(open ? o : {}), [o, open, onChange]);
 
   if (!allowed) return null;
-  return (
-    <details
-      className="adv"
-      onToggle={(e) => setOpen((e.target as HTMLDetailsElement).open)}
-    >
-      <summary>
-        <Icon name="info" size="sm" />
-        Advanced (admins)
-      </summary>
+  const body = (
+    <>
       {err && <p className="note">{err}</p>}
+      {!servers && !err && open && <p className="note">Loading servers…</p>}
       {servers && (
         <div className="adv-grid">
           <label className="sel">
@@ -265,6 +265,19 @@ export function AdvancedOptions({
           )}
         </div>
       )}
+    </>
+  );
+  if (inline) return <div className="adv adv-inline">{body}</div>;
+  return (
+    <details
+      className="adv"
+      onToggle={(e) => setOpen((e.target as HTMLDetailsElement).open)}
+    >
+      <summary>
+        <Icon name="info" size="sm" />
+        Advanced (admins)
+      </summary>
+      {body}
     </details>
   );
 }

@@ -10,6 +10,7 @@ import { useAuth } from '../auth';
 import { useExtras } from '../extras';
 import { useBack } from '../hooks';
 import { Icon, type IconName } from '../icons';
+import { BrandMark, brandName } from './brand';
 import { usePrefs } from '../settings';
 
 // scroll position of each history entry, for Back
@@ -188,13 +189,10 @@ export default function Shell({ children }: { children: ReactNode }) {
           <Link
             className="brand"
             to="/"
-            aria-label="SeerrNG home"
+            aria-label={`${brandName()} home`}
             onClick={toTop('/')}
           >
-            <span className="mark">
-              <Icon name="play" size="sm" />
-            </span>
-            SeerrNG
+            <BrandMark />
           </Link>
           {SIDE.filter(([h]) => prefs.showBooks || !isBook(h)).map(
             ([h, i, t]) => (

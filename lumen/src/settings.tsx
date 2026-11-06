@@ -33,6 +33,7 @@ export interface Prefs {
   hoverRequest: boolean; // quick request buttons on poster hover
   wholeSeriesDefault: boolean; // series requests start with every missing season ticked
   showBooks: boolean; // Books + Audiobooks in navigation and Discover
+  requestOptions: boolean; // poster quick requests ask for server/quality/folder (admins and request managers only)
   theme: 'dark' | 'light' | 'system';
 }
 
@@ -51,20 +52,25 @@ export const DEFAULT_PREFS: Prefs = {
   hoverRequest: true,
   wholeSeriesDefault: true,
   showBooks: true,
+  requestOptions: true,
   theme: 'dark',
 };
 
-interface AdminConfig {
+export interface AdminConfig {
   defaults?: Partial<Omit<Prefs, 'rows'>> & {
     rows?: Partial<Record<DiscoverRow, boolean>>;
   };
   locked?: string[]; // e.g. ["narratorChoice", "rows.genres"]
   seerrPublicUrl?: string;
-  mediaServer?: MediaServerSetting; // read by mediaServer.tsx before sign-in
+  mediaServer?: MediaServerSetting; // read by mediaServer.ts before sign-in
+  loginStyle?: 'buttons' | 'form'; // read by mediaServer.ts before sign-in
+  branding?: { name?: string; logo?: string; icon?: string };
+  [other: string]: unknown;
 }
 
 interface Ctx {
   prefs: Prefs;
+  adminConfig: AdminConfig; // lumen-config.json as loaded (the admin settings page starts from it)
   locked: Set<string>;
   seerrPublicUrl?: string;
   set: (path: string, value: boolean | string) => void;
@@ -72,6 +78,7 @@ interface Ctx {
 }
 const C = createContext<Ctx>({
   prefs: DEFAULT_PREFS,
+  adminConfig: {},
   locked: new Set(),
   set: () => {},
   reset: () => {},
@@ -145,16 +152,30 @@ export function PrefsProvider({ children }: { children: ReactNode }) {
   }, [key]);
 
   // theme lives on <html>, the same switch the mockup used
+  // and the browser's own bar (address bar, phone status bar) follows the page, including
+  // when "Device" is picked and the phone flips between light and dark
   useEffect(() => {
     const root = document.documentElement;
     if (prefs.theme === 'system') delete root.dataset.theme;
     else root.dataset.theme = prefs.theme;
+    const paintBar = () =>
+      document
+        .querySelector('meta[name="theme-color"]')
+        ?.setAttribute(
+          'content',
+          getComputedStyle(root).getPropertyValue('--bg').trim() || '#0b0d11'
+        );
+    paintBar();
+    const media = window.matchMedia?.('(prefers-color-scheme: dark)');
+    media?.addEventListener('change', paintBar);
+    return () => media?.removeEventListener('change', paintBar);
   }, [prefs.theme]);
 
   return (
     <C.Provider
       value={{
         prefs,
+        adminConfig: admin,
         locked,
         seerrPublicUrl: admin.seerrPublicUrl,
         set,
