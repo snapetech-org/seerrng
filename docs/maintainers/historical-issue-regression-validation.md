@@ -27,3 +27,27 @@ identities and focused logs. These records verify four specific reports; they do
 not establish completion of the full historical issue or security audit.
 
 release-note: none
+
+## Authentication, per-user preferences and native listboxes
+
+Issue #362: native OIDC flow, claim-role mapping, email/group allowlists and
+provisioning are present.36 full OpenID Connect flow cases pass;24 identity,
+provisioning and category policy cases pass. Fixed configured callback origins,
+signed actor-bound state/nonce, provider-authority rechecks and bounded safe HTTP
+fetching retain the relevant security boundaries. No live identity provider is used.
+
+Issues #363/#365: four new API regressions pass for own-user preferences,
+cross-account denial, inherited-default reset and malformed input rejection.
+The shared service-availability owner additionally hides unconfigured optional
+catalogs and respects global/admin defaults and personal choices. Headless checks
+save from the actual own-profile page, verify persistence after reload, and confirm
+movie/software navigation is hidden while series navigation stays available.
+The initial harness used the manager-only `/users/:id/settings/main` route for an
+ordinary user; the real own-user entry point is `/profile/settings/main`.
+
+Issue #400: a four-option native Prowlarr indexer listbox retains its declared row
+height and independent multi-selection at390/1440 widths in all three themes.
+Compact settings select geometry explicitly excludes `multiple` elements.12
+headless cases across these routes/themes pass. Provider coverage is a deterministic
+fixture; personal preference writes use the isolated QA database and restore prior
+choices. Captures/logs use the `historical-issue-accepted-*` evidence prefix.
