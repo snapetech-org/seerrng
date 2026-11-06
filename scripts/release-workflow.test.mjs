@@ -377,8 +377,8 @@ test('AppImage pins its builder, uses the current launcher, and loads its bundle
   assert.match(build.run, /@next\/swc-wasm-nodejs/u);
   assert.match(
     build.run,
-    /16\.4\.2\)[\s\S]*swc_wasm_integrity='sha512-GW89XFIz6Bmm064REK4DT6oCQH5RjJ4Erm\/MWEranFCsdIvqSoRIaT0xstiaFYk8g5z8YVdMOjpi4UcArYcF7g=='/u,
-    'AppImage must verify the official Next.js 16.4.2 WASM compiler tarball'
+    /16\.4\.3\)[\s\S]*swc_wasm_integrity='sha512-vJl7V950RQTY8OqK6\/0pD3F5NbyeefYVxpa\/6u\/Y98eZ6lK7\/eUK8b4g\+EzIUBytWic8fL4MkDuK4DYDf9Wh0A=='/u,
+    'AppImage must verify the official Next.js 16.4.3 WASM compiler tarball'
   );
   assert.match(
     build.run,
