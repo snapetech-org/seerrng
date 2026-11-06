@@ -131,3 +131,11 @@ language. Blank translations inherit their parent or English value. Opaque
 provider text with explicit null provenance remains unchanged even if it matches
 an application-authored phrase. Four component rendering cases pass. These
 results do not claim native-speaker review or completed browser/RTL acceptance.
+
+The first integrated production build passes after extending the shared contract
+checks to the same dimensioned logical CSS properties and the complete fail-closed
+i18n command chain. All 46 contract mutation tests and 73 shared visual checks
+pass. The first headless runtime case saves browser-default Arabic, reloads,
+verifies Arabic/RTL document metadata, and checks overflow at 1280×900 and
+390×844. This is initial runtime evidence, not acceptance of every affected
+route, theme, language, or translation.

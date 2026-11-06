@@ -8,24 +8,8 @@ const loginAsAdmin = async (page: Page, baseURL: string | undefined) => {
     .context()
     .request.post(`${baseURL}/api/v1/auth/local`, {
       data: { email: 'admin@seerr.dev', password: 'test1234' },
-      headers: { 'X-Forwarded-Proto': 'https' },
     });
   expect(response.status()).toBe(200);
-  const sessionCookie = response
-    .headersArray()
-    .find((header) => header.name.toLowerCase() === 'set-cookie')
-    ?.value.match(/^connect\.sid=([^;]+)/)?.[1];
-  expect(sessionCookie).toBeTruthy();
-  await page.context().addCookies([
-    {
-      name: 'connect.sid',
-      value: sessionCookie!,
-      url: baseURL!,
-      httpOnly: true,
-      secure: false,
-      sameSite: 'Lax',
-    },
-  ]);
 };
 
 test('browser-default language follows the browser and sets RTL document metadata', async ({
@@ -35,12 +19,16 @@ test('browser-default language follows the browser and sets RTL document metadat
   await loginAsAdmin(page, baseURL);
   await page.goto('/profile/settings/main', { waitUntil: 'networkidle' });
 
-  const language = page.getByLabel('Display Language');
+  const language = page.locator('#locale');
   await expect(language).toBeVisible();
   await expect(language.locator('option').first()).toContainText('العربية');
   await language.selectOption('');
   await page.locator('form button[type="submit"]').first().click();
 
+  await expect(page.locator('html')).toHaveAttribute('lang', 'ar');
+  await expect(page.locator('html')).toHaveAttribute('dir', 'rtl');
+  await expect(language).toHaveValue('');
+  await page.reload({ waitUntil: 'networkidle' });
   await expect(page.locator('html')).toHaveAttribute('lang', 'ar');
   await expect(page.locator('html')).toHaveAttribute('dir', 'rtl');
   await expect(language).toHaveValue('');
