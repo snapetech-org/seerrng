@@ -80,7 +80,8 @@ test('the Docker build context excludes secrets and development-only contracts',
     '**/*.p12',
     '**/*.pfx',
     '**/*.pem',
-    'config',
+    'config/*',
+    'config/i18n/*',
     '.github',
     'cypress',
     'docs/*',
@@ -124,6 +125,27 @@ test('the Docker build context excludes secrets and development-only contracts',
     2,
     'both production and build dependency installs must retain strict engine validation'
   );
+});
+
+test('Docker admits only reviewed localization files from operator configuration', () => {
+  const rules = fs
+    .readFileSync(path.join(rootDirectory, '.dockerignore'), 'utf8')
+    .split(/\r?\n/u);
+  const allowedConfig = rules.filter((rule) => rule.startsWith('!config/'));
+  const authoredFiles = fs
+    .readdirSync(path.join(rootDirectory, 'config/i18n'))
+    .filter((name) => name.endsWith('.json'))
+    .map((name) => `!config/i18n/${name}`);
+  assert.deepEqual(
+    allowedConfig.sort(),
+    ['!config/i18n/', ...authoredFiles].sort()
+  );
+  assert.ok(rules.indexOf('config/*') < rules.indexOf('!config/i18n/'));
+  assert.ok(
+    rules.indexOf('config/i18n/*') <
+      rules.indexOf('!config/i18n/api-message-sources.json')
+  );
+  assert.ok(!allowedConfig.some((rule) => rule.includes('*')));
 });
 
 test('the production build does not require development-only contracts', () => {
