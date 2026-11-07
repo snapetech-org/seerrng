@@ -116,7 +116,7 @@ const SettingsLayout = ({ children }: SettingsLayoutProps) => {
   const upstream = useUpstreamTheme();
   const router = useRouter();
   const settings = useSettings();
-  const { hasPermission } = useUser();
+  const { hasPermission, loading: permissionsLoading } = useUser();
   const canAdminister = hasPermission(Permission.ADMIN);
   const contentRef = useRef<HTMLDivElement>(null);
   const currentSettingsPathRef = useRef(router.asPath);
@@ -616,6 +616,7 @@ const SettingsLayout = ({ children }: SettingsLayoutProps) => {
           </span>
           <input
             type="search"
+            disabled={permissionsLoading}
             value={keywordSearch}
             onChange={(event) => setKeywordSearch(event.target.value)}
             aria-label={intl.formatMessage(messages.searchSettings)}

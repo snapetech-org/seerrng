@@ -6,7 +6,7 @@ audit. The November 7 follow-up below supersedes blanket completion readings. Th
 audit checked the requested behavior against current source and the earlier
 behavioral verification records, then read back the public issue threads.
 
-- 73 issues are closed with a resolving explanation or fix reference.
+- At the November 6 snapshot, 73 issues were closed with an explanation or fix reference.
 - 36 missing or stale public explanations were added and read back.
 - 35 existing resolution explanations were retained.
 - Issue #409 was reopened for its availability defects, then resolved in v3.72.19
@@ -37,7 +37,7 @@ the final sweep. The shared navigation filter now applies category/service
 eligibility to Book Recommendations and Collector Picks. Its
 [final receipt](https://github.com/snapetech-org/seerrng/issues/594#issuecomment-6702351013)
 links the fix, full CI, published replacement and actual-image browser checks.
-All 73 issues are now closed as completed; none is closed as not planned.
+At that snapshot all 73 were closed as completed; this historical count is not the current acceptance result.
 
 ## Human-workflow follow-up — November 7
 
