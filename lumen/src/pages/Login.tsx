@@ -12,6 +12,26 @@ import { BrandMark } from '../components/brand';
 import { mediaServer, services, site } from '../mediaServer';
 
 type Mode = 'start' | 'server' | 'local' | 'quick';
+type Method = 'server' | 'local' | 'quick';
+
+// The way this device last signed in successfully. The next sign-in opens straight to it,
+// so a family member picks Jellyfin (or email) once and then just types their password.
+const LAST_KEY = 'lumen-last-sign-in';
+export function lastSignIn(): Method | null {
+  try {
+    const v = localStorage.getItem(LAST_KEY);
+    return v === 'server' || v === 'local' || v === 'quick' ? v : null;
+  } catch {
+    return null;
+  }
+}
+function rememberSignIn(m: Method) {
+  try {
+    localStorage.setItem(LAST_KEY, m);
+  } catch {
+    // private window or blocked storage: the choice just isn't remembered
+  }
+}
 
 // SeerrNG answers sign-in failures with codes like INVALID_CREDENTIALS; say it in words
 export function friendly(e: unknown, serverName: string): string {
@@ -46,12 +66,19 @@ export default function Login() {
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState('');
   // nothing to choose between: open the only form straight away
+  // The admin's form setting wins; otherwise open the way this device last signed in.
+  // (Quick Connect only remembers the start page: a code shouldn't be asked for unprompted.)
+  const last = lastSignIn();
   const [mode, setMode] = useState<Mode>(
     family
       ? 'server'
       : !server.serverLogin && server.localLogin
         ? 'local'
-        : 'start'
+        : last === 'server' && passwordForm && server.serverLogin
+          ? 'server'
+          : last === 'local' && server.localLogin
+            ? 'local'
+            : 'start'
   );
   const home: Mode = family ? 'server' : 'start';
   const [code, setCode] = useState('');
@@ -66,13 +93,14 @@ export default function Login() {
     []
   );
 
-  const run = async (fn: () => Promise<unknown>) => {
+  const run = async (fn: () => Promise<unknown>, method?: Method) => {
     if (active.current) return;
     active.current = true;
     setBusy(true);
     setErr('');
     try {
       await fn();
+      if (method) rememberSignIn(method);
       await refresh();
     } catch (e) {
       if (!(e instanceof QuickConnectCancelled))
@@ -92,7 +120,8 @@ export default function Login() {
           email: f.get('email'),
           password: f.get('password'),
         }),
-      })
+      }),
+      'local'
     );
   };
   const jellyfin = (e: FormEvent<HTMLFormElement>) => {
@@ -102,7 +131,8 @@ export default function Login() {
       signInWithJellyfin(
         String(f.get('username') || ''),
         String(f.get('password') || '')
-      )
+      ),
+      'server'
     );
   };
   const quick = () => {
@@ -127,7 +157,7 @@ export default function Login() {
         if (runId === quickRun.current) setMode(home);
         throw e;
       }
-    });
+    }, 'quick');
   };
   const cancelQuick = () => {
     quickRun.current++;

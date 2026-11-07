@@ -398,6 +398,9 @@ you put the file in place by hand:
      sign-in page for Jellyfin and Emby, with no media server names, so family
      members just type their details. Leave it out for the usual
      **Continue with Jellyfin** button. Plex always uses its pop-up.
+     Either way, each phone or browser remembers how it last signed in
+     (Jellyfin password or email and password) and opens straight to that
+     next time, with the other ways still a tap away.
    - `branding`: `name` replaces "SeerrNG" next to the logo and in the browser
      tab (`""` hides the text; without it Lumen uses SeerrNG's application title).
      `logo` replaces the round play mark, and `icon` is the browser tab and iOS

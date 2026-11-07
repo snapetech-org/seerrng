@@ -51,7 +51,7 @@ async function fixtures(
     if (path === '/auth/me') {
       status = signedIn ? 200 : 401;
       body = signedIn ? { id: 1, displayName: 'jf user', permissions: 2 } : {};
-    } else if (path === '/auth/jellyfin') {
+    } else if (path === '/auth/jellyfin' || path === '/auth/local') {
       signedIn = true;
     } else if (path === '/auth/jellyfin/quickconnect/initiate') {
       body = { code: '123456', secret: 'a'.repeat(64) };
@@ -140,6 +140,66 @@ test('Jellyfin password sign-in and Jellyfin wording', async ({ page }) => {
   await expect(page.getByText('Media server: Jellyfin')).toBeVisible();
   await expect(page.getByText('New on Jellyfin')).toBeVisible();
   expect(errors).toEqual([]);
+});
+
+test('the next sign-in opens the way this device last signed in', async ({
+  page,
+}) => {
+  await fixtures(page, { serverType: 2 });
+  await page.goto('/');
+  await page.getByRole('button', { name: 'Continue with Jellyfin' }).click();
+  await page.getByLabel('Jellyfin username').fill('alice');
+  await page.getByLabel('Password').fill('secret');
+  await page.getByRole('button', { name: 'Sign in with Jellyfin' }).click();
+  await expect(
+    page.getByRole('heading', { name: 'Discover', exact: true })
+  ).toBeVisible();
+
+  // signed out again (fresh fixtures): straight to the Jellyfin boxes, other ways still there
+  await fixtures(page, { serverType: 2 });
+  await page.goto('/');
+  await expect(page.getByLabel('Jellyfin username')).toBeVisible();
+  await expect(
+    page.getByRole('button', { name: 'Continue with Jellyfin' })
+  ).toHaveCount(0);
+  await page
+    .getByRole('button', { name: 'Use an email and password instead' })
+    .click();
+  await page.getByLabel('Email').fill('alice@example.com');
+  await page.getByLabel('Password').fill('secret');
+  await page.getByRole('button', { name: 'Sign in', exact: true }).click();
+  await expect(
+    page.getByRole('heading', { name: 'Discover', exact: true })
+  ).toBeVisible();
+
+  // now email it is, with a way back to Jellyfin
+  await fixtures(page, { serverType: 2 });
+  await page.goto('/');
+  await expect(page.getByLabel('Email')).toBeVisible();
+  await page
+    .getByRole('button', { name: 'Use your Jellyfin account instead' })
+    .click();
+  await expect(
+    page.getByRole('button', { name: 'Continue with Jellyfin' })
+  ).toBeVisible();
+});
+
+test('a failed sign-in is not remembered', async ({ page }) => {
+  const { calls } = await fixtures(page, { serverType: 2 });
+  await page.route('**/api/v1/auth/jellyfin', (route) =>
+    route.fulfill({ status: 401, json: { message: 'INVALID_CREDENTIALS' } })
+  );
+  await page.goto('/');
+  await page.getByRole('button', { name: 'Continue with Jellyfin' }).click();
+  await page.getByLabel('Jellyfin username').fill('alice');
+  await page.getByLabel('Password').fill('wrong');
+  await page.getByRole('button', { name: 'Sign in with Jellyfin' }).click();
+  await expect(page.getByRole('alert')).toContainText('isn’t right');
+  await page.goto('/');
+  await expect(
+    page.getByRole('button', { name: 'Continue with Jellyfin' })
+  ).toBeVisible();
+  expect(calls.length).toBeGreaterThan(0);
 });
 
 test('Jellyfin Quick Connect sign-in', async ({ page }) => {
