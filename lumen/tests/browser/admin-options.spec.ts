@@ -994,6 +994,78 @@ test('a stale game page cannot overwrite loading or errors after a new search', 
   ).toHaveCount(0);
 });
 
+test('Games shows with only ROMarrNG, and only the consoles it serves', async ({
+  page,
+}) => {
+  await fixtures(page);
+  await page.route('**/api/v1/settings/public', (route) =>
+    route.fulfill({
+      json: {
+        applicationTitle: 'SeerrNG',
+        enabledMediaCategories: { game: true, retro: true, modern: true },
+        softwareEnabled: false,
+        romarrEnabled: true,
+        mediaServerType: 2,
+        localLogin: true,
+      },
+    })
+  );
+  const asked: string[] = [];
+  await page.route('**/api/v1/request/software/catalog/**', (route) => {
+    const url = new URL(route.request().url());
+    asked.push(url.search);
+    // PC games need QuestarrNG, which isn't connected
+    if (url.searchParams.get('category') === 'game')
+      return route.fulfill({
+        status: 503,
+        json: { error: 'QuestarrNG is not configured.' },
+      });
+    return route.fulfill({
+      json: {
+        results:
+          url.searchParams.get('limit') === '1'
+            ? []
+            : [
+                {
+                  id: '77',
+                  catalogProvider: 'igdb',
+                  catalogId: '77',
+                  title: `Console pick ${url.searchParams.get('category')}`,
+                  summary: '',
+                  coverUrl: '',
+                  releaseDate: '2026-01-01',
+                  platforms: [],
+                  genres: [],
+                },
+              ],
+        nextCursor: null,
+      },
+    });
+  });
+  await page.goto('/');
+  await expect(
+    page.getByRole('link', { name: 'Games', exact: true }).first()
+  ).toBeVisible();
+  await page.goto('/games');
+  const platform = page.getByRole('group', { name: 'Platform' });
+  await expect(
+    platform.getByRole('button', { name: 'Retro consoles' })
+  ).toBeVisible();
+  await expect(
+    platform.getByRole('button', { name: 'Modern consoles' })
+  ).toBeVisible();
+  await expect(platform.getByRole('button', { name: 'PC games' })).toHaveCount(
+    0
+  );
+  await expect(
+    page.getByRole('link', { name: 'Console pick retro', exact: true })
+  ).toBeVisible();
+  // the dead PC games list is only ever probed, never loaded
+  expect(
+    asked.filter((q) => q.includes('category=game') && !q.includes('limit=1'))
+  ).toEqual([]);
+});
+
 test('Discover reuses saved rows when reopened, and asks again after a request', async ({
   page,
 }) => {

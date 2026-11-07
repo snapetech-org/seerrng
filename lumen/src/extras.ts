@@ -113,7 +113,8 @@ export function useExtras() {
     music: svc.music,
     comic: svc.comics,
     magazine: svc.magazines,
-    game: svc.software,
+    // consoles can come from ROMarrNG alone; each category is checked below
+    game: svc.software || svc.romarr,
     sports: svc.sports,
     adult: true,
   };
@@ -125,6 +126,8 @@ export function useExtras() {
         ? !!on.adult && !!pub?.adultEnabled
         : !!on[k]);
   const [working, setWorking] = useState<Set<Extra> | null>(null);
+  // the game categories whose catalogue answers (PC games need QuestarrNG, consoles may not)
+  const [gamesWorking, setGamesWorking] = useState<GameCategory[] | null>(null);
   const key =
     EXTRAS.map((e) => (enabled(e.key) ? e.key : '')).join(',') +
     games.join(',');
@@ -139,7 +142,10 @@ export function useExtras() {
               games.map((c) =>
                 probe(`/request/software/catalog/popular?category=${c}&limit=1`)
               )
-            ).then((r) => r.some(Boolean))
+            ).then((r) => {
+              if (live) setGamesWorking(games.filter((_, i) => r[i]));
+              return r.some(Boolean);
+            })
           : PROBE[k]
             ? probe(PROBE[k]!)
             : Promise.resolve(true)
@@ -153,7 +159,10 @@ export function useExtras() {
   return {
     ready: !!pub,
     enabled,
-    games,
+    // until the checks answer, list none (so Games doesn't load a dead category first)
+    games: !enabled('game')
+      ? games
+      : games.filter((c) => gamesWorking?.includes(c)),
     list: EXTRAS.filter((e) => enabled(e.key) && working?.has(e.key)),
   };
 }
