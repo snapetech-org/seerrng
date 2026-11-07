@@ -61,7 +61,19 @@ for (const theme of ['seerrNGJ', 'seerrOrig']) {
           body: '<svg xmlns="http://www.w3.org/2000/svg" width="300" height="450"><rect width="300" height="450" fill="#30405c"/></svg>',
         })
       );
+      const catalogLoaded = page.waitForResponse(
+        (response) =>
+          new URL(response.url()).pathname === '/api/v1/discover/movies' &&
+          response.status() === 200
+      );
       await page.goto('/discover/movies');
+      await catalogLoaded;
+      await expect(page.locator('html')).toHaveAttribute(
+        'data-interface-theme',
+        theme
+      );
+      await expect(page.getByTestId('title-card')).toHaveCount(12);
+      await page.evaluate(() => document.fonts.ready);
       const frame = page
         .getByTestId('title-card')
         .first()
