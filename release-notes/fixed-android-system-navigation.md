@@ -1,3 +1,11 @@
+---
+category: fixed
+audience: users
+area: android
+action: Update the Android app.
+breaking: false
+---
+
 # Android system navigation and playback handoff
 
 Android handles Back through the current system API, keeps controls inside system
