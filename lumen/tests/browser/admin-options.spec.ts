@@ -1417,3 +1417,67 @@ test('failed requests can be retried, and Remove asks once more', async ({
     'DELETE /request/78',
   ]);
 });
+
+test('admins upload a logo, and only the logo is saved straight away', async ({
+  page,
+}) => {
+  await fixtures(page, {
+    permissions: 2,
+    config: { custom: 1, branding: { name: 'Movie Night' } },
+  });
+  const puts: { path: string; body: string; type: string }[] = [];
+  await page.route('**/lumen/config', (route) => {
+    const req = route.request();
+    if (req.method() !== 'PUT')
+      return route.fulfill({ json: { canSave: true, folder: 'ok' } });
+    puts.push({ path: 'config', body: req.postData() || '', type: '' });
+    return route.fulfill({ json: { saved: true } });
+  });
+  await page.route('**/lumen/branding/*', (route) => {
+    const req = route.request();
+    puts.push({
+      path: new URL(req.url()).pathname,
+      body: String(req.postDataBuffer()?.length || 0),
+      type: req.headers()['content-type'] || '',
+    });
+    return route.fulfill({ json: { url: '/branding/logo-123.png' } });
+  });
+  await page.goto('/me/lumen');
+  // an unsaved change elsewhere must not be saved by the upload
+  const row = page.locator('.cfg-row', {
+    hasText: 'Show books and audiobooks',
+  });
+  await row.locator('select').selectOption('off-locked');
+  const png = Buffer.from(
+    'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==',
+    'base64'
+  );
+  await page
+    .getByLabel('Upload logo')
+    .setInputFiles({ name: 'logo.png', mimeType: 'image/png', buffer: png });
+  await expect(
+    page.getByText('Logo uploaded and saved for everyone.')
+  ).toBeVisible();
+  expect(puts.map((p) => p.path)).toEqual(['/lumen/branding/logo', 'config']);
+  expect(puts[0].type).toBe('image/png');
+  expect(JSON.parse(puts[1].body)).toEqual({
+    custom: 1,
+    branding: { name: 'Movie Night', logo: '/branding/logo-123.png' },
+  });
+  await expect(page.getByLabel('Logo address')).toHaveValue(
+    '/branding/logo-123.png'
+  );
+  // the page still holds the unsaved change for Save
+  await expect(row.locator('select')).toHaveValue('off-locked');
+});
+
+test('no upload buttons when the server can’t keep files', async ({ page }) => {
+  await fixtures(page, { permissions: 2 });
+  await page.route('**/lumen/config', (route) =>
+    route.fulfill({ json: { canSave: false, folder: 'missing' } })
+  );
+  await page.goto('/me/lumen');
+  await expect(page.getByLabel('Logo address')).toBeVisible();
+  await expect(page.getByLabel('Upload logo')).toHaveCount(0);
+  await expect(page.getByLabel('Upload tab icon')).toHaveCount(0);
+});

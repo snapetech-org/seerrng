@@ -356,6 +356,11 @@ it may write to:
 Only SeerrNG admins can save; Lumen checks with SeerrNG before writing. Settings
 saved this way win over a `lumen-config.json` mounted as below.
 
+With that folder, the page also has **Upload** buttons for the logo and the tab
+icon (PNG, JPEG, WebP, SVG or ICO, up to 2 MB). Lumen keeps the image in
+`lumen-data/branding` and fills in its address, so there's no branding folder to
+mount.
+
 Without that folder, the page offers **Download lumen-config.json** instead, and
 you put the file in place by hand:
 

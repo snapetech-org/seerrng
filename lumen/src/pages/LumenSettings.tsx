@@ -113,17 +113,20 @@ export default function LumenSettings() {
     a.click();
     setTimeout(() => URL.revokeObjectURL(url), 1000);
   };
+  const putConfig = async (body: string) => {
+    const r = await fetch('/lumen/config', {
+      method: 'PUT',
+      credentials: 'same-origin',
+      headers: { 'Content-Type': 'application/json' },
+      body,
+    });
+    const d = await r.json().catch(() => null);
+    if (!r.ok) throw new Error(d?.message || `Couldn’t save (${r.status})`);
+  };
   const save = async () => {
     setSaving(true);
     try {
-      const r = await fetch('/lumen/config', {
-        method: 'PUT',
-        credentials: 'same-origin',
-        headers: { 'Content-Type': 'application/json' },
-        body: json,
-      });
-      const d = await r.json().catch(() => null);
-      if (!r.ok) throw new Error(d?.message || `Couldn’t save (${r.status})`);
+      await putConfig(json);
       adminSaved(JSON.parse(json));
       touched.current = false;
       toast('Saved. Everyone gets it the next time they open Lumen.');
@@ -133,6 +136,63 @@ export default function LumenSettings() {
       setSaving(false);
     }
   };
+  // Logo and tab icon: the server keeps the image (a new file name each time, so no browser
+  // shows an old copy) and its address goes straight into the saved settings. Other changes
+  // on this page stay unsaved until Save.
+  const [uploading, setUploading] = useState<'logo' | 'icon' | null>(null);
+  const upload = async (kind: 'logo' | 'icon', file: File) => {
+    if (file.size > 2 * 1024 * 1024) {
+      toast('Choose an image of up to 2 MB.');
+      return;
+    }
+    setUploading(kind);
+    try {
+      const r = await fetch(`/lumen/branding/${kind}`, {
+        method: 'PUT',
+        credentials: 'same-origin',
+        headers: { 'Content-Type': file.type || 'application/octet-stream' },
+        body: file,
+      });
+      const d = await r.json().catch(() => null);
+      if (!r.ok || typeof d?.url !== 'string')
+        throw new Error(d?.message || `Couldn’t upload (${r.status})`);
+      const saved: AdminConfig = {
+        ...adminConfig,
+        branding: { ...(adminConfig?.branding || {}), [kind]: d.url },
+      };
+      await putConfig(JSON.stringify(saved, null, 2) + '\n');
+      setCfgState((c) => ({
+        ...c,
+        branding: { ...(c.branding || {}), [kind]: d.url },
+      }));
+      adminSaved(saved);
+      toast(
+        `${kind === 'logo' ? 'Logo' : 'Tab icon'} uploaded and saved for everyone.`
+      );
+    } catch (e) {
+      toast(e instanceof Error ? e.message : 'Couldn’t upload');
+    } finally {
+      setUploading(null);
+    }
+  };
+  const Upload = ({ kind }: { kind: 'logo' | 'icon' }) =>
+    saveState?.canSave ? (
+      <label className="btn btn-tonal btn-sm cfg-upload">
+        {uploading === kind ? 'Uploading…' : 'Upload'}
+        <input
+          type="file"
+          className="sr"
+          accept="image/png,image/jpeg,image/webp,image/svg+xml,image/x-icon"
+          aria-label={kind === 'logo' ? 'Upload logo' : 'Upload tab icon'}
+          disabled={!!uploading}
+          onChange={(e) => {
+            const f = e.target.files?.[0];
+            e.target.value = '';
+            if (f) void upload(kind, f);
+          }}
+        />
+      </label>
+    ) : null;
   const copy = () =>
     navigator.clipboard
       ?.writeText(json)
@@ -304,33 +364,45 @@ export default function LumenSettings() {
               onChange={(e) => setBrand('name', e.target.value)}
             />
           </label>
-          <label className="set cfg-row">
+          <div className="set cfg-row">
             <span>
               <b>Logo</b>
               <small>
-                Square image, e.g. /branding/logo.png (mount a branding folder)
-                or an https address
+                {saveState?.canSave
+                  ? 'Square image: upload one, or an address such as /branding/logo.png or https://…'
+                  : 'Square image, e.g. /branding/logo.png (mount a branding folder) or an https address'}
               </small>
             </span>
             <input
               className="cfg-input"
+              aria-label="Logo address"
               placeholder="/branding/logo.png"
               value={cfg.branding?.logo ?? ''}
               onChange={(e) => setBrand('logo', e.target.value)}
             />
-          </label>
-          <label className="set cfg-row">
+            <Upload kind="logo" />
+          </div>
+          <div className="set cfg-row">
             <span>
               <b>Tab icon</b>
-              <small>PNG or SVG, e.g. /branding/icon.png</small>
+              <small>
+                {saveState?.canSave
+                  ? 'Square PNG or SVG: upload one, or an address such as /branding/icon.png'
+                  : 'PNG or SVG, e.g. /branding/icon.png'}
+              </small>
             </span>
             <input
               className="cfg-input"
+              aria-label="Tab icon address"
               placeholder="/branding/icon.png"
               value={cfg.branding?.icon ?? ''}
               onChange={(e) => setBrand('icon', e.target.value)}
             />
-          </label>
+            {cfg.branding?.icon && (
+              <img className="cfg-icon" src={cfg.branding.icon} alt="" />
+            )}
+            <Upload kind="icon" />
+          </div>
           {(cfg.branding?.logo || cfg.branding?.name !== undefined) && (
             <div className="set">
               <span className="brand cfg-preview">

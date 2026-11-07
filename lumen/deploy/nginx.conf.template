@@ -92,6 +92,32 @@ server {
     client_body_buffer_size 64k;
     js_content lumen.save;
   }
+  # logo and tab icon uploaded from the admin page (PUT, SeerrNG admins only)
+  location ^~ /lumen/branding/ {
+    client_max_body_size 2m;
+    client_body_buffer_size 2m;
+    js_content lumen.branding;
+  }
+  # /branding/: uploads first, then a branding folder mounted into the app. Images only, so
+  # nothing here may run scripts (an SVG opened on its own included).
+  location /branding/ {
+    add_header Cache-Control "no-cache";
+    add_header Content-Security-Policy "default-src 'none'; style-src 'unsafe-inline'; img-src data:; sandbox";
+    add_header X-Frame-Options DENY;
+    add_header X-Content-Type-Options nosniff;
+    add_header Referrer-Policy same-origin;
+    root /lumen-data;
+    try_files $uri @branding_mounted;
+  }
+  location @branding_mounted {
+    add_header Cache-Control "no-cache";
+    add_header Content-Security-Policy "default-src 'none'; style-src 'unsafe-inline'; img-src data:; sandbox";
+    add_header X-Frame-Options DENY;
+    add_header X-Content-Type-Options nosniff;
+    add_header Referrer-Policy same-origin;
+    root /usr/share/nginx/html;
+    try_files $uri =404;
+  }
   # settings saved from the admin page win over a lumen-config.json mounted into the app
   location = /lumen-config.json {
     add_header Cache-Control "no-cache";
