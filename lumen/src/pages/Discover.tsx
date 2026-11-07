@@ -98,6 +98,9 @@ function genreArt(list: Genre[]): [Genre, string | undefined][] {
   });
 }
 
+// a row that failed says so instead of loading forever
+const RowError = () => <div className="empty">Couldn’t load this row</div>;
+
 const CHIPS: [IconName, string, string][] = [
   ['film', 'Movies', '/movies'],
   ['tv', 'Series', '/series'],
@@ -148,6 +151,8 @@ export default function Discover() {
   const withCovers = (r?: Paged<BookResult> | null) =>
     (r?.results || []).filter((b) => b.posterPath).slice(0, 14);
   const ebookCards = useEbookCovers(withCovers(books.data));
+  // a row that loaded with nothing in it is left out, not shown as a bare heading
+  const empty = (d: unknown[] | undefined) => d !== undefined && !d.length;
 
   return (
     <>
@@ -191,7 +196,7 @@ export default function Discover() {
             <Rail className="feat-rail">
               {hero.map((it, i) => (
                 <FeatCard
-                  key={it.id}
+                  key={it.mediaType + it.id}
                   it={it}
                   eyebrow={
                     i === 0
@@ -239,7 +244,7 @@ export default function Discover() {
         </Section>
       )}
 
-      {on.trendingMovies && (
+      {on.trendingMovies && !empty(movies.data?.results) && (
         <Section title="Trending movies" link={['See all', '/movies']}>
           {movies.data ? (
             <Rail>
@@ -247,13 +252,15 @@ export default function Discover() {
                 <TitleCard key={m.id} it={{ ...m, mediaType: 'movie' }} />
               ))}
             </Rail>
+          ) : movies.error ? (
+            <RowError />
           ) : (
             <RailSkeleton />
           )}
         </Section>
       )}
 
-      {on.popularSeries && (
+      {on.popularSeries && !empty(series.data?.results) && (
         <Section title="Popular series" link={['See all', '/series']}>
           {series.data ? (
             <Rail>
@@ -261,27 +268,33 @@ export default function Discover() {
                 <TitleCard key={t.id} it={{ ...t, mediaType: 'tv' }} />
               ))}
             </Rail>
+          ) : series.error ? (
+            <RowError />
           ) : (
             <RailSkeleton />
           )}
         </Section>
       )}
 
-      {books_ && on.audiobooks && (
-        <Section title="Popular audiobooks" link={['See all', '/audiobooks']}>
-          {audio.data ? (
-            <Rail>
-              {withCovers(audio.data).map((b) => (
-                <BookCard key={b.id} b={{ ...b, bookFormat: 'audiobook' }} />
-              ))}
-            </Rail>
-          ) : (
-            <RailSkeleton sq />
-          )}
-        </Section>
-      )}
+      {books_ &&
+        on.audiobooks &&
+        !empty(audio.data ? withCovers(audio.data) : undefined) && (
+          <Section title="Popular audiobooks" link={['See all', '/audiobooks']}>
+            {audio.data ? (
+              <Rail>
+                {withCovers(audio.data).map((b) => (
+                  <BookCard key={b.id} b={{ ...b, bookFormat: 'audiobook' }} />
+                ))}
+              </Rail>
+            ) : audio.error ? (
+              <RowError />
+            ) : (
+              <RailSkeleton sq />
+            )}
+          </Section>
+        )}
 
-      {books_ && on.books && (
+      {books_ && on.books && !empty(books.data ? ebookCards : undefined) && (
         <Section title="Popular books" link={['See all', '/books']}>
           {books.data ? (
             <Rail>
@@ -292,13 +305,15 @@ export default function Discover() {
                 />
               ))}
             </Rail>
+          ) : books.error ? (
+            <RowError />
           ) : (
             <RailSkeleton />
           )}
         </Section>
       )}
 
-      {on.comingSoon && (
+      {on.comingSoon && !empty(soon.data?.results) && (
         <Section title="Coming soon" link={['Calendar', '/soon']}>
           {soon.data ? (
             <Rail>
@@ -310,6 +325,8 @@ export default function Discover() {
                 />
               ))}
             </Rail>
+          ) : soon.error ? (
+            <RowError />
           ) : (
             <RailSkeleton />
           )}

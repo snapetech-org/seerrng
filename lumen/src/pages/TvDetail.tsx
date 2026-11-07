@@ -69,6 +69,11 @@ export default function TvDetail() {
   const have = seasons.filter(
     (s) => stat.get(s.seasonNumber) === 'have'
   ).length;
+  // some episodes on the server count too: there's something to watch
+  const part = seasons.filter(
+    (s) => stat.get(s.seasonNumber) === 'part'
+  ).length;
+  const watchable = have + part > 0;
   // partial requests off on the server = it's the whole show or nothing
   const partialOk = pub?.partialRequestsEnabled !== false;
 
@@ -142,7 +147,9 @@ export default function TvDetail() {
   )?.rating;
   const statusLine = have
     ? `${have === seasons.length ? 'Every season' : `${have} of ${seasons.length} seasons`} on ${serverName}`
-    : '';
+    : part
+      ? `Partly on ${serverName}`
+      : '';
   const main = missing.length ? (
     <button className="btn btn-primary" disabled={!n || busy} onClick={request}>
       <Icon name="plus" />
@@ -183,7 +190,7 @@ export default function TvDetail() {
       />
       <div className="dbody">
         <div className="dstatus">
-          {have > 0 && (
+          {watchable && (
             <Pill k="ok" icon="check">
               {statusLine}
             </Pill>
@@ -201,7 +208,7 @@ export default function TvDetail() {
         </div>
         <div className="dacts pc">
           {main}
-          {have > 0 && missing.length > 0 && (
+          {watchable && missing.length > 0 && (
             <a
               className="btn btn-quiet"
               {...mediaLink(t.mediaInfo, false, 'tv', serverName)}
@@ -357,6 +364,17 @@ export default function TvDetail() {
         title={t.name || ''}
         meta={statusLine || `${seasons.length} seasons`}
       >
+        {/* phones only get this bar: keep a way to watch the seasons already there */}
+        {watchable && missing.length > 0 && (
+          <a
+            className="icon-btn"
+            aria-label={`Watch on ${serverName}`}
+            title={`Watch on ${serverName}`}
+            {...mediaLink(t.mediaInfo, false, 'tv', serverName)}
+          >
+            <Icon name="play" />
+          </a>
+        )}
         {main}
       </ActionBar>
     </article>

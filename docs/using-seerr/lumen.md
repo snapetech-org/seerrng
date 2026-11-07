@@ -96,9 +96,13 @@ mkdir seerrng-config
 Open `compose.yaml` in any text editor.
 
 - `TZ: Etc/UTC` → your time zone, for example `America/New_York` or `Europe/Berlin`.
-- `SEERR_FULL_URL: http://localhost:5055` → the address people type to reach this
+- `SEERR_BROWSER_URL: http://localhost:5055` → the address people type to reach this
   machine, keeping `:5055`. For example `http://192.168.1.50:5055`. If you already
   have a domain for SeerrNG, use that, for example `https://seerr.example.com`.
+
+Installed Lumen before these names? The older `SEERR_URL` (now
+`SEERR_INTERNAL_URL`) and `SEERR_FULL_URL` (now `SEERR_BROWSER_URL`) still work. If
+both are set, the new name wins.
 
 ### 4. Start it
 
@@ -159,7 +163,7 @@ Your SeerrNG and its settings stay as they are. You're adding one container.
 
 Lumen needs an address it can reach SeerrNG on. Which one depends on how SeerrNG runs:
 
-| How SeerrNG runs                                                       | `SEERR_URL` to use                                                                   |
+| How SeerrNG runs                                                       | `SEERR_INTERNAL_URL` to use                                                          |
 | ---------------------------------------------------------------------- | ------------------------------------------------------------------------------------ |
 | In Docker Compose, and you'll add Lumen **to the same compose file**   | `http://<seerrng service name>:5055`, for example `http://seerrng:5055`              |
 | In Docker, but in a separate compose file or `docker run`              | `http://<machine's LAN IP>:5055`, for example `http://192.168.1.50:5055`             |
@@ -183,8 +187,8 @@ services:
     image: seerrng-lumen:local
     container_name: lumen
     environment:
-      SEERR_URL: http://seerrng:5055 # your SeerrNG service name and port
-      SEERR_FULL_URL: http://192.168.1.50:5055 # where people open full SeerrNG
+      SEERR_INTERNAL_URL: http://seerrng:5055 # your SeerrNG service name and port
+      SEERR_BROWSER_URL: http://192.168.1.50:5055 # where people open full SeerrNG
       LUMEN_TRUSTED_PROXIES: ''
     ports:
       - 5080:80
@@ -210,8 +214,8 @@ click **Download raw file**, and save it in the folder as `compose.yaml`.
 
 Open `compose.yaml` in a text editor and change both addresses:
 
-- `SEERR_URL`: from the table in step 1, for example `http://192.168.1.50:5055`.
-- `SEERR_FULL_URL`: where people open full SeerrNG in their browser. This is often
+- `SEERR_INTERNAL_URL`: from the table in step 1, for example `http://192.168.1.50:5055`.
+- `SEERR_BROWSER_URL`: where people open full SeerrNG in their browser. This is often
   the same address, or your SeerrNG domain.
 
 Then start it:
@@ -242,7 +246,7 @@ When you're happy with it:
 
 If people reach SeerrNG through a domain such as `https://requests.example.com`,
 make that domain point at **Lumen** instead. Then give full SeerrNG its own address
-(a second subdomain, or LAN only) and set `SEERR_FULL_URL` to it.
+(a second subdomain, or LAN only) and set `SEERR_BROWSER_URL` to it.
 
 You need to change two things.
 
@@ -448,14 +452,14 @@ app completely and reopen it. If you had full SeerrNG installed as an app on the
 home screen, open it once and it switches to Lumen.
 
 **"502 Bad Gateway", or sign-in fails straight away.**
-Lumen can't reach SeerrNG, which means `SEERR_URL` is wrong. Check it from inside
+Lumen can't reach SeerrNG, which means `SEERR_INTERNAL_URL` is wrong. Check it from inside
 the Lumen container:
 
 ```sh
 docker compose exec lumen wget -qO- http://seerrng:5055/api/v1/status
 ```
 
-Replace the address with your `SEERR_URL`. It should print SeerrNG's version. If it
+Replace the address with your `SEERR_INTERNAL_URL`. It should print SeerrNG's version. If it
 doesn't, use the LAN IP instead of a container name, or the other way round.
 
 **Lumen exits right after starting.**
@@ -469,7 +473,7 @@ The config folder doesn't belong to user 1000. On Linux, run
 `sudo chown -R 1000:1000 seerrng-config`.
 
 **Settings, Users or Issues pages go to the wrong address.**
-Those pages live in full SeerrNG. Set `SEERR_FULL_URL` to the address people use
+Those pages live in full SeerrNG. Set `SEERR_BROWSER_URL` to the address people use
 to open it, then run `docker compose up -d`. Full SeerrNG on a different address
 has its own sign-in, so admins sign in there once as well.
 
@@ -498,7 +502,7 @@ Add Lumen as a container using **Add Container** with these settings:
    - **Repository:** `seerrng-lumen:local`
    - **Network type:** bridge
    - **Port:** container port `80`, host port `5080`
-   - **Variables:** `SEERR_URL` = `http://<Unraid IP>:5055`, and `SEERR_FULL_URL`.
+   - **Variables:** `SEERR_INTERNAL_URL` = `http://<Unraid IP>:5055`, and `SEERR_BROWSER_URL`.
      Add `LUMEN_TRUSTED_PROXIES` = `172.17.0.0/16` and `LUMEN_REAL_IP_HEADER` =
      `CF-Connecting-IP` if a Cloudflare Tunnel container on the default bridge sits
      in front of it.

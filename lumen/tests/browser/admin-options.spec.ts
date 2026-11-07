@@ -802,3 +802,167 @@ test('Back closes the request sheet and stays on the page', async ({
   await page.waitForTimeout(300);
   await expect(page).toHaveURL(/\/movies$/);
 });
+
+test('a failed page stops endless scrolling until Retry', async ({ page }) => {
+  await fixtures(page);
+  const asked: number[] = [];
+  let failed = false;
+  await page.route('**/api/v1/discover/movies?*', (route) => {
+    const n = Number(new URL(route.request().url()).searchParams.get('page'));
+    asked.push(n);
+    if (n === 2 && !failed) {
+      failed = true;
+      return route.fulfill({ status: 429, body: 'Too many requests' });
+    }
+    return route.fulfill({
+      json: {
+        page: n,
+        totalPages: 2,
+        totalResults: 40,
+        results: Array.from({ length: 20 }, (_, i) => ({
+          id: n * 100 + i,
+          title: `Popular ${n}-${i}`,
+          mediaType: 'movie',
+          releaseDate: '2020-01-01',
+        })),
+      },
+    });
+  });
+  await page.goto('/movies');
+  await expect(page.getByRole('link', { name: 'Popular 1-0' })).toBeVisible();
+  await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
+  await expect(page.getByRole('button', { name: 'Retry' })).toBeVisible();
+  await page.waitForTimeout(1500);
+  // asked for page 2 once, not over and over
+  expect(asked.filter((n) => n === 2)).toHaveLength(1);
+  await page.getByRole('button', { name: 'Retry' }).click();
+  await expect(page.getByRole('link', { name: 'Popular 2-0' })).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Retry' })).toHaveCount(0);
+  expect(asked.filter((n) => n === 2)).toHaveLength(2);
+});
+
+test('a Discover row that fails to load says so', async ({ page }) => {
+  await fixtures(page);
+  await page.route('**/api/v1/discover/tv', (route) =>
+    route.fulfill({ status: 500, json: { message: 'Server error' } })
+  );
+  await page.goto('/');
+  const row = page.locator('section', {
+    has: page.getByRole('heading', { name: 'Popular series' }),
+  });
+  await expect(row.getByText('Couldn’t load this row')).toBeVisible();
+  await expect(row.locator('.skel')).toHaveCount(0);
+});
+
+test('"open full SeerrNG" works without a configured address', async ({
+  page,
+}) => {
+  await fixtures(page);
+  await page.goto('/no-such-page');
+  await expect(
+    page.getByRole('link', { name: 'open full SeerrNG' })
+  ).toHaveAttribute('href', '/seerrng');
+});
+
+test('a stale failed page cannot block a newly selected filter', async ({
+  page,
+}) => {
+  await fixtures(page);
+  let releaseOld: (() => Promise<void>) | undefined;
+  let oldStarted: (() => void) | undefined;
+  const oldRequest = new Promise<void>((resolve) => {
+    oldStarted = resolve;
+  });
+  await page.route('**/api/v1/discover/movies?*', async (route) => {
+    const url = new URL(route.request().url());
+    if (url.searchParams.get('sortBy') === 'popularity.desc') {
+      releaseOld = () =>
+        route.fulfill({ status: 429, body: 'Old filter failed' });
+      oldStarted?.();
+      return;
+    }
+    await route.fulfill({ json: paged([movie(901, 'New filter result')]) });
+  });
+  await page.goto('/movies');
+  await oldRequest;
+  await page
+    .getByRole('combobox', { name: 'Sort', exact: true })
+    .selectOption('vote_average.desc');
+  // The new filter must start without waiting for the obsolete request.
+  await expect(
+    page.getByRole('link', { name: 'New filter result', exact: true })
+  ).toBeVisible();
+  await releaseOld?.();
+  await page.waitForTimeout(200);
+  await expect(
+    page.getByRole('link', { name: 'New filter result', exact: true })
+  ).toBeVisible();
+  await expect(
+    page.getByRole('button', { name: 'Retry', exact: true })
+  ).toHaveCount(0);
+});
+
+test('a stale game page cannot overwrite loading or errors after a new search', async ({
+  page,
+}) => {
+  await fixtures(page);
+  await page.route('**/api/v1/settings/public', (route) =>
+    route.fulfill({
+      json: {
+        applicationTitle: 'SeerrNG',
+        enabledMediaCategories: { game: true },
+        softwareEnabled: true,
+        mediaServerType: 2,
+        localLogin: true,
+      },
+    })
+  );
+  let releaseOld: (() => Promise<void>) | undefined;
+  let started: (() => void) | undefined;
+  const old = new Promise<void>((resolve) => {
+    started = resolve;
+  });
+  await page.route('**/api/v1/request/software/catalog/**', async (route) => {
+    const url = new URL(route.request().url());
+    if (url.searchParams.get('limit') === '1')
+      return route.fulfill({ json: { results: [] } });
+    if (url.pathname.endsWith('/popular')) {
+      releaseOld = () =>
+        route.fulfill({ status: 429, body: 'Old games failed' });
+      started?.();
+      return;
+    }
+    return route.fulfill({
+      json: {
+        results: [
+          {
+            id: '901',
+            catalogProvider: 'igdb',
+            catalogId: '901',
+            title: 'New game search',
+            summary: '',
+            coverUrl: '',
+            releaseDate: '2026-01-01',
+            platforms: [],
+            genres: [],
+          },
+        ],
+        nextCursor: null,
+      },
+    });
+  });
+  await page.goto('/games');
+  await old;
+  await page.getByPlaceholder('Search PC games…').fill('new');
+  await expect(
+    page.getByRole('link', { name: 'New game search', exact: true })
+  ).toBeVisible();
+  await releaseOld?.();
+  await page.waitForTimeout(200);
+  await expect(
+    page.getByRole('link', { name: 'New game search', exact: true })
+  ).toBeVisible();
+  await expect(
+    page.getByRole('button', { name: 'Retry', exact: true })
+  ).toHaveCount(0);
+});

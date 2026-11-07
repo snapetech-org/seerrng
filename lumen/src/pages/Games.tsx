@@ -47,14 +47,24 @@ function useGames(category: GameCategory | undefined, query: string) {
   const [error, setError] = useState<string | null>(null);
   const key = `${category}|${query}`;
   const live = useRef(key);
+  const inFlight = useRef<symbol | null>(null);
+  // where a failed page was, so Retry asks for it again
+  const failedAt = useRef<string | number | undefined>(undefined);
   useEffect(() => {
     live.current = key;
+    inFlight.current = null;
+    failedAt.current = undefined;
+    setLoading(false);
     setItems([]);
     setNext(undefined);
     setError(null);
   }, [key]);
   const more = useCallback(async () => {
-    if (!category || loading || next === null) return;
+    if (!category || loading || inFlight.current || next === null) return;
+    const token = Symbol();
+    inFlight.current = token;
+    const ownsRequest = () =>
+      live.current === key && inFlight.current === token;
     setLoading(true);
     const p = new URLSearchParams({ category, limit: '24' });
     if (query) p.set('q', query);
@@ -63,26 +73,33 @@ function useGames(category: GameCategory | undefined, query: string) {
       const d = await api<GamePage>(
         `/request/software/catalog/${query ? 'search' : 'popular'}?${p}`
       );
-      if (live.current !== key) return;
+      if (!ownsRequest()) return;
       setItems((x) => {
         const seen = new Set(x.map((g) => g.id));
         return x.concat(d.results.filter((g) => !seen.has(g.id)));
       });
       setNext((query ? d.nextCursor : d.nextOffset) ?? null);
     } catch (e) {
-      if (live.current === key) {
+      if (ownsRequest()) {
         setError(e instanceof Error ? e.message : 'Failed to load');
+        failedAt.current = next;
         setNext(null);
       }
     } finally {
-      setLoading(false);
+      if (ownsRequest()) {
+        inFlight.current = null;
+        setLoading(false);
+      }
     }
   }, [category, query, next, loading, key]);
   useEffect(() => {
     if (next === undefined && !loading) void more();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [key, next]);
-  return { items, more, loading, error, done: next === null };
+  }, [key, next, loading, more]);
+  const retry = useCallback(() => {
+    setError(null);
+    setNext(failedAt.current);
+  }, []);
+  return { items, more, retry, loading, error, done: next === null };
 }
 
 export function Games() {
@@ -147,7 +164,7 @@ export function Games() {
           }
         />
       </ExtraHeader>
-      <ServiceNote error={list.error} what="games" />
+      <ServiceNote error={list.items.length ? null : list.error} what="games" />
       {!list.error && !list.items.length && !list.loading && (
         <div className="empty">
           <b>No games found</b>Try the game’s full title.
@@ -168,7 +185,13 @@ export function Games() {
           />
         ))}
       </div>
-      <MoreOnScroll done={list.done} loading={list.loading} more={list.more} />
+      <MoreOnScroll
+        done={list.done}
+        loading={list.loading}
+        more={list.more}
+        error={list.error}
+        retry={list.retry}
+      />
     </ExtraGate>
   );
 }

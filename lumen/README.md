@@ -13,15 +13,15 @@ curl -o compose.yaml https://raw.githubusercontent.com/snapetech-org/seerrng/mai
 docker compose up -d
 ```
 
-Already running SeerrNG? [`compose.lumen-only.yaml`](./compose.lumen-only.yaml) installs Lumen alone; set `SEERR_URL` in it to your SeerrNG.
+Already running SeerrNG? [`compose.lumen-only.yaml`](./compose.lumen-only.yaml) installs Lumen alone; set `SEERR_INTERNAL_URL` in it to your SeerrNG.
 
 Or build and run Lumen without Compose:
 
 ```sh
 docker build -t lumen .
 docker run -d -p 5080:80 \
-  -e SEERR_URL=http://<seerrng-host>:5055 \
-  -e SEERR_FULL_URL=https://seerr.example.com \
+  -e SEERR_INTERNAL_URL=http://<seerrng-host>:5055 \
+  -e SEERR_BROWSER_URL=https://seerr.example.com \
   lumen
 ```
 
@@ -31,8 +31,8 @@ Open `http://<host>:5080` and sign in with Plex, Jellyfin, Emby or a SeerrNG loc
 
 | Variable | What it is |
 | --- | --- |
-| `SEERR_URL` | SeerrNG's address as the container sees it. `/api`, `/imageproxy` and `/avatarproxy` are proxied here. |
-| `SEERR_FULL_URL` | Where people reach full SeerrNG. Links to pages Lumen doesn't have (issues, settings, users…) redirect here. |
+| `SEERR_INTERNAL_URL` | SeerrNG's address as the container sees it (older name `SEERR_URL` still works). `/api`, `/imageproxy` and `/avatarproxy` are proxied here. |
+| `SEERR_BROWSER_URL` | Where people open full SeerrNG in their browser (older name `SEERR_FULL_URL` still works). Links to pages Lumen doesn't have (issues, settings, users…) redirect here. |
 | `SEERR_EXTRAS_URL` | Optional companion service for the narrator extras (see below). Without it Lumen uses SeerrNG alone. |
 | `LUMEN_TRUSTED_PROXIES` | Addresses or CIDRs of the reverse proxy or tunnel in front of Lumen, comma separated (e.g. `172.17.0.0/16`). Only these may tell Lumen who the visitor is. Empty (the default) = the address that connected. |
 | `LUMEN_REAL_IP_HEADER` | The header that proxy puts the visitor's address in: `X-Forwarded-For` (default) or `CF-Connecting-IP`. |

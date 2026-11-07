@@ -1,7 +1,9 @@
 # One origin for the app and SeerrNG's API, so SeerrNG's sign-in cookie just works.
-#   SEERR_URL         SeerrNG's API (e.g. http://seerrng:5055)
+#   SEERR_URL         SeerrNG's API (e.g. http://seerrng:5055);
+#                     SEERR_INTERNAL_URL also sets it (05-lumen-env-aliases.envsh)
 #   SEERR_EXTRAS_URL  optional companion proxy (ChaptarrNG lookups, "request another narrator")
-#   SEERR_FULL_URL    where people reach full SeerrNG for pages Lumen doesn't have
+#   SEERR_FULL_URL    where people reach full SeerrNG for pages Lumen doesn't have;
+#                     SEERR_BROWSER_URL also sets it (05-lumen-env-aliases.envsh)
 
 # The visitor's address. SeerrNG trusts one proxy hop (Lumen), so whatever Lumen forwards is the
 # IP SeerrNG rate-limits sign-ins by. $remote_addr is the address that connected, or, when that is
@@ -76,6 +78,11 @@ server {
     proxy_set_header CF-Connecting-IP "";
     proxy_set_header Forwarded "";
     proxy_set_header X-Forwarded-Proto $lumen_forwarded_proto;
+  }
+
+  # "open full SeerrNG" links when lumen-config.json sets no seerrPublicUrl
+  location = /seerrng {
+    return 302 ${SEERR_FULL_URL}/;
   }
 
   # SeerrNG pages Lumen doesn't have (links in emails, old bookmarks): open them in full SeerrNG

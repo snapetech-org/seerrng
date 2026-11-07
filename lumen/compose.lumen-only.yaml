@@ -3,7 +3,7 @@
 #
 #   Lumen     http://<this-machine>:5080   what everyone uses: discover, request, track requests
 #
-# Save this as compose.yaml in a new, empty folder, edit SEERR_URL and SEERR_FULL_URL below, then:
+# Save this as compose.yaml in a new, empty folder, edit SEERR_INTERNAL_URL and SEERR_BROWSER_URL below, then:
 # Start:   docker compose up -d
 # Update:  docker compose build --pull && docker compose up -d
 #
@@ -20,10 +20,11 @@ services:
       # How Lumen reaches your SeerrNG. Use the machine's LAN IP and SeerrNG's port, e.g.
       # http://192.168.1.50:5055. (SeerrNG installed directly on this machine with Docker Desktop:
       # http://host.docker.internal:5055)
-      SEERR_URL: http://192.168.1.50:5055
+      SEERR_INTERNAL_URL: http://192.168.1.50:5055
       # The address people use to open full SeerrNG in their browser. Lumen sends them here for
       # pages it doesn't have (settings, users, issues).
-      SEERR_FULL_URL: http://192.168.1.50:5055
+      SEERR_BROWSER_URL: http://192.168.1.50:5055
+      # (Set up before these names? SEERR_URL and SEERR_FULL_URL still work.)
       # Only if a reverse proxy or tunnel sits in front of Lumen: its address or subnet.
       # See "Put Lumen behind your reverse proxy or tunnel" in the guide. Leave empty otherwise.
       LUMEN_TRUSTED_PROXIES: ''

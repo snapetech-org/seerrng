@@ -16,9 +16,10 @@ import { BrandMark, brandName } from './brand';
 // scroll position of each history entry, for Back
 const scrollSpots = new Map<string, number>();
 
-// where "Advanced" (full SeerrNG for admins and settings) lives
+// where "Advanced" (full SeerrNG for admins and settings) lives when lumen-config.json
+// doesn't say: Lumen's nginx sends /seerrng on to SEERR_FULL_URL
 export const SEERR_PUBLIC_URL =
-  import.meta.env.VITE_SEERR_PUBLIC_URL || 'http://localhost:5070';
+  import.meta.env.VITE_SEERR_PUBLIC_URL || '/seerrng';
 
 const SIDE: [string, IconName, string][] = [
   ['/', 'home', 'Discover'],
@@ -309,6 +310,7 @@ export default function Shell({ children }: { children: ReactNode }) {
 }
 
 export function Placeholder({ title }: { title: string }) {
+  const { seerrPublicUrl } = usePrefs();
   return (
     <>
       <header className="ph">
@@ -325,7 +327,10 @@ export function Placeholder({ title }: { title: string }) {
           Back to Discover
         </Link>{' '}
         or{' '}
-        <a href={SEERR_PUBLIC_URL} style={{ color: 'var(--accent)' }}>
+        <a
+          href={seerrPublicUrl || SEERR_PUBLIC_URL}
+          style={{ color: 'var(--accent)' }}
+        >
           open full SeerrNG
         </a>
         .

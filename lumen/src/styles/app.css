@@ -2,6 +2,7 @@
 :root {
   --pw: 128px;
   --sq: 150px;
+  --gutter: 20px;
 }
 
 /* ---------- Shell ---------- */
@@ -454,6 +455,11 @@ body.is-detail .tabbar {
   bottom: 16px;
   display: grid;
   gap: 4px;
+  /* clicks on the title and text open the title (the card link sits underneath) */
+  pointer-events: none;
+}
+.feat .cap .go {
+  pointer-events: auto;
 }
 .feat .ey {
   font-size: 12px;
@@ -1869,6 +1875,53 @@ body.is-detail .toast {
   }
   .dcols > aside {
     position: static;
+  }
+}
+/* large screens: the page grows with the window instead of stopping at 1320px,
+   and posters, feature cards and genre tiles grow with it so rows stay full */
+@media (min-width: 1600px) {
+  :root {
+    --pw: 176px;
+    --sq: 192px;
+    --gutter: 48px;
+  }
+  .view {
+    max-width: 1680px;
+  }
+  .feat-rail {
+    --fw: calc((100% - 28px) / 2.5);
+  }
+  .genres {
+    grid-template-columns: repeat(6, 1fr);
+  }
+  .dcols {
+    grid-template-columns: minmax(0, 1fr) 400px;
+  }
+}
+@media (min-width: 2000px) {
+  :root {
+    --pw: 196px;
+    --sq: 212px;
+    --gutter: 56px;
+  }
+  .view {
+    max-width: 2400px;
+  }
+  .feat-rail {
+    --fw: calc((100% - 42px) / 3.15);
+  }
+}
+@media (min-width: 2600px) {
+  :root {
+    --pw: 232px;
+    --sq: 248px;
+    --gutter: 64px;
+  }
+  .view {
+    max-width: 3200px;
+  }
+  .feat-rail {
+    --fw: calc((100% - 56px) / 4.15);
   }
 }
 

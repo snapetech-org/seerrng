@@ -182,7 +182,7 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
           })}
         </div>
       </div>
-      {list.error && (
+      {list.error && !items.length && (
         <div className="empty">
           <b>Couldn’t load {word.toLowerCase()}</b>
           {list.error}
@@ -216,6 +216,8 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
         done={list.done || capped}
         loading={list.loading}
         more={list.more}
+        error={list.error}
+        retry={list.retry}
       />
     </>
   );

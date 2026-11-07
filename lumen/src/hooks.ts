@@ -72,38 +72,49 @@ export function usePaged<T>(base: string) {
   const [page, setPage] = useState(snap?.page || 0);
   const [total, setTotal] = useState(snap?.total || 1);
   const [loading, setLoading] = useState(false);
+  const [loadedBase, setLoadedBase] = useState(base);
   const [error, setError] = useState<string | null>(null);
   // one page in flight at a time: scroll triggers can fire twice before state catches up
   const inFlight = useRef<string | null>(null);
+  const generation = useRef(0);
   const shownBase = useRef(base);
   useEffect(() => {
     if (shownBase.current === base) return; // first render: state already set above
     shownBase.current = base;
+    setLoadedBase(base);
+    generation.current += 1;
+    setLoading(false);
     const s = pagedSnap.get(`${entry}|${base}`);
     setItems((s?.items as T[]) || []);
     setPage(s?.page || 0);
     setTotal(s?.total || 1);
+    setError(null);
     inFlight.current = null;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [base]);
   useEffect(() => {
-    if (page > 0) pagedSnap.set(snapKey, { items, page, total });
+    if (loadedBase === base && page > 0)
+      pagedSnap.set(snapKey, { items, page, total });
     // keep memory bounded: a long session visits many lists
     if (pagedSnap.size > 30)
       pagedSnap.delete(pagedSnap.keys().next().value as string);
-  }, [snapKey, items, page, total]);
+  }, [base, loadedBase, snapKey, items, page, total]);
   const more = useCallback(async () => {
-    if (loading || page >= total) return;
+    // after a failure only Retry asks again: retrying by itself would hammer the rate limit
+    if (loadedBase !== base || loading || page >= total || error) return;
     const key = `${base}#${page + 1}`;
     if (inFlight.current === key) return;
     inFlight.current = key;
+    const requestGeneration = generation.current;
+    const ownsRequest = () =>
+      generation.current === requestGeneration && inFlight.current === key;
     setLoading(true);
     try {
       const sep = base.includes('?') ? '&' : '?';
       const d = await api<{ page: number; totalPages: number; results: T[] }>(
         `${base}${sep}page=${page + 1}`
       );
-      if (inFlight.current !== key) return; // the list changed (new filter) while this loaded
+      if (!ownsRequest()) return; // an old filter must not replace the current list
       // popular lists shift between pages, so a title can come back; show it once
       const idOf = (x: T) => String((x as { id?: unknown }).id);
       setItems((x) => {
@@ -113,16 +124,32 @@ export function usePaged<T>(base: string) {
       setPage(d.page);
       setTotal(d.totalPages || 1);
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'Failed to load');
+      if (ownsRequest())
+        setError(e instanceof Error ? e.message : 'Failed to load');
     } finally {
-      setLoading(false);
+      if (ownsRequest()) {
+        inFlight.current = null;
+        setLoading(false);
+      }
     }
-  }, [base, page, total, loading]);
+  }, [base, loadedBase, page, total, loading, error]);
   useEffect(() => {
-    if (page === 0 && !loading) void more();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [base, page]);
-  return { items, more, loading, error, page, done: page >= total };
+    if (page === 0 && !loading && !error) void more();
+  }, [base, page, loading, error, more]);
+  const retry = useCallback(() => {
+    inFlight.current = null;
+    setError(null);
+  }, []);
+  return {
+    items,
+    more,
+    retry,
+    loading,
+    error,
+    page,
+    // a failed page also stops endless scrolling until Retry
+    done: page >= total || !!error,
+  };
 }
 
 // ---- book library state ----

@@ -123,7 +123,7 @@ export function Music() {
           ))}
         </div>
       </div>
-      <ServiceNote error={list.error} what="music" />
+      <ServiceNote error={list.items.length ? null : list.error} what="music" />
       {!list.error && !items.length && !list.loading && (
         <div className="empty">
           <b>Nothing here</b>
@@ -137,7 +137,13 @@ export function Music() {
           <AlbumCard key={a.id} a={a} />
         ))}
       </div>
-      <MoreOnScroll done={list.done} loading={list.loading} more={list.more} />
+      <MoreOnScroll
+        done={list.done}
+        loading={list.loading}
+        more={list.more}
+        error={list.error}
+        retry={list.retry}
+      />
     </ExtraGate>
   );
 }
