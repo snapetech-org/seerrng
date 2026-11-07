@@ -94,3 +94,11 @@ Its footer had fixed negative margins for a padded card. The shared
 `settings-form-footer` role now owns that outset; SeerrOrig open forms select
 zero while John retains its existing padded-card geometry. Regression checks
 cover both themes at 390 and 1440 pixels, including reachable save controls.
+
+Public sign-in, reset-password, Plex loading/error and SeerrNG setup entry
+were rendered at 390 and 1440 pixels. Public pages use the default theme before
+an account preference is available. Login reuses upstream card padding, mobile
+field sizing and Plex branding; SeerrNG transport-security notices remain.
+The configured upstream instance redirects setup to login, so its initial setup
+wizard is not claimed as a source comparison. Existing setup transport tests
+verify the SeerrNG-only entry and rejected-save recovery.

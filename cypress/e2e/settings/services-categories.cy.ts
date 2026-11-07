@@ -71,7 +71,7 @@ describe('service setup categories', () => {
 
     cy.location('pathname').should('eq', '/settings/prowlarr');
     cy.get('#prowlarr-settings-title').should('be.visible');
-    cy.get('.settings-page-filter-nav nav a[href="/settings/prowlarr"]')
+    cy.get('.settings-page-navigation-row nav a[href="/settings/prowlarr"]')
       .should('contain', 'Prowlarr')
       .next()
       .should('contain', 'Metadata Providers');

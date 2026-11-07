@@ -2052,6 +2052,7 @@
 }
 :is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
   .settings-page-content {
+  --settings-form-footer-outset: 0px;
   --settings-control-surface-opacity: 1;
   --theme-control-surface: 55 65 81;
   --compact-control-height: 38px;
@@ -2185,6 +2186,91 @@
 :is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
   .upstream-media-overview:not(:has(.upstream-media-facts)) {
   grid-template-columns: minmax(0, 1fr);
+}
+
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .auth-login-page {
+  padding-top: calc(80px + env(safe-area-inset-top));
+}
+
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .auth-login-brand
+  + div:empty {
+  display: none;
+}
+
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .auth-login-form {
+  margin-top: 32px;
+}
+
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .auth-login-form
+  .auth-frosted-surface {
+  --main-card-padding: 0px;
+  border-radius: 0;
+  background: rgb(31 41 55 / 0.5);
+  border: 0;
+  box-shadow: none;
+}
+
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .provider-sign-in-plex {
+  background: rgb(204 123 25 / 0.3);
+  border-color: #cc7b19;
+}
+
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .provider-sign-in-plex:hover {
+  background: rgb(204 123 25 / 0.7);
+  border-color: #cc7b19;
+}
+
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .provider-sign-in-plex
+  svg {
+  width: 32px;
+  height: auto;
+  filter: none;
+}
+
+@media (max-width: 639px) {
+  :is(
+      :root[data-interface-theme='seerrOrig'],
+      [data-interface-theme='seerrOrig']
+    )
+    .auth-frosted-surface
+    input:not([type='checkbox']):not([type='radio']) {
+    min-height: 42px;
+    height: 42px;
+    font-size: 16px;
+    line-height: 24px;
+  }
+  :is(
+      :root[data-interface-theme='seerrOrig'],
+      [data-interface-theme='seerrOrig']
+    )
+    .auth-frosted-surface
+    .input-action {
+    min-height: 42px;
+    height: 42px;
+  }
+}
+@media (min-width: 640px) {
+  :is(
+      :root[data-interface-theme='seerrOrig'],
+      [data-interface-theme='seerrOrig']
+    )
+    .auth-login-form
+    .auth-frosted-surface {
+    border-radius: 8px;
+  }
+}
+
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .input-action
+  svg {
+  filter: none;
 }
 </style>
     <style data-profile-stylesheet="seerrNGJ.css">
