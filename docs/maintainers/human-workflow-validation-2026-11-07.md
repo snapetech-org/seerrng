@@ -33,3 +33,42 @@ and 45 Vitest cases. These are test-harness corrections, not application fixes.
 
 Remaining historical issue paths, new contributions and release qualification are
 still being checked. This document does not certify every provider integration.
+
+
+## OIDC and theme-grid follow-up
+
+For #362, four real browser workflows now link an account from Profile → Settings
+→ Linked Accounts, reload the saved link, sign out, and sign in through the
+provider button back to Requests. They use a dedicated loopback OIDC fixture
+with real discovery, PKCE verification, RSA-signed ID tokens and the actual app
+session/API. Both themes pass at 390/1440 widths. The fixture uses explicit
+insecure/private-address allowances only in the isolated QA process; no live
+identity-provider account is used. Provider setup remains documented in
+`docs/using-seerr/settings/users/oidc.md`, including the protected settings file;
+these checks do not claim a provider-secret editor in the admin UI. Initial
+harness failures matched a destination inside the login query and then used
+`redirect` instead of the supported `returnTo` parameter; no app change was needed.
+
+The first two hosted browser runs each passed 345 cases, skipped one, and failed
+the same legacy phone-grid assertion. That test loaded Orig while requiring
+John's two columns at every phone width. Pinned upstream source
+`564bfb08b54caa374bddaf820abfd226e5e69151:src/styles/globals.css` declares a
+9.375rem (150px) minimum track; Orig correctly has one expanding column at
+320px and two at 360–412px. John retains two columns throughout. The revised
+regression explicitly selects each theme, keeps stylesheet-rejection/recovery
+and MIME checks, asserts each source's exact column count/poster minimum, and
+restores the account presentation. All 12 layout cases pass locally, including
+nine routes at eight widths and cast non-overlap. Phone captures were inspected.
+No production grid CSS was changed to satisfy an obsolete cross-theme assertion.
+
+The release candidate is still unpublished while final exact-head CI is pending.
+New #598 (publisher bootstrap) and #599 (settings disclosure) remain open.
+
+
+For #501, the focused native dispatch suite passes 24 cases across Plex,
+Jellyfin and Emby, requester/authorized household viewer, inherited/default-off
+per-request override, and matching/unrelated series. Another authorized viewer
+can advance a matching series at the existing watched threshold; an unrelated
+series does not. This is deterministic session/dispatch evidence, not playback
+on a real household server. The queue controls themselves use the already
+verified #503 Requests UI and the user's TV queue defaults.

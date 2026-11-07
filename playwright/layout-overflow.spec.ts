@@ -1,6 +1,8 @@
 import { expect, test, type Page } from '@playwright/test';
+import { restoreAdminPresentation } from './helpers/presentation';
 
 test.use({ serviceWorkers: 'block' });
+test.afterEach(async ({ page }) => restoreAdminPresentation(page));
 
 const loginAsAdmin = async (page: Page, baseURL: string | undefined) => {
   const response = await page
@@ -54,112 +56,135 @@ for (const path of pages) {
   });
 }
 
-test('poster grids keep full-size posters and two columns on phones', async ({
-  page,
-  baseURL,
-}, testInfo) => {
-  await loginAsAdmin(page, baseURL);
-  let discoveryFixtureApplied = false;
-  await page.route('**/api/v1/discover/movies*', async (route) => {
-    discoveryFixtureApplied = true;
-    await route.fulfill({
-      json: {
-        page: 1,
-        totalPages: 1,
-        totalResults: 4,
-        results: [
-          {
-            id: 550,
-            mediaType: 'movie',
-            title: 'Fight Club',
-            releaseDate: '1999-10-15',
-            posterPath: null,
-          },
-          {
-            id: 551,
-            mediaType: 'movie',
-            title: 'The Matrix',
-            releaseDate: '1999-03-31',
-            posterPath: null,
-          },
-          {
-            id: 552,
-            mediaType: 'movie',
-            title: 'The Mummy',
-            releaseDate: '1999-04-16',
-            posterPath: null,
-          },
-          {
-            id: 553,
-            mediaType: 'movie',
-            title: 'Notting Hill',
-            releaseDate: '1999-05-21',
-            posterPath: null,
-          },
-        ],
-      },
+for (const theme of ['seerrOrig', 'seerrNGJ'])
+  test(`poster grid preserves ${theme} phone geometry after stylesheet recovery`, async ({
+    page,
+    baseURL,
+  }, testInfo) => {
+    await loginAsAdmin(page, baseURL);
+    expect(
+      (
+        await page.request.post('/api/v1/user/1/settings/interface-theme', {
+          data: { theme },
+        })
+      ).status()
+    ).toBe(200);
+    let discoveryFixtureApplied = false;
+    await page.route('**/api/v1/discover/movies*', async (route) => {
+      discoveryFixtureApplied = true;
+      await route.fulfill({
+        json: {
+          page: 1,
+          totalPages: 1,
+          totalResults: 4,
+          results: [
+            {
+              id: 550,
+              mediaType: 'movie',
+              title: 'Fight Club',
+              releaseDate: '1999-10-15',
+              posterPath: null,
+            },
+            {
+              id: 551,
+              mediaType: 'movie',
+              title: 'The Matrix',
+              releaseDate: '1999-03-31',
+              posterPath: null,
+            },
+            {
+              id: 552,
+              mediaType: 'movie',
+              title: 'The Mummy',
+              releaseDate: '1999-04-16',
+              posterPath: null,
+            },
+            {
+              id: 553,
+              mediaType: 'movie',
+              title: 'Notting Hill',
+              releaseDate: '1999-05-21',
+              posterPath: null,
+            },
+          ],
+        },
+      });
     });
-  });
-  const themeStylesheet = '**/api/v1/interface-themes/seerrOrig/theme.css';
-  await page.route(themeStylesheet, (route) =>
-    route.fulfill({
-      status: 404,
-      contentType: 'application/json',
-      headers: { 'cache-control': 'no-store' },
-      body: JSON.stringify({ status: 404, message: 'Not found.' }),
-    })
-  );
-  await page.setViewportSize({ width: 320, height: 900 });
-  await page.goto('/discover/movies');
-  await page.waitForLoadState('networkidle');
-  await page.screenshot({
-    path: testInfo.outputPath('baseline-theme-stylesheet-rejected.png'),
-  });
-
-  await page.unroute(themeStylesheet);
-  const candidateStylesheetResponse = page.waitForResponse(
-    (response) =>
-      new URL(response.url()).pathname ===
-      '/api/v1/interface-themes/seerrOrig/theme.css'
-  );
-  await page.reload({ waitUntil: 'networkidle' });
-  const stylesheetResponse = await candidateStylesheetResponse;
-  expect(stylesheetResponse.status()).toBe(200);
-  expect(stylesheetResponse.headers()['content-type']).toMatch(
-    /^text\/css; charset=utf-8/u
-  );
-  await page.screenshot({
-    path: testInfo.outputPath('candidate-theme-stylesheet-served.png'),
-  });
-
-  for (const width of [320, 360, 375, 390, 412]) {
-    await page.setViewportSize({ width, height: 900 });
+    const themeStylesheet = `**/api/v1/interface-themes/${theme}/theme.css`;
+    await page.route(themeStylesheet, (route) =>
+      route.fulfill({
+        status: 404,
+        contentType: 'application/json',
+        headers: { 'cache-control': 'no-store' },
+        body: JSON.stringify({ status: 404, message: 'Not found.' }),
+      })
+    );
+    await page.setViewportSize({ width: 320, height: 900 });
     await page.goto('/discover/movies');
     await page.waitForLoadState('networkidle');
-    expect(discoveryFixtureApplied).toBe(true);
-    const metrics = await page.evaluate(() => {
-      const items = [
-        ...document.querySelectorAll('ul.cards-vertical > li'),
-      ].map((li) => li.getBoundingClientRect());
-      if (items.length === 0) {
-        return { count: 0, columns: 0, posterWidth: 0 };
-      }
-      const firstRowTop = Math.round(items[0].top);
-      return {
-        count: items.length,
-        columns: items.filter((r) => Math.round(r.top) === firstRowTop).length,
-        posterWidth: items[0].width,
-      };
+    await page.screenshot({
+      path: testInfo.outputPath('baseline-theme-stylesheet-rejected.png'),
     });
-    expect(metrics.count, `poster count at ${width}px`).toBeGreaterThanOrEqual(
-      2
+
+    await page.unroute(themeStylesheet);
+    const candidateStylesheetResponse = page.waitForResponse(
+      (response) =>
+        new URL(response.url()).pathname ===
+        `/api/v1/interface-themes/${theme}/theme.css`
     );
-    expect(metrics.columns, `columns at ${width}px`).toBeGreaterThanOrEqual(2);
-    expect(metrics.posterWidth, `poster width at ${width}px`).toBeGreaterThan(
-      120
+    await page.reload({ waitUntil: 'networkidle' });
+    const stylesheetResponse = await candidateStylesheetResponse;
+    expect(stylesheetResponse.status()).toBe(200);
+    expect(stylesheetResponse.headers()['content-type']).toMatch(
+      /^text\/css; charset=utf-8/u
     );
-  }
-});
+    await page.screenshot({
+      path: testInfo.outputPath('candidate-theme-stylesheet-served.png'),
+    });
+
+    for (const width of [320, 360, 375, 390, 412]) {
+      await page.setViewportSize({ width, height: 900 });
+      await page.goto('/discover/movies');
+      await page.waitForLoadState('networkidle');
+      expect(discoveryFixtureApplied).toBe(true);
+      await expect(page.locator('html')).toHaveAttribute(
+        'data-interface-theme',
+        theme
+      );
+      const metrics = await page.evaluate(() => {
+        const items = [
+          ...document.querySelectorAll('ul.cards-vertical > li'),
+        ].map((li) => li.getBoundingClientRect());
+        if (items.length === 0) {
+          return { count: 0, columns: 0, posterWidth: 0 };
+        }
+        const firstRowTop = Math.round(items[0].top);
+        return {
+          count: items.length,
+          columns: items.filter((r) => Math.round(r.top) === firstRowTop)
+            .length,
+          posterWidth: items[0].width,
+        };
+      });
+      expect(
+        metrics.count,
+        `poster count at ${width}px`
+      ).toBeGreaterThanOrEqual(2);
+      // Pinned upstream Seerr uses a 150px minimum expanding grid track.
+      // At 320px its page gutter leaves room for one; John retains two.
+      const expectedColumns = theme === 'seerrOrig' && width === 320 ? 1 : 2;
+      expect(metrics.columns, `${theme} columns at ${width}px`).toBe(
+        expectedColumns
+      );
+      expect(
+        metrics.posterWidth,
+        `${theme} poster width at ${width}px`
+      ).toBeGreaterThan(theme === 'seerrOrig' ? 149 : 120);
+      await page.screenshot({
+        path: testInfo.outputPath(`${theme}-${width}-grid.png`),
+      });
+    }
+  });
 
 test('cast posters never overlap their neighbours', async ({
   page,
