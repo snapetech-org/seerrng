@@ -4,7 +4,7 @@ import { useAuth } from '../auth';
 import { Section } from '../components/cards';
 import { useToast } from '../components/toast';
 import { Icon } from '../icons';
-import { mediaServer } from '../mediaServer';
+import { logoShapeOf, mediaServer, type LogoShape } from '../mediaServer';
 import {
   DEFAULT_PREFS,
   DISCOVER_ROWS,
@@ -87,13 +87,16 @@ export default function LumenSettings() {
       else l.delete(path);
       return { ...c, locked: [...l] };
     });
-  const setBrand = (k: 'name' | 'logo' | 'icon', v: string) =>
+  const setBrand = (k: 'name' | 'logo' | 'icon' | 'logoShape', v: string) =>
     setCfg((c) => {
-      const b = { ...(c.branding || {}) };
-      if (v === '' && k !== 'name') delete b[k];
+      const b: Record<string, string> = { ...(c.branding || {}) };
+      // "rounded" is the default, so it needn't be written down
+      if ((v === '' && k !== 'name') || (k === 'logoShape' && v === 'rounded'))
+        delete b[k];
       else b[k] = v;
       return { ...c, branding: b };
     });
+  const shape = logoShapeOf(cfg.branding?.logoShape);
   const setTop = (k: string, v: string | undefined) =>
     setCfg((c) => {
       const n = { ...c };
@@ -289,7 +292,7 @@ export default function LumenSettings() {
               <small>
                 Names in every label and the sign-in button. SeerrNG reports{' '}
                 {mediaServer().source === 'seerrng'
-                  ? mediaServer().name
+                  ? mediaServer().product
                   : 'its own server'}
                 .
               </small>
@@ -309,6 +312,21 @@ export default function LumenSettings() {
               <option value="jellyfin">Jellyfin</option>
               <option value="emby">Emby</option>
             </select>
+          </label>
+          <label className="set cfg-row">
+            <span>
+              <b>Media server name</b>
+              <small>
+                Replaces “{mediaServer().product}” everywhere: “On …”, “Watch on
+                …”, filters and sign-in. Leave empty to keep it.
+              </small>
+            </span>
+            <input
+              className="cfg-input"
+              placeholder={mediaServer().product}
+              value={(cfg.mediaServerName as string) || ''}
+              onChange={(e) => setTop('mediaServerName', e.target.value)}
+            />
           </label>
           <label className="set cfg-row">
             <span>
@@ -403,12 +421,42 @@ export default function LumenSettings() {
             )}
             <Upload kind="icon" />
           </div>
+          <div className="set cfg-row">
+            <span>
+              <b>Logo shape</b>
+              <small>
+                How the logo is framed next to the name. “As uploaded” keeps the
+                file as it is: transparent, uncropped and as wide as it is.
+              </small>
+            </span>
+            <div className="seg" role="group" aria-label="Logo shape">
+              {(
+                [
+                  ['rounded', 'Rounded square'],
+                  ['circle', 'Circle'],
+                  ['raw', 'As uploaded'],
+                ] as [LogoShape, string][]
+              ).map(([v, t]) => (
+                <button
+                  key={v}
+                  type="button"
+                  aria-pressed={shape === v}
+                  onClick={() => setBrand('logoShape', v)}
+                >
+                  {t}
+                </button>
+              ))}
+            </div>
+          </div>
           {(cfg.branding?.logo || cfg.branding?.name !== undefined) && (
-            <div className="set">
-              <span className="brand cfg-preview">
+            <div className="set cfg-row">
+              <span>
+                <b>Preview</b>
+              </span>
+              <span className="brand cfg-preview" aria-label="Logo preview">
                 {cfg.branding?.logo ? (
                   <img
-                    className="mark mark-img"
+                    className={`mark mark-img mark-${shape}`}
                     src={cfg.branding.logo}
                     alt=""
                   />

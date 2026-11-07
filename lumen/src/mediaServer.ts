@@ -14,7 +14,8 @@ export type MediaServerSetting = 'auto' | MediaServerKind;
 
 export interface MediaServer {
   kind: MediaServerKind;
-  name: string; // product name used in every label: "On Plex", "Watch on Jellyfin"…
+  name: string; // name used in every label: "On Plex", "Watch on Jellyfin"… (admins can rename it)
+  product: string; // what it really is: Plex, Jellyfin or Emby
   source: 'seerrng' | 'config'; // where the choice came from (shown on the Me page)
   localLogin: boolean; // SeerrNG allows email + password accounts
   serverLogin: boolean; // SeerrNG allows signing in with the media server account
@@ -65,7 +66,9 @@ const httpUrl = (v?: string) => {
 
 export function resolveMediaServer(
   setting: unknown,
-  pub: ServerPublicSettings | null
+  pub: ServerPublicSettings | null,
+  // "mediaServerName" in lumen-config.json: what people call it, e.g. the server's own brand
+  customName?: unknown
 ): MediaServer {
   const pinned = isSetting(setting) && setting !== 'auto' ? setting : null;
   const kind =
@@ -85,7 +88,11 @@ export function resolveMediaServer(
   const forgot = httpUrl(pub?.jellyfinForgotPasswordUrl)?.href || host?.href;
   return {
     kind,
-    name: NAMES[kind],
+    name:
+      typeof customName === 'string' && customName.trim()
+        ? customName.trim().slice(0, 40)
+        : NAMES[kind],
+    product: NAMES[kind],
     source: pinned ? 'config' : 'seerrng',
     localLogin: pub?.localLogin !== false,
     serverLogin:
@@ -101,9 +108,16 @@ export function resolveMediaServer(
 // Look and sign-in style, also from lumen-config.json:
 //   "branding": { "name": "Movie Night", "logo": "/branding/logo.png", "icon": "/branding/icon.png" }
 //   "loginStyle": "form"  (Jellyfin/Emby: username + password on the sign-in page itself)
+// rounded: in a rounded square (the default); circle: cropped to a circle; raw: the file as it
+// is, transparent and uncropped, as wide as it needs (up to a limit)
+export type LogoShape = 'rounded' | 'circle' | 'raw';
+export const LOGO_SHAPES: LogoShape[] = ['rounded', 'circle', 'raw'];
+export const logoShapeOf = (v: unknown): LogoShape =>
+  LOGO_SHAPES.includes(v as LogoShape) ? (v as LogoShape) : 'rounded';
 export interface Site {
   name: string; // shown next to the logo and in the tab title; "" hides the text
   logo?: string; // replaces the round play mark
+  logoShape: LogoShape; // how the logo is framed
   icon?: string; // browser tab icon (and iOS home-screen icon)
   loginForm: boolean;
 }
@@ -143,6 +157,7 @@ export function resolveSite(
   return {
     name,
     logo: assetUrl(b.logo),
+    logoShape: logoShapeOf(b.logoShape),
     icon: assetUrl(b.icon),
     loginForm: c.loginStyle === 'form',
   };
@@ -287,7 +302,8 @@ export function MediaServerProvider({ children }: { children: ReactNode }) {
         }
         current = resolveMediaServer(
           config?.mediaServer,
-          pub as ServerPublicSettings | null
+          pub as ServerPublicSettings | null,
+          config?.mediaServerName
         );
         currentSite = resolveSite(config, pub as ServerPublicSettings);
         currentServices = resolveServices(pub as Record<string, unknown>);

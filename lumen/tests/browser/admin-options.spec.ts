@@ -1481,3 +1481,88 @@ test('no upload buttons when the server can’t keep files', async ({ page }) =>
   await expect(page.getByLabel('Upload logo')).toHaveCount(0);
   await expect(page.getByLabel('Upload tab icon')).toHaveCount(0);
 });
+
+test('admins rename the media server everywhere', async ({ page }) => {
+  await fixtures(page, { config: { mediaServerName: 'Tatsuflix' } });
+  await page.goto('/movies');
+  await expect(
+    page.getByRole('button', { name: 'On Tatsuflix', exact: true })
+  ).toBeVisible();
+  await expect(page.getByText(/Jellyfin/)).toHaveCount(0);
+});
+
+for (const [shape, radius, width] of [
+  ['rounded', '9px', 30],
+  ['circle', '50%', 30],
+  ['raw', '0px', null],
+] as const)
+  test(`logo shape "${shape}" frames the logo the same everywhere`, async ({
+    page,
+  }) => {
+    await fixtures(page, {
+      signedIn: false,
+      config: {
+        branding: {
+          name: 'Requests',
+          logo: '/branding/wide.svg',
+          ...(shape === 'rounded' ? {} : { logoShape: shape }),
+        },
+      },
+    });
+    await page.route('**/branding/wide.svg', (route) =>
+      route.fulfill({
+        contentType: 'image/svg+xml',
+        body: '<svg xmlns="http://www.w3.org/2000/svg" width="120" height="40"><rect width="120" height="40" fill="#0af"/></svg>',
+      })
+    );
+    await page.goto('/');
+    const logo = page.locator('.login-card .brand img.mark');
+    await expect(logo).toBeVisible();
+    const look = await logo.evaluate((el) => {
+      const cs = getComputedStyle(el);
+      return {
+        radius: cs.borderTopLeftRadius,
+        bg: cs.backgroundColor,
+        width: el.getBoundingClientRect().width,
+      };
+    });
+    // the sign-in card's accent square must not show behind a custom logo
+    expect(look.bg).toBe('rgba(0, 0, 0, 0)');
+    if (shape === 'circle') expect(look.radius).not.toBe('9px');
+    else expect(look.radius).toBe(radius);
+    if (width) expect(Math.round(look.width)).toBe(width);
+    else expect(look.width).toBeGreaterThan(60); // a wide logo keeps its width
+  });
+
+test('admin page picks the logo shape with a live preview', async ({
+  page,
+}) => {
+  await fixtures(page, {
+    permissions: 2,
+    config: { branding: { name: 'Requests', logo: '/branding/logo.png' } },
+  });
+  await page.goto('/me/lumen');
+  const preview = page.getByLabel('Logo preview').locator('img');
+  await expect(preview).toHaveClass(/mark-rounded/);
+  const shapes = page.getByRole('group', { name: 'Logo shape' });
+  await expect(
+    shapes.getByRole('button', { name: 'Rounded square' })
+  ).toHaveAttribute('aria-pressed', 'true');
+  await shapes.getByRole('button', { name: 'As uploaded' }).click();
+  await expect(preview).toHaveClass(/mark-raw/);
+  await shapes.getByRole('button', { name: 'Circle' }).click();
+  await expect(preview).toHaveClass(/mark-circle/);
+  await page.getByPlaceholder('Jellyfin').fill('Tatsuflix');
+  const json = JSON.parse(
+    await page.getByLabel('lumen-config.json').inputValue()
+  );
+  expect(json).toMatchObject({
+    branding: { logoShape: 'circle' },
+    mediaServerName: 'Tatsuflix',
+  });
+  // back to the default: nothing written
+  await shapes.getByRole('button', { name: 'Rounded square' }).click();
+  expect(
+    JSON.parse(await page.getByLabel('lumen-config.json').inputValue()).branding
+  ).toEqual({ name: 'Requests', logo: '/branding/logo.png' });
+});

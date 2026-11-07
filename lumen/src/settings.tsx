@@ -64,7 +64,13 @@ export interface AdminConfig {
   seerrPublicUrl?: string;
   mediaServer?: MediaServerSetting; // read by mediaServer.ts before sign-in
   loginStyle?: 'buttons' | 'form'; // read by mediaServer.ts before sign-in
-  branding?: { name?: string; logo?: string; icon?: string };
+  branding?: {
+    name?: string;
+    logo?: string;
+    icon?: string;
+    logoShape?: 'rounded' | 'circle' | 'raw';
+  };
+  mediaServerName?: string; // replaces Plex / Jellyfin / Emby in every label
   [other: string]: unknown;
 }
 

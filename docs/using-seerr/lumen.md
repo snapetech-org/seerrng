@@ -374,8 +374,10 @@ you put the file in place by hand:
      "branding": {
        "name": "Movie Night",
        "logo": "/branding/logo.png",
-       "icon": "/branding/icon.png"
+       "icon": "/branding/icon.png",
+       "logoShape": "rounded"
      },
+     "mediaServerName": "Movie Night Server",
      "defaults": {
        "narratorChoice": true,
        "hoverRequest": true,
@@ -399,6 +401,12 @@ you put the file in place by hand:
      `logo` replaces the round play mark, and `icon` is the browser tab and iOS
      home-screen icon. Use files you mount into Lumen (step 2) or `https://`
      addresses.
+     `logoShape` frames the logo: `"rounded"` (a rounded square, the default),
+     `"circle"`, or `"raw"` (the file as it is: transparent, uncropped, and as
+     wide as it is).
+   - `mediaServerName` replaces "Plex", "Jellyfin" or "Emby" in every label,
+     filter and the sign-in page, for example `"On Movie Night Server"`. Leave it
+     out to keep the real name.
    - `requestOptions`: admins and request managers get a sheet to pick the
      Radarr/Sonarr server, quality and folder when they use **Request** on a
      poster. Set it to `false` for one-click requests for them too. Everyone else

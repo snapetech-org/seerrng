@@ -388,13 +388,25 @@
   text-underline-offset: 3px;
 }
 
-/* admin logo (lumen-config.json branding.logo) in place of the play mark */
-.mark.mark-img {
+/* admin logo (lumen-config.json branding.logo) in place of the play mark. Written to beat
+   the play mark's own rules (sidebar, sign-in card, settings preview), which give it the
+   accent background. branding.logoShape picks the frame. */
+.brand .mark.mark-img {
   width: 30px;
   height: 30px;
   border-radius: 9px;
   object-fit: contain;
   background: none;
+}
+.brand .mark.mark-img.mark-circle {
+  border-radius: 50%;
+  object-fit: cover;
+}
+/* raw: the file as it is, transparent and uncropped; wide logos keep their width */
+.brand .mark.mark-img.mark-raw {
+  width: auto;
+  max-width: 160px;
+  border-radius: 0;
 }
 
 /* admin settings page (/me/lumen) */
