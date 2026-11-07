@@ -1,0 +1,12 @@
+#!/bin/sh
+# Clearer names for Lumen's two SeerrNG addresses. The old names keep working; a new
+# name wins when both are set. nginx's entrypoint sources *.envsh files, so these
+# exports reach the template step (20-envsubst-on-templates.sh).
+#   SEERR_INTERNAL_URL  = SEERR_URL       how this container reaches SeerrNG
+#   SEERR_BROWSER_URL   = SEERR_FULL_URL  the address people open full SeerrNG at
+if [ -n "${SEERR_INTERNAL_URL:-}" ]; then
+  export SEERR_URL="$SEERR_INTERNAL_URL"
+fi
+if [ -n "${SEERR_BROWSER_URL:-}" ]; then
+  export SEERR_FULL_URL="$SEERR_BROWSER_URL"
+fi
