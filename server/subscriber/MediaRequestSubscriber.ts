@@ -53,6 +53,11 @@ import SeasonRequest, {
 } from '@server/entity/SeasonRequest';
 import { hasAvailableBookFormat } from '@server/lib/bookAvailability';
 import {
+  getComicRequestTarget,
+  hasDeliveredComicTarget,
+  isComicRequestAvailable,
+} from '@server/lib/comicAvailability';
+import {
   normalizeMusicBrainzId,
   normalizeOpenLibraryWorkId,
 } from '@server/lib/externalIds';
@@ -1428,6 +1433,22 @@ export class MediaRequestSubscriber implements EntitySubscriberInterface<MediaRe
       if (retryAfterMs !== undefined) {
         return { delivered: false, retryAfterMs };
       }
+      const updatedComicRequest = await getRepository(MediaRequest).findOne({
+        where: { id: request.id },
+        relations: { media: true },
+      });
+      const comicTarget = updatedComicRequest
+        ? getComicRequestTarget(updatedComicRequest.media, updatedComicRequest)
+        : undefined;
+      // Delivery to the acquisition service is distinct from library
+      // availability. Finish the outbox attempt without completing the request.
+      return {
+        delivered:
+          !updatedComicRequest ||
+          updatedComicRequest.status === MediaRequestStatus.COMPLETED ||
+          (updatedComicRequest.status === MediaRequestStatus.APPROVED &&
+            Boolean(comicTarget && hasDeliveredComicTarget(comicTarget))),
+      };
     } else if (request.type === MediaType.MAGAZINE) {
       const retryAfterMs = await this.sendToMagazineBackend(request);
       if (retryAfterMs !== undefined) {
@@ -3596,11 +3617,29 @@ export class MediaRequestSubscriber implements EntitySubscriberInterface<MediaRe
         throw new Error('Comic media data not found');
       }
 
-      if (
-        media.status === MediaStatus.AVAILABLE &&
-        media.serviceId !== null &&
-        media.externalServiceId !== null
-      ) {
+      const selection = getRequestDispatchServiceSelection(entity);
+      const backendId = selection.serviceIds[0];
+      const destinationTargets = entity.serviceTargets?.filter(
+        (target) =>
+          target.serviceType === selection.serviceType &&
+          target.serverId === backendId
+      );
+      const destinationRequest = {
+        serverId: backendId ?? null,
+        serviceTargets: destinationTargets?.length
+          ? destinationTargets
+          : backendId === undefined
+            ? []
+            : [
+                {
+                  serviceType: selection.serviceType,
+                  format: 'comic' as const,
+                  serverId: backendId,
+                  status: MediaStatus.PENDING,
+                },
+              ],
+      };
+      if (isComicRequestAvailable(media, destinationRequest)) {
         logger.warn('Comic already exists, marking request as COMPLETED', {
           label: 'Media Request',
           requestId: entity.id,
@@ -3613,6 +3652,31 @@ export class MediaRequestSubscriber implements EntitySubscriberInterface<MediaRe
         return;
       }
 
+      if (
+        entity.status === MediaRequestStatus.APPROVED &&
+        destinationTargets?.some(hasDeliveredComicTarget)
+      ) {
+        return;
+      }
+      if (
+        entity.status === MediaRequestStatus.APPROVED &&
+        backendId !== undefined &&
+        media.serviceId === backendId &&
+        (media.comicServiceType ?? 'mylar') === selection.serviceType &&
+        Number.isSafeInteger(media.externalServiceId) &&
+        Number(media.externalServiceId) > 0
+      ) {
+        await saveRequestServiceTarget(entity, {
+          serviceType: selection.serviceType,
+          format: 'comic',
+          serverId: backendId,
+          externalServiceId: media.externalServiceId,
+          externalServiceSlug: media.externalServiceSlug,
+          status: media.status,
+        });
+        return;
+      }
+
       const comicVineId = media.identifiers?.find(
         (identifier) =>
           identifier.provider === MediaIdentifierProvider.COMICVINE
@@ -3621,8 +3685,6 @@ export class MediaRequestSubscriber implements EntitySubscriberInterface<MediaRe
         throw new Error('Comic request is missing a ComicVine identifier');
       }
 
-      const selection = getRequestDispatchServiceSelection(entity);
-      const backendId = selection.serviceIds[0];
       if (backendId === undefined) {
         const backendName =
           selection.serviceType === 'kapowarr'
@@ -3697,6 +3759,7 @@ export class MediaRequestSubscriber implements EntitySubscriberInterface<MediaRe
       media.externalServiceSlug = externalServiceSlug;
       media.comicServiceType = selection.serviceType as
         'mylar' | 'kapowarr' | 'backissue';
+      media.status = MediaStatus.PROCESSING;
       await mediaRepository.save(media);
       await saveRequestServiceTarget(entity, {
         serviceType: selection.serviceType,
@@ -3708,7 +3771,7 @@ export class MediaRequestSubscriber implements EntitySubscriberInterface<MediaRe
       });
 
       const requestRepository = getRepository(MediaRequest);
-      entity.status = MediaRequestStatus.COMPLETED;
+      entity.status = MediaRequestStatus.APPROVED;
       await requestRepository.save(entity);
 
       logger.info('Sent request to comics service', {

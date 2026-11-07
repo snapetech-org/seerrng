@@ -870,7 +870,8 @@ class Media {
     ) {
       this.downloadStatus = downloadTracker.getComicProgress(
         this.serviceId,
-        this.externalServiceId
+        this.externalServiceId,
+        this.comicServiceType
       );
     }
   }

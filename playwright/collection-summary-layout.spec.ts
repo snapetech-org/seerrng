@@ -91,6 +91,24 @@ for (const theme of ['seerrNGJ', 'seerrOrig', 'persiusNG'])
             }
           ).next.router.push('/collection/123');
         });
+        if (locale === 'en') {
+          const queue = page.getByRole('button', {
+            name: 'Queue Collection',
+            exact: true,
+          });
+          // This must work before opening Orig's optional details disclosure.
+          await expect(queue).toBeVisible();
+          await queue.click();
+          const dialog = page.getByRole('dialog');
+          await expect(dialog).toBeVisible();
+          await expect(
+            dialog.getByLabel('Movies Ahead', { exact: true })
+          ).toBeVisible();
+          await dialog
+            .getByRole('button', { name: 'Cancel', exact: true })
+            .click();
+          await expect(dialog).toBeHidden();
+        }
         if (theme === 'seerrOrig') {
           await expect(
             page.locator(

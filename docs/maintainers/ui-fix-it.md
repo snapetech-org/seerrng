@@ -66,6 +66,14 @@ natural wrapping for longer or translated copy rather than clipping it.
 
 ## 5. Verify interactions and truthfulness
 
+Trace the current route's rendered owner before declaring a feature missing;
+legacy request components may coexist with the current Requests page. For
+settings pages with multiple forms, save one changed form while an unrelated
+optional form is invalid, then save again without reloading. Failed saves must
+retain the draft and unsaved state so the user can retry; successful saves must
+clear that state only after persistence succeeds. A visible control alone does
+not establish a working configuration flow.
+
 1. Exercise role/state combinations with isolated fixtures or mocks: enabled, disabled, hover, active, focus, busy, empty, failed, cached refresh, partial data and relevant breakpoints. Verify user-facing controls are visually functional where the review asks for them.
    Use dedicated ordinary inspection tabs, leave the work owner's existing tabs untouched, and close temporary inspection tabs afterward. Verify preview origin/source and media-specific optional controls before diagnosing a screenshot or wrapped row.
 2. Preserve accessibility: names, descriptive help, disabled-tooltip access, keyboard behavior, native semantics and reduced motion. Detect nested buttons, double selection, event propagation into posters and invisible-but-interactive panels.

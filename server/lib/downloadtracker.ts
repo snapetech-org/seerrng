@@ -398,12 +398,14 @@ export class DownloadTracker {
 
   public getComicProgress(
     serverId: number,
-    externalServiceId: number
+    externalServiceId: number,
+    serviceType: 'kapowarr' | 'backissue'
   ): DownloadingItem[] {
-    return [
-      ...(this.kapowarrServers[serverId] ?? []),
-      ...(this.backissueServers[serverId] ?? []),
-    ].filter((item) => item.externalId === externalServiceId);
+    const servers =
+      serviceType === 'kapowarr' ? this.kapowarrServers : this.backissueServers;
+    return (servers[serverId] ?? []).filter(
+      (item) => item.externalId === externalServiceId
+    );
   }
 
   public getAdultProgress(

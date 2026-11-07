@@ -3,16 +3,28 @@ import { afterEach, before, beforeEach, describe, it, mock } from 'node:test';
 
 import ExternalAPI from '@server/api/externalapi';
 import { IssueType } from '@server/constants/issue';
-import { MediaStatus, MediaType } from '@server/constants/media';
+import {
+  MediaRequestStatus,
+  MediaStatus,
+  MediaType,
+} from '@server/constants/media';
 import { getRepository } from '@server/datasource';
 import Issue from '@server/entity/Issue';
 import IssueComment from '@server/entity/IssueComment';
 import Media from '@server/entity/Media';
+import MediaIdentifier, {
+  MediaIdentifierProvider,
+} from '@server/entity/MediaIdentifier';
+import { MediaRequest } from '@server/entity/MediaRequest';
+import { MediaSearchMetadata } from '@server/entity/MediaSearchMetadata';
 import { User } from '@server/entity/User';
 import { UserSettings } from '@server/entity/UserSettings';
 import { Notification } from '@server/lib/notifications';
 import { resetTestDb, seedTestDb } from '@server/utils/seedTestDb';
-import { hydrateNotificationIntent } from './intents';
+import {
+  buildMediaRequestNotificationPayload,
+  hydrateNotificationIntent,
+} from './intents';
 import type { NotificationOutboxIntent } from './outbox';
 
 before(async () => {
@@ -25,6 +37,81 @@ beforeEach(async () => {
 
 afterEach(() => {
   mock.restoreAll();
+});
+
+describe('comic request notification identity', () => {
+  it('retires an old availability intent when the comic still has no confirmed files', async () => {
+    const media = await getRepository(Media).save(
+      new Media({
+        mediaType: MediaType.COMIC,
+        tmdbId: 0,
+        status: MediaStatus.PROCESSING,
+        status4k: MediaStatus.UNKNOWN,
+        serviceId: 30,
+        externalServiceId: 557,
+      })
+    );
+    const requestedBy = await getRepository(User).findOneByOrFail({ id: 1 });
+    const request = await getRepository(MediaRequest).save(
+      new MediaRequest({
+        type: MediaType.COMIC,
+        media,
+        requestedBy,
+        status: MediaRequestStatus.COMPLETED,
+        is4k: false,
+      })
+    );
+    assert.equal(
+      await hydrateNotificationIntent(Notification.MEDIA_AVAILABLE, {
+        kind: 'media-request',
+        requestId: request.id,
+      }),
+      undefined
+    );
+  });
+  it('uses the persisted comic title and cover instead of the backend volume number', async () => {
+    const media = await getRepository(Media).save(
+      new Media({
+        mediaType: MediaType.COMIC,
+        tmdbId: 0,
+        externalServiceSlug: '557',
+        status: MediaStatus.PROCESSING,
+        status4k: MediaStatus.UNKNOWN,
+      })
+    );
+    const identifier = await getRepository(MediaIdentifier).save(
+      new MediaIdentifier({
+        media,
+        provider: MediaIdentifierProvider.COMICVINE,
+        value: '1234',
+        canonical: true,
+      })
+    );
+    media.identifiers = [identifier];
+    await getRepository(MediaSearchMetadata).save({
+      mediaId: media.id,
+      title: 'Saga',
+      posterPath: 'https://comicvine.gamespot.com/cover.jpg',
+      searchText: 'saga',
+    });
+    const user = await getRepository(User).findOneByOrFail({ id: 1 });
+    const request = new MediaRequest({
+      id: 9200,
+      type: MediaType.COMIC,
+      media,
+      requestedBy: user,
+      is4k: false,
+    });
+    const payload = await buildMediaRequestNotificationPayload(
+      request,
+      media,
+      Notification.MEDIA_APPROVED
+    );
+    assert.equal(payload.subject, 'Saga');
+    assert.equal(payload.image, 'https://comicvine.gamespot.com/cover.jpg');
+    assert.equal(payload.mediaUrl, '/comic/1234');
+    assert.equal(payload.event, 'Comic Request Approved');
+  });
 });
 
 describe('availability subscription notification intents', () => {

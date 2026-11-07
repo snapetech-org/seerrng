@@ -511,7 +511,7 @@ const SettingsPlex = ({ isSetupSettings, onComplete }: SettingsPlexProps) => {
         }}
         validationSchema={PlexSettingsSchema}
         validateOnMount={true}
-        onSubmit={async (values) => {
+        onSubmit={async (values, { resetForm }) => {
           let toastId: string | null = null;
           try {
             addToast(
@@ -531,6 +531,8 @@ const SettingsPlex = ({ isSetupSettings, onComplete }: SettingsPlexProps) => {
               webAppUrl: values.webAppUrl,
               analyzeOnPlayback: values.analyzeOnPlayback,
             } as PlexSettings);
+
+            resetForm({ values });
 
             syncLibraries();
 
@@ -561,9 +563,15 @@ const SettingsPlex = ({ isSetupSettings, onComplete }: SettingsPlexProps) => {
           setValues,
           isSubmitting,
           isValid,
+          dirty,
         }) => {
           return (
-            <form className="app-card-sub section" onSubmit={handleSubmit}>
+            <form
+              className="app-card-sub section"
+              onSubmit={handleSubmit}
+              data-settings-dirty={dirty}
+              data-settings-submitting={isSubmitting}
+            >
               <div className="form-row">
                 <label htmlFor="preset" className="text-label">
                   {intl.formatMessage(messages.serverpreset)}
@@ -949,7 +957,7 @@ const SettingsPlex = ({ isSetupSettings, onComplete }: SettingsPlexProps) => {
               tautulliExternalUrl: dataTautulli?.externalUrl,
             }}
             validationSchema={TautulliSettingsSchema}
-            onSubmit={async (values) => {
+            onSubmit={async (values, { resetForm }) => {
               try {
                 await axios.post('/api/v1/settings/tautulli', {
                   hostname: values.tautulliHostname,
@@ -959,6 +967,8 @@ const SettingsPlex = ({ isSetupSettings, onComplete }: SettingsPlexProps) => {
                   apiKey: values.tautulliApiKey,
                   externalUrl: values.tautulliExternalUrl,
                 } as TautulliSettings);
+
+                resetForm({ values });
 
                 addToast(
                   intl.formatMessage(messages.toastTautulliSettingsSuccess),
@@ -988,9 +998,15 @@ const SettingsPlex = ({ isSetupSettings, onComplete }: SettingsPlexProps) => {
               setFieldValue,
               isSubmitting,
               isValid,
+              dirty,
             }) => {
               return (
-                <form className="app-card-sub section" onSubmit={handleSubmit}>
+                <form
+                  className="app-card-sub section"
+                  onSubmit={handleSubmit}
+                  data-settings-dirty={dirty}
+                  data-settings-submitting={isSubmitting}
+                >
                   <div className="form-row">
                     <label htmlFor="tautulliHostname" className="text-label">
                       {intl.formatMessage(messages.hostname)}

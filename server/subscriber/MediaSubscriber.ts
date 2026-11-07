@@ -10,6 +10,7 @@ import SeasonRequest, {
   isActiveSeasonRequest,
 } from '@server/entity/SeasonRequest';
 import { isBookRequestFileAvailable } from '@server/lib/bookAvailability';
+import { isComicRequestAvailable } from '@server/lib/comicAvailability';
 import logger from '@server/logger';
 import type {
   EntityManager,
@@ -104,8 +105,10 @@ export class MediaSubscriber implements EntitySubscriberInterface<Media> {
             continue;
           }
           if (
-            event.mediaType !== MediaType.BOOK ||
-            this.isBookRequestSatisfied(event, request)
+            event.mediaType === MediaType.COMIC
+              ? isComicRequestAvailable(event, request)
+              : event.mediaType !== MediaType.BOOK ||
+                this.isBookRequestSatisfied(event, request)
           ) {
             // Mark the request complete before its subscriber can dispatch it
             // to an acquisition service. The media is already available.
@@ -157,10 +160,11 @@ export class MediaSubscriber implements EntitySubscriberInterface<Media> {
               event[request.is4k ? 'status4k' : 'status'] ===
                 MediaStatus.DELETED) &&
             (event.mediaType === MediaType.MOVIE ||
-              event.mediaType === MediaType.MUSIC ||
-              event.mediaType === MediaType.COMIC)
+              event.mediaType === MediaType.MUSIC)
           ) {
             shouldComplete = true;
+          } else if (event.mediaType === MediaType.COMIC) {
+            shouldComplete = isComicRequestAvailable(event, request);
           } else if (event.mediaType === MediaType.BOOK) {
             shouldComplete = this.isBookRequestSatisfied(event, request);
           } else if (event.mediaType === 'tv') {

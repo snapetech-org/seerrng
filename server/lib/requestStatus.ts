@@ -14,6 +14,7 @@ import { RequestDispatchOutbox } from '@server/entity/RequestDispatchOutbox';
 import { isActiveSeasonRequest } from '@server/entity/SeasonRequest';
 import type { User } from '@server/entity/User';
 import { isBookRequestFileAvailable } from '@server/lib/bookAvailability';
+import { getComicRequestTarget } from '@server/lib/comicAvailability';
 import type {
   DownloadingItem,
   ServarrHistoryEvidence,
@@ -382,11 +383,11 @@ const hasRequestedServiceLink = (request: RequestLike): boolean => {
     return hasRequestedBookFormat(request.media, 'ebook');
   }
 
-  if (
-    request.type === MediaType.MOVIE ||
-    request.type === MediaType.TV ||
-    request.type === MediaType.COMIC
-  ) {
+  if (request.type === MediaType.COMIC) {
+    const target = getComicRequestTarget(request.media, request);
+    return hasLink(target?.serverId, target?.externalServiceId);
+  }
+  if (request.type === MediaType.MOVIE || request.type === MediaType.TV) {
     return request.is4k
       ? hasLink(request.media.serviceId4k, request.media.externalServiceId4k)
       : hasLink(request.media.serviceId, request.media.externalServiceId);
@@ -408,6 +409,12 @@ const getRequestedMediaStatus = (request: RequestLike): MediaStatus => {
 
   if (request.type === MediaType.MUSIC) {
     return getMusicTarget(request)?.status ?? request.media.status;
+  }
+  if (request.type === MediaType.COMIC) {
+    return (
+      getComicRequestTarget(request.media, request)?.status ??
+      MediaStatus.UNKNOWN
+    );
   }
   if (request.type === MediaType.ADULT) {
     return getAdultTarget(request)?.status ?? request.media.status;
@@ -628,15 +635,14 @@ const getDownloadItems = (request: RequestLike): DownloadingItem[] => {
     // Kapowarr and BackIssue expose live download queues; Mylar3 does not
     // (and cannot cancel an individual queued download), so a Mylar-backed
     // comic never has live progress data here.
-    return (media.comicServiceType === 'kapowarr' ||
-      media.comicServiceType === 'backissue') &&
-      media.serviceId !== null &&
-      media.serviceId !== undefined &&
-      media.externalServiceId !== null &&
-      media.externalServiceId !== undefined
+    const target = getComicRequestTarget(media, request);
+    return (target?.serviceType === 'kapowarr' ||
+      target?.serviceType === 'backissue') &&
+      target.externalServiceId != null
       ? downloadTracker.getComicProgress(
-          media.serviceId,
-          media.externalServiceId
+          target.serverId,
+          target.externalServiceId,
+          target.serviceType
         )
       : [];
   }
@@ -778,16 +784,14 @@ const getServiceName = (request: RequestLike): string | null => {
     const target = getMusicTarget(request);
     add(settings.lidarr.find((server) => server.id === target?.serverId)?.name);
   } else if (request.type === MediaType.COMIC) {
+    const target = getComicRequestTarget(request.media, request);
     const comicServices =
-      request.media.comicServiceType === 'kapowarr'
+      target?.serviceType === 'kapowarr'
         ? settings.kapowarr
-        : request.media.comicServiceType === 'backissue'
+        : target?.serviceType === 'backissue'
           ? settings.backissue
           : settings.mylar;
-    add(
-      comicServices.find((server) => server.id === request.media.serviceId)
-        ?.name
-    );
+    add(comicServices.find((server) => server.id === target?.serverId)?.name);
   } else if (request.type === MediaType.ADULT) {
     add(
       settings.whisparr.find(
@@ -1199,7 +1203,9 @@ const getStageFromRequest = (
     };
   }
   if (
-    (request.type === MediaType.MOVIE || request.type === MediaType.TV) &&
+    (request.type === MediaType.MOVIE ||
+      request.type === MediaType.TV ||
+      request.type === MediaType.COMIC) &&
     hasRequestedServiceLink(request)
   ) {
     // An Arr tracking entry and PROCESSING status are created at dispatch,

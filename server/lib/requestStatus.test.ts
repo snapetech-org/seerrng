@@ -897,3 +897,79 @@ test('a provider recording stays incomplete until its exact target confirms impo
     RequestStatusStage.AVAILABLE
   );
 });
+
+for (const status of [
+  MediaRequestStatus.APPROVED,
+  MediaRequestStatus.COMPLETED,
+]) {
+  test(`comic acquisition acceptance is searching without file evidence (request status ${status})`, () => {
+    const comic = request({
+      type: MediaType.COMIC,
+      status,
+      serverId: 40,
+      serviceTargets: [
+        {
+          serviceType: 'mylar',
+          format: 'comic',
+          serverId: 40,
+          externalServiceId: 557,
+          status: MediaStatus.PROCESSING,
+        },
+      ],
+      media: {
+        ...request().media,
+        mediaType: MediaType.COMIC,
+        comicServiceType: 'mylar',
+        serviceId: 40,
+        externalServiceId: 557,
+      },
+    });
+    assert.equal(
+      getRequestStatus(comic, { downloads: [] }).stage,
+      RequestStatusStage.SEARCHING
+    );
+  });
+}
+test('comic availability belongs to the requested destination, not another library', () => {
+  const comic = request({
+    type: MediaType.COMIC,
+    serverId: 40,
+    serviceTargets: [
+      {
+        serviceType: 'kapowarr',
+        format: 'comic',
+        serverId: 40,
+        externalServiceId: 557,
+        status: MediaStatus.PROCESSING,
+      },
+    ],
+    media: {
+      ...request().media,
+      mediaType: MediaType.COMIC,
+      status: MediaStatus.AVAILABLE,
+      comicServiceType: 'mylar',
+      serviceId: 30,
+      externalServiceId: 1234,
+    },
+  });
+  assert.equal(
+    getRequestStatus(comic, { downloads: [] }).stage,
+    RequestStatusStage.SEARCHING
+  );
+  const available = {
+    ...comic,
+    serviceTargets: [
+      {
+        serviceType: 'kapowarr' as const,
+        format: 'comic' as const,
+        serverId: 40,
+        externalServiceId: 557,
+        status: MediaStatus.AVAILABLE,
+      },
+    ],
+  };
+  assert.equal(
+    getRequestStatus(available, { downloads: [] }).stage,
+    RequestStatusStage.AVAILABLE
+  );
+});

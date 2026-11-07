@@ -1,3 +1,4 @@
+import ComicVineAPI from '@server/api/comicvine';
 import ListenBrainzAPI from '@server/api/listenbrainz/index';
 import OpenLibraryAPI from '@server/api/openlibrary/index';
 import TheMovieDb from '@server/api/themoviedb/index';
@@ -13,11 +14,14 @@ import MediaIdentifier, {
 import { MediaRequest } from '@server/entity/MediaRequest';
 import { MediaSearchMetadata } from '@server/entity/MediaSearchMetadata';
 import { User } from '@server/entity/User';
+import { isComicRequestAvailable } from '@server/lib/comicAvailability';
 import {
   normalizeMusicBrainzId,
   normalizeOpenLibraryWorkId,
 } from '@server/lib/externalIds';
+import { upsertMediaSearchMetadata } from '@server/lib/mediaSearchMetadata';
 import { Permission } from '@server/lib/permissions';
+import { getSettings } from '@server/lib/settings';
 import { normalizeStashDbId } from '@server/lib/stashdbIdentity';
 import { parseBookshelfBookId } from '@server/utils/bookshelfCatalog';
 import { sortBy, truncate } from 'lodash';
@@ -108,6 +112,44 @@ const getMediaDetails = async (
     const identifier = identifiers.find(
       (candidate) => candidate.provider === provider
     )?.value;
+    if (media.mediaType === MediaType.COMIC) {
+      const metadata =
+        media.searchMetadata ??
+        (await getRepository(MediaSearchMetadata).findOne({
+          where: { mediaId: media.id },
+        }));
+      if (metadata?.title?.trim()) {
+        return {
+          title: metadata.title.trim(),
+          image: metadata.posterPath ?? '',
+        };
+      }
+      const apiKey = getSettings().main.comicVineApiKey;
+      const id = Number(identifier);
+      if (apiKey && Number.isSafeInteger(id) && id > 0) {
+        try {
+          const volume = await new ComicVineAPI(apiKey).getVolume(id);
+          if (volume?.name?.trim()) {
+            const title = volume.name.trim();
+            const image = volume.image?.medium_url ?? '';
+            await upsertMediaSearchMetadata(media.id, {
+              title,
+              posterPath: image,
+              provider: 'comicvine',
+              externalIds: identifier,
+            });
+            return { title, image };
+          }
+        } catch {
+          // Metadata outages must not turn a backend's opaque volume number
+          // into the human title or drop the notification entirely.
+        }
+      }
+      return {
+        title: identifier ? `Comic #${identifier}` : 'Comic request',
+        image: '',
+      };
+    }
     return {
       title:
         media.externalServiceSlug ??
@@ -408,6 +450,14 @@ const hydrateMediaRequestIntent = async (
   // The request was deleted after its durable notification was queued. There
   // is no current payload to send, so the outbox should retire this stale row.
   if (!request) return undefined;
+  // Older builds queued availability on acquisition-service acceptance. Retire
+  // those stale intents rather than delivering a false email after upgrading.
+  if (
+    type === Notification.MEDIA_AVAILABLE &&
+    request.type === MediaType.COMIC &&
+    !isComicRequestAvailable(request.media, request)
+  )
+    return undefined;
   return buildMediaRequestNotificationPayload(request, request.media, type);
 };
 

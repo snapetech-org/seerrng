@@ -5200,7 +5200,7 @@ const validateCurrentBatchContract = (files) => {
     'className="settings-page-actions"',
     'buttonType="danger"',
     'buttonType="success"',
-    'disabled={!hasUnsavedChanges}',
+    'disabled={!hasUnsavedChanges || managedFormsSaving}',
     'intl.formatMessage(messages.save)',
     'router.beforePopState(() => {',
     "window.history.pushState(null, '', currentSettingsPathRef.current);",

@@ -1,6 +1,8 @@
 # Closed Issue Resolution Audit — November 6, 2026
 
-All 73 repository issues were inventoried, including every closed issue. The
+This document records the November 6 inventory of 73 issues, including every
+closed issue. Its source/comment reconciliation is not a completed human-workflow
+audit. The November 7 follow-up below supersedes blanket completion readings. The
 audit checked the requested behavior against current source and the earlier
 behavioral verification records, then read back the public issue threads.
 
@@ -36,6 +38,39 @@ eligibility to Book Recommendations and Collector Picks. Its
 [final receipt](https://github.com/snapetech-org/seerrng/issues/594#issuecomment-6702351013)
 links the fix, full CI, published replacement and actual-image browser checks.
 All 73 issues are now closed as completed; none is closed as not planned.
+
+## Human-workflow follow-up — November 7
+
+The earlier source links and public-comment readback did not prove every human
+entry point, action, persistence result or recovery path. Rechecking all 73
+issues through those paths is in progress; closed counts are not acceptance.
+
+- #500 was reopened after the actual v3.72.21 image hid Queue Collection under
+  Orig's generic Details disclosure. The candidate restores the visible header
+  action; John keeps its existing control. This is not yet a published fix.
+- #498 was reopened for a save-flow defect: saving Plex also validated the
+  unused Tautulli form, whose subsequent invalid state blocked later Plex saves.
+  Both released themes reproduced this with real settings persistence and an
+  isolated Plex fixture. The candidate submits changed forms independently and
+  preserves unsuccessful drafts. This is not yet a published fix.
+- #503 is verified already implemented in the current Requests page: Requests
+  → TV request → Episode Queue → Queue Length → Save Changes. Four phone/desktop
+  and Orig/John cases saved a real isolated record, reloaded it, and restored
+  the account default. Four additional cases verified non-admin HTTP 403 and
+  failed-save recovery. The initial follow-up mistakenly inspected the legacy
+  request list; its duplicate candidate was removed and the public comment
+  corrected. [Human-path receipt](https://github.com/snapetech-org/seerrng/issues/503#issuecomment-6713701679).
+- New #597 tracks confirmed comic completion and notification defects missed by
+  the previous scope. Service acceptance set COMPLETED and emitted an available
+  notification; the notification title used a backend numeric ID. The candidate
+  requires destination-specific file evidence, repairs legacy rows on rescan,
+  uses readable metadata, and retires stale availability intents.
+
+Headless evidence, including failed baselines, is retained on kspld0 under
+`/mnt/disks/scratch/task-deliverables/seerrng-human-workflow-audit-20261107/`.
+Tests use isolated records/provider fixtures, not household acquisitions. A
+rendered route or a source-only feature must not be counted as a completed
+interaction workflow. Remaining issues require their own verification record.
 
 ## Resolution Ledger
 
@@ -111,9 +146,9 @@ directive; it must not be restored merely to satisfy the original feature reques
 | [#415 — seerrng-migrate.mjs rejects freshly initialized SQLite target: seerr\_migration\_lock counted as user data](https://github.com/snapetech-org/seerrng/issues/415) | resolved | [Explanation and evidence](https://github.com/snapetech-org/seerrng/issues/415#issuecomment-6693003820) |
 | [#417 — Jellystat watch summary: GET /media/&#123;id&#125;/jellystat missing from seerr-api.yml, validator returns 405](https://github.com/snapetech-org/seerrng/issues/417) | resolved | [Explanation and evidence](https://github.com/snapetech-org/seerrng/issues/417#issuecomment-6693171466) |
 | [#425 — Native Bindery integration completely broken: "Test" works but saving fails on OpenAPI validation &amp; Outbox crashes](https://github.com/snapetech-org/seerrng/issues/425) | resolved | [Explanation and evidence](https://github.com/snapetech-org/seerrng/issues/425#issuecomment-6693002892) |
-| [#498 — As needed generation prompt](https://github.com/snapetech-org/seerrng/issues/498) | resolved | [Explanation and evidence](https://github.com/snapetech-org/seerrng/issues/498#issuecomment-6693001998) |
+| [#498 — As needed generation prompt](https://github.com/snapetech-org/seerrng/issues/498) | reopened; save-flow candidate pending delivery | [Earlier explanation](https://github.com/snapetech-org/seerrng/issues/498#issuecomment-6693001998) |
 | [#499 — filter defaulting to book](https://github.com/snapetech-org/seerrng/issues/499) | resolved | [Explanation and evidence](https://github.com/snapetech-org/seerrng/issues/499#issuecomment-6693001079) |
-| [#500 — movie collection pull as watched](https://github.com/snapetech-org/seerrng/issues/500) | resolved | [Explanation and evidence](https://github.com/snapetech-org/seerrng/issues/500#issuecomment-6692999970) |
+| [#500 — movie collection pull as watched](https://github.com/snapetech-org/seerrng/issues/500) | reopened; visible-entry candidate pending delivery | [Earlier explanation](https://github.com/snapetech-org/seerrng/issues/500#issuecomment-6692999970) |
 | [#501 — all users affect episode on demand pull](https://github.com/snapetech-org/seerrng/issues/501) | resolved | [Explanation and evidence](https://github.com/snapetech-org/seerrng/issues/501#issuecomment-6692999052) |
 | [#502 — comicvine api key and other key hyperlink](https://github.com/snapetech-org/seerrng/issues/502) | resolved | [Explanation and evidence](https://github.com/snapetech-org/seerrng/issues/502#issuecomment-6692997941) |
 | [#503 — admin episode queue overide on editing a request](https://github.com/snapetech-org/seerrng/issues/503) | resolved | [Explanation and evidence](https://github.com/snapetech-org/seerrng/issues/503#issuecomment-6692996850) |

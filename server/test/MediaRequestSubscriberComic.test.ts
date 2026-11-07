@@ -15,11 +15,30 @@ import MediaIdentifier, {
   MediaIdentifierProvider,
 } from '@server/entity/MediaIdentifier';
 import { MediaRequest } from '@server/entity/MediaRequest';
+import { MediaSearchMetadata } from '@server/entity/MediaSearchMetadata';
 import { User } from '@server/entity/User';
-import notificationManager from '@server/lib/notifications';
+import notificationManager, { Notification } from '@server/lib/notifications';
+import BaseScanner from '@server/lib/scanners/baseScanner';
 import { getSettings } from '@server/lib/settings';
 import { MediaRequestSubscriber } from '@server/subscriber/MediaRequestSubscriber';
 import { resetTestDb, seedTestDb } from '@server/utils/seedTestDb';
+
+class ComicFileScanner extends BaseScanner<never> {
+  constructor() {
+    super('Comic lifecycle regression');
+  }
+  scan(hasFile: boolean, processing: boolean, serviceId = 30) {
+    return this.processComic('1234', {
+      title: 'Saga',
+      hasFile,
+      processing,
+      serviceId,
+      externalServiceId: 1234,
+      externalServiceSlug: '1234',
+      comicServiceType: 'mylar',
+    });
+  }
+}
 
 async function getRequester() {
   return getRepository(User).findOneOrFail({
@@ -122,7 +141,7 @@ describe('MediaRequestSubscriber comic dispatch', () => {
     const updatedRequest = await getRepository(MediaRequest).findOneByOrFail({
       id: request.id,
     });
-    assert.strictEqual(updatedRequest.status, MediaRequestStatus.COMPLETED);
+    assert.strictEqual(updatedRequest.status, MediaRequestStatus.APPROVED);
 
     const updatedMedia = await getRepository(Media).findOneByOrFail({
       id: media.id,
@@ -131,6 +150,7 @@ describe('MediaRequestSubscriber comic dispatch', () => {
     assert.strictEqual(updatedMedia.externalServiceId, 1234);
     assert.strictEqual(updatedMedia.externalServiceSlug, '1234');
     assert.strictEqual(updatedMedia.comicServiceType, 'mylar');
+    assert.strictEqual(updatedMedia.status, MediaStatus.PROCESSING);
   });
 
   it('dispatches to a specific Kapowarr instance, resolving the root folder and using its internal volume id', async () => {
@@ -198,6 +218,11 @@ describe('MediaRequestSubscriber comic dispatch', () => {
     assert.strictEqual(updatedMedia.externalServiceId, 99);
     assert.strictEqual(updatedMedia.externalServiceSlug, '99');
     assert.strictEqual(updatedMedia.comicServiceType, 'kapowarr');
+    assert.strictEqual(updatedMedia.status, MediaStatus.PROCESSING);
+    const updatedRequest = await getRepository(MediaRequest).findOneByOrFail({
+      id: request.id,
+    });
+    assert.strictEqual(updatedRequest.status, MediaRequestStatus.APPROVED);
   });
 
   it('marks the request COMPLETED without dispatching when the comic is already available', async () => {
@@ -292,5 +317,187 @@ describe('MediaRequestSubscriber comic dispatch', () => {
       id: request.id,
     });
     assert.strictEqual(updatedRequest.status, MediaRequestStatus.FAILED);
+  });
+
+  it('waits for complete file evidence, then notifies once with a persisted human title', async () => {
+    getSettings().mylar = [
+      {
+        id: 30,
+        name: 'Mylar',
+        hostname: 'mylar.local',
+        port: 8090,
+        apiKey: 'fixture',
+        useSsl: false,
+        tags: [],
+        isDefault: true,
+        syncEnabled: true,
+        preventSearch: false,
+      },
+    ];
+    mock.method(MylarAPI.prototype, 'addComic', async () => undefined);
+    const notices = mock.method(
+      notificationManager,
+      'sendNotificationIntent',
+      async () => undefined
+    );
+    const media = await saveComicMedia('1234');
+    const request = await createApprovedComicRequest(
+      media,
+      await getRequester()
+    );
+    await new MediaRequestSubscriber().sendToComicBackend(request);
+    const scanner = new ComicFileScanner();
+    for (const [hasFile, processing] of [
+      [false, true],
+      [true, true],
+    ]) {
+      await scanner.scan(hasFile, processing);
+      assert.equal(
+        (await getRepository(MediaRequest).findOneByOrFail({ id: request.id }))
+          .status,
+        MediaRequestStatus.APPROVED
+      );
+      assert.equal(
+        notices.mock.calls.filter(
+          (call) => call.arguments[0] === Notification.MEDIA_AVAILABLE
+        ).length,
+        0
+      );
+    }
+    await scanner.scan(true, false);
+    assert.equal(
+      (await getRepository(MediaRequest).findOneByOrFail({ id: request.id }))
+        .status,
+      MediaRequestStatus.COMPLETED
+    );
+    assert.equal(
+      (
+        await getRepository(MediaSearchMetadata).findOneByOrFail({
+          mediaId: media.id,
+        })
+      ).title,
+      'Saga'
+    );
+    assert.equal(
+      notices.mock.calls.filter(
+        (call) => call.arguments[0] === Notification.MEDIA_AVAILABLE
+      ).length,
+      1
+    );
+    await scanner.scan(true, false);
+    assert.equal(
+      notices.mock.calls.filter(
+        (call) => call.arguments[0] === Notification.MEDIA_AVAILABLE
+      ).length,
+      1
+    );
+    await scanner.scan(false, false);
+    assert.notEqual(
+      (await getRepository(Media).findOneByOrFail({ id: media.id })).status,
+      MediaStatus.AVAILABLE
+    );
+    assert.equal(
+      (await getRepository(MediaRequest).findOneByOrFail({ id: request.id }))
+        .status,
+      MediaRequestStatus.APPROVED
+    );
+  });
+
+  it('repairs a legacy false completion on rescan without dispatching the accepted comic twice', async () => {
+    getSettings().mylar = [
+      {
+        id: 30,
+        name: 'Mylar',
+        hostname: 'mylar.local',
+        port: 8090,
+        apiKey: 'fixture',
+        useSsl: false,
+        tags: [],
+        isDefault: true,
+        syncEnabled: true,
+        preventSearch: false,
+      },
+    ];
+    const adds = mock.method(
+      MylarAPI.prototype,
+      'addComic',
+      async () => undefined
+    );
+    mock.method(
+      notificationManager,
+      'sendNotificationIntent',
+      async () => undefined
+    );
+    const media = await saveComicMedia('1234');
+    const request = await createApprovedComicRequest(
+      media,
+      await getRequester()
+    );
+    await new MediaRequestSubscriber().sendToComicBackend(request);
+    await getRepository(MediaRequest)
+      .createQueryBuilder()
+      .update()
+      .set({ status: MediaRequestStatus.COMPLETED })
+      .where('id = :id', { id: request.id })
+      .callListeners(false)
+      .execute();
+    await new ComicFileScanner().scan(false, true);
+    assert.equal(
+      (await getRepository(MediaRequest).findOneByOrFail({ id: request.id }))
+        .status,
+      MediaRequestStatus.APPROVED
+    );
+    assert.deepEqual(
+      await new MediaRequestSubscriber().dispatchRequestById(request.id),
+      { delivered: true }
+    );
+    assert.equal(adds.mock.calls.length, 1);
+  });
+
+  it('does not complete a request for another destination when one library has the comic', async () => {
+    const base = {
+      name: 'Mylar',
+      hostname: 'mylar.local',
+      port: 8090,
+      apiKey: 'fixture',
+      useSsl: false,
+      tags: [],
+      syncEnabled: true,
+      preventSearch: false,
+    };
+    getSettings().mylar = [
+      { ...base, id: 30, isDefault: true },
+      { ...base, id: 40, isDefault: false },
+    ];
+    mock.method(
+      notificationManager,
+      'sendNotificationIntent',
+      async () => undefined
+    );
+    const adds = mock.method(
+      MylarAPI.prototype,
+      'addComic',
+      async () => undefined
+    );
+    const media = await saveComicMedia('1234');
+    const request = await createApprovedComicRequest(
+      media,
+      await getRequester(),
+      40
+    );
+    await new MediaRequestSubscriber().sendToComicBackend(request);
+    await new ComicFileScanner().scan(true, false, 30);
+    assert.equal(
+      (await getRepository(MediaRequest).findOneByOrFail({ id: request.id }))
+        .status,
+      MediaRequestStatus.APPROVED
+    );
+    await new ComicFileScanner().scan(true, false, 40);
+    assert.equal(
+      (await getRepository(MediaRequest).findOneByOrFail({ id: request.id }))
+        .status,
+      MediaRequestStatus.COMPLETED
+    );
+    assert.equal(adds.mock.calls.length, 1);
   });
 });

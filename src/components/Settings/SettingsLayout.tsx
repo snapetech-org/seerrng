@@ -123,6 +123,7 @@ const SettingsLayout = ({ children }: SettingsLayoutProps) => {
   const dirtyRef = useRef(false);
   const [keywordSearch, setKeywordSearch] = useState('');
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
+  const [managedFormsSaving, setManagedFormsSaving] = useState(false);
   const [showUnsavedChanges, setShowUnsavedChanges] = useState(false);
   const [pageAction, setPageAction] = useState<SettingsPageAction | null>(null);
   const [pendingSettingsSearch, setPendingSettingsSearch] =
@@ -242,6 +243,24 @@ const SettingsLayout = ({ children }: SettingsLayoutProps) => {
       );
 
     if (
+      settingsForms.length > 0 &&
+      settingsForms.every(({ form }) =>
+        form.hasAttribute('data-settings-dirty')
+      )
+    ) {
+      // Each form owns validation and reports success by resetting its dirty
+      // state. An untouched optional form must not be submitted or block saving.
+      settingsForms
+        .filter(
+          ({ form }) =>
+            form.dataset.settingsDirty === 'true' &&
+            form.dataset.settingsSubmitting !== 'true'
+        )
+        .forEach(({ form }) => form.requestSubmit());
+      return;
+    }
+
+    if (
       settingsForms.length === 0 ||
       settingsForms.some(({ submitButton }) => submitButton.disabled)
     ) {
@@ -258,6 +277,35 @@ const SettingsLayout = ({ children }: SettingsLayoutProps) => {
     currentSettingsPathRef.current = router.asPath;
     setDirty(false);
   }, [router.asPath]);
+
+  useEffect(() => {
+    const content = contentRef.current;
+    setManagedFormsSaving(false);
+    if (!content || !hasSaveActions) return;
+    const syncManagedForms = () => {
+      const forms = [
+        ...content.querySelectorAll<HTMLFormElement>('form'),
+      ].filter((form) => form.querySelector('button[type="submit"]'));
+      if (
+        forms.length &&
+        forms.every((form) => form.hasAttribute('data-settings-dirty'))
+      ) {
+        setDirty(forms.some((form) => form.dataset.settingsDirty === 'true'));
+        setManagedFormsSaving(
+          forms.some((form) => form.dataset.settingsSubmitting === 'true')
+        );
+      }
+    };
+    const observer = new MutationObserver(syncManagedForms);
+    observer.observe(content, {
+      subtree: true,
+      childList: true,
+      attributes: true,
+      attributeFilter: ['data-settings-dirty', 'data-settings-submitting'],
+    });
+    syncManagedForms();
+    return () => observer.disconnect();
+  }, [hasSaveActions, router.pathname]);
 
   useEffect(() => {
     router.beforePopState(() => {
@@ -585,7 +633,13 @@ const SettingsLayout = ({ children }: SettingsLayoutProps) => {
           onChangeCapture={(event) => {
             if (hasSaveActions && event.nativeEvent.isTrusted) setDirty(true);
           }}
-          onSubmitCapture={() => setDirty(false)}
+          onSubmitCapture={(event) => {
+            if (
+              !(event.target instanceof HTMLFormElement) ||
+              !event.target.hasAttribute('data-settings-dirty')
+            )
+              setDirty(false);
+          }}
         >
           {children}
         </div>
@@ -614,10 +668,12 @@ const SettingsLayout = ({ children }: SettingsLayoutProps) => {
               data-testid="settings-save-button"
               buttonType="success"
               buttonSize="standard"
-              disabled={!hasUnsavedChanges}
+              disabled={!hasUnsavedChanges || managedFormsSaving}
               onClick={submitSettingsForms}
             >
-              {intl.formatMessage(messages.save)}
+              {intl.formatMessage(
+                managedFormsSaving ? globalMessages.saving : messages.save
+              )}
             </Button>
           )}
         </div>

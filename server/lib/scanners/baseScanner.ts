@@ -24,17 +24,19 @@ import {
   getBookAvailabilityStatus,
   recordBookFileAvailability,
 } from '@server/lib/bookAvailability';
+import { matchesComicDestination } from '@server/lib/comicAvailability';
 import {
   normalizeExternalBookId,
   normalizeMusicBrainzId,
 } from '@server/lib/externalIds';
+import { upsertMediaSearchMetadata } from '@server/lib/mediaSearchMetadata';
 import { upsertMediaServiceStatus } from '@server/lib/mediaServiceStatus';
 import { getSettings } from '@server/lib/settings';
 import { normalizeStashDbId } from '@server/lib/stashdbIdentity';
 import logger from '@server/logger';
 import AsyncLock from '@server/utils/asyncLock';
 import { randomUUID } from 'crypto';
-import { In, type Repository } from 'typeorm';
+import { In, MoreThan, type Repository } from 'typeorm';
 
 // Default scan rates (can be overidden)
 const BUNDLE_SIZE = 20;
@@ -1319,6 +1321,7 @@ class BaseScanner<T> {
                   existingIdentifier?.media?.mediaType === MediaType.COMIC
                     ? existingIdentifier.media
                     : undefined;
+                let scannedMedia = existing;
 
                 if (existing) {
                   let changedExisting = false;
@@ -1327,10 +1330,10 @@ class BaseScanner<T> {
                   existing.status =
                     !processing && hasFile
                       ? MediaStatus.AVAILABLE
-                      : !processing &&
-                          !hasFile &&
-                          previousStatus === MediaStatus.PROCESSING
-                        ? MediaStatus.UNKNOWN
+                      : !processing && !hasFile
+                        ? previousStatus === MediaStatus.DELETED
+                          ? MediaStatus.DELETED
+                          : MediaStatus.UNKNOWN
                         : processing
                           ? previousStatus === MediaStatus.DELETED
                             ? MediaStatus.DELETED
@@ -1401,6 +1404,7 @@ class BaseScanner<T> {
                       status4k: MediaStatus.UNKNOWN,
                     })
                   );
+                  scannedMedia = media;
 
                   await identifierRepository.save(
                     new MediaIdentifier({
@@ -1411,6 +1415,72 @@ class BaseScanner<T> {
                     })
                   );
                   this.log(`Saved new comic: ${title}`);
+                }
+                if (scannedMedia) {
+                  await upsertMediaSearchMetadata(
+                    scannedMedia.id,
+                    {
+                      title: title === 'Unknown Comic' ? undefined : title,
+                      provider: 'comicvine',
+                      externalIds: value,
+                    },
+                    manager
+                  );
+                  // Repair legacy "complete on acceptance" rows from earlier
+                  // releases using this destination's authoritative inventory.
+                  const requests = manager.getRepository(MediaRequest);
+                  let afterId = 0;
+                  for (;;) {
+                    const batch = await requests.find({
+                      where: {
+                        media: { id: scannedMedia.id },
+                        id: MoreThan(afterId),
+                        status: In([
+                          MediaRequestStatus.COMPLETED,
+                          MediaRequestStatus.APPROVED,
+                          MediaRequestStatus.FAILED,
+                        ]),
+                      },
+                      take: 250,
+                      order: { id: 'ASC' },
+                      relationLoadStrategy: 'query',
+                    });
+                    if (!batch.length) break;
+                    for (const request of batch) {
+                      if (!matchesComicDestination(request, scannedMedia))
+                        continue;
+                      let changed = false;
+                      request.serviceTargets = (
+                        request.serviceTargets ?? []
+                      ).map((target) => {
+                        if (
+                          target.format !== 'comic' ||
+                          target.serviceType !== comicServiceType ||
+                          target.serverId !== serviceId ||
+                          target.status === scannedMedia!.status
+                        )
+                          return target;
+                        changed = true;
+                        return { ...target, status: scannedMedia!.status };
+                      });
+                      if (
+                        scannedMedia.status !== MediaStatus.AVAILABLE &&
+                        request.status === MediaRequestStatus.COMPLETED
+                      ) {
+                        request.status = MediaRequestStatus.APPROVED;
+                        changed = true;
+                      } else if (
+                        scannedMedia.status === MediaStatus.AVAILABLE &&
+                        request.status !== MediaRequestStatus.COMPLETED
+                      ) {
+                        request.status = MediaRequestStatus.COMPLETED;
+                        changed = true;
+                      }
+                      if (changed) await requests.save(request);
+                    }
+                    afterId = batch[batch.length - 1].id;
+                    if (batch.length < 250) break;
+                  }
                 }
               })
             )

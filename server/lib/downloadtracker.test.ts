@@ -93,7 +93,7 @@ describe('DownloadTracker Kapowarr queues', () => {
     try {
       await tracker.updateDownloads();
 
-      const downloading = tracker.getComicProgress(40, 1);
+      const downloading = tracker.getComicProgress(40, 1, 'kapowarr');
       assert.strictEqual(downloading.length, 1);
       assert.strictEqual(downloading[0].mediaType, MediaType.COMIC);
       assert.strictEqual(downloading[0].size, 1000);
@@ -104,14 +104,14 @@ describe('DownloadTracker Kapowarr queues', () => {
         !Number.isNaN(downloading[0].estimatedCompletionTime.getTime())
       );
 
-      const queued = tracker.getComicProgress(40, 2);
+      const queued = tracker.getComicProgress(40, 2, 'kapowarr');
       assert.strictEqual(queued.length, 1);
       assert.strictEqual(queued[0].sizeLeft, 500);
       // A stalled/queued item with no measured speed yet has no usable ETA.
       assert.ok(Number.isNaN(queued[0].estimatedCompletionTime.getTime()));
 
-      assert.deepStrictEqual(tracker.getComicProgress(40, 999), []);
-      assert.deepStrictEqual(tracker.getComicProgress(41, 1), []);
+      assert.deepStrictEqual(tracker.getComicProgress(40, 999, 'kapowarr'), []);
+      assert.deepStrictEqual(tracker.getComicProgress(41, 1, 'kapowarr'), []);
     } finally {
       settings.kapowarr = originalKapowarr;
     }
@@ -399,4 +399,24 @@ describe('DownloadTracker update lifecycle', () => {
     await Promise.all([update, reset]);
     assert.deepStrictEqual(tracker.getMovieProgress(1, 99), []);
   });
+});
+
+it('keeps Kapowarr and BackIssue queues separate when their numeric IDs coincide', () => {
+  const tracker = new DownloadTracker();
+  const buffers = tracker as unknown as {
+    kapowarrServers: Record<number, { externalId: number; title: string }[]>;
+    backissueServers: Record<number, { externalId: number; title: string }[]>;
+  };
+  buffers.kapowarrServers[40] = [{ externalId: 557, title: 'Kapowarr comic' }];
+  buffers.backissueServers[40] = [
+    { externalId: 557, title: 'BackIssue comic' },
+  ];
+  assert.deepEqual(
+    tracker.getComicProgress(40, 557, 'kapowarr').map((item) => item.title),
+    ['Kapowarr comic']
+  );
+  assert.deepEqual(
+    tracker.getComicProgress(40, 557, 'backissue').map((item) => item.title),
+    ['BackIssue comic']
+  );
 });

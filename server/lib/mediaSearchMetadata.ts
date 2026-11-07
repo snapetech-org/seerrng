@@ -1,6 +1,7 @@
 import { getRepository } from '@server/datasource';
 import { MediaSearchMetadata } from '@server/entity/MediaSearchMetadata';
 import logger from '@server/logger';
+import type { EntityManager } from 'typeorm';
 
 export type MediaSearchMetadataInput = Partial<
   Pick<
@@ -63,14 +64,17 @@ const searchableFields: (keyof MediaSearchMetadataInput)[] = [
 
 export const upsertMediaSearchMetadata = async (
   mediaId: number | undefined,
-  input: MediaSearchMetadataInput
+  input: MediaSearchMetadataInput,
+  manager?: EntityManager
 ): Promise<void> => {
   if (!mediaId) {
     return;
   }
 
   try {
-    const repository = getRepository(MediaSearchMetadata);
+    const repository =
+      manager?.getRepository(MediaSearchMetadata) ??
+      getRepository(MediaSearchMetadata);
     const existing = await repository.findOne({ where: { mediaId } });
     const next = existing ?? repository.create({ mediaId, searchText: '' });
 

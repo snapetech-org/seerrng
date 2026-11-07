@@ -393,6 +393,13 @@ const CollectionDetails = ({ collection }: CollectionDetailsProps) => {
               split
               label={intl.formatMessage(messages.requestCollection)}
             />
+            <Button
+              buttonType="bulkRequest"
+              buttonSize="sm"
+              onClick={() => setQueueModal(true)}
+            >
+              {intl.formatMessage(messages.queueCollection)}
+            </Button>
           </>
         }
         onRefresh={() => {
@@ -577,13 +584,15 @@ const CollectionDetails = ({ collection }: CollectionDetailsProps) => {
               )}
               <CollectionAssociationsButton parts={data.parts} />
               <FormatRequestControl options={requestOptions} />
-              <Button
-                buttonType="bulkRequest"
-                buttonSize="sm"
-                onClick={() => setQueueModal(true)}
-              >
-                {intl.formatMessage(messages.queueCollection)}
-              </Button>
+              {!upstream && (
+                <Button
+                  buttonType="bulkRequest"
+                  buttonSize="sm"
+                  onClick={() => setQueueModal(true)}
+                >
+                  {intl.formatMessage(messages.queueCollection)}
+                </Button>
+              )}
             </div>
 
             <CollectionMetadataDisclosures parts={data.parts} />

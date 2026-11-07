@@ -229,6 +229,8 @@ describe('MediaSubscriber', () => {
         status: MediaStatus.PROCESSING,
         status4k: MediaStatus.UNKNOWN,
         comicServiceType: 'kapowarr',
+        serviceId: 30,
+        externalServiceId: 557,
       })
     );
     const request = await getRepository(MediaRequest).save(
