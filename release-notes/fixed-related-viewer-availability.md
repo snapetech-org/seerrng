@@ -1,3 +1,11 @@
+---
+category: fixed
+audience: users
+area: library
+action: none
+breaking: false
+---
+
 # Search availability matches viewer access
 
 Search and discovery verify Plex, Jellyfin and Emby access before removing private

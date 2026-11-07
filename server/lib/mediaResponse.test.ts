@@ -1,12 +1,17 @@
 import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
 
-import { MediaRequestStatus, MediaType } from '@server/constants/media';
+import {
+  MediaRequestStatus,
+  MediaStatus,
+  MediaType,
+} from '@server/constants/media';
 import Issue from '@server/entity/Issue';
 import Media from '@server/entity/Media';
 import { MediaRequest } from '@server/entity/MediaRequest';
 import SeasonRequest from '@server/entity/SeasonRequest';
 import { User } from '@server/entity/User';
+import { hasAvailableBookFormat } from './bookAvailability';
 import { resolveLiveDownloadToken } from './liveDownloadTokens';
 import {
   aliasDownloadId,
@@ -15,6 +20,22 @@ import {
   restrictMediaRequestsForUser,
 } from './mediaResponse';
 import { Permission } from './permissions';
+
+for (const hasFile of [true, false]) {
+  it(`preserves public Plex audiobook file evidence without revealing its item key (${hasFile})`, () => {
+    const media = restrictMediaOperationalFieldsForUser(
+      new Media({
+        mediaType: MediaType.BOOK,
+        status: MediaStatus.AVAILABLE,
+        ratingKey: hasFile ? 'private-plex-audio-item' : null,
+      }),
+      new User({ id: 10, permissions: Permission.REQUEST })
+    )!;
+    assert.equal(media.ratingKey, undefined);
+    assert.equal(hasAvailableBookFormat(media, 'audiobook'), hasFile);
+    assert.equal(hasAvailableBookFormat(media, 'ebook'), false);
+  });
+}
 
 describe('aliasDownloadId', () => {
   it('uses a stable installation-keyed alias for low-entropy queue IDs', () => {

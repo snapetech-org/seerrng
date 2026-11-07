@@ -6992,6 +6992,10 @@ components:
           items:
             type: integer
             minimum: 0
+        hasPlexAudiobookFile:
+          type: boolean
+          readOnly: true
+          description: Confirmed Plex audiobook file evidence when the private native item key is omitted from this response. Availability status must also permit an available copy.
         availableMusicServiceIds:
           type: array
           nullable: true

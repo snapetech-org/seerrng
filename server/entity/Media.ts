@@ -66,6 +66,9 @@ import Season from './Season';
   where: `"mediaType" = 'music' AND "mbId" IS NOT NULL`,
 })
 class Media {
+  // Response-only evidence survives private native-key redaction.
+  public hasPlexAudiobookFile?: boolean;
+
   public hasActiveRequest?: boolean;
 
   public viewerRequestCoverage?: ViewerRequestCoverage;
@@ -470,6 +473,7 @@ class Media {
     this.comicServiceType = null;
     if (!preserveMediaServerKeys) {
       this.ratingKey = null;
+      this.hasPlexAudiobookFile = undefined;
       this.jellyfinMediaId = null;
     }
     this.ratingKeyMp3 = null;

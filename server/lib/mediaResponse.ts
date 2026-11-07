@@ -1,3 +1,4 @@
+import { MediaType } from '@server/constants/media';
 import type Media from '@server/entity/Media';
 import type { MediaRequest } from '@server/entity/MediaRequest';
 import type SeasonRequest from '@server/entity/SeasonRequest';
@@ -136,6 +137,10 @@ export const restrictMediaOperationalFieldsForUser = (
   }
 
   const isAdmin = user?.hasPermission(Permission.ADMIN) ?? false;
+  if (media.mediaType === MediaType.BOOK) {
+    media.hasPlexAudiobookFile =
+      media.hasPlexAudiobookFile === true || !!media.ratingKey;
+  }
   if (!isAdmin) {
     media.downloadStatus = (media.downloadStatus ?? []).map((item) =>
       projectDownloadForNonAdmin(item, user?.id)

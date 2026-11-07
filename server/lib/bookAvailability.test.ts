@@ -21,6 +21,14 @@ const bookMedia = (overrides: Partial<Media> = {}) =>
     ...overrides,
   });
 
+test('public Plex evidence remains audio-only and cannot override unavailable status', () => {
+  const media = bookMedia({ hasPlexAudiobookFile: true });
+  assert.equal(hasAvailableBookFormat(media, 'audiobook'), true);
+  assert.equal(hasAvailableBookFormat(media, 'ebook'), false);
+  media.status = MediaStatus.UNKNOWN;
+  assert.equal(hasAvailableBookFormat(media, 'audiobook'), false);
+});
+
 test('book availability follows the selected format', () => {
   const ebookOnly = bookMedia({
     serviceId: 1,
