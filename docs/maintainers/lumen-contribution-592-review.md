@@ -36,8 +36,9 @@ harness waits for the selected theme and sheet animations and checks both footer
 buttons remain in the viewport. Contact sheets were visually reviewed. No CSS
 was changed by the review repairs. The contributor's new styles remain within
 Lumen's existing standalone semantic owners, separate from native Seerr themes.
-The initial comparison has24 pairs; the final pixel comparison is retained with
-the screenshots. Exact-head hosted proxy/image/security validation remains the
+All24 final matching pairs are pixel-identical after finite animations settle.
+The additional8 visual cases pass; comparison receipts are retained with the
+screenshots. Exact-head hosted proxy/image/security validation remains the
 integration gate.
 
 Untrusted build and browser execution used disposable containers without host

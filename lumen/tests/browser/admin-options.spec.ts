@@ -107,6 +107,20 @@ async function quickRequest(page: Page, title: string) {
     .click();
 }
 
+async function settleVisuals(page: Page) {
+  await page.evaluate(async () => {
+    await document.fonts.ready;
+    await Promise.all(
+      document
+        .getAnimations()
+        .filter((animation) =>
+          Number.isFinite(animation.effect?.getComputedTiming().endTime)
+        )
+        .map((animation) => animation.finished.catch(() => {}))
+    );
+  });
+}
+
 for (const theme of ['light', 'dark'] as const) {
   test(`review settings, destination sheet and family sign-in in ${theme}`, async ({
     page,
@@ -117,6 +131,7 @@ for (const theme of ['light', 'dark'] as const) {
       page.getByRole('heading', { name: 'Lumen settings for everyone' })
     ).toBeVisible();
     await expect(page.locator('html')).toHaveAttribute('data-theme', theme);
+    await settleVisuals(page);
     await page.screenshot({
       path: info.outputPath('settings.png'),
       fullPage: true,
@@ -138,6 +153,7 @@ for (const theme of ['light', 'dark'] as const) {
     await expect(
       sheet.getByRole('button', { name: 'Cancel', exact: true })
     ).toBeInViewport();
+    await settleVisuals(page);
     await page.screenshot({
       path: info.outputPath('request-sheet.png'),
       fullPage: true,
@@ -157,6 +173,7 @@ for (const theme of ['light', 'dark'] as const) {
           .map((animation) => animation.finished.catch(() => {}))
       );
     });
+    await settleVisuals(page);
     await page.screenshot({
       path: info.outputPath('family-sign-in.png'),
       fullPage: true,
