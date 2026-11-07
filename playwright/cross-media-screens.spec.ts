@@ -70,6 +70,31 @@ for (const [path, heading] of screens) {
         });
       });
     }
+    if (
+      path === '/discover/book-recommendations' ||
+      path === '/discover/collectors'
+    ) {
+      // These screen-render cases need the same configured category state as
+      // their primary catalogs. Unavailable categories are covered separately.
+      await page.route('**/api/v1/settings/public', async (route) => {
+        const response = await route.fetch();
+        const settings = await response.json();
+        const books = path === '/discover/book-recommendations';
+        await route.fulfill({
+          response,
+          json: {
+            ...settings,
+            ...(books
+              ? { booksEnabled: true, ebookServiceEnabled: true }
+              : { musicEnabled: true }),
+            enabledMediaCategories: {
+              ...settings.enabledMediaCategories,
+              [books ? 'ebook' : 'music']: true,
+            },
+          },
+        });
+      });
+    }
     const errors: string[] = [];
     page.on('pageerror', (e) => errors.push(`pageerror: ${e.message}`));
     page.on('console', (m) => {
