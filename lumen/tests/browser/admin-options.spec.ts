@@ -1233,3 +1233,43 @@ test('admin settings page explains a folder it can’t write', async ({
   ).toHaveCount(0);
   await expect(page.getByText(/can’t write to its \/lumen-data/)).toBeVisible();
 });
+
+test('downloads that have started show even when far down the history', async ({
+  page,
+}) => {
+  await fixtures(page, { permissions: 2 });
+  await requestRoutes(page);
+  const download = (sizeLeft: number) => ({
+    ...waitingRequest,
+    status: 2,
+    requestedBy: { id: 1, displayName: 'fam' },
+    media: {
+      ...waitingRequest.media,
+      status: 3,
+      downloadStatus: [{ size: 100, sizeLeft, timeLeft: '00:03:00' }],
+    },
+  });
+  // newest requests: one queued download; the running one is only in the in-progress list
+  await page.route('**/api/v1/request?*', (route) => {
+    const q = new URL(route.request().url()).searchParams;
+    const filter = q.get('filter');
+    const results =
+      filter === 'processing'
+        ? [
+            { ...download(100), id: 80 },
+            { ...download(40), id: 81 },
+          ]
+        : filter === 'all'
+          ? [{ ...download(100), id: 80 }]
+          : [];
+    return route.fulfill({ json: { pageInfo: { pages: 1 }, results } });
+  });
+  await page.goto('/requests');
+  await expect(page.locator('.rq')).toHaveCount(2);
+  await expect(page.locator('.rq').getByText('Downloading 60%')).toBeVisible();
+  await expect(page.locator('.rq').getByText('Queued')).toBeVisible();
+  await page.getByRole('button', { name: /Everyone/ }).click();
+  await expect(page.locator('.rq')).toHaveCount(2);
+  await expect(page.locator('.rq').first()).toContainText('Downloading 60%');
+  await expect(page.locator('.rq').nth(1)).toContainText('Queued');
+});

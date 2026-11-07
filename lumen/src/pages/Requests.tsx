@@ -142,7 +142,13 @@ function state(
   if (downloading)
     return {
       k: 'dl',
-      word: pct != null ? `Downloading ${pct}%` : 'Downloading',
+      // nothing here yet: it's waiting its turn in the download client's queue
+      word:
+        pct === 0
+          ? 'Queued'
+          : pct != null
+            ? `Downloading ${pct}%`
+            : 'Downloading',
       ico: 'down',
       active: true,
       pct,
@@ -175,6 +181,38 @@ function state(
   }
   return { k: 'wait', word: 'Requested', ico: 'clock', active: true };
 }
+
+// How much of a request's download is here (0 to 1). Radarr and Sonarr call everything in the
+// download client's queue "downloading", so this is what tells a running download from a
+// queued one.
+function progress(r: RequestItem) {
+  const dls =
+    (r.is4k
+      ? r.media.downloadStatus4k
+      : r.bookFormat === 'audiobook'
+        ? r.media.audiobookDownloadStatus
+        : r.media.downloadStatus) || [];
+  const size = dls.reduce((a, d) => a + (d.size || 0), 0);
+  const left = dls.reduce((a, d) => a + (d.sizeLeft || 0), 0);
+  return size ? 1 - left / size : 0;
+}
+// Requests whose download has started, wherever they are in the history: a big queue pushes
+// the one that's actually downloading far past the newest requests. `query` narrows the list
+// (e.g. one person's requests). Two pages of SeerrNG's in-progress requests are plenty.
+async function startedDownloads(query = '') {
+  const page = (skip: number) =>
+    api<{ pageInfo?: { pages?: number }; results: RequestItem[] }>(
+      `/request?take=100&skip=${skip}&filter=processing&sort=added${query}`
+    );
+  const first = await page(0);
+  const more =
+    (first.pageInfo?.pages || 1) > 1 ? (await page(100)).results : [];
+  return first.results.concat(more).filter((r) => progress(r) > 0);
+}
+const merge = (...lists: RequestItem[][]) => {
+  const seen = new Set<number>();
+  return lists.flat().filter((r) => !seen.has(r.id) && !!seen.add(r.id));
+};
 
 // titles and artwork don't change, so each request is described once and kept on this device.
 // A lookup that failed for a passing reason isn't kept, so the next visit tries again.
@@ -499,13 +537,22 @@ export default function Requests() {
         `/request?take=${take}&skip=0&filter=${filter}&sort=added`
       ).then((d) => d.results);
     // every request still waiting, then the newest of the rest
-    Promise.all([list('pending', 50), list('all', 20)])
-      .then(([pending, recent]) => {
-        const seen = new Set(pending.map((r) => r.id));
-        return describeAll(
-          pending.concat(recent.filter((r) => !seen.has(r.id)))
-        );
-      })
+    // waiting for approval, then downloads that have started (furthest along first), then the
+    // newest of the rest
+    Promise.all([
+      list('pending', 50),
+      startedDownloads().catch(() => []),
+      list('all', 20),
+    ])
+      .then(([pending, started, recent]) =>
+        describeAll(
+          merge(
+            pending,
+            started.sort((a, b) => progress(b) - progress(a)),
+            recent
+          )
+        )
+      )
       .then((x) => live && setOthers(x))
       .catch(() => live && setOthers([]))
       .finally(() => live && setRefreshing(false));
@@ -517,9 +564,12 @@ export default function Requests() {
   useEffect(() => {
     if (!user || everyone) return;
     let live = true;
-    const media = api<{ results: RequestItem[] }>(
-      `/request?take=40&skip=0&filter=all&sort=added&requestedBy=${user.id}`
-    ).then((d) => describeAll(d.results));
+    const media = Promise.all([
+      api<{ results: RequestItem[] }>(
+        `/request?take=40&skip=0&filter=all&sort=added&requestedBy=${user.id}`
+      ).then((d) => d.results),
+      startedDownloads(`&requestedBy=${user.id}`).catch(() => []),
+    ]).then(([recent, started]) => describeAll(merge(recent, started)));
     // game requests only when a games category is on (the endpoint refuses otherwise)
     const games = extras.games.length
       ? api<{ results: SoftwareRequest[] }>(

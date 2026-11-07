@@ -61,9 +61,12 @@ export function statusOf(
     return d
       ? {
           k: 'dl',
-          word: d.size
-            ? `Downloading ${Math.round((1 - d.sizeLeft / d.size) * 100)}%`
-            : 'Downloading',
+          // still all to come: waiting its turn in the download client's queue
+          word: !d.size
+            ? 'Downloading'
+            : d.sizeLeft >= d.size
+              ? 'Queued'
+              : `Downloading ${Math.round((1 - d.sizeLeft / d.size) * 100)}%`,
           ico: 'down',
         }
       : { k: 'wait', word: 'Requested', ico: 'clock' };
