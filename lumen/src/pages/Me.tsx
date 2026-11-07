@@ -1,18 +1,18 @@
-import { useAuth } from '../auth';
 import { Link } from 'react-router-dom';
+import { useAuth } from '../auth';
 import { Section } from '../components/cards';
 import { canChooseRequestOptions } from '../components/detail';
 import { initials, SEERR_PUBLIC_URL } from '../components/Shell';
 import { CAN_HOVER, useApi } from '../hooks';
 import { Icon } from '../icons';
 import { mediaServer, services } from '../mediaServer';
-import { canSeeRecent } from './Discover';
 import {
   DISCOVER_ROWS,
   discoverRowLabel,
   usePrefs,
   type DiscoverRow,
 } from '../settings';
+import { canSeeRecent } from './Discover';
 
 type Quota = Record<
   string,

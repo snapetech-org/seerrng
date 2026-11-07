@@ -10,8 +10,8 @@ import { useAuth } from '../auth';
 import { useExtras } from '../extras';
 import { useBack } from '../hooks';
 import { Icon, type IconName } from '../icons';
-import { BrandMark, brandName } from './brand';
 import { usePrefs } from '../settings';
+import { BrandMark, brandName } from './brand';
 
 // scroll position of each history entry, for Back
 const scrollSpots = new Map<string, number>();
