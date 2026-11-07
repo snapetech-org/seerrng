@@ -9,6 +9,12 @@ v3.72.7 section consolidates changes from the requested v3.71.4 baseline
 through v3.72.7, including changes also represented by unpublished interim
 tags. The comparison link is the complete commit range.
 
+## [3.72.20](https://github.com/snapetech-org/seerrng/compare/v3.72.19..v3.72.20) - 2026-11-06
+
+### Fixed
+
+- **Navigation:** Book Recommendations and Collector Picks respect global media category switches and supporting service configuration in desktop and mobile menus. Either enabled book format retains Book Recommendations; disabling Music hides Collector Picks.
+
 ## [3.72.19](https://github.com/snapetech-org/seerrng/compare/v3.72.18..v3.72.19) - 2026-11-06
 
 ### Fixed
