@@ -330,23 +330,28 @@ const SettingsLayout = ({ children }: SettingsLayoutProps) => {
     setPendingSettingsSearch(null);
   };
 
-  const focusSetting = (element: HTMLElement) => {
+  const focusSetting = (element: HTMLElement): boolean => {
     const row =
       element.closest<HTMLElement>(
         '.form-row, .settings-group-card, section'
       ) ?? element;
-    const focusTarget = element.matches(
-      'input, select, textarea, button, [tabindex]'
-    )
+    const controls = 'input, select, textarea, button, [tabindex]';
+    const available = (candidate: HTMLElement) =>
+      candidate.getClientRects().length > 0 &&
+      !candidate.matches(':disabled') &&
+      !candidate.closest('[hidden], [inert], [aria-hidden="true"]') &&
+      getComputedStyle(candidate).visibility !== 'hidden';
+    const focusTarget = element.matches(controls)
       ? element
-      : (row.querySelector<HTMLElement>(
-          'input, select, textarea, button, [tabindex]'
+      : (Array.from(row.querySelectorAll<HTMLElement>(controls)).find(
+          available
         ) ?? element);
+    if (!available(focusTarget)) return false;
     row.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    if (!focusTarget.matches('input, select, textarea, button, [tabindex]')) {
-      focusTarget.tabIndex = -1;
-    }
+    if (!focusTarget.matches(controls)) focusTarget.tabIndex = -1;
     focusTarget.focus({ preventScroll: true });
+    // A DOM match is not success while its panel/control is still unavailable.
+    return document.activeElement === focusTarget;
   };
 
   const focusSettingsSearchResult = (element: HTMLElement) => {
@@ -482,22 +487,49 @@ const SettingsLayout = ({ children }: SettingsLayoutProps) => {
       ) {
         return false;
       }
-      focusSetting(target);
-      return true;
+      return focusSetting(target);
     };
 
-    if (tryFocusTarget() || !contentRef.current) return;
-    const observer = new MutationObserver(() => {
-      if (tryFocusTarget()) observer.disconnect();
+    if (!contentRef.current) return;
+    let frame: number | undefined;
+    const scheduleFocus = () => {
+      if (frame !== undefined) return;
+      frame = window.requestAnimationFrame(() => {
+        frame = undefined;
+        if (tryFocusTarget()) observer.disconnect();
+      });
+    };
+    const observer = new MutationObserver(scheduleFocus);
+    observer.observe(contentRef.current, {
+      childList: true,
+      subtree: true,
+      attributes: true,
+      attributeFilter: [
+        'hidden',
+        'inert',
+        'aria-hidden',
+        'class',
+        'style',
+        'disabled',
+      ],
     });
-    observer.observe(contentRef.current, { childList: true, subtree: true });
-    const timeout = window.setTimeout(() => observer.disconnect(), 5000);
+    scheduleFocus();
+    const timeout = window.setTimeout(() => {
+      observer.disconnect();
+      if (frame !== undefined) window.cancelAnimationFrame(frame);
+    }, 5000);
 
     return () => {
       observer.disconnect();
+      if (frame !== undefined) window.cancelAnimationFrame(frame);
       window.clearTimeout(timeout);
     };
-  }, [router.asPath, router.isReady, router.query.settingsSearchTarget]);
+  }, [
+    router.asPath,
+    router.isReady,
+    router.query.settingsSearchTarget,
+    upstream,
+  ]);
 
   return (
     <SettingsPageActionContext.Provider value={registerPageAction}>

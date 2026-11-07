@@ -15,6 +15,7 @@ tags. The comparison link is the complete commit range.
 
 - **Lumen:** Merge the wide-screen layout, explicit list retries, partial series availability, book reading links and clearer internal/browser address aliases. Prevent stale paged responses or game-search errors from blocking or replacing a new query.
 - **SeerrOrig:** Restore upstream Seerr's layout and interaction flow instead of recolouring John's compact interface. Restore its search, navigation spacing, controls, shelf geometry, detail headers, open overview/facts/cast, season accordions, request format menus and season table. Keep SeerrNG integrations and authorized advanced options available.
+- **Settings search:** Wait for a visible, enabled destination before completing keyboard focus, including panels that appear after navigation.
 - **Public sign-in:** Remove duplicate card padding, restore upstream field sizing and Plex branding, and retain transport-security notices.
 - **Theme loading:** Accept upstream composition in installed theme catalogs so account selections and custom themes continue to restore and save. Keep SeerrNGJ's separate design.
 - **Collection and settings layout:** Restore upstream collection headers, open overview and movie shelves, settings tabs/phone selector, section typography, field spacing and checkbox geometry. Keep contextual Swipe accessible and settings footers within the viewport.

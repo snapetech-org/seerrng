@@ -102,3 +102,8 @@ field sizing and Plex branding; SeerrNG transport-security notices remain.
 The configured upstream instance redirects setup to login, so its initial setup
 wizard is not claimed as a source comparison. Existing setup transport tests
 verify the SeerrNG-only entry and rejected-save recovery.
+
+Settings search now confirms actual keyboard focus after a visible destination
+is ready, rather than treating a DOM match as success. A delayed-visibility
+regression reproduces lost focus on both prior themes; a bounded observer now
+tracks visibility/control readiness and schedules focus after layout.
