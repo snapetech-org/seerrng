@@ -1,8 +1,8 @@
 import { useEffect, useState, type ReactNode } from 'react';
 import { api, type Person, type RequestOptions } from '../api';
 import { useAuth } from '../auth';
-import { Glyph, type Stat } from './cards';
 import { Icon, type IconName } from '../icons';
+import { Glyph, type Stat } from './cards';
 
 const hue = (s: string) =>
   [...s].reduce((h, c) => (h * 31 + c.charCodeAt(0)) % 360, 0);
