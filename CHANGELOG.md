@@ -15,6 +15,8 @@ tags. The comparison link is the complete commit range.
 
 #### Added
 
+- **Lumen:** A native amd64/arm64 publisher packages tested Lumen images for each published stable SeerrNG version. It verifies source identity, production filesystem parity, vulnerability scans, and public registry access before updating the latest image alias.
+  - **Action required:** Use the updated Lumen Compose file after the first public image is available.
 - **Lumen:** Lumen adds permission-aware Everyone request management, requester selection, saved shared settings and branding uploads, loading placeholders, and account-scoped discovery caching. Failed Everyone loads show Retry. Uploads retain prior images until operators choose to remove them; cache retention expires after one day.
   - **Action required:** Mount a writable /lumen-data folder to save shared settings or upload branding from Lumen.
 
@@ -27,6 +29,7 @@ tags. The comparison link is the complete commit range.
 - **Settings:** Settings Search waits for account permissions before accepting a query, so an early search for an administrator setting cannot resolve against an incomplete destination list.
 
 ### 🚀 Features
+- *(lumen)* Publish tested native images for stable app releases - ([4ec5e12](https://github.com/snapetech-org/seerrng/commit/4ec5e12d775ca046baf90107d25be92b91fc93f7))
 - *(lumen)* Everyone shows every request: filters and Show more - ([485677b](https://github.com/snapetech-org/seerrng/commit/485677b1e38fdd83b4437a5b26d3ba532d2c6b06))
 - *(lumen)* Logo shape and a custom media server name - ([e71d5f3](https://github.com/snapetech-org/seerrng/commit/e71d5f394957c1c106e167d047d2a83a25cb2cc5))
 - *(lumen)* Upload the logo and tab icon from the admin settings page - ([f6bfd8f](https://github.com/snapetech-org/seerrng/commit/f6bfd8f088746fab70e9d24ad550d1534830f465))
@@ -40,6 +43,12 @@ tags. The comparison link is the complete commit range.
 
 ### ⚡ Performance
 - *(lumen)* Keep recent answers instead of asking SeerrNG every time - ([edcd42f](https://github.com/snapetech-org/seerrng/commit/edcd42faa2c4a13e54e34f4b651afef3cd2f2f4b))
+
+### 🎨 Styling
+- *(lumen)* Satisfy import ordering in release qualification - ([06e403c](https://github.com/snapetech-org/seerrng/commit/06e403cc66ddcfa311f16882f25daae083289ac2))
+
+### 🧪 Testing
+- *(ui)* Verify each theme phone grid against its own contract - ([02d2215](https://github.com/snapetech-org/seerrng/commit/02d2215409756b7499947c3f002d0fd341dc5f90))
 
 ## [3.72.21](https://github.com/snapetech-org/seerrng/compare/v3.72.20..v3.72.21) - 2026-11-07
 
