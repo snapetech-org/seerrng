@@ -1,13 +1,16 @@
 # Closed Issue Resolution Audit — November 6, 2026
 
-All 72 repository issues were inventoried, including every closed issue. The
+All 73 repository issues were inventoried, including every closed issue. The
 audit checked the requested behavior against current source and the earlier
 behavioral verification records, then read back the public issue threads.
 
-- 71 issues remain closed with a resolving explanation or fix reference.
+- 72 issues are closed with a resolving explanation or fix reference.
 - 36 missing or stale public explanations were added and read back.
 - 35 existing resolution explanations were retained.
-- Issue #409 was reopened because its additional availability defect remains.
+- Issue #409 was reopened for its availability defects, then resolved in v3.72.19
+  after final CI, publication and downloaded-image verification.
+- New issue #594 has a verified fix in main and remains open pending v3.72.20
+  publication and actual-image checks.
 - The ten resolving pull requests referenced by the selected comments were
   independently confirmed merged, with their merge commits in `v3.72.15`.
   Explicit commit links and recorded source/test paths were also checked
@@ -20,14 +23,20 @@ focused tests, production/browser checks and provider limitations remain scoped
 as described in each issue. The separate UI replacement build is tracked in
 [Compact Summary Theme Validation](compact-summary-theme-validation.md).
 
-## Remaining Work
+## Follow-Up Status
 
-[#409](https://github.com/snapetech-org/seerrng/issues/409) has a verified fix for
-provider-scoped Chaptarr lookup identity, but that does not resolve its separate
-premature completion/availability report. Manager record IDs are currently
-treated as evidence of imported files, including across ebook and audiobook
-formats. The issue was reopened with this cause and must remain open until
-file-backed format availability is implemented and verified.
+[#409](https://github.com/snapetech-org/seerrng/issues/409) is resolved by the
+provider-scoped lookup repair, per-format file evidence and the ABS audio-file
+follow-up published in v3.72.19. Its
+[final receipt](https://github.com/snapetech-org/seerrng/issues/409#issuecomment-6701620023)
+links the commits, full CI, release, production-image proof and rescan action.
+
+[#594](https://github.com/snapetech-org/seerrng/issues/594) was reported during
+the final sweep. The shared navigation filter now applies category/service
+eligibility to Book Recommendations and Collector Picks. Its
+[main-source receipt](https://github.com/snapetech-org/seerrng/issues/594#issuecomment-6701643231)
+links the fix and matched production browser checks. It remains open until the
+replacement build is verified.
 
 ## Resolution Ledger
 
@@ -97,7 +106,7 @@ directive; it must not be restored merely to satisfy the original feature reques
 | [#382 — Bookshelf-scoped IDs are ignored by book media matching without ISBN](https://github.com/snapetech-org/seerrng/issues/382) | resolved | [Explanation and evidence](https://github.com/snapetech-org/seerrng/issues/382#issuecomment-6693191274) |
 | [#400 — \[UX\] Settings &gt; Prowlarr &gt; Indexer assignments by medium](https://github.com/snapetech-org/seerrng/issues/400) | resolved | [Explanation and evidence](https://github.com/snapetech-org/seerrng/issues/400#issuecomment-6393107271) |
 | [#401 — \[UX / CODE\] Blocklist - Show only when used](https://github.com/snapetech-org/seerrng/issues/401) | resolved | [Explanation and evidence](https://github.com/snapetech-org/seerrng/issues/401#issuecomment-6393107745) |
-| [#409 — Book requests from ChaptarrNG catalogue results fail: lookup uses bare provider id, ChaptarrNG 0.9.977](https://github.com/snapetech-org/seerrng/issues/409) | reopened: unresolved per-format availability | [Explanation and evidence](https://github.com/snapetech-org/seerrng/issues/409#issuecomment-6693071549) |
+| [#409 — Book requests from ChaptarrNG catalogue results fail: lookup uses bare provider id, ChaptarrNG 0.9.977](https://github.com/snapetech-org/seerrng/issues/409) | resolved and published in v3.72.19 | [Explanation and evidence](https://github.com/snapetech-org/seerrng/issues/409#issuecomment-6701620023) |
 | [#412 — Plex Watchlist sync drops every item: ratingKey check only accepts digits, Plex Discover keys are hex](https://github.com/snapetech-org/seerrng/issues/412) | resolved | [Explanation and evidence](https://github.com/snapetech-org/seerrng/issues/412#issuecomment-6693173246) |
 | [#413 — Adult scene detail fails when Whisparr server ID is 0](https://github.com/snapetech-org/seerrng/issues/413) | resolved | [Explanation and evidence](https://github.com/snapetech-org/seerrng/issues/413#issuecomment-6693172350) |
 | [#415 — seerrng-migrate.mjs rejects freshly initialized SQLite target: seerr\_migration\_lock counted as user data](https://github.com/snapetech-org/seerrng/issues/415) | resolved | [Explanation and evidence](https://github.com/snapetech-org/seerrng/issues/415#issuecomment-6693003820) |
@@ -131,3 +140,12 @@ behavior and any limitations, and identify the published release when available.
 A duplicate or superseded disposition must identify the resolving replacement.
 If the claimed resolution is incomplete, reopen the issue instead of recording
 another unconditional completion statement.
+
+
+The final public-link check read all 72 closed issues again and verified every
+ledger resolution comment against the live thread. The 99 historically closed,
+unmerged PRs also have verified public receipts: 59 newly posted bodies match
+exact readbacks, 36 existing explanations remain intact and four additional
+source reconciliations are present. All 416 genuinely merged PRs have their
+merge commits in main. These dated counts are a snapshot, not an assertion
+about issues created after this audit.

@@ -1,8 +1,11 @@
 # Book Availability Follow-Up — Issue 409
 
-Issue [#409](https://github.com/snapetech-org/seerrng/issues/409) remains open.
-The earlier provider-scoped Chaptarr lookup fix does not establish that all
-reported availability behavior is resolved.
+Issue [#409](https://github.com/snapetech-org/seerrng/issues/409) was resolved in
+[v3.72.19](https://github.com/snapetech-org/seerrng/releases/tag/v3.72.19) after
+verifying both the provider-scoped lookup repair and the separate file-evidence
+defects. [Final public resolution](https://github.com/snapetech-org/seerrng/issues/409#issuecomment-6701620023).
+The milestone notes below retain their original implementation and validation
+sequence; the final qualification supersedes their pending closure gates.
 
 ## Confirmed Defects Repaired in This Milestone
 
@@ -90,8 +93,8 @@ enabled book services after upgrading. Migration reruns preserve positive
 observations; rollback removes the new columns without resurrecting the old
 unverified availability claims. Native PostgreSQL 16 migration up, repeat and down checks passed on an isolated local database.
 
-Local qualification is complete; #409 stays open pending CI on the committed
-main revision. The production server/client build, prebuild contracts and lint
+At this milestone, local qualification was complete and #409 stayed open
+pending CI on the committed main revision. The production server/client build, prebuild contracts and lint
 (no errors) pass. The final admission/helper suite passes 257 tests, including
 full request routes, stale completion, mixed-format files and alternate profiles.
 Earlier focused scanner, subscriber, cleanup, notification and tracking suites
@@ -128,8 +131,8 @@ Main CI on the first milestone found two available-library fixtures and one
 Cypress discovery fixture still using manager IDs as their entire proof. They
 now explicitly seed imported-file observations. The library regression suite
 passes8 tests, including exclusion of manager-only legacy AVAILABLE records.
-The final integrated main CI remains the closure gate; no old failing run is
-reported as qualification of these later fixes.
+Final integrated main CI remained the closure gate; old failing runs were not
+used as qualification of these later fixes.
 # Public Plex evidence after redaction
 
 The final response audit reproduced another missing-audio case: ordinary users
@@ -169,3 +172,31 @@ Primary contract references: [ABS ebook support](https://audiobookshelf.org/docs
 and [ABS Book API objects](https://api.audiobookshelf.org/#book).
 The correction does not add ebook ingestion through ABS; its existing
 SeerrNG integration supplies audiobook availability.
+
+
+## Published Qualification — v3.72.19
+
+[Full source CI](https://github.com/snapetech-org/seerrng/actions/runs/42328148067)
+passed at `1e23ef329a1dfb96da328cf2b6d0a70715170401`: 4,719 native tests
+passed, five intentional skips and zero failures. Build, typecheck, lint, browser
+suites, tooling, docs and Helm checks passed. The
+[release](https://github.com/snapetech-org/seerrng/actions/runs/42331055907)
+published 29 assets on November 7, 2026 UTC. All 21 canonical and legacy image
+aliases were verified at manifest digest
+`sha256:7a6df31ce2d6f71d12242c0820f502787a3dab623ea829ffd6a7b4ef31c6f36f`.
+
+The downloaded image's labels and HTTP status identify that exact source. Its
+compiled scanner passed an isolated HTTP/SQLite proof for three ebook-only and
+stale-audio cases, retaining an independently confirmed ebook. Its running app
+passed 51 critical UI checks and four persisted book-state groups across both
+interface themes at phone and desktop sizes. All six compiled CSS files and
+both served theme packages match the verified v3.72.18 image byte for byte.
+Fourteen of 16 book-state/dialog captures match the source captures pixel for
+pixel; the other two have reviewed placeholder/loading paint differences with
+identical geometry. All four request dialogs were visually inspected.
+
+Evidence is retained under
+`/mnt/disks/scratch/task-deliverables/seerrng-incoming-review-20261106`.
+After upgrading, rescan the enabled book libraries to rebuild file-backed
+observations. These isolated provider fixtures do not claim live household
+acquisition testing or add ABS ebook ingestion.
