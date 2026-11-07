@@ -1,0 +1,200 @@
+# ng-runner-policy: github-hosted-primary-v1
+name: Publish Lumen release image
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Published stable SeerrNG release tag to package
+        type: string
+        required: true
+permissions:
+  contents: read
+concurrency:
+  group: lumen-release-${{ inputs.tag || github.event.release.tag_name }}
+  cancel-in-progress: false
+env:
+  RELEASE_TAG: ${{ inputs.tag || github.event.release.tag_name }}
+  LUMEN_IMAGE: ghcr.io/snapetech-org/seerrng-lumen
+jobs:
+  validate:
+    if: github.repository == 'snapetech-org/seerrng'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    outputs:
+      sha: ${{ steps.release.outputs.sha }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Validate published source and tag
+        id: release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          [[ "$RELEASE_TAG" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]
+          gh release view "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" --json isDraft,isPrerelease \
+            --jq 'if .isDraft or .isPrerelease then error("A published stable release is required") else true end'
+          git merge-base --is-ancestor "${RELEASE_TAG}^{commit}" origin/main
+          git show "${RELEASE_TAG}:package.json" | \
+            node -e 'let s="";process.stdin.on("data",d=>s+=d).on("end",()=>{if(JSON.parse(s).version!==process.env.RELEASE_TAG.slice(1))process.exit(1)})'
+          release_sha="$(git rev-parse "${RELEASE_TAG}^{commit}")"
+          test "$(gh run list --repo "$GITHUB_REPOSITORY" --workflow lumen.yml \
+            --commit "$release_sha" --status success --json databaseId --jq length)" -gt 0
+          printf 'sha=%s\n' "$release_sha" >> "$GITHUB_OUTPUT"
+  native-image:
+    needs: validate
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - arch: amd64
+            runner: ubuntu-24.04
+          - arch: arm64
+            runner: ubuntu-24.04-arm
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 25
+    permissions:
+      contents: read
+      packages: write
+    env:
+      RELEASE_SHA: ${{ needs.validate.outputs.sha }}
+      IMAGE_ARCH: ${{ matrix.arch }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ needs.validate.outputs.sha }}
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: package.json
+          package-manager-cache: false
+      - name: Install and audit production dependencies
+        working-directory: lumen
+        run: npm ci --ignore-scripts && npm audit --omit=dev --audit-level=low
+      - name: Build and test native production filesystem
+        working-directory: lumen
+        env:
+          LUMEN_IMAGE_AUDIT_ARCHIVE: ${{ runner.temp }}/lumen-tested.tar
+        run: npm run build && npm test
+      - name: Package the tested filesystem with release metadata
+        run: |
+          set -euo pipefail
+          docker build --label "org.opencontainers.image.revision=$RELEASE_SHA" \
+            --label "org.opencontainers.image.version=$RELEASE_TAG" \
+            --label "org.opencontainers.image.source=https://github.com/$GITHUB_REPOSITORY" \
+            -t "$LUMEN_IMAGE:$RELEASE_TAG-$IMAGE_ARCH" lumen
+          test "$(docker image inspect --format '{{.Architecture}}' "$LUMEN_IMAGE:$RELEASE_TAG-$IMAGE_ARCH")" = "$IMAGE_ARCH"
+          python3 - <<'PY'
+          import json, os, subprocess, tarfile
+          with tarfile.open(os.environ['RUNNER_TEMP'] + '/lumen-tested.tar') as archive:
+              manifest = json.load(archive.extractfile('manifest.json'))[0]
+              tested = json.load(archive.extractfile(manifest['Config']))['rootfs']['diff_ids']
+          packaged = json.loads(subprocess.check_output([
+              'docker', 'image', 'inspect', '--format', '{{json .RootFS.Layers}}',
+              f"{os.environ['LUMEN_IMAGE']}:{os.environ['RELEASE_TAG']}-{os.environ['IMAGE_ARCH']}"
+          ]))
+          if tested != packaged:
+              raise SystemExit('Packaged filesystem differs from the tested production image')
+          PY
+      - uses: aquasecurity/setup-trivy@e07451d2e059ed86c2870430ea286b3a9e0bf241
+        with:
+          version: latest
+          token: ${{ github.token }}
+      - name: Scan exact native release image
+        run: >-
+          trivy image --config= --ignorefile= --scanners vuln --severity HIGH,CRITICAL
+          --ignore-unfixed --exit-code 1 "$LUMEN_IMAGE:$RELEASE_TAG-$IMAGE_ARCH"
+      - uses: docker/login-action@81c6f93d4bc991e510b342a00b419b3bb4efc5c6 # v4.7.0
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ github.token }}
+      - name: Publish immutable native version
+        run: |
+          set -euo pipefail
+          image_ref="$LUMEN_IMAGE:$RELEASE_TAG-$IMAGE_ARCH"
+          if docker manifest inspect "$image_ref" > /dev/null 2>&1; then
+            docker pull "$image_ref"
+            test "$(docker image inspect --format '{{index .Config.Labels "org.opencontainers.image.revision"}}' "$image_ref")" = "$RELEASE_SHA"
+            test "$(docker image inspect --format '{{.Architecture}}' "$image_ref")" = "$IMAGE_ARCH"
+          else
+            docker push "$image_ref"
+          fi
+          mkdir -p "$RUNNER_TEMP/lumen-digests"
+          docker image inspect --format '{{index .RepoDigests 0}}' "$image_ref" \
+            > "$RUNNER_TEMP/lumen-digests/$IMAGE_ARCH.txt"
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: lumen-digest-${{ matrix.arch }}
+          path: ${{ runner.temp }}/lumen-digests/
+          retention-days: 14
+  manifest:
+    needs: [validate, native-image]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          pattern: lumen-digest-*
+          path: digests
+          merge-multiple: true
+      - uses: docker/setup-buildx-action@f87e5991a6d7451dcb8d9637bfbc97413f497069 # v4
+      - uses: docker/login-action@81c6f93d4bc991e510b342a00b419b3bb4efc5c6 # v4.7.0
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ github.token }}
+      - name: Publish and verify public multi-architecture version
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mapfile -t refs < <(cat digests/amd64.txt digests/arm64.txt)
+          test "${#refs[@]}" = 2
+          for ref in "${refs[@]}"; do
+            [[ "$ref" =~ ^ghcr.io/snapetech-org/seerrng-lumen@sha256:[a-f0-9]{64}$ ]]
+          done
+          if docker buildx imagetools inspect --raw "$LUMEN_IMAGE:$RELEASE_TAG" > "$RUNNER_TEMP/existing-lumen.json" 2>/dev/null; then
+            jq -er '.manifests | map(.digest) | sort | join("\n")' "$RUNNER_TEMP/existing-lumen.json" > "$RUNNER_TEMP/existing-lumen-digests"
+            printf '%s\n' "${refs[@]}" | cut -d@ -f2 | sort > "$RUNNER_TEMP/expected-lumen-digests"
+            cmp "$RUNNER_TEMP/existing-lumen-digests" "$RUNNER_TEMP/expected-lumen-digests"
+          else
+            docker buildx imagetools create --tag "$LUMEN_IMAGE:$RELEASE_TAG" "${refs[@]}"
+          fi
+          mkdir -p "$RUNNER_TEMP/lumen-anonymous"
+          DOCKER_CONFIG="$RUNNER_TEMP/lumen-anonymous" docker manifest inspect "$LUMEN_IMAGE:$RELEASE_TAG" > /dev/null
+  stable-alias:
+    needs: manifest
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      packages: write
+    # Only obsolete pending alias refreshes may be superseded. Native builds
+    # and immutable version publication above do not share this queue.
+    concurrency:
+      group: lumen-stable-container-aliases
+      cancel-in-progress: false
+    steps:
+      - uses: docker/setup-buildx-action@f87e5991a6d7451dcb8d9637bfbc97413f497069 # v4
+      - uses: docker/login-action@81c6f93d4bc991e510b342a00b419b3bb4efc5c6 # v4.7.0
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ github.token }}
+      - name: Follow the latest published stable SeerrNG release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          latest="$(gh release view --repo "$GITHUB_REPOSITORY" --json tagName --jq .tagName)"
+          if [[ "$latest" == "$RELEASE_TAG" ]]; then
+            docker buildx imagetools create --tag "$LUMEN_IMAGE:latest" "$LUMEN_IMAGE:$RELEASE_TAG"
+          fi
