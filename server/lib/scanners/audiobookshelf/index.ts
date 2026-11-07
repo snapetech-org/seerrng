@@ -17,6 +17,7 @@ import {
   AUDIOBOOKSHELF_MAX_LIBRARY_PAGES,
   AUDIOBOOKSHELF_PAGE_SIZE,
   getCompleteAudiobookshelfItemIds,
+  hasAudiobookshelfAudioFile,
 } from '@server/lib/scanners/audiobookshelf/libraryScan';
 import type {
   ProcessOptions,
@@ -112,12 +113,7 @@ class AudiobookshelfScanner
 
       this.items = items;
       this.seenItemIds = new Set(
-        items
-          .filter(
-            (item) =>
-              !item.isMissing && !item.isInvalid && item.mediaType !== 'podcast'
-          )
-          .map((item) => item.id.trim())
+        items.filter(hasAudiobookshelfAudioFile).map((item) => item.id.trim())
       );
       await this.loop(this.processItem.bind(this), { sessionId });
       await this.cleanupRemovedItems();
@@ -148,9 +144,7 @@ class AudiobookshelfScanner
     if (
       !itemId ||
       this.serviceId === undefined ||
-      item.isMissing ||
-      item.isInvalid ||
-      item.mediaType === 'podcast'
+      !hasAudiobookshelfAudioFile(item)
     ) {
       return;
     }

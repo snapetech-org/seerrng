@@ -23,6 +23,14 @@ export interface AudiobookshelfLibraryItem {
   isInvalid?: boolean;
   mediaType?: 'book' | 'podcast' | string;
   media?: {
+    audioFiles?: {
+      ino?: string | number;
+      invalid?: boolean;
+      exclude?: boolean;
+      isMissing?: boolean;
+    }[];
+    numAudioFiles?: number;
+    numTracks?: number;
     metadata?: {
       title?: string | null;
       authorName?: string | null;

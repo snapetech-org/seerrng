@@ -139,3 +139,33 @@ It remains independent of manager observations, applies only to audio, and canno
 override an unavailable status. Resetting native media-server keys clears the
 response flag. The missing-copy regression fails before the change; focused
 availability/privacy/provider tests and server typecheck/lint pass afterward.
+
+
+## Audiobookshelf Format Evidence Follow-up
+
+The additional scan review found a separate format-classification defect:
+Audiobookshelf book libraries support ebook-only entries, but SeerrNG treated
+any valid item ID as an audiobook file. Two SQLite regressions reproduced new
+false availability and stale-link retention on the v3.72.18 source.
+
+The scanner now shares one audio-file predicate between admission and the
+complete-scan seen-item inventory. Expanded responses need a valid audio-file
+record that is not missing, invalid or excluded. Minified responses need a
+positive safe integer audio count, and a positive track count when provided.
+Metadata alone, ebook-only rows, contradictory arrays/counts and malformed
+values do not establish audio availability. Pagination completeness remains a
+separate prerequisite; incomplete scans still preserve prior observations.
+
+The focused scanner/file-evidence suite passes 46 tests, and the three
+SQLite ebook-only/independent-format regressions pass after the repair.
+The latter confirms that removing false ABS audiobook evidence preserves
+confirmed manager ebook files and ebook availability. Existing positive
+fixtures now include actual audio-file observations instead of assuming
+that a metadata record represents a file. Server typecheck and scoped lint pass.
+No live household ABS acquisition is claimed. Rescan the enabled ABS library
+after upgrading to refresh legacy observations.
+
+Primary contract references: [ABS ebook support](https://audiobookshelf.org/docs/documentation/libraries/book-library/ebooks/)
+and [ABS Book API objects](https://api.audiobookshelf.org/#book).
+The correction does not add ebook ingestion through ABS; its existing
+SeerrNG integration supplies audiobook availability.

@@ -9,6 +9,13 @@ v3.72.7 section consolidates changes from the requested v3.71.4 baseline
 through v3.72.7, including changes also represented by unpublished interim
 tags. The comparison link is the complete commit range.
 
+## [3.72.19](https://github.com/snapetech-org/seerrng/compare/v3.72.18..v3.72.19) - 2026-11-06
+
+### Fixed
+
+- **Audiobookshelf:** Ebook-only and metadata-only library entries no longer establish audiobook availability. Expanded audio-file records and minified audio counts are checked explicitly; invalid, excluded and missing audio files do not count. A complete rescan clears stale audiobook links while preserving independently confirmed ebook files.
+- **Action after upgrading:** Rescan the enabled Audiobookshelf library to refresh existing availability observations.
+
 ## [3.72.18](https://github.com/snapetech-org/seerrng/compare/v3.72.16..v3.72.18) - 2026-11-06
 
 ### User-facing changes

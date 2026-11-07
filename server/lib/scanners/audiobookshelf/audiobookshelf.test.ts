@@ -10,6 +10,7 @@ import Media from '@server/entity/Media';
 import MediaIdentifier, {
   MediaIdentifierProvider,
 } from '@server/entity/MediaIdentifier';
+import { hasBookFileEvidence } from '@server/lib/bookAvailability';
 import { setupTestDb } from '@server/test/db';
 
 import { audiobookshelfScanner } from '.';
@@ -104,6 +105,84 @@ async function seedBook(options: {
 }
 
 describe('Audiobookshelf Scanner', () => {
+  for (const staleLink of [false, true]) {
+    it(`does not treat an ebook-only ABS item as audiobook evidence (stale=${staleLink})`, async () => {
+      const book = await seedBook({
+        isbn: '9780306406157',
+        itemId: staleLink ? 'ebook-only' : undefined,
+        status: staleLink ? MediaStatus.AVAILABLE : MediaStatus.PROCESSING,
+      });
+      libraryPage = JSON.parse(
+        JSON.stringify({
+          results: [
+            {
+              id: 'ebook-only',
+              mediaType: 'book',
+              media: {
+                metadata: {
+                  isbn: '9780306406157',
+                  title: 'An ebook without audio',
+                },
+                audioFiles: [],
+                ebookFile: { ino: 'ebook-1', ebookFormat: 'epub' },
+              },
+            },
+          ],
+          total: 1,
+          limit: 100,
+          page: 0,
+        })
+      );
+      await audiobookshelfScanner.run();
+      const updated = await getRepository(Media).findOneByOrFail({
+        id: book.id,
+      });
+      assert.equal(updated.audiobookLibraryItemId, null);
+      assert.equal(
+        updated.status,
+        staleLink ? MediaStatus.UNKNOWN : MediaStatus.PROCESSING
+      );
+    });
+  }
+
+  it('clears ebook-only ABS audio evidence while preserving confirmed manager ebook files', async () => {
+    const book = await seedBook({
+      isbn: '9780306406157',
+      itemId: 'ebook-only',
+      status: MediaStatus.AVAILABLE,
+      ebookServiceId: 3,
+    });
+    await getRepository(Media).update(book.id, {
+      availableEbookServiceIds: [3],
+    });
+    libraryPage = JSON.parse(
+      JSON.stringify({
+        results: [
+          {
+            id: 'ebook-only',
+            mediaType: 'book',
+            media: {
+              metadata: { isbn: '9780306406157' },
+              audioFiles: [],
+              ebookFile: { ino: 'ebook-1' },
+            },
+          },
+        ],
+        total: 1,
+        limit: 100,
+        page: 0,
+      })
+    );
+    await audiobookshelfScanner.run();
+    const updated = await getRepository(Media).findOneByOrFail({ id: book.id });
+    assert.equal(updated.audiobookLibraryItemId, null);
+    assert.equal(updated.status, MediaStatus.AVAILABLE);
+    assert.deepEqual(updated.availableEbookServiceIds, [3]);
+    assert.equal(updated.externalServiceId, 3);
+    assert.equal(hasBookFileEvidence(updated, 'audiobook'), false);
+    assert.equal(hasBookFileEvidence(updated, 'ebook'), true);
+  });
+
   it('matches ASIN-only audio to exactly one known book without creating a duplicate', async () => {
     const book = await seedBook({ isbn: '9780306406157', asin: 'B012345678' });
     libraryPage = {
@@ -111,7 +190,10 @@ describe('Audiobookshelf Scanner', () => {
         {
           id: 'audio-asin',
           mediaType: 'book',
-          media: { metadata: { asin: 'b012345678', title: 'Test Book' } },
+          media: {
+            audioFiles: [{ ino: 'audio-file-1' }],
+            metadata: { asin: 'b012345678', title: 'Test Book' },
+          },
         },
       ],
       total: 1,
@@ -131,9 +213,27 @@ describe('Audiobookshelf Scanner', () => {
     await seedBook({ isbn: '9780140328721', asin: 'B012345678' });
     libraryPage = {
       results: [
-        { id: 'unknown', media: { metadata: { asin: 'B099999999' } } },
-        { id: 'ambiguous', media: { metadata: { asin: 'B012345678' } } },
-        { id: 'malformed', media: { metadata: { asin: '../bad' } } },
+        {
+          id: 'unknown',
+          media: {
+            audioFiles: [{ ino: 'audio-file-1' }],
+            metadata: { asin: 'B099999999' },
+          },
+        },
+        {
+          id: 'ambiguous',
+          media: {
+            audioFiles: [{ ino: 'audio-file-1' }],
+            metadata: { asin: 'B012345678' },
+          },
+        },
+        {
+          id: 'malformed',
+          media: {
+            audioFiles: [{ ino: 'audio-file-1' }],
+            metadata: { asin: '../bad' },
+          },
+        },
       ],
       total: 3,
       limit: 100,
@@ -160,7 +260,10 @@ describe('Audiobookshelf Scanner', () => {
           {
             id: 'missing',
             [flag]: true,
-            media: { metadata: { isbn: '9780306406157' } },
+            media: {
+              audioFiles: [{ ino: 'audio-file-1' }],
+              metadata: { isbn: '9780306406157' },
+            },
           },
         ],
         total: 1,
@@ -200,7 +303,10 @@ describe('Audiobookshelf Scanner', () => {
         {
           id: 'abs-item-1',
           mediaType: 'book',
-          media: { metadata: { isbn: '9780306406157', title: 'Test Book' } },
+          media: {
+            audioFiles: [{ ino: 'audio-file-1' }],
+            metadata: { isbn: '9780306406157', title: 'Test Book' },
+          },
           addedAt: 1_728_000_000,
         },
       ],
@@ -236,12 +342,18 @@ describe('Audiobookshelf Scanner', () => {
         {
           id: 'abs-item-1',
           mediaType: 'book',
-          media: { metadata: { isbn: '9780306406157', title: 'First Book' } },
+          media: {
+            audioFiles: [{ ino: 'audio-file-1' }],
+            metadata: { isbn: '9780306406157', title: 'First Book' },
+          },
         },
         {
           id: 'abs-item-2',
           mediaType: 'book',
-          media: { metadata: { isbn: '9780140328721', title: 'Second Book' } },
+          media: {
+            audioFiles: [{ ino: 'audio-file-1' }],
+            metadata: { isbn: '9780140328721', title: 'Second Book' },
+          },
         },
       ],
       total: 2,

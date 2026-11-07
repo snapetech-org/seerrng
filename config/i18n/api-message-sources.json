@@ -15483,7 +15483,7 @@
       "callsites": [
         {
           "path": "server/api/audiobookshelf.ts",
-          "line": 98,
+          "line": 106,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Audiobookshelf page request is invalid.'",
@@ -16526,7 +16526,7 @@
       "callsites": [
         {
           "path": "server/lib/scanners/audiobookshelf/index.ts",
-          "line": 78,
+          "line": 79,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`Audiobookshelf library exceeds the ${AUDIOBOOKSHELF_MAX_LIBRARY_ITEMS}-item scan limit. Orphan cleanup was skipped.`",
@@ -23632,7 +23632,7 @@
       "callsites": [
         {
           "path": "server/lib/scanners/audiobookshelf/index.ts",
-          "line": 85,
+          "line": 86,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Audiobookshelf library changed during the scan. Orphan cleanup was skipped; the next scan will retry.'",
@@ -25859,7 +25859,7 @@
       "callsites": [
         {
           "path": "server/lib/scanners/audiobookshelf/index.ts",
-          "line": 90,
+          "line": 91,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Audiobookshelf returned more items than its reported library total. Orphan cleanup was skipped.'",
@@ -41777,7 +41777,7 @@
       "callsites": [
         {
           "path": "server/api/audiobookshelf.ts",
-          "line": 115,
+          "line": 123,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Audiobookshelf returned an invalid library page.'",
@@ -45473,7 +45473,7 @@
       "callsites": [
         {
           "path": "server/lib/scanners/audiobookshelf/index.ts",
-          "line": 109,
+          "line": 110,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Audiobookshelf returned an incomplete or duplicated library scan. Orphan cleanup was skipped.'",
@@ -50483,7 +50483,7 @@
       "callsites": [
         {
           "path": "server/lib/scanners/audiobookshelf/index.ts",
-          "line": 98,
+          "line": 99,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Audiobookshelf returned an incomplete library scan. Orphan cleanup was skipped.'",
@@ -54872,7 +54872,7 @@
       "callsites": [
         {
           "path": "server/api/audiobookshelf.ts",
-          "line": 62,
+          "line": 70,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Audiobookshelf service URL is invalid.'",
@@ -56340,7 +56340,7 @@
       "callsites": [
         {
           "path": "server/api/audiobookshelf.ts",
-          "line": 82,
+          "line": 90,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Audiobookshelf returned an invalid library list.'",
@@ -72244,7 +72244,7 @@
     },
     {
       "path": "server/lib/scanners/audiobookshelf/index.ts",
-      "line": 44,
+      "line": 45,
       "kind": "message-helper-return",
       "field": "message",
       "expression": "{\n      running: this.running,\n      progress: this.progress,\n      total: this.items.length,\n      unmatchedItems: this.unmatchedItems,\n    }",
@@ -72253,7 +72253,7 @@
     },
     {
       "path": "server/lib/scanners/audiobookshelf/index.ts",
-      "line": 137,
+      "line": 133,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -72262,7 +72262,7 @@
     },
     {
       "path": "server/lib/scanners/audiobookshelf/index.ts",
-      "line": 137,
+      "line": 133,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "error instanceof Error ? error.message : String(error)",
