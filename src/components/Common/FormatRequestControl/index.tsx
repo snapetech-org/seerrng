@@ -13,6 +13,8 @@ const messages = defineMessages('components.Common.FormatRequestControl', {
 export interface FormatRequestOption {
   id: string;
   label: string;
+  /** Alternate action name, for example tagging an existing copy. */
+  buttonLabel?: string;
   onClick: () => void;
   disabled?: boolean;
   disabledReason?: string;
@@ -22,6 +24,8 @@ export interface FormatRequestOption {
 
 interface FormatRequestControlProps {
   options: FormatRequestOption[];
+  /** Entry actions may use the upstream split menu; in-dialog selection stays inline. */
+  split?: boolean;
   className?: string;
   label?: string;
   icon?: ReactNode;
@@ -29,6 +33,7 @@ interface FormatRequestControlProps {
 
 const FormatRequestControl = ({
   options,
+  split = false,
   className,
   label,
   icon,
@@ -40,7 +45,7 @@ const FormatRequestControl = ({
     return null;
   }
 
-  if (upstream)
+  if (upstream && split)
     return (
       <UpstreamRequestControl
         options={options}

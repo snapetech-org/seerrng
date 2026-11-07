@@ -2966,7 +2966,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/Settings/SettingsLayout.tsx",
-          "line": 29,
+          "line": 30,
           "defaultMessage": "'General'"
         }
       ],
@@ -4594,7 +4594,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/Settings/SettingsLayout.tsx",
-          "line": 38,
+          "line": 39,
           "defaultMessage": "'Notifications'"
         }
       ],
@@ -4614,7 +4614,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/Settings/SettingsLayout.tsx",
-          "line": 34,
+          "line": 35,
           "defaultMessage": "'Services'"
         }
       ],

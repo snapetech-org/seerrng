@@ -107,13 +107,14 @@
     },
     {
       "file": "src/components/CollectionDetails/index.tsx",
-      "line": 568,
+      "line": 620,
       "expression": "availability.error",
       "context": [
         "CollectionServerActions",
         "div",
         "div",
-        "article"
+        "article",
+        "UpstreamCollectionDetails"
       ],
       "attribute": "error",
       "classification": "localized-child-boundary",
@@ -632,7 +633,7 @@
     },
     {
       "file": "src/components/RequestModal/BulkRequestModal.tsx",
-      "line": 1001,
+      "line": 988,
       "expression": "failure.reason",
       "context": [
         "ApiMessageText",
@@ -748,7 +749,7 @@
     },
     {
       "file": "src/components/Requests/index.tsx",
-      "line": 2055,
+      "line": 2056,
       "expression": "current.message",
       "context": [
         "RequestStatusMessageText",
@@ -761,7 +762,7 @@
     },
     {
       "file": "src/components/Requests/index.tsx",
-      "line": 2062,
+      "line": 2063,
       "expression": "`${getStageLabel(intl, currentStage)}: ${currentMessage}`",
       "context": [
         "span",
@@ -775,7 +776,7 @@
     },
     {
       "file": "src/components/Requests/index.tsx",
-      "line": 2133,
+      "line": 2134,
       "expression": "event.message",
       "context": [
         "RequestStatusMessageText",
@@ -1360,7 +1361,7 @@
     },
     {
       "file": "src/components/Slider/index.tsx",
-      "line": 310,
+      "line": 365,
       "expression": "notice",
       "context": [
         "div"
@@ -1465,7 +1466,7 @@
     },
     {
       "file": "src/components/TvDetails/index.tsx",
-      "line": 650,
+      "line": 656,
       "expression": "error && loadErrorMessage",
       "context": [],
       "classification": "localized-child-boundary",

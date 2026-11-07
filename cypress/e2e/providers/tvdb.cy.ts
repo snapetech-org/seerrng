@@ -1,3 +1,5 @@
+// eslint-disable-next-line no-relative-import-paths/no-relative-import-paths -- Theme interaction helper.
+import { openSourceTools } from '../../support/themeControls';
 // eslint-disable-next-line no-relative-import-paths/no-relative-import-paths -- Cypress specs use deterministic local title fixtures.
 import { openTitleDetailsFromSearch } from '../../support/titleFixtures';
 
@@ -108,6 +110,7 @@ describe('TVDB Integration', () => {
   };
 
   const openMediaServer = () => {
+    openSourceTools();
     cy.get('button[aria-controls="series-media-server-panel"]')
       .should('be.visible')
       .then(($button) => {

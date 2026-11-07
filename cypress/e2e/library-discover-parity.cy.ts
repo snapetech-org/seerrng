@@ -1,11 +1,16 @@
 describe('Books and Music discover parity', () => {
+  // These cases specify John's pinned filter presentation; source drawer/sort
+  // flows are independently exercised in the source Playwright suite.
   const openFilterSection = (label: string) => {
-    cy.get('button')
-      .filter((_, button) => button.textContent?.trim() === label)
-      .should('have.length', 1)
+    cy.get('html').should('have.attr', 'data-interface-theme', 'seerrNGJ');
+    cy.contains('button.detail-disclosure-button', new RegExp(`^${label}$`))
+      .should('be.visible')
       .then(($button) => {
         if ($button.attr('aria-expanded') === 'false') {
-          cy.wrap($button).click();
+          cy.contains(
+            'button.detail-disclosure-button',
+            new RegExp(`^${label}$`)
+          ).click();
         }
       });
   };
@@ -89,9 +94,19 @@ describe('Books and Music discover parity', () => {
 
   beforeEach(() => {
     cy.loginAsAdmin();
+    cy.request('POST', '/api/v1/user/1/settings/interface-theme', {
+      theme: 'seerrNGJ',
+    });
     cy.mockConfiguredMediaAvailability({
       booksEnabled: true,
       musicEnabled: true,
+    });
+  });
+
+  afterEach(() => {
+    cy.loginAsAdmin();
+    cy.request('POST', '/api/v1/user/1/settings/interface-theme', {
+      theme: 'seerrOrig',
     });
   });
 
@@ -222,6 +237,7 @@ describe('Books and Music discover parity', () => {
     }).as('getMovies');
     cy.visit('/discover/movies');
     cy.wait('@getMovies');
+    cy.get('html').should('have.attr', 'data-interface-theme', 'seerrNGJ');
     cy.get('.sidebar')
       .filter(':visible')
       .first()

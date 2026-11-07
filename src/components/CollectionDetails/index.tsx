@@ -3,6 +3,7 @@ import CollectionAssociationsButton from '@app/components/CollectionDetails/Coll
 import CollectionMetadataDisclosures from '@app/components/CollectionDetails/CollectionMetadataDisclosures';
 import CollectionPlayOnDeviceButton from '@app/components/CollectionDetails/CollectionPlayOnDeviceButton';
 import CollectionQueueModal from '@app/components/CollectionDetails/CollectionQueueModal';
+import UpstreamCollectionDetails from '@app/components/CollectionDetails/UpstreamCollectionDetails';
 import Button from '@app/components/Common/Button';
 import CachedImage from '@app/components/Common/CachedImage';
 import FormatRequestControl from '@app/components/Common/FormatRequestControl';
@@ -19,6 +20,7 @@ import useCollectionAvailability from '@app/hooks/useCollectionAvailability';
 import useCollectionMemberDetails from '@app/hooks/useCollectionMemberDetails';
 import useSettings from '@app/hooks/useSettings';
 import useToasts from '@app/hooks/useToasts';
+import useUpstreamTheme from '@app/hooks/useUpstreamTheme';
 import { Permission, useUser } from '@app/hooks/useUser';
 import globalMessages from '@app/i18n/globalMessages';
 import ErrorPage from '@app/pages/_error';
@@ -69,6 +71,7 @@ const messages = defineMessages('components.CollectionDetails', {
   collectionSize: 'Collection Size',
   genres: 'Genres',
   collection: 'Collection',
+  requestCollection: 'Request Collection',
   queueCollection: 'Queue Collection',
   availability: 'Availability',
   available: 'Available',
@@ -109,6 +112,7 @@ const requestableStatuses = new Set([MediaStatus.UNKNOWN, MediaStatus.DELETED]);
 
 const CollectionDetails = ({ collection }: CollectionDetailsProps) => {
   const intl = useIntl();
+  const upstream = useUpstreamTheme();
   const router = useRouter();
   const settings = useSettings();
   const { hasPermission } = useUser();
@@ -351,277 +355,326 @@ const CollectionDetails = ({ collection }: CollectionDetailsProps) => {
         />
       )}
 
-      <article className="movie-collection-card media-detail-card app-card-main refreshed-card-surface refreshed-detail-text relative overflow-hidden rounded-xl border border-gray-700 p-3 shadow-lg shadow-gray-950/20">
-        {data.backdropPath && (
-          <MediaDetailArtwork
-            type="tmdb"
-            src={`https://image.tmdb.org/t/p/original${data.backdropPath}`}
-          />
-        )}
-
-        <div className="relative z-10">
-          <div className="app-card-sub detail-item-surface detail-summary-card collection-summary-header">
-            <div className="collection-summary-poster">
-              <CachedImage
-                type="tmdb"
-                src={
-                  data.posterPath
-                    ? getTmdbPosterImageUrl(data.posterPath)
-                    : '/images/seerr_poster_not_found.png'
-                }
-                variants={getTmdbPosterImageVariants(data.posterPath)}
-                alt=""
-                fill
-                priority
-                sizes="(min-width: 640px) 80px, 64px"
-                className="collection-summary-poster-image"
-              />
-            </div>
-            <div className="collection-summary-details">
-              <h1 className="collection-summary-title">{data.name}</h1>
-              <dl className="collection-summary-table detail-card-heading-spacing">
-                <dt className="collection-summary-overview-label">
-                  {intl.formatMessage(messages.overview)}:
-                </dt>
-                <dd className="collection-summary-overview-value">
-                  {data.overview ||
-                    intl.formatMessage(messages.overviewUnavailable)}
-                </dd>
-                <dt className="collection-summary-genres-label">
-                  {intl.formatMessage(messages.genres)}:
-                </dt>
-                <dd className="collection-summary-genres-value">
-                  {genreIds.length > 0
-                    ? genreIds.map((genreId, index) => (
-                        <span key={genreId}>
-                          {index > 0 && ', '}
-                          <Link href={`/discover/movies?genre=${genreId}`}>
-                            {genres?.find((genre) => genre.id === genreId)
-                              ?.name ?? genreId}
-                          </Link>
-                        </span>
-                      ))
-                    : intl.formatMessage(messages.notAvailable)}
-                </dd>
-                <div className="collection-summary-size">
-                  <dt className="collection-summary-size-label">
-                    {intl.formatMessage(messages.collectionSize)}:
-                  </dt>
-                  <dd className="collection-summary-size-value">
-                    {data.parts.length}
-                  </dd>
-                </div>
-              </dl>
-            </div>
-          </div>
-
-          <div className="media-rating-row">
-            <MediaQualitySelect
-              value={playbackQuality}
-              autoSelectAvailable={false}
-              label={intl.formatMessage(messages.quality)}
-              options={[
-                {
-                  label: 'HD',
-                  value: 'hd',
-                  disabled: !orderedParts.some(
-                    (part) =>
-                      collectionPartHasQuality(part, 'hd') &&
-                      !isPartQualityHidden(part, false)
-                  ),
-                },
-                {
-                  label: '4K',
-                  value: '4k',
-                  disabled: !orderedParts.some(
-                    (part) =>
-                      collectionPartHasQuality(part, '4k') &&
-                      !isPartQualityHidden(part, true)
-                  ),
-                },
-              ]}
-              onChange={setPlaybackQuality}
-            />
-            {!selectedPlaybackIsShared && (
-              <>
-                <MediaServerPlayButton
-                  collectionMediaIds={effectivePlaybackMediaIds}
-                  defaultIs4k={playbackQuality === '4k'}
-                  disabled={!allSelectedPlaybackAvailable}
-                  disabledReason={playbackUnavailableReason}
-                />
-                <CollectionPlayOnDeviceButton
-                  mediaIds={effectivePlaybackMediaIds}
-                  is4k={playbackQuality === '4k'}
-                  disabledReason={playbackUnavailableReason}
-                />
-              </>
-            )}
-            <CollectionRatings
-              ratings={averages}
-              total={orderedParts.length}
-              loading={membersLoading}
-            />
-          </div>
-          {members?.some((member) => member.failed) && (
-            <div className="collection-summary-status" role="status">
-              <span>{intl.formatMessage(messages.ratingsFailed)}</span>
-              <Button onClick={() => void refreshMembers()}>
-                {intl.formatMessage(messages.retry)}
+      <UpstreamCollectionDetails
+        enabled={upstream}
+        data={{
+          ...data,
+          parts: data.parts.filter(
+            (part) =>
+              part.mediaInfo?.status !== MediaStatus.BLOCKLISTED ||
+              hasPermission(
+                [Permission.MANAGE_BLOCKLIST, Permission.VIEW_BLOCKLIST],
+                { type: 'or' }
+              )
+          ),
+        }}
+        attributes={genreIds.map((genreId) => (
+          <Link key={genreId} href={`/discover/movies?genre=${genreId}`}>
+            {genres?.find((genre) => genre.id === genreId)?.name ?? genreId}
+          </Link>
+        ))}
+        actions={
+          <>
+            {canUseBlocklist && (
+              <Button
+                buttonType="ghost"
+                disabled={isCollectionBlocklisted}
+                disabledReason={intl.formatMessage(
+                  globalMessages.alreadyBlocklisted
+                )}
+                aria-label={intl.formatMessage(globalMessages.addToBlocklist)}
+                onClick={() => setShowBlocklistModal(true)}
+              >
+                <EyeSlashIcon aria-hidden="true" />
               </Button>
-            </div>
+            )}
+            <FormatRequestControl
+              options={requestOptions}
+              split
+              label={intl.formatMessage(messages.requestCollection)}
+            />
+          </>
+        }
+        onRefresh={() => {
+          void revalidate();
+        }}
+      >
+        <article className="movie-collection-card media-detail-card app-card-main refreshed-card-surface refreshed-detail-text relative overflow-hidden rounded-xl border border-gray-700 p-3 shadow-lg shadow-gray-950/20">
+          {data.backdropPath && (
+            <MediaDetailArtwork
+              type="tmdb"
+              src={`https://image.tmdb.org/t/p/original${data.backdropPath}`}
+            />
           )}
 
-          <div className="media-primary-action-row">
-            {canUseBlocklist && (
-              <Tooltip
-                content={intl.formatMessage(
-                  isCollectionBlocklisted
-                    ? globalMessages.alreadyBlocklisted
-                    : globalMessages.addToBlocklist
-                )}
-              >
-                <Button
-                  buttonType="blocklist"
-                  buttonSize="standard"
-                  disabled={isCollectionBlocklisted}
-                  disabledReason={intl.formatMessage(
-                    globalMessages.alreadyBlocklisted
-                  )}
-                  onClick={() => setShowBlocklistModal(true)}
-                  aria-label={intl.formatMessage(globalMessages.addToBlocklist)}
-                >
-                  <EyeSlashIcon className="!me-0" />
-                </Button>
-              </Tooltip>
-            )}
-            {trailerUrl ? (
-              <Button
-                as="a"
-                href={trailerUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                buttonType="trailer"
-                buttonSize="sm"
-                title={intl.formatMessage(messages.trailerHelp, {
-                  title: firstPart?.title ?? data.name,
-                })}
-              >
-                <FilmIcon />
-                <span>{intl.formatMessage(messages.watchTrailer)}</span>
-              </Button>
-            ) : (
-              <Button
-                buttonType="trailer"
-                buttonSize="sm"
-                disabled
-                disabledReason={intl.formatMessage(
-                  membersLoading ? messages.loadingTrailer : messages.noTrailer
-                )}
-              >
-                <FilmIcon />
-                <span>{intl.formatMessage(messages.watchTrailer)}</span>
-              </Button>
-            )}
-            <CollectionAssociationsButton parts={data.parts} />
-            <FormatRequestControl options={requestOptions} />
-            <Button
-              buttonType="bulkRequest"
-              buttonSize="sm"
-              onClick={() => setQueueModal(true)}
-            >
-              {intl.formatMessage(messages.queueCollection)}
-            </Button>
-          </div>
+          <div className="relative z-10">
+            <div className="app-card-sub detail-item-surface detail-summary-card collection-summary-header">
+              <div className="collection-summary-poster">
+                <CachedImage
+                  type="tmdb"
+                  src={
+                    data.posterPath
+                      ? getTmdbPosterImageUrl(data.posterPath)
+                      : '/images/seerr_poster_not_found.png'
+                  }
+                  variants={getTmdbPosterImageVariants(data.posterPath)}
+                  alt=""
+                  fill
+                  priority
+                  sizes="(min-width: 640px) 80px, 64px"
+                  className="collection-summary-poster-image"
+                />
+              </div>
+              <div className="collection-summary-details">
+                <h1 className="collection-summary-title">{data.name}</h1>
+                <dl className="collection-summary-table detail-card-heading-spacing">
+                  <dt className="collection-summary-overview-label">
+                    {intl.formatMessage(messages.overview)}:
+                  </dt>
+                  <dd className="collection-summary-overview-value">
+                    {data.overview ||
+                      intl.formatMessage(messages.overviewUnavailable)}
+                  </dd>
+                  <dt className="collection-summary-genres-label">
+                    {intl.formatMessage(messages.genres)}:
+                  </dt>
+                  <dd className="collection-summary-genres-value">
+                    {genreIds.length > 0
+                      ? genreIds.map((genreId, index) => (
+                          <span key={genreId}>
+                            {index > 0 && ', '}
+                            <Link href={`/discover/movies?genre=${genreId}`}>
+                              {genres?.find((genre) => genre.id === genreId)
+                                ?.name ?? genreId}
+                            </Link>
+                          </span>
+                        ))
+                      : intl.formatMessage(messages.notAvailable)}
+                  </dd>
+                  <div className="collection-summary-size">
+                    <dt className="collection-summary-size-label">
+                      {intl.formatMessage(messages.collectionSize)}:
+                    </dt>
+                    <dd className="collection-summary-size-value">
+                      {data.parts.length}
+                    </dd>
+                  </div>
+                </dl>
+              </div>
+            </div>
 
-          <CollectionMetadataDisclosures parts={data.parts} />
-
-          <div className="media-detail-disclosure-row collection-detail-disclosure-row collection-selection-action-row">
-            <Button
-              buttonType="association"
-              title={intl.formatMessage(messages.selectAllHelp)}
-              onClick={() => {
-                setHasManualPlaybackSelection(true);
-                setSelectedMediaIds(orderedParts.map((part) => part.id));
-              }}
-            >
-              <CheckCircleIcon />
-              <span>{intl.formatMessage(messages.selectAll)}</span>
-            </Button>
-            <Button
-              buttonType="association"
-              title={intl.formatMessage(messages.selectNoneHelp)}
-              onClick={() => {
-                setHasManualPlaybackSelection(true);
-                setSelectedMediaIds([]);
-              }}
-            >
-              <XMarkIcon />
-              <span>{intl.formatMessage(messages.selectNone)}</span>
-            </Button>
-            {availability.supported && (
-              <CollectionServerActions
-                key={collectionId}
-                id={collectionId}
-                title={data.name}
-                availability={availability.data}
-                error={availability.error}
-                revalidate={availability.mutate}
+            <div className="media-rating-row">
+              <MediaQualitySelect
+                value={playbackQuality}
+                autoSelectAvailable={false}
+                label={intl.formatMessage(messages.quality)}
+                options={[
+                  {
+                    label: 'HD',
+                    value: 'hd',
+                    disabled: !orderedParts.some(
+                      (part) =>
+                        collectionPartHasQuality(part, 'hd') &&
+                        !isPartQualityHidden(part, false)
+                    ),
+                  },
+                  {
+                    label: '4K',
+                    value: '4k',
+                    disabled: !orderedParts.some(
+                      (part) =>
+                        collectionPartHasQuality(part, '4k') &&
+                        !isPartQualityHidden(part, true)
+                    ),
+                  },
+                ]}
+                onChange={setPlaybackQuality}
               />
-            )}
-          </div>
-
-          <div className="card-spacing-before">
-            <ThreeItemScroll label={data.name}>
-              {orderedParts.map((part) => {
-                const member = memberById.get(part.id);
-                const details = member?.details;
-                return (
-                  <MovieSummaryCard
-                    key={part.id}
-                    data={{
-                      id: part.id,
-                      title: details?.title ?? part.title,
-                      posterPath: details?.posterPath ?? part.posterPath,
-                      releaseDate: details?.releaseDate ?? part.releaseDate,
-                      runtime: details?.runtime,
-                      productionCompanies: details?.productionCompanies ?? [],
-                      genres:
-                        details?.genres ??
-                        part.genreIds.map((id) => ({
-                          id,
-                          name:
-                            genres?.find((genre) => genre.id === id)?.name ??
-                            String(id),
-                        })),
-                      mediaInfo: part.mediaInfo,
-                    }}
-                    sortedCrew={sortCrewPriority(details?.credits.crew ?? [])}
-                    show4kAvailability={true}
-                    href={`/movie/${part.id}`}
-                    selection={
-                      <SelectionCircle
-                        onClick={() => togglePart(part.id)}
-                        selected={selectedMediaIds.includes(part.id)}
-                        label={intl.formatMessage(messages.selection)}
-                      />
-                    }
-                    ratings={
-                      <CollectionRatings
-                        ratings={getCollectionMemberRatings(
-                          part,
-                          member?.ratings
-                        )}
-                        loading={membersLoading}
-                      />
-                    }
+              {!selectedPlaybackIsShared && (
+                <>
+                  <MediaServerPlayButton
+                    collectionMediaIds={effectivePlaybackMediaIds}
+                    defaultIs4k={playbackQuality === '4k'}
+                    disabled={!allSelectedPlaybackAvailable}
+                    disabledReason={playbackUnavailableReason}
                   />
-                );
-              })}
-            </ThreeItemScroll>
+                  <CollectionPlayOnDeviceButton
+                    mediaIds={effectivePlaybackMediaIds}
+                    is4k={playbackQuality === '4k'}
+                    disabledReason={playbackUnavailableReason}
+                  />
+                </>
+              )}
+              <CollectionRatings
+                ratings={averages}
+                total={orderedParts.length}
+                loading={membersLoading}
+              />
+            </div>
+            {members?.some((member) => member.failed) && (
+              <div className="collection-summary-status" role="status">
+                <span>{intl.formatMessage(messages.ratingsFailed)}</span>
+                <Button onClick={() => void refreshMembers()}>
+                  {intl.formatMessage(messages.retry)}
+                </Button>
+              </div>
+            )}
+
+            <div className="media-primary-action-row">
+              {canUseBlocklist && (
+                <Tooltip
+                  content={intl.formatMessage(
+                    isCollectionBlocklisted
+                      ? globalMessages.alreadyBlocklisted
+                      : globalMessages.addToBlocklist
+                  )}
+                >
+                  <Button
+                    buttonType="blocklist"
+                    buttonSize="standard"
+                    disabled={isCollectionBlocklisted}
+                    disabledReason={intl.formatMessage(
+                      globalMessages.alreadyBlocklisted
+                    )}
+                    onClick={() => setShowBlocklistModal(true)}
+                    aria-label={intl.formatMessage(
+                      globalMessages.addToBlocklist
+                    )}
+                  >
+                    <EyeSlashIcon className="!me-0" />
+                  </Button>
+                </Tooltip>
+              )}
+              {trailerUrl ? (
+                <Button
+                  as="a"
+                  href={trailerUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  buttonType="trailer"
+                  buttonSize="sm"
+                  title={intl.formatMessage(messages.trailerHelp, {
+                    title: firstPart?.title ?? data.name,
+                  })}
+                >
+                  <FilmIcon />
+                  <span>{intl.formatMessage(messages.watchTrailer)}</span>
+                </Button>
+              ) : (
+                <Button
+                  buttonType="trailer"
+                  buttonSize="sm"
+                  disabled
+                  disabledReason={intl.formatMessage(
+                    membersLoading
+                      ? messages.loadingTrailer
+                      : messages.noTrailer
+                  )}
+                >
+                  <FilmIcon />
+                  <span>{intl.formatMessage(messages.watchTrailer)}</span>
+                </Button>
+              )}
+              <CollectionAssociationsButton parts={data.parts} />
+              <FormatRequestControl options={requestOptions} />
+              <Button
+                buttonType="bulkRequest"
+                buttonSize="sm"
+                onClick={() => setQueueModal(true)}
+              >
+                {intl.formatMessage(messages.queueCollection)}
+              </Button>
+            </div>
+
+            <CollectionMetadataDisclosures parts={data.parts} />
+
+            <div className="media-detail-disclosure-row collection-detail-disclosure-row collection-selection-action-row">
+              <Button
+                buttonType="association"
+                title={intl.formatMessage(messages.selectAllHelp)}
+                onClick={() => {
+                  setHasManualPlaybackSelection(true);
+                  setSelectedMediaIds(orderedParts.map((part) => part.id));
+                }}
+              >
+                <CheckCircleIcon />
+                <span>{intl.formatMessage(messages.selectAll)}</span>
+              </Button>
+              <Button
+                buttonType="association"
+                title={intl.formatMessage(messages.selectNoneHelp)}
+                onClick={() => {
+                  setHasManualPlaybackSelection(true);
+                  setSelectedMediaIds([]);
+                }}
+              >
+                <XMarkIcon />
+                <span>{intl.formatMessage(messages.selectNone)}</span>
+              </Button>
+              {availability.supported && (
+                <CollectionServerActions
+                  key={collectionId}
+                  id={collectionId}
+                  title={data.name}
+                  availability={availability.data}
+                  error={availability.error}
+                  revalidate={availability.mutate}
+                />
+              )}
+            </div>
+
+            <div className="card-spacing-before">
+              <ThreeItemScroll label={data.name}>
+                {orderedParts.map((part) => {
+                  const member = memberById.get(part.id);
+                  const details = member?.details;
+                  return (
+                    <MovieSummaryCard
+                      key={part.id}
+                      data={{
+                        id: part.id,
+                        title: details?.title ?? part.title,
+                        posterPath: details?.posterPath ?? part.posterPath,
+                        releaseDate: details?.releaseDate ?? part.releaseDate,
+                        runtime: details?.runtime,
+                        productionCompanies: details?.productionCompanies ?? [],
+                        genres:
+                          details?.genres ??
+                          part.genreIds.map((id) => ({
+                            id,
+                            name:
+                              genres?.find((genre) => genre.id === id)?.name ??
+                              String(id),
+                          })),
+                        mediaInfo: part.mediaInfo,
+                      }}
+                      sortedCrew={sortCrewPriority(details?.credits.crew ?? [])}
+                      show4kAvailability={true}
+                      href={`/movie/${part.id}`}
+                      selection={
+                        <SelectionCircle
+                          onClick={() => togglePart(part.id)}
+                          selected={selectedMediaIds.includes(part.id)}
+                          label={intl.formatMessage(messages.selection)}
+                        />
+                      }
+                      ratings={
+                        <CollectionRatings
+                          ratings={getCollectionMemberRatings(
+                            part,
+                            member?.ratings
+                          )}
+                          loading={membersLoading}
+                        />
+                      }
+                    />
+                  );
+                })}
+              </ThreeItemScroll>
+            </div>
           </div>
-        </div>
-      </article>
+        </article>
+      </UpstreamCollectionDetails>
     </>
   );
 };

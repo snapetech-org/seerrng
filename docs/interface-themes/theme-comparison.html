@@ -771,7 +771,7 @@
 
 :is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
   .upstream-media-title {
-  margin-top: 16px;
+  margin-top: 24px;
   text-align: center;
   min-width: 0;
   flex: 1;
@@ -1969,6 +1969,222 @@
   flex-wrap: wrap;
   white-space: normal;
   overflow-wrap: anywhere;
+}
+
+/* Format selection remains inline; only video entry actions use the split menu. */
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .format-request-control {
+  max-width: 100%;
+  height: auto;
+  max-height: none;
+  flex-wrap: wrap;
+  border-color: #6b7280;
+  background: #374151;
+  color: #e5e7eb;
+  font-size: 14px;
+}
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  :is(
+    .format-request-label,
+    .format-request-option,
+    .format-request-single-label
+  ) {
+  min-height: var(--action-control-height);
+  border-color: #6b7280;
+  color: #e5e7eb;
+}
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .format-request-option[aria-pressed='true']:not(:disabled) {
+  background: #4f46e5;
+  color: #fff;
+}
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  :is(.format-request-control-single, .format-request-option):hover:not(
+    :disabled
+  ) {
+  background: #4f46e5;
+  color: #fff;
+}
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  :is(.format-request-control-single, .format-request-option):disabled {
+  background: #1f2937;
+  color: #9ca3af;
+  filter: none;
+}
+
+/* Source settings and contextual navigation use upstream geometry. */
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .upstream-discovery-switch {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 999px;
+  background: #374151;
+  color: #e5e7eb;
+  flex-shrink: 0;
+}
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .upstream-discovery-switch:hover,
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .upstream-discovery-switch:focus-visible {
+  background: #4b5563;
+  color: #fff;
+}
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .settings-main-card,
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .settings-group-card,
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .settings-page-content
+  > .section,
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .settings-page-content
+  > .mb-6 {
+  --inset-card-padding: 0px;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  backdrop-filter: none;
+}
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .settings-page-content {
+  --settings-control-surface-opacity: 1;
+  --theme-control-surface: 55 65 81;
+  --compact-control-height: 38px;
+  --theme-control-text: 255 255 255;
+}
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .settings-page-content
+  .heading,
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .settings-group-heading {
+  font-size: 24px;
+  line-height: 32px;
+  font-weight: 600;
+  color: #f3f4f6;
+}
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .settings-page-content
+  label,
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .settings-page-content
+  .group-label {
+  font-size: 14px;
+  line-height: 20px;
+  color: #9ca3af;
+}
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .settings-page-content
+  .description,
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .settings-group-description,
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .settings-form-row-description,
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .settings-page-content
+  .label-tip {
+  color: #9ca3af;
+}
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .settings-page-content
+  .form-row,
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .settings-page-content
+  .form-group {
+  margin-top: 20px;
+}
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .settings-page-content
+  input:not([type='checkbox']):not([type='radio']),
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .settings-page-content
+  select,
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .settings-page-content
+  .settings-compatible-listbox-button {
+  padding: 8px 12px;
+  font-size: 14px;
+  line-height: 20px;
+}
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .settings-page-content
+  .react-select__single-value,
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .settings-page-content
+  .react-select__placeholder,
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .settings-page-content
+  .react-select__input,
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .settings-page-content
+  .react-select__input-container {
+  font-size: 14px;
+  line-height: 20px;
+}
+
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .settings-main-card {
+  --main-card-padding: 0px;
+  margin-top: 32px;
+}
+
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .settings-page-navigation-row {
+  display: block;
+  width: 100%;
+  margin-top: 32px;
+}
+
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .settings-page-search {
+  margin-top: 16px;
+  height: 38px;
+}
+
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .settings-page-content
+  .selection-circle {
+  --detail-row-height: 24px;
+  border-radius: 6px;
+  border: 1px solid #6b7280;
+  background: #fff;
+  color: transparent;
+}
+
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .settings-page-content
+  .selection-circle[aria-pressed='true'],
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .settings-page-content
+  .selection-circle[data-selected='true'] {
+  background: #4f46e5;
+  border-color: #4f46e5;
+  color: #fff;
+}
+
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .settings-page-content
+  .selection-circle-icon
+  circle {
+  display: none;
+}
+
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .settings-page-content
+  .selection-circle-icon {
+  filter: none;
+  width: 24px;
+  height: 24px;
+}
+
+/* An overview without a facts column uses the full source content width. */
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .upstream-media-overview:not(:has(.upstream-media-facts)) {
+  grid-template-columns: minmax(0, 1fr);
 }
 </style>
     <style data-profile-stylesheet="seerrNGJ.css">

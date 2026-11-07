@@ -1,3 +1,5 @@
+// eslint-disable-next-line no-relative-import-paths/no-relative-import-paths -- Theme interaction helper.
+import { openFilterSection, openSourceTools } from '../support/themeControls';
 const clickFirstTitleCardInSlider = (sliderTitle: string): void => {
   const firstCard = () =>
     cy
@@ -142,7 +144,7 @@ describe('Discover', () => {
 
     cy.visit('/discover/movies');
     cy.wait('@getMovieDiscover');
-    cy.contains('button.detail-disclosure-button', 'Filters').click();
+    openFilterSection('Filters');
     cy.get('button[aria-label="Genres"]').click();
     cy.contains('[role=option]', 'Action').click();
     cy.wait('@getMovieDiscover').then(({ request }) => {
@@ -207,7 +209,7 @@ describe('Discover', () => {
 
     cy.visit('/discover/tv');
     cy.wait('@getTvDiscover');
-    cy.contains('button.detail-disclosure-button', 'Filters').click();
+    openFilterSection('Filters');
     cy.get('button[aria-label="Status"]').click();
     cy.contains('[role=option]', 'Ended').click();
     cy.wait('@getTvDiscover');
@@ -447,6 +449,7 @@ describe('Discover', () => {
       .should('be.visible')
       .click();
     cy.url().should('include', '/movie/99012?discoverContext=');
+    openSourceTools();
     cy.get('[data-testid="discover-previous"]').should('be.visible');
     cy.get('[data-testid="discover-next"]').should('be.visible').click();
     cy.url().should('include', '/movie/99013?discoverContext=');
@@ -455,9 +458,11 @@ describe('Discover', () => {
       'Filtered Movie Three'
     );
     cy.viewport(390, 844);
+    openSourceTools();
     cy.get('[data-testid="discover-previous"]').should('be.visible');
     cy.get('[data-testid="discover-next"]').should('not.exist');
     cy.go('back');
+    openSourceTools();
     cy.get('[data-testid="discover-previous"]').should('be.visible');
     cy.go('back');
     cy.location('pathname').should('eq', '/discover/movies');
@@ -496,6 +501,7 @@ describe('Discover', () => {
       'contain',
       'Filtered Series Two'
     );
+    openSourceTools();
     cy.get('[data-testid="discover-previous"]').should('be.visible');
     cy.get('[data-testid="discover-next"]').should('not.exist');
   });

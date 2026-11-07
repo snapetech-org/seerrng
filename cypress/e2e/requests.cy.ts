@@ -1,13 +1,8 @@
-const openRequestFilterSection = (label: string) => {
-  cy.get(`section[aria-label="${label}"]`)
-    .find('button.detail-disclosure-button')
-    .then(($button) => {
-      if ($button.attr('aria-expanded') === 'false') cy.wrap($button).click();
-    });
-  cy.get(
-    `section[aria-label="${label}"] button.detail-disclosure-button`
-  ).should('have.attr', 'aria-expanded', 'true');
-};
+// eslint-disable-next-line no-relative-import-paths/no-relative-import-paths -- Theme interaction helper.
+import {
+  closeSourcePanel,
+  openFilterSection as openRequestFilterSection,
+} from '../support/themeControls';
 
 describe('Requests', () => {
   beforeEach(() => {
@@ -34,11 +29,13 @@ describe('Requests', () => {
     cy.contains('button', 'Books').should('be.visible');
     cy.contains('button', 'Audiobooks').click();
     cy.location('search').should('contain', 'mediaType=audiobook');
+    openRequestFilterSection('Filters');
     cy.contains('Showing requests for')
       .should('be.visible')
       .parent()
       .find('[title="Audiobook"]')
       .should('be.visible');
+    closeSourcePanel();
   });
 
   it('applies task filters to software requests', () => {
@@ -81,7 +78,7 @@ describe('Requests', () => {
       .its('request.url')
       .should('not.include', 'filter=');
     openRequestFilterSection('Task Filters');
-    cy.get('[aria-label="Task Filters"]')
+    cy.get('section[aria-label="Task Filters"], .slideover')
       .contains('button', 'No Release Found')
       .click();
     cy.location('search').should('include', 'filter=unavailable');
@@ -90,7 +87,9 @@ describe('Requests', () => {
       .should('include', 'filter=unavailable');
     cy.get('[aria-label="Software Requests"]').should('not.exist');
 
-    cy.get('[aria-label="Task Filters"]').contains('button', 'Failed').click();
+    cy.get('section[aria-label="Task Filters"], .slideover')
+      .contains('button', 'Failed')
+      .click();
     cy.location('search').should('include', 'filter=failed');
     cy.wait('@softwareStatus')
       .its('request.url')

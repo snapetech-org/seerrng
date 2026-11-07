@@ -248,6 +248,8 @@ for (const viewport of [
       mediaInfo: { requests: [{ id: request.id }] },
     });
     await expect(page.getByTestId('media-title')).toContainText(movie.title);
+    const sourceTools = page.locator('.upstream-extra-tools > summary');
+    if (await sourceTools.count()) await sourceTools.click();
     const manageButton = page.getByRole('button', { name: 'Manage Movie' });
     await expect(manageButton).toBeEnabled();
     await manageButton.click();

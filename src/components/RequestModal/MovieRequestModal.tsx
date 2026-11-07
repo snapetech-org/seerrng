@@ -964,6 +964,7 @@ const MovieRequestModal = ({
           <div className="mr-auto flex items-center gap-2">
             {canUseAdvancedOptions && !requesterTagOnlyMode && (
               <AdvancedOptionsDisclosureButton
+                plain
                 label={intl.formatMessage(messages.advancedOptions)}
                 open={advancedOptionsOpen}
                 pinned={advancedOptionsPinned}

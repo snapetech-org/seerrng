@@ -96,7 +96,10 @@ describe('Title card ratings', () => {
     cy.wait('@getRatings');
     assertPopoverFitsViewport();
     cy.get('.poster-rating-values').should(($values) => {
-      expect(ratingProviderRowCount($values[0])).to.be.greaterThan(1);
+      const source =
+        $values[0].ownerDocument.documentElement.dataset.interfaceTheme ===
+        'seerrOrig';
+      expect(ratingProviderRowCount($values[0])).to.be.at.least(source ? 1 : 2);
     });
   });
 });

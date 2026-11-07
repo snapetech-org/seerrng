@@ -3233,11 +3233,24 @@ const validateCurrentBatchContract = (files) => {
     'must not restore per-component button colors'
   );
   const requestButton = 'src/components/RequestButton/index.tsx';
-  requireText(
-    requestButton,
-    '<FormatRequestControl options={requestOptions}',
-    'Movie detail requests must retain the shared segmented control'
-  );
+  let hasSplitRequestEntry = false;
+  try {
+    const requestEntry = parsedJsx(requireFile(requestButton));
+    hasSplitRequestEntry = requestEntry.elements.some(
+      (node) =>
+        requestEntry.tag(node) === 'FormatRequestControl' &&
+        requestEntry.expression(node, 'options')?.getText(requestEntry.tree) ===
+          'requestOptions' &&
+        requestEntry.present(node, 'split')
+    );
+  } catch {
+    // A broken JSX owner is a failed contract, not a validator crash.
+  }
+  if (!hasSplitRequestEntry)
+    errors.push(
+      `${requestButton}: Movie detail requests must retain the shared segmented control with its supported upstream split presentation`
+    );
+
   requireText(
     requestButton,
     'canChooseAlternateTarget',
@@ -5181,7 +5194,7 @@ const validateCurrentBatchContract = (files) => {
   const settingsLayout = 'src/components/Settings/SettingsLayout.tsx';
   for (const token of [
     '<Header>{intl.formatMessage(globalMessages.settings)}</Header>',
-    '<SettingsTabs tabType="filter" settingsRoutes={settingsRoutes} />',
+    "tabType={upstream ? 'default' : 'filter'}",
     'className="discover-filter-control settings-page-search"',
     '<article className="app-card-main settings-main-card max-w-full min-w-0">',
     'className="settings-page-actions"',
@@ -5292,7 +5305,7 @@ const validateCurrentBatchContract = (files) => {
     '@apply col-span-full m-0 mt-[5px] w-full text-sm leading-5 font-normal;',
     '.settings-page-content .settings-compatible-listbox-button {',
     'max-height: var(--compact-control-height);',
-    'background-color: rgb(var(--theme-control-surface) / 0.58) !important;',
+    'var(--settings-control-surface-opacity, 0.58)',
     '.settings-page-content .react-select__multi-value {',
     '@apply inline-flex flex-nowrap items-center gap-[5px] whitespace-nowrap;',
     '.settings-permission-options .permission-option-row,',

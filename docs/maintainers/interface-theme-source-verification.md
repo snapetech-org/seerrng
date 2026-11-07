@@ -14,7 +14,8 @@ John's regression reference is the published SeerrNG **v3.72.20** image, digest
 An older fork screenshot is not evidence of upstream fidelity.
 
 Common routes compared with upstream: Discover, movie details, series details,
-Movies, general settings, requests and users. Matching viewports: 320, 390, 768,
+Movies, collections, people, movie/series genres, general settings, Plex settings,
+services, users, notifications, logs, jobs and About, plus requests and users. Matching viewports: 320, 390, 768,
 1024, 1280 and 1440 pixels, each 900 pixels high. Headless Chromium captures
 include expanded seasons, request dialogs, individual episode choices and the
 filter drawer. Provider metadata and request destinations are isolated read-only
@@ -37,7 +38,13 @@ must be compared separately from stable geometry.
 - Video pages restore upstream header actions, open overview/facts/cast, full
   crew links and read-only season accordions. Authorized SeerrNG tools remain
   available under the optional details disclosure.
-- Request format menus use existing callbacks and disabled states. The season
+- Source collections use an open poster header, overview and horizontal movie
+  shelf. Existing collection selection and playback tools remain under Details.
+- Settings use upstream tabs and a phone selector, open sections, 24px section
+  headings, 38px fields and square checkboxes; John retains its compact shell.
+- Contextual Swipe remains available from the upstream header.
+- Request format menus use existing callbacks and disabled states. Only video/collection entry actions opt into split menus; book/music and
+  in-dialog formats remain inline and retain pin controls. The season
   table uses the existing eligibility/selection adapter, including quotas and
   blocked episodes; individual episode choices remain available.
 - The episode frame grows to fit larger controls; only its rows scroll. A fixed
@@ -73,3 +80,11 @@ request summary geometry and individual-episode visibility in both themes.
 Existing Cypress video cases explicitly exercise John's compact composition;
 Playwright additionally exercises Orig's upstream composition and dialog flow.
 The release requires the complete main-branch CI, including browser suites.
+
+Additional source comparison covers 11 common routes at 390 and 1440 pixels
+(44 fork captures and 22 actual-upstream captures). Focused browser checks cover
+English/Arabic collections, format eligibility and disabled states, book/music
+requests, source sorting/filter drawers, contextual navigation, and request
+destination/edit tools through their visible disclosures. Older Cypress
+John-specific pin/disclosure assertions explicitly select John; source behavior
+is exercised independently, rather than assuming those presentations share DOM.

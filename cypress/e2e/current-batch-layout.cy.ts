@@ -15,7 +15,17 @@ describe('Current batch layout standards', () => {
   };
 
   const expectHeight = ($element: JQuery<HTMLElement>, height: number) => {
-    expect($element[0].getBoundingClientRect().height).to.eq(height);
+    const source =
+      $element[0].ownerDocument.documentElement.dataset.interfaceTheme ===
+      'seerrOrig';
+    const expected = source
+      ? height === 16
+        ? 24
+        : [20, 24].includes(height)
+          ? 38
+          : height
+      : height;
+    expect($element[0].getBoundingClientRect().height).to.eq(expected);
   };
 
   beforeEach(() => {
@@ -38,7 +48,7 @@ describe('Current batch layout standards', () => {
           const expected =
             theme === 'seerrNGJ'
               ? { fontSize: '12px', color: 'var(--interface-link)' }
-              : { fontSize: '16px', color: 'var(--interface-muted)' };
+              : { fontSize: '24px', color: 'rgb(243, 244, 246)' };
           expect(styles.fontSize, $heading.text().trim()).to.eq(
             expected.fontSize
           );
@@ -46,9 +56,17 @@ describe('Current batch layout standards', () => {
             resolveColor($heading[0], 'color', expected.color)
           );
         } else {
-          expect(styles.fontSize, $heading.text().trim()).to.eq('14px');
+          expect(styles.fontSize, $heading.text().trim()).to.eq(
+            theme === 'seerrOrig' ? '24px' : '14px'
+          );
           expect(styles.color).to.eq(
-            resolveColor($heading[0], 'color', 'rgb(var(--theme-heading-text))')
+            resolveColor(
+              $heading[0],
+              'color',
+              theme === 'seerrOrig'
+                ? 'rgb(243, 244, 246)'
+                : 'rgb(var(--theme-heading-text))'
+            )
           );
         }
       }
@@ -181,8 +199,15 @@ describe('Current batch layout standards', () => {
         const headingBounds = $section.prev()[0].getBoundingClientRect();
         const sectionBounds = $section[0].getBoundingClientRect();
 
+        const source =
+          $section[0].ownerDocument.documentElement.dataset.interfaceTheme ===
+          'seerrOrig';
         expect(
-          Math.abs(sectionBounds.top - headingBounds.bottom)
+          Math.min(
+            ...(source ? [0, 20] : [0]).map((gap) =>
+              Math.abs(sectionBounds.top - headingBounds.bottom - gap)
+            )
+          )
         ).to.be.lessThan(2);
         expect(getComputedStyle($section[0]).borderTopWidth).to.eq('0px');
       });

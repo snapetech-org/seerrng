@@ -46,6 +46,10 @@ it('selects an enabled format without invoking the disabled action, and keeps an
         ) as HTMLButtonElement
       ).click()
     );
+    expect(
+      container.querySelector('[data-testid="format-request-option-4k"]')
+        ?.textContent
+    ).toContain('Request 4K');
     expect(fourK).toHaveBeenCalledOnce();
     expect(hd).not.toHaveBeenCalled();
     await act(async () =>

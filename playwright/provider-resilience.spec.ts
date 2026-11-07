@@ -47,14 +47,26 @@ for (const width of [1440, 390]) {
       await expect(
         page.getByText('Catalog Title 1', { exact: true }).first()
       ).toBeVisible();
-      await page.getByRole('button', { name: 'Sort By', exact: true }).click();
-      await page.getByRole('button', { name: 'Title', exact: true }).click();
       const field =
         type === 'movies' || baseline ? 'original_title' : 'original_name';
+      const sourceSort = page.getByRole('combobox', {
+        name: 'Sort By',
+        exact: true,
+      });
+      const source = (await sourceSort.count()) > 0;
+      if (source) await sourceSort.selectOption(`${field}.desc`);
+      else {
+        await page
+          .getByRole('button', { name: 'Sort By', exact: true })
+          .click();
+        await page.getByRole('button', { name: 'Title', exact: true }).click();
+      }
       await expect.poll(() => sorts.at(-1)).toBe(`${field}.desc`);
-      await expect(
-        page.getByRole('button', { name: 'Title', exact: true })
-      ).toHaveAttribute('aria-pressed', 'true');
+      if (source) await expect(sourceSort).toHaveValue(`${field}.desc`);
+      else
+        await expect(
+          page.getByRole('button', { name: 'Title', exact: true })
+        ).toHaveAttribute('aria-pressed', 'true');
       await page.screenshot({
         path: info.outputPath(`${type}-${width}.png`),
         fullPage: true,

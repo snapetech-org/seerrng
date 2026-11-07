@@ -11,6 +11,7 @@ describe('TV Details', () => {
     });
   });
   afterEach(() => {
+    cy.loginAsAdmin();
     cy.request('POST', '/api/v1/user/1/settings/interface-theme', {
       theme: 'seerrOrig',
     });

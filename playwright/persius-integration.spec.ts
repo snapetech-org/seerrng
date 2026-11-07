@@ -974,7 +974,7 @@ for (const theme of ['seerrOrig', 'seerrNGJ']) {
     );
     for (const [name, route, ready] of [
       ['movies', '/discover/movies', '[data-testid="title-card"]'],
-      ['movie-detail', '/movie/101', '.media-page'],
+      ['movie-detail', '/movie/101', '.media-page, .upstream-media-page'],
       ['book-detail', '/book/OL999W', '.media-page'],
       ['requests', '/requests', '[data-testid="request-status-700"]'],
       ['settings', '/settings/main', '.settings-page-content'],

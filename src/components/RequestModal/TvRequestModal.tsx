@@ -2073,6 +2073,7 @@ const TvRequestModal = ({
           <div className="app-action-row" data-action-placement="leading">
             {canUseAdvancedOptions && !requesterTagOnlyMode && (
               <AdvancedOptionsDisclosureButton
+                plain
                 label={intl.formatMessage(messages.advancedOptions)}
                 open={advancedOptionsOpen}
                 pinned={advancedOptionsPinned}

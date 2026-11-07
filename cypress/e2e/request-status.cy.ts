@@ -1,13 +1,8 @@
-const openRequestFilterSection = (label: string) => {
-  cy.get(`section[aria-label="${label}"]`)
-    .find('button.detail-disclosure-button')
-    .then(($button) => {
-      if ($button.attr('aria-expanded') === 'false') cy.wrap($button).click();
-    });
-  cy.get(
-    `section[aria-label="${label}"] button.detail-disclosure-button`
-  ).should('have.attr', 'aria-expanded', 'true');
-};
+// eslint-disable-next-line no-relative-import-paths/no-relative-import-paths -- Theme interaction helper.
+import {
+  closeSourcePanel,
+  openFilterSection as openRequestFilterSection,
+} from '../support/themeControls';
 
 describe('Request Status', () => {
   beforeEach(() => {
@@ -34,10 +29,12 @@ describe('Request Status', () => {
     cy.contains('button', 'Books').should('be.visible');
     cy.contains('button', 'Audiobooks').click();
     cy.location('search').should('contain', 'mediaType=audiobook');
+    openRequestFilterSection('Filters');
     cy.contains('Showing requests for')
       .should('be.visible')
       .parent()
       .find('[title="Audiobook"]')
       .should('be.visible');
+    closeSourcePanel();
   });
 });

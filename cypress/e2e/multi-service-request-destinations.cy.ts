@@ -48,8 +48,12 @@ const videoServices = (serviceType: 'radarr' | 'sonarr') => {
 
 const openRequestDialog = (mediaType: 'movie' | 'tv') => {
   if (mediaType === 'movie') {
-    cy.get('[data-testid="format-request-control"]')
-      .filter(':has([data-testid="format-request-option-standard"])')
+    cy.get(
+      'button[data-testid="format-request-control"], [data-testid="format-request-control"] > button:first-child'
+    )
+      .filter(
+        ':has([data-testid="format-request-option-standard"]), [data-testid="format-request-option-standard"]'
+      )
       .first()
       .should('be.visible')
       .and('be.enabled')
@@ -61,6 +65,17 @@ const openRequestDialog = (mediaType: 'movie' | 'tv') => {
       .click();
   }
   cy.get('[role="dialog"]').should('be.visible');
+  cy.get('body').then(($body) => {
+    const advanced = $body
+      .find('[role="dialog"] button')
+      .filter((_, button) => button.textContent?.trim() === 'Advanced Options');
+    if (advanced.length && advanced.attr('aria-expanded') === 'false')
+      cy.wrap(advanced).click();
+  });
+  cy.get(`#${mediaType}-request-destination`).then(($destination) => {
+    const details = $destination.closest('details:not([open])');
+    if (details.length) cy.wrap(details.first()).children('summary').click();
+  });
   cy.get(`#${mediaType}-request-destination`).should('be.visible');
 };
 

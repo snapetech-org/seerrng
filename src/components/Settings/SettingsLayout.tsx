@@ -6,6 +6,7 @@ import type { SettingsRoute } from '@app/components/Common/SettingsTabs';
 import SettingsTabs from '@app/components/Common/SettingsTabs';
 import { SETTINGS_USER_CHANGE_EVENT } from '@app/components/Settings/settingsEvents';
 import useSettings from '@app/hooks/useSettings';
+import useUpstreamTheme from '@app/hooks/useUpstreamTheme';
 import { Permission, useUser } from '@app/hooks/useUser';
 import globalMessages from '@app/i18n/globalMessages';
 import defineMessages from '@app/utils/defineMessages';
@@ -112,6 +113,7 @@ const editableSettingsRoute = (path: string) =>
 
 const SettingsLayout = ({ children }: SettingsLayoutProps) => {
   const intl = useIntl();
+  const upstream = useUpstreamTheme();
   const router = useRouter();
   const settings = useSettings();
   const { hasPermission } = useUser();
@@ -516,9 +518,14 @@ const SettingsLayout = ({ children }: SettingsLayoutProps) => {
         </Modal>
       </Transition>
 
-      <Header>{intl.formatMessage(globalMessages.settings)}</Header>
+      {!upstream && (
+        <Header>{intl.formatMessage(globalMessages.settings)}</Header>
+      )}
       <div className="settings-page-navigation-row">
-        <SettingsTabs tabType="filter" settingsRoutes={settingsRoutes} />
+        <SettingsTabs
+          tabType={upstream ? 'default' : 'filter'}
+          settingsRoutes={settingsRoutes}
+        />
         <form
           className="discover-filter-control settings-page-search"
           onSubmit={handleSettingsSearch}

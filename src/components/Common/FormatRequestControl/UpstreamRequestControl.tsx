@@ -33,7 +33,8 @@ export default function UpstreamRequestControl({
       >
         {icon}
         <span>
-          {label}
+          {primary.buttonLabel ?? label}
+          {primary.id === '4k' ? ` ${primary.label}` : ''}
           {primary.id !== 'hd' &&
           primary.id !== 'standard' &&
           primary.id !== '4k'
@@ -66,7 +67,7 @@ export default function UpstreamRequestControl({
                     }
                   >
                     <span>
-                      {label} · {option.label}
+                      {option.buttonLabel ?? label} · {option.label}
                     </span>
                   </Tooltip>
                 </button>

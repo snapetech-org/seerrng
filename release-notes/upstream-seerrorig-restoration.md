@@ -6,9 +6,4 @@ action: none
 breaking: false
 ---
 
-Restore SeerrOrig's upstream Seerr layout and flow instead of recolouring
-  John's compact interface. Movie and series pages use the upstream header,
-  open overview/facts and cast; seasons expand directly into episode details.
-  Restore upstream search fields, controls, request format menus and shelves.
-  SeerrNG integrations and permissions remain available; SeerrNGJ retains its
-  separate design.
+Restore SeerrOrig's upstream Seerr layout and flow: navigation, search, movie/series and collection pages, open overview/cast, season accordions, request dialogs, settings tabs and phone selector, form spacing and checkboxes. Preserve book/music format choices, contextual Swipe, integrations and permissions. SeerrNGJ retains its separate compact design.

@@ -611,7 +611,11 @@ const RequestButton = ({
           </Button>
         )
       ) : (
-        <FormatRequestControl options={requestOptions} className={className} />
+        <FormatRequestControl
+          options={requestOptions}
+          split
+          className={className}
+        />
       )}
     </>
   );

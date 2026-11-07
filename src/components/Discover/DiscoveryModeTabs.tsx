@@ -134,10 +134,12 @@ const DiscoveryModeTabs = ({
   selected,
   mediaType,
   returnTo,
+  compact = false,
 }: {
   selected: 'discover' | 'swipe';
   mediaType: SwipeContextMediaType;
   returnTo?: unknown;
+  compact?: boolean;
 }) => {
   const intl = useIntl();
   const router = useRouter();
@@ -175,6 +177,27 @@ const DiscoveryModeTabs = ({
             returnTo: browsePath,
           },
         };
+  if (compact) {
+    const destination = selected === 'discover' ? 'swipe' : 'discover';
+    const Icon = destination === 'swipe' ? HeartIcon : SparklesIcon;
+    return (
+      <Link
+        href={destination === 'swipe' ? swipeHref : discoverHref}
+        prefetch={false}
+        aria-label={intl.formatMessage(messages[destination])}
+        title={intl.formatMessage(messages[destination])}
+        aria-disabled={!router.isReady}
+        onClick={(event) => {
+          if (!router.isReady) event.preventDefault();
+        }}
+        className="upstream-discovery-switch"
+        data-testid={`discovery-mode-tab-${destination}`}
+      >
+        <Icon className="app-action-icon" />
+      </Link>
+    );
+  }
+
   const mediaTypeLabel = intl.formatMessage(
     mediaType === 'tv'
       ? messages.series

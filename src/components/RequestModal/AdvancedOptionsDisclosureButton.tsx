@@ -10,6 +10,7 @@ const AdvancedOptionsDisclosureButton = ({
   onToggle,
   onPin,
   controlVariant,
+  plain = false,
 }: {
   label: string;
   open: boolean;
@@ -17,9 +18,11 @@ const AdvancedOptionsDisclosureButton = ({
   onToggle: () => void;
   onPin: () => void;
   controlVariant?: 'book-request-advanced-options';
+  /** The upstream video request flow uses a plain advanced-options button. */
+  plain?: boolean;
 }) => {
   const upstream = useUpstreamTheme();
-  return upstream ? (
+  return upstream && plain ? (
     <Button onClick={onToggle} aria-expanded={open}>
       {label}
     </Button>

@@ -8031,7 +8031,10 @@
     @apply px-2 py-0 text-xs leading-4;
     box-sizing: border-box;
     border-color: rgb(var(--theme-control-border) / 0.75);
-    background-color: rgb(var(--theme-control-surface) / 0.58) !important;
+    background-color: rgb(
+      var(--theme-control-surface) /
+        var(--settings-control-surface-opacity, 0.58)
+    ) !important;
     color: rgb(var(--theme-control-text)) !important;
   }
 
@@ -8045,7 +8048,10 @@
   .settings-page-content textarea {
     @apply px-3 py-2 text-sm leading-5;
     border-color: rgb(var(--theme-control-border) / 0.75);
-    background-color: rgb(var(--theme-control-surface) / 0.58);
+    background-color: rgb(
+      var(--theme-control-surface) /
+        var(--settings-control-surface-opacity, 0.58)
+    );
     color: rgb(var(--theme-control-text));
   }
 
@@ -8061,7 +8067,10 @@
   .settings-page-content .react-select__control,
   .settings-page-content .react-select__control--is-focused {
     border-color: rgb(var(--theme-control-border) / 0.75) !important;
-    background-color: rgb(var(--theme-control-surface) / 0.58) !important;
+    background-color: rgb(
+      var(--theme-control-surface) /
+        var(--settings-control-surface-opacity, 0.58)
+    ) !important;
     color: rgb(var(--theme-control-text)) !important;
     box-shadow: none !important;
   }
@@ -8074,7 +8083,10 @@
     max-height: var(--compact-control-height);
     padding-inline: var(--button-padding-x);
     border-color: rgb(var(--theme-control-border) / 0.75);
-    background-color: rgb(var(--theme-control-surface) / 0.58) !important;
+    background-color: rgb(
+      var(--theme-control-surface) /
+        var(--settings-control-surface-opacity, 0.58)
+    ) !important;
     color: rgb(var(--theme-control-text)) !important;
   }
 

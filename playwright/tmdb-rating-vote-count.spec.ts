@@ -58,11 +58,19 @@ for (const media of [
       return query.get('sortBy') === 'vote_average.desc';
     });
     await page.goto(media.path);
-    const sortSection = page.getByRole('region', { name: 'Sort By' });
-    await sortSection
-      .getByRole('button', { name: 'Sort By', exact: true })
-      .click();
-    await sortSection.getByRole('button', { name: 'TMDB Rating' }).click();
+    const sourceSort = page.getByRole('combobox', {
+      name: 'Sort By',
+      exact: true,
+    });
+    if (await sourceSort.count())
+      await sourceSort.selectOption('vote_average.desc');
+    else {
+      const sortSection = page.getByRole('region', { name: 'Sort By' });
+      await sortSection
+        .getByRole('button', { name: 'Sort By', exact: true })
+        .click();
+      await sortSection.getByRole('button', { name: 'TMDB Rating' }).click();
+    }
     const request = await discoverRequest;
     expect(new URL(request.url()).searchParams.get('voteCountGte')).toBe('50');
   });
@@ -114,7 +122,9 @@ for (const media of [
     );
 
     await page.goto(media.path);
-    await page.getByRole('button', { name: 'Filters', exact: true }).click();
+    await page
+      .getByRole('button', { name: /^(Filters|\d+ Active Filters)$/ })
+      .click();
     await page.getByRole('button', { name: 'TMDB Rating: Any' }).click();
     await page.getByRole('option', { name: '7.5+' }).click();
 

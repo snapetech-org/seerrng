@@ -91,6 +91,24 @@ for (const theme of ['seerrNGJ', 'seerrOrig', 'persiusNG'])
             }
           ).next.router.push('/collection/123');
         });
+        if (theme === 'seerrOrig') {
+          await expect(
+            page.locator(
+              '[data-native-composition="upstream"][data-media-type="collection"]'
+            )
+          ).toBeVisible();
+          await expect(
+            page.locator('.upstream-media-overview-copy')
+          ).toBeVisible();
+          await expect(
+            page
+              .locator(
+                '[data-testid="media-slider"] [data-testid="title-card"]'
+              )
+              .first()
+          ).toBeVisible();
+          await page.locator('.upstream-extra-tools > summary').click();
+        }
         const row = page.locator('.movie-summary-card-with-selection');
         await expect(row).toHaveCount(1);
         await expect(page.locator('html')).toHaveAttribute('lang', locale);
