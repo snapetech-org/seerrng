@@ -2,6 +2,7 @@
 category: fixed
 audience: users, operators
 area: navigation
+action: none
 breaking: false
 ---
 
