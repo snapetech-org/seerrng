@@ -9,6 +9,38 @@ v3.72.7 section consolidates changes from the requested v3.71.4 baseline
 through v3.72.7, including changes also represented by unpublished interim
 tags. The comparison link is the complete commit range.
 
+## [3.72.22](https://github.com/snapetech-org/seerrng/compare/v3.72.21..v3.72.22) - 2026-11-07
+
+### User-facing changes
+
+#### Added
+
+- **Lumen:** Lumen adds permission-aware Everyone request management, requester selection, saved shared settings and branding uploads, loading placeholders, and account-scoped discovery caching. Failed Everyone loads show Retry. Uploads retain prior images until operators choose to remove them; cache retention expires after one day.
+  - **Action required:** Mount a writable /lumen-data folder to save shared settings or upload branding from Lumen.
+
+#### Fixed
+
+- **Collections:** SeerrOrig shows Queue Collection beside Request Collection in the collection header, so progressive acquisition is reachable without opening the optional details disclosure. John retains its existing entry point.
+- **Comics:** Comic requests stay in progress after the download service accepts them. Availability requires scanned files at the requested destination; rescans repair old false completions. Notifications use comic titles and discard stale availability notices. Progress stays scoped to the correct comic service.
+  - **Action required:** Run the configured comic library scans after upgrading to repair old completion statuses.
+- **Settings:** Saving Plex settings no longer submits unused Tautulli settings or blocks a later save. Failed changes remain unsaved and retryable; successful persistence clears the pending state.
+- **Settings:** Settings Search waits for account permissions before accepting a query, so an early search for an administrator setting cannot resolve against an incomplete destination list.
+
+### 🚀 Features
+- *(lumen)* Everyone shows every request: filters and Show more - ([485677b](https://github.com/snapetech-org/seerrng/commit/485677b1e38fdd83b4437a5b26d3ba532d2c6b06))
+- *(lumen)* Logo shape and a custom media server name - ([e71d5f3](https://github.com/snapetech-org/seerrng/commit/e71d5f394957c1c106e167d047d2a83a25cb2cc5))
+- *(lumen)* Upload the logo and tab icon from the admin settings page - ([f6bfd8f](https://github.com/snapetech-org/seerrng/commit/f6bfd8f088746fab70e9d24ad550d1534830f465))
+- *(lumen)* Change, retry and remove requests from the Everyone tab - ([48d2ff3](https://github.com/snapetech-org/seerrng/commit/48d2ff30d59d7ba23189403b4d6698be71361132))
+- *(lumen)* Everyone's requests, request as, library badge, saved settings - ([d1d437c](https://github.com/snapetech-org/seerrng/commit/d1d437cad320dc167f631eb85bd0cc4e3e82b1dc))
+
+### 🐛 Bug Fixes
+- *(lumen)* Show downloads that have started, and call 0% ones Queued - ([a3308ae](https://github.com/snapetech-org/seerrng/commit/a3308ae00ee6a0ec0b3af700e34919a5c612d848))
+- Wait for settings permissions and verify human issue entry points - ([f55d0b1](https://github.com/snapetech-org/seerrng/commit/f55d0b14e81b9458b9116158e371d48e5ca75234))
+- Verify comic availability and restore actionable collection and Plex flows - ([aafa2ac](https://github.com/snapetech-org/seerrng/commit/aafa2ac51b423bd304069883f4cd163c12356d95))
+
+### ⚡ Performance
+- *(lumen)* Keep recent answers instead of asking SeerrNG every time - ([edcd42f](https://github.com/snapetech-org/seerrng/commit/edcd42faa2c4a13e54e34f4b651afef3cd2f2f4b))
+
 ## [3.72.21](https://github.com/snapetech-org/seerrng/compare/v3.72.20..v3.72.21) - 2026-11-07
 
 ### Fixed
