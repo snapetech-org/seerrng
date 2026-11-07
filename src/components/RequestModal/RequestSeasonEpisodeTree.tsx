@@ -6,6 +6,8 @@ import persiusMessages from '@app/components/Persius/messages';
 import { OptionalDisclosure } from '@app/components/Persius/Primitives';
 import SeasonPicker from '@app/components/Persius/SeasonPicker';
 import { usePersius } from '@app/components/Persius/usePersius';
+import UpstreamSeasonPicker from '@app/components/RequestModal/UpstreamSeasonPicker';
+import useUpstreamTheme from '@app/hooks/useUpstreamTheme';
 import defineMessages from '@app/utils/defineMessages';
 import type { SeasonEpisodeSelection } from '@server/interfaces/api/seasonInterfaces';
 import type { SeasonWithEpisodes, TvDetails } from '@server/models/Tv';
@@ -63,6 +65,7 @@ const RequestSeasonEpisodeTree = ({
 }: RequestSeasonEpisodeTreeProps) => {
   const intl = useIntl();
   const persius = usePersius();
+  const upstream = useUpstreamTheme();
   const { data, error, isValidating, mutate } = useSWR<SeasonWithEpisodes[]>(
     seasons.length
       ? [
@@ -115,7 +118,7 @@ const RequestSeasonEpisodeTree = ({
           number === 0
             ? intl.formatMessage(messages.specials)
             : intl.formatMessage(messages.seasonNumber, {
-                number: formatTreeNumber(number),
+                number: upstream ? String(number) : formatTreeNumber(number),
               }),
         intl.formatMessage(messages.untitled)
       ),
@@ -126,6 +129,7 @@ const RequestSeasonEpisodeTree = ({
       disabledEpisodes,
       availableEpisodesBySeason,
       intl,
+      upstream,
     ]
   );
   const feedback =
@@ -187,25 +191,40 @@ const RequestSeasonEpisodeTree = ({
       data-selection-tree
       aria-busy={isValidating}
     >
-      {persius && selectionMode === 'multiple' && (
+      {(persius || upstream) && selectionMode === 'multiple' && (
         <>
-          <SeasonPicker
-            seasons={treeData}
-            selectedIds={renderedSelectedIds}
-            disabled={!ready}
-            onChange={(ids) => {
-              if (ready)
-                onSelectionsChange(
-                  treeSelectionToRequests(treeData, ids, selections)
-                );
-            }}
-          />
+          {upstream ? (
+            <UpstreamSeasonPicker
+              seasons={treeData}
+              selectedIds={renderedSelectedIds}
+              disabled={!ready}
+              disabledSeasons={disabledSeasons ?? []}
+              onChange={(ids) => {
+                if (ready)
+                  onSelectionsChange(
+                    treeSelectionToRequests(treeData, ids, selections)
+                  );
+              }}
+            />
+          ) : (
+            <SeasonPicker
+              seasons={treeData}
+              selectedIds={renderedSelectedIds}
+              disabled={!ready}
+              onChange={(ids) => {
+                if (ready)
+                  onSelectionsChange(
+                    treeSelectionToRequests(treeData, ids, selections)
+                  );
+              }}
+            />
+          )}
           {feedback}
           {afterSeasonSelection}
         </>
       )}
       <OptionalDisclosure
-        enabled={persius && selectionMode === 'multiple'}
+        enabled={(persius || upstream) && selectionMode === 'multiple'}
         label={intl.formatMessage(persiusMessages.episodeChoices)}
       >
         <SeasonEpisodeTree
@@ -229,11 +248,14 @@ const RequestSeasonEpisodeTree = ({
             }
           }}
           feedback={
-            persius && selectionMode === 'multiple' ? undefined : feedback
+            (persius || upstream) && selectionMode === 'multiple'
+              ? undefined
+              : feedback
           }
         />
       </OptionalDisclosure>
-      {(!persius || selectionMode !== 'multiple') && afterSeasonSelection}
+      {(!(persius || upstream) || selectionMode !== 'multiple') &&
+        afterSeasonSelection}
     </div>
   );
 };

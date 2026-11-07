@@ -83,9 +83,10 @@ describe('interface theme contract', () => {
       assert.match(sheet, /data-interface-theme/);
       assert.match(sheet, /\.sidebar/);
       assert.match(sheet, /\.poster-layout/);
-      assert.match(sheet, /\.media-header/);
     }
-    assert.match(orig, /--poster-width: 150px/);
+    assert.match(orig, /\.upstream-media-header/);
+    assert.match(john, /\.media-header/);
+    assert.match(orig, /--poster-width: 144px/);
     assert.match(john, /--poster-width: 169\.2px/);
     assert.match(orig, /display: contents/);
     assert.match(john, /\.sidebar-navigation-heading/);

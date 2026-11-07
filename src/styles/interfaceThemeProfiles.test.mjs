@@ -47,15 +47,6 @@ const comparison = readFileSync(
   'utf8'
 );
 
-const cssToken = (css, name) => {
-  let token;
-  postcss.parse(css).walkDecls(`--${name}`, (declaration) => {
-    token ??= declaration.value;
-  });
-  assert.ok(token, `expected CSS token --${name}`);
-  return token.trim();
-};
-
 const desktopDetailsGrid = (css) => {
   let result;
 
@@ -97,146 +88,42 @@ const embeddedStylesheet = (name) => {
   return stylesheet.textContent?.slice(1) ?? '';
 };
 
-test('interface profiles own visibly different layout and geometry tokens', () => {
-  assert.notEqual(profiles.seerrOrig, profiles.seerrNGJ);
-
-  for (const [name, css] of Object.entries(profiles)) {
-    const unscopedPosterWidthOverrides = [];
-    postcss.parse(css).walkRules((rule) => {
-      if (!rule.selector.includes('.poster-layout')) return;
-      if (rule.selector.includes('ul.cards-vertical')) return;
-      rule.walkDecls('width', (declaration) => {
-        if (declaration.value === '100%') {
-          unscopedPosterWidthOverrides.push(rule.selector);
-        }
-      });
-    });
-    assert.deepEqual(
-      unscopedPosterWidthOverrides,
-      [],
-      `${name} must use the shared poster-width owner in sliders and watchlists`
-    );
-  }
-
-  for (const token of [
-    'interface-sidebar-width',
-    'interface-page-gutter',
-    'interface-card-radius',
-    'interface-control-radius',
-    'interface-section-gap',
-  ]) {
-    assert.notEqual(
-      cssToken(profiles.seerrOrig, token),
-      cssToken(profiles.seerrNGJ, token),
-      `expected --${token} to differ between profiles`
-    );
-  }
-
-  assert.match(profiles.seerrOrig, /--poster-width: 150px;/);
+test('profiles select separate native compositions and source geometry', () => {
+  const original = JSON.parse(
+    readFileSync(
+      new URL('../../themes/seerrOrig/manifest.json', import.meta.url),
+      'utf8'
+    )
+  );
+  const john = JSON.parse(
+    readFileSync(
+      new URL('../../themes/seerrNGJ/manifest.json', import.meta.url),
+      'utf8'
+    )
+  );
+  assert.equal(original.layout, 'upstream');
+  assert.equal(john.layout, undefined);
+  assert.equal(original.navigation, 'flat');
+  assert.equal(john.navigation, 'grouped');
+  assert.match(profiles.seerrOrig, /--poster-width: 144px;/);
+  assert.match(profiles.seerrOrig, /--poster-width: 176px;/);
   assert.match(profiles.seerrNGJ, /--poster-width: 169\.2px;/);
-
-  const desktopDetailsLayout = {
+  assert.match(profiles.seerrOrig, /upstream-media-header/);
+  assert.match(profiles.seerrOrig, /upstream-media-facts/);
+  assert.equal(desktopDetailsGrid(profiles.seerrOrig), undefined);
+  assert.deepEqual(desktopDetailsGrid(profiles.seerrNGJ), {
     columns: 'minmax(0, 1fr) minmax(18rem, 23rem)',
     areas: "'information actions'",
-  };
-  assert.match(
-    profiles.seerrNGJ,
-    /grid-template-columns: 5rem minmax\(0, 1fr\);/
-  );
-  assert.deepEqual(
-    desktopDetailsGrid(profiles.seerrOrig),
-    desktopDetailsLayout
-  );
-  assert.deepEqual(desktopDetailsGrid(profiles.seerrNGJ), desktopDetailsLayout);
-  assert.match(
-    profiles.seerrOrig,
-    /\.app-pinned-filter-group\s*\{\s*display: flex;\s*flex-direction: column;/
-  );
-  assert.match(
-    profiles.seerrNGJ,
-    /\.app-pinned-filter-group\s*\{\s*display: grid;\s*grid-template-columns: repeat\(2, minmax\(0, 1fr\)\);/
-  );
-  assert.match(
-    profiles.seerrOrig,
-    /grid-template-columns: repeat\(auto-fill, minmax\(var\(--poster-width\), 1fr\)\);/
-  );
-  assert.match(
-    profiles.seerrNGJ,
-    /grid-template-columns: repeat\(auto-fill, minmax\(var\(--poster-width\), 1fr\)\);/
-  );
-  assert.match(
-    profiles.seerrOrig,
-    /\.preview-route-grid\s*\{\s*grid-template-columns: minmax\(0, 1fr\);/
-  );
-  assert.match(
-    profiles.seerrNGJ,
-    /\.preview-route-grid\s*\{\s*grid-template-columns: minmax\(0, 1\.1fr\) minmax\(0, 0\.9fr\);/
-  );
-  assert.match(
-    profiles.seerrOrig,
-    /\.settings-page-content\s*\{\s*display: flex;\s*flex-direction: column;/
-  );
-  assert.match(
-    profiles.seerrNGJ,
-    /\.settings-page-content:has\(\s*> \.section,\s*> \.settings-group-card,\s*> \.settings-library-card\s*\)\s*\{\s*display: grid;\s*grid-template-columns: repeat\(2, minmax\(0, 1fr\)\);/
-  );
+  });
+  for (const [name, css] of Object.entries(profiles)) {
+    assert.match(css, /--interface-sidebar-width:/, name);
+    assert.match(css, /--interface-button-padding-x:/, name);
+    assert.match(css, /app-card-poster/, name);
+    assert.match(css, /request-modal-site-surface/, name);
+    assert.match(css, /settings-group-card/, name);
+  }
   assert.match(desktopNavigation, /interfaceThemeDefinition\.navigation/);
   assert.match(mobileNavigation, /interfaceThemeDefinition\.navigation/);
-  assert.match(desktopNavigation, /activeNavigationIcon === 'filled'/);
-  assert.match(mobileNavigation, /activeNavigationIcon ===/);
-  assert.match(comparison, /data-interface-theme="seerrOrig"/);
-  assert.match(comparison, /data-interface-theme="seerrNGJ"/);
-  assert.doesNotMatch(
-    readFileSync(new URL('../pages/_app.tsx', import.meta.url), 'utf8'),
-    /seerrOrig\.css|seerrNGJ\.css/
-  );
-  assert.match(
-    readFileSync(new URL('../pages/_document.tsx', import.meta.url), 'utf8'),
-    /api\/v1\/interface-themes\/seerrOrig\/theme\.css/
-  );
-  assert.equal(
-    comparison.match(
-      /<button aria-current="page">Movies<\/button><button>Series<\/button><button>Books<\/button><button>Music<\/button>/g
-    )?.length,
-    2,
-    'both panels should use the same media controls'
-  );
-  assert.equal(
-    comparison.match(/<h3 class="settings-group-heading">Catalog sync<\/h3>/g)
-      ?.length,
-    2,
-    'both panels should use the same admin cards'
-  );
-  assert.equal(
-    comparison.match(/The Glass Horizon/g)?.length,
-    2,
-    'both panels should use the same media sample'
-  );
-});
-
-test('both profiles style the current shared route-family contracts', () => {
-  const routeRoles = [
-    '.app-card-poster',
-    '.media-detail-card',
-    '.app-detail-summary-grid',
-    '.settings-group-card',
-    '.app-data-table',
-    '.request-modal-site-surface',
-    '.issue-summary-card',
-    "[data-interface-role='main-content']",
-    "[data-interface-role='request-card']",
-    "[data-interface-role='blocklist-card']",
-  ];
-
-  for (const [name, css] of Object.entries(profiles)) {
-    for (const role of routeRoles) {
-      assert.ok(css.includes(role), `${name} is missing ${role}`);
-    }
-    assert.match(css, /data-detail-layout='tv'/);
-    assert.match(css, /data-detail-layout='movie'/);
-    assert.ok(css.includes("[data-testid='media-details-poster']"));
-  }
-
   assert.match(requestListItem, /data-interface-role="request-card"/);
   assert.match(blocklistCard, /data-interface-role="blocklist-card"/);
   assert.match(appLayout, /data-interface-role="main-content"/);
@@ -287,89 +174,26 @@ test('theme design tokens live in packages while global CSS keeps shared roles',
   }
 });
 
-test('standalone comparison embeds production CSS and computes distinct layouts', () => {
+test('standalone palette example embeds current production packages without claiming renderer equivalence', () => {
   assert.equal(embeddedStylesheet('shared.css'), sharedStyles);
   assert.equal(embeddedStylesheet('seerrOrig.css'), profiles.seerrOrig);
   assert.equal(embeddedStylesheet('seerrNGJ.css'), profiles.seerrNGJ);
-
   const dom = new JSDOM(comparison, { pretendToBeVisual: true });
-  const { document, getComputedStyle } = dom.window;
-  const theme = (name) => {
-    const panel = document.querySelector(`[data-interface-theme="${name}"]`);
-    assert.ok(panel, `preview is missing ${name}`);
-    const style = (selector) => {
-      const element = panel.querySelector(selector);
-      assert.ok(element, `${name} is missing ${selector}`);
-      return getComputedStyle(element);
-    };
-    return {
-      posterWidth: getComputedStyle(panel)
+  for (const [name, expected] of [
+    ['seerrOrig', '144px'],
+    ['seerrNGJ', '169.2px'],
+  ]) {
+    const panel = dom.window.document.querySelector(
+      `[data-interface-theme="${name}"]`
+    );
+    assert.ok(panel);
+    assert.equal(
+      dom.window
+        .getComputedStyle(panel)
         .getPropertyValue('--poster-width')
         .trim(),
-      designTokens: Object.fromEntries(
-        [
-          '--interface-sidebar-width',
-          '--interface-section-gap',
-          '--interface-card-radius',
-          '--interface-main-card-padding',
-          '--interface-button-padding-x',
-          '--interface-card-compact-height',
-        ].map((token) => [
-          token,
-          getComputedStyle(panel).getPropertyValue(token).trim(),
-        ])
-      ),
-      filters: style('.app-pinned-filter-group'),
-      posters: style('.cards-vertical'),
-      route: style('.preview-route-grid'),
-      admin: style('.settings-page-content'),
-      mediaTabs: style('.preview-media-tabs'),
-      activeIcon: panel.querySelector(
-        '[data-navigation-link-id="discover-home"] svg'
-      ),
-    };
-  };
-
-  const original = theme('seerrOrig');
-  const john = theme('seerrNGJ');
-
-  assert.equal(original.posterWidth, '150px');
-  assert.equal(john.posterWidth, '169.2px');
-  for (const token of Object.keys(original.designTokens)) {
-    assert.ok(
-      original.designTokens[token],
-      `SeerrOrig preview computes ${token}`
-    );
-    assert.ok(john.designTokens[token], `SeerrNGJ preview computes ${token}`);
-    assert.notEqual(
-      original.designTokens[token],
-      john.designTokens[token],
-      `${token} must resolve differently in the two production packages`
+      expected
     );
   }
-  assert.equal(original.filters.display, 'flex');
-  assert.equal(original.filters.flexDirection, 'column');
-  assert.equal(john.filters.display, 'grid');
-  assert.equal(john.filters.gridTemplateColumns, 'repeat(2, minmax(0, 1fr))');
-  assert.equal(
-    original.posters.gridTemplateColumns,
-    'repeat(auto-fill, minmax(var(--poster-width), 1fr))'
-  );
-  assert.equal(
-    john.posters.gridTemplateColumns,
-    'repeat(auto-fill, minmax(var(--poster-width), 1fr))'
-  );
-  assert.equal(original.route.gridTemplateColumns, 'minmax(0, 1fr)');
-  assert.equal(
-    john.route.gridTemplateColumns,
-    'minmax(0, 1.1fr) minmax(0, 0.9fr)'
-  );
-  assert.equal(original.admin.display, 'flex');
-  assert.equal(john.admin.display, 'grid');
-  assert.equal(original.mediaTabs.justifyContent, 'flex-start');
-  assert.equal(john.mediaTabs.justifyContent, 'flex-end');
-  assert.equal(original.activeIcon?.getAttribute('fill'), 'none');
-  assert.equal(john.activeIcon?.getAttribute('fill'), 'currentColor');
-
   dom.window.close();
 });

@@ -15,6 +15,7 @@ import { OptionalDisclosure } from '@app/components/Persius/Primitives';
 import usePersius from '@app/components/Persius/usePersius';
 import useLocale from '@app/hooks/useLocale';
 import useSettings from '@app/hooks/useSettings';
+import useUpstreamTheme from '@app/hooks/useUpstreamTheme';
 import { Permission, useUser } from '@app/hooks/useUser';
 import globalMessages from '@app/i18n/globalMessages';
 import { getBrowserLocalePreference } from '@app/utils/browserLocale';
@@ -39,6 +40,7 @@ type LayoutProps = {
 
 const Layout = ({ children }: LayoutProps) => {
   const persius = usePersius();
+  const upstream = useUpstreamTheme();
   const [isSidebarOpen, setSidebarOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const isScrolledRef = useRef(false);
@@ -324,6 +326,7 @@ const Layout = ({ children }: LayoutProps) => {
               <UserWarnings />
               {hasPermission(Permission.ADMIN) && <AppDataWarning />}
               {!persius &&
+                !upstream &&
                 discoveryMediaType &&
                 currentSettings.swipeEnabled !== false && (
                   <div className="app-filter-section-gap">

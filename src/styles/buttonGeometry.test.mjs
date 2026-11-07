@@ -134,7 +134,7 @@ test('action buttons keep the 24px WCAG target without growing their text or gly
     sharedCss,
     /--compact-button-padding-x: var\(--button-padding-x\);/
   );
-  assert.match(origThemeCss, /--interface-button-padding-x: 5px;/);
+  assert.match(origThemeCss, /--interface-button-padding-x: 16px;/);
   assert.match(ngjThemeCss, /--interface-button-padding-x: 8px;/);
   assert.match(
     css,
@@ -1110,7 +1110,8 @@ test('media-grid posters pass title weight through the shared renderer without b
 
 test('all shared poster renderers use one fixed layout owner and preserve media type', () => {
   assert.doesNotMatch(css, /--poster-width\s*:/);
-  assert.match(origThemeCss, /--poster-width: 150px;/);
+  assert.match(origThemeCss, /--poster-width: 144px;/);
+  assert.match(origThemeCss, /--poster-width: 176px;/);
   assert.match(ngjThemeCss, /--poster-width: 169\.2px;/);
   assert.match(rule('.poster-layout'), /width: var\(--poster-width\)/);
   assert.match(
@@ -1316,7 +1317,11 @@ test('detail pages retain their shared title row and aggregate panel fetch activ
   const page = component('TvDetails/index.tsx');
   const layout = component('TvDetails/SeriesDetailsLayout.tsx');
   const panel = component('MediaDetails/SeriesSeasonEpisodeBrowser.tsx');
-  assert.match(page, /className="page-title-row"/);
+  assert.match(
+    page,
+    /upstream \? 'upstream-detail-status-row' : 'page-title-row'/
+  );
+  assert.match(page, /!upstream && \(/);
   assert.match(page, /className="page-title"/);
   assert.match(
     page,

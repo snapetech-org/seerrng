@@ -94,6 +94,8 @@ const viewerAvailabilityDependencies = compileModule(
 );
 const layoutDependencies = {
   ...common,
+  '@app/hooks/useUpstreamTheme': wrap(() => false),
+  '@app/components/Persius/Primitives': { OptionalDisclosure: Children },
   'next/link': wrap(Children),
   '@app/hooks/useWatchStatus': wrap(() => ({
     data: { serverType: environment.settings.mediaServerType },

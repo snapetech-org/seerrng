@@ -10,7 +10,7 @@ export const INTERFACE_THEME_IDS = [
 export type InterfaceThemeId = string;
 
 export type InterfaceThemeNavigation = 'flat' | 'grouped';
-export type InterfaceThemeLayout = 'classic' | 'persius';
+export type InterfaceThemeLayout = 'classic' | 'upstream' | 'persius';
 
 export type InterfaceThemeActiveNavigationIcon = 'outline' | 'filled';
 

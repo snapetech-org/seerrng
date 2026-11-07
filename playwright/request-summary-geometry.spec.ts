@@ -178,10 +178,20 @@ for (const theme of ['seerrOrig', 'seerrNGJ']) {
           'data-interface-theme',
           theme
         );
+        if (!baseline && theme === 'seerrOrig') {
+          await expect(
+            page.locator('[data-native-composition="upstream"]')
+          ).toBeVisible();
+          await expect(
+            page.locator('.upstream-media-overview-copy')
+          ).toBeVisible();
+        }
         if (!baseline) {
           const primaryPoster = page
             .locator(
-              '[data-summary-layout="detail"] [data-testid="media-details-poster"]'
+              theme === 'seerrOrig'
+                ? '.upstream-media-poster[data-testid="media-details-poster"]'
+                : '[data-summary-layout="detail"] [data-testid="media-details-poster"]'
             )
             .first();
           await expect(primaryPoster).toBeVisible();
@@ -190,9 +200,11 @@ for (const theme of ['seerrOrig', 'seerrNGJ']) {
           );
           expect(posterWidth).toBe(
             theme === 'seerrOrig'
-              ? width < 1024
+              ? width < 768
                 ? 128
-                : 192
+                : width < 1280
+                  ? 176
+                  : 208
               : width < 1024
                 ? 80
                 : 136
@@ -205,6 +217,41 @@ for (const theme of ['seerrOrig', 'seerrNGJ']) {
         const dialog = page.getByRole('dialog');
         await expect(dialog).toBeVisible();
         await page.waitForTimeout(350);
+        if (theme === 'seerrOrig') {
+          expect(
+            await dialog.evaluate((node) => node.scrollWidth)
+          ).toBeLessThanOrEqual(width);
+          if (mediaType === 'tv') {
+            const choice = dialog.getByRole('checkbox', {
+              name: 'Season 1',
+              exact: true,
+            });
+            await expect(choice).toBeEnabled();
+            await choice.uncheck();
+            await expect(dialog.getByTestId('modal-ok-button')).toBeDisabled();
+            await choice.check();
+            await expect(dialog.getByTestId('modal-ok-button')).toBeEnabled();
+            const episodes = dialog
+              .locator('summary')
+              .filter({ hasText: 'Choose individual episodes' });
+            await episodes.click();
+            await expect(
+              dialog.locator('[data-tree-part="season"]').first()
+            ).toBeVisible();
+            await dialog
+              .getByRole('button', { name: 'Expand All', exact: true })
+              .click();
+            await expect(
+              dialog.locator('[data-tree-part="episode"]').first()
+            ).toBeVisible();
+            await episodes.click();
+          }
+          const disclosure = dialog
+            .locator('details:has(.detail-summary-card)')
+            .first();
+          await expect(disclosure).not.toHaveAttribute('open');
+          await disclosure.locator('summary').first().click();
+        }
         const summary = dialog.locator('.detail-summary-card').first();
         await expect(summary).toBeVisible();
         const geometry = await summary.evaluate((node) => {

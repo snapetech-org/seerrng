@@ -7,13 +7,16 @@ import MediaQualitySelect from '@app/components/MediaDetails/MediaQualitySelect'
 import MetadataAttribution from '@app/components/MediaDetails/MetadataAttribution';
 import MovieSummaryCard from '@app/components/MediaDetails/MovieSummaryCard';
 import SubjectTagVisibilityPanel from '@app/components/MediaDetails/SubjectTagVisibilityPanel';
+import UpstreamVideoDetails from '@app/components/MediaDetails/UpstreamVideoDetails';
 import VideoRatings from '@app/components/MediaDetails/VideoRatings';
 import { subjectTagClassName } from '@app/components/MediaDetails/subjectTagStyle';
 import MediaSlider from '@app/components/MediaSlider';
 import PersiusMovieDetail from '@app/components/Persius/MovieDetail';
+import { OptionalDisclosure } from '@app/components/Persius/Primitives';
 import usePersius from '@app/components/Persius/usePersius';
 import useDetailDisclosurePins from '@app/hooks/useDetailDisclosurePins';
 import useSettings from '@app/hooks/useSettings';
+import useUpstreamTheme from '@app/hooks/useUpstreamTheme';
 import useWatchStatus from '@app/hooks/useWatchStatus';
 import defineMessages from '@app/utils/defineMessages';
 import { getViewerAvailabilityPresentation } from '@app/utils/viewerAvailabilityPresentation';
@@ -104,6 +107,7 @@ const MovieDetailsLayout = ({
   playbackActions,
 }: MovieDetailsLayoutProps) => {
   const intl = useIntl();
+  const upstream = useUpstreamTheme();
   const persius = usePersius();
   const settings = useSettings();
   const { data: watchedStatus } = useWatchStatus(
@@ -490,6 +494,53 @@ const MovieDetailsLayout = ({
         />
         {relatedTitles}
       </>
+    );
+
+  if (upstream)
+    return (
+      <UpstreamVideoDetails
+        data={data}
+        mediaType="movie"
+        actions={
+          <>
+            {availableFormats.length > 0 &&
+              playbackActions?.(selectedQuality === '4k')}
+            {availableFormats.length > 1 && (
+              <MediaQualitySelect
+                value={selectedQuality}
+                options={[
+                  { label: 'HD', value: 'hd' },
+                  { label: '4K', value: '4k' },
+                ]}
+                onChange={setSelectedQuality}
+                label={intl.formatMessage(messages.quality)}
+              />
+            )}
+            {requestAction}
+            {reportIssueAction}
+            {secondaryActions}
+          </>
+        }
+        ratings={
+          <VideoRatings
+            mediaType="movie"
+            id={data.id}
+            voteAverage={data.voteAverage}
+            voteCount={data.voteCount}
+            ratings={ratingData}
+          />
+        }
+      >
+        <OptionalDisclosure enabled className="upstream-extra-tools">
+          {movieDetailExtras}
+          <div className="upstream-extra-actions">
+            {primaryActions}
+            {indexerSearchAction}
+            {indexerCompanionActions}
+          </div>
+        </OptionalDisclosure>
+        {relatedTitles}
+      </UpstreamVideoDetails>
     );
 
   return (

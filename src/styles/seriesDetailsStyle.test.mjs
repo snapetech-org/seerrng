@@ -72,7 +72,13 @@ test('tree comparison omits unrelated overview, disclosure controls and duplicat
   for (const flag of ['showOverview', 'showInformationControls']) {
     assert.ok(details.includes(`${flag}={${flag}}`));
     assert.ok(layout.includes(`${flag} = true`));
-    assert.ok(layout.includes(`{${flag} && (`));
+    assert.ok(
+      layout.includes(
+        flag === 'showOverview'
+          ? '{showOverview && !upstream && ('
+          : `{${flag} && (`
+      )
+    );
   }
   assert.match(details, /showPageTitle = true/);
   assert.match(details, /const pageHeading = showPageTitle &&/);

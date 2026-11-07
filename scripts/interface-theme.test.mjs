@@ -63,10 +63,10 @@ test('creates an independent native Persius theme from outside the checkout', (t
   assert.match(run('validate', 'paper-cinema'), /Valid:/);
 });
 
-test('classic bases remain supported; creation never overwrites an existing directory', (t) => {
+test('upstream bases retain composition; creation never overwrites an existing directory', (t) => {
   const { directory, run, reject } = sandbox(t);
   run('create', 'classic-paper', '--from', 'seerrOrig');
-  assert.equal(JSON.parse(run('inspect', 'classic-paper')).layout, 'classic');
+  assert.equal(JSON.parse(run('inspect', 'classic-paper')).layout, 'upstream');
   const before = readFileSync(
     path.join(directory, 'classic-paper/theme.css'),
     'utf8'

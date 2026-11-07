@@ -24,6 +24,8 @@ describe('built-in interface theme packages', () => {
       ['seerrOrig', 'seerrNGJ', 'persiusNG']
     );
     assert.equal(themes[0].navigation, 'flat');
+    assert.equal(themes[0].layout, 'upstream');
+    assert.equal(themes[1].layout, undefined);
     assert.equal(themes[1].navigation, 'grouped');
     assert.equal(themes[0].activeNavigationIcon, 'outline');
     assert.equal(themes[1].activeNavigationIcon, 'filled');

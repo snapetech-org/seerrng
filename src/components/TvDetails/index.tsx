@@ -20,6 +20,7 @@ import SeriesDetailsLayout from '@app/components/TvDetails/SeriesDetailsLayout';
 import useSettings from '@app/hooks/useSettings';
 import useTitleBlocklist from '@app/hooks/useTitleBlocklist';
 import useToasts from '@app/hooks/useToasts';
+import useUpstreamTheme from '@app/hooks/useUpstreamTheme';
 import { Permission, UserType, useUser } from '@app/hooks/useUser';
 import globalMessages from '@app/i18n/globalMessages';
 import ErrorPage from '@app/pages/_error';
@@ -118,6 +119,7 @@ const TvDetails = ({
   embedded = false,
   additionalLoading = false,
 }: TvDetailsProps) => {
+  const upstream = useUpstreamTheme() && !embedded;
   const settings = useSettings();
   const { user, hasPermission } = useUser();
   const router = useRouter();
@@ -194,8 +196,12 @@ const TvDetails = ({
   );
 
   const pageHeading = showPageTitle && (
-    <div className="page-title-row">
-      <h1 className="page-title">{intl.formatMessage(messages.pageHeading)}</h1>
+    <div className={upstream ? 'upstream-detail-status-row' : 'page-title-row'}>
+      {!upstream && (
+        <h1 className="page-title">
+          {intl.formatMessage(messages.pageHeading)}
+        </h1>
+      )}
       <PageStatus
         active={
           seriesLoading ||

@@ -1,0 +1,75 @@
+# Interface theme source verification
+
+SeerrOrig uses the app-owned `upstream` composition. SeerrNGJ keeps its existing
+composition and theme package. Theme IDs, account preferences, permissions,
+request eligibility and service handlers remain independent of presentation.
+
+## Reference and scope
+
+The reference is the actual upstream Seerr **v3.5.1** container, source
+`564bfb08b54caa374bddaf820abfd226e5e69151`, image digest
+`sha256:d8fab675b55ad293ded98fd71efcfd46054cbad9746534ae1cc4794a88c0b3be`.
+John's regression reference is the published SeerrNG **v3.72.20** image, digest
+`sha256:d3ac93c938c80a46563f1091ad06b4b75c6f2b7e0b1f6cbcb055ad87f2f46804`.
+An older fork screenshot is not evidence of upstream fidelity.
+
+Common routes compared with upstream: Discover, movie details, series details,
+Movies, general settings, requests and users. Matching viewports: 320, 390, 768,
+1024, 1280 and 1440 pixels, each 900 pixels high. Headless Chromium captures
+include expanded seasons, request dialogs, individual episode choices and the
+filter drawer. Provider metadata and request destinations are isolated read-only
+fixtures; authentication and account theme persistence use the running app.
+Actual request submissions and household provider writes are excluded.
+
+The broader gallery covers 94 static and 52 dynamic route templates in both
+themes at 390 and 1440 pixels: 584 route captures. These exercise populated
+metadata, empty states, service-unconfigured states, loading/recovery and the
+legacy issue-detail redirect. They do not establish a successful live round trip
+to every external integration. Runtime logs, cache counters and service data
+must be compared separately from stable geometry.
+
+## Presentation owners and repaired regressions
+
+- SeerrOrig's manifest selects upstream composition; both the server registry
+  and client catalog accept it. Custom theme/account restoration remains tested.
+- Its semantic stylesheet owns 256px navigation, 42px pill search, 144/176px
+  shelf posters, 128/176/208px detail posters and 38px ordinary controls.
+- Video pages restore upstream header actions, open overview/facts/cast, full
+  crew links and read-only season accordions. Authorized SeerrNG tools remain
+  available under the optional details disclosure.
+- Request format menus use existing callbacks and disabled states. The season
+  table uses the existing eligibility/selection adapter, including quotas and
+  blocked episodes; individual episode choices remain available.
+- The episode frame grows to fit larger controls; only its rows scroll. A fixed
+  John-sized frame previously collapsed the upstream episode viewport.
+- Narrow request summaries retain stacked metadata at desktop viewport widths,
+  preventing subgrid tracks from collapsing inside a 448px dialog.
+- Search specificity, modal padding variables, long settings labels and form
+  inputs have explicit semantic owners. Production QA loads the copied theme
+  assets in `dist/interface-themes`; changing source CSS requires refreshing
+  those assets and restarting the server before comparison.
+- Discover uses the upstream sort/filter drawer flow. SeerrNGJ retains pinned
+  filters and compact request controls. Its manifest and stylesheet are unchanged.
+
+SeerrNG branding, supported media categories, integrations and additional actions
+remain present. Upstream has no corresponding pages for many of these features;
+they reuse its visual roles rather than pretending to be pixel-identical source
+screens. Upstream's reference presentation is dark; a light palette is not an
+upstream source reference.
+
+## Evidence and regression checks
+
+Evidence from this repair is retained on kspld0 under
+`/mnt/disks/scratch/task-deliverables/seerrng-upstream-theme-20261107/`, including
+reference/candidate PNGs, route manifests, geometry JSON, browser traces, test
+logs and John comparison sheets. The initial gallery compared 292 John route
+captures; 281 differed by at most 0.1%, with the remaining differences inspected
+as fixture/service data, log paths/counters, image timing or unsettled loading.
+Do not report that as whole-app pixel identity.
+
+Maintained checks cover native source composition, private availability,
+format callbacks/disabled actions, blocked episode selection, theme restoration,
+request summary geometry and individual-episode visibility in both themes.
+Existing Cypress video cases explicitly exercise John's compact composition;
+Playwright additionally exercises Orig's upstream composition and dialog flow.
+The release requires the complete main-branch CI, including browser suites.

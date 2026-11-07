@@ -1,8 +1,10 @@
 import Tooltip from '@app/components/Common/Tooltip';
+import useUpstreamTheme from '@app/hooks/useUpstreamTheme';
 import defineMessages from '@app/utils/defineMessages';
 import { ArrowDownTrayIcon } from '@heroicons/react/24/outline';
 import type { ReactNode } from 'react';
 import { useIntl } from 'react-intl';
+import UpstreamRequestControl from './UpstreamRequestControl';
 
 const messages = defineMessages('components.Common.FormatRequestControl', {
   request: 'Request',
@@ -32,10 +34,21 @@ const FormatRequestControl = ({
   icon,
 }: FormatRequestControlProps) => {
   const intl = useIntl();
+  const upstream = useUpstreamTheme();
 
   if (options.length === 0) {
     return null;
   }
+
+  if (upstream)
+    return (
+      <UpstreamRequestControl
+        options={options}
+        label={label ?? intl.formatMessage(messages.request)}
+        icon={icon ?? <ArrowDownTrayIcon aria-hidden="true" />}
+        className={className}
+      />
+    );
 
   if (options.length === 1) {
     const [option] = options;

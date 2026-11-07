@@ -21,6 +21,7 @@ import usePersius from '@app/components/Persius/usePersius';
 import useDiscover from '@app/hooks/useDiscover';
 import useDiscoverScrollRestoration from '@app/hooks/useDiscoverScrollRestoration';
 import { useSearchActivityReporter } from '@app/hooks/useSearchActivity';
+import useUpstreamTheme from '@app/hooks/useUpstreamTheme';
 import { Permission, useUser } from '@app/hooks/useUser';
 import defineMessages from '@app/utils/defineMessages';
 import { StarIcon } from '@heroicons/react/24/outline';
@@ -58,6 +59,7 @@ const DiscoverTv = ({
 }: DiscoverTvProps = {}) => {
   const intl = useIntl();
   const persius = usePersius();
+  const upstream = useUpstreamTheme();
   const router = useRouter();
   const { hasPermission } = useUser();
   const watchlistPreview =
@@ -112,7 +114,11 @@ const DiscoverTv = ({
   return (
     <>
       <PageTitle title={title} />
-      <div className="app-filter-section-gap">
+      <div
+        className={
+          upstream ? 'upstream-discovery-header' : 'app-filter-section-gap'
+        }
+      >
         <Header>{title}</Header>
         {persius && (
           <p className="persius-description">

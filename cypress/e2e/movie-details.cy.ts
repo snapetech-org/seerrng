@@ -2,6 +2,20 @@
 import { openTitleDetailsFromSearch } from '../support/titleFixtures';
 
 describe('Movie Details', () => {
+  // These existing cases specify John's segmented controls and compact disclosures.
+  // Upstream composition and responsive dialogs are covered separately in Playwright.
+  beforeEach(() => {
+    cy.loginAsAdmin();
+    cy.request('POST', '/api/v1/user/1/settings/interface-theme', {
+      theme: 'seerrNGJ',
+    });
+  });
+  afterEach(() => {
+    cy.request('POST', '/api/v1/user/1/settings/interface-theme', {
+      theme: 'seerrOrig',
+    });
+  });
+
   it('loads a movie page', () => {
     cy.loginAsAdmin();
     openTitleDetailsFromSearch({

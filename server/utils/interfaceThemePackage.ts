@@ -124,9 +124,10 @@ export const validateInterfaceThemeManifest = (
   if (
     value.layout !== undefined &&
     value.layout !== 'classic' &&
+    value.layout !== 'upstream' &&
     value.layout !== 'persius'
   ) {
-    return fail('layout must be classic or persius');
+    return fail('layout must be classic, upstream or persius');
   }
 
   return {

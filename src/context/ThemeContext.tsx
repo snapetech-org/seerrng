@@ -1248,6 +1248,7 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
               theme.activeNavigationIcon === 'filled') &&
             (theme.layout === undefined ||
               theme.layout === 'classic' ||
+              theme.layout === 'upstream' ||
               theme.layout === 'persius')
         );
         if (

@@ -5,7 +5,7 @@ import seerrOrig from '@themes/seerrOrig/manifest.json';
 
 /** Built-in picker fallback; the package manifests remain the source of truth. */
 const toBuiltInInterfaceThemeManifest = (
-  manifest: typeof seerrOrig,
+  manifest: typeof seerrNGJ & { layout?: string },
   expectedId: InterfaceThemeManifest['id']
 ): InterfaceThemeManifest => {
   if (
@@ -24,8 +24,12 @@ const toBuiltInInterfaceThemeManifest = (
   const activeNavigationIcon: InterfaceThemeManifest['activeNavigationIcon'] =
     manifest.activeNavigationIcon === 'outline' ? 'outline' : 'filled';
 
+  const { layout, ...identity } = manifest;
   return {
-    ...manifest,
+    ...identity,
+    ...(layout === 'upstream' || layout === 'classic' || layout === 'persius'
+      ? { layout }
+      : {}),
     formatVersion: 1,
     themeApiVersion: 1,
     navigation,

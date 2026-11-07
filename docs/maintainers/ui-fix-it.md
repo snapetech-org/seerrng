@@ -126,3 +126,15 @@ passes, failures, skips, and platform exclusions.
 5. When a new rule is accepted, add the reusable subject/asset rule to the standard and detection/repair method here. Keep exact examples and chronology in the journal, not in normative matching logic.
    For every repair, consider whether it exposes a reusable detection or ownership gap. Improve the relevant method rather than adding a class/text-specific exception or copying an isolated example's values into a new rule. Existing accepted components illustrate the standard; their CSS owners and variables remain the contract, and tests should enforce relationships and behavior rather than example labels.
 6. Before marking complete, verify the requested scope is implemented, source readback matches the authorized target, all required automated and functional gates passed, and records are current. For UI work, the rendered comparison in section 6.3 must be complete and recorded; if it is unavailable, report visual acceptance as unverified and do not claim the UI work is complete. Record the rendered comparison with the implementation evidence.
+
+
+### Verify interface origin, not only release-to-release stability
+
+For an upstream compatibility theme, pin the actual upstream source and shipped
+artifact and compare its common routes, responsive boundaries and interaction
+states with the candidate. A comparison against an earlier fork build only
+proves stability of the fork, not upstream fidelity. Inspect composition, open
+versus disclosure flow, navigation, input/button geometry, shelves, requests,
+settings and loading/error states. Verify the alternative theme independently
+against its own accepted baseline. Trace generic input selectors and specificity
+so they cannot override a more specific semantic search-field owner.

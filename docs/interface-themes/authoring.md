@@ -76,12 +76,15 @@ separate theme and does not replace saved account settings.
 | Manifest `layout`    | Application markup available to your stylesheet                                                                                                    |
 | -------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Omitted or `classic` | Existing Seerr/SeerrNG catalog, detail, request and filter composition                                                                             |
+| `upstream` | Upstream Seerr header, open overview/facts/cast, season and split-request flows; SeerrOrig uses this composition. |
 | `persius`            | Cinematic discovery, captions below posters, book/narrator shelves, recording choices, compact requests, coming-soon releases and season shortcuts |
+
+The `upstream` layout requires SeerrNG 3.72.21 or later. Test a package against that minimum version before distributing it.
 
 The layout is app-owned, not a script shipped by an author. Your theme ID can be
 anything valid: Persius layouts are activated by this metadata, not the reserved
 `persiusNG` name. Forking PersiusNG carries the metadata automatically. Forking
-SeerrOrig or SeerrNGJ preserves the classic composition. The CSS remains fully
+SeerrOrig preserves upstream composition; SeerrNGJ preserves classic composition. The CSS remains fully
 independent in either case. Navigation and icons are also native application
 choices. The `navigation` and `activeNavigationIcon` preferences apply to both
 compositions. PersiusNG defaults to grouped navigation and outlined icons; a
@@ -89,7 +92,7 @@ derivative can select a flat menu or filled active icons without editing React.
 Do not attempt to inject executable components into a package.
 
 Persius composition requires a SeerrNG release that includes PersiusNG in its
-picker. Older releases reject the unrecognized metadata rather than silently
+picker. Older releases reject unrecognized composition metadata rather than silently
 promising an equivalent layout. Publish the exact SeerrNG releases you tested.
 Existing version 1 themes without `layout` remain supported unchanged.
 

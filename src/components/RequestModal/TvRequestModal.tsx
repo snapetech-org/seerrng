@@ -20,6 +20,7 @@ import RequestFooterStatus from '@app/components/RequestModal/RequestFooterStatu
 import RequestMediaCard from '@app/components/RequestModal/RequestMediaCard';
 import RequestSeasonEpisodeTree from '@app/components/RequestModal/RequestSeasonEpisodeTree';
 import SearchByNameModal from '@app/components/RequestModal/SearchByNameModal';
+import UpstreamRequestNotice from '@app/components/RequestModal/UpstreamRequestNotice';
 import {
   areAllRequestDestinationSeasonsAvailable,
   canPromotePendingDestinationRequests,
@@ -35,6 +36,7 @@ import useAdvancedOptionsDisclosure from '@app/hooks/useAdvancedOptionsDisclosur
 import usePlaybackCatalog from '@app/hooks/usePlaybackCatalog';
 import useSettings from '@app/hooks/useSettings';
 import useToasts from '@app/hooks/useToasts';
+import useUpstreamTheme from '@app/hooks/useUpstreamTheme';
 import { useUser } from '@app/hooks/useUser';
 import useWatchStatus from '@app/hooks/useWatchStatus';
 import globalMessages from '@app/i18n/globalMessages';
@@ -335,6 +337,7 @@ const TvRequestModal = ({
     [playbackCatalog]
   );
   const intl = useIntl();
+  const upstream = useUpstreamTheme();
   const persius = usePersius();
   const [monitorFutureSeasons, setMonitorFutureSeasons] = useState<
     boolean | undefined
@@ -1442,7 +1445,8 @@ const TvRequestModal = ({
       onCancel={closeAction}
       onOk={submitAction}
       hideActions
-      alignTop={!persius}
+      alignTop={!persius && !upstream}
+      subTitle={upstream ? data?.name : undefined}
       ariaLabel={persius ? data?.name : undefined}
       title={
         persius
@@ -1535,6 +1539,9 @@ const TvRequestModal = ({
         }
         artworkType="tmdb"
       >
+        {upstream && !editRequest && (
+          <UpstreamRequestNotice hasAutoApprove={hasAutoApprove} />
+        )}
         {editRequest && (
           <div className="app-card-inset refreshed-inset-surface card-spacing-after">
             {isFailedManagerRepair
@@ -1569,7 +1576,7 @@ const TvRequestModal = ({
             }
           />
         )}
-        <OptionalDisclosure enabled={persius}>
+        <OptionalDisclosure enabled={persius || upstream}>
           <div className="app-card-inset refreshed-inset-surface detail-summary-card">
             <div className="app-detail-summary-grid">
               <div className="app-detail-poster-frame detail-card-poster">
@@ -1814,7 +1821,7 @@ const TvRequestModal = ({
             )}
 
           {!requesterTagOnlyMode && (
-            <OptionalDisclosure enabled={persius}>
+            <OptionalDisclosure enabled={persius || upstream}>
               <div className="request-selection-options">
                 {!editRequest && !requesterTagOnlyMode && (
                   <MediaQualitySelect
@@ -2097,7 +2104,7 @@ const TvRequestModal = ({
               type="button"
               onClick={closeAction}
               data-testid="modal-cancel-button"
-              buttonType="danger"
+              buttonType={upstream ? 'default' : 'danger'}
               buttonSize="standard"
             >
               <XMarkIcon aria-hidden="true" />
@@ -2112,7 +2119,7 @@ const TvRequestModal = ({
             disabledReason={requestDisabledReason}
             onClick={() => void submitAction()}
             data-testid="modal-ok-button"
-            buttonType="success"
+            buttonType={upstream ? 'primary' : 'success'}
             buttonSize="standard"
           >
             {(editRequest && selectedSeasons.length === 0) ||

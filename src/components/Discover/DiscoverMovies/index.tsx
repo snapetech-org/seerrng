@@ -18,6 +18,7 @@ import usePersius from '@app/components/Persius/usePersius';
 import useDiscover from '@app/hooks/useDiscover';
 import useDiscoverScrollRestoration from '@app/hooks/useDiscoverScrollRestoration';
 import { useSearchActivityReporter } from '@app/hooks/useSearchActivity';
+import useUpstreamTheme from '@app/hooks/useUpstreamTheme';
 import { Permission, useUser } from '@app/hooks/useUser';
 import ErrorPage from '@app/pages/_error';
 import defineMessages from '@app/utils/defineMessages';
@@ -49,6 +50,7 @@ const DiscoverMovies = ({
 }: DiscoverMoviesProps = {}) => {
   const intl = useIntl();
   const persius = usePersius();
+  const upstream = useUpstreamTheme();
   const router = useRouter();
   const { hasPermission } = useUser();
   const preparedFilters = withDefaultTmdbRatingMinimumVotes({
@@ -107,7 +109,7 @@ const DiscoverMovies = ({
   return (
     <>
       <PageTitle title={title} />
-      <div className="mb-4">
+      <div className={upstream ? 'upstream-discovery-header' : 'mb-4'}>
         <Header>{title}</Header>
         {persius && (
           <p className="persius-description">

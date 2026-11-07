@@ -2,7 +2,9 @@ import type { FilterOptions } from '@app/components/Discover/constants';
 import FilterPanel from '@app/components/Discover/FilterPanel';
 import { getFilterToggleButtonClass } from '@app/components/Discover/FilterPanel/CompactFilterSelect';
 import { PinnedFilterSectionGroup } from '@app/components/Discover/PinnedFilterSection';
+import UpstreamDiscoveryControls from '@app/components/Discover/UpstreamDiscoveryControls';
 import { useUpdateQueryParams } from '@app/hooks/useUpdateQueryParams';
+import useUpstreamTheme from '@app/hooks/useUpstreamTheme';
 import defineMessages from '@app/utils/defineMessages';
 import { BarsArrowDownIcon, BarsArrowUpIcon } from '@heroicons/react/24/solid';
 import type { SortOptions as TMDBSortOptions } from '@server/api/themoviedb';
@@ -54,9 +56,24 @@ const MediaDiscoveryControls = ({
   currentFilters,
 }: MediaDiscoveryControlsProps) => {
   const intl = useIntl();
+  const upstream = useUpstreamTheme();
   const updateQueryParams = useUpdateQueryParams({});
   const currentSort = currentFilters.sortBy || 'popularity.desc';
   const sorts = type === 'movie' ? movieSorts : seriesSorts;
+
+  if (upstream)
+    return (
+      <UpstreamDiscoveryControls
+        type={type}
+        filters={currentFilters}
+        currentSort={currentSort}
+        sorts={sorts.map((sort) => ({
+          ...sort,
+          label: intl.formatMessage(messages[sort.label]),
+        }))}
+        onSort={(sort) => updateQueryParams('sortBy', sort as TMDBSortOptions)}
+      />
+    );
 
   return (
     <PinnedFilterSectionGroup

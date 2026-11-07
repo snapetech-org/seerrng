@@ -1,4 +1,5 @@
 import CollectionRatings from '@app/components/CollectionDetails/CollectionRatings';
+import useUpstreamTheme from '@app/hooks/useUpstreamTheme';
 import { getCollectionMemberRatings } from '@app/utils/collectionRatings';
 import defineMessages from '@app/utils/defineMessages';
 import { getEffectiveVideoRatings } from '@app/utils/videoRatings';
@@ -62,10 +63,13 @@ export const getVideoRatingItems = ({
 
 const VideoRatings = (props: VideoRatingsProps) => {
   const intl = useIntl();
+  const upstream = useUpstreamTheme();
   const effective = getEffectiveVideoRatings(props.ratings);
   return (
     <CollectionRatings
-      ratings={getVideoRatingItems(props)}
+      ratings={getVideoRatingItems(props).filter(
+        (item) => !upstream || item.value !== undefined
+      )}
       loading={props.loading}
       unknownValue="--"
       loadingValue="--"

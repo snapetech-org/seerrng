@@ -9603,7 +9603,7 @@
       "callsites": [
         {
           "path": "src/context/ThemeContext.tsx",
-          "line": 1373,
+          "line": 1374,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Theme preference was not confirmed.'",
@@ -23651,7 +23651,7 @@
       "callsites": [
         {
           "path": "src/context/ThemeContext.tsx",
-          "line": 1563,
+          "line": 1564,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'useTheme must be used inside ThemeProvider'",
@@ -29890,7 +29890,7 @@
       "callsites": [
         {
           "path": "src/components/RequestModal/TvRequestModal.tsx",
-          "line": 784,
+          "line": 787,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'TV request response did not contain a media request.'",
@@ -34902,7 +34902,7 @@
       "callsites": [
         {
           "path": "src/context/ThemeContext.tsx",
-          "line": 1415,
+          "line": 1416,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Sign in and choose an installed interface theme after the current save finishes.'",
@@ -38227,7 +38227,7 @@
       "callsites": [
         {
           "path": "src/context/ThemeContext.tsx",
-          "line": 1363,
+          "line": 1364,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Sign in and choose a valid theme after the current save finishes.'",
@@ -39559,7 +39559,7 @@
       "callsites": [
         {
           "path": "src/context/ThemeContext.tsx",
-          "line": 1427,
+          "line": 1428,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Interface theme preference was not confirmed.'",
@@ -50347,7 +50347,7 @@
       "callsites": [
         {
           "path": "server/utils/interfaceThemePackage.ts",
-          "line": 326,
+          "line": 327,
           "kind": "authored-message-variable",
           "field": "message",
           "expression": "error instanceof Error ? error.message : 'invalid syntax'",
@@ -55989,7 +55989,7 @@
       "callsites": [
         {
           "path": "src/context/ThemeContext.tsx",
-          "line": 1487,
+          "line": 1488,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Sign in to save advanced theme settings.'",
@@ -85762,7 +85762,7 @@
     },
     {
       "path": "server/utils/interfaceThemePackage.ts",
-      "line": 326,
+      "line": 327,
       "kind": "authored-message-variable",
       "field": "message",
       "expression": "error instanceof Error ? error.message : 'invalid syntax'",
@@ -85924,7 +85924,7 @@
     },
     {
       "path": "src/context/ThemeContext.tsx",
-      "line": 1492,
+      "line": 1493,
       "kind": "app-error-candidate",
       "field": "message",
       "expression": "validation.error",

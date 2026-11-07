@@ -4056,11 +4056,22 @@ const validateCurrentBatchContract = (files) => {
     ['overflow-wrap: anywhere;', 'white-space: normal;'],
     'wrapped Series summary values must use the shared table wrap treatment rather than clamping'
   );
-  requireText(
-    'src/components/TvDetails/SeriesDetailsLayout.tsx',
-    'className="card-table-value"\n                      data-wrap="true"\n                      data-testid="media-details-genres"',
-    'Series Genres must attach the shared wrapping value role to the actual Genres cell'
+  // Inspect the actual cell rather than coupling the contract to indentation.
+  const seriesSummary = parsedJsx(
+    requireFile('src/components/TvDetails/SeriesDetailsLayout.tsx')
   );
+  if (
+    !seriesSummary.elements.some(
+      (node) =>
+        seriesSummary.tag(node) === 'dd' &&
+        seriesSummary.roles(node, 'card-table-value') &&
+        seriesSummary.text(node, 'data-wrap') === 'true' &&
+        seriesSummary.text(node, 'data-testid') === 'media-details-genres'
+    )
+  )
+    errors.push(
+      'src/components/TvDetails/SeriesDetailsLayout.tsx: Series Genres must attach the shared wrapping value role to the actual Genres cell'
+    );
 
   const mediaQualitySelect =
     'src/components/MediaDetails/MediaQualitySelect.tsx';

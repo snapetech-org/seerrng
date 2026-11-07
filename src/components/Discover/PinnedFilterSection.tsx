@@ -1,5 +1,7 @@
+import UpstreamFilterSections from '@app/components/Discover/UpstreamFilterSections';
 import DetailDisclosureButton from '@app/components/MediaDetails/DetailDisclosureButton';
 import useDetailDisclosurePins from '@app/hooks/useDetailDisclosurePins';
+import useUpstreamTheme from '@app/hooks/useUpstreamTheme';
 import type {
   DetailDisclosureMediaType,
   DetailDisclosurePin,
@@ -29,6 +31,7 @@ export function PinnedFilterSectionGroup({
     children: ReactNode;
   }[];
 }) {
+  const upstream = useUpstreamTheme();
   const { pins, togglePinned } = useDetailDisclosurePins(mediaType);
   const groupId = useId();
   const [openSections, setOpenSections] = useState<
@@ -59,6 +62,8 @@ export function PinnedFilterSectionGroup({
       });
     }
   }, [pins]);
+
+  if (upstream) return <UpstreamFilterSections sections={sections} />;
 
   return (
     <div className="app-pinned-filter-group">
@@ -108,10 +113,14 @@ export default function PinnedFilterSection({
   label: string;
   children: ReactNode;
 }) {
+  const upstream = useUpstreamTheme();
   const { pins, togglePinned } = useDetailDisclosurePins(mediaType);
   const [open, setOpen] = useState(false);
   const sectionPinned = Boolean(pins[section]);
   useEffect(() => setOpen(sectionPinned), [sectionPinned]);
+  if (upstream)
+    return <UpstreamFilterSections sections={[{ section, label, children }]} />;
+
   return (
     <section className="pinned-filter-section app-pinned-filter-section">
       <div className="media-detail-disclosure-row">

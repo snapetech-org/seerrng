@@ -169,7 +169,7 @@ test('a local disabled playback override cannot silently replace the shared stat
 
 const iconSources = [
   ['MediaDetails/MediaQualitySelect.tsx', 'AdjustmentsHorizontalIcon', 1],
-  ['Common/FormatRequestControl/index.tsx', 'ArrowDownTrayIcon', 2],
+  ['Common/FormatRequestControl/index.tsx', 'ArrowDownTrayIcon', 3],
 ];
 const localGeometryPrefixes = [
   'h-',

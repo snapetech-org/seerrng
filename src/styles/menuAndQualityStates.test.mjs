@@ -46,7 +46,7 @@ test('request dialogs use shared semantic action controls and the global disable
     )?.[1];
     assert.ok(submit, `Missing request submit action: ${media}`);
     if (media === 'Tv') {
-      assert.match(submit, /buttonType="success"/);
+      assert.match(submit, /buttonType=\{upstream \? 'primary' : 'success'\}/);
       assert.match(submit, /buttonSize="standard"/);
       assert.match(
         submit,
@@ -54,7 +54,16 @@ test('request dialogs use shared semantic action controls and the global disable
       );
       assert.match(submit, /onClick=\{\(\) => void submitAction\(\)\}/);
     } else {
-      const roles = submit.match(/className="([^"]+)"/)?.[1].split(/\s+/);
+      const roles =
+        media === 'Movie'
+          ? submit
+              .match(/className=\{`([^`]+)`\}/)?.[1]
+              .replace(
+                /\$\{upstream \? 'app-button-primary' : 'app-button-success'\}/,
+                'app-button-success'
+              )
+              .split(/\s+/)
+          : submit.match(/className="([^"]+)"/)?.[1].split(/\s+/);
       for (const role of [
         'app-button',
         'app-button-success',
@@ -95,7 +104,7 @@ test('all quality layouts disable unavailable formats and book/music requests ca
   ]) {
     const source = read(`../components/${file}`);
     assert.match(source, /disabled: !availableFormats.includes\('HD'\)/);
-    assert.match(source, /disabled: !availableFormats.includes\('4K'\)/);
+    assert.match(source, /disabled:\s*!availableFormats.includes\('4K'\)/);
   }
   const music = read('../components/MusicDetails/MusicDetailsLayout.tsx');
   assert.match(music, /disabled: !qualityAvailability\[0\].available/);

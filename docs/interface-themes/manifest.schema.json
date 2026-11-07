@@ -63,7 +63,7 @@
       "enum": ["outline", "filled"]
     },
     "layout": {
-      "enum": ["classic", "persius"],
+      "enum": ["classic", "upstream", "persius"],
       "description": "Optional native page composition; omitted means classic."
     }
   }

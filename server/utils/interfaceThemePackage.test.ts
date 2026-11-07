@@ -64,6 +64,11 @@ describe('interface theme package contract', () => {
       validateInterfaceThemeManifest({ ...manifest, layout: 'classic' }).layout,
       'classic'
     );
+    assert.equal(
+      validateInterfaceThemeManifest({ ...manifest, layout: 'upstream' })
+        .layout,
+      'upstream'
+    );
     assert.throws(
       () => validateInterfaceThemeManifest({ ...manifest, layout: 'script' }),
       /layout must be/

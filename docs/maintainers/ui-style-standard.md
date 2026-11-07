@@ -4,6 +4,28 @@ This document defines the accepted, reusable visual and interaction standards. [
 
 The rules describe asset roles, not particular pages, title strings, example media, or source-code snippets. Apply them to every approved consumer of a role. An implementation still containing legacy styling is drift to classify, not permission to create a new exception. Experimental designs remain opt-in.
 
+## Interface source fidelity
+
+SeerrOrig follows upstream stable Seerr v3.5.1, source
+`564bfb08b54caa374bddaf820abfd226e5e69151`, in composition, hierarchy,
+controls, spacing and interaction. Its `upstream` manifest composition selects
+native application variants sharing the existing authorized data and actions.
+A colour change on John's DOM does not establish upstream fidelity. Compare
+against the actual upstream release, in matching states and viewports.
+
+The compact geometry, colourful action families, framed summary cards and
+pinned disclosure presentation specified below describe SeerrNGJ and its shared
+native extensions. They must not impose John's presentation on SeerrOrig.
+Orig's upstream owners use 144px shelf posters below 768px and 176px above,
+150px minimum expanding grid tracks, 16px shelf gaps, ordinary 38px controls
+with 30px small controls, and open video overview/facts/cast with actions in the
+header. Detail posters are 128px, 176px from 768px, and 208px from 1280px.
+Upstream's existing dark presentation is the reference; extensions absent from
+upstream reuse its visual roles while retaining SeerrNG capability and security.
+
+John's package and composition remain separate. Any change to shared code must
+compare John with its qualified baseline, as well as Orig with upstream.
+
 ## 1. Shared ownership and scope
 
 1. Use global, reusable, descriptive CSS families. Do not create a class per page, duplicate a utility under a new class name, or retain competing local declarations merely because they look correct today.
@@ -61,7 +83,7 @@ This map identifies owners, not a whitelist of every valid class. Follow the exi
 3. Shared card spacing is 8px. Main and inset padding are 8px. Title-to-detail-table spacing consumes that existing card-spacing owner, rather than an independent 14px value. Independent nested-card/background settings use the same family with supported variables. Framed cards consume the shared frame's border and corner geometry; a surface role does not duplicate that ownership. An existing standalone consumer may retain its established geometry through an explicitly scoped, low-specificity fallback.
 4. A card's layout selects its own column/row arrangement without re-owning typography or button appearance. Use the shared action-row justification variable for alignment differences; retain wrapping and the standard card gap.
 5. Shelf headings, adjacent view controls and previous/next actions are real children of one row. Navigation sits at the far right on the same baseline, so its lower boundary matches the heading's content boundary. Do not position it as an independent absolute row or add vertical corrections.
-6. Poster width and narrow-phone behavior belong to each interface-theme package. SeerrOrig uses 150 CSS pixels; SeerrNGJ uses 169.2 CSS pixels; both use a 2:3 frame ratio. Each package owns its sub-390px two-poster width adjustment. Shared poster components consume `--poster-width` and `--poster-aspect-ratio` without supplying theme defaults. Preserve the accepted 1.05 hover enlargement.
+6. Poster width and narrow-phone behavior belong to each interface-theme package. SeerrOrig uses upstream 144px/176px shelf sizing and expanding grid tracks; SeerrNGJ uses 169.2 CSS pixels with its sub-390px two-poster adjustment. Both use a 2:3 frame ratio. Shared poster components consume `--poster-width` and `--poster-aspect-ratio` without supplying theme defaults. Preserve the accepted 1.05 hover enlargement.
 7. `poster-layout` owns browsing/shelf geometry across media types. Media type selects content and semantic region slots. Frame roles own ratio; content outside the image frame must not be clipped by applying that ratio to an entire article. Portrait, mosaic and provider-logo arrangement differences remain meaningful; compact credit cards and detail-card posters are distinct roles.
 8. Standard poster titles use the 18px card-title owner with the accepted regular weight. Do not reintroduce local typography or responsive shelf enlargement that competes with the fixed poster owner.
 9. Background artwork uses the shared card-layout position variable, currently top-aligned. Small poster artwork retains its independent centered treatment. Shared background, transparency and readability effects belong to card families; future effects are not approved merely because the architecture supports variables.

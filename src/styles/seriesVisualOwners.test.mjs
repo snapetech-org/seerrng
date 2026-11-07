@@ -86,7 +86,7 @@ test('migrated Series/request assets select semantic roles without presentation 
     assert.deepEqual(
       audit.unresolved,
       path === 'Common/FormatRequestControl/index.tsx'
-        ? ["className ?? ''"]
+        ? ['className', "className ?? ''"]
         : [],
       `${path} class composition must be traced`
     );

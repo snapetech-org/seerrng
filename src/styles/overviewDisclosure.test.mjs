@@ -168,7 +168,7 @@ test('Overview uses the existing reorder row, independent pin and matching below
   assert.ok(panel.pos > owner(button, 'ReorderableDisclosureRow').end);
   assert.match(
     panel.parent.parent.left.getText(ast),
-    /^showOverview && overviewOpen$/
+    /^showOverview && !upstream && overviewOpen$/
   );
   assert.match(panel.getText(ast), /data\.tagline/);
   assert.match(panel.getText(ast), /data\.overview/);

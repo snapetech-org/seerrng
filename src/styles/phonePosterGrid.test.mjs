@@ -32,8 +32,14 @@ const mediaRules = (predicate) => {
   return found;
 };
 
-test('each theme owns its two-up narrow-phone poster width', () => {
-  for (const [id, stylesheet] of Object.entries(interfaceThemes)) {
+test('John owns its two-up narrow-phone poster width; Orig keeps upstream shelf widths', () => {
+  const orig = interfaceThemes.seerrOrig;
+  const widths = [];
+  orig.walkDecls('--poster-width', (d) => widths.push(d.value));
+  assert.deepEqual(widths, ['144px', '176px']);
+  for (const [id, stylesheet] of Object.entries(interfaceThemes).filter(
+    ([id]) => id === 'seerrNGJ'
+  )) {
     const media = [];
     stylesheet.walkAtRules('media', (rule) => media.push(rule));
     const narrow = media.find((rule) => /max-width:\s*389px/.test(rule.params));
@@ -50,7 +56,9 @@ test('each theme owns its two-up narrow-phone poster width', () => {
 });
 
 test('narrow-phone poster widths override each theme default in the cascade', () => {
-  for (const [id, stylesheet] of Object.entries(interfaceThemes)) {
+  for (const [id, stylesheet] of Object.entries(interfaceThemes).filter(
+    ([id]) => id === 'seerrNGJ'
+  )) {
     const defaultRule = stylesheet.nodes.find(
       (node) =>
         node.type === 'rule' &&

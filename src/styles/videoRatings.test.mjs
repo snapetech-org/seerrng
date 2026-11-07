@@ -31,6 +31,7 @@ const loadModule = (file) => {
     }
   ).outputText;
   const imports = (id) => {
+    if (id === '@app/hooks/useUpstreamTheme') return () => false;
     if (id === '@app/components/Common/Tooltip') {
       return ({ children }) => children;
     }

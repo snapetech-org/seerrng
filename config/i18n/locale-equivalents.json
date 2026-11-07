@@ -2306,7 +2306,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/TvDetails/SeriesDetailsLayout.tsx",
-          "line": 54,
+          "line": 58,
           "defaultMessage": "'Genres'"
         }
       ],
@@ -2326,7 +2326,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/TvDetails/SeriesDetailsLayout.tsx",
-          "line": 74,
+          "line": 78,
           "defaultMessage": "'Status'"
         }
       ],
@@ -2346,7 +2346,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/TvDetails/index.tsx",
-          "line": 89,
+          "line": 90,
           "defaultMessage": "'Franchise'"
         }
       ],
@@ -3126,7 +3126,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/TvDetails/SeriesDetailsLayout.tsx",
-          "line": 58,
+          "line": 62,
           "defaultMessage": "'Director'"
         }
       ],
@@ -4894,7 +4894,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/TvDetails/index.tsx",
-          "line": 89,
+          "line": 90,
           "defaultMessage": "'Franchise'"
         }
       ],
@@ -6374,7 +6374,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/TvDetails/SeriesDetailsLayout.tsx",
-          "line": 74,
+          "line": 78,
           "defaultMessage": "'Status'"
         }
       ],

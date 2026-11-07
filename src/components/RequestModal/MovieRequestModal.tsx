@@ -2,6 +2,7 @@ import Button from '@app/components/Common/Button';
 import CachedImage from '@app/components/Common/CachedImage';
 import Modal from '@app/components/Common/Modal';
 import MediaQualitySelect from '@app/components/MediaDetails/MediaQualitySelect';
+import { OptionalDisclosure } from '@app/components/Persius/Primitives';
 import AdvancedOptionsDisclosureButton from '@app/components/RequestModal/AdvancedOptionsDisclosureButton';
 import AdvancedRequester, {
   RequestListboxControl,
@@ -10,6 +11,7 @@ import AdvancedRequester, {
 import QuotaDisplay from '@app/components/RequestModal/QuotaDisplay';
 import RequestFooterStatus from '@app/components/RequestModal/RequestFooterStatus';
 import RequestMediaCard from '@app/components/RequestModal/RequestMediaCard';
+import UpstreamRequestNotice from '@app/components/RequestModal/UpstreamRequestNotice';
 import {
   canPromotePendingDestinationRequests,
   createRequestDestination,
@@ -20,6 +22,7 @@ import {
 } from '@app/components/RequestModal/requestAvailability';
 import useAdvancedOptionsDisclosure from '@app/hooks/useAdvancedOptionsDisclosure';
 import useToasts from '@app/hooks/useToasts';
+import useUpstreamTheme from '@app/hooks/useUpstreamTheme';
 import { useUser } from '@app/hooks/useUser';
 import globalMessages from '@app/i18n/globalMessages';
 import { sortCrewPriority } from '@app/utils/creditHelpers';
@@ -144,6 +147,7 @@ const MovieRequestModal = ({
     revalidateOnMount: true,
   });
   const intl = useIntl();
+  const upstream = useUpstreamTheme();
   const { user, hasPermission } = useUser();
   const { data: quota } = useSWR<QuotaResponse>(
     user &&
@@ -703,7 +707,7 @@ const MovieRequestModal = ({
       onCancel={onCancel}
       onOk={() => void sendRequest()}
       hideActions
-      alignTop
+      alignTop={!upstream}
       okDisabled={
         isUpdating ||
         requestDestinationSettingsLoading ||
@@ -718,6 +722,7 @@ const MovieRequestModal = ({
           ? messages.requestmovie4ktitle
           : messages.requestmovietitle
       )}
+      subTitle={upstream ? data?.title : undefined}
       okText={requestButtonLabel}
       okButtonType={'primary'}
       dialogClass="app-card-main request-modal-site-surface sm:max-w-5xl"
@@ -741,124 +746,129 @@ const MovieRequestModal = ({
         }
         artworkType="tmdb"
       >
-        <div className="app-card-inset refreshed-inset-surface detail-summary-card app-detail-summary-grid">
-          <div className="detail-card-poster relative overflow-hidden rounded-lg ring-1 ring-gray-600">
-            <CachedImage
-              type="tmdb"
-              src={
-                getTmdbPosterImageUrl(data?.posterPath) ||
-                '/images/seerr_poster_not_found.png'
-              }
-              alt=""
-              fill
-              sizes="(min-width: 640px) 80px, 64px"
-              className="object-cover"
-            />
-          </div>
+        {upstream && !editRequest && (
+          <UpstreamRequestNotice hasAutoApprove={hasAutoApprove} />
+        )}
+        <OptionalDisclosure enabled={upstream}>
+          <div className="app-card-inset refreshed-inset-surface detail-summary-card app-detail-summary-grid">
+            <div className="detail-card-poster relative overflow-hidden rounded-lg ring-1 ring-gray-600">
+              <CachedImage
+                type="tmdb"
+                src={
+                  getTmdbPosterImageUrl(data?.posterPath) ||
+                  '/images/seerr_poster_not_found.png'
+                }
+                alt=""
+                fill
+                sizes="(min-width: 640px) 80px, 64px"
+                className="object-cover"
+              />
+            </div>
 
-          <div>
-            <h3 className="detail-summary-title truncate text-lg leading-5 font-semibold text-white">
-              {data?.title}
-              {releaseYear ? ` (${releaseYear})` : ''}
-            </h3>
+            <div>
+              <h3 className="detail-summary-title truncate text-lg leading-5 font-semibold text-white">
+                {data?.title}
+                {releaseYear ? ` (${releaseYear})` : ''}
+              </h3>
 
-            <div className="detail-card-heading-spacing detail-three-column-grid grid min-h-0 min-w-0 flex-1 items-stretch">
-              <div className="detail-paired-column-span min-w-0">
-                <dl className="media-detail-rows detail-paired-columns refreshed-detail-text grid min-w-0 content-start text-xs">
-                  <dt className="card:col-start-1 card:row-start-1 font-medium text-gray-100">
-                    {intl.formatMessage(messages.mediaAndFormat)}:
-                  </dt>
-                  <dd className="card:col-start-3 card:row-start-1 m-0 truncate">
-                    {intl.formatMessage(globalMessages.movie)} ·{' '}
-                    {effectiveIs4k ? '4K' : 'HD'}
-                  </dd>
-                  <dt className="card:col-start-1 card:row-start-2 font-medium text-gray-100">
-                    {intl.formatMessage(messages.releaseDate)}:
-                  </dt>
-                  <dd className="card:col-start-3 card:row-start-2 m-0 truncate">
-                    {releaseDate}
-                  </dd>
-                  <dt className="card:col-start-1 card:row-start-3 font-medium text-gray-100">
-                    {intl.formatMessage(messages.runtime)}:
-                  </dt>
-                  <dd className="card:col-start-3 card:row-start-3 m-0 truncate">
-                    {data?.runtime
-                      ? formatDurationMinutes(data.runtime, intl.locale)
-                      : notAvailable}
-                  </dd>
-
-                  <div className="media-detail-rows media-detail-column-divider card:col-span-1 card:col-start-5 card:row-span-3 card:row-start-1 col-span-2 grid min-w-0 grid-cols-[max-content_minmax(0,1fr)] content-start gap-x-3">
-                    {featuredCrew.map((person) => (
-                      <div
-                        className="contents"
-                        key={`${person.job}-${person.id}`}
-                      >
-                        <dt className="font-medium text-gray-100">
-                          {person.job}:
-                        </dt>
-                        <dd className="m-0 truncate">{person.name}</dd>
-                      </div>
-                    ))}
-                    <dt className="font-medium text-gray-100">
-                      {intl.formatMessage(messages.studio)}:
+              <div className="detail-card-heading-spacing detail-three-column-grid grid min-h-0 min-w-0 flex-1 items-stretch">
+                <div className="detail-paired-column-span min-w-0">
+                  <dl className="media-detail-rows detail-paired-columns refreshed-detail-text grid min-w-0 content-start text-xs">
+                    <dt className="card:col-start-1 card:row-start-1 font-medium text-gray-100">
+                      {intl.formatMessage(messages.mediaAndFormat)}:
                     </dt>
-                    <dd className="m-0 truncate">{studio}</dd>
-                  </div>
+                    <dd className="card:col-start-3 card:row-start-1 m-0 truncate">
+                      {intl.formatMessage(globalMessages.movie)} ·{' '}
+                      {effectiveIs4k ? '4K' : 'HD'}
+                    </dd>
+                    <dt className="card:col-start-1 card:row-start-2 font-medium text-gray-100">
+                      {intl.formatMessage(messages.releaseDate)}:
+                    </dt>
+                    <dd className="card:col-start-3 card:row-start-2 m-0 truncate">
+                      {releaseDate}
+                    </dd>
+                    <dt className="card:col-start-1 card:row-start-3 font-medium text-gray-100">
+                      {intl.formatMessage(messages.runtime)}:
+                    </dt>
+                    <dd className="card:col-start-3 card:row-start-3 m-0 truncate">
+                      {data?.runtime
+                        ? formatDurationMinutes(data.runtime, intl.locale)
+                        : notAvailable}
+                    </dd>
 
-                  <dt className="card:col-start-1 card:row-start-4 font-medium text-gray-100">
-                    {intl.formatMessage(messages.genres)}:
+                    <div className="media-detail-rows media-detail-column-divider card:col-span-1 card:col-start-5 card:row-span-3 card:row-start-1 col-span-2 grid min-w-0 grid-cols-[max-content_minmax(0,1fr)] content-start gap-x-3">
+                      {featuredCrew.map((person) => (
+                        <div
+                          className="contents"
+                          key={`${person.job}-${person.id}`}
+                        >
+                          <dt className="font-medium text-gray-100">
+                            {person.job}:
+                          </dt>
+                          <dd className="m-0 truncate">{person.name}</dd>
+                        </div>
+                      ))}
+                      <dt className="font-medium text-gray-100">
+                        {intl.formatMessage(messages.studio)}:
+                      </dt>
+                      <dd className="m-0 truncate">{studio}</dd>
+                    </div>
+
+                    <dt className="card:col-start-1 card:row-start-4 font-medium text-gray-100">
+                      {intl.formatMessage(messages.genres)}:
+                    </dt>
+                    <dd className="card:col-span-3 card:col-start-3 card:row-start-4 m-0 line-clamp-2 min-w-0 break-words">
+                      {data?.genres?.length
+                        ? formatLocalizedList(
+                            data.genres.slice(0, 3).map((genre) => genre.name),
+                            intl.locale
+                          )
+                        : notAvailable}
+                    </dd>
+                  </dl>
+                </div>
+
+                <dl className="media-detail-rows media-detail-column-divider refreshed-detail-text grid h-full min-w-0 grid-cols-[max-content_minmax(0,1fr)] content-start gap-x-3 text-xs">
+                  <dt className="font-medium text-gray-100">
+                    {intl.formatMessage(messages.status)}:
                   </dt>
-                  <dd className="card:col-span-3 card:col-start-3 card:row-start-4 m-0 line-clamp-2 min-w-0 break-words">
-                    {data?.genres?.length
-                      ? formatLocalizedList(
-                          data.genres.slice(0, 3).map((genre) => genre.name),
-                          intl.locale
-                        )
-                      : notAvailable}
+                  <dd className="m-0 truncate">
+                    {intl.formatMessage(
+                      selectedDestinationAvailable
+                        ? globalMessages.available
+                        : selectedDestinationRequested
+                          ? messages.requested
+                          : messages.readyToRequest
+                    )}
+                  </dd>
+                  <dt className="font-medium text-gray-100">
+                    {intl.formatMessage(messages.service)}:
+                  </dt>
+                  <dd className="m-0 truncate">
+                    {selectedService?.name ??
+                      (selectedRequestService
+                        ? `${selectedRequestService.requestButtonLabel} (${selectedRequestService.name})`
+                        : undefined) ??
+                      fallbackService?.name ??
+                      notAvailable}
+                  </dd>
+                  <dt className="font-medium text-gray-100">
+                    {intl.formatMessage(messages.approval)}:
+                  </dt>
+                  <dd className="card-table-value">
+                    <RequestFooterStatus
+                      available={
+                        selectedDestinationAvailable && !requesterTagOnly
+                      }
+                      requested={selectedDestinationRequested}
+                      hasAutoApprove={hasAutoApprove}
+                    />
                   </dd>
                 </dl>
               </div>
-
-              <dl className="media-detail-rows media-detail-column-divider refreshed-detail-text grid h-full min-w-0 grid-cols-[max-content_minmax(0,1fr)] content-start gap-x-3 text-xs">
-                <dt className="font-medium text-gray-100">
-                  {intl.formatMessage(messages.status)}:
-                </dt>
-                <dd className="m-0 truncate">
-                  {intl.formatMessage(
-                    selectedDestinationAvailable
-                      ? globalMessages.available
-                      : selectedDestinationRequested
-                        ? messages.requested
-                        : messages.readyToRequest
-                  )}
-                </dd>
-                <dt className="font-medium text-gray-100">
-                  {intl.formatMessage(messages.service)}:
-                </dt>
-                <dd className="m-0 truncate">
-                  {selectedService?.name ??
-                    (selectedRequestService
-                      ? `${selectedRequestService.requestButtonLabel} (${selectedRequestService.name})`
-                      : undefined) ??
-                    fallbackService?.name ??
-                    notAvailable}
-                </dd>
-                <dt className="font-medium text-gray-100">
-                  {intl.formatMessage(messages.approval)}:
-                </dt>
-                <dd className="card-table-value">
-                  <RequestFooterStatus
-                    available={
-                      selectedDestinationAvailable && !requesterTagOnly
-                    }
-                    requested={selectedDestinationRequested}
-                    hasAutoApprove={hasAutoApprove}
-                  />
-                </dd>
-              </dl>
             </div>
           </div>
-        </div>
+        </OptionalDisclosure>
 
         <div className="request-selection-options card-spacing-before">
           {requesterTagOnlyMode && (
@@ -987,7 +997,7 @@ const MovieRequestModal = ({
             type="button"
             onClick={onCancel}
             data-testid="modal-cancel-button"
-            className="app-button app-button-danger button-standard"
+            className={`app-button ${upstream ? 'app-button-default' : 'app-button-danger'} button-standard`}
           >
             <XMarkIcon aria-hidden="true" />
             {intl.formatMessage(globalMessages.cancel)}
@@ -1005,7 +1015,7 @@ const MovieRequestModal = ({
                 !requestQuotaApproval) ||
               requesterTagOnlyUnavailable
             }
-            className="app-button app-button-success button-standard"
+            className={`app-button ${upstream ? 'app-button-primary' : 'app-button-success'} button-standard`}
           >
             <ArrowDownTrayIcon aria-hidden="true" />
             {requestButtonLabel}

@@ -9,6 +9,7 @@ import TitleCard from '@app/components/TitleCard';
 import useCardTextVisibility from '@app/hooks/useCardTextVisibility';
 import useDiscoverHomeManifest from '@app/hooks/useDiscoverHomeManifest';
 import useSettings from '@app/hooks/useSettings';
+import useUpstreamTheme from '@app/hooks/useUpstreamTheme';
 import { useUser } from '@app/hooks/useUser';
 import useWarmImageCache, {
   DISCOVER_SHELF_POSTER_CACHE_WARM_LIMIT,
@@ -33,7 +34,10 @@ import {
   shouldShowMoreSliderCard,
 } from '@app/utils/mediaSlider';
 import { shouldHideRequestedMedia } from '@app/utils/requestVisibility';
-import { ArrowPathIcon } from '@heroicons/react/24/outline';
+import {
+  ArrowPathIcon,
+  ArrowRightCircleIcon,
+} from '@heroicons/react/24/outline';
 import { MediaStatus } from '@server/constants/media';
 import type { DiscoverHomeStateResponse } from '@server/interfaces/api/discoverHomeInterfaces';
 import type {
@@ -115,6 +119,7 @@ const MediaSlider = ({
   posterTitleWeight,
 }: MediaSliderProps) => {
   const intl = useIntl();
+  const upstream = useUpstreamTheme();
   const settings = useSettings();
   const { visibility } = useCardTextVisibility();
   const { user } = useUser();
@@ -619,13 +624,14 @@ const MediaSlider = ({
             {linkUrl ? (
               <Link href={linkUrl} className="page-heading">
                 <span>{title}</span>
+                {upstream && <ArrowRightCircleIcon aria-hidden="true" />}
               </Link>
             ) : (
               <div className="page-heading">
                 <span>{title}</span>
               </div>
             )}
-            {visibleMediaTypes.length > 0 && (
+            {visibleMediaTypes.length > 0 && !upstream && (
               <CardTextVisibilityToggle mediaType={visibleMediaTypes} />
             )}
             {randomizeOrder && (
