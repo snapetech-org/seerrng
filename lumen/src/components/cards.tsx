@@ -548,6 +548,26 @@ export const RailSkeleton = ({ n = 8, sq }: { n?: number; sq?: boolean }) => (
   </div>
 );
 
+// placeholder grid while a list's first page loads, so a slow answer doesn't look empty
+export const GridSkeleton = ({
+  n = 12,
+  sq,
+  className = 'grid',
+}: {
+  n?: number;
+  sq?: boolean;
+  className?: string;
+}) => (
+  <div className={className} aria-busy="true" aria-label="Loading">
+    {Array.from({ length: n }, (_, i) => (
+      <div key={i} className={`poster ${sq ? 'sq' : ''}`}>
+        <div className="art skel" />
+        <div className="t skel-line" />
+      </div>
+    ))}
+  </div>
+);
+
 // endless scrolling: loads the next page when this marker comes within a screen of view
 export function MoreOnScroll({
   done,

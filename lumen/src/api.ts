@@ -1,5 +1,6 @@
 // Thin client for the SeerrNG API. Everything goes through the same origin (the Lumen
 // container or the Vite dev proxy), so SeerrNG's session cookie does the auth.
+import { markAllStale } from './apiCache';
 
 export class ApiError extends Error {
   constructor(
@@ -29,6 +30,8 @@ export async function api<T>(path: string, init: RequestInit = {}): Promise<T> {
     }
     throw new ApiError(res.status, msg);
   }
+  // a request or other change: saved answers may now be out of date
+  if (init.method && init.method !== 'GET') markAllStale();
   return res.status === 204 ? (undefined as T) : res.json();
 }
 
@@ -245,6 +248,7 @@ export async function requestAnotherNarration(
   const body = await res.json().catch(() => ({}));
   if (!res.ok)
     throw new ApiError(res.status, body.error || 'The request failed.');
+  markAllStale();
   return body as {
     ok: true;
     bookId: number;

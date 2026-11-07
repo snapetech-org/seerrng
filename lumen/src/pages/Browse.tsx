@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { MediaStatus, type TitleResult } from '../api';
-import { MoreOnScroll, TitleCard } from '../components/cards';
+import { GridSkeleton, MoreOnScroll, TitleCard } from '../components/cards';
 import { useAsksRequestOptions } from '../components/requestSheet';
 import { Avatar } from '../components/Shell';
 import { CAN_HOVER, useApi, usePaged } from '../hooks';
@@ -193,6 +193,7 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
           <b>Nothing here</b>Try another genre, or switch to All.
         </div>
       )}
+      {list.loading && !items.length && list.page === 0 && <GridSkeleton />}
       <div className="grid">
         {items.map((x) => (
           <TitleCard key={x.id} it={{ ...x, mediaType: kind }} />

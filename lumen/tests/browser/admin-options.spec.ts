@@ -966,3 +966,58 @@ test('a stale game page cannot overwrite loading or errors after a new search', 
     page.getByRole('button', { name: 'Retry', exact: true })
   ).toHaveCount(0);
 });
+
+test('Discover reuses saved rows when reopened, and asks again after a request', async ({
+  page,
+}) => {
+  const { posts } = await fixtures(page, { permissions: 32 });
+  const rowCalls = () =>
+    asked.filter(
+      (u) =>
+        new URL(u).pathname === '/api/v1/discover/movies' && !new URL(u).search
+    ).length;
+  const asked: string[] = [];
+  page.on('request', (r) => asked.push(r.url()));
+  await page.goto('/');
+  await expect(
+    page.getByRole('link', { name: 'Fresh Pick' }).first()
+  ).toBeVisible();
+  expect(rowCalls()).toBe(1);
+  await page.waitForTimeout(700); // saved after a short pause
+  // reopened (new page load): rows show from the saved copy, nothing asked again
+  await page.goto('/');
+  await expect(
+    page.getByRole('link', { name: 'Fresh Pick' }).first()
+  ).toBeVisible();
+  await page.waitForTimeout(500);
+  expect(rowCalls()).toBe(1);
+  // a request marks saved answers stale: the next visit asks again
+  await page.goto('/movies');
+  await quickRequest(page, 'Fresh Pick');
+  await expect
+    .poll(() => posts.filter((p) => p.path === '/request').length)
+    .toBe(1);
+  await page.waitForTimeout(700);
+  await page.goto('/');
+  await expect(
+    page.getByRole('link', { name: 'Fresh Pick' }).first()
+  ).toBeVisible();
+  await expect.poll(rowCalls).toBe(2);
+});
+
+test('signing out drops the saved answers', async ({ page }) => {
+  await fixtures(page);
+  await page.goto('/');
+  await expect(
+    page.getByRole('link', { name: 'Fresh Pick' }).first()
+  ).toBeVisible();
+  await page.waitForTimeout(700);
+  expect(
+    await page.evaluate(() => !!localStorage.getItem('lumen-cache:1'))
+  ).toBe(true);
+  await page.goto('/me');
+  await page.getByRole('button', { name: /Sign out/ }).click();
+  await expect
+    .poll(() => page.evaluate(() => localStorage.getItem('lumen-cache:1')))
+    .toBeNull();
+});
