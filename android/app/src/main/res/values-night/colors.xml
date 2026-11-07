@@ -1,0 +1,11 @@
+<resources>
+    <!-- Dark mode: the app follows the phone, and so does the WebView's prefers-color-scheme -->
+    <color name="brand_blue">#3D73B8</color>
+    <color name="brand_blue_dark">#9DBCEB</color>
+    <color name="ink">#E7ECF3</color>
+    <color name="muted">#A3AEBD</color>
+    <color name="paper">#10151C</color>
+    <color name="warning">#F0A07F</color>
+    <color name="line">#2B3542</color>
+    <color name="surface">#1A212B</color>
+</resources>

@@ -16,7 +16,7 @@
     </style>
 
     <style name="SecondaryButton" parent="android:style/Widget.Material.Button">
-        <item name="android:backgroundTint">@color/white</item>
+        <item name="android:backgroundTint">@color/surface</item>
         <item name="android:textColor">@color/brand_blue_dark</item>
         <item name="android:textAllCaps">false</item>
     </style>

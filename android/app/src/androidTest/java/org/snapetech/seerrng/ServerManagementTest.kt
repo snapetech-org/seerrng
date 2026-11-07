@@ -220,6 +220,18 @@ class ServerManagementTest {
             assertTrue("The WebView did not render the local server response: ${pageText.get()}",
                 pageText.get()?.contains("SeerrNG Android E2E ready") == true)
             assertEquals("/seerrng", server.requestPath.get())
+            scenario.recreate()
+            onView(withId(R.id.httpBadge)).check(matches(isDisplayed()))
+            scenario.onActivity { activity ->
+                val container = activity.findViewById<FrameLayout>(R.id.webViewContainer)
+                val restored = (0 until container.childCount).map(container::getChildAt)
+                    .filterIsInstance<WebView>().single()
+                assertTrue("Activity recreation lost the selected page", restored.url?.endsWith("/seerrng") == true)
+                val content = activity.findViewById<View>(android.R.id.content)
+                assertTrue("System status bar overlaps app content", content.paddingTop > 0)
+            }
+            androidx.test.espresso.Espresso.pressBack()
+            onView(withId(R.id.pickerTitle)).check(matches(isDisplayed()))
         }
     }
 

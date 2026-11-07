@@ -8,6 +8,7 @@ import android.app.DownloadManager
 import android.content.ActivityNotFoundException
 import android.content.pm.PackageManager
 import android.content.Intent
+import android.content.res.Configuration
 import android.graphics.Color
 import android.net.Uri
 import android.os.Build
@@ -15,6 +16,8 @@ import android.os.Bundle
 import android.os.Environment
 import android.view.Gravity
 import android.view.View
+import android.view.WindowInsets
+import android.view.WindowInsetsController
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.webkit.CookieManager
@@ -34,6 +37,7 @@ import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
+import android.window.OnBackInvokedDispatcher
 import androidx.webkit.ProfileStore
 import androidx.webkit.WebViewCompat
 import androidx.webkit.WebViewFeature
@@ -65,6 +69,7 @@ class MainActivity : Activity() {
     private lateinit var trialUsageStore: TrialUsageStore
     private var trialSessionStartedThisLaunch = false
     private var activeMainFrameLoadFailed = false
+    private var pendingWebState: Bundle? = null
 
     private var pendingShare: SharedContent? = null
     private var editingServerId: String? = null
@@ -83,6 +88,8 @@ class MainActivity : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        fitSystemBars(findViewById(android.R.id.content))
+        registerBackHandling()
         serverStore = ServerStore(this)
         trialUsageStore = TrialUsageStore(this, BuildConfig.FREE_SESSION_LIMIT)
         trialSessionStartedThisLaunch = savedInstanceState?.getBoolean(TRIAL_SESSION_STARTED_KEY) ?: false
@@ -132,6 +139,7 @@ class MainActivity : Activity() {
         } else {
             showServerPicker()
         }
+        restoreOpenServer(savedInstanceState)
         acceptShare(intent)
         WebView.setWebContentsDebuggingEnabled(BuildConfig.DEBUG)
     }
@@ -186,22 +194,60 @@ class MainActivity : Activity() {
         super.onDestroy()
     }
 
-    @Deprecated("Use system back navigation")
-    override fun onBackPressed() {
+    // Android 13+ delivers Back through OnBackInvokedDispatcher. Apps targeting API 36 no
+    // longer get onBackPressed() on Android 16, so without this Back closed the app from
+    // any page instead of going back in the WebView.
+    private fun registerBackHandling() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            onBackInvokedDispatcher.registerOnBackInvokedCallback(
+                OnBackInvokedDispatcher.PRIORITY_DEFAULT,
+            ) { if (!navigateBack()) finish() }
+        }
+    }
+
+    /** True when Back did something inside the app; false means leave the app. */
+    private fun navigateBack(): Boolean {
         val currentWebView = webView
         if (browserScreen.visibility == View.VISIBLE && currentWebView?.canGoBack() == true) {
             currentWebView.goBack()
-            return
+            return true
         }
-        if (browserScreen.visibility == View.VISIBLE) {
+        if (browserScreen.visibility == View.VISIBLE || serverEditor.visibility == View.VISIBLE) {
             showServerPicker()
-            return
+            return true
         }
-        if (serverEditor.visibility == View.VISIBLE) {
-            showServerPicker()
-            return
+        return false
+    }
+
+    @Deprecated("Use system back navigation")
+    override fun onBackPressed() {
+        if (!navigateBack()) super.onBackPressed()
+    }
+
+    // Android 15+ draws apps targeting SDK 35+ edge to edge, under the status and navigation
+    // bars, which put the clock over the toolbar buttons. Opt in explicitly from Android 11
+    // and pad the content by the system bars, display cutout and keyboard.
+    private fun fitSystemBars(root: View) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) return
+        window.setDecorFitsSystemWindows(false)
+        @Suppress("DEPRECATION")
+        window.statusBarColor = Color.TRANSPARENT
+        @Suppress("DEPRECATION")
+        window.navigationBarColor = Color.TRANSPARENT
+        val night = (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) ==
+            Configuration.UI_MODE_NIGHT_YES
+        val lightBars = WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS or
+            WindowInsetsController.APPEARANCE_LIGHT_NAVIGATION_BARS
+        window.insetsController?.setSystemBarsAppearance(if (night) 0 else lightBars, lightBars)
+        root.setOnApplyWindowInsetsListener { view, insets ->
+            val bars = insets.getInsets(
+                WindowInsets.Type.systemBars() or WindowInsets.Type.displayCutout(),
+            )
+            val ime = insets.getInsets(WindowInsets.Type.ime())
+            view.setPadding(bars.left, bars.top, bars.right, maxOf(bars.bottom, ime.bottom))
+            WindowInsets.CONSUMED
         }
-        super.onBackPressed()
+        root.requestApplyInsets()
     }
 
     private fun renderServers() {
@@ -361,6 +407,18 @@ class MainActivity : Activity() {
         loadServer(server, address)
     }
 
+    // Switching dark mode (also font size, language, ...) recreates the activity. Reopen the
+    // server that was showing, with its page and back history, instead of dropping the person
+    // on the server list. The HTTP warning was already accepted and the session already
+    // counted, so this goes straight to the browser.
+    private fun restoreOpenServer(savedInstanceState: Bundle?) {
+        val serverId = savedInstanceState?.getString(OPEN_SERVER_KEY) ?: return
+        val server = serverStore.get(serverId) ?: return
+        val address = (ServerAddress.parse(server.url) as? ServerAddressResult.Valid)?.address ?: return
+        pendingWebState = savedInstanceState.getBundle(OPEN_WEB_STATE_KEY)
+        startBrowser(server, address)
+    }
+
     private fun loadServer(server: SavedServer, address: ParsedServerAddress) {
         if (activeServer?.id != server.id || browserScreen.visibility != View.VISIBLE) return
         activeMainFrameLoadFailed = false
@@ -370,6 +428,9 @@ class MainActivity : Activity() {
             view,
             FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT),
         )
+        val restored = pendingWebState?.let { view.restoreState(it) }
+        pendingWebState = null
+        if (restored != null && restored.size > 0) return
         val share = pendingShare
         view.loadUrl(if (share != null) ShareIntent.shareUrl(address.url, share) else address.url)
     }
@@ -631,7 +692,7 @@ class MainActivity : Activity() {
         val dialog = Dialog(this)
         val content = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
-            setBackgroundColor(Color.WHITE)
+            setBackgroundColor(getColor(R.color.surface))
         }
         val toolbar = LinearLayout(this).apply {
             orientation = LinearLayout.HORIZONTAL
@@ -680,6 +741,15 @@ class MainActivity : Activity() {
                 openExternal(uri)
                 return true
             }
+            // App hand-off links such as "Watch on Plex": intent:// on Android, plex:// otherwise
+            "intent" -> {
+                if (userGesture) openIntentLink(uri.toString())
+                return true
+            }
+            in APP_LINK_SCHEMES -> {
+                if (userGesture) openExternal(uri)
+                return true
+            }
             "about" -> return uri.toString() != "about:blank"
             else -> return true
         }
@@ -717,6 +787,28 @@ class MainActivity : Activity() {
 
         if (host.isBlank() || port != null && port !in 1..65535) return null
         return UriHostPort(host, port)
+    }
+
+    // Only ever starts a browsable activity: the page can't name a component or grant URI
+    // access, and when no app handles the link the intent's own http(s) fallback opens.
+    private fun openIntentLink(url: String) {
+        val target = AppLinkIntent.parse(url)
+        if (target == null) {
+            Toast.makeText(this, R.string.connection_error, Toast.LENGTH_SHORT).show()
+            return
+        }
+        try {
+            startActivity(target.intent)
+        } catch (_: ActivityNotFoundException) {
+            val fallback = target.fallback
+            if (fallback != null) {
+                openExternal(fallback)
+            } else {
+                Toast.makeText(this, R.string.connection_error, Toast.LENGTH_SHORT).show()
+            }
+        } catch (_: SecurityException) {
+            Toast.makeText(this, R.string.connection_error, Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun openExternal(uri: Uri) {
@@ -775,6 +867,12 @@ class MainActivity : Activity() {
 
     override fun onSaveInstanceState(outState: Bundle) {
         outState.putBoolean(TRIAL_SESSION_STARTED_KEY, trialSessionStartedThisLaunch)
+        val server = activeServer
+        val view = webView
+        if (server != null && view != null && browserScreen.visibility == View.VISIBLE) {
+            outState.putString(OPEN_SERVER_KEY, server.id)
+            outState.putBundle(OPEN_WEB_STATE_KEY, Bundle().also { view.saveState(it) })
+        }
         super.onSaveInstanceState(outState)
     }
 
@@ -881,5 +979,10 @@ class MainActivity : Activity() {
         const val DOWNLOAD_PERMISSION_REQUEST = 45218
         const val FALLBACK_SERVER_ID = "fallback_server_id"
         const val TRIAL_SESSION_STARTED_KEY = "trial_session_started_this_launch"
+        const val OPEN_SERVER_KEY = "open_server_id"
+        const val OPEN_WEB_STATE_KEY = "open_web_state"
+
+        // App links a page may hand off with a tap (http(s), mail and maps are handled separately)
+        val APP_LINK_SCHEMES = setOf("plex")
     }
 }
