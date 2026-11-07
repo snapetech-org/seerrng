@@ -20,9 +20,18 @@ return to the server picker. The run uses a disposable hosted VM, read-only
 repository permissions and no release signing credentials. The release job is
 skipped on this review branch.
 
-The report does not establish physical-device gesture feel, native Plex playback,
-all older Android versions or a full light/dark screenshot comparison. Those
-remain separate acceptance checks. XML reports and the complete build log are
+The follow-up [appearance run42317429318](https://github.com/snapetech-org/seerrng/actions/runs/42317429318)
+passes at b28f22fca30d36bdf1f3b13d1458592b921aca70 with the same Android source.
+It captures the candidate and actual published v3.72.16 APK on phone and
+1280x800 tablet layouts in device light/dark modes. All four matching pairs were
+visually reviewed: the status bar becomes legible, content clears its inset,
+shared controls retain geometry, and dark mode uses readable dark surfaces.
+The published baseline APK checksum is verified before installation. The first
+capture harness encountered connected-test cleanup uninstalling the target; the
+corrected harness explicitly installs the already-built debug APK first.
+
+The report does not establish physical-device gesture feel, native Plex playback
+or all older Android versions. Those remain separate acceptance checks. XML reports and the complete build log are
 retained in incoming-review20261106 deliverables as `android-593-reports` and
 `android-593-qualified.log`. Subsequent documentation-only commits do not change
 the validated Android source.
