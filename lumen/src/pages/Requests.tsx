@@ -15,6 +15,7 @@ import {
 import { useAuth, useMediaServerName } from '../auth';
 import { shortDate } from '../components/cards';
 import { canChooseRequestOptions, Pill } from '../components/detail';
+import { RequestEditSheet } from '../components/requestEdit';
 import { Avatar } from '../components/Shell';
 import { useToast } from '../components/toast';
 import {
@@ -517,6 +518,14 @@ export default function Requests() {
   const [others, setOthers] = useState<Row[] | null>(null);
   const [waiting, setWaiting] = useState<number | null>(null);
   const [acting, setActing] = useState<number | null>(null);
+  const [editing, setEditing] = useState<Row | null>(null);
+  // Remove asks once more on the same button instead of a pop-up
+  const [removing, setRemoving] = useState<number | null>(null);
+  useEffect(() => {
+    if (removing == null) return;
+    const t = window.setTimeout(() => setRemoving(null), 4000);
+    return () => window.clearTimeout(t);
+  }, [removing]);
 
   useEffect(() => {
     if (!manage) return;
@@ -610,11 +619,23 @@ export default function Requests() {
         ? all
         : act;
   const shown = everyone ? others : rows;
-  const decide = async (id: number, how: 'approve' | 'decline') => {
+  const decide = async (
+    id: number,
+    how: 'approve' | 'decline' | 'retry' | 'remove'
+  ) => {
     setActing(id);
+    setRemoving(null);
     try {
-      await api(`/request/${id}/${how}`, { method: 'POST' });
-      toast(how === 'approve' ? 'Request approved' : 'Request declined');
+      if (how === 'remove') await api(`/request/${id}`, { method: 'DELETE' });
+      else await api(`/request/${id}/${how}`, { method: 'POST', body: '{}' });
+      toast(
+        {
+          approve: 'Request approved',
+          decline: 'Request declined',
+          retry: 'Request sent again',
+          remove: 'Request removed',
+        }[how]
+      );
       setTick((t) => t + 1);
     } catch (e) {
       toast(e instanceof Error ? e.message : 'Couldn’t update the request');
@@ -756,23 +777,58 @@ export default function Requests() {
                   {st.detail && <span className="d">{st.detail}</span>}
                 </div>
                 <div className="rqa">
-                  {everyone && x.r.status === 1 ? (
+                  {everyone ? (
                     <>
-                      <button
-                        className="btn btn-sm btn-ok"
-                        disabled={acting === x.r.id}
-                        onClick={() => decide(x.r.id, 'approve')}
-                      >
-                        <Icon name="check" size="sm" />
-                        Approve
-                      </button>
+                      {x.r.status === 1 && (
+                        <>
+                          <button
+                            className="btn btn-sm btn-ok"
+                            disabled={acting === x.r.id}
+                            onClick={() => decide(x.r.id, 'approve')}
+                          >
+                            <Icon name="check" size="sm" />
+                            Approve
+                          </button>
+                          <button
+                            className="btn btn-sm btn-quiet"
+                            disabled={acting === x.r.id}
+                            onClick={() => decide(x.r.id, 'decline')}
+                          >
+                            <Icon name="x" size="sm" />
+                            Decline
+                          </button>
+                        </>
+                      )}
+                      {x.r.status === 4 && (
+                        <button
+                          className="btn btn-sm btn-tonal"
+                          disabled={acting === x.r.id}
+                          onClick={() => decide(x.r.id, 'retry')}
+                        >
+                          <Icon name="refresh" size="sm" />
+                          Retry
+                        </button>
+                      )}
+                      {(x.r.status === 1 || x.r.status === 4) &&
+                        (x.r.type === 'movie' || x.r.type === 'tv') && (
+                          <button
+                            className="btn btn-sm btn-quiet"
+                            disabled={acting === x.r.id}
+                            onClick={() => setEditing(x)}
+                          >
+                            Change
+                          </button>
+                        )}
                       <button
                         className="btn btn-sm btn-quiet"
                         disabled={acting === x.r.id}
-                        onClick={() => decide(x.r.id, 'decline')}
+                        onClick={() =>
+                          removing === x.r.id
+                            ? decide(x.r.id, 'remove')
+                            : setRemoving(x.r.id)
+                        }
                       >
-                        <Icon name="x" size="sm" />
-                        Decline
+                        {removing === x.r.id ? 'Remove for good?' : 'Remove'}
                       </button>
                     </>
                   ) : st.k === 'ok' &&
@@ -801,6 +857,19 @@ export default function Requests() {
           );
         })}
       </div>
+      {editing && (
+        <RequestEditSheet
+          r={editing.r}
+          title={editing.title}
+          art={editing.art}
+          onClose={() => setEditing(null)}
+          onDone={(message) => {
+            setEditing(null);
+            toast(message);
+            setTick((t) => t + 1);
+          }}
+        />
+      )}
     </>
   );
 }

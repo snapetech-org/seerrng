@@ -1273,3 +1273,147 @@ test('downloads that have started show even when far down the history', async ({
   await expect(page.locator('.rq').first()).toContainText('Downloading 60%');
   await expect(page.locator('.rq').nth(1)).toContainText('Queued');
 });
+
+// ---- admin request actions: change, approve with options, retry, remove ----
+async function adminActionRoutes(page: Page, list: unknown[]) {
+  const calls: { method: string; path: string; body: unknown }[] = [];
+  await page.route('**/api/v1/request?*', (route) => {
+    const q = new URL(route.request().url()).searchParams;
+    const mine = q.has('requestedBy');
+    const results = !mine && q.get('filter') === 'pending' ? list : [];
+    return route.fulfill({ json: { pageInfo: { pages: 1 }, results } });
+  });
+  await page.route(/\/api\/v1\/request\/7\d(\/|$)/, (route) => {
+    const req = route.request();
+    calls.push({
+      method: req.method(),
+      path: new URL(req.url()).pathname.slice(7),
+      body: req.postDataJSON?.() ?? null,
+    });
+    return route.fulfill(
+      req.method() === 'DELETE' ? { status: 204, body: '' } : { json: {} }
+    );
+  });
+  await page.route('**/api/v1/user?*', (route) =>
+    route.fulfill({
+      json: {
+        results: [
+          { id: 1, displayName: 'fam' },
+          { id: 5, displayName: 'Sam' },
+        ],
+      },
+    })
+  );
+  return calls;
+}
+
+test('admins change a waiting request, then approve it', async ({ page }) => {
+  await fixtures(page, { permissions: 2 });
+  await requestRoutes(page);
+  const calls = await adminActionRoutes(page, [waitingRequest]);
+  await page.goto('/requests?tab=everyone');
+  const row = page.locator('.rq', { hasText: 'Only In 4K' });
+  await row.getByRole('button', { name: 'Change' }).click();
+  const sheet = page.getByRole('dialog', {
+    name: 'Change request for Only In 4K',
+  });
+  await expect(sheet.getByLabel('Request as')).toHaveValue('5');
+  await sheet.getByLabel('Server').selectOption('1');
+  await sheet.getByLabel('Folder').selectOption('/movies-kids');
+  await sheet.getByRole('button', { name: 'Approve' }).click();
+  await expect(sheet).toHaveCount(0);
+  await expect(page.getByText('Request approved')).toBeVisible();
+  expect(calls.map((c) => `${c.method} ${c.path}`)).toEqual([
+    'PUT /request/77',
+    'POST /request/77/approve',
+  ]);
+  expect(calls[0].body).toMatchObject({
+    mediaType: 'movie',
+    serverId: 1,
+    rootFolder: '/movies-kids',
+    userId: 5,
+  });
+});
+
+test('changing a series request picks its seasons', async ({ page }) => {
+  await fixtures(page, { permissions: 2 });
+  await requestRoutes(page);
+  const series = {
+    ...waitingRequest,
+    id: 79,
+    type: 'tv',
+    seasons: [{ seasonNumber: 1 }],
+    media: { mediaType: 'tv', tmdbId: 400, status: 2 },
+  };
+  const calls = await adminActionRoutes(page, [series]);
+  await page.route('**/api/v1/tv/400', (route) =>
+    route.fulfill({
+      json: {
+        id: 400,
+        name: 'Long Show',
+        seasons: [
+          { seasonNumber: 0, name: 'Specials', episodeCount: 3 },
+          { seasonNumber: 1, name: 'Season 1', episodeCount: 8 },
+          { seasonNumber: 2, name: 'Season 2', episodeCount: 8 },
+        ],
+      },
+    })
+  );
+  await page.route('**/api/v1/service/sonarr', (route) =>
+    route.fulfill({
+      json: [{ id: 0, name: 'Sonarr', is4k: false, isDefault: true }],
+    })
+  );
+  await page.route('**/api/v1/service/sonarr/0', (route) =>
+    route.fulfill({
+      json: {
+        profiles: [{ id: 1, name: 'HD' }],
+        rootFolders: [{ id: 1, path: '/tv' }],
+        server: { activeProfileId: 1, activeDirectory: '/tv' },
+      },
+    })
+  );
+  await page.goto('/requests?tab=everyone');
+  await page
+    .locator('.rq', { hasText: 'Long Show' })
+    .getByRole('button', { name: 'Change' })
+    .click();
+  const sheet = page.getByRole('dialog', {
+    name: 'Change request for Long Show',
+  });
+  const seasons = sheet.getByRole('group', { name: 'Seasons' });
+  await expect(seasons.getByRole('checkbox')).toHaveCount(2); // no Specials
+  await expect(
+    seasons.getByRole('checkbox', { name: /Season 1/ })
+  ).toHaveAttribute('aria-checked', 'true');
+  await seasons.getByRole('checkbox', { name: /Season 2/ }).click();
+  await expect(sheet.getByLabel('Folder')).toBeVisible();
+  await sheet.getByRole('button', { name: 'Save' }).click();
+  await expect(sheet).toHaveCount(0);
+  expect(calls.map((c) => `${c.method} ${c.path}`)).toEqual([
+    'PUT /request/79',
+  ]);
+  expect(calls[0].body).toMatchObject({ mediaType: 'tv', seasons: [1, 2] });
+});
+
+test('failed requests can be retried, and Remove asks once more', async ({
+  page,
+}) => {
+  await fixtures(page, { permissions: 2 });
+  await requestRoutes(page);
+  const failed = { ...waitingRequest, id: 78, status: 4 };
+  const calls = await adminActionRoutes(page, [failed]);
+  await page.goto('/requests?tab=everyone');
+  const row = page.locator('.rq', { hasText: 'Only In 4K' });
+  await expect(row.getByRole('button', { name: 'Approve' })).toHaveCount(0);
+  await row.getByRole('button', { name: 'Retry' }).click();
+  await expect(page.getByText('Request sent again')).toBeVisible();
+  await row.getByRole('button', { name: 'Remove' }).click();
+  expect(calls.some((c) => c.method === 'DELETE')).toBe(false);
+  await row.getByRole('button', { name: 'Remove for good?' }).click();
+  await expect(page.getByText('Request removed')).toBeVisible();
+  expect(calls.map((c) => `${c.method} ${c.path}`)).toEqual([
+    'POST /request/78/retry',
+    'DELETE /request/78',
+  ]);
+});
