@@ -179,6 +179,7 @@ jobs:
         run: node .ci-release-tooling/scripts/prepare-release-note-validation.mjs
 
       - name: Validate release-note fragment or explicit opt-out
+        if: inputs.pr_number != ''
         env:
           HEAD_SHA: ${{ inputs.pr_number != '' && inputs.pr_sha || github.sha }}
           BASE_SHA: ${{ steps.release-range.outputs.base_sha }}
@@ -190,6 +191,21 @@ jobs:
             --head "$HEAD_SHA" \
             --pr-body "$BODY_FILE" \
             --summary-file "$GITHUB_STEP_SUMMARY"
+          node .ci-release-tooling/scripts/check-changelog-tags.mjs
+
+      - name: Validate complete unpublished release notes
+        if: inputs.pr_number == ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+          HEAD_SHA: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+          previous_tag="$(.ci-release-tooling/scripts/latest-published-release-tag.sh)"
+          node .ci-release-tooling/scripts/assemble-release-notes.mjs \
+            --previous-tag "$previous_tag" \
+            --head "$HEAD_SHA" \
+            --changelog CHANGELOG.md \
+            --output "$RUNNER_TEMP/assembled-release-notes.md"
           node .ci-release-tooling/scripts/check-changelog-tags.mjs
 
   i18n-and-tooling:

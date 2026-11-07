@@ -6,9 +6,4 @@ action: none
 breaking: false
 ---
 
-# Search availability matches viewer access
-
-Search and discovery verify Plex, Jellyfin and Emby access before removing private
-server identifiers from responses. Accessible standard and 4K copies now agree
-with the title detail page; inaccessible copies remain unavailable, and private
-identifiers remain hidden.
+Search and discovery verify Plex, Jellyfin and Emby access before removing private server identifiers. Accessible standard and 4K copies agree with title details; inaccessible copies remain unavailable and private identifiers stay hidden.

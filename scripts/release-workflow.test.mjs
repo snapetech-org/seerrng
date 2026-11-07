@@ -886,6 +886,26 @@ test('main CI installs Node before running its alias-policy check', () => {
   assert.ok(nodeSetupIndex < aliasPolicyIndex);
 });
 
+test('main CI validates the full unpublished range with the release assembler', () => {
+  const validation = readWorkflow('ci.yml').jobs['release-notes'];
+  const fullRange = validation.steps.find(
+    (step) => step.name === 'Validate complete unpublished release notes'
+  );
+  assert.equal(fullRange.if, "inputs.pr_number == ''");
+  assert.match(fullRange.run, /latest-published-release-tag\.sh/u);
+  assert.match(fullRange.run, /assemble-release-notes\.mjs/u);
+  assert.match(fullRange.run, /--previous-tag "\$previous_tag"/u);
+  assert.match(fullRange.run, /--head "\$HEAD_SHA"/u);
+  assert.match(fullRange.run, /check-changelog-tags\.mjs/u);
+  assert.equal(
+    validation.steps.find(
+      (step) =>
+        step.name === 'Validate release-note fragment or explicit opt-out'
+    ).if,
+    "inputs.pr_number != ''"
+  );
+});
+
 test('manual container recovery promotes only the latest published release from main', () => {
   const workflow = readWorkflow('promote-container-aliases.yml');
   const promotion = workflow.jobs.promote;

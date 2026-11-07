@@ -9,7 +9,7 @@ v3.72.7 section consolidates changes from the requested v3.71.4 baseline
 through v3.72.7, including changes also represented by unpublished interim
 tags. The comparison link is the complete commit range.
 
-## [3.72.17](https://github.com/snapetech-org/seerrng/compare/v3.72.16..v3.72.17) - 2026-11-06
+## [3.72.18](https://github.com/snapetech-org/seerrng/compare/v3.72.16..v3.72.18) - 2026-11-06
 
 ### User-facing changes
 
@@ -20,7 +20,7 @@ tags. The comparison link is the complete commit range.
 - **Interface:** Phone request summaries give metadata the card width; search/manage controls wrap instead of covering request buttons. Music details and request dialogs show one readable track-list layout without empty columns.
 
 - **Discovery:** Restore Arabic carousel positions after Back navigation, accept empty public TMDB lists and enforce the provider's supported list-ID range.
-- **Library access:** Search and discovery agree with title details for viewer-accessible Plex, Jellyfin and Emby copies, including4K. Private server identifiers remain hidden and inaccessible copies remain unavailable.
+- **Library access:** Search and discovery agree with title details for viewer-accessible Plex, Jellyfin and Emby copies, including 4K. Private server identifiers remain hidden and inaccessible copies remain unavailable.
 
 - **Lumen:** Add family sign-in, branding/configuration export and quick-request destination options; repair stale responses, account-scoped category caches, malformed settings and book file evidence.
 - **Android:** Restore system Back, system-bar spacing and device dark mode, retain the selected page after recreation, and constrain native app handoff to safe browsable view intents.
@@ -31,6 +31,10 @@ tags. The comparison link is the complete commit range.
 - **Action after upgrading:** Rescan enabled book services to populate imported-file observations for legacy records. Migration does not infer files from manager IDs; independent Audiobookshelf/Plex items are preserved.
 - **Distribution:** Restore reviewed Compose, Cloudron and Co-op submission candidates from PR137 with pinned images, restricted runtime privileges and validated proxy origins. These templates are not a claim of marketplace publication or live platform acceptance.
 - **Maintenance:** Remove blind support-issue closing and disable stale auto-closure. Closed issues have public resolution receipts. Recover the pnpm setup update with the reviewed v6.1.1 bootstrap while retaining pnpm10.24.0.
+
+## [3.72.17](https://github.com/snapetech-org/seerrng/compare/v3.72.16..v3.72.17) - 2026-11-06
+
+Unpublished interim tag. Release-note validation stopped publication before artifacts were built. Superseded by v3.72.18; the tag remains unchanged.
 
 ## [3.72.16](https://github.com/snapetech-org/seerrng/compare/v3.72.15..v3.72.16) - 2026-11-06
 

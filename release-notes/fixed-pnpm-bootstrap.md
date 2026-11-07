@@ -1,6 +1,6 @@
 ---
 category: fixed
-audience: maintainers
+audience: operators
 area: ci
 action: none
 breaking: false
