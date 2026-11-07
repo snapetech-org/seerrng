@@ -109,6 +109,9 @@ jobs:
             :app:connectedDebugAndroidTest \
             :app:assembleDebug
 
+      - name: Capture candidate and published Android appearance
+        run: bash scripts/qa-android-appearance.sh "$RUNNER_TEMP/android-appearance"
+
       - name: Upload Android test reports
         if: always()
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
@@ -117,6 +120,7 @@ jobs:
           path: |
             android/app/build/reports/androidTests/connected/
             android/app/build/outputs/androidTest-results/connected/
+            ${{ runner.temp }}/android-appearance/
           if-no-files-found: ignore
 
       - name: Stop Android emulator
