@@ -128,3 +128,14 @@ existing valid explanations, added explicit receipts for PR509/293/120, and
 resolved PR224 separately with its full50-commit source reconciliation.
 PR224 is closed as superseded; its temporarily restored branch is deleted.
 Incoming PR592/593 are genuinely MERGED, rather than closed as ignored work.
+
+
+## Published integration verification
+
+All 416 merged PR merge commits were independently checked as ancestors of
+v3.72.20 source `110ce87378da7c0fccc615d5997f597faf163775`. The other 99 closed
+PRs have resolving public explanations, all freshly read back. PRs592/593 remain
+MERGED with contributor history preserved. The final GitHub sweep found no open
+PRs and only the main branch. See
+[release qualification](release-3.72.20-verification.md) for integrated tests,
+publication and the explicit limits of provider/device/security verification.

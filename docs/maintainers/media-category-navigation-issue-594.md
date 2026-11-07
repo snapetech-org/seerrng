@@ -35,3 +35,15 @@ to each link. No component, CSS, theme, geometry or provider integration changed
 Settings/public responses are read-only fixtures; no household service settings
 or provider actions were changed. This follow-up is newer than the immutable
 v3.72.19 source and must not be represented as included in that release.
+
+## Published qualification
+
+[v3.72.20](https://github.com/snapetech-org/seerrng/releases/tag/v3.72.20)
+published on November 7, 2026 UTC from `110ce87378da7c0fccc615d5997f597faf163775`.
+[Exact-source full CI](https://github.com/snapetech-org/seerrng/actions/runs/42333250272)
+and [release](https://github.com/snapetech-org/seerrng/actions/runs/42336823753)
+succeeded. The downloaded image passes the same 12 navigation states, visually
+inspected in both skins and viewports. The
+[final public receipt](https://github.com/snapetech-org/seerrng/issues/594#issuecomment-6702351013)
+was read back before closing as completed. See the
+[complete release qualification](release-3.72.20-verification.md).

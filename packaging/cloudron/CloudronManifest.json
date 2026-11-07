@@ -3,8 +3,8 @@
   "title": "SeerrNG",
   "description": "Self-hosted media requests and discovery for Plex, Jellyfin, and Emby across movies, TV, music, ebooks, and audiobooks.",
   "tagline": "Media requests and discovery across movies, TV, music, and books",
-  "version": "0.1.0",
-  "upstreamVersion": "v3.72.16",
+  "version": "0.1.1",
+  "upstreamVersion": "v3.72.20",
   "healthCheckPath": "/api/v1/status",
   "httpPort": 5055,
   "addons": {

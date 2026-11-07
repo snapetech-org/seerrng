@@ -4,13 +4,12 @@ All 73 repository issues were inventoried, including every closed issue. The
 audit checked the requested behavior against current source and the earlier
 behavioral verification records, then read back the public issue threads.
 
-- 72 issues are closed with a resolving explanation or fix reference.
+- 73 issues are closed with a resolving explanation or fix reference.
 - 36 missing or stale public explanations were added and read back.
 - 35 existing resolution explanations were retained.
 - Issue #409 was reopened for its availability defects, then resolved in v3.72.19
   after final CI, publication and downloaded-image verification.
-- New issue #594 has a verified fix in main and remains open pending v3.72.20
-  publication and actual-image checks.
+- Issue #594 is resolved in v3.72.20 after publication and actual-image checks.
 - The ten resolving pull requests referenced by the selected comments were
   independently confirmed merged, with their merge commits in `v3.72.15`.
   Explicit commit links and recorded source/test paths were also checked
@@ -34,9 +33,9 @@ links the commits, full CI, release, production-image proof and rescan action.
 [#594](https://github.com/snapetech-org/seerrng/issues/594) was reported during
 the final sweep. The shared navigation filter now applies category/service
 eligibility to Book Recommendations and Collector Picks. Its
-[main-source receipt](https://github.com/snapetech-org/seerrng/issues/594#issuecomment-6701643231)
-links the fix and matched production browser checks. It remains open until the
-replacement build is verified.
+[final receipt](https://github.com/snapetech-org/seerrng/issues/594#issuecomment-6702351013)
+links the fix, full CI, published replacement and actual-image browser checks.
+All 73 issues are now closed as completed; none is closed as not planned.
 
 ## Resolution Ledger
 
@@ -122,6 +121,8 @@ directive; it must not be restored merely to satisfy the original feature reques
 | [#511 — Audiobookshelf settings: "Test" fails with \`request/body/port must be number\` after editing the port](https://github.com/snapetech-org/seerrng/issues/511) | resolved | [Explanation and evidence](https://github.com/snapetech-org/seerrng/issues/511#issuecomment-6692994826) |
 | [#513 — Live Download Progress: qBittorrent 5.2 login rejected (expects 200 'Ok.' + SID cookie; 5.2 sends 204 + QBT\_SID\_&lt;port&gt;)](https://github.com/snapetech-org/seerrng/issues/513) | resolved | [Explanation and evidence](https://github.com/snapetech-org/seerrng/issues/513#issuecomment-6692993692) |
 
+| [#594 — Media categories filter not applying to menu](https://github.com/snapetech-org/seerrng/issues/594) | resolved in v3.72.20 | [Explanation and evidence](https://github.com/snapetech-org/seerrng/issues/594#issuecomment-6702351013) |
+
 ## Evidence and Update Rules
 
 The task evidence retains the live issue snapshot, complete public comment
@@ -142,8 +143,9 @@ If the claimed resolution is incomplete, reopen the issue instead of recording
 another unconditional completion statement.
 
 
-The final public-link check read all 72 closed issues again and verified every
-ledger resolution comment against the live thread. The 99 historically closed,
+The final public-link check read the 72 previously closed issues again and verified every
+ledger resolution comment against the live thread. The subsequent final #594
+receipt was also read back, bringing the verified total to 73. The 99 historically closed,
 unmerged PRs also have verified public receipts: 59 newly posted bodies match
 exact readbacks, 36 existing explanations remain intact and four additional
 source reconciliations are present. All 416 genuinely merged PRs have their

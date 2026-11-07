@@ -50,3 +50,27 @@ Co-op Cloud Swarm/Traefik deployment, and updating and sideloading the companion
 StartOS package remain platform acceptance work before marketplace publication.
 No marketplace submission, wishlist issue or email was sent. YunoHost remains
 retired under the owner's separate directive.
+
+## v3.72.20 candidate refresh
+
+The generic Compose, Cloudron and Co-op Cloud candidates now pin the verified
+v3.72.20 manifest, `sha256:d3ac93c938c80a46563f1091ad06b4b75c6f2b7e0b1f6cbcb055ad87f2f46804`.
+The Cloudron wrapper version advances to 0.1.1. Local qualification repeats:
+
+- Generic Compose upgrades the actual v3.72.16 fixture to v3.72.20, remains
+  healthy, preserves its SQLite canary, and retains it across restart.
+- Both adapters restart with a read-only root filesystem; the application runs
+  as UID/GID 1000 with zero effective capabilities. Cloudron bootstrap uses
+  CHOWN, DAC_OVERRIDE, SETUID and SETGID, then drops privileges. DAC_OVERRIDE
+  permits the root bootstrap to traverse the private 0700 data directory on
+  restart; it is not retained by the application.
+- Both isolated HTTPS proxies pass login with Secure/HttpOnly cookies, persisted
+  switching between both skins, and direct offline-utility recovery, before and
+  after restart. Four skin captures were inspected.
+- All 24 startup/origin tests pass. Compose and Stack configuration parsing pass;
+  Stack parsing is repeated with explicit sample deployment variables.
+
+New evidence is under the incoming-review deliverable directory recorded in
+[the v3.72.20 qualification](release-3.72.20-verification.md). The platform
+acceptance and marketplace exclusions above still apply; local Docker proxies
+do not establish a real Cloudron restore or Swarm/Traefik deployment.

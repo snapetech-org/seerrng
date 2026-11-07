@@ -1,6 +1,6 @@
 # Cloudron Community Package Candidate
 
-This adapter builds from the published v3.72.16 image pinned by digest. It is a
+This adapter builds from the published v3.72.20 image pinned by digest. It is a
 local package candidate, not an advertised marketplace release. No published
 `CloudronVersions.json` is provided until a built package has actually passed
 installation, update and backup/restore verification on Cloudron.

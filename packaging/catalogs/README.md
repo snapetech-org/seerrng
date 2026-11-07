@@ -1,6 +1,6 @@
 # Self-hosting Catalog Deployment
 
-The Compose contract pins the public, published v3.72.16 multi-architecture
+The Compose contract pins the public, published v3.72.20 multi-architecture
 image by digest. It needs no registry login and supports Linux amd64 and arm64.
 Future pin updates must use a published image and repeat runtime verification.
 

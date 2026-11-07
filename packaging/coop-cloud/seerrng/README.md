@@ -1,7 +1,7 @@
 # Co-op Cloud recipe draft
 
 This directory contains a local Co-op Cloud recipe draft for SeerrNG.
-It pins the published v3.72.16 public image by digest, Traefik for the web UI, and a named
+It pins the published v3.72.20 public image by digest, Traefik for the web UI, and a named
 volume for `/app/config`.
 
 The recipe is not yet in the canonical `coop-cloud/apps` collection. Submit a

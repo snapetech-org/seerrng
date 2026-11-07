@@ -133,3 +133,16 @@ separately fixed in adf421d79; public Plex audiobook evidence after private-key
 redaction is fixed in3d2bd573d. These later changes require final integrated-main
 qualification and release publication; the older CI/source checkpoints above
 are not a claim that v3.72.17 is already published.
+
+
+## Published integrated follow-up
+
+The later native availability, public evidence redaction, ABS audio-file and
+category navigation fixes are now included in the immutable v3.72.20 source
+`110ce87378da7c0fccc615d5997f597faf163775`. Full source CI and release publication
+succeeded. Downloaded-image browser, compiled scanner/SQLite and visual checks
+are recorded in [release qualification](release-3.72.20-verification.md).
+The final live sweep found zero open Dependabot, code-scanning or secret-scanning
+alerts, zero open PRs and zero open issues. CodeQL remains disabled by owner
+directive. These counts do not imply an exhaustive audit of every upstream
+project, provider, dependency transitive path, device or operating system.
