@@ -1,6 +1,6 @@
 import { Link, useSearchParams } from 'react-router-dom';
 import { bookMediaForFormat, MediaStatus, type BookResult } from '../api';
-import { BookCard, MoreOnScroll } from '../components/cards';
+import { BookCard, GridSkeleton, MoreOnScroll } from '../components/cards';
 import { Avatar } from '../components/Shell';
 import { useEbookCovers, usePaged } from '../hooks';
 import { Icon } from '../icons';
@@ -103,6 +103,11 @@ export default function Books({ format }: { format: 'ebook' | 'audiobook' }) {
                 : 'No books match this view.'}
             </div>
           )}
+        {list.loading && !items.length && list.page === 0 && (
+          <div style={{ marginTop: 16 }}>
+            <GridSkeleton sq={audio} className={`grid ${audio ? 'sqg' : ''}`} />
+          </div>
+        )}
         <div className={`grid ${audio ? 'sqg' : ''}`} style={{ marginTop: 16 }}>
           {items.map((b) => (
             <BookCard key={b.id} b={b} />

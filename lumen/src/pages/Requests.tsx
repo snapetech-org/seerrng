@@ -14,7 +14,8 @@ import {
 } from '../api';
 import { useAuth, useMediaServerName } from '../auth';
 import { shortDate } from '../components/cards';
-import { Pill } from '../components/detail';
+import { canChooseRequestOptions, Pill } from '../components/detail';
+import { RequestEditSheet } from '../components/requestEdit';
 import { Avatar } from '../components/Shell';
 import { useToast } from '../components/toast';
 import {
@@ -46,6 +47,16 @@ interface Row {
   unaired?: number[];
   airing?: boolean;
 }
+
+// Everyone tab: SeerrNG's request filters, and how many requests load at a time
+const EVERYONE_FILTERS = [
+  ['all', 'All', 'total'],
+  ['pending', 'Waiting', 'pending'],
+  ['processing', 'Downloading', 'processing'],
+  ['failed', 'Failed', 'failed'],
+  ['available', 'Available', 'available'],
+] as const;
+const PAGE = 20;
 
 // what a request looks like to the person who made it, in plain words
 // "00:03:03" -> "About 3 min left"
@@ -142,7 +153,13 @@ function state(
   if (downloading)
     return {
       k: 'dl',
-      word: pct != null ? `Downloading ${pct}%` : 'Downloading',
+      // nothing here yet: it's waiting its turn in the download client's queue
+      word:
+        pct === 0
+          ? 'Queued'
+          : pct != null
+            ? `Downloading ${pct}%`
+            : 'Downloading',
       ico: 'down',
       active: true,
       pct,
@@ -175,6 +192,38 @@ function state(
   }
   return { k: 'wait', word: 'Requested', ico: 'clock', active: true };
 }
+
+// How much of a request's download is here (0 to 1). Radarr and Sonarr call everything in the
+// download client's queue "downloading", so this is what tells a running download from a
+// queued one.
+function progress(r: RequestItem) {
+  const dls =
+    (r.is4k
+      ? r.media.downloadStatus4k
+      : r.bookFormat === 'audiobook'
+        ? r.media.audiobookDownloadStatus
+        : r.media.downloadStatus) || [];
+  const size = dls.reduce((a, d) => a + (d.size || 0), 0);
+  const left = dls.reduce((a, d) => a + (d.sizeLeft || 0), 0);
+  return size ? 1 - left / size : 0;
+}
+// Requests whose download has started, wherever they are in the history: a big queue pushes
+// the one that's actually downloading far past the newest requests. `query` narrows the list
+// (e.g. one person's requests). Two pages of SeerrNG's in-progress requests are plenty.
+async function startedDownloads(query = '') {
+  const page = (skip: number) =>
+    api<{ pageInfo?: { pages?: number }; results: RequestItem[] }>(
+      `/request?take=100&skip=${skip}&filter=processing&sort=added${query}`
+    );
+  const first = await page(0);
+  const more =
+    (first.pageInfo?.pages || 1) > 1 ? (await page(100)).results : [];
+  return first.results.concat(more).filter((r) => progress(r) > 0);
+}
+const merge = (...lists: RequestItem[][]) => {
+  const seen = new Set<number>();
+  return lists.flat().filter((r) => !seen.has(r.id) && !!seen.add(r.id));
+};
 
 // titles and artwork don't change, so each request is described once and kept on this device.
 // A lookup that failed for a passing reason isn't kept, so the next visit tries again.
@@ -473,13 +522,112 @@ export default function Requests() {
     setTick((t) => t + 1);
   });
   const extras = useExtras();
+  // admins and request managers also see everyone's requests, and approve or decline them
+  const manage = canChooseRequestOptions(user?.permissions);
+  const everyone = manage && tab === 'everyone';
+  const [others, setOthers] = useState<Row[] | null>(null);
+  const [othersError, setOthersError] = useState(false);
+  // SeerrNG's request counts, for the Everyone tab and its filters
+  const [counts, setCounts] = useState<Record<string, number> | null>(null);
+  const waiting = counts?.pending ?? null;
+  // Everyone: which requests (SeerrNG's own filters) and how many pages of them
+  const show = (EVERYONE_FILTERS.find(([v]) => v === p.get('show')) ||
+    EVERYONE_FILTERS[0])[0];
+  const [pages, setPages] = useState(1);
+  const [hasMore, setHasMore] = useState(false);
+  const [loadingMore, setLoadingMore] = useState(false);
+  useEffect(() => {
+    setPages(1);
+    setOthers(null);
+  }, [show, everyone]);
+  const [acting, setActing] = useState<number | null>(null);
+  const [editing, setEditing] = useState<Row | null>(null);
+  // Remove asks once more on the same button instead of a pop-up
+  const [removing, setRemoving] = useState<number | null>(null);
+  useEffect(() => {
+    if (removing == null) return;
+    const t = window.setTimeout(() => setRemoving(null), 4000);
+    return () => window.clearTimeout(t);
+  }, [removing]);
 
   useEffect(() => {
-    if (!user) return;
+    if (!manage) return;
     let live = true;
-    const media = api<{ results: RequestItem[] }>(
-      `/request?take=40&skip=0&filter=all&sort=added&requestedBy=${user.id}`
-    ).then((d) => describeAll(d.results));
+    api<Record<string, number>>('/request/count')
+      .then((d) => live && setCounts(d))
+      .catch(() => live && setCounts(null));
+    return () => {
+      live = false;
+    };
+  }, [manage, tick]);
+
+  useEffect(() => {
+    if (!everyone) return;
+    let live = true;
+    setOthersError(false);
+    // the newest `take` requests of one filter, in SeerrNG's pages of up to 100
+    const list = async (filter: string, take: number) => {
+      const out: RequestItem[] = [];
+      let total = 0;
+      for (let skip = 0; skip < take; skip += 100) {
+        const d = await api<{
+          pageInfo?: { results?: number };
+          results: RequestItem[];
+        }>(
+          `/request?take=${Math.min(100, take - skip)}&skip=${skip}&filter=${filter}&sort=added`
+        );
+        total = d.pageInfo?.results ?? 0;
+        out.push(...d.results);
+        if (d.results.length < Math.min(100, take - skip)) break;
+      }
+      return { results: out, more: total > take };
+    };
+    const take = PAGE * pages;
+    // All: waiting for approval, then downloads that have started (furthest along first), then
+    // the newest of the rest. Downloading: started ones first too. Others: newest first.
+    const started =
+      show === 'all' || show === 'processing'
+        ? startedDownloads()
+            .then((x) => x.sort((a, b) => progress(b) - progress(a)))
+            .catch(() => [])
+        : Promise.resolve([]);
+    const pending =
+      show === 'all'
+        ? list('pending', 50).then((x) => x.results)
+        : Promise.resolve([]);
+    Promise.all([pending, started, list(show, take)])
+      .then(async ([waitingList, startedList, rest]) => {
+        const rows = await describeAll(
+          merge(waitingList, startedList, rest.results)
+        );
+        if (!live) return;
+        setOthers(rows);
+        setHasMore(rest.more);
+      })
+      .catch(() => {
+        if (!live) return;
+        setOthers(null);
+        setOthersError(true);
+      })
+      .finally(() => {
+        if (!live) return;
+        setRefreshing(false);
+        setLoadingMore(false);
+      });
+    return () => {
+      live = false;
+    };
+  }, [everyone, show, pages, tick]);
+
+  useEffect(() => {
+    if (!user || everyone) return;
+    let live = true;
+    const media = Promise.all([
+      api<{ results: RequestItem[] }>(
+        `/request?take=40&skip=0&filter=all&sort=added&requestedBy=${user.id}`
+      ).then((d) => d.results),
+      startedDownloads(`&requestedBy=${user.id}`).catch(() => []),
+    ]).then(([recent, started]) => describeAll(merge(recent, started)));
     // game requests only when a games category is on (the endpoint refuses otherwise)
     const games = extras.games.length
       ? api<{ results: SoftwareRequest[] }>(
@@ -498,7 +646,7 @@ export default function Requests() {
     return () => {
       live = false;
     };
-  }, [user, tick, extras.games.length]);
+  }, [user, everyone, tick, extras.games.length]);
 
   // keep download percentages moving while anything is downloading
   const busy = (rows || []).some((x) => state(x, serverName).pct != null);
@@ -512,7 +660,38 @@ export default function Requests() {
   const ready = all.filter(
     (x) => state(x, serverName).k === 'ok' && !state(x, serverName).active
   );
-  const list = tab === 'ready' ? ready : tab === 'all' ? all : act;
+  const list = everyone
+    ? others || []
+    : tab === 'ready'
+      ? ready
+      : tab === 'all'
+        ? all
+        : act;
+  const shown = everyone ? others : rows;
+  const decide = async (
+    id: number,
+    how: 'approve' | 'decline' | 'retry' | 'remove'
+  ) => {
+    setActing(id);
+    setRemoving(null);
+    try {
+      if (how === 'remove') await api(`/request/${id}`, { method: 'DELETE' });
+      else await api(`/request/${id}/${how}`, { method: 'POST', body: '{}' });
+      toast(
+        {
+          approve: 'Request approved',
+          decline: 'Request declined',
+          retry: 'Request sent again',
+          remove: 'Request removed',
+        }[how]
+      );
+      setTick((t) => t + 1);
+    } catch (e) {
+      toast(e instanceof Error ? e.message : 'Couldn’t update the request');
+    } finally {
+      setActing(null);
+    }
+  };
   const cancel = async (id: number) => {
     try {
       // game requests (negative ids here) are withdrawn through their own endpoint
@@ -537,7 +716,13 @@ export default function Requests() {
           </div>
           <Avatar className="avatar ph-only-avatar" />
         </div>
-        <p className="sub">Everything you’ve asked for, newest first.</p>
+        <p className="sub">
+          {everyone
+            ? show === 'all'
+              ? 'Everyone’s requests: waiting ones first, then downloads, then the newest.'
+              : 'Everyone’s requests, newest first.'
+            : 'Everything you’ve asked for, newest first.'}
+        </p>
       </header>
       {/* pull-to-refresh pill: fixed, so it never shifts the page layout */}
       <div
@@ -560,6 +745,7 @@ export default function Requests() {
           ['active', 'Active', act.length],
           ['ready', 'Ready', ready.length],
           ['all', 'All', all.length],
+          ...(manage ? [['everyone', 'Everyone', waiting ?? '']] : []),
         ].map(([v, t, n]) => (
           <button
             key={v as string}
@@ -570,12 +756,65 @@ export default function Requests() {
               })
             }
           >
-            {t} <span className="n">{rows ? n : ''}</span>
+            {t}{' '}
+            <span className="n">
+              {v === 'everyone' ? n || '' : rows ? n : ''}
+            </span>
           </button>
         ))}
       </div>
-      {!rows && <p className="note">Loading your requests…</p>}
-      {rows && !list.length && (
+      {!shown && (!everyone || !othersError) && (
+        <p className="note">
+          {everyone ? 'Loading everyone’s requests…' : 'Loading your requests…'}
+        </p>
+      )}
+      {everyone && othersError && (
+        <div className="empty" role="alert">
+          <b>Couldn’t load requests</b>
+          <p>Try again to check everyone’s request history.</p>
+          <button
+            className="btn btn-tonal"
+            onClick={() => setTick((t) => t + 1)}
+          >
+            Retry
+          </button>
+        </div>
+      )}
+      {everyone && (
+        <div className="chips wrap" role="group" aria-label="Which requests">
+          {EVERYONE_FILTERS.map(([v, t, key]) => (
+            <button
+              key={v}
+              className="chip"
+              aria-pressed={show === v}
+              onClick={() =>
+                setP(
+                  v === 'all'
+                    ? { tab: 'everyone' }
+                    : { tab: 'everyone', show: v },
+                  {
+                    replace: true,
+                  }
+                )
+              }
+            >
+              {t}
+              {counts?.[key] != null && (
+                <span className="n">{counts[key]}</span>
+              )}
+            </button>
+          ))}
+        </div>
+      )}
+      {shown && !list.length && everyone && (
+        <div className="empty">
+          <b>{show === 'all' ? 'No requests yet' : 'Nothing here'}</b>
+          {show === 'all'
+            ? 'Nobody has asked for anything.'
+            : 'No requests match this filter right now.'}
+        </div>
+      )}
+      {shown && !list.length && !everyone && (
         <div className="empty">
           <b>{tab === 'ready' ? 'Nothing ready yet' : 'No active requests'}</b>
           Find something on{' '}
@@ -617,6 +856,9 @@ export default function Requests() {
                   <Link to={x.href}>{x.title}</Link>
                 </div>
                 <div className="sub">
+                  {everyone && x.r.requestedBy?.displayName
+                    ? `${x.r.requestedBy.displayName} · `
+                    : ''}
                   {x.sub} · {shortDate(x.r.createdAt.slice(0, 10))}
                 </div>
                 <div className="st">
@@ -626,9 +868,63 @@ export default function Requests() {
                   {st.detail && <span className="d">{st.detail}</span>}
                 </div>
                 <div className="rqa">
-                  {st.k === 'ok' &&
-                  x.r.type !== 'book' &&
-                  plexUrl(x.r.media, x.r.is4k) ? (
+                  {everyone ? (
+                    <>
+                      {x.r.status === 1 && (
+                        <>
+                          <button
+                            className="btn btn-sm btn-ok"
+                            disabled={acting === x.r.id}
+                            onClick={() => decide(x.r.id, 'approve')}
+                          >
+                            <Icon name="check" size="sm" />
+                            Approve
+                          </button>
+                          <button
+                            className="btn btn-sm btn-quiet"
+                            disabled={acting === x.r.id}
+                            onClick={() => decide(x.r.id, 'decline')}
+                          >
+                            <Icon name="x" size="sm" />
+                            Decline
+                          </button>
+                        </>
+                      )}
+                      {x.r.status === 4 && (
+                        <button
+                          className="btn btn-sm btn-tonal"
+                          disabled={acting === x.r.id}
+                          onClick={() => decide(x.r.id, 'retry')}
+                        >
+                          <Icon name="refresh" size="sm" />
+                          Retry
+                        </button>
+                      )}
+                      {(x.r.status === 1 || x.r.status === 4) &&
+                        (x.r.type === 'movie' || x.r.type === 'tv') && (
+                          <button
+                            className="btn btn-sm btn-quiet"
+                            disabled={acting === x.r.id}
+                            onClick={() => setEditing(x)}
+                          >
+                            Change
+                          </button>
+                        )}
+                      <button
+                        className="btn btn-sm btn-quiet"
+                        disabled={acting === x.r.id}
+                        onClick={() =>
+                          removing === x.r.id
+                            ? decide(x.r.id, 'remove')
+                            : setRemoving(x.r.id)
+                        }
+                      >
+                        {removing === x.r.id ? 'Remove for good?' : 'Remove'}
+                      </button>
+                    </>
+                  ) : st.k === 'ok' &&
+                    x.r.type !== 'book' &&
+                    plexUrl(x.r.media, x.r.is4k) ? (
                     <a
                       className="btn btn-sm btn-ok"
                       {...mediaLink(x.r.media, x.r.is4k, x.r.type, serverName)}
@@ -652,6 +948,33 @@ export default function Requests() {
           );
         })}
       </div>
+      {everyone && hasMore && shown && (
+        <div className="more-scroll">
+          <button
+            className="btn btn-tonal"
+            disabled={loadingMore}
+            onClick={() => {
+              setLoadingMore(true);
+              setPages((n) => n + 1);
+            }}
+          >
+            {loadingMore ? 'Loading…' : 'Show more'}
+          </button>
+        </div>
+      )}
+      {editing && (
+        <RequestEditSheet
+          r={editing.r}
+          title={editing.title}
+          art={editing.art}
+          onClose={() => setEditing(null)}
+          onDone={(message) => {
+            setEditing(null);
+            toast(message);
+            setTick((t) => t + 1);
+          }}
+        />
+      )}
     </>
   );
 }

@@ -50,9 +50,14 @@ services:
       - ALL
     security_opt:
       - no-new-privileges:true
-    # Optional admin defaults for every user (see lumen/public/lumen-config.example.json).
-    # Create the file first, then remove the # from the two lines below.
+    # Optional admin defaults for every user (You > Lumen settings for everyone).
+    # To save them from that page, create a folder Lumen may write to:
+    #   mkdir lumen-data && sudo chown 101:101 lumen-data
+    # then remove the # from "volumes:" and the lumen-data line below.
+    # Or write lumen-config.json yourself (see lumen/public/lumen-config.example.json),
+    # create it first, and uncomment the lumen-config.json line instead.
     # volumes:
+    #   - ./lumen-data:/lumen-data
     #   - ./lumen-config.json:/usr/share/nginx/html/lumen-config.json:ro
     #   - ./branding:/usr/share/nginx/html/branding:ro  # optional logo / tab icon
     restart: unless-stopped

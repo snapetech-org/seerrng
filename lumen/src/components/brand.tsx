@@ -7,7 +7,11 @@ export function BrandMark() {
   return (
     <>
       {s.logo ? (
-        <img className="mark mark-img" src={s.logo} alt="" />
+        <img
+          className={`mark mark-img mark-${s.logoShape}`}
+          src={s.logo}
+          alt=""
+        />
       ) : (
         <span className="mark">
           <Icon name="play" size="sm" />

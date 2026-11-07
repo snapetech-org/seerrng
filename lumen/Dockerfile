@@ -22,6 +22,12 @@ COPY deploy/05-lumen-env-aliases.envsh /docker-entrypoint.d/05-lumen-env-aliases
 COPY deploy/15-lumen-trusted-proxies.sh /docker-entrypoint.d/15-lumen-trusted-proxies.sh
 RUN chmod 755 /docker-entrypoint.d/05-lumen-env-aliases.envsh /docker-entrypoint.d/15-lumen-trusted-proxies.sh
 COPY --from=build /app/dist /usr/share/nginx/html
+# "Lumen settings for everyone" are saved by a small nginx script (njs, shipped with this
+# image) into /lumen-data: a folder the installer mounts, writable by user 101 (nginx). It is
+# deliberately not created here, so settings are never saved inside a container that an
+# update would replace. Without it the admin page offers lumen-config.json as a download.
+COPY deploy/lumen-config.js /etc/nginx/lumen/lumen-config.js
+RUN sed -i '1i load_module modules/ngx_http_js_module.so;' /etc/nginx/nginx.conf
 # The entrypoint renders only proxy configuration. Keep the static app read-only
 # while allowing the unprivileged master to write its config, cache and PID.
 RUN sed -i 's@/run/nginx.pid@/tmp/nginx.pid@' /etc/nginx/nginx.conf && \

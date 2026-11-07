@@ -339,13 +339,32 @@ and showing books at all. You can set the defaults, and lock any of them, with a
 `lumen-config.json` file. The same file sets the sign-in page, the logo and the
 browser tab icon.
 
-The easiest way to write it: sign in to Lumen as an admin, open **You → Lumen
-settings for everyone**, pick what you want, and press **Download
-lumen-config.json**. The page starts from the file you already have. Lumen is
-plain files with no database, so it can't save settings itself; you put the
-downloaded file in place as below.
+The easiest way: sign in to Lumen as an admin, open **You → Lumen settings for
+everyone**, pick what you want, and press **Save for everyone**. The page starts
+from the settings you already have. For the **Save** button, Lumen needs a folder
+it may write to:
 
-To set it up:
+1. Next to `compose.yaml`, create the folder and give it to Lumen's user (101):
+
+   ```sh
+   mkdir lumen-data && sudo chown 101:101 lumen-data
+   ```
+
+2. In `compose.yaml`, remove the `#` from `volumes:` and the `./lumen-data` line
+   under `lumen`, then run `docker compose up -d`.
+
+Only SeerrNG admins can save; Lumen checks with SeerrNG before writing. Settings
+saved this way win over a `lumen-config.json` mounted as below.
+
+With that folder, the page also has **Upload** buttons for the logo and the tab
+icon (PNG, JPEG, WebP, SVG or ICO, up to 2 MB). Lumen keeps the image in
+`lumen-data/branding` and fills in its address, so there's no branding folder to
+mount. Earlier uploads are retained because saved settings or another administrator's
+unsaved changes may still reference them; uploading a replacement does not delete
+the current logo before its settings are saved.
+
+Without that folder, the page offers **Download lumen-config.json** instead, and
+you put the file in place by hand:
 
 1. Save this as `lumen-config.json` next to `compose.yaml`, and change what you like:
 
@@ -357,8 +376,10 @@ To set it up:
      "branding": {
        "name": "Movie Night",
        "logo": "/branding/logo.png",
-       "icon": "/branding/icon.png"
+       "icon": "/branding/icon.png",
+       "logoShape": "rounded"
      },
+     "mediaServerName": "Movie Night Server",
      "defaults": {
        "narratorChoice": true,
        "hoverRequest": true,
@@ -382,6 +403,12 @@ To set it up:
      `logo` replaces the round play mark, and `icon` is the browser tab and iOS
      home-screen icon. Use files you mount into Lumen (step 2) or `https://`
      addresses.
+     `logoShape` frames the logo: `"rounded"` (a rounded square, the default),
+     `"circle"`, or `"raw"` (the file as it is: transparent, uncropped, and as
+     wide as it is).
+   - `mediaServerName` replaces "Plex", "Jellyfin" or "Emby" in every label,
+     filter and the sign-in page, for example `"On Movie Night Server"`. Leave it
+     out to keep the real name.
    - `requestOptions`: admins and request managers get a sheet to pick the
      Radarr/Sonarr server, quality and folder when they use **Request** on a
      poster. Set it to `false` for one-click requests for them too. Everyone else
@@ -389,7 +416,8 @@ To set it up:
    - Put setting names in `locked` to stop users changing them, for example
      `"locked": ["showBooks"]`.
 
-2. In `compose.yaml`, remove the `#` from the two `volumes:` lines under `lumen`.
+2. In `compose.yaml`, remove the `#` from `volumes:` and the `./lumen-config.json`
+   line under `lumen`.
    For your own logo and icon, put the images in a `branding` folder next to
    `compose.yaml` and also uncomment the `./branding` line.
 3. Run `docker compose up -d`.

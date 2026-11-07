@@ -180,6 +180,7 @@ export function AlbumDetail() {
     <ExtraGate k="music">
       <article className="detail">
         <DetailTop
+          status={s}
           backdrop={a.artistBackdrop}
           poster={a.posterPath}
           square

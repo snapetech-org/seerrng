@@ -128,6 +128,7 @@ test('branding and sign-in style come from lumen-config.json', async () => {
   assert.deepEqual(resolveSite(null, null), {
     name: 'SeerrNG',
     logo: undefined,
+    logoShape: 'rounded',
     icon: undefined,
     loginForm: false,
   });
@@ -166,4 +167,32 @@ test('branding and sign-in style come from lumen-config.json', async () => {
       undefined
     );
   assert.equal(resolveSite({ loginStyle: 'other' }, null).loginForm, false);
+  // how the logo is framed: rounded unless the admin picks circle or raw
+  for (const shape of ['rounded', 'circle', 'raw'])
+    assert.equal(
+      resolveSite({ branding: { logoShape: shape } }, null).logoShape,
+      shape
+    );
+  assert.equal(
+    resolveSite({ branding: { logoShape: 'hexagon' } }, null).logoShape,
+    'rounded'
+  );
+});
+
+test('admins can rename the media server in every label', () => {
+  const jf = resolveMediaServer('auto', { mediaServerType: 2 }, ' Tatsuflix ');
+  assert.equal(jf.name, 'Tatsuflix');
+  assert.equal(jf.product, 'Jellyfin');
+  assert.equal(jf.kind, 'jellyfin');
+  // empty, blank or not text: the real name
+  for (const bad of ['', '   ', 42, null, undefined])
+    assert.equal(
+      resolveMediaServer('auto', { mediaServerType: 2 }, bad).name,
+      'Jellyfin'
+    );
+  assert.equal(
+    resolveMediaServer('auto', { mediaServerType: 1 }, 'x'.repeat(80)).name
+      .length,
+    40
+  );
 });

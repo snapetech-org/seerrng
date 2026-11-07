@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
-  api,
   tmdbImg,
   type BookResult,
   type Genre,
@@ -21,27 +20,14 @@ import {
 } from '../components/cards';
 import { Avatar } from '../components/Shell';
 import { useExtras } from '../extras';
-import { useEbookCovers } from '../hooks';
+import { cached, isFresh, remember } from '../apiCache';
+import { cachedApi, useApi, useEbookCovers } from '../hooks';
+import { sessionGeneration } from '../sessionState';
 import { Icon, type IconName } from '../icons';
 import { usePrefs } from '../settings';
 
-// rows that are switched off (or have no service behind them) don't fetch anything:
-// every call counts against SeerrNG's per-account rate limit
-function useApi<T>(path: string | null) {
-  const [data, setData] = useState<T | null>(null);
-  const [error, setError] = useState(false);
-  useEffect(() => {
-    if (!path) return;
-    let live = true;
-    api<T>(path)
-      .then((d) => live && setData(d))
-      .catch(() => live && setError(true));
-    return () => {
-      live = false;
-    };
-  }, [path]);
-  return { data, error };
-}
+// Rows that are switched off (or have no service behind them) don't fetch anything, and
+// rows use saved answers (useApi): every call counts against SeerrNG's per-account rate limit.
 
 // Recently added media: SeerrNG lists recently added media by id, so look up each title's details
 // SeerrNG only lists recently added media for admins, request managers and people with
@@ -49,15 +35,22 @@ function useApi<T>(path: string | null) {
 const RECENT = 2 | 16 | 67108864; // ADMIN | MANAGE_REQUESTS | RECENT_VIEW
 export const canSeeRecent = (permissions?: number) =>
   ((permissions ?? 0) & RECENT) !== 0;
+type Fresh = (TitleResult & { added?: string })[];
+// the finished row is saved too, so coming back to Discover doesn't look up 14 titles again
+const NEW_ROW = '/lumen/new-on-server';
 function useNewOnPlex(enabled: boolean) {
-  const [items, setItems] = useState<
-    (TitleResult & { added?: string })[] | null
-  >(null);
+  const [items, setItems] = useState<Fresh | null>(
+    () => (enabled && cached<Fresh>(NEW_ROW)) || null
+  );
   useEffect(() => {
     if (!enabled) return;
+    const saved = cached<Fresh>(NEW_ROW);
+    if (saved) setItems(saved);
+    if (saved && isFresh(NEW_ROW)) return;
     let live = true;
+    const generation = sessionGeneration();
     (async () => {
-      const page = await api<{ results: MediaRow[] }>(
+      const page = await cachedApi<{ results: MediaRow[] }>(
         '/media?filter=allavailable&take=30&sort=mediaAdded'
       );
       const rows = page.results
@@ -67,7 +60,7 @@ function useNewOnPlex(enabled: boolean) {
         .slice(0, 14);
       const details = await Promise.all(
         rows.map((m) =>
-          api<TitleResult>(`/${m.mediaType}/${m.tmdbId}`)
+          cachedApi<TitleResult>(`/${m.mediaType}/${m.tmdbId}`)
             .then((d) => ({
               ...d,
               mediaType: m.mediaType as 'movie' | 'tv',
@@ -76,11 +69,10 @@ function useNewOnPlex(enabled: boolean) {
             .catch(() => null)
         )
       );
-      if (live)
-        setItems(
-          details.filter(Boolean) as (TitleResult & { added?: string })[]
-        );
-    })().catch(() => live && setItems([]));
+      const row = details.filter(Boolean) as Fresh;
+      if (generation === sessionGeneration()) remember(NEW_ROW, row);
+      if (live) setItems(row);
+    })().catch(() => live && !saved && setItems([]));
     return () => {
       live = false;
     };

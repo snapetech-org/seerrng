@@ -264,6 +264,7 @@ export function GameDetail() {
     <ExtraGate k="game">
       <article className="detail">
         <DetailTop
+          status={s}
           backdrop={g.screenshots?.[0]}
           poster={g.coverUrl}
           title={g.title}

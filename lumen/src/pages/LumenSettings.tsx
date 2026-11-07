@@ -4,7 +4,7 @@ import { useAuth } from '../auth';
 import { Section } from '../components/cards';
 import { useToast } from '../components/toast';
 import { Icon } from '../icons';
-import { mediaServer } from '../mediaServer';
+import { logoShapeOf, mediaServer, type LogoShape } from '../mediaServer';
 import {
   DEFAULT_PREFS,
   DISCOVER_ROWS,
@@ -14,9 +14,9 @@ import {
   type DiscoverRow,
 } from '../settings';
 
-// Admins choose what everyone gets. Lumen is static files with no database, so the
-// result is a lumen-config.json to download and mount next to the app; every browser
-// reads it on its next load.
+// Admins choose what everyone gets, saved as lumen-config.json; every browser reads it on its
+// next load. Lumen has no database: its nginx saves the file into a mounted /lumen-data folder
+// (deploy/lumen-config.js). Without that folder the file is downloaded and mounted by hand.
 const SWITCHES = [
   ['hoverRequest', 'Quick request on posters'],
   ['wholeSeriesDefault', 'Request whole series by default'],
@@ -28,7 +28,7 @@ type Switch = (typeof SWITCHES)[number][0];
 
 export default function LumenSettings() {
   const { user } = useAuth();
-  const { adminConfig } = usePrefs();
+  const { adminConfig, adminSaved } = usePrefs();
   const toast = useToast();
   const [cfg, setCfgState] = useState<AdminConfig>(() =>
     JSON.parse(JSON.stringify(adminConfig || {}))
@@ -45,6 +45,29 @@ export default function LumenSettings() {
     setCfgState(v);
   };
   const isAdmin = ((user?.permissions ?? 0) & 2) !== 0;
+  // can this server save the file itself? null while asking
+  const [saveState, setSaveState] = useState<{
+    canSave: boolean;
+    folder?: string;
+  } | null>(null);
+  const [saving, setSaving] = useState(false);
+  useEffect(() => {
+    if (!isAdmin) return;
+    let live = true;
+    fetch('/lumen/config', { cache: 'no-store', credentials: 'same-origin' })
+      .then((r) => (r.ok ? r.json() : null))
+      .then(
+        (d) =>
+          live &&
+          setSaveState(
+            d && typeof d.canSave === 'boolean' ? d : { canSave: false }
+          )
+      )
+      .catch(() => live && setSaveState({ canSave: false }));
+    return () => {
+      live = false;
+    };
+  }, [isAdmin]);
 
   const defaults = { ...DEFAULT_PREFS, ...(cfg.defaults || {}) };
   const rows = { ...DEFAULT_PREFS.rows, ...(cfg.defaults?.rows || {}) };
@@ -64,13 +87,16 @@ export default function LumenSettings() {
       else l.delete(path);
       return { ...c, locked: [...l] };
     });
-  const setBrand = (k: 'name' | 'logo' | 'icon', v: string) =>
+  const setBrand = (k: 'name' | 'logo' | 'icon' | 'logoShape', v: string) =>
     setCfg((c) => {
-      const b = { ...(c.branding || {}) };
-      if (v === '' && k !== 'name') delete b[k];
+      const b: Record<string, string> = { ...(c.branding || {}) };
+      // "rounded" is the default, so it needn't be written down
+      if ((v === '' && k !== 'name') || (k === 'logoShape' && v === 'rounded'))
+        delete b[k];
       else b[k] = v;
       return { ...c, branding: b };
     });
+  const shape = logoShapeOf(cfg.branding?.logoShape);
   const setTop = (k: string, v: string | undefined) =>
     setCfg((c) => {
       const n = { ...c };
@@ -90,6 +116,86 @@ export default function LumenSettings() {
     a.click();
     setTimeout(() => URL.revokeObjectURL(url), 1000);
   };
+  const putConfig = async (body: string) => {
+    const r = await fetch('/lumen/config', {
+      method: 'PUT',
+      credentials: 'same-origin',
+      headers: { 'Content-Type': 'application/json' },
+      body,
+    });
+    const d = await r.json().catch(() => null);
+    if (!r.ok) throw new Error(d?.message || `Couldn’t save (${r.status})`);
+  };
+  const save = async () => {
+    setSaving(true);
+    try {
+      await putConfig(json);
+      adminSaved(JSON.parse(json));
+      touched.current = false;
+      toast('Saved. Everyone gets it the next time they open Lumen.');
+    } catch (e) {
+      toast(e instanceof Error ? e.message : 'Couldn’t save');
+    } finally {
+      setSaving(false);
+    }
+  };
+  // Logo and tab icon: the server keeps the image (a new file name each time, so no browser
+  // shows an old copy) and its address goes straight into the saved settings. Other changes
+  // on this page stay unsaved until Save.
+  const [uploading, setUploading] = useState<'logo' | 'icon' | null>(null);
+  const upload = async (kind: 'logo' | 'icon', file: File) => {
+    if (file.size > 2 * 1024 * 1024) {
+      toast('Choose an image of up to 2 MB.');
+      return;
+    }
+    setUploading(kind);
+    try {
+      const r = await fetch(`/lumen/branding/${kind}`, {
+        method: 'PUT',
+        credentials: 'same-origin',
+        headers: { 'Content-Type': file.type || 'application/octet-stream' },
+        body: file,
+      });
+      const d = await r.json().catch(() => null);
+      if (!r.ok || typeof d?.url !== 'string')
+        throw new Error(d?.message || `Couldn’t upload (${r.status})`);
+      const saved: AdminConfig = {
+        ...adminConfig,
+        branding: { ...(adminConfig?.branding || {}), [kind]: d.url },
+      };
+      await putConfig(JSON.stringify(saved, null, 2) + '\n');
+      setCfgState((c) => ({
+        ...c,
+        branding: { ...(c.branding || {}), [kind]: d.url },
+      }));
+      adminSaved(saved);
+      toast(
+        `${kind === 'logo' ? 'Logo' : 'Tab icon'} uploaded and saved for everyone.`
+      );
+    } catch (e) {
+      toast(e instanceof Error ? e.message : 'Couldn’t upload');
+    } finally {
+      setUploading(null);
+    }
+  };
+  const Upload = ({ kind }: { kind: 'logo' | 'icon' }) =>
+    saveState?.canSave ? (
+      <label className="btn btn-tonal btn-sm cfg-upload">
+        {uploading === kind ? 'Uploading…' : 'Upload'}
+        <input
+          type="file"
+          className="sr"
+          accept="image/png,image/jpeg,image/webp,image/svg+xml,image/x-icon"
+          aria-label={kind === 'logo' ? 'Upload logo' : 'Upload tab icon'}
+          disabled={!!uploading}
+          onChange={(e) => {
+            const f = e.target.files?.[0];
+            e.target.value = '';
+            if (f) void upload(kind, f);
+          }}
+        />
+      </label>
+    ) : null;
   const copy = () =>
     navigator.clipboard
       ?.writeText(json)
@@ -161,11 +267,20 @@ export default function LumenSettings() {
           </div>
         </div>
         <p className="sub">
-          Pick what everyone gets, then download <b>lumen-config.json</b> and
-          put it next to Lumen (see “Admin defaults” in the Lumen guide). People
-          see the change the next time they open Lumen. “Always on” and “Always
-          off” can’t be changed on anyone’s You page; the others are just where
-          everyone starts.
+          {saveState?.canSave ? (
+            <>
+              Pick what everyone gets, then select <b>Save for everyone</b>.
+            </>
+          ) : (
+            <>
+              Pick what everyone gets, then download <b>lumen-config.json</b>{' '}
+              and put it next to Lumen (see “Admin defaults” in the Lumen
+              guide).
+            </>
+          )}{' '}
+          People see the change the next time they open Lumen. “Always on” and
+          “Always off” can’t be changed on anyone’s You page; the others are
+          just where everyone starts.
         </p>
       </header>
 
@@ -177,7 +292,7 @@ export default function LumenSettings() {
               <small>
                 Names in every label and the sign-in button. SeerrNG reports{' '}
                 {mediaServer().source === 'seerrng'
-                  ? mediaServer().name
+                  ? mediaServer().product
                   : 'its own server'}
                 .
               </small>
@@ -197,6 +312,21 @@ export default function LumenSettings() {
               <option value="jellyfin">Jellyfin</option>
               <option value="emby">Emby</option>
             </select>
+          </label>
+          <label className="set cfg-row">
+            <span>
+              <b>Media server name</b>
+              <small>
+                Replaces “{mediaServer().product}” everywhere: “On …”, “Watch on
+                …”, filters and sign-in. Leave empty to keep it.
+              </small>
+            </span>
+            <input
+              className="cfg-input"
+              placeholder={mediaServer().product}
+              value={(cfg.mediaServerName as string) || ''}
+              onChange={(e) => setTop('mediaServerName', e.target.value)}
+            />
           </label>
           <label className="set cfg-row">
             <span>
@@ -252,39 +382,81 @@ export default function LumenSettings() {
               onChange={(e) => setBrand('name', e.target.value)}
             />
           </label>
-          <label className="set cfg-row">
+          <div className="set cfg-row">
             <span>
               <b>Logo</b>
               <small>
-                Square image, e.g. /branding/logo.png (mount a branding folder)
-                or an https address
+                {saveState?.canSave
+                  ? 'Square image: upload one, or an address such as /branding/logo.png or https://…'
+                  : 'Square image, e.g. /branding/logo.png (mount a branding folder) or an https address'}
               </small>
             </span>
             <input
               className="cfg-input"
+              aria-label="Logo address"
               placeholder="/branding/logo.png"
               value={cfg.branding?.logo ?? ''}
               onChange={(e) => setBrand('logo', e.target.value)}
             />
-          </label>
-          <label className="set cfg-row">
+            <Upload kind="logo" />
+          </div>
+          <div className="set cfg-row">
             <span>
               <b>Tab icon</b>
-              <small>PNG or SVG, e.g. /branding/icon.png</small>
+              <small>
+                {saveState?.canSave
+                  ? 'Square PNG or SVG: upload one, or an address such as /branding/icon.png'
+                  : 'PNG or SVG, e.g. /branding/icon.png'}
+              </small>
             </span>
             <input
               className="cfg-input"
+              aria-label="Tab icon address"
               placeholder="/branding/icon.png"
               value={cfg.branding?.icon ?? ''}
               onChange={(e) => setBrand('icon', e.target.value)}
             />
-          </label>
+            {cfg.branding?.icon && (
+              <img className="cfg-icon" src={cfg.branding.icon} alt="" />
+            )}
+            <Upload kind="icon" />
+          </div>
+          <div className="set cfg-row">
+            <span>
+              <b>Logo shape</b>
+              <small>
+                How the logo is framed next to the name. “As uploaded” keeps the
+                file as it is: transparent, uncropped and as wide as it is.
+              </small>
+            </span>
+            <div className="seg" role="group" aria-label="Logo shape">
+              {(
+                [
+                  ['rounded', 'Rounded square'],
+                  ['circle', 'Circle'],
+                  ['raw', 'As uploaded'],
+                ] as [LogoShape, string][]
+              ).map(([v, t]) => (
+                <button
+                  key={v}
+                  type="button"
+                  aria-pressed={shape === v}
+                  onClick={() => setBrand('logoShape', v)}
+                >
+                  {t}
+                </button>
+              ))}
+            </div>
+          </div>
           {(cfg.branding?.logo || cfg.branding?.name !== undefined) && (
-            <div className="set">
-              <span className="brand cfg-preview">
+            <div className="set cfg-row">
+              <span>
+                <b>Preview</b>
+              </span>
+              <span className="brand cfg-preview" aria-label="Logo preview">
                 {cfg.branding?.logo ? (
                   <img
-                    className="mark mark-img"
+                    className={`mark mark-img mark-${shape}`}
                     src={cfg.branding.logo}
                     alt=""
                   />
@@ -338,13 +510,32 @@ export default function LumenSettings() {
 
       <Section title="lumen-config.json">
         <div className="cfg-actions">
-          <button className="btn btn-primary" onClick={download}>
+          {saveState?.canSave && (
+            <button
+              className="btn btn-primary"
+              onClick={save}
+              disabled={saving}
+            >
+              {saving ? 'Saving…' : 'Save for everyone'}
+            </button>
+          )}
+          <button
+            className={`btn ${saveState?.canSave ? 'btn-tonal' : 'btn-primary'}`}
+            onClick={download}
+          >
             Download lumen-config.json
           </button>
           <button className="btn btn-tonal" onClick={copy}>
             Copy
           </button>
         </div>
+        {saveState && !saveState.canSave && (
+          <p className="note">
+            {saveState.folder === 'readonly'
+              ? 'Lumen can’t write to its /lumen-data folder, so it can’t save this itself. Make the folder writable by user 101 (see “Admin defaults” in the Lumen guide).'
+              : 'To save from here instead of downloading, give Lumen a /lumen-data folder (see “Admin defaults” in the Lumen guide).'}
+          </p>
+        )}
         <textarea
           className="cfg-json"
           readOnly

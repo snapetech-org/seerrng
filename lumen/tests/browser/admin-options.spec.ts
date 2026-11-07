@@ -121,6 +121,33 @@ async function settleVisuals(page: Page) {
   });
 }
 
+test('Everyone reports a failed load and retries instead of claiming there are no requests', async ({
+  page,
+}, info) => {
+  await fixtures(page);
+  let failed = true;
+  await page.route('**/api/v1/request?*', (route) =>
+    route.fulfill({
+      status: failed ? 503 : 200,
+      json: failed
+        ? { message: 'Temporary request service failure' }
+        : { pageInfo: { pages: 1, results: 0 }, results: [] },
+    })
+  );
+  await page.goto('/requests?tab=everyone');
+  await expect(page.getByRole('alert')).toContainText('Couldn’t load requests');
+  await expect(
+    page.getByText('Nobody has asked for anything.', { exact: true })
+  ).toHaveCount(0);
+  await page.screenshot({ path: info.outputPath('everyone-load-failure.png') });
+  failed = false;
+  await page.getByRole('button', { name: 'Retry', exact: true }).click();
+  await expect(
+    page.getByText('No requests yet', { exact: true })
+  ).toBeVisible();
+  await expect(page.getByRole('alert')).toHaveCount(0);
+});
+
 for (const theme of ['light', 'dark'] as const) {
   test(`review settings, destination sheet and family sign-in in ${theme}`, async ({
     page,
@@ -965,4 +992,650 @@ test('a stale game page cannot overwrite loading or errors after a new search', 
   await expect(
     page.getByRole('button', { name: 'Retry', exact: true })
   ).toHaveCount(0);
+});
+
+test('Discover reuses saved rows when reopened, and asks again after a request', async ({
+  page,
+}) => {
+  const { posts } = await fixtures(page, { permissions: 32 });
+  const rowCalls = () =>
+    asked.filter(
+      (u) =>
+        new URL(u).pathname === '/api/v1/discover/movies' && !new URL(u).search
+    ).length;
+  const asked: string[] = [];
+  page.on('request', (r) => asked.push(r.url()));
+  await page.goto('/');
+  await expect(
+    page.getByRole('link', { name: 'Fresh Pick' }).first()
+  ).toBeVisible();
+  expect(rowCalls()).toBe(1);
+  await page.waitForTimeout(700); // saved after a short pause
+  // reopened (new page load): rows show from the saved copy, nothing asked again
+  await page.goto('/');
+  await expect(
+    page.getByRole('link', { name: 'Fresh Pick' }).first()
+  ).toBeVisible();
+  await page.waitForTimeout(500);
+  expect(rowCalls()).toBe(1);
+  // a request marks saved answers stale: the next visit asks again
+  await page.goto('/movies');
+  await quickRequest(page, 'Fresh Pick');
+  await expect
+    .poll(() => posts.filter((p) => p.path === '/request').length)
+    .toBe(1);
+  await page.waitForTimeout(700);
+  await page.goto('/');
+  await expect(
+    page.getByRole('link', { name: 'Fresh Pick' }).first()
+  ).toBeVisible();
+  await expect.poll(rowCalls).toBe(2);
+});
+
+test('signing out drops the saved answers', async ({ page }) => {
+  await fixtures(page);
+  await page.goto('/');
+  await expect(
+    page.getByRole('link', { name: 'Fresh Pick' }).first()
+  ).toBeVisible();
+  await page.waitForTimeout(700);
+  expect(
+    await page.evaluate(() => !!localStorage.getItem('lumen-cache:1'))
+  ).toBe(true);
+  await page.goto('/me');
+  await page.getByRole('button', { name: /Sign out/ }).click();
+  await expect
+    .poll(() => page.evaluate(() => localStorage.getItem('lumen-cache:1')))
+    .toBeNull();
+});
+
+// ---- tester feedback (Tatsu): requests from everyone, request as, library badge, saving ----
+const details301 = {
+  id: 301,
+  title: 'Only In 4K',
+  genres: [],
+  releaseDate: '2020-01-01',
+  posterPath: '/p301.png',
+  backdropPath: '/b301.png',
+  overview: 'A title for the tests.',
+  mediaInfo: { id: 1, status: 5 },
+};
+const waitingRequest = {
+  id: 77,
+  status: 1,
+  type: 'movie',
+  is4k: false,
+  createdAt: '2026-11-06T10:00:00.000Z',
+  seasons: [],
+  requestedBy: { id: 5, displayName: 'Sam' },
+  media: { mediaType: 'movie', tmdbId: 301, status: 2 },
+};
+async function requestRoutes(page: Page) {
+  const asked: string[] = [];
+  await page.route('**/api/v1/request**', async (route) => {
+    const req = route.request();
+    const url = new URL(req.url());
+    const path = url.pathname.slice(7);
+    if (req.method() !== 'GET') return route.fallback();
+    asked.push(path + url.search);
+    if (path === '/request/count')
+      return route.fulfill({ json: { total: 1, pending: 1 } });
+    if (path !== '/request') return route.fallback();
+    const mine = url.searchParams.has('requestedBy');
+    const pending = url.searchParams.get('filter') === 'pending';
+    return route.fulfill({
+      json: {
+        pageInfo: { pages: 1, results: 1 },
+        results: !mine && pending ? [waitingRequest] : [],
+      },
+    });
+  });
+  await page.route('**/api/v1/movie/301', (route) =>
+    route.fulfill({ json: details301 })
+  );
+  return asked;
+}
+
+test('admins see everyone’s requests and approve or decline them', async ({
+  page,
+}) => {
+  const { posts, errors } = await fixtures(page, { permissions: 2 });
+  await requestRoutes(page);
+  await page.route('**/api/v1/request/77/*', (route) => {
+    if (route.request().method() !== 'POST') return route.fallback();
+    posts.push({
+      path: new URL(route.request().url()).pathname.slice(7),
+      body: {},
+    });
+    return route.fulfill({ json: {} });
+  });
+  await page.goto('/requests');
+  const tab = page.getByRole('button', { name: /Everyone/ });
+  await expect(tab).toContainText('1');
+  await tab.click();
+  const row = page.locator('.rq', { hasText: 'Only In 4K' });
+  await expect(row).toContainText('Sam');
+  await expect(row).toContainText('Waiting for approval');
+  await row.getByRole('button', { name: 'Approve' }).click();
+  await expect
+    .poll(() => posts.map((p) => p.path))
+    .toContain('/request/77/approve');
+  await row.getByRole('button', { name: 'Decline' }).click();
+  await expect
+    .poll(() => posts.map((p) => p.path))
+    .toContain('/request/77/decline');
+  expect(errors).toEqual([]);
+});
+
+test('people who can’t manage requests get no Everyone tab', async ({
+  page,
+}) => {
+  await fixtures(page, { permissions: 32 }); // REQUEST only
+  const asked = await requestRoutes(page);
+  await page.goto('/requests?tab=everyone');
+  await expect(page.getByRole('button', { name: /^Active/ })).toBeVisible();
+  await expect(page.getByRole('button', { name: /Everyone/ })).toHaveCount(0);
+  await expect(page.locator('.rq', { hasText: 'Sam' })).toHaveCount(0);
+  expect(asked.some((a) => a.startsWith('/request/count'))).toBe(false);
+  expect(
+    asked.some((a) => a.startsWith('/request?') && !a.includes('requestedBy'))
+  ).toBe(false);
+});
+
+test('admins can request on someone else’s behalf', async ({ page }) => {
+  const { posts } = await fixtures(page, { permissions: 2 });
+  await page.route('**/api/v1/user?*', (route) =>
+    route.fulfill({
+      json: {
+        pageInfo: { pages: 1, results: 2 },
+        results: [
+          { id: 1, displayName: 'fam' },
+          { id: 5, displayName: 'Sam' },
+        ],
+      },
+    })
+  );
+  await page.goto('/movies');
+  await quickRequest(page, 'Fresh Pick');
+  const sheet = page.getByRole('dialog', { name: 'Request Fresh Pick' });
+  const who = sheet.getByLabel('Request as');
+  await expect(who).toHaveValue('1');
+  await expect(who.locator('option')).toHaveText(['Me (fam)', 'Sam']);
+  await who.selectOption('5');
+  await expect(sheet.getByLabel('Folder')).toBeVisible();
+  await sheet.getByRole('button', { name: 'Request', exact: true }).click();
+  await expect(sheet).toHaveCount(0);
+  expect(posts.find((p) => p.path === '/request')?.body).toMatchObject({
+    mediaType: 'movie',
+    mediaId: 302,
+    userId: 5,
+  });
+});
+
+test('request managers without Manage Users get no Request as', async ({
+  page,
+}) => {
+  const asked: string[] = [];
+  await fixtures(page, { permissions: 16 }); // MANAGE_REQUESTS only
+  await page.route('**/api/v1/user?*', (route) => {
+    asked.push(route.request().url());
+    return route.fulfill({
+      json: { results: [{ id: 5, displayName: 'Sam' }] },
+    });
+  });
+  await page.goto('/movies');
+  await quickRequest(page, 'Fresh Pick');
+  const sheet = page.getByRole('dialog', { name: 'Request Fresh Pick' });
+  await expect(sheet.getByLabel('Folder')).toBeVisible();
+  await expect(sheet.getByLabel('Request as')).toHaveCount(0);
+  expect(asked).toEqual([]);
+});
+
+test('a title in the library shows the check on its page too', async ({
+  page,
+}) => {
+  await fixtures(page);
+  await requestRoutes(page);
+  await page.goto('/movie/301');
+  await expect(page.locator('.dposter .glyph.ok')).toBeVisible();
+  await page.route('**/api/v1/movie/301', (route) =>
+    route.fulfill({ json: { ...details301, mediaInfo: undefined } })
+  );
+  await page.evaluate(() => localStorage.clear());
+  await page.reload();
+  await expect(page.locator('.dtitle h1')).toHaveText('Only In 4K');
+  await expect(page.locator('.dposter .glyph')).toHaveCount(0);
+});
+
+test('admin settings page saves for everyone when the server can', async ({
+  page,
+}) => {
+  await fixtures(page, { permissions: 2, config: { custom: 1 } });
+  const saved: { body: string; type: string }[] = [];
+  await page.route('**/lumen/config', (route) => {
+    const req = route.request();
+    if (req.method() === 'PUT') {
+      saved.push({
+        body: req.postData() || '',
+        type: req.headers()['content-type'] || '',
+      });
+      return route.fulfill({ json: { saved: true } });
+    }
+    return route.fulfill({ json: { canSave: true, folder: 'ok' } });
+  });
+  await page.goto('/me/lumen');
+  const row = page.locator('.cfg-row', {
+    hasText: 'Show books and audiobooks',
+  });
+  await expect(row.locator('select')).toHaveValue('on');
+  await row.locator('select').selectOption('off-locked');
+  await page.getByRole('button', { name: 'Save for everyone' }).click();
+  await expect(page.getByText(/^Saved\./)).toBeVisible();
+  expect(saved).toHaveLength(1);
+  expect(saved[0].type).toBe('application/json');
+  expect(JSON.parse(saved[0].body)).toEqual({
+    custom: 1,
+    defaults: { showBooks: false },
+    locked: ['showBooks'],
+  });
+  // the download stays as a backup
+  await expect(
+    page.getByRole('button', { name: 'Download lumen-config.json' })
+  ).toBeVisible();
+});
+
+test('admin settings page explains a folder it can’t write', async ({
+  page,
+}) => {
+  await fixtures(page, { permissions: 2 });
+  await page.route('**/lumen/config', (route) =>
+    route.fulfill({ json: { canSave: false, folder: 'readonly' } })
+  );
+  await page.goto('/me/lumen');
+  await expect(
+    page.getByRole('button', { name: 'Download lumen-config.json' })
+  ).toBeVisible();
+  await expect(
+    page.getByRole('button', { name: 'Save for everyone' })
+  ).toHaveCount(0);
+  await expect(page.getByText(/can’t write to its \/lumen-data/)).toBeVisible();
+});
+
+test('downloads that have started show even when far down the history', async ({
+  page,
+}) => {
+  await fixtures(page, { permissions: 2 });
+  await requestRoutes(page);
+  const download = (sizeLeft: number) => ({
+    ...waitingRequest,
+    status: 2,
+    requestedBy: { id: 1, displayName: 'fam' },
+    media: {
+      ...waitingRequest.media,
+      status: 3,
+      downloadStatus: [{ size: 100, sizeLeft, timeLeft: '00:03:00' }],
+    },
+  });
+  // newest requests: one queued download; the running one is only in the in-progress list
+  await page.route('**/api/v1/request?*', (route) => {
+    const q = new URL(route.request().url()).searchParams;
+    const filter = q.get('filter');
+    const results =
+      filter === 'processing'
+        ? [
+            { ...download(100), id: 80 },
+            { ...download(40), id: 81 },
+          ]
+        : filter === 'all'
+          ? [{ ...download(100), id: 80 }]
+          : [];
+    return route.fulfill({ json: { pageInfo: { pages: 1 }, results } });
+  });
+  await page.goto('/requests');
+  await expect(page.locator('.rq')).toHaveCount(2);
+  await expect(page.locator('.rq').getByText('Downloading 60%')).toBeVisible();
+  await expect(page.locator('.rq').getByText('Queued')).toBeVisible();
+  await page.getByRole('button', { name: /Everyone/ }).click();
+  await expect(page.locator('.rq')).toHaveCount(2);
+  await expect(page.locator('.rq').first()).toContainText('Downloading 60%');
+  await expect(page.locator('.rq').nth(1)).toContainText('Queued');
+});
+
+// ---- admin request actions: change, approve with options, retry, remove ----
+async function adminActionRoutes(page: Page, list: unknown[]) {
+  const calls: { method: string; path: string; body: unknown }[] = [];
+  await page.route('**/api/v1/request?*', (route) => {
+    const q = new URL(route.request().url()).searchParams;
+    const mine = q.has('requestedBy');
+    const results = !mine && q.get('filter') === 'pending' ? list : [];
+    return route.fulfill({ json: { pageInfo: { pages: 1 }, results } });
+  });
+  await page.route(/\/api\/v1\/request\/7\d(\/|$)/, (route) => {
+    const req = route.request();
+    calls.push({
+      method: req.method(),
+      path: new URL(req.url()).pathname.slice(7),
+      body: req.postDataJSON?.() ?? null,
+    });
+    return route.fulfill(
+      req.method() === 'DELETE' ? { status: 204, body: '' } : { json: {} }
+    );
+  });
+  await page.route('**/api/v1/user?*', (route) =>
+    route.fulfill({
+      json: {
+        results: [
+          { id: 1, displayName: 'fam' },
+          { id: 5, displayName: 'Sam' },
+        ],
+      },
+    })
+  );
+  return calls;
+}
+
+test('admins change a waiting request, then approve it', async ({ page }) => {
+  await fixtures(page, { permissions: 2 });
+  await requestRoutes(page);
+  const calls = await adminActionRoutes(page, [waitingRequest]);
+  await page.goto('/requests?tab=everyone');
+  const row = page.locator('.rq', { hasText: 'Only In 4K' });
+  await row.getByRole('button', { name: 'Change' }).click();
+  const sheet = page.getByRole('dialog', {
+    name: 'Change request for Only In 4K',
+  });
+  await expect(sheet.getByLabel('Request as')).toHaveValue('5');
+  await sheet.getByLabel('Server').selectOption('1');
+  await sheet.getByLabel('Folder').selectOption('/movies-kids');
+  await sheet.getByRole('button', { name: 'Approve' }).click();
+  await expect(sheet).toHaveCount(0);
+  await expect(page.getByText('Request approved')).toBeVisible();
+  expect(calls.map((c) => `${c.method} ${c.path}`)).toEqual([
+    'PUT /request/77',
+    'POST /request/77/approve',
+  ]);
+  expect(calls[0].body).toMatchObject({
+    mediaType: 'movie',
+    serverId: 1,
+    rootFolder: '/movies-kids',
+    userId: 5,
+  });
+});
+
+test('changing a series request picks its seasons', async ({ page }) => {
+  await fixtures(page, { permissions: 2 });
+  await requestRoutes(page);
+  const series = {
+    ...waitingRequest,
+    id: 79,
+    type: 'tv',
+    seasons: [{ seasonNumber: 1 }],
+    media: { mediaType: 'tv', tmdbId: 400, status: 2 },
+  };
+  const calls = await adminActionRoutes(page, [series]);
+  await page.route('**/api/v1/tv/400', (route) =>
+    route.fulfill({
+      json: {
+        id: 400,
+        name: 'Long Show',
+        seasons: [
+          { seasonNumber: 0, name: 'Specials', episodeCount: 3 },
+          { seasonNumber: 1, name: 'Season 1', episodeCount: 8 },
+          { seasonNumber: 2, name: 'Season 2', episodeCount: 8 },
+        ],
+      },
+    })
+  );
+  await page.route('**/api/v1/service/sonarr', (route) =>
+    route.fulfill({
+      json: [{ id: 0, name: 'Sonarr', is4k: false, isDefault: true }],
+    })
+  );
+  await page.route('**/api/v1/service/sonarr/0', (route) =>
+    route.fulfill({
+      json: {
+        profiles: [{ id: 1, name: 'HD' }],
+        rootFolders: [{ id: 1, path: '/tv' }],
+        server: { activeProfileId: 1, activeDirectory: '/tv' },
+      },
+    })
+  );
+  await page.goto('/requests?tab=everyone');
+  await page
+    .locator('.rq', { hasText: 'Long Show' })
+    .getByRole('button', { name: 'Change' })
+    .click();
+  const sheet = page.getByRole('dialog', {
+    name: 'Change request for Long Show',
+  });
+  const seasons = sheet.getByRole('group', { name: 'Seasons' });
+  await expect(seasons.getByRole('checkbox')).toHaveCount(2); // no Specials
+  await expect(
+    seasons.getByRole('checkbox', { name: /Season 1/ })
+  ).toHaveAttribute('aria-checked', 'true');
+  await seasons.getByRole('checkbox', { name: /Season 2/ }).click();
+  await expect(sheet.getByLabel('Folder')).toBeVisible();
+  await sheet.getByRole('button', { name: 'Save' }).click();
+  await expect(sheet).toHaveCount(0);
+  expect(calls.map((c) => `${c.method} ${c.path}`)).toEqual([
+    'PUT /request/79',
+  ]);
+  expect(calls[0].body).toMatchObject({ mediaType: 'tv', seasons: [1, 2] });
+});
+
+test('failed requests can be retried, and Remove asks once more', async ({
+  page,
+}) => {
+  await fixtures(page, { permissions: 2 });
+  await requestRoutes(page);
+  const failed = { ...waitingRequest, id: 78, status: 4 };
+  const calls = await adminActionRoutes(page, [failed]);
+  await page.goto('/requests?tab=everyone');
+  const row = page.locator('.rq', { hasText: 'Only In 4K' });
+  await expect(row.getByRole('button', { name: 'Approve' })).toHaveCount(0);
+  await row.getByRole('button', { name: 'Retry' }).click();
+  await expect(page.getByText('Request sent again')).toBeVisible();
+  await row.getByRole('button', { name: 'Remove' }).click();
+  expect(calls.some((c) => c.method === 'DELETE')).toBe(false);
+  await row.getByRole('button', { name: 'Remove for good?' }).click();
+  await expect(page.getByText('Request removed')).toBeVisible();
+  expect(calls.map((c) => `${c.method} ${c.path}`)).toEqual([
+    'POST /request/78/retry',
+    'DELETE /request/78',
+  ]);
+});
+
+test('admins upload a logo, and only the logo is saved straight away', async ({
+  page,
+}) => {
+  await fixtures(page, {
+    permissions: 2,
+    config: { custom: 1, branding: { name: 'Movie Night' } },
+  });
+  const puts: { path: string; body: string; type: string }[] = [];
+  await page.route('**/lumen/config', (route) => {
+    const req = route.request();
+    if (req.method() !== 'PUT')
+      return route.fulfill({ json: { canSave: true, folder: 'ok' } });
+    puts.push({ path: 'config', body: req.postData() || '', type: '' });
+    return route.fulfill({ json: { saved: true } });
+  });
+  await page.route('**/lumen/branding/*', (route) => {
+    const req = route.request();
+    puts.push({
+      path: new URL(req.url()).pathname,
+      body: String(req.postDataBuffer()?.length || 0),
+      type: req.headers()['content-type'] || '',
+    });
+    return route.fulfill({ json: { url: '/branding/logo-123.png' } });
+  });
+  await page.goto('/me/lumen');
+  // an unsaved change elsewhere must not be saved by the upload
+  const row = page.locator('.cfg-row', {
+    hasText: 'Show books and audiobooks',
+  });
+  await row.locator('select').selectOption('off-locked');
+  const png = Buffer.from(
+    'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==',
+    'base64'
+  );
+  await page
+    .getByLabel('Upload logo')
+    .setInputFiles({ name: 'logo.png', mimeType: 'image/png', buffer: png });
+  await expect(
+    page.getByText('Logo uploaded and saved for everyone.')
+  ).toBeVisible();
+  expect(puts.map((p) => p.path)).toEqual(['/lumen/branding/logo', 'config']);
+  expect(puts[0].type).toBe('image/png');
+  expect(JSON.parse(puts[1].body)).toEqual({
+    custom: 1,
+    branding: { name: 'Movie Night', logo: '/branding/logo-123.png' },
+  });
+  await expect(page.getByLabel('Logo address')).toHaveValue(
+    '/branding/logo-123.png'
+  );
+  // the page still holds the unsaved change for Save
+  await expect(row.locator('select')).toHaveValue('off-locked');
+});
+
+test('no upload buttons when the server can’t keep files', async ({ page }) => {
+  await fixtures(page, { permissions: 2 });
+  await page.route('**/lumen/config', (route) =>
+    route.fulfill({ json: { canSave: false, folder: 'missing' } })
+  );
+  await page.goto('/me/lumen');
+  await expect(page.getByLabel('Logo address')).toBeVisible();
+  await expect(page.getByLabel('Upload logo')).toHaveCount(0);
+  await expect(page.getByLabel('Upload tab icon')).toHaveCount(0);
+});
+
+test('admins rename the media server everywhere', async ({ page }) => {
+  await fixtures(page, { config: { mediaServerName: 'Tatsuflix' } });
+  await page.goto('/movies');
+  await expect(
+    page.getByRole('button', { name: 'On Tatsuflix', exact: true })
+  ).toBeVisible();
+  await expect(page.getByText(/Jellyfin/)).toHaveCount(0);
+});
+
+for (const [shape, radius, width] of [
+  ['rounded', '9px', 30],
+  ['circle', '50%', 30],
+  ['raw', '0px', null],
+] as const)
+  test(`logo shape "${shape}" frames the logo the same everywhere`, async ({
+    page,
+  }) => {
+    await fixtures(page, {
+      signedIn: false,
+      config: {
+        branding: {
+          name: 'Requests',
+          logo: '/branding/wide.svg',
+          ...(shape === 'rounded' ? {} : { logoShape: shape }),
+        },
+      },
+    });
+    await page.route('**/branding/wide.svg', (route) =>
+      route.fulfill({
+        contentType: 'image/svg+xml',
+        body: '<svg xmlns="http://www.w3.org/2000/svg" width="120" height="40"><rect width="120" height="40" fill="#0af"/></svg>',
+      })
+    );
+    await page.goto('/');
+    const logo = page.locator('.login-card .brand img.mark');
+    await expect(logo).toBeVisible();
+    const look = await logo.evaluate((el) => {
+      const cs = getComputedStyle(el);
+      return {
+        radius: cs.borderTopLeftRadius,
+        bg: cs.backgroundColor,
+        width: el.getBoundingClientRect().width,
+      };
+    });
+    // the sign-in card's accent square must not show behind a custom logo
+    expect(look.bg).toBe('rgba(0, 0, 0, 0)');
+    if (shape === 'circle') expect(look.radius).not.toBe('9px');
+    else expect(look.radius).toBe(radius);
+    if (width) expect(Math.round(look.width)).toBe(width);
+    else expect(look.width).toBeGreaterThan(60); // a wide logo keeps its width
+  });
+
+test('admin page picks the logo shape with a live preview', async ({
+  page,
+}) => {
+  await fixtures(page, {
+    permissions: 2,
+    config: { branding: { name: 'Requests', logo: '/branding/logo.png' } },
+  });
+  await page.goto('/me/lumen');
+  const preview = page.getByLabel('Logo preview').locator('img');
+  await expect(preview).toHaveClass(/mark-rounded/);
+  const shapes = page.getByRole('group', { name: 'Logo shape' });
+  await expect(
+    shapes.getByRole('button', { name: 'Rounded square' })
+  ).toHaveAttribute('aria-pressed', 'true');
+  await shapes.getByRole('button', { name: 'As uploaded' }).click();
+  await expect(preview).toHaveClass(/mark-raw/);
+  await shapes.getByRole('button', { name: 'Circle' }).click();
+  await expect(preview).toHaveClass(/mark-circle/);
+  await page.getByPlaceholder('Jellyfin').fill('Tatsuflix');
+  const json = JSON.parse(
+    await page.getByLabel('lumen-config.json').inputValue()
+  );
+  expect(json).toMatchObject({
+    branding: { logoShape: 'circle' },
+    mediaServerName: 'Tatsuflix',
+  });
+  // back to the default: nothing written
+  await shapes.getByRole('button', { name: 'Rounded square' }).click();
+  expect(
+    JSON.parse(await page.getByLabel('lumen-config.json').inputValue()).branding
+  ).toEqual({ name: 'Requests', logo: '/branding/logo.png' });
+});
+
+test('Everyone shows more on request and filters by status', async ({
+  page,
+}) => {
+  await fixtures(page, { permissions: 2 });
+  await requestRoutes(page);
+  const asked: string[] = [];
+  const many = Array.from({ length: 45 }, (_, i) => ({
+    ...waitingRequest,
+    id: 100 + i,
+    status: 2,
+    createdAt: `2026-11-0${(i % 9) + 1}T10:00:00.000Z`,
+  }));
+  await page.route('**/api/v1/request?*', (route) => {
+    const q = new URL(route.request().url()).searchParams;
+    asked.push(`${q.get('filter')}:${q.get('skip')}:${q.get('take')}`);
+    if (q.has('requestedBy') || q.get('filter') !== 'all')
+      return route.fulfill({
+        json: { pageInfo: { pages: 1, results: 0 }, results: [] },
+      });
+    const skip = Number(q.get('skip'));
+    const take = Number(q.get('take'));
+    return route.fulfill({
+      json: {
+        pageInfo: { pages: 1, results: many.length },
+        results: many.slice(skip, skip + take),
+      },
+    });
+  });
+  await page.goto('/requests?tab=everyone');
+  await expect(page.locator('.rq')).toHaveCount(20);
+  await page.getByRole('button', { name: 'Show more' }).click();
+  await expect(page.locator('.rq')).toHaveCount(40);
+  await page.getByRole('button', { name: 'Show more' }).click();
+  await expect(page.locator('.rq')).toHaveCount(45);
+  await expect(page.getByRole('button', { name: 'Show more' })).toHaveCount(0);
+  // filters use SeerrNG's own, with its counts
+  const filters = page.getByRole('group', { name: 'Which requests' });
+  await expect(filters.getByRole('button', { name: /Waiting/ })).toContainText(
+    '1'
+  );
+  await filters.getByRole('button', { name: /Failed/ }).click();
+  await expect(page).toHaveURL(/show=failed/);
+  await expect(page.getByText('Nothing here')).toBeVisible();
+  expect(asked).toContain('failed:0:20');
 });

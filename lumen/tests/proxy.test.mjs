@@ -14,15 +14,22 @@ let imageBuilt = false;
 let extraCalls = 0;
 const echo = createServer((req, res) => {
   if (req.url === '/api/v1/auth/me') {
-    res.statusCode =
-      req.headers.cookie === 'fixture-session=valid'
-        ? 200
-        : req.headers.cookie === 'fixture-session=forbidden'
-          ? 403
-          : req.headers.cookie === 'fixture-session=unavailable'
-            ? 503
-            : 401;
-    res.end();
+    res.statusCode = [
+      'fixture-session=valid',
+      'fixture-session=family',
+    ].includes(req.headers.cookie)
+      ? 200
+      : req.headers.cookie === 'fixture-session=forbidden'
+        ? 403
+        : req.headers.cookie === 'fixture-session=unavailable'
+          ? 503
+          : 401;
+    res.setHeader('content-type', 'application/json');
+    res.end(
+      JSON.stringify({
+        permissions: req.headers.cookie === 'fixture-session=valid' ? 2 : 32,
+      })
+    );
     return;
   }
   if (req.url.startsWith('/seerr-classic/')) extraCalls += 1;
@@ -279,6 +286,126 @@ test('companion reads and narration writes require a current SeerrNG session', a
       body: JSON.stringify({ bookId: 1, editionId: 2 }),
     });
     assert.equal(extraCalls, before + 1);
+  } finally {
+    await docker('rm', '-f', id);
+    containers.delete(id);
+  }
+});
+
+test('actual nginx saves and serves admin branding without deleting the live logo before config commit', async () => {
+  const id = await docker(
+    'run',
+    '-d',
+    '--label',
+    'io.snapetech.task=lumen-proxy-tests',
+    '-p',
+    '127.0.0.1::80',
+    '--tmpfs',
+    '/lumen-data:rw,mode=1777,size=16m',
+    ...args()
+  );
+  containers.add(id);
+  try {
+    const base = `http://${await docker('port', id, '80/tcp')}`;
+    for (let i = 0; i < 100; i++) {
+      try {
+        if ((await fetch(base + '/api/v1/probe')).ok) break;
+      } catch {}
+      await new Promise((resolve) => setTimeout(resolve, 100));
+    }
+    const admin = {
+      cookie: 'fixture-session=valid',
+      'content-type': 'application/json',
+    };
+    for (const path of ['/lumen/config', '/lumen/branding/logo']) {
+      for (const [cookie, expected] of [
+        ['', 401],
+        ['fixture-session=family', 403],
+      ]) {
+        assert.equal(
+          (
+            await fetch(base + path, {
+              method: 'PUT',
+              headers: { cookie, 'content-type': 'application/json' },
+              body: '{}',
+            })
+          ).status,
+          expected
+        );
+      }
+    }
+    for (const [body, type, expected] of [
+      ['[]', 'application/json', 400],
+      ['{', 'application/json', 400],
+      ['{}', 'application/x-www-form-urlencoded', 403],
+      [' '.repeat(65537), 'application/json', 413],
+    ]) {
+      assert.equal(
+        (
+          await fetch(base + '/lumen/config', {
+            method: 'PUT',
+            headers: { ...admin, 'content-type': type },
+            body,
+          })
+        ).status,
+        expected
+      );
+    }
+    const upload = async () => {
+      const response = await fetch(base + '/lumen/branding/logo', {
+        method: 'PUT',
+        headers: { ...admin, 'content-type': 'image/svg+xml' },
+        body: '<svg xmlns="http://www.w3.org/2000/svg"><script>alert(1)</script></svg>',
+      });
+      assert.equal(response.status, 200, await response.clone().text());
+      return (await response.json()).url;
+    };
+    const first = await upload();
+    assert.equal(
+      (
+        await fetch(base + '/lumen/config', {
+          method: 'PUT',
+          headers: admin,
+          body: JSON.stringify({ branding: { logo: first } }),
+        })
+      ).status,
+      200
+    );
+    assert.equal(
+      (await (await fetch(base + '/lumen-config.json')).json()).branding.logo,
+      first
+    );
+    const second = await upload();
+    assert.notEqual(first, second);
+    for (const path of [first, second]) {
+      const response = await fetch(base + path);
+      assert.equal(response.status, 200);
+      assert.match(
+        response.headers.get('content-security-policy'),
+        /default-src 'none'.*sandbox/
+      );
+      assert.equal(response.headers.get('x-content-type-options'), 'nosniff');
+    }
+    assert.equal(
+      (
+        await fetch(base + '/lumen/branding/logo', {
+          method: 'PUT',
+          headers: { ...admin, 'content-type': 'image/png' },
+          body: 'not an image',
+        })
+      ).status,
+      415
+    );
+    assert.equal(
+      (
+        await fetch(base + '/lumen/branding/other', {
+          method: 'PUT',
+          headers: admin,
+          body: '{}',
+        })
+      ).status,
+      404
+    );
   } finally {
     await docker('rm', '-f', id);
     containers.delete(id);

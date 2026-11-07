@@ -1,14 +1,13 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { api, hardcoverWorkId, hcCovers } from './api';
+import { cached, forget, isFresh, remember } from './apiCache';
 import { onSessionReset, sessionGeneration } from './sessionState';
 
-// small response cache so going back to a page doesn't refetch everything
-const cache = new Map<string, unknown>();
-
+// A saved answer shows at once; a fresh one isn't asked for again (see apiCache.ts).
 export function useApi<T>(path: string | null) {
   const [data, setData] = useState<T | null>(
-    path ? ((cache.get(path) as T) ?? null) : null
+    path ? (cached<T>(path) ?? null) : null
   );
   const [error, setError] = useState<string | null>(null);
   const [tick, setTick] = useState(0);
@@ -17,32 +16,41 @@ export function useApi<T>(path: string | null) {
     let live = true;
     const generation = sessionGeneration();
     setError(null);
-    if (cache.has(path)) setData(cache.get(path) as T);
-    else setData(null);
+    const saved = cached<T>(path);
+    setData(saved ?? null);
+    if (saved !== undefined && isFresh(path)) return;
     api<T>(path)
       .then((d) => {
         if (generation !== sessionGeneration()) return;
-        cache.set(path, d);
+        remember(path, d);
         if (live) setData(d);
       })
-      .catch(
-        (e) =>
-          live && setError(e instanceof Error ? e.message : 'Failed to load')
-      );
+      .catch((e) => {
+        // a saved answer stays up if refreshing it fails
+        if (live && saved === undefined)
+          setError(e instanceof Error ? e.message : 'Failed to load');
+      });
     return () => {
       live = false;
     };
   }, [path, tick]);
   const reload = useCallback(() => {
-    if (path) cache.delete(path);
+    if (path) forget(path);
     setTick((t) => t + 1);
   }, [path]);
   return { data, error, reload };
 }
 
-export const dropCache = (prefix: string) => {
-  for (const k of cache.keys()) if (k.startsWith(prefix)) cache.delete(k);
-};
+// one answer, from the saved copy while it's fresh
+export async function cachedApi<T>(path: string): Promise<T> {
+  if (isFresh(path)) return cached<T>(path) as T;
+  const generation = sessionGeneration();
+  const d = await api<T>(path);
+  if (generation === sessionGeneration()) remember(path, d);
+  return d;
+}
+
+export const dropCache = forget;
 
 export interface PublicSettings {
   applicationTitle: string;
@@ -111,9 +119,11 @@ export function usePaged<T>(base: string) {
     setLoading(true);
     try {
       const sep = base.includes('?') ? '&' : '?';
-      const d = await api<{ page: number; totalPages: number; results: T[] }>(
-        `${base}${sep}page=${page + 1}`
-      );
+      const d = await cachedApi<{
+        page: number;
+        totalPages: number;
+        results: T[];
+      }>(`${base}${sep}page=${page + 1}`);
       if (!ownsRequest()) return; // an old filter must not replace the current list
       // popular lists shift between pages, so a title can come back; show it once
       const idOf = (x: T) => String((x as { id?: unknown }).id);
@@ -298,7 +308,6 @@ export const CAN_HOVER =
 
 // In-flight responses from an earlier principal cannot refill the new cache.
 onSessionReset(() => {
-  cache.clear();
   pagedSnap.clear();
   bookStates = null;
   bookStatesAt = 0;

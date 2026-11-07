@@ -24,30 +24,16 @@ export function useAsksRequestOptions() {
 // a just-closed sheet is about to undo its history step (one sheet is open at a time)
 let pendingBack = false;
 
-export function RequestSheet({
-  it,
-  onClose,
-  onDone,
-}: {
-  it: TitleResult;
-  onClose: () => void;
-  onDone: () => void; // request sent
-}) {
-  const tv = it.mediaType === 'tv';
-  const [opts, setOpts] = useState<RequestOptions>({});
-  const [busy, setBusy] = useState(false);
-  const [ready, setReady] = useState(false);
-  const [err, setErr] = useState('');
-  const onOpts = useCallback((o: RequestOptions) => setOpts(o), []);
-  useEffect(() => {
-    const k = (e: KeyboardEvent) => e.key === 'Escape' && onClose();
-    document.addEventListener('keydown', k);
-    return () => document.removeEventListener('keydown', k);
-  }, [onClose]);
-  // The phone's Back closes the sheet (like a native dialog) instead of leaving the page:
-  // the sheet adds a copy of the current history entry and closes when it's popped.
+// The phone's Back closes a sheet (like a native dialog) instead of leaving the page: the
+// sheet adds a copy of the current history entry and closes when it's popped.
+export function useBackCloses(onClose: () => void) {
   const closeRef = useRef(onClose);
   closeRef.current = onClose;
+  useEffect(() => {
+    const k = (e: KeyboardEvent) => e.key === 'Escape' && closeRef.current();
+    document.addEventListener('keydown', k);
+    return () => document.removeEventListener('keydown', k);
+  }, []);
   useEffect(() => {
     let popped = false;
     // remounted at once (React StrictMode runs effects twice): reuse the entry already
@@ -74,6 +60,24 @@ export function RequestSheet({
       }
     };
   }, []);
+}
+
+export function RequestSheet({
+  it,
+  onClose,
+  onDone,
+}: {
+  it: TitleResult;
+  onClose: () => void;
+  onDone: () => void; // request sent
+}) {
+  const tv = it.mediaType === 'tv';
+  const [opts, setOpts] = useState<RequestOptions>({});
+  const [busy, setBusy] = useState(false);
+  const [ready, setReady] = useState(false);
+  const [err, setErr] = useState('');
+  const onOpts = useCallback((o: RequestOptions) => setOpts(o), []);
+  useBackCloses(onClose);
   const send = async () => {
     if (busy || !ready) return;
     setBusy(true);

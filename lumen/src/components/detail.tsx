@@ -1,6 +1,7 @@
 import { useEffect, useState, type ReactNode } from 'react';
 import { api, type Person, type RequestOptions } from '../api';
 import { useAuth } from '../auth';
+import { Glyph, type Stat } from './cards';
 import { Icon, type IconName } from '../icons';
 
 const hue = (s: string) =>
@@ -89,6 +90,7 @@ export function DetailTop({
   title,
   by,
   line,
+  status,
 }: {
   backdrop?: string;
   poster?: string;
@@ -96,6 +98,8 @@ export function DetailTop({
   title: string;
   by?: ReactNode;
   line: ReactNode[];
+  // in the library, requested or downloading: the posters' corner glyph, on this poster too
+  status?: Stat;
 }) {
   // the floating back button lives in Shell, so it's there while the page loads or if it fails
   return (
@@ -106,6 +110,7 @@ export function DetailTop({
       <div className="dtop">
         <div className={`dposter ${square ? 'sq' : ''}`}>
           {poster && <img src={poster} alt="" />}
+          <Glyph s={status ?? null} />
         </div>
         <div className="dtitle">
           <h1>{title}</h1>
@@ -156,6 +161,16 @@ interface ServerDetail {
 // who may pick the Radarr/Sonarr server, quality and folder for a request
 export const canChooseRequestOptions = (permissions?: number) =>
   ((permissions ?? 0) & MANAGE) !== 0;
+// who may make a request in someone else's name: SeerrNG wants Manage Users and Manage
+// Requests together (or Admin)
+export const canRequestAs = (permissions?: number) => {
+  const p = permissions ?? 0;
+  return (p & 2) !== 0 || (p & (8 | 16)) === (8 | 16);
+};
+interface RequestUser {
+  id: number;
+  displayName: string;
+}
 
 export function AdvancedOptions({
   kind,
@@ -163,10 +178,13 @@ export function AdvancedOptions({
   onChange,
   inline = false,
   onReady,
+  initial,
 }: {
   kind: 'movie' | 'tv';
   is4k: boolean;
   onChange: (o: RequestOptions) => void;
+  // changing an existing request: start from its server, quality, folder and requester
+  initial?: RequestOptions;
   inline?: boolean; // always open, no "Advanced" toggle (the quick-request sheet)
   onReady?: (ready: boolean) => void;
 }) {
@@ -178,6 +196,15 @@ export function AdvancedOptions({
   const [detail, setDetail] = useState<ServerDetail | null>(null);
   const [err, setErr] = useState('');
   const [o, setO] = useState<RequestOptions>({});
+  const asAllowed = canRequestAs(user?.permissions);
+  const [people, setPeople] = useState<RequestUser[] | null>(null);
+  const [asUser, setAsUser] = useState<number | undefined>(initial?.userId);
+  useEffect(() => {
+    if (!open || !asAllowed || people) return;
+    api<{ results: RequestUser[] }>('/user?take=100&skip=0&sort=displayname')
+      .then((d) => setPeople(d.results))
+      .catch(() => setPeople([])); // the picker just stays hidden
+  }, [open, asAllowed, people]);
 
   useEffect(() => {
     if (!open || servers) return;
@@ -185,7 +212,10 @@ export function AdvancedOptions({
       .then((s) => {
         const mine = s.filter((x) => x.is4k === is4k);
         setServers(mine);
-        const d = mine.find((x) => x.isDefault) || mine[0];
+        const d =
+          mine.find((x) => x.id === initial?.serverId) ||
+          mine.find((x) => x.isDefault) ||
+          mine[0];
         if (d) setO((x) => ({ ...x, serverId: d.id }));
       })
       .catch((e) => setErr(e.message));
@@ -205,8 +235,18 @@ export function AdvancedOptions({
             ? x
             : {
                 ...x,
-                profileId: x.profileId ?? d.server.activeProfileId,
-                rootFolder: x.rootFolder ?? d.server.activeDirectory,
+                profileId:
+                  x.profileId ??
+                  (serverId === initial?.serverId &&
+                  d.profiles.some((p) => p.id === initial?.profileId)
+                    ? initial?.profileId
+                    : d.server.activeProfileId),
+                rootFolder:
+                  x.rootFolder ??
+                  (serverId === initial?.serverId &&
+                  d.rootFolders.some((r) => r.path === initial?.rootFolder)
+                    ? initial?.rootFolder
+                    : d.server.activeDirectory),
               }
         );
       })
@@ -221,7 +261,19 @@ export function AdvancedOptions({
       live = false;
     };
   }, [o.serverId, svc]);
-  useEffect(() => onChange(open ? o : {}), [o, open, onChange]);
+  useEffect(
+    () =>
+      onChange(
+        open
+          ? // a new request is the admin's own unless someone else is picked; a request being
+            // changed always says whose it is (picking "Me" moves it to the admin)
+            asUser && (asUser !== user?.id || initial?.userId !== undefined)
+            ? { ...o, userId: asUser }
+            : o
+          : {}
+      ),
+    [o, open, asUser, user?.id, initial?.userId, onChange]
+  );
   useEffect(() => {
     onReady?.(
       !!detail &&
@@ -239,6 +291,24 @@ export function AdvancedOptions({
       {!servers && !err && open && <p className="note">Loading servers…</p>}
       {servers && (
         <div className="adv-grid">
+          {asAllowed && !!people?.length && user && (
+            <label className="sel">
+              <span className="lbl">Request as</span>
+              <select
+                value={asUser ?? user.id}
+                onChange={(e) => setAsUser(+e.target.value)}
+              >
+                <option value={user.id}>Me ({user.displayName})</option>
+                {people
+                  .filter((x) => x.id !== user.id)
+                  .map((x) => (
+                    <option key={x.id} value={x.id}>
+                      {x.displayName}
+                    </option>
+                  ))}
+              </select>
+            </label>
+          )}
           <label className="sel">
             <span className="lbl">Server</span>
             <select

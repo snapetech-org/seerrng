@@ -61,9 +61,12 @@ export function statusOf(
     return d
       ? {
           k: 'dl',
-          word: d.size
-            ? `Downloading ${Math.round((1 - d.sizeLeft / d.size) * 100)}%`
-            : 'Downloading',
+          // still all to come: waiting its turn in the download client's queue
+          word: !d.size
+            ? 'Downloading'
+            : d.sizeLeft >= d.size
+              ? 'Queued'
+              : `Downloading ${Math.round((1 - d.sizeLeft / d.size) * 100)}%`,
           ico: 'down',
         }
       : { k: 'wait', word: 'Requested', ico: 'clock' };
@@ -539,6 +542,26 @@ export function Section({
 // placeholder row while a section loads, so the page doesn't jump
 export const RailSkeleton = ({ n = 8, sq }: { n?: number; sq?: boolean }) => (
   <div className="rail">
+    {Array.from({ length: n }, (_, i) => (
+      <div key={i} className={`poster ${sq ? 'sq' : ''}`}>
+        <div className="art skel" />
+        <div className="t skel-line" />
+      </div>
+    ))}
+  </div>
+);
+
+// placeholder grid while a list's first page loads, so a slow answer doesn't look empty
+export const GridSkeleton = ({
+  n = 12,
+  sq,
+  className = 'grid',
+}: {
+  n?: number;
+  sq?: boolean;
+  className?: string;
+}) => (
+  <div className={className} aria-busy="true" aria-label="Loading">
     {Array.from({ length: n }, (_, i) => (
       <div key={i} className={`poster ${sq ? 'sq' : ''}`}>
         <div className="art skel" />
