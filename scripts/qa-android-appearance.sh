@@ -28,6 +28,8 @@ capture() {
   done
 }
 
+# Connected-test cleanup can uninstall the target package after its assertions.
+adb install -r android/app/build/outputs/apk/debug/app-debug.apk >/dev/null
 capture candidate
 
 # Compare the actual published application, without rebuilding old source.
@@ -35,7 +37,7 @@ baseline=v3.72.16
 apk="$output/seerrng-$baseline-android.apk"
 url="https://github.com/snapetech-org/seerrng/releases/download/$baseline/seerrng-$baseline-android.apk"
 curl --fail --location --retry 2 "$url" --output "$apk"
-curl --fail --location --retry 2 "$url.sha256" --output "$apk.sha256"
+curl --fail --location --retry 2 "${url%.apk}.sha256" --output "$apk.sha256"
 read -r expected _ < "$apk.sha256"
 [[ "$expected" =~ ^[a-fA-F0-9]{64}$ ]]
 printf '%s  %s\n' "$expected" "$apk" | sha256sum --check
