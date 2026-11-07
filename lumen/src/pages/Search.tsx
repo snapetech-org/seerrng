@@ -76,10 +76,10 @@ export default function Search() {
   const typed = useRef(new Set<string>());
   useEffect(() => {
     const fromUrl = p.get('q') || '';
-    if (typed.current.has(fromUrl)) return; // one of our own keystrokes, maybe an old one
+    if (navType === 'REPLACE' && typed.current.has(fromUrl)) return; // one of our own keystrokes, maybe an old one
     typed.current.clear();
     setQ(fromUrl);
-  }, [p]);
+  }, [p, navType, entryKey]);
   useEffect(() => {
     const term = (p.get('q') || '').trim();
     if (!term) {

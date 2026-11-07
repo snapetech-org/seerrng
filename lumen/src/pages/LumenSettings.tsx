@@ -48,7 +48,7 @@ export default function LumenSettings() {
 
   const defaults = { ...DEFAULT_PREFS, ...(cfg.defaults || {}) };
   const rows = { ...DEFAULT_PREFS.rows, ...(cfg.defaults?.rows || {}) };
-  const locked = new Set(cfg.locked || []);
+  const locked = new Set(Array.isArray(cfg.locked) ? cfg.locked : []);
   const setDefault = (path: string, value: boolean | string) =>
     setCfg((c) => {
       const d = { ...(c.defaults || {}) };
@@ -59,7 +59,7 @@ export default function LumenSettings() {
     });
   const setLock = (path: string, on: boolean) =>
     setCfg((c) => {
-      const l = new Set(c.locked || []);
+      const l = new Set(Array.isArray(c.locked) ? c.locked : []);
       if (on) l.add(path);
       else l.delete(path);
       return { ...c, locked: [...l] };

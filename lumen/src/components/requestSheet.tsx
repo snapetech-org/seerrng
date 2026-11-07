@@ -33,6 +33,7 @@ export function RequestSheet({
   const tv = it.mediaType === 'tv';
   const [opts, setOpts] = useState<RequestOptions>({});
   const [busy, setBusy] = useState(false);
+  const [ready, setReady] = useState(false);
   const [err, setErr] = useState('');
   const onOpts = useCallback((o: RequestOptions) => setOpts(o), []);
   useEffect(() => {
@@ -59,6 +60,7 @@ export function RequestSheet({
     };
   }, []);
   const send = async () => {
+    if (busy || !ready) return;
     setBusy(true);
     setErr('');
     try {
@@ -98,6 +100,7 @@ export function RequestSheet({
             is4k={false}
             onChange={onOpts}
             inline
+            onReady={setReady}
           />
           {err && (
             <p className="note" role="alert">
@@ -105,7 +108,11 @@ export function RequestSheet({
             </p>
           )}
           <div className="pk-foot">
-            <button className="btn btn-primary" disabled={busy} onClick={send}>
+            <button
+              className="btn btn-primary"
+              disabled={busy || !ready}
+              onClick={send}
+            >
               {busy ? 'Requesting…' : 'Request'}
             </button>
             <button className="btn btn-tonal" onClick={onClose}>

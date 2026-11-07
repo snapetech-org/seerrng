@@ -46,26 +46,37 @@ const probes = new Map<string, Promise<boolean>>();
 // (kept per account: what answers can depend on permissions)
 const PROBE_TTL = 10 * 60_000;
 const probeKey = () => `lumen-probes:${sessionUserId() ?? 'none'}`;
-const savedProbes = (): Record<string, [boolean, number]> => {
+const savedProbes = (key: string): Record<string, [boolean, number]> => {
   try {
-    return JSON.parse(sessionStorage.getItem(probeKey()) || '{}');
+    const value = JSON.parse(sessionStorage.getItem(key) || '{}');
+    return value && typeof value === 'object' && !Array.isArray(value)
+      ? value
+      : {};
   } catch {
     return {};
   }
 };
-const saveProbe = (path: string, ok: boolean) => {
+const saveProbe = (key: string, path: string, ok: boolean) => {
   try {
-    const all = savedProbes();
+    const all = savedProbes(key);
     all[path] = [ok, Date.now()];
-    sessionStorage.setItem(probeKey(), JSON.stringify(all));
+    sessionStorage.setItem(key, JSON.stringify(all));
   } catch {
     // storage full or blocked: just ask again next time
   }
 };
 onSessionReset(() => probes.clear());
 const probe = (path: string) => {
-  const saved = savedProbes()[path];
-  if (!probes.has(path) && saved && Date.now() - saved[1] < PROBE_TTL)
+  const key = probeKey();
+  const saved = savedProbes(key)[path];
+  if (
+    !probes.has(path) &&
+    Array.isArray(saved) &&
+    typeof saved[0] === 'boolean' &&
+    Number.isFinite(saved[1]) &&
+    Date.now() - saved[1] >= 0 &&
+    Date.now() - saved[1] < PROBE_TTL
+  )
     probes.set(path, Promise.resolve(saved[0]));
   if (!probes.has(path)) {
     probes.set(
@@ -81,7 +92,7 @@ const probe = (path: string) => {
             )
         )
         .then((ok) => {
-          saveProbe(path, ok);
+          saveProbe(key, path, ok);
           return ok;
         })
     );

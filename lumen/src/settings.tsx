@@ -86,14 +86,28 @@ const C = createContext<Ctx>({
 export const usePrefs = () => useContext(C);
 
 const preferenceKey = (userId: number) => `lumen-prefs:${userId}`;
+const record = (value: unknown): Record<string, unknown> =>
+  value && typeof value === 'object' && !Array.isArray(value)
+    ? (value as Record<string, unknown>)
+    : {};
 const merge = (
   base: Prefs,
   over?: AdminConfig['defaults'] | Partial<Prefs>
-): Prefs => ({
-  ...base,
-  ...(over || {}),
-  rows: { ...base.rows, ...((over && over.rows) || {}) },
-});
+): Prefs => {
+  const next = { ...base, rows: { ...base.rows } };
+  const values = record(over);
+  for (const key of Object.keys(base) as (keyof Prefs)[]) {
+    if (key === 'rows') {
+      const rows = record(values.rows);
+      for (const row of Object.keys(base.rows) as DiscoverRow[])
+        if (typeof rows[row] === 'boolean') next.rows[row] = rows[row];
+    } else if (key === 'theme') {
+      if (['dark', 'light', 'system'].includes(values.theme as string))
+        next.theme = values.theme as Prefs['theme'];
+    } else if (typeof values[key] === 'boolean') next[key] = values[key];
+  }
+  return next;
+};
 
 export function PrefsProvider({ children }: { children: ReactNode }) {
   const { user } = useAuth();
@@ -109,11 +123,25 @@ export function PrefsProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     fetch('/lumen-config.json', { cache: 'no-store' })
       .then((r) => (r.ok ? r.json() : {}))
-      .then(setAdmin)
+      .then((value) => setAdmin(record(value) as AdminConfig))
       .catch(() => setAdmin({}));
   }, []);
 
-  const locked = useMemo(() => new Set(admin.locked || []), [admin]);
+  const locked = useMemo(
+    () =>
+      new Set(
+        Array.isArray(admin.locked)
+          ? admin.locked.filter(
+              (key) =>
+                typeof key === 'string' &&
+                (Object.hasOwn(DEFAULT_PREFS, key) ||
+                  (key.startsWith('rows.') &&
+                    Object.hasOwn(DEFAULT_PREFS.rows, key.slice(5))))
+            )
+          : []
+      ),
+    [admin]
+  );
   const prefs = useMemo(() => {
     const withAdmin = merge(DEFAULT_PREFS, admin.defaults);
     const withMine = merge(withAdmin, mine);
@@ -142,14 +170,22 @@ export function PrefsProvider({ children }: { children: ReactNode }) {
             [path.slice(5)]: value,
           } as Prefs['rows'];
         else (next as Record<string, unknown>)[path] = value;
-        if (key) localStorage.setItem(key, JSON.stringify(next));
+        try {
+          if (key) localStorage.setItem(key, JSON.stringify(next));
+        } catch {
+          /* Keep in-memory preferences when browser storage is blocked. */
+        }
         return next;
       });
     },
     [key]
   );
   const reset = useCallback(() => {
-    if (key) localStorage.removeItem(key);
+    try {
+      if (key) localStorage.removeItem(key);
+    } catch {
+      /* Storage may be blocked. */
+    }
     setMine({});
   }, [key]);
 

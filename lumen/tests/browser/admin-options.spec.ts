@@ -107,6 +107,210 @@ async function quickRequest(page: Page, title: string) {
     .click();
 }
 
+for (const theme of ['light', 'dark'] as const) {
+  test(`review settings, destination sheet and family sign-in in ${theme}`, async ({
+    page,
+  }, info) => {
+    await fixtures(page, { config: { defaults: { theme } } });
+    await page.goto('/me/lumen');
+    await expect(
+      page.getByRole('heading', { name: 'Lumen settings for everyone' })
+    ).toBeVisible();
+    await expect(page.locator('html')).toHaveAttribute('data-theme', theme);
+    await page.screenshot({
+      path: info.outputPath('settings.png'),
+      fullPage: true,
+    });
+    await page.goto('/movies');
+    await quickRequest(page, 'Fresh Pick');
+    const sheet = page.getByRole('dialog', { name: 'Request Fresh Pick' });
+    await expect(sheet.getByLabel('Quality')).toBeVisible();
+    await sheet.evaluate(async (element) => {
+      await Promise.all(
+        element
+          .getAnimations({ subtree: true })
+          .map((animation) => animation.finished.catch(() => {}))
+      );
+    });
+    await expect(
+      sheet.getByRole('button', { name: 'Request', exact: true })
+    ).toBeInViewport();
+    await expect(
+      sheet.getByRole('button', { name: 'Cancel', exact: true })
+    ).toBeInViewport();
+    await page.screenshot({
+      path: info.outputPath('request-sheet.png'),
+      fullPage: true,
+    });
+    await sheet.getByRole('button', { name: 'Cancel', exact: true }).click();
+    await fixtures(page, {
+      signedIn: false,
+      config: { loginStyle: 'form', defaults: { theme } },
+    });
+    await page.goto('/');
+    await expect(page.getByLabel('Username', { exact: true })).toBeVisible();
+    await expect(page.locator('html')).toHaveAttribute('data-theme', theme);
+    await page.locator('.login-card').evaluate(async (element) => {
+      await Promise.all(
+        element
+          .getAnimations({ subtree: true })
+          .map((animation) => animation.finished.catch(() => {}))
+      );
+    });
+    await page.screenshot({
+      path: info.outputPath('family-sign-in.png'),
+      fullPage: true,
+    });
+  });
+}
+
+test('quick request waits for destination details and ignores stale server replies', async ({
+  page,
+}) => {
+  const { posts, errors } = await fixtures(page);
+  let release!: () => void;
+  const gate = new Promise<void>((resolve) => {
+    release = resolve;
+  });
+  let firstStarted = false;
+  await page.route('**/api/v1/service/radarr/0', async (route) => {
+    firstStarted = true;
+    await gate;
+    await route.fulfill({
+      json: {
+        profiles: [{ id: 99, name: 'Old server quality' }],
+        rootFolders: [{ id: 99, path: '/old-server' }],
+        server: { activeProfileId: 99, activeDirectory: '/old-server' },
+      },
+    });
+  });
+  await page.goto('/movies');
+  await quickRequest(page, 'Fresh Pick');
+  const sheet = page.getByRole('dialog', { name: 'Request Fresh Pick' });
+  await expect.poll(() => firstStarted).toBe(true);
+  await expect(
+    sheet.getByRole('button', { name: 'Request', exact: true })
+  ).toBeDisabled();
+  await sheet.getByLabel('Server').selectOption('1');
+  await expect(sheet.getByLabel('Quality')).toHaveValue('4');
+  release();
+  await expect(sheet.getByLabel('Quality')).toHaveValue('4');
+  await expect(sheet.getByLabel('Folder')).toHaveValue('/movies');
+  await sheet.getByRole('button', { name: 'Request', exact: true }).click();
+  await expect
+    .poll(() => posts.filter((p) => p.path === '/request').length)
+    .toBe(1);
+  expect(posts.find((p) => p.path === '/request')?.body).toMatchObject({
+    serverId: 1,
+    profileId: 4,
+    rootFolder: '/movies',
+  });
+  expect(errors).toEqual([]);
+});
+
+test('malformed admin preferences do not blank the application', async ({
+  page,
+}) => {
+  const { errors } = await fixtures(page, {
+    config: {
+      locked: {},
+      defaults: { rows: null, theme: {}, showBooks: 'false' },
+    },
+  });
+  await page.goto('/movies');
+  await expect(
+    page.getByRole('heading', { name: 'Movies', exact: true })
+  ).toBeVisible();
+  expect(errors).toEqual([]);
+});
+
+test('malformed category probe storage does not break navigation', async ({
+  page,
+}) => {
+  const { errors } = await fixtures(page);
+  await page.addInitScript(() =>
+    sessionStorage.setItem('lumen-probes:1', 'null')
+  );
+  await page.route('**/api/v1/settings/public', (route) =>
+    route.fulfill({
+      json: {
+        mediaServerType: 2,
+        enabledMediaCategories: { comic: true },
+        comicsEnabled: true,
+      },
+    })
+  );
+  await page.goto('/movies');
+  await expect(
+    page.getByRole('heading', { name: 'Movies', exact: true })
+  ).toBeVisible();
+  await expect
+    .poll(() => page.evaluate(() => sessionStorage.getItem('lumen-probes:1')))
+    .not.toBe('null');
+  expect(errors).toEqual([]);
+});
+
+test('late category probes remain scoped to the account that started them', async ({
+  page,
+}) => {
+  await fixtures(page);
+  let account = 1;
+  let started = false;
+  let release!: () => void;
+  const gate = new Promise<void>((resolve) => {
+    release = resolve;
+  });
+  await page.route('**/api/v1/settings/public', (route) =>
+    route.fulfill({
+      json: {
+        mediaServerType: 2,
+        enabledMediaCategories: { comic: true },
+        comicsEnabled: true,
+      },
+    })
+  );
+  await page.route('**/api/v1/auth/me', (route) =>
+    route.fulfill({
+      json: { id: account, displayName: `viewer${account}`, permissions: 2 },
+    })
+  );
+  await page.route('**/api/v1/auth/logout', (route) => {
+    account = 2;
+    return route.fulfill({ json: {} });
+  });
+  await page.route('**/api/v1/discover/comics', async (route) => {
+    if (!started) {
+      started = true;
+      await gate;
+      await route.fulfill({ status: 403, json: {} });
+    } else
+      await route.fulfill({ json: { results: [], comicVineConfigured: true } });
+  });
+  await page.goto('/me');
+  await expect.poll(() => started).toBe(true);
+  await page.getByRole('button', { name: 'Sign out', exact: true }).click();
+  await page
+    .getByRole('button', { name: 'Continue with Jellyfin', exact: true })
+    .click();
+  await page.getByLabel('Jellyfin username', { exact: true }).fill('viewer2');
+  await page.getByLabel('Password', { exact: true }).fill('fixture-password');
+  await page
+    .getByRole('button', { name: 'Sign in with Jellyfin', exact: true })
+    .click();
+  const cached = (id: number) =>
+    page.evaluate(
+      (id) =>
+        JSON.parse(sessionStorage.getItem(`lumen-probes:${id}`) || '{}')[
+          '/discover/comics'
+        ]?.[0],
+      id
+    );
+  await expect.poll(() => cached(2)).toBe(true);
+  release();
+  await expect.poll(() => cached(1)).toBe(false);
+  expect(await cached(2)).toBe(true);
+});
+
 test('sign-in form without media server names', async ({ page }) => {
   const { posts } = await fixtures(page, {
     signedIn: false,
@@ -548,6 +752,15 @@ test('fast typing in search keeps every letter', async ({ page }) => {
   await box.click();
   await box.pressSequentially('night of the living dead', { delay: 0 });
   await page.waitForTimeout(800);
+  await expect(box).toHaveValue('night of the living dead');
+  // A history entry may repeat a query already typed in this mounted component.
+  // POP must restore it even though stale REPLACE updates are ignored.
+  await page.evaluate(() =>
+    history.pushState(history.state, '', location.href)
+  );
+  await box.fill('second search');
+  await expect(page).toHaveURL(/q=second\+search/);
+  await page.goBack();
   await expect(box).toHaveValue('night of the living dead');
   // Back to an empty search still clears the box (the address drives it then)
   await page.goto('/search?q=sintel');

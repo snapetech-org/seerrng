@@ -133,7 +133,10 @@ export function resolveSite(
       ? (c.branding as Record<string, unknown>)
       : {};
   // SeerrNG's application title, unless it's still the stock "Seerr"
-  const title = pub?.applicationTitle?.trim();
+  const title =
+    typeof pub?.applicationTitle === 'string'
+      ? pub.applicationTitle.trim()
+      : '';
   const fallback = title && title !== 'Seerr' ? title : 'SeerrNG';
   const name =
     typeof b.name === 'string' ? b.name.trim().slice(0, 60) : fallback;
@@ -201,16 +204,30 @@ export const serverName = () => current.name;
 const PUBLIC_KEY = 'lumen-public-settings';
 const pause = (ms: number, signal: AbortSignal) =>
   new Promise<void>((resolve) => {
-    const t = window.setTimeout(resolve, ms);
-    signal.addEventListener(
-      'abort',
-      () => {
-        window.clearTimeout(t);
-        resolve();
-      },
-      { once: true }
-    );
+    if (signal.aborted) {
+      resolve();
+      return;
+    }
+    const done = () => {
+      window.clearTimeout(t);
+      signal.removeEventListener('abort', done);
+      resolve();
+    };
+    const t = window.setTimeout(done, Math.min(ms, 2147483647));
+    signal.addEventListener('abort', done, { once: true });
   });
+export const retryAfterMs = (
+  value: string | null,
+  attempt: number,
+  now = Date.now()
+) => {
+  if (value && /^\d+$/.test(value.trim())) {
+    const seconds = Number(value);
+    if (Number.isFinite(seconds)) return seconds * 1000;
+  }
+  const date = value ? Date.parse(value) : NaN;
+  return Number.isFinite(date) ? Math.max(0, date - now) : 2000 * (attempt + 1);
+};
 async function loadPublicSettings(signal: AbortSignal): Promise<unknown> {
   for (let attempt = 0; attempt < 3 && !signal.aborted; attempt++) {
     const r = await fetch('/api/v1/settings/public', {
@@ -231,11 +248,8 @@ async function loadPublicSettings(signal: AbortSignal): Promise<unknown> {
     }
     // only "slow down" is worth waiting for; anything else shows Retry straight away
     if (!r || r.status !== 429) break;
-    const after = Number(r?.headers.get('Retry-After'));
-    await pause(
-      Math.min(6, after > 0 ? after : 2 * (attempt + 1)) * 1000,
-      signal
-    );
+    if (attempt < 2)
+      await pause(retryAfterMs(r.headers.get('Retry-After'), attempt), signal);
   }
   try {
     return JSON.parse(sessionStorage.getItem(PUBLIC_KEY) || 'null');

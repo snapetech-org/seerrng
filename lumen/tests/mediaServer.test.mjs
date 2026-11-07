@@ -1,6 +1,16 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { resolveMediaServer } from '../src/mediaServer.ts';
+import { resolveMediaServer, retryAfterMs } from '../src/mediaServer.ts';
+
+test('rate-limit retry honors numeric and HTTP-date deadlines', () => {
+  const now = Date.parse('2026-11-06T12:00:00Z');
+  assert.equal(retryAfterMs('60', 0, now), 60000);
+  assert.equal(retryAfterMs('0', 0, now), 0);
+  assert.equal(retryAfterMs('Fri, 06 Nov 2026 12:01:00 GMT', 0, now), 60000);
+  assert.equal(retryAfterMs('Fri, 06 Nov 2026 11:59:00 GMT', 0, now), 0);
+  assert.equal(retryAfterMs(null, 1, now), 4000);
+  assert.equal(retryAfterMs('invalid', 0, now), 2000);
+});
 
 test('follows SeerrNG media server type unless the admin pins one', () => {
   assert.equal(resolveMediaServer('auto', { mediaServerType: 1 }).name, 'Plex');
