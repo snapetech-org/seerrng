@@ -39,6 +39,88 @@ describe('isOptionalCatalogPathEnabled', () => {
     );
   });
 
+  it('hides related discovery links when their category or provider is unavailable', () => {
+    for (const href of [
+      '/discover/collectors',
+      '/discover/collectors?sort=name',
+    ]) {
+      for (const isAdmin of [false, true]) {
+        strictEqual(
+          isOptionalCatalogPathEnabled(
+            href,
+            getUserServiceAvailability(
+              {
+                musicEnabled: true,
+                booksEnabled: true,
+                comicsEnabled: true,
+                enabledMediaCategories: { music: false },
+              },
+              undefined,
+              isAdmin
+            )
+          ),
+          false
+        );
+      }
+      strictEqual(
+        isOptionalCatalogPathEnabled(href, {
+          musicEnabled: false,
+          booksEnabled: true,
+          comicsEnabled: true,
+        }),
+        false
+      );
+      strictEqual(
+        isOptionalCatalogPathEnabled(href, {
+          musicEnabled: true,
+          booksEnabled: false,
+          comicsEnabled: false,
+        }),
+        true
+      );
+    }
+    for (const href of [
+      '/discover/book-recommendations',
+      '/discover/book-recommendations?sort=name',
+    ]) {
+      strictEqual(
+        isOptionalCatalogPathEnabled(href, {
+          musicEnabled: true,
+          booksEnabled: true,
+          comicsEnabled: true,
+          enabledMediaCategories: { ebook: false, audiobook: false },
+        }),
+        false
+      );
+      strictEqual(
+        isOptionalCatalogPathEnabled(href, {
+          musicEnabled: true,
+          booksEnabled: false,
+          comicsEnabled: true,
+        }),
+        false
+      );
+      strictEqual(
+        isOptionalCatalogPathEnabled(href, {
+          musicEnabled: false,
+          booksEnabled: true,
+          comicsEnabled: false,
+          enabledMediaCategories: { ebook: false, audiobook: true },
+        }),
+        true
+      );
+      strictEqual(
+        isOptionalCatalogPathEnabled(href, {
+          musicEnabled: false,
+          booksEnabled: true,
+          comicsEnabled: false,
+          enabledMediaCategories: { ebook: true, audiobook: false },
+        }),
+        true
+      );
+    }
+  });
+
   it('hides game and patch catalogs until their services are configured', () => {
     const unavailable = {
       musicEnabled: false,

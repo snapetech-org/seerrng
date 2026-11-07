@@ -179,6 +179,8 @@ export const isOptionalCatalogPathEnabled = (
   }
 
   if (
+    path === '/discover/collectors' ||
+    path.startsWith('/discover/collectors/') ||
     path === '/discover/music' ||
     path.startsWith('/discover/music/') ||
     path.startsWith('/music/') ||
@@ -242,7 +244,12 @@ export const isOptionalCatalogPathEnabled = (
     return isBookFormatEnabled('ebook', availability);
   }
 
-  if (path.startsWith('/book/') || path.startsWith('/author/')) {
+  if (
+    path === '/discover/book-recommendations' ||
+    path.startsWith('/discover/book-recommendations/') ||
+    path.startsWith('/book/') ||
+    path.startsWith('/author/')
+  ) {
     return (
       isBookFormatEnabled('ebook', availability) ||
       isBookFormatEnabled('audiobook', availability)
