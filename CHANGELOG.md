@@ -25,6 +25,8 @@ tags. The comparison link is the complete commit range.
 - **Lumen:** Add family sign-in, branding/configuration export and quick-request destination options; repair stale responses, account-scoped category caches, malformed settings and book file evidence.
 - **Android:** Restore system Back, system-bar spacing and device dark mode, retain the selected page after recreation, and constrain native app handoff to safe browsable view intents.
 
+- **Japanese setup help:** Correct the reversed environment-variable instruction: configure the restricted key on ChaptarrNG, with no environment variable needed on SeerrNG.
+
 ### Operator and maintainer changes
 
 - **Lumen operators:** Rebuild and recreate Lumen to receive its frontend changes.

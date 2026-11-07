@@ -133,3 +133,21 @@ wording, and exact code token while retaining the existing geometry checks.
 The complete local `library-discover-parity` spec passes all 27 cases against
 the production fixture; logs/video are in `cypress-repair/` and
 `cypress-repair.log`. The corrected production build and Helm job pass in CI.
+
+
+## Japanese Setup Help Follow-up
+
+The Japanese `components.Settings.bookServiceApiKeyDescription` incorrectly
+stated that SeerrNG required a variable. Its negation now matches the English
+source: configure `CHAPTARR__AUTH__SEERRAPIKEY` on ChaptarrNG, and paste the
+same value into the SeerrNG connection. Only the locale message and its
+machine-draft provenance changed; this does not claim native-speaker review.
+
+The production prebuild, server and client build pass. Headless comparison
+against the published v3.72.16 image covers `/settings/services?serviceCategory=audiobooks-books`
+in Japanese, SeerrOrig and SeerrNGJ, at 390px and 1440px. All four baseline
+and four candidate groups pass. Settled theme identity is asserted; the help
+wraps without horizontal overflow, and matching viewport comparisons were
+visually inspected. Early screenshots taken before the theme settled are
+excluded. Evidence: the task delivery directory `japanese-book-help/`,
+qualified viewport logs and `qualified-comparison-*` images.

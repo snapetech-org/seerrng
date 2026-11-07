@@ -78221,9 +78221,9 @@
       "id": "components.Settings.bookServiceApiKeyDescription",
       "status": "draft",
       "provenance": "machine-draft",
-      "source": "Qwen 3.8 27B (local), generated 2026-10-30",
+      "source": "Codex correction of reversed environment-variable requirement; 2026-11-06; native-speaker review not performed",
       "sourceHash": "9ea8ed3ead1f2f874b404f6a75bd92f7d048ac96e32af0a2d755b432c3f2ac0e",
-      "targetHash": "0fb7f71dd939c6b9228d5176305fed4d2e34390b6562b48a672058455201a611"
+      "targetHash": "086d2e6a5d69d1f303ec4a23efd612d97adc33aad96ed30233c9cdd734a689fb"
     },
     {
       "domain": "client",
