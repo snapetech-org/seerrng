@@ -87,7 +87,7 @@ export default function Books({ format }: { format: 'ebook' | 'audiobook' }) {
             ))}
           </div>
         </div>
-        {list.error && (
+        {list.error && !items.length && (
           <div className="empty">
             <b>Couldn’t load books</b>
             {list.error}
@@ -112,6 +112,8 @@ export default function Books({ format }: { format: 'ebook' | 'audiobook' }) {
           done={list.done}
           loading={list.loading}
           more={list.more}
+          error={list.error}
+          retry={list.retry}
         />
       </section>
     </>

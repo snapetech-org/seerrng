@@ -61,7 +61,10 @@ export function Sports() {
           placeholder="Search leagues — Premier League, NFL, F1…"
         />
       </ExtraHeader>
-      <ServiceNote error={list.error} what="sports" />
+      <ServiceNote
+        error={list.items.length ? null : list.error}
+        what="sports"
+      />
       {!query && !list.error && (
         <div className="empty">
           <b>Search for a league</b>Try a sport, a league or a country.
@@ -90,6 +93,8 @@ export function Sports() {
         done={list.done || !query}
         loading={list.loading}
         more={list.more}
+        error={list.error}
+        retry={list.retry}
       />
     </ExtraGate>
   );
@@ -183,7 +188,10 @@ export function Adult() {
           placeholder="Search scenes, studios, performers…"
         />
       </ExtraHeader>
-      <ServiceNote error={list.error} what="this section" />
+      <ServiceNote
+        error={list.items.length ? null : list.error}
+        what="this section"
+      />
       {!list.error && !list.items.length && !list.loading && (
         <div className="empty">
           <b>Nothing found</b>Try a studio or performer.
@@ -203,7 +211,13 @@ export function Adult() {
           />
         ))}
       </div>
-      <MoreOnScroll done={list.done} loading={list.loading} more={list.more} />
+      <MoreOnScroll
+        done={list.done}
+        loading={list.loading}
+        more={list.more}
+        error={list.error}
+        retry={list.retry}
+      />
     </ExtraGate>
   );
 }

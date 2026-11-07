@@ -315,10 +315,11 @@ export function BookCard({ b }: { b: BookResult }) {
             <div className="qb">
               {s?.k === 'ok' ? (
                 <>
-                  <button className="qbtn okb">
+                  {/* this button did nothing: the book page has the library links */}
+                  <Link className="qbtn okb" to={href}>
                     <Icon name={audio ? 'play' : 'book'} size="sm" />
                     {audio ? 'Listen' : 'Read'}
-                  </button>
+                  </Link>
                   {audio && prefs.narratorChoice && (
                     <Link
                       className="qbtn ghost"
@@ -435,7 +436,7 @@ export function FeatCard({
             )
           ) : s || done ? (
             <span className="btn go done">
-              <Icon name="clock" size="sm" />
+              <Icon name={s?.ico || 'clock'} size="sm" />
               {s?.word || 'Requested'}
             </span>
           ) : tv && !prefs.wholeSeriesDefault ? (
@@ -552,10 +553,14 @@ export function MoreOnScroll({
   done,
   loading,
   more,
+  error,
+  retry,
 }: {
   done: boolean;
   loading: boolean;
   more: () => void;
+  error?: string | null;
+  retry?: () => void;
 }) {
   const ref = useRef<HTMLDivElement>(null);
   const latest = useRef({ done, loading, more });
@@ -573,13 +578,24 @@ export function MoreOnScroll({
     );
     io.observe(el);
     return () => io.disconnect();
-  }, []);
+    // the marker is removed while done ("Look further" brings it back): watch the new one
+  }, [done]);
   // a short page can leave the marker on screen after a load; check again once loading ends
   useEffect(() => {
     const el = ref.current;
     if (!el || done || loading) return;
     if (el.getBoundingClientRect().top < window.innerHeight + 900) more();
   }, [done, loading, more]);
+  // a page failed: stop here and let the person ask again (shown where the list stopped)
+  if (error && retry)
+    return (
+      <div className="more-scroll" role="alert">
+        Couldn’t load more.{' '}
+        <button className="btn btn-tonal btn-sm" onClick={retry}>
+          Retry
+        </button>
+      </div>
+    );
   if (done) return null;
   return (
     <div ref={ref} className="more-scroll" aria-live="polite">

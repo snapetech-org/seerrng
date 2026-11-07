@@ -47,6 +47,8 @@ function useGames(category: GameCategory | undefined, query: string) {
   const [error, setError] = useState<string | null>(null);
   const key = `${category}|${query}`;
   const live = useRef(key);
+  // where a failed page was, so Retry asks for it again
+  const failedAt = useRef<string | number | undefined>(undefined);
   useEffect(() => {
     live.current = key;
     setItems([]);
@@ -72,6 +74,7 @@ function useGames(category: GameCategory | undefined, query: string) {
     } catch (e) {
       if (live.current === key) {
         setError(e instanceof Error ? e.message : 'Failed to load');
+        failedAt.current = next;
         setNext(null);
       }
     } finally {
@@ -82,7 +85,11 @@ function useGames(category: GameCategory | undefined, query: string) {
     if (next === undefined && !loading) void more();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [key, next]);
-  return { items, more, loading, error, done: next === null };
+  const retry = useCallback(() => {
+    setError(null);
+    setNext(failedAt.current);
+  }, []);
+  return { items, more, retry, loading, error, done: next === null };
 }
 
 export function Games() {
@@ -147,7 +154,7 @@ export function Games() {
           }
         />
       </ExtraHeader>
-      <ServiceNote error={list.error} what="games" />
+      <ServiceNote error={list.items.length ? null : list.error} what="games" />
       {!list.error && !list.items.length && !list.loading && (
         <div className="empty">
           <b>No games found</b>Try the game’s full title.
@@ -168,7 +175,13 @@ export function Games() {
           />
         ))}
       </div>
-      <MoreOnScroll done={list.done} loading={list.loading} more={list.more} />
+      <MoreOnScroll
+        done={list.done}
+        loading={list.loading}
+        more={list.more}
+        error={list.error}
+        retry={list.retry}
+      />
     </ExtraGate>
   );
 }

@@ -802,3 +802,64 @@ test('Back closes the request sheet and stays on the page', async ({
   await page.waitForTimeout(300);
   await expect(page).toHaveURL(/\/movies$/);
 });
+
+test('a failed page stops endless scrolling until Retry', async ({ page }) => {
+  await fixtures(page);
+  const asked: number[] = [];
+  let failed = false;
+  await page.route('**/api/v1/discover/movies?*', (route) => {
+    const n = Number(new URL(route.request().url()).searchParams.get('page'));
+    asked.push(n);
+    if (n === 2 && !failed) {
+      failed = true;
+      return route.fulfill({ status: 429, body: 'Too many requests' });
+    }
+    return route.fulfill({
+      json: {
+        page: n,
+        totalPages: 2,
+        totalResults: 40,
+        results: Array.from({ length: 20 }, (_, i) => ({
+          id: n * 100 + i,
+          title: `Popular ${n}-${i}`,
+          mediaType: 'movie',
+          releaseDate: '2020-01-01',
+        })),
+      },
+    });
+  });
+  await page.goto('/movies');
+  await expect(page.getByRole('link', { name: 'Popular 1-0' })).toBeVisible();
+  await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
+  await expect(page.getByRole('button', { name: 'Retry' })).toBeVisible();
+  await page.waitForTimeout(1500);
+  // asked for page 2 once, not over and over
+  expect(asked.filter((n) => n === 2)).toHaveLength(1);
+  await page.getByRole('button', { name: 'Retry' }).click();
+  await expect(page.getByRole('link', { name: 'Popular 2-0' })).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Retry' })).toHaveCount(0);
+  expect(asked.filter((n) => n === 2)).toHaveLength(2);
+});
+
+test('a Discover row that fails to load says so', async ({ page }) => {
+  await fixtures(page);
+  await page.route('**/api/v1/discover/tv', (route) =>
+    route.fulfill({ status: 500, json: { message: 'Server error' } })
+  );
+  await page.goto('/');
+  const row = page.locator('section', {
+    has: page.getByRole('heading', { name: 'Popular series' }),
+  });
+  await expect(row.getByText('Couldn’t load this row')).toBeVisible();
+  await expect(row.locator('.skel')).toHaveCount(0);
+});
+
+test('"open full SeerrNG" works without a configured address', async ({
+  page,
+}) => {
+  await fixtures(page);
+  await page.goto('/no-such-page');
+  await expect(
+    page.getByRole('link', { name: 'open full SeerrNG' })
+  ).toHaveAttribute('href', '/seerrng');
+});

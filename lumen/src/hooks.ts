@@ -83,6 +83,7 @@ export function usePaged<T>(base: string) {
     setItems((s?.items as T[]) || []);
     setPage(s?.page || 0);
     setTotal(s?.total || 1);
+    setError(null);
     inFlight.current = null;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [base]);
@@ -93,7 +94,8 @@ export function usePaged<T>(base: string) {
       pagedSnap.delete(pagedSnap.keys().next().value as string);
   }, [snapKey, items, page, total]);
   const more = useCallback(async () => {
-    if (loading || page >= total) return;
+    // after a failure only Retry asks again: retrying by itself would hammer the rate limit
+    if (loading || page >= total || error) return;
     const key = `${base}#${page + 1}`;
     if (inFlight.current === key) return;
     inFlight.current = key;
@@ -117,12 +119,25 @@ export function usePaged<T>(base: string) {
     } finally {
       setLoading(false);
     }
-  }, [base, page, total, loading]);
+  }, [base, page, total, loading, error]);
   useEffect(() => {
-    if (page === 0 && !loading) void more();
+    if (page === 0 && !loading && !error) void more();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [base, page]);
-  return { items, more, loading, error, page, done: page >= total };
+  }, [base, page, error]);
+  const retry = useCallback(() => {
+    inFlight.current = null;
+    setError(null);
+  }, []);
+  return {
+    items,
+    more,
+    retry,
+    loading,
+    error,
+    page,
+    // a failed page also stops endless scrolling until Retry
+    done: page >= total || !!error,
+  };
 }
 
 // ---- book library state ----

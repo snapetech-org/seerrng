@@ -69,7 +69,10 @@ export function Comics() {
         </div>
       ) : (
         <>
-          <ServiceNote error={list.error} what="comics" />
+          <ServiceNote
+            error={list.items.length ? null : list.error}
+            what="comics"
+          />
           {!list.error && !list.items.length && !list.loading && (
             <div className="empty">
               <b>No comics found</b>Try a series name or a publisher.
@@ -99,6 +102,8 @@ export function Comics() {
             done={list.done}
             loading={list.loading}
             more={list.more}
+            error={list.error}
+            retry={list.retry}
           />
         </>
       )}
@@ -178,6 +183,8 @@ export function ComicDetail() {
                     done={issues.done}
                     loading={issues.loading}
                     more={issues.more}
+                    error={issues.error}
+                    retry={issues.retry}
                   />
                 </div>
               )}
@@ -230,7 +237,10 @@ export function Magazines() {
           placeholder="Search magazines…"
         />
       </ExtraHeader>
-      <ServiceNote error={list.error} what="magazines" />
+      <ServiceNote
+        error={list.items.length ? null : list.error}
+        what="magazines"
+      />
       {!list.error && !list.items.length && !list.loading && (
         <div className="empty">
           <b>{query ? 'No magazines found' : 'No magazines yet'}</b>
@@ -258,7 +268,13 @@ export function Magazines() {
           />
         ))}
       </div>
-      <MoreOnScroll done={list.done} loading={list.loading} more={list.more} />
+      <MoreOnScroll
+        done={list.done}
+        loading={list.loading}
+        more={list.more}
+        error={list.error}
+        retry={list.retry}
+      />
     </ExtraGate>
   );
 }

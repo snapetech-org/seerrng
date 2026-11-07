@@ -455,6 +455,11 @@ body.is-detail .tabbar {
   bottom: 16px;
   display: grid;
   gap: 4px;
+  /* clicks on the title and text open the title (the card link sits underneath) */
+  pointer-events: none;
+}
+.feat .cap .go {
+  pointer-events: auto;
 }
 .feat .ey {
   font-size: 12px;

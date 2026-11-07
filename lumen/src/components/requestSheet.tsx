@@ -21,6 +21,9 @@ export function useAsksRequestOptions() {
   return prefs.requestOptions && canChooseRequestOptions(user?.permissions);
 }
 
+// a just-closed sheet is about to undo its history step (one sheet is open at a time)
+let pendingBack = false;
+
 export function RequestSheet({
   it,
   onClose,
@@ -47,7 +50,11 @@ export function RequestSheet({
   closeRef.current = onClose;
   useEffect(() => {
     let popped = false;
-    window.history.pushState(window.history.state, '', window.location.href);
+    // remounted at once (React StrictMode runs effects twice): reuse the entry already
+    // added rather than going back, whose popstate would close the new sheet
+    if (pendingBack) pendingBack = false;
+    else
+      window.history.pushState(window.history.state, '', window.location.href);
     const onPop = () => {
       popped = true;
       closeRef.current();
@@ -55,8 +62,16 @@ export function RequestSheet({
     window.addEventListener('popstate', onPop);
     return () => {
       window.removeEventListener('popstate', onPop);
-      // closed with a button: drop the extra entry so Back isn't needed twice
-      if (!popped) window.history.back();
+      // closed with a button: drop the extra entry so Back isn't needed twice. A microtask
+      // runs after an immediate remount but before anything the person does next.
+      if (!popped) {
+        pendingBack = true;
+        queueMicrotask(() => {
+          if (!pendingBack) return;
+          pendingBack = false;
+          window.history.back();
+        });
+      }
     };
   }, []);
   const send = async () => {

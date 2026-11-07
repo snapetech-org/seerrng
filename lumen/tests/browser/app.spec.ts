@@ -491,3 +491,54 @@ test('unavailable history storage still permits searching', async ({
   ).toBeVisible();
   expect(fixture.errors).toEqual([]);
 });
+
+test('a partly available series can still be watched', async ({ page }) => {
+  await fixtures(page);
+  await page.route('**/api/v1/tv/202', (route) =>
+    route.fulfill({
+      json: {
+        ...movie,
+        id: 202,
+        name: 'The Test Series',
+        title: undefined,
+        firstAirDate: '2020-01-01',
+        status: 'Returning Series',
+        seasons: [
+          { id: 1, seasonNumber: 1, episodeCount: 8, name: 'Season 1' },
+          { id: 2, seasonNumber: 2, episodeCount: 8, name: 'Season 2' },
+        ],
+        mediaInfo: {
+          ...available,
+          status: 4,
+          seasons: [{ seasonNumber: 1, status: 4 }],
+        },
+      },
+    })
+  );
+  await page.goto('/tv/202');
+  await expect(
+    page.getByRole('heading', { name: 'The Test Series' })
+  ).toBeVisible();
+  await expect(
+    page
+      .getByRole('link', { name: 'Watch on Plex' })
+      .filter({ visible: true })
+      .first()
+  ).toBeVisible();
+  await expect(page.getByText('Partly on Plex').first()).toBeVisible();
+});
+
+test('Discover leaves out rows that came back empty', async ({ page }) => {
+  await fixtures(page);
+  await page.goto('/');
+  await expect(
+    page.getByRole('heading', { name: 'Trending movies' })
+  ).toBeVisible();
+  // the fixtures have no series and no books
+  await expect(
+    page.getByRole('heading', { name: 'Popular series' })
+  ).toHaveCount(0);
+  await expect(
+    page.getByRole('heading', { name: 'Popular books' })
+  ).toHaveCount(0);
+});
