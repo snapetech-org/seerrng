@@ -2,6 +2,11 @@ import { expect, test, type Page } from '@playwright/test';
 import { writeFileSync } from 'node:fs';
 
 test.use({ serviceWorkers: 'block', reducedMotion: 'reduce' });
+// Settings saves can start a read-only SWR refresh just before assertions finish.
+// Drain its intercepted request before closing the page; do not suppress errors.
+test.afterEach(async ({ page }) => {
+  await page.unrouteAll({ behavior: 'wait' });
+});
 const baseline = process.env.SEERR_FINAL_BASELINE === 'true';
 const theme = process.env.SEERR_FINAL_THEME ?? 'seerrNGJ';
 async function login(page: Page) {
