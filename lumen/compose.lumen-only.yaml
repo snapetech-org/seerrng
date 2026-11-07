@@ -38,4 +38,5 @@ services:
     # Create the file first, then remove the # from the two lines below.
     # volumes:
     #   - ./lumen-config.json:/usr/share/nginx/html/lumen-config.json:ro
+    #   - ./branding:/usr/share/nginx/html/branding:ro  # optional logo / tab icon
     restart: unless-stopped

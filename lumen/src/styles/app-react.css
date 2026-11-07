@@ -20,6 +20,7 @@
     var(--bg);
 }
 .login-card {
+  box-sizing: border-box; /* the padding used to push the card off narrow phones */
   width: min(420px, 100%);
   display: grid;
   gap: 14px;
@@ -385,4 +386,87 @@
   text-decoration: underline;
   text-decoration-color: var(--line);
   text-underline-offset: 3px;
+}
+
+/* admin logo (lumen-config.json branding.logo) in place of the play mark */
+.mark.mark-img {
+  width: 30px;
+  height: 30px;
+  border-radius: 9px;
+  object-fit: contain;
+  background: none;
+}
+
+/* admin settings page (/me/lumen) */
+.cfg-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.cfg-row > span:first-child {
+  flex: 1 1 220px;
+  min-width: 0;
+}
+.cfg-on,
+.cfg-lock {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink-2);
+  min-height: 44px;
+  cursor: pointer;
+}
+.cfg-input,
+.cfg-select {
+  height: 40px;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+  background: var(--surface-2);
+  color: var(--ink);
+  padding: 0 10px;
+  font: inherit;
+  font-size: 15px;
+  min-width: 0;
+  flex: 0 1 280px;
+}
+.cfg-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+.cfg-json {
+  width: 100%;
+  box-sizing: border-box;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: var(--surface-2);
+  color: var(--ink);
+  padding: 12px;
+  font:
+    13px/1.5 ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    Consolas,
+    monospace;
+  resize: vertical;
+}
+.cfg-preview {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 800;
+  font-size: 18px;
+}
+.cfg-preview .mark {
+  width: 30px;
+  height: 30px;
+  border-radius: 9px;
+  background: var(--accent);
+  color: var(--accent-ink);
+  display: grid;
+  place-items: center;
 }

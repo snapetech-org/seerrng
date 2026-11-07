@@ -6,6 +6,7 @@
     "hoverRequest": true,
     "wholeSeriesDefault": true,
     "showBooks": true,
+    "requestOptions": true,
     "theme": "dark",
     "rows": { "genres": true, "comingSoon": true }
   },

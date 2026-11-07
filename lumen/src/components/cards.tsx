@@ -21,6 +21,7 @@ import { useMediaServerName } from '../auth';
 import { dropBookStates, useBookStates } from '../hooks';
 import { Icon, type IconName } from '../icons';
 import { usePrefs } from '../settings';
+import { useQuickRequest } from './requestSheet';
 import { useToast } from './toast';
 
 // one status vocabulary everywhere (same as the mockup)
@@ -34,7 +35,18 @@ export function statusOf(
   book = false,
   serverName = 'Plex'
 ): Stat {
-  const s = mi?.status;
+  // SeerrNG's own cards count the 4K copy too: a title that's only in the 4K library
+  // (or only requested in 4K) still gets its glyph
+  const shown = (x?: number) =>
+    !!x && x >= MediaStatus.PENDING && x <= MediaStatus.AVAILABLE;
+  const have = (x?: number) =>
+    x === MediaStatus.AVAILABLE || x === MediaStatus.PARTIAL;
+  const use4k =
+    !book &&
+    shown(mi?.status4k) &&
+    (!shown(mi?.status) || (have(mi?.status4k) && !have(mi?.status)));
+  const s = use4k ? mi?.status4k : mi?.status;
+  const downloads = use4k ? mi?.downloadStatus4k : mi?.downloadStatus;
   if (s === MediaStatus.AVAILABLE)
     return {
       k: 'ok',
@@ -45,7 +57,7 @@ export function statusOf(
     return { k: 'ok', word: `Partly on ${serverName}`, ico: 'check' };
   // processing = handed to Radarr/Sonarr/ChaptarrNG; it's only "downloading" once a download shows up
   if (s === MediaStatus.PROCESSING) {
-    const d = mi?.downloadStatus?.[0];
+    const d = downloads?.[0];
     return d
       ? {
           k: 'dl',
@@ -158,6 +170,10 @@ export function TitleCard({ it, meta }: { it: TitleResult; meta?: string }) {
       toast(e instanceof Error ? e.message : 'Request failed');
     }
   };
+  const quick = useQuickRequest(it, go, () => {
+    markRequested();
+    toast(`Requested ${titleOf(it)}${tv ? ' · entire series' : ''}`);
+  });
   let qb: ReactNode;
   const plex = plexUrl(it.mediaInfo);
   if (s?.k === 'ok')
@@ -192,7 +208,7 @@ export function TitleCard({ it, meta }: { it: TitleResult; meta?: string }) {
   else
     qb = (
       <>
-        <button className="qbtn go" onClick={go}>
+        <button className="qbtn go" onClick={quick.request}>
           <Icon name="plus" size="sm" />
           {unreleased ? 'Request early' : 'Request'}
         </button>
@@ -219,7 +235,7 @@ export function TitleCard({ it, meta }: { it: TitleResult; meta?: string }) {
         {prefs.hoverRequest && !s && (!tv || prefs.wholeSeriesDefault) && (
           <TouchQuick
             label={`Request ${titleOf(it)}${tv ? ' (entire series)' : ''}`}
-            onClick={go}
+            onClick={quick.request}
           />
         )}
         {prefs.hoverRequest && (
@@ -232,6 +248,7 @@ export function TitleCard({ it, meta }: { it: TitleResult; meta?: string }) {
       </div>
       <div className="t">{titleOf(it)}</div>
       <div className="m">{m}</div>
+      {quick.sheet}
     </div>
   );
 }
@@ -373,8 +390,13 @@ export function FeatCard({
       toast(e instanceof Error ? e.message : 'Request failed');
     }
   };
+  const quick = useQuickRequest(it, go, () => {
+    setDone(true);
+    toast(`Requested ${titleOf(it)}${tv ? ' · entire series' : ''}`);
+  });
   return (
     <div className="feat">
+      {quick.sheet}
       <img
         src={tmdbImg(it.backdropPath, 'w780')}
         alt=""
@@ -422,7 +444,7 @@ export function FeatCard({
               Choose seasons
             </Link>
           ) : (
-            <button className="btn go" onClick={go}>
+            <button className="btn go" onClick={quick.request}>
               <Icon name="plus" size="sm" />
               {tv ? 'Request series' : 'Request'}
             </button>

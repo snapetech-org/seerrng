@@ -1566,6 +1566,11 @@ body.is-detail .tabbar {
 :root[data-theme='dark'] .toast button {
   color: #2950e0;
 }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) .toast button {
+    color: #2950e0;
+  }
+}
 body.is-detail .toast {
   bottom: calc(84px + env(safe-area-inset-bottom));
 }

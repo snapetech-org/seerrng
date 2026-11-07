@@ -104,7 +104,8 @@ export function Games() {
     return () => clearTimeout(t);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [q]);
-  const list = useGames(cat, query);
+  // no game service behind the category: the gate explains, so don't ask SeerrNG for lists
+  const list = useGames(x.enabled('game') ? cat : undefined, query);
   const setCat = (c: GameCategory) => {
     const n = new URLSearchParams(p);
     n.set('c', c);

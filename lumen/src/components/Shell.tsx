@@ -10,6 +10,7 @@ import { useAuth } from '../auth';
 import { useExtras } from '../extras';
 import { useBack } from '../hooks';
 import { Icon, type IconName } from '../icons';
+import { BrandMark, brandName } from './brand';
 import { usePrefs } from '../settings';
 
 // scroll position of each history entry, for Back
@@ -88,7 +89,9 @@ export default function Shell({ children }: { children: ReactNode }) {
   };
   const placeholder = word[scope]
     ? `Search ${word[scope]}…`
-    : 'Search movies, series, books, narrators…';
+    : prefs.showBooks
+      ? 'Search movies, series, books, narrators…'
+      : 'Search movies and series…';
   const [term, setTerm] = useState('');
   useEffect(() => {
     setTerm(path === '/search' ? params.get('q') || '' : '');
@@ -188,13 +191,10 @@ export default function Shell({ children }: { children: ReactNode }) {
           <Link
             className="brand"
             to="/"
-            aria-label="SeerrNG home"
+            aria-label={`${brandName()} home`}
             onClick={toTop('/')}
           >
-            <span className="mark">
-              <Icon name="play" size="sm" />
-            </span>
-            SeerrNG
+            <BrandMark />
           </Link>
           {SIDE.filter(([h]) => prefs.showBooks || !isBook(h)).map(
             ([h, i, t]) => (

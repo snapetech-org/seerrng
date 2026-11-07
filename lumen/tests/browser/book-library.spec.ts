@@ -14,13 +14,62 @@ const book = (id: string, format: string, title: string, owned = false) => ({
     ? {
         status: 5,
         ...(format === 'ebook'
-          ? { externalServiceId: 12 }
+          ? { externalServiceId: 12, availableEbookServiceIds: [0] }
           : {
               audiobookLibraryServiceId: 9,
               audiobookLibraryItemId: 'abs-owned',
             }),
       }
     : undefined,
+});
+
+test('manager records do not mark missing book files available', async ({
+  page,
+}) => {
+  await fixtures(page);
+  await page.route('**/api/v1/discover/books?**', (route) =>
+    route.fulfill({
+      json: paged([
+        {
+          ...book('pending-manager', 'ebook', 'Manager only'),
+          mediaInfo: {
+            status: 5,
+            externalServiceId: 12,
+            audiobookExternalServiceId: 13,
+          },
+        },
+        {
+          ...book('imported-zero', 'ebook', 'Imported ebook'),
+          mediaInfo: { status: 5, availableEbookServiceIds: [0] },
+        },
+        {
+          ...book('other-format', 'ebook', 'Audio only'),
+          mediaInfo: { status: 5, availableAudiobookServiceIds: [9] },
+        },
+        {
+          ...book('plex-audio', 'audiobook', 'Plex audiobook'),
+          mediaInfo: { status: 5, hasPlexAudiobookFile: true },
+        },
+      ]),
+    })
+  );
+  await page.goto('/books');
+  for (const title of ['Manager only', 'Audio only', 'Plex audiobook'])
+    await expect(
+      page.locator('.poster', { hasText: title }).locator('.glyph.ok')
+    ).toHaveCount(0);
+  await expect(
+    page.locator('.poster', { hasText: 'Imported ebook' }).locator('.glyph.ok')
+  ).toHaveCount(1);
+  await page.goto('/audiobooks');
+  for (const title of ['Manager only', 'Imported ebook'])
+    await expect(
+      page.locator('.poster', { hasText: title }).locator('.glyph.ok')
+    ).toHaveCount(0);
+  for (const title of ['Audio only', 'Plex audiobook'])
+    await expect(
+      page.locator('.poster', { hasText: title }).locator('.glyph.ok')
+    ).toHaveCount(1);
 });
 const paged = (results: unknown[]) => ({
   page: 1,

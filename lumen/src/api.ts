@@ -42,11 +42,16 @@ export const MediaStatus = {
 } as const;
 
 export interface MediaInfo {
+  hasPlexAudiobookFile?: boolean;
+  availableEbookServiceIds?: number[] | null;
+  availableAudiobookServiceIds?: number[] | null;
+  ratingKey?: string | null;
   externalServiceId?: number | null;
   audiobookExternalServiceId?: number | null;
   audiobookLibraryServiceId?: number | null;
   audiobookLibraryItemId?: string | null;
   downloadStatus?: { size: number; sizeLeft: number }[];
+  downloadStatus4k?: { size: number; sizeLeft: number }[];
   status?: number;
   status4k?: number;
   mediaAddedAt?: string;
@@ -277,14 +282,25 @@ export const bookMediaForFormat = (
   media: MediaInfo | undefined,
   format: 'ebook' | 'audiobook'
 ): MediaInfo | undefined => {
-  if (!media || media.status !== MediaStatus.AVAILABLE) return media;
+  if (
+    !media ||
+    (media.status !== MediaStatus.AVAILABLE &&
+      media.status !== MediaStatus.PARTIAL)
+  )
+    return media;
+  const hasFiles = (ids: unknown) =>
+    Array.isArray(ids) && ids.some((id) => Number.isSafeInteger(id) && id >= 0);
   const available =
     format === 'ebook'
-      ? media.externalServiceId != null
-      : media.audiobookExternalServiceId != null ||
+      ? hasFiles(media.availableEbookServiceIds)
+      : media.hasPlexAudiobookFile === true ||
+        hasFiles(media.availableAudiobookServiceIds) ||
+        !!media.ratingKey ||
         (media.audiobookLibraryServiceId != null &&
-          media.audiobookLibraryItemId != null);
-  return available ? media : { ...media, status: undefined };
+          !!media.audiobookLibraryItemId);
+  return available
+    ? { ...media, status: MediaStatus.AVAILABLE }
+    : { ...media, status: undefined };
 };
 
 // ---- detail shapes ----

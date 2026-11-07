@@ -153,19 +153,27 @@ interface ServerDetail {
   server: { activeProfileId: number; activeDirectory: string };
 }
 
+// who may pick the Radarr/Sonarr server, quality and folder for a request
+export const canChooseRequestOptions = (permissions?: number) =>
+  ((permissions ?? 0) & MANAGE) !== 0;
+
 export function AdvancedOptions({
   kind,
   is4k,
   onChange,
+  inline = false,
+  onReady,
 }: {
   kind: 'movie' | 'tv';
   is4k: boolean;
   onChange: (o: RequestOptions) => void;
+  inline?: boolean; // always open, no "Advanced" toggle (the quick-request sheet)
+  onReady?: (ready: boolean) => void;
 }) {
   const { user } = useAuth();
-  const allowed = !!user && (user.permissions & MANAGE) !== 0;
+  const allowed = canChooseRequestOptions(user?.permissions);
   const svc = kind === 'movie' ? 'radarr' : 'sonarr';
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(inline);
   const [servers, setServers] = useState<Server[] | null>(null);
   const [detail, setDetail] = useState<ServerDetail | null>(null);
   const [err, setErr] = useState('');
@@ -184,35 +192,51 @@ export function AdvancedOptions({
   }, [open, servers, svc, is4k]);
   useEffect(() => {
     if (o.serverId == null) return;
+    let live = true;
+    const serverId = o.serverId;
     setDetail(null);
+    setErr('');
     api<ServerDetail>(`/service/${svc}/${o.serverId}`)
       .then((d) => {
+        if (!live) return;
         setDetail(d);
-        setO((x) => ({
-          ...x,
-          profileId: x.profileId ?? d.server.activeProfileId,
-          rootFolder: x.rootFolder ?? d.server.activeDirectory,
-        }));
+        setO((x) =>
+          x.serverId !== serverId
+            ? x
+            : {
+                ...x,
+                profileId: x.profileId ?? d.server.activeProfileId,
+                rootFolder: x.rootFolder ?? d.server.activeDirectory,
+              }
+        );
       })
-      .catch((e) =>
-        setErr(
-          `${e.message} (the ${svc === 'radarr' ? 'Radarr' : 'Sonarr'} server didn't answer)`
-        )
+      .catch(
+        (e) =>
+          live &&
+          setErr(
+            `${e.message} (the ${svc === 'radarr' ? 'Radarr' : 'Sonarr'} server didn't answer)`
+          )
       );
+    return () => {
+      live = false;
+    };
   }, [o.serverId, svc]);
   useEffect(() => onChange(open ? o : {}), [o, open, onChange]);
+  useEffect(() => {
+    onReady?.(
+      !!detail &&
+        !err &&
+        o.serverId != null &&
+        o.profileId != null &&
+        !!o.rootFolder
+    );
+  }, [detail, err, o, onReady]);
 
   if (!allowed) return null;
-  return (
-    <details
-      className="adv"
-      onToggle={(e) => setOpen((e.target as HTMLDetailsElement).open)}
-    >
-      <summary>
-        <Icon name="info" size="sm" />
-        Advanced (admins)
-      </summary>
+  const body = (
+    <>
       {err && <p className="note">{err}</p>}
+      {!servers && !err && open && <p className="note">Loading servers…</p>}
       {servers && (
         <div className="adv-grid">
           <label className="sel">
@@ -265,6 +289,19 @@ export function AdvancedOptions({
           )}
         </div>
       )}
+    </>
+  );
+  if (inline) return <div className="adv adv-inline">{body}</div>;
+  return (
+    <details
+      className="adv"
+      onToggle={(e) => setOpen((e.target as HTMLDetailsElement).open)}
+    >
+      <summary>
+        <Icon name="info" size="sm" />
+        Advanced (admins)
+      </summary>
+      {body}
     </details>
   );
 }

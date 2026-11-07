@@ -9,7 +9,7 @@ import {
   type Paged,
   type TitleResult,
 } from '../api';
-import { useMediaServerName } from '../auth';
+import { useAuth, useMediaServerName } from '../auth';
 import {
   BookCard,
   FeatCard,
@@ -25,10 +25,13 @@ import { useEbookCovers } from '../hooks';
 import { Icon, type IconName } from '../icons';
 import { usePrefs } from '../settings';
 
-function useApi<T>(path: string) {
+// rows that are switched off (or have no service behind them) don't fetch anything:
+// every call counts against SeerrNG's per-account rate limit
+function useApi<T>(path: string | null) {
   const [data, setData] = useState<T | null>(null);
   const [error, setError] = useState(false);
   useEffect(() => {
+    if (!path) return;
     let live = true;
     api<T>(path)
       .then((d) => live && setData(d))
@@ -41,11 +44,17 @@ function useApi<T>(path: string) {
 }
 
 // Recently added media: SeerrNG lists recently added media by id, so look up each title's details
-function useNewOnPlex() {
+// SeerrNG only lists recently added media for admins, request managers and people with
+// "View Recently Added"; everyone else gets a 403, so they don't get the row at all
+const RECENT = 2 | 16 | 67108864; // ADMIN | MANAGE_REQUESTS | RECENT_VIEW
+export const canSeeRecent = (permissions?: number) =>
+  ((permissions ?? 0) & RECENT) !== 0;
+function useNewOnPlex(enabled: boolean) {
   const [items, setItems] = useState<
     (TitleResult & { added?: string })[] | null
   >(null);
   useEffect(() => {
+    if (!enabled) return;
     let live = true;
     (async () => {
       const page = await api<{ results: MediaRow[] }>(
@@ -75,7 +84,7 @@ function useNewOnPlex() {
     return () => {
       live = false;
     };
-  }, []);
+  }, [enabled]);
   return items;
 }
 
@@ -102,14 +111,30 @@ export default function Discover() {
   const { prefs } = usePrefs();
   const on = prefs.rows;
   const books_ = prefs.showBooks;
-  const trending = useApi<Paged<TitleResult>>('/discover/trending');
-  const movies = useApi<Paged<TitleResult>>('/discover/movies');
-  const series = useApi<Paged<TitleResult>>('/discover/tv');
-  const audio = useApi<Paged<BookResult>>('/discover/books?format=audiobook');
-  const books = useApi<Paged<BookResult>>('/discover/books?format=ebook');
-  const soon = useApi<Paged<TitleResult>>('/discover/movies/upcoming');
-  const genres = useApi<Genre[]>('/discover/genreslider/movie');
-  const fresh = useNewOnPlex();
+  const trending = useApi<Paged<TitleResult>>(
+    on.hero ? '/discover/trending' : null
+  );
+  const movies = useApi<Paged<TitleResult>>(
+    on.trendingMovies ? '/discover/movies' : null
+  );
+  const series = useApi<Paged<TitleResult>>(
+    on.popularSeries ? '/discover/tv' : null
+  );
+  const audio = useApi<Paged<BookResult>>(
+    books_ && on.audiobooks ? '/discover/books?format=audiobook' : null
+  );
+  const books = useApi<Paged<BookResult>>(
+    books_ && on.books ? '/discover/books?format=ebook' : null
+  );
+  const soon = useApi<Paged<TitleResult>>(
+    on.comingSoon ? '/discover/movies/upcoming' : null
+  );
+  const genres = useApi<Genre[]>(
+    on.genres ? '/discover/genreslider/movie' : null
+  );
+  const { user } = useAuth();
+  const recentAllowed = canSeeRecent(user?.permissions);
+  const fresh = useNewOnPlex(on.newOnPlex && recentAllowed);
   const extras = useExtras();
 
   const hero = (trending.data?.results || [])
@@ -136,7 +161,11 @@ export default function Discover() {
         </div>
         <Link className="search search-ph" to="/search">
           <Icon name="search" />
-          <span className="ph-text">Movies, series, books, narrators…</span>
+          <span className="ph-text">
+            {books_
+              ? 'Movies, series, books, narrators…'
+              : 'Movies and series…'}
+          </span>
         </Link>
         <div className="chips navchips">
           {CHIPS.filter(
@@ -185,7 +214,7 @@ export default function Discover() {
         </Section>
       )}
 
-      {on.newOnPlex && (
+      {on.newOnPlex && recentAllowed && fresh?.length !== 0 && (
         <Section
           title={`New on ${serverName}`}
           link={['See all', '/movies?show=plex']}
