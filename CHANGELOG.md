@@ -14,6 +14,7 @@ tags. The comparison link is the complete commit range.
 ### Fixed
 
 - **Navigation:** Book Recommendations and Collector Picks respect global media category switches and supporting service configuration in desktop and mobile menus. Either enabled book format retains Book Recommendations; disabling Music hides Collector Picks.
+- **Offline recovery:** Direct visits to the offline utility page return home after connectivity recovers instead of repeatedly reloading that page. Service-worker fallback recovery retains the originally requested route.
 
 ## [3.72.19](https://github.com/snapetech-org/seerrng/compare/v3.72.18..v3.72.19) - 2026-11-06
 
