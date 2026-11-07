@@ -119,3 +119,12 @@ No old CodeQL workflow is restored.
 | [PR510](https://github.com/snapetech-org/seerrng/pull/510) | superseded by implementation on main | [Included commit](https://github.com/snapetech-org/seerrng/commit/44fa96163f16d97197d5051ca597f5abd5e36a2b). |
 | [PR547](https://github.com/snapetech-org/seerrng/pull/547) | original head included | [Included commit](https://github.com/snapetech-org/seerrng/commit/9b5f36d5588187a3751611e4f69283d9ac7b53d4). |
 | [PR591](https://github.com/snapetech-org/seerrng/pull/591) | superseded by implementation on main | [Included commit](https://github.com/snapetech-org/seerrng/commit/63b067497c4ed9f2e0ea1cf7d4bfd38116960fca). |
+
+## Public resolution receipts
+
+All99 historical entries now have public resolving comments. The audit added
+59 missing/stale receipts and read back each exact posted body, preserved36
+existing valid explanations, added explicit receipts for PR509/293/120, and
+resolved PR224 separately with its full50-commit source reconciliation.
+PR224 is closed as superseded; its temporarily restored branch is deleted.
+Incoming PR592/593 are genuinely MERGED, rather than closed as ignored work.

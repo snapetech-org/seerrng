@@ -38686,7 +38686,7 @@
       "callsites": [
         {
           "path": "server/lib/bookAvailability.ts",
-          "line": 64,
+          "line": 66,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'A valid book service ID is required.'",
@@ -67798,7 +67798,7 @@
     },
     {
       "path": "server/lib/bookAvailability.ts",
-      "line": 89,
+      "line": 91,
       "kind": "message-helper-return",
       "field": "message",
       "expression": "MediaStatus.AVAILABLE",
@@ -67807,7 +67807,7 @@
     },
     {
       "path": "server/lib/bookAvailability.ts",
-      "line": 90,
+      "line": 92,
       "kind": "message-helper-return",
       "field": "message",
       "expression": "media.status === MediaStatus.DELETED\n    ? MediaStatus.DELETED\n    : processing\n      ? MediaStatus.PROCESSING\n      : MediaStatus.UNKNOWN",
@@ -67816,7 +67816,7 @@
     },
     {
       "path": "server/lib/bookAvailability.ts",
-      "line": 90,
+      "line": 92,
       "kind": "message-helper-return",
       "field": "message",
       "expression": "media.status === MediaStatus.DELETED\n    ? MediaStatus.DELETED\n    : processing\n      ? MediaStatus.PROCESSING\n      : MediaStatus.UNKNOWN",
@@ -67825,7 +67825,7 @@
     },
     {
       "path": "server/lib/bookAvailability.ts",
-      "line": 90,
+      "line": 92,
       "kind": "message-helper-return",
       "field": "message",
       "expression": "media.status === MediaStatus.DELETED\n    ? MediaStatus.DELETED\n    : processing\n      ? MediaStatus.PROCESSING\n      : MediaStatus.UNKNOWN",

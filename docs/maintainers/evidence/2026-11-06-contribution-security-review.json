@@ -724,6 +724,33 @@
         "../seerrng-user-bug-reports-20261106/lumen-pr589-browser.log"
       ],
       "pull_request": "https://github.com/snapetech-org/seerrng/pull/589"
+    },
+    {
+      "number": 592,
+      "source_patch": "../seerrng-incoming-review-20261106/pr592-source.patch",
+      "sha256": "5f077a6246ecd1e4aeca8bebb02db15f46c92c840ef387de4d228338290ae821",
+      "review": "All28 changed source/configuration/style/documentation/test files reviewed at original head3e5d25d596149699723057a1d99dfd5613e04f10; no dependency or workflow addition. Original history retained in main integration0d17a8a2038040d100d6938847694927c73c589f.",
+      "disposition": "Retain family login, branding, configuration export, bounded browsing and destination controls. Repair manager-ID file assumptions, premature submission, stale destination responses, malformed settings/storage, wrong-account late cache writes, Retry-After deadlines and search POP restoration. Five original-build browser failures reproduced; patched build passes13 focused unit and211 browser checks, plus eight matching visual cases. Hosted run42317198842 passes21 native/proxy checks, dependency/image security gates and211 browsers. All24 final light/dark matching pairs are pixel-identical. No live household mutation or physical-device claim.",
+      "evidence": [
+        "../seerrng-incoming-review-20261106/lumen-hosted-qualified.log",
+        "../seerrng-incoming-review-20261106/lumen-final-visual-comparison.json",
+        "../seerrng-incoming-review-20261106/lumen-regression-baseline.log",
+        "../seerrng-incoming-review-20261106/lumen-baseline-regressions-qualified.log"
+      ],
+      "pull_request": "https://github.com/snapetech-org/seerrng/pull/592"
+    },
+    {
+      "number": 593,
+      "source_patch": "../seerrng-incoming-review-20261106/pr593-source.patch",
+      "sha256": "929cae9ec5968003c7f310a707dd0e8cd76003f98a4f8d7146746a5120cc9600",
+      "review": "All seven original Android source/resource files reviewed at head88a3807e69a03a635b3945586438f98a37606f9c. Original history retained in main integration3f347376f.",
+      "disposition": "Retain system Back, insets, dark mode, WebView restoration and tapped native Plex handoff. Replace parsed intents with fresh ACTION_VIEW/BROWSABLE intents carrying only approved URL/package; reject local/executable schemes and credential-bearing targets/fallbacks. Four connected rejection/normalization regressions added. Hosted runs42315272983 and42317429318 pass10 unit and15 Android16 emulator checks plus debug APK build. The latter captures the checksum-verified published16 APK and candidate in phone/tablet light/dark; four pairs visually reviewed. Initial screenshot harness cleanup failure was repaired without changing app source. No native Plex playback, older-OS or physical gesture claim.",
+      "evidence": [
+        "../seerrng-incoming-review-20261106/android-593-qualified.log",
+        "../seerrng-incoming-review-20261106/android-593-appearance-qualified.log",
+        "../seerrng-incoming-review-20261106/android-593-appearance-reports"
+      ],
+      "pull_request": "https://github.com/snapetech-org/seerrng/pull/593"
     }
   ]
 }

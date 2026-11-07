@@ -103,3 +103,33 @@ current validation; this addendum does not change the earlier release checkpoint
 ## Main consolidation follow-up — November 6, 2026
 
 The two version-only deepmerge alerts mentioned above were subsequently reconciled against the actual patched runtime and fresh frozen-lockfile docs graphs. Runtime5/5 and docs3/3 regression checks passed. Alerts370/372 were dismissed as inaccurate for the locally patched packages, with explicit evidence; no upstream fixed version was claimed. A separately confirmed session-expiry issue was repaired in485dc0300 and its private report closed with native replay/restart regression evidence. See [the consolidation record](branch-consolidation-2026-11-06.md) for scope, source and release boundaries.
+
+## Incoming contributions592 and593
+
+The scoped human-contribution ledger now contains57 records. PR592 and PR593
+are MERGED with original contributor heads preserved in main through0d17a8a20
+and3f347376f, respectively. Their source-patch hashes, reviewed surfaces, repaired
+defects and validation boundaries are recorded individually in the JSON ledger.
+
+Lumen review reproduced five original-build browser failures and repaired
+destination readiness/freshness, file-evidence, malformed settings/storage and
+account-scoped cache handling. Retry deadlines and search Back restoration are
+also repaired. [Hosted run42317198842](https://github.com/snapetech-org/seerrng/actions/runs/42317198842)
+passes21 native/proxy checks, dependency/image security gates and211 browser
+cases. Matching light/dark captures cover four viewports; all24 final pairs are
+pixel-identical after finite transitions settle. See
+[lumen-contribution-592-review.md](lumen-contribution-592-review.md).
+
+Android intent handoff no longer retains page-supplied actions/extras. It builds
+a clean browsable view intent and rejects unsafe targets.
+[Hosted appearance run42317429318](https://github.com/snapetech-org/seerrng/actions/runs/42317429318)
+passes10 unit checks,15 Android16 emulator checks and the APK build. Four matching
+phone/tablet light/dark pairs compare the candidate with the actual checksum-
+verified published16 APK. See
+[android-contribution-593-review.md](android-contribution-593-review.md).
+
+The native search/detail availability discrepancy reported alongside PR592 is
+separately fixed in adf421d79; public Plex audiobook evidence after private-key
+redaction is fixed in3d2bd573d. These later changes require final integrated-main
+qualification and release publication; the older CI/source checkpoints above
+are not a claim that v3.72.17 is already published.

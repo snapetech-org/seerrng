@@ -22,8 +22,12 @@ tags. The comparison link is the complete commit range.
 - **Discovery:** Restore Arabic carousel positions after Back navigation, accept empty public TMDB lists and enforce the provider's supported list-ID range.
 - **Library access:** Search and discovery agree with title details for viewer-accessible Plex, Jellyfin and Emby copies, including4K. Private server identifiers remain hidden and inaccessible copies remain unavailable.
 
+- **Lumen:** Add family sign-in, branding/configuration export and quick-request destination options; repair stale responses, account-scoped category caches, malformed settings and book file evidence.
+- **Android:** Restore system Back, system-bar spacing and device dark mode, retain the selected page after recreation, and constrain native app handoff to safe browsable view intents.
+
 ### Operator and maintainer changes
 
+- **Lumen operators:** Rebuild and recreate Lumen to receive its frontend changes.
 - **Action after upgrading:** Rescan enabled book services to populate imported-file observations for legacy records. Migration does not infer files from manager IDs; independent Audiobookshelf/Plex items are preserved.
 - **Distribution:** Restore reviewed Compose, Cloudron and Co-op submission candidates from PR137 with pinned images, restricted runtime privileges and validated proxy origins. These templates are not a claim of marketplace publication or live platform acceptance.
 - **Maintenance:** Remove blind support-issue closing and disable stale auto-closure. Closed issues have public resolution receipts. Recover the pnpm setup update with the reviewed v6.1.1 bootstrap while retaining pnpm10.24.0.
