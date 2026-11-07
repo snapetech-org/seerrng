@@ -1566,3 +1566,49 @@ test('admin page picks the logo shape with a live preview', async ({
     JSON.parse(await page.getByLabel('lumen-config.json').inputValue()).branding
   ).toEqual({ name: 'Requests', logo: '/branding/logo.png' });
 });
+
+test('Everyone shows more on request and filters by status', async ({
+  page,
+}) => {
+  await fixtures(page, { permissions: 2 });
+  await requestRoutes(page);
+  const asked: string[] = [];
+  const many = Array.from({ length: 45 }, (_, i) => ({
+    ...waitingRequest,
+    id: 100 + i,
+    status: 2,
+    createdAt: `2026-11-0${(i % 9) + 1}T10:00:00.000Z`,
+  }));
+  await page.route('**/api/v1/request?*', (route) => {
+    const q = new URL(route.request().url()).searchParams;
+    asked.push(`${q.get('filter')}:${q.get('skip')}:${q.get('take')}`);
+    if (q.has('requestedBy') || q.get('filter') !== 'all')
+      return route.fulfill({
+        json: { pageInfo: { pages: 1, results: 0 }, results: [] },
+      });
+    const skip = Number(q.get('skip'));
+    const take = Number(q.get('take'));
+    return route.fulfill({
+      json: {
+        pageInfo: { pages: 1, results: many.length },
+        results: many.slice(skip, skip + take),
+      },
+    });
+  });
+  await page.goto('/requests?tab=everyone');
+  await expect(page.locator('.rq')).toHaveCount(20);
+  await page.getByRole('button', { name: 'Show more' }).click();
+  await expect(page.locator('.rq')).toHaveCount(40);
+  await page.getByRole('button', { name: 'Show more' }).click();
+  await expect(page.locator('.rq')).toHaveCount(45);
+  await expect(page.getByRole('button', { name: 'Show more' })).toHaveCount(0);
+  // filters use SeerrNG's own, with its counts
+  const filters = page.getByRole('group', { name: 'Which requests' });
+  await expect(filters.getByRole('button', { name: /Waiting/ })).toContainText(
+    '1'
+  );
+  await filters.getByRole('button', { name: /Failed/ }).click();
+  await expect(page).toHaveURL(/show=failed/);
+  await expect(page.getByText('Nothing here')).toBeVisible();
+  expect(asked).toContain('failed:0:20');
+});

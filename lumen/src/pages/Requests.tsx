@@ -48,6 +48,16 @@ interface Row {
   airing?: boolean;
 }
 
+// Everyone tab: SeerrNG's request filters, and how many requests load at a time
+const EVERYONE_FILTERS = [
+  ['all', 'All', 'total'],
+  ['pending', 'Waiting', 'pending'],
+  ['processing', 'Downloading', 'processing'],
+  ['failed', 'Failed', 'failed'],
+  ['available', 'Available', 'available'],
+] as const;
+const PAGE = 20;
+
 // what a request looks like to the person who made it, in plain words
 // "00:03:03" -> "About 3 min left"
 function eta(t?: string) {
@@ -516,7 +526,19 @@ export default function Requests() {
   const manage = canChooseRequestOptions(user?.permissions);
   const everyone = manage && tab === 'everyone';
   const [others, setOthers] = useState<Row[] | null>(null);
-  const [waiting, setWaiting] = useState<number | null>(null);
+  // SeerrNG's request counts, for the Everyone tab and its filters
+  const [counts, setCounts] = useState<Record<string, number> | null>(null);
+  const waiting = counts?.pending ?? null;
+  // Everyone: which requests (SeerrNG's own filters) and how many pages of them
+  const show = (EVERYONE_FILTERS.find(([v]) => v === p.get('show')) ||
+    EVERYONE_FILTERS[0])[0];
+  const [pages, setPages] = useState(1);
+  const [hasMore, setHasMore] = useState(false);
+  const [loadingMore, setLoadingMore] = useState(false);
+  useEffect(() => {
+    setPages(1);
+    setOthers(null);
+  }, [show, everyone]);
   const [acting, setActing] = useState<number | null>(null);
   const [editing, setEditing] = useState<Row | null>(null);
   // Remove asks once more on the same button instead of a pop-up
@@ -530,9 +552,9 @@ export default function Requests() {
   useEffect(() => {
     if (!manage) return;
     let live = true;
-    api<{ pending: number }>('/request/count')
-      .then((d) => live && setWaiting(d.pending))
-      .catch(() => live && setWaiting(null));
+    api<Record<string, number>>('/request/count')
+      .then((d) => live && setCounts(d))
+      .catch(() => live && setCounts(null));
     return () => {
       live = false;
     };
@@ -541,34 +563,55 @@ export default function Requests() {
   useEffect(() => {
     if (!everyone) return;
     let live = true;
-    const list = (filter: string, take: number) =>
-      api<{ results: RequestItem[] }>(
-        `/request?take=${take}&skip=0&filter=${filter}&sort=added`
-      ).then((d) => d.results);
-    // every request still waiting, then the newest of the rest
-    // waiting for approval, then downloads that have started (furthest along first), then the
-    // newest of the rest
-    Promise.all([
-      list('pending', 50),
-      startedDownloads().catch(() => []),
-      list('all', 20),
-    ])
-      .then(([pending, started, recent]) =>
-        describeAll(
-          merge(
-            pending,
-            started.sort((a, b) => progress(b) - progress(a)),
-            recent
-          )
-        )
-      )
-      .then((x) => live && setOthers(x))
+    // the newest `take` requests of one filter, in SeerrNG's pages of up to 100
+    const list = async (filter: string, take: number) => {
+      const out: RequestItem[] = [];
+      let total = 0;
+      for (let skip = 0; skip < take; skip += 100) {
+        const d = await api<{
+          pageInfo?: { results?: number };
+          results: RequestItem[];
+        }>(
+          `/request?take=${Math.min(100, take - skip)}&skip=${skip}&filter=${filter}&sort=added`
+        );
+        total = d.pageInfo?.results ?? 0;
+        out.push(...d.results);
+        if (d.results.length < Math.min(100, take - skip)) break;
+      }
+      return { results: out, more: total > take };
+    };
+    const take = PAGE * pages;
+    // All: waiting for approval, then downloads that have started (furthest along first), then
+    // the newest of the rest. Downloading: started ones first too. Others: newest first.
+    const started =
+      show === 'all' || show === 'processing'
+        ? startedDownloads()
+            .then((x) => x.sort((a, b) => progress(b) - progress(a)))
+            .catch(() => [])
+        : Promise.resolve([]);
+    const pending =
+      show === 'all'
+        ? list('pending', 50).then((x) => x.results)
+        : Promise.resolve([]);
+    Promise.all([pending, started, list(show, take)])
+      .then(async ([waitingList, startedList, rest]) => {
+        const rows = await describeAll(
+          merge(waitingList, startedList, rest.results)
+        );
+        if (!live) return;
+        setOthers(rows);
+        setHasMore(rest.more);
+      })
       .catch(() => live && setOthers([]))
-      .finally(() => live && setRefreshing(false));
+      .finally(() => {
+        if (!live) return;
+        setRefreshing(false);
+        setLoadingMore(false);
+      });
     return () => {
       live = false;
     };
-  }, [everyone, tick]);
+  }, [everyone, show, pages, tick]);
 
   useEffect(() => {
     if (!user || everyone) return;
@@ -669,7 +712,9 @@ export default function Requests() {
         </div>
         <p className="sub">
           {everyone
-            ? 'Everyone’s requests. Waiting ones first, then the newest.'
+            ? show === 'all'
+              ? 'Everyone’s requests: waiting ones first, then downloads, then the newest.'
+              : 'Everyone’s requests, newest first.'
             : 'Everything you’ve asked for, newest first.'}
         </p>
       </header>
@@ -717,10 +762,38 @@ export default function Requests() {
           {everyone ? 'Loading everyone’s requests…' : 'Loading your requests…'}
         </p>
       )}
+      {everyone && (
+        <div className="chips wrap" role="group" aria-label="Which requests">
+          {EVERYONE_FILTERS.map(([v, t, key]) => (
+            <button
+              key={v}
+              className="chip"
+              aria-pressed={show === v}
+              onClick={() =>
+                setP(
+                  v === 'all'
+                    ? { tab: 'everyone' }
+                    : { tab: 'everyone', show: v },
+                  {
+                    replace: true,
+                  }
+                )
+              }
+            >
+              {t}
+              {counts?.[key] != null && (
+                <span className="n">{counts[key]}</span>
+              )}
+            </button>
+          ))}
+        </div>
+      )}
       {shown && !list.length && everyone && (
         <div className="empty">
-          <b>No requests yet</b>
-          Nobody has asked for anything.
+          <b>{show === 'all' ? 'No requests yet' : 'Nothing here'}</b>
+          {show === 'all'
+            ? 'Nobody has asked for anything.'
+            : 'No requests match this filter right now.'}
         </div>
       )}
       {shown && !list.length && !everyone && (
@@ -857,6 +930,20 @@ export default function Requests() {
           );
         })}
       </div>
+      {everyone && hasMore && shown && (
+        <div className="more-scroll">
+          <button
+            className="btn btn-tonal"
+            disabled={loadingMore}
+            onClick={() => {
+              setLoadingMore(true);
+              setPages((n) => n + 1);
+            }}
+          >
+            {loadingMore ? 'Loading…' : 'Show more'}
+          </button>
+        </div>
+      )}
       {editing && (
         <RequestEditSheet
           r={editing.r}
