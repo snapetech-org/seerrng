@@ -929,10 +929,7 @@ const SettingsProwlarr = () => {
             {intl.formatMessage(messages.noSearchableIndexers)}
           </p>
         )}
-      <div
-        data-testid="prowlarr-actions"
-        className="-mx-4 mt-5 flex flex-wrap items-center gap-3 border-t border-gray-700 bg-gray-900/95 px-4 py-3 sm:-mx-6 sm:px-6"
-      >
+      <div data-testid="prowlarr-actions" className="settings-form-footer">
         <button
           type="button"
           className="rounded bg-indigo-600 px-4 py-2 font-semibold text-white hover:bg-indigo-500 disabled:cursor-not-allowed disabled:opacity-50"

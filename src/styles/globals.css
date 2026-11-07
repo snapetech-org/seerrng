@@ -8183,6 +8183,37 @@
     padding: 0 var(--inset-card-padding) var(--inset-card-padding);
   }
 
+  /* Padded card forms may extend their footer to the card edge. Open-form
+     themes set the outset to zero rather than inheriting negative margins. */
+  .settings-form-footer {
+    --settings-form-footer-default-outset: 16px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+    margin-top: 20px;
+    margin-inline: calc(
+      -1 *
+        var(
+          --settings-form-footer-outset,
+          var(--settings-form-footer-default-outset)
+        )
+    );
+    border-top: 1px solid rgb(var(--color-gray-700));
+    background: rgb(var(--color-gray-900) / 0.95);
+    padding: 12px
+      var(
+        --settings-form-footer-outset,
+        var(--settings-form-footer-default-outset)
+      );
+  }
+
+  @media (min-width: 640px) {
+    .settings-form-footer {
+      --settings-form-footer-default-outset: 24px;
+    }
+  }
+
   .settings-service-card-actions {
     @apply p-0;
   }

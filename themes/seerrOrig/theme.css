@@ -1862,6 +1862,7 @@
 }
 :is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
   .settings-page-content {
+  --settings-form-footer-outset: 0px;
   --settings-control-surface-opacity: 1;
   --theme-control-surface: 55 65 81;
   --compact-control-height: 38px;

@@ -150,6 +150,31 @@ describe('Prowlarr settings on a short mobile screen', () => {
     }).as('saveProwlarr');
   });
 
+  for (const theme of ['seerrOrig', 'seerrNGJ']) {
+    it(`keeps the settings footer inside the viewport in ${theme}`, () => {
+      cy.request('POST', '/api/v1/user/1/settings/interface-theme', { theme });
+      cy.visit('/settings/prowlarr');
+      cy.wait('@prowlarrSettings');
+      cy.get('html').should('have.attr', 'data-interface-theme', theme);
+      for (const width of [390, 1440]) {
+        cy.viewport(width, 900);
+        cy.get('[data-testid="prowlarr-actions"]')
+          .scrollIntoView()
+          .should(($footer) => {
+            const rect = $footer[0].getBoundingClientRect();
+            expect(rect.left).to.be.at.least(0);
+            expect(rect.right).to.be.at.most(width);
+            expect(
+              $footer[0].ownerDocument.documentElement.scrollWidth
+            ).to.be.at.most(width);
+          });
+      }
+      cy.request('POST', '/api/v1/user/1/settings/interface-theme', {
+        theme: 'seerrOrig',
+      });
+    });
+  }
+
   it('keeps save reachable after scrolling the long indexer report', () => {
     cy.visit('/settings/prowlarr');
     cy.wait('@prowlarrSettings').then(({ response }) => {

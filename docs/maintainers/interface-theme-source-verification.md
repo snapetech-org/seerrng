@@ -88,3 +88,9 @@ requests, source sorting/filter drawers, contextual navigation, and request
 destination/edit tools through their visible disclosures. Older Cypress
 John-specific pin/disclosure assertions explicitly select John; source behavior
 is exercised independently, rather than assuming those presentations share DOM.
+
+The final static-route sweep found an 8px desktop overflow in Prowlarr settings.
+Its footer had fixed negative margins for a padded card. The shared
+`settings-form-footer` role now owns that outset; SeerrOrig open forms select
+zero while John retains its existing padded-card geometry. Regression checks
+cover both themes at 390 and 1440 pixels, including reachable save controls.
