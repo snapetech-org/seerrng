@@ -138,6 +138,7 @@ export function ComicDetail() {
     <ExtraGate k="comic">
       <article className="detail">
         <DetailTop
+          status={s}
           poster={c.posterPath}
           title={c.title}
           line={[
@@ -308,6 +309,7 @@ export function MagazineDetail() {
     <ExtraGate k="magazine">
       <article className="detail">
         <DetailTop
+          status={s}
           poster={m.posterPath}
           title={m.title}
           line={[

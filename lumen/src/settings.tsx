@@ -75,6 +75,8 @@ interface Ctx {
   seerrPublicUrl?: string;
   set: (path: string, value: boolean | string) => void;
   reset: () => void;
+  // the admin page saved a new lumen-config.json: use it now, without a reload
+  adminSaved: (c: AdminConfig) => void;
 }
 const C = createContext<Ctx>({
   prefs: DEFAULT_PREFS,
@@ -82,6 +84,7 @@ const C = createContext<Ctx>({
   locked: new Set(),
   set: () => {},
   reset: () => {},
+  adminSaved: () => {},
 });
 export const usePrefs = () => useContext(C);
 
@@ -218,6 +221,7 @@ export function PrefsProvider({ children }: { children: ReactNode }) {
         seerrPublicUrl: admin.seerrPublicUrl,
         set,
         reset,
+        adminSaved: setAdmin,
       }}
     >
       {children}

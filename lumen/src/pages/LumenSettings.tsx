@@ -14,9 +14,9 @@ import {
   type DiscoverRow,
 } from '../settings';
 
-// Admins choose what everyone gets. Lumen is static files with no database, so the
-// result is a lumen-config.json to download and mount next to the app; every browser
-// reads it on its next load.
+// Admins choose what everyone gets, saved as lumen-config.json; every browser reads it on its
+// next load. Lumen has no database: its nginx saves the file into a mounted /lumen-data folder
+// (deploy/lumen-config.js). Without that folder the file is downloaded and mounted by hand.
 const SWITCHES = [
   ['hoverRequest', 'Quick request on posters'],
   ['wholeSeriesDefault', 'Request whole series by default'],
@@ -28,7 +28,7 @@ type Switch = (typeof SWITCHES)[number][0];
 
 export default function LumenSettings() {
   const { user } = useAuth();
-  const { adminConfig } = usePrefs();
+  const { adminConfig, adminSaved } = usePrefs();
   const toast = useToast();
   const [cfg, setCfgState] = useState<AdminConfig>(() =>
     JSON.parse(JSON.stringify(adminConfig || {}))
@@ -45,6 +45,29 @@ export default function LumenSettings() {
     setCfgState(v);
   };
   const isAdmin = ((user?.permissions ?? 0) & 2) !== 0;
+  // can this server save the file itself? null while asking
+  const [saveState, setSaveState] = useState<{
+    canSave: boolean;
+    folder?: string;
+  } | null>(null);
+  const [saving, setSaving] = useState(false);
+  useEffect(() => {
+    if (!isAdmin) return;
+    let live = true;
+    fetch('/lumen/config', { cache: 'no-store', credentials: 'same-origin' })
+      .then((r) => (r.ok ? r.json() : null))
+      .then(
+        (d) =>
+          live &&
+          setSaveState(
+            d && typeof d.canSave === 'boolean' ? d : { canSave: false }
+          )
+      )
+      .catch(() => live && setSaveState({ canSave: false }));
+    return () => {
+      live = false;
+    };
+  }, [isAdmin]);
 
   const defaults = { ...DEFAULT_PREFS, ...(cfg.defaults || {}) };
   const rows = { ...DEFAULT_PREFS.rows, ...(cfg.defaults?.rows || {}) };
@@ -89,6 +112,26 @@ export default function LumenSettings() {
     a.download = 'lumen-config.json';
     a.click();
     setTimeout(() => URL.revokeObjectURL(url), 1000);
+  };
+  const save = async () => {
+    setSaving(true);
+    try {
+      const r = await fetch('/lumen/config', {
+        method: 'PUT',
+        credentials: 'same-origin',
+        headers: { 'Content-Type': 'application/json' },
+        body: json,
+      });
+      const d = await r.json().catch(() => null);
+      if (!r.ok) throw new Error(d?.message || `Couldn’t save (${r.status})`);
+      adminSaved(JSON.parse(json));
+      touched.current = false;
+      toast('Saved. Everyone gets it the next time they open Lumen.');
+    } catch (e) {
+      toast(e instanceof Error ? e.message : 'Couldn’t save');
+    } finally {
+      setSaving(false);
+    }
   };
   const copy = () =>
     navigator.clipboard
@@ -161,11 +204,20 @@ export default function LumenSettings() {
           </div>
         </div>
         <p className="sub">
-          Pick what everyone gets, then download <b>lumen-config.json</b> and
-          put it next to Lumen (see “Admin defaults” in the Lumen guide). People
-          see the change the next time they open Lumen. “Always on” and “Always
-          off” can’t be changed on anyone’s You page; the others are just where
-          everyone starts.
+          {saveState?.canSave ? (
+            <>
+              Pick what everyone gets, then select <b>Save for everyone</b>.
+            </>
+          ) : (
+            <>
+              Pick what everyone gets, then download <b>lumen-config.json</b>{' '}
+              and put it next to Lumen (see “Admin defaults” in the Lumen
+              guide).
+            </>
+          )}{' '}
+          People see the change the next time they open Lumen. “Always on” and
+          “Always off” can’t be changed on anyone’s You page; the others are
+          just where everyone starts.
         </p>
       </header>
 
@@ -338,13 +390,32 @@ export default function LumenSettings() {
 
       <Section title="lumen-config.json">
         <div className="cfg-actions">
-          <button className="btn btn-primary" onClick={download}>
+          {saveState?.canSave && (
+            <button
+              className="btn btn-primary"
+              onClick={save}
+              disabled={saving}
+            >
+              {saving ? 'Saving…' : 'Save for everyone'}
+            </button>
+          )}
+          <button
+            className={`btn ${saveState?.canSave ? 'btn-tonal' : 'btn-primary'}`}
+            onClick={download}
+          >
             Download lumen-config.json
           </button>
           <button className="btn btn-tonal" onClick={copy}>
             Copy
           </button>
         </div>
+        {saveState && !saveState.canSave && (
+          <p className="note">
+            {saveState.folder === 'readonly'
+              ? 'Lumen can’t write to its /lumen-data folder, so it can’t save this itself. Make the folder writable by user 101 (see “Admin defaults” in the Lumen guide).'
+              : 'To save from here instead of downloading, give Lumen a /lumen-data folder (see “Admin defaults” in the Lumen guide).'}
+          </p>
+        )}
         <textarea
           className="cfg-json"
           readOnly

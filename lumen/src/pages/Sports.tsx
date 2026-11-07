@@ -128,6 +128,7 @@ export function LeagueDetail() {
     <ExtraGate k="sports">
       <article className="detail">
         <DetailTop
+          status={s}
           poster={l.posterPath}
           square
           title={l.title}
@@ -243,6 +244,7 @@ export function SceneDetail() {
     <ExtraGate k="adult">
       <article className="detail">
         <DetailTop
+          status={s}
           backdrop={x.posterPath}
           title={x.title}
           line={[x.year, x.studio]}

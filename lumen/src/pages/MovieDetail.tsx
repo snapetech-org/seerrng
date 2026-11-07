@@ -137,6 +137,7 @@ export default function MovieDetail() {
   return (
     <article className="detail">
       <DetailTop
+        status={s}
         backdrop={tmdbImg(m.backdropPath, 'w1280')}
         poster={tmdbImg(m.posterPath)}
         title={m.title || ''}

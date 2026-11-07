@@ -339,13 +339,25 @@ and showing books at all. You can set the defaults, and lock any of them, with a
 `lumen-config.json` file. The same file sets the sign-in page, the logo and the
 browser tab icon.
 
-The easiest way to write it: sign in to Lumen as an admin, open **You → Lumen
-settings for everyone**, pick what you want, and press **Download
-lumen-config.json**. The page starts from the file you already have. Lumen is
-plain files with no database, so it can't save settings itself; you put the
-downloaded file in place as below.
+The easiest way: sign in to Lumen as an admin, open **You → Lumen settings for
+everyone**, pick what you want, and press **Save for everyone**. The page starts
+from the settings you already have. For the **Save** button, Lumen needs a folder
+it may write to:
 
-To set it up:
+1. Next to `compose.yaml`, create the folder and give it to Lumen's user (101):
+
+   ```sh
+   mkdir lumen-data && sudo chown 101:101 lumen-data
+   ```
+
+2. In `compose.yaml`, remove the `#` from `volumes:` and the `./lumen-data` line
+   under `lumen`, then run `docker compose up -d`.
+
+Only SeerrNG admins can save; Lumen checks with SeerrNG before writing. Settings
+saved this way win over a `lumen-config.json` mounted as below.
+
+Without that folder, the page offers **Download lumen-config.json** instead, and
+you put the file in place by hand:
 
 1. Save this as `lumen-config.json` next to `compose.yaml`, and change what you like:
 
@@ -389,7 +401,8 @@ To set it up:
    - Put setting names in `locked` to stop users changing them, for example
      `"locked": ["showBooks"]`.
 
-2. In `compose.yaml`, remove the `#` from the two `volumes:` lines under `lumen`.
+2. In `compose.yaml`, remove the `#` from `volumes:` and the `./lumen-config.json`
+   line under `lumen`.
    For your own logo and icon, put the images in a `branding` folder next to
    `compose.yaml` and also uncomment the `./branding` line.
 3. Run `docker compose up -d`.

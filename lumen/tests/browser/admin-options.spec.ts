@@ -1021,3 +1021,215 @@ test('signing out drops the saved answers', async ({ page }) => {
     .poll(() => page.evaluate(() => localStorage.getItem('lumen-cache:1')))
     .toBeNull();
 });
+
+// ---- tester feedback (Tatsu): requests from everyone, request as, library badge, saving ----
+const details301 = {
+  id: 301,
+  title: 'Only In 4K',
+  genres: [],
+  releaseDate: '2020-01-01',
+  posterPath: '/p301.png',
+  backdropPath: '/b301.png',
+  overview: 'A title for the tests.',
+  mediaInfo: { id: 1, status: 5 },
+};
+const waitingRequest = {
+  id: 77,
+  status: 1,
+  type: 'movie',
+  is4k: false,
+  createdAt: '2026-11-06T10:00:00.000Z',
+  seasons: [],
+  requestedBy: { id: 5, displayName: 'Sam' },
+  media: { mediaType: 'movie', tmdbId: 301, status: 2 },
+};
+async function requestRoutes(page: Page) {
+  const asked: string[] = [];
+  await page.route('**/api/v1/request**', async (route) => {
+    const req = route.request();
+    const url = new URL(req.url());
+    const path = url.pathname.slice(7);
+    if (req.method() !== 'GET') return route.fallback();
+    asked.push(path + url.search);
+    if (path === '/request/count')
+      return route.fulfill({ json: { total: 1, pending: 1 } });
+    if (path !== '/request') return route.fallback();
+    const mine = url.searchParams.has('requestedBy');
+    const pending = url.searchParams.get('filter') === 'pending';
+    return route.fulfill({
+      json: {
+        pageInfo: { pages: 1, results: 1 },
+        results: !mine && pending ? [waitingRequest] : [],
+      },
+    });
+  });
+  await page.route('**/api/v1/movie/301', (route) =>
+    route.fulfill({ json: details301 })
+  );
+  return asked;
+}
+
+test('admins see everyone’s requests and approve or decline them', async ({
+  page,
+}) => {
+  const { posts, errors } = await fixtures(page, { permissions: 2 });
+  await requestRoutes(page);
+  await page.route('**/api/v1/request/77/*', (route) => {
+    if (route.request().method() !== 'POST') return route.fallback();
+    posts.push({
+      path: new URL(route.request().url()).pathname.slice(7),
+      body: {},
+    });
+    return route.fulfill({ json: {} });
+  });
+  await page.goto('/requests');
+  const tab = page.getByRole('button', { name: /Everyone/ });
+  await expect(tab).toContainText('1');
+  await tab.click();
+  const row = page.locator('.rq', { hasText: 'Only In 4K' });
+  await expect(row).toContainText('Sam');
+  await expect(row).toContainText('Waiting for approval');
+  await row.getByRole('button', { name: 'Approve' }).click();
+  await expect
+    .poll(() => posts.map((p) => p.path))
+    .toContain('/request/77/approve');
+  await row.getByRole('button', { name: 'Decline' }).click();
+  await expect
+    .poll(() => posts.map((p) => p.path))
+    .toContain('/request/77/decline');
+  expect(errors).toEqual([]);
+});
+
+test('people who can’t manage requests get no Everyone tab', async ({
+  page,
+}) => {
+  await fixtures(page, { permissions: 32 }); // REQUEST only
+  const asked = await requestRoutes(page);
+  await page.goto('/requests?tab=everyone');
+  await expect(page.getByRole('button', { name: /^Active/ })).toBeVisible();
+  await expect(page.getByRole('button', { name: /Everyone/ })).toHaveCount(0);
+  await expect(page.locator('.rq', { hasText: 'Sam' })).toHaveCount(0);
+  expect(asked.some((a) => a.startsWith('/request/count'))).toBe(false);
+  expect(
+    asked.some((a) => a.startsWith('/request?') && !a.includes('requestedBy'))
+  ).toBe(false);
+});
+
+test('admins can request on someone else’s behalf', async ({ page }) => {
+  const { posts } = await fixtures(page, { permissions: 2 });
+  await page.route('**/api/v1/user?*', (route) =>
+    route.fulfill({
+      json: {
+        pageInfo: { pages: 1, results: 2 },
+        results: [
+          { id: 1, displayName: 'fam' },
+          { id: 5, displayName: 'Sam' },
+        ],
+      },
+    })
+  );
+  await page.goto('/movies');
+  await quickRequest(page, 'Fresh Pick');
+  const sheet = page.getByRole('dialog', { name: 'Request Fresh Pick' });
+  const who = sheet.getByLabel('Request as');
+  await expect(who).toHaveValue('1');
+  await expect(who.locator('option')).toHaveText(['Me (fam)', 'Sam']);
+  await who.selectOption('5');
+  await expect(sheet.getByLabel('Folder')).toBeVisible();
+  await sheet.getByRole('button', { name: 'Request', exact: true }).click();
+  await expect(sheet).toHaveCount(0);
+  expect(posts.find((p) => p.path === '/request')?.body).toMatchObject({
+    mediaType: 'movie',
+    mediaId: 302,
+    userId: 5,
+  });
+});
+
+test('request managers without Manage Users get no Request as', async ({
+  page,
+}) => {
+  const asked: string[] = [];
+  await fixtures(page, { permissions: 16 }); // MANAGE_REQUESTS only
+  await page.route('**/api/v1/user?*', (route) => {
+    asked.push(route.request().url());
+    return route.fulfill({
+      json: { results: [{ id: 5, displayName: 'Sam' }] },
+    });
+  });
+  await page.goto('/movies');
+  await quickRequest(page, 'Fresh Pick');
+  const sheet = page.getByRole('dialog', { name: 'Request Fresh Pick' });
+  await expect(sheet.getByLabel('Folder')).toBeVisible();
+  await expect(sheet.getByLabel('Request as')).toHaveCount(0);
+  expect(asked).toEqual([]);
+});
+
+test('a title in the library shows the check on its page too', async ({
+  page,
+}) => {
+  await fixtures(page);
+  await requestRoutes(page);
+  await page.goto('/movie/301');
+  await expect(page.locator('.dposter .glyph.ok')).toBeVisible();
+  await page.route('**/api/v1/movie/301', (route) =>
+    route.fulfill({ json: { ...details301, mediaInfo: undefined } })
+  );
+  await page.evaluate(() => localStorage.clear());
+  await page.reload();
+  await expect(page.locator('.dtitle h1')).toHaveText('Only In 4K');
+  await expect(page.locator('.dposter .glyph')).toHaveCount(0);
+});
+
+test('admin settings page saves for everyone when the server can', async ({
+  page,
+}) => {
+  await fixtures(page, { permissions: 2, config: { custom: 1 } });
+  const saved: { body: string; type: string }[] = [];
+  await page.route('**/lumen/config', (route) => {
+    const req = route.request();
+    if (req.method() === 'PUT') {
+      saved.push({
+        body: req.postData() || '',
+        type: req.headers()['content-type'] || '',
+      });
+      return route.fulfill({ json: { saved: true } });
+    }
+    return route.fulfill({ json: { canSave: true, folder: 'ok' } });
+  });
+  await page.goto('/me/lumen');
+  const row = page.locator('.cfg-row', {
+    hasText: 'Show books and audiobooks',
+  });
+  await expect(row.locator('select')).toHaveValue('on');
+  await row.locator('select').selectOption('off-locked');
+  await page.getByRole('button', { name: 'Save for everyone' }).click();
+  await expect(page.getByText(/^Saved\./)).toBeVisible();
+  expect(saved).toHaveLength(1);
+  expect(saved[0].type).toBe('application/json');
+  expect(JSON.parse(saved[0].body)).toEqual({
+    custom: 1,
+    defaults: { showBooks: false },
+    locked: ['showBooks'],
+  });
+  // the download stays as a backup
+  await expect(
+    page.getByRole('button', { name: 'Download lumen-config.json' })
+  ).toBeVisible();
+});
+
+test('admin settings page explains a folder it can’t write', async ({
+  page,
+}) => {
+  await fixtures(page, { permissions: 2 });
+  await page.route('**/lumen/config', (route) =>
+    route.fulfill({ json: { canSave: false, folder: 'readonly' } })
+  );
+  await page.goto('/me/lumen');
+  await expect(
+    page.getByRole('button', { name: 'Download lumen-config.json' })
+  ).toBeVisible();
+  await expect(
+    page.getByRole('button', { name: 'Save for everyone' })
+  ).toHaveCount(0);
+  await expect(page.getByText(/can’t write to its \/lumen-data/)).toBeVisible();
+});

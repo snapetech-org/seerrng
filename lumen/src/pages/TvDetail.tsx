@@ -11,7 +11,13 @@ import {
   type TvDetails,
 } from '../api';
 import { useMediaServerName } from '../auth';
-import { Rail, Section, shortDate, TitleCard } from '../components/cards';
+import {
+  Rail,
+  Section,
+  shortDate,
+  statusOf,
+  TitleCard,
+} from '../components/cards';
 import {
   ActionBar,
   AdvancedOptions,
@@ -171,6 +177,7 @@ export default function TvDetail() {
   return (
     <article className="detail">
       <DetailTop
+        status={statusOf(t.mediaInfo, false, serverName)}
         backdrop={tmdbImg(t.backdropPath, 'w1280')}
         poster={tmdbImg(t.posterPath)}
         title={t.name || ''}

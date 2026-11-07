@@ -356,6 +356,7 @@ export default function BookDetail() {
   return (
     <article className="detail">
       <DetailTop
+        status={s}
         poster={b.posterPath || undefined}
         square={audio}
         title={b.title}

@@ -130,6 +130,7 @@ export interface RequestOptions {
   serverId?: number;
   profileId?: number;
   rootFolder?: string;
+  userId?: number; // request on someone else's behalf (admins)
 }
 const post = (body: object) =>
   api<{ id: number }>('/request', {

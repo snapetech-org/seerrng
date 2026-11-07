@@ -14,7 +14,7 @@ import {
 } from '../api';
 import { useAuth, useMediaServerName } from '../auth';
 import { shortDate } from '../components/cards';
-import { Pill } from '../components/detail';
+import { canChooseRequestOptions, Pill } from '../components/detail';
 import { Avatar } from '../components/Shell';
 import { useToast } from '../components/toast';
 import {
@@ -473,9 +473,49 @@ export default function Requests() {
     setTick((t) => t + 1);
   });
   const extras = useExtras();
+  // admins and request managers also see everyone's requests, and approve or decline them
+  const manage = canChooseRequestOptions(user?.permissions);
+  const everyone = manage && tab === 'everyone';
+  const [others, setOthers] = useState<Row[] | null>(null);
+  const [waiting, setWaiting] = useState<number | null>(null);
+  const [acting, setActing] = useState<number | null>(null);
 
   useEffect(() => {
-    if (!user) return;
+    if (!manage) return;
+    let live = true;
+    api<{ pending: number }>('/request/count')
+      .then((d) => live && setWaiting(d.pending))
+      .catch(() => live && setWaiting(null));
+    return () => {
+      live = false;
+    };
+  }, [manage, tick]);
+
+  useEffect(() => {
+    if (!everyone) return;
+    let live = true;
+    const list = (filter: string, take: number) =>
+      api<{ results: RequestItem[] }>(
+        `/request?take=${take}&skip=0&filter=${filter}&sort=added`
+      ).then((d) => d.results);
+    // every request still waiting, then the newest of the rest
+    Promise.all([list('pending', 50), list('all', 20)])
+      .then(([pending, recent]) => {
+        const seen = new Set(pending.map((r) => r.id));
+        return describeAll(
+          pending.concat(recent.filter((r) => !seen.has(r.id)))
+        );
+      })
+      .then((x) => live && setOthers(x))
+      .catch(() => live && setOthers([]))
+      .finally(() => live && setRefreshing(false));
+    return () => {
+      live = false;
+    };
+  }, [everyone, tick]);
+
+  useEffect(() => {
+    if (!user || everyone) return;
     let live = true;
     const media = api<{ results: RequestItem[] }>(
       `/request?take=40&skip=0&filter=all&sort=added&requestedBy=${user.id}`
@@ -498,7 +538,7 @@ export default function Requests() {
     return () => {
       live = false;
     };
-  }, [user, tick, extras.games.length]);
+  }, [user, everyone, tick, extras.games.length]);
 
   // keep download percentages moving while anything is downloading
   const busy = (rows || []).some((x) => state(x, serverName).pct != null);
@@ -512,7 +552,26 @@ export default function Requests() {
   const ready = all.filter(
     (x) => state(x, serverName).k === 'ok' && !state(x, serverName).active
   );
-  const list = tab === 'ready' ? ready : tab === 'all' ? all : act;
+  const list = everyone
+    ? others || []
+    : tab === 'ready'
+      ? ready
+      : tab === 'all'
+        ? all
+        : act;
+  const shown = everyone ? others : rows;
+  const decide = async (id: number, how: 'approve' | 'decline') => {
+    setActing(id);
+    try {
+      await api(`/request/${id}/${how}`, { method: 'POST' });
+      toast(how === 'approve' ? 'Request approved' : 'Request declined');
+      setTick((t) => t + 1);
+    } catch (e) {
+      toast(e instanceof Error ? e.message : 'Couldn’t update the request');
+    } finally {
+      setActing(null);
+    }
+  };
   const cancel = async (id: number) => {
     try {
       // game requests (negative ids here) are withdrawn through their own endpoint
@@ -537,7 +596,11 @@ export default function Requests() {
           </div>
           <Avatar className="avatar ph-only-avatar" />
         </div>
-        <p className="sub">Everything you’ve asked for, newest first.</p>
+        <p className="sub">
+          {everyone
+            ? 'Everyone’s requests. Waiting ones first, then the newest.'
+            : 'Everything you’ve asked for, newest first.'}
+        </p>
       </header>
       {/* pull-to-refresh pill: fixed, so it never shifts the page layout */}
       <div
@@ -560,6 +623,7 @@ export default function Requests() {
           ['active', 'Active', act.length],
           ['ready', 'Ready', ready.length],
           ['all', 'All', all.length],
+          ...(manage ? [['everyone', 'Everyone', waiting ?? '']] : []),
         ].map(([v, t, n]) => (
           <button
             key={v as string}
@@ -570,12 +634,25 @@ export default function Requests() {
               })
             }
           >
-            {t} <span className="n">{rows ? n : ''}</span>
+            {t}{' '}
+            <span className="n">
+              {v === 'everyone' ? n || '' : rows ? n : ''}
+            </span>
           </button>
         ))}
       </div>
-      {!rows && <p className="note">Loading your requests…</p>}
-      {rows && !list.length && (
+      {!shown && (
+        <p className="note">
+          {everyone ? 'Loading everyone’s requests…' : 'Loading your requests…'}
+        </p>
+      )}
+      {shown && !list.length && everyone && (
+        <div className="empty">
+          <b>No requests yet</b>
+          Nobody has asked for anything.
+        </div>
+      )}
+      {shown && !list.length && !everyone && (
         <div className="empty">
           <b>{tab === 'ready' ? 'Nothing ready yet' : 'No active requests'}</b>
           Find something on{' '}
@@ -617,6 +694,9 @@ export default function Requests() {
                   <Link to={x.href}>{x.title}</Link>
                 </div>
                 <div className="sub">
+                  {everyone && x.r.requestedBy?.displayName
+                    ? `${x.r.requestedBy.displayName} · `
+                    : ''}
                   {x.sub} · {shortDate(x.r.createdAt.slice(0, 10))}
                 </div>
                 <div className="st">
@@ -626,9 +706,28 @@ export default function Requests() {
                   {st.detail && <span className="d">{st.detail}</span>}
                 </div>
                 <div className="rqa">
-                  {st.k === 'ok' &&
-                  x.r.type !== 'book' &&
-                  plexUrl(x.r.media, x.r.is4k) ? (
+                  {everyone && x.r.status === 1 ? (
+                    <>
+                      <button
+                        className="btn btn-sm btn-ok"
+                        disabled={acting === x.r.id}
+                        onClick={() => decide(x.r.id, 'approve')}
+                      >
+                        <Icon name="check" size="sm" />
+                        Approve
+                      </button>
+                      <button
+                        className="btn btn-sm btn-quiet"
+                        disabled={acting === x.r.id}
+                        onClick={() => decide(x.r.id, 'decline')}
+                      >
+                        <Icon name="x" size="sm" />
+                        Decline
+                      </button>
+                    </>
+                  ) : st.k === 'ok' &&
+                    x.r.type !== 'book' &&
+                    plexUrl(x.r.media, x.r.is4k) ? (
                     <a
                       className="btn btn-sm btn-ok"
                       {...mediaLink(x.r.media, x.r.is4k, x.r.type, serverName)}

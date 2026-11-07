@@ -696,6 +696,7 @@ body.is-detail .tabbar {
   align-items: end;
 }
 .dposter {
+  position: relative;
   aspect-ratio: 2/3;
   border-radius: 12px;
   overflow: hidden;
@@ -704,6 +705,16 @@ body.is-detail .tabbar {
 }
 .dposter.sq {
   aspect-ratio: 1;
+}
+.dposter .glyph {
+  top: 8px;
+  right: 8px;
+  width: 30px;
+  height: 30px;
+}
+.dposter .glyph .ico {
+  width: 17px;
+  height: 17px;
 }
 .dposter img {
   width: 100%;
