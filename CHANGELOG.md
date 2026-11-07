@@ -9,6 +9,14 @@ v3.72.7 section consolidates changes from the requested v3.71.4 baseline
 through v3.72.7, including changes also represented by unpublished interim
 tags. The comparison link is the complete commit range.
 
+## [3.72.21](https://github.com/snapetech-org/seerrng/compare/v3.72.20..v3.72.21) - 2026-11-07
+
+### Fixed
+
+- **SeerrOrig:** Restore upstream Seerr's layout and interaction flow instead of recolouring John's compact interface. Restore its search, navigation spacing, controls, shelf geometry, detail headers, open overview/facts/cast, season accordions, request format menus and season table. Keep SeerrNG integrations and authorized advanced options available.
+- **Theme loading:** Accept upstream composition in installed theme catalogs so account selections and custom themes continue to restore and save. Keep SeerrNGJ's separate design.
+- **Request dialogs:** Keep individual episode rows visible with upstream controls, and fit optional metadata summaries inside narrow dialogs at desktop and phone widths.
+
 ## [3.72.20](https://github.com/snapetech-org/seerrng/compare/v3.72.19..v3.72.20) - 2026-11-06
 
 ### Fixed
