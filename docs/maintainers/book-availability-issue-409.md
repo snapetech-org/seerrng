@@ -130,3 +130,12 @@ now explicitly seed imported-file observations. The library regression suite
 passes8 tests, including exclusion of manager-only legacy AVAILABLE records.
 The final integrated main CI remains the closure gate; no old failing run is
 reported as qualification of these later fixes.
+# Public Plex evidence after redaction
+
+The final response audit reproduced another missing-audio case: ordinary users
+lost Plex-only audiobook evidence when the private `ratingKey` was removed.
+Responses now carry the read-only `hasPlexAudiobookFile` boolean before redaction.
+It remains independent of manager observations, applies only to audio, and cannot
+override an unavailable status. Resetting native media-server keys clears the
+response flag. The missing-copy regression fails before the change; focused
+availability/privacy/provider tests and server typecheck/lint pass afterward.

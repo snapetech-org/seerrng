@@ -12,6 +12,7 @@ type BookAvailabilityMedia = Pick<
   | 'audiobookLibraryServiceId'
   | 'audiobookLibraryItemId'
   | 'ratingKey'
+  | 'hasPlexAudiobookFile'
 >;
 const validIds = (value: unknown): number[] =>
   Array.isArray(value)
@@ -46,7 +47,8 @@ export const hasBookFileEvidence = (
 ): boolean =>
   format === 'ebook'
     ? validIds(media.availableEbookServiceIds).length > 0
-    : validIds(media.availableAudiobookServiceIds).length > 0 ||
+    : media.hasPlexAudiobookFile === true ||
+      validIds(media.availableAudiobookServiceIds).length > 0 ||
       (media.audiobookLibraryServiceId != null &&
         !!media.audiobookLibraryItemId) ||
       !!media.ratingKey;
@@ -108,8 +110,9 @@ export const hasAvailableBookServiceFormat = (
   if (!hasAvailableBookFormat(media, format)) return false;
   if (
     format === 'audiobook' &&
-    ((media.audiobookLibraryServiceId != null &&
-      !!media.audiobookLibraryItemId) ||
+    (media.hasPlexAudiobookFile === true ||
+      (media.audiobookLibraryServiceId != null &&
+        !!media.audiobookLibraryItemId) ||
       !!media.ratingKey)
   )
     return true;
