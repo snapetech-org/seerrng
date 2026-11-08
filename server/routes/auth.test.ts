@@ -2136,6 +2136,10 @@ describe('POST /auth/logout', () => {
 
     assert.strictEqual(res.status, 200);
     assert.strictEqual(res.body.status, 'ok');
+    assert.match(
+      String(res.headers['set-cookie']),
+      /seerrng-frontend=;.*Expires=Thu, 01 Jan 1970/
+    );
   });
 
   it('destroys session and returns 200 when logged in', async () => {
@@ -2148,6 +2152,10 @@ describe('POST /auth/logout', () => {
     const logoutRes = await agent.post('/auth/logout');
     assert.strictEqual(logoutRes.status, 200);
     assert.strictEqual(logoutRes.body.status, 'ok');
+    assert.match(
+      String(logoutRes.headers['set-cookie']),
+      /seerrng-frontend=;.*Expires=Thu, 01 Jan 1970/
+    );
 
     // Session should be invalidated — /me should fail
     const meAfterRes = await agent.get('/auth/me');

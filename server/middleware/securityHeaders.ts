@@ -1,5 +1,6 @@
 export const buildContentSecurityPolicy = (
-  nodeEnv = process.env.NODE_ENV
+  nodeEnv = process.env.NODE_ENV,
+  frontend: 'native' | 'lumen' = 'native'
 ): string => {
   const development = nodeEnv === 'development';
 
@@ -11,9 +12,9 @@ export const buildContentSecurityPolicy = (
     "object-src 'none'",
     `script-src 'self' 'unsafe-inline'${development ? " 'unsafe-eval'" : ''}`,
     "script-src-attr 'none'",
-    "style-src 'self' 'unsafe-inline'",
+    `style-src 'self' 'unsafe-inline'${frontend === 'lumen' ? ' https://fonts.googleapis.com' : ''}`,
     "img-src 'self' data: blob: https:",
-    "font-src 'self' data:",
+    `font-src 'self' data:${frontend === 'lumen' ? ' https://fonts.gstatic.com' : ''}`,
     `connect-src 'self' https://plex.tv https://*.plex.tv https://api.github.com${development ? ' ws: wss:' : ''}`,
     "media-src 'self' blob:",
     "worker-src 'self' blob:",

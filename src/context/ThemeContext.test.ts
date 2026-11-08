@@ -58,8 +58,8 @@ describe('interface theme contract', () => {
     );
   });
 
-  it('defaults to SeerrOrig and validates built-in or custom theme IDs', () => {
-    assert.equal(DEFAULT_INTERFACE_THEME_ID, 'seerrOrig');
+  it('defaults to PersiusNG and validates built-in or custom theme IDs', () => {
+    assert.equal(DEFAULT_INTERFACE_THEME_ID, 'persiusNG');
     assert.deepEqual(INTERFACE_THEME_IDS, [
       'seerrOrig',
       'seerrNGJ',

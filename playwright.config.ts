@@ -15,6 +15,23 @@ export default defineConfig({
     baseURL,
     headless: true,
     trace: 'retain-on-failure',
+    // This suite qualifies the full native interface. Default-entry tests clear
+    // this explicit browser choice and separately qualify the shipped Lumen app.
+    storageState: {
+      cookies: [
+        {
+          name: 'seerrng-frontend',
+          value: 'classic',
+          domain: new URL(baseURL).hostname,
+          path: '/',
+          expires: -1,
+          httpOnly: true,
+          secure: false,
+          sameSite: 'Lax',
+        },
+      ],
+      origins: [],
+    },
   },
   webServer: {
     command: 'pnpm cypress:start',

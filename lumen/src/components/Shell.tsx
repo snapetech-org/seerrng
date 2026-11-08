@@ -21,6 +21,21 @@ const scrollSpots = new Map<string, number>();
 export const SEERR_PUBLIC_URL =
   import.meta.env.VITE_SEERR_PUBLIC_URL || '/seerrng';
 
+export const fullSeerrUrl = (configured?: string): string => {
+  const destination = configured || SEERR_PUBLIC_URL;
+  if (destination === '/seerrng') return destination;
+  try {
+    const url = new URL(destination, window.location.origin);
+    if (!['http:', 'https:'].includes(url.protocol)) return '/seerrng';
+    // Older backends ignore this harmless query; embedded Lumen backends use
+    // it to open the full native interface rather than redirect back to Lumen.
+    url.searchParams.set('interface', 'classic');
+    return url.href;
+  } catch {
+    return '/seerrng';
+  }
+};
+
 const SIDE: [string, IconName, string][] = [
   ['/', 'home', 'Discover'],
   ['/movies', 'film', 'Movies'],
@@ -328,7 +343,7 @@ export function Placeholder({ title }: { title: string }) {
         </Link>{' '}
         or{' '}
         <a
-          href={seerrPublicUrl || SEERR_PUBLIC_URL}
+          href={fullSeerrUrl(seerrPublicUrl)}
           style={{ color: 'var(--accent)' }}
         >
           open full SeerrNG

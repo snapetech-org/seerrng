@@ -121,3 +121,6 @@ devenv.local.yaml
 
 # local certification/spike stacks (live API keys, runtime DBs, downloaded media)
 /deploy/certification/
+
+# Generated embedded Lumen production bundle
+/public/lumen/

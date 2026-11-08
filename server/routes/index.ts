@@ -88,6 +88,7 @@ import issueRoutes from './issue';
 import issueCommentRoutes from './issueComment';
 import liveRoutes from './live';
 import liveTvRoutes from './liveTv';
+import lumenRoutes from './lumen';
 import magazineRoutes from './magazine';
 import mediaRoutes from './media';
 import movieRoutes from './movie';
@@ -258,6 +259,7 @@ export const getReleaseUpdateStatus = (
 // Public CSS-only themes load on sign-in/setup routes before session checks.
 router.use('/interface-themes', interfaceThemeRoutes);
 router.use(checkUser);
+router.use('/lumen', lumenRoutes);
 router.use(contentRestrictionMiddleware);
 router.use(apiResponseCache);
 

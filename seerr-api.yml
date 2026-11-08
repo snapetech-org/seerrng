@@ -9189,6 +9189,84 @@ components:
       name: X-Api-Key
 
 paths:
+  /lumen/configuration:
+    get:
+      summary: Read public Lumen presentation configuration
+      responses:
+        '200':
+          description: Public presentation configuration (contains no credentials)
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+  /lumen/config:
+    get:
+      summary: Check administrator Lumen configuration storage
+      responses:
+        '200':
+          description: Writable app configuration volume
+        '403':
+          description: Administrator required
+    put:
+      summary: Save administrator Lumen presentation configuration
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: true
+      responses:
+        '200':
+          description: Configuration saved atomically
+        '403':
+          description: Administrator required
+        '413':
+          description: Configuration exceeds 64 KiB
+  /lumen/branding/{name}:
+    parameters:
+      - in: path
+        name: name
+        required: true
+        schema:
+          type: string
+          maxLength: 100
+    get:
+      summary: Read a published Lumen branding image
+      responses:
+        '200':
+          description: Re-encoded PNG branding image
+        '404':
+          description: Image not found
+    put:
+      summary: Upload administrator Lumen logo or icon
+      requestBody:
+        required: true
+        content:
+          image/png:
+            schema:
+              type: string
+              format: binary
+          image/jpeg:
+            schema:
+              type: string
+              format: binary
+          image/webp:
+            schema:
+              type: string
+              format: binary
+          application/octet-stream:
+            schema:
+              type: string
+              format: binary
+      responses:
+        '200':
+          description: Safe PNG stored with a generated name
+        '403':
+          description: Administrator required
+        '415':
+          description: Invalid or oversized image
   /desktop/auth-tickets:
     post:
       summary: Issue a one-time native desktop authentication ticket

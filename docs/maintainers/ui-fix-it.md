@@ -136,6 +136,15 @@ passes, failures, skips, and platform exclusions.
 6. Before marking complete, verify the requested scope is implemented, source readback matches the authorized target, all required automated and functional gates passed, and records are current. For UI work, the rendered comparison in section 6.3 must be complete and recorded; if it is unavailable, report visual acceptance as unverified and do not claim the UI work is complete. Record the rendered comparison with the implementation evidence.
 
 
+### Verify stylesheet load order
+
+Compare a package loaded with the server document and after a client selection.
+Reorder its actual stylesheet before and after shared CSS, wait for reattachment
+and rendering, and verify package-owned geometry does not change. A default
+change must update the server HTML/stylesheet and client/account default
+contract together. Check package token values against their owner rather than
+accepting an earlier fallback overriding them as a new design reference.
+
 ### Verify interface origin, not only release-to-release stability
 
 For an upstream compatibility theme, pin the actual upstream source and shipped

@@ -13,6 +13,7 @@ import { startJobs, stopJobs } from '@server/job/schedule';
 import { resumeComicCatalogIndex } from '@server/lib/comicCatalogIndex';
 import { runWithConfigurationAdmission } from '@server/lib/configurationAdmission';
 import { loadExternalRuntimeConfig } from '@server/lib/externalRuntimeConfig';
+import { mountLumenFrontend } from '@server/lib/lumenFrontend';
 import {
   METRICS_RATE_LIMIT,
   metricsAuthMiddleware,
@@ -467,6 +468,8 @@ Promise.resolve()
       server.post('/share-target', (_req, res) => {
         res.redirect(303, '/share');
       });
+
+      mountLumenFrontend(server);
 
       server.get('*path', (req, res) => {
         if (!dev) {

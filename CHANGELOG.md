@@ -13,11 +13,14 @@ tags. The comparison link is the complete commit range.
 
 Consolidates the fixes prepared for unpublished v3.72.24 with the subsequent
 book discovery, Bindery setup, deleted-TV recovery, magazine/sports status and
-notification, and release download repairs.
+notification, and release download repairs. Lumen is now bundled and becomes the
+default entry for existing and new users, with PersiusNG as the native fallback.
 
 ### User-facing changes
 
 #### Added
+
+- **Default interface:** The main application now includes P’s Lumen frontend. All users enter Lumen at the normal app address; You → Full SeerrNG opens administrative/native pages, and Theme picker → Open Lumen returns. Existing native profiles adopt PersiusNG once; users can still select Orig or John afterwards. No separate Lumen container is required.
 
 - **Books:** Administrators can restrict book languages in Metadata Providers. Search, discovery and requests enforce verified edition languages; unverified destinations are blocked while enabled. Leave the list empty for unrestricted behavior. Existing library files are retained.
 - **Lumen:** Lumen offers 1080p or 4K when requesting from posters and Coming Soon, subject to permissions and enabled formats. Movie 4K requests are available before HD exists. Advanced destinations keep each tier’s defaults, TV selection follows 4K season ownership, and request feedback identifies 4K.

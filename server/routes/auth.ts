@@ -3287,6 +3287,9 @@ authRoutes.post(
 );
 
 authRoutes.post('/logout', async (req, res, next) => {
+  // A shared browser must not carry one person's native-interface choice into
+  // the next person's session. This cookie contains presentation only.
+  res.clearCookie('seerrng-frontend', { path: '/' });
   try {
     const userId = req.session?.userId;
     if (!userId) {

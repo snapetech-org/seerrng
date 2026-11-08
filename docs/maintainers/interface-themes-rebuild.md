@@ -1,5 +1,10 @@
 # SeerrOrig and SeerrNGJ Implementation Plan
 
+This is the historical two-profile implementation plan. Its default and delivery
+limits are superseded by the November 8 owner directive: Lumen is the normal
+application entry, PersiusNG is the native default, and the current work includes
+commit, push and release. See [Lumen default qualification](lumen-default-validation-2026-11-08.md).
+
 ## Goal
 
 Offer two complete, account-selectable interface systems on the SeerrNG engine:

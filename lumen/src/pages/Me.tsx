@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { useAuth } from '../auth';
 import { Section } from '../components/cards';
 import { canChooseRequestOptions } from '../components/detail';
-import { initials, SEERR_PUBLIC_URL } from '../components/Shell';
+import { fullSeerrUrl, initials } from '../components/Shell';
 import { CAN_HOVER, useApi } from '../hooks';
 import { Icon } from '../icons';
 import { mediaServer, services } from '../mediaServer';
@@ -60,7 +60,7 @@ export default function Me() {
   const { user, signOut } = useAuth();
   const { prefs, set, reset, locked, seerrPublicUrl } = usePrefs();
   const quota = useApi<Quota>(user ? `/user/${user.id}/quota` : null).data;
-  const full = seerrPublicUrl || SEERR_PUBLIC_URL;
+  const full = fullSeerrUrl(seerrPublicUrl);
   const isAdmin = ((user?.permissions ?? 0) & 2) !== 0;
   const q = (k: string, label: string) => {
     const x = quota?.[k];

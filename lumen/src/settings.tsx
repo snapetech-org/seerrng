@@ -8,6 +8,7 @@ import {
   type ReactNode,
 } from 'react';
 import { useAuth } from './auth';
+import { lumenConfigUrl } from './deployment';
 import { serverName, services, type MediaServerSetting } from './mediaServer';
 
 // Every switchable part of Lumen. Admins set defaults (and can lock them) in
@@ -130,7 +131,7 @@ export function PrefsProvider({ children }: { children: ReactNode }) {
     }
   });
   useEffect(() => {
-    fetch('/lumen-config.json', { cache: 'no-store' })
+    fetch(lumenConfigUrl, { cache: 'no-store' })
       .then((r) => (r.ok ? r.json() : {}))
       .then((value) => setAdmin(record(value) as AdminConfig))
       .catch(() => setAdmin({}));

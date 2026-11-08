@@ -7,6 +7,7 @@ import {
   isAvailableLocale,
   resolveAcceptLanguage,
 } from '@server/types/languages';
+import { DEFAULT_INTERFACE_THEME_ID } from '@server/utils/interfaceTheme';
 import type { JSX } from 'react';
 
 interface MyDocumentProps extends DocumentInitialProps {
@@ -50,15 +51,15 @@ class MyDocument extends Document<MyDocumentProps> {
       <Html
         lang={locale}
         dir={getLocaleDirection(locale)}
-        data-interface-theme="seerrOrig"
+        data-interface-theme={DEFAULT_INTERFACE_THEME_ID}
       >
         <Head>
           <link
             id="interface-theme-stylesheet"
             data-interface-theme-stylesheet
-            data-interface-theme-id="seerrOrig"
+            data-interface-theme-id={DEFAULT_INTERFACE_THEME_ID}
             rel="stylesheet"
-            href="/api/v1/interface-themes/seerrOrig/theme.css"
+            href={`/api/v1/interface-themes/${DEFAULT_INTERFACE_THEME_ID}/theme.css`}
           />
         </Head>
         <body>

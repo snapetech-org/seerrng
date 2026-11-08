@@ -1,8 +1,10 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { csrfHeaders } from '../api';
 import { useAuth } from '../auth';
 import { Section } from '../components/cards';
 import { useToast } from '../components/toast';
+import { embedded, lumenAdminUrl } from '../deployment';
 import { Icon } from '../icons';
 import { logoShapeOf, mediaServer, type LogoShape } from '../mediaServer';
 import {
@@ -54,7 +56,10 @@ export default function LumenSettings() {
   useEffect(() => {
     if (!isAdmin) return;
     let live = true;
-    fetch('/lumen/config', { cache: 'no-store', credentials: 'same-origin' })
+    fetch(`${lumenAdminUrl}/config`, {
+      cache: 'no-store',
+      credentials: 'same-origin',
+    })
       .then((r) => (r.ok ? r.json() : null))
       .then(
         (d) =>
@@ -117,10 +122,10 @@ export default function LumenSettings() {
     setTimeout(() => URL.revokeObjectURL(url), 1000);
   };
   const putConfig = async (body: string) => {
-    const r = await fetch('/lumen/config', {
+    const r = await fetch(`${lumenAdminUrl}/config`, {
       method: 'PUT',
       credentials: 'same-origin',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', ...csrfHeaders() },
       body,
     });
     const d = await r.json().catch(() => null);
@@ -150,10 +155,13 @@ export default function LumenSettings() {
     }
     setUploading(kind);
     try {
-      const r = await fetch(`/lumen/branding/${kind}`, {
+      const r = await fetch(`${lumenAdminUrl}/branding/${kind}`, {
         method: 'PUT',
         credentials: 'same-origin',
-        headers: { 'Content-Type': file.type || 'application/octet-stream' },
+        headers: {
+          'Content-Type': file.type || 'application/octet-stream',
+          ...csrfHeaders(),
+        },
         body: file,
       });
       const d = await r.json().catch(() => null);
@@ -185,7 +193,11 @@ export default function LumenSettings() {
         <input
           type="file"
           className="sr"
-          accept="image/png,image/jpeg,image/webp,image/svg+xml,image/x-icon"
+          accept={
+            embedded
+              ? 'image/png,image/jpeg,image/webp'
+              : 'image/png,image/jpeg,image/webp,image/svg+xml,image/x-icon'
+          }
           aria-label={kind === 'logo' ? 'Upload logo' : 'Upload tab icon'}
           disabled={!!uploading}
           onChange={(e) => {
@@ -406,7 +418,9 @@ export default function LumenSettings() {
               <b>Tab icon</b>
               <small>
                 {saveState?.canSave
-                  ? 'Square PNG or SVG: upload one, or an address such as /branding/icon.png'
+                  ? embedded
+                    ? 'Square PNG, JPEG or WebP: upload one, or use an image address'
+                    : 'Square PNG or SVG: upload one, or an address such as /branding/icon.png'
                   : 'PNG or SVG, e.g. /branding/icon.png'}
               </small>
             </span>

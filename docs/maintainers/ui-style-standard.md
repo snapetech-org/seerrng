@@ -6,6 +6,14 @@ The rules describe asset roles, not particular pages, title strings, example med
 
 ## Interface source fidelity
 
+The owner adopted Lumen (P's original dark presentation) as the default entry
+for existing and new users on November 8, 2026. Ship its actual frontend in the
+normal app build; a recoloured native theme is not a substitute. Full SeerrNG
+remains accessible through Lumen's existing full-interface link. PersiusNG is
+the native fallback default, adopted once on upgrade; later explicit native
+choices remain available. Keep the companion container's existing root deployment
+working alongside the app's `/lumen/` deployment.
+
 SeerrOrig follows upstream stable Seerr v3.5.1, source
 `564bfb08b54caa374bddaf820abfd226e5e69151`, in composition, hierarchy,
 controls, spacing and interaction. Its `upstream` manifest composition selects
@@ -29,7 +37,7 @@ compare John with its qualified baseline, as well as Orig with upstream.
 ## 1. Shared ownership and scope
 
 1. Use global, reusable, descriptive CSS families. Do not create a class per page, duplicate a utility under a new class name, or retain competing local declarations merely because they look correct today.
-2. Give each property one effective owner. Shared CSS owns component roles, resets, accessibility baselines, and palette infrastructure. The selected interface-theme package owns its theme-specific typography, geometry, layout, surfaces, effects, icons, responsive behavior, and scrolling values. Components select a role or a supported semantic variant; they do not reproduce its values.
+2. Shared token aliases are low-specificity fallbacks (`:where`); a selected package’s explicit values must win whether its stylesheet arrives in the initial document or after a selection. The server document and client consume the same initial theme constant. Give each property one effective owner. Shared CSS owns component roles, resets, accessibility baselines, and palette infrastructure. The selected interface-theme package owns its theme-specific typography, geometry, layout, surfaces, effects, icons, responsive behavior, and scrolling values. Components select a role or a supported semantic variant; they do not reproduce its values.
 3. Reuse existing variables before adding one. A new variable must represent a genuine independently adjustable property. A new family must represent a reusable asset role with no suitable existing owner.
 4. Keep appearance separate from arrangement. All buttons use shared button styling, but their order, grouping and justification depend on the surrounding layout. There is no universal rule placing playback, ratings, quality, or other actions into a particular row.
 5. Use data attributes or supported component options to select semantic variants. Runtime CSS values are allowed for genuine data geometry, such as a progress fraction, measured bounds, or pointer coordinates; not for local font, padding, color, or button-size overrides.

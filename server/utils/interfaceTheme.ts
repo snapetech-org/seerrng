@@ -1,5 +1,5 @@
 /** Stable identifiers for installed application interface systems. */
-export const DEFAULT_INTERFACE_THEME_ID = 'seerrOrig';
+export const DEFAULT_INTERFACE_THEME_ID = 'persiusNG';
 export const INTERFACE_THEME_IDS = [
   'seerrOrig',
   'seerrNGJ',

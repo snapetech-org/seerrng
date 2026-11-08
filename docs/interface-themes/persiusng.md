@@ -1,8 +1,9 @@
 # PersiusNG
 
 Select **Theme picker → Interface design → PersiusNG**. The existing account
-preference and same-origin theme loader save and load this choice. The default
-theme remains SeerrOrig.
+preference and same-origin theme loader save and load this choice. PersiusNG is the native-interface default for new accounts and is adopted once
+for existing accounts on upgrade. Lumen is the default application entry; its
+Full SeerrNG link opens this native interface. Later explicit theme choices persist.
 
 PersiusNG follows the nine owner-provided October 30, 2026 mockups: a charcoal
 canvas, lavender controls, outlined navigation, posters with captions underneath,

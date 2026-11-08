@@ -1,6 +1,19 @@
 # Lumen
 
-A request-first front end for [SeerrNG](https://github.com/snapetech-org/seerrng). It talks only to SeerrNG's API, so SeerrNG keeps doing the work (accounts, permissions, request limits, Sonarr/Radarr/ChaptarrNG and the rest) and Lumen is just the screens people use: Discover, Movies, Series, Books, Audiobooks, Search, Requests and their profile. Admins keep using SeerrNG itself for settings.
+Lumen ships inside the main SeerrNG application and is the default entry at the
+normal application address. Existing and new users receive the same original
+dark Lumen design. No additional container is required. **You → Full SeerrNG →
+Open** reaches the native interface and administrator tools; **Theme picker →
+Open Lumen** returns. Direct `/lumen/` and `/seerrng` links also work. Fresh
+installations still complete the native setup wizard first.
+
+The app stores shared presentation settings under its existing configuration
+volume, in `lumen/config.json`. Administrator saves use the authenticated API;
+only public presentation values belong in this file, never API keys or secrets.
+Branding uploads are bounded raster images re-encoded as PNG. The separate
+companion deployment below remains supported with its existing root paths.
+
+A request-first front end for [SeerrNG](https://github.com/snapetech-org/seerrng). It talks only to SeerrNG's API, so SeerrNG keeps doing the work (accounts, permissions, request limits, Sonarr/Radarr/ChaptarrNG and the rest) and Lumen is just the screens people use: Discover, Movies, Series, Books, Audiobooks, Search, Requests and their profile. Service and account administration remain in full SeerrNG; Lumen has its own presentation settings.
 
 ## Run it
 

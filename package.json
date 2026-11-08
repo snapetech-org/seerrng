@@ -6,13 +6,13 @@
   "scripts": {
     "preinstall": "npx only-allow pnpm",
     "postinstall": "next telemetry disable",
-    "dev": "node scripts/dev-server.mjs",
-    "dev:server": "node scripts/dev-server.mjs",
+    "dev": "pnpm build:lumen && node scripts/dev-server.mjs",
+    "dev:server": "pnpm build:lumen && node scripts/dev-server.mjs",
     "dev:checked": "pnpm dev",
     "build:server": "tsc --project server/tsconfig.json && node scripts/copy-server-assets.mjs && node scripts/replace-server-import-aliases.mjs dist",
     "build:server:compile": "tsc --project server/tsconfig.json && node scripts/copy-server-assets.mjs && node scripts/replace-server-import-aliases.mjs dist",
-    "build:next": "next build --webpack",
-    "build:next:compile": "next build --webpack",
+    "build:next": "pnpm build:lumen && next build --webpack",
+    "build:next:compile": "pnpm build:lumen && next build --webpack",
     "prebuild": "pnpm i18n:check && pnpm current-batch:check",
     "build": "pnpm build:all",
     "build:compile": "run-p build:next:compile build:server:compile",
@@ -70,7 +70,8 @@
     "i18n:catalogs": "node bin/check-i18n-catalogs.mjs",
     "i18n:catalogs:strict": "node bin/check-i18n-catalogs.mjs --strict --strict-coverage --strict-plurals",
     "i18n:catalogs:review": "node bin/check-i18n-catalogs.mjs --strict-review",
-    "i18n:api-messages": "node bin/update-api-message-catalog.mjs"
+    "i18n:api-messages": "node bin/update-api-message-catalog.mjs",
+    "build:lumen": "node scripts/build-lumen.mjs"
   },
   "repository": {
     "type": "git",

@@ -1,12 +1,20 @@
 ---
 title: Lumen, the request-first interface
-description: Install Lumen in front of SeerrNG, move your users over to it, and switch back if you need to.
+description: Use bundled Lumen, open full SeerrNG, or run the optional companion frontend.
 sidebar_position: 12
 ---
 
 # Lumen, the request-first interface
 
-Lumen is a separate, simpler front end for SeerrNG. It has the screens your users
+Starting with **v3.72.25**, Lumen is bundled with SeerrNG and opens by default
+for existing and new users at the normal application address. No second container
+is needed. **You → Full SeerrNG → Open** reaches native settings and administration;
+**Theme picker → Open Lumen** returns. Fresh installations still complete setup
+first. Existing native profiles adopt PersiusNG once, and you can choose Orig or
+John afterwards. The companion deployment described below remains optional, and
+continues to support older installations.
+
+Lumen is a distinct, simpler front end for SeerrNG. It has the screens your users
 actually use: Discover, Movies, Series, Books, Audiobooks, Search, Requests and
 their profile. It works well on phones, and **Watch on Plex** offers a link to the
 Plex app on supported phones and tablets. App handoff depends on the installed

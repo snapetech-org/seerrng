@@ -70,8 +70,8 @@
   outline-offset: 2px;
 }
 
-/* Shared component names resolve through the selected package's token set. */
-:is(:root[data-interface-theme], [data-interface-theme]) {
+/* Fallback aliases stay below package-owned values in either stylesheet load order. */
+:where(:root[data-interface-theme], [data-interface-theme]) {
   --sidebar-navigation-group-gap: var(--interface-nav-group-gap);
   --sidebar-navigation-item-gap: var(--interface-nav-item-gap);
   --sidebar-navigation-inline-inset: var(--interface-nav-inline-inset);

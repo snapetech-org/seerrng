@@ -1,6 +1,8 @@
 import './commands';
 
 beforeEach(() => {
+  // These suites exercise the full native interface; Lumen entry is qualified separately.
+  cy.setCookie('seerrng-frontend', 'classic');
   if (Cypress.isBrowser({ family: 'chromium' })) {
     // These suites intercept HTTP at Cypress's proxy. A controlling worker can
     // bypass that proxy and its instrumented iframe navigation. Worker-enabled

@@ -1812,6 +1812,7 @@ export const apiMessages: Record<
     '[{value0}] Monitored download refresh failed ({value1}): {value2}',
   m853dab7af8d8ec9a4ac2: 'This album is blocklisted.',
   m85578f5ed58bd5aadc12: 'Could not connect to Audiobookshelf.',
+  m855f3b9b55f196935e70: 'User interface settings are not initialized.',
   m857cb31fce8f6c2b89ba:
     'Ask an administrator to map this SeerrNG user to a Bindery account in the Bindery service settings.',
   m858a7fd40bcc8e7c4666: 'Failed to send Telegram notification.',

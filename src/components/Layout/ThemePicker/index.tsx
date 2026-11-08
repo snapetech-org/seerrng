@@ -15,6 +15,7 @@ import { useIntl } from 'react-intl';
 const messages = defineMessages('components.Layout.ThemePicker', {
   themePicker: 'Theme picker',
   interfaceDesign: 'Interface design',
+  openLumen: 'Open Lumen',
   colorPalette: 'Colour palette',
   darkMode: 'Dark mode',
   lightMode: 'Light mode',
@@ -99,6 +100,13 @@ const ThemePicker = ({ triggerIcon }: { triggerIcon?: ReactNode } = {}) => {
             <span className="text-xs tracking-wide text-gray-400 uppercase">
               {intl.formatMessage(messages.toggle)}
             </span>
+          </Menu.Item>
+          <Menu.Item
+            as="a"
+            href="/lumen/"
+            className="app-button app-button-default button-standard"
+          >
+            {intl.formatMessage(messages.openLumen)}
           </Menu.Item>
           <p className="px-1 pb-2 text-xs font-semibold tracking-wide text-gray-400 uppercase">
             {intl.formatMessage(messages.interfaceDesign)}

@@ -9,6 +9,7 @@ import {
   useAuth,
 } from '../auth';
 import { BrandMark } from '../components/brand';
+import { embedded } from '../deployment';
 import { mediaServer, services, site } from '../mediaServer';
 
 type Mode = 'start' | 'server' | 'local' | 'quick';
@@ -323,6 +324,11 @@ export default function Login() {
               </button>
             )
           ))}
+        {embedded && (
+          <a className="btn btn-quiet btn-sm" href="/login">
+            More sign-in options
+          </a>
+        )}
         {err && (
           <p className="login-err" role="alert">
             {err}

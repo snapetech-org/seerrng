@@ -6,7 +6,7 @@ import { Icon, type IconName } from '../icons';
 import { usePrefs } from '../settings';
 import { Glyph, statusOf, type Stat } from './cards';
 import { Pill } from './detail';
-import { Avatar, SEERR_PUBLIC_URL } from './Shell';
+import { Avatar, fullSeerrUrl } from './Shell';
 import { useToast } from './toast';
 
 // The pieces the extra categories share: a poster card, the page header, the status-aware
@@ -184,7 +184,7 @@ export function ExtraGate({ k, children }: { k: Extra; children: ReactNode }) {
         </Link>{' '}
         or{' '}
         <a
-          href={seerrPublicUrl || SEERR_PUBLIC_URL}
+          href={fullSeerrUrl(seerrPublicUrl)}
           style={{ color: 'var(--accent)' }}
         >
           open full SeerrNG

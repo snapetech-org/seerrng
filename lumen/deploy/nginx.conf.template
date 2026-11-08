@@ -142,7 +142,7 @@ server {
 
   # "open full SeerrNG" links when lumen-config.json sets no seerrPublicUrl
   location = /seerrng {
-    return 302 ${SEERR_FULL_URL}/;
+    return 302 ${SEERR_FULL_URL}/?interface=classic;
   }
 
   # SeerrNG pages Lumen doesn't have (links in emails, old bookmarks): open them in full SeerrNG

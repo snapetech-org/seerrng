@@ -143,6 +143,12 @@ async function check(settings, clientIp, scheme, headers = {}) {
       await new Promise((resolve) => setTimeout(resolve, 100));
     }
     assert.ok(ready, await docker('logs', id));
+    const full = await fetch(base + '/seerrng', { redirect: 'manual' });
+    assert.equal(full.status, 302);
+    assert.equal(
+      full.headers.get('location'),
+      'https://seerr.example.test/?interface=classic'
+    );
     const frontend = await fetch(base + '/');
     assert.equal(frontend.status, 200);
     assert.match(await frontend.text(), /<div id="root"><\/div>/);

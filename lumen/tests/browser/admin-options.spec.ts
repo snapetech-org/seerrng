@@ -2417,3 +2417,28 @@ test('4K series selection uses 4K season ownership even when every HD season is 
     fullPage: true,
   });
 });
+
+test('a configured full SeerrNG address explicitly selects the native interface', async ({
+  page,
+}) => {
+  await fixtures(page, {
+    config: { seerrPublicUrl: 'https://seerr.example.com/?source=lumen' },
+  });
+  await page.goto('/no-such-page');
+  await expect(
+    page.getByRole('link', { name: 'open full SeerrNG' })
+  ).toHaveAttribute(
+    'href',
+    'https://seerr.example.com/?source=lumen&interface=classic'
+  );
+});
+
+test('unsafe full-interface URLs fall back to the same-origin native entry', async ({
+  page,
+}) => {
+  await fixtures(page, { config: { seerrPublicUrl: 'javascript:alert(1)' } });
+  await page.goto('/no-such-page');
+  await expect(
+    page.getByRole('link', { name: 'open full SeerrNG' })
+  ).toHaveAttribute('href', '/seerrng');
+});

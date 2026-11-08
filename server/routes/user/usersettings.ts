@@ -700,6 +700,14 @@ userSettingsRoutes.post<{ id: string }>(
           if (!user.settings) user.settings = new UserSettings({ user });
           user.settings.interfaceTheme = theme;
           await repository.save(user);
+          if (req.user!.id === userId) {
+            res.cookie('seerrng-frontend', 'classic', {
+              httpOnly: true,
+              sameSite: 'lax',
+              path: '/',
+              maxAge: 365 * 24 * 60 * 60 * 1000,
+            });
+          }
           return res.status(200).json({ interfaceTheme: theme });
         },
         {

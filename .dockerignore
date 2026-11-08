@@ -48,4 +48,6 @@ report.xml
 public/os_logo_filled.png
 public/preview.jpg
 stylelint.config.js
-lumen
+lumen/node_modules
+lumen/dist
+lumen/test-results

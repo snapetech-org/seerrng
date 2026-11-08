@@ -95,7 +95,7 @@ USER node:node
 WORKDIR /app
 
 COPY --chown=node:node package.json next.config.mjs seerr-api.yml ./
-COPY --chown=node:node public ./public
+COPY --chown=node:node --from=build /app/public ./public
 COPY --chown=node:node scripts/export-external-config.mjs ./scripts/export-external-config.mjs
 COPY --chown=node:node scripts/healthcheck.mjs ./scripts/healthcheck.mjs
 COPY --chown=node:node deploy/seerrng-migrate.mjs ./deploy/seerrng-migrate.mjs
