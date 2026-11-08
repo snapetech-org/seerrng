@@ -15,15 +15,22 @@ docker compose up -d
 
 Already running SeerrNG? [`compose.lumen-only.yaml`](./compose.lumen-only.yaml) installs Lumen alone; set `SEERR_INTERNAL_URL` in it to your SeerrNG.
 
-Or build and run Lumen without Compose:
+Prebuilt images support amd64 and arm64. To update either Compose install, run
+`docker compose pull && docker compose up -d`. Use `:v3.72.23` instead of `:latest`
+to pin a release.
+
+Or run the published image without Compose:
 
 ```sh
-docker build -t lumen .
 docker run -d -p 5080:80 \
   -e SEERR_INTERNAL_URL=http://<seerrng-host>:5055 \
   -e SEERR_BROWSER_URL=https://seerr.example.com \
-  lumen
+  ghcr.io/snapetech-org/seerrng-lumen:latest
 ```
+
+For local development, `docker build -t seerrng-lumen:local .` builds from this
+folder; run that local tag instead. The Compose examples retain a commented build
+fallback.
 
 The container runs as the unprivileged `nginx` user; its static app remains read-only, and only its generated proxy configuration, cache and temporary PID location are writable.
 

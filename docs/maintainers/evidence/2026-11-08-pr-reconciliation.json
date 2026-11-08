@@ -1,7 +1,7 @@
 {
-  "head": "9bf504fdc7c43811a6f511bc1e7affa6de30b8d2",
-  "total": 517,
-  "merged": 418,
+  "head": "068c0ef6c810fa6b22757255ed6f008dc0a04217",
+  "total": 518,
+  "merged": 419,
   "merged_not_ancestor": [],
   "closed_unmerged_missing_ledger": [],
   "ledger_commit_references": 60,
@@ -94,6 +94,13 @@
       "matching_main_commit": "be3b4b8d45b9523d4e543116b6dde3f8f4efe1ad"
     }
   ],
-  "external_human_prs": 59,
-  "external_human_review_records": 59
+  "external_human_prs": 60,
+  "external_human_review_records": 60,
+  "open": 0,
+  "closed_unmerged": 99,
+  "latest_actual_merge": {
+    "number": 604,
+    "merge_commit": "068c0ef6c810fa6b22757255ed6f008dc0a04217",
+    "original_head": "641d0939d63ef1c36be7c0a3bc1a61cadb688f99"
+  }
 }

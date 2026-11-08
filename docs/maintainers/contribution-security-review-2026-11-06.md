@@ -175,3 +175,29 @@ suspected temporary-file race. No exploit or fix is claimed from that probe.
 
 The 73-issue human-workflow audit remains open. Integration counts, review
 records and successful galleries do not establish every requested human action.
+
+## Follow-up after PR604 integration
+
+The fresh November8 inventory contains518 PRs:419 merged,99 closed without
+a GitHub merge and zero open. All419 merge commits are ancestors of main068c0ef6c.
+The closed99 retain their source-resolution ledger entries; all99 have public
+linked receipts, including36 strengthened from bare hashes or indirect chains.
+Patch-equivalent references remain distinguished from actual GitHub merges.
+
+The central ledger now contains60 external human reviews, including
+[PR604's source, security, recovery and visual review](lumen-pr604-review-2026-11-08.md).
+PR604 actually merged with original ancestry and is on both main remotes. Its
+375 browser and27 native/image cases pass;13 viewport-only cases are skipped.
+It is intended for the next release, not retroactively included in v3.72.23.
+
+The compressed-session repair is now published in v3.72.23. Lumen publisher
+[42442517885](https://github.com/snapetech-org/seerrng/actions/runs/42442517885)
+succeeded. The anonymously downloaded image carries source d036d9dd, matching
+the immutable release. Two actual-backend browser workflows,390px and1440px,
+verified anonymous writes denied, sign-in, administrator save, reload/readback
+and restoration. Version23's amd64/arm64 manifest is also tagged latest.
+Deployment templates now default to that public image, retaining an optional
+source-build fallback. This supersedes the earlier unpublished-repair checkpoint.
+
+The73-issue human-workflow audit remains incomplete; these integration and
+security records do not certify every requested feature or live-provider action.

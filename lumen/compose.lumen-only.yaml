@@ -5,16 +5,17 @@
 #
 # Save this as compose.yaml in a new, empty folder, edit SEERR_INTERNAL_URL and SEERR_BROWSER_URL below, then:
 # Start:   docker compose up -d
-# Update:  docker compose build --pull && docker compose up -d
+# Update:  docker compose pull && docker compose up -d
 #
 # Step-by-step guide: docs/using-seerr/lumen.md in the SeerrNG repository.
 # Then in SeerrNG: Settings -> Network -> turn on "Trust Reverse Proxy", save, restart SeerrNG.
 
 services:
   lumen:
-    # Built from the SeerrNG repository the first time you start it (takes a few minutes).
-    build: https://github.com/snapetech-org/seerrng.git#main:lumen
-    image: seerrng-lumen:local
+    image: ghcr.io/snapetech-org/seerrng-lumen:latest
+    # Pin v3.72.23 for a fixed release. Optional local build instead of the image:
+    # build: https://github.com/snapetech-org/seerrng.git#main:lumen
+    # image: seerrng-lumen:local
     container_name: lumen
     environment:
       # How Lumen reaches your SeerrNG. Use the machine's LAN IP and SeerrNG's port, e.g.

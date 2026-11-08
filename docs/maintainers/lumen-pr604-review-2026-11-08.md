@@ -79,3 +79,21 @@ Retained evidence:
 including original source patch, failed baseline traces, matching sign-in images,
 recovery renders and production-image archive. Main merge and release delivery
 must be verified before describing this candidate as shipped.
+
+## Verified main integration
+
+PR604 actually merged on November 8 at03:05:12 UTC as
+`068c0ef6c810fa6b22757255ed6f008dc0a04217`, with the original contributor
+commit641d0939d63ef1c36be7c0a3bc1a61cadb688f99 as its second parent. Both
+GitHub and GitLab main received that commit. Hosted exact-head Lumen validation
+[42440589568](https://github.com/snapetech-org/seerrng/actions/runs/42440589568)
+passed375 browser checks,13 viewport skips and27 native/image checks. Main's
+automatic validation42441205703 also passed. The branch-only root-contract
+workflow was skipped, not counted as a pass; the local root contracts passed.
+The temporary review branch was deleted after its checks and consumer exited.
+
+These PR604 features are on main for the next release. They are **not included
+in v3.72.23**, whose immutable source is d036d9dd126415e3f87880dbb6dd5e9d46d0c5b3.
+The [public merge receipt](https://github.com/snapetech-org/seerrng/pull/604#issuecomment-6716690018)
+records that distinction. Earlier candidate paragraphs above are historical
+checkpoints, superseded for integration status by this section.

@@ -29,9 +29,9 @@ SeerrNG's API.
 ```
 
 :::note
-There is no prebuilt Lumen image yet. Docker builds it from this repository the
-first time you start it, which takes a few minutes. After that, starting and
-restarting are instant.
+Lumen has prebuilt images for amd64 and arm64 at
+`ghcr.io/snapetech-org/seerrng-lumen`. The examples use `:latest`; use `:v3.72.23`
+to pin a release. Docker downloads the image when you start it.
 :::
 
 ## Before you start
@@ -183,8 +183,7 @@ services:
     # ...your existing SeerrNG settings stay as they are...
 
   lumen:
-    build: https://github.com/snapetech-org/seerrng.git#main:lumen
-    image: seerrng-lumen:local
+    image: ghcr.io/snapetech-org/seerrng-lumen:latest
     container_name: lumen
     environment:
       SEERR_INTERNAL_URL: http://seerrng:5055 # your SeerrNG service name and port
@@ -457,14 +456,14 @@ preferences and administrator locks.
 Run this in the folder with `compose.yaml`:
 
 ```sh
-docker compose pull --ignore-buildable
-docker compose build --pull
+docker compose pull
 docker compose up -d
 ```
 
-`pull` updates SeerrNG (`--ignore-buildable` skips Lumen, which is built rather than downloaded). `build --pull` rebuilds Lumen from the latest code. Users
-get the new version the next time they open or refresh Lumen. With the Lumen-only
-file, `pull` has nothing to update. Update your SeerrNG the way you always have.
+`pull` downloads the current published images, including Lumen. Users get the
+new version the next time they open or refresh it. With the Lumen-only file,
+update your separate SeerrNG installation the way you always have. If you chose
+the optional local build, use `docker compose build --pull` before `up -d` instead.
 
 ## Switching back
 
@@ -515,7 +514,7 @@ SeerrNG is seeing every user as one address. Turn on **Trust Reverse Proxy**
 ([step 6](#6-turn-on-trust-reverse-proxy)) and, behind a proxy, set
 `LUMEN_TRUSTED_PROXIES`.
 
-**The Lumen build fails, mentioning `git`.**
+**The optional local Lumen build fails, mentioning `git`.**
 Docker needs Git to build from a GitHub address, and some NAS systems don't have it.
 Download the repository instead (`git clone https://github.com/snapetech-org/seerrng.git`,
 or **Code → Download ZIP** on GitHub and unzip it) into the folder with `compose.yaml`.
@@ -529,17 +528,16 @@ Update Lumen. Older builds used a link the Android Plex app ignores.
 
 Add Lumen as a container using **Add Container** with these settings:
 
-1. Build the image once in the Unraid terminal:
-   `docker build -t seerrng-lumen:local https://github.com/snapetech-org/seerrng.git#main:lumen`
+1. Use the published image; no local build is needed.
 2. **Add Container**:
-   - **Repository:** `seerrng-lumen:local`
+   - **Repository:** `ghcr.io/snapetech-org/seerrng-lumen:latest`
    - **Network type:** bridge
    - **Port:** container port `80`, host port `5080`
    - **Variables:** `SEERR_INTERNAL_URL` = `http://<Unraid IP>:5055`, and `SEERR_BROWSER_URL`.
      Add `LUMEN_TRUSTED_PROXIES` = `172.17.0.0/16` and `LUMEN_REAL_IP_HEADER` =
      `CF-Connecting-IP` if a Cloudflare Tunnel container on the default bridge sits
      in front of it.
-3. To update, run the `docker build` command again, then restart the container.
+3. To update, use Unraid's container update action to pull the current image.
 
 ### ROMarrNG-only Games (PR604 update after v3.72.23)
 

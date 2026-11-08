@@ -4,7 +4,7 @@
 #   SeerrNG   http://<this-machine>:5055   full SeerrNG, for setup and admin settings
 #
 # Start:   docker compose up -d
-# Update:  docker compose pull --ignore-buildable && docker compose build --pull && docker compose up -d
+# Update:  docker compose pull && docker compose up -d
 #
 # Step-by-step guide: docs/using-seerr/lumen.md in the SeerrNG repository.
 # Already running SeerrNG? Use compose.lumen-only.yaml instead; it installs Lumen alone.
@@ -26,9 +26,10 @@ services:
     restart: unless-stopped
 
   lumen:
-    # Built from the SeerrNG repository the first time you start it (takes a few minutes).
-    build: https://github.com/snapetech-org/seerrng.git#main:lumen
-    image: seerrng-lumen:local
+    image: ghcr.io/snapetech-org/seerrng-lumen:latest
+    # Pin v3.72.23 for a fixed release. Optional local build instead of the image:
+    # build: https://github.com/snapetech-org/seerrng.git#main:lumen
+    # image: seerrng-lumen:local
     container_name: lumen
     depends_on:
       - seerrng
