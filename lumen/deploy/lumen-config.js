@@ -59,7 +59,12 @@ async function isAdmin(r) {
     send(r, 502, { message: 'SeerrNG didn’t say who you are.' });
     return false;
   }
-  if (!user || ((user.permissions || 0) & ADMIN) === 0) {
+  if (
+    !user ||
+    !Number.isSafeInteger(user.permissions) ||
+    user.permissions < 0 ||
+    (user.permissions & ADMIN) === 0
+  ) {
     send(r, 403, { message: 'Only admins can change settings for everyone.' });
     return false;
   }

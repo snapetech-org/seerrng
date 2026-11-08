@@ -176,7 +176,8 @@ export interface Services {
   comics: boolean;
   magazines: boolean;
   sports: boolean;
-  software: boolean;
+  software: boolean; // QuestarrNG: PC games, and consoles unless ROMarrNG serves them
+  romarr: boolean; // ROMarrNG (RomM): retro and modern consoles
 }
 export function resolveServices(pub: Record<string, unknown> | null): Services {
   const has = (k: string) => pub?.[k] !== false;
@@ -190,6 +191,7 @@ export function resolveServices(pub: Record<string, unknown> | null): Services {
     magazines: has('magazinesEnabled'),
     sports: has('sportsEnabled'),
     software: has('softwareEnabled'),
+    romarr: pub?.romarrEnabled === true,
   };
 }
 let currentServices: Services = resolveServices(null);

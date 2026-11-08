@@ -85,6 +85,10 @@ test('non-admin and malformed settings cannot alter saved defaults or upload bra
     [{ status: 401 }, 401],
     [{ status: 200, responseText: '{"permissions":32}' }, 403],
     [{ status: 200, responseText: 'bad' }, 502],
+    [{ status: 200, responseText: '{"permissions":"2"}' }, 403],
+    [{ status: 200, responseText: '{"permissions":[2]}' }, 403],
+    [{ status: 200, responseText: '{"permissions":2.5}' }, 403],
+    [{ status: 200, responseText: '{"permissions":-2}' }, 403],
   ]) {
     for (const handler of [handlers.save, handlers.branding]) {
       const r = request({ subrequest: async () => me });

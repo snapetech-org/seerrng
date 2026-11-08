@@ -398,6 +398,11 @@ you put the file in place by hand:
      sign-in page for Jellyfin and Emby, with no media server names, so family
      members just type their details. Leave it out for the usual
      **Continue with Jellyfin** button. Plex always uses its pop-up.
+     In the PR604 update planned after v3.72.23, the usual buttons remember this
+     phone or browser’s last successful
+     password sign-in method (Jellyfin/Emby or email) and opens that form next time.
+     `"loginStyle": "form"` always opens the media-server form instead. The other
+     enabled methods stay a tap away; Plex and Quick Connect never start unprompted.
    - `branding`: `name` replaces "SeerrNG" next to the logo and in the browser
      tab (`""` hides the text; without it Lumen uses SeerrNG's application title).
      `logo` replaces the round play mark, and `icon` is the browser tab and iOS
@@ -535,3 +540,11 @@ Add Lumen as a container using **Add Container** with these settings:
      `CF-Connecting-IP` if a Cloudflare Tunnel container on the default bridge sits
      in front of it.
 3. To update, run the `docker build` command again, then restart the container.
+
+### ROMarrNG-only Games (PR604 update after v3.72.23)
+
+The upcoming Lumen update supports console catalogs from ROMarrNG without requiring
+QuestarrNG. It shows the enabled, accessible console categories and leaves PC games
+out when QuestarrNG is not connected. Temporary catalog failures keep an error and
+Retry available; denied categories remain hidden. SeerrNG still enforces request
+permissions, quotas, approvals and service destinations.

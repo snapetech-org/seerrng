@@ -199,15 +199,22 @@ export function ExtraGate({ k, children }: { k: Extra; children: ReactNode }) {
 export function ServiceNote({
   error,
   what,
+  retry,
 }: {
   error: string | null;
   what: string;
+  retry?: () => void;
 }) {
   if (!error) return null;
   return (
-    <div className="empty">
+    <div className="empty" role={retry ? 'alert' : undefined}>
       <b>Couldn’t load {what}</b>
-      {error}
+      {retry ? <p>{error}</p> : error}
+      {retry && (
+        <button className="btn btn-tonal" onClick={retry}>
+          Retry
+        </button>
+      )}
     </div>
   );
 }

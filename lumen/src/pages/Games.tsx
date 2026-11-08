@@ -164,7 +164,11 @@ export function Games() {
           }
         />
       </ExtraHeader>
-      <ServiceNote error={list.items.length ? null : list.error} what="games" />
+      <ServiceNote
+        error={list.items.length ? null : list.error}
+        what="games"
+        retry={list.retry}
+      />
       {!list.error && !list.items.length && !list.loading && (
         <div className="empty">
           <b>No games found</b>Try the game’s full title.
@@ -189,7 +193,7 @@ export function Games() {
         done={list.done}
         loading={list.loading}
         more={list.more}
-        error={list.error}
+        error={list.items.length ? list.error : null}
         retry={list.retry}
       />
     </ExtraGate>

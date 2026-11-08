@@ -350,8 +350,22 @@ test('late category probes remain scoped to the account that started them', asyn
       id
     );
   await expect.poll(() => cached(2)).toBe(true);
+  const late = page.waitForResponse(
+    (response) =>
+      response.url().includes('/api/v1/discover/comics') &&
+      response.status() === 403
+  );
   release();
-  await expect.poll(() => cached(1)).toBe(false);
+  await (await late).finished();
+  // Let response parsing/cache callbacks settle, then prove logout data stayed
+  // absent and the current account's successful result was not overwritten.
+  await page.evaluate(
+    () =>
+      new Promise<void>((resolve) =>
+        requestAnimationFrame(() => requestAnimationFrame(() => resolve()))
+      )
+  );
+  expect(await cached(1)).toBeUndefined();
   expect(await cached(2)).toBe(true);
 });
 
@@ -992,6 +1006,78 @@ test('a stale game page cannot overwrite loading or errors after a new search', 
   await expect(
     page.getByRole('button', { name: 'Retry', exact: true })
   ).toHaveCount(0);
+});
+
+test('Games shows with only ROMarrNG, and only the consoles it serves', async ({
+  page,
+}) => {
+  await fixtures(page);
+  await page.route('**/api/v1/settings/public', (route) =>
+    route.fulfill({
+      json: {
+        applicationTitle: 'SeerrNG',
+        enabledMediaCategories: { game: true, retro: true, modern: true },
+        softwareEnabled: false,
+        romarrEnabled: true,
+        mediaServerType: 2,
+        localLogin: true,
+      },
+    })
+  );
+  const asked: string[] = [];
+  await page.route('**/api/v1/request/software/catalog/**', (route) => {
+    const url = new URL(route.request().url());
+    asked.push(url.search);
+    // PC games need QuestarrNG, which isn't connected
+    if (url.searchParams.get('category') === 'game')
+      return route.fulfill({
+        status: 503,
+        json: { error: 'QuestarrNG is not configured.' },
+      });
+    return route.fulfill({
+      json: {
+        results:
+          url.searchParams.get('limit') === '1'
+            ? []
+            : [
+                {
+                  id: '77',
+                  catalogProvider: 'igdb',
+                  catalogId: '77',
+                  title: `Console pick ${url.searchParams.get('category')}`,
+                  summary: '',
+                  coverUrl: '',
+                  releaseDate: '2026-01-01',
+                  platforms: [],
+                  genres: [],
+                },
+              ],
+        nextCursor: null,
+      },
+    });
+  });
+  await page.goto('/');
+  await expect(
+    page.getByRole('link', { name: 'Games', exact: true }).first()
+  ).toBeVisible();
+  await page.goto('/games');
+  const platform = page.getByRole('group', { name: 'Platform' });
+  await expect(
+    platform.getByRole('button', { name: 'Retro consoles' })
+  ).toBeVisible();
+  await expect(
+    platform.getByRole('button', { name: 'Modern consoles' })
+  ).toBeVisible();
+  await expect(platform.getByRole('button', { name: 'PC games' })).toHaveCount(
+    0
+  );
+  await expect(
+    page.getByRole('link', { name: 'Console pick retro', exact: true })
+  ).toBeVisible();
+  // the dead PC games list is only ever probed, never loaded
+  expect(
+    asked.filter((q) => q.includes('category=game') && !q.includes('limit=1'))
+  ).toEqual([]);
 });
 
 test('Discover reuses saved rows when reopened, and asks again after a request', async ({
@@ -1638,4 +1724,291 @@ test('Everyone shows more on request and filters by status', async ({
   await expect(page).toHaveURL(/show=failed/);
   await expect(page.getByText('Nothing here')).toBeVisible();
   expect(asked).toContain('failed:0:20');
+});
+
+test('a temporary configured game probe failure keeps that platform and Retry reachable', async ({
+  page,
+}, info) => {
+  await fixtures(page);
+  await page.route('**/api/v1/settings/public', (route) =>
+    route.fulfill({
+      json: {
+        applicationTitle: 'SeerrNG',
+        enabledMediaCategories: { game: true, retro: true, modern: true },
+        softwareEnabled: false,
+        romarrEnabled: true,
+        mediaServerType: 2,
+        localLogin: true,
+      },
+    })
+  );
+  let failures = 0;
+  await page.route('**/api/v1/request/software/catalog/**', (route) => {
+    const url = new URL(route.request().url());
+    const category = url.searchParams.get('category');
+    if (category === 'game')
+      return route.fulfill({
+        status: 503,
+        json: { error: 'QuestarrNG is not configured.' },
+      });
+    if (
+      category === 'modern' &&
+      (url.searchParams.get('limit') === '1' || failures++ === 0)
+    )
+      return route.fulfill({
+        status: 503,
+        json: { error: 'Temporary provider failure.' },
+      });
+    return route.fulfill({
+      json: {
+        results:
+          url.searchParams.get('limit') === '1'
+            ? []
+            : [
+                {
+                  id: '77',
+                  catalogProvider: 'igdb',
+                  catalogId: '77',
+                  title: `Recovered ${category} console game`,
+                  summary: '',
+                  coverUrl: '',
+                  releaseDate: '2026-01-01',
+                  platforms: [],
+                  genres: [],
+                },
+              ],
+        nextCursor: null,
+      },
+    });
+  });
+  await page.addInitScript(() =>
+    sessionStorage.setItem(
+      'lumen-probes:1',
+      JSON.stringify({
+        '/request/software/catalog/popular?category=modern&limit=1': [
+          false,
+          Date.now(),
+        ],
+      })
+    )
+  );
+  await page.goto('/games');
+  const platform = page.getByRole('group', { name: 'Platform' });
+  await platform.getByRole('button', { name: 'Modern consoles' }).click();
+  const retry = page.getByRole('button', { name: 'Retry', exact: true });
+  await expect(retry).toBeVisible();
+  await expect(page.getByRole('alert')).toHaveCount(1);
+  await expect(page.getByRole('alert')).toContainText('Couldn’t load games');
+  await expect(page.getByRole('alert')).toContainText(
+    'Temporary provider failure.'
+  );
+  await expect(
+    page.getByText('Couldn’t load more.', { exact: false })
+  ).toHaveCount(0);
+  await page.screenshot({
+    path: info.outputPath('temporary-platform-error.png'),
+    animations: 'disabled',
+  });
+  await retry.click();
+  await expect(
+    page.getByRole('link', {
+      name: 'Recovered modern console game',
+      exact: true,
+    })
+  ).toBeVisible();
+  await page.screenshot({
+    path: info.outputPath('recovered-platform.png'),
+    animations: 'disabled',
+  });
+});
+
+test('configured game services still hide a platform explicitly denied by the API', async ({
+  page,
+}) => {
+  await fixtures(page);
+  await page.route('**/api/v1/settings/public', (route) =>
+    route.fulfill({
+      json: {
+        applicationTitle: 'SeerrNG',
+        enabledMediaCategories: { game: true, retro: true, modern: true },
+        softwareEnabled: false,
+        romarrEnabled: true,
+        mediaServerType: 2,
+        localLogin: true,
+      },
+    })
+  );
+  const loaded: string[] = [];
+  await page.route('**/api/v1/request/software/catalog/**', (route) => {
+    const url = new URL(route.request().url());
+    const category = url.searchParams.get('category');
+    if (url.searchParams.get('limit') !== '1') loaded.push(category || '');
+    if (category === 'retro')
+      return route.fulfill({ status: 403, json: { error: 'Access denied.' } });
+    if (category === 'game')
+      return route.fulfill({
+        status: 503,
+        json: { error: 'QuestarrNG is not configured.' },
+      });
+    return route.fulfill({
+      json: {
+        results:
+          url.searchParams.get('limit') === '1'
+            ? []
+            : [
+                {
+                  id: '78',
+                  catalogProvider: 'igdb',
+                  catalogId: '78',
+                  title: 'Allowed modern console game',
+                  summary: '',
+                  coverUrl: '',
+                  releaseDate: '2026-01-01',
+                  platforms: [],
+                  genres: [],
+                },
+              ],
+        nextCursor: null,
+      },
+    });
+  });
+  await page.goto('/games');
+  await expect(
+    page.getByRole('link', { name: 'Allowed modern console game', exact: true })
+  ).toBeVisible();
+  await expect(
+    page.getByRole('button', { name: 'Retro consoles', exact: true })
+  ).toHaveCount(0);
+  expect(loaded).not.toContain('retro');
+  expect(loaded).not.toContain('game');
+});
+
+test('a later game-page failure retains loaded games and retries only that page', async ({
+  page,
+}) => {
+  await fixtures(page);
+  await page.route('**/api/v1/settings/public', (route) =>
+    route.fulfill({
+      json: {
+        applicationTitle: 'SeerrNG',
+        enabledMediaCategories: { game: true },
+        softwareEnabled: true,
+        romarrEnabled: false,
+        mediaServerType: 2,
+        localLogin: true,
+      },
+    })
+  );
+  let later = 0;
+  await page.route('**/api/v1/request/software/catalog/**', (route) => {
+    const url = new URL(route.request().url());
+    if (url.searchParams.get('limit') === '1')
+      return route.fulfill({ json: { results: [] } });
+    const next = url.searchParams.get('offset') === '24';
+    if (next && later++ === 0)
+      return route.fulfill({
+        status: 503,
+        json: { error: 'Temporary later-page failure.' },
+      });
+    return route.fulfill({
+      json: {
+        results: [
+          {
+            id: next ? '82' : '81',
+            catalogProvider: 'igdb',
+            catalogId: next ? '82' : '81',
+            title: next ? 'Recovered later game' : 'Retained first game',
+            summary: '',
+            coverUrl: '',
+            releaseDate: '2026-01-01',
+            platforms: [],
+            genres: [],
+          },
+        ],
+        nextOffset: next ? null : 24,
+      },
+    });
+  });
+  await page.goto('/games');
+  await expect(
+    page.getByRole('link', { name: 'Retained first game', exact: true })
+  ).toBeVisible();
+  const error = page.getByRole('alert');
+  await expect(error).toHaveCount(1);
+  await expect(error).toContainText('Couldn’t load more.');
+  await error.getByRole('button', { name: 'Retry', exact: true }).click();
+  await expect(
+    page.getByRole('link', { name: 'Recovered later game', exact: true })
+  ).toBeVisible();
+  await expect(
+    page.getByRole('link', { name: 'Retained first game', exact: true })
+  ).toBeVisible();
+});
+
+test('game capability denials expire during in-app navigation after the documented cache interval', async ({
+  page,
+}) => {
+  await page.clock.install();
+  await fixtures(page);
+  await page.route('**/api/v1/settings/public', (route) =>
+    route.fulfill({
+      json: {
+        applicationTitle: 'SeerrNG',
+        enabledMediaCategories: { game: true, retro: true, modern: true },
+        softwareEnabled: false,
+        romarrEnabled: true,
+        mediaServerType: 2,
+        localLogin: true,
+      },
+    })
+  );
+  let modernAllowed = false,
+    modernProbes = 0;
+  await page.route('**/api/v1/request/software/catalog/**', (route) => {
+    const url = new URL(route.request().url());
+    const category = url.searchParams.get('category');
+    if (category === 'modern' && url.searchParams.get('limit') === '1')
+      modernProbes++;
+    if (category === 'modern' && !modernAllowed)
+      return route.fulfill({ status: 403, json: { error: 'Access denied.' } });
+    return route.fulfill({
+      json: {
+        results:
+          url.searchParams.get('limit') === '1'
+            ? []
+            : [
+                {
+                  id: '83',
+                  catalogProvider: 'igdb',
+                  catalogId: '83',
+                  title: `Now available ${category}`,
+                  summary: '',
+                  coverUrl: '',
+                  releaseDate: '2026-01-01',
+                  platforms: [],
+                  genres: [],
+                },
+              ],
+        nextCursor: null,
+      },
+    });
+  });
+  await page.goto('/games');
+  await expect(
+    page.getByRole('link', { name: 'Now available retro', exact: true })
+  ).toBeVisible();
+  await expect(
+    page.getByRole('button', { name: 'Modern consoles', exact: true })
+  ).toHaveCount(0);
+  modernAllowed = true;
+  await page.clock.fastForward(600001);
+  await page
+    .getByRole('link', { name: 'Discover', exact: true })
+    .first()
+    .click();
+  await page.getByRole('link', { name: 'Games', exact: true }).first().click();
+  await expect(
+    page.getByRole('button', { name: 'Modern consoles', exact: true })
+  ).toBeVisible();
+  expect(modernProbes).toBeGreaterThanOrEqual(2);
 });

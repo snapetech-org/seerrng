@@ -1,6 +1,6 @@
 {
   "checkpoint": "2026-11-06",
-  "scope": "Security-relevant production and operational boundary reviews for all 59 external human-authored PRs in the refreshed 517-PR inventory through PR596. Bot dependency diffs are separate; not exhaustive upstream-package source, historical CSS, live-provider or physical-device acceptance. Original historical records remain dated evidence; follow-ups state integration and release boundaries.",
+  "scope": "60 scoped external human contribution reviews through incoming PR604. The earlier refreshed517-PR inventory contained59 external human PRs; PR604 arrived later and its integration is pending in this review checkpoint.144 historical bot dependency-diff reviews are separate. Not exhaustive upstream-package source, historical CSS, live-provider or physical-device acceptance.",
   "reviews": [
     {
       "number": 32,
@@ -775,6 +775,17 @@
         "https://github.com/snapetech-org/seerrng/issues/601"
       ],
       "pull_request": "https://github.com/snapetech-org/seerrng/pull/596"
+    },
+    {
+      "number": 604,
+      "source_patch": "pr604.diff",
+      "sha256": "3886056cdc339a847647b6cc368cb48adc92e3a238bddcce672bbf0510032478",
+      "review": "Reviewed all seven original changed files at641d0939d63ef1c36be7c0a3bc1a61cadb688f99: validated remembered-method storage, sign-in completion and admin precedence, ROMarrNG service resolution, per-platform capability probes and provider/permission recovery. No credential persistence or backend authorization changes.",
+      "disposition": "Retain original ancestry and features. Four original-build cases reproduce transient503 probes hiding a connected console platform and its Retry. Patch explicit service/category filtering, configured-catalog recovery with old-negative-cache isolation, and single first-page feedback while preserving continuation-page retry and403/404 denial. Candidate only: final CI, actual main merge and publication remain separate gates. Also repair probe-memory expiration and pending-entry ownership; late logout results are discarded. Harden config/branding admission against malformed permission-mask coercion; current supported backend remains numeric, and no anonymous exploit was demonstrated.27 final native/image checks pass; full browser validation and actual integration remain separate gates. Final local candidate:375 browser passes/13 viewport skips,27 actual-nginx/native passes, root contracts pass and16 baseline/candidate sign-in image pairs pixel-identical. Exact-head hosted validation, main merge and release publication remain pending.",
+      "evidence": [
+        "docs/maintainers/lumen-pr604-review-2026-11-08.md"
+      ],
+      "pull_request": "https://github.com/snapetech-org/seerrng/pull/604"
     }
   ]
 }

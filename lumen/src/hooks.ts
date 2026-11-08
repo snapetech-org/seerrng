@@ -53,6 +53,8 @@ export async function cachedApi<T>(path: string): Promise<T> {
 export const dropCache = forget;
 
 export interface PublicSettings {
+  softwareEnabled?: boolean;
+  romarrEnabled?: boolean;
   applicationTitle: string;
   movie4kEnabled: boolean;
   series4kEnabled: boolean;

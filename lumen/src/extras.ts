@@ -40,7 +40,8 @@ const PROBE: Partial<Record<Extra, string>> = {
   sports: '/discover/sports',
   adult: '/adult/search',
 };
-const probes = new Map<string, Promise<boolean>>();
+type ProbeEntry = { at: number; result: Promise<boolean> };
+const probes = new Map<string, ProbeEntry>();
 // answers are kept for the tab for 10 minutes, so reloading a page doesn't re-ask
 // SeerrNG about every unconfigured category (they count against its rate limit)
 // (kept per account: what answers can depend on permissions)
@@ -66,54 +67,69 @@ const saveProbe = (key: string, path: string, ok: boolean) => {
   }
 };
 onSessionReset(() => probes.clear());
-const probe = (path: string) => {
+const probe = (path: string, configured = false) => {
+  // A connected game catalog may be temporarily unavailable. Keep its page and
+  // Retry reachable; explicit denials and missing endpoints still stay hidden.
+  const cachePath = configured ? `configured:${path}` : path;
   const key = probeKey();
-  const saved = savedProbes(key)[path];
+  const now = Date.now();
+  const previous = probes.get(cachePath);
+  if (previous && (previous.at > now || now - previous.at >= PROBE_TTL))
+    probes.delete(cachePath);
+  const saved = savedProbes(key)[cachePath];
   if (
-    !probes.has(path) &&
+    !probes.has(cachePath) &&
     Array.isArray(saved) &&
     typeof saved[0] === 'boolean' &&
     Number.isFinite(saved[1]) &&
     Date.now() - saved[1] >= 0 &&
     Date.now() - saved[1] < PROBE_TTL
   )
-    probes.set(path, Promise.resolve(saved[0]));
-  if (!probes.has(path)) {
-    probes.set(
-      path,
-      api<{ comicVineConfigured?: boolean }>(path)
+    probes.set(cachePath, { at: saved[1], result: Promise.resolve(saved[0]) });
+  if (!probes.has(cachePath)) {
+    const pending: ProbeEntry = {
+      at: now,
+      result: api<{ comicVineConfigured?: boolean }>(path)
         .then((d) => d?.comicVineConfigured !== false)
-        // "not configured" and "unavailable" come back as 503; anything else, let the page explain
+        // Unknown configuration can also report 503. Explicit configured catalogs
+        // use their own cache namespace so old negative probes cannot hide recovery.
         .catch(
           (e) =>
             !(
               e instanceof ApiError &&
-              (e.status === 503 || e.status === 404 || e.status === 403)
+              ((e.status === 503 && !configured) ||
+                e.status === 404 ||
+                e.status === 403)
             )
         )
         .then((ok) => {
-          saveProbe(key, path, ok);
+          if (probes.get(cachePath) === pending) {
+            pending.at = Date.now();
+            saveProbe(key, cachePath, ok);
+          }
           return ok;
-        })
-    );
+        }),
+    };
+    probes.set(cachePath, pending);
   }
-  return probes.get(path)!;
+  return probes.get(cachePath)!.result;
 };
 
 // which extras this server has turned on (games count when any of its three categories is)
 export function useExtras() {
   const pub = usePublicSettings();
   const on = pub?.enabledMediaCategories || {};
+  const svc = services();
   const games = (['game', 'retro', 'modern'] as GameCategory[]).filter(
-    (c) => on[c]
+    (c) => on[c] && (c === 'game' ? svc.software : svc.software || svc.romarr)
   );
   // the category must be on in SeerrNG *and* have its service connected
-  const svc = services();
   const connected: Record<Extra, boolean> = {
     music: svc.music,
     comic: svc.comics,
     magazine: svc.magazines,
-    game: svc.software,
+    // consoles can come from ROMarrNG alone; each category is checked below
+    game: svc.software || svc.romarr,
     sports: svc.sports,
     adult: true,
   };
@@ -125,6 +141,8 @@ export function useExtras() {
         ? !!on.adult && !!pub?.adultEnabled
         : !!on[k]);
   const [working, setWorking] = useState<Set<Extra> | null>(null);
+  // the game categories whose catalogue answers (PC games need QuestarrNG, consoles may not)
+  const [gamesWorking, setGamesWorking] = useState<GameCategory[] | null>(null);
   const key =
     EXTRAS.map((e) => (enabled(e.key) ? e.key : '')).join(',') +
     games.join(',');
@@ -137,9 +155,16 @@ export function useExtras() {
         k === 'game'
           ? Promise.all(
               games.map((c) =>
-                probe(`/request/software/catalog/popular?category=${c}&limit=1`)
+                probe(
+                  `/request/software/catalog/popular?category=${c}&limit=1`,
+                  pub.softwareEnabled === true ||
+                    (c !== 'game' && pub.romarrEnabled === true)
+                )
               )
-            ).then((r) => r.some(Boolean))
+            ).then((r) => {
+              if (live) setGamesWorking(games.filter((_, i) => r[i]));
+              return r.some(Boolean);
+            })
           : PROBE[k]
             ? probe(PROBE[k]!)
             : Promise.resolve(true)
@@ -153,7 +178,10 @@ export function useExtras() {
   return {
     ready: !!pub,
     enabled,
-    games,
+    // until the checks answer, list none (so Games doesn't load a dead category first)
+    games: !enabled('game')
+      ? games
+      : games.filter((c) => gamesWorking?.includes(c)),
     list: EXTRAS.filter((e) => enabled(e.key) && working?.has(e.key)),
   };
 }

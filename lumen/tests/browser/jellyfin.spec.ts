@@ -51,7 +51,7 @@ async function fixtures(
     if (path === '/auth/me') {
       status = signedIn ? 200 : 401;
       body = signedIn ? { id: 1, displayName: 'jf user', permissions: 2 } : {};
-    } else if (path === '/auth/jellyfin') {
+    } else if (path === '/auth/jellyfin' || path === '/auth/local') {
       signedIn = true;
     } else if (path === '/auth/jellyfin/quickconnect/initiate') {
       body = { code: '123456', secret: 'a'.repeat(64) };
@@ -142,6 +142,66 @@ test('Jellyfin password sign-in and Jellyfin wording', async ({ page }) => {
   expect(errors).toEqual([]);
 });
 
+test('the next sign-in opens the way this device last signed in', async ({
+  page,
+}) => {
+  await fixtures(page, { serverType: 2 });
+  await page.goto('/');
+  await page.getByRole('button', { name: 'Continue with Jellyfin' }).click();
+  await page.getByLabel('Jellyfin username').fill('alice');
+  await page.getByLabel('Password').fill('secret');
+  await page.getByRole('button', { name: 'Sign in with Jellyfin' }).click();
+  await expect(
+    page.getByRole('heading', { name: 'Discover', exact: true })
+  ).toBeVisible();
+
+  // signed out again (fresh fixtures): straight to the Jellyfin boxes, other ways still there
+  await fixtures(page, { serverType: 2 });
+  await page.goto('/');
+  await expect(page.getByLabel('Jellyfin username')).toBeVisible();
+  await expect(
+    page.getByRole('button', { name: 'Continue with Jellyfin' })
+  ).toHaveCount(0);
+  await page
+    .getByRole('button', { name: 'Use an email and password instead' })
+    .click();
+  await page.getByLabel('Email').fill('alice@example.com');
+  await page.getByLabel('Password').fill('secret');
+  await page.getByRole('button', { name: 'Sign in', exact: true }).click();
+  await expect(
+    page.getByRole('heading', { name: 'Discover', exact: true })
+  ).toBeVisible();
+
+  // now email it is, with a way back to Jellyfin
+  await fixtures(page, { serverType: 2 });
+  await page.goto('/');
+  await expect(page.getByLabel('Email')).toBeVisible();
+  await page
+    .getByRole('button', { name: 'Use your Jellyfin account instead' })
+    .click();
+  await expect(
+    page.getByRole('button', { name: 'Continue with Jellyfin' })
+  ).toBeVisible();
+});
+
+test('a failed sign-in is not remembered', async ({ page }) => {
+  const { calls } = await fixtures(page, { serverType: 2 });
+  await page.route('**/api/v1/auth/jellyfin', (route) =>
+    route.fulfill({ status: 401, json: { message: 'INVALID_CREDENTIALS' } })
+  );
+  await page.goto('/');
+  await page.getByRole('button', { name: 'Continue with Jellyfin' }).click();
+  await page.getByLabel('Jellyfin username').fill('alice');
+  await page.getByLabel('Password').fill('wrong');
+  await page.getByRole('button', { name: 'Sign in with Jellyfin' }).click();
+  await expect(page.getByRole('alert')).toContainText('isn’t right');
+  await page.goto('/');
+  await expect(
+    page.getByRole('button', { name: 'Continue with Jellyfin' })
+  ).toBeVisible();
+  expect(calls.length).toBeGreaterThan(0);
+});
+
 test('Jellyfin Quick Connect sign-in', async ({ page }) => {
   const { calls } = await fixtures(page, {
     serverType: 2,
@@ -202,4 +262,85 @@ test('Emby uses its own name and has no Quick Connect', async ({ page }) => {
     'href',
     'https://jf.example.com/web/index.html#!/startup/forgotpassword.html'
   );
+});
+
+test('remembered sign-in forms retain the existing light and dark layout', async ({
+  page,
+}, info) => {
+  await fixtures(page, { serverType: 2 });
+  await page.addInitScript(() =>
+    localStorage.setItem(
+      'lumen-last-sign-in',
+      new URLSearchParams(location.search).get('method') || 'server'
+    )
+  );
+  for (const colorScheme of ['light', 'dark'] as const) {
+    await page.emulateMedia({ colorScheme });
+    for (const method of ['server', 'local']) {
+      await page.goto(`/?method=${method}`);
+      await expect(
+        page.getByLabel(method === 'server' ? 'Jellyfin username' : 'Email')
+      ).toBeVisible();
+      await page.evaluate(() => document.fonts.ready);
+      await page.screenshot({
+        path: info.outputPath(`${colorScheme}-${method}-remembered-form.png`),
+        animations: 'disabled',
+      });
+    }
+  }
+});
+
+test('administrator form style wins over the remembered local method', async ({
+  page,
+}) => {
+  await fixtures(page, { serverType: 2, config: { loginStyle: 'form' } });
+  await page.addInitScript(() =>
+    localStorage.setItem('lumen-last-sign-in', 'local')
+  );
+  await page.goto('/');
+  await expect(page.getByLabel('Username', { exact: true })).toBeVisible();
+  await expect(page.getByLabel('Email')).toHaveCount(0);
+});
+
+test('a remembered Quick Connect method never requests an unsolicited code', async ({
+  page,
+}) => {
+  const { calls } = await fixtures(page, {
+    serverType: 2,
+    quickConnectOnly: true,
+  });
+  await page.addInitScript(() =>
+    localStorage.setItem('lumen-last-sign-in', 'quick')
+  );
+  await page.goto('/');
+  await expect(
+    page.getByRole('button', { name: 'Continue with Jellyfin' })
+  ).toBeVisible();
+  expect(calls.filter((c) => c.path.includes('/quickconnect/'))).toEqual([]);
+});
+
+test('invalid or blocked remembered-method storage cannot prevent sign-in', async ({
+  page,
+}) => {
+  const { errors } = await fixtures(page, { serverType: 2 });
+  await page.addInitScript(() => {
+    localStorage.setItem('lumen-last-sign-in', '<script>invalid</script>');
+    const original = Storage.prototype.setItem;
+    Storage.prototype.setItem = function (key, value) {
+      if (key === 'lumen-last-sign-in') throw new Error('Storage denied');
+      return original.call(this, key, value);
+    };
+  });
+  await page.goto('/');
+  await expect(
+    page.getByRole('button', { name: 'Continue with Jellyfin' })
+  ).toBeVisible();
+  await page.getByRole('button', { name: 'Continue with Jellyfin' }).click();
+  await page.getByLabel('Jellyfin username').fill('alice');
+  await page.getByLabel('Password').fill('synthetic-password');
+  await page.getByRole('button', { name: 'Sign in with Jellyfin' }).click();
+  await expect(
+    page.getByRole('heading', { name: 'Discover', exact: true })
+  ).toBeVisible();
+  expect(errors).toEqual([]);
 });

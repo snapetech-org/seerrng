@@ -13,21 +13,31 @@ const containers = new Set();
 let image, port, gateway;
 let imageBuilt = false;
 let extraCalls = 0;
+const malformedPermissions = new Map([
+  ['fixture-session=string-admin', '2'],
+  ['fixture-session=array-admin', [2]],
+  ['fixture-session=fraction-admin', 2.5],
+  ['fixture-session=negative-admin', -2],
+]);
 const echo = createServer((req, res) => {
   if (req.url === '/api/v1/auth/me') {
-    res.statusCode = [
-      'fixture-session=valid',
-      'fixture-session=family',
-    ].includes(req.headers.cookie)
-      ? 200
-      : req.headers.cookie === 'fixture-session=forbidden'
-        ? 403
-        : req.headers.cookie === 'fixture-session=unavailable'
-          ? 503
-          : 401;
+    res.statusCode =
+      ['fixture-session=valid', 'fixture-session=family'].includes(
+        req.headers.cookie
+      ) || malformedPermissions.has(req.headers.cookie)
+        ? 200
+        : req.headers.cookie === 'fixture-session=forbidden'
+          ? 403
+          : req.headers.cookie === 'fixture-session=unavailable'
+            ? 503
+            : 401;
     res.setHeader('content-type', 'application/json');
     const body = JSON.stringify({
-      permissions: req.headers.cookie === 'fixture-session=valid' ? 2 : 32,
+      permissions: malformedPermissions.has(req.headers.cookie)
+        ? malformedPermissions.get(req.headers.cookie)
+        : req.headers.cookie === 'fixture-session=valid'
+          ? 2
+          : 32,
       // Real /auth/me responses contain settings and exceed the compression threshold.
       profile: 'fixture-profile '.repeat(150),
     });
@@ -327,6 +337,7 @@ test('actual nginx saves and serves admin branding without deleting the live log
       for (const [cookie, expected] of [
         ['', 401],
         ['fixture-session=family', 403],
+        ...[...malformedPermissions.keys()].map((cookie) => [cookie, 403]),
       ]) {
         assert.equal(
           (

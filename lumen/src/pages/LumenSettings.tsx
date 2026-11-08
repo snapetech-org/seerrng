@@ -333,7 +333,8 @@ export default function LumenSettings() {
               <b>Sign-in page</b>
               <small>
                 Jellyfin and Emby: show the username and password boxes straight
-                away, without naming the media server
+                away, without naming the media server. With buttons, each device
+                opens the way it last signed in.
               </small>
             </span>
             <select
