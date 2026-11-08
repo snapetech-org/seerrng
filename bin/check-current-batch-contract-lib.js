@@ -2790,8 +2790,18 @@ const validateCurrentBatchContract = (files) => {
   );
   requirePublicCommand(
     'build:next',
-    'next build --webpack',
+    'pnpm build:lumen && next build --webpack',
     'the public client build must retain the upstream Next compiler'
+  );
+  requirePublicCommand(
+    'build:next:compile',
+    'pnpm build:lumen && next build --webpack',
+    'the compile entry must build bundled Lumen before the upstream Next compiler'
+  );
+  requirePublicCommand(
+    'build:lumen',
+    'node scripts/build-lumen.mjs',
+    'the bundled Lumen build must use its locked build and artifact preparation'
   );
   for (const name of ['build:server', 'build:server:compile']) {
     requirePublicCommand(
@@ -2821,8 +2831,9 @@ const validateCurrentBatchContract = (files) => {
     'the translation command must retain its actual validator'
   );
   if (
-    publicScripts.dev !== 'node scripts/dev-server.mjs' ||
-    publicScripts['dev:server'] !== 'node scripts/dev-server.mjs'
+    publicScripts.dev !== 'pnpm build:lumen && node scripts/dev-server.mjs' ||
+    publicScripts['dev:server'] !==
+      'pnpm build:lumen && node scripts/dev-server.mjs'
   ) {
     errors.push(
       'package.json: public development must retain the local server watcher'

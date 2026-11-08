@@ -6,12 +6,4 @@ action: Use You → Full SeerrNG → Open for native settings and administration
 breaking: false
 ---
 
-Lumen now ships inside SeerrNG and is the default entry for existing and new
-users at the normal application address. Its original dark design is retained.
-Fresh installations keep the setup wizard, and full SeerrNG remains available.
-Existing native-interface profiles adopt PersiusNG once; later Orig, John or
-custom selections remain available. Shared Lumen settings save into the existing
-configuration volume with administrator authorization. Sign-in and saved changes
-work with SeerrNG CSRF protection enabled. The separate Lumen container remains
-supported. Full-interface links keep opening the native application, and native
-theme geometry stays consistent across initial loading and theme switching.
+Lumen is now the default for existing and new users and is bundled with SeerrNG. Full SeerrNG remains available for administration, with PersiusNG as its native default. Sign-in and saves support CSRF protection, and native theme spacing stays consistent across initial loading and theme switching.

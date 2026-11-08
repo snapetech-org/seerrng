@@ -160,6 +160,12 @@ test('upstream public commands preserve build-time translation and visual guards
     ['build:all', 'run-p build:next', 'compile both client and server'],
     ['build:next', 'echo skipped', 'upstream Next compiler'],
     [
+      'build:next:compile',
+      'next build --webpack',
+      'compile entry must build bundled Lumen',
+    ],
+    ['build:lumen', 'echo skipped', 'locked build and artifact preparation'],
+    [
       'build:server',
       'echo skipped',
       'upstream compilation, resources and alias resolution',

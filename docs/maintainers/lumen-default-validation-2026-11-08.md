@@ -109,7 +109,16 @@ focused browser cases for full-interface links and CSRF across four viewports.
 The original full 427-case run remains the broader baseline; the two new link
 cases add eight viewport checks, not eight different user features.
 
-Integrated final-head CI and actual released-image qualification remain pending. The earlier ad hoc harness
+The f3a6c7517 Lumen workflow passes all 435 browser cases (13 viewport skips),
+27 native/container checks and the scanner gate. Its combined application CI
+stopped at prebuild before running the browser suites: the command guard still
+required the old exact Next/dev strings, and the new release-note body exceeded
+400 characters. The guard now requires Lumen preparation plus the same Next
+compiler/watcher and adds negative checks against skipping either build. The
+actual shortened fragment validates; all 67 focused guard/release-note cases and
+the full prebuild, including 73 visual-role cases, pass. A fresh exact-head
+combined run and Lumen run are required; no failed run qualifies publication.
+Actual released-image qualification also remains pending. The earlier ad hoc harness
 needed login-readiness waiting, the menuitem role instead of link, and correctly
 scoped catalog replay; those failures are retained rather than counted as passes.
 A later run started before app readiness and its first navigation was refused;
