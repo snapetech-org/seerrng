@@ -683,7 +683,7 @@ mediaRoutes.get(
     const media = id
       ? await getRepository(Media).findOne({
           where: { id },
-          relations: { identifiers: true },
+          relations: { identifiers: true, seasons: true },
         })
       : null;
     if (!media) return next({ status: 404, message: 'Media not found.' });
@@ -758,9 +758,7 @@ mediaRoutes.post(
                 if (
                   body.token !== resolved.plan.token ||
                   resolved.plan.verifiedServices === 0 ||
-                  resolved.plan.targets.some(
-                    (target) => target.quality === quality
-                  )
+                  !resolved.plan.staleAvailabilityQualities?.includes(quality)
                 )
                   return next({
                     status: 409,

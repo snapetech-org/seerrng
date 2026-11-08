@@ -1,4 +1,4 @@
-import { MediaType } from '@server/constants/media';
+import { MediaStatus, MediaType } from '@server/constants/media';
 import type Media from '@server/entity/Media';
 import { MediaIdentifierProvider } from '@server/entity/MediaIdentifier';
 import { beforeEach, expect, it, vi } from 'vitest';
@@ -15,6 +15,7 @@ const fixture = vi.hoisted(() => ({
   volumes: [] as { id: number; comicvine_id: number; title: string }[],
   magazines: [] as { title: string }[],
   appApiKey: 'test-app-key',
+  hasFiles: vi.fn(),
   remove: vi.fn(),
   movies: vi.fn(),
 }));
@@ -113,6 +114,9 @@ vi.mock('@server/api/servarr/sonarr', () => ({
     }
     getSeries() {
       return Promise.resolve(fixture.series);
+    }
+    hasEpisodeFiles(id: number) {
+      return fixture.hasFiles(id);
     }
     removeSeriesById(id: number) {
       return fixture.remove(id);
@@ -356,4 +360,42 @@ it('resolves a magazine by its normalized LazyLibrarian identity', async () => {
   expect(fixture.remove).not.toHaveBeenCalled();
   await resolved.remove(resolved.plan.targets[0]);
   expect(fixture.remove).toHaveBeenCalledExactlyOnceWith('The Atlantic');
+});
+
+it('keeps an empty Sonarr tracking record removable while exposing stale availability recovery', async () => {
+  fixture.series = [{ id: 17, tvdbId: 81189 }];
+  fixture.hasFiles.mockResolvedValue(false);
+  const resolved = await resolveLibraryRemoval({
+    id: 42,
+    mediaType: MediaType.TV,
+    tvdbId: 81189,
+    status: MediaStatus.AVAILABLE,
+    status4k: MediaStatus.AVAILABLE,
+  } as Media);
+  expect(resolved.plan.targets).toHaveLength(1);
+  expect(resolved.plan.staleAvailabilityQualities).toEqual(['HD']);
+  expect(fixture.hasFiles).toHaveBeenCalledWith(17);
+  expect(fixture.remove).not.toHaveBeenCalled();
+  fixture.hasFiles.mockResolvedValue(true);
+  const changed = await resolveLibraryRemoval({
+    id: 42,
+    mediaType: MediaType.TV,
+    tvdbId: 81189,
+    status: MediaStatus.AVAILABLE,
+  } as Media);
+  expect(changed.plan.staleAvailabilityQualities).toEqual([]);
+  expect(changed.plan.token).not.toBe(resolved.plan.token);
+});
+
+it('fails closed when the Sonarr file inventory cannot be verified', async () => {
+  fixture.series = [{ id: 17, tvdbId: 81189 }];
+  fixture.hasFiles.mockRejectedValue(new Error('unavailable'));
+  await expect(
+    resolveLibraryRemoval({
+      id: 42,
+      mediaType: MediaType.TV,
+      tvdbId: 81189,
+      status: MediaStatus.AVAILABLE,
+    } as Media)
+  ).rejects.toThrow('Unable to verify library copies');
 });

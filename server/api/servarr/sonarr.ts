@@ -1546,6 +1546,22 @@ class SonarrAPI extends ServarrBase<{
     }
   }
 
+  /** A malformed file record must never be normalized into proof of absence. */
+  public async hasEpisodeFiles(seriesId: number): Promise<boolean> {
+    const response = await this.request<unknown>(
+      'GET',
+      '/episodefile',
+      undefined,
+      {
+        params: { seriesId },
+      }
+    );
+    if (!Array.isArray(response.data)) {
+      throw new Error('Sonarr returned an invalid episode-file inventory.');
+    }
+    return response.data.length > 0;
+  }
+
   public async getEpisodeFiles(seriesId: number): Promise<SonarrEpisodeFile[]> {
     try {
       const response = await this.request<unknown[]>(

@@ -25596,7 +25596,7 @@ paths:
           type: string
     get:
       summary: Resolve all verified library copies
-      description: Read-only inventory across configured services. Requires MANAGE_REQUESTS. Returns a confirmation token bound to the exact media, targets and service configuration. No default-service guessing or deletion.
+      description: Read-only inventory across configured services. Requires ADMIN. Returns a confirmation token bound to the exact media, targets and service configuration. No default-service guessing or deletion.
       tags: [media]
       responses:
         '200':
@@ -25607,6 +25607,16 @@ paths:
                 type: object
                 required: [targets, token]
                 properties:
+                  verifiedServices:
+                    type: integer
+                    minimum: 0
+                  staleAvailabilityQualities:
+                    description: Administrator recovery qualities confirmed absent by fresh provider inventories, independent of viewer visibility. Existing Sonarr tracking entries require an empty episode-file inventory. This never deletes library entries or files.
+                    type: array
+                    uniqueItems: true
+                    items:
+                      type: string
+                      enum: [HD, 4K]
                   token:
                     type: string
                   targets:

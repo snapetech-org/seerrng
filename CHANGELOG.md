@@ -24,6 +24,7 @@ book-discovery, fresh-Bindery and release-bootstrap repairs.
 
 #### Fixed
 
+- **TV:** Administrator stale-availability recovery stays visible when viewer availability is masked and verifies empty Sonarr episode-file inventories before allowing a new request. Existing tracking entries and request history are preserved.
 - **Books:** Service acceptance leaves requests processing until the requested files are observed. Premature completion and availability notifications are corrected, old active tracking is repaired, and repeated delivery stays idempotent.
 - **Books:** Recommended discovery starts with trending works rather than random catalog records. Open Library searches use a bounded 30-second budget while retaining language rules, caching and retry controls.
 - **Books:** Fresh Bindery installations with an unstored primary provider setting use Bindery's Open Library default. Authentication and service failures still surface; explicit requester mappings remain enforced.

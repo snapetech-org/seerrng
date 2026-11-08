@@ -1500,3 +1500,33 @@ describe('Sonarr requester-tag editor boundary', () => {
     assert.equal(request.mock.callCount(), 0);
   });
 });
+
+describe('Sonarr strict file absence verification', () => {
+  afterEach(() => mock.restoreAll());
+  for (const [data, expected] of [
+    [[], false],
+    [[{ id: 7 }], true],
+    [[null], true],
+  ] as const) {
+    it(`treats inventory ${JSON.stringify(data)} as ${expected ? 'occupied' : 'empty'}`, async () => {
+      const api = buildSonarr();
+      const get = mock.method(getAxios(api), 'get', async () => ({ data }));
+      assert.equal(await api.hasEpisodeFiles(17), expected);
+      assert.equal(
+        (get.mock.calls[0].arguments[1] as { params: { seriesId: number } })
+          .params.seriesId,
+        17
+      );
+    });
+  }
+  for (const data of [null, {}, { records: [] }, '']) {
+    it(`rejects malformed inventory ${JSON.stringify(data)}`, async () => {
+      const api = buildSonarr();
+      mock.method(getAxios(api), 'get', async () => ({ data }));
+      await assert.rejects(
+        api.hasEpisodeFiles(17),
+        /invalid episode-file inventory/
+      );
+    });
+  }
+});

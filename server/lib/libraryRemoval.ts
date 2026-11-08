@@ -6,7 +6,7 @@ import LidarrAPI from '@server/api/servarr/lidarr';
 import RadarrAPI from '@server/api/servarr/radarr';
 import ReadarrAPI from '@server/api/servarr/readarr';
 import SonarrAPI from '@server/api/servarr/sonarr';
-import { MediaType } from '@server/constants/media';
+import { MediaStatus, MediaType } from '@server/constants/media';
 import type Media from '@server/entity/Media';
 import { MediaIdentifierProvider } from '@server/entity/MediaIdentifier';
 import type {
@@ -91,6 +91,23 @@ export const resolveLibraryRemoval = async (
   const type = libraryServiceType(media.mediaType, media.comicServiceType);
   const settings = getExternalRuntimeConfig()[type];
   const targets: LibraryCopy[] = [];
+  const video = type === 'sonarr' || type === 'radarr';
+  const stale = (status?: MediaStatus) =>
+    status === MediaStatus.AVAILABLE ||
+    status === MediaStatus.PARTIALLY_AVAILABLE;
+  const staleQualities = new Set(
+    (['HD', '4K'] as const).filter((quality) => {
+      const key = quality === '4K' ? 'status4k' : 'status';
+      return (
+        video &&
+        media[key] !== MediaStatus.BLOCKLISTED &&
+        (stale(media[key]) ||
+          (media.seasons ?? []).some((season) => stale(season[key])))
+      );
+    })
+  );
+  const checkedQualities = new Set<string>();
+  const occupiedQualities = new Set<string>();
   const removers = new Map<string, () => Promise<void>>();
   const add = (
     server: DVRSettings | CollectorServiceSettings,
@@ -119,6 +136,8 @@ export const resolveLibraryRemoval = async (
   };
   for (const server of settings) {
     try {
+      const quality = isHighQualityServer(server) ? '4K' : 'HD';
+      if (video) checkedQualities.add(quality);
       if (type === 'radarr') {
         if (!media.tmdbId) throw new Error('Missing TMDB identifier.');
         const api = new RadarrAPI({
@@ -129,7 +148,8 @@ export const resolveLibraryRemoval = async (
           tmdbId: media.tmdbId,
           strict: true,
         })) {
-          if (item.tmdbId === media.tmdbId)
+          if (item.tmdbId === media.tmdbId) {
+            occupiedQualities.add(quality);
             add(
               server,
               item.id,
@@ -138,6 +158,7 @@ export const resolveLibraryRemoval = async (
                 encodeURIComponent(item.titleSlug || String(item.tmdbId)),
               () => api.removeMovieById(item.id)
             );
+          }
         }
       } else if (type === 'sonarr') {
         if (!media.tvdbId)
@@ -148,10 +169,21 @@ export const resolveLibraryRemoval = async (
           apiKey: server.apiKey,
           url: SonarrAPI.buildUrl(server, '/api/v3'),
         });
-        for (const item of await api.getSeries()) {
+        for (const item of await api.getSeries({
+          strict: true,
+          tvdbId: media.tvdbId,
+        })) {
           if (item.tvdbId === media.tvdbId) {
             const seriesId = item.id;
             if (seriesId == null) throw new Error('Missing library series ID.');
+            // Tracking records remain removal targets. Only a fresh, strict
+            // file-list read can prove that an existing series has no files.
+            if (
+              !staleQualities.has(quality) ||
+              (await api.hasEpisodeFiles(seriesId))
+            ) {
+              occupiedQualities.add(quality);
+            }
             add(
               server,
               seriesId,
@@ -323,11 +355,20 @@ export const resolveLibraryRemoval = async (
       );
     }
   }
+  const staleAvailabilityQualities = [...staleQualities].filter(
+    (quality) =>
+      checkedQualities.has(quality) && !occupiedQualities.has(quality)
+  );
   return {
     plan: {
       targets,
-      token: libraryPlanToken(media.id, targets, settings),
+      token: libraryPlanToken(
+        media.id,
+        targets,
+        video ? { settings, staleAvailabilityQualities } : settings
+      ),
       verifiedServices: settings.length,
+      ...(video ? { staleAvailabilityQualities } : {}),
     },
     remove: async (target) => {
       const remove = removers.get(target.key);

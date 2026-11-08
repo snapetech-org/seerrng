@@ -57,7 +57,7 @@ const messages = defineMessages('components.ManageMediaActions', {
   clearStaleAvailability: 'Clear Stale {quality} Availability',
   clearStaleAvailabilityTitle: 'Clear Stale {quality} Availability?',
   clearStaleAvailabilityExplanation:
-    'Reset SeerrNG’s {quality} availability status to Unknown. The latest check found no copy in any configured {service} library. This does not delete files, requests, or issues. A media-server scan may report availability again if a copy remains.',
+    'Reset SeerrNG’s {quality} availability status to Unknown. The latest check found no remaining media files in the configured {service} libraries for this quality. This does not delete files, requests, or issues. A media-server scan may report availability again if a copy remains.',
   clearStaleAvailabilitySuccess: 'Stale availability cleared.',
   clearStaleAvailabilityFailed: 'Unable to clear stale availability.',
   blocklist: 'Blocklist',
@@ -133,14 +133,16 @@ const canClearStaleAvailability = (
     (mediaType !== MediaType.MOVIE && mediaType !== MediaType.TV) ||
     !plan ||
     libraryError ||
-    plan.verifiedServices < 1 ||
-    plan.targets.some((target) => target.quality === quality)
+    plan.verifiedServices < 1
   )
     return false;
 
   const statusKey = quality === '4K' ? 'status4k' : 'status';
   const status = media[statusKey];
   if (status === MediaStatus.BLOCKLISTED) return false;
+  if (plan.staleAvailabilityQualities !== undefined)
+    return plan.staleAvailabilityQualities.includes(quality);
+  if (plan.targets.some((target) => target.quality === quality)) return false;
 
   return (
     hasStaleAvailabilityStatus(status) ||

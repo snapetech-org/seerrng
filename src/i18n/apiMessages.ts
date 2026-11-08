@@ -1121,6 +1121,7 @@ export const apiMessages: Record<
   m53a1ac96bc7f4d8e0574:
     '[Radarr] Failed to retrieve movies by TMDB ID: {value0}',
   m53b2402397afc349df84: 'Unable to retrieve movie certifications.',
+  m53c61d99f1db25a164a0: 'Sonarr returned an invalid episode-file inventory.',
   m53d62b84902291a061bb:
     'Upgrade ROMarrNG to the SeerrNG catalog contract or switch the emulation catalog source to QuestarrNG.',
   m53dce552d4dbfaafcd0d: 'Each download client must be an object.',

@@ -519,3 +519,45 @@ it('shares permanent-delete wording and green cancel/red confirmation', () => {
     'permanently delete its media files and remove its library entry'
   );
 });
+
+it('surfaces provider-verified administrator recovery when viewer availability is masked', () => {
+  state.libraryPlan = {
+    token: 'fresh-plan',
+    verifiedServices: 1,
+    staleAvailabilityQualities: ['HD'],
+    targets: [
+      {
+        key: 'sonarr:0:17:HD',
+        serviceType: 'sonarr',
+        serviceId: 0,
+        externalId: 17,
+        service: 'Sonarr',
+        quality: 'HD',
+        url: 'http://sonarr.test/series/anime',
+      },
+    ],
+  };
+  const html = render(
+    <ManageMediaActions
+      media={media({ status: MediaStatus.UNKNOWN })}
+      mediaType={MediaType.TV}
+      title="Series"
+      onUpdate={vi.fn()}
+    />
+  );
+  expect(html).toContain('Clear Stale HD Availability');
+  expect(html).not.toContain('Clear Stale 4K Availability');
+  expect(html).toContain('Delete From Library');
+  expect(state.remove).not.toHaveBeenCalled();
+  state.libraryPlan.staleAvailabilityQualities = [];
+  expect(
+    render(
+      <ManageMediaActions
+        media={media({ status: MediaStatus.AVAILABLE })}
+        mediaType={MediaType.TV}
+        title="Series"
+        onUpdate={vi.fn()}
+      />
+    )
+  ).not.toContain('Clear Stale HD Availability');
+});

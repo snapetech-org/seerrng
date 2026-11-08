@@ -20,4 +20,6 @@ export interface LibraryRemovalPlan {
   targets: LibraryCopy[];
   token: string;
   verifiedServices: number;
+  /** Administrator-only, freshly verified recovery; independent of viewer masking. */
+  staleAvailabilityQualities?: ('HD' | '4K')[];
 }

@@ -137,6 +137,11 @@ const removeVolumeMock = mock.method(
 const removeSeriesMock = mock.fn(async (tvdbId: number) => {
   void tvdbId;
 });
+const hasEpisodeFilesMock = mock.method(
+  SonarrAPI.prototype,
+  'hasEpisodeFiles',
+  async () => true
+);
 const getSeriesMock = mock.method(
   SonarrAPI.prototype,
   'getSeries',
@@ -273,6 +278,8 @@ beforeEach(() => {
   removeVolumeMock.mock.mockImplementation(async () => undefined);
   removeSeriesMock.mock.resetCalls();
   removeSeriesMock.mock.mockImplementation(async () => undefined);
+  hasEpisodeFilesMock.mock.resetCalls();
+  hasEpisodeFilesMock.mock.mockImplementation(async () => true);
   getSeriesMock.mock.resetCalls();
   getSeriesMock.mock.mockImplementation(async () => []);
   getTvShowMock.mock.resetCalls();
@@ -1023,6 +1030,70 @@ describe('library deletion authorization', () => {
     );
     assert.ok(created.id);
     assert.strictEqual(created.status, MediaRequestStatus.PENDING);
+  });
+
+  it('clears stale TV availability without deleting a zero-file Sonarr record and permits a re-request', async () => {
+    const media = await getRepository(Media).save(
+      new Media({
+        tmdbId: 909996,
+        tvdbId: 777,
+        mediaType: MediaType.TV,
+        status: MediaStatus.AVAILABLE,
+        status4k: MediaStatus.UNKNOWN,
+        seasons: [
+          new Season({ seasonNumber: 1, status: MediaStatus.AVAILABLE }),
+        ],
+      })
+    );
+    getSeriesMock.mock.mockImplementation(async () => [
+      { id: 701, tvdbId: 777, titleSlug: 'anime' } as SonarrSeries,
+    ]);
+    hasEpisodeFilesMock.mock.mockImplementation(async () => false);
+    const agent = await loginAs('admin@seerr.dev', 'test1234');
+    const plan = await agent.get(`/media/${media.id}/library`);
+    assert.equal(plan.status, 200);
+    assert.equal(plan.body.targets.length, getSettings().sonarr.length);
+    assert.deepEqual(plan.body.staleAvailabilityQualities, ['HD']);
+    const cleared = await agent
+      .post(`/media/${media.id}/library/clear-stale-availability`)
+      .send({ token: plan.body.token, quality: 'HD' });
+    assert.equal(cleared.status, 204, cleared.body.message);
+    assert.equal(removeSeriesMock.mock.callCount(), 0);
+    const requester = await getRepository(User).findOneByOrFail({
+      email: 'friend@seerr.dev',
+    });
+    const created = await MediaRequest.request(
+      { mediaType: MediaType.TV, mediaId: 909996, seasons: [1] },
+      requester
+    );
+    assert.equal(created.status, MediaRequestStatus.PENDING);
+  });
+
+  it('rejects old zero-file confirmation if files appear before administrator recovery', async () => {
+    const media = await getRepository(Media).save(
+      new Media({
+        tmdbId: 909995,
+        tvdbId: 777,
+        mediaType: MediaType.TV,
+        status: MediaStatus.AVAILABLE,
+      })
+    );
+    getSeriesMock.mock.mockImplementation(async () => [
+      { id: 701, tvdbId: 777 } as SonarrSeries,
+    ]);
+    hasEpisodeFilesMock.mock.mockImplementation(async () => false);
+    const agent = await loginAs('admin@seerr.dev', 'test1234');
+    const plan = await agent.get(`/media/${media.id}/library`);
+    hasEpisodeFilesMock.mock.mockImplementation(async () => true);
+    const cleared = await agent
+      .post(`/media/${media.id}/library/clear-stale-availability`)
+      .send({ token: plan.body.token, quality: 'HD' });
+    assert.equal(cleared.status, 409);
+    assert.equal(
+      (await getRepository(Media).findOneByOrFail({ id: media.id })).status,
+      MediaStatus.AVAILABLE
+    );
+    assert.equal(removeSeriesMock.mock.callCount(), 0);
   });
 
   it('does not clear availability when a fresh inventory finds a copy after the plan was issued', async () => {

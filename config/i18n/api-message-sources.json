@@ -277,7 +277,7 @@
       "callsites": [
         {
           "path": "server/lib/libraryRemoval.ts",
-          "line": 350,
+          "line": 391,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'No library copies were found.'",
@@ -2418,7 +2418,7 @@
         },
         {
           "path": "server/routes/media.ts",
-          "line": 1476,
+          "line": 1474,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Media does not exist.'",
@@ -2426,7 +2426,7 @@
         },
         {
           "path": "server/routes/media.ts",
-          "line": 1484,
+          "line": 1482,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Media does not exist.'",
@@ -2434,7 +2434,7 @@
         },
         {
           "path": "server/routes/media.ts",
-          "line": 1487,
+          "line": 1485,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Media does not exist.'",
@@ -2442,7 +2442,7 @@
         },
         {
           "path": "server/routes/media.ts",
-          "line": 1586,
+          "line": 1584,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Media does not exist.'",
@@ -2450,7 +2450,7 @@
         },
         {
           "path": "server/routes/media.ts",
-          "line": 1593,
+          "line": 1591,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Media does not exist.'",
@@ -7694,7 +7694,7 @@
         },
         {
           "path": "server/routes/media.ts",
-          "line": 805,
+          "line": 803,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'You no longer have permission to modify media.'",
@@ -7702,7 +7702,7 @@
         },
         {
           "path": "server/routes/media.ts",
-          "line": 943,
+          "line": 941,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'You no longer have permission to modify media.'",
@@ -7710,7 +7710,7 @@
         },
         {
           "path": "server/routes/media.ts",
-          "line": 1454,
+          "line": 1452,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'You no longer have permission to modify media.'",
@@ -9584,7 +9584,7 @@
       "callsites": [
         {
           "path": "server/routes/media.ts",
-          "line": 1598,
+          "line": 1596,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Jellystat is not configured.'",
@@ -11357,7 +11357,7 @@
         },
         {
           "path": "server/routes/media.ts",
-          "line": 964,
+          "line": 962,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Media not found'",
@@ -11365,7 +11365,7 @@
         },
         {
           "path": "server/routes/media.ts",
-          "line": 971,
+          "line": 969,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Media not found'",
@@ -11373,7 +11373,7 @@
         },
         {
           "path": "server/routes/media.ts",
-          "line": 1458,
+          "line": 1456,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Media not found'",
@@ -11381,7 +11381,7 @@
         },
         {
           "path": "server/routes/media.ts",
-          "line": 1465,
+          "line": 1463,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Media not found'",
@@ -11916,7 +11916,7 @@
       "callsites": [
         {
           "path": "server/routes/media.ts",
-          "line": 1496,
+          "line": 1494,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Tautulli API not configured.'",
@@ -13703,7 +13703,7 @@
       "callsites": [
         {
           "path": "server/lib/libraryRemoval.ts",
-          "line": 123,
+          "line": 142,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Missing TMDB identifier.'",
@@ -14309,7 +14309,7 @@
       "callsites": [
         {
           "path": "server/api/servarr/sonarr.ts",
-          "line": 1580,
+          "line": 1596,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Invalid Sonarr series ID.'",
@@ -15367,7 +15367,7 @@
       "callsites": [
         {
           "path": "server/routes/media.ts",
-          "line": 1274,
+          "line": 1272,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Bookshelf ebook server not configured'",
@@ -15567,7 +15567,7 @@
       "callsites": [
         {
           "path": "server/routes/media.ts",
-          "line": 792,
+          "line": 790,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'This availability status is no longer stale. Refresh the media status and try again.'",
@@ -16567,7 +16567,7 @@
       "callsites": [
         {
           "path": "server/lib/libraryRemoval.ts",
-          "line": 347,
+          "line": 388,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Library copies changed. Review a fresh confirmation before deleting.'",
@@ -19741,7 +19741,7 @@
       "callsites": [
         {
           "path": "server/routes/media.ts",
-          "line": 1576,
+          "line": 1574,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Failed to fetch watch data.'",
@@ -20326,7 +20326,7 @@
       "callsites": [
         {
           "path": "server/lib/libraryRemoval.ts",
-          "line": 320,
+          "line": 352,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Unable to verify library copies in ' +\n          server.name +\n          '. No deletion has started.'",
@@ -21164,7 +21164,7 @@
       "callsites": [
         {
           "path": "server/lib/libraryRemoval.ts",
-          "line": 106,
+          "line": 123,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Invalid library item ID.'",
@@ -21659,6 +21659,25 @@
       ]
     },
     {
+      "key": "m53c61d99f1db25a164a0",
+      "id": "utils.ApiMessage.m53c61d99f1db25a164a0",
+      "source": "Sonarr returned an invalid episode-file inventory.",
+      "defaultMessage": "Sonarr returned an invalid episode-file inventory.",
+      "sourceHash": "53c61d99f1db25a164a0f9d82eb7556823948914b2e607485f7b2b208ef74b0f",
+      "parts": ["Sonarr returned an invalid episode-file inventory."],
+      "parameterCount": 0,
+      "callsites": [
+        {
+          "path": "server/api/servarr/sonarr.ts",
+          "line": 1560,
+          "kind": "app-error-candidate",
+          "field": "message",
+          "expression": "'Sonarr returned an invalid episode-file inventory.'",
+          "captured": []
+        }
+      ]
+    },
+    {
       "key": "m53d62b84902291a061bb",
       "id": "utils.ApiMessage.m53d62b84902291a061bb",
       "source": "Upgrade ROMarrNG to the SeerrNG catalog contract or switch the emulation catalog source to QuestarrNG.",
@@ -21738,7 +21757,7 @@
       "callsites": [
         {
           "path": "server/routes/media.ts",
-          "line": 1183,
+          "line": 1181,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "`${serviceName} server not configured.`",
@@ -21866,7 +21885,7 @@
       "callsites": [
         {
           "path": "server/routes/media.ts",
-          "line": 929,
+          "line": 927,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "removed\n                      ? `${removed} library copy/copies were deleted before an error. Remaining copies were not deleted. Refresh and review a new confirmation.`\n                      : 'Library verification changed or deletion failed. No successful deletions were recorded. Refresh and review a new confirmation.'",
@@ -22066,7 +22085,7 @@
       "callsites": [
         {
           "path": "server/routes/media.ts",
-          "line": 1183,
+          "line": 1181,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "`${serviceName} server not configured.`",
@@ -28044,7 +28063,7 @@
       "callsites": [
         {
           "path": "server/lib/libraryRemoval.ts",
-          "line": 145,
+          "line": 166,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Missing TVDB identifier; refresh the media metadata first.'",
@@ -28958,7 +28977,7 @@
       "callsites": [
         {
           "path": "server/lib/libraryRemoval.ts",
-          "line": 190,
+          "line": 222,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Bindery does not support removal through the Readarr library tools.'",
@@ -29327,7 +29346,7 @@
       "callsites": [
         {
           "path": "server/routes/media.ts",
-          "line": 812,
+          "line": 810,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to verify all configured library services. Availability was not changed.'",
@@ -31248,7 +31267,7 @@
       "callsites": [
         {
           "path": "server/routes/media.ts",
-          "line": 768,
+          "line": 766,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Library availability changed or could not be verified. Refresh and review the current status.'",
@@ -31765,7 +31784,7 @@
       "callsites": [
         {
           "path": "server/api/servarr/sonarr.ts",
-          "line": 1623,
+          "line": 1639,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Failed to monitor episodes'",
@@ -31849,7 +31868,7 @@
       "callsites": [
         {
           "path": "server/routes/media.ts",
-          "line": 830,
+          "line": 828,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'A current library confirmation is required.'",
@@ -31984,7 +32003,7 @@
       "callsites": [
         {
           "path": "server/routes/media.ts",
-          "line": 1618,
+          "line": 1616,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "error instanceof Error\n            ? error.message\n            : 'Could not read watch statistics from Jellystat.'",
@@ -32210,7 +32229,7 @@
         },
         {
           "path": "server/routes/media.ts",
-          "line": 808,
+          "line": 806,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Media not found.'",
@@ -32218,7 +32237,7 @@
         },
         {
           "path": "server/routes/media.ts",
-          "line": 839,
+          "line": 837,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Media not found.'",
@@ -32226,7 +32245,7 @@
         },
         {
           "path": "server/routes/media.ts",
-          "line": 946,
+          "line": 944,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Media not found.'",
@@ -32234,7 +32253,7 @@
         },
         {
           "path": "server/routes/media.ts",
-          "line": 1015,
+          "line": 1013,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Media not found.'",
@@ -32826,7 +32845,7 @@
       "callsites": [
         {
           "path": "server/lib/libraryRemoval.ts",
-          "line": 166,
+          "line": 198,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Missing MusicBrainz identifier.'",
@@ -32883,7 +32902,7 @@
       "callsites": [
         {
           "path": "server/routes/media.ts",
-          "line": 1410,
+          "line": 1408,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'LazyLibrarian magazine title not found'",
@@ -34864,7 +34883,7 @@
       "callsites": [
         {
           "path": "server/routes/media.ts",
-          "line": 1605,
+          "line": 1603,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'This title is not linked to a Jellyfin item.'",
@@ -35443,7 +35462,7 @@
       "callsites": [
         {
           "path": "server/routes/media.ts",
-          "line": 1183,
+          "line": 1181,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "`${serviceName} server not configured.`",
@@ -36377,7 +36396,7 @@
       "callsites": [
         {
           "path": "server/routes/media.ts",
-          "line": 1420,
+          "line": 1418,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'TVDB ID not found'",
@@ -37351,7 +37370,7 @@
       "callsites": [
         {
           "path": "server/routes/media.ts",
-          "line": 1183,
+          "line": 1181,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "`${serviceName} server not configured.`",
@@ -38044,7 +38063,7 @@
       "callsites": [
         {
           "path": "server/routes/media.ts",
-          "line": 1230,
+          "line": 1228,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Lidarr album ID not found'",
@@ -39931,7 +39950,7 @@
       "callsites": [
         {
           "path": "server/lib/libraryRemoval.ts",
-          "line": 305,
+          "line": 337,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Missing LazyLibrarian magazine identifier.'",
@@ -40387,7 +40406,7 @@
       "callsites": [
         {
           "path": "server/routes/media.ts",
-          "line": 1403,
+          "line": 1401,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Kapowarr has a queued or running task for this comic. Wait for it to finish, then try again.'",
@@ -45030,7 +45049,7 @@
       "callsites": [
         {
           "path": "server/routes/media.ts",
-          "line": 950,
+          "line": 948,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to verify all library services. No deletion has started.'",
@@ -45609,7 +45628,7 @@
       "callsites": [
         {
           "path": "server/lib/libraryRemoval.ts",
-          "line": 239,
+          "line": 271,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Missing ComicVine identifier.'",
@@ -45617,7 +45636,7 @@
         },
         {
           "path": "server/lib/libraryRemoval.ts",
-          "line": 262,
+          "line": 294,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Missing ComicVine identifier.'",
@@ -45625,7 +45644,7 @@
         },
         {
           "path": "server/lib/libraryRemoval.ts",
-          "line": 281,
+          "line": 313,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Missing ComicVine identifier.'",
@@ -45736,7 +45755,7 @@
       "callsites": [
         {
           "path": "server/routes/media.ts",
-          "line": 1183,
+          "line": 1181,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "`${serviceName} server not configured.`",
@@ -47698,7 +47717,7 @@
       "callsites": [
         {
           "path": "server/routes/media.ts",
-          "line": 1183,
+          "line": 1181,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "`${serviceName} server not configured.`",
@@ -51073,7 +51092,7 @@
       "callsites": [
         {
           "path": "server/api/servarr/sonarr.ts",
-          "line": 1566,
+          "line": 1582,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`[Sonarr] Failed to retrieve episode files: ${error.message}`",
@@ -51687,7 +51706,7 @@
       "callsites": [
         {
           "path": "server/api/servarr/sonarr.ts",
-          "line": 1767,
+          "line": 1783,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Invalid series ID.'",
@@ -52555,7 +52574,7 @@
       "callsites": [
         {
           "path": "server/routes/media.ts",
-          "line": 1183,
+          "line": 1181,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "`${serviceName} server not configured.`",
@@ -54058,7 +54077,7 @@
       "callsites": [
         {
           "path": "server/lib/libraryRemoval.ts",
-          "line": 334,
+          "line": 375,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Library target is no longer verified.'",
@@ -55871,7 +55890,7 @@
       "callsites": [
         {
           "path": "server/routes/media.ts",
-          "line": 929,
+          "line": 927,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "removed\n                      ? `${removed} library copy/copies were deleted before an error. Remaining copies were not deleted. Refresh and review a new confirmation.`\n                      : 'Library verification changed or deletion failed. No successful deletions were recorded. Refresh and review a new confirmation.'",
@@ -55898,7 +55917,7 @@
       "callsites": [
         {
           "path": "server/routes/media.ts",
-          "line": 1107,
+          "line": 1105,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Removing a Bindery book through this action is not supported.'",
@@ -56856,7 +56875,7 @@
       "callsites": [
         {
           "path": "server/lib/libraryRemoval.ts",
-          "line": 174,
+          "line": 206,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Missing library album ID.'",
@@ -56896,7 +56915,7 @@
       "callsites": [
         {
           "path": "server/lib/libraryRemoval.ts",
-          "line": 154,
+          "line": 178,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Missing library series ID.'",
@@ -59988,7 +60007,7 @@
       "callsites": [
         {
           "path": "server/api/servarr/sonarr.ts",
-          "line": 1583,
+          "line": 1599,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Invalid Sonarr season number.'",
@@ -61183,7 +61202,7 @@
       "callsites": [
         {
           "path": "server/routes/media.ts",
-          "line": 1380,
+          "line": 1378,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Comic backend ID not found'",
@@ -62901,7 +62920,7 @@
       "callsites": [
         {
           "path": "server/routes/media.ts",
-          "line": 1328,
+          "line": 1326,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Bookshelf audiobook server not configured'",
@@ -63532,7 +63551,7 @@
       "callsites": [
         {
           "path": "server/routes/media.ts",
-          "line": 1376,
+          "line": 1374,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Bookshelf book ID not found'",
@@ -63752,7 +63771,7 @@
       "callsites": [
         {
           "path": "server/routes/media.ts",
-          "line": 1183,
+          "line": 1181,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "`${serviceName} server not configured.`",
@@ -67130,7 +67149,7 @@
     },
     {
       "path": "server/api/servarr/sonarr.ts",
-      "line": 1620,
+      "line": 1636,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "e.message",
@@ -77588,7 +77607,7 @@
     },
     {
       "path": "server/routes/media.ts",
-      "line": 988,
+      "line": 986,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "parsedIs4k.error",
@@ -77597,7 +77616,7 @@
     },
     {
       "path": "server/routes/media.ts",
-      "line": 1005,
+      "line": 1003,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "parsedBookFormat.error",
@@ -77606,7 +77625,7 @@
     },
     {
       "path": "server/routes/media.ts",
-      "line": 1463,
+      "line": 1461,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "e.message",
@@ -77615,7 +77634,7 @@
     },
     {
       "path": "server/routes/media.ts",
-      "line": 1573,
+      "line": 1571,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "e.message",
@@ -77624,7 +77643,7 @@
     },
     {
       "path": "server/routes/media.ts",
-      "line": 1618,
+      "line": 1616,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "error instanceof Error\n            ? error.message\n            : 'Could not read watch statistics from Jellystat.'",
