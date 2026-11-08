@@ -322,7 +322,7 @@ const SettingsMain = () => {
         }}
         enableReinitialize
         validationSchema={MainSettingsSchema}
-        onSubmit={async (values) => {
+        onSubmit={async (values, { resetForm }) => {
           try {
             await axios.post('/api/v1/settings/main', {
               applicationTitle: values.applicationTitle,
@@ -362,6 +362,8 @@ const SettingsMain = () => {
                 values.downloadPathMappingsJson || '[]'
               ),
             });
+            resetForm({ values });
+            void revalidate();
             mutate('/api/v1/settings/public');
             mutate('/api/v1/status?checkUpdateAvailable=false');
 
@@ -382,8 +384,6 @@ const SettingsMain = () => {
               autoDismiss: true,
               appearance: 'error',
             });
-          } finally {
-            revalidate();
           }
         }}
       >
@@ -391,6 +391,7 @@ const SettingsMain = () => {
           errors,
           touched,
           isSubmitting,
+          dirty,
           isValid,
           values,
           setFieldValue,
@@ -399,6 +400,8 @@ const SettingsMain = () => {
             <Form
               className="settings-page-form"
               data-testid="settings-main-form"
+              data-settings-dirty={dirty}
+              data-settings-submitting={isSubmitting}
             >
               <section className="app-card-sub settings-group-card">
                 <h3 className="settings-group-heading">

@@ -2207,3 +2207,25 @@ test('Books navigation keeps the route default and explicit sidebar format align
     );
   }
 });
+
+test('Users form ownership permits save-state attributes and rejects a lost shared form role', () => {
+  const file = 'src/components/Settings/SettingsUsers/index.tsx';
+  const source = repositoryFilesWith()[file];
+  const reason =
+    'Users Settings must keep its heading and fields in one complete shared group card';
+  assert.ok(
+    !validateCurrentBatchContract(repositoryFilesWith()).some((error) =>
+      error.includes(reason)
+    )
+  );
+  assert.ok(
+    validateCurrentBatchContract(
+      repositoryFilesWith({
+        [file]: source.replace(
+          'className="settings-group-content"',
+          'className="unowned-fields"'
+        ),
+      })
+    ).some((error) => error.includes(reason))
+  );
+});

@@ -74,20 +74,18 @@ const NotificationsApprise = () => {
         intl.formatMessage(messages.validationAppriseUrl),
         isValidURL
       ),
-    configKey: Yup.string()
-      .when('enabled', {
-        is: true,
-        then: (schema) =>
-          schema
-            .nullable()
-            .matches(
-              CONFIG_KEY_PATTERN,
-              intl.formatMessage(messages.validationConfigKey)
-            )
-            .required(intl.formatMessage(messages.validationConfigKey)),
-        otherwise: (schema) => schema.nullable(),
-      })
-      .defined(intl.formatMessage(messages.validationConfigKey)),
+    configKey: Yup.string().when('enabled', {
+      is: true,
+      then: (schema) =>
+        schema
+          .nullable()
+          .matches(
+            CONFIG_KEY_PATTERN,
+            intl.formatMessage(messages.validationConfigKey)
+          )
+          .required(intl.formatMessage(messages.validationConfigKey)),
+      otherwise: (schema) => schema.nullable(),
+    }),
   });
 
   if (!data && !error) {
@@ -108,7 +106,7 @@ const NotificationsApprise = () => {
         locale: data?.options.locale ?? 'en',
       }}
       validationSchema={NotificationsAppriseSchema}
-      onSubmit={async (values) => {
+      onSubmit={async (values, { resetForm }) => {
         try {
           await axios.post('/api/v1/settings/notifications/apprise', {
             enabled: values.enabled,
@@ -125,6 +123,8 @@ const NotificationsApprise = () => {
             },
           });
 
+          resetForm({ values });
+          void revalidate();
           addToast(intl.formatMessage(messages.apprisesettingssaved), {
             appearance: 'success',
             autoDismiss: true,
@@ -134,8 +134,6 @@ const NotificationsApprise = () => {
             appearance: 'error',
             autoDismiss: true,
           });
-        } finally {
-          revalidate();
         }
       }}
     >
@@ -143,6 +141,7 @@ const NotificationsApprise = () => {
         errors,
         touched,
         isSubmitting,
+        dirty,
         values,
         isValid,
         setFieldValue,
@@ -198,7 +197,11 @@ const NotificationsApprise = () => {
         };
 
         return (
-          <Form className="app-card-sub section">
+          <Form
+            data-settings-dirty={dirty}
+            data-settings-submitting={isSubmitting}
+            className="app-card-sub section"
+          >
             <div className="form-row">
               <label htmlFor="enabled" className="checkbox-label">
                 {intl.formatMessage(messages.agentenabled)}

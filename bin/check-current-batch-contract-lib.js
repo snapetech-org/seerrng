@@ -5333,15 +5333,31 @@ const validateCurrentBatchContract = (files) => {
     'className="settings-permission-options max-w-lg"',
     'Default Permissions must use the shared compact nested-option spacing'
   );
-  for (const token of [
-    '<section className="app-card-sub settings-group-card">',
-    '<h3 className="settings-group-heading">',
-    '<Form className="settings-group-content">',
-  ]) {
-    requireText(
-      'src/components/Settings/SettingsUsers/index.tsx',
-      token,
-      'Users Settings must keep its heading and fields in one complete shared group card'
+  try {
+    const jsx = parsedJsx(
+      requireFile('src/components/Settings/SettingsUsers/index.tsx')
+    );
+    const group = jsx.elements.find(
+      (node) =>
+        jsx.tag(node) === 'section' &&
+        jsx.roles(node, 'app-card-sub', 'settings-group-card')
+    );
+    const owns = (tag, role) =>
+      group &&
+      jsx.elements.some(
+        (node) =>
+          jsx.tag(node) === tag &&
+          jsx.roles(node, role) &&
+          jsx.within(node, group)
+      );
+    if (
+      !owns('h3', 'settings-group-heading') ||
+      !owns('Form', 'settings-group-content')
+    )
+      throw new Error('Missing shared owner');
+  } catch {
+    errors.push(
+      'src/components/Settings/SettingsUsers/index.tsx: Users Settings must keep its heading and fields in one complete shared group card'
     );
   }
   for (const token of [

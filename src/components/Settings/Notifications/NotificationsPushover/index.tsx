@@ -105,7 +105,7 @@ const NotificationsPushover = () => {
         sound: data?.options.sound,
       }}
       validationSchema={NotificationsPushoverSchema}
-      onSubmit={async (values) => {
+      onSubmit={async (values, { resetForm }) => {
         try {
           await axios.post('/api/v1/settings/notifications/pushover', {
             enabled: values.enabled,
@@ -117,6 +117,8 @@ const NotificationsPushover = () => {
               sound: values.sound,
             },
           });
+          resetForm({ values });
+          void revalidate();
           addToast(intl.formatMessage(messages.pushoversettingssaved), {
             appearance: 'success',
             autoDismiss: true,
@@ -126,8 +128,6 @@ const NotificationsPushover = () => {
             appearance: 'error',
             autoDismiss: true,
           });
-        } finally {
-          revalidate();
         }
       }}
     >
@@ -135,6 +135,7 @@ const NotificationsPushover = () => {
         errors,
         touched,
         isSubmitting,
+        dirty,
         values,
         isValid,
         setFieldValue,
@@ -186,7 +187,11 @@ const NotificationsPushover = () => {
         };
 
         return (
-          <Form className="app-card-sub section">
+          <Form
+            data-settings-dirty={dirty}
+            data-settings-submitting={isSubmitting}
+            className="app-card-sub section"
+          >
             <div className="form-row">
               <label htmlFor="enabled" className="checkbox-label">
                 {intl.formatMessage(messages.agentenabled)}

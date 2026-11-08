@@ -230,7 +230,7 @@ const NotificationsWebhook = () => {
         supportVariables: data.options.supportVariables ?? false,
       }}
       validationSchema={NotificationsWebhookSchema}
-      onSubmit={async (values) => {
+      onSubmit={async (values, { resetForm }) => {
         try {
           await axios.post('/api/v1/settings/notifications/webhook', {
             enabled: values.enabled,
@@ -251,6 +251,8 @@ const NotificationsWebhook = () => {
               supportVariables: values.supportVariables,
             },
           });
+          resetForm({ values });
+          void revalidate();
           addToast(intl.formatMessage(messages.webhooksettingssaved), {
             appearance: 'success',
             autoDismiss: true,
@@ -260,8 +262,6 @@ const NotificationsWebhook = () => {
             appearance: 'error',
             autoDismiss: true,
           });
-        } finally {
-          revalidate();
         }
       }}
     >
@@ -269,6 +269,7 @@ const NotificationsWebhook = () => {
         errors,
         touched,
         isSubmitting,
+        dirty,
         values,
         isValid,
         setFieldValue,
@@ -340,7 +341,11 @@ const NotificationsWebhook = () => {
         };
 
         return (
-          <Form className="app-card-sub section">
+          <Form
+            data-settings-dirty={dirty}
+            data-settings-submitting={isSubmitting}
+            className="app-card-sub section"
+          >
             <div className="form-row">
               <label htmlFor="enabled" className="checkbox-label">
                 {intl.formatMessage(messages.agentenabled)}

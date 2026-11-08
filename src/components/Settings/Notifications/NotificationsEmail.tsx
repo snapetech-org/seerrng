@@ -163,7 +163,7 @@ const NotificationsEmail = () => {
         pgpPassword: data.options.pgpPassword,
       }}
       validationSchema={NotificationsEmailSchema}
-      onSubmit={async (values) => {
+      onSubmit={async (values, { resetForm }) => {
         try {
           await axios.post('/api/v1/settings/notifications/email', {
             enabled: values.enabled,
@@ -187,6 +187,8 @@ const NotificationsEmail = () => {
           });
           mutate('/api/v1/settings/public');
 
+          resetForm({ values });
+          void revalidate();
           addToast(intl.formatMessage(messages.emailsettingssaved), {
             appearance: 'success',
             autoDismiss: true,
@@ -196,12 +198,10 @@ const NotificationsEmail = () => {
             appearance: 'error',
             autoDismiss: true,
           });
-        } finally {
-          revalidate();
         }
       }}
     >
-      {({ errors, touched, isSubmitting, values, isValid }) => {
+      {({ errors, touched, isSubmitting, dirty, values, isValid }) => {
         const testSettings = async () => {
           setIsTesting(true);
           let toastId: string | undefined;
@@ -258,7 +258,11 @@ const NotificationsEmail = () => {
         };
 
         return (
-          <Form className="app-card-sub section">
+          <Form
+            data-settings-dirty={dirty}
+            data-settings-submitting={isSubmitting}
+            className="app-card-sub section"
+          >
             <div className="form-row">
               <label htmlFor="enabled" className="checkbox-label">
                 {intl.formatMessage(messages.agentenabled)}

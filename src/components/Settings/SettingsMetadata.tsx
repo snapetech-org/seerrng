@@ -480,9 +480,10 @@ const SettingsMetadata = () => {
           <div className="app-card-inset refreshed-inset-surface card-spacing-before rounded-lg border border-gray-700 p-3">
             <Formik
               initialValues={{ metadata: initialValues }}
-              onSubmit={async (values) => {
+              onSubmit={async (values, { resetForm }) => {
                 try {
                   const result = await saveSettings(values.metadata);
+                  resetForm({ values });
 
                   if (data) {
                     data.metadata = result.metadata;
@@ -503,9 +504,13 @@ const SettingsMetadata = () => {
                 }
               }}
             >
-              {({ isSubmitting, isValid, values, setFieldValue }) => {
+              {({ isSubmitting, dirty, isValid, values, setFieldValue }) => {
                 return (
-                  <Form data-testid="settings-main-form">
+                  <Form
+                    data-testid="settings-main-form"
+                    data-settings-dirty={dirty}
+                    data-settings-submitting={isSubmitting}
+                  >
                     <h2 className="heading">
                       {intl.formatMessage(messages.metadataProviderSelection)}
                     </h2>
@@ -715,9 +720,10 @@ const SettingsMetadata = () => {
                 initialValues={coverArtArchiveSettings}
                 enableReinitialize
                 validate={validateMusicMetadataSettings}
-                onSubmit={async (values) => {
+                onSubmit={async (values, { resetForm }) => {
                   try {
                     await saveMusicMetadataSettings(values);
+                    resetForm({ values });
                     addToast(
                       intl.formatMessage(messages.musicMetadataSettingsSaved),
                       { appearance: 'success', autoDismiss: true }
@@ -735,12 +741,17 @@ const SettingsMetadata = () => {
                 {({
                   errors,
                   isSubmitting,
+                  dirty,
                   isValid,
                   setFieldValue,
                   touched,
                   values,
                 }) => (
-                  <Form data-testid="music-metadata-settings-form">
+                  <Form
+                    data-testid="music-metadata-settings-form"
+                    data-settings-dirty={dirty}
+                    data-settings-submitting={isSubmitting}
+                  >
                     <div className="form-row">
                       <label htmlFor="caa-max-concurrent-requests">
                         {intl.formatMessage(messages.maxConcurrentRequests)}

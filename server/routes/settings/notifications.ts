@@ -1274,7 +1274,9 @@ notificationRoutes.get('/webpush', (_req, res) => {
 });
 
 adminPost('/webpush', async (req, res) => {
-  const parsedBody = parseGenericNotificationBody(req.body, 'Web push');
+  const parsedBody = parseGenericNotificationBody(req.body, 'Web push', {
+    typesRequired: false,
+  });
   if ('error' in parsedBody) {
     return res.status(parsedBody.error.status).json(parsedBody.error);
   }
@@ -1296,7 +1298,9 @@ adminPost('/webpush/test', async (req, res, next) => {
     });
   }
 
-  const parsedBody = parseGenericNotificationBody(req.body, 'Web push');
+  const parsedBody = parseGenericNotificationBody(req.body, 'Web push', {
+    typesRequired: false,
+  });
   if ('error' in parsedBody) {
     return next(parsedBody.error);
   }

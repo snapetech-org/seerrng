@@ -237,7 +237,7 @@ const SettingsNetwork = () => {
           }}
           enableReinitialize
           validationSchema={NetworkSettingsSchema}
-          onSubmit={async (values) => {
+          onSubmit={async (values, { resetForm }) => {
             try {
               await axios.post('/api/v1/settings/network', {
                 csrfProtection: values.csrfProtection,
@@ -277,6 +277,8 @@ const SettingsNetwork = () => {
                   httpAuthAcknowledged: values.tlsHttpAuthAcknowledged,
                 },
               });
+              resetForm({ values });
+              void revalidate();
               mutate('/api/v1/status/tls');
               mutate('/api/v1/settings/public');
               mutate('/api/v1/status?checkUpdateAvailable=false');
@@ -300,8 +302,6 @@ const SettingsNetwork = () => {
                   appearance: 'error',
                 }
               );
-            } finally {
-              revalidate();
             }
           }}
         >
@@ -309,6 +309,7 @@ const SettingsNetwork = () => {
             errors,
             touched,
             isSubmitting,
+            dirty,
             isValid,
             values,
             setFieldValue,
@@ -317,6 +318,8 @@ const SettingsNetwork = () => {
               <Form
                 className="app-card-sub section"
                 data-testid="settings-network-form"
+                data-settings-dirty={dirty}
+                data-settings-submitting={isSubmitting}
               >
                 <div className="mb-6">
                   <h4 className="heading">

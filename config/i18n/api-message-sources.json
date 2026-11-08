@@ -5422,7 +5422,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/notifications.ts",
-          "line": 1313,
+          "line": 1317,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Failed to send web push notification.'",
@@ -17544,7 +17544,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/notifications.ts",
-          "line": 1643,
+          "line": 1647,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Failed to send ntfy notification.'",
@@ -25406,7 +25406,7 @@
         },
         {
           "path": "server/routes/settings/notifications.ts",
-          "line": 1295,
+          "line": 1297,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'User information is missing from the request.'",
@@ -25414,7 +25414,7 @@
         },
         {
           "path": "server/routes/settings/notifications.ts",
-          "line": 1438,
+          "line": 1442,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'User information is missing from the request.'",
@@ -25422,7 +25422,7 @@
         },
         {
           "path": "server/routes/settings/notifications.ts",
-          "line": 1538,
+          "line": 1542,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'User information is missing from the request.'",
@@ -25430,7 +25430,7 @@
         },
         {
           "path": "server/routes/settings/notifications.ts",
-          "line": 1611,
+          "line": 1615,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'User information is missing from the request.'",
@@ -25438,7 +25438,7 @@
         },
         {
           "path": "server/routes/settings/notifications.ts",
-          "line": 1704,
+          "line": 1708,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'User information is missing from the request.'",
@@ -28300,7 +28300,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/notifications.ts",
-          "line": 1659,
+          "line": 1663,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Apprise configuration key must be 1 to 64 letters, numbers, hyphens, or underscores.'",
@@ -31507,7 +31507,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/notifications.ts",
-          "line": 1570,
+          "line": 1574,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Failed to send Gotify notification.'",
@@ -44587,7 +44587,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/notifications.ts",
-          "line": 1494,
+          "line": 1498,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Failed to send webhook notification.'",
@@ -47401,7 +47401,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/notifications.ts",
-          "line": 1741,
+          "line": 1745,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Failed to send Apprise notification.'",
@@ -81919,7 +81919,7 @@
     },
     {
       "path": "server/routes/settings/notifications.ts",
-      "line": 1330,
+      "line": 1334,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -81928,7 +81928,7 @@
     },
     {
       "path": "server/routes/settings/notifications.ts",
-      "line": 1330,
+      "line": 1334,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -81937,7 +81937,7 @@
     },
     {
       "path": "server/routes/settings/notifications.ts",
-      "line": 1359,
+      "line": 1363,
       "kind": "authored-message-variable",
       "field": "payloadError",
       "expression": "validateWebhookPayload(body.options.jsonPayload)",
@@ -81946,7 +81946,7 @@
     },
     {
       "path": "server/routes/settings/notifications.ts",
-      "line": 1360,
+      "line": 1364,
       "kind": "authored-message-variable",
       "field": "headerError",
       "expression": "validateWebhookHeaders(body.options.customHeaders)",
@@ -81955,7 +81955,7 @@
     },
     {
       "path": "server/routes/settings/notifications.ts",
-      "line": 1389,
+      "line": 1393,
       "kind": "authored-message-variable",
       "field": "validationError",
       "expression": "merged.enabled\n      ? await validateNotificationUrl(\n          merged.options.webhookUrl,\n          'Webhook URL',\n          {\n            allowTemplates: merged.options.supportVariables,\n          }\n        )\n      : undefined",
@@ -81964,7 +81964,7 @@
     },
     {
       "path": "server/routes/settings/notifications.ts",
-      "line": 1389,
+      "line": 1393,
       "kind": "authored-message-variable",
       "field": "validationError",
       "expression": "merged.enabled\n      ? await validateNotificationUrl(\n          merged.options.webhookUrl,\n          'Webhook URL',\n          {\n            allowTemplates: merged.options.supportVariables,\n          }\n        )\n      : undefined",
@@ -81973,7 +81973,7 @@
     },
     {
       "path": "server/routes/settings/notifications.ts",
-      "line": 1430,
+      "line": 1434,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "e.message",
@@ -81982,7 +81982,7 @@
     },
     {
       "path": "server/routes/settings/notifications.ts",
-      "line": 1448,
+      "line": 1452,
       "kind": "authored-message-variable",
       "field": "payloadError",
       "expression": "validateWebhookPayload(body.options.jsonPayload)",
@@ -81991,7 +81991,7 @@
     },
     {
       "path": "server/routes/settings/notifications.ts",
-      "line": 1449,
+      "line": 1453,
       "kind": "authored-message-variable",
       "field": "headerError",
       "expression": "validateWebhookHeaders(body.options.customHeaders)",
@@ -82000,7 +82000,7 @@
     },
     {
       "path": "server/routes/settings/notifications.ts",
-      "line": 1478,
+      "line": 1482,
       "kind": "authored-message-variable",
       "field": "validationError",
       "expression": "await validateNotificationUrl(\n      testBody.options.webhookUrl,\n      'Webhook URL',\n      { allowTemplates: testBody.options.supportVariables }\n    )",
@@ -82009,7 +82009,7 @@
     },
     {
       "path": "server/routes/settings/notifications.ts",
-      "line": 1498,
+      "line": 1502,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "e.message",
@@ -82018,7 +82018,7 @@
     },
     {
       "path": "server/routes/settings/notifications.ts",
-      "line": 1518,
+      "line": 1522,
       "kind": "authored-message-variable",
       "field": "validationError",
       "expression": "body.enabled\n    ? await validateNotificationUrl(body.options.url, 'Gotify URL')\n    : undefined",
@@ -82027,7 +82027,7 @@
     },
     {
       "path": "server/routes/settings/notifications.ts",
-      "line": 1518,
+      "line": 1522,
       "kind": "authored-message-variable",
       "field": "validationError",
       "expression": "body.enabled\n    ? await validateNotificationUrl(body.options.url, 'Gotify URL')\n    : undefined",
@@ -82036,7 +82036,7 @@
     },
     {
       "path": "server/routes/settings/notifications.ts",
-      "line": 1555,
+      "line": 1559,
       "kind": "authored-message-variable",
       "field": "validationError",
       "expression": "await validateNotificationUrl(\n    body.options.url,\n    'Gotify URL'\n  )",
@@ -82045,7 +82045,7 @@
     },
     {
       "path": "server/routes/settings/notifications.ts",
-      "line": 1591,
+      "line": 1595,
       "kind": "authored-message-variable",
       "field": "validationError",
       "expression": "body.enabled\n    ? await validateNotificationUrl(body.options.url, 'ntfy URL')\n    : undefined",
@@ -82054,7 +82054,7 @@
     },
     {
       "path": "server/routes/settings/notifications.ts",
-      "line": 1591,
+      "line": 1595,
       "kind": "authored-message-variable",
       "field": "validationError",
       "expression": "body.enabled\n    ? await validateNotificationUrl(body.options.url, 'ntfy URL')\n    : undefined",
@@ -82063,7 +82063,7 @@
     },
     {
       "path": "server/routes/settings/notifications.ts",
-      "line": 1628,
+      "line": 1632,
       "kind": "authored-message-variable",
       "field": "validationError",
       "expression": "await validateNotificationUrl(\n    body.options.url,\n    'ntfy URL'\n  )",
@@ -82072,7 +82072,7 @@
     },
     {
       "path": "server/routes/settings/notifications.ts",
-      "line": 1678,
+      "line": 1682,
       "kind": "authored-message-variable",
       "field": "keyError",
       "expression": "body.enabled\n    ? validateAppriseConfigKey(body.options.configKey)\n    : undefined",
@@ -82081,7 +82081,7 @@
     },
     {
       "path": "server/routes/settings/notifications.ts",
-      "line": 1678,
+      "line": 1682,
       "kind": "authored-message-variable",
       "field": "keyError",
       "expression": "body.enabled\n    ? validateAppriseConfigKey(body.options.configKey)\n    : undefined",
@@ -82090,7 +82090,7 @@
     },
     {
       "path": "server/routes/settings/notifications.ts",
-      "line": 1684,
+      "line": 1688,
       "kind": "authored-message-variable",
       "field": "validationError",
       "expression": "body.enabled\n    ? await validateNotificationUrl(body.options.url, 'Apprise URL')\n    : undefined",
@@ -82099,7 +82099,7 @@
     },
     {
       "path": "server/routes/settings/notifications.ts",
-      "line": 1684,
+      "line": 1688,
       "kind": "authored-message-variable",
       "field": "validationError",
       "expression": "body.enabled\n    ? await validateNotificationUrl(body.options.url, 'Apprise URL')\n    : undefined",
@@ -82108,7 +82108,7 @@
     },
     {
       "path": "server/routes/settings/notifications.ts",
-      "line": 1721,
+      "line": 1725,
       "kind": "authored-message-variable",
       "field": "keyError",
       "expression": "validateAppriseConfigKey(body.options.configKey)",
@@ -82117,7 +82117,7 @@
     },
     {
       "path": "server/routes/settings/notifications.ts",
-      "line": 1726,
+      "line": 1730,
       "kind": "authored-message-variable",
       "field": "validationError",
       "expression": "await validateNotificationUrl(\n    body.options.url,\n    'Apprise URL'\n  )",

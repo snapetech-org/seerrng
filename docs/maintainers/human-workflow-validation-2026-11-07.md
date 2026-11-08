@@ -72,3 +72,55 @@ can advance a matching series at the existing watched threshold; an unrelated
 series does not. This is deterministic session/dispatch evidence, not playback
 on a real household server. The queue controls themselves use the already
 verified #503 Requests UI and the user's TV queue defaults.
+
+## Broader settings recovery — #600
+
+The continued audit reproduced a separate failure beyond the Plex/Tautulli
+repair frozen for v3.72.22: General's failed POST left its draft visible but
+cleared the unsaved state and disabled Save. The shared layout's legacy submit
+path treated submission as persistence. Remaining editable Formik owners now
+report dirty/submitting state, reset only after a successful mutation and
+refresh settings only on success. This covers General, Users, Media Categories,
+Network, Jellyfin/Emby, both Metadata forms and all eleven notification agents.
+Discovery/service editors with their own actions are outside this change.
+
+The actual API sweep also found two distinct contracts: Formik normalizes empty
+strings to undefined for Yup validation, so unconditional `.defined()` rejected
+optional Apprise configuration keys and ntfy topics while the agents were off.
+Required validation remains enabled-agent-only. Web Push's form/model have no
+notification type mask; its route now marks that field optional while rejecting
+malformed masks if supplied. Other notification agents keep their requirements.
+
+- `playwright/settings-save-recovery.spec.ts`: 64 passes across Orig/John and
+  390/1440 widths. Real isolated settings API writes, reload and restore; only
+  the first 503 is simulated. Covers sixteen route/form cases, including every
+  notification agent, and proves retry and a second save without reload.
+- `playwright/settings-secondary-save-recovery.spec.ts`: eight passes for the
+  Jellyfin form and TV metadata selector with API fixtures. These establish form
+  recovery/readback behavior, not a live Jellyfin or metadata-provider connection.
+- Native settings route checks: ten passes, including omitted Web Push types
+  and rejection of malformed supplied types. Production compile/typecheck,
+  lint, i18n/source-catalog and shared UI contracts pass; existing lint and
+  translation-review warnings remain classified by their own checks.
+- Baseline: frozen v3.72.22 candidate d595815, local port 55162. Candidate:
+  settings worktree, separate config/database, port 55164. Thirty-two baseline
+  visual captures cover General, Users, Network, Metadata and Email/ntfy/Web
+  Push/Apprise in matching themes/viewports. The baseline gallery is a visual
+  record, not 32 successful recovery assertions. Two preliminary gallery runs
+  stopped at a disabled Save after programmatic select changes; the final
+  gallery captures that state without forcing submission.
+- Inspected matching General Orig phone, Network Orig desktop, Email John
+  desktop and Apprise John phone captures. Existing geometry, surfaces,
+  typography, error visibility and action placement remain stable. Paired
+  comparison images concatenate top/bottom crops; their seam is not page layout.
+  Full captures and the route/state manifest remain in the task deliverables.
+
+The source contract now parses Users' JSX ownership instead of requiring an
+exact one-line `<Form>` opening tag, so save-state attributes do not falsely
+break the shared-card check. A mutation regression rejects removal of that role.
+Initial test harness failures used input operations on selection buttons/native
+selects; corrected tests use their real controls. The independently reproduced
+Web Push and optional-field failures required production repairs above.
+
+This milestone is not included in the frozen v3.72.22 tag candidate and does not
+complete #599's requested settings disclosure or the remaining historical audit.

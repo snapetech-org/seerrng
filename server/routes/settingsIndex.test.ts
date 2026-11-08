@@ -3031,6 +3031,25 @@ describe('Settings route input validation', () => {
     assert.strictEqual(getSettings().notifications.agents.webpush.types, 12);
   });
 
+  it('saves the Web Push form without an unused notification type mask', async () => {
+    const response = await request(app)
+      .post('/settings/notifications/webpush')
+      .send({ enabled: false, embedPoster: false, options: {} });
+    assert.strictEqual(response.status, 200);
+    assert.strictEqual(
+      getSettings().notifications.agents.webpush.embedPoster,
+      false
+    );
+
+    for (const types of ['all', -1, 1.5]) {
+      const invalid = await request(app)
+        .post('/settings/notifications/webpush')
+        .send({ enabled: false, embedPoster: true, types, options: {} });
+      assert.strictEqual(invalid.status, 400);
+      assert.match(invalid.body.message, /Notification types must be valid/);
+    }
+  });
+
   it('rejects oversized job IDs before lookup', async () => {
     const res = await request(app).post(
       `/settings/jobs/${'x'.repeat(129)}/run`

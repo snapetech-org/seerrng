@@ -74,16 +74,14 @@ const NotificationsNtfy = () => {
         intl.formatMessage(messages.validationNtfyUrl),
         isValidURL
       ),
-    topic: Yup.string()
-      .when('enabled', {
-        is: true,
-        then: (schema) =>
-          schema
-            .nullable()
-            .required(intl.formatMessage(messages.validationNtfyTopic)),
-        otherwise: (schema) => schema.nullable(),
-      })
-      .defined(intl.formatMessage(messages.validationNtfyTopic)),
+    topic: Yup.string().when('enabled', {
+      is: true,
+      then: (schema) =>
+        schema
+          .nullable()
+          .required(intl.formatMessage(messages.validationNtfyTopic)),
+      otherwise: (schema) => schema.nullable(),
+    }),
     priority: Yup.number().when('enabled', {
       is: true,
       then: (schema) =>
@@ -118,7 +116,7 @@ const NotificationsNtfy = () => {
         locale: data?.options.locale ?? 'en',
       }}
       validationSchema={NotificationsNtfySchema}
-      onSubmit={async (values) => {
+      onSubmit={async (values, { resetForm }) => {
         try {
           await axios.post('/api/v1/settings/notifications/ntfy', {
             enabled: values.enabled,
@@ -138,6 +136,8 @@ const NotificationsNtfy = () => {
             },
           });
 
+          resetForm({ values });
+          void revalidate();
           addToast(intl.formatMessage(messages.ntfysettingssaved), {
             appearance: 'success',
             autoDismiss: true,
@@ -147,8 +147,6 @@ const NotificationsNtfy = () => {
             appearance: 'error',
             autoDismiss: true,
           });
-        } finally {
-          revalidate();
         }
       }}
     >
@@ -156,6 +154,7 @@ const NotificationsNtfy = () => {
         errors,
         touched,
         isSubmitting,
+        dirty,
         values,
         isValid,
         setFieldValue,
@@ -214,7 +213,11 @@ const NotificationsNtfy = () => {
         };
 
         return (
-          <Form className="app-card-sub section">
+          <Form
+            data-settings-dirty={dirty}
+            data-settings-submitting={isSubmitting}
+            className="app-card-sub section"
+          >
             <div className="form-row">
               <label htmlFor="enabled" className="checkbox-label">
                 {intl.formatMessage(messages.agentenabled)}

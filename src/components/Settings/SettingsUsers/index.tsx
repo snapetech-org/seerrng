@@ -154,7 +154,7 @@ const SettingsUsers = () => {
           }}
           validationSchema={schema}
           enableReinitialize
-          onSubmit={async (values) => {
+          onSubmit={async (values, { resetForm }) => {
             try {
               await axios.post('/api/v1/settings/main', {
                 localLogin: values.localLogin,
@@ -199,6 +199,8 @@ const SettingsUsers = () => {
                 defaultEnabledMediaCategories:
                   values.defaultEnabledMediaCategories,
               });
+              resetForm({ values });
+              void revalidate();
               mutate('/api/v1/settings/public');
 
               addToast(intl.formatMessage(messages.toastSettingsSuccess), {
@@ -210,14 +212,23 @@ const SettingsUsers = () => {
                 autoDismiss: true,
                 appearance: 'error',
               });
-            } finally {
-              revalidate();
             }
           }}
         >
-          {({ isSubmitting, isValid, values, errors, setFieldValue }) => {
+          {({
+            isSubmitting,
+            dirty,
+            isValid,
+            values,
+            errors,
+            setFieldValue,
+          }) => {
             return (
-              <Form className="settings-group-content">
+              <Form
+                className="settings-group-content"
+                data-settings-dirty={dirty}
+                data-settings-submitting={isSubmitting}
+              >
                 <div className="form-row">
                   <label htmlFor="magazineQuotaLimit" className="text-label">
                     {intl.formatMessage(messages.magazineRequestLimitLabel)}

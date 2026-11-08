@@ -133,7 +133,7 @@ const NotificationsSlack = () => {
         requestManagerMappings: data.options.requestManagerMappings ?? '',
       }}
       validationSchema={NotificationsSlackSchema}
-      onSubmit={async (values) => {
+      onSubmit={async (values, { resetForm }) => {
         try {
           await axios.post('/api/v1/settings/notifications/slack', {
             enabled: values.enabled,
@@ -148,6 +148,8 @@ const NotificationsSlack = () => {
               requestManagerMappings: values.requestManagerMappings,
             },
           });
+          resetForm({ values });
+          void revalidate();
           addToast(intl.formatMessage(messages.slacksettingssaved), {
             appearance: 'success',
             autoDismiss: true,
@@ -157,8 +159,6 @@ const NotificationsSlack = () => {
             appearance: 'error',
             autoDismiss: true,
           });
-        } finally {
-          revalidate();
         }
       }}
     >
@@ -166,6 +166,7 @@ const NotificationsSlack = () => {
         errors,
         touched,
         isSubmitting,
+        dirty,
         values,
         isValid,
         setFieldValue,
@@ -220,7 +221,11 @@ const NotificationsSlack = () => {
         };
 
         return (
-          <Form className="app-card-sub section">
+          <Form
+            data-settings-dirty={dirty}
+            data-settings-submitting={isSubmitting}
+            className="app-card-sub section"
+          >
             <div className="form-row">
               <label htmlFor="isDefault" className="checkbox-label">
                 {intl.formatMessage(messages.agentenabled)}

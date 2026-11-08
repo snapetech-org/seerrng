@@ -59,7 +59,7 @@ const NotificationsWebPush = () => {
           enabled: data.enabled,
           embedPoster: data.embedPoster,
         }}
-        onSubmit={async (values) => {
+        onSubmit={async (values, { resetForm }) => {
           try {
             await axios.post('/api/v1/settings/notifications/webpush', {
               enabled: values.enabled,
@@ -67,6 +67,8 @@ const NotificationsWebPush = () => {
               options: {},
             });
             mutate('/api/v1/settings/public');
+            resetForm({ values });
+            void revalidate();
             addToast(intl.formatMessage(messages.webpushsettingssaved), {
               appearance: 'success',
               autoDismiss: true,
@@ -76,12 +78,10 @@ const NotificationsWebPush = () => {
               appearance: 'error',
               autoDismiss: true,
             });
-          } finally {
-            revalidate();
           }
         }}
       >
-        {({ isSubmitting, values }) => {
+        {({ isSubmitting, dirty, values }) => {
           const testSettings = async () => {
             setIsTesting(true);
             let toastId: string | undefined;
@@ -123,7 +123,11 @@ const NotificationsWebPush = () => {
           };
 
           return (
-            <Form className="app-card-sub section">
+            <Form
+              data-settings-dirty={dirty}
+              data-settings-submitting={isSubmitting}
+              className="app-card-sub section"
+            >
               <div className="form-row">
                 <label htmlFor="enabled" className="checkbox-label">
                   {intl.formatMessage(messages.agentenabled)}

@@ -108,7 +108,7 @@ const NotificationsDiscord = () => {
         useUserLocale: data?.options.useUserLocale ?? false,
       }}
       validationSchema={NotificationsDiscordSchema}
-      onSubmit={async (values) => {
+      onSubmit={async (values, { resetForm }) => {
         try {
           await axios.post('/api/v1/settings/notifications/discord', {
             enabled: values.enabled,
@@ -126,6 +126,8 @@ const NotificationsDiscord = () => {
             },
           });
 
+          resetForm({ values });
+          void revalidate();
           addToast(intl.formatMessage(messages.discordsettingssaved), {
             appearance: 'success',
             autoDismiss: true,
@@ -135,8 +137,6 @@ const NotificationsDiscord = () => {
             appearance: 'error',
             autoDismiss: true,
           });
-        } finally {
-          revalidate();
         }
       }}
     >
@@ -144,6 +144,7 @@ const NotificationsDiscord = () => {
         errors,
         touched,
         isSubmitting,
+        dirty,
         values,
         isValid,
         setFieldValue,
@@ -200,7 +201,11 @@ const NotificationsDiscord = () => {
         };
 
         return (
-          <Form className="app-card-sub section">
+          <Form
+            data-settings-dirty={dirty}
+            data-settings-submitting={isSubmitting}
+            className="app-card-sub section"
+          >
             <div className="form-row">
               <label htmlFor="enabled" className="checkbox-label">
                 {intl.formatMessage(messages.agentenabled)}

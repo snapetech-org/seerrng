@@ -535,7 +535,7 @@ const SettingsJellyfin: React.FC<SettingsJellyfinProps> = ({
           apiKey: data?.apiKey,
         }}
         validationSchema={JellyfinSettingsSchema}
-        onSubmit={async (values) => {
+        onSubmit={async (values, { resetForm }) => {
           try {
             await axios.post('/api/v1/settings/jellyfin', {
               ip: values.hostname,
@@ -547,6 +547,8 @@ const SettingsJellyfin: React.FC<SettingsJellyfinProps> = ({
               apiKey: values.apiKey,
             } as JellyfinSettings);
 
+            resetForm({ values });
+            void revalidate();
             addToast(
               intl.formatMessage(
                 messages.jellyfinSettingsSuccess,
@@ -581,8 +583,6 @@ const SettingsJellyfin: React.FC<SettingsJellyfinProps> = ({
                 }
               );
             }
-          } finally {
-            revalidate();
           }
         }}
       >
@@ -593,10 +593,16 @@ const SettingsJellyfin: React.FC<SettingsJellyfinProps> = ({
           setFieldValue,
           handleSubmit,
           isSubmitting,
+          dirty,
           isValid,
         }) => {
           return (
-            <form className="app-card-sub section" onSubmit={handleSubmit}>
+            <form
+              className="app-card-sub section"
+              onSubmit={handleSubmit}
+              data-settings-dirty={dirty}
+              data-settings-submitting={isSubmitting}
+            >
               {!isSetupSettings && (
                 <>
                   <div className="form-row">

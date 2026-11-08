@@ -132,12 +132,13 @@ const SettingsCategories = () => {
           },
         }}
         enableReinitialize
-        onSubmit={async (values, { setSubmitting }) => {
+        onSubmit={async (values, { setSubmitting, resetForm }) => {
           try {
             await axios.post('/api/v1/settings/main', {
               enabledMediaCategories: values.enabledMediaCategories,
               ageGate: values.ageGate,
             });
+            resetForm({ values });
             await Promise.all([
               revalidate(),
               mutate('/api/v1/settings/public'),
@@ -156,10 +157,12 @@ const SettingsCategories = () => {
           }
         }}
       >
-        {({ isSubmitting, values }) => (
+        {({ isSubmitting, dirty, values }) => (
           <Form
             className="settings-page-form"
             data-testid="settings-categories-form"
+            data-settings-dirty={dirty}
+            data-settings-submitting={isSubmitting}
           >
             <section className="settings-group-card">
               <h3 className="settings-group-heading">

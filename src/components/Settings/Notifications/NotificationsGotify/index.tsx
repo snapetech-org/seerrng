@@ -102,7 +102,7 @@ const NotificationsGotify = () => {
         locale: data?.options.locale ?? 'en',
       }}
       validationSchema={NotificationsGotifySchema}
-      onSubmit={async (values) => {
+      onSubmit={async (values, { resetForm }) => {
         try {
           await axios.post('/api/v1/settings/notifications/gotify', {
             enabled: values.enabled,
@@ -115,6 +115,8 @@ const NotificationsGotify = () => {
               locale: values.locale,
             },
           });
+          resetForm({ values });
+          void revalidate();
           addToast(intl.formatMessage(messages.gotifysettingssaved), {
             appearance: 'success',
             autoDismiss: true,
@@ -124,8 +126,6 @@ const NotificationsGotify = () => {
             appearance: 'error',
             autoDismiss: true,
           });
-        } finally {
-          revalidate();
         }
       }}
     >
@@ -133,6 +133,7 @@ const NotificationsGotify = () => {
         errors,
         touched,
         isSubmitting,
+        dirty,
         values,
         isValid,
         setFieldValue,
@@ -184,7 +185,11 @@ const NotificationsGotify = () => {
         };
 
         return (
-          <Form className="app-card-sub section">
+          <Form
+            data-settings-dirty={dirty}
+            data-settings-submitting={isSubmitting}
+            className="app-card-sub section"
+          >
             <div className="form-row">
               <label htmlFor="enabled" className="checkbox-label">
                 {intl.formatMessage(messages.agentenabled)}

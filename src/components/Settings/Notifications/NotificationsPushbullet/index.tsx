@@ -68,7 +68,7 @@ const NotificationsPushbullet = () => {
         channelTag: data.options.channelTag,
       }}
       validationSchema={NotificationsPushbulletSchema}
-      onSubmit={async (values) => {
+      onSubmit={async (values, { resetForm }) => {
         try {
           await axios.post('/api/v1/settings/notifications/pushbullet', {
             enabled: values.enabled,
@@ -78,6 +78,8 @@ const NotificationsPushbullet = () => {
               channelTag: values.channelTag,
             },
           });
+          resetForm({ values });
+          void revalidate();
           addToast(intl.formatMessage(messages.pushbulletSettingsSaved), {
             appearance: 'success',
             autoDismiss: true,
@@ -87,8 +89,6 @@ const NotificationsPushbullet = () => {
             appearance: 'error',
             autoDismiss: true,
           });
-        } finally {
-          revalidate();
         }
       }}
     >
@@ -96,6 +96,7 @@ const NotificationsPushbullet = () => {
         errors,
         touched,
         isSubmitting,
+        dirty,
         values,
         isValid,
         setFieldValue,
@@ -145,7 +146,11 @@ const NotificationsPushbullet = () => {
         };
 
         return (
-          <Form className="app-card-sub section">
+          <Form
+            data-settings-dirty={dirty}
+            data-settings-submitting={isSubmitting}
+            className="app-card-sub section"
+          >
             <div className="form-row">
               <label htmlFor="enabled" className="checkbox-label">
                 {intl.formatMessage(messages.agentEnabled)}
