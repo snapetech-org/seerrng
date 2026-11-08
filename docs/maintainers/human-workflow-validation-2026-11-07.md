@@ -264,3 +264,36 @@ and exact desktop geometry comparisons. See
 
 These are scoped additions to the continuing audit, not certification that all
 73 historical human workflows or all provider integrations are complete.
+
+
+## Reopened single-quality request follow-up (#132)
+
+The current production-browser audit reproduced a remaining part of #132: both
+movie and TV dialogs passed HD and 4K unconditionally to their shared quality
+control. Eight Orig/John × 390/1440px cases failed with no 4K service configured.
+The issue was reopened and its public explanation corrected before delivery.
+
+Both native modal owners now mount that existing chooser only when their public
+4K capability is enabled and the actor has both standard and 4K request
+permissions. The chosen quality of an already-open/edit request is preserved;
+backend admission checks remain unchanged. No CSS, geometry or new control was
+introduced. The TV unit fixture explicitly declares 4K permission for its existing
+positive quality-switch case; three new cases cover a disabled capability and
+each missing quality permission.
+
+Production rebuild and 31 focused modal/button regressions pass. Eight additional
+real browser cases pass with catalogue/provider replay and real authentication,
+theme persistence, navigation and dialogs. Each clicks the left edge, centre and
+right edge of the single-quality button, confirms a real dialog and no 4K choice,
+and closes it without creating a request. The maintained summary suite also
+covers the existing dual-quality rendering and switches to a no-4K configuration
+before those three click-position checks. Its Orig/John × movie/TV ×
+320/390/1440px scope passes all 12 cases and remains separate from household provider acquisition. Matching baseline trace frames and candidate dialog contact sheets were visually inspected; the correction removes the unusable quality row without changing shared CSS.
+
+Evidence retained in the shared November 7 artifact directory:
+`issue132-human.log` (eight reproduced failures), `issue132-ready.log` (eight
+passing cases), `issue132-final-owner-regression.log` (31 passes),
+`issue132-qualified-production-build.log`, and the `issue132-ready-artifacts`
+captures. Initial follow-up startup failures were connection/readiness problems;
+those logs remain retained. This issue remains open until the corrected release
+artifact is verified; source checks are not a publication claim.

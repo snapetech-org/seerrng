@@ -14,6 +14,7 @@ const fixtureState = vi.hoisted(() => ({
   data: {} as Record<string, unknown>,
   quota: { tv: { limit: 0, remaining: 10 } },
   catalog: undefined as unknown,
+  series4kEnabled: true,
   partialRequestsEnabled: true,
   tvSeasonWatchGateEnabled: false,
   watchStatus: undefined as unknown,
@@ -73,6 +74,7 @@ vi.mock('@app/hooks/useSettings', () => ({
   default: () => ({
     currentSettings: {
       partialRequestsEnabled: fixtureState.partialRequestsEnabled,
+      series4kEnabled: fixtureState.series4kEnabled,
       tvSeasonWatchGateEnabled: fixtureState.tvSeasonWatchGateEnabled,
       enableSpecialEpisodes: false,
       mediaServerType: 1,
@@ -373,6 +375,7 @@ async function fixture(
   fixtureState.quota = { tv: { limit: 0, remaining: 10 } };
   fixtureState.catalog = undefined;
   fixtureState.persius = false;
+  fixtureState.series4kEnabled = true;
   fixtureState.partialRequestsEnabled = true;
   fixtureState.tvSeasonWatchGateEnabled = false;
   fixtureState.watchStatus = undefined;
@@ -751,6 +754,7 @@ it('changing quality recomputes eligibility and submits the selected 4K destinat
     },
     {
       configure: () => {
+        fixtureState.requestPermissions |= Permission.REQUEST_4K_TV;
         (fixtureState.data.mediaInfo as Record<string, unknown>).status =
           MediaStatus.AVAILABLE;
       },
@@ -1157,3 +1161,27 @@ it('keeps automatic future seasons off when the watch gate manages the request',
     }
   );
 });
+
+for (const reason of [
+  'disabled',
+  'no-4k-permission',
+  'no-hd-permission',
+] as const) {
+  it(`hides the request quality chooser when ${reason}`, async () => {
+    await fixture(
+      async (doc) => {
+        expect(doc.querySelector('[data-testid="quality"]')).toBeNull();
+      },
+      {
+        configure: () => {
+          fixtureState.series4kEnabled = reason !== 'disabled';
+          fixtureState.requestPermissions =
+            reason === 'no-hd-permission'
+              ? Permission.REQUEST_4K_TV
+              : Permission.REQUEST_TV |
+                (reason === 'disabled' ? Permission.REQUEST_4K_TV : 0);
+        },
+      }
+    );
+  });
+}

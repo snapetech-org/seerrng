@@ -21,6 +21,7 @@ import {
   isVideoQualityAvailable,
 } from '@app/components/RequestModal/requestAvailability';
 import useAdvancedOptionsDisclosure from '@app/hooks/useAdvancedOptionsDisclosure';
+import useSettings from '@app/hooks/useSettings';
 import useToasts from '@app/hooks/useToasts';
 import useUpstreamTheme from '@app/hooks/useUpstreamTheme';
 import { useUser } from '@app/hooks/useUser';
@@ -40,7 +41,11 @@ import type { NonFunctionProperties } from '@server/interfaces/api/common';
 import type { ServiceCommonServer } from '@server/interfaces/api/serviceInterfaces';
 import type { QuotaResponse } from '@server/interfaces/api/userInterfaces';
 import type { UserRequestRootFolders } from '@server/interfaces/api/userSettingsInterfaces';
-import { Permission, hasAutoApprovePermission } from '@server/lib/permissions';
+import {
+  Permission,
+  hasAutoApprovePermission,
+  hasPermission as hasUserPermission,
+} from '@server/lib/permissions';
 import type { MovieDetails } from '@server/models/Movie';
 import axios from 'axios';
 import { useCallback, useEffect, useState } from 'react';
@@ -149,6 +154,7 @@ const MovieRequestModal = ({
   const intl = useIntl();
   const upstream = useUpstreamTheme();
   const { user, hasPermission } = useUser();
+  const settings = useSettings();
   const { data: quota } = useSWR<QuotaResponse>(
     user &&
       (!requestOverrides?.user?.id ||
@@ -180,6 +186,19 @@ const MovieRequestModal = ({
   const [requestedByPortal, setRequestedByPortal] =
     useState<HTMLDivElement | null>(null);
   const effectiveIs4k = requestOverrides?.is4k ?? selectedIs4k;
+  const canChooseRequestQuality =
+    settings.currentSettings.movie4kEnabled &&
+    hasUserPermission(
+      [Permission.REQUEST, Permission.REQUEST_MOVIE],
+      user?.permissions ?? 0,
+      { type: 'or' }
+    ) &&
+    hasUserPermission(
+      [Permission.REQUEST_4K, Permission.REQUEST_4K_MOVIE],
+      user?.permissions ?? 0,
+      { type: 'or' }
+    );
+
   const canUseAdvancedOptions = hasPermission(
     [Permission.REQUEST_ADVANCED, Permission.MANAGE_REQUESTS],
     { type: 'or' }
@@ -885,7 +904,7 @@ const MovieRequestModal = ({
               {intl.formatMessage(messages.requesterTagOnlyUnavailable)}
             </p>
           )}
-          {!requesterTagOnlyMode && (
+          {!requesterTagOnlyMode && canChooseRequestQuality && (
             <MediaQualitySelect
               value={effectiveIs4k ? '4k' : 'hd'}
               options={[

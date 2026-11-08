@@ -319,6 +319,19 @@ const TvRequestModal = ({
   const [requestedByPortal, setRequestedByPortal] =
     useState<HTMLDivElement | null>(null);
   const effectiveIs4k = requestOverrides?.is4k ?? selectedIs4k;
+  const canChooseRequestQuality =
+    settings.currentSettings.series4kEnabled &&
+    hasUserPermission(
+      [Permission.REQUEST, Permission.REQUEST_TV],
+      user?.permissions ?? 0,
+      { type: 'or' }
+    ) &&
+    hasUserPermission(
+      [Permission.REQUEST_4K, Permission.REQUEST_4K_TV],
+      user?.permissions ?? 0,
+      { type: 'or' }
+    );
+
   const canUseAdvancedOptions = hasPermission(
     [Permission.REQUEST_ADVANCED, Permission.MANAGE_REQUESTS],
     { type: 'or' }
@@ -1823,24 +1836,26 @@ const TvRequestModal = ({
           {!requesterTagOnlyMode && (
             <OptionalDisclosure enabled={persius || upstream}>
               <div className="request-selection-options">
-                {!editRequest && !requesterTagOnlyMode && (
-                  <MediaQualitySelect
-                    value={effectiveIs4k ? '4k' : 'hd'}
-                    options={[
-                      { label: 'HD', value: 'hd' },
-                      { label: '4K', value: '4k' },
-                    ]}
-                    onChange={(quality) => {
-                      setSelectedIs4k(quality === '4k');
-                      setRequestServiceServerId(undefined);
-                      setRequestOverrides(null);
-                      setQualityRevision((current) => current + 1);
-                    }}
-                    label={intl.formatMessage(messages.quality)}
-                    autoSelectAvailable={false}
-                    purpose="request"
-                  />
-                )}
+                {!editRequest &&
+                  !requesterTagOnlyMode &&
+                  canChooseRequestQuality && (
+                    <MediaQualitySelect
+                      value={effectiveIs4k ? '4k' : 'hd'}
+                      options={[
+                        { label: 'HD', value: 'hd' },
+                        { label: '4K', value: '4k' },
+                      ]}
+                      onChange={(quality) => {
+                        setSelectedIs4k(quality === '4k');
+                        setRequestServiceServerId(undefined);
+                        setRequestOverrides(null);
+                        setQualityRevision((current) => current + 1);
+                      }}
+                      label={intl.formatMessage(messages.quality)}
+                      autoSelectAvailable={false}
+                      purpose="request"
+                    />
+                  )}
                 {!editRequest &&
                   !requesterTagOnlyMode &&
                   !canUseAdvancedOptions &&

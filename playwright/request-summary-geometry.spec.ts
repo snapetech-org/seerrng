@@ -171,7 +171,12 @@ for (const theme of ['seerrOrig', 'seerrNGJ']) {
         );
         await page.goto('/');
         await page.evaluate(
-          (path) => (window as any).next.router.push(path),
+          (path) =>
+            (
+              window as typeof window & {
+                next: { router: { push: (value: string) => Promise<boolean> } };
+              }
+            ).next.router.push(path),
           `/${mediaType}/${id}`
         );
         await expect(page.locator('html')).toHaveAttribute(
@@ -328,6 +333,59 @@ for (const theme of ['seerrOrig', 'seerrNGJ']) {
           await dialog.evaluate((node) => node.scrollWidth - node.clientWidth)
         ).toBeLessThanOrEqual(1);
         await dialog.getByTestId('modal-cancel-button').click();
+        if (!baseline) {
+          await page.route('**/api/v1/settings/public', async (route) => {
+            const response = await route.fetch();
+            await route.fulfill({
+              response,
+              json: {
+                ...(await response.json()),
+                enable4k: false,
+                movie4kEnabled: false,
+                series4kEnabled: false,
+              },
+            });
+          });
+          await page.route(`**/api/v1/service/${serviceType}`, (route) =>
+            route.fulfill({ json: services.filter((server) => !server.is4k) })
+          );
+          await page.goto('/seerrng');
+          await page.evaluate(
+            (path) =>
+              (
+                window as typeof window & {
+                  next: {
+                    router: { push: (value: string) => Promise<boolean> };
+                  };
+                }
+              ).next.router.push(path),
+            `/${mediaType}/${id}`
+          );
+          const single = page
+            .getByRole('button', { name: /^Request(?: HD)?$/ })
+            .first();
+          for (const edge of ['left', 'center', 'right']) {
+            const box = await single.boundingBox();
+            expect(box).toBeTruthy();
+            await single.click({
+              position: {
+                x:
+                  edge === 'left'
+                    ? 3
+                    : edge === 'right'
+                      ? box!.width - 3
+                      : box!.width / 2,
+                y: box!.height / 2,
+              },
+            });
+            await expect(dialog).toBeVisible();
+            await expect(dialog.getByText('4K', { exact: true })).toHaveCount(
+              0
+            );
+            await dialog.getByTestId('modal-cancel-button').click();
+            await expect(dialog).toHaveCount(0);
+          }
+        }
       });
     }
   }
