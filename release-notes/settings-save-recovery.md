@@ -1,1 +1,9 @@
+---
+category: fixed
+audience: users, operators
+area: settings
+action: none
+breaking: false
+---
+
 Settings now retain unsuccessful drafts and allow retrying Save in General, Users, Media Categories, Network, Jellyfin/Emby, Metadata Providers and every notification agent. Successful saves clear the unsaved state after persistence, and separate metadata forms save independently. Disabled Apprise/ntfy agents accept empty optional settings; Web Push saves accept the form's supported payload.
