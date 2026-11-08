@@ -175,18 +175,21 @@ export const getMediaServerAccessContext = async (
 
   const linkedIdentity =
     normalizedIdentity ?? `token-linked-user-${linkedUser.id}`;
+  // A server API key can query a disabled viewer. Password sign-in persists
+  // the viewer credential; legacy sessions without one must sign in again.
+  const credential = linkedUser.jellyfinAuthToken ?? undefined;
   return {
     source,
     userId: linkedUser.id,
     linkedIdentity,
-    credential: linkedUser.jellyfinAuthToken ?? undefined,
+    credential,
     deviceId: linkedUser.jellyfinDeviceId ?? undefined,
     host,
     scopeDigest: accessScopeDigest({
       source,
       userId: linkedUser.id,
       linkedIdentity,
-      credential: linkedUser.jellyfinAuthToken ?? undefined,
+      credential,
       deviceId: linkedUser.jellyfinDeviceId ?? undefined,
       host,
     }),

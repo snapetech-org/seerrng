@@ -26,6 +26,63 @@ class TestJellyfinAPI extends JellyfinAPI {
   }
 }
 
+describe('Jellyfin viewer item visibility', () => {
+  const id = 'a'.repeat(32);
+  const viewer = 'b'.repeat(32);
+  it('uses the user-item route rather than the exact-ID list shortcut', async () => {
+    const api = new TestJellyfinAPI('http://localhost:8096', 'viewer-token');
+    mock.method(api.getTransport(), 'get', async (path: string) => {
+      assert.equal(new URL(path).pathname, `/Users/${viewer}/Items/${id}`);
+      return { data: { Id: id, Type: 'Movie', ProviderIds: { Tmdb: '550' } } };
+    });
+    assert.equal(
+      (await api.getUserItemForAvailabilityCheck(id, viewer))?.Id,
+      id
+    );
+  });
+  it('keeps playback item reads in the requested viewer scope', async () => {
+    const api = new TestJellyfinAPI('http://localhost:8096', 'viewer-token');
+    api.setUserId(viewer);
+    mock.method(api.getTransport(), 'get', async (path: string) => {
+      assert.equal(new URL(path).pathname, `/Users/${viewer}/Items/${id}`);
+      return { data: { Id: id, Type: 'Movie', ProviderIds: { Tmdb: '550' } } };
+    });
+    assert.equal((await api.getItemData(id))?.Id, id);
+  });
+  it('does not downgrade an invalid viewer scope to a server-wide item read', async () => {
+    const api = new TestJellyfinAPI('http://localhost:8096', 'viewer-token');
+    const transport = mock.method(api.getTransport(), 'get', async () => ({
+      data: {},
+    }));
+    api.setUserId('invalid-user');
+    await assert.rejects(api.getItemData(id));
+    assert.equal(transport.mock.callCount(), 0);
+  });
+  for (const status of [401, 403, 404]) {
+    it(`treats viewer denial ${status} as unavailable`, async () => {
+      const api = new TestJellyfinAPI('http://localhost:8096', 'viewer-token');
+      mock.method(api.getTransport(), 'get', async () => {
+        throw { response: { status } };
+      });
+      assert.equal(
+        await api.getUserItemForAvailabilityCheck(id, viewer),
+        undefined
+      );
+    });
+  }
+  for (const data of [
+    {},
+    { Items: [] },
+    { Id: 'c'.repeat(32), Type: 'Movie', ProviderIds: { Tmdb: '550' } },
+  ]) {
+    it(`rejects unverified viewer item data ${JSON.stringify(data)}`, async () => {
+      const api = new TestJellyfinAPI('http://localhost:8096', 'viewer-token');
+      mock.method(api.getTransport(), 'get', async () => ({ data }));
+      await assert.rejects(api.getUserItemForAvailabilityCheck(id, viewer));
+    });
+  }
+});
+
 describe('JellyfinAPI authorization headers', () => {
   it('uses modern Jellyfin and compatible Emby authorization headers', () => {
     const settings = getSettings();

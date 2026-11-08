@@ -15,6 +15,19 @@ import type {
   WatchStatusResponse,
 } from '@server/models/WatchStatus';
 import { getHostname } from '@server/utils/getHostname';
+import { hasHttpStatus } from '@server/utils/httpError';
+
+const readVisibleWatchState = async <T>(
+  read: () => Promise<T>
+): Promise<T | undefined> => {
+  try {
+    return await read();
+  } catch (error) {
+    if ([401, 403, 404].some((status) => hasHttpStatus(error, status)))
+      return undefined;
+    throw error;
+  }
+};
 
 export const getMediaServerWatchStatus = async (
   media: Media,
@@ -83,14 +96,21 @@ export const getMediaServerWatchStatus = async (
     jellyfin.setUserId(user.jellyfinUserId);
     if (media.mediaType === MediaType.MOVIE) {
       const played = await Promise.all(
-        rootIds.map((id) => jellyfin.getUserItemPlayed(id))
+        rootIds.map((id) =>
+          readVisibleWatchState(() => jellyfin.getUserItemPlayed(id))
+        )
       );
+      if (played.every((value) => value === undefined)) return empty;
       return getMovieWatchStatus(serverType, played.some(Boolean));
     }
     const episodes = (
-      await Promise.all(rootIds.map((id) => jellyfin.getUserWatchEpisodes(id)))
+      await Promise.all(
+        rootIds.map((id) =>
+          readVisibleWatchState(() => jellyfin.getUserWatchEpisodes(id))
+        )
+      )
     )
-      .flat()
+      .flatMap((episodes) => episodes ?? [])
       .map((episode) => ({
         seasonNumber: episode.seasonNumber,
         episodeNumber: episode.episodeNumber,

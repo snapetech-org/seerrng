@@ -1590,6 +1590,8 @@ authRoutes.post('/jellyfin', authRateLimit, async (req, res, next) => {
             await userRepository.update(activeUser.id, {
               avatar: getUserAvatarUrl(activeUser),
               jellyfinUsername: account.User.Name,
+              jellyfinAuthToken: account.AccessToken,
+              jellyfinDeviceId: deviceId,
               ...(activeUser.username === account.User.Name
                 ? { username: '' }
                 : {}),
@@ -1625,6 +1627,7 @@ authRoutes.post('/jellyfin', authRateLimit, async (req, res, next) => {
             jellyfinUsername: account.User.Name,
             jellyfinUserId,
             jellyfinDeviceId: deviceId,
+            jellyfinAuthToken: account.AccessToken,
             permissions: settings.main.defaultPermissions,
             userType:
               settings.main.mediaServerType === MediaServerType.JELLYFIN

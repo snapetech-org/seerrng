@@ -538,6 +538,7 @@ export const sanitizeJellyfinSession = (
 
 class JellyfinAPI extends ExternalAPI {
   private userId?: string;
+  private userScopeRequested = false;
   private mediaServerType: MediaServerType;
 
   constructor(
@@ -707,6 +708,7 @@ class JellyfinAPI extends ExternalAPI {
   }
 
   public setUserId(userId: string): void {
+    this.userScopeRequested = true;
     this.userId = normalizeJellyfinGuid(userId) ?? undefined;
     return;
   }
@@ -1005,7 +1007,7 @@ class JellyfinAPI extends ExternalAPI {
 
   /**
    * Check one native item with the linked viewer's credentials and explicit
-   * user scope. Unlike the server-wide item lookup, an empty result here means
+   * user scope. Unlike the server-wide item lookup, a missing result here means
    * the linked user cannot see this item (or it no longer exists).
    */
   public async getUserItemForAvailabilityCheck(
@@ -1019,19 +1021,12 @@ class JellyfinAPI extends ExternalAPI {
     }
 
     try {
-      const response = await this.get<unknown>('/Items', {
-        params: {
-          ids: safeId,
-          userId: safeUserId,
-          fields: 'ProviderIds',
-        },
-      });
-      if (!isRecord(response) || !Array.isArray(response.Items)) {
-        throw new Error('Media server returned an invalid item response.');
-      }
-      if (response.Items.length === 0) return undefined;
-
-      const item = sanitizeJellyfinLibraryItem(response.Items[0], true) as
+      // Jellyfin's /Items?ids= lookup can return an item outside the viewer's
+      // enabled libraries. The user-item route enforces item visibility.
+      const response = await this.get<unknown>(
+        `/Users/${encodeURIComponent(safeUserId)}/Items/${encodeURIComponent(safeId)}`
+      );
+      const item = sanitizeJellyfinLibraryItem(response, true) as
         JellyfinLibraryItemExtended | undefined;
       if (!item || normalizeJellyfinGuid(item.Id) !== safeId) {
         throw new Error('Media server returned an unverified item.');
@@ -1310,6 +1305,10 @@ class JellyfinAPI extends ExternalAPI {
   public async getItemData(
     id: string
   ): Promise<JellyfinLibraryItemExtended | undefined> {
+    if (this.userScopeRequested) {
+      if (!this.userId) throw new ApiError(400, ApiErrorCode.InvalidAuthToken);
+      return this.getUserItemForAvailabilityCheck(id, this.userId);
+    }
     try {
       const itemResponse = await this.get<JellyfinItemsReponse>(`/Items`, {
         params: {

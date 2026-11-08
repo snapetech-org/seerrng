@@ -1361,6 +1361,73 @@ describe('POST /auth/jellyfin/bridge', () => {
 });
 
 describe('POST /auth/jellyfin', () => {
+  for (const serverType of [MediaServerType.JELLYFIN, MediaServerType.EMBY]) {
+    for (const existing of [true, false]) {
+      it(`retains the viewer credential for ${existing ? 'existing' : 'new'} password-linked ${serverType} users`, async (t) => {
+        configureJellyfin();
+        getSettings().main.mediaServerType = serverType;
+        const viewerId = 'a'.repeat(32);
+        const username = 'password-viewer-fixture';
+        const repository = getRepository(User);
+        if (existing) {
+          await repository.update(2, {
+            jellyfinUserId: viewerId,
+            jellyfinUsername: username,
+            jellyfinAuthToken: null,
+            jellyfinDeviceId: 'existing-viewer-device',
+            userType:
+              serverType === MediaServerType.JELLYFIN
+                ? UserType.JELLYFIN
+                : UserType.EMBY,
+          });
+        }
+        const login = mock.method(JellyfinAPI.prototype, 'login', async () => {
+          if (existing)
+            await repository.update(2, {
+              permissions: Permission.REQUEST_MOVIE,
+            });
+          return {
+            User: {
+              Id: viewerId,
+              Name: username,
+              ServerId: 'fixture-server',
+              Configuration: { GroupedFolders: [] },
+              Policy: { IsAdministrator: false },
+            },
+            AccessToken: 'fresh-password-viewer-token',
+          };
+        });
+        t.after(() => login.mock.restore());
+        const response = await request(app)
+          .post('/auth/jellyfin')
+          .send({ username, password: 'fixture-password' });
+        assert.equal(response.status, 200);
+        assert.equal(response.body.jellyfinAuthToken, undefined);
+        assert.equal(response.body.password, undefined);
+        const saved = await repository.findOneOrFail({
+          where: { jellyfinUserId: viewerId },
+          select: {
+            id: true,
+            jellyfinAuthToken: true,
+            jellyfinDeviceId: true,
+            permissions: true,
+          },
+        });
+        assert.equal(saved.jellyfinAuthToken, 'fresh-password-viewer-token');
+        assert.ok(saved.jellyfinDeviceId);
+        if (existing) {
+          assert.equal(saved.id, 2);
+          assert.equal(saved.jellyfinDeviceId, 'existing-viewer-device');
+          assert.equal(saved.permissions, Permission.REQUEST_MOVIE);
+        } else
+          assert.equal(
+            saved.permissions,
+            getSettings().main.defaultPermissions
+          );
+      });
+    }
+  }
+
   it('returns forbidden without contacting Jellyfin when login is disabled', async () => {
     const settings = getSettings();
     const previousMediaServerType = settings.main.mediaServerType;

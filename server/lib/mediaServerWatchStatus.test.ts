@@ -52,6 +52,53 @@ describe('media server watch status', () => {
     ['Jellyfin', MediaServerType.JELLYFIN],
     ['Emby', MediaServerType.EMBY],
   ] as const) {
+    for (const mediaType of [MediaType.MOVIE, MediaType.TV]) {
+      for (const status of [401, 403, 404]) {
+        it(`keeps ${name} ${mediaType} viewer denial ${status} out of watched availability`, async () => {
+          settings.main.mediaServerType = serverType;
+          const user = new User({
+            email: 'scope-watch@fixture.invalid',
+            jellyfinUserId: 'a'.repeat(32),
+            jellyfinAuthToken: 'viewer-token',
+          });
+          const media = new Media({
+            tmdbId: 550,
+            mediaType,
+            jellyfinMediaId: 'b'.repeat(32),
+          });
+          const deny = async () => {
+            throw { response: { status } };
+          };
+          if (mediaType === MediaType.MOVIE)
+            mock.method(JellyfinAPI.prototype, 'getUserItemPlayed', deny);
+          else mock.method(JellyfinAPI.prototype, 'getUserWatchEpisodes', deny);
+          const result = await getMediaServerWatchStatus(media, user, true);
+          assert.equal(result.availableCount, 0);
+          assert.equal(result.watchedCount, 0);
+          assert.equal(result.unwatchedCount, 0);
+        });
+      }
+      it(`does not convert a ${name} ${mediaType} provider outage into absence`, async () => {
+        settings.main.mediaServerType = serverType;
+        const user = new User({
+          email: 'outage-watch@fixture.invalid',
+          jellyfinUserId: 'a'.repeat(32),
+          jellyfinAuthToken: 'viewer-token',
+        });
+        const media = new Media({
+          tmdbId: 550,
+          mediaType,
+          jellyfinMediaId: 'b'.repeat(32),
+        });
+        const outage = async () => {
+          throw { response: { status: 503 } };
+        };
+        if (mediaType === MediaType.MOVIE)
+          mock.method(JellyfinAPI.prototype, 'getUserItemPlayed', outage);
+        else mock.method(JellyfinAPI.prototype, 'getUserWatchEpisodes', outage);
+        await assert.rejects(getMediaServerWatchStatus(media, user, true));
+      });
+    }
     it(`reads per-user episode history from ${name}`, async () => {
       settings.main.mediaServerType = serverType;
       const user = new User({
