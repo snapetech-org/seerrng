@@ -50,7 +50,7 @@ services:
     # The user Lumen runs as (default 101). Like the *arr images, set PUID and PGID in a .env
     # file next to this one (e.g. PUID=1000 and PGID=1000) to match the owner of lumen-data.
     # Lumen never runs as root, so they go here rather than under environment:.
-    user: "${PUID:-101}:${PGID:-101}"
+    user: '${PUID:-101}:${PGID:-101}'
     cap_drop:
       - ALL
     security_opt:
