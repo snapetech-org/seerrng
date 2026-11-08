@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { execFile } from 'node:child_process';
-import { createServer } from 'node:http';
 import { chmod, mkdtemp, rm } from 'node:fs/promises';
+import { createServer } from 'node:http';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { after, before, test } from 'node:test';
@@ -227,6 +227,9 @@ test('the image runs as any unprivileged user, saving into a /lumen-data that us
       '127.0.0.1::80',
       '--user',
       user,
+      '--read-only',
+      '--tmpfs',
+      '/tmp:rw,nosuid,nodev',
       '-v',
       `${data}:/lumen-data`,
       ...args()
@@ -246,6 +249,13 @@ test('the image runs as any unprivileged user, saving into a /lumen-data that us
         await docker('exec', id, 'id', '-u'),
         user.split(':')[0],
         user
+      );
+      await docker(
+        'exec',
+        id,
+        'sh',
+        '-c',
+        'test ! -w /usr/share/nginx/html/index.html'
       );
       const config = await (await fetch(base + '/lumen/config')).json();
       assert.deepEqual(config, { canSave: true, folder: 'ok' }, user);

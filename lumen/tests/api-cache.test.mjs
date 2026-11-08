@@ -62,6 +62,42 @@ test('identical calls in flight share one answer', async (t) => {
   assert.equal(calls, 2, 'a finished call is not reused by shared()');
 });
 
+test('a response started before a mutation cannot make old availability fresh again', async (t) => {
+  session.resetSessionState(6);
+  t.after(() => session.resetSessionState(null));
+  const version = cache.cacheGeneration();
+  let finish;
+  const old = cache.shared(
+    '/request',
+    () =>
+      new Promise((resolve) => {
+        finish = resolve;
+      })
+  );
+  cache.markAllStale();
+  const current = await cache.shared('/request', async () => ({
+    requested: true,
+  }));
+  cache.remember('/request', current);
+  finish({ requested: false });
+  cache.remember('/request', await old, version);
+  assert.deepEqual(cache.cached('/request'), { requested: true });
+  assert.equal(cache.isFresh('/request'), true);
+});
+
+test('forget and same-account sign-in reset reject earlier response writes', (t) => {
+  session.resetSessionState(7);
+  t.after(() => session.resetSessionState(null));
+  let version = cache.cacheGeneration();
+  cache.forget('/movie');
+  cache.remember('/movie/1', { title: 'old' }, version);
+  assert.equal(cache.cached('/movie/1'), undefined);
+  version = cache.cacheGeneration();
+  session.resetSessionState(7);
+  cache.remember('/movie/1', { title: 'old session' }, version);
+  assert.equal(cache.cached('/movie/1'), undefined);
+});
+
 test('always-checked answers are reused briefly, and asked again after a change', (t) => {
   let now = 5_000_000;
   t.mock.method(Date, 'now', () => now);

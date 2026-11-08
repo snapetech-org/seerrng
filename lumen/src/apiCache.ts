@@ -29,6 +29,8 @@ const ALWAYS_CHECK = /^\/(request|auth|user\/\d+\/quota|settings\/public)/;
 type Entry = { at: number; data: unknown };
 let entries = new Map<string, Entry>();
 let loadedFor: number | null | undefined;
+let generation = 0;
+export const cacheGeneration = () => generation;
 const storeKey = (id: number) => `lumen-cache:${id}`;
 
 function retained(e: Entry | undefined, now = Date.now()): e is Entry {
@@ -104,7 +106,12 @@ export function isFresh(path: string) {
   );
 }
 
-export function remember(path: string, data: unknown) {
+export function remember(
+  path: string,
+  data: unknown,
+  expectedGeneration = generation
+) {
+  if (expectedGeneration !== generation) return;
   ensureLoaded();
   entries.set(path, { at: Date.now(), data });
   save();
@@ -112,6 +119,8 @@ export function remember(path: string, data: unknown) {
 
 export function forget(prefix: string) {
   ensureLoaded();
+  generation += 1;
+  inFlight.clear();
   for (const k of [...entries.keys()])
     if (k.startsWith(prefix)) entries.delete(k);
   save();
@@ -120,7 +129,7 @@ export function forget(prefix: string) {
 // one call per path at a time: everyone asking while it's in flight gets the same answer
 const inFlight = new Map<string, Promise<unknown>>();
 export function shared<T>(path: string, load: () => Promise<T>): Promise<T> {
-  const key = `${sessionUserId() ?? ''}|${path}`;
+  const key = `${generation}|${sessionUserId() ?? ''}|${path}`;
   const running = inFlight.get(key);
   if (running) return running as Promise<T>;
   const p = load().finally(() => {
@@ -133,6 +142,7 @@ export function shared<T>(path: string, load: () => Promise<T>): Promise<T> {
 // after a request or other change: keep showing what's there, but ask again next time
 export function markAllStale() {
   ensureLoaded();
+  generation += 1;
   inFlight.clear(); // an answer already on its way may predate the change
   const stale = Date.now() - FRESH_MS - 1;
   for (const e of entries.values()) e.at = Math.min(e.at, stale);
@@ -140,6 +150,7 @@ export function markAllStale() {
 }
 
 onSessionReset(() => {
+  generation += 1;
   const previous = loadedFor;
   if (previous != null && previous !== sessionUserId())
     try {

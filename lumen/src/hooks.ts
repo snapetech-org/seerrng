@@ -1,7 +1,14 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { api, hardcoverWorkId, hcCovers } from './api';
-import { cached, forget, isFresh, remember, shared } from './apiCache';
+import {
+  cached,
+  cacheGeneration,
+  forget,
+  isFresh,
+  remember,
+  shared,
+} from './apiCache';
 import { onSessionReset, sessionGeneration } from './sessionState';
 
 // A saved answer shows at once; a fresh one isn't asked for again (see apiCache.ts).
@@ -44,8 +51,9 @@ export function useApi<T>(path: string | null) {
 function fetchShared<T>(path: string): Promise<T> {
   return shared(path, async () => {
     const generation = sessionGeneration();
+    const cacheVersion = cacheGeneration();
     const d = await api<T>(path);
-    if (generation === sessionGeneration()) remember(path, d);
+    if (generation === sessionGeneration()) remember(path, d, cacheVersion);
     return d;
   });
 }
