@@ -294,6 +294,15 @@ export default function Shell({ children }: { children: ReactNode }) {
             </div>
           </div>
           <main className="view" id="view">
+            {user?.warnings?.includes('mediaServerSignInRequired') && (
+              <p className="note" role="status">
+                Sign out on You, then sign in with your Jellyfin or Emby account
+                again to restore library availability and playback.{' '}
+                <Link className="btn btn-quiet btn-sm" to="/me">
+                  Open You
+                </Link>
+              </p>
+            )}
             {children}
           </main>
         </div>

@@ -73,3 +73,38 @@ setup observations, not a claim of a broken sign-in.
 
 Exact final-head CI and the actual downloaded release artifact remain separate
 delivery gates. The prior v25 handoff was stopped before creating a tag.
+
+## Legacy-session recovery surfaced in the UI
+
+`/auth/me` now adds `mediaServerSignInRequired` only for the current linked
+Jellyfin/Emby account when its retained viewer credential is missing. It does not
+serialize the credential or warn an unrelated account. The native shared warning
+owner uses the existing Alert component; Lumen's Shell uses its original note and
+small-button roles, linking to You and its existing Sign out action. No CSS,
+Tailwind, theme tokens or dimensions were introduced.
+
+The auth suite passes 153 cases, including account isolation, missing-token
+warning and warning removal after reconnect. Production build, i18n checks and
+changed-file lint pass. Eight additional production-browser workflows pass across
+Orig, John, native Persius and bundled Lumen at 390/1440px. They start with an
+actual local session whose Jellyfin credential is absent, inspect the notice,
+use the visible account-menu Sign Out (or Lumen Open You → Sign out), perform a
+real Jellyfin password sign-in, assert the warning clears, then repeat allowed
+and restricted playback/availability checks. Real native playlist creation and
+returned URL checks remain included.
+
+Matched pre-change routes/themes/viewports are retained in
+`pr619-reconnect-baseline`; candidates and functional results in
+`pr619-reconnect-qualified*`. Phone comparisons and desktop candidate montages
+were visually inspected for readable wrapping, button bounds and surrounding
+layout. The baseline Lumen discovery catalog was still loading; those shelves
+and changing external recommendations/ratings are excluded from pixel comparison.
+The shared notice/header and candidate settled states are inspected; this is not
+a claim that those changing catalog regions are pixel-identical. The first
+candidate run used a five-second navigation assertion shorter than the existing
+logout cleanup window and selected both rendered account menus in Persius.
+Its failures are retained; the corrected assertions wait up to 15 seconds and
+select the visible menu. All eight corrected workflows pass in 53.5 seconds.
+
+Actual downloaded-image qualification and final-head CI remain required. Live
+Emby, physical-device playback and household libraries remain untested here.

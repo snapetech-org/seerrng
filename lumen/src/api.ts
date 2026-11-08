@@ -122,6 +122,7 @@ export interface User {
   displayName: string;
   avatar?: string;
   permissions: number;
+  warnings?: string[];
 }
 export interface Genre {
   id: number;

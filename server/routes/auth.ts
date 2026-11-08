@@ -556,6 +556,19 @@ authRoutes.get('/me', isAuthenticated(), async (req, res) => {
     logger.warn(`User ${user.username} has no valid email address`);
   }
 
+  if (
+    [MediaServerType.JELLYFIN, MediaServerType.EMBY].includes(
+      settings.main.mediaServerType
+    )
+  ) {
+    const linked = await userRepository.findOneOrFail({
+      where: { id: user.id },
+      select: { id: true, jellyfinUserId: true, jellyfinAuthToken: true },
+    });
+    if (linked.jellyfinUserId && !linked.jellyfinAuthToken)
+      user.warnings.push('mediaServerSignInRequired');
+  }
+
   return res.status(200).json(user.filter(true));
 });
 

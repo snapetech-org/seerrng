@@ -2224,7 +2224,6 @@ export const apiMessages: Record<
   ma6b4a59a4e652b4fa5e8: 'Audiobookshelf returned an invalid library page.',
   ma6d3bade8823230c7b01:
     'SeerrNG could not confirm cancellation in Bindery. Check Bindery before retrying.',
-  ma6e1e862ebba8e99c919: 'Media server returned an invalid item response.',
   ma6ee756ff0484f349e55: 'Collection identity could not be verified.',
   ma73403e5f40a3c1bb874: 'The AI provider URL is invalid.',
   ma73886c03e181cf97a67: '{value0} must be either "true" or "false"',

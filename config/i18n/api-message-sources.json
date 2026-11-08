@@ -2009,7 +2009,7 @@
       "callsites": [
         {
           "path": "server/routes/auth.ts",
-          "line": 3426,
+          "line": 3442,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Email address required.'",
@@ -2768,7 +2768,7 @@
       "callsites": [
         {
           "path": "server/routes/auth.ts",
-          "line": 1355,
+          "line": 1368,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'Media server configuration changed during login.'",
@@ -2776,7 +2776,7 @@
         },
         {
           "path": "server/routes/auth.ts",
-          "line": 1670,
+          "line": 1686,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'Media server configuration changed during login.'",
@@ -3139,7 +3139,7 @@
       "callsites": [
         {
           "path": "server/routes/auth.ts",
-          "line": 1793,
+          "line": 1809,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Something went wrong.'",
@@ -6137,7 +6137,7 @@
       "callsites": [
         {
           "path": "server/api/jellyfin.ts",
-          "line": 975,
+          "line": 977,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Jellyfin returned an invalid user library response.'",
@@ -7001,7 +7001,7 @@
       "callsites": [
         {
           "path": "server/api/jellyfin.ts",
-          "line": 1460,
+          "line": 1459,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'A playback session and at least one media item are required.'",
@@ -7094,7 +7094,7 @@
       "callsites": [
         {
           "path": "server/api/jellyfin.ts",
-          "line": 1037,
+          "line": 1032,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Media server returned an unverified item.'",
@@ -8855,7 +8855,7 @@
       "callsites": [
         {
           "path": "server/routes/auth.ts",
-          "line": 1813,
+          "line": 1829,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Jellyfin sign-in is disabled.'",
@@ -8863,7 +8863,7 @@
         },
         {
           "path": "server/routes/auth.ts",
-          "line": 1855,
+          "line": 1871,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Jellyfin sign-in is disabled.'",
@@ -8871,7 +8871,7 @@
         },
         {
           "path": "server/routes/auth.ts",
-          "line": 1921,
+          "line": 1937,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Jellyfin sign-in is disabled.'",
@@ -10115,7 +10115,7 @@
         },
         {
           "path": "server/routes/auth.ts",
-          "line": 907,
+          "line": 920,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Access denied.'",
@@ -10123,7 +10123,7 @@
         },
         {
           "path": "server/routes/auth.ts",
-          "line": 916,
+          "line": 929,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Access denied.'",
@@ -10131,7 +10131,7 @@
         },
         {
           "path": "server/routes/auth.ts",
-          "line": 923,
+          "line": 936,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Access denied.'",
@@ -10139,7 +10139,7 @@
         },
         {
           "path": "server/routes/auth.ts",
-          "line": 1075,
+          "line": 1088,
           "kind": "response-body",
           "field": "body",
           "expression": "'Access denied.'",
@@ -10147,7 +10147,7 @@
         },
         {
           "path": "server/routes/auth.ts",
-          "line": 1611,
+          "line": 1626,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Access denied.'",
@@ -10155,7 +10155,7 @@
         },
         {
           "path": "server/routes/auth.ts",
-          "line": 1684,
+          "line": 1700,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Access denied.'",
@@ -10163,7 +10163,7 @@
         },
         {
           "path": "server/routes/auth.ts",
-          "line": 1966,
+          "line": 1982,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Access denied.'",
@@ -10171,7 +10171,7 @@
         },
         {
           "path": "server/routes/auth.ts",
-          "line": 2016,
+          "line": 2032,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Access denied.'",
@@ -10179,7 +10179,7 @@
         },
         {
           "path": "server/routes/auth.ts",
-          "line": 2083,
+          "line": 2099,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Access denied.'",
@@ -10187,7 +10187,7 @@
         },
         {
           "path": "server/routes/auth.ts",
-          "line": 2221,
+          "line": 2237,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Access denied.'",
@@ -10195,7 +10195,7 @@
         },
         {
           "path": "server/routes/auth.ts",
-          "line": 2231,
+          "line": 2247,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Access denied.'",
@@ -10203,7 +10203,7 @@
         },
         {
           "path": "server/routes/auth.ts",
-          "line": 3278,
+          "line": 3294,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Access denied.'",
@@ -10825,7 +10825,7 @@
         },
         {
           "path": "server/routes/auth.ts",
-          "line": 2515,
+          "line": 2531,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "error instanceof Error ? error.message : 'Unknown error'",
@@ -10833,7 +10833,7 @@
         },
         {
           "path": "server/routes/auth.ts",
-          "line": 2572,
+          "line": 2588,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "error instanceof Error ? error.message : 'Unknown error'",
@@ -10841,7 +10841,7 @@
         },
         {
           "path": "server/routes/auth.ts",
-          "line": 2725,
+          "line": 2741,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "error instanceof Error ? error.message : 'Unknown error'",
@@ -10849,7 +10849,7 @@
         },
         {
           "path": "server/routes/auth.ts",
-          "line": 2808,
+          "line": 2824,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "error instanceof Error ? error.message : 'Unknown error'",
@@ -10857,7 +10857,7 @@
         },
         {
           "path": "server/routes/auth.ts",
-          "line": 2829,
+          "line": 2845,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "error instanceof Error ? error.message : 'Unknown error'",
@@ -10865,7 +10865,7 @@
         },
         {
           "path": "server/routes/auth.ts",
-          "line": 2852,
+          "line": 2868,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "error instanceof Error ? error.message : 'Unknown error'",
@@ -10873,7 +10873,7 @@
         },
         {
           "path": "server/routes/auth.ts",
-          "line": 2891,
+          "line": 2907,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "error instanceof Error ? error.message : 'Unknown error'",
@@ -10881,7 +10881,7 @@
         },
         {
           "path": "server/routes/auth.ts",
-          "line": 3348,
+          "line": 3364,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "error instanceof Error ? error.message : 'Unknown error'",
@@ -10889,7 +10889,7 @@
         },
         {
           "path": "server/routes/auth.ts",
-          "line": 3388,
+          "line": 3404,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "error instanceof Error ? error.message : 'Unknown error'",
@@ -10897,7 +10897,7 @@
         },
         {
           "path": "server/routes/auth.ts",
-          "line": 3405,
+          "line": 3421,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "error instanceof Error ? error.message : 'Unknown error'",
@@ -11487,7 +11487,7 @@
       "callsites": [
         {
           "path": "server/api/jellyfin.ts",
-          "line": 1166,
+          "line": 1161,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Jellyfin returned an invalid library inventory.'",
@@ -13013,7 +13013,7 @@
       "callsites": [
         {
           "path": "server/routes/auth.ts",
-          "line": 569,
+          "line": 582,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'Plex login is disabled'",
@@ -13021,7 +13021,7 @@
         },
         {
           "path": "server/routes/auth.ts",
-          "line": 619,
+          "line": 632,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'Plex login is disabled'",
@@ -13029,7 +13029,7 @@
         },
         {
           "path": "server/routes/auth.ts",
-          "line": 710,
+          "line": 723,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'Plex login is disabled'",
@@ -16204,7 +16204,7 @@
         },
         {
           "path": "server/routes/auth.ts",
-          "line": 2090,
+          "line": 2106,
           "kind": "authored-message-field",
           "field": "errorMessage",
           "expression": "error instanceof Error ? error.message : 'unknown error'",
@@ -16759,7 +16759,7 @@
       "callsites": [
         {
           "path": "server/routes/auth.ts",
-          "line": 2093,
+          "line": 2109,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to use this sign-in link.'",
@@ -18490,7 +18490,7 @@
       "callsites": [
         {
           "path": "server/routes/auth.ts",
-          "line": 2675,
+          "line": 2691,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Apple OIDC callback must use form encoding'",
@@ -18781,7 +18781,7 @@
       "callsites": [
         {
           "path": "server/routes/auth.ts",
-          "line": 2111,
+          "line": 2127,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'You must provide both an email address and a password.'",
@@ -18848,7 +18848,7 @@
       "callsites": [
         {
           "path": "server/api/jellyfin.ts",
-          "line": 1491,
+          "line": 1490,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'A playlist name, user, and at least one media item are required.'",
@@ -19664,7 +19664,7 @@
       "callsites": [
         {
           "path": "server/routes/auth.ts",
-          "line": 2682,
+          "line": 2698,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'OIDC form-post callback has duplicate parameters'",
@@ -23149,7 +23149,7 @@
       "callsites": [
         {
           "path": "server/routes/auth.ts",
-          "line": 1314,
+          "line": 1327,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Media server returned an invalid user identity.'",
@@ -23920,7 +23920,7 @@
       "callsites": [
         {
           "path": "server/routes/auth.ts",
-          "line": 3524,
+          "line": 3540,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Password must be at least 8 characters long.'",
@@ -23939,7 +23939,7 @@
       "callsites": [
         {
           "path": "server/routes/auth.ts",
-          "line": 1837,
+          "line": 1853,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Failed to initiate quick connect.'",
@@ -25914,7 +25914,7 @@
       "callsites": [
         {
           "path": "server/routes/auth.ts",
-          "line": 1407,
+          "line": 1420,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'An authenticated administrator is required to configure the media server.'",
@@ -25922,7 +25922,7 @@
         },
         {
           "path": "server/routes/auth.ts",
-          "line": 1425,
+          "line": 1438,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'An authenticated administrator is required to configure the media server.'",
@@ -27381,7 +27381,7 @@
       "callsites": [
         {
           "path": "server/routes/auth.ts",
-          "line": 2822,
+          "line": 2838,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'OIDC callback URL does not match the login request'",
@@ -27726,7 +27726,7 @@
       "callsites": [
         {
           "path": "server/routes/auth.ts",
-          "line": 590,
+          "line": 603,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Plex returned an invalid PIN.'",
@@ -29057,7 +29057,7 @@
       "callsites": [
         {
           "path": "server/routes/auth.ts",
-          "line": 3408,
+          "line": 3424,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Error during logout process.'",
@@ -29076,7 +29076,7 @@
       "callsites": [
         {
           "path": "server/routes/auth.ts",
-          "line": 2108,
+          "line": 2124,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'Password sign-in is disabled.'",
@@ -32333,7 +32333,7 @@
       "callsites": [
         {
           "path": "server/routes/auth.ts",
-          "line": 1809,
+          "line": 1825,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Quick Connect is only supported by Jellyfin.'",
@@ -32341,7 +32341,7 @@
         },
         {
           "path": "server/routes/auth.ts",
-          "line": 1851,
+          "line": 1867,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Quick Connect is only supported by Jellyfin.'",
@@ -32349,7 +32349,7 @@
         },
         {
           "path": "server/routes/auth.ts",
-          "line": 1917,
+          "line": 1933,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Quick Connect is only supported by Jellyfin.'",
@@ -34780,7 +34780,7 @@
       "callsites": [
         {
           "path": "server/routes/auth.ts",
-          "line": 1862,
+          "line": 1878,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Invalid secret format'",
@@ -34933,7 +34933,7 @@
       "callsites": [
         {
           "path": "server/routes/auth.ts",
-          "line": 2706,
+          "line": 2722,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'OIDC callback URL is invalid'",
@@ -35688,7 +35688,7 @@
       "callsites": [
         {
           "path": "server/routes/auth.ts",
-          "line": 1119,
+          "line": 1132,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'Jellyfin password sign-in is disabled. Use Quick Connect.'",
@@ -35696,7 +35696,7 @@
         },
         {
           "path": "server/routes/auth.ts",
-          "line": 1340,
+          "line": 1353,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'Jellyfin password sign-in is disabled. Use Quick Connect.'",
@@ -35736,7 +35736,7 @@
       "callsites": [
         {
           "path": "server/api/jellyfin.ts",
-          "line": 1677,
+          "line": 1676,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Jellyfin did not return the created API key'",
@@ -37361,7 +37361,7 @@
       "callsites": [
         {
           "path": "server/routes/auth.ts",
-          "line": 1242,
+          "line": 1255,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'Jellyfin/Emby hostname must not resolve to a private address.'",
@@ -39627,7 +39627,7 @@
       "callsites": [
         {
           "path": "server/routes/auth.ts",
-          "line": 1910,
+          "line": 1926,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Quick Connect is not available during initial setup.'",
@@ -39848,7 +39848,7 @@
       "callsites": [
         {
           "path": "server/api/jellyfin.ts",
-          "line": 1073,
+          "line": 1068,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Media server returned an invalid seasons response.'",
@@ -41019,7 +41019,7 @@
       "callsites": [
         {
           "path": "server/routes/auth.ts",
-          "line": 1882,
+          "line": 1898,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Failed to check Quick Connect status'",
@@ -41104,7 +41104,7 @@
       "callsites": [
         {
           "path": "server/api/jellyfin.ts",
-          "line": 1634,
+          "line": 1633,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Jellyfin episode inventory is incomplete'",
@@ -42015,25 +42015,6 @@
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'SeerrNG could not confirm cancellation in Bindery. Check Bindery before retrying.'",
-          "captured": []
-        }
-      ]
-    },
-    {
-      "key": "ma6e1e862ebba8e99c919",
-      "id": "utils.ApiMessage.ma6e1e862ebba8e99c919",
-      "source": "Media server returned an invalid item response.",
-      "defaultMessage": "Media server returned an invalid item response.",
-      "sourceHash": "a6e1e862ebba8e99c9190ab0122a38904b9973497ae29b33c68a10e2b4d443b2",
-      "parts": ["Media server returned an invalid item response."],
-      "parameterCount": 0,
-      "callsites": [
-        {
-          "path": "server/api/jellyfin.ts",
-          "line": 1030,
-          "kind": "app-error-candidate",
-          "field": "message",
-          "expression": "'Media server returned an invalid item response.'",
           "captured": []
         }
       ]
@@ -43149,7 +43130,7 @@
       "callsites": [
         {
           "path": "server/routes/auth.ts",
-          "line": 2043,
+          "line": 2059,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Sign out before using a sign-in link.'",
@@ -43309,7 +43290,7 @@
       "callsites": [
         {
           "path": "server/routes/auth.ts",
-          "line": 2038,
+          "line": 2054,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'This sign-in link is invalid, expired, or already used.'",
@@ -43685,7 +43666,7 @@
       "callsites": [
         {
           "path": "server/routes/auth.ts",
-          "line": 1222,
+          "line": 1235,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'No hostname provided.'",
@@ -44087,7 +44068,7 @@
       "callsites": [
         {
           "path": "server/api/jellyfin.ts",
-          "line": 1306,
+          "line": 1301,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Unverified media-server item identity'",
@@ -45158,7 +45139,7 @@
       "callsites": [
         {
           "path": "server/routes/auth.ts",
-          "line": 2689,
+          "line": 2705,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'OIDC callback is missing a valid state parameter'",
@@ -45166,7 +45147,7 @@
         },
         {
           "path": "server/routes/auth.ts",
-          "line": 2714,
+          "line": 2730,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'OIDC callback is missing a valid state parameter'",
@@ -45351,7 +45332,7 @@
       "callsites": [
         {
           "path": "server/api/jellyfin.ts",
-          "line": 861,
+          "line": 863,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Jellyfin returned an invalid user'",
@@ -45437,7 +45418,7 @@
       "callsites": [
         {
           "path": "server/api/jellyfin.ts",
-          "line": 1540,
+          "line": 1539,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`${this.mediaServerType === MediaServerType.EMBY ? 'Emby' : 'Jellyfin'} did not create the replacement playlist.`",
@@ -45864,7 +45845,7 @@
       "callsites": [
         {
           "path": "server/routes/auth.ts",
-          "line": 623,
+          "line": 636,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'Invalid Plex PIN id.'",
@@ -46998,7 +46979,7 @@
       "callsites": [
         {
           "path": "server/routes/auth.ts",
-          "line": 1246,
+          "line": 1259,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'Invalid hostname provided.'",
@@ -47084,7 +47065,7 @@
       "callsites": [
         {
           "path": "server/api/jellyfin.ts",
-          "line": 1301,
+          "line": 1296,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Invalid media-server item response'",
@@ -47509,7 +47490,7 @@
       "callsites": [
         {
           "path": "server/routes/auth.ts",
-          "line": 2671,
+          "line": 2687,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'OIDC form-post callback is only supported for Apple'",
@@ -47968,7 +47949,7 @@
       "callsites": [
         {
           "path": "server/routes/auth.ts",
-          "line": 1214,
+          "line": 1227,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'Jellyfin login is disabled'",
@@ -48991,7 +48972,7 @@
       "callsites": [
         {
           "path": "server/api/jellyfin.ts",
-          "line": 1654,
+          "line": 1653,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Jellyfin API key application name is invalid'",
@@ -49067,7 +49048,7 @@
       "callsites": [
         {
           "path": "server/routes/auth.ts",
-          "line": 1493,
+          "line": 1506,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Unable to find admin user to edit'",
@@ -49107,7 +49088,7 @@
       "callsites": [
         {
           "path": "server/routes/auth.ts",
-          "line": 3449,
+          "line": 3465,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Password reset email delivery is not configured.'",
@@ -49538,7 +49519,7 @@
       "callsites": [
         {
           "path": "server/api/jellyfin.ts",
-          "line": 799,
+          "line": 801,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Jellyfin returned invalid system information'",
@@ -50205,7 +50186,7 @@
       "callsites": [
         {
           "path": "server/routes/auth.ts",
-          "line": 1178,
+          "line": 1191,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'urlBase must be a relative path.'",
@@ -50283,7 +50264,7 @@
       "callsites": [
         {
           "path": "server/routes/auth.ts",
-          "line": 1377,
+          "line": 1390,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'Media server configuration changed during setup.'",
@@ -50291,7 +50272,7 @@
         },
         {
           "path": "server/routes/auth.ts",
-          "line": 1440,
+          "line": 1453,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'Media server configuration changed during setup.'",
@@ -50556,7 +50537,7 @@
       "callsites": [
         {
           "path": "server/routes/auth.ts",
-          "line": 1898,
+          "line": 1914,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Secret required'",
@@ -50998,7 +50979,7 @@
       "callsites": [
         {
           "path": "server/routes/auth.ts",
-          "line": 1105,
+          "line": 1118,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to validate the Jellyfin session.'",
@@ -52199,7 +52180,7 @@
       "callsites": [
         {
           "path": "server/routes/auth.ts",
-          "line": 932,
+          "line": 945,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to authenticate.'",
@@ -52207,7 +52188,7 @@
         },
         {
           "path": "server/routes/auth.ts",
-          "line": 2244,
+          "line": 2260,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to authenticate.'",
@@ -52814,7 +52795,7 @@
       "callsites": [
         {
           "path": "server/api/jellyfin.ts",
-          "line": 1577,
+          "line": 1576,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Jellyfin season inventory is incomplete'",
@@ -53809,7 +53790,7 @@
       "callsites": [
         {
           "path": "server/routes/auth.ts",
-          "line": 3535,
+          "line": 3551,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Invalid password reset link.'",
@@ -53817,7 +53798,7 @@
         },
         {
           "path": "server/routes/auth.ts",
-          "line": 3550,
+          "line": 3566,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Invalid password reset link.'",
@@ -53825,7 +53806,7 @@
         },
         {
           "path": "server/routes/auth.ts",
-          "line": 3565,
+          "line": 3581,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Invalid password reset link.'",
@@ -53833,7 +53814,7 @@
         },
         {
           "path": "server/routes/auth.ts",
-          "line": 3603,
+          "line": 3619,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Invalid password reset link.'",
@@ -53877,7 +53858,7 @@
       "callsites": [
         {
           "path": "server/api/jellyfin.ts",
-          "line": 1540,
+          "line": 1539,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`${this.mediaServerType === MediaServerType.EMBY ? 'Emby' : 'Jellyfin'} did not create the replacement playlist.`",
@@ -54799,7 +54780,7 @@
       "callsites": [
         {
           "path": "server/routes/auth.ts",
-          "line": 1220,
+          "line": 1233,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'Jellyfin hostname already configured'",
@@ -54837,7 +54818,7 @@
       "callsites": [
         {
           "path": "server/routes/auth.ts",
-          "line": 2208,
+          "line": 2224,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Authentication is temporarily unavailable.'",
@@ -58958,7 +58939,7 @@
       "callsites": [
         {
           "path": "server/routes/auth.ts",
-          "line": 3361,
+          "line": 3377,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Failed to destroy session.'",
@@ -61201,7 +61182,7 @@
       "callsites": [
         {
           "path": "server/routes/auth.ts",
-          "line": 610,
+          "line": 623,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to contact Plex.'",
@@ -61209,7 +61190,7 @@
         },
         {
           "path": "server/routes/auth.ts",
-          "line": 675,
+          "line": 688,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to contact Plex.'",
@@ -63163,7 +63144,7 @@
       "callsites": [
         {
           "path": "server/routes/auth.ts",
-          "line": 2695,
+          "line": 2711,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'OIDC callback is missing its correlation cookie'",
@@ -63731,7 +63712,7 @@
       "callsites": [
         {
           "path": "server/routes/auth.ts",
-          "line": 1675,
+          "line": 1691,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Jellyfin authentication completed without a user.'",
@@ -63856,7 +63837,7 @@
       "callsites": [
         {
           "path": "server/api/jellyfin.ts",
-          "line": 819,
+          "line": 821,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Jellyfin returned an invalid server name'",
@@ -65651,7 +65632,7 @@
     },
     {
       "path": "server/api/jellyfin.ts",
-      "line": 604,
+      "line": 605,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "e.response?.statusText",
@@ -65660,7 +65641,7 @@
     },
     {
       "path": "server/api/jellyfin.ts",
-      "line": 609,
+      "line": 610,
       "kind": "app-error-candidate",
       "field": "message",
       "expression": "404",
@@ -65669,7 +65650,7 @@
     },
     {
       "path": "server/api/jellyfin.ts",
-      "line": 613,
+      "line": 614,
       "kind": "app-error-candidate",
       "field": "message",
       "expression": "e.response?.status",
@@ -65678,7 +65659,7 @@
     },
     {
       "path": "server/api/jellyfin.ts",
-      "line": 621,
+      "line": 622,
       "kind": "app-error-candidate",
       "field": "message",
       "expression": "e.response?.status",
@@ -65687,7 +65668,7 @@
     },
     {
       "path": "server/api/jellyfin.ts",
-      "line": 628,
+      "line": 629,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "e.response?.status",
@@ -65696,7 +65677,7 @@
     },
     {
       "path": "server/api/jellyfin.ts",
-      "line": 634,
+      "line": 635,
       "kind": "app-error-candidate",
       "field": "message",
       "expression": "502",
@@ -65705,7 +65686,7 @@
     },
     {
       "path": "server/api/jellyfin.ts",
-      "line": 637,
+      "line": 638,
       "kind": "app-error-candidate",
       "field": "message",
       "expression": "e.response.status",
@@ -65714,7 +65695,7 @@
     },
     {
       "path": "server/api/jellyfin.ts",
-      "line": 651,
+      "line": 652,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "e.response?.status",
@@ -65723,7 +65704,7 @@
     },
     {
       "path": "server/api/jellyfin.ts",
-      "line": 655,
+      "line": 656,
       "kind": "app-error-candidate",
       "field": "message",
       "expression": "502",
@@ -65732,7 +65713,7 @@
     },
     {
       "path": "server/api/jellyfin.ts",
-      "line": 658,
+      "line": 659,
       "kind": "app-error-candidate",
       "field": "message",
       "expression": "e.response.status",
@@ -65741,7 +65722,7 @@
     },
     {
       "path": "server/api/jellyfin.ts",
-      "line": 675,
+      "line": 676,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "e.response?.status",
@@ -65750,7 +65731,7 @@
     },
     {
       "path": "server/api/jellyfin.ts",
-      "line": 679,
+      "line": 680,
       "kind": "app-error-candidate",
       "field": "message",
       "expression": "502",
@@ -65759,7 +65740,7 @@
     },
     {
       "path": "server/api/jellyfin.ts",
-      "line": 682,
+      "line": 683,
       "kind": "app-error-candidate",
       "field": "message",
       "expression": "e.response.status",
@@ -65768,7 +65749,7 @@
     },
     {
       "path": "server/api/jellyfin.ts",
-      "line": 698,
+      "line": 699,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "e.response?.status",
@@ -65777,7 +65758,7 @@
     },
     {
       "path": "server/api/jellyfin.ts",
-      "line": 702,
+      "line": 703,
       "kind": "app-error-candidate",
       "field": "message",
       "expression": "502",
@@ -65786,7 +65767,7 @@
     },
     {
       "path": "server/api/jellyfin.ts",
-      "line": 705,
+      "line": 706,
       "kind": "app-error-candidate",
       "field": "message",
       "expression": "e.response.status",
@@ -65795,7 +65776,7 @@
     },
     {
       "path": "server/api/jellyfin.ts",
-      "line": 804,
+      "line": 806,
       "kind": "app-error-candidate",
       "field": "message",
       "expression": "502",
@@ -65804,7 +65785,7 @@
     },
     {
       "path": "server/api/jellyfin.ts",
-      "line": 807,
+      "line": 809,
       "kind": "app-error-candidate",
       "field": "message",
       "expression": "e.response.status",
@@ -65813,7 +65794,7 @@
     },
     {
       "path": "server/api/jellyfin.ts",
-      "line": 825,
+      "line": 827,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "e.response?.status",
@@ -65822,7 +65803,7 @@
     },
     {
       "path": "server/api/jellyfin.ts",
-      "line": 829,
+      "line": 831,
       "kind": "app-error-candidate",
       "field": "message",
       "expression": "502",
@@ -65831,7 +65812,7 @@
     },
     {
       "path": "server/api/jellyfin.ts",
-      "line": 832,
+      "line": 834,
       "kind": "app-error-candidate",
       "field": "message",
       "expression": "e.response.status",
@@ -65840,7 +65821,7 @@
     },
     {
       "path": "server/api/jellyfin.ts",
-      "line": 844,
+      "line": 846,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "e.response?.status",
@@ -65849,7 +65830,7 @@
     },
     {
       "path": "server/api/jellyfin.ts",
-      "line": 848,
+      "line": 850,
       "kind": "app-error-candidate",
       "field": "message",
       "expression": "502",
@@ -65858,7 +65839,7 @@
     },
     {
       "path": "server/api/jellyfin.ts",
-      "line": 851,
+      "line": 853,
       "kind": "app-error-candidate",
       "field": "message",
       "expression": "e.response.status",
@@ -65867,7 +65848,7 @@
     },
     {
       "path": "server/api/jellyfin.ts",
-      "line": 867,
+      "line": 869,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "e.response?.status",
@@ -65876,7 +65857,7 @@
     },
     {
       "path": "server/api/jellyfin.ts",
-      "line": 871,
+      "line": 873,
       "kind": "app-error-candidate",
       "field": "message",
       "expression": "502",
@@ -65885,7 +65866,7 @@
     },
     {
       "path": "server/api/jellyfin.ts",
-      "line": 874,
+      "line": 876,
       "kind": "app-error-candidate",
       "field": "message",
       "expression": "e.response.status",
@@ -65894,7 +65875,7 @@
     },
     {
       "path": "server/api/jellyfin.ts",
-      "line": 897,
+      "line": 899,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "e.response?.status",
@@ -65903,7 +65884,7 @@
     },
     {
       "path": "server/api/jellyfin.ts",
-      "line": 902,
+      "line": 904,
       "kind": "app-error-candidate",
       "field": "message",
       "expression": "502",
@@ -65912,7 +65893,7 @@
     },
     {
       "path": "server/api/jellyfin.ts",
-      "line": 917,
+      "line": 919,
       "kind": "app-error-candidate",
       "field": "message",
       "expression": "409",
@@ -65921,19 +65902,10 @@
     },
     {
       "path": "server/api/jellyfin.ts",
-      "line": 927,
+      "line": 929,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "e.response?.status",
-      "source": "{value0}",
-      "reason": "dynamic/provider/user value"
-    },
-    {
-      "path": "server/api/jellyfin.ts",
-      "line": 930,
-      "kind": "app-error-candidate",
-      "field": "message",
-      "expression": "502",
       "source": "{value0}",
       "reason": "dynamic/provider/user value"
     },
@@ -65942,13 +65914,22 @@
       "line": 932,
       "kind": "app-error-candidate",
       "field": "message",
+      "expression": "502",
+      "source": "{value0}",
+      "reason": "dynamic/provider/user value"
+    },
+    {
+      "path": "server/api/jellyfin.ts",
+      "line": 934,
+      "kind": "app-error-candidate",
+      "field": "message",
       "expression": "e.response.status",
       "source": "{value0}",
       "reason": "dynamic/provider/user value"
     },
     {
       "path": "server/api/jellyfin.ts",
-      "line": 946,
+      "line": 948,
       "kind": "app-error-candidate",
       "field": "message",
       "expression": "409",
@@ -65957,19 +65938,10 @@
     },
     {
       "path": "server/api/jellyfin.ts",
-      "line": 997,
+      "line": 999,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "e.response?.status",
-      "source": "{value0}",
-      "reason": "dynamic/provider/user value"
-    },
-    {
-      "path": "server/api/jellyfin.ts",
-      "line": 1000,
-      "kind": "app-error-candidate",
-      "field": "message",
-      "expression": "502",
       "source": "{value0}",
       "reason": "dynamic/provider/user value"
     },
@@ -65978,40 +65950,49 @@
       "line": 1002,
       "kind": "app-error-candidate",
       "field": "message",
+      "expression": "502",
+      "source": "{value0}",
+      "reason": "dynamic/provider/user value"
+    },
+    {
+      "path": "server/api/jellyfin.ts",
+      "line": 1004,
+      "kind": "app-error-candidate",
+      "field": "message",
       "expression": "e.response.status",
       "source": "{value0}",
       "reason": "dynamic/provider/user value"
     },
     {
       "path": "server/api/jellyfin.ts",
-      "line": 1018,
+      "line": 1020,
       "kind": "app-error-candidate",
       "field": "message",
       "expression": "400",
+      "source": "{value0}",
+      "reason": "dynamic/provider/user value"
+    },
+    {
+      "path": "server/api/jellyfin.ts",
+      "line": 1042,
+      "kind": "authored-message-field",
+      "field": "error",
+      "expression": "e.response?.status",
+      "source": "{value0}",
+      "reason": "dynamic/provider/user value"
+    },
+    {
+      "path": "server/api/jellyfin.ts",
+      "line": 1045,
+      "kind": "app-error-candidate",
+      "field": "message",
+      "expression": "502",
       "source": "{value0}",
       "reason": "dynamic/provider/user value"
     },
     {
       "path": "server/api/jellyfin.ts",
       "line": 1047,
-      "kind": "authored-message-field",
-      "field": "error",
-      "expression": "e.response?.status",
-      "source": "{value0}",
-      "reason": "dynamic/provider/user value"
-    },
-    {
-      "path": "server/api/jellyfin.ts",
-      "line": 1050,
-      "kind": "app-error-candidate",
-      "field": "message",
-      "expression": "502",
-      "source": "{value0}",
-      "reason": "dynamic/provider/user value"
-    },
-    {
-      "path": "server/api/jellyfin.ts",
-      "line": 1052,
       "kind": "app-error-candidate",
       "field": "message",
       "expression": "e.response.status",
@@ -66020,7 +66001,7 @@
     },
     {
       "path": "server/api/jellyfin.ts",
-      "line": 1064,
+      "line": 1059,
       "kind": "app-error-candidate",
       "field": "message",
       "expression": "400",
@@ -66029,7 +66010,7 @@
     },
     {
       "path": "server/api/jellyfin.ts",
-      "line": 1084,
+      "line": 1079,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "e.response?.status",
@@ -66038,7 +66019,7 @@
     },
     {
       "path": "server/api/jellyfin.ts",
-      "line": 1088,
+      "line": 1083,
       "kind": "app-error-candidate",
       "field": "message",
       "expression": "502",
@@ -66047,7 +66028,7 @@
     },
     {
       "path": "server/api/jellyfin.ts",
-      "line": 1090,
+      "line": 1085,
       "kind": "app-error-candidate",
       "field": "message",
       "expression": "e.response.status",
@@ -66056,7 +66037,7 @@
     },
     {
       "path": "server/api/jellyfin.ts",
-      "line": 1240,
+      "line": 1235,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "e?.response?.status",
@@ -66065,7 +66046,7 @@
     },
     {
       "path": "server/api/jellyfin.ts",
-      "line": 1244,
+      "line": 1239,
       "kind": "app-error-candidate",
       "field": "message",
       "expression": "502",
@@ -66074,7 +66055,7 @@
     },
     {
       "path": "server/api/jellyfin.ts",
-      "line": 1247,
+      "line": 1242,
       "kind": "app-error-candidate",
       "field": "message",
       "expression": "e.response.status",
@@ -66083,7 +66064,7 @@
     },
     {
       "path": "server/api/jellyfin.ts",
-      "line": 1278,
+      "line": 1273,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "e.response?.status",
@@ -66092,7 +66073,7 @@
     },
     {
       "path": "server/api/jellyfin.ts",
-      "line": 1282,
+      "line": 1277,
       "kind": "app-error-candidate",
       "field": "message",
       "expression": "502",
@@ -66101,7 +66082,7 @@
     },
     {
       "path": "server/api/jellyfin.ts",
-      "line": 1285,
+      "line": 1280,
       "kind": "app-error-candidate",
       "field": "message",
       "expression": "e.response.status",
@@ -66110,7 +66091,16 @@
     },
     {
       "path": "server/api/jellyfin.ts",
-      "line": 1334,
+      "line": 1309,
+      "kind": "app-error-candidate",
+      "field": "message",
+      "expression": "400",
+      "source": "{value0}",
+      "reason": "dynamic/provider/user value"
+    },
+    {
+      "path": "server/api/jellyfin.ts",
+      "line": 1333,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "e.response?.status",
@@ -66119,7 +66109,7 @@
     },
     {
       "path": "server/api/jellyfin.ts",
-      "line": 1337,
+      "line": 1336,
       "kind": "app-error-candidate",
       "field": "message",
       "expression": "502",
@@ -66128,7 +66118,7 @@
     },
     {
       "path": "server/api/jellyfin.ts",
-      "line": 1340,
+      "line": 1339,
       "kind": "app-error-candidate",
       "field": "message",
       "expression": "e.response.status",
@@ -66137,7 +66127,7 @@
     },
     {
       "path": "server/api/jellyfin.ts",
-      "line": 1582,
+      "line": 1581,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "e.response?.status",
@@ -66146,7 +66136,7 @@
     },
     {
       "path": "server/api/jellyfin.ts",
-      "line": 1586,
+      "line": 1585,
       "kind": "app-error-candidate",
       "field": "message",
       "expression": "502",
@@ -66155,7 +66145,7 @@
     },
     {
       "path": "server/api/jellyfin.ts",
-      "line": 1589,
+      "line": 1588,
       "kind": "app-error-candidate",
       "field": "message",
       "expression": "e.response.status",
@@ -66164,7 +66154,7 @@
     },
     {
       "path": "server/api/jellyfin.ts",
-      "line": 1639,
+      "line": 1638,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "e.response?.status",
@@ -66173,7 +66163,7 @@
     },
     {
       "path": "server/api/jellyfin.ts",
-      "line": 1643,
+      "line": 1642,
       "kind": "app-error-candidate",
       "field": "message",
       "expression": "502",
@@ -66182,7 +66172,7 @@
     },
     {
       "path": "server/api/jellyfin.ts",
-      "line": 1646,
+      "line": 1645,
       "kind": "app-error-candidate",
       "field": "message",
       "expression": "e.response.status",
@@ -66191,7 +66181,7 @@
     },
     {
       "path": "server/api/jellyfin.ts",
-      "line": 1681,
+      "line": 1680,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "e.response?.status",
@@ -66200,7 +66190,7 @@
     },
     {
       "path": "server/api/jellyfin.ts",
-      "line": 1685,
+      "line": 1684,
       "kind": "app-error-candidate",
       "field": "message",
       "expression": "502",
@@ -66209,7 +66199,7 @@
     },
     {
       "path": "server/api/jellyfin.ts",
-      "line": 1688,
+      "line": 1687,
       "kind": "app-error-candidate",
       "field": "message",
       "expression": "e.response.status",
@@ -70367,7 +70357,7 @@
     },
     {
       "path": "server/lib/mediaServerAvailability.ts",
-      "line": 197,
+      "line": 200,
       "kind": "message-helper-expression",
       "field": "message",
       "expression": "media[format === '4k' ? 'status4k' : 'status']",
@@ -70376,7 +70366,7 @@
     },
     {
       "path": "server/lib/mediaServerAvailability.ts",
-      "line": 445,
+      "line": 448,
       "kind": "message-helper-return",
       "field": "message",
       "expression": "false",
@@ -70385,7 +70375,7 @@
     },
     {
       "path": "server/lib/mediaServerAvailability.ts",
-      "line": 453,
+      "line": 456,
       "kind": "message-helper-return",
       "field": "message",
       "expression": "true",
@@ -70394,7 +70384,7 @@
     },
     {
       "path": "server/lib/mediaServerAvailability.ts",
-      "line": 474,
+      "line": 477,
       "kind": "message-helper-return",
       "field": "message",
       "expression": "hiddenAvailableSeason",
@@ -70403,16 +70393,7 @@
     },
     {
       "path": "server/lib/mediaServerAvailability.ts",
-      "line": 542,
-      "kind": "message-helper-return",
-      "field": "message",
-      "expression": "false",
-      "source": "{value0}",
-      "reason": "dynamic/provider/user value"
-    },
-    {
-      "path": "server/lib/mediaServerAvailability.ts",
-      "line": 549,
+      "line": 545,
       "kind": "message-helper-return",
       "field": "message",
       "expression": "false",
@@ -70430,7 +70411,16 @@
     },
     {
       "path": "server/lib/mediaServerAvailability.ts",
-      "line": 560,
+      "line": 555,
+      "kind": "message-helper-return",
+      "field": "message",
+      "expression": "false",
+      "source": "{value0}",
+      "reason": "dynamic/provider/user value"
+    },
+    {
+      "path": "server/lib/mediaServerAvailability.ts",
+      "line": 563,
       "kind": "message-helper-return",
       "field": "message",
       "expression": "true",
@@ -70439,7 +70429,7 @@
     },
     {
       "path": "server/lib/mediaServerAvailability.ts",
-      "line": 582,
+      "line": 585,
       "kind": "message-helper-return",
       "field": "message",
       "expression": "hiddenAvailableSeason",
@@ -70466,7 +70456,7 @@
     },
     {
       "path": "server/lib/mediaServerWatchStatus.ts",
-      "line": 40,
+      "line": 53,
       "kind": "message-helper-return",
       "field": "message",
       "expression": "empty",
@@ -70475,19 +70465,10 @@
     },
     {
       "path": "server/lib/mediaServerWatchStatus.ts",
-      "line": 45,
+      "line": 58,
       "kind": "message-helper-return",
       "field": "message",
       "expression": "empty",
-      "source": "{value0}",
-      "reason": "dynamic/provider/user value"
-    },
-    {
-      "path": "server/lib/mediaServerWatchStatus.ts",
-      "line": 55,
-      "kind": "message-helper-return",
-      "field": "message",
-      "expression": "getMovieWatchStatus(\n        serverType,\n        roots.some((root) => root.viewCount > 0)\n      )",
       "source": "{value0}",
       "reason": "dynamic/provider/user value"
     },
@@ -70496,13 +70477,22 @@
       "line": 68,
       "kind": "message-helper-return",
       "field": "message",
+      "expression": "getMovieWatchStatus(\n        serverType,\n        roots.some((root) => root.viewCount > 0)\n      )",
+      "source": "{value0}",
+      "reason": "dynamic/provider/user value"
+    },
+    {
+      "path": "server/lib/mediaServerWatchStatus.ts",
+      "line": 81,
+      "kind": "message-helper-return",
+      "field": "message",
       "expression": "getSeriesWatchStatus(serverType, episodes, includeEpisodes)",
       "source": "{value0}",
       "reason": "dynamic/provider/user value"
     },
     {
       "path": "server/lib/mediaServerWatchStatus.ts",
-      "line": 76,
+      "line": 89,
       "kind": "message-helper-return",
       "field": "message",
       "expression": "empty",
@@ -70511,7 +70501,16 @@
     },
     {
       "path": "server/lib/mediaServerWatchStatus.ts",
-      "line": 88,
+      "line": 103,
+      "kind": "message-helper-return",
+      "field": "message",
+      "expression": "empty",
+      "source": "{value0}",
+      "reason": "dynamic/provider/user value"
+    },
+    {
+      "path": "server/lib/mediaServerWatchStatus.ts",
+      "line": 104,
       "kind": "message-helper-return",
       "field": "message",
       "expression": "getMovieWatchStatus(serverType, played.some(Boolean))",
@@ -70520,7 +70519,7 @@
     },
     {
       "path": "server/lib/mediaServerWatchStatus.ts",
-      "line": 99,
+      "line": 119,
       "kind": "message-helper-return",
       "field": "message",
       "expression": "getSeriesWatchStatus(serverType, episodes, includeEpisodes)",
@@ -70529,7 +70528,7 @@
     },
     {
       "path": "server/lib/mediaServerWatchStatus.ts",
-      "line": 102,
+      "line": 122,
       "kind": "message-helper-return",
       "field": "message",
       "expression": "empty",
@@ -74363,7 +74362,16 @@
     },
     {
       "path": "server/routes/auth.ts",
-      "line": 630,
+      "line": 569,
+      "kind": "message-list-entry",
+      "field": "warnings",
+      "expression": "'mediaServerSignInRequired'",
+      "source": "mediaServerSignInRequired",
+      "reason": "stable protocol/control-flow code"
+    },
+    {
+      "path": "server/routes/auth.ts",
+      "line": 643,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "pinCode.error",
@@ -74372,7 +74380,7 @@
     },
     {
       "path": "server/routes/auth.ts",
-      "line": 690,
+      "line": 703,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "parsedBody.error",
@@ -74381,7 +74389,7 @@
     },
     {
       "path": "server/routes/auth.ts",
-      "line": 701,
+      "line": 714,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "authToken.error",
@@ -74390,7 +74398,7 @@
     },
     {
       "path": "server/routes/auth.ts",
-      "line": 722,
+      "line": 735,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "parsedAccount.error",
@@ -74399,7 +74407,7 @@
     },
     {
       "path": "server/routes/auth.ts",
-      "line": 927,
+      "line": 940,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "e.message",
@@ -74408,7 +74416,7 @@
     },
     {
       "path": "server/routes/auth.ts",
-      "line": 996,
+      "line": 1009,
       "kind": "response-body",
       "field": "body",
       "expression": "parsedBody.error",
@@ -74417,7 +74425,7 @@
     },
     {
       "path": "server/routes/auth.ts",
-      "line": 1003,
+      "line": 1016,
       "kind": "response-body",
       "field": "body",
       "expression": "authToken.error",
@@ -74426,7 +74434,7 @@
     },
     {
       "path": "server/routes/auth.ts",
-      "line": 1101,
+      "line": 1114,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : undefined",
@@ -74435,7 +74443,7 @@
     },
     {
       "path": "server/routes/auth.ts",
-      "line": 1101,
+      "line": 1114,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : undefined",
@@ -74444,7 +74452,7 @@
     },
     {
       "path": "server/routes/auth.ts",
-      "line": 1125,
+      "line": 1138,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "parsedBody.error",
@@ -74453,7 +74461,7 @@
     },
     {
       "path": "server/routes/auth.ts",
-      "line": 1140,
+      "line": 1153,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "username.error",
@@ -74462,7 +74470,7 @@
     },
     {
       "path": "server/routes/auth.ts",
-      "line": 1146,
+      "line": 1159,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "password.error",
@@ -74471,7 +74479,7 @@
     },
     {
       "path": "server/routes/auth.ts",
-      "line": 1155,
+      "line": 1168,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "email.error",
@@ -74480,7 +74488,7 @@
     },
     {
       "path": "server/routes/auth.ts",
-      "line": 1164,
+      "line": 1177,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "hostname.error",
@@ -74489,7 +74497,7 @@
     },
     {
       "path": "server/routes/auth.ts",
-      "line": 1173,
+      "line": 1186,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "urlBase.error",
@@ -74498,7 +74506,7 @@
     },
     {
       "path": "server/routes/auth.ts",
-      "line": 1183,
+      "line": 1196,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "port.error",
@@ -74507,7 +74515,7 @@
     },
     {
       "path": "server/routes/auth.ts",
-      "line": 1188,
+      "line": 1201,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "useSsl.error",
@@ -74516,7 +74524,7 @@
     },
     {
       "path": "server/routes/auth.ts",
-      "line": 1193,
+      "line": 1206,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "serverType.error",
@@ -74525,7 +74533,7 @@
     },
     {
       "path": "server/routes/auth.ts",
-      "line": 1391,
+      "line": 1404,
       "kind": "app-error-candidate",
       "field": "message",
       "expression": "403",
@@ -74534,7 +74542,7 @@
     },
     {
       "path": "server/routes/auth.ts",
-      "line": 1398,
+      "line": 1411,
       "kind": "app-error-candidate",
       "field": "message",
       "expression": "500",
@@ -74543,7 +74551,7 @@
     },
     {
       "path": "server/routes/auth.ts",
-      "line": 1660,
+      "line": 1676,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error.message",
@@ -74552,7 +74560,7 @@
     },
     {
       "path": "server/routes/auth.ts",
-      "line": 1701,
+      "line": 1717,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "e.errorCode",
@@ -74561,7 +74569,7 @@
     },
     {
       "path": "server/routes/auth.ts",
-      "line": 1713,
+      "line": 1729,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "e.errorCode",
@@ -74570,7 +74578,7 @@
     },
     {
       "path": "server/routes/auth.ts",
-      "line": 1725,
+      "line": 1741,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "e.errorCode",
@@ -74579,16 +74587,7 @@
     },
     {
       "path": "server/routes/auth.ts",
-      "line": 1737,
-      "kind": "authored-message-field",
-      "field": "message",
-      "expression": "e.errorCode",
-      "source": "{value0}",
-      "reason": "dynamic/provider/user value"
-    },
-    {
-      "path": "server/routes/auth.ts",
-      "line": 1754,
+      "line": 1753,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "e.errorCode",
@@ -74615,7 +74614,16 @@
     },
     {
       "path": "server/routes/auth.ts",
-      "line": 1833,
+      "line": 1802,
+      "kind": "authored-message-field",
+      "field": "message",
+      "expression": "e.errorCode",
+      "source": "{value0}",
+      "reason": "dynamic/provider/user value"
+    },
+    {
+      "path": "server/routes/auth.ts",
+      "line": 1849,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error.message",
@@ -74624,7 +74632,7 @@
     },
     {
       "path": "server/routes/auth.ts",
-      "line": 2005,
+      "line": 2021,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error.message",
@@ -74633,7 +74641,7 @@
     },
     {
       "path": "server/routes/auth.ts",
-      "line": 2023,
+      "line": 2039,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "e.message",
@@ -74642,7 +74650,7 @@
     },
     {
       "path": "server/routes/auth.ts",
-      "line": 2028,
+      "line": 2044,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "ApiErrorCode.InvalidCredentials",
@@ -74651,7 +74659,7 @@
     },
     {
       "path": "server/routes/auth.ts",
-      "line": 2090,
+      "line": 2106,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : 'unknown error'",
@@ -74660,7 +74668,7 @@
     },
     {
       "path": "server/routes/auth.ts",
-      "line": 2101,
+      "line": 2117,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "parsedBody.error",
@@ -74669,7 +74677,7 @@
     },
     {
       "path": "server/routes/auth.ts",
-      "line": 2238,
+      "line": 2254,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "e.message",
@@ -74678,7 +74686,7 @@
     },
     {
       "path": "server/routes/auth.ts",
-      "line": 2469,
+      "line": 2485,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "ApiErrorCode.Unauthorized",
@@ -74687,7 +74695,7 @@
     },
     {
       "path": "server/routes/auth.ts",
-      "line": 2482,
+      "line": 2498,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "ApiErrorCode.OidcAuthorizationFailed",
@@ -74696,7 +74704,7 @@
     },
     {
       "path": "server/routes/auth.ts",
-      "line": 2515,
+      "line": 2531,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "error instanceof Error ? error.message : 'Unknown error'",
@@ -74705,28 +74713,10 @@
     },
     {
       "path": "server/routes/auth.ts",
-      "line": 2519,
+      "line": 2535,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "ApiErrorCode.OidcProviderDiscoveryFailed",
-      "source": "{value0}",
-      "reason": "dynamic/provider/user value"
-    },
-    {
-      "path": "server/routes/auth.ts",
-      "line": 2560,
-      "kind": "authored-message-field",
-      "field": "error",
-      "expression": "ApiErrorCode.OidcAuthorizationFailed",
-      "source": "{value0}",
-      "reason": "dynamic/provider/user value"
-    },
-    {
-      "path": "server/routes/auth.ts",
-      "line": 2572,
-      "kind": "authored-message-field",
-      "field": "error",
-      "expression": "error instanceof Error ? error.message : 'Unknown error'",
       "source": "{value0}",
       "reason": "dynamic/provider/user value"
     },
@@ -74741,25 +74731,7 @@
     },
     {
       "path": "server/routes/auth.ts",
-      "line": 2591,
-      "kind": "authored-message-field",
-      "field": "error",
-      "expression": "ApiErrorCode.OidcAuthorizationFailed",
-      "source": "{value0}",
-      "reason": "dynamic/provider/user value"
-    },
-    {
-      "path": "server/routes/auth.ts",
-      "line": 2657,
-      "kind": "authored-message-field",
-      "field": "error",
-      "expression": "ApiErrorCode.Unauthorized",
-      "source": "{value0}",
-      "reason": "dynamic/provider/user value"
-    },
-    {
-      "path": "server/routes/auth.ts",
-      "line": 2725,
+      "line": 2588,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "error instanceof Error ? error.message : 'Unknown error'",
@@ -74768,10 +74740,28 @@
     },
     {
       "path": "server/routes/auth.ts",
-      "line": 2729,
+      "line": 2592,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "ApiErrorCode.OidcAuthorizationFailed",
+      "source": "{value0}",
+      "reason": "dynamic/provider/user value"
+    },
+    {
+      "path": "server/routes/auth.ts",
+      "line": 2607,
+      "kind": "authored-message-field",
+      "field": "error",
+      "expression": "ApiErrorCode.OidcAuthorizationFailed",
+      "source": "{value0}",
+      "reason": "dynamic/provider/user value"
+    },
+    {
+      "path": "server/routes/auth.ts",
+      "line": 2673,
+      "kind": "authored-message-field",
+      "field": "error",
+      "expression": "ApiErrorCode.Unauthorized",
       "source": "{value0}",
       "reason": "dynamic/provider/user value"
     },
@@ -74780,13 +74770,31 @@
       "line": 2741,
       "kind": "authored-message-field",
       "field": "error",
+      "expression": "error instanceof Error ? error.message : 'Unknown error'",
+      "source": "{value0}",
+      "reason": "dynamic/provider/user value"
+    },
+    {
+      "path": "server/routes/auth.ts",
+      "line": 2745,
+      "kind": "authored-message-field",
+      "field": "error",
       "expression": "ApiErrorCode.OidcAuthorizationFailed",
       "source": "{value0}",
       "reason": "dynamic/provider/user value"
     },
     {
       "path": "server/routes/auth.ts",
-      "line": 2753,
+      "line": 2757,
+      "kind": "authored-message-field",
+      "field": "error",
+      "expression": "ApiErrorCode.OidcAuthorizationFailed",
+      "source": "{value0}",
+      "reason": "dynamic/provider/user value"
+    },
+    {
+      "path": "server/routes/auth.ts",
+      "line": 2769,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "ApiErrorCode.Unauthorized",
@@ -74795,7 +74803,7 @@
     },
     {
       "path": "server/routes/auth.ts",
-      "line": 2770,
+      "line": 2786,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "ApiErrorCode.Unauthorized",
@@ -74804,7 +74812,7 @@
     },
     {
       "path": "server/routes/auth.ts",
-      "line": 2808,
+      "line": 2824,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "error instanceof Error ? error.message : 'Unknown error'",
@@ -74813,7 +74821,7 @@
     },
     {
       "path": "server/routes/auth.ts",
-      "line": 2812,
+      "line": 2828,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "ApiErrorCode.OidcProviderDiscoveryFailed",
@@ -74822,7 +74830,7 @@
     },
     {
       "path": "server/routes/auth.ts",
-      "line": 2829,
+      "line": 2845,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "error instanceof Error ? error.message : 'Unknown error'",
@@ -74831,7 +74839,7 @@
     },
     {
       "path": "server/routes/auth.ts",
-      "line": 2833,
+      "line": 2849,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "ApiErrorCode.OidcAuthorizationFailed",
@@ -74840,7 +74848,7 @@
     },
     {
       "path": "server/routes/auth.ts",
-      "line": 2852,
+      "line": 2868,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "error instanceof Error ? error.message : 'Unknown error'",
@@ -74849,7 +74857,7 @@
     },
     {
       "path": "server/routes/auth.ts",
-      "line": 2856,
+      "line": 2872,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "ApiErrorCode.OidcAuthorizationFailed",
@@ -74858,7 +74866,7 @@
     },
     {
       "path": "server/routes/auth.ts",
-      "line": 2871,
+      "line": 2887,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "ApiErrorCode.OidcAuthorizationFailed",
@@ -74867,7 +74875,7 @@
     },
     {
       "path": "server/routes/auth.ts",
-      "line": 2891,
+      "line": 2907,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "error instanceof Error ? error.message : 'Unknown error'",
@@ -74876,7 +74884,7 @@
     },
     {
       "path": "server/routes/auth.ts",
-      "line": 2895,
+      "line": 2911,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "ApiErrorCode.OidcAuthorizationFailed",
@@ -74885,7 +74893,7 @@
     },
     {
       "path": "server/routes/auth.ts",
-      "line": 2924,
+      "line": 2940,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "ApiErrorCode.Unauthorized",
@@ -74894,7 +74902,7 @@
     },
     {
       "path": "server/routes/auth.ts",
-      "line": 2938,
+      "line": 2954,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "ApiErrorCode.Unauthorized",
@@ -74903,7 +74911,7 @@
     },
     {
       "path": "server/routes/auth.ts",
-      "line": 2956,
+      "line": 2972,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "ApiErrorCode.Unauthorized",
@@ -74912,7 +74920,7 @@
     },
     {
       "path": "server/routes/auth.ts",
-      "line": 2971,
+      "line": 2987,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "ApiErrorCode.OidcAuthorizationFailed",
@@ -74921,7 +74929,7 @@
     },
     {
       "path": "server/routes/auth.ts",
-      "line": 3005,
+      "line": 3021,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "ApiErrorCode.Unauthorized",
@@ -74930,7 +74938,7 @@
     },
     {
       "path": "server/routes/auth.ts",
-      "line": 3022,
+      "line": 3038,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "ApiErrorCode.Unauthorized",
@@ -74939,7 +74947,7 @@
     },
     {
       "path": "server/routes/auth.ts",
-      "line": 3047,
+      "line": 3063,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "ApiErrorCode.OidcAccountAlreadyLinked",
@@ -74948,7 +74956,7 @@
     },
     {
       "path": "server/routes/auth.ts",
-      "line": 3067,
+      "line": 3083,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "ApiErrorCode.OidcAccountAlreadyLinked",
@@ -74957,7 +74965,7 @@
     },
     {
       "path": "server/routes/auth.ts",
-      "line": 3099,
+      "line": 3115,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "ApiErrorCode.Unauthorized",
@@ -74966,7 +74974,7 @@
     },
     {
       "path": "server/routes/auth.ts",
-      "line": 3246,
+      "line": 3262,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "resolution.kind === 'missing-email'\n              ? ApiErrorCode.OidcMissingEmail\n              : ApiErrorCode.Unauthorized",
@@ -74975,7 +74983,7 @@
     },
     {
       "path": "server/routes/auth.ts",
-      "line": 3246,
+      "line": 3262,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "resolution.kind === 'missing-email'\n              ? ApiErrorCode.OidcMissingEmail\n              : ApiErrorCode.Unauthorized",
@@ -74984,7 +74992,7 @@
     },
     {
       "path": "server/routes/auth.ts",
-      "line": 3265,
+      "line": 3281,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "ApiErrorCode.Unauthorized",
@@ -74993,7 +75001,7 @@
     },
     {
       "path": "server/routes/auth.ts",
-      "line": 3348,
+      "line": 3364,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "error instanceof Error ? error.message : 'Unknown error'",
@@ -75002,7 +75010,7 @@
     },
     {
       "path": "server/routes/auth.ts",
-      "line": 3358,
+      "line": 3374,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "err.message",
@@ -75011,7 +75019,7 @@
     },
     {
       "path": "server/routes/auth.ts",
-      "line": 3388,
+      "line": 3404,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "error instanceof Error ? error.message : 'Unknown error'",
@@ -75020,19 +75028,10 @@
     },
     {
       "path": "server/routes/auth.ts",
-      "line": 3405,
+      "line": 3421,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "error instanceof Error ? error.message : 'Unknown error'",
-      "source": "{value0}",
-      "reason": "dynamic/provider/user value"
-    },
-    {
-      "path": "server/routes/auth.ts",
-      "line": 3419,
-      "kind": "authored-message-field",
-      "field": "message",
-      "expression": "parsedBody.error",
       "source": "{value0}",
       "reason": "dynamic/provider/user value"
     },
@@ -75041,13 +75040,22 @@
       "line": 3435,
       "kind": "authored-message-field",
       "field": "message",
+      "expression": "parsedBody.error",
+      "source": "{value0}",
+      "reason": "dynamic/provider/user value"
+    },
+    {
+      "path": "server/routes/auth.ts",
+      "line": 3451,
+      "kind": "authored-message-field",
+      "field": "message",
       "expression": "email.error",
       "source": "{value0}",
       "reason": "dynamic/provider/user value"
     },
     {
       "path": "server/routes/auth.ts",
-      "line": 3513,
+      "line": 3529,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "parsedBody.error",

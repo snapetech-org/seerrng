@@ -673,6 +673,32 @@ describe('POST /auth/jellyfin/quickconnect/authenticate', () => {
 });
 
 describe('GET /auth/me', () => {
+  it('surfaces missing viewer credentials only to their linked account and clears the warning after reconnect', async () => {
+    configureJellyfin();
+    const agent = await authenticatedAgent('friend@seerr.dev', 'test1234');
+    const repository = getRepository(User);
+    await repository.update(2, {
+      jellyfinUserId: 'a'.repeat(32),
+      jellyfinAuthToken: null,
+    });
+    const missing = await agent.get('/auth/me');
+    assert.equal(missing.status, 200);
+    assert.ok(missing.body.warnings.includes('mediaServerSignInRequired'));
+    assert.equal(missing.body.jellyfinAuthToken, undefined);
+    const owner = await authenticatedAgent('admin@seerr.dev', 'test1234');
+    assert.ok(
+      !(await owner.get('/auth/me')).body.warnings.includes(
+        'mediaServerSignInRequired'
+      )
+    );
+    await repository.update(2, {
+      jellyfinAuthToken: 'reconnected-viewer-token',
+    });
+    const restored = await agent.get('/auth/me');
+    assert.equal(restored.status, 200);
+    assert.ok(!restored.body.warnings.includes('mediaServerSignInRequired'));
+    assert.equal(restored.body.jellyfinAuthToken, undefined);
+  });
   it('returns 403 when not authenticated', async () => {
     const res = await request(app).get('/auth/me');
     assert.strictEqual(res.status, 403);

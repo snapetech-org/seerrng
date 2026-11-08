@@ -1,3 +1,4 @@
+import Alert from '@app/components/Common/Alert';
 import AddEmailModal from '@app/components/Login/AddEmailModal';
 import { useUser } from '@app/hooks/useUser';
 import defineMessages from '@app/utils/defineMessages';
@@ -13,6 +14,9 @@ const messages = defineMessages('components.Layout.UserWarnings', {
   emailInvalid: 'Email address is invalid.',
   passwordRequired: 'A password is required.',
   profileIncomplete: 'Profile is incomplete',
+  reconnectTitle: 'Reconnect Your Media Server',
+  reconnectHelp:
+    'Use the user menu to sign out, then sign in with your Jellyfin or Emby account again to restore library availability and playback.',
 });
 
 const UserWarnings: React.FC = () => {
@@ -26,6 +30,9 @@ const UserWarnings: React.FC = () => {
 
   let warningText = '';
   let showSetEmail = false;
+  const requiresMediaSignIn = user.warnings.includes(
+    'mediaServerSignInRequired'
+  );
 
   for (const warning of user.warnings) {
     switch (warning) {
@@ -36,12 +43,22 @@ const UserWarnings: React.FC = () => {
     }
   }
 
-  if (!warningText) {
+  if (!warningText && !requiresMediaSignIn) {
     return null;
   }
 
   return (
     <>
+      {requiresMediaSignIn && (
+        <div role="status">
+          <Alert
+            type="warning"
+            title={intl.formatMessage(messages.reconnectTitle)}
+          >
+            {intl.formatMessage(messages.reconnectHelp)}
+          </Alert>
+        </div>
+      )}
       {showEmailModal && (
         <AddEmailModal
           onClose={() => setShowEmailModal(false)}
@@ -51,20 +68,22 @@ const UserWarnings: React.FC = () => {
           }}
         />
       )}
-      <button
-        onClick={showSetEmail ? () => setShowEmailModal(true) : undefined}
-        className="service-error-banner mb-4 w-full cursor-pointer transition duration-300 hover:border-yellow-400 hover:bg-yellow-500/30"
-      >
-        <ExclamationTriangleIcon className="h-5 w-5 flex-shrink-0" />
-        <span className="flex-1 text-start">
-          <span className="font-bold">
-            {intl.formatMessage(messages.profileIncomplete)}
+      {warningText && (
+        <button
+          onClick={showSetEmail ? () => setShowEmailModal(true) : undefined}
+          className="service-error-banner mb-4 w-full cursor-pointer transition duration-300 hover:border-yellow-400 hover:bg-yellow-500/30"
+        >
+          <ExclamationTriangleIcon className="h-5 w-5 flex-shrink-0" />
+          <span className="flex-1 text-start">
+            <span className="font-bold">
+              {intl.formatMessage(messages.profileIncomplete)}
+            </span>
+            {': '}
+            {warningText}
           </span>
-          {': '}
-          {warningText}
-        </span>
-        <ChevronRightIcon className="h-5 w-5 flex-shrink-0" />
-      </button>
+          <ChevronRightIcon className="h-5 w-5 flex-shrink-0" />
+        </button>
+      )}
     </>
   );
 };
