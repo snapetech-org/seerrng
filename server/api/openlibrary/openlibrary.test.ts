@@ -311,3 +311,22 @@ describe('Open Library exact ISBN batches', () => {
     );
   });
 });
+
+it('retains bounded provider languages used by book admission visibility', async () => {
+  const api = new OpenLibraryAPI();
+  Object.defineProperty(api, 'get', {
+    value: async () => ({
+      numFound: 1,
+      start: 0,
+      docs: [
+        {
+          key: '/works/OL1W',
+          title: 'Language Book',
+          language: ['eng', null, 'x'.repeat(129), 'fre'],
+        },
+      ],
+    }),
+  });
+  const result = await api.searchBooks({ query: 'book' });
+  assert.deepEqual(result.docs[0].language, ['eng', 'fre']);
+});

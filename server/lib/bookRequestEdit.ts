@@ -10,6 +10,7 @@ import {
   type MediaRequestServiceTarget,
 } from '@server/entity/MediaRequest';
 import type { MediaRequestBody } from '@server/interfaces/api/requestInterfaces';
+import { allowedBookLanguages } from '@server/lib/bookLanguagePolicy';
 import { compareBookEditions } from '@server/lib/editionCompare';
 import { normalizeOpenLibraryAuthorId } from '@server/lib/externalIds';
 import { getExternalRuntimeConfig } from '@server/lib/externalRuntimeConfig';
@@ -139,6 +140,10 @@ export const planBookRequestEdit = async (
       'This request has no book destinations.'
     );
 
+  if (allowedBookLanguages().length && !exactEdition)
+    throw new ServiceConfigurationError(
+      'Create a new request with a verified allowed-language edition before changing this destination.'
+    );
   if (exactEdition) {
     const identifiers = await getRepository(MediaIdentifier).find({
       where: { media: { id: request.media.id } },

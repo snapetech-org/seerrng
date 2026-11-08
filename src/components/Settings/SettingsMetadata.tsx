@@ -6,6 +6,7 @@ import PageTitle from '@app/components/Common/PageTitle';
 import MetadataSelector, {
   MetadataProviderType,
 } from '@app/components/MetadataSelector';
+import SettingsBookLanguages from '@app/components/Settings/SettingsBookLanguages';
 import { notifySettingsUserChange } from '@app/components/Settings/settingsEvents';
 import SettingsHelp from '@app/components/Settings/SettingsHelp';
 import SettingsLoadState from '@app/components/Settings/SettingsLoadState';
@@ -423,6 +424,8 @@ const SettingsMetadata = () => {
           intl.formatMessage(globalMessages.settings),
         ]}
       />
+
+      <SettingsBookLanguages />
 
       <section className="app-card-sub settings-group-card mb-6">
         <h3 className="heading">

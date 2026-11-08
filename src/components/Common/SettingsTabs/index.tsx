@@ -115,10 +115,7 @@ const SettingsTabs = ({
           onChange={(e) => {
             navigateMobile(e.target.value);
           }}
-          onBlur={(e) => {
-            navigateMobile(e.target.value);
-          }}
-          defaultValue={activeMobileIndex >= 0 ? String(activeMobileIndex) : ''}
+          value={activeMobileIndex >= 0 ? String(activeMobileIndex) : ''}
           aria-label={intl.formatMessage(messages.selectedTab)}
         >
           {visibleSettingsRoutes.map((route, index) => (

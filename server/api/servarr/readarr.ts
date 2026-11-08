@@ -192,6 +192,7 @@ export interface ReadarrBookLookupResult {
     manualAdd?: boolean;
   };
   editions?: {
+    language?: string;
     foreignEditionId: string;
     title: string;
     isbn13?: string;
@@ -387,6 +388,7 @@ const sanitizeMediaMoveAuthorPreview = (
 };
 
 export interface ReadarrEdition {
+  language?: string;
   foreignEditionId: string;
   title: string;
   isbn13?: string;

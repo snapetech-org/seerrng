@@ -10450,3 +10450,66 @@ describe('streaming policy admission', () => {
     assert.match(res.body.message, /quota/i);
   });
 });
+
+describe('administrator book language admission', () => {
+  for (const format of ['ebook', 'audiobook'] as const)
+    for (const selected of [undefined, 'spanish', 'unknown', 'english'])
+      it(`verifies and pins ${format} ${selected ?? 'automatic'} edition language`, async (t) => {
+        const settings = getSettings();
+        const original = structuredClone(settings.metadataSettings);
+        settings.metadataSettings = {
+          ...original,
+          allowedBookLanguages: ['eng'],
+        };
+        t.after(() => {
+          settings.metadataSettings = original;
+        });
+        settings.readarr = [createReadarrSettings(21, format)];
+        mock.method(OpenLibraryAPI.prototype, 'getWork', async () => ({
+          key: '/works/OL999W',
+          title: 'Language Book',
+        }));
+        mock.method(OpenLibraryAPI.prototype, 'getWorkEditions', async () => ({
+          size: 0,
+          entries: [],
+        }));
+        mock.method(ReadarrAPI.prototype, 'lookupBook', async () => [
+          {
+            foreignBookId: 'work-123',
+            title: 'Language Book',
+            editions: [
+              {
+                foreignEditionId: 'spanish',
+                isEbook: format === 'ebook',
+                language: 'Spanish',
+              },
+              { foreignEditionId: 'unknown', isEbook: format === 'ebook' },
+              {
+                foreignEditionId: 'english',
+                isEbook: format === 'ebook',
+                language: 'English',
+              },
+            ],
+          },
+        ]);
+        const agent = await loginAs('admin@seerr.dev', 'test1234');
+        const res = await agent
+          .post('/request')
+          .send({
+            mediaType: MediaType.BOOK,
+            mediaId: 'OL999W',
+            format,
+            preferredEditionId: selected,
+          });
+        if (selected === 'spanish' || selected === 'unknown') {
+          assert.equal(res.status, 403, JSON.stringify(res.body));
+          assert.equal(await getRepository(MediaRequest).count(), 0);
+        } else {
+          assert.equal(res.status, 201, JSON.stringify(res.body));
+          const saved = await getRepository(MediaRequest).findOneOrFail({
+            where: { id: res.body.id },
+          });
+          assert.equal(saved.preferredEditionId, 'english');
+        }
+      });
+});

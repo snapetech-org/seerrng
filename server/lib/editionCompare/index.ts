@@ -3,6 +3,7 @@ import ReadarrAPI from '@server/api/servarr/readarr';
 import { MediaType } from '@server/constants/media';
 import { getRepository } from '@server/datasource';
 import Media from '@server/entity/Media';
+import { bookLanguageAllowed } from '@server/lib/bookLanguagePolicy';
 import { getExternalRuntimeConfig } from '@server/lib/externalRuntimeConfig';
 import { titleSimilarity } from '@server/lib/resolve/match';
 import type { ReadarrSettings } from '@server/lib/settings';
@@ -112,7 +113,7 @@ const compareLibraryEditions = async (
   return undefined;
 };
 
-export const compareBookEditions = async (options: {
+const compareBookEditionsUnfiltered = async (options: {
   mediaId?: number;
   bookId?: string;
   /** Configured destination used for edition lookup and exact ownership. */
@@ -216,6 +217,20 @@ export const compareBookEditions = async (options: {
     editions: [],
     supportsAlongside: false,
     source: 'none',
+  };
+};
+
+export const compareBookEditions = async (
+  options: Parameters<typeof compareBookEditionsUnfiltered>[0]
+): Promise<EditionComparison> => {
+  const comparison = await compareBookEditionsUnfiltered(options);
+  return {
+    ...comparison,
+    editions: comparison.editions.map((edition) =>
+      bookLanguageAllowed([edition.language])
+        ? edition
+        : { ...edition, requestable: false }
+    ),
   };
 };
 

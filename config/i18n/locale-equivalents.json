@@ -2946,7 +2946,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/Settings/SettingsMetadata.tsx",
-          "line": 25,
+          "line": 26,
           "defaultMessage": "'General'"
         }
       ],

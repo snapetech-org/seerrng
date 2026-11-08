@@ -426,3 +426,25 @@ describe('Bookshelf catalog identities', () => {
     expect(lookup).toHaveBeenNthCalledWith(2, 'The Fellowship of the Ring');
   });
 });
+
+it('retains normalized edition languages when the work omits language metadata', () => {
+  const result = mapBookshelfBook(
+    {
+      title: 'A Book',
+      foreignBookId: 'work-1',
+      editions: [
+        {
+          foreignEditionId: 'e-1',
+          title: 'A Book',
+          monitored: true,
+          language: 'English',
+        },
+      ],
+    },
+    1
+  );
+  expect(result.languages).toEqual(['eng']);
+  expect(
+    mapBookshelfBook({ title: 'Unknown', foreignBookId: 'work-2' }, 1).languages
+  ).toBeUndefined();
+});

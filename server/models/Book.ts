@@ -182,6 +182,7 @@ export const mapOpenLibrarySearchDoc = (
     ratingsCount: doc.ratings_count,
     wantToReadCount: doc.want_to_read_count,
     publisher: doc.publisher?.[0],
+    languages: doc.language,
     mediaInfo: media,
   };
 };

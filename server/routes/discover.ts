@@ -50,6 +50,10 @@ import type {
   GenreSliderItem,
   WatchlistResponse,
 } from '@server/interfaces/api/discoverInterfaces';
+import {
+  bookLanguageAllowed,
+  bookLanguageQuery,
+} from '@server/lib/bookLanguagePolicy';
 import { findBookMediaByOpenLibraryIds } from '@server/lib/bookMediaMatcher';
 import {
   getComicCatalogIndexStatus,
@@ -4095,7 +4099,8 @@ discoverRoutes.get('/books', async (req, res) => {
 
   // A match-all prefix combined with real clauses is much more expensive for
   // Open Library. Keep it only for an otherwise unfiltered catalog request.
-  const query = queryParts.filter(Boolean).join(' AND ') || '*:*';
+  const query =
+    [...queryParts, bookLanguageQuery()].filter(Boolean).join(' AND ') || '*:*';
   const needsLocalFiltering =
     hasSearchQuery ||
     parsedRatingNumber !== undefined ||
@@ -4104,6 +4109,7 @@ discoverRoutes.get('/books', async (req, res) => {
     books
       .filter(
         (book) =>
+          bookLanguageAllowed(book.languages) &&
           (!searchQuery ||
             matchesAllSearchTerms(
               [book.title, book.author, ...(book.subjects ?? [])],
@@ -4163,6 +4169,7 @@ discoverRoutes.get('/books', async (req, res) => {
     !narratorQuery &&
     !subjectQuery &&
     !language &&
+    !bookLanguageQuery() &&
     parsedRatingNumber === undefined &&
     !firstPublishYear &&
     sortByBase === 'ranked';
@@ -4336,9 +4343,15 @@ discoverRoutes.get('/books', async (req, res) => {
           : sortByBase === 'random'
             ? shuffleRankedWindow(dedupedDocs, shuffleSeed, dedupedDocs.length)
             : dedupedDocs;
+    const languageFilteredDocs = sortedDocs.filter((doc) =>
+      bookLanguageAllowed(doc.language)
+    );
     const pagedDocs = providerWindow
-      ? sortedDocs.slice(providerWindow.sliceStart, providerWindow.sliceEnd)
-      : sortedDocs;
+      ? languageFilteredDocs.slice(
+          providerWindow.sliceStart,
+          providerWindow.sliceEnd
+        )
+      : languageFilteredDocs;
     const providerHasMore = providerPage * providerLimit < books.numFound;
     const ids = pagedDocs.map((doc) => normalizeOpenLibraryWorkId(doc.key));
     const mediaByOpenLibraryId = await findBookMediaByOpenLibraryIds(

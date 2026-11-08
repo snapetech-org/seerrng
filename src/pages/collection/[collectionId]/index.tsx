@@ -19,23 +19,23 @@ const CollectionPage: NextPage<CollectionPageProps> = ({ collection }) => {
 export const getServerSideProps: GetServerSideProps<
   CollectionPageProps
 > = async (ctx) => {
-  const response = await axios.get<Collection>(
-    `${getInternalApiBaseUrl()}/api/v1/collection/${encodeInternalApiPathSegment(
-      ctx.query.collectionId
-    )}`,
-    {
-      ...INTERNAL_API_HTTP_OPTIONS,
-      headers: ctx.req?.headers?.cookie
-        ? { cookie: ctx.req.headers.cookie }
-        : undefined,
-    }
-  );
+  const response = await axios
+    .get<Collection>(
+      `${getInternalApiBaseUrl()}/api/v1/collection/${encodeInternalApiPathSegment(
+        ctx.query.collectionId
+      )}`,
+      {
+        ...INTERNAL_API_HTTP_OPTIONS,
+        headers: ctx.req?.headers?.cookie
+          ? { cookie: ctx.req.headers.cookie }
+          : undefined,
+      }
+    )
+    .catch(() => undefined);
 
-  return {
-    props: {
-      collection: response.data,
-    },
-  };
+  // The client owner exposes load failures and Retry. Never bubble an Axios
+  // error containing internal request headers into Next's rendered 500/logs.
+  return { props: response ? { collection: response.data } : {} };
 };
 
 export default CollectionPage;

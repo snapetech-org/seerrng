@@ -2,6 +2,10 @@ import CoverArtArchive from '@server/api/coverartarchive';
 import MusicBrainz from '@server/api/musicbrainz';
 import TheMovieDb from '@server/api/themoviedb';
 import Tvdb from '@server/api/tvdb';
+import {
+  allowedBookLanguages,
+  parseAllowedBookLanguages,
+} from '@server/lib/bookLanguagePolicy';
 import { Permission } from '@server/lib/permissions';
 import {
   DEFAULT_MUSIC_METADATA_SETTINGS,
@@ -129,6 +133,27 @@ metadataRoutes.get('/', (_req, res) => {
     anime: settings.metadataSettings.anime,
   });
 });
+
+metadataRoutes.get('/books', (_req, res) => {
+  res.json({ allowedLanguages: allowedBookLanguages() });
+});
+metadataRoutes.put(
+  '/books',
+  authorizedMutation(Permission.ADMIN, async (req, res) => {
+    const languages = parseAllowedBookLanguages(
+      (req.body as { allowedLanguages?: unknown } | undefined)?.allowedLanguages
+    );
+    if (!languages)
+      return res
+        .status(400)
+        .json({ message: 'Enter up to 50 valid book language codes.' });
+    await getSettings().persistSection('metadataSettings', (current) => ({
+      ...current,
+      allowedBookLanguages: languages,
+    }));
+    return res.json({ allowedLanguages: languages });
+  })
+);
 
 metadataRoutes.get('/music', (_req, res) => {
   const settings = getSettings().musicMetadataSettings;

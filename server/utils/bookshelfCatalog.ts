@@ -2,6 +2,7 @@ import ReadarrAPI, {
   type ReadarrBookLookupResult,
 } from '@server/api/servarr/readarr';
 import type Media from '@server/entity/Media';
+import { normalizeBookLanguage } from '@server/lib/bookLanguagePolicy';
 import { normalizeValidIsbn } from '@server/lib/isbn';
 import type { ReadarrSettings } from '@server/lib/settings';
 import type {
@@ -356,6 +357,17 @@ export const mapBookshelfBook = (
     }
   }
   const isbnCandidates = getIsbnCandidates(result);
+  const languages = [
+    ...new Set(
+      (result.languages?.length
+        ? result.languages
+        : (result.editions ?? []).map((edition) => edition.language)
+      )
+        .map(normalizeBookLanguage)
+        .filter((language): language is string => !!language)
+    ),
+  ];
+
   const audioEdition = (result.editions ?? []).find(
     (edition) =>
       edition.monitored &&
@@ -421,7 +433,7 @@ export const mapBookshelfBook = (
     editionId:
       result.foreignEditionId ?? result.editions?.[0]?.foreignEditionId,
     subjects: subjects.length ? [...new Set(subjects)] : undefined,
-    languages: result.languages?.length ? result.languages : undefined,
+    languages: languages.length ? languages : undefined,
     ratingsAverage: result.ratingsAverage,
     ratingsCount: result.ratingsCount,
     series,

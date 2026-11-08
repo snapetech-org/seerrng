@@ -6936,7 +6936,7 @@ const validateCurrentBatchContract = (files) => {
   );
   requireText(
     'server/routes/search.ts',
-    'query: toFieldedBooleanAndQuery(queryString, [',
+    'toFieldedBooleanAndQuery(queryString, [',
     'Global Book searches must use the same fielded provider query'
   );
   requireText(

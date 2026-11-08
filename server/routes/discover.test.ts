@@ -6243,3 +6243,42 @@ describe('GET /discover/watchlist', () => {
     assert.strictEqual(response.body.totalPages, 2);
   });
 });
+
+describe('book language discovery policy', () => {
+  it('applies policy to the provider query and rejects unknown or disallowed returned books', async (t) => {
+    const settings = getSettings();
+    const original = structuredClone(settings.metadataSettings);
+    settings.metadataSettings = { ...original, allowedBookLanguages: ['eng'] };
+    t.after(() => {
+      settings.metadataSettings = original;
+    });
+    let sent = '';
+    mock.method(
+      OpenLibraryAPI.prototype,
+      'searchBooks',
+      async ({ query }: { query: string }) => {
+        sent = query;
+        return {
+          numFound: 3,
+          start: 0,
+          docs: [
+            { key: '/works/OL1W', title: 'English Book', language: ['eng'] },
+            { key: '/works/OL2W', title: 'Spanish Book', language: ['spa'] },
+            { key: '/works/OL3W', title: 'Unknown Book' },
+          ],
+        };
+      }
+    );
+    const agent = await login();
+    const response = await agent.get(
+      '/discover/books?format=ebook&sortBy=trending'
+    );
+    assert.equal(response.status, 200);
+    assert.match(sent, /language:eng/);
+    assert.doesNotMatch(sent, /\*:\*/);
+    assert.deepEqual(
+      response.body.results.map((book: { title: string }) => book.title),
+      ['English Book']
+    );
+  });
+});

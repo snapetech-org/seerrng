@@ -24,6 +24,10 @@ import MediaServiceStatus from '@server/entity/MediaServiceStatus';
 import OverrideRule from '@server/entity/OverrideRule';
 import type { MediaRequestBody } from '@server/interfaces/api/requestInterfaces';
 import type { SeasonEpisodeSelection } from '@server/interfaces/api/seasonInterfaces';
+import {
+  allowedBookLanguages,
+  bookLanguageAllowed,
+} from '@server/lib/bookLanguagePolicy';
 import { isBookDestinationFileAvailable } from '@server/lib/bookRequestDestination';
 import { compareBookEditions } from '@server/lib/editionCompare';
 import {
@@ -1655,7 +1659,15 @@ export class MediaRequest {
         : [];
       // Verify the exact performance at the resolved destination before bypassing
       // work-level availability. Client edition IDs are never authority.
-      const preferredEditionId = requestBody.preferredEditionId;
+      let preferredEditionId = requestBody.preferredEditionId;
+      let verifiedBookLanguage: string | undefined;
+      const languageRestricted = allowedBookLanguages().length > 0;
+      if (languageRestricted && requestedBookFormat === 'both') {
+        throw new RequestPermissionError(
+          'Choose one book format so its edition language can be verified.'
+        );
+      }
+
       if (
         isProviderBookEdition(preferredEditionId) &&
         requestedBookFormat === 'both'
@@ -1664,13 +1676,13 @@ export class MediaRequest {
           'A specific edition requires a single book format.'
         );
       }
-      const hasEditionChoice = isProviderBookEdition(preferredEditionId);
+      let hasEditionChoice = isProviderBookEdition(preferredEditionId);
       if (requestBody.editionPolicy === 'alongside' && !hasEditionChoice) {
         throw new ServiceConfigurationError(
           'Choose one book format and a specific edition to add alongside.'
         );
       }
-      if (hasEditionChoice) {
+      if (hasEditionChoice || languageRestricted) {
         const expectedWork = parseBookshelfBookId(
           requestBody.mediaId.toString()
         )
@@ -1700,9 +1712,30 @@ export class MediaRequest {
             expectedTitle ||
             requestBody.mediaId.toString(),
         });
-        const selectedEdition = comparison.editions.find(
-          (edition) => edition.id === preferredEditionId
-        );
+        const selectedEdition = hasEditionChoice
+          ? comparison.editions.find(
+              (edition) => edition.id === preferredEditionId
+            )
+          : comparison.editions.find(
+              (edition) =>
+                edition.requestable !== false &&
+                !edition.owned &&
+                bookLanguageAllowed([edition.language])
+            );
+        if (
+          languageRestricted &&
+          (!selectedEdition || !bookLanguageAllowed([selectedEdition.language]))
+        ) {
+          throw new RequestPermissionError(
+            'This edition is not in an allowed book language, or its language could not be verified. Choose an allowed edition.'
+          );
+        }
+        verifiedBookLanguage = selectedEdition?.language;
+        if (languageRestricted && selectedEdition) {
+          preferredEditionId = selectedEdition.id;
+          requestBody.preferredEditionId = preferredEditionId;
+          hasEditionChoice = true;
+        }
         if (!selectedEdition || selectedEdition.requestable === false)
           throw new ServiceConfigurationError(
             'The selected edition could not be verified for this book and destination.'
@@ -1811,6 +1844,12 @@ export class MediaRequest {
       });
 
       return dataSource.transaction(async (manager) => {
+        // Recheck after asynchronous catalog/admission work, including policy changes.
+        if (!bookLanguageAllowed([verifiedBookLanguage])) {
+          throw new RequestPermissionError(
+            'The book language policy changed. Choose an allowed edition and try again.'
+          );
+        }
         const transactionalMediaRepository = manager.getRepository(Media);
         const transactionalIdentifierRepository =
           manager.getRepository(MediaIdentifier);

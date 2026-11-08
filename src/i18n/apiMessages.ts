@@ -642,6 +642,8 @@ export const apiMessages: Record<
   m30e252a8558ae9c5ebe2:
     'The selected release could not be handed to the download client.',
   m30efa0d62b3db4d5ec3b: 'Game not found in your library.',
+  m30f261e06efa1027191e:
+    'The book language policy changed. Choose an allowed edition and try again.',
   m31283aff2a23d0cbf693:
     'Trakt API request failed: {value0} {value1}: {value2}',
   m314349d109ff07573bb7:
@@ -665,6 +667,8 @@ export const apiMessages: Record<
     'The selected download service is unavailable for cleanup.',
   m32f1fab19b4c86ffc89d: '[Readarr] Failed to lookup book: {value0}',
   m32f7d2e8d4435e096215: 'Incomplete collection list.',
+  m330403cb1edb8e765d62:
+    'Bindery cannot verify the requested edition language under the current book language policy.',
   m331e02b7d270a7b62e76: 'BackIssue did not return an authenticated user.',
   m333c75e96c84b04a6759:
     'Every mapped season must exist in the selected series order.',
@@ -692,6 +696,8 @@ export const apiMessages: Record<
   m3519e2c7f5ce4723bd79: 'title is required.',
   m351f2bec44492e5d74fc: 'Query is too long.',
   m352317b675b0e26a0998: 'Searching for a usable release.',
+  m355992b2f312027b441e:
+    'ReadMeABook cannot verify edition languages. Use a book destination with verified editions or ask your administrator about the book language policy.',
   m355a58f69bf82f68cfd2: 'Unverified artist',
   m3566aee57a48c3c4b094: 'None of those issues can be fixed automatically.',
   m3583e9ce40e4a7112e45: 'Adult scene cover not found.',
@@ -2557,6 +2563,8 @@ export const apiMessages: Record<
   mbfea112afcd7583c26f5: 'User subscriptions not found.',
   mbfeeddc09bf877ecdb19: 'manifest.json is not valid JSON.',
   mc0081bc92bf999ea469d: 'You do not have permission to delete this entry.',
+  mc031de72fcd0981455da:
+    'This edition is not in an allowed book language, or its language could not be verified. Choose an allowed edition.',
   mc076f8476f0e1dd491c5:
     'requestRootFolders cannot contain more than 100 entries.',
   mc080bb0ecf9d7cf091bc: 'Invalid movie ID.',
@@ -2649,6 +2657,8 @@ export const apiMessages: Record<
   mc8179e40cebd2dc1c7fd: 'Similar artist',
   mc817edeb578c8d71906b: 'ComicVine returned an invalid issue response.',
   mc824470d68d4d10d104e: 'Invalid album ID.',
+  mc82aa9500ffdb00354ca:
+    'Choose one book format so its edition language can be verified.',
   mc83b2e910a682e9ef44e: 'External URL must be a valid HTTP or HTTPS URL.',
   mc843e80de99129fd4027: 'Unable to call login if class is not initialized.',
   mc88fb6627be23f59d630: 'unsupported pack',
@@ -3210,6 +3220,7 @@ export const apiMessages: Record<
   meff3ced3a7b6e0758ef6: 'Search filter is invalid.',
   mf005e7d6a77c973dfd46: '{value0} must be a valid non-negative integer.',
   mf06b842795aa00eaa29b: 'Choose each favorite once.',
+  mf06e14d122616a8555c0: 'Enter up to 50 valid book language codes.',
   mf0815638927c0fce5404: 'The download or import failed.',
   mf0b520748c769edc7348: 'BackIssue returned an invalid add response.',
   mf0bb67d4b7187b3b1f5f: 'Unable to find TMDb ID',
@@ -3238,6 +3249,8 @@ export const apiMessages: Record<
   mf2092c95f6c696addb7d: 'Person not found.',
   mf2405d921965acd12a40: 'Choose a valid destination root folder.',
   mf2a332bedb4c81cf1489: 'Anime-List mapping entries are invalid',
+  mf2e0ecbb7d3de79489fa:
+    'The selected edition language is unknown or disallowed by the current book language policy.',
   mf2e36b41a2526b4f69a7:
     'Both-format book requests require a default audiobook Bookshelf service.',
   mf3077606911f853b1494: 'Choose a valid US movie rating limit.',
@@ -3263,6 +3276,8 @@ export const apiMessages: Record<
   mf3c709c2b0dc4a2a6b03: 'Invalid external media ID',
   mf3d32c46d0d9e875c232: 'Comic backend ID not found',
   mf3dd182407ba4618911f: 'The list sync failed.',
+  mf40007f88763675eabc4:
+    'Create a new request with a verified allowed-language edition before changing this destination.',
   mf403cf8a9bacc01cbcea: 'Image response exceeds the maximum allowed size.',
   mf412be43147ccd563e87: 'User not found.',
   mf41c8730704fe424d7b9: 'The selected Whisparr server no longer exists.',
@@ -3388,6 +3403,8 @@ export const apiMessages: Record<
   mfd70663a824613e8f84f:
     'Trakt API request failed: {value0} {value1}: unknown error',
   mfd76a7b8a12543027571: 'Media server owner unavailable',
+  mfd7cb8f411c78996efdd:
+    'ReadMeABook cannot verify edition languages under the current book language policy.',
   mfd7e09e6086279a5d5eb: 'Sign in again before managing accounts.',
   mfd9b4d662c94414758aa: 'SEERR_EXTERNAL_CONFIG exceeds the 2 MiB limit',
   mfdb0fd914361ec4a4f14: 'Invalid release calendar response.',

@@ -6,6 +6,10 @@ import Media from '@server/entity/Media';
 import { Watchlist } from '@server/entity/Watchlist';
 import { hasAvailableBookFormat } from '@server/lib/bookAvailability';
 import {
+  bookLanguageAllowed,
+  bookLanguageQuery,
+} from '@server/lib/bookLanguagePolicy';
+import {
   findBookMediaForBookResults,
   findBookMediaForSearchDocs,
   findBookMediaForWork,
@@ -282,7 +286,11 @@ bookRoutes.get('/search', async (req, res, next) => {
 
   try {
     const [openLibraryResponse, bookshelfResults] = await Promise.allSettled([
-      new OpenLibraryAPI().searchBooks({ query, page, limit: 20 }),
+      new OpenLibraryAPI().searchBooks({
+        query: [query, bookLanguageQuery()].filter(Boolean).join(' AND '),
+        page,
+        limit: 20,
+      }),
       searchBookshelfCatalogs(settings.readarr, query),
     ]);
     const docs =
@@ -306,7 +314,9 @@ bookRoutes.get('/search', async (req, res, next) => {
         : `${result.title.toLowerCase()}:${result.author?.toLowerCase() ?? ''}`;
       if (!deduped.has(key)) deduped.set(key, result);
     }
-    const results = [...deduped.values()].slice(0, 40);
+    const results = [...deduped.values()]
+      .filter((book) => bookLanguageAllowed(book.languages))
+      .slice(0, 40);
     const mediaByOpenLibraryId = await findBookMediaForSearchDocs(
       docs,
       req.user

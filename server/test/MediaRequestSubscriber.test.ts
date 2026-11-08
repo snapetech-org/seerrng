@@ -1,3 +1,4 @@
+import logger from '@server/logger';
 import assert from 'node:assert/strict';
 import { afterEach, before, beforeEach, describe, it, mock } from 'node:test';
 
@@ -2622,6 +2623,101 @@ describe('MediaRequestSubscriber service dispatch', () => {
       id: request.id,
     });
     assert.equal(savedRequest.status, MediaRequestStatus.FAILED);
+  });
+
+  it('blocks a previously approved edition if provider language is now disallowed', async (t) => {
+    const settings = getSettings();
+    const original = structuredClone(settings.metadataSettings);
+    settings.metadataSettings = { ...original, allowedBookLanguages: ['eng'] };
+    t.after(() => {
+      settings.metadataSettings = original;
+    });
+    settings.readarr = [
+      {
+        id: 20,
+        name: 'Bookshelf',
+        hostname: 'bookshelf.local',
+        port: 8787,
+        apiKey: 'test-key',
+        useSsl: false,
+        activeProfileId: 11,
+        activeProfileName: 'Books',
+        activeMetadataProfileId: 12,
+        activeDirectory: '/books',
+        tags: [],
+        is4k: false,
+        isDefault: true,
+        syncEnabled: true,
+        preventSearch: false,
+        tagRequests: false,
+        overrideRule: [],
+        serviceType: 'ebook',
+      },
+    ];
+    const media = await getRepository(Media).save(
+      new Media({
+        mediaType: MediaType.BOOK,
+        tmdbId: 0,
+        status: MediaStatus.PENDING,
+        status4k: MediaStatus.UNKNOWN,
+        identifiers: [
+          new MediaIdentifier({
+            provider: MediaIdentifierProvider.BOOKSHELF,
+            value: makeBookshelfBookId(20, 'work-1'),
+            canonical: true,
+          }),
+        ],
+      })
+    );
+    const req = await createApprovedRequest(media, await getRequester());
+    req.bookFormat = 'ebook';
+    req.preferredEditionId = 'selected';
+    mock.method(ReadarrAPI.prototype, 'lookupBook', async () => [
+      {
+        foreignBookId: 'work-1',
+        title: 'A Book',
+        author: { foreignAuthorId: 'author-1', authorName: 'Author' },
+        editions: [
+          {
+            foreignEditionId: 'selected',
+            title: 'A Book',
+            monitored: true,
+            language: 'Spanish',
+          },
+        ],
+      },
+    ]);
+    mock.method(
+      ReadarrAPI.prototype,
+      'lookupBookByProviderIdentity',
+      async () => ({
+        foreignBookId: 'work-1',
+        title: 'A Book',
+        author: { foreignAuthorId: 'author-1', authorName: 'Author' },
+        editions: [
+          {
+            foreignEditionId: 'selected',
+            title: 'A Book',
+            monitored: true,
+            language: 'Spanish',
+          },
+        ],
+      })
+    );
+    const warnings = mock.method(logger, 'warn', () => undefined);
+    const add = mock.method(ReadarrAPI.prototype, 'addBook', async () => {
+      throw new Error('must not dispatch');
+    });
+    await new MediaRequestSubscriber().sendToReadarr(req);
+    assert.equal(add.mock.callCount(), 0);
+    const saved = await getRepository(MediaRequest).findOneOrFail({
+      where: { id: req.id },
+    });
+    assert.equal(saved.status, MediaRequestStatus.FAILED);
+    assert.match(
+      JSON.stringify(warnings.mock.calls.map((call) => call.arguments)),
+      /edition language is unknown or disallowed/i
+    );
   });
 
   it('expands Bookshelf lookup to OpenLibrary edition ISBNs when canonical lookup misses', async () => {

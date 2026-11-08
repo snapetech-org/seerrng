@@ -9,6 +9,7 @@ import CachedImage from '@app/components/Common/CachedImage';
 import FormatRequestControl from '@app/components/Common/FormatRequestControl';
 import LoadingSpinner from '@app/components/Common/LoadingSpinner';
 import MediaServerPlayButton from '@app/components/Common/MediaServerPlayButton';
+import PageErrorMessage from '@app/components/Common/PageErrorMessage';
 import PageTitle from '@app/components/Common/PageTitle';
 import SelectionCircle from '@app/components/Common/SelectionCircle';
 import ThreeItemScroll from '@app/components/Common/ThreeItemScroll';
@@ -66,6 +67,7 @@ const RequestModal = dynamic(() => import('@app/components/RequestModal'), {
 });
 
 const messages = defineMessages('components.CollectionDetails', {
+  loadError: 'Could not load this collection. Try again.',
   overview: 'Overview',
   overviewUnavailable: 'Overview unavailable',
   collectionSize: 'Collection Size',
@@ -233,7 +235,19 @@ const CollectionDetails = ({ collection }: CollectionDetailsProps) => {
   }, [orderedParts, hasManualPlaybackSelection]);
 
   if (!data && !error) return <LoadingSpinner />;
-  if (!data) return <ErrorPage statusCode={404} />;
+  if (!data) {
+    if (axios.isAxiosError(error) && error.response?.status === 404)
+      return <ErrorPage statusCode={404} />;
+    return (
+      <PageErrorMessage
+        title={intl.formatMessage(messages.loadError)}
+        retry={{
+          onClick: () => revalidate(),
+          tooltip: intl.formatMessage(globalMessages.retry),
+        }}
+      />
+    );
+  }
 
   const blocklistedParts = data.parts.filter(
     (part) => part.mediaInfo?.status === MediaStatus.BLOCKLISTED

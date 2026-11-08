@@ -57,6 +57,23 @@ override in their user settings. See
 [Preferred Request Languages](./users/editing-users.md#preferred-request-languages)
 for how those preferences affect requests.
 
+## Restrict requestable book languages
+
+Administrators can open **Settings > Metadata Providers > Book language restrictions**
+and set **Allowed book languages**. Enter comma-separated three-letter codes such
+as `eng` for English, `fre` for French or `ger` for German. Leave the field empty
+to keep all languages allowed. Save and reload to confirm the setting.
+
+This policy filters book search and discovery and checks ebook/audiobook requests
+on the server. A request automatically selects and pins a matching verified
+provider edition, or verifies the edition the requester explicitly chose. Unknown
+or disallowed edition languages are blocked, including when provider metadata or
+the policy changes before dispatch. Choose one book format at a time while the
+policy is enabled. Bindery and ReadMeABook cannot currently verify a destination
+edition's language, so requests through them are blocked under this opt-in policy.
+Existing library files are retained. User language preferences remain preferences;
+they cannot override the administrator's restriction.
+
 ## Configure book services
 
 An administrator must connect a Bookshelf or other Readarr-compatible service

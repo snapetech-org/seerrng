@@ -3267,3 +3267,59 @@ describe('administrator network policy settings', () => {
     );
   });
 });
+
+describe('book language settings admission', () => {
+  it('persists normalized restrictions without changing TV providers and can clear them', async () => {
+    const settings = getSettings();
+    const original = structuredClone(settings.metadataSettings);
+    try {
+      const saved = await request(app)
+        .put('/settings/metadatas/books')
+        .send({ allowedLanguages: ['ENG', 'fra', 'fre'] });
+      assert.equal(saved.status, 200);
+      assert.deepEqual(saved.body, { allowedLanguages: ['eng', 'fre'] });
+      assert.equal(settings.metadataSettings.tv, original.tv);
+      assert.equal(settings.metadataSettings.anime, original.anime);
+      assert.deepEqual(
+        (await request(app).get('/settings/metadatas/books')).body,
+        saved.body
+      );
+      assert.equal(
+        (
+          await request(app)
+            .put('/settings/metadatas/books')
+            .send({ allowedLanguages: [] })
+        ).status,
+        200
+      );
+      assert.deepEqual(
+        (await request(app).get('/settings/metadatas/books')).body,
+        { allowedLanguages: [] }
+      );
+    } finally {
+      await settings.persistSection('metadataSettings', original);
+    }
+  });
+  it('rejects malformed restrictions and nonadministrator writes', async () => {
+    for (const value of ['eng', ['eng OR *:*'], ['zzz'], [null]])
+      assert.equal(
+        (
+          await request(app)
+            .put('/settings/metadatas/books')
+            .send({ allowedLanguages: value })
+        ).status,
+        400
+      );
+    const denied = createApp(
+      new User({ id: 2, permissions: Permission.REQUEST })
+    );
+    assert.equal(
+      (
+        await request(denied)
+          .put('/settings/metadatas/books')
+          .send({ allowedLanguages: ['eng'] })
+      ).status,
+      403
+    );
+  });
+});

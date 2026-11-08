@@ -2256,3 +2256,29 @@ test('settings groups retain distinct semantic identities after compact display 
     1
   );
 });
+
+test('Global Book language policy preserves the fielded keyword query requirement', () => {
+  const file = 'server/routes/search.ts';
+  const source = repositoryFilesWith()[file];
+  assert.equal(
+    validateCurrentBatchContract(repositoryFilesWith()).some((error) =>
+      error.includes(
+        'Global Book searches must use the same fielded provider query'
+      )
+    ),
+    false
+  );
+  const removed = source.replace(
+    'toFieldedBooleanAndQuery(queryString, [',
+    'removedFieldedQuery(queryString, ['
+  );
+  assert.equal(
+    validateCurrentBatchContract(repositoryFilesWith({ [file]: removed })).some(
+      (error) =>
+        error.includes(
+          'Global Book searches must use the same fielded provider query'
+        )
+    ),
+    true
+  );
+});

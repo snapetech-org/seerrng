@@ -53,6 +53,10 @@ import SeasonRequest, {
 } from '@server/entity/SeasonRequest';
 import { hasAvailableBookFormat } from '@server/lib/bookAvailability';
 import {
+  allowedBookLanguages,
+  bookLanguageAllowed,
+} from '@server/lib/bookLanguagePolicy';
+import {
   getComicRequestTarget,
   hasDeliveredComicTarget,
   isComicRequestAvailable,
@@ -2924,6 +2928,10 @@ export class MediaRequestSubscriber implements EntitySubscriberInterface<MediaRe
         service: ReadarrSettings,
         formats: ('ebook' | 'audiobook')[]
       ): Promise<string | undefined> => {
+        if (allowedBookLanguages().length)
+          throw new Error(
+            'Bindery cannot verify the requested edition language under the current book language policy.'
+          );
         const bindery = new BinderyAPI(service);
         const status = await bindery.getSystemStatus();
         const resolved = await resolveBinderyBook(bindery);
@@ -3240,6 +3248,10 @@ export class MediaRequestSubscriber implements EntitySubscriberInterface<MediaRe
             `Bookshelf metadata does not contain the selected edition${preferredIsbn ? ` (ISBN ${preferredIsbn})` : ''}. Choose another edition or update the Bookshelf metadata source.`
           );
         }
+        if (!bookLanguageAllowed([matchedPreferredEdition?.language]))
+          throw new Error(
+            'The selected edition language is unknown or disallowed by the current book language policy.'
+          );
         const bookEditions = matchedPreferredEdition
           ? (bookInfo.editions ?? []).map((edition) => ({
               ...edition,

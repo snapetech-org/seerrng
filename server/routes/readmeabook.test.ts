@@ -73,6 +73,25 @@ describe('ReadMeABook routes', () => {
     return agent;
   };
 
+  it('cannot bypass configured edition language restrictions through ReadMeABook', async (t) => {
+    const settings = getSettings();
+    const original = structuredClone(settings.metadataSettings);
+    settings.metadataSettings = { ...original, allowedBookLanguages: ['eng'] };
+    t.after(() => {
+      settings.metadataSettings = original;
+    });
+    const upstream = mock.method(axios, 'request', async () => {
+      throw new Error('must not dispatch');
+    });
+    const agent = await loginAs('admin@seerr.dev');
+    const denied = await agent
+      .post('/api/v1/readmeabook/requests')
+      .send({ asin: 'B012345678', title: 'A Book', author: 'Author' });
+    assert.equal(denied.status, 403);
+    assert.equal(upstream.mock.callCount(), 0);
+    assert.equal(await getRepository(ReadMeABookRequest).count(), 0);
+  });
+
   it('proxies Audible search using the configured bearer token and normalizes results', async () => {
     let calledUrl = '';
     let calledAuthorization = '';

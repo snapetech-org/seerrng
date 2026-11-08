@@ -82,6 +82,8 @@ const CollectionQueueModal = ({
   const url = `/api/v1/collection/${collection.id}/queue?is4k=${is4k}`;
   const { data, error, mutate } = useSWR<{ queue: QueueView | null }>(url, {
     refreshInterval: 3000,
+    // The global 30-second dedupe window otherwise suppresses live progress polls.
+    dedupingInterval: 0,
   });
   const queue = data?.queue;
   const active = queue?.status === 'active' || queue?.status === 'waiting';

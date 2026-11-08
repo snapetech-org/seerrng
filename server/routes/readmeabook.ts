@@ -4,6 +4,7 @@ import { getRepository } from '@server/datasource';
 import { MediaRequest } from '@server/entity/MediaRequest';
 import ReadMeABookRequest from '@server/entity/ReadMeABookRequest';
 import { User } from '@server/entity/User';
+import { allowedBookLanguages } from '@server/lib/bookLanguagePolicy';
 import { Permission, hasAutoApprovePermission } from '@server/lib/permissions';
 import { getSettings } from '@server/lib/settings';
 import { authorizedRouteAccess } from '@server/middleware/authorizedMutation';
@@ -231,6 +232,11 @@ routes.get('/requests', async (req, res) => {
 });
 
 routes.post('/requests', async (req, res) => {
+  if (allowedBookLanguages().length)
+    return res.status(403).json({
+      message:
+        'ReadMeABook cannot verify edition languages. Use a book destination with verified editions or ask your administrator about the book language policy.',
+    });
   const user = await getRepository(User).findOne({
     where: { id: req.user!.id },
   });
@@ -425,6 +431,11 @@ routes.post<{ id: string }>(
   '/admin/requests/:id/approve',
   authorizedRouteAccess(Permission.ADMIN),
   async (req, res) => {
+    if (allowedBookLanguages().length)
+      return res.status(403).json({
+        message:
+          'ReadMeABook cannot verify edition languages under the current book language policy.',
+      });
     const id = parsePositiveRouteId(req.params.id, MAX_REQUEST_ID);
     if (!id) return res.status(404).json({ message: 'Request not found.' });
     const repository = getRepository(ReadMeABookRequest);

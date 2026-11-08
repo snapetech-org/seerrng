@@ -24,6 +24,7 @@ export interface OpenLibrarySearchDoc {
   trending_score_hourly_sum?: number;
   publisher?: string[];
   subject?: string[];
+  language?: string[];
 }
 
 export interface OpenLibraryAuthorSearchDoc {
@@ -120,6 +121,7 @@ export const MAX_OPENLIBRARY_EDITION_ISBNS = 200;
 export const MAX_OPENLIBRARY_TITLE_LENGTH = 1_000;
 export const MAX_OPENLIBRARY_DESCRIPTION_LENGTH = 20_000;
 export const OPENLIBRARY_SEARCH_FIELDS = [
+  'language',
   'key',
   'title',
   'author_name',
@@ -282,6 +284,9 @@ const sanitizeSearchDoc = (
         : undefined,
     publisher: boundedStrings(value.publisher, 100, 512),
     subject: boundedStrings(value.subject, 100, 512),
+    language: boundedStrings(value.language, 100, 16)?.filter((code) =>
+      /^[a-z]{3}$/i.test(code)
+    ),
   };
 };
 

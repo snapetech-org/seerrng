@@ -10164,6 +10164,43 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/MetadataSettings'
+  /settings/metadatas/books:
+    get:
+      summary: Get administrator book language restrictions
+      tags: [settings]
+      responses:
+        '200':
+          description: Current restrictions; empty means all languages
+          content:
+            application/json:
+              schema: &bookLanguageSettings
+                type: object
+                required: [allowedLanguages]
+                properties:
+                  allowedLanguages:
+                    type: array
+                    maxItems: 50
+                    items:
+                      type: string
+                      maxLength: 128
+    put:
+      summary: Save administrator book language restrictions
+      tags: [settings]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: *bookLanguageSettings
+      responses:
+        '200':
+          description: Saved normalized restrictions
+          content:
+            application/json:
+              schema: *bookLanguageSettings
+        '400':
+          description: Invalid languages
+        '403':
+          description: Administrator permission required
   /settings/metadatas/test:
     post:
       summary: Test metadata provider connections

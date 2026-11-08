@@ -510,6 +510,8 @@ interface Quota {
 }
 
 export interface MetadataSettings {
+  /** Empty or absent preserves unrestricted book requests. */
+  allowedBookLanguages?: string[];
   tv: MetadataProviderType;
   anime: MetadataProviderType;
 }

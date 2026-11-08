@@ -15,6 +15,10 @@ import Media from '@server/entity/Media';
 import MetadataAlbum from '@server/entity/MetadataAlbum';
 import MetadataArtist from '@server/entity/MetadataArtist';
 import {
+  bookLanguageAllowed,
+  bookLanguageQuery,
+} from '@server/lib/bookLanguagePolicy';
+import {
   findBookMediaForBookResults,
   findBookMediaForSearchDocs,
 } from '@server/lib/bookMediaMatcher';
@@ -619,11 +623,16 @@ searchRoutes.get('/', async (req, res, next) => {
           : Promise.resolve({ results: [], totalResults: 0 }),
         shouldSearchBooks && ebookEnabled && bookFormat !== 'audiobook'
           ? openLibrary.searchBooks({
-              query: toFieldedBooleanAndQuery(queryString, [
-                'title',
-                'author',
-                'subject',
-              ]),
+              query: [
+                toFieldedBooleanAndQuery(queryString, [
+                  'title',
+                  'author',
+                  'subject',
+                ]),
+                bookLanguageQuery(),
+              ]
+                .filter(Boolean)
+                .join(' AND '),
               page,
               limit: 20,
             })
@@ -1292,6 +1301,14 @@ searchRoutes.get('/', async (req, res, next) => {
         results: combinedResults,
       };
     }
+
+    results.results = results.results.filter(
+      (result) =>
+        !('mediaType' in result && result.mediaType === 'book') ||
+        bookLanguageAllowed(
+          'languages' in result ? result.languages : undefined
+        )
+    );
 
     results.results = capSearchProviderResults<
       (typeof results.results)[number]
