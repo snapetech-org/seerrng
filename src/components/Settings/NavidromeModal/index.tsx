@@ -1,6 +1,7 @@
 import Modal from '@app/components/Common/Modal';
 import SensitiveInput from '@app/components/Common/SensitiveInput';
 import Field from '@app/components/Settings/SettingsField';
+import SettingsHelp from '@app/components/Settings/SettingsHelp';
 import useToasts from '@app/hooks/useToasts';
 import globalMessages from '@app/i18n/globalMessages';
 import defineMessages from '@app/utils/defineMessages';
@@ -140,9 +141,9 @@ const NavidromeModal = ({ settings, onClose, onSave }: NavidromeModalProps) => {
             secondaryDisabled={isSubmitting || !isValid || isTesting}
           >
             <Form>
-              <p className="description">
+              <SettingsHelp className="description">
                 {intl.formatMessage(messages.intro)}
-              </p>
+              </SettingsHelp>
               <div className="form-row">
                 <label htmlFor="url" className="text-label">
                   {intl.formatMessage(messages.url)}
@@ -152,9 +153,9 @@ const NavidromeModal = ({ settings, onClose, onSave }: NavidromeModalProps) => {
                   <div className="form-input-field">
                     <Field id="url" name="url" type="text" inputMode="url" />
                   </div>
-                  <p className="settings-form-row-description">
+                  <SettingsHelp className="settings-form-row-description">
                     {intl.formatMessage(messages.urlHelp)}
-                  </p>
+                  </SettingsHelp>
                   {errors.url &&
                     touched.url &&
                     typeof errors.url === 'string' && (
@@ -187,9 +188,9 @@ const NavidromeModal = ({ settings, onClose, onSave }: NavidromeModalProps) => {
                   <div className="form-input-field">
                     <SensitiveInput as="field" id="password" name="password" />
                   </div>
-                  <p className="settings-form-row-description">
+                  <SettingsHelp className="settings-form-row-description">
                     {intl.formatMessage(messages.passwordHelp)}
-                  </p>
+                  </SettingsHelp>
                   {errors.password &&
                     touched.password &&
                     typeof errors.password === 'string' && (

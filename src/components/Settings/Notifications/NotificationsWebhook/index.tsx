@@ -3,6 +3,7 @@ import LoadingSpinner from '@app/components/Common/LoadingSpinner';
 import NotificationTypeSelector from '@app/components/NotificationTypeSelector';
 import SettingsBadge from '@app/components/Settings/SettingsBadge';
 import Field from '@app/components/Settings/SettingsField';
+import SettingsHelp from '@app/components/Settings/SettingsHelp';
 import useToasts from '@app/hooks/useToasts';
 import globalMessages from '@app/i18n/globalMessages';
 import defineMessages from '@app/utils/defineMessages';
@@ -372,9 +373,9 @@ const NotificationsWebhook = () => {
                   }
                 />
               </div>
-              <span className="settings-form-row-description">
+              <SettingsHelp as="span" className="settings-form-row-description">
                 {intl.formatMessage(messages.supportVariablesTip)}
-              </span>
+              </SettingsHelp>
             </div>
             {values.supportVariables && (
               <div className="mt-2">
@@ -511,9 +512,9 @@ const NotificationsWebhook = () => {
                     <div className="error">{errors.customHeaders}</div>
                   )}
               </div>
-              <span className="settings-form-row-description">
+              <SettingsHelp as="span" className="settings-form-row-description">
                 {intl.formatMessage(messages.customHeadersTip)}
-              </span>
+              </SettingsHelp>
             </div>
             <div className="form-row">
               <label htmlFor="webhook-json-payload" className="text-label">

@@ -7,6 +7,7 @@ import ServarrDownloadQueueSizeField, {
 import Field, {
   default as SettingsField,
 } from '@app/components/Settings/SettingsField';
+import SettingsHelp from '@app/components/Settings/SettingsHelp';
 import type { SonarrTestResponse } from '@app/components/Settings/SettingsServices';
 import SyncExcludedTagsField from '@app/components/Settings/SyncExcludedTagsField';
 import { useSetupConnectionSuggestion } from '@app/context/SetupConnectionsContext';
@@ -494,9 +495,12 @@ const SonarrModal = ({ onClose, sonarr, onSave }: SonarrModalProps) => {
                   <div className="form-input-area">
                     <SettingsField type="checkbox" id="is4k" name="is4k" />
                   </div>
-                  <span className="settings-form-row-description">
+                  <SettingsHelp
+                    as="span"
+                    className="settings-form-row-description"
+                  >
                     {intl.formatMessage(messages.server4kHelp)}
-                  </span>
+                  </SettingsHelp>
                 </div>
                 <div className="form-row">
                   <label htmlFor="name" className="text-label">
@@ -619,9 +623,12 @@ const SonarrModal = ({ onClose, sonarr, onSave }: SonarrModalProps) => {
                         <div className="error">{errors.apiKey}</div>
                       )}
                   </div>
-                  <span className="settings-form-row-description">
+                  <SettingsHelp
+                    as="span"
+                    className="settings-form-row-description"
+                  >
                     {intl.formatMessage(messages.apiKeyHelp)}
-                  </span>
+                  </SettingsHelp>
                 </div>
                 <div className="form-row">
                   <label htmlFor="baseUrl" className="text-label">
@@ -646,9 +653,12 @@ const SonarrModal = ({ onClose, sonarr, onSave }: SonarrModalProps) => {
                         <div className="error">{errors.baseUrl}</div>
                       )}
                   </div>
-                  <span className="settings-form-row-description">
+                  <SettingsHelp
+                    as="span"
+                    className="settings-form-row-description"
+                  >
                     {intl.formatMessage(messages.baseUrlHelp)}
-                  </span>
+                  </SettingsHelp>
                 </div>
                 <div className="form-row">
                   <label htmlFor="seriesType" className="text-label">
@@ -794,14 +804,14 @@ const SonarrModal = ({ onClose, sonarr, onSave }: SonarrModalProps) => {
                             ))}
                           </Field>
                         </div>
-                        <p
+                        <SettingsHelp
                           id="defaultMetadataLanguageHelp"
                           className="settings-form-row-description"
                         >
                           {intl.formatMessage(
                             messages.defaultMetadataLanguageHelp
                           )}
-                        </p>
+                        </SettingsHelp>
                       </div>
                     </div>
                     <div className="form-row">
@@ -827,12 +837,12 @@ const SonarrModal = ({ onClose, sonarr, onSave }: SonarrModalProps) => {
                             </option>
                           </Field>
                         </div>
-                        <p
+                        <SettingsHelp
                           id="defaultSeasonOrderHelp"
                           className="settings-form-row-description"
                         >
                           {intl.formatMessage(messages.defaultSeasonOrderHelp)}
-                        </p>
+                        </SettingsHelp>
                       </div>
                     </div>
                   </>
@@ -1207,11 +1217,14 @@ const SonarrModal = ({ onClose, sonarr, onSave }: SonarrModalProps) => {
                       </Field>
                     </div>
                   </div>
-                  <span className="settings-form-row-description">
+                  <SettingsHelp
+                    as="span"
+                    className="settings-form-row-description"
+                  >
                     {intl.formatMessage(
                       messages.monitorNewItemsModeDescription
                     )}
-                  </span>
+                  </SettingsHelp>
                   {errors.monitorNewItems && touched.monitorNewItems && (
                     <div className="error">{errors.monitorNewItems}</div>
                   )}
@@ -1235,9 +1248,12 @@ const SonarrModal = ({ onClose, sonarr, onSave }: SonarrModalProps) => {
                         <div className="error">{errors.externalUrl}</div>
                       )}
                   </div>
-                  <span className="settings-form-row-description">
+                  <SettingsHelp
+                    as="span"
+                    className="settings-form-row-description"
+                  >
                     {intl.formatMessage(messages.externalUrlHelp)}
-                  </span>
+                  </SettingsHelp>
                 </div>
                 <div className="form-row">
                   <label htmlFor="syncEnabled" className="checkbox-label">
@@ -1250,9 +1266,12 @@ const SonarrModal = ({ onClose, sonarr, onSave }: SonarrModalProps) => {
                       name="syncEnabled"
                     />
                   </div>
-                  <span className="settings-form-row-description">
+                  <SettingsHelp
+                    as="span"
+                    className="settings-form-row-description"
+                  >
                     {intl.formatMessage(messages.syncEnabledHelp)}
-                  </span>
+                  </SettingsHelp>
                 </div>
                 <ServarrDownloadQueueSizeField />
                 <SyncExcludedTagsField
@@ -1286,9 +1305,12 @@ const SonarrModal = ({ onClose, sonarr, onSave }: SonarrModalProps) => {
                       name="enableSearch"
                     />
                   </div>
-                  <span className="settings-form-row-description">
+                  <SettingsHelp
+                    as="span"
+                    className="settings-form-row-description"
+                  >
                     {intl.formatMessage(messages.enableSearchHelp)}
-                  </span>
+                  </SettingsHelp>
                 </div>
                 <div className="form-row">
                   <label htmlFor="tagRequests" className="checkbox-label">
@@ -1301,9 +1323,12 @@ const SonarrModal = ({ onClose, sonarr, onSave }: SonarrModalProps) => {
                       name="tagRequests"
                     />
                   </div>
-                  <span className="settings-form-row-description">
+                  <SettingsHelp
+                    as="span"
+                    className="settings-form-row-description"
+                  >
                     {intl.formatMessage(messages.tagRequestsInfo)}
-                  </span>
+                  </SettingsHelp>
                 </div>
                 <div className="form-row">
                   <label htmlFor="requestButtonLabel" className="text-label">
@@ -1319,9 +1344,12 @@ const SonarrModal = ({ onClose, sonarr, onSave }: SonarrModalProps) => {
                       />
                     </div>
                   </div>
-                  <span className="settings-form-row-description">
+                  <SettingsHelp
+                    as="span"
+                    className="settings-form-row-description"
+                  >
                     {intl.formatMessage(messages.requestButtonLabelHelp)}
-                  </span>
+                  </SettingsHelp>
                 </div>
                 <div className="form-row">
                   <label
@@ -1337,9 +1365,12 @@ const SonarrModal = ({ onClose, sonarr, onSave }: SonarrModalProps) => {
                       name="requestButtonAnimeOnly"
                     />
                   </div>
-                  <span className="settings-form-row-description">
+                  <SettingsHelp
+                    as="span"
+                    className="settings-form-row-description"
+                  >
                     {intl.formatMessage(messages.requestButtonAnimeOnlyHelp)}
-                  </span>
+                  </SettingsHelp>
                 </div>
               </div>
             </Modal>

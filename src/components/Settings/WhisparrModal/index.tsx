@@ -7,6 +7,7 @@ import ServarrDownloadQueueSizeField, {
 import Field, {
   default as SettingsField,
 } from '@app/components/Settings/SettingsField';
+import SettingsHelp from '@app/components/Settings/SettingsHelp';
 import type { DVRTestResponse } from '@app/components/Settings/SettingsServices';
 import useToasts from '@app/hooks/useToasts';
 import globalMessages from '@app/i18n/globalMessages';
@@ -334,9 +335,9 @@ const WhisparrModal = ({ whisparr, onClose, onSave }: WhisparrModalProps) => {
                     setFieldValue('apiKey', event.target.value);
                   }}
                 />
-                <p className="settings-form-row-description">
+                <SettingsHelp className="settings-form-row-description">
                   {intl.formatMessage(messages.apiKeyHelp)}
-                </p>
+                </SettingsHelp>
               </div>
             </div>
             <div className="form-row">
@@ -353,9 +354,9 @@ const WhisparrModal = ({ whisparr, onClose, onSave }: WhisparrModalProps) => {
                     setFieldValue('baseUrl', event.target.value);
                   }}
                 />
-                <p className="settings-form-row-description">
+                <SettingsHelp className="settings-form-row-description">
                   {intl.formatMessage(messages.baseUrlHelp)}
-                </p>
+                </SettingsHelp>
               </div>
             </div>
             <div className="form-row">
@@ -417,9 +418,9 @@ const WhisparrModal = ({ whisparr, onClose, onSave }: WhisparrModalProps) => {
                   name="syncEnabled"
                 />
               </div>
-              <span className="settings-form-row-description">
+              <SettingsHelp as="span" className="settings-form-row-description">
                 {intl.formatMessage(messages.syncHelp)}
-              </span>
+              </SettingsHelp>
             </div>
             <ServarrDownloadQueueSizeField />
             <div className="form-row">
@@ -433,9 +434,9 @@ const WhisparrModal = ({ whisparr, onClose, onSave }: WhisparrModalProps) => {
                   name="enableSearch"
                 />
               </div>
-              <span className="settings-form-row-description">
+              <SettingsHelp as="span" className="settings-form-row-description">
                 {intl.formatMessage(messages.searchHelp)}
-              </span>
+              </SettingsHelp>
             </div>
             <div className="form-row">
               <label htmlFor="externalUrl" className="text-label">

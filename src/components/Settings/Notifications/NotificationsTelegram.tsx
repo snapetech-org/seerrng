@@ -3,6 +3,7 @@ import LoadingSpinner from '@app/components/Common/LoadingSpinner';
 import SensitiveInput from '@app/components/Common/SensitiveInput';
 import NotificationTypeSelector from '@app/components/NotificationTypeSelector';
 import Field from '@app/components/Settings/SettingsField';
+import SettingsHelp from '@app/components/Settings/SettingsHelp';
 import useToasts from '@app/hooks/useToasts';
 import globalMessages from '@app/i18n/globalMessages';
 import defineMessages from '@app/utils/defineMessages';
@@ -225,7 +226,7 @@ const NotificationsTelegram = () => {
                     <div className="error">{errors.botAPI}</div>
                   )}
               </div>
-              <span className="settings-form-row-description">
+              <SettingsHelp as="span" className="settings-form-row-description">
                 {intl.formatMessage(messages.botApiTip, {
                   CreateBotLink: (msg: React.ReactNode) => (
                     <a
@@ -251,7 +252,7 @@ const NotificationsTelegram = () => {
                     <code className="bg-gray-800/50">{msg}</code>
                   ),
                 })}
-              </span>
+              </SettingsHelp>
             </div>
             <div className="form-row">
               <label htmlFor="botUsername" className="text-label">
@@ -276,9 +277,9 @@ const NotificationsTelegram = () => {
                     <div className="error">{errors.botUsername}</div>
                   )}
               </div>
-              <span className="settings-form-row-description">
+              <SettingsHelp as="span" className="settings-form-row-description">
                 {intl.formatMessage(messages.botUsernameTip)}
-              </span>
+              </SettingsHelp>
             </div>
             <div className="form-row">
               <label htmlFor="chatId" className="text-label">
@@ -304,7 +305,7 @@ const NotificationsTelegram = () => {
                     <div className="error">{errors.chatId}</div>
                   )}
               </div>
-              <span className="settings-form-row-description">
+              <SettingsHelp as="span" className="settings-form-row-description">
                 {intl.formatMessage(messages.chatIdTip, {
                   GetIdBotLink: (msg: React.ReactNode) => (
                     <a
@@ -317,7 +318,7 @@ const NotificationsTelegram = () => {
                   ),
                   code: (msg: React.ReactNode) => <code>{msg}</code>,
                 })}
-              </span>
+              </SettingsHelp>
             </div>
             <div className="form-row">
               <label htmlFor="messageThreadId" className="text-label">
@@ -337,9 +338,9 @@ const NotificationsTelegram = () => {
                     <div className="error">{errors.messageThreadId}</div>
                   )}
               </div>
-              <span className="settings-form-row-description">
+              <SettingsHelp as="span" className="settings-form-row-description">
                 {intl.formatMessage(messages.messageThreadIdTip)}
-              </span>
+              </SettingsHelp>
             </div>
             <div className="form-row">
               <label htmlFor="sendSilently" className="checkbox-label">
@@ -348,9 +349,9 @@ const NotificationsTelegram = () => {
               <div className="form-input-area">
                 <Field type="checkbox" id="sendSilently" name="sendSilently" />
               </div>
-              <span className="settings-form-row-description">
+              <SettingsHelp as="span" className="settings-form-row-description">
                 {intl.formatMessage(messages.sendSilentlyTip)}
-              </span>
+              </SettingsHelp>
             </div>
             <NotificationTypeSelector
               currentTypes={values.enabled ? values.types : 0}

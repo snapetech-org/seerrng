@@ -4,6 +4,7 @@ import Button from '@app/components/Common/Button';
 import LoadingSpinner from '@app/components/Common/LoadingSpinner';
 import OpaqueApiMessageText from '@app/components/Common/OpaqueApiMessageText';
 import SettingsField from '@app/components/Settings/SettingsField';
+import SettingsHelp from '@app/components/Settings/SettingsHelp';
 import useToasts from '@app/hooks/useToasts';
 import defineMessages from '@app/utils/defineMessages';
 import type { SwipeSettings } from '@server/lib/settings';
@@ -148,9 +149,9 @@ const SettingsSwipe = () => {
       <h3 className="settings-group-heading">
         {intl.formatMessage(messages.title)}
       </h3>
-      <p className="settings-group-description">
+      <SettingsHelp className="settings-group-description">
         {intl.formatMessage(messages.description)}
-      </p>
+      </SettingsHelp>
       <div className="settings-group-content">
         {!data && !error && <LoadingSpinner />}
         {error && (
@@ -245,9 +246,9 @@ const SettingsSwipe = () => {
                           }
                         />
                       </div>
-                      <p className="settings-form-row-description">
+                      <SettingsHelp className="settings-form-row-description">
                         {intl.formatMessage(messages.baseUrlHelp)}
-                      </p>
+                      </SettingsHelp>
                     </div>
                   </div>
                 )}
@@ -283,9 +284,9 @@ const SettingsSwipe = () => {
                       />
                     </div>
                     {usesOpenAi && (
-                      <p className="settings-form-row-description">
+                      <SettingsHelp className="settings-form-row-description">
                         {intl.formatMessage(messages.openAiKeyHelp)}
-                      </p>
+                      </SettingsHelp>
                     )}
                     {data.aiApiKey && (
                       <div className="form-input-field">
@@ -323,13 +324,13 @@ const SettingsSwipe = () => {
                         }
                       />
                     </div>
-                    <p className="settings-form-row-description">
+                    <SettingsHelp className="settings-form-row-description">
                       {usesOpenAi
                         ? intl.formatMessage(messages.openAiModelHelp)
                         : intl.formatMessage(messages.modelHelp, {
                             model: DEFAULT_MODEL,
                           })}
-                    </p>
+                    </SettingsHelp>
                   </div>
                 </div>
                 {!usesOpenAi && (
@@ -361,9 +362,9 @@ const SettingsSwipe = () => {
                           </option>
                         </select>
                       </div>
-                      <p className="settings-form-row-description">
+                      <SettingsHelp className="settings-form-row-description">
                         {intl.formatMessage(messages.effortHelp)}
-                      </p>
+                      </SettingsHelp>
                     </div>
                   </div>
                 )}

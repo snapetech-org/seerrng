@@ -7,6 +7,7 @@ import LibraryItem from '@app/components/Settings/LibraryItem';
 import Field, {
   default as SettingsField,
 } from '@app/components/Settings/SettingsField';
+import SettingsHelp from '@app/components/Settings/SettingsHelp';
 import useSettings from '@app/hooks/useSettings';
 import useToasts from '@app/hooks/useToasts';
 import globalMessages from '@app/i18n/globalMessages';
@@ -360,12 +361,12 @@ const SettingsJellyfin: React.FC<SettingsJellyfinProps> = ({
             mediaServerFormatValues
           )}
         </h3>
-        <p className="description">
+        <SettingsHelp className="description">
           {intl.formatMessage(
             messages.jellyfinlibrariesDescription,
             mediaServerFormatValues
           )}
-        </p>
+        </SettingsHelp>
       </div>
       <div className="app-card-sub section">
         <Button onClick={() => syncLibraries()} disabled={isSyncing}>
@@ -517,12 +518,12 @@ const SettingsJellyfin: React.FC<SettingsJellyfinProps> = ({
             mediaServerFormatValues
           )}
         </h3>
-        <p className="description">
+        <SettingsHelp className="description">
           {intl.formatMessage(
             messages.jellyfinSettingsDescription,
             mediaServerFormatValues
           )}
-        </p>
+        </SettingsHelp>
       </div>
       <Formik
         initialValues={{
@@ -785,9 +786,9 @@ const SettingsJellyfin: React.FC<SettingsJellyfinProps> = ({
             <h3 className="heading">
               {intl.formatMessage(messages.seerrngBridgeLogin)}
             </h3>
-            <p className="description">
+            <SettingsHelp className="description">
               {intl.formatMessage(messages.seerrngBridgeLoginDescription)}
-            </p>
+            </SettingsHelp>
           </div>
           <div className="app-card-sub section">
             <div className="form-row">

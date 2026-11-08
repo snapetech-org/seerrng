@@ -1966,7 +1966,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/Settings/SavedServiceHosts.tsx",
-          "line": 17,
+          "line": 18,
           "defaultMessage": "'Name'"
         }
       ],
@@ -1986,7 +1986,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/Settings/SettingsCategories/index.tsx",
-          "line": 34,
+          "line": 35,
           "defaultMessage": "'Comics'"
         }
       ],
@@ -2006,7 +2006,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/Settings/SettingsLogs/index.tsx",
-          "line": 58,
+          "line": 59,
           "defaultMessage": "'Pause'"
         }
       ],
@@ -2026,7 +2026,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/Settings/SettingsServices.tsx",
-          "line": 132,
+          "line": 133,
           "defaultMessage": "'System'"
         }
       ],
@@ -2046,7 +2046,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/Settings/SettingsProwlarr.tsx",
-          "line": 77,
+          "line": 78,
           "defaultMessage": "'Comics'"
         }
       ],
@@ -2926,7 +2926,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/Settings/SettingsLogs/index.tsx",
-          "line": 54,
+          "line": 55,
           "defaultMessage": "'Error'"
         }
       ],
@@ -2946,7 +2946,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/Settings/SettingsMetadata.tsx",
-          "line": 23,
+          "line": 24,
           "defaultMessage": "'General'"
         }
       ],
@@ -2966,7 +2966,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/Settings/SettingsLayout.tsx",
-          "line": 30,
+          "line": 35,
           "defaultMessage": "'General'"
         }
       ],
@@ -4534,7 +4534,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/Settings/SettingsJobsCache/index.tsx",
-          "line": 41,
+          "line": 42,
           "defaultMessage": "'Type'"
         }
       ],
@@ -4554,7 +4554,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/Settings/SettingsLogs/index.tsx",
-          "line": 50,
+          "line": 51,
           "defaultMessage": "'Message'"
         }
       ],
@@ -4574,7 +4574,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/Settings/SettingsLogs/index.tsx",
-          "line": 58,
+          "line": 59,
           "defaultMessage": "'Pause'"
         }
       ],
@@ -4594,7 +4594,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/Settings/SettingsLayout.tsx",
-          "line": 39,
+          "line": 44,
           "defaultMessage": "'Notifications'"
         }
       ],
@@ -4614,7 +4614,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/Settings/SettingsLayout.tsx",
-          "line": 35,
+          "line": 40,
           "defaultMessage": "'Services'"
         }
       ],
@@ -4634,7 +4634,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/Settings/SettingsNotifications.tsx",
-          "line": 17,
+          "line": 18,
           "defaultMessage": "'Notifications'"
         }
       ],
@@ -4654,7 +4654,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/Settings/SettingsServices.tsx",
-          "line": 126,
+          "line": 127,
           "defaultMessage": "'Services'"
         }
       ],
@@ -4674,7 +4674,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/Settings/SettingsProwlarr.tsx",
-          "line": 80,
+          "line": 81,
           "defaultMessage": "'Sports'"
         }
       ],
@@ -6154,7 +6154,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/Settings/SettingsLogs/index.tsx",
-          "line": 49,
+          "line": 50,
           "defaultMessage": "'Label'"
         }
       ],
@@ -6174,7 +6174,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/Settings/SettingsRecognition.tsx",
-          "line": 40,
+          "line": 41,
           "defaultMessage": "'Model'"
         }
       ],

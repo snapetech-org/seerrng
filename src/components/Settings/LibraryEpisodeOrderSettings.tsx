@@ -1,3 +1,4 @@
+import SettingsHelp from '@app/components/Settings/SettingsHelp';
 import defineMessages from '@app/utils/defineMessages';
 import { MetadataProviderType } from '@server/constants/metadata';
 import type { Library } from '@server/lib/settings';
@@ -36,7 +37,9 @@ const LibraryEpisodeOrderSettings = ({
   return (
     <section className="app-card-sub settings-group-card">
       <h3 className="heading">{intl.formatMessage(messages.title)}</h3>
-      <p className="description">{intl.formatMessage(messages.description)}</p>
+      <SettingsHelp className="description">
+        {intl.formatMessage(messages.description)}
+      </SettingsHelp>
       <div className="settings-group-content">
         {showLibraries.map((library) => {
           const id = `episode-order-${library.id}`;
@@ -72,9 +75,9 @@ const LibraryEpisodeOrderSettings = ({
                     </option>
                   </select>
                 </div>
-                <p className="settings-form-row-description">
+                <SettingsHelp className="settings-form-row-description">
                   {intl.formatMessage(messages.help)}
-                </p>
+                </SettingsHelp>
               </div>
             </div>
           );

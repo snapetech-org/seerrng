@@ -3,6 +3,7 @@ import Button from '@app/components/Common/Button';
 import LoadingSpinner from '@app/components/Common/LoadingSpinner';
 import { SavedServiceHostPicker } from '@app/components/Settings/SavedServiceHostPicker';
 import SettingsField from '@app/components/Settings/SettingsField';
+import SettingsHelp from '@app/components/Settings/SettingsHelp';
 import defineMessages from '@app/utils/defineMessages';
 import type ReadMeABookRequest from '@server/entity/ReadMeABookRequest';
 import type { ReadMeABookSettings } from '@server/lib/settings';
@@ -178,7 +179,9 @@ const SettingsReadMeABook = () => {
   return (
     <section className="section app-card-sub settings-service-section">
       <h3 className="heading">{intl.formatMessage(messages.title)}</h3>
-      <p className="description">{intl.formatMessage(messages.description)}</p>
+      <SettingsHelp className="description">
+        {intl.formatMessage(messages.description)}
+      </SettingsHelp>
       <form onSubmit={submit}>
         <div className="form-row">
           <label htmlFor="readmeabook-enabled">

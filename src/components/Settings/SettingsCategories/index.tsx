@@ -3,6 +3,7 @@ import LoadingSpinner from '@app/components/Common/LoadingSpinner';
 import PageTitle from '@app/components/Common/PageTitle';
 import SettingsField from '@app/components/Settings/SettingsField';
 import SettingsFormRow from '@app/components/Settings/SettingsFormRow';
+import SettingsHelp from '@app/components/Settings/SettingsHelp';
 import useToasts from '@app/hooks/useToasts';
 import globalMessages from '@app/i18n/globalMessages';
 import defineMessages from '@app/utils/defineMessages';
@@ -116,9 +117,9 @@ const SettingsCategories = () => {
       />
       <div className="mb-6">
         <h3 className="heading">{intl.formatMessage(messages.title)}</h3>
-        <p className="description">
+        <SettingsHelp className="description">
           {intl.formatMessage(messages.description)}
-        </p>
+        </SettingsHelp>
       </div>
       <Formik
         initialValues={{
@@ -168,9 +169,9 @@ const SettingsCategories = () => {
               <h3 className="settings-group-heading">
                 {intl.formatMessage(messages.groupTitle)}
               </h3>
-              <p className="settings-group-description">
+              <SettingsHelp className="settings-group-description">
                 {intl.formatMessage(messages.groupDescription)}
-              </p>
+              </SettingsHelp>
               <div className="settings-group-content">
                 {categories.map(({ key, label, description }) => (
                   <SettingsFormRow
@@ -200,9 +201,9 @@ const SettingsCategories = () => {
               <h3 className="settings-group-heading">
                 {intl.formatMessage(messages.ageGateTitle)}
               </h3>
-              <p className="settings-group-description">
+              <SettingsHelp className="settings-group-description">
                 {intl.formatMessage(messages.ageGateDescription)}
-              </p>
+              </SettingsHelp>
               <div className="settings-group-content">
                 <SettingsFormRow
                   htmlFor="ageGate.defaultRestricted"

@@ -3,6 +3,7 @@ import SensitiveInput from '@app/components/Common/SensitiveInput';
 import Field, {
   default as SettingsField,
 } from '@app/components/Settings/SettingsField';
+import SettingsHelp from '@app/components/Settings/SettingsHelp';
 import useToasts from '@app/hooks/useToasts';
 import globalMessages from '@app/i18n/globalMessages';
 import defineMessages from '@app/utils/defineMessages';
@@ -200,7 +201,9 @@ const AudiobookshelfModal = ({
           onSecondary={() => testConnection(values, setFieldValue)}
         >
           <div className="mb-6">
-            <p className="description">{intl.formatMessage(messages.intro)}</p>
+            <SettingsHelp className="description">
+              {intl.formatMessage(messages.intro)}
+            </SettingsHelp>
             <div className="form-row">
               <label className="checkbox-label" htmlFor="syncEnabled">
                 {intl.formatMessage(messages.scanEnabled)}
@@ -306,9 +309,9 @@ const AudiobookshelfModal = ({
                   }}
                 />
               </div>
-              <span className="settings-form-row-description">
+              <SettingsHelp as="span" className="settings-form-row-description">
                 {intl.formatMessage(messages.apiKeyHelp)}
-              </span>
+              </SettingsHelp>
             </div>
             <div className="form-row">
               <label className="text-label" htmlFor="baseUrl">
@@ -337,9 +340,9 @@ const AudiobookshelfModal = ({
                     <div className="error">{errors.externalUrl}</div>
                   )}
               </div>
-              <span className="settings-form-row-description">
+              <SettingsHelp as="span" className="settings-form-row-description">
                 {intl.formatMessage(messages.externalUrlHelp)}
-              </span>
+              </SettingsHelp>
             </div>
             <div className="form-row">
               <label className="text-label" htmlFor="libraryId">

@@ -1,6 +1,7 @@
 import Modal from '@app/components/Common/Modal';
 import SensitiveInput from '@app/components/Common/SensitiveInput';
 import Field from '@app/components/Settings/SettingsField';
+import SettingsHelp from '@app/components/Settings/SettingsHelp';
 import useToasts from '@app/hooks/useToasts';
 import globalMessages from '@app/i18n/globalMessages';
 import { getSafeApiErrorDetails } from '@app/utils/apiError';
@@ -208,9 +209,9 @@ const SportarrModal = ({ settings, onClose, onSave }: SportarrModalProps) => {
             secondaryDisabled={isSubmitting || isTesting || !canTestConnection}
           >
             <Form className="settings-page-content">
-              <p className="description">
+              <SettingsHelp className="description">
                 {intl.formatMessage(messages.intro)}
-              </p>
+              </SettingsHelp>
               <div className="form-row">
                 <label htmlFor="name" className="text-label">
                   {intl.formatMessage(messages.name)}
@@ -269,9 +270,9 @@ const SportarrModal = ({ settings, onClose, onSave }: SportarrModalProps) => {
                   <div className="form-input-field">
                     <Field id="baseUrl" name="baseUrl" type="text" />
                   </div>
-                  <p className="settings-form-row-description">
+                  <SettingsHelp className="settings-form-row-description">
                     {intl.formatMessage(messages.baseUrlHelp)}
-                  </p>
+                  </SettingsHelp>
                 </div>
               </div>
               <div className="form-row">
@@ -283,9 +284,9 @@ const SportarrModal = ({ settings, onClose, onSave }: SportarrModalProps) => {
                   <div className="form-input-field">
                     <SensitiveInput as="field" id="apiKey" name="apiKey" />
                   </div>
-                  <p className="settings-form-row-description">
+                  <SettingsHelp className="settings-form-row-description">
                     {intl.formatMessage(messages.apiKeyHelp)}
-                  </p>
+                  </SettingsHelp>
                   {renderError('apiKey')}
                 </div>
               </div>

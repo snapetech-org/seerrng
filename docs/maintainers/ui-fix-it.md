@@ -146,3 +146,12 @@ versus disclosure flow, navigation, input/button geometry, shelves, requests,
 settings and loading/error states. Verify the alternative theme independently
 against its own accepted baseline. Trace generic input selectors and specificity
 so they cannot override a more specific semantic search-field owner.
+
+### Optional compact settings display
+
+Keep full settings as the default in both themes. When checking compact settings,
+verify keyboard disclosure, search reveal, validation reveal and preserved dirty
+state through a failed save and display toggle. Inspect the configured status
+beside its button at 320px as well as ordinary phone/desktop widths; root overflow
+checks alone miss clipped button contents. The qualification and explicit gallery
+exclusions are recorded in [the display validation record](settings-compact-display-validation-2026-11-07.md).

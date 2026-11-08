@@ -5,6 +5,7 @@ import LoadingSpinner from '@app/components/Common/LoadingSpinner';
 import OpaqueApiMessageText from '@app/components/Common/OpaqueApiMessageText';
 import { SavedServiceHostPicker } from '@app/components/Settings/SavedServiceHostPicker';
 import SettingsField from '@app/components/Settings/SettingsField';
+import SettingsHelp from '@app/components/Settings/SettingsHelp';
 import {
   getSetupDefaultDownloadClientTypes,
   getSetupDownloadClientTypes,
@@ -703,9 +704,9 @@ const SettingsDownloadClients = ({
       <h3 className="settings-group-heading">
         {intl.formatMessage(messages.title)}
       </h3>
-      <p className="settings-group-description">
+      <SettingsHelp className="settings-group-description">
         {intl.formatMessage(messages.description)}
-      </p>
+      </SettingsHelp>
       <div className="settings-group-content">
         {!data && !error && <LoadingSpinner />}
         {error && (
@@ -749,9 +750,9 @@ const SettingsDownloadClients = ({
                     }}
                   />
                 </div>
-                <p className="settings-form-row-description">
+                <SettingsHelp className="settings-form-row-description">
                   {intl.formatMessage(messages.pollIntervalDescription)}
-                </p>
+                </SettingsHelp>
               </div>
             </div>
             {isDirty && (

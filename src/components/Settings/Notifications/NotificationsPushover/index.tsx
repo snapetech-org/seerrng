@@ -2,6 +2,7 @@ import Button from '@app/components/Common/Button';
 import LoadingSpinner from '@app/components/Common/LoadingSpinner';
 import NotificationTypeSelector from '@app/components/NotificationTypeSelector';
 import Field from '@app/components/Settings/SettingsField';
+import SettingsHelp from '@app/components/Settings/SettingsHelp';
 import useToasts from '@app/hooks/useToasts';
 import globalMessages from '@app/i18n/globalMessages';
 import defineMessages from '@app/utils/defineMessages';
@@ -224,7 +225,7 @@ const NotificationsPushover = () => {
                     <div className="error">{errors.accessToken}</div>
                   )}
               </div>
-              <span className="settings-form-row-description">
+              <SettingsHelp as="span" className="settings-form-row-description">
                 {intl.formatMessage(messages.accessTokenTip, {
                   ApplicationRegistrationLink: (msg: React.ReactNode) => (
                     <a
@@ -237,7 +238,7 @@ const NotificationsPushover = () => {
                     </a>
                   ),
                 })}
-              </span>
+              </SettingsHelp>
             </div>
             <div className="form-row">
               <label htmlFor="userToken" className="text-label">
@@ -254,7 +255,7 @@ const NotificationsPushover = () => {
                     <div className="error">{errors.userToken}</div>
                   )}
               </div>
-              <span className="settings-form-row-description">
+              <SettingsHelp as="span" className="settings-form-row-description">
                 {intl.formatMessage(messages.userTokenTip, {
                   UsersGroupsLink: (msg: React.ReactNode) => (
                     <a
@@ -267,7 +268,7 @@ const NotificationsPushover = () => {
                     </a>
                   ),
                 })}
-              </span>
+              </SettingsHelp>
             </div>
             <div className="form-row">
               <label htmlFor="sound" className="text-label">

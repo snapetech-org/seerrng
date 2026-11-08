@@ -3,6 +3,7 @@ import SensitiveInput from '@app/components/Common/SensitiveInput';
 import Field, {
   default as SettingsField,
 } from '@app/components/Settings/SettingsField';
+import SettingsHelp from '@app/components/Settings/SettingsHelp';
 import { useSetupConnectionSuggestion } from '@app/context/SetupConnectionsContext';
 import useToasts from '@app/hooks/useToasts';
 import globalMessages from '@app/i18n/globalMessages';
@@ -406,9 +407,12 @@ const KapowarrModal = ({ onClose, kapowarr, onSave }: KapowarrModalProps) => {
                       <div className="error">{errors.apiKey}</div>
                     )}
                 </div>
-                <span className="settings-form-row-description">
+                <SettingsHelp
+                  as="span"
+                  className="settings-form-row-description"
+                >
                   {intl.formatMessage(messages.apiKeyHelp)}
-                </span>
+                </SettingsHelp>
               </div>
               <div className="form-row">
                 <label htmlFor="baseUrl" className="text-label">
@@ -433,9 +437,12 @@ const KapowarrModal = ({ onClose, kapowarr, onSave }: KapowarrModalProps) => {
                       <div className="error">{errors.baseUrl}</div>
                     )}
                 </div>
-                <span className="settings-form-row-description">
+                <SettingsHelp
+                  as="span"
+                  className="settings-form-row-description"
+                >
                   {intl.formatMessage(messages.baseUrlHelp)}
-                </span>
+                </SettingsHelp>
               </div>
               <div className="form-row">
                 <label htmlFor="rootFolder" className="text-label">
@@ -452,9 +459,12 @@ const KapowarrModal = ({ onClose, kapowarr, onSave }: KapowarrModalProps) => {
                       <div className="error">{errors.rootFolder}</div>
                     )}
                 </div>
-                <span className="settings-form-row-description">
+                <SettingsHelp
+                  as="span"
+                  className="settings-form-row-description"
+                >
                   {intl.formatMessage(messages.rootFolderHelp)}
-                </span>
+                </SettingsHelp>
               </div>
               <div className="form-row">
                 <label htmlFor="externalUrl" className="text-label">
@@ -470,9 +480,12 @@ const KapowarrModal = ({ onClose, kapowarr, onSave }: KapowarrModalProps) => {
                       <div className="error">{errors.externalUrl}</div>
                     )}
                 </div>
-                <span className="settings-form-row-description">
+                <SettingsHelp
+                  as="span"
+                  className="settings-form-row-description"
+                >
                   {intl.formatMessage(messages.externalUrlHelp)}
-                </span>
+                </SettingsHelp>
               </div>
               <div className="form-row">
                 <label htmlFor="syncEnabled" className="checkbox-label">
@@ -485,9 +498,12 @@ const KapowarrModal = ({ onClose, kapowarr, onSave }: KapowarrModalProps) => {
                     name="syncEnabled"
                   />
                 </div>
-                <span className="settings-form-row-description">
+                <SettingsHelp
+                  as="span"
+                  className="settings-form-row-description"
+                >
                   {intl.formatMessage(messages.syncEnabledHelp)}
-                </span>
+                </SettingsHelp>
               </div>
               <div className="form-row">
                 <label htmlFor="enableSearch" className="checkbox-label">
@@ -500,9 +516,12 @@ const KapowarrModal = ({ onClose, kapowarr, onSave }: KapowarrModalProps) => {
                     name="enableSearch"
                   />
                 </div>
-                <span className="settings-form-row-description">
+                <SettingsHelp
+                  as="span"
+                  className="settings-form-row-description"
+                >
                   {intl.formatMessage(messages.enableSearchHelp)}
-                </span>
+                </SettingsHelp>
               </div>
             </div>
           </Modal>

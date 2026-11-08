@@ -3,6 +3,7 @@ import LoadingSpinner from '@app/components/Common/LoadingSpinner';
 import SensitiveInput from '@app/components/Common/SensitiveInput';
 import NotificationTypeSelector from '@app/components/NotificationTypeSelector';
 import Field from '@app/components/Settings/SettingsField';
+import SettingsHelp from '@app/components/Settings/SettingsHelp';
 import { availableLanguages } from '@app/context/LanguageContext';
 import useToasts from '@app/hooks/useToasts';
 import globalMessages from '@app/i18n/globalMessages';
@@ -236,9 +237,9 @@ const NotificationsApprise = () => {
                 <div className="form-input-field">
                   <Field id="configKey" name="configKey" type="text" />
                 </div>
-                <p className="settings-form-row-description">
+                <SettingsHelp className="settings-form-row-description">
                   {intl.formatMessage(messages.configKeyTip)}
-                </p>
+                </SettingsHelp>
                 {errors.configKey &&
                   touched.configKey &&
                   typeof errors.configKey === 'string' && (
@@ -254,9 +255,9 @@ const NotificationsApprise = () => {
                 <div className="form-input-field">
                   <Field id="tag" name="tag" type="text" />
                 </div>
-                <p className="settings-form-row-description">
+                <SettingsHelp className="settings-form-row-description">
                   {intl.formatMessage(messages.tagTip)}
-                </p>
+                </SettingsHelp>
               </div>
             </div>
             <div className="form-row">

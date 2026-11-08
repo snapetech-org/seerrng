@@ -7,6 +7,7 @@ import ServarrDownloadQueueSizeField, {
 import Field, {
   default as SettingsField,
 } from '@app/components/Settings/SettingsField';
+import SettingsHelp from '@app/components/Settings/SettingsHelp';
 import type { RadarrTestResponse } from '@app/components/Settings/SettingsServices';
 import SyncExcludedTagsField from '@app/components/Settings/SyncExcludedTagsField';
 import { useSetupConnectionSuggestion } from '@app/context/SetupConnectionsContext';
@@ -401,9 +402,12 @@ const RadarrModal = ({ onClose, radarr, onSave }: RadarrModalProps) => {
                   <div className="form-input-area">
                     <SettingsField type="checkbox" id="is4k" name="is4k" />
                   </div>
-                  <span className="settings-form-row-description">
+                  <SettingsHelp
+                    as="span"
+                    className="settings-form-row-description"
+                  >
                     {intl.formatMessage(messages.server4kHelp)}
-                  </span>
+                  </SettingsHelp>
                 </div>
                 <div className="form-row">
                   <label htmlFor="name" className="text-label">
@@ -526,9 +530,12 @@ const RadarrModal = ({ onClose, radarr, onSave }: RadarrModalProps) => {
                         <div className="error">{errors.apiKey}</div>
                       )}
                   </div>
-                  <span className="settings-form-row-description">
+                  <SettingsHelp
+                    as="span"
+                    className="settings-form-row-description"
+                  >
                     {intl.formatMessage(messages.apiKeyHelp)}
-                  </span>
+                  </SettingsHelp>
                 </div>
                 <div className="form-row">
                   <label htmlFor="baseUrl" className="text-label">
@@ -553,9 +560,12 @@ const RadarrModal = ({ onClose, radarr, onSave }: RadarrModalProps) => {
                         <div className="error">{errors.baseUrl}</div>
                       )}
                   </div>
-                  <span className="settings-form-row-description">
+                  <SettingsHelp
+                    as="span"
+                    className="settings-form-row-description"
+                  >
                     {intl.formatMessage(messages.baseUrlHelp)}
-                  </span>
+                  </SettingsHelp>
                 </div>
                 <div className="form-row">
                   <label htmlFor="activeProfileId" className="text-label">
@@ -753,9 +763,12 @@ const RadarrModal = ({ onClose, radarr, onSave }: RadarrModalProps) => {
                         <div className="error">{errors.externalUrl}</div>
                       )}
                   </div>
-                  <span className="settings-form-row-description">
+                  <SettingsHelp
+                    as="span"
+                    className="settings-form-row-description"
+                  >
                     {intl.formatMessage(messages.externalUrlHelp)}
-                  </span>
+                  </SettingsHelp>
                 </div>
                 <div className="form-row">
                   <label htmlFor="syncEnabled" className="checkbox-label">
@@ -768,9 +781,12 @@ const RadarrModal = ({ onClose, radarr, onSave }: RadarrModalProps) => {
                       name="syncEnabled"
                     />
                   </div>
-                  <span className="settings-form-row-description">
+                  <SettingsHelp
+                    as="span"
+                    className="settings-form-row-description"
+                  >
                     {intl.formatMessage(messages.syncEnabledHelp)}
-                  </span>
+                  </SettingsHelp>
                 </div>
                 <ServarrDownloadQueueSizeField />
                 <SyncExcludedTagsField
@@ -804,9 +820,12 @@ const RadarrModal = ({ onClose, radarr, onSave }: RadarrModalProps) => {
                       name="enableSearch"
                     />
                   </div>
-                  <span className="settings-form-row-description">
+                  <SettingsHelp
+                    as="span"
+                    className="settings-form-row-description"
+                  >
                     {intl.formatMessage(messages.enableSearchHelp)}
-                  </span>
+                  </SettingsHelp>
                 </div>
                 <div className="form-row">
                   <label htmlFor="tagRequests" className="checkbox-label">
@@ -819,9 +838,12 @@ const RadarrModal = ({ onClose, radarr, onSave }: RadarrModalProps) => {
                       name="tagRequests"
                     />
                   </div>
-                  <span className="settings-form-row-description">
+                  <SettingsHelp
+                    as="span"
+                    className="settings-form-row-description"
+                  >
                     {intl.formatMessage(messages.tagRequestsInfo)}
-                  </span>
+                  </SettingsHelp>
                 </div>
                 <div className="form-row">
                   <label htmlFor="requestButtonLabel" className="text-label">
@@ -837,9 +859,12 @@ const RadarrModal = ({ onClose, radarr, onSave }: RadarrModalProps) => {
                       />
                     </div>
                   </div>
-                  <span className="settings-form-row-description">
+                  <SettingsHelp
+                    as="span"
+                    className="settings-form-row-description"
+                  >
                     {intl.formatMessage(messages.requestButtonLabelHelp)}
-                  </span>
+                  </SettingsHelp>
                 </div>
                 <div className="form-row">
                   <label
@@ -855,9 +880,12 @@ const RadarrModal = ({ onClose, radarr, onSave }: RadarrModalProps) => {
                       name="requestButtonAnimeOnly"
                     />
                   </div>
-                  <span className="settings-form-row-description">
+                  <SettingsHelp
+                    as="span"
+                    className="settings-form-row-description"
+                  >
                     {intl.formatMessage(messages.requestButtonAnimeOnlyHelp)}
-                  </span>
+                  </SettingsHelp>
                 </div>
               </div>
             </Modal>

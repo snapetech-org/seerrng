@@ -7825,6 +7825,38 @@
     @apply min-w-max flex-none;
   }
 
+  .settings-page-controls {
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .settings-group-title-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--button-content-gap);
+  }
+
+  .settings-group-toggle {
+    max-width: 100%;
+  }
+
+  .settings-group-status {
+    font-weight: normal;
+    letter-spacing: normal;
+    text-transform: none;
+  }
+
+  .settings-help > summary {
+    min-height: var(--action-control-height);
+    cursor: pointer;
+    width: fit-content;
+  }
+
+  .settings-help-content {
+    margin-top: var(--button-content-gap);
+  }
+
   .settings-page-search {
     @apply w-72 max-w-full flex-none;
     height: var(--compact-control-height);
@@ -7998,7 +8030,12 @@
   }
 
   .settings-form-label-line {
-    @apply inline-flex flex-nowrap items-center gap-[5px] whitespace-nowrap;
+    display: inline-flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 5px;
+    max-width: 100%;
+    white-space: normal;
   }
 
   .settings-plain-value {

@@ -19,6 +19,7 @@ import OverrideRuleTiles from '@app/components/Settings/OverrideRule/OverrideRul
 import ReaderDeliverySettings from '@app/components/Settings/ReaderDeliverySettings';
 import SavedServiceHosts from '@app/components/Settings/SavedServiceHosts';
 import SettingsDownloadClients from '@app/components/Settings/SettingsDownloadClients';
+import SettingsHelp from '@app/components/Settings/SettingsHelp';
 import { useSettingsPageAction } from '@app/components/Settings/SettingsLayout';
 import SettingsProwlarr from '@app/components/Settings/SettingsProwlarr';
 import SettingsReadMeABook from '@app/components/Settings/SettingsReadMeABook';
@@ -1038,9 +1039,9 @@ const SettingsServices = ({
           <h2 className="heading">
             {intl.formatMessage(messages.guidedSetupTitle)}
           </h2>
-          <p className="description mb-3">
+          <SettingsHelp className="description mb-3">
             {intl.formatMessage(messages.guidedSetupDescription)}
-          </p>
+          </SettingsHelp>
           <Link href="/setup?guide=1" legacyBehavior passHref>
             <Button as="a" buttonType="default" buttonSize="standard">
               {intl.formatMessage(messages.guidedSetupAction)}
@@ -1152,14 +1153,14 @@ const SettingsServices = ({
                 <h3 className="heading">
                   {intl.formatMessage(messages.radarrsettings)}
                 </h3>
-                <p className="description">
+                <SettingsHelp className="description">
                   {intl.formatMessage(
                     messages.videoServiceSettingsDescription,
                     {
                       serverType: 'Radarr',
                     }
                   )}
-                </p>
+                </SettingsHelp>
               </div>
               {editRadarrModal.open && (
                 <RadarrModal
@@ -1493,14 +1494,14 @@ const SettingsServices = ({
                 <h3 className="heading">
                   {intl.formatMessage(messages.sonarrsettings)}
                 </h3>
-                <p className="description">
+                <SettingsHelp className="description">
                   {intl.formatMessage(
                     messages.videoServiceSettingsDescription,
                     {
                       serverType: 'Sonarr',
                     }
                   )}
-                </p>
+                </SettingsHelp>
               </div>
               <div
                 className="app-card-sub section settings-service-section"
@@ -1609,11 +1610,11 @@ const SettingsServices = ({
                     <h3 className="heading">
                       {intl.formatMessage(messages.whisparrsettings)}
                     </h3>
-                    <p className="description">
+                    <SettingsHelp className="description">
                       {intl.formatMessage(
                         messages.adultServiceSettingsDescription
                       )}
-                    </p>
+                    </SettingsHelp>
                   </div>
                   <div
                     className="app-card-sub section settings-service-section"
@@ -1739,9 +1740,9 @@ const SettingsServices = ({
                     <h3 className="heading">
                       {intl.formatMessage(messages.sportarrsettings)}
                     </h3>
-                    <p className="description">
+                    <SettingsHelp className="description">
                       {intl.formatMessage(messages.sportarrDescription)}
-                    </p>
+                    </SettingsHelp>
                   </div>
                   <div
                     className="app-card-sub section settings-service-section"
@@ -1834,9 +1835,9 @@ const SettingsServices = ({
                 <h3 className="heading">
                   {intl.formatMessage(messages.jellystatsettings)}
                 </h3>
-                <p className="description">
+                <SettingsHelp className="description">
                   {intl.formatMessage(messages.jellystatDescription)}
-                </p>
+                </SettingsHelp>
               </div>
               <ul className="settings-service-grid">
                 {jellystatData &&
@@ -1926,12 +1927,12 @@ const SettingsServices = ({
                 <h3 className="heading">
                   {intl.formatMessage(messages.readarrsettings)}
                 </h3>
-                <p className="description">
+                <SettingsHelp className="description">
                   {intl.formatMessage(messages.bookServiceSettingsDescription)}
-                </p>
-                <p className="description mt-2">
+                </SettingsHelp>
+                <SettingsHelp className="description mt-2">
                   {intl.formatMessage(messages.bookServiceApiKeyDescription)}
-                </p>
+                </SettingsHelp>
               </div>
               <div
                 className="app-card-sub section settings-service-section"
@@ -2108,9 +2109,9 @@ const SettingsServices = ({
                       <h4 className="text-lg font-semibold">
                         {intl.formatMessage(messages.audiobookshelfsettings)}
                       </h4>
-                      <p className="description">
+                      <SettingsHelp className="description">
                         {intl.formatMessage(messages.audiobookshelfDescription)}
-                      </p>
+                      </SettingsHelp>
                     </div>
                     <ul className="settings-service-grid">
                       {audiobookshelfData && (
@@ -2178,14 +2179,14 @@ const SettingsServices = ({
                 <h3 className="heading">
                   {intl.formatMessage(messages.mylarsettings)}
                 </h3>
-                <p className="description">
+                <SettingsHelp className="description">
                   {intl.formatMessage(
                     messages.comicServiceSettingsDescription,
                     {
                       serverType: 'Mylar',
                     }
                   )}
-                </p>
+                </SettingsHelp>
               </div>
               {showComicServices &&
                 mylarData &&
@@ -2260,14 +2261,14 @@ const SettingsServices = ({
                 <h3 className="heading">
                   {intl.formatMessage(messages.kapowarrsettings)}
                 </h3>
-                <p className="description">
+                <SettingsHelp className="description">
                   {intl.formatMessage(
                     messages.comicServiceSettingsDescription,
                     {
                       serverType: 'Kapowarr',
                     }
                   )}
-                </p>
+                </SettingsHelp>
               </div>
               <div
                 className="app-card-sub section settings-service-section"
@@ -2331,14 +2332,14 @@ const SettingsServices = ({
                 <h3 className="heading">
                   {intl.formatMessage(messages.backissuesettings)}
                 </h3>
-                <p className="description">
+                <SettingsHelp className="description">
                   {intl.formatMessage(
                     messages.comicServiceSettingsDescription,
                     {
                       serverType: 'BackIssue',
                     }
                   )}
-                </p>
+                </SettingsHelp>
               </div>
               <div
                 className="app-card-sub section settings-service-section"
@@ -2399,11 +2400,11 @@ const SettingsServices = ({
                 <h3 className="heading">
                   {intl.formatMessage(messages.lazylibrariansettings)}
                 </h3>
-                <p className="description">
+                <SettingsHelp className="description">
                   {intl.formatMessage(
                     messages.magazineServiceSettingsDescription
                   )}
-                </p>
+                </SettingsHelp>
               </div>
               <div
                 className="app-card-sub section settings-service-section"
@@ -2533,14 +2534,14 @@ const SettingsServices = ({
                 <h3 className="heading">
                   {intl.formatMessage(messages.lidarrsettings)}
                 </h3>
-                <p className="description">
+                <SettingsHelp className="description">
                   {intl.formatMessage(
                     messages.musicServiceSettingsDescription,
                     {
                       serverType: 'Lidarr',
                     }
                   )}
-                </p>
+                </SettingsHelp>
               </div>
               <div
                 className="app-card-sub section settings-service-section"
@@ -2630,9 +2631,9 @@ const SettingsServices = ({
               <h3 className="heading">
                 {intl.formatMessage(messages.navidromesettings)}
               </h3>
-              <p className="description">
+              <SettingsHelp className="description">
                 {intl.formatMessage(messages.navidromeDescription)}
-              </p>
+              </SettingsHelp>
             </div>
             <ul className="settings-service-grid">
               {navidromeData &&
@@ -2702,9 +2703,9 @@ const SettingsServices = ({
             <h2 className="heading">
               {intl.formatMessage(messages.setupAssistantTitle)}
             </h2>
-            <p className="description">
+            <SettingsHelp className="description">
               {intl.formatMessage(messages.setupAssistantDescription)}
-            </p>
+            </SettingsHelp>
             <Button
               as="a"
               href="https://github.com/snapetech-org/seerrng/blob/main/docs/using-seerr/setup-assistant.md"
@@ -2731,11 +2732,11 @@ const SettingsServices = ({
               <h3 className="heading">
                 {intl.formatMessage(messages.overrideRules)}
               </h3>
-              <p className="description">
+              <SettingsHelp className="description">
                 {intl.formatMessage(messages.overrideRulesDescription, {
                   serverType: 'Sonarr',
                 })}
-              </p>
+              </SettingsHelp>
             </div>
             <div className="app-card-sub section settings-service-section">
               <ul className="settings-service-grid">

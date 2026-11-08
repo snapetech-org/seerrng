@@ -2229,3 +2229,30 @@ test('Users form ownership permits save-state attributes and rejects a lost shar
     ).some((error) => error.includes(reason))
   );
 });
+
+test('settings groups retain distinct semantic identities after compact display migration', () => {
+  const file = 'src/components/Settings/SettingsMain/index.tsx';
+  const source = repositoryFilesWith()[file];
+  const reason =
+    'General Settings and Playlist Integrations must be separate standard subcards';
+  const errors = (text) =>
+    validateCurrentBatchContract(repositoryFilesWith({ [file]: text })).filter(
+      (error) => error.includes(reason)
+    );
+  assert.deepEqual(errors(source), []);
+  assert.equal(
+    errors(
+      source.replaceAll(
+        'messages.playlistIntegrations',
+        'messages.generalsettings'
+      )
+    ).length,
+    1
+  );
+  assert.equal(
+    errors(
+      source.replaceAll('messages.comicsMetadata', 'messages.generalsettings')
+    ).length,
+    1
+  );
+});

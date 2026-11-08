@@ -8,6 +8,7 @@ import PermissionEdit from '@app/components/PermissionEdit';
 import QuotaSelector from '@app/components/QuotaSelector';
 import { default as SettingsField } from '@app/components/Settings/SettingsField';
 import SettingsGeneratedLoginLinks from '@app/components/Settings/SettingsGeneratedLoginLinks';
+import SettingsHelp from '@app/components/Settings/SettingsHelp';
 import useSettings from '@app/hooks/useSettings';
 import useToasts from '@app/hooks/useToasts';
 import globalMessages from '@app/i18n/globalMessages';
@@ -121,9 +122,9 @@ const SettingsUsers = () => {
         <h3 className="settings-group-heading">
           {intl.formatMessage(messages.userSettings)}
         </h3>
-        <p className="description">
+        <SettingsHelp className="description">
           {intl.formatMessage(messages.userSettingsDescription)}
-        </p>
+        </SettingsHelp>
         <Formik
           initialValues={{
             localLogin: data?.localLogin,
@@ -295,9 +296,12 @@ const SettingsUsers = () => {
                     >
                       {intl.formatMessage(messages.defaultCategories)}
                     </span>
-                    <span className="settings-form-row-description">
+                    <SettingsHelp
+                      as="span"
+                      className="settings-form-row-description"
+                    >
                       {intl.formatMessage(messages.defaultCategoriesTip)}
-                    </span>
+                    </SettingsHelp>
                   </div>
                   <MediaCategoryPreferences
                     fieldPrefix="defaultEnabledMediaCategories"
@@ -384,9 +388,12 @@ const SettingsUsers = () => {
                         </div>
                       )}
                     </div>
-                    <span className="settings-form-row-description">
+                    <SettingsHelp
+                      as="span"
+                      className="settings-form-row-description"
+                    >
                       {intl.formatMessage(messages.loginMethodsTip)}
-                    </span>
+                    </SettingsHelp>
                   </div>
                 </div>
 
@@ -407,12 +414,15 @@ const SettingsUsers = () => {
                       }}
                     />
                   </div>
-                  <span className="settings-form-row-description">
+                  <SettingsHelp
+                    as="span"
+                    className="settings-form-row-description"
+                  >
                     {intl.formatMessage(
                       messages.newPlexLoginTip,
                       mediaServerFormatValues
                     )}
-                  </span>
+                  </SettingsHelp>
                 </div>
                 <div className="form-row">
                   <label htmlFor="movieQuotaLimit" className="text-label">
@@ -519,9 +529,12 @@ const SettingsUsers = () => {
                         />
                       </div>
                     </div>
-                    <span className="settings-form-row-description">
+                    <SettingsHelp
+                      as="span"
+                      className="settings-form-row-description"
+                    >
                       {intl.formatMessage(messages.defaultPermissionsTip)}
-                    </span>
+                    </SettingsHelp>
                   </div>
                 </div>
                 <div className="actions">

@@ -3,6 +3,7 @@ import ApiMessageText from '@app/components/Common/ApiMessageText';
 import Button from '@app/components/Common/Button';
 import LoadingSpinner from '@app/components/Common/LoadingSpinner';
 import SettingsField from '@app/components/Settings/SettingsField';
+import SettingsHelp from '@app/components/Settings/SettingsHelp';
 import useToasts from '@app/hooks/useToasts';
 import defineMessages from '@app/utils/defineMessages';
 import type { RecognitionSettings } from '@server/lib/settings';
@@ -110,9 +111,9 @@ const SettingsRecognition = () => {
       <h3 className="settings-group-heading">
         {intl.formatMessage(messages.title)}
       </h3>
-      <p className="settings-group-description">
+      <SettingsHelp className="settings-group-description">
         {intl.formatMessage(messages.description)}
-      </p>
+      </SettingsHelp>
       <div className="settings-group-content">
         {!data && !error && <LoadingSpinner />}
         {error && (
@@ -223,9 +224,9 @@ const SettingsRecognition = () => {
                           }
                         />
                       </div>
-                      <p className="settings-form-row-description">
+                      <SettingsHelp className="settings-form-row-description">
                         {intl.formatMessage(messages.baseUrlHelp)}
-                      </p>
+                      </SettingsHelp>
                     </div>
                   </div>
                 )}
@@ -261,9 +262,9 @@ const SettingsRecognition = () => {
                       />
                     </div>
                     {usesOpenAi && (
-                      <p className="settings-form-row-description">
+                      <SettingsHelp className="settings-form-row-description">
                         {intl.formatMessage(messages.apiKeyHelp)}
-                      </p>
+                      </SettingsHelp>
                     )}
                     {data.visionApiKey && (
                       <div className="form-input-field">
@@ -300,9 +301,9 @@ const SettingsRecognition = () => {
                         }
                       />
                     </div>
-                    <p className="settings-form-row-description">
+                    <SettingsHelp className="settings-form-row-description">
                       {intl.formatMessage(messages.modelHelp)}
-                    </p>
+                    </SettingsHelp>
                   </div>
                 </div>
                 <div className="form-row">

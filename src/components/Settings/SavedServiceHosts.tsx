@@ -1,5 +1,6 @@
 import ApiMessageText from '@app/components/Common/ApiMessageText';
 import Button from '@app/components/Common/Button';
+import SettingsHelp from '@app/components/Settings/SettingsHelp';
 import defineMessages from '@app/utils/defineMessages';
 import { MAX_SAVED_CONNECTION_HOSTS } from '@server/constants/connectionHosts';
 import type { SavedConnectionHost } from '@server/lib/settings';
@@ -85,7 +86,9 @@ const SavedServiceHosts = () => {
   return (
     <section className="mt-6 border-t border-gray-700 pt-5">
       <h3 className="heading">{intl.formatMessage(messages.title)}</h3>
-      <p className="description">{intl.formatMessage(messages.description)}</p>
+      <SettingsHelp className="description">
+        {intl.formatMessage(messages.description)}
+      </SettingsHelp>
       {error && (
         <p className="description" role="alert">
           {intl.formatMessage(messages.loadError)}

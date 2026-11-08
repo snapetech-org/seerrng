@@ -1,3 +1,4 @@
+import SettingsHelp from '@app/components/Settings/SettingsHelp';
 import type { ReactNode } from 'react';
 
 interface SettingsFormRowProps {
@@ -32,7 +33,12 @@ const SettingsFormRow = ({
     </label>
     <div className="form-input-area">{children}</div>
     {description && (
-      <p className="settings-form-row-description">{description}</p>
+      <SettingsHelp
+        className="settings-form-row-description"
+        topic={typeof label === 'string' ? label : undefined}
+      >
+        {description}
+      </SettingsHelp>
     )}
   </div>
 );

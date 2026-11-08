@@ -4,6 +4,11 @@ import Modal from '@app/components/Common/Modal';
 import PageTitle from '@app/components/Common/PageTitle';
 import type { SettingsRoute } from '@app/components/Common/SettingsTabs';
 import SettingsTabs from '@app/components/Common/SettingsTabs';
+import {
+  SettingsDisplayControl,
+  SettingsDisplayProvider,
+  useSettingsDisplay,
+} from '@app/components/Settings/SettingsDisplay';
 import { SETTINGS_USER_CHANGE_EVENT } from '@app/components/Settings/settingsEvents';
 import useSettings from '@app/hooks/useSettings';
 import useUpstreamTheme from '@app/hooks/useUpstreamTheme';
@@ -111,7 +116,8 @@ const editableSettingsRoute = (path: string) =>
     path
   );
 
-const SettingsLayout = ({ children }: SettingsLayoutProps) => {
+const SettingsLayoutContent = ({ children }: SettingsLayoutProps) => {
+  const { reveal } = useSettingsDisplay();
   const intl = useIntl();
   const upstream = useUpstreamTheme();
   const router = useRouter();
@@ -378,29 +384,33 @@ const SettingsLayout = ({ children }: SettingsLayoutProps) => {
     setPendingSettingsSearch(null);
   };
 
-  const focusSetting = (element: HTMLElement): boolean => {
-    const row =
-      element.closest<HTMLElement>(
-        '.form-row, .settings-group-card, section'
-      ) ?? element;
-    const controls = 'input, select, textarea, button, [tabindex]';
-    const available = (candidate: HTMLElement) =>
-      candidate.getClientRects().length > 0 &&
-      !candidate.matches(':disabled') &&
-      !candidate.closest('[hidden], [inert], [aria-hidden="true"]') &&
-      getComputedStyle(candidate).visibility !== 'hidden';
-    const focusTarget = element.matches(controls)
-      ? element
-      : (Array.from(row.querySelectorAll<HTMLElement>(controls)).find(
-          available
-        ) ?? element);
-    if (!available(focusTarget)) return false;
-    row.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    if (!focusTarget.matches(controls)) focusTarget.tabIndex = -1;
-    focusTarget.focus({ preventScroll: true });
-    // A DOM match is not success while its panel/control is still unavailable.
-    return document.activeElement === focusTarget;
-  };
+  const focusSetting = useCallback(
+    (element: HTMLElement): boolean => {
+      reveal(element);
+      const row =
+        element.closest<HTMLElement>(
+          '.form-row, .settings-group-card, section'
+        ) ?? element;
+      const controls = 'input, select, textarea, button, [tabindex]';
+      const available = (candidate: HTMLElement) =>
+        candidate.getClientRects().length > 0 &&
+        !candidate.matches(':disabled') &&
+        !candidate.closest('[hidden], [inert], [aria-hidden="true"]') &&
+        getComputedStyle(candidate).visibility !== 'hidden';
+      const focusTarget = element.matches(controls)
+        ? element
+        : (Array.from(row.querySelectorAll<HTMLElement>(controls)).find(
+            available
+          ) ?? element);
+      if (!available(focusTarget)) return false;
+      row.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      if (!focusTarget.matches(controls)) focusTarget.tabIndex = -1;
+      focusTarget.focus({ preventScroll: true });
+      // A DOM match is not success while its panel/control is still unavailable.
+      return document.activeElement === focusTarget;
+    },
+    [reveal]
+  );
 
   const focusSettingsSearchResult = (element: HTMLElement) => {
     const categoryPanel = element.closest<HTMLElement>(
@@ -431,7 +441,8 @@ const SettingsLayout = ({ children }: SettingsLayoutProps) => {
       return;
     }
 
-    focusSetting(element);
+    reveal(element);
+    window.requestAnimationFrame(() => focusSetting(element));
   };
 
   const navigateToSettingsSearchDestination = (
@@ -577,6 +588,7 @@ const SettingsLayout = ({ children }: SettingsLayoutProps) => {
     router.isReady,
     router.query.settingsSearchTarget,
     upstream,
+    focusSetting,
   ]);
 
   return (
@@ -606,23 +618,29 @@ const SettingsLayout = ({ children }: SettingsLayoutProps) => {
           tabType={upstream ? 'default' : 'filter'}
           settingsRoutes={settingsRoutes}
         />
-        <form
-          className="discover-filter-control settings-page-search"
-          onSubmit={handleSettingsSearch}
+        <div
+          className="app-action-row settings-page-controls"
+          data-action-placement="leading"
         >
-          <span className="discover-filter-control-label gap-1.5">
-            <MagnifyingGlassIcon className="h-4 w-4" aria-hidden="true" />
-            {intl.formatMessage(messages.searchSettings)}
-          </span>
-          <input
-            type="search"
-            disabled={permissionsLoading}
-            value={keywordSearch}
-            onChange={(event) => setKeywordSearch(event.target.value)}
-            aria-label={intl.formatMessage(messages.searchSettings)}
-            className="settings-page-search-input"
-          />
-        </form>
+          <form
+            className="discover-filter-control settings-page-search"
+            onSubmit={handleSettingsSearch}
+          >
+            <span className="discover-filter-control-label gap-1.5">
+              <MagnifyingGlassIcon className="h-4 w-4" aria-hidden="true" />
+              {intl.formatMessage(messages.searchSettings)}
+            </span>
+            <input
+              type="search"
+              disabled={permissionsLoading}
+              value={keywordSearch}
+              onChange={(event) => setKeywordSearch(event.target.value)}
+              aria-label={intl.formatMessage(messages.searchSettings)}
+              className="settings-page-search-input"
+            />
+          </form>
+          <SettingsDisplayControl />
+        </div>
       </div>
 
       <article className="app-card-main settings-main-card max-w-full min-w-0">
@@ -694,4 +712,9 @@ const SettingsLayout = ({ children }: SettingsLayoutProps) => {
   }
 };
 
+const SettingsLayout = ({ children }: SettingsLayoutProps) => (
+  <SettingsDisplayProvider>
+    <SettingsLayoutContent>{children}</SettingsLayoutContent>
+  </SettingsDisplayProvider>
+);
 export default SettingsLayout;

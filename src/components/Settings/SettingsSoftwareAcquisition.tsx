@@ -6,6 +6,7 @@ import OpaqueApiMessageText from '@app/components/Common/OpaqueApiMessageText';
 import SelectionCircle from '@app/components/Common/SelectionCircle';
 import Tooltip from '@app/components/Common/Tooltip';
 import { SavedServiceHostPicker } from '@app/components/Settings/SavedServiceHostPicker';
+import SettingsHelp from '@app/components/Settings/SettingsHelp';
 import { useSetupConnectionSuggestion } from '@app/context/SetupConnectionsContext';
 import defineMessages from '@app/utils/defineMessages';
 import { QuestionMarkCircleIcon } from '@heroicons/react/24/outline';
@@ -640,9 +641,9 @@ const SettingsSoftwareAcquisition = () => {
     <>
       <div className="mt-10 mb-6">
         <h3 className="heading">{intl.formatMessage(messages.title)}</h3>
-        <p className="description">
+        <SettingsHelp className="description">
           {intl.formatMessage(messages.description)}
-        </p>
+        </SettingsHelp>
       </div>
       <div className="section settings-service-section">
         <div className="grid grid-cols-1 gap-4 xl:grid-cols-2">
@@ -654,9 +655,9 @@ const SettingsSoftwareAcquisition = () => {
           <h4 className="settings-group-heading">
             {intl.formatMessage(messages.emulationCatalog)}
           </h4>
-          <p className="settings-group-description">
+          <SettingsHelp className="settings-group-description">
             {intl.formatMessage(messages.emulationCatalogDescription)}
-          </p>
+          </SettingsHelp>
           <label>
             {intl.formatMessage(messages.emulationCatalog)}
             <select
@@ -679,9 +680,9 @@ const SettingsSoftwareAcquisition = () => {
           <h4 className="settings-group-heading">
             {intl.formatMessage(messages.platformMappings)}
           </h4>
-          <p className="settings-group-description">
+          <SettingsHelp className="settings-group-description">
             {intl.formatMessage(messages.platformMappingsDescription)}
-          </p>
+          </SettingsHelp>
           <Button
             buttonType="default"
             buttonSize="sm"
@@ -700,9 +701,9 @@ const SettingsSoftwareAcquisition = () => {
           )}
           {mappingPreview && (
             <>
-              <p className="settings-group-description">
+              <SettingsHelp className="settings-group-description">
                 {intl.formatMessage(messages.platformMappingHelp)}
-              </p>
+              </SettingsHelp>
               <div className="app-list-items section">
                 <dl className="app-list">
                   {mappingPreview.systems.map((system) => {
@@ -810,9 +811,9 @@ const SettingsSoftwareAcquisition = () => {
                   autoComplete="new-password"
                 />
               </div>
-              <p className="settings-form-row-description">
+              <SettingsHelp className="settings-form-row-description">
                 {intl.formatMessage(messages.steamWebApiKeyHelp)}
-              </p>
+              </SettingsHelp>
             </div>
           </div>
           {data.steamApiKeyConfigured && (

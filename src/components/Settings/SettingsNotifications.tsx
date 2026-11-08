@@ -8,6 +8,7 @@ import TelegramLogo from '@app/assets/extlogos/telegram.svg';
 import PageTitle from '@app/components/Common/PageTitle';
 import type { SettingsRoute } from '@app/components/Common/SettingsTabs';
 import SettingsTabs from '@app/components/Common/SettingsTabs';
+import SettingsHelp from '@app/components/Settings/SettingsHelp';
 import globalMessages from '@app/i18n/globalMessages';
 import defineMessages from '@app/utils/defineMessages';
 import { BoltIcon, CloudIcon, EnvelopeIcon } from '@heroicons/react/24/solid';
@@ -161,9 +162,9 @@ const SettingsNotifications = ({ children }: SettingsNotificationsProps) => {
         <h3 className="settings-group-heading">
           {intl.formatMessage(messages.notificationsettings)}
         </h3>
-        <p className="settings-group-description">
+        <SettingsHelp className="settings-group-description">
           {intl.formatMessage(messages.notificationAgentSettingsDescription)}
-        </p>
+        </SettingsHelp>
         <div className="mt-2">
           <SettingsTabs tabType="button" settingsRoutes={settingsRoutes} />
         </div>

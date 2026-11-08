@@ -11,6 +11,7 @@ import Field, {
   default as SettingsField,
 } from '@app/components/Settings/SettingsField';
 import SettingsFormRow from '@app/components/Settings/SettingsFormRow';
+import SettingsHelp from '@app/components/Settings/SettingsHelp';
 import useToasts from '@app/hooks/useToasts';
 import globalMessages from '@app/i18n/globalMessages';
 import defineMessages from '@app/utils/defineMessages';
@@ -477,9 +478,9 @@ const SettingsPlex = ({ isSetupSettings, onComplete }: SettingsPlexProps) => {
       />
       <div className="mb-6">
         <h3 className="heading">{intl.formatMessage(messages.plexsettings)}</h3>
-        <p className="description">
+        <SettingsHelp className="description">
           {intl.formatMessage(messages.plexsettingsDescription)}
-        </p>
+        </SettingsHelp>
         {isSetupSettings && (
           <div className="app-card-sub section">
             <Alert
@@ -740,9 +741,12 @@ const SettingsPlex = ({ isSetupSettings, onComplete }: SettingsPlexProps) => {
                       <div className="error">{errors.webAppUrl}</div>
                     )}
                 </div>
-                <span className="settings-form-row-description">
+                <SettingsHelp
+                  as="span"
+                  className="settings-form-row-description"
+                >
                   {intl.formatMessage(messages.webAppUrlTip)}
-                </span>
+                </SettingsHelp>
               </div>
               <SettingsFormRow
                 htmlFor="analyzeOnPlayback"
@@ -781,9 +785,9 @@ const SettingsPlex = ({ isSetupSettings, onComplete }: SettingsPlexProps) => {
         <h3 className="heading">
           {intl.formatMessage(messages.plexlibraries)}
         </h3>
-        <p className="description">
+        <SettingsHelp className="description">
           {intl.formatMessage(messages.plexlibrariesDescription)}
-        </p>
+        </SettingsHelp>
         <div className="settings-library-actions mt-[5px]">
           <Button
             buttonSize="standard"
@@ -861,9 +865,9 @@ const SettingsPlex = ({ isSetupSettings, onComplete }: SettingsPlexProps) => {
       />
       <div className="mt-10 mb-6">
         <h3 className="heading">{intl.formatMessage(messages.manualscan)}</h3>
-        <p className="description">
+        <SettingsHelp className="description">
           {intl.formatMessage(messages.manualscanDescription)}
-        </p>
+        </SettingsHelp>
       </div>
       <div className="app-card-sub section">
         <div className="rounded-md bg-gray-800 p-4">
@@ -943,9 +947,9 @@ const SettingsPlex = ({ isSetupSettings, onComplete }: SettingsPlexProps) => {
             <h3 className="heading">
               {intl.formatMessage(messages.tautulliSettings)}
             </h3>
-            <p className="description">
+            <SettingsHelp className="description">
               {intl.formatMessage(messages.tautulliSettingsDescription)}
-            </p>
+            </SettingsHelp>
           </div>
           <Formik
             initialValues={{

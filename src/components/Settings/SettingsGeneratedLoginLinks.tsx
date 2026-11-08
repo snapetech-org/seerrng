@@ -1,6 +1,7 @@
 import ApiMessageText from '@app/components/Common/ApiMessageText';
 import Button from '@app/components/Common/Button';
 import LoadingSpinner from '@app/components/Common/LoadingSpinner';
+import SettingsHelp from '@app/components/Settings/SettingsHelp';
 import defineMessages from '@app/utils/defineMessages';
 import axios from 'axios';
 import { useRouter } from 'next/router';
@@ -123,7 +124,9 @@ const SettingsGeneratedLoginLinks = () => {
   return (
     <section className="section app-card-sub">
       <h3 className="heading">{intl.formatMessage(messages.title)}</h3>
-      <p className="description">{intl.formatMessage(messages.description)}</p>
+      <SettingsHelp className="description">
+        {intl.formatMessage(messages.description)}
+      </SettingsHelp>
       <div className="form-row">
         <label htmlFor="login-link-user-search">
           {intl.formatMessage(messages.search)}

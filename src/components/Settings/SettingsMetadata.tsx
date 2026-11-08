@@ -7,6 +7,7 @@ import MetadataSelector, {
   MetadataProviderType,
 } from '@app/components/MetadataSelector';
 import { notifySettingsUserChange } from '@app/components/Settings/settingsEvents';
+import SettingsHelp from '@app/components/Settings/SettingsHelp';
 import useToasts from '@app/hooks/useToasts';
 import globalMessages from '@app/i18n/globalMessages';
 import defineMessages from '@app/utils/defineMessages';
@@ -411,9 +412,9 @@ const SettingsMetadata = () => {
         <h3 className="heading">
           {intl.formatMessage(messages.bookshelfCatalogSettings)}
         </h3>
-        <p className="description">
+        <SettingsHelp className="description">
           {intl.formatMessage(messages.bookshelfCatalogSettingsDescription)}
-        </p>
+        </SettingsHelp>
         <Alert
           type="warning"
           title={intl.formatMessage(messages.hardcoverTokenReminderTitle)}
@@ -441,9 +442,9 @@ const SettingsMetadata = () => {
         <h3 className="heading">
           {intl.formatMessage(messages.metadataProviderSettings)}
         </h3>
-        <p className="description">
+        <SettingsHelp className="description">
           {intl.formatMessage(messages.metadataSettings)}
-        </p>
+        </SettingsHelp>
         <div className="settings-group-content">
           <div className="app-card-inset refreshed-inset-surface card-spacing-before rounded-lg border border-gray-700 p-3">
             <h4 className="settings-group-heading">
@@ -514,9 +515,9 @@ const SettingsMetadata = () => {
                     <h2 className="heading">
                       {intl.formatMessage(messages.metadataProviderSelection)}
                     </h2>
-                    <p className="description">
+                    <SettingsHelp className="description">
                       {intl.formatMessage(messages.chooseProvider)}
-                    </p>
+                    </SettingsHelp>
 
                     <div className="form-row mt-[5px]">
                       <label
@@ -663,9 +664,9 @@ const SettingsMetadata = () => {
         <h3 className="heading">
           {intl.formatMessage(messages.musicMetadataProviderSettings)}
         </h3>
-        <p className="description">
+        <SettingsHelp className="description">
           {intl.formatMessage(messages.musicMetadataProviderDescription)}
-        </p>
+        </SettingsHelp>
         <div className="settings-group-content">
           {musicSettingsError ? (
             <Alert
@@ -780,14 +781,14 @@ const SettingsMetadata = () => {
                           )}
                           aria-describedby="caa-max-concurrent-requests-description"
                         />
-                        <p
+                        <SettingsHelp
                           id="caa-max-concurrent-requests-description"
                           className="settings-form-row-description"
                         >
                           {intl.formatMessage(
                             messages.maxConcurrentRequestsDescription
                           )}
-                        </p>
+                        </SettingsHelp>
                         {touched.maxConcurrentRequests &&
                           errors.maxConcurrentRequests && (
                             <p
@@ -828,14 +829,14 @@ const SettingsMetadata = () => {
                           )}
                           aria-describedby="caa-max-requests-per-second-description"
                         />
-                        <p
+                        <SettingsHelp
                           id="caa-max-requests-per-second-description"
                           className="settings-form-row-description"
                         >
                           {intl.formatMessage(
                             messages.maxRequestsPerSecondDescription
                           )}
-                        </p>
+                        </SettingsHelp>
                         {touched.maxRequestsPerSecond &&
                           errors.maxRequestsPerSecond && (
                             <p

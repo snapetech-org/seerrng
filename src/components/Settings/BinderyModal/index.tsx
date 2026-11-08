@@ -2,6 +2,7 @@ import Button from '@app/components/Common/Button';
 import Modal from '@app/components/Common/Modal';
 import SensitiveInput from '@app/components/Common/SensitiveInput';
 import SettingsField from '@app/components/Settings/SettingsField';
+import SettingsHelp from '@app/components/Settings/SettingsHelp';
 import useToasts from '@app/hooks/useToasts';
 import globalMessages from '@app/i18n/globalMessages';
 import defineMessages from '@app/utils/defineMessages';
@@ -298,9 +299,9 @@ const BinderyModal = ({ settings, onClose, onSave }: BinderyModalProps) => {
             onSecondary={() => testConnection(values)}
           >
             <div className="mb-5 space-y-3">
-              <p className="description">
+              <SettingsHelp className="description">
                 {intl.formatMessage(messages.intro)}
-              </p>
+              </SettingsHelp>
               {testResult && (
                 <div className="rounded border border-gray-700 bg-gray-900/50 p-3 text-sm text-gray-200">
                   <p className="flex items-center gap-2 font-semibold">
@@ -462,13 +463,13 @@ const BinderyModal = ({ settings, onClose, onSave }: BinderyModalProps) => {
                     <div className="error">{errors.binderyUserMappings}</div>
                   )}
               </div>
-              <p
+              <SettingsHelp
                 id="bindery-requester-mappings-help"
                 className="settings-form-row-description"
               >
                 {intl.formatMessage(messages.requesterMappingsHelp)}{' '}
                 <code>{'{"2": 7}'}</code>
-              </p>
+              </SettingsHelp>
             </div>
             <div className="form-row">
               <label className="text-label" htmlFor="externalUrl">

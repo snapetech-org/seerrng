@@ -5,6 +5,7 @@ import {
   KeywordSelector,
   UserSelector,
 } from '@app/components/Selector';
+import SettingsHelp from '@app/components/Settings/SettingsHelp';
 import type {
   DVRTestResponse,
   SonarrTestResponse,
@@ -326,9 +327,9 @@ const OverrideRuleModal = ({
                 <h3 className="text-lg leading-8 font-bold text-gray-100">
                   {intl.formatMessage(messages.service)}
                 </h3>
-                <p className="description">
+                <SettingsHelp className="description">
                   {intl.formatMessage(messages.serviceDescription)}
-                </p>
+                </SettingsHelp>
                 <div className="form-row">
                   <label htmlFor="service" className="text-label">
                     {intl.formatMessage(messages.service)}
@@ -469,14 +470,14 @@ const OverrideRuleModal = ({
                 <h3 className="text-lg leading-8 font-bold text-gray-100">
                   {intl.formatMessage(messages.conditions)}
                 </h3>
-                <p className="description">
+                <SettingsHelp className="description">
                   {intl.formatMessage(messages.conditionsDescription)}
-                </p>
+                </SettingsHelp>
                 {(values.lidarrServiceId != null ||
                   values.readarrServiceId != null) && (
-                  <p className="description">
+                  <SettingsHelp className="description">
                     {intl.formatMessage(messages.catalogConditionsDescription)}
-                  </p>
+                  </SettingsHelp>
                 )}
                 <div className="form-row">
                   <label htmlFor="users" className="text-label">
@@ -668,20 +669,20 @@ const OverrideRuleModal = ({
                           }
                         />
                       </div>
-                      <p className="description">
+                      <SettingsHelp className="description">
                         {intl.formatMessage(
                           messages.productionCountriesDescription
                         )}
-                      </p>
+                      </SettingsHelp>
                     </div>
                   </div>
                 )}
                 <h3 className="mt-4 text-lg leading-8 font-bold text-gray-100">
                   {intl.formatMessage(messages.settings)}
                 </h3>
-                <p className="description">
+                <SettingsHelp className="description">
                   {intl.formatMessage(messages.settingsDescription)}
-                </p>
+                </SettingsHelp>
                 <div className="form-row">
                   <label htmlFor="rootFolderRule" className="text-label">
                     {intl.formatMessage(messages.rootfolder)}

@@ -6,6 +6,7 @@ import PageTitle from '@app/components/Common/PageTitle';
 import PaginationFooter from '@app/components/Common/PaginationFooter';
 import Table from '@app/components/Common/Table';
 import Tooltip from '@app/components/Common/Tooltip';
+import SettingsHelp from '@app/components/Settings/SettingsHelp';
 import useDebouncedState from '@app/hooks/useDebouncedState';
 import useToasts from '@app/hooks/useToasts';
 import {
@@ -258,7 +259,7 @@ const SettingsLogs = () => {
       </Transition>
       <div className="mb-2">
         <h3 className="heading">{intl.formatMessage(messages.logs)}</h3>
-        <p className="description">
+        <SettingsHelp className="description">
           {intl.formatMessage(messages.logsDescription, {
             code: (msg: React.ReactNode) => (
               <code className="bg-gray-800/50 break-words whitespace-normal">
@@ -267,7 +268,7 @@ const SettingsLogs = () => {
             ),
             appDataPath: appData ? appData.appDataPath : '/app/config',
           })}
-        </p>
+        </SettingsHelp>
         <div className="settings-log-toolbar">
           <div className="settings-log-search-control">
             <span className="settings-log-control-icon">

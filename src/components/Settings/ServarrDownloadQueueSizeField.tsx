@@ -1,4 +1,5 @@
 import Field from '@app/components/Settings/SettingsField';
+import SettingsHelp from '@app/components/Settings/SettingsHelp';
 import defineMessages from '@app/utils/defineMessages';
 import { useField } from 'formik';
 import { useId } from 'react';
@@ -72,9 +73,13 @@ const ServarrDownloadQueueSizeField = () => {
           </div>
         )}
       </div>
-      <span className="settings-form-row-description" id={helpId}>
+      <SettingsHelp
+        as="span"
+        className="settings-form-row-description"
+        id={helpId}
+      >
         {intl.formatMessage(messages.help)}
-      </span>
+      </SettingsHelp>
     </div>
   );
 };

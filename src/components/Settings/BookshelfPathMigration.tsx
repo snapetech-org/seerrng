@@ -3,6 +3,7 @@ import Button from '@app/components/Common/Button';
 import OpaqueApiMessageText from '@app/components/Common/OpaqueApiMessageText';
 import PageTitle from '@app/components/Common/PageTitle';
 import SettingsField from '@app/components/Settings/SettingsField';
+import SettingsHelp from '@app/components/Settings/SettingsHelp';
 import defineMessages from '@app/utils/defineMessages';
 import { formatBytes } from '@app/utils/numberHelpers';
 import type {
@@ -378,9 +379,9 @@ const BookshelfPathMigration = () => {
     <div className="text-gray-100">
       <PageTitle title={intl.formatMessage(messages.title)} />
       <h1 className="page-title">{intl.formatMessage(messages.title)}</h1>
-      <p className="description mb-4">
+      <SettingsHelp className="description mb-4">
         {intl.formatMessage(messages.description)}
-      </p>
+      </SettingsHelp>
       <div className="mb-4 space-y-2 rounded-lg border border-gray-700 bg-gray-800 p-4 text-sm">
         <p>{intl.formatMessage(messages.safety)}</p>
         <p>{intl.formatMessage(messages.consolidation)}</p>

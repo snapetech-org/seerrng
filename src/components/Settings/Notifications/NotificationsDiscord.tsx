@@ -2,6 +2,7 @@ import Button from '@app/components/Common/Button';
 import LoadingSpinner from '@app/components/Common/LoadingSpinner';
 import NotificationTypeSelector from '@app/components/NotificationTypeSelector';
 import Field from '@app/components/Settings/SettingsField';
+import SettingsHelp from '@app/components/Settings/SettingsHelp';
 import { availableLanguages } from '@app/context/LanguageContext';
 import useSettings from '@app/hooks/useSettings';
 import useToasts from '@app/hooks/useToasts';
@@ -243,7 +244,7 @@ const NotificationsDiscord = () => {
                     <div className="error">{errors.webhookUrl}</div>
                   )}
               </div>
-              <span className="settings-form-row-description">
+              <SettingsHelp as="span" className="settings-form-row-description">
                 {intl.formatMessage(messages.webhookUrlTip, {
                   DiscordWebhookLink: (msg: React.ReactNode) => (
                     <a
@@ -256,7 +257,7 @@ const NotificationsDiscord = () => {
                     </a>
                   ),
                 })}
-              </span>
+              </SettingsHelp>
             </div>
             <div className="form-row">
               <label htmlFor="botUsername" className="text-label">
@@ -336,9 +337,9 @@ const NotificationsDiscord = () => {
                     <div className="error">{errors.webhookThreadId}</div>
                   )}
               </div>
-              <span className="settings-form-row-description">
+              <SettingsHelp as="span" className="settings-form-row-description">
                 {intl.formatMessage(messages.webhookThreadIdTip)}
-              </span>
+              </SettingsHelp>
             </div>
             <div className="form-row">
               <label htmlFor="enableMentions" className="checkbox-label">

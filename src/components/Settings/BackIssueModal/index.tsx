@@ -3,6 +3,7 @@ import SensitiveInput from '@app/components/Common/SensitiveInput';
 import Field, {
   default as SettingsField,
 } from '@app/components/Settings/SettingsField';
+import SettingsHelp from '@app/components/Settings/SettingsHelp';
 import { useSetupConnectionSuggestion } from '@app/context/SetupConnectionsContext';
 import useToasts from '@app/hooks/useToasts';
 import globalMessages from '@app/i18n/globalMessages';
@@ -229,9 +230,9 @@ const BackIssueModal = ({
             )}
           >
             <div className="mb-6">
-              <p className="description">
+              <SettingsHelp className="description">
                 {intl.formatMessage(messages.intro)}
-              </p>
+              </SettingsHelp>
               <div className="form-row">
                 <label className="checkbox-label" htmlFor="isDefault">
                   {intl.formatMessage(messages.defaultServer)}
@@ -347,9 +348,12 @@ const BackIssueModal = ({
                     <div className="error">{errors.apiKey}</div>
                   )}
                 </div>
-                <span className="settings-form-row-description">
+                <SettingsHelp
+                  as="span"
+                  className="settings-form-row-description"
+                >
                   {intl.formatMessage(messages.apiKeyHelp)}
-                </span>
+                </SettingsHelp>
               </div>
               <div className="form-row">
                 <label className="text-label" htmlFor="baseUrl">
@@ -370,9 +374,12 @@ const BackIssueModal = ({
                     <div className="error">{errors.baseUrl}</div>
                   )}
                 </div>
-                <span className="settings-form-row-description">
+                <SettingsHelp
+                  as="span"
+                  className="settings-form-row-description"
+                >
                   {intl.formatMessage(messages.baseUrlHelp)}
-                </span>
+                </SettingsHelp>
               </div>
               <div className="form-row">
                 <label className="text-label" htmlFor="externalUrl">
@@ -385,9 +392,12 @@ const BackIssueModal = ({
                       <div className="error">{errors.externalUrl}</div>
                     )}
                 </div>
-                <span className="settings-form-row-description">
+                <SettingsHelp
+                  as="span"
+                  className="settings-form-row-description"
+                >
                   {intl.formatMessage(messages.externalUrlHelp)}
-                </span>
+                </SettingsHelp>
               </div>
               <div className="form-row">
                 <label className="checkbox-label" htmlFor="syncEnabled">
@@ -400,9 +410,12 @@ const BackIssueModal = ({
                     name="syncEnabled"
                   />
                 </div>
-                <span className="settings-form-row-description">
+                <SettingsHelp
+                  as="span"
+                  className="settings-form-row-description"
+                >
                   {intl.formatMessage(messages.syncHelp)}
-                </span>
+                </SettingsHelp>
               </div>
             </div>
           </Modal>

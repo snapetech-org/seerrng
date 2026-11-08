@@ -4,6 +4,7 @@ import Button from '@app/components/Common/Button';
 import LoadingSpinner from '@app/components/Common/LoadingSpinner';
 import { SavedServiceHostPicker } from '@app/components/Settings/SavedServiceHostPicker';
 import SettingsField from '@app/components/Settings/SettingsField';
+import SettingsHelp from '@app/components/Settings/SettingsHelp';
 import useToasts from '@app/hooks/useToasts';
 import defineMessages from '@app/utils/defineMessages';
 import type { SlskdnSettings } from '@server/lib/settings';
@@ -195,9 +196,9 @@ const SettingsSlskdn = () => {
       <h3 className="settings-group-heading">
         {intl.formatMessage(messages.title)}
       </h3>
-      <p className="settings-group-description">
+      <SettingsHelp className="settings-group-description">
         {intl.formatMessage(messages.description)}
-      </p>
+      </SettingsHelp>
       <div className="settings-group-content">
         {!data && !error && <LoadingSpinner />}
         {error && (

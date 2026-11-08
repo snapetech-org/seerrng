@@ -7,6 +7,7 @@ import SettingsBadge from '@app/components/Settings/SettingsBadge';
 import Field, {
   default as SettingsField,
 } from '@app/components/Settings/SettingsField';
+import SettingsHelp from '@app/components/Settings/SettingsHelp';
 import useToasts from '@app/hooks/useToasts';
 import globalMessages from '@app/i18n/globalMessages';
 import defineMessages from '@app/utils/defineMessages';
@@ -194,9 +195,9 @@ const SettingsNetwork = () => {
         <h3 className="heading">
           {intl.formatMessage(messages.networksettings)}
         </h3>
-        <p className="description">
+        <SettingsHelp className="description">
           {intl.formatMessage(messages.networksettingsDescription)}
-        </p>
+        </SettingsHelp>
       </div>
       <div className="app-card-sub section">
         <Formik
@@ -385,9 +386,12 @@ const SettingsNetwork = () => {
                             className="short"
                           />
                         </div>
-                        <span className="settings-form-row-description">
+                        <SettingsHelp
+                          as="span"
+                          className="settings-form-row-description"
+                        >
                           {intl.formatMessage(messages.httpsPortTip)}
-                        </span>
+                        </SettingsHelp>
                       </div>
                       {values.tlsMode === 'self-signed' && (
                         <div className="form-row">
@@ -397,16 +401,19 @@ const SettingsNetwork = () => {
                           <div className="form-input-area">
                             <Field id="tlsHosts" name="tlsHosts" type="text" />
                           </div>
-                          <span className="settings-form-row-description">
+                          <SettingsHelp
+                            as="span"
+                            className="settings-form-row-description"
+                          >
                             {intl.formatMessage(messages.tlsHostsTip)}
-                          </span>
+                          </SettingsHelp>
                         </div>
                       )}
                       {values.tlsMode === 'provided' && (
                         <>
-                          <p className="description">
+                          <SettingsHelp className="description">
                             {intl.formatMessage(messages.providedFileTip)}
-                          </p>
+                          </SettingsHelp>
                           {(
                             [
                               ['tlsCertificateFile', messages.certificateFile],
@@ -471,9 +478,12 @@ const SettingsNetwork = () => {
                           }}
                         />
                       </div>
-                      <span className="settings-form-row-description">
+                      <SettingsHelp
+                        as="span"
+                        className="settings-form-row-description"
+                      >
                         {intl.formatMessage(messages.redirectHttpToHttpsTip)}
-                      </span>
+                      </SettingsHelp>
                     </div>
                   </>
                 )}
@@ -550,9 +560,12 @@ const SettingsNetwork = () => {
                       }}
                     />
                   </div>
-                  <span className="settings-form-row-description">
+                  <SettingsHelp
+                    as="span"
+                    className="settings-form-row-description"
+                  >
                     {intl.formatMessage(messages.trustProxyTip)}
-                  </span>
+                  </SettingsHelp>
                 </div>
                 <div className="form-row">
                   <label
@@ -652,9 +665,12 @@ const SettingsNetwork = () => {
                       />
                     </Tooltip>
                   </div>
-                  <span className="settings-form-row-description">
+                  <SettingsHelp
+                    as="span"
+                    className="settings-form-row-description"
+                  >
                     {intl.formatMessage(messages.csrfProtectionDescription)}
-                  </span>
+                  </SettingsHelp>
                 </div>
                 <div className="form-row">
                   <label htmlFor="forceIpv4First" className="checkbox-label">
@@ -677,9 +693,12 @@ const SettingsNetwork = () => {
                       }}
                     />
                   </div>
-                  <span className="settings-form-row-description">
+                  <SettingsHelp
+                    as="span"
+                    className="settings-form-row-description"
+                  >
                     {intl.formatMessage(messages.forceIpv4FirstTip)}
-                  </span>
+                  </SettingsHelp>
                 </div>
                 <div className="form-row">
                   <label htmlFor="dnsCacheEnabled" className="checkbox-label">
@@ -709,9 +728,12 @@ const SettingsNetwork = () => {
                       />
                     </Tooltip>
                   </div>
-                  <span className="settings-form-row-description">
+                  <SettingsHelp
+                    as="span"
+                    className="settings-form-row-description"
+                  >
                     {intl.formatMessage(messages.dnsCacheTip)}
-                  </span>
+                  </SettingsHelp>
                 </div>
                 {values.dnsCacheEnabled && (
                   <>
@@ -783,9 +805,12 @@ const SettingsNetwork = () => {
                       className="short"
                     />
                   </div>
-                  <span className="settings-form-row-description">
+                  <SettingsHelp
+                    as="span"
+                    className="settings-form-row-description"
+                  >
                     {intl.formatMessage(messages.apiRequestTimeoutTip)}
-                  </span>
+                  </SettingsHelp>
                   {errors.apiRequestTimeout &&
                     touched.apiRequestTimeout &&
                     typeof errors.apiRequestTimeout === 'string' && (
@@ -812,9 +837,12 @@ const SettingsNetwork = () => {
                       }}
                     />
                   </div>
-                  <span className="settings-form-row-description">
+                  <SettingsHelp
+                    as="span"
+                    className="settings-form-row-description"
+                  >
                     {intl.formatMessage(messages.proxyEnabledTip)}
-                  </span>
+                  </SettingsHelp>
                 </div>
                 {values.proxyEnabled && (
                   <>
@@ -943,9 +971,12 @@ const SettingsNetwork = () => {
                               </div>
                             )}
                         </div>
-                        <span className="settings-form-row-description">
+                        <SettingsHelp
+                          as="span"
+                          className="settings-form-row-description"
+                        >
                           {intl.formatMessage(messages.proxyBypassFilterTip)}
-                        </span>
+                        </SettingsHelp>
                       </div>
                       <div className="form-row">
                         <label

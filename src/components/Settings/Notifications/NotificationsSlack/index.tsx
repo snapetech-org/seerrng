@@ -2,6 +2,7 @@ import Button from '@app/components/Common/Button';
 import LoadingSpinner from '@app/components/Common/LoadingSpinner';
 import NotificationTypeSelector from '@app/components/NotificationTypeSelector';
 import Field from '@app/components/Settings/SettingsField';
+import SettingsHelp from '@app/components/Settings/SettingsHelp';
 import { availableLanguages } from '@app/context/LanguageContext';
 import useToasts from '@app/hooks/useToasts';
 import globalMessages from '@app/i18n/globalMessages';
@@ -263,7 +264,7 @@ const NotificationsSlack = () => {
                     <div className="error">{errors.webhookUrl}</div>
                   )}
               </div>
-              <span className="settings-form-row-description">
+              <SettingsHelp as="span" className="settings-form-row-description">
                 {intl.formatMessage(messages.webhookUrlTip, {
                   WebhookLink: (msg: React.ReactNode) => (
                     <a
@@ -276,7 +277,7 @@ const NotificationsSlack = () => {
                     </a>
                   ),
                 })}
-              </span>
+              </SettingsHelp>
             </div>
             <div className="form-row">
               <label htmlFor="locale" className="text-label">
@@ -313,9 +314,9 @@ const NotificationsSlack = () => {
                   name="requestActionsEnabled"
                 />
               </div>
-              <span className="settings-form-row-description">
+              <SettingsHelp as="span" className="settings-form-row-description">
                 {intl.formatMessage(messages.requestActionsEnabledTip)}
-              </span>
+              </SettingsHelp>
             </div>
             {values.requestActionsEnabled && (
               <>
@@ -334,9 +335,12 @@ const NotificationsSlack = () => {
                         <div className="error">{errors.workspaceId}</div>
                       )}
                   </div>
-                  <span className="settings-form-row-description">
+                  <SettingsHelp
+                    as="span"
+                    className="settings-form-row-description"
+                  >
                     {intl.formatMessage(messages.workspaceIdTip)}
-                  </span>
+                  </SettingsHelp>
                 </div>
                 <div className="form-row">
                   <label htmlFor="signingSecret" className="text-label">
@@ -358,9 +362,12 @@ const NotificationsSlack = () => {
                         <div className="error">{errors.signingSecret}</div>
                       )}
                   </div>
-                  <span className="settings-form-row-description">
+                  <SettingsHelp
+                    as="span"
+                    className="settings-form-row-description"
+                  >
                     {intl.formatMessage(messages.signingSecretTip)}
-                  </span>
+                  </SettingsHelp>
                 </div>
                 <div className="form-row">
                   <label
@@ -387,9 +394,12 @@ const NotificationsSlack = () => {
                         </div>
                       )}
                   </div>
-                  <span className="settings-form-row-description">
+                  <SettingsHelp
+                    as="span"
+                    className="settings-form-row-description"
+                  >
                     {intl.formatMessage(messages.requestManagerMappingsTip)}
-                  </span>
+                  </SettingsHelp>
                 </div>
               </>
             )}

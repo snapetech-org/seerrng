@@ -5,6 +5,7 @@ import LoadingSpinner from '@app/components/Common/LoadingSpinner';
 import Modal from '@app/components/Common/Modal';
 import PageTitle from '@app/components/Common/PageTitle';
 import Table from '@app/components/Common/Table';
+import SettingsHelp from '@app/components/Settings/SettingsHelp';
 import useLocale from '@app/hooks/useLocale';
 import useSettings from '@app/hooks/useSettings';
 
@@ -497,9 +498,9 @@ const SettingsJobs = () => {
 
       <div className="mb-6">
         <h3 className="heading">{intl.formatMessage(messages.jobs)}</h3>
-        <p className="description">
+        <SettingsHelp className="description">
           {intl.formatMessage(messages.jobsDescription)}
-        </p>
+        </SettingsHelp>
       </div>
       <div className="app-card-sub section">
         <Table className="settings-jobs-table">
@@ -618,9 +619,9 @@ const SettingsJobs = () => {
       </div>
       <div>
         <h3 className="heading">{intl.formatMessage(messages.cache)}</h3>
-        <p className="description">
+        <SettingsHelp className="description">
           {intl.formatMessage(messages.cacheDescription)}
-        </p>
+        </SettingsHelp>
       </div>
       <div className="app-card-sub section">
         <Table>
@@ -663,9 +664,9 @@ const SettingsJobs = () => {
         <>
           <div>
             <h3 className="heading">{intl.formatMessage(messages.dnsCache)}</h3>
-            <p className="description">
+            <SettingsHelp className="description">
               {intl.formatMessage(messages.dnsCacheDescription)}
-            </p>
+            </SettingsHelp>
           </div>
           <div className="app-card-sub section">
             <Table>
@@ -743,9 +744,9 @@ const SettingsJobs = () => {
             <h3 className="heading">
               {intl.formatMessage(messages.dnsCacheGlobalStats)}
             </h3>
-            <p className="description">
+            <SettingsHelp className="description">
               {intl.formatMessage(messages.dnsCacheGlobalStatsDescription)}
-            </p>
+            </SettingsHelp>
           </div>
           <div className="app-card-sub section">
             {!cacheData ? (
@@ -788,7 +789,7 @@ const SettingsJobs = () => {
       )}
       <div className="break-words">
         <h3 className="heading">{intl.formatMessage(messages.imagecache)}</h3>
-        <p className="description">
+        <SettingsHelp className="description">
           {intl.formatMessage(messages.imagecacheDescription, {
             code: (msg: React.ReactNode) => (
               <code key="code-block" className="bg-gray-800/50">
@@ -797,7 +798,7 @@ const SettingsJobs = () => {
             ),
             appDataPath: appData ? appData.appDataPath : '/app/config',
           })}
-        </p>
+        </SettingsHelp>
       </div>
       <div className="app-card-sub section">
         <Table>

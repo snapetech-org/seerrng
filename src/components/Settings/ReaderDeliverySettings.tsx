@@ -3,6 +3,7 @@ import ApiMessageText from '@app/components/Common/ApiMessageText';
 import Button from '@app/components/Common/Button';
 import LoadingSpinner from '@app/components/Common/LoadingSpinner';
 import SettingsField from '@app/components/Settings/SettingsField';
+import SettingsHelp from '@app/components/Settings/SettingsHelp';
 import useToasts from '@app/hooks/useToasts';
 import defineMessages from '@app/utils/defineMessages';
 import { getSafeHref } from '@app/utils/safeUrl';
@@ -371,13 +372,13 @@ const ReaderDeliverySettings = () => {
         <div className="settings-service-card-content">
           <div className="settings-service-card-body">
             <h4 className="settings-service-title">{serviceName}</h4>
-            <p className="settings-group-description">
+            <SettingsHelp className="settings-group-description">
               {intl.formatMessage(
                 isGrimmory
                   ? messages.grimmoryDescription
                   : messages.bookorbitDescription
               )}
-            </p>
+            </SettingsHelp>
             <div className="form-row">
               <label htmlFor={provider + '-url'}>
                 {intl.formatMessage(messages.address)}
@@ -401,12 +402,12 @@ const ReaderDeliverySettings = () => {
                     )}
                   />
                 </div>
-                <p
+                <SettingsHelp
                   id={provider + '-url-description'}
                   className="settings-form-row-description"
                 >
                   {intl.formatMessage(messages.addressDescription)}
-                </p>
+                </SettingsHelp>
               </div>
             </div>
             <div className="form-row">
@@ -598,11 +599,11 @@ const ReaderDeliverySettings = () => {
                       {intl.formatMessage(messages.copyComicCatalogAddress)}
                     </Button>
                   </div>
-                  <p className="settings-form-row-description">
+                  <SettingsHelp className="settings-form-row-description">
                     {intl.formatMessage(
                       messages.comicCatalogAddressDescription
                     )}
-                  </p>
+                  </SettingsHelp>
                 </div>
               </div>
             )}
@@ -643,9 +644,9 @@ const ReaderDeliverySettings = () => {
       <h3 className="settings-group-heading">
         {intl.formatMessage(messages.title)}
       </h3>
-      <p className="settings-group-description">
+      <SettingsHelp className="settings-group-description">
         {intl.formatMessage(messages.description)}
-      </p>
+      </SettingsHelp>
       <p className="settings-group-description">
         {intl.formatMessage(messages.requestWorkflow)}
       </p>
@@ -700,9 +701,9 @@ const ReaderDeliverySettings = () => {
                     </option>
                   </select>
                 </div>
-                <p className="settings-form-row-description">
+                <SettingsHelp className="settings-form-row-description">
                   {intl.formatMessage(messages.preferredReaderDescription)}
-                </p>
+                </SettingsHelp>
               </div>
             </div>
             <Alert

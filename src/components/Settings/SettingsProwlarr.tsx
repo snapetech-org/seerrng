@@ -1,6 +1,7 @@
 import ApiMessageText from '@app/components/Common/ApiMessageText';
 import SelectionCircle from '@app/components/Common/SelectionCircle';
 import { SavedServiceHostPicker } from '@app/components/Settings/SavedServiceHostPicker';
+import SettingsHelp from '@app/components/Settings/SettingsHelp';
 import { useSetupConnectionSuggestion } from '@app/context/SetupConnectionsContext';
 import defineMessages from '@app/utils/defineMessages';
 import { detectProwlarrCategoryMatches } from '@app/utils/prowlarrCategories';
@@ -451,9 +452,9 @@ const SettingsProwlarr = () => {
         <h3 id="prowlarr-settings-title" className="heading">
           {intl.formatMessage(messages.title)}
         </h3>
-        <p className="description mt-1">
+        <SettingsHelp className="description mt-1">
           {intl.formatMessage(messages.description)}
-        </p>
+        </SettingsHelp>
         <p className="label-tip mt-1">
           {intl.formatMessage(messages.supportNote)}
         </p>

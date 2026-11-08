@@ -1,4 +1,5 @@
 import Button from '@app/components/Common/Button';
+import SettingsHelp from '@app/components/Settings/SettingsHelp';
 import { useSetupConnections } from '@app/context/SetupConnectionsContext';
 import defineMessages from '@app/utils/defineMessages';
 import { useRef, useState } from 'react';
@@ -70,7 +71,9 @@ const SetupConnectionsImport = () => {
           </>
         )}
       </div>
-      <p className="description">{intl.formatMessage(messages.help)}</p>
+      <SettingsHelp className="description">
+        {intl.formatMessage(messages.help)}
+      </SettingsHelp>
       {error && (
         <p className="description" role="alert">
           {error}

@@ -5232,17 +5232,42 @@ const validateCurrentBatchContract = (files) => {
       'Settings route navigation must reuse the shared filter-button component styling'
     );
   }
-  requireDistinctSectionHeadings(
-    'src/components/Settings/SettingsMain/index.tsx',
-    '<section className="app-card-sub settings-group-card">',
-    '</section>',
-    [
-      'intl.formatMessage(messages.generalsettings)',
-      'intl.formatMessage(messages.playlistIntegrations)',
-      'intl.formatMessage(messages.comicsMetadata)',
-    ],
-    'General Settings and Playlist Integrations must be separate standard subcards'
-  );
+  try {
+    const jsx = parsedJsx(
+      requireFile('src/components/Settings/SettingsMain/index.tsx')
+    );
+    for (const name of [
+      'generalsettings',
+      'playlistIntegrations',
+      'comicsMetadata',
+    ]) {
+      const owner = jsx.elements.find((node) => {
+        if (!jsx.roles(node, 'app-card-sub', 'settings-group-card'))
+          return false;
+        if (jsx.tag(node) === 'SettingsGroup')
+          return (
+            jsx.compact(jsx.expression(node, 'title')) ===
+            `intl.formatMessage(messages.${name})`
+          );
+        return (
+          jsx.tag(node) === 'section' &&
+          jsx.elements.some(
+            (heading) =>
+              jsx.tag(heading) === 'h3' &&
+              jsx.within(heading, node) &&
+              jsx
+                .compact(heading)
+                .includes(`intl.formatMessage(messages.${name})`)
+          )
+        );
+      });
+      if (!owner) throw new Error('Missing distinct shared group');
+    }
+  } catch {
+    errors.push(
+      'src/components/Settings/SettingsMain/index.tsx: General Settings and Playlist Integrations must be separate standard subcards'
+    );
+  }
   requireOrder(
     'src/components/Settings/SettingsMain/index.tsx',
     [
