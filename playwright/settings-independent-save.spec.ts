@@ -75,6 +75,13 @@ for (const theme of ['seerrOrig', 'seerrNGJ'])
           });
         });
         await page.goto('/settings/plex');
+        await expect(page.locator('html')).toHaveAttribute(
+          'data-interface-theme',
+          theme
+        );
+        await expect(page.locator('[data-presentation="persius"]')).toHaveCount(
+          0
+        );
         const analysis = page.getByRole('button', {
           name: 'Analyze Seasons During Playback',
           exact: true,

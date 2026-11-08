@@ -147,3 +147,37 @@ Evidence: `compact-select-baseline.log`, `compact-select-matched-baseline.log`
 `compact-select-production-build.log`, and `compact-select-owner-regressions.log`
 (72 passes) in the evidence directory above. Catalogue/quotas are replayed;
 authentication, theme persistence, native rendering and navigation are real.
+
+
+## Focused tooltip dismissal and native preferences
+
+Final-head CI 42510740631 passed 606 browser cases and skipped one, but the
+keyboard-entry case expected the first Escape to close its request dialog. The
+HD-only fixture now correctly has no quality chooser. Its first focusable control
+is the Advanced Options pin, which opens a focus tooltip. The retained CI trace
+and an instrumented production-browser reproduction show one tooltip at Escape
+capture and no bubbling key event: the child dismisses the tooltip. The existing
+shared focus hook deliberately respects handled child Escape events; changing
+that would break child-control dismissal.
+
+The fixture now declares its HD-only public capabilities to match its provider
+responses. The keyboard test waits for the actual focused pin and tooltip, then
+asserts first Escape removes the tooltip while retaining the dialog and second
+Escape closes the dialog. The focused production-browser case passes. This is a
+stronger layered keyboard assertion, not a change to the shared focus owner.
+
+The independent Plex save fixture also waits for its requested Orig/John theme
+and for the initial Persius composition to leave before clicking. Its existing
+independent-form, failed-save draft, retry and repeated-save assertions remain;
+all eight cases pass. Earlier CI 42509761563 failed its first-click readiness
+assumption while its other jobs passed. Logs for both failed CI runs and local
+probes remain retained. These fixture changes make no product CSS, API or focus
+behavior change.
+
+Evidence: `eef-playwright-completed-job.log`, `eef-playwright-failure`,
+`persius-escape-probe.log`, `persius-escape-qualified.log`,
+`settings-independent-qualified.log`, and `persius-fresh-ci-qualified.log` in the
+same evidence directory. The complete Persius file uses the actual fresh CI seed;
+a separate rich household fixture intentionally had an episode-queue default
+that selects a different tree and is not the season-picker reference. The fresh
+CI-seed full file passes 19 cases with one existing installed-package skip.

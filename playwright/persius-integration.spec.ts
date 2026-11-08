@@ -353,6 +353,8 @@ async function fixtures(page: Page) {
         audiobookServiceEnabled: true,
         cacheImages: false,
         partialRequestsEnabled: true,
+        movie4kEnabled: false,
+        series4kEnabled: false,
       };
     } else if (p === '/settings/discover')
       json = [{ id: 1, type: 1, enabled: true, isBuiltIn: true }];
@@ -855,9 +857,19 @@ test('native catalog filters, poster captions and keyboard request entry', async
   await card.locator('[data-poster-region="frame"]').focus();
   await page.keyboard.press('Enter');
   await card.getByRole('button', { name: /Request/ }).click();
-  await expect(page.getByRole('dialog')).toBeVisible();
+  const dialog = page.getByRole('dialog');
+  await expect(dialog).toBeVisible();
+  // The HD-only dialog initially focuses its pin control. Escape dismisses
+  // that control's focus tooltip before dismissing the containing dialog.
+  await expect(
+    dialog.getByRole('button', { name: /^(?:Unpin|Pin) Advanced Options/ })
+  ).toBeFocused();
+  await expect(page.getByRole('tooltip')).toBeVisible();
   await page.keyboard.press('Escape');
-  await expect(page.getByRole('dialog')).toHaveCount(0);
+  await expect(page.getByRole('tooltip')).toHaveCount(0);
+  await expect(dialog).toBeVisible();
+  await page.keyboard.press('Escape');
+  await expect(dialog).toHaveCount(0);
 });
 
 test('catalog metadata failures preserve saved watchlist state and poster identity', async ({

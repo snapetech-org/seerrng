@@ -297,3 +297,36 @@ passing cases), `issue132-final-owner-regression.log` (31 passes),
 captures. Initial follow-up startup failures were connection/readiness problems;
 those logs remain retained. This issue remains open until the corrected release
 artifact is verified; source checks are not a publication claim.
+
+
+## Additional closed-receipt and scanner checks
+
+- #126's existing public receipt now links the actual shared Plex library API
+  fix (`e4f72f5f8`) and the four current Orig/John settings workflows that sync,
+  reclassify, reload and sync again against a GET-only Plex fixture. Its former
+  description of this as a Bookshelf library API was inaccurate and is corrected.
+  This does not certify full Plex import or playback.
+- #170's actual compiled Lidarr scanner imported three HTTP artist batches with
+  zero unfiltered album reads. A fresh provider-cache observation of an HTTP 503
+  on the second batch preserved the existing orphan's status and availability.
+  Six subsequent actual local-availability API/UI cases pass across Orig, John
+  and native Persius at 390/1440px, including each title and identity link through
+  its normal hover interaction. Only cover requests are replayed. The scanner
+  source is identical in v3.72.23 and current main. This is not a fresh downloaded
+  image or household-large-library test. Public receipt:
+  https://github.com/snapetech-org/seerrng/issues/170#issuecomment-6693185846.
+- #295's receipt now directly links PR301 and its merge. Four actual native
+  connection-form/API cases pass across Orig/John at 390/1440px against a GET-only
+  scoped-key provider implementing the repository's v2 contract. Each DAT result
+  waits 13 seconds, exceeds the former 10-second cutoff, returns 200 and displays
+  the system count. Saved configuration is unchanged and provider logs show zero
+  administrator `/api/platforms` reads. This does not claim a 56-second/113-DAT or
+  live household test. Public receipt:
+  https://github.com/snapetech-org/seerrng/issues/295#issuecomment-6197548591.
+
+Retained evidence: `issue170-http-qualified.log`,
+`issue170-human-qualified.log`, `issue295-contract-qualified.log`,
+`issue295-contract-proof.json` and their captures in the shared artifact directory.
+Initial fixture failures remain preserved and are excluded from passing counts.
+The closed-receipt screening covers all 73 currently closed issues; that
+screening remains distinct from the unfinished complete human-workflow audit.
