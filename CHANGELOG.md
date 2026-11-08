@@ -21,6 +21,7 @@ tags. The comparison link is the complete commit range.
 
 #### Fixed
 
+- **Books:** Chaptarr/Bookshelf books show titles and detail links in user history, profile/recent-request cards and issue summaries; profile history retains their identifiers.
 - **Requests:** Media details revalidate live state after submission, immediately showing Processing and disabling duplicate requests instead of reusing a five-minute browser cache.
 - **Interface:** Shared pagination no longer overlaps its page indicator and Previous control on phones across Requests, Issues, Blocklist, Logs, user history and software requests. Desktop alignment and theme control sizes are retained.
 - **Books:** Audiobookshelf connections can be saved after automatic or manual book-library selection; stale validation no longer leaves Add library disabled.

@@ -224,3 +224,43 @@ repaired and all 60 consumer/theme/viewport cases pass, alongside two Arabic cas
 and exact desktop geometry comparisons. See
 [the pagination evidence](responsive-pagination-validation-2026-11-08.md).
 #511 and #608 remain open until a replacement artifact delivers their fixes.
+
+
+## Continued November 8 checks
+
+- #91 was reopened after browser caching reproduced an enabled duplicate Request
+  action despite a successful persisted request. Source repair `60d54c949` is on
+  both main remotes. Four real submit/immediate-status/reload workflows pass in
+  Orig/John at 390/1440; ten cache regressions pass. See
+  [cache qualification](request-state-browser-revalidation-2026-11-08.md).
+- #53 was reopened after actual API data reached Current Requests but failed in
+  legacy rows and profile cards. The shared routing and hydration repair is
+  documented in [book identity qualification](book-request-identity-validation-2026-11-08.md).
+  Release delivery remains pending for both reopened issues.
+- #192: eight actual downloaded v3.72.23 workflows pass across movie/series,
+  Orig/John and 390/1440. Rating sort applies 50 minimum votes; all tested returned
+  rows meet it. A human-selected 100 survives reload; Any sends explicit zero.
+  The same eight candidate workflows and eight filter-helper tests pass. Public
+  receipt: https://github.com/snapetech-org/seerrng/issues/192#issuecomment-6719429081.
+- #169: four production-browser creation/delivery workflows pass with a local SMTP
+  fixture, actual user API and SQLite. Setup email contains the username fallback
+  and reset link, the user survives reload and app remains healthy. Temporary
+  users are deleted; zero remain; fixture/app processes are stopped. Completing
+  a password reset or external SMTP delivery is not claimed. Public receipt:
+  https://github.com/snapetech-org/seerrng/issues/169#issuecomment-6719453220.
+- #105/#96: two fresh production-app databases pass typed-port Jellyfin bootstrap,
+  canonical owner creation/session readback, Sync Libraries, library enable and
+  Continue readiness. Four additional password-retry/return-to-Requests/reload
+  cases pass with both saved themes. Each database has one owner and persisted
+  library selection. All owned Jellyfin fixtures are stopped. Anonymous setup
+  uses the default theme until account preference is known; full wizard finish,
+  third-party clients, household playback and reverse-proxy/TLS are excluded.
+  Receipts: https://github.com/snapetech-org/seerrng/issues/105#issuecomment-6719535427
+  and https://github.com/snapetech-org/seerrng/issues/96#issuecomment-6719535595.
+- #194: the fresh PostgreSQL request/status UI and no-owner/retry checks support
+  the existing lowercase-alias fix. The real PostgreSQL regression passes without
+  skipping; its explicit hosted CI step passed in run 42459489954. Public receipt:
+  https://github.com/snapetech-org/seerrng/issues/194#issuecomment-6719404351.
+
+These are scoped additions to the continuing audit, not certification that all
+73 historical human workflows or all provider integrations are complete.

@@ -23,8 +23,8 @@ import { Permission, useUser } from '@app/hooks/useUser';
 import globalMessages from '@app/i18n/globalMessages';
 import {
   encodeApiPathSegment,
+  getBookRouteId,
   normalizeMusicBrainzId,
-  normalizeOpenLibraryWorkId,
 } from '@app/utils/apiPath';
 import defineMessages from '@app/utils/defineMessages';
 import { getTmdbPosterImageUrl } from '@app/utils/imageCache';
@@ -143,14 +143,7 @@ const isSports = (media: RequestItemTitle): media is SportarrDetails =>
   (media as SportarrDetails).mediaType === 'sports';
 
 const getBookId = (request: NonFunctionProperties<MediaRequest>) =>
-  request.media.identifiers?.find(
-    (identifier) => identifier.provider === 'openlibrary'
-  )?.value;
-
-const getNormalizedBookId = (request: NonFunctionProperties<MediaRequest>) => {
-  const bookId = getBookId(request);
-  return bookId ? normalizeOpenLibraryWorkId(bookId) : undefined;
-};
+  getBookRouteId(request.media.identifiers);
 
 const getNormalizedMusicId = (request: NonFunctionProperties<MediaRequest>) =>
   request.media.mbId ? normalizeMusicBrainzId(request.media.mbId) : undefined;
@@ -184,7 +177,7 @@ const getRequestDetailHref = (
     .filter(Boolean)
     .join('&');
   const suffix = query ? `?${query}` : '';
-  const bookId = getNormalizedBookId(request);
+  const bookId = getBookId(request);
   const musicId = getNormalizedMusicId(request);
   const comicId = getComicId(request);
   const magazineId = getMagazineId(request);
@@ -596,8 +589,7 @@ const RequestItem = ({ request, revalidateList }: RequestItemProps) => {
   const { user, hasPermission } = useUser();
   const [showEditModal, setShowEditModal] = useState(false);
   const [showSeasonMappingModal, setShowSeasonMappingModal] = useState(false);
-  const bookId =
-    request.type === 'book' ? getNormalizedBookId(request) : undefined;
+  const bookId = request.type === 'book' ? getBookId(request) : undefined;
   const musicId =
     request.type === 'music' ? getNormalizedMusicId(request) : undefined;
   const comicId = request.type === 'comic' ? getComicId(request) : undefined;

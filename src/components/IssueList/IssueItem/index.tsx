@@ -16,9 +16,9 @@ import {
 import { Permission, useUser } from '@app/hooks/useUser';
 import {
   encodeApiPathSegment,
+  getBookRouteId,
   normalizeExternalTitleId,
   normalizeMusicBrainzId,
-  normalizeOpenLibraryWorkId,
 } from '@app/utils/apiPath';
 import defineMessages from '@app/utils/defineMessages';
 import { getTmdbPosterImageUrl } from '@app/utils/imageCache';
@@ -214,9 +214,6 @@ const IssueItem = ({
   const { ref, inView } = useInView({
     triggerOnce: true,
   });
-  const bookId = issue.media.identifiers?.find(
-    (identifier) => identifier.provider === 'openlibrary'
-  )?.value;
   const comicId = issue.media.identifiers?.find(
     (identifier) => identifier.provider === 'comicvine'
   )?.value;
@@ -226,9 +223,7 @@ const IssueItem = ({
   const normalizedMusicId = issue.media.mbId
     ? normalizeMusicBrainzId(issue.media.mbId)
     : undefined;
-  const normalizedBookId = bookId
-    ? normalizeOpenLibraryWorkId(bookId)
-    : undefined;
+  const normalizedBookId = getBookRouteId(issue.media.identifiers);
   const normalizedMagazineId = magazineId
     ? normalizeExternalTitleId('magazine', magazineId).toString()
     : undefined;

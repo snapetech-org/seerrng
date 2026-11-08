@@ -18,6 +18,9 @@ import dataSource, { getRepository } from '@server/datasource';
 import { LinkedAccount } from '@server/entity/LinkedAccount';
 import Media from '@server/entity/Media';
 import MediaAvailabilitySubscription from '@server/entity/MediaAvailabilitySubscription';
+import MediaIdentifier, {
+  MediaIdentifierProvider,
+} from '@server/entity/MediaIdentifier';
 import { MediaRequest } from '@server/entity/MediaRequest';
 import { User } from '@server/entity/User';
 import { UserPushSubscription } from '@server/entity/UserPushSubscription';
@@ -3832,4 +3835,59 @@ describe('User route input validation', () => {
       history.mock.restore();
     }
   });
+});
+
+describe('profile request metadata identities', () => {
+  beforeEach(() => {
+    // Identity projection is independent of background provider acquisition.
+    mock.method(requestDispatchManager, 'enqueue', async () => undefined);
+  });
+  afterEach(() => mock.restoreAll());
+  for (const [provider, value] of [
+    [MediaIdentifierProvider.OPENLIBRARY, 'OL53W'],
+    [MediaIdentifierProvider.BOOKSHELF, 'bookshelf:0:aGM6NTM'],
+  ] as const) {
+    it(`preserves ${provider} identity in authenticated profile history`, async () => {
+      const media = await getRepository(Media).save(
+        new Media({
+          mediaType: MediaType.BOOK,
+          tmdbId: 0,
+          status: MediaStatus.PROCESSING,
+          status4k: MediaStatus.UNKNOWN,
+        })
+      );
+      await getRepository(MediaIdentifier).save(
+        new MediaIdentifier({
+          media,
+          provider,
+          value,
+          canonical: true,
+        })
+      );
+      const owner = await getRepository(User).findOneOrFail({
+        where: { id: 1 },
+      });
+      const created = await getRepository(MediaRequest).insert({
+        type: MediaType.BOOK,
+        bookFormat: 'audiobook',
+        status: MediaRequestStatus.APPROVED,
+        media: { id: media.id },
+        requestedBy: { id: owner.id },
+        is4k: false,
+      });
+      const agent = await loginAs('admin@seerr.dev', 'test1234');
+      const response = await agent.get('/user/1/requests?take=10&skip=0');
+      assert.equal(response.status, 200);
+      const row = response.body.results.find(
+        (entry: { id: number }) => entry.id === created.identifiers[0].id
+      );
+      assert.ok(row);
+      assert.ok(
+        row.media.identifiers.some(
+          (id: { provider: string; value: string }) =>
+            id.provider === provider && id.value === value
+        )
+      );
+    });
+  }
 });

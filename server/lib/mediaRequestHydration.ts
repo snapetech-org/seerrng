@@ -60,7 +60,11 @@ export const hydrateMediaRequestRelations = async (
         where: { id: In(batch) },
         relations: {
           seasons: true,
-          ...(options.includeMediaIdentifiers ? { identifiers: true } : {}),
+          // API projections need routable identities even when the caller does
+          // not explicitly opt in (notably user-profile request history).
+          ...(options.includeMediaIdentifiers !== false
+            ? { identifiers: true }
+            : {}),
         },
         relationLoadStrategy: 'query',
         loadEagerRelations: false,

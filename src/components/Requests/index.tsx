@@ -42,8 +42,8 @@ import { Permission, useUser } from '@app/hooks/useUser';
 import globalMessages from '@app/i18n/globalMessages';
 import {
   encodeApiPathSegment,
+  getBookRouteId,
   normalizeMusicBrainzId,
-  normalizeOpenLibraryWorkId,
 } from '@app/utils/apiPath';
 import { sortCrewPriority } from '@app/utils/creditHelpers';
 import defineMessages from '@app/utils/defineMessages';
@@ -569,14 +569,7 @@ const isSports = (details: MediaDetails): details is SportarrDetails =>
   (details as SportarrDetails).mediaType === 'sports';
 
 const getBookId = (item: RequestStatusItem): string | undefined =>
-  item.request.media.identifiers?.find(
-    (identifier) =>
-      identifier.provider === 'openlibrary' ||
-      identifier.provider === 'bookshelf'
-  )?.value;
-
-const normalizeBookRouteId = (bookId: string): string =>
-  bookId.startsWith('bookshelf:') ? bookId : normalizeOpenLibraryWorkId(bookId);
+  getBookRouteId(item.request.media.identifiers);
 
 const getComicId = (item: RequestStatusItem): string | undefined =>
   item.request.media.identifiers?.find(
@@ -628,9 +621,7 @@ const getDetailsUrl = (item: RequestStatusItem): string | null => {
       : null;
   }
   const bookId = getBookId(item);
-  return bookId
-    ? `/api/v1/book/${encodeApiPathSegment(normalizeBookRouteId(bookId))}`
-    : null;
+  return bookId ? `/api/v1/book/${encodeApiPathSegment(bookId)}` : null;
 };
 
 const getDetailHref = (item: RequestStatusItem): string | null => {
@@ -660,7 +651,7 @@ const getDetailHref = (item: RequestStatusItem): string | null => {
   const bookId = getBookId(item);
   const bookFormat = getRequestedBookFormat(item.request.bookFormat);
   return bookId
-    ? `/book/${encodeApiPathSegment(normalizeBookRouteId(bookId))}?format=${bookFormat}`
+    ? `/book/${encodeApiPathSegment(bookId)}?format=${bookFormat}`
     : null;
 };
 
