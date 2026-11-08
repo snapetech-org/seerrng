@@ -13,6 +13,7 @@ import type { SeasonEpisodeSelection } from './seasonInterfaces';
 
 export interface RequestResultsResponse extends PaginatedResponse {
   results: (NonFunctionProperties<MediaRequest> & {
+    currentStatus?: RequestStatusSnapshot;
     profileName?: string;
     canRemove?: boolean;
   })[];

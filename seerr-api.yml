@@ -6697,6 +6697,11 @@ components:
     MediaRequest:
       type: object
       properties:
+        currentStatus:
+          description: Present on request-list results only when includeStatus=true.
+          allOf:
+            - $ref: '#/components/schemas/RequestStatusSnapshot'
+          readOnly: true
         id:
           type: number
           example: 123
@@ -22602,6 +22607,12 @@ paths:
       tags:
         - request
       parameters:
+        - in: query
+          name: includeStatus
+          description: Include the current format- and destination-specific status for each authorized request. Does not update status history.
+          schema:
+            type: boolean
+            default: false
         - in: query
           name: take
           schema:

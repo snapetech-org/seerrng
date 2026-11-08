@@ -758,6 +758,68 @@ describe('GET /request/count', () => {
   });
 });
 
+describe('GET /request with current status', () => {
+  it('opts into owner-scoped format truth without adding history', async () => {
+    const own = await seedRequest();
+    const hidden = await seedRequest(
+      MediaRequestStatus.PENDING,
+      undefined,
+      12346,
+      'admin@seerr.dev'
+    );
+    // Raw updates avoid dispatch subscribers: the ebook exists, the requested audio does not.
+    await getRepository(Media).update(own.media.id, {
+      mediaType: MediaType.BOOK,
+      status: MediaStatus.AVAILABLE,
+      availableEbookServiceIds: [0],
+      availableAudiobookServiceIds: [],
+    });
+    await getRepository(MediaRequest).update(own.id, {
+      type: MediaType.BOOK,
+      bookFormat: 'audiobook',
+      status: MediaRequestStatus.APPROVED,
+    });
+    const agent = await loginAs('friend@seerr.dev', 'test1234');
+    const before = await getRepository(MediaRequestStatusEvent).count();
+    for (const query of [{}, { includeStatus: false }]) {
+      const plain = await agent.get('/request').query(query);
+      assert.equal(plain.status, 200);
+      assert.equal(plain.body.results.length, 1);
+      assert.equal(
+        Object.hasOwn(plain.body.results[0], 'currentStatus'),
+        false
+      );
+    }
+    const projected = await agent
+      .get('/request')
+      .query({ includeStatus: true });
+    assert.equal(projected.status, 200);
+    assert.deepEqual(
+      projected.body.results.map((row: { id: number }) => row.id),
+      [own.id]
+    );
+    assert.equal(projected.body.results[0].currentStatus.stage, 'searching');
+    assert.equal(await getRepository(MediaRequestStatusEvent).count(), before);
+    const detail = await agent.get(`/request/status/${own.id}`);
+    assert.equal(detail.status, 200);
+    assert.equal(
+      projected.body.results[0].currentStatus.stage,
+      detail.body.current.stage
+    );
+    assert.equal((await agent.get(`/request/status/${hidden.id}`)).status, 403);
+  });
+
+  it('rejects malformed status projection options', async () => {
+    const agent = await loginAs('friend@seerr.dev', 'test1234');
+    for (const includeStatus of ['yes', '1', ['true', 'false']]) {
+      assert.equal(
+        (await agent.get('/request').query({ includeStatus })).status,
+        400
+      );
+    }
+  });
+});
+
 describe('GET /request/status', () => {
   for (const filter of ['pending', 'processing', 'deleted']) {
     it(`returns an empty page for the ${filter} filter when nothing matches`, async () => {

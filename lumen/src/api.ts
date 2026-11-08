@@ -407,6 +407,11 @@ export interface DownloadItem {
   status?: string;
 }
 export interface RequestItem {
+  currentStatus?: {
+    stage: string;
+    percent: number | null;
+    message?: string;
+  };
   id: number;
   status: number; // 1 pending approval, 2 approved, 3 declined, 4 failed, 5 completed
   type: string;
@@ -415,7 +420,7 @@ export interface RequestItem {
   bookFormat?: string;
   seasons: { seasonNumber: number }[];
   requestedBy: { id: number; displayName: string };
-  media: {
+  media: MediaInfo & {
     mediaType: string;
     tmdbId: number;
     status: number;

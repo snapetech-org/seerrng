@@ -1965,6 +1965,35 @@ const mapRequestStatusItem = async (
   return { request, status };
 };
 
+/** Project already-authorized, hydrated requests without changing status history. */
+export const projectRequestStatuses = async (
+  requests: readonly MediaRequest[],
+  persist = false
+): Promise<RequestStatusPageItem[]> => {
+  if (!requests.length) return [];
+  const requestIds = requests.map((request) => request.id);
+  const [latestEvents, pendingRequestIds, bookSearchStates] = await Promise.all(
+    [
+      getLatestEvents(requestIds),
+      getPendingDispatchRequestIds(requestIds),
+      getBookSearchStates(requestIds),
+    ]
+  );
+  const items: RequestStatusPageItem[] = [];
+  for (const request of requests) {
+    items.push(
+      await mapRequestStatusItem(
+        request,
+        latestEvents.get(request.id),
+        pendingRequestIds.has(request.id),
+        bookSearchStates.get(request.id),
+        persist
+      )
+    );
+  }
+  return items;
+};
+
 const stageMatchesFilter = (
   stage: RequestStatusStage,
   filter: string | undefined,

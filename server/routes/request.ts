@@ -92,6 +92,7 @@ import {
   RequestStatusStage,
   getRequestStatusHistory,
   getRequestStatusPage,
+  projectRequestStatuses,
   recordRequestRetry,
   recordRequestStatus,
 } from '@server/lib/requestStatus';
@@ -2241,6 +2242,14 @@ requestRoutes.get<
       take: 10,
       maxTake: 100,
     });
+    const statusOption: unknown = req.query.includeStatus;
+    if (
+      statusOption !== undefined &&
+      ![true, false, 'true', 'false'].includes(statusOption as boolean | string)
+    ) {
+      return next({ status: 400, message: 'includeStatus must be a boolean' });
+    }
+    const includeStatus = statusOption === true || statusOption === 'true';
     const requestedBy = parseOptionalPositiveInt(req.query.requestedBy) ?? null;
     const parsedMediaType = parseOptionalAllowedString(req.query.mediaType, {
       fieldName: 'Media type',
@@ -2944,6 +2953,19 @@ requestRoutes.get<
           }
         }
       });
+    }
+
+    if (includeStatus) {
+      const statuses = new Map(
+        (await projectRequestStatuses(requests)).map(({ request, status }) => [
+          request.id,
+          protectRequestStatusDownloadId(status),
+        ])
+      );
+      mappedRequests = mappedRequests.map((request) => ({
+        ...request,
+        currentStatus: statuses.get(request.id),
+      }));
     }
 
     return res.status(200).json({
