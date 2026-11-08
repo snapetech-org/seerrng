@@ -234,6 +234,29 @@ describe('Jellyfin viewer library projection', () => {
     assert.equal(entry.status, MediaStatus.UNKNOWN);
     assert.equal(entry.jellyfinMediaId, undefined);
   });
+  it('checks password-linked viewers with the server key scoped to their user', async () => {
+    const entry = await setup();
+    await getRepository(User).update({ id: 1 }, { jellyfinAuthToken: null });
+    getSettings().jellyfin.apiKey = 'server-fixture-key';
+    const scope = await context();
+    assert.equal(scope.credential, 'server-fixture-key');
+    mock.method(
+      JellyfinAPI.prototype,
+      'getUserItemForAvailabilityCheck',
+      async (id: string, userId: string) => {
+        assert.equal(id, nativeId);
+        assert.equal(userId, viewer);
+        return {
+          Id: nativeId,
+          Type: 'Movie',
+          ProviderIds: { Tmdb: '550' },
+        } as JellyfinLibraryItemExtended;
+      }
+    );
+    await applyUserMediaServerAvailability([entry], scope);
+    assert.equal(entry.status, MediaStatus.AVAILABLE);
+    assert.equal(entry.jellyfinMediaId, nativeId);
+  });
   it('only exposes seasons visible through the linked viewer account', async () => {
     const entry = await setup();
     entry.mediaType = MediaType.TV;

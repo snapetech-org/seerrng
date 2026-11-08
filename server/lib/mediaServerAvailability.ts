@@ -175,18 +175,25 @@ export const getMediaServerAccessContext = async (
 
   const linkedIdentity =
     normalizedIdentity ?? `token-linked-user-${linkedUser.id}`;
+  // Password sign-ins do not persist a viewer token, so most linked accounts
+  // have none. Fall back to the server API key: the availability check always
+  // sends the viewer's userId, so Jellyfin/Emby still apply that user's own
+  // library access. Without this every title is hidden from those viewers.
+  const credential =
+    linkedUser.jellyfinAuthToken ??
+    (normalizedIdentity ? settings.jellyfin.apiKey || undefined : undefined);
   return {
     source,
     userId: linkedUser.id,
     linkedIdentity,
-    credential: linkedUser.jellyfinAuthToken ?? undefined,
+    credential,
     deviceId: linkedUser.jellyfinDeviceId ?? undefined,
     host,
     scopeDigest: accessScopeDigest({
       source,
       userId: linkedUser.id,
       linkedIdentity,
-      credential: linkedUser.jellyfinAuthToken ?? undefined,
+      credential,
       deviceId: linkedUser.jellyfinDeviceId ?? undefined,
       host,
     }),
