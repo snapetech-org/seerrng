@@ -28,9 +28,18 @@ COPY --from=build /app/dist /usr/share/nginx/html
 # update would replace. Without it the admin page offers lumen-config.json as a download.
 COPY deploy/lumen-config.js /etc/nginx/lumen/lumen-config.js
 RUN sed -i '1i load_module modules/ngx_http_js_module.so;' /etc/nginx/nginx.conf
-# The entrypoint renders only proxy configuration. Keep the static app read-only
-# while allowing the unprivileged master to write its config, cache and PID.
-RUN sed -i 's@/run/nginx.pid@/tmp/nginx.pid@' /etc/nginx/nginx.conf && \
-    chown -R nginx:nginx /etc/nginx/conf.d /var/cache/nginx
+# The entrypoint renders only proxy configuration. Everything nginx writes (that
+# configuration, its temporary files and PID) goes under /tmp, so the image runs as any
+# unprivileged user: nginx (101) by default, or e.g. `user: "1000:1000"` in compose to match
+# the owner of the mounted /lumen-data folder. The static app stays read-only.
+ENV NGINX_ENVSUBST_OUTPUT_DIR=/tmp/lumen/conf.d
+RUN sed -i \
+      -e 's@/run/nginx.pid@/tmp/nginx.pid@' \
+      -e 's@include /etc/nginx/conf.d/\*.conf;@include /tmp/lumen/conf.d/*.conf;@' \
+      -e 's@^http {@http {\n    client_body_temp_path /tmp/lumen/client_temp;\n    proxy_temp_path /tmp/lumen/proxy_temp;\n    fastcgi_temp_path /tmp/lumen/fastcgi_temp;\n    uwsgi_temp_path /tmp/lumen/uwsgi_temp;\n    scgi_temp_path /tmp/lumen/scgi_temp;@' \
+      /etc/nginx/nginx.conf && \
+    grep -q 'include /tmp/lumen/conf.d/\*.conf;' /etc/nginx/nginx.conf && \
+    grep -q 'client_body_temp_path /tmp/lumen/client_temp;' /etc/nginx/nginx.conf && \
+    rm -f /etc/nginx/conf.d/default.conf
 USER nginx
 EXPOSE 80
