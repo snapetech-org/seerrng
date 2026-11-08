@@ -124,3 +124,46 @@ Web Push and optional-field failures required production repairs above.
 
 This milestone is not included in the frozen v3.72.22 tag candidate and does not
 complete #599's requested settings disclosure or the remaining historical audit.
+
+
+## November 8 delivery and continued issue checks
+
+The earlier scoped milestones have since shipped: #498 playback-analysis settings
+in v3.72.22, and #599 compact settings plus #600 settings recovery in v3.72.23.
+The downloaded v3.72.23 image passed 162 settings workflows, including six compact-mode
+cases at 320/390/1440 in Orig/John. This supersedes the pending-delivery statements
+in the historical sections above; it does not complete all 73 issue workflows.
+
+- #366: eight actual downloaded v3.72.23 workflows pass in Orig/John at 390/1440.
+  Admins test the local Prowlarr connection, assign an indexer/category, set search
+  limits, save/reload, search, send to the synthetic downloader, reject a replay,
+  and see quota feedback. Four assigned indexer IDs and exactly four handoffs are
+  independently recorded by the HTTP fixture. Four separate admin/non-admin
+  workflows enable global details, change the target user's Show indexer details
+  control, save/reload and confirm the next real search hides names and links.
+  All fixture settings/permissions are restored; 27 focused native checks pass.
+  Indexer Search retains the documented Manage Requests/admin boundary. No real
+  indexer, torrent/NZB download or household downloader is used.
+- #500: actual downloaded v3.72.23 browser/API/SQLite/worker evidence completes the
+  full two-ahead → watched → exactly one additional request → fresh readback →
+  human Stop → no additional admission flow. Synthetic Plex playback and UI
+  metadata replay are explicit; ordinary approval policy remains enforced.
+  Additional SSR Retry and polling repairs are on main, awaiting replacement
+  release delivery. The earlier corrected milestone CI 42450549566 passed.
+- #602: visible language settings, verified-language request admission and
+  collection recovery are on main 35ef01975. Metadata settings save/reload,
+  failure/Retry and clear-to-unrestricted paths pass both themes and widths.
+- #605/#606: see the linked book lookup and ownership recovery runbooks. Real
+  slow-provider modal recovery passes four layouts, edition author encoding is
+  repaired, and scan ownership is restored without moving media or requests.
+  These fixes remain outside published v3.72.23 until replacement publication.
+- PR #607: both contributor commits are merged, with reviewed repairs and 423
+  Lumen browser passes/13 documented viewport skips plus27 native/proxy checks.
+  All24 new regressions fail against the contributor baseline and pass after
+  repair; eight additional selected-state visual checks pass. Published23 does
+  not contain this feature. Main ancestry and zero open PRs were read back.
+
+Evidence remains in task deliverables under issue366-*, issue605-*, issue606-*,
+collection-progression-* and pr607-*. The combined-head 6750bcdd7 Lumen validation
+42454294953 passed. Full CI 42454350430 is in progress; release qualification and
+remaining human issue paths are still open. No blanket completion is claimed.

@@ -139,3 +139,21 @@ MERGED with contributor history preserved. The final GitHub sweep found no open
 PRs and only the main branch. See
 [release qualification](release-3.72.20-verification.md) for integrated tests,
 publication and the explicit limits of provider/device/security verification.
+
+
+## November 8 PR #607 follow-up
+
+The fresh GitHub inventory is 519 total PRs: 420 merged, 99 closed without a merge,
+and zero open. The 99 historical dispositions above remain explicit already-included,
+superseded or obsolete resolutions; they were not erased to reach zero.
+
+PR #607 was actually merged as 64988146ac2bcd75bd63585d72f095a58da12278 and integrated
+with the current main as 6750bcdd7870e6a9aed160a5a1e6cd2d6d171e65. Both original
+contributor commits f053400bf and 54f589d55 remain ancestors. Reviewed owner repairs
+are recorded in the Lumen 4K review runbook. Patched source passes 27 native/proxy
+checks and 423 browser cases with 13 documented skips; 24 new regressions and eight
+selected-state visual checks also pass. The original contributor baseline fails
+all 24 regression cases. Automatic Lumen validation 42454294953 succeeds.
+
+This updates PR integration evidence, not the still-incomplete 73-issue human-path
+audit. Release delivery for post-v3.72.23 work remains a separate gate.

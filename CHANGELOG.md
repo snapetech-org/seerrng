@@ -9,6 +9,46 @@ v3.72.7 section consolidates changes from the requested v3.71.4 baseline
 through v3.72.7, including changes also represented by unpublished interim
 tags. The comparison link is the complete commit range.
 
+## [3.72.24](https://github.com/snapetech-org/seerrng/compare/v3.72.23..v3.72.24) - 2026-11-08
+
+### User-facing changes
+
+#### Added
+
+- **Books:** Administrators can restrict book languages in Metadata Providers. Search, discovery and requests enforce verified edition languages; unverified destinations are blocked while enabled. Leave the list empty for unrestricted behavior. Existing library files are retained.
+- **Lumen:** Lumen offers 1080p or 4K when requesting from posters and Coming Soon, subject to permissions and enabled formats. Movie 4K requests are available before HD exists. Advanced destinations keep each tier’s defaults, TV selection follows 4K season ownership, and request feedback identifies 4K.
+- **Lumen:** Lumen remembers this browser's last successful password sign-in method without storing credentials, while keeping administrator sign-in choices in control. Games now supports ROMarrNG-only console catalogs, leaves unavailable PC catalogs out, and keeps a single usable Retry path for temporary failures without dropping previously loaded games.
+
+#### Fixed
+
+- **Books:** Book metadata and edition lookups share a 25-second deadline and prefer exact provider identities. Matching concurrent reads share work without crossing destination, format or credential boundaries. Failed metadata loads offer Retry; edition outages retain Automatic best match. Edition queries now accept author names containing spaces and punctuation.
+- **Books:** Bookshelf scans restore ebook and audiobook ownership on older split catalog records and negotiated bare/provider-qualified identities. Request history, other formats and Audiobookshelf links are retained. Optional edition metadata outages no longer discard verified inventory file evidence.
+  - **Action required:** Run Bookshelf Scan after upgrading to restore older catalog availability.
+- **Requests:** Collection pages show a usable Retry action after temporary metadata failures instead of a generic error page. Queue Collection progress now refreshes on its three-second interval, and phone settings tabs keep the selected page in sync after permissions load or navigation changes.
+
+#### Security
+
+- **Lumen:** Lumen now requires a valid nonnegative integer permission mask before shared settings or branding writes. Malformed upstream strings, arrays, fractions and negative masks are denied instead of being coerced; ordinary SeerrNG administrator responses continue to work.
+
+### 🚀 Features
+- *(books)* Enforce language restrictions and repair collection recovery - ([35ef019](https://github.com/snapetech-org/seerrng/commit/35ef01975364998c0fd71bf485bd3db8e815be53))
+- *(lumen)* Choose 1080p or 4K when requesting, for people who may request 4K - ([54f589d](https://github.com/snapetech-org/seerrng/commit/54f589d559cc6bc25763942529030443bb56c188))
+- *(lumen)* Open sign-in the way this device last signed in - ([9bdd87a](https://github.com/snapetech-org/seerrng/commit/9bdd87ac7bea24eb6052af656586d350259b858f))
+
+### 🐛 Bug Fixes
+- *(books)* Retain bounded native fallback for older Chaptarr - ([7afaeff](https://github.com/snapetech-org/seerrng/commit/7afaeffaf07d1c61e0bec1de54664a9bb412a5a7))
+- *(books)* Bound metadata lookups and recover request dialogs - ([94e3f68](https://github.com/snapetech-org/seerrng/commit/94e3f682605f7a25913cc355cd7a3308041a5418))
+- *(books)* Reconcile legacy catalog ownership during scans - ([56bf60a](https://github.com/snapetech-org/seerrng/commit/56bf60a91c2e9bb534de815f18942f76106be487))
+- *(lumen)* Offer Request 4K before the HD copy exists - ([f053400](https://github.com/snapetech-org/seerrng/commit/f053400bffb87b7336bdfcca7f3df330580aad4f))
+- *(lumen)* Show Games when only ROMarrNG is connected - ([641d093](https://github.com/snapetech-org/seerrng/commit/641d0939d63ef1c36be7c0a3bc1a61cadb688f99))
+
+### 📖 Documentation
+- *(lumen)* Use verified public images and record PR604 integration - ([e61f6c6](https://github.com/snapetech-org/seerrng/commit/e61f6c63489032d954b806f82c6591925688d822))
+
+### 🧪 Testing
+- *(books)* Qualify route fixtures under native and Vitest runners - ([aa896aa](https://github.com/snapetech-org/seerrng/commit/aa896aad95ebce0a0eb577c250fb3460bee462fc))
+- *(books)* Restore optional policy state between CI cases - ([d513ef9](https://github.com/snapetech-org/seerrng/commit/d513ef962cb06f8bcb21d03740737dc5bf0e111b))
+
 ## [3.72.23](https://github.com/snapetech-org/seerrng/compare/v3.72.22..v3.72.23) - 2026-11-08
 
 ### User-facing changes
