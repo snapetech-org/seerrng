@@ -174,6 +174,13 @@ function mockLinkedBookshelfMetadata() {
 
 describe('GET /book/:id', () => {
   it('resolves a Bookshelf series member using its title hint and exact provider ID', async () => {
+    mock.method(
+      ReadarrAPI.prototype as unknown as {
+        ensureProvider: () => Promise<void>;
+      },
+      'ensureProvider',
+      async () => undefined
+    );
     const settings = getSettings();
     const priorReadarr = settings.readarr;
     settings.readarr = [
@@ -210,13 +217,33 @@ describe('GET /book/:id', () => {
       assert.strictEqual(response.body.id, id);
       assert.strictEqual(response.body.title, 'The Fellowship of the Ring');
       assert.strictEqual(lookup.mock.callCount(), 1);
-      assert.strictEqual(lookup.mock.calls[0].arguments[0], 'work:139773');
+      assert.strictEqual(lookup.mock.calls[0].arguments[0], '139773');
     } finally {
       settings.readarr = priorReadarr;
     }
   });
 
   it('resolves an unqualified Bookshelf ID through its primary provider namespace', async () => {
+    mock.method(
+      ReadarrAPI.prototype as unknown as {
+        ensureProvider: () => Promise<void>;
+      },
+      'ensureProvider',
+      async function (this: {
+        detectedSystemStatus: unknown;
+        chaptarrDialect: string;
+        chaptarrCapabilities: unknown;
+      }) {
+        this.detectedSystemStatus = { appName: 'Chaptarr' };
+        this.chaptarrDialect = 'hc';
+        this.chaptarrCapabilities = {
+          contract: 'chaptarrng-seerr-bookshelf',
+          contractVersion: 1,
+          providerIdDialect: 'hc',
+          features: { formatScopedFacade: true },
+        };
+      }
+    );
     const settings = getSettings();
     const priorReadarr = settings.readarr;
     settings.readarr = [
@@ -234,11 +261,11 @@ describe('GET /book/:id', () => {
       ReadarrAPI.prototype,
       'lookupBook',
       async (term: string) =>
-        term === 'hardcover:374541'
+        term === 'hc:374541'
           ? [
               {
                 title: 'The Return of the King',
-                foreignBookId: 'hardcover:374541',
+                foreignBookId: 'hc:374541',
               },
             ]
           : [
@@ -259,7 +286,7 @@ describe('GET /book/:id', () => {
       assert.strictEqual(response.body.title, 'The Return of the King');
       assert.deepStrictEqual(
         lookup.mock.calls.map((call) => call.arguments[0]),
-        ['work:374541', '374541', 'hardcover:374541']
+        ['hc:374541']
       );
     } finally {
       settings.readarr = priorReadarr;
@@ -719,6 +746,13 @@ describe('GET /book/:id', () => {
 
 describe('GET /book/:id/ratings', () => {
   it('matches a Bookshelf book by title and author before using Open Library ratings', async () => {
+    mock.method(
+      ReadarrAPI.prototype as unknown as {
+        ensureProvider: () => Promise<void>;
+      },
+      'ensureProvider',
+      async () => undefined
+    );
     const settings = getSettings();
     const priorReadarr = settings.readarr;
     settings.readarr = [

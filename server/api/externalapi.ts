@@ -478,8 +478,9 @@ class ExternalAPI {
           // read while they are starting, refreshing, or applying configuration.
           // Reads are safe to repeat, so absorb one transient transport/server
           // failure before the caller turns it into a user-facing error.
-          return await withTransientHttpRetry(() =>
-            this.axios.get<T>(requestTarget, config)
+          return await withTransientHttpRetry(
+            () => this.axios.get<T>(requestTarget, config),
+            { signal: config?.signal }
           );
         case 'POST':
           // requestTarget is restricted to the constructor's allowed origins;

@@ -13064,6 +13064,7 @@ paths:
             maxLength: 2048
         - in: query
           name: author
+          allowReserved: true
           description: Expected author for a title lookup.
           schema:
             type: string

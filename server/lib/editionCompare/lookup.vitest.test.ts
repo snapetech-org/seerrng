@@ -13,6 +13,10 @@ const fixture = vi.hoisted(() => ({
   media: vi.fn(),
 }));
 beforeEach(() => {
+  vi.spyOn(
+    ReadarrAPI.prototype as unknown as { ensureProvider: () => Promise<void> },
+    'ensureProvider'
+  ).mockResolvedValue();
   getSettings().readarr = [
     {
       id: 1,

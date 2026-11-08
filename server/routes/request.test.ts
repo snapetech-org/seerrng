@@ -1,3 +1,5 @@
+import { RequestDispatchOutbox } from '@server/entity/RequestDispatchOutbox';
+import { waitForBackgroundTasks } from '@server/utils/backgroundTasks';
 import assert from 'node:assert/strict';
 import { afterEach, before, beforeEach, describe, it, mock } from 'node:test';
 
@@ -168,6 +170,9 @@ function configureSonarr(overrides: Partial<SonarrSettings>[]): void {
     ...o,
   })) as SonarrSettings[];
 }
+
+const realDispatchEnqueue = requestDispatchManager.enqueue;
+const realWorkCleanup = requestWorkCleanupManager.cleanup;
 
 let app: Express;
 let cleanupShouldFail = false;
@@ -7126,6 +7131,13 @@ describe('pending book destination edits', () => {
   });
 
   it('verifies the exact edition against the new destination before saving', async (t) => {
+    mock.method(
+      ReadarrAPI.prototype as unknown as {
+        ensureProvider: () => Promise<void>;
+      },
+      'ensureProvider',
+      async () => undefined
+    );
     const original = await seedBook({
       preferredEditionId: 'edition-1',
       editionPolicy: 'alongside',
@@ -8350,6 +8362,39 @@ describe('POST /request/:requestId/retry', () => {
     const statusResponse = await owner.get(`/request/status/${pending.id}`);
     assert.strictEqual(statusResponse.status, 200);
     assert.strictEqual(statusResponse.body.current.stage, 'searching');
+  });
+
+  it('explicit retry replaces a six-hour dispatch backoff and dispatches once', async () => {
+    const failed = await seedRequest(MediaRequestStatus.FAILED);
+    await getRepository(RequestDispatchOutbox).save(
+      new RequestDispatchOutbox({
+        requestId: failed.id,
+        attempts: 4,
+        nextAttemptAt: new Date(Date.now() + 21600000),
+      })
+    );
+    // Use the real durable admission/cleanup under both native and Vitest runners.
+    mock.method(requestDispatchManager, 'enqueue', realDispatchEnqueue);
+    mock.method(requestWorkCleanupManager, 'cleanup', realWorkCleanup);
+    const dispatch = mock.method(
+      MediaRequestSubscriber.prototype,
+      'dispatchRequestById',
+      async () => ({ delivered: true })
+    );
+    const admin = await loginAs('admin@seerr.dev', 'test1234');
+    const response = await admin.post(`/request/${failed.id}/retry`);
+    assert.equal(response.status, 200);
+    await waitForBackgroundTasks();
+    assert.equal(dispatch.mock.callCount(), 1);
+    assert.equal(
+      await getRepository(RequestDispatchOutbox).countBy({
+        requestId: failed.id,
+      }),
+      0
+    );
+    const repeated = await admin.post(`/request/${failed.id}/retry`);
+    assert.equal(repeated.status, 409);
+    assert.equal(dispatch.mock.callCount(), 1);
   });
 
   it('re-approves a failed request and records the acting user', async () => {

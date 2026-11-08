@@ -30,5 +30,6 @@ export const bookEditionQuery = (book?: BookEditionQuery): string | null => {
 export default function useBookEditions(book?: BookEditionQuery) {
   return useSWR<EditionComparison>(bookEditionQuery(book), {
     revalidateOnFocus: false,
+    shouldRetryOnError: false,
   });
 }

@@ -1,4 +1,4 @@
-import axios, { type AxiosError } from 'axios';
+import axios, { type AxiosError, type GenericAbortSignal } from 'axios';
 
 export type HttpErrorDetails = {
   errorMessage: string;
@@ -330,8 +330,10 @@ export const withTransientHttpRetry = async <T>(
     maxAttempts = 2,
     delayMs = 250,
     onRetry,
+    signal,
   }: {
     maxAttempts?: number;
+    signal?: GenericAbortSignal;
     delayMs?: number;
     onRetry?: (error: unknown, nextAttempt: number) => void;
   } = {}
@@ -339,10 +341,15 @@ export const withTransientHttpRetry = async <T>(
   let attempt = 1;
 
   while (true) {
+    if (signal?.aborted) throw new axios.CanceledError('Request canceled.');
     try {
       return await request();
     } catch (error) {
-      if (attempt >= maxAttempts || !isTransientHttpError(error)) {
+      if (
+        signal?.aborted ||
+        attempt >= maxAttempts ||
+        !isTransientHttpError(error)
+      ) {
         throw error;
       }
 
@@ -351,7 +358,19 @@ export const withTransientHttpRetry = async <T>(
       const retryDelay =
         getRetryAfterMs(error) ??
         Math.min(Math.max(delayMs, 0) * 2 ** (attempt - 2), 10_000);
-      await new Promise((resolve) => setTimeout(resolve, retryDelay));
+      await new Promise<void>((resolve, reject) => {
+        const canceled = () => {
+          clearTimeout(timer);
+          signal?.removeEventListener?.('abort', canceled);
+          reject(new axios.CanceledError('Request canceled.'));
+        };
+        const timer = setTimeout(() => {
+          signal?.removeEventListener?.('abort', canceled);
+          resolve();
+        }, retryDelay);
+        signal?.addEventListener?.('abort', canceled, { once: true });
+        if (signal?.aborted) canceled();
+      });
     }
   }
 };

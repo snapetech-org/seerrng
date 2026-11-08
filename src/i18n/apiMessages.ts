@@ -1279,6 +1279,7 @@ export const apiMessages: Record<
   m5e8ab4b2c7e090545787: 'download had no seeds for 2 hours',
   m5e9f9877cb0aa02c7045: 'You do not have permission to retry this request.',
   m5ebafc4c13de2b6c4cb9: '{value0} must contain positive integer ids.',
+  m5ee515b18d694b909176: 'Book metadata lookup timed out. Please retry.',
   m5eea0138b3b0b1a7fa24: 'You do not have permission to view this issue.',
   m5f2db4725c05ddb2e2a2: 'Linked account changed.',
   m5f513a3099516336a695:
@@ -2026,6 +2027,7 @@ export const apiMessages: Record<
     'Too many redirects resolving Cover Art Archive metadata',
   m978e97dcd4931655b3df: 'Season not found.',
   m979476df209086cfa61b: 'Network IDs must be unique.',
+  m97c48a19ea70f4ce7daa: 'Request canceled.',
   m97ce79cf1b448bb59c9a: 'Log symlink escapes log directory: {value0}',
   m982cad4f3ac2bba0ca27: 'Webhook payload must be valid JSON.',
   m983c8474746d5013c0cb: 'Choose a valid audiobook section.',

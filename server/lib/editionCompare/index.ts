@@ -4,6 +4,7 @@ import { MediaType } from '@server/constants/media';
 import { getRepository } from '@server/datasource';
 import Media from '@server/entity/Media';
 import { bookLanguageAllowed } from '@server/lib/bookLanguagePolicy';
+import { withBookLookupBudget } from '@server/lib/bookLookupBudget';
 import { getExternalRuntimeConfig } from '@server/lib/externalRuntimeConfig';
 import { titleSimilarity } from '@server/lib/resolve/match';
 import type { ReadarrSettings } from '@server/lib/settings';
@@ -169,10 +170,21 @@ const compareBookEditionsUnfiltered = async (options: {
       url: ReadarrAPI.buildUrl(server, '/api/v1'),
       mediaType: options.format,
     });
-    const results = await api.lookupBook(options.term).catch(() => []);
     const foreignBookId = options.foreignBookId ?? identity?.foreignBookId;
+    const exact = foreignBookId
+      ? await api.lookupBookByProviderIdentity(foreignBookId)
+      : undefined;
+    const results = foreignBookId
+      ? exact
+        ? [exact]
+        : []
+      : await api.lookupBook(options.term);
     const matches = foreignBookId
-      ? results.filter((entry) => entry.foreignBookId === foreignBookId)
+      ? results.filter((entry) =>
+          api
+            .getKnownBookIdentityAliases(foreignBookId)
+            .includes(entry.foreignBookId)
+        )
       : results.filter(
           (entry) =>
             (!options.title ||
@@ -223,7 +235,9 @@ const compareBookEditionsUnfiltered = async (options: {
 export const compareBookEditions = async (
   options: Parameters<typeof compareBookEditionsUnfiltered>[0]
 ): Promise<EditionComparison> => {
-  const comparison = await compareBookEditionsUnfiltered(options);
+  const comparison = await withBookLookupBudget(() =>
+    compareBookEditionsUnfiltered(options)
+  );
   return {
     ...comparison,
     editions: comparison.editions.map((edition) =>
