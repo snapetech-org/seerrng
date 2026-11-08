@@ -86,7 +86,10 @@ test('admins can connect a read-only Audiobookshelf book library', async ({
   await expect(
     library.getByRole('option', { name: /Audio Library/ })
   ).toBeAttached();
-  await library.selectOption('book-library');
+  await expect(library).toHaveValue('book-library');
+  await expect(
+    dialog.getByRole('button', { name: 'Add library' })
+  ).toBeEnabled();
   const saveResponsePromise = page.waitForResponse(
     (response) =>
       response.request().method() === 'PUT' &&

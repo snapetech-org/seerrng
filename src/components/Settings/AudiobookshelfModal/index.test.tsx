@@ -34,11 +34,15 @@ vi.mock('@app/components/Common/Modal', async () => {
       onSecondary,
       secondaryDisabled,
       secondaryText,
+      onOk,
+      okDisabled,
     }: {
       children: React.ReactNode;
       onSecondary: () => void;
       secondaryDisabled: boolean;
       secondaryText: string;
+      onOk: () => void;
+      okDisabled: boolean;
     }) => {
       const { values, setValues } =
         formik.useFormikContext<Record<string, unknown>>();
@@ -66,6 +70,14 @@ vi.mock('@app/components/Common/Modal', async () => {
             onClick={onSecondary}
           >
             {secondaryText}
+          </button>
+          <button
+            type="button"
+            data-testid="save-connection"
+            disabled={okDisabled}
+            onClick={onOk}
+          >
+            Save connection
           </button>
           {children}
         </div>
@@ -141,3 +153,75 @@ it('sends the port as a number when testing an edited connection', async () => {
   );
   expect(typeof state.post.mock.calls[0]?.[1]?.port).toBe('number');
 });
+
+for (const automatic of [true, false]) {
+  it(`enables saving after ${automatic ? 'automatic' : 'manual'} library selection and persists its name`, async () => {
+    const onSave = vi.fn();
+    state.put.mockResolvedValue({ data: {} });
+    if (!automatic)
+      state.post.mockResolvedValue({
+        data: {
+          libraries: [
+            { id: 'lib-1', name: 'Audiobooks' },
+            { id: 'lib-2', name: 'Second library' },
+          ],
+        },
+      });
+    await act(async () =>
+      root.render(
+        <IntlProvider locale="en">
+          <AudiobookshelfModal
+            settings={null}
+            onClose={() => undefined}
+            onSave={onSave}
+          />
+        </IntlProvider>
+      )
+    );
+    await act(async () => {
+      container
+        .querySelector<HTMLButtonElement>(
+          '[data-testid="fill-connection-details"]'
+        )!
+        .click();
+      await new Promise((resolve) => setTimeout(resolve, 0));
+    });
+    await act(async () => {
+      container
+        .querySelector<HTMLButtonElement>('[data-testid="test-connection"]')!
+        .click();
+      await new Promise((resolve) => setTimeout(resolve, 0));
+    });
+    if (!automatic) {
+      expect(
+        container.querySelector<HTMLButtonElement>(
+          '[data-testid="save-connection"]'
+        )!.disabled
+      ).toBe(true);
+      await act(async () => {
+        const select =
+          container.querySelector<HTMLSelectElement>('#libraryId')!;
+        select.value = 'lib-2';
+        select.dispatchEvent(new dom.window.Event('change', { bubbles: true }));
+        await new Promise((resolve) => setTimeout(resolve, 0));
+      });
+    }
+    const save = container.querySelector<HTMLButtonElement>(
+      '[data-testid="save-connection"]'
+    )!;
+    expect(save.disabled).toBe(false);
+    await act(async () => {
+      save.click();
+      await new Promise((resolve) => setTimeout(resolve, 0));
+    });
+    expect(state.put).toHaveBeenCalledWith(
+      '/api/v1/settings/audiobookshelf',
+      expect.objectContaining({
+        port: 13380,
+        libraryId: automatic ? 'lib-1' : 'lib-2',
+        libraryName: automatic ? 'Audiobooks' : 'Second library',
+      })
+    );
+    expect(onSave).toHaveBeenCalledOnce();
+  });
+}

@@ -21,6 +21,7 @@ tags. The comparison link is the complete commit range.
 
 #### Fixed
 
+- **Books:** Audiobookshelf connections can be saved after automatic or manual book-library selection; stale validation no longer leaves Add library disabled.
 - **Books:** Book metadata and edition lookups share a 25-second deadline and prefer exact provider identities. Matching concurrent reads share work without crossing destination, format or credential boundaries. Failed metadata loads offer Retry; edition outages retain Automatic best match. Edition queries now accept author names containing spaces and punctuation.
 - **Books:** Bookshelf scans restore ebook and audiobook ownership on older split catalog records and negotiated bare/provider-qualified identities. Request history, other formats and Audiobookshelf links are retained. Optional edition metadata outages no longer discard verified inventory file evidence.
   - **Action required:** Run Bookshelf Scan after upgrading to restore older catalog availability.

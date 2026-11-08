@@ -167,3 +167,44 @@ Evidence remains in task deliverables under issue366-*, issue605-*, issue606-*,
 collection-progression-* and pr607-*. The combined-head 6750bcdd7 Lumen validation
 42454294953 passed. Full CI 42454350430 is in progress; release qualification and
 remaining human issue paths are still open. No blanket completion is claimed.
+
+
+## Further shipped-image checks — November 8
+
+- #294 and #346: actual downloaded v3.72.23 passes four Orig/John 390/1440
+  album-and-discography workflows using a destination named Lidarr with profile
+  Lossless Preferred and no explicit music-quality override. FLAC enables, MP3
+  remains unavailable, confirmation creates pending requests, and reload/API
+  readback retains the chosen destination/profile/root. Four additional cases
+  verify Requests and persistent history without inventing download progress.
+  The same core workflows pass against source24; four native quality and three
+  consumer/component checks pass. Artist/collection metadata is a one-album
+  replay; album metadata and request persistence use the actual backend. A
+  read-only loopback Lidarr fixture receives no acquisition writes. All test
+  requests and temporary services are removed. Public receipts:
+  [294](https://github.com/snapetech-org/seerrng/issues/294#issuecomment-6718538011),
+  [346](https://github.com/snapetech-org/seerrng/issues/346#issuecomment-6718538198).
+- #511 was reopened after the actual v3.72.23 Test connection succeeds but
+  Add library remains disabled after automatic selection of its sole book
+  library. All four theme/viewport cases reproduce the blocker. Two real-Formik
+  regressions also fail for automatic and manual selection: a second field
+  update validates the old empty library ID. Removing redundant library-name
+  updates leaves selection as the single validation update; submission already
+  derives the name from the loaded library record. The original typed-port
+  regression and both new cases pass. Production candidate and full release
+  qualification remain separate gates. Four real API/browser candidate workflows
+  pass, including save/reload and edited-port failure/retry. Matching captures
+  were inspected; [the evidence record](audiobookshelf-library-selection-recovery-2026-11-08.md)
+  records the baseline, repair and publication limits.
+
+Evidence: `music-published23*`, `music-status-published23-qualified*`,
+`music-human-qualified5*`, `music-quality-*` and `abs511-*` in the retained task
+artifacts. The first music harness runs used ambiguous playback/request controls,
+assumed a heading instead of the existing named dialog, allowed service workers
+to bypass metadata replays, and expected bulk HTTP 200 instead of the documented
+207 response. Those harness mistakes were corrected; they were not production
+fixes. The ABS harness initially required labels without their visible required
+asterisk; correcting that selector exposed the independent, genuine save bug.
+
+This expands the evidence; it does not complete the remaining historical human
+workflows or certify every external provider deployment.

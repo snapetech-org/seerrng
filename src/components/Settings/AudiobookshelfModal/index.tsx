@@ -111,7 +111,6 @@ const AudiobookshelfModal = ({
       setIsValidated(response.data.libraries.length > 0);
       if (response.data.libraries.length === 1) {
         setFieldValue('libraryId', response.data.libraries[0].id);
-        setFieldValue('libraryName', response.data.libraries[0].name);
       }
       addToast(intl.formatMessage(messages.testSuccess), {
         appearance: 'success',
@@ -356,14 +355,7 @@ const AudiobookshelfModal = ({
                     id="libraryId"
                     name="libraryId"
                     onChange={(event: React.ChangeEvent<HTMLSelectElement>) => {
-                      const library = libraries.find(
-                        (item) => item.id === event.target.value
-                      );
                       setFieldValue('libraryId', event.target.value);
-                      setFieldValue(
-                        'libraryName',
-                        library?.name ?? values.libraryName
-                      );
                     }}
                   >
                     <option value="">
