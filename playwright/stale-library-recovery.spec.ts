@@ -102,12 +102,10 @@ for (const theme of ['seerrOrig', 'seerrNGJ']) {
       await page
         .getByRole('button', { name: 'Manage Series', exact: true })
         .click();
-      const action = page
-        .getByRole('dialog')
-        .getByRole('button', {
-          name: 'Clear Stale HD Availability',
-          exact: true,
-        });
+      const action = page.getByRole('dialog').getByRole('button', {
+        name: 'Clear Stale HD Availability',
+        exact: true,
+      });
       await expect(action).toBeVisible();
       await expect(
         page.getByRole('button', {
