@@ -1,0 +1,25 @@
+name: Set up pinned Lychee
+description: Install a checksum-verified Linux x64 link checker with an official API fallback.
+runs:
+  using: composite
+  steps:
+    - name: Install verified Lychee
+      shell: bash
+      env:
+        GH_TOKEN: ${{ github.token }}
+      run: |
+        set -euo pipefail
+        if [[ "$RUNNER_OS" != Linux || "$RUNNER_ARCH" != X64 ]]; then
+          echo 'This installer requires Linux x64.' >&2
+          exit 1
+        fi
+        install_root="$RUNNER_TEMP/lychee-0.24.2"
+        python3 "$GITHUB_ACTION_PATH/../setup-gh-cli/download-release-asset.py" \
+          --repository lycheeverse/lychee --tag lychee-v0.24.2 \
+          --asset lychee-x86_64-unknown-linux-gnu.tar.gz --asset-id 409959156 \
+          --sha256 1f4e0ef7f6554a6ed33dd7ac144fb2e1bbed98598e7af973042fc5cd43951c9a \
+          --output "$install_root/lychee.tar.gz" --extract-to "$install_root"
+        bin_directory="$install_root/lychee-x86_64-unknown-linux-gnu"
+        test -x "$bin_directory/lychee"
+        "$bin_directory/lychee" --version
+        printf '%s\n' "$bin_directory" >> "$GITHUB_PATH"

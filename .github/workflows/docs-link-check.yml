@@ -48,23 +48,32 @@ jobs:
           fetch-depth: 1
           persist-credentials: false
 
+      - name: Install verified Lychee
+        uses: ./.github/actions/setup-lychee
+
       - name: Run Lychee link checker
-        uses: lycheeverse/lychee-action@e7477775783ea5526144ba13e8db5eec57747ce8 # v2.9.0
-        with:
-          fail: false
-          args: >-
-            --verbose
-            --no-progress
-            --accept 200..204,300..304,307,308,404,429,999
-            --exclude '^file://'
-            --exclude '^https?://(localhost|127\.0\.0\.1|0\.0\.0\.0|\[::1\]|\[::\])'
-            --exclude '^https?://support\.discord\.com'
-            './docs/**/*.md'
-            './docs/**/*.mdx'
-            './gen-docs/**/*.md'
-            './gen-docs/**/*.mdx'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          mkdir -p lychee
+          status=0
+          lychee --mode task --format markdown --output lychee/out.md \
+            --verbose --no-progress \
+            --accept 200..204,300..304,307,308,404,429,999 \
+            --exclude '^file://' \
+            --exclude '^https?://(localhost|127\.0\.0\.1|0\.0\.0\.0|\[::1\]|\[::\])' \
+            --exclude '^https?://support\.discord\.com' \
+            './docs/**/*.md' './docs/**/*.mdx' \
+            './gen-docs/**/*.md' './gen-docs/**/*.mdx' || status=$?
+          test -s lychee/out.md
+          if grep -Eq 'Total\s+\|\s+0' lychee/out.md; then
+            echo 'No documentation links were found.' >&2
+            exit 1
+          fi
+          cat lychee/out.md >> "$GITHUB_STEP_SUMMARY"
+          # Preserve the existing advisory link-result policy (formerly fail: false).
+          echo "Lychee completed with advisory exit code $status"
 
       - name: Upload Lychee report
         if: always()

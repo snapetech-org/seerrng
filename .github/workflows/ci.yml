@@ -539,13 +539,34 @@ jobs:
       github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main' &&
       ((inputs.pr_number != '' && inputs.pr_sha != '' && inputs.target_run_id != '' &&
         github.actor == 'github-actions[bot]' && inputs.action == 'ci') ||
-       (inputs.pr_number == '' && (inputs.action == 'ci' || inputs.action == 'publish-image')))
+       (inputs.pr_number == '' && (inputs.action == 'ci' || inputs.action == 'contracts' || inputs.action == 'publish-image')))
     name: Check documentation links
     permissions:
       contents: read
     uses: ./.github/workflows/docs-link-check.yml
     with:
       pr_sha: ${{ inputs.pr_sha }}
+
+  tool-bootstrap-contract:
+    name: Verified release-tool bootstrap
+    if: >-
+      github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main' &&
+      inputs.pr_number == '' && inputs.action == 'contracts'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Check verified downloader boundaries
+        env:
+          PYTHONDONTWRITEBYTECODE: '1'
+        run: python3 -m unittest discover -s .github/actions/setup-gh-cli -p 'test_download_release_asset.py'
+      - name: Validate pinned release CLI installer
+        uses: ./.github/actions/setup-gh-cli
 
   helm:
     if: >-

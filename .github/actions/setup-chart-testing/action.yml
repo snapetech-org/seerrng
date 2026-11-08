@@ -1,0 +1,50 @@
+name: Set up verified chart-testing
+description: Install the existing pinned Linux x64 chart toolchain with mandatory Sigstore verification.
+runs:
+  using: composite
+  steps:
+    - name: Install and verify chart-testing
+      shell: bash
+      env:
+        GH_TOKEN: ${{ github.token }}
+      run: |
+        set -euo pipefail
+        if [[ "$RUNNER_OS" != Linux || "$RUNNER_ARCH" != X64 ]]; then
+          echo 'This installer requires Linux x64.' >&2
+          exit 1
+        fi
+        install_root="$RUNNER_TEMP/chart-testing-3.15.0"
+        downloader="$GITHUB_ACTION_PATH/../setup-gh-cli/download-release-asset.py"
+        python3 "$downloader" --repository sigstore/cosign --tag v3.0.6 \
+          --asset cosign-linux-amd64 --asset-id 390331694 \
+          --sha256 c956e5dfcac53d52bcf058360d579472f0c1d2d9b69f55209e256fe7783f4c74 \
+          --output "$install_root/cosign"
+        chmod 0755 "$install_root/cosign"
+        python3 "$downloader" --repository helm/chart-testing --tag v3.15.0 \
+          --asset chart-testing_3.15.0_linux_amd64.tar.gz --asset-id 614959662 \
+          --sha256 467561730f25fe09d5e6cd09a3e1f6aa759871c657a57602947c716d9be2c583 \
+          --output "$install_root/ct.tar.gz"
+        python3 "$downloader" --repository helm/chart-testing --tag v3.15.0 \
+          --asset chart-testing_3.15.0_linux_amd64.tar.gz.sigstore.json --asset-id 614959827 \
+          --sha256 19aaab20ea9bb69978038879abc283b63542bbfda93fbf2525c39ee008f22b8e \
+          --output "$install_root/ct.tar.gz.sigstore.json"
+        "$install_root/cosign" verify-blob \
+          --bundle "$install_root/ct.tar.gz.sigstore.json" \
+          --certificate-identity 'https://github.com/helm/chart-testing/.github/workflows/release.yaml@refs/heads/main' \
+          --certificate-oidc-issuer 'https://token.actions.githubusercontent.com' \
+          "$install_root/ct.tar.gz"
+        python3 - "$downloader" "$install_root" <<'PY'
+        import importlib.util, pathlib, sys
+        spec = importlib.util.spec_from_file_location('verified_download', sys.argv[1])
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        root = pathlib.Path(sys.argv[2])
+        module.extract_archive(root / 'ct.tar.gz', root / 'bin')
+        PY
+        python3 -m venv "$install_root/venv"
+        "$install_root/venv/bin/python" -m pip install --disable-pip-version-check \
+          'yamllint==1.33.0' 'yamale==6.0.0'
+        "$install_root/bin/ct" version
+        printf '%s\n' "$install_root/bin" "$install_root/venv/bin" >> "$GITHUB_PATH"
+        printf 'CT_CONFIG_DIR=%s\nVIRTUAL_ENV=%s\n' \
+          "$install_root/bin/etc" "$install_root/venv" >> "$GITHUB_ENV"

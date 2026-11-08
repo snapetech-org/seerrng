@@ -47,7 +47,7 @@ jobs:
           ref: ${{ github.event.pull_request.head.sha }}
 
       - name: Set up chart-testing
-        uses: helm/chart-testing-action@720270857a28afd41e2426521a7801db09e9b510 # v2.9.0
+        uses: ./.github/actions/setup-chart-testing
 
       - name: Bump changed chart versions
         id: bump
