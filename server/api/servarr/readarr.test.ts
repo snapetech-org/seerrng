@@ -2580,3 +2580,40 @@ describe('Chaptarr catalog provider identity HTTP contract (issue #409)', () => 
     }
   }
 });
+
+describe('negotiated catalog identity aliases', () => {
+  it('does not invent aliases before provider knowledge exists', () => {
+    const api = new ReadarrAPI({
+      apiKey: 'fixture',
+      url: 'http://localhost:8787/api/v1',
+      mediaType: 'ebook',
+    });
+    assert.deepEqual(api.getKnownBookIdentityAliases('427578'), ['427578']);
+  });
+  for (const dialect of ['hc', 'gr'] as const)
+    it(`keeps aliases inside the negotiated ${dialect} provider`, () => {
+      const api = new ReadarrAPI({
+        apiKey: 'fixture',
+        url: 'http://localhost:8787/api/v1',
+        mediaType: 'ebook',
+      });
+      Object.assign(api, {
+        chaptarrDialect: dialect,
+        chaptarrCapabilities: {
+          contract: 'chaptarrng-seerr-bookshelf',
+          contractVersion: 1,
+          providerIdDialect: dialect,
+        },
+      });
+      const aliases = api.getKnownBookIdentityAliases('427578');
+      assert.ok(aliases.includes(`${dialect}:427578`));
+      assert.ok(aliases.includes('427578'));
+      const other = dialect === 'hc' ? 'gr' : 'hc';
+      assert.deepEqual(api.getKnownBookIdentityAliases(`${other}:427578`), [
+        `${other}:427578`,
+      ]);
+      assert.deepEqual(api.getKnownBookIdentityAliases('invalid:427578'), [
+        'invalid:427578',
+      ]);
+    });
+});

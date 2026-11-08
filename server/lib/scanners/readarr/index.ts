@@ -187,11 +187,23 @@ class ReadarrScanner
   private async processReadarrBook(readarrBook: ReadarrBook): Promise<void> {
     try {
       if (!readarrBook.editions?.length) {
-        readarrBook.editions = await runWithServarrServiceSnapshot(
-          'readarr',
-          this.currentServer,
-          async () => this.readarrApi.getEditions(readarrBook.id)
-        );
+        try {
+          readarrBook.editions = await runWithServarrServiceSnapshot(
+            'readarr',
+            this.currentServer,
+            async () => this.readarrApi.getEditions(readarrBook.id)
+          );
+        } catch {
+          // Edition enrichment is optional when inventory supplies a scoped work
+          // identity and file counts. Keep cleanup conservative after this gap.
+          this.scanItemsComplete = false;
+          this.log(
+            'Book edition metadata is unavailable; retaining catalog file observations.',
+            'warn',
+            { bookId: readarrBook.id }
+          );
+          readarrBook.editions = [];
+        }
       }
 
       const identifier =
@@ -222,15 +234,14 @@ class ReadarrScanner
       const secondaryIdentifiers = [
         // Catalog requests use an opaque identity scoped to the selected server.
         // Keep that same record when ISBN/Readarr identifiers become available.
-        readarrBook.foreignBookId
-          ? {
-              provider: MediaIdentifierProvider.BOOKSHELF,
-              value: makeBookshelfBookId(
-                this.currentServer.id,
-                readarrBook.foreignBookId
-              ),
-            }
-          : undefined,
+        ...(readarrBook.foreignBookId
+          ? this.readarrApi
+              .getKnownBookIdentityAliases(readarrBook.foreignBookId)
+              .map((id) => ({
+                provider: MediaIdentifierProvider.BOOKSHELF,
+                value: makeBookshelfBookId(this.currentServer.id, id),
+              }))
+          : []),
         readarrBook.foreignBookId
           ? {
               provider: MediaIdentifierProvider.READARR,

@@ -1729,6 +1729,35 @@ class ReadarrAPI extends ServarrBase<ReadarrQueueItem> {
     return result;
   }
 
+  /** Provider knowledge was negotiated while reading this client's catalog. */
+  public getKnownBookIdentityAliases(id: string): string[] {
+    const dialect = this.chaptarrDialect;
+    const contract = this.chaptarrCapabilities?.contract;
+    if (
+      !dialect ||
+      !['chaptarrng-seerr-bookshelf', 'seerrng-bookshelf'].includes(
+        contract ?? ''
+      ) ||
+      this.chaptarrCapabilities?.contractVersion !== 1
+    )
+      return [id];
+    const prefix =
+      dialect === 'hc'
+        ? /^(?:hc|hardcover|metadata-api):/i
+        : /^(?:gr|goodreads):/i;
+    const bare = id.replace(prefix, '');
+    if (!/^[1-9]\d{0,19}$/.test(bare)) return [id];
+    return [
+      ...new Set([
+        id,
+        bare,
+        `${dialect}:${bare}`,
+        `${dialect === 'hc' ? 'hardcover' : 'goodreads'}:${bare}`,
+        ...(dialect === 'hc' ? [`metadata-api:${bare}`] : []),
+      ]),
+    ];
+  }
+
   public async getBooks(): Promise<ReadarrBook[]> {
     try {
       await this.ensureProvider();

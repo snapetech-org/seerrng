@@ -35,6 +35,7 @@ import { getSettings } from '@server/lib/settings';
 import { normalizeStashDbId } from '@server/lib/stashdbIdentity';
 import logger from '@server/logger';
 import AsyncLock from '@server/utils/asyncLock';
+import { parseBookshelfBookId } from '@server/utils/bookshelfCatalog';
 import { randomUUID } from 'crypto';
 import { In, MoreThan, type Repository } from 'typeorm';
 
@@ -1036,23 +1037,99 @@ class BaseScanner<T> {
                 const linkedIdentifiers = existingIdentifiers.filter(
                   (identifier) => !!identifier.media
                 );
+                const scopedCandidates =
+                  serviceId === undefined
+                    ? []
+                    : identifierCandidates.filter(
+                        (identifier) =>
+                          identifier.provider ===
+                            MediaIdentifierProvider.BOOKSHELF &&
+                          parseBookshelfBookId(identifier.value)?.serviceId ===
+                            serviceId
+                      );
+                const scopedRows = scopedCandidates.flatMap((candidate) =>
+                  linkedIdentifiers.filter(
+                    (identifier) =>
+                      identifier.provider === candidate.provider &&
+                      identifier.value === candidate.value &&
+                      identifier.media.mediaType === MediaType.BOOK
+                  )
+                );
+                const compatible = (identifier: MediaIdentifier) =>
+                  identifier.media.mediaType === MediaType.BOOK &&
+                  (identifier.provider !== MediaIdentifierProvider.READARR ||
+                    serviceId === undefined ||
+                    identifier.media.serviceId === serviceId ||
+                    identifier.media.audiobookServiceId === serviceId ||
+                    /^(?:hc|gr|hardcover):[1-9]\d*$/.test(identifier.value));
+                // Catalog identity wins over an ISBN on a legacy split row. A bare
+                // Readarr ID is local to its service, not a global book identity.
                 const existingIdentifier =
+                  scopedRows[0] ??
                   linkedIdentifiers.find(
                     (identifier) =>
+                      compatible(identifier) &&
                       identifier.provider === provider &&
-                      identifier.value === normalizedValue &&
-                      identifier.media.mediaType === MediaType.BOOK
+                      identifier.value === normalizedValue
                   ) ??
-                  linkedIdentifiers.find(
-                    (identifier) =>
-                      identifier.media.mediaType === MediaType.BOOK
-                  );
+                  linkedIdentifiers.find(compatible);
                 const existing =
                   existingIdentifier?.media.mediaType === MediaType.BOOK
                     ? existingIdentifier.media
                     : undefined;
 
                 if (existing) {
+                  if (
+                    bookFileObservationKnown &&
+                    serviceId !== undefined &&
+                    !audiobookLibrarySource &&
+                    ratingKey === undefined
+                  ) {
+                    const scopedIds = new Set(
+                      scopedRows.map((identifier) => identifier.media.id)
+                    );
+                    const aliases = new Map(
+                      linkedIdentifiers.map((identifier) => [
+                        identifier.media.id,
+                        identifier.media,
+                      ])
+                    );
+                    for (const alias of aliases.values()) {
+                      if (
+                        alias.id === existing.id ||
+                        alias.mediaType !== MediaType.BOOK
+                      )
+                        continue;
+                      const observedSources =
+                        bookServiceType === 'audiobook'
+                          ? alias.availableAudiobookServiceIds
+                          : alias.availableEbookServiceIds;
+                      const target =
+                        bookServiceType === 'audiobook'
+                          ? alias.audiobookServiceId
+                          : alias.serviceId;
+                      if (
+                        !scopedIds.has(alias.id) &&
+                        target !== serviceId &&
+                        !observedSources?.includes(serviceId)
+                      )
+                        continue;
+                      const changed = recordBookFileAvailability(
+                        alias,
+                        bookServiceType,
+                        serviceId,
+                        hasFile
+                      );
+                      const status = getBookAvailabilityStatus(
+                        alias,
+                        processing
+                      );
+                      if (changed || alias.status !== status) {
+                        alias.status = status;
+                        await mediaRepository.save(alias);
+                      }
+                    }
+                  }
                   let changedExisting = false;
                   const previousStatus = existing.status;
                   if (

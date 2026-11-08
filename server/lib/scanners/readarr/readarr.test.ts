@@ -1,3 +1,6 @@
+import { MediaRequestStatus } from '@server/constants/media';
+import MediaRequest from '@server/entity/MediaRequest';
+import { User } from '@server/entity/User';
 import assert from 'node:assert/strict';
 import { beforeEach, describe, it, mock } from 'node:test';
 
@@ -18,6 +21,7 @@ import { makeBookshelfBookId } from '@server/utils/bookshelfCatalog';
 
 let getBooksImpl: () => Promise<ReadarrBook[]> = async () => [];
 let getBooksCallCount = 0;
+let knownDialect: 'hc' | 'gr' | undefined;
 let getEditionsImpl: (
   bookId: number
 ) => Promise<ReadarrEdition[]> = async () => [];
@@ -27,6 +31,16 @@ Object.defineProperty(ReadarrAPI.prototype, 'getBooks', {
   get() {
     return async () => {
       getBooksCallCount += 1;
+      if (knownDialect)
+        Object.assign(this, {
+          chaptarrDialect: knownDialect,
+          chaptarrCapabilities: {
+            contract: 'chaptarrng-seerr-bookshelf',
+            contractVersion: 1,
+            providerIdDialect: knownDialect,
+            features: { formatScopedFacade: true },
+          },
+        });
       return getBooksImpl();
     };
   },
@@ -171,6 +185,7 @@ describe('Readarr Scanner', () => {
     });
     getBooksImpl = async () => [];
     getBooksCallCount = 0;
+    knownDialect = undefined;
     getEditionsImpl = async () => [];
     getEditionsCallCount = 0;
   });
@@ -798,5 +813,282 @@ describe('Readarr Scanner', () => {
     });
     assert.equal(updated.status, MediaStatus.AVAILABLE);
     assert.deepEqual(updated.availableEbookServiceIds, [10]);
+  });
+  for (const format of ['ebook', 'audiobook'] as const)
+    it(`upgrade split rows preserve ${format} requests while recording inventory on the catalog row`, async () => {
+      const current = format === 'ebook' ? 0 : 1;
+      const other = 1 - current;
+      const field =
+        format === 'ebook'
+          ? 'availableEbookServiceIds'
+          : 'availableAudiobookServiceIds';
+      const requested = await getRepository(Media).save(
+        new Media({
+          tmdbId: 0,
+          mediaType: MediaType.BOOK,
+          status: MediaStatus.UNKNOWN,
+          status4k: MediaStatus.UNKNOWN,
+          identifiers: [
+            new MediaIdentifier({
+              provider: MediaIdentifierProvider.BOOKSHELF,
+              value: makeBookshelfBookId(current, '427578'),
+              canonical: true,
+            }),
+          ],
+        })
+      );
+      await getRepository(Media).save(
+        new Media({
+          tmdbId: 0,
+          mediaType: MediaType.BOOK,
+          status: MediaStatus.AVAILABLE,
+          status4k: MediaStatus.UNKNOWN,
+          [field]: [current],
+          identifiers: [
+            new MediaIdentifier({
+              provider: MediaIdentifierProvider.BOOKSHELF,
+              value: makeBookshelfBookId(other, '427578'),
+              canonical: true,
+            }),
+            new MediaIdentifier({
+              provider: MediaIdentifierProvider.ISBN,
+              value: '9780306406157',
+              canonical: false,
+            }),
+          ],
+        })
+      );
+      const requester = await getRepository(User).findOneByOrFail({ id: 1 });
+      const history = await getRepository(MediaRequest).save(
+        new MediaRequest({
+          type: MediaType.BOOK,
+          media: requested,
+          requestedBy: requester,
+          status: MediaRequestStatus.COMPLETED,
+          is4k: false,
+          bookFormat: format,
+        })
+      );
+      configureReadarr([{ id: current, serviceType: format }]);
+      knownDialect = 'hc';
+      getBooksImpl = async () => [
+        fakeReadarrBook({
+          foreignBookId: '427578',
+          editions: [
+            {
+              foreignEditionId: 'edition-1',
+              title: 'Test Book',
+              monitored: true,
+              isbn13: '9780306406157',
+            },
+          ],
+        }),
+      ];
+      await readarrScanner.run();
+      const updated = await getRepository(Media).findOneByOrFail({
+        id: requested.id,
+      });
+      assert.equal(updated.status, MediaStatus.AVAILABLE);
+      assert.deepEqual(updated[field], [current]);
+      assert.equal(
+        (
+          await getRepository(MediaRequest).findOneOrFail({
+            where: { id: history.id },
+            relations: { media: true },
+          })
+        ).media.id,
+        requested.id
+      );
+      assert.equal(
+        await getRepository(Media).count({
+          where: { mediaType: MediaType.BOOK },
+        }),
+        2
+      );
+    });
+  for (const format of ['ebook', 'audiobook'] as const)
+    it(`upgrade single bare ${format} identity survives a qualified Hardcover scan`, async () => {
+      const current = format === 'ebook' ? 0 : 1;
+      const field =
+        format === 'ebook'
+          ? 'availableEbookServiceIds'
+          : 'availableAudiobookServiceIds';
+      const requested = await getRepository(Media).save(
+        new Media({
+          tmdbId: 0,
+          mediaType: MediaType.BOOK,
+          status: MediaStatus.UNKNOWN,
+          status4k: MediaStatus.UNKNOWN,
+          identifiers: [
+            new MediaIdentifier({
+              provider: MediaIdentifierProvider.BOOKSHELF,
+              value: makeBookshelfBookId(current, '446680'),
+              canonical: true,
+            }),
+          ],
+        })
+      );
+      configureReadarr([{ id: current, serviceType: format }]);
+      knownDialect = 'hc';
+      getBooksImpl = async () => [
+        fakeReadarrBook({
+          foreignBookId: 'hc:446680',
+          editions: [
+            {
+              foreignEditionId: 'edition-2',
+              title: 'Test Book',
+              monitored: true,
+            },
+          ],
+        }),
+      ];
+      await readarrScanner.run();
+      const updated = await getRepository(Media).findOneByOrFail({
+        id: requested.id,
+      });
+      assert.equal(updated.status, MediaStatus.AVAILABLE);
+      assert.deepEqual(updated[field], [current]);
+      assert.equal(
+        await getRepository(Media).count({
+          where: { mediaType: MediaType.BOOK },
+        }),
+        1
+      );
+    });
+  it('upgrade aliases receive and lose only the currently verified ebook file evidence', async () => {
+    configureReadarr([{ id: 0, serviceType: 'ebook' }]);
+    knownDialect = 'hc';
+    const rows = [];
+    for (const id of ['427578', 'hc:427578'])
+      rows.push(
+        await getRepository(Media).save(
+          new Media({
+            tmdbId: 0,
+            mediaType: MediaType.BOOK,
+            status: MediaStatus.UNKNOWN,
+            status4k: MediaStatus.UNKNOWN,
+            availableAudiobookServiceIds: [9],
+            identifiers: [
+              new MediaIdentifier({
+                provider: MediaIdentifierProvider.BOOKSHELF,
+                value: makeBookshelfBookId(0, id),
+                canonical: true,
+              }),
+            ],
+          })
+        )
+      );
+    let count = 1;
+    getBooksImpl = async () => [
+      fakeReadarrBook({
+        foreignBookId: '427578',
+        editions: [
+          { foreignEditionId: 'e', title: 'Test Book', monitored: true },
+        ],
+        statistics: { bookFileCount: count, totalBookCount: 1 },
+      }),
+    ];
+    await readarrScanner.run();
+    for (const row of rows)
+      assert.deepEqual(
+        (await getRepository(Media).findOneByOrFail({ id: row.id }))
+          .availableEbookServiceIds,
+        [0]
+      );
+    count = 0;
+    await readarrScanner.run();
+    for (const row of rows) {
+      const updated = await getRepository(Media).findOneByOrFail({
+        id: row.id,
+      });
+      assert.deepEqual(updated.availableEbookServiceIds, []);
+      assert.deepEqual(updated.availableAudiobookServiceIds, [9]);
+    }
+  });
+  it('upgrade reconciliation never claims a bare Readarr identity from a different server', async () => {
+    const other = await getRepository(Media).save(
+      new Media({
+        tmdbId: 0,
+        mediaType: MediaType.BOOK,
+        status: MediaStatus.UNKNOWN,
+        status4k: MediaStatus.UNKNOWN,
+        serviceId: 2,
+        identifiers: [
+          new MediaIdentifier({
+            provider: MediaIdentifierProvider.READARR,
+            value: '427578',
+            canonical: true,
+          }),
+          new MediaIdentifier({
+            provider: MediaIdentifierProvider.BOOKSHELF,
+            value: makeBookshelfBookId(2, '427578'),
+            canonical: true,
+          }),
+        ],
+      })
+    );
+    configureReadarr([{ id: 1, serviceType: 'ebook' }]);
+    knownDialect = 'hc';
+    getBooksImpl = async () => [
+      fakeReadarrBook({
+        foreignBookId: '427578',
+        editions: [
+          { foreignEditionId: 'e', title: 'Test Book', monitored: true },
+        ],
+      }),
+    ];
+    await readarrScanner.run();
+    const unchanged = await getRepository(Media).findOneByOrFail({
+      id: other.id,
+    });
+    assert.equal(unchanged.status, MediaStatus.UNKNOWN);
+    assert.equal(unchanged.serviceId, 2);
+    assert.equal(
+      await getRepository(Media).count({
+        where: { mediaType: MediaType.BOOK },
+      }),
+      2
+    );
+  });
+  it('upgrade file evidence survives optional edition enrichment failure', async () => {
+    const legacy = await getRepository(Media).save(
+      new Media({
+        tmdbId: 0,
+        mediaType: MediaType.BOOK,
+        status: MediaStatus.UNKNOWN,
+        status4k: MediaStatus.UNKNOWN,
+        identifiers: [
+          new MediaIdentifier({
+            provider: MediaIdentifierProvider.BOOKSHELF,
+            value: makeBookshelfBookId(1, '446680'),
+            canonical: true,
+          }),
+        ],
+      })
+    );
+    configureReadarr([{ id: 1, serviceType: 'audiobook' }]);
+    knownDialect = 'hc';
+    getBooksImpl = async () => [
+      fakeReadarrBook({
+        foreignBookId: 'hc:446680',
+        editions: [],
+        statistics: { bookFileCount: 1, totalBookCount: 1 },
+      }),
+    ];
+    getEditionsImpl = async () => {
+      throw new Error('fixture edition metadata unavailable');
+    };
+    await readarrScanner.run();
+    const updated = await getRepository(Media).findOneByOrFail({
+      id: legacy.id,
+    });
+    assert.equal(updated.status, MediaStatus.AVAILABLE);
+    assert.deepEqual(updated.availableAudiobookServiceIds, [1]);
+    assert.equal(
+      await getRepository(Media).count({
+        where: { mediaType: MediaType.BOOK },
+      }),
+      1
+    );
   });
 });
