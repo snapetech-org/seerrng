@@ -52,7 +52,10 @@ async function fixtures(
         localLogin: true,
         enabledMediaCategories: {},
       };
-    else if (path === '/auth/me') {
+    else if (path === '/request/status') {
+      status = 404;
+      json = { message: 'Legacy fixture endpoint' };
+    } else if (path === '/auth/me') {
       status = signedIn ? 200 : 401;
       json = signedIn
         ? { id: 1, displayName: 'fam', permissions: opts.permissions ?? 2 }

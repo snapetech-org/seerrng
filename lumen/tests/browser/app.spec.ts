@@ -54,6 +54,11 @@ async function fixtures(page: Page) {
     const path = new URL(request.url()).pathname.slice('/api/v1'.length);
     let body: unknown;
     let status = 200;
+    if (path === '/request/status')
+      return route.fulfill({
+        status: 404,
+        json: { message: 'Legacy fixture endpoint' },
+      });
     if (path === '/auth/me') {
       status = user ? 200 : 401;
       body = user

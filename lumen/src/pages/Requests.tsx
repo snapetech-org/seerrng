@@ -61,14 +61,67 @@ const PAGE = 20;
 
 // Older companion backends may reject the opt-in parameter. Never retry an
 // authorization failure or outage as a legacy response, and reset on sign-out.
+interface RequestListPage {
+  pageInfo?: { pages?: number; results?: number };
+  results: RequestItem[];
+  authoritativeStatus?: boolean;
+}
 let statusProjectionSupported = true;
-async function requestList<T>(path: string): Promise<T> {
-  if (!statusProjectionSupported) return api<T>(path);
+let statusFilterSupported = true;
+async function requestList(path: string): Promise<RequestListPage> {
+  const filter = new URLSearchParams(path.split('?')[1]).get('filter');
+  if (
+    statusFilterSupported &&
+    (filter === 'available' || filter === 'processing')
+  ) {
+    try {
+      // The legacy list filter follows aggregate media/coarse request flags.
+      // Reuse the lifecycle owner's filtering and pagination for file truth.
+      const stages =
+        filter === 'available'
+          ? ['available']
+          : ['searching', 'downloading', 'importing', 'library'];
+      const data = await api<{
+        pageInfo: { pages: number; results: number };
+        results: {
+          request: RequestItem;
+          status: NonNullable<RequestItem['currentStatus']>;
+        }[];
+      }>(path.replace('/request?', '/request/status?'));
+      if (
+        !Array.isArray(data.results) ||
+        !Number.isSafeInteger(data.pageInfo?.results) ||
+        data.pageInfo.results < 0 ||
+        data.results.some(
+          (item) =>
+            !item.request ||
+            !Number.isSafeInteger(item.request.id) ||
+            item.request.id <= 0 ||
+            !stages.includes(item.status?.stage)
+        )
+      ) {
+        throw new Error('Invalid request status response');
+      }
+      return {
+        ...data,
+        authoritativeStatus: true,
+        results: data.results.map(({ request, status }) => ({
+          ...request,
+          currentStatus: status,
+        })),
+      };
+    } catch (error) {
+      if (!(error instanceof ApiError) || ![400, 404].includes(error.status))
+        throw error;
+      statusFilterSupported = false;
+    }
+  }
+  if (!statusProjectionSupported) return api<RequestListPage>(path);
   try {
-    return await api<T>(`${path}&includeStatus=true`);
+    return await api<RequestListPage>(`${path}&includeStatus=true`);
   } catch (error) {
     if (!(error instanceof ApiError) || error.status !== 400) throw error;
-    const result = await api<T>(path);
+    const result = await api<RequestListPage>(path);
     statusProjectionSupported = false;
     return result;
   }
@@ -313,7 +366,7 @@ function progress(r: RequestItem) {
 // (e.g. one person's requests). Two pages of SeerrNG's in-progress requests are plenty.
 async function startedDownloads(query = '') {
   const page = (skip: number) =>
-    requestList<{ pageInfo?: { pages?: number }; results: RequestItem[] }>(
+    requestList(
       `/request?take=100&skip=${skip}&filter=processing&sort=added${query}`
     );
   const first = await page(0);
@@ -656,7 +709,22 @@ export default function Requests() {
     if (!manage) return;
     let live = true;
     api<Record<string, number>>('/request/count')
-      .then((d) => live && setCounts(d))
+      .then(
+        (d) =>
+          live &&
+          setCounts((previous) => {
+            // Coarse media counts can describe a different book format. Derive
+            // availability and processing counts from their lifecycle pages.
+            const next = { ...d };
+            delete next.available;
+            delete next.processing;
+            if (previous?.available !== undefined)
+              next.available = previous.available;
+            if (previous?.processing !== undefined)
+              next.processing = previous.processing;
+            return next;
+          })
+      )
       .catch(() => live && setCounts(null));
     return () => {
       live = false;
@@ -672,13 +740,17 @@ export default function Requests() {
       const out: RequestItem[] = [];
       let total = 0;
       for (let skip = 0; skip < take; skip += 100) {
-        const d = await requestList<{
-          pageInfo?: { results?: number };
-          results: RequestItem[];
-        }>(
+        const d = await requestList(
           `/request?take=${Math.min(100, take - skip)}&skip=${skip}&filter=${filter}&sort=added`
         );
         total = d.pageInfo?.results ?? 0;
+        if (
+          live &&
+          (filter === 'available' || filter === 'processing') &&
+          d.authoritativeStatus
+        ) {
+          setCounts((previous) => ({ ...previous, [filter]: total }));
+        }
         out.push(...d.results);
         if (d.results.length < Math.min(100, take - skip)) break;
       }
@@ -726,7 +798,7 @@ export default function Requests() {
     let live = true;
     setOwnError(false);
     const media = Promise.all([
-      requestList<{ results: RequestItem[] }>(
+      requestList(
         `/request?take=40&skip=0&filter=all&sort=added&requestedBy=${user.id}`
       ).then((d) => d.results),
       startedDownloads(`&requestedBy=${user.id}`).catch(() => []),
@@ -764,7 +836,11 @@ export default function Requests() {
     (x) => state(x, serverName).k === 'ok' && !state(x, serverName).active
   );
   const list = everyone
-    ? others || []
+    ? (others || []).filter((row) =>
+        show === 'available'
+          ? state(row, serverName).k === 'ok' && !state(row, serverName).active
+          : show !== 'processing' || state(row, serverName).active
+      )
     : tab === 'ready'
       ? ready
       : tab === 'all'
@@ -1088,6 +1164,7 @@ export default function Requests() {
 
 onSessionReset(() => {
   statusProjectionSupported = true;
+  statusFilterSupported = true;
   described.clear();
   retryLater.clear();
   bookCalls.clear();

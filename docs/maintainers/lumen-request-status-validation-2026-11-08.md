@@ -53,3 +53,35 @@ not certify household provider credentials or physical mobile devices.
 This is source qualification, not a published-release claim. Issue #614 remains
 open pending exact-head CI and verification of the published replacement build.
 The broader issue audit and theme/browser qualification have independent gates.
+
+## Lifecycle filter membership and counts
+
+Extending the same real SQLite/API/browser case to a completed-but-missing-audio
+request exposed another boundary: the legacy `GET /request?filter=available`
+returned a row whose projected stage was Approved. The administrator's Available
+view consequently contained a nonavailable request. The lifecycle endpoint's
+Available filter already excluded it correctly.
+
+Lumen's Available and Downloading queries now reuse `GET /request/status` for
+format/destination-aware membership and pagination. Their snapshots are mapped
+into the existing card owner. This endpoint retains its existing durable status
+observation behavior; the separate ordinary list projection remains read-only.
+Processing also keeps older active audio transfers reachable when an existing
+ebook has made the aggregate media status Available. Counts for these two chips
+come from the corresponding lifecycle page total, not coarse media flags.
+
+A 400/404 permits a legacy list fallback; unverified formats are excluded from
+Available and its coarse count is withheld. Authorization failures, outages and
+malformed successful lifecycle payloads show the existing Retry state and cannot
+downgrade to coarse availability. Other filters keep their existing API.
+
+Both real 390/1440px Available-filter checks fail before and pass after this
+repair. The nine additional browser cases cover membership, exact counts,
+older audio downloads, legacy fallback, 401/403/503 and malformed responses.
+The complete Lumen browser run passes 503 tests with 13 viewport-specific skips;
+the focused request-status matrix passes 68. No CSS values or component geometry
+owners changed. Evidence: `lumen-available-filter-human-proven-baseline.log`,
+`lumen-available-filter-human-qualified.log`, `lumen-filter-browser.log`, and
+`lumen-filter-full-browser.log`, with their matching artifact directories.
+The prepared actual-artifact Lumen scenario includes both missing-format rows
+and six human checks; preparation alone is not release acceptance.

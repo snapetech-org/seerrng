@@ -6,4 +6,4 @@ action: none
 breaking: false
 ---
 
-Lumen now shows the requested book format and destination's actual status instead of treating aggregate library availability as completion. Requests distinguish searching, importing and checking the library, and a failed history load offers Retry.
+Lumen now uses the requested format and destination’s real status for cards, Available/Downloading filters, and their counts. Ebook availability cannot make missing audio appear ready or hide an audio transfer. Searching, importing and library checks remain distinct, and failed history loads offer Retry.
