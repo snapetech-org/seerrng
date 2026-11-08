@@ -162,7 +162,9 @@ describe('User List', () => {
     cy.get(
       `[data-testid=jellyfin-import-user-${newUserId}] svg.cached-image-avatar-fallback`
     ).should(($icon) => {
-      expect(($icon[0] as SVGSVGElement).getBoundingClientRect()).to.include({
+      expect(
+        ($icon[0] as unknown as SVGSVGElement).getBoundingClientRect()
+      ).to.include({
         width: 20,
         height: 20,
       });
@@ -180,7 +182,9 @@ describe('User List', () => {
     cy.get(
       `[data-testid=jellyfin-import-user-${importedUserId}] svg.cached-image-avatar-fallback`
     ).should(($icon) => {
-      expect(($icon[0] as SVGSVGElement).getBoundingClientRect()).to.include({
+      expect(
+        ($icon[0] as unknown as SVGSVGElement).getBoundingClientRect()
+      ).to.include({
         width: 20,
         height: 20,
       });

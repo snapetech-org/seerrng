@@ -230,7 +230,7 @@ describe('Prowlarr settings on a short mobile screen', () => {
       .find('details summary')
       .first()
       .click();
-    cy.get('select[multiple]')
+    cy.get<HTMLSelectElement>('select[multiple]')
       .first()
       .should(($select) => {
         expect($select[0].size).to.be.greaterThan(1);
@@ -242,7 +242,7 @@ describe('Prowlarr settings on a short mobile screen', () => {
       .find('details summary')
       .first()
       .click();
-    cy.get('select[aria-label="Indexers for Movies"]')
+    cy.get<HTMLSelectElement>('select[aria-label="Indexers for Movies"]')
       .should(($select) => {
         expect($select[0].size).to.equal(6);
         expect($select[0].clientHeight).to.be.greaterThan(60);
@@ -261,7 +261,9 @@ describe('Prowlarr settings on a short mobile screen', () => {
     }
 
     cy.viewport(1280, 800);
-    cy.get('select[aria-label="Indexers for Movies"]').should(($select) => {
+    cy.get<HTMLSelectElement>(
+      'select[aria-label="Indexers for Movies"]'
+    ).should(($select) => {
       expect($select[0].clientHeight).to.be.greaterThan(60);
     });
     if (Cypress.expose('VISUAL_REVIEW')) {
@@ -279,7 +281,9 @@ describe('Prowlarr settings on a short mobile screen', () => {
       .find('details summary')
       .first()
       .click();
-    cy.get('select[aria-label="Indexers for Movies"]').should(($select) => {
+    cy.get<HTMLSelectElement>(
+      'select[aria-label="Indexers for Movies"]'
+    ).should(($select) => {
       expect($select[0].clientHeight).to.be.greaterThan(60);
     });
 

@@ -58,6 +58,7 @@
     "prepare": "node bin/prepare.mjs",
     "cypress:open": "cypress open",
     "cypress:prepare": "ts-node -r tsconfig-paths/register --files --project server/tsconfig.json server/scripts/prepareTestDb.ts",
+    "cypress:typecheck": "tsc --noEmit --project cypress/tsconfig.json",
     "cypress:build": "pnpm build && pnpm cypress:prepare",
     "cypress:start": "node bin/run-cypress-start.mjs",
     "test:playwright": "pnpm cypress:prepare && playwright test",

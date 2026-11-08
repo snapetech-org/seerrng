@@ -230,6 +230,7 @@ describe('manual fail and search from request status', () => {
           class ImmediateIntersectionObserver implements IntersectionObserver {
             readonly root = null;
             readonly rootMargin = '0px';
+            readonly scrollMargin = '0px';
             readonly thresholds = [0];
 
             constructor(
@@ -303,9 +304,11 @@ describe('manual fail and search from request status', () => {
       cy.wait('@failOwnedDownload')
         .its('request.url')
         .should('include', '/api/v1/request/811/fail-download');
-      cy.contains('The release was failed and a new search was started.')
+      cy.contains<HTMLElement>(
+        'The release was failed and a new search was started.'
+      )
         .should('be.visible')
-        .and(($message) => {
+        .should(($message) => {
           const toast = $message.closest('.toast');
           const notification = toast.children().first();
           expect(notification).to.have.css('opacity', '1');

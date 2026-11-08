@@ -1,8 +1,8 @@
 {
   "compilerOptions": {
-    "target": "es5",
+    "target": "es2020",
     "ignoreDeprecations": "6.0",
-    "lib": ["es5", "dom"],
+    "lib": ["es2020", "dom"],
     "types": ["cypress", "node"],
     "resolveJsonModule": true,
     "esModuleInterop": true

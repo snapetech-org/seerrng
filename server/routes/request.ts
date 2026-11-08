@@ -152,6 +152,7 @@ import {
   parseOptionalAllowedString,
   parseOptionalBoundedString,
   parseOptionalNonNegativeInteger,
+  parseOptionalQueryBoolean,
 } from '@server/utils/validation';
 import { Router, type Request } from 'express';
 import { pipeline } from 'node:stream/promises';
@@ -2242,14 +2243,13 @@ requestRoutes.get<
       take: 10,
       maxTake: 100,
     });
-    const statusOption: unknown = req.query.includeStatus;
-    if (
-      statusOption !== undefined &&
-      ![true, false, 'true', 'false'].includes(statusOption as boolean | string)
-    ) {
-      return next({ status: 400, message: 'includeStatus must be a boolean' });
-    }
-    const includeStatus = statusOption === true || statusOption === 'true';
+    const parsedIncludeStatus = parseOptionalQueryBoolean(
+      req.query.includeStatus,
+      'Include status'
+    );
+    if ('error' in parsedIncludeStatus)
+      return next({ status: 400, message: parsedIncludeStatus.error });
+    const includeStatus = parsedIncludeStatus.value ?? false;
     const requestedBy = parseOptionalPositiveInt(req.query.requestedBy) ?? null;
     const parsedMediaType = parseOptionalAllowedString(req.query.mediaType, {
       fieldName: 'Media type',

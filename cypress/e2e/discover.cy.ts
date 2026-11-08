@@ -391,7 +391,9 @@ describe('Discover', () => {
         expect(href).to.match(
           /\/movie\/99012\?discoverContext=[a-z0-9_-]{12,64}$/i
         );
-        const contextId = href.match(/[?&]discoverContext=([^&]+)/)?.[1];
+        const contextId = String(href).match(
+          /[?&]discoverContext=([^&]+)/
+        )?.[1];
 
         expect(contextId).to.match(/^[a-z0-9_-]{12,64}$/i);
 

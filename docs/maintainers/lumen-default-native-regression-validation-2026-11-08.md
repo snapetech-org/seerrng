@@ -66,3 +66,19 @@ Evidence directory:
 `/mnt/disks/scratch/task-deliverables/seerrng-human-workflow-audit-20261107`.
 Exact-head full CI, published artifacts and the broader historical issue audit
 remain separate delivery gates. No claim of a published fix is made here.
+
+## Fixture typecheck gate
+
+The standalone Cypress project now targets ES2020, matching its existing BigInt
+fixtures and supported browser runtime. Its observer doubles implement the
+current DOM `scrollMargin` contract; select and SVG assertions use their actual
+DOM types. The success-toast callback keeps retrying assertions with an explicit
+HTML subject. The native navigation overwrite returns the same Cypress subject
+type in authenticated and anonymous branches. `pnpm cypress:typecheck` passes for
+the complete fixture project and runs before binary installation/build in the
+existing Cypress CI job. Runner routing and permissions are unchanged.
+
+The request-list opt-in reuses the shared boolean query validator. Regenerated
+API-message source locations and the complete prebuild/i18n/73-role checks pass.
+CI run 42501598947 caught the earlier stale source-location manifest before its
+browser jobs could run; it must not be described as a successful browser run.
