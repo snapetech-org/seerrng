@@ -47,6 +47,10 @@ services:
       LUMEN_REAL_IP_HEADER: X-Forwarded-For
     ports:
       - 5080:80
+    # The user Lumen runs as (default 101). Like the *arr images, set PUID and PGID in a .env
+    # file next to this one (e.g. PUID=1000 and PGID=1000) to match the owner of lumen-data.
+    # Lumen never runs as root, so they go here rather than under environment:.
+    user: "${PUID:-101}:${PGID:-101}"
     cap_drop:
       - ALL
     security_opt:
@@ -54,8 +58,7 @@ services:
     # Optional admin defaults for every user (You > Lumen settings for everyone).
     # To save them from that page, create a folder Lumen may write to:
     #   mkdir lumen-data && sudo chown 101:101 lumen-data
-    # (or keep it as your own user and run Lumen as that user: add user: "1000:1000"
-    # next to cap_drop, matching the folder's owner)
+    # (or keep it as your own user: set PUID/PGID in .env, see user: above)
     # then remove the # from "volumes:" and the lumen-data line below.
     # Or write lumen-config.json yourself (see lumen/public/lumen-config.example.json),
     # create it first, and uncomment the lumen-config.json line instead.

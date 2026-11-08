@@ -357,10 +357,20 @@ it may write to:
    mkdir lumen-data && sudo chown 101:101 lumen-data
    ```
 
-   Rather keep the folder as your own user (for example 1000)? Run Lumen as that
-   user instead: add `user: "1000:1000"` under `lumen` in `compose.yaml` (at the
-   same level as `environment:`) and own the folder with `chown 1000:1000`.
-   Lumen runs as any unprivileged user; it needs no other changes.
+   Rather keep the folder as your own user (for example 1000), like your *arr
+   containers? Put `PUID` and `PGID` in a `.env` file next to `compose.yaml`:
+
+   ```sh
+   PUID=1000
+   PGID=1000
+   ```
+
+   and own the folder with `chown 1000:1000 lumen-data`. The example
+   `compose.yaml` passes them to Lumen as `user: "${PUID:-101}:${PGID:-101}"`.
+   Lumen never runs as root, so they go in `user:` rather than under
+   `environment:` as on linuxserver images (those start as root to switch
+   users). With your own compose file, add that `user:` line under `lumen`, at
+   the same level as `environment:`.
 
 2. In `compose.yaml`, remove the `#` from `volumes:` and the `./lumen-data` line
    under `lumen`, then run `docker compose up -d`.
