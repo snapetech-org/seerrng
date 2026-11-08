@@ -1,5 +1,6 @@
 # ng-runner-policy: github-hosted-primary-v1
 name: Publish Lumen release image
+run-name: Lumen release ${{ inputs.tag || github.event.release.tag_name }}
 on:
   release:
     types: [published]

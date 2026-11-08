@@ -4,8 +4,16 @@
 `ghcr.io/snapetech-org/seerrng-lumen:<tag>`. It also updates `latest` when that
 version is still GitHub's latest published stable release. Version publication
 runs independently from alias refreshes so a newer pending alias cannot cancel
-an older version build. The normal event is a published GitHub release; use the
-manual entry point for a bootstrap or retry:
+an older version build. The normal SeerrNG release is published by `GITHUB_TOKEN`, whose release events
+do not start another workflow. `lumen-release-dispatch.yml` therefore handles a
+successful `SeerrNG Release` completion on trusted main, verifies the published
+stable tag against that completed run's source, and explicitly dispatches this
+publisher. It rejects fork/PR/alternate-branch events, draft/prerelease metadata
+and source mismatches, consumes no artifacts from the triggering run, and avoids
+duplicating an active or successful named publication. See
+[GitHub's token event rule](https://docs.github.com/en/actions/concepts/security/github_token).
+Direct human release publication remains supported by the existing release event.
+Use the manual entry point for bootstrap or recovery:
 
 ```sh
 gh workflow run lumen-release.yml --repo snapetech-org/seerrng --ref main -f tag=vX.Y.Z
