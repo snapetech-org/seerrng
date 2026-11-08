@@ -104,7 +104,11 @@ Cypress.Commands.overwrite(
         cy
           .request({ url: '/api/v1/auth/me', failOnStatusCode: false })
           .then((response) => {
-            if (response.status !== 200) return cy.wrap(window, { log: false });
+            if (
+              response.status !== 200 ||
+              !window.document.getElementById('__NEXT_DATA__')
+            )
+              return cy.wrap(window, { log: false });
             return cy
               .get('html')
               .should(

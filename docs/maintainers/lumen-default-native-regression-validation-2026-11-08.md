@@ -82,3 +82,27 @@ The request-list opt-in reuses the shared boolean query validator. Regenerated
 API-message source locations and the complete prebuild/i18n/73-role checks pass.
 CI run 42501598947 caught the earlier stale source-location manifest before its
 browser jobs could run; it must not be described as a successful browser run.
+
+## Full-suite discovery fixture follow-up
+
+The full Cypress job at `39d2d14f0` reached the browser suite and found seven
+failures. The local CI-seeded reproduction isolated the remaining assumptions:
+
+- The native visit helper must retain its explicit classic choice across a
+  restored login session and skip theme assertions for inert cache-reset HTML.
+- Discovery filter requests and request-list media types use state-specific
+  aliases; a Persius header badge's separate request must not satisfy a
+  book/music list assertion. Query and clear/exclude assertions are preserved.
+- The shuffled-music test must declare music availability. Its underlying CI
+  configuration has music disabled; its first request occurred before the
+  optional-category guard redirected away. All movie/series/music/book seed
+  refresh assertions remain intact after enabling the fixture capability.
+- Login return transport uses a stable main-settings path with a query and
+  fragment. The old Prowlarr Services target now intentionally redirects to
+  its dedicated settings page, covered separately.
+
+The focused CI-seeded reproduction passes all 14 Discovery, 27 book/music
+parity, and three theme/refresh cases. All six login cases pass, including the separate legacy Prowlarr redirect.
+Evidence: `lumen-cypress-ci-repro.log`, `lumen-cypress-seeded-qualified.log`, and
+`lumen-cypress-login-qualified.log`. These are fixture changes, with no further
+application behavior changes after `39d2d14f0`.

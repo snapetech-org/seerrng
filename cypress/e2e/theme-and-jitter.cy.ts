@@ -37,7 +37,10 @@ const makeBook = (title: string, id: string) => ({
 describe('Theme picker and seeded discovery refresh', () => {
   beforeEach(() => {
     cy.loginAsAdmin();
-    cy.mockConfiguredMediaAvailability({ booksEnabled: true });
+    cy.mockConfiguredMediaAvailability({
+      booksEnabled: true,
+      musicEnabled: true,
+    });
   });
 
   it('changes themes through the picker and persists across reloads', () => {
@@ -76,7 +79,9 @@ describe('Theme picker and seeded discovery refresh', () => {
       'content',
       '#1f2937'
     );
-    cy.get('button[aria-label="Theme picker"]').click();
+    cy.get('button[aria-label="Theme picker"]')
+      .should('have.length', 1)
+      .click();
     cy.contains('button', /^SeerrNG$/).should('exist');
     cy.contains('button', /^Seerr$/).click();
     cy.get('html').should('have.attr', 'data-theme-palette', 'classic');
@@ -85,7 +90,9 @@ describe('Theme picker and seeded discovery refresh', () => {
       'content',
       '#1e293b'
     );
-    cy.get('button[aria-label="Theme picker"]').click();
+    cy.get('button[aria-label="Theme picker"]')
+      .should('have.length', 1)
+      .click();
     cy.contains('button', 'Lagoon').click();
     cy.get('html').should('have.attr', 'data-theme-palette', 'lagoon');
     cy.get('meta[name="theme-color"]').should(
@@ -102,7 +109,9 @@ describe('Theme picker and seeded discovery refresh', () => {
     cy.contains('[data-testid=page-header]', 'Movies').should('be.visible');
     cy.get('html').should('have.attr', 'data-theme-palette', 'lagoon');
 
-    cy.get('button[aria-label="Theme picker"]').click();
+    cy.get('button[aria-label="Theme picker"]')
+      .should('have.length', 1)
+      .click();
     cy.contains('button', 'Dark mode').click();
     cy.get('html').should('have.attr', 'data-theme-mode', 'light');
     cy.window()

@@ -135,11 +135,18 @@ describe('Discover', () => {
     cy.intercept('GET', '/api/v1/genres/movie', {
       body: [{ id: 28, name: 'Action' }],
     });
-    cy.intercept('GET', '/api/v1/discover/movies*', {
-      page: 1,
-      totalPages: 1,
-      totalResults: 0,
-      results: [],
+    cy.intercept('GET', '/api/v1/discover/movies*', (request) => {
+      if (request.query.genre === '28') {
+        request.alias =
+          request.query.availability === 'hd'
+            ? request.query.excludeGenre === 'true'
+              ? 'genreExcludedLocal'
+              : 'genreIncludedLocal'
+            : request.query.excludeGenre === 'true'
+              ? 'genreExcluded'
+              : 'genreIncluded';
+      }
+      request.reply({ page: 1, totalPages: 1, totalResults: 0, results: [] });
     }).as('getMovieDiscover');
 
     cy.visit('/discover/movies');
@@ -147,7 +154,7 @@ describe('Discover', () => {
     openFilterSection('Filters');
     cy.get('button[aria-label="Genres"]').click();
     cy.contains('[role=option]', 'Action').click();
-    cy.wait('@getMovieDiscover').then(({ request }) => {
+    cy.wait('@genreIncluded').then(({ request }) => {
       expect(request.query.genre).to.eq('28');
       expect(request.query.excludeGenre).to.equal(undefined);
     });
@@ -161,7 +168,7 @@ describe('Discover', () => {
       'aria-pressed',
       'true'
     );
-    cy.wait('@getMovieDiscover').then(({ request }) => {
+    cy.wait('@genreExcluded').then(({ request }) => {
       expect(request.query.genre).to.eq('28');
       expect(request.query.excludeGenre).to.eq('true');
     });
@@ -173,7 +180,7 @@ describe('Discover', () => {
     });
 
     cy.get('[aria-label="Quality Available"]').contains('button', 'HD').click();
-    cy.wait('@getMovieDiscover').then(({ request }) => {
+    cy.wait('@genreExcludedLocal').then(({ request }) => {
       expect(request.query.availability).to.eq('hd');
       expect(request.query.genre).to.eq('28');
       expect(request.query.excludeGenre).to.eq('true');
@@ -189,7 +196,7 @@ describe('Discover', () => {
       'aria-pressed',
       'false'
     );
-    cy.wait('@getMovieDiscover').then(({ request }) => {
+    cy.wait('@genreIncludedLocal').then(({ request }) => {
       expect(request.query.excludeGenre).to.equal(undefined);
     });
     cy.location('search').should('not.include', 'excludeGenre=');
@@ -200,11 +207,13 @@ describe('Discover', () => {
     cy.intercept('GET', '/api/v1/genres/tv', {
       body: [{ id: 18, name: 'Drama' }],
     });
-    cy.intercept('GET', '/api/v1/discover/tv*', {
-      page: 1,
-      totalPages: 1,
-      totalResults: 0,
-      results: [],
+    cy.intercept('GET', '/api/v1/discover/tv*', (request) => {
+      if (request.query.availability === 'hd')
+        request.alias = 'localTvAvailability';
+      else if (request.query.excludeStatus === 'true')
+        request.alias = 'excludedTvStatus';
+      else if (request.query.status) request.alias = 'includedTvStatus';
+      request.reply({ page: 1, totalPages: 1, totalResults: 0, results: [] });
     }).as('getTvDiscover');
 
     cy.visit('/discover/tv');
@@ -212,9 +221,9 @@ describe('Discover', () => {
     openFilterSection('Filters');
     cy.get('button[aria-label="Status"]').click();
     cy.contains('[role=option]', 'Ended').click();
-    cy.wait('@getTvDiscover');
+    cy.wait('@includedTvStatus');
     cy.get('button[aria-label="Exclude Status"]').click();
-    cy.wait('@getTvDiscover');
+    cy.wait('@excludedTvStatus');
     cy.get('button[aria-label="Exclude Status"]').should(
       'have.attr',
       'aria-pressed',
@@ -229,7 +238,7 @@ describe('Discover', () => {
     });
 
     cy.get('[aria-label="Quality Available"]').contains('button', 'HD').click();
-    cy.wait('@getTvDiscover').then(({ request }) => {
+    cy.wait('@localTvAvailability').then(({ request }) => {
       expect(request.query.availability).to.eq('hd');
       expect(request.query.status).to.equal(undefined);
       expect(request.query.excludeStatus).to.equal(undefined);

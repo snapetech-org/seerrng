@@ -1411,6 +1411,8 @@ describe('Books and Music discover parity', () => {
 
   it('keeps request list media filters addressable for book and music queues', () => {
     cy.intercept('GET', '/api/v1/request*', (req) => {
+      if (req.query.mediaType === 'book') req.alias = 'bookRequests';
+      if (req.query.mediaType === 'music') req.alias = 'musicRequests';
       req.reply({
         pageInfo: { pages: 1, pageSize: 10, results: 0, page: 1 },
         results: [],
@@ -1424,7 +1426,7 @@ describe('Books and Music discover parity', () => {
     }).as('getRequests');
 
     cy.visit('/users/1/requests?mediaType=book&filter=pending');
-    cy.wait('@getRequests')
+    cy.wait('@bookRequests')
       .its('request.url')
       .should('include', 'mediaType=book')
       .and('include', 'filter=pending');
@@ -1435,7 +1437,7 @@ describe('Books and Music discover parity', () => {
 
     cy.get('button[aria-label="Media Type"]').click();
     cy.contains('[role=option]', /^Music$/).click();
-    cy.wait('@getRequests')
+    cy.wait('@musicRequests')
       .its('request.url')
       .should('include', 'mediaType=music');
     cy.location('search').should('include', 'mediaType=music');
