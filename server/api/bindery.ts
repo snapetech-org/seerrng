@@ -356,12 +356,23 @@ export default class BinderyAPI {
   }
 
   public async getPrimaryMetadataProvider(): Promise<string | undefined> {
-    const result = await this.request<unknown>(
-      'GET',
-      '/setting/metadata.primary_provider'
-    );
-    if (!isRecord(result) || typeof result.value !== 'string') return undefined;
-    return result.value.trim().toLowerCase() || undefined;
+    try {
+      const result = await this.request<unknown>(
+        'GET',
+        '/setting/metadata.primary_provider'
+      );
+      if (!isRecord(result) || typeof result.value !== 'string')
+        return undefined;
+      return result.value.trim().toLowerCase() || undefined;
+    } catch (error) {
+      // Fresh Bindery installations use Open Library without storing this
+      // setting. Only this missing setting has that default; do not mask an
+      // authentication failure, throttling, or an unavailable service.
+      if (axios.isAxiosError(error) && error.response?.status === 404) {
+        return 'openlibrary';
+      }
+      throw error;
+    }
   }
 
   public supportsForUserRequests(status: BinderySystemStatus): boolean {

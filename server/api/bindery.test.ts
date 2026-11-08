@@ -138,6 +138,41 @@ describe('BinderyAPI', () => {
     );
   });
 
+  it('uses the Open Library default when the primary provider setting is absent', async () => {
+    await withBinderyServer(
+      (request, response) => {
+        assert.equal(
+          request.url,
+          '/bindery/api/v1/setting/metadata.primary_provider'
+        );
+        assert.equal(request.headers['x-api-key'], 'recorded-bindery-key');
+        writeJson(response, 404, { error: 'setting not found' });
+      },
+      async (port) => {
+        assert.equal(
+          await new BinderyAPI(makeSettings(port)).getPrimaryMetadataProvider(),
+          'openlibrary'
+        );
+      }
+    );
+  });
+
+  for (const status of [401, 403, 429, 500, 503]) {
+    it(`preserves primary provider failures with HTTP ${status}`, async () => {
+      await withBinderyServer(
+        (_request, response) => {
+          writeJson(response, status, { error: 'unavailable' });
+        },
+        async (port) => {
+          await assert.rejects(
+            new BinderyAPI(makeSettings(port)).getPrimaryMetadataProvider(),
+            { status }
+          );
+        }
+      );
+    });
+  }
+
   it('uses Bindery lookup and book-management response fixtures', async () => {
     const lookupFixture = await fixture('book-lookup.json');
     const providerFixture = await fixture('metadata-provider.json');

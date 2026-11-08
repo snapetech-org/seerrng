@@ -1,5 +1,7 @@
 import logger from '@server/logger';
 import assert from 'node:assert/strict';
+import { once } from 'node:events';
+import { createServer } from 'node:http';
 import { afterEach, before, beforeEach, describe, it, mock } from 'node:test';
 
 import BinderyAPI, {
@@ -2454,6 +2456,129 @@ describe('MediaRequestSubscriber service dispatch', () => {
       },
       forUser: 7,
     });
+    const operation = await getRepository(BookRequestSearch).findOneByOrFail({
+      requestId: request.id,
+      format: 'ebook',
+    });
+    assert.equal(operation.state, 'pending');
+    assert.equal(operation.pendingId, null);
+    assert.equal(operation.providerBookId, 'OL45804W');
+    assert.equal(operation.binderyRequestId, 91);
+  });
+
+  it('dispatches a fresh Bindery request after its primary provider setting returns 404', async (context) => {
+    getSettings().readarr = [
+      {
+        id: 23,
+        name: 'Bindery',
+        hostname: '127.0.0.1',
+        port: 8787,
+        apiKey: 'bindery-key',
+        useSsl: false,
+        baseUrl: '',
+        externalUrl: '',
+        activeProfileId: 0,
+        activeProfileName: 'Bindery managed',
+        activeMetadataProfileId: 0,
+        activeMetadataProfileName: 'Bindery managed',
+        activeDirectory: '/',
+        tags: [],
+        is4k: false,
+        isDefault: true,
+        syncEnabled: true,
+        preventSearch: true,
+        tagRequests: false,
+        overrideRule: [],
+        backend: 'bindery',
+        binderyUserMappings: { '2': 7 },
+        serviceType: 'ebook',
+      },
+    ];
+    const requestedBy = await getRequester();
+    requestedBy.username = 'Victim';
+    requestedBy.plexUsername = 'unrelated-user';
+    const media = await getRepository(Media).save(
+      new Media({
+        mediaType: MediaType.BOOK,
+        tmdbId: 0,
+        status: MediaStatus.PENDING,
+        status4k: MediaStatus.UNKNOWN,
+        identifiers: [
+          new MediaIdentifier({
+            provider: MediaIdentifierProvider.OPENLIBRARY,
+            value: 'OL45804W',
+            canonical: true,
+          }),
+        ],
+      })
+    );
+    const request = await createApprovedRequest(media, requestedBy);
+    mock.method(OpenLibraryAPI.prototype, 'getWork', async () => ({
+      key: '/works/OL45804W',
+      title: 'The Left Hand of Darkness',
+    }));
+    let requestPayload: unknown;
+    const paths: string[] = [];
+    const server = createServer(async (incoming, response) => {
+      assert.equal(incoming.headers['x-api-key'], 'bindery-key');
+      paths.push(incoming.url ?? '');
+      response.setHeader('Content-Type', 'application/json');
+      if (incoming.url === '/api/v1/setting/metadata.primary_provider') {
+        response.statusCode = 404;
+        response.end(JSON.stringify({ error: 'setting not found' }));
+      } else if (incoming.url === '/api/v1/system/status') {
+        response.end(JSON.stringify({ features: { requestsForUser: true } }));
+      } else if (incoming.url === '/api/v1/auth/users') {
+        response.end(
+          JSON.stringify([
+            { id: 7, username: 'explicitly-mapped-reader' },
+            { id: 8, username: 'victim' },
+          ])
+        );
+      } else if (
+        incoming.url === '/api/v1/requests' &&
+        incoming.method === 'POST'
+      ) {
+        const chunks: Buffer[] = [];
+        for await (const chunk of incoming) chunks.push(Buffer.from(chunk));
+        requestPayload = JSON.parse(Buffer.concat(chunks).toString('utf8'));
+        response.statusCode = 201;
+        response.end(
+          JSON.stringify({
+            id: 91,
+            kind: 'book',
+            foreignId: 'OL45804W',
+            mediaType: 'ebook',
+            status: 'pending',
+          })
+        );
+      } else {
+        response.statusCode = 500;
+        response.end(JSON.stringify({ error: 'unexpected fixture call' }));
+      }
+    });
+    server.listen(0, '127.0.0.1');
+    context.after(async () => {
+      server.closeAllConnections();
+      await new Promise<void>((resolve, reject) =>
+        server.close((error) => (error ? reject(error) : resolve()))
+      );
+    });
+    await once(server, 'listening');
+    const address = server.address();
+    assert.ok(address && typeof address !== 'string');
+    getSettings().readarr[0].port = address.port;
+
+    await new MediaRequestSubscriber().sendToReadarr(request);
+
+    assert.deepEqual(requestPayload, {
+      kind: 'book',
+      foreignId: 'OL45804W',
+      mediaType: 'ebook',
+      forUser: 7,
+    });
+    assert.ok(paths.includes('/api/v1/setting/metadata.primary_provider'));
+    assert.ok(!paths.some((path) => path.includes('/author/book')));
     const operation = await getRepository(BookRequestSearch).findOneByOrFail({
       requestId: request.id,
       format: 'ebook',
