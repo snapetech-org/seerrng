@@ -100,7 +100,7 @@ test('all offered themes share the server allowlist', () => {
   expect(themePalettes.map((p) => p.id)).toEqual([...THEME_PALETTE_IDS]);
 });
 
-test('new installs use SeerrNG and keep its palette selected in light mode', async () => {
+test('new native profiles use PersiusNG and keep the Seerr palette selected in light mode', async () => {
   localStorage.setItem('seerr-theme-palette', 'classic');
   localStorage.setItem('seerr-theme-mode', 'light');
   await act(async () => render());
@@ -111,14 +111,14 @@ test('new installs use SeerrNG and keep its palette selected in light mode', asy
   expect(theme.palette).toBe('seerr');
   expect(document.documentElement.dataset.themePalette).toBe('seerr');
   expect(document.documentElement.dataset.themeMode).toBe('light');
-  expect(theme.interfaceTheme).toBe('seerrOrig');
-  expect(document.documentElement.dataset.interfaceTheme).toBe('seerrOrig');
+  expect(theme.interfaceTheme).toBe('persiusNG');
+  expect(document.documentElement.dataset.interfaceTheme).toBe('persiusNG');
   const sheets = document.querySelectorAll<HTMLLinkElement>(
     'link[data-interface-theme-stylesheet]'
   );
   expect(sheets).toHaveLength(1);
   expect(sheets[0].getAttribute('href')).toBe(
-    '/api/v1/interface-themes/seerrOrig/theme.css'
+    '/api/v1/interface-themes/persiusNG/theme.css'
   );
   expect(fixture.post).not.toHaveBeenCalled();
 });
