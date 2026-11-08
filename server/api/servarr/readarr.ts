@@ -1,4 +1,8 @@
 import {
+  getBookLookupBudget,
+  withBookLookupBudget,
+} from '@server/lib/bookLookupBudget';
+import {
   normalizeOpenLibraryEditionId,
   normalizeOpenLibraryWorkId,
 } from '@server/lib/externalIds';
@@ -12,6 +16,7 @@ import {
 import { trimTrailingSlashes } from '@server/utils/serviceUrl';
 import type { AxiosRequestConfig, AxiosResponse } from 'axios';
 import axios from 'axios';
+import { createHash } from 'node:crypto';
 import { z } from 'zod';
 import ServarrBase, {
   isServarrServiceUrl,
@@ -98,6 +103,10 @@ export interface ChaptarrNarratorMatrix {
   }[];
 }
 const CHAPTARR_REQUEST_TIMEOUT_MS = 60_000;
+const pendingBookLookups = new Map<
+  string,
+  Promise<ReadarrBookLookupResult[]>
+>();
 const CHAPTARR_LIBRARY_PAGE_SIZE = 500;
 
 const seriesArtworkBooksSchema = z
@@ -589,6 +598,7 @@ class ReadarrAPI extends ServarrBase<ReadarrQueueItem> {
     'appName' | 'version' | 'urlBase'
   >;
   private providerDetection?: Promise<void>;
+  private readonly lookupCredentialDigest: string;
 
   constructor({
     url,
@@ -606,9 +616,32 @@ class ReadarrAPI extends ServarrBase<ReadarrQueueItem> {
       apiName: 'Readarr',
       requestParams: mediaType ? { mediaType } : undefined,
     });
+    this.lookupCredentialDigest = createHash('sha256')
+      .update(apiKey)
+      .digest('hex');
     this.nativeApiUrl = trimTrailingSlashes(url);
     this.mediaType = mediaType;
     this.coverBaseUrl = ReadarrAPI.buildCoverBaseUrl(url);
+  }
+
+  private async requestWithinBudget<T>(
+    method: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE',
+    endpoint: string,
+    data?: unknown,
+    config?: AxiosRequestConfig
+  ): Promise<AxiosResponse<T>> {
+    const current = getBookLookupBudget();
+    if (!current || method !== 'GET')
+      return super.request<T>(method, endpoint, data, config);
+    current.signal.throwIfAborted();
+    const remaining = current.deadline - Date.now();
+    if (remaining <= 0)
+      throw new Error('Book metadata lookup timed out. Please retry.');
+    return super.request<T>(method, endpoint, data, {
+      ...config,
+      timeout: Math.min(config?.timeout || remaining, remaining),
+      signal: current.signal,
+    });
   }
 
   private static isChaptarrStatus(status: { appName?: string }): boolean {
@@ -647,7 +680,7 @@ class ReadarrAPI extends ServarrBase<ReadarrQueueItem> {
       restrictedServiceApiKey: false,
     };
     try {
-      const response = await super.request<unknown>(
+      const response = await this.requestWithinBudget<unknown>(
         'GET',
         '/system/capabilities',
         undefined,
@@ -668,7 +701,7 @@ class ReadarrAPI extends ServarrBase<ReadarrQueueItem> {
     }
 
     try {
-      const response = await super.request<unknown>(
+      const response = await this.requestWithinBudget<unknown>(
         'GET',
         '/config/hardcover',
         undefined,
@@ -709,7 +742,7 @@ class ReadarrAPI extends ServarrBase<ReadarrQueueItem> {
     }
 
     this.providerDetection = (async () => {
-      const response = await super.request<unknown>(
+      const response = await this.requestWithinBudget<unknown>(
         'GET',
         '/system/status',
         undefined,
@@ -737,7 +770,7 @@ class ReadarrAPI extends ServarrBase<ReadarrQueueItem> {
         // BookshelfNG retains Readarr's appName for API compatibility, so
         // identify its format facade from the explicit capability contract.
         try {
-          const response = await super.request<unknown>(
+          const response = await this.requestWithinBudget<unknown>(
             'GET',
             '/system/capabilities',
             undefined,
@@ -808,7 +841,7 @@ class ReadarrAPI extends ServarrBase<ReadarrQueueItem> {
   ): Promise<AxiosResponse<T>> {
     await this.ensureProvider();
 
-    return super.request(
+    return this.requestWithinBudget<T>(
       method,
       endpoint,
       data,
@@ -2269,6 +2302,37 @@ class ReadarrAPI extends ServarrBase<ReadarrQueueItem> {
   }
 
   public async lookupBook(term: string): Promise<ReadarrBookLookupResult[]> {
+    return withBookLookupBudget(async () => {
+      await this.ensureProvider();
+      const key = createHash('sha256')
+        .update(
+          JSON.stringify([
+            this.nativeApiUrl,
+            this.lookupCredentialDigest,
+            this.mediaType,
+            this.chaptarrDialect,
+            term,
+          ])
+        )
+        .digest('hex');
+      const pending = pendingBookLookups.get(key);
+      if (pending) return pending;
+      const lookup = this.lookupBookUncoalesced(term);
+      // Bound concurrency bookkeeping; excess callers still retain their deadline.
+      if (pendingBookLookups.size >= 128) return lookup;
+      pendingBookLookups.set(key, lookup);
+      try {
+        return await lookup;
+      } finally {
+        if (pendingBookLookups.get(key) === lookup)
+          pendingBookLookups.delete(key);
+      }
+    });
+  }
+
+  private async lookupBookUncoalesced(
+    term: string
+  ): Promise<ReadarrBookLookupResult[]> {
     try {
       await this.ensureProvider();
       // A saved identity belongs to its original provider, even when a new
@@ -2311,6 +2375,13 @@ class ReadarrAPI extends ServarrBase<ReadarrQueueItem> {
           throw error;
         }
 
+        // A provider outage is not a missing identity. Do not multiply slow
+        // failures across providers; the caller can explicitly retry.
+        if (
+          getBookLookupBudget()?.signal.aborted ||
+          (requestedDialect && this.chaptarrCapabilities?.contractVersion === 1)
+        )
+          throw error;
         logger.warn(
           'Chaptarr format facade lookup failed; trying compatible scopes.',
           {
@@ -2333,6 +2404,7 @@ class ReadarrAPI extends ServarrBase<ReadarrQueueItem> {
       if (
         !this.isChaptarr() ||
         !this.mediaType ||
+        !!requestedDialect ||
         scopedResults.some(ReadarrAPI.hasAddressableLookupIdentity)
       ) {
         return scopedResults;
@@ -2456,6 +2528,18 @@ class ReadarrAPI extends ServarrBase<ReadarrQueueItem> {
   }
 
   public async lookupBookByProviderIdentity(
+    providerBookId: string,
+    providerEditionId?: string
+  ): Promise<ReadarrBookLookupResult | undefined> {
+    return withBookLookupBudget(() =>
+      this.lookupBookByProviderIdentityWithinBudget(
+        providerBookId,
+        providerEditionId
+      )
+    );
+  }
+
+  private async lookupBookByProviderIdentityWithinBudget(
     providerBookId: string,
     providerEditionId?: string
   ): Promise<ReadarrBookLookupResult | undefined> {

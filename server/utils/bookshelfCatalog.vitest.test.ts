@@ -2,7 +2,7 @@ import ReadarrAPI, {
   type ReadarrBookLookupResult,
 } from '@server/api/servarr/readarr';
 import type { ReadarrSettings } from '@server/lib/settings';
-import { afterEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import {
   getBookshelfAudiobookLibraryPage,
   getBookshelfBookDetails,
@@ -16,6 +16,16 @@ import {
 } from './bookshelfCatalog';
 
 describe('Bookshelf catalog identities', () => {
+  beforeEach(() =>
+    vi
+      .spyOn(
+        ReadarrAPI.prototype as unknown as {
+          ensureProvider: () => Promise<void>;
+        },
+        'ensureProvider'
+      )
+      .mockResolvedValue()
+  );
   afterEach(() => {
     vi.restoreAllMocks();
   });
@@ -340,11 +350,11 @@ describe('Bookshelf catalog identities', () => {
     ]);
   });
 
-  it('uses the explicit work lookup for numeric Bookshelf book IDs', async () => {
+  it('uses the exact provider identity for numeric Bookshelf book IDs', async () => {
     const lookupBook = vi
       .spyOn(ReadarrAPI.prototype, 'lookupBook')
       .mockImplementation(async (term) =>
-        term === 'work:139773'
+        term === '139773'
           ? [
               {
                 title: 'The Fellowship of the Ring',
@@ -376,7 +386,7 @@ describe('Bookshelf catalog identities', () => {
     );
 
     expect(lookupBook).toHaveBeenCalledOnce();
-    expect(lookupBook).toHaveBeenCalledWith('work:139773');
+    expect(lookupBook).toHaveBeenCalledWith('139773');
     expect(details).toMatchObject({
       title: 'The Fellowship of the Ring',
       series: [{ title: 'The Lord of the Rings', position: '1' }],
@@ -422,7 +432,7 @@ describe('Bookshelf catalog identities', () => {
 
     expect(details?.id).toBe(id);
     expect(details?.title).toBe('The Fellowship of the Ring');
-    expect(lookup).toHaveBeenNthCalledWith(1, 'work:139773');
+    expect(lookup).toHaveBeenNthCalledWith(1, '139773');
     expect(lookup).toHaveBeenNthCalledWith(2, 'The Fellowship of the Ring');
   });
 });

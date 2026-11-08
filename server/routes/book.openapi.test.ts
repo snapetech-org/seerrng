@@ -17,6 +17,13 @@ describe('book detail routes behind the OpenAPI validator', () => {
         validateSecurity: false,
       })
     );
+    app.get('/api/v1/editions/book', (req, res) =>
+      res.json({
+        author: req.query.author,
+        bookId: req.query.bookId,
+        serverId: req.query.serverId,
+      })
+    );
     app.get('/api/v1/book/library', (req, res) =>
       res.json({ format: req.query.format, page: req.query.page })
     );
@@ -84,5 +91,23 @@ describe('book detail routes behind the OpenAPI validator', () => {
 
     assert.strictEqual(response.status, 200, JSON.stringify(response.body));
     assert.strictEqual(response.body.lookupTitle, 'The Return of the King');
+  });
+  it('admits edition query authors encoded by URLSearchParams', async () => {
+    const author = "Synthetic Author & O'Neil";
+    const params = new URLSearchParams({
+      format: 'ebook',
+      author,
+      bookId: 'bookshelf:0:NDI3NTc4',
+      serverId: '0',
+      title: 'Project Hail Mary',
+      term: 'Project Hail Mary ' + author,
+    });
+    const response = await request(createValidatedApp()).get(
+      '/api/v1/editions/book?' + params
+    );
+    assert.equal(response.status, 200, JSON.stringify(response.body));
+    assert.equal(response.body.author, author);
+    assert.equal(response.body.bookId, 'bookshelf:0:NDI3NTc4');
+    assert.equal(response.body.serverId, 0);
   });
 });

@@ -3,6 +3,7 @@ import ReadarrAPI, {
 } from '@server/api/servarr/readarr';
 import type Media from '@server/entity/Media';
 import { normalizeBookLanguage } from '@server/lib/bookLanguagePolicy';
+import { withBookLookupBudget } from '@server/lib/bookLookupBudget';
 import { normalizeValidIsbn } from '@server/lib/isbn';
 import type { ReadarrSettings } from '@server/lib/settings';
 import type {
@@ -787,7 +788,7 @@ export const searchBookshelfNarrators = async (
   return [...deduped.values()];
 };
 
-export const getBookshelfBookDetails = async (
+const getBookshelfBookDetailsUnbounded = async (
   servers: ReadarrSettings[],
   id: string,
   lookupTitle?: string
@@ -801,32 +802,16 @@ export const getBookshelfBookDetails = async (
   if (!server) return undefined;
   try {
     const api = getApi(server);
-    const providerLookupId = /^\d+$/.test(parsed.foreignBookId)
-      ? `work:${parsed.foreignBookId}`
-      : undefined;
-    const providerIds = /^\d+$/.test(parsed.foreignBookId)
-      ? [
-          parsed.foreignBookId,
-          `hardcover:${parsed.foreignBookId}`,
-          `metadata-api:${parsed.foreignBookId}`,
-        ]
-      : [parsed.foreignBookId];
     let result: ReadarrBookLookupResult | undefined = getCachedBook(id, server);
-    for (const term of [
-      ...new Set([providerLookupId, lookupTitle, ...providerIds]),
-    ]) {
-      if (result) break;
-      if (!term?.trim()) continue;
-      let candidates: ReadarrBookLookupResult[];
-      try {
-        candidates = await api.lookupBook(term);
-      } catch {
-        continue;
-      }
-      result = candidates.find((candidate) =>
-        providerIds.includes(candidate.foreignBookId)
+    if (!result)
+      result = await api.lookupBookByProviderIdentity(parsed.foreignBookId);
+    // A legacy title fallback is allowed only after an exact identity miss,
+    // and its result still has to match the negotiated provider identity.
+    if (!result && lookupTitle?.trim()) {
+      const aliases = api.getKnownBookIdentityAliases(parsed.foreignBookId);
+      result = (await api.lookupBook(lookupTitle)).find((candidate) =>
+        aliases.includes(candidate.foreignBookId)
       );
-      if (result) break;
     }
     if (!result) return undefined;
     if (result.foreignBookId !== parsed.foreignBookId) {
@@ -862,3 +847,8 @@ export const getBookshelfBookDetails = async (
     return undefined;
   }
 };
+
+export const getBookshelfBookDetails = (
+  ...args: Parameters<typeof getBookshelfBookDetailsUnbounded>
+): Promise<BookDetails | undefined> =>
+  withBookLookupBudget(() => getBookshelfBookDetailsUnbounded(...args));

@@ -1,5 +1,6 @@
 import Alert from '@app/components/Common/Alert';
 import { getBookFormatMessage } from '@app/components/Common/BookFormatBadge';
+import Button from '@app/components/Common/Button';
 import CachedImage from '@app/components/Common/CachedImage';
 import Modal from '@app/components/Common/Modal';
 import {
@@ -190,10 +191,15 @@ const BookRequestModal = ({
   const [requestedByPortal, setRequestedByPortal] =
     useState<HTMLDivElement | null>(null);
   const normalizedBookId = normalizeOpenLibraryWorkId(bookId);
-  const { data, error } = useSWR<BookDetails>(
+  const {
+    data,
+    error,
+    mutate: retryDetails,
+  } = useSWR<BookDetails>(
     `/api/v1/book/${encodeApiPathSegment(normalizedBookId)}`,
     {
       revalidateOnMount: true,
+      shouldRetryOnError: false,
     }
   );
   const canChooseRequestUser = hasPermission(
@@ -786,6 +792,25 @@ const BookRequestModal = ({
       setIsUpdating(false);
     }
   };
+
+  if (error && !data) {
+    return (
+      <Modal title={requestLabel} onCancel={onCancel} backgroundClickable>
+        <Alert
+          title={intl.formatMessage(globalMessages.error)}
+          type="warning"
+        />
+        <Button
+          buttonType="ghost"
+          buttonSize="sm"
+          buttonIcon="retry"
+          onClick={() => void retryDetails()}
+        >
+          {intl.formatMessage(globalMessages.retry)}
+        </Button>
+      </Modal>
+    );
+  }
 
   if (editRequest) {
     const isOwner = editRequest.requestedBy.id === user?.id;
