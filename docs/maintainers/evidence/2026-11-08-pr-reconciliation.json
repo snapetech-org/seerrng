@@ -1,0 +1,99 @@
+{
+  "head": "9bf504fdc7c43811a6f511bc1e7affa6de30b8d2",
+  "total": 517,
+  "merged": 418,
+  "merged_not_ancestor": [],
+  "closed_unmerged_missing_ledger": [],
+  "ledger_commit_references": 60,
+  "ledger_nonancestor_references": [
+    "1cbc77f881825a0715676d651b8afa3d46912fe2",
+    "351301acae0d7d1735f38b59049d743a32f31d4c",
+    "46ad835749748b023b199d790c0c4329893940a1",
+    "49adbf7e6b84c99db8a03636721cdfad83f91c93",
+    "6e6752cbb54154a241100421637a6026eca6644d",
+    "82896d33691bc2cd739e9151bb9d557a455ac580",
+    "832b4f2d33eb55f89d5492d10e1de67d06c77d25",
+    "8ac7ed7c432e6dbd848b76dec3630788b920083b",
+    "a095a37d449634d309cbcbc862a06906c54e604c",
+    "a9c438ee70a2cc5ccbc867ce7efab1ee37eea8ac",
+    "b03809f33dd602412a6995738159279cb007200b",
+    "b6626193b9287883a02b3c24c37af08a961b2bc3",
+    "c741b1c763f3f0e7561eb9f2bf413676689cb11f",
+    "d9d2df59761021bf89ce30c1176cde917c0d3426"
+  ],
+  "nonancestor_reference_patch_matches": [
+    {
+      "original": "1cbc77f881825a0715676d651b8afa3d46912fe2",
+      "patch_id": "7502f002d0828a5310522d97388bb30c96998880",
+      "matching_main_commit": "3f167d1db18bbd53faf02ae04b53090c11f1e2f2"
+    },
+    {
+      "original": "351301acae0d7d1735f38b59049d743a32f31d4c",
+      "patch_id": "228e99d55d064933759581f553458648c28b03d0",
+      "matching_main_commit": "d2a224e829ef15358f4812537330c00d68489469"
+    },
+    {
+      "original": "46ad835749748b023b199d790c0c4329893940a1",
+      "patch_id": "5113d96536a4e814f5a05c23bcddd89215e0a474",
+      "matching_main_commit": "84dec5245c20b81016dcb5a15399e1d906bd7d25"
+    },
+    {
+      "original": "49adbf7e6b84c99db8a03636721cdfad83f91c93",
+      "patch_id": "590ea3b11c97bd39b20b7b821435a265127c95a3",
+      "matching_main_commit": "ac6576274ed86b4dd158bc3c1e03354fde804934"
+    },
+    {
+      "original": "6e6752cbb54154a241100421637a6026eca6644d",
+      "patch_id": "0becae5c0f7ce376d5d087f148a8e168b33e821c",
+      "matching_main_commit": "ac79b057b2b0dde04f834505b427c587b29c5cdb"
+    },
+    {
+      "original": "82896d33691bc2cd739e9151bb9d557a455ac580",
+      "patch_id": "c376656be0e4997de8a77e0326ab720a272f3b42",
+      "matching_main_commit": "2d7bd5a928706ca92fbb9360b5aa50da2fba645d"
+    },
+    {
+      "original": "832b4f2d33eb55f89d5492d10e1de67d06c77d25",
+      "patch_id": "969b5b3f4ff3eef71bbc4b22a906b391631bffa9",
+      "matching_main_commit": "3e301627e0c77f6cead92f3c4cd1f3b83f92a809",
+      "scope": "tools/validation-engine"
+    },
+    {
+      "original": "8ac7ed7c432e6dbd848b76dec3630788b920083b",
+      "patch_id": "90228c87afef02af6969ffa8b92e44e295ee7c76",
+      "matching_main_commit": "5af80d36ba7ce0f270f1b67d4db0fa23685e7910"
+    },
+    {
+      "original": "a095a37d449634d309cbcbc862a06906c54e604c",
+      "patch_id": "30764cd64c679349da35fd155fb6d8078b6e4ab7",
+      "matching_main_commit": "3cbb8b5cedab316507e88e877110738f7abb31a9"
+    },
+    {
+      "original": "a9c438ee70a2cc5ccbc867ce7efab1ee37eea8ac",
+      "patch_id": "90228c87afef02af6969ffa8b92e44e295ee7c76",
+      "matching_main_commit": "5af80d36ba7ce0f270f1b67d4db0fa23685e7910"
+    },
+    {
+      "original": "b03809f33dd602412a6995738159279cb007200b",
+      "patch_id": "23a9e176431ed7106c2c7c3b37e09435440d4246",
+      "matching_main_commit": "384b6c12bb639cf28e99e6fc831fe40271aed660"
+    },
+    {
+      "original": "b6626193b9287883a02b3c24c37af08a961b2bc3",
+      "patch_id": "a889a7364c31007fd2a49adad469cadbccfa3cef",
+      "matching_main_commit": "f16277aaebcc207bd3028ed300295d6eb75128de"
+    },
+    {
+      "original": "c741b1c763f3f0e7561eb9f2bf413676689cb11f",
+      "patch_id": "6a8c2b2da45fe26faef77381cf413efa62398f6d",
+      "matching_main_commit": "c16acf0759be93d93be9400c4e506000b54f138f"
+    },
+    {
+      "original": "d9d2df59761021bf89ce30c1176cde917c0d3426",
+      "patch_id": "eccde2309ac846eaa35035bdcb9ce7306029f094",
+      "matching_main_commit": "be3b4b8d45b9523d4e543116b6dde3f8f4efe1ad"
+    }
+  ],
+  "external_human_prs": 59,
+  "external_human_review_records": 59
+}

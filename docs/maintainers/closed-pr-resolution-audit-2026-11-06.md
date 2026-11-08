@@ -13,7 +13,7 @@ alone proves a complete security review or every live provider scenario.
 Incoming PR592 and PR593 have separate review and validation records; their
 status is not inferred from this historical snapshot.
 
-The source snapshot below is 3d2bd573d1aae523da9fad8feef4639b25f321fe. Links to commits are checked ancestors.
+The source snapshot below is 3d2bd573d1aae523da9fad8feef4639b25f321fe. Included-commit links are checked ancestors; equivalent-original-patch links identify original source and need not be ancestors.
 Dependency/workflow replacements refer to this snapshot's frozen manifests and
 workflows. Current owner policy supersedes old runner-routing and CodeQL updates.
 No old CodeQL workflow is restored.

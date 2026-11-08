@@ -146,3 +146,32 @@ The final live sweep found zero open Dependabot, code-scanning or secret-scannin
 alerts, zero open PRs and zero open issues. CodeQL remains disabled by owner
 directive. These counts do not imply an exhaustive audit of every upstream
 project, provider, dependency transitive path, device or operating system.
+
+## Fresh PR reconciliation — November 8 UTC / November 7 local
+
+The refreshed GitHub inventory contains 517 PRs: 418 merged, 99 closed without a
+GitHub merge and none open. All 418 merge commits are ancestors of main at
+`9bf504fdc7c43811a6f511bc1e7affa6de30b8d2`. Every closed-unmerged PR has an entry
+in the source-resolution ledger. Fourteen original commit references are not
+ancestors; their stable patch identities match included commits, checked in the
+relevant source paths. They remain patch-equivalent resolutions, not fabricated
+GitHub merges. See the [fresh reconciliation evidence](evidence/2026-11-08-pr-reconciliation.json).
+
+The central security ledger now also includes the separate PR595 and PR596
+reviews, covering all 59 external human-authored PRs in this inventory. This
+repairs a ledger omission; it does not replace the individual reviews or imply
+an exhaustive review of all upstream dependency source. PR595's stale-query
+completion repairs were published in v3.72.21. PR596's cache, branding and error
+repairs were actually merged with original ancestry and published in v3.72.22.
+
+Subsequent real-backend verification reproduced a compressed-session response
+that prevented Lumen administrator saves. Commit9bf504fdc repairs the internal
+session request without weakening admission checks. All27 native production-image
+checks, two actual-backend UI save/readback cases and CI42434161663 pass. The
+repair is on main and still needs a replacement release; v3.72.22 is immutable.
+A separate authenticated concurrency probe completed240 config saves with240
+successes and restored its isolated QA configuration; it did not reproduce the
+suspected temporary-file race. No exploit or fix is claimed from that probe.
+
+The 73-issue human-workflow audit remains open. Integration counts, review
+records and successful galleries do not establish every requested human action.

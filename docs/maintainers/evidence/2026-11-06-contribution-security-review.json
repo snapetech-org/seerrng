@@ -1,6 +1,6 @@
 {
   "checkpoint": "2026-11-06",
-  "scope": "Security-relevant production and operational boundaries for 54 historical human contribution PRs plus incoming PR589 (55 scoped reviews); not exhaustive upstream-package or historical CSS acceptance. Evidence filenames refer to the retained recovery audit archive or the adjacent user-bug-report archive. Later delivery state is separate from source review.",
+  "scope": "Security-relevant production and operational boundary reviews for all 59 external human-authored PRs in the refreshed 517-PR inventory through PR596. Bot dependency diffs are separate; not exhaustive upstream-package source, historical CSS, live-provider or physical-device acceptance. Original historical records remain dated evidence; follow-ups state integration and release boundaries.",
   "reviews": [
     {
       "number": 32,
@@ -751,6 +751,30 @@
         "../seerrng-incoming-review-20261106/android-593-appearance-reports"
       ],
       "pull_request": "https://github.com/snapetech-org/seerrng/pull/593"
+    },
+    {
+      "number": 595,
+      "source_patch": "pr595.diff",
+      "sha256": "2b1a38e723ecbe2e965ea163f17560fb89a5b83349b7f08cb3b6ffecc5f18038",
+      "review": "Reviewed request/list retry ownership, query changes, cancel/unmount boundaries, server-address aliases and documentation, request-sheet layout and large-screen presentation. Original contributor ancestry retained through bc804d7de32f4ebe61c27b707cfe45feff4d45e1.",
+      "disposition": "Patched stale list result/error completion and game-query retry ownership so old asynchronous results cannot replace a newer query. Published in v3.72.21; 243 browser passes and 13 viewport skips; Lumen workflow42349220295 and full released-head CI42352495936 succeed. No blanket live-provider, physical-device or exhaustive package-source claim.",
+      "evidence": [
+        "https://github.com/snapetech-org/seerrng/pull/595#issuecomment-6704873721"
+      ],
+      "pull_request": "https://github.com/snapetech-org/seerrng/pull/595"
+    },
+    {
+      "number": 596,
+      "source_patch": "pr596.diff",
+      "sha256": "da81369fe829b33bf2588635529f7d527ff9a7978f321006250859a92e2569c5",
+      "review": "Reviewed nginx/njs filesystem and session-admission boundaries, branding response CSP and MIME handling, cache/session scope and retention, admin/request-as authorization and request UI. Original head485677b1e38fdd83b4437a5b26d3ba532d2c6b06 preserved through a03a2a04a3b89aaf4f4cc6aca4f798ca06a3d1a5.",
+      "disposition": "Repaired destructive pre-save logo replacement, upload filename collisions, stale/future cache retention and Everyone API failure shown as empty history. Published in v3.72.22. Native27, browser327/13skip and focused retry/signout plus matching visual checks are detailed in the review. Later real-backend testing found compressed auth subrequest failure: repair9bf504fdc7c43811a6f511bc1e7affa6de30b8d2 passes native27 and real admin-save/readback browser2; CI42434161663 succeeds. That follow-up is on main but not in v3.72.22. Anonymous/nonadmin writes remain denied; GET capability metadata is intentionally public.",
+      "evidence": [
+        "docs/maintainers/lumen-pr596-review-2026-11-07.md",
+        "docs/maintainers/lumen-session-compression-validation.md",
+        "https://github.com/snapetech-org/seerrng/issues/601"
+      ],
+      "pull_request": "https://github.com/snapetech-org/seerrng/pull/596"
     }
   ]
 }
