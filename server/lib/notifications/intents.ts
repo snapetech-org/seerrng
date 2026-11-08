@@ -14,6 +14,7 @@ import MediaIdentifier, {
 import { MediaRequest } from '@server/entity/MediaRequest';
 import { MediaSearchMetadata } from '@server/entity/MediaSearchMetadata';
 import { User } from '@server/entity/User';
+import { isBookRequestFileAvailable } from '@server/lib/bookAvailability';
 import { isComicRequestAvailable } from '@server/lib/comicAvailability';
 import {
   normalizeMusicBrainzId,
@@ -454,8 +455,10 @@ const hydrateMediaRequestIntent = async (
   // those stale intents rather than delivering a false email after upgrading.
   if (
     type === Notification.MEDIA_AVAILABLE &&
-    request.type === MediaType.COMIC &&
-    !isComicRequestAvailable(request.media, request)
+    ((request.type === MediaType.COMIC &&
+      !isComicRequestAvailable(request.media, request)) ||
+      (request.type === MediaType.BOOK &&
+        !isBookRequestFileAvailable(request.media, request)))
   )
     return undefined;
   return buildMediaRequestNotificationPayload(request, request.media, type);

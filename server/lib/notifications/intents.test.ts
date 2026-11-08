@@ -39,6 +39,41 @@ afterEach(() => {
   mock.restoreAll();
 });
 
+describe('book availability notification evidence', () => {
+  for (const format of ['ebook', 'audiobook', 'both'] as const) {
+    it(`retires a premature ${format} availability intent without requested files`, async () => {
+      const media = await getRepository(Media).save(
+        new Media({
+          mediaType: MediaType.BOOK,
+          tmdbId: 0,
+          status: MediaStatus.PROCESSING,
+          status4k: MediaStatus.UNKNOWN,
+          availableEbookServiceIds: [],
+          availableAudiobookServiceIds: [],
+        })
+      );
+      const requestedBy = await getRepository(User).findOneByOrFail({ id: 1 });
+      const request = await getRepository(MediaRequest).save(
+        new MediaRequest({
+          type: MediaType.BOOK,
+          media,
+          requestedBy,
+          status: MediaRequestStatus.COMPLETED,
+          is4k: false,
+          bookFormat: format,
+        })
+      );
+      assert.equal(
+        await hydrateNotificationIntent(Notification.MEDIA_AVAILABLE, {
+          kind: 'media-request',
+          requestId: request.id,
+        }),
+        undefined
+      );
+    });
+  }
+});
+
 describe('comic request notification identity', () => {
   it('retires an old availability intent when the comic still has no confirmed files', async () => {
     const media = await getRepository(Media).save(

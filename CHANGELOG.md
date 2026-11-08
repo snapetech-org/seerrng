@@ -24,6 +24,7 @@ book-discovery, fresh-Bindery and release-bootstrap repairs.
 
 #### Fixed
 
+- **Books:** Service acceptance leaves requests processing until the requested files are observed. Premature completion and availability notifications are corrected, old active tracking is repaired, and repeated delivery stays idempotent.
 - **Books:** Recommended discovery starts with trending works rather than random catalog records. Open Library searches use a bounded 30-second budget while retaining language rules, caching and retry controls.
 - **Books:** Fresh Bindery installations with an unstored primary provider setting use Bindery's Open Library default. Authentication and service failures still surface; explicit requester mappings remain enforced.
 - **Releases:** Android distribution and image-signing tool downloads use verified official fallback transport while retaining existing tool versions, checksums, publisher verification, scans and signatures.

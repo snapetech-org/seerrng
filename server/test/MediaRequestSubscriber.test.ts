@@ -2188,6 +2188,7 @@ describe('MediaRequestSubscriber service dispatch', () => {
     mock.method(notificationManager, 'sendNotification', () => undefined);
 
     await new MediaRequestSubscriber().sendToReadarr(request);
+    await new MediaRequestSubscriber().sendToReadarr(request);
 
     assert.deepStrictEqual(lookupTerms, [
       '9780441478125',
@@ -2235,7 +2236,7 @@ describe('MediaRequestSubscriber service dispatch', () => {
     const savedRequest = await getRepository(MediaRequest).findOneByOrFail({
       id: request.id,
     });
-    assert.equal(savedRequest.status, MediaRequestStatus.COMPLETED);
+    assert.equal(savedRequest.status, MediaRequestStatus.APPROVED);
   });
 
   it('dispatches a both-format Bindery request once with explicit format intent', async () => {
@@ -2348,7 +2349,7 @@ describe('MediaRequestSubscriber service dispatch', () => {
     const savedRequest = await getRepository(MediaRequest).findOneByOrFail({
       id: request.id,
     });
-    assert.equal(savedRequest.status, MediaRequestStatus.COMPLETED);
+    assert.equal(savedRequest.status, MediaRequestStatus.APPROVED);
     assert.deepEqual(
       savedRequest.serviceTargets
         ?.map(({ format, serverId }) => ({
@@ -2513,6 +2514,11 @@ describe('MediaRequestSubscriber service dispatch', () => {
       })
     );
     const request = await createApprovedRequest(media, requestedBy);
+    const notification = mock.method(
+      notificationManager,
+      'sendNotificationIntent',
+      async () => undefined
+    );
     mock.method(OpenLibraryAPI.prototype, 'getWork', async () => ({
       key: '/works/OL45804W',
       title: 'The Left Hand of Darkness',
@@ -2587,6 +2593,24 @@ describe('MediaRequestSubscriber service dispatch', () => {
     assert.equal(operation.pendingId, null);
     assert.equal(operation.providerBookId, 'OL45804W');
     assert.equal(operation.binderyRequestId, 91);
+    assert.equal(
+      (await getRepository(MediaRequest).findOneByOrFail({ id: request.id }))
+        .status,
+      MediaRequestStatus.APPROVED
+    );
+    assert.ok(
+      !notification.mock.calls.some(
+        (call) => call.arguments[0] === Notification.MEDIA_AVAILABLE
+      )
+    );
+    const subscriber = new MediaRequestSubscriber();
+    assert.deepEqual(await subscriber.dispatchRequestById(request.id), {
+      delivered: true,
+    });
+    assert.equal(paths.filter((path) => path === '/api/v1/requests').length, 1);
+    enqueuedRequestIds = [];
+    await subscriber.retryApprovedReadarrRequests(1);
+    assert.deepEqual(enqueuedRequestIds, []);
   });
 
   it('does not infer Bindery ownership from a requester-editable display name', async () => {
@@ -2972,7 +2996,7 @@ describe('MediaRequestSubscriber service dispatch', () => {
     const savedRequest = await getRepository(MediaRequest).findOneByOrFail({
       id: request.id,
     });
-    assert.equal(savedRequest.status, MediaRequestStatus.COMPLETED);
+    assert.equal(savedRequest.status, MediaRequestStatus.APPROVED);
   });
 
   it('requests a Bookshelf item by its raw provider ID before trying title or ISBN fallbacks', async () => {
@@ -3069,7 +3093,7 @@ describe('MediaRequestSubscriber service dispatch', () => {
     const savedRequest = await getRepository(MediaRequest).findOneByOrFail({
       id: request.id,
     });
-    assert.equal(savedRequest.status, MediaRequestStatus.COMPLETED);
+    assert.equal(savedRequest.status, MediaRequestStatus.APPROVED);
   });
 
   it('does not save Bookshelf identifiers already linked to another book media row', async () => {
@@ -3393,7 +3417,7 @@ describe('MediaRequestSubscriber service dispatch', () => {
     const savedRequest = await getRepository(MediaRequest).findOneByOrFail({
       id: request.id,
     });
-    assert.equal(savedRequest.status, MediaRequestStatus.COMPLETED);
+    assert.equal(savedRequest.status, MediaRequestStatus.APPROVED);
   });
 
   it('hydrates Bookshelf softcover lookup records through author lookup before adding', async () => {
@@ -3489,7 +3513,7 @@ describe('MediaRequestSubscriber service dispatch', () => {
     const savedRequest = await getRepository(MediaRequest).findOneByOrFail({
       id: request.id,
     });
-    assert.equal(savedRequest.status, MediaRequestStatus.COMPLETED);
+    assert.equal(savedRequest.status, MediaRequestStatus.APPROVED);
   });
 
   it('retries transient Bookshelf lookup failures before dispatching a book request', async () => {
@@ -3595,7 +3619,7 @@ describe('MediaRequestSubscriber service dispatch', () => {
     const savedRequest = await getRepository(MediaRequest).findOneByOrFail({
       id: request.id,
     });
-    assert.equal(savedRequest.status, MediaRequestStatus.COMPLETED);
+    assert.equal(savedRequest.status, MediaRequestStatus.APPROVED);
   });
 
   it('retries Hardcover-backed Bookshelf rate-limit failures surfaced as internal server errors', async () => {
@@ -3695,7 +3719,7 @@ describe('MediaRequestSubscriber service dispatch', () => {
     const savedRequest = await getRepository(MediaRequest).findOneByOrFail({
       id: request.id,
     });
-    assert.equal(savedRequest.status, MediaRequestStatus.COMPLETED);
+    assert.equal(savedRequest.status, MediaRequestStatus.APPROVED);
   });
 
   it('keeps Hardcover rate-limited book requests approved instead of failing hard', async () => {
@@ -4693,7 +4717,7 @@ describe('MediaRequestSubscriber service dispatch', () => {
       const savedRequest = await getRepository(MediaRequest).findOneByOrFail({
         id: request.id,
       });
-      assert.equal(savedRequest.status, MediaRequestStatus.COMPLETED);
+      assert.equal(savedRequest.status, MediaRequestStatus.APPROVED);
     });
 
   it('resets stale music processing status when the last request is declined', async () => {

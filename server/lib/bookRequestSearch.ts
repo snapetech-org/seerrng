@@ -21,7 +21,10 @@ import {
   runWithRequestAdmission,
   type MediaRequestServiceTarget,
 } from '@server/entity/MediaRequest';
-import { recordBookFileAvailability } from '@server/lib/bookAvailability';
+import {
+  isBookRequestFileAvailable,
+  recordBookFileAvailability,
+} from '@server/lib/bookAvailability';
 import { hasRequestedEditionFiles } from '@server/lib/editionCompare/availability';
 import { getExternalRuntimeConfig } from '@server/lib/externalRuntimeConfig';
 import { normalizeValidIsbn } from '@server/lib/isbn';
@@ -164,6 +167,31 @@ class BookRequestSearchManager {
       (candidate) => candidate.id === operation.serviceId
     );
     if (!server?.syncEnabled) return;
+
+    if (operation.request.status === MediaRequestStatus.COMPLETED) {
+      await runWithRequestAdmission(
+        [getRequestMutationAdmissionKey(operation.requestId)],
+        async () => {
+          const request = await getRepository(MediaRequest).findOne({
+            where: { id: operation.requestId },
+            relations: { media: true },
+          });
+          if (
+            request?.status === MediaRequestStatus.COMPLETED &&
+            !isBookRequestFileAvailable(request.media, request)
+          ) {
+            // Older dispatchers completed on service acceptance. Repair only
+            // active tracking with no file evidence, without re-enqueueing a
+            // delivery attempt or publishing another approval notification.
+            await getRepository(MediaRequest).update(
+              { id: request.id, status: MediaRequestStatus.COMPLETED },
+              { status: MediaRequestStatus.APPROVED }
+            );
+            operation.request.status = MediaRequestStatus.APPROVED;
+          }
+        }
+      );
+    }
 
     if (server.backend === 'bindery') {
       const key = `${server.id}:${operation.format}`;

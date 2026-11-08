@@ -21,6 +21,7 @@ import { resetTestDb, seedTestDb } from '@server/utils/seedTestDb';
 import assert from 'node:assert/strict';
 import { afterEach, before, beforeEach, describe, it, mock } from 'node:test';
 import bookRequestSearchManager from './bookRequestSearch';
+import requestDispatchManager from './requestDispatch';
 import { RequestStatusStage } from './requestStatus';
 
 const configureBookshelf = () => {
@@ -84,6 +85,7 @@ const createTrackedRequest = async (options: {
   providerBookId?: string;
   monitoring?: boolean;
   providerManagedSearch?: boolean;
+  requestStatus?: MediaRequestStatus;
 }) => {
   const pending =
     options.pendingId !== undefined || options.binderyRequestId !== undefined;
@@ -104,7 +106,7 @@ const createTrackedRequest = async (options: {
   const request = await getRepository(MediaRequest).save(
     new MediaRequest({
       type: MediaType.BOOK,
-      status: MediaRequestStatus.COMPLETED,
+      status: options.requestStatus ?? MediaRequestStatus.COMPLETED,
       is4k: false,
       bookFormat: 'ebook',
       media,
@@ -284,12 +286,19 @@ describe('BookRequestSearchManager', () => {
   it('settles Bindery request tracking only after the format appears in its imported library', async () => {
     configureBindery();
     getSettings().readarr[0].serviceType = 'ebook';
+    mock.method(requestDispatchManager, 'enqueue', async () => undefined);
     const { media, request } = await createTrackedRequest({
       createdBook: true,
       createdAuthor: false,
       monitoring: true,
       providerBookId: 'hc:book-55',
+      requestStatus: MediaRequestStatus.APPROVED,
     });
+    const notification = mock.method(
+      notificationManager,
+      'sendNotificationIntent',
+      async () => undefined
+    );
     mock.method(BinderyAPI.prototype, 'getImportedBooks', async () => [
       {
         id: 55,
@@ -308,6 +317,24 @@ describe('BookRequestSearchManager', () => {
       id: media.id,
     });
     assert.equal(updatedMedia.status, MediaStatus.AVAILABLE);
+    assert.equal(
+      (await getRepository(MediaRequest).findOneByOrFail({ id: request.id }))
+        .status,
+      MediaRequestStatus.COMPLETED
+    );
+    assert.equal(
+      notification.mock.calls.filter(
+        (call) => call.arguments[0] === Notification.MEDIA_AVAILABLE
+      ).length,
+      1
+    );
+    await bookRequestSearchManager.run();
+    assert.equal(
+      notification.mock.calls.filter(
+        (call) => call.arguments[0] === Notification.MEDIA_AVAILABLE
+      ).length,
+      1
+    );
   });
 
   it('waits for Bindery approval without losing the linked request ID', async () => {
@@ -356,6 +383,11 @@ describe('BookRequestSearchManager', () => {
     });
     assert.equal(operation.state, 'pending');
     assert.equal(operation.binderyRequestId, 91);
+    assert.equal(
+      (await getRepository(MediaRequest).findOneByOrFail({ id: request.id }))
+        .status,
+      MediaRequestStatus.APPROVED
+    );
     assert.equal(requestScan.mock.callCount(), 1);
     assert.equal(downloadScan.mock.callCount(), 0);
   });

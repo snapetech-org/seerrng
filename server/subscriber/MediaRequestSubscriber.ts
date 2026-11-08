@@ -51,7 +51,10 @@ import Season from '@server/entity/Season';
 import SeasonRequest, {
   isActiveSeasonRequest,
 } from '@server/entity/SeasonRequest';
-import { hasAvailableBookFormat } from '@server/lib/bookAvailability';
+import {
+  hasAvailableBookFormat,
+  isBookRequestFileAvailable,
+} from '@server/lib/bookAvailability';
 import {
   allowedBookLanguages,
   bookLanguageAllowed,
@@ -636,6 +639,16 @@ export class MediaRequestSubscriber implements EntitySubscriberInterface<MediaRe
           .where('dispatch.requestId = mediaRequest.id')
           .getQuery();
         return `NOT EXISTS ${queued}`;
+      })
+      .andWhere((query) => {
+        const tracked = query
+          .subQuery()
+          .select('1')
+          .from(BookRequestSearch, 'bookSearch')
+          .where('bookSearch.requestId = mediaRequest.id')
+          .getQuery();
+        // File/search tracking owns an accepted request after outbox delivery.
+        return `NOT EXISTS ${tracked}`;
       })
       .andWhere((query) => {
         const latestStage = query
@@ -1432,6 +1445,9 @@ export class MediaRequestSubscriber implements EntitySubscriberInterface<MediaRe
       if (retryAfterMs !== undefined) {
         return { delivered: false, retryAfterMs };
       }
+      // Successful delivery retires the dispatch attempt. File tracking, not
+      // service acceptance, completes the user request and sends availability.
+      return { delivered: true };
     } else if (request.type === MediaType.COMIC) {
       const retryAfterMs = await this.sendToComicBackend(request);
       if (retryAfterMs !== undefined) {
@@ -3500,9 +3516,29 @@ export class MediaRequestSubscriber implements EntitySubscriberInterface<MediaRe
             ? (['audiobook'] as const)
             : (['ebook'] as const);
       let lookupTerm: string | undefined;
-      const formatsToDispatch = targetFormats.filter(
-        (serviceType) => !hasAvailableBookFormat(media, serviceType)
-      );
+      const existingOperations = await getRepository(BookRequestSearch).find({
+        where: { requestId: entity.id },
+      });
+      const formatsToDispatch = targetFormats.filter((serviceType) => {
+        if (
+          hasAvailableBookFormat(media, serviceType) &&
+          !isProviderBookEdition(preferredEditionId)
+        )
+          return false;
+        const destination = getReadarrSettings(
+          serviceType,
+          requestedBookFormat !== 'both' || serviceType === 'ebook'
+        );
+        return !existingOperations.some(
+          (operation) =>
+            operation.format === serviceType &&
+            operation.serviceId === destination?.id &&
+            (!isProviderBookEdition(preferredEditionId) ||
+              operation.providerEditionId === preferredEditionId) &&
+            operation.state !== 'failed' &&
+            operation.state !== 'unavailable'
+        );
+      });
       const selectedTargets = formatsToDispatch.map((serviceType) => ({
         serviceType,
         server: getReadarrSettings(
@@ -3533,7 +3569,10 @@ export class MediaRequestSubscriber implements EntitySubscriberInterface<MediaRe
       }
 
       const requestRepository = getRepository(MediaRequest);
-      entity.status = MediaRequestStatus.COMPLETED;
+      entity.media = await mediaRepository.findOneByOrFail({ id: media.id });
+      entity.status = isBookRequestFileAvailable(entity.media, entity)
+        ? MediaRequestStatus.COMPLETED
+        : MediaRequestStatus.APPROVED;
       await requestRepository.save(entity);
 
       logger.info('Sent request to Bookshelf', {
