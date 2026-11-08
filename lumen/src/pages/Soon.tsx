@@ -13,6 +13,7 @@ import { Pill } from '../components/detail';
 import {
   RequestSheet,
   useAsksRequestOptions,
+  useOffers4k,
 } from '../components/requestSheet';
 import { Avatar } from '../components/Shell';
 import { useToast } from '../components/toast';
@@ -42,6 +43,8 @@ export default function Soon() {
   const toast = useToast();
   const [asked, setAsked] = useState<Set<string>>(new Set());
   const asks = useAsksRequestOptions();
+  const offers4kMovie = useOffers4k('movie');
+  const offers4kTv = useOffers4k('tv');
   const [choosing, setChoosing] = useState<TitleResult | null>(null);
   const items = [
     ...(movies?.results || []).map((m) => ({
@@ -156,7 +159,12 @@ export default function Soon() {
                       ) : (
                         <button
                           className="btn btn-sm btn-tonal"
-                          onClick={() => (asks ? setChoosing(it) : req(it))}
+                          onClick={() =>
+                            asks ||
+                            (it.mediaType === 'tv' ? offers4kTv : offers4kMovie)
+                              ? setChoosing(it)
+                              : req(it)
+                          }
                         >
                           <Icon name="plus" size="sm" />
                           Request

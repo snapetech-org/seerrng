@@ -133,12 +133,12 @@ export const shortDate = (d?: string) =>
 
 // local request state so a card flips to "Requested" straight away
 function useRequested(initial: Stat) {
-  const [requested, setRequested] = useState(false);
+  const [requested, setRequested] = useState('');
   return [
     requested && initial?.k !== 'ok'
-      ? ({ k: 'wait', word: 'Requested', ico: 'clock' } as const)
+      ? ({ k: 'wait', word: requested, ico: 'clock' } as const)
       : initial,
-    () => setRequested(true),
+    (word = 'Requested') => setRequested(word),
   ] as const;
 }
 
@@ -173,9 +173,11 @@ export function TitleCard({ it, meta }: { it: TitleResult; meta?: string }) {
       toast(e instanceof Error ? e.message : 'Request failed');
     }
   };
-  const quick = useQuickRequest(it, go, () => {
-    markRequested();
-    toast(`Requested ${titleOf(it)}${tv ? ' · entire series' : ''}`);
+  const quick = useQuickRequest(it, go, (is4k) => {
+    markRequested(is4k ? '4K Requested' : 'Requested');
+    toast(
+      `Requested ${titleOf(it)}${is4k ? ' in 4K' : ''}${tv ? ' · entire series' : ''}`
+    );
   });
   let qb: ReactNode;
   const plex = plexUrl(it.mediaInfo);
@@ -377,7 +379,7 @@ export function FeatCard({
   const s = statusOf(it.mediaInfo, false, serverName);
   const toast = useToast();
   const { prefs } = usePrefs();
-  const [done, setDone] = useState(false);
+  const [done, setDone] = useState('');
   const mm = [
     yearOf(it),
     tv ? 'Series' : 'Movie',
@@ -388,15 +390,17 @@ export function FeatCard({
   const go = async () => {
     try {
       await (tv ? requestSeries(it.id) : requestMovie(it.id));
-      setDone(true);
+      setDone('Requested');
       toast(`Requested ${titleOf(it)}${tv ? ' · entire series' : ''}`);
     } catch (e) {
       toast(e instanceof Error ? e.message : 'Request failed');
     }
   };
-  const quick = useQuickRequest(it, go, () => {
-    setDone(true);
-    toast(`Requested ${titleOf(it)}${tv ? ' · entire series' : ''}`);
+  const quick = useQuickRequest(it, go, (is4k) => {
+    setDone(is4k ? '4K Requested' : 'Requested');
+    toast(
+      `Requested ${titleOf(it)}${is4k ? ' in 4K' : ''}${tv ? ' · entire series' : ''}`
+    );
   });
   return (
     <div className="feat">
@@ -440,7 +444,7 @@ export function FeatCard({
           ) : s || done ? (
             <span className="btn go done">
               <Icon name={s?.ico || 'clock'} size="sm" />
-              {s?.word || 'Requested'}
+              {s?.word || done}
             </span>
           ) : tv && !prefs.wholeSeriesDefault ? (
             <Link className="btn go" to={`/tv/${it.id}#seasons`}>

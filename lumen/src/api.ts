@@ -363,7 +363,7 @@ export interface TvDetails extends TitleResult {
     episodeNumber: number;
   };
   mediaInfo?: MediaInfo & {
-    seasons?: { seasonNumber: number; status: number }[];
+    seasons?: { seasonNumber: number; status: number; status4k?: number }[];
   };
 }
 export interface BookDetails extends BookResult {

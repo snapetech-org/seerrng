@@ -69,6 +69,7 @@ async function fixtures(
       json = [
         { id: 0, name: 'Radarr HD', is4k: false, isDefault: true },
         { id: 1, name: 'Radarr Kids', is4k: false, isDefault: false },
+        { id: 2, name: 'Radarr UHD', is4k: true, isDefault: true },
       ];
     else if (/^\/service\/radarr\/\d$/.test(path))
       json = {
@@ -1277,6 +1278,219 @@ test('request managers without Manage Users get no Request as', async ({
   expect(asked).toEqual([]);
 });
 
+test('Request 4K is offered before the HD copy exists, and goes to the 4K server', async ({
+  page,
+}) => {
+  const { posts } = await fixtures(page, { permissions: 2 });
+  await page.route('**/api/v1/settings/public', (route) =>
+    route.fulfill({
+      json: {
+        applicationTitle: 'Seerr',
+        mediaServerType: 2,
+        mediaServerLogin: true,
+        localLogin: true,
+        enabledMediaCategories: {},
+        movie4kEnabled: true,
+      },
+    })
+  );
+  let status4k: number | undefined;
+  await page.route('**/api/v1/movie/302', (route) =>
+    route.fulfill({
+      json: {
+        ...details301,
+        id: 302,
+        title: 'Fresh Pick',
+        mediaInfo: status4k ? { id: 2, status: 1, status4k } : undefined,
+      },
+    })
+  );
+  await page.route('**/api/v1/movie/302/recommendations', (route) =>
+    route.fulfill({ json: paged([]) })
+  );
+  await page.goto('/movie/302');
+  await expect(page.locator('.dtitle h1')).toHaveText('Fresh Pick');
+  const fourK = page
+    .getByRole('button', { name: 'Request 4K' })
+    .filter({ visible: true })
+    .first();
+  await expect(
+    page.getByRole('button', { name: 'Request', exact: true })
+  ).toBeVisible();
+  await expect(fourK).toBeVisible();
+  // the admin's Advanced options belong to the HD server; the 4K request must not reuse them
+  await page.getByText('Advanced (admins)').click();
+  await expect(page.getByLabel('Folder')).toBeVisible();
+  status4k = 2;
+  await fourK.click();
+  await expect
+    .poll(() => posts.filter((p) => p.path === '/request').length)
+    .toBe(1);
+  const body = posts.find((p) => p.path === '/request')!.body;
+  expect(body).toMatchObject({ mediaType: 'movie', mediaId: 302, is4k: true });
+  expect(body.serverId).toBeUndefined();
+  expect(body.profileId).toBeUndefined();
+  expect(body.rootFolder).toBeUndefined();
+  // once requested, the button goes and the facts say so
+  await expect(
+    page.getByRole('button', { name: 'Request 4K' }).filter({ visible: true })
+  ).toHaveCount(0);
+  await expect(page.locator('aside')).toContainText('Requested');
+});
+
+const with4k = (page: Page) =>
+  page.route('**/api/v1/settings/public', (route) =>
+    route.fulfill({
+      json: {
+        applicationTitle: 'Seerr',
+        mediaServerType: 2,
+        mediaServerLogin: true,
+        localLogin: true,
+        enabledMediaCategories: {},
+        movie4kEnabled: true,
+      },
+    })
+  );
+
+test('poster request asks 1080p or 4K for people who may request 4K', async ({
+  page,
+}) => {
+  // Request + Request 4K, no Manage Requests: no server choices, just the quality
+  const { posts } = await fixtures(page, { permissions: 32 | 1024 });
+  await with4k(page);
+  await page.goto('/');
+  await quickRequest(page, 'Fresh Pick');
+  const sheet = page.getByRole('dialog', { name: 'Request Fresh Pick' });
+  const quality = sheet.getByRole('group', { name: 'Quality' });
+  await expect(quality.getByRole('button', { name: '1080p' })).toHaveAttribute(
+    'aria-pressed',
+    'true'
+  );
+  await expect(sheet.getByLabel('Server')).toHaveCount(0);
+  await quality.getByRole('button', { name: '4K' }).click();
+  await sheet.getByRole('button', { name: 'Request in 4K' }).click();
+  await expect
+    .poll(() => posts.filter((p) => p.path === '/request').length)
+    .toBe(1);
+  const body = posts.find((p) => p.path === '/request')!.body;
+  expect(body).toMatchObject({ mediaType: 'movie', mediaId: 302, is4k: true });
+  expect(body.serverId).toBeUndefined();
+  await expect(sheet).toHaveCount(0);
+});
+
+test('poster request stays one tap for people without 4K', async ({ page }) => {
+  const { posts } = await fixtures(page, { permissions: 32 });
+  await with4k(page);
+  await page.goto('/');
+  await quickRequest(page, 'Fresh Pick');
+  await expect
+    .poll(() => posts.filter((p) => p.path === '/request').length)
+    .toBe(1);
+  const body = posts.find((p) => p.path === '/request')!.body;
+  expect(body).toMatchObject({ mediaId: 302 });
+  expect(body.is4k).toBeFalsy();
+  await expect(page.getByRole('dialog')).toHaveCount(0);
+});
+
+test('an admin choosing 4K on a poster gets the 4K servers', async ({
+  page,
+}) => {
+  const { posts } = await fixtures(page, { permissions: 2 });
+  await with4k(page);
+  await page.goto('/');
+  await quickRequest(page, 'Fresh Pick');
+  const sheet = page.getByRole('dialog', { name: 'Request Fresh Pick' });
+  await expect(sheet.getByLabel('Server')).toContainText('Radarr HD');
+  await expect(sheet.getByLabel('Server')).not.toContainText('Radarr UHD');
+  await sheet
+    .getByRole('group', { name: 'Quality' })
+    .getByRole('button', { name: '4K' })
+    .click();
+  await expect(sheet.getByLabel('Server')).toContainText('Radarr UHD');
+  await expect(sheet.getByLabel('Server')).not.toContainText('Radarr HD');
+  await expect(sheet.getByLabel('Folder')).toBeVisible();
+  await sheet.getByRole('button', { name: 'Request in 4K' }).click();
+  await expect
+    .poll(() => posts.filter((p) => p.path === '/request').length)
+    .toBe(1);
+  expect(posts.find((p) => p.path === '/request')!.body).toMatchObject({
+    is4k: true,
+    serverId: 2,
+  });
+});
+
+test('Advanced options on a movie list the 4K server, and picking it requests 4K', async ({
+  page,
+}) => {
+  const { posts } = await fixtures(page, { permissions: 2 });
+  await with4k(page);
+  await page.route('**/api/v1/movie/302', (route) =>
+    route.fulfill({
+      json: {
+        ...details301,
+        id: 302,
+        title: 'Fresh Pick',
+        mediaInfo: undefined,
+      },
+    })
+  );
+  await page.route('**/api/v1/movie/302/recommendations', (route) =>
+    route.fulfill({ json: paged([]) })
+  );
+  await page.goto('/movie/302');
+  await page.getByText('Advanced (admins)').click();
+  const server = page.getByLabel('Server');
+  await expect(server).toContainText('Radarr UHD');
+  await expect(server.locator('option[value="2"]')).toHaveText(
+    'Radarr UHD · 4K (default)'
+  );
+  await server.selectOption('2');
+  await expect(page.getByLabel('Folder')).toBeVisible();
+  await page.getByRole('button', { name: 'Request', exact: true }).click();
+  await expect
+    .poll(() => posts.filter((p) => p.path === '/request').length)
+    .toBe(1);
+  expect(posts.find((p) => p.path === '/request')!.body).toMatchObject({
+    is4k: true,
+    serverId: 2,
+  });
+});
+
+test('Request 4K stays hidden from people without 4K permission', async ({
+  page,
+}) => {
+  await fixtures(page, { permissions: 32 });
+  await page.route('**/api/v1/settings/public', (route) =>
+    route.fulfill({
+      json: {
+        applicationTitle: 'Seerr',
+        mediaServerType: 2,
+        localLogin: true,
+        enabledMediaCategories: {},
+        movie4kEnabled: true,
+      },
+    })
+  );
+  await page.route('**/api/v1/movie/302', (route) =>
+    route.fulfill({
+      json: {
+        ...details301,
+        id: 302,
+        title: 'Fresh Pick',
+        mediaInfo: undefined,
+      },
+    })
+  );
+  await page.route('**/api/v1/movie/302/recommendations', (route) =>
+    route.fulfill({ json: paged([]) })
+  );
+  await page.goto('/movie/302');
+  await expect(
+    page.getByRole('button', { name: 'Request', exact: true })
+  ).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Request 4K' })).toHaveCount(0);
+});
+
 test('a title in the library shows the check on its page too', async ({
   page,
 }) => {
@@ -2011,4 +2225,195 @@ test('game capability denials expire during in-app navigation after the document
     page.getByRole('button', { name: 'Modern consoles', exact: true })
   ).toBeVisible();
   expect(modernProbes).toBeGreaterThanOrEqual(2);
+});
+
+for (const permissions of [-1, 2.5, '2']) {
+  test(`malformed permission mask ${permissions} does not expose privileged request controls`, async ({
+    page,
+  }) => {
+    const { posts } = await fixtures(page, {
+      permissions: permissions as number,
+    });
+    await with4k(page);
+    await page.goto('/movies');
+    await quickRequest(page, 'Fresh Pick');
+    await expect(page.getByRole('dialog')).toHaveCount(0);
+    await expect
+      .poll(() => posts.filter((p) => p.path === '/request').length)
+      .toBe(1);
+    expect(posts.find((p) => p.path === '/request')?.body.is4k).toBeFalsy();
+  });
+}
+
+test('4K poster feedback names the requested tier', async ({ page }, info) => {
+  const { posts } = await fixtures(page, { permissions: 32 | 1024 });
+  await with4k(page);
+  await page.goto('/movies');
+  await quickRequest(page, 'Fresh Pick');
+  const sheet = page.getByRole('dialog');
+  await sheet
+    .getByRole('group', { name: 'Quality' })
+    .getByRole('button', { name: '4K' })
+    .click();
+  await sheet.getByRole('button', { name: 'Request in 4K' }).click();
+  await expect(sheet).toHaveCount(0);
+  expect(posts.filter((p) => p.path === '/request')).toHaveLength(1);
+  await expect(
+    page
+      .locator('.poster', { hasText: 'Fresh Pick' })
+      .locator('[title="4K Requested"]')
+  ).toHaveCount(1);
+  await page.screenshot({
+    path: info.outputPath('4k-poster-feedback.png'),
+    fullPage: true,
+  });
+});
+
+test('HD controls reset after a 4K advanced request becomes pending', async ({
+  page,
+}, info) => {
+  const { posts } = await fixtures(page);
+  await with4k(page);
+  let pending = false;
+  await page.route('**/api/v1/movie/302', (r) =>
+    r.fulfill({
+      json: {
+        ...details301,
+        id: 302,
+        title: 'Fresh Pick',
+        mediaInfo: pending ? { id: 2, status: 1, status4k: 2 } : undefined,
+      },
+    })
+  );
+  await page.route('**/api/v1/movie/302/recommendations', (r) =>
+    r.fulfill({ json: paged([]) })
+  );
+  await page.route('**/api/v1/service/radarr/2', (r) =>
+    r.fulfill({
+      json: {
+        profiles: [{ id: 44, name: 'UHD only' }],
+        rootFolders: [{ id: 4, path: '/uhd' }],
+        server: { activeProfileId: 44, activeDirectory: '/uhd' },
+      },
+    })
+  );
+  await page.goto('/movie/302');
+  await page.getByText('Advanced (admins)').click();
+  await page.getByLabel('Server').selectOption('2');
+  await expect(page.getByLabel('Folder')).toHaveValue('/uhd');
+  pending = true;
+  await page.getByRole('button', { name: 'Request', exact: true }).click();
+  await expect(page.getByRole('button', { name: 'Request 4K' })).toHaveCount(0);
+  if (!(await page.getByLabel('Server').isVisible()))
+    await page.getByText('Advanced (admins)').click();
+  await expect(page.getByLabel('Server')).toHaveValue('0');
+  await expect(page.getByLabel('Folder')).toHaveValue('/movies');
+  await page.screenshot({
+    path: info.outputPath('hd-selection-after-4k.png'),
+    fullPage: true,
+  });
+  await page.getByRole('button', { name: 'Request', exact: true }).click();
+  await expect
+    .poll(() => posts.filter((p) => p.path === '/request').length)
+    .toBe(2);
+  const bodies = posts.filter((p) => p.path === '/request').map((p) => p.body);
+  expect(bodies[0]).toMatchObject({
+    is4k: true,
+    serverId: 2,
+    profileId: 44,
+    rootFolder: '/uhd',
+  });
+  expect(bodies[1]).toMatchObject({
+    is4k: false,
+    serverId: 0,
+    profileId: 4,
+    rootFolder: '/movies',
+  });
+  await page.screenshot({
+    path: info.outputPath('hd-after-4k.png'),
+    fullPage: true,
+  });
+});
+
+test('4K series selection uses 4K season ownership even when every HD season is available', async ({
+  page,
+}, info) => {
+  const { posts } = await fixtures(page);
+  await page.route('**/api/v1/settings/public', (r) =>
+    r.fulfill({
+      json: {
+        mediaServerType: 2,
+        enabledMediaCategories: {},
+        series4kEnabled: true,
+        partialRequestsEnabled: true,
+      },
+    })
+  );
+  await page.route('**/api/v1/tv/400', (r) =>
+    r.fulfill({
+      json: {
+        id: 400,
+        name: 'Tiered Show',
+        genres: [],
+        seasons: [
+          { seasonNumber: 1, name: 'Season 1', episodeCount: 8 },
+          { seasonNumber: 2, name: 'Season 2', episodeCount: 8 },
+        ],
+        mediaInfo: {
+          id: 44,
+          status: 5,
+          status4k: 4,
+          seasons: [
+            { seasonNumber: 1, status: 5, status4k: 5 },
+            { seasonNumber: 2, status: 5, status4k: 1 },
+          ],
+        },
+      },
+    })
+  );
+  await page.route('**/api/v1/tv/400/recommendations', (r) =>
+    r.fulfill({ json: paged([]) })
+  );
+  await page.route('**/api/v1/service/sonarr', (r) =>
+    r.fulfill({
+      json: [
+        { id: 0, name: 'Sonarr HD', is4k: false, isDefault: true },
+        { id: 2, name: 'Sonarr UHD', is4k: true, isDefault: true },
+      ],
+    })
+  );
+  await page.route('**/api/v1/service/sonarr/*', (r) =>
+    r.fulfill({
+      json: {
+        profiles: [{ id: 22, name: 'UHD' }],
+        rootFolders: [{ id: 1, path: '/tv4k' }],
+        server: { activeProfileId: 22, activeDirectory: '/tv4k' },
+      },
+    })
+  );
+  await page.goto('/tv/400');
+  await page.getByText('Advanced (admins)').click();
+  await page.getByLabel('Server').selectOption('2');
+  await expect(page.getByLabel('Folder')).toHaveValue('/tv4k');
+  await page.screenshot({
+    path: info.outputPath('4k-season-selection.png'),
+    fullPage: true,
+  });
+  await page
+    .getByRole('button', { name: 'Request 1 season in 4K', exact: true })
+    .click();
+  await expect
+    .poll(() => posts.filter((p) => p.path === '/request').length)
+    .toBe(1);
+  expect(posts.find((p) => p.path === '/request')?.body).toMatchObject({
+    mediaType: 'tv',
+    mediaId: 400,
+    is4k: true,
+    seasons: [2],
+    serverId: 2,
+  });
+  await page.screenshot({
+    path: info.outputPath('4k-seasons.png'),
+    fullPage: true,
+  });
 });

@@ -10,7 +10,7 @@ import {
   type TitleResult,
   type TvDetails,
 } from '../api';
-import { useMediaServerName } from '../auth';
+import { useAuth, useMediaServerName } from '../auth';
 import {
   Rail,
   Section,
@@ -21,6 +21,7 @@ import {
 import {
   ActionBar,
   AdvancedOptions,
+  canRequest4k,
   DetailTop,
   Facts,
   fmtRun,
@@ -49,6 +50,7 @@ export default function TvDetail() {
   const { data: t, error, reload } = useApi<TvDetails>(`/tv/${id}`);
   const like = useApi<Paged<TitleResult>>(`/tv/${id}/recommendations`).data;
   const pub = usePublicSettings();
+  const { user } = useAuth();
   const { prefs } = usePrefs();
   const toast = useToast();
   const [sel, setSel] = useState<Set<number>>(new Set());
@@ -63,9 +65,9 @@ export default function TvDetail() {
   const stat = useMemo(() => {
     const m = new Map<number, SeasonState>();
     for (const s of t?.mediaInfo?.seasons || [])
-      m.set(s.seasonNumber, stateOf(s.status));
+      m.set(s.seasonNumber, stateOf(opts.is4k ? s.status4k : s.status));
     return m;
-  }, [t]);
+  }, [t, opts.is4k]);
   const missing = seasons
     .filter((s) => {
       const st = stat.get(s.seasonNumber) || 'none';
@@ -86,7 +88,7 @@ export default function TvDetail() {
   useEffect(() => {
     setSel(new Set(prefs.wholeSeriesDefault || !partialOk ? missing : []));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [t, prefs.wholeSeriesDefault, partialOk]);
+  }, [t, prefs.wholeSeriesDefault, partialOk, opts.is4k]);
   useEffect(() => {
     if (t && loc.hash === '#seasons')
       document
@@ -160,11 +162,12 @@ export default function TvDetail() {
     <button className="btn btn-primary" disabled={!n || busy} onClick={request}>
       <Icon name="plus" />
       {label}
+      {opts.is4k ? ' in 4K' : ''}
     </button>
   ) : (
     <a
       className="btn btn-primary"
-      {...mediaLink(t.mediaInfo, false, 'tv', serverName)}
+      {...mediaLink(t.mediaInfo, !!opts.is4k, 'tv', serverName)}
     >
       <Icon name="play" />
       Watch on {serverName}
@@ -177,7 +180,18 @@ export default function TvDetail() {
   return (
     <article className="detail">
       <DetailTop
-        status={statusOf(t.mediaInfo, false, serverName)}
+        status={statusOf(
+          opts.is4k && t.mediaInfo
+            ? {
+                ...t.mediaInfo,
+                status: t.mediaInfo.status4k ?? 1,
+                status4k: undefined,
+                downloadStatus: t.mediaInfo.downloadStatus4k,
+              }
+            : t.mediaInfo,
+          false,
+          serverName
+        )}
         backdrop={tmdbImg(t.backdropPath, 'w1280')}
         poster={tmdbImg(t.posterPath)}
         title={t.name || ''}
@@ -218,15 +232,30 @@ export default function TvDetail() {
           {watchable && missing.length > 0 && (
             <a
               className="btn btn-quiet"
-              {...mediaLink(t.mediaInfo, false, 'tv', serverName)}
+              {...mediaLink(t.mediaInfo, !!opts.is4k, 'tv', serverName)}
             >
               <Icon name="play" />
               Watch on {serverName}
             </a>
           )}
         </div>
-        {missing.length > 0 && (
-          <AdvancedOptions kind="tv" is4k={false} onChange={onOpts} />
+        {(missing.length > 0 ||
+          (pub?.series4kEnabled &&
+            canRequest4k(user?.permissions, 'tv') &&
+            seasons.some((season) => {
+              const status = t.mediaInfo?.seasons?.find(
+                (s) => s.seasonNumber === season.seasonNumber
+              )?.status4k;
+              return !status || status === 1 || status === 4;
+            }))) && (
+          <AdvancedOptions
+            kind="tv"
+            is4k={false}
+            allow4k={
+              !!pub?.series4kEnabled && canRequest4k(user?.permissions, 'tv')
+            }
+            onChange={onOpts}
+          />
         )}
         <div className="dcols">
           <div style={{ display: 'grid', gap: 22 }}>
@@ -377,7 +406,7 @@ export default function TvDetail() {
             className="icon-btn"
             aria-label={`Watch on ${serverName}`}
             title={`Watch on ${serverName}`}
-            {...mediaLink(t.mediaInfo, false, 'tv', serverName)}
+            {...mediaLink(t.mediaInfo, !!opts.is4k, 'tv', serverName)}
           >
             <Icon name="play" />
           </a>
