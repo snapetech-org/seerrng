@@ -1970,3 +1970,24 @@ test('unavailable optional channels can be skipped without dropping required pac
     );
   }
 });
+
+test('failed browser checks retain their diagnostic traces and error context', () => {
+  const workflow = readWorkflow('ci.yml');
+  const diagnostic = workflow.jobs.playwright.steps.find(
+    (step) =>
+      step.name === 'Preserve failed Playwright traces and error context'
+  );
+  assert.ok(diagnostic);
+  assert.equal(diagnostic.if, 'failure()');
+  assert.match(diagnostic.uses, /^actions\/upload-artifact@[a-f0-9]{40}$/u);
+  assert.equal(diagnostic.with['retention-days'], 3);
+  assert.match(diagnostic.with.path, /^test-results\/\*\*\/trace\.zip$/mu);
+  assert.match(
+    diagnostic.with.path,
+    /^test-results\/\*\*\/error-context\.md$/mu
+  );
+  assert.doesNotMatch(
+    diagnostic.with.path,
+    /runtime-config|\.env|settings\.json/u
+  );
+});
