@@ -1277,6 +1277,96 @@ test('request managers without Manage Users get no Request as', async ({
   expect(asked).toEqual([]);
 });
 
+test('Request 4K is offered before the HD copy exists, and goes to the 4K server', async ({
+  page,
+}) => {
+  const { posts } = await fixtures(page, { permissions: 2 });
+  await page.route('**/api/v1/settings/public', (route) =>
+    route.fulfill({
+      json: {
+        applicationTitle: 'Seerr',
+        mediaServerType: 2,
+        mediaServerLogin: true,
+        localLogin: true,
+        enabledMediaCategories: {},
+        movie4kEnabled: true,
+      },
+    })
+  );
+  let status4k: number | undefined;
+  await page.route('**/api/v1/movie/302', (route) =>
+    route.fulfill({
+      json: {
+        ...details301,
+        id: 302,
+        title: 'Fresh Pick',
+        mediaInfo: status4k ? { id: 2, status: 1, status4k } : undefined,
+      },
+    })
+  );
+  await page.route('**/api/v1/movie/302/recommendations', (route) =>
+    route.fulfill({ json: paged([]) })
+  );
+  await page.goto('/movie/302');
+  await expect(page.locator('.dtitle h1')).toHaveText('Fresh Pick');
+  const fourK = page
+    .getByRole('button', { name: 'Request 4K' })
+    .filter({ visible: true })
+    .first();
+  await expect(
+    page.getByRole('button', { name: 'Request', exact: true })
+  ).toBeVisible();
+  await expect(fourK).toBeVisible();
+  // the admin's Advanced options belong to the HD server; the 4K request must not reuse them
+  await page.getByText('Advanced (admins)').click();
+  await expect(page.getByLabel('Folder')).toBeVisible();
+  status4k = 2;
+  await fourK.click();
+  await expect
+    .poll(() => posts.filter((p) => p.path === '/request').length)
+    .toBe(1);
+  const body = posts.find((p) => p.path === '/request')!.body;
+  expect(body).toMatchObject({ mediaType: 'movie', mediaId: 302, is4k: true });
+  expect(body.serverId).toBeUndefined();
+  expect(body.profileId).toBeUndefined();
+  expect(body.rootFolder).toBeUndefined();
+  // once requested, the button goes and the facts say so
+  await expect(
+    page.getByRole('button', { name: 'Request 4K' }).filter({ visible: true })
+  ).toHaveCount(0);
+  await expect(page.locator('aside')).toContainText('Requested');
+});
+
+test('Request 4K stays hidden from people without 4K permission', async ({
+  page,
+}) => {
+  await fixtures(page, { permissions: 32 });
+  await page.route('**/api/v1/settings/public', (route) =>
+    route.fulfill({
+      json: {
+        applicationTitle: 'Seerr',
+        mediaServerType: 2,
+        localLogin: true,
+        enabledMediaCategories: {},
+        movie4kEnabled: true,
+      },
+    })
+  );
+  await page.route('**/api/v1/movie/302', (route) =>
+    route.fulfill({
+      json: { ...details301, id: 302, title: 'Fresh Pick', mediaInfo: undefined },
+    })
+  );
+  await page.route('**/api/v1/movie/302/recommendations', (route) =>
+    route.fulfill({ json: paged([]) })
+  );
+  await page.goto('/movie/302');
+  await expect(
+    page.getByRole('button', { name: 'Request', exact: true })
+  ).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Request 4K' })).toHaveCount(0);
+});
+
 test('a title in the library shows the check on its page too', async ({
   page,
 }) => {

@@ -70,10 +70,18 @@ export default function MovieDetail() {
   const trailer = m.relatedVideos?.find(
     (v) => v.type === 'Trailer' && v.site === 'YouTube'
   );
+  // a 4K copy is in hand or on its way (requested, downloading, partly or fully there)
+  const has4k =
+    !!s4k && s4k >= MediaStatus.PENDING && s4k <= MediaStatus.AVAILABLE;
   const request = async (is4k = false) => {
     setBusy(true);
     try {
-      await requestMovie(m.id, { ...opts, is4k });
+      // Advanced options pick the HD server's quality and folder, so a 4K request keeps only
+      // who it's for and lets SeerrNG use the 4K server's own defaults
+      await requestMovie(
+        m.id,
+        is4k ? { is4k, userId: opts.userId } : { ...opts, is4k }
+      );
       toast(`Requested ${m.title}${is4k ? ' in 4K' : ''}`);
       dropCache(`/movie/${m.id}`);
       reload();
@@ -108,11 +116,9 @@ export default function MovieDetail() {
         {unreleased ? 'Request · downloads on release' : 'Request'}
       </button>
     );
+  // offered whether or not the HD copy is here or requested: they're separate files
   const fourK =
-    pub?.movie4kEnabled &&
-    can4k &&
-    s?.k === 'ok' &&
-    !(s4k && s4k >= MediaStatus.PENDING) ? (
+    pub?.movie4kEnabled && can4k && !has4k ? (
       <button
         className="btn btn-quiet"
         disabled={busy}
@@ -214,7 +220,9 @@ export default function MovieDetail() {
                   pub?.movie4kEnabled
                     ? s4k === MediaStatus.AVAILABLE
                       ? `On ${serverName}`
-                      : 'Not yet'
+                      : has4k
+                        ? 'Requested'
+                        : 'Not yet'
                     : '',
                 ],
               ]}
