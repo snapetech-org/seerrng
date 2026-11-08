@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { api, hardcoverWorkId, hcCovers } from './api';
-import { cached, forget, isFresh, remember } from './apiCache';
+import { cached, forget, isFresh, remember, shared } from './apiCache';
 import { onSessionReset, sessionGeneration } from './sessionState';
 
 // A saved answer shows at once; a fresh one isn't asked for again (see apiCache.ts).
@@ -19,10 +19,9 @@ export function useApi<T>(path: string | null) {
     const saved = cached<T>(path);
     setData(saved ?? null);
     if (saved !== undefined && isFresh(path)) return;
-    api<T>(path)
+    fetchShared<T>(path)
       .then((d) => {
         if (generation !== sessionGeneration()) return;
-        remember(path, d);
         if (live) setData(d);
       })
       .catch((e) => {
@@ -41,13 +40,20 @@ export function useApi<T>(path: string | null) {
   return { data, error, reload };
 }
 
+// one call for everyone asking for the same path at once; the answer is saved
+function fetchShared<T>(path: string): Promise<T> {
+  return shared(path, async () => {
+    const generation = sessionGeneration();
+    const d = await api<T>(path);
+    if (generation === sessionGeneration()) remember(path, d);
+    return d;
+  });
+}
+
 // one answer, from the saved copy while it's fresh
 export async function cachedApi<T>(path: string): Promise<T> {
   if (isFresh(path)) return cached<T>(path) as T;
-  const generation = sessionGeneration();
-  const d = await api<T>(path);
-  if (generation === sessionGeneration()) remember(path, d);
-  return d;
+  return fetchShared<T>(path);
 }
 
 export const dropCache = forget;

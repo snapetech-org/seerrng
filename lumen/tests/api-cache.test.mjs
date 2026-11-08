@@ -46,3 +46,51 @@ test('future-dated local storage cannot pin a supposedly fresh answer indefinite
   assert.equal(cache.cached('/movie/2'), undefined);
   assert.equal(cache.isFresh('/movie/2'), false);
 });
+
+test('identical calls in flight share one answer', async (t) => {
+  session.resetSessionState(3);
+  t.after(() => session.resetSessionState(null));
+  let calls = 0;
+  const load = () =>
+    new Promise((resolve) => setTimeout(() => resolve(++calls), 5));
+  const answers = await Promise.all(
+    Array.from({ length: 20 }, () => cache.shared('/settings/public', load))
+  );
+  assert.equal(calls, 1);
+  assert.deepEqual(new Set(answers), new Set([1]));
+  await cache.shared('/settings/public', load);
+  assert.equal(calls, 2, 'a finished call is not reused by shared()');
+});
+
+test('always-checked answers are reused briefly, and asked again after a change', (t) => {
+  let now = 5_000_000;
+  t.mock.method(Date, 'now', () => now);
+  session.resetSessionState(4);
+  t.after(() => session.resetSessionState(null));
+  cache.remember('/settings/public', { movie4kEnabled: true });
+  assert.equal(cache.isFresh('/settings/public'), true);
+  now += cache.RECHECK_MS + 1;
+  assert.equal(cache.isFresh('/settings/public'), false);
+  cache.remember('/request?take=40', { results: [] });
+  cache.markAllStale();
+  assert.equal(cache.isFresh('/request?take=40'), false);
+});
+
+test('the saved copy stays small and leaves out big lists', async (t) => {
+  session.resetSessionState(5);
+  t.after(() => session.resetSessionState(null));
+  cache.remember('/request?take=500', { results: 'x'.repeat(300_000) });
+  for (let i = 0; i < 140; i++)
+    cache.remember(`/movie/${i}`, { overview: 'y'.repeat(12_000) });
+  await new Promise((r) => setTimeout(r, 600));
+  const saved = stored.get('lumen-cache:5');
+  assert.ok(saved, 'something was saved');
+  assert.ok(saved.length <= 1_000_000, `saved ${saved.length} chars`);
+  const keys = JSON.parse(saved).map((e) => e[0]);
+  assert.ok(!keys.includes('/request?take=500'));
+  assert.ok(keys.includes('/movie/139'), 'newest answers are kept');
+  assert.ok(
+    cache.cached('/request?take=500'),
+    'big list still served from memory'
+  );
+});

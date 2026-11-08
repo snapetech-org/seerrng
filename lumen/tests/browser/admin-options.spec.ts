@@ -2445,3 +2445,42 @@ test('unsafe full-interface URLs fall back to the same-origin native entry', asy
     page.getByRole('link', { name: 'open full SeerrNG' })
   ).toHaveAttribute('href', '/seerrng');
 });
+
+test('a page of posters asks for the server settings once, not once per poster', async ({
+  page,
+}) => {
+  // SeerrNG allows each address 600 calls a minute, and behind a tunnel a household shares it
+  await fixtures(page);
+  const shows = Array.from({ length: 40 }, (_, i) => ({
+    id: 500 + i,
+    name: `Show ${i}`,
+    mediaType: 'tv',
+    firstAirDate: '2020-01-01',
+    posterPath: `/s${i}.png`,
+  }));
+  await page.route('**/api/v1/discover/tv?*', (route) =>
+    route.fulfill({ json: paged(shows) })
+  );
+  const asked: string[] = [];
+  page.on('request', (r) => {
+    const u = new URL(r.url());
+    if (u.pathname.startsWith('/api/v1/')) asked.push(u.pathname.slice(7));
+  });
+  await page.goto('/series');
+  await expect(page.locator('.poster', { hasText: 'Show 39' })).toHaveCount(1);
+  await page.waitForTimeout(500);
+  const settingsCalls = () =>
+    asked.filter((p) => p === '/settings/public').length;
+  expect(settingsCalls()).toBeLessThanOrEqual(2);
+  // moving to another list right away reuses the answer
+  const before = settingsCalls();
+  await page.evaluate(() => {
+    history.pushState({}, '', '/movies');
+    dispatchEvent(new PopStateEvent('popstate'));
+  });
+  await expect(
+    page.getByRole('heading', { name: 'Movies', level: 1 })
+  ).toBeVisible();
+  await page.waitForTimeout(500);
+  expect(settingsCalls() - before).toBeLessThanOrEqual(1);
+});
