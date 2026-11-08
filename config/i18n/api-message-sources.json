@@ -576,7 +576,7 @@
       "callsites": [
         {
           "path": "server/routes/discover.ts",
-          "line": 4826,
+          "line": 4828,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Google Books is unavailable. Try again shortly.'",
@@ -1667,7 +1667,7 @@
         },
         {
           "path": "server/routes/discover.ts",
-          "line": 4631,
+          "line": 4633,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Not found.'",
@@ -3242,7 +3242,7 @@
       "callsites": [
         {
           "path": "server/routes/discover.ts",
-          "line": 4264,
+          "line": 4266,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Open Library book discovery request timed out.'",
@@ -3250,7 +3250,7 @@
         },
         {
           "path": "server/routes/discover.ts",
-          "line": 4269,
+          "line": 4271,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Open Library book discovery request timed out.'",
@@ -3307,7 +3307,7 @@
       "callsites": [
         {
           "path": "server/routes/discover.ts",
-          "line": 4654,
+          "line": 4656,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Connect Sportarr in Settings > Services to browse leagues.'",
@@ -5403,7 +5403,7 @@
       "callsites": [
         {
           "path": "server/routes/discover.ts",
-          "line": 4445,
+          "line": 4447,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "getSettings().readarr.some(\n        (server) =>\n          audiobookEnabled &&\n          server.backend !== 'bindery' &&\n          readarrServiceSupportsFormat(server, 'audiobook')\n      )\n        ? 'Book discovery catalogs are unavailable right now. Please try again.'\n        : 'Open Library, the service used for book searches, timed out or is unavailable. Please try again.'",
@@ -6009,7 +6009,7 @@
       "callsites": [
         {
           "path": "server/routes/discover.ts",
-          "line": 4445,
+          "line": 4447,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "getSettings().readarr.some(\n        (server) =>\n          audiobookEnabled &&\n          server.backend !== 'bindery' &&\n          readarrServiceSupportsFormat(server, 'audiobook')\n      )\n        ? 'Book discovery catalogs are unavailable right now. Please try again.'\n        : 'Open Library, the service used for book searches, timed out or is unavailable. Please try again.'",
@@ -7189,7 +7189,7 @@
       "callsites": [
         {
           "path": "server/routes/discover.ts",
-          "line": 4767,
+          "line": 4769,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Catalog must be tracked or public.'",
@@ -13197,7 +13197,7 @@
       "callsites": [
         {
           "path": "server/routes/discover.ts",
-          "line": 4785,
+          "line": 4787,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Public magazine search requires a Google Books API key. Configure it in Settings > Main.'",
@@ -15095,7 +15095,7 @@
       "callsites": [
         {
           "path": "server/routes/discover.ts",
-          "line": 4535,
+          "line": 4537,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "('error' in parsedPublisher && parsedPublisher.error) ||\n        startYear.error ||\n        minIssues.error ||\n        maxIssues.error ||\n        'Minimum issues cannot exceed maximum issues.'",
@@ -19128,7 +19128,7 @@
       "callsites": [
         {
           "path": "server/routes/discover.ts",
-          "line": 4227,
+          "line": 4229,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'The audiobook catalog is unavailable. Please try again.'",
@@ -24371,7 +24371,7 @@
       "callsites": [
         {
           "path": "server/routes/discover.ts",
-          "line": 4624,
+          "line": 4626,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'ComicVine, the service used for comic searches, timed out or is unavailable. Please try again.'",
@@ -32451,7 +32451,7 @@
       "callsites": [
         {
           "path": "server/routes/discover.ts",
-          "line": 5016,
+          "line": 5018,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Invalid watchlist filters.'",
@@ -50217,7 +50217,7 @@
       "callsites": [
         {
           "path": "server/routes/discover.ts",
-          "line": 4278,
+          "line": 4280,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Open Library returned an empty default discovery feed.'",
@@ -50827,7 +50827,7 @@
       "callsites": [
         {
           "path": "server/routes/discover.ts",
-          "line": 5003,
+          "line": 5005,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'LazyLibrarian is unavailable. Try again shortly.'",
@@ -51820,7 +51820,7 @@
       "callsites": [
         {
           "path": "server/routes/discover.ts",
-          "line": 4500,
+          "line": 4502,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "`${fieldName} must be between ${minimum} and ${maximum}.`",
@@ -55449,7 +55449,7 @@
       "callsites": [
         {
           "path": "server/routes/discover.ts",
-          "line": 4943,
+          "line": 4945,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'All LazyLibrarian magazine catalogs are unavailable.'",
@@ -59364,7 +59364,7 @@
       "callsites": [
         {
           "path": "server/routes/discover.ts",
-          "line": 4745,
+          "line": 4747,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Sportarr is unavailable. Try again shortly.'",
@@ -75799,7 +75799,7 @@
     },
     {
       "path": "server/routes/discover.ts",
-      "line": 4478,
+      "line": 4480,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "parsedSearchQuery.error",
@@ -75808,7 +75808,7 @@
     },
     {
       "path": "server/routes/discover.ts",
-      "line": 4535,
+      "line": 4537,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "('error' in parsedPublisher && parsedPublisher.error) ||\n        startYear.error ||\n        minIssues.error ||\n        maxIssues.error ||\n        'Minimum issues cannot exceed maximum issues.'",
@@ -75817,7 +75817,7 @@
     },
     {
       "path": "server/routes/discover.ts",
-      "line": 4535,
+      "line": 4537,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "('error' in parsedPublisher && parsedPublisher.error) ||\n        startYear.error ||\n        minIssues.error ||\n        maxIssues.error ||\n        'Minimum issues cannot exceed maximum issues.'",
@@ -75826,7 +75826,7 @@
     },
     {
       "path": "server/routes/discover.ts",
-      "line": 4535,
+      "line": 4537,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "('error' in parsedPublisher && parsedPublisher.error) ||\n        startYear.error ||\n        minIssues.error ||\n        maxIssues.error ||\n        'Minimum issues cannot exceed maximum issues.'",
@@ -75835,7 +75835,7 @@
     },
     {
       "path": "server/routes/discover.ts",
-      "line": 4535,
+      "line": 4537,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "('error' in parsedPublisher && parsedPublisher.error) ||\n        startYear.error ||\n        minIssues.error ||\n        maxIssues.error ||\n        'Minimum issues cannot exceed maximum issues.'",
@@ -75844,7 +75844,7 @@
     },
     {
       "path": "server/routes/discover.ts",
-      "line": 4640,
+      "line": 4642,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "parsedQuery.error",
@@ -75853,7 +75853,7 @@
     },
     {
       "path": "server/routes/discover.ts",
-      "line": 4741,
+      "line": 4743,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -75862,7 +75862,7 @@
     },
     {
       "path": "server/routes/discover.ts",
-      "line": 4741,
+      "line": 4743,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -75871,7 +75871,7 @@
     },
     {
       "path": "server/routes/discover.ts",
-      "line": 4759,
+      "line": 4761,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "parsedSearchQuery.error",
@@ -75880,7 +75880,7 @@
     },
     {
       "path": "server/routes/discover.ts",
-      "line": 4999,
+      "line": 5001,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -75889,7 +75889,7 @@
     },
     {
       "path": "server/routes/discover.ts",
-      "line": 4999,
+      "line": 5001,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",

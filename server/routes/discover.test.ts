@@ -4704,12 +4704,44 @@ describe('GET /discover/books', () => {
     assert.strictEqual(searchBooksMock.mock.callCount(), 1);
   });
 
+  for (const [filters, expected] of [
+    ['language=eng', 'language:eng'],
+    ['firstPublishYear=2024', 'first_publish_year:2024'],
+    ['author=tolkien', '(author:"tolkien")'],
+    [
+      'sortBy=trending&language=eng',
+      'language:eng AND trending_score_hourly_sum:[1 TO *]',
+    ],
+    ['', '*:*'],
+  ]) {
+    it(`omits the wildcard when book discovery has real clauses: ${filters || 'unfiltered fallback'}`, async () => {
+      const searchBooksMock = mock.method(
+        OpenLibraryAPI.prototype,
+        'searchBooks',
+        async ({ query }: { query: string }) => {
+          assert.strictEqual(query, expected);
+          return {
+            numFound: 1,
+            start: 0,
+            docs: [{ key: '/works/OL-query-shape', title: 'Query Shape Book' }],
+          };
+        }
+      );
+      const agent = await login();
+      const res = await agent.get(
+        `/discover/books${filters ? '?' + filters : ''}`
+      );
+      assert.strictEqual(res.status, 200);
+      assert.ok(searchBooksMock.mock.callCount() > 0);
+    });
+  }
+
   it('requests and returns Open Library trending scores for book discovery', async () => {
     const searchBooksMock = mock.method(
       OpenLibraryAPI.prototype,
       'searchBooks',
       async ({ query, sort }: { query: string; sort?: string }) => {
-        assert.strictEqual(query, '*:* AND trending_score_hourly_sum:[1 TO *]');
+        assert.strictEqual(query, 'trending_score_hourly_sum:[1 TO *]');
         assert.strictEqual(sort, 'trending');
 
         return {

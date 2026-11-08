@@ -4074,7 +4074,7 @@ discoverRoutes.get('/books', async (req, res) => {
       ? toFieldedBooleanAndQuery(searchQuery, ['title', 'author', 'subject'])
       : hasSubjectFilter
         ? `subject:${subjectQuery}`
-        : '*:*',
+        : '',
   ];
 
   if (hasSearchQuery && hasSubjectFilter) {
@@ -4093,7 +4093,9 @@ discoverRoutes.get('/books', async (req, res) => {
     queryParts.push(`first_publish_year:${firstPublishYear}`);
   }
 
-  const query = queryParts.join(' AND ');
+  // A match-all prefix combined with real clauses is much more expensive for
+  // Open Library. Keep it only for an otherwise unfiltered catalog request.
+  const query = queryParts.filter(Boolean).join(' AND ') || '*:*';
   const needsLocalFiltering =
     hasSearchQuery ||
     parsedRatingNumber !== undefined ||
