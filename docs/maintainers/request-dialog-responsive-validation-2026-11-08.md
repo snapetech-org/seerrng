@@ -99,6 +99,16 @@ navigations per route instead of 30; all width assertions remain unchanged.
 Exact-head CI and published-artifact qualification remain pending. This record
 does not claim a published v3.72.25 artifact, exhaustive historical issue
 completion or household-provider acquisition.
+
+The subsequent `51f03737c` full CI completed the browser, build, Vitest and tooling
+checks, but its native suite caught three stale source-contract checks: two still
+named the old single-role selector, and the standalone example embedded the old
+Orig stylesheet. The assertions now target the shared combined selector without
+removing their row/span or negative checks. The generated example is refreshed
+from its production source. All 26 detail-row/profile checks pass; matching
+390/1440px baseline/candidate example renders are pixel-identical. This corrects
+test/example synchronization, not application styling. The later PR619 viewer
+repair and final combined CI remain separate qualification steps.
 Evidence is retained in the November 7 task artifact directory under
 `request-grid-final-qualified*`, `request-grid-final-*`,
 `request-grid-owner-*`, `summary-pairs-*`, `request-responsive-*`, and

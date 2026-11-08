@@ -99,7 +99,11 @@ const verifyNativeRequestRows = (source, stylesheet) => {
     ['.card-table dt', 'margin', '0'],
     ['.card-table dd', 'min-height', 'var(--detail-row-height)'],
     [".card-table-value[data-wrap='true']", 'white-space', 'normal'],
-    ['.card-table.detail-paired-columns > dd:nth-of-type(4)', 'grid-row', '4'],
+    [
+      ':is(.card-table, .media-detail-rows).detail-paired-columns > dd:nth-of-type(4)',
+      'grid-row',
+      '4',
+    ],
   ])
     assert.equal(
       contract.declaration(selector, property),
@@ -189,8 +193,10 @@ test('media summaries retain shared paired tables and fourth-row genres across m
       const rows = [];
       postcss.parse(css).walkRules((rule) => {
         if (
-          !rule.selectors.includes(
-            '.card-table.detail-paired-columns > dd:nth-of-type(4)'
+          !rule.selectors.some(
+            (selector) =>
+              selector.replace(/\s+/g, ' ').trim() ===
+              ':is(.card-table, .media-detail-rows).detail-paired-columns > dd:nth-of-type(4)'
           )
         )
           return;

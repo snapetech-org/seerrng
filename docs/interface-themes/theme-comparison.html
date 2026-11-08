@@ -1869,44 +1869,6 @@
   max-height: 186px;
 }
 
-/* Narrow source dialogs keep metadata in the same stacked arrangement at every viewport. */
-:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
-  .request-modal-site-surface
-  .detail-three-column-grid {
-  grid-template-columns: minmax(0, 1fr);
-}
-:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
-  .request-modal-site-surface
-  .detail-paired-column-span {
-  display: block;
-  grid-column: auto;
-}
-:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
-  .request-modal-site-surface
-  .card-table {
-  grid-template-columns: max-content minmax(0, 1fr);
-}
-:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
-  .request-modal-site-surface
-  .detail-paired-columns
-  > :is(dt, dd) {
-  grid-column: auto;
-  grid-row: auto;
-}
-:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
-  .request-modal-site-surface
-  .detail-paired-columns
-  > .card-table {
-  grid-column: 1 / -1;
-  grid-row: auto;
-}
-:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
-  .request-modal-site-surface
-  .media-detail-column-divider {
-  grid-column: auto;
-  border-inline-start: 0;
-  padding-inline-start: 0;
-}
 :is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
   .request-modal-site-surface
   .card-table-value {
