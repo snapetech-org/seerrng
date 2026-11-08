@@ -62,6 +62,9 @@ jobs:
           "$ANDROID_HOME/emulator/emulator" -list-avds | grep -Fxq 'seerrng-api36'
           echo "$ANDROID_HOME/emulator" >> "$GITHUB_PATH"
 
+      - name: Prepare pinned Gradle distribution
+        uses: ./.github/actions/setup-gradle-distribution
+
       - name: Enable KVM for Android emulator
         run: |
           if [[ ! -e /dev/kvm ]]; then
@@ -181,6 +184,9 @@ jobs:
           test -f "$ANDROID_AVD_HOME/seerrng-api36.ini"
           "$ANDROID_HOME/emulator/emulator" -list-avds | grep -Fxq 'seerrng-api36'
           echo "$ANDROID_HOME/emulator" >> "$GITHUB_PATH"
+
+      - name: Prepare pinned Gradle distribution
+        uses: ./.github/actions/setup-gradle-distribution
 
       - name: Enable KVM for Android emulator
         run: |

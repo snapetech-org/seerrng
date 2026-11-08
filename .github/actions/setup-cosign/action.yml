@@ -1,0 +1,31 @@
+name: Set up verified Cosign
+description: Install the existing Cosign version with pinned bytes and mandatory publisher verification.
+runs:
+  using: composite
+  steps:
+    - name: Install and verify Cosign
+      shell: bash
+      env:
+        GH_TOKEN: ${{ github.token }}
+      run: |
+        set -euo pipefail
+        if [[ "$RUNNER_OS" != Linux || "$RUNNER_ARCH" != X64 ]]; then
+          echo 'This installer requires Linux x64.' >&2
+          exit 1
+        fi
+        root="$RUNNER_TEMP/cosign-3.0.6"
+        downloader="$GITHUB_ACTION_PATH/../setup-gh-cli/download-release-asset.py"
+        python3 "$downloader" --repository sigstore/cosign --tag v3.0.6 \
+          --asset cosign-linux-amd64 --asset-id 390331694 \
+          --sha256 c956e5dfcac53d52bcf058360d579472f0c1d2d9b69f55209e256fe7783f4c74 \
+          --output "$root/cosign"
+        python3 "$downloader" --repository sigstore/cosign --tag v3.0.6 \
+          --asset cosign-linux-amd64.sigstore.json --asset-id 390332772 \
+          --sha256 b3a04913f3a3f4a38e4a7a42b8d590834b8791de99ddeaad66c608b6aa8e02a4 \
+          --output "$root/cosign.sigstore.json"
+        chmod 0755 "$root/cosign"
+        "$root/cosign" verify-blob --bundle "$root/cosign.sigstore.json" \
+          --certificate-identity keyless@projectsigstore.iam.gserviceaccount.com \
+          --certificate-oidc-issuer https://accounts.google.com "$root/cosign"
+        "$root/cosign" version
+        printf '%s\n' "$root" >> "$GITHUB_PATH"

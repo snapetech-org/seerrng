@@ -551,7 +551,7 @@ jobs:
     name: Verified release-tool bootstrap
     if: >-
       github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main' &&
-      inputs.pr_number == '' && inputs.action == 'contracts'
+      inputs.pr_number == '' && (inputs.action == 'contracts' || inputs.action == 'ci')
     runs-on: ubuntu-24.04
     timeout-minutes: 10
     permissions:
@@ -567,6 +567,23 @@ jobs:
         run: python3 -m unittest discover -s .github/actions/setup-gh-cli -p 'test_download_release_asset.py'
       - name: Validate pinned release CLI installer
         uses: ./.github/actions/setup-gh-cli
+      - name: Validate pinned image scanner installer
+        uses: ./.github/actions/setup-trivy
+      - name: Validate verified signing tool installer
+        uses: ./.github/actions/setup-cosign
+      - name: Set up Java for Gradle bootstrap validation
+        uses: actions/setup-java@b843ebf9b913146b38da2eaa7aeddf76074ae1ad # v6.1.0
+        with:
+          distribution: temurin
+          java-version: '17'
+      - name: Validate pinned Gradle distribution
+        uses: ./.github/actions/setup-gradle-distribution
+      - name: Validate Gradle wrapper and its transport guards
+        env:
+          PYTHONDONTWRITEBYTECODE: '1'
+        run: |
+          ./android/gradlew --no-daemon -p android --version
+          python3 -m unittest discover -s .github/actions/setup-gradle-distribution -p 'test_configure_wrapper.py'
 
   helm:
     if: >-
@@ -899,9 +916,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Install Trivy
-        uses: aquasecurity/setup-trivy@81e514348e19b6112ce2a7e3ecbafe19c1e1f567 # v0.3.1
-        with:
-          version: v0.74.0
+        uses: ./.github/actions/setup-trivy
 
       - name: Run Trivy image scan
         env:

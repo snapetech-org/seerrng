@@ -537,8 +537,14 @@ test('GitHub container vulnerability scans use an available pinned Trivy release
       path.join(workflowDirectory, workflowName),
       'utf8'
     );
-    assert.match(workflowText, /aquasecurity\/setup-trivy@/u);
-    assert.match(workflowText, /version: v0\.74\.0/u);
+    assert.match(workflowText, /uses: \.\/\.github\/actions\/setup-trivy/u);
+    assert.match(
+      fs.readFileSync(
+        path.join(workflowDirectory, '../actions/setup-trivy/action.yml'),
+        'utf8'
+      ),
+      /--tag v0\.74\.0/u
+    );
     assert.doesNotMatch(workflowText, /version: 0\.58\.2/u);
     assert.match(workflowText, /--exit-code 1/u);
     assert.match(workflowText, /--severity HIGH,CRITICAL/u);

@@ -1,0 +1,23 @@
+name: Set up verified Gradle distribution
+description: Use the wrapper-pinned Gradle bytes through official GitHub release transport.
+runs:
+  using: composite
+  steps:
+    - name: Prepare verified Gradle wrapper distribution
+      shell: bash
+      env:
+        GH_TOKEN: ${{ github.token }}
+      run: |
+        set -euo pipefail
+        if [[ "$RUNNER_OS" != Linux || "$RUNNER_ARCH" != X64 ]]; then
+          echo 'This installer requires Linux x64.' >&2
+          exit 1
+        fi
+        archive="$RUNNER_TEMP/gradle-9.6.0-bin.zip"
+        python3 "$GITHUB_ACTION_PATH/../setup-gh-cli/download-release-asset.py" \
+          --repository gradle/gradle-distributions --tag v9.6.0 \
+          --asset gradle-9.6.0-bin.zip --asset-id 451669088 \
+          --sha256 bbaeb2fef8710818cf0e261201dab964c572f92b942812df0c3620d62a529a01 \
+          --output "$archive"
+        python3 "$GITHUB_ACTION_PATH/configure-wrapper.py" \
+          android/gradle/wrapper/gradle-wrapper.properties "$archive"

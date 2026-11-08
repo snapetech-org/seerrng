@@ -1,0 +1,24 @@
+name: Set up pinned Trivy
+description: Install the existing Linux x64 scanner with a verified official API fallback.
+runs:
+  using: composite
+  steps:
+    - name: Install verified Trivy
+      shell: bash
+      env:
+        GH_TOKEN: ${{ github.token }}
+      run: |
+        set -euo pipefail
+        if [[ "$RUNNER_OS" != Linux || "$RUNNER_ARCH" != X64 ]]; then
+          echo 'This installer requires Linux x64.' >&2
+          exit 1
+        fi
+        root="$RUNNER_TEMP/trivy-0.74.0"
+        python3 "$GITHUB_ACTION_PATH/../setup-gh-cli/download-release-asset.py" \
+          --repository aquasecurity/trivy --tag v0.74.0 \
+          --asset trivy_0.74.0_Linux-64bit.tar.gz --asset-id 514339431 \
+          --sha256 2ae6fe3ee734b7fdf11335663e18c75ea12dccc76062f09f164a3b0f8be4371a \
+          --output "$root/trivy.tar.gz" --extract-to "$root/bin"
+        test -x "$root/bin/trivy"
+        "$root/bin/trivy" --version
+        printf '%s\n' "$root/bin" >> "$GITHUB_PATH"

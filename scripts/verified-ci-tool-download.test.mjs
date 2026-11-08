@@ -103,3 +103,75 @@ test('focused contracts exercise all repaired bootstrappers on their existing ru
     )
   );
 });
+
+test('release bootstrappers preserve scanner, signing identity and wrapper checksum', () => {
+  const scanner = parse(read('.github/actions/setup-trivy/action.yml')).runs
+    .steps[0].run;
+  assert.match(scanner, /--tag v0\.74\.0/);
+  assert.match(
+    scanner,
+    /2ae6fe3ee734b7fdf11335663e18c75ea12dccc76062f09f164a3b0f8be4371a/
+  );
+  const signing = parse(read('.github/actions/setup-cosign/action.yml')).runs
+    .steps[0].run;
+  assert.match(signing, /--tag v3\.0\.6/);
+  assert.match(signing, /cosign" verify-blob/);
+  assert.match(
+    signing,
+    /--certificate-identity keyless@projectsigstore\.iam\.gserviceaccount\.com/
+  );
+  assert.match(
+    signing,
+    /--certificate-oidc-issuer https:\/\/accounts\.google\.com/
+  );
+  assert.doesNotMatch(signing, /insecure|ignore-sct|continue-on-error/);
+  const gradle = parse(
+    read('.github/actions/setup-gradle-distribution/action.yml')
+  ).runs.steps[0].run;
+  assert.match(gradle, /--tag v9\.6\.0/);
+  assert.match(
+    gradle,
+    /bbaeb2fef8710818cf0e261201dab964c572f92b942812df0c3620d62a529a01/
+  );
+  const assets = parse(read('.github/workflows/release-assets.yml'));
+  assert.ok(
+    assets.jobs['build-android'].steps.some(
+      (step) => step.uses === './.github/actions/setup-gradle-distribution'
+    )
+  );
+  const ci = parse(read('.github/workflows/ci.yml')).jobs[
+    'tool-bootstrap-contract'
+  ];
+  for (const action of [
+    'setup-trivy',
+    'setup-cosign',
+    'setup-gradle-distribution',
+  ]) {
+    assert.ok(
+      ci.steps.some((step) => step.uses === './.github/actions/' + action)
+    );
+  }
+  assert.match(ci.if, /inputs.action == 'ci'/);
+});
+
+test('Gradle transport rejects tampered archives, wrapper pins and escaping paths', () => {
+  if (process.platform !== 'linux') return;
+  execFileSync(
+    'python3',
+    [
+      '-m',
+      'unittest',
+      'discover',
+      '-s',
+      '.github/actions/setup-gradle-distribution',
+      '-p',
+      'test_configure_wrapper.py',
+    ],
+    {
+      cwd: root,
+      env: { ...process.env, PYTHONDONTWRITEBYTECODE: '1' },
+      timeout: 30000,
+      stdio: 'pipe',
+    }
+  );
+});
