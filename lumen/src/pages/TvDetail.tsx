@@ -10,7 +10,7 @@ import {
   type TitleResult,
   type TvDetails,
 } from '../api';
-import { useMediaServerName } from '../auth';
+import { useAuth, useMediaServerName } from '../auth';
 import {
   Rail,
   Section,
@@ -21,6 +21,7 @@ import {
 import {
   ActionBar,
   AdvancedOptions,
+  canRequest4k,
   DetailTop,
   Facts,
   fmtRun,
@@ -49,6 +50,7 @@ export default function TvDetail() {
   const { data: t, error, reload } = useApi<TvDetails>(`/tv/${id}`);
   const like = useApi<Paged<TitleResult>>(`/tv/${id}/recommendations`).data;
   const pub = usePublicSettings();
+  const { user } = useAuth();
   const { prefs } = usePrefs();
   const toast = useToast();
   const [sel, setSel] = useState<Set<number>>(new Set());
@@ -226,7 +228,14 @@ export default function TvDetail() {
           )}
         </div>
         {missing.length > 0 && (
-          <AdvancedOptions kind="tv" is4k={false} onChange={onOpts} />
+          <AdvancedOptions
+            kind="tv"
+            is4k={false}
+            allow4k={
+              !!pub?.series4kEnabled && canRequest4k(user?.permissions, 'tv')
+            }
+            onChange={onOpts}
+          />
         )}
         <div className="dcols">
           <div style={{ display: 'grid', gap: 22 }}>

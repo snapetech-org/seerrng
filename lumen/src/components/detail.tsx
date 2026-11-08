@@ -161,6 +161,9 @@ interface ServerDetail {
 // who may pick the Radarr/Sonarr server, quality and folder for a request
 export const canChooseRequestOptions = (permissions?: number) =>
   ((permissions ?? 0) & MANAGE) !== 0;
+// who may request in 4K: Admin, Request 4K, or Request 4K Movies / Request 4K Series
+export const canRequest4k = (permissions: number | undefined, kind: 'movie' | 'tv') =>
+  ((permissions ?? 0) & (2 | 1024 | (kind === 'movie' ? 2048 : 4096))) !== 0;
 // who may make a request in someone else's name: SeerrNG wants Manage Users and Manage
 // Requests together (or Admin)
 export const canRequestAs = (permissions?: number) => {
@@ -179,9 +182,12 @@ export function AdvancedOptions({
   inline = false,
   onReady,
   initial,
+  allow4k = false,
 }: {
   kind: 'movie' | 'tv';
   is4k: boolean;
+  // also list the 4K servers (for people who may request 4K); picking one makes it a 4K request
+  allow4k?: boolean;
   onChange: (o: RequestOptions) => void;
   // changing an existing request: start from its server, quality, folder and requester
   initial?: RequestOptions;
@@ -210,16 +216,19 @@ export function AdvancedOptions({
     if (!open || servers) return;
     api<Server[]>(`/service/${svc}`)
       .then((s) => {
-        const mine = s.filter((x) => x.is4k === is4k);
+        const mine = allow4k
+          ? [...s].sort((a, b) => Number(a.is4k) - Number(b.is4k))
+          : s.filter((x) => x.is4k === is4k);
         setServers(mine);
         const d =
           mine.find((x) => x.id === initial?.serverId) ||
-          mine.find((x) => x.isDefault) ||
+          mine.find((x) => x.isDefault && x.is4k === is4k) ||
+          mine.find((x) => x.is4k === is4k) ||
           mine[0];
         if (d) setO((x) => ({ ...x, serverId: d.id }));
       })
       .catch((e) => setErr(e.message));
-  }, [open, servers, svc, is4k]);
+  }, [open, servers, svc, is4k, allow4k]);
   useEffect(() => {
     if (o.serverId == null) return;
     let live = true;
@@ -261,19 +270,21 @@ export function AdvancedOptions({
       live = false;
     };
   }, [o.serverId, svc]);
-  useEffect(
-    () =>
-      onChange(
-        open
-          ? // a new request is the admin's own unless someone else is picked; a request being
-            // changed always says whose it is (picking "Me" moves it to the admin)
-            asUser && (asUser !== user?.id || initial?.userId !== undefined)
-            ? { ...o, userId: asUser }
-            : o
-          : {}
-      ),
-    [o, open, asUser, user?.id, initial?.userId, onChange]
-  );
+  // with 4K servers listed, the chosen server decides whether this is a 4K request
+  const picked4k = allow4k
+    ? servers?.find((x) => x.id === o.serverId)?.is4k
+    : undefined;
+  useEffect(() => {
+    if (!open) return onChange({});
+    const base = picked4k === undefined ? o : { ...o, is4k: picked4k };
+    onChange(
+      // a new request is the admin's own unless someone else is picked; a request being
+      // changed always says whose it is (picking "Me" moves it to the admin)
+      asUser && (asUser !== user?.id || initial?.userId !== undefined)
+        ? { ...base, userId: asUser }
+        : base
+    );
+  }, [o, open, asUser, user?.id, initial?.userId, onChange, picked4k]);
   useEffect(() => {
     onReady?.(
       !!detail &&
@@ -318,6 +329,7 @@ export function AdvancedOptions({
               {servers.map((s) => (
                 <option key={s.id} value={s.id}>
                   {s.name}
+                  {allow4k && s.is4k && !/4k/i.test(s.name) ? ' · 4K' : ''}
                   {s.isDefault ? ' (default)' : ''}
                 </option>
               ))}

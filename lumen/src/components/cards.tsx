@@ -173,9 +173,11 @@ export function TitleCard({ it, meta }: { it: TitleResult; meta?: string }) {
       toast(e instanceof Error ? e.message : 'Request failed');
     }
   };
-  const quick = useQuickRequest(it, go, () => {
+  const quick = useQuickRequest(it, go, (is4k) => {
     markRequested();
-    toast(`Requested ${titleOf(it)}${tv ? ' · entire series' : ''}`);
+    toast(
+      `Requested ${titleOf(it)}${is4k ? ' in 4K' : ''}${tv ? ' · entire series' : ''}`
+    );
   });
   let qb: ReactNode;
   const plex = plexUrl(it.mediaInfo);
@@ -394,9 +396,11 @@ export function FeatCard({
       toast(e instanceof Error ? e.message : 'Request failed');
     }
   };
-  const quick = useQuickRequest(it, go, () => {
+  const quick = useQuickRequest(it, go, (is4k) => {
     setDone(true);
-    toast(`Requested ${titleOf(it)}${tv ? ' · entire series' : ''}`);
+    toast(
+      `Requested ${titleOf(it)}${is4k ? ' in 4K' : ''}${tv ? ' · entire series' : ''}`
+    );
   });
   return (
     <div className="feat">

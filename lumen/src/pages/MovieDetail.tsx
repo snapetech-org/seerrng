@@ -21,6 +21,7 @@ import {
 import {
   ActionBar,
   AdvancedOptions,
+  canRequest4k,
   DetailTop,
   Facts,
   fmtRun,
@@ -43,8 +44,7 @@ export default function MovieDetail() {
   const like = useApi<Paged<TitleResult>>(`/movie/${id}/recommendations`).data;
   const pub = usePublicSettings();
   const { user } = useAuth();
-  // ADMIN | REQUEST_4K | REQUEST_4K_MOVIE
-  const can4k = !!user && (user.permissions & (2 | 1024 | 2048)) !== 0;
+  const can4k = !!user && canRequest4k(user.permissions, 'movie');
   const toast = useToast();
   const [opts, setOpts] = useState<RequestOptions>({});
   const [busy, setBusy] = useState(false);
@@ -73,14 +73,18 @@ export default function MovieDetail() {
   // a 4K copy is in hand or on its way (requested, downloading, partly or fully there)
   const has4k =
     !!s4k && s4k >= MediaStatus.PENDING && s4k <= MediaStatus.AVAILABLE;
-  const request = async (is4k = false) => {
+  const request = async (force4k = false) => {
+    // Advanced options may have picked a 4K server; the Request 4K button always means 4K
+    const is4k = force4k || !!opts.is4k;
     setBusy(true);
     try {
-      // Advanced options pick the HD server's quality and folder, so a 4K request keeps only
-      // who it's for and lets SeerrNG use the 4K server's own defaults
+      // the Request 4K button ignores options chosen for an HD server and keeps only who
+      // it's for, so SeerrNG uses the 4K server's own defaults
       await requestMovie(
         m.id,
-        is4k ? { is4k, userId: opts.userId } : { ...opts, is4k }
+        force4k && !opts.is4k
+          ? { is4k: true, userId: opts.userId }
+          : { ...opts, is4k }
       );
       toast(`Requested ${m.title}${is4k ? ' in 4K' : ''}`);
       dropCache(`/movie/${m.id}`);
@@ -186,7 +190,14 @@ export default function MovieDetail() {
           {fourK}
           {trailerBtn}
         </div>
-        {!s && <AdvancedOptions kind="movie" is4k={false} onChange={onOpts} />}
+        {!s && (
+          <AdvancedOptions
+            kind="movie"
+            is4k={false}
+            allow4k={!!pub?.movie4kEnabled && can4k && !has4k}
+            onChange={onOpts}
+          />
+        )}
         <div className="dcols">
           <div style={{ display: 'grid', gap: 22 }}>
             {m.tagline && <p className="tagline">{m.tagline}</p>}

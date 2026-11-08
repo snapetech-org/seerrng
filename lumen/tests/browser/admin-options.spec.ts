@@ -69,6 +69,7 @@ async function fixtures(
       json = [
         { id: 0, name: 'Radarr HD', is4k: false, isDefault: true },
         { id: 1, name: 'Radarr Kids', is4k: false, isDefault: false },
+        { id: 2, name: 'Radarr UHD', is4k: true, isDefault: true },
       ];
     else if (/^\/service\/radarr\/\d$/.test(path))
       json = {
@@ -1335,6 +1336,119 @@ test('Request 4K is offered before the HD copy exists, and goes to the 4K server
     page.getByRole('button', { name: 'Request 4K' }).filter({ visible: true })
   ).toHaveCount(0);
   await expect(page.locator('aside')).toContainText('Requested');
+});
+
+const with4k = (page: Page) =>
+  page.route('**/api/v1/settings/public', (route) =>
+    route.fulfill({
+      json: {
+        applicationTitle: 'Seerr',
+        mediaServerType: 2,
+        mediaServerLogin: true,
+        localLogin: true,
+        enabledMediaCategories: {},
+        movie4kEnabled: true,
+      },
+    })
+  );
+
+test('poster request asks 1080p or 4K for people who may request 4K', async ({
+  page,
+}) => {
+  // Request + Request 4K, no Manage Requests: no server choices, just the quality
+  const { posts } = await fixtures(page, { permissions: 32 | 1024 });
+  await with4k(page);
+  await page.goto('/');
+  await quickRequest(page, 'Fresh Pick');
+  const sheet = page.getByRole('dialog', { name: 'Request Fresh Pick' });
+  const quality = sheet.getByRole('group', { name: 'Quality' });
+  await expect(quality.getByRole('button', { name: '1080p' })).toHaveAttribute(
+    'aria-pressed',
+    'true'
+  );
+  await expect(sheet.getByLabel('Server')).toHaveCount(0);
+  await quality.getByRole('button', { name: '4K' }).click();
+  await sheet.getByRole('button', { name: 'Request in 4K' }).click();
+  await expect
+    .poll(() => posts.filter((p) => p.path === '/request').length)
+    .toBe(1);
+  const body = posts.find((p) => p.path === '/request')!.body;
+  expect(body).toMatchObject({ mediaType: 'movie', mediaId: 302, is4k: true });
+  expect(body.serverId).toBeUndefined();
+  await expect(sheet).toHaveCount(0);
+});
+
+test('poster request stays one tap for people without 4K', async ({ page }) => {
+  const { posts } = await fixtures(page, { permissions: 32 });
+  await with4k(page);
+  await page.goto('/');
+  await quickRequest(page, 'Fresh Pick');
+  await expect
+    .poll(() => posts.filter((p) => p.path === '/request').length)
+    .toBe(1);
+  const body = posts.find((p) => p.path === '/request')!.body;
+  expect(body).toMatchObject({ mediaId: 302 });
+  expect(body.is4k).toBeFalsy();
+  await expect(page.getByRole('dialog')).toHaveCount(0);
+});
+
+test('an admin choosing 4K on a poster gets the 4K servers', async ({
+  page,
+}) => {
+  const { posts } = await fixtures(page, { permissions: 2 });
+  await with4k(page);
+  await page.goto('/');
+  await quickRequest(page, 'Fresh Pick');
+  const sheet = page.getByRole('dialog', { name: 'Request Fresh Pick' });
+  await expect(sheet.getByLabel('Server')).toContainText('Radarr HD');
+  await expect(sheet.getByLabel('Server')).not.toContainText('Radarr UHD');
+  await sheet
+    .getByRole('group', { name: 'Quality' })
+    .getByRole('button', { name: '4K' })
+    .click();
+  await expect(sheet.getByLabel('Server')).toContainText('Radarr UHD');
+  await expect(sheet.getByLabel('Server')).not.toContainText('Radarr HD');
+  await expect(sheet.getByLabel('Folder')).toBeVisible();
+  await sheet.getByRole('button', { name: 'Request in 4K' }).click();
+  await expect
+    .poll(() => posts.filter((p) => p.path === '/request').length)
+    .toBe(1);
+  expect(posts.find((p) => p.path === '/request')!.body).toMatchObject({
+    is4k: true,
+    serverId: 2,
+  });
+});
+
+test('Advanced options on a movie list the 4K server, and picking it requests 4K', async ({
+  page,
+}) => {
+  const { posts } = await fixtures(page, { permissions: 2 });
+  await with4k(page);
+  await page.route('**/api/v1/movie/302', (route) =>
+    route.fulfill({
+      json: { ...details301, id: 302, title: 'Fresh Pick', mediaInfo: undefined },
+    })
+  );
+  await page.route('**/api/v1/movie/302/recommendations', (route) =>
+    route.fulfill({ json: paged([]) })
+  );
+  await page.goto('/movie/302');
+  await page.getByText('Advanced (admins)').click();
+  const server = page.getByLabel('Server');
+  await expect(server).toContainText('Radarr UHD');
+  await expect(server.locator('option[value="2"]')).toHaveText(
+    'Radarr UHD · 4K (default)'
+  );
+  await server.selectOption('2');
+  await expect(page.getByLabel('Folder')).toBeVisible();
+  await page.getByRole('button', { name: 'Request', exact: true }).click();
+  await expect
+    .poll(() => posts.filter((p) => p.path === '/request').length)
+    .toBe(1);
+  expect(posts.find((p) => p.path === '/request')!.body).toMatchObject({
+    is4k: true,
+    serverId: 2,
+  });
 });
 
 test('Request 4K stays hidden from people without 4K permission', async ({

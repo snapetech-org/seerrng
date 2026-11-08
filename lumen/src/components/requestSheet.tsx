@@ -9,8 +9,13 @@ import {
   type TitleResult,
 } from '../api';
 import { useAuth } from '../auth';
+import { usePublicSettings } from '../hooks';
 import { usePrefs } from '../settings';
-import { AdvancedOptions, canChooseRequestOptions } from './detail';
+import {
+  AdvancedOptions,
+  canChooseRequestOptions,
+  canRequest4k,
+} from './detail';
 
 // Poster quick requests are one click for most people. People who may choose the
 // Radarr/Sonarr server, quality and folder get this sheet first (unless the
@@ -19,6 +24,16 @@ export function useAsksRequestOptions() {
   const { user } = useAuth();
   const { prefs } = usePrefs();
   return prefs.requestOptions && canChooseRequestOptions(user?.permissions);
+}
+
+// People who may request in 4K pick 1080p or 4K first (when the server has 4K for that kind).
+export function useOffers4k(kind: 'movie' | 'tv') {
+  const { user } = useAuth();
+  const pub = usePublicSettings();
+  return (
+    !!(kind === 'movie' ? pub?.movie4kEnabled : pub?.series4kEnabled) &&
+    canRequest4k(user?.permissions, kind)
+  );
 }
 
 // a just-closed sheet is about to undo its history step (one sheet is open at a time)
@@ -69,24 +84,31 @@ export function RequestSheet({
 }: {
   it: TitleResult;
   onClose: () => void;
-  onDone: () => void; // request sent
+  onDone: (is4k: boolean) => void; // request sent
 }) {
   const tv = it.mediaType === 'tv';
+  const asks = useAsksRequestOptions();
+  const offers4k = useOffers4k(tv ? 'tv' : 'movie');
+  const [fourK, setFourK] = useState(false);
   const [opts, setOpts] = useState<RequestOptions>({});
   const [busy, setBusy] = useState(false);
   const [ready, setReady] = useState(false);
   const [err, setErr] = useState('');
   const onOpts = useCallback((o: RequestOptions) => setOpts(o), []);
   useBackCloses(onClose);
+  // without server choices there's nothing to wait for
+  const canSend = asks ? ready : true;
   const send = async () => {
-    if (busy || !ready) return;
+    if (busy || !canSend) return;
     setBusy(true);
     setErr('');
+    const base = asks ? opts : {};
+    const body = offers4k && fourK ? { ...base, is4k: true } : base;
     try {
       await (tv
-        ? requestSeries(it.id, 'all', opts)
-        : requestMovie(it.id, opts));
-      onDone();
+        ? requestSeries(it.id, 'all', body)
+        : requestMovie(it.id, body));
+      onDone(!!body.is4k);
     } catch (e) {
       setErr(e instanceof Error ? e.message : 'Request failed');
       setBusy(false);
@@ -110,17 +132,44 @@ export function RequestSheet({
             <div>
               <h3>Request {titleOf(it)}</h3>
               <span className="sub">
-                {tv ? 'Entire series · ' : ''}Choose where it goes
+                {tv ? 'Entire series · ' : ''}
+                {asks ? 'Choose where it goes' : 'Choose the quality'}
               </span>
             </div>
           </div>
-          <AdvancedOptions
-            kind={tv ? 'tv' : 'movie'}
-            is4k={false}
-            onChange={onOpts}
-            inline
-            onReady={setReady}
-          />
+          {offers4k && (
+            <div className="seg" role="group" aria-label="Quality">
+              {(
+                [
+                  [false, '1080p'],
+                  [true, '4K'],
+                ] as [boolean, string][]
+              ).map(([v, t]) => (
+                <button
+                  key={t}
+                  type="button"
+                  aria-pressed={fourK === v}
+                  onClick={() => {
+                    setFourK(v);
+                    setReady(false);
+                  }}
+                >
+                  {t}
+                </button>
+              ))}
+            </div>
+          )}
+          {asks && (
+            // keyed by quality: the 4K choice lists the 4K servers with their own defaults
+            <AdvancedOptions
+              key={fourK ? '4k' : 'hd'}
+              kind={tv ? 'tv' : 'movie'}
+              is4k={offers4k && fourK}
+              onChange={onOpts}
+              inline
+              onReady={setReady}
+            />
+          )}
           {err && (
             <p className="note" role="alert">
               {err}
@@ -129,10 +178,14 @@ export function RequestSheet({
           <div className="pk-foot">
             <button
               className="btn btn-primary"
-              disabled={busy || !ready}
+              disabled={busy || !canSend}
               onClick={send}
             >
-              {busy ? 'Requesting…' : 'Request'}
+              {busy
+                ? 'Requesting…'
+                : offers4k && fourK
+                  ? 'Request in 4K'
+                  : 'Request'}
             </button>
             <button className="btn btn-tonal" onClick={onClose}>
               Cancel
@@ -145,14 +198,16 @@ export function RequestSheet({
   );
 }
 
-// Wraps a card's one-click request: people who may choose options get the sheet,
-// everyone else keeps the one-click request. `done` runs after the sheet's request.
+// Wraps a card's one-click request: people who may choose options or request 4K get the
+// sheet, everyone else keeps the one-click request. `done` runs after the sheet's request.
 export function useQuickRequest(
   it: TitleResult,
   oneClick: () => void | Promise<void>,
-  done: () => void
+  done: (is4k: boolean) => void
 ) {
-  const asks = useAsksRequestOptions();
+  const choosesOptions = useAsksRequestOptions();
+  const offers4k = useOffers4k(it.mediaType === 'tv' ? 'tv' : 'movie');
+  const asks = choosesOptions || offers4k;
   const [open, setOpen] = useState(false);
   const close = useCallback(() => setOpen(false), []);
   return {
@@ -164,9 +219,9 @@ export function useQuickRequest(
       <RequestSheet
         it={it}
         onClose={close}
-        onDone={() => {
+        onDone={(is4k) => {
           setOpen(false);
-          done();
+          done(is4k);
         }}
       />
     ) : null,
