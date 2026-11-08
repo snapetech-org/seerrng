@@ -434,7 +434,7 @@ test('unit-test shards use GitHub-hosted runners', () => {
   assert.equal(ciWorkflow.jobs['deploy-main'], undefined);
 });
 
-test('contracts dispatch selects only release-note and Helm validation', () => {
+test('contracts dispatch selects only release, docs and verified-tool validation', () => {
   const workflow = yaml.load(
     fs.readFileSync(
       path.join(rootDirectory, '.github', 'workflows', 'ci.yml'),
@@ -445,7 +445,13 @@ test('contracts dispatch selects only release-note and Helm validation', () => {
     .filter(([, job]) => job.if?.includes("inputs.action == 'contracts'"))
     .map(([name]) => name)
     .sort();
-  assert.deepEqual(selected, ['helm', 'release-notes']);
+  assert.deepEqual(selected, [
+    'docs-links',
+    'helm',
+    'release-notes',
+    'tool-bootstrap-arm64',
+    'tool-bootstrap-contract',
+  ]);
   for (const name of selected) {
     assert.match(workflow.jobs[name].if, /inputs\.pr_number == ''/u);
     assert.match(workflow.jobs[name].if, /github\.ref == 'refs\/heads\/main'/u);

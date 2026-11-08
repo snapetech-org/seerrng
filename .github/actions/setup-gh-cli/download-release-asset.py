@@ -79,11 +79,16 @@ def download_asset(repository, tag, asset, asset_id, sha256, output, opener=None
     opener = opener or urllib.request.build_opener(GitHubRedirects())
     urls = [f"https://github.com/{repository}/releases/download/{tag}/{asset}",
             f"https://api.github.com/repos/{repository}/releases/assets/{asset_id}"]
+    token = os.environ.get("GH_TOKEN") or os.environ.get("GITHUB_TOKEN")
+    if token:
+        # Repository-scoped Actions tokens can be denied another repository's
+        # public asset. A final anonymous read requests exactly the same pinned
+        # public bytes, without widening token permissions or trusting new hosts.
+        urls.append(urls[1])
     for index, url in enumerate(urls):
         headers = {"User-Agent": "SeerrNG-verified-tool-bootstrap", "Accept": "application/octet-stream"}
         req = urllib.request.Request(url, headers=headers)
-        token = os.environ.get("GH_TOKEN") or os.environ.get("GITHUB_TOKEN")
-        if index and token:
+        if index == 1 and token:
             # This header is never attached to the browser URL or redirected hosts.
             req.add_unredirected_header("Authorization", f"Bearer {token}")
         fd, filename = tempfile.mkstemp(prefix=".verified-download-", dir=output.parent)
@@ -107,6 +112,9 @@ def download_asset(repository, tag, asset, asset_id, sha256, output, opener=None
             print(f"Verified {asset} via {'GitHub API' if index else 'release URL'}")
             return
         except (urllib.error.URLError, TimeoutError) as error:
+            if index == 1 and token and getattr(error, "code", None) in (401, 403):
+                print("Repository token cannot read the public asset; trying the same pinned API asset anonymously")
+                continue
             if index:
                 code = getattr(error, "code", "transport")
                 raise RuntimeError(f"GitHub API asset download failed ({code})") from None

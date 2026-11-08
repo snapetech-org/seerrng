@@ -569,6 +569,10 @@ jobs:
         uses: ./.github/actions/setup-gh-cli
       - name: Validate pinned image scanner installer
         uses: ./.github/actions/setup-trivy
+      - name: Validate current Lumen scanner installer
+        uses: ./.github/actions/setup-trivy
+        with:
+          version: latest
       - name: Validate verified signing tool installer
         uses: ./.github/actions/setup-cosign
       - name: Set up Java for Gradle bootstrap validation
@@ -584,6 +588,25 @@ jobs:
         run: |
           ./android/gradlew --no-daemon -p android --version
           python3 -m unittest discover -s .github/actions/setup-gradle-distribution -p 'test_configure_wrapper.py'
+
+  tool-bootstrap-arm64:
+    name: Verified native ARM64 scanner bootstrap
+    if: >-
+      github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main' &&
+      inputs.pr_number == '' && (inputs.action == 'contracts' || inputs.action == 'ci')
+    runs-on: ubuntu-24.04-arm
+    timeout-minutes: 10
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Validate current native ARM64 Lumen scanner
+        uses: ./.github/actions/setup-trivy
+        with:
+          version: latest
 
   helm:
     if: >-

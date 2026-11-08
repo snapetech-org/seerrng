@@ -543,7 +543,7 @@ test('GitHub container vulnerability scans use an available pinned Trivy release
         path.join(workflowDirectory, '../actions/setup-trivy/action.yml'),
         'utf8'
       ),
-      /--tag v0\.74\.0/u
+      /default: v0\.74\.0/u
     );
     assert.doesNotMatch(workflowText, /version: 0\.58\.2/u);
     assert.match(workflowText, /--exit-code 1/u);

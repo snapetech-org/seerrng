@@ -1,5 +1,10 @@
 name: Set up pinned Trivy
-description: Install the existing Linux x64 scanner with a verified official API fallback.
+description: Install an approved native scanner with a verified official API fallback.
+inputs:
+  version:
+    description: Approved scanner version
+    required: false
+    default: v0.74.0
 runs:
   using: composite
   steps:
@@ -7,17 +12,36 @@ runs:
       shell: bash
       env:
         GH_TOKEN: ${{ github.token }}
+        PYTHONDONTWRITEBYTECODE: '1'
+        TRIVY_VERSION: ${{ inputs.version }}
       run: |
         set -euo pipefail
-        if [[ "$RUNNER_OS" != Linux || "$RUNNER_ARCH" != X64 ]]; then
-          echo 'This installer requires Linux x64.' >&2
-          exit 1
+        [[ "$RUNNER_OS" == Linux ]] || { echo 'This installer requires Linux.' >&2; exit 1; }
+        if [[ "$TRIVY_VERSION" == latest ]]; then
+          TRIVY_VERSION="$(python3 "$GITHUB_ACTION_PATH/verify-current.py")"
         fi
-        root="$RUNNER_TEMP/trivy-0.74.0"
+        case "$TRIVY_VERSION:$RUNNER_ARCH" in
+          v0.74.0:X64)
+            asset=trivy_0.74.0_Linux-64bit.tar.gz
+            asset_id=514339431
+            checksum=2ae6fe3ee734b7fdf11335663e18c75ea12dccc76062f09f164a3b0f8be4371a
+            ;;
+          v0.76.2:X64)
+            asset=trivy_0.76.2_Linux-64bit.tar.gz
+            asset_id=713401165
+            checksum=bc0fc726e017b8927a62b2d3531d7a84ee01769daf5c99ed866dced54089fdbf
+            ;;
+          v0.76.2:ARM64)
+            asset=trivy_0.76.2_Linux-ARM64.tar.gz
+            asset_id=713401022
+            checksum=ab9d51f86e6a5fb936f605faff6b593ac51bc378fff4d3e8b9d58358b9c367c3
+            ;;
+          *) echo 'Unsupported pinned Trivy version or native architecture.' >&2; exit 1 ;;
+        esac
+        root="$RUNNER_TEMP/trivy-${TRIVY_VERSION#v}"
         python3 "$GITHUB_ACTION_PATH/../setup-gh-cli/download-release-asset.py" \
-          --repository aquasecurity/trivy --tag v0.74.0 \
-          --asset trivy_0.74.0_Linux-64bit.tar.gz --asset-id 514339431 \
-          --sha256 2ae6fe3ee734b7fdf11335663e18c75ea12dccc76062f09f164a3b0f8be4371a \
+          --repository aquasecurity/trivy --tag "$TRIVY_VERSION" \
+          --asset "$asset" --asset-id "$asset_id" --sha256 "$checksum" \
           --output "$root/trivy.tar.gz" --extract-to "$root/bin"
         test -x "$root/bin/trivy"
         "$root/bin/trivy" --version

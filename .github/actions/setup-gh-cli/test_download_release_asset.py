@@ -80,6 +80,38 @@ class VerifiedAssetTests(unittest.TestCase):
         self.assertEqual(self.output.read_bytes(), b"existing")
         self.assertFalse(list(self.root.glob(".verified-download-*")))
 
+    def test_restricted_repository_token_retries_the_same_public_asset_anonymously(self):
+        for status in (401, 403):
+            with self.subTest(status=status):
+                self.output.unlink(missing_ok=True)
+                opener = Opener(urllib.error.URLError("unavailable"),
+                                urllib.error.HTTPError("https://api.github.com/asset", status, "denied", {}, None),
+                                Response(self.payload))
+                self.download(opener)
+                self.assertEqual(len(opener.calls), 3)
+                self.assertEqual(opener.calls[1].full_url, opener.calls[2].full_url)
+                self.assertIsNotNone(opener.calls[1].get_header("Authorization"))
+                self.assertIsNone(opener.calls[2].get_header("Authorization"))
+                self.assertEqual(self.output.read_bytes(), self.payload)
+
+    def test_api_server_failure_does_not_trigger_anonymous_retry(self):
+        opener = Opener(urllib.error.URLError("unavailable"),
+                        urllib.error.HTTPError("https://api.github.com/asset", 500, "unavailable", {}, None))
+        with self.assertRaisesRegex(RuntimeError, "500"):
+            self.download(opener)
+        self.assertEqual(len(opener.calls), 2)
+        self.assertFalse(self.output.exists())
+
+    def test_anonymous_fallback_must_still_match_the_pinned_checksum(self):
+        opener = Opener(urllib.error.URLError("unavailable"),
+                        urllib.error.HTTPError("https://api.github.com/asset", 403, "denied", {}, None),
+                        Response(b"tampered public bytes"))
+        with self.assertRaisesRegex(ValueError, "SHA-256"):
+            self.download(opener)
+        self.assertEqual(len(opener.calls), 3)
+        self.assertFalse(self.output.exists())
+        self.assertFalse(list(self.root.glob(".verified-download-*")))
+
     def test_oversized_response_is_rejected_before_reading(self):
         opener = Opener(Response(self.payload, {"Content-Length": str(module.MAX_BYTES + 1)}))
         with self.assertRaisesRegex(ValueError, "size limit"):

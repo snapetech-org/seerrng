@@ -107,7 +107,13 @@ test('focused contracts exercise all repaired bootstrappers on their existing ru
 test('release bootstrappers preserve scanner, signing identity and wrapper checksum', () => {
   const scanner = parse(read('.github/actions/setup-trivy/action.yml')).runs
     .steps[0].run;
-  assert.match(scanner, /--tag v0\.74\.0/);
+  assert.match(scanner, /v0\.74\.0:X64/);
+  assert.match(scanner, /v0\.76\.2:ARM64/);
+  for (const workflow of ['lumen.yml', 'lumen-release.yml']) {
+    const source = read('.github/workflows/' + workflow);
+    assert.match(source, /uses: \.\/\.github\/actions\/setup-trivy/);
+    assert.match(source, /version: latest/);
+  }
   assert.match(
     scanner,
     /2ae6fe3ee734b7fdf11335663e18c75ea12dccc76062f09f164a3b0f8be4371a/
@@ -152,6 +158,18 @@ test('release bootstrappers preserve scanner, signing identity and wrapper check
     );
   }
   assert.match(ci.if, /inputs.action == 'ci'/);
+  const arm = parse(read('.github/workflows/ci.yml')).jobs[
+    'tool-bootstrap-arm64'
+  ];
+  assert.equal(arm['runs-on'], 'ubuntu-24.04-arm');
+  assert.deepEqual(arm.permissions, { contents: 'read' });
+  assert.ok(
+    arm.steps.some(
+      (step) =>
+        step.uses === './.github/actions/setup-trivy' &&
+        step.with.version === 'latest'
+    )
+  );
 });
 
 test('Gradle transport rejects tampered archives, wrapper pins and escaping paths', () => {
@@ -166,6 +184,28 @@ test('Gradle transport rejects tampered archives, wrapper pins and escaping path
       '.github/actions/setup-gradle-distribution',
       '-p',
       'test_configure_wrapper.py',
+    ],
+    {
+      cwd: root,
+      env: { ...process.env, PYTHONDONTWRITEBYTECODE: '1' },
+      timeout: 30000,
+      stdio: 'pipe',
+    }
+  );
+});
+
+test('current scanner refuses unreviewed new releases rather than using stale pins', () => {
+  if (process.platform !== 'linux') return;
+  execFileSync(
+    'python3',
+    [
+      '-m',
+      'unittest',
+      'discover',
+      '-s',
+      '.github/actions/setup-trivy',
+      '-p',
+      'test_verify_current.py',
     ],
     {
       cwd: root,

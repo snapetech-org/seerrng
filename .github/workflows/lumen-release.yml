@@ -100,10 +100,9 @@ jobs:
           if tested != packaged:
               raise SystemExit('Packaged filesystem differs from the tested production image')
           PY
-      - uses: aquasecurity/setup-trivy@e07451d2e059ed86c2870430ea286b3a9e0bf241
+      - uses: ./.github/actions/setup-trivy
         with:
           version: latest
-          token: ${{ github.token }}
       - name: Scan exact native release image
         run: >-
           trivy image --config= --ignorefile= --scanners vuln --severity HIGH,CRITICAL
