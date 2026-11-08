@@ -1,5 +1,8 @@
 import { expect, test, type Page } from '@playwright/test';
-import { restoreAdminPresentation } from './helpers/presentation';
+import {
+  openAdminNativeRoute,
+  restoreAdminPresentation,
+} from './helpers/presentation';
 
 test.use({ serviceWorkers: 'block' });
 
@@ -57,7 +60,7 @@ for (const media of [
       const query = new URL(request.url()).searchParams;
       return query.get('sortBy') === 'vote_average.desc';
     });
-    await page.goto(media.path);
+    await openAdminNativeRoute(page, media.path);
     const sourceSort = page.getByRole('combobox', {
       name: 'Sort By',
       exact: true,
@@ -121,7 +124,7 @@ for (const media of [
       })
     );
 
-    await page.goto(media.path);
+    await openAdminNativeRoute(page, media.path);
     await page
       .getByRole('button', { name: /^(Filters|\d+ Active Filters)$/ })
       .click();

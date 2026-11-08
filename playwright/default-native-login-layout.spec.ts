@@ -1,21 +1,21 @@
 import { expect, test } from '@playwright/test';
 
-// Public sign-in uses the default theme before an account preference exists.
-// Geometry is measured from actual upstream Seerr v3.5.1, not a fork snapshot.
+// Public native sign-in now uses the owner-adopted Persius default before an
+// account preference exists. Orig geometry remains a signed-in theme contract.
 for (const width of [390, 1440]) {
-  test(`upstream sign-in geometry and rejected credentials at ${width}px`, async ({
+  test(`default native sign-in geometry and rejected credentials at ${width}px`, async ({
     page,
   }, info) => {
     await page.setViewportSize({ width, height: 900 });
     await page.goto('/login');
     await expect(page.locator('html')).toHaveAttribute(
       'data-interface-theme',
-      'seerrOrig'
+      'persiusNG'
     );
     const email = page.getByTestId('email');
     const password = page.locator('#password');
     await expect(email).toBeVisible();
-    const fieldWidth = width < 640 ? width - 80 : 368;
+    const fieldWidth = width < 640 ? width - 112 : 336;
     const fieldHeight = width < 640 ? 42 : 38;
     for (const field of [email, password]) {
       await expect
@@ -34,8 +34,8 @@ for (const width of [390, 1440]) {
         .toBe(fieldHeight);
     }
     const plex = page.getByTestId('plex-login-button');
-    await expect(plex).toHaveCSS('border-color', 'rgb(204, 123, 25)');
-    await expect(plex.locator('svg')).toHaveCSS('width', '32px');
+    await expect(plex).toHaveCSS('border-color', 'rgba(0, 0, 0, 0)');
+    await expect(plex.locator('svg')).toHaveCSS('width', '16px');
     await page.screenshot({
       path: info.outputPath(`login-${width}.png`),
       fullPage: true,

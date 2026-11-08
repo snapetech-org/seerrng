@@ -41,6 +41,16 @@ Cypress.Commands.add('login', (email, password) => {
           sameSite: 'lax',
           secure: false,
         });
+        // These native layout fixtures exercise the upstream interface. Set its
+        // theme once per session; individual tests may still change it later.
+        cy.request({
+          method: 'POST',
+          url: `/api/v1/user/${response.body.id}/settings/interface-theme`,
+          body: { theme: 'seerrOrig' },
+          headers: { 'X-Forwarded-Proto': 'https' },
+        })
+          .its('status')
+          .should('eq', 200);
       });
     },
     {
@@ -72,4 +82,64 @@ Cypress.Commands.add('loginAsUser', () => {
 Cypress.Commands.add(
   'mockConfiguredMediaAvailability',
   mockConfiguredMediaAvailability
+);
+
+// A native page first hydrates with the public default, then loads the account's
+// saved package. Assertions must observe that settled preference, including
+// tests that intentionally switch away from the upstream fixture.
+Cypress.Commands.overwrite(
+  'visit',
+  (
+    originalVisit,
+    url: string | (Partial<Cypress.VisitOptions> & { url: string }),
+    options?: Partial<Cypress.VisitOptions>
+  ) => {
+    return cy
+      .then(() =>
+        originalVisit(
+          typeof url === 'string' ? { ...options, url } : { ...url, ...options }
+        )
+      )
+      .then((window) =>
+        cy
+          .request({ url: '/api/v1/auth/me', failOnStatusCode: false })
+          .then((response) => {
+            if (response.status !== 200) return window;
+            return cy
+              .get('html')
+              .should(
+                'have.attr',
+                'data-interface-theme',
+                response.body.settings?.interfaceTheme ?? 'persiusNG'
+              )
+              .then(
+                () =>
+                  new Cypress.Promise<typeof window>((resolve, reject) => {
+                    const deadline = window.performance.now() + 5000;
+                    let settled = 0;
+                    const sample = () => {
+                      const moving = window.document
+                        .getAnimations()
+                        .some(
+                          (animation) =>
+                            animation.playState === 'running' &&
+                            animation.effect?.getComputedTiming().iterations !==
+                              Infinity
+                        );
+                      settled = moving ? 0 : settled + 1;
+                      if (settled >= 3) return resolve(window);
+                      if (window.performance.now() > deadline)
+                        return reject(
+                          new Error(
+                            'Native presentation did not settle after navigation'
+                          )
+                        );
+                      window.requestAnimationFrame(sample);
+                    };
+                    window.requestAnimationFrame(sample);
+                  })
+              );
+          })
+      );
+  }
 );

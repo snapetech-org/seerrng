@@ -24,3 +24,26 @@ export const restoreAdminPresentation = async (page: Page): Promise<void> => {
     ).status()
   ).toBe(200);
 };
+
+/** Enter discovery from the settled native shell, as an in-app navigation. */
+export const openAdminNativeRoute = async (
+  page: Page,
+  path: string
+): Promise<void> => {
+  await restoreAdminPresentation(page);
+  await page.goto('/settings/main');
+  await expect(page.locator('html')).toHaveAttribute(
+    'data-interface-theme',
+    'seerrOrig'
+  );
+  await page.evaluate(
+    (route) =>
+      (
+        window as unknown as {
+          next: { router: { push: (path: string) => Promise<boolean> } };
+        }
+      ).next.router.push(route),
+    path
+  );
+  await page.waitForURL((url) => `${url.pathname}${url.search}` === path);
+};

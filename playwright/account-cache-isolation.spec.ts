@@ -89,6 +89,11 @@ for (const width of [1440, 390]) {
         return route.continue();
       });
       await page.goto('/issues');
+      const owner = await (await page.request.get('/api/v1/auth/me')).json();
+      await expect(page.locator('html')).toHaveAttribute(
+        'data-interface-theme',
+        owner.settings?.interfaceTheme ?? 'persiusNG'
+      );
       await expect(page.getByText(privateText, { exact: true })).toBeVisible();
       await page.screenshot({
         path: info.outputPath(`owner-issues-${width}.png`),
@@ -103,6 +108,9 @@ for (const width of [1440, 390]) {
         .click();
       await page.getByText('Sign Out', { exact: true }).click();
       await page.waitForURL('**/login');
+      // Sign-out restores the shared browser's default Lumen entry. This
+      // native cache-isolation test explicitly reopens the full interface.
+      await page.goto('/seerrng');
       await expect(page.locator('input[name=email]')).toBeVisible();
       expect(
         await page.evaluate(() => Reflect.get(window, 'accountDocumentProbe'))
@@ -119,6 +127,11 @@ for (const width of [1440, 390]) {
       await page.locator('input[name=password]').fill('test1234');
       await page.locator('button[type=submit]').click();
       await page.waitForURL(baseURL + '/');
+      const nextUser = await (await page.request.get('/api/v1/auth/me')).json();
+      await expect(page.locator('html')).toHaveAttribute(
+        'data-interface-theme',
+        nextUser.settings?.interfaceTheme ?? 'persiusNG'
+      );
       await expect(
         page.getByRole('button', { name: 'User menu', exact: true })
       ).toBeVisible();
@@ -129,6 +142,12 @@ for (const width of [1440, 390]) {
         await page
           .getByRole('button', { name: 'More navigation', exact: true })
           .click();
+      if (width >= 640 && nextUser.settings?.interfaceTheme === 'persiusNG') {
+        await page
+          .locator('.persius-navigation-more > summary')
+          .filter({ visible: true })
+          .click();
+      }
       await page
         .getByRole('link', { name: 'Issues', exact: true })
         .filter({ visible: true })

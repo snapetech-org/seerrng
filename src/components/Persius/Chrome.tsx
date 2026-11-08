@@ -34,8 +34,8 @@ export function PersiusAccountLabel() {
     <span className="persius-account-label">
       <strong>{user?.displayName}</strong>
       {data &&
-        (data.movie.limit ?? 0) > 0 &&
-        data.movie.remaining !== undefined && (
+        (data.movie?.limit ?? 0) > 0 &&
+        data.movie?.remaining !== undefined && (
           <small>
             {intl.formatMessage(messages.movieQuota, {
               count: data.movie.remaining,

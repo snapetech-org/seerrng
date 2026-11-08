@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { openAdminNativeRoute } from './helpers/presentation';
 
 test.use({ serviceWorkers: 'block' });
 
@@ -43,7 +44,7 @@ for (const width of [1440, 390]) {
           },
         });
       });
-      await page.goto(`/discover/${type}`);
+      await openAdminNativeRoute(page, `/discover/${type}`);
       await expect(
         page.getByText('Catalog Title 1', { exact: true }).first()
       ).toBeVisible();
@@ -116,7 +117,7 @@ for (const width of [1440, 390]) {
         },
       });
     });
-    await page.goto('/discover/tv?sortBy=popularity.desc');
+    await openAdminNativeRoute(page, '/discover/tv?sortBy=popularity.desc');
     await expect(
       page.getByText('Recovery Series 1', { exact: true }).first()
     ).toBeVisible();

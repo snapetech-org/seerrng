@@ -18,22 +18,22 @@ const assertSharedManageSpacing = (css) => {
     );
   };
   declaration(
-    ':is(:root[data-interface-theme], [data-interface-theme])',
+    ':where(:root[data-interface-theme], [data-interface-theme])',
     '--card-layout-spacing',
     'var(--interface-section-gap)'
   );
   declaration(
-    ':is(:root[data-interface-theme], [data-interface-theme])',
+    ':where(:root[data-interface-theme], [data-interface-theme])',
     '--card-spacing',
     'var(--card-layout-spacing)'
   );
   declaration(
-    ':is(:root[data-interface-theme], [data-interface-theme])',
+    ':where(:root[data-interface-theme], [data-interface-theme])',
     '--main-card-padding',
     'var(--interface-main-card-padding)'
   );
   declaration(
-    ':is(:root[data-interface-theme], [data-interface-theme])',
+    ':where(:root[data-interface-theme], [data-interface-theme])',
     '--inset-card-padding',
     'var(--interface-inset-card-padding)'
   );

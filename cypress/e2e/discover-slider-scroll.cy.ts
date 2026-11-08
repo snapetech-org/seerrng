@@ -45,8 +45,14 @@ const waitForStableScrollPosition = (track: HTMLDivElement) =>
 const moveSliderToCard = (title: string, index: number) =>
   cy
     .contains('.slider-header', title)
+    .scrollIntoView()
     .closest('[data-testid=media-slider]')
     .find('.slider-track')
+    .should(($track) => {
+      expect(
+        $track[0].querySelectorAll('.slider-item').length
+      ).to.be.greaterThan(index);
+    })
     .then(($track) => {
       const track = $track[0] as HTMLDivElement;
       const card = track.querySelectorAll('.slider-item')[index] as HTMLElement;
