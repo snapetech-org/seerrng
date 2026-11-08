@@ -215,3 +215,12 @@ history, cross-user denial, and four initial-error recovery cases. The underlyin
 PostgreSQL count regression now executes successfully rather than skipping. Its
 runner isolation/CI correction and evidence limits are recorded in
 [the detailed status validation](request-status-human-and-postgres-validation-2026-11-08.md).
+
+The fresh PostgreSQL app now also passes 157 migrations and eight authenticated
+phone/desktop and Orig/John checks for empty-owner counts and status Retry,
+covering #164/#181/#243 with the limits in the detailed status record. Visual
+inspection exposed #608's shared pagination overlap; its existing owner is
+repaired and all 60 consumer/theme/viewport cases pass, alongside two Arabic cases
+and exact desktop geometry comparisons. See
+[the pagination evidence](responsive-pagination-validation-2026-11-08.md).
+#511 and #608 remain open until a replacement artifact delivers their fixes.

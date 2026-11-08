@@ -69,3 +69,31 @@ Evidence remains on kspld0 under
 `issue243-runner-tests.log` and `issue243-env-unit.log`. The original skipped run
 and failed loopback-port harness attempt remain alongside them. Live CI validation
 of the updated workflow is a separate pending gate at this checkpoint.
+
+## Fresh PostgreSQL application/UI follow-up
+
+The full production app subsequently starts against a new PostgreSQL 16.15
+`status164_qualified` database and completes 157 migrations. The affected
+reader_delivery_grouping.updatedAt column is a PostgreSQL-compatible timestamp
+with time zone. Three synthetic users and two pending requests for different
+owners exercise authenticated status reads rather than only temporary query
+fixtures. No production repair was needed for this startup path (#164).
+
+Four Orig/John 390/1440 cases verify an empty third account has zero actual API
+counts and visible zero filter counts despite those other owners' requests.
+They pass on both SQLite and PostgreSQL (#181). The missing historical reporter
+database is still unavailable; this does not claim to repair that lost instance.
+Four additional PostgreSQL-backed browser cases show an initial status outage,
+visible Retry and recovery to the real pending request card (#243). The outage
+is held until the click because the page can make both an initial and a focused
+query; failing only the first query can legitimately recover before inspection.
+The updated hosted CI PostgreSQL step also completed successfully.
+
+The first PostgreSQL seed omitted the required avatar and then assumed explicitly
+assigned generated IDs behaved like SQLite. Those fixture mistakes were corrected
+using a new database and returned generated IDs; the earlier database/logs are
+retained as failed-harness evidence. They were not production defects. Task
+artifacts include issue164-production-startup-qualified.log,
+issue164-seed-qualified2.log, status181-human-qualified/status181-postgres-qualified
+and status243-postgres-qualified2. The initial counts harness also needed to open
+the existing Task Filters disclosure before inspecting its buttons.

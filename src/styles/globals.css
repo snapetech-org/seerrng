@@ -7659,7 +7659,7 @@
 
   .pagination-footer {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    grid-template-columns: minmax(0, 1fr);
     align-items: center;
     gap: 5px;
     margin-top: 1.25rem;
@@ -7667,6 +7667,7 @@
 
   .pagination-footer-page-size {
     width: max-content;
+    justify-self: center;
   }
 
   .pagination-footer-page {
@@ -7680,8 +7681,22 @@
 
   .pagination-footer-actions {
     display: flex;
-    justify-self: end;
+    justify-self: center;
     gap: 5px;
+  }
+
+  @media (min-width: 640px) {
+    .pagination-footer {
+      grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    }
+
+    .pagination-footer-page-size {
+      justify-self: start;
+    }
+
+    .pagination-footer-actions {
+      justify-self: end;
+    }
   }
 
   .app-download-menu {
