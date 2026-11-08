@@ -187,3 +187,56 @@ it('lookup budget cancels Retry-After sleep as well as the HTTP socket', async (
     await f.close();
   }
 });
+
+it('legacy Chaptarr can still use its native lookup when provider facades have no index', async () => {
+  const server = createServer((req, res) => {
+    const path = new URL(req.url!, 'http://localhost').pathname;
+    res.setHeader('Content-Type', 'application/json');
+    if (path.endsWith('/system/status'))
+      return res.end(
+        JSON.stringify({ appName: 'Chaptarr', version: '0.9.911' })
+      );
+    if (path.endsWith('/system/capabilities')) {
+      res.statusCode = 404;
+      return res.end('{}');
+    }
+    if (path.endsWith('/config/hardcover')) return res.end('{"enabled":true}');
+    res.end(
+      JSON.stringify(
+        path === '/api/v1/book/lookup'
+          ? [
+              {
+                foreignBookId: 'hc:71',
+                title: 'Legacy',
+                mediaType: 'ebook',
+                author: {
+                  foreignAuthorId: 'hc:author:1',
+                  authorName: 'Fixture',
+                },
+                editions: [{ foreignEditionId: 'hc:edition:1' }],
+              },
+            ]
+          : []
+      )
+    );
+  });
+  server.listen(0, '127.0.0.1');
+  await once(server, 'listening');
+  const a = server.address();
+  assert.ok(a && typeof a !== 'string');
+  try {
+    const api = new ReadarrAPI({
+      url: `http://127.0.0.1:${a.port}/api/v1`,
+      apiKey: 'legacy',
+      mediaType: 'ebook',
+    });
+    assert.equal(
+      (await api.lookupBookByProviderIdentity('71'))?.foreignBookId,
+      'hc:71'
+    );
+  } finally {
+    server.closeAllConnections();
+    server.close();
+    await once(server, 'close');
+  }
+});

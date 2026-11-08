@@ -2404,7 +2404,8 @@ class ReadarrAPI extends ServarrBase<ReadarrQueueItem> {
       if (
         !this.isChaptarr() ||
         !this.mediaType ||
-        !!requestedDialect ||
+        (!!requestedDialect &&
+          this.chaptarrCapabilities?.contractVersion === 1) ||
         scopedResults.some(ReadarrAPI.hasAddressableLookupIdentity)
       ) {
         return scopedResults;

@@ -54,3 +54,8 @@ Rendered warning/Retry states were inspected; established theme geometry is reta
 Harness corrections (missing cloned DB subdirectory, wrong grouped-control selector,
 a duplicate title selector, and incidental ratings/series cache warming) are kept
 with their original logs. The validator author400 required the production fix.
+
+A follow-up preserves older Chaptarr0.9.911 native lookup fallback when its provider
+facades have no index and no explicit v1 contract. Verified v1 Hardcover identities
+still do not switch namespace. Both a legacy native-fallback regression and the
+known-provider miss boundary pass; the overall deadline still bounds legacy work.
