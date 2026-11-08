@@ -178,3 +178,76 @@ describe('LazyLibrarianAPI.getMagazineCover', () => {
     await assert.rejects(api.getMagazineCover('b'.repeat(32)), /raster image/i);
   });
 });
+
+describe('LazyLibrarian authoritative issue inventories', () => {
+  afterEach(() => mock.restoreAll());
+  for (const data of [
+    {},
+    [],
+    { issues: {} },
+    { issues: [null] },
+    { issues: [{}] },
+    { issues: [{ Title: 'The Economist', IssueFile: true }] },
+    { issues: [], magazine: { Title: 'A different magazine' } },
+    { issues: Array(10001).fill({ Title: 'The Economist' }) },
+  ]) {
+    it(`rejects malformed, unrelated or truncated absence evidence ${Array.isArray(data) ? 'array' : Object.keys(data).join(',')}`, async () => {
+      const api = new LazyLibrarianAPI({
+        url: 'http://localhost:5299',
+        apiKey: 'test',
+      });
+      mock.method(
+        api as unknown as { get: () => Promise<unknown> },
+        'get',
+        async () => data
+      );
+      await assert.rejects(
+        api.getIssues('The Economist', undefined, 0, { strict: true }),
+        /file absence could not be verified/
+      );
+    });
+  }
+  it('accepts explicit empty, wanted and downloaded inventories for the requested title', async () => {
+    for (const issues of [
+      [],
+      [{ Title: 'The Economist' }],
+      [{ Title: 'The Economist', IssueFile: null }],
+      [{ Title: 'The Economist', IssueFile: '/magazine/issue.pdf' }],
+    ]) {
+      const api = new LazyLibrarianAPI({
+        url: 'http://localhost:5299',
+        apiKey: 'test',
+      });
+      const get = mock.method(
+        api as unknown as { get: () => Promise<unknown> },
+        'get',
+        async () => ({ magazine: { Title: '  THE ECONOMIST ' }, issues })
+      );
+      const result = await api.getIssues('The Economist', undefined, 0, {
+        strict: true,
+      });
+      assert.equal(result.issues.length, issues.length);
+      get.mock.restore();
+    }
+  });
+});
+
+it('does not turn a numeric file marker into a downloaded file path in detail responses', async () => {
+  const api = new LazyLibrarianAPI({
+    url: 'http://localhost:5299',
+    apiKey: 'test',
+  });
+  const get = mock.method(
+    api as unknown as { get: () => Promise<unknown> },
+    'get',
+    async () => ({ issues: [{ Title: 'The Economist', IssueFile: 0 }] })
+  );
+  try {
+    assert.equal(
+      (await api.getIssues('The Economist')).issues[0].issueFile,
+      undefined
+    );
+  } finally {
+    get.mock.restore();
+  }
+});

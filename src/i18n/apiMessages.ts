@@ -762,6 +762,8 @@ export const apiMessages: Record<
   m397c07d2fb43f9b54b4c:
     '[MusicBrainz] Failed to fetch release labels: {value0}',
   m39a083213dfc370827b6: 'Minimum issues cannot exceed maximum issues.',
+  m39bfb0a62707c8c021b9:
+    'LazyLibrarian returned a different magazine; file absence could not be verified.',
   m39e2ac32dec823ba3b48: 'Invalid association media type.',
   m3a12879d6f8b8aad6aec: 'Bindery download queue exceeded the safe scan limit.',
   m3a2060bddc6c7c38c3ec:
@@ -1801,6 +1803,8 @@ export const apiMessages: Record<
     'The configured metadata provider failed this lookup. Check the Bookshelf provider logs and try again.',
   m84d28f93946a074d607c: 'Webhook options must be an object.',
   m84debbbb9b9ed93ab940: 'User read authority changed before access.',
+  m84f10bc37e5846428c71:
+    'LazyLibrarian returned an invalid issue inventory; file absence could not be verified.',
   m850b023b4c6b2c48029a: 'mediaServerType must be valid.',
   m850f45aa0250f5fbbc1d:
     'Enter the slskdN hostname and API key before enabling.',
@@ -3243,6 +3247,7 @@ export const apiMessages: Record<
   mf17c8e9fa1474e126f26:
     'Episode order can only be set for an existing TV library.',
   mf18bdf1a9b4698c4c24b: 'Movie request details are available in SeerrNG.',
+  mf19c6fcb8a6d1c2633a7: 'Sports request details are available in SeerrNG.',
   mf1b167bb645033b0df5c: 'The vision provider returned an invalid reading.',
   mf1bde7fc2fff83134270: '[Readarr] Failed to retrieve books: {value0}',
   mf1d320b606b1127cb5ca: 'External API request target is not allowed.',

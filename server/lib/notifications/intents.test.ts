@@ -290,3 +290,151 @@ it('hydrates issue-comment reporter settings for their enabled notification agen
     'fixture-reporter-chat'
   );
 });
+
+describe('magazine and sports tracking notification boundaries', () => {
+  for (const serviceId of [0, 12]) {
+    it(`retires magazine tracking acceptance and keeps matching file availability at service ${serviceId}`, async () => {
+      const media = await getRepository(Media).save(
+        new Media({
+          mediaType: MediaType.MAGAZINE,
+          tmdbId: 0,
+          status: MediaStatus.PROCESSING,
+          status4k: MediaStatus.UNKNOWN,
+          serviceId,
+          externalServiceId: 0,
+          externalServiceSlug: 'Synthetic Magazine',
+        })
+      );
+      const requestedBy = await getRepository(User).findOneByOrFail({ id: 1 });
+      const request = await getRepository(MediaRequest).save(
+        new MediaRequest({
+          type: MediaType.MAGAZINE,
+          media,
+          requestedBy,
+          status: MediaRequestStatus.COMPLETED,
+          is4k: false,
+          serverId: serviceId,
+          serviceTargets: [
+            {
+              serviceType: 'lazylibrarian',
+              format: 'magazine',
+              serverId: serviceId,
+              externalServiceId: 0,
+              status: MediaStatus.PROCESSING,
+            },
+          ],
+        })
+      );
+      const intent = { kind: 'media-request' as const, requestId: request.id };
+      assert.equal(
+        await hydrateNotificationIntent(Notification.MEDIA_AVAILABLE, intent),
+        undefined
+      );
+      await getRepository(Media).update(media.id, {
+        status: MediaStatus.AVAILABLE,
+      });
+      const available = await hydrateNotificationIntent(
+        Notification.MEDIA_AVAILABLE,
+        intent
+      );
+      assert.equal(available?.subject, 'Synthetic Magazine');
+      assert.equal(available?.eventMessage?.kind, 'available');
+      await getRepository(Media).update(media.id, { serviceId: serviceId + 1 });
+      assert.equal(
+        await hydrateNotificationIntent(Notification.MEDIA_AVAILABLE, intent),
+        undefined
+      );
+    });
+  }
+  for (const type of [
+    Notification.MEDIA_PENDING,
+    Notification.MEDIA_APPROVED,
+    Notification.MEDIA_DECLINED,
+    Notification.MEDIA_FAILED,
+    Notification.MEDIA_AUTO_APPROVED,
+    Notification.MEDIA_AUTO_REQUESTED,
+  ]) {
+    it(`hydrates sports request notification ${type} with a human title and canonical league link`, async () => {
+      const media = await getRepository(Media).save(
+        new Media({
+          mediaType: MediaType.SPORTS,
+          tmdbId: 0,
+          status: MediaStatus.PROCESSING,
+          status4k: MediaStatus.UNKNOWN,
+          externalServiceSlug: 'wrong fallback',
+        })
+      );
+      await getRepository(MediaIdentifier).save(
+        new MediaIdentifier({
+          media,
+          provider: MediaIdentifierProvider.SPORTARR,
+          value: 'lg-000042',
+          canonical: true,
+        })
+      );
+      await getRepository(MediaSearchMetadata).save(
+        getRepository(MediaSearchMetadata).create({
+          mediaId: media.id,
+          title: 'Synthetic League',
+          searchText: 'Synthetic League',
+        })
+      );
+      const requestedBy = await getRepository(User).findOneByOrFail({ id: 1 });
+      const request = await getRepository(MediaRequest).save(
+        new MediaRequest({
+          type: MediaType.SPORTS,
+          media,
+          requestedBy,
+          status: MediaRequestStatus.PENDING,
+          is4k: false,
+        })
+      );
+      const payload = await hydrateNotificationIntent(type, {
+        kind: 'media-request',
+        requestId: request.id,
+      });
+      assert.ok(payload);
+      assert.equal(payload.subject, 'Synthetic League');
+      assert.equal(payload.mediaUrl, '/sportarr/lg-000042');
+      assert.equal(payload.bodyMessage, 'sportsRequestDetails');
+      assert.equal(payload.eventMessage?.mediaType, MediaType.SPORTS);
+      assert.doesNotMatch(payload.event ?? '', /Book/);
+      assert.equal(
+        await hydrateNotificationIntent(Notification.MEDIA_AVAILABLE, {
+          kind: 'media-request',
+          requestId: request.id,
+        }),
+        undefined
+      );
+    });
+  }
+  it('uses a localized sports fallback and never constructs a league URL from an arbitrary slug', async () => {
+    const media = await getRepository(Media).save(
+      new Media({
+        mediaType: MediaType.SPORTS,
+        tmdbId: 0,
+        status: MediaStatus.PROCESSING,
+        status4k: MediaStatus.UNKNOWN,
+        externalServiceSlug: 'https://untrusted.invalid/evil',
+      })
+    );
+    const requestedBy = await getRepository(User).findOneByOrFail({ id: 1 });
+    const request = await getRepository(MediaRequest).save(
+      new MediaRequest({
+        type: MediaType.SPORTS,
+        media,
+        requestedBy,
+        status: MediaRequestStatus.PENDING,
+        is4k: false,
+      })
+    );
+    const payload = await hydrateNotificationIntent(
+      Notification.MEDIA_PENDING,
+      { kind: 'media-request', requestId: request.id }
+    );
+    assert.ok(payload);
+    assert.equal(payload.subject, 'Sports league request');
+    assert.equal(payload.subjectMessage, 'sportsLeagueRequest');
+    assert.equal(payload.mediaUrl, undefined);
+  });
+});

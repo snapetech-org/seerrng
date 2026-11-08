@@ -88,7 +88,7 @@ class LazyLibrarianScanner
           new LazyLibrarianAPI({
             url: LazyLibrarianAPI.buildUrl(current),
             apiKey: current.apiKey,
-          }).getIssues(magazine.title)
+          }).getIssues(magazine.title, undefined, 0, { strict: true })
       );
       const hasFile = detail.issues.some((issue) => Boolean(issue.issueFile));
       const isMonitored =

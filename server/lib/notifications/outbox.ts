@@ -235,13 +235,16 @@ const validateNotificationDescriptors = (
       'comicRequestDetails',
       'magazineRequestDetails',
       'adultRequestDetails',
+      'sportsRequestDetails',
     ].includes(payload.bodyMessage)
   ) {
     throw new Error('Notification outbox body descriptor is invalid.');
   }
   if (
     payload.subjectMessage !== undefined &&
-    !['bookRequest', 'adultSceneRequest'].includes(payload.subjectMessage)
+    !['bookRequest', 'adultSceneRequest', 'sportsLeagueRequest'].includes(
+      payload.subjectMessage
+    )
   ) {
     throw new Error('Notification outbox subject descriptor is invalid.');
   }

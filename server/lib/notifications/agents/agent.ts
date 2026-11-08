@@ -101,8 +101,12 @@ export type NotificationIssueEventDescriptor = {
   issueType: IssueTypeMessageKey;
 };
 export type NotificationBodyMessage =
-  'comicRequestDetails' | 'magazineRequestDetails' | 'adultRequestDetails';
-export type NotificationSubjectMessage = 'bookRequest' | 'adultSceneRequest';
+  | 'comicRequestDetails'
+  | 'magazineRequestDetails'
+  | 'adultRequestDetails'
+  | 'sportsRequestDetails';
+export type NotificationSubjectMessage =
+  'bookRequest' | 'adultSceneRequest' | 'sportsLeagueRequest';
 export type NotificationExtraLabel =
   | 'requestedSeasons'
   | 'artist'
@@ -122,6 +126,8 @@ const notificationContentMessages = defineMessages('notifications.content', {
   comicRequestDetails: 'Comic request details are available in SeerrNG.',
   magazineRequestDetails: 'Magazine request details are available in SeerrNG.',
   adultRequestDetails: 'Adult Scene request details are available in SeerrNG.',
+  sportsRequestDetails: 'Sports request details are available in SeerrNG.',
+  sportsLeagueRequest: 'Sports league request',
   bookRequest: 'Book request',
   adultSceneRequest: 'Adult scene request',
   requestedSeasons: 'Requested Seasons',

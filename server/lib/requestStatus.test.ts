@@ -973,3 +973,38 @@ test('comic availability belongs to the requested destination, not another libra
     RequestStatusStage.AVAILABLE
   );
 });
+
+for (const [type, serviceType, format] of [
+  [MediaType.MAGAZINE, 'lazylibrarian', 'magazine'],
+  [MediaType.SPORTS, 'sportarr', 'sports'],
+] as const) {
+  test(`${type} monitoring acceptance and completed flags do not prove file availability`, () => {
+    const tracked = request({
+      type,
+      status: MediaRequestStatus.COMPLETED,
+      serverId: 0,
+      media: { ...request().media, mediaType: type, serviceId: 0 },
+      serviceTargets: [
+        {
+          serviceType,
+          format,
+          serverId: 0,
+          externalServiceId: 20,
+          status: MediaStatus.PROCESSING,
+        },
+      ],
+    });
+    assert.equal(getRequestStatus(tracked).stage, RequestStatusStage.SEARCHING);
+    assert.equal(getRequestStatus(tracked).isTerminal, false);
+    const observed = {
+      ...tracked,
+      media: { ...tracked.media, status: MediaStatus.AVAILABLE },
+    };
+    assert.equal(
+      getRequestStatus(observed).stage,
+      type === MediaType.MAGAZINE
+        ? RequestStatusStage.AVAILABLE
+        : RequestStatusStage.SEARCHING
+    );
+  });
+}

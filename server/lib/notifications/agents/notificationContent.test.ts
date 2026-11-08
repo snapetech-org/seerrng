@@ -144,6 +144,32 @@ describe('notification content descriptors', () => {
     assert.equal(translated.message, base.message);
   });
 
+  it('resolves sports fallback and details at delivery time while retaining provider titles', () => {
+    const intl = createIntl<unknown>({
+      locale: 'ar',
+      messages: {
+        'notifications.content.sportsLeagueRequest': 'طلب دوري رياضي',
+        'notifications.content.sportsRequestDetails':
+          'تفاصيل الطلب الرياضي متاحة في SeerrNG.',
+      },
+    });
+    const fallback = {
+      ...base,
+      subject: 'Sports league request',
+      subjectMessage: 'sportsLeagueRequest' as const,
+      bodyMessage: 'sportsRequestDetails' as const,
+    };
+    const localized = getLocalizedNotificationPayload(fallback, intl);
+    assert.equal(localized.subject, 'طلب دوري رياضي');
+    assert.equal(localized.message, 'تفاصيل الطلب الرياضي متاحة في SeerrNG.');
+    const named = getLocalizedNotificationPayload(
+      { ...fallback, subject: 'Synthetic League', subjectMessage: undefined },
+      intl
+    );
+    assert.equal(named.subject, 'Synthetic League');
+    assert.equal(fallback.subject, 'Sports league request');
+  });
+
   it('formats every canonical media-event branch including quality and fallback', () => {
     const intl = createIntl<unknown>({ locale: 'en', messages: {} });
     const kinds: NotificationEventKind[] = [

@@ -21,6 +21,7 @@ import type {
 } from '@server/lib/downloadtracker';
 import downloadTracker from '@server/lib/downloadtracker';
 import { getExternalRuntimeConfig } from '@server/lib/externalRuntimeConfig';
+import { isMagazineRequestFileAvailable } from '@server/lib/magazineAvailability';
 import { hydrateMediaRequestRelations } from '@server/lib/mediaRequestHydration';
 import {
   getRequestedMusicSearchTime,
@@ -365,6 +366,34 @@ const getAdultTarget = (
     : undefined;
 };
 
+const getCatalogTrackingTarget = (
+  request: RequestLike
+): MediaRequestServiceTarget | undefined => {
+  if (!request.media) return undefined;
+  const magazine = request.type === MediaType.MAGAZINE;
+  const serviceType = magazine ? 'lazylibrarian' : 'sportarr';
+  const format = magazine ? 'magazine' : 'sports';
+  const saved = getTarget(request, serviceType, format);
+  if (saved)
+    return request.serverId == null || request.serverId === saved.serverId
+      ? saved
+      : undefined;
+  if (
+    request.serviceTargets?.length ||
+    (request.serverId != null &&
+      request.serverId !== request.media.serviceId) ||
+    !hasLink(request.media.serviceId, request.media.externalServiceId)
+  )
+    return undefined;
+  return {
+    serviceType,
+    format,
+    serverId: request.media.serviceId!,
+    externalServiceId: request.media.externalServiceId,
+    status: request.media.status,
+  };
+};
+
 const hasRequestedServiceLink = (request: RequestLike): boolean => {
   if (!request.media) {
     return false;
@@ -398,6 +427,14 @@ const hasRequestedServiceLink = (request: RequestLike): boolean => {
     return hasLink(target?.serverId, target?.externalServiceId);
   }
 
+  if (
+    request.type === MediaType.MAGAZINE ||
+    request.type === MediaType.SPORTS
+  ) {
+    const target = getCatalogTrackingTarget(request);
+    return hasLink(target?.serverId, target?.externalServiceId);
+  }
+
   const musicTarget = getMusicTarget(request);
   return hasLink(musicTarget?.serverId, musicTarget?.externalServiceId);
 };
@@ -419,6 +456,8 @@ const getRequestedMediaStatus = (request: RequestLike): MediaStatus => {
   if (request.type === MediaType.ADULT) {
     return getAdultTarget(request)?.status ?? request.media.status;
   }
+  if (request.type === MediaType.MAGAZINE)
+    return getCatalogTrackingTarget(request)?.status ?? request.media.status;
   if (request.type === MediaType.BOOK) return request.media.status;
   return request.is4k ? request.media.status4k : request.media.status;
 };
@@ -435,6 +474,10 @@ const isRequestSatisfied = (request: RequestLike): boolean => {
 
   if (request.type === MediaType.BOOK)
     return isBookRequestFileAvailable(request.media, request);
+  if (request.type === MediaType.MAGAZINE)
+    return isMagazineRequestFileAvailable(request.media, request);
+  // Monitoring a league does not identify a downloaded event file.
+  if (request.type === MediaType.SPORTS) return false;
 
   if (request.type === MediaType.TV && request.seasons?.length) {
     const seasonStatus = request.is4k ? 'status4k' : 'status';
@@ -798,6 +841,16 @@ const getServiceName = (request: RequestLike): string | null => {
         (server) => server.id === getAdultTarget(request)?.serverId
       )?.name
     );
+  } else if (
+    request.type === MediaType.MAGAZINE ||
+    request.type === MediaType.SPORTS
+  ) {
+    const target = getCatalogTrackingTarget(request);
+    const services =
+      request.type === MediaType.MAGAZINE
+        ? settings.lazylibrarian
+        : settings.sportarr;
+    add(services.find((server) => server.id === target?.serverId)?.name);
   } else {
     const formats =
       request.bookFormat === 'both'
@@ -1205,10 +1258,12 @@ const getStageFromRequest = (
   if (
     (request.type === MediaType.MOVIE ||
       request.type === MediaType.TV ||
-      request.type === MediaType.COMIC) &&
+      request.type === MediaType.COMIC ||
+      request.type === MediaType.MAGAZINE ||
+      request.type === MediaType.SPORTS) &&
     hasRequestedServiceLink(request)
   ) {
-    // An Arr tracking entry and PROCESSING status are created at dispatch,
+    // A service tracking entry and PROCESSING status are created at dispatch,
     // before any release is grabbed. Only the queue/import-history evidence
     // above may advance an unavailable video into download/import stages.
     // Recompute this even when old events or a request flag claim completion.

@@ -1,4 +1,5 @@
 import ExternalAPI from '@server/api/externalapi';
+import { normalizeMagazineTitle } from '@server/lib/magazineIdentity';
 import type { LazyLibrarianSettings } from '@server/lib/settings';
 import {
   MAX_SAFE_REMOTE_IMAGE_BYTES,
@@ -82,7 +83,10 @@ const sanitizeIssue = (value: unknown): LazyLibrarianIssue | undefined => {
     issueId: readString(value, 'IssueID', 'IssueId', 'id'),
     title,
     issueDate: readString(value, 'IssueDate', 'issueDate'),
-    issueFile: readString(value, 'IssueFile', 'issueFile'),
+    issueFile:
+      typeof (value.IssueFile ?? value.issueFile) === 'string'
+        ? readString(value, 'IssueFile', 'issueFile')
+        : undefined,
     cover: readString(value, 'Cover', 'cover'),
     issueNumber: readString(value, 'IssueNum', 'IssueNumber', 'issueNumber'),
   };
@@ -189,7 +193,8 @@ class LazyLibrarianAPI extends ExternalAPI {
   public async getIssues(
     title: string,
     signal?: AbortSignal,
-    ttl = 0
+    ttl = 0,
+    options: { strict?: boolean } = {}
   ): Promise<LazyLibrarianMagazineDetail> {
     const response = await this.runCommand<unknown>(
       'getIssues',
@@ -199,14 +204,43 @@ class LazyLibrarianAPI extends ExternalAPI {
       ttl,
       { signal }
     );
+    if (options.strict) {
+      const valid =
+        isRecord(response) &&
+        Array.isArray(response.issues) &&
+        response.issues.length <= 10_000 &&
+        response.issues.every(
+          (issue) =>
+            isRecord(issue) &&
+            !!sanitizeIssue(issue) &&
+            ((issue.IssueFile ?? issue.issueFile) == null ||
+              typeof (issue.IssueFile ?? issue.issueFile) === 'string')
+        );
+      if (!valid)
+        throw new Error(
+          'LazyLibrarian returned an invalid issue inventory; file absence could not be verified.'
+        );
+    }
     if (!isRecord(response)) {
       return { issues: [] };
     }
     const magazineValue = Array.isArray(response.magazine)
       ? response.magazine[0]
       : response.magazine;
+    const magazine = sanitizeMagazine(magazineValue);
+    if (
+      options.strict &&
+      magazineValue != null &&
+      (!magazine ||
+        normalizeMagazineTitle(magazine.title) !==
+          normalizeMagazineTitle(title))
+    ) {
+      throw new Error(
+        'LazyLibrarian returned a different magazine; file absence could not be verified.'
+      );
+    }
     return {
-      magazine: sanitizeMagazine(magazineValue),
+      magazine,
       issues: Array.isArray(response.issues)
         ? response.issues
             .slice(0, 10_000)

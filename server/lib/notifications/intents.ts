@@ -20,9 +20,11 @@ import {
   normalizeMusicBrainzId,
   normalizeOpenLibraryWorkId,
 } from '@server/lib/externalIds';
+import { isMagazineRequestFileAvailable } from '@server/lib/magazineAvailability';
 import { upsertMediaSearchMetadata } from '@server/lib/mediaSearchMetadata';
 import { Permission } from '@server/lib/permissions';
 import { getSettings } from '@server/lib/settings';
+import { isSportarrLeagueExternalId } from '@server/lib/sportarrIdentity';
 import { normalizeStashDbId } from '@server/lib/stashdbIdentity';
 import { parseBookshelfBookId } from '@server/utils/bookshelfCatalog';
 import { sortBy, truncate } from 'lodash';
@@ -72,6 +74,17 @@ const getMediaDetails = async (
       image: album.caa_release_mbid
         ? `https://coverartarchive.org/release/${album.caa_release_mbid}/front-500`
         : '',
+    };
+  }
+  if (media.mediaType === MediaType.SPORTS) {
+    const metadata =
+      media.searchMetadata ??
+      (await getRepository(MediaSearchMetadata).findOne({
+        where: { mediaId: media.id },
+      }));
+    return {
+      title: metadata?.title?.trim() || 'Sports league request',
+      image: metadata?.posterPath ?? '',
     };
   }
   if (media.mediaType === MediaType.BOOK) {
@@ -181,7 +194,9 @@ export const buildMediaRequestNotificationPayload = async (
               ? 'Magazine'
               : entity.type === MediaType.ADULT
                 ? 'Adult Scene'
-                : 'Book';
+                : entity.type === MediaType.SPORTS
+                  ? 'Sports'
+                  : 'Book';
   let event: string | undefined;
   let notifyAdmin = true;
   let notifySystem = true;
@@ -416,6 +431,32 @@ export const buildMediaRequestNotificationPayload = async (
       image,
     };
   }
+  if (entity.type === MediaType.SPORTS) {
+    const { title, image } = await getMediaDetails(media);
+    const identifiers =
+      media.identifiers ??
+      (await getRepository(MediaIdentifier).find({
+        where: { media: { id: media.id } },
+      }));
+    const candidate =
+      identifiers.find(
+        (identifier) => identifier.provider === MediaIdentifierProvider.SPORTARR
+      )?.value ?? media.externalServiceSlug;
+    const externalId =
+      typeof candidate === 'string' ? candidate.trim() : undefined;
+    return {
+      ...base,
+      mediaUrl: isSportarrLeagueExternalId(externalId)
+        ? `/sportarr/${encodeURIComponent(externalId)}`
+        : undefined,
+      subject: title,
+      subjectMessage:
+        title === 'Sports league request' ? 'sportsLeagueRequest' : undefined,
+      message: 'Sports request details are available in SeerrNG.',
+      bodyMessage: 'sportsRequestDetails',
+      image: image || undefined,
+    };
+  }
   if (entity.type === MediaType.ADULT) {
     const stashDbId = normalizeStashDbId(
       media.identifiers?.find(
@@ -458,7 +499,11 @@ const hydrateMediaRequestIntent = async (
     ((request.type === MediaType.COMIC &&
       !isComicRequestAvailable(request.media, request)) ||
       (request.type === MediaType.BOOK &&
-        !isBookRequestFileAvailable(request.media, request)))
+        !isBookRequestFileAvailable(request.media, request)) ||
+      (request.type === MediaType.MAGAZINE &&
+        !isMagazineRequestFileAvailable(request.media, request)) ||
+      // Sportarr requests add/monitor a league; completion proves no event file.
+      request.type === MediaType.SPORTS)
   )
     return undefined;
   return buildMediaRequestNotificationPayload(request, request.media, type);

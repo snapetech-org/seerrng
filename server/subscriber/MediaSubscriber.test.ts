@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { describe, it } from 'node:test';
+import { describe, it, mock } from 'node:test';
 
 import {
   MediaRequestStatus,
@@ -9,13 +9,17 @@ import {
 import dataSource, { getRepository } from '@server/datasource';
 import Media from '@server/entity/Media';
 import { MediaRequest } from '@server/entity/MediaRequest';
+import { NotificationOutbox } from '@server/entity/NotificationOutbox';
 import Season from '@server/entity/Season';
 import { User } from '@server/entity/User';
+import { isMagazineRequestFileAvailable } from '@server/lib/magazineAvailability';
+import notificationManager, { Notification } from '@server/lib/notifications';
 import {
   MEDIA_SUBSCRIBER_REQUEST_BATCH_SIZE,
   MediaSubscriber,
 } from '@server/subscriber/MediaSubscriber';
 import { setupTestDb } from '@server/test/db';
+import { waitForBackgroundTasks } from '@server/utils/backgroundTasks';
 import type { EntityManager, UpdateEvent } from 'typeorm';
 
 setupTestDb();
@@ -255,4 +259,200 @@ describe('MediaSubscriber', () => {
       MediaRequestStatus.COMPLETED
     );
   });
+});
+
+it('queues magazine availability once after matching file observation, retaining completed tracking history', async () => {
+  const user = await getRepository(User).findOneByOrFail({ id: 1 });
+  const media = await getRepository(Media).save(
+    new Media({
+      mediaType: MediaType.MAGAZINE,
+      tmdbId: 0,
+      status: MediaStatus.PROCESSING,
+      status4k: MediaStatus.UNKNOWN,
+      serviceId: 0,
+      externalServiceId: 0,
+    })
+  );
+  const request = await getRepository(MediaRequest).save(
+    new MediaRequest({
+      type: MediaType.MAGAZINE,
+      media,
+      requestedBy: user,
+      status: MediaRequestStatus.COMPLETED,
+      is4k: false,
+      serverId: 0,
+      serviceTargets: [
+        {
+          serviceType: 'lazylibrarian',
+          format: 'magazine',
+          serverId: 0,
+          externalServiceId: 0,
+          status: MediaStatus.PROCESSING,
+        },
+      ],
+    })
+  );
+  await waitForBackgroundTasks();
+  const queued = mock.method(
+    notificationManager,
+    'sendNotificationIntent',
+    async () => undefined
+  );
+  try {
+    media.status = MediaStatus.AVAILABLE;
+    await getRepository(Media).save(media);
+    assert.equal(queued.mock.callCount(), 1);
+    assert.equal(
+      queued.mock.calls[0].arguments[0],
+      Notification.MEDIA_AVAILABLE
+    );
+    assert.deepEqual(queued.mock.calls[0].arguments[1], {
+      kind: 'media-request',
+      requestId: request.id,
+    });
+    await getRepository(Media).save(media);
+    assert.equal(queued.mock.callCount(), 1);
+    media.serviceId = 1;
+    await getRepository(Media).save(media);
+    assert.equal(queued.mock.callCount(), 1);
+    assert.equal(
+      (await getRepository(MediaRequest).findOneByOrFail({ id: request.id }))
+        .status,
+      MediaRequestStatus.COMPLETED
+    );
+  } finally {
+    queued.mock.restore();
+  }
+});
+
+it('rolls back magazine availability intent with its uncommitted file observation', async () => {
+  const user = await getRepository(User).findOneByOrFail({ id: 1 });
+  const media = await getRepository(Media).save(
+    new Media({
+      mediaType: MediaType.MAGAZINE,
+      tmdbId: 0,
+      status: MediaStatus.PROCESSING,
+      status4k: MediaStatus.UNKNOWN,
+      serviceId: 0,
+      externalServiceId: 0,
+    })
+  );
+  await getRepository(MediaRequest).save(
+    new MediaRequest({
+      type: MediaType.MAGAZINE,
+      media,
+      requestedBy: user,
+      status: MediaRequestStatus.COMPLETED,
+      is4k: false,
+      serverId: 0,
+      serviceTargets: [
+        {
+          serviceType: 'lazylibrarian',
+          format: 'magazine',
+          serverId: 0,
+          externalServiceId: 0,
+          status: MediaStatus.PROCESSING,
+        },
+      ],
+    })
+  );
+  await waitForBackgroundTasks();
+  const before = await getRepository(NotificationOutbox).count();
+  const runner = dataSource.createQueryRunner();
+  await runner.connect();
+  await runner.startTransaction();
+  try {
+    const current = await runner.manager.findOneByOrFail(Media, {
+      id: media.id,
+    });
+    current.status = MediaStatus.AVAILABLE;
+    await runner.manager.save(current);
+    await runner.rollbackTransaction();
+  } finally {
+    if (runner.isTransactionActive) await runner.rollbackTransaction();
+    await runner.release();
+  }
+  await waitForBackgroundTasks();
+  assert.equal(
+    (await getRepository(Media).findOneByOrFail({ id: media.id })).status,
+    MediaStatus.PROCESSING
+  );
+  assert.equal(await getRepository(NotificationOutbox).count(), before);
+});
+
+it('retains each magazine destination observation across alternating scans and notifies only file transitions', async () => {
+  const user = await getRepository(User).findOneByOrFail({ id: 1 });
+  const media = await getRepository(Media).save(
+    new Media({
+      mediaType: MediaType.MAGAZINE,
+      tmdbId: 0,
+      status: MediaStatus.PROCESSING,
+      status4k: MediaStatus.UNKNOWN,
+      serviceId: 0,
+      externalServiceId: 0,
+    })
+  );
+  const requests: MediaRequest[] = [];
+  for (const serverId of [0, 1])
+    requests.push(
+      await getRepository(MediaRequest).save(
+        new MediaRequest({
+          type: MediaType.MAGAZINE,
+          media,
+          requestedBy: user,
+          status: MediaRequestStatus.COMPLETED,
+          is4k: false,
+          serverId,
+          serviceTargets: [
+            {
+              serviceType: 'lazylibrarian',
+              format: 'magazine',
+              serverId,
+              externalServiceId: 0,
+              status: MediaStatus.PROCESSING,
+            },
+          ],
+        })
+      )
+    );
+  await waitForBackgroundTasks();
+  const queued = mock.method(
+    notificationManager,
+    'sendNotificationIntent',
+    async () => undefined
+  );
+  const observe = async (serverId: number, status: MediaStatus) => {
+    media.serviceId = serverId;
+    media.status = status;
+    await getRepository(Media).save(media);
+  };
+  const saved = async (index: number) =>
+    getRepository(MediaRequest).findOneByOrFail({ id: requests[index].id });
+  try {
+    await observe(0, MediaStatus.AVAILABLE);
+    await observe(1, MediaStatus.PROCESSING);
+    assert.equal(queued.mock.callCount(), 1);
+    assert.equal(isMagazineRequestFileAvailable(media, await saved(0)), true);
+    await observe(0, MediaStatus.AVAILABLE);
+    await observe(1, MediaStatus.PROCESSING);
+    assert.equal(queued.mock.callCount(), 1);
+    await observe(1, MediaStatus.AVAILABLE);
+    assert.equal(queued.mock.callCount(), 2);
+    await observe(0, MediaStatus.PROCESSING);
+    assert.equal(isMagazineRequestFileAvailable(media, await saved(0)), false);
+    assert.equal(isMagazineRequestFileAvailable(media, await saved(1)), true);
+    await observe(0, MediaStatus.AVAILABLE);
+    await getRepository(Media).save(media);
+    assert.equal(queued.mock.callCount(), 3);
+    assert.deepEqual(
+      queued.mock.calls.map((call) => call.arguments[1]),
+      [
+        { kind: 'media-request', requestId: requests[0].id },
+        { kind: 'media-request', requestId: requests[1].id },
+        { kind: 'media-request', requestId: requests[0].id },
+      ]
+    );
+  } finally {
+    queued.mock.restore();
+  }
 });

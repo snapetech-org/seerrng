@@ -419,6 +419,31 @@ describe('NotificationManager delivery lifecycle', () => {
     assert.deepEqual(hydrated?.eventMessage, original.eventMessage);
   });
 
+  it('preserves sports recipient descriptors through durable storage and hydration', async () => {
+    const original: NotificationPayload = {
+      ...payload,
+      subject: 'Sports league request',
+      subjectMessage: 'sportsLeagueRequest',
+      bodyMessage: 'sportsRequestDetails',
+      eventMessage: {
+        kind: 'pending',
+        mediaType: MediaType.SPORTS,
+        is4k: false,
+      },
+      mediaUrl: '/sportarr/lg-000042',
+    };
+    const record = await createNotificationOutboxRecord(
+      Notification.MEDIA_PENDING,
+      original,
+      ['test']
+    );
+    const hydrated = await hydrateNotificationOutboxPayload(record);
+    assert.equal(hydrated?.subjectMessage, 'sportsLeagueRequest');
+    assert.equal(hydrated?.bodyMessage, 'sportsRequestDetails');
+    assert.equal(hydrated?.mediaUrl, '/sportarr/lg-000042');
+    assert.deepEqual(hydrated?.eventMessage, original.eventMessage);
+  });
+
   it('rejects unknown descriptors before persistence and when reading stored payloads', async () => {
     await assert.rejects(
       createNotificationOutboxRecord(

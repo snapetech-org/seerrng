@@ -11,6 +11,11 @@ import SeasonRequest, {
 } from '@server/entity/SeasonRequest';
 import { isBookRequestFileAvailable } from '@server/lib/bookAvailability';
 import { isComicRequestAvailable } from '@server/lib/comicAvailability';
+import {
+  getMagazineRequestTarget,
+  isMagazineRequestFileAvailable,
+} from '@server/lib/magazineAvailability';
+import notificationManager, { Notification } from '@server/lib/notifications';
 import logger from '@server/logger';
 import type {
   EntityManager,
@@ -105,10 +110,12 @@ export class MediaSubscriber implements EntitySubscriberInterface<Media> {
             continue;
           }
           if (
-            event.mediaType === MediaType.COMIC
-              ? isComicRequestAvailable(event, request)
-              : event.mediaType !== MediaType.BOOK ||
-                this.isBookRequestSatisfied(event, request)
+            event.mediaType === MediaType.MAGAZINE
+              ? isMagazineRequestFileAvailable(event, request)
+              : event.mediaType === MediaType.COMIC
+                ? isComicRequestAvailable(event, request)
+                : event.mediaType !== MediaType.BOOK ||
+                  this.isBookRequestSatisfied(event, request)
           ) {
             // Mark the request complete before its subscriber can dispatch it
             // to an acquisition service. The media is already available.
@@ -165,6 +172,8 @@ export class MediaSubscriber implements EntitySubscriberInterface<Media> {
             shouldComplete = true;
           } else if (event.mediaType === MediaType.COMIC) {
             shouldComplete = isComicRequestAvailable(event, request);
+          } else if (event.mediaType === MediaType.MAGAZINE) {
+            shouldComplete = isMagazineRequestFileAvailable(event, request);
           } else if (event.mediaType === MediaType.BOOK) {
             shouldComplete = this.isBookRequestSatisfied(event, request);
           } else if (event.mediaType === 'tv') {
@@ -256,10 +265,81 @@ export class MediaSubscriber implements EntitySubscriberInterface<Media> {
     event.databaseEntity.seasons = seasons;
   }
 
+  private async recordMagazineFileObservation(
+    event: UpdateEvent<Media>
+  ): Promise<void> {
+    const media = event.entity as Media;
+    if (
+      media.mediaType !== MediaType.MAGAZINE ||
+      ![
+        MediaStatus.AVAILABLE,
+        MediaStatus.PROCESSING,
+        MediaStatus.UNKNOWN,
+        MediaStatus.DELETED,
+      ].includes(media.status)
+    )
+      return;
+    const observedStatus =
+      media.status === MediaStatus.AVAILABLE
+        ? MediaStatus.AVAILABLE
+        : media.status === MediaStatus.PROCESSING
+          ? MediaStatus.PROCESSING
+          : MediaStatus.UNKNOWN;
+    await this.forEachRequestBatch(
+      event.manager,
+      {
+        media: { id: media.id },
+        type: MediaType.MAGAZINE,
+        status: In([
+          MediaRequestStatus.PENDING,
+          MediaRequestStatus.APPROVED,
+          MediaRequestStatus.FAILED,
+          MediaRequestStatus.COMPLETED,
+        ]),
+      },
+      async (requests) => {
+        for (const request of requests) {
+          if (request.serviceTargets?.some((target) => target.requesterTagOnly))
+            continue;
+          const target = getMagazineRequestTarget(media, request);
+          if (!target) continue;
+          const targets = [...(request.serviceTargets ?? [])];
+          const index = targets.indexOf(target);
+          if (index >= 0 && target.status === observedStatus) continue;
+          const previouslyAvailable =
+            index >= 0 && target.status === MediaStatus.AVAILABLE;
+          const next = { ...target, status: observedStatus };
+          if (index >= 0) targets[index] = next;
+          else targets.push(next);
+          // Only the observed destination changes; alternating scans cannot erase
+          // another library's file observation or repeatedly announce the same file.
+          await event.manager
+            .getRepository(MediaRequest)
+            .update(request.id, { serviceTargets: targets });
+          if (
+            request.status === MediaRequestStatus.COMPLETED &&
+            observedStatus === MediaStatus.AVAILABLE &&
+            !previouslyAvailable
+          ) {
+            await notificationManager.sendNotificationIntent(
+              Notification.MEDIA_AVAILABLE,
+              { kind: 'media-request', requestId: request.id },
+              event.queryRunner
+            );
+          }
+        }
+      }
+    );
+  }
+
   public async afterUpdate(event: UpdateEvent<Media>): Promise<void> {
     if (!event.entity || !event.databaseEntity) {
       return;
     }
+
+    // Completed magazine requests mean tracking was accepted. File observation
+    // creates its availability intent once, in the same transaction as the scan.
+    await this.recordMagazineFileObservation(event);
 
     const validStatuses = [
       MediaStatus.PARTIALLY_AVAILABLE,

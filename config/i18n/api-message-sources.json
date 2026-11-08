@@ -346,7 +346,7 @@
       "callsites": [
         {
           "path": "server/lib/requestStatus.ts",
-          "line": 869,
+          "line": 922,
           "kind": "message-helper-return",
           "field": "message",
           "expression": "'Your request was approved and is waiting to be dispatched.'",
@@ -2494,7 +2494,7 @@
       "callsites": [
         {
           "path": "server/lib/notifications/outbox.ts",
-          "line": 367,
+          "line": 370,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Stored notification outbox software status is invalid.'",
@@ -3454,7 +3454,7 @@
       "callsites": [
         {
           "path": "server/lib/requestStatus.ts",
-          "line": 1108,
+          "line": 1161,
           "kind": "authored-message-variable",
           "field": "message",
           "expression": "options.binderyRequestPending\n      ? 'Waiting for Bindery to approve this request. Enable Auto-approve requests for this account in Bindery if acquisition should start immediately.'\n      : pendingFormat\n        ? `ChaptarrNG is preparing the requested ${pendingFormat === 'audiobook' ? 'audiobook' : 'ebook'} while it imports the author.`\n        : 'Waiting for Bookshelf to prepare the requested book.'",
@@ -3568,7 +3568,7 @@
       "callsites": [
         {
           "path": "server/lib/notifications/outbox.ts",
-          "line": 531,
+          "line": 534,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`Notification outbox ${record.id} claim was lost.`",
@@ -3582,7 +3582,7 @@
         },
         {
           "path": "server/lib/notifications/outbox.ts",
-          "line": 650,
+          "line": 653,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`Notification outbox ${record.id} claim was lost.`",
@@ -3596,7 +3596,7 @@
         },
         {
           "path": "server/lib/notifications/outbox.ts",
-          "line": 668,
+          "line": 671,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`Notification outbox ${record.id} claim was lost.`",
@@ -3610,7 +3610,7 @@
         },
         {
           "path": "server/lib/notifications/outbox.ts",
-          "line": 681,
+          "line": 684,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`Notification outbox ${record.id} claim was lost.`",
@@ -3624,7 +3624,7 @@
         },
         {
           "path": "server/lib/notifications/outbox.ts",
-          "line": 698,
+          "line": 701,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`Notification outbox ${id} claim was lost.`",
@@ -7845,7 +7845,7 @@
       "callsites": [
         {
           "path": "server/api/lazylibrarian.ts",
-          "line": 97,
+          "line": 101,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`LazyLibrarian command \"${command}\" failed${error ? `: ${error}` : '.'}`",
@@ -7864,7 +7864,7 @@
         },
         {
           "path": "server/api/lazylibrarian.ts",
-          "line": 97,
+          "line": 101,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`LazyLibrarian command \"${command}\" failed${error ? `: ${error}` : '.'}`",
@@ -7883,7 +7883,7 @@
         },
         {
           "path": "server/api/lazylibrarian.ts",
-          "line": 107,
+          "line": 111,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`LazyLibrarian command \"${command}\" failed: ${response}`",
@@ -8024,7 +8024,7 @@
       "callsites": [
         {
           "path": "server/lib/notifications/intents.ts",
-          "line": 411,
+          "line": 426,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "`${mediaType} request details are available in SeerrNG.`",
@@ -8032,7 +8032,7 @@
         },
         {
           "path": "server/lib/notifications/intents.ts",
-          "line": 435,
+          "line": 476,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "`${mediaType} request details are available in SeerrNG.`",
@@ -8319,7 +8319,7 @@
       "callsites": [
         {
           "path": "server/lib/requestStatus.ts",
-          "line": 1126,
+          "line": 1179,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'The connected book service is handling acquisition for this title. SeerrNG will update availability when the book appears in its library.'",
@@ -9342,7 +9342,7 @@
       "callsites": [
         {
           "path": "server/lib/requestStatus.ts",
-          "line": 834,
+          "line": 887,
           "kind": "message-helper-return",
           "field": "message",
           "expression": "'No usable edition is available from the connected book service. Check the requested edition and the service catalog or acquisition sources, then retry when they are ready.'",
@@ -9679,7 +9679,7 @@
       "callsites": [
         {
           "path": "server/api/lazylibrarian.ts",
-          "line": 239,
+          "line": 273,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Magazine cover ID is invalid.'",
@@ -9736,7 +9736,7 @@
       "callsites": [
         {
           "path": "server/lib/notifications/intents.ts",
-          "line": 333,
+          "line": 348,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Book request has no supported metadata identifier.'",
@@ -13604,7 +13604,7 @@
       "callsites": [
         {
           "path": "server/lib/requestStatus.ts",
-          "line": 879,
+          "line": 932,
           "kind": "message-helper-return",
           "field": "message",
           "expression": "'The requested media is available.'",
@@ -13684,7 +13684,7 @@
       "callsites": [
         {
           "path": "server/lib/requestStatus.ts",
-          "line": 889,
+          "line": 942,
           "kind": "message-helper-return",
           "field": "message",
           "expression": "'This request was cancelled.'",
@@ -14053,7 +14053,7 @@
       "callsites": [
         {
           "path": "server/lib/requestStatus.ts",
-          "line": 871,
+          "line": 924,
           "kind": "message-helper-return",
           "field": "message",
           "expression": "'Searching for a usable release.'",
@@ -14635,7 +14635,7 @@
       "callsites": [
         {
           "path": "server/lib/notifications/outbox.ts",
-          "line": 384,
+          "line": 387,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Notification outbox is full.'",
@@ -14643,7 +14643,7 @@
         },
         {
           "path": "server/lib/notifications/outbox.ts",
-          "line": 413,
+          "line": 416,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Notification outbox is full.'",
@@ -14779,7 +14779,7 @@
       "callsites": [
         {
           "path": "server/lib/requestStatus.ts",
-          "line": 873,
+          "line": 926,
           "kind": "message-helper-return",
           "field": "message",
           "expression": "'A usable release is downloading.'",
@@ -15162,6 +15162,27 @@
           "kind": "authored-message-field",
           "field": "message",
           "expression": "('error' in parsedPublisher && parsedPublisher.error) ||\n        startYear.error ||\n        minIssues.error ||\n        maxIssues.error ||\n        'Minimum issues cannot exceed maximum issues.'",
+          "captured": []
+        }
+      ]
+    },
+    {
+      "key": "m39bfb0a62707c8c021b9",
+      "id": "utils.ApiMessage.m39bfb0a62707c8c021b9",
+      "source": "LazyLibrarian returned a different magazine; file absence could not be verified.",
+      "defaultMessage": "LazyLibrarian returned a different magazine; file absence could not be verified.",
+      "sourceHash": "39bfb0a62707c8c021b9c7c5da2662bad7f33a91bff2501fc249a2bf34c99ffb",
+      "parts": [
+        "LazyLibrarian returned a different magazine; file absence could not be verified."
+      ],
+      "parameterCount": 0,
+      "callsites": [
+        {
+          "path": "server/api/lazylibrarian.ts",
+          "line": 239,
+          "kind": "app-error-candidate",
+          "field": "message",
+          "expression": "'LazyLibrarian returned a different magazine; file absence could not be verified.'",
           "captured": []
         }
       ]
@@ -19855,7 +19876,7 @@
       "callsites": [
         {
           "path": "server/lib/requestStatus.ts",
-          "line": 883,
+          "line": 936,
           "kind": "message-helper-return",
           "field": "message",
           "expression": "queueFailure\n        ? 'The download or import failed.'\n        : 'The request could not be completed.'",
@@ -20565,7 +20586,7 @@
       "callsites": [
         {
           "path": "server/api/lazylibrarian.ts",
-          "line": 97,
+          "line": 101,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`LazyLibrarian command \"${command}\" failed${error ? `: ${error}` : '.'}`",
@@ -26822,7 +26843,7 @@
       "callsites": [
         {
           "path": "server/lib/requestStatus.ts",
-          "line": 859,
+          "line": 912,
           "kind": "message-helper-return",
           "field": "message",
           "expression": "queueFailure\n        ? 'Whisparr reported a download or import failure. Check its queue and logs, fix the issue there, then retry.'\n        : 'Whisparr could not accept this scene request. Check the connection and scene metadata, then retry.'",
@@ -27118,7 +27139,7 @@
       "callsites": [
         {
           "path": "server/lib/requestStatus.ts",
-          "line": 837,
+          "line": 890,
           "kind": "message-helper-return",
           "field": "message",
           "expression": "queueFailure\n        ? 'The connected book service reported a download or import failure. Check its queue or logs for the cause, fix it there, then retry here.'\n        : 'The connected book service could not accept this request. Check its connection and metadata provider settings, then retry.'",
@@ -28179,7 +28200,7 @@
       "callsites": [
         {
           "path": "server/lib/notifications/intents.ts",
-          "line": 411,
+          "line": 426,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "`${mediaType} request details are available in SeerrNG.`",
@@ -28187,7 +28208,7 @@
         },
         {
           "path": "server/lib/notifications/intents.ts",
-          "line": 435,
+          "line": 476,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "`${mediaType} request details are available in SeerrNG.`",
@@ -28998,7 +29019,7 @@
       "callsites": [
         {
           "path": "server/lib/requestStatus.ts",
-          "line": 848,
+          "line": 901,
           "kind": "message-helper-return",
           "field": "message",
           "expression": "queueFailure\n        ? 'The connected comics service reported a download or import failure. Check its queue or logs for the cause, fix it there, then retry here.'\n        : 'The connected comics service could not accept this request. Check its connection and ComicVine metadata settings, then retry.'",
@@ -31841,7 +31862,7 @@
       "callsites": [
         {
           "path": "server/lib/notifications/outbox.ts",
-          "line": 348,
+          "line": 351,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Stored notification outbox payload exceeds maximum size.'",
@@ -31849,7 +31870,7 @@
         },
         {
           "path": "server/lib/notifications/outbox.ts",
-          "line": 543,
+          "line": 546,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Stored notification outbox payload exceeds maximum size.'",
@@ -33024,7 +33045,7 @@
       "callsites": [
         {
           "path": "server/lib/requestStatus.ts",
-          "line": 848,
+          "line": 901,
           "kind": "message-helper-return",
           "field": "message",
           "expression": "queueFailure\n        ? 'The connected comics service reported a download or import failure. Check its queue or logs for the cause, fix it there, then retry here.'\n        : 'The connected comics service could not accept this request. Check its connection and ComicVine metadata settings, then retry.'",
@@ -34445,6 +34466,27 @@
       ]
     },
     {
+      "key": "m84f10bc37e5846428c71",
+      "id": "utils.ApiMessage.m84f10bc37e5846428c71",
+      "source": "LazyLibrarian returned an invalid issue inventory; file absence could not be verified.",
+      "defaultMessage": "LazyLibrarian returned an invalid issue inventory; file absence could not be verified.",
+      "sourceHash": "84f10bc37e5846428c71a8b9408d69e5df72f225946815db1c313ea6adb1338a",
+      "parts": [
+        "LazyLibrarian returned an invalid issue inventory; file absence could not be verified."
+      ],
+      "parameterCount": 0,
+      "callsites": [
+        {
+          "path": "server/api/lazylibrarian.ts",
+          "line": 221,
+          "kind": "app-error-candidate",
+          "field": "message",
+          "expression": "'LazyLibrarian returned an invalid issue inventory; file absence could not be verified.'",
+          "captured": []
+        }
+      ]
+    },
+    {
       "key": "m850b023b4c6b2c48029a",
       "id": "utils.ApiMessage.m850b023b4c6b2c48029a",
       "source": "mediaServerType must be valid.",
@@ -35648,7 +35690,7 @@
       "callsites": [
         {
           "path": "server/lib/requestStatus.ts",
-          "line": 856,
+          "line": 909,
           "kind": "message-helper-return",
           "field": "message",
           "expression": "'Whisparr has not found a usable release for this adult scene yet. Check its indexer categories and acquisition settings, then retry.'",
@@ -35838,7 +35880,7 @@
       "callsites": [
         {
           "path": "server/lib/requestStatus.ts",
-          "line": 1108,
+          "line": 1161,
           "kind": "authored-message-variable",
           "field": "message",
           "expression": "options.binderyRequestPending\n      ? 'Waiting for Bindery to approve this request. Enable Auto-approve requests for this account in Bindery if acquisition should start immediately.'\n      : pendingFormat\n        ? `ChaptarrNG is preparing the requested ${pendingFormat === 'audiobook' ? 'audiobook' : 'ebook'} while it imports the author.`\n        : 'Waiting for Bookshelf to prepare the requested book.'",
@@ -36180,7 +36222,7 @@
       "callsites": [
         {
           "path": "server/lib/notifications/intents.ts",
-          "line": 411,
+          "line": 426,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "`${mediaType} request details are available in SeerrNG.`",
@@ -36188,7 +36230,7 @@
         },
         {
           "path": "server/lib/notifications/intents.ts",
-          "line": 435,
+          "line": 476,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "`${mediaType} request details are available in SeerrNG.`",
@@ -36520,7 +36562,7 @@
       "callsites": [
         {
           "path": "server/lib/requestStatus.ts",
-          "line": 887,
+          "line": 940,
           "kind": "message-helper-return",
           "field": "message",
           "expression": "'This request was declined.'",
@@ -38174,7 +38216,7 @@
       "callsites": [
         {
           "path": "server/lib/notifications/outbox.ts",
-          "line": 240,
+          "line": 241,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Notification outbox body descriptor is invalid.'",
@@ -38412,7 +38454,7 @@
       "callsites": [
         {
           "path": "server/lib/requestStatus.ts",
-          "line": 1165,
+          "line": 1218,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'No release found. Use an interactive search in Lidarr.'",
@@ -39430,7 +39472,7 @@
       "callsites": [
         {
           "path": "server/lib/requestStatus.ts",
-          "line": 867,
+          "line": 920,
           "kind": "message-helper-return",
           "field": "message",
           "expression": "'Your request is waiting for approval.'",
@@ -40616,7 +40658,7 @@
       "callsites": [
         {
           "path": "server/lib/requestStatus.ts",
-          "line": 837,
+          "line": 890,
           "kind": "message-helper-return",
           "field": "message",
           "expression": "queueFailure\n        ? 'The connected book service reported a download or import failure. Check its queue or logs for the cause, fix it there, then retry here.'\n        : 'The connected book service could not accept this request. Check its connection and metadata provider settings, then retry.'",
@@ -42072,7 +42114,7 @@
       "callsites": [
         {
           "path": "server/lib/requestStatus.ts",
-          "line": 1225,
+          "line": 1280,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Waiting for a usable release. No active download or import is currently reported.'",
@@ -43371,7 +43413,7 @@
       "callsites": [
         {
           "path": "server/lib/requestStatus.ts",
-          "line": 859,
+          "line": 912,
           "kind": "message-helper-return",
           "field": "message",
           "expression": "queueFailure\n        ? 'Whisparr reported a download or import failure. Check its queue and logs, fix the issue there, then retry.'\n        : 'Whisparr could not accept this scene request. Check the connection and scene metadata, then retry.'",
@@ -47396,7 +47438,7 @@
       "callsites": [
         {
           "path": "server/lib/notifications/intents.ts",
-          "line": 440,
+          "line": 481,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`Unsupported media notification request ${entity.id}.`",
@@ -49620,7 +49662,7 @@
       "callsites": [
         {
           "path": "server/lib/requestStatus.ts",
-          "line": 1108,
+          "line": 1161,
           "kind": "authored-message-variable",
           "field": "message",
           "expression": "options.binderyRequestPending\n      ? 'Waiting for Bindery to approve this request. Enable Auto-approve requests for this account in Bindery if acquisition should start immediately.'\n      : pendingFormat\n        ? `ChaptarrNG is preparing the requested ${pendingFormat === 'audiobook' ? 'audiobook' : 'ebook'} while it imports the author.`\n        : 'Waiting for Bookshelf to prepare the requested book.'",
@@ -51559,7 +51601,7 @@
       "callsites": [
         {
           "path": "server/lib/requestStatus.ts",
-          "line": 875,
+          "line": 928,
           "kind": "message-helper-return",
           "field": "message",
           "expression": "'The download is being imported.'",
@@ -54117,7 +54159,7 @@
       "callsites": [
         {
           "path": "server/lib/notifications/intents.ts",
-          "line": 411,
+          "line": 426,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "`${mediaType} request details are available in SeerrNG.`",
@@ -54125,7 +54167,7 @@
         },
         {
           "path": "server/lib/notifications/intents.ts",
-          "line": 435,
+          "line": 476,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "`${mediaType} request details are available in SeerrNG.`",
@@ -54163,7 +54205,7 @@
       "callsites": [
         {
           "path": "server/lib/requestStatus.ts",
-          "line": 881,
+          "line": 934,
           "kind": "message-helper-return",
           "field": "message",
           "expression": "'No usable release is currently available.'",
@@ -54894,7 +54936,7 @@
       "callsites": [
         {
           "path": "server/lib/requestStatus.ts",
-          "line": 845,
+          "line": 898,
           "kind": "message-helper-return",
           "field": "message",
           "expression": "'No usable release is available from the connected comics service. Check the requested comic and the service catalog or acquisition sources, then retry when they are ready.'",
@@ -54915,7 +54957,7 @@
       "callsites": [
         {
           "path": "server/lib/requestStatus.ts",
-          "line": 1108,
+          "line": 1161,
           "kind": "authored-message-variable",
           "field": "message",
           "expression": "options.binderyRequestPending\n      ? 'Waiting for Bindery to approve this request. Enable Auto-approve requests for this account in Bindery if acquisition should start immediately.'\n      : pendingFormat\n        ? `ChaptarrNG is preparing the requested ${pendingFormat === 'audiobook' ? 'audiobook' : 'ebook'} while it imports the author.`\n        : 'Waiting for Bookshelf to prepare the requested book.'",
@@ -55270,7 +55312,7 @@
       "callsites": [
         {
           "path": "server/lib/notifications/outbox.ts",
-          "line": 582,
+          "line": 585,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`Notification outbox user ${id} no longer exists.`",
@@ -55360,7 +55402,7 @@
       "callsites": [
         {
           "path": "server/lib/notifications/outbox.ts",
-          "line": 246,
+          "line": 249,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Notification outbox subject descriptor is invalid.'",
@@ -55461,7 +55503,7 @@
       "callsites": [
         {
           "path": "server/lib/requestStatus.ts",
-          "line": 877,
+          "line": 930,
           "kind": "message-helper-return",
           "field": "message",
           "expression": "'The media is being added to your library.'",
@@ -56537,7 +56579,7 @@
       "callsites": [
         {
           "path": "server/lib/notifications/outbox.ts",
-          "line": 266,
+          "line": 269,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Notification outbox extra descriptor is invalid.'",
@@ -58335,7 +58377,7 @@
       "callsites": [
         {
           "path": "server/lib/notifications/intents.ts",
-          "line": 411,
+          "line": 426,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "`${mediaType} request details are available in SeerrNG.`",
@@ -58343,7 +58385,7 @@
         },
         {
           "path": "server/lib/notifications/intents.ts",
-          "line": 435,
+          "line": 476,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "`${mediaType} request details are available in SeerrNG.`",
@@ -60335,7 +60377,7 @@
       "callsites": [
         {
           "path": "server/lib/requestStatus.ts",
-          "line": 883,
+          "line": 936,
           "kind": "message-helper-return",
           "field": "message",
           "expression": "queueFailure\n        ? 'The download or import failed.'\n        : 'The request could not be completed.'",
@@ -60636,7 +60678,7 @@
       "callsites": [
         {
           "path": "server/lib/notifications/intents.ts",
-          "line": 411,
+          "line": 426,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "`${mediaType} request details are available in SeerrNG.`",
@@ -60644,7 +60686,42 @@
         },
         {
           "path": "server/lib/notifications/intents.ts",
-          "line": 435,
+          "line": 476,
+          "kind": "authored-message-field",
+          "field": "message",
+          "expression": "`${mediaType} request details are available in SeerrNG.`",
+          "captured": []
+        }
+      ]
+    },
+    {
+      "key": "mf19c6fcb8a6d1c2633a7",
+      "id": "utils.ApiMessage.mf19c6fcb8a6d1c2633a7",
+      "source": "Sports request details are available in SeerrNG.",
+      "defaultMessage": "Sports request details are available in SeerrNG.",
+      "sourceHash": "f19c6fcb8a6d1c2633a7e460a7cbc30f0970cdc9f8074cfa033eda9c141822d1",
+      "parts": ["Sports request details are available in SeerrNG."],
+      "parameterCount": 0,
+      "callsites": [
+        {
+          "path": "server/lib/notifications/intents.ts",
+          "line": 426,
+          "kind": "authored-message-field",
+          "field": "message",
+          "expression": "`${mediaType} request details are available in SeerrNG.`",
+          "captured": []
+        },
+        {
+          "path": "server/lib/notifications/intents.ts",
+          "line": 455,
+          "kind": "authored-message-field",
+          "field": "message",
+          "expression": "'Sports request details are available in SeerrNG.'",
+          "captured": []
+        },
+        {
+          "path": "server/lib/notifications/intents.ts",
+          "line": 476,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "`${mediaType} request details are available in SeerrNG.`",
@@ -63394,7 +63471,7 @@
       "callsites": [
         {
           "path": "server/lib/notifications/intents.ts",
-          "line": 411,
+          "line": 426,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "`${mediaType} request details are available in SeerrNG.`",
@@ -63402,7 +63479,7 @@
         },
         {
           "path": "server/lib/notifications/intents.ts",
-          "line": 435,
+          "line": 476,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "`${mediaType} request details are available in SeerrNG.`",
@@ -63847,7 +63924,7 @@
       "callsites": [
         {
           "path": "server/lib/notifications/outbox.ts",
-          "line": 358,
+          "line": 361,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Stored notification outbox payload is invalid.'",
@@ -64572,7 +64649,7 @@
       "callsites": [
         {
           "path": "server/lib/requestStatus.ts",
-          "line": 1650,
+          "line": 1705,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'The request was retried and is waiting to be dispatched.'",
@@ -64969,7 +65046,7 @@
       "callsites": [
         {
           "path": "server/lib/notifications/intents.ts",
-          "line": 538,
+          "line": 583,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`Notification issue ${issue.id} has no comments.`",
@@ -66258,7 +66335,7 @@
     },
     {
       "path": "server/api/lazylibrarian.ts",
-      "line": 93,
+      "line": 97,
       "kind": "authored-message-variable",
       "field": "error",
       "expression": "isRecord(response.Error)\n      ? readString(response.Error, 'Message', 'message')\n      : undefined",
@@ -66267,7 +66344,7 @@
     },
     {
       "path": "server/api/lazylibrarian.ts",
-      "line": 93,
+      "line": 97,
       "kind": "authored-message-variable",
       "field": "error",
       "expression": "isRecord(response.Error)\n      ? readString(response.Error, 'Message', 'message')\n      : undefined",
@@ -70704,25 +70781,16 @@
     },
     {
       "path": "server/lib/notifications/agents/agent.ts",
-      "line": 113,
+      "line": 117,
       "kind": "authored-message-variable",
       "field": "notificationContentMessages",
-      "expression": "defineMessages('notifications.content', {\n  created:\n    '{issueType, select, video {New Video Issue Reported} audio {New Audio Issue Reported} subtitles {New Subtitle Issue Reported} other {New Issue Reported}}',\n  resolved:\n    '{issueType, select, video {Video Issue Resolved} audio {Audio Issue Resolved} subtitles {Subtitle Issue Resolved} other {Issue Resolved}}',\n  reopened:\n    '{issueType, select, video {Video Issue Reopened} audio {Audio Issue Reopened} subtitles {Subtitle Issue Reopened} other {Issue Reopened}}',\n  comment:\n    '{issueType, select, video {New Comment on Video Issue} audio {New Comment on Audio Issue} subtitles {New Comment on Subtitle Issue} other {New Comment on Issue}}',\n  comicRequestDetails: 'Comic request details are available in SeerrNG.',\n  magazineRequestDetails: 'Magazine request details are available in SeerrNG.',\n  adultRequestDetails: 'Adult Scene request details are available in SeerrNG.',\n  bookRequest: 'Book request',\n  adultSceneRequest: 'Adult scene request',\n  requestedSeasons: 'Requested Seasons',\n  artist: 'Artist',\n  publisher: 'Publisher',\n  affectedSeason: 'Affected Season',\n  affectedEpisode: 'Affected Episode',\n})",
+      "expression": "defineMessages('notifications.content', {\n  created:\n    '{issueType, select, video {New Video Issue Reported} audio {New Audio Issue Reported} subtitles {New Subtitle Issue Reported} other {New Issue Reported}}',\n  resolved:\n    '{issueType, select, video {Video Issue Resolved} audio {Audio Issue Resolved} subtitles {Subtitle Issue Resolved} other {Issue Resolved}}',\n  reopened:\n    '{issueType, select, video {Video Issue Reopened} audio {Audio Issue Reopened} subtitles {Subtitle Issue Reopened} other {Issue Reopened}}',\n  comment:\n    '{issueType, select, video {New Comment on Video Issue} audio {New Comment on Audio Issue} subtitles {New Comment on Subtitle Issue} other {New Comment on Issue}}',\n  comicRequestDetails: 'Comic request details are available in SeerrNG.',\n  magazineRequestDetails: 'Magazine request details are available in SeerrNG.',\n  adultRequestDetails: 'Adult Scene request details are available in SeerrNG.',\n  sportsRequestDetails: 'Sports request details are available in SeerrNG.',\n  sportsLeagueRequest: 'Sports league request',\n  bookRequest: 'Book request',\n  adultSceneRequest: 'Adult scene request',\n  requestedSeasons: 'Requested Seasons',\n  artist: 'Artist',\n  publisher: 'Publisher',\n  affectedSeason: 'Affected Season',\n  affectedEpisode: 'Affected Episode',\n})",
       "source": "{value0}",
       "reason": "dynamic/provider/user value"
     },
     {
       "path": "server/lib/notifications/agents/agent.ts",
-      "line": 146,
-      "kind": "authored-message-field",
-      "field": "message",
-      "expression": "payload.bodyMessage\n        ? intl.formatMessage(notificationContentMessages[payload.bodyMessage])\n        : payload.message",
-      "source": "{value0}",
-      "reason": "dynamic/provider/user value"
-    },
-    {
-      "path": "server/lib/notifications/agents/agent.ts",
-      "line": 146,
+      "line": 152,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "payload.bodyMessage\n        ? intl.formatMessage(notificationContentMessages[payload.bodyMessage])\n        : payload.message",
@@ -70732,6 +70800,15 @@
     {
       "path": "server/lib/notifications/agents/agent.ts",
       "line": 152,
+      "kind": "authored-message-field",
+      "field": "message",
+      "expression": "payload.bodyMessage\n        ? intl.formatMessage(notificationContentMessages[payload.bodyMessage])\n        : payload.message",
+      "source": "{value0}",
+      "reason": "dynamic/provider/user value"
+    },
+    {
+      "path": "server/lib/notifications/agents/agent.ts",
+      "line": 158,
       "kind": "authored-message-variable",
       "field": "messages",
       "expression": "{\n    available: [\n      globalMessages.softwareRequestAvailable,\n      globalMessages.softwareAvailableMessage,\n    ],\n    pending: [\n      globalMessages.softwareRequestPending,\n      globalMessages.softwarePendingMessage,\n    ],\n    approved: [\n      globalMessages.softwareRequestApproved,\n      globalMessages.softwareApprovedMessage,\n    ],\n    declined: [\n      globalMessages.softwareRequestDeclined,\n      globalMessages.softwareDeclinedMessage,\n    ],\n    failed: [\n      globalMessages.softwareRequestFailed,\n      globalMessages.softwareFailedMessage,\n    ],\n  } satisfies Record<\n    SoftwareRequestStatus,\n    [\n      (typeof globalMessages)[keyof typeof globalMessages],\n      (typeof globalMessages)[keyof typeof globalMessages],\n    ]\n  >",
@@ -70740,7 +70817,7 @@
     },
     {
       "path": "server/lib/notifications/agents/agent.ts",
-      "line": 184,
+      "line": 190,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "intl.formatMessage(message)",
@@ -71208,7 +71285,7 @@
     },
     {
       "path": "server/lib/notifications/intents.ts",
-      "line": 256,
+      "line": 271,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "truncate(movie.overview, {\n        length: 500,\n        separator: /\\s/,\n        omission: '…',\n      })",
@@ -71217,7 +71294,7 @@
     },
     {
       "path": "server/lib/notifications/intents.ts",
-      "line": 272,
+      "line": 287,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "truncate(tv.overview, {\n        length: 500,\n        separator: /\\s/,\n        omission: '…',\n      })",
@@ -71226,7 +71303,7 @@
     },
     {
       "path": "server/lib/notifications/intents.ts",
-      "line": 299,
+      "line": 314,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "artist.name",
@@ -71235,7 +71312,7 @@
     },
     {
       "path": "server/lib/notifications/intents.ts",
-      "line": 343,
+      "line": 358,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "author || metadata?.publisher || undefined",
@@ -71244,7 +71321,7 @@
     },
     {
       "path": "server/lib/notifications/intents.ts",
-      "line": 343,
+      "line": 358,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "author || metadata?.publisher || undefined",
@@ -71253,7 +71330,7 @@
     },
     {
       "path": "server/lib/notifications/intents.ts",
-      "line": 343,
+      "line": 358,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "author || metadata?.publisher || undefined",
@@ -71262,7 +71339,7 @@
     },
     {
       "path": "server/lib/notifications/intents.ts",
-      "line": 378,
+      "line": 393,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "description\n        ? truncate(description, {\n            length: 500,\n            separator: /\\s/,\n            omission: '…',\n          })\n        : undefined",
@@ -71271,7 +71348,7 @@
     },
     {
       "path": "server/lib/notifications/intents.ts",
-      "line": 378,
+      "line": 393,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "description\n        ? truncate(description, {\n            length: 500,\n            separator: /\\s/,\n            omission: '…',\n          })\n        : undefined",
@@ -71280,7 +71357,7 @@
     },
     {
       "path": "server/lib/notifications/intents.ts",
-      "line": 581,
+      "line": 626,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "firstComment.message",
@@ -71289,7 +71366,7 @@
     },
     {
       "path": "server/lib/notifications/intents.ts",
-      "line": 629,
+      "line": 674,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "firstComment.message",
@@ -71298,7 +71375,7 @@
     },
     {
       "path": "server/lib/notifications/outbox.ts",
-      "line": 306,
+      "line": 309,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "payload.message",
@@ -71307,7 +71384,7 @@
     },
     {
       "path": "server/lib/notifications/outbox.ts",
-      "line": 332,
+      "line": 335,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "payload.comment.message",
@@ -71316,7 +71393,7 @@
     },
     {
       "path": "server/lib/notifications/outbox.ts",
-      "line": 603,
+      "line": 606,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "stored.message",
@@ -71325,7 +71402,7 @@
     },
     {
       "path": "server/lib/notifications/outbox.ts",
-      "line": 628,
+      "line": 631,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "stored.comment.message",
@@ -71937,7 +72014,7 @@
     },
     {
       "path": "server/lib/requestStatus.ts",
-      "line": 286,
+      "line": 287,
       "kind": "message-helper-expression",
       "field": "message",
       "expression": "status === MediaStatus.AVAILABLE",
@@ -71946,7 +72023,7 @@
     },
     {
       "path": "server/lib/requestStatus.ts",
-      "line": 289,
+      "line": 290,
       "kind": "message-helper-expression",
       "field": "message",
       "expression": "status === MediaStatus.DELETED",
@@ -71955,7 +72032,7 @@
     },
     {
       "path": "server/lib/requestStatus.ts",
-      "line": 407,
+      "line": 444,
       "kind": "message-helper-return",
       "field": "message",
       "expression": "MediaStatus.UNKNOWN",
@@ -71964,7 +72041,7 @@
     },
     {
       "path": "server/lib/requestStatus.ts",
-      "line": 411,
+      "line": 448,
       "kind": "message-helper-return",
       "field": "message",
       "expression": "getMusicTarget(request)?.status ?? request.media.status",
@@ -71973,7 +72050,7 @@
     },
     {
       "path": "server/lib/requestStatus.ts",
-      "line": 411,
+      "line": 448,
       "kind": "message-helper-return",
       "field": "message",
       "expression": "getMusicTarget(request)?.status ?? request.media.status",
@@ -71982,7 +72059,7 @@
     },
     {
       "path": "server/lib/requestStatus.ts",
-      "line": 414,
+      "line": 451,
       "kind": "message-helper-return",
       "field": "message",
       "expression": "(\n      getComicRequestTarget(request.media, request)?.status ??\n      MediaStatus.UNKNOWN\n    )",
@@ -71991,7 +72068,7 @@
     },
     {
       "path": "server/lib/requestStatus.ts",
-      "line": 414,
+      "line": 451,
       "kind": "message-helper-return",
       "field": "message",
       "expression": "(\n      getComicRequestTarget(request.media, request)?.status ??\n      MediaStatus.UNKNOWN\n    )",
@@ -72000,7 +72077,7 @@
     },
     {
       "path": "server/lib/requestStatus.ts",
-      "line": 420,
+      "line": 457,
       "kind": "message-helper-return",
       "field": "message",
       "expression": "getAdultTarget(request)?.status ?? request.media.status",
@@ -72009,7 +72086,7 @@
     },
     {
       "path": "server/lib/requestStatus.ts",
-      "line": 420,
+      "line": 457,
       "kind": "message-helper-return",
       "field": "message",
       "expression": "getAdultTarget(request)?.status ?? request.media.status",
@@ -72018,7 +72095,25 @@
     },
     {
       "path": "server/lib/requestStatus.ts",
-      "line": 422,
+      "line": 460,
+      "kind": "message-helper-return",
+      "field": "message",
+      "expression": "getCatalogTrackingTarget(request)?.status ?? request.media.status",
+      "source": "{value0}",
+      "reason": "dynamic/provider/user value"
+    },
+    {
+      "path": "server/lib/requestStatus.ts",
+      "line": 460,
+      "kind": "message-helper-return",
+      "field": "message",
+      "expression": "getCatalogTrackingTarget(request)?.status ?? request.media.status",
+      "source": "{value0}",
+      "reason": "dynamic/provider/user value"
+    },
+    {
+      "path": "server/lib/requestStatus.ts",
+      "line": 461,
       "kind": "message-helper-return",
       "field": "message",
       "expression": "request.media.status",
@@ -72027,7 +72122,7 @@
     },
     {
       "path": "server/lib/requestStatus.ts",
-      "line": 423,
+      "line": 462,
       "kind": "message-helper-return",
       "field": "message",
       "expression": "request.is4k ? request.media.status4k : request.media.status",
@@ -72036,7 +72131,7 @@
     },
     {
       "path": "server/lib/requestStatus.ts",
-      "line": 423,
+      "line": 462,
       "kind": "message-helper-return",
       "field": "message",
       "expression": "request.is4k ? request.media.status4k : request.media.status",
@@ -72045,7 +72140,7 @@
     },
     {
       "path": "server/lib/requestStatus.ts",
-      "line": 827,
+      "line": 880,
       "kind": "authored-message-variable",
       "field": "getMessage",
       "expression": "(\n  stage: RequestStatusStage,\n  queueFailure = false,\n  mediaType?: MediaType\n): string => {\n  if (mediaType === MediaType.BOOK) {\n    if (stage === RequestStatusStage.UNAVAILABLE) {\n      return 'No usable edition is available from the connected book service. Check the requested edition and the service catalog or acquisition sources, then retry when they are ready.';\n    }\n    if (stage === RequestStatusStage.FAILED) {\n      return queueFailure\n        ? 'The connected book service reported a download or import failure. Check its queue or logs for the cause, fix it there, then retry here.'\n        : 'The connected book service could not accept this request. Check its connection and metadata provider settings, then retry.';\n    }\n  }\n\n  if (mediaType === MediaType.COMIC) {\n    if (stage === RequestStatusStage.UNAVAILABLE) {\n      return 'No usable release is available from the connected comics service. Check the requested comic and the service catalog or acquisition sources, then retry when they are ready.';\n    }\n    if (stage === RequestStatusStage.FAILED) {\n      return queueFailure\n        ? 'The connected comics service reported a download or import failure. Check its queue or logs for the cause, fix it there, then retry here.'\n        : 'The connected comics service could not accept this request. Check its connection and ComicVine metadata settings, then retry.';\n    }\n  }\n\n  if (mediaType === MediaType.ADULT) {\n    if (stage === RequestStatusStage.UNAVAILABLE) {\n      return 'Whisparr has not found a usable release for this adult scene yet. Check its indexer categories and acquisition settings, then retry.';\n    }\n    if (stage === RequestStatusStage.FAILED) {\n      return queueFailure\n        ? 'Whisparr reported a download or import failure. Check its queue and logs, fix the issue there, then retry.'\n        : 'Whisparr could not accept this scene request. Check the connection and scene metadata, then retry.';\n    }\n  }\n\n  switch (stage) {\n    case RequestStatusStage.REQUESTED:\n      return 'Your request is waiting for approval.';\n    case RequestStatusStage.APPROVED:\n      return 'Your request was approved and is waiting to be dispatched.';\n    case RequestStatusStage.SEARCHING:\n      return 'Searching for a usable release.';\n    case RequestStatusStage.DOWNLOADING:\n      return 'A usable release is downloading.';\n    case RequestStatusStage.IMPORTING:\n      return 'The download is being imported.';\n    case RequestStatusStage.LIBRARY:\n      return 'The media is being added to your library.';\n    case RequestStatusStage.AVAILABLE:\n      return 'The requested media is available.';\n    case RequestStatusStage.UNAVAILABLE:\n      return 'No usable release is currently available.';\n    case RequestStatusStage.FAILED:\n      return queueFailure\n        ? 'The download or import failed.'\n        : 'The request could not be completed.';\n    case RequestStatusStage.DECLINED:\n      return 'This request was declined.';\n    case RequestStatusStage.CANCELLED:\n      return 'This request was cancelled.';\n  }\n}",
@@ -72054,7 +72149,7 @@
     },
     {
       "path": "server/lib/requestStatus.ts",
-      "line": 993,
+      "line": 1046,
       "kind": "protocol-helper-expression",
       "field": "message",
       "expression": "message ? REQUEST_STATUS_MESSAGE_KEYS.get(message) : undefined",
@@ -72063,7 +72158,7 @@
     },
     {
       "path": "server/lib/requestStatus.ts",
-      "line": 993,
+      "line": 1046,
       "kind": "protocol-helper-expression",
       "field": "message",
       "expression": "message ? REQUEST_STATUS_MESSAGE_KEYS.get(message) : undefined",
@@ -72072,7 +72167,7 @@
     },
     {
       "path": "server/lib/requestStatus.ts",
-      "line": 998,
+      "line": 1051,
       "kind": "protocol-helper-expression",
       "field": "message",
       "expression": "!!value &&\n  [...REQUEST_STATUS_MESSAGE_KEYS.values()].includes(\n    value as RequestStatusMessageKey\n  )",
@@ -72081,7 +72176,7 @@
     },
     {
       "path": "server/lib/requestStatus.ts",
-      "line": 1281,
+      "line": 1336,
       "kind": "authored-message-variable",
       "field": "hasGenericBookFailureMessage",
       "expression": "request.type === MediaType.BOOK &&\n    (latestEvent?.messageKey === 'unavailable' ||\n      latestEvent?.messageKey === 'downloadImportFailed' ||\n      latestEvent?.messageKey === 'couldNotComplete')",
@@ -72090,7 +72185,7 @@
     },
     {
       "path": "server/lib/requestStatus.ts",
-      "line": 1286,
+      "line": 1341,
       "kind": "authored-message-variable",
       "field": "useLatestEventMessage",
       "expression": "!result.message &&\n    latestEvent &&\n    (stage === RequestStatusStage.UNAVAILABLE ||\n      stage === RequestStatusStage.FAILED) &&\n    latestEvent.stage === stage &&\n    !!latestEvent.message &&\n    !hasGenericBookFailureMessage",
@@ -72099,7 +72194,7 @@
     },
     {
       "path": "server/lib/requestStatus.ts",
-      "line": 1294,
+      "line": 1349,
       "kind": "authored-message-variable",
       "field": "message",
       "expression": "result.message ??\n    (useLatestEventMessage\n      ? latestEvent.message!\n      : getMessage(stage, result.queueFailure, request.type))",
@@ -72108,7 +72203,7 @@
     },
     {
       "path": "server/lib/requestStatus.ts",
-      "line": 1294,
+      "line": 1349,
       "kind": "authored-message-variable",
       "field": "message",
       "expression": "result.message ??\n    (useLatestEventMessage\n      ? latestEvent.message!\n      : getMessage(stage, result.queueFailure, request.type))",
@@ -72117,7 +72212,7 @@
     },
     {
       "path": "server/lib/requestStatus.ts",
-      "line": 1294,
+      "line": 1349,
       "kind": "authored-message-variable",
       "field": "message",
       "expression": "result.message ??\n    (useLatestEventMessage\n      ? latestEvent.message!\n      : getMessage(stage, result.queueFailure, request.type))",
@@ -72126,7 +72221,7 @@
     },
     {
       "path": "server/lib/requestStatus.ts",
-      "line": 1306,
+      "line": 1361,
       "kind": "message-helper-return",
       "field": "message",
       "expression": "{\n    stage,\n    attempt: latestEvent?.attempt ?? 0,\n    percent: metrics.percent,\n    size: metrics.size,\n    sizeLeft: metrics.sizeLeft,\n    estimatedCompletionTime: metrics.estimatedCompletionTime,\n    downloadCount: result.downloads.length,\n    downloadId: metrics.downloadId,\n    service: getServiceName(request) ?? latestEvent?.service ?? null,\n    message,\n    ...(messageKey ? { messageKey } : {}),\n    observedAt: new Date(),\n    isTerminal: (REQUEST_STATUS_TERMINAL_STAGES as readonly string[]).includes(\n      stage\n    ),\n    needsAttention:\n      stage === RequestStatusStage.UNAVAILABLE ||\n      stage === RequestStatusStage.FAILED ||\n      stage === RequestStatusStage.DECLINED ||\n      stage === RequestStatusStage.CANCELLED,\n    retryable:\n      request.status === MediaRequestStatus.FAILED ||\n      (stage === RequestStatusStage.UNAVAILABLE &&\n        request.status === MediaRequestStatus.APPROVED &&\n        !hasRequestedServiceLink(request)),\n    ...(options.bookImportProgresses?.length\n      ? { bookImportProgresses: options.bookImportProgresses }\n      : {}),\n  }",
@@ -72135,7 +72230,7 @@
     },
     {
       "path": "server/lib/requestStatus.ts",
-      "line": 1341,
+      "line": 1396,
       "kind": "message-helper-expression",
       "field": "message",
       "expression": "manager?.getRepository(MediaRequestStatusEvent) ??\n  getRepository(MediaRequestStatusEvent)",
@@ -72144,7 +72239,7 @@
     },
     {
       "path": "server/lib/requestStatus.ts",
-      "line": 1341,
+      "line": 1396,
       "kind": "message-helper-expression",
       "field": "message",
       "expression": "manager?.getRepository(MediaRequestStatusEvent) ??\n  getRepository(MediaRequestStatusEvent)",
@@ -72153,7 +72248,7 @@
     },
     {
       "path": "server/lib/requestStatus.ts",
-      "line": 1348,
+      "line": 1403,
       "kind": "message-helper-expression",
       "field": "message",
       "expression": "getStatusEventRepository(manager).findOne({\n    where: { requestId },\n    order: { id: 'DESC' },\n  })",
@@ -72162,7 +72257,7 @@
     },
     {
       "path": "server/lib/requestStatus.ts",
-      "line": 1426,
+      "line": 1481,
       "kind": "authored-message-variable",
       "field": "message",
       "expression": "event.message ?? null",
@@ -72171,7 +72266,7 @@
     },
     {
       "path": "server/lib/requestStatus.ts",
-      "line": 1426,
+      "line": 1481,
       "kind": "authored-message-variable",
       "field": "message",
       "expression": "event.message ?? null",
@@ -72180,7 +72275,7 @@
     },
     {
       "path": "server/lib/requestStatus.ts",
-      "line": 1517,
+      "line": 1572,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "status.message",
@@ -72189,7 +72284,7 @@
     },
     {
       "path": "server/lib/requestStatus.ts",
-      "line": 1531,
+      "line": 1586,
       "kind": "authored-message-variable",
       "field": "message",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -72198,7 +72293,7 @@
     },
     {
       "path": "server/lib/requestStatus.ts",
-      "line": 1531,
+      "line": 1586,
       "kind": "authored-message-variable",
       "field": "message",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -72207,7 +72302,7 @@
     },
     {
       "path": "server/lib/requestStatus.ts",
-      "line": 1536,
+      "line": 1591,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "message",
@@ -72216,7 +72311,7 @@
     },
     {
       "path": "server/lib/requestStatus.ts",
-      "line": 1536,
+      "line": 1591,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "message",
@@ -72225,7 +72320,7 @@
     },
     {
       "path": "server/lib/requestStatus.ts",
-      "line": 1568,
+      "line": 1623,
       "kind": "message-helper-return",
       "field": "message",
       "expression": "undefined",
@@ -72234,7 +72329,7 @@
     },
     {
       "path": "server/lib/requestStatus.ts",
-      "line": 1589,
+      "line": 1644,
       "kind": "message-helper-return",
       "field": "message",
       "expression": "status",
@@ -72243,7 +72338,7 @@
     },
     {
       "path": "server/lib/requestStatus.ts",
-      "line": 1608,
+      "line": 1663,
       "kind": "persisted-message-assignment",
       "field": "message",
       "expression": "message.slice(0, 512)",
@@ -72252,7 +72347,7 @@
     },
     {
       "path": "server/lib/requestStatus.ts",
-      "line": 1662,
+      "line": 1717,
       "kind": "authored-message-variable",
       "field": "message",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -72261,7 +72356,7 @@
     },
     {
       "path": "server/lib/requestStatus.ts",
-      "line": 1662,
+      "line": 1717,
       "kind": "authored-message-variable",
       "field": "message",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -72270,7 +72365,7 @@
     },
     {
       "path": "server/lib/requestStatus.ts",
-      "line": 1667,
+      "line": 1722,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "message",
@@ -72279,7 +72374,7 @@
     },
     {
       "path": "server/lib/requestStatus.ts",
-      "line": 1667,
+      "line": 1722,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "message",
@@ -72288,7 +72383,7 @@
     },
     {
       "path": "server/lib/requestStatus.ts",
-      "line": 1704,
+      "line": 1759,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "getMessage(RequestStatusStage.CANCELLED)",
@@ -72297,7 +72392,7 @@
     },
     {
       "path": "server/lib/requestStatus.ts",
-      "line": 1722,
+      "line": 1777,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "status.message",
@@ -72306,7 +72401,7 @@
     },
     {
       "path": "server/lib/requestStatus.ts",
-      "line": 1731,
+      "line": 1786,
       "kind": "authored-message-variable",
       "field": "message",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -72315,7 +72410,7 @@
     },
     {
       "path": "server/lib/requestStatus.ts",
-      "line": 1731,
+      "line": 1786,
       "kind": "authored-message-variable",
       "field": "message",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -72324,7 +72419,7 @@
     },
     {
       "path": "server/lib/requestStatus.ts",
-      "line": 1736,
+      "line": 1791,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "message",
@@ -72333,7 +72428,7 @@
     },
     {
       "path": "server/lib/requestStatus.ts",
-      "line": 1736,
+      "line": 1791,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "message",
@@ -72342,7 +72437,7 @@
     },
     {
       "path": "server/lib/requestStatus.ts",
-      "line": 1754,
+      "line": 1809,
       "kind": "message-helper-return",
       "field": "message",
       "expression": "{ results: events.map(eventToHistoryItem), total }",
@@ -72351,7 +72446,7 @@
     },
     {
       "path": "server/lib/requestStatus.ts",
-      "line": 1910,
+      "line": 1965,
       "kind": "message-helper-return",
       "field": "message",
       "expression": "{ request, status }",
@@ -72360,7 +72455,7 @@
     },
     {
       "path": "server/lib/requestStatus.ts",
-      "line": 2080,
+      "line": 2135,
       "kind": "message-helper-return",
       "field": "message",
       "expression": "{\n    total: rows.length,\n    active,\n    incomplete,\n    attention,\n    completed,\n    unavailable,\n    failed,\n  }",
@@ -72369,7 +72464,7 @@
     },
     {
       "path": "server/lib/requestStatus.ts",
-      "line": 2139,
+      "line": 2194,
       "kind": "message-helper-return",
       "field": "message",
       "expression": "query.getCount()",
@@ -72378,7 +72473,7 @@
     },
     {
       "path": "server/lib/requestStatus.ts",
-      "line": 2326,
+      "line": 2381,
       "kind": "message-helper-return",
       "field": "message",
       "expression": "{\n    pageInfo: {\n      pages: Math.ceil(requestCount / pageSize),\n      pageSize,\n      results: requestCount,\n      page: Math.floor(skip / pageSize) + 1,\n    },\n    results: resultItems,\n    counts,\n    olderCount,\n  }",
@@ -85392,7 +85487,7 @@
     },
     {
       "path": "server/subscriber/MediaSubscriber.ts",
-      "line": 228,
+      "line": 237,
       "kind": "persisted-message-assignment",
       "field": "failureReason",
       "expression": "null",
@@ -85401,7 +85496,7 @@
     },
     {
       "path": "server/subscriber/MediaSubscriber.ts",
-      "line": 300,
+      "line": 380,
       "kind": "message-helper-return",
       "field": "message",
       "expression": "event.entity?.seasons?.some((season: Season) => {\n        const previousSeason = previousSeasons.get(season.seasonNumber);\n\n        return (\n          season[is4k ? 'status4k' : 'status'] !==\n          previousSeason?.[is4k ? 'status4k' : 'status']\n        );\n      })",
@@ -85410,7 +85505,7 @@
     },
     {
       "path": "server/subscriber/MediaSubscriber.ts",
-      "line": 331,
+      "line": 411,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "e instanceof Error ? e.message : String(e)",
@@ -85419,7 +85514,7 @@
     },
     {
       "path": "server/subscriber/MediaSubscriber.ts",
-      "line": 331,
+      "line": 411,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "e instanceof Error ? e.message : String(e)",
@@ -85428,7 +85523,7 @@
     },
     {
       "path": "server/subscriber/MediaSubscriber.ts",
-      "line": 357,
+      "line": 437,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "e instanceof Error ? e.message : String(e)",
@@ -85437,7 +85532,7 @@
     },
     {
       "path": "server/subscriber/MediaSubscriber.ts",
-      "line": 357,
+      "line": 437,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "e instanceof Error ? e.message : String(e)",

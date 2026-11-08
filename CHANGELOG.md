@@ -12,7 +12,8 @@ tags. The comparison link is the complete commit range.
 ## [3.72.25](https://github.com/snapetech-org/seerrng/compare/v3.72.23..v3.72.25) - 2026-11-08
 
 Consolidates the fixes prepared for unpublished v3.72.24 with the subsequent
-book-discovery, fresh-Bindery and release-bootstrap repairs.
+book discovery, Bindery setup, deleted-TV recovery, magazine/sports status and
+notification, and release download repairs.
 
 ### User-facing changes
 
@@ -24,6 +25,8 @@ book-discovery, fresh-Bindery and release-bootstrap repairs.
 
 #### Fixed
 
+- **Magazines:** Tracking acceptance no longer sends premature availability. Requested destinations retain independent file observations and notify once when an issue file appears; malformed inventories preserve verified state.
+- **Sports:** Request notices include human league titles and valid links. League monitoring does not claim event-file availability, and Requests reports the correct service and tracking stage.
 - **TV:** Administrator stale-availability recovery stays visible when viewer availability is masked and verifies empty Sonarr episode-file inventories before allowing a new request. Existing tracking entries and request history are preserved.
 - **Books:** Service acceptance leaves requests processing until the requested files are observed. Premature completion and availability notifications are corrected, old active tracking is repaired, and repeated delivery stays idempotent.
 - **Books:** Recommended discovery starts with trending works rather than random catalog records. Open Library searches use a bounded 30-second budget while retaining language rules, caching and retry controls.
