@@ -7,11 +7,22 @@
 // - Saved per account in localStorage, so a reopened app starts from what it last showed.
 //   Signing out or switching account drops it. Requests and other changes mark everything
 //   stale, so nothing keeps showing a title as not requested.
+// - SeerrNG allows each address 600 calls a minute, and behind a reverse proxy a whole
+//   household can share one address. So identical calls in flight are shared, and even the
+//   always-checked answers are reused for a few seconds (every poster asks for the server's
+//   settings, for one).
 import { onSessionReset, sessionUserId } from './sessionState';
 
 export const FRESH_MS = 3 * 60_000;
 const KEEP_MS = 24 * 60 * 60_000;
 const MAX_SAVED = 150;
+// browsers allow about 5MB per site (Firefox counts every *.example.org site together), and
+// the whole copy is rewritten on each save: keep it small and leave out the big lists
+const MAX_SAVED_CHARS = 1_000_000;
+const MAX_ENTRY_CHARS = 100_000;
+const SAVE_DELAY_MS = 400;
+// how long an always-checked answer is reused before asking again
+export const RECHECK_MS = 15_000;
 // these change as people use the site: always asked again (still shown at once meanwhile)
 const ALWAYS_CHECK = /^\/(request|auth|user\/\d+\/quota|settings\/public)/;
 
@@ -45,23 +56,35 @@ function ensureLoaded() {
 }
 
 let saveTimer: ReturnType<typeof setTimeout> | undefined;
+let pendingSave: (() => void) | undefined;
 function save() {
   const id = sessionUserId();
   if (id == null || loadedFor !== id) return;
   clearTimeout(saveTimer);
-  saveTimer = setTimeout(() => {
+  pendingSave = () => {
+    pendingSave = undefined;
     if (sessionUserId() !== id) return;
     try {
-      const newest = [...entries]
-        .sort((a, b) => b[1].at - a[1].at)
-        .slice(0, MAX_SAVED);
-      localStorage.setItem(storeKey(id), JSON.stringify(newest));
+      const parts: string[] = [];
+      let chars = 2;
+      // newest first (and the latest added first among answers saved the same moment)
+      for (const item of [...entries]
+        .reverse()
+        .sort((a, b) => b[1].at - a[1].at)) {
+        if (parts.length >= MAX_SAVED) break;
+        const one = JSON.stringify(item);
+        if (one.length > MAX_ENTRY_CHARS) continue; // kept in memory only
+        if (chars + one.length + 1 > MAX_SAVED_CHARS) break;
+        parts.push(one);
+        chars += one.length + 1;
+      }
+      localStorage.setItem(storeKey(id), `[${parts.join(',')}]`);
     } catch {
       // full or blocked storage: keep it in memory only
     }
-  }, 400);
+  };
+  saveTimer = setTimeout(() => pendingSave?.(), SAVE_DELAY_MS);
 }
-
 function currentEntry(path: string) {
   ensureLoaded();
   const e = entries.get(path);
@@ -76,7 +99,9 @@ export function cached<T>(path: string): T | undefined {
 
 export function isFresh(path: string) {
   const e = currentEntry(path);
-  return !!e && !ALWAYS_CHECK.test(path) && Date.now() - e.at < FRESH_MS;
+  return (
+    !!e && Date.now() - e.at < (ALWAYS_CHECK.test(path) ? RECHECK_MS : FRESH_MS)
+  );
 }
 
 export function remember(path: string, data: unknown) {
@@ -92,9 +117,23 @@ export function forget(prefix: string) {
   save();
 }
 
+// one call per path at a time: everyone asking while it's in flight gets the same answer
+const inFlight = new Map<string, Promise<unknown>>();
+export function shared<T>(path: string, load: () => Promise<T>): Promise<T> {
+  const key = `${sessionUserId() ?? ''}|${path}`;
+  const running = inFlight.get(key);
+  if (running) return running as Promise<T>;
+  const p = load().finally(() => {
+    if (inFlight.get(key) === p) inFlight.delete(key);
+  });
+  inFlight.set(key, p);
+  return p;
+}
+
 // after a request or other change: keep showing what's there, but ask again next time
 export function markAllStale() {
   ensureLoaded();
+  inFlight.clear(); // an answer already on its way may predate the change
   const stale = Date.now() - FRESH_MS - 1;
   for (const e of entries.values()) e.at = Math.min(e.at, stale);
   save();
@@ -109,6 +148,8 @@ onSessionReset(() => {
       // blocked storage: nothing was saved
     }
   clearTimeout(saveTimer);
+  pendingSave = undefined;
+  inFlight.clear();
   entries = new Map();
   loadedFor = undefined;
 });
