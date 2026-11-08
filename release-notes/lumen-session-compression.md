@@ -1,0 +1,1 @@
+Lumen can save shared settings and upload branding when SeerrNG compresses its session response. The proxy now requests plain JSON for its internal account check while retaining the existing sign-in and administrator checks.

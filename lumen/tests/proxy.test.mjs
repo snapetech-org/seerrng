@@ -4,6 +4,7 @@ import { createServer } from 'node:http';
 import { resolve } from 'node:path';
 import { after, before, test } from 'node:test';
 import { promisify } from 'node:util';
+import { gzipSync } from 'node:zlib';
 const exec = promisify(execFile);
 const docker = async (...args) =>
   (await exec('docker', args, { maxBuffer: 4 * 1024 * 1024 })).stdout.trim();
@@ -25,11 +26,15 @@ const echo = createServer((req, res) => {
           ? 503
           : 401;
     res.setHeader('content-type', 'application/json');
-    res.end(
-      JSON.stringify({
-        permissions: req.headers.cookie === 'fixture-session=valid' ? 2 : 32,
-      })
-    );
+    const body = JSON.stringify({
+      permissions: req.headers.cookie === 'fixture-session=valid' ? 2 : 32,
+      // Real /auth/me responses contain settings and exceed the compression threshold.
+      profile: 'fixture-profile '.repeat(150),
+    });
+    if (req.headers['accept-encoding']?.includes('gzip')) {
+      res.setHeader('content-encoding', 'gzip');
+      res.end(gzipSync(body));
+    } else res.end(body);
     return;
   }
   if (req.url.startsWith('/seerr-classic/')) extraCalls += 1;
@@ -316,6 +321,7 @@ test('actual nginx saves and serves admin branding without deleting the live log
     const admin = {
       cookie: 'fixture-session=valid',
       'content-type': 'application/json',
+      'accept-encoding': 'gzip',
     };
     for (const path of ['/lumen/config', '/lumen/branding/logo']) {
       for (const [cookie, expected] of [

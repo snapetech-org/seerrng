@@ -61,6 +61,8 @@ server {
     internal;
     proxy_pass ${SEERR_URL}/api/v1/auth/me;
     proxy_method GET;
+    # njs parses the JSON body itself; it cannot decode upstream gzip/brotli.
+    proxy_set_header Accept-Encoding "";
     # lumen-config.js reads the answer (who is signed in), not just the status
     subrequest_output_buffer_size 64k;
     proxy_pass_request_body off;
