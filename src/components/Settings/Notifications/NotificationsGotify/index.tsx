@@ -1,7 +1,7 @@
 import Button from '@app/components/Common/Button';
-import LoadingSpinner from '@app/components/Common/LoadingSpinner';
 import NotificationTypeSelector from '@app/components/NotificationTypeSelector';
 import Field from '@app/components/Settings/SettingsField';
+import SettingsLoadState from '@app/components/Settings/SettingsLoadState';
 import { availableLanguages } from '@app/context/LanguageContext';
 import useToasts from '@app/hooks/useToasts';
 import globalMessages from '@app/i18n/globalMessages';
@@ -86,8 +86,10 @@ const NotificationsGotify = () => {
     }),
   });
 
-  if (!data && !error) {
-    return <LoadingSpinner />;
+  if (!data) {
+    return (
+      <SettingsLoadState failed={Boolean(error)} onRetry={() => revalidate()} />
+    );
   }
 
   return (

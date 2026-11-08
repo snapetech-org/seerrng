@@ -2946,7 +2946,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/Settings/SettingsMetadata.tsx",
-          "line": 24,
+          "line": 25,
           "defaultMessage": "'General'"
         }
       ],
@@ -4534,7 +4534,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/Settings/SettingsJobsCache/index.tsx",
-          "line": 42,
+          "line": 43,
           "defaultMessage": "'Type'"
         }
       ],

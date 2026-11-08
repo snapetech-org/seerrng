@@ -1,9 +1,9 @@
 import Button from '@app/components/Common/Button';
-import LoadingSpinner from '@app/components/Common/LoadingSpinner';
 import SensitiveInput from '@app/components/Common/SensitiveInput';
 import SettingsBadge from '@app/components/Settings/SettingsBadge';
 import Field from '@app/components/Settings/SettingsField';
 import SettingsHelp from '@app/components/Settings/SettingsHelp';
+import SettingsLoadState from '@app/components/Settings/SettingsLoadState';
 import useToasts from '@app/hooks/useToasts';
 import globalMessages from '@app/i18n/globalMessages';
 import defineMessages from '@app/utils/defineMessages';
@@ -135,8 +135,10 @@ const NotificationsEmail = () => {
     [['pgpPrivateKey', 'pgpPassword']]
   );
 
-  if (!data && !error) {
-    return <LoadingSpinner />;
+  if (!data) {
+    return (
+      <SettingsLoadState failed={Boolean(error)} onRetry={() => revalidate()} />
+    );
   }
 
   return (

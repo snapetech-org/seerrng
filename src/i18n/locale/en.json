@@ -4694,6 +4694,7 @@
   "components.Settings.SettingsJobsCache.soulseek-sync": "Soulseek Sync",
   "components.Settings.SettingsJobsCache.unknownJob": "Unknown Job",
   "components.Settings.SettingsJobsCache.usersavatars": "Users' Avatars",
+  "components.Settings.SettingsLoadState.loadError": "Could not load settings.",
   "components.Settings.SettingsLogs.copiedLogMessage": "Copied log message to clipboard.",
   "components.Settings.SettingsLogs.copyToClipboard": "Copy to Clipboard",
   "components.Settings.SettingsLogs.extraData": "Additional Data",

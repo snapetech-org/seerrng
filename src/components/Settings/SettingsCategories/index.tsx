@@ -1,9 +1,9 @@
 import Alert from '@app/components/Common/Alert';
-import LoadingSpinner from '@app/components/Common/LoadingSpinner';
 import PageTitle from '@app/components/Common/PageTitle';
 import SettingsField from '@app/components/Settings/SettingsField';
 import SettingsFormRow from '@app/components/Settings/SettingsFormRow';
 import SettingsHelp from '@app/components/Settings/SettingsHelp';
+import SettingsLoadState from '@app/components/Settings/SettingsLoadState';
 import useToasts from '@app/hooks/useToasts';
 import globalMessages from '@app/i18n/globalMessages';
 import defineMessages from '@app/utils/defineMessages';
@@ -103,8 +103,10 @@ const SettingsCategories = () => {
     mutate: revalidate,
   } = useSWR<MainSettings>('/api/v1/settings/main');
 
-  if (!data && !error) {
-    return <LoadingSpinner />;
+  if (!data) {
+    return (
+      <SettingsLoadState failed={Boolean(error)} onRetry={() => revalidate()} />
+    );
   }
 
   return (

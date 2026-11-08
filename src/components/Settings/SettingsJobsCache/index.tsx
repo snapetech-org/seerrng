@@ -6,6 +6,7 @@ import Modal from '@app/components/Common/Modal';
 import PageTitle from '@app/components/Common/PageTitle';
 import Table from '@app/components/Common/Table';
 import SettingsHelp from '@app/components/Settings/SettingsHelp';
+import SettingsLoadState from '@app/components/Settings/SettingsLoadState';
 import useLocale from '@app/hooks/useLocale';
 import useSettings from '@app/hooks/useSettings';
 
@@ -204,8 +205,10 @@ const SettingsJobs = () => {
   const [isSaving, setIsSaving] = useState(false);
   const settings = useSettings();
 
-  if (!data && !error) {
-    return <LoadingSpinner />;
+  if (!data) {
+    return (
+      <SettingsLoadState failed={Boolean(error)} onRetry={() => revalidate()} />
+    );
   }
 
   const runJob = async (job: Job) => {

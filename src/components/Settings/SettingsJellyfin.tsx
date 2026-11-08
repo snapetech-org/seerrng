@@ -1,6 +1,5 @@
 import Badge from '@app/components/Common/Badge';
 import Button from '@app/components/Common/Button';
-import LoadingSpinner from '@app/components/Common/LoadingSpinner';
 import SensitiveInput from '@app/components/Common/SensitiveInput';
 import LibraryEpisodeOrderSettings from '@app/components/Settings/LibraryEpisodeOrderSettings';
 import LibraryItem from '@app/components/Settings/LibraryItem';
@@ -8,6 +7,7 @@ import Field, {
   default as SettingsField,
 } from '@app/components/Settings/SettingsField';
 import SettingsHelp from '@app/components/Settings/SettingsHelp';
+import SettingsLoadState from '@app/components/Settings/SettingsLoadState';
 import useSettings from '@app/hooks/useSettings';
 import useToasts from '@app/hooks/useToasts';
 import globalMessages from '@app/i18n/globalMessages';
@@ -339,8 +339,10 @@ const SettingsJellyfin: React.FC<SettingsJellyfinProps> = ({
     }
   };
 
-  if (!data && !error) {
-    return <LoadingSpinner />;
+  if (!data) {
+    return (
+      <SettingsLoadState failed={Boolean(error)} onRetry={() => revalidate()} />
+    );
   }
 
   const mediaServerFormatValues = {

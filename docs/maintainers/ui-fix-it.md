@@ -155,3 +155,9 @@ state through a failed save and display toggle. Inspect the configured status
 beside its button at 320px as well as ordinary phone/desktop widths; root overflow
 checks alone miss clipped button contents. The qualification and explicit gallery
 exclusions are recorded in [the display validation record](settings-compact-display-validation-2026-11-07.md).
+
+Initial configuration errors must not mount an empty settings form. Reuse the
+shared settings load/retry state only while data is absent; cached forms retain
+their drafts through background errors. Exercise an actual revalidation after
+SWR's de-duplication window, and assert the rendered theme before accepting error
+captures. See [initial settings recovery](settings-initial-load-validation-2026-11-07.md).

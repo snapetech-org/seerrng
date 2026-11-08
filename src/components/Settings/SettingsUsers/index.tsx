@@ -1,7 +1,6 @@
 import Alert from '@app/components/Common/Alert';
 import Button from '@app/components/Common/Button';
 import LabeledCheckbox from '@app/components/Common/LabeledCheckbox';
-import LoadingSpinner from '@app/components/Common/LoadingSpinner';
 import MediaCategoryPreferences from '@app/components/Common/MediaCategoryPreferences';
 import PageTitle from '@app/components/Common/PageTitle';
 import PermissionEdit from '@app/components/PermissionEdit';
@@ -9,6 +8,7 @@ import QuotaSelector from '@app/components/QuotaSelector';
 import { default as SettingsField } from '@app/components/Settings/SettingsField';
 import SettingsGeneratedLoginLinks from '@app/components/Settings/SettingsGeneratedLoginLinks';
 import SettingsHelp from '@app/components/Settings/SettingsHelp';
+import SettingsLoadState from '@app/components/Settings/SettingsLoadState';
 import useSettings from '@app/hooks/useSettings';
 import useToasts from '@app/hooks/useToasts';
 import globalMessages from '@app/i18n/globalMessages';
@@ -93,8 +93,10 @@ const SettingsUsers = () => {
       },
     });
 
-  if (!data && !error) {
-    return <LoadingSpinner />;
+  if (!data) {
+    return (
+      <SettingsLoadState failed={Boolean(error)} onRetry={() => revalidate()} />
+    );
   }
 
   const mediaServerFormatValues = {

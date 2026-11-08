@@ -4697,6 +4697,7 @@
     "components.Settings.SettingsJobsCache.soulseek-sync": "d2fad306f831f19f31a6a709499c9bfcdbb1daf28fa988fac4bb86b95a4a2bf1",
     "components.Settings.SettingsJobsCache.unknownJob": "58ff5c6a03b7294d38cecc4d7b516aca84037588cb9a43ff6ba60003758d9981",
     "components.Settings.SettingsJobsCache.usersavatars": "1a9c0b6fb3ef950d6c6e7fdd9c4f286c9e85ab0b2917e969ce016bcb911219f3",
+    "components.Settings.SettingsLoadState.loadError": "070006217e16770f96ee61ab12b09b51f5d6f28a0f1ab4c7c84e0bd014a6225d",
     "components.Settings.SettingsLogs.copiedLogMessage": "07d8d246308a1b95949bafb12a681a060fc963ac16fc3ff4dabc9be5143bd0c2",
     "components.Settings.SettingsLogs.copyToClipboard": "fa8f2b6c07fb514c9dd6d5b1b44ad4fae8f9960e03f155f9dbb9ed89b76c0576",
     "components.Settings.SettingsLogs.extraData": "af2533fa8c8bce1bb73e4733ae7d84f87f64ff2afe1f5e8201752ccb3ea18cff",

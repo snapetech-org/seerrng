@@ -1,7 +1,7 @@
 import Alert from '@app/components/Common/Alert';
 import Button from '@app/components/Common/Button';
-import LoadingSpinner from '@app/components/Common/LoadingSpinner';
 import Field from '@app/components/Settings/SettingsField';
+import SettingsLoadState from '@app/components/Settings/SettingsLoadState';
 import useToasts from '@app/hooks/useToasts';
 import globalMessages from '@app/i18n/globalMessages';
 import defineMessages from '@app/utils/defineMessages';
@@ -42,8 +42,10 @@ const NotificationsWebPush = () => {
     setIsHttps(window.location.protocol.startsWith('https'));
   }, []);
 
-  if (!data && !error) {
-    return <LoadingSpinner />;
+  if (!data) {
+    return (
+      <SettingsLoadState failed={Boolean(error)} onRetry={() => revalidate()} />
+    );
   }
 
   return (

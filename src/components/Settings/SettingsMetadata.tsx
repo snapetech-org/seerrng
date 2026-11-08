@@ -8,6 +8,7 @@ import MetadataSelector, {
 } from '@app/components/MetadataSelector';
 import { notifySettingsUserChange } from '@app/components/Settings/settingsEvents';
 import SettingsHelp from '@app/components/Settings/SettingsHelp';
+import SettingsLoadState from '@app/components/Settings/SettingsLoadState';
 import useToasts from '@app/hooks/useToasts';
 import globalMessages from '@app/i18n/globalMessages';
 import defineMessages from '@app/utils/defineMessages';
@@ -116,7 +117,11 @@ const SettingsMetadata = () => {
   const [providerStatus, setProviderStatus] =
     useState<ProviderResponse>(defaultStatus);
 
-  const { data, error } = useSWR<MetadataSettings>(
+  const {
+    data,
+    error,
+    mutate: revalidate,
+  } = useSWR<MetadataSettings>(
     '/api/v1/settings/metadatas',
     async (url: string) => {
       const response = await axios.get<{
@@ -390,8 +395,19 @@ const SettingsMetadata = () => {
     }
   };
 
-  if (!data && !error) {
-    return <LoadingSpinner />;
+  if (!data) {
+    return (
+      <SettingsLoadState failed={Boolean(error)} onRetry={() => revalidate()} />
+    );
+  }
+
+  if (!coverArtArchiveSettings) {
+    return (
+      <SettingsLoadState
+        failed={Boolean(musicSettingsError)}
+        onRetry={() => mutateMusicSettings()}
+      />
+    );
   }
 
   const initialValues: MetadataValues = data?.metadata || {

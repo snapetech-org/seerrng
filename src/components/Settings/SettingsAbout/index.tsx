@@ -2,9 +2,9 @@ import TmdbLogo from '@app/assets/tmdb_logo.svg';
 import Alert from '@app/components/Common/Alert';
 import Badge from '@app/components/Common/Badge';
 import List from '@app/components/Common/List';
-import LoadingSpinner from '@app/components/Common/LoadingSpinner';
 import PageTitle from '@app/components/Common/PageTitle';
 import Releases from '@app/components/Settings/SettingsAbout/Releases';
+import SettingsLoadState from '@app/components/Settings/SettingsLoadState';
 import useSettings from '@app/hooks/useSettings';
 import globalMessages from '@app/i18n/globalMessages';
 import ErrorPage from '@app/pages/_error';
@@ -48,9 +48,11 @@ const messages = defineMessages('components.Settings.SettingsAbout', {
 const SettingsAbout = () => {
   const settings = useSettings();
   const intl = useIntl();
-  const { data, error } = useSWR<SettingsAboutResponse>(
-    '/api/v1/settings/about'
-  );
+  const {
+    data,
+    error,
+    mutate: revalidate,
+  } = useSWR<SettingsAboutResponse>('/api/v1/settings/about');
 
   const { data: status, error: statusError } = useSWR<StatusResponse>(
     settings.currentSettings.versionCheck ? '/api/v1/status' : null
@@ -62,8 +64,10 @@ const SettingsAbout = () => {
         status && status.commitTag !== 'local' && !status.updateCheckSucceeded
       ));
 
-  if (!data && !error) {
-    return <LoadingSpinner />;
+  if (!data) {
+    return (
+      <SettingsLoadState failed={Boolean(error)} onRetry={() => revalidate()} />
+    );
   }
 
   if (!data) {

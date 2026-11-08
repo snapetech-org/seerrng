@@ -40086,7 +40086,7 @@
       "callsites": [
         {
           "path": "src/components/Settings/SettingsMetadata.tsx",
-          "line": 229,
+          "line": 234,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Failed to test music metadata providers'",
@@ -48494,7 +48494,7 @@
       "callsites": [
         {
           "path": "src/components/Settings/SettingsMetadata.tsx",
-          "line": 196,
+          "line": 201,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Failed to test connection'",
@@ -53966,7 +53966,7 @@
       "callsites": [
         {
           "path": "src/components/Settings/SettingsMetadata.tsx",
-          "line": 304,
+          "line": 309,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Failed to save Metadata settings'",
