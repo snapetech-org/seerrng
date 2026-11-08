@@ -9,6 +9,34 @@ v3.72.7 section consolidates changes from the requested v3.71.4 baseline
 through v3.72.7, including changes also represented by unpublished interim
 tags. The comparison link is the complete commit range.
 
+## [3.72.23](https://github.com/snapetech-org/seerrng/compare/v3.72.22..v3.72.23) - 2026-11-08
+
+### User-facing changes
+
+#### Added
+
+- **Settings:** Add an optional Compact settings display with expandable help and configured groups. Search reveals matching fields, validation opens groups with errors, and changing the display preserves unsaved drafts. Both themes keep their existing full display by default.
+
+#### Fixed
+
+- **Books:** Book discovery no longer adds a redundant match-all prefix to Open Library trending, language, author or publication-year filters. This avoids provider failures and long timeouts while retaining unfiltered browsing and keyword searches.
+- **Lumen:** Lumen can save shared settings and upload branding when SeerrNG compresses its session response. The proxy now requests plain JSON for its internal account check while retaining the existing sign-in and administrator checks.
+- **Settings:** Settings now show an error and Retry when their initial configuration cannot be loaded, instead of rendering blank defaults or crashing. Retrying reads the existing configuration; background refresh failures preserve loaded forms and unsaved drafts.
+- **Settings:** Settings now retain unsuccessful drafts and allow retrying Save in General, Users, Media Categories, Network, Jellyfin/Emby, Metadata Providers and every notification agent. Successful saves clear the unsaved state after persistence, and separate metadata forms save independently. Disabled Apprise/ntfy agents accept empty optional settings; Web Push saves accept the form's supported payload.
+
+### 🚀 Features
+- *(settings)* Add opt-in compact display with recoverable disclosures - ([e635567](https://github.com/snapetech-org/seerrng/commit/e63556771264b0d420e43affba75c6f715953340))
+
+### 🐛 Bug Fixes
+- *(books)* Omit match-all prefixes from filtered discovery queries - ([5e22608](https://github.com/snapetech-org/seerrng/commit/5e226087a0dd58e704d2df7c3d0d1222fabd7989))
+- *(lumen)* Decode real backend session checks before admin saves - ([9bf504f](https://github.com/snapetech-org/seerrng/commit/9bf504fdc7c43811a6f511bc1e7affa6de30b8d2))
+- *(settings)* Require loaded configuration before mounting editable forms - ([7bea22b](https://github.com/snapetech-org/seerrng/commit/7bea22bfe77c43344e5cb410b5bc66b6a7eedd92))
+- *(settings)* Retain failed drafts and repair notification saves - ([42f299c](https://github.com/snapetech-org/seerrng/commit/42f299c6d12616f051486aa94b614767b5b1247c))
+
+### 📖 Documentation
+- *(release)* Qualify new settings and Lumen note fragments - ([7c053c7](https://github.com/snapetech-org/seerrng/commit/7c053c70e02db6828d8c33ca5881bd8160a92abf))
+- *(review)* Reconcile all PR integrations and recent security findings - ([259b30c](https://github.com/snapetech-org/seerrng/commit/259b30c047926ca61b04dc019f8e6c8e3c197643))
+
 ## [3.72.22](https://github.com/snapetech-org/seerrng/compare/v3.72.21..v3.72.22) - 2026-11-07
 
 ### User-facing changes
