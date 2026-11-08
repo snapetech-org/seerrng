@@ -122,3 +122,28 @@ account switching on desktop and phone. The original private-text isolation,
 full-document navigation probes, stylesheet response, save response and reload
 assertions remain intact. Evidence: `39-playwright-failures` and
 `lumen-final-native-fixture.log`. These repairs change tests only.
+
+## Compact native selection text
+
+Visual inspection of the partial-quota captures exposed a separate shared-owner
+bug: compact native selects retained the browser form reset's 8px top and bottom
+padding inside a 24px control. On phones their 22px inner box left only 6px for
+16px text. The shared `select.compact-control` owner now removes block padding,
+following the existing compact settings/select treatment. Theme height, inline
+padding, typography and appearance remain owned by their existing packages.
+
+The unmodified production baseline fails the measured text-space assertion on
+mobile. A matching 390/1440px comparison that removes only the new CSS rule from
+the compiled response reproduces four failures (Persius and John); Orig's taller
+controls pass. The actual rebuilt candidate passes all six theme/viewport cases,
+including changing the discovery server and request destination. The original ten
+adult interaction cases also pass. Twelve settled discovery/dialog captures and
+their two contact sheets were inspected. This qualifies those two representative
+consumers of the shared select role, not every page using compact controls.
+
+Evidence: `compact-select-baseline.log`, `compact-select-matched-baseline.log`
+(four expected failures, two passes), `compact-select-settled.log` (16 passes),
+`compact-select-final.log` (six settled cases), `compact-select-final-artifacts`,
+`compact-select-production-build.log`, and `compact-select-owner-regressions.log`
+(72 passes) in the evidence directory above. Catalogue/quotas are replayed;
+authentication, theme persistence, native rendering and navigation are real.

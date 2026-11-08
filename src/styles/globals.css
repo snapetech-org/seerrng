@@ -6538,6 +6538,11 @@
     height: var(--compact-control-height);
   }
 
+  select.compact-control {
+    /* Native select padding must fit the compact role's fixed block size. */
+    padding-block: 0;
+  }
+
   .compact-control:is(button, a) {
     box-sizing: border-box;
     height: var(--action-control-height);

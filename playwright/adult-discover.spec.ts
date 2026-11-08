@@ -641,3 +641,95 @@ test('Adult discovery preserves its search and server scope on mobile scene navi
     page.getByRole('searchbox', { name: 'Search adult scenes' })
   ).toHaveValue('Orchard House');
 });
+
+for (const theme of ['persiusNG', 'seerrOrig', 'seerrNGJ']) {
+  for (const width of [390, 1440]) {
+    test(`Compact server selections remain readable in ${theme} at ${width}px`, async ({
+      page,
+      baseURL,
+    }, info) => {
+      const user = await loginAsAdmin(page, baseURL);
+      const previous =
+        (await (await page.request.get('/api/v1/auth/me')).json()).settings
+          ?.interfaceTheme ?? 'persiusNG';
+      await page.setViewportSize({ width, height: 900 });
+      const saveTheme = async (value: string) => {
+        expect(
+          (
+            await page.request.post(
+              `/api/v1/user/${user.id}/settings/interface-theme`,
+              { data: { theme: value } }
+            )
+          ).status()
+        ).toBe(200);
+      };
+      const settle = async () => {
+        await page.evaluate(async () => {
+          const finite = document
+            .getAnimations()
+            .filter((animation) =>
+              Number.isFinite(animation.effect?.getComputedTiming().endTime)
+            );
+          await Promise.all(
+            finite.map((animation) => animation.finished.catch(() => undefined))
+          );
+          await new Promise<void>((resolve) =>
+            requestAnimationFrame(() => requestAnimationFrame(() => resolve()))
+          );
+        });
+      };
+      const readable = async (select: ReturnType<Page['locator']>) => {
+        await expect(select).toBeVisible();
+        await settle();
+        const geometry = await select.evaluate((element) => {
+          const style = getComputedStyle(element);
+          return {
+            content:
+              element.clientHeight -
+              parseFloat(style.paddingTop) -
+              parseFloat(style.paddingBottom),
+            font: parseFloat(style.fontSize),
+          };
+        });
+        expect(geometry.content).toBeGreaterThanOrEqual(geometry.font);
+      };
+      try {
+        await saveTheme(theme);
+        await enableAdultForBrowser(page);
+        await installCatalogRoutes(page, user.id);
+        await page.goto('/discover/adult');
+        await expect(page.locator('html')).toHaveAttribute(
+          'data-interface-theme',
+          theme
+        );
+        const browse = page.getByRole('combobox', { name: 'Browse server' });
+        await readable(browse);
+        await browse.selectOption('4');
+        await expect(browse).toHaveValue('4');
+        await settle();
+        await page.screenshot({
+          path: info.outputPath('browse-server.png'),
+          fullPage: true,
+        });
+        await page.locator(`a[href^="/adult/${sceneId}"]`).click();
+        await page
+          .getByRole('button', { name: 'Request scene', exact: true })
+          .click();
+        const dialog = page.getByRole('dialog');
+        const destination = dialog.getByRole('combobox', {
+          name: 'Whisparr server',
+        });
+        await readable(destination);
+        await destination.selectOption('3');
+        await expect(destination).toHaveValue('3');
+        await settle();
+        await page.screenshot({
+          path: info.outputPath('request-server.png'),
+          fullPage: true,
+        });
+      } finally {
+        await saveTheme(previous);
+      }
+    });
+  }
+}
