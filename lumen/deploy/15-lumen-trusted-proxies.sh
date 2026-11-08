@@ -1,5 +1,5 @@
 #!/bin/sh
-# Writes /etc/nginx/conf.d/00-lumen-trusted-proxies.conf from LUMEN_TRUSTED_PROXIES before nginx
+# Writes /tmp/lumen/conf.d/00-lumen-trusted-proxies.conf from LUMEN_TRUSTED_PROXIES before nginx
 # starts. Forwarding headers (X-Forwarded-For, CF-Connecting-IP, X-Forwarded-Proto) are believed
 # only when the connection comes from one of these addresses. With none set, every visitor is the
 # address that connected, so nobody can pick the IP SeerrNG sees (its sign-in rate limit is per IP).
@@ -10,7 +10,10 @@
 set -eu
 set -f
 
-out=/etc/nginx/conf.d/00-lumen-trusted-proxies.conf
+# under /tmp so any unprivileged user can run the image (see the Dockerfile)
+conf="${NGINX_ENVSUBST_OUTPUT_DIR:-/tmp/lumen/conf.d}"
+mkdir -p "$conf"
+out="$conf/00-lumen-trusted-proxies.conf"
 header="${LUMEN_REAL_IP_HEADER:-X-Forwarded-For}"
 proxies=$(printf '%s' "${LUMEN_TRUSTED_PROXIES:-}" | tr ',' ' ')
 

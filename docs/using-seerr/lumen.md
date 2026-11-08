@@ -357,6 +357,11 @@ it may write to:
    mkdir lumen-data && sudo chown 101:101 lumen-data
    ```
 
+   Rather keep the folder as your own user (for example 1000)? Run Lumen as that
+   user instead: add `user: "1000:1000"` under `lumen` in `compose.yaml` (at the
+   same level as `environment:`) and own the folder with `chown 1000:1000`.
+   Lumen runs as any unprivileged user; it needs no other changes.
+
 2. In `compose.yaml`, remove the `#` from `volumes:` and the `./lumen-data` line
    under `lumen`, then run `docker compose up -d`.
 

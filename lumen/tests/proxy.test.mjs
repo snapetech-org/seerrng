@@ -1,7 +1,9 @@
 import assert from 'node:assert/strict';
 import { execFile } from 'node:child_process';
 import { createServer } from 'node:http';
-import { resolve } from 'node:path';
+import { chmod, mkdtemp, rm } from 'node:fs/promises';
+import { tmpdir } from 'node:os';
+import { join, resolve } from 'node:path';
 import { after, before, test } from 'node:test';
 import { promisify } from 'node:util';
 import { gzipSync } from 'node:zlib';
@@ -210,6 +212,51 @@ test('the built production image starts with an unprivileged user', async () => 
     user && user !== 'root' && user !== '0' && user !== '0:0',
     `Expected an explicit non-root production USER, got ${JSON.stringify(user)}`
   );
+});
+test('the image runs as any unprivileged user, saving into a /lumen-data that user owns', async () => {
+  // `user: "1000:1000"` in compose, to match whoever owns the mounted folder
+  for (const user of ['1000:1000', '4242:4242']) {
+    const data = await mkdtemp(join(tmpdir(), 'lumen-data-'));
+    await chmod(data, 0o777);
+    const id = await docker(
+      'run',
+      '-d',
+      '--label',
+      'io.snapetech.task=lumen-proxy-tests',
+      '-p',
+      '127.0.0.1::80',
+      '--user',
+      user,
+      '-v',
+      `${data}:/lumen-data`,
+      ...args()
+    );
+    containers.add(id);
+    try {
+      const base = `http://${await docker('port', id, '80/tcp')}`;
+      let ready = false;
+      for (let i = 0; i < 100 && !ready; i++) {
+        try {
+          ready = (await fetch(base + '/')).ok;
+        } catch {}
+        if (!ready) await new Promise((r) => setTimeout(r, 100));
+      }
+      assert.ok(ready, `${user}: ${await docker('logs', id)}`);
+      assert.equal(
+        await docker('exec', id, 'id', '-u'),
+        user.split(':')[0],
+        user
+      );
+      const config = await (await fetch(base + '/lumen/config')).json();
+      assert.deepEqual(config, { canSave: true, folder: 'ok' }, user);
+      const api = await fetch(base + '/api/v1/probe');
+      assert.equal(api.status, 200, `${user}: the proxy works`);
+    } finally {
+      await docker('rm', '-f', id);
+      containers.delete(id);
+      await rm(data, { recursive: true, force: true });
+    }
+  }
 });
 test('direct visitors cannot forge identity or transport on any proxy route', () =>
   check({}, gateway, 'http'));
