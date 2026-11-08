@@ -44,14 +44,12 @@ for (const theme of ['seerrOrig', 'seerrNGJ'])
       });
       try {
         await page.goto('/settings/metadata');
-        const section = page
-          .locator('section')
-          .filter({
-            has: page.getByRole('heading', {
-              name: 'Book language restrictions',
-              exact: true,
-            }),
-          });
+        const section = page.locator('section').filter({
+          has: page.getByRole('heading', {
+            name: 'Book language restrictions',
+            exact: true,
+          }),
+        });
         await expect(section.getByRole('textbox')).toHaveCount(0);
         await section
           .getByRole('button', { name: 'Retry', exact: true })

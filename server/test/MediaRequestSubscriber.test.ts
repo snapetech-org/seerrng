@@ -2630,7 +2630,7 @@ describe('MediaRequestSubscriber service dispatch', () => {
     const original = structuredClone(settings.metadataSettings);
     settings.metadataSettings = { ...original, allowedBookLanguages: ['eng'] };
     t.after(() => {
-      settings.metadataSettings = original;
+      settings.replaceSection('metadataSettings', original);
     });
     settings.readarr = [
       {

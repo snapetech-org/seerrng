@@ -10462,7 +10462,7 @@ describe('administrator book language admission', () => {
           allowedBookLanguages: ['eng'],
         };
         t.after(() => {
-          settings.metadataSettings = original;
+          settings.replaceSection('metadataSettings', original);
         });
         settings.readarr = [createReadarrSettings(21, format)];
         mock.method(OpenLibraryAPI.prototype, 'getWork', async () => ({
@@ -10493,14 +10493,12 @@ describe('administrator book language admission', () => {
           },
         ]);
         const agent = await loginAs('admin@seerr.dev', 'test1234');
-        const res = await agent
-          .post('/request')
-          .send({
-            mediaType: MediaType.BOOK,
-            mediaId: 'OL999W',
-            format,
-            preferredEditionId: selected,
-          });
+        const res = await agent.post('/request').send({
+          mediaType: MediaType.BOOK,
+          mediaId: 'OL999W',
+          format,
+          preferredEditionId: selected,
+        });
         if (selected === 'spanish' || selected === 'unknown') {
           assert.equal(res.status, 403, JSON.stringify(res.body));
           assert.equal(await getRepository(MediaRequest).count(), 0);

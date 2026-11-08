@@ -78,7 +78,7 @@ describe('ReadMeABook routes', () => {
     const original = structuredClone(settings.metadataSettings);
     settings.metadataSettings = { ...original, allowedBookLanguages: ['eng'] };
     t.after(() => {
-      settings.metadataSettings = original;
+      settings.replaceSection('metadataSettings', original);
     });
     const upstream = mock.method(axios, 'request', async () => {
       throw new Error('must not dispatch');
