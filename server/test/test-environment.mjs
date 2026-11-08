@@ -21,7 +21,7 @@ const vitestEnvironmentKeys = Object.freeze([
 export function setIsolatedTestEnvironment(
   directory,
   inherited = process.env,
-  { includeCi = false, includeVitest = false } = {}
+  { includeCi = false, includeVitest = false, includePostgres = false } = {}
 ) {
   if (typeof directory !== 'string' || directory.length === 0) {
     throw new Error('Tests require an owned temporary configuration directory');
@@ -37,6 +37,28 @@ export function setIsolatedTestEnvironment(
       entries.find(([name]) => name === key) ??
       entries.find(([name]) => name.toUpperCase() === key);
     if (entry && typeof entry[1] === 'string') environment[key] = entry[1];
+  }
+
+  if (includePostgres) {
+    let url;
+    try {
+      url = new URL(inherited.SEERR_TEST_POSTGRES_URL);
+    } catch {
+      throw new Error(
+        '--postgres requires SEERR_TEST_POSTGRES_URL for a loopback test database'
+      );
+    }
+    if (
+      !['postgres:', 'postgresql:'].includes(url.protocol) ||
+      !['127.0.0.1', 'localhost', '[::1]'].includes(url.hostname) ||
+      !url.pathname ||
+      url.pathname === '/'
+    ) {
+      throw new Error(
+        '--postgres requires a PostgreSQL URL for a named loopback test database'
+      );
+    }
+    environment.SEERR_TEST_POSTGRES_URL = url.href;
   }
 
   if (includeCi && inherited.CI !== undefined) environment.CI = 'true';

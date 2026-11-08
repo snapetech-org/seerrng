@@ -208,3 +208,10 @@ asterisk; correcting that selector exposed the independent, genuine save bug.
 
 This expands the evidence; it does not complete the remaining historical human
 workflows or certify every external provider deployment.
+
+Request Status follow-up for #104/#243 adds six worker-backed lifecycle states in
+both themes/viewports, actual owner Retry, measured/unknown progress, persistent
+history, cross-user denial, and four initial-error recovery cases. The underlying
+PostgreSQL count regression now executes successfully rather than skipping. Its
+runner isolation/CI correction and evidence limits are recorded in
+[the detailed status validation](request-status-human-and-postgres-validation-2026-11-08.md).

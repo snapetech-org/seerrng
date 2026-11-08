@@ -32,6 +32,7 @@ const parseTestConcurrency = (value: string) => {
 program
   .name('test')
   .option('--list', 'List native test files as JSON without running them')
+  .option('--postgres', 'Require loopback PostgreSQL integration tests')
   .argument('[file...]', 'Test file(s) to run (default: all)')
   .option(
     '-m, --test-name-pattern <pattern>',
@@ -73,6 +74,7 @@ const opts = program.opts<{
   testReporterDestination: string[];
   experimentalTestCoverage: boolean;
   testConcurrency?: number;
+  postgres?: boolean;
 }>();
 
 let files: string[];
@@ -106,11 +108,12 @@ const testConcurrency =
 const testConfigDirectory = mkdtempSync(
   join(tmpdir(), 'seerrng-node-test-config-')
 );
-setIsolatedTestEnvironment(testConfigDirectory, process.env, {
-  includeCi: runningInCi,
-});
 process.on('exit', () => {
   rmSync(testConfigDirectory, { force: true, recursive: true });
+});
+setIsolatedTestEnvironment(testConfigDirectory, process.env, {
+  includeCi: runningInCi,
+  includePostgres: opts.postgres === true,
 });
 // configure ts
 process.env.TS_NODE_PROJECT = resolveImport('../tsconfig.json');

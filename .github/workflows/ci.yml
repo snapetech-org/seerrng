@@ -263,6 +263,11 @@ jobs:
       - name: Check translations
         run: pnpm i18n:check
 
+      - name: Verify PostgreSQL request-status queries
+        env:
+          SEERR_TEST_POSTGRES_URL: postgresql://postgres:ci-only-migration@127.0.0.1:${{ job.services.postgres.ports[5432] }}/seerrng_migration_test
+        run: pnpm test:node --postgres server/lib/requestStatus.postgres.test.ts
+
       - name: Check tooling tests
         env:
           SEERR_MIGRATION_TEST_POSTGRES_URL: postgresql://postgres:ci-only-migration@127.0.0.1:${{ job.services.postgres.ports[5432] }}/seerrng_migration_test

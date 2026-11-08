@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { spawn } from 'node:child_process';
 import { once } from 'node:events';
-import { mkdtemp, readFile, rm } from 'node:fs/promises';
+import { mkdtemp, readFile, readdir, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { test } from 'node:test';
@@ -138,5 +138,55 @@ test('the runner exits service workers but waits for asynchronous final reports'
   } finally {
     clearTimeout(deadline);
     if (child.exitCode === null && child.signalCode === null) child.kill();
+  }
+});
+
+test('explicit PostgreSQL mode fails without its URL and cleans only its owned config', async () => {
+  const repoRoot = path.resolve(__dirname, '../..');
+  const directory = await mkdtemp(
+    path.join(tmpdir(), 'seerr-postgres-runner-')
+  );
+  const childEnvironment: NodeJS.ProcessEnv = {
+    ...process.env,
+    TMPDIR: directory,
+  };
+  delete childEnvironment.NODE_TEST_CONTEXT;
+  delete childEnvironment.SEERR_TEST_POSTGRES_URL;
+  try {
+    await writeFile(
+      path.join(directory, 'keep.txt'),
+      'preserve parent fixture'
+    );
+    const child = spawn(
+      process.execPath,
+      [
+        path.join(repoRoot, 'server/test/index.mts'),
+        '--postgres',
+        path.join(repoRoot, 'server/lib/requestStatus.postgres.test.ts'),
+      ],
+      {
+        cwd: repoRoot,
+        env: childEnvironment,
+        stdio: ['ignore', 'pipe', 'pipe'],
+      }
+    );
+    let output = '';
+    child.stdout.on('data', (chunk) => {
+      output += chunk.toString();
+    });
+    child.stderr.on('data', (chunk) => {
+      output += chunk.toString();
+    });
+    const [code, signal] = await once(child, 'close');
+    assert.equal(code, 1, output);
+    assert.equal(signal, null, output);
+    assert.match(output, /--postgres requires SEERR_TEST_POSTGRES_URL/);
+    assert.deepEqual(await readdir(directory), ['keep.txt']);
+    assert.equal(
+      await readFile(path.join(directory, 'keep.txt'), 'utf8'),
+      'preserve parent fixture'
+    );
+  } finally {
+    await rm(directory, { recursive: true, force: true });
   }
 });
