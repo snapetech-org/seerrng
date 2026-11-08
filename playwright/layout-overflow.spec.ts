@@ -43,6 +43,8 @@ const pages = [
 
 for (const path of pages) {
   test(`${path} never scrolls horizontally`, async ({ page, baseURL }) => {
+    // One case performs eight complete navigations, including cold image loads.
+    test.setTimeout(90_000);
     await loginAsAdmin(page, baseURL);
     for (const width of widths) {
       await page.setViewportSize({ width, height: 900 });

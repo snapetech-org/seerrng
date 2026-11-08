@@ -1,6 +1,7 @@
 import { expect, test } from '@playwright/test';
 import { writeFileSync } from 'node:fs';
 import { restoreAdminPresentation } from './helpers/presentation';
+import { expectSummaryPairsAligned } from './helpers/summaryPairs';
 
 test.use({ serviceWorkers: 'block', reducedMotion: 'reduce' });
 test.afterEach(async ({ page }) => restoreAdminPresentation(page));
@@ -300,6 +301,7 @@ for (const theme of ['seerrOrig', 'seerrNGJ']) {
           animations: 'disabled',
         });
         if (!baseline) {
+          await expectSummaryPairsAligned(summary);
           expect(geometry.poster.width).toBeLessThanOrEqual(
             width < 640 ? 64 : 80
           );
@@ -361,9 +363,19 @@ for (const theme of ['seerrOrig', 'seerrNGJ']) {
               ).next.router.push(path),
             `/${mediaType}/${id}`
           );
+          await expect(page.locator('html')).toHaveAttribute(
+            'data-interface-theme',
+            theme
+          );
+          if (theme === 'seerrOrig') {
+            await expect(
+              page.locator('[data-native-composition="upstream"]')
+            ).toBeVisible();
+          }
           const single = page
             .getByRole('button', { name: /^Request(?: HD)?$/ })
             .first();
+          await expect(single).toBeEnabled();
           for (const edge of ['left', 'center', 'right']) {
             const box = await single.boundingBox();
             expect(box).toBeTruthy();

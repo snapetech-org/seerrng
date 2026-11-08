@@ -1636,12 +1636,16 @@ test('card tables retain their explicit shared header and value typography', () 
 });
 
 test('details layout variables preserve placement independently of other card tables', () => {
-  const selector = '.card-table.detail-paired-columns > .card-table';
-  const matchingRules = [
-    ...css.matchAll(
-      /\.card-table\.detail-paired-columns > \.card-table\s*\{([^}]+)\}/g
-    ),
-  ].map((match) => match[1]);
+  const selector =
+    ':is(.card-table, .media-detail-rows).detail-paired-columns > :is(.card-table, .media-detail-rows)';
+  const matchingRules = [];
+  cssRoot.walkRules((node) => {
+    if (node.selector.replace(/\s+/g, ' ').trim() === selector) {
+      matchingRules.push(
+        node.nodes.map((declaration) => `${declaration.toString()};`).join('\n')
+      );
+    }
+  });
   assert.equal(matchingRules.length, 2);
   assert.match(matchingRules[0], /--card-table-details-group-column: 5;/);
   assert.match(
@@ -1649,11 +1653,11 @@ test('details layout variables preserve placement independently of other card ta
     /--card-table-details-group-row: 1 \/ span 3;/
   );
   assert.match(
-    rule(selector),
+    matchingRules[1],
     /grid-column: var\(--card-table-details-group-column, 1 \/ -1\);/
   );
   assert.match(
-    rule(selector),
+    matchingRules[1],
     /grid-row: var\(--card-table-details-group-row, auto\);/
   );
   assert.match(

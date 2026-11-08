@@ -1,6 +1,7 @@
 import { expect, test } from '@playwright/test';
 import { restoreAdminPresentation } from './helpers/presentation';
 import { getSelectOptionContrast } from './helpers/selectContrast';
+import { expectSummaryPairsAligned } from './helpers/summaryPairs';
 test.use({ serviceWorkers: 'block', reducedMotion: 'reduce' });
 test.afterEach(async ({ page }) => {
   expect(
@@ -213,6 +214,7 @@ for (const theme of ['seerrNGJ', 'seerrOrig', 'persiusNG'])
           path: info.outputPath('collapsed.png'),
           fullPage: true,
         });
+        await expectSummaryPairsAligned(dialog.locator('.detail-summary-card'));
         expect(submissions).toBe(0);
         expect((await dialog.boundingBox())!.width).toBeLessThanOrEqual(width);
         await info.attach('control-geometry', {

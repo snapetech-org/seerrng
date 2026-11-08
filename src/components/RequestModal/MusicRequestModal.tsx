@@ -535,68 +535,69 @@ const MusicRequestModal = ({
               {releaseYear ? ` (${releaseYear})` : ''}
             </h3>
 
-            <div className="detail-card-heading-spacing detail-three-column-grid grid min-h-0 min-w-0 flex-1 items-stretch">
+            <div className="detail-card-heading-spacing detail-three-column-grid min-h-0 min-w-0 flex-1 items-stretch">
               <div className="detail-paired-column-span min-w-0">
-                <dl className="media-detail-rows detail-paired-columns refreshed-detail-text grid min-w-0 content-start text-xs">
-                  <dt className="card:col-start-1 card:row-start-1 font-medium text-gray-100">
+                <dl className="media-detail-rows detail-paired-columns refreshed-detail-text min-w-0 content-start text-xs">
+                  <dt className="font-medium text-gray-100">
                     {intl.formatMessage(messages.mediaAndFormat)}:
                   </dt>
-                  <dd className="card:col-start-3 card:row-start-1 m-0 truncate">
+                  <dd className="card-table-value m-0">
                     {intl.formatMessage(globalMessages.music)} ·{' '}
                     {intl.formatMessage(globalMessages.album)}
                   </dd>
-                  <dt className="card:col-start-1 card:row-start-2 font-medium text-gray-100">
+                  <dt className="font-medium text-gray-100">
                     {intl.formatMessage(messages.releaseDate)}:
                   </dt>
-                  <dd className="card:col-start-3 card:row-start-2 m-0 truncate">
-                    {releaseDate}
-                  </dd>
-                  <dt className="card:col-start-1 card:row-start-3 font-medium text-gray-100">
+                  <dd className="card-table-value m-0">{releaseDate}</dd>
+                  <dt className="font-medium text-gray-100">
                     {intl.formatMessage(messages.runtime)}:
                   </dt>
-                  <dd className="card:col-start-3 card:row-start-3 m-0 truncate">
+                  <dd className="card-table-value m-0">
                     {runtimeMinutes > 0
                       ? formatDurationMinutes(runtimeMinutes, intl.locale)
                       : notAvailable}
                   </dd>
 
-                  <div className="media-detail-rows media-detail-column-divider card:col-span-1 card:col-start-5 card:row-span-3 card:row-start-1 col-span-2 grid min-w-0 grid-cols-[max-content_minmax(0,1fr)] content-start gap-x-3">
+                  <div className="media-detail-rows media-detail-column-divider min-w-0 content-start">
                     <dt className="font-medium text-gray-100">
                       {intl.formatMessage(messages.artist)}:
                     </dt>
-                    <dd className="m-0 truncate">
+                    <dd className="card-table-value m-0">
                       {data?.artist.name || notAvailable}
                     </dd>
                     <dt className="font-medium text-gray-100">
                       {intl.formatMessage(messages.albumType)}:
                     </dt>
-                    <dd className="m-0 truncate">
+                    <dd className="card-table-value m-0">
                       {data?.type || notAvailable}
                     </dd>
                     <dt className="font-medium text-gray-100">
                       {intl.formatMessage(messages.trackCount)}:
                     </dt>
-                    <dd className="m-0 truncate">
+                    <dd className="card-table-value m-0">
                       {data?.tracks.length
                         ? intl.formatNumber(data.tracks.length)
                         : notAvailable}
                     </dd>
                   </div>
 
-                  <dt className="card:col-start-1 card:row-start-4 font-medium text-gray-100">
+                  <dt className="font-medium text-gray-100">
                     {intl.formatMessage(messages.genres)}:
                   </dt>
-                  <dd className="card:col-span-3 card:col-start-3 card:row-start-4 m-0 line-clamp-2 min-w-0 break-words">
+                  <dd
+                    className="card-table-value m-0 min-w-0 break-words"
+                    data-wrap="two-lines"
+                  >
                     {genres || notAvailable}
                   </dd>
                 </dl>
               </div>
 
-              <dl className="media-detail-rows media-detail-column-divider refreshed-detail-text grid h-full min-w-0 grid-cols-[max-content_minmax(0,1fr)] content-start gap-x-3 text-xs">
+              <dl className="media-detail-rows media-detail-column-divider refreshed-detail-text h-full min-w-0 content-start text-xs">
                 <dt className="font-medium text-gray-100">
                   {intl.formatMessage(messages.status)}:
                 </dt>
-                <dd className="m-0 truncate">
+                <dd className="card-table-value m-0">
                   {intl.formatMessage(
                     selectedDestinationAvailable
                       ? globalMessages.available
@@ -608,7 +609,7 @@ const MusicRequestModal = ({
                 <dt className="font-medium text-gray-100">
                   {intl.formatMessage(messages.service)}:
                 </dt>
-                <dd className="m-0 truncate">
+                <dd className="card-table-value m-0">
                   {selectedService?.name ??
                     fallbackService?.name ??
                     notAvailable}
@@ -616,7 +617,7 @@ const MusicRequestModal = ({
                 <dt className="font-medium text-gray-100">
                   {intl.formatMessage(messages.approval)}:
                 </dt>
-                <dd className="m-0 min-w-0">
+                <dd className="card-table-value m-0 min-w-0">
                   <RequestFooterStatus
                     available={selectedDestinationAvailable}
                     requested={selectedDestinationRequested}

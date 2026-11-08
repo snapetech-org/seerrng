@@ -2288,3 +2288,21 @@ test('Global Book language policy preserves the fielded keyword query requiremen
     true
   );
 });
+
+test('paired semantic row owners retain the Genres spanning contract', () => {
+  const file = 'src/styles/globals.css';
+  const original = repositoryFilesWith()[file];
+  const changed = original.replace(
+    /(:is\(\.card-table,\s*\.media-detail-rows\)\.detail-paired-columns\s*> dd:nth-of-type\(4\)\s*\{)\s*grid-column: 3 \/ span 3;/,
+    '$1 grid-column: 3;'
+  );
+  assert.notEqual(changed, original);
+  assert.ok(
+    validateCurrentBatchContract(repositoryFilesWith({ [file]: changed })).some(
+      (error) =>
+        error.includes(
+          'Series Genres must span the paired summary value groups'
+        )
+    )
+  );
+});

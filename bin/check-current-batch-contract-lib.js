@@ -1179,8 +1179,8 @@ const validateCurrentBatchContract = (files) => {
         .replace(/\s+\)/g, ')')
         .trim();
     const matches = cssBlocks.filter(([, selectors]) =>
-      selectors
-        .split(',')
+      require('postcss')
+        .list.comma(selectors)
         .some((value) => normalize(value) === normalize(selector))
     );
     if (
@@ -4071,7 +4071,7 @@ const validateCurrentBatchContract = (files) => {
     );
   }
   requireCssRule(
-    '.card-table.detail-paired-columns > dd:nth-of-type(4)',
+    ':is(.card-table, .media-detail-rows).detail-paired-columns > dd:nth-of-type(4)',
     ['grid-column: 3 / span 3;'],
     'Series Genres must span the paired summary value groups through its shared table owner'
   );

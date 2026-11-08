@@ -64,9 +64,6 @@ const AlbumTrackList = ({
   const allSelected =
     selectableItems.length > 0 &&
     selectableItems.every((item) => selection.has(item.id));
-  const gridColumns = albumRequest
-    ? 'grid-cols-[2rem_2.25rem_minmax(0,1fr)_4rem]'
-    : 'grid-cols-[2rem_2.25rem_minmax(0,1fr)_4rem_2.5rem]';
   const toggleAllTracks = () => {
     if (!onSelectionChange || selectableItems.length === 0) {
       return;
@@ -162,7 +159,7 @@ const AlbumTrackList = ({
   };
 
   return (
-    <>
+    <div className="album-track-container">
       {layouts.map(({ columns, layout }) => (
         <div
           key={layout}
@@ -174,11 +171,10 @@ const AlbumTrackList = ({
             return (
               <section
                 key={`track-column-${columnIndex}`}
-                className="app-card-inset refreshed-inset-surface rounded-lg border border-gray-700 p-2"
+                className="album-track-column app-card-inset refreshed-inset-surface rounded-lg border border-gray-700 p-2"
+                data-album-request={albumRequest}
               >
-                <div
-                  className={`media-inset-table-heading media-scroll-grid-header request-divider-dark grid ${gridColumns} items-center gap-x-2 border-b px-1 pb-2`}
-                >
+                <div className="media-inset-table-heading media-scroll-grid-header request-divider-dark album-track-fields items-center border-b px-1 pb-2">
                   {columnIndex === 0 ? (
                     <SelectionCircle
                       disabled={albumRequest || selectableItems.length === 0}
@@ -204,7 +200,7 @@ const AlbumTrackList = ({
                   </span>
                   {!albumRequest && <AvailabilityHeading />}
                 </div>
-                <div className="space-y-0.5 pt-1">
+                <div className="album-track-body space-y-0.5 pt-1">
                   {columnTracks.map((track, trackIndex) => {
                     const row = trackRows[tracks.indexOf(track)];
                     const { available, position, selectionId } = row;
@@ -215,7 +211,7 @@ const AlbumTrackList = ({
                     return (
                       <div
                         key={`${track.recordingMbid || track.name}-${track.position}-${trackIndex}`}
-                        className={`grid min-h-[24px] ${gridColumns} items-center gap-x-2 px-1`}
+                        className="album-track-fields min-h-[24px] items-center px-1"
                       >
                         <SelectionCircle
                           disabled={albumRequest || !selectableId}
@@ -232,7 +228,11 @@ const AlbumTrackList = ({
                         <span className="text-xs font-medium text-gray-100">
                           {position}
                         </span>
-                        <span className="refreshed-detail-text truncate text-xs">
+                        <span
+                          className="refreshed-detail-text truncate text-xs"
+                          data-track-field="title"
+                          title={track.name || notAvailable}
+                        >
                           {track.name || notAvailable}
                         </span>
                         <span className="refreshed-detail-text text-center text-xs">
@@ -250,7 +250,7 @@ const AlbumTrackList = ({
           })}
         </div>
       ))}
-    </>
+    </div>
   );
 };
 
