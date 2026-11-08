@@ -1,9 +1,13 @@
-### Deleted TV files: recover and request again
+---
+category: fixed
+audience: users, operators
+area: tv
+action: Use Manage Series and Clear Stale Availability after deleting TV files.
+breaking: false
+---
 
-Administrators can use **Manage Series → Clear Stale HD/4K Availability** when a
-fresh Sonarr check confirms no episode files remain, including when the series
-tracking entry still exists. The control now works when viewer-scoped availability
-is hidden. Confirming clears stale SeerrNG availability so an ordinary user can
-submit a new request; existing provider entries, files and request history remain.
-Unknown or failed provider checks and files appearing before confirmation block
-recovery. This fixes the remaining workflow in reopened issue #199.
+Administrators can clear stale TV availability after a fresh Sonarr check confirms
+no episode files remain, including empty series tracking entries and hidden
+viewer availability. Users can then request again. Existing files, provider
+entries and request history are preserved; failed or changed inventories block
+recovery.
