@@ -4869,12 +4869,54 @@ describe('GET /discover/books', () => {
     );
   });
 
+  it('allows a working book catalog response beyond the former twelve-second limit', async () => {
+    mock.method(OpenLibraryAPI.prototype, 'searchBooks', async () => {
+      await new Promise((resolve) => setTimeout(resolve, 12_100));
+      return {
+        numFound: 1,
+        start: 0,
+        docs: [{ key: '/works/OL1W', title: 'Slow Book', cover_i: 42 }],
+      };
+    });
+    const response = await (
+      await login()
+    ).get('/discover/books?format=ebook&sortBy=editions');
+    assert.equal(response.status, 200);
+    assert.equal(response.body.results[0].title, 'Slow Book');
+  });
+
+  it('seeds the unfiltered recommended book feed from trending works', async () => {
+    const calls: unknown[] = [];
+    mock.method(
+      OpenLibraryAPI.prototype,
+      'searchBooks',
+      async (options: Parameters<OpenLibraryAPI['searchBooks']>[0]) => {
+        calls.push(options);
+        return {
+          numFound: 1,
+          start: 0,
+          docs: [{ key: '/works/OL1W', title: 'Popular Book', cover_i: 42 }],
+        };
+      }
+    );
+    const agent = await login();
+    for (const suffix of ['', '?sortBy=ranked&language=eng']) {
+      const response = await agent.get('/discover/books' + suffix);
+      assert.equal(response.status, 200);
+      assert.equal(response.body.results[0].title, 'Popular Book');
+    }
+    assert.deepEqual(calls, [
+      { query: '*:*', page: 1, limit: 50, sort: 'trending' },
+      { query: 'language:eng', page: 1, limit: 50, sort: 'trending' },
+    ]);
+  });
+
   it('supports ascending recommended book order', async () => {
     const searchBooksMock = mock.method(
       OpenLibraryAPI.prototype,
       'searchBooks',
       async ({ sort }: { sort?: string }) => {
-        assert.strictEqual(sort, 'random');
+        assert.strictEqual(sort, 'trending');
 
         return {
           numFound: 2,

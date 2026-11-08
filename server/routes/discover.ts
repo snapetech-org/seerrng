@@ -1,6 +1,5 @@
 import ComicVineAPI from '@server/api/comicvine';
 import { getCoverArtArchiveThumbnailUrl } from '@server/api/coverartarchive/urls';
-import { DEFAULT_EXTERNAL_API_TIMEOUT_MS } from '@server/api/externalapi';
 import GoogleBooksAPI from '@server/api/googlebooks';
 import LazyLibrarianAPI from '@server/api/lazylibrarian';
 import ListenBrainzAPI from '@server/api/listenbrainz';
@@ -13,7 +12,9 @@ import type {
 import MusicBrainz from '@server/api/musicbrainz';
 import type { MbAlbumResult } from '@server/api/musicbrainz/interfaces';
 import type { OpenLibrarySearchDoc } from '@server/api/openlibrary';
-import OpenLibraryAPI from '@server/api/openlibrary';
+import OpenLibraryAPI, {
+  OPENLIBRARY_SEARCH_TIMEOUT_MS,
+} from '@server/api/openlibrary';
 import RadarrAPI, { type RadarrMovie } from '@server/api/servarr/radarr';
 import SportarrAPI from '@server/api/servarr/sportarr';
 import type { SortOptions } from '@server/api/themoviedb';
@@ -977,14 +978,10 @@ const diversifyMusicAlbumsByArtist = (
   return [...selectedAlbums, ...skippedAlbums].slice(0, limit);
 };
 
-// Open Library requests can legitimately take up to
-// DEFAULT_EXTERNAL_API_TIMEOUT_MS to complete. These race timeouts must stay
-// above that, or they cut off in-flight requests before the HTTP client
-// itself would give up, turning a slow-but-working provider into a hard
-// failure (see: books discovery going empty under provider latency).
+// Leave room for the search client's abort deadline to report the failure.
 const MUSIC_DISCOVERY_BLEND_TIMEOUT_MS = 5_000;
 const OPENLIBRARY_SINGLE_REQUEST_TIMEOUT_MS =
-  DEFAULT_EXTERNAL_API_TIMEOUT_MS + 2_000;
+  OPENLIBRARY_SEARCH_TIMEOUT_MS + 2_000;
 
 const defaultMusicDiscoveryTags = [
   'pop',
@@ -4244,7 +4241,7 @@ discoverRoutes.get('/books', async (req, res) => {
       !hasSearchQuery &&
       !hasSubjectFilter &&
       !authorQuery
-        ? 'random'
+        ? 'trending'
         : sortByValue === 'newest'
           ? 'new'
           : sortByValue === 'oldest'

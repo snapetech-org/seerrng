@@ -117,6 +117,9 @@ interface OpenLibraryAuthorWorksResponse {
 }
 
 export const MAX_OPENLIBRARY_PAGE_SIZE = 100;
+// Catalog searches regularly exceed the ordinary ten-second metadata timeout.
+// Share one abort deadline across retries so a stalled search remains bounded.
+export const OPENLIBRARY_SEARCH_TIMEOUT_MS = 30_000;
 export const MAX_OPENLIBRARY_EDITION_ISBNS = 200;
 export const MAX_OPENLIBRARY_TITLE_LENGTH = 1_000;
 export const MAX_OPENLIBRARY_DESCRIPTION_LENGTH = 20_000;
@@ -516,6 +519,8 @@ class OpenLibraryAPI extends ExternalAPI {
     const response = await this.get<OpenLibrarySearchResponse>(
       '/search.json',
       {
+        timeout: OPENLIBRARY_SEARCH_TIMEOUT_MS,
+        signal: AbortSignal.timeout(OPENLIBRARY_SEARCH_TIMEOUT_MS),
         params: {
           q: query,
           page: page.toString(),

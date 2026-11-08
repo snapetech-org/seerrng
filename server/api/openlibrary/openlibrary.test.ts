@@ -12,13 +12,23 @@ import OpenLibraryAPI, {
 describe('OpenLibraryAPI response bounds', () => {
   it('requests every bounded field used by search result sorting and display', async () => {
     const openLibrary = new OpenLibraryAPI();
-    let requestOptions: { params?: Record<string, string> } | undefined;
+    let requestOptions:
+      | {
+          params?: Record<string, string>;
+          timeout?: number;
+          signal?: AbortSignal;
+        }
+      | undefined;
     let isUsableResponse: ((data: unknown) => boolean) | undefined;
     Object.defineProperty(openLibrary, 'get', {
       configurable: true,
       value: async (
         _endpoint: string,
-        options: { params?: Record<string, string> },
+        options: {
+          params?: Record<string, string>;
+          timeout?: number;
+          signal?: AbortSignal;
+        },
         _ttl: number,
         usableResponse: (data: unknown) => boolean
       ) => {
@@ -30,6 +40,9 @@ describe('OpenLibraryAPI response bounds', () => {
 
     await openLibrary.searchBooks({ query: 'microsoft' });
 
+    assert.equal(requestOptions?.timeout, 30_000);
+    assert.ok(requestOptions?.signal instanceof AbortSignal);
+    assert.equal(requestOptions.signal.aborted, false);
     assert.equal(requestOptions?.params?.fields, OPENLIBRARY_SEARCH_FIELDS);
     assert.match(OPENLIBRARY_SEARCH_FIELDS, /publisher/);
     assert.match(OPENLIBRARY_SEARCH_FIELDS, /subject/);
