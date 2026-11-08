@@ -171,6 +171,9 @@ function configureSonarr(overrides: Partial<SonarrSettings>[]): void {
   })) as SonarrSettings[];
 }
 
+const realDispatchEnqueue = requestDispatchManager.enqueue;
+const realWorkCleanup = requestWorkCleanupManager.cleanup;
+
 let app: Express;
 let cleanupShouldFail = false;
 
@@ -7128,6 +7131,13 @@ describe('pending book destination edits', () => {
   });
 
   it('verifies the exact edition against the new destination before saving', async (t) => {
+    mock.method(
+      ReadarrAPI.prototype as unknown as {
+        ensureProvider: () => Promise<void>;
+      },
+      'ensureProvider',
+      async () => undefined
+    );
     const original = await seedBook({
       preferredEditionId: 'edition-1',
       editionPolicy: 'alongside',
@@ -8363,17 +8373,9 @@ describe('POST /request/:requestId/retry', () => {
         nextAttemptAt: new Date(Date.now() + 21600000),
       })
     );
-    // Restore the real durable admission and cleanup paths for this regression.
-    (
-      requestDispatchManager.enqueue as unknown as {
-        mock: { restore: () => void };
-      }
-    ).mock.restore();
-    (
-      requestWorkCleanupManager.cleanup as unknown as {
-        mock: { restore: () => void };
-      }
-    ).mock.restore();
+    // Use the real durable admission/cleanup under both native and Vitest runners.
+    mock.method(requestDispatchManager, 'enqueue', realDispatchEnqueue);
+    mock.method(requestWorkCleanupManager, 'cleanup', realWorkCleanup);
     const dispatch = mock.method(
       MediaRequestSubscriber.prototype,
       'dispatchRequestById',
