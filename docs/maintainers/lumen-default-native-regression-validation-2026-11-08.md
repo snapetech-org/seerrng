@@ -106,3 +106,19 @@ parity, and three theme/refresh cases. All six login cases pass, including the s
 Evidence: `lumen-cypress-ci-repro.log`, `lumen-cypress-seeded-qualified.log`, and
 `lumen-cypress-login-qualified.log`. These are fixture changes, with no further
 application behavior changes after `39d2d14f0`.
+
+## Final Playwright seed-state qualification
+
+The full Playwright run at `39d2d14f0` passed 599 cases, skipped one, and found
+two remaining fixture assumptions. Its retained network traces confirm that the
+account-cache case's users had no settings object, while the theme-switch case
+began with John already saved. The cache test now resolves an absent preference
+to Persius consistently when opening the desktop More disclosure. The theme test
+starts from Orig, then verifies John's actual stylesheet/save responses and
+persistence, and restores the original preference afterward.
+
+All three focused cases pass against a freshly prepared CI database, including
+account switching on desktop and phone. The original private-text isolation,
+full-document navigation probes, stylesheet response, save response and reload
+assertions remain intact. Evidence: `39-playwright-failures` and
+`lumen-final-native-fixture.log`. These repairs change tests only.

@@ -42,9 +42,19 @@ test('users can switch and persist an installed interface theme', async ({
   expect(currentUserResponse.status()).toBe(200);
   const currentUser = await currentUserResponse.json();
   const userId = currentUser.id as number;
-  const originalTheme = currentUser.settings?.interfaceTheme ?? 'seerrOrig';
+  const originalTheme = currentUser.settings?.interfaceTheme ?? 'persiusNG';
 
   try {
+    // The shared seeded account may already use John after another UI case.
+    // Begin with a distinct saved theme so selecting John must issue a save.
+    expect(
+      (
+        await page.request.post(
+          `/api/v1/user/${userId}/settings/interface-theme`,
+          { data: { theme: 'seerrOrig' } }
+        )
+      ).status()
+    ).toBe(200);
     await page.route('**/api/v1/discover/**', (route) =>
       route.fulfill({
         json: new URL(route.request().url()).pathname.includes('/genreslider/')
@@ -67,6 +77,11 @@ test('users can switch and persist an installed interface theme', async ({
       if (message.type() === 'error') errors.push(message.text());
     });
     await page.goto('/');
+    await expect(page.locator('html')).toHaveAttribute(
+      'data-interface-theme',
+      'seerrOrig'
+    );
+    await expect(page.locator('[data-presentation="persius"]')).toHaveCount(0);
 
     const stylesheetResponse = page.waitForResponse(
       (response) =>

@@ -142,7 +142,10 @@ for (const width of [1440, 390]) {
         await page
           .getByRole('button', { name: 'More navigation', exact: true })
           .click();
-      if (width >= 640 && nextUser.settings?.interfaceTheme === 'persiusNG') {
+      if (
+        width >= 640 &&
+        (nextUser.settings?.interfaceTheme ?? 'persiusNG') === 'persiusNG'
+      ) {
         await page
           .locator('.persius-navigation-more > summary')
           .filter({ visible: true })
