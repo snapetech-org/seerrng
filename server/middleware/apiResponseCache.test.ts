@@ -16,7 +16,23 @@ const createApp = (authenticated = true) => {
   });
   app.use(apiResponseCache);
   app.get('/discover/books', (_req, res) => res.json({ results: [] }));
-  app.get('/book/OL1W', (_req, res) => res.json({ id: 'OL1W' }));
+  let requestStatus = 'unknown';
+  app.post('/request', (_req, res) => {
+    requestStatus = 'processing';
+    res.status(201).json({ status: requestStatus });
+  });
+  for (const path of [
+    '/book/OL1W',
+    '/movie/42',
+    '/tv/42',
+    '/collection/42',
+    '/person/42',
+    '/music/album',
+    '/author/1',
+    '/artist/1',
+  ]) {
+    app.get(path, (_req, res) => res.json({ status: requestStatus }));
+  }
   app.get('/tv/42/media-server-collections', (_req, res) =>
     res.json({ available: true, collections: [] })
   );
@@ -56,12 +72,33 @@ describe('apiResponseCache', () => {
     assert.equal(unchanged.status, 304);
   });
 
-  it('uses a shorter private cache for media details', async () => {
-    const res = await request(createApp()).get('/book/OL1W');
-
-    assert.equal(res.status, 200);
-    assert.match(res.headers['cache-control'], /private/);
-    assert.match(res.headers['cache-control'], /max-age=300/);
+  it('revalidates live media state and retains conditional reads only while unchanged', async () => {
+    const app = createApp();
+    for (const path of [
+      '/book/OL1W',
+      '/movie/42',
+      '/tv/42',
+      '/collection/42',
+      '/person/42',
+      '/music/album',
+      '/author/1',
+      '/artist/1',
+    ]) {
+      const first = await request(app).get(path);
+      assert.equal(first.headers['cache-control'], 'private, no-cache');
+      const unchanged = await request(app)
+        .get(path)
+        .set('If-None-Match', first.headers.etag);
+      assert.equal(unchanged.status, 304);
+    }
+    const before = await request(app).get('/movie/42');
+    await request(app).post('/request').expect(201);
+    const after = await request(app)
+      .get('/movie/42')
+      .set('If-None-Match', before.headers.etag);
+    assert.equal(after.status, 200);
+    assert.equal(after.body.status, 'processing');
+    assert.notEqual(after.headers.etag, before.headers.etag);
   });
 
   it('never caches mutable media-server collection or saved-item state', async () => {

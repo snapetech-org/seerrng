@@ -21,6 +21,7 @@ tags. The comparison link is the complete commit range.
 
 #### Fixed
 
+- **Requests:** Media details revalidate live state after submission, immediately showing Processing and disabling duplicate requests instead of reusing a five-minute browser cache.
 - **Interface:** Shared pagination no longer overlaps its page indicator and Previous control on phones across Requests, Issues, Blocklist, Logs, user history and software requests. Desktop alignment and theme control sizes are retained.
 - **Books:** Audiobookshelf connections can be saved after automatic or manual book-library selection; stale validation no longer leaves Add library disabled.
 - **Books:** Book metadata and edition lookups share a 25-second deadline and prefer exact provider identities. Matching concurrent reads share work without crossing destination, format or credential boundaries. Failed metadata loads offer Retry; edition outages retain Automatic best match. Edition queries now accept author names containing spaces and punctuation.

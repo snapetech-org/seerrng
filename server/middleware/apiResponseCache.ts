@@ -49,7 +49,11 @@ const getCacheControl = (path: string, isAuthenticated: boolean) => {
     return 'private, no-cache';
   }
 
-  return 'private, max-age=300, stale-while-revalidate=1800, stale-if-error=1800';
+  // Detail and related catalog responses include live request, availability,
+  // watchlist and viewer-policy state alongside provider metadata. Revalidate
+  // every read so mutations cannot leave an enabled stale Request action.
+  // Provider metadata retains its separate server-side cache.
+  return 'private, no-cache';
 };
 
 export const apiResponseCache = (
