@@ -4,6 +4,11 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.webkit.WebView
 import android.widget.FrameLayout
+import android.view.View
+import androidx.test.espresso.UiController
+import androidx.test.espresso.ViewAction
+import androidx.test.espresso.matcher.RootMatchers.isDialog
+import org.hamcrest.Matcher
 import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso.onView
@@ -43,6 +48,20 @@ class OriginBarTest {
                     onView(withId(R.id.activeServerName)).check(matches(withText(if (historicalBaseline) "Saved server" else first.origin)))
                     onView(withId(R.id.httpBadge)).check(matches(isDisplayed()))
                     screenshot(context, "origin-initial")
+                    // A real user gesture opens the native popup. Its toolbar
+                    // must identify the loaded origin as well as the main view.
+                    onView(isAssignableFrom(WebView::class.java)).perform(click())
+                    lateinit var popup: WebView
+                    onView(isAssignableFrom(WebView::class.java)).inRoot(isDialog()).perform(object : ViewAction {
+                        override fun getDescription() = "Capture the sign-in popup WebView"
+                        override fun getConstraints(): Matcher<View> = isAssignableFrom(WebView::class.java)
+                        override fun perform(controller: UiController, view: View) { popup = view as WebView }
+                    })
+                    waitForWebView(popup, first.origin)
+                    onView(withText(if (historicalBaseline) context.getString(R.string.app_name) else first.origin))
+                        .inRoot(isDialog()).check(matches(isDisplayed()))
+                    screenshot(context, "origin-popup")
+                    onView(withText(R.string.cancel)).inRoot(isDialog()).perform(click())
                     // Exercise the origin renderer with an actual second-page
                     // load initiated by instrumentation. This does not claim
                     // that user navigation may bypass the cleartext boundary.
@@ -64,9 +83,14 @@ class OriginBarTest {
     }
 
     private fun waitForPage(scenario: ActivityScenario<MainActivity>, origin: String) {
+        lateinit var view: WebView
+        scenario.onActivity { activity -> view = webView(activity) }
+        waitForWebView(view, origin)
+    }
+
+    private fun waitForWebView(view: WebView, origin: String) {
         val loaded = CountDownLatch(1)
-        scenario.onActivity { activity ->
-            val view = webView(activity)
+        view.post {
             val poll = object : Runnable {
                 override fun run() {
                     if (view.progress == 100 && view.url?.startsWith(origin) == true) {
@@ -101,7 +125,7 @@ class OriginBarTest {
                             val reader = client.getInputStream().bufferedReader()
                             val path = reader.readLine().orEmpty().split(' ').getOrNull(1)
                             while (!reader.readLine().isNullOrEmpty()) { }
-                            val body = "<html><meta name=viewport content='width=device-width'><body style='padding:32px;font:18px sans-serif'><h1>Origin fixture</h1><p>Check the server address above before signing in.</p></body></html>"
+                            val body = "<html><meta name=viewport content='width=device-width'><body style='padding:32px;font:18px sans-serif'><h1>Origin fixture</h1><p>Check the server address above before signing in.</p><a href='/popup' target='_blank' style='position:fixed;inset:45% 0 45%;text-align:center'>Open sign-in window</a></body></html>"
                             val response = if (path == "/redirect") "HTTP/1.1 302 Found\r\nLocation: http://127.0.0.1:$target/auth\r\nContent-Length: 0\r\nConnection: close\r\n\r\n" else "HTTP/1.1 200 OK\r\nContent-Type: text/html\r\nContent-Length: ${body.toByteArray().size}\r\nConnection: close\r\n\r\n$body"
                             client.getOutputStream().write(response.toByteArray())
                         }
