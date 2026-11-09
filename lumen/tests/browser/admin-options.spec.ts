@@ -2050,7 +2050,8 @@ test('Everyone shows more on request and filters by status', async ({
   await filters.getByRole('button', { name: /Failed/ }).click();
   await expect(page).toHaveURL(/show=failed/);
   await expect(page.getByText('Nothing here')).toBeVisible();
-  expect(asked).toContain('failed:0:20');
+  // pages of at most 15 keep SeerrNG's per-response availability check complete
+  expect(asked).toContain('failed:0:15');
 });
 
 test('a temporary configured game probe failure keeps that platform and Retry reachable', async ({
