@@ -9,6 +9,7 @@ import MediaIdentifier, {
   MediaIdentifierProvider,
 } from '@server/entity/MediaIdentifier';
 import type { User } from '@server/entity/User';
+import { projectBookFileObservations } from '@server/lib/bookFileObservations';
 import {
   isValidOpenLibraryResourceId,
   normalizeOpenLibraryEditionId,
@@ -18,7 +19,6 @@ import { normalizeValidIsbn } from '@server/lib/isbn';
 import { hydrateMediaSummaryRelations } from '@server/lib/mediaSummaryHydration';
 import { parseBookshelfBookId } from '@server/utils/bookshelfCatalog';
 import { Brackets, In } from 'typeorm';
-import { projectBookFileObservations } from '@server/lib/bookFileObservations';
 
 type BookMediaLookupResult = {
   id: string;

@@ -72,3 +72,15 @@ reported data shapes, not an exhaustive qualification of every external provider
 version. Browser-native app launch remains device-dependent. New setup was
 rendered with an empty configuration; external OAuth/media-server enrollment is
 covered separately by existing authentication tests.
+
+## Follow-up before tagging
+
+A mixed movie/music list still waited for the album lookup because progressive
+rendering required a placeholder for every category. Two headless tests reproduced
+this on the integrated build. Ready rows now render immediately; extra-category
+rows join in order as metadata arrives. An all-extra list retains its loading state
+until it has an actual row, avoiding a false empty message. All 16 slow-list cases
+passed across four viewports before the follow-up commit. Baseline failure traces
+and candidate screenshots remain in the task evidence directory. Native/backend
+sources are byte-identical to the preceding integration for CI reuse; Lumen and
+release-note contracts must qualify the final head separately.

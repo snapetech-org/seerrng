@@ -469,7 +469,7 @@ const fetchBook = (bid: string) => {
 let limited = false;
 // A slow lookup (a title SeerrNG has to fetch, a book while the metadata service is busy) shouldn't
 // hold back the whole list: `partial` gets the rows at once, with names already known or a plain
-// label, and again as lookups finish. Types without a plain label wait for their lookup.
+// label, and again as lookups finish. Other categories join as their names arrive.
 async function describeAll(
   list: RequestItem[],
   partial?: (rows: Row[]) => void
@@ -490,13 +490,18 @@ async function describeAll(
           ? titlePlaceholder(r)
           : null
   );
-  const showsEarly = !!partial && first.every(Boolean);
+  const showsEarly = !!partial;
   let finished = false;
   let timer: number | undefined;
   const show = () => {
     timer = undefined;
     if (finished || generation !== sessionGeneration()) return;
-    partial!(first.map((row, i) => out[i] || row!));
+    const visible = first
+      .map((row, i) => out[i] || row)
+      .filter((row): row is Row => !!row);
+    // Do not flash an empty-state message while an all-extra list is loading.
+    // A slow extra category must not prevent already-known rows from appearing.
+    if (visible.length || !list.length) partial!(visible);
   };
   if (showsEarly) show();
   const worker = async () => {
