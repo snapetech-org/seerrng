@@ -66,9 +66,12 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           node bin/update-api-message-catalog.mjs
+          node bin/check-api-message-surfaces.cjs --write
+          pnpm i18n:extract
+          node bin/update-i18n-source-snapshot.mjs
           python3 - <<'PY'
           import json, os, pathlib, subprocess, urllib.request
-          paths = ['config/i18n/api-message-sources.json', 'src/i18n/apiMessages.ts']
+          paths = ['config/i18n/api-message-sources.json', 'src/i18n/apiMessages.ts', 'config/i18n/api-message-surfaces.json', 'src/i18n/locale/en.json', 'config/i18n/source-snapshot.json']
           changed = set(subprocess.check_output(['git','diff','--name-only'],text=True).splitlines())
           assert changed <= set(paths + ['src/i18n/locale/en.json', 'config/i18n/source-snapshot.json']), changed
           def api(path, body):
@@ -87,7 +90,7 @@ jobs:
           PY
       - name: Check formatting and feature documentation
         run: |
-          pnpm exec prettier --check --ignore-unknown 'config/i18n/api-message-sources.json' 'src/i18n/apiMessages.ts' '.github/workflows/ci.yml' '.github/workflows/security-native-visual.yml' '.github/workflows/security-regression.yml' 'android/app/src/androidTest/java/org/snapetech/seerrng/OriginBarTest.kt' 'config/i18n/source-snapshot.json' 'ios/SeerrNG/ServerBrowserView.swift' 'ios/SeerrNGTests/ServerEndpointTests.swift' 'playwright/client-tokens.spec.ts' 'playwright/narrator-permissions.spec.ts' 'server/migration/clientApiKeys.postgres.test.ts' 'src/components/UserProfile/UserSettings/UserClientTokens.tsx' 'src/components/UserProfile/UserSettings/index.tsx' 'src/i18n/locale/en.json' 'src/pages/profile/settings/client-tokens.tsx' 'docs/using-seerr/browser-extension.md' 'ios/SeerrNGUITests/ServerSetupUITests.swift' 'release-notes/2026-11-09-client-token-settings.md' 'docs/maintainers/security-audit-remediation-2026-11-09.md' 'docs/using-seerr/client-api-keys.md' 'docs/feature-comparison.md'
+          pnpm exec prettier --check --ignore-unknown 'config/i18n/api-message-surfaces.json' 'config/i18n/api-message-sources.json' 'src/i18n/apiMessages.ts' '.github/workflows/ci.yml' '.github/workflows/security-native-visual.yml' '.github/workflows/security-regression.yml' 'android/app/src/androidTest/java/org/snapetech/seerrng/OriginBarTest.kt' 'config/i18n/source-snapshot.json' 'ios/SeerrNG/ServerBrowserView.swift' 'ios/SeerrNGTests/ServerEndpointTests.swift' 'playwright/client-tokens.spec.ts' 'playwright/narrator-permissions.spec.ts' 'server/migration/clientApiKeys.postgres.test.ts' 'src/components/UserProfile/UserSettings/UserClientTokens.tsx' 'src/components/UserProfile/UserSettings/index.tsx' 'src/i18n/locale/en.json' 'src/pages/profile/settings/client-tokens.tsx' 'docs/using-seerr/browser-extension.md' 'ios/SeerrNGUITests/ServerSetupUITests.swift' 'release-notes/2026-11-09-client-token-settings.md' 'docs/maintainers/security-audit-remediation-2026-11-09.md' 'docs/using-seerr/client-api-keys.md' 'docs/feature-comparison.md'
           node scripts/check-feature-comparison.mjs
       - name: Build integrated production apps
         env:
