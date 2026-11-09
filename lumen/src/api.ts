@@ -301,6 +301,21 @@ export const hardcoverWorkId = (id: string) => {
     return null;
   }
 };
+// The admin's Audiobookshelf address (http/https only), opening the item when SeerrNG knows it
+export const audiobookshelfLink = (
+  base?: string,
+  itemId?: string | null
+): string | null => {
+  if (!base) return null;
+  try {
+    const url = new URL(base);
+    if (!['http:', 'https:'].includes(url.protocol)) return null;
+    const root = url.href.replace(/\/+$/, '');
+    return itemId ? `${root}/item/${encodeURIComponent(itemId)}` : root;
+  } catch {
+    return null;
+  }
+};
 export const bookMediaForFormat = (
   media: MediaInfo | undefined,
   format: 'ebook' | 'audiobook'

@@ -78,14 +78,19 @@ const paged = (results: unknown[]) => ({
   results,
 });
 
-async function fixtures(page: Page) {
+async function fixtures(
+  page: Page,
+  opts: { config?: Record<string, unknown>; ownedAudiobook?: boolean } = {}
+) {
   const requests: {
     path: string;
     query: string;
     body?: Record<string, unknown>;
   }[] = [];
   await page.route('https://**/*', (r) => r.abort());
-  await page.route('**/lumen-config.json', (r) => r.fulfill({ json: {} }));
+  await page.route('**/lumen-config.json', (r) =>
+    r.fulfill({ json: opts.config || {} })
+  );
   await page.route('**/seerr-classic/**', (r) =>
     r.fulfill({ status: 404, body: '' })
   );
@@ -148,8 +153,11 @@ async function fixtures(page: Page) {
       return route.fulfill({
         json: book(
           decodeURIComponent(path.slice(6)),
-          url.searchParams.get('f') === 'audio' ? 'audiobook' : 'ebook',
-          'Native book detail'
+          opts.ownedAudiobook || url.searchParams.get('f') === 'audio'
+            ? 'audiobook'
+            : 'ebook',
+          'Native book detail',
+          !!opts.ownedAudiobook
         ),
       });
     return route.fulfill({ json: {} });
@@ -230,4 +238,31 @@ test('native ebook search works without a companion and retains its service-owne
       (r) => r.path === '/discover/books' && r.query.includes('query=rare')
     )
   ).toBe(true);
+});
+
+test('an owned audiobook opens in Audiobookshelf when the admin set its address', async ({
+  page,
+}) => {
+  await fixtures(page, {
+    ownedAudiobook: true,
+    config: { audiobookshelfUrl: 'https://books.example.com/' },
+  });
+  await page.goto(`/book/${encodeURIComponent(ownedId)}?f=audio`);
+  await expect(
+    page.getByRole('link', { name: 'Listen in Audiobookshelf' })
+  ).toHaveAttribute('href', 'https://books.example.com/item/abs-owned');
+});
+
+test('without an Audiobookshelf address an owned book shows its status, not a dead button', async ({
+  page,
+}) => {
+  await fixtures(page, {
+    ownedAudiobook: true,
+    config: { audiobookshelfUrl: 'javascript:alert(1)' },
+  });
+  await page.goto(`/book/${encodeURIComponent(ownedId)}?f=audio`);
+  await expect(
+    page.getByRole('button', { name: 'In your library' })
+  ).toBeDisabled();
+  await expect(page.getByText('Listen in Audiobookshelf')).toHaveCount(0);
 });

@@ -375,6 +375,18 @@ export default function LumenSettings() {
               onChange={(e) => setTop('seerrPublicUrl', e.target.value)}
             />
           </label>
+          <label className="set cfg-row">
+            <span>
+              <b>Audiobookshelf address</b>
+              <small>Where “Listen in Audiobookshelf” goes</small>
+            </span>
+            <input
+              className="cfg-input"
+              placeholder="https://books.example.com"
+              value={(cfg.audiobookshelfUrl as string) || ''}
+              onChange={(e) => setTop('audiobookshelfUrl', e.target.value)}
+            />
+          </label>
         </div>
       </Section>
 

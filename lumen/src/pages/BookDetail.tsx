@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link, useParams, useSearchParams } from 'react-router-dom';
 import {
+  audiobookshelfLink,
   bookIdFor,
   bookMediaForFormat,
   chaptarrWork,
@@ -101,7 +102,7 @@ export default function BookDetail() {
   const [p] = useSearchParams();
   const f: 'ebook' | 'audiobook' =
     p.get('f') === 'audio' ? 'audiobook' : 'ebook';
-  const { prefs } = usePrefs();
+  const { prefs, audiobookshelfUrl } = usePrefs();
   const toast = useToast();
   const plainId = bookIdFor(decodeURIComponent(id), f);
   const first = useApi<BookDetails>(`/book/${encodeURIComponent(plainId)}`);
@@ -311,12 +312,28 @@ export default function BookDetail() {
     : showNarr && chosenRow
       ? `Request · ${who(chosenRow)}`
       : 'Request audiobook';
-  const listen = (
-    <button className="btn btn-ok">
-      <Icon name="play" />
-      Listen in Audiobookshelf
-    </button>
-  );
+  // with the admin's Audiobookshelf address this opens the book there; without one it's a plain
+  // "in your library" status rather than a button that does nothing
+  const inAbs = (listening: boolean) => {
+    const href = audiobookshelfLink(
+      audiobookshelfUrl,
+      listening
+        ? bookMediaForFormat(b.mediaInfo, 'audiobook')?.audiobookLibraryItemId
+        : null
+    );
+    return href ? (
+      <a className="btn btn-ok" href={href} target="_blank" rel="noopener">
+        <Icon name={listening ? 'play' : 'book'} />
+        {listening ? 'Listen in Audiobookshelf' : 'Read in Audiobookshelf'}
+      </a>
+    ) : (
+      <button className="btn btn-tonal" disabled>
+        <Icon name="check" />
+        In your library
+      </button>
+    );
+  };
+  const listen = inAbs(true);
   const main =
     audio && showNarr && anotherMode ? (
       chosenRow ? (
@@ -337,10 +354,7 @@ export default function BookDetail() {
         </button>
       )
     ) : available && (!showNarr || !requestable.length) ? (
-      <button className="btn btn-ok">
-        <Icon name={audio ? 'play' : 'book'} />
-        {audio ? 'Listen in Audiobookshelf' : 'Read in Audiobookshelf'}
-      </button>
+      inAbs(audio)
     ) : s && s.k !== 'ok' ? (
       <button className="btn btn-tonal" disabled>
         <Icon name={s.ico} />
