@@ -4,7 +4,11 @@ import {
 } from '@app/utils/narrationSelection';
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { hasExactEditionFiles, hasRequestedEditionFiles } from './availability';
+import {
+  editionIdKey,
+  hasExactEditionFiles,
+  hasRequestedEditionFiles,
+} from './availability';
 import { cardFromCatalog, cardFromLookup, normalizeSampleUrl } from './cards';
 
 const card = (id: string, extra = {}) =>
@@ -124,4 +128,23 @@ test('a catalog row without a provider identity is not requestable', () => {
     'audiobook'
   );
   assert.equal(card.requestable, false);
+});
+
+test('Hardcover edition ids match across request and catalog spellings', () => {
+  assert.equal(editionIdKey('hc:31922668'), 'hc:31922668');
+  assert.equal(editionIdKey('31922668'), 'hc:31922668');
+  assert.equal(editionIdKey('hc:edition:31922668-audiobook'), 'hc:31922668');
+  assert.equal(editionIdKey('gr:236815844-audiobook'), 'gr:236815844');
+  const catalog = [
+    { foreignEditionId: 'hc:edition:31812548-audiobook', owned: false },
+    { foreignEditionId: 'hc:edition:31922668-audiobook', owned: true },
+  ];
+  assert.equal(hasExactEditionFiles('hc:31922668', catalog, [], 1), true);
+  assert.equal(hasExactEditionFiles('31922668', catalog, [], 1), true);
+  assert.equal(hasExactEditionFiles('hc:31812548', catalog, [], 1), false);
+  assert.equal(hasExactEditionFiles('', catalog, [], 1), false);
+  const editions = [
+    { foreignEditionId: 'hc:edition:31922668-audiobook', monitored: true },
+  ];
+  assert.equal(hasExactEditionFiles('hc:31922668', [], editions, 1), true);
 });
