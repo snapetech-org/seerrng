@@ -58,6 +58,14 @@ const publishReleaseIndex = releaseWorkflow.indexOf('\n  publish-release:\n');
 const promoteIndex = releaseWorkflow.indexOf(
   '\n  promote-stable-container-aliases:\n'
 );
+const promotionBlock = releaseWorkflow
+  .slice(promoteIndex + 1)
+  .split(/\n {2}[a-z][a-z-]+:\n/u)[0];
+const promotionNeeds = (
+  promotionBlock.match(/^ {4}needs:\s*\[([^\]]+)\]/mu)?.[1] ?? ''
+)
+  .split(',')
+  .map((value) => value.trim().replace(/^['"]|['"]$/gu, ''));
 const releaseAliasResolutionStart = releaseWorkflow.indexOf(
   '\n      - name: Resolve latest published stable release\n'
 );
@@ -113,7 +121,7 @@ if (
   releaseAliasResolutionStart < 0 ||
   releaseAliasPromotionStart < releaseAliasResolutionStart ||
   promoteIndex < publishReleaseIndex ||
-  !releaseWorkflow.includes('needs: [publish-release]') ||
+  !promotionNeeds.includes('publish-release') ||
   !releaseWorkflow.includes(
     'bash scripts/promote-container-aliases.sh "$VERSION" "$GHCR_IMAGE" "$DOCKER_HUB"'
   ) ||
