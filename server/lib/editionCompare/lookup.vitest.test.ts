@@ -193,3 +193,41 @@ test('uses the default destination and rejects ambiguous title matches', async (
   ]);
   expect((await compareBookEditions(query)).editions).toHaveLength(0);
 });
+
+test('a library copy stored with the bare work id still uses the library catalog', async () => {
+  vi.spyOn(
+    ReadarrAPI.prototype,
+    'getKnownBookIdentityAliases'
+  ).mockImplementation((id: string) => {
+    const bare = id.replace(/^hc:/, '');
+    return [id, bare, `hc:${bare}`];
+  });
+  fixture.lookup.mockResolvedValue([
+    {
+      id: 2214,
+      foreignBookId: 'hc:427578',
+      title: 'A Book',
+      author: { authorName: 'Author' },
+      editions: [{ foreignEditionId: 'lookup-only', isEbook: false }],
+    },
+  ]);
+  fixture.book.mockResolvedValue({ id: 2214, foreignBookId: '427578' });
+  fixture.catalog.mockResolvedValue([
+    {
+      editionId: 9,
+      foreignEditionId: 'owned-recording',
+      isEbook: false,
+      owned: true,
+      narrators: ['Ray Porter'],
+    },
+  ]);
+  const result = await compareBookEditions({
+    format: 'audiobook',
+    term: 'A Book',
+    title: 'A Book',
+  });
+  expect(fixture.catalog).toHaveBeenCalledWith(2214);
+  expect(result.editions.map((item) => [item.id, item.owned])).toEqual([
+    ['owned-recording', true],
+  ]);
+});
