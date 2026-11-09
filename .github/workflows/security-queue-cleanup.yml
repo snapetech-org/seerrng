@@ -26,14 +26,12 @@ jobs:
                   raw = response.read()
                   return json.loads(raw) if raw else None
           obsolete = {
-              42708248208: '09559f267a9143d929535e87b8c085bdf736a4b7',
-              42708786038: '20da3da247b212db5d3e00e036d14f02444c63eb',
-              42709701469: '41312bf636bf20a06082ca24af6cd735ce3134e9',
+              42710299656: 'ee82b0e3ce9398fce70589ce222c607160f3db54',
           }
           for run_id, sha in obsolete.items():
               run = api('GET', f'actions/runs/{run_id}')
               jobs = api('GET', f'actions/runs/{run_id}/jobs')['jobs']
-              if run['head_branch'] == 'codex/seerrng-security-verification-20261109' and run['head_sha'] == sha and run['status'] in ('queued', 'in_progress') and any(j['status'] == 'queued' for j in jobs) and not any(j['status'] == 'in_progress' for j in jobs):
+              if run['head_branch'] == 'codex/seerrng-security-verification-20261109' and run['head_sha'] == sha and run['status'] in ('queued', 'in_progress') and jobs and all(j['status'] == 'queued' for j in jobs):
                   api('POST', f'actions/runs/{run_id}/cancel')
                   print(f'Cancelled superseded queued verification {run_id}')
               else:
