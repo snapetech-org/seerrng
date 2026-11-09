@@ -306,6 +306,31 @@ test('empty and failed trending feeds finish loading', async ({ page }) => {
   expect(fixture.errors).toEqual([]);
 });
 
+test('a failed Discover row can be retried', async ({ page }) => {
+  const fixture = await fixtures(page);
+  let fail = true;
+  await page.route('**/api/v1/discover/trending', (route) =>
+    fail
+      ? route.fulfill({
+          status: 503,
+          json: { message: 'Provider unavailable' },
+        })
+      : route.fallback()
+  );
+  await page.goto('/');
+  const failed = page.getByText('Couldn’t load popular titles', {
+    exact: true,
+  });
+  await expect(failed).toBeVisible();
+  fail = false;
+  await page
+    .locator('.empty', { hasText: 'Couldn’t load popular titles' })
+    .getByRole('button', { name: 'Retry', exact: true })
+    .click();
+  await expect(failed).toHaveCount(0);
+  expect(fixture.errors).toEqual([]);
+});
+
 test('series details use the Android series route and retain iOS and desktop links', async ({
   page,
 }, info) => {
