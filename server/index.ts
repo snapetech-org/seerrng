@@ -10,6 +10,11 @@ import { Session } from '@server/entity/Session';
 import { User } from '@server/entity/User';
 import { initI18n } from '@server/i18n';
 import { startJobs, stopJobs } from '@server/job/schedule';
+import {
+  restoreCacheSnapshots,
+  saveCacheSnapshots,
+  startCacheSnapshots,
+} from '@server/lib/cachePersistence';
 import { resumeComicCatalogIndex } from '@server/lib/comicCatalogIndex';
 import { runWithConfigurationAdmission } from '@server/lib/configurationAdmission';
 import { loadExternalRuntimeConfig } from '@server/lib/externalRuntimeConfig';
@@ -249,6 +254,21 @@ Promise.resolve()
       restartFlag.initializeSettings(settings);
 
       initI18n();
+
+      // Provider metadata saved before the last stop, so the first visitors
+      // after a restart or update don't wait for every list to be fetched.
+      const skipCacheSnapshots = isTruthyEnv(process.env.E2E_TESTS);
+      if (!skipCacheSnapshots) {
+        const restoredCacheEntries = await restoreCacheSnapshots();
+        if (restoredCacheEntries > 0)
+          logger.info('Restored saved provider cache entries', {
+            label: 'Cache',
+            entries: restoredCacheEntries,
+          });
+      }
+      const stopCacheSnapshots = skipCacheSnapshots
+        ? () => undefined
+        : startCacheSnapshots();
 
       setForceIpv4First(settings.network.forceIpv4First);
 
@@ -698,6 +718,13 @@ Promise.resolve()
                   // them first so the background-task pass observes that work.
                   await waitForPendingPasswordResetDeliveries();
                   await waitForBackgroundTasks();
+                },
+              },
+              {
+                name: 'provider cache snapshot',
+                run: async () => {
+                  stopCacheSnapshots();
+                  if (!skipCacheSnapshots) await saveCacheSnapshots();
                 },
               },
             ],
