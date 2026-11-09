@@ -1,0 +1,61 @@
+# ng-runner-policy: github-hosted-primary-v1
+name: Preview security simulator evidence
+on:
+  push:
+    branches: [codex/seerrng-security-verification-20261109]
+    paths: ['.github/workflows/security-evidence-preview.yml']
+permissions:
+  contents: read
+  actions: read
+jobs:
+  preview:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    steps:
+      - name: Prepare image reader
+        run: python3 -m pip install --disable-pip-version-check Pillow==11.3.0
+      - name: Read only this task's fixture screenshots
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python3 - <<'PY'
+          import base64, io, json, subprocess, time, zipfile
+          from PIL import Image, ImageDraw
+          prefix = 'repos/snapetech-org/seerrng/'
+          def api(path):
+              return subprocess.check_output(['gh', 'api', prefix + path])
+          run_id = 42713806657
+          for attempt in range(90):
+              run = json.loads(api(f'actions/runs/{run_id}'))
+              assert run['head_sha'] == '33904698f23e3d7c1be3f6188c7e860d73a210ee'
+              assert run['head_branch'] == 'codex/seerrng-security-verification-20261109'
+              if run['status'] == 'completed': break
+              print('Waiting for fixture run:', run['status'], flush=True)
+              time.sleep(20)
+          else:
+              raise RuntimeError('Fixture run remains pending; no acceptance claimed')
+          print('SOURCE_CONCLUSION:', run['conclusion'], flush=True)
+          artifacts = json.loads(api(f'actions/runs/{run_id}/artifacts'))['artifacts']
+          for kind in ['baseline', 'candidate']:
+              item = next(a for a in artifacts if a['name'] == 'ios-origin-' + kind)
+              assert not item['expired'] and item['size_in_bytes'] < 32 * 1024 * 1024
+              archive = zipfile.ZipFile(io.BytesIO(api(f"actions/artifacts/{item['id']}/zip")))
+              manifest = json.loads(archive.read('manifest.json'))
+              attachments = [a for test in manifest for a in test['attachments']]
+              preview = Image.new('RGB', (1200, 910), '#eeeeee')
+              draw = ImageDraw.Draw(preview)
+              for column, name in enumerate(['origin-initial', 'origin-redirect', 'origin-long']):
+                  match = next((a for a in attachments if a.get('suggestedHumanReadableName', '').startswith(name + '_')), None)
+                  draw.text((column * 400 + 10, 10), kind + ' ' + name, fill='black')
+                  if match is None:
+                      print('Missing capture:', kind, name, flush=True)
+                      continue
+                  data = archive.read(match['exportedFileName'])
+                  picture = Image.open(io.BytesIO(data)).convert('RGB')
+                  print('CAPTURE:', kind, name, picture.size, flush=True)
+                  picture.thumbnail((400, 870))
+                  preview.paste(picture, (column * 400, 35))
+              encoded = io.BytesIO()
+              preview.save(encoded, format='JPEG', quality=88)
+              print('PREVIEW_IMAGE_' + kind + ':' + base64.b64encode(encoded.getvalue()).decode(), flush=True)
+          PY
