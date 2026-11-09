@@ -400,3 +400,11 @@ was not seeded. Tests now select the complete heading, explicitly represent a
 local-account watchlist, and seed the remaining public video shelves. The
 original application 500 and CSP failures remain independently demonstrated;
 these harness corrections do not weaken their assertions.
+
+The concurrent request/subscription contribution e6ee2a1bd is preserved in merge
+cda4bf4c8 on both remotes. Its five focused request, user, notification and
+migration suites pass (406 tests). The first combined prebuild caught omitted
+generated API messages from that contribution. Regenerated the source callsite
+manifest, six English defaults and source fingerprints; the full combined
+production build then passes. This requires fresh combined-source hosted checks;
+the earlier successful backend run does not qualify new backend code.

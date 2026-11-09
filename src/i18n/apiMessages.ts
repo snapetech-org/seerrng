@@ -115,6 +115,7 @@ export const apiMessages: Record<
   m08ba96e55bd9ebd45b22: '{value0} must be {value1} characters or fewer.',
   m08d431e37c89e1e5c398: 'Media data not found.',
   m094db48ba873c52368df: 'Invalid series watch request.',
+  m0965678281bef9ea9ab7: 'Invalid request idempotency key or scope.',
   m098c48366843b3a8bfbc:
     'Bindery requester mappings require positive integer user IDs.',
   m099df06244ec46806aa1:
@@ -1340,6 +1341,7 @@ export const apiMessages: Record<
   m622511cabdb7c425e6d6:
     '{value0} must have between 1 and 32 indexer category IDs.',
   m62744569ef6de6c01a6a: 'No {value0} service configuration was admitted.',
+  m62a2fed3d6e08c44835f: 'pending',
   m62a842870b21247f9f35:
     '[ListenBrainz] Failed to fetch album details: Unknown error',
   m62c2c1f7e909d8485bf8: '[TMDB] Failed to fetch TV watch providers: {value0}',
@@ -1545,6 +1547,7 @@ export const apiMessages: Record<
   m7181f099fd06d1bef15e: 'BackIssue returned an invalid collection page.',
   m7183db8a4b6b775e7d97: 'Unable to retrieve this series.',
   m71bdb186a639521bba73: 'Prowlarr base path is invalid.',
+  m71c6ca0372b5dcafd0b4: 'Notification outbox quality is invalid.',
   m71d5ffce4929f6fa0b90:
     'This BookOrbit Kobo collection exceeds SeerrNG’s safe 50,000-book sync limit.',
   m71ffba688b47eeab4166:
@@ -1570,6 +1573,7 @@ export const apiMessages: Record<
   m737fd6071fe8298b1ff1: 'TV request response did not contain a media request.',
   m738bcb487566cda86ca5:
     'Streaming service filters cannot be combined with local availability results.',
+  m7392d3c28c2ce71ed088: 'This request key was used for a different request.',
   m73c9da1a382a3126a67e: '{value0} must be a valid HTTP URL.',
   m73e9423481927983375d:
     'Episode Queue requests must specify exactly one starting episode in seasonRequests.',
@@ -1652,6 +1656,7 @@ export const apiMessages: Record<
     'Cannot safely identify the comic backend. Refresh its metadata before deleting.',
   m78f1af3bb56c4c2bb560: 'The requester-tag request has no media record.',
   m7900632c7ea6ed4ace41: 'ComicVine volume index order changed during a scan.',
+  m793d66e2ff3ae6bc1132: 'Invalid availability scope.',
   m7947691eee6724048bc3: '[Lidarr] Failed to add album: {value0}',
   m79599ac66af6a52fc184:
     'An additional edition requires an explicit selection.',
@@ -1764,6 +1769,7 @@ export const apiMessages: Record<
   m806e3cdef9658376314f: 'The vision provider URL is invalid.',
   m806fe0459ef5fc39c556: 'Invalid software status filter.',
   m80a3ef5bacda1efb3926: 'User missing from request context.',
+  m80aedf4eb8b581500d79: 'Invalid title identities.',
   m80de5ba77f205c2a34d5: 'Invalid numbered catalog pagination options.',
   m80ec62e1f6148b48eb08: 'Could not update the watch session.',
   m80ef41c05938ad7f05ab: 'The download service did not confirm cancellation.',
