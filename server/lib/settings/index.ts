@@ -445,7 +445,9 @@ export interface ReadarrSettings extends DVRSettings {
   activeMetadataProfileId?: number;
   activeMetadataProfileName?: string;
   /** Missing backend is the existing Readarr-compatible API. */
-  backend?: 'readarr' | 'bindery';
+  backend?: 'readarr' | 'bindery' | 'bookorbit';
+  /** Login name for the dedicated BookOrbit requester account; apiKey stores its password. */
+  bookorbitUsername?: string;
   serviceType?: 'ebook' | 'audiobook' | 'both';
 }
 

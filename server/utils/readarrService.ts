@@ -9,7 +9,7 @@ export const isBinderyService = (
 export const getReadarrServiceFormats = (
   service: Pick<ReadarrSettings, 'backend' | 'serviceType'>
 ): BookServiceFormat[] => {
-  if (service.backend === 'bindery' && service.serviceType === 'both') {
+  if (service.backend !== 'readarr' && service.serviceType === 'both') {
     return ['ebook', 'audiobook'];
   }
 

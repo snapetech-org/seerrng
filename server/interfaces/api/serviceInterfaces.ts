@@ -24,7 +24,7 @@ export interface ServiceCommonServer {
   tagRequests?: boolean;
   requestButtonLabel?: string;
   requestButtonAnimeOnly?: boolean;
-  backend?: 'readarr' | 'bindery';
+  backend?: 'readarr' | 'bindery' | 'bookorbit';
   serviceType?: 'ebook' | 'audiobook' | 'both';
   provider?: BookshelfProvider;
   providerNotice?: string;

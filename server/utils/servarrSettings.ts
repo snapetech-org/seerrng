@@ -69,6 +69,7 @@ export type ServarrConnectionSettings = Pick<
   id?: number;
   backend?: ReadarrSettings['backend'];
   serviceType?: ReadarrSettings['serviceType'];
+  bookorbitUsername?: string;
 };
 
 export const preserveServarrApiKey = <T extends { apiKey: string }>(
@@ -219,6 +220,7 @@ export const parseServarrConnectionSettings = (
   const settings = body as Partial<DVRSettings> & {
     backend?: ReadarrSettings['backend'];
     serviceType?: ReadarrSettings['serviceType'];
+    bookorbitUsername?: string;
   };
   const hostname = parseRequiredServiceString(settings.hostname, 'hostname');
   if ('error' in hostname) return hostname;
@@ -243,8 +245,8 @@ export const parseServarrConnectionSettings = (
   const backend =
     settings.backend === undefined || settings.backend === 'readarr'
       ? 'readarr'
-      : settings.backend === 'bindery'
-        ? 'bindery'
+      : settings.backend === 'bindery' || settings.backend === 'bookorbit'
+        ? settings.backend
         : undefined;
   if (!backend) return { error: 'backend is invalid.' };
 
@@ -252,17 +254,26 @@ export const parseServarrConnectionSettings = (
     settings.serviceType === undefined ||
     settings.serviceType === 'ebook' ||
     settings.serviceType === 'audiobook' ||
-    (backend === 'bindery' && settings.serviceType === 'both')
+    (backend !== 'readarr' && settings.serviceType === 'both')
       ? settings.serviceType
       : undefined;
   if (settings.serviceType !== undefined && serviceType === undefined) {
     return {
       error:
-        backend === 'bindery'
+        backend !== 'readarr'
           ? 'serviceType must be ebook, audiobook, or both.'
           : 'serviceType must be ebook or audiobook.',
     };
   }
+  const bookorbitUsername =
+    backend === 'bookorbit'
+      ? parseRequiredServiceString(
+          settings.bookorbitUsername,
+          'bookorbitUsername'
+        )
+      : undefined;
+  if (bookorbitUsername && 'error' in bookorbitUsername)
+    return bookorbitUsername;
 
   return {
     value: {
@@ -273,6 +284,9 @@ export const parseServarrConnectionSettings = (
       baseUrl: baseUrl.value,
       backend,
       serviceType,
+      ...(bookorbitUsername && 'value' in bookorbitUsername
+        ? { bookorbitUsername: bookorbitUsername.value }
+        : {}),
     },
   };
 };
@@ -703,8 +717,8 @@ export const parseReadarrSettings = (
   const backend =
     settings.backend === undefined || settings.backend === 'readarr'
       ? 'readarr'
-      : settings.backend === 'bindery'
-        ? 'bindery'
+      : settings.backend === 'bindery' || settings.backend === 'bookorbit'
+        ? settings.backend
         : undefined;
   if (!backend) {
     return { error: 'backend is invalid.' };
@@ -713,13 +727,23 @@ export const parseReadarrSettings = (
   const serviceType =
     settings.serviceType === 'ebook' ||
     settings.serviceType === 'audiobook' ||
-    (backend === 'bindery' && settings.serviceType === 'both')
+    (backend !== 'readarr' && settings.serviceType === 'both')
       ? settings.serviceType
       : undefined;
 
   if (!serviceType) {
     return { error: 'serviceType is invalid.' };
   }
+
+  const bookorbitUsername =
+    backend === 'bookorbit'
+      ? parseRequiredServiceString(
+          settings.bookorbitUsername,
+          'bookorbitUsername'
+        )
+      : undefined;
+  if (bookorbitUsername && 'error' in bookorbitUsername)
+    return bookorbitUsername;
 
   const mappings = parseBinderyUserMappings(
     settings.binderyUserMappings === undefined
@@ -733,6 +757,9 @@ export const parseReadarrSettings = (
       ...parsed.value,
       backend,
       serviceType,
+      ...(bookorbitUsername && 'value' in bookorbitUsername
+        ? { bookorbitUsername: bookorbitUsername.value }
+        : {}),
       ...(backend === 'bindery' ? { binderyUserMappings: mappings.value } : {}),
     },
   };

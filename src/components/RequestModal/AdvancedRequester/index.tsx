@@ -238,6 +238,8 @@ const messages = defineMessages('components.RequestModal.AdvancedRequester', {
   notagoptions: 'No tags',
   binderyDefaults:
     'Bindery uses its own acquisition defaults for profiles, folders, and search.',
+  bookorbitDefaults:
+    'BookOrbit manages approval, download, and library destinations for this request. Set those defaults in BookOrbit.',
   ignoreQuotaTitle: 'Bypass User Quota',
   ignoreQuotaDescription:
     "This request will not count against the user's quota limits. Use with caution.",
@@ -548,7 +550,9 @@ const AdvancedRequester = ({
     [data, selectedServer]
   );
   const selectedIsBindery =
-    type === 'book' && selectedServerDetails?.backend === 'bindery';
+    type === 'book' &&
+    (selectedServerDetails?.backend === 'bindery' ||
+      selectedServerDetails?.backend === 'bookorbit');
   const canCustomizeServiceRequest =
     serviceOverridesEnabled && !selectedIsBindery;
   const selectedIs4k = allow4kServerSelection
@@ -1434,7 +1438,11 @@ const AdvancedRequester = ({
               )}
               {selectedIsBindery && (
                 <p className="description">
-                  {intl.formatMessage(messages.binderyDefaults)}
+                  {intl.formatMessage(
+                    selectedServerDetails?.backend === 'bookorbit'
+                      ? messages.bookorbitDefaults
+                      : messages.binderyDefaults
+                  )}
                 </p>
               )}
               {canCustomizeServiceRequest &&

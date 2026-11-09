@@ -49,6 +49,9 @@ export class BookRequestSearch {
   public binderyRequestId?: number | null;
 
   @Column({ type: 'integer', nullable: true })
+  public bookorbitRequestId?: number | null;
+
+  @Column({ type: 'integer', nullable: true })
   public pendingAttemptCount?: number | null;
 
   @Column({ type: 'integer', nullable: true })
@@ -76,6 +79,7 @@ export class BookRequestSearch {
   public state:
     | 'searching'
     | 'pending'
+    | 'needs_review'
     | 'monitoring'
     | 'settling'
     | 'grabbed'

@@ -201,13 +201,13 @@ flow. This SeerrNG adaptation follows the idea in
 Use SeerrNG as the request portal for your household. People request books in
 SeerrNG; the connected book service handles acquisition, downloads, imports,
 and its own metadata and search settings. Household users do not need accounts
-in ChaptarrNG or Bindery.
+in ChaptarrNG, Bindery, or BookOrbit.
 
 | Backend | Best fit |
 | --- | --- |
 | ChaptarrNG or another Readarr-compatible service | You already use its library and profile controls. Configure indexers, download clients, profiles, and search behavior in that service; SeerrNG sends the selected book and format. |
 | Bindery | You want SeerrNG to submit book requests to Bindery’s request queue and follow approval, download, import, and availability. Configure acquisition defaults in Bindery. |
-| BookOrbit | SeerrNG connects it as a reader app for existing library files, shelves, OPDS, and Kobo sync. BookOrbit’s separate Requests feature is not connected to SeerrNG. |
+| BookOrbit | SeerrNG sends ebook and audiobook requests to BookOrbit’s request queue, follows approval through import, and scans its library for availability. Its Reader Apps connection remains available separately for shelves, OPDS, and Kobo sync. |
 
 SeerrNG connects to ChaptarrNG, BookshelfNG, and other Readarr-compatible book
 backends through this shared settings section. No environment variable is
@@ -271,6 +271,32 @@ shows approval and download progress for its own Bindery requests, and it
 withdraws a request on cancellation only while that Bindery request is still
 pending. See the [Bindery Backend guide](/using-seerr/bindery-backend) for
 identity matching and lifecycle details.
+
+### BookOrbit
+
+Select **Add BookOrbit Server** under **Settings → Services → Book Acquisition
+Services**. Enter the host and port, the username and password for a dedicated
+BookOrbit account with **Request books** permission and access to the books it
+will monitor, and choose Ebooks, Audiobooks, or Both. **Test Connection** checks
+the login and library read. Choose **Use as default** to route matching
+requests there; choose **Scan library availability** to recognize imported
+files. SeerrNG stores the password as a redacted service secret. The connected
+account owns requests it creates; it cannot attribute a request to a SeerrNG
+user unless you also establish that person's identity in BookOrbit.
+
+BookOrbit controls its own approval, indexers, downloads, and import settings.
+Enable its approval and acquisition automation if SeerrNG approval should start
+acquisition without an additional BookOrbit decision. SeerrNG follows pending,
+download, import, rejection, and file availability per format. If you request
+both formats with one BookOrbit connection, SeerrNG uses BookOrbit's paired
+request endpoint. Cancelling a pending request withdraws it only when doing so
+will not discard another BookOrbit subscriber's request; imported files remain
+BookOrbit's library inventory.
+
+Pleazyng users can separately add **BookOrbit** as a source using their own
+BookOrbit account to browse and play the library. This direct source and
+SeerrNG's BookOrbit acquisition connection can point at the same instance;
+there is no need to install or connect Chaptarr for that flow.
 
 ### Audiobookshelf availability
 

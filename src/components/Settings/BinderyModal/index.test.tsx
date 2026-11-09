@@ -64,6 +64,7 @@ vi.mock('@app/components/Common/Modal', async () => {
                 hostname: 'bindery.example',
                 port: '13380',
                 apiKey: 'test-api-key',
+                bookorbitUsername: 'requester',
               })
             }
           >
@@ -168,4 +169,60 @@ it('saves a tested both-format connection without the read-only ID', async () =>
     })
   );
   expect(saved).not.toHaveProperty('id');
+});
+
+it('shows BookOrbit credentials and saves a tested paired-format service', async () => {
+  await act(async () =>
+    root.render(
+      <IntlProvider locale="en">
+        <BinderyModal
+          backend="bookorbit"
+          settings={null}
+          onClose={() => undefined}
+          onSave={() => undefined}
+        />
+      </IntlProvider>
+    )
+  );
+  expect(container.textContent).toContain('BookOrbit Username');
+  expect(container.textContent).toContain('BookOrbit Password');
+  expect(container.textContent).not.toContain('Requester Account Mappings');
+  await act(async () => {
+    container
+      .querySelector<HTMLButtonElement>(
+        '[data-testid="fill-connection-details"]'
+      )
+      ?.click();
+    await new Promise((resolve) => setTimeout(resolve, 0));
+  });
+  await act(async () => {
+    container
+      .querySelector<HTMLButtonElement>('[data-testid="test-connection"]')
+      ?.click();
+    await new Promise((resolve) => setTimeout(resolve, 0));
+  });
+  await act(async () => {
+    container.querySelector<HTMLButtonElement>('[data-testid="save"]')?.click();
+    await new Promise((resolve) => setTimeout(resolve, 0));
+  });
+  const testBody = state.post.mock.calls.find(
+    ([url]) => url === '/api/v1/settings/readarr/test'
+  )?.[1];
+  const saved = state.post.mock.calls.find(
+    ([url]) => url === '/api/v1/settings/readarr'
+  )?.[1];
+  expect(testBody).toEqual(
+    expect.objectContaining({
+      backend: 'bookorbit',
+      bookorbitUsername: 'requester',
+    })
+  );
+  expect(saved).toEqual(
+    expect.objectContaining({
+      backend: 'bookorbit',
+      bookorbitUsername: 'requester',
+      serviceType: 'both',
+    })
+  );
+  expect(saved).not.toHaveProperty('binderyUserMappings');
 });

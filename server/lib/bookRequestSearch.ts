@@ -2,6 +2,7 @@ import BinderyAPI, {
   type BinderyQueueItem,
   type BinderyRequestQueueSnapshot,
 } from '@server/api/bindery';
+import BookOrbitAPI from '@server/api/bookorbit';
 import ReadarrAPI, {
   matchesReadarrBookProviderIdentity,
   type ReadarrBook,
@@ -215,6 +216,72 @@ export class BookRequestSearchManager {
           }
         }
       );
+    }
+
+    if (server.backend === 'bookorbit') {
+      if (operation.bookorbitRequestId == null) {
+        await this.failBinderyRequest(
+          operation,
+          'The linked BookOrbit request is missing. Ask an administrator to inspect the BookOrbit request queue.'
+        );
+        return;
+      }
+      const bookorbit = new BookOrbitAPI(server);
+      const request = await bookorbit.getRequest(operation.bookorbitRequestId);
+      if (request.mediaKind !== operation.format) {
+        await this.failBinderyRequest(
+          operation,
+          'BookOrbit returned a different book format for this request.'
+        );
+        return;
+      }
+      if (['rejected', 'cancelled', 'failed'].includes(request.status)) {
+        await this.failBinderyRequest(
+          operation,
+          `BookOrbit marked this ${operation.format} request ${request.status}. Review it in BookOrbit before retrying.`
+        );
+        return;
+      }
+      if (request.matchedBookId != null) {
+        const book = await bookorbit.getBook(request.matchedBookId);
+        if (BookOrbitAPI.hasFormat(book, operation.format)) {
+          await getRepository(BookRequestSearch).update(operation.id, {
+            bookId: book.id,
+            bookorbitRequestId: null,
+            state: 'available',
+            updatedAt: new Date(),
+          });
+          operation.bookId = book.id;
+          operation.bookorbitRequestId = null;
+          operation.state = 'available';
+          await this.storeBinderyBookServiceLink(operation, book.id);
+          await this.publishAvailableOperations(operation.request.media.id, [
+            operation,
+          ]);
+          await this.finalizeRequest(operation.requestId);
+          return;
+        }
+        if (operation.bookId !== book.id) {
+          await getRepository(BookRequestSearch).update(operation.id, {
+            bookId: book.id,
+            updatedAt: new Date(),
+          });
+          operation.bookId = book.id;
+          await this.storeBinderyBookServiceLink(operation, book.id);
+        }
+      }
+      const nextState: BookRequestSearch['state'] =
+        request.status === 'pending'
+          ? 'pending'
+          : request.status === 'needs_review'
+            ? 'needs_review'
+            : request.status === 'importing'
+              ? 'importing'
+              : request.status === 'grabbed' || request.status === 'downloading'
+                ? 'grabbed'
+                : 'monitoring';
+      await this.setState(operation, nextState);
+      return;
     }
 
     if (server.backend === 'bindery') {
@@ -1185,15 +1252,17 @@ export class BookRequestSearchManager {
   ): Promise<void> {
     const repository = getRepository(BookRequestSearch);
     const relatedOperations =
-      operation.binderyRequestId == null
+      operation.binderyRequestId == null && operation.bookorbitRequestId == null
         ? [operation]
-        : await repository.find({
-            where: {
-              requestId: operation.requestId,
-              serviceId: operation.serviceId,
-              binderyRequestId: operation.binderyRequestId,
-            },
-          });
+        : operation.bookorbitRequestId != null
+          ? [operation]
+          : await repository.find({
+              where: {
+                requestId: operation.requestId,
+                serviceId: operation.serviceId,
+                binderyRequestId: operation.binderyRequestId!,
+              },
+            });
     const targets = operation.request.serviceTargets ?? [];
     const failedFormats = new Set(
       relatedOperations.map((related) => related.format)
@@ -1228,10 +1297,12 @@ export class BookRequestSearchManager {
     for (const related of relatedOperations) {
       await repository.update(related.id, {
         binderyRequestId: null,
+        bookorbitRequestId: null,
         state: 'failed',
         updatedAt: new Date(),
       });
       related.binderyRequestId = null;
+      related.bookorbitRequestId = null;
       related.state = 'failed';
     }
     await this.finalizeRequest(operation.requestId, {

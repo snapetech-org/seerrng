@@ -1,4 +1,5 @@
 import BinderyAPI from '@server/api/bindery';
+import BookOrbitAPI from '@server/api/bookorbit';
 import BackIssueAPI from '@server/api/comics/backissue';
 import KapowarrAPI from '@server/api/comics/kapowarr';
 import LidarrAPI from '@server/api/servarr/lidarr';
@@ -76,6 +77,26 @@ class RequestWorkCleanupManager {
       throw new RequestWorkCleanupError(
         'The selected Bookshelf service is unavailable for cleanup.'
       );
+    }
+    if (server.backend === 'bookorbit') {
+      // A BookOrbit request can be shared by other subscribers. Unsubscribe the
+      // service account only while the request is still waiting for approval;
+      // BookOrbit owns all approved acquisition and imported library files.
+      if (operation.bookorbitRequestId != null) {
+        const bookorbit = new BookOrbitAPI(server);
+        const linked = await bookorbit.getRequest(operation.bookorbitRequestId);
+        if (linked.status === 'pending') {
+          const account = await bookorbit.testConnection();
+          if (linked.userId === account.userId) {
+            // BookOrbit may have other subscribers; preserve their request.
+            if (!linked.subscribers?.length)
+              await bookorbit.cancel(operation.bookorbitRequestId);
+          } else {
+            await bookorbit.unsubscribe(operation.bookorbitRequestId);
+          }
+        }
+      }
+      return;
     }
     if (server.backend === 'bindery') {
       if (operation.binderyRequestId == null) return;
@@ -332,7 +353,7 @@ class RequestWorkCleanupManager {
           'The selected Bookshelf service is unavailable for cleanup.'
         );
       }
-      if (server.backend === 'bindery') {
+      if (server.backend === 'bindery' || server.backend === 'bookorbit') {
         continue;
       }
       const api = new ReadarrAPI({

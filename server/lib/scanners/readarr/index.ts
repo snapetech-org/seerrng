@@ -1,4 +1,5 @@
 import BinderyAPI, { type BinderyBook } from '@server/api/bindery';
+import BookOrbitAPI, { type BookOrbitLibraryBook } from '@server/api/bookorbit';
 import type { ReadarrBook } from '@server/api/servarr/readarr';
 import ReadarrAPI from '@server/api/servarr/readarr';
 import {
@@ -61,6 +62,9 @@ type SyncStatus = StatusBase & {
 };
 
 type BinderyScanBook = BinderyBook & { binderyFormat: BookServiceFormat };
+type BookOrbitScanBook = BookOrbitLibraryBook & {
+  bookorbitFormat: BookServiceFormat;
+};
 
 const normalizeReadarrIsbn = (isbn?: string): string | undefined =>
   normalizeValidIsbn(isbn) ?? normalizeIsbn(isbn);
@@ -95,7 +99,7 @@ const sleep = (ms: number): Promise<void> =>
   new Promise((resolve) => setTimeout(resolve, ms));
 
 class ReadarrScanner
-  extends BaseScanner<ReadarrBook | BinderyScanBook>
+  extends BaseScanner<ReadarrBook | BinderyScanBook | BookOrbitScanBook>
   implements RunnableScanner<SyncStatus>
 {
   private servers: ReadarrSettings[];
@@ -173,6 +177,18 @@ class ReadarrScanner
                 );
                 return books.flat();
               }
+              if (current.backend === 'bookorbit') {
+                const bookorbit = new BookOrbitAPI(current);
+                const books = await Promise.all(
+                  getReadarrServiceFormats(current).map(async (format) =>
+                    (await bookorbit.getImportedBooks(format)).map((book) => ({
+                      ...book,
+                      bookorbitFormat: format,
+                    }))
+                  )
+                );
+                return books.flat();
+              }
 
               this.readarrApi = new ReadarrAPI({
                 apiKey: current.apiKey,
@@ -189,10 +205,15 @@ class ReadarrScanner
             async (book) =>
               this.currentServer.backend === 'bindery'
                 ? this.processBinderyBook(book as BinderyScanBook)
-                : this.processReadarrBook(book as ReadarrBook),
+                : this.currentServer.backend === 'bookorbit'
+                  ? this.processBookOrbitBook(book as BookOrbitScanBook)
+                  : this.processReadarrBook(book as ReadarrBook),
             { sessionId }
           );
-          if (this.currentServer.backend !== 'bindery')
+          if (
+            this.currentServer.backend !== 'bindery' &&
+            this.currentServer.backend !== 'bookorbit'
+          )
             await this.completeVerifiedEditionRequests();
         } else {
           this.log(
@@ -237,7 +258,11 @@ class ReadarrScanner
 
   private indexReadarrWorkFileRecords(): void {
     this.readarrWorkFileRecords.clear();
-    if (this.currentServer.backend === 'bindery') return;
+    if (
+      this.currentServer.backend === 'bindery' ||
+      this.currentServer.backend === 'bookorbit'
+    )
+      return;
     const serviceType = this.getReadarrServiceType();
     for (const book of this.items as ReadarrBook[]) {
       const key = this.getReadarrWorkKey(book);
@@ -748,6 +773,87 @@ class ReadarrScanner
       this.log('Failed to process Bindery media', 'error', {
         errorMessage: error instanceof Error ? error.message : String(error),
         title: book.title,
+      });
+    }
+  }
+
+  private async processBookOrbitBook(book: BookOrbitScanBook): Promise<void> {
+    try {
+      const identifiers = [
+        ...(book.providerIds?.openlibrary
+          ? [
+              {
+                provider: MediaIdentifierProvider.OPENLIBRARY,
+                value: normalizeExternalBookId(
+                  book.providerIds.openlibrary,
+                  MediaIdentifierProvider.OPENLIBRARY
+                ),
+              },
+            ]
+          : []),
+        ...(book.hardcoverId
+          ? [
+              {
+                provider: MediaIdentifierProvider.HARDCOVER,
+                value: normalizeExternalBookId(
+                  book.hardcoverId,
+                  MediaIdentifierProvider.HARDCOVER
+                ),
+              },
+            ]
+          : []),
+        ...(normalizeReadarrIsbn(book.isbn13 ?? undefined)
+          ? [
+              {
+                provider: MediaIdentifierProvider.ISBN,
+                value: normalizeReadarrIsbn(book.isbn13 ?? undefined)!,
+              },
+            ]
+          : []),
+      ];
+      if (!identifiers.length) {
+        this.scanItemsComplete = false;
+        this.log(
+          'BookOrbit book has no supported work identifier; skipping.',
+          'debug',
+          { bookId: book.id }
+        );
+        return;
+      }
+      for (const identifier of identifiers) {
+        this.scannedIdentifierKeys.add(
+          getBookIdentifierKey(identifier.provider, identifier.value)
+        );
+        this.scannedFormatKeys.add(
+          `${this.currentServer.id}:${book.bookorbitFormat}:${getBookIdentifierKey(identifier.provider, identifier.value)}`
+        );
+      }
+      await this.processBookWithRetry(
+        identifiers[0].provider,
+        identifiers[0].value,
+        {
+          serviceId: this.currentServer.id,
+          externalServiceId: book.id,
+          externalServiceSlug: String(book.id),
+          title: book.title,
+          hasFile: true,
+          processing: false,
+          secondaryIdentifiers: identifiers.slice(1),
+          bookServiceType: book.bookorbitFormat,
+          mutationGuard: (callback) =>
+            runWithServarrServiceSnapshot(
+              'readarr',
+              this.currentServer,
+              callback
+            ),
+        }
+      );
+    } catch (error) {
+      this.scanItemsComplete = false;
+      if (error instanceof ServarrServiceAuthorityChangedError) throw error;
+      this.log('Failed to process BookOrbit media', 'error', {
+        errorMessage: error instanceof Error ? error.message : String(error),
+        bookId: book.id,
       });
     }
   }

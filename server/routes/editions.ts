@@ -64,6 +64,7 @@ editionRoutes.get('/book', async (req, res, next) => {
         (server) =>
           server.id === serverId &&
           server.backend !== 'bindery' &&
+          server.backend !== 'bookorbit' &&
           readarrServiceSupportsFormat(server, format)
       ))
   ) {
@@ -105,7 +106,9 @@ editionRoutes.get('/series-narrators', async (req, res, next) => {
   }
   const servers = getExternalRuntimeConfig().readarr.filter(
     (server) =>
-      server.backend !== 'bindery' && server.serviceType === 'audiobook'
+      server.backend !== 'bindery' &&
+      server.backend !== 'bookorbit' &&
+      server.serviceType === 'audiobook'
   );
   try {
     for (const server of servers) {
@@ -156,7 +159,9 @@ editionRoutes.post('/series-narrators/prefer', async (req, res) => {
   }
   const servers = getExternalRuntimeConfig().readarr.filter(
     (server) =>
-      server.backend !== 'bindery' && server.serviceType === 'audiobook'
+      server.backend !== 'bindery' &&
+      server.backend !== 'bookorbit' &&
+      server.serviceType === 'audiobook'
   );
   for (const server of servers) {
     const api = new ReadarrAPI({

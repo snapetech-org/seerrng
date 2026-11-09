@@ -642,7 +642,10 @@ serviceRoutes.get<{ readarrId: string }>(
           'readarr',
           readarrId,
           async (readarrSettings) => {
-            if (readarrSettings.backend === 'bindery') {
+            if (
+              readarrSettings.backend === 'bindery' ||
+              readarrSettings.backend === 'bookorbit'
+            ) {
               return {
                 server: {
                   id: readarrSettings.id,
@@ -653,7 +656,7 @@ serviceRoutes.get<{ readarrId: string }>(
                   activeProfileId: 0,
                   activeMetadataProfileId: 0,
                   activeTags: [],
-                  backend: 'bindery',
+                  backend: readarrSettings.backend,
                   serviceType: readarrSettings.serviceType ?? 'both',
                 },
                 profiles: [],

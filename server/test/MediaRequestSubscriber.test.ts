@@ -8,6 +8,7 @@ import BinderyAPI, {
   type BinderyAddBookOptions,
   type BinderyBook,
 } from '@server/api/bindery';
+import BookOrbitAPI from '@server/api/bookorbit';
 import ExternalAPI from '@server/api/externalapi';
 import OpenLibraryAPI from '@server/api/openlibrary';
 import type { LidarrAlbumOptions } from '@server/api/servarr/lidarr';
@@ -2611,6 +2612,107 @@ describe('MediaRequestSubscriber service dispatch', () => {
     enqueuedRequestIds = [];
     await subscriber.retryApprovedReadarrRequests(1);
     assert.deepEqual(enqueuedRequestIds, []);
+  });
+
+  it('dispatches a both-format book request through BookOrbit as one pair', async () => {
+    getSettings().readarr = [
+      {
+        id: 23,
+        name: 'BookOrbit',
+        hostname: 'books.local',
+        port: 3000,
+        apiKey: 'secret',
+        bookorbitUsername: 'requester',
+        useSsl: false,
+        activeProfileId: 0,
+        activeProfileName: 'BookOrbit managed',
+        activeDirectory: '/',
+        tags: [],
+        is4k: false,
+        isDefault: true,
+        syncEnabled: true,
+        preventSearch: true,
+        tagRequests: false,
+        overrideRule: [],
+        backend: 'bookorbit',
+        serviceType: 'both',
+      },
+    ];
+    const requestedBy = await getRequester();
+    const media = await getRepository(Media).save(
+      new Media({
+        mediaType: MediaType.BOOK,
+        tmdbId: 0,
+        status: MediaStatus.PENDING,
+        status4k: MediaStatus.UNKNOWN,
+        identifiers: [
+          new MediaIdentifier({
+            provider: MediaIdentifierProvider.OPENLIBRARY,
+            value: 'OL45804W',
+            canonical: true,
+          }),
+        ],
+      })
+    );
+    const request = await createApprovedRequest(media, requestedBy);
+    request.bookFormat = 'both';
+    await getRepository(MediaRequest).save(request);
+    mock.method(OpenLibraryAPI.prototype, 'getWork', async () => ({
+      key: '/works/OL45804W',
+      title: 'The Left Hand of Darkness',
+    }));
+    let payload: unknown;
+    const submit = mock.method(
+      BookOrbitAPI.prototype,
+      'submitPair',
+      async (input) => {
+        payload = input;
+        return {
+          ebook: {
+            id: 91,
+            userId: 4,
+            mediaKind: 'ebook' as const,
+            status: 'pending' as const,
+            matchedBookId: null,
+          },
+          audiobook: {
+            id: 92,
+            userId: 4,
+            mediaKind: 'audiobook' as const,
+            status: 'pending' as const,
+            matchedBookId: null,
+          },
+        };
+      }
+    );
+    await new MediaRequestSubscriber().sendToReadarr(request);
+    assert.equal(submit.mock.callCount(), 1);
+    assert.deepEqual(payload, {
+      title: 'The Left Hand of Darkness',
+      authors: [],
+      providerKey: 'openlibrary',
+      providerId: 'OL45804W',
+    });
+    const operations = await getRepository(BookRequestSearch).find({
+      where: { requestId: request.id },
+      order: { format: 'ASC' },
+    });
+    assert.deepEqual(
+      operations.map((item) => [
+        item.format,
+        item.bookorbitRequestId,
+        item.state,
+      ]),
+      [
+        ['audiobook', 92, 'pending'],
+        ['ebook', 91, 'pending'],
+      ]
+    );
+    assert.equal(
+      (await getRepository(MediaRequest).findOneByOrFail({ id: request.id }))
+        .status,
+      MediaRequestStatus.APPROVED
+    );
   });
 
   it('does not infer Bindery ownership from a requester-editable display name', async () => {

@@ -204,7 +204,10 @@ const findBookshelfAuthorCover = async (
 ): Promise<{ serviceId: number; authorId: number } | undefined> => {
   const services = getSettings()
     .readarr.filter(
-      (service) => service.isDefault && service.backend !== 'bindery'
+      (service) =>
+        service.isDefault &&
+        service.backend !== 'bindery' &&
+        service.backend !== 'bookorbit'
     )
     .slice(0, 4);
   const normalizedName = normalizeAuthorName(authorName);
@@ -474,7 +477,10 @@ authorRoutes.get<{ id: string }>('/:id/cover', async (req, res) => {
   }
 
   const service = getSettings().readarr.find(
-    (candidate) => candidate.id === serviceId && candidate.backend !== 'bindery'
+    (candidate) =>
+      candidate.id === serviceId &&
+      candidate.backend !== 'bindery' &&
+      candidate.backend !== 'bookorbit'
   );
   if (!service) {
     return res.status(404).send('Author cover not found');

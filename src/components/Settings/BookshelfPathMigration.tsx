@@ -211,7 +211,11 @@ const BookshelfPathMigration = () => {
     '/api/v1/settings/readarr'
   );
   const compatibleServices = useMemo(
-    () => services?.filter((service) => service.backend !== 'bindery') ?? [],
+    () =>
+      services?.filter(
+        (service) =>
+          service.backend !== 'bindery' && service.backend !== 'bookorbit'
+      ) ?? [],
     [services]
   );
   useEffect(() => {

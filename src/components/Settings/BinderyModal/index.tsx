@@ -28,6 +28,22 @@ import { useIntl } from 'react-intl';
 import * as Yup from 'yup';
 
 const messages = defineMessages('components.Settings.BinderyModal', {
+  bookorbitAddTitle: 'Add BookOrbit Server',
+  bookorbitEditTitle: 'Edit BookOrbit Server',
+  bookorbitIntro:
+    'BookOrbit receives approved ebook and audiobook requests and reports what has reached its library. Use an account allowed to request books and view the library.',
+  bookorbitOwner:
+    'Requests are filed under this BookOrbit account. Configure its approval and download automation in BookOrbit; SeerrNG will follow its pending, downloading, and available states.',
+  bookorbitTestSuccess: 'BookOrbit connection established.',
+  bookorbitTestFailure:
+    'Could not connect to BookOrbit. Check the address, username, and password.',
+  bookorbitSaveFailure: 'Could not save the BookOrbit connection.',
+  bookorbitAdd: 'Add BookOrbit',
+  bookorbitUsername: 'BookOrbit Username',
+  bookorbitPassword: 'BookOrbit Password',
+  bookorbitUsernameRequired: 'Enter a BookOrbit username.',
+  bookorbitPasswordRequired: 'Enter the BookOrbit password.',
+  bookorbitVersion: 'BookOrbit Version',
   addTitle: 'Add Bindery server',
   editTitle: 'Edit Bindery server',
   intro:
@@ -70,7 +86,7 @@ const messages = defineMessages('components.Settings.BinderyModal', {
 });
 
 interface BinderyTestResponse {
-  backend: 'bindery';
+  backend: 'bindery' | 'bookorbit';
   system: { version?: string; commit?: string; buildDate?: string };
   features: { requestsForUser: boolean };
   requesterAccounts?: number;
@@ -78,11 +94,18 @@ interface BinderyTestResponse {
 
 interface BinderyModalProps {
   settings: ReadarrSettings | null;
+  backend?: 'bindery' | 'bookorbit';
   onClose: () => void;
   onSave: () => void;
 }
 
-const BinderyModal = ({ settings, onClose, onSave }: BinderyModalProps) => {
+const BinderyModal = ({
+  settings,
+  backend = 'bindery',
+  onClose,
+  onSave,
+}: BinderyModalProps) => {
+  const isBookOrbit = backend === 'bookorbit';
   const intl = useIntl();
   const { addToast } = useToasts();
   const [isValidated, setIsValidated] = useState(false);
@@ -102,7 +125,18 @@ const BinderyModal = ({ settings, onClose, onSave }: BinderyModalProps) => {
       .min(1)
       .max(65535)
       .required(intl.formatMessage(messages.portRequired)),
-    apiKey: Yup.string().required(intl.formatMessage(messages.apiKeyRequired)),
+    apiKey: Yup.string().required(
+      intl.formatMessage(
+        isBookOrbit
+          ? messages.bookorbitPasswordRequired
+          : messages.apiKeyRequired
+      )
+    ),
+    bookorbitUsername: Yup.string().test(
+      'account',
+      intl.formatMessage(messages.bookorbitUsernameRequired),
+      (value) => !isBookOrbit || !!value?.trim()
+    ),
     baseUrl: Yup.string()
       .test(
         'base-start',
@@ -124,8 +158,9 @@ const BinderyModal = ({ settings, onClose, onSave }: BinderyModalProps) => {
       intl.formatMessage(messages.requesterMappingsInvalid),
       (value) => {
         try {
-          return !(
-            'error' in parseBinderyUserMappings(JSON.parse(value || '{}'))
+          return (
+            isBookOrbit ||
+            !('error' in parseBinderyUserMappings(JSON.parse(value || '{}')))
           );
         } catch {
           return false;
@@ -144,6 +179,7 @@ const BinderyModal = ({ settings, onClose, onSave }: BinderyModalProps) => {
       hostname: string;
       port: number | string;
       apiKey: string;
+      bookorbitUsername: string;
       baseUrl: string;
       useSsl: boolean;
       serviceType: 'ebook' | 'audiobook' | 'both';
@@ -154,7 +190,10 @@ const BinderyModal = ({ settings, onClose, onSave }: BinderyModalProps) => {
           '/api/v1/settings/readarr/test',
           {
             id: settings?.id,
-            backend: 'bindery',
+            backend,
+            ...(isBookOrbit
+              ? { bookorbitUsername: values.bookorbitUsername.trim() }
+              : {}),
             hostname: values.hostname,
             port: Number(values.port),
             apiKey: values.apiKey,
@@ -165,24 +204,34 @@ const BinderyModal = ({ settings, onClose, onSave }: BinderyModalProps) => {
         );
         setTestResult(response.data);
         setIsValidated(true);
-        addToast(intl.formatMessage(messages.testSuccess), {
-          appearance: 'success',
-          autoDismiss: true,
-        });
+        addToast(
+          intl.formatMessage(
+            isBookOrbit ? messages.bookorbitTestSuccess : messages.testSuccess
+          ),
+          {
+            appearance: 'success',
+            autoDismiss: true,
+          }
+        );
         return response.data;
       } catch {
         setIsValidated(false);
         setTestResult(undefined);
-        addToast(intl.formatMessage(messages.testFailure), {
-          appearance: 'error',
-          autoDismiss: true,
-        });
+        addToast(
+          intl.formatMessage(
+            isBookOrbit ? messages.bookorbitTestFailure : messages.testFailure
+          ),
+          {
+            appearance: 'error',
+            autoDismiss: true,
+          }
+        );
         return undefined;
       } finally {
         setIsTesting(false);
       }
     },
-    [addToast, intl, settings?.id]
+    [addToast, backend, intl, isBookOrbit, settings?.id]
   );
 
   useEffect(() => {
@@ -192,6 +241,7 @@ const BinderyModal = ({ settings, onClose, onSave }: BinderyModalProps) => {
       hostname: settings.hostname,
       port: settings.port,
       apiKey: settings.apiKey,
+      bookorbitUsername: settings.bookorbitUsername ?? '',
       baseUrl: settings.baseUrl ?? '',
       useSsl: settings.useSsl,
       serviceType: settings.serviceType ?? 'both',
@@ -207,7 +257,8 @@ const BinderyModal = ({ settings, onClose, onSave }: BinderyModalProps) => {
             null,
             2
           ),
-          name: settings?.name ?? 'Bindery',
+          name: settings?.name ?? (isBookOrbit ? 'BookOrbit' : 'Bindery'),
+          bookorbitUsername: settings?.bookorbitUsername ?? '',
           hostname: settings?.hostname ?? '',
           port: settings?.port ?? 8787,
           useSsl: settings?.useSsl ?? false,
@@ -223,10 +274,15 @@ const BinderyModal = ({ settings, onClose, onSave }: BinderyModalProps) => {
           const mappings = parseBinderyUserMappings(
             JSON.parse(values.binderyUserMappings || '{}')
           );
-          if ('error' in mappings) return;
+          if (!isBookOrbit && 'error' in mappings) return;
           const submission: Omit<ReadarrSettings, 'id'> = {
-            binderyUserMappings: mappings.value,
-            backend: 'bindery',
+            ...(!isBookOrbit && 'value' in mappings
+              ? { binderyUserMappings: mappings.value }
+              : {}),
+            ...(isBookOrbit
+              ? { bookorbitUsername: values.bookorbitUsername.trim() }
+              : {}),
+            backend,
             name: values.name.trim(),
             hostname: values.hostname.trim(),
             port: Number(values.port),
@@ -236,9 +292,13 @@ const BinderyModal = ({ settings, onClose, onSave }: BinderyModalProps) => {
             externalUrl: values.externalUrl.trim() || undefined,
             serviceType: values.serviceType,
             activeProfileId: 0,
-            activeProfileName: 'Bindery managed',
+            activeProfileName: isBookOrbit
+              ? 'BookOrbit managed'
+              : 'Bindery managed',
             activeMetadataProfileId: 0,
-            activeMetadataProfileName: 'Bindery managed',
+            activeMetadataProfileName: isBookOrbit
+              ? 'BookOrbit managed'
+              : 'Bindery managed',
             activeDirectory: '/',
             tags: [],
             is4k: false,
@@ -259,10 +319,17 @@ const BinderyModal = ({ settings, onClose, onSave }: BinderyModalProps) => {
             }
             onSave();
           } catch {
-            addToast(intl.formatMessage(messages.saveFailure), {
-              appearance: 'error',
-              autoDismiss: true,
-            });
+            addToast(
+              intl.formatMessage(
+                isBookOrbit
+                  ? messages.bookorbitSaveFailure
+                  : messages.saveFailure
+              ),
+              {
+                appearance: 'error',
+                autoDismiss: true,
+              }
+            );
           }
         }}
       >
@@ -277,7 +344,13 @@ const BinderyModal = ({ settings, onClose, onSave }: BinderyModalProps) => {
         }) => (
           <Modal
             title={intl.formatMessage(
-              settings ? messages.editTitle : messages.addTitle
+              isBookOrbit
+                ? settings
+                  ? messages.bookorbitEditTitle
+                  : messages.bookorbitAddTitle
+                : settings
+                  ? messages.editTitle
+                  : messages.addTitle
             )}
             onCancel={onClose}
             onOk={() => handleSubmit()}
@@ -286,7 +359,9 @@ const BinderyModal = ({ settings, onClose, onSave }: BinderyModalProps) => {
                 ? intl.formatMessage(globalMessages.saving)
                 : settings
                   ? intl.formatMessage(globalMessages.save)
-                  : intl.formatMessage(messages.add)
+                  : intl.formatMessage(
+                      isBookOrbit ? messages.bookorbitAdd : messages.add
+                    )
             }
             okDisabled={!isValidated || !isValid || isTesting || isSubmitting}
             secondaryText={
@@ -295,34 +370,50 @@ const BinderyModal = ({ settings, onClose, onSave }: BinderyModalProps) => {
                 : intl.formatMessage(messages.test)
             }
             secondaryButtonType="warning"
-            secondaryDisabled={!values.hostname || !values.apiKey || isTesting}
+            secondaryDisabled={
+              !values.hostname ||
+              !values.apiKey ||
+              (isBookOrbit && !values.bookorbitUsername) ||
+              isTesting
+            }
             onSecondary={() => testConnection(values)}
           >
             <div className="mb-5 space-y-3">
               <SettingsHelp className="description">
-                {intl.formatMessage(messages.intro)}
+                {intl.formatMessage(
+                  isBookOrbit ? messages.bookorbitIntro : messages.intro
+                )}
               </SettingsHelp>
               {testResult && (
                 <div className="rounded border border-gray-700 bg-gray-900/50 p-3 text-sm text-gray-200">
                   <p className="flex items-center gap-2 font-semibold">
                     <CheckCircleIcon className="h-5 w-5 text-green-400" />
-                    {intl.formatMessage(messages.version)}:{' '}
+                    {intl.formatMessage(
+                      isBookOrbit ? messages.bookorbitVersion : messages.version
+                    )}
+                    :{' '}
                     {testResult.system.version ??
                       intl.formatMessage(globalMessages.unknown)}
                   </p>
-                  <p className="mt-2 flex items-start gap-2">
-                    {testResult.features.requestsForUser ? (
-                      <CheckCircleIcon className="mt-0.5 h-5 w-5 flex-shrink-0 text-green-400" />
-                    ) : (
-                      <ExclamationTriangleIcon className="mt-0.5 h-5 w-5 flex-shrink-0 text-yellow-400" />
-                    )}
-                    {intl.formatMessage(
-                      testResult.features.requestsForUser
-                        ? messages.ownerFeature
-                        : messages.ownerNote,
-                      { accountCount: testResult.requesterAccounts ?? 0 }
-                    )}
-                  </p>
+                  {isBookOrbit ? (
+                    <SettingsHelp className="settings-form-row-description">
+                      {intl.formatMessage(messages.bookorbitOwner)}
+                    </SettingsHelp>
+                  ) : (
+                    <p className="mt-2 flex items-start gap-2">
+                      {testResult.features.requestsForUser ? (
+                        <CheckCircleIcon className="mt-0.5 h-5 w-5 flex-shrink-0 text-green-400" />
+                      ) : (
+                        <ExclamationTriangleIcon className="mt-0.5 h-5 w-5 flex-shrink-0 text-yellow-400" />
+                      )}
+                      {intl.formatMessage(
+                        testResult.features.requestsForUser
+                          ? messages.ownerFeature
+                          : messages.ownerNote,
+                        { accountCount: testResult.requesterAccounts ?? 0 }
+                      )}
+                    </p>
+                  )}
                 </div>
               )}
             </div>
@@ -398,9 +489,33 @@ const BinderyModal = ({ settings, onClose, onSave }: BinderyModalProps) => {
                 />
               </div>
             </div>
+            {isBookOrbit && (
+              <div className="form-row">
+                <label className="text-label" htmlFor="bookorbitUsername">
+                  {intl.formatMessage(messages.bookorbitUsername)}
+                </label>
+                <div className="form-input-area">
+                  <SettingsField
+                    id="bookorbitUsername"
+                    name="bookorbitUsername"
+                    type="text"
+                    onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                      setIsValidated(false);
+                      setFieldValue('bookorbitUsername', event.target.value);
+                    }}
+                  />
+                  {touched.bookorbitUsername &&
+                    typeof errors.bookorbitUsername === 'string' && (
+                      <div className="error">{errors.bookorbitUsername}</div>
+                    )}
+                </div>
+              </div>
+            )}
             <div className="form-row">
               <label className="text-label" htmlFor="apiKey">
-                {intl.formatMessage(messages.apiKey)}
+                {intl.formatMessage(
+                  isBookOrbit ? messages.bookorbitPassword : messages.apiKey
+                )}
               </label>
               <div className="form-input-area">
                 <div className="form-input-field">
@@ -413,14 +528,15 @@ const BinderyModal = ({ settings, onClose, onSave }: BinderyModalProps) => {
                       void setFieldValue('apiKey', event.currentTarget.value);
                     }}
                   />
-                  <Button
-                    buttonType="default"
-                    buttonSize="sm"
-                    onClick={() => setFieldValue('apiKey', REDACTED_SECRET)}
-                    disabled={!settings}
-                  >
-                    {intl.formatMessage(messages.keepExisting)}
-                  </Button>
+                  {settings && (
+                    <Button
+                      buttonType="default"
+                      buttonSize="sm"
+                      onClick={() => setFieldValue('apiKey', REDACTED_SECRET)}
+                    >
+                      {intl.formatMessage(messages.keepExisting)}
+                    </Button>
+                  )}
                 </div>
                 {touched.apiKey && typeof errors.apiKey === 'string' && (
                   <div className="error">{errors.apiKey}</div>
@@ -446,31 +562,33 @@ const BinderyModal = ({ settings, onClose, onSave }: BinderyModalProps) => {
                 )}
               </div>
             </div>
-            <div className="form-row">
-              <label className="text-label" htmlFor="binderyUserMappings">
-                {intl.formatMessage(messages.requesterMappings)}
-              </label>
-              <div className="form-input-area">
-                <SettingsField
-                  as="textarea"
-                  id="binderyUserMappings"
-                  name="binderyUserMappings"
-                  rows={3}
-                  aria-describedby="bindery-requester-mappings-help"
-                />
-                {touched.binderyUserMappings &&
-                  typeof errors.binderyUserMappings === 'string' && (
-                    <div className="error">{errors.binderyUserMappings}</div>
-                  )}
+            {!isBookOrbit && (
+              <div className="form-row">
+                <label className="text-label" htmlFor="binderyUserMappings">
+                  {intl.formatMessage(messages.requesterMappings)}
+                </label>
+                <div className="form-input-area">
+                  <SettingsField
+                    as="textarea"
+                    id="binderyUserMappings"
+                    name="binderyUserMappings"
+                    rows={3}
+                    aria-describedby="bindery-requester-mappings-help"
+                  />
+                  {touched.binderyUserMappings &&
+                    typeof errors.binderyUserMappings === 'string' && (
+                      <div className="error">{errors.binderyUserMappings}</div>
+                    )}
+                </div>
+                <SettingsHelp
+                  id="bindery-requester-mappings-help"
+                  className="settings-form-row-description"
+                >
+                  {intl.formatMessage(messages.requesterMappingsHelp)}{' '}
+                  <code>{'{"2": 7}'}</code>
+                </SettingsHelp>
               </div>
-              <SettingsHelp
-                id="bindery-requester-mappings-help"
-                className="settings-form-row-description"
-              >
-                {intl.formatMessage(messages.requesterMappingsHelp)}{' '}
-                <code>{'{"2": 7}'}</code>
-              </SettingsHelp>
-            </div>
+            )}
             <div className="form-row">
               <label className="text-label" htmlFor="externalUrl">
                 {intl.formatMessage(messages.externalUrl)}

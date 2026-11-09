@@ -7,6 +7,8 @@ import {
   parseKapowarrSettings,
   parseLidarrSettings,
   parseMylarSettings,
+  parseReadarrSettings,
+  parseServarrConnectionSettings,
   parseSonarrSettings,
   preserveServarrConnectionSecret,
   resolveSonarrMonitorNewItems,
@@ -69,6 +71,28 @@ describe('preserveServarrConnectionSecret', () => {
 });
 
 describe('Servarr settings validation', () => {
+  it('accepts a BookOrbit account with both formats and rejects a missing username', () => {
+    const body = {
+      ...baseSettings,
+      backend: 'bookorbit',
+      serviceType: 'both',
+      bookorbitUsername: 'requester',
+    };
+    const parsed = parseReadarrSettings(body);
+    assert.ok('value' in parsed);
+    assert.equal(parsed.value.backend, 'bookorbit');
+    assert.equal(parsed.value.bookorbitUsername, 'requester');
+    assert.deepEqual(parseReadarrSettings({ ...body, bookorbitUsername: '' }), {
+      error: 'bookorbitUsername is required.',
+    });
+    const connection = parseServarrConnectionSettings(body);
+    assert.ok('value' in connection);
+    assert.equal(connection.value.bookorbitUsername, 'requester');
+    assert.deepEqual(
+      parseServarrConnectionSettings({ ...body, bookorbitUsername: '' }),
+      { error: 'bookorbitUsername is required.' }
+    );
+  });
   it('persists and clears Sonarr metadata defaults, preserving omitted fields', () => {
     const body = {
       ...baseSettings,

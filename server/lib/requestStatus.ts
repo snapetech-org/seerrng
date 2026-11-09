@@ -135,6 +135,7 @@ interface BookSearchSnapshot {
   state?: BookRequestSearch['state'];
   pendingImports: NonNullable<RequestStatusSnapshot['bookImportProgresses']>;
   binderyRequestPending?: boolean;
+  bookorbitRequestPending?: boolean;
 }
 
 export interface RequestStatusHistoryItem {
@@ -255,6 +256,7 @@ type StatusOptions = {
   dispatchPending?: boolean;
   bookSearchState?: BookRequestSearch['state'];
   binderyRequestPending?: boolean;
+  bookorbitRequestPending?: boolean;
   bookImportProgresses?: RequestStatusSnapshot['bookImportProgresses'];
   musicSearchTime?: Date | null;
   servarrHistory?: ServarrHistoryEvidence;
@@ -1158,16 +1160,27 @@ const getStageFromRequest = (
   }
   if (options.bookSearchState === 'pending') {
     const pendingFormat = options.bookImportProgresses?.[0]?.format;
-    const message = options.binderyRequestPending
-      ? 'Waiting for Bindery to approve this request. Enable Auto-approve requests for this account in Bindery if acquisition should start immediately.'
-      : pendingFormat
-        ? `ChaptarrNG is preparing the requested ${pendingFormat === 'audiobook' ? 'audiobook' : 'ebook'} while it imports the author.`
-        : 'Waiting for Bookshelf to prepare the requested book.';
+    const message = options.bookorbitRequestPending
+      ? 'Waiting for BookOrbit to approve this request. Configure approval and download automation in BookOrbit to continue automatically.'
+      : options.binderyRequestPending
+        ? 'Waiting for Bindery to approve this request. Enable Auto-approve requests for this account in Bindery if acquisition should start immediately.'
+        : pendingFormat
+          ? `ChaptarrNG is preparing the requested ${pendingFormat === 'audiobook' ? 'audiobook' : 'ebook'} while it imports the author.`
+          : 'Waiting for Bookshelf to prepare the requested book.';
     return {
       stage: RequestStatusStage.SEARCHING,
       queueFailure: false,
       downloads,
       message,
+    };
+  }
+  if (options.bookSearchState === 'needs_review') {
+    return {
+      stage: RequestStatusStage.SEARCHING,
+      queueFailure: false,
+      downloads,
+      message:
+        'BookOrbit needs a review or manual acquisition step. Open the request in BookOrbit to continue.',
     };
   }
   if (options.bookSearchState === 'monitoring') {
@@ -1427,6 +1440,7 @@ const getBookSearchSnapshot = async (
       state: true,
       providerManagedSearch: true,
       binderyRequestId: true,
+      bookorbitRequestId: true,
       format: true,
       pendingId: true,
       pendingAttemptCount: true,
@@ -1446,15 +1460,21 @@ const getBookSearchSnapshot = async (
               record.state === 'searching' || record.state === 'settling'
           )
         ? 'searching'
-        : trackedSearches.some((record) => record.state === 'pending')
-          ? 'pending'
-          : trackedSearches.some((record) => record.state === 'monitoring')
-            ? 'monitoring'
-            : undefined;
+        : trackedSearches.some((record) => record.state === 'needs_review')
+          ? 'needs_review'
+          : trackedSearches.some((record) => record.state === 'pending')
+            ? 'pending'
+            : trackedSearches.some((record) => record.state === 'monitoring')
+              ? 'monitoring'
+              : undefined;
   return {
     state,
     binderyRequestPending: trackedSearches.some(
       (record) => record.state === 'pending' && record.binderyRequestId != null
+    ),
+    bookorbitRequestPending: trackedSearches.some(
+      (record) =>
+        record.state === 'pending' && record.bookorbitRequestId != null
     ),
     pendingImports: trackedSearches
       .filter(
@@ -1632,6 +1652,7 @@ export const recordRequestStatus = async (
     dispatchPending,
     bookSearchState: bookSearch.state,
     binderyRequestPending: bookSearch.binderyRequestPending,
+    bookorbitRequestPending: bookSearch.bookorbitRequestPending,
     bookImportProgresses: bookSearch.pendingImports,
     resetTerminalOverride: options.resetTerminalOverride,
   });
@@ -1884,6 +1905,7 @@ const getBookSearchStates = async (
       state: true,
       providerManagedSearch: true,
       binderyRequestId: true,
+      bookorbitRequestId: true,
       format: true,
       pendingId: true,
       pendingAttemptCount: true,
@@ -1895,6 +1917,7 @@ const getBookSearchStates = async (
   const statePriority: Record<BookRequestSearch['state'], number> = {
     monitoring: 1,
     pending: 2,
+    needs_review: 2.5,
     searching: 3,
     settling: 3,
     grabbed: 4,
@@ -1940,6 +1963,9 @@ const getBookSearchStates = async (
       binderyRequestPending:
         current?.binderyRequestPending === true ||
         (record.state === 'pending' && record.binderyRequestId != null),
+      bookorbitRequestPending:
+        current?.bookorbitRequestPending === true ||
+        (record.state === 'pending' && record.bookorbitRequestId != null),
     });
   }
   return states;
@@ -1957,6 +1983,7 @@ const mapRequestStatusItem = async (
     dispatchPending,
     bookSearchState: bookSearch?.state,
     binderyRequestPending: bookSearch?.binderyRequestPending,
+    bookorbitRequestPending: bookSearch?.bookorbitRequestPending,
     bookImportProgresses: bookSearch?.pendingImports,
   });
   if (persist) {
