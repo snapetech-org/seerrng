@@ -9,6 +9,12 @@ v3.72.7 section consolidates changes from the requested v3.71.4 baseline
 through v3.72.7, including changes also represented by unpublished interim
 tags. The comparison link is the complete commit range.
 
+## [3.72.26](https://github.com/snapetech-org/seerrng/compare/v3.72.25..v3.72.26) - 2026-11-09
+
+- Initialize WebKit before deleting an unopened saved server's browser data in the iOS client, preventing the observed cleanup crash (#622).
+- Match automatic Lumen publication to the trusted release workflow path, including releases with custom run titles (#598).
+- Preserve v3.72.25's bundled Lumen default for existing and new users, native theme choices, request-layout repairs, and provider fixes.
+
 ## [3.72.25](https://github.com/snapetech-org/seerrng/compare/v3.72.23..v3.72.25) - 2026-11-08
 
 Consolidates the fixes prepared for unpublished v3.72.24 with the subsequent
