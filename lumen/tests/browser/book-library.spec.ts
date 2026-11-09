@@ -129,7 +129,24 @@ async function fixtures(page: Page) {
               ]),
       });
     if (path === '/editions/book')
-      return route.fulfill({ json: { editions: [] } });
+      // SeerrNG answers only when it also gets an identity; a bare term returns nothing
+      return route.fulfill({
+        json: {
+          editions:
+            url.searchParams.get('foreignBookId') === 'hc:12345'
+              ? [
+                  {
+                    id: 'ed-1',
+                    title: 'Native book detail',
+                    format: 'audiobook',
+                    language: 'eng',
+                    narrators: ['Fixture Narrator'],
+                    durationSeconds: 36000,
+                  },
+                ]
+              : [],
+        },
+      });
     if (path === '/discover/books' || path === '/book/library') {
       const format = url.searchParams.get('format') || 'ebook';
       return route.fulfill({
@@ -228,6 +245,21 @@ test('native ebook search works without a companion and retains its service-owne
   expect(
     requests.some(
       (r) => r.path === '/discover/books' && r.query.includes('query=rare')
+    )
+  ).toBe(true);
+});
+
+test('an audiobook page lists narrations from SeerrNG editions', async ({
+  page,
+}) => {
+  const requests = await fixtures(page);
+  await page.goto(`/book/${encodeURIComponent(audioId)}?f=audio`);
+  await expect(page.getByText('Fixture Narrator').first()).toBeVisible();
+  expect(
+    requests.some(
+      (r) =>
+        r.path === '/editions/book' &&
+        r.query.includes('foreignBookId=hc%3A12345')
     )
   ).toBe(true);
 });

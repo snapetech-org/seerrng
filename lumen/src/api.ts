@@ -184,6 +184,10 @@ export const requestBook = (
 // An audiobook request with no edition lets ChaptarrNG pick one, and it has picked foreign
 // editions (an Italian Project Hail Mary). "Any narrator" therefore still names an English one.
 const englishLang = (l?: string) => !l || /^(en|eng|english)$/i.test(l);
+// SeerrNG only looks editions up when it also has an identity (or title), so pass the Hardcover
+// work as foreignBookId alongside the search term
+export const audiobookEditionsPath = (workId: string) =>
+  `/editions/book?format=audiobook&term=${encodeURIComponent('work:' + workId)}&foreignBookId=${encodeURIComponent('hc:' + workId)}`;
 export async function englishAudioEdition(
   workId: string | null
 ): Promise<string | undefined> {
@@ -197,9 +201,7 @@ export async function englishAudioEdition(
         selected?: boolean;
         durationSeconds?: number | null;
       }[];
-    }>(
-      `/editions/book?format=audiobook&term=${encodeURIComponent('work:' + workId)}`
-    );
+    }>(audiobookEditionsPath(workId));
     const en = d.editions.filter(
       (e) => englishLang(e.language) && e.narrators?.length
     );

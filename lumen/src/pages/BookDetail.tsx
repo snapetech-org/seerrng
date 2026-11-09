@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link, useParams, useSearchParams } from 'react-router-dom';
 import {
+  audiobookEditionsPath,
   bookIdFor,
   bookMediaForFormat,
   chaptarrWork,
@@ -114,9 +115,7 @@ export default function BookDetail() {
   // narrations load on the ebook page too, so its Audiobook button reads the same as on the audiobook page
   const narrData = prefs.narratorChoice && !!work;
   const eds = useApi<{ editions: Edition[] }>(
-    narrData
-      ? `/editions/book?format=audiobook&term=${encodeURIComponent('work:' + work)}`
-      : null
+    narrData && work ? audiobookEditionsPath(work) : null
   );
   const allRows = useMemo(
     () => narrations(eds.data?.editions || []),
