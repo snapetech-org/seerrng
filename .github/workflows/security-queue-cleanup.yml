@@ -1,0 +1,41 @@
+# ng-runner-policy: github-hosted-primary-v1
+name: Clear superseded queued security checks
+on:
+  push:
+    branches: [codex/seerrng-security-verification-20261109]
+    paths: ['.github/workflows/security-queue-cleanup.yml']
+permissions:
+  contents: read
+jobs:
+  cancel-queued:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    permissions:
+      actions: write
+    steps:
+      - name: Cancel only this task's obsolete queued checks
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python3 - <<'PY'
+          import json, os, urllib.request
+          prefix = 'https://api.github.com/repos/snapetech-org/seerrng/'
+          def api(method, path):
+              req = urllib.request.Request(prefix + path, method=method, data=b'' if method == 'POST' else None, headers={'Authorization': 'Bearer ' + os.environ['GH_TOKEN'], 'Accept': 'application/vnd.github+json'})
+              with urllib.request.urlopen(req) as response:
+                  raw = response.read()
+                  return json.loads(raw) if raw else None
+          obsolete = {
+              42708248208: '09559f267a9143d929535e87b8c085bdf736a4b7',
+              42708786038: '20da3da247b212db5d3e00e036d14f02444c63eb',
+              42709701469: '41312bf636bf20a06082ca24af6cd735ce3134e9',
+          }
+          for run_id, sha in obsolete.items():
+              run = api('GET', f'actions/runs/{run_id}')
+              jobs = api('GET', f'actions/runs/{run_id}/jobs')['jobs']
+              if run['head_branch'] == 'codex/seerrng-security-verification-20261109' and run['head_sha'] == sha and run['status'] == 'queued' and not any(j['status'] == 'in_progress' for j in jobs):
+                  api('POST', f'actions/runs/{run_id}/cancel')
+                  print(f'Cancelled superseded queued verification {run_id}')
+              else:
+                  print(f'Kept verification {run_id}: running, completed, or changed')
+          PY
