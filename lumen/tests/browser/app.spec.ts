@@ -599,3 +599,30 @@ test('a failed search offers Retry instead of saying nothing matched', async ({
   await expect(page.getByRole('alert')).toHaveCount(0);
   expect(fixture.errors).toEqual([]);
 });
+
+test('a double click on a poster’s Request sends one request', async ({
+  page,
+}) => {
+  const fixture = await fixtures(page);
+  // a plain requester: one-click requests, no options sheet
+  await page.route('**/api/v1/auth/me', (route) =>
+    route.fulfill({ json: { id: 3, displayName: 'viewer', permissions: 32 } })
+  );
+  const posts: unknown[] = [];
+  await page.route('**/api/v1/request', async (route) => {
+    if (route.request().method() !== 'POST') return route.fallback();
+    posts.push(route.request().postDataJSON());
+    await new Promise((resolve) => setTimeout(resolve, 300));
+    await route.fulfill({ json: { id: 1 } });
+  });
+  await page.goto('/movies');
+  const card = page.locator('.poster', { hasText: 'The Test Film' }).first();
+  await card.hover();
+  const overlay = card.getByRole('button', { name: 'Request', exact: true });
+  const touch = card.getByRole('button', { name: 'Request The Test Film' });
+  await ((await overlay.isVisible()) ? overlay : touch).dblclick();
+  await expect(page.getByText('Requested The Test Film').first()).toBeVisible();
+  await page.waitForTimeout(400);
+  expect(posts).toHaveLength(1);
+  expect(fixture.errors).toEqual([]);
+});
