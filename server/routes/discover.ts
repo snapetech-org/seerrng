@@ -4142,17 +4142,62 @@ discoverRoutes.get('/books', async (req, res) => {
         );
       });
   const searchAudiobookResults = async (): Promise<BookResult[]> => {
-    const books = narratorQuery
-      ? await searchBookshelfNarrators(getSettings().readarr, narratorQuery)
-      : hasSearchQuery || authorQuery
-        ? await searchBookshelfCatalogs(
-            getSettings().readarr,
-            searchQuery || authorQuery,
-            'audiobook',
-            { failOnAllUnavailable: true }
-          )
-        : await getBookshelfAudiobookLibrary(getSettings().readarr);
-    return filterAndSortAudiobooks(books);
+    if (narratorQuery) {
+      return filterAndSortAudiobooks(
+        await searchBookshelfNarrators(getSettings().readarr, narratorQuery)
+      );
+    }
+    if (!hasSearchQuery && !authorQuery) {
+      return filterAndSortAudiobooks(
+        await getBookshelfAudiobookLibrary(getSettings().readarr)
+      );
+    }
+    let catalogError: unknown;
+    let results: BookResult[] = [];
+    try {
+      results = filterAndSortAudiobooks(
+        await searchBookshelfCatalogs(
+          getSettings().readarr,
+          searchQuery || authorQuery,
+          'audiobook',
+          { failOnAllUnavailable: true }
+        )
+      );
+    } catch (error) {
+      catalogError = error;
+    }
+    if (results.length) return results;
+    // Provider text search can fail or come back empty (ChaptarrNG's hosted
+    // search outage) while the title is already in the audiobook catalogue.
+    // Match the known catalogue locally; its library read goes through the
+    // Bookshelf API cache and keeps the normal bookshelf ids for requests.
+    try {
+      results = filterAndSortAudiobooks(
+        await getBookshelfAudiobookLibrary(getSettings().readarr)
+      );
+    } catch (libraryError) {
+      if (catalogError) throw catalogError;
+      logger.debug('Audiobook catalogue fallback search is unavailable', {
+        label: 'Discover Books',
+        ...getErrorLogFields(libraryError),
+      });
+      return [];
+    }
+    if (results.length) {
+      if (catalogError) {
+        logger.debug(
+          'Audiobook catalog search failed; using known catalogue matches',
+          {
+            label: 'Discover Books',
+            ...getErrorLogFields(catalogError),
+            resultCount: results.length,
+          }
+        );
+      }
+      return results;
+    }
+    if (catalogError) throw catalogError;
+    return results;
   };
   const canPageAudiobookBrowse =
     audiobookEnabled &&
