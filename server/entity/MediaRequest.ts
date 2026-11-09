@@ -188,6 +188,8 @@ type ResolvedBookRequest = {
 };
 
 type InternalMediaRequestOptions = MediaRequestOptions & {
+  idempotencyKey?: string;
+  idempotencyFingerprint?: string;
   resolvedMusicMbId?: string;
   resolvedBook?: ResolvedBookRequest;
   serviceAdmissionGranted?: boolean;
@@ -517,9 +519,43 @@ export class MediaRequest {
         }
       }
 
-      return runWithRequestAdmission([userLockKey, mediaLockKey], () =>
-        this.requestUnlocked(requestBody, user, options)
-      );
+      return runWithRequestAdmission([userLockKey, mediaLockKey], async () => {
+        if (options.idempotencyKey && options.idempotencyFingerprint) {
+          const existing = await getRepository(MediaRequest)
+            .createQueryBuilder('request')
+            .leftJoinAndSelect('request.requestedBy', 'requester')
+            .addSelect('request.idempotencyKey')
+            .addSelect('request.idempotencyFingerprint')
+            .where('request.idempotencyKey = :key', {
+              key: options.idempotencyKey,
+            })
+            .getOne();
+          if (existing) {
+            if (
+              existing.requestedBy.id !== user.id ||
+              existing.idempotencyFingerprint !== options.idempotencyFingerprint
+            ) {
+              throw new RequestPermissionError(
+                'This request key was used for a different request.'
+              );
+            }
+            if (
+              existing.status !== MediaRequestStatus.DECLINED &&
+              existing.status !== MediaRequestStatus.FAILED
+            ) {
+              return getRepository(MediaRequest).findOneOrFail({
+                where: { id: existing.id },
+              });
+            }
+            // A settled failure can be retried with the same key. Release its
+            // unique claim before admission creates a fresh request.
+            existing.idempotencyKey = null;
+            existing.idempotencyFingerprint = null;
+            await getRepository(MediaRequest).save(existing);
+          }
+        }
+        return this.requestUnlocked(requestBody, user, options);
+      });
     });
   }
 
@@ -3490,6 +3526,8 @@ export class MediaRequest {
               };
       const request = new MediaRequest({
         type: MediaType.MOVIE,
+        idempotencyKey: options.idempotencyKey,
+        idempotencyFingerprint: options.idempotencyFingerprint,
         media,
         requestedBy: requestUser,
         // Approval follows the request owner, including when an administrator
@@ -3829,6 +3867,8 @@ export class MediaRequest {
                 };
         const request = new MediaRequest({
           type: MediaType.TV,
+          idempotencyKey: options.idempotencyKey,
+          idempotencyFingerprint: options.idempotencyFingerprint,
           media: requestMedia,
           requestedBy: requestUser,
           status: autoApproved
@@ -3927,6 +3967,15 @@ export class MediaRequest {
 
   @PrimaryGeneratedColumn()
   public id: number;
+
+  /** Only written by the authenticated request route. Excluded from public
+   * entity loads so a response never includes either private hash. */
+  @Column({ type: 'varchar', length: 64, nullable: true, select: false })
+  @Index('UQ_media_request_idempotency_key', { unique: true })
+  public idempotencyKey?: string | null;
+
+  @Column({ type: 'varchar', length: 64, nullable: true, select: false })
+  public idempotencyFingerprint?: string | null;
 
   @Column({ type: 'integer' })
   @Index()

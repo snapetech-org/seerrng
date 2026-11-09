@@ -484,6 +484,35 @@ function replacePrototypeMethod(
   });
 }
 
+describe('request idempotency', () => {
+  it('returns the same request for a repeated key and rejects key reuse for a different title', async () => {
+    getSettings().radarr = [createRadarrSettings(10)];
+    const agent = await loginAs('friend@seerr.dev', 'test1234');
+    const body = { mediaType: MediaType.MOVIE, mediaId: 996_501 };
+    const key = 'pleazyng-request-key-12345678';
+    const first = await agent
+      .post('/request')
+      .set('Idempotency-Key', key)
+      .send(body);
+    assert.strictEqual(first.status, 201, first.body.message);
+    const replay = await agent
+      .post('/request')
+      .set('Idempotency-Key', key)
+      .send(body);
+    assert.strictEqual(replay.status, 201, replay.body.message);
+    assert.strictEqual(replay.body.id, first.body.id);
+    assert.strictEqual(await getRepository(MediaRequest).count(), 1);
+    assert.strictEqual('idempotencyKey' in replay.body, false);
+    assert.strictEqual('idempotencyFingerprint' in replay.body, false);
+    const misuse = await agent
+      .post('/request')
+      .set('Idempotency-Key', key)
+      .send({ mediaType: MediaType.MOVIE, mediaId: 996_502 });
+    assert.strictEqual(misuse.status, 403);
+    assert.strictEqual(await getRepository(MediaRequest).count(), 1);
+  });
+});
+
 describe('per-request Episode Queue API', () => {
   it('does not expose a per-request buffer endpoint', async () => {
     const owner = await loginAs('friend@seerr.dev', 'test1234');

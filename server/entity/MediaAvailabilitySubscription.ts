@@ -2,6 +2,7 @@ import Media from '@server/entity/Media';
 import { User } from '@server/entity/User';
 import { DbAwareColumn } from '@server/utils/DbColumnHelper';
 import {
+  Column,
   Entity,
   Index,
   JoinColumn,
@@ -25,6 +26,14 @@ export class MediaAvailabilitySubscription {
   @ManyToOne(() => Media, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'mediaId' })
   public media: Media;
+
+  /** Null keeps the legacy title-wide subscription across both qualities. */
+  @Column({ type: 'boolean', nullable: true })
+  public is4k?: boolean | null;
+
+  /** Null follows the whole title. A season scope is valid only for TV. */
+  @Column({ type: 'integer', nullable: true })
+  public seasonNumber?: number | null;
 
   @DbAwareColumn({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' })
   public createdAt: Date;

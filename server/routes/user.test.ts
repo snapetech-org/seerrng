@@ -22,6 +22,7 @@ import MediaIdentifier, {
   MediaIdentifierProvider,
 } from '@server/entity/MediaIdentifier';
 import { MediaRequest } from '@server/entity/MediaRequest';
+import SeasonRequest from '@server/entity/SeasonRequest';
 import { User } from '@server/entity/User';
 import { UserPushSubscription } from '@server/entity/UserPushSubscription';
 import { UserSettings } from '@server/entity/UserSettings';
@@ -142,6 +143,94 @@ describe('User media availability subscriptions', () => {
     mock.method(requestDispatchManager, 'enqueue', async () => undefined);
   });
   afterEach(() => mock.restoreAll());
+  it('keeps 4K and season subscriptions on their exact scopes', async () => {
+    const follower = await getRepository(User).findOneByOrFail({
+      email: 'admin@seerr.dev',
+    });
+    const requester = await getRepository(User).findOneByOrFail({
+      email: 'friend@seerr.dev',
+    });
+    const movie = await getRepository(Media).save(
+      new Media({
+        mediaType: MediaType.MOVIE,
+        tmdbId: 891250,
+        status: MediaStatus.AVAILABLE,
+        status4k: MediaStatus.PENDING,
+      })
+    );
+    await getRepository(MediaRequest).insert({
+      type: MediaType.MOVIE,
+      status: MediaRequestStatus.PENDING,
+      media: { id: movie.id },
+      requestedBy: { id: requester.id },
+      is4k: true,
+    });
+    const agent = await loginAs('admin@seerr.dev', 'test1234');
+    const moviePath = `/user/${follower.id}/availability-subscriptions/movie/${movie.tmdbId}`;
+    assert.equal(
+      (await agent.post(moviePath).send({ is4k: false })).status,
+      409
+    );
+    const fourK = await agent.post(moviePath).send({ is4k: true });
+    assert.equal(fourK.status, 200, fourK.body.message);
+    assert.deepStrictEqual(fourK.body.scope, {
+      is4k: true,
+      seasonNumber: null,
+    });
+    assert.equal(
+      (await agent.get(moviePath).query({ is4k: false })).body.subscribed,
+      false
+    );
+    assert.equal(
+      (await agent.get(moviePath).query({ is4k: true })).body.subscribed,
+      true
+    );
+
+    const tv = await getRepository(Media).save(
+      new Media({
+        mediaType: MediaType.TV,
+        tmdbId: 891251,
+        status: MediaStatus.PARTIALLY_AVAILABLE,
+        status4k: MediaStatus.UNKNOWN,
+      })
+    );
+    const tvRequest = await getRepository(MediaRequest).save(
+      new MediaRequest({
+        type: MediaType.TV,
+        status: MediaRequestStatus.PENDING,
+        media: tv,
+        requestedBy: requester,
+        is4k: false,
+        seasons: [
+          new SeasonRequest({
+            seasonNumber: 3,
+            status: MediaRequestStatus.PENDING,
+          }),
+        ],
+      })
+    );
+    assert.ok(tvRequest.id);
+    const tvPath = `/user/${follower.id}/availability-subscriptions/tv/${tv.tmdbId}`;
+    assert.equal(
+      (await agent.post(tvPath).send({ is4k: false, seasonNumber: 2 })).status,
+      409
+    );
+    const season = await agent
+      .post(tvPath)
+      .send({ is4k: false, seasonNumber: 3 });
+    assert.equal(season.status, 200, season.body.message);
+    assert.deepStrictEqual(season.body.scope, { is4k: false, seasonNumber: 3 });
+    const saved = await getRepository(
+      MediaAvailabilitySubscription
+    ).findOneByOrFail({ media: { id: tv.id }, user: { id: follower.id } });
+    assert.equal(saved.seasonNumber, 3);
+    assert.equal(saved.is4k, false);
+    assert.equal(
+      (await agent.post(moviePath).send({ is4k: true, seasonNumber: 1 }))
+        .status,
+      400
+    );
+  });
   it('lets another user follow an active request and cancel without changing it', async () => {
     const userRepository = getRepository(User);
     const follower = await userRepository.findOneByOrFail({

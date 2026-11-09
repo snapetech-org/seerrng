@@ -719,8 +719,48 @@ export class MediaRequestSubscriber implements EntitySubscriberInterface<MediaRe
       relations: { user: true },
     });
 
+    const media = await event.manager.getRepository(Media).findOne({
+      where: { id: entity.media.id },
+      relations: { seasons: true },
+    });
+    const fulfilled: MediaAvailabilitySubscription[] = [];
+
     for (const subscription of subscriptions) {
+      if (subscription.is4k != null && subscription.is4k !== entity.is4k)
+        continue;
+      if (subscription.seasonNumber != null) {
+        const number = subscription.seasonNumber;
+        if (
+          entity.type !== MediaType.TV ||
+          !entity.seasons?.some(
+            (season) =>
+              season.seasonNumber === number &&
+              isActiveSeasonRequest(season) &&
+              season.episodeNumbers == null
+          )
+        )
+          continue;
+        const season = media?.seasons?.find(
+          (row) => row.seasonNumber === number
+        );
+        if (
+          !season ||
+          (subscription.is4k === null
+            ? season.status !== MediaStatus.AVAILABLE &&
+              season.status4k !== MediaStatus.AVAILABLE
+            : season[subscription.is4k ? 'status4k' : 'status'] !==
+              MediaStatus.AVAILABLE)
+        )
+          continue;
+      } else if (
+        subscription.is4k != null &&
+        media?.[subscription.is4k ? 'status4k' : 'status'] !==
+          MediaStatus.AVAILABLE
+      ) {
+        continue;
+      }
       if (subscription.user.id === entity.requestedBy.id) {
+        fulfilled.push(subscription); // Their own request already notifies them.
         continue;
       }
       await notificationManager.sendNotificationIntent(
@@ -729,13 +769,18 @@ export class MediaRequestSubscriber implements EntitySubscriberInterface<MediaRe
           kind: 'media-availability-subscription',
           mediaId: entity.media.id,
           userId: subscription.user.id,
+          ...(subscription.is4k == null ? {} : { is4k: subscription.is4k }),
+          ...(subscription.seasonNumber == null
+            ? {}
+            : { seasonNumber: subscription.seasonNumber }),
         },
         event.queryRunner
       );
+      fulfilled.push(subscription);
     }
 
-    if (subscriptions.length > 0) {
-      await subscriptionRepository.remove(subscriptions);
+    if (fulfilled.length > 0) {
+      await subscriptionRepository.remove(fulfilled);
     }
   }
 
@@ -759,16 +804,23 @@ export class MediaRequestSubscriber implements EntitySubscriberInterface<MediaRe
         media: { id: mediaId },
         status: In([MediaRequestStatus.PENDING, MediaRequestStatus.APPROVED]),
       },
-      relations: { requestedBy: true },
-      select: { id: true, requestedBy: { id: true } },
+      relations: { requestedBy: true, seasons: true },
+      select: { id: true, is4k: true, requestedBy: { id: true } },
     });
-    const activeRequesterIds = new Set(
-      activeRequests.map((request) => request.requestedBy.id)
-    );
     const ineligibleSubscriptions = subscriptions.filter(
       (subscription) =>
-        ![...activeRequesterIds].some(
-          (requesterId) => requesterId !== subscription.user.id
+        !activeRequests.some(
+          (request) =>
+            request.requestedBy.id !== subscription.user.id &&
+            (subscription.is4k == null || request.is4k === subscription.is4k) &&
+            (subscription.seasonNumber == null ||
+              request.seasons.length === 0 ||
+              request.seasons.some(
+                (season) =>
+                  season.seasonNumber === subscription.seasonNumber &&
+                  isActiveSeasonRequest(season) &&
+                  season.episodeNumbers == null
+              ))
         )
     );
 

@@ -33,6 +33,7 @@ export interface QuotaResponse {
 export interface UserAvailabilitySubscriptionResponse {
   subscribed: boolean;
   canSubscribe: boolean;
+  scope?: { is4k: boolean | null; seasonNumber: number | null };
 }
 
 export interface UserWatchDataResponse {

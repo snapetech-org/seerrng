@@ -203,10 +203,47 @@ const parseAvailabilitySubscriptionMediaType = (
     ? (value as MediaType.MOVIE | MediaType.TV)
     : undefined;
 
+type AvailabilityScope = { is4k: boolean | null; seasonNumber: number | null };
+const parseAvailabilityScope = (
+  value: unknown,
+  mediaType: MediaType.MOVIE | MediaType.TV
+): AvailabilityScope | undefined => {
+  if (value == null || typeof value !== 'object' || Array.isArray(value))
+    return;
+  const input = value as { is4k?: unknown; seasonNumber?: unknown };
+  const is4k =
+    input.is4k === undefined
+      ? null
+      : input.is4k === true || input.is4k === 'true' || input.is4k === '1'
+        ? true
+        : input.is4k === false || input.is4k === 'false' || input.is4k === '0'
+          ? false
+          : undefined;
+  const seasonNumber =
+    input.seasonNumber === undefined
+      ? null
+      : typeof input.seasonNumber === 'string' &&
+          /^\d+$/.test(input.seasonNumber)
+        ? Number(input.seasonNumber)
+        : input.seasonNumber;
+  if (
+    is4k === undefined ||
+    (seasonNumber !== null &&
+      (!Number.isSafeInteger(seasonNumber) ||
+        Number(seasonNumber) < 1 ||
+        Number(seasonNumber) > 1000 ||
+        mediaType !== MediaType.TV))
+  )
+    return;
+  return { is4k, seasonNumber: seasonNumber as number | null };
+};
+
 const getAvailabilitySubscriptionState = async (
   userId: number,
   mediaType: MediaType.MOVIE | MediaType.TV,
-  tmdbId: number
+  tmdbId: number,
+  scope: AvailabilityScope = { is4k: null, seasonNumber: null },
+  scoped = false
 ): Promise<{
   response: UserAvailabilitySubscriptionResponse;
   mediaId?: number;
@@ -214,35 +251,66 @@ const getAvailabilitySubscriptionState = async (
   const media = await getRepository(Media).findOne({
     where: { mediaType, tmdbId },
     select: { id: true, status: true, status4k: true },
+    relations: { seasons: true },
   });
 
   if (!media) {
     return { response: { subscribed: false, canSubscribe: false } };
   }
 
-  const [subscription, otherActiveRequest] = await Promise.all([
+  const [subscription, otherActiveRequests] = await Promise.all([
     getRepository(MediaAvailabilitySubscription).findOneBy({
       media: { id: media.id },
       user: { id: userId },
     }),
-    getRepository(MediaRequest).exists({
+    getRepository(MediaRequest).find({
       where: {
         media: { id: media.id },
         requestedBy: { id: Not(userId) },
         status: In([MediaRequestStatus.PENDING, MediaRequestStatus.APPROVED]),
       },
+      relations: { seasons: true },
     }),
   ]);
 
+  const season =
+    scope.seasonNumber == null
+      ? null
+      : media.seasons?.find((row) => row.seasonNumber === scope.seasonNumber);
   const alreadyAvailable =
-    media.status === MediaStatus.AVAILABLE ||
-    media.status4k === MediaStatus.AVAILABLE;
+    scope.seasonNumber != null
+      ? scope.is4k === null
+        ? season?.status === MediaStatus.AVAILABLE ||
+          season?.status4k === MediaStatus.AVAILABLE
+        : season?.[scope.is4k ? 'status4k' : 'status'] === MediaStatus.AVAILABLE
+      : scope.is4k === null
+        ? media.status === MediaStatus.AVAILABLE ||
+          media.status4k === MediaStatus.AVAILABLE
+        : media[scope.is4k ? 'status4k' : 'status'] === MediaStatus.AVAILABLE;
+  const otherActiveRequest = otherActiveRequests.some(
+    (request) =>
+      (scope.is4k === null || request.is4k === scope.is4k) &&
+      (scope.seasonNumber === null ||
+        request.seasons.length === 0 ||
+        request.seasons.some(
+          (seasonRequest) =>
+            seasonRequest.seasonNumber === scope.seasonNumber &&
+            seasonRequest.status !== MediaRequestStatus.DECLINED &&
+            seasonRequest.episodeNumbers == null
+        ))
+  );
+  const subscriptionMatches =
+    subscription &&
+    (!scoped ||
+      ((subscription.is4k ?? null) === scope.is4k &&
+        (subscription.seasonNumber ?? null) === scope.seasonNumber));
 
   return {
     mediaId: media.id,
     response: {
-      subscribed: Boolean(subscription),
+      subscribed: Boolean(subscriptionMatches),
       canSubscribe: otherActiveRequest && !alreadyAvailable,
+      ...(scoped ? { scope } : {}),
     },
   };
 };
@@ -1610,11 +1678,19 @@ router.get<
       return next({ status: 404, message: 'Media not found.' });
     }
 
+    const scoped =
+      req.query.is4k !== undefined || req.query.seasonNumber !== undefined;
+    const scope = parseAvailabilityScope(req.query, mediaType);
+    if (!scope)
+      return next({ status: 400, message: 'Invalid availability scope.' });
+
     try {
       const { response } = await getAvailabilitySubscriptionState(
         userId,
         mediaType,
-        tmdbId
+        tmdbId,
+        scope,
+        scoped
       );
       return res.status(200).json(response);
     } catch (error) {
@@ -1647,6 +1723,11 @@ router.post(
       return next({ status: 404, message: 'Media not found.' });
     }
 
+    const scoped = req.body != null && Object.keys(req.body).length > 0;
+    const scope = parseAvailabilityScope(req.body ?? {}, mediaType);
+    if (!scope)
+      return next({ status: 400, message: 'Invalid availability scope.' });
+
     try {
       let limitReached = false;
       const accepted = await runUserSecurityMutation(userId, async () => {
@@ -1662,13 +1743,28 @@ router.post(
           const state = await getAvailabilitySubscriptionState(
             userId,
             mediaType,
-            tmdbId
+            tmdbId,
+            scope,
+            scoped
           );
           if (state.response.subscribed) {
             return true;
           }
           if (!state.response.canSubscribe || !state.mediaId) {
             return false;
+          }
+
+          const existing = await getRepository(
+            MediaAvailabilitySubscription
+          ).findOneBy({
+            user: { id: userId },
+            media: { id: state.mediaId },
+          });
+          if (existing) {
+            existing.is4k = scope.is4k;
+            existing.seasonNumber = scope.seasonNumber;
+            await getRepository(MediaAvailabilitySubscription).save(existing);
+            return true;
           }
 
           if (
@@ -1684,6 +1780,8 @@ router.post(
             await getRepository(MediaAvailabilitySubscription).insert({
               user: { id: userId },
               media: { id: state.mediaId },
+              is4k: scope.is4k,
+              seasonNumber: scope.seasonNumber,
             });
           } catch (error) {
             if (!isUniqueConstraintError(error)) {
@@ -1707,7 +1805,9 @@ router.post(
       const { response } = await getAvailabilitySubscriptionState(
         userId,
         mediaType,
-        tmdbId
+        tmdbId,
+        scope,
+        scoped
       );
       return res.status(200).json(response);
     } catch (error) {
