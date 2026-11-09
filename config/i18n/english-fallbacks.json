@@ -3,6 +3,22 @@
   "entries": [
     {
       "domain": "client",
+      "id": "components.ApiRateLimitNotice.description",
+      "sourceHash": "9f77264136d25b1c650be3044a67bbb87d2ee6ddbf30ac6dac0199afd63574fe",
+      "owner": "localization-maintainers",
+      "reason": "Plex setup recovery and rate-limit feedback added 2026-11-09. Use explicit English fallback pending translation review; do not reuse the obsolete retoggle-libraries instruction.",
+      "expiresOn": "2027-02-09"
+    },
+    {
+      "domain": "client",
+      "id": "components.ApiRateLimitNotice.title",
+      "sourceHash": "7818233332d7f055ecc8fc2a388e2d1b58fda401aac02330ad482cea71f36e3f",
+      "owner": "localization-maintainers",
+      "reason": "Plex setup recovery and rate-limit feedback added 2026-11-09. Use explicit English fallback pending translation review; do not reuse the obsolete retoggle-libraries instruction.",
+      "expiresOn": "2027-02-09"
+    },
+    {
+      "domain": "client",
       "id": "components.ArtistDetails.ep",
       "sourceHash": "dcc9be2679d9e1a4b7f2b903f67ee5638a679da66f1b6a39666c4b09fbd95ce3",
       "owner": "localization-maintainers",
@@ -619,6 +635,190 @@
     },
     {
       "domain": "client",
+      "id": "components.Settings.PlexServerPicker.advanced",
+      "sourceHash": "b015445902d2ae1e75139d04fb3f884926bf45f6cf33d5ea50a5b64d4e4e5ba9",
+      "owner": "localization-maintainers",
+      "reason": "Plex setup recovery and rate-limit feedback added 2026-11-09. Use explicit English fallback pending translation review; do not reuse the obsolete retoggle-libraries instruction.",
+      "expiresOn": "2027-02-09"
+    },
+    {
+      "domain": "client",
+      "id": "components.Settings.PlexServerPicker.advancedDescription",
+      "sourceHash": "dcf064ac8e0f15ff7e3103861c12fc3c332f9d563db77065fddbcaa5dfd32160",
+      "owner": "localization-maintainers",
+      "reason": "Plex setup recovery and rate-limit feedback added 2026-11-09. Use explicit English fallback pending translation review; do not reuse the obsolete retoggle-libraries instruction.",
+      "expiresOn": "2027-02-09"
+    },
+    {
+      "domain": "client",
+      "id": "components.Settings.PlexServerPicker.certificate",
+      "sourceHash": "2c9fbb8457a20476c52b2ff75adbe0087d21c7d206515cbb77eea7058ec0d9e0",
+      "owner": "localization-maintainers",
+      "reason": "Plex setup recovery and rate-limit feedback added 2026-11-09. Use explicit English fallback pending translation review; do not reuse the obsolete retoggle-libraries instruction.",
+      "expiresOn": "2027-02-09"
+    },
+    {
+      "domain": "client",
+      "id": "components.Settings.PlexServerPicker.connection",
+      "sourceHash": "069b1538258d08325da7acbe935f2457d04bea12511567088a3e3d1635e1afbc",
+      "owner": "localization-maintainers",
+      "reason": "Plex setup recovery and rate-limit feedback added 2026-11-09. Use explicit English fallback pending translation review; do not reuse the obsolete retoggle-libraries instruction.",
+      "expiresOn": "2027-02-09"
+    },
+    {
+      "domain": "client",
+      "id": "components.Settings.PlexServerPicker.description",
+      "sourceHash": "dc0fd3694b42a7afbed5e41b7c367f349db0ac37f31478da469ddde65e2dbc01",
+      "owner": "localization-maintainers",
+      "reason": "Plex setup recovery and rate-limit feedback added 2026-11-09. Use explicit English fallback pending translation review; do not reuse the obsolete retoggle-libraries instruction.",
+      "expiresOn": "2027-02-09"
+    },
+    {
+      "domain": "client",
+      "id": "components.Settings.PlexServerPicker.empty",
+      "sourceHash": "b4a694fd933e042323782bad16852d4aa0a6c1532249a6349a29879aa69211a9",
+      "owner": "localization-maintainers",
+      "reason": "Plex setup recovery and rate-limit feedback added 2026-11-09. Use explicit English fallback pending translation review; do not reuse the obsolete retoggle-libraries instruction.",
+      "expiresOn": "2027-02-09"
+    },
+    {
+      "domain": "client",
+      "id": "components.Settings.PlexServerPicker.emptyDescription",
+      "sourceHash": "333463426ce130ae5921cdf6e0857854bf511be61191c5276faee710fc5493f3",
+      "owner": "localization-maintainers",
+      "reason": "Plex setup recovery and rate-limit feedback added 2026-11-09. Use explicit English fallback pending translation review; do not reuse the obsolete retoggle-libraries instruction.",
+      "expiresOn": "2027-02-09"
+    },
+    {
+      "domain": "client",
+      "id": "components.Settings.PlexServerPicker.failed",
+      "sourceHash": "8920a2ff53888a84960c7b0d437bf48500eaaa162aee23ce501237386b28d6e5",
+      "owner": "localization-maintainers",
+      "reason": "Plex setup recovery and rate-limit feedback added 2026-11-09. Use explicit English fallback pending translation review; do not reuse the obsolete retoggle-libraries instruction.",
+      "expiresOn": "2027-02-09"
+    },
+    {
+      "domain": "client",
+      "id": "components.Settings.PlexServerPicker.failedDescription",
+      "sourceHash": "f708906eb91e847fc08af9556dbf375377c27f99529dadbf5a6efe36748bb2b4",
+      "owner": "localization-maintainers",
+      "reason": "Plex setup recovery and rate-limit feedback added 2026-11-09. Use explicit English fallback pending translation review; do not reuse the obsolete retoggle-libraries instruction.",
+      "expiresOn": "2027-02-09"
+    },
+    {
+      "domain": "client",
+      "id": "components.Settings.PlexServerPicker.linkLocal",
+      "sourceHash": "af4494866813833579c5fd818436c62c7fdb50af6df8f699a62cec2a51352fd5",
+      "owner": "localization-maintainers",
+      "reason": "Plex setup recovery and rate-limit feedback added 2026-11-09. Use explicit English fallback pending translation review; do not reuse the obsolete retoggle-libraries instruction.",
+      "expiresOn": "2027-02-09"
+    },
+    {
+      "domain": "client",
+      "id": "components.Settings.PlexServerPicker.load",
+      "sourceHash": "e0e70d5412855f45264770d88d233c1e1c07bf504cc4b5a5563538e41046c80d",
+      "owner": "localization-maintainers",
+      "reason": "Plex setup recovery and rate-limit feedback added 2026-11-09. Use explicit English fallback pending translation review; do not reuse the obsolete retoggle-libraries instruction.",
+      "expiresOn": "2027-02-09"
+    },
+    {
+      "domain": "client",
+      "id": "components.Settings.PlexServerPicker.loading",
+      "sourceHash": "5440f468cbcf5076617bec00b98e379c5365c0c5a929f2e3bb2572f04722acc3",
+      "owner": "localization-maintainers",
+      "reason": "Plex setup recovery and rate-limit feedback added 2026-11-09. Use explicit English fallback pending translation review; do not reuse the obsolete retoggle-libraries instruction.",
+      "expiresOn": "2027-02-09"
+    },
+    {
+      "domain": "client",
+      "id": "components.Settings.PlexServerPicker.local",
+      "sourceHash": "3a2a10b4bb269adc740fb99a8b1228777b45e21efd0d23ba4a574a7eb902dee8",
+      "owner": "localization-maintainers",
+      "reason": "Plex setup recovery and rate-limit feedback added 2026-11-09. Use explicit English fallback pending translation review; do not reuse the obsolete retoggle-libraries instruction.",
+      "expiresOn": "2027-02-09"
+    },
+    {
+      "domain": "client",
+      "id": "components.Settings.PlexServerPicker.loopback",
+      "sourceHash": "287618f8abe097a8c59553e65f760e75918ad9e8bd6afe87872a50c7e361e7b8",
+      "owner": "localization-maintainers",
+      "reason": "Plex setup recovery and rate-limit feedback added 2026-11-09. Use explicit English fallback pending translation review; do not reuse the obsolete retoggle-libraries instruction.",
+      "expiresOn": "2027-02-09"
+    },
+    {
+      "domain": "client",
+      "id": "components.Settings.PlexServerPicker.manual",
+      "sourceHash": "793bd86d2d2b65b67e2f7f711cbadd9e8b8cc586753218f25d4737b937a302c2",
+      "owner": "localization-maintainers",
+      "reason": "Plex setup recovery and rate-limit feedback added 2026-11-09. Use explicit English fallback pending translation review; do not reuse the obsolete retoggle-libraries instruction.",
+      "expiresOn": "2027-02-09"
+    },
+    {
+      "domain": "client",
+      "id": "components.Settings.PlexServerPicker.recommendedDescription",
+      "sourceHash": "3f9530bba073df7b8c0250564b651b0e7ca0ce029b52981e73c85ffb44165202",
+      "owner": "localization-maintainers",
+      "reason": "Plex setup recovery and rate-limit feedback added 2026-11-09. Use explicit English fallback pending translation review; do not reuse the obsolete retoggle-libraries instruction.",
+      "expiresOn": "2027-02-09"
+    },
+    {
+      "domain": "client",
+      "id": "components.Settings.PlexServerPicker.refresh",
+      "sourceHash": "ddec861cf25dd7b6c00c6a76f87be153514eada88ce415036cb4f6d5162d34cf",
+      "owner": "localization-maintainers",
+      "reason": "Plex setup recovery and rate-limit feedback added 2026-11-09. Use explicit English fallback pending translation review; do not reuse the obsolete retoggle-libraries instruction.",
+      "expiresOn": "2027-02-09"
+    },
+    {
+      "domain": "client",
+      "id": "components.Settings.PlexServerPicker.remote",
+      "sourceHash": "ffa98e02f7ce33fc935f02b3b668f6ad57661814dade5f41453fbee2b70cdd95",
+      "owner": "localization-maintainers",
+      "reason": "Plex setup recovery and rate-limit feedback added 2026-11-09. Use explicit English fallback pending translation review; do not reuse the obsolete retoggle-libraries instruction.",
+      "expiresOn": "2027-02-09"
+    },
+    {
+      "domain": "client",
+      "id": "components.Settings.PlexServerPicker.server",
+      "sourceHash": "1de51065780cbf8e2f2c20f57f151551185af25d485ab9fd5f18a5924e911458",
+      "owner": "localization-maintainers",
+      "reason": "Plex setup recovery and rate-limit feedback added 2026-11-09. Use explicit English fallback pending translation review; do not reuse the obsolete retoggle-libraries instruction.",
+      "expiresOn": "2027-02-09"
+    },
+    {
+      "domain": "client",
+      "id": "components.Settings.PlexServerPicker.timeout",
+      "sourceHash": "2e0b4a7d6c73428b79a9ddf24d347993ca885a29abc2c9add6ea2c13277c4622",
+      "owner": "localization-maintainers",
+      "reason": "Plex setup recovery and rate-limit feedback added 2026-11-09. Use explicit English fallback pending translation review; do not reuse the obsolete retoggle-libraries instruction.",
+      "expiresOn": "2027-02-09"
+    },
+    {
+      "domain": "client",
+      "id": "components.Settings.PlexServerPicker.unavailable",
+      "sourceHash": "ca184496974204a0bd3fd4925e0540bc4b0df6fcc232994d29754272b7183812",
+      "owner": "localization-maintainers",
+      "reason": "Plex setup recovery and rate-limit feedback added 2026-11-09. Use explicit English fallback pending translation review; do not reuse the obsolete retoggle-libraries instruction.",
+      "expiresOn": "2027-02-09"
+    },
+    {
+      "domain": "client",
+      "id": "components.Settings.PlexServerPicker.unreachable",
+      "sourceHash": "6639953082d92dc37d59a45d23168e961fda6e2670f321848987d48fa18d3c3f",
+      "owner": "localization-maintainers",
+      "reason": "Plex setup recovery and rate-limit feedback added 2026-11-09. Use explicit English fallback pending translation review; do not reuse the obsolete retoggle-libraries instruction.",
+      "expiresOn": "2027-02-09"
+    },
+    {
+      "domain": "client",
+      "id": "components.Settings.PlexServerPicker.unreachableDescription",
+      "sourceHash": "32e9169411f72442c2c2d0f30736911bf04a1e28e257d9712677c99066af8b1f",
+      "owner": "localization-maintainers",
+      "reason": "Plex setup recovery and rate-limit feedback added 2026-11-09. Use explicit English fallback pending translation review; do not reuse the obsolete retoggle-libraries instruction.",
+      "expiresOn": "2027-02-09"
+    },
+    {
+      "domain": "client",
       "id": "components.Settings.RadarrModal.port",
       "sourceHash": "72e9a59f5a1d6289dbacb35df897d6c007c55a27e77018455c37e7b372668475",
       "owner": "localization-maintainers",
@@ -880,6 +1080,22 @@
       "owner": "localization-maintainers",
       "reason": "Machine-assisted contextual QA (Codex, 2026-10-31): TV is a standard media-type acronym. The exact source value is intentionally preserved. Native-speaker and RTL review have not been performed; this approval expires 2027-10-31.",
       "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
+      "id": "components.Setup.librarieserrorDescription",
+      "sourceHash": "663e78266e076394b460d031b9707a5996f9644f81010ddc5b9a67995fbea61d",
+      "owner": "localization-maintainers",
+      "reason": "Plex setup recovery and rate-limit feedback added 2026-11-09. Use explicit English fallback pending translation review; do not reuse the obsolete retoggle-libraries instruction.",
+      "expiresOn": "2027-02-09"
+    },
+    {
+      "domain": "client",
+      "id": "components.Setup.libraryCheckFailed",
+      "sourceHash": "29a8ca654055711c4f662666de9663ce25fdff78e03c1ea61ec096817fa61b03",
+      "owner": "localization-maintainers",
+      "reason": "Plex setup recovery and rate-limit feedback added 2026-11-09. Use explicit English fallback pending translation review; do not reuse the obsolete retoggle-libraries instruction.",
+      "expiresOn": "2027-02-09"
     },
     {
       "domain": "client",

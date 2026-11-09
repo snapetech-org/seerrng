@@ -1,4 +1,5 @@
 import Alert from '@app/components/Common/Alert';
+import ApiRateLimitNotice from '@app/components/Common/ApiRateLimitNotice';
 import Badge from '@app/components/Common/Badge';
 import Button from '@app/components/Common/Button';
 import LoadingSpinner from '@app/components/Common/LoadingSpinner';
@@ -6,14 +7,18 @@ import PageTitle from '@app/components/Common/PageTitle';
 import SensitiveInput from '@app/components/Common/SensitiveInput';
 import LibraryEpisodeOrderSettings from '@app/components/Settings/LibraryEpisodeOrderSettings';
 import LibraryItem from '@app/components/Settings/LibraryItem';
+import PlexServerPicker from '@app/components/Settings/PlexServerPicker';
 import SettingsBadge from '@app/components/Settings/SettingsBadge';
 import Field, {
   default as SettingsField,
 } from '@app/components/Settings/SettingsField';
 import SettingsFormRow from '@app/components/Settings/SettingsFormRow';
 import SettingsHelp from '@app/components/Settings/SettingsHelp';
+import SettingsLoadState from '@app/components/Settings/SettingsLoadState';
+import useApiRateLimit from '@app/hooks/useApiRateLimit';
 import useToasts from '@app/hooks/useToasts';
 import globalMessages from '@app/i18n/globalMessages';
+import { isRateLimitError } from '@app/utils/apiRateLimit';
 import defineMessages from '@app/utils/defineMessages';
 import { isValidURL } from '@app/utils/urlValidationHelper';
 import {
@@ -32,7 +37,6 @@ import {
   getSettingsLibraryApiPath,
   getSettingsPlexLibraryTypeApiPath,
 } from '@server/constants/settingsLibraryApi';
-import type { PlexDevice } from '@server/interfaces/api/plexInterfaces';
 import type {
   MetadataProviderType,
   PlexSettings,
@@ -40,7 +44,7 @@ import type {
 } from '@server/lib/settings';
 import axios from 'axios';
 import { Formik } from 'formik';
-import { useMemo, useState } from 'react';
+import { useRef, useState } from 'react';
 import { useIntl } from 'react-intl';
 import useSWR from 'swr';
 import * as Yup from 'yup';
@@ -133,16 +137,6 @@ interface SyncStatus {
   libraries: Library[];
 }
 
-interface PresetServerDisplay {
-  name: string;
-  ssl: boolean;
-  uri: string;
-  address: string;
-  port: number;
-  local: boolean;
-  status?: boolean;
-  message?: string;
-}
 interface SettingsPlexProps {
   isSetupSettings?: boolean;
   onComplete?: () => void;
@@ -150,10 +144,8 @@ interface SettingsPlexProps {
 
 const SettingsPlex = ({ isSetupSettings, onComplete }: SettingsPlexProps) => {
   const [isSyncing, setIsSyncing] = useState(false);
-  const [isRefreshingPresets, setIsRefreshingPresets] = useState(false);
-  const [availableServers, setAvailableServers] = useState<PlexDevice[] | null>(
-    null
-  );
+  const libraryUpdateActive = useRef(false);
+  const rateLimitSeconds = useApiRateLimit();
   const {
     data,
     error,
@@ -259,133 +251,85 @@ const SettingsPlex = ({ isSetupSettings, onComplete }: SettingsPlexProps) => {
       .filter((library) => library.enabled)
       .map((library) => library.id) ?? [];
 
-  const availablePresets = useMemo(() => {
-    const finalPresets: PresetServerDisplay[] = [];
-    availableServers?.forEach((dev) => {
-      dev.connection.forEach((conn) =>
-        finalPresets.push({
-          name: dev.name,
-          ssl: conn.protocol === 'https',
-          uri: conn.uri,
-          address: conn.address,
-          port: conn.port,
-          local: conn.local,
-          status: conn.status === 200,
-          message: conn.message,
-        })
-      );
-    });
-
-    return finalPresets.sort(
-      (a, b) =>
-        Number(b.status) - Number(a.status) || Number(b.ssl) - Number(a.ssl)
+  const publishLibraries = async (libraries: PlexSettings['libraries']) => {
+    await revalidate(
+      (current) => (current ? { ...current, libraries } : current),
+      { revalidate: false }
     );
-  }, [availableServers]);
+    onComplete?.();
+  };
 
   const syncLibraries = async () => {
+    if (libraryUpdateActive.current || rateLimitSeconds) return;
+    libraryUpdateActive.current = true;
     setIsSyncing(true);
-
     try {
-      await axios.post(
+      const response = await axios.post<PlexSettings['libraries']>(
         getSettingsLibraryApiPath('plex'),
         createSettingsLibraryUpdateBody({
           sync: true,
           enabledLibraryIds: activeLibraries,
         })
       );
-    } catch (e) {
+      await publishLibraries(response.data);
+    } catch (error) {
+      if (isRateLimitError(error)) return;
       addToast(
-        e?.response?.data?.message === 'CONNECTION_ERROR'
+        error?.response?.data?.message === 'CONNECTION_ERROR'
           ? intl.formatMessage(messages.invalidurlerror, {
               mediaServerName: ServerType.PLEX,
             })
           : intl.formatMessage(messages.toastPlexSyncFailure),
-        {
-          autoDismiss: true,
-          appearance: 'error',
-        }
+        { autoDismiss: true, appearance: 'error' }
       );
     } finally {
+      libraryUpdateActive.current = false;
       setIsSyncing(false);
-      revalidate();
     }
   };
 
-  const refreshPresetServers = async () => {
-    setIsRefreshingPresets(true);
-    let toastId: string | undefined;
+  const setScanState = async (action: 'start' | 'cancel') => {
+    if (rateLimitSeconds || libraryUpdateActive.current) return;
+    libraryUpdateActive.current = true;
     try {
-      addToast(
-        intl.formatMessage(messages.toastPlexRefresh),
-        {
-          autoDismiss: false,
-          appearance: 'info',
-        },
-        (id) => {
-          toastId = id;
-        }
-      );
-      const response = await axios.get<PlexDevice[]>(
-        '/api/v1/settings/plex/devices/servers'
-      );
-      if (response.data) {
-        setAvailableServers(response.data);
-      }
-      if (toastId) {
-        removeToast(toastId);
-      }
-      addToast(intl.formatMessage(messages.toastPlexRefreshSuccess), {
-        autoDismiss: true,
-        appearance: 'success',
+      const response = await axios.post('/api/v1/settings/plex/sync', {
+        [action]: true,
       });
-    } catch {
-      if (toastId) {
-        removeToast(toastId);
-      }
-      addToast(intl.formatMessage(messages.toastPlexRefreshFailure), {
+      await revalidateSync(response.data, { revalidate: false });
+    } catch (error) {
+      if (isRateLimitError(error)) return;
+      addToast(intl.formatMessage(messages.toastPlexSyncFailure), {
         autoDismiss: true,
         appearance: 'error',
       });
     } finally {
-      setIsRefreshingPresets(false);
+      libraryUpdateActive.current = false;
     }
   };
-
-  const startScan = async () => {
-    await axios.post('/api/v1/settings/plex/sync', {
-      start: true,
-    });
-    revalidateSync();
-  };
-
-  const cancelScan = async () => {
-    await axios.post('/api/v1/settings/plex/sync', {
-      cancel: true,
-    });
-    revalidateSync();
-  };
+  const startScan = () => setScanState('start');
+  const cancelScan = () => setScanState('cancel');
 
   const toggleLibrary = async (libraryId: string) => {
+    if (libraryUpdateActive.current || rateLimitSeconds) return;
+    libraryUpdateActive.current = true;
     setIsSyncing(true);
     try {
       const enabledLibraryIds = activeLibraries.includes(libraryId)
         ? activeLibraries.filter((id) => id !== libraryId)
         : [...activeLibraries, libraryId];
-
-      await axios.post(
+      const response = await axios.post<PlexSettings['libraries']>(
         getSettingsLibraryApiPath('plex'),
         createSettingsLibraryUpdateBody({ enabledLibraryIds })
       );
-      if (onComplete) {
-        onComplete();
-      }
-      revalidate();
-    } catch {
+      await publishLibraries(response.data);
+    } catch (error) {
+      if (isRateLimitError(error)) return;
       addToast(intl.formatMessage(messages.toastPlexLibraryUpdateFailure), {
         autoDismiss: true,
         appearance: 'error',
       });
     } finally {
+      libraryUpdateActive.current = false;
       setIsSyncing(false);
     }
   };
@@ -394,9 +338,11 @@ const SettingsPlex = ({ isSetupSettings, onComplete }: SettingsPlexProps) => {
     libraryId: string,
     provider: MetadataProviderType | undefined
   ) => {
+    if (libraryUpdateActive.current || rateLimitSeconds) return;
+    libraryUpdateActive.current = true;
     setIsSyncing(true);
     try {
-      await axios.post(
+      const response = await axios.post<PlexSettings['libraries']>(
         getSettingsLibraryApiPath('plex'),
         createSettingsLibraryUpdateBody({
           enabledLibraryIds: activeLibraries,
@@ -406,22 +352,25 @@ const SettingsPlex = ({ isSetupSettings, onComplete }: SettingsPlexProps) => {
           },
         })
       );
-      await revalidate();
-    } catch {
+      await publishLibraries(response.data);
+    } catch (error) {
+      if (isRateLimitError(error)) return;
       addToast(intl.formatMessage(messages.toastPlexLibraryUpdateFailure), {
         autoDismiss: true,
         appearance: 'error',
       });
     } finally {
+      libraryUpdateActive.current = false;
       setIsSyncing(false);
     }
   };
 
   const setAllLibrariesEnabled = async (enabled: boolean) => {
+    if (libraryUpdateActive.current || rateLimitSeconds) return;
+    libraryUpdateActive.current = true;
     setIsSyncing(true);
-
     try {
-      await axios.post(
+      const response = await axios.post<PlexSettings['libraries']>(
         getSettingsLibraryApiPath('plex'),
         createSettingsLibraryUpdateBody({
           enabledLibraryIds: enabled
@@ -429,17 +378,15 @@ const SettingsPlex = ({ isSetupSettings, onComplete }: SettingsPlexProps) => {
             : [],
         })
       );
-
-      if (onComplete) {
-        onComplete();
-      }
-      revalidate();
-    } catch {
+      await publishLibraries(response.data);
+    } catch (error) {
+      if (isRateLimitError(error)) return;
       addToast(intl.formatMessage(messages.toastPlexLibraryUpdateFailure), {
         autoDismiss: true,
         appearance: 'error',
       });
     } finally {
+      libraryUpdateActive.current = false;
       setIsSyncing(false);
     }
   };
@@ -448,25 +395,42 @@ const SettingsPlex = ({ isSetupSettings, onComplete }: SettingsPlexProps) => {
     libraryId: string,
     nextType: 'music' | 'book'
   ) => {
+    if (libraryUpdateActive.current || rateLimitSeconds) return;
+    libraryUpdateActive.current = true;
+    setIsSyncing(true);
     try {
-      await axios.put(getSettingsPlexLibraryTypeApiPath(libraryId), {
-        type: nextType,
-      });
-      revalidate();
-    } catch {
+      const response = await axios.put<PlexSettings['libraries']>(
+        getSettingsPlexLibraryTypeApiPath(libraryId),
+        { type: nextType }
+      );
+      await publishLibraries(response.data);
+    } catch (error) {
+      if (isRateLimitError(error)) return;
       addToast(intl.formatMessage(messages.toastReclassifyFailure), {
         autoDismiss: true,
         appearance: 'error',
       });
+    } finally {
+      libraryUpdateActive.current = false;
+      setIsSyncing(false);
     }
   };
 
-  if (
-    (!data || (!isSetupSettings && !dataTautulli)) &&
-    !error &&
-    !errorTautulli
-  ) {
-    return <LoadingSpinner />;
+  if (!data || (!isSetupSettings && !dataTautulli)) {
+    return (
+      <>
+        {!isSetupSettings && <ApiRateLimitNotice />}
+        <SettingsLoadState
+          failed={Boolean(error || errorTautulli)}
+          onRetry={() =>
+            Promise.all([
+              revalidate(),
+              ...(isSetupSettings ? [] : [revalidateTautulli()]),
+            ])
+          }
+        />
+      </>
+    );
   }
   return (
     <>
@@ -476,6 +440,7 @@ const SettingsPlex = ({ isSetupSettings, onComplete }: SettingsPlexProps) => {
           intl.formatMessage(globalMessages.settings),
         ]}
       />
+      {!isSetupSettings && <ApiRateLimitNotice />}
       <div className="mb-6">
         <h3 className="heading">{intl.formatMessage(messages.plexsettings)}</h3>
         <SettingsHelp className="description">
@@ -506,13 +471,13 @@ const SettingsPlex = ({ isSetupSettings, onComplete }: SettingsPlexProps) => {
           hostname: data?.ip,
           port: data?.port ?? 32400,
           useSsl: data?.useSsl,
-          selectedPreset: undefined,
           webAppUrl: data?.webAppUrl,
           analyzeOnPlayback: data?.analyzeOnPlayback ?? false,
         }}
         validationSchema={PlexSettingsSchema}
         validateOnMount={true}
         onSubmit={async (values, { resetForm }) => {
+          if (rateLimitSeconds || isSyncing) return;
           let toastId: string | null = null;
           try {
             addToast(
@@ -525,7 +490,7 @@ const SettingsPlex = ({ isSetupSettings, onComplete }: SettingsPlexProps) => {
                 toastId = id;
               }
             );
-            await axios.post('/api/v1/settings/plex', {
+            const response = await axios.post<PlexSettings>('/api/v1/settings/plex', {
               ip: values.hostname,
               port: Number(values.port),
               useSsl: values.useSsl,
@@ -533,9 +498,9 @@ const SettingsPlex = ({ isSetupSettings, onComplete }: SettingsPlexProps) => {
               analyzeOnPlayback: values.analyzeOnPlayback,
             } as PlexSettings);
 
+            await revalidate(response.data, { revalidate: false });
             resetForm({ values });
-
-            syncLibraries();
+            await syncLibraries();
 
             if (toastId) {
               removeToast(toastId);
@@ -544,10 +509,11 @@ const SettingsPlex = ({ isSetupSettings, onComplete }: SettingsPlexProps) => {
               autoDismiss: true,
               appearance: 'success',
             });
-          } catch {
+          } catch (error) {
             if (toastId) {
               removeToast(toastId);
             }
+            if (isRateLimitError(error)) return;
             addToast(intl.formatMessage(messages.toastPlexConnectingFailure), {
               autoDismiss: true,
               appearance: 'error',
@@ -561,7 +527,6 @@ const SettingsPlex = ({ isSetupSettings, onComplete }: SettingsPlexProps) => {
           values,
           handleSubmit,
           setFieldValue,
-          setValues,
           isSubmitting,
           isValid,
           dirty,
@@ -573,82 +538,7 @@ const SettingsPlex = ({ isSetupSettings, onComplete }: SettingsPlexProps) => {
               data-settings-dirty={dirty}
               data-settings-submitting={isSubmitting}
             >
-              <div className="form-row">
-                <label htmlFor="preset" className="text-label">
-                  {intl.formatMessage(messages.serverpreset)}
-                </label>
-                <div className="form-input-area">
-                  <div className="form-input-field">
-                    <select
-                      id="preset"
-                      name="preset"
-                      value={values.selectedPreset}
-                      disabled={!availableServers || isRefreshingPresets}
-                      className="rounded-s-only"
-                      onChange={async (e) => {
-                        const targPreset =
-                          availablePresets[Number(e.target.value)];
-
-                        if (targPreset) {
-                          setValues({
-                            ...values,
-                            hostname: targPreset.address,
-                            port: targPreset.port,
-                            useSsl: targPreset.ssl,
-                          });
-                        }
-                      }}
-                    >
-                      <option value="manual">
-                        {availableServers || isRefreshingPresets
-                          ? isRefreshingPresets
-                            ? intl.formatMessage(
-                                messages.serverpresetRefreshing
-                              )
-                            : intl.formatMessage(
-                                messages.serverpresetManualMessage
-                              )
-                          : intl.formatMessage(messages.serverpresetLoad)}
-                      </option>
-                      {availablePresets.map((server, index) => (
-                        <option
-                          key={`preset-server-${index}`}
-                          value={index}
-                          disabled={!server.status}
-                        >
-                          {`
-                            ${server.name} (${server.address})
-                            [${
-                              server.local
-                                ? intl.formatMessage(messages.serverLocal)
-                                : intl.formatMessage(messages.serverRemote)
-                            }]${
-                              server.ssl
-                                ? ` [${intl.formatMessage(
-                                    messages.serverSecure
-                                  )}]`
-                                : ''
-                            }
-                            ${server.status ? '' : '(' + server.message + ')'}
-                          `}
-                        </option>
-                      ))}
-                    </select>
-                    <button
-                      onClick={(e) => {
-                        e.preventDefault();
-                        refreshPresetServers();
-                      }}
-                      className="input-action"
-                    >
-                      <ArrowPathIcon
-                        className={isRefreshingPresets ? 'animate-spin' : ''}
-                        style={{ animationDirection: 'reverse' }}
-                      />
-                    </button>
-                  </div>
-                </div>
-              </div>
+              <PlexServerPicker />
               <div className="form-row">
                 <label htmlFor="hostname" className="text-label">
                   {intl.formatMessage(messages.hostname)}
@@ -765,7 +655,7 @@ const SettingsPlex = ({ isSetupSettings, onComplete }: SettingsPlexProps) => {
                     <Button
                       buttonType="primary"
                       type="submit"
-                      disabled={isSubmitting || !isValid}
+                      disabled={isSubmitting || !isValid || rateLimitSeconds > 0}
                     >
                       <ArrowDownOnSquareIcon />
                       <span>
@@ -792,7 +682,7 @@ const SettingsPlex = ({ isSetupSettings, onComplete }: SettingsPlexProps) => {
           <Button
             buttonSize="standard"
             onClick={() => syncLibraries()}
-            disabled={isSyncing || !data?.ip || !data?.port}
+            disabled={isSyncing || rateLimitSeconds > 0 || !data?.ip || !data?.port}
           >
             <ArrowPathIcon
               className={isSyncing ? 'animate-spin' : ''}
@@ -809,6 +699,7 @@ const SettingsPlex = ({ isSetupSettings, onComplete }: SettingsPlexProps) => {
             onClick={() => setAllLibrariesEnabled(true)}
             disabled={
               isSyncing ||
+              rateLimitSeconds > 0 ||
               !data?.libraries.length ||
               activeLibraries.length === data.libraries.length
             }
@@ -819,7 +710,7 @@ const SettingsPlex = ({ isSetupSettings, onComplete }: SettingsPlexProps) => {
           <Button
             buttonSize="standard"
             onClick={() => setAllLibrariesEnabled(false)}
-            disabled={isSyncing || activeLibraries.length === 0}
+            disabled={isSyncing || rateLimitSeconds > 0 || activeLibraries.length === 0}
           >
             <MinusCircleIcon />
             <span>{intl.formatMessage(messages.selectNoLibraries)}</span>
@@ -837,6 +728,7 @@ const SettingsPlex = ({ isSetupSettings, onComplete }: SettingsPlexProps) => {
               }
               isEnabled={library.enabled}
               key={`setting-library-${library.id}`}
+              disabled={isSyncing || rateLimitSeconds > 0}
               onToggle={() => toggleLibrary(library.id)}
               reclassify={
                 library.type === 'music' || library.type === 'book'
@@ -860,7 +752,7 @@ const SettingsPlex = ({ isSetupSettings, onComplete }: SettingsPlexProps) => {
       </section>
       <LibraryEpisodeOrderSettings
         libraries={data?.libraries ?? []}
-        disabled={isSyncing}
+        disabled={isSyncing || rateLimitSeconds > 0}
         onChange={updateEpisodeOrder}
       />
       <div className="mt-10 mb-6">
@@ -926,7 +818,7 @@ const SettingsPlex = ({ isSetupSettings, onComplete }: SettingsPlexProps) => {
                 <Button
                   buttonType="warning"
                   onClick={() => startScan()}
-                  disabled={isSyncing || !activeLibraries.length}
+                  disabled={isSyncing || rateLimitSeconds > 0 || !activeLibraries.length}
                 >
                   <MagnifyingGlassIcon />
                   <span>{intl.formatMessage(messages.startscan)}</span>
@@ -1157,7 +1049,7 @@ const SettingsPlex = ({ isSetupSettings, onComplete }: SettingsPlexProps) => {
                         <Button
                           buttonType="primary"
                           type="submit"
-                          disabled={isSubmitting || !isValid}
+                          disabled={isSubmitting || !isValid || rateLimitSeconds > 0}
                         >
                           <ArrowDownOnSquareIcon />
                           <span>
