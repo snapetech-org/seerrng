@@ -2072,6 +2072,8 @@ export const apiMessages: Record<
   m9b6c0528bd7293f376d9:
     'The author catalogs timed out or are unavailable. Please try again.',
   m9b8c3ebbe2df17b68dc6: 'The requester tag could not be resolved.',
+  m9baa89df11630151344e:
+    'Waiting before recovering a book removed from the service.',
   m9bdb1d27c069a1abd2af: 'That title does not air on the chosen channel.',
   m9bde48e18fdf8f603a9d:
     'Incomplete or invalid Sonarr inventory; deletion reconciliation is not safe.',
@@ -2160,6 +2162,8 @@ export const apiMessages: Record<
   ma146e02bce29ea723a67:
     'The connected book service could not accept this request. Check its connection and metadata provider settings, then retry.',
   ma18dd1bd723e46133702: 'Unable to retrieve artist details.',
+  ma1a1459bc2a79731f018:
+    'Skipping book metadata lookup while the service recovers.',
   ma1a608f90ceef494e8d6: 'Invalid cancellation confirmation.',
   ma1b1cc7b6179d51d5f03: 'Anthropic returned HTTP error.',
   ma1ba4521c1e20f76bcae: 'Unable to process item.',

@@ -1091,4 +1091,73 @@ describe('Readarr Scanner', () => {
       1
     );
   });
+
+  for (const emptyFirst of [false, true]) {
+    it(`duplicate same-format records pool file evidence (empty record ${emptyFirst ? 'first' : 'last'})`, async () => {
+      const requested = await getRepository(Media).save(
+        new Media({
+          tmdbId: 0,
+          mediaType: MediaType.BOOK,
+          status: MediaStatus.PROCESSING,
+          status4k: MediaStatus.UNKNOWN,
+          identifiers: [
+            new MediaIdentifier({
+              provider: MediaIdentifierProvider.BOOKSHELF,
+              value: makeBookshelfBookId(1, '714600'),
+              canonical: true,
+            }),
+          ],
+        })
+      );
+      configureReadarr([{ id: 1, serviceType: 'ebook' }]);
+      knownDialect = 'hc';
+      const withFiles = fakeReadarrBook({
+        id: 2038,
+        title: 'Fourth Wing',
+        foreignBookId: 'hc:714600',
+        titleSlug: 'fourth-wing_5',
+        monitored: true,
+        editions: [],
+        statistics: {
+          bookFileCount: 1,
+          ebookFileCount: 1,
+          audiobookFileCount: 0,
+          totalBookCount: 1,
+        },
+      });
+      const empty = fakeReadarrBook({
+        id: 2215,
+        title: 'Fourth Wing',
+        foreignBookId: 'hc:714600',
+        titleSlug: 'fourth-wing_5_copy_53281849',
+        monitored: false,
+        editions: [],
+        statistics: {
+          bookFileCount: 0,
+          ebookFileCount: 0,
+          audiobookFileCount: 0,
+          totalBookCount: 0,
+        },
+      });
+      getBooksImpl = async () =>
+        emptyFirst ? [empty, withFiles] : [withFiles, empty];
+
+      await readarrScanner.run();
+
+      const updated = await getRepository(Media).findOneByOrFail({
+        id: requested.id,
+      });
+      assert.equal(updated.status, MediaStatus.AVAILABLE);
+      assert.deepEqual(updated.availableEbookServiceIds, [1]);
+      assert.equal(updated.serviceId, 1);
+      assert.equal(updated.externalServiceId, 2038);
+      assert.equal(updated.externalServiceSlug, 'fourth-wing_5');
+      assert.equal(
+        await getRepository(Media).count({
+          where: { mediaType: MediaType.BOOK },
+        }),
+        1
+      );
+    });
+  }
 });

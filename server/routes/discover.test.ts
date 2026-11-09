@@ -41,6 +41,7 @@ import {
 import logger from '@server/logger';
 import { checkUser } from '@server/middleware/auth';
 import { setupTestDb } from '@server/test/db';
+import { makeBookshelfBookId } from '@server/utils/bookshelfCatalog';
 import { settlePromisesWithin } from '@server/utils/concurrency';
 import type { Express } from 'express';
 import express from 'express';
@@ -4544,6 +4545,78 @@ describe('GET /discover/books', () => {
       settings.readarr = originalReadarr;
     }
   });
+
+  for (const failure of ['empty', 'error'] as const) {
+    it(`falls back to the known audiobook catalogue when provider search is ${failure === 'empty' ? 'empty' : 'failing'}`, async () => {
+      const settings = getSettings();
+      const originalReadarr = settings.readarr;
+      settings.readarr = [
+        {
+          id: 33,
+          hostname: 'audiobookshelf.test',
+          port: 8787,
+          apiKey: 'audio-key',
+          useSsl: false,
+          baseUrl: '',
+          serviceType: 'audiobook',
+        } as ReadarrSettings,
+      ];
+      const searchBookshelf = mock.method(
+        ReadarrAPI.prototype,
+        'lookupBook',
+        async () => {
+          if (failure === 'error') {
+            throw new Error('Request failed with status code 404');
+          }
+          return [];
+        }
+      );
+      const getBooks = mock.method(
+        ReadarrAPI.prototype,
+        'getBooks',
+        async () => [
+          {
+            id: 2152,
+            title: 'Onyx Storm',
+            foreignBookId: 'hc:1197328',
+            author: { authorName: 'Rebecca Yarros' },
+            monitored: true,
+          },
+          {
+            id: 2153,
+            title: 'Iron Flame',
+            foreignBookId: 'hc:1000001',
+            author: { authorName: 'Rebecca Yarros' },
+            monitored: true,
+          },
+        ]
+      );
+
+      try {
+        const agent = await login();
+        const result = await agent.get('/discover/books').query({
+          format: 'audiobook',
+          query: 'onyx storm',
+        });
+
+        assert.strictEqual(result.status, 200);
+        assert.deepStrictEqual(
+          result.body.results.map(
+            (book: { id: string; title: string; bookFormat: string }) => [
+              book.id,
+              book.title,
+              book.bookFormat,
+            ]
+          ),
+          [[makeBookshelfBookId(33, 'hc:1197328'), 'Onyx Storm', 'audiobook']]
+        );
+        assert.strictEqual(searchBookshelf.mock.callCount(), 1);
+        assert.strictEqual(getBooks.mock.callCount(), 1);
+      } finally {
+        settings.readarr = originalReadarr;
+      }
+    });
+  }
 
   it('limits narrator search to audiobook format', async () => {
     const searchOpenLibrary = mock.method(

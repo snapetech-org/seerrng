@@ -427,6 +427,7 @@ test('unit-test shards use GitHub-hosted runners', () => {
   assert.deepEqual(ciWorkflow.on.workflow_dispatch.inputs.action.options, [
     'ci',
     'contracts',
+    'browser',
     'publish-image',
   ]);
   assert.equal(ciWorkflow.jobs['unit-test']?.strategy?.['max-parallel'], 4);

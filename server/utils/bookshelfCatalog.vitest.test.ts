@@ -4,6 +4,7 @@ import ReadarrAPI, {
 import type { ReadarrSettings } from '@server/lib/settings';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import {
+  canonicalizeBookshelfBookId,
   getBookshelfAudiobookLibraryPage,
   getBookshelfBookDetails,
   getBookshelfMetadataSource,
@@ -391,6 +392,46 @@ describe('Bookshelf catalog identities', () => {
       title: 'The Fellowship of the Ring',
       series: [{ title: 'The Lord of the Rings', position: '1' }],
     });
+  });
+
+  it('opens audiobook details from a padded base64 Bookshelf ID', async () => {
+    const lookupBook = vi
+      .spyOn(ReadarrAPI.prototype, 'lookupBook')
+      .mockImplementation(async (term) =>
+        term === 'hc:1197328'
+          ? [
+              {
+                title: 'Onyx Storm',
+                foreignBookId: 'hc:1197328',
+                mediaType: 'audiobook',
+                editions: [],
+              },
+            ]
+          : []
+      );
+    const server = {
+      id: 1,
+      name: 'ChaptarrNG Audiobooks',
+      hostname: 'bookshelf.test',
+      port: 8790,
+      apiKey: 'test-key',
+      useSsl: false,
+      baseUrl: '',
+      serviceType: 'audiobook',
+    } as ReadarrSettings;
+    const canonicalId = makeBookshelfBookId(server.id, 'hc:1197328');
+    const paddedId = `bookshelf:1:${Buffer.from('hc:1197328').toString('base64')}`;
+
+    expect(paddedId).toBe('bookshelf:1:aGM6MTE5NzMyOA==');
+    const details = await getBookshelfBookDetails([server], paddedId);
+
+    expect(lookupBook).toHaveBeenCalledWith('hc:1197328');
+    expect(details).toMatchObject({ id: canonicalId, title: 'Onyx Storm' });
+    expect(canonicalizeBookshelfBookId(paddedId)).toBe(canonicalId);
+    expect(canonicalizeBookshelfBookId(canonicalId)).toBe(canonicalId);
+    expect(canonicalizeBookshelfBookId('bookshelf:1:!bad==')).toBe(
+      'bookshelf:1:!bad=='
+    );
   });
 
   it('uses a title hint but accepts only the exact Bookshelf book identity', async () => {

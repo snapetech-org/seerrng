@@ -30,6 +30,7 @@ import {
   type BookSeriesReference,
 } from '@server/models/Book';
 import {
+  canonicalizeBookshelfBookId,
   getBookshelfBookDetails,
   getBookshelfBookLibrary,
   getBookshelfLibraryBookSeries,
@@ -81,11 +82,27 @@ bookRoutes.get('/library', async (req, res) => {
       true
     );
     const media = await findBookMediaForBookResults(books, req.user);
+    // Several catalog records (editions, aliases, duplicate media rows) can
+    // resolve to one owned manager record; list it once per format (#625).
+    const listed = new Set<string>();
+    const ownedKey = (info: Media): string => {
+      const serviceId =
+        format === 'audiobook' ? info.audiobookServiceId : info.serviceId;
+      const externalId =
+        format === 'audiobook'
+          ? info.audiobookExternalServiceId
+          : info.externalServiceId;
+      return serviceId != null && externalId != null
+        ? `record:${serviceId}:${externalId}`
+        : `media:${info.id}`;
+    };
     const available = books.flatMap((book) => {
       const info = media.get(book.id);
-      return info && hasAvailableBookFormat(info, format)
-        ? [{ ...book, mediaInfo: info }]
-        : [];
+      if (!info || !hasAvailableBookFormat(info, format)) return [];
+      const key = ownedKey(info);
+      if (listed.has(key)) return [];
+      listed.add(key);
+      return [{ ...book, mediaInfo: info }];
     });
     return res.json(
       filterEntityResponse(
@@ -364,7 +381,9 @@ bookRoutes.get('/search', async (req, res, next) => {
 });
 
 bookRoutes.get('/:id', async (req, res, next) => {
-  const bookshelfId = parseBookshelfBookId(req.params.id);
+  const bookshelfId = parseBookshelfBookId(
+    canonicalizeBookshelfBookId(req.params.id)
+  );
   if (bookshelfId) {
     const lookupTitle = parseOptionalBoundedString(req.query.lookupTitle, {
       fieldName: 'Lookup title',
@@ -374,11 +393,19 @@ bookRoutes.get('/:id', async (req, res, next) => {
       return res.status(400).json({ status: 400, message: lookupTitle.error });
     }
     const settings = getSettings();
-    const details = await getBookshelfBookDetails(
-      settings.readarr,
-      req.params.id,
-      lookupTitle.value
-    );
+    let details;
+    try {
+      details = await getBookshelfBookDetails(
+        settings.readarr,
+        req.params.id,
+        lookupTitle.value,
+        { failOnUnavailable: true }
+      );
+    } catch {
+      return res
+        .status(503)
+        .json({ message: 'Book library is unavailable. Please try again.' });
+    }
     if (!details)
       return res.status(404).json({ status: 404, message: 'Book not found' });
     try {
@@ -509,7 +536,7 @@ bookRoutes.get('/:id', async (req, res, next) => {
 });
 
 bookRoutes.get('/:id/ratings', async (req, res) => {
-  if (parseBookshelfBookId(req.params.id)) {
+  if (parseBookshelfBookId(canonicalizeBookshelfBookId(req.params.id))) {
     const lookupTitle = parseOptionalBoundedString(req.query.lookupTitle, {
       fieldName: 'Lookup title',
       maxLength: 512,

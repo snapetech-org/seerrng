@@ -53,6 +53,19 @@ const getBookIdentifierKey = (
   value: string
 ): string => `${provider}:${normalizeExternalBookId(value, provider)}`;
 
+const getObservedReadarrFileCount = (
+  book: ReadarrBook,
+  serviceType: BookServiceFormat
+): number | undefined => {
+  const count =
+    (serviceType === 'audiobook'
+      ? book.statistics?.audiobookFileCount
+      : book.statistics?.ebookFileCount) ?? book.statistics?.bookFileCount;
+  return typeof count === 'number' && Number.isFinite(count) && count >= 0
+    ? count
+    : undefined;
+};
+
 const SQLITE_BUSY_RETRY_ATTEMPTS = 3;
 const SQLITE_BUSY_RETRY_DELAY_MS = 750;
 
@@ -74,6 +87,9 @@ class ReadarrScanner
   private binderyPrimaryProvider?: string;
   private scannedIdentifierKeys: Set<string> = new Set();
   private scannedFormatKeys = new Set<string>();
+  // Records of one format that share a work identity (duplicate Chaptarr
+  // books) pool their file evidence: the record with the most files wins.
+  private readarrWorkFileRecords = new Map<string, ReadarrBook>();
   private scanItemsComplete = true;
   private didScan = false;
 
@@ -151,6 +167,7 @@ class ReadarrScanner
             }
           );
           this.didScan = true;
+          this.indexReadarrWorkFileRecords();
           await this.loop(
             async (book) =>
               this.currentServer.backend === 'bindery'
@@ -181,6 +198,41 @@ class ReadarrScanner
       });
     } finally {
       this.endRun(sessionId);
+    }
+  }
+
+  private getReadarrServiceType(): BookServiceFormat {
+    return this.currentServer.serviceType === 'audiobook'
+      ? 'audiobook'
+      : 'ebook';
+  }
+
+  private getReadarrWorkKey(book: ReadarrBook): string | undefined {
+    const foreignBookId = book.foreignBookId?.trim();
+    if (!foreignBookId) return undefined;
+    // Every spelling of one work (hc:N, hardcover:N, bare N) yields the same
+    // alias set, so its smallest member is a stable group key.
+    return this.readarrApi
+      .getKnownBookIdentityAliases(foreignBookId)
+      .map((alias) => alias.toLowerCase())
+      .sort()[0];
+  }
+
+  private indexReadarrWorkFileRecords(): void {
+    this.readarrWorkFileRecords.clear();
+    if (this.currentServer.backend === 'bindery') return;
+    const serviceType = this.getReadarrServiceType();
+    for (const book of this.items as ReadarrBook[]) {
+      const key = this.getReadarrWorkKey(book);
+      const count = getObservedReadarrFileCount(book, serviceType) ?? 0;
+      if (!key || count <= 0) continue;
+      const current = this.readarrWorkFileRecords.get(key);
+      if (
+        !current ||
+        count > (getObservedReadarrFileCount(current, serviceType) ?? 0)
+      ) {
+        this.readarrWorkFileRecords.set(key, book);
+      }
     }
   }
 
@@ -287,8 +339,7 @@ class ReadarrScanner
           )
       );
 
-      const serviceType =
-        this.currentServer.serviceType === 'audiobook' ? 'audiobook' : 'ebook';
+      const serviceType = this.getReadarrServiceType();
       for (const item of [
         { provider, value: identifier },
         ...secondaryIdentifiers,
@@ -297,25 +348,39 @@ class ReadarrScanner
           `${this.currentServer.id}:${serviceType}:${getBookIdentifierKey(item.provider, item.value)}`
         );
       }
+      const ownFileCount = getObservedReadarrFileCount(
+        readarrBook,
+        serviceType
+      );
+      const workKey = this.getReadarrWorkKey(readarrBook);
+      const workFileRecord = workKey
+        ? this.readarrWorkFileRecords.get(workKey)
+        : undefined;
+      // A duplicate record of the same work and format must not erase file
+      // evidence held by its sibling, and the sibling with files owns the
+      // media's service link so downstream lookups see those files.
+      const evidenceRecord =
+        workFileRecord &&
+        workFileRecord.id !== readarrBook.id &&
+        (getObservedReadarrFileCount(workFileRecord, serviceType) ?? 0) >
+          (ownFileCount ?? 0)
+          ? workFileRecord
+          : readarrBook;
       const observedFileCount =
-        (serviceType === 'audiobook'
-          ? readarrBook.statistics?.audiobookFileCount
-          : readarrBook.statistics?.ebookFileCount) ??
-        readarrBook.statistics?.bookFileCount;
-      const bookFileObservationKnown =
-        typeof observedFileCount === 'number' &&
-        Number.isFinite(observedFileCount) &&
-        observedFileCount >= 0;
-      const bookFileCount = bookFileObservationKnown ? observedFileCount : 0;
+        evidenceRecord === readarrBook
+          ? ownFileCount
+          : getObservedReadarrFileCount(evidenceRecord, serviceType);
+      const bookFileObservationKnown = observedFileCount !== undefined;
+      const bookFileCount = observedFileCount ?? 0;
       const hasFile = bookFileCount > 0;
-      const totalBooks = readarrBook.statistics?.totalBookCount ?? 1;
+      const totalBooks = evidenceRecord.statistics?.totalBookCount ?? 1;
 
-      if (!readarrBook.monitored && !hasFile) {
+      if (!evidenceRecord.monitored && !hasFile) {
         await this.processBookWithRetry(provider, identifier, {
           serviceId: this.currentServer.id,
-          externalServiceId: readarrBook.id,
+          externalServiceId: evidenceRecord.id,
           externalServiceSlug:
-            readarrBook.titleSlug ?? readarrBook.foreignBookId,
+            evidenceRecord.titleSlug ?? evidenceRecord.foreignBookId,
           title: readarrBook.title,
           mediaAddedAt: readarrBook.added
             ? new Date(readarrBook.added)
@@ -337,8 +402,9 @@ class ReadarrScanner
 
       await this.processBookWithRetry(provider, identifier, {
         serviceId: this.currentServer.id,
-        externalServiceId: readarrBook.id,
-        externalServiceSlug: readarrBook.titleSlug ?? readarrBook.foreignBookId,
+        externalServiceId: evidenceRecord.id,
+        externalServiceSlug:
+          evidenceRecord.titleSlug ?? evidenceRecord.foreignBookId,
         title: readarrBook.title,
         mediaAddedAt: readarrBook.added
           ? new Date(readarrBook.added)
@@ -348,8 +414,8 @@ class ReadarrScanner
         secondaryIdentifiers,
         bookServiceType: serviceType,
         processing:
-          readarrBook.monitored &&
-          (readarrBook.statistics ? bookFileCount < totalBooks : !hasFile),
+          evidenceRecord.monitored &&
+          (evidenceRecord.statistics ? bookFileCount < totalBooks : !hasFile),
         mutationGuard: (callback) =>
           runWithServarrServiceSnapshot(
             'readarr',

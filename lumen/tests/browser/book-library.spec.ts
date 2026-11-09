@@ -384,3 +384,123 @@ test('Audiobookshelf credentials never become a public owned-book link', async (
     page.getByRole('link', { name: 'Listen in Audiobookshelf' })
   ).toHaveCount(0);
 });
+test('owning the audiobook still offers the ebook', async ({ page }) => {
+  await fixtures(page);
+  await page.route('**/api/v1/book/bookshelf*', (route) =>
+    route.fulfill({
+      json: {
+        ...book(ebookId, 'ebook', 'Audio only book'),
+        mediaInfo: {
+          status: 5,
+          availableEbookServiceIds: [],
+          availableAudiobookServiceIds: [1],
+          audiobookLibraryServiceId: 9,
+          audiobookLibraryItemId: 'abs-audio',
+        },
+      },
+    })
+  );
+  await page.goto(`/book/${encodeURIComponent(ebookId)}`);
+  await expect(
+    page.getByRole('button', { name: 'Request ebook' })
+  ).toBeVisible();
+  await expect(page.getByText('Read in Audiobookshelf')).toHaveCount(0);
+});
+
+test('a book page shows a requested format as requested, not as Request again', async ({
+  page,
+}) => {
+  await fixtures(page);
+  await page.route('**/api/v1/book/bookshelf*', (route) =>
+    route.fulfill({
+      json: {
+        ...book(ebookId, 'ebook', 'Requested ebook'),
+        mediaInfo: {
+          status: 5,
+          availableEbookServiceIds: [],
+          availableAudiobookServiceIds: [1],
+          audiobookLibraryServiceId: 9,
+          audiobookLibraryItemId: 'abs-audio',
+          requests: [{ id: 9, status: 2, bookFormat: 'ebook' }],
+        },
+      },
+    })
+  );
+  await page.goto(`/book/${encodeURIComponent(ebookId)}`);
+  await expect(page.locator('h1')).toContainText('Requested ebook');
+  await expect(page.getByRole('button', { name: 'Request ebook' })).toHaveCount(
+    0
+  );
+});
+
+test('requesting the audiobook does not mark the ebook as requested', async ({
+  page,
+}) => {
+  await fixtures(page);
+  await page.route('**/api/v1/book/bookshelf*', (route) =>
+    route.fulfill({
+      json: {
+        ...book(ebookId, 'ebook', 'Audio requested'),
+        mediaInfo: {
+          status: 3,
+          requests: [{ id: 10, status: 2, bookFormat: 'audiobook' }],
+        },
+      },
+    })
+  );
+  await page.goto(`/book/${encodeURIComponent(ebookId)}`);
+  await expect(
+    page.getByRole('button', { name: 'Request ebook' })
+  ).toBeVisible();
+});
+
+for (const [label, request, requested] of [
+  ['both formats', { status: 2, bookFormat: 'both' }, true],
+  ['legacy ebook', { status: 1 }, true],
+  [
+    'active handoff',
+    {
+      status: 5,
+      bookFormat: 'ebook',
+      serviceTargets: [{ serviceType: 'readarr', format: 'ebook', status: 3 }],
+    },
+    true,
+  ],
+  [
+    'completed handoff',
+    {
+      status: 5,
+      bookFormat: 'ebook',
+      serviceTargets: [{ serviceType: 'readarr', format: 'ebook', status: 5 }],
+    },
+    false,
+  ],
+  [
+    'opposite handoff',
+    {
+      status: 5,
+      bookFormat: 'both',
+      serviceTargets: [
+        { serviceType: 'readarr', format: 'audiobook', status: 3 },
+      ],
+    },
+    false,
+  ],
+] as const) {
+  test(`ebook detail scopes ${label} request state`, async ({ page }) => {
+    await fixtures(page);
+    await page.route('**/api/v1/book/bookshelf*', (route) =>
+      route.fulfill({
+        json: {
+          ...book(ebookId, 'ebook', 'Request state fixture'),
+          mediaInfo: { status: 3, requests: [request] },
+        },
+      })
+    );
+    await page.goto(`/book/${encodeURIComponent(ebookId)}`);
+    await expect(page.locator('h1')).toContainText('Request state fixture');
+    await expect(
+      page.getByRole('button', { name: 'Request ebook' })
+    ).toHaveCount(requested ? 0 : 1);
+  });
+}

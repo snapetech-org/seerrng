@@ -99,3 +99,62 @@ continue after another shard fails and retain distinct screenshots, traces and
 complete JSON results. The `browser` dispatch action reruns this suite and its
 release-note contract without duplicating already-qualified native/backend jobs.
 Live execution on the selected public runner class is required before publication.
+
+
+## Follow-up contribution #630
+
+Reviewed ncbudd's original `0b3a78794609bb2ecfad6fd9200a5615e40b5c68`
+([PR #630](https://github.com/snapetech-org/seerrng/pull/630)). It extends the
+library repair to catalogues larger than 200 identifiers, pools exact same-work
+file observations within a scanner service/format, tolerates Chaptarr's specific
+missing-row error, finalizes verified recording files before metadata lookup,
+and backs off metadata outages and deleted manager records. Local audiobook
+catalogue search is a fallback when remote metadata search fails.
+
+Review corrections retain provider and explicit format boundaries for edition
+aliases; require matching work identity before a linked numeric record can finish
+a request; run bounded identifier/media/summary database batches; and preserve
+both-format and active-handoff request states. Detail provider failure returns a
+sanitized 503; only a successful exact miss returns 404. No new dependency,
+workflow privilege, remote deletion, or user-data merge is introduced.
+
+The outage reconciliation tests now isolate already-dispatched requests from the
+background delivery outbox and create a fresh manager per case. A transaction
+completion assertion guards fixture teardown. The workflow contract tests include
+the browser dispatch option. Final source qualification and publication receipts
+will be appended after those checks finish; #625 and #629 remain open until the
+replacement images are published and verified.
+
+
+### Local follow-up qualification
+
+The integrated production build passes; all 295 affected native tests and 15
+catalogue Vitest cases pass. Live rebuilt backend plus the read-only Chaptarr
+fixture supplies 260 additional ebook and audiobook records. Both formats render
+through title 260 at phone/desktop sizes; original issue examples and duplicate
+409 guards still pass. A forced metadata outage produces a Retry action rather
+than a false missing edition, while local catalogue search returns the known
+Martian audiobook. These high-volume fixture checks use the existing
+`E2E_TESTS=true` rate-limit exemption after the ordinary production 30/minute book
+limit correctly interrupted the combined test sequence; deployed defaults are
+unchanged. No provider writes are permitted by the fixture.
+
+The first standalone follow-up browser run used the older standalone `lumen/dist`
+(the root production build writes `public/lumen`), and its new cases exposed that
+stale preview. Preserved those results separately, rebuilt the standalone artifact
+from current source, and reran the full suite. The actual included production
+workflows above use the new `public/lumen` artifact. Keep the standalone and
+included artifact identities explicit in future qualifications.
+
+
+Final local follow-up: 651 Lumen browser cases passed, 13 existing skips across
+four viewports; all 33 actual proxy/container/security tests passed. Production
+build, lint and full formatting checks passed. Repeated native General routing
+captures show no page errors at 390, 768, 1024 and 1440 pixels, across Orig, John
+and Persius. Reviewed `pr630-book-workflows-gallery.png` and
+`pr630-library-and-retry-gallery.png` manually; empty synthetic cover placeholders
+are fixture data, not failed real artwork. No geometry or stylesheet owner changed.
+The preceding native browser run at `8c30e2d4` passed all four isolated shards;
+its two workflow-option contract failures are corrected and all 15 relevant
+workflow tests now pass locally. A fresh full CI run must qualify the merged
+follow-up source before tagging 3.72.28.

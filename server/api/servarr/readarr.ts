@@ -512,6 +512,25 @@ const getReadarrErrorMessage = (error: unknown): string => {
 const isRecord = (value: unknown): value is Record<string, unknown> =>
   typeof value === 'object' && value !== null && !Array.isArray(value);
 
+/**
+ * ChaptarrNG answers a lookup of a deleted record with HTTP 500
+ * "Expected query to return 1 rows but returned 0" instead of a 404.
+ */
+const isMissingRowServerError = (error: unknown): boolean => {
+  const response = (
+    error as { response?: { status?: unknown; data?: unknown } } | undefined
+  )?.response;
+  if (response?.status !== 500) return false;
+  const data = response.data;
+  const message =
+    typeof data === 'string'
+      ? data
+      : isRecord(data) && typeof data.message === 'string'
+        ? data.message
+        : '';
+  return /expected query to return 1 rows? but returned 0/i.test(message);
+};
+
 const sanitizeReadarrBookFile = (
   value: unknown
 ): ReadarrBookFile | undefined => {
@@ -2116,7 +2135,7 @@ class ReadarrAPI extends ServarrBase<ReadarrQueueItem> {
       );
       return response.data;
     } catch (e) {
-      if (e?.response?.status === 404) {
+      if (e?.response?.status === 404 || isMissingRowServerError(e)) {
         return null;
       }
       throw new Error(

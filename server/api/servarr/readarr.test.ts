@@ -291,6 +291,55 @@ describe('ReadarrAPI.getBook', () => {
   });
 });
 
+describe('ReadarrAPI.getBookIfExists', () => {
+  afterEach(() => {
+    mock.restoreAll();
+  });
+
+  const httpError = (status: number, data: unknown) =>
+    Object.assign(new Error(`Request failed with status code ${status}`), {
+      response: { status, data },
+    });
+
+  for (const [label, error] of [
+    ['a 404', httpError(404, '')],
+    [
+      "ChaptarrNG's missing-row 500",
+      httpError(500, {
+        message: 'Expected query to return 1 rows but returned 0',
+      }),
+    ],
+  ] as const) {
+    it(`treats ${label} as a deleted book`, async () => {
+      const api = new ReadarrAPI({
+        url: 'http://localhost:8787/api/v1',
+        apiKey: 'key',
+        mediaType: 'audiobook',
+      });
+      mock.method(api as unknown as MockableReadarr, 'request', async () => {
+        throw error;
+      });
+
+      assert.equal(await api.getBookIfExists(185), null);
+    });
+  }
+
+  it('still reports other server errors', async () => {
+    const api = new ReadarrAPI({
+      url: 'http://localhost:8787/api/v1',
+      apiKey: 'key',
+    });
+    mock.method(api as unknown as MockableReadarr, 'request', async () => {
+      throw httpError(500, { message: 'database is locked' });
+    });
+
+    await assert.rejects(
+      api.getBookIfExists(185),
+      /Failed to retrieve book 185/
+    );
+  });
+});
+
 describe('ReadarrAPI.getBookCover', () => {
   afterEach(() => {
     mock.restoreAll();
