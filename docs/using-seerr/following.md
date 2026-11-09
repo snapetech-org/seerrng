@@ -66,3 +66,17 @@ media categories, and provider identity before becoming news. Stored video news
 is checked again when the feed is read, so a later policy change hides the title
 without deleting the saved event. Temporary metadata or event-write failures
 remain eligible for retry.
+
+## Sources and attribution
+
+This guide is maintained for SeerrNG by snapetech and SeerrNG contributors.
+Inherited Seerr, Jellyseerr and Overseerr work retains its original credit; see
+[NOTICE](https://github.com/snapetech-org/seerrng/blob/main/NOTICE.md) and the
+[upstream source ledger](https://github.com/snapetech-org/seerrng/blob/main/UPSTREAM_ATTRIBUTION.md).
+
+Feature context and source credit (a report or proposal does not by itself prove
+that upstream or a released SeerrNG version implements the behavior):
+
+- [Upstream Seerr issue #3178](https://github.com/seerr-team/seerr/issues/3178) — [@timfurnish](https://github.com/timfurnish).
+
+[Back to the Seerr / SeerrNG feature comparison](../feature-comparison.md).

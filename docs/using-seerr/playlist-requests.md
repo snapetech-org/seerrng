@@ -79,3 +79,15 @@ Spotify access and refresh tokens are stored with the connecting user's
 SeerrNG settings and are not included in normal user payloads or playlist
 responses. Use **Disconnect Spotify** in the import dialog to remove that
 authorization from SeerrNG.
+
+## Sources and attribution
+
+This guide is maintained for SeerrNG by snapetech and SeerrNG contributors.
+Inherited Seerr, Jellyseerr and Overseerr work retains its original credit; see
+[NOTICE](https://github.com/snapetech-org/seerrng/blob/main/NOTICE.md) and the
+[upstream source ledger](https://github.com/snapetech-org/seerrng/blob/main/UPSTREAM_ATTRIBUTION.md).
+
+No feature-specific upstream issue or pull request is recorded for this guide
+in the public source ledger. That absence does not establish original authorship.
+
+[Back to the Seerr / SeerrNG feature comparison](../feature-comparison.md).

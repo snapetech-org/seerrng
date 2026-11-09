@@ -28,3 +28,17 @@ Normal included Save/reload/PNG upload has passed headless checks against a real
 SeerrNG server. Companion UID1000 save/upload and read-only failure also passed.
 These do not prove the pending migration/import/diagnostics work. Physical Plex or
 Jellyfin playback and real household-provider mutations require separate evidence.
+
+## Sources and attribution
+
+This guide is maintained for SeerrNG by snapetech and SeerrNG contributors.
+Inherited Seerr, Jellyseerr and Overseerr work retains its original credit; see
+[NOTICE](https://github.com/snapetech-org/seerrng/blob/main/NOTICE.md) and the
+[upstream source ledger](https://github.com/snapetech-org/seerrng/blob/main/UPSTREAM_ATTRIBUTION.md).
+
+Feature context and source credit (a report or proposal does not by itself prove
+that upstream or a released SeerrNG version implements the behavior):
+
+- [upgrade-routing report #629](https://github.com/snapetech-org/seerrng/issues/629).
+
+[Back to the Seerr / SeerrNG feature comparison](../feature-comparison.md).

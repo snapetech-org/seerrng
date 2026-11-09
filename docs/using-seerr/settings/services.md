@@ -313,3 +313,23 @@ depending on the service. Grimmory is selected by default. Administrators can
 also create live author and series shelves from detail pages and manage those
 shelves here. See the [reader delivery guide](/using-seerr/reader-delivery) for
 setup, supported formats, Kobo behavior, and device downloads.
+
+## Sources and attribution
+
+This guide is maintained for SeerrNG by snapetech and SeerrNG contributors.
+Inherited Seerr, Jellyseerr and Overseerr work retains its original credit; see
+[NOTICE](https://github.com/snapetech-org/seerrng/blob/main/NOTICE.md) and the
+[upstream source ledger](https://github.com/snapetech-org/seerrng/blob/main/UPSTREAM_ATTRIBUTION.md).
+
+Feature context and source credit (a report or proposal does not by itself prove
+that upstream or a released SeerrNG version implements the behavior):
+
+- [Upstream Seerr issue #3152](https://github.com/seerr-team/seerr/issues/3152) — [@Emport1](https://github.com/Emport1).
+- [Upstream Seerr PR #3157](https://github.com/seerr-team/seerr/pull/3157) — [@u61d](https://github.com/u61d).
+- [Upstream Seerr issue #3159](https://github.com/seerr-team/seerr/issues/3159) — [@H0tChicken](https://github.com/H0tChicken).
+- [Upstream Seerr PR #3160](https://github.com/seerr-team/seerr/pull/3160) — [@H0tChicken](https://github.com/H0tChicken).
+- [Upstream Seerr issue #3410](https://github.com/seerr-team/seerr/issues/3410) — [@Raffa2001](https://github.com/Raffa2001).
+- [Upstream Seerr PR #3560](https://github.com/seerr-team/seerr/pull/3560) — [@Simoneu01](https://github.com/Simoneu01).
+- [Related report or contribution](https://github.com/seerr-team/seerr/pull/3423).
+
+[Back to the Seerr / SeerrNG feature comparison](../../feature-comparison.md).

@@ -151,3 +151,15 @@ You can keep two SeerrNG service entries for format-specific request routing;
 they may share one BookshelfNG URL, port, and API key. The path-move service
 selector chooses which configured connection to use, and the format selector
 chooses the paths to update in that Bookshelf database.
+
+## Sources and attribution
+
+This guide is maintained for SeerrNG by snapetech and SeerrNG contributors.
+Inherited Seerr, Jellyseerr and Overseerr work retains its original credit; see
+[NOTICE](https://github.com/snapetech-org/seerrng/blob/main/NOTICE.md) and the
+[upstream source ledger](https://github.com/snapetech-org/seerrng/blob/main/UPSTREAM_ATTRIBUTION.md).
+
+No feature-specific upstream issue or pull request is recorded for this guide
+in the public source ledger. That absence does not establish original authorship.
+
+[Back to the Seerr / SeerrNG feature comparison](../feature-comparison.md).

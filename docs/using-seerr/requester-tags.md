@@ -47,3 +47,17 @@ library.
 
 This behavior adapts the idea in [Seerr PR #3423](https://github.com/seerr-team/seerr/pull/3423)
 to SeerrNG's per-service destinations and request approval model.
+
+## Sources and attribution
+
+This guide is maintained for SeerrNG by snapetech and SeerrNG contributors.
+Inherited Seerr, Jellyseerr and Overseerr work retains its original credit; see
+[NOTICE](https://github.com/snapetech-org/seerrng/blob/main/NOTICE.md) and the
+[upstream source ledger](https://github.com/snapetech-org/seerrng/blob/main/UPSTREAM_ATTRIBUTION.md).
+
+Feature context and source credit (a report or proposal does not by itself prove
+that upstream or a released SeerrNG version implements the behavior):
+
+- [Related report or contribution](https://github.com/seerr-team/seerr/pull/3423).
+
+[Back to the Seerr / SeerrNG feature comparison](../feature-comparison.md).

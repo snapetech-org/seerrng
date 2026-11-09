@@ -68,3 +68,21 @@ When editing a pending request, choose the connected service's configured
 default to clear a saved override. See [Request Defaults and Overrides](./request-defaults.md)
 for how anime settings and account preferences affect the values shown in the
 form.
+
+## Sources and attribution
+
+This guide is maintained for SeerrNG by snapetech and SeerrNG contributors.
+Inherited Seerr, Jellyseerr and Overseerr work retains its original credit; see
+[NOTICE](https://github.com/snapetech-org/seerrng/blob/main/NOTICE.md) and the
+[upstream source ledger](https://github.com/snapetech-org/seerrng/blob/main/UPSTREAM_ATTRIBUTION.md).
+
+Feature context and source credit (a report or proposal does not by itself prove
+that upstream or a released SeerrNG version implements the behavior):
+
+- [Upstream Seerr PR #2164](https://github.com/seerr-team/seerr/pull/2164) — [@gauthier-th](https://github.com/gauthier-th).
+- [Upstream Seerr PR #3428](https://github.com/seerr-team/seerr/pull/3428) — [@aussierk](https://github.com/aussierk).
+- [Upstream Seerr issue #3439](https://github.com/seerr-team/seerr/issues/3439) — [@gravelfreeman](https://github.com/gravelfreeman).
+- [Upstream Seerr PR #3477](https://github.com/seerr-team/seerr/pull/3477) — [@fallenbagel](https://github.com/fallenbagel).
+- [Upstream Seerr PR #3539](https://github.com/seerr-team/seerr/pull/3539) — [@fallenbagel](https://github.com/fallenbagel).
+
+[Back to the Seerr / SeerrNG feature comparison](../feature-comparison.md).

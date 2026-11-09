@@ -55,3 +55,19 @@ Verify the signature with [cosign](https://docs.sigstore.dev/cosign/system_confi
 ```console
 cosign verify ghcr.io/snapetech-org/seerrng/seerr-chart:[tag] --certificate-identity-regexp="https://github.com/(snapetech|snapetech-org)/seerrng/.github/workflows/helm.yml@refs/heads/main" --certificate-oidc-issuer=https://token.actions.githubusercontent.com
 ```
+
+## Sources and attribution
+
+This guide is maintained for SeerrNG by snapetech and SeerrNG contributors.
+Inherited Seerr, Jellyseerr and Overseerr work retains its original credit; see
+[NOTICE](https://github.com/snapetech-org/seerrng/blob/main/NOTICE.md) and the
+[upstream source ledger](https://github.com/snapetech-org/seerrng/blob/main/UPSTREAM_ATTRIBUTION.md).
+
+Feature context and source credit (a report or proposal does not by itself prove
+that upstream or a released SeerrNG version implements the behavior):
+
+- [Upstream Seerr PR #3388](https://github.com/seerr-team/seerr/pull/3388) — [@aaronspruit](https://github.com/aaronspruit).
+- [Upstream Seerr PR #3420](https://github.com/seerr-team/seerr/pull/3420) — [@M0NsTeRRR](https://github.com/M0NsTeRRR).
+- [Upstream Seerr PR #3629](https://github.com/seerr-team/seerr/pull/3629) — [@rpardini](https://github.com/rpardini).
+
+[Back to the Seerr / SeerrNG feature comparison](../feature-comparison.md).

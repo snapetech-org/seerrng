@@ -104,3 +104,15 @@ detail, requests and settings at matching desktop and phone viewports. This
 bounded evidence does not establish visual acceptance for every route in the
 broader family inventory. See the [verification report](evidence/persiusng-native-verification.json)
 and [integration checkpoint](integration-checkpoint-20261030.md).
+
+## Sources and attribution
+
+This guide is maintained for SeerrNG by snapetech and SeerrNG contributors.
+Inherited Seerr, Jellyseerr and Overseerr work retains its original credit; see
+[NOTICE](https://github.com/snapetech-org/seerrng/blob/main/NOTICE.md) and the
+[upstream source ledger](https://github.com/snapetech-org/seerrng/blob/main/UPSTREAM_ATTRIBUTION.md).
+
+No feature-specific upstream issue or pull request is recorded for this guide
+in the public source ledger. That absence does not establish original authorship.
+
+[Back to the Seerr / SeerrNG feature comparison](../feature-comparison.md).

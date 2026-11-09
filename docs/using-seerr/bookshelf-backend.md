@@ -1091,3 +1091,19 @@ Edition choices show their language when the catalog provides it. The
 language filter selects the first matching ISBN candidate, and the edition
 selector remains available for a manual override. The automatic edition
 option keeps the existing best-match behavior.
+
+## Sources and attribution
+
+This guide is maintained for SeerrNG by snapetech and SeerrNG contributors.
+Inherited Seerr, Jellyseerr and Overseerr work retains its original credit; see
+[NOTICE](https://github.com/snapetech-org/seerrng/blob/main/NOTICE.md) and the
+[upstream source ledger](https://github.com/snapetech-org/seerrng/blob/main/UPSTREAM_ATTRIBUTION.md).
+
+Feature context and source credit (a report or proposal does not by itself prove
+that upstream or a released SeerrNG version implements the behavior):
+
+- [Related report or contribution](https://github.com/snapetech-org/chaptarrng/pull/183).
+- [split-book library report #625](https://github.com/snapetech-org/seerrng/issues/625).
+- [book-library contribution #630](https://github.com/snapetech-org/seerrng/pull/630) — [@ncbudd](https://github.com/ncbudd).
+
+[Back to the Seerr / SeerrNG feature comparison](../feature-comparison.md).

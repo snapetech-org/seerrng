@@ -28,3 +28,15 @@ The server owner's current Plex credentials authorize the operation. A changed
 server or revoked owner credential stops the check. SeerrNG validates episode,
 season, show and library identities before issuing the analysis request. The
 **Plex Playback Analysis** job in Jobs & Cache controls the polling schedule.
+
+## Sources and attribution
+
+This guide is maintained for SeerrNG by snapetech and SeerrNG contributors.
+Inherited Seerr, Jellyseerr and Overseerr work retains its original credit; see
+[NOTICE](https://github.com/snapetech-org/seerrng/blob/main/NOTICE.md) and the
+[upstream source ledger](https://github.com/snapetech-org/seerrng/blob/main/UPSTREAM_ATTRIBUTION.md).
+
+No feature-specific upstream issue or pull request is recorded for this guide
+in the public source ledger. That absence does not establish original authorship.
+
+[Back to the Seerr / SeerrNG feature comparison](../feature-comparison.md).

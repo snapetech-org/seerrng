@@ -56,3 +56,21 @@ background. Their saved options are considered when you edit them.
 For rule conditions and precedence, see [Configure override rules](./override-rules.md).
 
 Related Seerr reports provide context for these behaviors: [PR #3477](https://github.com/seerr-team/seerr/pull/3477), [issue #3410](https://github.com/seerr-team/seerr/issues/3410), and [PR #3539](https://github.com/seerr-team/seerr/pull/3539). They describe upstream discussion and do not define SeerrNG's request-target storage.
+
+## Sources and attribution
+
+This guide is maintained for SeerrNG by snapetech and SeerrNG contributors.
+Inherited Seerr, Jellyseerr and Overseerr work retains its original credit; see
+[NOTICE](https://github.com/snapetech-org/seerrng/blob/main/NOTICE.md) and the
+[upstream source ledger](https://github.com/snapetech-org/seerrng/blob/main/UPSTREAM_ATTRIBUTION.md).
+
+Feature context and source credit (a report or proposal does not by itself prove
+that upstream or a released SeerrNG version implements the behavior):
+
+- [Upstream Seerr PR #2164](https://github.com/seerr-team/seerr/pull/2164) — [@gauthier-th](https://github.com/gauthier-th).
+- [Upstream Seerr issue #3410](https://github.com/seerr-team/seerr/issues/3410) — [@Raffa2001](https://github.com/Raffa2001).
+- [Upstream Seerr PR #3477](https://github.com/seerr-team/seerr/pull/3477) — [@fallenbagel](https://github.com/fallenbagel).
+- [Upstream Seerr PR #3539](https://github.com/seerr-team/seerr/pull/3539) — [@fallenbagel](https://github.com/fallenbagel).
+- [Upstream Seerr issue #3585](https://github.com/seerr-team/seerr/issues/3585) — [@joshrmcdaniel](https://github.com/joshrmcdaniel).
+
+[Back to the Seerr / SeerrNG feature comparison](../feature-comparison.md).

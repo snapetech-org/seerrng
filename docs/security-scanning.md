@@ -15,3 +15,15 @@ Scans report findings without failing by default so existing findings can be tri
 Run `./scripts/update-security-tools.sh` to refresh the local Semgrep package cache, pull the current Semgrep fallback image, and refresh Trivy's database. All three pnpm workspaces and Dependabot version updates use a seven-day release cooldown; Dependabot security updates remain unaffected. Dispatch each scanner against the revision being reviewed; these workflows do not currently run automatically on pushes, pull requests or schedules. Standard supported jobs use public hosted runners; private resources follow the project runner policy. CodeQL remains disabled under the owner directive.
 
 Semgrep uses the POSIX I/O backend by default for compatibility with restricted Linux runners. Set `SEMGREP_EIO_BACKEND` only if your runner needs a different backend.
+
+## Sources and attribution
+
+This guide is maintained for SeerrNG by snapetech and SeerrNG contributors.
+Inherited Seerr, Jellyseerr and Overseerr work retains its original credit; see
+[NOTICE](https://github.com/snapetech-org/seerrng/blob/main/NOTICE.md) and the
+[upstream source ledger](https://github.com/snapetech-org/seerrng/blob/main/UPSTREAM_ATTRIBUTION.md).
+
+No feature-specific upstream issue or pull request is recorded for this guide
+in the public source ledger. That absence does not establish original authorship.
+
+[Back to the Seerr / SeerrNG feature comparison](feature-comparison.md).

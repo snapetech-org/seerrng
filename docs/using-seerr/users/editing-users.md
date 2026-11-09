@@ -117,3 +117,19 @@ These grants apply only to the selected service instance. They do not grant
 advanced request permissions or let the user choose profiles, root folders,
 language profiles, or tags. Anime-only destinations appear only for titles
 SeerrNG identifies as anime.
+
+## Sources and attribution
+
+This guide is maintained for SeerrNG by snapetech and SeerrNG contributors.
+Inherited Seerr, Jellyseerr and Overseerr work retains its original credit; see
+[NOTICE](https://github.com/snapetech-org/seerrng/blob/main/NOTICE.md) and the
+[upstream source ledger](https://github.com/snapetech-org/seerrng/blob/main/UPSTREAM_ATTRIBUTION.md).
+
+Feature context and source credit (a report or proposal does not by itself prove
+that upstream or a released SeerrNG version implements the behavior):
+
+- [Upstream Seerr PR #2482](https://github.com/seerr-team/seerr/pull/2482) — [@Arul1998](https://github.com/Arul1998).
+- [Upstream Seerr PR #3378](https://github.com/seerr-team/seerr/pull/3378) — [@fallenbagel](https://github.com/fallenbagel).
+- [Upstream Seerr issue #3585](https://github.com/seerr-team/seerr/issues/3585) — [@joshrmcdaniel](https://github.com/joshrmcdaniel).
+
+[Back to the Seerr / SeerrNG feature comparison](../../feature-comparison.md).

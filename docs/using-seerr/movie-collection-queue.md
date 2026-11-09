@@ -29,3 +29,15 @@ queues. The Movie Collection Queue job checks up to 20 queues per run with a sha
 budget of 40 playback-history reads. Large watched collections can take several
 checks to catch up. Progress survives restarts. New movies added to the collection
 after enrollment are included only when you restart the queue.
+
+## Sources and attribution
+
+This guide is maintained for SeerrNG by snapetech and SeerrNG contributors.
+Inherited Seerr, Jellyseerr and Overseerr work retains its original credit; see
+[NOTICE](https://github.com/snapetech-org/seerrng/blob/main/NOTICE.md) and the
+[upstream source ledger](https://github.com/snapetech-org/seerrng/blob/main/UPSTREAM_ATTRIBUTION.md).
+
+No feature-specific upstream issue or pull request is recorded for this guide
+in the public source ledger. That absence does not establish original authorship.
+
+[Back to the Seerr / SeerrNG feature comparison](../feature-comparison.md).

@@ -11,6 +11,8 @@ request workflows, download copies, user settings, and the services SeerrNG
 connects to.
 
 ## Start here
+
+- [Seerr and SeerrNG feature comparison](./feature-comparison.md): shared capabilities, fork extensions, requirements and unfinished work, with linked guides and source credits.
 - [Localization coverage and roadmap](/localization-roadmap): current supported locales, catalog coverage, and remaining translation work.
 
 - [SeerrNG Android app](/getting-started/android-app): install the APK and add or switch between servers.

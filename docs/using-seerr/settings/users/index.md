@@ -82,3 +82,23 @@ Administrators retain access to every category that is enabled globally.
 These preferences control category browsing, search, and request entry points
 for each user. They do not enable a service that is disabled globally or not
 configured by an administrator.
+
+## Sources and attribution
+
+This guide is maintained for SeerrNG by snapetech and SeerrNG contributors.
+Inherited Seerr, Jellyseerr and Overseerr work retains its original credit; see
+[NOTICE](https://github.com/snapetech-org/seerrng/blob/main/NOTICE.md) and the
+[upstream source ledger](https://github.com/snapetech-org/seerrng/blob/main/UPSTREAM_ATTRIBUTION.md).
+
+Feature context and source credit (a report or proposal does not by itself prove
+that upstream or a released SeerrNG version implements the behavior):
+
+- [Upstream Seerr issue #3300](https://github.com/seerr-team/seerr/issues/3300) — [@Billos](https://github.com/Billos).
+- [Upstream Seerr PR #3315](https://github.com/seerr-team/seerr/pull/3315) — [@Billos](https://github.com/Billos).
+- [Upstream Seerr issue #3581](https://github.com/seerr-team/seerr/issues/3581) — [@StarAssassin64](https://github.com/StarAssassin64).
+- [Upstream Seerr issue #3585](https://github.com/seerr-team/seerr/issues/3585) — [@joshrmcdaniel](https://github.com/joshrmcdaniel).
+- [Upstream Seerr issue #3592](https://github.com/seerr-team/seerr/issues/3592) — [@iSteed](https://github.com/iSteed).
+- [Upstream Seerr PR #3612](https://github.com/seerr-team/seerr/pull/3612) — [@fallenbagel](https://github.com/fallenbagel).
+- [Upstream Seerr issue #3618](https://github.com/seerr-team/seerr/issues/3618) — [@tadnir](https://github.com/tadnir).
+
+[Back to the Seerr / SeerrNG feature comparison](../../../feature-comparison.md).

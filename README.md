@@ -87,6 +87,10 @@ For local MCP access, see the [SnapeTech MCP integration guide](./docs/integrati
 - [Contributing](#contributing)
 - [Attribution](#attribution)
 
+## Seerr vs SeerrNG
+
+The [comprehensive feature comparison](./docs/feature-comparison.md) compares shared capabilities, SeerrNG extensions and unfinished work against pinned upstream sources. Every row links to an in-repository guide with source attribution.
+
 ## What SeerrNG Does
 
 - Requests and approvals for movies, shows, music, ebooks, audiobooks, comics, magazines, emulation ROMs, and PC games.

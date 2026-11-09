@@ -84,3 +84,15 @@ The report lists these reductions by table, column, or settings path. Users whos
 The migration covers `settings.json` and database rows. It does not copy logs, caches, or media files managed by Plex, Jellyfin, Radarr, Sonarr, or other services. Cache content can be rebuilt by the destination application.
 
 The database transaction and settings file replacement are separate resources. If the host loses power or the process is forcibly killed during the final handoff, discard and reinitialize the target from the untouched source, then run the migration again. Do not point the destination app at a partially migrated target.
+
+## Sources and attribution
+
+This guide is maintained for SeerrNG by snapetech and SeerrNG contributors.
+Inherited Seerr, Jellyseerr and Overseerr work retains its original credit; see
+[NOTICE](https://github.com/snapetech-org/seerrng/blob/main/NOTICE.md) and the
+[upstream source ledger](https://github.com/snapetech-org/seerrng/blob/main/UPSTREAM_ATTRIBUTION.md).
+
+No feature-specific upstream issue or pull request is recorded for this guide
+in the public source ledger. That absence does not establish original authorship.
+
+[Back to the Seerr / SeerrNG feature comparison](../feature-comparison.md).

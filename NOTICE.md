@@ -54,3 +54,13 @@ revision `3fc9bdf47f99db32c2e777a4bbd6d8d6262a4ae3`.
 Copyright (c) 2026 Selman Trabzon. The original MIT license is retained in
 [`licenses/foreseerr-MIT.txt`](licenses/foreseerr-MIT.txt). SeerrNG changes are
 attributed to snapetech and SeerrNG contributors.
+
+## Feature comparison and documentation source credits
+
+The Seerr / SeerrNG feature comparison and feature-guide attribution footers are
+SeerrNG-maintained documentation. Their deliberate links to upstream issues,
+pull requests, reports and authors preserve source credit and describe
+compatibility; they do not present SeerrNG as upstream Seerr output or imply
+upstream endorsement. Source inspiration, code adoption, implementation status
+and release availability remain separate. The comparison validation script
+checks those source references against the public ledger.

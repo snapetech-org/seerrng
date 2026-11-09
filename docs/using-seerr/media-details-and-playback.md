@@ -47,3 +47,27 @@ selection.
 server** opens a persistent SeerrNG playlist named **SeerrNG - Current
 Selection**, replacing that playlist's previous contents. Playback uses only
 the selected quality, so separately cataloged quality versions are not mixed.
+
+## Sources and attribution
+
+This guide is maintained for SeerrNG by snapetech and SeerrNG contributors.
+Inherited Seerr, Jellyseerr and Overseerr work retains its original credit; see
+[NOTICE](https://github.com/snapetech-org/seerrng/blob/main/NOTICE.md) and the
+[upstream source ledger](https://github.com/snapetech-org/seerrng/blob/main/UPSTREAM_ATTRIBUTION.md).
+
+Feature context and source credit (a report or proposal does not by itself prove
+that upstream or a released SeerrNG version implements the behavior):
+
+- [Upstream Seerr issue #2651](https://github.com/seerr-team/seerr/issues/2651) — [@aegershman](https://github.com/aegershman).
+- [Upstream Seerr issue #3015](https://github.com/seerr-team/seerr/issues/3015) — [@Tharic99](https://github.com/Tharic99).
+- [Upstream Seerr PR #3071](https://github.com/seerr-team/seerr/pull/3071) — [@AlexS54](https://github.com/AlexS54).
+- [Upstream Seerr PR #3122](https://github.com/seerr-team/seerr/pull/3122) — [@u61d](https://github.com/u61d).
+- [Upstream Seerr PR #3154](https://github.com/seerr-team/seerr/pull/3154) — [@u61d](https://github.com/u61d).
+- [Upstream Seerr issue #3183](https://github.com/seerr-team/seerr/issues/3183) — [@Erwan-loot](https://github.com/Erwan-loot).
+- [Upstream Seerr issue #3204](https://github.com/seerr-team/seerr/issues/3204) — [@bryceeppler](https://github.com/bryceeppler).
+- [Upstream Seerr PR #3206](https://github.com/seerr-team/seerr/pull/3206) — [@Clancey](https://github.com/Clancey).
+- [Upstream Seerr issue #3220](https://github.com/seerr-team/seerr/issues/3220) — [@IvanJosipovic](https://github.com/IvanJosipovic).
+- [Upstream Seerr PR #3250](https://github.com/seerr-team/seerr/pull/3250) — [@ofgrenudo](https://github.com/ofgrenudo).
+- [Upstream Seerr PR #3507](https://github.com/seerr-team/seerr/pull/3507) — [@JamyPatch44](https://github.com/JamyPatch44).
+
+[Back to the Seerr / SeerrNG feature comparison](../feature-comparison.md).

@@ -82,3 +82,19 @@ Download Sync.
   Web UI's Connection Manager and add the daemon once.
 - After you save, the settings page shows a warning on a client whose most
   recent progress check failed.
+
+## Sources and attribution
+
+This guide is maintained for SeerrNG by snapetech and SeerrNG contributors.
+Inherited Seerr, Jellyseerr and Overseerr work retains its original credit; see
+[NOTICE](https://github.com/snapetech-org/seerrng/blob/main/NOTICE.md) and the
+[upstream source ledger](https://github.com/snapetech-org/seerrng/blob/main/UPSTREAM_ATTRIBUTION.md).
+
+Feature context and source credit (a report or proposal does not by itself prove
+that upstream or a released SeerrNG version implements the behavior):
+
+- [Upstream Seerr PR #3412](https://github.com/seerr-team/seerr/pull/3412) — [@0xSysR3ll](https://github.com/0xSysR3ll).
+- [Upstream Seerr PR #3473](https://github.com/seerr-team/seerr/pull/3473) — [@constbogdan](https://github.com/constbogdan).
+- [Upstream Seerr PR #3535](https://github.com/seerr-team/seerr/pull/3535) — [@constbogdan](https://github.com/constbogdan).
+
+[Back to the Seerr / SeerrNG feature comparison](../feature-comparison.md).

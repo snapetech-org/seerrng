@@ -51,3 +51,15 @@ provider-wide preferences, or token management. Image requests retain the same
 resource and daily budgets as browser sessions. Send the token only in
 `X-API-Key`, over HTTPS; never put it in a URL. Scoped bearer calls do not require
 a browser CSRF cookie, and invalid bearer headers never fall back to a session.
+
+## Sources and attribution
+
+This guide is maintained for SeerrNG by snapetech and SeerrNG contributors.
+Inherited Seerr, Jellyseerr and Overseerr work retains its original credit; see
+[NOTICE](https://github.com/snapetech-org/seerrng/blob/main/NOTICE.md) and the
+[upstream source ledger](https://github.com/snapetech-org/seerrng/blob/main/UPSTREAM_ATTRIBUTION.md).
+
+No feature-specific upstream issue or pull request is recorded for this guide
+in the public source ledger. That absence does not establish original authorship.
+
+[Back to the Seerr / SeerrNG feature comparison](../feature-comparison.md).

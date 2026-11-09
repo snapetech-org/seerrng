@@ -183,3 +183,19 @@ The following special variables are only included in issue comment-related notif
 | `{{commentedBy_avatar}}`                  | The commenting user's avatar URL                                               |
 | `{{commentedBy_settings_discordIds}}`     | The commenting user's Discord ID(s) as a JSON array (if set)                   |
 | `{{commentedBy_settings_telegramChatId}}` | The commenting user's Telegram Chat ID (if set)                                |
+
+## Sources and attribution
+
+This guide is maintained for SeerrNG by snapetech and SeerrNG contributors.
+Inherited Seerr, Jellyseerr and Overseerr work retains its original credit; see
+[NOTICE](https://github.com/snapetech-org/seerrng/blob/main/NOTICE.md) and the
+[upstream source ledger](https://github.com/snapetech-org/seerrng/blob/main/UPSTREAM_ATTRIBUTION.md).
+
+Feature context and source credit (a report or proposal does not by itself prove
+that upstream or a released SeerrNG version implements the behavior):
+
+- [Upstream Seerr PR #1879](https://github.com/seerr-team/seerr/pull/1879) — [@tsotimus](https://github.com/tsotimus).
+- [Upstream Seerr PR #2039](https://github.com/seerr-team/seerr/pull/2039) — [@mmenanno](https://github.com/mmenanno).
+- [Upstream Seerr issue #3394](https://github.com/seerr-team/seerr/issues/3394) — [@IBIMSEINES](https://github.com/IBIMSEINES).
+
+[Back to the Seerr / SeerrNG feature comparison](../../feature-comparison.md).

@@ -157,3 +157,9 @@ attribution check catches common mistakes, especially fresh files or repository
 metadata that still present SeerrNG work as upstream Seerr output.
 
 This contribution guide was inspired by the [Next.js](https://github.com/vercel/next.js), [Radarr](https://github.com/Radarr/Radarr), and [Ghostty](https://github.com/ghostty-org/ghostty) contribution guides. In addition, our AI policy draws from [Jellyfin's LLM policies](https://jellyfin.org/docs/general/contributing/llm-policies/).
+
+## Feature documentation and source credit
+
+For a user-visible capability, update the [Seerr / SeerrNG feature comparison](./docs/feature-comparison.md) and its linked usage guide. Document where users find it, prerequisites, permissions, limitations and recovery. Mark API-only, partial and planned work explicitly; source presence is not release evidence.
+
+End each linked guide with **Sources and attribution**. Cite the originating upstream issue, pull request or public report where applicable, retaining source authors and licenses. Distinguish inspiration, adaptation and direct adoption. Do not invent a ticket when provenance is unknown; say that no per-feature source is recorded. Update the [public source ledger](./UPSTREAM_ATTRIBUTION.md) when adding verified provenance. Run `node scripts/check-feature-comparison.mjs` and validate documentation links before committing.

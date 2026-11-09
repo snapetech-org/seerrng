@@ -138,3 +138,18 @@ An alpha build is ready for wider tester use when:
   the correct SeerrNG and backend pages.
 - No request flow requires entering TMDB, MusicBrainz, Open Library, ISBN, or
   backend IDs manually in normal use.
+
+## Sources and attribution
+
+This guide is maintained for SeerrNG by snapetech and SeerrNG contributors.
+Inherited Seerr, Jellyseerr and Overseerr work retains its original credit; see
+[NOTICE](https://github.com/snapetech-org/seerrng/blob/main/NOTICE.md) and the
+[upstream source ledger](https://github.com/snapetech-org/seerrng/blob/main/UPSTREAM_ATTRIBUTION.md).
+
+Feature context and source credit (a report or proposal does not by itself prove
+that upstream or a released SeerrNG version implements the behavior):
+
+- [Upstream Seerr PR #3110](https://github.com/seerr-team/seerr/pull/3110) — [@Crow-Control](https://github.com/Crow-Control).
+- [Upstream Seerr PR #3116](https://github.com/seerr-team/seerr/pull/3116) — [@Crow-Control](https://github.com/Crow-Control).
+
+[Back to the Seerr / SeerrNG feature comparison](../feature-comparison.md).

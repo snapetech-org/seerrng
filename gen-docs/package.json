@@ -6,6 +6,7 @@
   "scripts": {
     "docusaurus": "docusaurus",
     "start": "docusaurus start",
+    "prebuild": "node ../scripts/check-feature-comparison.mjs",
     "build": "docusaurus build",
     "test:security": "node --test scripts/image-size-security.test.mjs scripts/dependency-policy.test.mjs scripts/dependency-patches.test.mjs",
     "gen-api-docs": "docusaurus gen-api-docs all",

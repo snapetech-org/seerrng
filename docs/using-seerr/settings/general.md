@@ -143,3 +143,27 @@ When enabled, users must watch every episode of the immediately previous regular
 SeerrNG checks the requester's linked Plex, Jellyfin, or Emby playback history. The series must be present in that media server's library so SeerrNG can match its episodes. If playback history cannot be verified, later seasons stay blocked until it can be checked. When partial series requests are disabled, the request modal includes only seasons that pass the rule, so users can request the first eligible season and continue after watching it. Administrators and users with **Manage Requests** permission can override the rule.
 
 If this global setting is off, each user can request approval from **Profile → TV Season Rule**. A user manager reviews pending requests from the **Users** page. After approval, the user can turn the rule on or off from their profile without another review. Turning on the global setting applies the rule to everyone and temporarily overrides individual choices.
+
+## Sources and attribution
+
+This guide is maintained for SeerrNG by snapetech and SeerrNG contributors.
+Inherited Seerr, Jellyseerr and Overseerr work retains its original credit; see
+[NOTICE](https://github.com/snapetech-org/seerrng/blob/main/NOTICE.md) and the
+[upstream source ledger](https://github.com/snapetech-org/seerrng/blob/main/UPSTREAM_ATTRIBUTION.md).
+
+Feature context and source credit (a report or proposal does not by itself prove
+that upstream or a released SeerrNG version implements the behavior):
+
+- [Upstream Seerr issue #206](https://github.com/seerr-team/seerr/issues/206) — [@xoniq](https://github.com/xoniq).
+- [Upstream Seerr issue #898](https://github.com/seerr-team/seerr/issues/898) — [@Joly0](https://github.com/Joly0).
+- [Upstream Seerr PR #1855](https://github.com/seerr-team/seerr/pull/1855) — [@0xSysR3ll](https://github.com/0xSysR3ll).
+- [Upstream Seerr PR #2415](https://github.com/seerr-team/seerr/pull/2415) — [@ProgenyAlpha](https://github.com/ProgenyAlpha).
+- [Upstream Seerr issue #2651](https://github.com/seerr-team/seerr/issues/2651) — [@aegershman](https://github.com/aegershman).
+- [Upstream Seerr PR #3071](https://github.com/seerr-team/seerr/pull/3071) — [@AlexS54](https://github.com/AlexS54).
+- [Upstream Seerr issue #3090](https://github.com/seerr-team/seerr/issues/3090) — [@sveinbjornpalsson](https://github.com/sveinbjornpalsson).
+- [Upstream Seerr PR #3163](https://github.com/seerr-team/seerr/pull/3163) — [@emmick4](https://github.com/emmick4).
+- [Upstream Seerr PR #3318](https://github.com/seerr-team/seerr/pull/3318) — [@WGlegola](https://github.com/WGlegola).
+- [Upstream Seerr issue #3322](https://github.com/seerr-team/seerr/issues/3322) — [@jmjviana](https://github.com/jmjviana).
+- [Upstream Seerr issue #3590](https://github.com/seerr-team/seerr/issues/3590) — [@tidde88](https://github.com/tidde88).
+
+[Back to the Seerr / SeerrNG feature comparison](../../feature-comparison.md).

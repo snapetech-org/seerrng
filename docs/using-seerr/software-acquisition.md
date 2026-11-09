@@ -389,3 +389,15 @@ For ROM requests fulfilled by ROMarrNG, the request shows **In RomM Library**
 once ROMarrNG has placed the finished file in a library folder that RomM reads.
 This means the file is in place. RomM still has to scan its library before the
 game appears there, so the badge does not confirm that RomM has indexed it.
+
+## Sources and attribution
+
+This guide is maintained for SeerrNG by snapetech and SeerrNG contributors.
+Inherited Seerr, Jellyseerr and Overseerr work retains its original credit; see
+[NOTICE](https://github.com/snapetech-org/seerrng/blob/main/NOTICE.md) and the
+[upstream source ledger](https://github.com/snapetech-org/seerrng/blob/main/UPSTREAM_ATTRIBUTION.md).
+
+No feature-specific upstream issue or pull request is recorded for this guide
+in the public source ledger. That absence does not establish original authorship.
+
+[Back to the Seerr / SeerrNG feature comparison](../feature-comparison.md).

@@ -72,3 +72,18 @@ SeerrNG's per-user rating limits adapt the request described in Seerr
 [PR #3163](https://github.com/seerr-team/seerr/pull/3163), related to the
 still-open [PR #2415](https://github.com/seerr-team/seerr/pull/2415). The
 cross-category age gate described above is a separate SeerrNG extension.
+
+## Sources and attribution
+
+This guide is maintained for SeerrNG by snapetech and SeerrNG contributors.
+Inherited Seerr, Jellyseerr and Overseerr work retains its original credit; see
+[NOTICE](https://github.com/snapetech-org/seerrng/blob/main/NOTICE.md) and the
+[upstream source ledger](https://github.com/snapetech-org/seerrng/blob/main/UPSTREAM_ATTRIBUTION.md).
+
+Feature context and source credit (a report or proposal does not by itself prove
+that upstream or a released SeerrNG version implements the behavior):
+
+- [Upstream Seerr PR #2415](https://github.com/seerr-team/seerr/pull/2415) — [@ProgenyAlpha](https://github.com/ProgenyAlpha).
+- [Upstream Seerr PR #3163](https://github.com/seerr-team/seerr/pull/3163) — [@emmick4](https://github.com/emmick4).
+
+[Back to the Seerr / SeerrNG feature comparison](../feature-comparison.md).

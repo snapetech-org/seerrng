@@ -84,3 +84,15 @@ If Sportarr is also connected, an administrator can optionally add Tunerr's
 generated sports playlist and guide to Sportarr so its own DVR can schedule
 monitored, mapped league events. That setup does not change how SeerrNG's Live
 TV recording requests use approval settings. See the [Sportarr guide](./sportarr.md#optional-iptv-tunerr-sports-dvr).
+
+## Sources and attribution
+
+This guide is maintained for SeerrNG by snapetech and SeerrNG contributors.
+Inherited Seerr, Jellyseerr and Overseerr work retains its original credit; see
+[NOTICE](https://github.com/snapetech-org/seerrng/blob/main/NOTICE.md) and the
+[upstream source ledger](https://github.com/snapetech-org/seerrng/blob/main/UPSTREAM_ATTRIBUTION.md).
+
+No feature-specific upstream issue or pull request is recorded for this guide
+in the public source ledger. That absence does not establish original authorship.
+
+[Back to the Seerr / SeerrNG feature comparison](../feature-comparison.md).

@@ -23,3 +23,18 @@ request state available to the signed-in user.
 When you open a title from Discover and go back, each home slider returns to
 its previous horizontal position so you can continue browsing where you left
 off. This applies to default and custom sliders.
+
+## Sources and attribution
+
+This guide is maintained for SeerrNG by snapetech and SeerrNG contributors.
+Inherited Seerr, Jellyseerr and Overseerr work retains its original credit; see
+[NOTICE](https://github.com/snapetech-org/seerrng/blob/main/NOTICE.md) and the
+[upstream source ledger](https://github.com/snapetech-org/seerrng/blob/main/UPSTREAM_ATTRIBUTION.md).
+
+Feature context and source credit (a report or proposal does not by itself prove
+that upstream or a released SeerrNG version implements the behavior):
+
+- [Upstream Seerr PR #3607](https://github.com/seerr-team/seerr/pull/3607) — [@AintGotNoLoveToday](https://github.com/AintGotNoLoveToday).
+- [Upstream Seerr PR #3608](https://github.com/seerr-team/seerr/pull/3608) — [@0xSysR3ll](https://github.com/0xSysR3ll).
+
+[Back to the Seerr / SeerrNG feature comparison](../feature-comparison.md).

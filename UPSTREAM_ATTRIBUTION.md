@@ -6,6 +6,8 @@ The linked people made their reports, suggestions, discussions, or code contribu
 
 Implemented and referenced/in-progress records are separated so source credit never overstates shipping status.
 
+The [feature comparison](./docs/feature-comparison.md) links these source credits to user-facing guides. Each linked guide carries its relevant attribution footer; source credit alone does not establish feature or release status.
+
 ## Integrated or verified upstream sources
 
 These records were already identified as incorporated, adapted, or verified in SeerrNG.

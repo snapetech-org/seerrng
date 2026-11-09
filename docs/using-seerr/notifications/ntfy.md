@@ -39,3 +39,17 @@ Please refer to the [ntfy.sh API documentation](https://docs.ntfy.sh/) for more 
 ### Notification Language
 
 Sets the language for notifications sent to this ntfy server.
+
+## Sources and attribution
+
+This guide is maintained for SeerrNG by snapetech and SeerrNG contributors.
+Inherited Seerr, Jellyseerr and Overseerr work retains its original credit; see
+[NOTICE](https://github.com/snapetech-org/seerrng/blob/main/NOTICE.md) and the
+[upstream source ledger](https://github.com/snapetech-org/seerrng/blob/main/UPSTREAM_ATTRIBUTION.md).
+
+Feature context and source credit (a report or proposal does not by itself prove
+that upstream or a released SeerrNG version implements the behavior):
+
+- [Upstream Seerr PR #3350](https://github.com/seerr-team/seerr/pull/3350) — [@bartdelange](https://github.com/bartdelange).
+
+[Back to the Seerr / SeerrNG feature comparison](../../feature-comparison.md).

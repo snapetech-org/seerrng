@@ -181,3 +181,21 @@ User-Agent values are preserved. Remote services can use this header to identify
 the software version; it does not contain a SeerrNG account or request identity.
 
 This extends the outbound request identification work in [Seerr PR #3395](https://github.com/seerr-team/seerr/pull/3395).
+
+## Sources and attribution
+
+This guide is maintained for SeerrNG by snapetech and SeerrNG contributors.
+Inherited Seerr, Jellyseerr and Overseerr work retains its original credit; see
+[NOTICE](https://github.com/snapetech-org/seerrng/blob/main/NOTICE.md) and the
+[upstream source ledger](https://github.com/snapetech-org/seerrng/blob/main/UPSTREAM_ATTRIBUTION.md).
+
+Feature context and source credit (a report or proposal does not by itself prove
+that upstream or a released SeerrNG version implements the behavior):
+
+- [Upstream Seerr issue #3193](https://github.com/seerr-team/seerr/issues/3193) — [@nicolas-parmentier](https://github.com/nicolas-parmentier).
+- [Upstream Seerr PR #3196](https://github.com/seerr-team/seerr/pull/3196) — [@fallenbagel](https://github.com/fallenbagel).
+- [Upstream Seerr issue #3338](https://github.com/seerr-team/seerr/issues/3338) — [@BrennieBoyBouwer](https://github.com/BrennieBoyBouwer).
+- [Upstream Seerr PR #3501](https://github.com/seerr-team/seerr/pull/3501) — [@aussierk](https://github.com/aussierk).
+- [Related report or contribution](https://github.com/seerr-team/seerr/pull/3395).
+
+[Back to the Seerr / SeerrNG feature comparison](../../feature-comparison.md).

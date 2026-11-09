@@ -56,3 +56,17 @@ A PC game request can ask for editions and content (needs QuestarrNG): the base 
 - The file picker is a real button, and drag-and-drop is optional.
 
 See also [what each feature needs](./cross-media-requirements.md), [Following](./following.md), and [troubleshooting](./cross-media-troubleshooting.md).
+
+## Sources and attribution
+
+This guide is maintained for SeerrNG by snapetech and SeerrNG contributors.
+Inherited Seerr, Jellyseerr and Overseerr work retains its original credit; see
+[NOTICE](https://github.com/snapetech-org/seerrng/blob/main/NOTICE.md) and the
+[upstream source ledger](https://github.com/snapetech-org/seerrng/blob/main/UPSTREAM_ATTRIBUTION.md).
+
+Feature context and source credit (a report or proposal does not by itself prove
+that upstream or a released SeerrNG version implements the behavior):
+
+- [exact-edition request recovery contribution #633](https://github.com/snapetech-org/seerrng/pull/633) — [@ncbudd](https://github.com/ncbudd).
+
+[Back to the Seerr / SeerrNG feature comparison](../feature-comparison.md).

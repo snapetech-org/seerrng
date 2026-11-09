@@ -646,3 +646,18 @@ QuestarrNG. It shows the enabled, accessible console categories and leaves PC ga
 out when QuestarrNG is not connected. Temporary catalog failures keep an error and
 Retry available; denied categories remain hidden. SeerrNG still enforces request
 permissions, quotas, approvals and service destinations.
+
+## Sources and attribution
+
+This guide is maintained for SeerrNG by snapetech and SeerrNG contributors.
+Inherited Seerr, Jellyseerr and Overseerr work retains its original credit; see
+[NOTICE](https://github.com/snapetech-org/seerrng/blob/main/NOTICE.md) and the
+[upstream source ledger](https://github.com/snapetech-org/seerrng/blob/main/UPSTREAM_ATTRIBUTION.md).
+
+Feature context and source credit (a report or proposal does not by itself prove
+that upstream or a released SeerrNG version implements the behavior):
+
+- [SeerrNG Lumen contribution #458](https://github.com/snapetech-org/seerrng/pull/458) — [@ncbudd](https://github.com/ncbudd).
+- [upgrade-routing report #629](https://github.com/snapetech-org/seerrng/issues/629).
+
+[Back to the Seerr / SeerrNG feature comparison](../feature-comparison.md).

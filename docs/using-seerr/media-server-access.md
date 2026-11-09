@@ -83,3 +83,19 @@ Seerr [issue #180](https://github.com/seerr-team/seerr/issues/180) and
 [pull request #3296](https://github.com/seerr-team/seerr/pull/3296). The
 SeerrNG implementation verifies items with the linked viewer's identity and
 does not modify provider permissions.
+
+## Sources and attribution
+
+This guide is maintained for SeerrNG by snapetech and SeerrNG contributors.
+Inherited Seerr, Jellyseerr and Overseerr work retains its original credit; see
+[NOTICE](https://github.com/snapetech-org/seerrng/blob/main/NOTICE.md) and the
+[upstream source ledger](https://github.com/snapetech-org/seerrng/blob/main/UPSTREAM_ATTRIBUTION.md).
+
+Feature context and source credit (a report or proposal does not by itself prove
+that upstream or a released SeerrNG version implements the behavior):
+
+- [Upstream Seerr issue #180](https://github.com/seerr-team/seerr/issues/180) — [@ghost](https://github.com/ghost).
+- [Upstream Seerr issue #1744](https://github.com/seerr-team/seerr/issues/1744) — [@LaurenceBarnes](https://github.com/LaurenceBarnes).
+- [Upstream Seerr PR #3296](https://github.com/seerr-team/seerr/pull/3296) — [@Izakun](https://github.com/Izakun).
+
+[Back to the Seerr / SeerrNG feature comparison](../feature-comparison.md).

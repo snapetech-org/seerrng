@@ -160,3 +160,51 @@ need a path mapping. Keep the mounted library read-only and map the narrowest pr
 folder. If the backend does not report an imported file, the path is not
 mounted, or a mapping cannot be resolved safely, the download action stays
 hidden.
+
+## Sources and attribution
+
+This guide is maintained for SeerrNG by snapetech and SeerrNG contributors.
+Inherited Seerr, Jellyseerr and Overseerr work retains its original credit; see
+[NOTICE](https://github.com/snapetech-org/seerrng/blob/main/NOTICE.md) and the
+[upstream source ledger](https://github.com/snapetech-org/seerrng/blob/main/UPSTREAM_ATTRIBUTION.md).
+
+Feature context and source credit (a report or proposal does not by itself prove
+that upstream or a released SeerrNG version implements the behavior):
+
+- [Upstream Seerr issue #1994](https://github.com/seerr-team/seerr/issues/1994) — [@zwimer](https://github.com/zwimer).
+- [Upstream Seerr issue #2070](https://github.com/seerr-team/seerr/issues/2070) — [@jstrot](https://github.com/jstrot).
+- [Upstream Seerr PR #2698](https://github.com/seerr-team/seerr/pull/2698) — [@Xyerophyte](https://github.com/Xyerophyte).
+- [Upstream Seerr PR #3184](https://github.com/seerr-team/seerr/pull/3184) — [@0xSysR3ll](https://github.com/0xSysR3ll).
+- [Upstream Seerr PR #3279](https://github.com/seerr-team/seerr/pull/3279) — [@Knat-Dev](https://github.com/Knat-Dev).
+- [Upstream Seerr PR #3288](https://github.com/seerr-team/seerr/pull/3288) — [@fallenbagel](https://github.com/fallenbagel).
+- [Upstream Seerr PR #3351](https://github.com/seerr-team/seerr/pull/3351) — [@fallenbagel](https://github.com/fallenbagel).
+- [Upstream Seerr PR #3376](https://github.com/seerr-team/seerr/pull/3376) — [@fallenbagel](https://github.com/fallenbagel).
+- [Upstream Seerr PR #3377](https://github.com/seerr-team/seerr/pull/3377) — [@fallenbagel](https://github.com/fallenbagel).
+- [Upstream Seerr PR #3378](https://github.com/seerr-team/seerr/pull/3378) — [@fallenbagel](https://github.com/fallenbagel).
+- [Upstream Seerr PR #3379](https://github.com/seerr-team/seerr/pull/3379) — [@fallenbagel](https://github.com/fallenbagel).
+- [Upstream Seerr PR #3380](https://github.com/seerr-team/seerr/pull/3380) — [@fallenbagel](https://github.com/fallenbagel).
+- [Upstream Seerr PR #3385](https://github.com/seerr-team/seerr/pull/3385) — [@fallenbagel](https://github.com/fallenbagel).
+- [Upstream Seerr PR #3412](https://github.com/seerr-team/seerr/pull/3412) — [@0xSysR3ll](https://github.com/0xSysR3ll).
+- [Upstream Seerr issue #3460](https://github.com/seerr-team/seerr/issues/3460) — [@aussierk](https://github.com/aussierk).
+- [Upstream Seerr PR #3461](https://github.com/seerr-team/seerr/pull/3461) — [@aussierk](https://github.com/aussierk).
+- [Upstream Seerr PR #3462](https://github.com/seerr-team/seerr/pull/3462) — [@aussierk](https://github.com/aussierk).
+- [Upstream Seerr issue #3488](https://github.com/seerr-team/seerr/issues/3488) — [@castiliad](https://github.com/castiliad).
+- [Upstream Seerr PR #3489](https://github.com/seerr-team/seerr/pull/3489) — [@fallenbagel](https://github.com/fallenbagel).
+- [Upstream Seerr PR #3490](https://github.com/seerr-team/seerr/pull/3490) — [@fallenbagel](https://github.com/fallenbagel).
+- [Upstream Seerr PR #3493](https://github.com/seerr-team/seerr/pull/3493) — [@fallenbagel](https://github.com/fallenbagel).
+- [Upstream Seerr PR #3494](https://github.com/seerr-team/seerr/pull/3494) — [@fallenbagel](https://github.com/fallenbagel).
+- [Upstream Seerr PR #3495](https://github.com/seerr-team/seerr/pull/3495) — [@fallenbagel](https://github.com/fallenbagel).
+- [Upstream Seerr PR #3496](https://github.com/seerr-team/seerr/pull/3496) — [@fallenbagel](https://github.com/fallenbagel).
+- [Upstream Seerr issue #3508](https://github.com/seerr-team/seerr/issues/3508) — [@d-Rickyy-b](https://github.com/d-Rickyy-b).
+- [Upstream Seerr issue #3542](https://github.com/seerr-team/seerr/issues/3542) — [@Kladki](https://github.com/Kladki).
+- [Upstream Seerr PR #3578](https://github.com/seerr-team/seerr/pull/3578) — [@fallenbagel](https://github.com/fallenbagel).
+- [Upstream Seerr PR #3579](https://github.com/seerr-team/seerr/pull/3579) — [@fallenbagel](https://github.com/fallenbagel).
+- [Upstream Seerr issue #3604](https://github.com/seerr-team/seerr/issues/3604) — [@jrgutier](https://github.com/jrgutier).
+- [Upstream Seerr PR #3605](https://github.com/seerr-team/seerr/pull/3605) — [@fallenbagel](https://github.com/fallenbagel).
+- [Upstream Seerr PR #3606](https://github.com/seerr-team/seerr/pull/3606) — [@fallenbagel](https://github.com/fallenbagel).
+- [Upstream Seerr issue #3642](https://github.com/seerr-team/seerr/issues/3642) — [@MrCasquette](https://github.com/MrCasquette).
+- [Upstream Seerr PR #3647](https://github.com/seerr-team/seerr/pull/3647) — [@fallenbagel](https://github.com/fallenbagel).
+- [Upstream Seerr issue #3657](https://github.com/seerr-team/seerr/issues/3657) — [@Octoputty](https://github.com/Octoputty).
+- [Upstream Seerr PR #3659](https://github.com/seerr-team/seerr/pull/3659) — [@fallenbagel](https://github.com/fallenbagel).
+
+[Back to the Seerr / SeerrNG feature comparison](../feature-comparison.md).

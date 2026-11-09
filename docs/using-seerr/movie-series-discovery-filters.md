@@ -67,3 +67,26 @@ are checked against the media items and seasons visible to that account. Titles
 whose access cannot be verified are omitted. See
 [per-user movie and TV availability](./media-server-access.md) for the account
 requirements and troubleshooting steps.
+
+## Sources and attribution
+
+This guide is maintained for SeerrNG by snapetech and SeerrNG contributors.
+Inherited Seerr, Jellyseerr and Overseerr work retains its original credit; see
+[NOTICE](https://github.com/snapetech-org/seerrng/blob/main/NOTICE.md) and the
+[upstream source ledger](https://github.com/snapetech-org/seerrng/blob/main/UPSTREAM_ATTRIBUTION.md).
+
+Feature context and source credit (a report or proposal does not by itself prove
+that upstream or a released SeerrNG version implements the behavior):
+
+- [Upstream Seerr issue #206](https://github.com/seerr-team/seerr/issues/206) — [@xoniq](https://github.com/xoniq).
+- [Upstream Seerr PR #626](https://github.com/seerr-team/seerr/pull/626) — [@wjh000123](https://github.com/wjh000123).
+- [Upstream Seerr issue #898](https://github.com/seerr-team/seerr/issues/898) — [@Joly0](https://github.com/Joly0).
+- [Upstream Seerr issue #1269](https://github.com/seerr-team/seerr/issues/1269) — [@RDLN7](https://github.com/RDLN7).
+- [Upstream Seerr issue #3090](https://github.com/seerr-team/seerr/issues/3090) — [@sveinbjornpalsson](https://github.com/sveinbjornpalsson).
+- [Upstream Seerr PR #3154](https://github.com/seerr-team/seerr/pull/3154) — [@u61d](https://github.com/u61d).
+- [Upstream Seerr PR #3166](https://github.com/seerr-team/seerr/pull/3166) — [@TheReaperJay](https://github.com/TheReaperJay).
+- [Upstream Seerr issue #3304](https://github.com/seerr-team/seerr/issues/3304) — [@qelijahq](https://github.com/qelijahq).
+- [Upstream Seerr PR #3305](https://github.com/seerr-team/seerr/pull/3305) — [@fallenbagel](https://github.com/fallenbagel).
+- [Upstream Seerr PR #3584](https://github.com/seerr-team/seerr/pull/3584) — [@Hugisko](https://github.com/Hugisko).
+
+[Back to the Seerr / SeerrNG feature comparison](../feature-comparison.md).

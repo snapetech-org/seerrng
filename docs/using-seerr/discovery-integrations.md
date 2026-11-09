@@ -184,3 +184,17 @@ The history uses the same **My requests** or shared-calendar visibility as the
 release itself. Administrators can run or disable **Release Calendar History**
 under **Settings → Jobs & Cache**. Software catalog dates are not included in
 these daily snapshots.
+
+## Sources and attribution
+
+This guide is maintained for SeerrNG by snapetech and SeerrNG contributors.
+Inherited Seerr, Jellyseerr and Overseerr work retains its original credit; see
+[NOTICE](https://github.com/snapetech-org/seerrng/blob/main/NOTICE.md) and the
+[upstream source ledger](https://github.com/snapetech-org/seerrng/blob/main/UPSTREAM_ATTRIBUTION.md).
+
+Feature context and source credit (a report or proposal does not by itself prove
+that upstream or a released SeerrNG version implements the behavior):
+
+- [Foreseerr provider source, revision 3fc9bdf](https://github.com/selmant/foreseerr/tree/3fc9bdf47f99db32c2e777a4bbd6d8d6262a4ae3).
+
+[Back to the Seerr / SeerrNG feature comparison](../feature-comparison.md).

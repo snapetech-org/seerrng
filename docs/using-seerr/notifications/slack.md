@@ -49,3 +49,17 @@ takes effect immediately.
 The buttons appear only on pending request notifications. A successful action
 updates the request through SeerrNG's normal approval workflow and removes the
 buttons from that Slack message.
+
+## Sources and attribution
+
+This guide is maintained for SeerrNG by snapetech and SeerrNG contributors.
+Inherited Seerr, Jellyseerr and Overseerr work retains its original credit; see
+[NOTICE](https://github.com/snapetech-org/seerrng/blob/main/NOTICE.md) and the
+[upstream source ledger](https://github.com/snapetech-org/seerrng/blob/main/UPSTREAM_ATTRIBUTION.md).
+
+Feature context and source credit (a report or proposal does not by itself prove
+that upstream or a released SeerrNG version implements the behavior):
+
+- [Upstream Seerr issue #3554](https://github.com/seerr-team/seerr/issues/3554) — [@klejejs](https://github.com/klejejs).
+
+[Back to the Seerr / SeerrNG feature comparison](../../feature-comparison.md).

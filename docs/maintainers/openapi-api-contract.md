@@ -57,3 +57,21 @@ to the fork's current request and response fields.
   clients validate or interpret an endpoint.
 - Add a release note for API changes visible to clients and record upstream
   provenance in the public PR description.
+
+## Sources and attribution
+
+This guide is maintained for SeerrNG by snapetech and SeerrNG contributors.
+Inherited Seerr, Jellyseerr and Overseerr work retains its original credit; see
+[NOTICE](https://github.com/snapetech-org/seerrng/blob/main/NOTICE.md) and the
+[upstream source ledger](https://github.com/snapetech-org/seerrng/blob/main/UPSTREAM_ATTRIBUTION.md).
+
+Feature context and source credit (a report or proposal does not by itself prove
+that upstream or a released SeerrNG version implements the behavior):
+
+- [Upstream Seerr PR #2700](https://github.com/seerr-team/seerr/pull/2700) — [@electather](https://github.com/electather).
+- [Upstream Seerr issue #3298](https://github.com/seerr-team/seerr/issues/3298) — [@Billos](https://github.com/Billos).
+- [Upstream Seerr PR #3425](https://github.com/seerr-team/seerr/pull/3425) — [@Arul1998](https://github.com/Arul1998).
+- [Upstream Seerr PR #3635](https://github.com/seerr-team/seerr/pull/3635) — [@Jocelyn017](https://github.com/Jocelyn017).
+- [Related report or contribution](https://github.com/snapetech-org/seerrng/pull/429).
+
+[Back to the Seerr / SeerrNG feature comparison](../feature-comparison.md).

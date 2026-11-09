@@ -139,3 +139,18 @@ pass. The first headless runtime case saves browser-default Arabic, reloads,
 verifies Arabic/RTL document metadata, and checks overflow at 1280×900 and
 390×844. This is initial runtime evidence, not acceptance of every affected
 route, theme, language, or translation.
+
+## Sources and attribution
+
+This guide is maintained for SeerrNG by snapetech and SeerrNG contributors.
+Inherited Seerr, Jellyseerr and Overseerr work retains its original credit; see
+[NOTICE](https://github.com/snapetech-org/seerrng/blob/main/NOTICE.md) and the
+[upstream source ledger](https://github.com/snapetech-org/seerrng/blob/main/UPSTREAM_ATTRIBUTION.md).
+
+Feature context and source credit (a report or proposal does not by itself prove
+that upstream or a released SeerrNG version implements the behavior):
+
+- [Upstream Seerr PR #3421](https://github.com/seerr-team/seerr/pull/3421) — [@Surfoo](https://github.com/Surfoo).
+- [Upstream Seerr PR #3667](https://github.com/seerr-team/seerr/pull/3667) — [@centralsofware](https://github.com/centralsofware).
+
+[Back to the Seerr / SeerrNG feature comparison](feature-comparison.md).

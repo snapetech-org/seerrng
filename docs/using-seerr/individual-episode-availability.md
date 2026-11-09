@@ -75,3 +75,21 @@ proposed in Seerr [PR #1671](https://github.com/seerr-team/seerr/pull/1671),
 episode availability from media-server scanners; the SeerrNG implementation
 adds explicit per-library episode-order configuration and keeps each source's
 records independent during reconciliation.
+
+## Sources and attribution
+
+This guide is maintained for SeerrNG by snapetech and SeerrNG contributors.
+Inherited Seerr, Jellyseerr and Overseerr work retains its original credit; see
+[NOTICE](https://github.com/snapetech-org/seerrng/blob/main/NOTICE.md) and the
+[upstream source ledger](https://github.com/snapetech-org/seerrng/blob/main/UPSTREAM_ATTRIBUTION.md).
+
+Feature context and source credit (a report or proposal does not by itself prove
+that upstream or a released SeerrNG version implements the behavior):
+
+- [Upstream Seerr PR #1671](https://github.com/seerr-team/seerr/pull/1671) — [@0xSysR3ll](https://github.com/0xSysR3ll).
+- [Upstream Seerr PR #3355](https://github.com/seerr-team/seerr/pull/3355) — [@0xSysR3ll](https://github.com/0xSysR3ll).
+- [Upstream Seerr PR #3361](https://github.com/seerr-team/seerr/pull/3361) — [@0xSysR3ll](https://github.com/0xSysR3ll).
+- [Upstream Seerr PR #3402](https://github.com/seerr-team/seerr/pull/3402) — [@0xSysR3ll](https://github.com/0xSysR3ll).
+- [Upstream Seerr PR #3527](https://github.com/seerr-team/seerr/pull/3527) — [@0xSysR3ll](https://github.com/0xSysR3ll).
+
+[Back to the Seerr / SeerrNG feature comparison](../feature-comparison.md).
