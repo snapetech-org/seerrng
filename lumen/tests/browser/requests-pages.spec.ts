@@ -33,7 +33,10 @@ async function fixture(page: Page) {
       const list = filter === 'pending' || filter === 'processing' ? [] : all;
       return r.fulfill({
         json: {
-          pageInfo: { pages: Math.ceil(list.length / take), results: list.length },
+          pageInfo: {
+            pages: Math.ceil(list.length / take),
+            results: list.length,
+          },
           results: list.slice(skip, skip + take),
         },
       });
