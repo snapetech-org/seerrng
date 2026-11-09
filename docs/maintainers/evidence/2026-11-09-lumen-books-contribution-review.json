@@ -1,0 +1,114 @@
+{
+  "checkpoint": "2026-11-09T19:37:27.808131+00:00",
+  "scope": "Nine incoming contributions reviewed during the routing, storage and book-library correction. Complements the historical dated review ledger; not exhaustive upstream dependency-source, historical human-workflow or physical-device acceptance. State fields describe this review checkpoint, not current release publication.",
+  "reviews": [
+    {
+      "number": 624,
+      "pull_request": "https://github.com/snapetech-org/seerrng/pull/624",
+      "contributor": "ncbudd",
+      "original_head": "ad3d849295a69f8c4dd326710e73b7be32976d1a",
+      "saved_source_patch": "pr624.diff",
+      "saved_patch_sha256": "3892e42372d8b5670860fbf5ad2ee690f0445b3bad1d198e3474b47bb6009f8b",
+      "review": "Reviewed sign-out session retention and error feedback; ended401 sessions complete logout, transport/server failures retain the session and display Retry.",
+      "state_at_review": "genuinely merged; replacement publication pending",
+      "merge_commit_at_review": "cb9b89860e8c6aa088df081b90bac416794bc1d8",
+      "evidence": "docs/maintainers/20261109-lumen-upgrade-and-storage-qa.md"
+    },
+    {
+      "number": 626,
+      "pull_request": "https://github.com/snapetech-org/seerrng/pull/626",
+      "contributor": "ncbudd",
+      "original_head": "61e8c51d6136a15c7b3e66f835f7284e676e2eeb",
+      "saved_source_patch": "pr626.diff",
+      "saved_patch_sha256": "7af665ec79c1e9171ed865369035508209236eaea4a74c769487ce408b3334ad",
+      "review": "Reviewed Audiobookshelf destination links and settings; added exact HTTP(S) URL validation, prefix preservation and removal of credentials/query/fragment from links.",
+      "state_at_review": "genuinely merged; replacement publication pending",
+      "merge_commit_at_review": "cb9b89860e8c6aa088df081b90bac416794bc1d8",
+      "evidence": "docs/maintainers/20261109-lumen-upgrade-and-storage-qa.md"
+    },
+    {
+      "number": 627,
+      "pull_request": "https://github.com/snapetech-org/seerrng/pull/627",
+      "contributor": "ncbudd",
+      "original_head": "8311700b4df8798a0e00decfac088fc9368ba0c6",
+      "saved_source_patch": "pr627.diff",
+      "saved_patch_sha256": "4ec1481a2ed62105dee1ab0588ffdbf8d129622f37b4f67ee704b9786bb3ea1f",
+      "review": "Reviewed progressive request rendering, metadata completion and session guards; follow-up preserves ready movie/music rows while another media category loads.",
+      "state_at_review": "genuinely merged; replacement publication pending",
+      "merge_commit_at_review": "cb9b89860e8c6aa088df081b90bac416794bc1d8",
+      "evidence": "docs/maintainers/20261109-lumen-upgrade-and-storage-qa.md"
+    },
+    {
+      "number": 628,
+      "pull_request": "https://github.com/snapetech-org/seerrng/pull/628",
+      "contributor": "ncbudd",
+      "original_head": "1ba13272c42eb26ebb0af305afd891ada675abca",
+      "saved_source_patch": "pr628.diff",
+      "saved_patch_sha256": "dcfef7c8f54a03945382eb1de9e1f6a629fd03a99f2a4bbca8b23c8539fd0be9",
+      "review": "Reviewed all original changed files: negotiated edition aliases, bounded verified request pages, busy/single-flight guards, failure recovery and active-session result ownership. Retained features and tests.",
+      "state_at_review": "genuinely merged; replacement publication pending",
+      "merge_commit_at_review": "cb9b89860e8c6aa088df081b90bac416794bc1d8",
+      "evidence": "docs/maintainers/20261109-lumen-upgrade-and-storage-qa.md"
+    },
+    {
+      "number": 630,
+      "pull_request": "https://github.com/snapetech-org/seerrng/pull/630",
+      "contributor": "ncbudd",
+      "original_head": "0b3a78794609bb2ecfad6fd9200a5615e40b5c68",
+      "saved_source_patch": "pr630.diff",
+      "saved_patch_sha256": "7b427405c1d5f1b96b91bf435b73a27dd908d2228d55134ba171a24a991bc76d",
+      "review": "Reviewed file/narrator completion, catalogue matching, request format and retry semantics. Added exact work identity, case-sensitive opaque aliases, bounded DB work, catalogue-size recovery and sanitized503 detail errors.",
+      "state_at_review": "genuinely merged; replacement publication pending",
+      "merge_commit_at_review": "83a9ddd3c99904bdfcceb4a3e2b3bef4ddb8b00f",
+      "evidence": "docs/maintainers/20261109-lumen-upgrade-and-storage-qa.md"
+    },
+    {
+      "number": 631,
+      "pull_request": "https://github.com/snapetech-org/seerrng/pull/631",
+      "contributor": "ncbudd",
+      "original_head": "166825897b9c762cc0afad561692cb170631fe43",
+      "saved_source_patch": "pr631.diff",
+      "saved_patch_sha256": "064b289a78e2ae59e908aed8e488f2a3fe9c1e795b33076ff9dc7783e4f142ca",
+      "review": "Replaced ebook-dependent fallback with format-neutral authorized metadata; canonical OL works only; retained403/429 failures,503 recovery, Retry and stale-query guards.",
+      "state_at_review": "genuinely merged; replacement publication pending",
+      "merge_commit_at_review": "0f9374f4bf776e2c068ce4ec38a1369ebf5a1cfe",
+      "evidence": "docs/maintainers/20261109-lumen-upgrade-and-storage-qa.md"
+    },
+    {
+      "number": 632,
+      "pull_request": "https://github.com/snapetech-org/seerrng/pull/632",
+      "contributor": "ncbudd",
+      "original_head": "02a27cfcd5a4ccef0a7b3899d09005a3c4e3f2d4",
+      "saved_source_patch": "pr632.diff",
+      "saved_patch_sha256": "81880a7cbcb985c4cc9af851951b546e1f4c7b3836248d2c8e51b3a1f113952a",
+      "review": "Reviewed artwork/title injection, source replacement and accessibility. Reused theme tokens/fonts; restored shared one-line title clamp after matched visual comparison exposed wrapping.",
+      "state_at_review": "genuinely merged; replacement publication pending",
+      "merge_commit_at_review": "0f9374f4bf776e2c068ce4ec38a1369ebf5a1cfe",
+      "evidence": "docs/maintainers/20261109-lumen-upgrade-and-storage-qa.md"
+    },
+    {
+      "number": 633,
+      "pull_request": "https://github.com/snapetech-org/seerrng/pull/633",
+      "contributor": "ncbudd",
+      "original_head": "ec2fe4b155bb25f058b7719cb3cecf8b447a053e",
+      "saved_source_patch": "pr633.diff",
+      "saved_patch_sha256": "dd887b2cd1c2c866e3a307991eac48331b9a8e56b61cc27334eeef973237e9a4",
+      "review": "Bounded reconciliation, exact work/edition and format file evidence, fresh request/media/service authority, cancellation/retarget guards and active search ownership. Actual compiled worker and human Requests rows verified.",
+      "state_at_review": "genuinely merged; replacement publication pending",
+      "merge_commit_at_review": "0f9374f4bf776e2c068ce4ec38a1369ebf5a1cfe",
+      "evidence": "docs/maintainers/20261109-lumen-upgrade-and-storage-qa.md"
+    },
+    {
+      "number": 634,
+      "pull_request": "https://github.com/snapetech-org/seerrng/pull/634",
+      "contributor": "ncbudd",
+      "original_head": "378bbddc89751886d4cfd70542a7c0885d6c2f14",
+      "saved_source_patch": "pr634.diff",
+      "saved_patch_sha256": "93d1604d643cbd6dc6b49425c8dd40c041b9a3253035266fe4cbb4ca84cab89e",
+      "review": "Eight added baseline regressions confirmed invalidation, expiry age, shared mutation, combined capacity, optional storage failure and masked401/403/404. Patched these plus cancellation, exclusive atomic files, shutdown draining and redacted diagnostics. Source and full local suites reviewed; not part of frozen corrective release.",
+      "state_at_review": "locally patched and qualified; genuine integration pending",
+      "merge_commit_at_review": null,
+      "evidence": "docs/maintainers/provider-cache-634-review.md"
+    }
+  ]
+}

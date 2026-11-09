@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
-import { describe, it } from 'node:test';
+import { afterEach, describe, it, mock } from 'node:test';
 
+import { Cache } from '@server/lib/cache';
 import {
   getPendingBackgroundTaskCount,
   waitForBackgroundTasks,
@@ -13,6 +14,7 @@ import ExternalAPI, {
   DEFAULT_EXTERNAL_API_MAX_CONTENT_LENGTH,
   DEFAULT_EXTERNAL_API_TIMEOUT_MS,
   MAX_PENDING_EXTERNAL_API_REQUESTS,
+  STALE_RESPONSE_WAIT_MS,
   containsCredentialFields,
   createExternalApiCacheKeySuffix,
   normalizeExternalApiRequestTarget,
@@ -975,5 +977,152 @@ describe('ExternalAPI in-flight admission', () => {
 
     assert.deepStrictEqual(await api.getForTest('/after-drain'), { ok: true });
     assert.strictEqual(adapterCalls, MAX_PENDING_EXTERNAL_API_REQUESTS + 1);
+  });
+});
+
+describe('ExternalAPI expired cache entries', () => {
+  const expiredCache = async (api: TestExternalAPI, cache: Cache) => {
+    // cache "/feed" for one second, then let it expire
+    api.setAdapter(async (config) => ({
+      config,
+      data: { version: 'old' },
+      headers: {},
+      status: 200,
+      statusText: 'OK',
+    }));
+    await api.getForTest('/feed', undefined, 1);
+    const now = Date.now();
+    mock.method(Date, 'now', () => now + 2_000);
+    assert.strictEqual(cache.data.keys().length, 1);
+  };
+  const setup = () => {
+    const cache = new Cache('tmdb', 'Test cache', {
+      checkPeriod: 0,
+      staleMaxAge: 3600,
+    });
+    const api = new TestExternalAPI(
+      'https://service.example',
+      { api_key: 'secret' },
+      { nodeCache: cache.data }
+    );
+    return { cache, api };
+  };
+  afterEach(() => mock.restoreAll());
+
+  it('answers from the expired copy while the provider is slow, then refreshes', async () => {
+    const { cache, api } = setup();
+    await expiredCache(api, cache);
+    let finish: (() => void) | undefined;
+    api.setAdapter(
+      (config) =>
+        new Promise((resolve) => {
+          finish = () =>
+            resolve({
+              config,
+              data: { version: 'new' },
+              headers: {},
+              status: 200,
+              statusText: 'OK',
+            });
+        })
+    );
+    const started = performance.now();
+    assert.deepStrictEqual(await api.getForTest('/feed', undefined, 600), {
+      version: 'old',
+    });
+    assert.ok(performance.now() - started >= STALE_RESPONSE_WAIT_MS - 10);
+    assert.ok(performance.now() - started < STALE_RESPONSE_WAIT_MS + 1_000);
+    finish?.();
+    await new Promise((resolve) => setImmediate(resolve));
+    await new Promise((resolve) => setImmediate(resolve));
+    assert.deepStrictEqual(await api.getForTest('/feed', undefined, 600), {
+      version: 'new',
+    });
+  });
+
+  it('answers from the expired copy when the provider fails', async () => {
+    const { cache, api } = setup();
+    await expiredCache(api, cache);
+    api.setAdapter(async () => {
+      throw Object.assign(new Error('Service unavailable'), {
+        response: { status: 503 },
+      });
+    });
+    assert.deepStrictEqual(await api.getForTest('/feed', undefined, 600), {
+      version: 'old',
+    });
+  });
+
+  for (const status of [401, 403, 404]) {
+    it(`does not conceal a provider ${status} behind a stale copy`, async () => {
+      const { cache, api } = setup();
+      await expiredCache(api, cache);
+      const failure = Object.assign(new Error('Provider denied request'), {
+        response: { status },
+      });
+      api.setAdapter(async () => {
+        throw failure;
+      });
+      await assert.rejects(api.getForTest('/feed', undefined, 600), failure);
+      assert.strictEqual(cache.snapshot().entries.length, 0);
+    });
+  }
+
+  it('does not answer stale after the caller aborts a slow read', async () => {
+    const { cache, api } = setup();
+    await expiredCache(api, cache);
+    const controller = new AbortController();
+    let finish: (() => void) | undefined;
+    api.setAdapter(
+      (config) =>
+        new Promise((resolve) => {
+          finish = () =>
+            resolve({
+              config,
+              data: { version: 'new' },
+              headers: {},
+              status: 200,
+              statusText: 'OK',
+            });
+        })
+    );
+    const request = api.getForTest('/feed', { signal: controller.signal }, 600);
+    setTimeout(() => controller.abort(), 50);
+    try {
+      await assert.rejects(request, { code: 'ERR_CANCELED' });
+    } finally {
+      finish?.();
+      await new Promise((resolve) => setImmediate(resolve));
+    }
+  });
+
+  it('prefers a provider answer that arrives in time', async () => {
+    const { cache, api } = setup();
+    await expiredCache(api, cache);
+    api.setAdapter(async (config) => ({
+      config,
+      data: { version: 'new' },
+      headers: {},
+      status: 200,
+      statusText: 'OK',
+    }));
+    assert.deepStrictEqual(await api.getForTest('/feed', undefined, 600), {
+      version: 'new',
+    });
+  });
+
+  it('never answers from an expired copy when the caller bypasses the cache', async () => {
+    const { cache, api } = setup();
+    await expiredCache(api, cache);
+    api.setAdapter(async (config) => ({
+      config,
+      data: { version: 'new' },
+      headers: {},
+      status: 200,
+      statusText: 'OK',
+    }));
+    assert.deepStrictEqual(await api.getForTest('/feed', undefined, 0), {
+      version: 'new',
+    });
   });
 });

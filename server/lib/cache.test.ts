@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
-import { describe, it } from 'node:test';
+import { afterEach, describe, it, mock } from 'node:test';
 
-import { Cache, estimateCacheEntryBytes } from './cache';
+import { Cache, estimateCacheEntryBytes, type CacheSnapshot } from './cache';
 
 describe('Cache', () => {
   it('evicts the least recently set key when its key cap is exceeded', () => {
@@ -81,5 +81,161 @@ describe('Cache', () => {
     cache.data.set('oversized', 'x'.repeat(1_000));
 
     assert.deepStrictEqual(cache.data.keys(), []);
+  });
+});
+
+describe('Cache stale copies', () => {
+  const later = (ms: number) => {
+    const now = Date.now();
+    mock.method(Date, 'now', () => now + ms);
+  };
+  afterEach(() => mock.restoreAll());
+
+  it('keeps an expired value for getStale but not for get', () => {
+    const cache = new Cache('tmdb', 'Test cache', {
+      checkPeriod: 0,
+      staleMaxAge: 60,
+    });
+    cache.data.set('feed', { page: 1 }, 1);
+    later(2_000);
+    assert.strictEqual(cache.data.get('feed'), undefined);
+    assert.deepStrictEqual(cache.getStale('feed'), { page: 1 });
+  });
+
+  it('drops a stale value after its stale window', () => {
+    const cache = new Cache('tmdb', 'Test cache', {
+      checkPeriod: 0,
+      staleMaxAge: 60,
+    });
+    cache.data.set('feed', 1, 1);
+    later(2_000);
+    cache.data.get('feed');
+    mock.restoreAll();
+    later(70_000);
+    assert.strictEqual(cache.getStale('feed'), undefined);
+  });
+
+  it('does not keep values that were invalidated, evicted or flushed', () => {
+    const cache = new Cache('tmdb', 'Test cache', {
+      checkPeriod: 0,
+      staleMaxAge: 60,
+      maxKeys: 1,
+    });
+    cache.data.set('removed', 1, 1);
+    cache.data.del('removed');
+    cache.data.set('evicted', 2, 1);
+    cache.data.set('kept', 3, 1);
+    later(2_000);
+    cache.data.get('kept');
+    assert.strictEqual(cache.getStale('removed'), undefined);
+    assert.strictEqual(cache.getStale('evicted'), undefined);
+    assert.strictEqual(cache.getStale('kept'), 3);
+    cache.flush();
+    assert.strictEqual(cache.getStale('kept'), undefined);
+  });
+
+  it('invalidates a stale-only key explicitly', () => {
+    const cache = new Cache('tmdb', 'Test', {
+      checkPeriod: 0,
+      staleMaxAge: 60,
+    });
+    cache.data.set('feed', { page: 1 }, 1);
+    later(2_000);
+    cache.data.get('feed');
+    cache.data.del('feed');
+    assert.strictEqual(cache.getStale('feed'), undefined);
+  });
+
+  it('does not restart the stale window when an old entry is read late', () => {
+    const cache = new Cache('tmdb', 'Test', {
+      checkPeriod: 0,
+      staleMaxAge: 60,
+    });
+    cache.data.set('feed', 1, 1);
+    later(70_000);
+    cache.data.get('feed');
+    assert.strictEqual(cache.getStale('feed'), undefined);
+  });
+
+  it('keeps stale reads isolated from caller mutation', () => {
+    const cache = new Cache('tmdb', 'Test', {
+      checkPeriod: 0,
+      staleMaxAge: 60,
+    });
+    cache.data.set('feed', { page: 1 }, 1);
+    later(2_000);
+    cache.data.get('feed');
+    cache.getStale<{ page: number }>('feed')!.page = 99;
+    assert.deepStrictEqual(cache.getStale('feed'), { page: 1 });
+  });
+
+  it('shares the existing capacity between fresh and stale keys', () => {
+    const cache = new Cache('tmdb', 'Test', {
+      checkPeriod: 0,
+      staleMaxAge: 60,
+      maxKeys: 1,
+    });
+    cache.data.set('old', 1, 1);
+    later(2_000);
+    cache.data.get('old');
+    cache.data.set('new', 2, 600);
+    assert.strictEqual(cache.getStale('old'), undefined);
+    assert.strictEqual(cache.data.get('new'), 2);
+  });
+
+  it('keeps nothing stale unless the cache opts in', () => {
+    const cache = new Cache('tmdb', 'Test cache', { checkPeriod: 0 });
+    cache.data.set('feed', 1, 1);
+    later(2_000);
+    cache.data.get('feed');
+    assert.strictEqual(cache.getStale('feed'), undefined);
+  });
+
+  it('restores fresh entries as fresh and expired ones as stale only', () => {
+    const source = new Cache('tmdb', 'Test cache', {
+      checkPeriod: 0,
+      staleMaxAge: 3600,
+    });
+    source.data.set('fresh', 'f', 600);
+    source.data.set('old', 'o', 1);
+    later(2_000);
+    source.data.get('old');
+    const snapshot = source.snapshot();
+
+    const target = new Cache('tmdb', 'Test cache', {
+      checkPeriod: 0,
+      staleMaxAge: 3600,
+    });
+    target.data.set('fresh', 'current', 600);
+    assert.strictEqual(target.restore(snapshot), 1);
+    assert.strictEqual(target.data.get('fresh'), 'current');
+    assert.strictEqual(target.data.get('old'), undefined);
+    assert.strictEqual(target.getStale('old'), 'o');
+
+    const empty = new Cache('tmdb', 'Test cache', {
+      checkPeriod: 0,
+      staleMaxAge: 3600,
+    });
+    assert.strictEqual(empty.restore(snapshot), 2);
+    assert.strictEqual(empty.data.get('fresh'), 'f');
+  });
+
+  it('ignores snapshots of another cache or format', () => {
+    const cache = new Cache('tmdb', 'Test cache', { checkPeriod: 0 });
+    const entries = [{ key: 'k', value: 1, expiresAt: Date.now() + 60_000 }];
+    assert.strictEqual(
+      cache.restore({ version: 1, id: 'tvdb', savedAt: 0, entries }),
+      0
+    );
+    assert.strictEqual(
+      cache.restore({
+        version: 2,
+        id: 'tmdb',
+        savedAt: 0,
+        entries,
+      } as unknown as CacheSnapshot),
+      0
+    );
+    assert.strictEqual(cache.data.keys().length, 0);
   });
 });

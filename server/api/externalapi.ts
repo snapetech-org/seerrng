@@ -1,9 +1,12 @@
-import type { CacheStore } from '@server/lib/cache';
+import { getStaleCacheValue, type CacheStore } from '@server/lib/cache';
 import { recordCacheHit, recordExternalApiCall } from '@server/lib/metrics';
 import logger from '@server/logger';
 import { trackBackgroundTask } from '@server/utils/backgroundTasks';
 import { proxyRequestInterceptor } from '@server/utils/customProxyAgent';
-import { withTransientHttpRetry } from '@server/utils/httpError';
+import {
+  getHttpErrorDetails,
+  withTransientHttpRetry,
+} from '@server/utils/httpError';
 import {
   createSafeHttpRequestOptions,
   createSafeHttpUrl,
@@ -20,6 +23,9 @@ const DEFAULT_TTL = 300;
 
 // 10 seconds default rolling buffer (in ms)
 const DEFAULT_ROLLING_BUFFER = 10000;
+// How long a request waits for the provider before answering from an expired
+// copy. The provider request keeps running and refreshes the cache.
+export const STALE_RESPONSE_WAIT_MS = 750;
 export const DEFAULT_EXTERNAL_API_TIMEOUT_MS = 10_000;
 export const DEFAULT_EXTERNAL_API_MAX_CONTENT_LENGTH = 16 * 1024 * 1024;
 export const DEFAULT_EXTERNAL_API_MAX_BODY_LENGTH = 1024 * 1024;
@@ -547,7 +553,7 @@ class ExternalAPI {
       }
     }
 
-    const response = await this.fetchAndCache(
+    const fresh = this.fetchAndCache(
       'GET',
       cacheKey,
       () => this.request<T>('GET', endpoint, undefined, config),
@@ -556,6 +562,22 @@ class ExternalAPI {
       cache,
       transform
     );
+
+    // An expired copy answers only while this request's own provider call is
+    // slow or failing. Nothing new is started in the background: the call
+    // above belongs to this request and refreshes the cache when it finishes.
+    const stale =
+      ttl !== 0 ? getStaleCacheValue<T>(cache, cacheKey) : undefined;
+    if (stale !== undefined && (!isUsableResponse || isUsableResponse(stale)))
+      return this.freshOrStale(
+        fresh,
+        stale,
+        isUsableResponse,
+        config?.signal,
+        () => cache?.del(cacheKey)
+      );
+
+    const response = await fresh;
 
     if (isUsableResponse && !isUsableResponse(response)) {
       return this.fetchAndCache(
@@ -570,6 +592,64 @@ class ExternalAPI {
     }
 
     return response;
+  }
+
+  private async freshOrStale<T>(
+    fresh: Promise<T>,
+    stale: T,
+    isUsableResponse?: (data: T) => boolean,
+    signal?: AxiosRequestConfig['signal'],
+    invalidate?: () => unknown
+  ): Promise<T> {
+    let timer: NodeJS.Timeout | undefined;
+    const waited = new Promise<undefined>((resolve) => {
+      const handle: NodeJS.Timeout = setTimeout(
+        () => resolve(undefined),
+        STALE_RESPONSE_WAIT_MS
+      );
+      handle.unref();
+      timer = handle;
+    });
+    const cannotUseStale = (error: unknown) => {
+      const status = (error as { response?: { status?: number } })?.response
+        ?.status;
+      return (
+        signal?.aborted ||
+        axios.isCancel(error) ||
+        (status !== undefined &&
+          status < 500 &&
+          status !== 408 &&
+          status !== 429)
+      );
+    };
+    const refresh = fresh.catch((error: unknown) => {
+      if (cannotUseStale(error)) invalidate?.();
+      throw error;
+    });
+    try {
+      const result = await Promise.race([
+        refresh.then((data) => ({ data })),
+        waited,
+      ]);
+      if (result && (!isUsableResponse || isUsableResponse(result.data))) {
+        return result.data;
+      }
+    } catch (error) {
+      if (cannotUseStale(error)) throw error;
+      logger.debug('Provider request failed; answering from an expired copy', {
+        label: 'External API',
+        ...getHttpErrorDetails(error),
+      });
+    } finally {
+      clearTimeout(timer);
+    }
+    // The provider call may still settle after this answer; never leave its
+    // rejection unhandled.
+    refresh.catch(() => undefined);
+    if (signal?.aborted)
+      throw new axios.CanceledError('Provider read cancelled');
+    recordCacheHit('external-api-stale');
+    return stale;
   }
 
   protected async post<T>(
