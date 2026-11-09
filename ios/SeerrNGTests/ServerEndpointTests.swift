@@ -1,3 +1,5 @@
+import Combine
+import WebKit
 import XCTest
 @testable import SeerrNG
 
@@ -33,5 +35,46 @@ final class ServerEndpointTests: XCTestCase {
         XCTAssertThrowsError(try ServerEndpoint.create(name: "Home", address: "https://example.com:65536")) {
             XCTAssertEqual($0 as? ServerEndpointError, .invalidPort)
         }
+    }
+}
+
+final class WebViewStateTests: XCTestCase {
+    @MainActor
+    func testUnchangedBrowserStateDoesNotPublishAgain() {
+        let view = WKWebView()
+        let state = WebViewState()
+        state.webView = view
+        state.refresh(view)
+        var updates = 0
+        let observation = state.objectWillChange.sink { updates += 1 }
+        defer { observation.cancel() }
+        state.refresh(view)
+        state.refresh(view)
+        XCTAssertEqual(updates, 0)
+        state.progress = 0.5
+        updates = 0
+        state.refresh(view)
+        XCTAssertEqual(updates, 1)
+        state.refresh(view)
+        XCTAssertEqual(updates, 1)
+    }
+
+    @MainActor
+    func testLateCallbacksCannotReplaceTheActiveBrowser() {
+        let previous = WKWebView()
+        let active = WKWebView()
+        let state = WebViewState()
+        state.webView = active
+        state.progress = 0.5
+        var updates = 0
+        let observation = state.objectWillChange.sink { updates += 1 }
+        defer { observation.cancel() }
+        state.refresh(previous)
+        XCTAssertTrue(state.webView === active)
+        XCTAssertEqual(state.progress, 0.5)
+        XCTAssertEqual(updates, 0)
+        state.refresh(active)
+        XCTAssertEqual(state.progress, active.estimatedProgress)
+        XCTAssertEqual(updates, 1)
     }
 }

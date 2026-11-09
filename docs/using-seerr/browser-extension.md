@@ -34,7 +34,14 @@ The popup and options page use native controls with labels, so they work with th
 
 ## Create and revoke a scoped token
 
-Sign in to SeerrNG, then use its authenticated API at `/api/v1/auth/client-tokens`.
+Sign in to SeerrNG and open **Profile → Settings → Client Tokens**
+(`/profile/settings/client-tokens`). Give the token a recognizable name,
+choose **Discover and Request** for the companion extension, and select an
+expiry. Press **Create Token**, copy the one-time value into the extension,
+then dismiss it. Use **Revoke Token → Confirm Revocation** to disconnect a client.
+Other users' profile settings do not expose your tokens, even to administrators.
+
+The authenticated API at `/api/v1/auth/client-tokens` is also available.
 Creation and revocation require an interactive cookie session and the normal
 `X-XSRF-TOKEN` header when CSRF protection is enabled; a service or client key
 cannot create other tokens. The endpoints are also documented in `/api-docs`.

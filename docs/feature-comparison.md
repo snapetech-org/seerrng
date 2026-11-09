@@ -180,7 +180,7 @@ imply a corresponding Lumen or native screen.
 | Administrator network restrictions | Not found | Restrict administrator sign-in to configured trusted networks | [Guide](./using-seerr/settings/network.md) |
 | Family age gate | Not found | Category access and administrator-managed household age policy | [Guide](./using-seerr/age-gate.md) |
 | Built-in HTTPS | Reverse proxy documented | Administrator-controlled TLS/HTTP transport and certificate guidance | [Guide](./using-seerr/advanced/built-in-tls.mdx) |
-| Scoped client API keys | Global API key baseline | Per-client discover/request authorization and credential revocation | [Guide](./using-seerr/client-api-keys.md) |
+| Scoped client API keys | Global API key baseline | Per-client discover/request authorization, profile token management and revocation | [Guide](./using-seerr/client-api-keys.md) |
 
 ## Interface and clients
 

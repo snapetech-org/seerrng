@@ -1,0 +1,87 @@
+# ng-runner-policy: github-hosted-primary-v1
+name: Verify final security integration
+on:
+  push:
+    branches: [codex/seerrng-security-integrated-007e321]
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - name: Merge only this task's catalog entries and preserve main
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python3 - <<'PY'
+          import hashlib, json, os, pathlib, subprocess, urllib.request
+          overlay = json.loads(pathlib.Path('.codex-transfer/token-messages.json').read_text())
+          locale = pathlib.Path('src/i18n/locale/en.json')
+          snapshot = pathlib.Path('config/i18n/source-snapshot.json')
+          a = json.loads(locale.read_text()); b = json.loads(snapshot.read_text())
+          assert len(overlay['locale']) == len(overlay['snapshot']) == 28
+          for key, value in overlay['locale'].items():
+              assert key not in a or a[key] == value
+              a[key] = value
+          for key, value in overlay['snapshot'].items():
+              assert key not in b['client'] or b['client'][key] == value
+              b['client'][key] = value
+          b['client'] = dict(sorted(b['client'].items()))
+          locale.write_text(json.dumps(dict(sorted(a.items())), ensure_ascii=False, indent=2) + '\n')
+          snapshot.write_text(json.dumps(b, ensure_ascii=False, indent=2) + '\n')
+          expected = {'src/i18n/locale/en.json': 'd8c4583ed508416c3a0f723fd9720794f1ce362a', 'config/i18n/source-snapshot.json': '57b40851617487516f2ef48ae0bd11409c553f21'}
+          def api(path, body):
+              req = urllib.request.Request('https://api.github.com/repos/snapetech-org/seerrng/' + path, data=json.dumps(body).encode(), headers={'Authorization': 'Bearer ' + os.environ['GH_TOKEN'], 'Content-Type': 'application/json', 'Accept': 'application/vnd.github+json'})
+              with urllib.request.urlopen(req, timeout=60) as response: return json.load(response)
+          for path, sha in expected.items():
+              data = pathlib.Path(path).read_bytes()
+              actual = hashlib.sha1(b'blob ' + str(len(data)).encode() + b'\0' + data).hexdigest()
+              assert actual == sha, (path, actual)
+              result = api('git/blobs', {'content': data.decode(), 'encoding': 'utf-8'})
+              assert result['sha'] == sha
+          paths = [".github/workflows/ci.yml",".github/workflows/security-native-visual.yml",".github/workflows/security-regression.yml","android/app/src/androidTest/java/org/snapetech/seerrng/OriginBarTest.kt","config/i18n/source-snapshot.json","ios/SeerrNG/ServerBrowserView.swift","ios/SeerrNGTests/ServerEndpointTests.swift","playwright/client-tokens.spec.ts","playwright/narrator-permissions.spec.ts","server/migration/clientApiKeys.postgres.test.ts","src/components/UserProfile/UserSettings/UserClientTokens.tsx","src/components/UserProfile/UserSettings/index.tsx","src/i18n/locale/en.json","src/pages/profile/settings/client-tokens.tsx","docs/using-seerr/browser-extension.md","ios/SeerrNGUITests/ServerSetupUITests.swift","release-notes/2026-11-09-client-token-settings.md","docs/maintainers/security-audit-remediation-2026-11-09.md","docs/using-seerr/client-api-keys.md","docs/feature-comparison.md"]
+          elements = [{'path': path, 'mode': '100644', 'type': 'blob', 'sha': subprocess.check_output(['git','hash-object','-w',path],text=True).strip()} for path in paths]
+          result = api('git/trees', {'base_tree': 'f736eccfa09d14fa89fe07f33a5b67f2afabeae8', 'tree': elements})
+          print('PREPARED_TREE:' + result['sha'], flush=True)
+          print('PREPARED_BLOBS:' + json.dumps(elements), flush=True)
+          
+          PY
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1
+        with:
+          node-version-file: package.json
+          package-manager-cache: false
+      - uses: pnpm/action-setup@73e46992e05b19abd31f2f3c20e0e7370d762115
+      - name: Install locked dependencies
+        env:
+          CYPRESS_INSTALL_BINARY: 0
+        run: pnpm install --frozen-lockfile
+      - name: Check formatting and feature documentation
+        run: |
+          pnpm exec prettier --check --ignore-unknown '.github/workflows/ci.yml' '.github/workflows/security-native-visual.yml' '.github/workflows/security-regression.yml' 'android/app/src/androidTest/java/org/snapetech/seerrng/OriginBarTest.kt' 'config/i18n/source-snapshot.json' 'ios/SeerrNG/ServerBrowserView.swift' 'ios/SeerrNGTests/ServerEndpointTests.swift' 'playwright/client-tokens.spec.ts' 'playwright/narrator-permissions.spec.ts' 'server/migration/clientApiKeys.postgres.test.ts' 'src/components/UserProfile/UserSettings/UserClientTokens.tsx' 'src/components/UserProfile/UserSettings/index.tsx' 'src/i18n/locale/en.json' 'src/pages/profile/settings/client-tokens.tsx' 'docs/using-seerr/browser-extension.md' 'ios/SeerrNGUITests/ServerSetupUITests.swift' 'release-notes/2026-11-09-client-token-settings.md' 'docs/maintainers/security-audit-remediation-2026-11-09.md' 'docs/using-seerr/client-api-keys.md' 'docs/feature-comparison.md'
+          node scripts/check-feature-comparison.mjs
+      - name: Build integrated production apps
+        env:
+          CIRCLE_NODE_TOTAL: 3
+        run: pnpm build
+      - name: Verify shared retry and token boundaries
+        run: pnpm exec vitest run --maxWorkers=2 src/utils/apiRateLimit.test.ts server/routes/clientApiKeys.test.ts server/routes/requestIntent.test.ts
+      - name: Prepare isolated browser fixtures
+        run: pnpm cypress:prepare
+      - name: Install Chromium
+        run: pnpm exec playwright install --with-deps chromium
+      - name: Exercise token settings, permissions and production CSP
+        env:
+          E2E_OFFLINE: true
+        run: pnpm exec playwright test playwright/production-csp.spec.ts playwright/client-tokens.spec.ts playwright/narrator-permissions.spec.ts
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+        if: always()
+        with:
+          name: final-security-browser-evidence
+          path: test-results/
+          retention-days: 14

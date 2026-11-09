@@ -23,7 +23,7 @@ withdrawn in the original audit; its form-login negative control remains tested.
 | SNG-14 | Live downloads reload session/key authority and current permissions before every frame and heartbeat. Revocation or administrator demotion closes the stream. |
 | SNG-15 | Coalesce one pending update batch, bound frames/buffer length, and close a stream as soon as its writable buffer rejects more data. |
 | SNG-16 | Admit image work before body buffering: two global jobs, one per user, 50 per-user/500 global attempts per UTC day. Decode at most four million pixels; bound OCR threads, time and output; bound external response tokens and time. |
-| SNG-17 | Add hashed, expiring, per-user client tokens with exact discover/request scopes, independent revocation, a ten-active-token limit and credential-version invalidation. Token management requires an interactive session. Publish extension migration instructions. |
+| SNG-17 | Add hashed, expiring, per-user client tokens with exact discover/request scopes, independent revocation, a ten-unexpired-token limit and credential-version invalidation. Management requires an interactive session. Profile → Settings → Client Tokens provides creation, one-time copying and confirmed revocation. Publish extension migration instructions. |
 | SNG-18 | Use the existing TLS-aware healthcheck for startup, readiness and liveness. Expose HTTPS and configurable ingress/Gateway backend ports. Preserve certificate verification. |
 | SNG-19 | **Accepted by the owner: main remains unprotected.** No protection or ruleset changes are part of this work. |
 | SNG-20 | Run Semgrep, Trivy and focused security regressions on PRs/main. Missing scanners and actionable findings fail. Accepted Semgrep matches are bound to exact file hashes, rules and counts, with owner/reason/expiry. |
@@ -94,15 +94,12 @@ inline scripts. CI retains screenshots and failure traces for this suite.
 ## Verification exclusions
 
 External identity/media providers were mocked; no live provider credentials or
-production user data were used. PostgreSQL integration needs its optional local
-service. Linux cannot run Xcode or native device UI comparisons; Android unit
-tests and unsigned client builds are configured on GitHub-hosted native runners.
-Native origin-bar appearance and the narrator planner's permission states have
-not received matching baseline/candidate visual comparison. Their visual
-acceptance is **unverified and UI work is incomplete** until that comparison is
-performed. This limitation does not relax server authorization checks or undo
-the origin protections. Main branch protection is intentionally excluded by the
-owner's instruction.
+production user data were used. PostgreSQL integration and Android rendered
+comparison have passed on GitHub-hosted runners. The final iOS origin-bar
+comparison is still queued: its visual acceptance remains **unverified and UI
+work is incomplete** until the screenshots are inspected. Physical devices,
+signed store releases and live external sign-in providers were not exercised.
+Main branch protection is intentionally excluded by the owner's instruction.
 
 ### Web narrator visual acceptance addendum
 
@@ -113,5 +110,131 @@ Panel geometry is preserved, managers retain the action, advanced-only accounts
 lose it and receive 403 from the real endpoint. The long phone heading now uses
 the existing shared truncation span. Details and retained evidence are in the
 [November 9 QA journal](20261109-lumen-upgrade-and-storage-qa.md). This supersedes
-only the narrator web-visual exclusion; native origin-bar acceptance remains
-pending its separate native comparison.
+the narrator web-visual exclusion. Native comparison results are recorded below.
+
+### Token-management and database verification continuation
+
+The scoped-token settings flow completes SNG-17 without sharing the legacy
+owner key. It uses the existing profile tabs, form fields, status, sensitive
+input, card and action components. Tokens are held only in the component's
+one-time display state, cleared on account changes, excluded from the SWR cache
+and absent from browser storage. Failed creation retains the draft; failed list
+refresh cannot discard the only copy of a new token. Revocation requires explicit
+confirmation and immediately invalidates the credential. New UI adds no page
+CSS or Tailwind utilities; existing semantic owners retain their styling.
+
+Production Chromium verification passed all 23 cases on integrated
+`d06af0e2589c3179bf3cee963160e50cc1387f07` plus this continuation:
+
+- `/profile/settings/client-tokens`: PersiusNG, SeerrOrig and SeerrNGJ at
+  390×900 and 1440×900; empty, creation failure, one-time masked token,
+  reload, cancel revocation and confirmed revocation. Read failure/Retry was
+  also exercised on the phone layout. All six layouts were visually inspected,
+  including the token card centered above fixed phone navigation.
+- `/profile/settings/password`: matching existing shared-consumer captures on
+  baseline `f6e9cffb2ffd86e3b00f9e832f0afb3321084c08` and candidate.
+  The new navigation item is intentional; shared controls retain their geometry.
+- An ordinary fixture account creates its own token; even an administrator
+  cannot list or revoke that other account's token through this own-account API.
+  Client keys cannot reach server settings, list responses are `no-store`,
+  plaintext is absent from storage/list responses, and revoked keys return 401.
+  The existing service worker excludes authentication routes from its cache
+  allowlist and honors `no-store`; this policy was inspected separately.
+- `/series/security-fixture`: all three themes and both widths, with and
+  without request-management permission (12 cases). Provider reads and writes
+  are mocked for presentation checks; real endpoint denial tests establish
+  server authorization. The concurrent narrator heading fix is retained.
+- `/login` and `/lumen/login`: both widths hydrate and reject inline script
+  injection under production self-only script CSP (four cases).
+
+The [PostgreSQL verification run](https://github.com/snapetech-org/seerrng/actions/runs/42703503483)
+passed the real PostgreSQL 16 token migration/authentication test, 37 focused
+security regressions and 39 deployment/scanner gate tests. The same checks
+passed on integrated `d06af0e25` entity metadata and client-scope rules in
+[run 42714291962](https://github.com/snapetech-org/seerrng/actions/runs/42714291962).
+The PostgreSQL test creates and removes only a random test schema. It exercises
+production entity metadata and migration SQL, hidden and unique token hashes,
+UTC expiry round trips with a non-UTC database session, scope and expiry denial,
+credential-version invalidation, deletion revocation, owner cascade and rollback.
+Normal PostgreSQL CI and the security workflow now run it automatically.
+
+Production builds, client/server typechecking, lint, formatting, the full
+Vitest suite (5,295 passed; seven skips across 724 files), and the tooling suite
+(408 passed; five skips) passed on `15134c7c7` plus this continuation.
+After integrating `d06af0e25`, the production build and formatting passed again,
+as did 59 focused token, request-intent, migration and service-worker regressions
+and all 23 production browser cases. The six token-card layouts were reinspected.
+No native production source changed in that integration. The PostgreSQL case
+is intentionally skipped without its database and passed separately above.
+
+The operator actions above remain deployment-specific. This change does not
+claim to have rotated live keys, changed production proxy peers, reconstructed
+past consent, or exercised external identity-provider accounts.
+
+### iOS browser lifecycle correction discovered during native verification
+
+The first real simulator comparison found an existing render feedback loop in
+both historical and current iOS clients. `makeUIView`/`updateUIView`
+synchronously called `WebViewState.refresh`, assigning `@Published`
+properties even when unchanged. Opening a server repeatedly invalidated SwiftUI
+while rendering; the UI became unresponsive and XCTest could not take a
+snapshot. The original failed run is
+[42703503082](https://github.com/snapetech-org/seerrng/actions/runs/42703503082).
+
+The correction attaches the weak browser reference without publishing, delivers
+initial/KVO state asynchronously, publishes only changed values, and ignores
+callbacks from a previously selected browser. Two unit tests cover unchanged
+publication and stale-browser isolation; all 12 candidate unit tests passed in
+[42709701469](https://github.com/snapetech-org/seerrng/actions/runs/42709701469).
+The workflow applies the same nonvisual lifecycle correction to the historical
+comparison so it can render, retaining its original address label and navigation
+policy. This is a qualified baseline, not a claim that the untouched historical
+client passed.
+
+The origin label uses middle truncation so a long hostname's suffix and port
+remain visible. The fixture includes a long `.invalid` HTTPS address and checks
+that the old HTTP warning disappears after switching.
+
+The initial iOS hyperlink fixture confirmed that cross-origin clicked links
+require the external-navigation prompt, even when only the port changes.
+The rendering fixture uses a page-initiated redirect to exercise an embedded
+origin change; the user-link protection is unchanged.
+
+### Scanner continuation
+
+The full Semgrep scan retained the same 54 reviewed findings and passed the
+hash/count/expiry gate, retaining 97 parser/engine diagnostics. A focused scan
+of subsequently changed native files reported no production findings.
+Explicitly including the normally excluded Android instrumentation fixture
+reports its intentional unencrypted loopback `ServerSocket`; this fake server
+runs only on the disposable emulator and handles no live credentials.
+
+A focused scan of the 44 incoming integration files reported no production
+matches or parser errors. Four test-only matches were throwaway Express session
+secrets and a fixed-table-name SQL assertion regex; these files are already
+excluded from the production scan by the existing test-fixture policy.
+Trivy's HIGH/CRITICAL filesystem vulnerability, configuration and secret gate
+passed using the previously downloaded database from this audit session.
+
+### Native rendered comparison results
+
+Both [Android comparison jobs](https://github.com/snapetech-org/seerrng/actions/runs/42709114266)
+passed on a Pixel 2/API 36 fixture, including a user-gesture sign-in popup.
+All six retained 1080×1920 PNGs were compared: initial origin, popup origin and
+changed main-window port. The main toolbar preserves the HTTP warning and uses
+middle truncation; the popup toolbar shows its own loaded origin.
+
+The changed-port load is initiated by instrumentation to exercise rendering;
+ordinary cross-port HTTP navigation remains blocked. This does not establish
+live external SSO compatibility. Screenshots use the instrumentation-only shell
+bridge because Gradle removes app-owned files during test-app uninstall.
+CI requires three nonempty PNGs per job and retains them for 14 days.
+
+The final [iOS comparison](https://github.com/snapetech-org/seerrng/actions/runs/42713806657)
+is pending runner allocation and visual inspection. No final iOS visual
+acceptance is claimed yet.
+
+The local execution workspace disconnected after the integrated checks.
+Implementation, test and workflow source was recovered from verified Git objects
+and matched against the tested source hashes. Later main-branch packaging and
+documentation changes are preserved, including guide attribution footers.
