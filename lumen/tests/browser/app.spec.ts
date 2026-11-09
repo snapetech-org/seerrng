@@ -547,3 +547,55 @@ test('Discover leaves out rows that came back empty', async ({ page }) => {
     page.getByRole('heading', { name: 'Popular books' })
   ).toHaveCount(0);
 });
+
+test('Coming soon says when its lists fail and retries them', async ({
+  page,
+}) => {
+  const fixture = await fixtures(page);
+  let fail = true;
+  await page.route(/\/api\/v1\/discover\/(movies|tv)\/upcoming$/, (route) =>
+    fail
+      ? route.fulfill({
+          status: 503,
+          json: { message: 'Provider unavailable' },
+        })
+      : route.fulfill({
+          json: paged([{ ...movie, releaseDate: '2099-03-04' }]),
+        })
+  );
+  await page.goto('/soon');
+  const alert = page.getByRole('alert');
+  await expect(alert).toContainText('Couldn’t load upcoming titles');
+  await expect(page.getByText('Loading…', { exact: true })).toHaveCount(0);
+  fail = false;
+  await alert.getByRole('button', { name: 'Retry' }).click();
+  await expect(
+    page.getByRole('link', { name: 'The Test Film' }).first()
+  ).toBeVisible();
+  await expect(page.getByRole('alert')).toHaveCount(0);
+  expect(fixture.errors).toEqual([]);
+});
+
+test('a failed search offers Retry instead of saying nothing matched', async ({
+  page,
+}) => {
+  const fixture = await fixtures(page);
+  let fail = true;
+  await page.route('**/api/v1/search?**', (route) =>
+    fail
+      ? route.fulfill({ status: 429, json: { message: 'Too many requests' } })
+      : route.fulfill({ json: paged([movie]) })
+  );
+  await page.goto('/search?q=Test');
+  const alert = page.getByRole('alert');
+  await expect(alert).toContainText('Couldn’t load search results');
+  await expect(alert).toContainText('Too many requests');
+  await expect(page.getByText(/No matches for/)).toHaveCount(0);
+  fail = false;
+  await alert.getByRole('button', { name: 'Retry' }).click();
+  await expect(
+    page.getByRole('heading', { name: 'Movies', exact: true })
+  ).toBeVisible();
+  await expect(page.getByRole('alert')).toHaveCount(0);
+  expect(fixture.errors).toEqual([]);
+});

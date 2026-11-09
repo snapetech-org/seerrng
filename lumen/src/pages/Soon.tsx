@@ -10,6 +10,7 @@ import {
 import { useMediaServerName } from '../auth';
 import { statusOf } from '../components/cards';
 import { Pill } from '../components/detail';
+import { ServiceNote } from '../components/extra';
 import {
   RequestSheet,
   useAsksRequestOptions,
@@ -38,8 +39,12 @@ const MONTHS = [
 // upcoming movies and series, grouped by month, requestable ahead of release
 export default function Soon() {
   const serverName = useMediaServerName();
-  const movies = useApi<Paged<TitleResult>>('/discover/movies/upcoming').data;
-  const tv = useApi<Paged<TitleResult>>('/discover/tv/upcoming').data;
+  const movieList = useApi<Paged<TitleResult>>('/discover/movies/upcoming');
+  const tvList = useApi<Paged<TitleResult>>('/discover/tv/upcoming');
+  const movies = movieList.data;
+  const tv = tvList.data;
+  // both lists failed: say so (with Retry) instead of "Loading…" for good
+  const failed = !movies && !tv && !!movieList.error && !!tvList.error;
   const toast = useToast();
   const [asked, setAsked] = useState<Set<string>>(new Set());
   const asks = useAsksRequestOptions();
@@ -97,7 +102,15 @@ export default function Soon() {
         </div>
         <p className="sub">Request ahead and it downloads the day it’s out.</p>
       </header>
-      {!movies && !tv && <p className="note">Loading…</p>}
+      {!movies && !tv && !failed && <p className="note">Loading…</p>}
+      <ServiceNote
+        error={failed ? movieList.error : null}
+        what="upcoming titles"
+        retry={() => {
+          movieList.reload();
+          tvList.reload();
+        }}
+      />
       {choosing && (
         <RequestSheet
           it={choosing}
