@@ -2595,3 +2595,22 @@ test('a page of posters asks for the server settings once, not once per poster',
   await page.waitForTimeout(500);
   expect(settingsCalls() - before).toBeLessThanOrEqual(1);
 });
+
+test('the request sheet still requests when no Radarr server is set up', async ({
+  page,
+}) => {
+  const { posts, errors } = await fixtures(page);
+  await page.route('**/api/v1/service/radarr', (route) =>
+    route.fulfill({ json: [] })
+  );
+  await page.goto('/movies');
+  await quickRequest(page, 'Fresh Pick');
+  const sheet = page.getByRole('dialog', { name: 'Request Fresh Pick' });
+  await expect(sheet.getByText('No Radarr server to choose')).toBeVisible();
+  const send = sheet.getByRole('button', { name: 'Request', exact: true });
+  await expect(send).toBeEnabled();
+  await send.click();
+  await expect(sheet).toHaveCount(0);
+  expect(posts.filter((p) => p.path === '/request')).toHaveLength(1);
+  expect(errors).toEqual([]);
+});
