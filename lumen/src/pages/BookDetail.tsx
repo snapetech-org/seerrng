@@ -251,7 +251,9 @@ export default function BookDetail() {
   const longest = Math.max(0, ...rows.map((r) => r.durationSeconds || 0));
   const series = b.series?.[0];
   const audio = f === 'audiobook';
-  const available = b.mediaInfo?.status === MediaStatus.AVAILABLE;
+  // owned in this format: an audiobook in the library doesn't make the ebook owned (or the reverse)
+  const available =
+    bookMediaForFormat(b.mediaInfo, f)?.status === MediaStatus.AVAILABLE;
 
   const requestAnother = async () => {
     const row = rows.find((r) => r.id === chosen);

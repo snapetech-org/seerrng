@@ -384,3 +384,25 @@ test('Audiobookshelf credentials never become a public owned-book link', async (
     page.getByRole('link', { name: 'Listen in Audiobookshelf' })
   ).toHaveCount(0);
 });
+test('owning the audiobook still offers the ebook', async ({ page }) => {
+  await fixtures(page);
+  await page.route('**/api/v1/book/bookshelf*', (route) =>
+    route.fulfill({
+      json: {
+        ...book(ebookId, 'ebook', 'Audio only book'),
+        mediaInfo: {
+          status: 5,
+          availableEbookServiceIds: [],
+          availableAudiobookServiceIds: [1],
+          audiobookLibraryServiceId: 9,
+          audiobookLibraryItemId: 'abs-audio',
+        },
+      },
+    })
+  );
+  await page.goto(`/book/${encodeURIComponent(ebookId)}`);
+  await expect(
+    page.getByRole('button', { name: 'Request ebook' })
+  ).toBeVisible();
+  await expect(page.getByText('Read in Audiobookshelf')).toHaveCount(0);
+});
