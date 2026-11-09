@@ -1,11 +1,7 @@
 # ng-runner-policy: github-hosted-primary-v1
 name: Continuation security verification
-on:
-  pull_request:
-    branches: [codex/seerrng-security-verification-20261109]
-  push:
-    branches: [codex/seerrng-security-verification-20261109]
-  workflow_dispatch:
+on: workflow_dispatch
+
 permissions:
   contents: read
 concurrency:
