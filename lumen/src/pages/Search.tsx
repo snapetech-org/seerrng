@@ -125,9 +125,20 @@ export default function Search() {
             ? r.mediaType === 'tv'
             : r.mediaType !== 'person'
       );
-      const foundBooks = (br?.results || []).filter(
+      let foundBooks = (br?.results || []).filter(
         (b) => b.mediaType === 'book'
       );
+      // The audiobook catalogue only knows books it has seen. Open Library (the ebook search)
+      // finds the rest, and those can be requested as audiobooks too.
+      if (format === 'audiobook' && wantBooks && !foundBooks.length) {
+        const more = await api<Paged<BookResult>>(
+          `/discover/books?format=ebook&query=${encodeURIComponent(term)}&page=1`
+        ).catch(() => null);
+        if (!live) return;
+        foundBooks = (more?.results || [])
+          .filter((b) => b.mediaType === 'book')
+          .map((b) => ({ ...b, bookFormat: 'audiobook' }));
+      }
       setTitles(foundTitles);
       setBooks(foundBooks);
       setFailed(foundTitles.length || foundBooks.length ? null : error);

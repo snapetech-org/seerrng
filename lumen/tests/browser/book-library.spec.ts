@@ -504,3 +504,36 @@ for (const [label, request, requested] of [
     ).toHaveCount(requested ? 0 : 1);
   });
 }
+
+test('audiobook search offers books the audiobook catalogue has not seen yet', async ({
+  page,
+}) => {
+  await fixtures(page);
+  const asked: string[] = [];
+  await page.route('**/api/v1/discover/books?**', (route) => {
+    const url = new URL(route.request().url());
+    const format = url.searchParams.get('format') || '';
+    asked.push(format);
+    return route.fulfill({
+      json: paged(
+        format === 'ebook'
+          ? [
+              {
+                ...book('OL123W', 'ebook', 'Brand New Book'),
+                bookFormat: undefined,
+              },
+            ]
+          : []
+      ),
+    });
+  });
+  await page.goto('/search?q=brand%20new&f=audio');
+  const card = page.locator('.poster', { hasText: 'Brand New Book' });
+  await expect(card).toHaveCount(1);
+  await expect(card).toHaveClass(/sq/);
+  await expect(card.locator('a.hit')).toHaveAttribute(
+    'href',
+    '/book/OL123W?f=audio'
+  );
+  expect(asked).toEqual(['audiobook', 'ebook']);
+});
