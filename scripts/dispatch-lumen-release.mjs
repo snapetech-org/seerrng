@@ -7,7 +7,7 @@ import { fileURLToPath } from 'node:url';
 export function completedRelease(event, repository) {
   const run = event?.workflow_run;
   if (
-    run?.name !== 'SeerrNG Release' ||
+    run?.path !== '.github/workflows/release.yml' ||
     run.conclusion !== 'success' ||
     run.event !== 'workflow_dispatch' ||
     run.head_branch !== 'main' ||

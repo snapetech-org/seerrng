@@ -9,7 +9,8 @@ const repository = 'snapetech-org/seerrng';
 const sha = 'b'.repeat(40);
 const event = () => ({
   workflow_run: {
-    name: 'SeerrNG Release',
+    name: 'action:release:pool:public:tag:v3.72.25',
+    path: '.github/workflows/release.yml',
     conclusion: 'success',
     event: 'workflow_dispatch',
     head_branch: 'main',
@@ -37,7 +38,7 @@ test('rejects fork, PR, failed, cancelled, alternate branch and unrelated workfl
     { conclusion: 'failure' },
     { conclusion: 'cancelled' },
     { head_branch: 'feature' },
-    { name: 'Untrusted Release' },
+    { path: '.github/workflows/untrusted-release.yml' },
   ]) {
     const data = event();
     Object.assign(data.workflow_run, change);
