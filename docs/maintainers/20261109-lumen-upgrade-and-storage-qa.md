@@ -158,3 +158,31 @@ The preceding native browser run at `8c30e2d4` passed all four isolated shards;
 its two workflow-option contract failures are corrected and all 15 relevant
 workflow tests now pass locally. A fresh full CI run must qualify the merged
 follow-up source before tagging 3.72.28.
+
+
+### Opaque scanner identity follow-up
+
+Continued review reproduced another PR630 edge case after its initial integration:
+the duplicate-work index lowercased every provider ID, so two opaque IDs differing
+only in case shared file evidence. Both ebook and audiobook regression cases
+failed against83a9ddd3. Preserve adapter-provided aliases verbatim; only a negotiated
+provider adapter may define equivalence. The two negative cases and both original
+same-work duplicate ordering cases pass after the repair. This is a backend identity
+boundary correction; no visual owner or interface-default policy changes.
+
+
+All34 scanner tests pass after this follow-up. The compiled production scanner
+also ran against a separately cloned task database and read-only provider with
+`googlebooks:AbC123` and `googlebooks:abc123`: only the first work has files.
+Actual SQL/API readback preserves each record's service links, and headless
+Library/detail workflows in both formats at390/1440 show only the owned work in
+Library while the missing work retains its Request action. Reviewed
+`opaque-identity/opaque-scanner-gallery.png`; existing shared geometry remains
+unchanged. The server build and scoped lint/format checks pass.
+
+The E2E app deliberately disables scheduled jobs; the compiled scanner was invoked
+as a separate real worker after loading the same settings/runtime config. Early
+harness attempts using a nonexistent E2E job and an unloaded worker settings
+snapshot are retained as exclusions. These are not application fixes or passing
+worker runs. The verified worker additionally asserts its final database evidence
+before reporting completion. No provider mutation is allowed.

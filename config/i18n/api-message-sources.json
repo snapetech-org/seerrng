@@ -73150,7 +73150,7 @@
     },
     {
       "path": "server/lib/scanners/readarr/index.ts",
-      "line": 430,
+      "line": 428,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "e.message",
@@ -73159,7 +73159,7 @@
     },
     {
       "path": "server/lib/scanners/readarr/index.ts",
-      "line": 528,
+      "line": 526,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -73168,7 +73168,7 @@
     },
     {
       "path": "server/lib/scanners/readarr/index.ts",
-      "line": 528,
+      "line": 526,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",

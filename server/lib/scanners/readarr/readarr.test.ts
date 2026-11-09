@@ -1092,6 +1092,62 @@ describe('Readarr Scanner', () => {
     );
   });
 
+  for (const serviceType of ['ebook', 'audiobook'] as const) {
+    it(`keeps case-sensitive opaque work identities separate for ${serviceType}`, async () => {
+      const foreignIds = ['googlebooks:AbC123', 'googlebooks:abc123'];
+      const rows = await getRepository(Media).save(
+        foreignIds.map(
+          (foreignBookId) =>
+            new Media({
+              tmdbId: 0,
+              mediaType: MediaType.BOOK,
+              status: MediaStatus.PROCESSING,
+              identifiers: [
+                new MediaIdentifier({
+                  provider: MediaIdentifierProvider.BOOKSHELF,
+                  value: makeBookshelfBookId(1, foreignBookId),
+                  canonical: true,
+                }),
+              ],
+            })
+        )
+      );
+      configureReadarr([{ id: 1, serviceType }]);
+      getBooksImpl = async () =>
+        foreignIds.map((foreignBookId, i) =>
+          fakeReadarrBook({
+            id: 800 + i,
+            foreignBookId,
+            title: `Distinct work ${i}`,
+            editions: [],
+            monitored: true,
+            statistics: { bookFileCount: i === 0 ? 1 : 0, totalBookCount: 1 },
+          })
+        );
+      await readarrScanner.run();
+      const owned = await getRepository(Media).findOneByOrFail({
+        id: rows[0].id,
+      });
+      const missing = await getRepository(Media).findOneByOrFail({
+        id: rows[1].id,
+      });
+      assert.equal(owned.status, MediaStatus.AVAILABLE);
+      assert.notEqual(missing.status, MediaStatus.AVAILABLE);
+      assert.deepEqual(
+        serviceType === 'ebook'
+          ? missing.availableEbookServiceIds
+          : missing.availableAudiobookServiceIds,
+        []
+      );
+      assert.equal(
+        serviceType === 'ebook'
+          ? missing.externalServiceId
+          : missing.audiobookExternalServiceId,
+        801
+      );
+    });
+  }
+
   for (const emptyFirst of [false, true]) {
     it(`duplicate same-format records pool file evidence (empty record ${emptyFirst ? 'first' : 'last'})`, async () => {
       const requested = await getRepository(Media).save(

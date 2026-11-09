@@ -211,11 +211,9 @@ class ReadarrScanner
     const foreignBookId = book.foreignBookId?.trim();
     if (!foreignBookId) return undefined;
     // Every spelling of one work (hc:N, hardcover:N, bare N) yields the same
-    // alias set, so its smallest member is a stable group key.
-    return this.readarrApi
-      .getKnownBookIdentityAliases(foreignBookId)
-      .map((alias) => alias.toLowerCase())
-      .sort()[0];
+    // alias set, so its smallest member is a stable group key. Opaque provider
+    // IDs can be case-sensitive; only the negotiated adapter defines aliases.
+    return this.readarrApi.getKnownBookIdentityAliases(foreignBookId).sort()[0];
   }
 
   private indexReadarrWorkFileRecords(): void {

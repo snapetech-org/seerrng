@@ -19,6 +19,7 @@ tags. The comparison link is the complete commit range.
 - Integrate [@ncbudd](https://github.com/ncbudd)’s Lumen fixes in [#624](https://github.com/snapetech-org/seerrng/pull/624), [#626](https://github.com/snapetech-org/seerrng/pull/626), [#627](https://github.com/snapetech-org/seerrng/pull/627) and [#628](https://github.com/snapetech-org/seerrng/pull/628): visible sign-out errors, working Audiobookshelf book links, progressive request titles, correct narrations, verified large request lists and retryable failures. Validate Audiobookshelf URL paths and omit credentials and query tokens from links.
 
 - Finish narrator requests from verified edition files during metadata outages, preserve ownership across empty duplicate scans, resolve catalogues larger than 200 identifiers, and keep ebook/audiobook request state separate. Contribution by [@ncbudd](https://github.com/ncbudd) in [#630](https://github.com/snapetech-org/seerrng/pull/630), with identity safeguards, bounded database work and retryable detail errors added during review.
+- Preserve case-sensitive opaque provider IDs when pooling duplicate book scan observations, preventing file evidence from marking a different work available.
 - Keep ready request rows visible when a different media category is slow to load, including mixed movie/music lists.
 
 ## [3.72.27](https://github.com/snapetech-org/seerrng/compare/v3.72.26..v3.72.27) - 2026-11-09
