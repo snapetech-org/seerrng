@@ -438,7 +438,13 @@ const fetchBook = (bid: string) => {
 // movie/series lookups share SeerrNG's 60-a-minute metadata limit with the rest of the app: after
 // a 429, stop for this visit so browsing keeps working (the rest are named next visit)
 let limited = false;
-async function describeAll(list: RequestItem[]): Promise<Row[]> {
+// A slow lookup (a title SeerrNG has to fetch, a book while the metadata service is busy) shouldn't
+// hold back the whole list: `partial` gets the rows at once, with names already known or a plain
+// label, and again as lookups finish. Types without a plain label wait for their lookup.
+async function describeAll(
+  list: RequestItem[],
+  partial?: (rows: Row[]) => void
+): Promise<Row[]> {
   const generation = sessionGeneration();
   const out: Row[] = new Array(list.length);
   let next = 0;
@@ -446,6 +452,24 @@ async function describeAll(list: RequestItem[]): Promise<Row[]> {
   bookLimited = false;
   bookCalls.clear();
   limited = false;
+  const first = list.map((r): Row | null =>
+    described.has(r.id)
+      ? { ...described.get(r.id)!, r }
+      : r.type === 'book'
+        ? bookPlaceholder(r)
+        : r.type === 'movie' || r.type === 'tv'
+          ? titlePlaceholder(r)
+          : null
+  );
+  const showsEarly = !!partial && first.every(Boolean);
+  let finished = false;
+  let timer: number | undefined;
+  const show = () => {
+    timer = undefined;
+    if (finished || generation !== sessionGeneration()) return;
+    partial!(first.map((row, i) => out[i] || row!));
+  };
+  if (showsEarly) show();
   const worker = async () => {
     while (next < list.length && generation === sessionGeneration()) {
       const i = next++;
@@ -458,9 +482,16 @@ async function describeAll(list: RequestItem[]): Promise<Row[]> {
           ? { ...described.get(r.id)!, r }
           : titlePlaceholder(r);
       else out[i] = await describe(r);
+      if (showsEarly && timer === undefined)
+        timer = window.setTimeout(show, 250);
     }
   };
-  await Promise.all(Array.from({ length: 4 }, worker));
+  try {
+    await Promise.all(Array.from({ length: 4 }, worker));
+  } finally {
+    finished = true;
+    window.clearTimeout(timer);
+  }
   if (generation === sessionGeneration()) saveDescribed();
   return out;
 }
@@ -772,7 +803,8 @@ export default function Requests() {
     Promise.all([pending, started, list(show, take)])
       .then(async ([waitingList, startedList, rest]) => {
         const rows = await describeAll(
-          merge(waitingList, startedList, rest.results)
+          merge(waitingList, startedList, rest.results),
+          (early) => live && setOthers(early)
         );
         if (!live) return;
         setOthers(rows);
@@ -802,7 +834,21 @@ export default function Requests() {
         `/request?take=40&skip=0&filter=all&sort=added&requestedBy=${user.id}`
       ).then((d) => d.results),
       startedDownloads(`&requestedBy=${user.id}`).catch(() => []),
-    ]).then(([recent, started]) => describeAll(merge(recent, started)));
+    ]).then(([recent, started]) =>
+      describeAll(
+        merge(recent, started),
+        // with games on, the list waits for both so game requests don't pop in later
+        extras.games.length
+          ? undefined
+          : (early) =>
+              live &&
+              setRows(
+                [...early].sort((x, y) =>
+                  y.r.createdAt.localeCompare(x.r.createdAt)
+                )
+              )
+      )
+    );
     // game requests only when a games category is on (the endpoint refuses otherwise)
     const games = extras.games.length
       ? api<{ results: SoftwareRequest[] }>(
