@@ -36,6 +36,9 @@ final class ServerStore: ObservableObject {
         guard let index = servers.firstIndex(where: { $0.id == id }) else { return nil }
         let removed = servers.remove(at: index)
         persist()
+        // Static store removal can run before any browser has initialized WebKit.
+        // Initialize its main run loop on the main actor before background cleanup.
+        _ = WKWebsiteDataStore.default()
         Task {
             // Let SwiftUI release any web view using this server before deleting its store.
             try? await Task.sleep(for: .milliseconds(300))
