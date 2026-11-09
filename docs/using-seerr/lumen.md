@@ -36,7 +36,7 @@ SeerrNG's API.
 
 :::note
 Lumen has prebuilt images for amd64 and arm64 at
-`ghcr.io/snapetech-org/seerrng-lumen`. The examples use `:latest`; use `:v3.72.28`
+`ghcr.io/snapetech-org/seerrng-lumen`. The examples use `:latest`; use `:v3.72.29`
 to pin a release. Docker downloads the image when you start it.
 :::
 

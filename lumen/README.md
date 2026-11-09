@@ -101,7 +101,7 @@ docker compose up -d
 Already running SeerrNG? [`compose.lumen-only.yaml`](./compose.lumen-only.yaml) installs Lumen alone; set `SEERR_INTERNAL_URL` in it to your SeerrNG.
 
 Prebuilt images support amd64 and arm64. To update either Compose install, run
-`docker compose pull && docker compose up -d`. Use `:v3.72.28` instead of `:latest`
+`docker compose pull && docker compose up -d`. Use `:v3.72.29` instead of `:latest`
 to pin a release.
 
 Or run the published image without Compose:

@@ -158,6 +158,7 @@ test('a superseded restoration cannot detach the current account stylesheet', as
     'link[data-interface-theme-id="persiusNG"]'
   );
   expect(pending?.media).toBe('not all');
+  const detachPending = vi.spyOn(pending!, 'remove');
   fixture.user = account(2, 'aurora', 'persiusNG');
   await act(async () => render());
   expect(
@@ -168,12 +169,56 @@ test('a superseded restoration cannot detach the current account stylesheet', as
   });
   expect(theme.interfaceTheme).toBe('persiusNG');
   expect(theme.palette).toBe('aurora');
+  expect(detachPending).not.toHaveBeenCalled();
   expect(pending?.isConnected).toBe(true);
   expect(pending?.media).toBe('all');
   expect(previous?.isConnected).toBe(false);
   expect(
     document.querySelectorAll('link[data-interface-theme-stylesheet]')
   ).toHaveLength(1);
+});
+
+test('a failed preference save releases only its unused candidate stylesheet', async () => {
+  fixture.user = account(1, 'seerr', 'seerrOrig');
+  await act(async () => render());
+  const original = document.querySelector<HTMLLinkElement>(
+    'link[data-interface-theme-id="seerrOrig"]'
+  );
+  fixture.post.mockRejectedValue(new Error('Save failed'));
+  await act(async () => {
+    await expect(theme.setInterfaceTheme('seerrNGJ')).rejects.toThrow(
+      'Save failed'
+    );
+  });
+  expect(original?.isConnected).toBe(true);
+  expect(original?.media).toBe('all');
+  expect(document.documentElement.dataset.interfaceTheme).toBe('seerrOrig');
+  expect(
+    document.querySelector('link[data-interface-theme-id="seerrNGJ"]')
+  ).toBeNull();
+});
+
+test('a failed restoration keeps the applied identity and loaded stylesheet together', async () => {
+  fixture.user = account(1, 'seerr', 'seerrOrig');
+  await act(async () => render());
+  const original = document.querySelector<HTMLLinkElement>(
+    'link[data-interface-theme-id="seerrOrig"]'
+  );
+  vi.mocked(document.head.append).mockRestore();
+  stylesheetObserver.disconnect();
+  fixture.user = account(2, 'aurora', 'seerrNGJ');
+  await act(async () => render());
+  const pending = document.querySelector<HTMLLinkElement>(
+    'link[data-interface-theme-id="seerrNGJ"]'
+  );
+  await act(async () => pending?.dispatchEvent(new dom.window.Event('error')));
+  expect(original?.isConnected).toBe(true);
+  expect(original?.media).toBe('all');
+  expect(theme.interfaceTheme).toBe('seerrOrig');
+  expect(document.documentElement.dataset.interfaceTheme).toBe('seerrOrig');
+  expect(
+    document.querySelector('link[data-interface-theme-id="seerrNGJ"]')
+  ).toBeNull();
 });
 
 test('later logins restore the account choice instead of resetting it or sharing another user choice', async () => {

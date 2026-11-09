@@ -236,3 +236,59 @@ correct Ebook/Audiobook labels at 390/1440. Reviewed
 `edition-recovery/requests-gallery.jpg`; no page errors or overflow. Opaque work
 identity negative checks also remain green. This is local source qualification;
 new merged-head CI and published-image verification remain required before release.
+
+
+## Native stylesheet lifetime and withheld 3.72.28 candidate
+
+The 3.72.28 tag remains immutable at 95b40d7c. Release run 42687418443
+was cancelled before publication after the d5e6995e browser shard 4 failure
+exposed a real restoration race. The GitHub release is still a draft with no
+published timestamp. Its versioned main image exists for evidence; it is not
+the replacement release. 3.72.29 supersedes that candidate and includes PR634.
+
+An obsolete restoration effect removed the pending stylesheet shared with its
+current successor. Reattaching the link after load temporarily unloaded CSS,
+moving the native save button during a click. A new unit assertion fails on
+the original code even though the final link remains connected. A real delayed
+catalogue/CSS browser probe reproduced target stylesheet removals in all four
+Orig/John × 390/1440 states on the actual 3.72.28 image.
+
+The loader now grants explicit leases, retains shared links while any consumer
+owns them, and releases only unused candidates. Switching deactivates a still
+owned link without detaching it. A failed restore retains the applied stylesheet
+and theme identity together; failed preference saves retain the previous theme.
+No dimensions, colours, spacing, or CSS declarations changed.
+
+The 3.72.29 production build passes. The matching delayed-load probe records zero
+target removals and constant save-button geometry in all four states: Orig 38px
+and John 24px, as specified by the existing shared action geometry. An initial
+probe incorrectly assumed every theme should exceed 30px; the check now asserts
+each established source-owned size and continuity. The original removal evidence
+still fails. Reviewed `theme-lifetime-comparison.jpg`: settled baseline/candidate
+layouts match, and Orig and John retain their distinct layouts. Ten isolated
+repetitions of the previously failing John/1440 email save/retry/reload case pass.
+
+The first repetition batch overlapped another test process using the same artifact
+directory and lost a trace file; that infrastructure-invalid run is retained and
+superseded by the isolated ten-pass batch. The first two probe attempts lacked
+CSRF bootstrap and returned 403; corrected browser checks retain CSRF protection.
+Further settings, delayed catalogue, exact-head CI and shipped-image qualification
+are recorded below when completed. Issues #625/#629 remain open until then.
+
+Final local stylesheet milestone: all 64 settings scenarios (16 routes × Orig/John
+× 390/1440) are covered by 60 passing first-run cases and all four corrected
+category cases. Six delayed-catalogue/stylesheet plus deliberate CSS-order cases
+also pass after ending the artificial delay before the deliberate DOM reorder.
+The cloned fixture contained an unsupported `magazines` key alongside canonical
+`magazine`; strict category validation correctly rejected that hand-edited test
+configuration with 400. Removed only that extra fixture key after stopping the
+fixture process; no validation rule was relaxed. All ten corrected cases pass.
+Theme provider/layout tests pass 12/12, client types, lint, formatting and the
+production build pass. Original traces, corrected runs, screenshots and probe
+reports remain in the task artifact directory. Exact-head hosted browser and
+release-contract validation must still pass before tagging 3.72.29.
+
+The d5e6995e CI run 42687917148 has completed: all backend/native, Vitest,
+build/type/lint, tooling, Cypress, ARM64, docs and chart jobs pass. Its sole
+failure is the native browser save race described above; final browser CI will
+qualify the repair. Lumen run 42687735933 passed on the unchanged bundled source.

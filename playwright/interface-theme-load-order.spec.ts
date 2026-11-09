@@ -31,6 +31,41 @@ for (const theme of ['seerrOrig', 'seerrNGJ', 'persiusNG']) {
             await page.request.post(endpoint, { headers, data: { theme } })
           ).status()
         ).toBe(200);
+        // Catalogue restoration and account restoration share a pending link.
+        // An obsolete effect must not detach that link while its successor owns it.
+        await page.addInitScript(() => {
+          const state = window as unknown as {
+            themeStylesheetRemovals: string[];
+          };
+          state.themeStylesheetRemovals = [];
+          new MutationObserver((records) => {
+            for (const record of records) {
+              for (const node of record.removedNodes) {
+                if (
+                  node instanceof HTMLLinkElement &&
+                  node.hasAttribute('data-interface-theme-stylesheet')
+                ) {
+                  state.themeStylesheetRemovals.push(
+                    node.dataset.interfaceThemeId ?? ''
+                  );
+                }
+              }
+            }
+          }).observe(document, { childList: true, subtree: true });
+        });
+        await page.route('**/api/v1/interface-themes', async (route) => {
+          const response = await route.fetch();
+          await new Promise((resolve) => setTimeout(resolve, 150));
+          await route.fulfill({ response });
+        });
+        await page.route(
+          `**/api/v1/interface-themes/${theme}/theme.css`,
+          async (route) => {
+            const response = await route.fetch();
+            await new Promise((resolve) => setTimeout(resolve, 450));
+            await route.fulfill({ response });
+          }
+        );
         await page.goto('/settings/plex');
         await expect(page.locator('html')).toHaveAttribute(
           'data-interface-theme',
@@ -42,6 +77,16 @@ for (const theme of ['seerrOrig', 'seerrNGJ', 'persiusNG']) {
           );
           return Boolean(link?.sheet && link.media !== 'not all');
         }, theme);
+        expect(
+          await page.evaluate(
+            (theme) =>
+              (
+                window as unknown as { themeStylesheetRemovals: string[] }
+              ).themeStylesheetRemovals.filter((id) => id === theme),
+            theme
+          )
+        ).toEqual([]);
+        await page.unrouteAll({ behavior: 'wait' });
         const values = await page.evaluate(async (theme) => {
           const link = document.querySelector<HTMLLinkElement>(
             `link[data-interface-theme-stylesheet][data-interface-theme-id="${theme}"]`

@@ -201,3 +201,26 @@ source-build fallback. This supersedes the earlier unpublished-repair checkpoint
 
 The73-issue human-workflow audit remains incomplete; these integration and
 security records do not certify every requested feature or live-provider action.
+
+## Lumen merge reconciliation — November 9, 2026
+
+The earlier statement that PR458 was closed and excluded describes an earlier
+unsafe snapshot and is superseded by the verified integration. GitHub records
+[PR458](https://github.com/snapetech-org/seerrng/pull/458) as genuinely merged on
+November 5 at 16:52:32 UTC: contributor head
+`8e95d483525f80245a2fcd343dcdc87032516cea` and merge
+[`b96557a98`](https://github.com/snapetech-org/seerrng/commit/b96557a98ad40b6b0bc3f7432e2eb8c21e9605a8)
+are both ancestors of current main. Contributor changes
+[`676768f`](https://github.com/snapetech-org/seerrng/commit/676768fc58b44dea689cab71e7d5d44dade1d20e)
+(trust forwarding headers only from configured proxies) and
+[`835c271`](https://github.com/snapetech-org/seerrng/commit/835c271e3eb0322e36127c4336f36af694dca5e7)
+(mobile Plex handoff) are also preserved ancestors. The later contribution was
+integrated and hardened; it was not discarded.
+
+Current proxy ownership remains in `lumen/deploy/15-lumen-trusted-proxies.sh`
+and the nginx template. The frozen corrective source's
+[hosted Lumen qualification](https://github.com/snapetech-org/seerrng/actions/runs/42676086262)
+passes all 33 actual proxy/container tests, browser checks and dependency/image
+security gates. This establishes those tested trust boundaries; it does not
+expand the older review into an exhaustive historical package-source or physical
+device certification. CodeQL remains disabled under the owner directive.

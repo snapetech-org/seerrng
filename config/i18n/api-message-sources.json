@@ -9622,7 +9622,7 @@
       "callsites": [
         {
           "path": "src/context/ThemeContext.tsx",
-          "line": 1374,
+          "line": 1426,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Theme preference was not confirmed.'",
@@ -23792,7 +23792,7 @@
       "callsites": [
         {
           "path": "src/context/ThemeContext.tsx",
-          "line": 1564,
+          "line": 1608,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'useTheme must be used inside ThemeProvider'",
@@ -35118,7 +35118,7 @@
       "callsites": [
         {
           "path": "src/context/ThemeContext.tsx",
-          "line": 1416,
+          "line": 1468,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Sign in and choose an installed interface theme after the current save finishes.'",
@@ -38462,7 +38462,7 @@
       "callsites": [
         {
           "path": "src/context/ThemeContext.tsx",
-          "line": 1364,
+          "line": 1416,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Sign in and choose a valid theme after the current save finishes.'",
@@ -39840,7 +39840,7 @@
       "callsites": [
         {
           "path": "src/context/ThemeContext.tsx",
-          "line": 1428,
+          "line": 1481,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Interface theme preference was not confirmed.'",
@@ -56312,7 +56312,7 @@
       "callsites": [
         {
           "path": "src/context/ThemeContext.tsx",
-          "line": 1488,
+          "line": 1532,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Sign in to save advanced theme settings.'",
@@ -57510,7 +57510,7 @@
       "callsites": [
         {
           "path": "src/context/ThemeContext.tsx",
-          "line": 934,
+          "line": 974,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Could not load the selected interface theme.'",
@@ -86589,7 +86589,7 @@
     },
     {
       "path": "src/context/ThemeContext.tsx",
-      "line": 1493,
+      "line": 1537,
       "kind": "app-error-candidate",
       "field": "message",
       "expression": "validation.error",

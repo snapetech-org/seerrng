@@ -9,9 +9,12 @@ v3.72.7 section consolidates changes from the requested v3.71.4 baseline
 through v3.72.7, including changes also represented by unpublished interim
 tags. The comparison link is the complete commit range.
 
-## [3.72.28](https://github.com/snapetech-org/seerrng/compare/v3.72.27..v3.72.28) - 2026-11-09
+## [3.72.29](https://github.com/snapetech-org/seerrng/compare/v3.72.27..v3.72.29) - 2026-11-09
 
 ### Fixed
+
+- Keep native stylesheets loaded during account/theme restoration, including cancelled and failed loads, so Orig and John retain their layout and working Save controls.
+- Reuse persisted public provider metadata after restart and during slow or transiently failing refreshes. Preserve invalidation, cancellation, terminal provider errors and shared cache limits. Contribution by [@ncbudd](https://github.com/ncbudd) in [#634](https://github.com/snapetech-org/seerrng/pull/634), with safety fixes added during review.
 
 - Restore native home access on upgrades and let administrators explicitly choose full SeerrNG, included Lumen or their existing companion. The Lumen sign-in page exposes native access before authentication. Reported by [@Tatsu941](https://github.com/Tatsu941) in [#629](https://github.com/snapetech-org/seerrng/issues/629).
 - Keep Save and Upload visible with actionable storage diagnostics, the actual UID/GID and draft-preserving rechecks. The short companion Compose guide supports UID/GID 1000 with a read-only root and one `/tmp` tmpfs.
@@ -22,6 +25,10 @@ tags. The comparison link is the complete commit range.
 - Preserve case-sensitive opaque provider IDs when pooling duplicate book scan observations, preventing file evidence from marking a different work available.
 - Keep ready request rows visible when a different media category is slow to load, including mixed movie/music lists.
 - Offer uncatalogued audiobook search results in audiobook-only households, draw readable covers for missing artwork, make card titles clickable, and recover stuck exact-edition requests from verified files. Contributions by [@ncbudd](https://github.com/ncbudd) in [#631](https://github.com/snapetech-org/seerrng/pull/631), [#632](https://github.com/snapetech-org/seerrng/pull/632) and [#633](https://github.com/snapetech-org/seerrng/pull/633), with permission, identity, concurrency and layout safeguards added during review.
+
+## [3.72.28](https://github.com/snapetech-org/seerrng/compare/v3.72.27..v3.72.28) - 2026-11-09
+
+**Unpublished draft.** Publication was stopped after headless QA exposed a shared stylesheet-lifetime race. Version 3.72.29 carries its fixes together with the subsequent theme and cache corrections. The immutable tag and retained build artifacts are preserved for audit.
 
 ## [3.72.27](https://github.com/snapetech-org/seerrng/compare/v3.72.26..v3.72.27) - 2026-11-09
 

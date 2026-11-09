@@ -903,7 +903,17 @@ type ThemeContextValue = {
 const THEME_MODE_KEY = 'seerr-theme-mode';
 const THEME_PALETTE_KEY = 'seerr-theme-palette';
 const THEME_STYLESHEET_ATTRIBUTE = 'data-interface-theme-stylesheet';
-const pendingThemeStylesheets = new Map<string, Promise<HTMLLinkElement>>();
+type PreparedThemeStylesheet = {
+  link: HTMLLinkElement;
+  ready: Promise<HTMLLinkElement>;
+  users: number;
+  loaded: boolean;
+};
+type ThemeStylesheetLease = {
+  ready: Promise<HTMLLinkElement>;
+  release: () => void;
+};
+const pendingThemeStylesheets = new Map<string, PreparedThemeStylesheet>();
 
 const getActiveThemeStylesheet = (): HTMLLinkElement | null =>
   Array.from(
@@ -912,46 +922,98 @@ const getActiveThemeStylesheet = (): HTMLLinkElement | null =>
     )
   ).find((link) => link.media !== 'not all') ?? null;
 
-const prepareThemeStylesheet = (themeId: string): Promise<HTMLLinkElement> => {
+const releaseUnusedThemeStylesheet = (
+  themeId: string,
+  prepared: PreparedThemeStylesheet
+): void => {
+  if (prepared.users || !prepared.loaded) return;
+  if (prepared.link !== getActiveThemeStylesheet()) prepared.link.remove();
+  if (pendingThemeStylesheets.get(themeId) === prepared)
+    pendingThemeStylesheets.delete(themeId);
+};
+
+const prepareThemeStylesheet = (themeId: string): ThemeStylesheetLease => {
   const active = getActiveThemeStylesheet();
-  if (active?.dataset.interfaceThemeId === themeId) {
-    return Promise.resolve(active);
+  let prepared = pendingThemeStylesheets.get(themeId);
+  let attach: HTMLLinkElement | undefined;
+  if (!prepared?.link.isConnected) {
+    if (active?.dataset.interfaceThemeId === themeId) {
+      prepared = {
+        link: active,
+        ready: Promise.resolve(active),
+        users: 0,
+        loaded: true,
+      };
+    } else {
+      const link = document.createElement('link');
+      link.rel = 'stylesheet';
+      link.media = 'not all';
+      link.href = `/api/v1/interface-themes/${encodeURIComponent(themeId)}/theme.css`;
+      link.setAttribute(THEME_STYLESHEET_ATTRIBUTE, '');
+      link.dataset.interfaceThemeId = themeId;
+      let resolve!: (value: HTMLLinkElement) => void;
+      let reject!: (error: Error) => void;
+      const ready = new Promise<HTMLLinkElement>((yes, no) => {
+        resolve = yes;
+        reject = no;
+      });
+      const entry: PreparedThemeStylesheet = {
+        link,
+        ready,
+        users: 0,
+        loaded: false,
+      };
+      link.onload = () => {
+        entry.loaded = true;
+        resolve(link);
+        releaseUnusedThemeStylesheet(themeId, entry);
+      };
+      link.onerror = () => {
+        entry.loaded = true;
+        link.remove();
+        reject(new Error('Could not load the selected interface theme.'));
+        releaseUnusedThemeStylesheet(themeId, entry);
+      };
+      prepared = entry;
+      attach = link;
+    }
+    pendingThemeStylesheets.set(themeId, prepared);
   }
-  const pending = pendingThemeStylesheets.get(themeId);
-  if (pending) return pending;
-
-  const link = document.createElement('link');
-  link.rel = 'stylesheet';
-  link.media = 'not all';
-  link.href = `/api/v1/interface-themes/${encodeURIComponent(themeId)}/theme.css`;
-  link.setAttribute(THEME_STYLESHEET_ATTRIBUTE, '');
-  link.dataset.interfaceThemeId = themeId;
-
-  const load = new Promise<HTMLLinkElement>((resolve, reject) => {
-    link.onload = () => resolve(link);
-    link.onerror = () => {
-      link.remove();
-      reject(new Error('Could not load the selected interface theme.'));
-    };
-    document.head.append(link);
-  });
-  pendingThemeStylesheets.set(themeId, load);
-  void load.then(
-    () => pendingThemeStylesheets.delete(themeId),
-    () => pendingThemeStylesheets.delete(themeId)
-  );
-  return load;
+  const entry = prepared;
+  entry.users++;
+  if (attach) document.head.append(attach);
+  let released = false;
+  return {
+    ready: entry.ready,
+    release: () => {
+      if (released) return;
+      released = true;
+      entry.users--;
+      releaseUnusedThemeStylesheet(themeId, entry);
+    },
+  };
 };
 
 const activateThemeStylesheet = (selected: HTMLLinkElement): void => {
   selected.media = 'all';
-  // Restoration effects share an in-flight load. A superseded subscriber may
-  // detach it before the current subscriber runs, so activation owns attachment.
+  // Preparation retains shared links until their consumers release them.
+  // Reattachment is only a fallback for an externally removed link.
   if (!selected.isConnected) document.head.append(selected);
   for (const link of document.head.querySelectorAll<HTMLLinkElement>(
     `link[${THEME_STYLESHEET_ATTRIBUTE}]`
   )) {
-    if (link !== selected) link.remove();
+    if (link === selected) continue;
+    const prepared = pendingThemeStylesheets.get(
+      link.dataset.interfaceThemeId ?? ''
+    );
+    // Another restoration or confirmed preference save may still own this
+    // loaded/pending link. Deactivate it without detaching or reloading it.
+    if (prepared?.link === link && prepared.users) link.media = 'not all';
+    else {
+      link.remove();
+      if (prepared?.link === link)
+        pendingThemeStylesheets.delete(link.dataset.interfaceThemeId ?? '');
+    }
   }
 };
 
@@ -1287,14 +1349,10 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
     // Old browser palettes must not override the one-time account migration.
     // Later logins and releases restore the user's newly saved account choice.
     let active = true;
-    let preparedStylesheet: HTMLLinkElement | undefined;
-    void prepareThemeStylesheet(selectedInterfaceTheme)
+    const stylesheetLease = prepareThemeStylesheet(selectedInterfaceTheme);
+    void stylesheetLease.ready
       .then((stylesheet) => {
-        preparedStylesheet = stylesheet;
-        if (!active) {
-          if (stylesheet !== getActiveThemeStylesheet()) stylesheet.remove();
-          return;
-        }
+        if (!active) return;
         activateThemeStylesheet(stylesheet);
         hasRestoredTheme.current = true;
         setModeState(restoredMode);
@@ -1310,26 +1368,20 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
       })
       .catch(() => {
         if (!active) return;
+        const fallbackTheme =
+          parseInterfaceTheme(
+            getActiveThemeStylesheet()?.dataset.interfaceThemeId
+          ) ?? DEFAULT_INTERFACE_THEME_ID;
         hasRestoredTheme.current = true;
         setModeState(restoredMode);
         setPaletteState(savedPalette);
-        setInterfaceThemeState(DEFAULT_INTERFACE_THEME_ID);
+        setInterfaceThemeState(fallbackTheme);
         setAdvancedThemeOverrides(savedOverrides);
-        applyTheme(
-          restoredMode,
-          savedPalette,
-          savedOverrides,
-          DEFAULT_INTERFACE_THEME_ID
-        );
+        applyTheme(restoredMode, savedPalette, savedOverrides, fallbackTheme);
       });
     return () => {
       active = false;
-      if (
-        preparedStylesheet &&
-        preparedStylesheet !== getActiveThemeStylesheet()
-      ) {
-        preparedStylesheet.remove();
-      }
+      stylesheetLease.release();
     };
   }, [
     interfaceThemes,
@@ -1417,9 +1469,10 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
         );
       }
       themeSaveActive.current = true;
-      let preparedStylesheet: HTMLLinkElement | undefined;
+      let stylesheetLease: ThemeStylesheetLease | undefined;
       try {
-        preparedStylesheet = await prepareThemeStylesheet(selectedTheme);
+        stylesheetLease = prepareThemeStylesheet(selectedTheme);
+        const preparedStylesheet = await stylesheetLease.ready;
         const { data } = await axios.post<{ interfaceTheme: string }>(
           `/api/v1/user/${userId}/settings/interface-theme`,
           { theme: selectedTheme }
@@ -1428,9 +1481,6 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
           throw new Error('Interface theme preference was not confirmed.');
         }
         if (currentUserId.current !== userId) {
-          if (preparedStylesheet !== getActiveThemeStylesheet()) {
-            preparedStylesheet.remove();
-          }
           return;
         }
         activateThemeStylesheet(preparedStylesheet);
@@ -1452,13 +1502,7 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
           false
         );
       } finally {
-        if (
-          preparedStylesheet &&
-          preparedStylesheet !== getActiveThemeStylesheet() &&
-          preparedStylesheet.isConnected
-        ) {
-          preparedStylesheet.remove();
-        }
+        stylesheetLease?.release();
         themeSaveActive.current = false;
       }
     },

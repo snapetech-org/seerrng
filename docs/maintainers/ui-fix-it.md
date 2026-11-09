@@ -170,3 +170,7 @@ shared settings load/retry state only while data is absent; cached forms retain
 their drafts through background errors. Exercise an actual revalidation after
 SWR's de-duplication window, and assert the rendered theme before accepting error
 captures. See [initial settings recovery](settings-initial-load-validation-2026-11-07.md).
+
+## Stylesheet restoration races
+
+When a theme loader shares pending stylesheets between account/catalogue restoration effects, verify continuous attachment through effect cleanup and activation. A final `isConnected` check misses detach/reattach cycles that unload styles and move click targets. Delay both the theme catalogue and stylesheet responses; record removals and control geometry while switching/restoring accounts. Compare phone and desktop native themes, failed stylesheet/save paths, and the retained active theme identity. Keep deliberate stylesheet reorder checks separate from the artificial network delay, because reordering itself can reload a link.
