@@ -265,6 +265,13 @@ h3 {
 .btn:active {
   transform: scale(0.97);
 }
+/* a main action that can't be pressed yet (e.g. Request while the server list loads) says so;
+   tonal buttons stay as they are, they double as status labels ("Requested") */
+.btn-primary:disabled {
+  opacity: 0.5;
+  cursor: default;
+  transform: none;
+}
 .btn-primary {
   background: var(--accent);
   color: var(--accent-ink);

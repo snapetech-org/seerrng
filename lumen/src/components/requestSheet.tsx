@@ -150,6 +150,8 @@ export function RequestSheet({
                   type="button"
                   aria-pressed={fourK === v}
                   onClick={() => {
+                    // the same choice keeps its server list, which won't report ready again
+                    if (v === fourK) return;
                     setFourK(v);
                     setReady(false);
                   }}

@@ -11,6 +11,7 @@ tags. The comparison link is the complete commit range.
 
 ## [3.72.26](https://github.com/snapetech-org/seerrng/compare/v3.72.25..v3.72.26) - 2026-11-09
 
+- Keep Lumen Request working when reselecting HD or 4K, continue productive filtered lists while retaining sparse-list request limits, and visibly disable unavailable primary actions (#623).
 - Initialize WebKit before deleting an unopened saved server's browser data in the iOS client, preventing the observed cleanup crash (#622).
 - Match automatic Lumen publication to the trusted release workflow path, including releases with custom run titles (#598).
 - Preserve v3.72.25's bundled Lumen default for existing and new users, native theme choices, request-layout repairs, and provider fixes.

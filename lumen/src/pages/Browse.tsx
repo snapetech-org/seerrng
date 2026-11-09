@@ -56,28 +56,32 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
   // Availability is filtered here, not by the API, so a filtered view reads TMDB's list a
   // page at a time. With a small library almost nothing matches, and an open-ended loop
   // would walk hundreds of pages and hit SeerrNG's rate limit for the whole account.
-  // Read a few pages at a time and let the person ask for more.
+  // Pages that keep finding titles go on loading as the person scrolls; a run of pages that
+  // finds less than a screenful stops and lets them ask for more.
   const PAGES_PER_LOOK = 5;
-  const [budget, setBudget] = useState(PAGES_PER_LOOK);
+  const SCREENFUL = 18;
   const filterKey = `${kind}|${show}|${q}`;
-  const [budgetFor, setBudgetFor] = useState(filterKey);
-  if (budgetFor !== filterKey) {
-    setBudgetFor(filterKey);
-    setBudget(PAGES_PER_LOOK);
-  }
-  const capped = show !== 'all' && !list.done && list.page >= budget;
+  const [look, setLook] = useState({ key: filterKey, page: 0, found: 0 });
+  if (look.key !== filterKey) setLook({ key: filterKey, page: 0, found: 0 });
+  else if (items.length - look.found >= SCREENFUL)
+    setLook({ key: filterKey, page: list.page, found: items.length });
+  const capped =
+    show !== 'all' &&
+    !list.done &&
+    list.page - look.page >= PAGES_PER_LOOK &&
+    items.length - look.found < SCREENFUL;
   useEffect(() => {
     if (
       show !== 'all' &&
-      items.length < 18 &&
+      items.length < SCREENFUL &&
       !list.done &&
       !list.loading &&
       !list.error &&
       list.page > 0 &&
-      list.page < budget
+      !capped
     )
       void list.more();
-  }, [show, items.length, list, budget]);
+  }, [show, items.length, list, capped]);
   const upd = (k: string, v: string) => {
     const n = new URLSearchParams(p);
     if (!v || v === 'all' || v === 'popularity.desc') n.delete(k);
@@ -207,7 +211,9 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
           <button
             className="btn btn-tonal btn-sm"
             style={{ marginTop: 10 }}
-            onClick={() => setBudget(list.page + PAGES_PER_LOOK)}
+            onClick={() =>
+              setLook({ key: filterKey, page: list.page, found: items.length })
+            }
           >
             Look further
           </button>
