@@ -901,6 +901,9 @@ export default function Requests() {
     }
   };
   const cancel = async (id: number) => {
+    // a second tap while the first is on its way would fail ("not found") after it worked
+    if (acting === id) return;
+    setActing(id);
     try {
       // game requests (negative ids here) are withdrawn through their own endpoint
       if (id < 0)
@@ -909,9 +912,13 @@ export default function Requests() {
         });
       else await cancelRequest(id);
       toast('Request cancelled');
+      // gone now, not after the list has refreshed
+      setRows((list) => list && list.filter((x) => x.r.id !== id));
       setTick((t) => t + 1);
     } catch (e) {
       toast(e instanceof Error ? e.message : 'Couldn’t cancel');
+    } finally {
+      setActing(null);
     }
   };
 
@@ -1149,6 +1156,7 @@ export default function Requests() {
                   ) : x.r.status === 1 ? (
                     <button
                       className="btn btn-sm btn-quiet"
+                      disabled={acting === x.r.id}
                       onClick={() => cancel(x.r.id)}
                     >
                       Cancel
