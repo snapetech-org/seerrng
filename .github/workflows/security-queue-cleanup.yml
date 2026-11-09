@@ -33,7 +33,7 @@ jobs:
           for run_id, sha in obsolete.items():
               run = api('GET', f'actions/runs/{run_id}')
               jobs = api('GET', f'actions/runs/{run_id}/jobs')['jobs']
-              if run['head_branch'] == 'codex/seerrng-security-verification-20261109' and run['head_sha'] == sha and run['status'] == 'queued' and not any(j['status'] == 'in_progress' for j in jobs):
+              if run['head_branch'] == 'codex/seerrng-security-verification-20261109' and run['head_sha'] == sha and run['status'] in ('queued', 'in_progress') and any(j['status'] == 'queued' for j in jobs) and not any(j['status'] == 'in_progress' for j in jobs):
                   api('POST', f'actions/runs/{run_id}/cancel')
                   print(f'Cancelled superseded queued verification {run_id}')
               else:
