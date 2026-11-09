@@ -9,7 +9,12 @@
     <copyright>Copyright 2026 SeerrNG contributors</copyright>
     <licenseUrl>https://github.com/snapetech-org/seerrng/blob/main/LICENSE</licenseUrl>
     <projectUrl>https://github.com/snapetech-org/seerrng</projectUrl>
-    <packageSourceUrl>https://github.com/snapetech-org/seerrng</packageSourceUrl>
+    <packageSourceUrl>https://github.com/snapetech-org/seerrng/tree/main/packaging/chocolatey</packageSourceUrl>
+    <projectSourceUrl>https://github.com/snapetech-org/seerrng</projectSourceUrl>
+    <docsUrl>https://github.com/snapetech-org/seerrng/blob/main/docs/README.md</docsUrl>
+    <mailingListUrl>https://github.com/snapetech-org/seerrng/discussions</mailingListUrl>
+    <bugTrackerUrl>https://github.com/snapetech-org/seerrng/issues</bugTrackerUrl>
+    <releaseNotes>https://github.com/snapetech-org/seerrng/releases</releaseNotes>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <summary>Self-hosted media request and discovery manager.</summary>
     <description>SeerrNG helps users discover and request media from connected services. This package installs the Windows x64 release as the SeerrNG service and retains its configuration when the package is removed.</description>
