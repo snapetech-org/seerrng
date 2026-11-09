@@ -1,5 +1,5 @@
 import Toast from '@app/components/Toast';
-import { useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 import { toast } from 'react-hot-toast';
 
 interface ToastOptions {
@@ -51,7 +51,8 @@ export const useToasts = () => {
     toast.dismiss(id);
   }, []);
 
-  return { addToast, removeToast };
+  // Effect consumers need a stable API, including setup library validation.
+  return useMemo(() => ({ addToast, removeToast }), [addToast, removeToast]);
 };
 
 export default useToasts;

@@ -13,6 +13,7 @@ interface LibraryItemProps {
   type?: string;
   typeLabel?: string;
   onToggle: () => void;
+  disabled?: boolean;
   /**
    * Shown as a small reclassify control when set. Used for Plex 'artist'
    * libraries, where music vs. audiobook can't be told apart automatically.
@@ -26,6 +27,7 @@ const LibraryItem = ({
   type,
   typeLabel,
   onToggle,
+  disabled = false,
   reclassify,
 }: LibraryItemProps) => {
   const intl = useIntl();
@@ -58,6 +60,7 @@ const LibraryItem = ({
               type="button"
               title={reclassify.label}
               aria-label={reclassify.label}
+              disabled={disabled}
               onClick={(e) => {
                 e.stopPropagation();
                 reclassify.onReclassify();
@@ -71,6 +74,7 @@ const LibraryItem = ({
         <div className="flex-shrink-0">
           <SelectionCircle
             selected={Boolean(isEnabled)}
+            disabled={disabled}
             label={name}
             onClick={onToggle}
           />
