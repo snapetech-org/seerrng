@@ -24,6 +24,7 @@ import {
   fmtHrs,
   Pill,
 } from '../components/detail';
+import { ServiceNote } from '../components/extra';
 import { useToast } from '../components/toast';
 import { dropCache, useApi } from '../hooks';
 import { Icon } from '../icons';
@@ -210,7 +211,8 @@ export default function BookDetail() {
   };
 
   if (error)
-    return f === 'ebook' ? (
+    // only "not found" means there's no ebook; a rate limit or outage can be tried again
+    return f === 'ebook' && first.errorStatus === 404 ? (
       <div className="empty">
         <b>No ebook edition found</b>ChaptarrNG only knows this book as an
         audiobook.{' '}
@@ -222,10 +224,7 @@ export default function BookDetail() {
         </Link>
       </div>
     ) : (
-      <div className="empty">
-        <b>Couldn’t load this book</b>
-        {error}
-      </div>
+      <ServiceNote error={error} what="this book" retry={reload} />
     );
   if (!b) return <div className="detail-loading" aria-busy="true" />;
 

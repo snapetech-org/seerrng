@@ -28,6 +28,7 @@ import {
   People,
   Pill,
 } from '../components/detail';
+import { ServiceNote } from '../components/extra';
 import { useToast } from '../components/toast';
 import { dropCache, useApi, usePublicSettings } from '../hooks';
 import { Icon } from '../icons';
@@ -97,12 +98,7 @@ export default function TvDetail() {
   }, [t, loc.hash]);
 
   if (error)
-    return (
-      <div className="empty">
-        <b>Couldn’t load this series</b>
-        {error}
-      </div>
-    );
+    return <ServiceNote error={error} what="this series" retry={reload} />;
   if (!t) return <div className="detail-loading" aria-busy="true" />;
 
   const n = sel.size;

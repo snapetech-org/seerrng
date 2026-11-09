@@ -263,3 +263,58 @@ test('an audiobook page lists narrations from SeerrNG editions', async ({
     )
   ).toBe(true);
 });
+
+test('a passing book lookup failure offers Retry instead of “no ebook”', async ({
+  page,
+}) => {
+  await fixtures(page);
+  let status = 404;
+  await page.route(/\/api\/v1\/book\/bookshelf[^/?]*$/, (route) =>
+    status === 200
+      ? route.fallback()
+      : route.fulfill({ status, json: { message: 'Too many requests' } })
+  );
+  // a real "not found" points to the audiobook
+  await page.goto(`/book/${encodeURIComponent(ebookId)}`);
+  await expect(page.getByText('No ebook edition found')).toBeVisible();
+
+  status = 429;
+  await page.reload();
+  const alert = page.getByRole('alert');
+  await expect(alert).toContainText('Couldn’t load this book');
+  await expect(page.getByText('No ebook edition found')).toHaveCount(0);
+  status = 200;
+  await alert.getByRole('button', { name: 'Retry' }).click();
+  await expect(
+    page.getByRole('heading', { name: 'Native book detail' })
+  ).toBeVisible();
+});
+
+test('a failed movie page can be retried', async ({ page }) => {
+  await fixtures(page);
+  let fail = true;
+  await page.route('**/api/v1/movie/77', (route) =>
+    fail
+      ? route.fulfill({
+          status: 503,
+          json: { message: 'Provider unavailable' },
+        })
+      : route.fulfill({
+          json: {
+            id: 77,
+            title: 'Retry Film',
+            genres: [],
+            releaseDate: '2020-01-01',
+          },
+        })
+  );
+  await page.route('**/api/v1/movie/77/recommendations', (route) =>
+    route.fulfill({ json: paged([]) })
+  );
+  await page.goto('/movie/77');
+  const alert = page.getByRole('alert');
+  await expect(alert).toContainText('Couldn’t load this movie');
+  fail = false;
+  await alert.getByRole('button', { name: 'Retry' }).click();
+  await expect(page.getByRole('heading', { name: 'Retry Film' })).toBeVisible();
+});
