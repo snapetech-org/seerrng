@@ -17,6 +17,7 @@ import MediaIdentifier, {
 } from '@server/entity/MediaIdentifier';
 import { MediaRequest } from '@server/entity/MediaRequest';
 import { MediaSearchMetadata } from '@server/entity/MediaSearchMetadata';
+import Season from '@server/entity/Season';
 import { User } from '@server/entity/User';
 import { UserSettings } from '@server/entity/UserSettings';
 import { Notification } from '@server/lib/notifications';
@@ -150,6 +151,80 @@ describe('comic request notification identity', () => {
 });
 
 describe('availability subscription notification intents', () => {
+  it('retires a 4K or season alert until the exact scope becomes available', async () => {
+    mock.method(
+      ExternalAPI.prototype as unknown as {
+        get: (...args: unknown[]) => Promise<unknown>;
+      },
+      'get',
+      async () => ({
+        name: 'Series',
+        first_air_date: '2020-01-01',
+        poster_path: '/series.jpg',
+      })
+    );
+    const user = await getRepository(User).findOneByOrFail({ id: 1 });
+    const media = await getRepository(Media).save(
+      new Media({
+        mediaType: MediaType.TV,
+        tmdbId: 329866,
+        status: MediaStatus.PARTIALLY_AVAILABLE,
+        status4k: MediaStatus.UNKNOWN,
+      })
+    );
+    const season = await getRepository(Season).save(
+      new Season({
+        media: Promise.resolve(media),
+        seasonNumber: 3,
+        status: MediaStatus.UNKNOWN,
+        status4k: MediaStatus.UNKNOWN,
+      })
+    );
+    const fourK: NotificationOutboxIntent = {
+      kind: 'media-availability-subscription',
+      mediaId: media.id,
+      userId: user.id,
+      is4k: true,
+    };
+    const thirdSeason: NotificationOutboxIntent = {
+      kind: 'media-availability-subscription',
+      mediaId: media.id,
+      userId: user.id,
+      is4k: false,
+      seasonNumber: 3,
+    };
+    assert.equal(
+      await hydrateNotificationIntent(Notification.MEDIA_AVAILABLE, fourK),
+      undefined
+    );
+    assert.equal(
+      await hydrateNotificationIntent(
+        Notification.MEDIA_AVAILABLE,
+        thirdSeason
+      ),
+      undefined
+    );
+    season.status = MediaStatus.AVAILABLE;
+    await getRepository(Season).save(season);
+    const readySeason = await hydrateNotificationIntent(
+      Notification.MEDIA_AVAILABLE,
+      thirdSeason
+    );
+    assert.equal(readySeason?.event, 'Season 3 Now Available');
+    assert.equal(
+      await hydrateNotificationIntent(Notification.MEDIA_AVAILABLE, fourK),
+      undefined
+    );
+    media.status4k = MediaStatus.AVAILABLE;
+    await getRepository(Media).save(media);
+    const ready4k = await hydrateNotificationIntent(
+      Notification.MEDIA_AVAILABLE,
+      fourK
+    );
+    assert.equal(ready4k?.eventMessage?.kind, 'available');
+    if (ready4k?.eventMessage?.kind === 'available')
+      assert.equal(ready4k.eventMessage.is4k, true);
+  });
   it('hydrates a private movie notification without the original request', async () => {
     mock.method(
       ExternalAPI.prototype as unknown as {

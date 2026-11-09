@@ -13,6 +13,8 @@ export const clientApiKeyAllows = (
 ): boolean => {
   if (method === 'GET' && path === '/auth/me') return true;
   if (scopes.includes('discover')) {
+    if (method === 'GET' && path === '/request/intent/capabilities')
+      return true;
     if (method === 'POST' && /^\/resolve(?:\/image)?\/?$/.test(path))
       return true;
     if (
@@ -25,7 +27,7 @@ export const clientApiKeyAllows = (
   return (
     scopes.includes('request') &&
     method === 'POST' &&
-    /^\/request\/?$/.test(path)
+    /^\/request(?:\/intent\/state)?\/?$/.test(path)
   );
 };
 

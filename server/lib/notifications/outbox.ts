@@ -101,6 +101,8 @@ export type NotificationOutboxIntent =
       kind: 'media-availability-subscription';
       mediaId: number;
       userId: number;
+      is4k?: boolean;
+      seasonNumber?: number;
     }
   | { kind: 'issue'; issueId: number; modifiedById?: number }
   | { kind: 'issue-comment'; commentId: number };
@@ -128,10 +130,22 @@ const parseStoredIntent = (value: unknown): NotificationOutboxIntent => {
     };
   }
   if (intent.kind === 'media-availability-subscription') {
+    if (intent.is4k !== undefined && typeof intent.is4k !== 'boolean') {
+      throw new Error('Notification outbox quality is invalid.');
+    }
     return {
       kind: intent.kind,
       mediaId: ensurePositiveInteger(intent.mediaId, 'media id'),
       userId: ensurePositiveInteger(intent.userId, 'user id'),
+      ...(intent.is4k === undefined ? {} : { is4k: intent.is4k }),
+      ...(intent.seasonNumber === undefined
+        ? {}
+        : {
+            seasonNumber: ensurePositiveInteger(
+              intent.seasonNumber,
+              'season number'
+            ),
+          }),
     };
   }
   if (intent.kind === 'issue') {

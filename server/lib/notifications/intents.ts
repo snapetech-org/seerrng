@@ -3,7 +3,7 @@ import ListenBrainzAPI from '@server/api/listenbrainz/index';
 import OpenLibraryAPI from '@server/api/openlibrary/index';
 import TheMovieDb from '@server/api/themoviedb/index';
 import { IssueStatus, IssueType, IssueTypeName } from '@server/constants/issue';
-import { MediaType } from '@server/constants/media';
+import { MediaStatus, MediaType } from '@server/constants/media';
 import { getRepository } from '@server/datasource';
 import Issue from '@server/entity/Issue';
 import IssueComment from '@server/entity/IssueComment';
@@ -512,7 +512,9 @@ const hydrateMediaRequestIntent = async (
 const hydrateMediaAvailabilitySubscriptionIntent = async (
   type: Notification,
   mediaId: number,
-  userId: number
+  userId: number,
+  is4k?: boolean,
+  seasonNumber?: number
 ): Promise<NotificationPayload | undefined> => {
   if (type !== Notification.MEDIA_AVAILABLE) {
     return undefined;
@@ -521,7 +523,7 @@ const hydrateMediaAvailabilitySubscriptionIntent = async (
   const [media, user] = await Promise.all([
     getRepository(Media).findOne({
       where: { id: mediaId },
-      relations: { identifiers: true, searchMetadata: true },
+      relations: { identifiers: true, searchMetadata: true, seasons: true },
     }),
     getRepository(User).findOne({
       where: { id: userId },
@@ -536,15 +538,39 @@ const hydrateMediaAvailabilitySubscriptionIntent = async (
     return undefined;
   }
 
+  // An outbox row can be delivered long after the subscriber enqueued it.
+  // Recheck the exact scope so a disappeared file cannot produce a false alert.
+  if (seasonNumber != null) {
+    const season = media.seasons?.find(
+      (row) => row.seasonNumber === seasonNumber
+    );
+    if (
+      !season ||
+      (is4k === undefined
+        ? season.status !== MediaStatus.AVAILABLE &&
+          season.status4k !== MediaStatus.AVAILABLE
+        : season[is4k ? 'status4k' : 'status'] !== MediaStatus.AVAILABLE)
+    )
+      return undefined;
+  } else if (
+    is4k !== undefined &&
+    media[is4k ? 'status4k' : 'status'] !== MediaStatus.AVAILABLE
+  ) {
+    return undefined;
+  }
+
   const { title, image } = await getMediaDetails(media);
   const mediaType = media.mediaType === MediaType.MOVIE ? 'Movie' : 'Series';
 
   return {
-    event: `${mediaType} Now Available`,
+    event:
+      seasonNumber == null
+        ? `${mediaType} Now Available`
+        : `Season ${seasonNumber} Now Available`,
     eventMessage: {
       kind: 'available',
       mediaType: media.mediaType,
-      is4k: false,
+      is4k: is4k ?? false,
     },
     subject: title,
     notifySystem: false,
@@ -697,7 +723,9 @@ export const hydrateNotificationIntent = (
       return hydrateMediaAvailabilitySubscriptionIntent(
         type,
         intent.mediaId,
-        intent.userId
+        intent.userId,
+        intent.is4k,
+        intent.seasonNumber
       );
     case 'issue':
       return hydrateIssueIntent(type, intent.issueId, intent.modifiedById);

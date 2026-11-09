@@ -156,10 +156,13 @@ import {
   parseOptionalQueryBoolean,
 } from '@server/utils/validation';
 import { Router, type Request } from 'express';
+import { createHash } from 'node:crypto';
 import { pipeline } from 'node:stream/promises';
 import { EntityNotFoundError } from 'typeorm';
+import requestIntentRoutes from './requestIntent';
 
 const requestRoutes = Router();
+requestRoutes.use('/intent', requestIntentRoutes);
 export const REQUEST_SERVICE_PROFILE_CONCURRENCY = 10;
 const maxBulkRequestItems = 100;
 const maxPersonMovieBulkRequestItems = 100;
@@ -3126,9 +3129,34 @@ requestRoutes.post<never, MediaRequestCreationResponse, MediaRequestBody>(
         });
       }
 
+      const requestKey = req.get('Idempotency-Key');
+      if (
+        requestKey !== undefined &&
+        (!/^[A-Za-z0-9_-]{16,128}$/.test(requestKey) ||
+          (body.value.userId !== undefined &&
+            body.value.userId !== req.user.id) ||
+          (body.value.mediaType !== MediaType.MOVIE &&
+            body.value.mediaType !== MediaType.TV))
+      ) {
+        return next({
+          status: 400,
+          message: 'Invalid request idempotency key or scope.',
+        });
+      }
+
       const request = await MediaRequest.request(body.value, req.user, {
         expectedCredentialVersion: getExpectedCredentialVersion(req),
         requestQuotaApproval: body.value.requestQuotaApproval === true,
+        idempotencyKey: requestKey
+          ? createHash('sha256')
+              .update(`${req.user.id}:${requestKey}`)
+              .digest('hex')
+          : undefined,
+        idempotencyFingerprint: requestKey
+          ? createHash('sha256')
+              .update(JSON.stringify(body.value))
+              .digest('hex')
+          : undefined,
       });
       const [viewerRequest] = await hydrateMediaRequestRelations([request], {
         viewer: req.user,
