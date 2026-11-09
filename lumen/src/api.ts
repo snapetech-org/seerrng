@@ -336,12 +336,17 @@ export const bookMediaForFormat = (
   media: MediaInfo | undefined,
   format: 'ebook' | 'audiobook'
 ): MediaInfo | undefined => {
+  if (!media) return media;
+  const hasRequests = Array.isArray((media as { requests?: unknown }).requests);
   if (
-    !media ||
-    (media.status !== MediaStatus.AVAILABLE &&
-      media.status !== MediaStatus.PARTIAL)
+    media.status !== MediaStatus.AVAILABLE &&
+    media.status !== MediaStatus.PARTIAL
   )
-    return media;
+    // the aggregate says requested/processing: with the requests at hand, say it only for the
+    // format that was actually asked for
+    return hasRequests
+      ? { ...media, status: requestedStatus(media, format) }
+      : media;
   const hasFiles = (ids: unknown) =>
     Array.isArray(ids) && ids.some((id) => Number.isSafeInteger(id) && id >= 0);
   const available =
@@ -352,9 +357,25 @@ export const bookMediaForFormat = (
         !!media.ratingKey ||
         (media.audiobookLibraryServiceId != null &&
           !!media.audiobookLibraryItemId);
-  return available
-    ? { ...media, status: MediaStatus.AVAILABLE }
-    : { ...media, status: undefined };
+  if (available) return { ...media, status: MediaStatus.AVAILABLE };
+  return { ...media, status: requestedStatus(media, format) };
+};
+// not in the library in this format: a request for it that's waiting for approval or already
+// handed to the book service still counts, so the page doesn't offer to request it again
+const requestedStatus = (
+  media: MediaInfo,
+  format: 'ebook' | 'audiobook'
+): number | undefined => {
+  const active = (
+    (media as { requests?: { status?: number; bookFormat?: string }[] })
+      .requests || []
+  ).filter(
+    (r) =>
+      (r.bookFormat ?? format) === format && (r.status === 1 || r.status === 2)
+  );
+  if (active.some((r) => r.status === 2)) return MediaStatus.PROCESSING;
+  if (active.length) return MediaStatus.PENDING;
+  return undefined;
 };
 
 // ---- detail shapes ----
