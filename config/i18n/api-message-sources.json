@@ -10772,7 +10772,7 @@
         },
         {
           "path": "server/index.ts",
-          "line": 131,
+          "line": 136,
           "kind": "authored-message-field",
           "field": "errorMessage",
           "expression": "error instanceof Error ? error.message : 'Unknown error'",
@@ -10780,7 +10780,7 @@
         },
         {
           "path": "server/index.ts",
-          "line": 722,
+          "line": 749,
           "kind": "authored-message-field",
           "field": "errorMessage",
           "expression": "error instanceof Error ? error.message : 'Unknown error'",
@@ -23338,6 +23338,25 @@
       ]
     },
     {
+      "key": "m59270ae9fcdb0f57f3d1",
+      "id": "utils.ApiMessage.m59270ae9fcdb0f57f3d1",
+      "source": "Provider read cancelled",
+      "defaultMessage": "Provider read cancelled",
+      "sourceHash": "59270ae9fcdb0f57f3d195b4030c0161f91a9372922fa047d1fc631e3468e189",
+      "parts": ["Provider read cancelled"],
+      "parameterCount": 0,
+      "callsites": [
+        {
+          "path": "server/api/externalapi.ts",
+          "line": 650,
+          "kind": "app-error-candidate",
+          "field": "message",
+          "expression": "'Provider read cancelled'",
+          "captured": []
+        }
+      ]
+    },
+    {
       "key": "m59487f06e706527dfbb5",
       "id": "utils.ApiMessage.m59487f06e706527dfbb5",
       "source": "[Whisparr] Failed to accept the scene request.",
@@ -35521,6 +35540,25 @@
       ]
     },
     {
+      "key": "m88daef5d98a65fdb2418",
+      "id": "utils.ApiMessage.m88daef5d98a65fdb2418",
+      "source": "Cache stale age must be a non-negative integer.",
+      "defaultMessage": "Cache stale age must be a non-negative integer.",
+      "sourceHash": "88daef5d98a65fdb24181e29f8ece0c6b32eac597ede823666733e6884e32ff7",
+      "parts": ["Cache stale age must be a non-negative integer."],
+      "parameterCount": 0,
+      "callsites": [
+        {
+          "path": "server/lib/cache.ts",
+          "line": 148,
+          "kind": "app-error-candidate",
+          "field": "message",
+          "expression": "'Cache stale age must be a non-negative integer.'",
+          "captured": []
+        }
+      ]
+    },
+    {
       "key": "m88e051482b4cdf0abbf9",
       "id": "utils.ApiMessage.m88e051482b4cdf0abbf9",
       "source": "Something went wrong trying to fetch series information",
@@ -46941,7 +46979,7 @@
       "callsites": [
         {
           "path": "server/lib/cache.ts",
-          "line": 108,
+          "line": 156,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Cache byte limit must be a positive integer.'",
@@ -51575,7 +51613,7 @@
       "callsites": [
         {
           "path": "server/api/externalapi.ts",
-          "line": 118,
+          "line": 124,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'External API base URLs must use HTTP or HTTPS.'",
@@ -52492,7 +52530,7 @@
       "callsites": [
         {
           "path": "server/api/externalapi.ts",
-          "line": 719,
+          "line": 799,
           "kind": "authored-message-field",
           "field": "errorMessage",
           "expression": "error instanceof Error ? error.message : 'Unknown cache error'",
@@ -52814,7 +52852,7 @@
       "callsites": [
         {
           "path": "server/api/externalapi.ts",
-          "line": 208,
+          "line": 214,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'External API cache options exceed safe limits.'",
@@ -54721,7 +54759,7 @@
       "callsites": [
         {
           "path": "server/lib/cache.ts",
-          "line": 105,
+          "line": 153,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Cache key limit must be a positive integer.'",
@@ -57324,7 +57362,7 @@
       "callsites": [
         {
           "path": "server/api/externalapi.ts",
-          "line": 697,
+          "line": 777,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'External API request capacity exceeded.'",
@@ -60705,7 +60743,7 @@
       "callsites": [
         {
           "path": "server/api/externalapi.ts",
-          "line": 121,
+          "line": 127,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'External API base URLs must not contain credentials.'",
@@ -60857,7 +60895,7 @@
       "callsites": [
         {
           "path": "server/api/externalapi.ts",
-          "line": 168,
+          "line": 174,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'External API request target is not allowed.'",
@@ -60865,7 +60903,7 @@
         },
         {
           "path": "server/api/externalapi.ts",
-          "line": 179,
+          "line": 185,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'External API request target is not allowed.'",
@@ -60873,7 +60911,7 @@
         },
         {
           "path": "server/api/externalapi.ts",
-          "line": 186,
+          "line": 192,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'External API request target is not allowed.'",
@@ -60881,7 +60919,7 @@
         },
         {
           "path": "server/api/externalapi.ts",
-          "line": 410,
+          "line": 416,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'External API request target is not allowed.'",
@@ -60889,7 +60927,7 @@
         },
         {
           "path": "server/api/externalapi.ts",
-          "line": 469,
+          "line": 475,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'External API request target is not allowed.'",
@@ -64459,7 +64497,7 @@
       "callsites": [
         {
           "path": "server/api/externalapi.ts",
-          "line": 245,
+          "line": 251,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`Unsupported external API cache option value: ${typeof value}.`",
@@ -65698,7 +65736,7 @@
     },
     {
       "path": "server/api/externalapi.ts",
-      "line": 719,
+      "line": 799,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : 'Unknown cache error'",
@@ -68065,7 +68103,7 @@
     },
     {
       "path": "server/index.ts",
-      "line": 130,
+      "line": 135,
       "kind": "message-helper-expression",
       "field": "message",
       "expression": "({\n  errorMessage: error instanceof Error ? error.message : 'Unknown error',\n  errorStack: error instanceof Error ? error.stack : undefined,\n})",
@@ -68074,7 +68112,7 @@
     },
     {
       "path": "server/index.ts",
-      "line": 131,
+      "line": 136,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : 'Unknown error'",
@@ -68083,7 +68121,7 @@
     },
     {
       "path": "server/index.ts",
-      "line": 509,
+      "line": 529,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "err.message",
@@ -68092,7 +68130,7 @@
     },
     {
       "path": "server/index.ts",
-      "line": 553,
+      "line": 573,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "err.message",
@@ -68101,7 +68139,7 @@
     },
     {
       "path": "server/index.ts",
-      "line": 668,
+      "line": 688,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "err.message",
@@ -68110,7 +68148,7 @@
     },
     {
       "path": "server/index.ts",
-      "line": 722,
+      "line": 749,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : 'Unknown error'",
@@ -68564,6 +68602,42 @@
       "kind": "authored-message-variable",
       "field": "BROWSER_IMAGE_STALE_IF_ERROR",
       "expression": "7 * 24 * 60 * 60",
+      "source": "{value0}",
+      "reason": "dynamic/provider/user value"
+    },
+    {
+      "path": "server/lib/cachePersistence.ts",
+      "line": 65,
+      "kind": "authored-message-field",
+      "field": "errorMessage",
+      "expression": "error instanceof Error ? error.message : String(error)",
+      "source": "{value0}",
+      "reason": "dynamic/provider/user value"
+    },
+    {
+      "path": "server/lib/cachePersistence.ts",
+      "line": 65,
+      "kind": "authored-message-field",
+      "field": "errorMessage",
+      "expression": "error instanceof Error ? error.message : String(error)",
+      "source": "{value0}",
+      "reason": "dynamic/provider/user value"
+    },
+    {
+      "path": "server/lib/cachePersistence.ts",
+      "line": 91,
+      "kind": "authored-message-field",
+      "field": "errorMessage",
+      "expression": "error instanceof Error ? error.message : String(error)",
+      "source": "{value0}",
+      "reason": "dynamic/provider/user value"
+    },
+    {
+      "path": "server/lib/cachePersistence.ts",
+      "line": 91,
+      "kind": "authored-message-field",
+      "field": "errorMessage",
+      "expression": "error instanceof Error ? error.message : String(error)",
       "source": "{value0}",
       "reason": "dynamic/provider/user value"
     },

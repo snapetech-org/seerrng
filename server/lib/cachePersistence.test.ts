@@ -36,6 +36,29 @@ describe('provider cache snapshots', () => {
     ]);
   });
 
+  it('writes simultaneous snapshots atomically without losing a writer', async () => {
+    const cache = make();
+    cache.data.set('trending', { results: [1, 2] }, 600);
+    const saved = await Promise.all(
+      Array.from({ length: 8 }, () => saveCacheSnapshots(directory, [cache]))
+    );
+    assert.ok(saved.every((count) => count === 1));
+    const restored = make();
+    assert.strictEqual(await restoreCacheSnapshots(directory, [restored]), 1);
+    assert.deepStrictEqual(restored.data.get('trending'), { results: [1, 2] });
+    assert.deepStrictEqual(await readdir(directory), [
+      'provider-cache-tmdb.json',
+    ]);
+  });
+
+  it('keeps optional cache storage failure nonfatal', async () => {
+    const blocked = path.join(directory, 'not-a-directory');
+    await writeFile(blocked, 'fixture');
+    const cache = make();
+    cache.data.set('trending', 1, 600);
+    assert.strictEqual(await saveCacheSnapshots(blocked, [cache]), 0);
+  });
+
   it('removes the snapshot when the cache is empty', async () => {
     const cache = make();
     cache.data.set('trending', 1, 600);

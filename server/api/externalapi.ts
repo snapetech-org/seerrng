@@ -3,7 +3,10 @@ import { recordCacheHit, recordExternalApiCall } from '@server/lib/metrics';
 import logger from '@server/logger';
 import { trackBackgroundTask } from '@server/utils/backgroundTasks';
 import { proxyRequestInterceptor } from '@server/utils/customProxyAgent';
-import { withTransientHttpRetry } from '@server/utils/httpError';
+import {
+  getHttpErrorDetails,
+  withTransientHttpRetry,
+} from '@server/utils/httpError';
 import {
   createSafeHttpRequestOptions,
   createSafeHttpUrl,
@@ -566,7 +569,13 @@ class ExternalAPI {
     const stale =
       ttl !== 0 ? getStaleCacheValue<T>(cache, cacheKey) : undefined;
     if (stale !== undefined && (!isUsableResponse || isUsableResponse(stale)))
-      return this.freshOrStale(fresh, stale, isUsableResponse);
+      return this.freshOrStale(
+        fresh,
+        stale,
+        isUsableResponse,
+        config?.signal,
+        () => cache?.del(cacheKey)
+      );
 
     const response = await fresh;
 
@@ -588,7 +597,9 @@ class ExternalAPI {
   private async freshOrStale<T>(
     fresh: Promise<T>,
     stale: T,
-    isUsableResponse?: (data: T) => boolean
+    isUsableResponse?: (data: T) => boolean,
+    signal?: AxiosRequestConfig['signal'],
+    invalidate?: () => unknown
   ): Promise<T> {
     let timer: NodeJS.Timeout | undefined;
     const waited = new Promise<undefined>((resolve) => {
@@ -599,25 +610,44 @@ class ExternalAPI {
       handle.unref();
       timer = handle;
     });
+    const cannotUseStale = (error: unknown) => {
+      const status = (error as { response?: { status?: number } })?.response
+        ?.status;
+      return (
+        signal?.aborted ||
+        axios.isCancel(error) ||
+        (status !== undefined &&
+          status < 500 &&
+          status !== 408 &&
+          status !== 429)
+      );
+    };
+    const refresh = fresh.catch((error: unknown) => {
+      if (cannotUseStale(error)) invalidate?.();
+      throw error;
+    });
     try {
       const result = await Promise.race([
-        fresh.then((data) => ({ data })),
+        refresh.then((data) => ({ data })),
         waited,
       ]);
       if (result && (!isUsableResponse || isUsableResponse(result.data))) {
         return result.data;
       }
     } catch (error) {
+      if (cannotUseStale(error)) throw error;
       logger.debug('Provider request failed; answering from an expired copy', {
         label: 'External API',
-        errorMessage: error instanceof Error ? error.message : String(error),
+        ...getHttpErrorDetails(error),
       });
     } finally {
       clearTimeout(timer);
     }
     // The provider call may still settle after this answer; never leave its
     // rejection unhandled.
-    fresh.catch(() => undefined);
+    refresh.catch(() => undefined);
+    if (signal?.aborted)
+      throw new axios.CanceledError('Provider read cancelled');
     recordCacheHit('external-api-stale');
     return stale;
   }

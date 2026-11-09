@@ -1,3 +1,4 @@
+import { cloneDeep } from 'lodash';
 import NodeCache from 'node-cache';
 import { serialize } from 'node:v8';
 
@@ -119,6 +120,7 @@ export class Cache {
   private readonly maxKeys: number;
   private readonly maxBytes: number;
   private totalBytes = 0;
+  private readonly keyExpiries = new Map<string, number>();
   /** Seconds an expired value stays available to getStale (0 = not kept). */
   public readonly staleMaxAge: number;
   /** Saved across restarts (public provider metadata only). */
@@ -157,7 +159,17 @@ export class Cache {
       stdTTL: options.stdTtl ?? DEFAULT_TTL,
       checkperiod: options.checkPeriod ?? DEFAULT_CHECK_PERIOD,
     });
+    // Explicit deletion must invalidate stale-only keys too: node-cache emits
+    // no del event when a key has already expired.
+    const deleteFresh = this.data.del.bind(this.data);
+    this.data.del = (keys) => {
+      for (const key of Array.isArray(keys) ? keys : [keys])
+        this.dropStale(String(key));
+      return deleteFresh(keys);
+    };
     this.data.on('set', (key: string, value: unknown) => {
+      this.dropStale(key);
+      this.keyExpiries.set(key, this.data.getTtl(key) ?? 0);
       this.totalBytes -= this.keyBytes.get(key) ?? 0;
       let entryBytes: number;
       try {
@@ -170,35 +182,37 @@ export class Cache {
       this.keyOrder.delete(key);
       this.keyOrder.set(key, undefined);
 
-      while (
-        this.keyOrder.size > this.maxKeys ||
-        this.totalBytes > this.maxBytes
-      ) {
-        const oldestKey = this.keyOrder.keys().next().value;
-        if (oldestKey === undefined) {
-          break;
-        }
-        this.data.del(oldestKey);
-      }
+      this.enforceBounds();
     });
     const forgetKey = (key: string) => {
       this.keyOrder.delete(key);
       this.totalBytes -= this.keyBytes.get(key) ?? 0;
       this.keyBytes.delete(key);
+      this.keyExpiries.delete(key);
     };
+    let deletedExpiry: { key: string; expiresAt: number } | undefined;
     // node-cache reports an expiry as "del" followed by "expired". A plain del
     // (invalidation, eviction) drops any stale copy; only an expiry keeps one.
     this.data.on('del', (key: string) => {
+      deletedExpiry = {
+        key,
+        expiresAt: this.keyExpiries.get(key) ?? Date.now(),
+      };
       forgetKey(key);
       this.dropStale(key);
     });
     this.data.on('expired', (key: string, value: unknown) => {
+      const expiredAt =
+        deletedExpiry?.key === key ? deletedExpiry.expiresAt : Date.now();
+      deletedExpiry = undefined;
       forgetKey(key);
-      if (this.staleMaxAge > 0) this.keepStale(key, value, Date.now());
+      if (this.staleMaxAge > 0) this.keepStale(key, value, expiredAt);
     });
     this.data.on('flush', () => {
       this.keyOrder.clear();
       this.keyBytes.clear();
+      this.keyExpiries.clear();
+      deletedExpiry = undefined;
       this.totalBytes = 0;
       this.stale.clear();
       this.staleBytes = 0;
@@ -214,7 +228,8 @@ export class Cache {
   }
 
   private keepStale(key: string, value: unknown, expiredAt: number): void {
-    if (value === undefined) return;
+    if (value === undefined || Date.now() - expiredAt > this.staleMaxAge * 1000)
+      return;
     let bytes: number;
     try {
       bytes = estimateCacheEntryBytes(key, value);
@@ -225,11 +240,22 @@ export class Cache {
     this.dropStale(key);
     this.stale.set(key, { value, expiredAt, bytes });
     this.staleBytes += bytes;
-    // Same bounds as fresh entries; the oldest expiry goes first.
-    while (this.stale.size > this.maxKeys || this.staleBytes > this.maxBytes) {
-      const oldest = this.stale.keys().next().value;
-      if (oldest === undefined) break;
-      this.dropStale(oldest);
+    this.enforceBounds();
+  }
+
+  private enforceBounds(): void {
+    while (
+      this.keyOrder.size + this.stale.size > this.maxKeys ||
+      this.totalBytes + this.staleBytes > this.maxBytes
+    ) {
+      const staleKey = this.stale.keys().next().value;
+      if (staleKey !== undefined) {
+        this.dropStale(staleKey);
+        continue;
+      }
+      const freshKey = this.keyOrder.keys().next().value;
+      if (freshKey === undefined) break;
+      this.data.del(freshKey);
     }
   }
 
@@ -240,7 +266,7 @@ export class Cache {
       this.dropStale(key);
       return undefined;
     }
-    return entry.value as T;
+    return cloneDeep(entry.value) as T;
   }
 
   /** Fresh and stale entries, for saving across a restart. */

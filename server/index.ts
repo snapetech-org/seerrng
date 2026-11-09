@@ -723,7 +723,7 @@ Promise.resolve()
               {
                 name: 'provider cache snapshot',
                 run: async () => {
-                  stopCacheSnapshots();
+                  await stopCacheSnapshots();
                   if (!skipCacheSnapshots) await saveCacheSnapshots();
                 },
               },

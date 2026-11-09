@@ -134,6 +134,55 @@ describe('Cache stale copies', () => {
     assert.strictEqual(cache.getStale('kept'), undefined);
   });
 
+  it('invalidates a stale-only key explicitly', () => {
+    const cache = new Cache('tmdb', 'Test', {
+      checkPeriod: 0,
+      staleMaxAge: 60,
+    });
+    cache.data.set('feed', { page: 1 }, 1);
+    later(2_000);
+    cache.data.get('feed');
+    cache.data.del('feed');
+    assert.strictEqual(cache.getStale('feed'), undefined);
+  });
+
+  it('does not restart the stale window when an old entry is read late', () => {
+    const cache = new Cache('tmdb', 'Test', {
+      checkPeriod: 0,
+      staleMaxAge: 60,
+    });
+    cache.data.set('feed', 1, 1);
+    later(70_000);
+    cache.data.get('feed');
+    assert.strictEqual(cache.getStale('feed'), undefined);
+  });
+
+  it('keeps stale reads isolated from caller mutation', () => {
+    const cache = new Cache('tmdb', 'Test', {
+      checkPeriod: 0,
+      staleMaxAge: 60,
+    });
+    cache.data.set('feed', { page: 1 }, 1);
+    later(2_000);
+    cache.data.get('feed');
+    cache.getStale<{ page: number }>('feed')!.page = 99;
+    assert.deepStrictEqual(cache.getStale('feed'), { page: 1 });
+  });
+
+  it('shares the existing capacity between fresh and stale keys', () => {
+    const cache = new Cache('tmdb', 'Test', {
+      checkPeriod: 0,
+      staleMaxAge: 60,
+      maxKeys: 1,
+    });
+    cache.data.set('old', 1, 1);
+    later(2_000);
+    cache.data.get('old');
+    cache.data.set('new', 2, 600);
+    assert.strictEqual(cache.getStale('old'), undefined);
+    assert.strictEqual(cache.data.get('new'), 2);
+  });
+
   it('keeps nothing stale unless the cache opts in', () => {
     const cache = new Cache('tmdb', 'Test cache', { checkPeriod: 0 });
     cache.data.set('feed', 1, 1);

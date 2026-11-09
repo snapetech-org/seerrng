@@ -2,6 +2,7 @@ import type { Cache, CacheSnapshot } from '@server/lib/cache';
 import cacheManager from '@server/lib/cache';
 import logger from '@server/logger';
 import { appDataPath } from '@server/utils/appDataVolume';
+import { randomUUID } from 'node:crypto';
 import { mkdir, readFile, rename, rm, stat, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 
@@ -31,18 +32,29 @@ export const saveCacheSnapshots = async (
   directory = defaultCacheSnapshotDirectory(),
   caches: Cache[] = persistedCaches()
 ): Promise<number> => {
-  await mkdir(directory, { recursive: true, mode: 0o700 });
+  try {
+    await mkdir(directory, { recursive: true, mode: 0o700 });
+  } catch {
+    logger.warn(
+      'Provider cache storage is unavailable; continuing without snapshots',
+      { label: 'Cache' }
+    );
+    return 0;
+  }
   let saved = 0;
   for (const cache of caches) {
     const file = snapshotFile(directory, cache);
-    const temporary = `${file}.${process.pid}.tmp`;
+    const temporary = `${file}.${randomUUID()}.tmp`;
     try {
       const snapshot = cache.snapshot();
       if (snapshot.entries.length === 0) {
         await rm(file, { force: true });
         continue;
       }
-      await writeFile(temporary, JSON.stringify(snapshot), { mode: 0o600 });
+      await writeFile(temporary, JSON.stringify(snapshot), {
+        mode: 0o600,
+        flag: 'wx',
+      });
       await rename(temporary, file);
       saved += snapshot.entries.length;
     } catch (error) {
@@ -86,14 +98,19 @@ export const restoreCacheSnapshots = async (
 /** Save periodically so a crash or forced stop loses at most one interval. */
 export const startCacheSnapshots = (
   directory = defaultCacheSnapshotDirectory()
-): (() => void) => {
+): (() => Promise<void>) => {
   let running: Promise<unknown> | undefined;
   const timer = setInterval(() => {
     if (running) return;
-    running = saveCacheSnapshots(directory).finally(() => {
-      running = undefined;
-    });
+    running = saveCacheSnapshots(directory)
+      .catch(() => undefined)
+      .finally(() => {
+        running = undefined;
+      });
   }, CACHE_SNAPSHOT_INTERVAL_MS);
   timer.unref();
-  return () => clearInterval(timer);
+  return async () => {
+    clearInterval(timer);
+    await running;
+  };
 };

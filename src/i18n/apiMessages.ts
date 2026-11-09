@@ -1209,6 +1209,7 @@ export const apiMessages: Record<
   m58cc0af8b9cf2a23c4bd: 'A valid user ID is required for a security read.',
   m58d3c977f18d617c1088: 'Series catalog not found.',
   m590def2c8b90f7d2af11: 'showIndexerDetails must be a boolean or null.',
+  m59270ae9fcdb0f57f3d1: 'Provider read cancelled',
   m59487f06e706527dfbb5: '[Whisparr] Failed to accept the scene request.',
   m594a332a6901f1f3e31b:
     'Open Library and configured book catalogs are unavailable. Please try again.',
@@ -1860,6 +1861,7 @@ export const apiMessages: Record<
   m88c798afb299eda189d5: 'Invalid collection identifier.',
   m88d16975f614a1419324: 'Issue mutation forbidden',
   m88d7c530bcd524263bff: 'Indexer search limits must be an object.',
+  m88daef5d98a65fdb2418: 'Cache stale age must be a non-negative integer.',
   m88e051482b4cdf0abbf9:
     'Something went wrong trying to fetch series information',
   m88f30d489936e14664b0: 'Radarr server not configured.',

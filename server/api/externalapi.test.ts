@@ -1026,11 +1026,12 @@ describe('ExternalAPI expired cache entries', () => {
             });
         })
     );
-    const started = Date.now();
+    const started = performance.now();
     assert.deepStrictEqual(await api.getForTest('/feed', undefined, 600), {
       version: 'old',
     });
-    assert.ok(Date.now() - started < STALE_RESPONSE_WAIT_MS + 1_000);
+    assert.ok(performance.now() - started >= STALE_RESPONSE_WAIT_MS - 10);
+    assert.ok(performance.now() - started < STALE_RESPONSE_WAIT_MS + 1_000);
     finish?.();
     await new Promise((resolve) => setImmediate(resolve));
     await new Promise((resolve) => setImmediate(resolve));
@@ -1044,12 +1045,55 @@ describe('ExternalAPI expired cache entries', () => {
     await expiredCache(api, cache);
     api.setAdapter(async () => {
       throw Object.assign(new Error('Service unavailable'), {
-        response: { status: 404 },
+        response: { status: 503 },
       });
     });
     assert.deepStrictEqual(await api.getForTest('/feed', undefined, 600), {
       version: 'old',
     });
+  });
+
+  for (const status of [401, 403, 404]) {
+    it(`does not conceal a provider ${status} behind a stale copy`, async () => {
+      const { cache, api } = setup();
+      await expiredCache(api, cache);
+      const failure = Object.assign(new Error('Provider denied request'), {
+        response: { status },
+      });
+      api.setAdapter(async () => {
+        throw failure;
+      });
+      await assert.rejects(api.getForTest('/feed', undefined, 600), failure);
+      assert.strictEqual(cache.snapshot().entries.length, 0);
+    });
+  }
+
+  it('does not answer stale after the caller aborts a slow read', async () => {
+    const { cache, api } = setup();
+    await expiredCache(api, cache);
+    const controller = new AbortController();
+    let finish: (() => void) | undefined;
+    api.setAdapter(
+      (config) =>
+        new Promise((resolve) => {
+          finish = () =>
+            resolve({
+              config,
+              data: { version: 'new' },
+              headers: {},
+              status: 200,
+              statusText: 'OK',
+            });
+        })
+    );
+    const request = api.getForTest('/feed', { signal: controller.signal }, 600);
+    setTimeout(() => controller.abort(), 50);
+    try {
+      await assert.rejects(request, { code: 'ERR_CANCELED' });
+    } finally {
+      finish?.();
+      await new Promise((resolve) => setImmediate(resolve));
+    }
   });
 
   it('prefers a provider answer that arrives in time', async () => {
