@@ -5,7 +5,13 @@ import {
   useNavigationType,
   useSearchParams,
 } from 'react-router-dom';
-import { api, type BookResult, type Paged, type TitleResult } from '../api';
+import {
+  ApiError,
+  api,
+  type BookResult,
+  type Paged,
+  type TitleResult,
+} from '../api';
 import { BookCard, Section, TitleCard } from '../components/cards';
 import { ServiceNote } from '../components/extra';
 import { useExtras } from '../extras';
@@ -101,6 +107,7 @@ export default function Search() {
         prefs.showBooks && (f === 'all' || f === 'ebook' || f === 'audio');
       const format = f === 'audio' ? 'audiobook' : 'ebook';
       let error: string | null = null;
+      let catalogueUnavailable = false;
       const failure = (e: unknown) => {
         error = e instanceof Error ? e.message : 'Search failed';
         return null;
@@ -114,7 +121,10 @@ export default function Search() {
         wantBooks
           ? api<Paged<BookResult>>(
               `/discover/books?format=${format}&query=${encodeURIComponent(term)}&page=1`
-            ).catch(failure)
+            ).catch((e: unknown) => {
+              catalogueUnavailable = e instanceof ApiError && e.status >= 500;
+              return failure(e);
+            })
           : null,
       ]);
       if (!live) return;
@@ -125,9 +135,25 @@ export default function Search() {
             ? r.mediaType === 'tv'
             : r.mediaType !== 'person'
       );
-      const foundBooks = (br?.results || []).filter(
+      let foundBooks = (br?.results || []).filter(
         (b) => b.mediaType === 'book'
       );
+      // The format-neutral metadata endpoint also serves audiobook-only households.
+      // Only canonical Open Library works can be retargeted as audiobook cards.
+      if (
+        format === 'audiobook' &&
+        wantBooks &&
+        (br || catalogueUnavailable) &&
+        !foundBooks.length
+      ) {
+        const more = await api<Paged<BookResult>>(
+          `/book/search?query=${encodeURIComponent(term)}&page=1`
+        ).catch(failure);
+        if (!live) return;
+        foundBooks = (more?.results || [])
+          .filter((b) => b.mediaType === 'book' && /^OL[1-9]\d*W$/.test(b.id))
+          .map((b) => ({ ...b, bookFormat: 'audiobook' }));
+      }
       setTitles(foundTitles);
       setBooks(foundBooks);
       setFailed(foundTitles.length || foundBooks.length ? null : error);

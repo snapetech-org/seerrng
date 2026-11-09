@@ -73123,7 +73123,7 @@
     },
     {
       "path": "server/lib/scanners/readarr/index.ts",
-      "line": 72,
+      "line": 89,
       "kind": "authored-message-variable",
       "field": "isSqliteBusyError",
       "expression": "(error: unknown): boolean =>\n  error instanceof Error &&\n  (error.message.includes('SQLITE_BUSY') ||\n    error.message.includes('database is locked'))",
@@ -73132,7 +73132,7 @@
     },
     {
       "path": "server/lib/scanners/readarr/index.ts",
-      "line": 73,
+      "line": 90,
       "kind": "message-helper-expression",
       "field": "message",
       "expression": "error instanceof Error &&\n  (error.message.includes('SQLITE_BUSY') ||\n    error.message.includes('database is locked'))",
@@ -73141,7 +73141,7 @@
     },
     {
       "path": "server/lib/scanners/readarr/index.ts",
-      "line": 101,
+      "line": 118,
       "kind": "message-helper-return",
       "field": "message",
       "expression": "{\n      running: this.running,\n      progress: this.progress,\n      total: this.items.length,\n      currentServer: this.currentServer,\n      servers: this.servers,\n    }",
@@ -73150,7 +73150,16 @@
     },
     {
       "path": "server/lib/scanners/readarr/index.ts",
-      "line": 428,
+      "line": 437,
+      "kind": "persisted-message-assignment",
+      "field": "failureReason",
+      "expression": "null",
+      "source": "{value0}",
+      "reason": "dynamic/provider/user value"
+    },
+    {
+      "path": "server/lib/scanners/readarr/index.ts",
+      "line": 651,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "e.message",
@@ -73159,7 +73168,7 @@
     },
     {
       "path": "server/lib/scanners/readarr/index.ts",
-      "line": 526,
+      "line": 749,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -73168,7 +73177,7 @@
     },
     {
       "path": "server/lib/scanners/readarr/index.ts",
-      "line": 526,
+      "line": 749,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",

@@ -1,15 +1,27 @@
 import BinderyAPI, { type BinderyBook } from '@server/api/bindery';
 import type { ReadarrBook } from '@server/api/servarr/readarr';
 import ReadarrAPI from '@server/api/servarr/readarr';
-import { MediaStatus, MediaType } from '@server/constants/media';
+import {
+  MediaRequestStatus,
+  MediaStatus,
+  MediaType,
+} from '@server/constants/media';
 import { getRepository } from '@server/datasource';
+import BookRequestSearch from '@server/entity/BookRequestSearch';
 import Media from '@server/entity/Media';
 import { MediaIdentifierProvider } from '@server/entity/MediaIdentifier';
 import {
+  MediaRequest,
+  getRequestMutationAdmissionKey,
+  runWithRequestAdmission,
+} from '@server/entity/MediaRequest';
+import {
   getBookAvailabilityStatus,
+  isBookRequestFileAvailable,
   recordBookFileAvailability,
 } from '@server/lib/bookAvailability';
 import { resolveOpenLibraryIdentifiersForReadarrBook } from '@server/lib/bookIdentifierResolver';
+import { hasRequestedEditionFiles } from '@server/lib/editionCompare/availability';
 import {
   normalizeExternalBookId,
   normalizeValidAsin,
@@ -30,13 +42,18 @@ import {
   runWithServarrServiceSnapshots,
 } from '@server/lib/serviceAdmission';
 import type { ReadarrSettings } from '@server/lib/settings';
-import { makeBookshelfBookId } from '@server/utils/bookshelfCatalog';
+import { isProviderBookEdition } from '@server/utils/bookEdition';
+import {
+  makeBookshelfBookId,
+  parseBookshelfBookId,
+} from '@server/utils/bookshelfCatalog';
 import { getHttpErrorDetails } from '@server/utils/httpError';
 import {
   getReadarrServiceFormats,
   type BookServiceFormat,
 } from '@server/utils/readarrService';
 import { uniqWith } from 'lodash';
+import { Between, In } from 'typeorm';
 
 type SyncStatus = StatusBase & {
   currentServer: ReadarrSettings;
@@ -175,6 +192,8 @@ class ReadarrScanner
                 : this.processReadarrBook(book as ReadarrBook),
             { sessionId }
           );
+          if (this.currentServer.backend !== 'bindery')
+            await this.completeVerifiedEditionRequests();
         } else {
           this.log(
             `Sync not enabled. Skipping Bookshelf server: ${server.name}`
@@ -230,6 +249,210 @@ class ReadarrScanner
         count > (getObservedReadarrFileCount(current, serviceType) ?? 0)
       ) {
         this.readarrWorkFileRecords.set(key, book);
+      }
+    }
+  }
+
+  /**
+   * An exact-edition request is only completed when its search operation sees
+   * the edition arrive. A file imported any other way (a manual import, an
+   * import retried after the operation ended, a server restart in between)
+   * left the request target "processing" forever, so the request stayed at
+   * "Adding to library" with the book on disk. Complete those targets from the
+   * same exact-edition evidence the search uses.
+   */
+  private async completeVerifiedEditionRequests(): Promise<void> {
+    const format = this.getReadarrServiceType();
+    const serverId = this.currentServer.id;
+    const repository = getRepository(MediaRequest);
+    const statuses = [
+      MediaRequestStatus.APPROVED,
+      MediaRequestStatus.COMPLETED,
+    ];
+    const books = new Map(
+      (this.items as ReadarrBook[]).map((book) => [book.id, book])
+    );
+    const highWatermark =
+      (
+        await repository.findOne({
+          where: { type: MediaType.BOOK, status: In(statuses) },
+          order: { id: 'DESC' },
+          select: { id: true },
+        })
+      )?.id ?? 0;
+    let cursor = 0;
+    while (this.running && cursor < highWatermark) {
+      const requests = await repository.find({
+        where: {
+          type: MediaType.BOOK,
+          status: In(statuses),
+          id: Between(cursor + 1, highWatermark),
+        },
+        relations: { media: { identifiers: true } },
+        order: { id: 'ASC' },
+        take: 100,
+      });
+      if (!requests.length) break;
+      cursor = requests[requests.length - 1].id;
+      for (const candidate of requests) {
+        if (!this.running) return;
+        if (!isProviderBookEdition(candidate.preferredEditionId)) continue;
+        const targetFor = (request: MediaRequest, bookId?: number) =>
+          statuses.includes(request.status) &&
+          (request.bookFormat === format ||
+            request.bookFormat === 'both' ||
+            (!request.bookFormat && format === 'ebook')) &&
+          ![MediaStatus.BLOCKLISTED, MediaStatus.DELETED].includes(
+            request.media.status
+          )
+            ? request.serviceTargets?.find(
+                (item) =>
+                  item.serviceType === 'readarr' &&
+                  item.format === format &&
+                  item.serverId === serverId &&
+                  (bookId == null || item.externalServiceId === bookId) &&
+                  (item.status === MediaStatus.PENDING ||
+                    item.status === MediaStatus.PROCESSING)
+              )
+            : undefined;
+        const target = targetFor(candidate);
+        const book =
+          target?.externalServiceId != null
+            ? books.get(target.externalServiceId)
+            : undefined;
+        if (!target || !book || !getObservedReadarrFileCount(book, format))
+          continue;
+        const matchesWork = (request: MediaRequest, slug?: string | null) => {
+          const aliases = new Set(
+            this.readarrApi.getKnownBookIdentityAliases(
+              book.foreignBookId ?? ''
+            )
+          );
+          if (slug && aliases.has(slug)) return true;
+          return (
+            request.media.identifiers?.some((identifier) => {
+              if (identifier.provider === MediaIdentifierProvider.READARR)
+                return aliases.has(identifier.value);
+              if (identifier.provider === MediaIdentifierProvider.BOOKSHELF) {
+                const scoped = parseBookshelfBookId(identifier.value);
+                return (
+                  scoped?.serviceId === serverId &&
+                  aliases.has(scoped.foreignBookId)
+                );
+              }
+              return (
+                identifier.provider === MediaIdentifierProvider.ISBN &&
+                !!normalizeReadarrIsbn(identifier.value) &&
+                book.editions?.some(
+                  (edition) =>
+                    normalizeReadarrIsbn(edition.isbn13) ===
+                    normalizeReadarrIsbn(identifier.value)
+                )
+              );
+            }) ?? false
+          );
+        };
+        if (!matchesWork(candidate, target.externalServiceSlug)) continue;
+        try {
+          await runWithRequestAdmission(
+            [getRequestMutationAdmissionKey(candidate.id)],
+            async () => {
+              const operationOwned = () =>
+                getRepository(BookRequestSearch).exists({
+                  where: {
+                    requestId: candidate.id,
+                    format,
+                    serviceId: serverId,
+                  },
+                });
+              if (await operationOwned()) return;
+              const request = await repository.findOne({
+                where: { id: candidate.id },
+                relations: { media: { identifiers: true } },
+              });
+              if (
+                !request ||
+                request.preferredEditionId !== candidate.preferredEditionId ||
+                request.media.id !== candidate.media.id
+              )
+                return;
+              const current = targetFor(request, book.id);
+              if (
+                !current ||
+                !matchesWork(request, current.externalServiceSlug)
+              )
+                return;
+              const owned = await runWithServarrServiceSnapshot(
+                'readarr',
+                this.currentServer,
+                () =>
+                  hasRequestedEditionFiles(
+                    this.readarrApi,
+                    book,
+                    request.preferredEditionId
+                  )
+              );
+              if (!owned) return;
+              // Match the existing media -> service lock order, and revalidate both
+              // authorities after metadata I/O before publishing any file evidence.
+              await runMediaEntityMutation(request.media, () =>
+                runWithServarrServiceSnapshot(
+                  'readarr',
+                  this.currentServer,
+                  async () => {
+                    const fresh = await repository.findOne({
+                      where: { id: candidate.id },
+                      relations: { media: { identifiers: true } },
+                    });
+                    if (
+                      !fresh ||
+                      fresh.preferredEditionId !==
+                        candidate.preferredEditionId ||
+                      fresh.media.id !== candidate.media.id ||
+                      (await operationOwned())
+                    )
+                      return;
+                    const freshTarget = targetFor(fresh, book.id);
+                    if (
+                      !freshTarget ||
+                      !matchesWork(fresh, freshTarget.externalServiceSlug)
+                    )
+                      return;
+                    recordBookFileAvailability(
+                      fresh.media,
+                      format,
+                      serverId,
+                      true
+                    );
+                    fresh.media.status = getBookAvailabilityStatus(fresh.media);
+                    fresh.media = await getRepository(Media).save(fresh.media);
+                    fresh.serviceTargets = fresh.serviceTargets?.map((item) =>
+                      item === freshTarget
+                        ? { ...item, status: MediaStatus.AVAILABLE }
+                        : item
+                    );
+                    // One completed format does not complete a both-format request.
+                    if (isBookRequestFileAvailable(fresh.media, fresh)) {
+                      fresh.status = MediaRequestStatus.COMPLETED;
+                      fresh.failureReason = null;
+                    }
+                    await repository.save(fresh);
+                    this.log(
+                      'Verified an exact-edition request target found on disk.',
+                      'info',
+                      { requestId: fresh.id, bookId: book.id, format }
+                    );
+                  }
+                )
+              );
+            }
+          );
+        } catch (error) {
+          this.log('Could not complete an exact-edition request.', 'warn', {
+            requestId: candidate.id,
+            ...getHttpErrorDetails(error),
+          });
+        }
       }
     }
   }

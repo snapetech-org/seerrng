@@ -1,6 +1,8 @@
 import { MediaRequestStatus } from '@server/constants/media';
+import BookRequestSearch from '@server/entity/BookRequestSearch';
 import MediaRequest from '@server/entity/MediaRequest';
 import { User } from '@server/entity/User';
+import requestDispatchManager from '@server/lib/requestDispatch';
 import assert from 'node:assert/strict';
 import { beforeEach, describe, it, mock } from 'node:test';
 
@@ -1216,4 +1218,269 @@ describe('Readarr Scanner', () => {
       );
     });
   }
+
+  describe('exact-edition requests completed outside their search', () => {
+    beforeEach(() =>
+      mock.method(requestDispatchManager, 'enqueue', async () => undefined)
+    );
+    // The edition check asks Chaptarr for its catalog; tests have no network, so
+    // answer with an empty catalog and fall back to the monitored editions.
+    beforeEach(() => {
+      mock.method(ReadarrAPI.prototype, 'getEditionCatalog', async () => []);
+    });
+    const seedStuckRequest = async (format: 'ebook' | 'audiobook') => {
+      const media = await getRepository(Media).save(
+        new Media({
+          tmdbId: 0,
+          mediaType: MediaType.BOOK,
+          status: MediaStatus.PROCESSING,
+          status4k: MediaStatus.UNKNOWN,
+          identifiers: [
+            new MediaIdentifier({
+              provider: MediaIdentifierProvider.ISBN,
+              value: '9780000000001',
+              canonical: true,
+            }),
+          ],
+        })
+      );
+      const requester = await getRepository(User).findOneByOrFail({ id: 1 });
+      return getRepository(MediaRequest).save(
+        new MediaRequest({
+          type: MediaType.BOOK,
+          media,
+          requestedBy: requester,
+          status: MediaRequestStatus.COMPLETED,
+          is4k: false,
+          bookFormat: format,
+          preferredEditionId: '31540799',
+          serviceTargets: [
+            {
+              serviceType: 'readarr',
+              format,
+              serverId: 0,
+              status: MediaStatus.PROCESSING,
+              externalServiceId: 1,
+              externalServiceSlug: '747398',
+            },
+          ],
+        })
+      );
+    };
+    const targetStatus = async (id: number) =>
+      (await getRepository(MediaRequest).findOneByOrFail({ id }))
+        .serviceTargets?.[0]?.status;
+
+    const configureOwnedEdition = (format: 'ebook' | 'audiobook' = 'ebook') => {
+      configureReadarr([{ serviceType: format }]);
+      knownDialect = 'hc';
+      getBooksImpl = async () => [
+        fakeReadarrBook({
+          editions: [
+            {
+              foreignEditionId: `hc:edition:31540799-${format}`,
+              title: 'Test Book',
+              isbn13: '9780000000001',
+              monitored: true,
+            },
+          ],
+        }),
+      ];
+      getEditionsImpl = async () => [
+        {
+          foreignEditionId: `hc:edition:31540799-${format}`,
+          title: 'Test Book',
+          monitored: true,
+        },
+      ];
+    };
+    it('keeps a both-format request approved while the other format is missing', async () => {
+      configureOwnedEdition();
+      const request = await seedStuckRequest('ebook');
+      await getRepository(MediaRequest).update(request.id, {
+        status: MediaRequestStatus.APPROVED,
+        bookFormat: 'both',
+        serviceTargets: [
+          ...request.serviceTargets!,
+          {
+            serviceType: 'readarr',
+            format: 'audiobook',
+            serverId: 1,
+            externalServiceId: 1,
+            status: MediaStatus.PROCESSING,
+          },
+        ],
+      });
+      await readarrScanner.run();
+      const fresh = await getRepository(MediaRequest).findOneByOrFail({
+        id: request.id,
+      });
+      assert.equal(fresh.status, MediaRequestStatus.APPROVED);
+      assert.deepEqual(
+        fresh.serviceTargets?.map((t) => t.status),
+        [MediaStatus.AVAILABLE, MediaStatus.PROCESSING]
+      );
+    });
+    it('does not overwrite cancellation during edition metadata I/O', async () => {
+      configureOwnedEdition();
+      const request = await seedStuckRequest('ebook');
+      mock.method(ReadarrAPI.prototype, 'getEditionCatalog', async () => {
+        await getRepository(MediaRequest).update(request.id, {
+          status: MediaRequestStatus.DECLINED,
+        });
+        return [{ foreignEditionId: 'hc:edition:31540799-ebook', owned: true }];
+      });
+      await readarrScanner.run();
+      assert.equal(
+        (await getRepository(MediaRequest).findOneByOrFail({ id: request.id }))
+          .status,
+        MediaRequestStatus.DECLINED
+      );
+      assert.equal(await targetStatus(request.id), MediaStatus.PROCESSING);
+    });
+    it('does not overwrite a retargeted request after edition metadata I/O', async () => {
+      configureOwnedEdition();
+      const request = await seedStuckRequest('ebook');
+      mock.method(ReadarrAPI.prototype, 'getEditionCatalog', async () => {
+        await getRepository(MediaRequest).update(request.id, {
+          serviceTargets: request.serviceTargets!.map((t) => ({
+            ...t,
+            externalServiceId: 9999,
+          })),
+        });
+        return [{ foreignEditionId: 'hc:edition:31540799-ebook', owned: true }];
+      });
+      await readarrScanner.run();
+      const fresh = await getRepository(MediaRequest).findOneByOrFail({
+        id: request.id,
+      });
+      assert.equal(fresh.serviceTargets?.[0]?.externalServiceId, 9999);
+      assert.equal(fresh.serviceTargets?.[0]?.status, MediaStatus.PROCESSING);
+    });
+    it('leaves a changed service authority unpromoted after metadata I/O', async () => {
+      configureOwnedEdition();
+      const request = await seedStuckRequest('ebook');
+      mock.method(ReadarrAPI.prototype, 'getEditionCatalog', async () => {
+        getSettings().readarr[0].apiKey = 'rotated-fixture-key';
+        return [{ foreignEditionId: 'hc:edition:31540799-ebook', owned: true }];
+      });
+      await readarrScanner.run();
+      assert.equal(await targetStatus(request.id), MediaStatus.PROCESSING);
+    });
+    it('leaves an active search operation in control of its format and service', async () => {
+      configureOwnedEdition();
+      const request = await seedStuckRequest('ebook');
+      await getRepository(BookRequestSearch).save(
+        new BookRequestSearch({
+          requestId: request.id,
+          serviceId: 0,
+          format: 'ebook',
+          state: 'monitoring',
+          bookId: 1,
+        })
+      );
+      await readarrScanner.run();
+      assert.equal(await targetStatus(request.id), MediaStatus.PROCESSING);
+    });
+    it('does not complete a reused numeric book ID for a different work', async () => {
+      configureOwnedEdition();
+      const request = await seedStuckRequest('ebook');
+      await getRepository(MediaIdentifier).delete({
+        media: { id: request.media.id },
+      });
+      await getRepository(MediaIdentifier).save(
+        new MediaIdentifier({
+          media: request.media,
+          provider: MediaIdentifierProvider.BOOKSHELF,
+          value: makeBookshelfBookId(0, 'hc:original-work'),
+          canonical: true,
+        })
+      );
+      mock.method(ReadarrAPI.prototype, 'getEditionCatalog', async () => [
+        { foreignEditionId: 'hc:edition:31540799-ebook', owned: true },
+      ]);
+      await readarrScanner.run();
+      assert.equal(await targetStatus(request.id), MediaStatus.PROCESSING);
+    });
+    it('reconciles every eligible request across a bounded query batch', async () => {
+      configureOwnedEdition();
+      const first = await seedStuckRequest('ebook');
+      const requester = await getRepository(User).findOneByOrFail({ id: 1 });
+      const rest = await getRepository(MediaRequest).save(
+        Array.from(
+          { length: 104 },
+          () =>
+            new MediaRequest({
+              type: MediaType.BOOK,
+              media: first.media,
+              requestedBy: requester,
+              status: MediaRequestStatus.COMPLETED,
+              is4k: false,
+              bookFormat: 'ebook',
+              preferredEditionId: first.preferredEditionId,
+              serviceTargets: first.serviceTargets,
+            })
+        )
+      );
+      await readarrScanner.run();
+      for (const id of [first.id, rest[99].id, rest[103].id])
+        assert.equal(await targetStatus(id), MediaStatus.AVAILABLE);
+    });
+
+    for (const format of ['ebook', 'audiobook'] as const) {
+      it(`marks a ${format} target available when its exact edition is on disk`, async () => {
+        configureReadarr([{ serviceType: format }]);
+        knownDialect = 'hc';
+        const request = await seedStuckRequest(format);
+        getEditionsImpl = async () => [
+          {
+            foreignEditionId: `hc:edition:31540799-${format}`,
+            title: 'Test Book',
+            monitored: true,
+          },
+        ];
+        getBooksImpl = async () => [
+          fakeReadarrBook({
+            editions: [
+              {
+                foreignEditionId: `hc:edition:31540799-${format}`,
+                title: 'Test Book',
+                isbn13: '9780000000001',
+                monitored: true,
+              },
+            ],
+          }),
+        ];
+        await readarrScanner.run();
+        assert.equal(await targetStatus(request.id), MediaStatus.AVAILABLE);
+      });
+
+      it(`leaves a ${format} target processing when a different edition is on disk`, async () => {
+        configureReadarr([{ serviceType: format }]);
+        knownDialect = 'hc';
+        const request = await seedStuckRequest(format);
+        getEditionsImpl = async () => [
+          {
+            foreignEditionId: `hc:edition:99999999-${format}`,
+            title: 'Test Book',
+            monitored: true,
+          },
+        ];
+        getBooksImpl = async () => [
+          fakeReadarrBook({
+            editions: [
+              {
+                foreignEditionId: `hc:edition:99999999-${format}`,
+                title: 'Test Book',
+                isbn13: '9780000000001',
+                monitored: true,
+              },
+            ],
+          }),
+        ];
+        await readarrScanner.run();
+        assert.equal(await targetStatus(request.id), MediaStatus.PROCESSING);
+      });
+    }
+  });
 });

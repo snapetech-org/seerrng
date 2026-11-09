@@ -504,3 +504,189 @@ for (const [label, request, requested] of [
     ).toHaveCount(requested ? 0 : 1);
   });
 }
+
+test('audiobook search offers books the audiobook catalogue has not seen yet', async ({
+  page,
+}) => {
+  await fixtures(page);
+  await page.route('**/api/v1/settings/public', (route) =>
+    route.fulfill({
+      json: {
+        mediaServerType: 2,
+        booksEnabled: true,
+        ebookServiceEnabled: false,
+        audiobookServiceEnabled: true,
+        enabledMediaCategories: { ebook: false, audiobook: true },
+      },
+    })
+  );
+  const asked: string[] = [];
+  await page.route('**/api/v1/discover/books?**', (route) => {
+    const url = new URL(route.request().url());
+    const format = url.searchParams.get('format') || '';
+    asked.push(format);
+    return route.fulfill({
+      json: paged(
+        format === 'ebook'
+          ? [
+              {
+                ...book('OL123W', 'ebook', 'Brand New Book'),
+                bookFormat: undefined,
+              },
+            ]
+          : []
+      ),
+    });
+  });
+  await page.route('**/api/v1/book/search?**', (route) =>
+    route.fulfill({
+      json: paged([
+        book('OL123W', 'ebook', 'Brand New Book'),
+        book('bookshelf:7:ZXhhbXBsZQ', 'ebook', 'Ebook-only manager record'),
+      ]),
+    })
+  );
+  await page.goto('/search?q=brand%20new&f=audio');
+  const card = page.locator('.poster', { hasText: 'Brand New Book' });
+  await expect(card).toHaveCount(1);
+  await expect(card).toHaveClass(/sq/);
+  await expect(card.locator('a.hit')).toHaveAttribute(
+    'href',
+    '/book/OL123W?f=audio'
+  );
+  expect(asked).toEqual(['audiobook']);
+  await expect(page.getByText('Ebook-only manager record')).toHaveCount(0);
+});
+
+test('cards without art get a drawn cover, and the title opens the book', async ({
+  page,
+}) => {
+  await fixtures(page);
+  await page.route('**/api/v1/discover/books?**', (route) =>
+    route.fulfill({
+      json: paged([
+        book('no-art', 'ebook', 'Book Without Art'),
+        {
+          ...book('broken-art', 'ebook', 'Broken Art'),
+          // external images are aborted by the fixtures, so this one fails to load
+          posterPath: 'https://covers.invalid/broken.jpg',
+        },
+      ]),
+    })
+  );
+  await page.goto('/books');
+  for (const title of ['Book Without Art', 'Broken Art'])
+    await expect(
+      page.locator('.poster', { hasText: title }).locator('.nocover')
+    ).toHaveAttribute('data-title', title);
+  await expect(
+    page.locator('.poster', { hasText: 'Broken Art' }).locator('img')
+  ).toHaveCount(0);
+  await page
+    .locator('.poster', { hasText: 'Book Without Art' })
+    .locator('a.t')
+    .click();
+  await expect(page).toHaveURL(/\/book\/no-art$/);
+});
+
+for (const status of [403, 429, 503]) {
+  test(`audiobook fallback preserves catalogue status ${status}`, async ({
+    page,
+  }) => {
+    await fixtures(page);
+    let fallbackCalls = 0;
+    await page.route('**/api/v1/discover/books?**', (route) =>
+      route.fulfill({
+        status,
+        json: { message: 'Catalogue fixture unavailable' },
+      })
+    );
+    await page.route('**/api/v1/book/search?**', (route) => {
+      fallbackCalls++;
+      return route.fulfill({
+        json: paged([book('OL123W', 'ebook', 'Fallback work')]),
+      });
+    });
+    await page.goto('/search?q=fallback&f=audio');
+    if (status === 503)
+      await expect(
+        page.locator('.poster', { hasText: 'Fallback work' })
+      ).toHaveCount(1);
+    else
+      await expect(page.getByRole('alert')).toContainText(
+        'Catalogue fixture unavailable'
+      );
+    expect(fallbackCalls).toBe(status === 503 ? 1 : 0);
+  });
+}
+test('a failed uncatalogued audiobook metadata lookup remains retryable', async ({
+  page,
+}) => {
+  await fixtures(page);
+  await page.route('**/api/v1/discover/books?**', (route) =>
+    route.fulfill({ json: paged([]) })
+  );
+  await page.route('**/api/v1/book/search?**', (route) =>
+    route.fulfill({
+      status: 503,
+      json: { message: 'Metadata fixture unavailable' },
+    })
+  );
+  await page.goto('/search?q=unseen&f=audio');
+  await expect(page.getByRole('alert')).toContainText(
+    'Metadata fixture unavailable'
+  );
+  await expect(
+    page.getByRole('button', { name: 'Retry', exact: true })
+  ).toBeVisible();
+});
+test('catalogued audiobook results do not trigger an extra metadata search', async ({
+  page,
+}) => {
+  await fixtures(page);
+  let fallbackCalls = 0;
+  await page.route('**/api/v1/discover/books?**', (route) =>
+    route.fulfill({ json: paged([book(audioId, 'audiobook', 'Known audio')]) })
+  );
+  await page.route('**/api/v1/book/search?**', (route) => {
+    fallbackCalls++;
+    return route.fulfill({ json: paged([]) });
+  });
+  await page.goto('/search?q=known&f=audio');
+  await expect(page.locator('.poster', { hasText: 'Known audio' })).toHaveCount(
+    1
+  );
+  expect(fallbackCalls).toBe(0);
+});
+test('a card title keeps the existing keyboard target and cannot render title markup', async ({
+  page,
+}) => {
+  await fixtures(page);
+  const title =
+    'Quoted "title" <img id="injected-cover" src=x onerror=alert(1)>';
+  await page.route('**/api/v1/discover/books?**', (route) =>
+    route.fulfill({ json: paged([book('OL123W', 'ebook', title)]) })
+  );
+  await page.goto('/books');
+  const card = page.locator('.poster');
+  await expect(card.locator('.nocover')).toHaveAttribute('data-title', title);
+  await expect(page.locator('#injected-cover')).toHaveCount(0);
+  const titleGeometry = await card.locator('a.t').evaluate((element) => ({
+    height: element.getBoundingClientRect().height,
+    lineHeight: parseFloat(getComputedStyle(element).lineHeight),
+  }));
+  expect(titleGeometry.height).toBeLessThanOrEqual(
+    titleGeometry.lineHeight + 1
+  );
+  await expect(
+    card.getByRole('link', { name: title, exact: true })
+  ).toHaveCount(1);
+  expect(
+    await card
+      .locator('a')
+      .evaluateAll((links) => links.filter((a) => a.tabIndex >= 0).length)
+  ).toBe(1);
+  await card.locator('a.hit').focus();
+  await page.keyboard.press('Enter');
+  await expect(page).toHaveURL(/\/book\/OL123W$/);
+});

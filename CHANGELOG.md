@@ -21,6 +21,7 @@ tags. The comparison link is the complete commit range.
 - Finish narrator requests from verified edition files during metadata outages, preserve ownership across empty duplicate scans, resolve catalogues larger than 200 identifiers, and keep ebook/audiobook request state separate. Contribution by [@ncbudd](https://github.com/ncbudd) in [#630](https://github.com/snapetech-org/seerrng/pull/630), with identity safeguards, bounded database work and retryable detail errors added during review.
 - Preserve case-sensitive opaque provider IDs when pooling duplicate book scan observations, preventing file evidence from marking a different work available.
 - Keep ready request rows visible when a different media category is slow to load, including mixed movie/music lists.
+- Offer uncatalogued audiobook search results in audiobook-only households, draw readable covers for missing artwork, make card titles clickable, and recover stuck exact-edition requests from verified files. Contributions by [@ncbudd](https://github.com/ncbudd) in [#631](https://github.com/snapetech-org/seerrng/pull/631), [#632](https://github.com/snapetech-org/seerrng/pull/632) and [#633](https://github.com/snapetech-org/seerrng/pull/633), with permission, identity, concurrency and layout safeguards added during review.
 
 ## [3.72.27](https://github.com/snapetech-org/seerrng/compare/v3.72.26..v3.72.27) - 2026-11-09
 

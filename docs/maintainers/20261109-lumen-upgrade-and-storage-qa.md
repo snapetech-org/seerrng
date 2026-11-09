@@ -186,3 +186,53 @@ harness attempts using a nonexistent E2E job and an unloaded worker settings
 snapshot are retained as exclusions. These are not application fixes or passing
 worker runs. The verified worker additionally asserts its final database evidence
 before reporting completion. No provider mutation is allowed.
+
+### Review of incoming PR631–633
+
+Retain the original contribution heads as merge ancestors. PR631's initial
+fallback required the ebook category and masked failures: use the existing
+format-neutral `/book/search` authorization/language policy instead, permit
+fallback only after a successful empty catalogue or server failure, retain Retry,
+and project only canonical Open Library works as audiobook candidates. Ebook
+manager records are not audiobook ownership evidence. Tests cover audiobook-only
+households, 403/429/503, failed fallback and nonempty catalogue behavior.
+
+PR632 reuses the shared Cover/poster/title owners. Missing or failed art receives
+an escaped title/author fallback with six stable existing theme-token tints and
+the existing display font. Preserve one keyboard/screen-reader art target while
+making the equivalent title action clickable. Initial visual comparison caught
+that `display:block` disabled the shared one-line title clamp; removed that
+competing property and added a long-title geometry regression. Baseline 4e0bc219
+and corrected candidate have zero geometry differences over 1px in 24 states:
+/books, /audiobooks, /movies at 320/390/768/1440 in dark/light, plus hover captures.
+Reviewed `cover-layout-gallery-final.jpg`. Valid art and neighboring content retain
+the baseline arrangement. Broken image and malicious-looking literal title cases
+are fixtures, with no injected markup. Early incomplete movie fixtures and the
+first unclamped candidate remain recorded as exclusions/failures.
+
+PR633's recovery now uses finite keyset batches of 100, exact work/edition and
+format-scoped file evidence, request admission and fresh media/service authority
+checks after metadata I/O. Cancellation, retargeting, configuration changes,
+active search ownership and reused numeric book IDs cannot publish stale
+completion. One format does not complete a both-format request. Save complete
+entities through existing status/history subscribers. All 45 scanner tests pass,
+including 11 recovery cases. All 683 Lumen browser tests pass across four viewports,
+with 13 existing skips. Server typecheck and lint pass. Final production and actual
+compiled-worker/UI qualification are recorded below when completed.
+
+The separate default-for-all integration roadmap is
+[lumen-single-container-remaining-work.md](lumen-single-container-remaining-work.md).
+This batch does not silently change upgrade defaults or import companion data.
+
+Final PR631–633 local qualification: production build, server typecheck and lint
+pass; generated API-message coverage was refreshed for the scanner source change.
+The 34 lifecycle/availability tests and 86 edition/subscriber/notification tests
+pass. A separate cloned database and read-only Chaptarr fixture exercised the real
+compiled scanner, without mocks: an approved ebook and previously completed
+stuck audiobook both acquire AVAILABLE service targets for the exact owned edition.
+The approved request queues its durable availability notification. Lifecycle API
+readback and actual Lumen Requests display both rows as **In library**, with the
+correct Ebook/Audiobook labels at 390/1440. Reviewed
+`edition-recovery/requests-gallery.jpg`; no page errors or overflow. Opaque work
+identity negative checks also remain green. This is local source qualification;
+new merged-head CI and published-image verification remain required before release.
