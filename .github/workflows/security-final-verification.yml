@@ -1,0 +1,46 @@
+# ng-runner-policy: github-hosted-primary-v1
+name: Verify recovered security source
+on:
+  push:
+    branches: [codex/seerrng-security-final-validation-20261109]
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1
+        with:
+          node-version-file: package.json
+          package-manager-cache: false
+      - uses: pnpm/action-setup@73e46992e05b19abd31f2f3c20e0e7370d762115
+      - name: Verify tested sources and documentation links
+        run: |
+          python3 - <<'PY'
+          import json, pathlib, re, subprocess
+          expected = {".github/workflows/ci.yml":"f2d0c75f0b56d74ee084f5c98470f13a1a0b1d96",".github/workflows/security-native-visual.yml":"11c2b29d0219622eef855900673689e37175be4c",".github/workflows/security-regression.yml":"847a24f7a05f301724b4af3181275a3b251737a7","android/app/src/androidTest/java/org/snapetech/seerrng/OriginBarTest.kt":"3aa454db9a2e73bcec504e2eab786d8ce307fe5a","config/i18n/source-snapshot.json":"d861c4174fc2e4be4b40c9fd6e81789e53e6be89","docs/feature-comparison.md":"d5fe1c854e2eb0e6537933a80ed8819c2494ed92","docs/maintainers/security-audit-remediation-2026-11-09.md":"dfa68851870c1ab04548b27458de5eb24f09c54d","docs/using-seerr/browser-extension.md":"c33f6a8cac6836003f070c3b1bfb3a821e9a3c88","docs/using-seerr/client-api-keys.md":"64be48694a0c442628577b56968da33885be739c","ios/SeerrNG/ServerBrowserView.swift":"db325ee2e8b4577ea88e9bcb1803473ab8473a30","ios/SeerrNGTests/ServerEndpointTests.swift":"b6cba4d2aa59120f37ec0ad14a7691125f693e62","ios/SeerrNGUITests/ServerSetupUITests.swift":"6f261d69acd2ee2cf4d0c29a6b9d7ffc19c1b0a7","playwright/client-tokens.spec.ts":"5051b585c898f30cf4a83feb32590cc8b6f7abee","playwright/narrator-permissions.spec.ts":"252776564a12a07ead41326b7a09b6bf13505c69","release-notes/2026-11-09-client-token-settings.md":"1a108fc181e9adbfd693ad2a82cbb58d4d027652","server/migration/clientApiKeys.postgres.test.ts":"4605bc2359fbdfc6647ca8a021eea6b01f37c8e1","src/components/UserProfile/UserSettings/UserClientTokens.tsx":"9fb667116d68bc1b2ac7a4b4fe8d198b6faf277c","src/components/UserProfile/UserSettings/index.tsx":"a47a57f30fa74a5b74fcfb77e76350fd0f350f55","src/i18n/locale/en.json":"ddb48c9fb15347a171d340b1b42c75d550d6872e","src/pages/profile/settings/client-tokens.tsx":"cd80b33c949a1797afc93ab2603a64af1fee0d8b"}
+          for path, sha in expected.items():
+              actual = subprocess.check_output(['git', 'rev-parse', 'HEAD:' + path], text=True).strip()
+              assert actual == sha, path
+          print('Verified all 20 source/document hashes.')
+          for name in expected:
+              if not name.endswith('.md'): continue
+              source = pathlib.Path(name).read_text()
+              for target in re.findall(r'\]\(([^)\s]+)\)', source):
+                  if target.startswith(('https:', 'http:', '/', '#', 'mailto:')): continue
+                  target = target.split('#', 1)[0]
+                  if target: assert (pathlib.Path(name).parent / target).exists(), (name, target)
+          print('Changed Markdown relative file links resolve.')
+          
+          PY
+          node scripts/check-feature-comparison.mjs
+      - name: Install locked formatting tools
+        env:
+          CYPRESS_INSTALL_BINARY: 0
+        run: pnpm install --frozen-lockfile
+      - name: Check changed source formatting
+        run: pnpm exec prettier --check --ignore-unknown '.github/workflows/ci.yml' '.github/workflows/security-native-visual.yml' '.github/workflows/security-regression.yml' 'android/app/src/androidTest/java/org/snapetech/seerrng/OriginBarTest.kt' 'config/i18n/source-snapshot.json' 'docs/feature-comparison.md' 'docs/maintainers/security-audit-remediation-2026-11-09.md' 'docs/using-seerr/browser-extension.md' 'docs/using-seerr/client-api-keys.md' 'ios/SeerrNG/ServerBrowserView.swift' 'ios/SeerrNGTests/ServerEndpointTests.swift' 'ios/SeerrNGUITests/ServerSetupUITests.swift' 'playwright/client-tokens.spec.ts' 'playwright/narrator-permissions.spec.ts' 'release-notes/2026-11-09-client-token-settings.md' 'server/migration/clientApiKeys.postgres.test.ts' 'src/components/UserProfile/UserSettings/UserClientTokens.tsx' 'src/components/UserProfile/UserSettings/index.tsx' 'src/i18n/locale/en.json' 'src/pages/profile/settings/client-tokens.tsx'
