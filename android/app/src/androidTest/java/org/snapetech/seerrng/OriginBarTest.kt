@@ -2,6 +2,7 @@ package org.snapetech.seerrng
 
 import android.content.Context
 import android.graphics.Bitmap
+import android.os.ParcelFileDescriptor
 import android.webkit.WebView
 import android.widget.FrameLayout
 import android.view.View
@@ -20,7 +21,6 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.junit.runner.RunWith
-import java.io.File
 import java.net.InetAddress
 import java.net.ServerSocket
 import java.util.concurrent.CountDownLatch
@@ -47,7 +47,7 @@ class OriginBarTest {
                     waitForPage(scenario, first.origin)
                     onView(withId(R.id.activeServerName)).check(matches(withText(if (historicalBaseline) "Saved server" else first.origin)))
                     onView(withId(R.id.httpBadge)).check(matches(isDisplayed()))
-                    screenshot(context, "origin-initial")
+                    screenshot("origin-initial")
                     // A real user gesture opens the native popup. Its toolbar
                     // must identify the loaded origin as well as the main view.
                     onView(isAssignableFrom(WebView::class.java)).perform(click())
@@ -60,7 +60,7 @@ class OriginBarTest {
                     waitForWebView(popup, first.origin)
                     onView(withText(if (historicalBaseline) context.getString(R.string.app_name) else first.origin))
                         .inRoot(isDialog()).check(matches(isDisplayed()))
-                    screenshot(context, "origin-popup")
+                    screenshot("origin-popup")
                     onView(withText(R.string.cancel)).inRoot(isDialog()).perform(click())
                     // Exercise the origin renderer with an actual second-page
                     // load initiated by instrumentation. This does not claim
@@ -71,7 +71,7 @@ class OriginBarTest {
                     waitForPage(scenario, "http://127.0.0.1:18772")
                     onView(withId(R.id.activeServerName)).check(matches(withText(if (historicalBaseline) "Saved server" else "http://127.0.0.1:18772")))
                     onView(withId(R.id.httpBadge)).check(matches(isDisplayed()))
-                    screenshot(context, "origin-redirect")
+                    screenshot("origin-redirect")
                 }
             }
         }
@@ -106,11 +106,19 @@ class OriginBarTest {
         InstrumentationRegistry.getInstrumentation().waitForIdleSync()
     }
 
-    private fun screenshot(context: Context, name: String) {
-        val directory = File(context.getExternalFilesDir(null), "security-visual").apply { mkdirs() }
-        File(directory, "$name.png").outputStream().use { stream ->
-            InstrumentationRegistry.getInstrumentation().uiAutomation.takeScreenshot().compress(Bitmap.CompressFormat.PNG, 100, stream)
+    private fun screenshot(name: String) {
+        // Gradle uninstalls the tested app after instrumentation, removing its
+        // app-specific files. Save evidence through the test-only shell bridge
+        // so it survives until the hosted runner pulls and verifies the PNGs.
+        val automation = InstrumentationRegistry.getInstrumentation().uiAutomation
+        ParcelFileDescriptor.AutoCloseInputStream(
+            automation.executeShellCommand("mkdir -p /sdcard/Download/seerrng-security")
+        ).use { it.readBytes() }
+        val pipes = automation.executeShellCommandRw("cat > /sdcard/Download/seerrng-security/$name.png")
+        ParcelFileDescriptor.AutoCloseOutputStream(pipes[1]).use { stream ->
+            assertTrue(automation.takeScreenshot().compress(Bitmap.CompressFormat.PNG, 100, stream))
         }
+        ParcelFileDescriptor.AutoCloseInputStream(pipes[0]).use { it.readBytes() }
     }
 
     private class FixtureServer(port: Int, private val target: Int) : AutoCloseable {

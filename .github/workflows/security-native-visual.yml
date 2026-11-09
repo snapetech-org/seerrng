@@ -45,7 +45,7 @@ jobs:
           sudo chmod 0666 /dev/kvm
           echo no | avdmanager create avd --name security --package 'system-images;android-36;google_apis;x86_64' --device pixel_2 --force
           "$ANDROID_HOME/emulator/emulator" -avd security -no-window -no-audio -no-boot-anim -no-snapshot -gpu swiftshader_indirect > "$RUNNER_TEMP/emulator.log" 2>&1 &
-          trap 'adb pull /sdcard/Android/data/org.snapetech.seerrng/files/security-visual "$RUNNER_TEMP/native-origin-evidence" || true; adb emu kill || true' EXIT
+          trap 'if [[ ! -d "$RUNNER_TEMP/native-origin-evidence" ]]; then adb pull /sdcard/Download/seerrng-security "$RUNNER_TEMP/native-origin-evidence" || true; fi; adb emu kill || true' EXIT
           timeout 300s adb wait-for-device
           for attempt in {1..120}; do
             if [[ "$(adb shell getprop sys.boot_completed | tr -d '\r')" == '1' ]]; then break; fi
@@ -56,6 +56,10 @@ jobs:
           adb shell settings put global transition_animation_scale 0
           adb shell settings put global animator_duration_scale 0
           ./android/gradlew --no-daemon -p android :app:connectedDebugAndroidTest -Pandroid.testInstrumentationRunnerArguments.class=org.snapetech.seerrng.OriginBarTest
+          adb pull /sdcard/Download/seerrng-security "$RUNNER_TEMP/native-origin-evidence"
+          for shot in origin-initial origin-popup origin-redirect; do
+            test -s "$RUNNER_TEMP/native-origin-evidence/$shot.png"
+          done
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         if: always()
         with:
