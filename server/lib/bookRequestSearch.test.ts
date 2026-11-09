@@ -17,6 +17,7 @@ import MediaRequestStatusEvent from '@server/entity/MediaRequestStatusEvent';
 import { User } from '@server/entity/User';
 import notificationManager, { Notification } from '@server/lib/notifications';
 import { getSettings } from '@server/lib/settings';
+import logger from '@server/logger';
 import { resetTestDb, seedTestDb } from '@server/utils/seedTestDb';
 import assert from 'node:assert/strict';
 import { afterEach, before, beforeEach, describe, it, mock } from 'node:test';
@@ -1189,6 +1190,136 @@ describe('BookRequestSearchManager', () => {
       id: request.id,
     });
     assert.equal(updatedRequest.status, MediaRequestStatus.APPROVED);
+  });
+
+  describe('when the tracked service book was deleted', () => {
+    beforeEach(() => {
+      // Keep the approved request's background dispatch from outliving the
+      // test and racing the next database reset.
+      mock.method(requestDispatchManager, 'enqueue', async () => undefined);
+    });
+
+    const missingRowError = () =>
+      Object.assign(new Error('Request failed with status code 500'), {
+        response: {
+          status: 500,
+          data: { message: 'Expected query to return 1 rows but returned 0' },
+        },
+      });
+    const mockServiceBooks = (books: Record<number, number>) =>
+      mock.method(
+        ReadarrAPI.prototype as unknown as {
+          request: (method: string, path: string) => Promise<{ data: unknown }>;
+        },
+        'request',
+        async (method: string, path: string) => {
+          const bookId = Number(path.match(/^\/book\/(\d+)$/)?.[1]);
+          if (method !== 'GET' || !Number.isSafeInteger(bookId)) {
+            throw new Error(`unexpected request ${method} ${path}`);
+          }
+          if (!(bookId in books)) throw missingRowError();
+          return {
+            data: {
+              id: bookId,
+              title: 'Tracked Book',
+              foreignBookId: 'hc:book-55',
+              statistics: { bookFileCount: books[bookId] },
+            },
+          };
+        }
+      );
+
+    it('follows the book the media now links instead of warning each cycle', async () => {
+      const { media, request } = await createTrackedRequest({
+        createdBook: true,
+        createdAuthor: false,
+        monitoring: true,
+        providerManagedSearch: true,
+        providerBookId: 'hc:book-55',
+        requestStatus: MediaRequestStatus.APPROVED,
+      });
+      await getRepository(Media).update(media.id, { externalServiceId: 66 });
+      const requests = mockServiceBooks({ 66: 1 });
+      const lookup = mock.method(
+        ReadarrAPI.prototype,
+        'lookupBookByProviderIdentity',
+        async () => undefined
+      );
+      const warn = mock.method(logger, 'warn');
+
+      await bookRequestSearchManager.run();
+
+      assert.deepEqual(
+        requests.mock.calls.map((call) => call.arguments[1]),
+        ['/book/55', '/book/66']
+      );
+      assert.equal(
+        await getRepository(BookRequestSearch).countBy({
+          requestId: request.id,
+        }),
+        0
+      );
+      assert.equal(lookup.mock.callCount(), 0);
+      assert.equal(
+        warn.mock.calls.filter(
+          (call) =>
+            String(call.arguments[0]) ===
+            'Unable to reconcile book service request.'
+        ).length,
+        0
+      );
+    });
+
+    it('drops the stale book and backs off recovery when nothing replaces it', async () => {
+      const { request } = await createTrackedRequest({
+        createdBook: true,
+        createdAuthor: false,
+        monitoring: true,
+        providerManagedSearch: true,
+        providerBookId: 'hc:book-55',
+        requestStatus: MediaRequestStatus.APPROVED,
+      });
+      const requests = mockServiceBooks({});
+      const lookup = mock.method(
+        ReadarrAPI.prototype,
+        'lookupBookByProviderIdentity',
+        async () => undefined
+      );
+      const warn = mock.method(logger, 'warn');
+
+      await bookRequestSearchManager.run();
+      const operation = await getRepository(BookRequestSearch).findOneByOrFail({
+        requestId: request.id,
+      });
+      assert.equal(operation.bookId, null);
+      assert.equal(operation.state, 'monitoring');
+      assert.equal(requests.mock.callCount(), 1);
+      assert.equal(lookup.mock.callCount(), 1);
+
+      // Within the backoff window nothing is retried.
+      await bookRequestSearchManager.run();
+      assert.equal(requests.mock.callCount(), 1);
+      assert.equal(lookup.mock.callCount(), 1);
+
+      const now = Date.now();
+      let offset = 2 * 60_000;
+      mock.method(Date, 'now', () => now + offset);
+      await bookRequestSearchManager.run();
+      assert.equal(lookup.mock.callCount(), 2);
+      // The empty recovery doubles the wait.
+      offset = 3 * 60_000;
+      await bookRequestSearchManager.run();
+      assert.equal(lookup.mock.callCount(), 2);
+      assert.equal(requests.mock.callCount(), 1);
+      assert.equal(
+        warn.mock.calls.filter(
+          (call) =>
+            String(call.arguments[0]) ===
+            'Unable to reconcile book service request.'
+        ).length,
+        0
+      );
+    });
   });
 
   describe('while provider metadata lookups fail', () => {

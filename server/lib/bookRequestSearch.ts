@@ -103,6 +103,11 @@ class BookRequestSearchManager {
     string,
     { failures: number; retryAt: number }
   >();
+  // Operations whose tracked service book was deleted, keyed by operation ID.
+  private missingBookBackoff = new Map<
+    number,
+    { createdAt?: number; failures: number; retryAt: number }
+  >();
 
   public run(): Promise<void> {
     if (this.activeRun) return this.activeRun;
@@ -339,6 +344,17 @@ class BookRequestSearchManager {
       mediaType: operation.format,
     });
 
+    const missingBook = this.getMissingBookBackoff(operation);
+    if (
+      operation.bookId == null &&
+      missingBook &&
+      Date.now() < missingBook.retryAt
+    ) {
+      throw new LookupBackoffError(
+        'Waiting before recovering a book removed from the service.'
+      );
+    }
+
     if (operation.providerManagedSearch) {
       await this.reconcileProviderManagedSearch(operation, readarr);
       return;
@@ -487,7 +503,7 @@ class BookRequestSearchManager {
     }
     if (operation.bookId == null) return { finalized: false };
 
-    const currentBook = await readarr.getBookIfExists(operation.bookId);
+    const currentBook = await this.getTrackedBook(operation, readarr);
     if (
       currentBook &&
       (await hasRequestedEditionFiles(
@@ -864,9 +880,7 @@ class BookRequestSearchManager {
     const currentBook =
       knownCurrentBook !== undefined
         ? knownCurrentBook
-        : operation.bookId != null
-          ? await readarr.getBookIfExists(operation.bookId)
-          : null;
+        : await this.getTrackedBook(operation, readarr);
     if (
       currentBook &&
       (!providerBookId ||
@@ -890,9 +904,14 @@ class BookRequestSearchManager {
       !Number.isSafeInteger(recoveredBook.id) ||
       recoveredBook.id <= 0
     ) {
+      const missingBook = this.getMissingBookBackoff(operation);
+      if (missingBook && Date.now() >= missingBook.retryAt) {
+        this.deferMissingBook(operation);
+      }
       return undefined;
     }
 
+    this.missingBookBackoff.delete(operation.id);
     await getRepository(BookRequestSearch).update(operation.id, {
       bookId: recoveredBook.id,
       providerBookId,
@@ -904,6 +923,103 @@ class BookRequestSearchManager {
     operation.providerEditionId = providerEditionId ?? null;
     await this.storeBookServiceLink(operation, recoveredBook);
     return recoveredBook as ReadarrBook;
+  }
+
+  /**
+   * Read the service book this operation tracks. A book deleted from the
+   * service (404, or ChaptarrNG's missing-row 500) falls back to the book the
+   * media currently links for this format and service. With no usable
+   * fallback the stale ID is dropped and provider recovery backs off instead
+   * of failing every reconciliation cycle.
+   */
+  private async getTrackedBook(
+    operation: BookRequestSearch,
+    readarr: ReadarrAPI
+  ): Promise<ReadarrBook | null> {
+    if (operation.bookId == null) return null;
+    const trackedBook = await readarr.getBookIfExists(operation.bookId);
+    if (trackedBook) return trackedBook;
+
+    const missingBookId = operation.bookId;
+    const media = operation.request.media;
+    const linkedServiceId =
+      operation.format === 'audiobook'
+        ? media?.audiobookServiceId
+        : media?.serviceId;
+    const linkedBookId =
+      operation.format === 'audiobook'
+        ? media?.audiobookExternalServiceId
+        : media?.externalServiceId;
+    const fallbackBook =
+      linkedServiceId === operation.serviceId &&
+      typeof linkedBookId === 'number' &&
+      Number.isSafeInteger(linkedBookId) &&
+      linkedBookId > 0 &&
+      linkedBookId !== missingBookId
+        ? await readarr.getBookIfExists(linkedBookId)
+        : null;
+    const nextBookId = fallbackBook?.id ?? null;
+
+    await getRepository(BookRequestSearch).update(operation.id, {
+      bookId: nextBookId,
+      commandId: null,
+      updatedAt: new Date(),
+    });
+    operation.bookId = nextBookId;
+    operation.commandId = null;
+
+    if (fallbackBook) {
+      this.missingBookBackoff.delete(operation.id);
+      logger.info(
+        'Tracked service book was removed; following the book linked to the media.',
+        {
+          label: 'Book Request Search',
+          requestId: operation.requestId,
+          serviceId: operation.serviceId,
+          missingBookId,
+          bookId: fallbackBook.id,
+        }
+      );
+      return fallbackBook;
+    }
+
+    this.deferMissingBook(operation);
+    logger.info(
+      'Tracked service book was removed; recovering it by provider identity with backoff.',
+      {
+        label: 'Book Request Search',
+        requestId: operation.requestId,
+        serviceId: operation.serviceId,
+        missingBookId,
+      }
+    );
+    return null;
+  }
+
+  private getMissingBookBackoff(
+    operation: BookRequestSearch
+  ): { failures: number; retryAt: number } | undefined {
+    const entry = this.missingBookBackoff.get(operation.id);
+    // Bind the entry to this operation row, not just a reusable numeric ID.
+    if (entry && entry.createdAt !== operation.createdAt?.getTime()) {
+      this.missingBookBackoff.delete(operation.id);
+      return undefined;
+    }
+    return entry;
+  }
+
+  private deferMissingBook(operation: BookRequestSearch): void {
+    const failures = (this.getMissingBookBackoff(operation)?.failures ?? 0) + 1;
+    this.missingBookBackoff.set(operation.id, {
+      createdAt: operation.createdAt?.getTime(),
+      failures,
+      retryAt:
+        Date.now() +
+        Math.min(
+          LOOKUP_BACKOFF_BASE_MS * 2 ** (failures - 1),
+          LOOKUP_BACKOFF_MAX_MS
+        ),
+    });
   }
 
   private async lookupWithBackoff<T>(
