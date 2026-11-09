@@ -49,10 +49,7 @@ object ShareIntent {
         return builder.build().toString()
     }
 
-    fun isSharePage(url: String?): Boolean {
-        val path = url?.let { Uri.parse(it).path } ?: return false
-        return path.trimEnd('/').endsWith(SHARE_PATH)
-    }
+    fun isSharePage(url: String?, serverUrl: String): Boolean = WebOrigin.isSharePage(url, serverUrl)
 
     fun readImage(resolver: ContentResolver, uri: Uri): ByteArray? = try {
         resolver.openInputStream(uri)?.use { input ->

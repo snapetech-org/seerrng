@@ -97,6 +97,7 @@ import {
   createHttpsUpgradeHandler,
   initializeTls,
 } from '@server/utils/tls';
+import { getTrustedProxyNetworks } from '@server/utils/trustedProxies';
 import '@server/utils/userAgent';
 import compression from 'compression';
 import cookieParser from 'cookie-parser';
@@ -390,7 +391,7 @@ Promise.resolve()
       const server = express();
       server.disable('x-powered-by');
       if (settings.network.trustProxy) {
-        server.set('trust proxy', 1);
+        server.set('trust proxy', getTrustedProxyNetworks());
       }
       server.use(securityHeaders);
       server.use(compression());

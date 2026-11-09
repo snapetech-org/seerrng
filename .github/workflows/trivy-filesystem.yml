@@ -3,6 +3,9 @@ name: Trivy filesystem scan
 run-name: ${{ format('action:{0}:pool:{1}', inputs.action_tag, inputs.runner_pool_tag) }}
 
 on:
+  pull_request:
+  push:
+    branches: [main]
   workflow_dispatch:
     inputs:
       action_tag:
@@ -35,12 +38,14 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: Install the latest Trivy release
-        uses: aquasecurity/setup-trivy@e07451d2e059ed86c2870430ea286b3a9e0bf241 # latest
+      - name: Install verified Trivy
+        uses: ./.github/actions/setup-trivy
         with:
-          version: latest
-          token: ${{ github.token }}
+          version: v0.76.2
 
       - name: Scan applicable repository files
+        env:
+          TRIVY_EXIT_CODE: 1
+          REQUIRE_TRIVY: 1
         run: ./scripts/security-scan-local.sh --trivy-only --ci
 

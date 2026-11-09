@@ -10,7 +10,7 @@ export const buildContentSecurityPolicy = (
     "form-action 'self'",
     "frame-ancestors 'none'",
     "object-src 'none'",
-    `script-src 'self' 'unsafe-inline'${development ? " 'unsafe-eval'" : ''}`,
+    `script-src 'self'${development ? " 'unsafe-inline' 'unsafe-eval'" : ''}`,
     "script-src-attr 'none'",
     `style-src 'self' 'unsafe-inline'${frontend === 'lumen' ? ' https://fonts.googleapis.com' : ''}`,
     "img-src 'self' data: blob: https:",

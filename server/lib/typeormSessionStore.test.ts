@@ -10,6 +10,7 @@ import type { AddressInfo } from 'node:net';
 import os from 'node:os';
 import path from 'node:path';
 import test from 'node:test';
+import request from 'supertest';
 import { DataSource } from 'typeorm';
 import { TypeormSessionStore } from './typeormSessionStore';
 
@@ -212,12 +213,14 @@ test('native signed session replay is rejected after expiry and after reopening 
       server = undefined;
     };
     let base = await start();
-    assert.equal((await fetch(`${base}/me`)).status, 401);
-    const login = await fetch(`${base}/login`, { method: 'POST' });
+    assert.equal((await request(base).get('/me')).status, 401);
+    // A dedicated HTTP client keeps the replay test independent of the global
+    // fetch connection pool when the fixture server is closed and reopened.
+    const login = await request(base).post('/login');
     assert.equal(login.status, 200);
-    const cookie = login.headers.get('set-cookie')!.split(';')[0];
+    const cookie = login.headers['set-cookie'][0].split(';')[0];
     assert.equal(
-      (await fetch(`${base}/me`, { headers: { Cookie: cookie } })).status,
+      (await request(base).get('/me').set('Cookie', cookie)).status,
       200
     );
     const repository = source.getRepository(Session);
@@ -230,7 +233,7 @@ test('native signed session replay is rejected after expiry and after reopening 
       { expiredAt, json: JSON.stringify(data) }
     );
     assert.equal(
-      (await fetch(`${base}/me`, { headers: { Cookie: cookie } })).status,
+      (await request(base).get('/me').set('Cookie', cookie)).status,
       401
     );
     assert.equal(
@@ -242,7 +245,7 @@ test('native signed session replay is rejected after expiry and after reopening 
     await source.initialize();
     base = await start();
     assert.equal(
-      (await fetch(`${base}/me`, { headers: { Cookie: cookie } })).status,
+      (await request(base).get('/me').set('Cookie', cookie)).status,
       401
     );
     assert.equal(

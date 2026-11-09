@@ -11,7 +11,7 @@ const makeSettings = (tls: Record<string, unknown>): AllSettings =>
   }) as unknown as AllSettings;
 
 describe('0015_enable_default_http_auth', () => {
-  it('enables HTTP authentication for existing disabled-TLS defaults', () => {
+  it('preserves explicit HTTPS-only authentication behind a proxy', () => {
     const migrated = enableDefaultHttpAuth(
       makeSettings({
         mode: 'disabled',
@@ -20,8 +20,8 @@ describe('0015_enable_default_http_auth', () => {
       })
     );
 
-    assert.equal(migrated.network.tls.allowHttpAuth, true);
-    assert.equal(migrated.network.tls.httpAuthAcknowledged, true);
+    assert.equal(migrated.network.tls.allowHttpAuth, false);
+    assert.equal(migrated.network.tls.httpAuthAcknowledged, false);
     assert.deepEqual(migrated.migrations, ['0015_enable_default_http_auth']);
   });
 

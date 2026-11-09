@@ -12,6 +12,7 @@ import { getRepository } from '@server/datasource';
 import MediaRelation, {
   type RelationConfidence,
 } from '@server/entity/MediaRelation';
+import { allowedByCurrentContentPolicy } from '@server/lib/contentRestriction';
 import { normalizeTitle, titleSimilarity } from '@server/lib/resolve/match';
 import logger from '@server/logger';
 import {
@@ -109,7 +110,7 @@ export const buildSeasonChain = async (
       );
       if (!edge) break;
       const next = await anilist.getMediaWithRelations(edge.node.id);
-      if (!next) break;
+      if (!next || !allowedByCurrentContentPolicy(next)) break;
       seen.add(next.id);
       found.push(next);
       current = next;
@@ -247,7 +248,7 @@ export const getContinuation = async (options: {
   const language = options.language?.slice(0, 2).toLowerCase() || 'en';
   const anilist = new AnilistAPI();
   const anchor = await anilist.getMediaWithRelations(options.anilistId);
-  if (!anchor) return undefined;
+  if (!anchor || !allowedByCurrentContentPolicy(anchor)) return undefined;
 
   const chain = await buildSeasonChain(anilist, anchor);
   const seasons: ContinuationSeason[] = chain.map((media, index) => ({
@@ -281,6 +282,7 @@ export const getContinuation = async (options: {
   for (const edge of unique) {
     if (rejected.has(String(edge.node.id))) continue;
     const node = edge.node;
+    if (!allowedByCurrentContentPolicy(node)) continue;
     const isNovel = node.format === 'NOVEL';
     const evidence = [
       `AniList lists this as the source of ${titleOf(selected)}`,

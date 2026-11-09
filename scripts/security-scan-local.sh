@@ -35,13 +35,17 @@ Semgrep uses the local Community Edition engine with p/default and metrics off.
 Trivy selects secret, dependency, and IaC scanners from files in this repository.
 Findings are report-only by default. Set SEMGREP_FAIL_ON_FINDINGS=1 or
 TRIVY_EXIT_CODE=1 to make findings fail the command. --ci disables repository-
-controlled Trivy config and ignore files. --staged scans only staged Semgrep files.
+controlled Trivy config and ignore files and makes findings blocking.
+--staged scans only staged Semgrep files.
 HELP
       exit 0 ;;
     *) echo "Unknown option: $1" >&2; exit 2 ;;
   esac
   shift
 done
+if (( ci_mode )); then
+  export SEMGREP_FAIL_ON_FINDINGS=1 TRIVY_EXIT_CODE=1 REQUIRE_TRIVY=1
+fi
 if (( staged )) && [[ "$mode" == trivy ]]; then
   echo "Trivy scans the checkout, not the staged index; omit --staged for Trivy." >&2
   exit 2
@@ -221,7 +225,7 @@ trivy_run() {
       -v "$repo_root:/src:ro" -v "$cache_dir:/cache" -w /src "$image" "${args[@]}" .
   else
     echo "Trivy is unavailable; install Trivy or Docker to run this project scan." >&2
-    [[ "${REQUIRE_TRIVY:-0}" == 1 ]] && return 127
+    if (( ci_mode )) || [[ "${REQUIRE_TRIVY:-0}" == 1 ]]; then return 127; fi
   fi
 }
 

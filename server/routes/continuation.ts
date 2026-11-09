@@ -1,8 +1,10 @@
+import { MediaType } from '@server/constants/media';
 import {
   findAnilistIdForTmdbShow,
   getContinuation,
 } from '@server/lib/continuation';
 import { getRequestTargets } from '@server/lib/continuation/targets';
+import { mayAccessVideo } from '@server/lib/mediaAccess';
 import logger from '@server/logger';
 import { Router } from 'express';
 import rateLimit from 'express-rate-limit';
@@ -50,6 +52,8 @@ continuationRoutes.get<{ tvId: string }>(
     if (!tvId) {
       return res.status(400).json({ status: 400, message: 'Invalid show id.' });
     }
+    if (!req.user || !(await mayAccessVideo(req.user, MediaType.TV, tvId)))
+      return res.status(404).json({ message: 'Not found.' });
     try {
       const { anilistId, seasonCount } = await findAnilistIdForTmdbShow(
         tvId,
@@ -93,6 +97,8 @@ continuationRoutes.get<{ id: string }>(
         .status(400)
         .json({ status: 400, message: 'Invalid AniList id.' });
     }
+    if (req.user?.settings?.tvMaturityRatingLimit)
+      return res.status(404).json({ message: 'Not found.' });
     try {
       const result = await respond(id, {
         season: positive(req.query.season, 50),

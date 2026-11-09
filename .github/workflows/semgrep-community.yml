@@ -3,6 +3,9 @@ name: Semgrep Community Edition
 run-name: ${{ format('action:{0}:pool:{1}', inputs.action_tag, inputs.runner_pool_tag) }}
 
 on:
+  pull_request:
+  push:
+    branches: [main]
   workflow_dispatch:
     inputs:
       action_tag:
@@ -38,15 +41,19 @@ jobs:
       - name: Verify the isolated Docker daemon
         run: docker info
 
-      - name: Scan with the current Semgrep CE image and p/default rules
+      - name: Scan with pinned Semgrep CE and current community rules
         run: |
           mkdir -p .semgrep-reports
+          scan_status=0
           docker run --rm --user "$(id -u):$(id -g)" -e HOME=/tmp -e EIO_BACKEND=posix \
             -v "$GITHUB_WORKSPACE:/src:ro" \
             -v "$GITHUB_WORKSPACE/.semgrep-reports:/reports:rw" \
-            -w /src semgrep/semgrep:latest \
-            semgrep scan --config p/default --metrics=off --jobs 2 \
-              --json-output /reports/semgrep.json --sarif-output /reports/semgrep.sarif .
+            -w /src semgrep/semgrep:1.184.0 \
+            semgrep scan --error --config p/default --metrics=off --jobs 2 \
+              --json-output /reports/semgrep.json --sarif-output /reports/semgrep.sarif . || scan_status=$?
+          # Exit 1 means findings; fatal engine/configuration failures stay fatal.
+          [[ "$scan_status" -le 1 ]] || exit "$scan_status"
+          node scripts/check-semgrep-baseline.mjs .semgrep-reports/semgrep.json
 
       - name: Report finding count
         if: always() && hashFiles('.semgrep-reports/semgrep.json') != ''

@@ -13,11 +13,8 @@ type MutableSettings = {
 
 const MIGRATION_NAME = '0015_enable_default_http_auth';
 
-// The transport feature initially shipped with HTTP authentication disabled,
-// even though the default listener is plain HTTP. That left every untouched
-// installation unable to persist a browser login. Normalize that old default
-// once; administrators can still turn it off afterward or set the environment
-// override to require HTTPS.
+// Listener mode does not establish consent to send credentials over HTTP:
+// reverse-proxy TLS deployments also disable the built-in TLS listener.
 const enableDefaultHttpAuth = (settings: AllSettings): AllSettings => {
   const mutableSettings = settings as unknown as MutableSettings;
 
@@ -29,9 +26,9 @@ const enableDefaultHttpAuth = (settings: AllSettings): AllSettings => {
   }
 
   const tls = mutableSettings.network?.tls;
-  if (tls?.mode === 'disabled' && tls.allowHttpAuth !== true) {
-    tls.allowHttpAuth = true;
-    tls.httpAuthAcknowledged = true;
+  if (tls) {
+    tls.allowHttpAuth ??= false;
+    tls.httpAuthAcknowledged ??= false;
   }
 
   if (!Array.isArray(mutableSettings.migrations)) {

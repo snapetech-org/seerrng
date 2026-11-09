@@ -9,6 +9,10 @@ import Media from '@server/entity/Media';
 import { User } from '@server/entity/User';
 import { classifyAudioPlaybackFormats } from '@server/lib/audioPlaybackFormat';
 import { resolveCollectionQualityCatalog } from '@server/lib/collectionPlaybackQuality';
+import {
+  isMediaTypeEnabledForUser,
+  mayAccessMedia,
+} from '@server/lib/mediaAccess';
 import { getMediaServerWatchStatus } from '@server/lib/mediaServerWatchStatus';
 import { Permission } from '@server/lib/permissions';
 import { getPlaybackMediaRootId } from '@server/lib/playbackMediaRoot';
@@ -128,6 +132,7 @@ const requestPermissions: Partial<Record<MediaType, Permission[]>> = {
 };
 
 const canUsePlayback = (user: User, mediaType: MediaType, is4k = false) => {
+  if (!isMediaTypeEnabledForUser(user, mediaType)) return false;
   if (mediaType === MediaType.COMIC || mediaType === MediaType.MAGAZINE) {
     return false;
   }
@@ -160,18 +165,35 @@ const canUsePlayback = (user: User, mediaType: MediaType, is4k = false) => {
 };
 
 const loadPlaybackUser = async (userId: number): Promise<User> =>
-  getRepository(User).findOneOrFail({
-    where: { id: userId },
-    select: {
-      id: true,
-      permissions: true,
-      passwordChangedAt: true,
-      plexToken: true,
-      jellyfinUserId: true,
-      jellyfinDeviceId: true,
-      jellyfinAuthToken: true,
-    },
-  });
+  getRepository(User)
+    .createQueryBuilder('user')
+    .leftJoinAndSelect('user.settings', 'settings')
+    .addSelect([
+      'user.plexToken',
+      'user.jellyfinAuthToken',
+      'user.jellyfinDeviceId',
+    ])
+    .where('user.id = :userId', { userId })
+    .getOneOrFail();
+
+const canAccessPlayback = async (
+  user: User,
+  media: Media,
+  is4k = false
+): Promise<boolean> =>
+  canUsePlayback(user, media.mediaType, is4k) &&
+  (await mayAccessMedia(user, media));
+
+const canAccessPlaybackItems = async (
+  user: User,
+  media: Media[],
+  is4k = false
+): Promise<boolean> =>
+  (
+    await mapWithConcurrency(media, 4, (item) =>
+      canAccessPlayback(user, item, is4k)
+    )
+  ).every(Boolean);
 
 // Provider catalog/device reads must not keep authority alive after account
 // changes. Admit each external mutation against the current account while holding
@@ -188,9 +210,7 @@ const withPlaybackAuthority = <Result>(
     Permission.ADMIN,
     async (actor) => {
       if (
-        mediaItems.some(
-          (media) => !canUsePlayback(actor, media.mediaType, is4k)
-        ) ||
+        !(await canAccessPlaybackItems(actor, mediaItems, is4k)) ||
         getUserCredentialVersion(actor) !==
           getUserCredentialVersion(snapshot) ||
         actor.plexToken !== snapshot.plexToken ||
@@ -671,6 +691,8 @@ playbackRoutes.get('/watched/:mediaType/:tmdbId', async (req, res, next) => {
         unwatchedCount: 0,
       } satisfies WatchStatusResponse);
     }
+    if (!(await canAccessPlayback(user, media)))
+      return res.status(403).json({ message: 'Playback is not permitted.' });
     return res
       .status(200)
       .json(
@@ -693,7 +715,7 @@ playbackRoutes.get('/media/:mediaId', async (req, res, next) => {
       loadMedia(mediaId),
       loadPlaybackUser(req.user!.id),
     ]);
-    if (!canUsePlayback(user, media.mediaType, is4k)) {
+    if (!(await canAccessPlayback(user, media, is4k))) {
       return res
         .status(403)
         .json({ status: 403, message: 'Playback is not permitted.' });
@@ -728,7 +750,7 @@ playbackRoutes.post('/media/:mediaId/play', async (req, res, next) => {
       loadMedia(mediaId),
       loadPlaybackUser(req.user!.id),
     ]);
-    if (!canUsePlayback(user, media.mediaType, is4k)) {
+    if (!(await canAccessPlayback(user, media, is4k))) {
       logger.warn('Media-server playback was rejected.', {
         label: 'Playback',
         mediaId,
@@ -885,7 +907,7 @@ playbackRoutes.post('/media/:mediaId/playlist', async (req, res, next) => {
       loadMedia(mediaId),
       loadPlaybackUser(req.user!.id),
     ]);
-    if (!canUsePlayback(user, media.mediaType, is4k)) {
+    if (!(await canAccessPlayback(user, media, is4k))) {
       return res
         .status(403)
         .json({ status: 403, message: 'Playback is not permitted.' });
@@ -977,9 +999,7 @@ playbackRoutes.post('/collection/play', async (req, res, next) => {
         message: 'The collection selection is not playable.',
       });
     }
-    if (
-      mediaItems.some((media) => !canUsePlayback(user, media.mediaType, is4k))
-    )
+    if (!(await canAccessPlaybackItems(user, mediaItems, is4k)))
       return res.status(403).json({ message: 'Playback is not permitted.' });
     const playbackType =
       mediaItems[0].mediaType === MediaType.MUSIC ? 'audio' : 'video';
@@ -1118,9 +1138,7 @@ playbackRoutes.post('/collection/playlist', async (req, res, next) => {
         message: 'The collection selection is not playable.',
       });
     }
-    if (
-      mediaItems.some((media) => !canUsePlayback(user, media.mediaType, is4k))
-    )
+    if (!(await canAccessPlaybackItems(user, mediaItems, is4k)))
       return res.status(403).json({ message: 'Playback is not permitted.' });
     const playbackType =
       mediaItems[0].mediaType === MediaType.MUSIC ? 'audio' : 'video';

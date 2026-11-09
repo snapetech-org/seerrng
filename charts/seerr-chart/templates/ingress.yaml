@@ -35,7 +35,7 @@ spec:
               service:
                 name: {{ include "seerr.fullname" $ }}
                 port:
-                  number: {{ $.Values.service.port }}
+                  number: {{ $.Values.ingress.backendPort | default $.Values.service.port }}
           {{- end }}
     {{- end }}
 {{- end }}

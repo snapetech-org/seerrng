@@ -403,10 +403,9 @@ export const SeriesNarratorPlanner = ({
   const intl = useIntl();
   const { hasPermission } = useUser();
   const { addToast } = useToasts();
-  const canCollect = hasPermission(
-    [Permission.REQUEST_ADVANCED, Permission.MANAGE_REQUESTS],
-    { type: 'or' }
-  );
+  const canCollect = hasPermission([Permission.MANAGE_REQUESTS], {
+    type: 'or',
+  });
   const collect = async (narrator: string) => {
     try {
       await axios.post('/api/v1/editions/series-narrators/prefer', {

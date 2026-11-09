@@ -15,7 +15,11 @@
       "type": "array",
       "items": {
         "type": "object",
-        "required": ["apiVersion", "kind", "metadata"],
+        "required": [
+          "apiVersion",
+          "kind",
+          "metadata"
+        ],
         "properties": {
           "apiVersion": {
             "type": "string",
@@ -28,12 +32,26 @@
           "metadata": {
             "type": "object",
             "anyOf": [
-              { "required": ["name"] },
-              { "required": ["generateName"] }
+              {
+                "required": [
+                  "name"
+                ]
+              },
+              {
+                "required": [
+                  "generateName"
+                ]
+              }
             ],
             "properties": {
-              "name": { "type": "string", "minLength": 1 },
-              "generateName": { "type": "string", "minLength": 1 }
+              "name": {
+                "type": "string",
+                "minLength": 1
+              },
+              "generateName": {
+                "type": "string",
+                "minLength": 1
+              }
             },
             "additionalProperties": true
           }
@@ -43,10 +61,20 @@
     },
     "image": {
       "type": "object",
-      "required": ["pullPolicy", "registry", "repository", "sha", "tag"],
+      "required": [
+        "pullPolicy",
+        "registry",
+        "repository",
+        "sha",
+        "tag"
+      ],
       "properties": {
         "pullPolicy": {
-          "enum": ["Always", "IfNotPresent", "Never"]
+          "enum": [
+            "Always",
+            "IfNotPresent",
+            "Never"
+          ]
         },
         "registry": {
           "type": "string",
@@ -72,7 +100,10 @@
     },
     "runtimeStorage": {
       "type": "object",
-      "required": ["nextCacheSizeLimit", "tmpSizeLimit"],
+      "required": [
+        "nextCacheSizeLimit",
+        "tmpSizeLimit"
+      ],
       "properties": {
         "nextCacheSizeLimit": {
           "type": "string",
@@ -128,6 +159,11 @@
     "service": {
       "type": "object",
       "properties": {
+        "httpsPort": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 65535
+        },
         "port": {
           "type": "integer",
           "minimum": 1,
@@ -137,7 +173,11 @@
     },
     "serviceAccount": {
       "type": "object",
-      "required": ["automount", "create", "name"],
+      "required": [
+        "automount",
+        "create",
+        "name"
+      ],
       "properties": {
         "automount": {
           "type": "boolean"
@@ -147,6 +187,35 @@
         },
         "name": {
           "type": "string"
+        }
+      }
+    },
+    "ingress": {
+      "type": "object",
+      "properties": {
+        "backendPort": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 1,
+          "maximum": 65535
+        }
+      }
+    },
+    "route": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "backendPort": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 1,
+            "maximum": 65535
+          }
         }
       }
     }

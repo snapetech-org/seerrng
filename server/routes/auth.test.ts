@@ -725,7 +725,7 @@ describe('GET /auth/me', () => {
       .get('/auth/me')
       .set('X-API-Key', 'invalid-service-credential');
 
-    assert.strictEqual(response.status, 403);
+    assert.strictEqual(response.status, 401);
   });
 
   it('never returns credential or notification secrets', async () => {
@@ -2082,7 +2082,7 @@ describe('POST /auth/local', () => {
     assert.strictEqual(res.body.message, 'Access denied.');
   });
 
-  it('blocks distributed password guessing without locking out the valid password', async () => {
+  it('blocks every password guess during a fixed cooldown and recovers after expiry', async () => {
     for (let attempt = 0; attempt < LOCAL_LOGIN_FAILURE_LIMIT; attempt++) {
       const failed = await request(app)
         .post('/auth/local')
@@ -2095,6 +2095,13 @@ describe('POST /auth/local', () => {
       .send({ email: 'admin@seerr.dev', password: 'anotherwrongpassword' });
     assert.strictEqual(blockedGuess.status, 403);
 
+    const correctWhileBlocked = await request(app)
+      .post('/auth/local')
+      .send({ email: 'admin@seerr.dev', password: 'test1234' });
+    assert.strictEqual(correctWhileBlocked.status, 403);
+    await getRepository(User).update(1, {
+      loginBlockedUntil: new Date(Date.now() - 1),
+    });
     const recovered = await request(app)
       .post('/auth/local')
       .send({ email: 'admin@seerr.dev', password: 'test1234' });
@@ -4271,6 +4278,6 @@ describe('administrator sign-in network policy', () => {
     const invalid = await request(app)
       .get('/auth/me')
       .set('X-API-Key', 'invalid-fixture-key');
-    assert.equal(invalid.status, 403);
+    assert.equal(invalid.status, 401);
   });
 });

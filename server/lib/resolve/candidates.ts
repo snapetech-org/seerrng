@@ -2,6 +2,7 @@ import MusicBrainz from '@server/api/musicbrainz';
 import OpenLibraryAPI from '@server/api/openlibrary';
 import { QuestarrNGAPI } from '@server/api/software/questarrng';
 import TheMovieDb from '@server/api/themoviedb';
+import { allowedByCurrentContentPolicy as allowedByContentPolicy } from '@server/lib/contentRestriction';
 import { isMediaCategoryEnabled } from '@server/lib/mediaCategories';
 import { getSettings } from '@server/lib/settings';
 import logger from '@server/logger';
@@ -54,6 +55,7 @@ const searchVideo = async (
   const response = await tmdb.searchMulti({ query: item.query, language });
   const out: ResolveCandidate[] = [];
   for (const result of response.results.slice(0, 10)) {
+    if (!allowedByContentPolicy(result)) continue;
     if (result.media_type === 'movie') {
       const candidate = {
         title: result.title,
@@ -104,27 +106,32 @@ const searchBooks = async (
       ? `title:${item.query} author:${item.creator}`
       : item.query;
   const response = await api.searchBooks({ query, limit: PER_SOURCE });
-  return response.docs.slice(0, PER_SOURCE).map((doc) => {
-    const book = mapOpenLibrarySearchDoc(doc);
-    const candidate = {
-      title: book.title,
-      creator: book.author,
-      year: book.firstPublishYear,
-    };
-    const score = item.isbn ? 1 : scoreCandidate(item, candidate);
-    return {
-      mediaType: 'book' as const,
-      id: book.id,
-      ...candidate,
-      imageUrl: book.posterPath,
-      formatHint,
-      score,
-      confidence: confidenceFor(score),
-      evidence: item.isbn ? `ISBN ${item.isbn}` : `Title match "${book.title}"`,
-      source: 'openlibrary',
-      href: `/book/${encodeURIComponent(book.id)}${formatHint ? `?format=${formatHint}` : ''}`,
-    };
-  });
+  return response.docs
+    .filter((doc) => allowedByContentPolicy({ ...doc, subjects: doc.subject }))
+    .slice(0, PER_SOURCE)
+    .map((doc) => {
+      const book = mapOpenLibrarySearchDoc(doc);
+      const candidate = {
+        title: book.title,
+        creator: book.author,
+        year: book.firstPublishYear,
+      };
+      const score = item.isbn ? 1 : scoreCandidate(item, candidate);
+      return {
+        mediaType: 'book' as const,
+        id: book.id,
+        ...candidate,
+        imageUrl: book.posterPath,
+        formatHint,
+        score,
+        confidence: confidenceFor(score),
+        evidence: item.isbn
+          ? `ISBN ${item.isbn}`
+          : `Title match "${book.title}"`,
+        source: 'openlibrary',
+        href: `/book/${encodeURIComponent(book.id)}${formatHint ? `?format=${formatHint}` : ''}`,
+      };
+    });
 };
 
 const searchAlbums = async (item: ParsedItem): Promise<ResolveCandidate[]> => {
@@ -133,7 +140,7 @@ const searchAlbums = async (item: ParsedItem): Promise<ResolveCandidate[]> => {
     ? `releasegroup:"${item.query}" AND artist:"${item.creator}"`
     : `releasegroup:"${item.query}"`;
   const albums = await musicbrainz.searchAlbum({ query, limit: PER_SOURCE });
-  return albums.map((album) => {
+  return albums.filter(allowedByContentPolicy).map((album) => {
     const creator = album['artist-credit']?.[0]?.name;
     const candidate = {
       title: album.title,
@@ -160,25 +167,28 @@ const searchGames = async (item: ParsedItem): Promise<ResolveCandidate[]> => {
   if (!settings.hostname || !settings.apiKey) return [];
   const api = new QuestarrNGAPI(settings);
   const games = await api.searchCatalog(item.query, PER_SOURCE);
-  return games.slice(0, PER_SOURCE).map((game) => {
-    const candidate = {
-      title: game.title,
-      creator: game.developers?.[0],
-      year: yearOf(game.releaseDate),
-    };
-    const score = scoreCandidate(item, candidate);
-    return {
-      mediaType: 'game' as const,
-      id: game.id,
-      ...candidate,
-      imageUrl: game.coverUrl || undefined,
-      score,
-      confidence: confidenceFor(score),
-      evidence: `Game match "${game.title}"`,
-      source: 'igdb',
-      href: `/software?category=game&game=${game.igdbId ?? game.id}`,
-    };
-  });
+  return games
+    .filter(allowedByContentPolicy)
+    .slice(0, PER_SOURCE)
+    .map((game) => {
+      const candidate = {
+        title: game.title,
+        creator: game.developers?.[0],
+        year: yearOf(game.releaseDate),
+      };
+      const score = scoreCandidate(item, candidate);
+      return {
+        mediaType: 'game' as const,
+        id: game.id,
+        ...candidate,
+        imageUrl: game.coverUrl || undefined,
+        score,
+        confidence: confidenceFor(score),
+        evidence: `Game match "${game.title}"`,
+        source: 'igdb',
+        href: `/software?category=game&game=${game.igdbId ?? game.id}`,
+      };
+    });
 };
 
 /** Ranked candidates for one parsed item across every enabled catalog. */

@@ -1,0 +1,88 @@
+# ng-runner-policy: github-hosted-primary-v1
+name: Security regression tests
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: security-regression-${{ github.run_id }}
+  cancel-in-progress: false
+jobs:
+  server-browser:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: package.json
+          package-manager-cache: false
+      - uses: pnpm/action-setup@73e46992e05b19abd31f2f3c20e0e7370d762115 # v6.1.1
+      - uses: azure/setup-helm@9bc31f4ebc9c6b171d7bfbaa5d006ae7abdb4310 # v5
+      - name: Install locked dependencies
+        env:
+          CYPRESS_INSTALL_BINARY: 0
+        run: pnpm install --frozen-lockfile
+      - name: Check security regression boundaries
+        run: >-
+          pnpm exec vitest run --maxWorkers=2
+          server/test/auditRemediation.vitest.test.ts
+          server/routes/clientApiKeys.test.ts server/lib/mediaAccess.test.ts
+          server/middleware/streamAuthorization.test.ts server/lib/follow/index.test.ts
+          server/lib/resolve/admission.test.ts server/utils/securityBoundaries.test.ts
+          server/migration/clientApiKeys.test.ts server/lib/typeormSessionStore.test.ts
+      - name: Check deployment and scanner gates
+        run: node --test scripts/check-helm-security.test.mjs scripts/healthcheck.test.mjs scripts/check-semgrep-baseline.test.mjs scripts/check-repository-hygiene.test.mjs packaging/cloudron/start-cloudron.test.mjs
+      - name: Build production apps
+        run: pnpm build
+      - name: Prepare isolated browser fixtures
+        run: pnpm cypress:prepare
+      - name: Install Chromium
+        run: pnpm exec playwright install --with-deps chromium
+      - name: Exercise both production frontends under CSP
+        env:
+          E2E_OFFLINE: true
+        run: pnpm exec playwright test playwright/production-csp.spec.ts
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        if: always()
+        with:
+          name: security-browser-evidence
+          path: test-results/
+          retention-days: 14
+  android:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-java@b843ebf9b913146b38da2eaa7aeddf76074ae1ad # v6.1.0
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: android-actions/setup-android@be39fa834029ff78f1a44aa3bb0819b8fc2bd8fd # v4.0.4
+        with:
+          packages: 'platform-tools platforms;android-36 build-tools;36.0.0'
+      - uses: ./.github/actions/setup-gradle-distribution
+      - name: Verify origin matching and compile unsigned client
+        run: ./android/gradlew --no-daemon -p android :app:testDebugUnitTest :app:assembleDebug
+  ios:
+    runs-on: xcode-27
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Compile unsigned simulator client
+        run: >-
+          xcodebuild -project ios/SeerrNG.xcodeproj -scheme SeerrNG
+          -configuration Debug -sdk iphonesimulator
+          -destination 'generic/platform=iOS Simulator'
+          -derivedDataPath '${{ runner.temp }}/seerr-security-ios'
+          CODE_SIGNING_ALLOWED=NO build

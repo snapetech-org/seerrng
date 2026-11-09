@@ -78,6 +78,7 @@ before(() => {
 
 beforeEach(() => {
   resetDesktopRateLimitsForTests();
+  getSettings().main.apiKey = 'desktop-session-only-test-key';
   getSettings().main.localLogin = true;
   getSettings().main.mediaServerType = MediaServerType.JELLYFIN;
   Object.assign(getSettings().jellyfin, {

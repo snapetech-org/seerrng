@@ -1,5 +1,6 @@
 import { getRepository } from '@server/datasource';
 import { User } from '@server/entity/User';
+import { authenticateClientApiKey } from '@server/lib/clientApiKeys';
 import { getJellyfinAuthAuthorityKey } from '@server/lib/mediaServerAuthority';
 import {
   Permission,
@@ -17,6 +18,7 @@ import { isClientIpAllowedForAdministratorLogin } from '@server/utils/adminLogin
 import { normalizeJellyfinGuid } from '@server/utils/jellyfin';
 import { getRateLimitKey } from '@server/utils/security';
 import rateLimit from 'express-rate-limit';
+import type { SessionData } from 'express-session';
 import { timingSafeEqual } from 'node:crypto';
 
 const authenticatedRouteRateLimit = rateLimit({
@@ -29,6 +31,14 @@ const authenticatedRouteRateLimit = rateLimit({
     process.env.NODE_ENV === 'test' || process.env.E2E_TESTS === 'true',
 });
 
+// checkUser and nested isAuthenticated guards share one request budget.
+const countedRequests = new WeakSet<object>();
+const limitAuthenticatedRequest: Middleware = (req, res, next) => {
+  if (countedRequests.has(req)) return next();
+  countedRequests.add(req);
+  void authenticatedRouteRateLimit(req, res, next);
+};
+
 export const matchesApiKey = (
   provided: string,
   configured: string
@@ -36,6 +46,7 @@ export const matchesApiKey = (
   const providedBytes = Buffer.from(provided);
   const configuredBytes = Buffer.from(configured);
   return (
+    configuredBytes.length > 0 &&
     providedBytes.length === configuredBytes.length &&
     timingSafeEqual(providedBytes, configuredBytes)
   );
@@ -46,16 +57,41 @@ const checkUserImplementation: Middleware = async (req, res, next) => {
   let user: User | undefined | null;
 
   const apiKey = req.header('X-API-Key');
+  // Express trims req.path while entering nested routers. Bind subsequent
+  // revocation checks to the API operation that was originally authorized.
+  const apiRequestMethod = req.method;
+  const apiRequestPath = req.path;
   const apiKeyProvided = apiKey !== undefined;
-  const isApiKeyCurrent = () =>
+  const serviceKeyAuthenticated =
     apiKey !== undefined && matchesApiKey(apiKey, settings.main.apiKey);
-  const apiKeyAuthenticated = isApiKeyCurrent();
+  const scopedActor =
+    apiKey && !serviceKeyAuthenticated
+      ? await authenticateClientApiKey(apiKey, apiRequestMethod, apiRequestPath)
+      : null;
+  const isApiKeyCurrent = async () =>
+    apiKey !== undefined &&
+    (serviceKeyAuthenticated
+      ? matchesApiKey(apiKey, settings.main.apiKey)
+      : (
+          await authenticateClientApiKey(
+            apiKey,
+            apiRequestMethod,
+            apiRequestPath
+          )
+        )?.id === scopedActor?.id && !!scopedActor);
+  const apiKeyAuthenticated = serviceKeyAuthenticated || !!scopedActor;
+  if (apiKeyProvided && !apiKeyAuthenticated) {
+    res
+      .status(401)
+      .json({ message: 'Invalid API key or insufficient token scope.' });
+    return;
+  }
   if (apiKeyAuthenticated) {
     const userRepository = getRepository(User);
 
     // API key access is a service-level credential. Keep it bound to the
     // owner account instead of allowing callers to impersonate arbitrary users.
-    user = await userRepository.findOne({ where: { id: 1 } });
+    user = scopedActor ?? (await userRepository.findOne({ where: { id: 1 } }));
   } else if (!apiKeyProvided && req.session?.userId) {
     const userRepository = getRepository(User);
 
@@ -109,6 +145,44 @@ const checkUserImplementation: Middleware = async (req, res, next) => {
 
   if (user) {
     req.user = user;
+    const actorId = user.id;
+    const sessionId = req.sessionID;
+    req.revalidateUser = async () => {
+      const session =
+        !apiKeyProvided && sessionId
+          ? await new Promise<SessionData | null>((resolve, reject) =>
+              req.sessionStore.get(sessionId, (error, value) =>
+                error ? reject(error) : resolve(value ?? null)
+              )
+            )
+          : null;
+      const fresh = await getRepository(User).findOneBy({ id: actorId });
+      if (!fresh) return null;
+      if (apiKeyProvided) return (await isApiKeyCurrent()) ? fresh : null;
+      if (
+        session?.userId !== actorId ||
+        !isUserSessionCredentialVersionCurrent(fresh, session.credentialVersion)
+      )
+        return null;
+      const bridge = session.jellyfinBridge;
+      if (
+        bridge &&
+        (!settings.jellyfin.bridgeLoginEnabled ||
+          bridge.authorityKey !== getJellyfinAuthAuthorityKey(settings) ||
+          bridge.jellyfinUserId !== normalizeJellyfinGuid(fresh.jellyfinUserId))
+      )
+        return null;
+      if (
+        settings.network.restrictAdministratorSignInToNetworks &&
+        fresh.hasPermission(Permission.ADMIN) &&
+        !isClientIpAllowedForAdministratorLogin(
+          req.ip,
+          settings.network.administratorSignInAllowedNetworks
+        )
+      )
+        return null;
+      return fresh;
+    };
   }
 
   req.locale = user?.settings?.locale
@@ -171,7 +245,7 @@ const checkUserImplementation: Middleware = async (req, res, next) => {
 };
 
 export const checkUser: Middleware = (req, res, next) => {
-  authenticatedRouteRateLimit(req, res, () => {
+  limitAuthenticatedRequest(req, res, () => {
     void Promise.resolve(checkUserImplementation(req, res, next)).catch(next);
   });
 };
@@ -191,7 +265,7 @@ export const isAuthenticated = (
     }
   };
   return (req, res, next) => {
-    authenticatedRouteRateLimit(req, res, () => {
+    limitAuthenticatedRequest(req, res, () => {
       authMiddleware(req, res, next);
     });
   };

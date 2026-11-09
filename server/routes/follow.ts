@@ -8,12 +8,14 @@ import Follow, {
 import FollowEvent from '@server/entity/FollowEvent';
 import {
   evaluateFollow,
+  followCategories,
   isFollowKind,
-  MAX_FOLLOWS_PER_USER,
   upsertFollow,
 } from '@server/lib/follow';
 import { filterFollowVideoItems } from '@server/lib/follow/videoPolicy';
+import { isMediaTypeEnabledForUser } from '@server/lib/mediaAccess';
 import { Permission } from '@server/lib/permissions';
+import { isUserMediaCategoryEnabled } from '@server/lib/userMediaCategories';
 import logger from '@server/logger';
 import { parsePageParams } from '@server/utils/pagination';
 import { Router } from 'express';
@@ -107,7 +109,13 @@ followRoutes.get('/', async (req, res) => {
   });
   return res.status(200).json({
     results: rows
-      .filter((row) => row.kind !== 'saved-discovery')
+      .filter(
+        (row) =>
+          row.kind !== 'saved-discovery' &&
+          followCategories(row).some((category) =>
+            isUserMediaCategoryEnabled(req.user, category)
+          )
+      )
       .map(serializeFollow),
   });
 });
@@ -183,12 +191,6 @@ followRoutes.post('/', async (req, res) => {
       .json({ error: 'Auto-request is only available for books.' });
   }
   const repository = getRepository(Follow);
-  const existing = await repository.count({
-    where: { user: { id: req.user.id } },
-  });
-  if (existing >= MAX_FOLLOWS_PER_USER) {
-    return res.status(409).json({ error: 'Follow limit reached.' });
-  }
   const follow = await upsertFollow({
     userId: req.user.id,
     kind: body.kind,
@@ -287,13 +289,22 @@ followRoutes.get('/events', async (req, res) => {
     videoItems
   );
   const allowedIds = new Set(allowed.map((item) => item.eventId));
-  const visibleRows = rows.filter(
-    (row) =>
-      !row.target ||
-      (row.target.mediaType !== MediaType.MOVIE &&
-        row.target.mediaType !== MediaType.TV) ||
-      allowedIds.has(row.id)
-  );
+  const visibleRows = rows
+    .filter(
+      (row) =>
+        followCategories(row.follow).some((category) =>
+          isUserMediaCategoryEnabled(req.user, category)
+        ) &&
+        (!row.target ||
+          isMediaTypeEnabledForUser(req.user!, row.target.mediaType))
+    )
+    .filter(
+      (row) =>
+        !row.target ||
+        (row.target.mediaType !== MediaType.MOVIE &&
+          row.target.mediaType !== MediaType.TV) ||
+        allowedIds.has(row.id)
+    );
   return res.status(200).json({
     total,
     results: visibleRows.map((row) => ({

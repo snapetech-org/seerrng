@@ -86,3 +86,44 @@ describe('follow event persistence', () => {
     assert.deepEqual(stored.cursor, { known: ['movie:1'] });
   });
 });
+
+describe('follow admission', () => {
+  it('serializes the shared quota and still permits idempotent updates at capacity', async () => {
+    const { upsertFollow } = await import('./index');
+    const { Permission } = await import('@server/lib/permissions');
+    await getRepository(User).update(2, { permissions: Permission.REQUEST });
+    const user = await getRepository(User).findOneByOrFail({ id: 2 });
+    const repo = getRepository(Follow);
+    await repo.save(
+      Array.from(
+        { length: 199 },
+        (_, i) =>
+          new Follow({
+            user,
+            kind: 'artist-release-type',
+            subjectKey: `fixture:${i}`,
+            subjectLabel: 'Fixture',
+          })
+      )
+    );
+    const input = {
+      userId: 2,
+      kind: 'artist-release-type' as const,
+      subjectLabel: 'Final artist',
+    };
+    const results = await Promise.allSettled([
+      upsertFollow({ ...input, subjectKey: 'last-a' }),
+      upsertFollow({ ...input, subjectKey: 'last-b' }),
+    ]);
+    assert.equal(results.filter((r) => r.status === 'fulfilled').length, 1);
+    assert.equal(await repo.count({ where: { user: { id: 2 } } }), 200);
+    const existing = results.find((r) => r.status === 'fulfilled');
+    assert.ok(existing && existing.status === 'fulfilled');
+    await upsertFollow({
+      ...input,
+      subjectKey: existing.value.subjectKey,
+      subjectLabel: 'Updated',
+    });
+    assert.equal(await repo.count({ where: { user: { id: 2 } } }), 200);
+  });
+});

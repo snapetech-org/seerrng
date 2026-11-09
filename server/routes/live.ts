@@ -107,14 +107,47 @@ liveRoutes.get('/downloads', (req, res) => {
   streamsByUser.set(userId, userStreams + 1);
   totalStreams += 1;
 
+  let closed = false;
+  let unsubscribe = () => {};
+  const timers: {
+    heartbeat?: ReturnType<typeof setInterval>;
+    lifetime?: ReturnType<typeof setTimeout>;
+  } = {};
+  const cleanup = () => {
+    if (closed) return;
+    closed = true;
+    clearInterval(timers.heartbeat);
+    clearTimeout(timers.lifetime);
+    unsubscribe();
+    const remaining = (streamsByUser.get(userId) ?? 1) - 1;
+    if (remaining > 0) streamsByUser.set(userId, remaining);
+    else streamsByUser.delete(userId);
+    totalStreams = Math.max(0, totalStreams - 1);
+  };
+  const close = () => {
+    cleanup();
+    res.destroy();
+  };
+  const write = (frame: string) => {
+    if (closed) return;
+    // Never accumulate queued frames for a stalled reader.
+    if (
+      Buffer.byteLength(frame) > 64 * 1024 ||
+      res.writableLength > 64 * 1024 ||
+      !res.write(frame)
+    )
+      close();
+  };
+  req.on('close', cleanup);
+  res.on('close', cleanup);
   res.status(200);
   res.setHeader('Content-Type', 'text/event-stream; charset=utf-8');
-  // no-transform keeps the compression middleware from buffering events.
   res.setHeader('Cache-Control', 'no-cache, no-transform');
   res.setHeader('Connection', 'keep-alive');
   res.setHeader('X-Accel-Buffering', 'no');
   res.flushHeaders();
-  res.write('retry: 5000\n\n');
+  write('retry: 5000\n\n');
+  if (closed) return;
 
   const idsByHash = new Map<string, string[]>();
   for (const { id, hash } of ids) {
@@ -122,46 +155,63 @@ liveRoutes.get('/downloads', (req, res) => {
     hashIds.push(id);
     idsByHash.set(hash, hashIds);
   }
-
-  const unsubscribe = liveDownloadMonitor.subscribe(
+  // One in-flight authorization read and one coalesced batch per stream.
+  let pending: { updates: LiveDownloadUpdate[]; missing: string[] } | undefined;
+  let sending = false;
+  const send = async () => {
+    if (sending || closed) return;
+    sending = true;
+    try {
+      do {
+        const batch = pending;
+        pending = undefined;
+        const actor = await req.revalidateUser?.();
+        if (closed) return;
+        if (!actor || actor.id !== userId) {
+          close();
+          return;
+        }
+        const admin = actor.hasPermission(Permission.ADMIN);
+        // Raw hashes were admitted on administrator authority, so demotion
+        // closes the subscription rather than retaining privileged access.
+        if (isAdmin && !admin) {
+          close();
+          return;
+        }
+        if (!batch) write(': ping\n\n');
+        else {
+          const payload: Record<string, unknown>[] = batch.updates.flatMap(
+            (update) =>
+              (idsByHash.get(update.hash) ?? []).map((id) =>
+                toBrowserUpdate(update, id, admin)
+              )
+          );
+          for (const hash of batch.missing) {
+            for (const id of idsByHash.get(hash) ?? [])
+              payload.push({ id, unavailable: true });
+          }
+          if (payload.length)
+            write(`event: downloads\ndata: ${JSON.stringify(payload)}\n\n`);
+        }
+      } while (pending && !closed);
+    } catch {
+      close();
+    } finally {
+      sending = false;
+    }
+  };
+  unsubscribe = liveDownloadMonitor.subscribe(
     [...idsByHash.keys()],
     (updates, missingHashes) => {
-      const payload: Record<string, unknown>[] = updates.flatMap((update) =>
-        (idsByHash.get(update.hash) ?? []).map((id) =>
-          toBrowserUpdate(update, id, isAdmin)
-        )
-      );
-      for (const hash of missingHashes) {
-        for (const id of idsByHash.get(hash) ?? []) {
-          payload.push({ id, unavailable: true });
-        }
-      }
-      if (payload.length > 0) {
-        res.write(`event: downloads\ndata: ${JSON.stringify(payload)}\n\n`);
-      }
+      pending = { updates, missing: missingHashes };
+      void send();
     }
   );
-
-  const heartbeat = setInterval(() => res.write(': ping\n\n'), HEARTBEAT_MS);
-  const lifetime = setTimeout(() => res.end(), MAX_STREAM_MS);
-
-  let closed = false;
-  const cleanup = () => {
-    if (closed) return;
-    closed = true;
-    clearInterval(heartbeat);
-    clearTimeout(lifetime);
-    unsubscribe();
-    const remaining = (streamsByUser.get(userId) ?? 1) - 1;
-    if (remaining > 0) {
-      streamsByUser.set(userId, remaining);
-    } else {
-      streamsByUser.delete(userId);
-    }
-    totalStreams = Math.max(0, totalStreams - 1);
-  };
-  req.on('close', cleanup);
-  res.on('close', cleanup);
+  timers.heartbeat = setInterval(() => void send(), HEARTBEAT_MS);
+  timers.lifetime = setTimeout(() => {
+    cleanup();
+    res.end();
+  }, MAX_STREAM_MS);
 });
 
 export default liveRoutes;

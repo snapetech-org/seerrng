@@ -36,7 +36,7 @@ spec:
     {{- else }}
     - backendRefs:
         - name: {{ include "seerr.fullname" $ }}
-          port: {{ $.Values.service.port }}
+          port: {{ $route.backendPort | default $.Values.service.port }}
       {{- with $route.filters }}
       filters:
         {{- toYaml . | nindent 8 }}

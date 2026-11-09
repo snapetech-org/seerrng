@@ -2152,6 +2152,13 @@ authRoutes.post('/local', authRateLimit, async (req, res, next) => {
             .where('user.email = :email', { email: normalizedEmail })
             .getOne();
 
+          // Admission must precede the real password comparison. Otherwise a
+          // distributed caller still gets a fresh guess during the cooldown.
+          // Rejected attempts do not extend the fixed recovery window.
+          const now = new Date();
+          if (user?.loginBlockedUntil && user.loginBlockedUntil > now) {
+            return { authenticated: false, user };
+          }
           const suppliedPassword = password.value ?? '';
           let passwordMatches: boolean;
           try {
@@ -2165,20 +2172,11 @@ authRoutes.post('/local', authRateLimit, async (req, res, next) => {
             }
             throw error;
           }
-          const now = new Date();
-
           if (!user) {
             return { authenticated: false, user: undefined };
           }
 
           if (!passwordMatches) {
-            if (
-              user.loginBlockedUntil &&
-              user.loginBlockedUntil.getTime() > now.getTime()
-            ) {
-              return { authenticated: false, user };
-            }
-
             const lastFailureTime = user.lastFailedLoginAt?.getTime();
             const failuresInWindow =
               lastFailureTime !== undefined &&
@@ -3367,54 +3365,51 @@ authRoutes.post('/logout', async (req, res, next) => {
       }
     }
 
-    req.session?.destroy((err: Error | null) => {
-      if (err) {
-        logger.error('Failed to destroy session', {
-          label: 'Auth',
-          error: err.message,
-          userId,
-        });
-        return next({ status: 500, message: 'Failed to destroy session.' });
-      }
+    await runUserSecurityMutation(
+      userId,
+      () =>
+        new Promise<void>((resolve, reject) => {
+          req.session!.destroy((error) => (error ? reject(error) : resolve()));
+        })
+    );
 
-      if (jellyfinDeviceCleanup) {
-        const cleanup = jellyfinDeviceCleanup;
-        trackBackgroundTask('Jellyfin logout device cleanup', async () => {
-          try {
-            await runWithMediaServerUserAuthority(cleanup.userAuthority, () =>
-              runWithConfigurationSnapshot(cleanup.configurationAuthority, () =>
-                axios
-                  .delete(`${cleanup.baseUrl}/Devices`, {
-                    ...DEVICE_DELETE_REQUEST_OPTIONS,
-                    params: {
-                      Id: cleanup.userAuthority.jellyfinDeviceId,
-                    },
-                    headers: getMediaBrowserAuthorizationHeaders({
-                      mediaServerType: cleanup.serverType,
-                      deviceId: 'seerr',
-                      token: cleanup.apiKey,
-                    }),
-                  })
-                  .then(() => undefined)
-              )
-            );
-          } catch (error) {
-            logger.error('Failed to delete Jellyfin device', {
-              label: 'Auth',
-              error: error instanceof Error ? error.message : 'Unknown error',
-              userId: cleanup.userAuthority.userId,
-              jellyfinUserId: cleanup.userAuthority.jellyfinUserId,
-            });
-          }
-        });
-      }
-
-      logger.debug('Successfully logged out user', {
-        label: 'Auth',
-        userId,
+    if (jellyfinDeviceCleanup) {
+      const cleanup = jellyfinDeviceCleanup;
+      trackBackgroundTask('Jellyfin logout device cleanup', async () => {
+        try {
+          await runWithMediaServerUserAuthority(cleanup.userAuthority, () =>
+            runWithConfigurationSnapshot(cleanup.configurationAuthority, () =>
+              axios
+                .delete(`${cleanup.baseUrl}/Devices`, {
+                  ...DEVICE_DELETE_REQUEST_OPTIONS,
+                  params: {
+                    Id: cleanup.userAuthority.jellyfinDeviceId,
+                  },
+                  headers: getMediaBrowserAuthorizationHeaders({
+                    mediaServerType: cleanup.serverType,
+                    deviceId: 'seerr',
+                    token: cleanup.apiKey,
+                  }),
+                })
+                .then(() => undefined)
+            )
+          );
+        } catch (error) {
+          logger.error('Failed to delete Jellyfin device', {
+            label: 'Auth',
+            error: error instanceof Error ? error.message : 'Unknown error',
+            userId: cleanup.userAuthority.userId,
+            jellyfinUserId: cleanup.userAuthority.jellyfinUserId,
+          });
+        }
       });
-      res.status(200).json({ status: 'ok' });
+    }
+
+    logger.debug('Successfully logged out user', {
+      label: 'Auth',
+      userId,
     });
+    res.status(200).json({ status: 'ok' });
   } catch (error) {
     logger.error('Error during logout process', {
       label: 'Auth',

@@ -633,7 +633,7 @@
       "callsites": [
         {
           "path": "server/routes/index.ts",
-          "line": 943,
+          "line": 971,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to retrieve watch provider regions.'",
@@ -1439,7 +1439,7 @@
       "callsites": [
         {
           "path": "server/routes/follow.ts",
-          "line": 122,
+          "line": 130,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'Choose what to follow.'",
@@ -1634,8 +1634,32 @@
       "parameterCount": 0,
       "callsites": [
         {
+          "path": "server/lib/franchise/index.ts",
+          "line": 133,
+          "kind": "app-error-candidate",
+          "field": "message",
+          "expression": "'Not found.'",
+          "captured": []
+        },
+        {
           "path": "server/middleware/contentRestriction.ts",
-          "line": 82,
+          "line": 87,
+          "kind": "authored-message-field",
+          "field": "message",
+          "expression": "'Not found.'",
+          "captured": []
+        },
+        {
+          "path": "server/routes/continuation.ts",
+          "line": 56,
+          "kind": "authored-message-field",
+          "field": "message",
+          "expression": "'Not found.'",
+          "captured": []
+        },
+        {
+          "path": "server/routes/continuation.ts",
+          "line": 101,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Not found.'",
@@ -1674,8 +1698,24 @@
           "captured": []
         },
         {
+          "path": "server/routes/editions.ts",
+          "line": 51,
+          "kind": "authored-message-field",
+          "field": "message",
+          "expression": "'Not found.'",
+          "captured": []
+        },
+        {
+          "path": "server/routes/editions.ts",
+          "line": 101,
+          "kind": "authored-message-field",
+          "field": "message",
+          "expression": "'Not found.'",
+          "captured": []
+        },
+        {
           "path": "server/routes/follow.ts",
-          "line": 225,
+          "line": 227,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'Not found.'",
@@ -1683,7 +1723,7 @@
         },
         {
           "path": "server/routes/follow.ts",
-          "line": 247,
+          "line": 249,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'Not found.'",
@@ -1691,7 +1731,7 @@
         },
         {
           "path": "server/routes/franchise.ts",
-          "line": 45,
+          "line": 49,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'Not found.'",
@@ -1699,7 +1739,23 @@
         },
         {
           "path": "server/routes/franchise.ts",
-          "line": 77,
+          "line": 57,
+          "kind": "authored-message-field",
+          "field": "error",
+          "expression": "'Not found.'",
+          "captured": []
+        },
+        {
+          "path": "server/routes/franchise.ts",
+          "line": 72,
+          "kind": "authored-message-field",
+          "field": "error",
+          "expression": "'Not found.'",
+          "captured": []
+        },
+        {
+          "path": "server/routes/franchise.ts",
+          "line": 90,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'Not found.'",
@@ -1723,7 +1779,7 @@
         },
         {
           "path": "server/routes/index.ts",
-          "line": 136,
+          "line": 137,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Not found.'",
@@ -1731,7 +1787,7 @@
         },
         {
           "path": "server/routes/index.ts",
-          "line": 143,
+          "line": 144,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Not found.'",
@@ -2009,7 +2065,7 @@
       "callsites": [
         {
           "path": "server/routes/auth.ts",
-          "line": 3442,
+          "line": 3437,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Email address required.'",
@@ -2185,7 +2241,7 @@
       "callsites": [
         {
           "path": "server/routes/playback.ts",
-          "line": 680,
+          "line": 702,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to retrieve watched status.'",
@@ -2898,7 +2954,7 @@
       "callsites": [
         {
           "path": "server/routes/playback.ts",
-          "line": 779,
+          "line": 801,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Playback device is unavailable.'",
@@ -2906,7 +2962,7 @@
         },
         {
           "path": "server/routes/playback.ts",
-          "line": 840,
+          "line": 862,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Playback device is unavailable.'",
@@ -2914,7 +2970,7 @@
         },
         {
           "path": "server/routes/playback.ts",
-          "line": 1015,
+          "line": 1035,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Playback device is unavailable.'",
@@ -2922,7 +2978,7 @@
         },
         {
           "path": "server/routes/playback.ts",
-          "line": 1058,
+          "line": 1078,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Playback device is unavailable.'",
@@ -4074,7 +4130,7 @@
       "callsites": [
         {
           "path": "server/routes/index.ts",
-          "line": 751,
+          "line": 779,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to retrieve studio.'",
@@ -4263,7 +4319,7 @@
       "callsites": [
         {
           "path": "server/routes/franchise.ts",
-          "line": 107,
+          "line": 125,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'A valid relationship is required.'",
@@ -4666,7 +4722,7 @@
       "callsites": [
         {
           "path": "server/routes/index.ts",
-          "line": 307,
+          "line": 308,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Transport bootstrap is only available before setup is complete or to an authenticated administrator.'",
@@ -6091,7 +6147,7 @@
       "callsites": [
         {
           "path": "server/routes/continuation.ts",
-          "line": 80,
+          "line": 84,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to find the source material.'",
@@ -6099,7 +6155,7 @@
         },
         {
           "path": "server/routes/continuation.ts",
-          "line": 115,
+          "line": 121,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to find the source material.'",
@@ -7189,7 +7245,7 @@
       "callsites": [
         {
           "path": "server/lib/userSecurityMutation.ts",
-          "line": 70,
+          "line": 71,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'A valid user credential context is required.'",
@@ -8024,7 +8080,7 @@
       "callsites": [
         {
           "path": "server/routes/follow.ts",
-          "line": 137,
+          "line": 145,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'The follow conditions are invalid.'",
@@ -8760,7 +8816,7 @@
       "callsites": [
         {
           "path": "server/routes/follow.ts",
-          "line": 159,
+          "line": 167,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'Choose a valid TMDB person, production company, or network.'",
@@ -9012,7 +9068,7 @@
       "callsites": [
         {
           "path": "server/routes/playback.ts",
-          "line": 202,
+          "line": 222,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Playback is not permitted.'",
@@ -9020,7 +9076,7 @@
         },
         {
           "path": "server/routes/playback.ts",
-          "line": 699,
+          "line": 695,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Playback is not permitted.'",
@@ -9028,7 +9084,7 @@
         },
         {
           "path": "server/routes/playback.ts",
-          "line": 740,
+          "line": 721,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Playback is not permitted.'",
@@ -9036,7 +9092,7 @@
         },
         {
           "path": "server/routes/playback.ts",
-          "line": 854,
+          "line": 762,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Playback is not permitted.'",
@@ -9044,7 +9100,7 @@
         },
         {
           "path": "server/routes/playback.ts",
-          "line": 891,
+          "line": 876,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Playback is not permitted.'",
@@ -9052,7 +9108,7 @@
         },
         {
           "path": "server/routes/playback.ts",
-          "line": 925,
+          "line": 913,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Playback is not permitted.'",
@@ -9060,7 +9116,7 @@
         },
         {
           "path": "server/routes/playback.ts",
-          "line": 983,
+          "line": 947,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Playback is not permitted.'",
@@ -9068,7 +9124,7 @@
         },
         {
           "path": "server/routes/playback.ts",
-          "line": 1072,
+          "line": 1003,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Playback is not permitted.'",
@@ -9076,7 +9132,7 @@
         },
         {
           "path": "server/routes/playback.ts",
-          "line": 1124,
+          "line": 1092,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Playback is not permitted.'",
@@ -9084,7 +9140,15 @@
         },
         {
           "path": "server/routes/playback.ts",
-          "line": 1156,
+          "line": 1142,
+          "kind": "authored-message-field",
+          "field": "message",
+          "expression": "'Playback is not permitted.'",
+          "captured": []
+        },
+        {
+          "path": "server/routes/playback.ts",
+          "line": 1174,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Playback is not permitted.'",
@@ -9679,7 +9743,7 @@
       "callsites": [
         {
           "path": "server/api/anilist/index.ts",
-          "line": 270,
+          "line": 273,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Unable to exchange AniList authorization code'",
@@ -10045,7 +10109,7 @@
         },
         {
           "path": "server/routes/index.ts",
-          "line": 906,
+          "line": 934,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Keyword not found.'",
@@ -10083,7 +10147,7 @@
       "callsites": [
         {
           "path": "server/routes/collectors.ts",
-          "line": 134,
+          "line": 146,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'Unable to compare releases.'",
@@ -10206,7 +10270,7 @@
         },
         {
           "path": "server/routes/auth.ts",
-          "line": 2237,
+          "line": 2235,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Access denied.'",
@@ -10214,7 +10278,7 @@
         },
         {
           "path": "server/routes/auth.ts",
-          "line": 2247,
+          "line": 2245,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Access denied.'",
@@ -10222,7 +10286,7 @@
         },
         {
           "path": "server/routes/auth.ts",
-          "line": 3294,
+          "line": 3292,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Access denied.'",
@@ -10230,7 +10294,7 @@
         },
         {
           "path": "server/routes/index.ts",
-          "line": 526,
+          "line": 553,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Access denied.'",
@@ -10772,7 +10836,7 @@
         },
         {
           "path": "server/index.ts",
-          "line": 136,
+          "line": 137,
           "kind": "authored-message-field",
           "field": "errorMessage",
           "expression": "error instanceof Error ? error.message : 'Unknown error'",
@@ -10780,7 +10844,7 @@
         },
         {
           "path": "server/index.ts",
-          "line": 749,
+          "line": 750,
           "kind": "authored-message-field",
           "field": "errorMessage",
           "expression": "error instanceof Error ? error.message : 'Unknown error'",
@@ -10844,7 +10908,7 @@
         },
         {
           "path": "server/routes/auth.ts",
-          "line": 2531,
+          "line": 2529,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "error instanceof Error ? error.message : 'Unknown error'",
@@ -10852,7 +10916,7 @@
         },
         {
           "path": "server/routes/auth.ts",
-          "line": 2588,
+          "line": 2586,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "error instanceof Error ? error.message : 'Unknown error'",
@@ -10860,7 +10924,7 @@
         },
         {
           "path": "server/routes/auth.ts",
-          "line": 2741,
+          "line": 2739,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "error instanceof Error ? error.message : 'Unknown error'",
@@ -10868,7 +10932,7 @@
         },
         {
           "path": "server/routes/auth.ts",
-          "line": 2824,
+          "line": 2822,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "error instanceof Error ? error.message : 'Unknown error'",
@@ -10876,7 +10940,7 @@
         },
         {
           "path": "server/routes/auth.ts",
-          "line": 2845,
+          "line": 2843,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "error instanceof Error ? error.message : 'Unknown error'",
@@ -10884,7 +10948,7 @@
         },
         {
           "path": "server/routes/auth.ts",
-          "line": 2868,
+          "line": 2866,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "error instanceof Error ? error.message : 'Unknown error'",
@@ -10892,7 +10956,7 @@
         },
         {
           "path": "server/routes/auth.ts",
-          "line": 2907,
+          "line": 2905,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "error instanceof Error ? error.message : 'Unknown error'",
@@ -10900,7 +10964,7 @@
         },
         {
           "path": "server/routes/auth.ts",
-          "line": 3364,
+          "line": 3362,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "error instanceof Error ? error.message : 'Unknown error'",
@@ -10908,7 +10972,7 @@
         },
         {
           "path": "server/routes/auth.ts",
-          "line": 3404,
+          "line": 3400,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "error instanceof Error ? error.message : 'Unknown error'",
@@ -10916,7 +10980,7 @@
         },
         {
           "path": "server/routes/auth.ts",
-          "line": 3421,
+          "line": 3416,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "error instanceof Error ? error.message : 'Unknown error'",
@@ -10980,7 +11044,7 @@
         },
         {
           "path": "server/routes/editions.ts",
-          "line": 87,
+          "line": 92,
           "kind": "authored-message-field",
           "field": "errorMessage",
           "expression": "error instanceof Error ? error.message : 'Unknown error'",
@@ -10988,7 +11052,7 @@
         },
         {
           "path": "server/routes/editions.ts",
-          "line": 126,
+          "line": 133,
           "kind": "authored-message-field",
           "field": "errorMessage",
           "expression": "error instanceof Error ? error.message : 'Unknown error'",
@@ -11240,7 +11304,7 @@
       "callsites": [
         {
           "path": "server/routes/continuation.ts",
-          "line": 51,
+          "line": 53,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Invalid show id.'",
@@ -11259,7 +11323,7 @@
       "callsites": [
         {
           "path": "server/routes/playback.ts",
-          "line": 722,
+          "line": 744,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'A playback device is required.'",
@@ -11525,7 +11589,7 @@
       "callsites": [
         {
           "path": "server/routes/resolve.ts",
-          "line": 157,
+          "line": 235,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to read that image.'",
@@ -12488,7 +12552,7 @@
       "callsites": [
         {
           "path": "server/routes/editions.ts",
-          "line": 45,
+          "line": 48,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'format must be ebook or audiobook.'",
@@ -12559,6 +12623,27 @@
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Plex collection owner authority is required.'",
+          "captured": []
+        }
+      ]
+    },
+    {
+      "key": "m2e2d7f041fb58bd77e4e",
+      "id": "utils.ApiMessage.m2e2d7f041fb58bd77e4e",
+      "source": "SEERR_TRUSTED_PROXIES must contain trusted proxy IP addresses or CIDRs.",
+      "defaultMessage": "SEERR_TRUSTED_PROXIES must contain trusted proxy IP addresses or CIDRs.",
+      "sourceHash": "2e2d7f041fb58bd77e4e5dac62e90da7b4bdd370d4de62018e1029347abdb6a7",
+      "parts": [
+        "SEERR_TRUSTED_PROXIES must contain trusted proxy IP addresses or CIDRs."
+      ],
+      "parameterCount": 0,
+      "callsites": [
+        {
+          "path": "server/utils/trustedProxies.ts",
+          "line": 12,
+          "kind": "app-error-candidate",
+          "field": "message",
+          "expression": "'SEERR_TRUSTED_PROXIES must contain trusted proxy IP addresses or CIDRs.'",
           "captured": []
         }
       ]
@@ -13390,7 +13475,7 @@
       "callsites": [
         {
           "path": "server/routes/index.ts",
-          "line": 724,
+          "line": 752,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to retrieve languages.'",
@@ -13428,7 +13513,7 @@
       "callsites": [
         {
           "path": "server/routes/playback.ts",
-          "line": 999,
+          "line": 1019,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'No selected collection items are available in this quality.'",
@@ -13436,7 +13521,7 @@
         },
         {
           "path": "server/routes/playback.ts",
-          "line": 1140,
+          "line": 1158,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'No selected collection items are available in this quality.'",
@@ -14034,7 +14119,7 @@
       "callsites": [
         {
           "path": "server/routes/editions.ts",
-          "line": 97,
+          "line": 104,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'title is required.'",
@@ -14391,7 +14476,7 @@
       "callsites": [
         {
           "path": "server/routes/desktop.ts",
-          "line": 157,
+          "line": 163,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'A valid Jellyfin server URL is required.'",
@@ -15363,7 +15448,7 @@
       "callsites": [
         {
           "path": "server/routes/index.ts",
-          "line": 972,
+          "line": 1000,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to retrieve movie watch providers.'",
@@ -16207,7 +16292,7 @@
       "callsites": [
         {
           "path": "server/api/anilist/index.ts",
-          "line": 267,
+          "line": 270,
           "kind": "authored-message-field",
           "field": "errorMessage",
           "expression": "e instanceof Error ? e.message : 'unknown error'",
@@ -16386,7 +16471,7 @@
       "callsites": [
         {
           "path": "server/middleware/auth.ts",
-          "line": 187,
+          "line": 261,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'You do not have permission to access this endpoint'",
@@ -16489,7 +16574,7 @@
       "callsites": [
         {
           "path": "server/routes/follow.ts",
-          "line": 175,
+          "line": 183,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'Choose a valid movie or series genre.'",
@@ -16567,7 +16652,7 @@
       "callsites": [
         {
           "path": "server/api/anilist/index.ts",
-          "line": 249,
+          "line": 252,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'AniList did not return an access token'",
@@ -18297,7 +18382,7 @@
       "callsites": [
         {
           "path": "server/routes/resolve.ts",
-          "line": 88,
+          "line": 139,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Not available.'",
@@ -18305,7 +18390,15 @@
         },
         {
           "path": "server/routes/resolve.ts",
-          "line": 131,
+          "line": 179,
+          "kind": "authored-message-field",
+          "field": "message",
+          "expression": "'Not available.'",
+          "captured": []
+        },
+        {
+          "path": "server/routes/resolve.ts",
+          "line": 206,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Not available.'",
@@ -18509,7 +18602,7 @@
       "callsites": [
         {
           "path": "server/routes/auth.ts",
-          "line": 2691,
+          "line": 2689,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Apple OIDC callback must use form encoding'",
@@ -18625,7 +18718,7 @@
       "callsites": [
         {
           "path": "server/routes/index.ts",
-          "line": 704,
+          "line": 732,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to retrieve regions.'",
@@ -18850,6 +18943,25 @@
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Plex returned an invalid library response.'",
+          "captured": []
+        }
+      ]
+    },
+    {
+      "key": "m48c92fdf037d4324ab47",
+      "id": "utils.ApiMessage.m48c92fdf037d4324ab47",
+      "source": "SEERR_TRUSTED_PROXIES must not trust the entire Internet.",
+      "defaultMessage": "SEERR_TRUSTED_PROXIES must not trust the entire Internet.",
+      "sourceHash": "48c92fdf037d4324ab47f58b7a7f74b9479f179b2e8fb95509c59251ad25ca9b",
+      "parts": ["SEERR_TRUSTED_PROXIES must not trust the entire Internet."],
+      "parameterCount": 0,
+      "callsites": [
+        {
+          "path": "server/utils/trustedProxies.ts",
+          "line": 17,
+          "kind": "app-error-candidate",
+          "field": "message",
+          "expression": "'SEERR_TRUSTED_PROXIES must not trust the entire Internet.'",
           "captured": []
         }
       ]
@@ -19147,7 +19259,7 @@
       "callsites": [
         {
           "path": "server/routes/resolve.ts",
-          "line": 134,
+          "line": 209,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Send an image.'",
@@ -19453,7 +19565,7 @@
       "callsites": [
         {
           "path": "server/routes/editions.ts",
-          "line": 89,
+          "line": 94,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to compare editions.'",
@@ -19683,7 +19795,7 @@
       "callsites": [
         {
           "path": "server/routes/auth.ts",
-          "line": 2698,
+          "line": 2696,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'OIDC form-post callback has duplicate parameters'",
@@ -20178,6 +20290,25 @@
               "disposition": "opaque captured value; preserve verbatim"
             }
           ]
+        }
+      ]
+    },
+    {
+      "key": "m4deee8999ef6b1078fc1",
+      "id": "utils.ApiMessage.m4deee8999ef6b1078fc1",
+      "source": "Revoke an existing client token first.",
+      "defaultMessage": "Revoke an existing client token first.",
+      "sourceHash": "4deee8999ef6b1078fc1e27d6f602b4bfe920ef79db5e32a534c4b6274558912",
+      "parts": ["Revoke an existing client token first."],
+      "parameterCount": 0,
+      "callsites": [
+        {
+          "path": "server/routes/clientApiKeys.ts",
+          "line": 70,
+          "kind": "authored-message-field",
+          "field": "message",
+          "expression": "'Revoke an existing client token first.'",
+          "captured": []
         }
       ]
     },
@@ -21082,7 +21213,7 @@
       "callsites": [
         {
           "path": "server/routes/follow.ts",
-          "line": 131,
+          "line": 139,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'A subject and label are required.'",
@@ -21587,7 +21718,7 @@
       "callsites": [
         {
           "path": "server/routes/index.ts",
-          "line": 313,
+          "line": 314,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "`Transport is controlled by environment variables: ${configured.environmentOverrides.join(', ')}.`",
@@ -21690,7 +21821,7 @@
       "callsites": [
         {
           "path": "server/routes/index.ts",
-          "line": 1020,
+          "line": 1048,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to retrieve movie certifications.'",
@@ -22825,6 +22956,25 @@
       ]
     },
     {
+      "key": "m57872b95dc2a1921b03d",
+      "id": "utils.ApiMessage.m57872b95dc2a1921b03d",
+      "source": "Invalid client token ID.",
+      "defaultMessage": "Invalid client token ID.",
+      "sourceHash": "57872b95dc2a1921b03d5c409248c24ceffc25a922f6f4644657b51fbb2fb755",
+      "parts": ["Invalid client token ID."],
+      "parameterCount": 0,
+      "callsites": [
+        {
+          "path": "server/routes/clientApiKeys.ts",
+          "line": 95,
+          "kind": "authored-message-field",
+          "field": "message",
+          "expression": "'Invalid client token ID.'",
+          "captured": []
+        }
+      ]
+    },
+    {
       "key": "m57ad0c7f70b4a43f7d0c",
       "id": "utils.ApiMessage.m57ad0c7f70b4a43f7d0c",
       "source": "Network logo tone is invalid.",
@@ -23071,7 +23221,7 @@
       "callsites": [
         {
           "path": "server/routes/index.ts",
-          "line": 806,
+          "line": 834,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to retrieve movie genres.'",
@@ -23214,7 +23364,7 @@
       "callsites": [
         {
           "path": "server/lib/userSecurityMutation.ts",
-          "line": 202,
+          "line": 203,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'User mutation authority changed before admission.'",
@@ -23222,7 +23372,7 @@
         },
         {
           "path": "server/lib/userSecurityMutation.ts",
-          "line": 328,
+          "line": 329,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'User mutation authority changed before admission.'",
@@ -23266,7 +23416,7 @@
       "callsites": [
         {
           "path": "server/lib/resolve/vision.ts",
-          "line": 207,
+          "line": 214,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`The vision provider returned HTTP ${response.status}.`",
@@ -23291,7 +23441,7 @@
       "callsites": [
         {
           "path": "server/lib/userSecurityMutation.ts",
-          "line": 233,
+          "line": 234,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'A valid user ID is required for a security read.'",
@@ -23674,7 +23824,7 @@
       "callsites": [
         {
           "path": "server/lib/resolve/vision.ts",
-          "line": 203,
+          "line": 210,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'The vision provider rejected the API key.'",
@@ -23958,7 +24108,7 @@
       "callsites": [
         {
           "path": "server/routes/auth.ts",
-          "line": 3540,
+          "line": 3535,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Password must be at least 8 characters long.'",
@@ -24247,6 +24397,25 @@
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'rTorrent returned an XML-RPC fault.'",
+          "captured": []
+        }
+      ]
+    },
+    {
+      "key": "m5d7b03aaddbc3627fec6",
+      "id": "utils.ApiMessage.m5d7b03aaddbc3627fec6",
+      "source": "Manage Requests access is required.",
+      "defaultMessage": "Manage Requests access is required.",
+      "sourceHash": "5d7b03aaddbc3627fec683687885fb6e415c1bf126d9846c74fcafefbbbfcded",
+      "parts": ["Manage Requests access is required."],
+      "parameterCount": 0,
+      "callsites": [
+        {
+          "path": "server/routes/editions.ts",
+          "line": 147,
+          "kind": "authored-message-field",
+          "field": "error",
+          "expression": "'Manage Requests access is required.'",
           "captured": []
         }
       ]
@@ -24879,7 +25048,7 @@
         },
         {
           "path": "server/routes/index.ts",
-          "line": 764,
+          "line": 792,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Network not found.'",
@@ -26569,7 +26738,7 @@
       "callsites": [
         {
           "path": "server/routes/follow.ts",
-          "line": 118,
+          "line": 126,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'Request access is required.'",
@@ -26585,7 +26754,7 @@
         },
         {
           "path": "server/routes/resolve.ts",
-          "line": 59,
+          "line": 71,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Request access is required.'",
@@ -26814,7 +26983,7 @@
       "callsites": [
         {
           "path": "server/routes/playback.ts",
-          "line": 954,
+          "line": 976,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'A device and collection selection are required.'",
@@ -27265,7 +27434,7 @@
       "callsites": [
         {
           "path": "server/lib/userSecurityMutation.ts",
-          "line": 86,
+          "line": 87,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'A valid user API key context is required.'",
@@ -27419,7 +27588,7 @@
       "callsites": [
         {
           "path": "server/routes/auth.ts",
-          "line": 2838,
+          "line": 2836,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'OIDC callback URL does not match the login request'",
@@ -27575,7 +27744,7 @@
       "callsites": [
         {
           "path": "server/routes/index.ts",
-          "line": 832,
+          "line": 860,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to retrieve series genres.'",
@@ -27979,7 +28148,7 @@
         },
         {
           "path": "server/routes/collectors.ts",
-          "line": 85,
+          "line": 88,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'Sign in.'",
@@ -27987,7 +28156,7 @@
         },
         {
           "path": "server/routes/follow.ts",
-          "line": 103,
+          "line": 105,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'Sign in.'",
@@ -27995,7 +28164,7 @@
         },
         {
           "path": "server/routes/follow.ts",
-          "line": 116,
+          "line": 124,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'Sign in.'",
@@ -28003,7 +28172,7 @@
         },
         {
           "path": "server/routes/follow.ts",
-          "line": 219,
+          "line": 221,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'Sign in.'",
@@ -28011,7 +28180,7 @@
         },
         {
           "path": "server/routes/follow.ts",
-          "line": 240,
+          "line": 242,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'Sign in.'",
@@ -28019,7 +28188,7 @@
         },
         {
           "path": "server/routes/follow.ts",
-          "line": 252,
+          "line": 254,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'Sign in.'",
@@ -28027,7 +28196,7 @@
         },
         {
           "path": "server/routes/follow.ts",
-          "line": 319,
+          "line": 330,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'Sign in.'",
@@ -28035,7 +28204,7 @@
         },
         {
           "path": "server/routes/follow.ts",
-          "line": 327,
+          "line": 338,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'Sign in.'",
@@ -29066,6 +29235,27 @@
       ]
     },
     {
+      "key": "m6f7c78a28b431f059f31",
+      "id": "utils.ApiMessage.m6f7c78a28b431f059f31",
+      "source": "Image dimensions or frame count exceed the recognition limit.",
+      "defaultMessage": "Image dimensions or frame count exceed the recognition limit.",
+      "sourceHash": "6f7c78a28b431f059f31edc7effe2ec2eac56db690ff80ee4493379ce6e1cc91",
+      "parts": [
+        "Image dimensions or frame count exceed the recognition limit."
+      ],
+      "parameterCount": 0,
+      "callsites": [
+        {
+          "path": "server/lib/resolve/vision.ts",
+          "line": 241,
+          "kind": "app-error-candidate",
+          "field": "message",
+          "expression": "'Image dimensions or frame count exceed the recognition limit.'",
+          "captured": []
+        }
+      ]
+    },
+    {
       "key": "m6fab6021f549aef4667b",
       "id": "utils.ApiMessage.m6fab6021f549aef4667b",
       "source": "seasons are required for series requests.",
@@ -29095,7 +29285,7 @@
       "callsites": [
         {
           "path": "server/routes/auth.ts",
-          "line": 3424,
+          "line": 3419,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Error during logout process.'",
@@ -29277,7 +29467,7 @@
       "callsites": [
         {
           "path": "server/routes/playback.ts",
-          "line": 1095,
+          "line": 1115,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'A collection selection is required.'",
@@ -29346,7 +29536,7 @@
       "callsites": [
         {
           "path": "server/routes/index.ts",
-          "line": 534,
+          "line": 561,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to retrieve Pushover sounds.'",
@@ -30514,7 +30704,7 @@
       "callsites": [
         {
           "path": "server/lib/userSecurityMutation.ts",
-          "line": 142,
+          "line": 143,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'A valid user ID is required for a security mutation.'",
@@ -30591,7 +30781,7 @@
       "callsites": [
         {
           "path": "server/routes/playback.ts",
-          "line": 848,
+          "line": 870,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'No media server is configured.'",
@@ -30599,7 +30789,7 @@
         },
         {
           "path": "server/routes/playback.ts",
-          "line": 919,
+          "line": 941,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'No media server is configured.'",
@@ -30607,7 +30797,7 @@
         },
         {
           "path": "server/routes/playback.ts",
-          "line": 1066,
+          "line": 1086,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'No media server is configured.'",
@@ -30615,7 +30805,7 @@
         },
         {
           "path": "server/routes/playback.ts",
-          "line": 1150,
+          "line": 1168,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'No media server is configured.'",
@@ -32320,7 +32510,7 @@
         },
         {
           "path": "server/routes/playback.ts",
-          "line": 658,
+          "line": 678,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Media not found.'",
@@ -32328,7 +32518,7 @@
         },
         {
           "path": "server/routes/playback.ts",
-          "line": 688,
+          "line": 710,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Media not found.'",
@@ -32543,7 +32733,7 @@
       "callsites": [
         {
           "path": "server/routes/follow.ts",
-          "line": 183,
+          "line": 191,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'Auto-request is only available for books.'",
@@ -32551,7 +32741,7 @@
         },
         {
           "path": "server/routes/follow.ts",
-          "line": 232,
+          "line": 234,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'Auto-request is only available for books.'",
@@ -33528,7 +33718,7 @@
       "callsites": [
         {
           "path": "server/lib/resolve/vision.ts",
-          "line": 166,
+          "line": 172,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'The vision provider URL is invalid.'",
@@ -33795,7 +33985,7 @@
       "callsites": [
         {
           "path": "server/routes/editions.ts",
-          "line": 176,
+          "line": 191,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'No audiobook library knows this series.'",
@@ -33945,6 +34135,25 @@
       ]
     },
     {
+      "key": "m81ee49c7b984217f6eb9",
+      "id": "utils.ApiMessage.m81ee49c7b984217f6eb9",
+      "source": "Audiobooks are unavailable.",
+      "defaultMessage": "Audiobooks are unavailable.",
+      "sourceHash": "81ee49c7b984217f6eb9e5ebd83f43bd8ce1952b355a4217d2f256eafb0d9305",
+      "parts": ["Audiobooks are unavailable."],
+      "parameterCount": 0,
+      "callsites": [
+        {
+          "path": "server/routes/editions.ts",
+          "line": 178,
+          "kind": "app-error-candidate",
+          "field": "message",
+          "expression": "'Audiobooks are unavailable.'",
+          "captured": []
+        }
+      ]
+    },
+    {
       "key": "m81f2efe9ea479615e0ba",
       "id": "utils.ApiMessage.m81f2efe9ea479615e0ba",
       "source": "Request body must be an object.",
@@ -33963,7 +34172,7 @@
         },
         {
           "path": "server/routes/index.ts",
-          "line": 319,
+          "line": 320,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Request body must be an object.'",
@@ -34019,7 +34228,7 @@
       "callsites": [
         {
           "path": "server/api/anilist/index.ts",
-          "line": 508,
+          "line": 511,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "response.errors[0]?.message || 'AniList GraphQL error'",
@@ -34199,7 +34408,7 @@
       "callsites": [
         {
           "path": "server/routes/index.ts",
-          "line": 779,
+          "line": 807,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to retrieve network.'",
@@ -34285,7 +34494,7 @@
       "callsites": [
         {
           "path": "server/routes/playback.ts",
-          "line": 879,
+          "line": 901,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'A valid media item is required.'",
@@ -34495,7 +34704,7 @@
       "callsites": [
         {
           "path": "server/lib/userSecurityMutation.ts",
-          "line": 252,
+          "line": 253,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'User read authority changed before access.'",
@@ -34753,7 +34962,7 @@
       "callsites": [
         {
           "path": "server/routes/playback.ts",
-          "line": 759,
+          "line": 781,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'The media selection is not playable.'",
@@ -34761,7 +34970,7 @@
         },
         {
           "path": "server/routes/playback.ts",
-          "line": 903,
+          "line": 925,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'The media selection is not playable.'",
@@ -34971,7 +35180,7 @@
       "callsites": [
         {
           "path": "server/routes/auth.ts",
-          "line": 2722,
+          "line": 2720,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'OIDC callback URL is invalid'",
@@ -35137,7 +35346,7 @@
       "callsites": [
         {
           "path": "server/api/anilist/index.ts",
-          "line": 366,
+          "line": 369,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'AniList Viewer query returned no user'",
@@ -35905,7 +36114,7 @@
       "callsites": [
         {
           "path": "server/routes/collectors.ts",
-          "line": 123,
+          "line": 135,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'Invalid release group.'",
@@ -36371,7 +36580,7 @@
       "callsites": [
         {
           "path": "server/routes/playback.ts",
-          "line": 703,
+          "line": 725,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to retrieve playable media.'",
@@ -36608,7 +36817,7 @@
       "callsites": [
         {
           "path": "server/routes/playback.ts",
-          "line": 862,
+          "line": 884,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to start playback.'",
@@ -37514,6 +37723,14 @@
       "parameterCount": 0,
       "callsites": [
         {
+          "path": "server/routes/clientApiKeys.ts",
+          "line": 24,
+          "kind": "authored-message-field",
+          "field": "message",
+          "expression": "'A signed-in browser session is required.'",
+          "captured": []
+        },
+        {
           "path": "server/routes/gameLibrary.ts",
           "line": 614,
           "kind": "authored-message-field",
@@ -37628,7 +37845,7 @@
       "callsites": [
         {
           "path": "server/routes/playback.ts",
-          "line": 929,
+          "line": 951,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to replace the media-server playlist.'",
@@ -37636,7 +37853,7 @@
         },
         {
           "path": "server/routes/playback.ts",
-          "line": 1160,
+          "line": 1178,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to replace the media-server playlist.'",
@@ -38174,6 +38391,25 @@
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Invalid association media id.'",
+          "captured": []
+        }
+      ]
+    },
+    {
+      "key": "m94f483afbe0482fdf458",
+      "id": "utils.ApiMessage.m94f483afbe0482fdf458",
+      "source": "Invalid client token settings.",
+      "defaultMessage": "Invalid client token settings.",
+      "sourceHash": "94f483afbe0482fdf4587e6708888425eb8f1c6783574e0145e7e3816d6ee4fa",
+      "parts": ["Invalid client token settings."],
+      "parameterCount": 0,
+      "callsites": [
+        {
+          "path": "server/routes/clientApiKeys.ts",
+          "line": 56,
+          "kind": "authored-message-field",
+          "field": "message",
+          "expression": "'Invalid client token settings.'",
           "captured": []
         }
       ]
@@ -40154,7 +40390,7 @@
       "callsites": [
         {
           "path": "server/routes/index.ts",
-          "line": 153,
+          "line": 154,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'You do not have permission to access adult media.'",
@@ -40721,7 +40957,7 @@
       "callsites": [
         {
           "path": "server/middleware/contentRestriction.ts",
-          "line": 72,
+          "line": 74,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'This content is restricted for your account.'",
@@ -41095,7 +41331,7 @@
       "callsites": [
         {
           "path": "server/routes/playback.ts",
-          "line": 795,
+          "line": 817,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'The Plex server identifier is unavailable.'",
@@ -41716,7 +41952,7 @@
       "callsites": [
         {
           "path": "server/routes/playback.ts",
-          "line": 977,
+          "line": 999,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'The collection selection is not playable.'",
@@ -41724,7 +41960,7 @@
         },
         {
           "path": "server/routes/playback.ts",
-          "line": 1118,
+          "line": 1138,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'The collection selection is not playable.'",
@@ -43664,7 +43900,7 @@
       "callsites": [
         {
           "path": "server/routes/continuation.ts",
-          "line": 94,
+          "line": 98,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Invalid AniList id.'",
@@ -44474,25 +44710,6 @@
       ]
     },
     {
-      "key": "mafc9708e36a75f50787a",
-      "id": "utils.ApiMessage.mafc9708e36a75f50787a",
-      "source": "Advanced request access is required.",
-      "defaultMessage": "Advanced request access is required.",
-      "sourceHash": "afc9708e36a75f50787a76e34c917bdd5ee6eac430cf3646b14f98e39229edc3",
-      "parts": ["Advanced request access is required."],
-      "parameterCount": 0,
-      "callsites": [
-        {
-          "path": "server/routes/editions.ts",
-          "line": 145,
-          "kind": "authored-message-field",
-          "field": "error",
-          "expression": "'Advanced request access is required.'",
-          "captured": []
-        }
-      ]
-    },
-    {
       "key": "mafd5801e5e98a40a07bc",
       "id": "utils.ApiMessage.mafd5801e5e98a40a07bc",
       "source": "{value0} must be between {value1} and {value2}",
@@ -44849,7 +45066,7 @@
       "callsites": [
         {
           "path": "server/routes/resolve.ts",
-          "line": 115,
+          "line": 169,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to read that input.'",
@@ -45135,7 +45352,7 @@
       "callsites": [
         {
           "path": "server/routes/index.ts",
-          "line": 922,
+          "line": 950,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to retrieve keyword data.'",
@@ -45234,7 +45451,7 @@
       "callsites": [
         {
           "path": "server/routes/auth.ts",
-          "line": 2705,
+          "line": 2703,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'OIDC callback is missing a valid state parameter'",
@@ -45242,7 +45459,7 @@
         },
         {
           "path": "server/routes/auth.ts",
-          "line": 2730,
+          "line": 2728,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'OIDC callback is missing a valid state parameter'",
@@ -47017,7 +47234,7 @@
       "callsites": [
         {
           "path": "server/routes/editions.ts",
-          "line": 128,
+          "line": 135,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to compare narrators.'",
@@ -47585,7 +47802,7 @@
       "callsites": [
         {
           "path": "server/routes/auth.ts",
-          "line": 2687,
+          "line": 2685,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'OIDC form-post callback is only supported for Apple'",
@@ -47663,7 +47880,7 @@
       "callsites": [
         {
           "path": "server/routes/index.ts",
-          "line": 1040,
+          "line": 1068,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to retrieve TV certifications.'",
@@ -47965,7 +48182,7 @@
       "callsites": [
         {
           "path": "server/routes/resolve.ts",
-          "line": 97,
+          "line": 148,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Provide text, a link, or an ISBN.'",
@@ -48445,7 +48662,7 @@
       "callsites": [
         {
           "path": "server/routes/franchise.ts",
-          "line": 71,
+          "line": 84,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'Not allowed.'",
@@ -48453,7 +48670,7 @@
         },
         {
           "path": "server/routes/franchise.ts",
-          "line": 87,
+          "line": 105,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'Not allowed.'",
@@ -49183,7 +49400,7 @@
       "callsites": [
         {
           "path": "server/routes/auth.ts",
-          "line": 3465,
+          "line": 3460,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Password reset email delivery is not configured.'",
@@ -49271,7 +49488,7 @@
       "callsites": [
         {
           "path": "server/routes/resolve.ts",
-          "line": 148,
+          "line": 224,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'This image could not be read. Enable local OCR or an image recognition provider in settings.'",
@@ -49461,6 +49678,25 @@
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'Each problem episode selection must be an object.'",
+          "captured": []
+        }
+      ]
+    },
+    {
+      "key": "mc5bf6ff67cb8b43a48d7",
+      "id": "utils.ApiMessage.mc5bf6ff67cb8b43a48d7",
+      "source": "Request access to this category is required.",
+      "defaultMessage": "Request access to this category is required.",
+      "sourceHash": "c5bf6ff67cb8b43a48d71df4c81a3af17bf577f6ab9c94467f147f417e18132c",
+      "parts": ["Request access to this category is required."],
+      "parameterCount": 0,
+      "callsites": [
+        {
+          "path": "server/lib/follow/index.ts",
+          "line": 91,
+          "kind": "app-error-candidate",
+          "field": "message",
+          "expression": "'Request access to this category is required.'",
           "captured": []
         }
       ]
@@ -49709,7 +49945,7 @@
       "callsites": [
         {
           "path": "server/routes/index.ts",
-          "line": 896,
+          "line": 924,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to retrieve backdrops.'",
@@ -49892,6 +50128,33 @@
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Book editionId and authorId must be valid Open Library resource IDs.'",
+          "captured": []
+        }
+      ]
+    },
+    {
+      "key": "mc7e588882846464264e6",
+      "id": "utils.ApiMessage.mc7e588882846464264e6",
+      "source": "Invalid API key or insufficient token scope.",
+      "defaultMessage": "Invalid API key or insufficient token scope.",
+      "sourceHash": "c7e588882846464264e6d8df64ab3784a30029f9af2aafa665521f36fd7b58c3",
+      "parts": ["Invalid API key or insufficient token scope."],
+      "parameterCount": 0,
+      "callsites": [
+        {
+          "path": "server/middleware/auth.ts",
+          "line": 86,
+          "kind": "authored-message-field",
+          "field": "message",
+          "expression": "'Invalid API key or insufficient token scope.'",
+          "captured": []
+        },
+        {
+          "path": "server/middleware/csrfProtection.ts",
+          "line": 63,
+          "kind": "authored-message-field",
+          "field": "message",
+          "expression": "'Invalid API key or insufficient token scope.'",
           "captured": []
         }
       ]
@@ -50884,7 +51147,7 @@
       "callsites": [
         {
           "path": "server/routes/playback.ts",
-          "line": 1076,
+          "line": 1096,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to start collection playback.'",
@@ -52045,7 +52308,7 @@
         },
         {
           "path": "server/routes/index.ts",
-          "line": 736,
+          "line": 764,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Studio not found.'",
@@ -52283,7 +52546,7 @@
         },
         {
           "path": "server/routes/auth.ts",
-          "line": 2260,
+          "line": 2258,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to authenticate.'",
@@ -53885,7 +54148,7 @@
       "callsites": [
         {
           "path": "server/routes/auth.ts",
-          "line": 3551,
+          "line": 3546,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Invalid password reset link.'",
@@ -53893,7 +54156,7 @@
         },
         {
           "path": "server/routes/auth.ts",
-          "line": 3566,
+          "line": 3561,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Invalid password reset link.'",
@@ -53901,7 +54164,7 @@
         },
         {
           "path": "server/routes/auth.ts",
-          "line": 3581,
+          "line": 3576,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Invalid password reset link.'",
@@ -53909,7 +54172,7 @@
         },
         {
           "path": "server/routes/auth.ts",
-          "line": 3619,
+          "line": 3614,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Invalid password reset link.'",
@@ -54083,7 +54346,7 @@
       "callsites": [
         {
           "path": "server/routes/index.ts",
-          "line": 998,
+          "line": 1026,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to retrieve tv watch providers.'",
@@ -54184,7 +54447,7 @@
       "callsites": [
         {
           "path": "server/routes/editions.ts",
-          "line": 153,
+          "line": 155,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'A series and narrator are required.'",
@@ -54346,7 +54609,7 @@
       "callsites": [
         {
           "path": "server/routes/editions.ts",
-          "line": 67,
+          "line": 72,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Invalid edition destination.'",
@@ -54913,7 +55176,7 @@
       "callsites": [
         {
           "path": "server/routes/auth.ts",
-          "line": 2224,
+          "line": 2222,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Authentication is temporarily unavailable.'",
@@ -55840,7 +56103,7 @@
       "callsites": [
         {
           "path": "server/api/anilist/index.ts",
-          "line": 512,
+          "line": 515,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'AniList returned an empty response'",
@@ -56369,7 +56632,7 @@
       "callsites": [
         {
           "path": "server/routes/collectors.ts",
-          "line": 93,
+          "line": 96,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'An artist and MusicBrainz id are required.'",
@@ -59024,25 +59287,6 @@
       ]
     },
     {
-      "key": "meb293e650ef0f598e6a9",
-      "id": "utils.ApiMessage.meb293e650ef0f598e6a9",
-      "source": "Failed to destroy session.",
-      "defaultMessage": "Failed to destroy session.",
-      "sourceHash": "eb293e650ef0f598e6a94d2d500411b081da174d860af2c64b6a9aa26dc25b42",
-      "parts": ["Failed to destroy session."],
-      "parameterCount": 0,
-      "callsites": [
-        {
-          "path": "server/routes/auth.ts",
-          "line": 3377,
-          "kind": "authored-message-field",
-          "field": "message",
-          "expression": "'Failed to destroy session.'",
-          "captured": []
-        }
-      ]
-    },
-    {
       "key": "meb2e7013de7406c1b05a",
       "id": "utils.ApiMessage.meb2e7013de7406c1b05a",
       "source": "Unable to retrieve playback devices.",
@@ -59053,7 +59297,7 @@
       "callsites": [
         {
           "path": "server/routes/playback.ts",
-          "line": 646,
+          "line": 666,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to retrieve playback devices.'",
@@ -59392,7 +59636,7 @@
       "callsites": [
         {
           "path": "server/lib/resolve/vision.ts",
-          "line": 213,
+          "line": 220,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'The vision provider returned no content.'",
@@ -60387,7 +60631,7 @@
       "callsites": [
         {
           "path": "server/routes/franchise.ts",
-          "line": 64,
+          "line": 77,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to load this franchise.'",
@@ -60851,7 +61095,7 @@
       "callsites": [
         {
           "path": "server/lib/resolve/vision.ts",
-          "line": 113,
+          "line": 119,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'The vision provider returned an invalid reading.'",
@@ -61484,7 +61728,7 @@
         },
         {
           "path": "server/routes/index.ts",
-          "line": 504,
+          "line": 531,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'User not found.'",
@@ -63247,7 +63491,7 @@
       "callsites": [
         {
           "path": "server/routes/auth.ts",
-          "line": 2711,
+          "line": 2709,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'OIDC callback is missing its correlation cookie'",
@@ -64240,7 +64484,7 @@
         },
         {
           "path": "server/routes/index.ts",
-          "line": 490,
+          "line": 517,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Invalid user ID.'",
@@ -64432,7 +64676,7 @@
       "callsites": [
         {
           "path": "server/routes/playback.ts",
-          "line": 736,
+          "line": 758,
           "kind": "authored-message-field",
           "field": "reason",
           "expression": "'permission'",
@@ -65156,10 +65400,10 @@
       "parameterCount": 0,
       "callsites": [
         {
-          "path": "server/routes/follow.ts",
-          "line": 190,
-          "kind": "authored-message-field",
-          "field": "error",
+          "path": "server/lib/follow/index.ts",
+          "line": 115,
+          "kind": "app-error-candidate",
+          "field": "message",
           "expression": "'Follow limit reached.'",
           "captured": []
         }
@@ -65220,7 +65464,7 @@
       "callsites": [
         {
           "path": "server/lib/userSecurityMutation.ts",
-          "line": 174,
+          "line": 175,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'User credentials changed before admission.'",
@@ -65340,7 +65584,7 @@
     },
     {
       "path": "server/api/anilist/index.ts",
-      "line": 267,
+      "line": 270,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "e instanceof Error ? e.message : 'unknown error'",
@@ -65349,7 +65593,7 @@
     },
     {
       "path": "server/api/anilist/index.ts",
-      "line": 498,
+      "line": 501,
       "kind": "authored-message-variable",
       "field": "graphQlError",
       "expression": "firstAnilistGraphQlError(response)",
@@ -65358,7 +65602,7 @@
     },
     {
       "path": "server/api/anilist/index.ts",
-      "line": 501,
+      "line": 504,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "graphQlError.message",
@@ -65367,7 +65611,7 @@
     },
     {
       "path": "server/api/anilist/index.ts",
-      "line": 508,
+      "line": 511,
       "kind": "app-error-candidate",
       "field": "message",
       "expression": "response.errors[0]?.message || 'AniList GraphQL error'",
@@ -65376,16 +65620,7 @@
     },
     {
       "path": "server/api/anilist/index.ts",
-      "line": 533,
-      "kind": "app-error-candidate",
-      "field": "message",
-      "expression": "Number.isFinite(retryAfter) && retryAfter > 0 ? retryAfter : 60",
-      "source": "{value0}",
-      "reason": "dynamic/provider/user value"
-    },
-    {
-      "path": "server/api/anilist/index.ts",
-      "line": 533,
+      "line": 536,
       "kind": "app-error-candidate",
       "field": "message",
       "expression": "Number.isFinite(retryAfter) && retryAfter > 0 ? retryAfter : 60",
@@ -65395,6 +65630,15 @@
     {
       "path": "server/api/anilist/index.ts",
       "line": 536,
+      "kind": "app-error-candidate",
+      "field": "message",
+      "expression": "Number.isFinite(retryAfter) && retryAfter > 0 ? retryAfter : 60",
+      "source": "{value0}",
+      "reason": "dynamic/provider/user value"
+    },
+    {
+      "path": "server/api/anilist/index.ts",
+      "line": 539,
       "kind": "authored-message-variable",
       "field": "graphQlError",
       "expression": "firstAnilistGraphQlError(\n        axios.isAxiosError(e) ? e.response?.data : undefined\n      )",
@@ -65403,7 +65647,7 @@
     },
     {
       "path": "server/api/anilist/index.ts",
-      "line": 542,
+      "line": 545,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "graphQlError.message",
@@ -68103,7 +68347,7 @@
     },
     {
       "path": "server/index.ts",
-      "line": 135,
+      "line": 136,
       "kind": "message-helper-expression",
       "field": "message",
       "expression": "({\n  errorMessage: error instanceof Error ? error.message : 'Unknown error',\n  errorStack: error instanceof Error ? error.stack : undefined,\n})",
@@ -68112,7 +68356,7 @@
     },
     {
       "path": "server/index.ts",
-      "line": 136,
+      "line": 137,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : 'Unknown error'",
@@ -68121,7 +68365,7 @@
     },
     {
       "path": "server/index.ts",
-      "line": 529,
+      "line": 530,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "err.message",
@@ -68130,7 +68374,7 @@
     },
     {
       "path": "server/index.ts",
-      "line": 573,
+      "line": 574,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "err.message",
@@ -68139,7 +68383,7 @@
     },
     {
       "path": "server/index.ts",
-      "line": 688,
+      "line": 689,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "err.message",
@@ -68148,7 +68392,7 @@
     },
     {
       "path": "server/index.ts",
-      "line": 749,
+      "line": 750,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : 'Unknown error'",
@@ -68679,7 +68923,7 @@
     },
     {
       "path": "server/lib/continuation/index.ts",
-      "line": 227,
+      "line": 228,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -68688,7 +68932,7 @@
     },
     {
       "path": "server/lib/continuation/index.ts",
-      "line": 227,
+      "line": 228,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -70047,7 +70291,7 @@
     },
     {
       "path": "server/lib/follow/index.ts",
-      "line": 100,
+      "line": 164,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -70056,7 +70300,7 @@
     },
     {
       "path": "server/lib/follow/index.ts",
-      "line": 100,
+      "line": 164,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -70065,7 +70309,7 @@
     },
     {
       "path": "server/lib/follow/index.ts",
-      "line": 152,
+      "line": 216,
       "kind": "authored-message-variable",
       "field": "errors",
       "expression": "0",
@@ -70074,7 +70318,7 @@
     },
     {
       "path": "server/lib/follow/index.ts",
-      "line": 163,
+      "line": 227,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -70083,7 +70327,7 @@
     },
     {
       "path": "server/lib/follow/index.ts",
-      "line": 163,
+      "line": 227,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -70092,7 +70336,7 @@
     },
     {
       "path": "server/lib/franchise/index.ts",
-      "line": 126,
+      "line": 128,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -70101,7 +70345,7 @@
     },
     {
       "path": "server/lib/franchise/index.ts",
-      "line": 126,
+      "line": 128,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -72783,7 +73027,7 @@
     },
     {
       "path": "server/lib/resolve/candidates.ts",
-      "line": 43,
+      "line": 44,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -72792,7 +73036,7 @@
     },
     {
       "path": "server/lib/resolve/candidates.ts",
-      "line": 43,
+      "line": 44,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -72819,7 +73063,7 @@
     },
     {
       "path": "server/lib/resolve/vision.ts",
-      "line": 243,
+      "line": 270,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -72828,7 +73072,7 @@
     },
     {
       "path": "server/lib/resolve/vision.ts",
-      "line": 243,
+      "line": 270,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -72837,7 +73081,7 @@
     },
     {
       "path": "server/lib/resolve/vision.ts",
-      "line": 255,
+      "line": 288,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -72846,7 +73090,7 @@
     },
     {
       "path": "server/lib/resolve/vision.ts",
-      "line": 255,
+      "line": 288,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -74484,7 +74728,7 @@
     },
     {
       "path": "server/middleware/auth.ts",
-      "line": 88,
+      "line": 124,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "error.message",
@@ -74493,7 +74737,7 @@
     },
     {
       "path": "server/middleware/contentRestriction.ts",
-      "line": 43,
+      "line": 44,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "e.message",
@@ -74898,7 +75142,7 @@
     },
     {
       "path": "server/routes/auth.ts",
-      "line": 2254,
+      "line": 2252,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "e.message",
@@ -74907,7 +75151,7 @@
     },
     {
       "path": "server/routes/auth.ts",
-      "line": 2485,
+      "line": 2483,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "ApiErrorCode.Unauthorized",
@@ -74916,7 +75160,7 @@
     },
     {
       "path": "server/routes/auth.ts",
-      "line": 2498,
+      "line": 2496,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "ApiErrorCode.OidcAuthorizationFailed",
@@ -74925,7 +75169,7 @@
     },
     {
       "path": "server/routes/auth.ts",
-      "line": 2531,
+      "line": 2529,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "error instanceof Error ? error.message : 'Unknown error'",
@@ -74934,7 +75178,7 @@
     },
     {
       "path": "server/routes/auth.ts",
-      "line": 2535,
+      "line": 2533,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "ApiErrorCode.OidcProviderDiscoveryFailed",
@@ -74943,7 +75187,7 @@
     },
     {
       "path": "server/routes/auth.ts",
-      "line": 2576,
+      "line": 2574,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "ApiErrorCode.OidcAuthorizationFailed",
@@ -74952,7 +75196,7 @@
     },
     {
       "path": "server/routes/auth.ts",
-      "line": 2588,
+      "line": 2586,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "error instanceof Error ? error.message : 'Unknown error'",
@@ -74961,7 +75205,7 @@
     },
     {
       "path": "server/routes/auth.ts",
-      "line": 2592,
+      "line": 2590,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "ApiErrorCode.OidcAuthorizationFailed",
@@ -74970,7 +75214,7 @@
     },
     {
       "path": "server/routes/auth.ts",
-      "line": 2607,
+      "line": 2605,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "ApiErrorCode.OidcAuthorizationFailed",
@@ -74979,7 +75223,7 @@
     },
     {
       "path": "server/routes/auth.ts",
-      "line": 2673,
+      "line": 2671,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "ApiErrorCode.Unauthorized",
@@ -74988,7 +75232,7 @@
     },
     {
       "path": "server/routes/auth.ts",
-      "line": 2741,
+      "line": 2739,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "error instanceof Error ? error.message : 'Unknown error'",
@@ -74997,7 +75241,7 @@
     },
     {
       "path": "server/routes/auth.ts",
-      "line": 2745,
+      "line": 2743,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "ApiErrorCode.OidcAuthorizationFailed",
@@ -75006,7 +75250,7 @@
     },
     {
       "path": "server/routes/auth.ts",
-      "line": 2757,
+      "line": 2755,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "ApiErrorCode.OidcAuthorizationFailed",
@@ -75015,7 +75259,7 @@
     },
     {
       "path": "server/routes/auth.ts",
-      "line": 2769,
+      "line": 2767,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "ApiErrorCode.Unauthorized",
@@ -75024,7 +75268,7 @@
     },
     {
       "path": "server/routes/auth.ts",
-      "line": 2786,
+      "line": 2784,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "ApiErrorCode.Unauthorized",
@@ -75033,7 +75277,7 @@
     },
     {
       "path": "server/routes/auth.ts",
-      "line": 2824,
+      "line": 2822,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "error instanceof Error ? error.message : 'Unknown error'",
@@ -75042,7 +75286,7 @@
     },
     {
       "path": "server/routes/auth.ts",
-      "line": 2828,
+      "line": 2826,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "ApiErrorCode.OidcProviderDiscoveryFailed",
@@ -75051,7 +75295,7 @@
     },
     {
       "path": "server/routes/auth.ts",
-      "line": 2845,
+      "line": 2843,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "error instanceof Error ? error.message : 'Unknown error'",
@@ -75060,7 +75304,7 @@
     },
     {
       "path": "server/routes/auth.ts",
-      "line": 2849,
+      "line": 2847,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "ApiErrorCode.OidcAuthorizationFailed",
@@ -75069,7 +75313,7 @@
     },
     {
       "path": "server/routes/auth.ts",
-      "line": 2868,
+      "line": 2866,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "error instanceof Error ? error.message : 'Unknown error'",
@@ -75078,7 +75322,7 @@
     },
     {
       "path": "server/routes/auth.ts",
-      "line": 2872,
+      "line": 2870,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "ApiErrorCode.OidcAuthorizationFailed",
@@ -75087,7 +75331,7 @@
     },
     {
       "path": "server/routes/auth.ts",
-      "line": 2887,
+      "line": 2885,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "ApiErrorCode.OidcAuthorizationFailed",
@@ -75096,7 +75340,7 @@
     },
     {
       "path": "server/routes/auth.ts",
-      "line": 2907,
+      "line": 2905,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "error instanceof Error ? error.message : 'Unknown error'",
@@ -75105,7 +75349,7 @@
     },
     {
       "path": "server/routes/auth.ts",
-      "line": 2911,
+      "line": 2909,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "ApiErrorCode.OidcAuthorizationFailed",
@@ -75114,7 +75358,7 @@
     },
     {
       "path": "server/routes/auth.ts",
-      "line": 2940,
+      "line": 2938,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "ApiErrorCode.Unauthorized",
@@ -75123,7 +75367,7 @@
     },
     {
       "path": "server/routes/auth.ts",
-      "line": 2954,
+      "line": 2952,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "ApiErrorCode.Unauthorized",
@@ -75132,7 +75376,7 @@
     },
     {
       "path": "server/routes/auth.ts",
-      "line": 2972,
+      "line": 2970,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "ApiErrorCode.Unauthorized",
@@ -75141,7 +75385,7 @@
     },
     {
       "path": "server/routes/auth.ts",
-      "line": 2987,
+      "line": 2985,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "ApiErrorCode.OidcAuthorizationFailed",
@@ -75150,7 +75394,7 @@
     },
     {
       "path": "server/routes/auth.ts",
-      "line": 3021,
+      "line": 3019,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "ApiErrorCode.Unauthorized",
@@ -75159,7 +75403,7 @@
     },
     {
       "path": "server/routes/auth.ts",
-      "line": 3038,
+      "line": 3036,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "ApiErrorCode.Unauthorized",
@@ -75168,7 +75412,7 @@
     },
     {
       "path": "server/routes/auth.ts",
-      "line": 3063,
+      "line": 3061,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "ApiErrorCode.OidcAccountAlreadyLinked",
@@ -75177,7 +75421,7 @@
     },
     {
       "path": "server/routes/auth.ts",
-      "line": 3083,
+      "line": 3081,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "ApiErrorCode.OidcAccountAlreadyLinked",
@@ -75186,7 +75430,7 @@
     },
     {
       "path": "server/routes/auth.ts",
-      "line": 3115,
+      "line": 3113,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "ApiErrorCode.Unauthorized",
@@ -75195,7 +75439,7 @@
     },
     {
       "path": "server/routes/auth.ts",
-      "line": 3262,
+      "line": 3260,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "resolution.kind === 'missing-email'\n              ? ApiErrorCode.OidcMissingEmail\n              : ApiErrorCode.Unauthorized",
@@ -75204,7 +75448,7 @@
     },
     {
       "path": "server/routes/auth.ts",
-      "line": 3262,
+      "line": 3260,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "resolution.kind === 'missing-email'\n              ? ApiErrorCode.OidcMissingEmail\n              : ApiErrorCode.Unauthorized",
@@ -75213,7 +75457,7 @@
     },
     {
       "path": "server/routes/auth.ts",
-      "line": 3281,
+      "line": 3279,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "ApiErrorCode.Unauthorized",
@@ -75222,7 +75466,7 @@
     },
     {
       "path": "server/routes/auth.ts",
-      "line": 3364,
+      "line": 3362,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "error instanceof Error ? error.message : 'Unknown error'",
@@ -75231,16 +75475,7 @@
     },
     {
       "path": "server/routes/auth.ts",
-      "line": 3374,
-      "kind": "authored-message-field",
-      "field": "error",
-      "expression": "err.message",
-      "source": "{value0}",
-      "reason": "dynamic/provider/user value"
-    },
-    {
-      "path": "server/routes/auth.ts",
-      "line": 3404,
+      "line": 3400,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "error instanceof Error ? error.message : 'Unknown error'",
@@ -75249,7 +75484,7 @@
     },
     {
       "path": "server/routes/auth.ts",
-      "line": 3421,
+      "line": 3416,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "error instanceof Error ? error.message : 'Unknown error'",
@@ -75258,7 +75493,7 @@
     },
     {
       "path": "server/routes/auth.ts",
-      "line": 3435,
+      "line": 3430,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "parsedBody.error",
@@ -75267,7 +75502,7 @@
     },
     {
       "path": "server/routes/auth.ts",
-      "line": 3451,
+      "line": 3446,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "email.error",
@@ -75276,7 +75511,7 @@
     },
     {
       "path": "server/routes/auth.ts",
-      "line": 3529,
+      "line": 3524,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "parsedBody.error",
@@ -75699,7 +75934,7 @@
     },
     {
       "path": "server/routes/collectors.ts",
-      "line": 64,
+      "line": 67,
       "kind": "authored-message-field",
       "field": "reasons",
       "expression": "recommendation.reasons.slice(0, 5)",
@@ -75708,7 +75943,7 @@
     },
     {
       "path": "server/routes/collectors.ts",
-      "line": 77,
+      "line": 80,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -75717,7 +75952,7 @@
     },
     {
       "path": "server/routes/collectors.ts",
-      "line": 77,
+      "line": 80,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -75726,7 +75961,7 @@
     },
     {
       "path": "server/routes/collectors.ts",
-      "line": 132,
+      "line": 144,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -75735,7 +75970,7 @@
     },
     {
       "path": "server/routes/collectors.ts",
-      "line": 132,
+      "line": 144,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -75744,7 +75979,7 @@
     },
     {
       "path": "server/routes/continuation.ts",
-      "line": 59,
+      "line": 63,
       "kind": "authored-message-field",
       "field": "reason",
       "expression": "'not-anime'",
@@ -75753,7 +75988,7 @@
     },
     {
       "path": "server/routes/continuation.ts",
-      "line": 76,
+      "line": 80,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -75762,7 +75997,7 @@
     },
     {
       "path": "server/routes/continuation.ts",
-      "line": 76,
+      "line": 80,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -75771,7 +76006,7 @@
     },
     {
       "path": "server/routes/continuation.ts",
-      "line": 111,
+      "line": 117,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -75780,7 +76015,7 @@
     },
     {
       "path": "server/routes/continuation.ts",
-      "line": 111,
+      "line": 117,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -76761,7 +76996,7 @@
     },
     {
       "path": "server/routes/editions.ts",
-      "line": 87,
+      "line": 92,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : 'Unknown error'",
@@ -76770,7 +77005,7 @@
     },
     {
       "path": "server/routes/editions.ts",
-      "line": 126,
+      "line": 133,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : 'Unknown error'",
@@ -76851,7 +77086,7 @@
     },
     {
       "path": "server/routes/follow.ts",
-      "line": 211,
+      "line": 213,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -76860,7 +77095,7 @@
     },
     {
       "path": "server/routes/follow.ts",
-      "line": 211,
+      "line": 213,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -76869,7 +77104,7 @@
     },
     {
       "path": "server/routes/franchise.ts",
-      "line": 62,
+      "line": 75,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -76878,7 +77113,7 @@
     },
     {
       "path": "server/routes/franchise.ts",
-      "line": 62,
+      "line": 75,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -76986,7 +77221,7 @@
     },
     {
       "path": "server/routes/index.ts",
-      "line": 215,
+      "line": 216,
       "kind": "message-helper-return",
       "field": "message",
       "expression": "null",
@@ -76995,7 +77230,7 @@
     },
     {
       "path": "server/routes/index.ts",
-      "line": 219,
+      "line": 220,
       "kind": "message-helper-return",
       "field": "message",
       "expression": "{ updateAvailable: false, commitsBehind: 0 }",
@@ -77004,7 +77239,7 @@
     },
     {
       "path": "server/routes/index.ts",
-      "line": 226,
+      "line": 227,
       "kind": "message-helper-return",
       "field": "message",
       "expression": "{\n    updateAvailable: true,\n    // If the current commit is older than the fetched window, the exact count\n    // is unknown but it is at least the number of relevant commits returned.\n    commitsBehind: commitIndex >= 0 ? commitIndex : relevantCommits.length,\n  }",
@@ -77013,7 +77248,7 @@
     },
     {
       "path": "server/routes/index.ts",
-      "line": 244,
+      "line": 245,
       "kind": "message-helper-return",
       "field": "message",
       "expression": "null",
@@ -77022,7 +77257,7 @@
     },
     {
       "path": "server/routes/index.ts",
-      "line": 253,
+      "line": 254,
       "kind": "message-helper-return",
       "field": "message",
       "expression": "null",
@@ -77031,7 +77266,7 @@
     },
     {
       "path": "server/routes/index.ts",
-      "line": 256,
+      "line": 257,
       "kind": "message-helper-return",
       "field": "message",
       "expression": "stableVersions.some((version) => semver.gt(version, installedVersion))",
@@ -77040,7 +77275,7 @@
     },
     {
       "path": "server/routes/index.ts",
-      "line": 327,
+      "line": 328,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "parsed.error",
@@ -77049,7 +77284,7 @@
     },
     {
       "path": "server/routes/index.ts",
-      "line": 357,
+      "line": 358,
       "kind": "response-body",
       "field": "body",
       "expression": "caCertificate",
@@ -77058,7 +77293,7 @@
     },
     {
       "path": "server/routes/index.ts",
-      "line": 372,
+      "line": 373,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "parsedCheckUpdate.error",
@@ -77067,7 +77302,7 @@
     },
     {
       "path": "server/routes/index.ts",
-      "line": 517,
+      "line": 544,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "token.error",
@@ -77076,7 +77311,7 @@
     },
     {
       "path": "server/routes/index.ts",
-      "line": 530,
+      "line": 557,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "e.message",
@@ -77085,7 +77320,7 @@
     },
     {
       "path": "server/routes/index.ts",
-      "line": 700,
+      "line": 728,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "e.message",
@@ -77094,16 +77329,7 @@
     },
     {
       "path": "server/routes/index.ts",
-      "line": 720,
-      "kind": "authored-message-field",
-      "field": "errorMessage",
-      "expression": "e.message",
-      "source": "{value0}",
-      "reason": "dynamic/provider/user value"
-    },
-    {
-      "path": "server/routes/index.ts",
-      "line": 746,
+      "line": 748,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "e.message",
@@ -77121,15 +77347,6 @@
     },
     {
       "path": "server/routes/index.ts",
-      "line": 789,
-      "kind": "authored-message-field",
-      "field": "message",
-      "expression": "parsedLanguage.error",
-      "source": "{value0}",
-      "reason": "dynamic/provider/user value"
-    },
-    {
-      "path": "server/routes/index.ts",
       "line": 802,
       "kind": "authored-message-field",
       "field": "errorMessage",
@@ -77139,7 +77356,7 @@
     },
     {
       "path": "server/routes/index.ts",
-      "line": 815,
+      "line": 817,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "parsedLanguage.error",
@@ -77148,7 +77365,7 @@
     },
     {
       "path": "server/routes/index.ts",
-      "line": 828,
+      "line": 830,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "e.message",
@@ -77157,7 +77374,16 @@
     },
     {
       "path": "server/routes/index.ts",
-      "line": 892,
+      "line": 843,
+      "kind": "authored-message-field",
+      "field": "message",
+      "expression": "parsedLanguage.error",
+      "source": "{value0}",
+      "reason": "dynamic/provider/user value"
+    },
+    {
+      "path": "server/routes/index.ts",
+      "line": 856,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "e.message",
@@ -77166,7 +77392,7 @@
     },
     {
       "path": "server/routes/index.ts",
-      "line": 918,
+      "line": 920,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "e.message",
@@ -77175,7 +77401,7 @@
     },
     {
       "path": "server/routes/index.ts",
-      "line": 939,
+      "line": 946,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "e.message",
@@ -77184,7 +77410,16 @@
     },
     {
       "path": "server/routes/index.ts",
-      "line": 956,
+      "line": 967,
+      "kind": "authored-message-field",
+      "field": "errorMessage",
+      "expression": "e.message",
+      "source": "{value0}",
+      "reason": "dynamic/provider/user value"
+    },
+    {
+      "path": "server/routes/index.ts",
+      "line": 984,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "watchRegion.error",
@@ -77193,7 +77428,7 @@
     },
     {
       "path": "server/routes/index.ts",
-      "line": 968,
+      "line": 996,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "e.message",
@@ -77202,7 +77437,7 @@
     },
     {
       "path": "server/routes/index.ts",
-      "line": 982,
+      "line": 1010,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "watchRegion.error",
@@ -77211,7 +77446,7 @@
     },
     {
       "path": "server/routes/index.ts",
-      "line": 994,
+      "line": 1022,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "e.message",
@@ -77220,7 +77455,7 @@
     },
     {
       "path": "server/routes/index.ts",
-      "line": 1016,
+      "line": 1044,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "e.message",
@@ -77229,7 +77464,7 @@
     },
     {
       "path": "server/routes/index.ts",
-      "line": 1036,
+      "line": 1064,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "e.message",
@@ -78804,7 +79039,7 @@
     },
     {
       "path": "server/routes/playback.ts",
-      "line": 754,
+      "line": 776,
       "kind": "authored-message-field",
       "field": "reason",
       "expression": "'empty-selection'",
@@ -78813,7 +79048,7 @@
     },
     {
       "path": "server/routes/playback.ts",
-      "line": 775,
+      "line": 797,
       "kind": "authored-message-field",
       "field": "reason",
       "expression": "'plex-device-unavailable'",
@@ -78822,7 +79057,7 @@
     },
     {
       "path": "server/routes/playback.ts",
-      "line": 791,
+      "line": 813,
       "kind": "authored-message-field",
       "field": "reason",
       "expression": "'plex-server-identifier-unavailable'",
@@ -80577,7 +80812,7 @@
     },
     {
       "path": "server/routes/resolve.ts",
-      "line": 113,
+      "line": 167,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -80586,7 +80821,7 @@
     },
     {
       "path": "server/routes/resolve.ts",
-      "line": 113,
+      "line": 167,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -80595,7 +80830,7 @@
     },
     {
       "path": "server/routes/resolve.ts",
-      "line": 155,
+      "line": 233,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -80604,7 +80839,7 @@
     },
     {
       "path": "server/routes/resolve.ts",
-      "line": 155,
+      "line": 233,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",

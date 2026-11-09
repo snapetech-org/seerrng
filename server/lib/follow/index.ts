@@ -1,4 +1,5 @@
 import { MediaType } from '@server/constants/media';
+import type { MediaCategoryKey } from '@server/constants/mediaCategories';
 import { getRepository } from '@server/datasource';
 import Follow, {
   FOLLOW_KINDS,
@@ -8,6 +9,9 @@ import Follow, {
 import FollowEvent from '@server/entity/FollowEvent';
 import MediaRequest from '@server/entity/MediaRequest';
 import { syncSavedDiscoveries } from '@server/lib/gameDiscovery';
+import { Permission } from '@server/lib/permissions';
+import { isUserMediaCategoryEnabled } from '@server/lib/userMediaCategories';
+import { runUserSecurityMutationWithActor } from '@server/lib/userSecurityMutation';
 import logger from '@server/logger';
 import { isUniqueConstraintError } from '@server/utils/databaseError';
 import { FOLLOW_ADAPTERS } from './adapters';
@@ -31,39 +35,99 @@ export interface CreateFollowInput {
   autoRequest?: boolean;
 }
 
-/** Idempotent: following the same subject twice updates the first follow. */
-export const upsertFollow = async (
-  input: CreateFollowInput
-): Promise<Follow> => {
-  const repository = getRepository(Follow);
-  const existing = await repository.findOne({
-    where: {
-      user: { id: input.userId },
-      kind: input.kind,
-      subjectKey: input.subjectKey,
-    },
-  });
-  if (existing) {
-    existing.subjectLabel = input.subjectLabel;
-    existing.conditions = input.conditions ?? existing.conditions;
-    if (input.notify !== undefined) existing.notify = input.notify;
-    if (input.autoRequest !== undefined)
-      existing.autoRequest = input.autoRequest;
-    return repository.save(existing);
+export class FollowAdmissionError extends Error {
+  constructor(
+    message: string,
+    public readonly status: number
+  ) {
+    super(message);
   }
-  return repository.save(
-    repository.create({
-      user: { id: input.userId } as Follow['user'],
-      kind: input.kind,
-      subjectKey: input.subjectKey,
-      subjectLabel: input.subjectLabel,
-      conditions: input.conditions ?? null,
-      notify: input.notify ?? true,
-      autoRequest: input.autoRequest ?? false,
-      cursor: null,
-    })
-  );
+}
+
+export const followCategories = (
+  input: Pick<CreateFollowInput, 'kind' | 'conditions'>
+): MediaCategoryKey[] => {
+  switch (input.kind) {
+    case 'artist-release-type':
+      return ['music'];
+    case 'narrator':
+      return ['audiobook'];
+    case 'author':
+    case 'series-language':
+    case 'edition':
+      return ['ebook', 'audiobook'];
+    case 'expansion':
+    case 'saved-discovery':
+      return ['game'];
+    case 'patch-project':
+      return ['retro', 'modern'];
+    case 'tmdb-network':
+      return ['tv'];
+    case 'tmdb-studio':
+      return ['movie'];
+    case 'tmdb-genre':
+      return input.conditions?.ref?.mediaType === 'tv' ? ['tv'] : ['movie'];
+    case 'tmdb-person':
+      return ['movie', 'tv'];
+    case 'franchise':
+      return ['tv', 'game', 'ebook', 'audiobook'];
+  }
 };
+
+/** Idempotent: following the same subject twice updates the first follow. */
+export const upsertFollow = async (input: CreateFollowInput): Promise<Follow> =>
+  runUserSecurityMutationWithActor(
+    input.userId,
+    input.userId,
+    Permission.ADMIN,
+    async (actor) => {
+      if (
+        !actor.hasPermission(Permission.REQUEST) ||
+        !followCategories(input).some((category) =>
+          isUserMediaCategoryEnabled(actor, category)
+        )
+      ) {
+        throw new FollowAdmissionError(
+          'Request access to this category is required.',
+          403
+        );
+      }
+      const repository = getRepository(Follow);
+      const existing = await repository.findOne({
+        where: {
+          user: { id: input.userId },
+          kind: input.kind,
+          subjectKey: input.subjectKey,
+        },
+      });
+      if (existing) {
+        existing.subjectLabel = input.subjectLabel;
+        existing.conditions = input.conditions ?? existing.conditions;
+        if (input.notify !== undefined) existing.notify = input.notify;
+        if (input.autoRequest !== undefined)
+          existing.autoRequest = input.autoRequest;
+        return repository.save(existing);
+      }
+      if (
+        (await repository.count({ where: { user: { id: input.userId } } })) >=
+        MAX_FOLLOWS_PER_USER
+      ) {
+        throw new FollowAdmissionError('Follow limit reached.', 409);
+      }
+      return repository.save(
+        repository.create({
+          user: { id: input.userId } as Follow['user'],
+          kind: input.kind,
+          subjectKey: input.subjectKey,
+          subjectLabel: input.subjectLabel,
+          conditions: input.conditions ?? null,
+          notify: input.notify ?? true,
+          autoRequest: input.autoRequest ?? false,
+          cursor: null,
+        })
+      );
+    }
+  );
 
 /**
  * Auto-requests run through the normal request path so quotas, approval, and
