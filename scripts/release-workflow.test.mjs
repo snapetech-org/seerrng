@@ -60,8 +60,8 @@ test('every release job that calls GitHub CLI installs the pinned CLI first', ()
 
   assert.ok(ghJobs.length > 0, 'release workflow should exercise GitHub CLI');
   for (const [jobName, job] of ghJobs) {
-    const setupIndex = job.steps.findIndex(
-      (step) => step.uses === ghCliSetupPath
+    const setupIndex = job.steps.findIndex((step) =>
+      [ghCliSetupPath, './.github/actions/setup-gh-cli'].includes(step.uses)
     );
     const checkoutIndex = job.steps.findIndex(
       (step) =>
@@ -69,8 +69,14 @@ test('every release job that calls GitHub CLI installs the pinned CLI first', ()
           'actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1' &&
         step.with?.repository === 'snapetech-org/seerrng' &&
         step.with?.ref === ghCliSetupRef &&
-        step.with?.path === '.github-actions' &&
-        step.with?.['sparse-checkout'] === '.github/actions/setup-gh-cli' &&
+        [undefined, '.github-actions'].includes(step.with?.path) &&
+        step.with?.['sparse-checkout']
+          ?.split(/\s+/)
+          .some(
+            (path) =>
+              path === '.github/actions' ||
+              path === '.github/actions/setup-gh-cli'
+          ) &&
         step.with?.['sparse-checkout-cone-mode'] === false
     );
     const commandIndex = job.steps.findIndex((step) =>
@@ -271,7 +277,6 @@ test('manual release recovery cannot rebuild product outputs', () => {
     'publish',
     'scan-release-image',
     'sign',
-    'verify',
     'build-release-assets',
     'dispatch-chocolatey',
     'announce-discord',
@@ -1044,53 +1049,24 @@ test('release recovery validates reusable artifacts and repairs the failed relea
     release.jobs['validate-main-tag'].outputs.reuse_windows_arm64_artifact,
     /steps\.recovery\.outputs/u
   );
-  assert.match(recoveryValidation.run, /\.head_sha == \$sha/u);
-  assert.match(
+  assert.equal(
     recoveryValidation.run,
-    /Build release assets \/ Build windows x64/u
+    'node .github-actions/scripts/classify-release-recovery.mjs'
   );
+  const recoveryCheckout = release.jobs['validate-main-tag'].steps.find(
+    (step) => step.with?.path === '.github-actions'
+  );
+  assert.equal(recoveryCheckout.with.ref, '${{ github.sha }}');
   assert.match(
-    recoveryValidation.run,
-    /\["Build release assets \/ Build iOS Simulator release package"\]/u,
-    'an iOS-only failure must allow successful platform artifacts to be reused'
+    recoveryCheckout.with['sparse-checkout'],
+    /scripts\/classify-release-recovery\.mjs/u
   );
-  assert.match(
-    recoveryValidation.run,
-    /reuse_windows_x64_artifact=true[\s\S]*reuse_windows_arm64_artifact=true/u,
-    'iOS-only recovery must reuse both successful Windows artifacts'
+  assert.equal(
+    release.jobs['validate-main-tag'].outputs.reverify_existing_image,
+    "${{ steps.recovery.outputs.reverify_existing_image || 'false' }}"
   );
-  const windowsX64RecoveryArtifacts = recoveryValidation.run.match(
-    /else\s+expected_artifacts='([\s\S]*?)'/u
-  )?.[1];
-  assert.ok(windowsX64RecoveryArtifacts);
-  assert.match(windowsX64RecoveryArtifacts, /"seerrng-windows-arm64"/u);
-  assert.doesNotMatch(windowsX64RecoveryArtifacts, /"seerrng-windows-x64"/u);
-  assert.match(
-    recoveryValidation.run,
-    /Build release assets \/ Build Android APK/u,
-    'recovery must validate that the signed Android artifact was built'
-  );
-  assert.match(
-    recoveryValidation.run,
-    /"seerrng-android"/u,
-    'recovery must require the Android artifact before reusing release assets'
-  );
-  assert.match(
-    recoveryValidation.run,
-    /Build release assets \/ Upload release assets/u
-  );
-  assert.match(
-    recoveryValidation.run,
-    /\["Dispatch package channels"\]/u,
-    'a package-channel-only failure must be recoverable from verified assets'
-  );
-  assert.match(
-    recoveryValidation.run,
-    /reuse_windows_arm64_artifact=true/u,
-    'package-only recovery must preserve the successful Windows ARM64 artifact'
-  );
-  assert.match(recoveryValidation.run, /event == "workflow_dispatch"/u);
-  assert.match(recoveryValidation.run, /\.expired == false/u);
+  assert.match(release.jobs.verify.if, /needs\.publish\.result == 'success'/u);
+  assert.match(release.jobs.verify.if, /reverify_existing_image/u);
   assert.match(imageBuild.if, /inputs\.reuse_published_image != true/u);
   assert.match(imageReuse.if, /inputs\.reuse_published_image == true/u);
   assert.match(imageReuse.run, /org\.opencontainers\.image\.revision/u);
@@ -1601,12 +1577,17 @@ test('release notes flow into the draft release and Discord announcement', () =>
       .run,
     /assemble-release-notes\.mjs/u
   );
-  assert.equal(draft.needs, 'changelog');
+  assert.deepEqual(draft.needs, ['validate-main-tag', 'changelog']);
   assert.equal(
     draft.steps.find((step) => step.name === 'Draft Release').env.RELEASE_BODY,
     '${{ needs.changelog.outputs.release_body }}'
   );
-  assert.deepEqual(discord.needs, ['changelog', 'publish', 'publish-release']);
+  assert.deepEqual(discord.needs, [
+    'validate-main-tag',
+    'changelog',
+    'publish',
+    'publish-release',
+  ]);
   assert.equal(
     discord.env.RELEASE_BODY,
     '${{ needs.changelog.outputs.release_body }}'

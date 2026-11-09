@@ -29,7 +29,7 @@ on:
         default: false
         type: boolean
       reuse_from_run_id:
-        description: Reuse successful platform artifacts from a failed release run for this exact tag
+        description: Reuse completed assets after a verifier or package-dispatch failure for this exact tag
         required: false
         type: string
         default: ''
@@ -77,6 +77,7 @@ jobs:
       actions: read
       contents: read
     outputs:
+      reverify_existing_image: ${{ steps.recovery.outputs.reverify_existing_image || 'false' }}
       reuse_windows_x64_artifact: ${{ steps.recovery.outputs.reuse_windows_x64_artifact || 'false' }}
       reuse_windows_arm64_artifact: ${{ steps.recovery.outputs.reuse_windows_arm64_artifact || 'false' }}
     steps:
@@ -106,7 +107,9 @@ jobs:
           repository: snapetech-org/seerrng
           ref: ${{ github.sha }}
           path: .github-actions
-          sparse-checkout: .github/actions/setup-gh-cli
+          sparse-checkout: |
+            .github/actions/setup-gh-cli
+            scripts/classify-release-recovery.mjs
           sparse-checkout-cone-mode: false
           persist-credentials: false
 
@@ -160,198 +163,11 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           REPO: ${{ github.repository }}
           REUSE_FROM_RUN_ID: ${{ inputs.reuse_from_run_id }}
-        run: |
-          set -euo pipefail
-          [[ "$REUSE_FROM_RUN_ID" =~ ^[0-9]+$ ]] || {
-            echo 'The previous run ID must be numeric.' >&2
-            exit 1
-          }
-
-          release_sha="$(git rev-parse "${RELEASE_TAG}^{commit}")"
-          run="$(gh api "repos/$REPO/actions/runs/$REUSE_FROM_RUN_ID")"
-          jq -e \
-            --arg tag "$RELEASE_TAG" \
-            --arg sha "$release_sha" \
-            '.status == "completed" and
-             .conclusion == "failure" and
-             ((.event == "push" and .head_branch == $tag and .head_sha == $sha) or
-              (.event == "workflow_dispatch" and .head_branch == "main"))' <<<"$run" >/dev/null || {
-              echo 'The previous run must be a failed release run for this tag on main.' >&2
-              exit 1
-            }
-          source_event="$(jq -r '.event' <<<"$run")"
-          source_sha="$(jq -r '.head_sha' <<<"$run")"
-          if [[ "$source_event" == 'workflow_dispatch' ]]; then
-            git merge-base --is-ancestor "$release_sha" "$source_sha" || {
-              echo 'The previous manual release run started before this tag commit.' >&2
-              exit 1
-            }
-            git merge-base --is-ancestor "$source_sha" origin/main || {
-              echo 'The previous manual release run is not based on current main history.' >&2
-              exit 1
-            }
-          fi
-
-          jobs="$(gh api "repos/$REPO/actions/runs/$REUSE_FROM_RUN_ID/jobs?per_page=100")"
-          jq -e '
-            ([.jobs[] | select(.conclusion == "failure") | .name] ==
-              ["Dispatch package channels"]) and
-            (([
-              "Validate main release tag",
-              "Generate changelog",
-              "Create draft release",
-              "Publish multi-arch manifests",
-              "Scan release image (linux/amd64)",
-              "Scan release image (linux/arm64)",
-              "Sign images and create SBOM attestations",
-              "Verify signatures and attestations",
-              "Build release assets / Validate release tag",
-              "Build release assets / Build linux x64",
-              "Build release assets / Build linux arm64",
-              "Build release assets / Build macos arm64",
-              "Build release assets / Build macos x64",
-              "Build release assets / Build windows x64",
-              "Build release assets / Build windows arm64",
-              "Build release assets / Build Android APK",
-              "Build release assets / Build iOS Simulator release package",
-              "Build release assets / Build optional Jellyfin plugin",
-              "Build release assets / Upload release assets"
-            ] - [.jobs[] | select(.conclusion == "success") | .name]) | length == 0)
-          ' <<<"$jobs" >/dev/null || {
-            echo 'Manual release recovery is only supported after the tagged release and all assets succeeded; use the original tag run to recover failed builds.' >&2
-            exit 1
-          }
-          reuse_windows_arm64_artifact=false
-          if jq -e '
-            ([.jobs[] | select(.conclusion == "failure") | .name] ==
-              ["Build release assets / Build windows x64"]) and
-            (([
-              "Validate main release tag",
-              "Build release assets / Validate release tag",
-              "Build release assets / Build linux x64",
-              "Build release assets / Build linux arm64",
-              "Build release assets / Build macos arm64",
-              "Build release assets / Build macos x64",
-              "Build release assets / Build windows arm64",
-              "Build release assets / Build Android APK",
-              "Build release assets / Build iOS Simulator release package",
-              "Build release assets / Build optional Jellyfin plugin"
-            ] - [.jobs[] | select(.conclusion == "success") | .name]) | length == 0)
-          ' <<<"$jobs" >/dev/null; then
-            reuse_windows_x64_artifact=false
-            reuse_windows_arm64_artifact=true
-          elif jq -e '
-            ([.jobs[] | select(.conclusion == "failure") | .name] ==
-              ["Build release assets / Build iOS Simulator release package"]) and
-            (([
-              "Validate main release tag",
-              "Generate changelog",
-              "Create draft release",
-              "Publish multi-arch manifests",
-              "Scan release image (linux/amd64)",
-              "Scan release image (linux/arm64)",
-              "Sign images and create SBOM attestations",
-              "Verify signatures and attestations",
-              "Build release assets / Validate release tag",
-              "Build release assets / Build linux x64",
-              "Build release assets / Build linux arm64",
-              "Build release assets / Build macos arm64",
-              "Build release assets / Build macos x64",
-              "Build release assets / Build windows x64",
-              "Build release assets / Build windows arm64",
-              "Build release assets / Build Android APK",
-              "Build release assets / Build optional Jellyfin plugin"
-            ] - [.jobs[] | select(.conclusion == "success") | .name]) | length == 0)
-          ' <<<"$jobs" >/dev/null; then
-            reuse_windows_x64_artifact=true
-            reuse_windows_arm64_artifact=true
-          elif jq -e '
-            ([.jobs[] | select(.conclusion == "failure") | .name] ==
-              ["Build release assets / Upload release assets"]) and
-            (([
-              "Validate main release tag",
-              "Build release assets / Validate release tag",
-              "Build release assets / Build linux x64",
-              "Build release assets / Build linux arm64",
-              "Build release assets / Build macos arm64",
-              "Build release assets / Build macos x64",
-              "Build release assets / Build windows x64",
-              "Build release assets / Build windows arm64",
-              "Build release assets / Build Android APK",
-              "Build release assets / Build iOS Simulator release package",
-              "Build release assets / Build optional Jellyfin plugin",
-              "Create draft release"
-            ] - [.jobs[] | select(.conclusion == "success") | .name]) | length == 0)
-          ' <<<"$jobs" >/dev/null; then
-            reuse_windows_x64_artifact=true
-            reuse_windows_arm64_artifact=true
-          elif jq -e '
-            ([.jobs[] | select(.conclusion == "failure") | .name] ==
-              ["Dispatch package channels"]) and
-            (([
-              "Validate main release tag",
-              "Generate changelog",
-              "Create draft release",
-              "Publish multi-arch manifests",
-              "Scan release image (linux/amd64)",
-              "Scan release image (linux/arm64)",
-              "Sign images and create SBOM attestations",
-              "Verify signatures and attestations",
-              "Build release assets / Validate release tag",
-              "Build release assets / Build linux x64",
-              "Build release assets / Build linux arm64",
-              "Build release assets / Build macos arm64",
-              "Build release assets / Build macos x64",
-              "Build release assets / Build windows x64",
-              "Build release assets / Build windows arm64",
-              "Build release assets / Build Android APK",
-              "Build release assets / Build iOS Simulator release package",
-              "Build release assets / Build optional Jellyfin plugin",
-              "Build release assets / Upload release assets"
-            ] - [.jobs[] | select(.conclusion == "success") | .name]) | length == 0)
-          ' <<<"$jobs" >/dev/null; then
-            reuse_windows_x64_artifact=true
-            reuse_windows_arm64_artifact=true
-          else
-            echo 'The previous run did not fail at a supported recoverable release stage.' >&2
-            exit 1
-          fi
-          echo "reuse_windows_x64_artifact=$reuse_windows_x64_artifact" >> "$GITHUB_OUTPUT"
-          echo "reuse_windows_arm64_artifact=$reuse_windows_arm64_artifact" >> "$GITHUB_OUTPUT"
-
-          artifacts="$(gh api "repos/$REPO/actions/runs/$REUSE_FROM_RUN_ID/artifacts?per_page=100")"
-          if [[ "$reuse_windows_x64_artifact" == true ]]; then
-            expected_artifacts='[
-              "seerrng-linux-x64",
-              "seerrng-linux-arm64",
-              "seerrng-macos-arm64",
-              "seerrng-macos-x64",
-              "seerrng-windows-x64",
-              "seerrng-windows-arm64",
-              "seerrng-android",
-              "seerrng-jellyfin-plugin"
-            ]'
-          else
-            expected_artifacts='[
-              "seerrng-linux-x64",
-              "seerrng-linux-arm64",
-              "seerrng-macos-arm64",
-              "seerrng-macos-x64",
-              "seerrng-windows-arm64",
-              "seerrng-android",
-              "seerrng-jellyfin-plugin"
-            ]'
-          fi
-          jq -e --argjson expected "$expected_artifacts" '
-            ($expected - [.artifacts[] | select(.expired == false) | .name] | length == 0)
-          ' <<<"$artifacts" >/dev/null || {
-            echo 'One or more successful builder artifacts are missing or expired.' >&2
-            exit 1
-          }
+        run: node .github-actions/scripts/classify-release-recovery.mjs
 
   changelog:
     name: Generate changelog
-    if: (github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && inputs.reuse_from_run_id == '' && inputs.announce_security_correction != true))
+    if: (github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && (inputs.reuse_from_run_id == '' || needs.validate-main-tag.outputs.reverify_existing_image == 'true') && inputs.announce_security_correction != true))
     needs: validate-main-tag
     timeout-minutes: 10
     runs-on: ubuntu-24.04
@@ -429,12 +245,12 @@ jobs:
 
   create-draft-release:
     name: Create draft release
-    if: (github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && inputs.reuse_from_run_id == '' && inputs.announce_security_correction != true))
+    if: (github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && (inputs.reuse_from_run_id == '' || needs.validate-main-tag.outputs.reverify_existing_image == 'true') && inputs.announce_security_correction != true))
     timeout-minutes: 10
     runs-on: ubuntu-24.04
     permissions:
       contents: write
-    needs: changelog
+    needs: [validate-main-tag, changelog]
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -478,7 +294,7 @@ jobs:
 
   publish:
     name: Publish multi-arch manifests
-    if: (github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && inputs.reuse_from_run_id == '' && inputs.announce_security_correction != true))
+    if: (github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && (inputs.reuse_from_run_id == '' || needs.validate-main-tag.outputs.reverify_existing_image == 'true') && inputs.announce_security_correction != true))
     needs: [validate-main-tag, create-draft-release]
     timeout-minutes: 90
     runs-on: ubuntu-24.04
@@ -871,8 +687,10 @@ jobs:
 
   verify:
     name: Verify signatures and attestations
-    if: (github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && inputs.reuse_from_run_id == '' && inputs.announce_security_correction != true))
-    needs: [publish, sign]
+    if: >-
+      always() && needs.publish.result == 'success' &&
+      (needs.sign.result == 'success' || needs.validate-main-tag.outputs.reverify_existing_image == 'true')
+    needs: [validate-main-tag, publish, sign]
     timeout-minutes: 15
     runs-on: ubuntu-24.04
     permissions:
@@ -882,18 +700,17 @@ jobs:
     env:
       VERSION: ${{ inputs.tag || github.ref_name }}
     steps:
-      - name: Checkout pinned GitHub CLI setup
+      - name: Checkout pinned verifier actions
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           repository: snapetech-org/seerrng
           ref: ${{ github.sha }}
-          path: .github-actions
-          sparse-checkout: .github/actions/setup-gh-cli
+          sparse-checkout: .github/actions
           sparse-checkout-cone-mode: false
           persist-credentials: false
 
       - name: Set up GitHub CLI
-        uses: ./.github-actions/.github/actions/setup-gh-cli
+        uses: ./.github/actions/setup-gh-cli
 
       - name: Install Cosign
         uses: ./.github/actions/setup-cosign
@@ -982,7 +799,8 @@ jobs:
           needs.build-release-assets.result == 'success') ||
         (github.event_name == 'workflow_dispatch' &&
           inputs.reuse_from_run_id != '' &&
-          inputs.announce_security_correction != true)
+          inputs.announce_security_correction != true &&
+          (needs.validate-main-tag.outputs.reverify_existing_image != 'true' || needs.verify.result == 'success'))
       )
     needs:
       [
@@ -1019,8 +837,8 @@ jobs:
 
   promote-stable-container-aliases:
     name: Promote stable container aliases
-    if: ${{ (github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && inputs.reuse_from_run_id == '' && inputs.announce_security_correction != true)) && !contains(inputs.tag || github.ref_name, '-') }}
-    needs: [publish-release]
+    if: ${{ (github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && (inputs.reuse_from_run_id == '' || needs.validate-main-tag.outputs.reverify_existing_image == 'true') && inputs.announce_security_correction != true)) && !contains(inputs.tag || github.ref_name, '-') }}
+    needs: [validate-main-tag, publish-release]
     concurrency:
       group: seerrng-stable-container-aliases
       queue: max
@@ -1105,8 +923,8 @@ jobs:
 
   dispatch-chocolatey:
     name: Dispatch Chocolatey after publication
-    if: inputs.skip_unavailable_optional_channels != true && (github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && inputs.reuse_from_run_id == '' && inputs.announce_security_correction != true))
-    needs: [publish-release]
+    if: inputs.skip_unavailable_optional_channels != true && (github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && (inputs.reuse_from_run_id == '' || needs.validate-main-tag.outputs.reverify_existing_image == 'true') && inputs.announce_security_correction != true))
+    needs: [validate-main-tag, publish-release]
     timeout-minutes: 5
     runs-on: ubuntu-24.04
     permissions:
@@ -1179,7 +997,8 @@ jobs:
           needs.build-release-assets.result == 'success') ||
         (github.event_name == 'workflow_dispatch' &&
           inputs.reuse_from_run_id != '' &&
-          inputs.announce_security_correction != true)
+          inputs.announce_security_correction != true &&
+          (needs.validate-main-tag.outputs.reverify_existing_image != 'true' || needs.verify.result == 'success'))
       )
     needs: [validate-main-tag, verify, build-release-assets]
     timeout-minutes: 360
@@ -1413,9 +1232,9 @@ jobs:
 
   announce-discord:
     name: Announce release to Discord
-    if: (github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && inputs.reuse_from_run_id == '' && inputs.announce_security_correction != true))
+    if: (github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && (inputs.reuse_from_run_id == '' || needs.validate-main-tag.outputs.reverify_existing_image == 'true') && inputs.announce_security_correction != true))
     needs:
-      [changelog, publish, publish-release]
+      [validate-main-tag, changelog, publish, publish-release]
     timeout-minutes: 10
     runs-on: ubuntu-24.04
     permissions:

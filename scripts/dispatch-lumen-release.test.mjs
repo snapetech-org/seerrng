@@ -103,3 +103,18 @@ test('does not duplicate a successful or active same-tag publication but permits
     )
   );
 });
+
+test('workflow-only recovery may publish an older immutable tag only when git verifies its ancestry in the completed trusted run', () => {
+  const candidate = completedRelease(event(), repository),
+    tagSha = 'a'.repeat(40);
+  let checked;
+  requirePublishedSource(candidate, release(), tagSha, (source, head) => {
+    checked = [source, head];
+  });
+  assert.deepEqual(checked, [tagSha, sha]);
+  assert.throws(() =>
+    requirePublishedSource(candidate, release(), tagSha, () => {
+      throw new Error('unrelated history');
+    })
+  );
+});

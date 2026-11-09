@@ -22,16 +22,19 @@ export function completedRelease(event, repository) {
   return { tag: match[1], sha: run.head_sha };
 }
 
-export function requirePublishedSource(candidate, release, tagSha) {
+export function requirePublishedSource(
+  candidate,
+  release,
+  tagSha,
+  verifyAncestry = (source, head) =>
+    assert.equal(source, head, 'Release source differs from completed run')
+) {
   assert.equal(release.tagName, candidate.tag);
   assert.equal(release.isDraft, false);
   assert.equal(release.isPrerelease, false);
   assert.ok(release.publishedAt);
-  assert.equal(
-    tagSha,
-    candidate.sha,
-    'Release source differs from completed run'
-  );
+  assert.match(tagSha, /^[a-f0-9]{40}$/);
+  verifyAncestry(tagSha, candidate.sha);
 }
 
 export function alreadyDispatched(runs, tag) {
@@ -68,7 +71,8 @@ function main() {
   requirePublishedSource(
     candidate,
     release,
-    git('rev-parse', `${candidate.tag}^{commit}`)
+    git('rev-parse', `${candidate.tag}^{commit}`),
+    (source, head) => git('merge-base', '--is-ancestor', source, head)
   );
   git('merge-base', '--is-ancestor', candidate.sha, 'origin/main');
   const runs = JSON.parse(

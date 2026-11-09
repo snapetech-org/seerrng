@@ -6,8 +6,8 @@ version is still GitHub's latest published stable release. Version publication
 runs independently from alias refreshes so a newer pending alias cannot cancel
 an older version build. The normal SeerrNG release is published by `GITHUB_TOKEN`, whose release events
 do not start another workflow. `lumen-release-dispatch.yml` therefore handles a
-successful `SeerrNG Release` completion on trusted main, verifies the published
-stable tag against that completed run's source, and explicitly dispatches this
+successful `SeerrNG Release` completion on trusted main, verifies that the published
+stable tag is contained in that completed trusted-main run's source, and explicitly dispatches this
 publisher. It rejects fork/PR/alternate-branch events, draft/prerelease metadata
 and source mismatches, consumes no artifacts from the triggering run, and avoids
 duplicating an active or successful named publication. See
