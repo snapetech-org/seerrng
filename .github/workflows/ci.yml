@@ -17,7 +17,7 @@ on:
         description: Action to run
         type: choice
         required: true
-        options: [ci, contracts, publish-image]
+        options: [ci, contracts, browser, publish-image]
       runner_pool:
         description: GitHub-hosted runner pool
         type: choice
@@ -137,7 +137,7 @@ jobs:
       github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main' &&
       ((inputs.pr_number != '' && inputs.pr_sha != '' && inputs.target_run_id != '' &&
         github.actor == 'github-actions[bot]' && inputs.action == 'ci') ||
-       (inputs.pr_number == '' && (inputs.action == 'ci' || inputs.action == 'contracts' || inputs.action == 'publish-image')))
+       (inputs.pr_number == '' && (inputs.action == 'ci' || inputs.action == 'browser' || inputs.action == 'contracts' || inputs.action == 'publish-image')))
     name: Release-note contract
     permissions:
       contents: read
@@ -214,7 +214,7 @@ jobs:
       github.ref == 'refs/heads/main' &&
       ((inputs.pr_number != '' && inputs.pr_sha != '' && inputs.target_run_id != '' &&
         github.actor == 'github-actions[bot]' && inputs.action == 'ci') ||
-       (inputs.pr_number == '' && (inputs.action == 'ci' || inputs.action == 'publish-image')))
+       (inputs.pr_number == '' && (inputs.action == 'ci' || inputs.action == 'browser' || inputs.action == 'publish-image')))
     name: i18n and tooling tests
     timeout-minutes: 45
     runs-on: ubuntu-24.04
@@ -265,12 +265,12 @@ jobs:
 
       - name: Verify PostgreSQL request-status queries
         env:
-          SEERR_TEST_POSTGRES_URL: postgresql://postgres:ci-only-migration@127.0.0.1:${{ job.services.postgres.ports[5432] }}/seerrng_migration_test
+          SEERR_TEST_POSTGRES_URL: postgresql://postgres:ci-only-migration@127.0.0.1:${{ job.services.postgres.ports['5432'] }}/seerrng_migration_test
         run: pnpm test:node --postgres server/lib/requestStatus.postgres.test.ts
 
       - name: Check tooling tests
         env:
-          SEERR_MIGRATION_TEST_POSTGRES_URL: postgresql://postgres:ci-only-migration@127.0.0.1:${{ job.services.postgres.ports[5432] }}/seerrng_migration_test
+          SEERR_MIGRATION_TEST_POSTGRES_URL: postgresql://postgres:ci-only-migration@127.0.0.1:${{ job.services.postgres.ports['5432'] }}/seerrng_migration_test
         run: pnpm test:tooling
 
   test:
@@ -446,8 +446,12 @@ jobs:
       github.ref == 'refs/heads/main' &&
       ((inputs.pr_number != '' && inputs.pr_sha != '' && inputs.target_run_id != '' &&
         github.actor == 'github-actions[bot]' && inputs.action == 'ci') ||
-       (inputs.pr_number == '' && (inputs.action == 'ci' || inputs.action == 'publish-image')))
-    name: Playwright browser tests
+       (inputs.pr_number == '' && (inputs.action == 'ci' || inputs.action == 'browser' || inputs.action == 'publish-image')))
+    name: Playwright browser tests (${{ matrix.shard }}/4)
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [1, 2, 3, 4]
     timeout-minutes: 60
     runs-on: ubuntu-24.04
     permissions:
@@ -494,13 +498,13 @@ jobs:
       - name: Run Playwright suite
         env:
           CI: true
-        run: pnpm exec playwright test --reporter=json
+        run: pnpm exec playwright test --shard=${{ matrix.shard }}/4 --reporter=json
 
       - name: Preserve Playwright screenshots for visual review
         if: always() && hashFiles('test-results/**/*.png') != ''
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
-          name: seerrng-playwright-screenshots-${{ github.run_id }}-${{ github.run_attempt }}
+          name: seerrng-playwright-screenshots-${{ github.run_id }}-${{ github.run_attempt }}-shard-${{ matrix.shard }}
           path: test-results/**/*.png
           if-no-files-found: ignore
           retention-days: 3
@@ -509,12 +513,21 @@ jobs:
         if: failure()
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
-          name: seerrng-playwright-failures-${{ github.run_id }}-${{ github.run_attempt }}
+          name: seerrng-playwright-failures-${{ github.run_id }}-${{ github.run_attempt }}-shard-${{ matrix.shard }}
           path: |
             test-results/**/trace.zip
             test-results/**/error-context.md
           if-no-files-found: ignore
           retention-days: 3
+
+      - name: Preserve complete Playwright shard results
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: seerrng-playwright-report-${{ github.run_id }}-${{ github.run_attempt }}-shard-${{ matrix.shard }}
+          path: ${{ runner.temp }}/seerrng-playwright-result.json
+          if-no-files-found: ignore
+          retention-days: 7
 
   # Owner-PR reusable check runner label: gha-{0}-cypress-run.
   cypress:

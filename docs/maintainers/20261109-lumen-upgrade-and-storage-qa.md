@@ -81,6 +81,21 @@ this on the integrated build. Ready rows now render immediately; extra-category
 rows join in order as metadata arrives. An all-extra list retains its loading state
 until it has an actual row, avoiding a false empty message. All 16 slow-list cases
 passed across four viewports before the follow-up commit. Baseline failure traces
-and candidate screenshots remain in the task evidence directory. Native/backend
-sources are byte-identical to the preceding integration for CI reuse; Lumen and
-release-note contracts must qualify the final head separately.
+and candidate screenshots remain in the task evidence directory. The frontend correction does not change backend behavior. Final qualification records each source revision explicitly; no stale failed job is treated as a passing check.
+
+## Native browser entry contract and CI partitioning
+
+The original native browser run passed 617 cases and skipped one; its two failures
+still asserted that every upgraded installation must enter Lumen. Those cases now
+verify native upgrade entry, a visible pre-authentication escape, explicit admin
+selection of Lumen, friend-account access in both interfaces, logout behavior and
+bundled manifest/icon paths. Both corrected cases passed locally against the rebuilt
+3.72.28 production app before commit.
+
+The complete native browser suite runs in four isolated Ubuntu 24.04 jobs using
+Playwright’s file sharding. Each instance retains one worker and an independent
+prepared database/configuration; assertions and cases are not removed. All shards
+continue after another shard fails and retain distinct screenshots, traces and
+complete JSON results. The `browser` dispatch action reruns this suite and its
+release-note contract without duplicating already-qualified native/backend jobs.
+Live execution on the selected public runner class is required before publication.
