@@ -33,6 +33,7 @@ import {
   requestStatusMessages,
   RequestStatusMessageText,
 } from '@app/components/RequestStatus/messages';
+import BookOrbitRequestActions from '@app/components/Requests/BookOrbitRequestActions';
 import useDebouncedState from '@app/hooks/useDebouncedState';
 import useMediaFilterPin from '@app/hooks/useMediaFilterPin';
 import useRequestStatusScrollRestoration from '@app/hooks/useRequestStatusScrollRestoration';
@@ -2078,6 +2079,7 @@ const RequestStatusCard = ({
             aria-hidden="true"
           />
         </Button>
+        <BookOrbitRequestActions links={detail?.bookOrbitRequests} />
         {actionControls}
         <RequestDownloadAction
           requestId={item.request.id}

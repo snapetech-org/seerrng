@@ -1,4 +1,5 @@
 import type { AxiosRequestConfig, AxiosResponse } from 'axios';
+import { AxiosError } from 'axios';
 import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
 
@@ -30,7 +31,9 @@ class InspectBookOrbitAPI extends BookOrbitAPI {
     config?: AxiosRequestConfig
   ): Promise<AxiosResponse<T>> {
     this.calls.push({ method, path, body, config });
-    return { data: this.responses.shift() as T } as AxiosResponse<T>;
+    const response = this.responses.shift();
+    if (response instanceof Error) throw response;
+    return { data: response as T } as AxiosResponse<T>;
   }
 }
 
@@ -43,6 +46,27 @@ const request = (id: number, mediaKind: 'ebook' | 'audiobook') => ({
 });
 
 describe('BookOrbit acquisition contract', () => {
+  it('re-authenticates a stale token before removing its subscription', async () => {
+    const api = new InspectBookOrbitAPI([
+      { accessToken: 'expired' },
+      new AxiosError('Expired', 'ERR_BAD_REQUEST', undefined, undefined, {
+        status: 401,
+      } as AxiosResponse),
+      { accessToken: 'fresh' },
+      undefined,
+    ]);
+    await api.unsubscribe(42);
+    assert.deepEqual(
+      api.calls.map((call) => [call.method, call.path]),
+      [
+        ['POST', '/api/v1/auth/login'],
+        ['DELETE', '/api/v1/book-requests/42/subscription'],
+        ['POST', '/api/v1/auth/login'],
+        ['DELETE', '/api/v1/book-requests/42/subscription'],
+      ]
+    );
+    assert.equal(api.calls[3].config?.headers?.Authorization, 'Bearer fresh');
+  });
   it('tests a requester account and a library read before enabling the connection', async () => {
     const api = new InspectBookOrbitAPI([
       { accessToken: 'token' },

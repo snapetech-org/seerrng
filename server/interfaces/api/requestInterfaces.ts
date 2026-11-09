@@ -188,6 +188,7 @@ export type RequestStatusQuery = {
 export interface RequestStatusDetailResponse {
   request: NonFunctionProperties<MediaRequest>;
   current: RequestStatusSnapshot;
+  bookOrbitRequests?: { format: 'ebook' | 'audiobook'; url: string }[];
   history: {
     results: RequestStatusHistoryItem[];
     total: number;
