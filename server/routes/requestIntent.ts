@@ -231,9 +231,6 @@ requestIntentRoutes.post('/state', async (req, res, next) => {
                 : null;
           return { own: status(true), other: status(false) };
         };
-        const available =
-          entry?.status === MediaStatus.AVAILABLE ||
-          entry?.status4k === MediaStatus.AVAILABLE;
         const subscription = entry
           ? subscriptionByMedia.get(entry.id)
           : undefined;
@@ -276,8 +273,8 @@ requestIntentRoutes.post('/state', async (req, res, next) => {
             : null,
           canSubscribe: Boolean(
             entry &&
-            !available &&
-            claims.some((row) => Number(row.requesterId) !== user.id)
+            entry.status !== MediaStatus.AVAILABLE &&
+            claim(false).other
           ),
           canSubscribe4k: Boolean(
             entry &&

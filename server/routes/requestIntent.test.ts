@@ -198,4 +198,35 @@ describe('small title request projection', () => {
     assert.equal(JSON.stringify(response.body).includes(other.email), false);
     assert.equal(JSON.stringify(response.body).includes('requestedBy'), false);
   });
+
+  it('offers a standard alert when only the 4K copy is available', async (t) => {
+    t.mock.method(requestDispatchManager, 'enqueue', async () => undefined);
+    const other = await getRepository(User).findOneByOrFail({
+      email: 'demo@seerr.dev',
+    });
+    const movie = await getRepository(Media).save(
+      new Media({
+        mediaType: MediaType.MOVIE,
+        tmdbId: 912,
+        status: MediaStatus.PENDING,
+        status4k: MediaStatus.AVAILABLE,
+      })
+    );
+    await getRepository(MediaRequest).save(
+      new MediaRequest({
+        type: MediaType.MOVIE,
+        media: movie,
+        requestedBy: other,
+        status: MediaRequestStatus.PENDING,
+        is4k: false,
+      })
+    );
+    const agent = await login('friend@seerr.dev');
+    const response = await agent.post('/request/intent/state').send({
+      items: [{ mediaType: 'movie', tmdbId: 912 }],
+    });
+    assert.equal(response.status, 200);
+    assert.equal(response.body.items[0].canSubscribe, true);
+    assert.equal(response.body.items[0].standard.other, 'pending');
+  });
 });
