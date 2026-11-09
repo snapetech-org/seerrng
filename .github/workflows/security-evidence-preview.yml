@@ -25,15 +25,9 @@ jobs:
           def api(path):
               return subprocess.check_output(['gh', 'api', prefix + path])
           run_id = 42713806657
-          for attempt in range(90):
-              run = json.loads(api(f'actions/runs/{run_id}'))
-              assert run['head_sha'] == '33904698f23e3d7c1be3f6188c7e860d73a210ee'
-              assert run['head_branch'] == 'codex/seerrng-security-verification-20261109'
-              if run['status'] == 'completed': break
-              print('Waiting for fixture run:', run['status'], flush=True)
-              time.sleep(20)
-          else:
-              raise RuntimeError('Fixture run remains pending; no acceptance claimed')
+          run = json.loads(api(f'actions/runs/{run_id}'))
+          assert run['head_sha'] == '33904698f23e3d7c1be3f6188c7e860d73a210ee'
+          assert run['status'] == 'completed' and run['conclusion'] == 'success'
           print('SOURCE_CONCLUSION:', run['conclusion'], flush=True)
           artifacts = json.loads(api(f'actions/runs/{run_id}/artifacts'))['artifacts']
           for kind in ['baseline', 'candidate']:
@@ -47,9 +41,7 @@ jobs:
               for column, name in enumerate(['origin-initial', 'origin-redirect', 'origin-long']):
                   match = next((a for a in attachments if a.get('suggestedHumanReadableName', '').startswith(name + '_')), None)
                   draw.text((column * 400 + 10, 10), kind + ' ' + name, fill='black')
-                  if match is None:
-                      print('Missing capture:', kind, name, flush=True)
-                      continue
+                  assert match is not None, (kind, name)
                   data = archive.read(match['exportedFileName'])
                   picture = Image.open(io.BytesIO(data)).convert('RGB')
                   print('CAPTURE:', kind, name, picture.size, flush=True)
