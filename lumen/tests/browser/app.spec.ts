@@ -626,3 +626,26 @@ test('a double click on a poster’s Request sends one request', async ({
   expect(posts).toHaveLength(1);
   expect(fixture.errors).toEqual([]);
 });
+
+test('a category page says when SeerrNG’s settings fail and retries', async ({
+  page,
+}) => {
+  const fixture = await fixtures(page);
+  // the app's first read (which picks the media server) works; the page's own read fails
+  let calls = 0;
+  let fail = true;
+  await page.route('**/api/v1/settings/public', (route) =>
+    ++calls > 1 && fail
+      ? route.fulfill({ status: 503, json: { message: 'Starting up' } })
+      : route.fallback()
+  );
+  await page.goto('/music');
+  const alert = page.getByRole('alert');
+  await expect(alert).toContainText('Couldn’t load this page');
+  fail = false;
+  await alert.getByRole('button', { name: 'Retry' }).click();
+  await expect(
+    page.getByText('Music is turned off on this server')
+  ).toBeVisible();
+  expect(fixture.errors).toEqual([]);
+});

@@ -162,7 +162,12 @@ export const StatPill = ({ s }: { s: Stat }) =>
 export function ExtraGate({ k, children }: { k: Extra; children: ReactNode }) {
   const x = useExtras();
   const { seerrPublicUrl } = usePrefs();
-  if (!x.ready) return <div className="detail-loading" aria-busy="true" />;
+  if (!x.ready)
+    return x.error ? (
+      <ServiceNote error={x.error} what="this page" retry={x.retry} />
+    ) : (
+      <div className="detail-loading" aria-busy="true" />
+    );
   if (x.enabled(k)) return <>{children}</>;
   const label = {
     music: 'Music',
