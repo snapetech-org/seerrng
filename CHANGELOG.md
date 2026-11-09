@@ -9,6 +9,12 @@ v3.72.7 section consolidates changes from the requested v3.71.4 baseline
 through v3.72.7, including changes also represented by unpublished interim
 tags. The comparison link is the complete commit range.
 
+## [3.72.27](https://github.com/snapetech-org/seerrng/compare/v3.72.26..v3.72.27) - 2026-11-09
+
+### Upstream source attribution
+
+- Publicly credit 52 Seerr issues and pull requests whose upstream code, reports, suggestions, or discussions informed SeerrNG. The [source ledger](UPSTREAM_ATTRIBUTION.md) links every originating record and upstream author while making clear that those people contributed to Seerr, not directly to this fork.
+
 ## [3.72.26](https://github.com/snapetech-org/seerrng/compare/v3.72.25..v3.72.26) - 2026-11-09
 
 - Keep Lumen Request working when reselecting HD or 4K, continue productive filtered lists while retaining sparse-list request limits, and visibly disable unavailable primary actions (#623).

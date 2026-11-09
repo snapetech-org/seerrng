@@ -28,3 +28,20 @@ For any change affecting rendered UI, components, styles, themes, layout, states
 3. Reuse existing owners. Add no Tailwind, page-only or duplicate CSS, or local overrides for shared properties. Preserve approved dimensions, spacing, typography, colors, and responsive behavior; make the smallest scoped change.
 4. Render baseline and candidate at matching viewports and states; compare against approved references. Inspect changed pages and representative shared consumers for button geometry, alignment, spacing, typography, surfaces, overflow, and interactions. Fix regressions; record routes, states, viewports, evidence, and exclusions.
 5. If rendering or comparison is blocked, mark acceptance unverified and UI work incomplete.
+
+## Upstream source attribution
+
+When SeerrNG gathers or adapts an idea, report, discussion, patch, rejected
+request, issue, or pull request from upstream Seerr, update
+`UPSTREAM_ATTRIBUTION.md` and the user-facing changelog in the same change.
+Record the originating upstream URL, the upstream author’s GitHub handle, the
+kind of source, and the behavior brought into SeerrNG. Say that the person
+contributed or suggested it to the upstream project and that SeerrNG
+independently adapted, integrated, or verified it. Never imply that the person
+contributed directly to, endorsed, or participated in this fork.
+
+Credit closed, unmerged, superseded, and rejected upstream records when their
+code or ideas materially informed the fork. Before a release, audit every new
+upstream reference in commits, release-note fragments, and changelog entries
+for an author link and originating issue, PR, or commit link. Missing source
+credit is a release-note defect and must be fixed before publication.
