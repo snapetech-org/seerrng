@@ -105,6 +105,7 @@ import {
   getUserVideoMaturityPolicy,
   isVideoWithinMaturityLimit,
 } from '@server/lib/videoMaturityPolicy';
+import { hasValidEpisodeQueueStartingSelection } from '@server/lib/watchAheadEligibility';
 import logger from '@server/logger';
 import AsyncLock from '@server/utils/asyncLock';
 import { isProviderBookEdition } from '@server/utils/bookEdition';
@@ -377,6 +378,11 @@ const promotePendingRequest = async (
       );
     }
 
+    if (!hasValidEpisodeQueueStartingSelection(currentRequest)) {
+      throw new RequestPermissionError(
+        'Choose one starting episode in Edit Request before approving an Episode Queue request. Queue length is a playback buffer, not a total download limit.'
+      );
+    }
     currentRequest.status = MediaRequestStatus.APPROVED;
     if (currentRequest.quotaException) {
       currentRequest.ignoreQuota = true;

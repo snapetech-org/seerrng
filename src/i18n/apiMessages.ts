@@ -415,6 +415,8 @@ export const apiMessages: Record<
   m1dde82b337437b075522: 'Unknown media category: {value0}.',
   m1de79f3bc0de64ba4afe: 'Only pending recordings can be declined.',
   m1df2c53045266e82cee0: 'Failed to send Slack notification.',
+  m1e04d6285931135cf9d5:
+    'Choose one starting episode in Edit Request before approving an Episode Queue request. Queue length is a playback buffer, not a total download limit.',
   m1e51f90126f7e58ea93b: 'List URL or reference is required',
   m1e7350e3dfd427a159f9: 'items must contain request objects.',
   m1e90b117a639bf9c1e47: 'You no longer have permission to modify media.',

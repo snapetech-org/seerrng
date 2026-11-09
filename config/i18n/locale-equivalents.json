@@ -2066,7 +2066,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/Setup/index.tsx",
-          "line": 107,
+          "line": 113,
           "defaultMessage": "'Comics'"
         }
       ],
@@ -4694,7 +4694,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/Setup/index.tsx",
-          "line": 110,
+          "line": 116,
           "defaultMessage": "'Sports'"
         }
       ],

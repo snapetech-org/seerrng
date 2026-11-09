@@ -7784,6 +7784,42 @@ describe('PUT /request/:requestId (quota)', () => {
 });
 
 describe('POST /request/:requestId/:status', () => {
+  it('keeps a pending full-series request pending when a queue buffer was added until a starting episode is selected', async () => {
+    const owner = await getRepository(User).findOneByOrFail({ id: 2 });
+    const pending = await seedTvRequest(owner, [1, 2], { tmdbId: 932800 });
+    await getRepository(MediaRequest).update(pending.id, {
+      watchAheadEpisodeCount: 5,
+      watchAheadUsesUserDefault: false,
+    });
+    const admin = await loginAs('admin@seerr.dev', 'test1234');
+    const denied = await admin.post(`/request/${pending.id}/approve`);
+    assert.equal(denied.status, 409);
+    assert.match(denied.body.message, /starting episode/i);
+    assert.equal(
+      (await getRepository(MediaRequest).findOneByOrFail({ id: pending.id }))
+        .status,
+      MediaRequestStatus.PENDING
+    );
+    const saved = await getRepository(MediaRequest).findOneOrFail({
+      where: { id: pending.id },
+      relations: { seasons: true },
+    });
+    saved.seasons = [saved.seasons[0]];
+    saved.seasons[0].episodeNumbers = [1];
+    await getRepository(MediaRequest).save(saved);
+    const approved = await admin.post(`/request/${pending.id}/approve`);
+    assert.equal(approved.status, 200, JSON.stringify(approved.body));
+    assert.deepEqual(
+      approved.body.seasons.map(
+        (season: { seasonNumber: number; episodeNumbers: number[] }) => ({
+          seasonNumber: season.seasonNumber,
+          episodeNumbers: season.episodeNumbers,
+        })
+      ),
+      [{ seasonNumber: 1, episodeNumbers: [1] }]
+    );
+  });
+
   const cases = [
     { action: 'approve', expected: MediaRequestStatus.APPROVED },
     { action: 'decline', expected: MediaRequestStatus.DECLINED },

@@ -2245,6 +2245,9 @@ export class MediaRequestSubscriber implements EntitySubscriberInterface<MediaRe
           ...resolveFutureSeasonMonitoring(
             entity.monitorFutureSeasons,
             (entity.watchAheadEpisodeCount ?? 0) > 0 ||
+              entity.seasons
+                .filter(isActiveSeasonRequest)
+                .some((season) => season.episodeNumbers != null) ||
               isTvSeasonWatchGateEnabledForUser(entity.requestedBy),
             resolveSonarrMonitorNewItems(
               sonarrSettings.monitorNewItems,

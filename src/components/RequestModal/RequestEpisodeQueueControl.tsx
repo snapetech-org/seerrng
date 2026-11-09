@@ -14,7 +14,7 @@ const messages = defineMessages('components.RequestEpisodeQueueControl', {
   watchAheadUseDefault: 'Account default ({count})',
   watchAheadOff: 'Off',
   watchAheadOverrideHelp:
-    'Changes future queueing only. Existing episode requests and downloaded files stay in place.',
+    'Queue length is a playback buffer, not a total episode limit. Existing requests and downloads stay in place. For a pending request, choose one starting episode before approval.',
   watchAheadSaved: 'Episode Queue saved.',
   watchAheadSaveFailed:
     'Could not save Episode Queue. Reload the request and try again.',

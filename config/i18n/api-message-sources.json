@@ -649,7 +649,7 @@
       "callsites": [
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 1312,
+          "line": 1318,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'No default Lidarr server configured.'",
@@ -1182,7 +1182,7 @@
       "callsites": [
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 2346,
+          "line": 2352,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'This adult scene is blocklisted.'",
@@ -1190,7 +1190,7 @@
         },
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 2403,
+          "line": 2409,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'This adult scene is blocklisted.'",
@@ -1337,7 +1337,7 @@
       "callsites": [
         {
           "path": "server/subscriber/MediaRequestSubscriber.ts",
-          "line": 4380,
+          "line": 4383,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'No default Sportarr server is configured.'",
@@ -1375,7 +1375,7 @@
       "callsites": [
         {
           "path": "server/api/servarr/sonarr.ts",
-          "line": 1509,
+          "line": 1522,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Failed to execute Sonarr series search.'",
@@ -1493,7 +1493,7 @@
       "callsites": [
         {
           "path": "server/subscriber/MediaRequestSubscriber.ts",
-          "line": 3942,
+          "line": 3945,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Selected Kapowarr server has no root folder configured'",
@@ -1670,7 +1670,7 @@
       "callsites": [
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 1408,
+          "line": 1414,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'This album is already available on the selected service.'",
@@ -2010,7 +2010,7 @@
       "callsites": [
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 3475,
+          "line": 3481,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Request for this media already exists at the selected destination.'",
@@ -2187,7 +2187,7 @@
       "callsites": [
         {
           "path": "server/subscriber/MediaRequestSubscriber.ts",
-          "line": 4137,
+          "line": 4140,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Media data not found.'",
@@ -2333,7 +2333,7 @@
       "callsites": [
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 812,
+          "line": 818,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`Selected ${serviceName} server does not exist.`",
@@ -2341,7 +2341,7 @@
         },
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 1306,
+          "line": 1312,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Selected Lidarr server does not exist.'",
@@ -2458,7 +2458,7 @@
       "callsites": [
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 2111,
+          "line": 2117,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Request for this comic already exists at the selected destination.'",
@@ -3249,7 +3249,7 @@
       "callsites": [
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 2649,
+          "line": 2655,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'This league is already linked to the selected Sportarr server.'",
@@ -3545,7 +3545,7 @@
       "callsites": [
         {
           "path": "server/api/servarr/sonarr.ts",
-          "line": 1066,
+          "line": 1079,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'The requested Sonarr season order is not available.'",
@@ -3697,7 +3697,7 @@
       "callsites": [
         {
           "path": "server/subscriber/MediaRequestSubscriber.ts",
-          "line": 4389,
+          "line": 4392,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Sports league media data not found.'",
@@ -3959,7 +3959,7 @@
       "callsites": [
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 812,
+          "line": 818,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`Selected ${serviceName} server does not exist.`",
@@ -3967,7 +3967,7 @@
         },
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 1561,
+          "line": 1567,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Selected Bookshelf server does not exist.'",
@@ -4007,7 +4007,7 @@
       "callsites": [
         {
           "path": "server/subscriber/MediaRequestSubscriber.ts",
-          "line": 2694,
+          "line": 2697,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Book request is missing lookup identifiers'",
@@ -5303,7 +5303,7 @@
       "callsites": [
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 958,
+          "line": 964,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Adult media request quota exceeded.'",
@@ -5395,7 +5395,7 @@
       "callsites": [
         {
           "path": "server/lib/requestTransition.ts",
-          "line": 196,
+          "line": 197,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'The selected comics server no longer exists.'",
@@ -5841,7 +5841,7 @@
       "callsites": [
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 226,
+          "line": 227,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'A valid request ID is required for request admission.'",
@@ -5962,7 +5962,7 @@
       "callsites": [
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 923,
+          "line": 929,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Movie Quota exceeded.'",
@@ -6287,7 +6287,7 @@
       "callsites": [
         {
           "path": "server/api/servarr/sonarr.ts",
-          "line": 1443,
+          "line": 1456,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Failed to get metadata languages'",
@@ -6550,7 +6550,7 @@
       "callsites": [
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 821,
+          "line": 827,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`Selected ${serviceName} server does not match the requested quality tier.`",
@@ -6558,7 +6558,7 @@
         },
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 2965,
+          "line": 2971,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`Selected ${\n          requestBody.mediaType === MediaType.MOVIE ? 'Radarr' : 'Sonarr'\n        } server does not match the requested quality tier.`",
@@ -7001,7 +7001,7 @@
       "callsites": [
         {
           "path": "server/subscriber/MediaRequestSubscriber.ts",
-          "line": 3424,
+          "line": 3427,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`Bookshelf metadata does not contain the selected edition${preferredIsbn ? ` (ISBN ${preferredIsbn})` : ''}. Choose another edition or update the Bookshelf metadata source.`",
@@ -7015,7 +7015,7 @@
         },
         {
           "path": "server/subscriber/MediaRequestSubscriber.ts",
-          "line": 3433,
+          "line": 3436,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`Bookshelf metadata does not contain the selected edition${preferredIsbn ? ` (ISBN ${preferredIsbn})` : ''}. Choose another edition or update the Bookshelf metadata source.`",
@@ -7235,7 +7235,7 @@
       "callsites": [
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 774,
+          "line": 780,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'You do not have permission to make adult media requests.'",
@@ -7810,6 +7810,35 @@
       ]
     },
     {
+      "key": "m1e04d6285931135cf9d5",
+      "id": "utils.ApiMessage.m1e04d6285931135cf9d5",
+      "source": "Choose one starting episode in Edit Request before approving an Episode Queue request. Queue length is a playback buffer, not a total download limit.",
+      "defaultMessage": "Choose one starting episode in Edit Request before approving an Episode Queue request. Queue length is a playback buffer, not a total download limit.",
+      "sourceHash": "1e04d6285931135cf9d5f2c6376ec481d5082d88e7eae38044dba8ee6ef56e50",
+      "parts": [
+        "Choose one starting episode in Edit Request before approving an Episode Queue request. Queue length is a playback buffer, not a total download limit."
+      ],
+      "parameterCount": 0,
+      "callsites": [
+        {
+          "path": "server/entity/MediaRequest.ts",
+          "line": 383,
+          "kind": "app-error-candidate",
+          "field": "message",
+          "expression": "'Choose one starting episode in Edit Request before approving an Episode Queue request. Queue length is a playback buffer, not a total download limit.'",
+          "captured": []
+        },
+        {
+          "path": "server/lib/requestTransition.ts",
+          "line": 274,
+          "kind": "app-error-candidate",
+          "field": "message",
+          "expression": "'Choose one starting episode in Edit Request before approving an Episode Queue request. Queue length is a playback buffer, not a total download limit.'",
+          "captured": []
+        }
+      ]
+    },
+    {
       "key": "m1e51f90126f7e58ea93b",
       "id": "utils.ApiMessage.m1e51f90126f7e58ea93b",
       "source": "List URL or reference is required",
@@ -8158,7 +8187,7 @@
       "callsites": [
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 1501,
+          "line": 1507,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'This book is blocklisted.'",
@@ -8166,7 +8195,7 @@
         },
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 1540,
+          "line": 1546,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'This book is blocklisted.'",
@@ -8451,7 +8480,7 @@
       "callsites": [
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 2550,
+          "line": 2556,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'This sports league is blocklisted.'",
@@ -8459,7 +8488,7 @@
         },
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 2618,
+          "line": 2624,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'This sports league is blocklisted.'",
@@ -8829,7 +8858,7 @@
       "callsites": [
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 2542,
+          "line": 2548,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'A valid Sportarr league identity is required.'",
@@ -9517,7 +9546,7 @@
       "callsites": [
         {
           "path": "server/api/servarr/sonarr.ts",
-          "line": 1545,
+          "line": 1558,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Failed to get episodes'",
@@ -9723,7 +9752,7 @@
       "callsites": [
         {
           "path": "server/lib/requestTransition.ts",
-          "line": 110,
+          "line": 111,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`No default ${requestedFormat} Bookshelf server is configured for book requests.`",
@@ -10035,7 +10064,7 @@
       "callsites": [
         {
           "path": "server/subscriber/MediaRequestSubscriber.ts",
-          "line": 3925,
+          "line": 3928,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`No default ${backendName} server is configured for comic requests`",
@@ -10960,7 +10989,7 @@
         },
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 406,
+          "line": 412,
           "kind": "authored-message-field",
           "field": "errorMessage",
           "expression": "error instanceof Error ? error.message : 'Unknown error'",
@@ -10968,7 +10997,7 @@
         },
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 424,
+          "line": 430,
           "kind": "authored-message-field",
           "field": "errorMessage",
           "expression": "releaseGroupError instanceof Error\n            ? releaseGroupError.message\n            : 'Unknown error'",
@@ -11507,7 +11536,7 @@
       "callsites": [
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 878,
+          "line": 884,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`A ${mediaType === MediaType.MOVIE ? 'movie' : 'TV'} quota exception is already awaiting approval.`",
@@ -12616,7 +12645,7 @@
       "callsites": [
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 2587,
+          "line": 2593,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'This league is already monitored in Sportarr.'",
@@ -13084,7 +13113,7 @@
       "callsites": [
         {
           "path": "server/lib/requestTransition.ts",
-          "line": 55,
+          "line": 56,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`The selected ${\n          requestType === MediaType.MOVIE ? 'Radarr' : 'Sonarr'\n        } server does not match the requested quality tier.`",
@@ -13186,7 +13215,7 @@
       "callsites": [
         {
           "path": "server/lib/requestTransition.ts",
-          "line": 171,
+          "line": 172,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`The selected Bookshelf server is configured for ${selectedReadarrServiceType} requests, not ${requestedFormat} requests.`",
@@ -13366,7 +13395,7 @@
       "callsites": [
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 1893,
+          "line": 1899,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'The book language policy changed. Choose an allowed edition and try again.'",
@@ -13533,7 +13562,7 @@
       "callsites": [
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 2223,
+          "line": 2229,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'No default LazyLibrarian server is configured for magazine requests.'",
@@ -13541,7 +13570,7 @@
         },
         {
           "path": "server/lib/requestTransition.ts",
-          "line": 205,
+          "line": 206,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'No default LazyLibrarian server is configured for magazine requests.'",
@@ -13549,7 +13578,7 @@
         },
         {
           "path": "server/subscriber/MediaRequestSubscriber.ts",
-          "line": 4263,
+          "line": 4266,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'No default LazyLibrarian server is configured for magazine requests.'",
@@ -13785,7 +13814,7 @@
       "callsites": [
         {
           "path": "server/subscriber/MediaRequestSubscriber.ts",
-          "line": 3002,
+          "line": 3005,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Bindery cannot verify the requested edition language under the current book language policy.'",
@@ -14574,7 +14603,7 @@
       "callsites": [
         {
           "path": "server/api/servarr/sonarr.ts",
-          "line": 1596,
+          "line": 1609,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Invalid Sonarr series ID.'",
@@ -14740,7 +14769,7 @@
       "callsites": [
         {
           "path": "server/subscriber/MediaRequestSubscriber.ts",
-          "line": 3031,
+          "line": 3034,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'The configured Bindery requester account is unavailable. Ask an administrator to update the account mapping.'",
@@ -14946,7 +14975,7 @@
       "callsites": [
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 832,
+          "line": 838,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`Selected Bookshelf server is not configured for ${\n            requestBody.format === 'audiobook' ? 'audiobook' : 'ebook'\n          }.`",
@@ -14954,7 +14983,7 @@
         },
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 1572,
+          "line": 1578,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`Selected Bookshelf server is not configured for ${requestedServiceType}.`",
@@ -16037,7 +16066,7 @@
       "callsites": [
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 766,
+          "line": 772,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'You do not have permission to make sports requests.'",
@@ -16238,7 +16267,7 @@
       "callsites": [
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 3450,
+          "line": 3456,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`This ${\n            requestBody.mediaType === MediaType.MOVIE ? 'movie' : 'series'\n          } is already available at the selected destination.`",
@@ -16257,7 +16286,7 @@
       "callsites": [
         {
           "path": "server/lib/requestTransition.ts",
-          "line": 48,
+          "line": 49,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`The selected ${\n          requestType === MediaType.MOVIE ? 'Radarr' : 'Sonarr'\n        } server no longer exists.`",
@@ -16377,7 +16406,7 @@
       "callsites": [
         {
           "path": "server/lib/requestTransition.ts",
-          "line": 55,
+          "line": 56,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`The selected ${\n          requestType === MediaType.MOVIE ? 'Radarr' : 'Sonarr'\n        } server does not match the requested quality tier.`",
@@ -16415,7 +16444,7 @@
       "callsites": [
         {
           "path": "server/subscriber/MediaRequestSubscriber.ts",
-          "line": 4253,
+          "line": 4256,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Magazine request is missing its LazyLibrarian title.'",
@@ -16434,7 +16463,7 @@
       "callsites": [
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 1605,
+          "line": 1611,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`No default Bookshelf server configured for ${requestedServiceType}.`",
@@ -16716,7 +16745,7 @@
       "callsites": [
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 2582,
+          "line": 2588,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'This league is no longer in the Sportarr catalog. Search again and retry.'",
@@ -16900,7 +16929,7 @@
       "callsites": [
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 581,
+          "line": 587,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Request user no longer exists.'",
@@ -16908,7 +16937,7 @@
         },
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 673,
+          "line": 679,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Request user no longer exists.'",
@@ -17005,7 +17034,7 @@
       "callsites": [
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 3409,
+          "line": 3415,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'You already have an active request for this media on the selected service.'",
@@ -17307,7 +17336,7 @@
       "callsites": [
         {
           "path": "server/subscriber/MediaRequestSubscriber.ts",
-          "line": 4395,
+          "line": 4398,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Sports request is missing its Sportarr league ID.'",
@@ -17347,7 +17376,7 @@
       "callsites": [
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 1778,
+          "line": 1784,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'The selected edition could not be verified for this book and destination.'",
@@ -17496,7 +17525,7 @@
       "callsites": [
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 3291,
+          "line": 3297,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'A selected, existing service destination is required for a requester tag.'",
@@ -17757,7 +17786,7 @@
       "callsites": [
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 3361,
+          "line": 3367,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`An unresolved ${\n            unresolvedOtherQualityRequest.is4k ? '4K' : 'HD'\n          } request already exists for this media.`",
@@ -17828,7 +17857,7 @@
       "callsites": [
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 724,
+          "line": 730,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`You do not have permission to make ${\n          requestBody.is4k ? '4K ' : ''\n        }series requests.`",
@@ -17847,7 +17876,7 @@
       "callsites": [
         {
           "path": "server/subscriber/MediaRequestSubscriber.ts",
-          "line": 3925,
+          "line": 3928,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`No default ${backendName} server is configured for comic requests`",
@@ -17958,7 +17987,7 @@
       "callsites": [
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 2743,
+          "line": 2749,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'This title exceeds the selected user’s maturity limit or has no recognized US rating.'",
@@ -18004,7 +18033,7 @@
       "callsites": [
         {
           "path": "server/subscriber/MediaRequestSubscriber.ts",
-          "line": 3937,
+          "line": 3940,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Selected Kapowarr server no longer exists'",
@@ -18113,7 +18142,7 @@
       "callsites": [
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 846,
+          "line": 852,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Selected Whisparr server does not exist.'",
@@ -18121,7 +18150,7 @@
         },
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 2359,
+          "line": 2365,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "requestedServerId == null\n            ? 'No default Whisparr server is configured for adult requests.'\n            : 'Selected Whisparr server does not exist.'",
@@ -18216,7 +18245,7 @@
       "callsites": [
         {
           "path": "server/lib/requestTransition.ts",
-          "line": 76,
+          "line": 77,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'The selected Lidarr server no longer exists.'",
@@ -18254,7 +18283,7 @@
       "callsites": [
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 2986,
+          "line": 2992,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Requester tags are not enabled for the selected service.'",
@@ -18338,7 +18367,7 @@
       "callsites": [
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 724,
+          "line": 730,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`You do not have permission to make ${\n          requestBody.is4k ? '4K ' : ''\n        }series requests.`",
@@ -19420,7 +19449,7 @@
       "callsites": [
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 3487,
+          "line": 3493,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Auto-request for this media, user, and destination already exists.'",
@@ -20794,7 +20823,7 @@
       "callsites": [
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 916,
+          "line": 922,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'You do not have permission to bypass user quota limits.'",
@@ -21393,7 +21422,7 @@
       "callsites": [
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 3764,
+          "line": 3770,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'All seasons must satisfy your TV watch policy before adding a requester tag.'",
@@ -21786,7 +21815,7 @@
       "callsites": [
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 2050,
+          "line": 2056,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Selected Kapowarr root folder is no longer available.'",
@@ -21867,7 +21896,7 @@
       "callsites": [
         {
           "path": "server/subscriber/MediaRequestSubscriber.ts",
-          "line": 3386,
+          "line": 3389,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`Bookshelf returned incomplete book metadata for ${termsToTry.length} lookup terms. The Bookshelf/Readarr metadata provider may be unavailable.`",
@@ -22039,7 +22068,7 @@
       "callsites": [
         {
           "path": "server/api/servarr/sonarr.ts",
-          "line": 1560,
+          "line": 1573,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Sonarr returned an invalid episode-file inventory.'",
@@ -22108,7 +22137,7 @@
       "callsites": [
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 3593,
+          "line": 3599,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Every selected season must be available on the selected Sonarr service before adding a requester tag.'",
@@ -22234,7 +22263,7 @@
       "callsites": [
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 742,
+          "line": 748,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'You do not have permission to make book requests.'",
@@ -22898,7 +22927,7 @@
       "callsites": [
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 943,
+          "line": 949,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Book Quota exceeded.'",
@@ -23127,7 +23156,7 @@
       "callsites": [
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 953,
+          "line": 959,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Magazine Quota exceeded.'",
@@ -23305,7 +23334,7 @@
       "callsites": [
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 2571,
+          "line": 2577,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'No default Sportarr server is configured for sports requests.'",
@@ -23544,7 +23573,7 @@
       "callsites": [
         {
           "path": "server/api/servarr/sonarr.ts",
-          "line": 1233,
+          "line": 1246,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Failed to update series in Sonarr'",
@@ -23966,7 +23995,7 @@
       "callsites": [
         {
           "path": "server/subscriber/MediaRequestSubscriber.ts",
-          "line": 3566,
+          "line": 3569,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Bookshelf returned no book ID after adding the book.'",
@@ -24101,7 +24130,7 @@
       "callsites": [
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 2090,
+          "line": 2096,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'This comic is already available at the selected destination.'",
@@ -24288,7 +24317,7 @@
       "callsites": [
         {
           "path": "server/lib/requestTransition.ts",
-          "line": 171,
+          "line": 172,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`The selected Bookshelf server is configured for ${selectedReadarrServiceType} requests, not ${requestedFormat} requests.`",
@@ -24743,7 +24772,7 @@
       "callsites": [
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 2770,
+          "line": 2776,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'The streaming availability rule cannot be overridden for this request.'",
@@ -25583,7 +25612,7 @@
       "callsites": [
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 3361,
+          "line": 3367,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`An unresolved ${\n            unresolvedOtherQualityRequest.is4k ? '4K' : 'HD'\n          } request already exists for this media.`",
@@ -25640,7 +25669,7 @@
       "callsites": [
         {
           "path": "server/api/servarr/sonarr.ts",
-          "line": 1319,
+          "line": 1332,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Failed to add series to Sonarr'",
@@ -26511,7 +26540,7 @@
       "callsites": [
         {
           "path": "server/subscriber/MediaRequestSubscriber.ts",
-          "line": 2730,
+          "line": 2733,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Book request is missing a Readarr lookup term'",
@@ -26647,7 +26676,7 @@
       "callsites": [
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 832,
+          "line": 838,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`Selected Bookshelf server is not configured for ${\n            requestBody.format === 'audiobook' ? 'audiobook' : 'ebook'\n          }.`",
@@ -26655,7 +26684,7 @@
         },
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 1572,
+          "line": 1578,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`Selected Bookshelf server is not configured for ${requestedServiceType}.`",
@@ -26693,7 +26722,7 @@
       "callsites": [
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 812,
+          "line": 818,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`Selected ${serviceName} server does not exist.`",
@@ -26701,7 +26730,7 @@
         },
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 2955,
+          "line": 2961,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`Selected ${\n          requestBody.mediaType === MediaType.MOVIE ? 'Radarr' : 'Sonarr'\n        } server does not exist.`",
@@ -26882,7 +26911,7 @@
       "callsites": [
         {
           "path": "server/subscriber/MediaRequestSubscriber.ts",
-          "line": 4095,
+          "line": 4098,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "entity.serverId !== null && entity.serverId >= 0\n            ? 'The selected Whisparr server no longer exists.'\n            : 'No default Whisparr server is configured.'",
@@ -26901,7 +26930,7 @@
       "callsites": [
         {
           "path": "server/lib/requestTransition.ts",
-          "line": 213,
+          "line": 214,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'The selected LazyLibrarian server no longer exists.'",
@@ -27391,7 +27420,7 @@
       "callsites": [
         {
           "path": "server/subscriber/MediaRequestSubscriber.ts",
-          "line": 3146,
+          "line": 3149,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'BookOrbit cannot verify the selected edition language under the current book language policy.'",
@@ -28139,7 +28168,7 @@
       "callsites": [
         {
           "path": "server/lib/requestTransition.ts",
-          "line": 138,
+          "line": 139,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'The selected Bookshelf server is not configured for either requested book format.'",
@@ -28231,7 +28260,7 @@
       "callsites": [
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 710,
+          "line": 716,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`You do not have permission to make ${\n          requestBody.is4k ? '4K ' : ''\n        }movie requests.`",
@@ -28713,7 +28742,7 @@
       "callsites": [
         {
           "path": "server/subscriber/MediaRequestSubscriber.ts",
-          "line": 3960,
+          "line": 3963,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Selected Mylar server no longer exists'",
@@ -29629,7 +29658,7 @@
       "callsites": [
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 2489,
+          "line": 2495,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'A request for this adult scene already exists on the selected Whisparr server.'",
@@ -29893,7 +29922,7 @@
       "callsites": [
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 1600,
+          "line": 1606,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Both book formats require default ebook and audiobook Bookshelf servers.'",
@@ -30350,7 +30379,7 @@
       "callsites": [
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 821,
+          "line": 827,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`Selected ${serviceName} server does not match the requested quality tier.`",
@@ -30358,7 +30387,7 @@
         },
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 2965,
+          "line": 2971,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`Selected ${\n          requestBody.mediaType === MediaType.MOVIE ? 'Radarr' : 'Sonarr'\n        } server does not match the requested quality tier.`",
@@ -30415,7 +30444,7 @@
       "callsites": [
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 758,
+          "line": 764,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'You do not have permission to make magazine requests.'",
@@ -30565,7 +30594,7 @@
       "callsites": [
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 539,
+          "line": 545,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'This request key was used for a different request.'",
@@ -31272,7 +31301,7 @@
       "callsites": [
         {
           "path": "server/subscriber/MediaRequestSubscriber.ts",
-          "line": 4411,
+          "line": 4414,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'This league exists in Sportarr but is not monitored. Enable it in Sportarr before retrying.'",
@@ -32226,7 +32255,7 @@
       "callsites": [
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 2816,
+          "line": 2822,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'The selected request destination is no longer available.'",
@@ -32375,7 +32404,7 @@
       "callsites": [
         {
           "path": "server/api/servarr/sonarr.ts",
-          "line": 1639,
+          "line": 1652,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Failed to monitor episodes'",
@@ -32499,7 +32528,7 @@
       "callsites": [
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 3312,
+          "line": 3318,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'The selected service does not have a confirmed available item for this media.'",
@@ -32537,7 +32566,7 @@
       "callsites": [
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 515,
+          "line": 521,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Media server authority changed before request admission.'",
@@ -33270,7 +33299,7 @@
       "callsites": [
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 1947,
+          "line": 1953,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'This comic is blocklisted.'",
@@ -33278,7 +33307,7 @@
         },
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 1973,
+          "line": 1979,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'This comic is blocklisted.'",
@@ -34079,7 +34108,7 @@
       "callsites": [
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 611,
+          "line": 617,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'User missing from request context.'",
@@ -34551,7 +34580,7 @@
       "callsites": [
         {
           "path": "server/lib/requestTransition.ts",
-          "line": 98,
+          "line": 99,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Both-format book requests require default ebook and audiobook Bookshelf services.'",
@@ -34687,7 +34716,7 @@
       "callsites": [
         {
           "path": "server/subscriber/MediaRequestSubscriber.ts",
-          "line": 3391,
+          "line": 3394,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`Book not found in Bookshelf search for ${termsToTry.join(', ')}`",
@@ -34817,7 +34846,7 @@
       "callsites": [
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 2270,
+          "line": 2276,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'This magazine is already available or being processed at the selected destination.'",
@@ -35183,7 +35212,7 @@
       "callsites": [
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 1263,
+          "line": 1269,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'This album is blocklisted.'",
@@ -35191,7 +35220,7 @@
         },
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 1284,
+          "line": 1290,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'This album is blocklisted.'",
@@ -35266,7 +35295,7 @@
       "callsites": [
         {
           "path": "server/subscriber/MediaRequestSubscriber.ts",
-          "line": 3023,
+          "line": 3026,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Ask an administrator to map this SeerrNG user to a Bindery account in the Bindery service settings.'",
@@ -35924,7 +35953,7 @@
       "callsites": [
         {
           "path": "server/lib/requestTransition.ts",
-          "line": 149,
+          "line": 150,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Both-format book requests require a default ebook Bookshelf service.'",
@@ -36629,7 +36658,7 @@
       "callsites": [
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 2289,
+          "line": 2295,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'A request for this magazine already exists.'",
@@ -36722,7 +36751,7 @@
       "callsites": [
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 750,
+          "line": 756,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'You do not have permission to make comic requests.'",
@@ -37403,7 +37432,7 @@
       "callsites": [
         {
           "path": "server/subscriber/MediaRequestSubscriber.ts",
-          "line": 2649,
+          "line": 2652,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Book media data not found'",
@@ -37574,7 +37603,7 @@
       "callsites": [
         {
           "path": "server/subscriber/MediaRequestSubscriber.ts",
-          "line": 2993,
+          "line": 2996,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Bindery could not resolve this book through its configured metadata provider. Check the provider setting or add a supported identifier.'",
@@ -37668,7 +37697,7 @@
       "callsites": [
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 2607,
+          "line": 2613,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'The stored Sportarr league identity is linked to a different media type.'",
@@ -37775,7 +37804,7 @@
       "callsites": [
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 821,
+          "line": 827,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`Selected ${serviceName} server does not match the requested quality tier.`",
@@ -38189,7 +38218,7 @@
       "callsites": [
         {
           "path": "server/subscriber/MediaRequestSubscriber.ts",
-          "line": 4452,
+          "line": 4455,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Sportarr did not confirm that the league was added.'",
@@ -38500,7 +38529,7 @@
       "callsites": [
         {
           "path": "server/lib/requestTransition.ts",
-          "line": 48,
+          "line": 49,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`The selected ${\n          requestType === MediaType.MOVIE ? 'Radarr' : 'Sonarr'\n        } server no longer exists.`",
@@ -38565,7 +38594,7 @@
       "callsites": [
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 2122,
+          "line": 2128,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Request for this comic already exists.'",
@@ -38651,7 +38680,7 @@
       "callsites": [
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 938,
+          "line": 944,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Music Quota exceeded.'",
@@ -38880,7 +38909,7 @@
       "callsites": [
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 2564,
+          "line": 2570,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Selected Sportarr server does not exist.'",
@@ -40239,7 +40268,7 @@
       "callsites": [
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 3379,
+          "line": 3385,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Request for this media already exists.'",
@@ -40302,7 +40331,7 @@
       "callsites": [
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 1841,
+          "line": 1847,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Request for this book already exists.'",
@@ -40466,7 +40495,7 @@
       "callsites": [
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 2821,
+          "line": 2827,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'You do not have access to the selected request destination.'",
@@ -40759,7 +40788,7 @@
       "callsites": [
         {
           "path": "server/lib/requestTransition.ts",
-          "line": 184,
+          "line": 185,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'No default comic service is configured for comic requests.'",
@@ -41255,7 +41284,7 @@
       "callsites": [
         {
           "path": "server/subscriber/MediaRequestSubscriber.ts",
-          "line": 3139,
+          "line": 3142,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'BookOrbit needs a book title. Refresh this book’s metadata and retry.'",
@@ -41274,7 +41303,7 @@
       "callsites": [
         {
           "path": "server/subscriber/MediaRequestSubscriber.ts",
-          "line": 3914,
+          "line": 3917,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Comic request is missing a ComicVine identifier'",
@@ -41818,7 +41847,7 @@
       "callsites": [
         {
           "path": "server/api/servarr/sonarr.ts",
-          "line": 1082,
+          "line": 1095,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'The requested Sonarr metadata language is not available.'",
@@ -41840,7 +41869,7 @@
       "callsites": [
         {
           "path": "server/lib/requestTransition.ts",
-          "line": 171,
+          "line": 172,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`The selected Bookshelf server is configured for ${selectedReadarrServiceType} requests, not ${requestedFormat} requests.`",
@@ -41903,7 +41932,7 @@
       "callsites": [
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 2359,
+          "line": 2365,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "requestedServerId == null\n            ? 'No default Whisparr server is configured for adult requests.'\n            : 'Selected Whisparr server does not exist.'",
@@ -41911,7 +41940,7 @@
         },
         {
           "path": "server/lib/requestTransition.ts",
-          "line": 222,
+          "line": 223,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'No default Whisparr server is configured for adult requests.'",
@@ -42009,7 +42038,7 @@
       "callsites": [
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 931,
+          "line": 937,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Series Quota exceeded.'",
@@ -42017,7 +42046,7 @@
         },
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 3822,
+          "line": 3828,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Series Quota exceeded.'",
@@ -42166,7 +42195,7 @@
       "callsites": [
         {
           "path": "server/subscriber/MediaRequestSubscriber.ts",
-          "line": 3182,
+          "line": 3185,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`BookOrbit declined the ${format} request.`",
@@ -42728,7 +42757,7 @@
       "callsites": [
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 963,
+          "line": 969,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'TV and sports request quota exceeded.'",
@@ -42946,7 +42975,7 @@
       "callsites": [
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 734,
+          "line": 740,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'You do not have permission to make music requests.'",
@@ -43434,7 +43463,7 @@
       "callsites": [
         {
           "path": "server/subscriber/MediaRequestSubscriber.ts",
-          "line": 3925,
+          "line": 3928,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`No default ${backendName} server is configured for comic requests`",
@@ -43992,7 +44021,7 @@
       "callsites": [
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 1713,
+          "line": 1719,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'A specific edition requires a single book format.'",
@@ -44076,7 +44105,7 @@
       "callsites": [
         {
           "path": "server/subscriber/MediaRequestSubscriber.ts",
-          "line": 3846,
+          "line": 3849,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Comic media data not found'",
@@ -44245,7 +44274,7 @@
       "callsites": [
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 2003,
+          "line": 2009,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Selected comics server does not exist.'",
@@ -44921,7 +44950,7 @@
       "callsites": [
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 646,
+          "line": 652,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Quota approval can only be requested for your own movie or TV request.'",
@@ -45597,7 +45626,7 @@
       "callsites": [
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 948,
+          "line": 954,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Comic Quota exceeded.'",
@@ -45635,7 +45664,7 @@
       "callsites": [
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 602,
+          "line": 608,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'You do not have permission to modify the request user.'",
@@ -46053,7 +46082,7 @@
       "callsites": [
         {
           "path": "server/lib/requestTransition.ts",
-          "line": 67,
+          "line": 68,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'No default Lidarr server is configured for music requests.'",
@@ -46139,7 +46168,7 @@
       "callsites": [
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 2592,
+          "line": 2598,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'This league exists in Sportarr but is not monitored. Enable it in Sportarr before requesting it here.'",
@@ -46250,7 +46279,7 @@
       "callsites": [
         {
           "path": "server/subscriber/MediaRequestSubscriber.ts",
-          "line": 4421,
+          "line": 4424,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Sports request is missing its league title.'",
@@ -46863,7 +46892,7 @@
       "callsites": [
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 2826,
+          "line": 2832,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'The selected request destination does not match the requested quality.'",
@@ -46901,7 +46930,7 @@
       "callsites": [
         {
           "path": "server/subscriber/MediaRequestSubscriber.ts",
-          "line": 4114,
+          "line": 4117,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Whisparr could not resolve the requested StashDB scene.'",
@@ -47813,7 +47842,7 @@
       "callsites": [
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 1719,
+          "line": 1725,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Choose one book format and a specific edition to add alongside.'",
@@ -49035,7 +49064,7 @@
       "callsites": [
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 1767,
+          "line": 1773,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'This edition is not in an allowed book language, or its language could not be verified. Choose an allowed edition.'",
@@ -49203,7 +49232,7 @@
       "callsites": [
         {
           "path": "server/subscriber/MediaRequestSubscriber.ts",
-          "line": 2987,
+          "line": 2990,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`Bindery returned multiple exact matches for “${work?.title ?? 'this book'}”.`",
@@ -49228,7 +49257,7 @@
       "callsites": [
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 631,
+          "line": 637,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Requester tag-only mode requires a full-series selection.'",
@@ -49582,7 +49611,7 @@
       "callsites": [
         {
           "path": "server/subscriber/MediaRequestSubscriber.ts",
-          "line": 4243,
+          "line": 4246,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Magazine media data not found.'",
@@ -49941,7 +49970,7 @@
       "callsites": [
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 1433,
+          "line": 1439,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Request for this album already exists for the selected service.'",
@@ -50766,7 +50795,7 @@
       "callsites": [
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 1704,
+          "line": 1710,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Choose one book format so its edition language can be verified.'",
@@ -51167,7 +51196,7 @@
       "callsites": [
         {
           "path": "server/api/servarr/sonarr.ts",
-          "line": 1452,
+          "line": 1465,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'A valid Sonarr series ID is required.'",
@@ -51342,7 +51371,7 @@
       "callsites": [
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 2914,
+          "line": 2920,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Future seasons are managed by Episode Queue or the season watch gate.'",
@@ -51369,7 +51398,7 @@
       "callsites": [
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 1605,
+          "line": 1611,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`No default Bookshelf server configured for ${requestedServiceType}.`",
@@ -51541,7 +51570,7 @@
       "callsites": [
         {
           "path": "server/subscriber/MediaRequestSubscriber.ts",
-          "line": 2987,
+          "line": 2990,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`Bindery returned multiple exact matches for “${work?.title ?? 'this book'}”.`",
@@ -51993,7 +52022,7 @@
       "callsites": [
         {
           "path": "server/api/servarr/sonarr.ts",
-          "line": 1582,
+          "line": 1595,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`[Sonarr] Failed to retrieve episode files: ${error.message}`",
@@ -52248,7 +52277,7 @@
       "callsites": [
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 821,
+          "line": 827,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`Selected ${serviceName} server does not match the requested quality tier.`",
@@ -52506,7 +52535,7 @@
       "callsites": [
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 2929,
+          "line": 2935,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Episode Queue requests must specify exactly one starting episode.'",
@@ -52569,7 +52598,7 @@
       "callsites": [
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 2882,
+          "line": 2888,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'This media is blocklisted.'",
@@ -52607,7 +52636,7 @@
       "callsites": [
         {
           "path": "server/api/servarr/sonarr.ts",
-          "line": 1783,
+          "line": 1796,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Invalid series ID.'",
@@ -52650,7 +52679,7 @@
       "callsites": [
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 3780,
+          "line": 3786,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Partial series requests are disabled by the administrator.'",
@@ -52658,7 +52687,7 @@
         },
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 3810,
+          "line": 3816,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Partial series requests are disabled by the administrator.'",
@@ -53125,7 +53154,7 @@
       "callsites": [
         {
           "path": "server/subscriber/MediaRequestSubscriber.ts",
-          "line": 3424,
+          "line": 3427,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`Bookshelf metadata does not contain the selected edition${preferredIsbn ? ` (ISBN ${preferredIsbn})` : ''}. Choose another edition or update the Bookshelf metadata source.`",
@@ -53133,7 +53162,7 @@
         },
         {
           "path": "server/subscriber/MediaRequestSubscriber.ts",
-          "line": 3433,
+          "line": 3436,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`Bookshelf metadata does not contain the selected edition${preferredIsbn ? ` (ISBN ${preferredIsbn})` : ''}. Choose another edition or update the Bookshelf metadata source.`",
@@ -53152,7 +53181,7 @@
       "callsites": [
         {
           "path": "server/subscriber/MediaRequestSubscriber.ts",
-          "line": 2834,
+          "line": 2837,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`Selected Bookshelf server is not configured for ${serviceType}`",
@@ -53166,7 +53195,7 @@
         },
         {
           "path": "server/subscriber/MediaRequestSubscriber.ts",
-          "line": 2854,
+          "line": 2857,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`Selected Bookshelf server is not configured for ${serviceType}`",
@@ -53191,7 +53220,7 @@
       "callsites": [
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 470,
+          "line": 476,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'4K movie and TV requests are disabled by the administrator.'",
@@ -53494,7 +53523,7 @@
       "callsites": [
         {
           "path": "server/api/servarr/sonarr.ts",
-          "line": 1056,
+          "line": 1069,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Alternate season ordering requires Sonarr v5.'",
@@ -53551,7 +53580,7 @@
       "callsites": [
         {
           "path": "server/api/servarr/sonarr.ts",
-          "line": 1354,
+          "line": 1367,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Failed to add series'",
@@ -54206,7 +54235,7 @@
         },
         {
           "path": "server/subscriber/MediaRequestSubscriber.ts",
-          "line": 2266,
+          "line": 2269,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Media data not found'",
@@ -54455,7 +54484,7 @@
       "callsites": [
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 781,
+          "line": 787,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Magazine title must contain 1 to 256 characters.'",
@@ -54635,7 +54664,7 @@
         },
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 478,
+          "line": 484,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'A valid StashDB scene ID is required.'",
@@ -54643,7 +54672,7 @@
         },
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 2339,
+          "line": 2345,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'A valid StashDB scene ID is required.'",
@@ -55020,7 +55049,7 @@
       "callsites": [
         {
           "path": "server/lib/requestTransition.ts",
-          "line": 171,
+          "line": 172,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`The selected Bookshelf server is configured for ${selectedReadarrServiceType} requests, not ${requestedFormat} requests.`",
@@ -55517,7 +55546,7 @@
       "callsites": [
         {
           "path": "server/subscriber/MediaRequestSubscriber.ts",
-          "line": 3975,
+          "line": 3978,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Selected BackIssue server no longer exists'",
@@ -55614,7 +55643,7 @@
       "callsites": [
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 3007,
+          "line": 3013,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'The selected request destination is limited to anime titles.'",
@@ -55858,7 +55887,7 @@
       "callsites": [
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 694,
+          "line": 700,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'The requested episode queue must be between 0 and 5 episodes.'",
@@ -56255,7 +56284,7 @@
       "callsites": [
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 812,
+          "line": 818,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`Selected ${serviceName} server does not exist.`",
@@ -56263,7 +56292,7 @@
         },
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 2955,
+          "line": 2961,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`Selected ${\n          requestBody.mediaType === MediaType.MOVIE ? 'Radarr' : 'Sonarr'\n        } server does not exist.`",
@@ -57335,7 +57364,7 @@
       "callsites": [
         {
           "path": "server/lib/requestTransition.ts",
-          "line": 123,
+          "line": 124,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'The selected Bookshelf server no longer exists.'",
@@ -57476,7 +57505,7 @@
       "callsites": [
         {
           "path": "server/api/servarr/sonarr.ts",
-          "line": 1475,
+          "line": 1488,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Failed to get series history'",
@@ -57797,7 +57826,7 @@
       "callsites": [
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 2381,
+          "line": 2387,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Whisparr could not resolve this StashDB scene. Try searching again.'",
@@ -57896,7 +57925,7 @@
       "callsites": [
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 710,
+          "line": 716,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`You do not have permission to make ${\n          requestBody.is4k ? '4K ' : ''\n        }movie requests.`",
@@ -57934,7 +57963,7 @@
       "callsites": [
         {
           "path": "server/subscriber/MediaRequestSubscriber.ts",
-          "line": 4401,
+          "line": 4404,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Select an active Sportarr quality profile first.'",
@@ -58074,7 +58103,7 @@
       "callsites": [
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 448,
+          "line": 454,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'MusicBrainz ID did not resolve to a release group.'",
@@ -58182,7 +58211,7 @@
       "callsites": [
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 2472,
+          "line": 2478,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'This adult scene is already available or being processed on the selected Whisparr server.'",
@@ -58247,7 +58276,7 @@
         },
         {
           "path": "server/api/servarr/sonarr.ts",
-          "line": 1332,
+          "line": 1345,
           "kind": "authored-message-field",
           "field": "errorMessage",
           "expression": "recoveryError instanceof Error\n                    ? recoveryError.message\n                    : 'Unknown recovery error'",
@@ -58323,7 +58352,7 @@
       "callsites": [
         {
           "path": "server/subscriber/MediaRequestSubscriber.ts",
-          "line": 3044,
+          "line": 3047,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Bindery declined the requester-owned book request.'",
@@ -58576,7 +58605,7 @@
       "callsites": [
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 878,
+          "line": 884,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`A ${mediaType === MediaType.MOVIE ? 'movie' : 'TV'} quota exception is already awaiting approval.`",
@@ -58878,7 +58907,7 @@
       "callsites": [
         {
           "path": "server/api/servarr/sonarr.ts",
-          "line": 1423,
+          "line": 1436,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Failed to get language profiles'",
@@ -59018,7 +59047,7 @@
       "callsites": [
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 3450,
+          "line": 3456,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`This ${\n            requestBody.mediaType === MediaType.MOVIE ? 'movie' : 'series'\n          } is already available at the selected destination.`",
@@ -59037,7 +59066,7 @@
       "callsites": [
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 376,
+          "line": 377,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'The matching request is no longer pending approval.'",
@@ -59167,7 +59196,7 @@
       "callsites": [
         {
           "path": "server/subscriber/MediaRequestSubscriber.ts",
-          "line": 2443,
+          "line": 2446,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Album not found in Lidarr search'",
@@ -59236,7 +59265,7 @@
       "callsites": [
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 590,
+          "line": 596,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Request credentials changed before admission.'",
@@ -59522,7 +59551,7 @@
       "callsites": [
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 2668,
+          "line": 2674,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'A request for this league already exists.'",
@@ -59675,7 +59704,7 @@
       "callsites": [
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 1782,
+          "line": 1788,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'This exact edition is already available.'",
@@ -59885,7 +59914,7 @@
       "callsites": [
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 2182,
+          "line": 2188,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'This magazine is blocklisted.'",
@@ -59893,7 +59922,7 @@
         },
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 2203,
+          "line": 2209,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'This magazine is blocklisted.'",
@@ -60720,7 +60749,7 @@
       "callsites": [
         {
           "path": "server/subscriber/MediaRequestSubscriber.ts",
-          "line": 4105,
+          "line": 4108,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Adult request is missing its StashDB scene ID.'",
@@ -60819,7 +60848,7 @@
       "callsites": [
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 1847,
+          "line": 1853,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Every selected book destination is already available or requested.'",
@@ -60916,7 +60945,7 @@
       "callsites": [
         {
           "path": "server/api/servarr/sonarr.ts",
-          "line": 1599,
+          "line": 1612,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Invalid Sonarr season number.'",
@@ -61124,7 +61153,7 @@
       "callsites": [
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 1935,
+          "line": 1941,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Comic mediaId must be a valid ComicVine volume ID.'",
@@ -61702,7 +61731,7 @@
       "callsites": [
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 2037,
+          "line": 2043,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Per-request comic folders are only supported by Kapowarr.'",
@@ -61807,7 +61836,7 @@
       "callsites": [
         {
           "path": "server/subscriber/MediaRequestSubscriber.ts",
-          "line": 3438,
+          "line": 3441,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'The selected edition language is unknown or disallowed by the current book language policy.'",
@@ -61828,7 +61857,7 @@
       "callsites": [
         {
           "path": "server/lib/requestTransition.ts",
-          "line": 161,
+          "line": 162,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Both-format book requests require a default audiobook Bookshelf service.'",
@@ -62108,7 +62137,7 @@
       "callsites": [
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 2804,
+          "line": 2810,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'A request destination can only be selected for a movie or series.'",
@@ -62939,7 +62968,7 @@
       "callsites": [
         {
           "path": "server/lib/requestTransition.ts",
-          "line": 229,
+          "line": 230,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'The selected Whisparr server no longer exists.'",
@@ -62947,7 +62976,7 @@
         },
         {
           "path": "server/subscriber/MediaRequestSubscriber.ts",
-          "line": 4095,
+          "line": 4098,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "entity.serverId !== null && entity.serverId >= 0\n            ? 'The selected Whisparr server no longer exists.'\n            : 'No default Whisparr server is configured.'",
@@ -63069,7 +63098,7 @@
       "callsites": [
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 2996,
+          "line": 3002,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'You do not have access to the selected requester-tag destination.'",
@@ -63652,7 +63681,7 @@
       "callsites": [
         {
           "path": "server/subscriber/MediaRequestSubscriber.ts",
-          "line": 3253,
+          "line": 3256,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`No default Bookshelf server configured for ${serviceType}`",
@@ -64590,7 +64619,7 @@
       "callsites": [
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 498,
+          "line": 504,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Media server authority does not belong to the request user.'",
@@ -64890,7 +64919,7 @@
       "callsites": [
         {
           "path": "server/lib/requestTransition.ts",
-          "line": 110,
+          "line": 111,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`No default ${requestedFormat} Bookshelf server is configured for book requests.`",
@@ -65554,7 +65583,7 @@
       "callsites": [
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 3726,
+          "line": 3732,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'No seasons available to request'",
@@ -65562,7 +65591,7 @@
         },
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 3960,
+          "line": 3966,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'No seasons available to request'",
@@ -65634,7 +65663,7 @@
       "callsites": [
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 622,
+          "line": 628,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Requester tag-only mode is only available for direct movie or TV requests.'",
@@ -65682,7 +65711,7 @@
       "callsites": [
         {
           "path": "server/entity/MediaRequest.ts",
-          "line": 1789,
+          "line": 1795,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'This destination cannot keep another edition alongside the existing one.'",
@@ -68085,7 +68114,7 @@
     },
     {
       "path": "server/api/servarr/sonarr.ts",
-      "line": 1217,
+      "line": 1230,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "e.message",
@@ -68094,7 +68123,7 @@
     },
     {
       "path": "server/api/servarr/sonarr.ts",
-      "line": 1332,
+      "line": 1345,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "recoveryError instanceof Error\n                    ? recoveryError.message\n                    : 'Unknown recovery error'",
@@ -68103,7 +68132,7 @@
     },
     {
       "path": "server/api/servarr/sonarr.ts",
-      "line": 1350,
+      "line": 1363,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "e.message",
@@ -68112,7 +68141,7 @@
     },
     {
       "path": "server/api/servarr/sonarr.ts",
-      "line": 1419,
+      "line": 1432,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "e.message",
@@ -68121,7 +68150,7 @@
     },
     {
       "path": "server/api/servarr/sonarr.ts",
-      "line": 1441,
+      "line": 1454,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "e instanceof Error ? e.message : String(e)",
@@ -68130,7 +68159,7 @@
     },
     {
       "path": "server/api/servarr/sonarr.ts",
-      "line": 1441,
+      "line": 1454,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "e instanceof Error ? e.message : String(e)",
@@ -68139,7 +68168,7 @@
     },
     {
       "path": "server/api/servarr/sonarr.ts",
-      "line": 1472,
+      "line": 1485,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "e instanceof Error ? e.message : String(e)",
@@ -68148,7 +68177,7 @@
     },
     {
       "path": "server/api/servarr/sonarr.ts",
-      "line": 1472,
+      "line": 1485,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "e instanceof Error ? e.message : String(e)",
@@ -68157,7 +68186,7 @@
     },
     {
       "path": "server/api/servarr/sonarr.ts",
-      "line": 1504,
+      "line": 1517,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "e.message",
@@ -68166,7 +68195,7 @@
     },
     {
       "path": "server/api/servarr/sonarr.ts",
-      "line": 1542,
+      "line": 1555,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "e.message",
@@ -68175,7 +68204,7 @@
     },
     {
       "path": "server/api/servarr/sonarr.ts",
-      "line": 1636,
+      "line": 1649,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "e.message",
@@ -68634,7 +68663,7 @@
     },
     {
       "path": "server/entity/MediaRequest.ts",
-      "line": 310,
+      "line": 311,
       "kind": "authored-message-variable",
       "field": "isTvdbConstraintError",
       "expression": "(error: unknown): boolean => {\n  const message = error instanceof Error ? error.message : String(error);\n\n  return message.includes('media.tvdbId');\n}",
@@ -68643,7 +68672,7 @@
     },
     {
       "path": "server/entity/MediaRequest.ts",
-      "line": 311,
+      "line": 312,
       "kind": "authored-message-variable",
       "field": "message",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -68652,7 +68681,7 @@
     },
     {
       "path": "server/entity/MediaRequest.ts",
-      "line": 311,
+      "line": 312,
       "kind": "authored-message-variable",
       "field": "message",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -68661,7 +68690,7 @@
     },
     {
       "path": "server/entity/MediaRequest.ts",
-      "line": 313,
+      "line": 314,
       "kind": "message-helper-return",
       "field": "message",
       "expression": "message.includes('media.tvdbId')",
@@ -68670,7 +68699,7 @@
     },
     {
       "path": "server/entity/MediaRequest.ts",
-      "line": 406,
+      "line": 412,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : 'Unknown error'",
@@ -68679,7 +68708,7 @@
     },
     {
       "path": "server/entity/MediaRequest.ts",
-      "line": 424,
+      "line": 430,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "releaseGroupError instanceof Error\n            ? releaseGroupError.message\n            : 'Unknown error'",
@@ -68688,7 +68717,7 @@
     },
     {
       "path": "server/entity/MediaRequest.ts",
-      "line": 3087,
+      "line": 3093,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -68697,7 +68726,7 @@
     },
     {
       "path": "server/entity/MediaRequest.ts",
-      "line": 3087,
+      "line": 3093,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -68706,7 +68735,7 @@
     },
     {
       "path": "server/entity/MediaRequest.ts",
-      "line": 3126,
+      "line": 3132,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -68715,7 +68744,7 @@
     },
     {
       "path": "server/entity/MediaRequest.ts",
-      "line": 3126,
+      "line": 3132,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -68724,7 +68753,7 @@
     },
     {
       "path": "server/entity/MediaRequest.ts",
-      "line": 4220,
+      "line": 4226,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "e.message",
@@ -86346,7 +86375,7 @@
     },
     {
       "path": "server/subscriber/MediaRequestSubscriber.ts",
-      "line": 2338,
+      "line": 2341,
       "kind": "persisted-message-assignment",
       "field": "failureReason",
       "expression": "e instanceof ClassifiedMediaRequestError\n              ? e.failureReason\n              : MediaRequestFailureReason.DISPATCH_FAILED",
@@ -86355,7 +86384,7 @@
     },
     {
       "path": "server/subscriber/MediaRequestSubscriber.ts",
-      "line": 2338,
+      "line": 2341,
       "kind": "persisted-message-assignment",
       "field": "failureReason",
       "expression": "e instanceof ClassifiedMediaRequestError\n              ? e.failureReason\n              : MediaRequestFailureReason.DISPATCH_FAILED",
@@ -86364,7 +86393,7 @@
     },
     {
       "path": "server/subscriber/MediaRequestSubscriber.ts",
-      "line": 2349,
+      "line": 2352,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "e.message",
@@ -86373,7 +86402,7 @@
     },
     {
       "path": "server/subscriber/MediaRequestSubscriber.ts",
-      "line": 2592,
+      "line": 2595,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "e instanceof Error ? e.message : String(e)",
@@ -86382,7 +86411,7 @@
     },
     {
       "path": "server/subscriber/MediaRequestSubscriber.ts",
-      "line": 2592,
+      "line": 2595,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "e instanceof Error ? e.message : String(e)",
@@ -86391,7 +86420,7 @@
     },
     {
       "path": "server/subscriber/MediaRequestSubscriber.ts",
-      "line": 2767,
+      "line": 2770,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -86400,7 +86429,7 @@
     },
     {
       "path": "server/subscriber/MediaRequestSubscriber.ts",
-      "line": 2767,
+      "line": 2770,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -86409,7 +86438,7 @@
     },
     {
       "path": "server/subscriber/MediaRequestSubscriber.ts",
-      "line": 3787,
+      "line": 3790,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "e instanceof Error ? e.message : String(e)",
@@ -86418,7 +86447,7 @@
     },
     {
       "path": "server/subscriber/MediaRequestSubscriber.ts",
-      "line": 3787,
+      "line": 3790,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "e instanceof Error ? e.message : String(e)",
@@ -86427,7 +86456,7 @@
     },
     {
       "path": "server/subscriber/MediaRequestSubscriber.ts",
-      "line": 4028,
+      "line": 4031,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "e instanceof Error ? e.message : String(e)",
@@ -86436,7 +86465,7 @@
     },
     {
       "path": "server/subscriber/MediaRequestSubscriber.ts",
-      "line": 4028,
+      "line": 4031,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "e instanceof Error ? e.message : String(e)",
@@ -86445,7 +86474,7 @@
     },
     {
       "path": "server/subscriber/MediaRequestSubscriber.ts",
-      "line": 4054,
+      "line": 4057,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "e instanceof Error ? e.message : String(e)",
@@ -86454,7 +86483,7 @@
     },
     {
       "path": "server/subscriber/MediaRequestSubscriber.ts",
-      "line": 4054,
+      "line": 4057,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "e instanceof Error ? e.message : String(e)",
@@ -86463,7 +86492,7 @@
     },
     {
       "path": "server/subscriber/MediaRequestSubscriber.ts",
-      "line": 4173,
+      "line": 4176,
       "kind": "persisted-message-assignment",
       "field": "failureReason",
       "expression": "null",
@@ -86472,7 +86501,7 @@
     },
     {
       "path": "server/subscriber/MediaRequestSubscriber.ts",
-      "line": 4187,
+      "line": 4190,
       "kind": "persisted-message-assignment",
       "field": "failureReason",
       "expression": "MediaRequestFailureReason.DISPATCH_FAILED",
@@ -86481,7 +86510,7 @@
     },
     {
       "path": "server/subscriber/MediaRequestSubscriber.ts",
-      "line": 4193,
+      "line": 4196,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -86490,7 +86519,7 @@
     },
     {
       "path": "server/subscriber/MediaRequestSubscriber.ts",
-      "line": 4193,
+      "line": 4196,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -86499,7 +86528,7 @@
     },
     {
       "path": "server/subscriber/MediaRequestSubscriber.ts",
-      "line": 4332,
+      "line": 4335,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -86508,7 +86537,7 @@
     },
     {
       "path": "server/subscriber/MediaRequestSubscriber.ts",
-      "line": 4332,
+      "line": 4335,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -86517,7 +86546,7 @@
     },
     {
       "path": "server/subscriber/MediaRequestSubscriber.ts",
-      "line": 4504,
+      "line": 4507,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -86526,7 +86555,7 @@
     },
     {
       "path": "server/subscriber/MediaRequestSubscriber.ts",
-      "line": 4504,
+      "line": 4507,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -86544,7 +86573,16 @@
     },
     {
       "path": "server/subscriber/MediaSubscriber.ts",
-      "line": 380,
+      "line": 319,
+      "kind": "persisted-message-assignment",
+      "field": "failureReason",
+      "expression": "null",
+      "source": "{value0}",
+      "reason": "dynamic/provider/user value"
+    },
+    {
+      "path": "server/subscriber/MediaSubscriber.ts",
+      "line": 462,
       "kind": "message-helper-return",
       "field": "message",
       "expression": "event.entity?.seasons?.some((season: Season) => {\n        const previousSeason = previousSeasons.get(season.seasonNumber);\n\n        return (\n          season[is4k ? 'status4k' : 'status'] !==\n          previousSeason?.[is4k ? 'status4k' : 'status']\n        );\n      })",
@@ -86553,7 +86591,7 @@
     },
     {
       "path": "server/subscriber/MediaSubscriber.ts",
-      "line": 411,
+      "line": 493,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "e instanceof Error ? e.message : String(e)",
@@ -86562,7 +86600,7 @@
     },
     {
       "path": "server/subscriber/MediaSubscriber.ts",
-      "line": 411,
+      "line": 493,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "e instanceof Error ? e.message : String(e)",
@@ -86571,7 +86609,7 @@
     },
     {
       "path": "server/subscriber/MediaSubscriber.ts",
-      "line": 437,
+      "line": 519,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "e instanceof Error ? e.message : String(e)",
@@ -86580,7 +86618,7 @@
     },
     {
       "path": "server/subscriber/MediaSubscriber.ts",
-      "line": 437,
+      "line": 519,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "e instanceof Error ? e.message : String(e)",

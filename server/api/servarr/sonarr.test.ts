@@ -1256,13 +1256,16 @@ describe('SonarrAPI exact episode requests', () => {
     const api = buildSonarr();
     mock.method(api, 'getSeriesByTvdbId', async () =>
       series({
+        monitorNewItems: 'none',
         seasons: [
           { seasonNumber: 1, monitored: false },
-          { seasonNumber: 2, monitored: false },
+          { seasonNumber: 2, monitored: true },
         ],
       })
     );
-    mock.method(getAxios(api), 'put', async () => ({ data: series() }));
+    const update = mock.method(getAxios(api), 'put', async () => ({
+      data: series(),
+    }));
     mock.method(api, 'getEpisodes', async () => [
       {
         seriesId: 42,
@@ -1319,12 +1322,23 @@ describe('SonarrAPI exact episode requests', () => {
       profileId: 1,
       seasons: [1],
       episodeSelections: [{ seasonNumber: 1, episodeNumbers: [2] }],
+      monitorNewItems: 'all',
+      enableFutureSeasons: true,
       seasonFolder: true,
       rootFolderPath: '/tv',
       seriesType: 'standard',
       searchNow: true,
     });
 
+    const updated = update.mock.calls[0].arguments[1] as Record<
+      string,
+      unknown
+    >;
+    assert.equal(updated.monitorNewItems, 'none');
+    assert.deepEqual(updated.seasons, [
+      { seasonNumber: 1, monitored: false },
+      { seasonNumber: 2, monitored: true },
+    ]);
     assert.deepStrictEqual(monitor.mock.calls[0].arguments[0], [102]);
     assert.deepStrictEqual(search.mock.calls[0].arguments[0], [102]);
   });

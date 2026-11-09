@@ -5,12 +5,14 @@ import {
 } from '@server/constants/media';
 import Media from '@server/entity/Media';
 import { MediaRequest } from '@server/entity/MediaRequest';
+import MediaServiceStatus from '@server/entity/MediaServiceStatus';
 import Season from '@server/entity/Season';
 import SeasonRequest, {
   isActiveSeasonRequest,
 } from '@server/entity/SeasonRequest';
 import { isBookRequestFileAvailable } from '@server/lib/bookAvailability';
 import { isComicRequestAvailable } from '@server/lib/comicAvailability';
+import { getExternalRuntimeConfig } from '@server/lib/externalRuntimeConfig';
 import {
   getMagazineRequestTarget,
   isMagazineRequestFileAvailable,
@@ -88,6 +90,59 @@ export class MediaSubscriber implements EntitySubscriberInterface<Media> {
     return isBookRequestFileAvailable(media, request);
   }
 
+  private async isPendingTvRequestAvailable(
+    manager: EntityManager,
+    media: Media,
+    request: MediaRequest
+  ): Promise<boolean> {
+    const seasons = request.seasons.filter(isActiveSeasonRequest);
+    if (seasons.length === 0) return false;
+    const format = request.is4k ? '4k' : 'standard';
+    const target = request.serviceTargets?.find(
+      (item) => item.serviceType === 'sonarr' && item.format === format
+    );
+    const serverId =
+      request.serverId ??
+      target?.serverId ??
+      getExternalRuntimeConfig().sonarr.find(
+        (server) => server.isDefault && server.is4k === request.is4k
+      )?.id;
+    const statusKey = request.is4k ? 'status4k' : 'status';
+    if (serverId != null) {
+      const observed = await manager
+        .getRepository(MediaServiceStatus)
+        .findOneBy({
+          mediaId: media.id,
+          serviceType: 'sonarr',
+          serverId,
+          format,
+        });
+      if (observed) {
+        return (
+          observed.status === MediaStatus.AVAILABLE ||
+          seasons.every(
+            (season) =>
+              observed.seasonStatuses?.[season.seasonNumber] ===
+              MediaStatus.AVAILABLE
+          )
+        );
+      }
+      // An available copy on a different destination cannot satisfy this request.
+      if (media[request.is4k ? 'serviceId4k' : 'serviceId'] !== serverId)
+        return false;
+    }
+    return (
+      media[statusKey] === MediaStatus.AVAILABLE ||
+      seasons.every((season) =>
+        media.seasons.some(
+          (owned) =>
+            owned.seasonNumber === season.seasonNumber &&
+            owned[statusKey] === MediaStatus.AVAILABLE
+        )
+      )
+    );
+  }
+
   private async updateChildRequestStatus(
     manager: EntityManager,
     event: Media,
@@ -109,6 +164,11 @@ export class MediaSubscriber implements EntitySubscriberInterface<Media> {
           ) {
             continue;
           }
+          if (
+            event.mediaType === MediaType.TV &&
+            !(await this.isPendingTvRequestAvailable(manager, event, request))
+          )
+            continue;
           if (
             event.mediaType === MediaType.MAGAZINE
               ? isMagazineRequestFileAvailable(event, request)
@@ -145,7 +205,13 @@ export class MediaSubscriber implements EntitySubscriberInterface<Media> {
       manager,
       {
         media: { id: event.id },
-        status: In([MediaRequestStatus.APPROVED, MediaRequestStatus.FAILED]),
+        status: In([
+          MediaRequestStatus.APPROVED,
+          MediaRequestStatus.FAILED,
+          ...(event.mediaType === MediaType.TV
+            ? [MediaRequestStatus.PENDING]
+            : []),
+        ]),
         is4k,
       },
       async (relatedRequests) => {
@@ -157,6 +223,22 @@ export class MediaSubscriber implements EntitySubscriberInterface<Media> {
           if (
             request.serviceTargets?.some((target) => target.requesterTagOnly)
           ) {
+            continue;
+          }
+          if (
+            request.status === MediaRequestStatus.PENDING &&
+            event.mediaType === MediaType.TV
+          ) {
+            if (
+              !(await this.isPendingTvRequestAvailable(manager, event, request))
+            )
+              continue;
+            request.status = MediaRequestStatus.COMPLETED;
+            request.failureReason = null;
+            request.seasons.filter(isActiveSeasonRequest).forEach((season) => {
+              season.status = MediaRequestStatus.COMPLETED;
+            });
+            completedRequests.push(request);
             continue;
           }
           let shouldComplete = false;

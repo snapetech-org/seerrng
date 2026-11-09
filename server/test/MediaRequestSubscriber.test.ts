@@ -1572,8 +1572,35 @@ describe('MediaRequestSubscriber service dispatch', () => {
       { seasonNumber: 3 },
       { seasonNumber: 5, episodeNumbers: [7, 8] },
     ]);
-    assert.strictEqual(receivedOptions?.monitorNewItems, 'all');
+    assert.strictEqual(receivedOptions?.monitorNewItems, 'none');
+    assert.strictEqual(receivedOptions?.enableFutureSeasons, false);
     assert.strictEqual(receivedOptions?.searchNow, false);
+
+    settings.sonarr[0].preventSearch = false;
+    const fiveEpisodes = await getRepository(MediaRequest).save(
+      new MediaRequest({
+        type: MediaType.TV,
+        status: MediaRequestStatus.APPROVED,
+        media,
+        requestedBy,
+        is4k: false,
+        monitorFutureSeasons: true,
+        seasons: [
+          new SeasonRequest({
+            seasonNumber: 5,
+            episodeNumbers: [1, 2, 3, 4, 5],
+            status: MediaRequestStatus.APPROVED,
+          }),
+        ],
+      })
+    );
+    await new MediaRequestSubscriber().sendToSonarr(fiveEpisodes);
+    assert.deepStrictEqual(receivedOptions?.episodeSelections, [
+      { seasonNumber: 5, episodeNumbers: [1, 2, 3, 4, 5] },
+    ]);
+    assert.strictEqual(receivedOptions?.monitorNewItems, 'none');
+    assert.strictEqual(receivedOptions?.enableFutureSeasons, false);
+    assert.strictEqual(receivedOptions?.searchNow, true);
   });
 
   it('fails a movie request whose explicit Radarr server was removed', async () => {
