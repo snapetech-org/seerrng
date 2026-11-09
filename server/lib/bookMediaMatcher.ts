@@ -28,6 +28,15 @@ type BookMediaLookupResult = {
 };
 
 const MAX_IDENTIFIER_LOOKUPS = 200;
+// Owned-library pages resolve every catalog record. Query them in bounded
+// batches instead of silently dropping everything after the first batch.
+const MAX_BOOK_RESULT_IDENTIFIER_LOOKUPS = 100_000;
+const QUERY_BATCH_SIZE = 200;
+
+const chunk = <T>(values: T[], size = QUERY_BATCH_SIZE): T[][] =>
+  Array.from({ length: Math.ceil(values.length / size) }, (_, index) =>
+    values.slice(index * size, (index + 1) * size)
+  );
 const MAX_ISBN_INPUT_LENGTH = 32;
 
 type IdentifierLookup = {
@@ -78,7 +87,8 @@ const getBookResultIsbns = (book: BookMediaLookupResult): string[] => {
 };
 
 const uniqIdentifierLookups = (
-  lookups: IdentifierLookup[]
+  lookups: IdentifierLookup[],
+  limit = MAX_IDENTIFIER_LOOKUPS
 ): IdentifierLookup[] => {
   const seen = new Set<string>();
   const unique: IdentifierLookup[] = [];
@@ -93,7 +103,7 @@ const uniqIdentifierLookups = (
     seen.add(key);
     unique.push(lookup);
 
-    if (unique.length >= MAX_IDENTIFIER_LOOKUPS) {
+    if (unique.length >= limit) {
       break;
     }
   }
@@ -124,49 +134,57 @@ const getEditionIsbns = (editions: OpenLibraryEdition[]): string[] => [
 const findBookMediaByIdentifiers = async (
   lookups: IdentifierLookup[],
   user?: User,
-  options: { includeIssues?: boolean } = {}
+  options: { includeIssues?: boolean; limit?: number } = {}
 ): Promise<Map<string, Media>> => {
-  const uniqueLookups = uniqIdentifierLookups(lookups);
+  const uniqueLookups = uniqIdentifierLookups(lookups, options.limit);
 
   if (!uniqueLookups.length) {
     return new Map();
   }
 
-  const groupedLookups = uniqueLookups.reduce((acc, lookup) => {
-    const values = acc.get(lookup.provider) ?? [];
-    values.push(lookup.value);
-    acc.set(lookup.provider, values);
-    return acc;
-  }, new Map<MediaIdentifierProvider, string[]>());
-
   // Resolve identifiers separately from relation hydration. Joining up to 200
   // identifiers directly through requests, watchlists, issues, and comments
   // multiplies all of those relation counts into one potentially enormous
   // intermediate result set.
-  const identifiers = await getRepository(MediaIdentifier)
-    .createQueryBuilder('identifier')
-    .innerJoin('identifier.media', 'media')
-    .select('identifier.provider', 'provider')
-    .addSelect('identifier.value', 'value')
-    .addSelect('media.id', 'mediaId')
-    .where(
-      new Brackets((query) => {
-        [...groupedLookups.entries()].forEach(([provider, values], index) => {
-          query.orWhere(
-            `(identifier.provider = :provider${index} AND identifier.value IN (:...values${index}))`,
-            {
-              [`provider${index}`]: provider,
-              [`values${index}`]: values,
-            }
-          );
-        });
+  const identifiers = (
+    await Promise.all(
+      chunk(uniqueLookups).map((batch) => {
+        const groupedLookups = batch.reduce((acc, lookup) => {
+          const values = acc.get(lookup.provider) ?? [];
+          values.push(lookup.value);
+          acc.set(lookup.provider, values);
+          return acc;
+        }, new Map<MediaIdentifierProvider, string[]>());
+
+        return getRepository(MediaIdentifier)
+          .createQueryBuilder('identifier')
+          .innerJoin('identifier.media', 'media')
+          .select('identifier.provider', 'provider')
+          .addSelect('identifier.value', 'value')
+          .addSelect('media.id', 'mediaId')
+          .where(
+            new Brackets((query) => {
+              [...groupedLookups.entries()].forEach(
+                ([provider, values], index) => {
+                  query.orWhere(
+                    `(identifier.provider = :provider${index} AND identifier.value IN (:...values${index}))`,
+                    {
+                      [`provider${index}`]: provider,
+                      [`values${index}`]: values,
+                    }
+                  );
+                }
+              );
+            })
+          )
+          .getRawMany<{
+            provider: MediaIdentifierProvider;
+            value: string;
+            mediaId: number | string;
+          }>();
       })
     )
-    .getRawMany<{
-      provider: MediaIdentifierProvider;
-      value: string;
-      mediaId: number | string;
-    }>();
+  ).flat();
 
   const mediaIds = [
     ...new Set(
@@ -175,27 +193,31 @@ const findBookMediaByIdentifiers = async (
         .filter((id) => Number.isSafeInteger(id) && id > 0)
     ),
   ];
-  const media = mediaIds.length
-    ? await getRepository(Media).find({
-        where: { id: In(mediaIds), mediaType: MediaType.BOOK },
-        relations: {
-          ...(options.includeIssues
-            ? {
-                issues: {
-                  createdBy: true,
-                  modifiedBy: true,
-                  comments: {
-                    user: true,
+  const media = (
+    await Promise.all(
+      chunk(mediaIds).map((ids) =>
+        getRepository(Media).find({
+          where: { id: In(ids), mediaType: MediaType.BOOK },
+          relations: {
+            ...(options.includeIssues
+              ? {
+                  issues: {
+                    createdBy: true,
+                    modifiedBy: true,
+                    comments: {
+                      user: true,
+                    },
                   },
-                },
-              }
-            : {}),
-        },
-        // Separate relation queries prevent issues and comments from forming a
-        // cartesian product for the same media row.
-        relationLoadStrategy: 'query',
-      })
-    : [];
+                }
+              : {}),
+          },
+          // Separate relation queries prevent issues and comments from forming a
+          // cartesian product for the same media row.
+          relationLoadStrategy: 'query',
+        })
+      )
+    )
+  ).flat();
   await hydrateMediaSummaryRelations(media, user);
   const mediaById = await projectBookFileObservations(media);
 
@@ -298,15 +320,23 @@ export const findBookMediaForBookResults = async (
       return [];
     }
 
-    return [
-      identifier,
-      ...getBookResultIsbns(book).map((isbn) => ({
-        provider: MediaIdentifierProvider.ISBN,
-        value: isbn,
-      })),
-    ];
+    return [identifier];
   });
-  const mediaByIdentifier = await findBookMediaByIdentifiers(lookups, user);
+  const isbnLookups = books.flatMap((book) =>
+    getBookResultIdentifier(book)
+      ? getBookResultIsbns(book).map((isbn) => ({
+          provider: MediaIdentifierProvider.ISBN,
+          value: isbn,
+        }))
+      : []
+  );
+  // Exact catalog identities first, so ISBN fallbacks can never crowd a book's
+  // own identity out of the lookup budget.
+  const mediaByIdentifier = await findBookMediaByIdentifiers(
+    [...lookups, ...isbnLookups],
+    user,
+    { limit: MAX_BOOK_RESULT_IDENTIFIER_LOOKUPS }
+  );
   const mediaByBookId = new Map<string, Media>();
 
   books.forEach((book) => {

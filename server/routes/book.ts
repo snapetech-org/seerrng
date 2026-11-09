@@ -82,11 +82,27 @@ bookRoutes.get('/library', async (req, res) => {
       true
     );
     const media = await findBookMediaForBookResults(books, req.user);
+    // Several catalog records (editions, aliases, duplicate media rows) can
+    // resolve to one owned manager record; list it once per format (#625).
+    const listed = new Set<string>();
+    const ownedKey = (info: Media): string => {
+      const serviceId =
+        format === 'audiobook' ? info.audiobookServiceId : info.serviceId;
+      const externalId =
+        format === 'audiobook'
+          ? info.audiobookExternalServiceId
+          : info.externalServiceId;
+      return serviceId != null && externalId != null
+        ? `record:${serviceId}:${externalId}`
+        : `media:${info.id}`;
+    };
     const available = books.flatMap((book) => {
       const info = media.get(book.id);
-      return info && hasAvailableBookFormat(info, format)
-        ? [{ ...book, mediaInfo: info }]
-        : [];
+      if (!info || !hasAvailableBookFormat(info, format)) return [];
+      const key = ownedKey(info);
+      if (listed.has(key)) return [];
+      listed.add(key);
+      return [{ ...book, mediaInfo: info }];
     });
     return res.json(
       filterEntityResponse(

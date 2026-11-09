@@ -208,4 +208,79 @@ describe('GET /book/library', () => {
     assert.equal(second.body.results.length, 1);
     assert.equal(second.body.results[0].id, makeBookshelfBookId(7, ids[50]));
   });
+
+  it('lists owned audiobooks once beyond the first lookup batch, preferring the duplicate row with an ABS item (issue #625)', async () => {
+    const audio = getSettings().readarr[1];
+    const row = (fields: Partial<Media>, ...identifiers: string[]) =>
+      new Media({
+        tmdbId: 0,
+        mediaType: MediaType.BOOK,
+        status: MediaStatus.AVAILABLE,
+        status4k: MediaStatus.UNKNOWN,
+        ...fields,
+        identifiers: identifiers.map(
+          (value, index) =>
+            new MediaIdentifier({
+              provider: MediaIdentifierProvider.BOOKSHELF,
+              value,
+              canonical: index === 0,
+            })
+        ),
+      });
+    await getRepository(Media).save([
+      row(
+        {
+          audiobookServiceId: audio.id,
+          audiobookExternalServiceId: 2096,
+          availableAudiobookServiceIds: [audio.id],
+        },
+        makeBookshelfBookId(audio.id, '292354')
+      ),
+      row(
+        {
+          serviceId: 7,
+          externalServiceId: 2802,
+          audiobookServiceId: audio.id,
+          audiobookExternalServiceId: 2096,
+          audiobookLibraryServiceId: 1,
+          audiobookLibraryItemId: 'abs-martian',
+          availableEbookServiceIds: [],
+          availableAudiobookServiceIds: [audio.id],
+        },
+        makeBookshelfBookId(7, '292354'),
+        makeBookshelfBookId(audio.id, '2422653')
+      ),
+    ]);
+    mock.method(ReadarrAPI.prototype, 'getBooks', async () => [
+      ...Array.from({ length: 250 }, (_, i) => ({
+        id: 5000 + i,
+        foreignBookId: `${9000 + i}`,
+        title: `Catalogue only ${i}`,
+        monitored: false,
+      })),
+      {
+        id: 2096,
+        foreignBookId: '292354',
+        title: 'The Martian',
+        monitored: true,
+      },
+      {
+        id: 2134,
+        foreignBookId: '2422653',
+        title: 'The Martian (alternate edition)',
+        monitored: false,
+      },
+    ]);
+    const res = await request(app).get('/book/library?format=audiobook');
+    assert.equal(res.status, 200);
+    assert.equal(res.body.totalResults, 1);
+    assert.equal(
+      res.body.results[0].id,
+      makeBookshelfBookId(audio.id, '292354')
+    );
+    assert.equal(
+      res.body.results[0].mediaInfo.audiobookLibraryItemId,
+      'abs-martian'
+    );
+  });
 });

@@ -93,3 +93,118 @@ describe('Bookshelf scoped catalog matching (issue #382)', () => {
     assert.equal(unmatched.size, 0);
   });
 });
+
+describe('owned library matching with duplicate media rows (issue #625)', () => {
+  const bookRow = (fields: Partial<Media>, identifier: string) =>
+    new Media({
+      tmdbId: 0,
+      mediaType: MediaType.BOOK,
+      status: MediaStatus.AVAILABLE,
+      status4k: MediaStatus.UNKNOWN,
+      ...fields,
+      identifiers: [
+        new MediaIdentifier({
+          provider: MediaIdentifierProvider.BOOKSHELF,
+          value: identifier,
+          canonical: true,
+        }),
+      ],
+    });
+
+  it('matches every book in a library larger than one lookup batch', async () => {
+    const ids = Array.from({ length: 260 }, (_, i) =>
+      makeBookshelfBookId(1, `hc:${1000 + i}`)
+    );
+    await getRepository(Media).save(
+      ids.map((id, i) =>
+        bookRow(
+          {
+            audiobookServiceId: 1,
+            audiobookExternalServiceId: i + 1,
+            availableAudiobookServiceIds: [1],
+          },
+          id
+        )
+      )
+    );
+    const matches = await findBookMediaForBookResults(
+      ids.map((id) => ({ id, provider: 'bookshelf' as const }))
+    );
+    assert.equal(matches.size, ids.length);
+    assert.ok(matches.get(ids[259]));
+  });
+
+  it('carries files and the Audiobookshelf item from a duplicate row for the same Chaptarr record', async () => {
+    const id = makeBookshelfBookId(1, '292354');
+    const scoped = await getRepository(Media).save(
+      bookRow(
+        {
+          audiobookServiceId: 1,
+          audiobookExternalServiceId: 2096,
+          availableAudiobookServiceIds: [1],
+        },
+        id
+      )
+    );
+    const scanned = await getRepository(Media).save(
+      bookRow(
+        {
+          serviceId: 0,
+          externalServiceId: 2802,
+          audiobookServiceId: 1,
+          audiobookExternalServiceId: 2096,
+          audiobookLibraryServiceId: 1,
+          audiobookLibraryItemId: 'abs-martian',
+          availableEbookServiceIds: [],
+          availableAudiobookServiceIds: [1],
+        },
+        makeBookshelfBookId(0, '292354')
+      )
+    );
+    assert.notEqual(scoped.id, scanned.id);
+    const matches = await findBookMediaForBookResults([
+      { id, provider: 'bookshelf' },
+    ]);
+    assert.equal(matches.get(id)?.id, scoped.id);
+    assert.equal(matches.get(id)?.audiobookLibraryItemId, 'abs-martian');
+  });
+
+  it('keeps the exact row when a duplicate has no better evidence or belongs to another service', async () => {
+    const id = makeBookshelfBookId(1, '427578');
+    const exact = await getRepository(Media).save(
+      bookRow(
+        {
+          audiobookServiceId: 1,
+          audiobookExternalServiceId: 2214,
+          availableAudiobookServiceIds: [1],
+        },
+        id
+      )
+    );
+    await getRepository(Media).save([
+      bookRow(
+        {
+          status: MediaStatus.UNKNOWN,
+          audiobookServiceId: 1,
+          audiobookExternalServiceId: 2214,
+          availableAudiobookServiceIds: [],
+        },
+        makeBookshelfBookId(0, '427578')
+      ),
+      bookRow(
+        {
+          audiobookServiceId: 9,
+          audiobookExternalServiceId: 2214,
+          audiobookLibraryServiceId: 1,
+          audiobookLibraryItemId: 'abs-other-server',
+          availableAudiobookServiceIds: [9],
+        },
+        makeBookshelfBookId(9, '427578')
+      ),
+    ]);
+    const matches = await findBookMediaForBookResults([
+      { id, provider: 'bookshelf' },
+    ]);
+    assert.equal(matches.get(id)?.id, exact.id);
+  });
+});
