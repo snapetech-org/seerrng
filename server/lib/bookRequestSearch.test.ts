@@ -1190,4 +1190,121 @@ describe('BookRequestSearchManager', () => {
     });
     assert.equal(updatedRequest.status, MediaRequestStatus.APPROVED);
   });
+
+  describe('while provider metadata lookups fail', () => {
+    const mockLookupOutage = () =>
+      mock.method(
+        ReadarrAPI.prototype,
+        'lookupBookByProviderIdentity',
+        async () => {
+          throw new Error(
+            '[Readarr] Failed to lookup book: Request failed with status code 503'
+          );
+        }
+      );
+
+    it('finalizes a monitored request from the known Bookshelf book files', async () => {
+      const { media, request } = await createTrackedRequest({
+        createdBook: true,
+        createdAuthor: false,
+        monitoring: true,
+        providerManagedSearch: true,
+        providerBookId: '54810660',
+        requestStatus: MediaRequestStatus.APPROVED,
+      });
+      mockCurrentBooks({ 55: 1 });
+      const lookup = mockLookupOutage();
+
+      await bookRequestSearchManager.run();
+
+      assert.equal(
+        await getRepository(BookRequestSearch).countBy({
+          requestId: request.id,
+        }),
+        0
+      );
+      const updatedMedia = await getRepository(Media).findOneByOrFail({
+        id: media.id,
+      });
+      assert.equal(updatedMedia.status, MediaStatus.AVAILABLE);
+      assert.deepEqual(updatedMedia.availableEbookServiceIds, [20]);
+      assert.equal(lookup.mock.callCount(), 0);
+    });
+
+    it('stops tracking a completed request whose files are already available', async () => {
+      const { media, request } = await createTrackedRequest({
+        createdBook: false,
+        createdAuthor: false,
+        monitoring: true,
+        providerManagedSearch: true,
+        providerBookId: '25126752',
+        requestStatus: MediaRequestStatus.COMPLETED,
+      });
+      await getRepository(Media).update(media.id, {
+        status: MediaStatus.AVAILABLE,
+        availableEbookServiceIds: [20],
+      });
+      mockCurrentBooks();
+      const lookup = mockLookupOutage();
+
+      await bookRequestSearchManager.run();
+
+      assert.equal(
+        await getRepository(BookRequestSearch).countBy({
+          requestId: request.id,
+        }),
+        0
+      );
+      assert.equal(
+        (await getRepository(MediaRequest).findOneByOrFail({ id: request.id }))
+          .status,
+        MediaRequestStatus.COMPLETED
+      );
+      assert.equal(lookup.mock.callCount(), 0);
+    });
+
+    it('backs off metadata lookups instead of retrying every cycle', async () => {
+      const { request } = await createTrackedRequest({
+        createdBook: true,
+        createdAuthor: false,
+        monitoring: true,
+        providerManagedSearch: true,
+        providerBookId: '86385440',
+        requestStatus: MediaRequestStatus.APPROVED,
+      });
+      mockCurrentBooks();
+      const lookup = mockLookupOutage();
+
+      await bookRequestSearchManager.run();
+      await bookRequestSearchManager.run();
+      assert.equal(lookup.mock.callCount(), 1);
+
+      const now = Date.now();
+      mock.method(Date, 'now', () => now + 5 * 60_000);
+      await bookRequestSearchManager.run();
+      assert.equal(lookup.mock.callCount(), 2);
+
+      // A successful lookup clears the backoff for later cycles.
+      mock.method(Date, 'now', () => now + 60 * 60_000);
+      const recovered = mock.method(
+        ReadarrAPI.prototype,
+        'lookupBookByProviderIdentity',
+        async () => undefined
+      );
+      // Count only the calls after recovery (a re-mocked method can keep the
+      // earlier spy's history).
+      const before = recovered.mock.callCount();
+      await bookRequestSearchManager.run();
+      await bookRequestSearchManager.run();
+      assert.equal(recovered.mock.callCount() - before, 2);
+      assert.equal(
+        (
+          await getRepository(BookRequestSearch).findOneByOrFail({
+            requestId: request.id,
+          })
+        ).state,
+        'monitoring'
+      );
+    });
+  });
 });
