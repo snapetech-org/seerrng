@@ -36,7 +36,7 @@ SeerrNG's API.
 
 :::note
 Lumen has prebuilt images for amd64 and arm64 at
-`ghcr.io/snapetech-org/seerrng-lumen`. The examples use `:latest`; use `:v3.72.27`
+`ghcr.io/snapetech-org/seerrng-lumen`. The examples use `:latest`; use `:v3.72.28`
 to pin a release. Docker downloads the image when you start it.
 :::
 
@@ -45,7 +45,7 @@ to pin a release. Docker downloads the image when you start it.
 | Situation | What to do |
 | --- | --- |
 | Already running SeerrNG | Keep your existing address. Upgrades preserve full SeerrNG. No companion is required. |
-| Want the included Lumen | Open `/lumen/` on your SeerrNG server. To make it the home page, use **Full SeerrNG → Settings → General → Default Interface → Included Lumen**, then save. |
+| Want the included Lumen | Open `/lumen/` on your SeerrNG server. To make it the home page, use **Full SeerrNG → Settings → General → Default Interface → Included Lumen**, save, then select **Open the saved default interface** to switch this browser. |
 | Already configured a Lumen companion | Keep using its existing address, usually port 5080. Select **Configured Lumen companion** in General settings and enter that address if you want SeerrNG’s home page to send people there. |
 | Need the native interface | Open `/seerrng` on your SeerrNG server. This works before sign-in. Lumen also has **Open full SeerrNG** on its sign-in page. |
 
@@ -70,9 +70,11 @@ Create the data folder owned by that user, then start:
 
 ```sh
 mkdir -p lumen-data
-sudo chown 1000:1000 lumen-data
+sudo chown -R 1000:1000 lumen-data
 docker compose up -d lumen
 ```
+
+When changing an existing container’s UID, stop Lumen first and change ownership of its dedicated data folder and existing files before restarting.
 
 The supplied Compose file uses these host-side values in `user:` and the `/tmp`
 tmpfs. **Do not put `user:`, PUID, or PGID under the service’s `environment:`.**

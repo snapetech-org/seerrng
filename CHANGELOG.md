@@ -9,7 +9,7 @@ v3.72.7 section consolidates changes from the requested v3.71.4 baseline
 through v3.72.7, including changes also represented by unpublished interim
 tags. The comparison link is the complete commit range.
 
-## [3.72.27](https://github.com/snapetech-org/seerrng/compare/v3.72.26..v3.72.27) - 2026-11-09
+## [3.72.28](https://github.com/snapetech-org/seerrng/compare/v3.72.27..v3.72.28) - 2026-11-09
 
 ### Fixed
 
@@ -19,6 +19,8 @@ tags. The comparison link is the complete commit range.
 - Integrate [@ncbudd](https://github.com/ncbudd)’s Lumen fixes in [#624](https://github.com/snapetech-org/seerrng/pull/624), [#626](https://github.com/snapetech-org/seerrng/pull/626), [#627](https://github.com/snapetech-org/seerrng/pull/627) and [#628](https://github.com/snapetech-org/seerrng/pull/628): visible sign-out errors, working Audiobookshelf book links, progressive request titles, correct narrations, verified large request lists and retryable failures. Validate Audiobookshelf URL paths and omit credentials and query tokens from links.
 
 - Keep ready request rows visible when a different media category is slow to load, including mixed movie/music lists.
+
+## [3.72.27](https://github.com/snapetech-org/seerrng/compare/v3.72.26..v3.72.27) - 2026-11-09
 
 ### Upstream source attribution
 
