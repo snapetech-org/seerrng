@@ -1972,3 +1972,19 @@ test('failed browser checks retain their diagnostic traces and error context', (
     /runtime-config|\.env|settings\.json/u
   );
 });
+
+test('post-publication delivery survives skipped recovery ancestors but requires successful publication', () => {
+  const release = readWorkflow('release.yml');
+  for (const name of [
+    'promote-stable-container-aliases',
+    'dispatch-chocolatey',
+    'announce-discord',
+  ]) {
+    const job = release.jobs[name];
+    assert.match(job.if, /always\(\)/u);
+    assert.match(job.if, /!cancelled\(\)/u);
+    assert.match(job.if, /needs\.validate-main-tag\.result == 'success'/u);
+    assert.match(job.if, /needs\.publish-release\.result == 'success'/u);
+    assert.ok(job.needs.includes('publish-release'));
+  }
+});

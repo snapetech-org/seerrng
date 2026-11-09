@@ -28,6 +28,12 @@ release publication require this fresh verifier to pass. Image rebuild, rescanni
 and resigning are omitted only because the original matching stages are required
 to have succeeded. Native assets remain the previously checked uploaded files.
 Stable aliases and announcements follow the recovered public-release gate.
+Their job conditions must include `always()`, `!cancelled()` and explicit
+successful validation/publication results: without a status-check function,
+GitHub can skip downstream jobs because a transitive build ancestor was skipped.
+The v3.72.25 recovery exposed this condition. Its immutable tag remains valid;
+use the existing `promote-container-aliases.yml` workflow to resolve the latest
+published stable tag and repair aliases without rebuilding or republishing it.
 
 The Lumen handoff checks that the published tag's exact commit is contained in the
 completed trusted-main release run. A workflow-only recovery may have a newer

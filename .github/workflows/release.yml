@@ -837,7 +837,7 @@ jobs:
 
   promote-stable-container-aliases:
     name: Promote stable container aliases
-    if: ${{ (github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && (inputs.reuse_from_run_id == '' || needs.validate-main-tag.outputs.reverify_existing_image == 'true') && inputs.announce_security_correction != true)) && !contains(inputs.tag || github.ref_name, '-') }}
+    if: ${{ always() && !cancelled() && needs.validate-main-tag.result == 'success' && needs.publish-release.result == 'success' && (github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && (inputs.reuse_from_run_id == '' || needs.validate-main-tag.outputs.reverify_existing_image == 'true') && inputs.announce_security_correction != true)) && !contains(inputs.tag || github.ref_name, '-') }}
     needs: [validate-main-tag, publish-release]
     concurrency:
       group: seerrng-stable-container-aliases
@@ -923,7 +923,7 @@ jobs:
 
   dispatch-chocolatey:
     name: Dispatch Chocolatey after publication
-    if: inputs.skip_unavailable_optional_channels != true && (github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && (inputs.reuse_from_run_id == '' || needs.validate-main-tag.outputs.reverify_existing_image == 'true') && inputs.announce_security_correction != true))
+    if: always() && !cancelled() && needs.validate-main-tag.result == 'success' && needs.publish-release.result == 'success' && inputs.skip_unavailable_optional_channels != true && (github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && (inputs.reuse_from_run_id == '' || needs.validate-main-tag.outputs.reverify_existing_image == 'true') && inputs.announce_security_correction != true))
     needs: [validate-main-tag, publish-release]
     timeout-minutes: 5
     runs-on: ubuntu-24.04
@@ -1232,7 +1232,7 @@ jobs:
 
   announce-discord:
     name: Announce release to Discord
-    if: (github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && (inputs.reuse_from_run_id == '' || needs.validate-main-tag.outputs.reverify_existing_image == 'true') && inputs.announce_security_correction != true))
+    if: always() && !cancelled() && needs.validate-main-tag.result == 'success' && needs.publish-release.result == 'success' && (github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && (inputs.reuse_from_run_id == '' || needs.validate-main-tag.outputs.reverify_existing_image == 'true') && inputs.announce_security_correction != true))
     needs:
       [validate-main-tag, changelog, publish, publish-release]
     timeout-minutes: 10
