@@ -61,9 +61,33 @@ jobs:
         env:
           CYPRESS_INSTALL_BINARY: 0
         run: pnpm install --frozen-lockfile
+      - name: Synchronize generated API message sources
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          node bin/update-api-message-catalog.mjs
+          python3 - <<'PY'
+          import json, os, pathlib, subprocess, urllib.request
+          paths = ['config/i18n/api-message-sources.json', 'src/i18n/apiMessages.ts']
+          changed = set(subprocess.check_output(['git','diff','--name-only'],text=True).splitlines())
+          assert changed <= set(paths + ['src/i18n/locale/en.json', 'config/i18n/source-snapshot.json']), changed
+          def api(path, body):
+              req = urllib.request.Request('https://api.github.com/repos/snapetech-org/seerrng/' + path, data=json.dumps(body).encode(), headers={'Authorization': 'Bearer ' + os.environ['GH_TOKEN'], 'Content-Type': 'application/json', 'Accept': 'application/vnd.github+json'})
+              with urllib.request.urlopen(req, timeout=60) as response: return json.load(response)
+          elements = []
+          for path in paths:
+              sha = subprocess.check_output(['git','hash-object','-w',path],text=True).strip()
+              result = api('git/blobs', {'content': pathlib.Path(path).read_text(), 'encoding': 'utf-8'})
+              assert result['sha'] == sha
+              elements.append({'path':path, 'mode':'100644', 'type':'blob', 'sha':sha})
+          result = api('git/trees', {'base_tree':'a26cfab715527951bde02ee9d6372853614acabf', 'tree':elements})
+          print('REGENERATED_TREE:' + result['sha'], flush=True)
+          print('REGENERATED_BLOBS:' + json.dumps(elements), flush=True)
+          
+          PY
       - name: Check formatting and feature documentation
         run: |
-          pnpm exec prettier --check --ignore-unknown '.github/workflows/ci.yml' '.github/workflows/security-native-visual.yml' '.github/workflows/security-regression.yml' 'android/app/src/androidTest/java/org/snapetech/seerrng/OriginBarTest.kt' 'config/i18n/source-snapshot.json' 'ios/SeerrNG/ServerBrowserView.swift' 'ios/SeerrNGTests/ServerEndpointTests.swift' 'playwright/client-tokens.spec.ts' 'playwright/narrator-permissions.spec.ts' 'server/migration/clientApiKeys.postgres.test.ts' 'src/components/UserProfile/UserSettings/UserClientTokens.tsx' 'src/components/UserProfile/UserSettings/index.tsx' 'src/i18n/locale/en.json' 'src/pages/profile/settings/client-tokens.tsx' 'docs/using-seerr/browser-extension.md' 'ios/SeerrNGUITests/ServerSetupUITests.swift' 'release-notes/2026-11-09-client-token-settings.md' 'docs/maintainers/security-audit-remediation-2026-11-09.md' 'docs/using-seerr/client-api-keys.md' 'docs/feature-comparison.md'
+          pnpm exec prettier --check --ignore-unknown 'config/i18n/api-message-sources.json' 'src/i18n/apiMessages.ts' '.github/workflows/ci.yml' '.github/workflows/security-native-visual.yml' '.github/workflows/security-regression.yml' 'android/app/src/androidTest/java/org/snapetech/seerrng/OriginBarTest.kt' 'config/i18n/source-snapshot.json' 'ios/SeerrNG/ServerBrowserView.swift' 'ios/SeerrNGTests/ServerEndpointTests.swift' 'playwright/client-tokens.spec.ts' 'playwright/narrator-permissions.spec.ts' 'server/migration/clientApiKeys.postgres.test.ts' 'src/components/UserProfile/UserSettings/UserClientTokens.tsx' 'src/components/UserProfile/UserSettings/index.tsx' 'src/i18n/locale/en.json' 'src/pages/profile/settings/client-tokens.tsx' 'docs/using-seerr/browser-extension.md' 'ios/SeerrNGUITests/ServerSetupUITests.swift' 'release-notes/2026-11-09-client-token-settings.md' 'docs/maintainers/security-audit-remediation-2026-11-09.md' 'docs/using-seerr/client-api-keys.md' 'docs/feature-comparison.md'
           node scripts/check-feature-comparison.mjs
       - name: Build integrated production apps
         env:
