@@ -93,7 +93,9 @@ struct ServerBrowserView: View {
                     Button("Manage servers", action: onClose)
                 } label: {
                     HStack(spacing: 5) {
-                        Text((webState.currentURL ?? activeServer.url).absoluteOrigin).lineLimit(1)
+                        Text((webState.currentURL ?? activeServer.url).absoluteOrigin)
+                            .lineLimit(1)
+                            .truncationMode(.middle)
                         Image(systemName: "chevron.down").font(.caption2)
                     }
                 }

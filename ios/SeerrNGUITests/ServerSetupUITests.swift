@@ -32,6 +32,23 @@ final class ServerSetupUITests: XCTestCase {
         XCTAssertTrue(menu.label.contains(historicalBaseline ? "Saved server" : "http://127.0.0.1:18772"))
         XCTAssertTrue(app.staticTexts["HTTP connection is not encrypted"].exists)
         captureOrigin("origin-redirect", app: app)
+
+        // An intentionally unresolvable address exercises long-origin display
+        // without involving an external provider or a live account.
+        app.buttons["Servers"].tap()
+        app.buttons["Actions for Saved server"].tap()
+        app.buttons["Edit"].tap()
+        let address = app.textFields["serverURLField"]
+        XCTAssertTrue(address.waitForExistence(timeout: 10))
+        address.tap()
+        address.clearAndEnterText("https://trusted.example.com.untrusted-host.example.invalid")
+        app.buttons["saveServerButton"].tap()
+        waitForSavedServer("Saved server", in: app)
+        app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH 'connectServer_'" )).firstMatch.tap()
+        XCTAssertTrue(menu.waitForExistence(timeout: 20))
+        XCTAssertTrue(menu.label.contains(historicalBaseline ? "Saved server" : "https://trusted.example.com.untrusted-host.example.invalid:443"))
+        XCTAssertFalse(app.staticTexts["HTTP connection is not encrypted"].exists)
+        captureOrigin("origin-long", app: app)
     }
 
     private func captureOrigin(_ name: String, app: XCUIApplication) {
