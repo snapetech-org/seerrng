@@ -658,6 +658,49 @@ test('filtered Movies view stops after a few pages and offers to look further', 
   expect(pages).toBe(10);
 });
 
+test('a filtered view that keeps finding titles keeps loading as you scroll', async ({
+  page,
+}) => {
+  await fixtures(page);
+  let pages = 0;
+  // a big library: most popular movies are on the server, a few per page are not
+  await page.route('**/api/v1/discover/movies?*', (route) => {
+    pages++;
+    const n = Number(new URL(route.request().url()).searchParams.get('page'));
+    return route.fulfill({
+      json: {
+        page: n,
+        totalPages: 500,
+        totalResults: 10000,
+        results: Array.from({ length: 20 }, (_, i) => ({
+          id: n * 100 + i,
+          title: `Popular ${n}-${i}`,
+          mediaType: 'movie',
+          releaseDate: '2020-01-01',
+          ...(i < 16 ? { mediaInfo: { status: 5 } } : {}),
+        })),
+      },
+    });
+  });
+  await page.goto('/movies?show=not');
+  await expect
+    .poll(() => page.locator('.grid .poster').count())
+    .toBeGreaterThanOrEqual(20);
+  for (let i = 0; i < 6; i++) {
+    await page.mouse.wheel(0, 20000);
+    await page.waitForTimeout(400);
+  }
+  await expect.poll(() => pages).toBeGreaterThan(10);
+  await expect(page.getByRole('button', { name: 'Look further' })).toHaveCount(
+    0
+  );
+  // and it stops once the screen is full instead of walking every page
+  const settled = pages;
+  await page.waitForTimeout(1500);
+  expect(pages).toBe(settled);
+  expect(pages).toBeLessThan(60);
+});
+
 test('people without "View Recently Added" get no New on row and no 403s', async ({
   page,
 }) => {
@@ -1378,6 +1421,28 @@ test('poster request asks 1080p or 4K for people who may request 4K', async ({
   const body = posts.find((p) => p.path === '/request')!.body;
   expect(body).toMatchObject({ mediaType: 'movie', mediaId: 302, is4k: true });
   expect(body.serverId).toBeUndefined();
+  await expect(sheet).toHaveCount(0);
+});
+
+test('tapping the quality that is already picked keeps Request working', async ({
+  page,
+}) => {
+  const { posts } = await fixtures(page, { permissions: 2 });
+  await with4k(page);
+  await page.goto('/');
+  await quickRequest(page, 'Fresh Pick');
+  const sheet = page.getByRole('dialog', { name: 'Request Fresh Pick' });
+  await expect(sheet.getByLabel('Folder')).toBeVisible();
+  await sheet
+    .getByRole('group', { name: 'Quality' })
+    .getByRole('button', { name: '1080p' })
+    .click();
+  const send = sheet.getByRole('button', { name: 'Request', exact: true });
+  await expect(send).toBeEnabled();
+  await send.click();
+  await expect
+    .poll(() => posts.filter((p) => p.path === '/request').length)
+    .toBe(1);
   await expect(sheet).toHaveCount(0);
 });
 
