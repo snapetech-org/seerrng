@@ -1,4 +1,10 @@
-import { useEffect, useRef, useState, type ReactNode } from 'react';
+import {
+  useEffect,
+  useRef,
+  useState,
+  type CSSProperties,
+  type ReactNode,
+} from 'react';
 import { Link } from 'react-router-dom';
 import {
   bookMediaForFormat,
@@ -23,6 +29,46 @@ import { Icon, type IconName } from '../icons';
 import { usePrefs } from '../settings';
 import { useQuickRequest } from './requestSheet';
 import { useToast } from './toast';
+
+// a stable hue per title, so a drawn cover keeps its colour between visits
+function hueOf(text: string) {
+  let h = 0;
+  for (let i = 0; i < text.length; i++) h = (h * 31 + text.charCodeAt(i)) % 360;
+  return h;
+}
+
+// Art that is missing, or fails to load, gets a drawn cover with the title
+// instead of an empty grey box. The words come from CSS (data attributes), so
+// screen readers and text searches still see the title only once.
+export function Cover({
+  src,
+  title,
+  sub,
+  icon,
+}: {
+  src?: string | null;
+  title: string;
+  sub?: string;
+  icon: IconName;
+}) {
+  const [failed, setFailed] = useState(false);
+  useEffect(() => setFailed(false), [src]);
+  if (src && !failed)
+    return (
+      <img loading="lazy" src={src} alt="" onError={() => setFailed(true)} />
+    );
+  return (
+    <div
+      className="nocover"
+      style={{ '--hue': hueOf(title) } as CSSProperties}
+      data-title={title}
+      data-sub={sub || ''}
+      aria-hidden="true"
+    >
+      <Icon name={icon} />
+    </div>
+  );
+}
 
 // one status vocabulary everywhere (same as the mockup)
 export type Stat = {
@@ -246,9 +292,12 @@ export function TitleCard({ it, meta }: { it: TitleResult; meta?: string }) {
   return (
     <div className="poster">
       <div className="art">
-        {it.posterPath && (
-          <img loading="lazy" src={tmdbImg(it.posterPath)} alt="" />
-        )}
+        <Cover
+          src={it.posterPath ? tmdbImg(it.posterPath) : null}
+          title={titleOf(it)}
+          sub={yearOf(it)}
+          icon={tv ? 'tv' : 'film'}
+        />
         <Glyph s={s} />
         <Link className="hit" to={href} aria-label={titleOf(it)} />
         {prefs.hoverRequest && !s && (!tv || prefs.wholeSeriesDefault) && (
@@ -266,7 +315,9 @@ export function TitleCard({ it, meta }: { it: TitleResult; meta?: string }) {
           </div>
         )}
       </div>
-      <div className="t">{titleOf(it)}</div>
+      <Link className="t" to={href} tabIndex={-1} aria-hidden="true">
+        {titleOf(it)}
+      </Link>
       <div className="m">{m}</div>
       {quick.sheet}
     </div>
@@ -313,7 +364,12 @@ export function BookCard({ b }: { b: BookResult }) {
   return (
     <div className={`poster ${audio ? 'sq' : 'book'}`}>
       <div className="art">
-        {b.posterPath && <img loading="lazy" src={b.posterPath} alt="" />}
+        <Cover
+          src={b.posterPath}
+          title={b.title}
+          sub={b.author}
+          icon={audio ? 'headphones' : 'book'}
+        />
         <Glyph s={s} />
         <Link className="hit" to={href} aria-label={b.title} />
         {prefs.hoverRequest && !s && straight && (
@@ -373,7 +429,9 @@ export function BookCard({ b }: { b: BookResult }) {
           </div>
         )}
       </div>
-      <div className="t">{b.title}</div>
+      <Link className="t" to={href} tabIndex={-1} aria-hidden="true">
+        {b.title}
+      </Link>
       <div className="m">
         {b.author || (audio ? 'Audiobook' : 'Ebook')}
         {b.firstPublishYear ? ' · ' + b.firstPublishYear : ''}

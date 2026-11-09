@@ -317,6 +317,66 @@ body.is-detail .tabbar {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+/* the title under a card opens the same page as the art; the art link stays the one
+   keyboard and screen-reader target */
+.poster a.t {
+  color: inherit;
+  text-decoration: none;
+}
+.poster a.t:hover {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+/* drawn cover for titles without art */
+.poster .art {
+  container-type: inline-size;
+}
+.nocover {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 13% 11%;
+  background:
+    radial-gradient(120% 80% at 0% 0%, hsl(var(--hue) 45% 42% / 0.55), transparent 60%),
+    linear-gradient(160deg, hsl(var(--hue) 32% 26%), hsl(calc(var(--hue) + 35) 38% 13%));
+  color: hsl(var(--hue) 55% 93%);
+  overflow: hidden;
+}
+.nocover::before {
+  content: attr(data-title);
+  font-family: Georgia, 'Times New Roman', serif;
+  font-weight: 600;
+  font-size: clamp(12px, 12cqw, 24px);
+  line-height: 1.15;
+  display: -webkit-box;
+  -webkit-line-clamp: 5;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  overflow-wrap: anywhere;
+}
+.nocover::after {
+  content: attr(data-sub);
+  max-width: 70%;
+  font-size: clamp(9px, 6.5cqw, 12px);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  opacity: 0.75;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.nocover .ico {
+  position: absolute;
+  right: 11%;
+  bottom: 11%;
+  width: 18%;
+  height: auto;
+  opacity: 0.45;
+}
 .poster a.hit {
   position: absolute;
   inset: 0;

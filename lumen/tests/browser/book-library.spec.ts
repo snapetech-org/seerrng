@@ -504,3 +504,34 @@ for (const [label, request, requested] of [
     ).toHaveCount(requested ? 0 : 1);
   });
 }
+
+test('cards without art get a drawn cover, and the title opens the book', async ({
+  page,
+}) => {
+  await fixtures(page);
+  await page.route('**/api/v1/discover/books?**', (route) =>
+    route.fulfill({
+      json: paged([
+        book('no-art', 'ebook', 'Book Without Art'),
+        {
+          ...book('broken-art', 'ebook', 'Broken Art'),
+          // external images are aborted by the fixtures, so this one fails to load
+          posterPath: 'https://covers.invalid/broken.jpg',
+        },
+      ]),
+    })
+  );
+  await page.goto('/books');
+  for (const title of ['Book Without Art', 'Broken Art'])
+    await expect(
+      page.locator('.poster', { hasText: title }).locator('.nocover')
+    ).toHaveAttribute('data-title', title);
+  await expect(
+    page.locator('.poster', { hasText: 'Broken Art' }).locator('img')
+  ).toHaveCount(0);
+  await page
+    .locator('.poster', { hasText: 'Book Without Art' })
+    .locator('a.t')
+    .click();
+  await expect(page).toHaveURL(/\/book\/no-art$/);
+});
