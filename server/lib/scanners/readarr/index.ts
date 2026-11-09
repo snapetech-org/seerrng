@@ -1,15 +1,26 @@
 import BinderyAPI, { type BinderyBook } from '@server/api/bindery';
 import type { ReadarrBook } from '@server/api/servarr/readarr';
 import ReadarrAPI from '@server/api/servarr/readarr';
-import { MediaStatus, MediaType } from '@server/constants/media';
+import {
+  MediaRequestStatus,
+  MediaStatus,
+  MediaType,
+} from '@server/constants/media';
 import { getRepository } from '@server/datasource';
+import BookRequestSearch from '@server/entity/BookRequestSearch';
 import Media from '@server/entity/Media';
 import { MediaIdentifierProvider } from '@server/entity/MediaIdentifier';
+import {
+  MediaRequest,
+  getRequestMutationAdmissionKey,
+  runWithRequestAdmission,
+} from '@server/entity/MediaRequest';
 import {
   getBookAvailabilityStatus,
   recordBookFileAvailability,
 } from '@server/lib/bookAvailability';
 import { resolveOpenLibraryIdentifiersForReadarrBook } from '@server/lib/bookIdentifierResolver';
+import { hasRequestedEditionFiles } from '@server/lib/editionCompare/availability';
 import {
   normalizeExternalBookId,
   normalizeValidAsin,
@@ -30,6 +41,7 @@ import {
   runWithServarrServiceSnapshots,
 } from '@server/lib/serviceAdmission';
 import type { ReadarrSettings } from '@server/lib/settings';
+import { isProviderBookEdition } from '@server/utils/bookEdition';
 import { makeBookshelfBookId } from '@server/utils/bookshelfCatalog';
 import { getHttpErrorDetails } from '@server/utils/httpError';
 import {
@@ -175,6 +187,8 @@ class ReadarrScanner
                 : this.processReadarrBook(book as ReadarrBook),
             { sessionId }
           );
+          if (this.currentServer.backend !== 'bindery')
+            await this.completeVerifiedEditionRequests();
         } else {
           this.log(
             `Sync not enabled. Skipping Bookshelf server: ${server.name}`
@@ -230,6 +244,128 @@ class ReadarrScanner
         count > (getObservedReadarrFileCount(current, serviceType) ?? 0)
       ) {
         this.readarrWorkFileRecords.set(key, book);
+      }
+    }
+  }
+
+  /**
+   * An exact-edition request is only completed when its search operation sees
+   * the edition arrive. A file imported any other way (a manual import, an
+   * import retried after the operation ended, a server restart in between)
+   * left the request target "processing" forever, so the request stayed at
+   * "Adding to library" with the book on disk. Complete those targets from the
+   * same exact-edition evidence the search uses.
+   */
+  private async completeVerifiedEditionRequests(): Promise<void> {
+    const format = this.getReadarrServiceType();
+    const serverId = this.currentServer.id;
+    const books = new Map(
+      (this.items as ReadarrBook[]).map((book) => [book.id, book])
+    );
+    let requests: MediaRequest[];
+    try {
+      requests = await getRepository(MediaRequest).find({
+        where: [
+          { type: MediaType.BOOK, status: MediaRequestStatus.APPROVED },
+          { type: MediaType.BOOK, status: MediaRequestStatus.COMPLETED },
+        ],
+        relations: { media: true },
+      });
+    } catch (e) {
+      this.log('Could not load exact-edition requests to complete.', 'warn', {
+        errorMessage: e instanceof Error ? e.message : String(e),
+      });
+      return;
+    }
+
+    for (const candidate of requests) {
+      if (!isProviderBookEdition(candidate.preferredEditionId)) continue;
+      const target = candidate.serviceTargets?.find(
+        (item) =>
+          item.serviceType === 'readarr' &&
+          item.format === format &&
+          item.serverId === serverId &&
+          (item.status === MediaStatus.PENDING ||
+            item.status === MediaStatus.PROCESSING)
+      );
+      const book =
+        target?.externalServiceId != null
+          ? books.get(target.externalServiceId)
+          : undefined;
+      if (!target || !book || !getObservedReadarrFileCount(book, format))
+        continue;
+
+      try {
+        await runWithRequestAdmission(
+          [getRequestMutationAdmissionKey(candidate.id)],
+          async () => {
+            // A live search operation owns this format and completes it itself.
+            if (
+              await getRepository(BookRequestSearch).exists({
+                where: { requestId: candidate.id, format },
+              })
+            )
+              return;
+            const request = await getRepository(MediaRequest).findOne({
+              where: { id: candidate.id },
+              relations: { media: true },
+            });
+            if (
+              !request ||
+              ![
+                MediaRequestStatus.APPROVED,
+                MediaRequestStatus.COMPLETED,
+              ].includes(request.status) ||
+              request.preferredEditionId !== candidate.preferredEditionId
+            )
+              return;
+            const current = request.serviceTargets?.find(
+              (item) =>
+                item.serviceType === 'readarr' &&
+                item.format === format &&
+                item.serverId === serverId &&
+                item.externalServiceId === book.id &&
+                (item.status === MediaStatus.PENDING ||
+                  item.status === MediaStatus.PROCESSING)
+            );
+            if (
+              !current ||
+              !(await runWithServarrServiceSnapshot(
+                'readarr',
+                this.currentServer,
+                () =>
+                  hasRequestedEditionFiles(
+                    this.readarrApi,
+                    book,
+                    request.preferredEditionId
+                  )
+              ))
+            )
+              return;
+            request.serviceTargets = request.serviceTargets?.map((item) =>
+              item === current
+                ? { ...item, status: MediaStatus.AVAILABLE }
+                : item
+            );
+            request.status = MediaRequestStatus.COMPLETED;
+            request.failureReason = null;
+            await getRepository(MediaRequest).save(request);
+            this.log(
+              'Completed an exact-edition request found on disk.',
+              'info',
+              {
+                requestId: request.id,
+                bookId: book.id,
+                format,
+              }
+            );
+          }
+        );
+      } catch (e) {
+        this.log('Could not complete an exact-edition request.', 'warn', {
+          requestId: candidate.id,
+          errorMessage: e instanceof Error ? e.message : String(e),
+        });
       }
     }
   }

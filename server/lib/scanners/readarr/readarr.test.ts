@@ -1216,4 +1216,110 @@ describe('Readarr Scanner', () => {
       );
     });
   }
+
+  describe('exact-edition requests completed outside their search', () => {
+    // The edition check asks Chaptarr for its catalog; tests have no network, so
+    // answer with an empty catalog and fall back to the monitored editions.
+    beforeEach(() => {
+      mock.method(ReadarrAPI.prototype, 'getEditionCatalog', async () => []);
+    });
+    const seedStuckRequest = async (format: 'ebook' | 'audiobook') => {
+      const media = await getRepository(Media).save(
+        new Media({
+          tmdbId: 0,
+          mediaType: MediaType.BOOK,
+          status: MediaStatus.PROCESSING,
+          status4k: MediaStatus.UNKNOWN,
+          identifiers: [
+            new MediaIdentifier({
+              provider: MediaIdentifierProvider.ISBN,
+              value: '9780000000001',
+              canonical: true,
+            }),
+          ],
+        })
+      );
+      const requester = await getRepository(User).findOneByOrFail({ id: 1 });
+      return getRepository(MediaRequest).save(
+        new MediaRequest({
+          type: MediaType.BOOK,
+          media,
+          requestedBy: requester,
+          status: MediaRequestStatus.COMPLETED,
+          is4k: false,
+          bookFormat: format,
+          preferredEditionId: '31540799',
+          serviceTargets: [
+            {
+              serviceType: 'readarr',
+              format,
+              serverId: 0,
+              status: MediaStatus.PROCESSING,
+              externalServiceId: 1,
+              externalServiceSlug: '747398',
+            },
+          ],
+        })
+      );
+    };
+    const targetStatus = async (id: number) =>
+      (await getRepository(MediaRequest).findOneByOrFail({ id }))
+        .serviceTargets?.[0]?.status;
+
+    for (const format of ['ebook', 'audiobook'] as const) {
+      it(`marks a ${format} target available when its exact edition is on disk`, async () => {
+        configureReadarr([{ serviceType: format }]);
+        knownDialect = 'hc';
+        const request = await seedStuckRequest(format);
+        getEditionsImpl = async () => [
+          {
+            foreignEditionId: `hc:edition:31540799-${format}`,
+            title: 'Test Book',
+            monitored: true,
+          },
+        ];
+        getBooksImpl = async () => [
+          fakeReadarrBook({
+            editions: [
+              {
+                foreignEditionId: `hc:edition:31540799-${format}`,
+                title: 'Test Book',
+                isbn13: '9780000000001',
+                monitored: true,
+              },
+            ],
+          }),
+        ];
+        await readarrScanner.run();
+        assert.equal(await targetStatus(request.id), MediaStatus.AVAILABLE);
+      });
+
+      it(`leaves a ${format} target processing when a different edition is on disk`, async () => {
+        configureReadarr([{ serviceType: format }]);
+        knownDialect = 'hc';
+        const request = await seedStuckRequest(format);
+        getEditionsImpl = async () => [
+          {
+            foreignEditionId: `hc:edition:99999999-${format}`,
+            title: 'Test Book',
+            monitored: true,
+          },
+        ];
+        getBooksImpl = async () => [
+          fakeReadarrBook({
+            editions: [
+              {
+                foreignEditionId: `hc:edition:99999999-${format}`,
+                title: 'Test Book',
+                isbn13: '9780000000001',
+                monitored: true,
+              },
+            ],
+          }),
+        ];
+        await readarrScanner.run();
+        assert.equal(await targetStatus(request.id), MediaStatus.PROCESSING);
+      });
+    }
+  });
 });
