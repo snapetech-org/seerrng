@@ -326,3 +326,36 @@ latter still makes nonzero real warm requests and requires 202 responses, provin
 the check is no longer vacuous. Formatting and lint pass. The next exact-head
 browser run supersedes the old provider-idle failure; production source remains
 byte-for-byte identical to the qualified 9a6f0386 application.
+
+## Concurrent security integration and narrator UI qualification
+
+GitHub main advanced to f6e9cffb2 while the deterministic browser milestone was
+being pushed. Preserved that security history and cb0b3ad34 through merge
+1fb0ae8a5 on both remotes; no history was rewritten. Full CI 42702222464 qualifies
+the combined security/backend source. Earlier 9a6f0386 backend receipts cannot
+qualify those new authentication/session/deployment changes. The security commit's
+focused server/browser and Android/iOS compilation checks passed independently.
+
+Rendered the actual `/series/QA-Narrator` page with bounded series/narrator
+metadata fixtures, real account permissions, real theme loading and real API
+mutation guards. Baseline uses the retained 3.72.28 image; candidate uses the
+combined production build. Eight normal states per source cover administrator
+and advanced-request-only accounts in Orig/John at 390/1440. Managers retain the
+collection button; advanced-only candidate accounts do not see it, and all four
+real mutation probes return 403. Candidate and baseline panel geometry match.
+Click trials after ordinary scrolling prove controls are usable above the mobile
+navigation; no provider mutation is sent. Four failed-load states per source
+also expose Retry and preserve the complete accessible heading. All 24 matched
+captures pass without page errors or document overflow.
+
+The phone baseline exposed bare text inside an inline-flex `page-heading`, which
+clipped the long narrator label mid-word. Both normal/error headings now reuse
+the existing child-span truncation owner. No CSS or dimensions change. Reviewed
+`narrator-heading-final-comparison.jpg` and the failed-load captures. The two
+existing edition comparison tests, lint, types and webpack production build pass.
+An initial direct Next command selected Turbopack and rejected the shared dependency
+symlink; the project's webpack invocation passes. Initial harness attempts with
+an omitted username, pre-ready connection, and incomplete accessible-name match
+are retained separately and excluded from acceptance. Synthetic role changes
+were restored after each run. Native origin-bar visual verification remains
+separate from this web UI acceptance.

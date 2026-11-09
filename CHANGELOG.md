@@ -13,7 +13,7 @@ tags. The comparison link is the complete commit range.
 
 ### Fixed
 
-- Keep native stylesheets loaded during account/theme restoration, including cancelled and failed loads, so Orig and John retain their layout and working Save controls.
+- Keep native stylesheets loaded during account/theme restoration, including cancelled and failed loads, so Orig and John retain their layout and working Save controls. Preserve shared truncation for long narrator headings on phones.
 - Reuse persisted public provider metadata after restart and during slow or transiently failing refreshes. Preserve invalidation, cancellation, terminal provider errors and shared cache limits. Contribution by [@ncbudd](https://github.com/ncbudd) in [#634](https://github.com/snapetech-org/seerrng/pull/634), with safety fixes added during review.
 
 - Restore native home access on upgrades and let administrators explicitly choose full SeerrNG, included Lumen or their existing companion. The Lumen sign-in page exposes native access before authentication. Reported by [@Tatsu941](https://github.com/Tatsu941) in [#629](https://github.com/snapetech-org/seerrng/issues/629).

@@ -103,3 +103,15 @@ acceptance is **unverified and UI work is incomplete** until that comparison is
 performed. This limitation does not relax server authorization checks or undo
 the origin protections. Main branch protection is intentionally excluded by the
 owner's instruction.
+
+### Web narrator visual acceptance addendum
+
+The narrator-planner permission states above have now received matched production
+browser comparison: Orig/John, 390/1440, administrator and advanced-request-only
+accounts, plus failed-load/Retry states (24 captures across baseline/candidate).
+Panel geometry is preserved, managers retain the action, advanced-only accounts
+lose it and receive 403 from the real endpoint. The long phone heading now uses
+the existing shared truncation span. Details and retained evidence are in the
+[November 9 QA journal](20261109-lumen-upgrade-and-storage-qa.md). This supersedes
+only the narrator web-visual exclusion; native origin-bar acceptance remains
+pending its separate native comparison.

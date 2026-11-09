@@ -433,7 +433,7 @@ export const SeriesNarratorPlanner = ({
     return (
       <section className="app-card-main card-layout">
         <h2 className="page-heading">
-          {intl.formatMessage(messages.seriesHeading)}
+          <span>{intl.formatMessage(messages.seriesHeading)}</span>
         </h2>
         <p className="card-body-text" role="alert">
           {intl.formatMessage(messages.seriesLoadFailed)}
@@ -459,7 +459,7 @@ export const SeriesNarratorPlanner = ({
   return (
     <section className="app-card-main card-layout">
       <h2 className="page-heading">
-        {intl.formatMessage(messages.seriesHeading)}
+        <span>{intl.formatMessage(messages.seriesHeading)}</span>
       </h2>
       <p className="card-body-text">
         {intl.formatMessage(messages.seriesIntro)}
