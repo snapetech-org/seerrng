@@ -50,7 +50,20 @@ final class ServerSetupUITests: XCTestCase {
         XCTAssertTrue(menu.waitForExistence(timeout: 20))
         XCTAssertTrue(menu.label.contains(historicalBaseline ? "Saved server" : "https://trusted.example.com.untrusted-host.example.invalid:443"))
         XCTAssertFalse(app.staticTexts["HTTP connection is not encrypted"].exists)
+        assertOriginStaysBetweenToolbarControls(menu, app: app)
         captureOrigin("origin-long", app: app)
+    }
+
+    private func assertOriginStaysBetweenToolbarControls(_ menu: XCUIElement, app: XCUIApplication) {
+        let servers = app.buttons["Servers"]
+        let unlock = app.buttons["Lifetime access"]
+        XCTAssertTrue(servers.exists)
+        XCTAssertTrue(unlock.exists)
+        XCTAssertGreaterThan(menu.frame.width, 0)
+        XCTAssertGreaterThanOrEqual(menu.frame.minX, servers.frame.maxX)
+        XCTAssertLessThanOrEqual(menu.frame.maxX, unlock.frame.minX)
+        XCTAssertTrue(servers.isHittable)
+        XCTAssertTrue(unlock.isHittable)
     }
 
     private func captureOrigin(_ name: String, app: XCUIApplication) {

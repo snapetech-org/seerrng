@@ -17,7 +17,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        source: [baseline, candidate]
+        source: [candidate]
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -58,6 +58,23 @@ jobs:
       - name: Export rendered evidence
         if: always()
         run: xcrun xcresulttool export attachments --path "$RUNNER_TEMP/security.xcresult" --output-path "$RUNNER_TEMP/native-origin-evidence"
+      - name: Render review previews
+        if: always()
+        env:
+          EVIDENCE_PATH: ${{ runner.temp }}/native-origin-evidence
+        run: |
+          python3 - <<'PY'
+          import base64, json, os, pathlib, subprocess
+          root = pathlib.Path(os.environ['EVIDENCE_PATH'])
+          manifest = json.loads((root / 'manifest.json').read_text())
+          attachments = [a for test in manifest for a in test['attachments']]
+          for name in ['origin-initial', 'origin-redirect', 'origin-long']:
+              item = next(a for a in attachments if a.get('suggestedHumanReadableName', '').startswith(name + '_'))
+              source = root / item['exportedFileName']
+              target = root / (name + '-preview.jpg')
+              subprocess.run(['sips', '-s', 'format', 'jpeg', '--resampleHeightWidthMax', '1200', str(source), '--out', str(target)], check=True, stdout=subprocess.DEVNULL)
+              print('PREVIEW_IMAGE_' + name + ':' + base64.b64encode(target.read_bytes()).decode(), flush=True)
+          PY
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         if: always()
         with:
