@@ -1,0 +1,59 @@
+# ng-runner-policy: github-hosted-primary-v1
+name: Continuation security verification
+on:
+  pull_request:
+    branches: [codex/seerrng-security-verification-20261109]
+  push:
+    branches: [codex/seerrng-security-verification-20261109]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: security-regression-${{ github.run_id }}
+  cancel-in-progress: false
+jobs:
+  server-browser:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    services:
+      postgres:
+        image: postgres:16-alpine@sha256:57c72fd2a128e416c7fcc499958864df5301e940bca0a56f58fddf30ffc07777
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: ci-only-migration
+          POSTGRES_DB: seerrng_migration_test
+        ports:
+          - 5432/tcp
+        options: >-
+          --health-cmd "pg_isready -U postgres -d seerrng_migration_test"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: package.json
+          package-manager-cache: false
+      - uses: pnpm/action-setup@73e46992e05b19abd31f2f3c20e0e7370d762115 # v6.1.1
+      - uses: azure/setup-helm@9bc31f4ebc9c6b171d7bfbaa5d006ae7abdb4310 # v5
+      - name: Install locked dependencies
+        env:
+          CYPRESS_INSTALL_BINARY: 0
+        run: pnpm install --frozen-lockfile
+      - name: Check security regression boundaries
+        run: >-
+          pnpm exec vitest run --maxWorkers=2
+          server/test/auditRemediation.vitest.test.ts
+          server/routes/clientApiKeys.test.ts server/lib/mediaAccess.test.ts
+          server/middleware/streamAuthorization.test.ts server/lib/follow/index.test.ts
+          server/lib/resolve/admission.test.ts server/utils/securityBoundaries.test.ts
+          server/migration/clientApiKeys.test.ts server/lib/typeormSessionStore.test.ts
+      - name: Check deployment and scanner gates
+        run: node --test scripts/check-helm-security.test.mjs scripts/healthcheck.test.mjs scripts/check-semgrep-baseline.test.mjs scripts/check-repository-hygiene.test.mjs packaging/cloudron/start-cloudron.test.mjs
+      - name: Exercise PostgreSQL token migration and authentication
+        env:
+          SEERR_TEST_POSTGRES_URL: postgresql://postgres:ci-only-migration@127.0.0.1:${{ job.services.postgres.ports['5432'] }}/seerrng_migration_test
+        run: pnpm test:node --postgres server/migration/clientApiKeys.postgres.test.ts

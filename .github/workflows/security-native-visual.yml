@@ -1,0 +1,105 @@
+# ng-runner-policy: github-hosted-primary-v1
+name: Native security visual regression
+on:
+  push:
+    branches: [codex/seerrng-security-verification-20261109]
+    paths: ['android/**', 'ios/**', '.github/workflows/security-native-visual.yml']
+  pull_request:
+    branches: [codex/seerrng-security-verification-20261109]
+    paths: ['android/**', 'ios/**', '.github/workflows/security-native-visual.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  android:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        source: [baseline, candidate]
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-java@b843ebf9b913146b38da2eaa7aeddf76074ae1ad # v6.1.0
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: android-actions/setup-android@be39fa834029ff78f1a44aa3bb0819b8fc2bd8fd # v4.0.4
+        with:
+          packages: 'platform-tools platforms;android-36 build-tools;36.0.0 emulator system-images;android-36;google_apis;x86_64'
+      - uses: ./.github/actions/setup-gradle-distribution
+      - name: Prepare the historical comparison
+        if: matrix.source == 'baseline'
+        run: |
+          git fetch --depth=1 origin 9a6f0386133ed98ceb545f8ff991f605a4178cb6
+          cp android/app/src/androidTest/java/org/snapetech/seerrng/OriginBarTest.kt "$RUNNER_TEMP/OriginBarTest.kt"
+          git restore --source=9a6f0386133ed98ceb545f8ff991f605a4178cb6 -- android
+          cp "$RUNNER_TEMP/OriginBarTest.kt" android/app/src/androidTest/java/org/snapetech/seerrng/OriginBarTest.kt
+          sed -i 's/val historicalBaseline = false/val historicalBaseline = true/' android/app/src/androidTest/java/org/snapetech/seerrng/OriginBarTest.kt
+      - name: Render the origin bar and cross-port sign-in redirect
+        run: |
+          set -euo pipefail
+          test -e /dev/kvm
+          sudo chmod 0666 /dev/kvm
+          echo no | avdmanager create avd --name security --package 'system-images;android-36;google_apis;x86_64' --device pixel_2 --force
+          "$ANDROID_HOME/emulator/emulator" -avd security -no-window -no-audio -no-boot-anim -no-snapshot -gpu swiftshader_indirect > "$RUNNER_TEMP/emulator.log" 2>&1 &
+          trap 'adb emu kill || true' EXIT
+          timeout 300s adb wait-for-device
+          for attempt in {1..120}; do
+            if [[ "$(adb shell getprop sys.boot_completed | tr -d '\r')" == '1' ]]; then break; fi
+            sleep 2
+          done
+          [[ "$(adb shell getprop sys.boot_completed | tr -d '\r')" == '1' ]]
+          adb shell settings put global window_animation_scale 0
+          adb shell settings put global transition_animation_scale 0
+          adb shell settings put global animator_duration_scale 0
+          ./android/gradlew --no-daemon -p android :app:connectedDebugAndroidTest -Pandroid.testInstrumentationRunnerArguments.class=org.snapetech.seerrng.OriginBarTest
+          adb pull /sdcard/Android/data/org.snapetech.seerrng/files/security-visual evidence
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        if: always()
+        with:
+          name: android-origin-${{ matrix.source }}
+          path: |
+            evidence/
+            android/app/build/reports/androidTests/
+            ${{ runner.temp }}/emulator.log
+          retention-days: 14
+  ios:
+    runs-on: xcode-27
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        source: [baseline, candidate]
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Prepare the historical comparison
+        if: matrix.source == 'baseline'
+        run: |
+          git fetch --depth=1 origin 9a6f0386133ed98ceb545f8ff991f605a4178cb6
+          cp ios/SeerrNGUITests/ServerSetupUITests.swift "$RUNNER_TEMP/ServerSetupUITests.swift"
+          git restore --source=9a6f0386133ed98ceb545f8ff991f605a4178cb6 -- ios
+          cp "$RUNNER_TEMP/ServerSetupUITests.swift" ios/SeerrNGUITests/ServerSetupUITests.swift
+          sed -i '' 's/let historicalBaseline = false/let historicalBaseline = true/' ios/SeerrNGUITests/ServerSetupUITests.swift
+      - name: Render the origin bar and cross-port sign-in redirect
+        run: >-
+          xcodebuild -project ios/SeerrNG.xcodeproj -scheme SeerrNG
+          -configuration Debug -destination 'platform=iOS Simulator,name=iPhone 17'
+          -derivedDataPath '${{ runner.temp }}/security-derived'
+          -resultBundlePath '${{ runner.temp }}/security.xcresult'
+          -parallel-testing-enabled NO
+          -only-testing:SeerrNGUITests/ServerSetupUITests/testActualOriginRemainsVisibleAcrossSignInRedirects
+          CODE_SIGNING_ALLOWED=NO test
+      - name: Export rendered evidence
+        if: always()
+        run: xcrun xcresulttool export attachments --path "$RUNNER_TEMP/security.xcresult" --output-path evidence
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        if: always()
+        with:
+          name: ios-origin-${{ matrix.source }}
+          path: evidence/
+          retention-days: 14
