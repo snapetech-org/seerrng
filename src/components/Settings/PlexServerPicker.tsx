@@ -17,29 +17,34 @@ import { useMemo, useRef, useState } from 'react';
 import { useIntl } from 'react-intl';
 
 const messages = defineMessages('components.Settings.PlexServerPicker', {
-  server: "Plex Server",
-  description: "Load your servers to find a working connection. We recommend a local network address and prefer HTTPS when available. Your choice is saved when you save these settings.",
-  load: "Load Servers",
-  refresh: "Refresh Servers",
-  loading: "Checking Connections…",
-  manual: "Manual Configuration",
-  recommendedDescription: "Recommended connection: {connection}.",
-  local: "Local Network",
-  remote: "Remote",
-  loopback: "Same Host Only",
-  linkLocal: "Link-Local Network",
-  unavailable: "Unavailable",
-  certificate: "Certificate could not be verified",
-  timeout: "Connection timed out",
-  advanced: "Other Connections (Advanced)",
-  connection: "Connection Address",
-  advancedDescription: "These are alternative routes to the same servers, not separate servers. Connections are tested from SeerrNG. Container, loopback and remote addresses are only useful when reachable from SeerrNG. Unavailable connections cannot be selected; you can still enter a hostname manually.",
-  failed: "Could Not Load Plex Servers",
-  failedDescription: "Check your Plex account connection, then retry. Any previously loaded servers and your current settings have been kept.",
-  empty: "No Plex Servers Found",
-  emptyDescription: "No servers owned by the connected Plex account were found. Check that Plex is running and signed in to that account, or enter its address manually.",
-  unreachable: "No Working Plex Connection Found",
-  unreachableDescription: "SeerrNG could not reach any of the advertised connections. Check the network between SeerrNG and Plex, then refresh. Other Connections shows which addresses failed. For certificate errors, check trusted certificates, the system clock and DNS settings; certificate checks remain enabled.",
+  server: 'Plex Server',
+  description:
+    'Load your servers to find a working connection. We recommend a local network address and prefer HTTPS when available. Your choice is saved when you save these settings.',
+  load: 'Load Servers',
+  refresh: 'Refresh Servers',
+  loading: 'Checking Connections…',
+  manual: 'Manual Configuration',
+  recommendedDescription: 'Recommended connection: {connection}.',
+  local: 'Local Network',
+  remote: 'Remote',
+  loopback: 'Same Host Only',
+  linkLocal: 'Link-Local Network',
+  unavailable: 'Unavailable',
+  certificate: 'Certificate could not be verified',
+  timeout: 'Connection timed out',
+  advanced: 'Other Connections (Advanced)',
+  connection: 'Connection Address',
+  advancedDescription:
+    'These are alternative routes to the same servers, not separate servers. Connections are tested from SeerrNG. Container, loopback and remote addresses are only useful when reachable from SeerrNG. Unavailable connections cannot be selected; you can still enter a hostname manually.',
+  failed: 'Could Not Load Plex Servers',
+  failedDescription:
+    'Check your Plex account connection, then retry. Any previously loaded servers and your current settings have been kept.',
+  empty: 'No Plex Servers Found',
+  emptyDescription:
+    'No servers owned by the connected Plex account were found. Check that Plex is running and signed in to that account, or enter its address manually.',
+  unreachable: 'No Working Plex Connection Found',
+  unreachableDescription:
+    'SeerrNG could not reach any of the advertised connections. Check the network between SeerrNG and Plex, then refresh. Other Connections shows which addresses failed. For certificate errors, check trusted certificates, the system clock and DNS settings; certificate checks remain enabled.',
 });
 
 interface ConnectionValues {
@@ -65,9 +70,9 @@ export default function PlexServerPicker() {
   const selected = connections.find((option) =>
     matchesPlexConnection(option, values)
   );
-  const selectedServer = servers.find(
-    (server) => server.recommended?.id === selected?.id
-  );
+  const selectedServer = selected
+    ? servers.find((server) => server.recommended?.id === selected.id)
+    : undefined;
 
   const choose = (option: PlexConnectionOption) => {
     if (option.connection.status !== 200) return;
