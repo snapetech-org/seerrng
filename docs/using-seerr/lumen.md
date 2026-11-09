@@ -18,20 +18,27 @@ their profile. It works well on phones, and **Watch on Plex** offers a link to t
 Plex app on supported phones and tablets. App handoff depends on the installed
 Plex app and device settings; a browser link is also available.
 
-Lumen doesn't replace SeerrNG. It runs **in front of** SeerrNG and only talks to
-SeerrNG's API.
+Included Lumen uses SeerrNG's API and session on the same address.
 
-- **Your users** sign in to Lumen with the same Plex, Jellyfin, Emby, or local account as before.
-  Their requests, permissions and request limits don't change.
-- **You, the admin**, keep using full SeerrNG for setup and settings: Sonarr,
-  Radarr, users, notifications and so on. Lumen has no settings pages of its own.
-  It sends anyone who opens a settings link to full SeerrNG.
-- **Nothing is migrated or converted.** Lumen keeps no database. If you remove it,
-  SeerrNG carries on exactly as before.
+- **Your users** sign in with their existing Plex, Jellyfin, Emby, or local account.
+  Requests, permissions and request limits stay with SeerrNG.
+- **Administrators** can adjust Lumen presentation and branding from its profile
+  menu. Full SeerrNG retains service configuration, users, notifications and the
+  complete administration pages; Lumen links there when needed.
+- **Included Lumen** saves presentation settings under the existing SeerrNG config
+  volume. An optional companion uses its own `/lumen-data` volume. Companion
+  settings are not automatically imported into the included copy.
+
+The usual deployment needs one container:
 
 ```text
- browser / phone ──► Lumen (port 5080) ──► SeerrNG (port 5055) ──► Plex, Sonarr, Radarr…
- admin ──────────────────────────────────► SeerrNG (port 5055)
+ browser / phone ──► SeerrNG (port 5055: Lumen and full interface) ──► media services
+```
+
+An independently configured companion remains optional:
+
+```text
+ browser / phone ──► Lumen companion (port 5080) ──► SeerrNG (port 5055)
 ```
 
 :::note

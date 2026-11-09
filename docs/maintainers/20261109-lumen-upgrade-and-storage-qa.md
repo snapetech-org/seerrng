@@ -292,3 +292,37 @@ The d5e6995e CI run 42687917148 has completed: all backend/native, Vitest,
 build/type/lint, tooling, Cypress, ARM64, docs and chart jobs pass. Its sole
 failure is the native browser save race described above; final browser CI will
 qualify the repair. Lumen run 42687735933 passed on the unchanged bundled source.
+
+## Deterministic image-warm browser qualification
+
+Exact-head 9a6f0386 browser run 42697296958 passed shards 1, 3 and 4,
+including the original native settings failure. Shard 2 had one timeout at
+`networkidle` in `/discover/movies`' image-warm check: its retained trace shows
+movie metadata calls taking over 20 seconds and queued lookups keeping the page
+busy; no 429 occurred. The other 158 cases passed, with one existing skip.
+Contracts 42697311907 and Lumen 42697252242 passed (683 browser passes, 13 skips;
+33 proxy/security tests). This is not a reason to rerun a blind provider-dependent
+assertion or publish a failing check.
+
+The warm test now seeds public catalogue/detail/artwork fixtures, waits for a real
+visible card instead of global network idleness, and leaves the authenticated
+`/api/v1/imageproxy/warm` endpoint and client queue real. It requires nonzero warm
+calls, bounded batches, complete 202 responses, no 429 and no page errors. The old
+Cypress configuration disabled image caching, so zero calls could satisfy its
+upper-bound-only assertion. The browser fixture explicitly enables the client
+warm path without changing server settings. Authentication now bootstraps CSRF
+and uses the context's actual session cookies, rather than assuming the first
+Set-Cookie header is the session. Early local runs exposed that obsolete helper
+assumption and are retained as harness failures, not application failures.
+
+The included-Lumen guide also now diagrams the normal single-container 5055 path
+first and describes its actual presentation/branding controls. The independent
+5080 companion is shown separately; its settings are not implicitly imported.
+Application source is unchanged from 9a6f0386 by this test/documentation milestone.
+
+All three corrected warm-page cases pass with CSRF enabled, both with the source
+fixture's image cache enabled and with server caching disabled as in CI. The
+latter still makes nonzero real warm requests and requires 202 responses, proving
+the check is no longer vacuous. Formatting and lint pass. The next exact-head
+browser run supersedes the old provider-idle failure; production source remains
+byte-for-byte identical to the qualified 9a6f0386 application.
