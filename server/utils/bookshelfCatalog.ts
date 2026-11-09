@@ -6,6 +6,7 @@ import { normalizeBookLanguage } from '@server/lib/bookLanguagePolicy';
 import { withBookLookupBudget } from '@server/lib/bookLookupBudget';
 import { normalizeValidIsbn } from '@server/lib/isbn';
 import type { ReadarrSettings } from '@server/lib/settings';
+import logger from '@server/logger';
 import type {
   AuthorDetails,
   AuthorResult,
@@ -141,6 +142,13 @@ export const getBookshelfMetadataSource = (
 
 export const makeBookshelfBookId = (serviceId: number, foreignBookId: string) =>
   `${BOOKSHELF_BOOK_ID_PREFIX}${serviceId}:${encodeForeignId(foreignBookId)}`;
+
+// Book IDs are minted as unpadded base64url. Hand-built or older links can
+// carry standard base64 padding ("bookshelf:1:aGM6MTE5NzMyOA=="), which the
+// strict parser rejects, so a read-only lookup canonicalizes it first.
+export const canonicalizeBookshelfBookId = (value: string): string =>
+  value.match(/^(bookshelf:\d{1,10}:[A-Za-z0-9_-]{1,2048})={1,2}$/)?.[1] ??
+  value;
 
 export const parseBookshelfBookId = (
   value: string
@@ -790,9 +798,10 @@ export const searchBookshelfNarrators = async (
 
 const getBookshelfBookDetailsUnbounded = async (
   servers: ReadarrSettings[],
-  id: string,
+  requestedId: string,
   lookupTitle?: string
 ): Promise<BookDetails | undefined> => {
+  const id = canonicalizeBookshelfBookId(requestedId);
   const parsed = parseBookshelfBookId(id);
   if (!parsed) return undefined;
   const server = servers.find(
@@ -843,7 +852,13 @@ const getBookshelfBookDetailsUnbounded = async (
       numberOfPages: pageCount,
       onUserWatchlist: false,
     };
-  } catch {
+  } catch (error) {
+    logger.warn('Bookshelf book details lookup failed.', {
+      label: 'Bookshelf Catalog',
+      bookId: id,
+      serviceId: server.id,
+      errorMessage: error instanceof Error ? error.message : String(error),
+    });
     return undefined;
   }
 };

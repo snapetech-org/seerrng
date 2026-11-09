@@ -30,6 +30,7 @@ import {
   type BookSeriesReference,
 } from '@server/models/Book';
 import {
+  canonicalizeBookshelfBookId,
   getBookshelfBookDetails,
   getBookshelfBookLibrary,
   getBookshelfLibraryBookSeries,
@@ -364,7 +365,9 @@ bookRoutes.get('/search', async (req, res, next) => {
 });
 
 bookRoutes.get('/:id', async (req, res, next) => {
-  const bookshelfId = parseBookshelfBookId(req.params.id);
+  const bookshelfId = parseBookshelfBookId(
+    canonicalizeBookshelfBookId(req.params.id)
+  );
   if (bookshelfId) {
     const lookupTitle = parseOptionalBoundedString(req.query.lookupTitle, {
       fieldName: 'Lookup title',
@@ -509,7 +512,7 @@ bookRoutes.get('/:id', async (req, res, next) => {
 });
 
 bookRoutes.get('/:id/ratings', async (req, res) => {
-  if (parseBookshelfBookId(req.params.id)) {
+  if (parseBookshelfBookId(canonicalizeBookshelfBookId(req.params.id))) {
     const lookupTitle = parseOptionalBoundedString(req.query.lookupTitle, {
       fieldName: 'Lookup title',
       maxLength: 512,
