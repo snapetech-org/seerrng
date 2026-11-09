@@ -1364,7 +1364,7 @@ test('panel messages use the shared message role before content, with source-own
   assert.match(message, /<Tooltip content=\{retry\.tooltip\}>/);
   assert.match(panel, /onClick: \(\) => mutate\(\)/);
   assert.match(page, /onClick: \(\) => revalidate\(\)/);
-  assert.match(page, /error\?\.response\?\.status === 404/);
+  assert.match(page, /\[401, 403, 404\]\.includes\(failureStatus\)/);
   assert.match(page, /\{error && loadErrorMessage\}/);
   assert.match(panel, /metadataRetry: MessageRetry/);
   assert.doesNotMatch(

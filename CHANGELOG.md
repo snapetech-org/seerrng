@@ -13,6 +13,8 @@ tags. The comparison link is the complete commit range.
 
 ### Fixed
 
+- Recover movie and series details after metadata timeouts instead of failing the entire page. Keep watchlist state accurate after recovery or failed writes, and preserve explicit access-denied/not-found states.
+- Restore offline-page retry and reconnection under the stricter Content Security Policy by caching its same-origin recovery script with the offline document.
 - Keep native stylesheets loaded during account/theme restoration, including cancelled and failed loads, so Orig and John retain their layout and working Save controls. Preserve shared truncation for long narrator headings on phones.
 - Reuse persisted public provider metadata after restart and during slow or transiently failing refreshes. Preserve invalidation, cancellation, terminal provider errors and shared cache limits. Contribution by [@ncbudd](https://github.com/ncbudd) in [#634](https://github.com/snapetech-org/seerrng/pull/634), with safety fixes added during review.
 

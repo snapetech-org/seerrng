@@ -9,11 +9,22 @@ const createHarness = async (pathname: string, status?: number) => {
   const replacements: string[] = [];
   const timers: number[] = [];
   let reloads = 0;
-  const source = readFileSync(
+  const html = readFileSync(
     resolve(__dirname, '../../../public/offline.html'),
     'utf8'
-  ).match(/<script>([\s\S]*?)<\/script>/)?.[1];
-  assert.ok(source);
+  );
+  assert.match(html, /<script src="\/offline-recovery\.js" defer><\/script>/);
+  for (const script of html.matchAll(/<script\b[^>]*>([\s\S]*?)<\/script>/gi)) {
+    assert.equal(
+      script[1].trim(),
+      '',
+      'offline recovery must not need unsafe-inline'
+    );
+  }
+  const source = readFileSync(
+    resolve(__dirname, '../../../public/offline-recovery.js'),
+    'utf8'
+  );
   runInNewContext(source, {
     document: {
       querySelector: () => ({

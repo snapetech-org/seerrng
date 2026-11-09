@@ -154,6 +154,9 @@ const TvDetails = ({
       15000
     ),
   });
+  useEffect(() => {
+    setToggleWatchlist(!data?.onUserWatchlist);
+  }, [data?.onUserWatchlist]);
   const { data: ratingData, isValidating: ratingsLoading } =
     useSWR<RatingResponse>(tvId ? `/api/v1/tv/${tvId}/ratingscombined` : null);
   const { data: episodeQueueAccess } = useSWR<EpisodeQueueAccessResponse>(
@@ -227,6 +230,11 @@ const TvDetails = ({
     />
   );
 
+  const failureStatus = error?.response?.status;
+  if (failureStatus && [401, 403, 404].includes(failureStatus)) {
+    return <ErrorPage statusCode={failureStatus} />;
+  }
+
   if (!data && !error) {
     return (
       <>
@@ -240,11 +248,7 @@ const TvDetails = ({
       <>
         <PageTitle title={intl.formatMessage(messages.pageHeading)} />
         {pageHeading}
-        {error?.response?.status === 404 ? (
-          <ErrorPage statusCode={404} />
-        ) : (
-          loadErrorMessage
-        )}
+        {loadErrorMessage}
       </>
     );
   }

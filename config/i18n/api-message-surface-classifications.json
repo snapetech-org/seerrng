@@ -98,6 +98,12 @@
       "reason": "This is the rich-text callback argument supplied by an enclosing intl.formatMessage call."
     },
     {
+      "file": "src/components/MovieDetails/index.tsx",
+      "expression": "error && loadErrorMessage",
+      "classification": "localized-child-boundary",
+      "reason": "The error is only a condition. loadErrorMessage is a PageErrorMessage React element whose title, description and retry label use Intl; raw API error text is never rendered."
+    },
+    {
       "file": "src/components/NotificationTypeSelector/index.tsx",
       "expression": "error",
       "classification": "localized-state",

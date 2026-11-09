@@ -3,8 +3,9 @@ import AssociationBadge from '@app/components/Association/AssociationBadge';
 import AvailabilitySubscriptionButton from '@app/components/AvailabilitySubscriptionButton';
 import Button from '@app/components/Common/Button';
 import IndexerSearchLink from '@app/components/Common/IndexerSearchLink';
-import LoadingSpinner from '@app/components/Common/LoadingSpinner';
+import { PageStatus } from '@app/components/Common/LoadingSpinner';
 import MediaServerPlayButton from '@app/components/Common/MediaServerPlayButton';
+import PageErrorMessage from '@app/components/Common/PageErrorMessage';
 import PageTitle from '@app/components/Common/PageTitle';
 import PlayOnDeviceButton from '@app/components/Common/PlayOnDeviceButton';
 import Tooltip from '@app/components/Common/Tooltip';
@@ -63,6 +64,9 @@ const ManageSlideOver = dynamic(
 );
 
 const messages = defineMessages('components.MovieDetails', {
+  pageHeading: 'Movie Details',
+  loadError: 'Movie Details Could Not Be Loaded',
+  loadErrorHint: 'Movie details could not be fetched, please try again.',
   watchtrailer: 'Watch Trailer',
   reportissue: 'Report an Issue',
   managemovie: 'Manage Movie',
@@ -104,6 +108,7 @@ const MovieDetails = ({ movie }: MovieDetailsProps) => {
     data,
     error,
     mutate: revalidate,
+    isValidating: movieLoading,
   } = useSWR<MovieDetailsType>(movieId ? `/api/v1/movie/${movieId}` : null, {
     fallbackData: movie,
     refreshInterval: refreshIntervalHelper(
@@ -114,6 +119,9 @@ const MovieDetails = ({ movie }: MovieDetailsProps) => {
       15000
     ),
   });
+  useEffect(() => {
+    setToggleWatchlist(!data?.onUserWatchlist);
+  }, [data?.onUserWatchlist]);
   const { data: ratingData } = useSWR<RatingResponse>(
     movieId ? `/api/v1/movie/${movieId}/ratingscombined` : null
   );
@@ -163,11 +171,39 @@ const MovieDetails = ({ movie }: MovieDetailsProps) => {
     data?.mediaInfo?.status === MediaStatus.BLOCKLISTED
   );
 
-  if (!data && !error) {
-    return <LoadingSpinner />;
+  const failureStatus = axios.isAxiosError(error)
+    ? error.response?.status
+    : undefined;
+  if (failureStatus && [401, 403, 404].includes(failureStatus)) {
+    return <ErrorPage statusCode={failureStatus} />;
   }
+  const loadErrorMessage = (
+    <PageErrorMessage
+      title={intl.formatMessage(messages.loadError)}
+      description={intl.formatMessage(messages.loadErrorHint)}
+      retry={{
+        onClick: () => revalidate(),
+        tooltip: intl.formatMessage(globalMessages.retry),
+        busy: movieLoading,
+      }}
+    />
+  );
   if (!data) {
-    return <ErrorPage statusCode={404} />;
+    return (
+      <>
+        <PageTitle title={intl.formatMessage(messages.pageHeading)} />
+        <div className="page-title-row">
+          <h1 className="page-title">
+            {intl.formatMessage(messages.pageHeading)}
+          </h1>
+          <PageStatus
+            active={movieLoading}
+            label={intl.formatMessage(globalMessages.loading)}
+          />
+        </div>
+        {error && loadErrorMessage}
+      </>
+    );
   }
 
   const trailerVideo = data.relatedVideos
@@ -204,6 +240,7 @@ const MovieDetails = ({ movie }: MovieDetailsProps) => {
         mediaType: MediaType.MOVIE,
         title: data.title,
       });
+      setToggleWatchlist(false);
       if (response.data) {
         addToast(
           <span>
@@ -222,7 +259,6 @@ const MovieDetails = ({ movie }: MovieDetailsProps) => {
       });
     } finally {
       setIsUpdating(false);
-      setToggleWatchlist(false);
     }
   };
 
@@ -232,6 +268,7 @@ const MovieDetails = ({ movie }: MovieDetailsProps) => {
       await axios.delete(
         `/api/v1/watchlist/${data.id}?mediaType=${MediaType.MOVIE}`
       );
+      setToggleWatchlist(true);
       addToast(
         <span>
           {intl.formatMessage(messages.watchlistDeleted, {
@@ -248,7 +285,6 @@ const MovieDetails = ({ movie }: MovieDetailsProps) => {
       });
     } finally {
       setIsUpdating(false);
-      setToggleWatchlist(true);
     }
   };
 
@@ -524,6 +560,7 @@ const MovieDetails = ({ movie }: MovieDetailsProps) => {
   return (
     <>
       <PageTitle title={data.title} />
+      {error && loadErrorMessage}
       {showIssueModal && (
         <IssueModal
           onCancel={() => setShowIssueModal(false)}

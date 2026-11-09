@@ -19,23 +19,23 @@ const MoviePage: NextPage<MoviePageProps> = ({ movie }) => {
 export const getServerSideProps: GetServerSideProps<MoviePageProps> = async (
   ctx
 ) => {
-  const response = await axios.get<MovieDetailsType>(
-    `${getInternalApiBaseUrl()}/api/v1/movie/${encodeInternalApiPathSegment(
-      ctx.query.movieId
-    )}`,
-    {
-      ...INTERNAL_API_HTTP_OPTIONS,
-      headers: ctx.req?.headers?.cookie
-        ? { cookie: ctx.req.headers.cookie }
-        : undefined,
-    }
-  );
+  const response = await axios
+    .get<MovieDetailsType>(
+      `${getInternalApiBaseUrl()}/api/v1/movie/${encodeInternalApiPathSegment(
+        ctx.query.movieId
+      )}`,
+      {
+        ...INTERNAL_API_HTTP_OPTIONS,
+        headers: ctx.req?.headers?.cookie
+          ? { cookie: ctx.req.headers.cookie }
+          : undefined,
+      }
+    )
+    .catch(() => undefined);
 
-  return {
-    props: {
-      movie: response.data,
-    },
-  };
+  // Hydration metadata is optional. The authenticated client owns recovery;
+  // never bubble an Axios error containing request cookies into Next's 500.
+  return { props: response ? { movie: response.data } : {} };
 };
 
 export default MoviePage;

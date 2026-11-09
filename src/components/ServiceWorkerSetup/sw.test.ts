@@ -678,3 +678,23 @@ describe('service worker notification actions', () => {
     ]);
   });
 });
+
+it('serves the trusted offline recovery script from its dependency cache without a network', async () => {
+  const harness = createHarness();
+  const cache = await harness.seedCache('seerrng-offline-v2');
+  await cache.put(
+    '/offline-recovery.js',
+    new Response('trusted recovery fixture', {
+      headers: { 'content-type': 'application/javascript' },
+    })
+  );
+  const response = await harness.fetchRequest(
+    new Request('https://seerr.test/offline-recovery.js')
+  );
+  assert.equal(await response?.text(), 'trusted recovery fixture');
+  assert.equal(harness.networkRequests.length, 0);
+  const foreign = await harness.fetchRequest(
+    new Request('https://other.test/offline-recovery.js')
+  );
+  assert.equal(foreign, undefined);
+});

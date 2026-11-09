@@ -1,0 +1,69 @@
+{
+  "movie": {
+    "id": 424242,
+    "adult": false,
+    "originalLanguage": "en",
+    "overview": "Isolated metadata recovery fixture.",
+    "genres": [],
+    "productionCompanies": [],
+    "productionCountries": [],
+    "spokenLanguages": [],
+    "voteAverage": 8,
+    "voteCount": 10,
+    "credits": {
+      "cast": [],
+      "crew": []
+    },
+    "externalIds": {},
+    "keywords": [],
+    "onUserWatchlist": true,
+    "title": "QA Recovery Movie",
+    "originalTitle": "QA Recovery Movie",
+    "releaseDate": "2020-01-01",
+    "releases": {
+      "results": []
+    },
+    "runtime": 120,
+    "status": "Released",
+    "budget": 0,
+    "revenue": 0,
+    "popularity": 1,
+    "video": false
+  },
+  "tv": {
+    "id": 424242,
+    "adult": false,
+    "originalLanguage": "en",
+    "overview": "Isolated metadata recovery fixture.",
+    "genres": [],
+    "productionCompanies": [],
+    "productionCountries": [],
+    "spokenLanguages": [],
+    "voteAverage": 8,
+    "voteCount": 10,
+    "credits": {
+      "cast": [],
+      "crew": []
+    },
+    "externalIds": {},
+    "keywords": [],
+    "onUserWatchlist": true,
+    "name": "QA Recovery Series",
+    "originalName": "QA Recovery Series",
+    "firstAirDate": "2020-01-01",
+    "lastAirDate": "2020-01-01",
+    "numberOfSeasons": 1,
+    "numberOfEpisodes": 1,
+    "contentRatings": {
+      "results": []
+    },
+    "createdBy": [],
+    "episodeRunTime": [45],
+    "languages": ["en"],
+    "networks": [],
+    "originCountry": ["US"],
+    "status": "Ended",
+    "type": "Scripted",
+    "seasons": []
+  }
+}

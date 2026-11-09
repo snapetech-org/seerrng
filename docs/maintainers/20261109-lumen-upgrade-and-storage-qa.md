@@ -359,3 +359,44 @@ an omitted username, pre-ready connection, and incomplete accessible-name match
 are retained separately and excluded from acceptance. Synthetic role changes
 were restored after each run. Native origin-bar visual verification remains
 separate from this web UI acceptance.
+
+## Combined-build metadata and offline recovery
+
+Combined CI 42702222464 completed with successful native TypeScript, all four
+Vitest shards, lint/types/build, tooling, Cypress, ARM64, docs and chart jobs.
+Three browser failures exposed additional integration problems before publication:
+TV's bounded server metadata request could reject into a Next 500; the strict
+security CSP blocked the offline document's inline recovery script; and the warm
+test still depended on optional caption visibility and unseeded Discover shelves.
+
+A controlled server-side 503 reproduces the original whole-page 500 in all eight
+movie/TV × Orig/John × 390/1440 cases. Metadata hydration is now optional, using
+existing authenticated client recovery. Movie gets the existing shared Retry
+message owner. Both pages synchronize watchlist state when metadata arrives;
+failed movie mutations no longer invert visible state in `finally`. Explicit
+401/403/404 states take priority over cached data. Internal URL encoding,
+timeouts and cookie forwarding remain bounded; Axios request configuration is
+not serialized into Next's error path. Eighteen unit cases cover successful
+hydration, seven failure classes and invalid scalar IDs on each page.
+
+The offline document now uses an external same-origin script. A versioned
+installation cache atomically retains its HTML and script, and serves the script
+offline without changing account-partitioned API caching. Focused SSR, offline
+and service-worker tests pass (49). The production build passes all prebuild
+contracts, translations, types and compilation.
+
+A real built server with CSRF enabled passes all 42 focused browser cases:
+32 metadata recovery/watchlist/access cases, three real warm-endpoint cases,
+three actual service-worker navigation/offline/reconnection cases and four stale
+library recovery cases. Native metadata cases cover Orig/John at 390/1440. Only
+bounded provider metadata and watchlist writes are fixtures; no household
+providers are mutated. The warm endpoint remains real and must receive nonzero
+bounded batches with 202 responses, no 429 or page errors.
+
+The first focused run's nine failures are retained and excluded: exact title
+matching omitted the displayed year, the seeded administrator was a Plex account
+whose watchlist controls are intentionally absent, and a built-in Discover shelf
+was not seeded. Tests now select the complete heading, explicitly represent a
+local-account watchlist, and seed the remaining public video shelves. The
+original application 500 and CSP failures remain independently demonstrated;
+these harness corrections do not weaken their assertions.

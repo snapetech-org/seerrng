@@ -1,5 +1,5 @@
 import { expect, test, type Page } from '@playwright/test';
-import { DiscoverSliderType } from '../server/constants/discover';
+import { DiscoverSliderType } from '@server/constants/discover';
 
 test.use({ serviceWorkers: 'block' });
 
@@ -40,7 +40,7 @@ const fixtureCatalogue = async (page: Page) => {
     })
   );
   await page.route(
-    /\/api\/v1\/discover\/(movies|tv|list\/\d+)(\?|$)/,
+    /\/api\/v1\/discover\/(movies|tv|trending|watchlist|genreslider\/(movie|tv)|list\/\d+)(\?|$)/,
     (route) => {
       const url = new URL(route.request().url());
       const type = url.pathname.endsWith('/tv') ? 'tv' : 'movie';
@@ -104,11 +104,14 @@ for (const path of ['/', '/discover/movies', '/discover/tv']) {
     const warmCalls: string[] = [];
     const limited: string[] = [];
     const warmStatuses: number[] = [];
+    const warmPayloads: string[][] = [];
     const pageErrors: string[] = [];
     page.on('pageerror', (error) => pageErrors.push(error.message));
     page.on('request', (request) => {
-      if (request.url().includes('/api/v1/imageproxy/warm'))
+      if (request.url().includes('/api/v1/imageproxy/warm')) {
         warmCalls.push(request.url());
+        warmPayloads.push(request.postDataJSON().urls);
+      }
     });
     page.on('response', (response) => {
       if (response.status() === 429) limited.push(response.url());
@@ -117,12 +120,7 @@ for (const path of ['/', '/discover/movies', '/discover/tv']) {
     });
 
     await page.goto(path);
-    await expect(
-      page
-        .getByTestId('title-card')
-        .filter({ hasText: 'Warm fixture title' })
-        .first()
-    ).toBeVisible();
+    await expect(page.getByTestId('title-card').first()).toBeVisible();
     // Scroll through the page so lazy shelves mount and queue their warm requests.
     for (let y = 0; y < 6000; y += 600) {
       await page.evaluate((top) => window.scrollTo(0, top), y);
@@ -143,5 +141,13 @@ for (const path of ['/', '/discover/movies', '/discover/tv']) {
     expect(warmCalls.length).toBeLessThanOrEqual(6);
     expect(warmStatuses).toHaveLength(warmCalls.length);
     expect(warmStatuses.every((status) => status === 202)).toBe(true);
+    expect(
+      warmPayloads.every(
+        (urls) =>
+          urls.length > 0 &&
+          urls.length <= 100 &&
+          urls.every((url) => url.includes('/warm-fixture-'))
+      )
+    ).toBe(true);
   });
 }

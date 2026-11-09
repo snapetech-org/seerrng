@@ -1,7 +1,7 @@
 /* eslint-disable no-undef */
 // Cache names change only when their stored data becomes incompatible. Normal
 // application builds keep compatible runtime data available for offline use.
-const OFFLINE_CACHE_NAME = 'seerrng-offline-v1';
+const OFFLINE_CACHE_NAME = 'seerrng-offline-v2';
 const DATA_CACHE_SCHEMA = 2;
 const DATA_CACHE_NAME = `seerrng-data-v${DATA_CACHE_SCHEMA}`;
 const STATIC_CACHE_SCHEMA = 1;
@@ -30,6 +30,8 @@ const CLIENT_PARTITION_RETENTION_MS = DATA_CACHE_RETENTION_MS;
 const EXPIRATION_CLEANUP_INTERVAL_MS = 15 * 60 * 1000;
 // Customize this with a different URL if needed.
 const OFFLINE_URL = '/offline.html';
+// This script and its HTML must remain available as one offline dependency set.
+const OFFLINE_SCRIPT_URL = '/offline-recovery.js';
 
 // A service worker serves every signed-in user of a browser profile. Cache API
 // matching does not partition entries by cookies, so clients explicitly tell
@@ -481,7 +483,11 @@ self.addEventListener('install', (event) => {
       // Setting {cache: 'reload'} in the new request will ensure that the
       // response isn't fulfilled from the HTTP cache; i.e., it will be from
       // the network.
-      await cache.add(new Request(OFFLINE_URL, { cache: 'reload' }));
+      await cache.addAll(
+        [OFFLINE_URL, OFFLINE_SCRIPT_URL].map(
+          (url) => new Request(url, { cache: 'reload' })
+        )
+      );
     })()
   );
   // Force the waiting service worker to become the active service worker.
@@ -591,6 +597,21 @@ self.addEventListener('fetch', (event) => {
     new URL(event.request.url).pathname === '/share-target'
   ) {
     event.respondWith(handleShareTarget(event.request));
+    return;
+  }
+
+  const requestUrl = new URL(event.request.url);
+  if (
+    event.request.method === 'GET' &&
+    requestUrl.origin === self.location.origin &&
+    requestUrl.pathname === OFFLINE_SCRIPT_URL
+  ) {
+    event.respondWith(
+      (async () => {
+        const cache = await caches.open(OFFLINE_CACHE_NAME);
+        return (await cache.match(OFFLINE_SCRIPT_URL)) ?? fetch(event.request);
+      })()
+    );
     return;
   }
 

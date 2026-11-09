@@ -604,6 +604,22 @@
       "classification": "already-localized"
     },
     {
+      "file": "src/components/MovieDetails/index.tsx",
+      "line": 204,
+      "expression": "error && loadErrorMessage",
+      "context": [],
+      "classification": "localized-child-boundary",
+      "reason": "The error is only a condition. loadErrorMessage is a PageErrorMessage React element whose title, description and retry label use Intl; raw API error text is never rendered."
+    },
+    {
+      "file": "src/components/MovieDetails/index.tsx",
+      "line": 563,
+      "expression": "error && loadErrorMessage",
+      "context": [],
+      "classification": "localized-child-boundary",
+      "reason": "The error is only a condition. loadErrorMessage is a PageErrorMessage React element whose title, description and retry label use Intl; raw API error text is never rendered."
+    },
+    {
       "file": "src/components/NotificationTypeSelector/index.tsx",
       "line": 463,
       "expression": "error",
@@ -760,7 +776,7 @@
     },
     {
       "file": "src/components/Requests/index.tsx",
-      "line": 2056,
+      "line": 2047,
       "expression": "current.message",
       "context": [
         "RequestStatusMessageText",
@@ -773,7 +789,7 @@
     },
     {
       "file": "src/components/Requests/index.tsx",
-      "line": 2063,
+      "line": 2054,
       "expression": "`${getStageLabel(intl, currentStage)}: ${currentMessage}`",
       "context": [
         "span",
@@ -787,7 +803,7 @@
     },
     {
       "file": "src/components/Requests/index.tsx",
-      "line": 2134,
+      "line": 2125,
       "expression": "event.message",
       "context": [
         "RequestStatusMessageText",
@@ -1477,7 +1493,7 @@
     },
     {
       "file": "src/components/TvDetails/index.tsx",
-      "line": 656,
+      "line": 660,
       "expression": "error && loadErrorMessage",
       "context": [],
       "classification": "localized-child-boundary",
