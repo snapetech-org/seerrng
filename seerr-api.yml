@@ -9202,6 +9202,50 @@ components:
       name: X-Api-Key
 
 paths:
+  /auth/client-tokens:
+    get:
+      summary: List the signed-in user's scoped client tokens
+      tags: [auth]
+      responses:
+        '200':
+          description: Token metadata, excluding credentials
+    post:
+      summary: Create a scoped client token using an interactive session
+      tags: [auth]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+              required: [name]
+              properties:
+                name: { type: string, minLength: 1, maxLength: 80 }
+                scopes:
+                  type: array
+                  minItems: 1
+                  maxItems: 2
+                  items: { type: string, enum: [discover, request] }
+                days: { type: integer, minimum: 1, maximum: 90, default: 30 }
+      responses:
+        '201':
+          description: Token returned once; store it securely
+        '409':
+          description: Ten active tokens already exist
+  /auth/client-tokens/{id}:
+    delete:
+      summary: Revoke one of the signed-in user's client tokens
+      tags: [auth]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer, minimum: 1 }
+      responses:
+        '204':
+          description: Token revoked
+
   /lumen/configuration:
     get:
       summary: Read public Lumen presentation configuration
@@ -13215,7 +13259,7 @@ paths:
         '200':
           description: Preference saved
         '403':
-          description: Advanced request access is required
+          description: Manage Requests permission is required
         '404':
           description: No audiobook library knows this series
   /editions/capabilities:

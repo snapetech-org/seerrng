@@ -81,6 +81,7 @@ upgrading to 2.7.0. SeerrNG chart 1.0.138 reintroduces the value with a strict
 | image.tag | string | `""` | Overrides the image tag whose default is the chart appVersion. |
 | imagePullSecrets | list | `[]` |  |
 | ingress.annotations | object | `{}` |  |
+| ingress.backendPort | string | `nil` | Backend service port. Null uses service.port; select service.httpsPort for native TLS. |
 | ingress.enabled | bool | `false` |  |
 | ingress.hosts[0].host | string | `"chart-example.local"` |  |
 | ingress.hosts[0].paths[0].path | string | `"/"` |  |
@@ -96,12 +97,13 @@ upgrading to 2.7.0. SeerrNG chart 1.0.138 reintroduces the value with a strict
 | priorityClassName | string | `nil` | Specify a priorityclass, or use default if unset. |
 | probes.livenessProbe | object | `{"initialDelaySeconds":20,"periodSeconds":15,"timeoutSeconds":3}` | Configure liveness probe |
 | probes.readinessProbe | object | `{"initialDelaySeconds":60,"periodSeconds":15,"timeoutSeconds":3}` | Configure readiness probe |
-| probes.startupProbe | object | `{"failureThreshold":120,"httpGet":{"path":"/api/v1/settings/public","port":"http"},"periodSeconds":5,"timeoutSeconds":3}` | Configure startup probe |
+| probes.startupProbe | object | `{"exec":{"command":["node","/app/scripts/healthcheck.mjs","/api/v1/status/ready"]},"failureThreshold":120,"periodSeconds":5,"timeoutSeconds":3}` | Configure startup probe |
 | replicaCount | int | `1` | Number of SeerrNG pods to run. Set 0 during maintenance; only 0 or 1 is supported. |
 | resources | object | `{}` |  |
 | route.main.additionalRules | list | `[]` |  |
 | route.main.annotations | object | `{}` |  |
 | route.main.apiVersion | string | `"gateway.networking.k8s.io/v1"` | Set the route apiVersion, e.g. gateway.networking.k8s.io/v1 or gateway.networking.k8s.io/v1alpha2 |
+| route.main.backendPort | string | `nil` | Backend service port. Null uses service.port; configure a BackendTLSPolicy for native TLS. |
 | route.main.enabled | bool | `false` | Enables or disables the Gateway API route |
 | route.main.filters | list | `[]` |  |
 | route.main.hostnames | list | `[]` |  |
@@ -122,6 +124,7 @@ upgrading to 2.7.0. SeerrNG chart 1.0.138 reintroduces the value with a strict
 | securityContext.runAsUser | int | `1000` |  |
 | securityContext.seccompProfile.type | string | `"RuntimeDefault"` |  |
 | service.annotations | object | `{}` |  |
+| service.httpsPort | int | `5056` | HTTPS listener port. Must match SEERR_HTTPS_PORT or the persisted TLS setting. |
 | service.port | int | `80` |  |
 | service.type | string | `"ClusterIP"` |  |
 | serviceAccount.annotations | object | `{}` | Annotations to add to the service account |

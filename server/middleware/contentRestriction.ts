@@ -6,6 +6,7 @@ import {
   getContentRestriction,
   isRestrictedItem,
 } from '@server/lib/contentRestriction';
+import { filterMediaCategories } from '@server/lib/mediaAccess';
 import logger from '@server/logger';
 import type { NextFunction, Request, Response } from 'express';
 
@@ -46,9 +47,10 @@ const checkRequestAllowed = async (
   }
 };
 
-/** Catalog, detail, and request surfaces that can expose mature titles. */
-const restrictedPathPattern =
-  /^\/(?:discover|search|movie|tv|music|artist|book|author|comic|magazine|sportarr|series|collection|collection-catalog|person|watchlist|swipe|watch-sessions|association|playlist|calendar|request|media|software|game-library|live|live-tv)(?:\/|$)/;
+// New feature routes inherit policy by default. Only non-catalog administrative
+// envelopes are excluded; adding a feature no longer requires editing a list.
+const administrativePathPattern =
+  /^\/(?:auth|user|settings|interface-themes|notifications|status|desktop)(?:\/|$)/;
 
 /**
  * Enforces the age gate server-side for restricted accounts: upstream TMDB
@@ -61,7 +63,7 @@ export const contentRestrictionMiddleware = (
   next: NextFunction
 ) => {
   const restriction = getContentRestriction(req.user);
-  if (!restriction || !restrictedPathPattern.test(req.path)) {
+  if (!req.user || administrativePathPattern.test(req.path)) {
     return next();
   }
 
@@ -76,15 +78,18 @@ export const contentRestrictionMiddleware = (
     if (res.statusCode >= 400 || res.headersSent) {
       return json(body);
     }
-    const filtered = filterRestrictedPayload(restriction, body);
-    if (filtered.blocked) {
+    const categories = filterMediaCategories(req.user!, body);
+    const filtered = restriction
+      ? filterRestrictedPayload(restriction, categories.payload)
+      : categories;
+    if (categories.blocked || filtered.blocked) {
       res.status(404);
       return json({ status: 404, message: 'Not found.' });
     }
     return json(filtered.payload);
   }) as Response['json'];
 
-  if (req.method === 'POST' && /^\/request\/?$/.test(req.path)) {
+  if (restriction && req.method === 'POST' && /^\/request\/?$/.test(req.path)) {
     return void checkRequestAllowed(req, restriction).then(
       (allowed) =>
         allowed

@@ -4,6 +4,7 @@ import WebKit
 
 @MainActor
 final class WebViewState: ObservableObject {
+    @Published var currentURL: URL?
     @Published var progress = 0.0
     @Published var canGoBack = false
     @Published var canGoForward = false
@@ -11,6 +12,7 @@ final class WebViewState: ObservableObject {
 
     func refresh(_ webView: WKWebView) {
         self.webView = webView
+        currentURL = webView.url
         progress = webView.estimatedProgress
         canGoBack = webView.canGoBack
         canGoForward = webView.canGoForward
@@ -89,7 +91,7 @@ struct ServerBrowserView: View {
                     Button("Manage servers", action: onClose)
                 } label: {
                     HStack(spacing: 5) {
-                        Text(activeServer.name).lineLimit(1)
+                        Text((webState.currentURL ?? activeServer.url).absoluteOrigin).lineLimit(1)
                         Image(systemName: "chevron.down").font(.caption2)
                     }
                 }
@@ -134,7 +136,7 @@ struct ServerBrowserView: View {
             Text(externalURL?.host ?? "This external website")
         }
         .overlay(alignment: .top) {
-            if !activeServer.usesHTTPS {
+            if (webState.currentURL ?? activeServer.url).scheme != "https" {
                 Label("HTTP connection is not encrypted", systemImage: "lock.open.fill")
                     .font(.caption.weight(.semibold))
                     .padding(.horizontal, 12)
@@ -196,6 +198,9 @@ private struct ServerWebView: UIViewRepresentable {
 
         func observe(_ webView: WKWebView) {
             observations = [
+                webView.observe(\.url, options: [.new]) { [weak self] view, _ in
+                    Task { @MainActor in self?.parent.state.refresh(view) }
+                },
                 webView.observe(\.estimatedProgress, options: [.new]) { [weak self] view, _ in
                     Task { @MainActor in self?.parent.state.refresh(view) }
                 },
@@ -232,7 +237,7 @@ private struct ServerWebView: UIViewRepresentable {
             }
             if navigationAction.targetFrame == nil {
                 if target.scheme == "http" || target.scheme == "https" {
-                    if target.host == parent.url.host {
+                    if target.absoluteOrigin == parent.url.absoluteOrigin {
                         webView.load(URLRequest(url: target))
                     } else {
                         parent.onExternalURL(target)
@@ -242,7 +247,7 @@ private struct ServerWebView: UIViewRepresentable {
                 return
             }
             if navigationAction.navigationType == .linkActivated,
-               target.host != parent.url.host,
+               target.absoluteOrigin != parent.url.absoluteOrigin,
                target.scheme == "http" || target.scheme == "https" {
                 parent.onExternalURL(target)
                 decisionHandler(.cancel)
@@ -258,12 +263,20 @@ private struct ServerWebView: UIViewRepresentable {
             windowFeatures: WKWindowFeatures
         ) -> WKWebView? {
             guard let target = navigationAction.request.url else { return nil }
-            if target.host == parent.url.host {
+            if target.absoluteOrigin == parent.url.absoluteOrigin {
                 webView.load(URLRequest(url: target))
             } else if target.scheme == "http" || target.scheme == "https" {
                 parent.onExternalURL(target)
             }
             return nil
         }
+    }
+}
+
+private extension URL {
+    var absoluteOrigin: String {
+        guard let scheme, let host, user == nil, password == nil,
+              scheme == "https" || scheme == "http" else { return "about:blank" }
+        return "\(scheme.lowercased())://\(host.lowercased()):\(port ?? (scheme == "https" ? 443 : 80))"
     }
 }

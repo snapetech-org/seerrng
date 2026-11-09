@@ -32,7 +32,7 @@ describe('security response headers', () => {
     );
     assert.match(
       response.headers['content-security-policy'],
-      /script-src 'self' 'unsafe-inline'/
+      /script-src 'self';/
     );
     assert.match(
       response.headers['content-security-policy'],

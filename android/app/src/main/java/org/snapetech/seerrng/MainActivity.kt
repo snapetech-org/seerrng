@@ -74,6 +74,7 @@ class MainActivity : Activity() {
     private var pendingShare: SharedContent? = null
     private var editingServerId: String? = null
     private var activeServer: SavedServer? = null
+    private val popupOrigins = mutableMapOf<WebView, TextView>()
     private var activeAddress: ParsedServerAddress? = null
     private var webView: WebView? = null
     private var pendingFileChooser: ValueCallback<Array<Uri>>? = null
@@ -438,8 +439,8 @@ class MainActivity : Activity() {
     /** Hands a shared image to the share page once it has loaded. */
     private fun deliverSharedImage(view: WebView, url: String?) {
         val share = pendingShare ?: return
-        if (!ShareIntent.isSharePage(url)) return
-        pendingShare = null
+        val serverUrl = activeAddress?.url ?: return
+        if (view !== webView || view.url != url || !ShareIntent.isSharePage(url, serverUrl)) return
         val uri = share.imageUri ?: return
         val mime = share.imageMime ?: return
         val bytes = ShareIntent.readImage(contentResolver, uri)
@@ -447,7 +448,14 @@ class MainActivity : Activity() {
             Toast.makeText(this, R.string.share_image_unreadable, Toast.LENGTH_LONG).show()
             return
         }
-        view.evaluateJavascript(ShareIntent.imageScript(bytes, mime), null)
+        if (view !== webView || activeAddress?.url != serverUrl || view.url != url || !ShareIntent.isSharePage(view.url, serverUrl)) return
+        pendingShare = null
+        // Also check the executing document: navigation can commit between
+        // this native check and JavaScript evaluation.
+        val expectedOrigin = org.json.JSONObject.quote(WebOrigin.origin(serverUrl))
+        val expectedPath = org.json.JSONObject.quote(Uri.parse(serverUrl).encodedPath.orEmpty().trimEnd('/') + ShareIntent.SHARE_PATH)
+        val guard = "(location.protocol + '//' + location.hostname.toLowerCase() + ':' + (location.port || (location.protocol === 'https:' ? '443' : '80'))) === $expectedOrigin && location.pathname.replace(/\\/$/, '') === $expectedPath"
+        view.evaluateJavascript("if ($guard) {" + ShareIntent.imageScript(bytes, mime) + "}", null)
     }
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -579,7 +587,11 @@ class MainActivity : Activity() {
             handleNavigation(Uri.parse(url), userGesture = false)
 
         override fun onPageStarted(view: WebView, url: String?, favicon: android.graphics.Bitmap?) {
+            val origin = WebOrigin.origin(url).orEmpty()
+            popupOrigins[view]?.text = origin
             if (view == webView) {
+                activeServerName.text = origin
+                httpBadge.visibility = if (url?.startsWith("https://", ignoreCase = true) == true) View.GONE else View.VISIBLE
                 errorPanel.visibility = View.GONE
                 pageProgress.visibility = View.VISIBLE
             }
@@ -705,6 +717,7 @@ class MainActivity : Activity() {
             setTextColor(getColor(R.color.ink))
             setPadding(dp(12), 0, 0, 0)
         }
+        popupOrigins[popup] = title
         val close = Button(this).apply {
             text = getString(R.string.cancel)
             setOnClickListener { dialog.dismiss() }
@@ -719,6 +732,7 @@ class MainActivity : Activity() {
             (popup.parent as? ViewGroup)?.removeView(popup)
             popup.destroy()
             popupDialogs.remove(popup)
+            popupOrigins.remove(popup)
         }
         dialog.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
         return dialog
@@ -726,7 +740,13 @@ class MainActivity : Activity() {
 
     private fun handleNavigation(uri: Uri, userGesture: Boolean): Boolean {
         when (uri.scheme?.lowercase()) {
-            "https" -> return false
+            "https" -> {
+                if (userGesture && !WebOrigin.same(uri.toString(), activeAddress?.url)) {
+                    openExternal(uri)
+                    return true
+                }
+                return false // SSO redirects retain cookies; actual origin stays visible.
+            }
             "http" -> {
                 val active = activeAddress ?: return true
                 val endpoint = uriHostPort(uri)

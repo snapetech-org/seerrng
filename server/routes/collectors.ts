@@ -1,8 +1,11 @@
 import SlskdnAPI from '@server/api/slskdn';
 import { upsertFollow } from '@server/lib/follow';
 import { getMusicVariants } from '@server/lib/musicVariants';
+import { Permission } from '@server/lib/permissions';
 import { findCandidates } from '@server/lib/resolve/candidates';
 import { getSettings } from '@server/lib/settings';
+import { isUserMediaCategoryEnabled } from '@server/lib/userMediaCategories';
+import { runAuthorizedUserSecurityMutation } from '@server/lib/userSecurityMutation';
 import logger from '@server/logger';
 import { Router } from 'express';
 import rateLimit from 'express-rate-limit';
@@ -104,13 +107,22 @@ collectorRoutes.post('/radar', async (req, res) => {
     },
   });
   let radar = false;
-  const client = api();
-  if (client) {
-    radar = (
-      await client
-        .subscribeReleaseRadar({ artistId, title: artist, creator: artist })
-        .catch(() => ({ created: false }))
-    ).created;
+  if (req.user.hasPermission(Permission.MANAGE_REQUESTS)) {
+    radar = await runAuthorizedUserSecurityMutation(
+      req.user.id,
+      req.user.id,
+      Permission.MANAGE_REQUESTS,
+      async (actor) => {
+        if (!isUserMediaCategoryEnabled(actor, 'music')) return false;
+        const client = api();
+        if (!client) return false;
+        return (
+          await client
+            .subscribeReleaseRadar({ artistId, title: artist, creator: artist })
+            .catch(() => ({ created: false }))
+        ).created;
+      }
+    );
   }
   return res.status(201).json({ followId: follow.id, radar });
 });

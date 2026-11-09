@@ -62,6 +62,7 @@ describe('GET /live/downloads', () => {
         id: 7,
         hasPermission: () => false,
       };
+      req.revalidateUser = async () => req.user ?? null;
       next();
     });
     server.use('/live', liveRoutes);

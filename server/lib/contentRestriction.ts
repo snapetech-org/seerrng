@@ -200,6 +200,8 @@ export const filterRestrictedPayload = (
     if (depth > MAX_FILTER_DEPTH) {
       return value;
     }
+    if (isRecord(value) && typeof value.toJSON === 'function')
+      return walk(value.toJSON(), depth + 1);
     if (Array.isArray(value)) {
       return value
         .filter(
@@ -210,7 +212,10 @@ export const filterRestrictedPayload = (
     if (isRecord(value)) {
       const next: Record<string, unknown> = {};
       for (const [key, entry] of Object.entries(value)) {
-        next[key] = walk(entry, depth + 1);
+        next[key] =
+          isRecord(entry) && isRestrictedItem(restriction, entry)
+            ? null
+            : walk(entry, depth + 1);
       }
       return next;
     }
@@ -218,4 +223,13 @@ export const filterRestrictedPayload = (
   };
 
   return { payload: walk(payload, 0), blocked: false };
+};
+
+/** Apply policy to provider records before mapping away their rating fields. */
+export const allowedByCurrentContentPolicy = (item: object): boolean => {
+  const restriction = currentContentRestriction();
+  return (
+    !restriction ||
+    !isRestrictedItem(restriction, item as Record<string, unknown>)
+  );
 };

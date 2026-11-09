@@ -13,6 +13,7 @@ declare global {
   namespace Express {
     export interface Request {
       user?: User;
+      revalidateUser?: () => Promise<User | null>;
       locale?: string;
       metadataLocale?: string;
       rawBody?: Buffer;

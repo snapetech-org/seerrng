@@ -67,6 +67,7 @@ import bookRoutes from './book';
 import bookRecommendationRoutes from './bookRecommendations';
 import bookSeriesRoutes from './bookSeries';
 import calendarRoutes from './calendar';
+import clientApiKeyRoutes from './clientApiKeys';
 import collectionRoutes from './collection';
 import collectionCatalogRoutes from './collectionCatalog';
 import collectorRoutes from './collectors';
@@ -436,10 +437,25 @@ router.use('/soulseek', isAuthenticated(), soulseekRoutes);
 router.use('/swipe', isAuthenticated(), swipeRoutes);
 router.use('/watch-sessions', isAuthenticated(), watchSessionRoutes);
 router.use('/resolve', isAuthenticated(), resolveRoutes);
-router.use('/continuation', isAuthenticated(), continuationRoutes);
-router.use('/editions', isAuthenticated(), editionRoutes);
+router.use(
+  '/continuation',
+  isAuthenticated(),
+  categoryAvailabilityGuard(['tv'], 'any'),
+  continuationRoutes
+);
+router.use(
+  '/editions',
+  isAuthenticated(),
+  categoryAvailabilityGuard(['ebook', 'audiobook'], 'any'),
+  editionRoutes
+);
 router.use('/follow', isAuthenticated(), followRoutes);
-router.use('/franchise', isAuthenticated(), franchiseRoutes);
+router.use(
+  '/franchise',
+  isAuthenticated(),
+  categoryAvailabilityGuard(['tv'], 'any'),
+  franchiseRoutes
+);
 router.use(
   '/game-content',
   isAuthenticated(),
@@ -455,10 +471,21 @@ router.use(
 router.use(
   '/book-recommendations',
   isAuthenticated(),
+  categoryAvailabilityGuard(['ebook', 'audiobook'], 'any'),
   bookRecommendationRoutes
 );
-router.use('/collectors', isAuthenticated(), collectorRoutes);
-router.use('/readmeabook', isAuthenticated(), readMeABookRoutes);
+router.use(
+  '/collectors',
+  isAuthenticated(),
+  categoryAvailabilityGuard(['music'], 'any'),
+  collectorRoutes
+);
+router.use(
+  '/readmeabook',
+  isAuthenticated(),
+  categoryAvailabilityGuard(['ebook', 'audiobook'], 'any'),
+  readMeABookRoutes
+);
 router.get('/settings/public', async (req, res) => {
   const settings = getSettings();
 
@@ -684,6 +711,7 @@ router.post(
   imageCacheWarmRateLimit,
   warmImageCache
 );
+router.use('/auth/client-tokens', isAuthenticated(), clientApiKeyRoutes);
 router.use('/auth', authRoutes);
 router.use('/overrideRule', isAuthenticated(), overrideRuleRoutes);
 

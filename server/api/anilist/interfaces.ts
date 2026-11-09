@@ -24,6 +24,9 @@ export interface AnilistTitle {
 }
 
 export interface AnilistMedia {
+  isAdult?: boolean;
+  genres?: string[];
+  tags?: { name: string }[];
   id: number;
   idMal?: number | null;
   title?: AnilistTitle | null;

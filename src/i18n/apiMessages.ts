@@ -608,6 +608,8 @@ export const apiMessages: Record<
     'This exact edition is already available at the selected destination.',
   m2dde86154c483ac240e0: 'ReadMeABook rejected the configured API token.',
   m2df10b0ad0af3e53f03f: 'Plex collection owner authority is required.',
+  m2e2d7f041fb58bd77e4e:
+    'SEERR_TRUSTED_PROXIES must contain trusted proxy IP addresses or CIDRs.',
   m2e6e931292f955a2432b:
     'You do not have permission to map seasons for this request.',
   m2e7511e4c0ae97f8f558: 'Only cancelled software requests can be cleared.',
@@ -976,6 +978,8 @@ export const apiMessages: Record<
     'You must provide both an email address and a password.',
   m48ac4e99263b92bb1240: 'This audiobook is already being processed.',
   m48b0eb41d4936cbe7664: 'Plex returned an invalid library response.',
+  m48c92fdf037d4324ab47:
+    'SEERR_TRUSTED_PROXIES must not trust the entire Internet.',
   m48cfdf0e42f1c1dac5e3:
     'A playlist name, user, and at least one media item are required.',
   m48f8167bb6b0984e84e3: 'Request dispatch outbox {value0} claim was lost.',
@@ -1039,6 +1043,7 @@ export const apiMessages: Record<
   m4d7a46b80b0308395f10: 'Bulk movie requests from person pages are disabled.',
   m4dc944fdc14af5f1a4b6: 'Rotten Tomatoes ratings not found.',
   m4dd07df92a65a6d198fb: '{value0} must use #RGB or #RRGGBB format.',
+  m4deee8999ef6b1078fc1: 'Revoke an existing client token first.',
   m4e0943d2fbc2c2774ee9:
     'Enter the Tunerr hostname before connecting Sportarr.',
   m4e272781cd8e05a348d4: 'Anime-List mapping contains too many rules',
@@ -1184,6 +1189,7 @@ export const apiMessages: Record<
   m5745993e688578260a22: 'Media type must be valid.',
   m5771820a8ec3d4330d40: 'Magazine Quota exceeded.',
   m57764c9b86953e997583: 'Please sign in.',
+  m57872b95dc2a1921b03d: 'Invalid client token ID.',
   m57ad0c7f70b4a43f7d0c: 'Network logo tone is invalid.',
   m57b720661afb3794f460: 'Choose a valid Swipe category.',
   m57bc3094569f770d0126: 'Mylar3 did not return an issue file.',
@@ -1261,6 +1267,7 @@ export const apiMessages: Record<
   m5d49f300550171262c13: 'You do not have permission to view this comment.',
   m5d67dbdbca9fa7b9b9dc: 'Directory exceeds the inspection entry limit.',
   m5d71cca7e000d1f572f3: 'rTorrent returned an XML-RPC fault.',
+  m5d7b03aaddbc3627fec6: 'Manage Requests access is required.',
   m5d84a1381ebdb0ce8f2c: 'qBittorrent returned an invalid torrent list.',
   m5d8983a86f7c877a69cd: 'Maximum number of sliders reached.',
   m5dbf555076181cab82c8: 'Maximum image size must be between 64 KB and 20 MB.',
@@ -1505,6 +1512,8 @@ export const apiMessages: Record<
     'Bindery does not support removal through the Readarr library tools.',
   m6f6d777b2bc667a6416a:
     'The connected comics service reported a download or import failure. Check its queue or logs for the cause, fix it there, then retry here.',
+  m6f7c78a28b431f059f31:
+    'Image dimensions or frame count exceed the recognition limit.',
   m6fab6021f549aef4667b: 'seasons are required for series requests.',
   m6fbb19720b1b35ed4f61: 'Error during logout process.',
   m6fe1973f858b4dc3bc93: 'Password sign-in is disabled.',
@@ -1775,6 +1784,7 @@ export const apiMessages: Record<
   m81cc868395de9f7f38e9: 'ComicVine issue page is invalid.',
   m81e528dbfca502931346: 'Item already blocklisted',
   m81e88a2670874485ce25: 'slskdN is not set up.',
+  m81ee49c7b984217f6eb9: 'Audiobooks are unavailable.',
   m81f2efe9ea479615e0ba: 'Request body must be an object.',
   m81ffacbbacb052641170:
     'Both-format book requests require default ebook and audiobook Bookshelf services.',
@@ -2008,6 +2018,7 @@ export const apiMessages: Record<
     '[Tautulli] Failed to fetch Tautulli server info: {value0}',
   m94e0489458b98baa4ba6: 'Similar tone and audience',
   m94ed1be14df3456f422a: 'Invalid association media id.',
+  m94f483afbe0482fdf458: 'Invalid client token settings.',
   m9516cadbc061cc7f94e0: 'Lidarr album ID not found',
   m953f4eb5795fc9d56938: 'Deck password is invalid.',
   m95421b1abc3aea027913: 'Selected Sportarr server does not exist.',
@@ -2365,7 +2376,6 @@ export const apiMessages: Record<
   maf6adbb4e6ca12c16247: 'Could not save media filter pin.',
   mafb63ae7ce807a73e6ea: 'Invalid Plex page size.',
   mafc29ab5884dc14c2ef5: '[TVDB] {value0}: {value1}',
-  mafc9708e36a75f50787a: 'Advanced request access is required.',
   mafd5801e5e98a40a07bc: '{value0} must be between {value1} and {value2}',
   mafeea1d68b2f23e3c8f3: 'Navidrome password is required.',
   mb00227551cdc0fbbca02:
@@ -2641,6 +2651,7 @@ export const apiMessages: Record<
   mc5087828b3deda3ed148:
     '[Sportarr] Failed to retrieve cover for league {value0}: {value1}',
   mc57c0dee8e070f33b1cb: 'Each problem episode selection must be an object.',
+  mc5bf6ff67cb8b43a48d7: 'Request access to this category is required.',
   mc5c0e5c35fa06242f5d9: 'QuestarrNG is not configured.',
   mc5dfd2c09704f103cb1b: 'Invalid Plex season identity',
   mc5e5cc04361f4c09fc2b: 'Selection must be an object.',
@@ -2665,6 +2676,7 @@ export const apiMessages: Record<
     'Bindery could not confirm the request status. Refresh and try again.',
   mc7d39f1dd87ed20fe835:
     'Book editionId and authorId must be valid Open Library resource IDs.',
+  mc7e588882846464264e6: 'Invalid API key or insufficient token scope.',
   mc80612a222550d198d71: 'Format can only be used with book searches.',
   mc81428442a7a2a498355:
     'blocklistedTags must contain at most {value0} valid keyword IDs.',
@@ -3159,7 +3171,6 @@ export const apiMessages: Record<
   meafc02af6dafa44c39e9:
     'QuestarrNG connection failed during the {value0}. Check its address and API key.',
   meb0095604112d2ea38f9: 'Slider must be an object.',
-  meb293e650ef0f598e6a9: 'Failed to destroy session.',
   meb2e7013de7406c1b05a: 'Unable to retrieve playback devices.',
   meb2eb12f18c2e776a8e9: 'discordId must be a valid Discord user ID.',
   meb74d72c13947d1486c6: 'preset must name a supported built-in theme preset.',

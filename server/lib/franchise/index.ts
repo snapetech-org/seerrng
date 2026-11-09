@@ -8,8 +8,10 @@ import MediaRelation, {
   type RelationConfidence,
   type RelationKind,
 } from '@server/entity/MediaRelation';
+import { allowedByCurrentContentPolicy } from '@server/lib/contentRestriction';
 import { findAnilistIdForTmdbShow } from '@server/lib/continuation';
 import logger from '@server/logger';
+import { isInternalPath } from '@server/utils/internalPath';
 
 export type FranchiseGroup =
   | 'source'
@@ -127,6 +129,8 @@ export const getFranchise = async (options: {
         });
         return null;
       });
+    if (anchor && !allowedByCurrentContentPolicy(anchor))
+      throw Object.assign(new Error('Not found.'), { status: 404 });
     if (anchor) {
       title = anchor.title?.english || anchor.title?.romaji || title;
       const edges = anchor.relations?.edges ?? [];
@@ -143,7 +147,12 @@ export const getFranchise = async (options: {
       );
       for (const edge of edges) {
         const mapped = RELATION_MAP[edge.relationType];
-        if (!mapped || rejected.has(String(edge.node.id))) continue;
+        if (
+          !mapped ||
+          rejected.has(String(edge.node.id)) ||
+          !allowedByCurrentContentPolicy(edge.node)
+        )
+          continue;
         items.push({
           group: mapped.group,
           relation: mapped.relation,
@@ -210,7 +219,9 @@ export const getFranchise = async (options: {
       title: data.title ?? row.toId,
       mediaType: row.toType as FranchiseItem['mediaType'],
       imageUrl: data.imageUrl,
-      href: data.href ?? searchHref(data.title ?? row.toId),
+      href: isInternalPath(data.href)
+        ? data.href
+        : searchHref(data.title ?? row.toId),
       confidence: row.confidence,
       evidence: row.evidence ?? undefined,
       source: row.source,

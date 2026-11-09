@@ -19,7 +19,7 @@ import express from 'express';
 import session from 'express-session';
 import assert from 'node:assert/strict';
 import { randomBytes } from 'node:crypto';
-import { afterEach, before, describe, it, mock } from 'node:test';
+import { afterEach, before, beforeEach, describe, it, mock } from 'node:test';
 import request from 'supertest';
 import authRoutes from './auth';
 import discoveryRoutes from './discoveryIntegrations';
@@ -51,9 +51,14 @@ let savedConfiguration: typeof getSettings extends () => infer S
     : never
   : never;
 let savedApplicationUrl: string;
+let savedApiKey: string;
 before(() => {
   savedConfiguration = structuredClone(getSettings().discoveryIntegrations);
   savedApplicationUrl = getSettings().main.applicationUrl;
+  savedApiKey = getSettings().main.apiKey;
+});
+beforeEach(() => {
+  getSettings().main.apiKey = 'discovery-session-only-test-key';
 });
 afterEach(() => {
   mock.restoreAll();
@@ -62,6 +67,7 @@ afterEach(() => {
     structuredClone(savedConfiguration)
   );
   getSettings().main.applicationUrl = savedApplicationUrl;
+  getSettings().main.apiKey = savedApiKey;
 });
 async function login() {
   const agent = request.agent(app);

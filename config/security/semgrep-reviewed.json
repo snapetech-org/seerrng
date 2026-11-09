@@ -1,0 +1,281 @@
+[
+  {
+    "rule": "bash.lang.security.ifs-tampering.ifs-tampering",
+    "path": "packaging/smoke/package-smoke",
+    "sha256": "657e7375a81cbd400593d7e9d35599bd45d5e50c8784d1a442ba3543c9e1263b",
+    "count": 1,
+    "owner": "SeerrNG maintainers",
+    "expires": "2027-02-07",
+    "reason": "IFS is intentionally set only for a bounded local package-smoke read loop; it is not derived from attacker input."
+  },
+  {
+    "rule": "dockerfile.security.last-user-is-root.last-user-is-root",
+    "path": "packaging/cloudron/Dockerfile",
+    "sha256": "a60006bb6b48c12559021f5675b584ec400ed716fc647037a4bdaa4ba1ae4f30",
+    "count": 1,
+    "owner": "SeerrNG maintainers",
+    "expires": "2027-02-07",
+    "reason": "Cloudron requires root to repair restored volume ownership. start-cloudron.cjs clears groups and drops uid/gid to 1000 before loading app modules; start-cloudron.test.mjs verifies fail-closed behavior."
+  },
+  {
+    "rule": "javascript.express.security.audit.express-res-sendfile.express-res-sendfile",
+    "path": "server/routes/lumen.ts",
+    "sha256": "03c8ac1bb4e386bf2a768376c68296c1143c67c7c12e0bf9d0bcbf0f194241b7",
+    "count": 1,
+    "owner": "SeerrNG maintainers",
+    "expires": "2027-02-07",
+    "reason": "The filename is restricted to a fixed logo/icon UUID.png allowlist before sendFile; uploads are decoded and re-encoded as bounded PNG raster data."
+  },
+  {
+    "rule": "javascript.express.security.audit.xss.pug.var-in-href.var-in-href",
+    "path": "server/templates/email/media-issue/html.pug",
+    "sha256": "f599baad689c240243341f101e4b252bd88169e6b508a6240d0a5edc59eec7fa",
+    "count": 1,
+    "owner": "SeerrNG maintainers",
+    "expires": "2027-02-07",
+    "reason": "Links are assembled from the administrator-configured HTTP(S) application URL plus internal identifiers. Template escaping remains enabled; ordinary users cannot supply the link scheme."
+  },
+  {
+    "rule": "javascript.express.security.audit.xss.pug.var-in-href.var-in-href",
+    "path": "server/templates/email/media-request/html.pug",
+    "sha256": "7d4b32a0e209cb54dc24e9a09914aa6a6a4437f759dd1297225e57394a74ab96",
+    "count": 3,
+    "owner": "SeerrNG maintainers",
+    "expires": "2027-02-07",
+    "reason": "Links are assembled from the administrator-configured HTTP(S) application URL plus internal identifiers. Template escaping remains enabled; ordinary users cannot supply the link scheme."
+  },
+  {
+    "rule": "javascript.express.security.audit.xss.pug.var-in-href.var-in-href",
+    "path": "server/templates/email/resetpassword/html.pug",
+    "sha256": "1c6cc02059fa9fa9eb3e0c69b8269641e5610108a7fc8ffe8191c0d0ababb669",
+    "count": 1,
+    "owner": "SeerrNG maintainers",
+    "expires": "2027-02-07",
+    "reason": "Links are assembled from the administrator-configured HTTP(S) application URL plus internal identifiers. Template escaping remains enabled; ordinary users cannot supply the link scheme."
+  },
+  {
+    "rule": "javascript.express.security.audit.xss.pug.var-in-href.var-in-href",
+    "path": "server/templates/email/test-email/html.pug",
+    "sha256": "e45d2f0229a146eab831dd2c8115158b74a0eb48f89fdec416c31842b8b42ccd",
+    "count": 1,
+    "owner": "SeerrNG maintainers",
+    "expires": "2027-02-07",
+    "reason": "Links are assembled from the administrator-configured HTTP(S) application URL plus internal identifiers. Template escaping remains enabled; ordinary users cannot supply the link scheme."
+  },
+  {
+    "rule": "javascript.express.security.express-data-exfiltration.express-data-exfiltration",
+    "path": "server/routes/overrideRule.ts",
+    "sha256": "08c986000071206caf7d9c1a608daef0534982aec405d4d8883cff0c2068a474",
+    "count": 1,
+    "owner": "SeerrNG maintainers",
+    "expires": "2027-02-07",
+    "reason": "Only parsed and validated rule fields are merged under current actor and service admission. This is an authorized rule update, not exfiltration."
+  },
+  {
+    "rule": "javascript.express.security.express-data-exfiltration.express-data-exfiltration",
+    "path": "server/routes/user/usersettings.ts",
+    "sha256": "de50ac97decb66428a5da181ea2592418a68328e85139bc4d832e889706468b2",
+    "count": 3,
+    "owner": "SeerrNG maintainers",
+    "expires": "2027-02-07",
+    "reason": "The actor/target authorization and validation precede an explicit fixed field allowlist. Returned settings pass secret redaction; owner-controlled preference updates are intentional."
+  },
+  {
+    "rule": "javascript.lang.security.audit.detect-non-literal-regexp.detect-non-literal-regexp",
+    "path": "playwright/watch-session-recovery.spec.ts",
+    "sha256": "542709d35382d6ca71e13acf47e2df0fe7d82dac9fd25a8f06bb6bf916590d38",
+    "count": 1,
+    "owner": "SeerrNG maintainers",
+    "expires": "2027-02-07",
+    "reason": "Regular expression is constructed from a test-only fixture identifier or an escaped repository chart key, not uncontrolled input."
+  },
+  {
+    "rule": "javascript.lang.security.audit.detect-non-literal-regexp.detect-non-literal-regexp",
+    "path": "scripts/update-helm-release-metadata.mjs",
+    "sha256": "83bdb81e31ae4cf4fd9399a9f18b6544b5c5fcd10f26f17370f5d4c6c696bdf5",
+    "count": 1,
+    "owner": "SeerrNG maintainers",
+    "expires": "2027-02-07",
+    "reason": "Regular expression is constructed from a test-only fixture identifier or an escaped repository chart key, not uncontrolled input."
+  },
+  {
+    "rule": "javascript.lang.security.audit.detect-non-literal-regexp.detect-non-literal-regexp",
+    "path": "server/lib/liveTv/xmltv.ts",
+    "sha256": "9febefa3e540671290bbeab42133ae0a519a954687d4f16f3a4289d01752e392",
+    "count": 1,
+    "owner": "SeerrNG maintainers",
+    "expires": "2027-02-07",
+    "reason": "The dynamic literal is escaped with escapeRegExp before constructing the regular expression; input sizes are bounded by the caller."
+  },
+  {
+    "rule": "javascript.lang.security.audit.detect-non-literal-regexp.detect-non-literal-regexp",
+    "path": "server/lib/resolve/fetchSafe.ts",
+    "sha256": "005dedb4d890ea1588abb04655bab6e64ad9f19496dc804e565466d5e8df46f5",
+    "count": 1,
+    "owner": "SeerrNG maintainers",
+    "expires": "2027-02-07",
+    "reason": "The dynamic literal is escaped with escapeRegExp before constructing the regular expression; input sizes are bounded by the caller."
+  },
+  {
+    "rule": "javascript.lang.security.audit.path-traversal.path-join-resolve-traversal.path-join-resolve-traversal",
+    "path": "bin/check-api-message-surfaces.cjs",
+    "sha256": "40111c9d44dda71fe77969e6bb03930c4d5aeeb232e3d02ba1bd121c6da13353",
+    "count": 4,
+    "owner": "SeerrNG maintainers",
+    "expires": "2027-02-07",
+    "reason": "Developer inventory traversal starts in fixed repository directories and uses filesystem directory entries, not request paths."
+  },
+  {
+    "rule": "javascript.lang.security.audit.path-traversal.path-join-resolve-traversal.path-join-resolve-traversal",
+    "path": "server/lib/imageproxy.ts",
+    "sha256": "6b1517fb3547369a4b8cfe17dd242ac48e004b5c8fa43db310e01e3dbca706b8",
+    "count": 9,
+    "owner": "SeerrNG maintainers",
+    "expires": "2027-02-07",
+    "reason": "Paths are cache directory entries or basename-validated cache filenames. The surrounding cache boundary code checks containment, symlinks, file type and private permissions; image proxy tests exercise these boundaries."
+  },
+  {
+    "rule": "javascript.lang.security.audit.path-traversal.path-join-resolve-traversal.path-join-resolve-traversal",
+    "path": "server/lib/logFileSecurity.ts",
+    "sha256": "72de7a2d6fa3b481a49e3811829496a8b7f42b7084423642d957d834b3b43ad2",
+    "count": 4,
+    "owner": "SeerrNG maintainers",
+    "expires": "2027-02-07",
+    "reason": "Paths are local directory entries or symlink targets checked to be a single basename. Unexpected links, external targets and non-private files are rejected."
+  },
+  {
+    "rule": "javascript.lang.security.audit.spawn-shell-true.spawn-shell-true",
+    "path": "scripts/build-lumen.mjs",
+    "sha256": "8d49bf2b5db77896eb71d08cd4bbfaad3dc57997e202ad0652ef998bb808966d",
+    "count": 1,
+    "owner": "SeerrNG maintainers",
+    "expires": "2027-02-07",
+    "reason": "Windows npm.cmd requires a shell. Executable and arguments are fixed literals, with no request or repository data interpolated into a command. Non-Windows builds do not use a shell."
+  },
+  {
+    "rule": "javascript.lang.security.audit.unsafe-formatstring.unsafe-formatstring",
+    "path": "server/lib/settings/migrations/0007_migrate_arr_tags.ts",
+    "sha256": "6cc62bd7d20f300b1d71784efaee79e946d7136e6ecb91bb09eaae7f8ceddd61",
+    "count": 2,
+    "owner": "SeerrNG maintainers",
+    "expires": "2027-02-07",
+    "reason": "Console output contains migration status strings. Node formatting here cannot execute code or expose a format-string memory primitive."
+  },
+  {
+    "rule": "javascript.lang.security.insecure-object-assign.insecure-object-assign",
+    "path": "server/i18n/index.ts",
+    "sha256": "f3fa473b1aba60885564f8a4fbd45cc9c62d775a11a2607c3738ef34f7a55d2b",
+    "count": 1,
+    "owner": "SeerrNG maintainers",
+    "expires": "2027-02-07",
+    "reason": "The merge reads trusted local operator translation catalogues. No HTTP input reaches this catalogue-loading path."
+  },
+  {
+    "rule": "python.lang.security.audit.dynamic-urllib-use-detected.dynamic-urllib-use-detected",
+    "path": "docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-550-599/runner-source.py",
+    "sha256": "a598b47f5ba601ee9b53be6a05c374981aad84b245bd67905fc83c2efc7b7fda",
+    "count": 2,
+    "owner": "SeerrNG maintainers",
+    "expires": "2027-02-07",
+    "reason": "Historical localization evidence scripts, not loaded or executed by the application or CI. Hashing names is not cryptographic authentication; local review runners intentionally execute fixed review code. Retained for provenance."
+  },
+  {
+    "rule": "python.lang.security.audit.dynamic-urllib-use-detected.dynamic-urllib-use-detected",
+    "path": "docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/runner-window-650-700.py",
+    "sha256": "4c171a3029936f94f9a338f0c2fa7e20aa11df4686ef006a1aa9e8074776b2c3",
+    "count": 2,
+    "owner": "SeerrNG maintainers",
+    "expires": "2027-02-07",
+    "reason": "Historical localization evidence scripts, not loaded or executed by the application or CI. Hashing names is not cryptographic authentication; local review runners intentionally execute fixed review code. Retained for provenance."
+  },
+  {
+    "rule": "python.lang.security.audit.exec-detected.exec-detected",
+    "path": "docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-550-599/runner-source.py",
+    "sha256": "a598b47f5ba601ee9b53be6a05c374981aad84b245bd67905fc83c2efc7b7fda",
+    "count": 1,
+    "owner": "SeerrNG maintainers",
+    "expires": "2027-02-07",
+    "reason": "Historical localization evidence scripts, not loaded or executed by the application or CI. Hashing names is not cryptographic authentication; local review runners intentionally execute fixed review code. Retained for provenance."
+  },
+  {
+    "rule": "python.lang.security.audit.exec-detected.exec-detected",
+    "path": "docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/runner-window-650-700.py",
+    "sha256": "4c171a3029936f94f9a338f0c2fa7e20aa11df4686ef006a1aa9e8074776b2c3",
+    "count": 1,
+    "owner": "SeerrNG maintainers",
+    "expires": "2027-02-07",
+    "reason": "Historical localization evidence scripts, not loaded or executed by the application or CI. Hashing names is not cryptographic authentication; local review runners intentionally execute fixed review code. Retained for provenance."
+  },
+  {
+    "rule": "python.lang.security.audit.insecure-file-permissions.insecure-file-permissions",
+    "path": "docs/pr-evidence/pr418-localization-2026-11-03/window-3580-3599/blind-review/build-blind-review.py",
+    "sha256": "3c69f5fe216a71752b9f388f09b1a348a0e392fb79044bb8ec78184a593f24f8",
+    "count": 1,
+    "owner": "SeerrNG maintainers",
+    "expires": "2027-02-07",
+    "reason": "Historical localization evidence scripts, not loaded or executed by the application or CI. Hashing names is not cryptographic authentication; local review runners intentionally execute fixed review code. Retained for provenance."
+  },
+  {
+    "rule": "python.lang.security.audit.insecure-file-permissions.insecure-file-permissions",
+    "path": "docs/pr-evidence/pr418-localization-2026-11-03/window-3580-3599/root-cross-audit/build-root-crossaudit.py",
+    "sha256": "ce7777cd4d8f373ba60aa34a4965d4bf99435ecf79d16051736056464c24868e",
+    "count": 1,
+    "owner": "SeerrNG maintainers",
+    "expires": "2027-02-07",
+    "reason": "Historical localization evidence scripts, not loaded or executed by the application or CI. Hashing names is not cryptographic authentication; local review runners intentionally execute fixed review code. Retained for provenance."
+  },
+  {
+    "rule": "python.lang.security.audit.insecure-transport.urllib.insecure-request-object.insecure-request-object",
+    "path": "docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-550-599/runner-source.py",
+    "sha256": "a598b47f5ba601ee9b53be6a05c374981aad84b245bd67905fc83c2efc7b7fda",
+    "count": 2,
+    "owner": "SeerrNG maintainers",
+    "expires": "2027-02-07",
+    "reason": "Historical localization evidence scripts, not loaded or executed by the application or CI. Hashing names is not cryptographic authentication; local review runners intentionally execute fixed review code. Retained for provenance."
+  },
+  {
+    "rule": "python.lang.security.audit.insecure-transport.urllib.insecure-request-object.insecure-request-object",
+    "path": "docs/pr-evidence/pr418-localization-2026-11-02/semantic-review-650-699/frozen-packet/runner-window-650-700.py",
+    "sha256": "4c171a3029936f94f9a338f0c2fa7e20aa11df4686ef006a1aa9e8074776b2c3",
+    "count": 2,
+    "owner": "SeerrNG maintainers",
+    "expires": "2027-02-07",
+    "reason": "Historical localization evidence scripts, not loaded or executed by the application or CI. Hashing names is not cryptographic authentication; local review runners intentionally execute fixed review code. Retained for provenance."
+  },
+  {
+    "rule": "python.lang.security.insecure-hash-algorithms.insecure-hash-algorithm-sha1",
+    "path": "docs/pr-evidence/pr418-localization-2026-11-02/window-1700-1799/cross-review/generate_crossreview.py",
+    "sha256": "6d7685ab0d595f7fe1c406091c8d4912b3ff3b5edfae21e79d8d79618adb7f74",
+    "count": 1,
+    "owner": "SeerrNG maintainers",
+    "expires": "2027-02-07",
+    "reason": "Historical localization evidence scripts, not loaded or executed by the application or CI. Hashing names is not cryptographic authentication; local review runners intentionally execute fixed review code. Retained for provenance."
+  },
+  {
+    "rule": "python.lang.security.insecure-hash-algorithms.insecure-hash-algorithm-sha1",
+    "path": "docs/pr-evidence/pr418-localization-2026-11-02/window-2800-2899/crossreview/build_crossreview.py",
+    "sha256": "30a9ad44556789de95f345e9a0e0b5659b15ab6abd5285493849fdf4c262eb39",
+    "count": 1,
+    "owner": "SeerrNG maintainers",
+    "expires": "2027-02-07",
+    "reason": "Historical localization evidence scripts, not loaded or executed by the application or CI. Hashing names is not cryptographic authentication; local review runners intentionally execute fixed review code. Retained for provenance."
+  },
+  {
+    "rule": "python.lang.security.insecure-hash-algorithms.insecure-hash-algorithm-sha1",
+    "path": "docs/pr-evidence/pr418-localization-2026-11-03/window3320-3339/independent-audit/audit.py",
+    "sha256": "bba7f9c223f18dea3db9c188667c30d423095f540dd28ba8c1fefec6f45544aa",
+    "count": 1,
+    "owner": "SeerrNG maintainers",
+    "expires": "2027-02-07",
+    "reason": "Historical localization evidence scripts, not loaded or executed by the application or CI. Hashing names is not cryptographic authentication; local review runners intentionally execute fixed review code. Retained for provenance."
+  },
+  {
+    "rule": "python.lang.security.insecure-hash-algorithms.insecure-hash-algorithm-sha1",
+    "path": "docs/pr-evidence/pr418-localization-2026-11-04/w3820-3839-independent-cross/cross-audit/verify-cross-audit.py",
+    "sha256": "7ab08e698abba8b048619b254001adf6aff34c58ab64242851eac505104da9a7",
+    "count": 1,
+    "owner": "SeerrNG maintainers",
+    "expires": "2027-02-07",
+    "reason": "Historical localization evidence scripts, not loaded or executed by the application or CI. Hashing names is not cryptographic authentication; local review runners intentionally execute fixed review code. Retained for provenance."
+  }
+]

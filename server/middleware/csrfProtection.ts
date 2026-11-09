@@ -1,4 +1,5 @@
 import csurf from '@dr.pogodin/csurf';
+import { authenticateClientApiKey } from '@server/lib/clientApiKeys';
 import { isSlackActionCallbackRequest } from '@server/lib/notifications/slackActions';
 import type { Request, RequestHandler } from 'express';
 
@@ -33,14 +34,45 @@ export const isJellyfinBridgeAuthRequest = (
   req.method === 'POST' &&
   /(?:^|\/)api\/v1\/auth\/jellyfin\/bridge\/?$/u.test(req.path);
 
+// OIDC form_post is authenticated by the callback's signed correlation cookie,
+// state, nonce and provider binding. An identity provider cannot supply our
+// browser CSRF token. JSON callbacks and all other auth endpoints stay guarded.
+export const isOidcFormPostCallback = (req: Request): boolean =>
+  req.method === 'POST' &&
+  /^\/api\/v1\/auth\/oidc\/callback\/[a-zA-Z0-9_-]+\/?$/u.test(req.path) &&
+  Boolean(req.is('application/x-www-form-urlencoded'));
+
 export const csrfProtection = (): RequestHandler => {
   const httpProtection = createCsrfProtection(false);
   const httpsProtection = createCsrfProtection(true);
 
   return (req, res, next) => {
+    // A scoped bearer token has no ambient browser authority. Validate both
+    // the token and its exact route scope before bypassing the cookie guard.
+    const clientKey = req.header('X-API-Key');
+    if (clientKey?.startsWith('sngc_')) {
+      void authenticateClientApiKey(
+        clientKey,
+        req.method,
+        req.path.replace(/^\/api\/v1(?=\/)/, '')
+      )
+        .then((actor) =>
+          actor
+            ? next()
+            : res.status(401).json({
+                message: 'Invalid API key or insufficient token scope.',
+              })
+        )
+        .catch(next);
+      return;
+    }
     // Jellyfin bridge credentials and Slack request signatures are validated
     // by their exact callback routes instead of a browser CSRF cookie.
-    if (isJellyfinBridgeAuthRequest(req) || isSlackActionCallbackRequest(req)) {
+    if (
+      isJellyfinBridgeAuthRequest(req) ||
+      isSlackActionCallbackRequest(req) ||
+      isOidcFormPostCallback(req)
+    ) {
       return next();
     }
 

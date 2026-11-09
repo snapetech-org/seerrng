@@ -62,10 +62,12 @@ spec:
             - name: http
               containerPort: 5055
               protocol: TCP
+            - name: https
+              containerPort: {{ .Values.service.httpsPort }}
+              protocol: TCP
           livenessProbe:
-            httpGet:
-              path: /api/v1/settings/public
-              port: http
+            exec:
+              command: [node, /app/scripts/healthcheck.mjs, /api/v1/status/ready]
             {{- if .Values.probes.livenessProbe.initialDelaySeconds }}
             initialDelaySeconds: {{ .Values.probes.livenessProbe.initialDelaySeconds }}
             {{- end }}
@@ -82,9 +84,8 @@ spec:
             failureThreshold: {{ .Values.probes.livenessProbe.failureThreshold }}
             {{- end }}
           readinessProbe:
-            httpGet:
-              path: /api/v1/status/ready
-              port: http
+            exec:
+              command: [node, /app/scripts/healthcheck.mjs, /api/v1/status/ready]
             {{- if .Values.probes.readinessProbe.initialDelaySeconds }}
             initialDelaySeconds: {{ .Values.probes.readinessProbe.initialDelaySeconds }}
             {{- end }}

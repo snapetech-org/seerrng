@@ -114,10 +114,21 @@ test('default workload denies ambient Kubernetes credentials and privileges', ()
   );
   assert.equal(podSpec.volumes[1].emptyDir.sizeLimit, '64Mi');
   assert.equal(podSpec.volumes[2].emptyDir.sizeLimit, '256Mi');
-  assert.equal(container.livenessProbe.httpGet.path, '/api/v1/settings/public');
-  assert.equal(container.readinessProbe.httpGet.path, '/api/v1/status/ready');
-  assert.equal(container.startupProbe.httpGet.path, '/api/v1/settings/public');
-  assert.equal(container.startupProbe.httpGet.port, 'http');
+  assert.deepEqual(container.livenessProbe.exec.command, [
+    'node',
+    '/app/scripts/healthcheck.mjs',
+    '/api/v1/status/ready',
+  ]);
+  assert.deepEqual(container.readinessProbe.exec.command, [
+    'node',
+    '/app/scripts/healthcheck.mjs',
+    '/api/v1/status/ready',
+  ]);
+  assert.deepEqual(container.startupProbe.exec.command, [
+    'node',
+    '/app/scripts/healthcheck.mjs',
+    '/api/v1/status/ready',
+  ]);
   assert.equal(container.startupProbe.periodSeconds, 5);
   assert.equal(container.startupProbe.failureThreshold, 120);
 });
@@ -263,4 +274,45 @@ test('extra resource schema rejects malformed Kubernetes objects', () => {
       /extraResources/u
     );
   }
+});
+
+test('chart exposes the configured HTTPS listener as well as the redirect listener', () => {
+  const documents = renderChart('--set', 'service.httpsPort=5443');
+  const service = findDocument(documents, 'Service');
+  assert.ok(
+    service.spec.ports.some(
+      (port) =>
+        port.name === 'https' &&
+        port.port === 5443 &&
+        port.targetPort === 'https'
+    )
+  );
+  const workload = findDocument(documents, 'StatefulSet');
+  assert.ok(
+    workload.spec.template.spec.containers[0].ports.some(
+      (port) => port.name === 'https' && port.containerPort === 5443
+    )
+  );
+});
+
+test('Ingress and Gateway routes can select the native TLS service port', () => {
+  const documents = renderChart(
+    '--set',
+    'ingress.enabled=true',
+    '--set',
+    'ingress.backendPort=5056',
+    '--set',
+    'route.main.enabled=true',
+    '--set',
+    'route.main.backendPort=5056'
+  );
+  assert.equal(
+    findDocument(documents, 'Ingress').spec.rules[0].http.paths[0].backend
+      .service.port.number,
+    5056
+  );
+  assert.equal(
+    findDocument(documents, 'HTTPRoute').spec.rules[0].backendRefs[0].port,
+    5056
+  );
 });

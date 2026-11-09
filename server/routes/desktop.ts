@@ -4,9 +4,15 @@ import { getRepository } from '@server/datasource';
 import { DesktopAuthTicket } from '@server/entity/DesktopAuthTicket';
 import { Session } from '@server/entity/Session';
 import { User } from '@server/entity/User';
+import { runWithConfigurationAdmission } from '@server/lib/configurationAdmission';
 import { getJellyfinAuthAuthorityKey } from '@server/lib/mediaServerAuthority';
+import { Permission } from '@server/lib/permissions';
 import { getSettings } from '@server/lib/settings';
-import { getUserCredentialVersion } from '@server/lib/userSecurityMutation';
+import {
+  getUserCredentialVersion,
+  runUserSecurityMutationWithActor,
+  UserMutationActorUnauthorizedError,
+} from '@server/lib/userSecurityMutation';
 import { isAuthenticated } from '@server/middleware/auth';
 import { requestUsesSecureTransport } from '@server/middleware/csrfProtection';
 import { ApiError } from '@server/types/error';
@@ -354,31 +360,59 @@ router.post('/auth-tickets/redeem', async (req, res, next) => {
       return res.status(401).json({ code: 'token_invalid' });
     }
 
-    // Consume only after Jellyfin identity validation; retry transient network
-    // failures with the same ticket while it is still within its short TTL.
-    const consumed = await repository
-      .createQueryBuilder()
-      .update(DesktopAuthTicket)
-      .set({ consumedAt: new Date() })
-      .where('id = :id AND "consumedAt" IS NULL AND "expiresAt" > :now', {
-        id: ticket.id,
-        now: new Date(),
-      })
-      .execute();
-    if (consumed.affected !== 1) {
-      return res.status(409).json({ code: 'ticket_used' });
-    }
+    const verifiedServerId = linkedIdentity.ServerId;
+    // Network validation runs outside locks. Re-admit all local authority and
+    // consume the ticket under the same locks as credential/config mutations.
+    return await runUserSecurityMutationWithActor(
+      ticket.userId,
+      ticket.userId,
+      Permission.ADMIN,
+      (actor) =>
+        runWithConfigurationAdmission('jellyfin', async () => {
+          const activeSession = await getActiveStoredSession(ticket.sessionId);
+          if (
+            activeSession?.userId !== ticket.userId ||
+            String(activeSession.credentialVersion ?? 0) !==
+              ticket.credentialVersion ||
+            actor.jellyfinAuthToken !== user.jellyfinAuthToken ||
+            actor.jellyfinDeviceId !== user.jellyfinDeviceId ||
+            normalizeJellyfinGuid(actor.jellyfinUserId) !== normalizedUserId ||
+            getSettings().main.mediaServerType !== MediaServerType.JELLYFIN ||
+            getJellyfinAuthAuthorityKey(getSettings()) !==
+              ticket.jellyfinAuthorityKey
+          )
+            return res.status(401).json({ code: 'session_expired' });
+          const consumed = await repository
+            .createQueryBuilder()
+            .update(DesktopAuthTicket)
+            .set({ consumedAt: new Date() })
+            .where('id = :id AND "consumedAt" IS NULL AND "expiresAt" > :now', {
+              id: ticket.id,
+              now: new Date(),
+            })
+            .execute();
+          if (consumed.affected !== 1) {
+            return res.status(409).json({ code: 'ticket_used' });
+          }
 
-    return res.status(200).json({
-      serverUrl: hosts.serverUrl,
-      fallbackServerUrl: hosts.fallbackServerUrl,
-      serverId: linkedIdentity.ServerId,
-      userId: user.jellyfinUserId,
-      deviceId: user.jellyfinDeviceId,
-      accessToken: user.jellyfinAuthToken,
-      bootstrapGeneration: randomBytes(12).toString('hex'),
-    });
+          return res.status(200).json({
+            serverUrl: hosts.serverUrl,
+            fallbackServerUrl: hosts.fallbackServerUrl,
+            serverId: verifiedServerId,
+            userId: actor.jellyfinUserId,
+            deviceId: actor.jellyfinDeviceId,
+            accessToken: actor.jellyfinAuthToken,
+            bootstrapGeneration: randomBytes(12).toString('hex'),
+          });
+        }),
+      {
+        expectedCredentialVersion: Number(ticket.credentialVersion),
+        includeMediaServerCredentials: true,
+      }
+    );
   } catch (error) {
+    if (error instanceof UserMutationActorUnauthorizedError)
+      return res.status(401).json({ code: 'session_expired' });
     return next(error);
   }
 });

@@ -1,8 +1,12 @@
+import { MediaType } from '@server/constants/media';
 import { getRepository } from '@server/datasource';
 import MediaRelation, { type RelationKind } from '@server/entity/MediaRelation';
 import { getFranchise } from '@server/lib/franchise';
+import { mayAccessVideo } from '@server/lib/mediaAccess';
 import { Permission } from '@server/lib/permissions';
+import { runAuthorizedUserSecurityMutation } from '@server/lib/userSecurityMutation';
 import logger from '@server/logger';
+import { isInternalPath } from '@server/utils/internalPath';
 import type { Request } from 'express';
 import { Router } from 'express';
 import rateLimit from 'express-rate-limit';
@@ -44,6 +48,13 @@ franchiseRoutes.get<{ mediaType: string; id: string }>(
     ) {
       return res.status(404).json({ error: 'Not found.' });
     }
+    if (
+      !req.user ||
+      (req.params.mediaType === 'tv'
+        ? !(await mayAccessVideo(req.user, MediaType.TV, Number(req.params.id)))
+        : !!req.user.settings?.tvMaturityRatingLimit)
+    )
+      return res.status(404).json({ error: 'Not found.' });
     try {
       return res.status(200).json({
         ...(await getFranchise({
@@ -57,6 +68,8 @@ franchiseRoutes.get<{ mediaType: string; id: string }>(
         canCurate: canCurate(req),
       });
     } catch (error) {
+      if (error instanceof Error && 'status' in error && error.status === 404)
+        return res.status(404).json({ error: 'Not found.' });
       logger.warn('Franchise lookup failed', {
         label: 'Franchise',
         errorMessage: error instanceof Error ? error.message : String(error),
@@ -79,7 +92,12 @@ franchiseRoutes.patch<{ id: string }>('/relations/:id', async (req, res) => {
   if (typeof body.verified === 'boolean') row.verified = body.verified;
   if (typeof body.rejected === 'boolean') row.rejected = body.rejected;
   row.updatedAt = new Date();
-  return res.status(200).json(await repository.save(row));
+  return runAuthorizedUserSecurityMutation(
+    req.user!.id,
+    req.user!.id,
+    Permission.MANAGE_REQUESTS,
+    async () => res.status(200).json(await repository.save(row))
+  );
 });
 
 /** Curated cross-media links, e.g. an anime and its game or soundtrack. */
@@ -102,31 +120,37 @@ franchiseRoutes.post('/relations', async (req, res) => {
     !toType ||
     !toId ||
     !relation ||
-    (href && !href.startsWith('/'))
+    (href && !isInternalPath(href))
   ) {
     return res.status(400).json({ error: 'A valid relationship is required.' });
   }
   const repository = getRepository(MediaRelation);
-  await repository.upsert(
-    {
-      fromType,
-      fromId,
-      toType,
-      toId,
-      relation,
-      confidence: 'high',
-      evidence: text(body.evidence, 512) ?? 'Curated by an administrator',
-      source: 'curated',
-      verified: true,
-      rejected: false,
-      data: {
-        title: text(body.title, 255),
-        href,
-        imageUrl: text(body.imageUrl, 1024),
-      },
-      updatedAt: new Date(),
-    },
-    ['fromType', 'fromId', 'toType', 'toId', 'relation']
+  await runAuthorizedUserSecurityMutation(
+    req.user!.id,
+    req.user!.id,
+    Permission.MANAGE_REQUESTS,
+    () =>
+      repository.upsert(
+        {
+          fromType,
+          fromId,
+          toType,
+          toId,
+          relation,
+          confidence: 'high',
+          evidence: text(body.evidence, 512) ?? 'Curated by an administrator',
+          source: 'curated',
+          verified: true,
+          rejected: false,
+          data: {
+            title: text(body.title, 255),
+            href,
+            imageUrl: text(body.imageUrl, 1024),
+          },
+          updatedAt: new Date(),
+        },
+        ['fromType', 'fromId', 'toType', 'toId', 'relation']
+      )
   );
   return res.status(201).json({ ok: true });
 });

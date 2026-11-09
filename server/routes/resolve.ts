@@ -1,4 +1,11 @@
+import { MediaType } from '@server/constants/media';
+import type { User } from '@server/entity/User';
+import {
+  isMediaTypeEnabledForUser,
+  mayAccessVideo,
+} from '@server/lib/mediaAccess';
 import { Permission } from '@server/lib/permissions';
+import type { ResolveResponse } from '@server/lib/resolve';
 import {
   isLocalOcrAvailable,
   isVisionConfigured,
@@ -6,8 +13,13 @@ import {
   resolveInput,
   type ResolveMediaType,
 } from '@server/lib/resolve';
+import {
+  recognitionBudget,
+  RecognitionBudgetError,
+} from '@server/lib/resolve/admission';
 import { getSettings } from '@server/lib/settings';
 import logger from '@server/logger';
+import { mapWithConcurrency } from '@server/utils/concurrency';
 import express, { Router } from 'express';
 import rateLimit from 'express-rate-limit';
 
@@ -62,6 +74,45 @@ const requireRequestPermission = (
   return true;
 };
 
+export const filterResolvedCandidates = async (
+  user: User,
+  result: ResolveResponse
+): Promise<ResolveResponse> => {
+  for (const group of result.groups) {
+    const allowed = await mapWithConcurrency(
+      group.candidates,
+      4,
+      (candidate) => {
+        if (
+          !isMediaTypeEnabledForUser(
+            user,
+            candidate.formatHint ?? candidate.mediaType
+          )
+        )
+          return Promise.resolve(false);
+        if (candidate.mediaType === 'movie' || candidate.mediaType === 'tv') {
+          return mayAccessVideo(
+            user,
+            candidate.mediaType === 'movie' ? MediaType.MOVIE : MediaType.TV,
+            Number(candidate.id)
+          );
+        }
+        return Promise.resolve(true);
+      }
+    );
+    const selected =
+      group.autoSelected === undefined
+        ? undefined
+        : group.candidates[group.autoSelected];
+    group.candidates = group.candidates.filter((_, index) => allowed[index]);
+    group.autoSelected =
+      selected && group.candidates.includes(selected)
+        ? group.candidates.indexOf(selected)
+        : undefined;
+  }
+  return result;
+};
+
 /** What the share page can offer on this server. */
 resolveRoutes.get('/capabilities', async (_req, res) => {
   const settings = getSettings().recognition;
@@ -98,14 +149,17 @@ resolveRoutes.post(
     }
     try {
       return res.status(200).json(
-        await resolveInput({
-          text,
-          url,
-          isbn,
-          types: parseTypes(body.types),
-          formatHint: parseFormat(body.formatHint),
-          language: str(body.language, 16),
-        })
+        await filterResolvedCandidates(
+          req.user!,
+          await resolveInput({
+            text,
+            url,
+            isbn,
+            types: parseTypes(body.types),
+            formatHint: parseFormat(body.formatHint),
+            language: str(body.language, 16),
+          })
+        )
       );
     } catch (error) {
       logger.warn('Resolve failed', {
@@ -119,6 +173,27 @@ resolveRoutes.post(
 
 resolveRoutes.post(
   '/image',
+  (req, res, next) => {
+    if (!requireRequestPermission(req, res)) return;
+    if (!getSettings().recognition.enabled)
+      return res.status(404).json({ message: 'Not available.' });
+    try {
+      const release = recognitionBudget.acquire(req.user!.id);
+      res.locals.releaseRecognition = release;
+      // Body-parser failures and abandoned uploads must release admission;
+      // active OCR keeps its slot until the worker has actually stopped.
+      const releaseUpload = () => {
+        if (!res.locals.recognitionRunning) release();
+      };
+      res.once('finish', releaseUpload);
+      res.once('close', releaseUpload);
+      next();
+    } catch (error) {
+      if (error instanceof RecognitionBudgetError)
+        res.setHeader('Retry-After', '60');
+      next(error);
+    }
+  },
   (req, res, next) =>
     express.raw({
       type: ['image/*', 'application/octet-stream'],
@@ -133,6 +208,7 @@ resolveRoutes.post(
     if (!Buffer.isBuffer(req.body) || !req.body.length) {
       return res.status(400).json({ status: 400, message: 'Send an image.' });
     }
+    res.locals.recognitionRunning = true;
     try {
       const result = await resolveImage(req.body, {
         types: parseTypes(
@@ -148,13 +224,17 @@ resolveRoutes.post(
             'This image could not be read. Enable local OCR or an image recognition provider in settings.',
         });
       }
-      return res.status(200).json(result);
+      return res
+        .status(200)
+        .json(await filterResolvedCandidates(req.user!, result));
     } catch (error) {
       logger.warn('Image resolve failed', {
         label: 'Resolver',
         errorMessage: error instanceof Error ? error.message : String(error),
       });
       return next({ status: 503, message: 'Unable to read that image.' });
+    } finally {
+      res.locals.releaseRecognition?.();
     }
   }
 );

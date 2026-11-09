@@ -6,6 +6,9 @@ import {
 } from '@server/lib/editionCompare';
 import { getExternalRuntimeConfig } from '@server/lib/externalRuntimeConfig';
 import { Permission } from '@server/lib/permissions';
+import { runWithServarrServiceSnapshot } from '@server/lib/serviceAdmission';
+import { isUserMediaCategoryEnabled } from '@server/lib/userMediaCategories';
+import { runAuthorizedUserSecurityMutation } from '@server/lib/userSecurityMutation';
 import logger from '@server/logger';
 import { readarrServiceSupportsFormat } from '@server/utils/readarrService';
 import { Router } from 'express';
@@ -44,6 +47,8 @@ editionRoutes.get('/book', async (req, res, next) => {
       .status(400)
       .json({ status: 400, message: 'format must be ebook or audiobook.' });
   }
+  if (!isUserMediaCategoryEnabled(req.user, format))
+    return res.status(404).json({ message: 'Not found.' });
   const rawServerId = req.query.serverId;
   const serverId =
     typeof rawServerId === 'number' ||
@@ -92,6 +97,8 @@ editionRoutes.get('/book', async (req, res, next) => {
 
 /** "Collect this series with the same narrator" planning data. */
 editionRoutes.get('/series-narrators', async (req, res, next) => {
+  if (!isUserMediaCategoryEnabled(req.user, 'audiobook'))
+    return res.status(404).json({ message: 'Not found.' });
   const title = str(req.query.title, 256);
   if (!title) {
     return res.status(400).json({ status: 400, message: 'title is required.' });
@@ -134,15 +141,10 @@ editionRoutes.get('/series-narrators', async (req, res, next) => {
  * Chaptarr, which then prefers that performance for the whole series.
  */
 editionRoutes.post('/series-narrators/prefer', async (req, res) => {
-  if (
-    !req.user?.hasPermission(
-      [Permission.REQUEST_ADVANCED, Permission.MANAGE_REQUESTS],
-      { type: 'or' }
-    )
-  ) {
+  if (!req.user?.hasPermission([Permission.MANAGE_REQUESTS], { type: 'or' })) {
     return res
       .status(403)
-      .json({ error: 'Advanced request access is required.' });
+      .json({ error: 'Manage Requests access is required.' });
   }
   const body = (req.body ?? {}) as Record<string, unknown>;
   const title = str(body.title, 256);
@@ -167,7 +169,20 @@ editionRoutes.post('/series-narrators/prefer', async (req, res) => {
       authorId: parseId(body.authorId),
     });
     if (matrix) {
-      await api.setSeriesPreferredNarrator(matrix.seriesId, narrator);
+      await runAuthorizedUserSecurityMutation(
+        req.user!.id,
+        req.user!.id,
+        Permission.MANAGE_REQUESTS,
+        (actor) => {
+          if (!isUserMediaCategoryEnabled(actor, 'audiobook'))
+            throw Object.assign(new Error('Audiobooks are unavailable.'), {
+              status: 403,
+            });
+          return runWithServarrServiceSnapshot('readarr', server, () =>
+            api.setSeriesPreferredNarrator(matrix.seriesId, narrator)
+          );
+        }
+      );
       return res.status(200).json({ ok: true, seriesId: matrix.seriesId });
     }
   }

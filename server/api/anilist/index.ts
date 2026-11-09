@@ -47,6 +47,9 @@ const ANILIST_TOKEN_TTL_FALLBACK_SECONDS = 365 * 24 * 60 * 60;
 const PUBLIC_PAGE_CACHE_TTL_SECONDS = 300;
 
 const MEDIA_FIELDS = `
+  isAdult
+  genres
+  tags { name }
   id
   idMal
   title { romaji english native }

@@ -8,6 +8,7 @@ import {
 } from '@server/utils/security';
 import axios from 'axios';
 import { execFile } from 'node:child_process';
+import sharp from 'sharp';
 import { z } from 'zod';
 
 export const ALLOWED_IMAGE_TYPES = [
@@ -91,7 +92,12 @@ export const readImageLocally = async (image: Buffer): Promise<string> =>
     const child = execFile(
       'tesseract',
       ['stdin', 'stdout', '--psm', '6', '-l', 'eng'],
-      { timeout: 30_000, maxBuffer: 1024 * 1024, encoding: 'utf8' },
+      {
+        timeout: 30_000,
+        maxBuffer: 1024 * 1024,
+        encoding: 'utf8',
+        env: { ...process.env, OMP_THREAD_LIMIT: '1', OMP_NUM_THREADS: '1' },
+      },
       (error, stdout) => (error ? reject(error) : resolve(stdout))
     );
     child.stdin?.on('error', () => undefined);
@@ -124,7 +130,7 @@ const readWithAnthropic = async (
   const client = new Anthropic({
     apiKey: settings.visionApiKey,
     timeout: 60_000,
-    maxRetries: 1,
+    maxRetries: 0,
   });
   const response = await client.messages.create({
     model: settings.visionModel || 'claude-sonnet-5-5',
@@ -172,6 +178,7 @@ const readWithOpenAi = async (
     stringifySafeHttpUrl(endpoint),
     {
       model: settings.visionModel,
+      max_tokens: 2000,
       messages: [
         { role: 'system', content: SYSTEM_PROMPT },
         {
@@ -190,7 +197,7 @@ const readWithOpenAi = async (
       response_format: { type: 'json_object' },
     },
     {
-      timeout: 120_000,
+      timeout: 60_000,
       maxContentLength: 2 * 1024 * 1024,
       maxRedirects: 0,
       validateStatus: () => true,
@@ -215,42 +222,68 @@ const readWithOpenAi = async (
   return parseVisionJson(content);
 };
 
-/**
- * Reads titles from an image. The vision provider (opt-in, consented) runs
- * first when configured; otherwise local OCR. Images are never written to disk.
- */
+/** Decode and re-encode a single bounded frame before OCR or external upload. */
+export const normalizeRecognitionImage = async (
+  image: Buffer
+): Promise<Buffer> => {
+  const decoder = sharp(image, {
+    limitInputPixels: 4_000_000,
+    failOn: 'warning',
+  });
+  const metadata = await decoder.metadata();
+  if (
+    !metadata.width ||
+    !metadata.height ||
+    metadata.width * metadata.height > 4_000_000 ||
+    (metadata.pages ?? 1) > 1
+  )
+    throw new Error(
+      'Image dimensions or frame count exceed the recognition limit.'
+    );
+  return decoder
+    .rotate()
+    .resize({
+      width: 2000,
+      height: 2000,
+      fit: 'inside',
+      withoutEnlargement: true,
+    })
+    .png()
+    .toBuffer();
+};
+
+/** Local OCR first; external recognition is a consented fallback. */
 export const readImage = async (
   settings: RecognitionSettings,
   image: Buffer
 ): Promise<ImageReading | undefined> => {
-  const mediaType = sniffImageType(image);
-  if (!mediaType) return undefined;
-
+  if (!sniffImageType(image)) return undefined;
+  const normalized = await normalizeRecognitionImage(image);
+  if (settings.localOcr && (await isLocalOcrAvailable())) {
+    try {
+      const rawText = await readImageLocally(normalized);
+      if (rawText.trim())
+        return { items: [], isbns: [], rawText, usedExternalProvider: false };
+    } catch (error) {
+      logger.warn('Local OCR failed', {
+        label: 'Resolver',
+        errorMessage: error instanceof Error ? error.message : String(error),
+      });
+    }
+  }
   if (isVisionConfigured(settings)) {
     try {
       const reading =
         settings.visionProvider === 'anthropic'
-          ? await readWithAnthropic(settings, image, mediaType)
-          : await readWithOpenAi(settings, image, mediaType);
+          ? await readWithAnthropic(settings, normalized, 'image/png')
+          : await readWithOpenAi(settings, normalized, 'image/png');
       return {
         items: reading.items,
         isbns: reading.isbns,
         usedExternalProvider: true,
       };
     } catch (error) {
-      logger.warn('Vision provider failed; trying local OCR', {
-        label: 'Resolver',
-        errorMessage: error instanceof Error ? error.message : String(error),
-      });
-    }
-  }
-
-  if (settings.localOcr && (await isLocalOcrAvailable())) {
-    try {
-      const rawText = await readImageLocally(image);
-      return { items: [], isbns: [], rawText, usedExternalProvider: false };
-    } catch (error) {
-      logger.warn('Local OCR failed', {
+      logger.warn('Vision provider failed', {
         label: 'Resolver',
         errorMessage: error instanceof Error ? error.message : String(error),
       });

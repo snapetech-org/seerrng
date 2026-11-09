@@ -25,6 +25,7 @@ const tlsMode = (
 const tlsEnabled = tlsMode === 'self-signed' || tlsMode === 'provided';
 const configDirectory = process.env.CONFIG_DIRECTORY ?? '/app/config';
 const readinessPath = process.argv[2] ?? '/api/v1/status/ready';
+const expectedStatus = readinessPath === '/api/v1/settings/public' ? 200 : 204;
 const port = Number(
   tlsEnabled
     ? (process.env.SEERR_HTTPS_PORT ?? persistedTlsSettings.httpsPort ?? '5056')
@@ -92,7 +93,7 @@ const request = client.get(
   (response) => {
     response.resume();
     response.once('end', () => {
-      process.exit(response.statusCode === 204 ? 0 : 1);
+      process.exit(response.statusCode === expectedStatus ? 0 : 1);
     });
   }
 );

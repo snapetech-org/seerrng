@@ -12,7 +12,7 @@ const userSecurityMutationLock = new AsyncLock();
 const userCredentialAuthorityContext = new AsyncLocalStorage<{
   actorId: number;
   expectedCredentialVersion?: number;
-  isCurrent?: () => boolean;
+  isCurrent?: () => boolean | Promise<boolean>;
   isActive: () => boolean;
 }>();
 
@@ -46,6 +46,7 @@ const loadSecurityActor = (
   // identity/permission/version columns and never load password/reset secrets.
   return repository
     .createQueryBuilder('user')
+    .leftJoinAndSelect('user.settings', 'settings')
     .addSelect([
       'user.plexToken',
       'user.jellyfinAuthToken',
@@ -78,7 +79,7 @@ export const runWithUserCredentialVersionContext = <Result>(
 
 export const runWithUserApiKeyAuthorityContext = <Result>(
   actorId: number,
-  isCurrent: () => boolean,
+  isCurrent: () => boolean | Promise<boolean>,
   callback: () => Result,
   isActive: () => boolean = () => true
 ): Result => {
@@ -92,11 +93,11 @@ export const runWithUserApiKeyAuthorityContext = <Result>(
   );
 };
 
-const isRequestCredentialAuthorityCurrent = (
+const isRequestCredentialAuthorityCurrent = async (
   actorId: number,
   actor: User,
   explicitExpectedCredentialVersion?: number
-): boolean => {
+): Promise<boolean> => {
   const context = userCredentialAuthorityContext.getStore();
   const activeContext =
     context?.actorId === actorId && context.isActive() ? context : undefined;
@@ -106,7 +107,7 @@ const isRequestCredentialAuthorityCurrent = (
 
   return (
     isUserCredentialVersionCurrent(actor, expectedCredentialVersion) &&
-    (activeContext?.isCurrent?.() ?? true)
+    ((await activeContext?.isCurrent?.()) ?? true)
   );
 };
 
@@ -168,7 +169,7 @@ export const runUserSecurityMutation = <Result>(
       });
       if (
         !actor ||
-        !isRequestCredentialAuthorityCurrent(context.actorId, actor)
+        !(await isRequestCredentialAuthorityCurrent(context.actorId, actor))
       ) {
         throw new UserMutationActorUnauthorizedError(
           'User credentials changed before admission.'
@@ -192,11 +193,11 @@ export const runAuthorizedUserSecurityMutation = <Result>(
       const actor = await getRepository(User).findOneBy({ id: actorId });
       if (
         !actor?.hasPermission(permission, { type: 'or' }) ||
-        !isRequestCredentialAuthorityCurrent(
+        !(await isRequestCredentialAuthorityCurrent(
           actorId,
           actor,
           options.expectedCredentialVersion
-        )
+        ))
       ) {
         throw new UserMutationActorUnauthorizedError(
           'User mutation authority changed before admission.'
@@ -236,11 +237,11 @@ export const runUserSecurityReadWithActor = async <Result>(
   const actor = await loadSecurityActor(actorId, options);
   if (
     !actor ||
-    !isRequestCredentialAuthorityCurrent(
+    !(await isRequestCredentialAuthorityCurrent(
       actorId,
       actor,
       options.expectedCredentialVersion
-    ) ||
+    )) ||
     ((options.requirePermission ||
       targets.some((targetId) => targetId !== actorId)) &&
       !actor.hasPermission(
@@ -316,11 +317,11 @@ export const runUserSecurityMutationWithActor = <Result>(
     const actor = await loadSecurityActor(actorId, options);
     if (
       !actor ||
-      !isRequestCredentialAuthorityCurrent(
+      !(await isRequestCredentialAuthorityCurrent(
         actorId,
         actor,
         options.expectedCredentialVersion
-      ) ||
+      )) ||
       (targets.some((targetId) => targetId !== actorId) &&
         !actor.hasPermission(permissionForOtherUsers, { type: 'or' }))
     ) {

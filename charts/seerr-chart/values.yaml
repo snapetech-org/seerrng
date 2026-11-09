@@ -31,9 +31,8 @@ probes:
     # failureThreshold: 3
   # -- Configure startup probe
   startupProbe:
-    httpGet:
-      path: /api/v1/settings/public
-      port: http
+    exec:
+      command: [node, /app/scripts/healthcheck.mjs, /api/v1/status/ready]
     periodSeconds: 5
     timeoutSeconds: 3
     failureThreshold: 120
@@ -112,6 +111,8 @@ hostUsers: true
 priorityClassName: null
 
 service:
+  # -- HTTPS listener port. Must match SEERR_HTTPS_PORT or the persisted TLS setting.
+  httpsPort: 5056
   type: ClusterIP
   port: 80
   annotations: {}
@@ -139,6 +140,8 @@ config:
     storageClass: ''
 
 ingress:
+  # -- Backend service port. Null uses service.port; select service.httpsPort for native TLS.
+  backendPort: null
   enabled: false
   ingressClassName: ''
   annotations: {}
@@ -156,6 +159,8 @@ ingress:
 
 route:
   main:
+    # -- Backend service port. Null uses service.port; configure a BackendTLSPolicy for native TLS.
+    backendPort: null
     # -- Enables or disables the Gateway API route
     enabled: false
 
