@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useAuth } from '../auth';
 import { Section } from '../components/cards';
+import { useToast } from '../components/toast';
 import { canChooseRequestOptions } from '../components/detail';
 import { fullSeerrUrl, initials } from '../components/Shell';
 import { CAN_HOVER, useApi } from '../hooks';
@@ -58,6 +59,7 @@ function Toggle({
 
 export default function Me() {
   const { user, signOut } = useAuth();
+  const toast = useToast();
   const { prefs, set, reset, locked, seerrPublicUrl } = usePrefs();
   const quota = useApi<Quota>(user ? `/user/${user.id}/quota` : null).data;
   const full = fullSeerrUrl(seerrPublicUrl);
@@ -250,7 +252,9 @@ export default function Me() {
       <button
         className="btn btn-quiet"
         style={{ justifySelf: 'start' }}
-        onClick={signOut}
+        onClick={() =>
+          signOut().catch(() => toast('Couldn’t sign out. Try again.'))
+        }
       >
         Sign out
       </button>

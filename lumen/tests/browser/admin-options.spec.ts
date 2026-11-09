@@ -1424,6 +1424,37 @@ test('poster request asks 1080p or 4K for people who may request 4K', async ({
   await expect(sheet).toHaveCount(0);
 });
 
+test('a failed sign-out says so instead of failing silently', async ({
+  page,
+}) => {
+  const errors: string[] = [];
+  page.on('pageerror', (e) => errors.push(e.message));
+  await fixtures(page);
+  await page.route('**/api/v1/auth/logout', (route) =>
+    route.fulfill({ status: 503, json: { message: 'Unavailable' } })
+  );
+  await page.goto('/me');
+  const signOut = page.getByRole('button', { name: 'Sign out', exact: true });
+  await signOut.click();
+  await expect(page.getByText('Couldn’t sign out. Try again.')).toBeVisible();
+  await expect(signOut).toBeVisible();
+  expect(errors).toEqual([]);
+});
+
+test('signing out when the session already ended still signs out', async ({
+  page,
+}) => {
+  await fixtures(page);
+  await page.route('**/api/v1/auth/logout', (route) =>
+    route.fulfill({ status: 401, json: { message: 'Not signed in' } })
+  );
+  await page.goto('/me');
+  await page.getByRole('button', { name: 'Sign out', exact: true }).click();
+  await expect(
+    page.getByRole('button', { name: 'Sign out', exact: true })
+  ).toHaveCount(0);
+});
+
 for (const quality of ['1080p', '4K'] as const) {
   test(`tapping the already picked ${quality} quality keeps Request working`, async ({
     page,
