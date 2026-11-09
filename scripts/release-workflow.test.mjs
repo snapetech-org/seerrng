@@ -1988,3 +1988,17 @@ test('post-publication delivery survives skipped recovery ancestors but requires
     assert.ok(job.needs.includes('publish-release'));
   }
 });
+
+
+test('every main commit qualifies Lumen for automatic release publication', () => {
+  const validation = readWorkflow('lumen.yml');
+  assert.deepEqual(validation.on.push.branches, ['main']);
+  assert.equal(validation.on.push.paths, undefined);
+  assert.ok(validation.on.pull_request.paths.includes('lumen/**'));
+  const publisher = readWorkflow('lumen-release.yml');
+  const gate = publisher.jobs.validate.steps.find((step) => step.id === 'release').run;
+  assert.match(gate, /for attempt in \{1\.\.20\}/u);
+  assert.match(gate, /--commit "\$release_sha" --status success/u);
+  assert.match(gate, /sleep 15/u);
+  assert.match(gate, /publication remains blocked/u);
+});

@@ -20,7 +20,12 @@ gh workflow run lumen-release.yml --repo snapetech-org/seerrng --ref main -f tag
 ```
 
 The source tag must be on main, have the matching package version, be a public
-stable GitHub release, and have successful exact-commit Lumen validation. Native
+stable GitHub release, and have successful exact-commit Lumen validation.
+Validation starts on every main push, including backend/version-only changes;
+PR validation remains scoped to Lumen changes. The publisher waits up to twenty
+bounded checks at fifteen-second intervals for that source qualification, then
+fails closed. A release must never depend on an operator manually dispatching
+validation for an otherwise untested tag. Native
 amd64 and arm64 hosted runners each install/audit dependencies and run the real
 production-nginx tests. Packaging adds release labels; its root filesystem must
 match the tested exported image exactly. The exact packaged image is scanned

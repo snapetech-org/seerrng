@@ -43,8 +43,18 @@ jobs:
           git show "${RELEASE_TAG}:package.json" | \
             node -e 'let s="";process.stdin.on("data",d=>s+=d).on("end",()=>{if(JSON.parse(s).version!==process.env.RELEASE_TAG.slice(1))process.exit(1)})'
           release_sha="$(git rev-parse "${RELEASE_TAG}^{commit}")"
-          test "$(gh run list --repo "$GITHUB_REPOSITORY" --workflow lumen.yml \
-            --commit "$release_sha" --status success --json databaseId --jq length)" -gt 0
+          for attempt in {1..20}; do
+            if test "$(gh run list --repo "$GITHUB_REPOSITORY" --workflow lumen.yml \
+              --commit "$release_sha" --status success --json databaseId --jq length)" -gt 0; then
+              break
+            fi
+            if [[ "$attempt" == 20 ]]; then
+              echo 'The tagged source has no successful Lumen validation; publication remains blocked.' >&2
+              exit 1
+            fi
+            echo 'Waiting for the tagged source Lumen validation.'
+            sleep 15
+          done
           printf 'sha=%s\n' "$release_sha" >> "$GITHUB_OUTPUT"
   native-image:
     needs: validate

@@ -6,7 +6,6 @@ on:
     paths: ['lumen/**', '.github/workflows/lumen.yml']
   push:
     branches: [main]
-    paths: ['lumen/**', '.github/workflows/lumen.yml']
   workflow_dispatch:
 permissions:
   contents: read
