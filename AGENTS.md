@@ -45,3 +45,8 @@ code or ideas materially informed the fork. Before a release, audit every new
 upstream reference in commits, release-note fragments, and changelog entries
 for an author link and originating issue, PR, or commit link. Missing source
 credit is a release-note defect and must be fixed before publication.
+
+Also record upstream ideas that are planned, referenced, incomplete, rejected,
+withdrawn, superseded, not applicable, or not yet reviewed. Put them in a
+clearly labelled non-shipped section with an explicit disposition; never imply
+that attribution means the behavior is implemented.

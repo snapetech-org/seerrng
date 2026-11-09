@@ -6,4 +6,4 @@ action: none
 breaking: false
 ---
 
-SeerrNG now publicly links and credits 52 upstream Seerr issues and pull requests that informed fork behavior, without implying that their authors contributed directly to SeerrNG.
+SeerrNG now publicly links and credits 170 upstream Seerr issues and pull requests that informed fork behavior or maintained plans. Integrated work is separated from referenced or in-progress ideas, without implying that their authors contributed directly to SeerrNG.

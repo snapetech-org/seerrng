@@ -13,7 +13,7 @@ tags. The comparison link is the complete commit range.
 
 ### Upstream source attribution
 
-- Publicly credit 52 Seerr issues and pull requests whose upstream code, reports, suggestions, or discussions informed SeerrNG. The [source ledger](UPSTREAM_ATTRIBUTION.md) links every originating record and upstream author while making clear that those people contributed to Seerr, not directly to this fork.
+- Publicly credit 170 Seerr issues and pull requests whose upstream code, reports, suggestions, or discussions informed implemented behavior or maintained plans in SeerrNG. The [source ledger](UPSTREAM_ATTRIBUTION.md) links every originating record and upstream author, separates integrated work from referenced or in-progress ideas, and makes clear that those people contributed to Seerr, not directly to this fork.
 
 ## [3.72.26](https://github.com/snapetech-org/seerrng/compare/v3.72.25..v3.72.26) - 2026-11-09
 
