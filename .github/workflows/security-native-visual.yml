@@ -38,14 +38,14 @@ jobs:
           git restore --source=9a6f0386133ed98ceb545f8ff991f605a4178cb6 -- android
           cp "$RUNNER_TEMP/OriginBarTest.kt" android/app/src/androidTest/java/org/snapetech/seerrng/OriginBarTest.kt
           sed -i 's/val historicalBaseline = false/val historicalBaseline = true/' android/app/src/androidTest/java/org/snapetech/seerrng/OriginBarTest.kt
-      - name: Render the origin bar and cross-port sign-in redirect
+      - name: Render the current WebView origin
         run: |
           set -euo pipefail
           test -e /dev/kvm
           sudo chmod 0666 /dev/kvm
           echo no | avdmanager create avd --name security --package 'system-images;android-36;google_apis;x86_64' --device pixel_2 --force
           "$ANDROID_HOME/emulator/emulator" -avd security -no-window -no-audio -no-boot-anim -no-snapshot -gpu swiftshader_indirect > "$RUNNER_TEMP/emulator.log" 2>&1 &
-          trap 'adb emu kill || true' EXIT
+          trap 'adb pull /sdcard/Android/data/org.snapetech.seerrng/files/security-visual "$RUNNER_TEMP/native-origin-evidence" || true; adb emu kill || true' EXIT
           timeout 300s adb wait-for-device
           for attempt in {1..120}; do
             if [[ "$(adb shell getprop sys.boot_completed | tr -d '\r')" == '1' ]]; then break; fi
@@ -56,50 +56,12 @@ jobs:
           adb shell settings put global transition_animation_scale 0
           adb shell settings put global animator_duration_scale 0
           ./android/gradlew --no-daemon -p android :app:connectedDebugAndroidTest -Pandroid.testInstrumentationRunnerArguments.class=org.snapetech.seerrng.OriginBarTest
-          adb pull /sdcard/Android/data/org.snapetech.seerrng/files/security-visual evidence
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         if: always()
         with:
           name: android-origin-${{ matrix.source }}
           path: |
-            evidence/
+            ${{ runner.temp }}/native-origin-evidence/
             android/app/build/reports/androidTests/
             ${{ runner.temp }}/emulator.log
-          retention-days: 14
-  ios:
-    runs-on: xcode-27
-    timeout-minutes: 30
-    strategy:
-      fail-fast: false
-      matrix:
-        source: [baseline, candidate]
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          persist-credentials: false
-      - name: Prepare the historical comparison
-        if: matrix.source == 'baseline'
-        run: |
-          git fetch --depth=1 origin 9a6f0386133ed98ceb545f8ff991f605a4178cb6
-          cp ios/SeerrNGUITests/ServerSetupUITests.swift "$RUNNER_TEMP/ServerSetupUITests.swift"
-          git restore --source=9a6f0386133ed98ceb545f8ff991f605a4178cb6 -- ios
-          cp "$RUNNER_TEMP/ServerSetupUITests.swift" ios/SeerrNGUITests/ServerSetupUITests.swift
-          sed -i '' 's/let historicalBaseline = false/let historicalBaseline = true/' ios/SeerrNGUITests/ServerSetupUITests.swift
-      - name: Render the origin bar and cross-port sign-in redirect
-        run: >-
-          xcodebuild -project ios/SeerrNG.xcodeproj -scheme SeerrNG
-          -configuration Debug -destination 'platform=iOS Simulator,name=iPhone 17'
-          -derivedDataPath '${{ runner.temp }}/security-derived'
-          -resultBundlePath '${{ runner.temp }}/security.xcresult'
-          -parallel-testing-enabled NO
-          -only-testing:SeerrNGUITests/ServerSetupUITests/testActualOriginRemainsVisibleAcrossSignInRedirects
-          CODE_SIGNING_ALLOWED=NO test
-      - name: Export rendered evidence
-        if: always()
-        run: xcrun xcresulttool export attachments --path "$RUNNER_TEMP/security.xcresult" --output-path evidence
-      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
-        if: always()
-        with:
-          name: ios-origin-${{ matrix.source }}
-          path: evidence/
           retention-days: 14

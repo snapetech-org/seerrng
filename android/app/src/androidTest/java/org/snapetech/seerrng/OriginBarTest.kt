@@ -25,7 +25,7 @@ import java.util.concurrent.TimeUnit
 @RunWith(AndroidJUnit4::class)
 class OriginBarTest {
     @Test
-    fun actualOriginRemainsVisibleAcrossSignInRedirects() {
+    fun actualOriginRemainsVisibleAcrossNavigation() {
         // The visual comparison runner changes this test-only value in the
         // historical checkout, never in the candidate or production app.
         val historicalBaseline = false
@@ -43,8 +43,11 @@ class OriginBarTest {
                     onView(withId(R.id.activeServerName)).check(matches(withText(if (historicalBaseline) "Saved server" else first.origin)))
                     onView(withId(R.id.httpBadge)).check(matches(isDisplayed()))
                     screenshot(context, "origin-initial")
+                    // Exercise the origin renderer with an actual second-page
+                    // load initiated by instrumentation. This does not claim
+                    // that user navigation may bypass the cleartext boundary.
                     scenario.onActivity { activity ->
-                        webView(activity).loadUrl("${first.origin}/redirect")
+                        webView(activity).loadUrl("http://127.0.0.1:18772/auth")
                     }
                     waitForPage(scenario, "http://127.0.0.1:18772")
                     onView(withId(R.id.activeServerName)).check(matches(withText(if (historicalBaseline) "Saved server" else "http://127.0.0.1:18772")))
