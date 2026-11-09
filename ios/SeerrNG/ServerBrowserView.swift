@@ -11,11 +11,13 @@ final class WebViewState: ObservableObject {
     weak var webView: WKWebView?
 
     func refresh(_ webView: WKWebView) {
-        self.webView = webView
-        currentURL = webView.url
-        progress = webView.estimatedProgress
-        canGoBack = webView.canGoBack
-        canGoForward = webView.canGoForward
+        // A callback from a previously selected server must not replace the
+        // active browser's address or controls. Publish actual changes only.
+        guard self.webView === webView else { return }
+        if currentURL != webView.url { currentURL = webView.url }
+        if progress != webView.estimatedProgress { progress = webView.estimatedProgress }
+        if canGoBack != webView.canGoBack { canGoBack = webView.canGoBack }
+        if canGoForward != webView.canGoForward { canGoForward = webView.canGoForward }
     }
 }
 
@@ -169,7 +171,9 @@ private struct ServerWebView: UIViewRepresentable {
         if #available(iOS 16.4, *) {
             webView.isInspectable = _isDebugAssertConfiguration()
         }
-        state.refresh(webView)
+        // Attaching the weak handle does not publish during SwiftUI rendering.
+        // Initial KVO callbacks schedule state publication on the next turn.
+        state.webView = webView
         context.coordinator.observe(webView)
         context.coordinator.load(url, in: webView)
         return webView
@@ -177,7 +181,6 @@ private struct ServerWebView: UIViewRepresentable {
 
     func updateUIView(_ webView: WKWebView, context: Context) {
         context.coordinator.parent = self
-        state.refresh(webView)
         context.coordinator.load(url, in: webView)
     }
 
@@ -198,16 +201,16 @@ private struct ServerWebView: UIViewRepresentable {
 
         func observe(_ webView: WKWebView) {
             observations = [
-                webView.observe(\.url, options: [.new]) { [weak self] view, _ in
+                webView.observe(\.url, options: [.initial, .new]) { [weak self] view, _ in
                     Task { @MainActor in self?.parent.state.refresh(view) }
                 },
-                webView.observe(\.estimatedProgress, options: [.new]) { [weak self] view, _ in
+                webView.observe(\.estimatedProgress, options: [.initial, .new]) { [weak self] view, _ in
                     Task { @MainActor in self?.parent.state.refresh(view) }
                 },
-                webView.observe(\.canGoBack, options: [.new]) { [weak self] view, _ in
+                webView.observe(\.canGoBack, options: [.initial, .new]) { [weak self] view, _ in
                     Task { @MainActor in self?.parent.state.refresh(view) }
                 },
-                webView.observe(\.canGoForward, options: [.new]) { [weak self] view, _ in
+                webView.observe(\.canGoForward, options: [.initial, .new]) { [weak self] view, _ in
                     Task { @MainActor in self?.parent.state.refresh(view) }
                 },
             ]
