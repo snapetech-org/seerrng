@@ -27,7 +27,9 @@ final class ServerSetupUITests: XCTestCase {
         let menu = app.buttons["activeServerMenu"]
         XCTAssertTrue(menu.label.contains(historicalBaseline ? "Saved server" : "http://127.0.0.1:18771"))
         captureOrigin("origin-initial", app: app)
-        app.webViews.links["Continue sign-in"].tap()
+        // Page-initiated redirects may stay embedded. Cross-origin hyperlinks
+        // deliberately require the separate external-link confirmation.
+        app.webViews.buttons["Continue sign-in"].tap()
         XCTAssertTrue(app.webViews.staticTexts["Redirected origin fixture"].waitForExistence(timeout: 20))
         XCTAssertTrue(menu.label.contains(historicalBaseline ? "Saved server" : "http://127.0.0.1:18772"))
         XCTAssertTrue(app.staticTexts["HTTP connection is not encrypted"].exists)
@@ -181,7 +183,7 @@ private final class OriginFixtureServer {
             connection.start(queue: self.queue)
             connection.receive(minimumIncompleteLength: 1, maximumLength: 8192) { data, _, _, _ in
                 let request = String(data: data ?? Data(), encoding: .utf8) ?? ""
-                let body = "<html><meta name=viewport content='width=device-width'><body style='padding:72px 20px;font:18px sans-serif'><h1>\(port == target ? "Redirected origin fixture" : "Origin fixture")</h1><p>Check the server address above before signing in.</p><a href='/redirect'>Continue sign-in</a></body></html>"
+                let body = "<html><meta name=viewport content='width=device-width'><body style='padding:72px 20px;font:18px sans-serif'><h1>\(port == target ? "Redirected origin fixture" : "Origin fixture")</h1><p>Check the server address above before signing in.</p><button onclick=\"location.href='/redirect'\">Continue sign-in</button></body></html>"
                 let response = request.hasPrefix("GET /redirect ")
                     ? "HTTP/1.1 302 Found\r\nLocation: http://127.0.0.1:\(target)/auth\r\nContent-Length: 0\r\nConnection: close\r\n\r\n"
                     : "HTTP/1.1 200 OK\r\nContent-Type: text/html\r\nContent-Length: \(body.utf8.count)\r\nConnection: close\r\n\r\n\(body)"
