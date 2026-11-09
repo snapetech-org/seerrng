@@ -91,7 +91,15 @@ function genreArt(list: Genre[]): [Genre, string | undefined][] {
 }
 
 // a row that failed says so instead of loading forever
-const RowError = () => <div className="empty">Couldn’t load this row</div>;
+// a row that failed for a passing reason (rate limit, outage) can be asked again
+const RowError = ({ retry }: { retry: () => void }) => (
+  <div className="empty">
+    <span>Couldn’t load this row</span>
+    <button className="btn btn-tonal btn-sm" onClick={retry}>
+      Retry
+    </button>
+  </div>
+);
 
 const CHIPS: [IconName, string, string][] = [
   ['film', 'Movies', '/movies'],
@@ -202,7 +210,15 @@ export default function Discover() {
               ))}
             </Rail>
           ) : trending.error ? (
-            <div className="empty">Couldn’t load popular titles</div>
+            <div className="empty">
+              <span>Couldn’t load popular titles</span>
+              <button
+                className="btn btn-tonal btn-sm"
+                onClick={trending.reload}
+              >
+                Retry
+              </button>
+            </div>
           ) : trending.data ? (
             <div className="empty">No popular titles available</div>
           ) : (
@@ -245,7 +261,7 @@ export default function Discover() {
               ))}
             </Rail>
           ) : movies.error ? (
-            <RowError />
+            <RowError retry={movies.reload} />
           ) : (
             <RailSkeleton />
           )}
@@ -261,7 +277,7 @@ export default function Discover() {
               ))}
             </Rail>
           ) : series.error ? (
-            <RowError />
+            <RowError retry={series.reload} />
           ) : (
             <RailSkeleton />
           )}
@@ -279,7 +295,7 @@ export default function Discover() {
                 ))}
               </Rail>
             ) : audio.error ? (
-              <RowError />
+              <RowError retry={audio.reload} />
             ) : (
               <RailSkeleton sq />
             )}
@@ -298,7 +314,7 @@ export default function Discover() {
               ))}
             </Rail>
           ) : books.error ? (
-            <RowError />
+            <RowError retry={books.reload} />
           ) : (
             <RailSkeleton />
           )}
@@ -318,7 +334,7 @@ export default function Discover() {
               ))}
             </Rail>
           ) : soon.error ? (
-            <RowError />
+            <RowError retry={soon.reload} />
           ) : (
             <RailSkeleton />
           )}

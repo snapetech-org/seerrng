@@ -7,7 +7,7 @@ The rules describe asset roles, not particular pages, title strings, example med
 ## Interface source fidelity
 
 The owner adopted Lumen (P's original dark presentation) as the default entry
-for existing and new users on November 8, 2026. Ship its actual frontend in the
+for new installs on November 8, 2026. Issue #629 corrected the upgrade behavior: existing installs retain native home access until an administrator explicitly selects included Lumen or a configured companion in Settings → General. Ship its actual frontend in the
 normal app build; a recoloured native theme is not a substitute. Full SeerrNG
 remains accessible through Lumen's existing full-interface link. PersiusNG is
 the native fallback default, adopted once on upgrade; later explicit native

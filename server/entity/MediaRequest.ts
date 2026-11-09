@@ -24,6 +24,7 @@ import MediaServiceStatus from '@server/entity/MediaServiceStatus';
 import OverrideRule from '@server/entity/OverrideRule';
 import type { MediaRequestBody } from '@server/interfaces/api/requestInterfaces';
 import type { SeasonEpisodeSelection } from '@server/interfaces/api/seasonInterfaces';
+import { projectBookFileObservations } from '@server/lib/bookFileObservations';
 import {
   allowedBookLanguages,
   bookLanguageAllowed,
@@ -1765,11 +1766,17 @@ export class MediaRequest {
               request.preferredEditionId === preferredEditionId
           )
         : destinationRequests;
+      const observedBookMedia =
+        (await projectBookFileObservations([media])).get(media.id) ?? media;
       const isLegacyBookTargetAvailable = (
         target: MediaRequestServiceTarget
       ): boolean =>
         !hasEditionChoice &&
-        isBookDestinationFileAvailable(media, target, destinationRequests);
+        isBookDestinationFileAvailable(
+          observedBookMedia,
+          target,
+          destinationRequests
+        );
       const uncoveredBookTargets = bookTargets.filter(
         (target) =>
           !isLegacyBookTargetAvailable(target) &&

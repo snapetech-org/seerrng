@@ -83,30 +83,43 @@ export const Glyph = ({ s }: { s: Stat }) =>
     </span>
   ) : null;
 
+// one request at a time: a double click must not send it twice (the second comes back as an
+// error after the first worked). Every request button on a card shares the same guard.
+function useBusy(run: () => void | Promise<void>) {
+  const [busy, setBusy] = useState(false);
+  const running = useRef(false);
+  const start = async () => {
+    if (running.current) return;
+    running.current = true;
+    setBusy(true);
+    try {
+      await run();
+    } finally {
+      running.current = false;
+      setBusy(false);
+    }
+  };
+  return [start, busy] as const;
+}
+
 // touch screens can't hover, so posters get a small round request button instead of the overlay
 // (CSS shows it only where there's no mouse; the overlay keeps working on desktop)
 export function TouchQuick({
   label,
   onClick,
+  busy = false,
 }: {
   label: string;
   onClick: () => Promise<void>;
+  busy?: boolean;
 }) {
-  const [busy, setBusy] = useState(false);
   return (
     <button
       className="tq"
       aria-label={label}
       title={label}
       disabled={busy}
-      onClick={async () => {
-        setBusy(true);
-        try {
-          await onClick();
-        } finally {
-          setBusy(false);
-        }
-      }}
+      onClick={() => void onClick()}
     >
       <Icon name="plus" />
     </button>
@@ -179,6 +192,7 @@ export function TitleCard({ it, meta }: { it: TitleResult; meta?: string }) {
       `Requested ${titleOf(it)}${is4k ? ' in 4K' : ''}${tv ? ' · entire series' : ''}`
     );
   });
+  const [request, busy] = useBusy(quick.request);
   let qb: ReactNode;
   const plex = plexUrl(it.mediaInfo);
   if (s?.k === 'ok')
@@ -213,7 +227,7 @@ export function TitleCard({ it, meta }: { it: TitleResult; meta?: string }) {
   else
     qb = (
       <>
-        <button className="qbtn go" onClick={quick.request}>
+        <button className="qbtn go" disabled={busy} onClick={request}>
           <Icon name="plus" size="sm" />
           {unreleased ? 'Request early' : 'Request'}
         </button>
@@ -240,7 +254,8 @@ export function TitleCard({ it, meta }: { it: TitleResult; meta?: string }) {
         {prefs.hoverRequest && !s && (!tv || prefs.wholeSeriesDefault) && (
           <TouchQuick
             label={`Request ${titleOf(it)}${tv ? ' (entire series)' : ''}`}
-            onClick={quick.request}
+            onClick={request}
+            busy={busy}
           />
         )}
         {prefs.hoverRequest && (
@@ -292,6 +307,7 @@ export function BookCard({ b }: { b: BookResult }) {
       toast(e instanceof Error ? e.message : 'Request failed');
     }
   };
+  const [request, busy] = useBusy(go);
   const href = `/book/${encodeURIComponent(b.id)}${audio ? '?f=audio' : ''}`;
   const series = b.series?.[0];
   return (
@@ -303,7 +319,8 @@ export function BookCard({ b }: { b: BookResult }) {
         {prefs.hoverRequest && !s && straight && (
           <TouchQuick
             label={`Request ${b.title} (${audio ? 'audiobook' : 'ebook'})`}
-            onClick={go}
+            onClick={request}
+            busy={busy}
           />
         )}
         {prefs.hoverRequest && (
@@ -342,7 +359,7 @@ export function BookCard({ b }: { b: BookResult }) {
                   {s.word}
                 </button>
               ) : straight ? (
-                <button className="qbtn go" onClick={go}>
+                <button className="qbtn go" disabled={busy} onClick={request}>
                   <Icon name="plus" size="sm" />
                   {audio ? 'Request audiobook' : 'Request ebook'}
                 </button>
@@ -402,6 +419,7 @@ export function FeatCard({
       `Requested ${titleOf(it)}${is4k ? ' in 4K' : ''}${tv ? ' · entire series' : ''}`
     );
   });
+  const [request, busy] = useBusy(quick.request);
   return (
     <div className="feat">
       {quick.sheet}
@@ -452,7 +470,7 @@ export function FeatCard({
               Choose seasons
             </Link>
           ) : (
-            <button className="btn go" onClick={quick.request}>
+            <button className="btn go" disabled={busy} onClick={request}>
               <Icon name="plus" size="sm" />
               {tv ? 'Request series' : 'Request'}
             </button>

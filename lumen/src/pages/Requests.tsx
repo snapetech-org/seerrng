@@ -68,7 +68,36 @@ interface RequestListPage {
 }
 let statusProjectionSupported = true;
 let statusFilterSupported = true;
+// SeerrNG checks at most 32 title variants (HD and 4K) per answer against the viewer's own media
+// server access and reports the rest as not available, so a page of 100 showed most titles as
+// missing. Ask in pages small enough to stay inside that and join them.
+const SAFE_TAKE = 15;
 async function requestList(path: string): Promise<RequestListPage> {
+  const [base, query = ''] = path.split('?');
+  const params = new URLSearchParams(query);
+  const take = Number(params.get('take') || 0);
+  if (!(take > SAFE_TAKE)) return requestListOnce(path);
+  const skip = Number(params.get('skip') || 0);
+  const pages: RequestListPage[] = [];
+  for (let offset = 0; offset < take; offset += SAFE_TAKE) {
+    const size = Math.min(SAFE_TAKE, take - offset);
+    params.set('take', String(size));
+    params.set('skip', String(skip + offset));
+    const page = await requestListOnce(`${base}?${params}`);
+    pages.push(page);
+    if (page.results.length < size) break;
+  }
+  const total = pages[pages.length - 1].pageInfo?.results;
+  return {
+    pageInfo:
+      total === undefined
+        ? pages[0].pageInfo
+        : { results: total, pages: Math.max(1, Math.ceil(total / take)) },
+    results: pages.flatMap((p) => p.results),
+    authoritativeStatus: pages.every((p) => p.authoritativeStatus) || undefined,
+  };
+}
+async function requestListOnce(path: string): Promise<RequestListPage> {
   const filter = new URLSearchParams(path.split('?')[1]).get('filter');
   if (
     statusFilterSupported &&
@@ -438,7 +467,13 @@ const fetchBook = (bid: string) => {
 // movie/series lookups share SeerrNG's 60-a-minute metadata limit with the rest of the app: after
 // a 429, stop for this visit so browsing keeps working (the rest are named next visit)
 let limited = false;
-async function describeAll(list: RequestItem[]): Promise<Row[]> {
+// A slow lookup (a title SeerrNG has to fetch, a book while the metadata service is busy) shouldn't
+// hold back the whole list: `partial` gets the rows at once, with names already known or a plain
+// label, and again as lookups finish. Types without a plain label wait for their lookup.
+async function describeAll(
+  list: RequestItem[],
+  partial?: (rows: Row[]) => void
+): Promise<Row[]> {
   const generation = sessionGeneration();
   const out: Row[] = new Array(list.length);
   let next = 0;
@@ -446,6 +481,24 @@ async function describeAll(list: RequestItem[]): Promise<Row[]> {
   bookLimited = false;
   bookCalls.clear();
   limited = false;
+  const first = list.map((r): Row | null =>
+    described.has(r.id)
+      ? { ...described.get(r.id)!, r }
+      : r.type === 'book'
+        ? bookPlaceholder(r)
+        : r.type === 'movie' || r.type === 'tv'
+          ? titlePlaceholder(r)
+          : null
+  );
+  const showsEarly = !!partial && first.every(Boolean);
+  let finished = false;
+  let timer: number | undefined;
+  const show = () => {
+    timer = undefined;
+    if (finished || generation !== sessionGeneration()) return;
+    partial!(first.map((row, i) => out[i] || row!));
+  };
+  if (showsEarly) show();
   const worker = async () => {
     while (next < list.length && generation === sessionGeneration()) {
       const i = next++;
@@ -458,9 +511,16 @@ async function describeAll(list: RequestItem[]): Promise<Row[]> {
           ? { ...described.get(r.id)!, r }
           : titlePlaceholder(r);
       else out[i] = await describe(r);
+      if (showsEarly && timer === undefined)
+        timer = window.setTimeout(show, 250);
     }
   };
-  await Promise.all(Array.from({ length: 4 }, worker));
+  try {
+    await Promise.all(Array.from({ length: 4 }, worker));
+  } finally {
+    finished = true;
+    window.clearTimeout(timer);
+  }
   if (generation === sessionGeneration()) saveDescribed();
   return out;
 }
@@ -772,7 +832,8 @@ export default function Requests() {
     Promise.all([pending, started, list(show, take)])
       .then(async ([waitingList, startedList, rest]) => {
         const rows = await describeAll(
-          merge(waitingList, startedList, rest.results)
+          merge(waitingList, startedList, rest.results),
+          (early) => live && setOthers(early)
         );
         if (!live) return;
         setOthers(rows);
@@ -802,7 +863,21 @@ export default function Requests() {
         `/request?take=40&skip=0&filter=all&sort=added&requestedBy=${user.id}`
       ).then((d) => d.results),
       startedDownloads(`&requestedBy=${user.id}`).catch(() => []),
-    ]).then(([recent, started]) => describeAll(merge(recent, started)));
+    ]).then(([recent, started]) =>
+      describeAll(
+        merge(recent, started),
+        // with games on, the list waits for both so game requests don't pop in later
+        extras.games.length
+          ? undefined
+          : (early) =>
+              live &&
+              setRows(
+                [...early].sort((x, y) =>
+                  y.r.createdAt.localeCompare(x.r.createdAt)
+                )
+              )
+      )
+    );
     // game requests only when a games category is on (the endpoint refuses otherwise)
     const games = extras.games.length
       ? api<{ results: SoftwareRequest[] }>(
@@ -872,6 +947,9 @@ export default function Requests() {
     }
   };
   const cancel = async (id: number) => {
+    // a second tap while the first is on its way would fail ("not found") after it worked
+    if (acting === id) return;
+    setActing(id);
     try {
       // game requests (negative ids here) are withdrawn through their own endpoint
       if (id < 0)
@@ -880,9 +958,13 @@ export default function Requests() {
         });
       else await cancelRequest(id);
       toast('Request cancelled');
+      // gone now, not after the list has refreshed
+      setRows((list) => list && list.filter((x) => x.r.id !== id));
       setTick((t) => t + 1);
     } catch (e) {
       toast(e instanceof Error ? e.message : 'Couldn’t cancel');
+    } finally {
+      setActing(null);
     }
   };
 
@@ -1120,6 +1202,7 @@ export default function Requests() {
                   ) : x.r.status === 1 ? (
                     <button
                       className="btn btn-sm btn-quiet"
+                      disabled={acting === x.r.id}
                       onClick={() => cancel(x.r.id)}
                     >
                       Cancel

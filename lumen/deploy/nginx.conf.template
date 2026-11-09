@@ -29,6 +29,8 @@ server {
   listen 80;
   root /usr/share/nginx/html;
   server_tokens off;
+  set $lumen_runtime_uid "${LUMEN_RUNTIME_UID}";
+  set $lumen_runtime_gid "${LUMEN_RUNTIME_GID}";
 
   # security headers (repeated in each location below that sets headers of its own)
   add_header Content-Security-Policy $lumen_csp;

@@ -306,6 +306,31 @@ test('empty and failed trending feeds finish loading', async ({ page }) => {
   expect(fixture.errors).toEqual([]);
 });
 
+test('a failed Discover row can be retried', async ({ page }) => {
+  const fixture = await fixtures(page);
+  let fail = true;
+  await page.route('**/api/v1/discover/trending', (route) =>
+    fail
+      ? route.fulfill({
+          status: 503,
+          json: { message: 'Provider unavailable' },
+        })
+      : route.fallback()
+  );
+  await page.goto('/');
+  const failed = page.getByText('Couldn’t load popular titles', {
+    exact: true,
+  });
+  await expect(failed).toBeVisible();
+  fail = false;
+  await page
+    .locator('.empty', { hasText: 'Couldn’t load popular titles' })
+    .getByRole('button', { name: 'Retry', exact: true })
+    .click();
+  await expect(failed).toHaveCount(0);
+  expect(fixture.errors).toEqual([]);
+});
+
 test('series details use the Android series route and retain iOS and desktop links', async ({
   page,
 }, info) => {
@@ -546,4 +571,125 @@ test('Discover leaves out rows that came back empty', async ({ page }) => {
   await expect(
     page.getByRole('heading', { name: 'Popular books' })
   ).toHaveCount(0);
+});
+
+test('Coming soon says when its lists fail and retries them', async ({
+  page,
+}) => {
+  const fixture = await fixtures(page);
+  let fail = true;
+  await page.route(/\/api\/v1\/discover\/(movies|tv)\/upcoming$/, (route) =>
+    fail
+      ? route.fulfill({
+          status: 503,
+          json: { message: 'Provider unavailable' },
+        })
+      : route.fulfill({
+          json: paged([{ ...movie, releaseDate: '2099-03-04' }]),
+        })
+  );
+  await page.goto('/soon');
+  const alert = page.getByRole('alert');
+  await expect(alert).toContainText('Couldn’t load upcoming titles');
+  await expect(page.getByText('Loading…', { exact: true })).toHaveCount(0);
+  fail = false;
+  await alert.getByRole('button', { name: 'Retry' }).click();
+  await expect(
+    page.getByRole('link', { name: 'The Test Film' }).first()
+  ).toBeVisible();
+  await expect(page.getByRole('alert')).toHaveCount(0);
+  expect(fixture.errors).toEqual([]);
+});
+
+test('a failed search offers Retry instead of saying nothing matched', async ({
+  page,
+}) => {
+  const fixture = await fixtures(page);
+  let fail = true;
+  await page.route('**/api/v1/search?**', (route) =>
+    fail
+      ? route.fulfill({ status: 429, json: { message: 'Too many requests' } })
+      : route.fulfill({ json: paged([movie]) })
+  );
+  await page.goto('/search?q=Test');
+  const alert = page.getByRole('alert');
+  await expect(alert).toContainText('Couldn’t load search results');
+  await expect(alert).toContainText('Too many requests');
+  await expect(page.getByText(/No matches for/)).toHaveCount(0);
+  fail = false;
+  await alert.getByRole('button', { name: 'Retry' }).click();
+  await expect(
+    page.getByRole('heading', { name: 'Movies', exact: true })
+  ).toBeVisible();
+  await expect(page.getByRole('alert')).toHaveCount(0);
+  expect(fixture.errors).toEqual([]);
+});
+
+test('a double click on a poster’s Request sends one request', async ({
+  page,
+}) => {
+  const fixture = await fixtures(page);
+  // a plain requester: one-click requests, no options sheet
+  await page.route('**/api/v1/auth/me', (route) =>
+    route.fulfill({ json: { id: 3, displayName: 'viewer', permissions: 32 } })
+  );
+  const posts: unknown[] = [];
+  await page.route('**/api/v1/request', async (route) => {
+    if (route.request().method() !== 'POST') return route.fallback();
+    posts.push(route.request().postDataJSON());
+    await new Promise((resolve) => setTimeout(resolve, 300));
+    await route.fulfill({ json: { id: 1 } });
+  });
+  await page.goto('/movies');
+  const card = page.locator('.poster', { hasText: 'The Test Film' }).first();
+  await card.hover();
+  const overlay = card.getByRole('button', { name: 'Request', exact: true });
+  const touch = card.getByRole('button', { name: 'Request The Test Film' });
+  await ((await overlay.isVisible()) ? overlay : touch).dblclick();
+  await expect(page.getByText('Requested The Test Film').first()).toBeVisible();
+  await page.waitForTimeout(400);
+  expect(posts).toHaveLength(1);
+  expect(fixture.errors).toEqual([]);
+});
+
+test('a category page says when SeerrNG’s settings fail and retries', async ({
+  page,
+}) => {
+  const fixture = await fixtures(page);
+  // the app's first read (which picks the media server) works; the page's own read fails
+  let calls = 0;
+  let fail = true;
+  await page.route('**/api/v1/settings/public', (route) =>
+    ++calls > 1 && fail
+      ? route.fulfill({ status: 503, json: { message: 'Starting up' } })
+      : route.fallback()
+  );
+  await page.goto('/music');
+  const alert = page.getByRole('alert');
+  await expect(alert).toContainText('Couldn’t load this page');
+  fail = false;
+  await alert.getByRole('button', { name: 'Retry' }).click();
+  await expect(
+    page.getByText('Music is turned off on this server')
+  ).toBeVisible();
+  expect(fixture.errors).toEqual([]);
+});
+
+test('the companion sign-in screen offers native access before authentication', async ({
+  page,
+}) => {
+  await fixtures(page);
+  await page.route('**/api/v1/auth/me', (r) =>
+    r.fulfill({ status: 401, json: { message: 'Not signed in' } })
+  );
+  await page.goto('/');
+  await expect(
+    page.getByRole('link', { name: 'Open full SeerrNG', exact: true })
+  ).toBeVisible();
+  await expect(
+    page.getByRole('link', { name: 'Open full SeerrNG', exact: true })
+  ).toHaveAttribute('href', '/seerrng');
+  await expect(
+    page.getByText('Lumen companion', { exact: true })
+  ).toBeVisible();
 });

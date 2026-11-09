@@ -1,6 +1,8 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link, useParams, useSearchParams } from 'react-router-dom';
 import {
+  audiobookEditionsPath,
+  audiobookshelfLink,
   bookIdFor,
   bookMediaForFormat,
   chaptarrWork,
@@ -23,8 +25,9 @@ import {
   fmtHrs,
   Pill,
 } from '../components/detail';
+import { ServiceNote } from '../components/extra';
 import { useToast } from '../components/toast';
-import { dropCache, useApi } from '../hooks';
+import { dropBookStates, dropCache, useApi } from '../hooks';
 import { Icon } from '../icons';
 import { usePrefs } from '../settings';
 
@@ -101,7 +104,7 @@ export default function BookDetail() {
   const [p] = useSearchParams();
   const f: 'ebook' | 'audiobook' =
     p.get('f') === 'audio' ? 'audiobook' : 'ebook';
-  const { prefs } = usePrefs();
+  const { prefs, audiobookshelfUrl } = usePrefs();
   const toast = useToast();
   const plainId = bookIdFor(decodeURIComponent(id), f);
   const first = useApi<BookDetails>(`/book/${encodeURIComponent(plainId)}`);
@@ -114,9 +117,7 @@ export default function BookDetail() {
   // narrations load on the ebook page too, so its Audiobook button reads the same as on the audiobook page
   const narrData = prefs.narratorChoice && !!work;
   const eds = useApi<{ editions: Edition[] }>(
-    narrData
-      ? `/editions/book?format=audiobook&term=${encodeURIComponent('work:' + work)}`
-      : null
+    narrData && work ? audiobookEditionsPath(work) : null
   );
   const allRows = useMemo(
     () => narrations(eds.data?.editions || []),
@@ -211,7 +212,8 @@ export default function BookDetail() {
   };
 
   if (error)
-    return f === 'ebook' ? (
+    // only "not found" means there's no ebook; a rate limit or outage can be tried again
+    return f === 'ebook' && first.errorStatus === 404 ? (
       <div className="empty">
         <b>No ebook edition found</b>ChaptarrNG only knows this book as an
         audiobook.{' '}
@@ -223,10 +225,7 @@ export default function BookDetail() {
         </Link>
       </div>
     ) : (
-      <div className="empty">
-        <b>Couldn’t load this book</b>
-        {error}
-      </div>
+      <ServiceNote error={error} what="this book" retry={reload} />
     );
   if (!b) return <div className="detail-loading" aria-busy="true" />;
 
@@ -299,6 +298,7 @@ export default function BookDetail() {
         `Requested ${b.title} · ${audio ? (showNarr && chosenRow ? who(chosenRow) : 'audiobook') : 'ebook'}`
       );
       dropCache(`/book/${encodeURIComponent(bookId)}`);
+      dropBookStates(); // book cards elsewhere show the new request straight away
       reload();
     } catch (e) {
       toast(e instanceof Error ? e.message : 'Request failed');
@@ -311,12 +311,28 @@ export default function BookDetail() {
     : showNarr && chosenRow
       ? `Request · ${who(chosenRow)}`
       : 'Request audiobook';
-  const listen = (
-    <button className="btn btn-ok">
-      <Icon name="play" />
-      Listen in Audiobookshelf
-    </button>
-  );
+  // with the admin's Audiobookshelf address this opens the book there; without one it's a plain
+  // "in your library" status rather than a button that does nothing
+  const inAbs = (listening: boolean) => {
+    const href = audiobookshelfLink(
+      audiobookshelfUrl,
+      listening
+        ? bookMediaForFormat(b.mediaInfo, 'audiobook')?.audiobookLibraryItemId
+        : null
+    );
+    return href ? (
+      <a className="btn btn-ok" href={href} target="_blank" rel="noopener">
+        <Icon name={listening ? 'play' : 'book'} />
+        {listening ? 'Listen in Audiobookshelf' : 'Read in Audiobookshelf'}
+      </a>
+    ) : (
+      <button className="btn btn-tonal" disabled>
+        <Icon name="check" />
+        In your library
+      </button>
+    );
+  };
+  const listen = inAbs(true);
   const main =
     audio && showNarr && anotherMode ? (
       chosenRow ? (
@@ -337,10 +353,7 @@ export default function BookDetail() {
         </button>
       )
     ) : available && (!showNarr || !requestable.length) ? (
-      <button className="btn btn-ok">
-        <Icon name={audio ? 'play' : 'book'} />
-        {audio ? 'Listen in Audiobookshelf' : 'Read in Audiobookshelf'}
-      </button>
+      inAbs(audio)
     ) : s && s.k !== 'ok' ? (
       <button className="btn btn-tonal" disabled>
         <Icon name={s.ico} />

@@ -63,6 +63,7 @@ export interface AdminConfig {
   };
   locked?: string[]; // e.g. ["narratorChoice", "rows.genres"]
   seerrPublicUrl?: string;
+  audiobookshelfUrl?: string; // where "Listen/Read in Audiobookshelf" go
   mediaServer?: MediaServerSetting; // read by mediaServer.ts before sign-in
   loginStyle?: 'buttons' | 'form'; // read by mediaServer.ts before sign-in
   branding?: {
@@ -80,6 +81,7 @@ interface Ctx {
   adminConfig: AdminConfig; // lumen-config.json as loaded (the admin settings page starts from it)
   locked: Set<string>;
   seerrPublicUrl?: string;
+  audiobookshelfUrl?: string;
   set: (path: string, value: boolean | string) => void;
   reset: () => void;
   // the admin page saved a new lumen-config.json: use it now, without a reload
@@ -226,6 +228,7 @@ export function PrefsProvider({ children }: { children: ReactNode }) {
         adminConfig: admin,
         locked,
         seerrPublicUrl: admin.seerrPublicUrl,
+        audiobookshelfUrl: admin.audiobookshelfUrl,
         set,
         reset,
         adminSaved: setAdmin,

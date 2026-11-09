@@ -11,6 +11,13 @@ tags. The comparison link is the complete commit range.
 
 ## [3.72.27](https://github.com/snapetech-org/seerrng/compare/v3.72.26..v3.72.27) - 2026-11-09
 
+### Fixed
+
+- Restore native home access on upgrades and let administrators explicitly choose full SeerrNG, included Lumen or their existing companion. The Lumen sign-in page exposes native access before authentication. Reported by [@Tatsu941](https://github.com/Tatsu941) in [#629](https://github.com/snapetech-org/seerrng/issues/629).
+- Keep Save and Upload visible with actionable storage diagnostics, the actual UID/GID and draft-preserving rechecks. The short companion Compose guide supports UID/GID 1000 with a read-only root and one `/tmp` tmpfs.
+- Restore owned books in Library and detail views when historical media rows split identity and file observations. Reject duplicate requests using the same service-scoped evidence, preserving database records and histories. Reported by [@ncbudd](https://github.com/ncbudd) in [#625](https://github.com/snapetech-org/seerrng/issues/625).
+- Integrate [@ncbudd](https://github.com/ncbudd)’s Lumen fixes in [#624](https://github.com/snapetech-org/seerrng/pull/624), [#626](https://github.com/snapetech-org/seerrng/pull/626), [#627](https://github.com/snapetech-org/seerrng/pull/627) and [#628](https://github.com/snapetech-org/seerrng/pull/628): visible sign-out errors, working Audiobookshelf book links, progressive request titles, correct narrations, verified large request lists and retryable failures. Validate Audiobookshelf URL paths and omit credentials and query tokens from links.
+
 ### Upstream source attribution
 
 - Publicly credit 170 Seerr issues and pull requests whose upstream code, reports, suggestions, or discussions informed implemented behavior or maintained plans in SeerrNG. The [source ledger](UPSTREAM_ATTRIBUTION.md) links every originating record and upstream author, separates integrated work from referenced or in-progress ideas, and makes clear that those people contributed to Seerr, not directly to this fork.

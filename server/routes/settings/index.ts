@@ -1449,6 +1449,31 @@ const parseMainSettingsBody = (
     value.defaultQuotas = defaultQuotas;
   }
 
+  if (body.defaultFrontend !== undefined) {
+    if (
+      !['native', 'lumen', 'external'].includes(body.defaultFrontend as string)
+    ) {
+      return { error: 'defaultFrontend must be native, lumen, or external.' };
+    }
+    value.defaultFrontend =
+      body.defaultFrontend as MainSettings['defaultFrontend'];
+  }
+  if (body.lumenPublicUrl !== undefined) {
+    const parsed = validateOptionalApplicationUrl(body.lumenPublicUrl);
+    if ('error' in parsed)
+      return {
+        error: parsed.error.replaceAll('applicationUrl', 'lumenPublicUrl'),
+      };
+    value.lumenPublicUrl = parsed.value ?? '';
+  }
+  if (
+    (value.defaultFrontend ?? getSettings().main.defaultFrontend) ===
+      'external' &&
+    !(value.lumenPublicUrl ?? getSettings().main.lumenPublicUrl)
+  ) {
+    return { error: 'Enter the configured Lumen companion address.' };
+  }
+
   for (const [key, fieldName] of [
     ['applicationUrl', 'applicationUrl'],
     ['youtubeUrl', 'youtubeUrl'],

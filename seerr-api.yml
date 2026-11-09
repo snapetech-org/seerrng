@@ -3038,6 +3038,14 @@ components:
     MainSettings:
       type: object
       properties:
+        defaultFrontend:
+          type: string
+          enum: [native, lumen, external]
+          description: Home address interface. Existing installations retain native access; fresh setups default to included Lumen.
+        lumenPublicUrl:
+          type: string
+          maxLength: 512
+          description: Administrator-selected HTTP(S) address of an independently configured Lumen companion.
         apiKey:
           type: string
           readOnly: true

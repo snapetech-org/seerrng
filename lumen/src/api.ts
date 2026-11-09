@@ -184,6 +184,10 @@ export const requestBook = (
 // An audiobook request with no edition lets ChaptarrNG pick one, and it has picked foreign
 // editions (an Italian Project Hail Mary). "Any narrator" therefore still names an English one.
 const englishLang = (l?: string) => !l || /^(en|eng|english)$/i.test(l);
+// SeerrNG only looks editions up when it also has an identity (or title), so pass the Hardcover
+// work as foreignBookId alongside the search term
+export const audiobookEditionsPath = (workId: string) =>
+  `/editions/book?format=audiobook&term=${encodeURIComponent('work:' + workId)}&foreignBookId=${encodeURIComponent('hc:' + workId)}`;
 export async function englishAudioEdition(
   workId: string | null
 ): Promise<string | undefined> {
@@ -197,9 +201,7 @@ export async function englishAudioEdition(
         selected?: boolean;
         durationSeconds?: number | null;
       }[];
-    }>(
-      `/editions/book?format=audiobook&term=${encodeURIComponent('work:' + workId)}`
-    );
+    }>(audiobookEditionsPath(workId));
     const en = d.editions.filter(
       (e) => englishLang(e.language) && e.narrators?.length
     );
@@ -297,6 +299,35 @@ export const hardcoverWorkId = (id: string) => {
   try {
     const raw = atob(id.split(':')[2].replace(/-/g, '+').replace(/_/g, '/'));
     return /^hc:(\d+)$/.exec(raw)?.[1] ?? null;
+  } catch {
+    return null;
+  }
+};
+// The admin's Audiobookshelf address (http/https only), opening the item when SeerrNG knows it
+export const audiobookshelfLink = (
+  base?: string,
+  itemId?: string | null
+): string | null => {
+  if (!base) return null;
+  try {
+    const url = new URL(base);
+    if (
+      !['http:', 'https:'].includes(url.protocol) ||
+      url.username ||
+      url.password
+    )
+      return null;
+    url.search = '';
+    url.hash = '';
+    if (
+      itemId &&
+      itemId !== '.' &&
+      itemId !== '..' &&
+      !/[\x00-\x1f]/.test(itemId)
+    ) {
+      url.pathname = `${url.pathname.replace(/\/+$/, '')}/item/${encodeURIComponent(itemId)}`;
+    }
+    return url.href;
   } catch {
     return null;
   }

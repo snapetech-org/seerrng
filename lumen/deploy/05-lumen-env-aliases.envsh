@@ -10,3 +10,10 @@ fi
 if [ -n "${SEERR_BROWSER_URL:-}" ]; then
   export SEERR_FULL_URL="$SEERR_BROWSER_URL"
 fi
+
+# Report the actual Docker user rather than assuming the image default.
+export LUMEN_RUNTIME_UID="$(id -u)"
+export LUMEN_RUNTIME_GID="$(id -g)"
+if [ -n "${PUID:-}${PGID:-}" ]; then
+  echo "lumen: PUID/PGID belong in Compose's .env file with the service user key, not in environment. Running as $LUMEN_RUNTIME_UID:$LUMEN_RUNTIME_GID." >&2
+fi

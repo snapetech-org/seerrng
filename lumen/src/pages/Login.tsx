@@ -9,8 +9,10 @@ import {
   useAuth,
 } from '../auth';
 import { BrandMark } from '../components/brand';
+import { fullSeerrUrl } from '../components/Shell';
 import { embedded } from '../deployment';
 import { mediaServer, services, site } from '../mediaServer';
+import { usePrefs } from '../settings';
 
 type Mode = 'start' | 'server' | 'local' | 'quick';
 type Method = 'server' | 'local' | 'quick';
@@ -57,6 +59,7 @@ export function friendly(e: unknown, serverName: string): string {
 }
 
 export default function Login() {
+  const { seerrPublicUrl } = usePrefs();
   const { refresh } = useAuth();
   const server = mediaServer();
   const plex = server.kind === 'plex';
@@ -329,6 +332,12 @@ export default function Login() {
             More sign-in options
           </a>
         )}
+        <a className="btn btn-tonal btn-sm" href={fullSeerrUrl(seerrPublicUrl)}>
+          Open full SeerrNG
+        </a>
+        <p className="sub">
+          {embedded ? 'Lumen included with SeerrNG' : 'Lumen companion'}
+        </p>
         {err && (
           <p className="login-err" role="alert">
             {err}

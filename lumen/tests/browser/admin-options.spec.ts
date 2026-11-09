@@ -1424,6 +1424,37 @@ test('poster request asks 1080p or 4K for people who may request 4K', async ({
   await expect(sheet).toHaveCount(0);
 });
 
+test('a failed sign-out says so instead of failing silently', async ({
+  page,
+}) => {
+  const errors: string[] = [];
+  page.on('pageerror', (e) => errors.push(e.message));
+  await fixtures(page);
+  await page.route('**/api/v1/auth/logout', (route) =>
+    route.fulfill({ status: 503, json: { message: 'Unavailable' } })
+  );
+  await page.goto('/me');
+  const signOut = page.getByRole('button', { name: 'Sign out', exact: true });
+  await signOut.click();
+  await expect(page.getByText('Couldn’t sign out. Try again.')).toBeVisible();
+  await expect(signOut).toBeVisible();
+  expect(errors).toEqual([]);
+});
+
+test('signing out when the session already ended still signs out', async ({
+  page,
+}) => {
+  await fixtures(page);
+  await page.route('**/api/v1/auth/logout', (route) =>
+    route.fulfill({ status: 401, json: { message: 'Not signed in' } })
+  );
+  await page.goto('/me');
+  await page.getByRole('button', { name: 'Sign out', exact: true }).click();
+  await expect(
+    page.getByRole('button', { name: 'Sign out', exact: true })
+  ).toHaveCount(0);
+});
+
 for (const quality of ['1080p', '4K'] as const) {
   test(`tapping the already picked ${quality} quality keeps Request working`, async ({
     page,
@@ -1662,7 +1693,9 @@ test('admin settings page explains a folder it can’t write', async ({
 }) => {
   await fixtures(page, { permissions: 2 });
   await page.route('**/lumen/config', (route) =>
-    route.fulfill({ json: { canSave: false, folder: 'readonly' } })
+    route.fulfill({
+      json: { canSave: false, folder: 'readonly', uid: 1000, gid: 1000 },
+    })
   );
   await page.goto('/me/lumen');
   await expect(
@@ -1670,8 +1703,10 @@ test('admin settings page explains a folder it can’t write', async ({
   ).toBeVisible();
   await expect(
     page.getByRole('button', { name: 'Save for everyone' })
-  ).toHaveCount(0);
-  await expect(page.getByText(/can’t write to its \/lumen-data/)).toBeVisible();
+  ).toBeDisabled();
+  await expect(
+    page.getByText(/give its host folder to UID:GID 1000:1000/)
+  ).toBeVisible();
 });
 
 test('downloads that have started show even when far down the history', async ({
@@ -2050,7 +2085,8 @@ test('Everyone shows more on request and filters by status', async ({
   await filters.getByRole('button', { name: /Failed/ }).click();
   await expect(page).toHaveURL(/show=failed/);
   await expect(page.getByText('Nothing here')).toBeVisible();
-  expect(asked).toContain('failed:0:20');
+  // pages of at most 15 keep SeerrNG's per-response availability check complete
+  expect(asked).toContain('failed:0:15');
 });
 
 test('a temporary configured game probe failure keeps that platform and Retry reachable', async ({
@@ -2593,4 +2629,61 @@ test('a page of posters asks for the server settings once, not once per poster',
   ).toBeVisible();
   await page.waitForTimeout(500);
   expect(settingsCalls() - before).toBeLessThanOrEqual(1);
+});
+
+test('the request sheet still requests when no Radarr server is set up', async ({
+  page,
+}) => {
+  const { posts, errors } = await fixtures(page);
+  await page.route('**/api/v1/service/radarr', (route) =>
+    route.fulfill({ json: [] })
+  );
+  await page.goto('/movies');
+  await quickRequest(page, 'Fresh Pick');
+  const sheet = page.getByRole('dialog', { name: 'Request Fresh Pick' });
+  await expect(sheet.getByText('No Radarr server to choose')).toBeVisible();
+  const send = sheet.getByRole('button', { name: 'Request', exact: true });
+  await expect(send).toBeEnabled();
+  await send.click();
+  await expect(sheet).toHaveCount(0);
+  expect(posts.filter((p) => p.path === '/request')).toHaveLength(1);
+  expect(errors).toEqual([]);
+});
+
+test('storage recovery keeps the draft and enables visible Save and Upload controls', async ({
+  page,
+}) => {
+  await fixtures(page, { permissions: 2 });
+  let writable = false;
+  await page.route('**/lumen/config', (route) =>
+    route.fulfill({
+      json: {
+        canSave: writable,
+        folder: writable ? 'ok' : 'readonly',
+        uid: 1000,
+        gid: 1000,
+      },
+    })
+  );
+  await page.goto('/me/lumen');
+  const save = page.getByRole('button', {
+    name: 'Save for everyone',
+    exact: true,
+  });
+  await expect(save).toBeVisible();
+  await expect(save).toBeDisabled();
+  await expect(
+    page.getByRole('button', { name: 'Upload', exact: true }).first()
+  ).toBeDisabled();
+  await page
+    .getByPlaceholder('SeerrNG', { exact: true })
+    .fill('Keep this draft');
+  await expect(page.getByText(/UID:GID 1000:1000/)).toBeVisible();
+  writable = true;
+  await page.getByRole('button', { name: 'Check storage again' }).click();
+  await expect(save).toBeEnabled();
+  await expect(page.getByLabel('Upload logo')).toBeEnabled();
+  await expect(page.getByPlaceholder('SeerrNG', { exact: true })).toHaveValue(
+    'Keep this draft'
+  );
 });

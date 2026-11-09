@@ -197,7 +197,14 @@ const compareBookEditionsUnfiltered = async (options: {
     const match = matches.length === 1 ? matches[0] : undefined;
     if (match?.id && match.id > 0) {
       const localBook = await api.getBookIfExists(match.id);
-      if (localBook?.foreignBookId === match.foreignBookId) {
+      // Chaptarr lookups qualify the work id (hc:427578) while the stored
+      // book can keep the bare form (427578); both name the same work.
+      if (
+        localBook?.foreignBookId &&
+        api
+          .getKnownBookIdentityAliases(match.foreignBookId)
+          .includes(localBook.foreignBookId)
+      ) {
         const comparison = await compareLibraryEditions(
           api,
           match.id,

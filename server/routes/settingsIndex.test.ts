@@ -149,6 +149,44 @@ afterEach(() => {
 });
 
 describe('Settings route input validation', () => {
+  it('persists an explicit frontend and rejects unsafe or missing companion URLs', async () => {
+    for (const defaultFrontend of ['native', 'lumen', 'external']) {
+      const response = await request(app)
+        .post('/settings/main')
+        .send({
+          defaultFrontend,
+          lumenPublicUrl:
+            defaultFrontend === 'external' ? 'http://server.example:5080' : '',
+        });
+      assert.equal(response.status, 200);
+      assert.equal(getSettings().main.defaultFrontend, defaultFrontend);
+    }
+    for (const lumenPublicUrl of [
+      '',
+      'javascript:alert(1)',
+      'https://user:secret@example.com',
+      'https://example.com?token=secret',
+      'https://example.com#fragment',
+    ]) {
+      const response = await request(app)
+        .post('/settings/main')
+        .send({ defaultFrontend: 'external', lumenPublicUrl });
+      assert.equal(response.status, 400);
+      assert.equal(
+        getSettings().main.lumenPublicUrl,
+        'http://server.example:5080'
+      );
+    }
+    assert.equal(
+      (
+        await request(app)
+          .post('/settings/main')
+          .send({ defaultFrontend: 'unexpected' })
+      ).status,
+      400
+    );
+  });
+
   it('isolates public fixture DNS without admitting unknown or private hosts', async () => {
     assert.strictEqual(await isSafeHttpUrl('https://example.com/'), true);
     assert.strictEqual(

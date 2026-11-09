@@ -7,6 +7,7 @@ import {
 } from 'react-router-dom';
 import { api, type BookResult, type Paged, type TitleResult } from '../api';
 import { BookCard, Section, TitleCard } from '../components/cards';
+import { ServiceNote } from '../components/extra';
 import { useExtras } from '../extras';
 import { useApi } from '../hooks';
 import { Icon } from '../icons';
@@ -36,6 +37,9 @@ export default function Search() {
   const [books, setBooks] = useState<BookResult[] | null>(null);
   const [recent, setRecent] = useState<string[]>(readRecentSearches);
   const [searching, setSearching] = useState(false);
+  // a lookup failed and nothing was found: an error with Retry, not "No matches"
+  const [failed, setFailed] = useState<string | null>(null);
+  const [attempt, setAttempt] = useState(0);
   const navType = useNavigationType();
   // a new key per history entry, even when Enter pushes the same URL typing already showed
   const entryKey = useLocation().key;
@@ -86,6 +90,7 @@ export default function Search() {
       setTitles(null);
       setBooks(null);
       setSearching(false);
+      setFailed(null);
       return;
     }
     let live = true;
@@ -95,29 +100,37 @@ export default function Search() {
       const wantBooks =
         prefs.showBooks && (f === 'all' || f === 'ebook' || f === 'audio');
       const format = f === 'audio' ? 'audiobook' : 'ebook';
+      let error: string | null = null;
+      const failure = (e: unknown) => {
+        error = e instanceof Error ? e.message : 'Search failed';
+        return null;
+      };
       const [tr, br] = await Promise.all([
         wantTitles
           ? api<Paged<TitleResult>>(
               `/search?query=${encodeURIComponent(term)}&page=1`
-            ).catch(() => null)
+            ).catch(failure)
           : null,
         wantBooks
           ? api<Paged<BookResult>>(
               `/discover/books?format=${format}&query=${encodeURIComponent(term)}&page=1`
-            ).catch(() => null)
+            ).catch(failure)
           : null,
       ]);
       if (!live) return;
-      setTitles(
-        (tr?.results || []).filter((r) =>
-          f === 'movie'
-            ? r.mediaType === 'movie'
-            : f === 'tv'
-              ? r.mediaType === 'tv'
-              : r.mediaType !== 'person'
-        )
+      const foundTitles = (tr?.results || []).filter((r) =>
+        f === 'movie'
+          ? r.mediaType === 'movie'
+          : f === 'tv'
+            ? r.mediaType === 'tv'
+            : r.mediaType !== 'person'
       );
-      setBooks((br?.results || []).filter((b) => b.mediaType === 'book'));
+      const foundBooks = (br?.results || []).filter(
+        (b) => b.mediaType === 'book'
+      );
+      setTitles(foundTitles);
+      setBooks(foundBooks);
+      setFailed(foundTitles.length || foundBooks.length ? null : error);
       setSearching(false);
     }, 300);
     return () => {
@@ -125,7 +138,7 @@ export default function Search() {
       clearTimeout(t);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [p, prefs.showBooks]);
+  }, [p, prefs.showBooks, attempt]);
 
   const setParam = (k: string, v: string) => {
     const n = new URLSearchParams(p);
@@ -267,7 +280,14 @@ export default function Search() {
           Searching…
         </p>
       )}
-      {nothing && !searching && (
+      {!searching && (
+        <ServiceNote
+          error={failed}
+          what="search results"
+          retry={() => setAttempt((n) => n + 1)}
+        />
+      )}
+      {nothing && !searching && !failed && (
         <div className="empty">
           <b>
             No {f === 'all' ? 'matches' : SCOPES[f].toLowerCase()} for “

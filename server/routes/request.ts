@@ -56,6 +56,7 @@ import {
   isActiveBookFormatRequest,
   isBookRequestFileAvailable,
 } from '@server/lib/bookAvailability';
+import { projectBookFileObservations } from '@server/lib/bookFileObservations';
 import {
   BookRequestEditConflictError,
   planBookRequestEdit,
@@ -2211,8 +2212,10 @@ const getBulkCoveredReason = async (
   }
 
   const requestedFormat = format ?? 'ebook';
-  const ebookAvailable = hasAvailableBookFormat(media, 'ebook');
-  const audiobookAvailable = hasAvailableBookFormat(media, 'audiobook');
+  const observedMedia =
+    (await projectBookFileObservations([media])).get(media.id) ?? media;
+  const ebookAvailable = hasAvailableBookFormat(observedMedia, 'ebook');
+  const audiobookAvailable = hasAvailableBookFormat(observedMedia, 'audiobook');
 
   if (requestedFormat === 'ebook' && ebookAvailable) {
     return 'This ebook is already available.';

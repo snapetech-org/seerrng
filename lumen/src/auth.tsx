@@ -49,7 +49,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, [setPrincipal]);
   const signOut = useCallback(async () => {
     ++authRequest.current;
-    await api('/auth/logout', { method: 'POST' });
+    try {
+      await api('/auth/logout', { method: 'POST' });
+    } catch (e) {
+      // already signed out on the server: finish here too. Anything else is reported by the caller.
+      if (!(e instanceof ApiError && e.status === 401)) throw e;
+    }
     setPrincipal(null);
   }, [setPrincipal]);
   useEffect(() => {

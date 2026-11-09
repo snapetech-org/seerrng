@@ -105,6 +105,17 @@ const messages = defineMessages('components.Settings.SettingsMain', {
   toastApiKeySuccess: 'New API key generated successfully!',
   toastApiKeyFailure: 'Something went wrong while generating a new API key.',
   toastSettingsSuccess: 'Settings saved successfully!',
+  defaultInterface: 'Default Interface',
+  fullInterface: 'Full SeerrNG',
+  includedLumen: 'Included Lumen',
+  configuredLumen: 'Configured Lumen companion',
+  defaultInterfaceHelp:
+    'Choose what opens at this server’s home address. Full SeerrNG always remains available at /seerrng. Included Lumen uses /lumen/ and has separate presentation settings from a companion container.',
+  openSavedInterface: 'Open the saved default interface',
+  lumenAddress: 'Lumen Companion Address',
+  lumenAddressHelp:
+    'The address people already use for your companion, for example http://server:5080. Save before opening it.',
+
   toastSettingsFailure: 'Something went wrong while saving settings.',
   hideAvailable: 'Hide Available Media',
   hideAvailableTip:
@@ -289,6 +300,8 @@ const SettingsMain = () => {
         initialValues={{
           applicationTitle: data?.applicationTitle,
           applicationUrl: data?.applicationUrl,
+          defaultFrontend: data.defaultFrontend ?? 'native',
+          lumenPublicUrl: data.lumenPublicUrl ?? '',
           hideAvailable: data?.hideAvailable,
           otherUsersAvailability:
             data?.otherUsersAvailability ?? OtherUserAvailabilityMode.SHOW,
@@ -337,6 +350,8 @@ const SettingsMain = () => {
             await axios.post('/api/v1/settings/main', {
               applicationTitle: values.applicationTitle,
               applicationUrl: values.applicationUrl,
+              defaultFrontend: values.defaultFrontend,
+              lumenPublicUrl: values.lumenPublicUrl,
               hideAvailable: values.hideAvailable,
               otherUsersAvailability: values.otherUsersAvailability,
               hideBlocklisted: values.hideBlocklisted,
@@ -532,6 +547,56 @@ const SettingsMain = () => {
                         )}
                     </div>
                   </div>
+                  <div className="form-row">
+                    <label htmlFor="defaultFrontend" className="text-label">
+                      {intl.formatMessage(messages.defaultInterface)}
+                    </label>
+                    <div className="form-input-area">
+                      <div className="form-input-field">
+                        <Field
+                          as="select"
+                          id="defaultFrontend"
+                          name="defaultFrontend"
+                        >
+                          <option value="native">
+                            {intl.formatMessage(messages.fullInterface)}
+                          </option>
+                          <option value="lumen">
+                            {intl.formatMessage(messages.includedLumen)}
+                          </option>
+                          <option value="external">
+                            {intl.formatMessage(messages.configuredLumen)}
+                          </option>
+                        </Field>
+                      </div>
+                      <p className="settings-form-row-description">
+                        {intl.formatMessage(messages.defaultInterfaceHelp)}
+                      </p>
+                      <a href="/?interface=default">
+                        {intl.formatMessage(messages.openSavedInterface)}
+                      </a>
+                    </div>
+                  </div>
+                  {values.defaultFrontend === 'external' && (
+                    <div className="form-row">
+                      <label htmlFor="lumenPublicUrl" className="text-label">
+                        {intl.formatMessage(messages.lumenAddress)}
+                      </label>
+                      <div className="form-input-area">
+                        <div className="form-input-field">
+                          <Field
+                            id="lumenPublicUrl"
+                            name="lumenPublicUrl"
+                            type="url"
+                            required
+                          />
+                        </div>
+                        <p className="settings-form-row-description">
+                          {intl.formatMessage(messages.lumenAddressHelp)}
+                        </p>
+                      </div>
+                    </div>
+                  )}
                   {!compact && cacheImagesRow}
                   <div className="form-row">
                     <label htmlFor="locale" className="text-label">

@@ -6,13 +6,11 @@ sidebar_position: 12
 
 # Lumen, the request-first interface
 
-Starting with **v3.72.25**, Lumen is bundled with SeerrNG and opens by default
-for existing and new users at the normal application address. No second container
-is needed. **You → Full SeerrNG → Open** reaches native settings and administration;
-**Theme picker → Open Lumen** returns. Fresh installations still complete setup
-first. Existing native profiles adopt PersiusNG once, and you can choose Orig or
-John afterwards. The companion deployment described below remains optional, and
-continues to support older installations.
+Lumen is bundled with SeerrNG. Fresh installs open it after setup. Existing
+installations retain full SeerrNG at their normal address; administrators can
+choose another default in **Settings → General**. Included Lumen is available at
+`/lumen/` and full SeerrNG at `/seerrng`, including before sign-in. A separately
+configured companion remains optional and keeps its own presentation settings.
 
 Lumen is a distinct, simpler front end for SeerrNG. It has the screens your users
 actually use: Discover, Movies, Series, Books, Audiobooks, Search, Requests and
@@ -38,9 +36,79 @@ SeerrNG's API.
 
 :::note
 Lumen has prebuilt images for amd64 and arm64 at
-`ghcr.io/snapetech-org/seerrng-lumen`. The examples use `:latest`; use `:v3.72.23`
+`ghcr.io/snapetech-org/seerrng-lumen`. The examples use `:latest`; use `:v3.72.27`
 to pin a release. Docker downloads the image when you start it.
 :::
+
+## Choose the interface you want
+
+| Situation | What to do |
+| --- | --- |
+| Already running SeerrNG | Keep your existing address. Upgrades preserve full SeerrNG. No companion is required. |
+| Want the included Lumen | Open `/lumen/` on your SeerrNG server. To make it the home page, use **Full SeerrNG → Settings → General → Default Interface → Included Lumen**, then save. |
+| Already configured a Lumen companion | Keep using its existing address, usually port 5080. Select **Configured Lumen companion** in General settings and enter that address if you want SeerrNG’s home page to send people there. |
+| Need the native interface | Open `/seerrng` on your SeerrNG server. This works before sign-in. Lumen also has **Open full SeerrNG** on its sign-in page. |
+
+Included Lumen and the companion have separate presentation settings and branding.
+The included copy saves under SeerrNG’s existing config volume; the companion uses
+its own `/lumen-data` mount. Neither creates another SeerrNG database or changes
+requests, accounts, or media-server configuration. Fresh installs start with the
+included Lumen after setup.
+
+### Companion permissions: the short version
+
+No additional container is needed for included Lumen. For an independently deployed
+companion, download `lumen/compose.lumen-only.yaml`, enter the two SeerrNG addresses,
+and create a `.env` file **next to the Compose file**:
+
+```dotenv
+PUID=1000
+PGID=1000
+```
+
+Create the data folder owned by that user, then start:
+
+```sh
+mkdir -p lumen-data
+sudo chown 1000:1000 lumen-data
+docker compose up -d lumen
+```
+
+The supplied Compose file uses these host-side values in `user:` and the `/tmp`
+tmpfs. **Do not put `user:`, PUID, or PGID under the service’s `environment:`.**
+If editing your own stack, this is the complete placement (adapt the addresses and
+host data path):
+
+```yaml
+services:
+  lumen:
+    image: ghcr.io/snapetech-org/seerrng-lumen:latest
+    user: "1000:1000"
+    environment:
+      SEERR_INTERNAL_URL: http://seerrng:5055
+      SEERR_BROWSER_URL: http://your-server:5055
+    ports:
+      - "5080:80"
+    volumes:
+      - ./lumen-data:/lumen-data
+    read_only: true
+    tmpfs:
+      - /tmp:uid=1000,gid=1000,mode=1777
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    restart: unless-stopped
+```
+
+The image defaults to UID/GID 101:101 when no Docker user is selected. It supports
+1000:1000 directly; it does not remap users through LinuxServer-style container
+environment variables. Current images keep nginx’s temporary files under `/tmp`;
+the old `/etc/nginx/conf.d` and `/var/cache/nginx` tmpfs workaround is unnecessary.
+**Lumen settings for everyone** shows storage problems and the actual UID/GID.
+After correcting the mount or ownership, select **Check storage again**; your draft
+is preserved. Never use `chmod 777` to work around ownership.
+
 
 ## Before you start
 

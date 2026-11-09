@@ -28,6 +28,7 @@ import {
   People,
   Pill,
 } from '../components/detail';
+import { ServiceNote } from '../components/extra';
 import { useToast } from '../components/toast';
 import { dropCache, useApi, usePublicSettings } from '../hooks';
 import { Icon } from '../icons';
@@ -51,12 +52,7 @@ export default function MovieDetail() {
   const onOpts = useCallback((o: RequestOptions) => setOpts(o), []);
 
   if (error)
-    return (
-      <div className="empty">
-        <b>Couldn’t load this movie</b>
-        {error}
-      </div>
-    );
+    return <ServiceNote error={error} what="this movie" retry={reload} />;
   if (!m) return <div className="detail-loading" aria-busy="true" />;
 
   // A pending 4K copy must not make the independent HD request look requested.

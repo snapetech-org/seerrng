@@ -27,7 +27,7 @@ services:
 
   lumen:
     image: ghcr.io/snapetech-org/seerrng-lumen:latest
-    # Pin v3.72.23 for a fixed release. Optional local build instead of the image:
+    # Pin v3.72.27 for a fixed release. Optional local build instead of the image:
     # build: https://github.com/snapetech-org/seerrng.git#main:lumen
     # image: seerrng-lumen:local
     container_name: lumen
@@ -51,19 +51,22 @@ services:
     # file next to this one (e.g. PUID=1000 and PGID=1000) to match the owner of lumen-data.
     # Lumen never runs as root, so they go here rather than under environment:.
     user: '${PUID:-101}:${PGID:-101}'
+    read_only: true
+    tmpfs:
+      - /tmp:uid=${PUID:-101},gid=${PGID:-101},mode=1777
     cap_drop:
       - ALL
     security_opt:
       - no-new-privileges:true
-    # Optional admin defaults for every user (You > Lumen settings for everyone).
+    # Admin defaults for every user (You > Lumen settings for everyone).
     # To save them from that page, create a folder Lumen may write to:
     #   mkdir lumen-data && sudo chown 101:101 lumen-data
     # (or keep it as your own user: set PUID/PGID in .env, see user: above)
     # then remove the # from "volumes:" and the lumen-data line below.
     # Or write lumen-config.json yourself (see lumen/public/lumen-config.example.json),
     # create it first, and uncomment the lumen-config.json line instead.
-    # volumes:
-    #   - ./lumen-data:/lumen-data
+    volumes:
+      - ./lumen-data:/lumen-data
     #   - ./lumen-config.json:/usr/share/nginx/html/lumen-config.json:ro
     #   - ./branding:/usr/share/nginx/html/branding:ro  # optional logo / tab icon
     restart: unless-stopped

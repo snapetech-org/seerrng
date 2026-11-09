@@ -11,6 +11,8 @@ export const mountLumenFrontend = (
   {
     directory = path.resolve('public/lumen'),
     isInitialized = () => getSettings().public.initialized,
+    frontend = () => getSettings().main.defaultFrontend,
+    companionUrl = () => getSettings().main.lumenPublicUrl,
   } = {}
 ): void => {
   server.get('/seerrng', (_req, res) => {
@@ -33,10 +35,35 @@ export const mountLumenFrontend = (
       res.set('Cache-Control', 'no-store');
       return next();
     }
-    if (!isInitialized() || req.cookies?.[classicCookie] === 'classic') {
+    const useDefault = req.query.interface === 'default';
+    if (useDefault) res.clearCookie(classicCookie, { path: '/' });
+    if (
+      !isInitialized() ||
+      (!useDefault && req.cookies?.[classicCookie] === 'classic')
+    ) {
       return next();
     }
-    return res.set('Cache-Control', 'no-store').redirect(302, '/lumen/');
+    res.set('Cache-Control', 'no-store');
+    if (frontend() === 'lumen') return res.redirect(302, '/lumen/');
+    if (frontend() === 'external') {
+      try {
+        const url = new URL(companionUrl());
+        // Administrator-selected browser navigation only; never proxy this URL.
+        // A companion cannot be this server's own root or it would loop.
+        if (
+          ['http:', 'https:'].includes(url.protocol) &&
+          !url.username &&
+          !url.password &&
+          !url.search &&
+          !url.hash &&
+          (url.host !== req.get('host') || url.pathname !== '/')
+        )
+          return res.redirect(302, url.href);
+      } catch {
+        /* An invalid saved choice must leave native access usable. */
+      }
+    }
+    return next();
   });
   server.use(
     '/lumen',

@@ -3,7 +3,7 @@
 // on every call, so a hidden page that someone opens by URL just explains it's off.
 import { useEffect, useState } from 'react';
 import { api, ApiError, type MediaInfo } from './api';
-import { usePublicSettings } from './hooks';
+import { useApi, type PublicSettings } from './hooks';
 import type { IconName } from './icons';
 import { services } from './mediaServer';
 import { onSessionReset, sessionUserId } from './sessionState';
@@ -117,7 +117,8 @@ const probe = (path: string, configured = false) => {
 
 // which extras this server has turned on (games count when any of its three categories is)
 export function useExtras() {
-  const pub = usePublicSettings();
+  const settings = useApi<PublicSettings>('/settings/public');
+  const pub = settings.data;
   const on = pub?.enabledMediaCategories || {};
   const svc = services();
   const games = (['game', 'retro', 'modern'] as GameCategory[]).filter(
@@ -177,6 +178,9 @@ export function useExtras() {
   }, [key, !!pub]);
   return {
     ready: !!pub,
+    // SeerrNG's settings couldn't be read: the pages that wait for them offer Retry
+    error: pub ? null : settings.error,
+    retry: settings.reload,
     enabled,
     // until the checks answer, list none (so Games doesn't load a dead category first)
     games: !enabled('game')

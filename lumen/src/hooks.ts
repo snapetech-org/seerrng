@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { api, hardcoverWorkId, hcCovers } from './api';
+import { api, ApiError, hardcoverWorkId, hcCovers } from './api';
 import {
   cached,
   cacheGeneration,
@@ -17,12 +17,15 @@ export function useApi<T>(path: string | null) {
     path ? (cached<T>(path) ?? null) : null
   );
   const [error, setError] = useState<string | null>(null);
+  // the HTTP status of that error (0 when the server wasn't reached)
+  const [errorStatus, setErrorStatus] = useState(0);
   const [tick, setTick] = useState(0);
   useEffect(() => {
     if (!path) return;
     let live = true;
     const generation = sessionGeneration();
     setError(null);
+    setErrorStatus(0);
     const saved = cached<T>(path);
     setData(saved ?? null);
     if (saved !== undefined && isFresh(path)) return;
@@ -33,8 +36,10 @@ export function useApi<T>(path: string | null) {
       })
       .catch((e) => {
         // a saved answer stays up if refreshing it fails
-        if (live && saved === undefined)
+        if (live && saved === undefined) {
           setError(e instanceof Error ? e.message : 'Failed to load');
+          setErrorStatus(e instanceof ApiError ? e.status : 0);
+        }
       });
     return () => {
       live = false;
@@ -44,7 +49,7 @@ export function useApi<T>(path: string | null) {
     if (path) forget(path);
     setTick((t) => t + 1);
   }, [path]);
-  return { data, error, reload };
+  return { data, error, errorStatus, reload };
 }
 
 // one call for everyone asking for the same path at once; the answer is saved

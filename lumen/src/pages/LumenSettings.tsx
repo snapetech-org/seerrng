@@ -51,8 +51,11 @@ export default function LumenSettings() {
   const [saveState, setSaveState] = useState<{
     canSave: boolean;
     folder?: string;
+    uid?: number;
+    gid?: number;
   } | null>(null);
   const [saving, setSaving] = useState(false);
+  const [storageCheck, setStorageCheck] = useState(0);
   useEffect(() => {
     if (!isAdmin) return;
     let live = true;
@@ -72,7 +75,7 @@ export default function LumenSettings() {
     return () => {
       live = false;
     };
-  }, [isAdmin]);
+  }, [isAdmin, storageCheck]);
 
   const defaults = { ...DEFAULT_PREFS, ...(cfg.defaults || {}) };
   const rows = { ...DEFAULT_PREFS.rows, ...(cfg.defaults?.rows || {}) };
@@ -207,7 +210,15 @@ export default function LumenSettings() {
           }}
         />
       </label>
-    ) : null;
+    ) : (
+      <button
+        className="btn btn-tonal btn-sm"
+        disabled
+        title="Saving needs writable storage. See the storage message above."
+      >
+        Upload
+      </button>
+    );
   const copy = () =>
     navigator.clipboard
       ?.writeText(json)
@@ -285,9 +296,8 @@ export default function LumenSettings() {
             </>
           ) : (
             <>
-              Pick what everyone gets, then download <b>lumen-config.json</b>{' '}
-              and put it next to Lumen (see “Admin defaults” in the Lumen
-              guide).
+              Save and Upload need writable storage. You can still download your
+              settings.
             </>
           )}{' '}
           People see the change the next time they open Lumen. “Always on” and
@@ -295,6 +305,31 @@ export default function LumenSettings() {
           just where everyone starts.
         </p>
       </header>
+
+      {saveState && !saveState.canSave && (
+        <div className="note" role="status">
+          <p>
+            {embedded
+              ? 'Included Lumen cannot save its settings. Check that SeerrNG’s config volume is writable.'
+              : saveState.folder === 'readonly'
+                ? `Lumen cannot write to /lumen-data. Mount it read-write and give its host folder to UID:GID ${saveState.uid ?? 'the container user'}:${saveState.gid ?? 'the container group'}.`
+                : saveState.folder === 'missing'
+                  ? 'Mount a writable host folder at /lumen-data to enable Save and Upload.'
+                  : 'Could not check Lumen storage. Check the container logs, then try again.'}
+          </p>
+          <button
+            className="btn btn-tonal btn-sm"
+            onClick={() => setStorageCheck((n) => n + 1)}
+          >
+            Check storage again
+          </button>
+          <p>
+            Compose: put <code>user: "1000:1000"</code> beside{' '}
+            <code>environment:</code>, with the same indentation. It is not an
+            environment variable. Your draft stays here while you check.
+          </p>
+        </div>
+      )}
 
       <Section title="Sign-in and media server">
         <div className="setlist">
@@ -373,6 +408,18 @@ export default function LumenSettings() {
               placeholder="https://seerr.example.com"
               value={(cfg.seerrPublicUrl as string) || ''}
               onChange={(e) => setTop('seerrPublicUrl', e.target.value)}
+            />
+          </label>
+          <label className="set cfg-row">
+            <span>
+              <b>Audiobookshelf address</b>
+              <small>Where “Listen in Audiobookshelf” goes</small>
+            </span>
+            <input
+              className="cfg-input"
+              placeholder="https://books.example.com"
+              value={(cfg.audiobookshelfUrl as string) || ''}
+              onChange={(e) => setTop('audiobookshelfUrl', e.target.value)}
             />
           </label>
         </div>
@@ -525,15 +572,18 @@ export default function LumenSettings() {
 
       <Section title="lumen-config.json">
         <div className="cfg-actions">
-          {saveState?.canSave && (
-            <button
-              className="btn btn-primary"
-              onClick={save}
-              disabled={saving}
-            >
-              {saving ? 'Saving…' : 'Save for everyone'}
-            </button>
-          )}
+          <button
+            className="btn btn-primary"
+            onClick={save}
+            disabled={saving || !saveState?.canSave}
+            title={
+              saveState?.canSave
+                ? undefined
+                : 'Saving needs writable storage. See the storage message above.'
+            }
+          >
+            {saving ? 'Saving…' : 'Save for everyone'}
+          </button>
           <button
             className={`btn ${saveState?.canSave ? 'btn-tonal' : 'btn-primary'}`}
             onClick={download}
@@ -544,13 +594,6 @@ export default function LumenSettings() {
             Copy
           </button>
         </div>
-        {saveState && !saveState.canSave && (
-          <p className="note">
-            {saveState.folder === 'readonly'
-              ? 'Lumen can’t write to its /lumen-data folder, so it can’t save this itself. Make the folder writable by user 101 (see “Admin defaults” in the Lumen guide).'
-              : 'To save from here instead of downloading, give Lumen a /lumen-data folder (see “Admin defaults” in the Lumen guide).'}
-          </p>
-        )}
         <textarea
           className="cfg-json"
           readOnly

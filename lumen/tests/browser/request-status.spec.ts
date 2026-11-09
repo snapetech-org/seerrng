@@ -297,3 +297,51 @@ test('malformed successful lifecycle data does not become legacy availability', 
   ).toBe(false);
   await expect(page.locator('.rq')).toHaveCount(0);
 });
+
+test('a double click on Cancel cancels the request once', async ({ page }) => {
+  await fixture(page, undefined);
+  let cancelled = false;
+  let deletes = 0;
+  await page.route('**/api/v1/request?**', (route) =>
+    route.fulfill({
+      json: {
+        pageInfo: { pages: 1, results: cancelled ? 0 : 1 },
+        results:
+          cancelled || route.request().url().includes('filter=processing')
+            ? []
+            : [
+                {
+                  id: 614,
+                  type: 'book',
+                  status: 1,
+                  bookFormat: 'ebook',
+                  is4k: false,
+                  createdAt: '2026-11-08T12:00:00Z',
+                  requestedBy: { id: 1, displayName: 'reader' },
+                  media: {
+                    mediaType: 'book',
+                    status: 2,
+                    identifiers: [{ provider: 'openlibrary', value: 'OL614W' }],
+                  },
+                },
+              ],
+      },
+    })
+  );
+  await page.route('**/api/v1/request/614', async (route) => {
+    if (route.request().method() !== 'DELETE') return route.fallback();
+    deletes += 1;
+    if (cancelled)
+      return route.fulfill({ status: 404, json: { message: 'Not found' } });
+    cancelled = true;
+    await new Promise((resolve) => setTimeout(resolve, 300));
+    await route.fulfill({ status: 204 });
+  });
+  await page.goto('/requests');
+  const row = page.locator('.rq').filter({ hasText: 'Requested audio' });
+  await row.getByRole('button', { name: 'Cancel', exact: true }).dblclick();
+  await expect(page.getByText('Request cancelled')).toBeVisible();
+  await expect(row).toHaveCount(0);
+  await expect(page.getByText('Not found')).toHaveCount(0);
+  expect(deletes).toBe(1);
+});

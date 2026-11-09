@@ -8,7 +8,7 @@ import { test } from 'node:test';
 import request from 'supertest';
 import { mountLumenFrontend } from './lumenFrontend';
 
-test('old and new browsers enter Lumen, explicit classic access persists, and setup stays reachable', async () => {
+test('selected frontend, explicit native access, and setup stay reachable', async () => {
   const root = await fs.mkdtemp(
     path.join(os.tmpdir(), 'seerrng-lumen-entry-test-')
   );
@@ -16,11 +16,15 @@ test('old and new browsers enter Lumen, explicit classic access persists, and se
     await fs.writeFile(path.join(root, 'index.html'), '<html>Lumen</html>');
     await fs.writeFile(path.join(root, 'app.js'), '/* shipped Lumen bundle */');
     let initialized = true;
+    let frontend: 'native' | 'lumen' | 'external' = 'lumen';
+    let companionUrl = 'http://companion.example:5080';
     const app = express();
     app.use(cookieParser());
     mountLumenFrontend(app, {
       directory: root,
       isInitialized: () => initialized,
+      frontend: () => frontend,
+      companionUrl: () => companionUrl,
     });
     app.get('/', (_req, res) => res.send('Native interface'));
     for (const cookie of ['', 'theme=seerrNGJ', 'theme=seerrOrig']) {
@@ -45,6 +49,40 @@ test('old and new browsers enter Lumen, explicit classic access persists, and se
     assert.equal((await browser.get('/')).headers.location, '/lumen/');
     assert.equal((await request(app).get('/lumen/app.js')).status, 200);
     assert.equal((await request(app).get('/lumen/missing.js')).status, 404);
+    frontend = 'native';
+    assert.equal((await request(app).get('/')).text, 'Native interface');
+    frontend = 'external';
+    assert.equal(
+      (await request(app).get('/')).headers.location,
+      'http://companion.example:5080/'
+    );
+    assert.equal((await browser.get('/seerrng')).headers.location, '/');
+    assert.equal((await browser.get('/')).text, 'Native interface');
+    assert.equal(
+      (await browser.get('/?interface=default')).headers.location,
+      'http://companion.example:5080/'
+    );
+    for (const invalid of [
+      'javascript:alert(1)',
+      'https://user:secret@example.com',
+      'https://example.com/?token=secret',
+      'not a URL',
+    ]) {
+      companionUrl = invalid;
+      assert.equal((await request(app).get('/')).text, 'Native interface');
+    }
+    const sameHost = request(app);
+    companionUrl = 'http://same.example';
+    assert.equal(
+      (await sameHost.get('/').set('Host', 'same.example')).text,
+      'Native interface'
+    );
+    companionUrl = 'http://same.example/requests/';
+    assert.equal(
+      (await request(app).get('/').set('Host', 'same.example')).headers
+        .location,
+      companionUrl
+    );
     initialized = false;
     assert.equal((await request(app).get('/')).text, 'Native interface');
     assert.equal(

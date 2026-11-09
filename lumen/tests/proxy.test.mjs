@@ -258,7 +258,16 @@ test('the image runs as any unprivileged user, saving into a /lumen-data that us
         'test ! -w /usr/share/nginx/html/index.html'
       );
       const config = await (await fetch(base + '/lumen/config')).json();
-      assert.deepEqual(config, { canSave: true, folder: 'ok' }, user);
+      assert.deepEqual(
+        config,
+        {
+          canSave: true,
+          folder: 'ok',
+          uid: Number(user.split(':')[0]),
+          gid: Number(user.split(':')[1]),
+        },
+        user
+      );
       const api = await fetch(base + '/api/v1/probe');
       assert.equal(api.status, 200, `${user}: the proxy works`);
     } finally {

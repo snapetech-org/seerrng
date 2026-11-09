@@ -15,7 +15,7 @@ import { useIntl } from 'react-intl';
 const messages = defineMessages('components.Layout.ThemePicker', {
   themePicker: 'Theme picker',
   interfaceDesign: 'Interface design',
-  openLumen: 'Open Lumen',
+  openLumen: 'Open included Lumen',
   colorPalette: 'Colour palette',
   darkMode: 'Dark mode',
   lightMode: 'Light mode',

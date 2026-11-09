@@ -147,6 +147,7 @@ export const apiMessages: Record<
   m0b3fc7176fb77831957e: 'Media server configuration changed during login.',
   m0b570eb9b0e9ff05fb9f: 'The operation was aborted.',
   m0b5a756b4b39c61fc1ac: 'Media type must be a string.',
+  m0b67c5a5d453709b60fd: 'Enter the configured Lumen companion address.',
   m0b8c2c7d830734780830: 'The game could not be added to your library.',
   m0bb4ecec33688632fb9a: 'Provide 1 to 200 valid TMDB movie IDs.',
   m0bc521ad5c26605ce0e8: 'Playback device is unavailable.',
@@ -3413,6 +3414,7 @@ export const apiMessages: Record<
   mfd76a7b8a12543027571: 'Media server owner unavailable',
   mfd7cb8f411c78996efdd:
     'ReadMeABook cannot verify edition languages under the current book language policy.',
+  mfd7d62bc84f5a86d4325: 'defaultFrontend must be native, lumen, or external.',
   mfd7e09e6086279a5d5eb: 'Sign in again before managing accounts.',
   mfd9b4d662c94414758aa: 'SEERR_EXTERNAL_CONFIG exceeds the 2 MiB limit',
   mfdb0fd914361ec4a4f14: 'Invalid release calendar response.',

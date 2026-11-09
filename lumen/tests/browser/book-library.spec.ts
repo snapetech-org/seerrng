@@ -78,14 +78,19 @@ const paged = (results: unknown[]) => ({
   results,
 });
 
-async function fixtures(page: Page) {
+async function fixtures(
+  page: Page,
+  opts: { config?: Record<string, unknown>; ownedAudiobook?: boolean } = {}
+) {
   const requests: {
     path: string;
     query: string;
     body?: Record<string, unknown>;
   }[] = [];
   await page.route('https://**/*', (r) => r.abort());
-  await page.route('**/lumen-config.json', (r) => r.fulfill({ json: {} }));
+  await page.route('**/lumen-config.json', (r) =>
+    r.fulfill({ json: opts.config || {} })
+  );
   await page.route('**/seerr-classic/**', (r) =>
     r.fulfill({ status: 404, body: '' })
   );
@@ -129,7 +134,24 @@ async function fixtures(page: Page) {
               ]),
       });
     if (path === '/editions/book')
-      return route.fulfill({ json: { editions: [] } });
+      // SeerrNG answers only when it also gets an identity; a bare term returns nothing
+      return route.fulfill({
+        json: {
+          editions:
+            url.searchParams.get('foreignBookId') === 'hc:12345'
+              ? [
+                  {
+                    id: 'ed-1',
+                    title: 'Native book detail',
+                    format: 'audiobook',
+                    language: 'eng',
+                    narrators: ['Fixture Narrator'],
+                    durationSeconds: 36000,
+                  },
+                ]
+              : [],
+        },
+      });
     if (path === '/discover/books' || path === '/book/library') {
       const format = url.searchParams.get('format') || 'ebook';
       return route.fulfill({
@@ -148,8 +170,11 @@ async function fixtures(page: Page) {
       return route.fulfill({
         json: book(
           decodeURIComponent(path.slice(6)),
-          url.searchParams.get('f') === 'audio' ? 'audiobook' : 'ebook',
-          'Native book detail'
+          opts.ownedAudiobook || url.searchParams.get('f') === 'audio'
+            ? 'audiobook'
+            : 'ebook',
+          'Native book detail',
+          !!opts.ownedAudiobook
         ),
       });
     return route.fulfill({ json: {} });
@@ -230,4 +255,132 @@ test('native ebook search works without a companion and retains its service-owne
       (r) => r.path === '/discover/books' && r.query.includes('query=rare')
     )
   ).toBe(true);
+});
+
+test('an owned audiobook opens in Audiobookshelf when the admin set its address', async ({
+  page,
+}) => {
+  await fixtures(page, {
+    ownedAudiobook: true,
+    config: { audiobookshelfUrl: 'https://books.example.com/' },
+  });
+  await page.goto(`/book/${encodeURIComponent(ownedId)}?f=audio`);
+  await expect(
+    page.getByRole('link', { name: 'Listen in Audiobookshelf' })
+  ).toHaveAttribute('href', 'https://books.example.com/item/abs-owned');
+});
+
+test('without an Audiobookshelf address an owned book shows its status, not a dead button', async ({
+  page,
+}) => {
+  await fixtures(page, {
+    ownedAudiobook: true,
+    config: { audiobookshelfUrl: 'javascript:alert(1)' },
+  });
+  await page.goto(`/book/${encodeURIComponent(ownedId)}?f=audio`);
+  await expect(
+    page.getByRole('button', { name: 'In your library' })
+  ).toBeDisabled();
+  await expect(page.getByText('Listen in Audiobookshelf')).toHaveCount(0);
+});
+
+test('an audiobook page lists narrations from SeerrNG editions', async ({
+  page,
+}) => {
+  const requests = await fixtures(page);
+  await page.goto(`/book/${encodeURIComponent(audioId)}?f=audio`);
+  await expect(page.getByText('Fixture Narrator').first()).toBeVisible();
+  expect(
+    requests.some(
+      (r) =>
+        r.path === '/editions/book' &&
+        r.query.includes('foreignBookId=hc%3A12345')
+    )
+  ).toBe(true);
+});
+
+test('a passing book lookup failure offers Retry instead of “no ebook”', async ({
+  page,
+}) => {
+  await fixtures(page);
+  let status = 404;
+  await page.route(/\/api\/v1\/book\/bookshelf[^/?]*$/, (route) =>
+    status === 200
+      ? route.fallback()
+      : route.fulfill({ status, json: { message: 'Too many requests' } })
+  );
+  // a real "not found" points to the audiobook
+  await page.goto(`/book/${encodeURIComponent(ebookId)}`);
+  await expect(page.getByText('No ebook edition found')).toBeVisible();
+
+  status = 429;
+  await page.reload();
+  const alert = page.getByRole('alert');
+  await expect(alert).toContainText('Couldn’t load this book');
+  await expect(page.getByText('No ebook edition found')).toHaveCount(0);
+  status = 200;
+  await alert.getByRole('button', { name: 'Retry' }).click();
+  await expect(
+    page.getByRole('heading', { name: 'Native book detail' })
+  ).toBeVisible();
+});
+
+test('a failed movie page can be retried', async ({ page }) => {
+  await fixtures(page);
+  let fail = true;
+  await page.route('**/api/v1/movie/77', (route) =>
+    fail
+      ? route.fulfill({
+          status: 503,
+          json: { message: 'Provider unavailable' },
+        })
+      : route.fulfill({
+          json: {
+            id: 77,
+            title: 'Retry Film',
+            genres: [],
+            releaseDate: '2020-01-01',
+          },
+        })
+  );
+  await page.route('**/api/v1/movie/77/recommendations', (route) =>
+    route.fulfill({ json: paged([]) })
+  );
+  await page.goto('/movie/77');
+  const alert = page.getByRole('alert');
+  await expect(alert).toContainText('Couldn’t load this movie');
+  fail = false;
+  await alert.getByRole('button', { name: 'Retry' }).click();
+  await expect(page.getByRole('heading', { name: 'Retry Film' })).toBeVisible();
+});
+
+test('Audiobookshelf links retain a path prefix and omit query tokens and fragments', async ({
+  page,
+}) => {
+  await fixtures(page, {
+    ownedAudiobook: true,
+    config: {
+      audiobookshelfUrl:
+        'https://books.example.com/abs/?token=must-not-forward#shelf',
+    },
+  });
+  await page.goto(`/book/${encodeURIComponent(ownedId)}?f=audio`);
+  await expect(
+    page.getByRole('link', { name: 'Listen in Audiobookshelf' })
+  ).toHaveAttribute('href', 'https://books.example.com/abs/item/abs-owned');
+});
+test('Audiobookshelf credentials never become a public owned-book link', async ({
+  page,
+}) => {
+  await fixtures(page, {
+    ownedAudiobook: true,
+    config: { audiobookshelfUrl: 'https://user:secret@books.example.com/' },
+  });
+  await page.goto(`/book/${encodeURIComponent(ownedId)}?f=audio`);
+  await expect(
+    page.getByRole('button', { name: 'In your library' })
+  ).toBeDisabled();
+  await expect(
+    page.getByRole('link', { name: 'Listen in Audiobookshelf' })
+  ).toHaveCount(0);
 });

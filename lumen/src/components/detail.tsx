@@ -297,22 +297,31 @@ export function AdvancedOptions({
         : base
     );
   }, [o, open, asUser, user?.id, initial?.userId, onChange, picked4k]);
+  // no server of this kind set up: nothing to choose, SeerrNG decides (as its own dialog does)
+  const none = !!servers && !servers.length;
   useEffect(() => {
     onReady?.(
-      !!detail &&
-        !err &&
-        o.serverId != null &&
-        o.profileId != null &&
-        !!o.rootFolder
+      !err &&
+        (none ||
+          (!!detail &&
+            o.serverId != null &&
+            o.profileId != null &&
+            !!o.rootFolder))
     );
-  }, [detail, err, o, onReady]);
+  }, [detail, err, o, onReady, none]);
 
   if (!allowed) return null;
   const body = (
     <>
       {err && <p className="note">{err}</p>}
       {!servers && !err && open && <p className="note">Loading servers…</p>}
-      {servers && (
+      {none && !err && (
+        <p className="note">
+          No {svc === 'radarr' ? 'Radarr' : 'Sonarr'} server to choose; SeerrNG
+          uses its defaults.
+        </p>
+      )}
+      {servers && !none && (
         <div className="adv-grid">
           {asAllowed && !!people?.length && user && (
             <label className="sel">

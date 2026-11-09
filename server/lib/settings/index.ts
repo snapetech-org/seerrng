@@ -563,6 +563,8 @@ export interface MainSettings {
   downloadPathMappings: DownloadPathMapping[];
   applicationTitle: string;
   applicationUrl: string;
+  defaultFrontend: 'native' | 'lumen' | 'external';
+  lumenPublicUrl: string;
   cacheImages: boolean;
   includeAdult: boolean;
   ageGate?: AgeGateSettings;
@@ -990,6 +992,8 @@ class Settings {
         downloadPathMappings: [],
         applicationTitle: 'Seerr',
         applicationUrl: '',
+        defaultFrontend: 'lumen',
+        lumenPublicUrl: '',
         cacheImages: true,
         includeAdult: false,
         ageGate: { ...DEFAULT_AGE_GATE_SETTINGS },
@@ -2070,6 +2074,8 @@ class Settings {
         downloadPathMappings: [],
         applicationTitle: 'Seerr',
         applicationUrl: '',
+        defaultFrontend: 'lumen',
+        lumenPublicUrl: '',
         cacheImages: false,
         includeAdult: false,
         ageGate: { ...DEFAULT_AGE_GATE_SETTINGS },

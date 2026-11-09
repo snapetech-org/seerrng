@@ -1,11 +1,81 @@
 # Lumen
 
-Lumen ships inside the main SeerrNG application and is the default entry at the
-normal application address. Existing and new users receive the same original
-dark Lumen design. No additional container is required. **You → Full SeerrNG →
-Open** reaches the native interface and administrator tools; **Theme picker →
-Open Lumen** returns. Direct `/lumen/` and `/seerrng` links also work. Fresh
-installations still complete the native setup wizard first.
+## Choose the interface you want
+
+| Situation | What to do |
+| --- | --- |
+| Already running SeerrNG | Keep your existing address. Upgrades preserve full SeerrNG. No companion is required. |
+| Want the included Lumen | Open `/lumen/` on your SeerrNG server. To make it the home page, use **Full SeerrNG → Settings → General → Default Interface → Included Lumen**, then save. |
+| Already configured a Lumen companion | Keep using its existing address, usually port 5080. Select **Configured Lumen companion** in General settings and enter that address if you want SeerrNG’s home page to send people there. |
+| Need the native interface | Open `/seerrng` on your SeerrNG server. This works before sign-in. Lumen also has **Open full SeerrNG** on its sign-in page. |
+
+Included Lumen and the companion have separate presentation settings and branding.
+The included copy saves under SeerrNG’s existing config volume; the companion uses
+its own `/lumen-data` mount. Neither creates another SeerrNG database or changes
+requests, accounts, or media-server configuration. Fresh installs start with the
+included Lumen after setup.
+
+### Companion permissions: the short version
+
+No additional container is needed for included Lumen. For an independently deployed
+companion, download `lumen/compose.lumen-only.yaml`, enter the two SeerrNG addresses,
+and create a `.env` file **next to the Compose file**:
+
+```dotenv
+PUID=1000
+PGID=1000
+```
+
+Create the data folder owned by that user, then start:
+
+```sh
+mkdir -p lumen-data
+sudo chown 1000:1000 lumen-data
+docker compose up -d lumen
+```
+
+The supplied Compose file uses these host-side values in `user:` and the `/tmp`
+tmpfs. **Do not put `user:`, PUID, or PGID under the service’s `environment:`.**
+If editing your own stack, this is the complete placement (adapt the addresses and
+host data path):
+
+```yaml
+services:
+  lumen:
+    image: ghcr.io/snapetech-org/seerrng-lumen:latest
+    user: "1000:1000"
+    environment:
+      SEERR_INTERNAL_URL: http://seerrng:5055
+      SEERR_BROWSER_URL: http://your-server:5055
+    ports:
+      - "5080:80"
+    volumes:
+      - ./lumen-data:/lumen-data
+    read_only: true
+    tmpfs:
+      - /tmp:uid=1000,gid=1000,mode=1777
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    restart: unless-stopped
+```
+
+The image defaults to UID/GID 101:101 when no Docker user is selected. It supports
+1000:1000 directly; it does not remap users through LinuxServer-style container
+environment variables. Current images keep nginx’s temporary files under `/tmp`;
+the old `/etc/nginx/conf.d` and `/var/cache/nginx` tmpfs workaround is unnecessary.
+**Lumen settings for everyone** shows storage problems and the actual UID/GID.
+After correcting the mount or ownership, select **Check storage again**; your draft
+is preserved. Never use `chmod 777` to work around ownership.
+
+
+
+Lumen is bundled with SeerrNG. Fresh installs use P’s original dark Lumen
+presentation after setup; existing installations retain native home access until
+an administrator selects a different default in Settings → General. The sign-in
+page offers **Open full SeerrNG** without requiring an account first. The companion
+container remains optional and keeps its own branding and configuration.
 
 The app stores shared presentation settings under its existing configuration
 volume, in `lumen/config.json`. Administrator saves use the authenticated API;
@@ -19,7 +89,7 @@ A request-first front end for [SeerrNG](https://github.com/snapetech-org/seerrng
 
 **Step-by-step install and migration guide:** [docs/using-seerr/lumen.md](../docs/using-seerr/lumen.md). It covers new installs, adding Lumen to an existing SeerrNG, reverse proxies and tunnels, updating and switching back.
 
-The quickest start is [`compose.yaml`](./compose.yaml), which runs SeerrNG and Lumen together:
+For a separate companion alongside a new server, [`compose.yaml`](./compose.yaml) runs both containers. Create the config/data directories first as described above; included Lumen needs neither this stack nor a second container:
 
 ```sh
 curl -o compose.yaml https://raw.githubusercontent.com/snapetech-org/seerrng/main/lumen/compose.yaml
@@ -29,7 +99,7 @@ docker compose up -d
 Already running SeerrNG? [`compose.lumen-only.yaml`](./compose.lumen-only.yaml) installs Lumen alone; set `SEERR_INTERNAL_URL` in it to your SeerrNG.
 
 Prebuilt images support amd64 and arm64. To update either Compose install, run
-`docker compose pull && docker compose up -d`. Use `:v3.72.23` instead of `:latest`
+`docker compose pull && docker compose up -d`. Use `:v3.72.27` instead of `:latest`
 to pin a release.
 
 Or run the published image without Compose:

@@ -18,6 +18,7 @@ import { normalizeValidIsbn } from '@server/lib/isbn';
 import { hydrateMediaSummaryRelations } from '@server/lib/mediaSummaryHydration';
 import { parseBookshelfBookId } from '@server/utils/bookshelfCatalog';
 import { Brackets, In } from 'typeorm';
+import { projectBookFileObservations } from '@server/lib/bookFileObservations';
 
 type BookMediaLookupResult = {
   id: string;
@@ -196,7 +197,7 @@ const findBookMediaByIdentifiers = async (
       })
     : [];
   await hydrateMediaSummaryRelations(media, user);
-  const mediaById = new Map(media.map((item) => [item.id, item]));
+  const mediaById = await projectBookFileObservations(media);
 
   const mediaByIdentifier = new Map<string, Media>();
 

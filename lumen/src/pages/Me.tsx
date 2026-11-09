@@ -3,6 +3,7 @@ import { useAuth } from '../auth';
 import { Section } from '../components/cards';
 import { canChooseRequestOptions } from '../components/detail';
 import { fullSeerrUrl, initials } from '../components/Shell';
+import { useToast } from '../components/toast';
 import { CAN_HOVER, useApi } from '../hooks';
 import { Icon } from '../icons';
 import { mediaServer, services } from '../mediaServer';
@@ -58,6 +59,7 @@ function Toggle({
 
 export default function Me() {
   const { user, signOut } = useAuth();
+  const toast = useToast();
   const { prefs, set, reset, locked, seerrPublicUrl } = usePrefs();
   const quota = useApi<Quota>(user ? `/user/${user.id}/quota` : null).data;
   const full = fullSeerrUrl(seerrPublicUrl);
@@ -250,7 +252,9 @@ export default function Me() {
       <button
         className="btn btn-quiet"
         style={{ justifySelf: 'start' }}
-        onClick={signOut}
+        onClick={() =>
+          signOut().catch(() => toast('Couldn’t sign out. Try again.'))
+        }
       >
         Sign out
       </button>

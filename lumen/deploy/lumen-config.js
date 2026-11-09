@@ -74,7 +74,12 @@ async function isAdmin(r) {
 async function save(r) {
   if (r.method === 'GET') {
     const f = folder();
-    send(r, 200, { canSave: f === 'ok', folder: f });
+    send(r, 200, {
+      canSave: f === 'ok',
+      folder: f,
+      uid: Number(r.variables.lumen_runtime_uid),
+      gid: Number(r.variables.lumen_runtime_gid),
+    });
     return;
   }
   if (r.method !== 'PUT') {
