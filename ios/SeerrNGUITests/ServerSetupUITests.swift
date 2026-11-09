@@ -1,6 +1,65 @@
 import XCTest
+import Network
 
 final class ServerSetupUITests: XCTestCase {
+    func testActualOriginRemainsVisibleAcrossSignInRedirects() throws {
+        // Changed only in the historical comparison checkout, never production.
+        let historicalBaseline = false
+        let first = try OriginFixtureServer(port: 18771, target: 18772)
+        let second = try OriginFixtureServer(port: 18772, target: 18772)
+        defer { first.stop(); second.stop() }
+        let app = XCUIApplication()
+        app.launchArguments.append("-reset-server-data")
+        app.launch()
+        XCTAssertTrue(app.buttons["addServerButton"].waitForExistence(timeout: 10))
+        app.buttons["addServerButton"].tap()
+        app.textFields["serverNameField"].tap()
+        app.textFields["serverNameField"].typeText("Saved server")
+        app.textFields["serverURLField"].tap()
+        app.textFields["serverURLField"].typeText("http://127.0.0.1:18771")
+        app.buttons["saveServerButton"].tap()
+        let warning = app.alerts["Use an unencrypted HTTP connection?"]
+        XCTAssertTrue(warning.waitForExistence(timeout: 5))
+        warning.buttons["Use HTTP"].tap()
+        waitForSavedServer("Saved server", in: app)
+        app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH 'connectServer_'" )).firstMatch.tap()
+        XCTAssertTrue(app.webViews.staticTexts["Origin fixture"].waitForExistence(timeout: 20))
+        let menu = app.buttons["activeServerMenu"]
+        XCTAssertTrue(menu.label.contains(historicalBaseline ? "Saved server" : "http://127.0.0.1:18771"))
+        captureOrigin("origin-initial", app: app)
+        // Page-initiated redirects may stay embedded. Cross-origin hyperlinks
+        // deliberately require the separate external-link confirmation.
+        app.webViews.buttons["Continue sign-in"].tap()
+        XCTAssertTrue(app.webViews.staticTexts["Redirected origin fixture"].waitForExistence(timeout: 20))
+        XCTAssertTrue(menu.label.contains(historicalBaseline ? "Saved server" : "http://127.0.0.1:18772"))
+        XCTAssertTrue(app.staticTexts["HTTP connection is not encrypted"].exists)
+        captureOrigin("origin-redirect", app: app)
+
+        // An intentionally unresolvable address exercises long-origin display
+        // without involving an external provider or a live account.
+        app.buttons["Servers"].tap()
+        app.buttons["Actions for Saved server"].tap()
+        app.buttons["Edit"].tap()
+        let address = app.textFields["serverURLField"]
+        XCTAssertTrue(address.waitForExistence(timeout: 10))
+        address.tap()
+        address.clearAndEnterText("https://trusted.example.com.untrusted-host.example.invalid")
+        app.buttons["saveServerButton"].tap()
+        waitForSavedServer("Saved server", in: app)
+        app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH 'connectServer_'" )).firstMatch.tap()
+        XCTAssertTrue(menu.waitForExistence(timeout: 20))
+        XCTAssertTrue(menu.label.contains(historicalBaseline ? "Saved server" : "https://trusted.example.com.untrusted-host.example.invalid:443"))
+        XCTAssertFalse(app.staticTexts["HTTP connection is not encrypted"].exists)
+        captureOrigin("origin-long", app: app)
+    }
+
+    private func captureOrigin(_ name: String, app: XCUIApplication) {
+        let attachment = XCTAttachment(screenshot: app.screenshot())
+        attachment.name = name
+        attachment.lifetime = .keepAlways
+        add(attachment)
+    }
+
     func testFirstLaunchCanAddAndSaveAnHTTPSSeerrNGServer() {
         let app = XCUIApplication()
         app.launchArguments.append("-reset-server-data")
@@ -108,6 +167,36 @@ final class ServerSetupUITests: XCTestCase {
         XCTAssertTrue(saveButton.waitForNonExistence(timeout: 30), "The server editor should close after saving \(name).")
         XCTAssertTrue(app.staticTexts[name].waitForExistence(timeout: 30), "The server list should show \(name) after saving.")
     }
+}
+
+private final class OriginFixtureServer {
+    private let listener: NWListener
+    private let queue = DispatchQueue(label: "seerrng.origin-fixture")
+    init(port: UInt16, target: UInt16) throws {
+        listener = try NWListener(using: .tcp, on: NWEndpoint.Port(rawValue: port)!)
+        let ready = DispatchSemaphore(value: 0)
+        listener.stateUpdateHandler = { state in
+            if case .ready = state { ready.signal() }
+            if case .failed = state { ready.signal() }
+        }
+        listener.newConnectionHandler = { connection in
+            connection.start(queue: self.queue)
+            connection.receive(minimumIncompleteLength: 1, maximumLength: 8192) { data, _, _, _ in
+                let request = String(data: data ?? Data(), encoding: .utf8) ?? ""
+                let body = "<html><meta name=viewport content='width=device-width'><body style='padding:72px 20px;font:18px sans-serif'><h1>\(port == target ? "Redirected origin fixture" : "Origin fixture")</h1><p>Check the server address above before signing in.</p><button onclick=\"location.href='/redirect'\">Continue sign-in</button></body></html>"
+                let response = request.hasPrefix("GET /redirect ")
+                    ? "HTTP/1.1 302 Found\r\nLocation: http://127.0.0.1:\(target)/auth\r\nContent-Length: 0\r\nConnection: close\r\n\r\n"
+                    : "HTTP/1.1 200 OK\r\nContent-Type: text/html\r\nContent-Length: \(body.utf8.count)\r\nConnection: close\r\n\r\n\(body)"
+                connection.send(content: Data(response.utf8), completion: .contentProcessed { _ in connection.cancel() })
+            }
+        }
+        listener.start(queue: queue)
+        guard ready.wait(timeout: .now() + 5) == .success else {
+            listener.cancel()
+            throw NSError(domain: "OriginFixtureServer", code: 1)
+        }
+    }
+    func stop() { listener.cancel() }
 }
 
 private extension XCUIElement {

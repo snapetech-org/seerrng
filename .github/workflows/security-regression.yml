@@ -15,6 +15,20 @@ jobs:
   server-browser:
     runs-on: ubuntu-24.04
     timeout-minutes: 35
+    services:
+      postgres:
+        image: postgres:16-alpine@sha256:57c72fd2a128e416c7fcc499958864df5301e940bca0a56f58fddf30ffc07777
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: ci-only-migration
+          POSTGRES_DB: seerrng_migration_test
+        ports:
+          - 5432/tcp
+        options: >-
+          --health-cmd "pg_isready -U postgres -d seerrng_migration_test"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -39,6 +53,10 @@ jobs:
           server/migration/clientApiKeys.test.ts server/lib/typeormSessionStore.test.ts
       - name: Check deployment and scanner gates
         run: node --test scripts/check-helm-security.test.mjs scripts/healthcheck.test.mjs scripts/check-semgrep-baseline.test.mjs scripts/check-repository-hygiene.test.mjs packaging/cloudron/start-cloudron.test.mjs
+      - name: Exercise PostgreSQL token migration and authentication
+        env:
+          SEERR_TEST_POSTGRES_URL: postgresql://postgres:ci-only-migration@127.0.0.1:${{ job.services.postgres.ports['5432'] }}/seerrng_migration_test
+        run: pnpm test:node --postgres server/migration/clientApiKeys.postgres.test.ts
       - name: Build production apps
         run: pnpm build
       - name: Prepare isolated browser fixtures
@@ -48,7 +66,7 @@ jobs:
       - name: Exercise both production frontends under CSP
         env:
           E2E_OFFLINE: true
-        run: pnpm exec playwright test playwright/production-csp.spec.ts
+        run: pnpm exec playwright test playwright/production-csp.spec.ts playwright/client-tokens.spec.ts playwright/narrator-permissions.spec.ts
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         if: always()
         with:
