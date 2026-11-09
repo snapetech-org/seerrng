@@ -1049,7 +1049,7 @@ it('uses one starting episode when the administrator default is enabled and part
   );
 });
 
-it('saves the administrator Episode Queue override separately from season edits', async () => {
+it('saves the queue override separately and requires a starting episode before approval', async () => {
   await fixture(
     async (doc) => {
       expect(
@@ -1079,15 +1079,20 @@ it('saves the administrator Episode Queue override separately from season edits'
         { episodeCount: 2 }
       );
       expect(selections(doc)).toEqual([
-        { seasonNumber: 1 },
-        { seasonNumber: 2 },
+        { seasonNumber: 1, episodeNumbers: [1] },
       ]);
+      expect(
+        doc
+          .querySelector('[data-testid="tree"]')
+          ?.getAttribute('data-selection-mode')
+      ).toBe('single-episode');
+      await click(doc, 'tree-start-episode-2');
       await click(doc, 'modal-ok-button');
       expect(axios.put).toHaveBeenCalledExactlyOnceWith(
         '/api/v1/request/88',
         expect.objectContaining({
-          seasons: [1, 2],
-          seasonRequests: [{ seasonNumber: 1 }, { seasonNumber: 2 }],
+          seasons: [2],
+          seasonRequests: [{ seasonNumber: 2, episodeNumbers: [2] }],
         })
       );
       const submittedBody = vi.mocked(axios.put).mock.calls[0][1] as Record<

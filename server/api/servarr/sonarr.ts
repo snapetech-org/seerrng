@@ -1045,6 +1045,19 @@ class SonarrAPI extends ServarrBase<{
   }
 
   public async addSeries(options: AddSeriesOptions): Promise<SonarrSeries> {
+    // An exact episode selection must never opt the series into broader monitoring.
+    // Existing monitoring owned by Sonarr or another request is preserved below.
+    if (
+      options.episodeSelections?.some(
+        (selection) => selection.episodeNumbers !== undefined
+      )
+    ) {
+      options = {
+        ...options,
+        monitorNewItems: 'none',
+        enableFutureSeasons: false,
+      };
+    }
     try {
       let series = await this.getSeriesByTvdbId(options.tvdbid);
       const apiVersion = await this.getApiVersion();

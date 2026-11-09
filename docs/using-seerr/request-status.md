@@ -161,6 +161,17 @@ folder. If the backend does not report an imported file, the path is not
 mounted, or a mapping cannot be resolved safely, the download action stays
 hidden.
 
+## TV requests that are already owned
+
+A pending TV request can complete when all selected seasons become available at
+its Sonarr destination and quality, even while the rest of an ongoing series is
+only partially available. An unrelated destination or a standard-quality copy
+cannot satisfy a 4K request. Completion does not send another acquisition.
+
+An **Add Your Tag** request is different: approval can still be required before
+updating the requester tag on an existing item. It does not acquire the series
+again. See [requester tags](./requester-tags.md).
+
 ## Sources and attribution
 
 This guide is maintained for SeerrNG by snapetech and SeerrNG contributors.

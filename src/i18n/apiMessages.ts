@@ -12,6 +12,7 @@ export const apiMessages: Record<
   m004c586cf7f3332f6dc6: 'User does not have an associated Plex ID',
   m005b5264a873a28c5cd6: 'Jellystat service URL is invalid.',
   m0071b3d3cf3223dce825: 'backend is invalid.',
+  m00963bbf3be70d276718: 'BookOrbit request ID is invalid.',
   m009c11bd9ae6c0cfa6fd: 'QuestarrNG API v{value0} is not supported',
   m00bb1d8dccdca7a52b0f: 'Unable to read request folders.',
   m00e13f5b885f310d6275: ': URL base is invalid.',
@@ -90,6 +91,8 @@ export const apiMessages: Record<
   m07343e8ccf49d35cf0bb:
     'Selected Kapowarr server has no root folder configured',
   m074408278e13efd37d1f: 'This game is already linked to the catalog.',
+  m07492657aa3bf10d8ce6:
+    'BookOrbit account needs the Request books permission.',
   m0761705ee05e01de26d5: 'Invalid series cover content type.',
   m077dceb0eb2f8f2ff2d2: 'Could not review TV request access.',
   m078dd32c9ff587ee1e46: 'settings contains unsupported field {value0}.',
@@ -194,6 +197,7 @@ export const apiMessages: Record<
   m0e4c37ed0a64b4ff21f7: 'format must be ebook, audiobook, or both.',
   m0e4f7149909f8915a43e:
     'ROMarrNG cannot stop a download after it reaches the download client. Cancel it in ROMarrNG or the download client.',
+  m0e51f8646fbea0f05101: 'BookOrbit returned an invalid book.',
   m0e5a66a83359829dcc09: 'This recording is no longer active.',
   m0e83b057c6d525008c50: 'Administrator access is required.',
   m0ed69eb916a5bc24b464: 'Whisparr scene catalog is unavailable right now.',
@@ -292,6 +296,8 @@ export const apiMessages: Record<
   m150dcaa471d0c8de1a8e: 'BookOrbit returned an invalid paginated book list.',
   m1527b7003c988decbdd1: 'defaultQuotas.{value0} must be an object.',
   m154b53f332cd930152cc: 'Stored notification outbox intent kind is invalid.',
+  m1556fc882fc0970c184d:
+    'Waiting for BookOrbit to approve this request. Configure approval and download automation in BookOrbit to continue automatically.',
   m15790caff9fbe0b66be9: 'IMDb did not return a public watchlist page.',
   m15864fb9623e8f9d2794: 'Unable to save settings after migration.',
   m15a64eb99b30e09dfc75: 'You do not have permission to delete this comment.',
@@ -409,6 +415,8 @@ export const apiMessages: Record<
   m1dde82b337437b075522: 'Unknown media category: {value0}.',
   m1de79f3bc0de64ba4afe: 'Only pending recordings can be declined.',
   m1df2c53045266e82cee0: 'Failed to send Slack notification.',
+  m1e04d6285931135cf9d5:
+    'Choose one starting episode in Edit Request before approving an Episode Queue request. Queue length is a playback buffer, not a total download limit.',
   m1e51f90126f7e58ea93b: 'List URL or reference is required',
   m1e7350e3dfd427a159f9: 'items must contain request objects.',
   m1e90b117a639bf9c1e47: 'You no longer have permission to modify media.',
@@ -452,6 +460,7 @@ export const apiMessages: Record<
     'Bookshelf request tracking is incomplete, so Seerr cannot confirm cancellation yet.',
   m2128f23b6f58f90c00f1: 'Choose to record one airing or the series.',
   m2159c18b47f008eec6d8: 'Lidarr returned an invalid artist list',
+  m2160bdea2d035bd0b5c9: 'BookOrbit did not return an access token.',
   m2192ffc6605307ab798e: 'Book not found',
   m219df593a3290a4bb743:
     'MDBList list references must be 2048 characters or fewer',
@@ -662,6 +671,8 @@ export const apiMessages: Record<
   m32195bc8f23a1e7efb84:
     '[Radarr] Failed to retrieve cover for movie {value0}: No cover path worked',
   m321be7b250861ddec681: 'Series monitoring is unavailable. Try again later.',
+  m323493de14f4cb0ecc74:
+    'Removing a Bindery or BookOrbit book through this action is not supported.',
   m3268e41ec874dc55f49d: 'Unable to retrieve languages.',
   m32931dde01180c20f6ae: 'Request view permission is required.',
   m32a7f23916875373cbc0:
@@ -857,6 +868,7 @@ export const apiMessages: Record<
   m3fc6cea7345af0719403: 'Bindery did not confirm the request withdrawal.',
   m3fd2e22a54f045c0c908:
     'You already have an active request for this media on the selected service.',
+  m3fdcf5ec84073955d142: 'BookOrbit library exceeds the safe scan limit.',
   m40099228a97df9b475a9: 'Unable to use this sign-in link.',
   m401a86ba5d7a9107ce9a: 'Live TV recording is not set up.',
   m403d06c50806714c5b78: 'That card is no longer in your deck.',
@@ -1087,6 +1099,7 @@ export const apiMessages: Record<
     '[Sonarr] Failed to retrieve cover for series {value0}: No cover path worked',
   m4fe79fe44289cf266598: 'Unable to find TMDB ID',
   m4fef08472b1d34208fb1: 'slskdN settings must be an object.',
+  m4ff24f8138a686b011b3: 'BookOrbit library page is incomplete.',
   m5023e6ded82b0bafa1d3: '{value0} is limited to {value1} ids.',
   m5046c5d79b29084c9910: 'Provide one public list URL.',
   m504b1ba631d3ff89d628: 'Prowlarr API key is invalid.',
@@ -1340,6 +1353,8 @@ export const apiMessages: Record<
   m61f28ea533bab5c49938: 'ComicVine volume not found.',
   m622511cabdb7c425e6d6:
     '{value0} must have between 1 and 32 indexer category IDs.',
+  m623e8e5b3414b2c2ea8f:
+    'Requests are temporarily paused. Please try again after the cooldown.',
   m62744569ef6de6c01a6a: 'No {value0} service configuration was admitted.',
   m62a2fed3d6e08c44835f: 'pending',
   m62a842870b21247f9f35:
@@ -1350,6 +1365,8 @@ export const apiMessages: Record<
   m6322692050cf7697d5ca: 'Navidrome service URL is invalid.',
   m6325b271811ad53ec605: 'Cannot verify the selected collections.',
   m63454cd9b9a8c5eeffe8: 'Unable to retrieve upcoming series.',
+  m635695ed7f9a22220dda:
+    'Bookshelf media tools are only available for Chaptarr.',
   m63692f9f971b0833cef3: 'slskdN returned an invalid wishlist item.',
   m63702b032137b3e218ad: 'Request id must be a positive integer.',
   m63874f1f209fa72567a9: 'Media status does not exist.',
@@ -1411,6 +1428,8 @@ export const apiMessages: Record<
     'Whisparr could not accept this scene request. Check the connection and scene metadata, then retry.',
   m67ea8315c6c80f866e1c: 'hostname is invalid.',
   m6806f4353eebedc3c04d: 'Your account authority changed. Sign in again.',
+  m68417011363c9149046d:
+    'BookOrbit cannot verify the selected edition language under the current book language policy.',
   m684b0b2707be9c60642f: '[Lidarr] Failed to remove artist: {value0}',
   m684d16d8bec411376469:
     'Open Library returned an invalid author works response.',
@@ -1510,8 +1529,6 @@ export const apiMessages: Record<
     '[Sonarr] Failed to retrieve cover for series {value0}: {value1}',
   m6f1c120a94db1986ccce: 'Invalid Wikidata item ID',
   m6f50fd451b4385839c74: 'Language not found.',
-  m6f575f4863274d9c81e3:
-    'Bindery does not support removal through the Readarr library tools.',
   m6f6d777b2bc667a6416a:
     'The connected comics service reported a download or import failure. Check its queue or logs for the cause, fix it there, then retry here.',
   m6f7c78a28b431f059f31:
@@ -1649,6 +1666,8 @@ export const apiMessages: Record<
   m789516031c28106d20fe: 'Slider type is invalid.',
   m78ae6621fe3dd23c7a02:
     'movieIds must contain between 1 and {value0} valid movie IDs.',
+  m78bd221dc61b4cac068a:
+    'BookOrbit library page is invalid or exceeds the scan limit.',
   m78c96c436c3b41d46d2c: 'Bindery returned an invalid users response.',
   m78d4949c141944b3932b: 'Spotify returned an invalid token response.',
   m78dc0f95433cd2d425e2: 'Choose one TV status before excluding it.',
@@ -1756,7 +1775,6 @@ export const apiMessages: Record<
   m7fd9f37030965c37b53c: 'Invalid mediaId parameter.',
   m7fdf2d92babd8917d610:
     'Choose Grimmory or BookOrbit as the preferred reader service.',
-  m7fdf73c506c455b84d6f: 'Bookshelf media tools are not available for Bindery.',
   m7ffa450bc0706b9f052c:
     '[Readarr] Failed to retrieve pending Chaptarr import {value0}: {value1}',
   m8011d5f2181c0713e07e: 'Hardcover could not validate this token.',
@@ -1961,6 +1979,8 @@ export const apiMessages: Record<
   m8e8c5ad0b5ed3aa4a53e: 'Service actor no longer exists.',
   m8ebf5b9f4e00abe5e650:
     'The stored Sportarr league identity is linked to a different media type.',
+  m8ec91f73676f2d9278da:
+    'BookOrbit needs a review or manual acquisition step. Open the request in BookOrbit to continue.',
   m8ed4a760b10e53e1e9e2:
     '[TMDB] Failed to fetch movie watch providers: {value0}',
   m8f104bc1940b4ed432d1:
@@ -2012,8 +2032,10 @@ export const apiMessages: Record<
   m932b8d70d1b60f9cb6d9: 'TV request access is not enabled.',
   m93628a42fa906cac1cce: 'Confirm the collections to remove.',
   m936fa579ac20f7b17c31: 'Request for this comic already exists.',
+  m93fdc06f58f2218fe14b: 'BookOrbit returned an invalid request.',
   m94383fcc919648820061:
     'This series cannot be saved to the linked media-server account.',
+  m94388f81ea1bd56b222c: 'BookOrbit repeated a library book.',
   m944c8cee4fa657ef62bd: 'Music Quota exceeded.',
   m947627e8fa3089ca0d6d:
     'This software request changed before it could be removed.',
@@ -2170,6 +2192,8 @@ export const apiMessages: Record<
     'Kapowarr has a queued or running task for this comic. Wait for it to finish, then try again.',
   ma0aa1ad6751df53d9f43: 'tls must be an object.',
   ma0b434d4e1337d8ff677: 'Unable to search books.',
+  ma0ce13ff38db25fe6efd:
+    'BookOrbit needs a book title. Refresh this book’s metadata and retry.',
   ma0d543f182f845fe976e: 'Comic request is missing a ComicVine identifier',
   ma0db7ecad31d5b8f31aa: 'permissions is invalid.',
   ma0e40a24801624261060: 'MusicBrainz ID is required for music watchlists.',
@@ -2217,8 +2241,10 @@ export const apiMessages: Record<
     'Add an account username and password in Settings > Services > Reader Apps first.',
   ma410cadb87bcb2f1c743: 'Invalid blocklist payload.',
   ma42012334ccc146fa6c8: 'Select between 1 and {value0} unique authors.',
+  ma437c793ada67ec5f158: 'BookOrbit account is invalid.',
   ma451bae396b20746f5ac: 'Invalid Simkl watched episode lookup.',
   ma47674145cba46f3f349: 'Transcoded image exceeds maximum allowed size.',
+  ma4a238736538526197ac: 'BookOrbit declined the {value0} request.',
   ma4bf8ae5f63127682b20: 'Software request not found.',
   ma5155ff6ac3bb985f6e2: 'Collection identity changed.',
   ma515fbc0d223dc267748: 'Job is already running.',
@@ -2676,6 +2702,7 @@ export const apiMessages: Record<
   mc7114dc5829c1face927:
     'ChaptarrNG is preparing the requested ebook while it imports the author.',
   mc72069ca3d442af8ac8f: 'Settings path must be a regular file.',
+  mc73fee6c5396519dd225: 'BookOrbit connection needs an account and password.',
   mc74896863adb52dfa21b: 'User settings body must be an object.',
   mc7736058413ee241e5c4: 'Unable to submit request.',
   mc7d019063e6f084cc936:
@@ -2878,6 +2905,8 @@ export const apiMessages: Record<
   md55591eb707fe5934865:
     'Production countries are only available for Radarr and Sonarr rules.',
   md582ab7229c3831166a0: 'Unknown HTTP error',
+  md5913beda3deb0edb7d6:
+    'This book provider does not support removal through the Chaptarr library tools.',
   md60ffb3e176d54f61ce3: 'Unable to delete the request status entry.',
   md6157b2f967a2586b334: 'Magazine title must contain 1 to 256 characters.',
   md61abfe71c6fb10d70c7: 'Category mappings contain an unsupported media type.',
@@ -3010,8 +3039,6 @@ export const apiMessages: Record<
   mde2e807d246376203a47: 'Music quota exceeded.',
   mde39dc2fa9b7ad5ebd26:
     '{value0} library copy/copies were deleted before an error. Remaining copies were not deleted. Refresh and review a new confirmation.',
-  mde6b8e2d4ac7b4062f4c:
-    'Removing a Bindery book through this action is not supported.',
   mde82f7a359e6f69f9552:
     "This title is not available through the streaming services you selected in '{'region'}'.",
   mdeb71c2522cfcb4f87a2: 'ReadMeABook returned HTTP {value0}.',
@@ -3113,6 +3140,7 @@ export const apiMessages: Record<
   me5e83de58c9e1a04e39f: 'Invalid manual import response.',
   me5fb224cf81afe33b6c0:
     'A movie quota exception is already awaiting approval.',
+  me6003252b91b8e0746a9: 'BookOrbit returned an invalid request pair.',
   me62624f412f2049c53e8:
     'At least one valid auth account resource is required.',
   me63f133e76f88f6c5256: '{value0} appears in this',

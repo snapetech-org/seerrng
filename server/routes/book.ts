@@ -275,7 +275,9 @@ const getBookCoverService = (
 
     const server = settings.readarr.find(
       (readarr) =>
-        readarr.id === candidate.serviceId && readarr.backend !== 'bindery'
+        readarr.id === candidate.serviceId &&
+        readarr.backend !== 'bindery' &&
+        readarr.backend !== 'bookorbit'
     );
 
     if (server) {

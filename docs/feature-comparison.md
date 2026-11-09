@@ -127,7 +127,7 @@ imply a corresponding Lumen or native screen.
 | Override rules | Shared baseline | Production-country conditions, service-ID matching and explicit-choice preservation | [Guide](./using-seerr/override-rules.md) |
 | Quota-exception approvals | Not found | Request a one-time movie/TV exception when quota is full | [Guide](./using-seerr/settings/users/index.md) |
 | Previous-season watched gate | Not found | Optional account-linked Plex/Jellyfin/Emby progress gate | [Guide](./using-seerr/settings/general.md) |
-| Episode Queue | Not found | Per-user opt-in and defaults; playback-aware episode progression | [Guide](./using-seerr/jellyfin-watch-ahead.md) |
+| Episode Queue | Not found | Per-user defaults, one starting episode before queue approval and playback-aware progression | [Guide](./using-seerr/jellyfin-watch-ahead.md) |
 | Movie collection queue | Not found | Progressively request collection movies as prior entries are watched | [Guide](./using-seerr/movie-collection-queue.md) |
 | Per-episode file availability | Not found | Optional Sonarr and media-server source reconciliation; separate HD/4K and order choices | [Guide](./using-seerr/individual-episode-availability.md) |
 | Per-user movie/TV availability | Baseline shared status | Verify private library access; configure other-user availability presentation | [Guide](./using-seerr/media-server-access.md) |
@@ -137,7 +137,7 @@ imply a corresponding Lumen or native screen.
 | Streaming-subscription request policy | Not found | Reject, pending, auto-approve and explicit override policies | [Guide](./using-seerr/settings/general.md) |
 | Automatic genre blocklisting | Baseline manual blocklist | Administrator region/language/genre rules | [Guide](./using-seerr/settings/general.md) |
 | Hide available, requested or blocklisted titles | Baseline hide controls | User/category-aware presentation and local filters | [Guide](./using-seerr/settings/general.md) |
-| Request status sorting and history | Baseline request list | Cross-media status, failure explanation, progress and recovery | [Guide](./using-seerr/request-status.md) |
+| Request status sorting and history | Baseline request list | Cross-media status, failure explanation and recovery; settle owned selected TV seasons | [Guide](./using-seerr/request-status.md) |
 | Automatic transient-failure retry | Not found | Bounded retry classification and visible retry state | [Guide](./using-seerr/request-status.md) |
 | Missing/deleted service recovery | Baseline failure handling | Prompt failure and manager recovery with retained request context | [Guide](./using-seerr/request-status.md) |
 | TV identity and season mapping recovery | Baseline TVDB identity | Resolve missing IDs and explicitly map requested seasons | [Guide](./using-seerr/request-status.md) |

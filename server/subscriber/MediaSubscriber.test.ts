@@ -9,8 +9,10 @@ import {
 import dataSource, { getRepository } from '@server/datasource';
 import Media from '@server/entity/Media';
 import { MediaRequest } from '@server/entity/MediaRequest';
+import MediaServiceStatus from '@server/entity/MediaServiceStatus';
 import { NotificationOutbox } from '@server/entity/NotificationOutbox';
 import Season from '@server/entity/Season';
+import SeasonRequest from '@server/entity/SeasonRequest';
 import { User } from '@server/entity/User';
 import { isMagazineRequestFileAvailable } from '@server/lib/magazineAvailability';
 import notificationManager, { Notification } from '@server/lib/notifications';
@@ -61,6 +63,84 @@ const makeUpdateEvent = (
   ({ entity, databaseEntity }) as unknown as UpdateEvent<Media>;
 
 describe('MediaSubscriber', () => {
+  for (const evidence of ['legacy', 'contradicts', 'scoped']) {
+    for (const requestedServer of [0, 31, 32]) {
+      for (const is4k of [false, true]) {
+        it(`settles an owned selected season only at its destination and quality (server ${requestedServer}, 4k ${is4k}, ${evidence})`, async () => {
+          const user = await getRepository(User).findOneByOrFail({ id: 2 });
+          const media = await getRepository(Media).save(
+            new Media({
+              mediaType: MediaType.TV,
+              tmdbId: 932010 + requestedServer + (is4k ? 100 : 0),
+              status: MediaStatus.PARTIALLY_AVAILABLE,
+              status4k: MediaStatus.UNKNOWN,
+              serviceId: 31,
+              seasons: [
+                new Season({ seasonNumber: 1, status: MediaStatus.PROCESSING }),
+                new Season({ seasonNumber: 2, status: MediaStatus.UNKNOWN }),
+              ],
+            })
+          );
+          if (evidence !== 'legacy') {
+            await getRepository(MediaServiceStatus).save(
+              new MediaServiceStatus({
+                mediaId: media.id,
+                media,
+                serviceType: 'sonarr',
+                serverId: requestedServer,
+                format: is4k ? '4k' : 'standard',
+                status: MediaStatus.PARTIALLY_AVAILABLE,
+                seasonStatuses: {
+                  1:
+                    evidence === 'scoped'
+                      ? MediaStatus.AVAILABLE
+                      : MediaStatus.PROCESSING,
+                },
+              })
+            );
+          }
+          const request = await getRepository(MediaRequest).save(
+            new MediaRequest({
+              type: MediaType.TV,
+              status: MediaRequestStatus.PENDING,
+              media,
+              requestedBy: user,
+              serverId: requestedServer,
+              is4k,
+              seasons: [
+                new SeasonRequest({
+                  seasonNumber: 1,
+                  status: MediaRequestStatus.PENDING,
+                }),
+              ],
+            })
+          );
+          media.seasons[0].status = MediaStatus.AVAILABLE;
+          // Match BaseScanner: a newly available season touches the parent timestamp.
+          media.lastSeasonChange = new Date(Date.now() + 1000);
+          await getRepository(Media).save(media);
+          await waitForBackgroundTasks();
+          const saved = await getRepository(MediaRequest).findOneOrFail({
+            where: { id: request.id },
+            relations: { seasons: true },
+          });
+          const expected =
+            !is4k &&
+            (evidence === 'scoped' ||
+              (evidence === 'legacy' && requestedServer === 31))
+              ? MediaRequestStatus.COMPLETED
+              : MediaRequestStatus.PENDING;
+          assert.equal(saved.status, expected);
+          assert.equal(saved.seasons[0].status, expected);
+          assert.equal(
+            (await getRepository(Media).findOneByOrFail({ id: media.id }))
+              .status,
+            MediaStatus.PARTIALLY_AVAILABLE
+          );
+        });
+      }
+    }
+  }
   it('processes a fixed request snapshot in bounded keyset batches', async () => {
     const subscriber = new MediaSubscriber();
     const internals = subscriber as unknown as SubscriberInternals;

@@ -4204,6 +4204,7 @@ discoverRoutes.get('/books', async (req, res) => {
     getSettings().readarr.filter(
       (server) =>
         server.backend !== 'bindery' &&
+        server.backend !== 'bookorbit' &&
         readarrServiceSupportsFormat(server, 'audiobook')
     ).length === 1 &&
     !hasSearchQuery &&
@@ -4503,6 +4504,7 @@ discoverRoutes.get('/books', async (req, res) => {
         (server) =>
           audiobookEnabled &&
           server.backend !== 'bindery' &&
+          server.backend !== 'bookorbit' &&
           readarrServiceSupportsFormat(server, 'audiobook')
       )
         ? 'Book discovery catalogs are unavailable right now. Please try again.'

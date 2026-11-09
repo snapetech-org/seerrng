@@ -1095,14 +1095,15 @@ mediaRoutes.delete(
                   selectionSettings.readarr.some(
                     (server) =>
                       server.id === linkedServiceId &&
-                      server.backend === 'bindery'
+                      (server.backend === 'bindery' ||
+                        server.backend === 'bookorbit')
                   )
                 )
               ) {
                 return next({
                   status: 409,
                   message:
-                    'Removing a Bindery book through this action is not supported.',
+                    'Removing a Bindery or BookOrbit book through this action is not supported.',
                 });
               }
             }

@@ -1,4 +1,5 @@
 import BinderyAPI, { type BinderyBook } from '@server/api/bindery';
+import BookOrbitAPI, { type BookOrbitFormat } from '@server/api/bookorbit';
 import BackIssueAPI from '@server/api/comics/backissue';
 import KapowarrAPI from '@server/api/comics/kapowarr';
 import MylarAPI from '@server/api/comics/mylar';
@@ -2244,6 +2245,9 @@ export class MediaRequestSubscriber implements EntitySubscriberInterface<MediaRe
           ...resolveFutureSeasonMonitoring(
             entity.monitorFutureSeasons,
             (entity.watchAheadEpisodeCount ?? 0) > 0 ||
+              entity.seasons
+                .filter(isActiveSeasonRequest)
+                .some((season) => season.episodeNumbers != null) ||
               isTvSeasonWatchGateEnabledForUser(entity.requestedBy),
             resolveSonarrMonitorNewItems(
               sonarrSettings.monitorNewItems,
@@ -3125,6 +3129,119 @@ export class MediaRequestSubscriber implements EntitySubscriberInterface<MediaRe
         await mediaRepository.save(media);
         return lookupTerms[0];
       };
+      const dispatchBookOrbitFormats = async (
+        service: ReadarrSettings,
+        formats: BookOrbitFormat[]
+      ): Promise<string | undefined> => {
+        const metadata = await getRepository(MediaSearchMetadata).findOneBy({
+          mediaId: media.id,
+        });
+        const title = work?.title?.trim() || metadata?.title?.trim();
+        if (!title)
+          throw new Error(
+            'BookOrbit needs a book title. Refresh this book’s metadata and retry.'
+          );
+        const authorName =
+          (await getOpenLibraryAuthorName()) || metadata?.author?.trim();
+        const isbn13 = preferredIsbn || normalizeValidIsbn(isbn);
+        if (allowedBookLanguages().length)
+          throw new Error(
+            'BookOrbit cannot verify the selected edition language under the current book language policy.'
+          );
+
+        const bookorbit = new BookOrbitAPI(service);
+        const input = {
+          title,
+          authors: authorName ? [authorName] : [],
+          ...(isbn13 ? { isbn13 } : {}),
+          ...(normalizedOpenLibraryId
+            ? {
+                providerKey: 'openlibrary',
+                providerId: normalizedOpenLibraryId,
+              }
+            : {}),
+        };
+        const requests =
+          formats.length === 2
+            ? await bookorbit.submitPair(input)
+            : ({
+                [formats[0]]: (
+                  await bookorbit.submit({ ...input, mediaKind: formats[0] })
+                ).request,
+              } as Record<
+                BookOrbitFormat,
+                Awaited<ReturnType<BookOrbitAPI['getRequest']>>
+              >);
+        const repository = getRepository(BookRequestSearch);
+        for (const format of formats) {
+          const request = requests[format];
+          if (
+            !request ||
+            request.mediaKind !== format ||
+            request.status === 'rejected' ||
+            request.status === 'cancelled' ||
+            request.status === 'failed'
+          )
+            throw new Error(`BookOrbit declined the ${format} request.`);
+          const state: BookRequestSearch['state'] =
+            request.status === 'pending' ? 'pending' : 'monitoring';
+          const existing = await repository.findOneBy({
+            requestId: entity.id,
+            format,
+          });
+          await repository.save(
+            new BookRequestSearch({
+              ...(existing ? { id: existing.id } : {}),
+              requestId: entity.id,
+              serviceId: service.id,
+              format,
+              bookorbitRequestId: request.id,
+              bookId: request.matchedBookId,
+              providerBookId: normalizedOpenLibraryId ?? isbn13 ?? null,
+              providerEditionId: preferredEditionId ?? null,
+              pendingId: null,
+              authorId: null,
+              commandId: null,
+              createdBook: false,
+              createdAuthor: false,
+              providerManagedSearch: false,
+              state,
+            })
+          );
+          await saveRequestServiceTarget(entity, {
+            serviceType: 'readarr',
+            format,
+            serverId: service.id,
+            profileId: null,
+            metadataProfileId: null,
+            rootFolder: null,
+            tags: null,
+            externalServiceId: request.matchedBookId,
+            externalServiceSlug: request.matchedBookId
+              ? String(request.matchedBookId)
+              : null,
+            status:
+              state === 'pending'
+                ? MediaStatus.PENDING
+                : MediaStatus.PROCESSING,
+          });
+          if (request.matchedBookId) {
+            if (format === 'ebook') {
+              media.serviceId = service.id;
+              media.externalServiceId = request.matchedBookId;
+              media.externalServiceSlug = String(request.matchedBookId);
+            } else {
+              media.audiobookServiceId = service.id;
+              media.audiobookExternalServiceId = request.matchedBookId;
+              media.audiobookExternalServiceSlug = String(
+                request.matchedBookId
+              );
+            }
+          }
+        }
+        await mediaRepository.save(media);
+        return title;
+      };
       const dispatchFormat = async (
         serviceType: 'ebook' | 'audiobook',
         allowServerOverride: boolean
@@ -3142,6 +3259,9 @@ export class MediaRequestSubscriber implements EntitySubscriberInterface<MediaRe
 
         if (readarrSettings.backend === 'bindery') {
           return dispatchBinderyFormats(readarrSettings, [serviceType]);
+        }
+        if (readarrSettings.backend === 'bookorbit') {
+          return dispatchBookOrbitFormats(readarrSettings, [serviceType]);
         }
 
         const readarr = new ReadarrAPI({
@@ -3609,6 +3729,15 @@ export class MediaRequestSubscriber implements EntitySubscriberInterface<MediaRe
       if (sharedBindery) {
         lookupTerm = await dispatchBinderyFormats(
           selectedTargets[0].server!,
+          formatsToDispatch
+        );
+      } else if (
+        formatsToDispatch.length === 2 &&
+        selectedTargets[0].server?.backend === 'bookorbit' &&
+        selectedTargets[0].server.id === selectedTargets[1].server?.id
+      ) {
+        lookupTerm = await dispatchBookOrbitFormats(
+          selectedTargets[0].server,
           formatsToDispatch
         );
       } else {

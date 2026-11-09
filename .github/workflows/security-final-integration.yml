@@ -35,7 +35,7 @@ jobs:
           b['client'] = dict(sorted(b['client'].items()))
           locale.write_text(json.dumps(dict(sorted(a.items())), ensure_ascii=False, indent=2) + '\n')
           snapshot.write_text(json.dumps(b, ensure_ascii=False, indent=2) + '\n')
-          expected = {'src/i18n/locale/en.json': 'd8c4583ed508416c3a0f723fd9720794f1ce362a', 'config/i18n/source-snapshot.json': '57b40851617487516f2ef48ae0bd11409c553f21'}
+          expected = {'src/i18n/locale/en.json': '33939c85e9f0e8e2c61a40f76810dba47d43e3b8', 'config/i18n/source-snapshot.json': 'a48edf5e14688a9abdbdc52c32585e7787ff22c0'}
           def api(path, body):
               req = urllib.request.Request('https://api.github.com/repos/snapetech-org/seerrng/' + path, data=json.dumps(body).encode(), headers={'Authorization': 'Bearer ' + os.environ['GH_TOKEN'], 'Content-Type': 'application/json', 'Accept': 'application/vnd.github+json'})
               with urllib.request.urlopen(req, timeout=60) as response: return json.load(response)
@@ -47,7 +47,8 @@ jobs:
               assert result['sha'] == sha
           paths = [".github/workflows/ci.yml",".github/workflows/security-native-visual.yml",".github/workflows/security-regression.yml","android/app/src/androidTest/java/org/snapetech/seerrng/OriginBarTest.kt","config/i18n/source-snapshot.json","ios/SeerrNG/ServerBrowserView.swift","ios/SeerrNGTests/ServerEndpointTests.swift","playwright/client-tokens.spec.ts","playwright/narrator-permissions.spec.ts","server/migration/clientApiKeys.postgres.test.ts","src/components/UserProfile/UserSettings/UserClientTokens.tsx","src/components/UserProfile/UserSettings/index.tsx","src/i18n/locale/en.json","src/pages/profile/settings/client-tokens.tsx","docs/using-seerr/browser-extension.md","ios/SeerrNGUITests/ServerSetupUITests.swift","release-notes/2026-11-09-client-token-settings.md","docs/maintainers/security-audit-remediation-2026-11-09.md","docs/using-seerr/client-api-keys.md","docs/feature-comparison.md"]
           elements = [{'path': path, 'mode': '100644', 'type': 'blob', 'sha': subprocess.check_output(['git','hash-object','-w',path],text=True).strip()} for path in paths]
-          result = api('git/trees', {'base_tree': 'f736eccfa09d14fa89fe07f33a5b67f2afabeae8', 'tree': elements})
+          result = api('git/trees', {'base_tree': '3c2d31b96ed39cf806e436c510d8be88d7a25ee8', 'tree': elements})
+          with open(os.environ['GITHUB_ENV'], 'a') as env: env.write('PREPARED_SOURCE_TREE=' + result['sha'] + '\n')
           print('PREPARED_TREE:' + result['sha'], flush=True)
           print('PREPARED_BLOBS:' + json.dumps(elements), flush=True)
           
@@ -83,7 +84,7 @@ jobs:
               result = api('git/blobs', {'content': pathlib.Path(path).read_text(), 'encoding': 'utf-8'})
               assert result['sha'] == sha
               elements.append({'path':path, 'mode':'100644', 'type':'blob', 'sha':sha})
-          result = api('git/trees', {'base_tree':'a26cfab715527951bde02ee9d6372853614acabf', 'tree':elements})
+          result = api('git/trees', {'base_tree':os.environ['PREPARED_SOURCE_TREE'], 'tree':elements})
           print('REGENERATED_TREE:' + result['sha'], flush=True)
           print('REGENERATED_BLOBS:' + json.dumps(elements), flush=True)
           
@@ -97,7 +98,7 @@ jobs:
           CIRCLE_NODE_TOTAL: 3
         run: pnpm build
       - name: Verify shared retry and token boundaries
-        run: pnpm exec vitest run --maxWorkers=2 src/utils/apiRateLimit.test.ts server/routes/clientApiKeys.test.ts server/routes/requestIntent.test.ts
+        run: pnpm exec vitest run --maxWorkers=2 src/utils/apiRateLimit.test.ts server/routes/clientApiKeys.test.ts server/routes/requestIntent.test.ts server/api/bookorbit.test.ts server/lib/bookRequestSearch.test.ts server/routes/request.test.ts server/subscriber/MediaSubscriber.test.ts server/test/MediaRequestSubscriber.test.ts server/api/servarr/sonarr.test.ts src/components/RequestModal/TvRequestModal.tree.test.tsx src/components/Settings/BinderyModal/index.test.tsx
       - name: Prepare isolated browser fixtures
         run: pnpm cypress:prepare
       - name: Install Chromium

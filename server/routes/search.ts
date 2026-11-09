@@ -815,6 +815,7 @@ searchRoutes.get('/', async (req, res, next) => {
       const hasBookshelfBookCatalog = settings.readarr.some(
         (server) =>
           server.backend !== 'bindery' &&
+          server.backend !== 'bookorbit' &&
           Number.isSafeInteger(server.id) &&
           server.id >= 0 &&
           (!bookFormat || readarrServiceSupportsFormat(server, bookFormat))

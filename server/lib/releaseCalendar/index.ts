@@ -89,7 +89,10 @@ export async function getReleaseCalendar(
       server,
     })),
     ...settings.readarr
-      .filter((server) => server.backend !== 'bindery')
+      .filter(
+        (server) =>
+          server.backend !== 'bindery' && server.backend !== 'bookorbit'
+      )
       .map((server) => {
         const bookFormat: ReleaseCalendarBookFormat =
           server.serviceType === 'audiobook' ? 'audiobook' : 'ebook';

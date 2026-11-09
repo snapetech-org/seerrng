@@ -7,6 +7,7 @@ import assert from 'node:assert/strict';
 import { beforeEach, describe, it, mock } from 'node:test';
 
 import BinderyAPI, { type BinderyBook } from '@server/api/bindery';
+import BookOrbitAPI from '@server/api/bookorbit';
 import OpenLibraryAPI from '@server/api/openlibrary';
 import type { ReadarrBook, ReadarrEdition } from '@server/api/servarr/readarr';
 import ReadarrAPI from '@server/api/servarr/readarr';
@@ -359,6 +360,49 @@ describe('Readarr Scanner', () => {
     assert.equal(updated.serviceId, 0);
     assert.equal(updated.externalServiceId, 55);
     assert.equal(updated.audiobookServiceId, 0);
+    assert.equal(updated.audiobookExternalServiceId, 55);
+  });
+
+  it('scans BookOrbit content files by format and supported work identifiers', async () => {
+    const media = await seedBook('9780306406157', MediaStatus.UNKNOWN);
+    configureReadarr([
+      {
+        backend: 'bookorbit',
+        bookorbitUsername: 'requester',
+        serviceType: 'both',
+        syncEnabled: true,
+      },
+    ]);
+    const formats: string[] = [];
+    mock.method(
+      BookOrbitAPI.prototype,
+      'getImportedBooks',
+      async (format: 'ebook' | 'audiobook') => {
+        formats.push(format);
+        return [
+          {
+            id: 55,
+            title: 'Test Book',
+            authors: ['Writer'],
+            isbn13: '9780306406157',
+            files: [
+              {
+                id: format === 'ebook' ? 8 : 9,
+                format: format === 'ebook' ? 'epub' : 'm4b',
+                role: 'content',
+              },
+            ],
+          },
+        ];
+      }
+    );
+    await readarrScanner.run();
+    const updated = await getRepository(Media).findOneByOrFail({
+      id: media.id,
+    });
+    assert.deepEqual(formats, ['ebook', 'audiobook']);
+    assert.equal(updated.status, MediaStatus.AVAILABLE);
+    assert.equal(updated.externalServiceId, 55);
     assert.equal(updated.audiobookExternalServiceId, 55);
   });
 

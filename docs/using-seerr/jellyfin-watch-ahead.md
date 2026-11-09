@@ -69,6 +69,21 @@ series needs a TVDB identity. Playback linking, destination checks, and request
 approval still apply. Changing this setting preserves the original request owner,
 approval, seasons, watched progress, and existing episode requests.
 
+## Queue length and exact episode selection
+
+A queue length of five is a playback buffer, not a five-episode total download
+limit. Changing it does not cancel or shrink requests already sent to Sonarr.
+For a pending request, choose one starting episode in **Edit Request** and save
+before approving it. The editor uses a single-episode picker while Episode Queue
+is enabled. Approval rejects a leftover whole-season or whole-series selection
+instead of sending it as an episode queue request.
+
+To request exactly five episodes without playback-driven progression, leave
+Episode Queue off and select those five episodes in the request tree (when
+partial requests are enabled). Exact episode selections do not enable monitoring
+for future seasons. Monitoring already established in Sonarr by other requests
+or an administrator is preserved.
+
 ## What SeerrNG does
 
 While at least one request has a buffer enabled, the worker checks active

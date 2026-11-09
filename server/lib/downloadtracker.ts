@@ -1091,7 +1091,12 @@ export class DownloadTracker {
 
     const filteredServers = uniqWith(
       settings.readarr
-        .filter((server) => server.backend !== 'bindery' && server.syncEnabled)
+        .filter(
+          (server) =>
+            server.backend !== 'bindery' &&
+            server.backend !== 'bookorbit' &&
+            server.syncEnabled
+        )
         .slice(0, MAX_SERVARR_INSTANCES_PER_TYPE),
       (readarrA, readarrB) =>
         isMatchingReadarrDownloadServer(readarrA, readarrB)
@@ -1109,6 +1114,7 @@ export class DownloadTracker {
         const matchingServers = settings.readarr.filter(
           (candidate) =>
             candidate.backend !== 'bindery' &&
+            candidate.backend !== 'bookorbit' &&
             candidate.syncEnabled &&
             candidate.id !== server.id &&
             isMatchingReadarrDownloadServer(candidate, server)

@@ -217,9 +217,12 @@ export const resolveLibraryRemoval = async (
         const service = getExternalRuntimeConfig().readarr.find(
           (candidate) => candidate.id === server.id
         );
-        if (service?.backend === 'bindery') {
+        if (
+          service?.backend === 'bindery' ||
+          service?.backend === 'bookorbit'
+        ) {
           throw new Error(
-            'Bindery does not support removal through the Readarr library tools.'
+            'This book provider does not support removal through the Chaptarr library tools.'
           );
         }
         const format =

@@ -1,4 +1,5 @@
 import BinderyAPI from '@server/api/bindery';
+import BookOrbitAPI from '@server/api/bookorbit';
 import type {
   ReadarrBookLookupResult,
   ReadarrMediaMoveAuthor,
@@ -138,8 +139,8 @@ const parseBookshelfMediaMoveRequest = (
 };
 
 const createReadarrApi = (settings: ReadarrSettings): ReadarrAPI => {
-  if (settings.backend === 'bindery') {
-    throw new Error('Bookshelf media tools are not available for Bindery.');
+  if (settings.backend === 'bindery' || settings.backend === 'bookorbit') {
+    throw new Error('Bookshelf media tools are only available for Chaptarr.');
   }
   return new ReadarrAPI({
     apiKey: settings.apiKey,
@@ -540,6 +541,18 @@ readarrRoutes.post<
         return res.status(400).json({ message: parsedReadarr.error });
       }
 
+      if (parsedReadarr.value.backend === 'bookorbit') {
+        const bookorbit = new BookOrbitAPI(
+          parsedReadarr.value as ReadarrSettings
+        );
+        const status = await bookorbit.testConnection();
+        return res.status(200).json({
+          backend: 'bookorbit',
+          system: { version: status.version },
+          features: { requests: true, ebook: true, audiobook: true },
+        });
+      }
+
       if (parsedReadarr.value.backend === 'bindery') {
         const bindery = new BinderyAPI({
           ...parsedReadarr.value,
@@ -650,7 +663,10 @@ readarrRoutes.post<
       });
     }
 
-    if (parsedReadarr.value.backend === 'bindery') {
+    if (
+      parsedReadarr.value.backend === 'bindery' ||
+      parsedReadarr.value.backend === 'bookorbit'
+    ) {
       return res.status(400).json({
         ok: false,
         category: 'unsupported_operation',

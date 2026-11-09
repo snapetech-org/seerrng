@@ -55,6 +55,7 @@ export const getLibraryBookService = async (
     (entry) =>
       entry.id === serviceId &&
       entry.backend !== 'bindery' &&
+      entry.backend !== 'bookorbit' &&
       readarrServiceSupportsFormat(entry, format)
   );
   if (!server) return undefined;
@@ -153,6 +154,7 @@ const compareBookEditionsUnfiltered = async (options: {
   const candidates = servers.filter(
     (entry) =>
       entry.backend !== 'bindery' &&
+      entry.backend !== 'bookorbit' &&
       (wantedServer === undefined || entry.id === wantedServer) &&
       readarrServiceSupportsFormat(entry, options.format)
   );

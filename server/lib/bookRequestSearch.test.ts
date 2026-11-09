@@ -1,4 +1,5 @@
 import BinderyAPI from '@server/api/bindery';
+import BookOrbitAPI from '@server/api/bookorbit';
 import ReadarrAPI from '@server/api/servarr/readarr';
 import {
   MediaRequestStatus,
@@ -80,18 +81,31 @@ const configureBindery = () => {
   ];
 };
 
+const configureBookOrbit = () => {
+  configureBindery();
+  getSettings().readarr[0] = {
+    ...getSettings().readarr[0],
+    name: 'BookOrbit',
+    backend: 'bookorbit',
+    bookorbitUsername: 'requester',
+  };
+};
+
 const createTrackedRequest = async (options: {
   createdBook: boolean;
   createdAuthor: boolean;
   pendingId?: number;
   binderyRequestId?: number;
+  bookorbitRequestId?: number;
   providerBookId?: string;
   monitoring?: boolean;
   providerManagedSearch?: boolean;
   requestStatus?: MediaRequestStatus;
 }) => {
   const pending =
-    options.pendingId !== undefined || options.binderyRequestId !== undefined;
+    options.pendingId !== undefined ||
+    options.binderyRequestId !== undefined ||
+    options.bookorbitRequestId !== undefined;
   const requestedBy = await getRepository(User).findOneByOrFail({
     email: 'friend@seerr.dev',
   });
@@ -125,6 +139,7 @@ const createTrackedRequest = async (options: {
       providerBookId: options.providerBookId ?? 'hc:book-55',
       pendingId: options.pendingId ?? null,
       binderyRequestId: options.binderyRequestId ?? null,
+      bookorbitRequestId: options.bookorbitRequestId ?? null,
       authorId: 77,
       commandId: pending || options.monitoring ? null : 901,
       createdBook: options.createdBook,
@@ -171,6 +186,106 @@ describe('BookRequestSearchManager', () => {
     );
     mock.restoreAll();
     getSettings().readarr = [];
+  });
+
+  it('tracks BookOrbit approval and publishes availability only after a content file exists', async () => {
+    configureBookOrbit();
+    const { media, request } = await createTrackedRequest({
+      createdBook: false,
+      createdAuthor: false,
+      bookorbitRequestId: 91,
+    });
+    let status = 'pending';
+    let hasFile = false;
+    mock.method(BookOrbitAPI.prototype, 'getRequest', async () => ({
+      id: 91,
+      userId: 4,
+      mediaKind: 'ebook' as const,
+      status: status as
+        'pending' | 'needs_review' | 'downloading' | 'available',
+      matchedBookId: status === 'pending' ? null : 55,
+    }));
+    mock.method(BookOrbitAPI.prototype, 'getBook', async () => ({
+      id: 55,
+      title: 'Tracked Book',
+      authors: ['Writer'],
+      files: hasFile ? [{ id: 3, format: 'epub', role: 'content' }] : [],
+    }));
+    await bookRequestSearchManager.run();
+    assert.equal(
+      (
+        await getRepository(BookRequestSearch).findOneByOrFail({
+          requestId: request.id,
+        })
+      ).state,
+      'pending'
+    );
+    status = 'needs_review';
+    await bookRequestSearchManager.run();
+    assert.equal(
+      (
+        await getRepository(BookRequestSearch).findOneByOrFail({
+          requestId: request.id,
+        })
+      ).state,
+      'needs_review'
+    );
+    status = 'downloading';
+    await bookRequestSearchManager.run();
+    assert.equal(
+      (
+        await getRepository(BookRequestSearch).findOneByOrFail({
+          requestId: request.id,
+        })
+      ).state,
+      'grabbed'
+    );
+    hasFile = true;
+    status = 'available';
+    await bookRequestSearchManager.run();
+    assert.equal(
+      await getRepository(BookRequestSearch).countBy({ requestId: request.id }),
+      0
+    );
+    assert.equal(
+      (await getRepository(Media).findOneByOrFail({ id: media.id }))
+        .externalServiceId,
+      55
+    );
+    assert.equal(
+      (await getRepository(MediaRequest).findOneByOrFail({ id: request.id }))
+        .status,
+      MediaRequestStatus.COMPLETED
+    );
+  });
+
+  it('fails a rejected BookOrbit request without reporting it as a library file', async () => {
+    configureBookOrbit();
+    const { request } = await createTrackedRequest({
+      createdBook: false,
+      createdAuthor: false,
+      bookorbitRequestId: 92,
+    });
+    mock.method(BookOrbitAPI.prototype, 'getRequest', async () => ({
+      id: 92,
+      userId: 4,
+      mediaKind: 'ebook' as const,
+      status: 'rejected' as const,
+      matchedBookId: null,
+    }));
+    await bookRequestSearchManager.run();
+    assert.equal(
+      await getRepository(BookRequestSearch).countBy({ requestId: request.id }),
+      0
+    );
+    const event = await getRepository(MediaRequestStatusEvent).findOneOrFail({
+      where: { requestId: request.id },
+      order: { id: 'DESC' },
+    });
+    assert.match(
+      event.message ?? '',
+      /BookOrbit marked this ebook request rejected/
+    );
   });
 
   it('completes an exact recording through notification and status history subscribers once', async () => {

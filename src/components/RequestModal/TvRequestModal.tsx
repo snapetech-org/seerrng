@@ -1069,7 +1069,7 @@ const TvRequestModal = ({
     : usesEpisodeSelection
       ? seasonSelections
       : unrequestedSeasons.map((seasonNumber) => ({ seasonNumber }));
-  const requestableSelections = requesterTagOnly
+  const requestableSelections: SeasonEpisodeSelection[] = requesterTagOnly
     ? requestSelections
     : getRequestableTvSelections(
         requestSelections,
@@ -1077,6 +1077,11 @@ const TvRequestModal = ({
         getAllRequestedSeasons(),
         blockedEpisodesBySeason
       );
+  const needsQueueStartingEpisode =
+    !requesterTagOnly &&
+    watchAheadEpisodeCount > 0 &&
+    (requestableSelections.length !== 1 ||
+      requestableSelections[0].episodeNumbers?.length !== 1);
   const seasonWatchGateCatalog = (data?.seasons ?? []).map((season) => ({
     seasonNumber: season.seasonNumber,
     episodeCount: season.episodeCount,
@@ -1251,9 +1256,12 @@ const TvRequestModal = ({
   const submissionSelectionCount = usesEpisodeSelection
     ? requestableSelections.length
     : fullSeasonSelectionsToSubmit.length;
-  const requestDisabledReason =
-    requesterTagOnlyUnavailableMessage &&
-    (hasPermission(Permission.MANAGE_REQUESTS) || isFailedManagerRepair)
+  const requestDisabledReason = needsQueueStartingEpisode
+    ? intl.formatMessage(messages.watchAheadStartingEpisode, {
+        owner: watchAheadOwnerLabel,
+      })
+    : requesterTagOnlyUnavailableMessage &&
+        (hasPermission(Permission.MANAGE_REQUESTS) || isFailedManagerRepair)
       ? intl.formatMessage(messages.requesterTagOnlyUnavailable)
       : usesEpisodeSelection && !requestTreeReady && selectedSeasons.length > 0
         ? intl.formatMessage(messages.episodesLoading)
@@ -1386,30 +1394,32 @@ const TvRequestModal = ({
       : requestQuotaApproval
         ? intl.formatMessage(messages.requestQuotaApproval)
         : intl.formatMessage(globalMessages.request);
-  const requestDisabled = editRequest
-    ? isRequesterTagOnlyRequest
-      ? isFailedManagerRepair
-        ? selectedSeasons.length === 0 ||
-          requesterTagOnlyUnavailable ||
-          Boolean(gateBlocksSubmission)
-        : hasPermission(Permission.MANAGE_REQUESTS) &&
-          requesterTagOnlyUnavailable
-      : (isFailedManagerRepair
-          ? selectedSeasons.length === 0
-          : usesEpisodeSelection &&
-            selectedSeasons.length > 0 &&
-            !requestTreeReady) || Boolean(gateBlocksSubmission)
-    : (usesEpisodeSelection && !requestTreeReady) ||
-      requestDestinationSettingsLoading ||
-      (!requesterTagOnly &&
-        (!episodeQueueAccess || Boolean(episodeQueueAccessError))) ||
-      requesterTagOnlyUnavailable ||
-      selectedDestinationCovered ||
-      submissionSelectionCount === 0 ||
-      (!requestQuotaApproval &&
-        (partialQuotaExceeded ||
-          (!usesEpisodeSelection && fullQuotaExceeded))) ||
-      Boolean(gateBlocksSubmission);
+  const requestDisabled =
+    needsQueueStartingEpisode ||
+    (editRequest
+      ? isRequesterTagOnlyRequest
+        ? isFailedManagerRepair
+          ? selectedSeasons.length === 0 ||
+            requesterTagOnlyUnavailable ||
+            Boolean(gateBlocksSubmission)
+          : hasPermission(Permission.MANAGE_REQUESTS) &&
+            requesterTagOnlyUnavailable
+        : (isFailedManagerRepair
+            ? selectedSeasons.length === 0
+            : usesEpisodeSelection &&
+              selectedSeasons.length > 0 &&
+              !requestTreeReady) || Boolean(gateBlocksSubmission)
+      : (usesEpisodeSelection && !requestTreeReady) ||
+        requestDestinationSettingsLoading ||
+        (!requesterTagOnly &&
+          (!episodeQueueAccess || Boolean(episodeQueueAccessError))) ||
+        requesterTagOnlyUnavailable ||
+        selectedDestinationCovered ||
+        submissionSelectionCount === 0 ||
+        (!requestQuotaApproval &&
+          (partialQuotaExceeded ||
+            (!usesEpisodeSelection && fullQuotaExceeded))) ||
+        Boolean(gateBlocksSubmission));
   const closeAction = tvdbId ? () => setSearchModal({ show: true }) : onCancel;
   const submitAction = () =>
     editRequest
@@ -1740,9 +1750,7 @@ const TvRequestModal = ({
               disabledEpisodes={blockedEpisodesBySeason}
               availableEpisodesBySeason={availableEpisodesBySeason}
               selectionMode={
-                watchAheadEpisodeCount > 0 && !editRequest
-                  ? 'single-episode'
-                  : 'multiple'
+                watchAheadEpisodeCount > 0 ? 'single-episode' : 'multiple'
               }
               onReadyChange={setRequestTreeReady}
               afterSeasonSelection={futureSeasonControl}
@@ -1973,18 +1981,16 @@ const TvRequestModal = ({
                             ? intl.formatMessage(messages.watchAheadLoadError)
                             : intl.formatMessage(messages.watchAheadLoading)}
                     </p>
-                    {episodeQueueAccess &&
-                      watchAheadEpisodeCount > 0 &&
-                      !editRequest && (
-                        <p className="request-episode-queue-description refreshed-detail-text-muted">
-                          {intl.formatMessage(
-                            messages.watchAheadStartingEpisode,
-                            {
-                              owner: watchAheadOwnerLabel,
-                            }
-                          )}
-                        </p>
-                      )}
+                    {episodeQueueAccess && watchAheadEpisodeCount > 0 && (
+                      <p className="request-episode-queue-description refreshed-detail-text-muted">
+                        {intl.formatMessage(
+                          messages.watchAheadStartingEpisode,
+                          {
+                            owner: watchAheadOwnerLabel,
+                          }
+                        )}
+                      </p>
+                    )}
                     {watchAheadUnavailableMessage && (
                       <p
                         className="request-episode-queue-description refreshed-detail-text-muted"

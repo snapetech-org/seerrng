@@ -293,7 +293,9 @@ export const getBookshelfLibraryBookSeries = async (
     candidates.map(async ({ serviceId, bookId }) => {
       const server = servers.find(
         (candidate) =>
-          candidate.id === serviceId && candidate.backend !== 'bindery'
+          candidate.id === serviceId &&
+          candidate.backend !== 'bindery' &&
+          candidate.backend !== 'bookorbit'
       );
       if (!server) return [];
 
@@ -457,7 +459,10 @@ export const searchBookshelfAuthors = async (
 ): Promise<AuthorResult[]> => {
   const results = await Promise.all(
     servers
-      .filter((server) => server.backend !== 'bindery')
+      .filter(
+        (server) =>
+          server.backend !== 'bindery' && server.backend !== 'bookorbit'
+      )
       .map(async (server) => {
         try {
           const authors = await getApi(server).lookupAuthor(term);
@@ -493,7 +498,9 @@ export const getBookshelfSeriesDetails = async (
     parsed &&
     servers.find(
       (candidate) =>
-        candidate.id === parsed.serviceId && candidate.backend !== 'bindery'
+        candidate.id === parsed.serviceId &&
+        candidate.backend !== 'bindery' &&
+        candidate.backend !== 'bookorbit'
     );
   if (!parsed || !server) return undefined;
 
@@ -584,7 +591,9 @@ export const getBookshelfAuthorDetails = async (
     parsed &&
     servers.find(
       (candidate) =>
-        candidate.id === parsed.serviceId && candidate.backend !== 'bindery'
+        candidate.id === parsed.serviceId &&
+        candidate.backend !== 'bindery' &&
+        candidate.backend !== 'bookorbit'
     );
   if (!parsed || !server) return undefined;
   try {
@@ -636,6 +645,7 @@ export const searchBookshelfCatalogs = async (
   const matches = servers.filter(
     (server) =>
       server.backend !== 'bindery' &&
+      server.backend !== 'bookorbit' &&
       (!serviceType || readarrServiceSupportsFormat(server, serviceType))
   );
   const responses = await Promise.allSettled(
@@ -684,6 +694,7 @@ export const getBookshelfBookLibrary = async (
   const audiobookServers = servers.filter(
     (server) =>
       server.backend !== 'bindery' &&
+      server.backend !== 'bookorbit' &&
       readarrServiceSupportsFormat(server, format)
   );
   if (!audiobookServers.length) return [];
@@ -723,6 +734,7 @@ export const getBookshelfAudiobookLibraryPage = async (
   const audiobookServers = servers.filter(
     (server) =>
       server.backend !== 'bindery' &&
+      server.backend !== 'bookorbit' &&
       readarrServiceSupportsFormat(server, 'audiobook')
   );
   if (!audiobookServers.length) return { books: [], totalCount: 0 };
@@ -766,6 +778,7 @@ export const searchBookshelfNarrators = async (
   const audiobookServers = servers.filter(
     (server) =>
       server.backend !== 'bindery' &&
+      server.backend !== 'bookorbit' &&
       readarrServiceSupportsFormat(server, 'audiobook')
   );
   if (!audiobookServers.length) return [];
@@ -807,7 +820,9 @@ const getBookshelfBookDetailsUnbounded = async (
   if (!parsed) return undefined;
   const server = servers.find(
     (candidate) =>
-      candidate.id === parsed.serviceId && candidate.backend !== 'bindery'
+      candidate.id === parsed.serviceId &&
+      candidate.backend !== 'bindery' &&
+      candidate.backend !== 'bookorbit'
   );
   if (!server) return undefined;
   try {

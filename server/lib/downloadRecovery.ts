@@ -252,7 +252,10 @@ class DownloadRecovery {
     }
 
     const readarrServers = uniqWith(
-      settings.readarr.filter((server) => server.backend !== 'bindery'),
+      settings.readarr.filter(
+        (server) =>
+          server.backend !== 'bindery' && server.backend !== 'bookorbit'
+      ),
       (a, b) => isMatchingReadarrDownloadServer(a, b)
     );
     for (const server of readarrServers) {

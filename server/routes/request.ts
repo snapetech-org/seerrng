@@ -2592,7 +2592,10 @@ requestRoutes.get<
     const radarrSettings = canHydrateServiceProfiles ? settings.radarr : [];
     const lidarrSettings = canHydrateServiceProfiles ? settings.lidarr : [];
     const readarrSettings = canHydrateServiceProfiles
-      ? settings.readarr.filter((service) => service.backend !== 'bindery')
+      ? settings.readarr.filter(
+          (service) =>
+            service.backend !== 'bindery' && service.backend !== 'bookorbit'
+        )
       : [];
     const sportarrSettings = canHydrateServiceProfiles ? settings.sportarr : [];
     const referencedProfileServiceIds = new Map<MediaType, Set<number>>();

@@ -164,7 +164,7 @@ const messages = defineMessages('components.Settings', {
   whisparrsettings: 'Whisparr Settings',
   sportarrsettings: 'Sportarr Settings',
   lidarrsettings: 'Lidarr Settings',
-  readarrsettings: 'Bookshelf and Bindery Settings',
+  readarrsettings: 'Book Acquisition Services',
   audiobookshelfsettings: 'Audiobookshelf Availability',
   audiobookshelfDescription:
     'Optionally sync an Audiobookshelf book library so SeerrNG can recognize matching audiobooks that are already available. This connection is read-only and does not send acquisition requests.',
@@ -228,6 +228,7 @@ const messages = defineMessages('components.Settings', {
   addlidarr: 'Add Lidarr Server',
   addreadarr: 'Add ChaptarrNG Server',
   addbindery: 'Add Bindery Server',
+  addbookorbit: 'Add BookOrbit Server',
   bothBookFormats: 'Book and Audiobook',
   addmylar: 'Add Mylar Server',
   addkapowarr: 'Add Kapowarr Server',
@@ -348,6 +349,7 @@ interface ServerInstanceProps {
   isAdult?: boolean;
   serviceFormat?: 'ebook' | 'audiobook' | 'both';
   isBindery?: boolean;
+  isBookOrbit?: boolean;
   onEdit: () => void;
   onDelete: () => void;
 }
@@ -393,6 +395,7 @@ const ServerInstance = ({
   isLidarr = false,
   isReadarr = false,
   isBindery = false,
+  isBookOrbit = false,
   isAudiobookshelf = false,
   isNavidrome = false,
   isJellystat = false,
@@ -509,6 +512,7 @@ const ServerInstance = ({
               </Badge>
             )}
             {isBindery && <Badge badgeType="success">Bindery</Badge>}
+            {isBookOrbit && <Badge badgeType="success">BookOrbit</Badge>}
             {isAudiobookshelf && (
               <Badge badgeType="warning">
                 {intl.formatMessage(messages.audiobook)}
@@ -762,7 +766,8 @@ const SettingsServices = ({
   const [editBinderyModal, setEditBinderyModal] = useState<{
     open: boolean;
     bindery: ReadarrSettings | null;
-  }>({ open: false, bindery: null });
+    backend: 'bindery' | 'bookorbit';
+  }>({ open: false, bindery: null, backend: 'bindery' });
   const [editAudiobookshelfModal, setEditAudiobookshelfModal] = useState(false);
   const [editNavidromeModal, setEditNavidromeModal] = useState(false);
   const [editJellystatModal, setEditJellystatModal] = useState(false);
@@ -865,7 +870,10 @@ const SettingsServices = ({
         ? 'ebook'
         : undefined;
   const readarrCompatibleConnections =
-    readarrData?.filter((readarr) => readarr.backend !== 'bindery') ?? [];
+    readarrData?.filter(
+      (readarr) =>
+        readarr.backend !== 'bindery' && readarr.backend !== 'bookorbit'
+    ) ?? [];
   const bookConnectionToCopy =
     readarrCompatibleConnections.find((readarr) => readarr.isDefault) ??
     readarrCompatibleConnections[0];
@@ -1247,13 +1255,22 @@ const SettingsServices = ({
               {editBinderyModal.open && (
                 <BinderyModal
                   settings={editBinderyModal.bindery}
+                  backend={editBinderyModal.backend}
                   onClose={() =>
-                    setEditBinderyModal({ open: false, bindery: null })
+                    setEditBinderyModal({
+                      open: false,
+                      bindery: null,
+                      backend: 'bindery',
+                    })
                   }
                   onSave={() => {
                     revalidateReadarr();
                     mutate('/api/v1/settings/public');
-                    setEditBinderyModal({ open: false, bindery: null });
+                    setEditBinderyModal({
+                      open: false,
+                      bindery: null,
+                      backend: 'bindery',
+                    });
                   }}
                 />
               )}
@@ -2052,14 +2069,17 @@ const SettingsServices = ({
                           isSSL={readarr.useSsl}
                           isReadarr={true}
                           isBindery={readarr.backend === 'bindery'}
+                          isBookOrbit={readarr.backend === 'bookorbit'}
                           serviceFormat={readarr.serviceType ?? 'ebook'}
                           isDefault={readarr.isDefault}
                           externalUrl={readarr.externalUrl}
                           onEdit={() =>
-                            readarr.backend === 'bindery'
+                            readarr.backend === 'bindery' ||
+                            readarr.backend === 'bookorbit'
                               ? setEditBinderyModal({
                                   open: true,
                                   bindery: readarr,
+                                  backend: readarr.backend,
                                 })
                               : setEditReadarrModal({ open: true, readarr })
                           }
@@ -2094,12 +2114,36 @@ const SettingsServices = ({
                             buttonType="success"
                             buttonSize="standard"
                             onClick={() =>
-                              setEditBinderyModal({ open: true, bindery: null })
+                              setEditBinderyModal({
+                                open: true,
+                                bindery: null,
+                                backend: 'bindery',
+                              })
                             }
                           >
                             <PlusIcon />
                             <span>
                               {intl.formatMessage(messages.addbindery)}
+                            </span>
+                          </Button>
+                        </div>
+                      </li>
+                      <li className="settings-service-add-card">
+                        <div className="settings-service-add-card-content">
+                          <Button
+                            buttonType="success"
+                            buttonSize="standard"
+                            onClick={() =>
+                              setEditBinderyModal({
+                                open: true,
+                                bindery: null,
+                                backend: 'bookorbit',
+                              })
+                            }
+                          >
+                            <PlusIcon />
+                            <span>
+                              {intl.formatMessage(messages.addbookorbit)}
                             </span>
                           </Button>
                         </div>

@@ -887,7 +887,7 @@
     },
     {
       "file": "src/components/Settings/BookshelfPathMigration.tsx",
-      "line": 738,
+      "line": 742,
       "expression": "warning",
       "context": [
         "OpaqueApiMessageText",
@@ -902,7 +902,7 @@
     },
     {
       "file": "src/components/Settings/BookshelfPathMigration.tsx",
-      "line": 804,
+      "line": 808,
       "expression": "notice",
       "context": [
         "ApiMessageText",
@@ -914,7 +914,7 @@
     },
     {
       "file": "src/components/Settings/BookshelfPathMigration.tsx",
-      "line": 824,
+      "line": 828,
       "expression": "errorMessage",
       "context": [
         "ApiMessageText",
@@ -1193,21 +1193,6 @@
       ],
       "classification": "diagnostic-data",
       "reason": "The log viewer displays original operational records for diagnosis and search; preserve emitted log data."
-    },
-    {
-      "file": "src/components/Settings/SettingsPlex.tsx",
-      "line": 619,
-      "expression": "`\n                            ${server.name} (${server.address})\n                            [${\n                              server.local\n                                ? intl.formatMessage(messages.serverLocal)\n                                : intl.formatMessage(messages.serverRemote)\n                            }]${\n                              server.ssl\n                                ? ` [${intl.formatMessage(\n                                    messages.serverSecure\n                                  )}]`\n                                : ''\n                            }\n                            ${server.status ? '' : '(' + server.message + ')'}\n                          `",
-      "context": [
-        "option",
-        "select",
-        "div",
-        "div",
-        "div",
-        "form",
-        "Formik"
-      ],
-      "classification": "already-localized"
     },
     {
       "file": "src/components/Settings/SettingsProwlarr.tsx",

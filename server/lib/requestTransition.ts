@@ -9,6 +9,7 @@ import {
 import { getExternalRuntimeConfig } from '@server/lib/externalRuntimeConfig';
 import { Permission } from '@server/lib/permissions';
 import { runAuthorizedUserSecurityMutation } from '@server/lib/userSecurityMutation';
+import { hasValidEpisodeQueueStartingSelection } from '@server/lib/watchAheadEligibility';
 import { readarrServiceSupportsFormat } from '@server/utils/readarrService';
 
 export class PendingRequestTransitionNotFoundError extends Error {
@@ -22,8 +23,8 @@ export class PendingRequestTransitionNotFoundError extends Error {
 export class PendingRequestTransitionConflictError extends Error {
   public readonly status = 409;
 
-  constructor() {
-    super('Only pending requests can be approved or declined.');
+  constructor(message = 'Only pending requests can be approved or declined.') {
+    super(message);
   }
 }
 
@@ -268,6 +269,11 @@ export const transitionPendingMediaRequest = (
           }
 
           if (newStatus === MediaRequestStatus.APPROVED) {
+            if (!hasValidEpisodeQueueStartingSelection(request)) {
+              throw new PendingRequestTransitionConflictError(
+                'Choose one starting episode in Edit Request before approving an Episode Queue request. Queue length is a playback buffer, not a total download limit.'
+              );
+            }
             validateExternalServiceConfiguration(
               request.type,
               request.serverId,
