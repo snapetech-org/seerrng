@@ -114,7 +114,7 @@ class OriginBarTest {
         ParcelFileDescriptor.AutoCloseInputStream(
             automation.executeShellCommand("mkdir -p /sdcard/Download/seerrng-security")
         ).use { it.readBytes() }
-        val pipes = automation.executeShellCommandRw("cat > /sdcard/Download/seerrng-security/$name.png")
+        val pipes = automation.executeShellCommandRw("dd of=/sdcard/Download/seerrng-security/$name.png bs=65536")
         ParcelFileDescriptor.AutoCloseOutputStream(pipes[1]).use { stream ->
             assertTrue(automation.takeScreenshot().compress(Bitmap.CompressFormat.PNG, 100, stream))
         }
