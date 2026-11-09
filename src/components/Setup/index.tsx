@@ -2,8 +2,10 @@ import EmbyLogo from '@app/assets/services/emby.svg';
 import JellyfinLogo from '@app/assets/services/jellyfin.svg';
 import PlexLogo from '@app/assets/services/plex.svg';
 import AppDataWarning from '@app/components/AppDataWarning';
+import ApiRateLimitNotice from '@app/components/Common/ApiRateLimitNotice';
 import Button from '@app/components/Common/Button';
 import ImageFader from '@app/components/Common/ImageFader';
+import PageErrorMessage from '@app/components/Common/PageErrorMessage';
 import PageTitle from '@app/components/Common/PageTitle';
 import LanguagePicker from '@app/components/Layout/LanguagePicker';
 import type { LoginBackdrop } from '@app/components/Login';
@@ -13,6 +15,7 @@ import SetupSteps from '@app/components/Setup/SetupSteps';
 import type { SetupDownloadProfile } from '@app/components/Setup/setupDownloadClients';
 import type { SetupServiceCategory } from '@app/components/Setup/setupServiceCategories';
 import TransportSecurityNotice from '@app/components/TransportSecurityNotice';
+import useApiRateLimit from '@app/hooks/useApiRateLimit';
 import useLocale from '@app/hooks/useLocale';
 import useSettings from '@app/hooks/useSettings';
 import useToasts from '@app/hooks/useToasts';
@@ -83,6 +86,9 @@ const messages = defineMessages('components.Setup', {
   categoryTools: 'System tools',
   librarieserror:
     'Validation failed. Please toggle the libraries again to continue.',
+  libraryCheckFailed: 'Could Not Check Selected Libraries',
+  librarieserrorDescription:
+    'Your library selections have been kept. Retry the check to continue. If it still fails, check the connection to your media server.',
   finisherror: 'Something went wrong while finishing setup.',
   localesaveerror:
     'Setup completed, but the selected language could not be saved.',
@@ -134,6 +140,10 @@ const Setup = () => {
     useState(false);
   const [enabledLibraryCount, setEnabledLibraryCount] = useState(0);
   const [enabledLibraryNames, setEnabledLibraryNames] = useState<string[]>([]);
+  const [libraryValidationFailed, setLibraryValidationFailed] = useState(false);
+  const [libraryValidationPending, setLibraryValidationPending] =
+    useState(false);
+  const rateLimitSeconds = useApiRateLimit();
   const [mediaServerType, setMediaServerType] = useState(
     MediaServerType.NOT_CONFIGURED
   );
@@ -163,7 +173,7 @@ const Setup = () => {
   ).map((category) =>
     intl.formatMessage(messages[categoryMessageKeys[category]])
   );
-  const toasts = useToasts();
+  const { addToast } = useToasts();
   const {
     user,
     loading: userLoading,
@@ -189,6 +199,7 @@ const Setup = () => {
   }, [revalidateUser]);
 
   const finishSetup = async () => {
+    if (rateLimitSeconds) return;
     if (settings.currentSettings.initialized && isGuidedSetup) {
       await router.push('/settings/services');
       return;
@@ -225,7 +236,7 @@ const Setup = () => {
         throw new Error('Setup initialization was not persisted.');
       }
       if (!result.localeSaved) {
-        toasts.addToast(intl.formatMessage(messages.localesaveerror), {
+        addToast(intl.formatMessage(messages.localesaveerror), {
           autoDismiss: true,
           appearance: 'error',
         });
@@ -235,7 +246,7 @@ const Setup = () => {
       await router.push('/');
     } catch (error) {
       if (!axios.isCancel(error)) {
-        toasts.addToast(intl.formatMessage(messages.finisherror), {
+        addToast(intl.formatMessage(messages.finisherror), {
           autoDismiss: true,
           appearance: 'error',
         });
@@ -252,6 +263,8 @@ const Setup = () => {
     libraryValidationController.current?.abort();
     const controller = new AbortController();
     libraryValidationController.current = controller;
+    setLibraryValidationPending(true);
+    setLibraryValidationFailed(false);
     try {
       const endpointMap: Record<MediaServerType, string> = {
         [MediaServerType.JELLYFIN]: '/api/v1/settings/jellyfin',
@@ -282,20 +295,19 @@ const Setup = () => {
       if (axios.isCancel(error)) {
         return;
       }
-      toasts.addToast(intl.formatMessage(messages.librarieserror), {
-        autoDismiss: true,
-        appearance: 'error',
-      });
-
-      setMediaServerSettingsComplete(false);
-      setEnabledLibraryCount(0);
-      setEnabledLibraryNames([]);
+      // A failed read does not undo persisted choices. Keep Continue blocked
+      // until a fresh check succeeds, and offer a read-only retry.
+      if (!controller.signal.aborted) {
+        setLibraryValidationFailed(true);
+        setMediaServerSettingsComplete(false);
+      }
     } finally {
       if (libraryValidationController.current === controller) {
         libraryValidationController.current = undefined;
+        setLibraryValidationPending(false);
       }
     }
-  }, [intl, mediaServerType, toasts]);
+  }, [mediaServerType]);
 
   const { data: backdrops } = useSWR<LoginBackdrop[]>('/api/v1/backdrops', {
     refreshInterval: 0,
@@ -506,6 +518,7 @@ const Setup = () => {
           </ul>
         </nav>
         <TransportSecurityNotice onReadinessChange={setTransportReady} />
+        <ApiRateLimitNotice />
         <div className="mt-10 w-full rounded-md border border-gray-600 bg-gray-800/50 p-4 text-white">
           {currentStep === 1 && (
             <div className="flex flex-col items-center pb-6">
@@ -655,12 +668,29 @@ const Setup = () => {
                     onComplete={handleComplete}
                   />
                 )}
+                {libraryValidationFailed && !rateLimitSeconds && (
+                  <PageErrorMessage
+                    title={intl.formatMessage(messages.libraryCheckFailed)}
+                    description={intl.formatMessage(
+                      messages.librarieserrorDescription
+                    )}
+                    retry={{
+                      onClick: validateLibraries,
+                      tooltip: intl.formatMessage(messages.libraryCheckFailed),
+                      busy: libraryValidationPending,
+                    }}
+                  />
+                )}
                 <div className="actions">
                   <div className="flex justify-end">
                     <span className="ms-3 inline-flex rounded-md shadow-sm">
                       <Button
                         buttonType="primary"
-                        disabled={!mediaServerSettingsComplete}
+                        disabled={
+                          !mediaServerSettingsComplete ||
+                          libraryValidationPending ||
+                          rateLimitSeconds > 0
+                        }
                         onClick={() => setCurrentStep(isAdvancedSetup ? 5 : 4)}
                       >
                         {intl.formatMessage(messages.continue)}

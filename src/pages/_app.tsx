@@ -12,6 +12,10 @@ import { ThemeProvider } from '@app/context/ThemeContext';
 import { UserContext } from '@app/context/UserContext';
 import useSettings from '@app/hooks/useSettings';
 import globalMessages from '@app/i18n/globalMessages';
+import {
+  installApiRateLimitHandling,
+  retryApiRead,
+} from '@app/utils/apiRateLimit';
 import { loadLocaleMessages } from '@app/i18n/locale/loadLocaleMessages.generated';
 import { getCatalogMessageLanguage } from '@app/utils/messageCatalog';
 // organize-imports-ignore: CSS import order keeps role styles after Tailwind base styles.
@@ -87,6 +91,8 @@ const CoreApp = ({ Component, pageProps, router }: AppProps) => {
   useEffect(() => {
     polyfillIntl();
   }, []);
+
+  useEffect(installApiRateLimitHandling, []);
 
   useEffect(() => {
     const browserPreference = getBrowserLocalePreference();
@@ -220,6 +226,8 @@ const CoreApp = ({ Component, pageProps, router }: AppProps) => {
         focusThrottleInterval: 30000,
         dedupingInterval: 30000,
         keepPreviousData: true,
+        errorRetryCount: 3,
+        onErrorRetry: retryApiRead,
       }}
     >
       <LanguageContext.Provider
