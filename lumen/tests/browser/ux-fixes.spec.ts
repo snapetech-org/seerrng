@@ -259,4 +259,69 @@ test.describe('touch screens', () => {
     await expect(chip).toBeVisible();
     expect((await chip.boundingBox())!.height).toBeGreaterThanOrEqual(44);
   });
+  test('hero buttons, See all, avatar, back and sort have a 44px hit area', async ({
+    page,
+  }) => {
+    const movie = {
+      id: 5,
+      mediaType: 'movie',
+      title: 'Hero Film',
+      posterPath: '/p.jpg',
+      backdropPath: '/b.jpg',
+      releaseDate: '2024-01-01',
+      voteAverage: 7,
+    };
+    await fixtures(page, (path) =>
+      /^\/discover\/(trending|movies|tv)$/.test(path)
+        ? { json: paged([movie]) }
+        : path.startsWith('/discover/genreslider/')
+          ? { json: [] }
+          : undefined
+    );
+    await page.goto('/');
+    const measure = async (sel: string) => {
+      const el = page.locator(sel).first();
+      await expect(el).toBeVisible();
+      const b = (await el.boundingBox())!;
+      return Math.min(b.width, b.height);
+    };
+    expect(await measure('.feat .cap .go')).toBeGreaterThanOrEqual(44);
+    expect(await measure('.sec-head a')).toBeGreaterThanOrEqual(44);
+    expect(await measure('.ph-only-avatar')).toBeGreaterThanOrEqual(44);
+    await page.goto('/movies');
+    expect(await measure('.sel select')).toBeGreaterThanOrEqual(44);
+    await page.goto('/movie/5');
+    expect(await measure('.dback')).toBeGreaterThanOrEqual(44);
+  });
+  test('the fact line keeps each dot with the item before it', async ({
+    page,
+  }) => {
+    await fixtures(page, (path) =>
+      path === '/movie/5'
+        ? {
+            json: {
+              id: 5,
+              title: 'Hero Film',
+              releaseDate: '2024-01-01',
+              runtime: 100,
+              voteAverage: 7,
+              genres: [{ id: 1, name: 'Drama' }],
+            },
+          }
+        : undefined
+    );
+    await page.goto('/movie/5');
+    const spans = page.locator('.dline span');
+    await expect(spans.first()).toBeVisible();
+    expect(await spans.count()).toBeGreaterThan(1);
+    const marks = await spans.evaluateAll((els) =>
+      els.map((e) => [
+        getComputedStyle(e, '::before').content,
+        getComputedStyle(e, '::after').content,
+      ])
+    );
+    for (const [before] of marks) expect(before).toBe('none');
+    expect(marks[0][1]).toContain('·');
+    expect(marks[marks.length - 1][1]).toBe('none');
+  });
 });

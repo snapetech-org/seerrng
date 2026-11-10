@@ -830,11 +830,12 @@ body.is-detail .tabbar {
   font-weight: 500;
   display: flex;
   flex-wrap: wrap;
-  gap: 4px 10px;
+  gap: 4px 0;
 }
-.dline span + span::before {
+/* the dot trails its item so a wrapped line never starts with one */
+.dline span:not(:last-child)::after {
   content: '·';
-  margin-right: 10px;
+  margin: 0 10px;
   color: var(--ink-3);
 }
 .cert {
