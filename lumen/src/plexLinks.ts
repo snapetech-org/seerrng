@@ -6,7 +6,7 @@ export type PlexLinks = {
 };
 // the title in Plex's web app
 export const plexUrl = (m?: PlexLinks, is4k = false) =>
-  safeUrl((is4k && m?.mediaUrl4k) || m?.mediaUrl, false);
+  safeUrl((is4k && m?.mediaUrl4k) || m?.mediaUrl || m?.mediaUrl4k, false);
 
 export type PlexPlatform = 'ios' | 'android' | 'desktop';
 export function plexPlatform(
@@ -51,7 +51,8 @@ export const plexLink = (
 ) => {
   const web = plexUrl(m, is4k);
   const app = safeUrl(
-    (is4k && m?.iOSPlexUrl4k) || (!is4k && m?.iOSPlexUrl) || undefined,
+    (is4k ? m?.iOSPlexUrl4k : m?.iOSPlexUrl) ||
+      (is4k ? undefined : m?.iOSPlexUrl4k),
     true
   );
   if (app && platform === 'android' && (kind === 'movie' || kind === 'tv')) {

@@ -801,6 +801,13 @@ body.is-detail .tabbar {
   height: 100%;
   object-fit: cover;
 }
+/* book art comes in any shape: show all of it inside the frame */
+.dposter.whole img {
+  object-fit: contain;
+}
+.ov.long {
+  white-space: pre-line;
+}
 .dtitle h1 {
   font-size: 26px;
   font-weight: 800;
@@ -823,11 +830,12 @@ body.is-detail .tabbar {
   font-weight: 500;
   display: flex;
   flex-wrap: wrap;
-  gap: 4px 10px;
+  gap: 4px 0;
 }
-.dline span + span::before {
+/* the dot trails its item so a wrapped line never starts with one */
+.dline span:not(:last-child)::after {
   content: '·';
-  margin-right: 10px;
+  margin: 0 10px;
   color: var(--ink-3);
 }
 .cert {
@@ -871,15 +879,17 @@ body.is-detail .tabbar {
   max-width: 68ch;
 }
 .facts2 {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  display: flex;
+  flex-wrap: wrap;
   gap: 1px;
   background: var(--line);
   border-radius: var(--r-md);
   overflow: hidden;
   margin: 0;
 }
+/* cells share a row equally, so an odd one out widens instead of leaving an empty block */
 .facts2 > div {
+  flex: 1 1 calc(50% - 1px);
   background: var(--surface);
   padding: 12px 14px;
   min-width: 0;
@@ -1282,6 +1292,9 @@ body.is-detail .tabbar {
   border-radius: 10px;
   overflow: hidden;
   background: var(--surface-3);
+}
+.rq .art {
+  container-type: inline-size;
 }
 .rq .art.sq {
   aspect-ratio: 16/9;
@@ -1764,8 +1777,8 @@ body.is-detail .toast {
   .dtitle h1 {
     font-size: 40px;
   }
-  .facts2 {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+  .facts2 > div {
+    flex-basis: calc(25% - 1px);
   }
   .browse {
     grid-template-columns: repeat(4, minmax(0, 1fr));

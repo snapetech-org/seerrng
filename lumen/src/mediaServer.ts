@@ -5,7 +5,7 @@ import {
   useState,
   type ReactNode,
 } from 'react';
-import { lumenConfigUrl } from './deployment.ts';
+import { loadLumenConfig } from './deployment.ts';
 
 // Which media server the household watches on. SeerrNG reports its own server
 // (Settings → General → media server), so Lumen follows it by default; admins can pin
@@ -285,15 +285,14 @@ export function MediaServerProvider({ children }: { children: ReactNode }) {
     setFailed(false);
     const controller = new AbortController();
     const timeout = window.setTimeout(() => controller.abort(), 20000);
-    const json = (url: string) =>
-      fetch(url, {
-        cache: 'no-store',
-        credentials: 'same-origin',
-        signal: controller.signal,
-      })
-        .then((r) => (r.ok ? r.json() : null))
-        .catch(() => null);
-    Promise.all([json(lumenConfigUrl), loadPublicSettings(controller.signal)])
+    Promise.all([
+      loadLumenConfig(controller.signal) as Promise<{
+        mediaServer?: string;
+        mediaServerName?: string;
+        [key: string]: unknown;
+      } | null>,
+      loadPublicSettings(controller.signal),
+    ])
       .then(([config, pub]) => {
         if (!live) return;
         if (!pub || typeof pub !== 'object' || Array.isArray(pub)) {

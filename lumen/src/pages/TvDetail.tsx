@@ -30,9 +30,11 @@ import {
 } from '../components/detail';
 import { ServiceNote } from '../components/extra';
 import { useToast } from '../components/toast';
-import { dropCache, useApi, usePublicSettings } from '../hooks';
+import { useApi, usePublicSettings } from '../hooks';
 import { Icon } from '../icons';
 import { usePrefs } from '../settings';
+import { friendlyError } from '../errors';
+import { scrollBehavior } from '../motion';
 
 type SeasonState = 'have' | 'part' | 'asked' | 'none';
 const stateOf = (status?: number): SeasonState =>
@@ -48,7 +50,7 @@ export default function TvDetail() {
   const serverName = useMediaServerName();
   const { id } = useParams();
   const loc = useLocation();
-  const { data: t, error, reload } = useApi<TvDetails>(`/tv/${id}`);
+  const { data: t, error, reload, refresh } = useApi<TvDetails>(`/tv/${id}`);
   const like = useApi<Paged<TitleResult>>(`/tv/${id}/recommendations`).data;
   const pub = usePublicSettings();
   const { user } = useAuth();
@@ -86,15 +88,26 @@ export default function TvDetail() {
   // partial requests off on the server = it's the whole show or nothing
   const partialOk = pub?.partialRequestsEnabled !== false;
 
+  // ticks reset when the show (or the defaults) change, not when a background refresh lands
+  const showId = t?.id;
   useEffect(() => {
     setSel(new Set(prefs.wholeSeriesDefault || !partialOk ? missing : []));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [t, prefs.wholeSeriesDefault, partialOk, opts.is4k]);
+  }, [showId, prefs.wholeSeriesDefault, partialOk, opts.is4k]);
+  // seasons that were just requested (or arrived) can no longer be ticked
+  const missingKey = missing.join(',');
+  useEffect(() => {
+    setSel((x) => {
+      const keep = [...x].filter((s) => missing.includes(s));
+      return keep.length === x.size ? x : new Set(keep);
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [missingKey]);
   useEffect(() => {
     if (t && loc.hash === '#seasons')
       document
         .getElementById('seasons')
-        ?.scrollIntoView({ behavior: 'smooth' });
+        ?.scrollIntoView({ behavior: scrollBehavior() });
   }, [t, loc.hash]);
 
   if (error)
@@ -131,10 +144,9 @@ export default function TvDetail() {
       toast(
         `Requested ${t.name} · ${whole ? 'entire series' : n === 1 ? 'Season ' + [...sel][0] : n + ' seasons'}`
       );
-      dropCache(`/tv/${t.id}`);
-      reload();
+      refresh();
     } catch (e) {
-      toast(e instanceof Error ? e.message : 'Request failed');
+      toast(friendlyError(e, 'Request failed'));
     } finally {
       setBusy(false);
     }

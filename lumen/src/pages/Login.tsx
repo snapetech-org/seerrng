@@ -196,6 +196,12 @@ export default function Login() {
           </p>
         )}
 
+        {err && (
+          <p className="login-err" role="alert">
+            {err}
+          </p>
+        )}
+
         {mode === 'quick' ? (
           <div className="login-quick" aria-live="polite">
             {code ? (
@@ -338,11 +344,6 @@ export default function Login() {
         <p className="sub">
           {embedded ? 'Lumen included with SeerrNG' : 'Lumen companion'}
         </p>
-        {err && (
-          <p className="login-err" role="alert">
-            {err}
-          </p>
-        )}
       </div>
     </div>
   );

@@ -14,6 +14,7 @@ import { Icon, type IconName } from '../icons';
 import { usePrefs } from '../settings';
 import { BrandMark, brandName } from './brand';
 import { canChooseRequestOptions } from './detail';
+import { scrollBehavior } from '../motion';
 
 // scroll position of each history entry, for Back
 const scrollSpots = new Map<string, number>();
@@ -198,7 +199,7 @@ export default function Shell({ children }: { children: ReactNode }) {
     if (loc.pathname === to && !loc.search) {
       e.preventDefault();
       const from = window.scrollY;
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      window.scrollTo({ top: 0, behavior: scrollBehavior() });
       // some browsers skip or throttle smooth scrolling; make sure it gets there
       window.setTimeout(() => {
         if (window.scrollY >= from && from > 0) window.scrollTo(0, 0);

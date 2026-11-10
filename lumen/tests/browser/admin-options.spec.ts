@@ -1254,6 +1254,7 @@ test('admins see everyone’s requests and approve or decline them', async ({
     .poll(() => posts.map((p) => p.path))
     .toContain('/request/77/approve');
   await row.getByRole('button', { name: 'Decline' }).click();
+  await page.getByRole('button', { name: 'Decline request' }).click();
   await expect
     .poll(() => posts.map((p) => p.path))
     .toContain('/request/77/decline');
@@ -1871,7 +1872,7 @@ test('changing a series request picks its seasons', async ({ page }) => {
   expect(calls[0].body).toMatchObject({ mediaType: 'tv', seasons: [1, 2] });
 });
 
-test('failed requests can be retried, and Remove asks once more', async ({
+test('failed requests can be retried, and Remove asks in a dialog', async ({
   page,
 }) => {
   await fixtures(page, { permissions: 2 });
@@ -1884,8 +1885,18 @@ test('failed requests can be retried, and Remove asks once more', async ({
   await row.getByRole('button', { name: 'Retry' }).click();
   await expect(page.getByText('Request sent again')).toBeVisible();
   await row.getByRole('button', { name: 'Remove' }).click();
+  const ask = page.getByRole('alertdialog');
+  await expect(ask).toBeVisible();
   expect(calls.some((c) => c.method === 'DELETE')).toBe(false);
-  await row.getByRole('button', { name: 'Remove for good?' }).click();
+  // dismissing sends nothing
+  await ask.getByRole('button', { name: 'Keep it' }).click();
+  await expect(ask).toHaveCount(0);
+  expect(calls.some((c) => c.method === 'DELETE')).toBe(false);
+  await row.getByRole('button', { name: 'Remove' }).click();
+  await page
+    .getByRole('alertdialog')
+    .getByRole('button', { name: 'Remove request' })
+    .click();
   await expect(page.getByText('Request removed')).toBeVisible();
   expect(calls.map((c) => `${c.method} ${c.path}`)).toEqual([
     'POST /request/78/retry',
@@ -2237,7 +2248,10 @@ test('configured game services still hide a platform explicitly denied by the AP
   });
   await page.goto('/games');
   await expect(
-    page.getByRole('link', { name: 'Allowed modern console game', exact: true })
+    page.getByRole('link', {
+      name: 'Allowed modern console game',
+      exact: true,
+    })
   ).toBeVisible();
   await expect(
     page.getByRole('button', { name: 'Retro consoles', exact: true })

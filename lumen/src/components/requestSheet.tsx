@@ -16,6 +16,8 @@ import {
   canChooseRequestOptions,
   canRequest4k,
 } from './detail';
+import { useDialog } from './useDialog';
+import { friendlyError } from '../errors';
 
 // Poster quick requests are one click for most people. People who may choose the
 // Radarr/Sonarr server, quality and folder get this sheet first (unless the
@@ -44,11 +46,6 @@ let pendingBack = false;
 export function useBackCloses(onClose: () => void) {
   const closeRef = useRef(onClose);
   closeRef.current = onClose;
-  useEffect(() => {
-    const k = (e: KeyboardEvent) => e.key === 'Escape' && closeRef.current();
-    document.addEventListener('keydown', k);
-    return () => document.removeEventListener('keydown', k);
-  }, []);
   useEffect(() => {
     let popped = false;
     // remounted at once (React StrictMode runs effects twice): reuse the entry already
@@ -96,6 +93,8 @@ export function RequestSheet({
   const [err, setErr] = useState('');
   const onOpts = useCallback((o: RequestOptions) => setOpts(o), []);
   useBackCloses(onClose);
+  const box = useRef<HTMLDivElement>(null);
+  useDialog(box, onClose);
   // without server choices there's nothing to wait for
   const canSend = asks ? ready : true;
   const send = async () => {
@@ -110,7 +109,7 @@ export function RequestSheet({
         : requestMovie(it.id, body));
       onDone(!!body.is4k);
     } catch (e) {
-      setErr(e instanceof Error ? e.message : 'Request failed');
+      setErr(friendlyError(e, 'Request failed'));
       setBusy(false);
     }
   };
@@ -118,6 +117,7 @@ export function RequestSheet({
     <div className="sheet-wrap open">
       <div className="sheet-scrim" onClick={onClose} />
       <div
+        ref={box}
         className="sheet"
         role="dialog"
         aria-modal="true"

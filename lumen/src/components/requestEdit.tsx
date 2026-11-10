@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import {
   api,
@@ -9,6 +9,8 @@ import {
 import { Icon } from '../icons';
 import { AdvancedOptions } from './detail';
 import { useBackCloses } from './requestSheet';
+import { useDialog } from './useDialog';
+import { friendlyError } from '../errors';
 
 // What SeerrNG says about a request's destination (not in Lumen's RequestItem shape).
 type Destination = {
@@ -34,6 +36,8 @@ export function RequestEditSheet({
   onDone: (message: string) => void;
 }) {
   useBackCloses(onClose);
+  const box = useRef<HTMLDivElement>(null);
+  useDialog(box, onClose);
   const tv = r.type === 'tv';
   const waiting = r.status === 1;
   const d = r as RequestItem & Destination;
@@ -108,7 +112,7 @@ export function RequestEditSheet({
             : 'Request changed'
       );
     } catch (e) {
-      setErr(e instanceof Error ? e.message : 'Couldn’t change the request');
+      setErr(friendlyError(e, 'Couldn’t change the request'));
       setBusy(false);
     }
   };
@@ -117,6 +121,7 @@ export function RequestEditSheet({
     <div className="sheet-wrap open">
       <div className="sheet-scrim" onClick={onClose} />
       <div
+        ref={box}
         className="sheet"
         role="dialog"
         aria-modal="true"

@@ -30,8 +30,9 @@ import {
 } from '../components/detail';
 import { ServiceNote } from '../components/extra';
 import { useToast } from '../components/toast';
-import { dropCache, useApi, usePublicSettings } from '../hooks';
+import { useApi, usePublicSettings } from '../hooks';
 import { Icon } from '../icons';
+import { friendlyError } from '../errors';
 
 const cert = (m: MovieDetails) =>
   m.releases?.results
@@ -41,7 +42,12 @@ const cert = (m: MovieDetails) =>
 export default function MovieDetail() {
   const serverName = useMediaServerName();
   const { id } = useParams();
-  const { data: m, error, reload } = useApi<MovieDetails>(`/movie/${id}`);
+  const {
+    data: m,
+    error,
+    reload,
+    refresh,
+  } = useApi<MovieDetails>(`/movie/${id}`);
   const like = useApi<Paged<TitleResult>>(`/movie/${id}/recommendations`).data;
   const pub = usePublicSettings();
   const { user } = useAuth();
@@ -92,10 +98,9 @@ export default function MovieDetail() {
           : { ...opts, is4k }
       );
       toast(`Requested ${m.title}${is4k ? ' in 4K' : ''}`);
-      dropCache(`/movie/${m.id}`);
-      reload();
+      refresh();
     } catch (e) {
-      toast(e instanceof Error ? e.message : 'Request failed');
+      toast(friendlyError(e, 'Request failed'));
     } finally {
       setBusy(false);
     }

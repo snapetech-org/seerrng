@@ -140,7 +140,13 @@ export function shared<T>(path: string, load: () => Promise<T>): Promise<T> {
 }
 
 // after a request or other change: keep showing what's there, but ask again next time
+const staleListeners = new Set<() => void>();
+// for things kept outside this cache that a change makes out of date too
+export function onMarkStale(fn: () => void) {
+  staleListeners.add(fn);
+}
 export function markAllStale() {
+  for (const fn of staleListeners) fn();
   ensureLoaded();
   generation += 1;
   inFlight.clear(); // an answer already on its way may predate the change

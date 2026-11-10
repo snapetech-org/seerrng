@@ -98,6 +98,7 @@
 .sec-head a,
 .sec-head button.link {
   position: relative;
+  min-width: 44px;
 }
 .sec-head a::after,
 .sec-head button.link::after {
@@ -229,4 +230,48 @@ html.no-overscroll body {
   position: absolute;
   inset: -4px;
   border-radius: 50%;
+}
+
+/* a finger needs more than the 34-36px compact controls have on a mouse */
+@media (pointer: coarse) {
+  .chip,
+  .seg button,
+  .seg a,
+  .btn-sm,
+  .rq .rqa .btn,
+  .set a.go {
+    min-height: 44px;
+  }
+}
+
+/* second pass: the remaining controls a real phone measured under 44px */
+@media (pointer: coarse) {
+  .feat .cap .go {
+    min-height: 44px;
+  }
+  .sec-head a,
+  .sec-head button.link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    margin-block: -6px;
+  }
+  .ph-only-avatar {
+    min-width: 44px;
+    min-height: 44px;
+    margin: -3px;
+  }
+  .dback {
+    width: 44px;
+    height: 44px;
+  }
+  .sel select {
+    min-height: 44px;
+  }
+  .rq .tt a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    margin-block: -12px;
+  }
 }

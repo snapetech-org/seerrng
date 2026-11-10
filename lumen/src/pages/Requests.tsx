@@ -14,11 +14,13 @@ import {
   type TvDetails,
 } from '../api';
 import { useAuth, useMediaServerName } from '../auth';
-import { shortDate } from '../components/cards';
+import { Cover, shortDate } from '../components/cards';
+import { ConfirmSheet } from '../components/ConfirmSheet';
 import { canChooseRequestOptions, Pill } from '../components/detail';
 import { RequestEditSheet } from '../components/requestEdit';
 import { Avatar } from '../components/Shell';
 import { useToast } from '../components/toast';
+import { friendlyError } from '../errors';
 import {
   GAME_LABEL,
   useExtras,
@@ -36,6 +38,16 @@ import {
   sessionGeneration,
   sessionUserId,
 } from '../sessionState';
+
+// the glyph on a drawn cover when a request has no artwork
+const coverIcon = (type: string, format?: string): IconName =>
+  type === 'book'
+    ? format === 'audiobook'
+      ? 'headphones'
+      : 'book'
+    : type === 'tv'
+      ? 'tv'
+      : 'film';
 
 interface Row {
   r: RequestItem;
@@ -762,14 +774,12 @@ export default function Requests() {
   }, [show, everyone]);
   const [acting, setActing] = useState<number | null>(null);
   const [editing, setEditing] = useState<Row | null>(null);
-  // Remove asks once more on the same button instead of a pop-up
-  const [removing, setRemoving] = useState<number | null>(null);
-  useEffect(() => {
-    if (removing == null) return;
-    const t = window.setTimeout(() => setRemoving(null), 4000);
-    return () => window.clearTimeout(t);
-  }, [removing]);
-
+  // a decline, a cancel or a remove waits for a yes; none can be taken back
+  const [confirming, setConfirming] = useState<{
+    id: number;
+    how: 'decline' | 'cancel' | 'remove';
+    title: string;
+  } | null>(null);
   useEffect(() => {
     if (!manage) return;
     let live = true;
@@ -907,8 +917,23 @@ export default function Requests() {
   const busy = (rows || []).some((x) => state(x, serverName).pct != null);
   useEffect(() => {
     if (!busy) return;
-    const t = window.setInterval(() => setTick((n) => n + 1), 30_000);
-    return () => window.clearInterval(t);
+    // a hidden tab (or backgrounded app) doesn't poll; it catches up when it's shown again
+    const t = window.setInterval(() => {
+      if (!document.hidden) setTick((n) => n + 1);
+    }, 30_000);
+    let hiddenAt: number | null = null;
+    const onVisible = () => {
+      if (document.hidden) hiddenAt = Date.now();
+      else if (hiddenAt != null) {
+        if (Date.now() - hiddenAt >= 30_000) setTick((n) => n + 1);
+        hiddenAt = null;
+      }
+    };
+    document.addEventListener('visibilitychange', onVisible);
+    return () => {
+      window.clearInterval(t);
+      document.removeEventListener('visibilitychange', onVisible);
+    };
   }, [busy]);
   const all = rows || [];
   const act = all.filter((x) => state(x, serverName).active);
@@ -932,7 +957,6 @@ export default function Requests() {
     how: 'approve' | 'decline' | 'retry' | 'remove'
   ) => {
     setActing(id);
-    setRemoving(null);
     try {
       if (how === 'remove') await api(`/request/${id}`, { method: 'DELETE' });
       else await api(`/request/${id}/${how}`, { method: 'POST', body: '{}' });
@@ -946,7 +970,7 @@ export default function Requests() {
       );
       setTick((t) => t + 1);
     } catch (e) {
-      toast(e instanceof Error ? e.message : 'Couldn’t update the request');
+      toast(friendlyError(e, 'Couldn’t update the request'));
     } finally {
       setActing(null);
     }
@@ -967,7 +991,7 @@ export default function Requests() {
       setRows((list) => list && list.filter((x) => x.r.id !== id));
       setTick((t) => t + 1);
     } catch (e) {
-      toast(e instanceof Error ? e.message : 'Couldn’t cancel');
+      toast(friendlyError(e, 'Couldn’t cancel'));
     } finally {
       setActing(null);
     }
@@ -1109,7 +1133,12 @@ export default function Requests() {
                     loading="lazy"
                   />
                 )}
-                {x.art && <img src={x.art} alt="" loading="lazy" />}
+                <Cover
+                  src={x.art}
+                  title={x.title}
+                  sub={x.sub}
+                  icon={coverIcon(x.r.type, x.r.bookFormat)}
+                />
                 {st.k === 'ok' && !x.cover && (
                   <span className="play">
                     <Icon name="play" />
@@ -1153,7 +1182,13 @@ export default function Requests() {
                           <button
                             className="btn btn-sm btn-quiet"
                             disabled={acting === x.r.id}
-                            onClick={() => decide(x.r.id, 'decline')}
+                            onClick={() =>
+                              setConfirming({
+                                id: x.r.id,
+                                how: 'decline',
+                                title: x.title,
+                              })
+                            }
                           >
                             <Icon name="x" size="sm" />
                             Decline
@@ -1184,12 +1219,14 @@ export default function Requests() {
                         className="btn btn-sm btn-quiet"
                         disabled={acting === x.r.id}
                         onClick={() =>
-                          removing === x.r.id
-                            ? decide(x.r.id, 'remove')
-                            : setRemoving(x.r.id)
+                          setConfirming({
+                            id: x.r.id,
+                            how: 'remove',
+                            title: x.title,
+                          })
                         }
                       >
-                        {removing === x.r.id ? 'Remove for good?' : 'Remove'}
+                        Remove
                       </button>
                     </>
                   ) : st.k === 'ok' &&
@@ -1208,7 +1245,13 @@ export default function Requests() {
                     <button
                       className="btn btn-sm btn-quiet"
                       disabled={acting === x.r.id}
-                      onClick={() => cancel(x.r.id)}
+                      onClick={() =>
+                        setConfirming({
+                          id: x.r.id,
+                          how: 'cancel',
+                          title: x.title,
+                        })
+                      }
                     >
                       Cancel
                     </button>
@@ -1232,6 +1275,38 @@ export default function Requests() {
             {loadingMore ? 'Loading…' : 'Show more'}
           </button>
         </div>
+      )}
+      {confirming && (
+        <ConfirmSheet
+          title={
+            confirming.how === 'cancel'
+              ? 'Cancel this request?'
+              : confirming.how === 'remove'
+                ? `Remove ${confirming.title}?`
+                : 'Decline this request?'
+          }
+          body={
+            confirming.how === 'cancel'
+              ? `${confirming.title} won’t be fetched. You can ask for it again later.`
+              : confirming.how === 'remove'
+                ? `This deletes the request for ${confirming.title} for good. It can’t be undone.`
+                : `${confirming.title} won’t be fetched, and the person who asked will see it was declined.`
+          }
+          confirm={
+            confirming.how === 'cancel'
+              ? 'Cancel request'
+              : confirming.how === 'remove'
+                ? 'Remove request'
+                : 'Decline request'
+          }
+          onClose={() => setConfirming(null)}
+          onConfirm={() => {
+            const { id, how } = confirming;
+            setConfirming(null);
+            if (how === 'cancel') void cancel(id);
+            else void decide(id, how);
+          }}
+        />
       )}
       {editing && (
         <RequestEditSheet

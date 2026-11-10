@@ -20,6 +20,7 @@ import { Avatar } from '../components/Shell';
 import { useToast } from '../components/toast';
 import { useApi } from '../hooks';
 import { Icon } from '../icons';
+import { friendlyError } from '../errors';
 
 const MONTHS = [
   'January',
@@ -87,7 +88,7 @@ export default function Soon() {
       toast(`Requested ${it.title || it.name}. It downloads when it’s out.`);
     } catch (e) {
       unask();
-      toast(e instanceof Error ? e.message : 'Request failed');
+      toast(friendlyError(e, 'Request failed'));
     }
   };
 

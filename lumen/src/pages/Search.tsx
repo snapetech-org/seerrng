@@ -23,6 +23,7 @@ import {
   saveRecentSearches,
 } from '../recentSearches';
 import { usePrefs } from '../settings';
+import { friendlyError } from '../errors';
 
 const SCOPES = {
   all: 'All',
@@ -106,27 +107,33 @@ export default function Search() {
       const wantBooks =
         prefs.showBooks && (f === 'all' || f === 'ebook' || f === 'audio');
       const format = f === 'audio' ? 'audiobook' : 'ebook';
+      // All searches both catalogues; the chips narrow to one
+      const formats = f === 'all' ? ['ebook', 'audiobook'] : [format];
       let error: string | null = null;
       let catalogueUnavailable = false;
       const failure = (e: unknown) => {
-        error = e instanceof Error ? e.message : 'Search failed';
+        error = friendlyError(e, 'Search failed');
         return null;
       };
-      const [tr, br] = await Promise.all([
+      const [tr, ...brs] = await Promise.all([
         wantTitles
           ? api<Paged<TitleResult>>(
               `/search?query=${encodeURIComponent(term)}&page=1`
             ).catch(failure)
           : null,
-        wantBooks
-          ? api<Paged<BookResult>>(
-              `/discover/books?format=${format}&query=${encodeURIComponent(term)}&page=1`
-            ).catch((e: unknown) => {
-              catalogueUnavailable = e instanceof ApiError && e.status >= 500;
-              return failure(e);
-            })
-          : null,
+        ...formats.map((fmt) =>
+          wantBooks
+            ? api<Paged<BookResult>>(
+                `/discover/books?format=${fmt}&query=${encodeURIComponent(term)}&page=1`
+              ).catch((e: unknown) => {
+                catalogueUnavailable ||=
+                  e instanceof ApiError && e.status >= 500;
+                return failure(e);
+              })
+            : null
+        ),
       ]);
+      const br = brs.find(Boolean) ?? null;
       if (!live) return;
       const foundTitles = (tr?.results || []).filter((r) =>
         f === 'movie'
@@ -135,8 +142,14 @@ export default function Search() {
             ? r.mediaType === 'tv'
             : r.mediaType !== 'person'
       );
-      let foundBooks = (br?.results || []).filter(
-        (b) => b.mediaType === 'book'
+      let foundBooks = brs.flatMap((r, i) =>
+        (r?.results || [])
+          .filter((b) => b.mediaType === 'book')
+          .map((b) =>
+            f === 'all' && formats[i] === 'audiobook'
+              ? { ...b, bookFormat: 'audiobook' }
+              : b
+          )
       );
       // The format-neutral metadata endpoint also serves audiobook-only households.
       // Only canonical Open Library works can be retargeted as audiobook cards.
@@ -368,7 +381,7 @@ export default function Search() {
           >
             <div className={`grid ${f === 'audio' ? 'sqg' : ''}`}>
               {bookCards.map((b) => (
-                <BookCard key={b.id} b={b} />
+                <BookCard key={`${b.id}:${b.bookFormat ?? ''}`} b={b} />
               ))}
             </div>
           </Section>

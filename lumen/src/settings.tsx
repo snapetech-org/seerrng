@@ -8,7 +8,7 @@ import {
   type ReactNode,
 } from 'react';
 import { useAuth } from './auth';
-import { lumenConfigUrl } from './deployment';
+import { forgetLumenConfig, loadLumenConfig } from './deployment';
 import { serverName, services, type MediaServerSetting } from './mediaServer';
 
 // Every switchable part of Lumen. Admins set defaults (and can lock them) in
@@ -133,9 +133,8 @@ export function PrefsProvider({ children }: { children: ReactNode }) {
     }
   });
   useEffect(() => {
-    fetch(lumenConfigUrl, { cache: 'no-store' })
-      .then((r) => (r.ok ? r.json() : {}))
-      .then((value) => setAdmin(record(value) as AdminConfig))
+    loadLumenConfig()
+      .then((value) => setAdmin(record(value ?? {}) as AdminConfig))
       .catch(() => setAdmin({}));
   }, []);
 
@@ -231,7 +230,10 @@ export function PrefsProvider({ children }: { children: ReactNode }) {
         audiobookshelfUrl: admin.audiobookshelfUrl,
         set,
         reset,
-        adminSaved: setAdmin,
+        adminSaved: (c: AdminConfig) => {
+          forgetLumenConfig();
+          setAdmin(c);
+        },
       }}
     >
       {children}

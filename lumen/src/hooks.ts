@@ -6,10 +6,12 @@ import {
   cacheGeneration,
   forget,
   isFresh,
+  onMarkStale,
   remember,
   shared,
 } from './apiCache';
 import { onSessionReset, sessionGeneration } from './sessionState';
+import { friendlyError } from './errors';
 
 // A saved answer shows at once; a fresh one isn't asked for again (see apiCache.ts).
 export function useApi<T>(path: string | null) {
@@ -37,7 +39,7 @@ export function useApi<T>(path: string | null) {
       .catch((e) => {
         // a saved answer stays up if refreshing it fails
         if (live && saved === undefined) {
-          setError(e instanceof Error ? e.message : 'Failed to load');
+          setError(friendlyError(e, 'Failed to load'));
           setErrorStatus(e instanceof ApiError ? e.status : 0);
         }
       });
@@ -49,7 +51,10 @@ export function useApi<T>(path: string | null) {
     if (path) forget(path);
     setTick((t) => t + 1);
   }, [path]);
-  return { data, error, errorStatus, reload };
+  // ask again but keep what is on screen meanwhile (after a request the saved copy is already
+  // marked stale, so the page updates in place instead of blanking)
+  const refresh = useCallback(() => setTick((t) => t + 1), []);
+  return { data, error, errorStatus, reload, refresh };
 }
 
 // one call for everyone asking for the same path at once; the answer is saved
@@ -68,8 +73,6 @@ export async function cachedApi<T>(path: string): Promise<T> {
   if (isFresh(path)) return cached<T>(path) as T;
   return fetchShared<T>(path);
 }
-
-export const dropCache = forget;
 
 export interface PublicSettings {
   lockLumenForNonAdmins?: boolean;
@@ -92,7 +95,7 @@ export const usePublicSettings = () =>
 // each history entry keeps what it had loaded, so Back lands on the same rows (and scroll spot)
 const pagedSnap = new Map<
   string,
-  { items: unknown[]; page: number; total: number }
+  { items: unknown[]; page: number; total: number; gen: number }
 >();
 export function usePaged<T>(base: string) {
   const entry = useLocation().key;
@@ -104,6 +107,9 @@ export function usePaged<T>(base: string) {
   const [loading, setLoading] = useState(false);
   const [loadedBase, setLoadedBase] = useState(base);
   const [error, setError] = useState<string | null>(null);
+  // the cache generation these rows were fetched under: a request made since then means the
+  // restored rows may show a title as not requested
+  const rowsGen = useRef(snap?.gen ?? cacheGeneration());
   // one page in flight at a time: scroll triggers can fire twice before state catches up
   const inFlight = useRef<string | null>(null);
   const generation = useRef(0);
@@ -119,12 +125,55 @@ export function usePaged<T>(base: string) {
     setPage(s?.page || 0);
     setTotal(s?.total || 1);
     setError(null);
+    rowsGen.current = s?.gen ?? cacheGeneration();
     inFlight.current = null;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [base]);
+  // Back to a list after something changed (a request): quietly re-read the pages that were
+  // shown and swap them in place, so scroll position holds and statuses are current
+  useEffect(() => {
+    const s = pagedSnap.get(snapKey);
+    if (!s || s.gen === cacheGeneration()) return;
+    let live = true;
+    const gen = cacheGeneration();
+    const sep = base.includes('?') ? '&' : '?';
+    (async () => {
+      const rows: T[] = [];
+      const seen = new Set<string>();
+      let totalPages = s.total;
+      for (let p = 1; p <= s.page; p++) {
+        const d = await cachedApi<{
+          page: number;
+          totalPages: number;
+          results: T[];
+        }>(`${base}${sep}page=${p}`);
+        totalPages = d.totalPages || 1;
+        for (const r of d.results) {
+          const id = String((r as { id?: unknown }).id);
+          if (!seen.has(id)) {
+            seen.add(id);
+            rows.push(r);
+          }
+        }
+        if (!live) return;
+      }
+      rowsGen.current = gen;
+      // pages scrolled in while this ran stay after the refreshed ones
+      setItems((cur) => {
+        const idOf = (x: T) => String((x as { id?: unknown }).id);
+        return rows.concat(cur.filter((x) => !seen.has(idOf(x))));
+      });
+      setTotal(totalPages);
+    })().catch(() => {
+      // the restored rows stay up if refreshing them fails
+    });
+    return () => {
+      live = false;
+    };
+  }, [snapKey, base]);
   useEffect(() => {
     if (loadedBase === base && page > 0)
-      pagedSnap.set(snapKey, { items, page, total });
+      pagedSnap.set(snapKey, { items, page, total, gen: rowsGen.current });
     // keep memory bounded: a long session visits many lists
     if (pagedSnap.size > 30)
       pagedSnap.delete(pagedSnap.keys().next().value as string);
@@ -135,6 +184,7 @@ export function usePaged<T>(base: string) {
     const key = `${base}#${page + 1}`;
     if (inFlight.current === key) return;
     inFlight.current = key;
+    if (page === 0) rowsGen.current = cacheGeneration();
     const requestGeneration = generation.current;
     const ownsRequest = () =>
       generation.current === requestGeneration && inFlight.current === key;
@@ -156,8 +206,7 @@ export function usePaged<T>(base: string) {
       setPage(d.page);
       setTotal(d.totalPages || 1);
     } catch (e) {
-      if (ownsRequest())
-        setError(e instanceof Error ? e.message : 'Failed to load');
+      if (ownsRequest()) setError(friendlyError(e, 'Failed to load'));
     } finally {
       if (ownsRequest()) {
         inFlight.current = null;
@@ -193,7 +242,7 @@ let bookStatesAt = 0;
 export function loadBookStates(): Promise<Map<string, BookState>> {
   if (bookStates && Date.now() - bookStatesAt < 60_000) return bookStates;
   bookStatesAt = Date.now();
-  bookStates = api<{
+  const p: Promise<Map<string, BookState>> = api<{
     results: {
       status: number;
       bookFormat?: string;
@@ -210,21 +259,31 @@ export function loadBookStates(): Promise<Map<string, BookState>> {
           if (!i.value.startsWith('bookshelf:') && !/^OL\d+W$/.test(i.value))
             continue;
           const work = i.value;
-          const f = r.bookFormat === 'audiobook' ? 'audiobook' : 'ebook';
+          // a request for both formats counts for each
+          const formats: ('ebook' | 'audiobook')[] =
+            r.bookFormat === 'both'
+              ? ['ebook', 'audiobook']
+              : [r.bookFormat === 'audiobook' ? 'audiobook' : 'ebook'];
           const cur = m.get(work) || {};
-          const st = 2;
-          cur[f] = Math.max(cur[f] || 0, st);
+          for (const f of formats) cur[f] = Math.max(cur[f] || 0, 2);
           m.set(work, cur);
         }
       }
       return m;
     })
-    .catch(() => new Map());
-  return bookStates;
+    .catch(() => {
+      // a failed read shows nothing for now but isn't kept: the next ask tries again
+      if (bookStates === p) bookStates = null;
+      return new Map<string, BookState>();
+    });
+  bookStates = p;
+  return p;
 }
 export const dropBookStates = () => {
   bookStates = null;
 };
+// cancelling, declining or removing a request (any change) must not leave "Requested" up
+onMarkStale(dropBookStates);
 export function useBookStates() {
   const [m, setM] = useState<Map<string, BookState> | null>(null);
   useEffect(() => {

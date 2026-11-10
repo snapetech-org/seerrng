@@ -30,9 +30,10 @@ import {
 } from '../components/detail';
 import { ServiceNote } from '../components/extra';
 import { useToast } from '../components/toast';
-import { dropBookStates, dropCache, useApi } from '../hooks';
+import { dropBookStates, useApi } from '../hooks';
 import { Icon } from '../icons';
 import { usePrefs } from '../settings';
+import { friendlyError } from '../errors';
 
 const english = (e: Edition) =>
   !e.language || /^(en|eng|english|und)$/i.test(e.language);
@@ -255,6 +256,8 @@ export default function BookDetail() {
   const longest = Math.max(0, ...rows.map((r) => r.durationSeconds || 0));
   const series = b.series?.[0];
   const audio = f === 'audiobook';
+  // nothing to choose between: no narrator details, or no recordings found at all
+  const noChoice = !anotherMode && (!work || (!!eds.data && !rows.length));
   // owned in this format: an audiobook in the library doesn't make the ebook owned (or the reverse)
   const available =
     bookMediaForFormat(b.mediaInfo, f)?.status === MediaStatus.AVAILABLE;
@@ -275,7 +278,7 @@ export default function BookDetail() {
         body: '{}',
       });
       toast('Request approved');
-      dropCache(`/book/${encodeURIComponent(bookId)}`);
+      dropBookStates();
       reload();
     } catch (e) {
       toast(e instanceof Error ? e.message : 'Couldn’t approve the request');
@@ -300,7 +303,7 @@ export default function BookDetail() {
       );
       setCwTick((t) => t + 1);
     } catch (e) {
-      toast(e instanceof Error ? e.message : 'Request failed');
+      toast(friendlyError(e, 'Request failed'));
     } finally {
       setBusy(false);
     }
@@ -328,11 +331,10 @@ export default function BookDetail() {
       toast(
         `Requested ${b.title} · ${audio ? (showNarr && chosenRow ? who(chosenRow) : 'audiobook') : 'ebook'}`
       );
-      dropCache(`/book/${encodeURIComponent(bookId)}`);
       dropBookStates(); // book cards elsewhere show the new request straight away
-      reload();
+      first.refresh();
     } catch (e) {
-      toast(e instanceof Error ? e.message : 'Request failed');
+      toast(friendlyError(e, 'Request failed'));
     } finally {
       setBusy(false);
     }
@@ -407,16 +409,13 @@ export default function BookDetail() {
         status={s}
         poster={b.posterPath || undefined}
         square={audio}
+        whole
         title={b.title}
-        by={
-          series?.title ? (
-            <>
-              {series.title}
-              {series.position ? ` #${series.position}` : ''}
-            </>
-          ) : undefined
-        }
+        by={b.author || undefined}
         line={[
+          series?.title
+            ? `${series.title}${series.position ? ' #' + series.position : ''}`
+            : '',
           b.firstPublishYear,
           audio && longest ? fmtHrs(longest) + ' listen' : '',
           audio ? 'Audiobook' : 'Ebook',
@@ -460,12 +459,19 @@ export default function BookDetail() {
         </div>
         <div className="dcols">
           <div style={{ display: 'grid', gap: 22 }}>
+            {b.description && <p className="ov long">{b.description.trim()}</p>}
             {showNarr ? (
               <div id="narr">
                 <div className="sec-head">
-                  <h2>{anotherMode ? 'Narrations' : 'Choose a narrator'}</h2>
+                  <h2>
+                    {anotherMode
+                      ? 'Narrations'
+                      : noChoice
+                        ? 'Narrator'
+                        : 'Choose a narrator'}
+                  </h2>
                   <span className="note">
-                    {eds.data
+                    {eds.data && rows.length
                       ? `${rows.length} English recording${rows.length === 1 ? '' : 's'}`
                       : ''}
                   </span>
@@ -492,7 +498,13 @@ export default function BookDetail() {
                     the best available recording.
                   </p>
                 )}
-                {eds.data && (
+                {noChoice && eds.data && (
+                  <p className="note">
+                    No English recordings with narrator details were found.
+                    Requesting it gets the best available English recording.
+                  </p>
+                )}
+                {eds.data && !noChoice && (
                   <div
                     className="nlist"
                     role="radiogroup"
