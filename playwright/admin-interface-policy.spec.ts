@@ -82,6 +82,12 @@ test('admin can apply the interface to all users and lock non-admins to Lumen', 
     ).toHaveCount(0);
     await friendPage.goto('/seerrng');
     await expect(friendPage).toHaveURL(/\/lumen\/$/);
+    const nonHtmlRequest = await friend.request.get('/movie/123', {
+      headers: { Accept: 'application/json' },
+      maxRedirects: 0,
+    });
+    expect(nonHtmlRequest.status()).toBe(302);
+    expect(nonHtmlRequest.headers().location).toBe('/lumen/');
     await page.goto('/seerrng');
     await expect(page).toHaveURL(/\/?interface=classic$/);
   } finally {

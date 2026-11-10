@@ -500,8 +500,7 @@ Promise.resolve()
           req.method !== 'GET' ||
           req.path.startsWith('/lumen') ||
           req.path.startsWith('/_next') ||
-          path.extname(req.path) ||
-          !req.accepts('html')
+          path.extname(req.path)
         ) {
           return next();
         }

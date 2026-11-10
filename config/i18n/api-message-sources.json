@@ -11013,7 +11013,7 @@
         },
         {
           "path": "server/index.ts",
-          "line": 772,
+          "line": 771,
           "kind": "authored-message-field",
           "field": "errorMessage",
           "expression": "error instanceof Error ? error.message : 'Unknown error'",
@@ -68906,7 +68906,7 @@
     },
     {
       "path": "server/index.ts",
-      "line": 552,
+      "line": 551,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "err.message",
@@ -68915,7 +68915,7 @@
     },
     {
       "path": "server/index.ts",
-      "line": 596,
+      "line": 595,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "err.message",
@@ -68924,7 +68924,7 @@
     },
     {
       "path": "server/index.ts",
-      "line": 711,
+      "line": 710,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "err.message",
@@ -68933,7 +68933,7 @@
     },
     {
       "path": "server/index.ts",
-      "line": 772,
+      "line": 771,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : 'Unknown error'",

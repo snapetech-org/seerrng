@@ -24,7 +24,9 @@ signed-in non-administrators while the lock is active.
   saved both controls through the General form, read them back, verified the
   friend with a classic-home cookie entered Lumen at `/`, verified `/seerrng`
   redirected the friend to Lumen, hid the friend's full-interface link, and
-  retained the admin's native access. The test restored the original settings.
+  retained the admin's native access. A follow-up regression also verified the
+  redirect for a native page request with `Accept: application/json`. The test
+  restored the original settings.
 - Exact pre-change `HEAD` was built in a separate worktree with independent
   dependencies. Baseline and candidate `/settings/main` captures at
   1440×900, 640×900, and 390×900 use the same SeerrNGJ theme, seeded account,

@@ -146,6 +146,12 @@ test('optional Lumen lock redirects non-admin native pages but preserves admin a
       assert.equal(response.status, 302, route);
       assert.equal(response.headers.location, '/lumen/', route);
     }
+    const nonHtmlRequest = await request(app)
+      .get('/movie/123')
+      .set('X-Test-Role', 'user')
+      .set('Accept', 'application/json');
+    assert.equal(nonHtmlRequest.status, 302);
+    assert.equal(nonHtmlRequest.headers.location, '/lumen/');
     assert.equal(
       (await request(app).get('/movie/123').set('X-Test-Role', 'admin')).text,
       'Native interface'

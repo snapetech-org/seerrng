@@ -21,8 +21,7 @@ export const redirectLockedNativeFrontend: RequestHandler = (
     !req.path.startsWith('/lumen') &&
     !req.path.startsWith('/_next') &&
     !req.path.startsWith('/api') &&
-    !path.extname(req.path) &&
-    req.accepts('html')
+    !path.extname(req.path)
   ) {
     res.set('Cache-Control', 'no-store').redirect(302, '/lumen/');
     return;
