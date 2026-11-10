@@ -9,6 +9,94 @@ v3.72.7 section consolidates changes from the requested v3.71.4 baseline
 through v3.72.7, including changes also represented by unpublished interim
 tags. The comparison link is the complete commit range.
 
+## [3.72.30](https://github.com/snapetech-org/seerrng/compare/v3.72.29..v3.72.30) - 2026-11-10
+
+### User-facing changes
+
+#### Added
+
+- **Interface:** Administrators can optionally apply their selected default interface to every browser at the server home address. They can also lock signed-in non-administrators to included Lumen while keeping the full SeerrNG interface available to administrators.
+  - **Action required:** Choose the default interface in Settings → General, then optionally apply it to all users or lock non-administrators to included Lumen.
+
+#### Changed
+
+- **Release Pipeline:** Windows release archives now avoid duplicate dependencies and omit unneeded source maps and test screenshots while retaining runtime files. ZIPs must fit a 190,000,000-byte budget before publication, and Chocolatey verifies the downloaded archive before submission.
+
+#### Fixed
+
+- **Download Recovery:** Download recovery no longer blocklists and deletes a finished book download that ChaptarrNG held back because it could not verify the edition or title and author, so it stays in the client for manual import.
+- **Books:** Book requests now reuse an exact, unmonitored ChaptarrNG catalog row when the provider lookup omits its local ID. SeerrNG uses ChaptarrNG's format-scoped provider-ID lookup and updates that row instead of attempting to add a duplicate book.
+- **Lumen:** Watch on Plex in Lumen now opens the 4K copy for titles that only exist in 4K instead of showing a link that goes nowhere.
+- **Lumen:** The Lumen audiobooks page is now titled Audiobooks instead of Books.
+- **Lumen:** Going Back to a Lumen movie or series list after making a request now shows the new status instead of offering Request again.
+- **Lumen:** Book cards in Lumen now take one keyboard tab stop instead of several links to the same page.
+- **Lumen:** Book and audiobook pages now show the author and description when the catalogue has them, show the whole cover instead of cropping it, and explain an audiobook with no listed recordings instead of asking you to choose a narrator.
+- **Lumen:** Book cards in Lumen drop their Requested badge right after a request is cancelled, declined or removed, and a failed lookup is no longer remembered as no requests.
+- **Lumen:** Movie, series and book pages in Lumen now stay on screen while they refresh after a request, keeping your scroll position and chosen options instead of going blank.
+- **Lumen:** Request dialogs now keep keyboard focus inside, close with Escape, return focus to the button that opened them, and stop the page behind from scrolling or being tabbed into.
+- **Lumen:** A wrong password now shows its message right under the sign-in form instead of at the bottom of the card, where it was easy to miss on a phone.
+- **Lumen:** Failed requests now say the server had a problem or that you are offline instead of showing raw messages like Failed to fetch, and row arrows and scroll-to-top jump instead of gliding when your device asks for reduced motion.
+- **Lumen:** The Approve, Decline, Cancel and Open buttons on the Requests and You pages are now at least 44 pixels tall on touch screens.
+- **Lumen:** Requests without artwork now show a drawn cover with the title, and cancelling your own request, declining someone else's or resetting your settings now asks for confirmation first.
+- **Lumen:** The Lumen Requests page stops refreshing download progress while the tab is in the background and catches up when you return.
+- **Lumen:** Searching all of Lumen now includes audiobooks as well as ebooks.
+- **Lumen:** Lumen no longer resets the ticked seasons on a series page when the page quietly refreshes in the background.
+- **Lumen:** A brief network or server problem while Lumen opens no longer signs you out; it shows a Retry screen, and only a real sign-out returns to the sign-in page.
+- **Lumen:** Filter chips, segmented buttons and small buttons are now at least 44 pixels tall on touch screens, which makes them easier to hit. The desktop look is unchanged.
+- **Discovery:** Movie and series filters now search their own TMDB catalogs, with working result pages. Administrators see scanned availability on title details and Recently Added even when their linked playback account cannot verify the item. Lumen shows pending counts and offers approval on pending book details. Expired native settings sessions return to sign-in with the original destination.
+
+#### Security
+
+- **Lumen:** The Lumen container now refreshes its XSLT runtime library with Alpine security updates to address reported vulnerabilities. Upgrade the Lumen image to receive the fix.
+  - **Action required:** Upgrade the Lumen image.
+
+### 🚀 Features
+- *(interface)* Add optional global default and Lumen lock - ([9b733d6](https://github.com/snapetech-org/seerrng/commit/9b733d6af9f5bc7e7041dd95771a42e64529fc6d))
+- *(lumen)* Add shared helpers for dialogs, confirmations, plain errors and motion - ([eec9306](https://github.com/snapetech-org/seerrng/commit/eec930662c43219da2110f47ed7567b01b988284))
+
+### 🐛 Bug Fixes
+- *(downloads)* Keep import-blocked book downloads for manual import - ([6682301](https://github.com/snapetech-org/seerrng/commit/66823013cab903fb7ba37ce834d2da124443d05c))
+- *(interface)* Enforce Lumen lock for all native page requests - ([370f8fa](https://github.com/snapetech-org/seerrng/commit/370f8fa21fa4f8aafabdf47924030bb84de57742))
+- *(lumen)* Confirm Remove in a dialog instead of a timed second tap - ([ca1fbd0](https://github.com/snapetech-org/seerrng/commit/ca1fbd08c2cb5150eb0949e772345ed11eb1ceff))
+- *(lumen)* Finish the 44px touch targets and keep fact-line dots with their item - ([dffed45](https://github.com/snapetech-org/seerrng/commit/dffed451d8a4c5b9d6396bcc4c1676d539af5a9a))
+- *(lumen)* Raise request row buttons and Open links to 44px on touch - ([c5d15b5](https://github.com/snapetech-org/seerrng/commit/c5d15b545d83f11470fd035eee91285c9f8db930))
+- *(lumen)* Plain error messages and reduced-motion scrolling - ([4d4a5dc](https://github.com/snapetech-org/seerrng/commit/4d4a5dc8885d2236c45ddf5ca04ad1065fe9aac9))
+- *(lumen)* Show the sign-in error under the form - ([4800bd0](https://github.com/snapetech-org/seerrng/commit/4800bd0cff48a8bc47923763d8609d3a109c5118))
+- *(lumen)* Raise small tap targets to 44px on touch screens - ([0a4d7ff](https://github.com/snapetech-org/seerrng/commit/0a4d7ffe90b1c20a0ceec7270ea8e1dea7e6e5d5))
+- *(lumen)* Trap focus, lock scrolling and restore focus in request dialogs - ([3f814be](https://github.com/snapetech-org/seerrng/commit/3f814be7f81e7e47c4cef5b1723d0380972af49e))
+- *(lumen)* Draw covers for request rows and confirm destructive actions - ([4adbb28](https://github.com/snapetech-org/seerrng/commit/4adbb28383b9eeb30ff8a70d615189df3f69df9a))
+- *(lumen)* Show author, description and whole cover on book detail - ([204844b](https://github.com/snapetech-org/seerrng/commit/204844b50ff1faf972d0af7b5ddde457120c8f89))
+- *(lumen)* Give book cards a single tab stop - ([5a4f64d](https://github.com/snapetech-org/seerrng/commit/5a4f64dba0bed617559a557ebd16e37e5ffd9671))
+- *(lumen)* Title the audiobooks page Audiobooks - ([9ca19c6](https://github.com/snapetech-org/seerrng/commit/9ca19c6f016330088dcebfcbe77b27ea85154b50))
+- *(lumen)* Include audiobooks in the All search scope - ([0d80088](https://github.com/snapetech-org/seerrng/commit/0d80088290552ead9518a91767404429e2a095ca))
+- *(lumen)* Link Watch to the 4K copy when it is the only one - ([d159877](https://github.com/snapetech-org/seerrng/commit/d159877a0bcfb556eb814df2ce086ce3f3570d58))
+- *(lumen)* Invalidate book request states on any change - ([4ce89fb](https://github.com/snapetech-org/seerrng/commit/4ce89fb0d10ea89fb756b43f80f90845c0eec563))
+- *(lumen)* Pause request polling while the page is hidden - ([f9dcd96](https://github.com/snapetech-org/seerrng/commit/f9dcd96c3302a5b2e1f32fbb12be9866aa2c7879))
+- *(lumen)* Treat a failed session check as unreachable, not signed out - ([4d3c5f4](https://github.com/snapetech-org/seerrng/commit/4d3c5f4609a361de88519a0534767f33d9578eec))
+- *(lumen)* Refresh restored lists on Back after a request - ([5283b26](https://github.com/snapetech-org/seerrng/commit/5283b26a47f73af6e8bc18d5e1a3c1a40d321f24))
+- *(lumen)* Keep detail pages visible while they refresh after a request - ([df97e09](https://github.com/snapetech-org/seerrng/commit/df97e093d3ae520ddacd26ca81086b75287077ca))
+- *(lumen)* Keep ticked seasons when a series page revalidates - ([0470b19](https://github.com/snapetech-org/seerrng/commit/0470b194263087151df37148b724bce25a1a1479))
+- *(packaging)* Deduplicate Windows dependencies and enforce scanner budget - ([bbdffe8](https://github.com/snapetech-org/seerrng/commit/bbdffe8db6d0862a425a1264446e136c5c172ba0))
+- *(validation)* Refresh Lumen runtime and repair release contracts - ([9e6cab5](https://github.com/snapetech-org/seerrng/commit/9e6cab5193c75ee57542d39de2bd950ef4e8e45f))
+- Synchronize API message catalog after recovery merge - ([89531ec](https://github.com/snapetech-org/seerrng/commit/89531ecb24ad799479d1eec3600d8208b9a01c57))
+- Reuse unmonitored Chaptarr books by provider identity - ([ce8f905](https://github.com/snapetech-org/seerrng/commit/ce8f905fc400391e374c348f21af56604b57c1b2))
+- Restore filtered search and admin request visibility - ([2f7d1c9](https://github.com/snapetech-org/seerrng/commit/2f7d1c91e590f727a107324dba3572b181288818))
+
+### 📖 Documentation
+- *(packaging)* Retain verified Windows archive hashes and receipts - ([a1a4561](https://github.com/snapetech-org/seerrng/commit/a1a45615aa47ac347a91a4b02a01690fb073a95b))
+- *(packaging)* Record complete inventory and passed native Windows checks - ([9a3b8f1](https://github.com/snapetech-org/seerrng/commit/9a3b8f155fed5d4d83c004faf10a8877cb161925))
+- *(packaging)* Record cross-repository Chocolatey payload audit - ([612b3ae](https://github.com/snapetech-org/seerrng/commit/612b3ae9a5e4ded6052c477e38e4412fdf81b088))
+
+### ⚡ Performance
+- *(lumen)* Load lumen-config.json once per page load - ([7265327](https://github.com/snapetech-org/seerrng/commit/72653274bee811c49bff9fc8f7c843b8359e6d4b))
+
+### 🧪 Testing
+- *(lumen)* Cover book detail, dialogs, confirmations, drawn covers and touch targets - ([fd42bed](https://github.com/snapetech-org/seerrng/commit/fd42bedf13bfd49b1f10a073eb3c8b563209a753))
+- *(lumen)* Cover detail refresh, outage retry, 4K link, audiobooks and search - ([6559f15](https://github.com/snapetech-org/seerrng/commit/6559f15bd181e17308a34e16dc5404502fcb3a6a))
+
+### ⚙️ Miscellaneous Tasks
+- Route Discord release notes through the changelog channel - ([65d910a](https://github.com/snapetech-org/seerrng/commit/65d910a814bbe9d66426d1a703f57f54514f9376))
+
 ## [3.72.29](https://github.com/snapetech-org/seerrng/compare/v3.72.27..v3.72.29) - 2026-11-10
 
 ### User-facing changes
