@@ -130,3 +130,10 @@ test('the saved copy stays small and leaves out big lists', async (t) => {
     'big list still served from memory'
   );
 });
+
+test('marking everything stale also tells anything kept outside the cache', () => {
+  let told = 0;
+  cache.onMarkStale(() => told++);
+  cache.markAllStale();
+  assert.equal(told, 1);
+});

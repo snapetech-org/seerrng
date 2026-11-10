@@ -6,6 +6,7 @@ import {
   cacheGeneration,
   forget,
   isFresh,
+  onMarkStale,
   remember,
   shared,
 } from './apiCache';
@@ -104,10 +105,10 @@ export function usePaged<T>(base: string) {
   const [loading, setLoading] = useState(false);
   const [loadedBase, setLoadedBase] = useState(base);
   const [error, setError] = useState<string | null>(null);
-  // one page in flight at a time: scroll triggers can fire twice before state catches up
   // the cache generation these rows were fetched under: a request made since then means the
   // restored rows may show a title as not requested
   const rowsGen = useRef(snap?.gen ?? cacheGeneration());
+  // one page in flight at a time: scroll triggers can fire twice before state catches up
   const inFlight = useRef<string | null>(null);
   const generation = useRef(0);
   const shownBase = useRef(base);
@@ -122,11 +123,10 @@ export function usePaged<T>(base: string) {
     setPage(s?.page || 0);
     setTotal(s?.total || 1);
     setError(null);
-    inFlight.current = null;
     rowsGen.current = s?.gen ?? cacheGeneration();
+    inFlight.current = null;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [base]);
-  useEffect(() => {
   // Back to a list after something changed (a request): quietly re-read the pages that were
   // shown and swap them in place, so scroll position holds and statuses are current
   useEffect(() => {
@@ -169,6 +169,7 @@ export function usePaged<T>(base: string) {
       live = false;
     };
   }, [snapKey, base]);
+  useEffect(() => {
     if (loadedBase === base && page > 0)
       pagedSnap.set(snapKey, { items, page, total, gen: rowsGen.current });
     // keep memory bounded: a long session visits many lists
@@ -181,8 +182,8 @@ export function usePaged<T>(base: string) {
     const key = `${base}#${page + 1}`;
     if (inFlight.current === key) return;
     inFlight.current = key;
-    const requestGeneration = generation.current;
     if (page === 0) rowsGen.current = cacheGeneration();
+    const requestGeneration = generation.current;
     const ownsRequest = () =>
       generation.current === requestGeneration && inFlight.current === key;
     setLoading(true);
@@ -240,7 +241,7 @@ let bookStatesAt = 0;
 export function loadBookStates(): Promise<Map<string, BookState>> {
   if (bookStates && Date.now() - bookStatesAt < 60_000) return bookStates;
   bookStatesAt = Date.now();
-  bookStates = api<{
+  const p: Promise<Map<string, BookState>> = api<{
     results: {
       status: number;
       bookFormat?: string;
@@ -257,21 +258,31 @@ export function loadBookStates(): Promise<Map<string, BookState>> {
           if (!i.value.startsWith('bookshelf:') && !/^OL\d+W$/.test(i.value))
             continue;
           const work = i.value;
-          const f = r.bookFormat === 'audiobook' ? 'audiobook' : 'ebook';
+          // a request for both formats counts for each
+          const formats: ('ebook' | 'audiobook')[] =
+            r.bookFormat === 'both'
+              ? ['ebook', 'audiobook']
+              : [r.bookFormat === 'audiobook' ? 'audiobook' : 'ebook'];
           const cur = m.get(work) || {};
-          const st = 2;
-          cur[f] = Math.max(cur[f] || 0, st);
+          for (const f of formats) cur[f] = Math.max(cur[f] || 0, 2);
           m.set(work, cur);
         }
       }
       return m;
     })
-    .catch(() => new Map());
-  return bookStates;
+    .catch(() => {
+      // a failed read shows nothing for now but isn't kept: the next ask tries again
+      if (bookStates === p) bookStates = null;
+      return new Map<string, BookState>();
+    });
+  bookStates = p;
+  return p;
 }
 export const dropBookStates = () => {
   bookStates = null;
 };
+// cancelling, declining or removing a request (any change) must not leave "Requested" up
+onMarkStale(dropBookStates);
 export function useBookStates() {
   const [m, setM] = useState<Map<string, BookState> | null>(null);
   useEffect(() => {
