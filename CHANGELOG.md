@@ -9,24 +9,89 @@ v3.72.7 section consolidates changes from the requested v3.71.4 baseline
 through v3.72.7, including changes also represented by unpublished interim
 tags. The comparison link is the complete commit range.
 
-## [3.72.29](https://github.com/snapetech-org/seerrng/compare/v3.72.27..v3.72.29) - 2026-11-09
+## [3.72.29](https://github.com/snapetech-org/seerrng/compare/v3.72.27..v3.72.29) - 2026-11-10
 
-### Fixed
+### User-facing changes
 
-- Recover movie and series details after metadata timeouts instead of failing the entire page. Keep watchlist state accurate after recovery or failed writes, and preserve explicit access-denied/not-found states.
-- Restore offline-page retry and reconnection under the stricter Content Security Policy by caching its same-origin recovery script with the offline document.
-- Keep native stylesheets loaded during account/theme restoration, including cancelled and failed loads, so Orig and John retain their layout and working Save controls. Preserve shared truncation for long narrator headings on phones.
-- Reuse persisted public provider metadata after restart and during slow or transiently failing refreshes. Preserve invalidation, cancellation, terminal provider errors and shared cache limits. Contribution by [@ncbudd](https://github.com/ncbudd) in [#634](https://github.com/snapetech-org/seerrng/pull/634), with safety fixes added during review.
+#### Added
 
-- Restore native home access on upgrades and let administrators explicitly choose full SeerrNG, included Lumen or their existing companion. The Lumen sign-in page exposes native access before authentication. Reported by [@Tatsu941](https://github.com/Tatsu941) in [#629](https://github.com/snapetech-org/seerrng/issues/629).
-- Keep Save and Upload visible with actionable storage diagnostics, the actual UID/GID and draft-preserving rechecks. The short companion Compose guide supports UID/GID 1000 with a read-only root and one `/tmp` tmpfs.
-- Restore owned books in Library and detail views when historical media rows split identity and file observations. Reject duplicate requests using the same service-scoped evidence, preserving database records and histories. Reported by [@ncbudd](https://github.com/ncbudd) in [#625](https://github.com/snapetech-org/seerrng/issues/625).
-- Integrate [@ncbudd](https://github.com/ncbudd)’s Lumen fixes in [#624](https://github.com/snapetech-org/seerrng/pull/624), [#626](https://github.com/snapetech-org/seerrng/pull/626), [#627](https://github.com/snapetech-org/seerrng/pull/627) and [#628](https://github.com/snapetech-org/seerrng/pull/628): visible sign-out errors, working Audiobookshelf book links, progressive request titles, correct narrations, verified large request lists and retryable failures. Validate Audiobookshelf URL paths and omit credentials and query tokens from links.
+- **Books:** Connect BookOrbit as an ebook/audiobook request and library service in Settings → Services. Requests keep their BookOrbit identity, recover expired sessions and open the matching reader/service actions from the UI. Ownership, cancellation and availability follow the selected destination and format.
+- **Documentation:** Compare Seerr and SeerrNG through a linked table of 132 capabilities. Unique features link to in-repository setup and usage guides with originating issue/PR attribution, making the available controls and their limits easier to find.
 
-- Finish narrator requests from verified edition files during metadata outages, preserve ownership across empty duplicate scans, resolve catalogues larger than 200 identifiers, and keep ebook/audiobook request state separate. Contribution by [@ncbudd](https://github.com/ncbudd) in [#630](https://github.com/snapetech-org/seerrng/pull/630), with identity safeguards, bounded database work and retryable detail errors added during review.
-- Preserve case-sensitive opaque provider IDs when pooling duplicate book scan observations, preventing file evidence from marking a different work available.
-- Keep ready request rows visible when a different media category is slow to load, including mixed movie/music lists.
-- Offer uncatalogued audiobook search results in audiobook-only households, draw readable covers for missing artwork, make card titles clickable, and recover stuck exact-edition requests from verified files. Contributions by [@ncbudd](https://github.com/ncbudd) in [#631](https://github.com/snapetech-org/seerrng/pull/631), [#632](https://github.com/snapetech-org/seerrng/pull/632) and [#633](https://github.com/snapetech-org/seerrng/pull/633), with permission, identity, concurrency and layout safeguards added during review.
+#### Fixed
+
+- **Plex Setup:** Plex setup avoids repeated validation calls and honors Retry-After after HTTP 429. Discovery offers one choice per server, recommends a reachable local connection and puts alternatives under Other Connections (Advanced). Failed reads preserve library choices and offer Retry; updates use the server-confirmed selection.
+- **Books:** Owned libraries resolve beyond 200 identifiers and survive empty duplicate scans. Narrator requests finish from verified files during metadata outages; detail failures remain retryable. Ebook and audiobook request states stay separate. Contribution by [@ncbudd](https://github.com/ncbudd) in [#630](https://github.com/snapetech-org/seerrng/pull/630).
+- **Books:** Owned books remain visible in Library and detail when historical rows split identity and file observations. Duplicate requests use the same service-scoped evidence, preserving existing records. Reported by [@ncbudd](https://github.com/ncbudd) in [#625](https://github.com/snapetech-org/seerrng/issues/625).
+- **Books:** Book scans preserve case-sensitive provider identities. Two distinct works whose IDs differ only by case no longer share ebook or audiobook availability.
+- **Books:** Audiobook search finds uncatalogued titles in audiobook-only households. Missing art gets drawn covers, and card titles open details. Scans recover stuck exact-edition requests from verified files. Contributions by [@ncbudd](https://github.com/ncbudd), PRs #631–#633.
+  - **Action required:** Search Audiobooks for uncatalogued books; existing exact-edition requests recover when verified files are found on disk.
+- **Lumen:** Integrates [@ncbudd](https://github.com/ncbudd)’s [#624](https://github.com/snapetech-org/seerrng/pull/624), [#626](https://github.com/snapetech-org/seerrng/pull/626), [#627](https://github.com/snapetech-org/seerrng/pull/627) and [#628](https://github.com/snapetech-org/seerrng/pull/628) fixes for sign-out errors, Audiobookshelf links, slow request lists, narrations and retryable failures.
+  - **Action required:** Set your public Audiobookshelf address in Lumen settings for everyone to open owned audiobooks directly.
+- **Interface:** Upgrades retain native home access; administrators can choose included Lumen or their configured companion. Native access works before sign-in. Storage messages explain disabled Save/Upload and report the actual UID/GID. Reported by [@Tatsu941](https://github.com/Tatsu941) in [#629](https://github.com/snapetech-org/seerrng/issues/629).
+  - **Action required:** Choose your default interface in Settings → General. Existing installs retain native home access; use the short Lumen guide for UID/GID 1000 companion setup.
+- **Lumen:** Ready requests stay visible while another media category is slow to load. Mixed movie/music lists now update progressively, extending [@ncbudd](https://github.com/ncbudd)’s [#627](https://github.com/snapetech-org/seerrng/pull/627) fix without showing a false empty list.
+- **Lumen:** Administrators can now find Lumen Settings and SeerrNG Administration in Lumen's desktop sidebar and near the top of You on phones and tablets. The full administration interface retains the signed-in session. Short sidebars scroll so navigation stays reachable; regular users do not receive administrative controls.
+- **Interface:** Native pages keep their styling and usable Save controls while account preferences and theme stylesheets load. Cancelled restorations cannot detach a stylesheet another operation still needs. A failed theme load preserves the currently loaded presentation. Long narrator headings use the existing truncation owner on phones.
+- **Offline:** Offline Retry and automatic reconnection work with the stricter Content Security Policy. The recovery script is served from the same origin and cached together with the offline document, so it remains available without a network connection.
+- **Discovery:** Discovery and title pages reuse saved public provider metadata after restarts. Expired metadata can answer during a slow refresh or transient outage. Terminal provider errors and cancelled reads remain authoritative. Contribution by [@ncbudd](https://github.com/ncbudd), PR #634.
+- **Requests:** Pending TV requests complete when their selected seasons are owned at the matching destination and quality. Exact episode requests no longer enable future-season monitoring. Episode Queue editors require one starting episode before approval and explain that queue length is a playback buffer, preserving existing downloads.
+- **Details:** Movie and series pages recover from metadata timeouts through a visible Retry action. Watchlist controls reflect recovered metadata and change only after successful writes. Access-denied and missing titles retain explicit error states.
+
+#### Security
+
+- **Client Tokens:** Create expiring discovery/request tokens in Profile → Settings → Client Tokens, copy them once and revoke individual clients. Server and user administration stay outside these scopes. Native clients show the current server origin; iOS keeps long origins between toolbar controls and avoids browser state feedback loops.
+- **Security:** **Breaking:** Security fixes harden login, proxy trust, content restrictions, client credentials, mobile origins and resource limits. Review [deployment steps and verification limits](https://github.com/snapetech-org/seerrng/blob/main/docs/maintainers/security-audit-remediation-2026-11-09.md), rotate extension owner keys and verify proxy/CSRF/HTTP settings.
+  - **Action required:** Rotate extension owner keys; configure trusted proxies; review migrated CSRF and HTTP authentication settings.
+
+### 🛡️ Security
+- *(security)* Remediate SeerrNG audit findings - ([f6e9cff](https://github.com/snapetech-org/seerrng/commit/f6e9cffb2ffd86e3b00f9e832f0afb3321084c08))
+- Compare Seerr and SeerrNG features with linked source credits - ([959495f](https://github.com/snapetech-org/seerrng/commit/959495f87d2b05c538b76ba93cc363a9afccc213))
+
+### 🐛 Bug Fixes
+- *(cache)* Merge reviewed provider metadata persistence and stale recovery - ([d5e6995](https://github.com/snapetech-org/seerrng/commit/d5e6995e5a65608ca78442530da8e56de74acd3d))
+- *(cache)* Preserve invalidation, authority and snapshot safety in PR634 - ([ef89624](https://github.com/snapetech-org/seerrng/commit/ef89624f167556ac2c9834f3281b9bd998f224a1))
+- *(cache)* Keep provider metadata across restarts and answer from expired copies - ([378bbdd](https://github.com/snapetech-org/seerrng/commit/378bbddc89751886d4cfd70542a7c0885d6c2f14))
+- *(chocolatey)* Link package sources, release notes and support resources - ([b0f16dc](https://github.com/snapetech-org/seerrng/commit/b0f16dcad19bf1ae2c5b2894542782304eb8e783))
+- *(ios)* Keep long server origins between toolbar controls - ([a3dfb0f](https://github.com/snapetech-org/seerrng/commit/a3dfb0fbd5307f1531ce644a1413a451b6ef3ff9))
+- *(ios)* Stop browser state publication during SwiftUI updates - ([41312bf](https://github.com/snapetech-org/seerrng/commit/41312bf636bf20a06082ca24af6cd735ce3134e9))
+- *(plex)* Stop setup request loops and honor rate limits - ([007e321](https://github.com/snapetech-org/seerrng/commit/007e321afbf544b5019c81ceb7f4ecb88fff49c7))
+- *(plex)* Finalize setup recovery for main - ([d47f8ac](https://github.com/snapetech-org/seerrng/commit/d47f8acd826dd4698b347261a959f3318cf14219))
+- *(plex)* Keep manual selection when no discovered route matches - ([bf3612f](https://github.com/snapetech-org/seerrng/commit/bf3612f2add4812e24b6c2ae991f1cd17108d31e))
+- *(plex)* Stop setup request loops and respect API rate limits - ([60c03ad](https://github.com/snapetech-org/seerrng/commit/60c03adb260787cfa4b114dfe9c2168276099f58))
+- *(security)* Complete scoped client controls and native regression coverage - ([587c2f3](https://github.com/snapetech-org/seerrng/commit/587c2f31027fa0050e88d8d8f72bde766c5e9c8f))
+- *(security)* Complete scoped token controls and native origin safeguards - ([6d7587b](https://github.com/snapetech-org/seerrng/commit/6d7587bd012905703452773c78df196681c67765))
+- *(theme)* Retain shared stylesheets through account restoration - ([9a6f038](https://github.com/snapetech-org/seerrng/commit/9a6f0386133ed98ceb545f8ff991f605a4178cb6))
+- *(ui)* Preserve narrator heading truncation across permission states - ([15134c7](https://github.com/snapetech-org/seerrng/commit/15134c7c70ce26aaa3bef08c25086d01a88cc1f2))
+- Synchronize generated API sources after incoming route changes - ([7ebe5a3](https://github.com/snapetech-org/seerrng/commit/7ebe5a3272cee8a94683873850b342e224e92744))
+- Synchronize request intent API message catalogues - ([d06af0e](https://github.com/snapetech-org/seerrng/commit/d06af0e2589c3179bf3cee963160e50cc1387f07))
+- Recover video metadata and offline navigation safely - ([30c510e](https://github.com/snapetech-org/seerrng/commit/30c510ef2dd33bfba3a36f6050eae60e113cd142))
+
+### 📖 Documentation
+- *(security)* Close the audit remediation and verification record - ([f302cfc](https://github.com/snapetech-org/seerrng/commit/f302cfcaefaed1302667fcf2b5865dbaec46cfda))
+
+### 🧪 Testing
+- *(android)* Write evidence without relying on shell redirection - ([747bb1c](https://github.com/snapetech-org/seerrng/commit/747bb1c8bf828dab75192b04e1a7b6db09a92758))
+- *(android)* Retain screenshots after instrumentation uninstall - ([20da3da](https://github.com/snapetech-org/seerrng/commit/20da3da247b212db5d3e00e036d14f02444c63eb))
+- *(android)* Capture the actual popup origin on a user gesture - ([09559f2](https://github.com/snapetech-org/seerrng/commit/09559f267a9143d929535e87b8c085bdf736a4b7))
+- *(android)* Respect cleartext navigation policy in origin rendering fixture - ([ecb4fc0](https://github.com/snapetech-org/seerrng/commit/ecb4fc0b293fd2a342305a25d5d6dc461005adb6))
+- *(browser)* Exercise image warming without live catalogue timing - ([cb0b3ad](https://github.com/snapetech-org/seerrng/commit/cb0b3ad34096fb4fbf1964dcc1cb63c8db124f61))
+- *(ios)* Exercise page-initiated origin redirects without bypassing link policy - ([3390469](https://github.com/snapetech-org/seerrng/commit/33904698f23e3d7c1be3f6188c7e860d73a210ee))
+- *(ios)* Preserve and render long origin suffixes - ([ee82b0e](https://github.com/snapetech-org/seerrng/commit/ee82b0e3ce9398fce70589ce222c607160f3db54))
+- *(security)* Verify PostgreSQL and native origin rendering - ([c36a62d](https://github.com/snapetech-org/seerrng/commit/c36a62d15165d5bd5ebb075ea7b82f3e6e9bbbed))
+- Verify security controls with current API retry handling - ([d109b74](https://github.com/snapetech-org/seerrng/commit/d109b74c86a55ddad2785b1e6a4f8e278b80cfae))
+- Preview all six screenshots from the successful iOS comparison - ([7783029](https://github.com/snapetech-org/seerrng/commit/7783029cb265b6ad660aac54c056c159a824a85e))
+- Expose bounded native fixture previews for remote visual review - ([b7203c2](https://github.com/snapetech-org/seerrng/commit/b7203c28597090e50e705a54809852d02638f231))
+- Verify recovered source hashes and final documentation checks - ([619b948](https://github.com/snapetech-org/seerrng/commit/619b948312eb91afdf4eae786977fa5a1730c068))
+- Verify token migration against integrated request entities - ([094aab3](https://github.com/snapetech-org/seerrng/commit/094aab395049f6718318f610ddd86e7d22bff641))
+
+### ⚙️ Miscellaneous Tasks
+- Preserve new BookOrbit and TV work in final security integration - ([9e80614](https://github.com/snapetech-org/seerrng/commit/9e80614122a6f40af3cd37ea5d476a22bcc38de3))
+- Synchronize generated API localization before final integration checks - ([e0cac33](https://github.com/snapetech-org/seerrng/commit/e0cac337942bc33d10be7302b9a4849d4371bfab))
+- Discard superseded iOS comparison only if both jobs remain queued - ([f245cdd](https://github.com/snapetech-org/seerrng/commit/f245cddac6d5c571125141a1352387f458834bf3))
+- Stop repeating completed database verification on native changes - ([c9bbc49](https://github.com/snapetech-org/seerrng/commit/c9bbc499467068d55bfa63d7f1acc010fa4c1738))
+- Preserve active jobs while clearing obsolete queue entries - ([d8007f9](https://github.com/snapetech-org/seerrng/commit/d8007f947c3053793e5c87684c89db429153a236))
+- Clear only superseded queued verification runs - ([36cd65e](https://github.com/snapetech-org/seerrng/commit/36cd65e324cda1c9740eb669400c5d84f5de8adc))
 
 ## [3.72.28](https://github.com/snapetech-org/seerrng/compare/v3.72.27..v3.72.28) - 2026-11-09
 
