@@ -10,7 +10,7 @@ The existing `.side` CSS owner now scrolls vertically and its links retain their
 
 ## Qualification
 
-Baseline: main `80cea98db28ae773afa6656c2110a56c71a2031b`. Candidate: these changes on that source.
+Baseline: main `80cea98db28ae773afa6656c2110a56c71a2031b`. The Lumen implementation is `ef64f416a`; its rendered/browser qualification used that source. Delivery also preserves concurrent BookOrbit commit `dbc36efad` through merge `ab5d19a6f`. That merge changes no Lumen runtime files; its eight targeted BookOrbit tests passed. Its four missing source fingerprints were generated with the canonical i18n snapshot tool. Final combined build evidence is `integrated-production-build-final.log`.
 
 - Full production build passed, including Lumen TypeScript/Vite and Next/server builds.
 - Lumen native tests: **33 passed**, zero failures or skips.
