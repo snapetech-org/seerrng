@@ -86,10 +86,21 @@ export default function TvDetail() {
   // partial requests off on the server = it's the whole show or nothing
   const partialOk = pub?.partialRequestsEnabled !== false;
 
+  // ticks reset when the show (or the defaults) change, not when a background refresh lands
+  const showId = t?.id;
   useEffect(() => {
     setSel(new Set(prefs.wholeSeriesDefault || !partialOk ? missing : []));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [t, prefs.wholeSeriesDefault, partialOk, opts.is4k]);
+  }, [showId, prefs.wholeSeriesDefault, partialOk, opts.is4k]);
+  // seasons that were just requested (or arrived) can no longer be ticked
+  const missingKey = missing.join(',');
+  useEffect(() => {
+    setSel((x) => {
+      const keep = [...x].filter((s) => missing.includes(s));
+      return keep.length === x.size ? x : new Set(keep);
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [missingKey]);
   useEffect(() => {
     if (t && loc.hash === '#seasons')
       document
