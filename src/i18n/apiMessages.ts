@@ -3415,6 +3415,8 @@ export const apiMessages: Record<
     '[TMDB] Failed to fetch movie certifications: {value0}',
   mf98bfa1be2f06b21e239: 'override-rule:{value0}',
   mf98f4c2c4e06d883e768: 'Request for this album already exists.',
+  mf9b842393b8425defb67:
+    'completed download is blocked at import by an edition or title identity check; left for manual import',
   mf9bc23a578d232c04108: 'Only pending requests can be approved.',
   mf9be00d25675ac2d7fcd:
     'SEERR_TLS_CERT_FILE and SEERR_TLS_KEY_FILE are required when SEERR_TLS_MODE=provided.',
