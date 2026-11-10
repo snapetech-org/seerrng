@@ -11,6 +11,14 @@ const htmlToText = createRequire(require.resolve('email-templates')).resolve(
 const consumers = [
   ['email rendering', createRequire(htmlToText)],
   ['Formik', createRequire(require.resolve('formik'))],
+  [
+    'SVG optimization',
+    createRequire(
+      createRequire(require.resolve('@svgr/webpack')).resolve(
+        '@svgr/plugin-svgo'
+      )
+    ),
+  ],
 ];
 for (const [consumer, consumerRequire] of consumers) {
   const root = dirname(consumerRequire.resolve('deepmerge/package.json'));
