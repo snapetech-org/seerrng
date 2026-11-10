@@ -14,11 +14,13 @@ import { resetSessionState } from './sessionState';
 
 interface AuthState {
   user: User | null | undefined; // undefined = still checking
+  unreachable: boolean; // /auth/me couldn't be answered (not the same as signed out)
   refresh: () => Promise<void>;
   signOut: () => Promise<void>;
 }
 const Ctx = createContext<AuthState>({
   user: undefined,
+  unreachable: false,
   refresh: async () => {},
   signOut: async () => {},
 });
@@ -32,6 +34,7 @@ export const useMediaServerName = () => serverName();
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null | undefined>(undefined);
+  const [unreachable, setUnreachable] = useState(false);
   const principal = useRef<number | null | undefined>(undefined);
   const authRequest = useRef(0);
   const setPrincipal = useCallback((next: User | null) => {
@@ -44,12 +47,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const request = ++authRequest.current;
     try {
       const next = await api<User>('/auth/me');
-      if (request === authRequest.current) setPrincipal(next);
+      if (request === authRequest.current) {
+        setUnreachable(false);
+        setPrincipal(next);
+      }
     } catch (e) {
       if (request !== authRequest.current) return;
-      if (e instanceof ApiError && (e.status === 401 || e.status === 403))
+      // only an answer from the server means signed out; a network drop or 5xx must not
+      // sign anyone out (whoever was signed in stays, otherwise a retry screen is shown)
+      if (e instanceof ApiError && (e.status === 401 || e.status === 403)) {
+        setUnreachable(false);
         setPrincipal(null);
-      else setPrincipal(null);
+      } else setUnreachable(true);
     }
   }, [setPrincipal]);
   const signOut = useCallback(async () => {
@@ -66,7 +75,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     void refresh();
   }, [refresh]);
   return (
-    <Ctx.Provider value={{ user, refresh, signOut }}>
+    <Ctx.Provider value={{ user, unreachable, refresh, signOut }}>
       <Fragment key={user?.id ?? 'signed-out'}>{children}</Fragment>
     </Ctx.Provider>
   );

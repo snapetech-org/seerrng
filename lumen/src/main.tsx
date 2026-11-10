@@ -35,8 +35,17 @@ import './styles/lumen.css';
 import './styles/touch.css';
 
 function App() {
-  const { user } = useAuth();
+  const { user, unreachable, refresh } = useAuth();
   const location = useLocation();
+  if (unreachable && !user)
+    return (
+      <div className="boot boot-note" role="alert">
+        <p>Can’t reach the server. Check your connection and try again.</p>
+        <button className="btn btn-primary" onClick={() => void refresh()}>
+          Retry
+        </button>
+      </div>
+    );
   if (user === undefined) return <div className="boot" aria-busy="true" />;
   if (user === null) return <Login />;
   return (

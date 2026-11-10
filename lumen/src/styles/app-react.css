@@ -5,6 +5,16 @@
   background: var(--bg);
 }
 
+.boot-note {
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 16px;
+  padding: 16px;
+  text-align: center;
+  color: var(--ink);
+}
+
 .login {
   min-height: 100vh;
   min-height: 100dvh;
