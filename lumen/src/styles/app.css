@@ -2080,3 +2080,63 @@ a.brand {
     display: none;
   }
 }
+
+/* Phones turned sideways: a floating bottom bar would eat a quarter of a 360px-tall screen and sit
+   over the content, so the tabs become a slim rail down the left edge and the page makes room for it */
+@media (max-width: 1039px) and (max-height: 500px) and (orientation: landscape) {
+  :root {
+    --rail: calc(76px + env(safe-area-inset-left));
+  }
+  .tabbar {
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: var(--rail);
+    transform: none;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0;
+    padding: 4px 4px 4px calc(4px + env(safe-area-inset-left));
+    border-radius: 0;
+    border-width: 0 1px 0 0;
+    overflow-y: auto;
+  }
+  .tab {
+    flex: 0 1 auto;
+    padding: 5px 0 3px;
+    min-height: 44px;
+    align-content: center;
+  }
+  body.is-detail .tabbar {
+    transform: translateX(-110%);
+  }
+  .view {
+    padding-left: calc(var(--rail) + var(--gutter));
+    padding-right: calc(var(--gutter) + env(safe-area-inset-right));
+    padding-bottom: calc(32px + env(safe-area-inset-bottom));
+  }
+  body.is-detail .view {
+    padding-left: calc(var(--gutter) + env(safe-area-inset-left));
+  }
+  .detail {
+    margin-left: calc(-1 * var(--gutter) - env(safe-area-inset-left));
+    margin-right: calc(-1 * var(--gutter) - env(safe-area-inset-right));
+  }
+  .toast,
+  body.is-detail .toast {
+    bottom: calc(16px + env(safe-area-inset-bottom));
+  }
+  .dhero {
+    height: 240px;
+  }
+  .dtop {
+    margin-top: -120px;
+  }
+  .dback {
+    left: calc(12px + env(safe-area-inset-left));
+  }
+  .actionbar {
+    padding-left: calc(16px + env(safe-area-inset-left));
+    padding-right: calc(16px + env(safe-area-inset-right));
+  }
+}
