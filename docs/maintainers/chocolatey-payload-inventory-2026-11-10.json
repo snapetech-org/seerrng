@@ -1,0 +1,594 @@
+{
+  "observed_at": "2026-11-10T18:04:01.361779+00:00",
+  "repository_count": 72,
+  "manifest_count": 9,
+  "repositories": [
+    {
+      "repository": "snapetech-org/0xBEEF",
+      "manifest_count": 0,
+      "split_trees": 0,
+      "method": "recursive GitHub trees, splitting truncated responses",
+      "branch": "main",
+      "manifests": []
+    },
+    {
+      "repository": "snapetech-org/Aftermortal",
+      "manifest_count": 0,
+      "split_trees": 1,
+      "method": "recursive GitHub trees, splitting truncated responses",
+      "branch": "master",
+      "manifests": []
+    },
+    {
+      "repository": "snapetech-org/agentSkills",
+      "manifest_count": 0,
+      "split_trees": 0,
+      "method": "recursive GitHub trees, splitting truncated responses",
+      "branch": "main",
+      "manifests": []
+    },
+    {
+      "repository": "snapetech-org/arrmature",
+      "manifest_count": 0,
+      "split_trees": 0,
+      "method": "recursive GitHub trees, splitting truncated responses",
+      "branch": "main",
+      "manifests": []
+    },
+    {
+      "repository": "snapetech-org/bookshelfng",
+      "manifest_count": 1,
+      "split_trees": 0,
+      "method": "recursive GitHub trees, splitting truncated responses",
+      "branch": "main",
+      "commit": "a7d0e5182e335b20818e4ce94e1633c2e313b82a",
+      "manifests": ["packaging/chocolatey/bookshelfng.nuspec"]
+    },
+    {
+      "repository": "snapetech-org/bookshelfng-startos",
+      "manifest_count": 0,
+      "split_trees": 0,
+      "method": "recursive GitHub trees, splitting truncated responses",
+      "branch": "main",
+      "manifests": []
+    },
+    {
+      "repository": "snapetech-org/bookshelfng-unraid",
+      "manifest_count": 1,
+      "split_trees": 0,
+      "method": "recursive GitHub trees, splitting truncated responses",
+      "branch": "main",
+      "commit": "9239e3bdc38988a959dbadee3d8580be4bccd8c2",
+      "manifests": ["packaging/chocolatey/bookshelfng.nuspec"]
+    },
+    {
+      "repository": "snapetech-org/bootable_macos_recovery.sh",
+      "manifest_count": 0,
+      "split_trees": 0,
+      "method": "recursive GitHub trees, splitting truncated responses",
+      "branch": "main",
+      "manifests": []
+    },
+    {
+      "repository": "snapetech-org/btrfs_map.devices",
+      "manifest_count": 0,
+      "split_trees": 0,
+      "method": "recursive GitHub trees, splitting truncated responses",
+      "branch": "main",
+      "manifests": []
+    },
+    {
+      "repository": "snapetech-org/CasaOS-AppStore",
+      "manifest_count": 0,
+      "split_trees": 0,
+      "method": "recursive GitHub trees, splitting truncated responses",
+      "branch": "main",
+      "manifests": []
+    },
+    {
+      "repository": "snapetech-org/chaptarrng",
+      "manifest_count": 2,
+      "split_trees": 0,
+      "method": "recursive GitHub trees, splitting truncated responses",
+      "branch": "main",
+      "commit": "fdc959a673da3d7e4afece838c6de30d62a75dbe",
+      "manifests": [
+        "packaging/chocolatey/chaptarrng.nuspec.in",
+        "packaging/legacy/chocolatey/bookshelfng.nuspec.in"
+      ]
+    },
+    {
+      "repository": "snapetech-org/chaptarrng-unraid",
+      "manifest_count": 0,
+      "split_trees": 0,
+      "method": "recursive GitHub trees, splitting truncated responses",
+      "branch": "main",
+      "manifests": []
+    },
+    {
+      "repository": "snapetech-org/claude-code",
+      "manifest_count": 0,
+      "split_trees": 0,
+      "method": "recursive GitHub trees, splitting truncated responses",
+      "branch": "main",
+      "manifests": []
+    },
+    {
+      "repository": "snapetech-org/condensearr",
+      "manifest_count": 0,
+      "split_trees": 0,
+      "method": "recursive GitHub trees, splitting truncated responses",
+      "branch": "main",
+      "manifests": []
+    },
+    {
+      "repository": "snapetech-org/ConvertNG",
+      "manifest_count": 0,
+      "split_trees": 0,
+      "method": "recursive GitHub trees, splitting truncated responses",
+      "branch": "main",
+      "manifests": []
+    },
+    {
+      "repository": "snapetech-org/cosmos-servapps-official",
+      "manifest_count": 0,
+      "split_trees": 0,
+      "method": "recursive GitHub trees, splitting truncated responses",
+      "branch": "master",
+      "manifests": []
+    },
+    {
+      "repository": "snapetech-org/council_of_experts",
+      "manifest_count": 0,
+      "split_trees": 0,
+      "method": "recursive GitHub trees, splitting truncated responses",
+      "branch": "main",
+      "manifests": []
+    },
+    {
+      "repository": "snapetech-org/dune.snape.tech",
+      "manifest_count": 0,
+      "split_trees": 0,
+      "method": "recursive GitHub trees, splitting truncated responses",
+      "branch": "main",
+      "manifests": []
+    },
+    {
+      "repository": "snapetech-org/DuneAwakeningSelfHost",
+      "manifest_count": 0,
+      "split_trees": 0,
+      "method": "recursive GitHub trees, splitting truncated responses",
+      "branch": "main",
+      "manifests": []
+    },
+    {
+      "repository": "snapetech-org/Eekwip",
+      "manifest_count": 0,
+      "split_trees": 0,
+      "method": "recursive GitHub trees, splitting truncated responses",
+      "branch": "main",
+      "manifests": []
+    },
+    {
+      "repository": "snapetech-org/ghidra",
+      "manifest_count": 0,
+      "split_trees": 0,
+      "method": "recursive GitHub trees, splitting truncated responses",
+      "branch": "master",
+      "manifests": []
+    },
+    {
+      "repository": "snapetech-org/go-jose-v3",
+      "manifest_count": 0,
+      "split_trees": 0,
+      "method": "recursive GitHub trees, splitting truncated responses",
+      "branch": "main",
+      "manifests": []
+    },
+    {
+      "repository": "snapetech-org/hardened-matrix-stack-install-from-scratch",
+      "manifest_count": 0,
+      "split_trees": 0,
+      "method": "recursive GitHub trees, splitting truncated responses",
+      "branch": "main",
+      "manifests": []
+    },
+    {
+      "repository": "snapetech-org/homebrew-pleazyng",
+      "manifest_count": 0,
+      "split_trees": 0,
+      "method": "recursive GitHub trees, splitting truncated responses",
+      "branch": "main",
+      "manifests": []
+    },
+    {
+      "repository": "snapetech-org/homebrew-slskdn",
+      "manifest_count": 0,
+      "split_trees": 0,
+      "method": "recursive GitHub trees, splitting truncated responses",
+      "branch": "main",
+      "manifests": []
+    },
+    {
+      "repository": "snapetech-org/iptvtunerr",
+      "manifest_count": 1,
+      "split_trees": 0,
+      "method": "recursive GitHub trees, splitting truncated responses",
+      "branch": "main",
+      "commit": "8f99341236bd0e3c8a215fe9dfb77a59c645e72a",
+      "manifests": ["packaging/chocolatey/iptvtunerr.nuspec"]
+    },
+    {
+      "repository": "snapetech-org/letsencrypt_automation_for_panorama.py",
+      "manifest_count": 0,
+      "split_trees": 0,
+      "method": "recursive GitHub trees, splitting truncated responses",
+      "branch": "main",
+      "manifests": []
+    },
+    {
+      "repository": "snapetech-org/LGPrivacyShield",
+      "manifest_count": 0,
+      "split_trees": 0,
+      "method": "recursive GitHub trees, splitting truncated responses",
+      "branch": "main",
+      "manifests": []
+    },
+    {
+      "repository": "snapetech-org/MileageNG",
+      "manifest_count": 0,
+      "split_trees": 0,
+      "method": "recursive GitHub trees, splitting truncated responses",
+      "branch": "main",
+      "manifests": []
+    },
+    {
+      "repository": "snapetech-org/MilkRust",
+      "manifest_count": 0,
+      "split_trees": 0,
+      "method": "recursive GitHub trees, splitting truncated responses",
+      "branch": "main",
+      "manifests": []
+    },
+    {
+      "repository": "snapetech-org/mpv-build",
+      "manifest_count": 0,
+      "split_trees": 0,
+      "method": "recursive GitHub trees, splitting truncated responses",
+      "branch": "main",
+      "manifests": []
+    },
+    {
+      "repository": "snapetech-org/one-click-apps",
+      "manifest_count": 0,
+      "split_trees": 0,
+      "method": "recursive GitHub trees, splitting truncated responses",
+      "branch": "master",
+      "manifests": []
+    },
+    {
+      "repository": "snapetech-org/orchestro",
+      "manifest_count": 0,
+      "split_trees": 0,
+      "method": "recursive GitHub trees, splitting truncated responses",
+      "branch": "main",
+      "manifests": []
+    },
+    {
+      "repository": "snapetech-org/orchestro-mesh",
+      "manifest_count": 0,
+      "split_trees": 0,
+      "method": "recursive GitHub trees, splitting truncated responses",
+      "branch": "main",
+      "manifests": []
+    },
+    {
+      "repository": "snapetech-org/packer",
+      "manifest_count": 0,
+      "split_trees": 0,
+      "method": "recursive GitHub trees, splitting truncated responses",
+      "branch": "main",
+      "manifests": []
+    },
+    {
+      "repository": "snapetech-org/PalWorldSelfHost",
+      "manifest_count": 0,
+      "split_trees": 0,
+      "method": "recursive GitHub trees, splitting truncated responses",
+      "branch": "main",
+      "manifests": []
+    },
+    {
+      "repository": "snapetech-org/PhotoCleanNG",
+      "manifest_count": 0,
+      "split_trees": 0,
+      "method": "recursive GitHub trees, splitting truncated responses",
+      "branch": "main",
+      "manifests": []
+    },
+    {
+      "repository": "snapetech-org/pleazyng",
+      "manifest_count": 1,
+      "split_trees": 0,
+      "method": "recursive GitHub trees, splitting truncated responses",
+      "branch": "main",
+      "commit": "6ae26b8224f52a30ec2864ad1102ecb3cc836927",
+      "manifests": ["packaging/chocolatey/pleazyng.nuspec"]
+    },
+    {
+      "repository": "snapetech-org/pleazyng-aerynos",
+      "manifest_count": 0,
+      "split_trees": 0,
+      "method": "recursive GitHub trees, splitting truncated responses",
+      "branch": "main",
+      "manifests": []
+    },
+    {
+      "repository": "snapetech-org/plezyng.app",
+      "manifest_count": 0,
+      "split_trees": 0,
+      "method": "recursive GitHub trees, splitting truncated responses",
+      "branch": "main",
+      "manifests": []
+    },
+    {
+      "repository": "snapetech-org/prosperNG",
+      "manifest_count": 0,
+      "split_trees": 0,
+      "method": "recursive GitHub trees, splitting truncated responses",
+      "branch": "main",
+      "manifests": []
+    },
+    {
+      "repository": "snapetech-org/QuestarrNG",
+      "manifest_count": 0,
+      "split_trees": 0,
+      "method": "recursive GitHub trees, splitting truncated responses",
+      "branch": "main",
+      "manifests": []
+    },
+    {
+      "repository": "snapetech-org/questarrng-unraid",
+      "manifest_count": 0,
+      "split_trees": 0,
+      "method": "recursive GitHub trees, splitting truncated responses",
+      "branch": "main",
+      "manifests": []
+    },
+    {
+      "repository": "snapetech-org/redlibe",
+      "manifest_count": 0,
+      "split_trees": 0,
+      "method": "recursive GitHub trees, splitting truncated responses",
+      "branch": "main",
+      "manifests": []
+    },
+    {
+      "repository": "snapetech-org/ROMarrNG",
+      "manifest_count": 0,
+      "split_trees": 0,
+      "method": "recursive GitHub trees, splitting truncated responses",
+      "branch": "main",
+      "manifests": []
+    },
+    {
+      "repository": "snapetech-org/rustTorrent",
+      "manifest_count": 0,
+      "split_trees": 0,
+      "method": "recursive GitHub trees, splitting truncated responses",
+      "branch": "main",
+      "manifests": []
+    },
+    {
+      "repository": "snapetech-org/securityOps",
+      "manifest_count": 0,
+      "split_trees": 0,
+      "method": "recursive GitHub trees, splitting truncated responses",
+      "branch": "main",
+      "manifests": []
+    },
+    {
+      "repository": "snapetech-org/seerrng",
+      "manifest_count": 1,
+      "split_trees": 0,
+      "method": "recursive GitHub trees, splitting truncated responses",
+      "branch": "main",
+      "commit": "612b3ae9a5e4ded6052c477e38e4412fdf81b088",
+      "manifests": ["packaging/chocolatey/seerrng.nuspec"]
+    },
+    {
+      "repository": "snapetech-org/seerrng-android-privacy",
+      "manifest_count": 0,
+      "split_trees": 0,
+      "method": "recursive GitHub trees, splitting truncated responses",
+      "branch": "main",
+      "manifests": []
+    },
+    {
+      "repository": "snapetech-org/seerrng-companion",
+      "manifest_count": 0,
+      "split_trees": 0,
+      "method": "recursive GitHub trees, splitting truncated responses",
+      "branch": "main",
+      "manifests": []
+    },
+    {
+      "repository": "snapetech-org/seerrng-startos",
+      "manifest_count": 0,
+      "split_trees": 0,
+      "method": "recursive GitHub trees, splitting truncated responses",
+      "branch": "main",
+      "manifests": []
+    },
+    {
+      "repository": "snapetech-org/slskd-retry-stuck-downloads",
+      "manifest_count": 0,
+      "split_trees": 0,
+      "method": "recursive GitHub trees, splitting truncated responses",
+      "branch": "main",
+      "manifests": []
+    },
+    {
+      "repository": "snapetech-org/slskdN",
+      "manifest_count": 1,
+      "split_trees": 0,
+      "method": "recursive GitHub trees, splitting truncated responses",
+      "branch": "main",
+      "commit": "c5629f268e666ae0cff41ac7d054849c02c469ef",
+      "manifests": ["packaging/chocolatey/slskdn.nuspec"]
+    },
+    {
+      "repository": "snapetech-org/slskdn-startos",
+      "manifest_count": 0,
+      "split_trees": 0,
+      "method": "recursive GitHub trees, splitting truncated responses",
+      "branch": "main",
+      "manifests": []
+    },
+    {
+      "repository": "snapetech-org/slskNet.Runtime",
+      "manifest_count": 0,
+      "split_trees": 0,
+      "method": "recursive GitHub trees, splitting truncated responses",
+      "branch": "main",
+      "manifests": []
+    },
+    {
+      "repository": "snapetech-org/slskr",
+      "manifest_count": 1,
+      "split_trees": 0,
+      "method": "recursive GitHub trees, splitting truncated responses",
+      "branch": "main",
+      "commit": "fbe0f0f66ea399c6bbbaa9d2cbfb899b27784535",
+      "manifests": ["packaging/chocolatey/slskr.nuspec"]
+    },
+    {
+      "repository": "snapetech-org/snape.local",
+      "manifest_count": 0,
+      "split_trees": 0,
+      "method": "recursive GitHub trees, splitting truncated responses",
+      "branch": "main",
+      "manifests": []
+    },
+    {
+      "repository": "snapetech-org/snape.tech",
+      "manifest_count": 0,
+      "split_trees": 0,
+      "method": "recursive GitHub trees, splitting truncated responses",
+      "branch": "main",
+      "manifests": []
+    },
+    {
+      "repository": "snapetech-org/snapetech-mcp",
+      "manifest_count": 0,
+      "split_trees": 0,
+      "method": "recursive GitHub trees, splitting truncated responses",
+      "branch": "main",
+      "manifests": []
+    },
+    {
+      "repository": "snapetech-org/Soulseek.NET",
+      "manifest_count": 0,
+      "split_trees": 0,
+      "method": "recursive GitHub trees, splitting truncated responses",
+      "branch": "master",
+      "manifests": []
+    },
+    {
+      "repository": "snapetech-org/suniistuff",
+      "manifest_count": 0,
+      "split_trees": 0,
+      "method": "recursive GitHub trees, splitting truncated responses",
+      "branch": "main",
+      "manifests": []
+    },
+    {
+      "repository": "snapetech-org/time_machine_enrollment_login_hook",
+      "manifest_count": 0,
+      "split_trees": 0,
+      "method": "recursive GitHub trees, splitting truncated responses",
+      "branch": "main",
+      "manifests": []
+    },
+    {
+      "repository": "snapetech-org/TorrentNG",
+      "manifest_count": 0,
+      "split_trees": 0,
+      "method": "recursive GitHub trees, splitting truncated responses",
+      "branch": "main",
+      "manifests": []
+    },
+    {
+      "repository": "snapetech-org/UE4SSLinux",
+      "manifest_count": 0,
+      "split_trees": 0,
+      "method": "recursive GitHub trees, splitting truncated responses",
+      "branch": "main",
+      "manifests": []
+    },
+    {
+      "repository": "snapetech-org/umbrel-apps",
+      "manifest_count": 0,
+      "split_trees": 0,
+      "method": "recursive GitHub trees, splitting truncated responses",
+      "branch": "master",
+      "manifests": []
+    },
+    {
+      "repository": "snapetech-org/winget-pkgs",
+      "manifest_count": 0,
+      "manifests": [],
+      "commit": "e7800014185b895f93dd25178576639ed295f7ec",
+      "method": "complete recursive git ls-tree from the fetched default branch; no blobs or checkout needed",
+      "branch": "master"
+    },
+    {
+      "repository": "snapetech-org/worldmonitor-uap",
+      "manifest_count": 0,
+      "split_trees": 0,
+      "method": "recursive GitHub trees, splitting truncated responses",
+      "branch": "main",
+      "manifests": []
+    },
+    {
+      "repository": "snapetech-org/ytdlpchopid",
+      "manifest_count": 0,
+      "split_trees": 0,
+      "method": "recursive GitHub trees, splitting truncated responses",
+      "branch": "main",
+      "manifests": []
+    },
+    {
+      "repository": "snapetech/apps-repo",
+      "manifest_count": 0,
+      "split_trees": 0,
+      "method": "recursive GitHub trees, splitting truncated responses",
+      "branch": "main",
+      "manifests": []
+    },
+    {
+      "repository": "snapetech/bookshelfng-ghcr-release-bridge",
+      "manifest_count": 0,
+      "split_trees": 0,
+      "method": "recursive GitHub trees, splitting truncated responses",
+      "branch": "main",
+      "manifests": []
+    },
+    {
+      "repository": "snapetech/mpv-build",
+      "manifest_count": 0,
+      "split_trees": 0,
+      "method": "recursive GitHub trees, splitting truncated responses",
+      "branch": "main",
+      "manifests": []
+    },
+    {
+      "repository": "snapetech/nixpkgs",
+      "manifest_count": 0,
+      "split_trees": 2,
+      "method": "recursive GitHub trees, splitting truncated responses",
+      "branch": "master",
+      "manifests": []
+    }
+  ]
+}

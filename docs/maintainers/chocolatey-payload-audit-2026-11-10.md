@@ -2,7 +2,7 @@
 
 ## Scope
 
-Inspect the default branches of the repositories owned by `snapetech-org` and
+Inspected all 72 default branches of the repositories owned by `snapetech-org` and
 `snapetech`, including `.nuspec` and `.nuspec.in` templates. Count mirrored and
 legacy manifests separately, but follow each install script to the actual release
 download instead of treating every Windows release asset as a Chocolatey input.
@@ -12,6 +12,12 @@ repositories. ChaptarrNG contains both `chaptarrng` and the legacy `bookshelfng`
 migration package. `bookshelfng-unraid` mirrors BookshelfNG's packaging; it is not
 an additional package identity. The old PlezyNG repository URL and local alias do
 not represent another repository or package.
+
+The [machine-readable inventory](chocolatey-payload-inventory-2026-11-10.json)
+records every repository and manifest. Truncated recursive GitHub tree responses
+were split into complete subtrees. The large winget fork was checked using a
+complete recursive Git tree listing at its fetched default-branch commit instead
+of accepting a truncated API result.
 
 ## Published payload snapshot
 
@@ -69,10 +75,14 @@ this audit. ChaptarrNG's Windows x86 ZIP is likewise not a Chocolatey input.
   passed at the existing packaging fix.
 - SeerrNG native x64/ARM64 package validation is tracked in
   [42868117978](https://github.com/snapetech-org/seerrng/actions/runs/42868117978).
-  Windows x64 passed with a 184,837,015-byte ZIP, down from 755,307,021 bytes.
-  ZIP integrity/extraction, native SQLite/bcrypt/Sharp/Next dependencies,
-  database startup, HTTP API and frontend checks passed. ARM64 remains pending
-  until that job finishes.
+  Both native jobs passed at source commit
+  `bbdffe8db`. Windows x64 produced a 184,837,015-byte ZIP, down from
+  755,307,021 bytes; Windows ARM64 produced a 179,008,508-byte ZIP, down from
+  735,693,645 bytes. ZIP integrity/extraction, native SQLite/bcrypt/Sharp/Next
+  dependencies, database startup, HTTP API and frontend checks passed on both
+  architectures. Independent inspection of the downloaded x64 archive also
+  verified ZIP integrity, retained native libraries and removal of the selected
+  debug/fixture content.
 
 IPTV Tunerr's GitHub push succeeded. Its additional GitLab push destination
 rejected the update because its history diverges, including an independent
