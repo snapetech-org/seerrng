@@ -460,6 +460,7 @@ export interface TvDetails extends TitleResult {
   };
 }
 export interface BookDetails extends BookResult {
+  description?: string;
   subjects?: string[];
   isbnCandidates?: string[];
 }

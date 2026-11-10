@@ -225,8 +225,8 @@
   }
 }
 /* facts beside the overview: two roomy columns instead of four cramped ones */
-.dcols aside .facts2 {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+.dcols aside .facts2 > div {
+  flex-basis: calc(50% - 1px);
 }
 .dcols aside .facts2 dd {
   overflow-wrap: normal;

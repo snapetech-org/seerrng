@@ -3,6 +3,7 @@ import { api, type Person, type RequestOptions } from '../api';
 import { useAuth } from '../auth';
 import { Icon, type IconName } from '../icons';
 import { Glyph, type Stat } from './cards';
+import { friendlyError } from '../errors';
 
 const hue = (s: string) =>
   [...s].reduce((h, c) => (h * 31 + c.charCodeAt(0)) % 360, 0);
@@ -87,6 +88,7 @@ export function DetailTop({
   backdrop,
   poster,
   square,
+  whole,
   title,
   by,
   line,
@@ -95,6 +97,8 @@ export function DetailTop({
   backdrop?: string;
   poster?: string;
   square?: boolean;
+  // book art is not always poster-shaped: show all of it instead of cropping
+  whole?: boolean;
   title: string;
   by?: ReactNode;
   line: ReactNode[];
@@ -108,7 +112,9 @@ export function DetailTop({
         {(backdrop || poster) && <img src={backdrop || poster} alt="" />}
       </div>
       <div className="dtop">
-        <div className={`dposter ${square ? 'sq' : ''}`}>
+        <div
+          className={`dposter ${square ? 'sq' : ''} ${whole ? 'whole' : ''}`}
+        >
           {poster && <img src={poster} alt="" />}
           <Glyph s={status ?? null} />
         </div>
@@ -239,7 +245,7 @@ export function AdvancedOptions({
           mine[0];
         if (d) setO((x) => ({ ...x, serverId: d.id }));
       })
-      .catch((e) => setErr(e.message));
+      .catch((e) => setErr(friendlyError(e)));
   }, [open, servers, svc, is4k, allow4k]);
   useEffect(() => {
     if (o.serverId == null) return;
@@ -275,7 +281,7 @@ export function AdvancedOptions({
         (e) =>
           live &&
           setErr(
-            `${e.message} (the ${svc === 'radarr' ? 'Radarr' : 'Sonarr'} server didn't answer)`
+            `${friendlyError(e)} (the ${svc === 'radarr' ? 'Radarr' : 'Sonarr'} server didn't answer)`
           )
       );
     return () => {
