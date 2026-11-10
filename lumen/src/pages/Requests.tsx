@@ -907,8 +907,23 @@ export default function Requests() {
   const busy = (rows || []).some((x) => state(x, serverName).pct != null);
   useEffect(() => {
     if (!busy) return;
-    const t = window.setInterval(() => setTick((n) => n + 1), 30_000);
-    return () => window.clearInterval(t);
+    // a hidden tab (or backgrounded app) doesn't poll; it catches up when it's shown again
+    const t = window.setInterval(() => {
+      if (!document.hidden) setTick((n) => n + 1);
+    }, 30_000);
+    let hiddenAt: number | null = null;
+    const onVisible = () => {
+      if (document.hidden) hiddenAt = Date.now();
+      else if (hiddenAt != null) {
+        if (Date.now() - hiddenAt >= 30_000) setTick((n) => n + 1);
+        hiddenAt = null;
+      }
+    };
+    document.addEventListener('visibilitychange', onVisible);
+    return () => {
+      window.clearInterval(t);
+      document.removeEventListener('visibilitychange', onVisible);
+    };
   }, [busy]);
   const all = rows || [];
   const act = all.filter((x) => state(x, serverName).active);
