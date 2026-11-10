@@ -65,6 +65,11 @@ export const DOWNLOAD_RECOVERY_MEDIA_CONCURRENCY = 5;
 
 const retryableFailurePattern =
   /\b(encrypted|password|unpack|crc|parity|failed|error|missing|blacklist|rejected|not close enough|couldn't find similar|unable to parse|wrong)\b/i;
+// ChaptarrNG blocks the import of a completed, correct download when it cannot
+// verify the edition or title/author identity. The release is not defective, so
+// it must stay in the client (seeding) for manual import, not be blocklisted.
+const bookIdentityImportBlockPattern =
+  /(could not verify the expected edition|but import matched|matched same-work sibling|title\/author mismatch)/i;
 const nonRetryableImportPattern =
   /\b(permission|access denied|unauthorized|remote path|path does not exist|no files found|disk full|free space|not enough space|folder is not writable)\b/i;
 
@@ -400,7 +405,7 @@ class DownloadRecovery {
       await stateRepository.save(state);
     }
 
-    const decision = this.decide(item, state, now);
+    const decision = this.decide(item, state, now, service.serviceType);
 
     if (decision.action === 'track') {
       return;
@@ -481,7 +486,8 @@ class DownloadRecovery {
   private decide(
     item: RecoveryQueueItem,
     state: DownloadRecoveryState,
-    now: Date
+    now: Date,
+    serviceType?: DownloadRecoveryServiceType
   ): RecoveryDecision {
     // Clients can retain a stale seedless/failure warning while paused.
     // An explicit pause takes priority over every automatic retry reason.
@@ -491,6 +497,20 @@ class DownloadRecovery {
     const trackedState = normalize(item.trackedDownloadState);
     const trackedStatus = normalize(item.trackedDownloadStatus);
     const status = normalize(item.status);
+
+    if (
+      serviceType === 'readarr' &&
+      ['importblocked', 'importpending', 'importfailed'].includes(
+        trackedState
+      ) &&
+      bookIdentityImportBlockPattern.test(getQueueMessageText(item))
+    ) {
+      return {
+        action: 'ignore',
+        reason:
+          'completed download is blocked at import by an edition or title identity check; left for manual import',
+      };
+    }
 
     if (trackedState === 'importfailed') {
       if (nonRetryableImportPattern.test(fingerprint)) {
