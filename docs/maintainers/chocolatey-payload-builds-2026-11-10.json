@@ -1,0 +1,36 @@
+[
+  {
+    "architecture": "x64",
+    "archive": "seerrng-v3.72.29-package-validation-windows-x64.zip",
+    "bytes": 184837015,
+    "sha256": "b15aa0850a7c672f052ad252c2b48b3815ae859ab9f521be395be30797aebd28",
+    "entries": 56554,
+    "native_modules": {
+      "/better-sqlite3/prebuilds/win32-x64.node": 1,
+      "/bcrypt/prebuilds/win32-x64/bcrypt.node": 1,
+      "next-swc.win32-x64-msvc.node": 1,
+      "sharp_dlls": 2
+    },
+    "zip_integrity": "passed",
+    "checksum": "passed",
+    "dependency_source_maps": "absent",
+    "readme_cover_fixtures": "absent"
+  },
+  {
+    "architecture": "arm64",
+    "archive": "seerrng-v3.72.29-package-validation-windows-arm64.zip",
+    "bytes": 179008508,
+    "sha256": "603320752c6ba96bd0c9bea03c3a62f13532109e0946b3d653d98250b460fd50",
+    "entries": 56554,
+    "native_modules": {
+      "/better-sqlite3/prebuilds/win32-arm64.node": 1,
+      "/bcrypt/prebuilds/win32-arm64/bcrypt.node": 1,
+      "next-swc.win32-arm64-msvc.node": 1,
+      "sharp_dlls": 2
+    },
+    "zip_integrity": "passed",
+    "checksum": "passed",
+    "dependency_source_maps": "absent",
+    "readme_cover_fixtures": "absent"
+  }
+]

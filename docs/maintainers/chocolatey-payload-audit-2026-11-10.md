@@ -66,6 +66,7 @@ this audit. ChaptarrNG's Windows x86 ZIP is likewise not a Chocolatey input.
 - Execute the actual six publisher guard snippets at 189,999,999, 190,000,000 and
   190,000,001 bytes: all 18 boundary cases passed. The exact budget is accepted;
   one byte over is rejected.
+- slskR's existing Chocolatey workflow/checksum regression suite: nine passed.
 - Modified workflow YAML parses successfully; SeerrNG workflow formatting and
   Bash syntax checks pass. Applicable commit-time security scans report no
   findings. Pleazyng's workflow-only change uses targeted changelog and packaging
@@ -80,9 +81,12 @@ this audit. ChaptarrNG's Windows x86 ZIP is likewise not a Chocolatey input.
   755,307,021 bytes; Windows ARM64 produced a 179,008,508-byte ZIP, down from
   735,693,645 bytes. ZIP integrity/extraction, native SQLite/bcrypt/Sharp/Next
   dependencies, database startup, HTTP API and frontend checks passed on both
-  architectures. Independent inspection of the downloaded x64 archive also
-  verified ZIP integrity, retained native libraries and removal of the selected
-  debug/fixture content.
+  architectures. Independent inspection of both downloaded archives also
+  verified ZIP integrity and SHA-256 sidecars, retained native libraries and
+  removal of the selected debug/fixture content. Both contain 56,554 ZIP entries
+  instead of the published x64 archive's 201,380 entries. Exact sizes, hashes and
+  retained native-module counts are recorded in the
+  [build receipts](chocolatey-payload-builds-2026-11-10.json).
 
 IPTV Tunerr's GitHub push succeeded. Its additional GitLab push destination
 rejected the update because its history diverges, including an independent
