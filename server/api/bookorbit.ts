@@ -119,7 +119,7 @@ export default class BookOrbitAPI extends ExternalAPI {
   }
 
   private async call<T>(
-    method: 'GET' | 'POST',
+    method: 'GET' | 'POST' | 'DELETE',
     path: string,
     body?: unknown
   ): Promise<T> {
@@ -218,17 +218,7 @@ export default class BookOrbitAPI extends ExternalAPI {
 
   public async unsubscribe(id: number): Promise<void> {
     if (!validId(id)) throw new Error('BookOrbit request ID is invalid.');
-    await this.request(
-      'DELETE',
-      `/api/v1/book-requests/${id}/subscription`,
-      undefined,
-      {
-        headers: {
-          Authorization: `Bearer ${this.token ?? (await this.login())}`,
-        },
-        maxRedirects: 0,
-      }
-    );
+    await this.call('DELETE', `/api/v1/book-requests/${id}/subscription`);
   }
 
   public async cancel(id: number): Promise<void> {

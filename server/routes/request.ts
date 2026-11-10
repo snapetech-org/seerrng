@@ -13,6 +13,7 @@ import {
 } from '@server/constants/media';
 import type { MediaCategoryKey } from '@server/constants/mediaCategories';
 import dataSource, { getRepository } from '@server/datasource';
+import BookRequestSearch from '@server/entity/BookRequestSearch';
 import Media from '@server/entity/Media';
 import MediaIdentifier, {
   MediaIdentifierProvider,
@@ -57,6 +58,7 @@ import {
   isBookRequestFileAvailable,
 } from '@server/lib/bookAvailability';
 import { projectBookFileObservations } from '@server/lib/bookFileObservations';
+import { bookOrbitRequestLinks } from '@server/lib/bookorbitRequestLinks';
 import {
   BookRequestEditConflictError,
   planBookRequestEdit,
@@ -4123,9 +4125,30 @@ requestRoutes.get<
         }
         await hydrateMediaSummaryRelations([request.media], actor);
         const history = await getRequestStatusHistory(request.id);
+        const bookOrbitOperations =
+          request.type === MediaType.BOOK
+            ? await getRepository(BookRequestSearch).find({
+                where: { requestId: request.id },
+                select: {
+                  serviceId: true,
+                  format: true,
+                  bookorbitRequestId: true,
+                  providerManagedSearch: true,
+                  state: true,
+                },
+              })
+            : [];
         return res.status(200).json({
           request: filterEntityResponse(request, actor),
           current: protectRequestStatusDownloadId(current),
+          ...(bookOrbitOperations.length > 0
+            ? {
+                bookOrbitRequests: bookOrbitRequestLinks(
+                  bookOrbitOperations,
+                  getExternalRuntimeConfig().readarr
+                ),
+              }
+            : {}),
           history: {
             ...history,
             results: history.results.map(protectRequestStatusDownloadId),

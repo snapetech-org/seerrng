@@ -14,7 +14,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 4214,
+          "line": 4237,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Download copy not found.'",
@@ -22,7 +22,7 @@
         },
         {
           "path": "server/routes/request.ts",
-          "line": 4218,
+          "line": 4241,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Download copy not found.'",
@@ -222,7 +222,7 @@
         },
         {
           "path": "server/api/bookorbit.ts",
-          "line": 235,
+          "line": 225,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'BookOrbit request ID is invalid.'",
@@ -857,7 +857,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 4684,
+          "line": 4707,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Failed request recovery cannot change the request owner.'",
@@ -962,7 +962,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 2295,
+          "line": 2297,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Metadata sorting requires mediaType=movie or mediaType=tv.'",
@@ -1144,7 +1144,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 3516,
+          "line": 3518,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "`${body.mediaType === MediaType.MUSIC ? 'Music' : 'Book'} quota exceeded.`",
@@ -2056,7 +2056,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 1227,
+          "line": 1229,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Episode Queue is managed by an administrator from the user profile.'",
@@ -2225,7 +2225,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 3146,
+          "line": 3148,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Invalid request idempotency key or scope.'",
@@ -2598,7 +2598,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 1395,
+          "line": 1397,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "`${field} must be a valid Open Library resource ID.`",
@@ -2679,7 +2679,7 @@
         },
         {
           "path": "server/routes/request.ts",
-          "line": 2228,
+          "line": 2230,
           "kind": "message-helper-return",
           "field": "message",
           "expression": "'This audiobook is already available.'",
@@ -3621,7 +3621,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 3368,
+          "line": 3370,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'At least one item is required.'",
@@ -3640,7 +3640,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 1144,
+          "line": 1146,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'episodeNumbers must be an array of positive integers.'",
@@ -3797,7 +3797,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 795,
+          "line": 797,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'format must be ebook, audiobook, or both.'",
@@ -3837,7 +3837,7 @@
       "callsites": [
         {
           "path": "server/api/bookorbit.ts",
-          "line": 283,
+          "line": 273,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'BookOrbit returned an invalid book.'",
@@ -3875,7 +3875,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 4393,
+          "line": 4416,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Administrator access is required.'",
@@ -3883,7 +3883,7 @@
         },
         {
           "path": "server/routes/request.ts",
-          "line": 4460,
+          "line": 4483,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Administrator access is required.'",
@@ -4165,7 +4165,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 1856,
+          "line": 1858,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Requester tag-only mode requires a full-series selection without episode overrides.'",
@@ -4203,7 +4203,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 5616,
+          "line": 5639,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Only failed or unavailable requests can be retried.'",
@@ -4392,7 +4392,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 5134,
+          "line": 5157,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'You do not have permission to change Sonarr metadata options.'",
@@ -6132,7 +6132,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 514,
+          "line": 516,
           "kind": "message-helper-expression",
           "field": "message",
           "expression": "isMediaCategoryEnabled(category)\n    ? `${getMediaCategoryLabel(category)} requests are unavailable for this user.`\n    : `${getMediaCategoryLabel(category)} requests are disabled by the administrator.`",
@@ -6502,7 +6502,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 1644,
+          "line": 1646,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'sonarrSeasonType must be a valid Sonarr order name.'",
@@ -7040,7 +7040,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 5488,
+          "line": 5511,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Only TVDB season mapping fields are accepted.'",
@@ -7396,7 +7396,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 2179,
+          "line": 2181,
           "kind": "message-helper-return",
           "field": "message",
           "expression": "'This album is already available.'",
@@ -7528,7 +7528,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 4826,
+          "line": 4849,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Missing seasons. Use DELETE to cancel a series request.'",
@@ -7631,7 +7631,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 5548,
+          "line": 5571,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Season mappings must use unique, non-negative integer season numbers.'",
@@ -7876,7 +7876,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 1930,
+          "line": 1932,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'items must contain request objects.'",
@@ -8149,7 +8149,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 1780,
+          "line": 1782,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Edition preferences are only valid for book requests.'",
@@ -8203,7 +8203,7 @@
         },
         {
           "path": "server/routes/request.ts",
-          "line": 2214,
+          "line": 2216,
           "kind": "message-helper-return",
           "field": "message",
           "expression": "'This book is blocklisted.'",
@@ -8346,7 +8346,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 3361,
+          "line": 3363,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Bulk requests only support music and books.'",
@@ -8422,7 +8422,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 4950,
+          "line": 4973,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to verify all unavailable seasons. Try again later.'",
@@ -8603,7 +8603,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 1000,
+          "line": 1002,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'requesterSelectedOptions are only valid for new movie or TV requests.'",
@@ -8958,7 +8958,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 3978,
+          "line": 3980,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to retrieve request status.'",
@@ -9866,7 +9866,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 1171,
+          "line": 1173,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'A partial season request must include an episode.'",
@@ -10173,7 +10173,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 1715,
+          "line": 1717,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'editionPolicy must be only, either, or alongside.'",
@@ -10194,7 +10194,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 4591,
+          "line": 4614,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Requester-tag retries must keep the original requester, destination, and full-series selection.'",
@@ -10471,7 +10471,7 @@
         },
         {
           "path": "server/routes/request.ts",
-          "line": 3618,
+          "line": 3620,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Access denied.'",
@@ -10479,7 +10479,7 @@
         },
         {
           "path": "server/routes/request.ts",
-          "line": 3803,
+          "line": 3805,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Access denied.'",
@@ -10487,7 +10487,7 @@
         },
         {
           "path": "server/routes/request.ts",
-          "line": 3972,
+          "line": 3974,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Access denied.'",
@@ -10495,7 +10495,7 @@
         },
         {
           "path": "server/routes/request.ts",
-          "line": 3988,
+          "line": 3990,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Access denied.'",
@@ -10503,7 +10503,7 @@
         },
         {
           "path": "server/routes/request.ts",
-          "line": 4045,
+          "line": 4047,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Access denied.'",
@@ -10511,7 +10511,7 @@
         },
         {
           "path": "server/routes/request.ts",
-          "line": 4141,
+          "line": 4164,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Access denied.'",
@@ -10519,7 +10519,7 @@
         },
         {
           "path": "server/routes/request.ts",
-          "line": 4179,
+          "line": 4202,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Access denied.'",
@@ -10527,7 +10527,7 @@
         },
         {
           "path": "server/routes/request.ts",
-          "line": 4274,
+          "line": 4297,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Access denied.'",
@@ -10535,7 +10535,7 @@
         },
         {
           "path": "server/routes/request.ts",
-          "line": 4343,
+          "line": 4366,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Access denied.'",
@@ -11285,7 +11285,7 @@
         },
         {
           "path": "server/routes/request.ts",
-          "line": 463,
+          "line": 465,
           "kind": "authored-message-field",
           "field": "errorMessage",
           "expression": "error instanceof Error ? error.message : 'Unknown error'",
@@ -11555,7 +11555,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 1009,
+          "line": 1011,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'requesterSelectedOptions must be an object.'",
@@ -11834,7 +11834,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 5528,
+          "line": 5551,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Each season mapping must contain only season numbers.'",
@@ -11907,7 +11907,7 @@
         },
         {
           "path": "server/routes/request.ts",
-          "line": 4657,
+          "line": 4680,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'You do not have permission to modify this request.'",
@@ -11915,7 +11915,7 @@
         },
         {
           "path": "server/routes/request.ts",
-          "line": 5301,
+          "line": 5324,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'You do not have permission to modify this request.'",
@@ -12828,7 +12828,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 5645,
+          "line": 5668,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'You do not have permission to map seasons for this request.'",
@@ -13852,7 +13852,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 5768,
+          "line": 5791,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Every mapped season must exist in the selected series order.'",
@@ -14851,7 +14851,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 4645,
+          "line": 4668,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Request media type cannot be changed.'",
@@ -15111,7 +15111,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 2476,
+          "line": 2478,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "\"You do not have permission to view this user's requests.\"",
@@ -15187,7 +15187,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 5913,
+          "line": 5936,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'You do not have permission to manage this request download.'",
@@ -15195,7 +15195,7 @@
         },
         {
           "path": "server/routes/request.ts",
-          "line": 5936,
+          "line": 5959,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'You do not have permission to manage this request download.'",
@@ -15817,7 +15817,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 1404,
+          "line": 1406,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'mediaId is required for book requests.'",
@@ -15920,7 +15920,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 943,
+          "line": 945,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'requestTargetOptions.tags must be an array or null.'",
@@ -16590,7 +16590,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 1269,
+          "line": 1271,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'requesterTagOnly must be a boolean.'",
@@ -16823,7 +16823,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 1283,
+          "line": 1285,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Requester tag-only mode is only valid for new movie or TV requests.'",
@@ -16945,7 +16945,7 @@
         },
         {
           "path": "server/routes/request.ts",
-          "line": 5362,
+          "line": 5385,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Request user no longer exists.'",
@@ -17053,7 +17053,7 @@
       "callsites": [
         {
           "path": "server/api/bookorbit.ts",
-          "line": 363,
+          "line": 353,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'BookOrbit library exceeds the safe scan limit.'",
@@ -17252,7 +17252,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 4671,
+          "line": 4694,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'You do not have permission to change service request options.'",
@@ -17504,7 +17504,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 1434,
+          "line": 1436,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'tvdbId must be a positive integer.'",
@@ -17995,7 +17995,7 @@
         },
         {
           "path": "server/routes/request.ts",
-          "line": 4742,
+          "line": 4765,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'This title exceeds the selected user’s maturity limit or has no recognized US rating.'",
@@ -18348,7 +18348,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 4372,
+          "line": 4395,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'episodeCount must be null or an integer between 0 and 5.'",
@@ -18442,7 +18442,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 1306,
+          "line": 1308,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'bypassStreamingRequestPolicy must be a boolean.'",
@@ -19064,7 +19064,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 5558,
+          "line": 5581,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'The retry body must be an object.'",
@@ -20288,7 +20288,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 5751,
+          "line": 5774,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'The selected Sonarr order is unavailable for this series.'",
@@ -20307,7 +20307,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 1509,
+          "line": 1511,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'mediaId must be a canonical Sportarr league ID.'",
@@ -20442,7 +20442,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 3256,
+          "line": 3258,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Bulk movie requests from person pages are disabled.'",
@@ -21281,7 +21281,7 @@
       "callsites": [
         {
           "path": "server/api/bookorbit.ts",
-          "line": 361,
+          "line": 351,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'BookOrbit library page is incomplete.'",
@@ -23012,7 +23012,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 3836,
+          "line": 3838,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Media id must be a positive integer.'",
@@ -23353,7 +23353,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 3375,
+          "line": 3377,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "`Bulk requests are limited to ${maxBulkRequestItems} items.`",
@@ -24403,7 +24403,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 911,
+          "line": 913,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'requestTargetOptions.profileId must be a non-negative integer or null.'",
@@ -25027,7 +25027,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 5600,
+          "line": 5623,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'You do not have permission to retry this request.'",
@@ -25035,7 +25035,7 @@
         },
         {
           "path": "server/routes/request.ts",
-          "line": 5837,
+          "line": 5860,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'You do not have permission to retry this request.'",
@@ -25211,7 +25211,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 1538,
+          "line": 1540,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'mediaId is required for adult requests.'",
@@ -26316,7 +26316,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 3826,
+          "line": 3828,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Request id must be a positive integer.'",
@@ -26586,7 +26586,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 1517,
+          "line": 1519,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'mediaId is required for sports requests.'",
@@ -26632,7 +26632,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 5678,
+          "line": 5701,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Map every active season selected on this request exactly once.'",
@@ -27226,7 +27226,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 4149,
+          "line": 4172,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to retrieve request status history.'",
@@ -28090,7 +28090,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 1257,
+          "line": 1259,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'is4k must be a boolean.'",
@@ -28964,7 +28964,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 514,
+          "line": 516,
           "kind": "message-helper-expression",
           "field": "message",
           "expression": "isMediaCategoryEnabled(category)\n    ? `${getMediaCategoryLabel(category)} requests are unavailable for this user.`\n    : `${getMediaCategoryLabel(category)} requests are disabled by the administrator.`",
@@ -29184,7 +29184,7 @@
         },
         {
           "path": "server/routes/request.ts",
-          "line": 4062,
+          "line": 4064,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Request not found.'",
@@ -29192,7 +29192,7 @@
         },
         {
           "path": "server/routes/request.ts",
-          "line": 4076,
+          "line": 4078,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Request not found.'",
@@ -29200,7 +29200,7 @@
         },
         {
           "path": "server/routes/request.ts",
-          "line": 4106,
+          "line": 4108,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Request not found.'",
@@ -29208,7 +29208,7 @@
         },
         {
           "path": "server/routes/request.ts",
-          "line": 4122,
+          "line": 4124,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Request not found.'",
@@ -29216,7 +29216,7 @@
         },
         {
           "path": "server/routes/request.ts",
-          "line": 4158,
+          "line": 4181,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Request not found.'",
@@ -29224,7 +29224,7 @@
         },
         {
           "path": "server/routes/request.ts",
-          "line": 4162,
+          "line": 4185,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Request not found.'",
@@ -29232,7 +29232,7 @@
         },
         {
           "path": "server/routes/request.ts",
-          "line": 4199,
+          "line": 4222,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Request not found.'",
@@ -29240,7 +29240,7 @@
         },
         {
           "path": "server/routes/request.ts",
-          "line": 4203,
+          "line": 4226,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Request not found.'",
@@ -29248,7 +29248,7 @@
         },
         {
           "path": "server/routes/request.ts",
-          "line": 4291,
+          "line": 4314,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Request not found.'",
@@ -29256,7 +29256,7 @@
         },
         {
           "path": "server/routes/request.ts",
-          "line": 4318,
+          "line": 4341,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Request not found.'",
@@ -29264,15 +29264,7 @@
         },
         {
           "path": "server/routes/request.ts",
-          "line": 4349,
-          "kind": "authored-message-field",
-          "field": "message",
-          "expression": "'Request not found.'",
-          "captured": []
-        },
-        {
-          "path": "server/routes/request.ts",
-          "line": 4358,
+          "line": 4372,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Request not found.'",
@@ -29288,7 +29280,7 @@
         },
         {
           "path": "server/routes/request.ts",
-          "line": 4400,
+          "line": 4404,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Request not found.'",
@@ -29296,7 +29288,7 @@
         },
         {
           "path": "server/routes/request.ts",
-          "line": 4475,
+          "line": 4423,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Request not found.'",
@@ -29304,7 +29296,7 @@
         },
         {
           "path": "server/routes/request.ts",
-          "line": 4502,
+          "line": 4498,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Request not found.'",
@@ -29312,7 +29304,7 @@
         },
         {
           "path": "server/routes/request.ts",
-          "line": 4534,
+          "line": 4525,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Request not found.'",
@@ -29320,7 +29312,7 @@
         },
         {
           "path": "server/routes/request.ts",
-          "line": 5325,
+          "line": 4557,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Request not found.'",
@@ -29328,7 +29320,7 @@
         },
         {
           "path": "server/routes/request.ts",
-          "line": 5368,
+          "line": 5348,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Request not found.'",
@@ -29336,7 +29328,7 @@
         },
         {
           "path": "server/routes/request.ts",
-          "line": 5378,
+          "line": 5391,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Request not found.'",
@@ -29344,7 +29336,7 @@
         },
         {
           "path": "server/routes/request.ts",
-          "line": 5387,
+          "line": 5401,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Request not found.'",
@@ -29352,7 +29344,7 @@
         },
         {
           "path": "server/routes/request.ts",
-          "line": 5564,
+          "line": 5410,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Request not found.'",
@@ -29360,7 +29352,7 @@
         },
         {
           "path": "server/routes/request.ts",
-          "line": 5572,
+          "line": 5587,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Request not found.'",
@@ -29368,7 +29360,7 @@
         },
         {
           "path": "server/routes/request.ts",
-          "line": 5606,
+          "line": 5595,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Request not found.'",
@@ -29376,7 +29368,7 @@
         },
         {
           "path": "server/routes/request.ts",
-          "line": 5860,
+          "line": 5629,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Request not found.'",
@@ -29384,7 +29376,7 @@
         },
         {
           "path": "server/routes/request.ts",
-          "line": 5872,
+          "line": 5883,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Request not found.'",
@@ -29392,7 +29384,7 @@
         },
         {
           "path": "server/routes/request.ts",
-          "line": 5889,
+          "line": 5895,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Request not found.'",
@@ -29400,7 +29392,7 @@
         },
         {
           "path": "server/routes/request.ts",
-          "line": 5966,
+          "line": 5912,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Request not found.'",
@@ -29408,7 +29400,7 @@
         },
         {
           "path": "server/routes/request.ts",
-          "line": 5970,
+          "line": 5989,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Request not found.'",
@@ -29416,7 +29408,15 @@
         },
         {
           "path": "server/routes/request.ts",
-          "line": 6006,
+          "line": 5993,
+          "kind": "authored-message-field",
+          "field": "message",
+          "expression": "'Request not found.'",
+          "captured": []
+        },
+        {
+          "path": "server/routes/request.ts",
+          "line": 6029,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Request not found.'",
@@ -29553,7 +29553,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 1843,
+          "line": 1845,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'seasons are required for series requests.'",
@@ -29984,7 +29984,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 3625,
+          "line": 3627,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to submit bulk request.'",
@@ -30060,7 +30060,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 3044,
+          "line": 3046,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "e instanceof Error ? e.message : 'Unable to retrieve requests.'",
@@ -30200,7 +30200,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 1068,
+          "line": 1070,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "`seasons must contain integers no greater than ${maxSeasonNumber}.`",
@@ -30263,7 +30263,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 2224,
+          "line": 2226,
           "kind": "message-helper-return",
           "field": "message",
           "expression": "'This ebook is already available.'",
@@ -30654,7 +30654,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 3102,
+          "line": 3104,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Episode Queue requests must specify exactly one starting episode in seasonRequests.'",
@@ -30793,7 +30793,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 4404,
+          "line": 4427,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'The request owner changed. Reload and try again.'",
@@ -31563,7 +31563,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 1530,
+          "line": 1532,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'mediaId must be a canonical StashDB scene ID.'",
@@ -31601,7 +31601,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 1345,
+          "line": 1347,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'mediaId must be a valid MusicBrainz resource ID.'",
@@ -31609,7 +31609,7 @@
         },
         {
           "path": "server/routes/request.ts",
-          "line": 1962,
+          "line": 1964,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'mediaId must be a valid MusicBrainz resource ID.'",
@@ -31801,7 +31801,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 1089,
+          "line": 1091,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'seasonRequests must be an array.'",
@@ -31860,7 +31860,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 3439,
+          "line": 3441,
           "kind": "authored-message-field",
           "field": "reason",
           "expression": "'Missing media ID.'",
@@ -31940,7 +31940,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 5701,
+          "line": 5724,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'A matching Sonarr server must be configured for this request.'",
@@ -31978,7 +31978,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 3249,
+          "line": 3251,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "`movieIds must contain between 1 and ${maxPersonMovieBulkRequestItems} valid movie IDs.`",
@@ -32003,7 +32003,7 @@
       "callsites": [
         {
           "path": "server/api/bookorbit.ts",
-          "line": 350,
+          "line": 340,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'BookOrbit library page is invalid or exceeds the scan limit.'",
@@ -32585,7 +32585,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 891,
+          "line": 893,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'requestTargetOptions contains missing or unsupported fields.'",
@@ -32994,7 +32994,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 1112,
+          "line": 1114,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'seasonRequests must contain selection objects.'",
@@ -34247,7 +34247,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 1768,
+          "line": 1770,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'preferredIsbn13 must be a valid ISBN.'",
@@ -34394,7 +34394,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 5623,
+          "line": 5646,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'This request cannot be retried from its current state.'",
@@ -34551,7 +34551,7 @@
         },
         {
           "path": "server/routes/request.ts",
-          "line": 1211,
+          "line": 1213,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Request body must be an object.'",
@@ -34559,7 +34559,7 @@
         },
         {
           "path": "server/routes/request.ts",
-          "line": 3351,
+          "line": 3353,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Request body must be an object.'",
@@ -35228,7 +35228,7 @@
         },
         {
           "path": "server/routes/request.ts",
-          "line": 2175,
+          "line": 2177,
           "kind": "message-helper-return",
           "field": "message",
           "expression": "'This album is blocklisted.'",
@@ -35444,7 +35444,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 5506,
+          "line": 5529,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'A TVDB ID and at least one season mapping are required.'",
@@ -35616,7 +35616,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 4548,
+          "line": 4571,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Requester-tag requests cannot be edited. Cancel the request and submit it again if needed.'",
@@ -35658,7 +35658,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 861,
+          "line": 863,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'requestTargetOptions are only valid when editing movie or TV requests.'",
@@ -36563,7 +36563,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 1295,
+          "line": 1297,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'requestQuotaApproval must be a boolean.'",
@@ -36978,7 +36978,7 @@
         },
         {
           "path": "server/routes/request.ts",
-          "line": 3466,
+          "line": 3468,
           "kind": "authored-message-field",
           "field": "reason",
           "expression": "'Unknown error.'",
@@ -36986,7 +36986,7 @@
         },
         {
           "path": "server/routes/request.ts",
-          "line": 3552,
+          "line": 3554,
           "kind": "authored-message-field",
           "field": "reason",
           "expression": "'Unknown error.'",
@@ -38491,7 +38491,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 870,
+          "line": 872,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'requestTargetOptions must be an object.'",
@@ -38621,7 +38621,7 @@
         },
         {
           "path": "server/api/bookorbit.ts",
-          "line": 247,
+          "line": 237,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'BookOrbit returned an invalid request.'",
@@ -38661,7 +38661,7 @@
       "callsites": [
         {
           "path": "server/api/bookorbit.ts",
-          "line": 355,
+          "line": 345,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'BookOrbit repeated a library book.'",
@@ -39033,7 +39033,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 4441,
+          "line": 4464,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'The request needs a TVDB identity and an owner with permission for its TV quality.'",
@@ -39174,7 +39174,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 1133,
+          "line": 1135,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'seasonRequests must not contain duplicate seasons.'",
@@ -39193,7 +39193,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 1416,
+          "line": 1418,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'mediaId must be a positive integer.'",
@@ -39473,7 +39473,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 1481,
+          "line": 1483,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'mediaId is required for magazine requests.'",
@@ -39641,7 +39641,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 831,
+          "line": 833,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "`tags must contain positive integers no greater than ${maxRequestIdValue}.`",
@@ -39869,7 +39869,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 1125,
+          "line": 1127,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "`seasonRequests must contain season numbers no greater than ${maxSeasonNumber}.`",
@@ -39921,7 +39921,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 4724,
+          "line": 4747,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'The selected user does not have permission to request this media.'",
@@ -39940,7 +39940,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 1459,
+          "line": 1461,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'mediaId is required for comic requests.'",
@@ -40077,7 +40077,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 5215,
+          "line": 5238,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "`${request.type} quota exceeded.`",
@@ -40339,7 +40339,7 @@
         },
         {
           "path": "server/routes/request.ts",
-          "line": 2236,
+          "line": 2238,
           "kind": "message-helper-return",
           "field": "message",
           "expression": "'Request for this book already exists.'",
@@ -40434,7 +40434,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 5920,
+          "line": 5943,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Only an active approved request download can be failed.'",
@@ -40455,7 +40455,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 5951,
+          "line": 5974,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to fail this download and start a new search. Refresh to check its current state.'",
@@ -40636,7 +40636,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 1939,
+          "line": 1941,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'mediaId must be a string.'",
@@ -41092,7 +41092,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 1577,
+          "line": 1579,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Choose either a request destination or advanced server override.'",
@@ -41559,7 +41559,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 3504,
+          "line": 3506,
           "kind": "authored-message-field",
           "field": "reason",
           "expression": "'Unable to process item.'",
@@ -41567,7 +41567,7 @@
         },
         {
           "path": "server/routes/request.ts",
-          "line": 3590,
+          "line": 3592,
           "kind": "authored-message-field",
           "field": "reason",
           "expression": "'Unable to process item.'",
@@ -41760,7 +41760,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 670,
+          "line": 672,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "`${fieldName} must be a ${\n          allowZero ? 'non-negative' : 'positive'\n        } integer no greater than ${maxRequestIdValue}.`",
@@ -42008,7 +42008,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 670,
+          "line": 672,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "`${fieldName} must be a ${\n          allowZero ? 'non-negative' : 'positive'\n        } integer no greater than ${maxRequestIdValue}.`",
@@ -42597,7 +42597,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 5348,
+          "line": 5371,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'You do not have permission to delete this request.'",
@@ -43037,7 +43037,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 4116,
+          "line": 4118,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'You do not have permission to view this request.'",
@@ -43045,7 +43045,7 @@
         },
         {
           "path": "server/routes/request.ts",
-          "line": 4167,
+          "line": 4190,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'You do not have permission to view this request.'",
@@ -43053,7 +43053,7 @@
         },
         {
           "path": "server/routes/request.ts",
-          "line": 4208,
+          "line": 4231,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'You do not have permission to view this request.'",
@@ -43061,7 +43061,7 @@
         },
         {
           "path": "server/routes/request.ts",
-          "line": 4330,
+          "line": 4353,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'You do not have permission to view this request.'",
@@ -43603,7 +43603,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 2453,
+          "line": 2455,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'You do not have permission to view adult requests.'",
@@ -43611,7 +43611,7 @@
         },
         {
           "path": "server/routes/request.ts",
-          "line": 3934,
+          "line": 3936,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'You do not have permission to view adult requests.'",
@@ -43766,7 +43766,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 1237,
+          "line": 1239,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'mediaType is invalid.'",
@@ -43823,7 +43823,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 5517,
+          "line": 5540,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Each season mapping must contain two season numbers.'",
@@ -43888,7 +43888,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 5635,
+          "line": 5658,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'This request cannot be retried until a listing with matching season numbers is selected.'",
@@ -44384,7 +44384,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 4051,
+          "line": 4053,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to retrieve request users.'",
@@ -44580,7 +44580,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 1585,
+          "line": 1587,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'requestServiceServerId is only valid for new requests.'",
@@ -44645,7 +44645,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 1242,
+          "line": 1244,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'mediaType is required.'",
@@ -44864,7 +44864,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 4419,
+          "line": 4442,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Episode Queue can only be configured for an active interactive series request.'",
@@ -45496,7 +45496,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 5719,
+          "line": 5742,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to verify official TVDB season data.'",
@@ -45688,7 +45688,7 @@
         },
         {
           "path": "server/routes/request.ts",
-          "line": 3420,
+          "line": 3422,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'You do not have permission to modify the request user.'",
@@ -45696,7 +45696,7 @@
         },
         {
           "path": "server/routes/request.ts",
-          "line": 4698,
+          "line": 4721,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'You do not have permission to modify the request user.'",
@@ -45742,7 +45742,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 1096,
+          "line": 1098,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "`seasonRequests are limited to ${maxSeasonCount} seasons.`",
@@ -46641,7 +46641,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 1568,
+          "line": 1570,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'requestServiceServerId is only valid for movie and series requests.'",
@@ -47356,7 +47356,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 1944,
+          "line": 1946,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'mediaId is required.'",
@@ -47413,7 +47413,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 1951,
+          "line": 1953,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "`mediaId must be ${maxBulkRequestItemTextLength} characters or fewer.`",
@@ -48076,7 +48076,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 1974,
+          "line": 1976,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'mediaId must be a valid Open Library resource ID.'",
@@ -48122,7 +48122,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 1353,
+          "line": 1355,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'mediaId is required for music requests.'",
@@ -48856,7 +48856,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 5880,
+          "line": 5903,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Choose a current download.'",
@@ -49035,7 +49035,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 5408,
+          "line": 5431,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'You do not have permission to delete this entry.'",
@@ -49043,7 +49043,7 @@
         },
         {
           "path": "server/routes/request.ts",
-          "line": 5445,
+          "line": 5468,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'You do not have permission to delete this entry.'",
@@ -50596,7 +50596,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 3179,
+          "line": 3181,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to submit request.'",
@@ -50604,7 +50604,7 @@
         },
         {
           "path": "server/routes/request.ts",
-          "line": 3217,
+          "line": 3219,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to submit request.'",
@@ -50646,7 +50646,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 2030,
+          "line": 2032,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Book editionId and authorId must be valid Open Library resource IDs.'",
@@ -50957,7 +50957,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 1451,
+          "line": 1453,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'mediaId must be a positive integer ComicVine volume ID.'",
@@ -51087,7 +51087,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 1159,
+          "line": 1161,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'episodeNumbers must contain positive integers no greater than 10000.'",
@@ -51379,7 +51379,7 @@
         },
         {
           "path": "server/routes/request.ts",
-          "line": 5228,
+          "line": 5251,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Future seasons are managed by Episode Queue or the season watch gate.'",
@@ -51476,7 +51476,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 4602,
+          "line": 4625,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Only request managers can reassign failed movie or TV requests.'",
@@ -51516,7 +51516,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 5660,
+          "line": 5683,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Manual season mapping is only available for failed TVDB resolution or season-mismatch requests.'",
@@ -51840,7 +51840,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 3809,
+          "line": 3811,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to retrieve request counts.'",
@@ -51897,7 +51897,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 5858,
+          "line": 5881,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to save the TV season mapping.'",
@@ -52180,7 +52180,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 4261,
+          "line": 4284,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Request download provider returned no file stream.'",
@@ -52695,7 +52695,7 @@
         },
         {
           "path": "server/routes/request.ts",
-          "line": 3119,
+          "line": 3121,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Partial series requests are disabled by the administrator.'",
@@ -52703,7 +52703,7 @@
         },
         {
           "path": "server/routes/request.ts",
-          "line": 4638,
+          "line": 4661,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Partial series requests are disabled by the administrator.'",
@@ -52711,7 +52711,7 @@
         },
         {
           "path": "server/routes/request.ts",
-          "line": 4938,
+          "line": 4961,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Partial series requests are disabled by the administrator.'",
@@ -52719,7 +52719,7 @@
         },
         {
           "path": "server/routes/request.ts",
-          "line": 4987,
+          "line": 5010,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Partial series requests are disabled by the administrator.'",
@@ -53133,7 +53133,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 4187,
+          "line": 4210,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to list request download copies.'",
@@ -54465,7 +54465,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 5458,
+          "line": 5481,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to delete the request status entry.'",
@@ -54492,7 +54492,7 @@
         },
         {
           "path": "server/routes/request.ts",
-          "line": 1491,
+          "line": 1493,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Magazine title must contain 1 to 256 characters.'",
@@ -55009,7 +55009,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 1424,
+          "line": 1426,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'mediaId is required for movie and series requests.'",
@@ -55133,7 +55133,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 809,
+          "line": 811,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'tags must be an array of integers.'",
@@ -55311,7 +55311,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 965,
+          "line": 967,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'requestTargetOptions.languageProfileId must be a non-negative integer or null.'",
@@ -55584,7 +55584,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 3864,
+          "line": 3866,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Book format filtering requires mediaType=book.'",
@@ -55605,7 +55605,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 1319,
+          "line": 1321,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'bypassStreamingRequestPolicy is only valid for new movie or series requests.'",
@@ -56800,7 +56800,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 1748,
+          "line": 1750,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'variantKey must be a MusicBrainz release id for music.'",
@@ -56819,7 +56819,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 3516,
+          "line": 3518,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "`${body.mediaType === MediaType.MUSIC ? 'Music' : 'Book'} quota exceeded.`",
@@ -57040,7 +57040,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 931,
+          "line": 933,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'requestTargetOptions.rootFolder must be a string or null.'",
@@ -57059,7 +57059,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 1180,
+          "line": 1182,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'seasonRequests are limited to 5000 selected episodes.'",
@@ -57681,7 +57681,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 5250,
+          "line": 5273,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Choose a different configured server to resubmit this failed request.'",
@@ -58447,7 +58447,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 4514,
+          "line": 4537,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Only pending requests can be edited.'",
@@ -58455,7 +58455,7 @@
         },
         {
           "path": "server/routes/request.ts",
-          "line": 4612,
+          "line": 4635,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Only pending requests can be edited.'",
@@ -58493,7 +58493,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 817,
+          "line": 819,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "`tags are limited to ${maxRequestTags} values.`",
@@ -59513,7 +59513,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 1658,
+          "line": 1660,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Sonarr metadata options are only valid for TV requests.'",
@@ -60867,7 +60867,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 3321,
+          "line": 3323,
           "kind": "authored-message-field",
           "field": "reason",
           "expression": "'Unable to process this movie.'",
@@ -60907,7 +60907,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 1332,
+          "line": 1334,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'requestQuotaApproval is only valid for new movie or TV requests.'",
@@ -61134,7 +61134,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 5085,
+          "line": 5108,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Series quota exceeded.'",
@@ -61750,7 +61750,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 5989,
+          "line": 6012,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'You do not have permission to update this request.'",
@@ -61922,7 +61922,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 4280,
+          "line": 4303,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to download this copy.'",
@@ -62009,7 +62009,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 1811,
+          "line": 1813,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Each selected requester option must include its corresponding value.'",
@@ -62285,7 +62285,7 @@
         },
         {
           "path": "server/routes/request.ts",
-          "line": 4705,
+          "line": 4728,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'User not found.'",
@@ -63308,7 +63308,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 1025,
+          "line": 1027,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'requesterSelectedOptions contains unsupported fields or values.'",
@@ -63354,7 +63354,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 1736,
+          "line": 1738,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Edition policy is only valid for book requests, and a release choice only for books and music.'",
@@ -64281,7 +64281,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 2192,
+          "line": 2194,
           "kind": "message-helper-return",
           "field": "message",
           "expression": "'Request for this album already exists.'",
@@ -64505,7 +64505,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 2232,
+          "line": 2234,
           "kind": "message-helper-return",
           "field": "message",
           "expression": "'Both requested book formats are already available.'",
@@ -64801,7 +64801,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 1046,
+          "line": 1048,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'seasons must be an array or all.'",
@@ -65377,7 +65377,7 @@
       "callsites": [
         {
           "path": "server/routes/request.ts",
-          "line": 3061,
+          "line": 3063,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'You must be logged in to request media.'",
@@ -65385,7 +65385,7 @@
         },
         {
           "path": "server/routes/request.ts",
-          "line": 3231,
+          "line": 3233,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'You must be logged in to request media.'",
@@ -65393,7 +65393,7 @@
         },
         {
           "path": "server/routes/request.ts",
-          "line": 3340,
+          "line": 3342,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'You must be logged in to request media.'",
@@ -65599,7 +65599,7 @@
         },
         {
           "path": "server/routes/request.ts",
-          "line": 4995,
+          "line": 5018,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'No seasons available to request'",
@@ -65863,7 +65863,7 @@
         },
         {
           "path": "server/routes/request.ts",
-          "line": 1054,
+          "line": 1056,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "`seasons are limited to ${maxSeasonCount} values.`",
@@ -79895,7 +79895,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 208,
+      "line": 210,
       "kind": "app-error-candidate",
       "field": "message",
       "expression": "400",
@@ -79904,7 +79904,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 227,
+      "line": 229,
       "kind": "app-error-candidate",
       "field": "message",
       "expression": "409",
@@ -79913,7 +79913,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 248,
+      "line": 250,
       "kind": "app-error-candidate",
       "field": "message",
       "expression": "409",
@@ -79922,7 +79922,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 263,
+      "line": 265,
       "kind": "app-error-candidate",
       "field": "message",
       "expression": "502",
@@ -79931,7 +79931,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 271,
+      "line": 273,
       "kind": "app-error-candidate",
       "field": "message",
       "expression": "409",
@@ -79940,7 +79940,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 293,
+      "line": 295,
       "kind": "app-error-candidate",
       "field": "message",
       "expression": "409",
@@ -79949,7 +79949,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 308,
+      "line": 310,
       "kind": "app-error-candidate",
       "field": "message",
       "expression": "502",
@@ -79958,7 +79958,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 316,
+      "line": 318,
       "kind": "app-error-candidate",
       "field": "message",
       "expression": "409",
@@ -79967,7 +79967,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 445,
+      "line": 447,
       "kind": "message-helper-return",
       "field": "message",
       "expression": "days > 0\n    ? new Date(Date.now() - days * 24 * 60 * 60 * 1000)\n    : undefined",
@@ -79976,7 +79976,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 445,
+      "line": 447,
       "kind": "message-helper-return",
       "field": "message",
       "expression": "days > 0\n    ? new Date(Date.now() - days * 24 * 60 * 60 * 1000)\n    : undefined",
@@ -79985,7 +79985,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 462,
+      "line": 464,
       "kind": "message-helper-expression",
       "field": "message",
       "expression": "({\n  errorMessage: error instanceof Error ? error.message : 'Unknown error',\n  errorStack: error instanceof Error ? error.stack : undefined,\n})",
@@ -79994,7 +79994,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 463,
+      "line": 465,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : 'Unknown error'",
@@ -80003,7 +80003,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 513,
+      "line": 515,
       "kind": "authored-message-variable",
       "field": "getUnavailableCategoryMessage",
       "expression": "(category: MediaCategoryKey): string =>\n  isMediaCategoryEnabled(category)\n    ? `${getMediaCategoryLabel(category)} requests are unavailable for this user.`\n    : `${getMediaCategoryLabel(category)} requests are disabled by the administrator.`",
@@ -80012,7 +80012,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 541,
+      "line": 543,
       "kind": "protocol-helper-expression",
       "field": "message",
       "expression": "status.downloadId\n    ? { ...status, downloadId: aliasDownloadId(status.downloadId) }\n    : status",
@@ -80021,7 +80021,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 541,
+      "line": 543,
       "kind": "protocol-helper-expression",
       "field": "message",
       "expression": "status.downloadId\n    ? { ...status, downloadId: aliasDownloadId(status.downloadId) }\n    : status",
@@ -80030,19 +80030,10 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 628,
+      "line": 630,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "error.message",
-      "source": "{value0}",
-      "reason": "dynamic/provider/user value"
-    },
-    {
-      "path": "server/routes/request.ts",
-      "line": 642,
-      "kind": "message-helper-return",
-      "field": "message",
-      "expression": "MediaRequestStatus.APPROVED",
       "source": "{value0}",
       "reason": "dynamic/provider/user value"
     },
@@ -80051,7 +80042,7 @@
       "line": 644,
       "kind": "message-helper-return",
       "field": "message",
-      "expression": "MediaRequestStatus.DECLINED",
+      "expression": "MediaRequestStatus.APPROVED",
       "source": "{value0}",
       "reason": "dynamic/provider/user value"
     },
@@ -80060,13 +80051,22 @@
       "line": 646,
       "kind": "message-helper-return",
       "field": "message",
+      "expression": "MediaRequestStatus.DECLINED",
+      "source": "{value0}",
+      "reason": "dynamic/provider/user value"
+    },
+    {
+      "path": "server/routes/request.ts",
+      "line": 648,
+      "kind": "message-helper-return",
+      "field": "message",
       "expression": "undefined",
       "source": "{value0}",
       "reason": "dynamic/provider/user value"
     },
     {
       "path": "server/routes/request.ts",
-      "line": 668,
+      "line": 670,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "{\n        status: 400,\n        message: `${fieldName} must be a ${\n          allowZero ? 'non-negative' : 'positive'\n        } integer no greater than ${maxRequestIdValue}.`,\n      }",
@@ -80075,7 +80075,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 773,
+      "line": 775,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "{ status: 400, message: parsed.error }",
@@ -80084,7 +80084,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 773,
+      "line": 775,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "parsed.error",
@@ -80093,7 +80093,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 793,
+      "line": 795,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "{\n      status: 400,\n      message: 'format must be ebook, audiobook, or both.',\n    }",
@@ -80102,7 +80102,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 809,
+      "line": 811,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "{ status: 400, message: 'tags must be an array of integers.' }",
@@ -80111,7 +80111,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 815,
+      "line": 817,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "{\n        status: 400,\n        message: `tags are limited to ${maxRequestTags} values.`,\n      }",
@@ -80120,7 +80120,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 829,
+      "line": 831,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "{\n          status: 400,\n          message: `tags must contain positive integers no greater than ${maxRequestIdValue}.`,\n        }",
@@ -80129,7 +80129,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 858,
+      "line": 860,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "{\n        status: 400,\n        message:\n          'requestTargetOptions are only valid when editing movie or TV requests.',\n      }",
@@ -80138,7 +80138,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 868,
+      "line": 870,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "{\n        status: 400,\n        message: 'requestTargetOptions must be an object.',\n      }",
@@ -80147,7 +80147,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 889,
+      "line": 891,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "{\n        status: 400,\n        message: 'requestTargetOptions contains missing or unsupported fields.',\n      }",
@@ -80156,7 +80156,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 908,
+      "line": 910,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "{\n            status: 400,\n            message:\n              'requestTargetOptions.profileId must be a non-negative integer or null.',\n          }",
@@ -80165,7 +80165,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 928,
+      "line": 930,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "{\n            status: 400,\n            message:\n              'requestTargetOptions.rootFolder must be a string or null.',\n          }",
@@ -80174,7 +80174,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 941,
+      "line": 943,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "{\n            status: 400,\n            message: 'requestTargetOptions.tags must be an array or null.',\n          }",
@@ -80183,7 +80183,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 962,
+      "line": 964,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "{\n              status: 400,\n              message:\n                'requestTargetOptions.languageProfileId must be a non-negative integer or null.',\n            }",
@@ -80192,7 +80192,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 997,
+      "line": 999,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "{\n        status: 400,\n        message:\n          'requesterSelectedOptions are only valid for new movie or TV requests.',\n      }",
@@ -80201,7 +80201,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 1007,
+      "line": 1009,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "{\n        status: 400,\n        message: 'requesterSelectedOptions must be an object.',\n      }",
@@ -80210,7 +80210,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 1022,
+      "line": 1024,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "{\n        status: 400,\n        message:\n          'requesterSelectedOptions contains unsupported fields or values.',\n      }",
@@ -80219,7 +80219,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 1046,
+      "line": 1048,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "{ status: 400, message: 'seasons must be an array or all.' }",
@@ -80228,7 +80228,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 1052,
+      "line": 1054,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "{\n        status: 400,\n        message: `seasons are limited to ${maxSeasonCount} values.`,\n      }",
@@ -80237,7 +80237,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 1066,
+      "line": 1068,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "{\n          status: 400,\n          message: `seasons must contain integers no greater than ${maxSeasonNumber}.`,\n        }",
@@ -80246,7 +80246,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 1089,
+      "line": 1091,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "{ status: 400, message: 'seasonRequests must be an array.' }",
@@ -80255,7 +80255,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 1094,
+      "line": 1096,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "{\n        status: 400,\n        message: `seasonRequests are limited to ${maxSeasonCount} seasons.`,\n      }",
@@ -80264,7 +80264,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 1110,
+      "line": 1112,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "{\n          status: 400,\n          message: 'seasonRequests must contain selection objects.',\n        }",
@@ -80273,7 +80273,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 1123,
+      "line": 1125,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "{\n          status: 400,\n          message: `seasonRequests must contain season numbers no greater than ${maxSeasonNumber}.`,\n        }",
@@ -80282,7 +80282,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 1131,
+      "line": 1133,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "{\n          status: 400,\n          message: 'seasonRequests must not contain duplicate seasons.',\n        }",
@@ -80291,7 +80291,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 1142,
+      "line": 1144,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "{\n            status: 400,\n            message: 'episodeNumbers must be an array of positive integers.',\n          }",
@@ -80300,7 +80300,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 1156,
+      "line": 1158,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "{\n              status: 400,\n              message:\n                'episodeNumbers must contain positive integers no greater than 10000.',\n            }",
@@ -80309,7 +80309,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 1169,
+      "line": 1171,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "{\n            status: 400,\n            message: 'A partial season request must include an episode.',\n          }",
@@ -80318,7 +80318,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 1178,
+      "line": 1180,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "{\n            status: 400,\n            message: 'seasonRequests are limited to 5000 selected episodes.',\n          }",
@@ -80327,7 +80327,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 1209,
+      "line": 1211,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "{\n        status: 400,\n        message: 'Request body must be an object.',\n      }",
@@ -80336,7 +80336,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 1224,
+      "line": 1226,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "{\n        status: 403,\n        message:\n          'Episode Queue is managed by an administrator from the user profile.',\n      }",
@@ -80345,7 +80345,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 1237,
+      "line": 1239,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "{ status: 400, message: 'mediaType is invalid.' }",
@@ -80354,7 +80354,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 1242,
+      "line": 1244,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "{ status: 400, message: 'mediaType is required.' }",
@@ -80363,7 +80363,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 1246,
+      "line": 1248,
       "kind": "authored-message-variable",
       "field": "futureSeasonError",
       "expression": "validateFutureSeasonPreference(\n    bodyObject.monitorFutureSeasons,\n    mediaType\n  )",
@@ -80372,7 +80372,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 1251,
+      "line": 1253,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "{ status: 400, message: futureSeasonError }",
@@ -80381,7 +80381,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 1251,
+      "line": 1253,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "futureSeasonError",
@@ -80390,7 +80390,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 1255,
+      "line": 1257,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "{\n        status: 400,\n        message: 'is4k must be a boolean.',\n      }",
@@ -80399,7 +80399,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 1267,
+      "line": 1269,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "{\n        status: 400,\n        message: 'requesterTagOnly must be a boolean.',\n      }",
@@ -80408,7 +80408,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 1280,
+      "line": 1282,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "{\n        status: 400,\n        message:\n          'Requester tag-only mode is only valid for new movie or TV requests.',\n      }",
@@ -80417,7 +80417,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 1293,
+      "line": 1295,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "{\n        status: 400,\n        message: 'requestQuotaApproval must be a boolean.',\n      }",
@@ -80426,7 +80426,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 1304,
+      "line": 1306,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "{\n        status: 400,\n        message: 'bypassStreamingRequestPolicy must be a boolean.',\n      }",
@@ -80435,7 +80435,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 1316,
+      "line": 1318,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "{\n        status: 400,\n        message:\n          'bypassStreamingRequestPolicy is only valid for new movie or series requests.',\n      }",
@@ -80444,7 +80444,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 1329,
+      "line": 1331,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "{\n        status: 400,\n        message:\n          'requestQuotaApproval is only valid for new movie or TV requests.',\n      }",
@@ -80453,7 +80453,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 1343,
+      "line": 1345,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "{\n          status: 400,\n          message: 'mediaId must be a valid MusicBrainz resource ID.',\n        }",
@@ -80462,7 +80462,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 1351,
+      "line": 1353,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "{\n        status: 400,\n        message: 'mediaId is required for music requests.',\n      }",
@@ -80471,7 +80471,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 1393,
+      "line": 1395,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "{\n            status: 400,\n            message: `${field} must be a valid Open Library resource ID.`,\n          }",
@@ -80480,7 +80480,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 1402,
+      "line": 1404,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "{\n          status: 400,\n          message: 'mediaId is required for book requests.',\n        }",
@@ -80489,7 +80489,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 1414,
+      "line": 1416,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "{\n          status: 400,\n          message: 'mediaId must be a positive integer.',\n        }",
@@ -80498,7 +80498,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 1422,
+      "line": 1424,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "{\n          status: 400,\n          message: 'mediaId is required for movie and series requests.',\n        }",
@@ -80507,7 +80507,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 1432,
+      "line": 1434,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "{\n            status: 400,\n            message: 'tvdbId must be a positive integer.',\n          }",
@@ -80516,7 +80516,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 1449,
+      "line": 1451,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "{\n          status: 400,\n          message: 'mediaId must be a positive integer ComicVine volume ID.',\n        }",
@@ -80525,7 +80525,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 1457,
+      "line": 1459,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "{\n          status: 400,\n          message: 'mediaId is required for comic requests.',\n        }",
@@ -80534,7 +80534,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 1479,
+      "line": 1481,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "{\n          status: 400,\n          message: 'mediaId is required for magazine requests.',\n        }",
@@ -80543,7 +80543,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 1489,
+      "line": 1491,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "{\n            status: 400,\n            message: 'Magazine title must contain 1 to 256 characters.',\n          }",
@@ -80552,7 +80552,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 1507,
+      "line": 1509,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "{\n          status: 400,\n          message: 'mediaId must be a canonical Sportarr league ID.',\n        }",
@@ -80561,7 +80561,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 1515,
+      "line": 1517,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "{\n          status: 400,\n          message: 'mediaId is required for sports requests.',\n        }",
@@ -80570,7 +80570,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 1528,
+      "line": 1530,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "{\n          status: 400,\n          message: 'mediaId must be a canonical StashDB scene ID.',\n        }",
@@ -80579,7 +80579,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 1536,
+      "line": 1538,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "{\n          status: 400,\n          message: 'mediaId is required for adult requests.',\n        }",
@@ -80588,7 +80588,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 1565,
+      "line": 1567,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "{\n          status: 400,\n          message:\n            'requestServiceServerId is only valid for movie and series requests.',\n        }",
@@ -80597,7 +80597,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 1574,
+      "line": 1576,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "{\n          status: 400,\n          message:\n            'Choose either a request destination or advanced server override.',\n        }",
@@ -80606,7 +80606,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 1583,
+      "line": 1585,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "{\n          status: 400,\n          message: 'requestServiceServerId is only valid for new requests.',\n        }",
@@ -80615,7 +80615,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 1642,
+      "line": 1644,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "{\n            status: 400,\n            message: 'sonarrSeasonType must be a valid Sonarr order name.',\n          }",
@@ -80624,7 +80624,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 1656,
+      "line": 1658,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "{\n        status: 400,\n        message: 'Sonarr metadata options are only valid for TV requests.',\n      }",
@@ -80633,7 +80633,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 1713,
+      "line": 1715,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "{\n        status: 400,\n        message: 'editionPolicy must be only, either, or alongside.',\n      }",
@@ -80642,7 +80642,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 1733,
+      "line": 1735,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "{\n        status: 400,\n        message:\n          'Edition policy is only valid for book requests, and a release choice only for books and music.',\n      }",
@@ -80651,7 +80651,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 1746,
+      "line": 1748,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "{\n        status: 400,\n        message: 'variantKey must be a MusicBrainz release id for music.',\n      }",
@@ -80660,7 +80660,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 1766,
+      "line": 1768,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "{\n        status: 400,\n        message: 'preferredIsbn13 must be a valid ISBN.',\n      }",
@@ -80669,7 +80669,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 1778,
+      "line": 1780,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "{\n        status: 400,\n        message: 'Edition preferences are only valid for book requests.',\n      }",
@@ -80678,7 +80678,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 1808,
+      "line": 1810,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "{\n        status: 400,\n        message:\n          'Each selected requester option must include its corresponding value.',\n      }",
@@ -80687,7 +80687,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 1841,
+      "line": 1843,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "{\n        status: 400,\n        message: 'seasons are required for series requests.',\n      }",
@@ -80696,7 +80696,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 1853,
+      "line": 1855,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "{\n        status: 400,\n        message:\n          'Requester tag-only mode requires a full-series selection without episode overrides.',\n      }",
@@ -80705,7 +80705,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 1928,
+      "line": 1930,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "{\n          status: 400,\n          message: 'items must contain request objects.',\n        }",
@@ -80714,7 +80714,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 1939,
+      "line": 1941,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "{ status: 400, message: 'mediaId must be a string.' }",
@@ -80723,7 +80723,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 1944,
+      "line": 1946,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "{ status: 400, message: 'mediaId is required.' }",
@@ -80732,7 +80732,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 1949,
+      "line": 1951,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "{\n          status: 400,\n          message: `mediaId must be ${maxBulkRequestItemTextLength} characters or fewer.`,\n        }",
@@ -80741,7 +80741,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 1960,
+      "line": 1962,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "{\n          status: 400,\n          message: 'mediaId must be a valid MusicBrainz resource ID.',\n        }",
@@ -80750,7 +80750,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 1972,
+      "line": 1974,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "{\n          status: 400,\n          message: 'mediaId must be a valid Open Library resource ID.',\n        }",
@@ -80759,7 +80759,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 2027,
+      "line": 2029,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "{\n          status: 400,\n          message:\n            'Book editionId and authorId must be valid Open Library resource IDs.',\n        }",
@@ -80768,7 +80768,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 2163,
+      "line": 2165,
       "kind": "authored-message-variable",
       "field": "getBulkCoveredReason",
       "expression": "async (\n  mediaType: MediaType.MUSIC | MediaType.BOOK,\n  mediaId: string,\n  format?: 'ebook' | 'audiobook' | 'both'\n): Promise<string | undefined> => {\n  if (mediaType === MediaType.MUSIC) {\n    const normalizedMediaId = normalizeMusicBrainzId(mediaId);\n    const media = await getRepository(Media).findOne({\n      where: { mbId: normalizedMediaId, mediaType: MediaType.MUSIC },\n    });\n\n    if (media?.status === MediaStatus.BLOCKLISTED) {\n      return 'This album is blocklisted.';\n    }\n\n    if (media?.status === MediaStatus.AVAILABLE) {\n      return 'This album is already available.';\n    }\n\n    const hasActiveRequest = media\n      ? await getRepository(MediaRequest)\n          .createQueryBuilder('request')\n          .where('request.media = :mediaId', { mediaId: media.id })\n          .andWhere('request.status NOT IN (:...inactiveStatuses)', {\n            inactiveStatuses: inactiveMediaRequestStatuses,\n          })\n          .getExists()\n      : false;\n    if (hasActiveRequest) {\n      return 'Request for this album already exists.';\n    }\n\n    return undefined;\n  }\n\n  const normalizedOpenLibraryId = normalizeOpenLibraryWorkId(mediaId);\n  const identifier = await getRepository(MediaIdentifier).findOne({\n    where: {\n      provider: MediaIdentifierProvider.OPENLIBRARY,\n      value: normalizedOpenLibraryId,\n    },\n    relations: { media: true },\n    relationLoadStrategy: 'query',\n  });\n  const media = identifier?.media;\n\n  if (!media || media.mediaType !== MediaType.BOOK) {\n    return undefined;\n  }\n\n  if (media.status === MediaStatus.BLOCKLISTED) {\n    return 'This book is blocklisted.';\n  }\n\n  const requestedFormat = format ?? 'ebook';\n  const observedMedia =\n    (await projectBookFileObservations([media])).get(media.id) ?? media;\n  const ebookAvailable = hasAvailableBookFormat(observedMedia, 'ebook');\n  const audiobookAvailable = hasAvailableBookFormat(observedMedia, 'audiobook');\n\n  if (requestedFormat === 'ebook' && ebookAvailable) {\n    return 'This ebook is already available.';\n  }\n\n  if (requestedFormat === 'audiobook' && audiobookAvailable) {\n    return 'This audiobook is already available.';\n  }\n\n  if (requestedFormat === 'both' && ebookAvailable && audiobookAvailable) {\n    return 'Both requested book formats are already available.';\n  }\n\n  if (await hasActiveOverlappingBookRequest(media.id, requestedFormat)) {\n    return 'Request for this book already exists.';\n  }\n\n  return undefined;\n}",
@@ -80777,7 +80777,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 2195,
+      "line": 2197,
       "kind": "message-helper-return",
       "field": "message",
       "expression": "undefined",
@@ -80786,7 +80786,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 2210,
+      "line": 2212,
       "kind": "message-helper-return",
       "field": "message",
       "expression": "undefined",
@@ -80795,7 +80795,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 2239,
+      "line": 2241,
       "kind": "message-helper-return",
       "field": "message",
       "expression": "undefined",
@@ -80804,7 +80804,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 2257,
+      "line": 2259,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "parsedIncludeStatus.error",
@@ -80813,7 +80813,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 2266,
+      "line": 2268,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "parsedMediaType.error",
@@ -80822,7 +80822,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 2276,
+      "line": 2278,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "parsedFilter.error",
@@ -80831,7 +80831,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 2286,
+      "line": 2288,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "parsedSort.error",
@@ -80840,7 +80840,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 2308,
+      "line": 2310,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "parsedSortDirection.error",
@@ -80849,7 +80849,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 3033,
+      "line": 3035,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "e.message",
@@ -80858,7 +80858,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 3044,
+      "line": 3046,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "e instanceof Error ? e.message : 'Unable to retrieve requests.'",
@@ -80867,7 +80867,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 3131,
+      "line": 3133,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "getUnavailableCategoryMessage(disabledCategory)",
@@ -80876,7 +80876,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 3183,
+      "line": 3185,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "error.message",
@@ -80885,16 +80885,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 3190,
-      "kind": "authored-message-field",
-      "field": "message",
-      "expression": "error.message",
-      "source": "{value0}",
-      "reason": "dynamic/provider/user value"
-    },
-    {
-      "path": "server/routes/request.ts",
-      "line": 3199,
+      "line": 3192,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "error.message",
@@ -80948,7 +80939,16 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 3268,
+      "line": 3211,
+      "kind": "authored-message-field",
+      "field": "message",
+      "expression": "error.message",
+      "source": "{value0}",
+      "reason": "dynamic/provider/user value"
+    },
+    {
+      "path": "server/routes/request.ts",
+      "line": 3270,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "getUnavailableCategoryMessage(disabledCategory)",
@@ -80957,16 +80957,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 3292,
-      "kind": "authored-message-field",
-      "field": "reason",
-      "expression": "error.message",
-      "source": "{value0}",
-      "reason": "dynamic/provider/user value"
-    },
-    {
-      "path": "server/routes/request.ts",
-      "line": 3301,
+      "line": 3294,
       "kind": "authored-message-field",
       "field": "reason",
       "expression": "error.message",
@@ -80984,7 +80975,16 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 3312,
+      "line": 3305,
+      "kind": "authored-message-field",
+      "field": "reason",
+      "expression": "error.message",
+      "source": "{value0}",
+      "reason": "dynamic/provider/user value"
+    },
+    {
+      "path": "server/routes/request.ts",
+      "line": 3314,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "error.message",
@@ -80993,7 +80993,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 3399,
+      "line": 3401,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "getUnavailableCategoryMessage(disabledCategory)",
@@ -81002,7 +81002,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 3445,
+      "line": 3447,
       "kind": "authored-message-variable",
       "field": "coveredReason",
       "expression": "await getBulkCoveredReason(\n            body.mediaType,\n            item.mediaId,\n            body.format\n          )",
@@ -81011,7 +81011,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 3455,
+      "line": 3457,
       "kind": "authored-message-field",
       "field": "reason",
       "expression": "coveredReason",
@@ -81020,7 +81020,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 3478,
+      "line": 3480,
       "kind": "authored-message-field",
       "field": "reason",
       "expression": "error.message",
@@ -81029,7 +81029,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 3488,
+      "line": 3490,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "error.message",
@@ -81038,7 +81038,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 3492,
+      "line": 3494,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "error.message",
@@ -81047,7 +81047,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 3564,
+      "line": 3566,
       "kind": "authored-message-field",
       "field": "reason",
       "expression": "error.message",
@@ -81056,7 +81056,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 3574,
+      "line": 3576,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "error.message",
@@ -81065,7 +81065,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 3578,
+      "line": 3580,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "error.message",
@@ -81074,7 +81074,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 3807,
+      "line": 3809,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "e.message",
@@ -81083,7 +81083,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 3846,
+      "line": 3848,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "parsedMediaType.error",
@@ -81092,7 +81092,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 3854,
+      "line": 3856,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "parsedBookFormat.error",
@@ -81101,7 +81101,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 3876,
+      "line": 3878,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "parsedFilter.error",
@@ -81110,7 +81110,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 3884,
+      "line": 3886,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "parsedSort.error",
@@ -81119,7 +81119,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 3895,
+      "line": 3897,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "parsedSortDirection.error",
@@ -81128,7 +81128,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 3903,
+      "line": 3905,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "parsedTimeFrame.error",
@@ -81137,7 +81137,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 3910,
+      "line": 3912,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "parsedSearch.error",
@@ -81146,7 +81146,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 4347,
+      "line": 4370,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "e.message",
@@ -81155,7 +81155,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 5023,
+      "line": 5046,
       "kind": "app-error-candidate",
       "field": "message",
       "expression": "503",
@@ -81164,7 +81164,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 5029,
+      "line": 5052,
       "kind": "app-error-candidate",
       "field": "message",
       "expression": "503",
@@ -81173,7 +81173,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 5047,
+      "line": 5070,
       "kind": "app-error-candidate",
       "field": "message",
       "expression": "403",
@@ -81182,7 +81182,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 5255,
+      "line": 5278,
       "kind": "persisted-message-assignment",
       "field": "failureReason",
       "expression": "null",
@@ -81191,7 +81191,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 5308,
+      "line": 5331,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "e.message",
@@ -81200,7 +81200,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 5311,
+      "line": 5334,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "e.message",
@@ -81209,7 +81209,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 5314,
+      "line": 5337,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "e.message",
@@ -81218,7 +81218,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 5366,
+      "line": 5389,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "e.message",
@@ -81227,7 +81227,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 5449,
+      "line": 5472,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "e.message",
@@ -81236,16 +81236,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 5454,
-      "kind": "authored-message-field",
-      "field": "errorMessage",
-      "expression": "e instanceof Error ? e.message : String(e)",
-      "source": "{value0}",
-      "reason": "dynamic/provider/user value"
-    },
-    {
-      "path": "server/routes/request.ts",
-      "line": 5454,
+      "line": 5477,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "e instanceof Error ? e.message : String(e)",
@@ -81254,7 +81245,16 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 5797,
+      "line": 5477,
+      "kind": "authored-message-field",
+      "field": "errorMessage",
+      "expression": "e instanceof Error ? e.message : String(e)",
+      "source": "{value0}",
+      "reason": "dynamic/provider/user value"
+    },
+    {
+      "path": "server/routes/request.ts",
+      "line": 5820,
       "kind": "persisted-message-assignment",
       "field": "failureReason",
       "expression": "null",
@@ -81263,7 +81263,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 5841,
+      "line": 5864,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "e.message",
@@ -81272,7 +81272,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 5844,
+      "line": 5867,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "e.message",
@@ -81281,7 +81281,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 5847,
+      "line": 5870,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "e.message",
@@ -81290,7 +81290,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 5852,
+      "line": 5875,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "e.message",
@@ -81299,7 +81299,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 5940,
+      "line": 5963,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "error.message",
@@ -81308,7 +81308,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 5946,
+      "line": 5969,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -81317,7 +81317,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 5946,
+      "line": 5969,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -81326,7 +81326,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 5993,
+      "line": 6016,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "error.message",
@@ -81335,7 +81335,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 5996,
+      "line": 6019,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "error.message",
@@ -81344,7 +81344,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 5999,
+      "line": 6022,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "error.message",
@@ -81353,7 +81353,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 6004,
+      "line": 6027,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -81362,7 +81362,7 @@
     },
     {
       "path": "server/routes/request.ts",
-      "line": 6004,
+      "line": 6027,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "error instanceof Error ? error.message : String(error)",
