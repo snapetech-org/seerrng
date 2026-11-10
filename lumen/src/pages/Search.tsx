@@ -23,6 +23,7 @@ import {
   saveRecentSearches,
 } from '../recentSearches';
 import { usePrefs } from '../settings';
+import { friendlyError } from '../errors';
 
 const SCOPES = {
   all: 'All',
@@ -111,7 +112,7 @@ export default function Search() {
       let error: string | null = null;
       let catalogueUnavailable = false;
       const failure = (e: unknown) => {
-        error = e instanceof Error ? e.message : 'Search failed';
+        error = friendlyError(e, 'Search failed');
         return null;
       };
       const [tr, ...brs] = await Promise.all([

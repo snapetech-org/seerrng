@@ -11,6 +11,7 @@ import {
   shared,
 } from './apiCache';
 import { onSessionReset, sessionGeneration } from './sessionState';
+import { friendlyError } from './errors';
 
 // A saved answer shows at once; a fresh one isn't asked for again (see apiCache.ts).
 export function useApi<T>(path: string | null) {
@@ -38,7 +39,7 @@ export function useApi<T>(path: string | null) {
       .catch((e) => {
         // a saved answer stays up if refreshing it fails
         if (live && saved === undefined) {
-          setError(e instanceof Error ? e.message : 'Failed to load');
+          setError(friendlyError(e, 'Failed to load'));
           setErrorStatus(e instanceof ApiError ? e.status : 0);
         }
       });
@@ -204,8 +205,7 @@ export function usePaged<T>(base: string) {
       setPage(d.page);
       setTotal(d.totalPages || 1);
     } catch (e) {
-      if (ownsRequest())
-        setError(e instanceof Error ? e.message : 'Failed to load');
+      if (ownsRequest()) setError(friendlyError(e, 'Failed to load'));
     } finally {
       if (ownsRequest()) {
         inFlight.current = null;

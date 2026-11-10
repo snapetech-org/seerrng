@@ -33,6 +33,8 @@ import { useToast } from '../components/toast';
 import { useApi, usePublicSettings } from '../hooks';
 import { Icon } from '../icons';
 import { usePrefs } from '../settings';
+import { friendlyError } from '../errors';
+import { scrollBehavior } from '../motion';
 
 type SeasonState = 'have' | 'part' | 'asked' | 'none';
 const stateOf = (status?: number): SeasonState =>
@@ -105,7 +107,7 @@ export default function TvDetail() {
     if (t && loc.hash === '#seasons')
       document
         .getElementById('seasons')
-        ?.scrollIntoView({ behavior: 'smooth' });
+        ?.scrollIntoView({ behavior: scrollBehavior() });
   }, [t, loc.hash]);
 
   if (error)
@@ -144,7 +146,7 @@ export default function TvDetail() {
       );
       refresh();
     } catch (e) {
-      toast(e instanceof Error ? e.message : 'Request failed');
+      toast(friendlyError(e, 'Request failed'));
     } finally {
       setBusy(false);
     }

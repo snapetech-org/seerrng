@@ -23,6 +23,8 @@ import { Icon, type IconName } from '../icons';
 import { usePrefs } from '../settings';
 import { useQuickRequest } from './requestSheet';
 import { useToast } from './toast';
+import { friendlyError } from '../errors';
+import { scrollBehavior } from '../motion';
 
 // A stable theme-owned tone per title keeps drawn covers consistent between visits.
 function toneOf(text: string) {
@@ -223,7 +225,7 @@ export function TitleCard({ it, meta }: { it: TitleResult; meta?: string }) {
       markRequested();
       toast(`Requested ${titleOf(it)}${tv ? ' · entire series' : ''}`);
     } catch (e) {
-      toast(e instanceof Error ? e.message : 'Request failed');
+      toast(friendlyError(e, 'Request failed'));
     }
   };
   const quick = useQuickRequest(it, go, (is4k) => {
@@ -349,7 +351,7 @@ export function BookCard({ b }: { b: BookResult }) {
       dropBookStates();
       toast(`Requested ${b.title} · ${audio ? 'audiobook' : 'ebook'}`);
     } catch (e) {
-      toast(e instanceof Error ? e.message : 'Request failed');
+      toast(friendlyError(e, 'Request failed'));
     }
   };
   const [request, busy] = useBusy(go);
@@ -472,7 +474,7 @@ export function FeatCard({
       setDone('Requested');
       toast(`Requested ${titleOf(it)}${tv ? ' · entire series' : ''}`);
     } catch (e) {
-      toast(e instanceof Error ? e.message : 'Request failed');
+      toast(friendlyError(e, 'Request failed'));
     }
   };
   const quick = useQuickRequest(it, go, (is4k) => {
@@ -573,7 +575,7 @@ export function Rail({
   const by = (d: number) =>
     ref.current?.scrollBy({
       left: d * ref.current.clientWidth * 0.85,
-      behavior: 'smooth',
+      behavior: scrollBehavior(),
     });
   return (
     <div className="rail-wrap">

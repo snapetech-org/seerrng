@@ -32,6 +32,7 @@ import { ServiceNote } from '../components/extra';
 import { useToast } from '../components/toast';
 import { useApi, usePublicSettings } from '../hooks';
 import { Icon } from '../icons';
+import { friendlyError } from '../errors';
 
 const cert = (m: MovieDetails) =>
   m.releases?.results
@@ -99,7 +100,7 @@ export default function MovieDetail() {
       toast(`Requested ${m.title}${is4k ? ' in 4K' : ''}`);
       refresh();
     } catch (e) {
-      toast(e instanceof Error ? e.message : 'Request failed');
+      toast(friendlyError(e, 'Request failed'));
     } finally {
       setBusy(false);
     }

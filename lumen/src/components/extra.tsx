@@ -8,6 +8,7 @@ import { Glyph, statusOf, type Stat } from './cards';
 import { Pill } from './detail';
 import { Avatar, fullSeerrUrl } from './Shell';
 import { useToast } from './toast';
+import { friendlyError } from '../errors';
 
 // The pieces the extra categories share: a poster card, the page header, the status-aware
 // request button and the "this category is off" notice.
@@ -138,7 +139,7 @@ export function RequestButton({
       setDone(true);
       toast('Requested');
     } catch (e) {
-      toast(e instanceof Error ? e.message : 'Request failed');
+      toast(friendlyError(e, 'Request failed'));
     } finally {
       setBusy(false);
     }
