@@ -2692,7 +2692,7 @@ describe('MediaRequestSubscriber service dispatch', () => {
     const submit = mock.method(
       BookOrbitAPI.prototype,
       'submitPair',
-      async (input) => {
+      async (input: Parameters<BookOrbitAPI['submitPair']>[0]) => {
         payload = input;
         return {
           ebook: {
