@@ -1,0 +1,93 @@
+name: Windows package validation
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  package:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: windows-2025
+            arch: x64
+          - runner: windows-11-vs2026-arm
+            arch: arm64
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: package.json
+          architecture: ${{ matrix.arch }}
+          package-manager-cache: false
+      - name: Prepare package manager metadata
+        shell: bash
+        run: printf '{"name":"seerrng-release-tooling","private":true}\n' > .github/release-pnpm-tooling.json
+      - uses: pnpm/action-setup@73e46992e05b19abd31f2f3c20e0e7370d762115 # v6.1.1
+        with:
+          version: 10.24.0
+          package_json_file: .github/release-pnpm-tooling.json
+      - name: Prepare native compiler
+        shell: bash
+        run: |
+          set -euo pipefail
+          npm install --global --ignore-scripts node-gyp@13.0.1
+          npm_root="$(npm root --global | tr -d '\r')"
+          printf 'npm_config_node_gyp=%s\n' "$npm_root/node-gyp/bin/node-gyp.js" >> "$GITHUB_ENV"
+          printf 'npm_config_msvs_version=2026\n' >> "$GITHUB_ENV"
+      - name: Build scanner-sized archive
+        shell: bash
+        env:
+          SEERRNG_RELEASE_ARCH: ${{ matrix.arch }}
+          npm_config_manage_package_manager_versions: 'false'
+        run: |
+          set -euo pipefail
+          tag="v$(node -p 'require("./package.json").version')-package-validation"
+          bash scripts/build-release-assets.sh "$tag" dist-release
+      - name: Extract and exercise native runtime
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $archive = @(Get-ChildItem dist-release/*.zip)
+          if ($archive.Count -ne 1 -or $archive[0].Length -gt 190000000) { throw 'Invalid Windows archive inventory or size.' }
+          & 7z t $archive[0].FullName
+          if ($LASTEXITCODE -ne 0) { throw 'ZIP integrity check failed.' }
+          & 7z x $archive[0].FullName "-o$env:RUNNER_TEMP/package-extracted" -y
+          if ($LASTEXITCODE -ne 0) { throw 'ZIP extraction failed.' }
+          $root = Join-Path "$env:RUNNER_TEMP/package-extracted" $archive[0].BaseName
+          Set-Location $root
+          node -e 'const db = new (require("better-sqlite3"))(":memory:"); db.exec("create table smoke(id integer)"); db.close(); require("bcrypt").hashSync("smoke", 4); require("sharp"); require("next");'
+          if ($LASTEXITCODE -ne 0) { throw 'Native runtime dependencies failed.' }
+          $env:NODE_ENV = 'production'
+          $env:CONFIG_DIRECTORY = "$env:RUNNER_TEMP/package-smoke-config"
+          $env:PORT = '15055'
+          $env:HOST = '127.0.0.1'
+          $process = Start-Process node -ArgumentList 'dist/index.js' -WorkingDirectory $root -PassThru -RedirectStandardOutput "$env:RUNNER_TEMP/package-stdout.log" -RedirectStandardError "$env:RUNNER_TEMP/package-stderr.log"
+          try {
+            $healthy = $false
+            for ($attempt = 0; $attempt -lt 90; $attempt++) {
+              if ($process.HasExited) { throw 'Extracted runtime exited before becoming healthy.' }
+              try {
+                $response = Invoke-WebRequest 'http://127.0.0.1:15055/api/v1/status' -TimeoutSec 5
+                if ($response.StatusCode -eq 200) { $healthy = $true; break }
+              } catch { Start-Sleep -Seconds 2 }
+            }
+            if (-not $healthy) { throw 'Extracted runtime did not become healthy.' }
+            Invoke-WebRequest 'http://127.0.0.1:15055/' -TimeoutSec 30 | Out-Null
+            "$($archive[0].Name): $($archive[0].Length) bytes; native modules, SQLite, HTTP API and frontend passed." | Out-File $env:GITHUB_STEP_SUMMARY -Append
+          } finally {
+            if (-not $process.HasExited) { Stop-Process -Id $process.Id -Force }
+          }
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
+        if: always()
+        with:
+          name: windows-package-validation-${{ matrix.arch }}
+          path: |
+            dist-release/seerrng-*
+            ${{ runner.temp }}/package-stdout.log
+            ${{ runner.temp }}/package-stderr.log
+          retention-days: 7

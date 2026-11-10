@@ -116,6 +116,11 @@ jobs:
             --dir $downloadDirectory
           if ($LASTEXITCODE -ne 0) { throw "Could not download $archiveName and its checksum from the release." }
 
+          $archiveBytes = (Get-Item -LiteralPath (Join-Path $downloadDirectory $archiveName)).Length
+          if ($archiveBytes -gt 190000000) {
+            throw "Chocolatey payload exceeds the 190000000-byte budget: $archiveName ($archiveBytes bytes)."
+          }
+
           $sidecar = Get-Content -LiteralPath (Join-Path $downloadDirectory "$assetBase.sha256") -Raw
           $escapedArchiveName = [regex]::Escape($archiveName)
           if ($sidecar -notmatch "(?m)^([a-f0-9]{64})\s+\*?$escapedArchiveName\s*$") {

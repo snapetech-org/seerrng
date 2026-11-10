@@ -45,7 +45,7 @@ esac
 arch="$requested_arch"
 
 asset="seerrng-${tag}-${os}-${arch}"
-work_dir="$(mktemp -d)"
+work_dir="$(mktemp -d "${dist_abs}/.runtime.XXXXXX")"
 work_dir="$(cd "$work_dir" && pwd -P)"
 archive_temporary=""
 checksum_temporary=""
@@ -93,8 +93,32 @@ cp bin/prepare.mjs "$stage/bin/"
 cp -R patches "$stage/"
 (
   cd "$stage"
-  time_phase 'Install staged production dependencies' env CI=true CYPRESS_INSTALL_BINARY=0 pnpm install --prod --frozen-lockfile
+  production_install_options=()
+  if [[ "$os" == 'windows' ]]; then
+    production_install_options+=(--config.node-linker=hoisted)
+  fi
+  time_phase 'Install staged production dependencies' env CI=true CYPRESS_INSTALL_BINARY=0 pnpm install --prod --frozen-lockfile "${production_install_options[@]}"
 )
+if [[ "$os" == 'windows' ]]; then
+  rm -rf -- "${stage:?}/public/readme-covers"
+  time_phase 'Prune dependency debug artifacts' node --input-type=module - "$stage/node_modules" <<'NODE'
+import fs from 'node:fs/promises';
+import path from 'node:path';
+
+const pendingDirectories = [process.argv[2]];
+while (pendingDirectories.length > 0) {
+  const directory = pendingDirectories.pop();
+  for (const entry of await fs.readdir(directory, { withFileTypes: true })) {
+    const entryPath = path.join(directory, entry.name);
+    if (entry.isDirectory()) {
+      pendingDirectories.push(entryPath);
+    } else if (entry.isFile() && /\.[cm]?js\.map$/.test(entry.name)) {
+      await fs.unlink(entryPath);
+    }
+  }
+}
+NODE
+fi
 rm -rf "${stage:?}/.next/cache" "${stage:?}/.next/dev" "${stage:?}/bin" "${stage:?}/cache" "${stage:?}/patches"
 mkdir -p "$stage/config"
 touch "$stage/config/.gitkeep"
@@ -201,10 +225,7 @@ if [[ "$os" == "windows" ]]; then
   archive_temporary="$(mktemp "${dist_abs}/.${archive_name}.tmp.XXXXXX.zip")"
   rm -f -- "$archive_temporary"
   if command -v 7z >/dev/null 2>&1; then
-    # PowerShell Compress-Archive is prohibitively slow for the staged
-    # Next.js runtime on GitHub's Windows runners. Use 7-Zip's fast Deflate
-    # level and parallel workers to keep native ARM packaging practical.
-    (cd "$work_dir" && 7z a -tzip -mx=1 -mmt=on -bsp1 -bso0 -bse2 "$archive_temporary" "$asset")
+    (cd "$work_dir" && 7z a -tzip -mx=9 -mmt=on -bsp1 -bso0 -bse2 "$archive_temporary" "$asset")
   elif command -v zip >/dev/null 2>&1; then
     (cd "$work_dir" && zip -qr "$archive_temporary" "$asset")
   elif command -v tar >/dev/null 2>&1; then
@@ -242,6 +263,11 @@ else
   tar -C "$work_dir" -czf "$archive_temporary" "$asset"
 fi
 
+archive_bytes="$(wc -c < "$archive_temporary" | tr -d '[:space:]')"
+if [[ "$os" == 'windows' && "$archive_bytes" -gt 190000000 ]]; then
+  echo "Windows archive exceeds the Chocolatey payload budget: $archive_bytes > 190000000 bytes" >&2
+  exit 1
+fi
 chmod 0644 "$archive_temporary"
 mv -f -- "$archive_temporary" "${dist_abs}/${archive_name}"
 archive_bytes="$(wc -c < "${dist_abs}/${archive_name}" | tr -d '[:space:]')"

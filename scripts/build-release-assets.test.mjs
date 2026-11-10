@@ -73,7 +73,7 @@ const createFixture = async () => {
   );
   await fs.writeFile(
     path.join(executableDirectory, 'pnpm'),
-    '#!/bin/sh\nif [ "$1" = install ] && [ "$2" = --prod ]; then\n  test -f "$PWD/patches/eslint-plugin-no-relative-import-paths@1.6.1.patch" || exit 1\n  ln -s "$PWD/public/asset.txt" "$PWD/public/internal-link"\nfi\nexit 0\n',
+    '#!/bin/sh\nif [ "$1" = install ] && [ "$2" = --prod ]; then\n  test -f "$PWD/patches/eslint-plugin-no-relative-import-paths@1.6.1.patch" || exit 1\n  ln -s "$PWD/public/asset.txt" "$PWD/public/internal-link"\n  mkdir -p node_modules/runtime public/readme-covers\n  printf runtime >node_modules/runtime/index.js\n  printf debug >node_modules/runtime/index.js.map\n  printf native >node_modules/runtime/addon.node\n  printf cover >public/readme-covers/book-1.png\n  printf "%s\\n" "$*" >node_modules/install-arguments.txt\nfi\nexit 0\n',
     { mode: 0o755 }
   );
   return { executableDirectory, root, script };
@@ -297,7 +297,7 @@ describe('release asset construction', () => {
     await fs.mkdir(distribution);
     await fs.writeFile(
       path.join(fixture.executableDirectory, '7z'),
-      '#!/bin/sh\nprintf \'%s\\n\' "$*" >"$ARCHIVER_LOG"\nprevious_argument=\'\'\nfor argument in "$@"; do\n  archive_path="$previous_argument"\n  stage_path="$argument"\n  previous_argument="$argument"\ndone\nif [ ! -d "$stage_path" ] || [ ! -f "$stage_path/start.cmd" ]; then exit 1; fi\nprintf \'%s\\n\' start.cmd >"$archive_path"\n',
+      '#!/bin/sh\nprintf \'%s\\n\' "$*" >"$ARCHIVER_LOG"\nprevious_argument=\'\'\nfor argument in "$@"; do\n  archive_path="$previous_argument"\n  stage_path="$argument"\n  previous_argument="$argument"\ndone\nif [ ! -d "$stage_path" ] || [ ! -f "$stage_path/start.cmd" ]; then exit 1; fi\ntest -f "$stage_path/node_modules/runtime/addon.node" || exit 1\ntest -f "$stage_path/node_modules/runtime/index.js" || exit 1\ntest ! -e "$stage_path/node_modules/runtime/index.js.map" || exit 1\ntest ! -e "$stage_path/public/readme-covers" || exit 1\ngrep -q -- --config.node-linker=hoisted "$stage_path/node_modules/install-arguments.txt" || exit 1\nprintf \'%s\\n\' start.cmd >"$archive_path"\n',
       { mode: 0o755 }
     );
 
@@ -321,13 +321,46 @@ describe('release asset construction', () => {
     );
     const archiverArguments = await fs.readFile(archiverLog, 'utf8');
     assert.match(archiverArguments, /-tzip/);
-    assert.match(archiverArguments, /-mx=1/);
+    assert.match(archiverArguments, /-mx=9/);
     assert.match(archiverArguments, /-mmt=on/);
     assert.match(archiverArguments, /-bsp1/);
     assert.match(archiverArguments, /-bso0/);
     assert.match(archiverArguments, /-bse2/);
     assert.equal((await fs.stat(archive)).mode & 0o777, 0o644);
     assert.match(await fs.readFile(archive, 'utf8'), /start\.cmd/);
+  });
+
+  it('rejects oversized Windows ZIPs without replacing existing artifacts', async () => {
+    const fixture = await createFixture();
+    const distribution = path.join(fixture.root, 'dist-release');
+    await fs.mkdir(distribution);
+    const archive = path.join(distribution, 'seerrng-v1.2.3-windows-x64.zip');
+    const checksum = path.join(
+      distribution,
+      'seerrng-v1.2.3-windows-x64.sha256'
+    );
+    await fs.writeFile(archive, 'previous archive');
+    await fs.writeFile(checksum, 'previous checksum');
+    await fs.writeFile(
+      path.join(fixture.executableDirectory, '7z'),
+      '#!/bin/sh\nprevious_argument=""\nfor argument in "$@"; do archive_path="$previous_argument"; previous_argument="$argument"; done\ntruncate -s 190000001 "$archive_path"\n',
+      { mode: 0o755 }
+    );
+    const result = await runForPlatformAndNodeArchitecture(
+      fixture,
+      ['v1.2.3', distribution],
+      'MINGW64_NT',
+      'x86_64',
+      'x64'
+    );
+    assert.notEqual(result.code, 0);
+    assert.match(result.output, /190000001 > 190000000 bytes/);
+    assert.equal(await fs.readFile(archive, 'utf8'), 'previous archive');
+    assert.equal(await fs.readFile(checksum, 'utf8'), 'previous checksum');
+    assert.deepEqual((await fs.readdir(distribution)).sort(), [
+      path.basename(checksum),
+      path.basename(archive),
+    ]);
   });
 
   it('rejects Linux ARMv7 without a supported Node.js 24 runtime', async () => {
