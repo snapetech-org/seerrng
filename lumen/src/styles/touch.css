@@ -236,7 +236,9 @@ html.no-overscroll body {
   .chip,
   .seg button,
   .seg a,
-  .btn-sm {
+  .btn-sm,
+  .rq .rqa .btn,
+  .set a.go {
     min-height: 44px;
   }
 }
