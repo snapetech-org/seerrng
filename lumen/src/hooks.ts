@@ -49,7 +49,10 @@ export function useApi<T>(path: string | null) {
     if (path) forget(path);
     setTick((t) => t + 1);
   }, [path]);
-  return { data, error, errorStatus, reload };
+  // ask again but keep what is on screen meanwhile (after a request the saved copy is already
+  // marked stale, so the page updates in place instead of blanking)
+  const refresh = useCallback(() => setTick((t) => t + 1), []);
+  return { data, error, errorStatus, reload, refresh };
 }
 
 // one call for everyone asking for the same path at once; the answer is saved
@@ -68,8 +71,6 @@ export async function cachedApi<T>(path: string): Promise<T> {
   if (isFresh(path)) return cached<T>(path) as T;
   return fetchShared<T>(path);
 }
-
-export const dropCache = forget;
 
 export interface PublicSettings {
   softwareEnabled?: boolean;

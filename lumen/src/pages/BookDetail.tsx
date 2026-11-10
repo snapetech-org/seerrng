@@ -27,7 +27,7 @@ import {
 } from '../components/detail';
 import { ServiceNote } from '../components/extra';
 import { useToast } from '../components/toast';
-import { dropBookStates, dropCache, useApi } from '../hooks';
+import { dropBookStates, useApi } from '../hooks';
 import { Icon } from '../icons';
 import { usePrefs } from '../settings';
 
@@ -299,9 +299,8 @@ export default function BookDetail() {
       toast(
         `Requested ${b.title} · ${audio ? (showNarr && chosenRow ? who(chosenRow) : 'audiobook') : 'ebook'}`
       );
-      dropCache(`/book/${encodeURIComponent(bookId)}`);
       dropBookStates(); // book cards elsewhere show the new request straight away
-      reload();
+      first.refresh();
     } catch (e) {
       toast(e instanceof Error ? e.message : 'Request failed');
     } finally {

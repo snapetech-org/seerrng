@@ -30,7 +30,7 @@ import {
 } from '../components/detail';
 import { ServiceNote } from '../components/extra';
 import { useToast } from '../components/toast';
-import { dropCache, useApi, usePublicSettings } from '../hooks';
+import { useApi, usePublicSettings } from '../hooks';
 import { Icon } from '../icons';
 import { usePrefs } from '../settings';
 
@@ -48,7 +48,7 @@ export default function TvDetail() {
   const serverName = useMediaServerName();
   const { id } = useParams();
   const loc = useLocation();
-  const { data: t, error, reload } = useApi<TvDetails>(`/tv/${id}`);
+  const { data: t, error, reload, refresh } = useApi<TvDetails>(`/tv/${id}`);
   const like = useApi<Paged<TitleResult>>(`/tv/${id}/recommendations`).data;
   const pub = usePublicSettings();
   const { user } = useAuth();
@@ -142,8 +142,7 @@ export default function TvDetail() {
       toast(
         `Requested ${t.name} · ${whole ? 'entire series' : n === 1 ? 'Season ' + [...sel][0] : n + ' seasons'}`
       );
-      dropCache(`/tv/${t.id}`);
-      reload();
+      refresh();
     } catch (e) {
       toast(e instanceof Error ? e.message : 'Request failed');
     } finally {
