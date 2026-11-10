@@ -39,7 +39,7 @@ export default function Books({ format }: { format: 'ebook' | 'audiobook' }) {
       <header className="ph">
         <div className="ph-row">
           <div>
-            <h1>Books</h1>
+            <h1>{audio ? 'Audiobooks' : 'Books'}</h1>
           </div>
           <Avatar className="avatar ph-only-avatar" />
         </div>
