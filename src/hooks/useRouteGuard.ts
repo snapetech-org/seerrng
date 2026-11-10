@@ -1,3 +1,5 @@
+import { isAuthenticationError } from '@app/utils/auth';
+import { buildLoginPath } from '@app/utils/loginReturn';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import type { Permission, PermissionCheckOptions } from './useUser';
@@ -8,13 +10,15 @@ const useRouteGuard = (
   options?: PermissionCheckOptions
 ): void => {
   const router = useRouter();
-  const { user, hasPermission } = useUser();
+  const { user, error, hasPermission } = useUser();
 
   useEffect(() => {
-    if (user && !hasPermission(permission, options)) {
+    if (!user && isAuthenticationError(error)) {
+      router.replace(buildLoginPath(router.asPath));
+    } else if (user && !hasPermission(permission, options)) {
       router.push('/');
     }
-  }, [user, permission, router, hasPermission, options]);
+  }, [user, error, permission, router, hasPermission, options]);
 };
 
 export default useRouteGuard;

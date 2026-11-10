@@ -8,6 +8,7 @@ import MediaServiceStatus from '@server/entity/MediaServiceStatus';
 import { User } from '@server/entity/User';
 import cacheManager from '@server/lib/cache';
 import type { EpisodeAvailabilityForEpisode } from '@server/lib/episodeAvailability';
+import { Permission } from '@server/lib/permissions';
 import type { PlexSettings } from '@server/lib/settings';
 import { getSettings } from '@server/lib/settings';
 import { is4kResolution } from '@server/lib/videoResolution';
@@ -195,6 +196,14 @@ export const getMediaServerAccessContext = async (
     }),
   };
 };
+
+/** Managers need the global scanned state while reviewing the library. */
+export const getPresentationMediaServerAccessContext = async (
+  user?: User
+): Promise<MediaServerAccessContext | undefined> =>
+  user?.hasPermission(Permission.ADMIN)
+    ? undefined
+    : getMediaServerAccessContext(user);
 
 const variantStatus = (media: Media, format: VideoFormat): MediaStatus =>
   media[format === '4k' ? 'status4k' : 'status'];

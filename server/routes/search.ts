@@ -585,11 +585,27 @@ searchRoutes.get('/', async (req, res, next) => {
       ];
       const providerPromises: Promise<unknown>[] = [
         shouldSearchVideo
-          ? tmdb.searchMulti({
-              query: queryString,
-              page,
-              language,
-            })
+          ? typeFilter === 'movie'
+            ? tmdb
+                .searchMovies({ query: queryString, page, language })
+                .then((response) => ({
+                  ...response,
+                  results: response.results.map((result) => ({
+                    ...result,
+                    media_type: 'movie' as const,
+                  })),
+                }))
+            : typeFilter === 'tv'
+              ? tmdb
+                  .searchTvShows({ query: queryString, page, language })
+                  .then((response) => ({
+                    ...response,
+                    results: response.results.map((result) => ({
+                      ...result,
+                      media_type: 'tv' as const,
+                    })),
+                  }))
+              : tmdb.searchMulti({ query: queryString, page, language })
           : Promise.resolve({
               page,
               results: [],
@@ -1012,12 +1028,18 @@ searchRoutes.get('/', async (req, res, next) => {
         totalResults: 0,
         results: [],
       });
-      if (typeFilter === 'comic') {
+      if (typeFilter === 'movie' || typeFilter === 'tv') {
+        typeSpecificTotalResults = rawTmdbResults.total_results;
+        typeSpecificTotalPages = rawTmdbResults.total_pages;
+      } else if (typeFilter === 'comic') {
         typeSpecificTotalResults = rawComicResults.number_of_total_results;
       } else if (typeFilter === 'magazine') {
         typeSpecificTotalResults = rawMagazineResults.totalResults;
       }
-      if (typeSpecificTotalResults !== undefined) {
+      if (
+        typeSpecificTotalResults !== undefined &&
+        typeSpecificTotalPages === undefined
+      ) {
         typeSpecificTotalPages = Math.max(
           1,
           Math.ceil(typeSpecificTotalResults / MAX_SEARCH_RESULTS_PER_PROVIDER)

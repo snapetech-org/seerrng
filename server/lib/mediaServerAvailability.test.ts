@@ -17,6 +17,7 @@ import { afterEach, before, beforeEach, describe, it, mock } from 'node:test';
 import {
   applyUserMediaServerAvailability,
   getMediaServerAccessContext,
+  getPresentationMediaServerAccessContext,
   restrictEpisodeAvailabilityForUser,
 } from './mediaServerAvailability';
 
@@ -67,6 +68,20 @@ afterEach(() => {
 });
 
 describe('viewer-scoped media-server availability', () => {
+  it('keeps the scanned library state visible to an administrator', async () => {
+    const admin = await getRepository(User).findOneByOrFail({ id: 1 });
+    assert.equal(
+      await getPresentationMediaServerAccessContext(admin),
+      undefined
+    );
+    const item = media();
+    await applyUserMediaServerAvailability(
+      [item],
+      await getPresentationMediaServerAccessContext(admin)
+    );
+    assert.equal(item.status, MediaStatus.AVAILABLE);
+  });
+
   it('masks a denied TV response even when its season relation was not loaded', async () => {
     mock.method(PlexAPI.prototype, 'getMetadata', async () => {
       throw new Error('Fixture access denied');

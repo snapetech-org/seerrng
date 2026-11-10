@@ -62,6 +62,7 @@ export const MediaStatus = {
 } as const;
 
 export interface MediaInfo {
+  requests?: { id: number; status: number; bookFormat?: string }[];
   hasPlexAudiobookFile?: boolean;
   availableEbookServiceIds?: number[] | null;
   availableAudiobookServiceIds?: number[] | null;
@@ -293,6 +294,7 @@ export const narratorKey = (names?: (string | null | undefined)[] | null) =>
 // Book identities belong to SeerrNG's configured provider and service, not a
 // frontend-assigned format/server number. Keep opaque IDs byte-for-byte.
 export const isBookshelf = (id: string) => id.startsWith('bookshelf:');
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const bookIdFor = (id: string, _format: 'ebook' | 'audiobook') => id;
 export const hardcoverWorkId = (id: string) => {
   if (!isBookshelf(id)) return null;
@@ -323,6 +325,7 @@ export const audiobookshelfLink = (
       itemId &&
       itemId !== '.' &&
       itemId !== '..' &&
+      // eslint-disable-next-line no-control-regex
       !/[\x00-\x1f]/.test(itemId)
     ) {
       url.pathname = `${url.pathname.replace(/\/+$/, '')}/item/${encodeURIComponent(itemId)}`;

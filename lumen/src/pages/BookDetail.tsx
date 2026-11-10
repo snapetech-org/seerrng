@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link, useParams, useSearchParams } from 'react-router-dom';
 import {
+  api,
   audiobookEditionsPath,
   audiobookshelfLink,
   bookIdFor,
@@ -17,9 +18,11 @@ import {
   type ChaptarrWork,
   type Edition,
 } from '../api';
+import { useAuth } from '../auth';
 import { statusOf } from '../components/cards';
 import {
   ActionBar,
+  canChooseRequestOptions,
   DetailTop,
   Facts,
   fmtHrs,
@@ -106,6 +109,7 @@ export default function BookDetail() {
     p.get('f') === 'audio' ? 'audiobook' : 'ebook';
   const { prefs, audiobookshelfUrl } = usePrefs();
   const toast = useToast();
+  const { user } = useAuth();
   const plainId = bookIdFor(decodeURIComponent(id), f);
   const first = useApi<BookDetails>(`/book/${encodeURIComponent(plainId)}`);
   const bookId = plainId;
@@ -254,6 +258,31 @@ export default function BookDetail() {
   // owned in this format: an audiobook in the library doesn't make the ebook owned (or the reverse)
   const available =
     bookMediaForFormat(b.mediaInfo, f)?.status === MediaStatus.AVAILABLE;
+  const pendingRequest = canChooseRequestOptions(user?.permissions)
+    ? b.mediaInfo?.requests?.find(
+        (request) =>
+          request.status === 1 &&
+          ((request.bookFormat ?? 'ebook') === f ||
+            request.bookFormat === 'both')
+      )
+    : undefined;
+  const approve = async () => {
+    if (!pendingRequest || busy) return;
+    setBusy(true);
+    try {
+      await api(`/request/${pendingRequest.id}/approve`, {
+        method: 'POST',
+        body: '{}',
+      });
+      toast('Request approved');
+      dropCache(`/book/${encodeURIComponent(bookId)}`);
+      reload();
+    } catch (e) {
+      toast(e instanceof Error ? e.message : 'Couldn’t approve the request');
+    } finally {
+      setBusy(false);
+    }
+  };
 
   const requestAnother = async () => {
     const row = rows.find((r) => r.id === chosen);
@@ -335,38 +364,42 @@ export default function BookDetail() {
     );
   };
   const listen = inAbs(true);
-  const main =
-    audio && showNarr && anotherMode ? (
-      chosenRow ? (
-        <button
-          className="btn btn-primary"
-          disabled={busy}
-          onClick={requestAnother}
-        >
-          <Icon name="plus" />
-          Request another narrator · {who(chosenRow)}
-        </button>
-      ) : ownsAny ? (
-        listen
-      ) : (
-        <button className="btn btn-tonal" disabled>
-          <Icon name="clock" />
-          Requested
-        </button>
-      )
-    ) : available && (!showNarr || !requestable.length) ? (
-      inAbs(audio)
-    ) : s && s.k !== 'ok' ? (
-      <button className="btn btn-tonal" disabled>
-        <Icon name={s.ico} />
-        {s.word}
-      </button>
-    ) : (
-      <button className="btn btn-primary" disabled={busy} onClick={request}>
+  const main = pendingRequest ? (
+    <button className="btn btn-ok" disabled={busy} onClick={approve}>
+      <Icon name="check" />
+      {busy ? 'Approving…' : 'Approve request'}
+    </button>
+  ) : audio && showNarr && anotherMode ? (
+    chosenRow ? (
+      <button
+        className="btn btn-primary"
+        disabled={busy}
+        onClick={requestAnother}
+      >
         <Icon name="plus" />
-        {label}
+        Request another narrator · {who(chosenRow)}
       </button>
-    );
+    ) : ownsAny ? (
+      listen
+    ) : (
+      <button className="btn btn-tonal" disabled>
+        <Icon name="clock" />
+        Requested
+      </button>
+    )
+  ) : available && (!showNarr || !requestable.length) ? (
+    inAbs(audio)
+  ) : s && s.k !== 'ok' ? (
+    <button className="btn btn-tonal" disabled>
+      <Icon name={s.ico} />
+      {s.word}
+    </button>
+  ) : (
+    <button className="btn btn-primary" disabled={busy} onClick={request}>
+      <Icon name="plus" />
+      {label}
+    </button>
+  );
 
   return (
     <article className="detail">
@@ -586,6 +619,12 @@ export default function BookDetail() {
                         aria-checked={chosen === '*'}
                         tabIndex={0}
                         onClick={() => setPick('*')}
+                        onKeyDown={(event) => {
+                          if (event.key === 'Enter' || event.key === ' ') {
+                            event.preventDefault();
+                            setPick('*');
+                          }
+                        }}
                       >
                         <span className="radio" />
                         <span className="nart">

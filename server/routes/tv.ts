@@ -22,7 +22,7 @@ import { getExternalRuntimeConfig } from '@server/lib/externalRuntimeConfig';
 import { enqueueImageCacheWarm } from '@server/lib/imageCacheWarmer';
 import { upsertMediaSearchMetadata } from '@server/lib/mediaSearchMetadata';
 import {
-  getMediaServerAccessContext,
+  getPresentationMediaServerAccessContext,
   restrictEpisodeAvailabilityForUser,
 } from '@server/lib/mediaServerAvailability';
 import {
@@ -463,7 +463,7 @@ tvRoutes.get('/:id/season/:seasonNumber', async (req, res, next) => {
           tmdbId: tvId,
           mediaType: MediaType.TV,
         }),
-        await getMediaServerAccessContext(req.user),
+        await getPresentationMediaServerAccessContext(req.user),
         seasonNumber
       );
       mappedSeason.episodes = mappedSeason.episodes.map((episode) => {

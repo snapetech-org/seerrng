@@ -87,6 +87,13 @@ export default defineConfig(
   },
   prettier,
   {
+    files: ['lumen/**/*.{ts,tsx}'],
+    rules: {
+      // Lumen is a separate Vite project with relative module imports.
+      'no-relative-import-paths/no-relative-import-paths': 'off',
+    },
+  },
+  {
     files: [
       'src/components/UserProfile/UserSettings/UserGeneralSettings/index.tsx',
       'src/components/RequestModal/BulkRequestModal.tsx',

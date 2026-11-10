@@ -25,7 +25,7 @@ import { normalizeMusicBrainzId } from '@server/lib/externalIds';
 import { restrictMediaRelationsForUser } from '@server/lib/mediaResponse';
 import {
   applyUserMediaServerAvailability,
-  getMediaServerAccessContext,
+  getPresentationMediaServerAccessContext,
 } from '@server/lib/mediaServerAvailability';
 import { hydrateMediaSummaryRelations } from '@server/lib/mediaSummaryHydration';
 import { getSettings } from '@server/lib/settings';
@@ -144,7 +144,8 @@ class Media {
       }
 
       await attachViewerRequestCoverage(relatedMedia, user);
-      const mediaServerAccessContext = await getMediaServerAccessContext(user);
+      const mediaServerAccessContext =
+        await getPresentationMediaServerAccessContext(user);
       await applyUserMediaServerAvailability(
         relatedMedia,
         mediaServerAccessContext

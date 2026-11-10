@@ -78,7 +78,7 @@ import { extractImageCacheUrls } from '@server/lib/imageCacheUrls';
 import { enqueueImageCacheWarm } from '@server/lib/imageCacheWarmer';
 import { normalizeMagazineTitle } from '@server/lib/magazineIdentity';
 import { findMagazineMediaByTitles } from '@server/lib/magazineMediaMatcher';
-import { getMediaServerAccessContext } from '@server/lib/mediaServerAvailability';
+import { getPresentationMediaServerAccessContext } from '@server/lib/mediaServerAvailability';
 import { hydrateMediaSummaryRelations } from '@server/lib/mediaSummaryHydration';
 import {
   getAvailableMusicQualities,
@@ -1329,7 +1329,7 @@ const getLiveAvailableMovieDiscoverResponse = async ({
   // Live Arr inventory has no viewer-scoped media-server identity to verify.
   // The indexed fallback below carries native media-server IDs and can fail
   // closed for linked viewers instead of presenting global Arr status.
-  if (await getMediaServerAccessContext(user)) {
+  if (await getPresentationMediaServerAccessContext(user)) {
     return undefined;
   }
 
@@ -1609,7 +1609,8 @@ const getLocalAvailableVideoDiscoverResponse = async ({
   await hydrateMediaSummaryRelations(pageMedia, user, {
     preferredAvailabilityFormat: quality === '4k' ? '4k' : 'standard',
   });
-  const viewerAccessContext = await getMediaServerAccessContext(user);
+  const viewerAccessContext =
+    await getPresentationMediaServerAccessContext(user);
   const visiblePageItems = viewerAccessContext
     ? pageItems.filter(({ media }) =>
         AVAILABLE_MEDIA_STATUSES.includes(media[statusField])

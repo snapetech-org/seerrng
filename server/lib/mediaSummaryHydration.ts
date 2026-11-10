@@ -9,7 +9,7 @@ import { Watchlist } from '@server/entity/Watchlist';
 import { restrictMediaRelationsForUser } from '@server/lib/mediaResponse';
 import {
   applyUserMediaServerAvailability,
-  getMediaServerAccessContext,
+  getPresentationMediaServerAccessContext,
   type VideoAvailabilityFormat,
 } from '@server/lib/mediaServerAvailability';
 import { attachViewerRequestCoverage } from '@server/lib/viewerRequestCoverage';
@@ -92,7 +92,7 @@ export const hydrateMediaSummaryRelations = async (
       .addOrderBy('serviceStatus.format', 'ASC')
       .getMany(),
     attachViewerRequestCoverage(mediaItems, user),
-    getMediaServerAccessContext(user),
+    getPresentationMediaServerAccessContext(user),
   ]);
   const requestsByMediaId = new Map<number, MediaRequest[]>();
   for (const request of activeRequests) {

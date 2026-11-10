@@ -186,6 +186,46 @@ async function loginAs(email: string, password: string) {
 }
 
 describe('GET /search', () => {
+  for (const [type, endpoint, titleField] of [
+    ['movie', '/search/movie', 'title'],
+    ['tv', '/search/tv', 'name'],
+  ] as const) {
+    it(`uses the dedicated TMDB ${type} search and preserves its page count`, async () => {
+      const endpoints: string[] = [];
+      mockPrivate(ExternalAPI.prototype, 'get', async (path) => {
+        endpoints.push(String(path));
+        if (path === endpoint) {
+          return {
+            page: 2,
+            total_pages: 5,
+            total_results: 83,
+            results: [
+              {
+                id: 12345,
+                [titleField]: 'Filtered result',
+                overview: '',
+                original_language: 'en',
+                genre_ids: [],
+                adult: false,
+              },
+            ],
+          };
+        }
+        throw new Error(`Unexpected endpoint: ${String(path)}`);
+      });
+      const agent = await loginAs('friend@seerr.dev', 'test1234');
+      const res = await agent
+        .get('/search')
+        .query({ query: 'filtered', type, page: 2 });
+      assert.equal(res.status, 200);
+      assert.equal(res.body.results[0]?.mediaType, type);
+      assert.equal(res.body.totalPages, 5);
+      assert.equal(res.body.totalResults, 83);
+      assert.ok(endpoints.includes(endpoint));
+      assert.ok(!endpoints.includes('/search/multi'));
+    });
+  }
+
   for (const restricted of [false, true]) {
     it(`includes collection results only without a movie maturity limit (${restricted})`, async () => {
       const settings = getSettings();

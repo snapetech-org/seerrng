@@ -543,6 +543,10 @@ describe('GET /media', () => {
       res.body.results.map((item: { mediaType: string }) => item.mediaType),
       [MediaType.MOVIE, MediaType.TV]
     );
+    assert.deepStrictEqual(
+      res.body.results.map((item: { status: MediaStatus }) => item.status),
+      [MediaStatus.AVAILABLE, MediaStatus.PARTIALLY_AVAILABLE]
+    );
   });
 
   it('rejects malformed media type filters', async () => {

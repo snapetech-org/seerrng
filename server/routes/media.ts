@@ -36,7 +36,7 @@ import {
 import { runMediaEntityMutation } from '@server/lib/mediaMutation';
 import {
   applyUserMediaServerAvailability,
-  getMediaServerAccessContext,
+  getPresentationMediaServerAccessContext,
 } from '@server/lib/mediaServerAvailability';
 import { hydrateMediaSummaryRelations } from '@server/lib/mediaSummaryHydration';
 import { Permission } from '@server/lib/permissions';
@@ -431,9 +431,8 @@ mediaRoutes.get(
     }
 
     try {
-      const mediaServerAccessContext = await getMediaServerAccessContext(
-        req.user
-      );
+      const mediaServerAccessContext =
+        await getPresentationMediaServerAccessContext(req.user);
       const viewerAvailabilityFilter =
         filter === 'available' ||
         filter === 'partial' ||

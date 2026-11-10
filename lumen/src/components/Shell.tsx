@@ -6,12 +6,14 @@ import {
   useNavigate,
   useNavigationType,
 } from 'react-router-dom';
+import { api } from '../api';
 import { isAdministrator, useAuth } from '../auth';
 import { useExtras } from '../extras';
 import { useBack, usePublicSettings } from '../hooks';
 import { Icon, type IconName } from '../icons';
 import { usePrefs } from '../settings';
 import { BrandMark, brandName } from './brand';
+import { canChooseRequestOptions } from './detail';
 
 // scroll position of each history entry, for Back
 const scrollSpots = new Map<string, number>();
@@ -75,6 +77,26 @@ export default function Shell({ children }: { children: ReactNode }) {
   const extras = useExtras();
   const isBook = (h: string) => h === '/books' || h === '/audiobooks';
   const loc = useLocation();
+  const canManageRequests = canChooseRequestOptions(user?.permissions);
+  const [pendingRequests, setPendingRequests] = useState(0);
+  useEffect(() => {
+    if (!canManageRequests) {
+      setPendingRequests(0);
+      return;
+    }
+    let live = true;
+    const refresh = () => {
+      api<{ pending: number }>('/request/count')
+        .then((count) => live && setPendingRequests(count.pending || 0))
+        .catch(() => live && setPendingRequests(0));
+    };
+    refresh();
+    const timer = window.setInterval(refresh, 30_000);
+    return () => {
+      live = false;
+      window.clearInterval(timer);
+    };
+  }, [canManageRequests, loc.pathname]);
   const nav = useNavigate();
   const q = useRef<HTMLInputElement>(null);
   const detail =
@@ -255,6 +277,14 @@ export default function Shell({ children }: { children: ReactNode }) {
           <NavLink to="/requests">
             <Icon name="inbox" />
             Requests
+            {pendingRequests > 0 && (
+              <span
+                className="n"
+                aria-label={`${pendingRequests} pending requests`}
+              >
+                {pendingRequests}
+              </span>
+            )}
           </NavLink>
           <NavLink to="/soon">
             <Icon name="cal" />
@@ -338,6 +368,14 @@ export default function Shell({ children }: { children: ReactNode }) {
             >
               <Icon name={i} />
               {t}
+              {h === '/requests' && pendingRequests > 0 && (
+                <span
+                  className="badge"
+                  aria-label={`${pendingRequests} pending requests`}
+                >
+                  {pendingRequests}
+                </span>
+              )}
             </NavLink>
           )
         )}
