@@ -774,7 +774,7 @@ describe('Books and Music discover parity', () => {
     cy.contains('button[aria-pressed="false"]', 'Music').click();
     cy.contains('h3', 'Lidarr Settings').scrollIntoView().should('be.visible');
     cy.contains('button[aria-pressed="false"]', 'Audiobooks & Books').click();
-    cy.contains('h3', 'Bookshelf and Bindery Settings')
+    cy.contains('h3', 'Book Acquisition Services')
       .scrollIntoView()
       .should('be.visible');
 
@@ -886,7 +886,7 @@ describe('Books and Music discover parity', () => {
 
     cy.visit('/settings/services?serviceCategory=audiobooks-books');
 
-    cy.contains('h3', 'Bookshelf and Bindery Settings')
+    cy.contains('h3', 'Book Acquisition Services')
       .scrollIntoView()
       .should('be.visible');
     cy.contains(

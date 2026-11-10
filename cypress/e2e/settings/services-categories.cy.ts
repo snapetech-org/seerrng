@@ -33,7 +33,7 @@ describe('service setup categories', () => {
     cy.location('search').should('eq', '?serviceCategory=audiobooks-books');
     cy.get('[data-settings-category="audiobooks-books"]')
       .should('be.visible')
-      .and('contain', 'Bookshelf and Bindery Settings')
+      .and('contain', 'Book Acquisition Services')
       .and('contain', 'Connect ChaptarrNG, BookshelfNG')
       .and('contain', 'No variable is needed on the SeerrNG container')
       .and('contain', 'Add ChaptarrNG Server')

@@ -560,7 +560,6 @@ const MovieDetails = ({ movie }: MovieDetailsProps) => {
   return (
     <>
       <PageTitle title={data.title} />
-      {error && loadErrorMessage}
       {showIssueModal && (
         <IssueModal
           onCancel={() => setShowIssueModal(false)}
@@ -600,6 +599,7 @@ const MovieDetails = ({ movie }: MovieDetailsProps) => {
         />
       )}
       <MovieDetailsLayout
+        statusMessage={error && loadErrorMessage}
         data={data}
         ratingData={ratingData}
         sortedCrew={sortedCrew}

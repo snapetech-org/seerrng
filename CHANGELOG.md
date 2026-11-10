@@ -36,7 +36,7 @@ tags. The comparison link is the complete commit range.
 - **Offline:** Offline Retry and automatic reconnection work with the stricter Content Security Policy. The recovery script is served from the same origin and cached together with the offline document, so it remains available without a network connection.
 - **Discovery:** Discovery and title pages reuse saved public provider metadata after restarts. Expired metadata can answer during a slow refresh or transient outage. Terminal provider errors and cancelled reads remain authoritative. Contribution by [@ncbudd](https://github.com/ncbudd), PR #634.
 - **Requests:** Pending TV requests complete when their selected seasons are owned at the matching destination and quality. Exact episode requests no longer enable future-season monitoring. Episode Queue editors require one starting episode before approval and explain that queue length is a playback buffer, preserving existing downloads.
-- **Details:** Movie and series pages recover from metadata timeouts through a visible Retry action. Watchlist controls reflect recovered metadata and change only after successful writes. Access-denied and missing titles retain explicit error states.
+- **Details:** Movie and series pages recover from metadata timeouts through a visible Retry action. Watchlist controls reflect recovered metadata and change only after successful writes. Access-denied and missing titles retain explicit error states. Cached movie and series details no longer overlap the Retry banner in the John theme.
 
 #### Security
 

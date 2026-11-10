@@ -105,7 +105,19 @@ for (const type of ['movie', 'tv'] as const) {
           inWatchlist = true;
           return route.fulfill({ status: 201, json: { id: 424242 } });
         });
-        expect((await page.goto(`/${type}/424242`))?.status()).toBe(200);
+        // Keep server-rendered metadata visible while the client refresh fails.
+        // This state exposed the detail shell intercepting the Retry action.
+        await page.route(`**/_next/data/*/${type}/424242.json*`, (route) =>
+          route.fulfill({
+            json: { pageProps: { [type]: fixtures[type] }, __N_SSP: true },
+          })
+        );
+        await page.goto('/settings/main');
+        await page.evaluate(
+          (path) => (window as any).next.router.push(path),
+          `/${type}/424242`
+        );
+        await expect(page).toHaveURL(new RegExp(`/${type}/424242$`));
         const retry = page.getByRole('button', { name: 'Retry', exact: true });
         await expect(retry).toBeVisible();
         await page.screenshot({

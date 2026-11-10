@@ -110,6 +110,7 @@ const messages = defineMessages('components.TvDetails.Layout', {
 });
 
 interface SeriesDetailsLayoutProps {
+  statusMessage?: ReactNode;
   metadataRetry: MessageRetry;
   onLoadingChange?: (loading: boolean) => void;
   data: TvDetails;
@@ -167,6 +168,7 @@ const getAvailabilityText = (
 };
 
 const SeriesDetailsLayout = ({
+  statusMessage,
   metadataRetry,
   onLoadingChange,
   data,
@@ -430,6 +432,7 @@ const SeriesDetailsLayout = ({
       className={upstream ? 'upstream-detail-extensions' : 'media-page'}
       data-page-layout={embedded ? 'embedded' : undefined}
     >
+      {(!upstream || embedded) && statusMessage}
       <OptionalDisclosure enabled={upstream} className="upstream-extra-tools">
         <article className="media-detail-card app-card-main card-layout refreshed-card-surface refreshed-detail-text">
           {!upstream && data.backdropPath && (
@@ -1254,39 +1257,42 @@ const SeriesDetailsLayout = ({
     </div>
   );
   return upstream && !embedded ? (
-    <UpstreamVideoDetails
-      data={data}
-      mediaType="tv"
-      seasons={
-        seasonBrowser ?? (
-          <UpstreamSeasons tvId={data.id} seasons={visibleSeasons} />
-        )
-      }
-      actions={
-        <>
-          {primaryActions}
-          {selectedPlaybackAction}
-          {requestAction}
-          {reportIssueAction}
-          {secondaryActions}
-        </>
-      }
-      ratings={
-        <VideoRatings
-          mediaType="tv"
-          id={data.id}
-          voteAverage={data.voteAverage}
-          voteCount={data.voteCount}
-          ratings={ratingData}
-        />
-      }
-    >
-      <div className="upstream-extra-actions">
-        {indexerSearchAction}
-        {indexerCompanionActions}
-      </div>
-      {content}
-    </UpstreamVideoDetails>
+    <>
+      {statusMessage}
+      <UpstreamVideoDetails
+        data={data}
+        mediaType="tv"
+        seasons={
+          seasonBrowser ?? (
+            <UpstreamSeasons tvId={data.id} seasons={visibleSeasons} />
+          )
+        }
+        actions={
+          <>
+            {primaryActions}
+            {selectedPlaybackAction}
+            {requestAction}
+            {reportIssueAction}
+            {secondaryActions}
+          </>
+        }
+        ratings={
+          <VideoRatings
+            mediaType="tv"
+            id={data.id}
+            voteAverage={data.voteAverage}
+            voteCount={data.voteCount}
+            ratings={ratingData}
+          />
+        }
+      >
+        <div className="upstream-extra-actions">
+          {indexerSearchAction}
+          {indexerCompanionActions}
+        </div>
+        {content}
+      </UpstreamVideoDetails>
+    </>
   ) : (
     content
   );

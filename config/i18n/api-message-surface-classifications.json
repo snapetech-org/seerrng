@@ -216,6 +216,24 @@
       "expression": "meta.error",
       "classification": "localized-state",
       "reason": "Every consumer uses createServarrDownloadQueueSizeSchema(intl), whose type/integer/min/max/required failures are authored Intl messages."
+    },
+    {
+      "file": "src/components/MovieDetails/MovieDetailsLayout.tsx",
+      "expression": "statusMessage",
+      "classification": "localized-child-boundary",
+      "reason": "The detail page supplies its existing PageErrorMessage React node; that component localizes the error and Retry action before this layout renders it."
+    },
+    {
+      "file": "src/components/TvDetails/SeriesDetailsLayout.tsx",
+      "expression": "(!upstream || embedded) && statusMessage",
+      "classification": "localized-child-boundary",
+      "reason": "The detail page supplies its existing PageErrorMessage React node; that component localizes the error and Retry action before this layout renders it."
+    },
+    {
+      "file": "src/components/TvDetails/SeriesDetailsLayout.tsx",
+      "expression": "statusMessage",
+      "classification": "localized-child-boundary",
+      "reason": "The detail page supplies its existing PageErrorMessage React node; that component localizes the error and Retry action before this layout renders it."
     }
   ]
 }

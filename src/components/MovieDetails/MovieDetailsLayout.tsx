@@ -68,6 +68,7 @@ const messages = defineMessages('components.MovieDetails.Layout', {
 });
 
 interface MovieDetailsLayoutProps {
+  statusMessage?: ReactNode;
   data: MovieDetails;
   ratingData?: RatingResponse;
   sortedCrew: MovieDetails['credits']['crew'];
@@ -92,6 +93,7 @@ const availableStatuses = new Set([
 ]);
 
 const MovieDetailsLayout = ({
+  statusMessage,
   data,
   ratingData,
   sortedCrew,
@@ -440,6 +442,7 @@ const MovieDetailsLayout = ({
   if (persius)
     return (
       <>
+        {statusMessage}
         <PersiusMovieDetail
           data={data}
           requestAction={requestAction}
@@ -498,53 +501,57 @@ const MovieDetailsLayout = ({
 
   if (upstream)
     return (
-      <UpstreamVideoDetails
-        data={data}
-        mediaType="movie"
-        actions={
-          <>
-            {availableFormats.length > 0 &&
-              playbackActions?.(selectedQuality === '4k')}
-            {availableFormats.length > 1 && (
-              <MediaQualitySelect
-                value={selectedQuality}
-                options={[
-                  { label: 'HD', value: 'hd' },
-                  { label: '4K', value: '4k' },
-                ]}
-                onChange={setSelectedQuality}
-                label={intl.formatMessage(messages.quality)}
-              />
-            )}
-            {requestAction}
-            {reportIssueAction}
-            {secondaryActions}
-          </>
-        }
-        ratings={
-          <VideoRatings
-            mediaType="movie"
-            id={data.id}
-            voteAverage={data.voteAverage}
-            voteCount={data.voteCount}
-            ratings={ratingData}
-          />
-        }
-      >
-        <OptionalDisclosure enabled className="upstream-extra-tools">
-          {movieDetailExtras}
-          <div className="upstream-extra-actions">
-            {primaryActions}
-            {indexerSearchAction}
-            {indexerCompanionActions}
-          </div>
-        </OptionalDisclosure>
-        {relatedTitles}
-      </UpstreamVideoDetails>
+      <>
+        {statusMessage}
+        <UpstreamVideoDetails
+          data={data}
+          mediaType="movie"
+          actions={
+            <>
+              {availableFormats.length > 0 &&
+                playbackActions?.(selectedQuality === '4k')}
+              {availableFormats.length > 1 && (
+                <MediaQualitySelect
+                  value={selectedQuality}
+                  options={[
+                    { label: 'HD', value: 'hd' },
+                    { label: '4K', value: '4k' },
+                  ]}
+                  onChange={setSelectedQuality}
+                  label={intl.formatMessage(messages.quality)}
+                />
+              )}
+              {requestAction}
+              {reportIssueAction}
+              {secondaryActions}
+            </>
+          }
+          ratings={
+            <VideoRatings
+              mediaType="movie"
+              id={data.id}
+              voteAverage={data.voteAverage}
+              voteCount={data.voteCount}
+              ratings={ratingData}
+            />
+          }
+        >
+          <OptionalDisclosure enabled className="upstream-extra-tools">
+            {movieDetailExtras}
+            <div className="upstream-extra-actions">
+              {primaryActions}
+              {indexerSearchAction}
+              {indexerCompanionActions}
+            </div>
+          </OptionalDisclosure>
+          {relatedTitles}
+        </UpstreamVideoDetails>
+      </>
     );
 
   return (
     <div className="media-page">
+      {statusMessage}
       <article className="media-detail-card app-card-main refreshed-card-surface refreshed-detail-text relative overflow-hidden rounded-xl border border-gray-700 p-3 shadow-lg shadow-gray-950/20">
         {data.backdropPath && (
           <MediaDetailArtwork

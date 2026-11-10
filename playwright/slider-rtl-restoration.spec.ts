@@ -53,7 +53,7 @@ for (const theme of ['seerrOrig', 'seerrNGJ'])
           })
         );
         const detail = {
-          ...results[3],
+          ...results[2],
           credits: { cast: [], crew: [] },
           productionCompanies: [],
           productionCountries: [],
@@ -70,10 +70,10 @@ for (const theme of ['seerrOrig', 'seerrNGJ'])
           originalLanguage: 'en',
           status: 'Released',
         };
-        await page.route('**/api/v1/movie/991003', (route) =>
+        await page.route('**/api/v1/movie/991002', (route) =>
           route.fulfill({ json: detail })
         );
-        await page.route('**/_next/data/*/movie/991003.json*', (route) =>
+        await page.route('**/_next/data/*/movie/991002.json*', (route) =>
           route.fulfill({
             json: { pageProps: { movie: detail }, __N_SSP: true },
           })
@@ -164,10 +164,8 @@ for (const theme of ['seerrOrig', 'seerrNGJ'])
             })
           )
           .toBe(260);
-        await page.evaluate(() => {
-          void (window as any).next.router.push('/movie/991003');
-        });
-        await expect(page).toHaveURL(/\/movie\/991003$/);
+        await slider.locator('a[href="/movie/991002"]').first().click();
+        await expect(page).toHaveURL(/\/movie\/991002$/);
         await page.goBack();
         await expect(page).toHaveURL(/\/$/);
         await expect(track).toBeVisible();

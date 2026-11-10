@@ -26,7 +26,9 @@ test('real service worker preserves repeated authenticated document navigation',
     const response = await page.goto(route);
     expect(response?.status()).toBe(200);
     await expect(
-      page.getByRole('button', { name: 'User menu', exact: true })
+      page
+        .locator('.searchbar')
+        .getByRole('button', { name: 'User menu', exact: true })
     ).toBeVisible();
     expect(
       await page.evaluate(() => Boolean(navigator.serviceWorker.controller))
@@ -46,7 +48,9 @@ test('direct offline-page recovery leaves the utility document', async ({
   await page.goto('/offline.html');
   await expect(page).toHaveURL(`${baseURL}/`);
   await expect(
-    page.getByRole('button', { name: 'User menu', exact: true })
+    page
+      .locator('.searchbar')
+      .getByRole('button', { name: 'User menu', exact: true })
   ).toBeVisible();
 });
 
@@ -77,7 +81,9 @@ test('worker offline recovery returns to the originally requested route', async 
     await context.setOffline(false);
   }
   await expect(
-    page.getByRole('button', { name: 'User menu', exact: true })
+    page
+      .locator('.searchbar')
+      .getByRole('button', { name: 'User menu', exact: true })
   ).toBeVisible();
   expect(page.url()).toBe(`${baseURL}/settings/network`);
 });

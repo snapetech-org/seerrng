@@ -604,6 +604,32 @@
       "classification": "already-localized"
     },
     {
+      "file": "src/components/MovieDetails/MovieDetailsLayout.tsx",
+      "line": 445,
+      "expression": "statusMessage",
+      "context": [],
+      "classification": "localized-child-boundary",
+      "reason": "The detail page supplies its existing PageErrorMessage React node; that component localizes the error and Retry action before this layout renders it."
+    },
+    {
+      "file": "src/components/MovieDetails/MovieDetailsLayout.tsx",
+      "line": 505,
+      "expression": "statusMessage",
+      "context": [],
+      "classification": "localized-child-boundary",
+      "reason": "The detail page supplies its existing PageErrorMessage React node; that component localizes the error and Retry action before this layout renders it."
+    },
+    {
+      "file": "src/components/MovieDetails/MovieDetailsLayout.tsx",
+      "line": 554,
+      "expression": "statusMessage",
+      "context": [
+        "div"
+      ],
+      "classification": "localized-child-boundary",
+      "reason": "The detail page supplies its existing PageErrorMessage React node; that component localizes the error and Retry action before this layout renders it."
+    },
+    {
       "file": "src/components/MovieDetails/index.tsx",
       "line": 204,
       "expression": "error && loadErrorMessage",
@@ -613,9 +639,12 @@
     },
     {
       "file": "src/components/MovieDetails/index.tsx",
-      "line": 563,
+      "line": 602,
       "expression": "error && loadErrorMessage",
-      "context": [],
+      "context": [
+        "MovieDetailsLayout"
+      ],
+      "attribute": "statusMessage",
       "classification": "localized-child-boundary",
       "reason": "The error is only a condition. loadErrorMessage is a PageErrorMessage React element whose title, description and retry label use Intl; raw API error text is never rendered."
     },
@@ -1477,10 +1506,31 @@
       "classification": "provider-data"
     },
     {
-      "file": "src/components/TvDetails/index.tsx",
-      "line": 660,
-      "expression": "error && loadErrorMessage",
+      "file": "src/components/TvDetails/SeriesDetailsLayout.tsx",
+      "line": 435,
+      "expression": "(!upstream || embedded) && statusMessage",
+      "context": [
+        "div"
+      ],
+      "classification": "localized-child-boundary",
+      "reason": "The detail page supplies its existing PageErrorMessage React node; that component localizes the error and Retry action before this layout renders it."
+    },
+    {
+      "file": "src/components/TvDetails/SeriesDetailsLayout.tsx",
+      "line": 1261,
+      "expression": "statusMessage",
       "context": [],
+      "classification": "localized-child-boundary",
+      "reason": "The detail page supplies its existing PageErrorMessage React node; that component localizes the error and Retry action before this layout renders it."
+    },
+    {
+      "file": "src/components/TvDetails/index.tsx",
+      "line": 707,
+      "expression": "error && loadErrorMessage",
+      "context": [
+        "SeriesDetailsLayout"
+      ],
+      "attribute": "statusMessage",
       "classification": "localized-child-boundary",
       "reason": "This expression renders an already-built React error block whose fixed copy uses Intl and explicit API text boundaries."
     },

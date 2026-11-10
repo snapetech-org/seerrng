@@ -657,7 +657,6 @@ const TvDetails = ({
     <>
       <PageTitle title={data.name} />
       {pageHeading}
-      {error && loadErrorMessage}
       {showBlocklistModal && (
         <BlocklistModal
           tmdbId={data.id}
@@ -705,6 +704,7 @@ const TvDetails = ({
         showInformationControls={showInformationControls}
         embedded={embedded}
         metadataRetry={metadataRetry}
+        statusMessage={error && loadErrorMessage}
         onLoadingChange={setDetailsLoading}
         data={data}
         ratingData={ratingData}

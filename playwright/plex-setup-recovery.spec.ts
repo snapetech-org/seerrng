@@ -8,6 +8,16 @@ test.afterEach(async ({ page }) => page.unrouteAll({ behavior: 'wait' }));
 // Exercise the shipped application and real Axios/SWR/Formik owners with
 // deterministic API responses. These fixtures never write a provider account.
 const fixture = async (page: Page, theme = 'seerrNGJ', setup = false) => {
+  // Settings routes authorize on the server before browser API interception.
+  // Use the seeded session rather than relying on a mocked auth/me response.
+  if (!setup)
+    expect(
+      (
+        await page.request.post('/api/v1/auth/local', {
+          data: { email: 'admin@seerr.dev', password: 'test1234' },
+        })
+      ).status()
+    ).toBe(200);
   let plex = {
     name: 'Media Server',
     ip: '',
