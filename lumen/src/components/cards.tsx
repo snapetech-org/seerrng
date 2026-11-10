@@ -388,7 +388,12 @@ export function BookCard({ b }: { b: BookResult }) {
               {s?.k === 'ok' ? (
                 <>
                   {/* this button did nothing: the book page has the library links */}
-                  <Link className="qbtn okb" to={href}>
+                  <Link
+                    className="qbtn okb"
+                    to={href}
+                    tabIndex={-1}
+                    aria-hidden="true"
+                  >
                     <Icon name={audio ? 'play' : 'book'} size="sm" />
                     {audio ? 'Listen' : 'Read'}
                   </Link>
@@ -414,7 +419,12 @@ export function BookCard({ b }: { b: BookResult }) {
                   {audio ? 'Request audiobook' : 'Request ebook'}
                 </button>
               ) : (
-                <Link className="qbtn go" to={href}>
+                <Link
+                  className="qbtn go"
+                  to={href}
+                  tabIndex={-1}
+                  aria-hidden="true"
+                >
                   <Icon name="headphones" size="sm" />
                   Choose narrator
                 </Link>
