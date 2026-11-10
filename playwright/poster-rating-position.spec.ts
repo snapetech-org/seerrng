@@ -2,7 +2,8 @@ import { expect, test } from '@playwright/test';
 import { restoreAdminPresentation } from './helpers/presentation';
 
 test.afterEach(async ({ page }) => restoreAdminPresentation(page));
-test.use({ reducedMotion: 'no-preference' });
+// The real worker has its own navigation tests; this fixture intercepts APIs.
+test.use({ reducedMotion: 'no-preference', serviceWorkers: 'block' });
 
 for (const theme of ['seerrNGJ', 'seerrOrig']) {
   for (const width of [390, 1440]) {
@@ -66,12 +67,18 @@ for (const theme of ['seerrNGJ', 'seerrOrig']) {
           new URL(response.url()).pathname === '/api/v1/discover/movies' &&
           response.status() === 200
       );
-      await page.goto('/discover/movies');
-      await catalogLoaded;
+      // Settle the requested theme before card prefetch competes with its
+      // nonmatching-media stylesheet on a cold browser connection pool.
+      await page.goto('/settings/main');
       await expect(page.locator('html')).toHaveAttribute(
         'data-interface-theme',
         theme
       );
+      await page.evaluate(() =>
+        (window as any).next.router.push('/discover/movies')
+      );
+      await expect(page).toHaveURL(/\/discover\/movies$/);
+      await catalogLoaded;
       await expect(page.getByTestId('title-card')).toHaveCount(12);
       await page.evaluate(() => document.fonts.ready);
       const frame = page
