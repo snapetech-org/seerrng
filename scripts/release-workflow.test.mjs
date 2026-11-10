@@ -263,8 +263,8 @@ test('release assets build while image verification runs, then package channels 
   );
   assert.match(
     discordStep.run,
-    /curl --fail --silent --show-error/u,
-    'Discord delivery must fail the release when the webhook returns HTTP error'
+    /\| python3 scripts\/discord_release_route\.py/u,
+    'Discord delivery must fail the announcement job when the sender fails'
   );
 });
 
@@ -1598,8 +1598,11 @@ test('release notes flow into the draft release and Discord announcement', () =>
   assert.ok(
     discord.steps.some((step) => step.name === 'Checkout release tooling')
   );
-  assert.match(discordScript, /discord-release-notes\.mjs --split/u);
-  assert.match(discordScript, /wait=true/u);
+  assert.equal(
+    discord.env.DISCORD_CHANGELOG_WEBHOOK,
+    '${{ secrets.DISCORD_CHANGELOG_WEBHOOK }}'
+  );
+  assert.match(discordScript, /discord_release_route[.]py/u);
   assert.doesNotMatch(
     discordScript,
     /3797|3800/u,
@@ -1697,15 +1700,19 @@ test('Discord confirmation accepts boundary whitespace normalization but rejects
   );
   for (const name of ['release.yml', 'reannounce-release.yml']) {
     const workflow = readWorkflow(name);
-    const posts = Object.values(workflow.jobs)
-      .flatMap((job) => job.steps ?? [])
-      .filter((step) => step.run?.includes('"$webhook_url"'));
-    assert.ok(posts.length > 0);
-    for (const step of posts)
-      assert.match(
-        step.run,
-        /discord-release-notes\.mjs --verify payload\.json/u
+    const posts = Object.values(workflow.jobs).filter(
+      (job) => job.env?.DISCORD_PROJECT_WEBHOOK
+    );
+    assert.equal(posts.length, name === 'release.yml' ? 2 : 1);
+    for (const job of posts) {
+      assert.equal(
+        job.env.DISCORD_CHANGELOG_WEBHOOK,
+        '${{ secrets.DISCORD_CHANGELOG_WEBHOOK }}'
       );
+      assert.ok(
+        job.steps.some((step) => /discord_release_route[.]py/u.test(step.run))
+      );
+    }
   }
 });
 

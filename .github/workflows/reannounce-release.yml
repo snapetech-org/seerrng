@@ -24,7 +24,8 @@ jobs:
     permissions:
       contents: read
     env:
-      DISCORD_WEBHOOK: ${{ secrets.DISCORD_RELEASE_WEBHOOK }}
+      DISCORD_PROJECT_WEBHOOK: ${{ secrets.DISCORD_RELEASE_WEBHOOK }}
+      DISCORD_CHANGELOG_WEBHOOK: ${{ secrets.DISCORD_CHANGELOG_WEBHOOK }}
       GH_TOKEN: ${{ github.token }}
       REPO: ${{ github.repository }}
       TAG: ${{ inputs.tag }}
@@ -66,7 +67,7 @@ jobs:
             echo 'Invalid release tag.' >&2
             exit 1
           }
-          test -n "$DISCORD_WEBHOOK" || {
+          test -n "$DISCORD_PROJECT_WEBHOOK" || {
             echo 'DISCORD_RELEASE_WEBHOOK is required to reannounce a release.' >&2
             exit 1
           }
@@ -82,55 +83,27 @@ jobs:
             exit 1
           }
           jq -r '.body' release.json > release-body.md
-          node scripts/discord-release-notes.mjs --split < release-body.md > chunks.json
-          chunk_count="$(jq 'length' chunks.json)"
-          (( chunk_count > 0 )) || {
-            echo 'The published release notes are empty.' >&2
-            exit 1
-          }
-
           release_url="${GITHUB_SERVER_URL}/${REPO}/releases/tag/${TAG}"
           image_ref="ghcr.io/snapetech-org/seerrng:${TAG}"
-          webhook_url="$DISCORD_WEBHOOK"
-          if [[ "$webhook_url" == *'?'* ]]; then
-            webhook_url+='&wait=true'
-          else
-            webhook_url+='?wait=true'
-          fi
-
-          for ((index = 0; index < chunk_count; index += 1)); do
-            description="$(jq -r --argjson index "$index" '.[$index]' chunks.json)"
-            number=$((index + 1))
-            title="SeerrNG ${TAG} release notes (reissue ${number}/${chunk_count})"
-            jq -n \
-              --arg username "SeerrNG Releases" \
-              --arg title "$title" \
-              --arg url "$release_url" \
-              --arg description "$description" \
-              --arg image "$image_ref" \
-              --arg run_url "${GITHUB_SERVER_URL}/${REPO}/actions/runs/${GITHUB_RUN_ID}" \
-              --argjson first "$index" \
-              '{
-                username: $username,
-                embeds: [{
-                  title: $title,
-                  url: $url,
-                  description: $description,
-                  color: 5814783,
-                  fields: (if $first == 0 then [
-                    { name: "Image", value: $image, inline: false },
-                    { name: "Workflow", value: $run_url, inline: false }
-                  ] else [] end)
-                }]
-              }' > payload.json
-
-            response="$(curl --fail --silent --show-error \
-              -H 'Content-Type: application/json' \
-              -X POST \
-              --data @payload.json \
-              "$webhook_url")"
-            printf '%s' "$response" | node scripts/discord-release-notes.mjs --verify payload.json
-            if (( number < chunk_count )); then
-              sleep 1
-            fi
-          done
+          title="SeerrNG ${TAG} release notes (reissue)"
+          discord_body="$(cat release-body.md)"
+          jq -n \
+            --arg username "SeerrNG Releases" \
+            --arg title "$title" \
+            --arg url "$release_url" \
+            --arg description "$discord_body" \
+            --arg image "$image_ref" \
+            --arg run_url "${GITHUB_SERVER_URL}/${REPO}/actions/runs/${GITHUB_RUN_ID}" \
+            '{
+              username: $username,
+              embeds: [{
+                title: $title,
+                url: $url,
+                description: $description,
+                color: 5814783,
+                fields: [
+                  { name: "Image", value: $image, inline: false },
+                  { name: "Workflow", value: $run_url, inline: false }
+                ]
+              }]
+            }' | python3 scripts/discord_release_route.py SeerrNG "$TAG" -

@@ -26,8 +26,9 @@ implementation details stay in the technical history.
 CI validates the fragment contract. Before tagging a stable release, prepare
 the versioned section in `CHANGELOG.md` and prepend it without replacing the
 audited historical sections. The release workflow assembles the current
-fragments into the GitHub release body; the Discord announcement uses the same
-content.
+fragments into the GitHub release body. With `DISCORD_CHANGELOG_WEBHOOK`
+configured, Discord receives the same content in #changelogs and the existing
+`DISCORD_RELEASE_WEBHOOK` posts only a link to the confirmed notes.
 
 If an announcement stops after publication, inspect its failed step before
 retrying. Discord trims boundary whitespace in embed descriptions; confirmation
@@ -84,8 +85,8 @@ When reviewing a release, check all three surfaces:
 
 1. `CHANGELOG.md` contains a section for the new version.
 2. The GitHub release body starts with the curated user-facing changes.
-3. The Discord announcement contains the same useful summary and links to the
-   release.
+3. The Discord #changelogs post contains the same notes. The project-channel
+   announcement links to that post.
 
 ## Retrying a Tagged Release
 
