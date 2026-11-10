@@ -122,8 +122,15 @@ for (const theme of ['seerrOrig', 'seerrNGJ'])
       })
     );
     await page.setViewportSize({ width: 320, height: 900 });
+    const rejectedStylesheet = page.waitForResponse(
+      (response) =>
+        new URL(response.url()).pathname ===
+          `/api/v1/interface-themes/${theme}/theme.css` &&
+        response.status() === 404
+    );
     await page.goto('/discover/movies');
-    await page.waitForLoadState('networkidle');
+    await rejectedStylesheet;
+    await expect(page.getByTestId('title-card')).toHaveCount(4);
     await page.screenshot({
       path: testInfo.outputPath('baseline-theme-stylesheet-rejected.png'),
     });
@@ -134,20 +141,27 @@ for (const theme of ['seerrOrig', 'seerrNGJ'])
         new URL(response.url()).pathname ===
         `/api/v1/interface-themes/${theme}/theme.css`
     );
-    await page.reload({ waitUntil: 'networkidle' });
+    await page.reload();
     const stylesheetResponse = await candidateStylesheetResponse;
     expect(stylesheetResponse.status()).toBe(200);
     expect(stylesheetResponse.headers()['content-type']).toMatch(
       /^text\/css; charset=utf-8/u
     );
+    await expect(page.locator('html')).toHaveAttribute(
+      'data-interface-theme',
+      theme
+    );
+    await expect(page.getByTestId('title-card')).toHaveCount(4);
+    await page.evaluate(() => document.fonts.ready);
     await page.screenshot({
       path: testInfo.outputPath('candidate-theme-stylesheet-served.png'),
     });
 
     for (const width of [320, 360, 375, 390, 412]) {
       await page.setViewportSize({ width, height: 900 });
-      await page.goto('/discover/movies');
-      await page.waitForLoadState('networkidle');
+      // Resize the recovered page itself; unrelated card prefetch need not
+      // become globally idle to inspect its responsive geometry.
+      await expect(page.getByTestId('title-card')).toHaveCount(4);
       expect(discoveryFixtureApplied).toBe(true);
       await expect(page.locator('html')).toHaveAttribute(
         'data-interface-theme',

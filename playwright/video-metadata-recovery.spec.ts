@@ -169,9 +169,34 @@ for (const type of ['movie', 'tv'] as const) {
           'data-interface-theme',
           theme
         );
-        expect(
-          await page.evaluate(() => document.documentElement.scrollWidth)
-        ).toBeLessThanOrEqual(width + 1);
+        const documentWidth = await page.evaluate(
+          () => document.documentElement.scrollWidth
+        );
+        if (documentWidth > width + 1)
+          await info.attach('horizontal-overflow', {
+            body: JSON.stringify(
+              await page.evaluate(() =>
+                [...document.querySelectorAll('body *')]
+                  .filter(
+                    (el) => el.getBoundingClientRect().right > innerWidth + 1
+                  )
+                  .slice(0, 25)
+                  .map((el) => ({
+                    tag: el.tagName,
+                    className: el.getAttribute('class'),
+                    right: el.getBoundingClientRect().right,
+                    position: getComputedStyle(el).position,
+                    transform: getComputedStyle(el).transform,
+                  }))
+              )
+            ),
+            contentType: 'application/json',
+          });
+        // Watchlist labels resize their floating tooltip asynchronously.
+        // Require the unchanged viewport bound after positioning settles.
+        await expect
+          .poll(() => page.evaluate(() => document.documentElement.scrollWidth))
+          .toBeLessThanOrEqual(width + 1);
         expect(errors).toEqual([]);
         await page.screenshot({
           path: info.outputPath('watchlist-confirmed.png'),
