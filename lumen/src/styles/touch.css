@@ -286,3 +286,17 @@ html.no-overscroll body {
     padding-right: 14px;
   }
 }
+
+/* the "Let people change it" box was 13px: a bigger box inside a full-height label */
+@media (pointer: coarse) {
+  .cfg-lock {
+    gap: 10px;
+    min-width: 44px;
+  }
+  .cfg-lock input {
+    width: 24px;
+    height: 24px;
+    margin: 0;
+    flex: none;
+  }
+}

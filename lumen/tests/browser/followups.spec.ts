@@ -94,3 +94,32 @@ test('the search field fills its bar so a tap anywhere in it types', async ({
   await page.touchscreen.tap(bar.x + bar.width / 2, bar.y + 3);
   await expect(page.locator('#sq')).toBeFocused();
 });
+
+test('the Lumen settings checkbox has a 44px touch target and stays keyboard friendly', async ({
+  page,
+}) => {
+  await fixtures(page);
+  await page.goto('/me/lumen');
+  const lock = page.locator('.cfg-lock').first();
+  await expect(lock).toBeVisible();
+  const input = lock.locator('input');
+  const coarse = await page.evaluate(
+    () => matchMedia('(pointer: coarse)').matches
+  );
+  if (coarse) {
+    await lock.scrollIntoViewIfNeeded();
+    const label = (await lock.boundingBox())!;
+    const mark = (await input.boundingBox())!;
+    expect(label.height).toBeGreaterThanOrEqual(44);
+    expect(label.width).toBeGreaterThanOrEqual(44);
+    expect(mark.width).toBeGreaterThanOrEqual(22);
+    // the very left edge of the control, beside the box, still toggles it
+    const before = await input.isChecked();
+    await page.touchscreen.tap(label.x + 1, label.y + label.height / 2);
+    expect(await input.isChecked()).toBe(!before);
+  }
+  await input.focus();
+  const was = await input.isChecked();
+  await page.keyboard.press('Space');
+  expect(await input.isChecked()).toBe(!was);
+});
