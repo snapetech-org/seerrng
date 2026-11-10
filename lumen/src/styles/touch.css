@@ -230,3 +230,13 @@ html.no-overscroll body {
   inset: -4px;
   border-radius: 50%;
 }
+
+/* a finger needs more than the 34-36px compact controls have on a mouse */
+@media (pointer: coarse) {
+  .chip,
+  .seg button,
+  .seg a,
+  .btn-sm {
+    min-height: 44px;
+  }
+}
