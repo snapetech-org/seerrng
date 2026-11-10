@@ -92,7 +92,7 @@ export const usePublicSettings = () =>
 // each history entry keeps what it had loaded, so Back lands on the same rows (and scroll spot)
 const pagedSnap = new Map<
   string,
-  { items: unknown[]; page: number; total: number }
+  { items: unknown[]; page: number; total: number; gen: number }
 >();
 export function usePaged<T>(base: string) {
   const entry = useLocation().key;
@@ -105,6 +105,9 @@ export function usePaged<T>(base: string) {
   const [loadedBase, setLoadedBase] = useState(base);
   const [error, setError] = useState<string | null>(null);
   // one page in flight at a time: scroll triggers can fire twice before state catches up
+  // the cache generation these rows were fetched under: a request made since then means the
+  // restored rows may show a title as not requested
+  const rowsGen = useRef(snap?.gen ?? cacheGeneration());
   const inFlight = useRef<string | null>(null);
   const generation = useRef(0);
   const shownBase = useRef(base);
@@ -120,11 +123,54 @@ export function usePaged<T>(base: string) {
     setTotal(s?.total || 1);
     setError(null);
     inFlight.current = null;
+    rowsGen.current = s?.gen ?? cacheGeneration();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [base]);
   useEffect(() => {
+  // Back to a list after something changed (a request): quietly re-read the pages that were
+  // shown and swap them in place, so scroll position holds and statuses are current
+  useEffect(() => {
+    const s = pagedSnap.get(snapKey);
+    if (!s || s.gen === cacheGeneration()) return;
+    let live = true;
+    const gen = cacheGeneration();
+    const sep = base.includes('?') ? '&' : '?';
+    (async () => {
+      const rows: T[] = [];
+      const seen = new Set<string>();
+      let totalPages = s.total;
+      for (let p = 1; p <= s.page; p++) {
+        const d = await cachedApi<{
+          page: number;
+          totalPages: number;
+          results: T[];
+        }>(`${base}${sep}page=${p}`);
+        totalPages = d.totalPages || 1;
+        for (const r of d.results) {
+          const id = String((r as { id?: unknown }).id);
+          if (!seen.has(id)) {
+            seen.add(id);
+            rows.push(r);
+          }
+        }
+        if (!live) return;
+      }
+      rowsGen.current = gen;
+      // pages scrolled in while this ran stay after the refreshed ones
+      setItems((cur) => {
+        const idOf = (x: T) => String((x as { id?: unknown }).id);
+        return rows.concat(cur.filter((x) => !seen.has(idOf(x))));
+      });
+      setTotal(totalPages);
+    })().catch(() => {
+      // the restored rows stay up if refreshing them fails
+    });
+    return () => {
+      live = false;
+    };
+  }, [snapKey, base]);
     if (loadedBase === base && page > 0)
-      pagedSnap.set(snapKey, { items, page, total });
+      pagedSnap.set(snapKey, { items, page, total, gen: rowsGen.current });
     // keep memory bounded: a long session visits many lists
     if (pagedSnap.size > 30)
       pagedSnap.delete(pagedSnap.keys().next().value as string);
@@ -136,6 +182,7 @@ export function usePaged<T>(base: string) {
     if (inFlight.current === key) return;
     inFlight.current = key;
     const requestGeneration = generation.current;
+    if (page === 0) rowsGen.current = cacheGeneration();
     const ownsRequest = () =>
       generation.current === requestGeneration && inFlight.current === key;
     setLoading(true);
