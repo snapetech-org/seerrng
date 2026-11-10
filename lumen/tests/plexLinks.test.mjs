@@ -131,3 +131,23 @@ test('Android rejects decoded routing delimiters and malformed metadata keys', (
     );
   }
 });
+
+test('a title that only exists in 4K still links to it', () => {
+  const only4k = {
+    mediaUrl4k: links.mediaUrl4k,
+    iOSPlexUrl4k: links.iOSPlexUrl4k,
+  };
+  assert.equal(
+    plexLink(only4k, false, 'movie', 'desktop').href,
+    links.mediaUrl4k
+  );
+  assert.equal(
+    plexLink(only4k, false, 'movie', 'ios').href,
+    links.iOSPlexUrl4k
+  );
+  // an HD-only title never borrows a 4K link it doesn't have
+  assert.equal(
+    plexLink({ mediaUrl: links.mediaUrl }, true, 'movie', 'desktop').href,
+    links.mediaUrl
+  );
+});
