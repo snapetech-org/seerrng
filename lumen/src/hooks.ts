@@ -7,11 +7,15 @@ import {
   forget,
   isFresh,
   onMarkStale,
+  RECHECK_MS,
   remember,
   shared,
 } from './apiCache';
-import { onSessionReset, sessionGeneration } from './sessionState';
 import { friendlyError } from './errors';
+import { recentPublicSettings } from './mediaServer';
+import { onSessionReset, sessionGeneration } from './sessionState';
+
+const PUBLIC_PATH = '/settings/public';
 
 // A saved answer shows at once; a fresh one isn't asked for again (see apiCache.ts).
 export function useApi<T>(path: string | null) {
@@ -62,7 +66,11 @@ function fetchShared<T>(path: string): Promise<T> {
   return shared(path, async () => {
     const generation = sessionGeneration();
     const cacheVersion = cacheGeneration();
-    const d = await api<T>(path);
+    const d =
+      path === PUBLIC_PATH
+        ? ((recentPublicSettings(RECHECK_MS) as T | null) ??
+          (await api<T>(path)))
+        : await api<T>(path);
     if (generation === sessionGeneration()) remember(path, d, cacheVersion);
     return d;
   });

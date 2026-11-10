@@ -123,3 +123,53 @@ test('the Lumen settings checkbox has a 44px touch target and stays keyboard fri
   await page.keyboard.press('Space');
   expect(await input.isChecked()).toBe(!was);
 });
+
+test('a cold load asks for the public settings and the signed-in user once each', async ({
+  page,
+}) => {
+  const counts: Record<string, number> = {};
+  await fixtures(page, counts);
+  await page.goto('/');
+  await expect(page.locator('.navchips')).toBeVisible();
+  // let late rows and rechecks settle before counting
+  await page.waitForTimeout(1500);
+  expect(counts).toMatchObject({ '/settings/public': 1, '/auth/me': 1 });
+});
+
+test('signing in does not ask for the public settings again', async ({
+  page,
+}) => {
+  const counts: Record<string, number> = {};
+  await fixtures(page);
+  let signedIn = false;
+  await page.route('**/api/v1/auth/me', (route) => {
+    counts['/auth/me'] = (counts['/auth/me'] || 0) + 1;
+    return route.fulfill(
+      signedIn
+        ? { json: { id: 1, displayName: 'fam', permissions: 2 } }
+        : { status: 401, json: { message: 'NO_SESSION' } }
+    );
+  });
+  await page.route('**/lumen-config.json', (route) =>
+    route.fulfill({ json: { loginStyle: 'form' } })
+  );
+  await page.route('**/api/v1/settings/public', (route) => {
+    counts['/settings/public'] = (counts['/settings/public'] || 0) + 1;
+    return route.fulfill({
+      json: { mediaServerType: 2, localLogin: true, booksEnabled: true },
+    });
+  });
+  await page.route('**/api/v1/auth/jellyfin', (route) => {
+    signedIn = true;
+    return route.fulfill({ json: { id: 1, displayName: 'fam' } });
+  });
+  await page.goto('/');
+  await page.getByLabel('Username', { exact: true }).fill('fam');
+  await page.getByLabel('Password').fill('secret');
+  await page.getByRole('button', { name: 'Sign in', exact: true }).click();
+  await expect(page.locator('.navchips')).toBeVisible();
+  await page.waitForTimeout(1000);
+  expect(counts['/settings/public']).toBe(1);
+  // once to find out nobody is signed in, once after signing in
+  expect(counts['/auth/me']).toBe(2);
+});
