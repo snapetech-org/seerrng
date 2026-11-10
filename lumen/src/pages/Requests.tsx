@@ -15,10 +15,12 @@ import {
 } from '../api';
 import { useAuth, useMediaServerName } from '../auth';
 import { Cover, shortDate } from '../components/cards';
+import { ConfirmSheet } from '../components/ConfirmSheet';
 import { canChooseRequestOptions, Pill } from '../components/detail';
 import { RequestEditSheet } from '../components/requestEdit';
 import { Avatar } from '../components/Shell';
 import { useToast } from '../components/toast';
+import { friendlyError } from '../errors';
 import {
   GAME_LABEL,
   useExtras,
@@ -36,8 +38,6 @@ import {
   sessionGeneration,
   sessionUserId,
 } from '../sessionState';
-import { friendlyError } from '../errors';
-import { ConfirmSheet } from '../components/ConfirmSheet';
 
 // the glyph on a drawn cover when a request has no artwork
 const coverIcon = (type: string, format?: string): IconName =>
@@ -774,20 +774,12 @@ export default function Requests() {
   }, [show, everyone]);
   const [acting, setActing] = useState<number | null>(null);
   const [editing, setEditing] = useState<Row | null>(null);
-  // Remove asks once more on the same button instead of a pop-up
-  const [removing, setRemoving] = useState<number | null>(null);
-  // a decline or a cancel waits for a yes; neither can be taken back
+  // a decline, a cancel or a remove waits for a yes; none can be taken back
   const [confirming, setConfirming] = useState<{
     id: number;
-    how: 'decline' | 'cancel';
+    how: 'decline' | 'cancel' | 'remove';
     title: string;
   } | null>(null);
-  useEffect(() => {
-    if (removing == null) return;
-    const t = window.setTimeout(() => setRemoving(null), 4000);
-    return () => window.clearTimeout(t);
-  }, [removing]);
-
   useEffect(() => {
     if (!manage) return;
     let live = true;
@@ -965,7 +957,6 @@ export default function Requests() {
     how: 'approve' | 'decline' | 'retry' | 'remove'
   ) => {
     setActing(id);
-    setRemoving(null);
     try {
       if (how === 'remove') await api(`/request/${id}`, { method: 'DELETE' });
       else await api(`/request/${id}/${how}`, { method: 'POST', body: '{}' });
@@ -1228,12 +1219,14 @@ export default function Requests() {
                         className="btn btn-sm btn-quiet"
                         disabled={acting === x.r.id}
                         onClick={() =>
-                          removing === x.r.id
-                            ? decide(x.r.id, 'remove')
-                            : setRemoving(x.r.id)
+                          setConfirming({
+                            id: x.r.id,
+                            how: 'remove',
+                            title: x.title,
+                          })
                         }
                       >
-                        {removing === x.r.id ? 'Remove for good?' : 'Remove'}
+                        Remove
                       </button>
                     </>
                   ) : st.k === 'ok' &&
@@ -1288,22 +1281,30 @@ export default function Requests() {
           title={
             confirming.how === 'cancel'
               ? 'Cancel this request?'
-              : 'Decline this request?'
+              : confirming.how === 'remove'
+                ? `Remove ${confirming.title}?`
+                : 'Decline this request?'
           }
           body={
             confirming.how === 'cancel'
               ? `${confirming.title} won’t be fetched. You can ask for it again later.`
-              : `${confirming.title} won’t be fetched, and the person who asked will see it was declined.`
+              : confirming.how === 'remove'
+                ? `This deletes the request for ${confirming.title} for good. It can’t be undone.`
+                : `${confirming.title} won’t be fetched, and the person who asked will see it was declined.`
           }
           confirm={
-            confirming.how === 'cancel' ? 'Cancel request' : 'Decline request'
+            confirming.how === 'cancel'
+              ? 'Cancel request'
+              : confirming.how === 'remove'
+                ? 'Remove request'
+                : 'Decline request'
           }
           onClose={() => setConfirming(null)}
           onConfirm={() => {
             const { id, how } = confirming;
             setConfirming(null);
             if (how === 'cancel') void cancel(id);
-            else void decide(id, 'decline');
+            else void decide(id, how);
           }}
         />
       )}
