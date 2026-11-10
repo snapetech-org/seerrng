@@ -1,3 +1,4 @@
+# ng-runner-policy: github-hosted-primary-v1
 name: Windows package validation
 on:
   workflow_dispatch:

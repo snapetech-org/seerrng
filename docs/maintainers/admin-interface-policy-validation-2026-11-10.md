@@ -48,3 +48,17 @@ signed-in non-administrators while the lock is active.
 
 This fixture verifies routing and rendered settings. It does not exercise
 external authentication providers or a production upgrade image.
+
+## Remote validation follow-up
+
+The first exact-head CI dispatch for the follow-up commit exposed three
+independent validation failures. The Lumen image scan reported two fixable HIGH
+findings in the pinned nginx image's `libxslt 1.1.43-r3`; the Dockerfile now
+upgrades that runtime package to Alpine's `1.1.43-r4`. A local Docker build
+served `/` with HTTP 200, and the running image passed `nginx -t` as user 101.
+The release-note assembly found missing frontmatter in the unpublished
+Chocolatey archive fragment; that fragment now passes the parser. The tooling
+suite found a missing runner-policy marker in the Windows package-validation
+workflow; all 14 workflow-boundary tests now pass. The original CI run was left
+running to preserve its active jobs, and the corrections require a new exact-head
+run for remote acceptance.
