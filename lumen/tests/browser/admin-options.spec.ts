@@ -1254,6 +1254,7 @@ test('admins see everyone’s requests and approve or decline them', async ({
     .poll(() => posts.map((p) => p.path))
     .toContain('/request/77/approve');
   await row.getByRole('button', { name: 'Decline' }).click();
+  await page.getByRole('button', { name: 'Decline request' }).click();
   await expect
     .poll(() => posts.map((p) => p.path))
     .toContain('/request/77/decline');

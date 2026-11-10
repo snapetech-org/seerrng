@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { isAdministrator, useAuth } from '../auth';
 import { Section } from '../components/cards';
@@ -14,6 +15,7 @@ import {
   type DiscoverRow,
 } from '../settings';
 import { canSeeRecent } from './Discover';
+import { ConfirmSheet } from '../components/ConfirmSheet';
 
 type Quota = Record<
   string,
@@ -61,6 +63,7 @@ export default function Me() {
   const { user, signOut } = useAuth();
   const toast = useToast();
   const { prefs, set, reset, locked, seerrPublicUrl } = usePrefs();
+  const [askReset, setAskReset] = useState(false);
   const quota = useApi<Quota>(user ? `/user/${user.id}/quota` : null).data;
   const full = fullSeerrUrl(seerrPublicUrl);
   const isAdmin = isAdministrator(user?.permissions);
@@ -244,11 +247,24 @@ export default function Me() {
         <button
           className="btn btn-quiet btn-sm"
           style={{ marginTop: 10 }}
-          onClick={reset}
+          onClick={() => setAskReset(true)}
         >
           Reset to defaults
         </button>
       </Section>
+
+      {askReset && (
+        <ConfirmSheet
+          title="Reset to defaults?"
+          body="Your theme, quick-request, narrator and Discover row choices go back to how they started."
+          confirm="Reset"
+          onClose={() => setAskReset(false)}
+          onConfirm={() => {
+            setAskReset(false);
+            reset();
+          }}
+        />
+      )}
 
       <Section title="More">
         <div className="setlist">

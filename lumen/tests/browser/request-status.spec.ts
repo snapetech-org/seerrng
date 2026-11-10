@@ -339,7 +339,8 @@ test('a double click on Cancel cancels the request once', async ({ page }) => {
   });
   await page.goto('/requests');
   const row = page.locator('.rq').filter({ hasText: 'Requested audio' });
-  await row.getByRole('button', { name: 'Cancel', exact: true }).dblclick();
+  await row.getByRole('button', { name: 'Cancel', exact: true }).click();
+  await page.getByRole('button', { name: 'Cancel request' }).dblclick();
   await expect(page.getByText('Request cancelled')).toBeVisible();
   await expect(row).toHaveCount(0);
   await expect(page.getByText('Not found')).toHaveCount(0);
