@@ -77,3 +77,20 @@ for (const [width, height] of [
     await context.close();
   });
 }
+
+test('the search field fills its bar so a tap anywhere in it types', async ({
+  page,
+}) => {
+  test.skip(page.viewportSize()!.width >= 1040, 'phone and tablet search box');
+  await fixtures(page);
+  await page.goto('/search');
+  const bar = (await page.locator('#sq-label').boundingBox())!;
+  const field = (await page.locator('#sq').boundingBox())!;
+  expect(bar.height).toBeGreaterThanOrEqual(44);
+  expect(field.height).toBeGreaterThanOrEqual(bar.height - 1);
+  expect(field.x + field.width).toBeGreaterThanOrEqual(bar.x + bar.width - 1);
+  // a tap near the bar edge, outside the old 25px strip, still focuses the field
+  await page.locator('#sq').blur();
+  await page.touchscreen.tap(bar.x + bar.width / 2, bar.y + 3);
+  await expect(page.locator('#sq')).toBeFocused();
+});

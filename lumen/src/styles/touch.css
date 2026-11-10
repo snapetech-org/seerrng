@@ -275,3 +275,14 @@ html.no-overscroll body {
     margin-block: -12px;
   }
 }
+
+/* the whole search bar is the tap target: the field fills its height instead of a 25px strip */
+@media (pointer: coarse) {
+  .search:has(input) {
+    padding-right: 0;
+  }
+  .search input {
+    align-self: stretch;
+    padding-right: 14px;
+  }
+}
