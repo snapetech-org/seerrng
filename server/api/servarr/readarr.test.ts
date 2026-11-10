@@ -1834,6 +1834,62 @@ describe('ReadarrAPI Chaptarr compatibility', () => {
     assert.strictEqual(searchBookMock.mock.calls.length, 1);
   });
 
+  it('recovers an unmonitored Chaptarr book by exact provider ID without a library scan', async () => {
+    const api = new ReadarrAPI({
+      url: 'http://localhost:8787/api/v1',
+      apiKey: 'key',
+      mediaType: 'ebook',
+    });
+    const internalApi = api as unknown as {
+      detectedSystemStatus?: { appName?: string };
+      requestBaseUrl?: string;
+    };
+    internalApi.detectedSystemStatus = { appName: 'Chaptarr' };
+    internalApi.requestBaseUrl =
+      'http://localhost:8787/readarr/hc/ebook/api/v1';
+    mock.method(
+      api as unknown as { ensureProvider: () => Promise<void> },
+      'ensureProvider',
+      async () => undefined
+    );
+    const localBook = existingBook({
+      id: 42,
+      foreignBookId: 'hc:123',
+      mediaType: 'ebook',
+      monitored: false,
+      ebookMonitored: false,
+    });
+    const getMock = mock.method(
+      api as unknown as MockableReadarr,
+      'get',
+      async () => [localBook]
+    );
+    mock.method(api, 'getBook', async () => localBook);
+    const writes: string[] = [];
+    mock.method(
+      api as unknown as MockableReadarr,
+      'request',
+      async (method: string, endpoint: string) => {
+        writes.push(`${method} ${endpoint}`);
+        return {
+          data: { ...localBook, monitored: true, ebookMonitored: true },
+        };
+      }
+    );
+    mock.method(api, 'searchBook', async () => undefined);
+
+    const result = await api.addBook({
+      ...bookOptions,
+      foreignBookId: 'hc:123',
+      mediaType: 'ebook',
+    });
+    assert.strictEqual(result.id, 42);
+    assert.deepStrictEqual(getMock.mock.calls[0].arguments[1], {
+      params: { titleSlug: '123', mediaType: 'ebook' },
+    });
+    assert.deepStrictEqual(writes, ['PUT /book/42', 'POST /command']);
+  });
+
   it('paginates Chaptarr library scans with bounded requests', async () => {
     const pageQueries: URLSearchParams[] = [];
     const pages = [
@@ -2101,6 +2157,7 @@ describe('ReadarrAPI Chaptarr compatibility', () => {
         '/readarr/gr/ebook/api/v1/book/lookup',
         '/readarr/hc/ebook/api/v1/book/lookup',
         '/readarr/gr/ebook/api/v1/book',
+        '/readarr/gr/ebook/api/v1/book',
         '/readarr/gr/ebook/api/v1/book/42',
         '/readarr/gr/ebook/api/v1/book/42',
         '/readarr/gr/ebook/api/v1/book/42',
@@ -2321,9 +2378,11 @@ describe('ReadarrAPI Chaptarr compatibility', () => {
         true
       );
       assert.ok(
-        !requests.some(
-          ({ method, path }) =>
-            method === 'GET' && path === '/readarr/gr/ebook/api/v1/book'
+        requests.some(
+          ({ method, path, query }) =>
+            method === 'GET' &&
+            path === '/readarr/gr/ebook/api/v1/book' &&
+            query.get('titleSlug') === '3194841'
         )
       );
       const update = requests.find(

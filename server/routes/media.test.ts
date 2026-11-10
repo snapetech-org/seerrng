@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import { randomBytes } from 'node:crypto';
 import path from 'node:path';
 import { before, beforeEach, describe, it, mock } from 'node:test';
 
@@ -198,7 +199,7 @@ function createApp() {
   app.use(express.json());
   app.use(
     session({
-      secret: 'test-secret',
+      secret: randomBytes(32).toString('hex'),
       cookie: { secure: 'auto' },
       resave: false,
       saveUninitialized: false,
@@ -1284,7 +1285,7 @@ describe('DELETE /media/:id/file', () => {
     validatedApp.use(express.json());
     validatedApp.use(
       session({
-        secret: 'test-secret',
+        secret: randomBytes(32).toString('hex'),
         cookie: { secure: 'auto' },
         resave: false,
         saveUninitialized: false,

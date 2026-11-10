@@ -1191,14 +1191,47 @@ class ReadarrAPI extends ServarrBase<ReadarrQueueItem> {
   ): Promise<ReadarrBook | undefined> {
     if (this.isChaptarr()) {
       // Chaptarr's POST /book is provider-aware and resolves existing local
-      // rows in its indexed database. Only use a positive ID already returned
-      // by a lookup as a targeted read; never scan the whole library here.
+      // rows in its indexed database. A provider lookup may omit the local ID
+      // for an existing unmonitored row, so ask the format-scoped facade for
+      // that exact work before attempting a duplicate POST.
       const bookId = options.id;
       if (
         typeof bookId !== 'number' ||
         !Number.isSafeInteger(bookId) ||
         bookId <= 0
       ) {
+        const providerId = options.foreignBookId?.match(
+          /^(?:hc|hardcover|metadata-api|gr|goodreads):([1-9]\d{0,19})$/i
+        )?.[1];
+        if (providerId && this.requestBaseUrl) {
+          try {
+            const matches = sanitizeServarrRecordArray<ReadarrBook>(
+              await this.get<ReadarrBook[]>(
+                '/book',
+                this.getRequestConfig({
+                  titleSlug: providerId,
+                  mediaType: this.mediaType,
+                })
+              ),
+              5
+            );
+            const matched = matches.find((book) =>
+              ReadarrAPI.matchesExistingBook(book, options)
+            );
+            if (matched && Number.isSafeInteger(matched.id) && matched.id > 0) {
+              return await this.getBook(matched.id);
+            }
+          } catch (error) {
+            logger.debug(
+              'Chaptarr exact existing-book lookup failed; letting the provider resolve the add.',
+              {
+                label: 'Readarr',
+                errorMessage:
+                  error instanceof Error ? error.message : String(error),
+              }
+            );
+          }
+        }
         return undefined;
       }
 
