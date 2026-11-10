@@ -566,6 +566,8 @@ export interface MainSettings {
   applicationTitle: string;
   applicationUrl: string;
   defaultFrontend: 'native' | 'lumen' | 'external';
+  enforceDefaultFrontend?: boolean;
+  lockLumenForNonAdmins?: boolean;
   lumenPublicUrl: string;
   cacheImages: boolean;
   includeAdult: boolean;
@@ -663,6 +665,7 @@ interface FullPublicSettings extends PublicSettings {
   applicationTitle: string;
   applicationUrl: string;
   hideAvailable: boolean;
+  lockLumenForNonAdmins: boolean;
   hideBlocklisted: boolean;
   hideRequested: boolean;
   otherUsersAvailability: OtherUserAvailabilityMode;
@@ -995,6 +998,8 @@ class Settings {
         applicationTitle: 'Seerr',
         applicationUrl: '',
         defaultFrontend: 'lumen',
+        enforceDefaultFrontend: false,
+        lockLumenForNonAdmins: false,
         lumenPublicUrl: '',
         cacheImages: true,
         includeAdult: false,
@@ -1803,6 +1808,9 @@ class Settings {
       applicationTitle: this.data.main.applicationTitle,
       applicationUrl: this.data.main.applicationUrl,
       hideAvailable: this.data.main.hideAvailable,
+      lockLumenForNonAdmins:
+        this.data.main.defaultFrontend === 'lumen' &&
+        this.data.main.lockLumenForNonAdmins === true,
       hideBlocklisted: this.data.main.hideBlocklisted,
       hideRequested: this.data.main.hideRequested,
       otherUsersAvailability: this.data.main.otherUsersAvailability,
@@ -2077,6 +2085,8 @@ class Settings {
         applicationTitle: 'Seerr',
         applicationUrl: '',
         defaultFrontend: 'lumen',
+        enforceDefaultFrontend: false,
+        lockLumenForNonAdmins: false,
         lumenPublicUrl: '',
         cacheImages: false,
         includeAdult: false,

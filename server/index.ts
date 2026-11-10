@@ -18,7 +18,10 @@ import {
 import { resumeComicCatalogIndex } from '@server/lib/comicCatalogIndex';
 import { runWithConfigurationAdmission } from '@server/lib/configurationAdmission';
 import { loadExternalRuntimeConfig } from '@server/lib/externalRuntimeConfig';
-import { mountLumenFrontend } from '@server/lib/lumenFrontend';
+import {
+  mountLumenFrontend,
+  redirectLockedNativeFrontend,
+} from '@server/lib/lumenFrontend';
 import {
   METRICS_RATE_LIMIT,
   metricsAuthMiddleware,
@@ -50,6 +53,7 @@ import {
   getRequestLogPath,
   normalizeApiErrorStatus,
 } from '@server/middleware/apiError';
+import { checkUser } from '@server/middleware/auth';
 import clearCookies from '@server/middleware/clearcookies';
 import csrfProtection, {
   requestUsesSecureTransport,
@@ -452,8 +456,7 @@ Promise.resolve()
             cleanupLimit: 2,
             ttl: 60 * 60 * 24 * 30,
           }) as Store);
-      server.use(
-        '/api',
+      const sessionMiddleware =
         // HTTP session cookies are an explicit compatibility mode controlled
         // by allowHttpAuth; HTTPS-only deployments always force Secure.
         // codeql[js/clear-text-cookie]
@@ -466,8 +469,8 @@ Promise.resolve()
           },
           proxy: sessionTransportOptions.proxy,
           ...(sessionStore ? { store: sessionStore } : {}),
-        })
-      );
+        });
+      server.use('/api', sessionMiddleware);
       const apiSpecContent = await fs.readFile(API_SPEC_PATH, 'utf-8');
       const apiDocs = yaml.load(apiSpecContent) as Record<string, unknown>;
       server.use('/api-docs', swaggerUi.serve, swaggerUi.setup(apiDocs));
@@ -488,6 +491,25 @@ Promise.resolve()
       // opens empty rather than failing, and the person can paste instead.
       server.post('/share-target', (_req, res) => {
         res.redirect(303, '/share');
+      });
+
+      server.use((req, res, next) => {
+        if (
+          getSettings().main.defaultFrontend !== 'lumen' ||
+          getSettings().main.lockLumenForNonAdmins !== true ||
+          req.method !== 'GET' ||
+          req.path.startsWith('/lumen') ||
+          req.path.startsWith('/_next') ||
+          path.extname(req.path) ||
+          !req.accepts('html')
+        ) {
+          return next();
+        }
+        return sessionMiddleware(req, res, () =>
+          checkUser(req, res, () =>
+            redirectLockedNativeFrontend(req, res, next)
+          )
+        );
       });
 
       mountLumenFrontend(server);

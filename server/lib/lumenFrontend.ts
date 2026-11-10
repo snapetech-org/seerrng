@@ -1,10 +1,34 @@
+import { Permission } from '@server/lib/permissions';
 import { getSettings } from '@server/lib/settings';
 import { buildContentSecurityPolicy } from '@server/middleware/securityHeaders';
-import type { Express } from 'express';
+import type { Express, RequestHandler } from 'express';
 import express from 'express';
 import path from 'node:path';
 
 const classicCookie = 'seerrng-frontend';
+
+export const redirectLockedNativeFrontend: RequestHandler = (
+  req,
+  res,
+  next
+) => {
+  if (
+    getSettings().main.defaultFrontend === 'lumen' &&
+    getSettings().main.lockLumenForNonAdmins === true &&
+    req.user &&
+    !req.user.hasPermission(Permission.ADMIN) &&
+    req.method === 'GET' &&
+    !req.path.startsWith('/lumen') &&
+    !req.path.startsWith('/_next') &&
+    !req.path.startsWith('/api') &&
+    !path.extname(req.path) &&
+    req.accepts('html')
+  ) {
+    res.set('Cache-Control', 'no-store').redirect(302, '/lumen/');
+    return;
+  }
+  next();
+};
 
 export const mountLumenFrontend = (
   server: Express,
@@ -12,6 +36,7 @@ export const mountLumenFrontend = (
     directory = path.resolve('public/lumen'),
     isInitialized = () => getSettings().public.initialized,
     frontend = () => getSettings().main.defaultFrontend,
+    enforceFrontend = () => getSettings().main.enforceDefaultFrontend === true,
     companionUrl = () => getSettings().main.lumenPublicUrl,
   } = {}
 ): void => {
@@ -22,7 +47,9 @@ export const mountLumenFrontend = (
       maxAge: 365 * 24 * 60 * 60 * 1000,
       path: '/',
     });
-    res.set('Cache-Control', 'no-store').redirect(302, '/');
+    res
+      .set('Cache-Control', 'no-store')
+      .redirect(302, enforceFrontend() ? '/?interface=classic' : '/');
   });
   server.get('/', (req, res, next) => {
     if (req.query.interface === 'classic') {
@@ -39,7 +66,9 @@ export const mountLumenFrontend = (
     if (useDefault) res.clearCookie(classicCookie, { path: '/' });
     if (
       !isInitialized() ||
-      (!useDefault && req.cookies?.[classicCookie] === 'classic')
+      (!useDefault &&
+        !enforceFrontend() &&
+        req.cookies?.[classicCookie] === 'classic')
     ) {
       return next();
     }

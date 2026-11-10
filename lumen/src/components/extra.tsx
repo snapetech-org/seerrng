@@ -1,7 +1,9 @@
 import { useState, type ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 import type { MediaInfo } from '../api';
+import { isAdministrator, useAuth } from '../auth';
 import { useExtras, type Extra } from '../extras';
+import { usePublicSettings } from '../hooks';
 import { Icon, type IconName } from '../icons';
 import { usePrefs } from '../settings';
 import { Glyph, statusOf, type Stat } from './cards';
@@ -162,6 +164,10 @@ export const StatPill = ({ s }: { s: Stat }) =>
 export function ExtraGate({ k, children }: { k: Extra; children: ReactNode }) {
   const x = useExtras();
   const { seerrPublicUrl } = usePrefs();
+  const { user } = useAuth();
+  const lockedToLumen =
+    usePublicSettings()?.lockLumenForNonAdmins &&
+    !isAdministrator(user?.permissions);
   if (!x.ready)
     return x.error ? (
       <ServiceNote error={x.error} what="this page" retry={x.retry} />
@@ -187,13 +193,17 @@ export function ExtraGate({ k, children }: { k: Extra; children: ReactNode }) {
         <Link to="/" style={{ color: 'var(--accent)' }}>
           Back to Discover
         </Link>{' '}
-        or{' '}
-        <a
-          href={fullSeerrUrl(seerrPublicUrl)}
-          style={{ color: 'var(--accent)' }}
-        >
-          open full SeerrNG
-        </a>
+        {!lockedToLumen && (
+          <>
+            or{' '}
+            <a
+              href={fullSeerrUrl(seerrPublicUrl)}
+              style={{ color: 'var(--accent)' }}
+            >
+              open full SeerrNG
+            </a>
+          </>
+        )}
         .
       </div>
     </>

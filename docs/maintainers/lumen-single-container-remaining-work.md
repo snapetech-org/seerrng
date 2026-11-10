@@ -11,6 +11,15 @@ subdirectory. A separate container is optional. Settings → General chooses nat
 SeerrNG, included Lumen, or an explicitly configured companion. `/seerrng` and the
 visible full-interface link retain native administrative access.
 
+General settings now offer two optional controls alongside that selection.
+**Apply Default Interface to All Users** makes the server home address follow
+the administrator's selection even when a browser saved a classic-home choice;
+it is off for existing installations. When included Lumen is selected,
+**Lock Lumen for Non-Administrators** redirects signed-in non-administrators
+from native pages to Lumen, while native sign-in and administrator access remain
+available. Both controls are off unless an administrator enables them, and
+switching away from included Lumen clears the lock.
+
 The corrective candidate makes P's dark Lumen presentation the fresh-install
 default. It preserves native root access on upgrades unless the administrator
 selects another interface. **Automatic adoption for all existing users remains

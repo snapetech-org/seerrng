@@ -1458,6 +1458,27 @@ const parseMainSettingsBody = (
     value.defaultFrontend =
       body.defaultFrontend as MainSettings['defaultFrontend'];
   }
+  if (body.enforceDefaultFrontend !== undefined) {
+    const parsed = parseOptionalBooleanSetting(
+      body.enforceDefaultFrontend,
+      'enforceDefaultFrontend'
+    );
+    if ('error' in parsed) return parsed;
+    value.enforceDefaultFrontend = parsed.value;
+  }
+  if (body.lockLumenForNonAdmins !== undefined) {
+    const parsed = parseOptionalBooleanSetting(
+      body.lockLumenForNonAdmins,
+      'lockLumenForNonAdmins'
+    );
+    if ('error' in parsed) return parsed;
+    value.lockLumenForNonAdmins = parsed.value;
+  }
+  if (
+    (value.defaultFrontend ?? getSettings().main.defaultFrontend) !== 'lumen'
+  ) {
+    value.lockLumenForNonAdmins = false;
+  }
   if (body.lumenPublicUrl !== undefined) {
     const parsed = validateOptionalApplicationUrl(body.lumenPublicUrl);
     if ('error' in parsed)

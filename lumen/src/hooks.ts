@@ -72,6 +72,7 @@ export async function cachedApi<T>(path: string): Promise<T> {
 export const dropCache = forget;
 
 export interface PublicSettings {
+  lockLumenForNonAdmins?: boolean;
   softwareEnabled?: boolean;
   romarrEnabled?: boolean;
   applicationTitle: string;

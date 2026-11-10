@@ -8,7 +8,7 @@ import {
 } from 'react-router-dom';
 import { isAdministrator, useAuth } from '../auth';
 import { useExtras } from '../extras';
-import { useBack } from '../hooks';
+import { useBack, usePublicSettings } from '../hooks';
 import { Icon, type IconName } from '../icons';
 import { usePrefs } from '../settings';
 import { BrandMark, brandName } from './brand';
@@ -348,6 +348,10 @@ export default function Shell({ children }: { children: ReactNode }) {
 
 export function Placeholder({ title }: { title: string }) {
   const { seerrPublicUrl } = usePrefs();
+  const { user } = useAuth();
+  const lockedToLumen =
+    usePublicSettings()?.lockLumenForNonAdmins &&
+    !isAdministrator(user?.permissions);
   return (
     <>
       <header className="ph">
@@ -363,13 +367,17 @@ export function Placeholder({ title }: { title: string }) {
         <Link to="/" style={{ color: 'var(--accent)' }}>
           Back to Discover
         </Link>{' '}
-        or{' '}
-        <a
-          href={fullSeerrUrl(seerrPublicUrl)}
-          style={{ color: 'var(--accent)' }}
-        >
-          open full SeerrNG
-        </a>
+        {!lockedToLumen && (
+          <>
+            or{' '}
+            <a
+              href={fullSeerrUrl(seerrPublicUrl)}
+              style={{ color: 'var(--accent)' }}
+            >
+              open full SeerrNG
+            </a>
+          </>
+        )}
         .
       </div>
     </>

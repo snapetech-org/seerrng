@@ -110,7 +110,13 @@ const messages = defineMessages('components.Settings.SettingsMain', {
   includedLumen: 'Included Lumen',
   configuredLumen: 'Configured Lumen companion',
   defaultInterfaceHelp:
-    'Choose what opens at this server’s home address. Full SeerrNG always remains available at /seerrng. Included Lumen uses /lumen/ and has separate presentation settings from a companion container.',
+    'Choose what opens at this server’s home address. Full SeerrNG is at /seerrng unless non-administrators are locked to Lumen. Included Lumen uses /lumen/ and has separate presentation settings from a companion container.',
+  enforceDefaultInterface: 'Apply Default Interface to All Users',
+  enforceDefaultInterfaceHelp:
+    'Override saved Full SeerrNG home choices when people visit the server’s home address. Direct access to Full SeerrNG remains available unless the Lumen lock is enabled.',
+  lockLumenForNonAdmins: 'Lock Lumen for Non-Administrators',
+  lockLumenForNonAdminsHelp:
+    'Send signed-in non-administrators to included Lumen if they open a Full SeerrNG page. Administrators can still use Full SeerrNG.',
   openSavedInterface: 'Open the saved default interface',
   lumenAddress: 'Lumen Companion Address',
   lumenAddressHelp:
@@ -301,6 +307,8 @@ const SettingsMain = () => {
           applicationTitle: data?.applicationTitle,
           applicationUrl: data?.applicationUrl,
           defaultFrontend: data.defaultFrontend ?? 'native',
+          enforceDefaultFrontend: data.enforceDefaultFrontend ?? false,
+          lockLumenForNonAdmins: data.lockLumenForNonAdmins ?? false,
           lumenPublicUrl: data.lumenPublicUrl ?? '',
           hideAvailable: data?.hideAvailable,
           otherUsersAvailability:
@@ -351,6 +359,10 @@ const SettingsMain = () => {
               applicationTitle: values.applicationTitle,
               applicationUrl: values.applicationUrl,
               defaultFrontend: values.defaultFrontend,
+              enforceDefaultFrontend: values.enforceDefaultFrontend,
+              lockLumenForNonAdmins:
+                values.defaultFrontend === 'lumen' &&
+                values.lockLumenForNonAdmins,
               lumenPublicUrl: values.lumenPublicUrl,
               hideAvailable: values.hideAvailable,
               otherUsersAvailability: values.otherUsersAvailability,
@@ -577,6 +589,48 @@ const SettingsMain = () => {
                       </a>
                     </div>
                   </div>
+                  <SettingsFormRow
+                    htmlFor="enforceDefaultFrontend"
+                    label={intl.formatMessage(messages.enforceDefaultInterface)}
+                    description={intl.formatMessage(
+                      messages.enforceDefaultInterfaceHelp
+                    )}
+                    labelClassName="checkbox-label"
+                  >
+                    <SettingsField
+                      type="checkbox"
+                      id="enforceDefaultFrontend"
+                      name="enforceDefaultFrontend"
+                      onChange={() => {
+                        setFieldValue(
+                          'enforceDefaultFrontend',
+                          !values.enforceDefaultFrontend
+                        );
+                      }}
+                    />
+                  </SettingsFormRow>
+                  {values.defaultFrontend === 'lumen' && (
+                    <SettingsFormRow
+                      htmlFor="lockLumenForNonAdmins"
+                      label={intl.formatMessage(messages.lockLumenForNonAdmins)}
+                      description={intl.formatMessage(
+                        messages.lockLumenForNonAdminsHelp
+                      )}
+                      labelClassName="checkbox-label"
+                    >
+                      <SettingsField
+                        type="checkbox"
+                        id="lockLumenForNonAdmins"
+                        name="lockLumenForNonAdmins"
+                        onChange={() => {
+                          setFieldValue(
+                            'lockLumenForNonAdmins',
+                            !values.lockLumenForNonAdmins
+                          );
+                        }}
+                      />
+                    </SettingsFormRow>
+                  )}
                   {values.defaultFrontend === 'external' && (
                     <div className="form-row">
                       <label htmlFor="lumenPublicUrl" className="text-label">

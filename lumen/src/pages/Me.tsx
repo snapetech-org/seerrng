@@ -4,7 +4,7 @@ import { Section } from '../components/cards';
 import { canChooseRequestOptions } from '../components/detail';
 import { fullSeerrUrl, initials } from '../components/Shell';
 import { useToast } from '../components/toast';
-import { CAN_HOVER, useApi } from '../hooks';
+import { CAN_HOVER, useApi, usePublicSettings } from '../hooks';
 import { Icon } from '../icons';
 import { mediaServer, services } from '../mediaServer';
 import {
@@ -64,6 +64,7 @@ export default function Me() {
   const quota = useApi<Quota>(user ? `/user/${user.id}/quota` : null).data;
   const full = fullSeerrUrl(seerrPublicUrl);
   const isAdmin = isAdministrator(user?.permissions);
+  const lockedToLumen = usePublicSettings()?.lockLumenForNonAdmins && !isAdmin;
   const q = (k: string, label: string) => {
     const x = quota?.[k];
     if (!x) return null;
@@ -262,15 +263,17 @@ export default function Me() {
               </small>
             </span>
           </div>
-          <div className="set">
-            <span>
-              <b>Full SeerrNG</b>
-              <small>Issues, watchlists, settings and admin tools</small>
-            </span>
-            <a className="go" href={full}>
-              Open <Icon name="chev" size="sm" />
-            </a>
-          </div>
+          {!lockedToLumen && (
+            <div className="set">
+              <span>
+                <b>Full SeerrNG</b>
+                <small>Issues, watchlists, settings and admin tools</small>
+              </span>
+              <a className="go" href={full}>
+                Open <Icon name="chev" size="sm" />
+              </a>
+            </div>
+          )}
         </div>
       </Section>
       <button

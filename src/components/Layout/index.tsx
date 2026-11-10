@@ -49,6 +49,8 @@ const Layout = ({ children }: LayoutProps) => {
   const discoveryMediaType = discoveryMediaTypeForPath(router.pathname);
   const { currentSettings } = useSettings();
   const isAdmin = hasPermission(Permission.ADMIN);
+  const lockedToLumen =
+    currentSettings.lockLumenForNonAdmins && user && !isAdmin;
   const serviceAvailability = useMemo(
     () =>
       getUserServiceAvailability(
@@ -71,6 +73,10 @@ const Layout = ({ children }: LayoutProps) => {
       dedupingInterval: 30000,
     }
   );
+
+  useEffect(() => {
+    if (lockedToLumen) window.location.replace('/lumen/');
+  }, [lockedToLumen]);
 
   useEffect(() => {
     if (setLocale && user) {
@@ -248,6 +254,8 @@ const Layout = ({ children }: LayoutProps) => {
       window.removeEventListener('scroll', updateScrolled);
     };
   }, []);
+
+  if (lockedToLumen) return null;
 
   return (
     <div

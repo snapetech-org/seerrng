@@ -3042,6 +3042,12 @@ components:
           type: string
           enum: [native, lumen, external]
           description: Home address interface. Existing installations retain native access; fresh setups default to included Lumen.
+        enforceDefaultFrontend:
+          type: boolean
+          description: Apply the selected home address interface to every browser, overriding saved classic-home choices. Direct interface URLs remain available.
+        lockLumenForNonAdmins:
+          type: boolean
+          description: Redirect signed-in non-administrators from native pages to included Lumen when it is the selected default.
         lumenPublicUrl:
           type: string
           maxLength: 512
@@ -4896,6 +4902,9 @@ components:
         - plexClientIdentifier
         - jellyfinQuickConnectOnly
       properties:
+        lockLumenForNonAdmins:
+          type: boolean
+          description: Whether signed-in non-administrators are restricted to included Lumen pages.
         initialized:
           type: boolean
           example: false

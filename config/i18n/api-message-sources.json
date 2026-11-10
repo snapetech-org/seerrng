@@ -819,7 +819,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/index.ts",
-          "line": 2357,
+          "line": 2378,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'Set Jellyfin as the active media server and enable media-server sign-in before enabling bridge sign-in.'",
@@ -2970,7 +2970,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/index.ts",
-          "line": 1474,
+          "line": 1495,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'Enter the configured Lumen companion address.'",
@@ -6306,7 +6306,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/index.ts",
-          "line": 1550,
+          "line": 1571,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'streamingRequestPolicy.enabled must be a boolean.'",
@@ -11005,7 +11005,7 @@
         },
         {
           "path": "server/index.ts",
-          "line": 137,
+          "line": 141,
           "kind": "authored-message-field",
           "field": "errorMessage",
           "expression": "error instanceof Error ? error.message : 'Unknown error'",
@@ -11013,7 +11013,7 @@
         },
         {
           "path": "server/index.ts",
-          "line": 750,
+          "line": 772,
           "kind": "authored-message-field",
           "field": "errorMessage",
           "expression": "error instanceof Error ? error.message : 'Unknown error'",
@@ -15092,7 +15092,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/index.ts",
-          "line": 2900,
+          "line": 2921,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to retrieve unimported Plex users.'",
@@ -17273,7 +17273,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/index.ts",
-          "line": 2270,
+          "line": 2291,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Only Music/Audiobook libraries can be reclassified between the two.'",
@@ -18329,7 +18329,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/index.ts",
-          "line": 2252,
+          "line": 2273,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Type is required.'",
@@ -21027,7 +21027,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/index.ts",
-          "line": 2103,
+          "line": 2124,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Library sync and episode order updates must be separate.'",
@@ -21035,7 +21035,7 @@
         },
         {
           "path": "server/routes/settings/index.ts",
-          "line": 2551,
+          "line": 2572,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Library sync and episode order updates must be separate.'",
@@ -22814,7 +22814,7 @@
         },
         {
           "path": "server/routes/settings/index.ts",
-          "line": 2051,
+          "line": 2072,
           "kind": "persisted-message-assignment",
           "field": "message",
           "expression": "'OK'",
@@ -24092,7 +24092,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/index.ts",
-          "line": 1885,
+          "line": 1906,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'The current client IP must be included in the allowed networks before enabling or changing this restriction.'",
@@ -25888,7 +25888,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/index.ts",
-          "line": 3065,
+          "line": 3086,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Invalid job schedule.'",
@@ -25896,7 +25896,7 @@
         },
         {
           "path": "server/routes/settings/index.ts",
-          "line": 3099,
+          "line": 3120,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Invalid job schedule.'",
@@ -25904,7 +25904,7 @@
         },
         {
           "path": "server/routes/settings/index.ts",
-          "line": 3132,
+          "line": 3153,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Invalid job schedule.'",
@@ -28394,7 +28394,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/index.ts",
-          "line": 1560,
+          "line": 1581,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'streamingRequestPolicy.condition must be available or unavailable.'",
@@ -28924,7 +28924,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/index.ts",
-          "line": 2978,
+          "line": 2999,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to retrieve logs.'",
@@ -29842,7 +29842,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/index.ts",
-          "line": 1536,
+          "line": 1557,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'streamingRequestPolicy must be an object.'",
@@ -30003,7 +30003,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/index.ts",
-          "line": 2810,
+          "line": 2831,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Tautulli version not supported'",
@@ -30307,7 +30307,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/index.ts",
-          "line": 3177,
+          "line": 3198,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Cache not found.'",
@@ -30315,7 +30315,7 @@
         },
         {
           "path": "server/routes/settings/index.ts",
-          "line": 3181,
+          "line": 3202,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Cache not found.'",
@@ -30323,7 +30323,7 @@
         },
         {
           "path": "server/routes/settings/index.ts",
-          "line": 3191,
+          "line": 3212,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Cache not found.'",
@@ -30331,7 +30331,7 @@
         },
         {
           "path": "server/routes/settings/index.ts",
-          "line": 3206,
+          "line": 3227,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Cache not found.'",
@@ -30339,7 +30339,7 @@
         },
         {
           "path": "server/routes/settings/index.ts",
-          "line": 3214,
+          "line": 3235,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Cache not found.'",
@@ -30673,7 +30673,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/index.ts",
-          "line": 2819,
+          "line": 2840,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to connect to Tautulli.'",
@@ -33161,7 +33161,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/index.ts",
-          "line": 2008,
+          "line": 2029,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to connect to Plex.'",
@@ -33827,7 +33827,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/index.ts",
-          "line": 3031,
+          "line": 3052,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Job is running on another instance.'",
@@ -35379,7 +35379,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/index.ts",
-          "line": 2066,
+          "line": 2087,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to retrieve Plex server list.'",
@@ -35810,7 +35810,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/index.ts",
-          "line": 2340,
+          "line": 2361,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'enabled must be a boolean.'",
@@ -37979,7 +37979,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/index.ts",
-          "line": 1569,
+          "line": 1590,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'streamingRequestPolicy.action must be reject, pending, or approve.'",
@@ -42362,7 +42362,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/index.ts",
-          "line": 3004,
+          "line": 3025,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Job is already running.'",
@@ -43520,7 +43520,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/index.ts",
-          "line": 1526,
+          "line": 1547,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "error instanceof Error\n            ? error.message\n            : 'downloadPathMappings must contain valid path mappings.'",
@@ -43560,7 +43560,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/index.ts",
-          "line": 3000,
+          "line": 3021,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Job not found.'",
@@ -43568,7 +43568,7 @@
         },
         {
           "path": "server/routes/settings/index.ts",
-          "line": 3023,
+          "line": 3044,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Job not found.'",
@@ -43576,7 +43576,7 @@
         },
         {
           "path": "server/routes/settings/index.ts",
-          "line": 3053,
+          "line": 3074,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Job not found.'",
@@ -43584,7 +43584,7 @@
         },
         {
           "path": "server/routes/settings/index.ts",
-          "line": 3110,
+          "line": 3131,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Job not found.'",
@@ -43785,7 +43785,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/index.ts",
-          "line": 1610,
+          "line": 1631,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Invalid log read limit.'",
@@ -44727,7 +44727,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/index.ts",
-          "line": 3114,
+          "line": 3135,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Invalid job enabled setting.'",
@@ -44735,7 +44735,7 @@
         },
         {
           "path": "server/routes/settings/index.ts",
-          "line": 3122,
+          "line": 3143,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Invalid job enabled setting.'",
@@ -46187,7 +46187,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/index.ts",
-          "line": 2075,
+          "line": 2096,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Library synchronization and updates require POST.'",
@@ -46195,7 +46195,7 @@
         },
         {
           "path": "server/routes/settings/index.ts",
-          "line": 2523,
+          "line": 2544,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Library synchronization and updates require POST.'",
@@ -50539,7 +50539,7 @@
         },
         {
           "path": "server/lib/settings/index.ts",
-          "line": 1451,
+          "line": 1456,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Settings path must be a regular file.'",
@@ -54631,7 +54631,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/index.ts",
-          "line": 1492,
+          "line": 1513,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "`${fieldName} must not end with a slash.`",
@@ -54778,7 +54778,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/index.ts",
-          "line": 2348,
+          "line": 2369,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'Connect a Jellyfin server before enabling bridge sign-in.'",
@@ -54908,7 +54908,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/index.ts",
-          "line": 1949,
+          "line": 1970,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Server not found'",
@@ -55457,7 +55457,7 @@
         },
         {
           "path": "server/routes/settings/index.ts",
-          "line": 1813,
+          "line": 1834,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'User missing from request.'",
@@ -55465,7 +55465,7 @@
         },
         {
           "path": "server/routes/settings/index.ts",
-          "line": 1905,
+          "line": 1926,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'User missing from request.'",
@@ -58333,7 +58333,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/index.ts",
-          "line": 2700,
+          "line": 2721,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Jellyfin is not configured.'",
@@ -59753,7 +59753,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/index.ts",
-          "line": 1632,
+          "line": 1653,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Log symlink must target a file in the log directory.'",
@@ -60270,7 +60270,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/index.ts",
-          "line": 1645,
+          "line": 1666,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Log path must resolve to one private regular file.'",
@@ -61547,7 +61547,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/index.ts",
-          "line": 2167,
+          "line": 2188,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Episode order can only be set for an existing TV library.'",
@@ -61555,7 +61555,7 @@
         },
         {
           "path": "server/routes/settings/index.ts",
-          "line": 2568,
+          "line": 2589,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Episode order can only be set for an existing TV library.'",
@@ -64394,7 +64394,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/index.ts",
-          "line": 1574,
+          "line": 1595,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'streamingRequestPolicy.allowUserOverride must be a boolean.'",
@@ -68888,7 +68888,7 @@
     },
     {
       "path": "server/index.ts",
-      "line": 136,
+      "line": 140,
       "kind": "message-helper-expression",
       "field": "message",
       "expression": "({\n  errorMessage: error instanceof Error ? error.message : 'Unknown error',\n  errorStack: error instanceof Error ? error.stack : undefined,\n})",
@@ -68897,7 +68897,7 @@
     },
     {
       "path": "server/index.ts",
-      "line": 137,
+      "line": 141,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : 'Unknown error'",
@@ -68906,7 +68906,7 @@
     },
     {
       "path": "server/index.ts",
-      "line": 530,
+      "line": 552,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "err.message",
@@ -68915,7 +68915,7 @@
     },
     {
       "path": "server/index.ts",
-      "line": 574,
+      "line": 596,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "err.message",
@@ -68924,7 +68924,7 @@
     },
     {
       "path": "server/index.ts",
-      "line": 689,
+      "line": 711,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "err.message",
@@ -68933,7 +68933,7 @@
     },
     {
       "path": "server/index.ts",
-      "line": 750,
+      "line": 772,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : 'Unknown error'",
@@ -81956,7 +81956,7 @@
     },
     {
       "path": "server/routes/settings/index.ts",
-      "line": 1465,
+      "line": 1486,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "parsed.error.replaceAll('applicationUrl', 'lumenPublicUrl')",
@@ -81965,7 +81965,7 @@
     },
     {
       "path": "server/routes/settings/index.ts",
-      "line": 1526,
+      "line": 1547,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "error instanceof Error\n            ? error.message\n            : 'downloadPathMappings must contain valid path mappings.'",
@@ -81974,7 +81974,7 @@
     },
     {
       "path": "server/routes/settings/index.ts",
-      "line": 1578,
+      "line": 1599,
       "kind": "authored-message-variable",
       "field": "rejectionMessage",
       "expression": "parseOptionalBoundedString(\n      policy.rejectionMessage,\n      {\n        fieldName: 'streamingRequestPolicy.rejectionMessage',\n        maxLength: MAX_STREAMING_REQUEST_REJECTION_MESSAGE_LENGTH,\n      }\n    )",
@@ -81983,7 +81983,7 @@
     },
     {
       "path": "server/routes/settings/index.ts",
-      "line": 1703,
+      "line": 1724,
       "kind": "authored-message-variable",
       "field": "parseLogMessages",
       "expression": "(\n  logContent: string,\n  filter: string[],\n  searchRegexp?: RegExp\n): LogMessage[] => {\n  const logs: LogMessage[] = [];\n  const logMessageProperties = [\n    'timestamp',\n    'level',\n    'label',\n    'message',\n    'data',\n  ];\n\n  logContent.split('\\n').forEach((line) => {\n    if (!line.length || Buffer.byteLength(line, 'utf8') > MAX_LOG_LINE_BYTES) {\n      return;\n    }\n\n    let logMessage: LogMessage & Record<string, unknown>;\n    try {\n      logMessage = JSON.parse(line);\n    } catch {\n      return;\n    }\n\n    if (\n      !filter.includes(logMessage.level) ||\n      typeof logMessage.message !== 'string'\n    ) {\n      return;\n    }\n\n    if (\n      !Object.keys(logMessage).every((key) =>\n        logMessageProperties.includes(key)\n      )\n    ) {\n      Object.keys(logMessage)\n        .filter((prop) => !logMessageProperties.includes(prop))\n        .forEach((prop) => {\n          set(logMessage, `data.${prop}`, logMessage[prop]);\n        });\n    }\n\n    if (searchRegexp) {\n      if (\n        // label and data are sometimes undefined\n        !searchRegexp.test(logMessage.label ?? '') &&\n        !searchRegexp.test(logMessage.message) &&\n        !deepLogValueStrings(logMessage.data ?? {}).some((val) =>\n          searchRegexp.test(val)\n        )\n      ) {\n        return;\n      }\n    }\n\n    logs.push(redactSecrets(logMessage));\n  });\n\n  return logs;\n}",
@@ -81992,7 +81992,7 @@
     },
     {
       "path": "server/routes/settings/index.ts",
-      "line": 1825,
+      "line": 1846,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "parsedBody.error",
@@ -82001,7 +82001,7 @@
     },
     {
       "path": "server/routes/settings/index.ts",
-      "line": 1829,
+      "line": 1850,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "parsedMain.error",
@@ -82010,7 +82010,7 @@
     },
     {
       "path": "server/routes/settings/index.ts",
-      "line": 1856,
+      "line": 1877,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "parsedBody.error",
@@ -82019,7 +82019,7 @@
     },
     {
       "path": "server/routes/settings/index.ts",
-      "line": 1863,
+      "line": 1884,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "parsedNetwork.error",
@@ -82028,7 +82028,7 @@
     },
     {
       "path": "server/routes/settings/index.ts",
-      "line": 1923,
+      "line": 1944,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "parsedBody.error",
@@ -82037,7 +82037,7 @@
     },
     {
       "path": "server/routes/settings/index.ts",
-      "line": 1932,
+      "line": 1953,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "parsedPlex.error",
@@ -82046,7 +82046,7 @@
     },
     {
       "path": "server/routes/settings/index.ts",
-      "line": 1996,
+      "line": 2017,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -82055,7 +82055,7 @@
     },
     {
       "path": "server/routes/settings/index.ts",
-      "line": 1996,
+      "line": 2017,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -82064,7 +82064,7 @@
     },
     {
       "path": "server/routes/settings/index.ts",
-      "line": 2004,
+      "line": 2025,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "e.message",
@@ -82073,7 +82073,7 @@
     },
     {
       "path": "server/routes/settings/index.ts",
-      "line": 2054,
+      "line": 2075,
       "kind": "persisted-message-assignment",
       "field": "message",
       "expression": "e.message.split(':')[0]",
@@ -82082,7 +82082,7 @@
     },
     {
       "path": "server/routes/settings/index.ts",
-      "line": 2062,
+      "line": 2083,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "e.message",
@@ -82091,7 +82091,7 @@
     },
     {
       "path": "server/routes/settings/index.ts",
-      "line": 2087,
+      "line": 2108,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "parsedBody.error",
@@ -82100,7 +82100,7 @@
     },
     {
       "path": "server/routes/settings/index.ts",
-      "line": 2091,
+      "line": 2112,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "sync.error",
@@ -82109,7 +82109,7 @@
     },
     {
       "path": "server/routes/settings/index.ts",
-      "line": 2095,
+      "line": 2116,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "enabledLibraries.error",
@@ -82118,7 +82118,7 @@
     },
     {
       "path": "server/routes/settings/index.ts",
-      "line": 2099,
+      "line": 2120,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "episodeOrder.error",
@@ -82127,7 +82127,7 @@
     },
     {
       "path": "server/routes/settings/index.ts",
-      "line": 2150,
+      "line": 2171,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -82136,7 +82136,7 @@
     },
     {
       "path": "server/routes/settings/index.ts",
-      "line": 2150,
+      "line": 2171,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -82145,7 +82145,7 @@
     },
     {
       "path": "server/routes/settings/index.ts",
-      "line": 2219,
+      "line": 2240,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -82154,7 +82154,7 @@
     },
     {
       "path": "server/routes/settings/index.ts",
-      "line": 2219,
+      "line": 2240,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -82163,7 +82163,7 @@
     },
     {
       "path": "server/routes/settings/index.ts",
-      "line": 2236,
+      "line": 2257,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "libraryId.error",
@@ -82172,7 +82172,7 @@
     },
     {
       "path": "server/routes/settings/index.ts",
-      "line": 2241,
+      "line": 2262,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "parsedBody.error",
@@ -82181,7 +82181,7 @@
     },
     {
       "path": "server/routes/settings/index.ts",
-      "line": 2249,
+      "line": 2270,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "type.error",
@@ -82190,7 +82190,7 @@
     },
     {
       "path": "server/routes/settings/index.ts",
-      "line": 2296,
+      "line": 2317,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "parsedBody.error",
@@ -82199,7 +82199,7 @@
     },
     {
       "path": "server/routes/settings/index.ts",
-      "line": 2302,
+      "line": 2323,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "cancel.error",
@@ -82208,7 +82208,7 @@
     },
     {
       "path": "server/routes/settings/index.ts",
-      "line": 2306,
+      "line": 2327,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "start.error",
@@ -82217,7 +82217,7 @@
     },
     {
       "path": "server/routes/settings/index.ts",
-      "line": 2329,
+      "line": 2350,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "parsedBody.error",
@@ -82226,7 +82226,7 @@
     },
     {
       "path": "server/routes/settings/index.ts",
-      "line": 2337,
+      "line": 2358,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "enabled.error",
@@ -82235,7 +82235,7 @@
     },
     {
       "path": "server/routes/settings/index.ts",
-      "line": 2383,
+      "line": 2404,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "result.error",
@@ -82244,7 +82244,7 @@
     },
     {
       "path": "server/routes/settings/index.ts",
-      "line": 2397,
+      "line": 2418,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "parsedBody.error",
@@ -82253,7 +82253,7 @@
     },
     {
       "path": "server/routes/settings/index.ts",
-      "line": 2413,
+      "line": 2434,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "parsedJellyfin.error",
@@ -82262,7 +82262,7 @@
     },
     {
       "path": "server/routes/settings/index.ts",
-      "line": 2484,
+      "line": 2505,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -82271,7 +82271,7 @@
     },
     {
       "path": "server/routes/settings/index.ts",
-      "line": 2484,
+      "line": 2505,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -82280,7 +82280,7 @@
     },
     {
       "path": "server/routes/settings/index.ts",
-      "line": 2494,
+      "line": 2515,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "ApiErrorCode.InvalidUrl",
@@ -82289,7 +82289,7 @@
     },
     {
       "path": "server/routes/settings/index.ts",
-      "line": 2499,
+      "line": 2520,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "ApiErrorCode.InvalidUrl",
@@ -82298,7 +82298,7 @@
     },
     {
       "path": "server/routes/settings/index.ts",
-      "line": 2504,
+      "line": 2525,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "e.message",
@@ -82307,7 +82307,7 @@
     },
     {
       "path": "server/routes/settings/index.ts",
-      "line": 2509,
+      "line": 2530,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "ApiErrorCode.Unknown",
@@ -82316,7 +82316,7 @@
     },
     {
       "path": "server/routes/settings/index.ts",
-      "line": 2535,
+      "line": 2556,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "parsedBody.error",
@@ -82325,7 +82325,7 @@
     },
     {
       "path": "server/routes/settings/index.ts",
-      "line": 2539,
+      "line": 2560,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "sync.error",
@@ -82334,7 +82334,7 @@
     },
     {
       "path": "server/routes/settings/index.ts",
-      "line": 2543,
+      "line": 2564,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "enabledLibraries.error",
@@ -82343,7 +82343,7 @@
     },
     {
       "path": "server/routes/settings/index.ts",
-      "line": 2547,
+      "line": 2568,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "episodeOrder.error",
@@ -82352,7 +82352,7 @@
     },
     {
       "path": "server/routes/settings/index.ts",
-      "line": 2599,
+      "line": 2620,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "ApiErrorCode.SyncErrorGroupedFolders",
@@ -82361,7 +82361,7 @@
     },
     {
       "path": "server/routes/settings/index.ts",
-      "line": 2605,
+      "line": 2626,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "ApiErrorCode.SyncErrorNoLibraries",
@@ -82370,7 +82370,7 @@
     },
     {
       "path": "server/routes/settings/index.ts",
-      "line": 2685,
+      "line": 2706,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -82379,7 +82379,7 @@
     },
     {
       "path": "server/routes/settings/index.ts",
-      "line": 2685,
+      "line": 2706,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -82388,7 +82388,7 @@
     },
     {
       "path": "server/routes/settings/index.ts",
-      "line": 2753,
+      "line": 2774,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "parsedBody.error",
@@ -82397,7 +82397,7 @@
     },
     {
       "path": "server/routes/settings/index.ts",
-      "line": 2759,
+      "line": 2780,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "cancel.error",
@@ -82406,7 +82406,7 @@
     },
     {
       "path": "server/routes/settings/index.ts",
-      "line": 2763,
+      "line": 2784,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "start.error",
@@ -82415,7 +82415,7 @@
     },
     {
       "path": "server/routes/settings/index.ts",
-      "line": 2787,
+      "line": 2808,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "parsedBody.error",
@@ -82424,7 +82424,7 @@
     },
     {
       "path": "server/routes/settings/index.ts",
-      "line": 2800,
+      "line": 2821,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "parsedTautulli.error",
@@ -82433,7 +82433,7 @@
     },
     {
       "path": "server/routes/settings/index.ts",
-      "line": 2815,
+      "line": 2836,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "e.message",
@@ -82442,7 +82442,7 @@
     },
     {
       "path": "server/routes/settings/index.ts",
-      "line": 2896,
+      "line": 2917,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "e.message",
@@ -82451,7 +82451,7 @@
     },
     {
       "path": "server/routes/settings/index.ts",
-      "line": 2919,
+      "line": 2940,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "parsedSearch.error",
@@ -82460,7 +82460,7 @@
     },
     {
       "path": "server/routes/settings/index.ts",
-      "line": 2927,
+      "line": 2948,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "parsedFilter.error",
@@ -82469,7 +82469,7 @@
     },
     {
       "path": "server/routes/settings/index.ts",
-      "line": 2974,
+      "line": 2995,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error.message",

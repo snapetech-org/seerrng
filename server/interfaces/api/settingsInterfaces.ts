@@ -34,6 +34,7 @@ export interface PublicSettingsResponse {
   applicationTitle: string;
   applicationUrl: string;
   hideAvailable: boolean;
+  lockLumenForNonAdmins: boolean;
   hideBlocklisted: boolean;
   hideRequested: boolean;
   otherUsersAvailability: OtherUserAvailabilityMode;

@@ -19,6 +19,7 @@ const defaultSettings: PublicSettingsResponse = {
   applicationTitle: 'Seerr',
   applicationUrl: '',
   hideAvailable: false,
+  lockLumenForNonAdmins: false,
   hideBlocklisted: false,
   hideRequested: false,
   otherUsersAvailability: OtherUserAvailabilityMode.SHOW,

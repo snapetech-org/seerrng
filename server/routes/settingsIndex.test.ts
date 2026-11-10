@@ -187,6 +187,70 @@ describe('Settings route input validation', () => {
     );
   });
 
+  it('keeps the all-users interface override opt-in and validates its value', async () => {
+    assert.equal(getSettings().main.enforceDefaultFrontend, false);
+    assert.equal(
+      (
+        await request(app)
+          .post('/settings/main')
+          .send({ enforceDefaultFrontend: true })
+      ).status,
+      200
+    );
+    assert.equal(getSettings().main.enforceDefaultFrontend, true);
+    assert.equal(
+      (
+        await request(app)
+          .post('/settings/main')
+          .send({ enforceDefaultFrontend: 'yes' })
+      ).status,
+      400
+    );
+    assert.equal(getSettings().main.enforceDefaultFrontend, true);
+    assert.equal(
+      (
+        await request(app)
+          .post('/settings/main')
+          .send({ enforceDefaultFrontend: false })
+      ).status,
+      200
+    );
+    assert.equal(getSettings().main.enforceDefaultFrontend, false);
+  });
+
+  it('locks native pages only when included Lumen is selected', async () => {
+    assert.equal(
+      (
+        await request(app).post('/settings/main').send({
+          defaultFrontend: 'lumen',
+          lockLumenForNonAdmins: true,
+        })
+      ).status,
+      200
+    );
+    assert.equal(getSettings().main.lockLumenForNonAdmins, true);
+    assert.equal(getSettings().fullPublicSettings.lockLumenForNonAdmins, true);
+    assert.equal(
+      (
+        await request(app).post('/settings/main').send({
+          lockLumenForNonAdmins: 'yes',
+        })
+      ).status,
+      400
+    );
+    assert.equal(getSettings().main.lockLumenForNonAdmins, true);
+    assert.equal(
+      (
+        await request(app).post('/settings/main').send({
+          defaultFrontend: 'native',
+        })
+      ).status,
+      200
+    );
+    assert.equal(getSettings().main.lockLumenForNonAdmins, false);
+    assert.equal(getSettings().fullPublicSettings.lockLumenForNonAdmins, false);
+  });
+
   it('isolates public fixture DNS without admitting unknown or private hosts', async () => {
     assert.strictEqual(await isSafeHttpUrl('https://example.com/'), true);
     assert.strictEqual(
