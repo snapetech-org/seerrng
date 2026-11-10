@@ -14,7 +14,7 @@ three-way to current main. Their policy corrections were already integrated or
 superseded by main's more detailed hosted-runner, native-platform, release-input
 and attribution guidance. Conflict review retained those newer details. No user
 change was silently dropped; none of the four needed a duplicate/empty commit.
-The primary checkout can now be advanced to main and cleared of those old edits.
+The primary checkout was advanced to main and cleared of those old edits.
 
 ## Current security checks
 
@@ -106,6 +106,17 @@ The separate companion's preferences/branding were not imported or replaced.
 This is the corrective routing behavior, not a claim that the separately
 [tracked automatic Lumen migration/import roadmap](lumen-single-container-remaining-work.md)
 is complete.
+
+## Resolution receipts
+
+After the implementation/UI checks and verification commit were pushed to both
+main remotes, the two known-fixed issues were closed as completed with explicit
+source-versus-release status:
+
+- [#625 resolution comment](https://github.com/snapetech-org/seerrng/issues/625#issuecomment-6755764704).
+- [#629 resolution comment](https://github.com/snapetech-org/seerrng/issues/629#issuecomment-6755765394).
+
+No unsupported public-image claim or blanket closure comment was used.
 
 ## Delivery and evidence limits
 
