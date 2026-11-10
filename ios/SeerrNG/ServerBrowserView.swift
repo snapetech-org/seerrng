@@ -11,11 +11,13 @@ final class WebViewState: ObservableObject {
     weak var webView: WKWebView?
 
     func refresh(_ webView: WKWebView) {
-        self.webView = webView
-        currentURL = webView.url
-        progress = webView.estimatedProgress
-        canGoBack = webView.canGoBack
-        canGoForward = webView.canGoForward
+        // A callback from a previously selected server must not replace the
+        // active browser's address or controls. Publish actual changes only.
+        guard self.webView === webView else { return }
+        if currentURL != webView.url { currentURL = webView.url }
+        if progress != webView.estimatedProgress { progress = webView.estimatedProgress }
+        if canGoBack != webView.canGoBack { canGoBack = webView.canGoBack }
+        if canGoForward != webView.canGoForward { canGoForward = webView.canGoForward }
     }
 }
 
@@ -49,100 +51,108 @@ struct ServerBrowserView: View {
     }
 
     var body: some View {
-        VStack(spacing: 0) {
-            if webState.progress < 1 {
-                ProgressView(value: webState.progress)
-                    .tint(.accentColor)
-                    .accessibilityLabel("Page loading")
-            }
-            ServerWebView(
-                url: activeServer.url,
-                dataStoreIdentifier: activeServer.id,
-                state: webState,
-                onSuccessfulLoad: {
-                    usageStore.recordSuccessfulPageLoad(isUnlocked: storeKit.isUnlocked)
-                },
-                onExternalURL: { externalURL = $0 }
-            )
-            .id(activeServer.id)
-            .ignoresSafeArea(edges: .bottom)
-        }
-        .navigationBarTitleDisplayMode(.inline)
-        .toolbar {
-            ToolbarItem(placement: .topBarLeading) {
-                Button(action: onClose) {
-                    Label("Servers", systemImage: "list.bullet")
+        GeometryReader { geometry in
+            VStack(spacing: 0) {
+                if webState.progress < 1 {
+                    ProgressView(value: webState.progress)
+                        .tint(.accentColor)
+                        .accessibilityLabel("Page loading")
                 }
+                ServerWebView(
+                    url: activeServer.url,
+                    dataStoreIdentifier: activeServer.id,
+                    state: webState,
+                    onSuccessfulLoad: {
+                        usageStore.recordSuccessfulPageLoad(isUnlocked: storeKit.isUnlocked)
+                    },
+                    onExternalURL: { externalURL = $0 }
+                )
+                .id(activeServer.id)
+                .ignoresSafeArea(edges: .bottom)
             }
-            ToolbarItem(placement: .principal) {
-                Menu {
-                    ForEach(serverStore.servers) { server in
-                        Button {
-                            activeServer = server
-                        } label: {
-                            if server.id == activeServer.id {
-                                Label(server.name, systemImage: "checkmark")
-                            } else {
-                                Text(server.name)
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    Button(action: onClose) {
+                        Label("Servers", systemImage: "list.bullet")
+                    }
+                }
+                ToolbarItem(placement: .principal) {
+                    Menu {
+                        ForEach(serverStore.servers) { server in
+                            Button {
+                                activeServer = server
+                            } label: {
+                                if server.id == activeServer.id {
+                                    Label(server.name, systemImage: "checkmark")
+                                } else {
+                                    Text(server.name)
+                                }
                             }
                         }
+                        Divider()
+                        Button("Manage servers", action: onClose)
+                    } label: {
+                        HStack(spacing: 5) {
+                            Text((webState.currentURL ?? activeServer.url).absoluteOrigin)
+                                .lineLimit(1)
+                                .truncationMode(.middle)
+                            Image(systemName: "chevron.down").font(.caption2)
+                                .fixedSize()
+                        }
+                        // Navigation title views may otherwise take their full intrinsic
+                        // width and cover toolbar controls for a long server origin.
+                        .frame(width: max(1, min(320, geometry.size.width - 160)))
                     }
-                    Divider()
-                    Button("Manage servers", action: onClose)
-                } label: {
-                    HStack(spacing: 5) {
-                        Text((webState.currentURL ?? activeServer.url).absoluteOrigin).lineLimit(1)
-                        Image(systemName: "chevron.down").font(.caption2)
+                    .accessibilityIdentifier("activeServerMenu")
+                }
+                ToolbarItem(placement: .topBarTrailing) {
+                    if !storeKit.isUnlocked {
+                        Button(action: onUnlock) {
+                            Label("Unlock", systemImage: "sparkles")
+                        }
+                        .labelStyle(.iconOnly)
+                        .accessibilityLabel("Lifetime access")
                     }
                 }
-                .accessibilityIdentifier("activeServerMenu")
-            }
-            ToolbarItem(placement: .topBarTrailing) {
-                if !storeKit.isUnlocked {
-                    Button(action: onUnlock) {
-                        Label("Unlock", systemImage: "sparkles")
+                ToolbarItemGroup(placement: .bottomBar) {
+                    Button { webState.webView?.goBack() } label: {
+                        Image(systemName: "chevron.backward")
                     }
-                    .labelStyle(.iconOnly)
-                    .accessibilityLabel("Lifetime access")
+                    .disabled(!webState.canGoBack)
+                    Button { webState.webView?.goForward() } label: {
+                        Image(systemName: "chevron.forward")
+                    }
+                    .disabled(!webState.canGoForward)
+                    Spacer()
+                    Button { webState.webView?.reload() } label: {
+                        Image(systemName: "arrow.clockwise")
+                    }
+                    .accessibilityLabel("Reload page")
                 }
             }
-            ToolbarItemGroup(placement: .bottomBar) {
-                Button { webState.webView?.goBack() } label: {
-                    Image(systemName: "chevron.backward")
+            .alert("Open this link outside SeerrNG?", isPresented: Binding(
+                get: { externalURL != nil },
+                set: { if !$0 { externalURL = nil } }
+            )) {
+                Button("Cancel", role: .cancel) { externalURL = nil }
+                Button("Open link") {
+                    guard let externalURL else { return }
+                    UIApplication.shared.open(externalURL)
+                    self.externalURL = nil
                 }
-                .disabled(!webState.canGoBack)
-                Button { webState.webView?.goForward() } label: {
-                    Image(systemName: "chevron.forward")
-                }
-                .disabled(!webState.canGoForward)
-                Spacer()
-                Button { webState.webView?.reload() } label: {
-                    Image(systemName: "arrow.clockwise")
-                }
-                .accessibilityLabel("Reload page")
+            } message: {
+                Text(externalURL?.host ?? "This external website")
             }
-        }
-        .alert("Open this link outside SeerrNG?", isPresented: Binding(
-            get: { externalURL != nil },
-            set: { if !$0 { externalURL = nil } }
-        )) {
-            Button("Cancel", role: .cancel) { externalURL = nil }
-            Button("Open link") {
-                guard let externalURL else { return }
-                UIApplication.shared.open(externalURL)
-                self.externalURL = nil
-            }
-        } message: {
-            Text(externalURL?.host ?? "This external website")
-        }
-        .overlay(alignment: .top) {
-            if (webState.currentURL ?? activeServer.url).scheme != "https" {
-                Label("HTTP connection is not encrypted", systemImage: "lock.open.fill")
-                    .font(.caption.weight(.semibold))
-                    .padding(.horizontal, 12)
-                    .padding(.vertical, 7)
-                    .background(.orange.opacity(0.16), in: Capsule())
-                    .padding(.top, 4)
+            .overlay(alignment: .top) {
+                if (webState.currentURL ?? activeServer.url).scheme != "https" {
+                    Label("HTTP connection is not encrypted", systemImage: "lock.open.fill")
+                        .font(.caption.weight(.semibold))
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 7)
+                        .background(.orange.opacity(0.16), in: Capsule())
+                        .padding(.top, 4)
+                }
             }
         }
     }
@@ -169,7 +179,9 @@ private struct ServerWebView: UIViewRepresentable {
         if #available(iOS 16.4, *) {
             webView.isInspectable = _isDebugAssertConfiguration()
         }
-        state.refresh(webView)
+        // Attaching the weak handle does not publish during SwiftUI rendering.
+        // Initial KVO callbacks schedule state publication on the next turn.
+        state.webView = webView
         context.coordinator.observe(webView)
         context.coordinator.load(url, in: webView)
         return webView
@@ -177,7 +189,6 @@ private struct ServerWebView: UIViewRepresentable {
 
     func updateUIView(_ webView: WKWebView, context: Context) {
         context.coordinator.parent = self
-        state.refresh(webView)
         context.coordinator.load(url, in: webView)
     }
 
@@ -198,16 +209,16 @@ private struct ServerWebView: UIViewRepresentable {
 
         func observe(_ webView: WKWebView) {
             observations = [
-                webView.observe(\.url, options: [.new]) { [weak self] view, _ in
+                webView.observe(\.url, options: [.initial, .new]) { [weak self] view, _ in
                     Task { @MainActor in self?.parent.state.refresh(view) }
                 },
-                webView.observe(\.estimatedProgress, options: [.new]) { [weak self] view, _ in
+                webView.observe(\.estimatedProgress, options: [.initial, .new]) { [weak self] view, _ in
                     Task { @MainActor in self?.parent.state.refresh(view) }
                 },
-                webView.observe(\.canGoBack, options: [.new]) { [weak self] view, _ in
+                webView.observe(\.canGoBack, options: [.initial, .new]) { [weak self] view, _ in
                     Task { @MainActor in self?.parent.state.refresh(view) }
                 },
-                webView.observe(\.canGoForward, options: [.new]) { [weak self] view, _ in
+                webView.observe(\.canGoForward, options: [.initial, .new]) { [weak self] view, _ in
                     Task { @MainActor in self?.parent.state.refresh(view) }
                 },
             ]

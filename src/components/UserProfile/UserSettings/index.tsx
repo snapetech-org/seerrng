@@ -28,6 +28,7 @@ const messages = defineMessages('components.UserProfile.UserSettings', {
   menuAdvancedTheme: 'Advanced Theme',
   unauthorizedDescription:
     "You do not have permission to modify this user's settings.",
+  menuClientTokens: 'Client Tokens',
 });
 
 type UserSettingsProps = {
@@ -74,6 +75,12 @@ const UserSettings = ({ children }: UserSettingsProps) => {
       text: intl.formatMessage(messages.menuLinkedAccounts),
       route: '/settings/linked-accounts',
       regex: /\/settings\/linked-accounts/,
+    },
+    {
+      text: intl.formatMessage(messages.menuClientTokens),
+      route: '/settings/client-tokens',
+      regex: /\/settings\/client-tokens/,
+      hidden: currentUser?.id !== user.id,
     },
     {
       text: intl.formatMessage(messages.menuNotifications),
@@ -140,6 +147,10 @@ const UserSettings = ({ children }: UserSettingsProps) => {
   }
 
   settingsRoutes.forEach((settingsRoute) => {
+    if (settingsRoute.route === '/settings/client-tokens') {
+      settingsRoute.route = '/profile/settings/client-tokens';
+      return;
+    }
     if (settingsRoute.route === '/settings/maturity') {
       settingsRoute.route = `/users/${user.id}${settingsRoute.route}`;
       return;

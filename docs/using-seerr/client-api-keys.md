@@ -7,9 +7,18 @@ administrator settings access.
 
 ## Create, list and revoke
 
-This capability currently has an authenticated API, **not a dedicated token
-management screen**. Integrators use a signed-in browser session and the normal
-CSRF header for mutations:
+Open **Profile → Settings → Client Tokens** while signed in to your own account.
+Give the client a name, choose discovery/request access and an expiry, then
+select **Create Token**. Copy the token before dismissing it or leaving the page.
+To remove access, select **Revoke Token** and confirm. If you lose a token,
+revoke it and create a replacement; its plaintext cannot be retrieved later.
+
+The page offers 1, 7, 30 and 90-day expiry choices and keeps the one-time token
+masked until you reveal it. Token management is available only for your own
+account, including when you are an administrator.
+
+Integrators can also use the authenticated API with a signed-in browser session
+and the normal CSRF header for mutations:
 
 | Method | Endpoint | Purpose |
 | --- | --- | --- |
