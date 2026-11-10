@@ -1,9 +1,9 @@
 ---
 category: fixed
 audience: users, operators
-area: discovery, requests, authentication
+area: discovery
 action: none
 breaking: false
 ---
 
-Movie and series search filters now use the corresponding TMDB catalog and preserve its result pages. Administrators retain the scanned library's availability on title details and Recently Added while linked viewers continue to see only media their own media-server account can access. Lumen shows pending request counts to request managers and lets them approve a pending book request on its detail page. An expired native settings session returns to sign-in with the original destination preserved.
+Movie and series filters now search their own TMDB catalogs, with working result pages. Administrators see scanned availability on title details and Recently Added even when their linked playback account cannot verify the item. Lumen shows pending counts and offers approval on pending book details. Expired native settings sessions return to sign-in with the original destination.
