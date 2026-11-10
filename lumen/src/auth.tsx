@@ -23,6 +23,11 @@ const Ctx = createContext<AuthState>({
   signOut: async () => {},
 });
 export const useAuth = () => useContext(Ctx);
+export const isAdministrator = (permissions: unknown): boolean =>
+  typeof permissions === 'number' &&
+  Number.isSafeInteger(permissions) &&
+  permissions >= 0 &&
+  (BigInt(permissions) & 2n) !== 0n;
 export const useMediaServerName = () => serverName();
 
 export function AuthProvider({ children }: { children: ReactNode }) {

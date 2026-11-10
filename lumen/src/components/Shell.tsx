@@ -6,7 +6,7 @@ import {
   useNavigate,
   useNavigationType,
 } from 'react-router-dom';
-import { useAuth } from '../auth';
+import { isAdministrator, useAuth } from '../auth';
 import { useExtras } from '../extras';
 import { useBack } from '../hooks';
 import { Icon, type IconName } from '../icons';
@@ -71,7 +71,7 @@ export function Avatar({ className = 'avatar' }: { className?: string }) {
 
 export default function Shell({ children }: { children: ReactNode }) {
   const { user } = useAuth();
-  const { prefs } = usePrefs();
+  const { prefs, seerrPublicUrl } = usePrefs();
   const extras = useExtras();
   const isBook = (h: string) => h === '/books' || h === '/audiobooks';
   const loc = useLocation();
@@ -238,6 +238,19 @@ export default function Shell({ children }: { children: ReactNode }) {
               {e.label}
             </NavLink>
           ))}
+          {isAdministrator(user?.permissions) && (
+            <>
+              <div className="lbl">Administration</div>
+              <Link to="/me/lumen">
+                <Icon name="lock" />
+                Lumen Settings
+              </Link>
+              <a href={fullSeerrUrl(seerrPublicUrl)}>
+                <Icon name="list" />
+                SeerrNG Administration
+              </a>
+            </>
+          )}
           <div className="lbl">You</div>
           <NavLink to="/requests">
             <Icon name="inbox" />

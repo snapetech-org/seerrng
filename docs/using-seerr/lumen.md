@@ -22,9 +22,14 @@ Included Lumen uses SeerrNG's API and session on the same address.
 
 - **Your users** sign in with their existing Plex, Jellyfin, Emby, or local account.
   Requests, permissions and request limits stay with SeerrNG.
-- **Administrators** can adjust Lumen presentation and branding from its profile
-  menu. Full SeerrNG retains service configuration, users, notifications and the
-  complete administration pages; Lumen links there when needed.
+- **Administrators** have an **Administration** section in the desktop sidebar.
+  On phones and tablets, open **You** in the bottom navigation; Administration
+  appears immediately below your profile. **Lumen Settings** controls presentation
+  and branding. **SeerrNG Administration** opens the complete interface for service
+  configuration, users, notifications, logs and other administrative tools, using
+  your existing signed-in session. Short desktop sidebars scroll to keep links
+  reachable. These administrative links require the administrator permission;
+  regular accounts retain the existing **Full SeerrNG** link under **You → More**.
 - **Included Lumen** saves presentation settings under the existing SeerrNG config
   volume. An optional companion uses its own `/lumen-data` volume. Companion
   settings are not automatically imported into the included copy.

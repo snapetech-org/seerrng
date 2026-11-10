@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { csrfHeaders } from '../api';
-import { useAuth } from '../auth';
+import { isAdministrator, useAuth } from '../auth';
 import { Section } from '../components/cards';
 import { useToast } from '../components/toast';
 import { embedded, lumenAdminUrl } from '../deployment';
@@ -46,7 +46,7 @@ export default function LumenSettings() {
     touched.current = true;
     setCfgState(v);
   };
-  const isAdmin = ((user?.permissions ?? 0) & 2) !== 0;
+  const isAdmin = isAdministrator(user?.permissions);
   // can this server save the file itself? null while asking
   const [saveState, setSaveState] = useState<{
     canSave: boolean;

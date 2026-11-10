@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { useAuth } from '../auth';
+import { isAdministrator, useAuth } from '../auth';
 import { Section } from '../components/cards';
 import { canChooseRequestOptions } from '../components/detail';
 import { fullSeerrUrl, initials } from '../components/Shell';
@@ -63,7 +63,7 @@ export default function Me() {
   const { prefs, set, reset, locked, seerrPublicUrl } = usePrefs();
   const quota = useApi<Quota>(user ? `/user/${user.id}/quota` : null).data;
   const full = fullSeerrUrl(seerrPublicUrl);
-  const isAdmin = ((user?.permissions ?? 0) & 2) !== 0;
+  const isAdmin = isAdministrator(user?.permissions);
   const q = (k: string, label: string) => {
     const x = quota?.[k];
     if (!x) return null;
@@ -108,6 +108,43 @@ export default function Me() {
           <small>Signed in to SeerrNG</small>
         </div>
       </div>
+
+      {isAdmin && (
+        <Section title="Administration">
+          <div className="setlist">
+            <div className="set">
+              <span>
+                <b>Lumen Settings</b>
+                <small>
+                  Defaults, locks, sign-in, media server, logo and tab icon
+                </small>
+              </span>
+              <Link
+                className="go"
+                to="/me/lumen"
+                aria-label="Open Lumen Settings"
+              >
+                Open <Icon name="chev" size="sm" />
+              </Link>
+            </div>
+            <div className="set">
+              <span>
+                <b>SeerrNG Administration</b>
+                <small>
+                  Full settings, users, services, logs and other admin tools
+                </small>
+              </span>
+              <a
+                className="go"
+                href={full}
+                aria-label="Open SeerrNG Administration"
+              >
+                Open <Icon name="chev" size="sm" />
+              </a>
+            </div>
+          </div>
+        </Section>
+      )}
 
       <Section title="Request limits">
         <div className="quota">
@@ -225,19 +262,6 @@ export default function Me() {
               </small>
             </span>
           </div>
-          {isAdmin && (
-            <div className="set">
-              <span>
-                <b>Lumen settings for everyone</b>
-                <small>
-                  Defaults, locks, sign-in, media server, logo and tab icon
-                </small>
-              </span>
-              <Link className="go" to="/me/lumen">
-                Open <Icon name="chev" size="sm" />
-              </Link>
-            </div>
-          )}
           <div className="set">
             <span>
               <b>Full SeerrNG</b>
