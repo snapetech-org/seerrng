@@ -77,9 +77,11 @@ const SettingsLink = ({
 const SettingsTabs = ({
   tabType = 'default',
   settingsRoutes,
+  compactOnNarrowScreens = false,
 }: {
   tabType?: 'default' | 'button' | 'filter';
   settingsRoutes: SettingsRoute[];
+  compactOnNarrowScreens?: boolean;
 }) => {
   const intl = useIntl();
   const router = useRouter();
@@ -106,7 +108,15 @@ const SettingsTabs = ({
 
   return (
     <>
-      <div className={tabType === 'filter' ? 'hidden' : 'sm:hidden'}>
+      <div
+        className={
+          compactOnNarrowScreens
+            ? 'lg:hidden'
+            : tabType === 'filter'
+              ? 'hidden'
+              : 'sm:hidden'
+        }
+      >
         <label htmlFor="tabs" className="sr-only">
           {intl.formatMessage(messages.selectTab)}
         </label>
@@ -129,7 +139,9 @@ const SettingsTabs = ({
         <div
           className={
             tabType === 'filter'
-              ? 'settings-page-filter-nav flex'
+              ? compactOnNarrowScreens
+                ? 'settings-page-filter-nav hidden lg:flex'
+                : 'settings-page-filter-nav flex'
               : 'hidden sm:block'
           }
         >
@@ -156,7 +168,11 @@ const SettingsTabs = ({
           </nav>
         </div>
       ) : (
-        <div className="hide-scrollbar hidden overflow-x-scroll border-b border-gray-600 sm:block">
+        <div
+          className={`hide-scrollbar hidden overflow-x-scroll border-b border-gray-600 ${
+            compactOnNarrowScreens ? 'lg:block' : 'sm:block'
+          }`}
+        >
           <nav className="flex" data-testid="settings-nav-desktop">
             {visibleSettingsRoutes.map((route, index) => (
               <SettingsLink
