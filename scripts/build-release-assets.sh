@@ -93,11 +93,11 @@ cp bin/prepare.mjs "$stage/bin/"
 cp -R patches "$stage/"
 (
   cd "$stage"
-  production_install_options=()
   if [[ "$os" == 'windows' ]]; then
-    production_install_options+=(--config.node-linker=hoisted)
+    time_phase 'Install staged production dependencies' env CI=true CYPRESS_INSTALL_BINARY=0 pnpm install --prod --frozen-lockfile --config.node-linker=hoisted
+  else
+    time_phase 'Install staged production dependencies' env CI=true CYPRESS_INSTALL_BINARY=0 pnpm install --prod --frozen-lockfile
   fi
-  time_phase 'Install staged production dependencies' env CI=true CYPRESS_INSTALL_BINARY=0 pnpm install --prod --frozen-lockfile "${production_install_options[@]}"
 )
 if [[ "$os" == 'windows' ]]; then
   rm -rf -- "${stage:?}/public/readme-covers"

@@ -163,6 +163,27 @@ afterEach(async () => {
 });
 
 describe('release asset construction', () => {
+  it('installs macOS production dependencies under Bash 3 without Windows options', async () => {
+    const fixture = await createFixture();
+    const distribution = path.join(fixture.root, 'dist-release');
+    const result = await runForPlatformAndNodeArchitecture(
+      fixture,
+      ['v1.2.3', distribution],
+      'Darwin',
+      'arm64',
+      'arm64'
+    );
+
+    assert.equal(result.code, 0, result.output);
+    assert.equal(
+      await fs.readFile(
+        path.join(distribution, 'seerrng-v1.2.3-macos-arm64.sha256'),
+        'utf8'
+      ).then((value) => value.includes('seerrng-v1.2.3-macos-arm64.tar.gz')),
+      true
+    );
+  });
+
   it('atomically publishes a narrowed archive with a location-independent launcher', async () => {
     const fixture = await createFixture();
     const distribution = path.join(fixture.root, 'dist-release');
