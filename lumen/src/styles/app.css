@@ -1462,9 +1462,13 @@ body.is-detail .tabbar {
 .si .tt {
   font-weight: 700;
   font-size: 15px;
-  white-space: nowrap;
+  line-height: 1.25;
   overflow: hidden;
-  text-overflow: ellipsis;
+  overflow-wrap: anywhere;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
 }
 .si .tt a::after {
   content: '';
