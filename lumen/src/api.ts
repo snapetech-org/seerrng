@@ -88,6 +88,7 @@ export interface TitleResult {
   title?: string;
   name?: string;
   posterPath?: string;
+  profilePath?: string;
   backdropPath?: string;
   releaseDate?: string;
   firstAirDate?: string;

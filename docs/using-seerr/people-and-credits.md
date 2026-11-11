@@ -17,6 +17,26 @@ requests.
 This SeerrNG capability was developed with reference to the open Seerr
 [person-credit sorting pull request #3342](https://github.com/seerr-team/seerr/pull/3342).
 
+## People in Lumen All search
+
+In the included Lumen interface, choose **Search**, select **All**, and enter an
+actor's, director's, or other person's name. Matching people appear in a
+separate **People** section alongside Movies, Series, and Books when those
+categories are available. Profile cards show an image when one is supplied.
+
+Open a person to see their biography and up to 24 distinct movie and TV
+credits in Lumen; choose a credit to open the normal title details. The person
+and credit data use existing TMDB-backed SeerrNG APIs; server-side maturity
+limits are applied to credits. People aren't included in Movies-only or
+Series-only search. Lumen doesn't yet offer the native credit-sorting controls.
+
+A signed-in Lumen account and working TMDB metadata access are required.
+If a person or credits lookup fails, choose **Retry**. This feature doesn't
+change request permissions, available titles, or native interface settings.
+
+This Lumen UI adapts a previous private People-search implementation using
+SeerrNG's existing person APIs and presentation components.
+
 ## Sources and attribution
 
 This guide is maintained for SeerrNG by snapetech and SeerrNG contributors.
