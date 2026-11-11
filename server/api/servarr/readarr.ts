@@ -2,6 +2,7 @@ import {
   getBookLookupBudget,
   withBookLookupBudget,
 } from '@server/lib/bookLookupBudget';
+import { getBookMetadataPendingRetryMs } from '@server/lib/bookMetadataPending';
 import {
   normalizeOpenLibraryEditionId,
   normalizeOpenLibraryWorkId,
@@ -850,6 +851,13 @@ class ReadarrAPI extends ServarrBase<ReadarrQueueItem> {
         { cause: e }
       );
     }
+  }
+
+  protected override shouldRetryRequest(error: unknown): boolean {
+    return (
+      getBookMetadataPendingRetryMs(error) === undefined &&
+      super.shouldRetryRequest(error)
+    );
   }
 
   protected override async request<T>(
@@ -2423,6 +2431,7 @@ class ReadarrAPI extends ServarrBase<ReadarrQueueItem> {
           MAX_SERVARR_LOOKUP_RESULTS
         );
       } catch (error) {
+        if (getBookMetadataPendingRetryMs(error) !== undefined) throw error;
         if (!this.isChaptarr()) {
           throw error;
         }
@@ -2504,6 +2513,7 @@ class ReadarrAPI extends ServarrBase<ReadarrQueueItem> {
           return alternateResults;
         }
       } catch (error) {
+        if (getBookMetadataPendingRetryMs(error) !== undefined) throw error;
         logger.warn('Chaptarr alternate provider facade lookup failed.', {
           label: 'Readarr',
           dialect: alternateDialect,
@@ -2564,6 +2574,7 @@ class ReadarrAPI extends ServarrBase<ReadarrQueueItem> {
           return crossFormatResults;
         }
       } catch (error) {
+        if (getBookMetadataPendingRetryMs(error) !== undefined) throw error;
         logger.warn('Chaptarr native lookup fallback failed.', {
           label: 'Readarr',
           mediaType: this.mediaType,

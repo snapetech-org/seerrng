@@ -331,11 +331,13 @@ export const withTransientHttpRetry = async <T>(
     delayMs = 250,
     onRetry,
     signal,
+    shouldRetry,
   }: {
     maxAttempts?: number;
     signal?: GenericAbortSignal;
     delayMs?: number;
     onRetry?: (error: unknown, nextAttempt: number) => void;
+    shouldRetry?: (error: unknown) => boolean;
   } = {}
 ): Promise<T> => {
   let attempt = 1;
@@ -348,7 +350,8 @@ export const withTransientHttpRetry = async <T>(
       if (
         signal?.aborted ||
         attempt >= maxAttempts ||
-        !isTransientHttpError(error)
+        !isTransientHttpError(error) ||
+        shouldRetry?.(error) === false
       ) {
         throw error;
       }

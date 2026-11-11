@@ -308,6 +308,11 @@ export const createExternalApiCacheKeySuffix = (
 };
 
 class ExternalAPI {
+  /** Provider semantics may defer a response through a durable queue instead. */
+  protected shouldRetryRequest(error: unknown): boolean {
+    void error;
+    return true;
+  }
   protected axios: AxiosInstance;
   private baseUrl: string;
   private allowedOrigins: ReadonlySet<string>;
@@ -486,7 +491,10 @@ class ExternalAPI {
           // failure before the caller turns it into a user-facing error.
           return await withTransientHttpRetry(
             () => this.axios.get<T>(requestTarget, config),
-            { signal: config?.signal }
+            {
+              signal: config?.signal,
+              shouldRetry: (error) => this.shouldRetryRequest(error),
+            }
           );
         case 'POST':
           // requestTarget is restricted to the constructor's allowed origins;

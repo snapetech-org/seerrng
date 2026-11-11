@@ -9,12 +9,14 @@ import { MediaRequest } from '@server/entity/MediaRequest';
 import { RequestDispatchOutbox } from '@server/entity/RequestDispatchOutbox';
 import { User } from '@server/entity/User';
 import notificationManager, { Notification } from '@server/lib/notifications';
+import logger from '@server/logger';
 import { MediaRequestSubscriber } from '@server/subscriber/MediaRequestSubscriber';
 import { setupTestDb } from '@server/test/db';
 import { waitForBackgroundTasks } from '@server/utils/backgroundTasks';
 import assert from 'node:assert/strict';
 import { beforeEach, describe, it, mock } from 'node:test';
 import {
+  MAX_BOOK_METADATA_PENDING_MS,
   REQUEST_DISPATCH_CONCURRENCY,
   RequestDispatchManager,
   getRequestDispatchRetryDelayMs,
@@ -197,6 +199,88 @@ describe('RequestDispatchManager', () => {
     assert.strictEqual(await getRepository(RequestDispatchOutbox).count(), 0);
   });
 
+  it('rejects a stale worker snapshot after another worker persists metadata backoff', async (t) => {
+    const request = await createPendingRequest();
+    await getRepository(MediaRequest).update(request.id, {
+      status: MediaRequestStatus.APPROVED,
+    });
+    const record = await getRepository(RequestDispatchOutbox).save(
+      new RequestDispatchOutbox({ requestId: request.id, attempts: 0 })
+    );
+    let dispatches = 0;
+    const dispatchMock = mock.method(
+      MediaRequestSubscriber.prototype,
+      'dispatchRequestById',
+      async () => {
+        dispatches++;
+        return {
+          delivered: false,
+          metadataPending: true,
+          retryAfterMs: 120_000,
+        };
+      }
+    );
+    const first = new RequestDispatchManager();
+    const second = new RequestDispatchManager();
+    type Scan = {
+      getPending: (respectBackoff: boolean) => Promise<RequestDispatchOutbox[]>;
+    };
+    const originalScan = (second as unknown as Scan).getPending.bind(second);
+    let scanned!: () => void;
+    const captured = new Promise<void>((resolve) => {
+      scanned = resolve;
+    });
+    let release!: () => void;
+    const continueScan = new Promise<void>((resolve) => {
+      release = resolve;
+    });
+    const getPending = mock.method(
+      second as unknown as Scan,
+      'getPending',
+      async (respectBackoff) => {
+        const snapshot = await originalScan(respectBackoff);
+        scanned();
+        await continueScan;
+        return snapshot;
+      }
+    );
+    t.after(() => {
+      release();
+      getPending.mock.restore();
+      dispatchMock.mock.restore();
+    });
+    const secondScan = second.resume(false);
+    await captured;
+    await first.resume(false);
+    await waitForBackgroundTasks();
+    const deferred = await getRepository(RequestDispatchOutbox).findOneByOrFail(
+      { id: record.id }
+    );
+    assert.equal(dispatches, 1);
+    assert.equal(deferred.attempts, 0);
+    assert.ok(
+      deferred.nextAttemptAt && deferred.nextAttemptAt.getTime() > Date.now()
+    );
+    release();
+    await secondScan;
+    await waitForBackgroundTasks();
+    assert.equal(dispatches, 1);
+    const persisted = await getRepository(
+      RequestDispatchOutbox
+    ).findOneByOrFail({ id: record.id });
+    assert.equal(persisted.attempts, 0);
+    assert.equal(persisted.claimToken, null);
+    assert.equal(
+      persisted.nextAttemptAt?.getTime(),
+      deferred.nextAttemptAt.getTime()
+    );
+    assert.equal(
+      (await getRepository(MediaRequest).findOneByOrFail({ id: request.id }))
+        .status,
+      MediaRequestStatus.APPROVED
+    );
+  });
+
   it('bounds concurrent durable request dispatches', async (t) => {
     const requests: MediaRequest[] = [];
     for (let index = 0; index < REQUEST_DISPATCH_CONCURRENCY + 3; index += 1) {
@@ -339,6 +423,159 @@ describe('RequestDispatchManager', () => {
     await waitForBackgroundTasks();
     assert.strictEqual(dispatches, 2);
     assert.strictEqual(await getRepository(RequestDispatchOutbox).count(), 0);
+  });
+
+  it('persists metadata-pending state across restarts and retires a ready request only once', async (t) => {
+    const request = await createPendingRequest();
+    await getRepository(MediaRequest).update(request.id, {
+      status: MediaRequestStatus.APPROVED,
+    });
+    const record = await getRepository(RequestDispatchOutbox).save(
+      new RequestDispatchOutbox({ requestId: request.id, attempts: 49 })
+    );
+    let dispatches = 0;
+    const dispatchMock = mock.method(
+      MediaRequestSubscriber.prototype,
+      'dispatchRequestById',
+      async () => {
+        dispatches++;
+        return dispatches === 1
+          ? { delivered: false, metadataPending: true, retryAfterMs: 120_000 }
+          : { delivered: true };
+      }
+    );
+    const logs = mock.method(logger, 'error', () => logger);
+    const notifications = mock.method(
+      notificationManager,
+      'sendNotificationIntent',
+      async () => undefined
+    );
+    t.after(() => {
+      dispatchMock.mock.restore();
+      notifications.mock.restore();
+      logs.mock.restore();
+    });
+
+    await new RequestDispatchManager().resume(false);
+    await waitForBackgroundTasks();
+    const pending = await getRepository(RequestDispatchOutbox).findOneByOrFail({
+      id: record.id,
+    });
+    assert.equal(pending.attempts, 49);
+    assert.equal(pending.claimToken, null);
+    assert.equal(pending.claimedAt, null);
+    assert.ok(pending.lastAttemptAt && pending.nextAttemptAt);
+    assert.equal(
+      pending.nextAttemptAt.getTime() - pending.lastAttemptAt.getTime(),
+      120_000
+    );
+    assert.equal(
+      (await getRepository(MediaRequest).findOneByOrFail({ id: request.id }))
+        .status,
+      MediaRequestStatus.APPROVED
+    );
+    assert.equal(notifications.mock.callCount(), 0);
+    assert.equal(logs.mock.callCount(), 0);
+
+    await new RequestDispatchManager().resume(false);
+    await waitForBackgroundTasks();
+    assert.equal(dispatches, 1);
+    await getRepository(RequestDispatchOutbox).update(record.id, {
+      nextAttemptAt: new Date(Date.now() - 1),
+    });
+    await new RequestDispatchManager().resume(false);
+    await waitForBackgroundTasks();
+    await new RequestDispatchManager().resume(false);
+    await waitForBackgroundTasks();
+    assert.equal(dispatches, 2);
+    assert.equal(await getRepository(RequestDispatchOutbox).count(), 0);
+    assert.equal(notifications.mock.callCount(), 0);
+  });
+
+  for (const [requested, expected] of [
+    [0, 60_000],
+    [60 * 60_000, 900_000],
+  ] as const) {
+    it(`bounds metadata-pending outbox delay ${requested} without consuming attempts`, async (t) => {
+      const request = await createPendingRequest();
+      const record = await getRepository(RequestDispatchOutbox).save(
+        new RequestDispatchOutbox({ requestId: request.id, attempts: 0 })
+      );
+      const dispatchMock = mock.method(
+        MediaRequestSubscriber.prototype,
+        'dispatchRequestById',
+        async () => ({
+          delivered: false,
+          metadataPending: true,
+          retryAfterMs: requested,
+        })
+      );
+      t.after(() => dispatchMock.mock.restore());
+      await new RequestDispatchManager().resume(false);
+      await waitForBackgroundTasks();
+      const pending = await getRepository(
+        RequestDispatchOutbox
+      ).findOneByOrFail({ id: record.id });
+      assert.equal(pending.attempts, 0);
+      assert.ok(pending.lastAttemptAt && pending.nextAttemptAt);
+      assert.equal(
+        pending.nextAttemptAt.getTime() - pending.lastAttemptAt.getTime(),
+        expected
+      );
+    });
+  }
+
+  it('fails expired metadata preparation once using the persisted 24-hour deadline', async (t) => {
+    const request = await createPendingRequest();
+    await getRepository(MediaRequest).update(request.id, {
+      status: MediaRequestStatus.APPROVED,
+    });
+    await getRepository(RequestDispatchOutbox).save(
+      new RequestDispatchOutbox({
+        requestId: request.id,
+        attempts: 0,
+        createdAt: new Date(Date.now() - MAX_BOOK_METADATA_PENDING_MS - 60_000),
+      })
+    );
+    let dispatches = 0;
+    const dispatchMock = mock.method(
+      MediaRequestSubscriber.prototype,
+      'dispatchRequestById',
+      async () => {
+        dispatches++;
+        return {
+          delivered: false,
+          metadataPending: true,
+          retryAfterMs: 60_000,
+        };
+      }
+    );
+    const notifications = mock.method(
+      notificationManager,
+      'sendNotificationIntent',
+      async () => undefined
+    );
+    t.after(() => {
+      dispatchMock.mock.restore();
+      notifications.mock.restore();
+    });
+    await new RequestDispatchManager().resume(false);
+    await waitForBackgroundTasks();
+    assert.equal(
+      (await getRepository(MediaRequest).findOneByOrFail({ id: request.id }))
+        .status,
+      MediaRequestStatus.FAILED
+    );
+    assert.equal(await getRepository(RequestDispatchOutbox).count(), 0);
+    assert.equal(notifications.mock.callCount(), 1);
+    assert.equal(
+      notifications.mock.calls[0].arguments[0],
+      Notification.MEDIA_FAILED
+    );
+    await new RequestDispatchManager().resume(false);
+    await waitForBackgroundTasks();
+    assert.equal(dispatches, 1);
+    assert.equal(notifications.mock.callCount(), 1);
   });
 
   it('atomically fails approved requests when dispatch attempts are exhausted', async (t) => {

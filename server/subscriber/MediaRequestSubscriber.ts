@@ -60,6 +60,7 @@ import {
   allowedBookLanguages,
   bookLanguageAllowed,
 } from '@server/lib/bookLanguagePolicy';
+import { getBookMetadataPendingRetryMs } from '@server/lib/bookMetadataPending';
 import {
   getComicRequestTarget,
   hasDeliveredComicTarget,
@@ -81,6 +82,7 @@ import { upsertMediaServiceStatus } from '@server/lib/mediaServiceStatus';
 import { getLidarrAlbumMediaStatus } from '@server/lib/musicAvailability';
 import notificationManager, { Notification } from '@server/lib/notifications';
 import requestDispatchManager, {
+  REQUEST_DISPATCH_SCAN_INTERVAL_MS,
   type RequestDispatchOutcome,
 } from '@server/lib/requestDispatch';
 import { resolveRequesterTag } from '@server/lib/requesterTags';
@@ -458,6 +460,7 @@ const lookupReadarrWithRetry = async <T>(
       return await lookup();
     } catch (error) {
       if (
+        getBookMetadataPendingRetryMs(error) !== undefined ||
         !isTransientExternalError(error) ||
         attempt >= READARR_LOOKUP_RETRY_DELAYS_MS.length
       ) {
@@ -595,11 +598,11 @@ export class MediaRequestSubscriber implements EntitySubscriberInterface<MediaRe
   private getReadarrDispatchRetryDelay(
     entity: MediaRequest,
     error: unknown
-  ): number | undefined {
+  ): number {
     const providerRetryDelay = getRetryAfterMs(error);
     const retryAfterMs =
       providerRetryDelay === undefined
-        ? undefined
+        ? REQUEST_DISPATCH_SCAN_INTERVAL_MS
         : clampReadarrProviderRetryDelay(providerRetryDelay);
 
     logger.warn(
@@ -1494,7 +1497,18 @@ export class MediaRequestSubscriber implements EntitySubscriberInterface<MediaRe
       }
       return { delivered };
     } else if (request.type === MediaType.BOOK) {
-      const retryAfterMs = await this.sendToReadarr(request);
+      let retryAfterMs: number | undefined;
+      try {
+        retryAfterMs = await this.sendToReadarr(request);
+      } catch (error) {
+        const pendingDelay = getBookMetadataPendingRetryMs(error);
+        if (pendingDelay === undefined) throw error;
+        return {
+          delivered: false,
+          retryAfterMs: pendingDelay,
+          metadataPending: true,
+        };
+      }
       if (retryAfterMs !== undefined) {
         return { delivered: false, retryAfterMs };
       }
@@ -3764,6 +3778,19 @@ export class MediaRequestSubscriber implements EntitySubscriberInterface<MediaRe
         bookFormat: requestedBookFormat,
       });
     } catch (e) {
+      if (getBookMetadataPendingRetryMs(e) !== undefined) {
+        // Keep the approved intent durable while the provider prepares metadata.
+        // The outbox owns the bounded delay and deadline, not failure notifications.
+        if (entity.status === MediaRequestStatus.FAILED) {
+          await getRepository(MediaRequest).update(entity.id, {
+            status: MediaRequestStatus.APPROVED,
+            failureReason: null,
+          });
+          entity.status = MediaRequestStatus.APPROVED;
+          entity.failureReason = null;
+        }
+        throw e;
+      }
       if (isTransientExternalError(e)) {
         return this.getReadarrDispatchRetryDelay(entity, e);
       }

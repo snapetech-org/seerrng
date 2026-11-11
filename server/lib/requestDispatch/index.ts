@@ -23,10 +23,12 @@ export const MAX_REQUEST_DISPATCH_ATTEMPTS = 50;
 export const REQUEST_DISPATCH_CLAIM_LEASE_MS = 15 * 60 * 1000;
 export const REQUEST_DISPATCH_SCAN_INTERVAL_MS = 60_000;
 export const MAX_REQUEST_DISPATCH_RETRY_DELAY_MS = 6 * 60 * 60 * 1000;
+export const MAX_BOOK_METADATA_PENDING_MS = 24 * 60 * 60 * 1000;
 
 export type RequestDispatchOutcome = {
   delivered: boolean;
   retryAfterMs?: number;
+  metadataPending?: boolean;
 };
 
 export const getRequestDispatchRetryDelayMs = (attempts: number): number =>
@@ -202,6 +204,9 @@ export class RequestDispatchManager {
           ),
         }
       )
+      .andWhere('("nextAttemptAt" IS NULL OR "nextAttemptAt" <= :claimedAt)', {
+        claimedAt,
+      })
       .execute();
     return result.affected === 1 ? claimToken : undefined;
   }
@@ -256,9 +261,17 @@ export class RequestDispatchManager {
   private async failAttempt(
     record: RequestDispatchOutbox,
     claimToken: string,
-    retryAfterMs?: number
+    retryAfterMs?: number,
+    metadataPending = false
   ): Promise<void> {
-    const attempts = record.attempts + 1;
+    const stillPreparing =
+      metadataPending &&
+      Date.now() - record.createdAt.getTime() < MAX_BOOK_METADATA_PENDING_MS;
+    const attempts = stillPreparing
+      ? record.attempts
+      : metadataPending
+        ? MAX_REQUEST_DISPATCH_ATTEMPTS
+        : record.attempts + 1;
     if (attempts >= MAX_REQUEST_DISPATCH_ATTEMPTS) {
       const queryRunner = dataSource.createQueryRunner();
       await queryRunner.connect();
@@ -316,10 +329,9 @@ export class RequestDispatchManager {
             MAX_REQUEST_DISPATCH_RETRY_DELAY_MS
           )
         : 0;
-    const retryDelay = Math.max(
-      getRequestDispatchRetryDelayMs(attempts),
-      requestedDelay
-    );
+    const retryDelay = stillPreparing
+      ? Math.min(900_000, Math.max(60_000, requestedDelay))
+      : Math.max(getRequestDispatchRetryDelayMs(attempts), requestedDelay);
     const nextAttemptAt = new Date(lastAttemptAt.getTime() + retryDelay);
     const result = await getRepository(RequestDispatchOutbox).update(
       { id: record.id, claimToken },
@@ -382,8 +394,14 @@ export class RequestDispatchManager {
               claimToken = undefined;
               return;
             }
-            await this.failAttempt(record, claimToken, outcome.retryAfterMs);
+            await this.failAttempt(
+              record,
+              claimToken,
+              outcome.retryAfterMs,
+              outcome.metadataPending === true
+            );
             claimToken = undefined;
+            if (outcome.metadataPending) return;
             throw new Error(
               `Request dispatch outbox ${record.id} remains pending.`
             );

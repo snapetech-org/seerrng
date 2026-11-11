@@ -306,6 +306,294 @@ describe('MediaRequestSubscriber service dispatch', () => {
     settings.sportarr = [];
   });
 
+  it('returns an explicit metadata-pending dispatch outcome without failing the approved request', async () => {
+    const media = await getRepository(Media).save(
+      new Media({
+        mediaType: MediaType.BOOK,
+        tmdbId: 0,
+        status: MediaStatus.PENDING,
+        status4k: MediaStatus.UNKNOWN,
+      })
+    );
+    const request = await createApprovedRequest(media, await getRequester());
+    await getRepository(MediaRequest).save(request);
+    const pending = new Error('Bookshelf add failed', {
+      cause: {
+        response: {
+          status: 503,
+          data: { code: 'metadata_pending', retryAfterSeconds: 120 },
+        },
+      },
+    });
+    mock.method(MediaRequestSubscriber.prototype, 'sendToReadarr', async () => {
+      throw pending;
+    });
+    const notifications = mock.method(
+      notificationManager,
+      'sendNotification',
+      () => undefined
+    );
+    assert.deepEqual(
+      await new MediaRequestSubscriber().dispatchRequestById(request.id),
+      {
+        delivered: false,
+        metadataPending: true,
+        retryAfterMs: 120_000,
+      }
+    );
+    assert.equal(
+      (await getRepository(MediaRequest).findOneByOrFail({ id: request.id }))
+        .status,
+      MediaRequestStatus.APPROVED
+    );
+    assert.equal(notifications.mock.callCount(), 0);
+    assert.equal(startedBookSearches, 0);
+  });
+
+  it('honors pending metadata from the first book lookup without immediate retries or adds', async () => {
+    getSettings().readarr = [
+      {
+        id: 20,
+        name: 'Bookshelf',
+        hostname: 'bookshelf.local',
+        port: 8787,
+        apiKey: 'test-key',
+        useSsl: false,
+        activeProfileId: 11,
+        activeProfileName: 'Books',
+        activeMetadataProfileId: 12,
+        activeMetadataProfileName: 'Standard',
+        activeDirectory: '/books',
+        tags: [],
+        is4k: false,
+        isDefault: true,
+        syncEnabled: true,
+        preventSearch: false,
+        tagRequests: false,
+        overrideRule: [],
+        serviceType: 'ebook',
+      },
+    ];
+    const media = await getRepository(Media).save(
+      new Media({
+        mediaType: MediaType.BOOK,
+        tmdbId: 0,
+        status: MediaStatus.PENDING,
+        status4k: MediaStatus.UNKNOWN,
+        identifiers: [
+          new MediaIdentifier({
+            provider: MediaIdentifierProvider.OPENLIBRARY,
+            value: 'OL45804W',
+            canonical: true,
+          }),
+          new MediaIdentifier({
+            provider: MediaIdentifierProvider.ISBN,
+            value: '9780441478125',
+          }),
+        ],
+      })
+    );
+    const request = await createApprovedRequest(media, await getRequester());
+    request.serverId = 20;
+    await getRepository(MediaRequest).save(request);
+    mock.method(OpenLibraryAPI.prototype, 'getWork', async () => ({
+      key: '/works/OL45804W',
+      title: 'The Left Hand of Darkness',
+    }));
+    const pending = new Error('Lookup is awaiting metadata', {
+      cause: {
+        response: {
+          status: 503,
+          data: { code: 'metadata_pending', retryAfterSeconds: 90 },
+        },
+      },
+    });
+    const lookup = mock.method(ReadarrAPI.prototype, 'lookupBook', async () => {
+      throw pending;
+    });
+    const add = mock.method(
+      ReadarrAPI.prototype,
+      'addBook',
+      async (payload: ReadarrBookOptions) => ({ ...payload, id: 999 })
+    );
+    const notifications = mock.method(
+      notificationManager,
+      'sendNotification',
+      () => undefined
+    );
+    assert.deepEqual(
+      await new MediaRequestSubscriber().dispatchRequestById(request.id),
+      {
+        delivered: false,
+        metadataPending: true,
+        retryAfterMs: 90_000,
+      }
+    );
+    assert.equal(lookup.mock.callCount(), 1);
+    assert.equal(add.mock.callCount(), 0);
+    assert.equal(
+      (await getRepository(MediaRequest).findOneByOrFail({ id: request.id }))
+        .status,
+      MediaRequestStatus.APPROVED
+    );
+    assert.equal(notifications.mock.callCount(), 0);
+    assert.equal(startedBookSearches, 0);
+  });
+
+  it('propagates a generic book dispatch 503 without calling it metadata preparation', async () => {
+    const media = await getRepository(Media).save(
+      new Media({
+        mediaType: MediaType.BOOK,
+        tmdbId: 0,
+        status: MediaStatus.PENDING,
+        status4k: MediaStatus.UNKNOWN,
+      })
+    );
+    const request = await createApprovedRequest(media, await getRequester());
+    await getRepository(MediaRequest).save(request);
+    const unavailable = new Error('Backend unavailable', {
+      cause: {
+        response: { status: 503, data: { message: 'Service unavailable' } },
+      },
+    });
+    mock.method(MediaRequestSubscriber.prototype, 'sendToReadarr', async () => {
+      throw unavailable;
+    });
+    await assert.rejects(
+      new MediaRequestSubscriber().dispatchRequestById(request.id),
+      (error) => error === unavailable
+    );
+  });
+
+  for (const { initialStatus, explicitPending } of [
+    { initialStatus: MediaRequestStatus.APPROVED, explicitPending: true },
+    { initialStatus: MediaRequestStatus.FAILED, explicitPending: true },
+    { initialStatus: MediaRequestStatus.APPROVED, explicitPending: false },
+  ]) {
+    it(`keeps book status ${initialStatus} queued for ${explicitPending ? 'pending metadata' : 'an unavailable service without Retry-After'}`, async () => {
+      getSettings().readarr = [
+        {
+          id: 20,
+          name: 'Bookshelf',
+          hostname: 'bookshelf.local',
+          port: 8787,
+          apiKey: 'test-key',
+          useSsl: false,
+          activeProfileId: 11,
+          activeProfileName: 'Books',
+          activeMetadataProfileId: 12,
+          activeMetadataProfileName: 'Standard',
+          activeDirectory: '/books',
+          tags: [],
+          is4k: false,
+          isDefault: true,
+          syncEnabled: true,
+          preventSearch: false,
+          tagRequests: false,
+          overrideRule: [],
+          serviceType: 'ebook',
+        },
+      ];
+      const media = await getRepository(Media).save(
+        new Media({
+          mediaType: MediaType.BOOK,
+          tmdbId: 0,
+          status: MediaStatus.PENDING,
+          status4k: MediaStatus.UNKNOWN,
+          identifiers: [
+            new MediaIdentifier({
+              provider: MediaIdentifierProvider.OPENLIBRARY,
+              value: 'OL45804W',
+              canonical: true,
+            }),
+            new MediaIdentifier({
+              provider: MediaIdentifierProvider.ISBN,
+              value: '9780441478125',
+            }),
+          ],
+        })
+      );
+      const request = await createApprovedRequest(media, await getRequester());
+      request.serverId = 20;
+      await getRepository(MediaRequest).save(request);
+      request.status = initialStatus;
+      await getRepository(MediaRequest).update(request.id, {
+        status: initialStatus,
+      });
+      mock.method(OpenLibraryAPI.prototype, 'getWork', async () => ({
+        key: '/works/OL45804W',
+        title: 'The Left Hand of Darkness',
+      }));
+      mock.method(
+        ReadarrAPI.prototype,
+        'lookupBook',
+        async () =>
+          [
+            {
+              title: 'The Left Hand of Darkness',
+              foreignBookId: 'readarr-work-id',
+              titleSlug: 'left-hand-darkness',
+              author: {
+                foreignAuthorId: 'le-guin-author-id',
+                authorName: 'Ursula K. Le Guin',
+              },
+              editions: [
+                {
+                  foreignEditionId: 'edition-id',
+                  title: 'The Left Hand of Darkness',
+                  isbn13: '9780441478125',
+                  monitored: true,
+                },
+              ],
+            },
+          ] as ReadarrBookLookupResult[]
+      );
+      const pending = new Error(
+        explicitPending
+          ? 'Add is awaiting metadata'
+          : 'Request failed with status code 503',
+        {
+          cause: {
+            response: {
+              status: 503,
+              data: {
+                code: explicitPending ? 'metadata_pending' : 'unavailable',
+                retryAfterSeconds: 90,
+              },
+            },
+          },
+        }
+      );
+      const add = mock.method(ReadarrAPI.prototype, 'addBook', async () => {
+        throw pending;
+      });
+      const notifications = mock.method(
+        notificationManager,
+        'sendNotification',
+        () => undefined
+      );
+      if (explicitPending) {
+        await assert.rejects(
+          new MediaRequestSubscriber().sendToReadarr(request),
+          (error) => error === pending
+        );
+      } else {
+        assert.equal(
+          await new MediaRequestSubscriber().sendToReadarr(request),
+          60_000
+        );
+      }
+      assert.equal(add.mock.callCount(), 1);
+      assert.equal(
+        (await getRepository(MediaRequest).findOneByOrFail({ id: request.id }))
+          .status,
+        MediaRequestStatus.APPROVED
+      );
+      assert.equal(notifications.mock.callCount(), 0);
+      assert.equal(startedBookSearches, 0);
+    });
+  }
+
   it('bounds provider-directed Bookshelf retry delays', () => {
     assert.strictEqual(clampReadarrProviderRetryDelay(0), 1_000);
     assert.strictEqual(clampReadarrProviderRetryDelay(2_000), 2_000);
