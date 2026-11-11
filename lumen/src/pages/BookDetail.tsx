@@ -30,10 +30,10 @@ import {
 } from '../components/detail';
 import { ServiceNote } from '../components/extra';
 import { useToast } from '../components/toast';
+import { friendlyError } from '../errors';
 import { dropBookStates, useApi } from '../hooks';
 import { Icon } from '../icons';
 import { usePrefs } from '../settings';
-import { friendlyError } from '../errors';
 
 const english = (e: Edition) =>
   !e.language || /^(en|eng|english|und)$/i.test(e.language);
@@ -44,13 +44,19 @@ const who = (e: Edition) =>
       : e.narrators.join(' & ')
     : 'Narrator not listed';
 
-// one row per distinct narrator set; the copy with the most detail wins
-function narrations(list: Edition[]) {
-  const by = new Map<string, Edition>();
+// SeerrNG lists catalogue copies it can't pin (no Hardcover edition id) with an empty id
+const pinnable = (e: Edition) => !!e.id && e.requestable !== false;
+// a narration row: one recording, keyed by its narrators (edition ids can be empty or shared)
+type NarrationRow = Edition & { key: string };
+
+// one row per distinct narrator set; a copy that can be requested wins, then the most detail
+function narrations(list: Edition[]): NarrationRow[] {
+  const by = new Map<string, NarrationRow>();
   for (const e of list.filter((x) => x.format === 'audiobook' && english(x))) {
     const k = narratorKey(e.narrators) || 'unknown:' + e.id;
     const cur = by.get(k);
     const score = (x: Edition) =>
+      (pinnable(x) ? 16 : 0) +
       (x.durationSeconds ? 2 : 0) +
       (x.publisher ? 1 : 0) +
       (x.owned ? 4 : 0) +
@@ -58,13 +64,21 @@ function narrations(list: Edition[]) {
     if (!cur || score(e) > score(cur))
       by.set(k, {
         ...e,
+        key: k,
         owned: e.owned || cur?.owned,
         selected: e.selected || cur?.selected,
       });
+    else if (e.owned || e.selected)
+      by.set(k, {
+        ...cur,
+        owned: cur.owned || e.owned,
+        selected: cur.selected || e.selected,
+      });
   }
   // full-cast productions show up as several listings (different cast subsets, or just "Full Cast");
-  // keep one row for them: the one with the most detail
+  // keep one row for them: one that can be requested, then the one with the most detail
   const castScore = (x: Edition) =>
+    (pinnable(x) ? 16 : 0) +
     (x.durationSeconds ? 4 : 0) +
     (x.owned ? 8 : 0) +
     (x.narrators?.length || 0) / 100;
@@ -75,7 +89,13 @@ function narrations(list: Edition[]) {
     .sort((a, b) => castScore(b) - castScore(a));
   const rows = [...by.values()]
     .filter((x) => !isCast(x))
-    .concat(cast.slice(0, 1));
+    .concat(
+      cast.slice(0, 1).map((x) => ({
+        ...x,
+        owned: cast.some((c) => c.owned),
+        selected: cast.some((c) => c.selected),
+      }))
+    );
   // unnamed recordings only add noise when named ones exist; "Any English narrator" covers them
   const named = rows.filter((r) => r.narrators?.length || r.owned);
   return (named.length ? named : rows).sort(
@@ -200,9 +220,11 @@ export default function BookDetail() {
     return r.owned ? 'library' : '';
   };
   const chaptarrFor = (r: Edition): ChaptarrEdition | undefined => {
-    const num = r.id.replace(/^hc:/, '');
+    const num = (r.id || '').replace(/^hc:/, '');
     return (
-      cEditions.find((e) => String(e.foreignEditionId) === num) ||
+      (num
+        ? cEditions.find((e) => String(e.foreignEditionId) === num)
+        : undefined) ||
       cEditions.find(
         (e) =>
           narratorKey(
@@ -242,17 +264,20 @@ export default function BookDetail() {
   );
   const ownedRows = rows.filter((r) => stateOf(r) === 'library');
   const ownsAny = ownedRows.length > 0 || local.some((l) => l.hasFiles);
-  // another-narrator copies need a named narrator and ChaptarrNG's edition id
+  // another-narrator copies need a named narrator and ChaptarrNG's edition id; a first request
+  // pins SeerrNG's edition id, so a recording SeerrNG can't pin can't be chosen
   const requestable = rows.filter(
     (r) =>
-      !stateOf(r) && (!anotherMode || (r.narrators?.length && chaptarrFor(r)))
+      !stateOf(r) &&
+      (anotherMode ? r.narrators?.length && chaptarrFor(r) : pinnable(r))
   );
+  // the selection is a row key ('*' = any English narrator, '' = nothing picked yet)
   const chosen =
     pick ??
     (anotherMode
       ? ''
-      : ((requestable.find((r) => r.selected) || requestable[0])?.id ?? '*'));
-  const chosenRow = rows.find((r) => r.id === chosen);
+      : ((requestable.find((r) => r.selected) || requestable[0])?.key ?? '*'));
+  const chosenRow = requestable.find((r) => r.key === chosen);
   const longest = Math.max(0, ...rows.map((r) => r.durationSeconds || 0));
   const series = b.series?.[0];
   const audio = f === 'audiobook';
@@ -288,7 +313,7 @@ export default function BookDetail() {
   };
 
   const requestAnother = async () => {
-    const row = rows.find((r) => r.id === chosen);
+    const row = chosenRow;
     const ce = row && chaptarrFor(row);
     if (!row || !ce) return;
     setBusy(true);
@@ -312,7 +337,7 @@ export default function BookDetail() {
     setBusy(true);
     try {
       // "any narrator" or narrator choice off: still target an English recording
-      const exact = audio && showNarr && chosen !== '*' ? chosen : undefined;
+      const exact = audio && showNarr ? chosenRow?.id || undefined : undefined;
       const fallback =
         audio && !exact
           ? rows.find((r) => r.selected && r.narrators?.length)?.id ||
@@ -513,23 +538,23 @@ export default function BookDetail() {
                     {rows.map((r) => {
                       const st = stateOf(r);
                       const locked = !!st || !requestable.includes(r);
-                      const on = !locked && chosen === r.id;
+                      const on = !locked && chosen === r.key;
                       return (
                         <div
-                          key={r.id}
+                          key={r.key}
                           className={`nrow ${st === 'library' ? 'owned' : ''} ${locked && !st ? 'unavailable' : ''}`}
                           role="radio"
                           aria-checked={on}
                           aria-disabled={locked}
                           tabIndex={locked ? -1 : 0}
-                          onClick={() => !locked && setPick(r.id)}
+                          onClick={() => !locked && setPick(r.key)}
                           onKeyDown={(e) => {
                             if (
                               !locked &&
                               (e.key === ' ' || e.key === 'Enter')
                             ) {
                               e.preventDefault();
-                              setPick(r.id);
+                              setPick(r.key);
                             }
                           }}
                         >

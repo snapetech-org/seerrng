@@ -483,6 +483,7 @@ export interface Edition {
   releaseDate?: string;
   owned?: boolean;
   selected?: boolean;
+  requestable?: boolean; // false: no edition id SeerrNG can pin a request to
 }
 export interface DownloadItem {
   size: number;
