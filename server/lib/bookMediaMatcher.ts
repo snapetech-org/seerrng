@@ -277,21 +277,28 @@ export const findBookMediaForSearchDocs = async (
   docs: OpenLibrarySearchDoc[],
   user?: User
 ): Promise<Map<string, Media>> => {
-  const lookups = docs.flatMap((doc) => {
-    const workId = doc.key ? normalizeOpenLibraryWorkId(doc.key) : undefined;
-    const isbnLookups = getSearchDocIsbns(doc).map((isbn) => ({
+  const workLookups = docs.flatMap((doc) =>
+    doc.key
+      ? [
+          {
+            provider: MediaIdentifierProvider.OPENLIBRARY,
+            value: normalizeOpenLibraryWorkId(doc.key),
+          },
+        ]
+      : []
+  );
+  const isbnLookups = docs.flatMap((doc) =>
+    getSearchDocIsbns(doc).map((isbn) => ({
       provider: MediaIdentifierProvider.ISBN,
       value: isbn,
-    }));
-
-    return [
-      ...(workId
-        ? [{ provider: MediaIdentifierProvider.OPENLIBRARY, value: workId }]
-        : []),
-      ...isbnLookups,
-    ];
-  });
-  const mediaByIdentifier = await findBookMediaByIdentifiers(lookups, user);
+    }))
+  );
+  // Every work's own id first: a popular work's long edition ISBN list must
+  // not crowd the later works out of the lookup budget.
+  const mediaByIdentifier = await findBookMediaByIdentifiers(
+    [...workLookups, ...isbnLookups],
+    user
+  );
   const mediaByWorkId = new Map<string, Media>();
 
   docs.forEach((doc) => {

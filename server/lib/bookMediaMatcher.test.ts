@@ -9,7 +9,10 @@ import MediaIdentifier, {
 } from '@server/entity/MediaIdentifier';
 import { setupTestDb } from '@server/test/db';
 import { makeBookshelfBookId } from '@server/utils/bookshelfCatalog';
-import { findBookMediaForBookResults } from './bookMediaMatcher';
+import {
+  findBookMediaForBookResults,
+  findBookMediaForSearchDocs,
+} from './bookMediaMatcher';
 
 setupTestDb();
 
@@ -206,5 +209,41 @@ describe('owned library matching with duplicate media rows (issue #625)', () => 
       { id, provider: 'bookshelf' },
     ]);
     assert.equal(matches.get(id)?.id, exact.id);
+  });
+});
+
+describe('Open Library search result matching', () => {
+  it('looks up every work id before any ISBN fallback', async () => {
+    const owned = await seedIdentity(
+      MediaIdentifierProvider.OPENLIBRARY,
+      'OL2W'
+    );
+    // a popular work first in the page, with a full ISBN budget of editions
+    const isbns = Array.from({ length: 200 }, (_, index) => {
+      const body = `978${String(index).padStart(9, '0')}`;
+      const sum = [...body].reduce(
+        (total, digit, position) =>
+          total + Number(digit) * (position % 2 ? 3 : 1),
+        0
+      );
+      return `${body}${(10 - (sum % 10)) % 10}`;
+    });
+    const matches = await findBookMediaForSearchDocs([
+      { key: '/works/OL1W', title: 'Popular', isbn: isbns },
+      { key: '/works/OL2W', title: 'Owned' },
+    ]);
+    assert.equal(matches.get('OL2W')?.id, owned.id);
+    assert.equal(matches.has('OL1W'), false);
+  });
+
+  it('matches a work through an owned edition ISBN', async () => {
+    const owned = await seedIdentity(
+      MediaIdentifierProvider.ISBN,
+      '9780306406157'
+    );
+    const matches = await findBookMediaForSearchDocs([
+      { key: '/works/OL3W', title: 'Owned elsewhere', isbn: ['0306406152'] },
+    ]);
+    assert.equal(matches.get('OL3W')?.id, owned.id);
   });
 });
