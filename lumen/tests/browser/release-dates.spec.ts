@@ -82,4 +82,6 @@ test('Coming soon on Discover names the year and links to the full page', async 
   await expect(
     row.locator('.poster', { hasText: 'Later This Year' }).locator('.m')
   ).toHaveText('Dec 31');
+  const seeAll = row.getByRole('link', { name: 'See all' });
+  await expect(seeAll).toHaveAttribute('href', '/soon');
 });
