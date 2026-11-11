@@ -116,6 +116,10 @@ export interface MediaRow {
   tmdbId: number;
   mediaType: string;
   status: number;
+  status4k?: number;
+  title?: string;
+  posterPath?: string;
+  releaseDate?: string;
   mediaAddedAt?: string;
 }
 export interface User {

@@ -25,19 +25,26 @@ import { cachedApi, useApi, useEbookCovers } from '../hooks';
 import { Icon, type IconName } from '../icons';
 import { sessionGeneration } from '../sessionState';
 import { usePrefs } from '../settings';
+import {
+  RECENT_MEDIA_QUERY,
+  RECENT_ROW_CACHE_KEY,
+  enrichRecentMediaTitles,
+  recentMediaTitles,
+} from '../recentMedia';
 
 // Rows that are switched off (or have no service behind them) don't fetch anything, and
 // rows use saved answers (useApi): every call counts against SeerrNG's per-account rate limit.
 
-// Recently added media: SeerrNG lists recently added media by id, so look up each title's details
+// Prefer metadata already on the media list; fetch details only where the
+// viewer's media response has no title, and retain the card if lookup fails.
 // SeerrNG only lists recently added media for admins, request managers and people with
 // "View Recently Added"; everyone else gets a 403, so they don't get the row at all
 const RECENT = 2 | 16 | 67108864; // ADMIN | MANAGE_REQUESTS | RECENT_VIEW
 export const canSeeRecent = (permissions?: number) =>
   ((permissions ?? 0) & RECENT) !== 0;
-type Fresh = (TitleResult & { added?: string })[];
-// the finished row is saved too, so coming back to Discover doesn't look up 14 titles again
-const NEW_ROW = '/lumen/new-on-server';
+type Fresh = ReturnType<typeof recentMediaTitles>;
+// A new key avoids reusing a previously cached, incomplete one-item row.
+const NEW_ROW = RECENT_ROW_CACHE_KEY;
 function useNewOnPlex(enabled: boolean) {
   const [items, setItems] = useState<Fresh | null>(
     () => (enabled && cached<Fresh>(NEW_ROW)) || null
@@ -50,26 +57,11 @@ function useNewOnPlex(enabled: boolean) {
     let live = true;
     const generation = sessionGeneration();
     (async () => {
-      const page = await cachedApi<{ results: MediaRow[] }>(
-        '/media?filter=allavailable&take=30&sort=mediaAdded'
+      const page = await cachedApi<{ results: MediaRow[] }>(RECENT_MEDIA_QUERY);
+      const row = await enrichRecentMediaTitles(
+        recentMediaTitles(page.results),
+        (title) => cachedApi<TitleResult>(`/${title.mediaType}/${title.id}`)
       );
-      const rows = page.results
-        .filter(
-          (m) => (m.mediaType === 'movie' || m.mediaType === 'tv') && m.tmdbId
-        )
-        .slice(0, 14);
-      const details = await Promise.all(
-        rows.map((m) =>
-          cachedApi<TitleResult>(`/${m.mediaType}/${m.tmdbId}`)
-            .then((d) => ({
-              ...d,
-              mediaType: m.mediaType as 'movie' | 'tv',
-              added: m.mediaAddedAt,
-            }))
-            .catch(() => null)
-        )
-      );
-      const row = details.filter(Boolean) as Fresh;
       if (generation === sessionGeneration()) remember(NEW_ROW, row);
       if (live) setItems(row);
     })().catch(() => live && !saved && setItems([]));
