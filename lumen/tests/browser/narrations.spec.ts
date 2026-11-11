@@ -301,3 +301,29 @@ test('a full cast listed without an edition id does not share a selection with a
   await expect.poll(() => sent.length).toBe(1);
   expect(sent[0].body).toMatchObject({ preferredEditionId: '32752239' });
 });
+
+test('"Any English narrator" still names an edition SeerrNG can pin', async ({
+  page,
+}) => {
+  // no recommended copy; the only one with a length is listed without an edition id
+  const editions = [
+    ed('', ['Minnie Goode'], { durationSeconds: 64380 }),
+    ed('33113576', ['Minnie Goode']),
+    ed('33383711', ['Amanda Sayle']),
+  ];
+  const sent = await fixtures(page, editions, null);
+  await page.goto(`/book/${encodeURIComponent(woolId)}?f=audio`);
+  await row(page, 'Any English narrator').click();
+  await expect(row(page, 'Any English narrator')).toHaveAttribute(
+    'aria-checked',
+    'true'
+  );
+  await expect(requestButton(page)).toHaveText(/Request audiobook/);
+  await requestButton(page).click();
+  await expect.poll(() => sent.length).toBe(1);
+  expect(sent[0].body).toMatchObject({
+    format: 'audiobook',
+    preferredEditionId: '33113576',
+    editionPolicy: 'either',
+  });
+});
