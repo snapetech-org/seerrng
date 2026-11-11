@@ -1,5 +1,8 @@
 import ReadarrAPI from '@server/api/servarr/readarr';
-import { withBookLookupBudget } from '@server/lib/bookLookupBudget';
+import {
+  BookLookupTimeoutError,
+  withBookLookupBudget,
+} from '@server/lib/bookLookupBudget';
 import type { ReadarrSettings } from '@server/lib/settings';
 import {
   getBookshelfBookDetails,
@@ -130,7 +133,8 @@ it('lookup budget aborts a 60-second provider response without starting alternat
   try {
     const started = Date.now();
     await assert.rejects(
-      withBookLookupBudget(() => f.api().lookupBook('hc:999'), 300)
+      withBookLookupBudget(() => f.api().lookupBook('hc:999'), 300),
+      (error) => error instanceof BookLookupTimeoutError
     );
     assert.ok(Date.now() - started < 2000);
     assert.equal(
@@ -176,7 +180,8 @@ it('lookup budget cancels Retry-After sleep as well as the HTTP socket', async (
   try {
     const started = Date.now();
     await assert.rejects(
-      withBookLookupBudget(() => f.api().lookupBook('hc:999'), 100)
+      withBookLookupBudget(() => f.api().lookupBook('hc:999'), 100),
+      (error) => error instanceof BookLookupTimeoutError
     );
     assert.ok(Date.now() - started < 1000);
     assert.equal(

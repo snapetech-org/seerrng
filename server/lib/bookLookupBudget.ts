@@ -1,6 +1,14 @@
 import { AsyncLocalStorage } from 'node:async_hooks';
 
 export const BOOK_LOOKUP_BUDGET_MS = 25_000;
+export class BookLookupTimeoutError extends Error {
+  readonly code = 'BOOK_LOOKUP_TIMEOUT';
+
+  constructor() {
+    super('Book metadata lookup timed out. Please retry.');
+    this.name = 'BookLookupTimeoutError';
+  }
+}
 const budget = new AsyncLocalStorage<{
   deadline: number;
   signal: AbortSignal;
@@ -16,10 +24,7 @@ export const withBookLookupBudget = async <T>(
   if (budget.getStore()) return operation();
   const controller = new AbortController();
   const timer = setTimeout(
-    () =>
-      controller.abort(
-        new Error('Book metadata lookup timed out. Please retry.')
-      ),
+    () => controller.abort(new BookLookupTimeoutError()),
     timeoutMs
   );
   timer.unref();
@@ -32,6 +37,10 @@ export const withBookLookupBudget = async <T>(
         return result;
       }
     );
+  } catch (error) {
+    // Axios cancellation must not erase the internal deadline's retryable cause.
+    controller.signal.throwIfAborted();
+    throw error;
   } finally {
     clearTimeout(timer);
   }

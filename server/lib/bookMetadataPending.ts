@@ -3,7 +3,7 @@ const record = (value: unknown): Record<string, unknown> | undefined =>
     ? (value as Record<string, unknown>)
     : undefined;
 
-/** Only the backend's explicit pending contract qualifies, never a generic 503. */
+/** Explicit preparation or outage contracts defer metadata, never a generic 503. */
 export const getBookMetadataPendingRetryMs = (
   error: unknown
 ): number | undefined => {
@@ -14,7 +14,11 @@ export const getBookMetadataPendingRetryMs = (
     const value = record(current);
     const response = record(value?.response);
     const data = record(response?.data);
-    if (response?.status === 503 && data?.code === 'metadata_pending') {
+    if (
+      response?.status === 503 &&
+      (data?.code === 'metadata_pending' ||
+        data?.code === 'metadata_unavailable')
+    ) {
       const seconds = data.retryAfterSeconds;
       return typeof seconds === 'number' && Number.isFinite(seconds)
         ? Math.min(900, Math.max(60, seconds)) * 1000

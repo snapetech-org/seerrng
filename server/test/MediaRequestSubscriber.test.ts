@@ -52,6 +52,7 @@ import { RequestDispatchOutbox } from '@server/entity/RequestDispatchOutbox';
 import Season from '@server/entity/Season';
 import SeasonRequest from '@server/entity/SeasonRequest';
 import { User } from '@server/entity/User';
+import { BookLookupTimeoutError } from '@server/lib/bookLookupBudget';
 import { getExternalRuntimeConfig } from '@server/lib/externalRuntimeConfig';
 import { runMediaEntityMutation } from '@server/lib/mediaMutation';
 import notificationManager, { Notification } from '@server/lib/notifications';
@@ -350,7 +351,103 @@ describe('MediaRequestSubscriber service dispatch', () => {
     assert.equal(startedBookSearches, 0);
   });
 
-  it('honors pending metadata from the first book lookup without immediate retries or adds', async () => {
+  for (const code of ['metadata_pending', 'metadata_unavailable']) {
+    it(`honors ${code} from the first book lookup without immediate retries or adds`, async () => {
+      getSettings().readarr = [
+        {
+          id: 20,
+          name: 'Bookshelf',
+          hostname: 'bookshelf.local',
+          port: 8787,
+          apiKey: 'test-key',
+          useSsl: false,
+          activeProfileId: 11,
+          activeProfileName: 'Books',
+          activeMetadataProfileId: 12,
+          activeMetadataProfileName: 'Standard',
+          activeDirectory: '/books',
+          tags: [],
+          is4k: false,
+          isDefault: true,
+          syncEnabled: true,
+          preventSearch: false,
+          tagRequests: false,
+          overrideRule: [],
+          serviceType: 'ebook',
+        },
+      ];
+      const media = await getRepository(Media).save(
+        new Media({
+          mediaType: MediaType.BOOK,
+          tmdbId: 0,
+          status: MediaStatus.PENDING,
+          status4k: MediaStatus.UNKNOWN,
+          identifiers: [
+            new MediaIdentifier({
+              provider: MediaIdentifierProvider.OPENLIBRARY,
+              value: 'OL45804W',
+              canonical: true,
+            }),
+            new MediaIdentifier({
+              provider: MediaIdentifierProvider.ISBN,
+              value: '9780441478125',
+            }),
+          ],
+        })
+      );
+      const request = await createApprovedRequest(media, await getRequester());
+      request.serverId = 20;
+      await getRepository(MediaRequest).save(request);
+      mock.method(OpenLibraryAPI.prototype, 'getWork', async () => ({
+        key: '/works/OL45804W',
+        title: 'The Left Hand of Darkness',
+      }));
+      const pending = new Error('Lookup is awaiting metadata', {
+        cause: {
+          response: {
+            status: 503,
+            data: { code, retryAfterSeconds: 90 },
+          },
+        },
+      });
+      const lookup = mock.method(
+        ReadarrAPI.prototype,
+        'lookupBook',
+        async () => {
+          throw pending;
+        }
+      );
+      const add = mock.method(
+        ReadarrAPI.prototype,
+        'addBook',
+        async (payload: ReadarrBookOptions) => ({ ...payload, id: 999 })
+      );
+      const notifications = mock.method(
+        notificationManager,
+        'sendNotification',
+        () => undefined
+      );
+      assert.deepEqual(
+        await new MediaRequestSubscriber().dispatchRequestById(request.id),
+        {
+          delivered: false,
+          metadataPending: true,
+          retryAfterMs: 90_000,
+        }
+      );
+      assert.equal(lookup.mock.callCount(), 1);
+      assert.equal(add.mock.callCount(), 0);
+      assert.equal(
+        (await getRepository(MediaRequest).findOneByOrFail({ id: request.id }))
+          .status,
+        MediaRequestStatus.APPROVED
+      );
+      assert.equal(notifications.mock.callCount(), 0);
+      assert.equal(startedBookSearches, 0);
+    });
+  }
+
+  it('keeps an expired lookup budget approved and defers without immediate retries or adds', async () => {
     getSettings().readarr = [
       {
         id: 20,
@@ -400,13 +497,8 @@ describe('MediaRequestSubscriber service dispatch', () => {
       key: '/works/OL45804W',
       title: 'The Left Hand of Darkness',
     }));
-    const pending = new Error('Lookup is awaiting metadata', {
-      cause: {
-        response: {
-          status: 503,
-          data: { code: 'metadata_pending', retryAfterSeconds: 90 },
-        },
-      },
+    const pending = new Error('Lookup failed', {
+      cause: new BookLookupTimeoutError(),
     });
     const lookup = mock.method(ReadarrAPI.prototype, 'lookupBook', async () => {
       throw pending;
@@ -425,8 +517,7 @@ describe('MediaRequestSubscriber service dispatch', () => {
       await new MediaRequestSubscriber().dispatchRequestById(request.id),
       {
         delivered: false,
-        metadataPending: true,
-        retryAfterMs: 90_000,
+        retryAfterMs: 60_000,
       }
     );
     assert.equal(lookup.mock.callCount(), 1);
@@ -465,12 +556,29 @@ describe('MediaRequestSubscriber service dispatch', () => {
     );
   });
 
-  for (const { initialStatus, explicitPending } of [
-    { initialStatus: MediaRequestStatus.APPROVED, explicitPending: true },
-    { initialStatus: MediaRequestStatus.FAILED, explicitPending: true },
-    { initialStatus: MediaRequestStatus.APPROVED, explicitPending: false },
+  for (const { initialStatus, explicitPending, metadataCode } of [
+    {
+      initialStatus: MediaRequestStatus.APPROVED,
+      explicitPending: true,
+      metadataCode: 'metadata_pending',
+    },
+    {
+      initialStatus: MediaRequestStatus.FAILED,
+      explicitPending: true,
+      metadataCode: 'metadata_pending',
+    },
+    {
+      initialStatus: MediaRequestStatus.APPROVED,
+      explicitPending: false,
+      metadataCode: 'unavailable',
+    },
+    {
+      initialStatus: MediaRequestStatus.FAILED,
+      explicitPending: true,
+      metadataCode: 'metadata_unavailable',
+    },
   ]) {
-    it(`keeps book status ${initialStatus} queued for ${explicitPending ? 'pending metadata' : 'an unavailable service without Retry-After'}`, async () => {
+    it(`keeps book status ${initialStatus} queued for ${explicitPending ? metadataCode : 'an unavailable service without Retry-After'}`, async () => {
       getSettings().readarr = [
         {
           id: 20,
@@ -557,7 +665,7 @@ describe('MediaRequestSubscriber service dispatch', () => {
             response: {
               status: 503,
               data: {
-                code: explicitPending ? 'metadata_pending' : 'unavailable',
+                code: metadataCode,
                 retryAfterSeconds: 90,
               },
             },

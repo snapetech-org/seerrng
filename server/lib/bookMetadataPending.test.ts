@@ -18,6 +18,27 @@ describe('book metadata pending contract', () => {
     assert.equal(getBookMetadataPendingRetryMs(wrapped), 120_000);
   });
 
+  it('defers an explicit metadata outage using the same bounded durable policy', () => {
+    assert.equal(
+      getBookMetadataPendingRetryMs({
+        response: {
+          status: 503,
+          data: { code: 'metadata_unavailable', retryAfterSeconds: 120 },
+        },
+      }),
+      120_000
+    );
+    assert.equal(
+      getBookMetadataPendingRetryMs({
+        response: {
+          status: 404,
+          data: { code: 'metadata_unavailable', retryAfterSeconds: 120 },
+        },
+      }),
+      undefined
+    );
+  });
+
   for (const [seconds, expected] of [
     [-100, 60_000],
     [0, 60_000],

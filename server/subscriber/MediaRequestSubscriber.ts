@@ -60,6 +60,7 @@ import {
   allowedBookLanguages,
   bookLanguageAllowed,
 } from '@server/lib/bookLanguagePolicy';
+import { BookLookupTimeoutError } from '@server/lib/bookLookupBudget';
 import { getBookMetadataPendingRetryMs } from '@server/lib/bookMetadataPending';
 import {
   getComicRequestTarget,
@@ -365,6 +366,7 @@ function* dispatchErrorCauses(error: unknown): Generator<unknown> {
 
 const isTransientExternalError = (error: unknown): boolean => {
   for (const current of dispatchErrorCauses(error)) {
+    if (current instanceof BookLookupTimeoutError) return true;
     const message =
       current instanceof Error ? current.message : String(current);
 
@@ -461,6 +463,9 @@ const lookupReadarrWithRetry = async <T>(
     } catch (error) {
       if (
         getBookMetadataPendingRetryMs(error) !== undefined ||
+        [...dispatchErrorCauses(error)].some(
+          (cause) => cause instanceof BookLookupTimeoutError
+        ) ||
         !isTransientExternalError(error) ||
         attempt >= READARR_LOOKUP_RETRY_DELAYS_MS.length
       ) {

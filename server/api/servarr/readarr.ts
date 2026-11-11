@@ -1,4 +1,5 @@
 import {
+  BookLookupTimeoutError,
   getBookLookupBudget,
   withBookLookupBudget,
 } from '@server/lib/bookLookupBudget';
@@ -655,8 +656,7 @@ class ReadarrAPI extends ServarrBase<ReadarrQueueItem> {
       return super.request<T>(method, endpoint, data, config);
     current.signal.throwIfAborted();
     const remaining = current.deadline - Date.now();
-    if (remaining <= 0)
-      throw new Error('Book metadata lookup timed out. Please retry.');
+    if (remaining <= 0) throw new BookLookupTimeoutError();
     return super.request<T>(method, endpoint, data, {
       ...config,
       timeout: Math.min(config?.timeout || remaining, remaining),
