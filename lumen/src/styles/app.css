@@ -1384,6 +1384,14 @@ body.is-detail .tabbar {
   font-size: 13px;
   color: var(--ink-2);
 }
+/* a long status ("Different edition in library") wraps instead of leaving the row */
+.rq .st .pill {
+  max-width: 100%;
+  height: auto;
+  min-height: 24px;
+  padding-block: 3px;
+  white-space: normal;
+}
 .rq .rqa {
   position: relative;
   z-index: 2;
