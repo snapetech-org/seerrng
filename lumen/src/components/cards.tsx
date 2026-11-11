@@ -183,8 +183,15 @@ const MON = [
   'Nov',
   'Dec',
 ];
-export const shortDate = (d?: string) =>
-  d ? `${MON[+d.slice(5, 7) - 1]} ${+d.slice(8, 10)}` : '';
+// "Mar 11", or "Mar 11, 2027" when the date is in another year than this one (`year: false` for
+// callers that print the year themselves)
+export const shortDate = (d?: string, year = true) =>
+  d
+    ? `${MON[+d.slice(5, 7) - 1]} ${+d.slice(8, 10)}` +
+      (year && +d.slice(0, 4) !== new Date().getFullYear()
+        ? `, ${+d.slice(0, 4)}`
+        : '')
+    : '';
 
 // local request state so a card flips to "Requested" straight away
 function useRequested(initial: Stat) {
