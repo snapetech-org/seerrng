@@ -1,4 +1,5 @@
 import { Permission } from '@server/lib/permissions';
+import logger from '@server/logger';
 import { isAuthenticated } from '@server/middleware/auth';
 import {
   authorizedMutation,
@@ -10,6 +11,24 @@ import { randomUUID } from 'node:crypto';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import sharp from 'sharp';
+
+const lumenStorageError = (error: unknown): string | undefined => {
+  switch ((error as NodeJS.ErrnoException)?.code) {
+    case 'EACCES':
+    case 'EPERM':
+    case 'EROFS':
+      return 'Lumen cannot write shared settings. Check the SeerrNG configuration volume permissions.';
+    case 'ENOSPC':
+    case 'EDQUOT':
+      return 'Not enough space to save Lumen settings. Check the SeerrNG configuration volume.';
+    case 'ENOTDIR':
+    case 'EISDIR':
+    case 'EEXIST':
+      return 'Lumen settings storage is not a usable directory or file. Check the SeerrNG configuration volume.';
+    default:
+      return undefined;
+  }
+};
 
 export const createLumenRoutes = (
   storageDirectory = path.join(appDataPath(), 'lumen')
@@ -31,8 +50,25 @@ export const createLumenRoutes = (
       return next(error);
     }
   });
-  router.get('/config', isAuthenticated(Permission.ADMIN), (_req, res) =>
-    res.json({ canSave: true, folder: 'ok' })
+  router.get(
+    '/config',
+    isAuthenticated(Permission.ADMIN),
+    async (_req, res, next) => {
+      const probe = path.join(directory(), `${randomUUID()}.probe`);
+      try {
+        // Verify the actual write path; access(W_OK) can give false positives.
+        await fs.mkdir(directory(), { recursive: true, mode: 0o700 });
+        await fs.writeFile(probe, '', { mode: 0o600, flag: 'wx' });
+        await fs.unlink(probe);
+        return res.json({ canSave: true, folder: 'ok' });
+      } catch (error) {
+        await fs.unlink(probe).catch(() => undefined);
+        const message = lumenStorageError(error);
+        if (message)
+          return res.json({ canSave: false, folder: 'readonly', message });
+        return next(error);
+      }
+    }
   );
   router.put(
     '/config',
@@ -55,6 +91,14 @@ export const createLumenRoutes = (
         return res.json({ saved: true });
       } catch (error) {
         await fs.unlink(temporary).catch(() => undefined);
+        const message = lumenStorageError(error);
+        if (message) {
+          logger.warn('Unable to save Lumen shared settings', {
+            label: 'Lumen',
+            errorCode: (error as NodeJS.ErrnoException).code,
+          });
+          return res.status(503).json({ message });
+        }
         return next(error);
       }
     })
@@ -77,23 +121,42 @@ export const createLumenRoutes = (
         (bytes[0] === 255 && bytes[1] === 216 && bytes[2] === 255) ||
         (bytes.toString('ascii', 0, 4) === 'RIFF' &&
           bytes.toString('ascii', 8, 12) === 'WEBP');
-      if (!raster) return res.sendStatus(415);
+      if (!raster) {
+        return res.status(415).json({
+          message: 'Upload a PNG, JPEG, or WebP image.',
+        });
+      }
+      let image: Buffer;
       try {
         // Decode and re-encode: uploaded SVG/scripts and metadata are never served.
-        const image = await sharp(req.body, { limitInputPixels: 16_000_000 })
+        image = await sharp(req.body, { limitInputPixels: 16_000_000 })
           .resize(1024, 1024, { fit: 'inside', withoutEnlargement: true })
           .png()
           .toBuffer();
-        const name = `${kind}-${randomUUID()}.png`;
-        const branding = path.join(directory(), 'branding');
+      } catch {
+        return res.status(415).json({
+          message: 'The image could not be decoded as PNG, JPEG, or WebP.',
+        });
+      }
+
+      const name = `${kind}-${randomUUID()}.png`;
+      const branding = path.join(directory(), 'branding');
+      try {
         await fs.mkdir(branding, { recursive: true, mode: 0o700 });
         await fs.writeFile(path.join(branding, name), image, {
           mode: 0o600,
           flag: 'wx',
         });
         return res.json({ url: `/api/v1/lumen/branding/${name}` });
-      } catch {
-        return res.sendStatus(415);
+      } catch (error) {
+        const message =
+          lumenStorageError(error) ??
+          'Could not store the image. Check SeerrNG application storage.';
+        logger.warn('Unable to store Lumen branding image', {
+          label: 'Lumen',
+          errorCode: (error as NodeJS.ErrnoException).code ?? 'unknown',
+        });
+        return res.status(lumenStorageError(error) ? 503 : 500).json({ message });
       }
     }
   );
