@@ -123,6 +123,19 @@ function sameCopy(k: string, narrator?: string) {
 // Hardcover tags that name a format, not a subject ("Audiobook" on the ebook page)
 const FORMAT_TAG = /^(audio ?books?|e-?books?|kindle|audible)$/i;
 
+// bookshelf:N:<base64 of a bare number> -> the same book under bookshelf:N:<base64 of "hc:number">
+function hcFormId(id: string): string | null {
+  const m = /^(bookshelf:\d+:)([A-Za-z0-9_-]+)$/.exec(id);
+  if (!m) return null;
+  try {
+    const raw = atob(m[2].replace(/-/g, '+').replace(/_/g, '/'));
+    if (!/^[1-9]\d*$/.test(raw)) return null;
+    return `${m[1]}${btoa(`hc:${raw}`).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '')}`;
+  } catch {
+    return null;
+  }
+}
+
 export default function BookDetail() {
   const { id = '' } = useParams();
   const [p] = useSearchParams();
@@ -134,7 +147,20 @@ export default function BookDetail() {
   const plainId = bookIdFor(decodeURIComponent(id), f);
   const first = useApi<BookDetails>(`/book/${encodeURIComponent(plainId)}`);
   const bookId = plainId;
-  const b = first.data;
+  // Books stored under a bare Hardcover id can come back without a description while the
+  // "hc:" form of the same work has one: ask for that form once, and only to fill the blurb.
+  const altId =
+    first.data && !first.data.description ? hcFormId(plainId) : null;
+  const alt = useApi<BookDetails>(
+    altId ? `/book/${encodeURIComponent(altId)}` : null
+  );
+  const b = useMemo(
+    () =>
+      first.data && !first.data.description && altId && alt.data?.description
+        ? { ...first.data, description: alt.data.description }
+        : first.data,
+    [first.data, alt.data, altId]
+  );
   const error = first.error;
   const reload = first.reload;
   const work = hardcoverWorkId(bookId);
