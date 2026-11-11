@@ -481,7 +481,8 @@ body.is-detail .tabbar {
 }
 @media (hover: hover) and (pointer: fine) {
   .poster:hover .qa,
-  .poster:focus-within .qa {
+  .poster:focus-within .qa,
+  .poster.hold .qa {
     display: flex;
   }
   .poster:hover .art .glyph {

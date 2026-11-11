@@ -18,13 +18,13 @@ import {
   type TitleResult,
 } from '../api';
 import { useMediaServerName } from '../auth';
+import { friendlyError } from '../errors';
 import { dropBookStates, useBookStates } from '../hooks';
 import { Icon, type IconName } from '../icons';
+import { scrollBehavior } from '../motion';
 import { usePrefs } from '../settings';
 import { useQuickRequest } from './requestSheet';
 import { useToast } from './toast';
-import { friendlyError } from '../errors';
-import { scrollBehavior } from '../motion';
 
 // A stable theme-owned tone per title keeps drawn covers consistent between visits.
 function toneOf(text: string) {
@@ -235,6 +235,18 @@ export function TitleCard({ it, meta }: { it: TitleResult; meta?: string }) {
     );
   });
   const [request, busy] = useBusy(quick.request);
+  // The Request button sits in an overlay that only shows on hover or focus. While the sheet is
+  // open the poster has neither, so keep the overlay up until focus is back on the button.
+  const goRef = useRef<HTMLButtonElement>(null);
+  const sheetOpen = quick.sheet !== null;
+  const [hold, setHold] = useState(false);
+  useEffect(() => {
+    if (sheetOpen) setHold(true);
+    else if (hold) {
+      goRef.current?.focus({ preventScroll: true });
+      setHold(false);
+    }
+  }, [sheetOpen, hold]);
   let qb: ReactNode;
   const plex = plexUrl(it.mediaInfo);
   if (s?.k === 'ok')
@@ -269,7 +281,12 @@ export function TitleCard({ it, meta }: { it: TitleResult; meta?: string }) {
   else
     qb = (
       <>
-        <button className="qbtn go" disabled={busy} onClick={request}>
+        <button
+          ref={goRef}
+          className="qbtn go"
+          disabled={busy}
+          onClick={request}
+        >
           <Icon name="plus" size="sm" />
           {unreleased ? 'Request early' : 'Request'}
         </button>
@@ -286,7 +303,7 @@ export function TitleCard({ it, meta }: { it: TitleResult; meta?: string }) {
       </>
     );
   return (
-    <div className="poster">
+    <div className={hold ? 'poster hold' : 'poster'}>
       <div className="art">
         <Cover
           src={it.posterPath ? tmdbImg(it.posterPath) : null}
