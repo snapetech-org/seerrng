@@ -1749,6 +1749,21 @@ body.is-detail .toast {
   display: grid;
   gap: 6px;
 }
+/* short landscape screens: a pinned Request/Cancel footer would cover the options and push Cancel
+   off the screen, so the whole sheet scrolls as one piece and the two buttons share a row */
+@media (max-height: 480px) {
+  .sheet .pk {
+    gap: 10px;
+  }
+  .sheet .pk-foot {
+    position: static;
+    padding-top: 0;
+    background: none;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(0, 1fr);
+    gap: 8px;
+  }
+}
 .sheet .pk .close {
   background: var(--surface-2);
   color: var(--ink);
