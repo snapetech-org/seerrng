@@ -2108,8 +2108,10 @@ a.brand {
 }
 
 /* Phones turned sideways: a floating bottom bar would eat a quarter of a 360px-tall screen and sit
-   over the content, so the tabs become a slim rail down the left edge and the page makes room for it */
-@media (max-width: 1039px) and (max-height: 500px) and (orientation: landscape) {
+   over the content, so the tabs become a slim rail down the left edge and the page makes room for it.
+   Only when the screen is wide enough to spare the rail: a short, narrow screen (360x288) is
+   landscape by shape but keeps the bottom bar, or the content would be left under 300px wide */
+@media (min-width: 560px) and (max-width: 1039px) and (max-height: 500px) and (orientation: landscape) {
   :root {
     --rail: calc(76px + env(safe-area-inset-left));
   }
