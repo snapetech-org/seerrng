@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 import {
-  bookMediaForFormat,
   englishAudioEdition,
   hardcoverWorkId,
   mediaLink,
@@ -19,7 +18,12 @@ import {
 } from '../api';
 import { useMediaServerName } from '../auth';
 import { friendlyError } from '../errors';
-import { dropBookStates, useBookStates } from '../hooks';
+import {
+  bookMediaWithLibrary,
+  dropBookStates,
+  useBookStates,
+  useOwnedBooks,
+} from '../hooks';
 import { Icon, type IconName } from '../icons';
 import { scrollBehavior } from '../motion';
 import { usePrefs } from '../settings';
@@ -349,12 +353,11 @@ export function BookCard({ b }: { b: BookResult }) {
   const { prefs } = usePrefs();
   const toast = useToast();
   const states = useBookStates();
-  const known = states?.get(b.id)?.[audio ? 'audiobook' : 'ebook'];
+  const format = audio ? 'audiobook' : 'ebook';
+  const library = useOwnedBooks(format);
+  const known = states?.get(b.id)?.[format];
   const [s0, markRequested] = useRequested(
-    statusOf(
-      bookMediaForFormat(b.mediaInfo, audio ? 'audiobook' : 'ebook'),
-      true
-    )
+    statusOf(bookMediaWithLibrary(b, format, library), true)
   );
   const s =
     s0 ||

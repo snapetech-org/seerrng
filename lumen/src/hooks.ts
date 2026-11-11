@@ -1,10 +1,21 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { api, ApiError, hardcoverWorkId, hcCovers } from './api';
+import {
+  api,
+  ApiError,
+  bookMediaForFormat,
+  hardcoverWorkId,
+  hcCovers,
+  MediaStatus,
+  type BookResult,
+  type MediaInfo,
+  type Paged,
+} from './api';
 import {
   cached,
   cacheGeneration,
   forget,
+  FRESH_MS,
   isFresh,
   onMarkStale,
   RECHECK_MS,
@@ -302,6 +313,129 @@ export function useBookStates() {
     };
   }, []);
   return m;
+}
+
+// ---- books already in the library ----
+// The catalogue feeds don't say which books are owned (SeerrNG before the fix sends no
+// mediaInfo on them), so book cards also check the owned list: the same /book/library answer
+// the "In library" filter shows, from the shared answer cache. SeerrNG lists only books with
+// that format's files, and bookMediaForFormat checks the file evidence again.
+type BookFormat = 'ebook' | 'audiobook';
+export type OwnedBooks = {
+  byId: Map<string, MediaInfo>;
+  byWork: Map<string, MediaInfo>;
+  // null: two different owned books share the title and author, so neither is matched
+  byTitle: Map<string, MediaInfo | null>;
+};
+// SeerrNG pages the owned list 50 at a time; past this the rest is left to the server
+const MAX_LIBRARY_PAGES = 20;
+const owned = new Map<BookFormat, { at: number; p: Promise<OwnedBooks> }>();
+// Open Library and the manager spell titles differently; compare letters and digits only,
+// without the subtitle, a parenthesised edition note or a trailing "Book 4"
+const titleKey = (title?: string, author?: string) => {
+  const norm = (x: string) =>
+    x
+      .normalize('NFKD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .toLowerCase()
+      .replace(/&/g, ' and ');
+  if (!title || !author) return '';
+  const t = norm(title)
+    .split(':')[0]
+    .replace(/\([^)]*\)|\[[^\]]*\]/g, ' ')
+    .replace(/,?\s*(?:book|volume|vol\.?)\s*\d+\s*$/, '')
+    .replace(/[^a-z0-9]+/g, ' ')
+    .trim();
+  const a = norm(author).replace(/[^a-z0-9]+/g, '');
+  return t && a ? `${t}|${a}` : '';
+};
+const isOpenLibraryWork = (id: string) => /^OL[1-9]\d*W$/.test(id);
+// The Hardcover work number of a Bookshelf id, for matching owned rows only: rows from
+// older installs carry the bare number, newer ones "hc:<n>", so accept both spellings
+const ownedWorkKey = (id: string): string | null => {
+  if (!id.startsWith('bookshelf:')) return null;
+  try {
+    const raw = atob(
+      (id.split(':')[2] ?? '').replace(/-/g, '+').replace(/_/g, '/')
+    );
+    return /^(?:hc:)?(\d+)$/.exec(raw)?.[1] ?? null;
+  } catch {
+    return null;
+  }
+};
+async function fetchOwnedBooks(format: BookFormat): Promise<OwnedBooks> {
+  const rows: BookResult[] = [];
+  for (let page = 1; page <= MAX_LIBRARY_PAGES; page++) {
+    const d = await cachedApi<Partial<Paged<BookResult>>>(
+      `/book/library?format=${format}&page=${page}`
+    );
+    rows.push(...(Array.isArray(d?.results) ? d.results : []));
+    if (!d || page >= (d.totalPages || 1)) break;
+  }
+  const out: OwnedBooks = {
+    byId: new Map(),
+    byWork: new Map(),
+    byTitle: new Map(),
+  };
+  for (const b of rows) {
+    const mi = bookMediaForFormat(b.mediaInfo, format);
+    if (!b?.id || !mi || mi.status !== MediaStatus.AVAILABLE) continue;
+    out.byId.set(b.id, mi);
+    const work = ownedWorkKey(b.id);
+    if (work) out.byWork.set(work, mi);
+    const key = titleKey(b.title, b.author);
+    if (!key) continue;
+    const seen = out.byTitle.get(key);
+    out.byTitle.set(key, seen === undefined || seen === mi ? mi : null);
+  }
+  return out;
+}
+export function loadOwnedBooks(format: BookFormat): Promise<OwnedBooks> {
+  const cur = owned.get(format);
+  if (cur && Date.now() - cur.at < FRESH_MS) return cur.p;
+  const p = fetchOwnedBooks(format).catch(() => {
+    // no access to the category, or the library is down: nothing is marked, and the next
+    // look asks again
+    if (owned.get(format)?.p === p) owned.delete(format);
+    return { byId: new Map(), byWork: new Map(), byTitle: new Map() };
+  });
+  owned.set(format, { at: Date.now(), p });
+  return p;
+}
+// a request, an import or another account: ask again next time
+onMarkStale(() => owned.clear());
+onSessionReset(() => owned.clear());
+// null while the owned list loads
+export function useOwnedBooks(format: BookFormat | null) {
+  const [m, setM] = useState<OwnedBooks | null>(null);
+  useEffect(() => {
+    if (!format) return;
+    let live = true;
+    loadOwnedBooks(format).then((x) => live && setM(x));
+    return () => {
+      live = false;
+    };
+  }, [format]);
+  return m;
+}
+// The book's state in one format: SeerrNG's own answer when it says the book is there,
+// else the matching owned-list row (same book id, same Hardcover work, or for an Open
+// Library work an unambiguous title and author)
+export function bookMediaWithLibrary(
+  b: Pick<BookResult, 'id' | 'title' | 'author' | 'mediaInfo'>,
+  format: BookFormat,
+  lib: OwnedBooks | null
+): MediaInfo | undefined {
+  const mi = bookMediaForFormat(b.mediaInfo, format);
+  if (mi?.status === MediaStatus.AVAILABLE || !lib) return mi;
+  const work = ownedWorkKey(b.id);
+  const match =
+    lib.byId.get(b.id) ??
+    (work ? lib.byWork.get(work) : undefined) ??
+    (isOpenLibraryWork(b.id)
+      ? lib.byTitle.get(titleKey(b.title, b.author)) || undefined
+      : undefined);
+  return match ?? mi;
 }
 
 // ebook covers: Hardcover's book cover when the companion has one, else what SeerrNG gave

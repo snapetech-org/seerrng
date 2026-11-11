@@ -1,8 +1,13 @@
 import { Link, useSearchParams } from 'react-router-dom';
-import { bookMediaForFormat, MediaStatus, type BookResult } from '../api';
+import { MediaStatus, type BookResult } from '../api';
 import { BookCard, GridSkeleton, MoreOnScroll } from '../components/cards';
 import { Avatar } from '../components/Shell';
-import { useEbookCovers, usePaged } from '../hooks';
+import {
+  bookMediaWithLibrary,
+  useEbookCovers,
+  useOwnedBooks,
+  usePaged,
+} from '../hooks';
 import { Icon } from '../icons';
 import { usePrefs } from '../settings';
 
@@ -18,13 +23,18 @@ export default function Books({ format }: { format: 'ebook' | 'audiobook' }) {
       : `/discover/books?format=${format}`
   );
   const audio = format === 'audiobook';
+  // the popular feed doesn't say which books are owned: "Not yet" checks the owned list
+  const library = useOwnedBooks(format);
+  const waiting = show === 'not' && !library;
   const have = (b: BookResult) =>
-    bookMediaForFormat(b.mediaInfo, format)?.status === MediaStatus.AVAILABLE;
-  const raw = list.items
-    .map((b) => ({ ...b, bookFormat: format }))
-    .filter((b) =>
-      show === 'have' ? have(b) : show === 'not' ? !have(b) : true
-    );
+    bookMediaWithLibrary(b, format, library)?.status === MediaStatus.AVAILABLE;
+  const raw = waiting
+    ? []
+    : list.items
+        .map((b) => ({ ...b, bookFormat: format }))
+        .filter((b) =>
+          show === 'have' ? have(b) : show === 'not' ? !have(b) : true
+        );
   const withCovers = useEbookCovers(raw);
   const items = audio ? raw : withCovers;
   const upd = (v: string) => {
@@ -94,6 +104,7 @@ export default function Books({ format }: { format: 'ebook' | 'audiobook' }) {
           </div>
         )}
         {!list.loading &&
+          !waiting &&
           !list.error &&
           list.page > 0 &&
           items.length === 0 && (
@@ -103,7 +114,7 @@ export default function Books({ format }: { format: 'ebook' | 'audiobook' }) {
                 : 'No books match this view.'}
             </div>
           )}
-        {list.loading && !items.length && list.page === 0 && (
+        {(waiting || (list.loading && list.page === 0)) && !items.length && (
           <div style={{ marginTop: 16 }}>
             <GridSkeleton sq={audio} className={`grid ${audio ? 'sqg' : ''}`} />
           </div>
