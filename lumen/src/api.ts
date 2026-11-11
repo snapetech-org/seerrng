@@ -509,6 +509,7 @@ export interface RequestItem {
   is4k: boolean;
   createdAt: string;
   bookFormat?: string;
+  preferredEditionId?: string | null;
   seasons: { seasonNumber: number }[];
   requestedBy: { id: number; displayName: string };
   media: MediaInfo & {

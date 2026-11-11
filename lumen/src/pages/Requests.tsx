@@ -211,6 +211,29 @@ function seasonList(ns: number[]) {
   return `${ns.length === 1 ? 'Season' : 'Seasons'} ${runs.join(', ')}`;
 }
 
+// an edition id that names a specific edition rather than just "this book" (Open Library work ids
+// and plain edition ids from the book service are not pins)
+const OL_EDITION = /^(?:\/?books\/)?OL\d+M$/i;
+function otherEditionInLibrary(r: RequestItem): boolean {
+  if (r.type !== 'book' || r.status !== 5) return false;
+  if (r.media.status !== 4 && r.media.status !== 5) return false;
+  const pin = r.preferredEditionId;
+  if (!pin || OL_EDITION.test(pin)) return false;
+  const m = r.media;
+  const ebook = !!m.availableEbookServiceIds?.length;
+  const audiobook =
+    !!m.availableAudiobookServiceIds?.length ||
+    !!m.audiobookLibraryItemId ||
+    m.hasPlexAudiobookFile === true ||
+    !!m.ratingKey;
+  const format = r.bookFormat ?? 'ebook';
+  return format === 'both'
+    ? ebook && audiobook
+    : format === 'audiobook'
+      ? audiobook
+      : ebook;
+}
+
 function state(
   x: Row,
   serverName = 'Plex'
@@ -274,6 +297,17 @@ function state(
       case 'importing':
         return { ...base, k: 'wait', word: 'Importing', ico: 'clock' };
       case 'library':
+        // a completed request pinned to one edition, while another edition of the book is what's
+        // in the library: the server keeps saying "library" for it, which would never settle
+        if (otherEditionInLibrary(r))
+          return {
+            k: 'ok',
+            word: 'Different edition in library',
+            ico: 'check',
+            active: false,
+            detail:
+              'This book is in your library in another edition than the one requested.',
+          };
         return { ...base, k: 'wait', word: 'Checking library', ico: 'clock' };
       case 'failed':
         return { ...base, k: 'bad', word: 'Couldn’t get it', ico: 'x' };
