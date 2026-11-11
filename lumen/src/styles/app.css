@@ -226,6 +226,14 @@ body.is-detail .tabbar {
 .seg.wide {
   display: flex;
 }
+/* four tabs (Active, Ready, All, Everyone) plus counts must fit a 360px phone without scrolling */
+@media (max-width: 400px) {
+  .seg button,
+  .seg a {
+    padding: 0 9px;
+    gap: 4px;
+  }
+}
 
 /* ---------- Toolbar (sort + filters) ---------- */
 .toolbar {
