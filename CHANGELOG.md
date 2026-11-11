@@ -9,6 +9,25 @@ v3.72.7 section consolidates changes from the requested v3.71.4 baseline
 through v3.72.7, including changes also represented by unpublished interim
 tags. The comparison link is the complete commit range.
 
+## [3.72.31](https://github.com/snapetech-org/seerrng/compare/v3.72.30..v3.72.31) - 2026-11-11
+
+### User-facing changes
+
+#### Fixed
+
+- **Lumen:** Lumen's New on Plex row now includes recently added movies and series even when other media types share the library, and no longer drops titles when a detail lookup fails.
+
+### 🐛 Bug Fixes
+- *(lumen)* Preserve recently added movies and series (#644) - ([ed24de3](https://github.com/snapetech-org/seerrng/commit/ed24de38b53b8b9df1736b1ea5ef2f0f7fe16111))
+- *(release)* Support macOS Bash in archive packaging - ([6b6b0e5](https://github.com/snapetech-org/seerrng/commit/6b6b0e575aebdc7b907bd84c10aae2f6a8971429))
+
+### 🧪 Testing
+- *(lumen)* Cover recently added mixed libraries - ([2b81487](https://github.com/snapetech-org/seerrng/commit/2b8148746804869e6cc443a456c6a380588488ed))
+
+
+## New Contributors ❤️
+* @HadNutz made their first contribution
+
 ## [3.72.30](https://github.com/snapetech-org/seerrng/compare/v3.72.29..v3.72.30) - 2026-11-10
 
 ### User-facing changes
