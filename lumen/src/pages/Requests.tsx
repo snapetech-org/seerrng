@@ -415,6 +415,24 @@ async function startedDownloads(query = '') {
     (first.pageInfo?.pages || 1) > 1 ? (await page(100)).results : [];
   return first.results.concat(more).filter((r) => progress(r) > 0);
 }
+// All of one person's requests, newest first, a page of the list at a time (one call each), so
+// the tab counts are the real totals and nothing falls out of every tab. Row detail lookups stay
+// limited separately (describeAll).
+const OWN_PAGE = 15;
+const OWN_MAX = 2000; // a safety stop, not a limit anyone should meet
+async function ownRequests(userId: number): Promise<RequestItem[]> {
+  const out: RequestItem[] = [];
+  for (let skip = 0; skip < OWN_MAX; skip += OWN_PAGE) {
+    const d = await requestList(
+      `/request?take=${OWN_PAGE}&skip=${skip}&filter=all&sort=added&requestedBy=${userId}`
+    );
+    out.push(...d.results);
+    const total = d.pageInfo?.results;
+    if (d.results.length < OWN_PAGE) break;
+    if (total !== undefined && out.length >= total) break;
+  }
+  return out;
+}
 const merge = (...lists: RequestItem[][]) => {
   const seen = new Set<number>();
   return lists.flat().filter((r) => !seen.has(r.id) && !!seen.add(r.id));
@@ -874,9 +892,7 @@ export default function Requests() {
     let live = true;
     setOwnError(false);
     const media = Promise.all([
-      requestList(
-        `/request?take=40&skip=0&filter=all&sort=added&requestedBy=${user.id}`
-      ).then((d) => d.results),
+      ownRequests(user.id),
       startedDownloads(`&requestedBy=${user.id}`).catch(() => []),
     ]).then(([recent, started]) =>
       describeAll(

@@ -2,9 +2,9 @@ import { expect, test, type Page } from '@playwright/test';
 
 // SeerrNG verifies at most 32 title variants per answer and reports the rest as not available,
 // so request lists are fetched in pages small enough that every title keeps its real status.
-async function fixture(page: Page) {
+async function fixture(page: Page, count = 40) {
   const takes: number[] = [];
-  const all = Array.from({ length: 40 }, (_, i) => ({
+  const all = Array.from({ length: count }, (_, i) => ({
     id: i + 1,
     type: 'movie',
     status: 2,
@@ -64,3 +64,12 @@ for (const everyone of [false, true]) {
     expect(Math.max(...takes)).toBeLessThanOrEqual(15);
   });
 }
+
+test('My requests loads every page so the counts are the real totals', async ({
+  page,
+}) => {
+  await fixture(page, 47);
+  await page.goto('/requests?tab=all');
+  await expect(page.getByRole('button', { name: /^All\s*47$/ })).toBeVisible();
+  await expect(page.locator('.rq')).toHaveCount(47);
+});
