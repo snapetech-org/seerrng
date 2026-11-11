@@ -580,7 +580,7 @@ export default function BookDetail() {
                                 .join(' · ') || 'Details unknown'}
                             </div>
                             <div className="tags">
-                              {r.selected && !st && !anotherMode && (
+                              {r.selected && !locked && !anotherMode && (
                                 <span className="tag rec">
                                   <Icon name="star" />
                                   Recommended

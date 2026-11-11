@@ -327,3 +327,34 @@ test('"Any English narrator" still names an edition SeerrNG can pin', async ({
     editionPolicy: 'either',
   });
 });
+
+test('a recommended recording SeerrNG can only list without an id is not offered', async ({
+  page,
+}) => {
+  // live shape of Cheshire Crossing: one full-cast listing, recommended, no edition id
+  const cast = [
+    'Brittany Pressley',
+    'James Monroe Iglehart',
+    'Kristen DiMercurio',
+    'Ann Marie Gideon',
+  ];
+  const sent = await fixtures(
+    page,
+    [ed('', cast, { selected: true, durationSeconds: 5880 })],
+    null
+  );
+  await page.goto(`/book/${encodeURIComponent(woolId)}?f=audio`);
+  const castRow = row(page, 'Full cast');
+  await expect(castRow).toHaveAttribute('aria-disabled', 'true');
+  await expect(castRow).toContainText('Can’t be requested yet');
+  await expect(castRow).not.toContainText('Recommended');
+  await expect(row(page, 'Any English narrator')).toHaveAttribute(
+    'aria-checked',
+    'true'
+  );
+  await expect(requestButton(page)).toHaveText(/Request audiobook/);
+  await requestButton(page).click();
+  await expect.poll(() => sent.length).toBe(1);
+  expect(sent[0].body).toMatchObject({ format: 'audiobook' });
+  expect(sent[0].body).not.toHaveProperty('editionPolicy', 'only');
+});
