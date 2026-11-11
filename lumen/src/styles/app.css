@@ -1477,6 +1477,10 @@ body.is-detail .tabbar {
   z-index: 2;
   margin-top: 6px;
 }
+.si .act .btn {
+  max-width: 100%;
+  white-space: normal;
+}
 
 /* ---------- Search ---------- */
 .top-hit {
@@ -1973,6 +1977,11 @@ body.is-detail .toast {
   }
   .sheet .pk {
     padding: 24px var(--s8) var(--s6);
+  }
+}
+@media (min-width: 1040px) and (max-width: 1319px) {
+  .sl {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 @media (min-width: 1040px) and (max-width: 1279px) {
