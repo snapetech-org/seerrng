@@ -579,9 +579,11 @@ body.is-detail .tabbar {
 .feat .mm {
   font-size: 13px;
   opacity: 0.88;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  /* wrap instead of cutting the genre/rating off on narrow cards */
+  white-space: normal;
+  overflow-wrap: anywhere;
+  line-height: 1.3;
+  flex: 1 1 auto;
   min-width: 0;
 }
 .feat .go {
