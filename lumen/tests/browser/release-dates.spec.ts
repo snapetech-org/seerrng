@@ -85,3 +85,20 @@ test('Coming soon on Discover names the year and links to the full page', async 
   const seeAll = row.getByRole('link', { name: 'See all' });
   await expect(seeAll).toHaveAttribute('href', '/soon');
 });
+
+test('the phone request bar keeps its button on screen and the title readable', async ({
+  page,
+}, info) => {
+  test.skip(info.project.name !== 'iphone', 'phone layout');
+  await fixture(page);
+  await page.goto('/movie/402');
+  const bar = page.locator('.actionbar');
+  await expect(bar).toBeVisible();
+  const button = bar.getByRole('button', { name: /Request/ });
+  const box = (await button.boundingBox())!;
+  expect(box.x + box.width).toBeLessThanOrEqual(
+    page.viewportSize()!.width + 0.5
+  );
+  const title = (await bar.locator('.ab-meta').boundingBox())!;
+  expect(title.height).toBeLessThan(40);
+});
