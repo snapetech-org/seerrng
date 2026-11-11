@@ -242,6 +242,11 @@ html.no-overscroll body {
   .set a.go {
     min-height: 44px;
   }
+  /* a one-word button ("All") is still a full-size target */
+  .seg button,
+  .seg a {
+    min-width: 44px;
+  }
 }
 
 /* second pass: the remaining controls a real phone measured under 44px */
