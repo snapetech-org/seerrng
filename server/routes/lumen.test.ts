@@ -250,4 +250,8 @@ test('branding denies non-admin writes and publishes only re-encoded, bounded im
     (await request(app).get('/api/v1/lumen/branding/config.json')).status,
     404
   );
+  assert.equal(
+    (await request(app).get('/api/v1/lumen/branding/..%2Fconfig.json')).status,
+    404
+  );
 });

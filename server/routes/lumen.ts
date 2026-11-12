@@ -168,10 +168,11 @@ export const createLumenRoutes = (
     if (!/^(logo|icon)-[a-f0-9-]{36}\.png$/.test(req.params.name)) {
       return res.sendStatus(404);
     }
+    const branding = path.join(directory(), 'branding');
     return res
       .set('Content-Type', 'image/png')
       .set('X-Content-Type-Options', 'nosniff')
-      .sendFile(path.join(directory(), 'branding', req.params.name));
+      .sendFile(req.params.name, { root: branding });
   });
 
   return router;
