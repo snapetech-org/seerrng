@@ -157,22 +157,47 @@ const isSafeImagePath = (path: string) => {
     .slice(1)
     .split('/')
     .every((segment) => {
-      try {
-        const decoded = decodeURIComponent(segment);
-        return (
-          decoded !== '.' &&
-          decoded !== '..' &&
-          !decoded.includes('/') &&
-          !decoded.includes('\\') &&
-          !/[\u0000-\u001f\u007f?#]/.test(decoded)
-        );
-      } catch {
-        return false;
+      let decoded = segment;
+      // URL and proxy layers can decode more than one percent-encoding layer.
+      // Check every layer so encoded dot segments and separators cannot become
+      // traversal after the browser has canonicalized the URL.
+      for (let layer = 0; layer < 8; layer++) {
+        let next: string;
+        try {
+          next = decodeURIComponent(decoded);
+        } catch {
+          return false;
+        }
+        if (
+          decoded === '.' ||
+          decoded === '..' ||
+          decoded.includes('/') ||
+          decoded.includes('\\') ||
+          /[\u0000-\u001f\u007f?#]/.test(decoded)
+        ) {
+          return false;
+        }
+        if (next === decoded) return true;
+        decoded = next;
       }
+      // Excessive nested encodings are unnecessary for provider image paths.
+      return false;
     });
 };
 const theAudioDbImg = (value: string) => {
-  if (value.length > 2048) return '';
+  if (
+    value.length > 2048 ||
+    value.includes('?') ||
+    value.includes('#') ||
+    value.includes('\\')
+  ) {
+    return '';
+  }
+  // Validate the original path before WHATWG URL parsing normalizes literal or
+  // percent-encoded dot segments. The image proxy receives a path, never a
+  // provider-selected origin.
+  const rawPath = value.match(/^https:\/\/[^/?#]+(\/[^?#]*)?$/i)?.[1];
+  if (!rawPath || !isSafeImagePath(rawPath)) return '';
   try {
     const url = new URL(value);
     const hostname = url.hostname.toLowerCase();
@@ -184,6 +209,7 @@ const theAudioDbImg = (value: string) => {
       (hostname !== THEAUDIODB_IMAGE_HOST &&
         !hostname.endsWith(`.${THEAUDIODB_IMAGE_HOST}`)) ||
       url.search ||
+      url.hash ||
       !isSafeImagePath(url.pathname)
     ) {
       return '';
