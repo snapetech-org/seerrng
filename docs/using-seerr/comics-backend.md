@@ -1,6 +1,6 @@
 ---
 title: Comics Backend
-description: Configure ComicVine, Mylar3 or Issuarr, Kapowarr, and BackIssue for comic requests.
+description: Configure ComicVine, Mylar3 or Issuarr, Kapowarr, and BackIssue for comic and manga requests.
 sidebar_position: 24
 ---
 
@@ -203,6 +203,49 @@ SeerrNG administrator API key. The API exposes `GET` and `POST
 /api/v1/settings/backissue/{id}`, plus `POST
 /api/v1/settings/jobs/backissue-scan/run` to start the same scan task. These
 endpoints require administrator authentication.
+
+## Manga through BackIssue
+
+Manga uses the BackIssue backend and needs no extra service. Comic search
+first asks [AniList](https://anilist.co/) for the manga, so a series is found
+by its English, romaji or native title, then looks up its editions on
+ComicVine. AniList needs no API key. Results are cached to spare the ComicVine
+request quota.
+
+- **One card per work.** Every ComicVine volume of the same manga (for example
+  the Viz, Shueisha and Norma editions) is grouped under one AniList work, and
+  each volume becomes an edition of it. A Western comic run is grouped by
+  title and start year, with its translations attached. ComicVine has no
+  language field, so SeerrNG infers each edition's language from its
+  publisher.
+- **English recommended.** The work page lists the editions and recommends
+  the English one with the most volumes. A request is sent for one edition,
+  and BackIssue files a manga request in its manga library (BackIssue creates
+  that library on first use).
+- **Availability.** The BackIssue scan reads the comic and manga libraries
+  separately. A series is **Available** only when every known volume is in the
+  library and nothing is still downloading; until then it is partially
+  available, and Lumen shows progress such as **9 of 16 in library**. The
+  requester is notified once, when the series becomes available. Pack grabs
+  (one torrent or NZB that covers many volumes) count as downloads, and a
+  download that leaves BackIssue's queue triggers a new scan.
+
+In Lumen, the **Comics/Manga** page opens with your comics and manga, trending
+and newly licensed English manga from AniList, Western comics from the catalog
+index, and a popular manga grid. Filter by type, library or requested status,
+sort, publication status, genre and publisher. The top search covers comics
+and manga, with one card per work. The page appears only for accounts that
+have the comic category enabled.
+
+The API adds `GET /api/v1/discover/comics/landing`,
+`GET /api/v1/discover/comics/browse` (filters `type`, `show`, `sort`, `genre`,
+`status`, `publisher` and `page`), `GET /api/v1/comic/work/{key}` for a work
+and its editions, and a `group=works` option on `GET /api/v1/discover/comics`.
+
+The nightly BackIssue scan (05:30 by default) is enough for most libraries. If
+you want manga progress to update sooner after downloads finish, set the
+**BackIssue Comics Scan** job to run every hour or two under
+**Settings → Jobs & Cache**.
 
 ## Configuration checklist
 
