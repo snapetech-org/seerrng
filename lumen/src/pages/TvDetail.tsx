@@ -30,11 +30,11 @@ import {
 } from '../components/detail';
 import { ServiceNote } from '../components/extra';
 import { useToast } from '../components/toast';
+import { friendlyError } from '../errors';
 import { useApi, usePublicSettings } from '../hooks';
 import { Icon } from '../icons';
-import { usePrefs } from '../settings';
-import { friendlyError } from '../errors';
 import { scrollBehavior } from '../motion';
+import { usePrefs } from '../settings';
 
 type SeasonState = 'have' | 'part' | 'asked' | 'none';
 const stateOf = (status?: number): SeasonState =>
@@ -45,6 +45,21 @@ const stateOf = (status?: number): SeasonState =>
       : status === MediaStatus.PENDING || status === MediaStatus.PROCESSING
         ? 'asked'
         : 'none';
+
+// request status: 1 waiting for approval, 2 approved (3 declined, 4 failed, 5 completed)
+const live = (status?: number) => status === 1 || status === 2;
+
+const seasonList = (n: number[]) => {
+  const a = [...n].sort((x, y) => x - y);
+  const runs: string[] = [];
+  for (let i = 0; i < a.length;) {
+    let j = i;
+    while (j + 1 < a.length && a[j + 1] === a[j] + 1) j++;
+    runs.push(j > i ? `${a[i]}–${a[j]}` : `${a[i]}`);
+    i = j + 1;
+  }
+  return (a.length === 1 ? 'Season ' : 'Seasons ') + runs.join(', ');
+};
 
 export default function TvDetail() {
   const serverName = useMediaServerName();
@@ -69,12 +84,33 @@ export default function TvDetail() {
     const m = new Map<number, SeasonState>();
     for (const s of t?.mediaInfo?.seasons || [])
       m.set(s.seasonNumber, stateOf(opts.is4k ? s.status4k : s.status));
+    // SeerrNG only fills in mediaInfo.seasons once Sonarr has synced them, so a fresh request
+    // shows up in the requests alone: its seasons count as asked until then
+    for (const r of t?.mediaInfo?.requests || [])
+      if (!!r.is4k === !!opts.is4k && live(r.status))
+        for (const s of r.seasons || [])
+          if (
+            live(s.status ?? r.status) &&
+            (m.get(s.seasonNumber) ?? 'none') === 'none'
+          )
+            m.set(s.seasonNumber, 'asked');
     return m;
+  }, [t, opts.is4k]);
+  const activeRequestSeasons = useMemo(() => {
+    const requested = new Set<number>();
+    for (const r of t?.mediaInfo?.requests || [])
+      if (!!r.is4k === !!opts.is4k && live(r.status))
+        for (const s of r.seasons || [])
+          if (live(s.status ?? r.status)) requested.add(s.seasonNumber);
+    return requested;
   }, [t, opts.is4k]);
   const missing = seasons
     .filter((s) => {
       const st = stat.get(s.seasonNumber) || 'none';
-      return st === 'none' || st === 'part';
+      return (
+        (st === 'none' || st === 'part') &&
+        !activeRequestSeasons.has(s.seasonNumber)
+      );
     })
     .map((s) => s.seasonNumber);
   const have = seasons.filter(
@@ -85,6 +121,12 @@ export default function TvDetail() {
     (s) => stat.get(s.seasonNumber) === 'part'
   ).length;
   const watchable = have + part > 0;
+  const asked = seasons.filter(
+    (s) =>
+      stat.get(s.seasonNumber) === 'asked' ||
+      (activeRequestSeasons.has(s.seasonNumber) &&
+        stat.get(s.seasonNumber) !== 'have')
+  ).length;
   // partial requests off on the server = it's the whole show or nothing
   const partialOk = pub?.partialRequestsEnabled !== false;
 
@@ -120,8 +162,8 @@ export default function TvDetail() {
     : n === missing.length && n > 1
       ? missing.length === seasons.length
         ? 'Request entire series'
-        : `Request ${n} missing seasons`
-      : `Request ${n} season${n === 1 ? '' : 's'}`;
+        : `Request ${n} ${asked ? 'more' : 'missing'} seasons`
+      : `Request ${n}${asked > 0 ? ' more' : ''} season${n === 1 ? '' : 's'}`;
   const toggle = (sn: number) => {
     if (!partialOk) return;
     setSel((x) => {
@@ -166,13 +208,29 @@ export default function TvDetail() {
     : part
       ? `Partly on ${serverName}`
       : '';
+  // the series' own state, as the poster glyph says it (downloading x%, requested, ...)
+  const mine = statusOf(
+    opts.is4k && t.mediaInfo
+      ? {
+          ...t.mediaInfo,
+          status: t.mediaInfo.status4k ?? 1,
+          status4k: undefined,
+          downloadStatus: t.mediaInfo.downloadStatus4k,
+        }
+      : t.mediaInfo,
+    false,
+    serverName
+  );
+  const asks = (t.mediaInfo?.requests || []).filter(
+    (r) => !!r.is4k === !!opts.is4k && live(r.status)
+  );
   const main = missing.length ? (
     <button className="btn btn-primary" disabled={!n || busy} onClick={request}>
       <Icon name="plus" />
       {label}
       {opts.is4k ? ' in 4K' : ''}
     </button>
-  ) : (
+  ) : watchable ? (
     <a
       className="btn btn-primary"
       {...mediaLink(t.mediaInfo, !!opts.is4k, 'tv', serverName)}
@@ -180,11 +238,12 @@ export default function TvDetail() {
       <Icon name="play" />
       Watch on {serverName}
     </a>
+  ) : (
+    <button className="btn btn-tonal" disabled>
+      <Icon name={mine?.ico || 'clock'} />
+      {mine?.word || 'Requested'}
+    </button>
   );
-  const asked = seasons.filter(
-    (s) => stat.get(s.seasonNumber) === 'asked'
-  ).length;
-
   return (
     <article className="detail">
       <DetailTop
@@ -247,6 +306,33 @@ export default function TvDetail() {
             </a>
           )}
         </div>
+        {asks.length > 0 && (
+          <ul className="note request-summary rinfo">
+            {asks.map((r) => {
+              const ss = (r.seasons || [])
+                .filter((x) => live(x.status ?? r.status))
+                .map((x) => x.seasonNumber);
+              return (
+                <li key={r.id}>
+                  {r.status === 1
+                    ? 'Waiting for approval'
+                    : mine?.k === 'dl'
+                      ? mine.word
+                      : 'Approved'}
+                  {' · requested by '}
+                  {r.requestedBy?.displayName || 'someone'}
+                  {r.createdAt ? ' on ' + shortDate(r.createdAt) : ''}
+                  {ss.length
+                    ? ' · ' +
+                      (ss.length === seasons.length
+                        ? 'Entire series'
+                        : seasonList(ss))
+                    : ''}
+                </li>
+              );
+            })}
+          </ul>
+        )}
         {(missing.length > 0 ||
           (pub?.series4kEnabled &&
             canRequest4k(user?.permissions, 'tv') &&
@@ -308,7 +394,9 @@ export default function TvDetail() {
               <div className="slist" role="group" aria-label="Seasons">
                 {seasons.map((s) => {
                   const st = stat.get(s.seasonNumber) || 'none';
-                  const locked = st === 'have' || st === 'asked';
+                  const requested =
+                    st === 'asked' || activeRequestSeasons.has(s.seasonNumber);
+                  const locked = st === 'have' || requested;
                   const on = locked || sel.has(s.seasonNumber);
                   const yr = s.airDate
                     ? s.airDate > new Date().toISOString().slice(0, 10)
@@ -346,12 +434,17 @@ export default function TvDetail() {
                           On {serverName}
                         </Pill>
                       )}
-                      {st === 'part' && (
+                      {st === 'part' && !requested && (
                         <Pill k="ok" icon="check">
                           Partly on {serverName}
                         </Pill>
                       )}
-                      {st === 'asked' && (
+                      {st === 'part' && requested && (
+                        <Pill k="wait" icon="clock">
+                          Partly on {serverName} · Requested
+                        </Pill>
+                      )}
+                      {requested && st !== 'have' && st !== 'part' && (
                         <Pill k="wait" icon="clock">
                           Requested
                         </Pill>

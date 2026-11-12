@@ -16,7 +16,7 @@ jobs:
   lumen:
     name: Build, proxy security and browser tests
     runs-on: ubuntu-24.04
-    timeout-minutes: 20
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -63,6 +63,44 @@ jobs:
       - name: Test Lumen in desktop, phone and tablet viewports
         working-directory: lumen
         run: npm run test:browser -- --workers=2
+      - name: Check out the pre-request TV UI baseline
+        if: github.event_name == 'pull_request'
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
+          # Parent of the TV request-state UI change for a reproducible baseline.
+          ref: 40a18c330e195611994a7128cccde113e49fed4a
+          path: baseline-tv-request
+          persist-credentials: false
+      - name: Add the current request-state browser fixture to the baseline
+        if: github.event_name == 'pull_request'
+        run: cp lumen/tests/browser/tv-request-state.spec.ts baseline-tv-request/lumen/tests/browser/
+      - name: Install baseline Lumen dependencies
+        if: github.event_name == 'pull_request'
+        working-directory: baseline-tv-request/lumen
+        run: npm ci --ignore-scripts
+      - name: Build the pre-request TV UI baseline
+        if: github.event_name == 'pull_request'
+        working-directory: baseline-tv-request/lumen
+        run: npm run build
+      - name: Capture matched pre-request TV UI screenshots
+        if: github.event_name == 'pull_request'
+        working-directory: baseline-tv-request/lumen
+        run: >-
+          npm run test:browser -- tests/browser/tv-request-state.spec.ts
+          --grep @tv-request-visual --project=desktop --project=iphone
+          --workers=1
+        env:
+          LUMEN_TV_REQUEST_BASELINE: 'true'
+          LUMEN_TEST_OUTPUT: ${{ runner.temp }}/lumen-tv-request-baseline
+      - name: Retain pre-request TV UI baseline evidence
+        if: always() && github.event_name == 'pull_request'
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: lumen-tv-request-baseline
+          path: ${{ runner.temp }}/lumen-tv-request-baseline/
+          if-no-files-found: ignore
+          retention-days: 7
       - name: Retain browser evidence
         if: always()
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
