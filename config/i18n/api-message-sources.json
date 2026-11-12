@@ -1641,6 +1641,43 @@
       ]
     },
     {
+      "key": "m07b633dae4945a433cb9",
+      "id": "utils.ApiMessage.m07b633dae4945a433cb9",
+      "source": "Lumen settings storage is not a usable directory or file. Check the SeerrNG configuration volume.",
+      "defaultMessage": "Lumen settings storage is not a usable directory or file. Check the SeerrNG configuration volume.",
+      "sourceHash": "07b633dae4945a433cb9bf64f70e3f91ff245c07f63c0010f1b4b34a07bf848d",
+      "parts": [
+        "Lumen settings storage is not a usable directory or file. Check the SeerrNG configuration volume."
+      ],
+      "parameterCount": 0,
+      "callsites": [
+        {
+          "path": "server/routes/lumen.ts",
+          "line": 16,
+          "kind": "authored-message-variable",
+          "field": "unusableLumenStorageMessage",
+          "expression": "'Lumen settings storage is not a usable directory or file. Check the SeerrNG configuration volume.'",
+          "captured": []
+        },
+        {
+          "path": "server/routes/lumen.ts",
+          "line": 30,
+          "kind": "message-helper-return",
+          "field": "message",
+          "expression": "unusableLumenStorageMessage",
+          "captured": []
+        },
+        {
+          "path": "server/routes/lumen.ts",
+          "line": 73,
+          "kind": "authored-message-field",
+          "field": "message",
+          "expression": "unusableLumenStorageMessage",
+          "captured": []
+        }
+      ]
+    },
+    {
       "key": "m07d7f0a3d9d144728e1b",
       "id": "utils.ApiMessage.m07d7f0a3d9d144728e1b",
       "source": "Unable to prepare password setup link",
@@ -4856,6 +4893,27 @@
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Failed to update existing movie in Radarr'",
+          "captured": []
+        }
+      ]
+    },
+    {
+      "key": "m11f6c69a5b0d6245e341",
+      "id": "utils.ApiMessage.m11f6c69a5b0d6245e341",
+      "source": "Lumen cannot write shared settings. Check the SeerrNG configuration volume permissions.",
+      "defaultMessage": "Lumen cannot write shared settings. Check the SeerrNG configuration volume permissions.",
+      "sourceHash": "11f6c69a5b0d6245e341116ed47fbf9929fcdd224cab9025d6564559982b4d03",
+      "parts": [
+        "Lumen cannot write shared settings. Check the SeerrNG configuration volume permissions."
+      ],
+      "parameterCount": 0,
+      "callsites": [
+        {
+          "path": "server/routes/lumen.ts",
+          "line": 23,
+          "kind": "message-helper-return",
+          "field": "message",
+          "expression": "'Lumen cannot write shared settings. Check the SeerrNG configuration volume permissions.'",
           "captured": []
         }
       ]
@@ -8607,6 +8665,25 @@
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'requesterSelectedOptions are only valid for new movie or TV requests.'",
+          "captured": []
+        }
+      ]
+    },
+    {
+      "key": "m20fe0dc1841cbc2ed020",
+      "id": "utils.ApiMessage.m20fe0dc1841cbc2ed020",
+      "source": "The image could not be decoded as PNG, JPEG, or WebP.",
+      "defaultMessage": "The image could not be decoded as PNG, JPEG, or WebP.",
+      "sourceHash": "20fe0dc1841cbc2ed02035edca22c3b2110b641e765be4670f66f7c71281a0b7",
+      "parts": ["The image could not be decoded as PNG, JPEG, or WebP."],
+      "parameterCount": 0,
+      "callsites": [
+        {
+          "path": "server/routes/lumen.ts",
+          "line": 167,
+          "kind": "authored-message-field",
+          "field": "message",
+          "expression": "'The image could not be decoded as PNG, JPEG, or WebP.'",
           "captured": []
         }
       ]
@@ -25577,6 +25654,27 @@
       ]
     },
     {
+      "key": "m6091dc83b97a03269d0c",
+      "id": "utils.ApiMessage.m6091dc83b97a03269d0c",
+      "source": "Not enough space to save Lumen settings. Check the SeerrNG configuration volume.",
+      "defaultMessage": "Not enough space to save Lumen settings. Check the SeerrNG configuration volume.",
+      "sourceHash": "6091dc83b97a03269d0c4e4a8d2c6eae53cd7130ea5b9bd5b7b2944541f4b211",
+      "parts": [
+        "Not enough space to save Lumen settings. Check the SeerrNG configuration volume."
+      ],
+      "parameterCount": 0,
+      "callsites": [
+        {
+          "path": "server/routes/lumen.ts",
+          "line": 26,
+          "kind": "message-helper-return",
+          "field": "message",
+          "expression": "'Not enough space to save Lumen settings. Check the SeerrNG configuration volume.'",
+          "captured": []
+        }
+      ]
+    },
+    {
       "key": "m60b64d587afbdc06f6ba",
       "id": "utils.ApiMessage.m60b64d587afbdc06f6ba",
       "source": "Book series: {value0}",
@@ -31786,6 +31884,27 @@
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to process override rules.'",
+          "captured": []
+        }
+      ]
+    },
+    {
+      "key": "m77ad82b54d77134af41e",
+      "id": "utils.ApiMessage.m77ad82b54d77134af41e",
+      "source": "Could not store the image. Check SeerrNG application storage.",
+      "defaultMessage": "Could not store the image. Check SeerrNG application storage.",
+      "sourceHash": "77ad82b54d77134af41efe0ba92b28f8932dac678a76f797b03dcd894d7c3876",
+      "parts": [
+        "Could not store the image. Check SeerrNG application storage."
+      ],
+      "parameterCount": 0,
+      "callsites": [
+        {
+          "path": "server/routes/lumen.ts",
+          "line": 182,
+          "kind": "authored-message-variable",
+          "field": "message",
+          "expression": "lumenStorageError(error) ??\n          'Could not store the image. Check SeerrNG application storage.'",
           "captured": []
         }
       ]
@@ -51459,6 +51578,25 @@
           "kind": "authored-message-variable",
           "field": "message",
           "expression": "error instanceof Error ? error.message : 'invalid syntax'",
+          "captured": []
+        }
+      ]
+    },
+    {
+      "key": "mcac21e64a1b0dc3a421b",
+      "id": "utils.ApiMessage.mcac21e64a1b0dc3a421b",
+      "source": "Upload a PNG, JPEG, or WebP image.",
+      "defaultMessage": "Upload a PNG, JPEG, or WebP image.",
+      "sourceHash": "cac21e64a1b0dc3a421bd88e8d23ce185c76a2c4c78f465873f0f3cbcf928500",
+      "parts": ["Upload a PNG, JPEG, or WebP image."],
+      "parameterCount": 0,
+      "callsites": [
+        {
+          "path": "server/routes/lumen.ts",
+          "line": 155,
+          "kind": "authored-message-field",
+          "field": "message",
+          "expression": "'Upload a PNG, JPEG, or WebP image.'",
           "captured": []
         }
       ]
@@ -78570,6 +78708,51 @@
       "kind": "authored-message-field",
       "field": "message",
       "expression": "error instanceof TunerrError\n          ? error.message\n          : 'Tunerr sports schedules could not be loaded.'",
+      "source": "{value0}",
+      "reason": "dynamic/provider/user value"
+    },
+    {
+      "path": "server/routes/lumen.ts",
+      "line": 18,
+      "kind": "authored-message-variable",
+      "field": "lumenStorageError",
+      "expression": "(error: unknown): string | undefined => {\n  switch ((error as NodeJS.ErrnoException)?.code) {\n    case 'EACCES':\n    case 'EPERM':\n    case 'EROFS':\n      return 'Lumen cannot write shared settings. Check the SeerrNG configuration volume permissions.';\n    case 'ENOSPC':\n    case 'EDQUOT':\n      return 'Not enough space to save Lumen settings. Check the SeerrNG configuration volume.';\n    case 'ENOTDIR':\n    case 'EISDIR':\n    case 'EEXIST':\n      return unusableLumenStorageMessage;\n    default:\n      return undefined;\n  }\n}",
+      "source": "{value0}",
+      "reason": "dynamic/provider/user value"
+    },
+    {
+      "path": "server/routes/lumen.ts",
+      "line": 32,
+      "kind": "message-helper-return",
+      "field": "message",
+      "expression": "undefined",
+      "source": "{value0}",
+      "reason": "dynamic/provider/user value"
+    },
+    {
+      "path": "server/routes/lumen.ts",
+      "line": 86,
+      "kind": "authored-message-variable",
+      "field": "message",
+      "expression": "lumenStorageError(error)",
+      "source": "{value0}",
+      "reason": "dynamic/provider/user value"
+    },
+    {
+      "path": "server/routes/lumen.ts",
+      "line": 123,
+      "kind": "authored-message-variable",
+      "field": "message",
+      "expression": "lumenStorageError(error)",
+      "source": "{value0}",
+      "reason": "dynamic/provider/user value"
+    },
+    {
+      "path": "server/routes/lumen.ts",
+      "line": 182,
+      "kind": "authored-message-variable",
+      "field": "message",
+      "expression": "lumenStorageError(error) ??\n          'Could not store the image. Check SeerrNG application storage.'",
       "source": "{value0}",
       "reason": "dynamic/provider/user value"
     },
