@@ -1,3 +1,4 @@
+import { writeFile } from 'node:fs/promises';
 import { expect, test, type Page } from '@playwright/test';
 
 // 1x1 PNG for every proxied cover
@@ -668,6 +669,26 @@ for (const width of [360, 768, 1280]) {
       path: info.outputPath(`comic-detail-candidate-${width}.png`),
       fullPage: true,
     });
+    await writeFile(
+      info.outputPath('comics-responsive.json'),
+      JSON.stringify(
+        {
+          candidateSha: process.env.GITHUB_SHA,
+          referenceRoute: '/series',
+          candidateRoutes: ['/comics', '/comic/al-105778'],
+          state: 'authenticated dark theme with downloading and partial library entries',
+          viewport: { width, height: 800 },
+          overflow: { comicsPage: overflow, detailPage: detailOverflow },
+          screenshots: [
+            `series-reference-${width}.png`,
+            `comics-candidate-${width}.png`,
+            `comic-detail-candidate-${width}.png`,
+          ],
+        },
+        null,
+        2
+      )
+    );
   });
 }
 
