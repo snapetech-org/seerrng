@@ -199,13 +199,14 @@ async function fixtures(
     // this account's own categories, as SeerrNG answers them (undefined = no answer)
     mine = undefined as Record<string, boolean> | undefined,
     permissions = 2,
+    config = {} as Record<string, unknown>,
   } = {}
 ) {
   const requested: unknown[] = [];
   const browsed: string[] = [];
   const searched: string[] = [];
   await page.route('https://**/*', (r) => r.abort());
-  await page.route('**/lumen-config.json', (r) => r.fulfill({ json: {} }));
+  await page.route('**/lumen-config.json', (r) => r.fulfill({ json: config }));
   await page.route('**/seerr-classic/**', (r) => r.fulfill({ status: 404 }));
   await page.route('**/imageproxy/**', (r) =>
     r.fulfill({ body: PNG, contentType: 'image/png' })
@@ -689,3 +690,119 @@ test('a user with the comic category sees Comics/Manga, and so does an admin', a
       page.locator('nav.side').getByRole('link', { name: 'Comics/Manga' })
     ).toBeVisible();
 });
+
+// ---- "Read in Kavita" ----
+const KAVITA = 'https://manga.example.com/library/2/series/41';
+const reading = (media: Record<string, unknown>) => ({
+  ...media,
+  readerUrl: KAVITA,
+});
+const readLink = (page: Page) =>
+  page.getByRole('link', { name: 'Read in Kavita' }).filter({ visible: true });
+
+test('a complete series opens in Kavita from its main button', async ({
+  page,
+}) => {
+  await fixtures(page, { works: { 'al-117195': oshi(reading(complete)) } });
+  await page.goto('/comic/al-117195');
+  const read = readLink(page);
+  await expect(read).toHaveCount(1);
+  await expect(read).toHaveAttribute('href', KAVITA);
+  await expect(read).toHaveAttribute('target', '_blank');
+  await expect(read).toHaveClass(/btn-primary/);
+  await expect(
+    page.getByRole('button', { name: 'Complete' }).filter({ visible: true })
+  ).toHaveCount(0);
+});
+
+test('a part-owned series keeps its state and adds a Kavita link', async ({
+  page,
+}) => {
+  await fixtures(page, { works: { '46568': saga(reading(partial)) } });
+  await page.goto('/comic/46568');
+  await expect(
+    page
+      .getByRole('button', { name: '9 of 16 in library' })
+      .filter({ visible: true })
+  ).toHaveCount(1);
+  const read = readLink(page);
+  await expect(read).toHaveCount(1);
+  await expect(read).toHaveAttribute('href', KAVITA);
+  await expect(read).not.toHaveClass(/btn-primary/);
+});
+
+test('without a Kavita link there is no read button', async ({ page }) => {
+  await fixtures(page, { works: { 'al-117195': oshi(complete) } });
+  await page.goto('/comic/al-117195');
+  await expect(
+    page.getByRole('button', { name: 'Complete' }).filter({ visible: true })
+  ).toHaveCount(1);
+  await expect(page.getByRole('link', { name: 'Read in Kavita' })).toHaveCount(
+    0
+  );
+});
+
+test("Lumen's Kavita address replaces SeerrNG's", async ({ page }) => {
+  await fixtures(page, {
+    works: { 'al-117195': oshi(reading(complete)) },
+    config: { kavitaUrl: 'https://read.example.org/kavita/' },
+  });
+  await page.goto('/comic/al-117195');
+  await expect(readLink(page)).toHaveAttribute(
+    'href',
+    'https://read.example.org/kavita/library/2/series/41'
+  );
+});
+
+test('hovering a complete card reads it in Kavita, a part-owned one offers it too', async ({
+  page,
+}, info) => {
+  test.skip(!hoverable(info.project.name), 'needs a mouse');
+  await fixtures(page, {
+    browse: [
+      oshi(reading(complete)),
+      saga(reading(partial)),
+      chainsaw(complete, '130799'),
+    ],
+  });
+  await page.goto('/comics?type=manga');
+  const cards = page.locator('.comic-grid .poster');
+  await cards.nth(0).hover();
+  await expect(
+    cards.nth(0).getByRole('link', { name: 'Read [Oshi no Ko] in Kavita' })
+  ).toHaveAttribute('href', KAVITA);
+  await cards.nth(1).hover();
+  await expect(
+    cards.nth(1).getByRole('link', { name: '9 of 16 in library' })
+  ).toBeVisible();
+  await expect(
+    cards.nth(1).getByRole('link', { name: 'Read Saga in Kavita' })
+  ).toHaveAttribute('href', KAVITA);
+  await cards.nth(2).hover();
+  await expect(cards.nth(2).getByRole('link', { name: /in Kavita/ })).toHaveCount(
+    0
+  );
+});
+
+for (const width of [360, 768]) {
+  test(`the Kavita buttons fit ${width}px`, async ({ page }, info) => {
+    test.skip(info.project.name !== 'desktop', 'sets its own viewport');
+    await page.setViewportSize({ width, height: 800 });
+    for (const [id, work] of [
+      ['al-117195', oshi(reading(complete))],
+      ['46568', saga(reading(partial))],
+    ] as const) {
+      await fixtures(page, { works: { [id]: work } });
+      await page.goto(`/comic/${id}`);
+      const read = readLink(page);
+      await expect(read).toHaveCount(1);
+      const box = await read.boundingBox();
+      expect(box!.x).toBeGreaterThanOrEqual(0);
+      expect(box!.x + box!.width).toBeLessThanOrEqual(width);
+      const overflow = await page.evaluate(
+        () => document.documentElement.scrollWidth - window.innerWidth
+      );
+      expect(overflow).toBeLessThanOrEqual(0);
+    }
+  });
+}

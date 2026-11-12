@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { artUrl } from '../api';
+import { artUrl, kavitaLink, MediaStatus } from '../api';
 import { friendlyError } from '../errors';
 import {
   loadComicWork,
@@ -53,10 +53,13 @@ export async function requestComicEdition(
 }
 
 export function ComicCard({ w }: { w: ComicWork }) {
-  const { prefs } = usePrefs();
+  const { prefs, kavitaUrl } = usePrefs();
   const toast = useToast();
   const nav = useNavigate();
   const cs = comicState(w.mediaInfo);
+  // in the library: a complete series reads in Kavita, part of one offers it beside its state
+  const readHref = kavitaLink(w.mediaInfo?.readerUrl, kavitaUrl);
+  const complete = w.mediaInfo?.status === MediaStatus.AVAILABLE;
   const [asked, setAsked] = useState('');
   const s: Stat =
     asked && cs.stat?.k !== 'ok'
@@ -103,6 +106,18 @@ export function ComicCard({ w }: { w: ComicWork }) {
   ]
     .filter(Boolean)
     .join(' · ');
+  const readGhost = readHref ? (
+    <a
+      className="qbtn ghost"
+      href={readHref}
+      target="_blank"
+      rel="noopener"
+      aria-label={`Read ${w.title} in Kavita`}
+      title="Read in Kavita"
+    >
+      <Icon name="book" size="sm" />
+    </a>
+  ) : null;
   const choose = (
     <Link
       className="qbtn ghost"
@@ -143,17 +158,34 @@ export function ComicCard({ w }: { w: ComicWork }) {
             <div className="qb">
               {s?.k === 'ok' ? (
                 <>
-                  <Link className="qbtn okb" to={href}>
-                    <Icon name="book" size="sm" />
-                    {s.word}
-                  </Link>
+                  {readHref && complete ? (
+                    <a
+                      className="qbtn okb"
+                      href={readHref}
+                      target="_blank"
+                      rel="noopener"
+                      aria-label={`Read ${w.title} in Kavita`}
+                    >
+                      <Icon name="book" size="sm" />
+                      Read
+                    </a>
+                  ) : (
+                    <Link className="qbtn okb" to={href}>
+                      <Icon name="book" size="sm" />
+                      {s.word}
+                    </Link>
+                  )}
+                  {readHref && !complete && readGhost}
                   {editions > 1 && choose}
                 </>
               ) : s ? (
-                <button className="qbtn done" disabled>
-                  <Icon name={s.ico} size="sm" />
-                  {s.word}
-                </button>
+                <>
+                  <button className="qbtn done" disabled>
+                    <Icon name={s.ico} size="sm" />
+                    {s.word}
+                  </button>
+                  {readHref && readGhost}
+                </>
               ) : quick ? (
                 <>
                   <button

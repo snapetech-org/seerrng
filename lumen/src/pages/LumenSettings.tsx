@@ -422,6 +422,21 @@ export default function LumenSettings() {
               onChange={(e) => setTop('audiobookshelfUrl', e.target.value)}
             />
           </label>
+          <label className="set cfg-row">
+            <span>
+              <b>Kavita address</b>
+              <small>
+                Where “Read in Kavita” goes. Leave empty to use SeerrNG’s Kavita
+                address
+              </small>
+            </span>
+            <input
+              className="cfg-input"
+              placeholder="https://manga.example.com"
+              value={(cfg.kavitaUrl as string) || ''}
+              onChange={(e) => setTop('kavitaUrl', e.target.value)}
+            />
+          </label>
         </div>
       </Section>
 

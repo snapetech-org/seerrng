@@ -974,6 +974,12 @@ body.is-detail .tabbar {
     display: none;
   }
 }
+/* phones: actions that don't fit in the sticky action bar */
+@media (min-width: 1040px) {
+  .dacts.ph {
+    display: none;
+  }
+}
 /* sticky action bar (phones) */
 .actionbar {
   position: fixed;

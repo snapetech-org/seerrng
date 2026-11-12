@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link, useParams, useSearchParams } from 'react-router-dom';
-import { artUrl } from '../api';
+import { artUrl, kavitaLink, MediaStatus } from '../api';
 import {
   GridSkeleton,
   MoreOnScroll,
@@ -40,6 +40,7 @@ import {
 } from '../extras';
 import { useApi, usePaged } from '../hooks';
 import { Icon } from '../icons';
+import { usePrefs } from '../settings';
 
 // the search box writes ?q= after a pause, so typing doesn't fire a request per letter
 function useQueryParam() {
@@ -438,6 +439,7 @@ function ComicIssues({ id, manga }: { id: string; manga: boolean }) {
 export function ComicDetail() {
   const { id = '' } = useParams();
   const toast = useToast();
+  const { kavitaUrl } = usePrefs();
   const { data: work, error: workError } = useApi<ComicWork>(
     `/comic/work/${encodeURIComponent(id)}`
   );
@@ -498,6 +500,24 @@ export function ComicDetail() {
       setBusy(false);
     }
   };
+  // in the library: complete opens it in Kavita; part of it keeps its state and offers
+  // the reader as well. No Kavita link: no button
+  const shown = chosen?.mediaInfo ?? work.mediaInfo;
+  const readHref = kavitaLink(shown?.readerUrl, kavitaUrl);
+  const complete =
+    s?.k === 'ok' && shown?.status === MediaStatus.AVAILABLE;
+  const read = readHref ? (
+    <a
+      className={`btn ${complete ? 'btn-primary' : 'btn-quiet'}`}
+      href={readHref}
+      target="_blank"
+      rel="noopener"
+    >
+      <Icon name="book" />
+      Read in Kavita
+    </a>
+  ) : null;
+  const alsoRead = complete ? null : read;
   const main = !chosen ? (
     <button className="btn btn-tonal" disabled>
       <Icon name="clock" />
@@ -505,6 +525,8 @@ export function ComicDetail() {
         ? 'No edition to request yet'
         : 'Looking up editions…'}
     </button>
+  ) : complete && read ? (
+    read
   ) : s ? (
     <button className="btn btn-tonal" disabled>
       <Icon name={s.ico} />
@@ -545,6 +567,7 @@ export function ComicDetail() {
               </Pill>
             ))}
           </div>
+          {alsoRead && <div className="dacts ph">{alsoRead}</div>}
           {cs.pct != null && (
             <div
               className="progress"
@@ -666,7 +689,10 @@ export function ComicDetail() {
                   </div>
                 )}
               </div>
-              <div className="dacts pc">{main}</div>
+              <div className="dacts pc">
+                {main}
+                {alsoRead}
+              </div>
               {chosen && <ComicIssues id={chosen.id} manga={manga} />}
             </div>
             <aside>
