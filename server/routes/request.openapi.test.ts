@@ -42,6 +42,7 @@ describe('request status routes behind the OpenAPI validator', () => {
         results: [],
         counts: {
           total: 0,
+          pending: 0,
           active: 0,
           incomplete: 0,
           attention: 0,
