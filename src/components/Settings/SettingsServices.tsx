@@ -57,6 +57,7 @@ import type {
   BackIssueSettings,
   JellystatSettings,
   KapowarrSettings,
+  KavitaSettings,
   LazyLibrarianSettings,
   LidarrSettings,
   MylarSettings,
@@ -87,6 +88,9 @@ const BackIssueModal = dynamic(
 );
 const AudiobookshelfModal = dynamic(
   () => import('@app/components/Settings/AudiobookshelfModal')
+);
+const KavitaModal = dynamic(
+  () => import('@app/components/Settings/KavitaModal')
 );
 const NavidromeModal = dynamic(
   () => import('@app/components/Settings/NavidromeModal')
@@ -241,6 +245,10 @@ const messages = defineMessages('components.Settings', {
   mylarsettings: 'Mylar Settings',
   kapowarrsettings: 'Kapowarr Settings',
   backissuesettings: 'BackIssue Settings',
+  kavitasettings: 'Kavita Reader',
+  kavitaDescription:
+    'Optionally connect Kavita so comics and manga in your library get a "Read in Kavita" button. This connection is read-only.',
+  addKavita: 'Connect Kavita Server',
   comicServiceSettingsDescription:
     'Mylar, Kapowarr, and BackIssue share one default destination for comic requests.',
   mediaTypeComic: 'comic',
@@ -691,6 +699,8 @@ const SettingsServices = ({
     useSWR<AudiobookshelfSettings | null>('/api/v1/settings/audiobookshelf');
   const { data: navidromeData, mutate: revalidateNavidrome } =
     useSWR<NavidromeSettings | null>('/api/v1/settings/navidrome');
+  const { data: kavitaData, mutate: revalidateKavita } =
+    useSWR<KavitaSettings | null>('/api/v1/settings/kavita');
   const { data: jellystatData, mutate: revalidateJellystat } =
     useSWR<JellystatSettings | null>('/api/v1/settings/jellystat');
   const { data: slskdnData } = useSWR<SlskdnSettings>(
@@ -770,6 +780,7 @@ const SettingsServices = ({
   }>({ open: false, bindery: null, backend: 'bindery' });
   const [editAudiobookshelfModal, setEditAudiobookshelfModal] = useState(false);
   const [editNavidromeModal, setEditNavidromeModal] = useState(false);
+  const [editKavitaModal, setEditKavitaModal] = useState(false);
   const [editJellystatModal, setEditJellystatModal] = useState(false);
   const [editMylarModal, setEditMylarModal] = useState<{
     open: boolean;
@@ -807,6 +818,7 @@ const SettingsServices = ({
       | 'readarr'
       | 'audiobookshelf'
       | 'navidrome'
+      | 'kavita'
       | 'jellystat'
       | 'mylar'
       | 'kapowarr'
@@ -1010,6 +1022,8 @@ const SettingsServices = ({
       await axios.delete('/api/v1/settings/audiobookshelf');
     } else if (deleteServerModal.type === 'navidrome') {
       await axios.delete('/api/v1/settings/navidrome');
+    } else if (deleteServerModal.type === 'kavita') {
+      await axios.delete('/api/v1/settings/kavita');
     } else if (deleteServerModal.type === 'jellystat') {
       await axios.delete('/api/v1/settings/jellystat');
     } else {
@@ -1030,6 +1044,7 @@ const SettingsServices = ({
     revalidateLazyLibrarian();
     revalidateAudiobookshelf();
     revalidateNavidrome();
+    revalidateKavita();
     revalidateJellystat();
     mutate('/api/v1/settings/public');
   };
@@ -1284,6 +1299,16 @@ const SettingsServices = ({
                   }}
                 />
               )}
+              {editKavitaModal && (
+                <KavitaModal
+                  settings={kavitaData ?? null}
+                  onClose={() => setEditKavitaModal(false)}
+                  onSave={() => {
+                    revalidateKavita();
+                    setEditKavitaModal(false);
+                  }}
+                />
+              )}
               {editNavidromeModal && (
                 <NavidromeModal
                   settings={navidromeData ?? null}
@@ -1400,9 +1425,11 @@ const SettingsServices = ({
                                     ? 'Audiobookshelf'
                                     : deleteServerModal.type === 'navidrome'
                                       ? 'Navidrome'
-                                      : deleteServerModal.type === 'jellystat'
-                                        ? 'Jellystat'
-                                        : 'Bookshelf',
+                                      : deleteServerModal.type === 'kavita'
+                                        ? 'Kavita'
+                                        : deleteServerModal.type === 'jellystat'
+                                          ? 'Jellystat'
+                                          : 'Bookshelf',
                   })}
                 >
                   {intl.formatMessage(messages.deleteserverconfirm)}
@@ -2436,6 +2463,55 @@ const SettingsServices = ({
                     </li>
                   </ul>
                 )}
+              </div>
+              <div
+                className="settings-service-heading"
+                hidden={!showComicServices}
+              >
+                <h3 className="heading">
+                  {intl.formatMessage(messages.kavitasettings)}
+                </h3>
+                <SettingsHelp className="description">
+                  {intl.formatMessage(messages.kavitaDescription)}
+                </SettingsHelp>
+              </div>
+              <div
+                className="app-card-sub section settings-service-section"
+                hidden={!showComicServices}
+              >
+                <ul className="settings-service-grid">
+                  {kavitaData ? (
+                    <ServerInstance
+                      name="Kavita"
+                      hostname={kavitaData.hostname}
+                      port={kavitaData.port}
+                      isSSL={kavitaData.useSsl}
+                      isComics
+                      externalUrl={kavitaData.externalUrl}
+                      onEdit={() => setEditKavitaModal(true)}
+                      onDelete={() =>
+                        setDeleteServerModal({
+                          open: true,
+                          serverId: null,
+                          type: 'kavita',
+                        })
+                      }
+                    />
+                  ) : (
+                    <li className="settings-service-add-card">
+                      <div className="settings-service-add-card-content">
+                        <Button
+                          buttonType="success"
+                          buttonSize="standard"
+                          onClick={() => setEditKavitaModal(true)}
+                        >
+                          <PlusIcon />
+                          <span>{intl.formatMessage(messages.addKavita)}</span>
+                        </Button>
+                      </div>
+                    </li>
+                  )}
+                </ul>
               </div>
               <div
                 className="settings-service-heading"

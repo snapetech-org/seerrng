@@ -180,6 +180,7 @@ export const apiMessages: Record<
   m0cd7bb3089910dccd77b: 'Invalid comic identity.',
   m0cdd74535be0c71f3dc0: 'Invalid Plex collection selection.',
   m0cdf275bfa9ce8ddd412: 'Malformed CSV quoting.',
+  m0cfbd301e90696d361d4: 'Kavita did not return a session token.',
   m0d1aa7daf134cba1ff93: 'Open Library book discovery request timed out.',
   m0d1f623c24509c4a535f: 'Cannot check series collections right now.',
   m0d2d3b16bdad80d2d4bc: 'requestRootFolders must be an object.',
@@ -253,6 +254,7 @@ export const apiMessages: Record<
   m119c88b21206f2daba4b: '{value0}: enabled setting must be true or false.',
   m11a820d15d1fcca9d380: 'Whisparr library browsing is unavailable right now.',
   m11b44a3822666c4add2e: 'downloadPathMappings[{value0}] must be an object.',
+  m11b5ce29e8bbc6d3ad28: 'Kavita returned an invalid series page.',
   m11bdb9e60e27ddd8f987: 'Enter a valid game title and library state.',
   m11cb10f04bdab434e57e:
     'Transport bootstrap is only available before setup is complete or to an authenticated administrator.',
@@ -1060,6 +1062,7 @@ export const apiMessages: Record<
   m4ced5b92a007a52e82fb:
     'A valid software category and catalog title are required.',
   m4cf7aa014cb8380548c4: 'Book server series metadata is unavailable.',
+  m4cfecb7d2efaacdc8a6c: 'Could not connect to Kavita.',
   m4d42e64ae7072f77f003: 'Choose a valid source folder.',
   m4d46b2241240c02f52a7: 'Invalid Discogs release identity',
   m4d4a7857fa672e925b64: 'Reader service did not return an access token.',
@@ -1342,6 +1345,7 @@ export const apiMessages: Record<
   m605c0f0fe0296bbccbcb: 'Choose ebook or audiobook media.',
   m60640eb2b75cb8b9fdf3:
     'Advanced Request or Manage Requests permission is required.',
+  m6073c2cc8ef854f98857: 'Kavita returned an invalid library list.',
   m6082cbd02cd60e41f6e3: 'Sportarr returned an invalid league library',
   m608b4833bb61b61cf825: 'Invalid Cover Art Archive settings.',
   m6091dc83b97a03269d0c:
@@ -2725,6 +2729,7 @@ export const apiMessages: Record<
   mc73fee6c5396519dd225: 'BookOrbit connection needs an account and password.',
   mc74896863adb52dfa21b: 'User settings body must be an object.',
   mc7736058413ee241e5c4: 'Unable to submit request.',
+  mc7c17d51f450414ddbc9: 'Kavita returned an unexpectedly large library.',
   mc7d019063e6f084cc936:
     'Bindery could not confirm the request status. Refresh and try again.',
   mc7d39f1dd87ed20fe835:
@@ -3325,6 +3330,7 @@ export const apiMessages: Record<
   mf1b167bb645033b0df5c: 'The vision provider returned an invalid reading.',
   mf1bde7fc2fff83134270: '[Readarr] Failed to retrieve books: {value0}',
   mf1d320b606b1127cb5ca: 'External API request target is not allowed.',
+  mf1dfb9d5b5b5565ecd1f: 'Kavita service URL is invalid.',
   mf1e5d5c2e1f7a2d1adcb:
     'Per-request comic folders are only supported by Kapowarr.',
   mf1ff8dbdf80526670c41: 'You do not have permission to update this request.',

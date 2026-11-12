@@ -8,6 +8,7 @@ import type { DownloadingItem } from '@server/lib/downloadtracker';
 import { issueLiveDownloadToken } from '@server/lib/liveDownloadTokens';
 import { Permission } from '@server/lib/permissions';
 import { getSettings } from '@server/lib/settings';
+import { isUserMediaCategoryEnabled } from '@server/lib/userMediaCategories';
 import { createHmac } from 'node:crypto';
 
 const projectPublicMediaRequest = (request: MediaRequest): MediaRequest =>
@@ -185,6 +186,14 @@ export const restrictMediaOperationalFieldsForUser = (
   }
 
   const isAdmin = user?.hasPermission(Permission.ADMIN) ?? false;
+  // the reading-server link only for people who can see comics
+  if (
+    media.readerUrl &&
+    (media.mediaType !== MediaType.COMIC ||
+      !isUserMediaCategoryEnabled(user, 'comic'))
+  ) {
+    delete media.readerUrl;
+  }
   if (media.mediaType === MediaType.BOOK) {
     media.hasPlexAudiobookFile =
       media.hasPlexAudiobookFile === true || !!media.ratingKey;

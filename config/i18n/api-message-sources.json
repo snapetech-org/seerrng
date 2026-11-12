@@ -819,7 +819,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/index.ts",
-          "line": 2378,
+          "line": 2380,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'Set Jellyfin as the active media server and enable media-server sign-in before enabling bridge sign-in.'",
@@ -2085,7 +2085,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/index.ts",
-          "line": 531,
+          "line": 532,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "`${fieldName} must be a valid port.`",
@@ -2351,7 +2351,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/index.ts",
-          "line": 891,
+          "line": 892,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "error instanceof Error ? error.message : 'PORT is invalid.'",
@@ -2827,7 +2827,7 @@
         },
         {
           "path": "server/routes/settings/index.ts",
-          "line": 384,
+          "line": 385,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'Settings body must be an object.'",
@@ -3047,7 +3047,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/index.ts",
-          "line": 1495,
+          "line": 1496,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'Enter the configured Lumen companion address.'",
@@ -3479,6 +3479,25 @@
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Malformed CSV quoting.'",
+          "captured": []
+        }
+      ]
+    },
+    {
+      "key": "m0cfbd301e90696d361d4",
+      "id": "utils.ApiMessage.m0cfbd301e90696d361d4",
+      "source": "Kavita did not return a session token.",
+      "defaultMessage": "Kavita did not return a session token.",
+      "sourceHash": "0cfbd301e90696d361d4633e0eb60945ded42ce559e8b8bac11c511bde1db152",
+      "parts": ["Kavita did not return a session token."],
+      "parameterCount": 0,
+      "callsites": [
+        {
+          "path": "server/api/kavita.ts",
+          "line": 144,
+          "kind": "app-error-candidate",
+          "field": "message",
+          "expression": "'Kavita did not return a session token.'",
           "captured": []
         }
       ]
@@ -4879,6 +4898,25 @@
       ]
     },
     {
+      "key": "m11b5ce29e8bbc6d3ad28",
+      "id": "utils.ApiMessage.m11b5ce29e8bbc6d3ad28",
+      "source": "Kavita returned an invalid series page.",
+      "defaultMessage": "Kavita returned an invalid series page.",
+      "sourceHash": "11b5ce29e8bbc6d3ad28ccd32358b64ed32eed7ea16bb6926c64ba0cba82b8b3",
+      "parts": ["Kavita returned an invalid series page."],
+      "parameterCount": 0,
+      "callsites": [
+        {
+          "path": "server/api/kavita.ts",
+          "line": 196,
+          "kind": "app-error-candidate",
+          "field": "message",
+          "expression": "'Kavita returned an invalid series page.'",
+          "captured": []
+        }
+      ]
+    },
+    {
       "key": "m11bdb9e60e27ddd8f987",
       "id": "utils.ApiMessage.m11bdb9e60e27ddd8f987",
       "source": "Enter a valid game title and library state.",
@@ -5236,7 +5274,7 @@
       "callsites": [
         {
           "path": "server/api/comics/backissue.ts",
-          "line": 320,
+          "line": 353,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'BackIssue returned an invalid queue response.'",
@@ -5825,7 +5863,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/index.ts",
-          "line": 1422,
+          "line": 1423,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "`defaultQuotas.${mediaType} must be an object.`",
@@ -6431,7 +6469,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/index.ts",
-          "line": 1571,
+          "line": 1572,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'streamingRequestPolicy.enabled must be a boolean.'",
@@ -6982,7 +7020,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/index.ts",
-          "line": 1284,
+          "line": 1285,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'ageGate must be an object.'",
@@ -7868,7 +7906,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/index.ts",
-          "line": 1244,
+          "line": 1245,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "`Unknown media category: ${key}.`",
@@ -9216,7 +9254,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/index.ts",
-          "line": 1308,
+          "line": 1309,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'ageGate.maxTvCertification must be valid.'",
@@ -11959,7 +11997,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/index.ts",
-          "line": 896,
+          "line": 897,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'tls.httpsPort must differ from the HTTP PORT.'",
@@ -13996,7 +14034,7 @@
       "callsites": [
         {
           "path": "server/api/comics/backissue.ts",
-          "line": 150,
+          "line": 183,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'BackIssue did not return an authenticated user.'",
@@ -14886,7 +14924,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/index.ts",
-          "line": 1397,
+          "line": 1398,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'defaultQuotas must be an object.'",
@@ -15192,7 +15230,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/index.ts",
-          "line": 1317,
+          "line": 1318,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'ageGate.certificationCountry must be valid.'",
@@ -15255,7 +15293,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/index.ts",
-          "line": 2921,
+          "line": 2923,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to retrieve unimported Plex users.'",
@@ -15293,7 +15331,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/index.ts",
-          "line": 1113,
+          "line": 1114,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'proxy hostname and port are required when proxy is enabled.'",
@@ -16906,7 +16944,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/index.ts",
-          "line": 1299,
+          "line": 1300,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'ageGate.maxMovieCertification must be valid.'",
@@ -17455,7 +17493,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/index.ts",
-          "line": 2291,
+          "line": 2293,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Only Music/Audiobook libraries can be reclassified between the two.'",
@@ -17793,7 +17831,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/index.ts",
-          "line": 989,
+          "line": 990,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'Add at least one administrator network before enabling the restriction.'",
@@ -18511,7 +18549,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/index.ts",
-          "line": 2273,
+          "line": 2275,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Type is required.'",
@@ -18754,7 +18792,7 @@
       "callsites": [
         {
           "path": "server/api/comics/backissue.ts",
-          "line": 288,
+          "line": 321,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'BackIssue did not return the added series ID.'",
@@ -19170,7 +19208,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/index.ts",
-          "line": 435,
+          "line": 436,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'applicationUrl must not contain credentials, a query, or a fragment.'",
@@ -19837,7 +19875,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/index.ts",
-          "line": 514,
+          "line": 515,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "`${fieldName} must be a valid hostname or IP address.`",
@@ -20536,6 +20574,25 @@
       ]
     },
     {
+      "key": "m4cfecb7d2efaacdc8a6c",
+      "id": "utils.ApiMessage.m4cfecb7d2efaacdc8a6c",
+      "source": "Could not connect to Kavita.",
+      "defaultMessage": "Could not connect to Kavita.",
+      "sourceHash": "4cfecb7d2efaacdc8a6c105bb26e3930358c076dd935b145e64e46ee8df68ab8",
+      "parts": ["Could not connect to Kavita."],
+      "parameterCount": 0,
+      "callsites": [
+        {
+          "path": "server/routes/settings/kavita.ts",
+          "line": 89,
+          "kind": "authored-message-field",
+          "field": "message",
+          "expression": "error instanceof Error\n            ? error.message\n            : 'Could not connect to Kavita.'",
+          "captured": []
+        }
+      ]
+    },
+    {
       "key": "m4d42e64ae7072f77f003",
       "id": "utils.ApiMessage.m4d42e64ae7072f77f003",
       "source": "Choose a valid source folder.",
@@ -21209,7 +21266,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/index.ts",
-          "line": 2124,
+          "line": 2126,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Library sync and episode order updates must be separate.'",
@@ -21217,7 +21274,7 @@
         },
         {
           "path": "server/routes/settings/index.ts",
-          "line": 2572,
+          "line": 2574,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Library sync and episode order updates must be separate.'",
@@ -22996,7 +23053,7 @@
         },
         {
           "path": "server/routes/settings/index.ts",
-          "line": 2072,
+          "line": 2074,
           "kind": "persisted-message-assignment",
           "field": "message",
           "expression": "'OK'",
@@ -23468,7 +23525,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/index.ts",
-          "line": 1236,
+          "line": 1237,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'enabledMediaCategories must be an object.'",
@@ -24274,7 +24331,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/index.ts",
-          "line": 1906,
+          "line": 1908,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'The current client IP must be included in the allowed networks before enabling or changing this restriction.'",
@@ -24478,7 +24535,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/index.ts",
-          "line": 802,
+          "line": 803,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'tls.mode must be a string.'",
@@ -25721,6 +25778,25 @@
       ]
     },
     {
+      "key": "m6073c2cc8ef854f98857",
+      "id": "utils.ApiMessage.m6073c2cc8ef854f98857",
+      "source": "Kavita returned an invalid library list.",
+      "defaultMessage": "Kavita returned an invalid library list.",
+      "sourceHash": "6073c2cc8ef854f9885701eedfc17178b11b155562d57a819f81b375e6cb2c40",
+      "parts": ["Kavita returned an invalid library list."],
+      "parameterCount": 0,
+      "callsites": [
+        {
+          "path": "server/api/kavita.ts",
+          "line": 179,
+          "kind": "app-error-candidate",
+          "field": "message",
+          "expression": "'Kavita returned an invalid library list.'",
+          "captured": []
+        }
+      ]
+    },
+    {
       "key": "m6082cbd02cd60e41f6e3",
       "id": "utils.ApiMessage.m6082cbd02cd60e41f6e3",
       "source": "Sportarr returned an invalid league library",
@@ -26066,7 +26142,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/index.ts",
-          "line": 782,
+          "line": 783,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "`${fieldName} must be a valid number.`",
@@ -26091,7 +26167,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/index.ts",
-          "line": 3086,
+          "line": 3088,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Invalid job schedule.'",
@@ -26099,7 +26175,7 @@
         },
         {
           "path": "server/routes/settings/index.ts",
-          "line": 3120,
+          "line": 3122,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Invalid job schedule.'",
@@ -26107,7 +26183,7 @@
         },
         {
           "path": "server/routes/settings/index.ts",
-          "line": 3153,
+          "line": 3155,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Invalid job schedule.'",
@@ -26500,7 +26576,7 @@
       "callsites": [
         {
           "path": "server/api/comics/backissue.ts",
-          "line": 266,
+          "line": 299,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'BackIssue returned an unexpectedly large collection.'",
@@ -27985,7 +28061,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/index.ts",
-          "line": 913,
+          "line": 914,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'tls.httpAuthAcknowledged must be true before HTTP authentication can be enabled.'",
@@ -28637,7 +28713,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/index.ts",
-          "line": 1581,
+          "line": 1582,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'streamingRequestPolicy.condition must be available or unavailable.'",
@@ -29167,7 +29243,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/index.ts",
-          "line": 2999,
+          "line": 3001,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to retrieve logs.'",
@@ -30085,7 +30161,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/index.ts",
-          "line": 1557,
+          "line": 1558,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'streamingRequestPolicy must be an object.'",
@@ -30246,7 +30322,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/index.ts",
-          "line": 2831,
+          "line": 2833,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Tautulli version not supported'",
@@ -30322,7 +30398,7 @@
       "callsites": [
         {
           "path": "server/api/comics/backissue.ts",
-          "line": 250,
+          "line": 283,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'BackIssue returned an invalid collection page.'",
@@ -30550,7 +30626,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/index.ts",
-          "line": 3198,
+          "line": 3200,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Cache not found.'",
@@ -30558,7 +30634,7 @@
         },
         {
           "path": "server/routes/settings/index.ts",
-          "line": 3202,
+          "line": 3204,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Cache not found.'",
@@ -30566,7 +30642,7 @@
         },
         {
           "path": "server/routes/settings/index.ts",
-          "line": 3212,
+          "line": 3214,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Cache not found.'",
@@ -30574,7 +30650,7 @@
         },
         {
           "path": "server/routes/settings/index.ts",
-          "line": 3227,
+          "line": 3229,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Cache not found.'",
@@ -30582,7 +30658,7 @@
         },
         {
           "path": "server/routes/settings/index.ts",
-          "line": 3235,
+          "line": 3237,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Cache not found.'",
@@ -30856,7 +30932,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/index.ts",
-          "line": 415,
+          "line": 416,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "`${fieldName} must be a valid HTTP URL.`",
@@ -30870,7 +30946,7 @@
         },
         {
           "path": "server/routes/settings/index.ts",
-          "line": 579,
+          "line": 580,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "`${fieldName} must be a valid HTTP URL.`",
@@ -30916,7 +30992,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/index.ts",
-          "line": 2840,
+          "line": 2842,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to connect to Tautulli.'",
@@ -30973,7 +31049,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/index.ts",
-          "line": 1269,
+          "line": 1270,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "`Unknown default media category: ${key}.`",
@@ -33406,7 +33482,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/index.ts",
-          "line": 2029,
+          "line": 2031,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to connect to Plex.'",
@@ -33628,7 +33704,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/index.ts",
-          "line": 1273,
+          "line": 1274,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "`defaultEnabledMediaCategories.${key} must be a boolean.`",
@@ -33840,7 +33916,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/index.ts",
-          "line": 839,
+          "line": 840,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "error instanceof Error ? error.message : 'tls.hosts is invalid.'",
@@ -34072,7 +34148,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/index.ts",
-          "line": 3052,
+          "line": 3054,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Job is running on another instance.'",
@@ -35043,7 +35119,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/index.ts",
-          "line": 439,
+          "line": 440,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'applicationUrl must be a valid HTTP URL.'",
@@ -35051,7 +35127,7 @@
         },
         {
           "path": "server/routes/settings/index.ts",
-          "line": 444,
+          "line": 445,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'applicationUrl must be a valid HTTP URL.'",
@@ -35202,7 +35278,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/index.ts",
-          "line": 304,
+          "line": 305,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'Episode order must be none, tmdb, or tvdb.'",
@@ -35360,7 +35436,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/index.ts",
-          "line": 1386,
+          "line": 1387,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'mediaServerType must be valid.'",
@@ -35624,7 +35700,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/index.ts",
-          "line": 2087,
+          "line": 2089,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to retrieve Plex server list.'",
@@ -36055,7 +36131,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/index.ts",
-          "line": 2361,
+          "line": 2363,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'enabled must be a boolean.'",
@@ -36261,7 +36337,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/index.ts",
-          "line": 1376,
+          "line": 1377,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'defaultPermissions must be valid.'",
@@ -38262,7 +38338,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/index.ts",
-          "line": 1590,
+          "line": 1591,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'streamingRequestPolicy.action must be reject, pending, or approve.'",
@@ -40513,7 +40589,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/index.ts",
-          "line": 1261,
+          "line": 1262,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'defaultEnabledMediaCategories must be an object.'",
@@ -41462,7 +41538,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/index.ts",
-          "line": 562,
+          "line": 563,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "`${fieldName} must be a relative URL path.`",
@@ -41527,7 +41603,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/index.ts",
-          "line": 794,
+          "line": 795,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'tls must be an object.'",
@@ -42645,7 +42721,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/index.ts",
-          "line": 3025,
+          "line": 3027,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Job is already running.'",
@@ -42977,7 +43053,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/index.ts",
-          "line": 1057,
+          "line": 1058,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'proxy must be an object.'",
@@ -43803,7 +43879,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/index.ts",
-          "line": 1547,
+          "line": 1548,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "error instanceof Error\n            ? error.message\n            : 'downloadPathMappings must contain valid path mappings.'",
@@ -43843,7 +43919,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/index.ts",
-          "line": 3021,
+          "line": 3023,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Job not found.'",
@@ -43851,7 +43927,7 @@
         },
         {
           "path": "server/routes/settings/index.ts",
-          "line": 3044,
+          "line": 3046,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Job not found.'",
@@ -43859,7 +43935,7 @@
         },
         {
           "path": "server/routes/settings/index.ts",
-          "line": 3074,
+          "line": 3076,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Job not found.'",
@@ -43867,7 +43943,7 @@
         },
         {
           "path": "server/routes/settings/index.ts",
-          "line": 3131,
+          "line": 3133,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Job not found.'",
@@ -44068,7 +44144,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/index.ts",
-          "line": 1631,
+          "line": 1632,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Invalid log read limit.'",
@@ -45010,7 +45086,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/index.ts",
-          "line": 3135,
+          "line": 3137,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Invalid job enabled setting.'",
@@ -45018,7 +45094,7 @@
         },
         {
           "path": "server/routes/settings/index.ts",
-          "line": 3143,
+          "line": 3145,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Invalid job enabled setting.'",
@@ -46470,7 +46546,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/index.ts",
-          "line": 2096,
+          "line": 2098,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Library synchronization and updates require POST.'",
@@ -46478,7 +46554,7 @@
         },
         {
           "path": "server/routes/settings/index.ts",
-          "line": 2544,
+          "line": 2546,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Library synchronization and updates require POST.'",
@@ -46643,6 +46719,14 @@
         {
           "path": "server/routes/settings/jellystat.ts",
           "line": 23,
+          "kind": "authored-message-field",
+          "field": "error",
+          "expression": "'Settings must be an object.'",
+          "captured": []
+        },
+        {
+          "path": "server/routes/settings/kavita.ts",
+          "line": 25,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'Settings must be an object.'",
@@ -47433,7 +47517,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/index.ts",
-          "line": 289,
+          "line": 290,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'Library ID and episode order must be provided together.'",
@@ -48742,7 +48826,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/index.ts",
-          "line": 1018,
+          "line": 1019,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'dnsCache must be an object.'",
@@ -50167,7 +50251,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/index.ts",
-          "line": 903,
+          "line": 904,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'tls.allowHttpAuth cannot be enabled while built-in HTTPS is enabled.'",
@@ -50822,7 +50906,7 @@
         },
         {
           "path": "server/lib/settings/index.ts",
-          "line": 1456,
+          "line": 1472,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Settings path must be a regular file.'",
@@ -50891,6 +50975,25 @@
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to submit request.'",
+          "captured": []
+        }
+      ]
+    },
+    {
+      "key": "mc7c17d51f450414ddbc9",
+      "id": "utils.ApiMessage.mc7c17d51f450414ddbc9",
+      "source": "Kavita returned an unexpectedly large library.",
+      "defaultMessage": "Kavita returned an unexpectedly large library.",
+      "sourceHash": "c7c17d51f450414ddbc920f40d342fbf5bdf2e2c5af9d41a64e901f4d3865062",
+      "parts": ["Kavita returned an unexpectedly large library."],
+      "parameterCount": 0,
+      "callsites": [
+        {
+          "path": "server/api/kavita.ts",
+          "line": 205,
+          "kind": "app-error-candidate",
+          "field": "message",
+          "expression": "'Kavita returned an unexpectedly large library.'",
           "captured": []
         }
       ]
@@ -50994,7 +51097,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/index.ts",
-          "line": 1188,
+          "line": 1189,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "`blocklistedTags must contain at most ${MAX_BLOCKLISTED_TAG_IDS} valid keyword IDs.`",
@@ -51098,6 +51201,14 @@
         {
           "path": "server/routes/settings/audiobookshelf.ts",
           "line": 62,
+          "kind": "authored-message-field",
+          "field": "error",
+          "expression": "'External URL must be a valid HTTP or HTTPS URL.'",
+          "captured": []
+        },
+        {
+          "path": "server/routes/settings/kavita.ts",
+          "line": 42,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'External URL must be a valid HTTP or HTTPS URL.'",
@@ -51389,7 +51500,7 @@
       "callsites": [
         {
           "path": "server/api/comics/backissue.ts",
-          "line": 178,
+          "line": 211,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'BackIssue returned an invalid library list.'",
@@ -54045,7 +54156,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/index.ts",
-          "line": 1223,
+          "line": 1224,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "`${fieldName} must contain at most ${MAX_BLOCKLISTED_GENRE_IDS} valid genre IDs.`",
@@ -54952,7 +55063,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/index.ts",
-          "line": 1513,
+          "line": 1514,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "`${fieldName} must not end with a slash.`",
@@ -55099,7 +55210,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/index.ts",
-          "line": 2369,
+          "line": 2371,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'Connect a Jellyfin server before enabling bridge sign-in.'",
@@ -55229,7 +55340,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/index.ts",
-          "line": 1970,
+          "line": 1972,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Server not found'",
@@ -55778,7 +55889,7 @@
         },
         {
           "path": "server/routes/settings/index.ts",
-          "line": 1834,
+          "line": 1836,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'User missing from request.'",
@@ -55786,7 +55897,7 @@
         },
         {
           "path": "server/routes/settings/index.ts",
-          "line": 1926,
+          "line": 1928,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'User missing from request.'",
@@ -56651,7 +56762,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/index.ts",
-          "line": 1331,
+          "line": 1332,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'otherUsersAvailability must be show, distinguish, or hide.'",
@@ -58654,7 +58765,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/index.ts",
-          "line": 2721,
+          "line": 2723,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Jellyfin is not configured.'",
@@ -59477,7 +59588,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/index.ts",
-          "line": 1290,
+          "line": 1291,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'ageGate.defaultRestricted must be a boolean.'",
@@ -60074,7 +60185,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/index.ts",
-          "line": 1653,
+          "line": 1654,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Log symlink must target a file in the log directory.'",
@@ -60459,7 +60570,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/index.ts",
-          "line": 1247,
+          "line": 1248,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "`enabledMediaCategories.${key} must be a boolean.`",
@@ -60591,7 +60702,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/index.ts",
-          "line": 1666,
+          "line": 1667,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Log path must resolve to one private regular file.'",
@@ -61002,7 +61113,7 @@
       "callsites": [
         {
           "path": "server/api/comics/backissue.ts",
-          "line": 170,
+          "line": 203,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'BackIssue returned an invalid status response.'",
@@ -61629,7 +61740,7 @@
       "callsites": [
         {
           "path": "server/api/comics/backissue.ts",
-          "line": 284,
+          "line": 317,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'BackIssue returned an invalid add response.'",
@@ -61884,7 +61995,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/index.ts",
-          "line": 2188,
+          "line": 2190,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Episode order can only be set for an existing TV library.'",
@@ -61892,7 +62003,7 @@
         },
         {
           "path": "server/routes/settings/index.ts",
-          "line": 2589,
+          "line": 2591,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Episode order can only be set for an existing TV library.'",
@@ -62053,6 +62164,25 @@
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'External API request target is not allowed.'",
+          "captured": []
+        }
+      ]
+    },
+    {
+      "key": "mf1dfb9d5b5b5565ecd1f",
+      "id": "utils.ApiMessage.mf1dfb9d5b5b5565ecd1f",
+      "source": "Kavita service URL is invalid.",
+      "defaultMessage": "Kavita service URL is invalid.",
+      "sourceHash": "f1dfb9d5b5b5565ecd1f72e5bd1170587a1d0a9f3f9347733123ce1589c4fd58",
+      "parts": ["Kavita service URL is invalid."],
+      "parameterCount": 0,
+      "callsites": [
+        {
+          "path": "server/api/kavita.ts",
+          "line": 120,
+          "kind": "app-error-candidate",
+          "field": "message",
+          "expression": "'Kavita service URL is invalid.'",
           "captured": []
         }
       ]
@@ -63531,7 +63661,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/index.ts",
-          "line": 808,
+          "line": 809,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "error instanceof Error ? error.message : 'tls.mode is invalid.'",
@@ -63650,7 +63780,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/index.ts",
-          "line": 1140,
+          "line": 1141,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'locale must be a supported locale.'",
@@ -64786,7 +64916,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/index.ts",
-          "line": 1595,
+          "line": 1596,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'streamingRequestPolicy.allowUserOverride must be a boolean.'",
@@ -65533,7 +65663,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/index.ts",
-          "line": 1456,
+          "line": 1457,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'defaultFrontend must be native, lumen, or external.'",
@@ -65818,7 +65948,7 @@
         },
         {
           "path": "server/routes/settings/index.ts",
-          "line": 457,
+          "line": 458,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "`${fieldName} must be a boolean.`",
@@ -65832,7 +65962,7 @@
         },
         {
           "path": "server/routes/settings/index.ts",
-          "line": 540,
+          "line": 541,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "`${fieldName} must be a boolean.`",
@@ -66634,7 +66764,7 @@
     },
     {
       "path": "server/api/comics/backissue.ts",
-      "line": 166,
+      "line": 199,
       "kind": "app-error-candidate",
       "field": "message",
       "expression": "missingPermissions",
@@ -71574,6 +71704,24 @@
       "reason": "dynamic/provider/user value"
     },
     {
+      "path": "server/lib/kavitaReader.ts",
+      "line": 288,
+      "kind": "authored-message-field",
+      "field": "errorMessage",
+      "expression": "error instanceof Error ? error.message : String(error)",
+      "source": "{value0}",
+      "reason": "dynamic/provider/user value"
+    },
+    {
+      "path": "server/lib/kavitaReader.ts",
+      "line": 288,
+      "kind": "authored-message-field",
+      "field": "errorMessage",
+      "expression": "error instanceof Error ? error.message : String(error)",
+      "source": "{value0}",
+      "reason": "dynamic/provider/user value"
+    },
+    {
       "path": "server/lib/liveDownloads.ts",
       "line": 168,
       "kind": "authored-message-variable",
@@ -74275,7 +74423,7 @@
     },
     {
       "path": "server/lib/scanners/comics/backissue/index.ts",
-      "line": 34,
+      "line": 40,
       "kind": "message-helper-return",
       "field": "message",
       "expression": "{\n      running: this.running,\n      progress: this.progress,\n      total: this.items.length,\n      currentServer: this.currentServer,\n      servers: this.servers,\n    }",
@@ -74284,7 +74432,7 @@
     },
     {
       "path": "server/lib/scanners/comics/backissue/index.ts",
-      "line": 130,
+      "line": 137,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -74293,7 +74441,25 @@
     },
     {
       "path": "server/lib/scanners/comics/backissue/index.ts",
-      "line": 130,
+      "line": 137,
+      "kind": "authored-message-field",
+      "field": "errorMessage",
+      "expression": "error instanceof Error ? error.message : String(error)",
+      "source": "{value0}",
+      "reason": "dynamic/provider/user value"
+    },
+    {
+      "path": "server/lib/scanners/comics/backissue/index.ts",
+      "line": 182,
+      "kind": "authored-message-field",
+      "field": "errorMessage",
+      "expression": "error instanceof Error ? error.message : String(error)",
+      "source": "{value0}",
+      "reason": "dynamic/provider/user value"
+    },
+    {
+      "path": "server/lib/scanners/comics/backissue/index.ts",
+      "line": 182,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -82537,7 +82703,7 @@
     },
     {
       "path": "server/routes/settings/index.ts",
-      "line": 808,
+      "line": 809,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "error instanceof Error ? error.message : 'tls.mode is invalid.'",
@@ -82546,7 +82712,7 @@
     },
     {
       "path": "server/routes/settings/index.ts",
-      "line": 839,
+      "line": 840,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "error instanceof Error ? error.message : 'tls.hosts is invalid.'",
@@ -82555,7 +82721,7 @@
     },
     {
       "path": "server/routes/settings/index.ts",
-      "line": 891,
+      "line": 892,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "error instanceof Error ? error.message : 'PORT is invalid.'",
@@ -82564,7 +82730,7 @@
     },
     {
       "path": "server/routes/settings/index.ts",
-      "line": 1486,
+      "line": 1487,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "parsed.error.replaceAll('applicationUrl', 'lumenPublicUrl')",
@@ -82573,7 +82739,7 @@
     },
     {
       "path": "server/routes/settings/index.ts",
-      "line": 1547,
+      "line": 1548,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "error instanceof Error\n            ? error.message\n            : 'downloadPathMappings must contain valid path mappings.'",
@@ -82582,7 +82748,7 @@
     },
     {
       "path": "server/routes/settings/index.ts",
-      "line": 1599,
+      "line": 1600,
       "kind": "authored-message-variable",
       "field": "rejectionMessage",
       "expression": "parseOptionalBoundedString(\n      policy.rejectionMessage,\n      {\n        fieldName: 'streamingRequestPolicy.rejectionMessage',\n        maxLength: MAX_STREAMING_REQUEST_REJECTION_MESSAGE_LENGTH,\n      }\n    )",
@@ -82591,7 +82757,7 @@
     },
     {
       "path": "server/routes/settings/index.ts",
-      "line": 1724,
+      "line": 1725,
       "kind": "authored-message-variable",
       "field": "parseLogMessages",
       "expression": "(\n  logContent: string,\n  filter: string[],\n  searchRegexp?: RegExp\n): LogMessage[] => {\n  const logs: LogMessage[] = [];\n  const logMessageProperties = [\n    'timestamp',\n    'level',\n    'label',\n    'message',\n    'data',\n  ];\n\n  logContent.split('\\n').forEach((line) => {\n    if (!line.length || Buffer.byteLength(line, 'utf8') > MAX_LOG_LINE_BYTES) {\n      return;\n    }\n\n    let logMessage: LogMessage & Record<string, unknown>;\n    try {\n      logMessage = JSON.parse(line);\n    } catch {\n      return;\n    }\n\n    if (\n      !filter.includes(logMessage.level) ||\n      typeof logMessage.message !== 'string'\n    ) {\n      return;\n    }\n\n    if (\n      !Object.keys(logMessage).every((key) =>\n        logMessageProperties.includes(key)\n      )\n    ) {\n      Object.keys(logMessage)\n        .filter((prop) => !logMessageProperties.includes(prop))\n        .forEach((prop) => {\n          set(logMessage, `data.${prop}`, logMessage[prop]);\n        });\n    }\n\n    if (searchRegexp) {\n      if (\n        // label and data are sometimes undefined\n        !searchRegexp.test(logMessage.label ?? '') &&\n        !searchRegexp.test(logMessage.message) &&\n        !deepLogValueStrings(logMessage.data ?? {}).some((val) =>\n          searchRegexp.test(val)\n        )\n      ) {\n        return;\n      }\n    }\n\n    logs.push(redactSecrets(logMessage));\n  });\n\n  return logs;\n}",
@@ -82600,7 +82766,7 @@
     },
     {
       "path": "server/routes/settings/index.ts",
-      "line": 1846,
+      "line": 1848,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "parsedBody.error",
@@ -82609,7 +82775,7 @@
     },
     {
       "path": "server/routes/settings/index.ts",
-      "line": 1850,
+      "line": 1852,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "parsedMain.error",
@@ -82618,7 +82784,7 @@
     },
     {
       "path": "server/routes/settings/index.ts",
-      "line": 1877,
+      "line": 1879,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "parsedBody.error",
@@ -82627,7 +82793,7 @@
     },
     {
       "path": "server/routes/settings/index.ts",
-      "line": 1884,
+      "line": 1886,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "parsedNetwork.error",
@@ -82636,7 +82802,7 @@
     },
     {
       "path": "server/routes/settings/index.ts",
-      "line": 1944,
+      "line": 1946,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "parsedBody.error",
@@ -82645,7 +82811,7 @@
     },
     {
       "path": "server/routes/settings/index.ts",
-      "line": 1953,
+      "line": 1955,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "parsedPlex.error",
@@ -82654,7 +82820,7 @@
     },
     {
       "path": "server/routes/settings/index.ts",
-      "line": 2017,
+      "line": 2019,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -82663,7 +82829,7 @@
     },
     {
       "path": "server/routes/settings/index.ts",
-      "line": 2017,
+      "line": 2019,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -82672,7 +82838,7 @@
     },
     {
       "path": "server/routes/settings/index.ts",
-      "line": 2025,
+      "line": 2027,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "e.message",
@@ -82681,7 +82847,7 @@
     },
     {
       "path": "server/routes/settings/index.ts",
-      "line": 2075,
+      "line": 2077,
       "kind": "persisted-message-assignment",
       "field": "message",
       "expression": "e.message.split(':')[0]",
@@ -82690,7 +82856,7 @@
     },
     {
       "path": "server/routes/settings/index.ts",
-      "line": 2083,
+      "line": 2085,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "e.message",
@@ -82699,7 +82865,7 @@
     },
     {
       "path": "server/routes/settings/index.ts",
-      "line": 2108,
+      "line": 2110,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "parsedBody.error",
@@ -82708,7 +82874,7 @@
     },
     {
       "path": "server/routes/settings/index.ts",
-      "line": 2112,
+      "line": 2114,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "sync.error",
@@ -82717,7 +82883,7 @@
     },
     {
       "path": "server/routes/settings/index.ts",
-      "line": 2116,
+      "line": 2118,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "enabledLibraries.error",
@@ -82726,7 +82892,7 @@
     },
     {
       "path": "server/routes/settings/index.ts",
-      "line": 2120,
+      "line": 2122,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "episodeOrder.error",
@@ -82735,7 +82901,7 @@
     },
     {
       "path": "server/routes/settings/index.ts",
-      "line": 2171,
+      "line": 2173,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -82744,7 +82910,7 @@
     },
     {
       "path": "server/routes/settings/index.ts",
-      "line": 2171,
+      "line": 2173,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -82753,7 +82919,7 @@
     },
     {
       "path": "server/routes/settings/index.ts",
-      "line": 2240,
+      "line": 2242,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -82762,7 +82928,7 @@
     },
     {
       "path": "server/routes/settings/index.ts",
-      "line": 2240,
+      "line": 2242,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -82771,7 +82937,7 @@
     },
     {
       "path": "server/routes/settings/index.ts",
-      "line": 2257,
+      "line": 2259,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "libraryId.error",
@@ -82780,7 +82946,7 @@
     },
     {
       "path": "server/routes/settings/index.ts",
-      "line": 2262,
+      "line": 2264,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "parsedBody.error",
@@ -82789,7 +82955,7 @@
     },
     {
       "path": "server/routes/settings/index.ts",
-      "line": 2270,
+      "line": 2272,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "type.error",
@@ -82798,7 +82964,7 @@
     },
     {
       "path": "server/routes/settings/index.ts",
-      "line": 2317,
+      "line": 2319,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "parsedBody.error",
@@ -82807,7 +82973,7 @@
     },
     {
       "path": "server/routes/settings/index.ts",
-      "line": 2323,
+      "line": 2325,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "cancel.error",
@@ -82816,7 +82982,7 @@
     },
     {
       "path": "server/routes/settings/index.ts",
-      "line": 2327,
+      "line": 2329,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "start.error",
@@ -82825,7 +82991,7 @@
     },
     {
       "path": "server/routes/settings/index.ts",
-      "line": 2350,
+      "line": 2352,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "parsedBody.error",
@@ -82834,7 +83000,7 @@
     },
     {
       "path": "server/routes/settings/index.ts",
-      "line": 2358,
+      "line": 2360,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "enabled.error",
@@ -82843,7 +83009,7 @@
     },
     {
       "path": "server/routes/settings/index.ts",
-      "line": 2404,
+      "line": 2406,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "result.error",
@@ -82852,7 +83018,7 @@
     },
     {
       "path": "server/routes/settings/index.ts",
-      "line": 2418,
+      "line": 2420,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "parsedBody.error",
@@ -82861,7 +83027,7 @@
     },
     {
       "path": "server/routes/settings/index.ts",
-      "line": 2434,
+      "line": 2436,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "parsedJellyfin.error",
@@ -82870,7 +83036,7 @@
     },
     {
       "path": "server/routes/settings/index.ts",
-      "line": 2505,
+      "line": 2507,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -82879,7 +83045,7 @@
     },
     {
       "path": "server/routes/settings/index.ts",
-      "line": 2505,
+      "line": 2507,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -82888,7 +83054,7 @@
     },
     {
       "path": "server/routes/settings/index.ts",
-      "line": 2515,
+      "line": 2517,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "ApiErrorCode.InvalidUrl",
@@ -82897,7 +83063,7 @@
     },
     {
       "path": "server/routes/settings/index.ts",
-      "line": 2520,
+      "line": 2522,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "ApiErrorCode.InvalidUrl",
@@ -82906,7 +83072,7 @@
     },
     {
       "path": "server/routes/settings/index.ts",
-      "line": 2525,
+      "line": 2527,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "e.message",
@@ -82915,7 +83081,7 @@
     },
     {
       "path": "server/routes/settings/index.ts",
-      "line": 2530,
+      "line": 2532,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "ApiErrorCode.Unknown",
@@ -82924,7 +83090,7 @@
     },
     {
       "path": "server/routes/settings/index.ts",
-      "line": 2556,
+      "line": 2558,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "parsedBody.error",
@@ -82933,7 +83099,7 @@
     },
     {
       "path": "server/routes/settings/index.ts",
-      "line": 2560,
+      "line": 2562,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "sync.error",
@@ -82942,7 +83108,7 @@
     },
     {
       "path": "server/routes/settings/index.ts",
-      "line": 2564,
+      "line": 2566,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "enabledLibraries.error",
@@ -82951,7 +83117,7 @@
     },
     {
       "path": "server/routes/settings/index.ts",
-      "line": 2568,
+      "line": 2570,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "episodeOrder.error",
@@ -82960,7 +83126,7 @@
     },
     {
       "path": "server/routes/settings/index.ts",
-      "line": 2620,
+      "line": 2622,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "ApiErrorCode.SyncErrorGroupedFolders",
@@ -82969,7 +83135,7 @@
     },
     {
       "path": "server/routes/settings/index.ts",
-      "line": 2626,
+      "line": 2628,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "ApiErrorCode.SyncErrorNoLibraries",
@@ -82978,7 +83144,7 @@
     },
     {
       "path": "server/routes/settings/index.ts",
-      "line": 2706,
+      "line": 2708,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -82987,7 +83153,7 @@
     },
     {
       "path": "server/routes/settings/index.ts",
-      "line": 2706,
+      "line": 2708,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -82996,7 +83162,7 @@
     },
     {
       "path": "server/routes/settings/index.ts",
-      "line": 2774,
+      "line": 2776,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "parsedBody.error",
@@ -83005,7 +83171,7 @@
     },
     {
       "path": "server/routes/settings/index.ts",
-      "line": 2780,
+      "line": 2782,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "cancel.error",
@@ -83014,7 +83180,7 @@
     },
     {
       "path": "server/routes/settings/index.ts",
-      "line": 2784,
+      "line": 2786,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "start.error",
@@ -83023,7 +83189,7 @@
     },
     {
       "path": "server/routes/settings/index.ts",
-      "line": 2808,
+      "line": 2810,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "parsedBody.error",
@@ -83032,7 +83198,7 @@
     },
     {
       "path": "server/routes/settings/index.ts",
-      "line": 2821,
+      "line": 2823,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "parsedTautulli.error",
@@ -83041,7 +83207,7 @@
     },
     {
       "path": "server/routes/settings/index.ts",
-      "line": 2836,
+      "line": 2838,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "e.message",
@@ -83050,7 +83216,7 @@
     },
     {
       "path": "server/routes/settings/index.ts",
-      "line": 2917,
+      "line": 2919,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "e.message",
@@ -83059,7 +83225,7 @@
     },
     {
       "path": "server/routes/settings/index.ts",
-      "line": 2940,
+      "line": 2942,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "parsedSearch.error",
@@ -83068,7 +83234,7 @@
     },
     {
       "path": "server/routes/settings/index.ts",
-      "line": 2948,
+      "line": 2950,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "parsedFilter.error",
@@ -83077,7 +83243,7 @@
     },
     {
       "path": "server/routes/settings/index.ts",
-      "line": 2995,
+      "line": 2997,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error.message",
@@ -83144,6 +83310,33 @@
       "kind": "authored-message-field",
       "field": "message",
       "expression": "admittedKapowarr.error",
+      "source": "{value0}",
+      "reason": "dynamic/provider/user value"
+    },
+    {
+      "path": "server/routes/settings/kavita.ts",
+      "line": 73,
+      "kind": "authored-message-field",
+      "field": "message",
+      "expression": "parsed.error",
+      "source": "{value0}",
+      "reason": "dynamic/provider/user value"
+    },
+    {
+      "path": "server/routes/settings/kavita.ts",
+      "line": 89,
+      "kind": "authored-message-field",
+      "field": "message",
+      "expression": "error instanceof Error\n            ? error.message\n            : 'Could not connect to Kavita.'",
+      "source": "{value0}",
+      "reason": "dynamic/provider/user value"
+    },
+    {
+      "path": "server/routes/settings/kavita.ts",
+      "line": 102,
+      "kind": "authored-message-field",
+      "field": "message",
+      "expression": "parsed.error",
       "source": "{value0}",
       "reason": "dynamic/provider/user value"
     },

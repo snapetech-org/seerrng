@@ -11,6 +11,8 @@ export interface BackIssueCollectionItem {
   missing: number;
   active: number;
   type?: string;
+  /** The series folder, when BackIssue reports it. */
+  location?: string;
 }
 
 export interface BackIssueCollectionDetail {
@@ -18,6 +20,8 @@ export interface BackIssueCollectionDetail {
   title: string;
   cv_id?: number;
   files: { path: string; name?: string; size?: number }[];
+  /** The series folder: BackIssue's own, else the folder its files share. */
+  location?: string;
 }
 
 export interface BackIssueAddResult {
@@ -68,6 +72,26 @@ const boundedString = (value: unknown, max = 1_000): string | undefined =>
     ? value.slice(0, max)
     : undefined;
 
+const folderString = (value: unknown): string | undefined => {
+  const folder = boundedString(value, 4_096);
+  return folder && !folder.includes('\0') ? folder : undefined;
+};
+
+/** The deepest folder every file sits in. */
+export const commonFolder = (paths: string[]): string | undefined => {
+  const split = paths.map((path) =>
+    path.replace(/\\/g, '/').split('/').slice(0, -1)
+  );
+  if (!split.length) return undefined;
+  const shared: string[] = [];
+  for (let i = 0; i < split[0].length; i++) {
+    const part = split[0][i];
+    if (split.some((parts) => parts[i] !== part)) break;
+    shared.push(part);
+  }
+  return shared.join('/') || undefined;
+};
+
 const sanitizeCollectionItem = (
   value: unknown
 ): BackIssueCollectionItem | undefined => {
@@ -87,6 +111,7 @@ const sanitizeCollectionItem = (
     missing: boundedInteger(value.missing) ?? 0,
     active: boundedInteger(value.active) ?? 0,
     type: boundedString(value.type, 64),
+    location: folderString(value.location ?? value.path ?? value.folder),
   };
 };
 
@@ -112,7 +137,15 @@ const sanitizeCollectionDetail = (
       ];
     }
   );
-  return { id, title, cv_id: cvId, files };
+  return {
+    id,
+    title,
+    cv_id: cvId,
+    files,
+    location:
+      folderString(value.location ?? value.path ?? value.folder) ??
+      commonFolder(files.map((file) => file.path)),
+  };
 };
 
 class BackIssueAPI extends ExternalAPI {

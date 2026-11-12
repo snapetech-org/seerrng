@@ -8,6 +8,7 @@ import Media from '@server/entity/Media';
 import MediaIdentifier, {
   MediaIdentifierProvider,
 } from '@server/entity/MediaIdentifier';
+import * as kavitaReader from '@server/lib/kavitaReader';
 import { getSettings } from '@server/lib/settings';
 import { setupTestDb } from '@server/test/db';
 import { backissueScanner } from './index';
@@ -85,6 +86,120 @@ describe('BackIssue collection scanner', () => {
     );
     assert.strictEqual(linkedIdentifier?.media.id, media.id);
     assert.strictEqual(backissueScanner.status().running, false);
+  });
+
+  it('records each owned series and its folder for Kavita, once', async () => {
+    settings.backissue = [
+      {
+        id: 7,
+        name: 'Home BackIssue',
+        hostname: 'backissue.test',
+        port: 8787,
+        apiKey: 'backissue-test-key',
+        useSsl: false,
+        baseUrl: '',
+        isDefault: true,
+        externalUrl: '',
+        tags: [],
+        syncEnabled: true,
+        preventSearch: false,
+      },
+    ];
+    const previousKavita = settings.kavita;
+    settings.kavita = {
+      hostname: 'kavita.test',
+      port: 5000,
+      useSsl: false,
+      apiKey: 'kavita-key',
+    };
+    kavitaReader.resetKavitaReader();
+    scannerInternals.updateRate = 0;
+    const refresh = mock.method(
+      kavitaReader,
+      'refreshKavitaIndex',
+      async () => undefined
+    );
+    const recorded: unknown[] = [];
+    const record = mock.method(
+      kavitaReader,
+      'recordComicSeries',
+      (serviceId: number, id: number, ref: unknown) => {
+        recorded.push([serviceId, id, ref]);
+      }
+    );
+    mock.method(BackIssueAPI.prototype, 'getCollection', async () => [
+      {
+        id: 412,
+        title: 'Frieren',
+        cv_id: 9001,
+        total: 13,
+        owned: 13,
+        missing: 0,
+        active: 0,
+        type: 'manga',
+      },
+      {
+        id: 413,
+        title: 'Watchmen',
+        cv_id: 9002,
+        total: 12,
+        owned: 12,
+        missing: 0,
+        active: 0,
+        type: 'comic',
+        location: '/comics/DC Comics/Watchmen (1986)',
+      },
+      {
+        id: 414,
+        title: 'Not Yet',
+        cv_id: 9003,
+        total: 5,
+        owned: 0,
+        missing: 5,
+        active: 0,
+        type: 'manga',
+      },
+    ]);
+    const getSeries = mock.method(
+      BackIssueAPI.prototype,
+      'getSeries',
+      async (id: number) => ({
+        id,
+        title: 'Frieren',
+        files: [{ path: '/manga/Frieren/Frieren v01.cbz' }],
+        location: '/manga/Frieren',
+      })
+    );
+
+    try {
+      await backissueScanner.run();
+    } finally {
+      settings.kavita = previousKavita;
+    }
+
+    // only the owned series without a folder in its row is looked up
+    assert.strictEqual(getSeries.mock.callCount(), 1);
+    assert.strictEqual(record.mock.callCount(), 3);
+    // series in one batch are processed side by side
+    recorded.sort(
+      (a, b) => (a as [number, number])[1] - (b as [number, number])[1]
+    );
+    assert.deepStrictEqual(recorded[0], [
+      7,
+      412,
+      {
+        title: 'Frieren',
+        kind: 'manga',
+        folder: '/manga/Frieren',
+        comicVineId: 9001,
+        owned: 13,
+      },
+    ]);
+    assert.deepStrictEqual(
+      (recorded[1] as [number, number, { folder?: string }])[2].folder,
+      '/comics/DC Comics/Watchmen (1986)'
+    );
+    assert.strictEqual(refresh.mock.callCount(), 1);
   });
 
   it('does not query a BackIssue server when collection sync is disabled', async () => {

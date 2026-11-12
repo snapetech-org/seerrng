@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { afterEach, describe, it, mock } from 'node:test';
 
-import BackIssueAPI from '@server/api/comics/backissue';
+import BackIssueAPI, { commonFolder } from '@server/api/comics/backissue';
 
 type MockableBackIssue = {
   get: (
@@ -160,5 +160,37 @@ describe('BackIssueAPI', () => {
         pack: true,
       },
     ]);
+  });
+});
+
+describe('BackIssue series folder', () => {
+  it('takes the reported folder, else the folder the files share', async () => {
+    const client = api();
+    const internals = client as unknown as MockableBackIssue;
+    mock.method(internals, 'get', async (endpoint: string) =>
+      endpoint === '/api/collection/1'
+        ? {
+            id: 1,
+            title: 'Frieren',
+            files: [
+              { path: '/manga/Frieren/Volume 01/Frieren v01.cbz' },
+              { path: '/manga/Frieren/Volume 02/Frieren v02.cbz' },
+            ],
+          }
+        : {
+            id: 2,
+            title: 'Watchmen',
+            location: '/comics/DC Comics/Watchmen (1986)',
+            files: [],
+          }
+    );
+    assert.equal((await client.getSeries(1))?.location, '/manga/Frieren');
+    assert.equal(
+      (await client.getSeries(2))?.location,
+      '/comics/DC Comics/Watchmen (1986)'
+    );
+    assert.equal(commonFolder([]), undefined);
+    assert.equal(commonFolder(['/a.cbz', '/b.cbz']), undefined);
+    assert.equal(commonFolder(['C:\\manga\\Eri\\v1.cbz']), 'C:/manga/Eri');
   });
 });

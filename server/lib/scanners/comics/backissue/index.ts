@@ -5,6 +5,12 @@ import {
   setComicLibraryProgress,
 } from '@server/lib/comicLibraryProgress';
 import { getExternalRuntimeConfig } from '@server/lib/externalRuntimeConfig';
+import {
+  isKavitaConfigured,
+  needsComicSeriesFolder,
+  recordComicSeries,
+  refreshKavitaIndex,
+} from '@server/lib/kavitaReader';
 import type {
   RunnableScanner,
   StatusBase,
@@ -90,6 +96,10 @@ class BackIssueScanner
         await this.loop(this.processSeries.bind(this), { sessionId });
       }
       this.log('BackIssue comics scan complete', 'info');
+      // match the scanned series against the reading server (Kavita)
+      if (isKavitaConfigured()) {
+        void refreshKavitaIndex().catch(() => undefined);
+      }
     } catch (error) {
       this.log('Scan interrupted', 'error', {
         ...getHttpErrorDetails(error),
@@ -98,6 +108,47 @@ class BackIssueScanner
     } finally {
       this.endRun(sessionId);
     }
+  }
+
+  /**
+   * Remembers the series (and its folder) for "Read in Kavita". Without a
+   * folder in the collection row it is looked up once per series, again only
+   * when its files change, and only while a Kavita server is configured.
+   */
+  private async recordForReader(
+    series: BackIssueCollectionItem
+  ): Promise<void> {
+    if (!isKavitaConfigured()) return;
+    const serviceId = this.currentServer.id;
+    let folder = series.location;
+    if (
+      !folder &&
+      series.owned > 0 &&
+      needsComicSeriesFolder(serviceId, series.id, series.owned)
+    ) {
+      try {
+        const detail = await new BackIssueAPI({
+          url: BackIssueAPI.buildUrl(this.currentServer),
+          apiKey: this.currentServer.apiKey,
+        }).getSeries(series.id);
+        folder = detail?.location;
+      } catch (error) {
+        this.log('Could not read a BackIssue series folder', 'debug', {
+          errorMessage: error instanceof Error ? error.message : String(error),
+          title: series.title,
+        });
+      }
+    }
+    recordComicSeries(serviceId, series.id, {
+      title: series.title,
+      kind:
+        series.type === 'manga' || series.type === 'comic'
+          ? series.type
+          : undefined,
+      folder,
+      comicVineId: series.cv_id,
+      owned: series.owned,
+    });
   }
 
   private async processSeries(series: BackIssueCollectionItem): Promise<void> {
@@ -111,6 +162,7 @@ class BackIssueScanner
         active: series.active,
       };
       setComicLibraryProgress(this.currentServer.id, series.id, counts);
+      await this.recordForReader(series);
       await this.processComic(String(series.cv_id), {
         serviceId: this.currentServer.id,
         externalServiceId: series.id,

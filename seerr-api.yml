@@ -3717,6 +3717,44 @@ components:
           type: integer
           minimum: 0
       required: [id, name]
+    KavitaSettings:
+      type: object
+      description: Read-only Kavita reading server used for "Read in Kavita" links on comics and manga.
+      properties:
+        hostname:
+          type: string
+          maxLength: 512
+        port:
+          type: integer
+          minimum: 1
+          maximum: 65535
+        useSsl:
+          type: boolean
+        apiKey:
+          type: string
+          description: A Kavita user's auth key. Responses redact this value.
+        baseUrl:
+          type: string
+          maxLength: 512
+        externalUrl:
+          type: string
+          maxLength: 512
+          description: Address readers open, e.g. https://manga.example.com. Defaults to the connection address.
+      required:
+        - hostname
+        - port
+        - apiKey
+    KavitaLibrary:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        type:
+          type: string
+          enum: [manga, comic]
+      required: [id, name, type]
     RadarrSettings:
       type: object
       properties:
@@ -7081,6 +7119,10 @@ components:
               type: integer
             total:
               type: integer
+        readerUrl:
+          type: string
+          readOnly: true
+          description: Comics with issues or volumes in the library - the series page in the configured Kavita reading server. Only sent to users who can see comics.
         tmdbId:
           type: number
           readOnly: true
@@ -22200,6 +22242,78 @@ paths:
           description: Invalid connection settings
         '502':
           description: Audiobookshelf connection failed
+  /settings/kavita:
+    get:
+      summary: Get Kavita reader settings
+      description: Returns the configured read-only Kavita reading server, with its API key redacted, or null when not configured.
+      tags:
+        - settings
+      responses:
+        '200':
+          description: Kavita settings returned
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/KavitaSettings'
+                nullable: true
+    put:
+      summary: Save Kavita reader settings
+      description: Configures a read-only Kavita server. SeerrNG matches comics and manga to Kavita series (by ComicVine ID, series folder, then name) so completed series can be opened with "Read in Kavita". It never changes Kavita.
+      tags:
+        - settings
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/KavitaSettings'
+      responses:
+        '200':
+          description: Kavita settings saved with the API key redacted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/KavitaSettings'
+        '400':
+          description: Invalid Kavita settings
+    delete:
+      summary: Remove Kavita reader settings
+      description: Removes the Kavita connection; comics stop offering "Read in Kavita".
+      tags:
+        - settings
+      responses:
+        '204':
+          description: Kavita settings removed
+  /settings/kavita/test:
+    post:
+      summary: Test Kavita connection
+      description: Signs in with the Kavita API key and lists the manga and comic libraries without changing them.
+      tags:
+        - settings
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/KavitaSettings'
+      responses:
+        '200':
+          description: Readable Kavita libraries
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [libraries]
+                properties:
+                  libraries:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/KavitaLibrary'
+        '400':
+          description: Invalid connection settings
+        '502':
+          description: Kavita connection failed
   /settings/mylar:
     get:
       summary: Get Mylar settings
