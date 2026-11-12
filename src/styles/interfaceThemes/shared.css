@@ -1,5 +1,6 @@
 /* Shared safety and interaction rules for every selectable interface system. */
 :where(:root[data-interface-theme], [data-interface-theme]) {
+  --settings-navigation-sticky-offset: calc(4rem + env(safe-area-inset-top));
   --interface-sidebar-width: 16rem;
   --interface-page-gutter: 1rem;
   --interface-grid-gap: 1rem;

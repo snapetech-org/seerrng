@@ -614,7 +614,7 @@ const SettingsLayoutContent = ({ children }: SettingsLayoutProps) => {
         <Header>{intl.formatMessage(globalMessages.settings)}</Header>
       )}
       <div
-        className={`settings-page-navigation-row ${settingsLayoutStyles.stickyNavigation}`}
+        className="settings-page-navigation-row"
       >
         <SettingsTabs
           tabType={upstream ? 'default' : 'filter'}

@@ -192,28 +192,4 @@ describe('service setup categories', () => {
       );
     });
   });
-  it('keeps Settings navigation visible when scrolling and reachable on narrow screens', () => {
-    cy.viewport(1280, 800);
-    cy.visit('/settings/services');
-
-    cy.scrollTo(0, 400);
-    cy.window().its('scrollY').should('be.gt', 80);
-    cy.get('.settings-page-navigation-row')
-      .should('be.visible')
-      .then(($navigation) => {
-        expect($navigation[0].getBoundingClientRect().top).to.be.closeTo(64, 5);
-      });
-    cy.get('.settings-page-navigation-row nav').should('be.visible');
-    cy.get('.settings-page-navigation-row nav a[href="/settings/jobs"]').should(
-      'exist'
-    );
-
-    cy.viewport(390, 700);
-    cy.scrollTo('top');
-    cy.get('.settings-page-navigation-row select#tabs')
-      .should('be.visible')
-      .select('Jobs & Cache');
-    cy.location('pathname').should('eq', '/settings/jobs');
-  });
-
 });

@@ -7995,6 +7995,15 @@
   }
 
   .settings-page-navigation-row {
+    position: sticky;
+    top: var(--settings-navigation-sticky-offset);
+    z-index: 9;
+    max-height: calc(
+      100dvh - var(--settings-navigation-sticky-offset) -
+        var(--card-layout-spacing)
+    );
+    overflow-y: auto;
+    background-color: var(--interface-page);
     @apply flex min-w-0 flex-col items-start;
   }
 
