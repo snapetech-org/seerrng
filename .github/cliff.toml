@@ -70,7 +70,7 @@ commit_parsers = [
   { message = '^chore\(release\):', skip = true },
   { sha = "3872d8dd53e76ad373d8ac9b871118765e03e241", skip = true },
   { message = '^chore\(deps.*\)', skip = true },
-  { body = ".*security", group = "<!-- 0 -->🛡️ Security" },
+  { message = '(?i)^[a-z]+\(security\):', group = "<!-- 0 -->🛡️ Security" },
   { message = "^feat", group = "<!-- 1 -->🚀 Features" },
   { message = "^fix", group = "<!-- 2 -->🐛 Bug Fixes" },
   { message = "^doc", group = "<!-- 3 -->📖 Documentation" },

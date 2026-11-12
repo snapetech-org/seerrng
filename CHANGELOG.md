@@ -9,6 +9,113 @@ v3.72.7 section consolidates changes from the requested v3.71.4 baseline
 through v3.72.7, including changes also represented by unpublished interim
 tags. The comparison link is the complete commit range.
 
+## [3.72.32](https://github.com/snapetech-org/seerrng/compare/v3.72.31..v3.72.32) - 2026-11-12
+
+### User-facing changes
+
+#### Added
+
+- **Lumen:** Lumen All search now includes People with profile cards, and person pages show biography and linked movie and series credits without leaving Lumen.
+- **Comics:** Manga can be found and requested through BackIssue, with AniList search by any title and the English edition recommended. Lumen has a Comics/Manga page with one card per work, an edition picker, filters and library progress such as 9 of 16 volumes.
+
+#### Changed
+
+- **Request Management:** The Requests badge now counts pending requests and opens the Pending view. Pending is available as a visible filter, and administrators can open the existing Episode Queue editor directly from eligible TV request cards.
+
+#### Fixed
+
+- **Books:** Book pages now show a description for books that were first seen in a library list and had none.
+- **Books:** Book requests whose file is already in the library now move on from "Checking library" to available, including ebooks requested from another server's catalog.
+- **Books:** Requesting a specific edition of a book no longer fails with "Bookshelf metadata does not contain the selected edition" when the edition id is written in a different form.
+- **Lumen:** Book pages in Lumen now show the description for books stored under a bare Hardcover id.
+- **Lumen:** Coming Soon request buttons now stay within their cards in iPad landscape, without overlapping neighboring titles.
+- **Lumen:** The Coming soon row on Discover now has a See all link that opens the Coming soon page.
+- **Lumen:** When the edition you picked for a book differs from the one already in the library, Lumen now shows "Different edition in library" instead of an unclear state.
+- **Lumen:** On a phone held sideways, the tab bar is now a slim rail down the left edge instead of a bar floating over the page, so it no longer covers the shortcut chips or content, and it respects the screen cutouts.
+- **Lumen:** The narrator list on a Lumen audiobook page now lets you pick exactly one narrator, including books where two narrators looked selected and clicking did nothing. "Any narrator" requests now always name an edition that can be requested, and a narration that cannot be requested is no longer labeled Recommended.
+- **Lumen:** The Requests page in Lumen now loads all of your own requests instead of the first 40, so the tab counts and lists match what you actually requested.
+- **Lumen:** On phones, the request bar on unreleased titles no longer pushes its Request button off the screen.
+- **Lumen:** On desktop, closing the quick-request sheet from a poster now returns keyboard focus to that poster's Request button.
+- **Lumen:** Release dates in Lumen that fall outside the current year now include the year.
+- **Lumen:** On phones and tablets the whole search bar is now a tap target: the text field fills the bar instead of a thin strip in the middle.
+- **Lumen:** The Let people change it checkboxes on the Lumen settings page are now larger and easier to tap on touch screens.
+- **Lumen:** Lumen now asks the server for its public settings and for who is signed in once when it opens, instead of repeating the same requests.
+- **Books:** Book results on Discover and in search now carry library status, so books you already have are shown as in your library. Open Library ebooks are matched by work id or edition ISBN.
+- **Lumen:** The All filter button is now a 44 px touch target.
+- **Lumen:** Book cards in Lumen show a check for books already in your library on the Books and Audiobooks pages, Discover and search. Cards label unresolved Open Library matches as unknown, and the Not yet filter hides those items instead of treating them as unowned. The filter also explains when a library check fails or exceeds its bounded scan.
+- **Lumen:** Titles on the Coming soon page now wrap to two lines instead of being cut to a few letters on screens 1320 to 1599 px wide.
+- **Lumen:** The year, type and rating line on Discover feature cards now wraps on phones and foldables instead of being cut off.
+- **Lumen:** The quick-request sheet now scrolls as one piece on short landscape phones, so all of its options stay reachable.
+- **Lumen:** A long request status pill now wraps inside its row on narrow screens.
+- **Lumen:** All four Requests tabs now fit on a 360 px wide phone.
+- **Lumen:** Short, narrow screens such as 360 by 288 now keep the bottom tab bar instead of switching to a cramped side rail.
+- **Lumen:** The Watch on Plex button now stays inside a narrow request card instead of overflowing it.
+- **Discovery:** Movies now shows a discovery error with Retry instead of a generic internal-server-error page when a catalogue request fails. Filters remain available, retry keeps the current query, and already-loaded titles stay visible during a failed refresh.
+- **Requests:** PersiusNG recent request cards now retain their full card width in the horizontal slider. Poster-sized slider widths no longer cause adjacent request cards and retry actions to overlap. Regular poster sliders retain their existing sizing.
+- **Books Lumen:** Book cards now show library ownership and filter owned titles correctly; pinned edition requests and narrator selection keep the requested copy. Lumen also restores request results after transient errors and improves narrow-screen layouts across discovery and settings.
+- **Lumen:** A series you just requested in Lumen shows the request (status, who asked and when, which seasons) and no longer offers the seasons already asked for while Sonarr catches up.
+- **Lumen:** Lumen now checks whether shared configuration storage is writable and explains save or branding upload failures instead of showing misleading server or unsupported-image errors.
+- **Settings:** Settings section navigation now stays accessible while scrolling, with a compact section picker at narrower screen widths.
+
+### 🛡️ Security
+- *(security)* Fix provider budget regression fixtures - ([0853f90](https://github.com/snapetech-org/seerrng/commit/0853f90d26a93f54e9c9c84bc88cbafc77badf35))
+
+### 🚀 Features
+- *(api)* Document the comics landing, browse, grouped search and work routes - ([7f65c59](https://github.com/snapetech-org/seerrng/commit/7f65c59d493d8ed3f4ac55caf7f6a9e8d3f6b367))
+- *(comics)* Read in Kavita links for comics and manga in the library - ([bf0bf33](https://github.com/snapetech-org/seerrng/commit/bf0bf33a9839dbf87ebfc84a6c16463ff18eaa68))
+- *(comics)* Manga through BackIssue with AniList-first search and one card per work - ([bf342f8](https://github.com/snapetech-org/seerrng/commit/bf342f841b4c8d0c1800806c97171ab65d52f78f))
+- *(lumen)* Include People search profiles and credits - ([9b48181](https://github.com/snapetech-org/seerrng/commit/9b48181259a7251de293a50d612b6ee1e9e2cb7f))
+- *(lumen)* Read in Kavita on comic and manga pages and cards - ([0ba7820](https://github.com/snapetech-org/seerrng/commit/0ba7820035161f59640dcf32545682acbb8c926d))
+- *(lumen)* Comics/Manga page with editions, filters and library progress - ([ab76e90](https://github.com/snapetech-org/seerrng/commit/ab76e900b96445c6a1b69261818ce3f7e8e73334))
+
+### 🐛 Bug Fixes
+- *(comics)* Hash Kavita connection fingerprint - ([1d10d61](https://github.com/snapetech-org/seerrng/commit/1d10d61b2940f80bb5e1fb8f87ea29e66934814a))
+- *(comics)* Prune Kavita reader cache state - ([acb1989](https://github.com/snapetech-org/seerrng/commit/acb198914c957a284028beb0896cbb50cde3e968))
+- *(comics)* Revalidate manga maturity and capture UI evidence - ([5069494](https://github.com/snapetech-org/seerrng/commit/506949477c71dea047d08ab09d181725b9816da8))
+- *(discover)* Recover movie requests without a generic 500 page (#656) - ([2c22b50](https://github.com/snapetech-org/seerrng/commit/2c22b506557afc5bc550f1eb1c3e4c48bdc3f439))
+- *(i18n)* Regenerate API message catalogs - ([990f297](https://github.com/snapetech-org/seerrng/commit/990f297498161a605f6e0fcdf910960e3ddfe907))
+- *(lumen)* Honor person visibility policies - ([8ad8c93](https://github.com/snapetech-org/seerrng/commit/8ad8c934beb18a727c2b753e694e29280c184d24))
+- *(lumen)* Proxy allowlisted artist portraits - ([05a4822](https://github.com/snapetech-org/seerrng/commit/05a4822ee3982a24b8ee96015276c281d5454d8b))
+- *(lumen)* Restrict person artwork URLs - ([1a01ad7](https://github.com/snapetech-org/seerrng/commit/1a01ad74aa7e1f48402d087a74e2cc87238784c8))
+- *(lumen)* Contain Coming Soon requests on iPad landscape (#646) - ([ad28c96](https://github.com/snapetech-org/seerrng/commit/ad28c968b49bb36639f1518d51898a714538238d))
+- *(lumen)* Sync API message catalogs - ([7b8771e](https://github.com/snapetech-org/seerrng/commit/7b8771e86424e9892b1e4a38aa5f11979a652729))
+- *(lumen)* Report incompatible settings target - ([8e8ff18](https://github.com/snapetech-org/seerrng/commit/8e8ff186a1943b6ebd1939a3c88b3635ba10d9b8))
+- *(lumen)* Constrain branding file serving - ([8370fa6](https://github.com/snapetech-org/seerrng/commit/8370fa6bcc8e74c19b496b88581e46867c81e770))
+- *(lumen)* Track probe file ownership - ([b807c7b](https://github.com/snapetech-org/seerrng/commit/b807c7bd7b3a00fc7f31e57451c52107e5afb3d7))
+- *(lumen)* Report configuration storage errors accurately - ([63b5e49](https://github.com/snapetech-org/seerrng/commit/63b5e49ebe07e1ea09c689afe097ca61ec6c5850))
+- *(requests)* Surface pending work and episode queue actions - ([f99b6fd](https://github.com/snapetech-org/seerrng/commit/f99b6fd0e2d6a8f9659236a14f90aca5d4cb6110))
+- *(settings)* Anchor sticky navigation to theme header - ([12f2d41](https://github.com/snapetech-org/seerrng/commit/12f2d41f818e63b91fbacdcd8e8697452e17078a))
+- *(settings)* Keep section navigation reachable during scroll - ([5713db6](https://github.com/snapetech-org/seerrng/commit/5713db6c23e73e7ab5f5d38598e0f24ed8434983))
+- *(ui)* Preserve compact request slider card widths - ([48b78b7](https://github.com/snapetech-org/seerrng/commit/48b78b7dd7084c71140c0620a5c2fe1cf3014df1))
+- Book request status, narrator picker and Lumen request list fixes (#658) - ([aa372c3](https://github.com/snapetech-org/seerrng/commit/aa372c3f44fda2437174f386571bf890d1872100))
+
+### 📖 Documentation
+- *(comics)* Manga through BackIssue guide and release note - ([24d8a0f](https://github.com/snapetech-org/seerrng/commit/24d8a0ff839f4c4ecf0ee51c9f1fd1b46c7c9d30))
+- *(styles)* Clarify Visual Lab settings scope - ([774ef34](https://github.com/snapetech-org/seerrng/commit/774ef3496592105744af94032d2b9d014460ef08))
+
+### 🎨 Styling
+- *(settings)* Preserve sticky navigation surface - ([7124424](https://github.com/snapetech-org/seerrng/commit/7124424ece84b7291db72e8033832e219e86bbcd))
+- Sort the Kavita settings route import - ([328a26d](https://github.com/snapetech-org/seerrng/commit/328a26d1e207f413cb0bbb50b88ec6c74cdac8ef))
+
+### 🧪 Testing
+- *(lumen)* Stabilize comics baseline fixture - ([fcd1284](https://github.com/snapetech-org/seerrng/commit/fcd1284d2606333753c280a33d9b4d0120a42f0f))
+- *(lumen)* Expect pre-comics page boundary - ([cdb48a2](https://github.com/snapetech-org/seerrng/commit/cdb48a28f7c6de055cdedb3a99c421c7ff5a68b3))
+- *(lumen)* Define comics pagination fixture - ([3c4401a](https://github.com/snapetech-org/seerrng/commit/3c4401a6d92c206b9e4e6055f4dd362d3220eaaa))
+- *(lumen)* Scope person credit assertions to cards - ([acf203d](https://github.com/snapetech-org/seerrng/commit/acf203d2c0058c81fcbef5e767cc3de26da3bfa1))
+- *(lumen)* Assert person navigation starts at top - ([b259ed0](https://github.com/snapetech-org/seerrng/commit/b259ed0d280bb3e29fa0e6b1d8eb88224423526b))
+- *(lumen)* Retain people search visual evidence - ([866b6e6](https://github.com/snapetech-org/seerrng/commit/866b6e671e70201bccdaba998bdcba28c2f91de7))
+- *(lumen)* Record comics visual evidence metadata - ([ec70b09](https://github.com/snapetech-org/seerrng/commit/ec70b0905f036aa4fe092bdf597db9b3d648ef08))
+- *(lumen)* Run tablet layout in security suite - ([36b8bb8](https://github.com/snapetech-org/seerrng/commit/36b8bb891bafb3bf59bf3ad63a153ac4c44b8656))
+- *(lumen)* Compare Coming Soon tablet layouts - ([a561c1b](https://github.com/snapetech-org/seerrng/commit/a561c1bd4fdf711109736a317d9605540763413b))
+- *(lumen)* Retain coming soon layout evidence - ([2808674](https://github.com/snapetech-org/seerrng/commit/2808674dd50f4413511f65225f95abbc33a408ba))
+- *(lumen)* Exercise storage route regressions in CI - ([ae84e04](https://github.com/snapetech-org/seerrng/commit/ae84e04615b4b23066e6e9e6dbfa4a096994412e))
+- *(settings)* Run sticky navigation browser coverage in CI - ([997bb3f](https://github.com/snapetech-org/seerrng/commit/997bb3fe054821acf66876e9dca7223d2bbffb11))
+- *(ui)* Run recent request slider regression - ([1fbb7c7](https://github.com/snapetech-org/seerrng/commit/1fbb7c78bb5f7ba5ea2361e691d82dd8049fce7d))
+
+### ⚙️ Miscellaneous Tasks
+- *(i18n)* Refresh person route source locations - ([87fb6a7](https://github.com/snapetech-org/seerrng/commit/87fb6a76e62ccda3a4a7a9cba252e77ee49e8158))
+- *(i18n)* Drop a removed BackIssue message and refresh moved callsite lines - ([9db38ff](https://github.com/snapetech-org/seerrng/commit/9db38ff1d86865ab57b86c85742eda23e10e0581))
+
 ## [3.72.31](https://github.com/snapetech-org/seerrng/compare/v3.72.30..v3.72.31) - 2026-11-11
 
 ### User-facing changes
