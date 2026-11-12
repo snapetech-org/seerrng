@@ -44,6 +44,13 @@ const audiobookOnlyMedia = {
   availableAudiobookServiceIds: [1],
   hasPlexAudiobookFile: false,
 };
+// The catalogue knows these works through an ebook, but there is no audiobook file.
+const ebookOnlyMedia = {
+  status: 5,
+  availableEbookServiceIds: [0],
+  availableAudiobookServiceIds: null,
+  hasPlexAudiobookFile: false,
+};
 const audioFeed = [
   card(
     ownedAudio,
@@ -61,11 +68,13 @@ const audioFeed = [
   card('bookshelf:1:OTk5OTk5', 'Not Owned Recording', 'Writer Two', {
     provider: 'bookshelf',
     bookFormat: 'audiobook',
+    mediaInfo: ebookOnlyMedia,
   }),
   // only the ebook of this one is in the library
   card(audioOnlyEbookOwned, 'Wool', 'Hugh Howey', {
     provider: 'bookshelf',
     bookFormat: 'audiobook',
+    mediaInfo: ebookOnlyMedia,
   }),
 ];
 const ebookFeed = [
@@ -205,7 +214,7 @@ const expectOwned = async (page: Page, title: string, owned: boolean) => {
 
 test('audiobook cards show the books already in the library', async ({
   page,
-}) => {
+}, info) => {
   const calls = await fixtures(page);
   await page.goto('/audiobooks');
   await expect(poster(page, 'Not Owned Recording')).toHaveCount(1);
@@ -222,11 +231,19 @@ test('audiobook cards show the books already in the library', async ({
   await expectOwned(page, 'Not Owned Recording', false);
   // owning the ebook is not owning the audiobook
   await expectOwned(page, 'Wool', false);
+  await page.screenshot({
+    path: info.outputPath('audiobooks-all.png'),
+    fullPage: true,
+  });
 
   await page.getByRole('button', { name: 'Not yet', exact: true }).click();
   await expect(poster(page, 'Not Owned Recording')).toHaveCount(1);
   await expect(poster(page, 'Wool')).toHaveCount(1);
   await expect(page.locator('.grid .poster')).toHaveCount(2);
+  await page.screenshot({
+    path: info.outputPath('audiobooks-not-yet.png'),
+    fullPage: true,
+  });
 
   await page.getByRole('button', { name: 'In library', exact: true }).click();
   await expect(page.locator('.grid .poster')).toHaveCount(2);
@@ -240,7 +257,7 @@ test('audiobook cards show the books already in the library', async ({
 
 test('ebook cards use server-resolved Open Library identity without title guesses', async ({
   page,
-}) => {
+}, info) => {
   await fixtures(page);
   await page.goto('/books');
   await expect(poster(page, 'Pride and Prejudice')).toHaveCount(1);
@@ -252,19 +269,34 @@ test('ebook cards use server-resolved Open Library identity without title guesse
   await expect(
     poster(page, 'Pride and Prejudice').locator('.glyph.wait')
   ).toHaveAttribute('title', 'Library status unknown');
-  await poster(page, 'Pride and Prejudice').hover();
-  await expect(
-    poster(page, 'Pride and Prejudice').getByRole('button', {
-      name: 'Request anyway',
-    })
-  ).toBeVisible();
+  const unknownBook = poster(page, 'Pride and Prejudice');
+  if (info.project.name === 'desktop') {
+    await unknownBook.hover();
+    await expect(
+      unknownBook.getByRole('button', { name: 'Request anyway' })
+    ).toBeVisible();
+  } else {
+    await expect(
+      unknownBook.getByRole('button', {
+        name: 'Request Pride and Prejudice anyway; library status is unknown',
+      })
+    ).toBeVisible();
+  }
+  await page.screenshot({
+    path: info.outputPath('ebooks-all.png'),
+    fullPage: true,
+  });
 
   await page.getByRole('button', { name: 'Not yet', exact: true }).click();
-  await expect(page.getByRole('status')).toContainText(
+  await expect(page.locator('.note[role="status"]')).toContainText(
     'library status could not be confirmed'
   );
   await expect(page.locator('.grid .poster')).toHaveCount(1);
   await expect(poster(page, 'Wool')).toHaveCount(1);
+  await page.screenshot({
+    path: info.outputPath('ebooks-not-yet.png'),
+    fullPage: true,
+  });
 
   await page.getByRole('button', { name: 'In library', exact: true }).click();
   await expect(page.locator('.grid .poster')).toHaveCount(3);

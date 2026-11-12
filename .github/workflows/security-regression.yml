@@ -51,6 +51,7 @@ jobs:
           server/middleware/streamAuthorization.test.ts server/lib/follow/index.test.ts
           server/lib/resolve/admission.test.ts server/utils/securityBoundaries.test.ts
           server/migration/clientApiKeys.test.ts server/lib/typeormSessionStore.test.ts
+          server/migration/bookServiceLinkIndexes.test.ts
       - name: Check deployment and scanner gates
         run: node --test scripts/check-helm-security.test.mjs scripts/healthcheck.test.mjs scripts/check-semgrep-baseline.test.mjs scripts/check-repository-hygiene.test.mjs packaging/cloudron/start-cloudron.test.mjs
       - name: Exercise PostgreSQL token migration and authentication
