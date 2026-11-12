@@ -46,7 +46,7 @@ afterEach(() => {
 });
 
 describe('GET /imageproxy/:type/*path', () => {
-  it('accepts comic and game artwork providers through the image cache', async () => {
+  it('accepts supported artwork providers through the image cache', async () => {
     mock.method(
       ImageProxy.prototype,
       'getCachedImage',
@@ -58,6 +58,7 @@ describe('GET /imageproxy/:type/*path', () => {
       'comicvinestatic',
       'comicvinestatic1',
       'igdb',
+      'theaudiodb',
     ]) {
       const response = await request(createApp()).get(
         `/imageproxy/${type}/cover.jpg`

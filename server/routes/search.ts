@@ -557,7 +557,7 @@ searchRoutes.get('/', async (req, res, next) => {
       const shouldSearchVideo =
         ((!typeFilter || typeFilter === 'movie' || typeFilter === 'tv') &&
           (moviesEnabled || seriesEnabled)) ||
-        typeFilter === 'person';
+        (typeFilter === 'person' && (moviesEnabled || seriesEnabled));
       const shouldSearchCollections =
         !typeFilter &&
         moviesEnabled &&
@@ -1471,8 +1471,9 @@ searchRoutes.get('/', async (req, res, next) => {
     const capabilityResults = creditEnrichedResults.filter(
       (result) =>
         !('mediaType' in result) ||
-        (((result.mediaType !== 'album' && result.mediaType !== 'artist') ||
-          musicEnabled) &&
+        ((result.mediaType !== 'person' || moviesEnabled || seriesEnabled) &&
+          ((result.mediaType !== 'album' && result.mediaType !== 'artist') ||
+            musicEnabled) &&
           (result.mediaType !== 'movie' || moviesEnabled) &&
           (result.mediaType !== 'tv' || seriesEnabled) &&
           (result.mediaType !== 'collection' || moviesEnabled) &&

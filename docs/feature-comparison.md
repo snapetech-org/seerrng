@@ -81,7 +81,7 @@ imply a corresponding Lumen or native screen.
 | Genre and series-status exclusions | Baseline filters | Include/exclude conditions and validated movie/TV sorts | [Guide](./using-seerr/movie-series-discovery-filters.md) |
 | Per-account local-library discovery | Baseline availability | Verify linked account access before showing local results | [Guide](./using-seerr/media-server-access.md) |
 | Global search and collections | Baseline search | Cross-media search, collection results and normalized fallback queries | [Guide](./using-seerr/search.md) |
-| People and credits | Baseline filmography | Sorted person credits and matching through people | [Guide](./using-seerr/people-and-credits.md) |
+| People and credits | Baseline filmography | Sorted native credits and people matching; Lumen All search includes People profiles and movie/TV credits | [Guide](./using-seerr/people-and-credits.md) |
 | Book authors, series and narrators | Not found | Book/series discovery with format and identity matching | [Guide](./using-seerr/books-and-series.md) |
 | Metadata providers and music limits | Video metadata | MusicBrainz/CAA diagnostics, bounded artwork and music request limits | [Guide](./using-seerr/settings/metadata.md) |
 | Administrator book language policy | Not found | Language admission and edition evidence; existing files are preserved | [Guide](./using-seerr/book-language-policy.md) |

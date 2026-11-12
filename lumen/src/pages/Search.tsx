@@ -25,6 +25,7 @@ import {
 } from '../recentSearches';
 import { usePrefs } from '../settings';
 import { friendlyError } from '../errors';
+import { PersonCard } from './People';
 
 const SCOPES = {
   all: 'All',
@@ -157,7 +158,9 @@ export default function Search() {
           ? r.mediaType === 'movie'
           : f === 'tv'
             ? r.mediaType === 'tv'
-            : r.mediaType !== 'person'
+            : r.mediaType === 'movie' ||
+                r.mediaType === 'tv' ||
+                r.mediaType === 'person'
       );
       let foundBooks = brs.flatMap((r, i) =>
         (r?.results || [])
@@ -219,6 +222,8 @@ export default function Search() {
       : f === 'comic'
         ? 'Search comics and manga…'
         : `Search ${SCOPES[f].toLowerCase()}…`;
+  const people =
+    f === 'all' ? (titles || []).filter((t) => t.mediaType === 'person') : [];
   const movies = (titles || []).filter((t) => t.mediaType === 'movie');
   const shows = (titles || []).filter((t) => t.mediaType === 'tv');
   const bookCards = books || [];
@@ -229,6 +234,7 @@ export default function Search() {
     comics !== null &&
     !movies.length &&
     !shows.length &&
+    !people.length &&
     !bookCards.length &&
     !comicCards.length;
 
@@ -396,6 +402,15 @@ export default function Search() {
             <div className="grid">
               {shows.map((m) => (
                 <TitleCard key={m.id} it={m} />
+              ))}
+            </div>
+          </Section>
+        )}
+        {!!people.length && (
+          <Section title="People">
+            <div className="grid">
+              {people.map((person) => (
+                <PersonCard key={person.id} person={person} />
               ))}
             </div>
           </Section>

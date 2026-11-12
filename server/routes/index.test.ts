@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import path from 'node:path';
 import { afterEach, before, describe, it, mock } from 'node:test';
 
+import ExternalAPI from '@server/api/externalapi';
 import PushoverAPI from '@server/api/pushover';
 import TheMovieDb from '@server/api/themoviedb';
 import { DiscoverSliderType } from '@server/constants/discover';
@@ -203,6 +204,73 @@ describe('Authenticated metadata resource boundaries', () => {
       } else {
         environment.NODE_ENV = previousNodeEnv;
       }
+    }
+  });
+
+  it('hides person detail and credits when both video categories are disabled', async () => {
+    const settings = getSettings();
+    const originalCategories = { ...settings.main.enabledMediaCategories };
+    settings.main.enabledMediaCategories = {
+      ...originalCategories,
+      movie: false,
+      tv: false,
+    };
+    const providerLookup = mock.method(
+      ExternalAPI.prototype,
+      'get',
+      async () => {
+        throw new Error('Person provider should not be called');
+      }
+    );
+
+    try {
+      const agent = await loginAs('friend@seerr.dev');
+      const person = await agent.get('/api/v1/person/123');
+      const credits = await agent.get(
+        '/api/v1/person/123/combined_credits'
+      );
+
+      assert.strictEqual(person.status, 404);
+      assert.strictEqual(credits.status, 404);
+      assert.strictEqual(providerLookup.mock.callCount(), 0);
+    } finally {
+      settings.main.enabledMediaCategories = originalCategories;
+    }
+  });
+
+  it('hides person detail and credits for a user with both video categories disabled', async () => {
+    const user = await getRepository(User).findOneByOrFail({
+      email: 'friend@seerr.dev',
+    });
+    const userSettings = user.settings ?? new UserSettings({ user });
+    const originalCategories = userSettings.enabledMediaCategories;
+    userSettings.enabledMediaCategories = {
+      ...originalCategories,
+      movie: false,
+      tv: false,
+    };
+    await getRepository(UserSettings).save(userSettings);
+    const providerLookup = mock.method(
+      ExternalAPI.prototype,
+      'get',
+      async () => {
+        throw new Error('Person provider should not be called');
+      }
+    );
+
+    try {
+      const agent = await loginAs('friend@seerr.dev');
+      const person = await agent.get('/api/v1/person/123');
+      const credits = await agent.get(
+        '/api/v1/person/123/combined_credits'
+      );
+
+      assert.strictEqual(person.status, 404);
+      assert.strictEqual(credits.status, 404);
+      assert.strictEqual(providerLookup.mock.callCount(), 0);
+    } finally {
+      userSettings.enabledMediaCategories = originalCategories;
+      await getRepository(UserSettings).save(userSettings);
     }
   });
 });

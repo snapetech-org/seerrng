@@ -22,6 +22,7 @@ import Login from './pages/Login';
 import LumenSettings from './pages/LumenSettings';
 import Me from './pages/Me';
 import MovieDetail from './pages/MovieDetail';
+import PersonDetail from './pages/People';
 import { AlbumDetail, Artist, Music } from './pages/Music';
 import Requests from './pages/Requests';
 import Search from './pages/Search';
@@ -62,6 +63,7 @@ function App() {
             element={<Books key="audiobook" format="audiobook" />}
           />
           <Route path="/movie/:id" element={<MovieDetail />} />
+          <Route path="/person/:id" element={<PersonDetail />} />
           <Route path="/tv/:id" element={<TvDetail />} />
           <Route path="/book/:id" element={<BookDetail />} />
           <Route path="/music" element={<Music />} />

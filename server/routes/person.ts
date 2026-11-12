@@ -6,6 +6,7 @@ import {
   filterVideoItemsByMaturityPolicy,
   getUserVideoMaturityPolicy,
 } from '@server/lib/videoMaturityPolicy';
+import { isUserMediaCategoryEnabled } from '@server/lib/userMediaCategories';
 import logger from '@server/logger';
 import {
   mapCastCredits,
@@ -71,8 +72,22 @@ personRoutes.get('/:id/combined_credits', async (req, res, next) => {
       personId,
       language,
     });
-    const rankedCast = rankTmdbPersonCredits(combinedCredits.cast);
-    const rankedCrew = rankTmdbPersonCredits(combinedCredits.crew);
+    const moviesEnabled = isUserMediaCategoryEnabled(req.user, 'movie');
+    const seriesEnabled = isUserMediaCategoryEnabled(req.user, 'tv');
+    const visibleCredits = <T extends { media_type?: string }>(
+      credits: T[]
+    ): T[] =>
+      credits.filter(
+        (credit) =>
+          (credit.media_type !== MediaType.MOVIE || moviesEnabled) &&
+          (credit.media_type !== MediaType.TV || seriesEnabled)
+      );
+    const rankedCast = visibleCredits(
+      rankTmdbPersonCredits(combinedCredits.cast)
+    );
+    const rankedCrew = visibleCredits(
+      rankTmdbPersonCredits(combinedCredits.crew)
+    );
     const maturityPolicy = req.user
       ? await getUserVideoMaturityPolicy(req.user.id)
       : { movie: null, tv: null };

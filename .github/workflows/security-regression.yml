@@ -50,6 +50,8 @@ jobs:
           pnpm exec vitest run --maxWorkers=2
           server/test/auditRemediation.vitest.test.ts
           server/routes/clientApiKeys.test.ts server/lib/mediaAccess.test.ts
+          server/routes/person.test.ts server/routes/search.test.ts
+          server/routes/index.test.ts
           server/middleware/streamAuthorization.test.ts server/lib/follow/index.test.ts
           server/lib/resolve/admission.test.ts server/utils/securityBoundaries.test.ts
           server/migration/clientApiKeys.test.ts server/lib/typeormSessionStore.test.ts
@@ -114,6 +116,20 @@ jobs:
           path: ${{ runner.temp }}/lumen-coming-soon-evidence/
           if-no-files-found: ignore
           retention-days: 14
+      - name: Capture recent request slider baseline
+        env:
+          E2E_OFFLINE: true
+          SEERR_REQUEST_SLIDER_BASELINE: 'true'
+        run: >-
+          pnpm exec playwright test playwright/recent-request-slider-layout.spec.ts
+          --workers=1 --output=test-results/recent-request-slider-baseline
+      - name: Verify recent request slider candidate
+        env:
+          E2E_OFFLINE: true
+          SEERR_REQUEST_SLIDER_BASELINE: 'false'
+        run: >-
+          pnpm exec playwright test playwright/recent-request-slider-layout.spec.ts
+          --workers=1 --output=test-results/recent-request-slider-candidate
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         if: always()
         with:

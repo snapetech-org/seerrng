@@ -668,7 +668,7 @@
       "callsites": [
         {
           "path": "server/routes/index.ts",
-          "line": 971,
+          "line": 972,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to retrieve watch provider regions.'",
@@ -4345,7 +4345,7 @@
       "callsites": [
         {
           "path": "server/routes/index.ts",
-          "line": 779,
+          "line": 780,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to retrieve studio.'",
@@ -10460,7 +10460,7 @@
         },
         {
           "path": "server/routes/index.ts",
-          "line": 934,
+          "line": 935,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Keyword not found.'",
@@ -11475,7 +11475,7 @@
         },
         {
           "path": "server/routes/search.ts",
-          "line": 1518,
+          "line": 1519,
           "kind": "authored-message-field",
           "field": "errorMessage",
           "expression": "e instanceof Error ? e.message : 'Unknown error'",
@@ -13866,7 +13866,7 @@
       "callsites": [
         {
           "path": "server/routes/index.ts",
-          "line": 752,
+          "line": 753,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to retrieve languages.'",
@@ -15839,7 +15839,7 @@
       "callsites": [
         {
           "path": "server/routes/index.ts",
-          "line": 1000,
+          "line": 1001,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to retrieve movie watch providers.'",
@@ -19147,7 +19147,7 @@
       "callsites": [
         {
           "path": "server/routes/index.ts",
-          "line": 732,
+          "line": 733,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to retrieve regions.'",
@@ -22288,7 +22288,7 @@
       "callsites": [
         {
           "path": "server/routes/index.ts",
-          "line": 1048,
+          "line": 1049,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to retrieve movie certifications.'",
@@ -22414,7 +22414,7 @@
       "callsites": [
         {
           "path": "server/routes/search.ts",
-          "line": 1551,
+          "line": 1552,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to retrieve keyword search results.'",
@@ -23688,7 +23688,7 @@
       "callsites": [
         {
           "path": "server/routes/index.ts",
-          "line": 834,
+          "line": 835,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to retrieve movie genres.'",
@@ -25515,7 +25515,7 @@
         },
         {
           "path": "server/routes/index.ts",
-          "line": 792,
+          "line": 793,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Network not found.'",
@@ -28350,7 +28350,7 @@
       "callsites": [
         {
           "path": "server/routes/index.ts",
-          "line": 860,
+          "line": 861,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to retrieve series genres.'",
@@ -35100,7 +35100,7 @@
       "callsites": [
         {
           "path": "server/routes/index.ts",
-          "line": 807,
+          "line": 808,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to retrieve network.'",
@@ -41033,7 +41033,7 @@
       "callsites": [
         {
           "path": "server/routes/search.ts",
-          "line": 1579,
+          "line": 1580,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to retrieve company search results.'",
@@ -46214,7 +46214,7 @@
       "callsites": [
         {
           "path": "server/routes/index.ts",
-          "line": 950,
+          "line": 951,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to retrieve keyword data.'",
@@ -48750,7 +48750,7 @@
       "callsites": [
         {
           "path": "server/routes/index.ts",
-          "line": 1068,
+          "line": 1069,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to retrieve TV certifications.'",
@@ -50448,7 +50448,7 @@
       "callsites": [
         {
           "path": "server/routes/search.ts",
-          "line": 1523,
+          "line": 1524,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to retrieve search results.'",
@@ -50815,7 +50815,7 @@
       "callsites": [
         {
           "path": "server/routes/index.ts",
-          "line": 924,
+          "line": 925,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to retrieve backdrops.'",
@@ -53262,7 +53262,7 @@
         },
         {
           "path": "server/routes/index.ts",
-          "line": 764,
+          "line": 765,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Studio not found.'",
@@ -53671,7 +53671,7 @@
       "callsites": [
         {
           "path": "server/routes/person.ts",
-          "line": 52,
+          "line": 53,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to retrieve person.'",
@@ -54632,7 +54632,7 @@
       "callsites": [
         {
           "path": "server/routes/person.ts",
-          "line": 184,
+          "line": 199,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to retrieve combined credits.'",
@@ -55321,7 +55321,7 @@
       "callsites": [
         {
           "path": "server/routes/index.ts",
-          "line": 1026,
+          "line": 1027,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to retrieve tv watch providers.'",
@@ -62244,7 +62244,7 @@
       "callsites": [
         {
           "path": "server/routes/person.ts",
-          "line": 30,
+          "line": 31,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Person not found.'",
@@ -62252,7 +62252,7 @@
         },
         {
           "path": "server/routes/person.ts",
-          "line": 61,
+          "line": 62,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Person not found.'",
@@ -78616,7 +78616,7 @@
     },
     {
       "path": "server/routes/index.ts",
-      "line": 728,
+      "line": 729,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "e.message",
@@ -78625,7 +78625,7 @@
     },
     {
       "path": "server/routes/index.ts",
-      "line": 748,
+      "line": 749,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "e.message",
@@ -78634,7 +78634,7 @@
     },
     {
       "path": "server/routes/index.ts",
-      "line": 774,
+      "line": 775,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "e.message",
@@ -78643,7 +78643,7 @@
     },
     {
       "path": "server/routes/index.ts",
-      "line": 802,
+      "line": 803,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "e.message",
@@ -78652,7 +78652,7 @@
     },
     {
       "path": "server/routes/index.ts",
-      "line": 817,
+      "line": 818,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "parsedLanguage.error",
@@ -78661,7 +78661,7 @@
     },
     {
       "path": "server/routes/index.ts",
-      "line": 830,
+      "line": 831,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "e.message",
@@ -78670,7 +78670,7 @@
     },
     {
       "path": "server/routes/index.ts",
-      "line": 843,
+      "line": 844,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "parsedLanguage.error",
@@ -78679,7 +78679,7 @@
     },
     {
       "path": "server/routes/index.ts",
-      "line": 856,
+      "line": 857,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "e.message",
@@ -78688,7 +78688,7 @@
     },
     {
       "path": "server/routes/index.ts",
-      "line": 920,
+      "line": 921,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "e.message",
@@ -78697,7 +78697,7 @@
     },
     {
       "path": "server/routes/index.ts",
-      "line": 946,
+      "line": 947,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "e.message",
@@ -78706,7 +78706,7 @@
     },
     {
       "path": "server/routes/index.ts",
-      "line": 967,
+      "line": 968,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "e.message",
@@ -78715,7 +78715,7 @@
     },
     {
       "path": "server/routes/index.ts",
-      "line": 984,
+      "line": 985,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "watchRegion.error",
@@ -78724,7 +78724,7 @@
     },
     {
       "path": "server/routes/index.ts",
-      "line": 996,
+      "line": 997,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "e.message",
@@ -78733,7 +78733,7 @@
     },
     {
       "path": "server/routes/index.ts",
-      "line": 1010,
+      "line": 1011,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "watchRegion.error",
@@ -78742,7 +78742,7 @@
     },
     {
       "path": "server/routes/index.ts",
-      "line": 1022,
+      "line": 1023,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "e.message",
@@ -78751,7 +78751,7 @@
     },
     {
       "path": "server/routes/index.ts",
-      "line": 1044,
+      "line": 1045,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "e.message",
@@ -78760,7 +78760,7 @@
     },
     {
       "path": "server/routes/index.ts",
-      "line": 1064,
+      "line": 1065,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "e.message",
@@ -80344,7 +80344,7 @@
     },
     {
       "path": "server/routes/person.ts",
-      "line": 34,
+      "line": 35,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "parsedLanguage.error",
@@ -80353,7 +80353,7 @@
     },
     {
       "path": "server/routes/person.ts",
-      "line": 47,
+      "line": 48,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "e.message",
@@ -80362,7 +80362,7 @@
     },
     {
       "path": "server/routes/person.ts",
-      "line": 65,
+      "line": 66,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "parsedLanguage.error",
@@ -80371,7 +80371,7 @@
     },
     {
       "path": "server/routes/person.ts",
-      "line": 179,
+      "line": 194,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "e.message",
@@ -82252,7 +82252,7 @@
     },
     {
       "path": "server/routes/search.ts",
-      "line": 1518,
+      "line": 1519,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "e instanceof Error ? e.message : 'Unknown error'",
@@ -82261,7 +82261,7 @@
     },
     {
       "path": "server/routes/search.ts",
-      "line": 1531,
+      "line": 1532,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "parsedQuery.error",
@@ -82270,7 +82270,7 @@
     },
     {
       "path": "server/routes/search.ts",
-      "line": 1546,
+      "line": 1547,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "e.message",
@@ -82279,7 +82279,7 @@
     },
     {
       "path": "server/routes/search.ts",
-      "line": 1559,
+      "line": 1560,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "parsedQuery.error",
@@ -82288,7 +82288,7 @@
     },
     {
       "path": "server/routes/search.ts",
-      "line": 1574,
+      "line": 1575,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "e.message",

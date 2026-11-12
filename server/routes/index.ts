@@ -688,6 +688,7 @@ router.use('/media', isAuthenticated(), mediaRoutes);
 router.use(
   '/person',
   isAuthenticated(),
+  categoryAvailabilityGuard(['movie', 'tv'], 'any'),
   externalMetadataRateLimit,
   personRoutes
 );
