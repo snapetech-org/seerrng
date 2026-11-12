@@ -13,6 +13,7 @@
 // restart. Kavita being down keeps the last good copy and is retried later;
 // the media pages never wait on Kavita.
 
+import { createHash } from 'node:crypto';
 import type { KavitaLibrary, KavitaSeries } from '@server/api/kavita';
 import KavitaAPI, { KavitaLibraryType } from '@server/api/kavita';
 import type { KavitaSettings } from '@server/lib/settings';
@@ -64,13 +65,17 @@ const key = (serviceId: number, externalServiceId: number) =>
   `${serviceId}:${externalServiceId}`;
 
 const connectionKey = (settings: KavitaSettings) =>
-  JSON.stringify([
-    settings.hostname,
-    settings.port,
-    settings.useSsl,
-    settings.baseUrl ?? '',
-    settings.apiKey,
-  ]);
+  createHash('sha256')
+    .update(
+      JSON.stringify([
+        settings.hostname,
+        settings.port,
+        settings.useSsl,
+        settings.baseUrl ?? '',
+        settings.apiKey,
+      ])
+    )
+    .digest('hex');
 
 export const normalizeFolder = (value?: string): string =>
   (value ?? '')
