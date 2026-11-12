@@ -54,6 +54,14 @@ jobs:
           server/lib/resolve/admission.test.ts server/utils/securityBoundaries.test.ts
           server/migration/clientApiKeys.test.ts server/lib/typeormSessionStore.test.ts
           server/migration/bookServiceLinkIndexes.test.ts
+          server/lib/editionCompare
+      - name: Exercise book catalog, identity and scanner regressions
+        run: >-
+          pnpm test:node
+          server/routes/discover.test.ts
+          server/lib/bookMediaMatcher.test.ts
+          server/lib/scanners/readarr/readarr.test.ts
+          server/test/MediaRequestSubscriber.test.ts
       - name: Check deployment and scanner gates
         run: node --test scripts/check-helm-security.test.mjs scripts/healthcheck.test.mjs scripts/check-semgrep-baseline.test.mjs scripts/check-repository-hygiene.test.mjs packaging/cloudron/start-cloudron.test.mjs
       - name: Exercise PostgreSQL token migration and authentication
