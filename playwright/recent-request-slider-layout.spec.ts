@@ -29,9 +29,11 @@ for (const theme of ['persiusNG', 'seerrOrig', 'seerrNGJ']) {
           '**/interface-themes/persiusNG/theme.css*',
           async (route) => {
             const response = await route.fetch();
+            const css = await response.text();
+            expect(css).toContain('.slider-item:not(.slider-item-compact)');
             await route.fulfill({
               response,
-              body: (await response.text()).replace(
+              body: css.replace(
                 '.slider-item:not(.slider-item-compact)',
                 '.slider-item'
               ),
@@ -166,7 +168,12 @@ for (const theme of ['persiusNG', 'seerrOrig', 'seerrNGJ']) {
       await slider.locator('.slider-track').evaluate((el) => {
         el.scrollLeft = 0;
       });
-      await slider.screenshot({ path: info.outputPath('recent-requests.png') });
+      const isBaseline = process.env.SEERR_REQUEST_SLIDER_BASELINE === 'true';
+      await slider.screenshot({
+        path: info.outputPath(
+          `recent-requests-${isBaseline ? 'baseline' : 'candidate'}.png`
+        ),
+      });
       const geometry = await slider
         .locator('.slider-item')
         .evaluateAll((items) =>
@@ -187,19 +194,30 @@ for (const theme of ['persiusNG', 'seerrOrig', 'seerrNGJ']) {
         const card = geometry[i];
         expect(card.width).toBe(width < 640 ? 288 : 384);
         expect(card.cardLeft).toBeGreaterThanOrEqual(card.slotLeft - 1);
-        expect(card.cardRight).toBeLessThanOrEqual(card.slotRight + 1);
-        if (i)
-          expect(card.cardLeft).toBeGreaterThanOrEqual(
-            geometry[i - 1].cardRight
-          );
+        if (isBaseline && theme === 'persiusNG') {
+          expect(card.cardRight).toBeGreaterThan(card.slotRight + 1);
+          if (i)
+            expect(card.cardLeft).toBeLessThan(geometry[i - 1].cardRight);
+        } else {
+          expect(card.cardRight).toBeLessThanOrEqual(card.slotRight + 1);
+          if (i)
+            expect(card.cardLeft).toBeGreaterThanOrEqual(
+              geometry[i - 1].cardRight
+            );
+        }
       }
       const poster = page
         .locator('.slider-item:not(.slider-item-compact)')
         .first();
       await poster.scrollIntoViewIfNeeded();
-      expect(
-        await poster.evaluate((el) => el.getBoundingClientRect().width)
-      ).toBeGreaterThan(100);
+      const posterWidth = await poster.evaluate(
+        (el) => el.getBoundingClientRect().width
+      );
+      if (theme === 'persiusNG') {
+        expect(posterWidth).toBe(width < 768 ? 150 : 164);
+      } else {
+        expect(posterWidth).toBeGreaterThan(100);
+      }
     });
   }
 }
