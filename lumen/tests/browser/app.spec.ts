@@ -223,6 +223,51 @@ test('catalogue, Plex device links, requests and responsive layout', async ({
   expect(fixture.unknown).toEqual([]);
 });
 
+test('New on Plex keeps all recent videos when other media types share the library', async ({
+  page,
+}) => {
+  const fixture = await fixtures(page);
+  let requestedMedia: URL | undefined;
+  let detailRequests = 0;
+  await page.route('**/api/v1/media?**', async (route) => {
+    requestedMedia = new URL(route.request().url());
+    await route.fulfill({
+      json: paged(
+        Array.from({ length: 19 }, (_, index) => ({
+          id: index + 1,
+          tmdbId: index + 1001,
+          mediaType: index % 2 ? 'tv' : 'movie',
+          status: 5,
+          title: `Recent title ${index + 1}`,
+          posterPath: '/qa-poster.png',
+          mediaAddedAt: '2026-11-10T00:00:00Z',
+        }))
+      ),
+    });
+  });
+  await page.route(/\/api\/v1\/(movie|tv)\/\d+$/, async (route) => {
+    detailRequests += 1;
+    await route.fulfill({
+      status: 500,
+      json: { message: 'Unexpected lookup' },
+    });
+  });
+
+  await page.goto('/');
+  const recent = page.locator('section').filter({
+    has: page.getByRole('heading', { name: 'New on Plex' }),
+  });
+  await expect(
+    recent.getByRole('link', { name: 'Recent title 19' })
+  ).toHaveCount(1);
+  await expect(recent.locator('a[aria-label^="Recent title "]')).toHaveCount(
+    19
+  );
+  expect(requestedMedia?.searchParams.get('mediaType')).toBe('movie,tv');
+  expect(detailRequests).toBe(0);
+  expect(fixture.errors).toEqual([]);
+});
+
 test('account changes clear private API responses and preferences without reloading', async ({
   page,
 }) => {
