@@ -62,7 +62,15 @@ export const MediaStatus = {
 } as const;
 
 export interface MediaInfo {
-  requests?: { id: number; status: number; bookFormat?: string }[];
+  requests?: {
+    id: number;
+    status: number;
+    bookFormat?: string;
+    is4k?: boolean;
+    createdAt?: string;
+    requestedBy?: { displayName?: string };
+    seasons?: { seasonNumber: number; status?: number }[];
+  }[];
   hasPlexAudiobookFile?: boolean;
   availableEbookServiceIds?: number[] | null;
   availableAudiobookServiceIds?: number[] | null;
