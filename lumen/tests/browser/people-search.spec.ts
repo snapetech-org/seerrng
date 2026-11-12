@@ -48,6 +48,18 @@ async function fixtures(page: Page) {
           knownForDepartment: 'Acting',
         },
       });
+    if (path === '/person/78')
+      return route.fulfill({
+        json: {
+          id: 78,
+          name: 'Artist Example',
+          profilePath:
+            'https://r2.theaudiodb.com/images/media/artist/thumb/image.jpg',
+          knownForDepartment: 'Music',
+        },
+      });
+    if (path === '/person/78/combined_credits')
+      return route.fulfill({ json: { id: 78, cast: [], crew: [] } });
     if (path === '/person/77/combined_credits')
       return route.fulfill({
         json: {
@@ -84,6 +96,27 @@ test('All search shows People and opens an internal Lumen person page', async ({
   await expect(
     page.locator('img[src^="https://attacker.invalid/"]')
   ).toHaveCount(0);
+  expect(externalImageRequests).toEqual([]);
+});
+
+test('allowlisted TheAudioDB portraits use SeerrNG image proxy', async ({
+  page,
+}) => {
+  const externalImageRequests: string[] = [];
+  page.on('request', (request) => {
+    const host = new URL(request.url()).hostname;
+    if (host === 'r2.theaudiodb.com') externalImageRequests.push(request.url());
+  });
+  await fixtures(page);
+  await page.goto('/person/78');
+
+  await expect(
+    page.getByRole('heading', { name: 'Artist Example' })
+  ).toBeVisible();
+  await expect(page.locator('.portrait img')).toHaveAttribute(
+    'src',
+    '/imageproxy/theaudiodb/images/media/artist/thumb/image.jpg'
+  );
   expect(externalImageRequests).toEqual([]);
 });
 

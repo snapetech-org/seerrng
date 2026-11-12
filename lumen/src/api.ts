@@ -140,16 +140,63 @@ export interface Genre {
 // Treat provider paths as untrusted input: accepting an arbitrary absolute URL here
 // would turn metadata into a browser-side tracking/request primitive.
 const TMDB_IMAGE_SIZES = new Set(['w342', 'w500', 'w780', 'w1280']);
-export const tmdbImg = (path: string | undefined | null, size = 'w342') => {
+const THEAUDIODB_IMAGE_HOST = 'theaudiodb.com';
+const isSafeImagePath = (path: string) => {
   if (
-    typeof path !== 'string' ||
-    !path ||
+    path.length > 2048 ||
     !path.startsWith('/') ||
     path.startsWith('//') ||
+    path.includes('//') ||
     path.includes('\\') ||
-    /[\u0000-\u001f]/.test(path)
-  )
+    /[\u0000-\u001f\u007f?#]/.test(path)
+  ) {
+    return false;
+  }
+
+  return path
+    .slice(1)
+    .split('/')
+    .every((segment) => {
+      try {
+        const decoded = decodeURIComponent(segment);
+        return (
+          decoded !== '.' &&
+          decoded !== '..' &&
+          !decoded.includes('/') &&
+          !decoded.includes('\\') &&
+          !/[\u0000-\u001f\u007f?#]/.test(decoded)
+        );
+      } catch {
+        return false;
+      }
+    });
+};
+const theAudioDbImg = (value: string) => {
+  if (value.length > 2048) return '';
+  try {
+    const url = new URL(value);
+    const hostname = url.hostname.toLowerCase();
+    if (
+      url.protocol !== 'https:' ||
+      (url.port && url.port !== '443') ||
+      url.username ||
+      url.password ||
+      (hostname !== THEAUDIODB_IMAGE_HOST &&
+        !hostname.endsWith(`.${THEAUDIODB_IMAGE_HOST}`)) ||
+      url.search ||
+      !isSafeImagePath(url.pathname)
+    ) {
+      return '';
+    }
+    return `/imageproxy/theaudiodb${url.pathname}`;
+  } catch {
     return '';
+  }
+};
+export const tmdbImg = (path: string | undefined | null, size = 'w342') => {
+  if (typeof path !== 'string' || !path) return '';
+  if (path.startsWith('https://')) return theAudioDbImg(path);
+  if (!isSafeImagePath(path)) return '';
   const safeSize = TMDB_IMAGE_SIZES.has(size) ? size : 'w342';
   return `/imageproxy/tmdb/t/p/${safeSize}${path}`;
 };
