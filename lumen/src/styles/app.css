@@ -955,6 +955,12 @@ body.is-detail .tabbar {
   font-size: 13px;
   margin: 0;
 }
+.request-summary {
+  margin-top: 4px;
+  padding: 0;
+  list-style: none;
+  overflow-wrap: anywhere;
+}
 
 @media (max-width: 1039px) {
   .dacts.pc {

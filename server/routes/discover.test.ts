@@ -5619,9 +5619,22 @@ describe('GET /discover/books', () => {
       new Media({
         tmdbId: 0,
         mediaType: MediaType.BOOK,
+        status: MediaStatus.UNKNOWN,
         serviceUrl: 'http://readarr.internal/book/1',
         externalServiceSlug: 'other-user-book',
-        ratingKey: 'plex-book-key',
+        serviceId: 4,
+        externalServiceId: 77,
+      })
+    );
+    await getRepository(Media).save(
+      new Media({
+        tmdbId: 0,
+        mediaType: MediaType.BOOK,
+        status: MediaStatus.AVAILABLE,
+        serviceId: 4,
+        externalServiceId: 77,
+        ratingKey: 'linked-plex-book-key',
+        availableEbookServiceIds: [4],
       })
     );
     await getRepository(MediaIdentifier).save(

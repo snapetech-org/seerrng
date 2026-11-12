@@ -96,10 +96,21 @@ export default function TvDetail() {
             m.set(s.seasonNumber, 'asked');
     return m;
   }, [t, opts.is4k]);
+  const activeRequestSeasons = useMemo(() => {
+    const requested = new Set<number>();
+    for (const r of t?.mediaInfo?.requests || [])
+      if (!!r.is4k === !!opts.is4k && live(r.status))
+        for (const s of r.seasons || [])
+          if (live(s.status ?? r.status)) requested.add(s.seasonNumber);
+    return requested;
+  }, [t, opts.is4k]);
   const missing = seasons
     .filter((s) => {
       const st = stat.get(s.seasonNumber) || 'none';
-      return st === 'none' || st === 'part';
+      return (
+        (st === 'none' || st === 'part') &&
+        !activeRequestSeasons.has(s.seasonNumber)
+      );
     })
     .map((s) => s.seasonNumber);
   const have = seasons.filter(
@@ -111,7 +122,10 @@ export default function TvDetail() {
   ).length;
   const watchable = have + part > 0;
   const asked = seasons.filter(
-    (s) => stat.get(s.seasonNumber) === 'asked'
+    (s) =>
+      stat.get(s.seasonNumber) === 'asked' ||
+      (activeRequestSeasons.has(s.seasonNumber) &&
+        stat.get(s.seasonNumber) !== 'have')
   ).length;
   // partial requests off on the server = it's the whole show or nothing
   const partialOk = pub?.partialRequestsEnabled !== false;
@@ -293,13 +307,13 @@ export default function TvDetail() {
           )}
         </div>
         {asks.length > 0 && (
-          <ul className="note rinfo" style={{ margin: '4px 0 0', padding: 0 }}>
+          <ul className="note request-summary rinfo">
             {asks.map((r) => {
               const ss = (r.seasons || [])
                 .filter((x) => live(x.status ?? r.status))
                 .map((x) => x.seasonNumber);
               return (
-                <li key={r.id} style={{ listStyle: 'none' }}>
+                <li key={r.id}>
                   {r.status === 1
                     ? 'Waiting for approval'
                     : mine?.k === 'dl'
@@ -380,7 +394,9 @@ export default function TvDetail() {
               <div className="slist" role="group" aria-label="Seasons">
                 {seasons.map((s) => {
                   const st = stat.get(s.seasonNumber) || 'none';
-                  const locked = st === 'have' || st === 'asked';
+                  const requested =
+                    st === 'asked' || activeRequestSeasons.has(s.seasonNumber);
+                  const locked = st === 'have' || requested;
                   const on = locked || sel.has(s.seasonNumber);
                   const yr = s.airDate
                     ? s.airDate > new Date().toISOString().slice(0, 10)
@@ -418,12 +434,17 @@ export default function TvDetail() {
                           On {serverName}
                         </Pill>
                       )}
-                      {st === 'part' && (
+                      {st === 'part' && !requested && (
                         <Pill k="ok" icon="check">
                           Partly on {serverName}
                         </Pill>
                       )}
-                      {st === 'asked' && (
+                      {st === 'part' && requested && (
+                        <Pill k="wait" icon="clock">
+                          Partly on {serverName} · Requested
+                        </Pill>
+                      )}
+                      {requested && st !== 'have' && st !== 'part' && (
                         <Pill k="wait" icon="clock">
                           Requested
                         </Pill>
