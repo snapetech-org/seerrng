@@ -42,11 +42,16 @@ describe('book service-link index migration', () => {
       ]);
 
       await migration.down(runner);
+      const rolledBackTable = await runner.getTable('media');
       expect(
-        await runner.hasIndex('media', 'IDX_media_book_ebook_service_link')
+        rolledBackTable?.indices.some(
+          (index) => index.name === 'IDX_media_book_ebook_service_link'
+        )
       ).toBe(false);
       expect(
-        await runner.hasIndex('media', 'IDX_media_book_audiobook_service_link')
+        rolledBackTable?.indices.some(
+          (index) => index.name === 'IDX_media_book_audiobook_service_link'
+        )
       ).toBe(false);
       expect(new PostgresMigration().name).toBe(migration.name);
     } finally {
