@@ -8,6 +8,12 @@ const PNG = Buffer.from(
 );
 
 const MEDIA = { PENDING: 2, PROCESSING: 3, PARTIAL: 4, AVAILABLE: 5 };
+const paged = (results: unknown[]) => ({
+  page: 1,
+  totalPages: 1,
+  totalResults: results.length,
+  results,
+});
 
 type Media = Record<string, unknown> | undefined;
 const edition = (
