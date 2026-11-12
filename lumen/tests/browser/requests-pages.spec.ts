@@ -4,6 +4,8 @@ import { expect, test, type Page } from '@playwright/test';
 // so request lists are fetched in pages small enough that every title keeps its real status.
 async function fixture(page: Page, count = 40) {
   const takes: number[] = [];
+  let activeOwnerPages = 0;
+  let maxConcurrentOwnerPages = 0;
   const all = Array.from({ length: count }, (_, i) => ({
     id: i + 1,
     type: 'movie',
@@ -16,7 +18,7 @@ async function fixture(page: Page, count = 40) {
   await page.route('https://**/*', (r) => r.abort());
   await page.route('**/lumen-config.json', (r) => r.fulfill({ json: {} }));
   await page.route('**/seerr-classic/**', (r) => r.fulfill({ status: 404 }));
-  await page.route('**/api/v1/**', (r) => {
+  await page.route('**/api/v1/**', async (r) => {
     const url = new URL(r.request().url());
     const path = url.pathname.slice(7);
     if (path === '/auth/me')
@@ -31,15 +33,29 @@ async function fixture(page: Page, count = 40) {
       takes.push(take);
       const filter = url.searchParams.get('filter');
       const list = filter === 'pending' || filter === 'processing' ? [] : all;
-      return r.fulfill({
-        json: {
-          pageInfo: {
-            pages: Math.ceil(list.length / take),
-            results: list.length,
+      const ownerPage =
+        filter === 'all' && url.searchParams.get('requestedBy') === '1';
+      if (ownerPage) {
+        activeOwnerPages++;
+        maxConcurrentOwnerPages = Math.max(
+          maxConcurrentOwnerPages,
+          activeOwnerPages
+        );
+      }
+      try {
+        await new Promise<void>((resolve) => setTimeout(resolve, 10));
+        return await r.fulfill({
+          json: {
+            pageInfo: {
+              pages: Math.ceil(list.length / take),
+              results: list.length,
+            },
+            results: list.slice(skip, skip + take),
           },
-          results: list.slice(skip, skip + take),
-        },
-      });
+        });
+      } finally {
+        if (ownerPage) activeOwnerPages--;
+      }
     }
     if (path.startsWith('/movie/'))
       return r.fulfill({
@@ -47,14 +63,14 @@ async function fixture(page: Page, count = 40) {
       });
     return r.fulfill({ json: {} });
   });
-  return takes;
+  return { takes, maxConcurrentOwnerPages: () => maxConcurrentOwnerPages };
 }
 
 for (const everyone of [false, true]) {
   test(`${everyone ? 'Everyone' : 'My requests'} asks for small pages so availability stays verified`, async ({
     page,
   }) => {
-    const takes = await fixture(page);
+    const { takes } = await fixture(page);
     await page.goto(everyone ? '/requests?tab=everyone' : '/requests?tab=all');
     await expect(page.locator('.rq').first()).toBeVisible();
     await expect
@@ -68,8 +84,16 @@ for (const everyone of [false, true]) {
 test('My requests loads every page so the counts are the real totals', async ({
   page,
 }) => {
-  await fixture(page, 47);
+  const { maxConcurrentOwnerPages } = await fixture(page, 100);
   await page.goto('/requests?tab=all');
-  await expect(page.getByRole('button', { name: /^All\s*47$/ })).toBeVisible();
-  await expect(page.locator('.rq')).toHaveCount(47);
+  await expect(page.getByRole('button', { name: /^All\s*100$/ })).toBeVisible();
+  await expect(page.locator('.rq')).toHaveCount(100);
+  await expect(page.locator('.rq').first().getByRole('link')).toHaveText(
+    'Title 1000'
+  );
+  await expect(page.locator('.rq').last().getByRole('link')).toHaveText(
+    'Title 1099'
+  );
+  expect(maxConcurrentOwnerPages()).toBeGreaterThan(1);
+  expect(maxConcurrentOwnerPages()).toBeLessThanOrEqual(4);
 });

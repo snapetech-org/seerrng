@@ -38,6 +38,12 @@ const ebookMedia = {
   availableAudiobookServiceIds: null,
   hasPlexAudiobookFile: false,
 };
+const audiobookOnlyMedia = {
+  status: 5,
+  availableEbookServiceIds: null,
+  availableAudiobookServiceIds: [1],
+  hasPlexAudiobookFile: false,
+};
 const audioFeed = [
   card(
     ownedAudio,
@@ -81,6 +87,7 @@ const ebookFeed = [
   card('OL1W', 'Wool', 'Someone Else', {
     provider: 'openlibrary',
     bookFormat: 'ebook',
+    mediaInfo: audiobookOnlyMedia,
   }),
   // A similar title and same author is a different Open Library work and must not inherit
   // the owned state from Project Hail Mary.
@@ -166,7 +173,12 @@ async function fixtures(
       return route.fulfill({
         json: {
           ...paged(library[format]),
+          page: Number(url.searchParams.get('page') || 1),
           totalPages: options.libraryTotalPages ?? 1,
+          totalResults:
+            options.libraryTotalPages === undefined
+              ? library[format].length
+              : Math.max(0, (options.libraryTotalPages - 1) * 50 + 1),
         },
       });
     }
@@ -237,14 +249,22 @@ test('ebook cards use server-resolved Open Library identity without title guesse
   await expectOwned(page, 'Pride and Prejudice', false);
   await expectOwned(page, 'Wool', false);
   await expectOwned(page, 'Project Hail Mary: Illustrated Edition', false);
+  await expect(
+    poster(page, 'Pride and Prejudice').locator('.glyph.wait')
+  ).toHaveAttribute('title', 'Library status unknown');
+  await poster(page, 'Pride and Prejudice').hover();
+  await expect(
+    poster(page, 'Pride and Prejudice').getByRole('button', {
+      name: 'Request anyway',
+    })
+  ).toBeVisible();
 
   await page.getByRole('button', { name: 'Not yet', exact: true }).click();
-  await expect(page.locator('.grid .poster')).toHaveCount(3);
-  await expect(poster(page, 'Pride and Prejudice')).toHaveCount(1);
+  await expect(page.getByRole('status')).toContainText(
+    'library status could not be confirmed'
+  );
+  await expect(page.locator('.grid .poster')).toHaveCount(1);
   await expect(poster(page, 'Wool')).toHaveCount(1);
-  await expect(
-    poster(page, 'Project Hail Mary: Illustrated Edition')
-  ).toHaveCount(1);
 
   await page.getByRole('button', { name: 'In library', exact: true }).click();
   await expect(page.locator('.grid .poster')).toHaveCount(3);
@@ -288,13 +308,16 @@ test('Not yet hides results when the library check fails', async ({ page }) => {
 test('Not yet hides results when the library exceeds the bounded scan', async ({
   page,
 }) => {
-  await fixtures(page, { libraryTotalPages: 21 });
+  const calls = await fixtures(page, { libraryTotalPages: 21 });
   await page.goto('/books?show=not');
 
   await expect(page.getByRole('alert')).toContainText(
     'Library Check Incomplete'
   );
   await expect(page.locator('.grid .poster')).toHaveCount(0);
+  expect(
+    calls.filter((call) => call.startsWith('/discover/books'))
+  ).toHaveLength(1);
 });
 
 test('Not yet hides results when library pagination is malformed', async ({

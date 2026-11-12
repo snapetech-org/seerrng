@@ -329,6 +329,7 @@ export type OwnedBooks = {
 };
 // SeerrNG pages the owned list 50 at a time; past this the rest is left to the server
 const MAX_LIBRARY_PAGES = 20;
+const LIBRARY_PAGE_SIZE = 50;
 const owned = new Map<BookFormat, { at: number; p: Promise<OwnedBooks> }>();
 // The Hardcover work number of a Bookshelf id, for matching owned rows only: rows from
 // older installs carry the bare number, newer ones "hc:<n>", so accept both spellings
@@ -347,7 +348,9 @@ async function fetchOwnedBooks(format: BookFormat): Promise<OwnedBooks> {
   const rows: BookResult[] = [];
   let complete = false;
   for (let page = 1; page <= MAX_LIBRARY_PAGES; page++) {
-    const d = await cachedApi<Partial<Paged<BookResult>>>(
+    const d = await cachedApi<
+      Partial<Paged<BookResult>> & { totalResults?: number }
+    >(
       `/book/library?format=${format}&page=${page}`
     );
     if (!d || !Array.isArray(d.results)) {
@@ -356,7 +359,13 @@ async function fetchOwnedBooks(format: BookFormat): Promise<OwnedBooks> {
     if (
       typeof d.totalPages !== 'number' ||
       !Number.isSafeInteger(d.totalPages) ||
-      d.totalPages < 1
+      d.totalPages < 1 ||
+      d.page !== page ||
+      typeof d.totalResults !== 'number' ||
+      !Number.isSafeInteger(d.totalResults) ||
+      d.totalResults < 0 ||
+      d.totalPages !==
+        Math.max(1, Math.ceil(d.totalResults / LIBRARY_PAGE_SIZE))
     ) {
       throw new Error('Invalid book library pagination');
     }

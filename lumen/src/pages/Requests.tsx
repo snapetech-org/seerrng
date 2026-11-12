@@ -449,21 +449,51 @@ async function startedDownloads(query = '') {
     (first.pageInfo?.pages || 1) > 1 ? (await page(100)).results : [];
   return first.results.concat(more).filter((r) => progress(r) > 0);
 }
-// All of one person's requests, newest first, a page of the list at a time (one call each), so
-// the tab counts are the real totals and nothing falls out of every tab. Row detail lookups stay
-// limited separately (describeAll).
+// All of one person's requests, newest first, so the tab counts are the real totals and nothing
+// falls out of every tab. Keep each request page small for status accuracy, with bounded
+// concurrency so large histories don't issue hundreds of sequential round trips.
 const OWN_PAGE = 15;
 const OWN_MAX = 2000; // a safety stop, not a limit anyone should meet
+const OWN_PAGE_CONCURRENCY = 4;
 async function ownRequests(userId: number): Promise<RequestItem[]> {
-  const out: RequestItem[] = [];
-  for (let skip = 0; skip < OWN_MAX; skip += OWN_PAGE) {
-    const d = await requestList(
+  const page = (skip: number) =>
+    requestList(
       `/request?take=${OWN_PAGE}&skip=${skip}&filter=all&sort=added&requestedBy=${userId}`
     );
-    out.push(...d.results);
-    const total = d.pageInfo?.results;
-    if (d.results.length < OWN_PAGE) break;
-    if (total !== undefined && out.length >= total) break;
+  const first = await page(0);
+  const out = [...first.results];
+  let total = first.pageInfo?.results;
+  let skip = OWN_PAGE;
+  while (
+    first.results.length === OWN_PAGE &&
+    out.length < OWN_MAX &&
+    (total === undefined || out.length < total)
+  ) {
+    const remaining = Math.min(OWN_MAX, total ?? OWN_MAX) - out.length;
+    const pageCount = Math.min(
+      OWN_PAGE_CONCURRENCY,
+      Math.ceil(remaining / OWN_PAGE)
+    );
+    const pages = await Promise.all(
+      Array.from({ length: pageCount }, (_, index) =>
+        page(skip + index * OWN_PAGE)
+      )
+    );
+    let finished = false;
+    for (const result of pages) {
+      out.push(...result.results.slice(0, OWN_MAX - out.length));
+      total = result.pageInfo?.results ?? total;
+      if (
+        result.results.length < OWN_PAGE ||
+        out.length >= OWN_MAX ||
+        (total !== undefined && out.length >= total)
+      ) {
+        finished = true;
+        break;
+      }
+    }
+    skip += pages.length * OWN_PAGE;
+    if (finished) break;
   }
   return out;
 }

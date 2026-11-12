@@ -356,8 +356,15 @@ export function BookCard({ b }: { b: BookResult }) {
   const format = audio ? 'audiobook' : 'ebook';
   const library = useOwnedBooks(format);
   const known = states?.get(b.id)?.[format];
-  const libraryStatus = statusOf(bookMediaWithLibrary(b, format, library), true);
+  const media = bookMediaWithLibrary(b, format, library);
+  const libraryStatus = statusOf(media, true);
   const [s0, markRequested] = useRequested(libraryStatus);
+  const ownershipUnknown =
+    b.provider === 'openlibrary' &&
+    !!library?.complete &&
+    !media &&
+    !known &&
+    !s0;
   const s =
     s0 ||
     libraryStatus ||
@@ -373,7 +380,13 @@ export function BookCard({ b }: { b: BookResult }) {
                 : 'Checking library',
             ico: 'clock' as const,
           }
-        : null);
+        : ownershipUnknown
+          ? {
+              k: 'wait' as const,
+              word: 'Library status unknown',
+              ico: 'clock' as const,
+            }
+          : null);
   // narrator choice off (admin or personal setting) = one straight request, no picker
   const straight = !audio || !prefs.narratorChoice;
   const go = async () => {
@@ -405,9 +418,13 @@ export function BookCard({ b }: { b: BookResult }) {
         />
         <Glyph s={s} />
         <Link className="hit" to={href} aria-label={b.title} />
-        {prefs.hoverRequest && !s && straight && (
+        {prefs.hoverRequest && (!s || ownershipUnknown) && straight && (
           <TouchQuick
-            label={`Request ${b.title} (${audio ? 'audiobook' : 'ebook'})`}
+            label={
+              ownershipUnknown
+                ? `Request ${b.title} anyway; library status is unknown`
+                : `Request ${b.title} (${audio ? 'audiobook' : 'ebook'})`
+            }
             onClick={request}
             busy={busy}
           />
@@ -447,7 +464,7 @@ export function BookCard({ b }: { b: BookResult }) {
                     </Link>
                   )}
                 </>
-              ) : s ? (
+              ) : s && !ownershipUnknown ? (
                 <button className="qbtn done" disabled>
                   <Icon name={s.ico} size="sm" />
                   {s.word}
@@ -455,7 +472,11 @@ export function BookCard({ b }: { b: BookResult }) {
               ) : straight ? (
                 <button className="qbtn go" disabled={busy} onClick={request}>
                   <Icon name="plus" size="sm" />
-                  {audio ? 'Request audiobook' : 'Request ebook'}
+                  {ownershipUnknown
+                    ? 'Request anyway'
+                    : audio
+                      ? 'Request audiobook'
+                      : 'Request ebook'}
                 </button>
               ) : (
                 <Link
