@@ -169,7 +169,7 @@ test('branding differentiates undecodable input from storage errors', async () =
   }
 });
 
-test('embedded Lumen handles a rename failure after a successful write probe', async () => {
+test('embedded Lumen reports a config target directory as unwritable', async () => {
   const configFile = path.join(root, 'config.json');
   const parked = path.join(root, 'config-parked.json');
   const saved = await fs.readFile(configFile, 'utf8');
@@ -179,7 +179,8 @@ test('embedded Lumen handles a rename failure after a successful write probe', a
     const check = await request(app)
       .get('/api/v1/lumen/config')
       .set('x-test-role', 'admin');
-    assert.equal(check.body.canSave, true);
+    assert.equal(check.body.canSave, false);
+    assert.match(check.body.message, /not a usable directory/);
 
     const put = await request(app)
       .put('/api/v1/lumen/config')
@@ -198,6 +199,23 @@ test('embedded Lumen handles a rename failure after a successful write probe', a
     await fs.rename(parked, configFile);
   }
   assert.equal(await fs.readFile(configFile, 'utf8'), saved);
+});
+
+test('embedded Lumen does not unlink a pre-existing save path after exclusive creation fails', async (t) => {
+  const open = t.mock.method(fs, 'open', async () => {
+    throw Object.assign(new Error('save path already exists'), {
+      code: 'EEXIST',
+    });
+  });
+  const unlink = t.mock.method(fs, 'unlink', async () => {});
+  const save = await request(app)
+    .put('/api/v1/lumen/config')
+    .set('x-test-role', 'admin')
+    .send({ defaults: { theme: 'light' } });
+
+  assert.equal(save.status, 503);
+  assert.equal(open.mock.callCount(), 1);
+  assert.equal(unlink.mock.callCount(), 0);
 });
 
 test('branding denies non-admin writes and publishes only re-encoded, bounded images', async () => {

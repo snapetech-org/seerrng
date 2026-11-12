@@ -12,6 +12,9 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import sharp from 'sharp';
 
+const unusableLumenStorageMessage =
+  'Lumen settings storage is not a usable directory or file. Check the SeerrNG configuration volume.';
+
 const lumenStorageError = (error: unknown): string | undefined => {
   switch ((error as NodeJS.ErrnoException)?.code) {
     case 'EACCES':
@@ -24,7 +27,7 @@ const lumenStorageError = (error: unknown): string | undefined => {
     case 'ENOTDIR':
     case 'EISDIR':
     case 'EEXIST':
-      return 'Lumen settings storage is not a usable directory or file. Check the SeerrNG configuration volume.';
+      return unusableLumenStorageMessage;
     default:
       return undefined;
   }
@@ -57,6 +60,19 @@ export const createLumenRoutes = (
       const probe = path.join(directory(), `${randomUUID()}.probe`);
       let probeCreated = false;
       try {
+        const existingConfig = await fs
+          .lstat(configPath())
+          .catch((error: NodeJS.ErrnoException) => {
+            if (error.code === 'ENOENT') return undefined;
+            throw error;
+          });
+        if (existingConfig?.isDirectory()) {
+          return res.json({
+            canSave: false,
+            folder: 'readonly',
+            message: unusableLumenStorageMessage,
+          });
+        }
         // Verify the actual write path; access(W_OK) can give false positives.
         await fs.mkdir(directory(), { recursive: true, mode: 0o700 });
         const handle = await fs.open(probe, 'wx', 0o600);
@@ -88,13 +104,22 @@ export const createLumenRoutes = (
       const text = JSON.stringify(req.body);
       if (Buffer.byteLength(text) > 64 * 1024) return res.sendStatus(413);
       const temporary = path.join(directory(), `${randomUUID()}.saving`);
+      let temporaryCreated = false;
       try {
         await fs.mkdir(directory(), { recursive: true, mode: 0o700 });
-        await fs.writeFile(temporary, text, { mode: 0o600, flag: 'wx' });
+        const handle = await fs.open(temporary, 'wx', 0o600);
+        temporaryCreated = true;
+        try {
+          await handle.writeFile(text);
+        } finally {
+          await handle.close();
+        }
         await fs.rename(temporary, configPath());
+        temporaryCreated = false;
         return res.json({ saved: true });
       } catch (error) {
-        await fs.unlink(temporary).catch(() => undefined);
+        if (temporaryCreated)
+          await fs.unlink(temporary).catch(() => undefined);
         const message = lumenStorageError(error);
         if (message) {
           logger.warn('Unable to save Lumen shared settings', {
