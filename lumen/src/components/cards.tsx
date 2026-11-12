@@ -356,14 +356,24 @@ export function BookCard({ b }: { b: BookResult }) {
   const format = audio ? 'audiobook' : 'ebook';
   const library = useOwnedBooks(format);
   const known = states?.get(b.id)?.[format];
-  const [s0, markRequested] = useRequested(
-    statusOf(bookMediaWithLibrary(b, format, library), true)
-  );
+  const libraryStatus = statusOf(bookMediaWithLibrary(b, format, library), true);
+  const [s0, markRequested] = useRequested(libraryStatus);
   const s =
     s0 ||
+    libraryStatus ||
     (known
       ? { k: 'wait' as const, word: 'Requested', ico: 'clock' as const }
-      : null);
+      : !library?.complete
+        ? {
+            k: 'wait' as const,
+            word: library?.unavailable
+              ? 'Library check unavailable'
+              : library
+                ? 'Library check incomplete'
+                : 'Checking library',
+            ico: 'clock' as const,
+          }
+        : null);
   // narrator choice off (admin or personal setting) = one straight request, no picker
   const straight = !audio || !prefs.narratorChoice;
   const go = async () => {

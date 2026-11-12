@@ -6,4 +6,4 @@ action: none
 breaking: false
 ---
 
-Book cards in Lumen show a check for books already in your library on the Books and Audiobooks pages, Discover and search, and the Not yet filter no longer lists books you have.
+Book cards in Lumen show a check for books already in your library on the Books and Audiobooks pages, Discover and search. The Not yet filter hides its results when the library check fails or exceeds its bounded scan, rather than treating unverified books as unowned.

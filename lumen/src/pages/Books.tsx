@@ -26,9 +26,11 @@ export default function Books({ format }: { format: 'ebook' | 'audiobook' }) {
   // the popular feed doesn't say which books are owned: "Not yet" checks the owned list
   const library = useOwnedBooks(format);
   const waiting = show === 'not' && !library;
+  const incompleteLibrary =
+    show === 'not' && !!library && !library.complete;
   const have = (b: BookResult) =>
     bookMediaWithLibrary(b, format, library)?.status === MediaStatus.AVAILABLE;
-  const raw = waiting
+  const raw = waiting || incompleteLibrary
     ? []
     : list.items
         .map((b) => ({ ...b, bookFormat: format }))
@@ -103,8 +105,21 @@ export default function Books({ format }: { format: 'ebook' | 'audiobook' }) {
             {list.error}
           </div>
         )}
+        {incompleteLibrary && (
+          <div className="empty" role="alert">
+            <b>
+              {library?.unavailable
+                ? 'Library Check Unavailable'
+                : 'Library Check Incomplete'}
+            </b>
+            {library?.unavailable
+              ? 'Refresh the page to try the library check again.'
+              : 'The library exceeds the check limit. Not yet results are hidden to avoid mislabeling owned books.'}
+          </div>
+        )}
         {!list.loading &&
           !waiting &&
+          !incompleteLibrary &&
           !list.error &&
           list.page > 0 &&
           items.length === 0 && (
@@ -114,7 +129,8 @@ export default function Books({ format }: { format: 'ebook' | 'audiobook' }) {
                 : 'No books match this view.'}
             </div>
           )}
-        {(waiting || (list.loading && list.page === 0)) && !items.length && (
+        {((waiting && !library) || (list.loading && list.page === 0)) &&
+          !items.length && (
           <div style={{ marginTop: 16 }}>
             <GridSkeleton sq={audio} className={`grid ${audio ? 'sqg' : ''}`} />
           </div>

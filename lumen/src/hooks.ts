@@ -324,32 +324,12 @@ type BookFormat = 'ebook' | 'audiobook';
 export type OwnedBooks = {
   byId: Map<string, MediaInfo>;
   byWork: Map<string, MediaInfo>;
-  // null: two different owned books share the title and author, so neither is matched
-  byTitle: Map<string, MediaInfo | null>;
+  complete: boolean;
+  unavailable: boolean;
 };
 // SeerrNG pages the owned list 50 at a time; past this the rest is left to the server
 const MAX_LIBRARY_PAGES = 20;
 const owned = new Map<BookFormat, { at: number; p: Promise<OwnedBooks> }>();
-// Open Library and the manager spell titles differently; compare letters and digits only,
-// without the subtitle, a parenthesised edition note or a trailing "Book 4"
-const titleKey = (title?: string, author?: string) => {
-  const norm = (x: string) =>
-    x
-      .normalize('NFKD')
-      .replace(/[\u0300-\u036f]/g, '')
-      .toLowerCase()
-      .replace(/&/g, ' and ');
-  if (!title || !author) return '';
-  const t = norm(title)
-    .split(':')[0]
-    .replace(/\([^)]*\)|\[[^\]]*\]/g, ' ')
-    .replace(/,?\s*(?:book|volume|vol\.?)\s*\d+\s*$/, '')
-    .replace(/[^a-z0-9]+/g, ' ')
-    .trim();
-  const a = norm(author).replace(/[^a-z0-9]+/g, '');
-  return t && a ? `${t}|${a}` : '';
-};
-const isOpenLibraryWork = (id: string) => /^OL[1-9]\d*W$/.test(id);
 // The Hardcover work number of a Bookshelf id, for matching owned rows only: rows from
 // older installs carry the bare number, newer ones "hc:<n>", so accept both spellings
 const ownedWorkKey = (id: string): string | null => {
@@ -365,17 +345,33 @@ const ownedWorkKey = (id: string): string | null => {
 };
 async function fetchOwnedBooks(format: BookFormat): Promise<OwnedBooks> {
   const rows: BookResult[] = [];
+  let complete = false;
   for (let page = 1; page <= MAX_LIBRARY_PAGES; page++) {
     const d = await cachedApi<Partial<Paged<BookResult>>>(
       `/book/library?format=${format}&page=${page}`
     );
-    rows.push(...(Array.isArray(d?.results) ? d.results : []));
-    if (!d || page >= (d.totalPages || 1)) break;
+    if (!d || !Array.isArray(d.results)) {
+      throw new Error('Invalid book library response');
+    }
+    if (
+      typeof d.totalPages !== 'number' ||
+      !Number.isSafeInteger(d.totalPages) ||
+      d.totalPages < 1
+    ) {
+      throw new Error('Invalid book library pagination');
+    }
+    rows.push(...d.results);
+    const totalPages = d.totalPages;
+    if (page >= totalPages) {
+      complete = true;
+      break;
+    }
   }
   const out: OwnedBooks = {
     byId: new Map(),
     byWork: new Map(),
-    byTitle: new Map(),
+    complete,
+    unavailable: false,
   };
   for (const b of rows) {
     const mi = bookMediaForFormat(b.mediaInfo, format);
@@ -383,10 +379,6 @@ async function fetchOwnedBooks(format: BookFormat): Promise<OwnedBooks> {
     out.byId.set(b.id, mi);
     const work = ownedWorkKey(b.id);
     if (work) out.byWork.set(work, mi);
-    const key = titleKey(b.title, b.author);
-    if (!key) continue;
-    const seen = out.byTitle.get(key);
-    out.byTitle.set(key, seen === undefined || seen === mi ? mi : null);
   }
   return out;
 }
@@ -397,7 +389,12 @@ export function loadOwnedBooks(format: BookFormat): Promise<OwnedBooks> {
     // no access to the category, or the library is down: nothing is marked, and the next
     // look asks again
     if (owned.get(format)?.p === p) owned.delete(format);
-    return { byId: new Map(), byWork: new Map(), byTitle: new Map() };
+    return {
+      byId: new Map(),
+      byWork: new Map(),
+      complete: false,
+      unavailable: true,
+    };
   });
   owned.set(format, { at: Date.now(), p });
   return p;
@@ -418,11 +415,11 @@ export function useOwnedBooks(format: BookFormat | null) {
   }, [format]);
   return m;
 }
-// The book's state in one format: SeerrNG's own answer when it says the book is there,
-// else the matching owned-list row (same book id, same Hardcover work, or for an Open
-// Library work an unambiguous title and author)
+// The book's state in one format: SeerrNG's resolved answer when present, else the
+// matching owned-list row by exact identifier or Hardcover work identity. Open Library
+// catalogue entries must be resolved by the server; title similarity can conflate editions.
 export function bookMediaWithLibrary(
-  b: Pick<BookResult, 'id' | 'title' | 'author' | 'mediaInfo'>,
+  b: Pick<BookResult, 'id' | 'mediaInfo'>,
   format: BookFormat,
   lib: OwnedBooks | null
 ): MediaInfo | undefined {
@@ -431,10 +428,7 @@ export function bookMediaWithLibrary(
   const work = ownedWorkKey(b.id);
   const match =
     lib.byId.get(b.id) ??
-    (work ? lib.byWork.get(work) : undefined) ??
-    (isOpenLibraryWork(b.id)
-      ? lib.byTitle.get(titleKey(b.title, b.author)) || undefined
-      : undefined);
+    (work ? lib.byWork.get(work) : undefined);
   return match ?? mi;
 }
 
