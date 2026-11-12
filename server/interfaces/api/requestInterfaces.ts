@@ -142,6 +142,7 @@ export interface RequestStatusResultsResponse extends PaginatedResponse {
   }[];
   counts: {
     total: number;
+    pending: number;
     active: number;
     incomplete: number;
     attention: number;

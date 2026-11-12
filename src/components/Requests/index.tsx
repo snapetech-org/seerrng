@@ -1453,6 +1453,16 @@ const RequestStatusCard = ({
     hasPermission(Permission.MANAGE_REQUESTS) &&
     item.request.status === MediaRequestStatus.FAILED &&
     (item.request.type === 'movie' || item.request.type === 'tv');
+  const canEditEpisodeQueue =
+    hasPermission(Permission.ADMIN) &&
+    item.request.type === 'tv' &&
+    !item.request.watchAheadParentRequestId &&
+    !item.request.isAutoRequest &&
+    [
+      MediaRequestStatus.PENDING,
+      MediaRequestStatus.APPROVED,
+      MediaRequestStatus.COMPLETED,
+    ].includes(item.request.status);
   const posterBadge = bookFormat ? (
     <BookFormatBadge format={bookFormat} variant="card" />
   ) : (
@@ -1577,23 +1587,15 @@ const RequestStatusCard = ({
           </Tooltip>
         </>
       )}
-      {hasPermission(Permission.ADMIN) &&
-        item.request.type === 'tv' &&
-        !item.request.watchAheadParentRequestId &&
-        !item.request.isAutoRequest &&
-        [
-          MediaRequestStatus.PENDING,
-          MediaRequestStatus.APPROVED,
-          MediaRequestStatus.COMPLETED,
-        ].includes(item.request.status) && (
-          <Button
-            type="button"
-            buttonSize="sm"
-            onClick={() => setShowQueueModal(true)}
-          >
-            {intl.formatMessage(messages.episodeQueue)}
-          </Button>
-        )}
+      {!persius && canEditEpisodeQueue && (
+        <Button
+          type="button"
+          buttonSize="sm"
+          onClick={() => setShowQueueModal(true)}
+        >
+          {intl.formatMessage(messages.episodeQueue)}
+        </Button>
+      )}
       {canRepairFailed && (
         <Tooltip content={intl.formatMessage(messages.changeServerTooltip)}>
           <Button
@@ -2263,6 +2265,15 @@ const RequestStatusCard = ({
           }
           actions={
             <>
+              {canEditEpisodeQueue && (
+                <Button
+                  buttonType="default"
+                  buttonSize="sm"
+                  onClick={() => setShowQueueModal(true)}
+                >
+                  {intl.formatMessage(messages.episodeQueue)}
+                </Button>
+              )}
               {current.needsAttention &&
                 item.request.type === 'book' &&
                 bookFormat === 'audiobook' &&
@@ -2919,6 +2930,12 @@ const Requests = () => {
     value: number;
   }[] = [
     {
+      key: 'pending',
+      filter: 'pending',
+      label: 'pending',
+      value: data.counts.pending,
+    },
+    {
       key: 'all',
       filter: 'all',
       label: 'all',
@@ -2969,6 +2986,7 @@ const Requests = () => {
       ? 'active'
       : [
             'all',
+            'pending',
             'completed',
             'incomplete',
             'attention',
