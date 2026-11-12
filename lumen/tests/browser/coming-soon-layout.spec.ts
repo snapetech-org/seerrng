@@ -46,6 +46,10 @@ test('Coming Soon Request buttons stay inside cards in iPad landscape', async ({
 
   for (const width of [1024, 1112, 1180, 1194, 1280, 1366]) {
     await page.setViewportSize({ width, height: 820 });
+    await page.screenshot({
+      path: info.outputPath(`coming-soon-landscape-${width}.png`),
+      fullPage: true,
+    });
     const layout = await page.locator('.sl').first().evaluate((grid) => {
       const cards = Array.from(grid.querySelectorAll<HTMLElement>('.si'));
       const overflow = cards.flatMap((card, index) => {
