@@ -184,7 +184,7 @@ test('a partial season with a live request stays locked and keeps playback avail
   expect(posts).toEqual([
     {
       path: '/request',
-      body: { mediaType: 'tv', mediaId: 2074, seasons: [2, 3] },
+      body: { mediaType: 'tv', mediaId: 84773, seasons: [2, 3] },
     },
   ]);
 });
