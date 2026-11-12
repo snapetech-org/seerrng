@@ -44,6 +44,8 @@ jobs:
           CYPRESS_INSTALL_BINARY: 0
         run: pnpm install --frozen-lockfile
       - name: Check security regression boundaries
+        env:
+          SEERR_TEST_POSTGRES_URL: postgresql://postgres:ci-only-migration@127.0.0.1:${{ job.services.postgres.ports['5432'] }}/seerrng_migration_test
         run: >-
           pnpm exec vitest run --maxWorkers=2
           server/test/auditRemediation.vitest.test.ts
