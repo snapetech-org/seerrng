@@ -24,7 +24,12 @@ async function fixtures(page: Page) {
     if (path === '/search')
       return route.fulfill({
         json: paged([
-          { id: 77, mediaType: 'person', name: 'Jane Example' },
+          {
+            id: 77,
+            mediaType: 'person',
+            name: 'Jane Example',
+            profilePath: 'https://attacker.invalid/profile.jpg',
+          },
           {
             id: 5,
             mediaType: 'movie',
@@ -38,6 +43,7 @@ async function fixtures(page: Page) {
         json: {
           id: 77,
           name: 'Jane Example',
+          profilePath: 'https://attacker.invalid/profile.jpg',
           biography: 'Performer and director.',
           knownForDepartment: 'Acting',
         },
@@ -57,6 +63,11 @@ async function fixtures(page: Page) {
 test('All search shows People and opens an internal Lumen person page', async ({
   page,
 }) => {
+  const externalImageRequests: string[] = [];
+  page.on('request', (request) => {
+    if (new URL(request.url()).hostname === 'attacker.invalid')
+      externalImageRequests.push(request.url());
+  });
   await fixtures(page);
   await page.goto('/search?q=Jane');
   await expect(page.getByRole('heading', { name: 'People' })).toBeVisible();
@@ -69,6 +80,11 @@ test('All search shows People and opens an internal Lumen person page', async ({
   await expect(page.getByText('Performer and director.')).toBeVisible();
   await expect(page.getByRole('heading', { name: 'Known for' })).toBeVisible();
   await expect(page.locator('.grid .poster')).toHaveCount(1);
+  await expect(page.locator('.portrait .art-ph')).toBeVisible();
+  await expect(
+    page.locator('img[src^="https://attacker.invalid/"]')
+  ).toHaveCount(0);
+  expect(externalImageRequests).toEqual([]);
 });
 
 test('Movie-scoped Lumen search does not show People', async ({ page }) => {

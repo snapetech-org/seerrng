@@ -6,10 +6,11 @@ import { useApi } from '../hooks';
 import { Icon } from '../icons';
 
 export function PersonCard({ person }: { person: TitleResult }) {
+  const image = tmdbImg(person.profilePath);
   return (
     <ExtraCard
       href={`/person/${person.id}`}
-      img={person.profilePath ? tmdbImg(person.profilePath) : undefined}
+      img={image || undefined}
       title={person.name || 'Unknown person'}
       icon="user"
     />
@@ -82,7 +83,7 @@ export default function PersonDetail() {
       {person.data && (
         <div className="person-overview">
           <div className="portrait">
-            {person.data.profilePath ? (
+            {tmdbImg(person.data.profilePath) ? (
               <img
                 src={tmdbImg(person.data.profilePath)}
                 alt=""

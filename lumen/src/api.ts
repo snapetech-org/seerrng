@@ -136,13 +136,23 @@ export interface Genre {
   backdrops: string[];
 }
 
-// TMDB artwork goes through SeerrNG's image proxy, the same as SeerrNG's own UI
-export const tmdbImg = (path: string | undefined | null, size = 'w342') =>
-  !path
-    ? ''
-    : path.startsWith('http')
-      ? path
-      : `/imageproxy/tmdb/t/p/${size}${path}`;
+// TMDB artwork goes through SeerrNG's image proxy, the same as SeerrNG's own UI.
+// Treat provider paths as untrusted input: accepting an arbitrary absolute URL here
+// would turn metadata into a browser-side tracking/request primitive.
+const TMDB_IMAGE_SIZES = new Set(['w342', 'w500', 'w780', 'w1280']);
+export const tmdbImg = (path: string | undefined | null, size = 'w342') => {
+  if (
+    typeof path !== 'string' ||
+    !path ||
+    !path.startsWith('/') ||
+    path.startsWith('//') ||
+    path.includes('\\') ||
+    /[\u0000-\u001f]/.test(path)
+  )
+    return '';
+  const safeSize = TMDB_IMAGE_SIZES.has(size) ? size : 'w342';
+  return `/imageproxy/tmdb/t/p/${safeSize}${path}`;
+};
 
 export const titleOf = (r: TitleResult) => r.title || r.name || '';
 export const yearOf = (r: TitleResult) =>
