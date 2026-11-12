@@ -71,8 +71,10 @@ export interface MediaInfo {
   audiobookExternalServiceId?: number | null;
   audiobookLibraryServiceId?: number | null;
   audiobookLibraryItemId?: string | null;
-  downloadStatus?: { size: number; sizeLeft: number }[];
+  downloadStatus?: { size: number; sizeLeft: number; percent?: number }[];
   downloadStatus4k?: { size: number; sizeLeft: number }[];
+  // comics: issues/volumes in the library out of those known (BackIssue)
+  comicProgress?: { owned: number; total: number };
   status?: number;
   status4k?: number;
   mediaAddedAt?: string;
@@ -142,6 +144,21 @@ export const tmdbImg = (path: string | undefined | null, size = 'w342') =>
     : path.startsWith('http')
       ? path
       : `/imageproxy/tmdb/t/p/${size}${path}`;
+
+// ComicVine and AniList covers through SeerrNG's image proxy (cached on the server, and
+// no third-party requests from the browser); anything else is used as given
+const PROXIED_ART: [string, string][] = [
+  ['https://comicvine.gamespot.com/', '/imageproxy/comicvine/'],
+  ['https://comicvine.cbsistatic.com/', '/imageproxy/comicvinestatic/'],
+  ['https://comicvine1.cbsistatic.com/', '/imageproxy/comicvinestatic1/'],
+  ['https://s4.anilist.co/', '/imageproxy/anilist/'],
+];
+export const artUrl = (url?: string | null) => {
+  if (!url) return undefined;
+  for (const [from, to] of PROXIED_ART)
+    if (url.startsWith(from)) return to + url.slice(from.length);
+  return url;
+};
 
 export const titleOf = (r: TitleResult) => r.title || r.name || '';
 export const yearOf = (r: TitleResult) =>

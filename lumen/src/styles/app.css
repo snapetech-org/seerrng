@@ -858,6 +858,13 @@ body.is-detail .tabbar {
   flex-wrap: wrap;
   align-items: center;
 }
+.dstatus .dnote {
+  color: var(--ink-3);
+  font-size: 13px;
+}
+.dbody > .progress {
+  max-width: 420px;
+}
 .dacts {
   display: flex;
   gap: 10px;
@@ -1308,15 +1315,18 @@ body.is-detail .tabbar {
   object-fit: contain;
   background: var(--surface-2);
 }
-.rq .art .bar {
+.rq .art .bar,
+.poster .art .bar {
   position: absolute;
   left: 0;
   right: 0;
   bottom: 0;
   height: 4px;
   background: rgba(255, 255, 255, 0.25);
+  pointer-events: none;
 }
-.rq .art .bar i {
+.rq .art .bar i,
+.poster .art .bar i {
   display: block;
   height: 100%;
   background: var(--accent);

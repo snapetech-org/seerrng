@@ -13,8 +13,9 @@ import {
   type TitleResult,
 } from '../api';
 import { BookCard, Section, TitleCard } from '../components/cards';
+import { ComicCard } from '../components/comics';
 import { ServiceNote } from '../components/extra';
-import { useExtras } from '../extras';
+import { useExtras, type ComicWork } from '../extras';
 import { useApi } from '../hooks';
 import { Icon } from '../icons';
 import {
@@ -31,10 +32,11 @@ const SCOPES = {
   tv: 'Series',
   ebook: 'Books',
   audio: 'Audiobooks',
+  comic: 'Comics/Manga',
 } as const;
 type Scope = keyof typeof SCOPES;
 
-// Search stays in the section you came from (?f=movie|tv|ebook|audio); "All" widens it
+// Search stays in the section you came from (?f=movie|tv|ebook|audio|comic); "All" widens it
 export default function Search() {
   const [p, setP] = useSearchParams();
   const { prefs } = usePrefs();
@@ -42,6 +44,7 @@ export default function Search() {
   const f = ((p.get('f') as Scope) in SCOPES ? p.get('f') : 'all') as Scope;
   const [titles, setTitles] = useState<TitleResult[] | null>(null);
   const [books, setBooks] = useState<BookResult[] | null>(null);
+  const [comics, setComics] = useState<ComicWork[] | null>(null);
   const [recent, setRecent] = useState<string[]>(readRecentSearches);
   const [searching, setSearching] = useState(false);
   // a lookup failed and nothing was found: an error with Retry, not "No matches"
@@ -51,6 +54,8 @@ export default function Search() {
   // a new key per history entry, even when Enter pushes the same URL typing already showed
   const entryKey = useLocation().key;
   const extras = useExtras();
+  // comics join the search once the category is on and its catalogue answers
+  const comicsOn = extras.list.some((e) => e.key === 'comic');
   const term0 = (p.get('q') || '').trim();
   // nothing typed yet: something to tap instead of an empty screen
   const trending = useApi<Paged<TitleResult>>(
@@ -78,7 +83,9 @@ export default function Search() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [entryKey]);
   const scopes = (Object.keys(SCOPES) as Scope[]).filter(
-    (s) => prefs.showBooks || (s !== 'ebook' && s !== 'audio')
+    (s) =>
+      (prefs.showBooks || (s !== 'ebook' && s !== 'audio')) &&
+      (comicsOn || s !== 'comic' || f === 'comic')
   );
 
   // The box follows the address only when something else changed it (Back, a recent search,
@@ -96,6 +103,7 @@ export default function Search() {
     if (!term) {
       setTitles(null);
       setBooks(null);
+      setComics(null);
       setSearching(false);
       setFailed(null);
       return;
@@ -106,6 +114,8 @@ export default function Search() {
       const wantTitles = f === 'all' || f === 'movie' || f === 'tv';
       const wantBooks =
         prefs.showBooks && (f === 'all' || f === 'ebook' || f === 'audio');
+      // one card per work, editions inside (AniList finds the manga)
+      const wantComics = (comicsOn && f === 'all') || f === 'comic';
       const format = f === 'audio' ? 'audiobook' : 'ebook';
       // All searches both catalogues; the chips narrow to one
       const formats = f === 'all' ? ['ebook', 'audiobook'] : [format];
@@ -115,6 +125,11 @@ export default function Search() {
         error = friendlyError(e, 'Search failed');
         return null;
       };
+      const comicsAsk = wantComics
+        ? api<Paged<ComicWork>>(
+            `/discover/comics?query=${encodeURIComponent(term)}&group=works&page=1`
+          ).catch(failure)
+        : null;
       const [tr, ...brs] = await Promise.all([
         wantTitles
           ? api<Paged<TitleResult>>(
@@ -134,7 +149,9 @@ export default function Search() {
         ),
       ]);
       const br = brs.find(Boolean) ?? null;
+      const cr = await comicsAsk;
       if (!live) return;
+      const foundComics = cr?.results || [];
       const foundTitles = (tr?.results || []).filter((r) =>
         f === 'movie'
           ? r.mediaType === 'movie'
@@ -169,7 +186,12 @@ export default function Search() {
       }
       setTitles(foundTitles);
       setBooks(foundBooks);
-      setFailed(foundTitles.length || foundBooks.length ? null : error);
+      setComics(foundComics);
+      setFailed(
+        foundTitles.length || foundBooks.length || foundComics.length
+          ? null
+          : error
+      );
       setSearching(false);
     }, 300);
     return () => {
@@ -177,7 +199,7 @@ export default function Search() {
       clearTimeout(t);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [p, prefs.showBooks, attempt]);
+  }, [p, prefs.showBooks, attempt, comicsOn]);
 
   const setParam = (k: string, v: string) => {
     const n = new URLSearchParams(p);
@@ -188,18 +210,27 @@ export default function Search() {
   const ph =
     f === 'all'
       ? prefs.showBooks
-        ? 'Movies, series, books, narrators…'
-        : 'Movies and series…'
-      : `Search ${SCOPES[f].toLowerCase()}…`;
+        ? comicsOn
+          ? 'Movies, series, books, manga…'
+          : 'Movies, series, books, narrators…'
+        : comicsOn
+          ? 'Movies, series, comics…'
+          : 'Movies and series…'
+      : f === 'comic'
+        ? 'Search comics and manga…'
+        : `Search ${SCOPES[f].toLowerCase()}…`;
   const movies = (titles || []).filter((t) => t.mediaType === 'movie');
   const shows = (titles || []).filter((t) => t.mediaType === 'tv');
   const bookCards = books || [];
+  const comicCards = comics || [];
   const nothing =
     titles !== null &&
     books !== null &&
+    comics !== null &&
     !movies.length &&
     !shows.length &&
-    !bookCards.length;
+    !bookCards.length &&
+    !comicCards.length;
 
   return (
     <>
@@ -382,6 +413,15 @@ export default function Search() {
             <div className={`grid ${f === 'audio' ? 'sqg' : ''}`}>
               {bookCards.map((b) => (
                 <BookCard key={`${b.id}:${b.bookFormat ?? ''}`} b={b} />
+              ))}
+            </div>
+          </Section>
+        )}
+        {!!comicCards.length && (
+          <Section title="Comics & manga">
+            <div className="grid comic-grid">
+              {comicCards.map((w) => (
+                <ComicCard key={w.id} w={w} />
               ))}
             </div>
           </Section>
