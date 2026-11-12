@@ -74,6 +74,7 @@
   --app-card-frame-background: #2a303b;
   --persius-content-width: 1320px;
   --persius-header-height: 70px;
+  --settings-navigation-sticky-offset: var(--persius-header-height);
   --persius-secondary-text: #b3c1d7;
   --persius-success: #39d883;
   --persius-warning: #ffb331;

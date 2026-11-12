@@ -74,10 +74,14 @@ jobs:
         run: pnpm cypress:prepare
       - name: Install Chromium
         run: pnpm exec playwright install --with-deps chromium
-      - name: Exercise both production frontends under CSP
+      - name: Exercise production frontends under CSP and responsive layouts
         env:
           E2E_OFFLINE: true
-        run: pnpm exec playwright test playwright/production-csp.spec.ts playwright/client-tokens.spec.ts playwright/narrator-permissions.spec.ts playwright/movie-discovery-recovery.spec.ts
+        run: >-
+          pnpm exec playwright test playwright/production-csp.spec.ts playwright/client-tokens.spec.ts
+          playwright/narrator-permissions.spec.ts
+          playwright/movie-discovery-recovery.spec.ts
+          playwright/settings-sticky-navigation.spec.ts
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         if: always()
         with:
