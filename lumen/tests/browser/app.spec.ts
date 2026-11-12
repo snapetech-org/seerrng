@@ -711,7 +711,16 @@ test('a category page says when SeerrNG’s settings fail and retries', async ({
       ? route.fulfill({ status: 503, json: { message: 'Starting up' } })
       : route.fallback()
   );
-  await page.goto('/music');
+  // the app reads the settings once when it opens and reuses that answer; a day later the saved
+  // copy has expired, so opening Music asks again, and that read fails
+  await page.clock.install();
+  await page.goto('/');
+  await expect(page.getByRole('heading', { name: 'Discover' })).toBeVisible();
+  await page.clock.fastForward(25 * 60 * 60 * 1000);
+  await page.evaluate(() => {
+    history.pushState({}, '', '/music');
+    dispatchEvent(new PopStateEvent('popstate'));
+  });
   const alert = page.getByRole('alert');
   await expect(alert).toContainText('Couldn’t load this page');
   fail = false;

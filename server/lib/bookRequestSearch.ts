@@ -36,7 +36,10 @@ import {
 } from '@server/lib/requestStatus';
 import type { ReadarrSettings } from '@server/lib/settings';
 import logger from '@server/logger';
-import { isProviderBookEdition } from '@server/utils/bookEdition';
+import {
+  isProviderBookEdition,
+  sameEditionId,
+} from '@server/utils/bookEdition';
 
 const terminalCommandStates = new Set([
   'completed',
@@ -880,8 +883,9 @@ export class BookRequestSearchManager {
     const requestedEdition = editions.find(
       (edition) =>
         (providerEditionId &&
-          normalize(edition.foreignEditionId) ===
-            normalize(providerEditionId)) ||
+          (normalize(edition.foreignEditionId) ===
+            normalize(providerEditionId) ||
+            sameEditionId(edition.foreignEditionId, providerEditionId))) ||
         (preferredIsbn && normalizeValidIsbn(edition.isbn13) === preferredIsbn)
     );
 

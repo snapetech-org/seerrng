@@ -55,7 +55,10 @@ import {
   bookLanguageAllowed,
   bookLanguageQuery,
 } from '@server/lib/bookLanguagePolicy';
-import { findBookMediaByOpenLibraryIds } from '@server/lib/bookMediaMatcher';
+import {
+  findBookMediaForBookResults,
+  findBookMediaForSearchDocs,
+} from '@server/lib/bookMediaMatcher';
 import {
   browseComicCatalogIndex,
   getComicCatalogIndexStatus,
@@ -4265,6 +4268,28 @@ discoverRoutes.get('/books', async (req, res) => {
     ? Math.floor(providerWindow.offset / providerWindow.limit) + 1
     : page;
   const providerLimit = providerWindow?.limit ?? itemsPerPage;
+  // Catalogue records carry no library state of their own. Attach the media
+  // row each one resolves to (one batched lookup per page, the same matching
+  // /book/library uses) so clients can tell which books are already owned.
+  const withBookMedia = async (books: BookResult[]): Promise<BookResult[]> => {
+    if (!books.some((book) => !book.mediaInfo)) return books;
+    try {
+      const mediaByBookId = await findBookMediaForBookResults(
+        books.filter((book) => !book.mediaInfo),
+        req.user
+      );
+      return books.map((book) => {
+        const media = book.mediaInfo ? undefined : mediaByBookId.get(book.id);
+        return media ? { ...book, mediaInfo: media } : book;
+      });
+    } catch (error) {
+      logger.debug('Book library state is unavailable for discovery', {
+        label: 'Discover Books',
+        ...getErrorLogFields(error),
+      });
+      return books;
+    }
+  };
 
   if (!ebookEnabled) {
     try {
@@ -4279,9 +4304,11 @@ discoverRoutes.get('/books', async (req, res) => {
         page,
         totalPages: Math.max(Math.ceil(resultCount / itemsPerPage), 1),
         totalResults: resultCount,
-        results: outcome.pageResolved
-          ? books
-          : books.slice(offset, offset + itemsPerPage),
+        results: await withBookMedia(
+          outcome.pageResolved
+            ? books
+            : books.slice(offset, offset + itemsPerPage)
+        ),
       });
     } catch (error) {
       logger.error('Failed to search audiobook catalog', {
@@ -4411,9 +4438,8 @@ discoverRoutes.get('/books', async (req, res) => {
         )
       : languageFilteredDocs;
     const providerHasMore = providerPage * providerLimit < books.numFound;
-    const ids = pagedDocs.map((doc) => normalizeOpenLibraryWorkId(doc.key));
-    const mediaByOpenLibraryId = await findBookMediaByOpenLibraryIds(
-      ids,
+    const mediaByOpenLibraryId = await findBookMediaForSearchDocs(
+      pagedDocs,
       req.user
     );
     const audiobookOutcome = await audiobookSearchOutcome;
@@ -4428,12 +4454,14 @@ discoverRoutes.get('/books', async (req, res) => {
       );
     }
     const audiobookOffset = (page - 1) * itemsPerPage;
-    const audiobookResults = audiobookOutcome.pageResolved
-      ? audiobookOutcome.books
-      : audiobookOutcome.books.slice(
-          audiobookOffset,
-          audiobookOffset + itemsPerPage
-        );
+    const audiobookResults = await withBookMedia(
+      audiobookOutcome.pageResolved
+        ? audiobookOutcome.books
+        : audiobookOutcome.books.slice(
+            audiobookOffset,
+            audiobookOffset + itemsPerPage
+          )
+    );
     const audiobookTotalResults = audiobookOutcome.pageResolved
       ? audiobookOutcome.totalCount
       : audiobookOutcome.books.length;
@@ -4484,9 +4512,11 @@ discoverRoutes.get('/books', async (req, res) => {
     const audiobookOutcome = await audiobookSearchOutcome;
     if (audiobookOutcome.books.length > 0) {
       const offset = (page - 1) * itemsPerPage;
-      const results = audiobookOutcome.pageResolved
-        ? audiobookOutcome.books
-        : audiobookOutcome.books.slice(offset, offset + itemsPerPage);
+      const results = await withBookMedia(
+        audiobookOutcome.pageResolved
+          ? audiobookOutcome.books
+          : audiobookOutcome.books.slice(offset, offset + itemsPerPage)
+      );
       const audiobookTotalResults = audiobookOutcome.pageResolved
         ? audiobookOutcome.totalCount
         : audiobookOutcome.books.length;

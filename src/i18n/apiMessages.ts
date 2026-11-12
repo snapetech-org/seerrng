@@ -99,6 +99,8 @@ export const apiMessages: Record<
   m078dd32c9ff587ee1e46: 'settings contains unsupported field {value0}.',
   m07a5749e14540548096f: 'Magazine title is invalid.',
   m07acde9d03c4d6fc12fa: 'Trakt repeated a sync page.',
+  m07b633dae4945a433cb9:
+    'Lumen settings storage is not a usable directory or file. Check the SeerrNG configuration volume.',
   m07d7f0a3d9d144728e1b: 'Unable to prepare password setup link',
   m07e27ab0a716f170899e:
     'This album is already available on the selected service.',
@@ -256,6 +258,8 @@ export const apiMessages: Record<
     'Transport bootstrap is only available before setup is complete or to an authenticated administrator.',
   m11e99b413c3eccce4817: 'Bindery returned an invalid user account.',
   m11f01447e370cce6519c: 'Failed to update existing movie in Radarr',
+  m11f6c69a5b0d6245e341:
+    'Lumen cannot write shared settings. Check the SeerrNG configuration volume permissions.',
   m121e0fb425b70ca63041: 'syncEnabled must be true or false.',
   m124c5912b6cb373a6102: 'Invalid TMDB network response',
   m12559c6c8a4165535c5b: 'Select a profile picture to upload.',
@@ -458,6 +462,8 @@ export const apiMessages: Record<
   m20bc85424ebbfd829df6: 'Bindery API requires a Bindery service connection.',
   m20df946db8f703c215f5:
     'requesterSelectedOptions are only valid for new movie or TV requests.',
+  m20fe0dc1841cbc2ed020:
+    'The image could not be decoded as PNG, JPEG, or WebP.',
   m20fe9c4b716bfaf751fc: 'Software request could not be created.',
   m21153a1a62064f27ee5e: 'Patches can only be selected for emulation titles.',
   m2119028c2abd088fe000:
@@ -1338,6 +1344,8 @@ export const apiMessages: Record<
     'Advanced Request or Manage Requests permission is required.',
   m6082cbd02cd60e41f6e3: 'Sportarr returned an invalid league library',
   m608b4833bb61b61cf825: 'Invalid Cover Art Archive settings.',
+  m6091dc83b97a03269d0c:
+    'Not enough space to save Lumen settings. Check the SeerrNG configuration volume.',
   m60b64d587afbdc06f6ba: 'Book series: {value0}',
   m60c386cd49d8c7b54791:
     'An unresolved 4K request already exists for this media.',
@@ -1661,6 +1669,8 @@ export const apiMessages: Record<
   m77663586c7d0671f84a1:
     '[ListenBrainz] Failed to fetch artist details: Unknown error',
   m779bdb05d97ca158ee13: 'Unable to process override rules.',
+  m77ad82b54d77134af41e:
+    'Could not store the image. Check SeerrNG application storage.',
   m77b012b2afb9a6971475: 'seasonRequests must be an array.',
   m77daa7c9d23678327c1d: 'Missing media identifier',
   m77dbb592bfc8e274c449:
@@ -2767,6 +2777,7 @@ export const apiMessages: Record<
   mca929bc3e0f4bbe43164: 'Secret required',
   mcaaa47ec7e1f45fc059c: 'Unable to retrieve trending items.',
   mcab55a6f6670f8d1dc0a: 'invalid syntax',
+  mcac21e64a1b0dc3a421b: 'Upload a PNG, JPEG, or WebP image.',
   mcace22a331af9c087a27:
     'Only request managers can reassign failed movie or TV requests.',
   mcad0fc7a05075397191b: 'Invalid issue ID',

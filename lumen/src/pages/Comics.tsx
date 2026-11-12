@@ -414,7 +414,7 @@ function ComicIssues({ id, manga }: { id: string; manga: boolean }) {
               </b>
               {i.coverDate && (
                 <small>
-                  {shortDate(i.coverDate)}, {i.coverDate.slice(0, 4)}
+                  {shortDate(i.coverDate, false)}, {i.coverDate.slice(0, 4)}
                 </small>
               )}
             </span>

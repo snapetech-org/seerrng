@@ -1352,6 +1352,51 @@ class BaseScanner<T> {
                   );
                   this.log(`Saved new book: ${title}`);
                 }
+
+                if (
+                  bookFileObservationKnown &&
+                  serviceId !== undefined &&
+                  externalServiceId !== undefined &&
+                  !audiobookLibrarySource &&
+                  ratingKey === undefined
+                ) {
+                  // A request can own a media row whose catalog identity was
+                  // scoped to another server (an ebook requested from the
+                  // audiobook catalog) while its service link names this exact
+                  // record. Identity lookup lands on a sibling row, so publish
+                  // this record's file observation to every row linked to it.
+                  const linkedRows = await mediaRepository.find({
+                    where:
+                      bookServiceType === 'audiobook'
+                        ? {
+                            mediaType: MediaType.BOOK,
+                            audiobookServiceId: serviceId,
+                            audiobookExternalServiceId: externalServiceId,
+                          }
+                        : {
+                            mediaType: MediaType.BOOK,
+                            serviceId,
+                            externalServiceId,
+                          },
+                  });
+                  for (const linked of linkedRows) {
+                    if (linked.status === MediaStatus.BLOCKLISTED) continue;
+                    const changed = recordBookFileAvailability(
+                      linked,
+                      bookServiceType,
+                      serviceId,
+                      hasFile
+                    );
+                    const status = getBookAvailabilityStatus(
+                      linked,
+                      processing
+                    );
+                    if (changed || linked.status !== status) {
+                      linked.status = status;
+                      await mediaRepository.save(linked);
+                    }
+                  }
+                }
               })
             )
           )
