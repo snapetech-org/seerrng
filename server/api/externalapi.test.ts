@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import { randomBytes } from 'node:crypto';
 import { afterEach, describe, it, mock } from 'node:test';
 
 import { Cache } from '@server/lib/cache';
@@ -13,6 +14,7 @@ import ExternalAPI, {
   DEFAULT_EXTERNAL_API_MAX_BODY_LENGTH,
   DEFAULT_EXTERNAL_API_MAX_CONTENT_LENGTH,
   DEFAULT_EXTERNAL_API_TIMEOUT_MS,
+  ExternalAPIQuotaError,
   MAX_PENDING_EXTERNAL_API_REQUESTS,
   STALE_RESPONSE_WAIT_MS,
   containsCredentialFields,
@@ -393,6 +395,129 @@ describe('ExternalAPI redirect handling', () => {
       }),
       (error: NodeJS.ErrnoException) => error.code === 'EACCES'
     );
+  });
+});
+
+describe('ExternalAPI shared request budgets', () => {
+  it('shares rolling limits across independently constructed clients', async () => {
+    const sharedRateLimit = {
+      key: `test-provider:${randomBytes(16).toString('hex')}`,
+      limits: [
+        { maxRequests: 2, perMilliseconds: 100 },
+        { maxRequests: 1, perMilliseconds: 20 },
+      ],
+    };
+    const first = new TestExternalAPI('https://service.example', {}, {
+      sharedRateLimit,
+    });
+    const second = new TestExternalAPI('https://service.example', {}, {
+      sharedRateLimit,
+    });
+    const started: number[] = [];
+    const adapter: AxiosAdapter = async (config) => {
+      started.push(Date.now());
+      return {
+        config,
+        data: { ok: true },
+        headers: {},
+        status: 200,
+        statusText: 'OK',
+      };
+    };
+    first.setAdapter(adapter);
+    second.setAdapter(adapter);
+
+    await Promise.all([
+      first.getForTest('/one', undefined, 0),
+      second.getForTest('/two', undefined, 0),
+      first.getForTest('/three', undefined, 0),
+    ]);
+
+    assert.equal(started.length, 3);
+    assert.ok(started[1] - started[0] >= 15);
+    assert.ok(started[2] - started[0] >= 90);
+  });
+
+  it('caps each provider queue without blocking other providers', async () => {
+    const sharedRateLimit = {
+      key: `test-provider-cap:${randomBytes(16).toString('hex')}`,
+      limits: [{ maxRequests: 1, perMilliseconds: 150 }],
+      maxPendingRequests: 1,
+      maxWaitMs: 1000,
+    };
+    const first = new TestExternalAPI('https://service.example', {}, {
+      sharedRateLimit,
+    });
+    const other = new TestExternalAPI('https://other.example', {}, {
+      ...sharedRateLimit,
+      key: `other-provider:${randomBytes(16).toString('hex')}`,
+    });
+    const started: string[] = [];
+    const adapter: AxiosAdapter = async (config) => {
+      started.push(new URL(config.url!).pathname);
+      return {
+        config,
+        data: { ok: true },
+        headers: {},
+        status: 200,
+        statusText: 'OK',
+      };
+    };
+    first.setAdapter(adapter);
+    other.setAdapter(adapter);
+
+    await first.getForTest('/first', undefined, 0);
+    const queued = first.getForTest('/queued', undefined, 0);
+    await new Promise<void>((resolve) => setImmediate(resolve));
+    const excess = first.getForTest('/excess', undefined, 0);
+    await assert.rejects(
+      excess,
+      (error) =>
+        error instanceof ExternalAPIQuotaError && error.status === 503
+    );
+
+    await other.getForTest('/other', undefined, 0);
+    assert.ok(started.includes('/other'));
+    assert.equal(started.includes('/excess'), false);
+    await queued;
+    assert.deepEqual(started, ['/first', '/other', '/queued']);
+  });
+
+  it('fails fast instead of holding a request past its queue deadline', async () => {
+    const api = new TestExternalAPI(
+      'https://service.example',
+      {},
+      {
+        sharedRateLimit: {
+          key: `test-provider-deadline:${randomBytes(16).toString('hex')}`,
+          limits: [{ maxRequests: 1, perMilliseconds: 500 }],
+          maxPendingRequests: 2,
+          maxWaitMs: 20,
+        },
+      }
+    );
+    const started: number[] = [];
+    api.setAdapter(async (config) => {
+      started.push(Date.now());
+      return {
+        config,
+        data: { ok: true },
+        headers: {},
+        status: 200,
+        statusText: 'OK',
+      };
+    });
+
+    await api.getForTest('/first', undefined, 0);
+    const start = Date.now();
+    await assert.rejects(
+      api.getForTest('/limited', undefined, 0),
+      (error) =>
+        error instanceof ExternalAPIQuotaError && error.status === 503
+    );
+
+    assert.equal(started.length, 1);
+    assert.ok(Date.now() - start < 250);
   });
 });
 

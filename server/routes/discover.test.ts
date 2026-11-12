@@ -131,6 +131,39 @@ describe('genre slider provider bounds', () => {
     });
   });
 
+  it('shares a per-user request budget across comic discovery routes', async () => {
+    const settings = getSettings();
+    const originalComicVineKey = settings.main.comicVineApiKey;
+    const originalCategories = { ...settings.main.enabledMediaCategories };
+    const environment = process.env as Record<string, string | undefined>;
+    const previousNodeEnv = environment.NODE_ENV;
+    settings.main.comicVineApiKey = '';
+    settings.main.enabledMediaCategories = {
+      ...originalCategories,
+      comic: true,
+    };
+
+    try {
+      const agent = await login();
+      environment.NODE_ENV = 'production';
+      for (let index = 0; index < EXTERNAL_DISCOVER_RATE_LIMIT.limit; index++) {
+        const response = await agent.get('/discover/comics/unmatched');
+        assert.strictEqual(response.status, 404);
+      }
+
+      const limited = await agent.get('/discover/comics/landing');
+      assert.strictEqual(limited.status, 429);
+    } finally {
+      settings.main.comicVineApiKey = originalComicVineKey;
+      settings.main.enabledMediaCategories = originalCategories;
+      if (previousNodeEnv === undefined) {
+        delete environment.NODE_ENV;
+      } else {
+        environment.NODE_ENV = previousNodeEnv;
+      }
+    }
+  });
+
   it('caps upstream cardinality and outbound hydration concurrency', async () => {
     let active = 0;
     let peak = 0;

@@ -640,6 +640,7 @@ router.use(
   '/comic',
   isAuthenticated(),
   categoryAvailabilityGuard(['comic']),
+  externalMetadataRateLimit,
   comicRoutes
 );
 router.use(

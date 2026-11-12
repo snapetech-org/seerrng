@@ -13,7 +13,12 @@ import {
   stringifySafeHttpUrl,
 } from '@server/utils/security';
 import { userAgentRequestInterceptor } from '@server/utils/userAgent';
-import type { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
+import type {
+  AxiosInstance,
+  AxiosRequestConfig,
+  AxiosResponse,
+  GenericAbortSignal,
+} from 'axios';
 import axios from 'axios';
 import rateLimit from 'axios-rate-limit';
 import { createHash } from 'node:crypto';
@@ -43,6 +48,16 @@ const MAX_CACHE_KEY_VALUES = 100_000;
 const MAX_CACHE_KEY_DEPTH = 64;
 const MAX_CREDENTIAL_SCAN_NODES = 5_000;
 const MAX_CREDENTIAL_SCAN_DEPTH = 32;
+const MAX_SHARED_RATE_LIMIT_STATES = 128;
+const MAX_SHARED_RATE_LIMIT_WINDOWS = 8;
+const MAX_SHARED_RATE_LIMIT_REQUESTS = 100_000;
+const MAX_SHARED_RATE_LIMIT_WINDOW_MS = 2_147_483_647;
+const DEFAULT_SHARED_RATE_LIMIT_MAX_PENDING = 8;
+const MAX_SHARED_RATE_LIMIT_MAX_PENDING = 64;
+const DEFAULT_SHARED_RATE_LIMIT_MAX_WAIT_MS = 10_000;
+const MAX_SHARED_RATE_LIMIT_MAX_WAIT_MS = 60_000;
+const EXTERNAL_API_QUOTA_MESSAGE =
+  'The provider request limit was reached. Try again later.';
 const CREDENTIAL_FIELD_PATTERN =
   /(authorization|api[-_]?key|auth(?:entication)?[-_]?token|auth[-_]?header|auth|token|secret|password|cookie|credential)$/i;
 
@@ -99,12 +114,34 @@ export interface ExternalAPIOptions {
     maxRequests: number;
     perMilliseconds?: number;
   };
+  /**
+   * A process-wide request budget shared by independently constructed clients.
+   * `key` is digested before it is retained; callers may use a credential
+   * digest here so provider secrets never become map keys or log fields.
+   * Pending admissions and wait time are bounded; saturation throws a retryable
+   * 503 error instead of keeping requests queued indefinitely.
+   */
+  sharedRateLimit?: {
+    key: string;
+    limits: Array<{ maxRequests: number; perMilliseconds: number }>;
+    maxPendingRequests?: number;
+    maxWaitMs?: number;
+  };
   // Some callers (e.g. JellyfinAPI) build their base URL from structured
   // settings where an unset hostname is a normal "not yet configured" state,
   // not an admin-entered typo. For those, defer the failure to request time
   // instead of throwing during construction.
   allowUnconfiguredBaseUrl?: boolean;
   onRequestFailure?: (failure: ExternalAPIRequestFailure) => void;
+}
+
+export class ExternalAPIQuotaError extends Error {
+  public readonly status = 503;
+
+  constructor() {
+    super(EXTERNAL_API_QUOTA_MESSAGE);
+    this.name = 'ExternalAPIQuotaError';
+  }
 }
 
 const getHttpOrigin = (
@@ -315,7 +352,28 @@ class ExternalAPI {
   private cache?: CacheStore;
   private backgroundCacheRefreshEnabled: boolean;
   private onRequestFailure?: ExternalAPIOptions['onRequestFailure'];
+  private sharedRateLimit?: {
+    keyDigest: string;
+    limits: Array<{ maxRequests: number; perMilliseconds: number }>;
+    maxPendingRequests: number;
+    maxWaitMs: number;
+  };
   private static pendingRequests = new Map<string | symbol, Promise<unknown>>();
+  private static sharedRateLimitStates = new Map<
+    string,
+    {
+      tail: Promise<void>;
+      pending: number;
+      lastUsedAt: number;
+      maxPendingRequests: number;
+      maxWaitMs: number;
+      limits: Array<{
+        maxRequests: number;
+        perMilliseconds: number;
+        timestamps: number[];
+      }>;
+    }
+  >();
   private static explicitCacheKeys = new WeakMap<
     CacheStore,
     Map<string, { endpoint: string; scope: string }>
@@ -446,6 +504,244 @@ class ExternalAPI {
       containsCredentialFields(options.headers)
     );
     this.onRequestFailure = options.onRequestFailure;
+
+    if (options.sharedRateLimit) {
+      const {
+        key,
+        limits,
+        maxPendingRequests = DEFAULT_SHARED_RATE_LIMIT_MAX_PENDING,
+        maxWaitMs = DEFAULT_SHARED_RATE_LIMIT_MAX_WAIT_MS,
+      } = options.sharedRateLimit;
+      if (
+        typeof key !== 'string' ||
+        !key ||
+        !Array.isArray(limits) ||
+        limits.length > MAX_SHARED_RATE_LIMIT_WINDOWS ||
+        limits.length === 0 ||
+        !Number.isSafeInteger(maxPendingRequests) ||
+        maxPendingRequests < 1 ||
+        maxPendingRequests > MAX_SHARED_RATE_LIMIT_MAX_PENDING ||
+        !Number.isSafeInteger(maxWaitMs) ||
+        maxWaitMs < 1 ||
+        maxWaitMs > MAX_SHARED_RATE_LIMIT_MAX_WAIT_MS ||
+        limits.some(
+          (limit) =>
+            !limit ||
+            typeof limit !== 'object' ||
+            !Number.isSafeInteger(limit.maxRequests) ||
+            limit.maxRequests <= 0 ||
+            limit.maxRequests > MAX_SHARED_RATE_LIMIT_REQUESTS ||
+            !Number.isSafeInteger(limit.perMilliseconds) ||
+            limit.perMilliseconds <= 0 ||
+            limit.perMilliseconds > MAX_SHARED_RATE_LIMIT_WINDOW_MS
+        )
+      ) {
+        throw new Error('External API shared rate limit is invalid.');
+      }
+      this.sharedRateLimit = {
+        keyDigest: createHash('sha256').update(key).digest('hex'),
+        limits: limits.map(({ maxRequests, perMilliseconds }) => ({
+          maxRequests,
+          perMilliseconds,
+        })),
+        maxPendingRequests,
+        maxWaitMs,
+      };
+      this.axios.interceptors.request.use(async (config) => {
+        await ExternalAPI.acquireSharedRateLimit(
+          this.sharedRateLimit!,
+          config.signal
+        );
+        return config;
+      });
+    }
+  }
+
+  private static async acquireSharedRateLimit(
+    requested: NonNullable<ExternalAPI['sharedRateLimit']>,
+    signal?: GenericAbortSignal
+  ): Promise<void> {
+    const configKey = requested.limits
+      .map(
+        ({ maxRequests, perMilliseconds }) =>
+          `${maxRequests}/${perMilliseconds}`
+      )
+      .join(',');
+    const queueConfigKey =
+      `${requested.maxPendingRequests}/${requested.maxWaitMs}`;
+    let state = ExternalAPI.sharedRateLimitStates.get(requested.keyDigest);
+    if (state) {
+      const currentConfig = state.limits
+        .map(
+          ({ maxRequests, perMilliseconds }) =>
+            `${maxRequests}/${perMilliseconds}`
+        )
+        .join(',');
+      if (currentConfig !== configKey) {
+        throw new Error(
+          'External API shared rate limit configuration changed.'
+        );
+      }
+      if (
+        `${state.maxPendingRequests}/${state.maxWaitMs}` !== queueConfigKey
+      ) {
+        throw new Error(
+          'External API shared rate limit configuration changed.'
+        );
+      }
+    } else {
+      const now = Date.now();
+      for (const [key, candidate] of ExternalAPI.sharedRateLimitStates) {
+        const windowMs = Math.max(
+          ...candidate.limits.map((limit) => limit.perMilliseconds)
+        );
+        if (
+          candidate.pending === 0 &&
+          now - candidate.lastUsedAt >= windowMs
+        ) {
+          ExternalAPI.sharedRateLimitStates.delete(key);
+        }
+      }
+      if (
+        ExternalAPI.sharedRateLimitStates.size >=
+        MAX_SHARED_RATE_LIMIT_STATES
+      ) {
+        throw new Error('External API rate limit capacity exceeded.');
+      }
+      state = {
+        tail: Promise.resolve(),
+        pending: 0,
+        lastUsedAt: now,
+        maxPendingRequests: requested.maxPendingRequests,
+        maxWaitMs: requested.maxWaitMs,
+        limits: requested.limits.map((limit) => ({ ...limit, timestamps: [] })),
+      };
+      ExternalAPI.sharedRateLimitStates.set(requested.keyDigest, state);
+    }
+
+    if (signal?.aborted) {
+      throw new axios.CanceledError('External API request canceled');
+    }
+    if (state.pending >= state.maxPendingRequests) {
+      throw new ExternalAPIQuotaError();
+    }
+
+    state.pending++;
+    state.lastUsedAt = Date.now();
+    const deadline = state.lastUsedAt + state.maxWaitMs;
+    let release!: () => void;
+    const turn = new Promise<void>((resolve) => {
+      release = resolve;
+    });
+    const previous = state.tail;
+    state.tail = previous.then(() => turn);
+
+    try {
+      await ExternalAPI.waitForRateLimitTurn(
+        previous,
+        signal,
+        deadline
+      );
+      while (true) {
+        if (signal?.aborted) {
+          throw new axios.CanceledError('External API request canceled');
+        }
+        const now = Date.now();
+        if (now >= deadline) {
+          throw new ExternalAPIQuotaError();
+        }
+        let waitMs = 0;
+        for (const limit of state.limits) {
+          while (
+            limit.timestamps.length > 0 &&
+            now - limit.timestamps[0] >= limit.perMilliseconds
+          ) {
+            limit.timestamps.shift();
+          }
+          if (limit.timestamps.length >= limit.maxRequests) {
+            waitMs = Math.max(
+              waitMs,
+              limit.timestamps[0] + limit.perMilliseconds - now
+            );
+          }
+        }
+        if (waitMs <= 0) {
+          for (const limit of state.limits) limit.timestamps.push(now);
+          state.lastUsedAt = now;
+          return;
+        }
+        if (now + waitMs >= deadline) {
+          throw new ExternalAPIQuotaError();
+        }
+        await ExternalAPI.waitForRateLimitDelay(waitMs, signal);
+      }
+    } finally {
+      state.pending--;
+      state.lastUsedAt = Date.now();
+      release();
+    }
+  }
+
+  private static async waitForRateLimitTurn(
+    turn: Promise<void>,
+    signal: GenericAbortSignal | undefined,
+    deadline: number
+  ): Promise<void> {
+    if (signal?.aborted) {
+      throw new axios.CanceledError('External API request canceled');
+    }
+    let timer: NodeJS.Timeout | undefined;
+    let abort: (() => void) | undefined;
+    try {
+      await Promise.race([
+        turn,
+        new Promise<never>((_resolve, reject) => {
+          timer = setTimeout(() => {
+            reject(new ExternalAPIQuotaError());
+          }, Math.max(1, deadline - Date.now()));
+          if (signal?.addEventListener) {
+            abort = () =>
+              reject(new axios.CanceledError('External API request canceled'));
+            signal.addEventListener('abort', abort, { once: true });
+            if (signal.aborted) abort();
+          }
+        }),
+      ]);
+    } finally {
+      if (timer) clearTimeout(timer);
+      if (abort) signal?.removeEventListener?.('abort', abort);
+    }
+  }
+
+  private static async waitForRateLimitDelay(
+    ms: number,
+    signal?: GenericAbortSignal
+  ): Promise<void> {
+    if (!signal) {
+      await new Promise<void>((resolve) => setTimeout(resolve, ms));
+      return;
+    }
+    if (signal.aborted) {
+      throw new axios.CanceledError('External API request canceled');
+    }
+    if (!signal.addEventListener) {
+      await new Promise<void>((resolve) => setTimeout(resolve, ms));
+      return;
+    }
+    await new Promise<void>((resolve, reject) => {
+      const cleanup = () => signal.removeEventListener?.('abort', abort);
+      const timer = setTimeout(() => {
+        cleanup();
+        resolve();
+      }, ms);
+      const abort = () => {
+        clearTimeout(timer);
+        cleanup();
+        reject(new axios.CanceledError('External API request canceled'));
+      };
+      signal.addEventListener?.('abort', abort, { once: true });
+      if (signal.aborted) abort();
+    });
   }
 
   protected async request<T>(

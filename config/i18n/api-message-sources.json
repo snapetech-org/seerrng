@@ -58150,6 +58150,14 @@
       "parameterCount": 0,
       "callsites": [
         {
+          "path": "server/api/externalapi.ts",
+          "line": 59,
+          "kind": "authored-message-variable",
+          "field": "EXTERNAL_API_QUOTA_MESSAGE",
+          "expression": "'The provider request limit was reached. Try again later.'",
+          "captured": []
+        },
+        {
           "path": "server/lib/discoveryIntegrations/http.ts",
           "line": 44,
           "kind": "authored-message-field",

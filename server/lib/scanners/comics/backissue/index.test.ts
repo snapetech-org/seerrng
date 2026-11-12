@@ -9,6 +9,10 @@ import MediaIdentifier, {
   MediaIdentifierProvider,
 } from '@server/entity/MediaIdentifier';
 import * as kavitaReader from '@server/lib/kavitaReader';
+import {
+  clearComicLibraryProgress,
+  getComicLibraryProgress,
+} from '@server/lib/comicLibraryProgress';
 import { getSettings } from '@server/lib/settings';
 import { setupTestDb } from '@server/test/db';
 import { backissueScanner } from './index';
@@ -25,6 +29,7 @@ const previousUpdateRate = scannerInternals.updateRate;
 afterEach(() => {
   settings.backissue = previousBackIssueSettings;
   scannerInternals.updateRate = previousUpdateRate;
+  clearComicLibraryProgress();
   mock.restoreAll();
 });
 
@@ -225,6 +230,77 @@ describe('BackIssue collection scanner', () => {
 
     assert.strictEqual(getCollection.mock.callCount(), 0);
     assert.strictEqual(backissueScanner.status().running, false);
+  });
+
+  it('reconciles progress and removes stale services', async () => {
+    settings.backissue = [
+      {
+        id: 7,
+        name: 'Home BackIssue',
+        hostname: 'backissue.test',
+        port: 8787,
+        apiKey: 'backissue-test-key',
+        useSsl: false,
+        baseUrl: '',
+        isDefault: true,
+        externalUrl: '',
+        tags: [],
+        syncEnabled: true,
+        preventSearch: false,
+      },
+    ];
+    scannerInternals.updateRate = 0;
+    let collection = [
+      {
+        id: 31,
+        title: 'First series',
+        cv_id: 9001,
+        total: 10,
+        owned: 4,
+        missing: 6,
+        active: 1,
+        type: 'comic',
+      },
+      {
+        id: 32,
+        title: 'Second series',
+        cv_id: 9002,
+        total: 12,
+        owned: 8,
+        missing: 4,
+        active: 0,
+        type: 'manga',
+      },
+    ];
+    mock.method(
+      BackIssueAPI.prototype,
+      'getCollection',
+      async () => collection
+    );
+
+    await backissueScanner.run();
+    assert.equal(getComicLibraryProgress(7, 31)?.owned, 4);
+    assert.equal(getComicLibraryProgress(7, 32)?.owned, 8);
+
+    collection = [
+      {
+        id: 32,
+        title: 'Second series',
+        cv_id: 9002,
+        total: 12,
+        owned: 9,
+        missing: 3,
+        active: 0,
+        type: 'manga',
+      },
+    ];
+    await backissueScanner.run();
+    assert.equal(getComicLibraryProgress(7, 31), undefined);
+    assert.equal(getComicLibraryProgress(7, 32)?.owned, 9);
+
+    settings.backissue = [];
+    await backissueScanner.run();
+    assert.equal(getComicLibraryProgress(7, 32), undefined);
   });
 
   it('tracks a manga series from downloading through partial to complete', async () => {

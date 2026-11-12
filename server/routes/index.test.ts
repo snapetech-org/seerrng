@@ -177,20 +177,27 @@ describe('Authenticated metadata resource boundaries', () => {
 
   it('cannot reset the metadata budget by switching route families', async () => {
     const agent = await login();
+    const settings = getSettings();
+    const previousCategories = { ...settings.main.enabledMediaCategories };
+    settings.main.enabledMediaCategories = {
+      ...previousCategories,
+      comic: true,
+    };
     const environment = process.env as Record<string, string | undefined>;
     const previousNodeEnv = environment.NODE_ENV;
     environment.NODE_ENV = 'production';
 
     try {
       for (let index = 0; index < EXTERNAL_METADATA_RATE_LIMIT.limit; index++) {
-        const route = index % 2 === 0 ? '/movie/0' : '/tv/0';
+        const route = ['/movie/0', '/tv/0', '/comic/work/not-a-key'][index % 3];
         const response = await agent.get(`/api/v1${route}`);
         assert.notStrictEqual(response.status, 429);
       }
 
-      const limited = await agent.get('/api/v1/person/0');
+      const limited = await agent.get('/api/v1/comic/work/not-a-key');
       assert.strictEqual(limited.status, 429);
     } finally {
+      settings.main.enabledMediaCategories = previousCategories;
       if (previousNodeEnv === undefined) {
         delete environment.NODE_ENV;
       } else {

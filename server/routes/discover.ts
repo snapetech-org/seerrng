@@ -308,7 +308,7 @@ discoverRoutes.use((req, res, next) => {
 
 discoverRoutes.use('/home', discoverHomeRoutes);
 discoverRoutes.use(
-  ['/music', '/books', '/magazines'],
+  ['/music', '/books', '/magazines', '/comics'],
   rateLimit({
     ...EXTERNAL_DISCOVER_RATE_LIMIT,
     standardHeaders: true,

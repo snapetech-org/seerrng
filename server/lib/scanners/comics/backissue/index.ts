@@ -2,7 +2,8 @@ import type { BackIssueCollectionItem } from '@server/api/comics/backissue';
 import BackIssueAPI from '@server/api/comics/backissue';
 import {
   backIssueSeriesState,
-  setComicLibraryProgress,
+  pruneComicLibraryProgressServices,
+  replaceComicLibraryProgress,
 } from '@server/lib/comicLibraryProgress';
 import { getExternalRuntimeConfig } from '@server/lib/externalRuntimeConfig';
 import {
@@ -70,6 +71,9 @@ class BackIssueScanner
 
     try {
       this.servers = structuredClone(settings.backissue);
+      pruneComicLibraryProgressServices(
+        this.servers.map((server) => server.id)
+      );
       for (const server of this.servers) {
         this.currentServer = server;
         if (!server.syncEnabled) {
@@ -92,6 +96,24 @@ class BackIssueScanner
             });
             return client.getCollection();
           }
+        );
+        replaceComicLibraryProgress(
+          server.id,
+          this.items
+            .filter(
+              (series) =>
+                !series.type ||
+                series.type === 'comic' ||
+                series.type === 'manga'
+            )
+            .map((series) => ({
+              externalServiceId: series.id,
+              progress: {
+                owned: series.owned,
+                total: series.total,
+                active: series.active,
+              },
+            }))
         );
         await this.loop(this.processSeries.bind(this), { sessionId });
       }
@@ -161,7 +183,6 @@ class BackIssueScanner
         total: series.total,
         active: series.active,
       };
-      setComicLibraryProgress(this.currentServer.id, series.id, counts);
       await this.recordForReader(series);
       await this.processComic(String(series.cv_id), {
         serviceId: this.currentServer.id,

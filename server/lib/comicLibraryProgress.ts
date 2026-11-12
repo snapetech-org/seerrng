@@ -1,6 +1,7 @@
 // How much of each comic/manga series the comics service holds, as of the
-// last library scan ("9 of 16 volumes"). Kept in memory: the next scan
-// refills it after a restart, and the media status itself is persisted.
+// last library scan ("9 of 16 volumes"). A complete collection read replaces
+// that service's snapshot; removed services and series are pruned. Media status
+// itself is persisted, so the next scan refills this cache after a restart.
 
 export interface ComicLibraryProgress {
   owned: number;
@@ -8,16 +9,42 @@ export interface ComicLibraryProgress {
   active: number;
 }
 
-const progress = new Map<string, ComicLibraryProgress>();
-const key = (serviceId: number, externalServiceId: number) =>
-  `${serviceId}:${externalServiceId}`;
+export interface ComicLibraryProgressEntry {
+  externalServiceId: number;
+  progress: ComicLibraryProgress;
+}
 
-export const setComicLibraryProgress = (
+const progressByService = new Map<
+  number,
+  Map<number, ComicLibraryProgress>
+>();
+
+export const replaceComicLibraryProgress = (
   serviceId: number,
-  externalServiceId: number,
-  value: ComicLibraryProgress
+  entries: Iterable<ComicLibraryProgressEntry>
 ): void => {
-  progress.set(key(serviceId, externalServiceId), value);
+  const serviceProgress = new Map<number, ComicLibraryProgress>();
+  for (const { externalServiceId, progress } of entries) {
+    if (!Number.isSafeInteger(externalServiceId) || externalServiceId < 0) {
+      continue;
+    }
+    serviceProgress.set(externalServiceId, { ...progress });
+  }
+
+  if (serviceProgress.size) {
+    progressByService.set(serviceId, serviceProgress);
+  } else {
+    progressByService.delete(serviceId);
+  }
+};
+
+export const pruneComicLibraryProgressServices = (
+  configuredServiceIds: Iterable<number>
+): void => {
+  const configured = new Set(configuredServiceIds);
+  for (const serviceId of progressByService.keys()) {
+    if (!configured.has(serviceId)) progressByService.delete(serviceId);
+  }
 };
 
 export const getComicLibraryProgress = (
@@ -26,10 +53,11 @@ export const getComicLibraryProgress = (
 ): ComicLibraryProgress | undefined =>
   serviceId == null || externalServiceId == null
     ? undefined
-    : progress.get(key(serviceId, externalServiceId));
+    : progressByService.get(serviceId)?.get(externalServiceId);
 
 /** Test hook. */
-export const clearComicLibraryProgress = (): void => progress.clear();
+export const clearComicLibraryProgress = (): void =>
+  progressByService.clear();
 
 /**
  * Media state for a BackIssue series from its owned/total/active counts:

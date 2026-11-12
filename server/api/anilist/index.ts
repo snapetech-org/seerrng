@@ -304,6 +304,12 @@ class AnilistAPI extends ExternalAPI {
           maxRPS: 1,
           maxRequests: 90,
         },
+        sharedRateLimit: {
+          // Search/browse helpers construct clients per request; share the
+          // one-request-per-second budget across those clients.
+          key: 'anilist:graphql',
+          limits: [{ maxRequests: 1, perMilliseconds: 1000 }],
+        },
       }
     );
 
