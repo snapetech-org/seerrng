@@ -92,7 +92,12 @@ test('All search shows People and opens an internal Lumen person page', async ({
   });
   await page.locator('.results').getByRole('link', { name: 'Jane Example' }).click();
   await expect(page).toHaveURL(/\/person\/77$/);
-  await expect(page.getByRole('heading', { name: 'Jane Example' })).toBeVisible();
+  const personHeading = page.getByRole('heading', { name: 'Jane Example' });
+  await expect(personHeading).toBeVisible();
+  await expect
+    .poll(() => page.evaluate(() => window.scrollY))
+    .toBe(0);
+  await expect(personHeading).toBeInViewport();
   await expect(page.getByText('Performer and director.')).toBeVisible();
   await expect(page.getByRole('heading', { name: 'Known for' })).toBeVisible();
   await expect(page.locator('.grid .poster')).toHaveCount(1);
