@@ -107,6 +107,20 @@ jobs:
           path: ${{ runner.temp }}/lumen-coming-soon-evidence/
           if-no-files-found: ignore
           retention-days: 14
+      - name: Capture recent request slider baseline
+        env:
+          E2E_OFFLINE: true
+          SEERR_REQUEST_SLIDER_BASELINE: 'true'
+        run: >-
+          pnpm exec playwright test playwright/recent-request-slider-layout.spec.ts
+          --workers=1 --output=test-results/recent-request-slider-baseline
+      - name: Verify recent request slider candidate
+        env:
+          E2E_OFFLINE: true
+          SEERR_REQUEST_SLIDER_BASELINE: 'false'
+        run: >-
+          pnpm exec playwright test playwright/recent-request-slider-layout.spec.ts
+          --workers=1 --output=test-results/recent-request-slider-candidate
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         if: always()
         with:
