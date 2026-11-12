@@ -4289,6 +4289,80 @@ describe('GET /discover/books', () => {
     }
   });
 
+  it('attaches the library state of owned audiobook catalogue records', async () => {
+    getSettings().readarr = [
+      {
+        id: 3,
+        hostname: 'audiobookshelf.test',
+        port: 8787,
+        apiKey: 'audio-key',
+        useSsl: false,
+        baseUrl: '',
+        serviceType: 'audiobook',
+      } as ReadarrSettings,
+    ];
+    const ownedId = makeBookshelfBookId(3, 'owned-work');
+    const media = await getRepository(Media).save(
+      new Media({
+        tmdbId: 0,
+        mediaType: MediaType.BOOK,
+        status: MediaStatus.AVAILABLE,
+        availableAudiobookServiceIds: [3],
+      })
+    );
+    await getRepository(MediaIdentifier).save(
+      new MediaIdentifier({
+        media,
+        provider: MediaIdentifierProvider.BOOKSHELF,
+        value: ownedId,
+        canonical: true,
+      })
+    );
+    const searchOpenLibrary = mock.method(
+      OpenLibraryAPI.prototype,
+      'searchBooks'
+    );
+    mock.method(ReadarrAPI.prototype, 'getBooksPage', async () => ({
+      books: [
+        {
+          id: 1,
+          title: 'Owned Recording',
+          foreignBookId: 'owned-work',
+          author: { authorName: 'Writer One' },
+        },
+        {
+          id: 2,
+          title: 'Catalogue Only',
+          foreignBookId: 'other-work',
+          author: { authorName: 'Writer Two' },
+        },
+      ],
+      totalCount: 2,
+    }));
+
+    try {
+      const agent = await login();
+      const result = await agent
+        .get('/discover/books')
+        .query({ format: 'audiobook' });
+
+      assert.strictEqual(result.status, 200);
+      type Item = { id: string; title: string; mediaInfo?: Media };
+      const owned = result.body.results.find((b: Item) => b.id === ownedId);
+      const other = result.body.results.find((b: Item) => b.id !== ownedId);
+      assert.strictEqual(owned.mediaInfo?.id, media.id);
+      assert.deepStrictEqual(
+        owned.mediaInfo?.availableAudiobookServiceIds,
+        [3]
+      );
+      assert.strictEqual(other.title, 'Catalogue Only');
+      assert.strictEqual(other.mediaInfo, undefined);
+      assert.strictEqual(searchOpenLibrary.mock.callCount(), 0);
+    } finally {
+      getSettings().readarr = [];
+    }
+  });
+
   it('keeps combined audiobook catalog paging global across multiple services', async () => {
     getSettings().readarr = [
       {
@@ -5467,6 +5541,53 @@ describe('GET /discover/books', () => {
     assert.strictEqual(errorLog.mock.callCount(), 1);
   });
 
+  it('marks an Open Library work owned through one of its edition ISBNs', async () => {
+    mock.method(OpenLibraryAPI.prototype, 'searchBooks', async () => ({
+      numFound: 2,
+      start: 0,
+      docs: [
+        {
+          key: '/works/OL5W',
+          title: 'Owned Novel',
+          author_name: ['Writer Five'],
+          isbn: ['0306406152'],
+        },
+        {
+          key: '/works/OL6W',
+          title: 'Unowned Novel',
+          author_name: ['Writer Six'],
+          isbn: ['9780000000002'],
+        },
+      ],
+    }));
+    const media = await getRepository(Media).save(
+      new Media({
+        tmdbId: 0,
+        mediaType: MediaType.BOOK,
+        status: MediaStatus.AVAILABLE,
+        availableEbookServiceIds: [0],
+      })
+    );
+    await getRepository(MediaIdentifier).save(
+      new MediaIdentifier({
+        media,
+        provider: MediaIdentifierProvider.ISBN,
+        value: '9780306406157',
+      })
+    );
+
+    const agent = await login();
+    const res = await agent.get('/discover/books?format=ebook&query=novel');
+
+    assert.strictEqual(res.status, 200);
+    type Item = { id: string; mediaInfo?: Media };
+    const byId = new Map<string, Item>(
+      res.body.results.map((book: Item) => [book.id, book])
+    );
+    assert.strictEqual(byId.get('OL5W')?.mediaInfo?.id, media.id);
+    assert.strictEqual(byId.get('OL6W')?.mediaInfo, undefined);
+  });
+
   it('only exposes the current user watchlist state on book results', async () => {
     mock.method(OpenLibraryAPI.prototype, 'searchBooks', async () => ({
       numFound: 1,
@@ -5498,9 +5619,22 @@ describe('GET /discover/books', () => {
       new Media({
         tmdbId: 0,
         mediaType: MediaType.BOOK,
+        status: MediaStatus.UNKNOWN,
         serviceUrl: 'http://readarr.internal/book/1',
         externalServiceSlug: 'other-user-book',
-        ratingKey: 'plex-book-key',
+        serviceId: 4,
+        externalServiceId: 77,
+      })
+    );
+    await getRepository(Media).save(
+      new Media({
+        tmdbId: 0,
+        mediaType: MediaType.BOOK,
+        status: MediaStatus.AVAILABLE,
+        serviceId: 4,
+        externalServiceId: 77,
+        ratingKey: 'linked-plex-book-key',
+        availableEbookServiceIds: [4],
       })
     );
     await getRepository(MediaIdentifier).save(
@@ -5532,6 +5666,10 @@ describe('GET /discover/books', () => {
       undefined
     );
     assert.strictEqual(res.body.results[0].mediaInfo.ratingKey, undefined);
+    assert.strictEqual(
+      res.body.results[0].mediaInfo.hasPlexAudiobookFile,
+      true
+    );
   });
 });
 

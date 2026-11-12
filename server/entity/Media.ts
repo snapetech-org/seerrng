@@ -57,6 +57,16 @@ import Season from './Season';
 @Entity()
 @Index(['tmdbId', 'mediaType'])
 @Index('IDX_media_mbId', ['mbId'])
+@Index('IDX_media_book_ebook_service_link', [
+  'mediaType',
+  'serviceId',
+  'externalServiceId',
+])
+@Index('IDX_media_book_audiobook_service_link', [
+  'mediaType',
+  'audiobookServiceId',
+  'audiobookExternalServiceId',
+])
 @Index('UQ_media_screen_tmdb_type', ['tmdbId', 'mediaType'], {
   unique: true,
   where: `"mediaType" IN ('movie', 'tv') AND "tmdbId" > 0`,
