@@ -141,9 +141,9 @@ test(
           state: 'authenticated dark-theme fixture with six upcoming movies',
           project: info.project.name,
           deviceScaleFactor: 2,
-          baselineCommit: 'aa372c3f44fda2437174f386571bf890d1872100',
+          baselineCommit: '2c22b506557afc5bc550f1eb1c3e4c48bdc3f439',
           baseline:
-            'PR base after #658: three desktop columns, shared nowrap buttons, and two-line card titles',
+            'PR base after #658 and #656: three desktop columns, shared nowrap buttons, and two-line card titles',
           candidate:
             'PR CSS: two columns 1040–1319px; shared data-label-wrap button variant',
           measurements,
