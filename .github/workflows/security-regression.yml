@@ -44,6 +44,8 @@ jobs:
           CYPRESS_INSTALL_BINARY: 0
         run: pnpm install --frozen-lockfile
       - name: Check security regression boundaries
+        env:
+          SEERR_TEST_POSTGRES_URL: postgresql://postgres:ci-only-migration@127.0.0.1:${{ job.services.postgres.ports['5432'] }}/seerrng_migration_test
         run: >-
           pnpm exec vitest run --maxWorkers=2
           server/test/auditRemediation.vitest.test.ts
@@ -51,6 +53,15 @@ jobs:
           server/middleware/streamAuthorization.test.ts server/lib/follow/index.test.ts
           server/lib/resolve/admission.test.ts server/utils/securityBoundaries.test.ts
           server/migration/clientApiKeys.test.ts server/lib/typeormSessionStore.test.ts
+          server/migration/bookServiceLinkIndexes.test.ts
+          server/lib/editionCompare
+      - name: Exercise book catalog, identity and scanner regressions
+        run: >-
+          pnpm test:node
+          server/routes/discover.test.ts
+          server/lib/bookMediaMatcher.test.ts
+          server/lib/scanners/readarr/readarr.test.ts
+          server/test/MediaRequestSubscriber.test.ts
       - name: Check deployment and scanner gates
         run: node --test scripts/check-helm-security.test.mjs scripts/healthcheck.test.mjs scripts/check-semgrep-baseline.test.mjs scripts/check-repository-hygiene.test.mjs packaging/cloudron/start-cloudron.test.mjs
       - name: Exercise PostgreSQL token migration and authentication

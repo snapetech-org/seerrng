@@ -246,6 +246,11 @@ export const retryAfterMs = (
   const date = value ? Date.parse(value) : NaN;
   return Number.isFinite(date) ? Math.max(0, date - now) : 2000 * (attempt + 1);
 };
+// The answer the provider just fetched. The rest of the app asks for the same path through
+// useApi, and a sign-in clears the saved answers, so without this each page load asked twice.
+let lastPublic: { at: number; body: unknown } | null = null;
+export const recentPublicSettings = (maxAgeMs: number) =>
+  lastPublic && Date.now() - lastPublic.at < maxAgeMs ? lastPublic.body : null;
 async function loadPublicSettings(signal: AbortSignal): Promise<unknown> {
   for (let attempt = 0; attempt < 3 && !signal.aborted; attempt++) {
     const r = await fetch('/api/v1/settings/public', {
@@ -256,6 +261,7 @@ async function loadPublicSettings(signal: AbortSignal): Promise<unknown> {
     if (r?.ok) {
       const body = await r.json().catch(() => null);
       if (body && typeof body === 'object' && !Array.isArray(body)) {
+        lastPublic = { at: Date.now(), body };
         try {
           sessionStorage.setItem(PUBLIC_KEY, JSON.stringify(body));
         } catch {

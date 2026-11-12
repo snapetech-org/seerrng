@@ -124,33 +124,13 @@ const projectDownloadForNonAdmin = (
   } as DownloadingItem;
 };
 
-/**
- * Removes backend routing identifiers and release details that the UI does
- * not expose at the caller's permission level.
- */
-export const restrictMediaOperationalFieldsForUser = (
+/** Removes operational identifiers that are limited to request managers. */
+export const restrictMediaOperationalIdentifiersForUser = (
   media: Media | undefined,
   user: User | undefined
 ): Media | undefined => {
   if (!media) {
     return media;
-  }
-
-  const isAdmin = user?.hasPermission(Permission.ADMIN) ?? false;
-  if (media.mediaType === MediaType.BOOK) {
-    media.hasPlexAudiobookFile =
-      media.hasPlexAudiobookFile === true || !!media.ratingKey;
-  }
-  if (!isAdmin) {
-    media.downloadStatus = (media.downloadStatus ?? []).map((item) =>
-      projectDownloadForNonAdmin(item, user?.id)
-    );
-    media.downloadStatus4k = (media.downloadStatus4k ?? []).map((item) =>
-      projectDownloadForNonAdmin(item, user?.id)
-    );
-    media.audiobookDownloadStatus = (media.audiobookDownloadStatus ?? []).map(
-      (item) => projectDownloadForNonAdmin(item, user?.id)
-    );
   }
 
   const canManageRequests =
@@ -190,6 +170,38 @@ export const restrictMediaOperationalFieldsForUser = (
   }
 
   return media;
+};
+
+/**
+ * Removes backend routing identifiers and release details that the UI does
+ * not expose at the caller's permission level.
+ */
+export const restrictMediaOperationalFieldsForUser = (
+  media: Media | undefined,
+  user: User | undefined
+): Media | undefined => {
+  if (!media) {
+    return media;
+  }
+
+  const isAdmin = user?.hasPermission(Permission.ADMIN) ?? false;
+  if (media.mediaType === MediaType.BOOK) {
+    media.hasPlexAudiobookFile =
+      media.hasPlexAudiobookFile === true || !!media.ratingKey;
+  }
+  if (!isAdmin) {
+    media.downloadStatus = (media.downloadStatus ?? []).map((item) =>
+      projectDownloadForNonAdmin(item, user?.id)
+    );
+    media.downloadStatus4k = (media.downloadStatus4k ?? []).map((item) =>
+      projectDownloadForNonAdmin(item, user?.id)
+    );
+    media.audiobookDownloadStatus = (media.audiobookDownloadStatus ?? []).map(
+      (item) => projectDownloadForNonAdmin(item, user?.id)
+    );
+  }
+
+  return restrictMediaOperationalIdentifiersForUser(media, user);
 };
 
 export const restrictMediaRelationsForUser = (

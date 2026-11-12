@@ -232,7 +232,7 @@ export default function MovieDetail() {
                 ['Runtime', fmtRun(m.runtime)],
                 [
                   'Released',
-                  date ? `${shortDate(date)}, ${date.slice(0, 4)}` : '',
+                  date ? `${shortDate(date, false)}, ${date.slice(0, 4)}` : '',
                 ],
                 ['Director', director],
                 ['Rated', cert(m)],

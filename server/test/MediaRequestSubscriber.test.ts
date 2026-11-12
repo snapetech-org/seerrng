@@ -2998,6 +2998,110 @@ describe('MediaRequestSubscriber service dispatch', () => {
     );
   });
 
+  it('dispatches a bare Hardcover edition id against qualified lookup editions', async () => {
+    // Narrator lists offer the library catalog's bare id (31923605) while the
+    // Chaptarr provider lookup qualifies the same edition (hc:31923605).
+    const settings = getSettings();
+    settings.readarr = [
+      {
+        id: 20,
+        name: 'Bookshelf',
+        hostname: 'bookshelf.local',
+        port: 8787,
+        apiKey: 'test-key',
+        useSsl: false,
+        activeProfileId: 11,
+        activeProfileName: 'Audiobooks',
+        activeMetadataProfileId: 12,
+        activeDirectory: '/audiobooks',
+        tags: [],
+        is4k: false,
+        isDefault: true,
+        syncEnabled: true,
+        preventSearch: false,
+        tagRequests: false,
+        overrideRule: [],
+        serviceType: 'audiobook',
+      },
+    ];
+    const media = await getRepository(Media).save(
+      new Media({
+        mediaType: MediaType.BOOK,
+        tmdbId: 0,
+        status: MediaStatus.PENDING,
+        status4k: MediaStatus.UNKNOWN,
+        identifiers: [
+          new MediaIdentifier({
+            provider: MediaIdentifierProvider.BOOKSHELF,
+            value: makeBookshelfBookId(20, 'hc:446681'),
+            canonical: true,
+          }),
+        ],
+      })
+    );
+    const req = await createApprovedRequest(media, await getRequester());
+    req.bookFormat = 'audiobook';
+    req.preferredEditionId = '31923605';
+    req.editionPolicy = 'only';
+    const lookupResult = {
+      id: 2279,
+      foreignBookId: 'hc:446681',
+      title: 'Dungeon Crawler Carl',
+      author: { foreignAuthorId: 'hc:author-1', authorName: 'Matt Dinniman' },
+      editions: [
+        {
+          foreignEditionId: 'hc:31285035',
+          title: 'Dungeon Crawler Carl (full cast)',
+          monitored: true,
+          language: 'English',
+        },
+        {
+          foreignEditionId: 'hc:31923605',
+          title: 'Dungeon Crawler Carl',
+          monitored: false,
+          language: 'English',
+        },
+      ],
+    } as ReadarrBookLookupResult;
+    mock.method(ReadarrAPI.prototype, 'lookupBook', async () => [lookupResult]);
+    mock.method(
+      ReadarrAPI.prototype,
+      'lookupBookByProviderIdentity',
+      async () => lookupResult
+    );
+    const add = mock.method(
+      ReadarrAPI.prototype,
+      'addBook',
+      async (payload: ReadarrBookOptions) =>
+        ({
+          ...payload,
+          id: 2279,
+          titleSlug: '446681',
+        }) as Awaited<ReturnType<ReadarrAPI['addBook']>>
+    );
+    mock.method(notificationManager, 'sendNotification', () => undefined);
+
+    await new MediaRequestSubscriber().sendToReadarr(req);
+
+    assert.equal(add.mock.callCount(), 1);
+    const payload = add.mock.calls[0].arguments[0] as ReadarrBookOptions;
+    assert.equal(payload.useRequestedEdition, true);
+    assert.deepEqual(
+      payload.editions?.map((edition) => [
+        edition.foreignEditionId,
+        edition.monitored,
+      ]),
+      [
+        ['hc:31285035', false],
+        ['hc:31923605', true],
+      ]
+    );
+    const saved = await getRepository(MediaRequest).findOneOrFail({
+      where: { id: req.id },
+    });
+    assert.notEqual(saved.status, MediaRequestStatus.FAILED);
+  });
+
   it('expands Bookshelf lookup to OpenLibrary edition ISBNs when canonical lookup misses', async () => {
     const settings = getSettings();
     settings.readarr = [

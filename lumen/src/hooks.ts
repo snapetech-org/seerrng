@@ -1,17 +1,32 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { api, ApiError, hardcoverWorkId, hcCovers } from './api';
+import {
+  api,
+  ApiError,
+  bookMediaForFormat,
+  hardcoverWorkId,
+  hcCovers,
+  MediaStatus,
+  type BookResult,
+  type MediaInfo,
+  type Paged,
+} from './api';
 import {
   cached,
   cacheGeneration,
   forget,
+  FRESH_MS,
   isFresh,
   onMarkStale,
+  RECHECK_MS,
   remember,
   shared,
 } from './apiCache';
-import { onSessionReset, sessionGeneration } from './sessionState';
 import { friendlyError } from './errors';
+import { recentPublicSettings } from './mediaServer';
+import { onSessionReset, sessionGeneration } from './sessionState';
+
+const PUBLIC_PATH = '/settings/public';
 
 // A saved answer shows at once; a fresh one isn't asked for again (see apiCache.ts).
 export function useApi<T>(path: string | null) {
@@ -62,7 +77,11 @@ function fetchShared<T>(path: string): Promise<T> {
   return shared(path, async () => {
     const generation = sessionGeneration();
     const cacheVersion = cacheGeneration();
-    const d = await api<T>(path);
+    const d =
+      path === PUBLIC_PATH
+        ? ((recentPublicSettings(RECHECK_MS) as T | null) ??
+          (await api<T>(path)))
+        : await api<T>(path);
     if (generation === sessionGeneration()) remember(path, d, cacheVersion);
     return d;
   });
@@ -294,6 +313,132 @@ export function useBookStates() {
     };
   }, []);
   return m;
+}
+
+// ---- books already in the library ----
+// The catalogue feeds don't say which books are owned (SeerrNG before the fix sends no
+// mediaInfo on them), so book cards also check the owned list: the same /book/library answer
+// the "In library" filter shows, from the shared answer cache. SeerrNG lists only books with
+// that format's files, and bookMediaForFormat checks the file evidence again.
+type BookFormat = 'ebook' | 'audiobook';
+export type OwnedBooks = {
+  byId: Map<string, MediaInfo>;
+  byWork: Map<string, MediaInfo>;
+  complete: boolean;
+  unavailable: boolean;
+};
+// SeerrNG pages the owned list 50 at a time; past this the rest is left to the server
+const MAX_LIBRARY_PAGES = 20;
+const LIBRARY_PAGE_SIZE = 50;
+const owned = new Map<BookFormat, { at: number; p: Promise<OwnedBooks> }>();
+// The Hardcover work number of a Bookshelf id, for matching owned rows only: rows from
+// older installs carry the bare number, newer ones "hc:<n>", so accept both spellings
+const ownedWorkKey = (id: string): string | null => {
+  if (!id.startsWith('bookshelf:')) return null;
+  try {
+    const raw = atob(
+      (id.split(':')[2] ?? '').replace(/-/g, '+').replace(/_/g, '/')
+    );
+    return /^(?:hc:)?(\d+)$/.exec(raw)?.[1] ?? null;
+  } catch {
+    return null;
+  }
+};
+async function fetchOwnedBooks(format: BookFormat): Promise<OwnedBooks> {
+  const rows: BookResult[] = [];
+  let complete = false;
+  for (let page = 1; page <= MAX_LIBRARY_PAGES; page++) {
+    const d = await cachedApi<
+      Partial<Paged<BookResult>> & { totalResults?: number }
+    >(
+      `/book/library?format=${format}&page=${page}`
+    );
+    if (!d || !Array.isArray(d.results)) {
+      throw new Error('Invalid book library response');
+    }
+    if (
+      typeof d.totalPages !== 'number' ||
+      !Number.isSafeInteger(d.totalPages) ||
+      d.totalPages < 1 ||
+      d.page !== page ||
+      typeof d.totalResults !== 'number' ||
+      !Number.isSafeInteger(d.totalResults) ||
+      d.totalResults < 0 ||
+      d.totalPages !==
+        Math.max(1, Math.ceil(d.totalResults / LIBRARY_PAGE_SIZE))
+    ) {
+      throw new Error('Invalid book library pagination');
+    }
+    rows.push(...d.results);
+    const totalPages = d.totalPages;
+    if (page >= totalPages) {
+      complete = true;
+      break;
+    }
+  }
+  const out: OwnedBooks = {
+    byId: new Map(),
+    byWork: new Map(),
+    complete,
+    unavailable: false,
+  };
+  for (const b of rows) {
+    const mi = bookMediaForFormat(b.mediaInfo, format);
+    if (!b?.id || !mi || mi.status !== MediaStatus.AVAILABLE) continue;
+    out.byId.set(b.id, mi);
+    const work = ownedWorkKey(b.id);
+    if (work) out.byWork.set(work, mi);
+  }
+  return out;
+}
+export function loadOwnedBooks(format: BookFormat): Promise<OwnedBooks> {
+  const cur = owned.get(format);
+  if (cur && Date.now() - cur.at < FRESH_MS) return cur.p;
+  const p = fetchOwnedBooks(format).catch(() => {
+    // no access to the category, or the library is down: nothing is marked, and the next
+    // look asks again
+    if (owned.get(format)?.p === p) owned.delete(format);
+    return {
+      byId: new Map(),
+      byWork: new Map(),
+      complete: false,
+      unavailable: true,
+    };
+  });
+  owned.set(format, { at: Date.now(), p });
+  return p;
+}
+// a request, an import or another account: ask again next time
+onMarkStale(() => owned.clear());
+onSessionReset(() => owned.clear());
+// null while the owned list loads
+export function useOwnedBooks(format: BookFormat | null) {
+  const [m, setM] = useState<OwnedBooks | null>(null);
+  useEffect(() => {
+    if (!format) return;
+    let live = true;
+    loadOwnedBooks(format).then((x) => live && setM(x));
+    return () => {
+      live = false;
+    };
+  }, [format]);
+  return m;
+}
+// The book's state in one format: SeerrNG's resolved answer when present, else the
+// matching owned-list row by exact identifier or Hardcover work identity. Open Library
+// catalogue entries must be resolved by the server; title similarity can conflate editions.
+export function bookMediaWithLibrary(
+  b: Pick<BookResult, 'id' | 'mediaInfo'>,
+  format: BookFormat,
+  lib: OwnedBooks | null
+): MediaInfo | undefined {
+  const mi = bookMediaForFormat(b.mediaInfo, format);
+  if (mi?.status === MediaStatus.AVAILABLE || !lib) return mi;
+  const work = ownedWorkKey(b.id);
+  const match =
+    lib.byId.get(b.id) ??
+    (work ? lib.byWork.get(work) : undefined);
+  return match ?? mi;
 }
 
 // ebook covers: Hardcover's book cover when the companion has one, else what SeerrNG gave

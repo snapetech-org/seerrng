@@ -16,6 +16,9 @@ import {
   normalizeOpenLibraryWorkId,
 } from '@server/lib/externalIds';
 import { normalizeValidIsbn } from '@server/lib/isbn';
+import {
+  restrictMediaOperationalIdentifiersForUser,
+} from '@server/lib/mediaResponse';
 import { hydrateMediaSummaryRelations } from '@server/lib/mediaSummaryHydration';
 import { parseBookshelfBookId } from '@server/utils/bookshelfCatalog';
 import { Brackets, In } from 'typeorm';
@@ -226,6 +229,10 @@ const findBookMediaByIdentifiers = async (
   for (const batch of chunk(media))
     await hydrateMediaSummaryRelations(batch, user);
   const mediaById = await projectBookFileObservations(media);
+  // File-observation projection can graft manager-only identifiers from a
+  // linked row. Download statuses were already tokenized during hydration.
+  for (const projectedMedia of mediaById.values())
+    restrictMediaOperationalIdentifiersForUser(projectedMedia, user);
 
   const mediaByIdentifier = new Map<string, Media>();
 
@@ -277,21 +284,28 @@ export const findBookMediaForSearchDocs = async (
   docs: OpenLibrarySearchDoc[],
   user?: User
 ): Promise<Map<string, Media>> => {
-  const lookups = docs.flatMap((doc) => {
-    const workId = doc.key ? normalizeOpenLibraryWorkId(doc.key) : undefined;
-    const isbnLookups = getSearchDocIsbns(doc).map((isbn) => ({
+  const workLookups = docs.flatMap((doc) =>
+    doc.key
+      ? [
+          {
+            provider: MediaIdentifierProvider.OPENLIBRARY,
+            value: normalizeOpenLibraryWorkId(doc.key),
+          },
+        ]
+      : []
+  );
+  const isbnLookups = docs.flatMap((doc) =>
+    getSearchDocIsbns(doc).map((isbn) => ({
       provider: MediaIdentifierProvider.ISBN,
       value: isbn,
-    }));
-
-    return [
-      ...(workId
-        ? [{ provider: MediaIdentifierProvider.OPENLIBRARY, value: workId }]
-        : []),
-      ...isbnLookups,
-    ];
-  });
-  const mediaByIdentifier = await findBookMediaByIdentifiers(lookups, user);
+    }))
+  );
+  // Every work's own id first: a popular work's long edition ISBN list must
+  // not crowd the later works out of the lookup budget.
+  const mediaByIdentifier = await findBookMediaByIdentifiers(
+    [...workLookups, ...isbnLookups],
+    user
+  );
   const mediaByWorkId = new Map<string, Media>();
 
   docs.forEach((doc) => {

@@ -8,6 +8,7 @@ import {
 } from '@server/lib/externalIds';
 import { normalizeIsbn, normalizeValidIsbn } from '@server/lib/isbn';
 import logger from '@server/logger';
+import { sameEditionId } from '@server/utils/bookEdition';
 import {
   fetchSafeRemoteImage,
   MAX_SAFE_REMOTE_IMAGE_BYTES,
@@ -2963,16 +2964,29 @@ class ReadarrAPI extends ServarrBase<ReadarrQueueItem> {
     }
 
     const currentEditions = existingBook.editions ?? [];
-    const requestedEditionExists = currentEditions.some(
-      (edition) =>
-        edition.foreignEditionId === requestedEdition.foreignEditionId
-    );
+    // The stored book reports bare edition ids, lookups qualify them; a local
+    // edition id names the same row either way.
+    const localId = (edition: object): number | undefined => {
+      const id = (edition as { id?: unknown }).id;
+      return typeof id === 'number' && Number.isSafeInteger(id) && id > 0
+        ? id
+        : undefined;
+    };
+    const requestedLocalId = localId(requestedEdition);
+    const isRequested = (edition: ReadarrEdition) =>
+      (requestedLocalId !== undefined &&
+        localId(edition) === requestedLocalId) ||
+      sameEditionId(
+        edition.foreignEditionId,
+        requestedEdition.foreignEditionId
+      );
+    const requestedEditionExists = currentEditions.some(isRequested);
     const editions = requestedEditionExists
       ? currentEditions
       : [...currentEditions, requestedEdition];
     const monitoredEditions = editions.map((edition) => ({
       ...edition,
-      monitored: edition.foreignEditionId === requestedEdition.foreignEditionId,
+      monitored: isRequested(edition),
     }));
 
     return {
@@ -3026,8 +3040,8 @@ class ReadarrAPI extends ServarrBase<ReadarrQueueItem> {
       throw new Error('An additional edition requires an explicit selection.');
     }
     const catalog = await this.getEditionCatalog(existingBook.id);
-    const match = catalog.find(
-      (edition) => edition.foreignEditionId === requested.foreignEditionId
+    const match = catalog.find((edition) =>
+      sameEditionId(edition.foreignEditionId, requested.foreignEditionId)
     );
     if (!match) {
       throw new Error(
