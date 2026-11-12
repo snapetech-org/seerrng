@@ -140,6 +140,110 @@ const SEARCH_ANIME_QUERY = `
   }
 `;
 
+const MANGA_FIELDS = `
+  id
+  isAdult
+  format
+  status
+  volumes
+  countryOfOrigin
+  popularity
+  synonyms
+  genres
+  title { romaji english native }
+  startDate { year }
+  coverImage { extraLarge large medium }
+`;
+
+const SEARCH_MANGA_QUERY = `
+  query SearchManga($search: String, $perPage: Int) {
+    Page(page: 1, perPage: $perPage) {
+      media(type: MANGA, search: $search, sort: SEARCH_MATCH) {
+        ${MANGA_FIELDS}
+      }
+    }
+  }
+`;
+
+// Browsing (the Comics page): manga and one-shots with an English licence
+// AniList knows of. Unset filters must be left out of the variables: AniList
+// answers an empty page when a filter variable is null.
+const BROWSE_MANGA_QUERY = `
+  query BrowseManga(
+    $page: Int
+    $perPage: Int
+    $sort: [MediaSort]
+    $genres: [String]
+    $status: MediaStatus
+    $licensedBy: [Int]
+    $popularity: Int
+  ) {
+    Page(page: $page, perPage: $perPage) {
+      pageInfo { currentPage hasNextPage }
+      media(
+        type: MANGA
+        isAdult: false
+        format_in: [MANGA, ONE_SHOT]
+        status_not: NOT_YET_RELEASED
+        sort: $sort
+        genre_in: $genres
+        status: $status
+        licensedById_in: $licensedBy
+        popularity_greater: $popularity
+      ) {
+        ${MANGA_FIELDS}
+      }
+    }
+  }
+`;
+
+const MANGA_BY_ID_QUERY = `
+  query MangaById($id: Int) {
+    Media(id: $id, type: MANGA) {
+      ${MANGA_FIELDS}
+      description(asHtml: false)
+    }
+  }
+`;
+
+/**
+ * AniList's external-link sources for English manga releases (print
+ * publishers, and the publishers' own reading sites): Kodansha USA, Seven
+ * Seas, SuBLime, TOKYOPOP (English), Yen Press, VIZ, K MANGA, Manga UP!
+ * (Square Enix) and J-Novel Club. Browsing keeps to manga licensed by one of
+ * them, so webtoons only read in Korean don't fill the page.
+ */
+export const ANILIST_ENGLISH_MANGA_SOURCES = [
+  182, 184, 260, 259, 183, 132, 215, 199, 105,
+];
+
+export type AnilistMangaBrowseSort =
+  'TRENDING_DESC' | 'POPULARITY_DESC' | 'START_DATE_DESC' | 'TITLE_ENGLISH';
+
+export interface AnilistMangaSearchResult {
+  id: number;
+  isAdult?: boolean | null;
+  format?: string | null;
+  status?: string | null;
+  volumes?: number | null;
+  countryOfOrigin?: string | null;
+  popularity?: number | null;
+  synonyms?: string[] | null;
+  genres?: string[] | null;
+  description?: string | null;
+  title?: {
+    romaji?: string | null;
+    english?: string | null;
+    native?: string | null;
+  } | null;
+  startDate?: { year?: number | null } | null;
+  coverImage?: {
+    extraLarge?: string | null;
+    large?: string | null;
+    medium?: string | null;
+  } | null;
+}
+
 const SAVE_MEDIA_LIST_ENTRY_MUTATION = `
   mutation SaveMediaListEntry(
     $mediaId: Int
@@ -199,6 +303,12 @@ class AnilistAPI extends ExternalAPI {
         rateLimit: {
           maxRPS: 1,
           maxRequests: 90,
+        },
+        sharedRateLimit: {
+          // Search/browse helpers construct clients per request; share the
+          // one-request-per-second budget across those clients.
+          key: 'anilist:graphql',
+          limits: [{ maxRequests: 1, perMilliseconds: 1000 }],
         },
       }
     );
@@ -412,6 +522,72 @@ class AnilistAPI extends ExternalAPI {
       PUBLIC_PAGE_CACHE_TTL_SECONDS * 12
     );
     return data.Page?.media ?? [];
+  }
+
+  /**
+   * Manga by title (type MANGA also covers manhwa, one-shots and light
+   * novels). AniList matches English, romaji and native titles and synonyms.
+   * Cached briefly so provider-side maturity changes are reflected promptly.
+   */
+  async searchManga(
+    search: string,
+    perPage = 6
+  ): Promise<AnilistMangaSearchResult[]> {
+    const data = await this.graphql<{
+      Page: { media: AnilistMangaSearchResult[] };
+    }>(SEARCH_MANGA_QUERY, { search, perPage }, 5 * 60);
+    return data.Page?.media ?? [];
+  }
+
+  /**
+   * A page of English-licensed manga for the Comics page. Cached briefly so
+   * provider-side maturity changes are reflected promptly.
+   */
+  async browseManga({
+    page = 1,
+    perPage = 20,
+    sort = 'TRENDING_DESC',
+    genres,
+    status,
+    minPopularity,
+  }: {
+    page?: number;
+    perPage?: number;
+    sort?: AnilistMangaBrowseSort;
+    genres?: string[];
+    status?: 'RELEASING' | 'FINISHED';
+    minPopularity?: number;
+  } = {}): Promise<{
+    hasNextPage: boolean;
+    media: AnilistMangaSearchResult[];
+  }> {
+    const variables: Record<string, unknown> = {
+      page,
+      perPage,
+      sort: [sort, ...(sort === 'TITLE_ENGLISH' ? [] : ['ID_DESC'])],
+      licensedBy: ANILIST_ENGLISH_MANGA_SOURCES,
+    };
+    if (genres?.length) variables.genres = genres;
+    if (status) variables.status = status;
+    if (minPopularity) variables.popularity = minPopularity;
+    const data = await this.graphql<{
+      Page: {
+        pageInfo?: { hasNextPage?: boolean };
+        media: AnilistMangaSearchResult[];
+      };
+    }>(BROWSE_MANGA_QUERY, variables, 5 * 60);
+    return {
+      hasNextPage: !!data.Page?.pageInfo?.hasNextPage,
+      media: (data.Page?.media ?? []).filter((m) => m?.id && !m.isAdult),
+    };
+  }
+
+  /** One manga with its description; cached briefly to refresh maturity. */
+  async getManga(id: number): Promise<AnilistMangaSearchResult | null> {
+    const data = await this.graphql<{
+      Media: AnilistMangaSearchResult | null;
+    }>(MANGA_BY_ID_QUERY, { id }, 5 * 60);
+    return data.Media ?? null;
   }
 
   async saveMediaListEntry(options: {

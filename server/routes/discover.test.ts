@@ -1,7 +1,8 @@
 import assert from 'node:assert/strict';
 import { randomBytes } from 'node:crypto';
-import { afterEach, before, describe, it, mock } from 'node:test';
+import { afterEach, before, beforeEach, describe, it, mock } from 'node:test';
 
+import AnilistAPI from '@server/api/anilist';
 import ComicVineAPI from '@server/api/comicvine';
 import CoverArtArchive from '@server/api/coverartarchive';
 import ExternalAPI from '@server/api/externalapi';
@@ -128,6 +129,39 @@ describe('genre slider provider bounds', () => {
       windowMs: 60_000,
       limit: 30,
     });
+  });
+
+  it('shares a per-user request budget across comic discovery routes', async () => {
+    const settings = getSettings();
+    const originalComicVineKey = settings.main.comicVineApiKey;
+    const originalCategories = { ...settings.main.enabledMediaCategories };
+    const environment = process.env as Record<string, string | undefined>;
+    const previousNodeEnv = environment.NODE_ENV;
+    settings.main.comicVineApiKey = '';
+    settings.main.enabledMediaCategories = {
+      ...originalCategories,
+      comic: true,
+    };
+
+    try {
+      const agent = await login();
+      environment.NODE_ENV = 'production';
+      for (let index = 0; index < EXTERNAL_DISCOVER_RATE_LIMIT.limit; index++) {
+        const response = await agent.get('/discover/comics/unmatched');
+        assert.strictEqual(response.status, 404);
+      }
+
+      const limited = await agent.get('/discover/comics/landing');
+      assert.strictEqual(limited.status, 429);
+    } finally {
+      settings.main.comicVineApiKey = originalComicVineKey;
+      settings.main.enabledMediaCategories = originalCategories;
+      if (previousNodeEnv === undefined) {
+        delete environment.NODE_ENV;
+      } else {
+        environment.NODE_ENV = previousNodeEnv;
+      }
+    }
   });
 
   it('caps upstream cardinality and outbound hydration concurrency', async () => {
@@ -5674,8 +5708,74 @@ describe('GET /discover/books', () => {
 });
 
 describe('GET /discover/comics', () => {
+  beforeEach(() => {
+    // the manga half of a comics search asks AniList first
+    mock.method(AnilistAPI.prototype, 'searchManga', async () => []);
+  });
+
   afterEach(() => {
     getSettings().main.comicVineApiKey = '';
+  });
+
+  it('puts the English edition of a manga the query names first, with its AniList cover', async () => {
+    getSettings().main.comicVineApiKey = 'comicvine-test-key';
+    mock.method(AnilistAPI.prototype, 'searchManga', async () => [
+      {
+        id: 117195,
+        format: 'MANGA',
+        popularity: 107975,
+        title: { romaji: '[Oshi no Ko]', english: '[Oshi no Ko]' },
+        coverImage: { extraLarge: 'https://s4.anilist.co/file/oshi.jpg' },
+      },
+    ]);
+    mock.method(ComicVineAPI.prototype, 'searchVolumes', async () => ({
+      error: 'OK',
+      limit: 20,
+      offset: 0,
+      number_of_page_results: 2,
+      number_of_total_results: 2,
+      status_code: 1,
+      results: [
+        {
+          id: 132980,
+          name: '【Oshi no Ko】',
+          publisher: { id: 1, name: 'Shueisha' },
+          count_of_issues: 16,
+          resource_type: 'volume' as const,
+        },
+        {
+          id: 147500,
+          name: '[Oshi No Ko]',
+          publisher: { id: 2, name: 'Yen Press' },
+          count_of_issues: 13,
+          resource_type: 'volume' as const,
+        },
+      ],
+    }));
+    const res = await (
+      await login()
+    )
+      .get('/discover/comics')
+      .query({ query: 'Oshi no Ko' });
+
+    assert.strictEqual(res.status, 200);
+    assert.deepStrictEqual(
+      res.body.results.map(
+        (r: { id: string; manga?: boolean; label?: string }) => [
+          r.id,
+          r.manga ?? false,
+          r.label ?? '',
+        ]
+      ),
+      [
+        ['147500', true, 'Manga · English edition · Yen Press · 13 vols'],
+        ['132980', true, 'Manga · Japanese edition · Shueisha · 16 vols'],
+      ]
+    );
+    assert.strictEqual(
+      res.body.results[0].posterPath,
+      'https://s4.anilist.co/file/oshi.jpg'
+    );
   });
 
   it('returns an empty result set when ComicVine is not configured', async () => {

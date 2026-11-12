@@ -19,9 +19,11 @@ import { Blocklist } from '@server/entity/Blocklist';
 import type { User } from '@server/entity/User';
 import { Watchlist } from '@server/entity/Watchlist';
 import { bookFileServiceIdsTransformer } from '@server/lib/bookAvailability';
+import { getComicLibraryProgress } from '@server/lib/comicLibraryProgress';
 import type { DownloadingItem } from '@server/lib/downloadtracker';
 import downloadTracker from '@server/lib/downloadtracker';
 import { normalizeMusicBrainzId } from '@server/lib/externalIds';
+import { getKavitaReaderUrl } from '@server/lib/kavitaReader';
 import { restrictMediaRelationsForUser } from '@server/lib/mediaResponse';
 import {
   applyUserMediaServerAvailability,
@@ -447,6 +449,10 @@ class Media {
   public downloadStatus?: DownloadingItem[] = [];
   public downloadStatus4k?: DownloadingItem[] = [];
   public audiobookDownloadStatus?: DownloadingItem[] = [];
+  /** Comics: issues/volumes in the library out of those known, last scan. */
+  public comicProgress?: { owned: number; total: number };
+  /** Comics: the series in the reading server (Kavita), once any of it is in. */
+  public readerUrl?: string;
 
   public mediaUrl?: string;
   public mediaUrl4k?: string;
@@ -892,6 +898,30 @@ class Media {
         this.externalServiceId,
         this.comicServiceType
       );
+    }
+
+    if (
+      this.mediaType === MediaType.COMIC &&
+      this.comicServiceType === 'backissue'
+    ) {
+      const progress = getComicLibraryProgress(
+        this.serviceId,
+        this.externalServiceId
+      );
+      if (progress) {
+        this.comicProgress = { owned: progress.owned, total: progress.total };
+      }
+      if (
+        (progress?.owned ?? 0) > 0 ||
+        this.status === MediaStatus.AVAILABLE ||
+        this.status === MediaStatus.PARTIALLY_AVAILABLE
+      ) {
+        const readerUrl = getKavitaReaderUrl(
+          this.serviceId,
+          this.externalServiceId
+        );
+        if (readerUrl) this.readerUrl = readerUrl;
+      }
     }
   }
 }

@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import { afterEach, before, beforeEach, describe, it, mock } from 'node:test';
 
+import BackIssueAPI from '@server/api/comics/backissue';
 import type { KapowarrVolume } from '@server/api/comics/kapowarr';
 import KapowarrAPI from '@server/api/comics/kapowarr';
 import MylarAPI from '@server/api/comics/mylar';
@@ -17,8 +18,13 @@ import MediaIdentifier, {
 import { MediaRequest } from '@server/entity/MediaRequest';
 import { MediaSearchMetadata } from '@server/entity/MediaSearchMetadata';
 import { User } from '@server/entity/User';
+import {
+  clearMangaSearchCaches,
+  rememberMangaVolume,
+} from '@server/lib/mangaSearch';
 import notificationManager, { Notification } from '@server/lib/notifications';
 import BaseScanner from '@server/lib/scanners/baseScanner';
+import { backissueScanner } from '@server/lib/scanners/comics/backissue';
 import { getSettings } from '@server/lib/settings';
 import { MediaRequestSubscriber } from '@server/subscriber/MediaRequestSubscriber';
 import { resetTestDb, seedTestDb } from '@server/utils/seedTestDb';
@@ -103,6 +109,129 @@ describe('MediaRequestSubscriber comic dispatch', () => {
     const settings = getSettings();
     settings.mylar = [];
     settings.kapowarr = [];
+    settings.backissue = [];
+    clearMangaSearchCaches();
+  });
+
+  it('files a manga request into the manga library and notifies once, when every volume is in', async () => {
+    getSettings().backissue = [
+      {
+        id: 7,
+        name: 'BackIssue',
+        hostname: 'backissue.local',
+        port: 8787,
+        apiKey: 'fixture',
+        useSsl: false,
+        baseUrl: '',
+        externalUrl: '',
+        tags: [],
+        isDefault: true,
+        syncEnabled: true,
+        preventSearch: false,
+      },
+    ];
+    // found through the AniList manga search
+    rememberMangaVolume(1234, { anilistId: 117195 });
+    const adds = mock.method(BackIssueAPI.prototype, 'addVolume', async () => ({
+      seriesId: 31,
+      outcome: 'added',
+    }));
+    const notices = mock.method(
+      notificationManager,
+      'sendNotificationIntent',
+      async () => undefined
+    );
+    const media = await saveComicMedia('1234');
+    const request = await createApprovedComicRequest(
+      media,
+      await getRequester()
+    );
+    await new MediaRequestSubscriber().sendToComicBackend(request);
+    assert.deepEqual(adds.mock.calls[0]?.arguments, [1234, { manga: true }]);
+
+    let counts = { owned: 0, total: 16, active: 1 };
+    mock.method(BackIssueAPI.prototype, 'getCollection', async () => [
+      {
+        id: 31,
+        title: '[Oshi No Ko]',
+        cv_id: 1234,
+        missing: counts.total - counts.owned,
+        type: 'manga',
+        ...counts,
+      },
+    ]);
+    (backissueScanner as unknown as { updateRate: number }).updateRate = 0;
+    const availableNotices = () =>
+      notices.mock.calls.filter(
+        (call) => call.arguments[0] === Notification.MEDIA_AVAILABLE
+      ).length;
+    const requestStatus = async () =>
+      (await getRepository(MediaRequest).findOneByOrFail({ id: request.id }))
+        .status;
+
+    for (const next of [
+      { owned: 0, total: 16, active: 1 },
+      { owned: 9, total: 16, active: 1 },
+      { owned: 9, total: 16, active: 0 },
+      { owned: 16, total: 16, active: 1 },
+    ]) {
+      counts = next;
+      await backissueScanner.run();
+      assert.equal(await requestStatus(), MediaRequestStatus.APPROVED);
+      assert.equal(availableNotices(), 0);
+    }
+
+    counts = { owned: 16, total: 16, active: 0 };
+    await backissueScanner.run();
+    assert.equal(
+      (await getRepository(Media).findOneByOrFail({ id: media.id })).status,
+      MediaStatus.AVAILABLE
+    );
+    assert.equal(await requestStatus(), MediaRequestStatus.COMPLETED);
+    assert.equal(availableNotices(), 1);
+
+    await backissueScanner.run();
+    // a newly published volume, then that volume arriving: no second notice
+    counts = { owned: 16, total: 17, active: 0 };
+    await backissueScanner.run();
+    assert.equal(
+      (await getRepository(Media).findOneByOrFail({ id: media.id })).status,
+      MediaStatus.PARTIALLY_AVAILABLE
+    );
+    assert.equal(await requestStatus(), MediaRequestStatus.COMPLETED);
+    counts = { owned: 17, total: 17, active: 0 };
+    await backissueScanner.run();
+    assert.equal(availableNotices(), 1);
+  });
+
+  it('files a Western comic request into the default library', async () => {
+    getSettings().backissue = [
+      {
+        id: 7,
+        name: 'BackIssue',
+        hostname: 'backissue.local',
+        port: 8787,
+        apiKey: 'fixture',
+        useSsl: false,
+        baseUrl: '',
+        externalUrl: '',
+        tags: [],
+        isDefault: true,
+        syncEnabled: true,
+        preventSearch: false,
+      },
+    ];
+    getSettings().main.comicVineApiKey = '';
+    const adds = mock.method(BackIssueAPI.prototype, 'addVolume', async () => ({
+      seriesId: 32,
+    }));
+    const media = await saveComicMedia('4321');
+    const request = await createApprovedComicRequest(
+      media,
+      await getRequester()
+    );
+    await new MediaRequestSubscriber().sendToComicBackend(request);
+    assert.deepEqual(adds.mock.calls[0]?.arguments, [4321, { manga: false }]);
   });
 
   it('dispatches to the default Mylar instance and records the ComicVine id as the external id', async () => {

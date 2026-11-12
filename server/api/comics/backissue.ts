@@ -11,6 +11,8 @@ export interface BackIssueCollectionItem {
   missing: number;
   active: number;
   type?: string;
+  /** The series folder, when BackIssue reports it. */
+  location?: string;
 }
 
 export interface BackIssueCollectionDetail {
@@ -18,6 +20,8 @@ export interface BackIssueCollectionDetail {
   title: string;
   cv_id?: number;
   files: { path: string; name?: string; size?: number }[];
+  /** The series folder: BackIssue's own, else the folder its files share. */
+  location?: string;
 }
 
 export interface BackIssueAddResult {
@@ -43,7 +47,17 @@ export interface BackIssueQueueItem {
   title: string;
   status: string;
   progress?: number;
+  /** A pack grab (one torrent/NZB covering many issues or volumes). */
+  pack?: boolean;
 }
+
+export interface BackIssueLibrary {
+  id: number;
+  name: string;
+  type: string;
+}
+
+const COLLECTION_LIBRARY_TYPES = new Set(['comic', 'manga']);
 
 const isRecord = (value: unknown): value is Record<string, unknown> =>
   !!value && typeof value === 'object' && !Array.isArray(value);
@@ -57,6 +71,26 @@ const boundedString = (value: unknown, max = 1_000): string | undefined =>
   typeof value === 'string' && value.length > 0
     ? value.slice(0, max)
     : undefined;
+
+const folderString = (value: unknown): string | undefined => {
+  const folder = boundedString(value, 4_096);
+  return folder && !folder.includes('\0') ? folder : undefined;
+};
+
+/** The deepest folder every file sits in. */
+export const commonFolder = (paths: string[]): string | undefined => {
+  const split = paths.map((path) =>
+    path.replace(/\\/g, '/').split('/').slice(0, -1)
+  );
+  if (!split.length) return undefined;
+  const shared: string[] = [];
+  for (let i = 0; i < split[0].length; i++) {
+    const part = split[0][i];
+    if (split.some((parts) => parts[i] !== part)) break;
+    shared.push(part);
+  }
+  return shared.join('/') || undefined;
+};
 
 const sanitizeCollectionItem = (
   value: unknown
@@ -77,6 +111,7 @@ const sanitizeCollectionItem = (
     missing: boundedInteger(value.missing) ?? 0,
     active: boundedInteger(value.active) ?? 0,
     type: boundedString(value.type, 64),
+    location: folderString(value.location ?? value.path ?? value.folder),
   };
 };
 
@@ -102,7 +137,15 @@ const sanitizeCollectionDetail = (
       ];
     }
   );
-  return { id, title, cv_id: cvId, files };
+  return {
+    id,
+    title,
+    cv_id: cvId,
+    files,
+    location:
+      folderString(value.location ?? value.path ?? value.folder) ??
+      commonFolder(files.map((file) => file.path)),
+  };
 };
 
 class BackIssueAPI extends ExternalAPI {
@@ -162,50 +205,111 @@ class BackIssueAPI extends ExternalAPI {
     return { version: boundedString(status.version, 64) ?? 'unknown' };
   }
 
+  public async getLibraries(): Promise<BackIssueLibrary[]> {
+    const response = await this.get<unknown>('/api/libraries', {}, 0);
+    if (!isRecord(response) || !Array.isArray(response.libraries)) {
+      throw new Error('BackIssue returned an invalid library list.');
+    }
+    return response.libraries.flatMap((candidate) => {
+      if (!isRecord(candidate)) return [];
+      const id = boundedInteger(candidate.id);
+      if (id === undefined || id === 0) return [];
+      return [
+        {
+          id,
+          name: boundedString(candidate.name, 255) ?? `Library ${id}`,
+          type: (boundedString(candidate.type, 64) ?? 'comic').toLowerCase(),
+        },
+      ];
+    });
+  }
+
+  /**
+   * Every ComicVine-matched comic and manga series. Pages one library at a
+   * time when BackIssue reports libraries, so its on-demand ebook catalog is
+   * never walked. BackIssue only reports a page total when chip counts are
+   * requested, so pages are read until a short page instead.
+   */
   public async getCollection(): Promise<BackIssueCollectionItem[]> {
+    let libraries: (number | undefined)[] = [undefined];
+    try {
+      const comicLibraries = (await this.getLibraries()).filter((library) =>
+        COLLECTION_LIBRARY_TYPES.has(library.type)
+      );
+      if (comicLibraries.length) {
+        libraries = comicLibraries.map((library) => library.id);
+      }
+    } catch {
+      // older BackIssue without libraries: read the whole collection
+    }
+    const rows: BackIssueCollectionItem[] = [];
+    const seen = new Set<number>();
+    for (const library of libraries) {
+      for (const row of await this.getCollectionRows(library)) {
+        if (seen.has(row.id)) continue;
+        seen.add(row.id);
+        rows.push(row);
+      }
+    }
+    return rows;
+  }
+
+  private async getCollectionRows(
+    library?: number
+  ): Promise<BackIssueCollectionItem[]> {
     const pageSize = 500;
+    const maxPages = 400;
     const rows: BackIssueCollectionItem[] = [];
     let offset = 0;
-    let total: number | undefined;
 
-    do {
+    for (let pageNumber = 0; pageNumber < maxPages; pageNumber++) {
       const response = await this.get<unknown>(
         '/api/collection',
-        { params: { limit: pageSize, offset, counts: 0 } },
+        {
+          params: {
+            limit: pageSize,
+            offset,
+            counts: 0,
+            ...(library !== undefined ? { library } : {}),
+          },
+        },
         0
       );
-      const pageTotal = isRecord(response)
-        ? boundedInteger(response.total)
-        : undefined;
       if (
         !isRecord(response) ||
         !Array.isArray(response.rows) ||
-        pageTotal === undefined ||
         response.rows.length > pageSize
       ) {
         throw new Error('BackIssue returned an invalid collection page.');
       }
-      if (
-        offset > pageTotal ||
-        (response.rows.length === 0 && offset < pageTotal)
-      ) {
-        throw new Error('BackIssue returned an incomplete collection page.');
-      }
-      const pageRows = response.rows
-        .map(sanitizeCollectionItem)
-        .filter((item): item is BackIssueCollectionItem => !!item);
-      rows.push(...pageRows);
-      total = pageTotal;
+      const pageTotal = boundedInteger(response.total);
+      rows.push(
+        ...response.rows
+          .map(sanitizeCollectionItem)
+          .filter((item): item is BackIssueCollectionItem => !!item)
+      );
       offset += response.rows.length;
-    } while (offset < total);
-
-    return rows;
+      if (
+        response.rows.length < pageSize ||
+        (pageTotal !== undefined && offset >= pageTotal)
+      ) {
+        return rows;
+      }
+    }
+    throw new Error('BackIssue returned an unexpectedly large collection.');
   }
 
-  public async addVolume(comicVineId: number): Promise<BackIssueAddResult> {
+  /**
+   * Adds a ComicVine volume. A manga lands in BackIssue's manga library (the
+   * first library of type manga, which BackIssue creates on first use).
+   */
+  public async addVolume(
+    comicVineId: number,
+    { manga = false }: { manga?: boolean } = {}
+  ): Promise<BackIssueAddResult> {
     const response = await this.post<unknown>(
       '/api/collection/add-cv',
-      { comicvineId: comicVineId },
+      { comicvineId: comicVineId, ...(manga ? { manga: true } : {}) },
       undefined,
       0
     );
@@ -238,34 +342,62 @@ class BackIssueAPI extends ExternalAPI {
     );
   }
 
+  /**
+   * Issue downloads plus active pack grabs. A pack (one torrent or NZB that
+   * covers many issues or manga volumes) has no issue rows, so without
+   * `packs` a series downloading as a pack would look idle.
+   */
   public async getQueue(): Promise<BackIssueQueueItem[]> {
     const response = await this.get<unknown>('/api/queue', {}, 0);
     if (!isRecord(response) || !Array.isArray(response.items)) {
       throw new Error('BackIssue returned an invalid queue response.');
     }
-    return response.items.flatMap((candidate) => {
+    const progressOf = (live: Record<string, unknown> | undefined) => {
+      const raw = live?.progress;
+      return typeof raw === 'number' &&
+        Number.isFinite(raw) &&
+        raw >= 0 &&
+        raw <= 100
+        ? raw
+        : undefined;
+    };
+    const issues = response.items.flatMap((candidate) => {
       if (!isRecord(candidate)) return [];
       const id = boundedInteger(candidate.id);
       const seriesId = boundedInteger(candidate.series_id);
       if (id === undefined || seriesId === undefined) return [];
       const live = isRecord(candidate.live) ? candidate.live : undefined;
-      const rawProgress = live?.progress;
       return [
         {
           id,
           seriesId,
           title: boundedString(candidate.series_title ?? candidate.title) ?? '',
           status: boundedString(candidate.status, 64) ?? 'queued',
-          progress:
-            typeof rawProgress === 'number' &&
-            Number.isFinite(rawProgress) &&
-            rawProgress >= 0 &&
-            rawProgress <= 100
-              ? rawProgress
-              : undefined,
+          progress: progressOf(live),
         },
       ];
     });
+    const packs = (Array.isArray(response.packs) ? response.packs : []).flatMap(
+      (candidate): BackIssueQueueItem[] => {
+        if (!isRecord(candidate)) return [];
+        const id = boundedInteger(candidate.id);
+        const seriesId = boundedInteger(candidate.series_id);
+        if (id === undefined || seriesId === undefined) return [];
+        const live = isRecord(candidate.live) ? candidate.live : undefined;
+        return [
+          {
+            id,
+            seriesId,
+            title:
+              boundedString(candidate.series_title ?? candidate.title) ?? '',
+            status: boundedString(live?.state, 64) ?? 'downloading',
+            progress: progressOf(live),
+            pack: true,
+          },
+        ];
+      }
+    );
+    return [...issues, ...packs];
   }
 
   public async cancelQueueItem(id: number): Promise<void> {

@@ -3,6 +3,7 @@
 // on every call, so a hidden page that someone opens by URL just explains it's off.
 import { useEffect, useState } from 'react';
 import { api, ApiError, type MediaInfo } from './api';
+import { useAuth } from './auth';
 import { useApi, type PublicSettings } from './hooks';
 import type { IconName } from './icons';
 import { services } from './mediaServer';
@@ -20,7 +21,7 @@ export const EXTRAS: {
   label: string;
 }[] = [
   { key: 'music', path: '/music', icon: 'music', label: 'Music' },
-  { key: 'comic', path: '/comics', icon: 'comic', label: 'Comics' },
+  { key: 'comic', path: '/comics', icon: 'comic', label: 'Comics/Manga' },
   { key: 'magazine', path: '/magazines', icon: 'magazine', label: 'Magazines' },
   { key: 'game', path: '/games', icon: 'game', label: 'Games' },
   { key: 'sports', path: '/sports', icon: 'trophy', label: 'Sports' },
@@ -119,7 +120,18 @@ const probe = (path: string, configured = false) => {
 export function useExtras() {
   const settings = useApi<PublicSettings>('/settings/public');
   const pub = settings.data;
-  const on = pub?.enabledMediaCategories || {};
+  // what this account may see: SeerrNG gives each user their own categories (an admin gets all
+  // of them). Until that answers nothing is probed, so a hidden category is never asked for.
+  const { user } = useAuth();
+  const mine = useApi<{ enabledMediaCategories?: Record<string, boolean> }>(
+    user ? `/user/${user.id}/settings/main` : null
+  );
+  const userSettled = !user || !!mine.data || !!mine.error;
+  const own = mine.data?.enabledMediaCategories;
+  const global = pub?.enabledMediaCategories || {};
+  // a category must be on for the whole server *and* for this account
+  const on: Record<string, boolean> = { ...global };
+  if (own) for (const k of Object.keys(on)) if (own[k] === false) on[k] = false;
   const svc = services();
   const games = (['game', 'retro', 'modern'] as GameCategory[]).filter(
     (c) => on[c] && (c === 'game' ? svc.software : svc.software || svc.romarr)
@@ -148,7 +160,7 @@ export function useExtras() {
     EXTRAS.map((e) => (enabled(e.key) ? e.key : '')).join(',') +
     games.join(',');
   useEffect(() => {
-    if (!pub) return;
+    if (!pub || !userSettled) return;
     let live = true;
     const keys = EXTRAS.map((e) => e.key).filter(enabled);
     Promise.all(
@@ -175,9 +187,9 @@ export function useExtras() {
       live = false;
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [key, !!pub]);
+  }, [key, !!pub, userSettled]);
   return {
-    ready: !!pub,
+    ready: !!pub && userSettled,
     // SeerrNG's settings couldn't be read: the pages that wait for them offer Retry
     error: pub ? null : settings.error,
     retry: settings.reload,
@@ -268,7 +280,74 @@ export interface Comic {
   description?: string;
   issues?: ComicIssue[];
   mediaInfo?: MediaInfo;
+  manga?: boolean; // manga or manhwa, not a Western comic
+  edition?: 'en' | 'ja';
+  label?: string; // e.g. "Manga · English edition · Yen Press · 13 vols"
 }
+// One card per work: a manga (an AniList series, id "al-<id>") or a Western
+// run (id = its main ComicVine volume). Each edition is one ComicVine volume
+// (Viz's English Chainsaw Man, Norma's Spanish one…); requests go out for one
+// edition, the English one by default.
+export interface ComicEdition {
+  id: string;
+  title: string;
+  publisher?: string;
+  language?: string;
+  languageName?: string;
+  startYear?: string;
+  issueCount?: number;
+  posterPath?: string;
+  recommended?: boolean;
+  mediaInfo?: MediaInfo;
+}
+export interface ComicWork {
+  id: string;
+  mediaType: 'comic';
+  kind: 'manga' | 'comic';
+  title: string;
+  anilistId?: number;
+  posterPath?: string;
+  startYear?: string;
+  publisher?: string;
+  issueCount?: number;
+  status?: 'ongoing' | 'finished' | 'hiatus' | 'cancelled';
+  genres?: string[];
+  description?: string;
+  editions: ComicEdition[];
+  // false for a manga from AniList whose ComicVine editions aren't looked up yet
+  editionsResolved: boolean;
+  recommendedId?: string;
+  mediaInfo?: MediaInfo;
+  mediaEditionId?: string;
+}
+export interface ComicLanding {
+  library: ComicWork[];
+  trending: ComicWork[];
+  newest: ComicWork[];
+  western: ComicWork[];
+  failed: string[];
+  genres: string[];
+  publishers: string[];
+  comicVineConfigured: boolean;
+}
+// a work's editions, looked up on ComicVine the first time a manga is opened
+export const loadComicWork = (id: string) =>
+  api<ComicWork>(`/comic/work/${encodeURIComponent(id)}`);
+// the edition a quick request asks for: the recommended (English) one
+export const recommendedEdition = (w: ComicWork) =>
+  w.editions.find((e) => e.id === w.recommendedId);
+export const editionLine = (e: ComicEdition, unit = 'vol') =>
+  [
+    e.languageName,
+    e.publisher,
+    e.startYear,
+    e.issueCount
+      ? `${e.issueCount} ${unit}${e.issueCount === 1 ? '' : 's'}`
+      : '',
+  ]
+    .filter(Boolean)
+    .join(' · ');
+
 export interface ComicIssue {
   id: string;
   name?: string;

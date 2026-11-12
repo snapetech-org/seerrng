@@ -64,6 +64,8 @@ async function fixtures(page: Page) {
       body = user
         ? { id: user === 'owner' ? 1 : 2, displayName: user, permissions: 2 }
         : { message: 'Sign in' };
+    } else if (/^\/user\/\d+\/settings\/main$/.test(path)) {
+      body = {};
     } else if (path === '/auth/logout') {
       user = '';
       status = 204;

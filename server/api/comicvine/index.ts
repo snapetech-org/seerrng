@@ -1,5 +1,6 @@
 import ExternalAPI from '@server/api/externalapi';
 import cacheManager from '@server/lib/cache';
+import { createHash } from 'node:crypto';
 import DOMPurify from 'dompurify';
 import { JSDOM } from 'jsdom';
 
@@ -271,9 +272,17 @@ class ComicVineAPI extends ExternalAPI {
       {
         nodeCache: cacheManager.getCache('comicvine').data,
         rateLimit: {
-          // ComicVine's documented limit is 200 requests/resource/hour.
-          maxRequests: 190,
-          maxRPS: 1,
+          maxRequests: 1,
+          perMilliseconds: 1000,
+        },
+        sharedRateLimit: {
+          // ComicVine's documented limit is 200 requests/resource/hour. Leave
+          // room for provider-side retries and other clients of the same key.
+          key: `comicvine:${createHash('sha256').update(apiKey).digest('hex')}`,
+          limits: [
+            { maxRequests: 190, perMilliseconds: 60 * 60 * 1000 },
+            { maxRequests: 1, perMilliseconds: 1000 },
+          ],
         },
       }
     );

@@ -60,10 +60,24 @@ import {
   findBookMediaForSearchDocs,
 } from '@server/lib/bookMediaMatcher';
 import {
+  browseComicCatalogIndex,
   getComicCatalogIndexStatus,
+  lookupComicCatalogVolumes,
   searchComicCatalogIndex,
 } from '@server/lib/comicCatalogIndex';
+import {
+  MANGA_GENRES,
+  browseMangaWorks,
+  buildComicLanding,
+  buildComicWorkSearch,
+  listComicLibrary,
+  westernWorksFromVolumes,
+  type MangaSort,
+} from '@server/lib/comicDiscovery';
 import { findComicMediaByComicVineIds } from '@server/lib/comicMediaMatcher';
+import { MAJOR_WESTERN_PUBLISHERS } from '@server/lib/comicPublisherLanguages';
+import { buildComicSearchResults } from '@server/lib/comicSearchResults';
+import { withWorkMedia, type ComicWork } from '@server/lib/comicWorks';
 import { currentContentRestriction } from '@server/lib/contentRestriction';
 import {
   getCachedDiscoverMovieFeed,
@@ -246,7 +260,7 @@ discoverRoutes.use((req, res, next) => {
         ? 'tv'
         : route === '/music'
           ? 'music'
-          : route === '/comics'
+          : route === '/comics' || route.startsWith('/comics/')
             ? 'comic'
             : route === '/magazines'
               ? 'magazine'
@@ -294,7 +308,7 @@ discoverRoutes.use((req, res, next) => {
 
 discoverRoutes.use('/home', discoverHomeRoutes);
 discoverRoutes.use(
-  ['/music', '/books', '/magazines'],
+  ['/music', '/books', '/magazines', '/comics'],
   rateLimit({
     ...EXTERNAL_DISCOVER_RATE_LIMIT,
     standardHeaders: true,
@@ -4544,6 +4558,207 @@ discoverRoutes.get('/books', async (req, res) => {
   }
 });
 
+// ---- Comics page (Lumen): works with editions, from AniList and the library ----
+
+const comicLibraryFor = (user?: User) => {
+  const apiKey = getSettings().main.comicVineApiKey;
+  return listComicLibrary({
+    user,
+    lookupIndexed: lookupComicCatalogVolumes,
+    lookupVolume: apiKey
+      ? (id) => new ComicVineAPI(apiKey).getVolume(id)
+      : undefined,
+  });
+};
+
+const westernLanding = async (): Promise<ComicWork[]> => {
+  const recent = await browseComicCatalogIndex({
+    publishers: MAJOR_WESTERN_PUBLISHERS,
+    sinceYear: new Date().getFullYear() - 3,
+    minIssues: 3,
+    sort: 'newest',
+    page: 1,
+    limit: 20,
+  });
+  // a first index scan reaches recent volumes last: modern long runs meanwhile
+  const volumes =
+    recent.results.length >= 8
+      ? recent.results
+      : (
+          await browseComicCatalogIndex({
+            publishers: MAJOR_WESTERN_PUBLISHERS,
+            sinceYear: 2010,
+            minIssues: 12,
+            sort: 'issues',
+            page: 1,
+            limit: 20,
+          })
+        ).results;
+  return westernWorksFromVolumes(volumes);
+};
+
+discoverRoutes.get('/comics/landing', async (req, res) => {
+  const comicVineConfigured = !!getSettings().main.comicVineApiKey;
+  try {
+    const library = await comicLibraryFor(req.user).catch((error) => {
+      logger.warn('Could not list the comic library', {
+        label: 'Discover Comics',
+        ...getErrorLogFields(error),
+      });
+      return [] as ComicWork[];
+    });
+    const landing = await buildComicLanding({
+      user: req.user,
+      library,
+      western: comicVineConfigured ? westernLanding : undefined,
+    });
+    return res.status(200).json({
+      ...landing,
+      genres: MANGA_GENRES,
+      publishers: MAJOR_WESTERN_PUBLISHERS,
+      comicVineConfigured,
+    });
+  } catch (e) {
+    logger.error('Failed to build the comics landing page', {
+      label: 'Discover Comics',
+      ...getErrorLogFields(e),
+    });
+    return res.status(503).json({
+      status: 503,
+      message: 'Comics are unavailable right now. Please try again.',
+    });
+  }
+});
+
+const MANGA_SORTS: MangaSort[] = ['trending', 'popular', 'newest', 'title'];
+
+discoverRoutes.get('/comics/browse', async (req, res) => {
+  const page = parsePositiveInt(req.query.page, 1, 500);
+  const perPage = 20;
+  const type = req.query.type === 'comic' ? 'comic' : 'manga';
+  const show =
+    req.query.show === 'library' || req.query.show === 'requested'
+      ? req.query.show
+      : undefined;
+  const sortParam = typeof req.query.sort === 'string' ? req.query.sort : '';
+  const genres = (typeof req.query.genre === 'string' ? req.query.genre : '')
+    .split(',')
+    .map((g) => g.trim())
+    .filter((g) => MANGA_GENRES.includes(g));
+  const status =
+    req.query.status === 'ongoing'
+      ? 'RELEASING'
+      : req.query.status === 'finished'
+        ? 'FINISHED'
+        : undefined;
+  const publisher =
+    typeof req.query.publisher === 'string' &&
+    MAJOR_WESTERN_PUBLISHERS.includes(req.query.publisher)
+      ? req.query.publisher
+      : undefined;
+  try {
+    if (show) {
+      // what's in the library or asked for: one page, filtered here
+      const library = await comicLibraryFor(req.user);
+      const results = library.filter((work) => {
+        const s = work.mediaInfo?.status;
+        const have =
+          s === MediaStatus.AVAILABLE || s === MediaStatus.PARTIALLY_AVAILABLE;
+        // asked for and not complete yet: nothing in, downloading, or some volumes still missing
+        const asked =
+          s === MediaStatus.PENDING ||
+          s === MediaStatus.PROCESSING ||
+          s === MediaStatus.PARTIALLY_AVAILABLE;
+        if (show === 'library' ? !have : !asked) return false;
+        if (req.query.type === 'manga' && work.kind !== 'manga') return false;
+        if (req.query.type === 'comic' && work.kind !== 'comic') return false;
+        if (publisher && work.publisher !== publisher) return false;
+        if (
+          genres.length &&
+          !genres.every((g) => work.genres?.includes(g) ?? false)
+        )
+          return false;
+        return true;
+      });
+      return res.status(200).json({
+        page: 1,
+        totalPages: 1,
+        totalResults: results.length,
+        results,
+      });
+    }
+    if (type === 'comic') {
+      if (!getSettings().main.comicVineApiKey) {
+        return res.status(200).json({
+          page: 1,
+          totalPages: 0,
+          totalResults: 0,
+          results: [],
+          comicVineConfigured: false,
+        });
+      }
+      const sort =
+        sortParam === 'newest' || sortParam === 'title' ? sortParam : 'issues';
+      const indexed = await browseComicCatalogIndex({
+        publishers: publisher ? undefined : MAJOR_WESTERN_PUBLISHERS,
+        publisher,
+        sort,
+        minIssues: sort === 'issues' ? undefined : 2,
+        page,
+        limit: perPage,
+      });
+      const works = westernWorksFromVolumes(indexed.results);
+      const media = await findComicMediaByComicVineIds(
+        works.flatMap((w) => w.editions.map((e) => Number(e.id))),
+        req.user
+      );
+      return res.status(200).json({
+        page,
+        totalPages: Math.ceil(indexed.totalResults / perPage),
+        totalResults: indexed.totalResults,
+        results: works.map((w) => withWorkMedia(w, media)),
+        indexing: indexed.indexing,
+      });
+    }
+    const sort = MANGA_SORTS.includes(sortParam as MangaSort)
+      ? (sortParam as MangaSort)
+      : 'popular';
+    const library = await comicLibraryFor(req.user).catch(
+      () => [] as ComicWork[]
+    );
+    const answer = await browseMangaWorks({
+      sort,
+      genres: genres.length ? genres : undefined,
+      status,
+      page,
+      perPage,
+      library,
+      user: req.user,
+    });
+    return res.status(200).json({
+      page,
+      totalPages: answer.hasNextPage ? page + 1 : page,
+      totalResults: (page - 1) * perPage + answer.results.length,
+      results: answer.results,
+    });
+  } catch (e) {
+    logger.error('Failed to browse comics', {
+      label: 'Discover Comics',
+      ...getErrorLogFields(e),
+    });
+    return res.status(503).json({
+      status: 503,
+      message:
+        type === 'manga' &&
+        /anilist|timeout|timed out|ECONN|ETIMEDOUT|socket hang up|\b429\b|\b5\d\d\b/i.test(
+          e instanceof Error ? e.message : String(e)
+        )
+          ? 'AniList, the service used for manga, timed out or is unavailable. Please try again.'
+          : 'Comics are unavailable right now. Please try again.',
+    });
+  }
+});
+
 discoverRoutes.get('/comics', async (req, res) => {
   const { comicVineApiKey } = getSettings().main;
   if (!comicVineApiKey) {
@@ -4686,10 +4901,35 @@ discoverRoutes.get('/comics', async (req, res) => {
       page,
       limit: itemsPerPage,
     });
-    const mediaByComicVineId = await findComicMediaByComicVineIds(
-      response.results.map((volume) => volume.id),
-      req.user
-    );
+    if (req.query.group === 'works') {
+      // One card per work, editions inside (Lumen's search and Comics page)
+      const works = await buildComicWorkSearch({
+        query,
+        page,
+        comicVine,
+        volumes: response.results,
+        user: req.user,
+      });
+      return res.status(200).json({
+        page,
+        totalPages: Math.max(
+          Math.ceil(response.number_of_total_results / itemsPerPage),
+          1
+        ),
+        totalResults: response.number_of_total_results + works.mangaResults,
+        results: works.results,
+        comicVineConfigured: true,
+      });
+    }
+    // Manga: AniList finds the series, ComicVine its English edition; merged
+    // into the first page (see buildComicSearchResults).
+    const { results, mangaResults } = await buildComicSearchResults({
+      query,
+      page,
+      comicVine,
+      volumes: response.results,
+      user: req.user,
+    });
 
     return res.status(200).json({
       page,
@@ -4697,10 +4937,8 @@ discoverRoutes.get('/comics', async (req, res) => {
         Math.ceil(response.number_of_total_results / itemsPerPage),
         1
       ),
-      totalResults: response.number_of_total_results,
-      results: response.results.map((volume) =>
-        mapComicVineVolumeResult(volume, mediaByComicVineId.get(volume.id))
-      ),
+      totalResults: response.number_of_total_results + mangaResults,
+      results,
       comicVineConfigured: true,
     });
   } catch (e) {

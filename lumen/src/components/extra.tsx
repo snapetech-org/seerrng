@@ -1,6 +1,6 @@
 import { useState, type ReactNode } from 'react';
 import { Link } from 'react-router-dom';
-import type { MediaInfo } from '../api';
+import { MediaStatus, type MediaInfo } from '../api';
 import { isAdministrator, useAuth } from '../auth';
 import { useExtras, type Extra } from '../extras';
 import { usePublicSettings } from '../hooks';
@@ -17,6 +17,61 @@ import { friendlyError } from '../errors';
 
 export const extraStat = (mi?: MediaInfo): Stat => statusOf(mi, true);
 
+// A comic or manga series: complete only when every issue/volume is in; "9 of 16" while
+// part of it is; the download's progress while a download (often one pack for many
+// volumes) runs; otherwise the usual requested state.
+export function comicState(mi?: MediaInfo): {
+  stat: Stat;
+  pct?: number;
+  detail?: string;
+} {
+  if (!mi) return { stat: null };
+  const p = mi.comicProgress;
+  const ofTotal =
+    p && p.total > 0 ? `${Math.min(p.owned, p.total)} of ${p.total}` : '';
+  if (mi.status === MediaStatus.AVAILABLE)
+    return {
+      stat: { k: 'ok', word: 'Complete', ico: 'check' },
+      detail: p?.total ? `All ${p.total} in library` : undefined,
+    };
+  const dls = mi.downloadStatus || [];
+  if (dls.length) {
+    const pcts = dls
+      .map((d) => d.percent)
+      .filter((x): x is number => typeof x === 'number' && Number.isFinite(x));
+    const pct =
+      pcts.length === dls.length
+        ? Math.max(
+            0,
+            Math.min(100, Math.round(pcts.reduce((a, b) => a + b, 0) / pcts.length))
+          )
+        : undefined;
+    return {
+      stat: {
+        k: 'dl',
+        word:
+          pct === undefined
+            ? 'Downloading'
+            : pct === 0
+              ? 'Queued'
+              : `Downloading ${pct}%`,
+        ico: 'down',
+      },
+      pct,
+      detail: ofTotal ? `${ofTotal} in library` : undefined,
+    };
+  }
+  if (mi.status === MediaStatus.PARTIAL)
+    return {
+      stat: {
+        k: 'ok',
+        word: ofTotal ? `${ofTotal} in library` : 'Partly in library',
+        ico: 'check',
+      },
+    };
+  return { stat: statusOf(mi, true) };
+}
+
 export function ExtraCard({
   href,
   img,
@@ -25,6 +80,8 @@ export function ExtraCard({
   stat,
   shape,
   icon,
+  note,
+  pct,
 }: {
   href: string;
   img?: string;
@@ -33,6 +90,8 @@ export function ExtraCard({
   stat?: Stat;
   shape?: 'sq' | 'book' | 'wide';
   icon: IconName;
+  note?: string; // a second, quieter line (e.g. the library state)
+  pct?: number; // a download progress bar along the bottom of the art
 }) {
   return (
     <div className={`poster ${shape || ''}`}>
@@ -45,10 +104,16 @@ export function ExtraCard({
           </span>
         )}
         <Glyph s={stat || null} />
+        {pct != null && (
+          <span className="bar" aria-hidden="true">
+            <i style={{ width: `${pct}%` }} />
+          </span>
+        )}
         <Link className="hit" to={href} aria-label={title} />
       </div>
       <div className="t">{title}</div>
       {meta && <div className="m">{meta}</div>}
+      {note && <div className="m2">{note}</div>}
     </div>
   );
 }
@@ -178,7 +243,7 @@ export function ExtraGate({ k, children }: { k: Extra; children: ReactNode }) {
   if (x.enabled(k)) return <>{children}</>;
   const label = {
     music: 'Music',
-    comic: 'Comics',
+    comic: 'Comics/Manga',
     magazine: 'Magazines',
     game: 'Games',
     sports: 'Sports',

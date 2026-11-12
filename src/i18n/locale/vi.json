@@ -8194,7 +8194,6 @@
   "utils.ApiMessage.m799a3ff8c44a78cc15c5": "Mục đích yêu cầu được chọn không còn có sẵn nữa.",
   "utils.ApiMessage.m79bae6832d09e322ae9b": "Invalid Sportarr ID dịch vụ",
   "utils.ApiMessage.m79bee6d6fcb53ed8f70d": "Anthropic từ chối khóa API.",
-  "utils.ApiMessage.m79c436406b993817b6f0": "BackIssue trả về một trang thu thập không đầy đủ.",
   "utils.ApiMessage.m79e00f05272303cdf501": "Chứng nhận danh sách không đầy đủ.",
   "utils.ApiMessage.m79fa10100b808966015b": "Webhook payload vượt quá số lượng đối tượng tối đa.",
   "utils.ApiMessage.m79fcbd1326e77ca2e1fa": "Không thể theo dõi các sự kiện",

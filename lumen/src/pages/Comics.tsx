@@ -1,8 +1,22 @@
 import { useEffect, useState } from 'react';
-import { useParams, useSearchParams } from 'react-router-dom';
-import { MoreOnScroll, shortDate } from '../components/cards';
+import { Link, useParams, useSearchParams } from 'react-router-dom';
+import { artUrl, kavitaLink, MediaStatus } from '../api';
+import {
+  GridSkeleton,
+  MoreOnScroll,
+  Rail,
+  RailSkeleton,
+  Section,
+  shortDate,
+} from '../components/cards';
+import {
+  ComicCard,
+  editionLabel,
+  requestComicEdition,
+} from '../components/comics';
 import { DetailTop, Facts, Pill } from '../components/detail';
 import {
+  comicState,
   ExtraCard,
   ExtraGate,
   ExtraHeader,
@@ -12,14 +26,21 @@ import {
   ServiceNote,
   StatPill,
 } from '../components/extra';
+import { useToast } from '../components/toast';
+import { friendlyError } from '../errors';
 import {
+  editionLine,
   plainText,
   requestExtra,
   type Comic,
   type ComicIssue,
+  type ComicLanding,
+  type ComicWork,
   type Magazine,
 } from '../extras';
 import { useApi, usePaged } from '../hooks';
+import { Icon } from '../icons';
+import { usePrefs } from '../settings';
 
 // the search box writes ?q= after a pause, so typing doesn't fire a request per letter
 function useQueryParam() {
@@ -40,162 +61,678 @@ function useQueryParam() {
   return { q, setQ, query, p, setP };
 }
 
-// ---- comics: ComicVine volumes, requested through Mylar or Kapowarr ----
-export function Comics() {
-  const { q, setQ, query } = useQueryParam();
-  const list = usePaged<Comic>(
-    `/discover/comics${query ? `?query=${encodeURIComponent(query)}` : ''}`
+const MANGA_SORTS = [
+  ['popular', 'Popular'],
+  ['trending', 'Trending'],
+  ['newest', 'Newest'],
+  ['title', 'A–Z'],
+] as const;
+const COMIC_SORTS = [
+  ['issues', 'Most issues'],
+  ['newest', 'Newest'],
+  ['title', 'A–Z'],
+] as const;
+
+const DEFAULT_GENRES = [
+  'Action',
+  'Adventure',
+  'Comedy',
+  'Drama',
+  'Fantasy',
+  'Horror',
+  'Mystery',
+  'Psychological',
+  'Romance',
+  'Sci-Fi',
+  'Slice of Life',
+  'Sports',
+  'Supernatural',
+  'Thriller',
+];
+
+// a row of comic cards, or its placeholder while the page loads
+function ComicRail({
+  title,
+  works,
+  loading,
+  link,
+}: {
+  title: string;
+  works?: ComicWork[];
+  loading: boolean;
+  link?: [string, string];
+}) {
+  if (!loading && !works?.length) return null;
+  return (
+    <Section title={title} link={link}>
+      {works?.length ? (
+        <Rail>
+          {works.map((w) => (
+            <ComicCard key={w.id} w={w} />
+          ))}
+        </Rail>
+      ) : (
+        <RailSkeleton />
+      )}
+    </Section>
   );
-  // SeerrNG answers with an empty list and comicVineConfigured: false when there's no key
-  const noKey =
-    useApi<{ comicVineConfigured?: boolean }>('/discover/comics').data
-      ?.comicVineConfigured === false;
+}
+
+// ---- comics and manga: manga from AniList, Western comics from ComicVine; one card per
+// work with its editions inside; searching is the top search bar's job ----
+export function Comics() {
+  const [p, setP] = useSearchParams();
+  const type = (['manga', 'comic'] as const).find((t) => t === p.get('type'));
+  const show = (['library', 'requested'] as const).find(
+    (s) => s === p.get('show')
+  );
+  const picked = (p.get('genre') || '').split(',').filter(Boolean);
+  const status = p.get('status') || '';
+  const publisher = p.get('publisher') || '';
+  const sort = p.get('sort') || '';
+  const filtered = !!(type || show || picked.length || status || sort);
+  const landing = useApi<ComicLanding>('/discover/comics/landing');
+  const genres = landing.data?.genres?.length
+    ? landing.data.genres
+    : DEFAULT_GENRES;
+  const publishers = landing.data?.publishers || [];
+  const kind = type || 'manga';
+  const q = new URLSearchParams({ type: kind });
+  if (show) {
+    q.set('show', show);
+    if (!type) q.delete('type');
+  }
+  if (sort) q.set('sort', sort);
+  if (kind === 'manga' && picked.length) q.set('genre', picked.join(','));
+  if (kind === 'manga' && status) q.set('status', status);
+  if (kind === 'comic' && publisher) q.set('publisher', publisher);
+  const list = usePaged<ComicWork>(`/discover/comics/browse?${q}`);
+  // a work can come back on a later page too
+  const seen = new Set<string>();
+  const items = list.items.filter((w) =>
+    seen.has(w.id) ? false : (seen.add(w.id), true)
+  );
+  const upd = (changes: Record<string, string | null>) => {
+    const n = new URLSearchParams(p);
+    for (const [k, v] of Object.entries(changes)) {
+      if (v) n.set(k, v);
+      else n.delete(k);
+    }
+    setP(n, { replace: true });
+  };
+  // genre, status and these sorts only exist for manga: picking one from All shows manga
+  const mangaOnly = (changes: Record<string, string | null>) =>
+    upd({ ...changes, ...(type ? {} : { type: 'manga' }) });
+  const noKey = landing.data?.comicVineConfigured === false;
+  const sorts = kind === 'comic' ? COMIC_SORTS : MANGA_SORTS;
+  const gridTitle = show
+    ? show === 'library'
+      ? 'In your library'
+      : 'Requested'
+    : kind === 'comic'
+      ? 'Western comics'
+      : picked.length || status || sort
+        ? 'Manga'
+        : 'Popular manga';
+
   return (
     <ExtraGate k="comic">
       <ExtraHeader
-        title="Comics"
-        sub="Request a series and new issues arrive as they come out."
+        title="Comics/Manga"
+        sub="Request a manga or comic series. New volumes and issues arrive as they come out; manga comes in its English edition unless you pick another."
       >
-        <ExtraSearch
-          value={q}
-          onChange={setQ}
-          placeholder="Search comic series…"
-        />
+        <Link className="search search-ph" to="/search?f=comic">
+          <Icon name="search" />
+          <span className="ph-text">Search comics and manga…</span>
+        </Link>
       </ExtraHeader>
-      {noKey ? (
+      {noKey && (
         <div className="empty">
-          <b>Comics need a ComicVine key</b>An admin can add one in SeerrNG
-          under Settings › General.
+          <b>Requests need a ComicVine key</b>An admin can add one in SeerrNG
+          under Settings › General. You can still browse manga.
         </div>
-      ) : (
-        <>
-          <ServiceNote
-            error={list.items.length ? null : list.error}
-            what="comics"
-          />
-          {!list.error && !list.items.length && !list.loading && (
-            <div className="empty">
-              <b>No comics found</b>Try a series name or a publisher.
-            </div>
-          )}
-          <div className="grid">
-            {list.items.map((c) => (
-              <ExtraCard
-                key={c.id}
-                href={`/comic/${c.id}`}
-                img={c.posterPath}
-                title={c.title}
-                shape="book"
-                icon="comic"
-                stat={extraStat(c.mediaInfo)}
-                meta={[
-                  c.publisher,
-                  c.startYear,
-                  c.issueCount ? `${c.issueCount} issues` : '',
-                ]
-                  .filter(Boolean)
-                  .join(' · ')}
-              />
-            ))}
+      )}
+      <div className="toolbar">
+        <div className="seg" role="group" aria-label="Type">
+          {(
+            [
+              ['', 'All'],
+              ['manga', 'Manga'],
+              ['comic', 'Comics'],
+            ] as const
+          ).map(([v, t]) => (
+            <button
+              key={v || 'all'}
+              aria-pressed={(type || '') === v}
+              onClick={() =>
+                upd({
+                  type: v || null,
+                  sort: null,
+                  // manga filters don't apply to Western comics and back
+                  ...(v === 'comic' ? { genre: null, status: null } : {}),
+                  ...(v !== 'comic' ? { publisher: null } : {}),
+                })
+              }
+            >
+              {t}
+            </button>
+          ))}
+        </div>
+        <div className="seg" role="group" aria-label="Library">
+          {(
+            [
+              ['', 'All'],
+              ['library', 'In library'],
+              ['requested', 'Requested'],
+            ] as const
+          ).map(([v, t]) => (
+            <button
+              key={v || 'all'}
+              aria-pressed={(show || '') === v}
+              onClick={() => upd({ show: v || null })}
+            >
+              {t}
+            </button>
+          ))}
+        </div>
+        {!show && (
+          <label className="sel">
+            <span className="lbl">Sort</span>
+            <select
+              value={sort || sorts[0][0]}
+              onChange={(e) =>
+                kind === 'comic'
+                  ? upd({
+                      sort: e.target.value === 'issues' ? null : e.target.value,
+                    })
+                  : mangaOnly({
+                      sort:
+                        e.target.value === 'popular' && type
+                          ? null
+                          : e.target.value,
+                    })
+              }
+            >
+              {sorts.map(([v, t]) => (
+                <option key={v} value={v}>
+                  {t}
+                </option>
+              ))}
+            </select>
+          </label>
+        )}
+        {kind === 'manga' && !show && (
+          <label className="sel">
+            <span className="lbl">Status</span>
+            <select
+              value={status}
+              onChange={(e) => mangaOnly({ status: e.target.value || null })}
+            >
+              <option value="">Any</option>
+              <option value="ongoing">Ongoing</option>
+              <option value="finished">Finished</option>
+            </select>
+          </label>
+        )}
+        {kind === 'comic' && !!publishers.length && (
+          <label className="sel">
+            <span className="lbl">Publisher</span>
+            <select
+              value={publisher}
+              onChange={(e) => upd({ publisher: e.target.value || null })}
+            >
+              <option value="">All</option>
+              {publishers.map((x) => (
+                <option key={x} value={x}>
+                  {x}
+                </option>
+              ))}
+            </select>
+          </label>
+        )}
+        {kind === 'manga' && (
+          <div className="chips genre-chips" role="group" aria-label="Genres">
+            <button
+              className="chip"
+              aria-pressed={!picked.length}
+              onClick={() => upd({ genre: null })}
+            >
+              All genres
+            </button>
+            {genres.map((g) => {
+              const on = picked.includes(g);
+              const next = on
+                ? picked.filter((x) => x !== g)
+                : picked.concat(g);
+              return (
+                <button
+                  key={g}
+                  className="chip"
+                  aria-pressed={on}
+                  onClick={() => mangaOnly({ genre: next.join(',') || null })}
+                >
+                  {on && <Icon name="check" size="sm" />}
+                  {g}
+                </button>
+              );
+            })}
           </div>
-          <MoreOnScroll
-            done={list.done}
-            loading={list.loading}
-            more={list.more}
-            error={list.error}
-            retry={list.retry}
+        )}
+      </div>
+      {!filtered && (
+        <>
+          <ComicRail
+            title="Your comics & manga"
+            works={landing.data?.library}
+            loading={false}
+            link={['See all', '/comics?show=library']}
+          />
+          <ComicRail
+            title="Trending manga"
+            works={landing.data?.trending}
+            loading={!landing.data && !landing.error}
+            link={['See all', '/comics?type=manga&sort=trending']}
+          />
+          <ComicRail
+            title="New manga"
+            works={landing.data?.newest}
+            loading={!landing.data && !landing.error}
+            link={['See all', '/comics?type=manga&sort=newest']}
+          />
+          <ComicRail
+            title="Western comics"
+            works={landing.data?.western}
+            loading={false}
+            link={['See all', '/comics?type=comic']}
           />
         </>
       )}
+      <section>
+        <div className="sec-head">
+          <h2>{gridTitle}</h2>
+        </div>
+        {list.error && !items.length && (
+          <ServiceNote error={list.error} what="comics" retry={list.retry} />
+        )}
+        {!list.error && !items.length && !list.loading && list.page > 0 && (
+          <div className="empty">
+            {show ? (
+              <>
+                <b>
+                  {show === 'library'
+                    ? 'Nothing in the library yet'
+                    : 'Nothing requested'}
+                </b>
+                Request a series and it shows up here.
+              </>
+            ) : kind === 'comic' ? (
+              <>
+                <b>Western comics are still being catalogued</b>
+                SeerrNG is reading ComicVine’s catalogue in the background. Use
+                the search bar to find a series meanwhile.
+              </>
+            ) : (
+              <>
+                <b>Nothing here</b>Try another genre, or switch to All.
+              </>
+            )}
+          </div>
+        )}
+        {list.loading && !items.length && list.page === 0 && (
+          <GridSkeleton className="comic-grid grid" />
+        )}
+        <div className="comic-grid grid">
+          {items.map((w) => (
+            <ComicCard key={w.id} w={w} />
+          ))}
+        </div>
+        <MoreOnScroll
+          done={list.done}
+          loading={list.loading}
+          more={list.more}
+          error={list.error}
+          retry={list.retry}
+        />
+      </section>
     </ExtraGate>
   );
 }
 
-export function ComicDetail() {
-  const { id } = useParams();
-  const { data: c, error } = useApi<Comic>(`/comic/${id}`);
+// the chosen edition's volumes or issues, as ComicVine lists them
+function ComicIssues({ id, manga }: { id: string; manga: boolean }) {
   const issues = usePaged<ComicIssue>(`/comic/${id}/issues`);
-  if (error)
+  if (!issues.items.length) return null;
+  return (
+    <div>
+      <div className="h2">{manga ? 'Volumes' : 'Issues'}</div>
+      <ol className="slist tlist">
+        {issues.items.map((i) => (
+          <li key={i.id} className="trow">
+            <span className="tn">#{i.issueNumber || '?'}</span>
+            <span>
+              <b>
+                {i.name || `${manga ? 'Volume' : 'Issue'} #${i.issueNumber}`}
+              </b>
+              {i.coverDate && (
+                <small>
+                  {shortDate(i.coverDate, false)}, {i.coverDate.slice(0, 4)}
+                </small>
+              )}
+            </span>
+            <span />
+          </li>
+        ))}
+      </ol>
+      <MoreOnScroll
+        done={issues.done}
+        loading={issues.loading}
+        more={issues.more}
+        error={issues.error}
+        retry={issues.retry}
+      />
+    </div>
+  );
+}
+
+// ---- one work: its editions to choose from (English recommended), then the chosen
+// edition's description and volumes ----
+export function ComicDetail() {
+  const { id = '' } = useParams();
+  const toast = useToast();
+  const { kavitaUrl } = usePrefs();
+  const { data: work, error: workError } = useApi<ComicWork>(
+    `/comic/work/${encodeURIComponent(id)}`
+  );
+  const [pick, setPick] = useState<string | null>(null);
+  const [asked, setAsked] = useState<Set<string>>(new Set());
+  const [busy, setBusy] = useState(false);
+  useEffect(() => setPick(null), [id]);
+  // #editions (from a card's "Choose edition") scrolls to the picker once it's there
+  useEffect(() => {
+    if (work && window.location.hash === '#editions')
+      document.getElementById('editions')?.scrollIntoView({ block: 'start' });
+  }, [work]);
+  const editions = work?.editions || [];
+  const stateOf = (editionId: string) => {
+    const e = editions.find((x) => x.id === editionId);
+    const st = comicState(e?.mediaInfo).stat;
+    return asked.has(editionId) && st?.k !== 'ok'
+      ? ({ k: 'wait', word: 'Requested', ico: 'clock' } as const)
+      : st;
+  };
+  const chosenId =
+    pick ??
+    (work?.mediaEditionId && editions.some((e) => e.id === work.mediaEditionId)
+      ? work.mediaEditionId
+      : work?.recommendedId) ??
+    editions[0]?.id;
+  const chosen = editions.find((e) => e.id === chosenId);
+  const { data: c } = useApi<Comic>(chosen ? `/comic/${chosen.id}` : null);
+  if (workError)
     return (
       <ExtraGate k="comic">
         <div className="empty">
           <b>Couldn’t load this comic</b>
-          {error}
+          {workError}
         </div>
       </ExtraGate>
     );
-  if (!c) return <div className="detail-loading" aria-busy="true" />;
-  const s = extraStat(c.mediaInfo);
-  const about = plainText(c.description);
-  const main = (
-    <RequestButton
-      stat={s}
-      label="Request series"
-      request={() => requestExtra('comic', Number(c.id))}
-    />
+  if (!work) return <div className="detail-loading" aria-busy="true" />;
+  const manga = work.kind === 'manga';
+  const unit = manga ? 'vol' : 'issue';
+  const cs = comicState(chosen?.mediaInfo ?? work.mediaInfo);
+  const s = chosen ? stateOf(chosen.id) : cs.stat;
+  const about = work.description
+    ? work.description
+        .split(/\n+/)
+        .map((t) => t.trim())
+        .filter(Boolean)
+    : plainText(c?.description);
+  const request = async () => {
+    if (!chosen) return;
+    setBusy(true);
+    try {
+      toast(await requestComicEdition(work, chosen));
+      setAsked((x) => new Set(x).add(chosen.id));
+    } catch (e) {
+      toast(friendlyError(e, 'Request failed'));
+    } finally {
+      setBusy(false);
+    }
+  };
+  // in the library: complete opens it in Kavita; part of it keeps its state and offers
+  // the reader as well. No Kavita link: no button
+  const shown = chosen?.mediaInfo ?? work.mediaInfo;
+  const readHref = kavitaLink(shown?.readerUrl, kavitaUrl);
+  const complete =
+    s?.k === 'ok' && shown?.status === MediaStatus.AVAILABLE;
+  const read = readHref ? (
+    <a
+      className={`btn ${complete ? 'btn-primary' : 'btn-quiet'}`}
+      href={readHref}
+      target="_blank"
+      rel="noopener"
+    >
+      <Icon name="book" />
+      Read in Kavita
+    </a>
+  ) : null;
+  const alsoRead = complete ? null : read;
+  const main = !chosen ? (
+    <button className="btn btn-tonal" disabled>
+      <Icon name="clock" />
+      {work.editionsResolved
+        ? 'No edition to request yet'
+        : 'Looking up editions…'}
+    </button>
+  ) : complete && read ? (
+    read
+  ) : s ? (
+    <button className="btn btn-tonal" disabled>
+      <Icon name={s.ico} />
+      {s.word}
+    </button>
+  ) : (
+    <button className="btn btn-primary" disabled={busy} onClick={request}>
+      <Icon name="plus" />
+      {editions.length > 1
+        ? `Request · ${editionLabel(chosen)}`
+        : manga
+          ? 'Request manga'
+          : 'Request series'}
+    </button>
   );
   return (
     <ExtraGate k="comic">
       <article className="detail">
         <DetailTop
           status={s}
-          poster={c.posterPath}
-          title={c.title}
+          poster={artUrl(work.posterPath)}
+          whole
+          title={work.title}
           line={[
-            c.startYear,
-            c.publisher,
-            c.issueCount ? `${c.issueCount} issues` : '',
+            work.startYear,
+            manga ? 'Manga' : 'Comic',
+            chosen?.publisher || work.publisher,
+            chosen?.issueCount ? `${chosen.issueCount} ${unit}s` : '',
           ]}
         />
         <div className="dbody">
           <div className="dstatus">
             <StatPill s={s} />
+            {cs.detail && <span className="dnote">{cs.detail}</span>}
+            {(work.genres || []).slice(0, 4).map((g) => (
+              <Pill key={g} k="neutral">
+                {g}
+              </Pill>
+            ))}
           </div>
-          <div className="dacts pc">{main}</div>
+          {alsoRead && <div className="dacts ph">{alsoRead}</div>}
+          {cs.pct != null && (
+            <div
+              className="progress"
+              role="progressbar"
+              aria-label="Download progress"
+              aria-valuenow={cs.pct}
+              aria-valuemin={0}
+              aria-valuemax={100}
+            >
+              <i style={{ width: `${cs.pct}%` }} />
+            </div>
+          )}
           <div className="dcols">
             <div style={{ display: 'grid', gap: 22 }}>
-              {c.deck && <p className="tagline">{c.deck}</p>}
+              {c?.deck && !work.description && (
+                <p className="tagline">{c.deck}</p>
+              )}
               {about.slice(0, 4).map((t, i) => (
                 <p key={i} className="ov">
                   {t}
                 </p>
               ))}
-              {!!issues.items.length && (
-                <div>
-                  <div className="h2">Issues</div>
-                  <ol className="slist tlist">
-                    {issues.items.map((i) => (
-                      <li key={i.id} className="trow">
-                        <span className="tn">#{i.issueNumber || '?'}</span>
-                        <span>
-                          <b>{i.name || `Issue #${i.issueNumber}`}</b>
-                          {i.coverDate && (
-                            <small>
-                              {shortDate(i.coverDate, false)},{' '}
-                              {i.coverDate.slice(0, 4)}
-                            </small>
-                          )}
-                        </span>
-                        <span />
-                      </li>
-                    ))}
-                  </ol>
-                  <MoreOnScroll
-                    done={issues.done}
-                    loading={issues.loading}
-                    more={issues.more}
-                    error={issues.error}
-                    retry={issues.retry}
-                  />
+              <div id="editions">
+                <div className="sec-head">
+                  <h2>
+                    {editions.length > 1 ? 'Choose an edition' : 'Edition'}
+                  </h2>
+                  <span className="note">
+                    {editions.length > 1 ? `${editions.length} editions` : ''}
+                  </span>
                 </div>
-              )}
+                {!editions.length && (
+                  <p className="note">
+                    {work.editionsResolved
+                      ? 'ComicVine has no edition of this series yet, so it can’t be requested.'
+                      : 'Couldn’t look up the editions right now. Try again in a minute.'}
+                  </p>
+                )}
+                {!!editions.length && (
+                  <div
+                    className="nlist"
+                    role="radiogroup"
+                    aria-label="Editions"
+                  >
+                    {editions.map((e) => {
+                      const st = stateOf(e.id);
+                      const on = chosenId === e.id;
+                      return (
+                        <div
+                          key={e.id}
+                          className={`nrow ${st?.k === 'ok' ? 'owned' : ''}`}
+                          role="radio"
+                          aria-checked={on}
+                          tabIndex={0}
+                          onClick={() => setPick(e.id)}
+                          onKeyDown={(ev) => {
+                            if (ev.key === ' ' || ev.key === 'Enter') {
+                              ev.preventDefault();
+                              setPick(e.id);
+                            }
+                          }}
+                        >
+                          <span className="radio">
+                            {st?.k === 'ok' && <Icon name="check" />}
+                          </span>
+                          <span className="nart">
+                            {e.posterPath ? (
+                              <img
+                                src={artUrl(e.posterPath)}
+                                alt=""
+                                loading="lazy"
+                              />
+                            ) : (
+                              <Icon name="comic" />
+                            )}
+                          </span>
+                          <span>
+                            <div className="who">
+                              {e.languageName || e.publisher || e.title}
+                              {e.languageName && e.publisher && (
+                                <small> · {e.publisher}</small>
+                              )}
+                            </div>
+                            <div className="det">
+                              {[
+                                e.title !== work.title ? e.title : '',
+                                e.startYear,
+                                e.issueCount
+                                  ? `${e.issueCount} ${unit}${e.issueCount === 1 ? '' : 's'}`
+                                  : '',
+                              ]
+                                .filter(Boolean)
+                                .join(' · ') || editionLine(e, unit)}
+                            </div>
+                            <div className="tags">
+                              {e.recommended && (
+                                <span className="tag rec">
+                                  <Icon name="star" />
+                                  Recommended
+                                </span>
+                              )}
+                              {st?.k === 'ok' && (
+                                <span className="tag own">
+                                  <Icon name="check" />
+                                  {st.word}
+                                </span>
+                              )}
+                              {st && st.k !== 'ok' && (
+                                <span className="tag wait">
+                                  <Icon name={st.ico} />
+                                  {st.word}
+                                </span>
+                              )}
+                            </div>
+                          </span>
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+              <div className="dacts pc">
+                {main}
+                {alsoRead}
+              </div>
+              {chosen && <ComicIssues id={chosen.id} manga={manga} />}
             </div>
             <aside>
               <Facts
                 rows={[
-                  ['Publisher', c.publisher],
-                  ['Started', c.startYear],
-                  ['Issues', c.issueCount ? String(c.issueCount) : ''],
+                  [
+                    'Type',
+                    manga
+                      ? chosen?.languageName
+                        ? `Manga, ${chosen.languageName} edition`
+                        : 'Manga'
+                      : chosen?.languageName &&
+                          chosen.languageName !== 'English'
+                        ? `Comic, ${chosen.languageName} edition`
+                        : 'Comic',
+                  ],
+                  ['Publisher', chosen?.publisher || work.publisher],
+                  ['Started', chosen?.startYear || work.startYear],
+                  [
+                    manga ? 'Volumes' : 'Issues',
+                    chosen?.issueCount ? String(chosen.issueCount) : '',
+                  ],
+                  [
+                    'Status',
+                    work.status === 'ongoing'
+                      ? 'Ongoing'
+                      : work.status === 'finished'
+                        ? 'Finished'
+                        : work.status === 'hiatus'
+                          ? 'On hiatus'
+                          : work.status === 'cancelled'
+                            ? 'Cancelled'
+                            : '',
+                  ],
+                  [
+                    'In library',
+                    chosen?.mediaInfo?.comicProgress?.total
+                      ? `${Math.min(chosen.mediaInfo.comicProgress.owned, chosen.mediaInfo.comicProgress.total)} of ${chosen.mediaInfo.comicProgress.total}`
+                      : '',
+                  ],
                 ]}
               />
             </aside>
@@ -203,8 +740,8 @@ export function ComicDetail() {
         </div>
         <div className="actionbar">
           <span className="ab-meta">
-            <b>{c.title}</b>
-            {c.publisher}
+            <b>{work.title}</b>
+            {chosen ? editionLabel(chosen) : work.publisher}
           </span>
           {main}
         </div>

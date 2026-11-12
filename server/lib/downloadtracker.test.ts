@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
 
+import BackIssueAPI from '@server/api/comics/backissue';
 import KapowarrAPI from '@server/api/comics/kapowarr';
 import RadarrAPI from '@server/api/servarr/radarr';
 import { MediaType } from '@server/constants/media';
@@ -10,6 +11,7 @@ import {
   hasSameServarrDownloadAuthority,
   isMatchingReadarrDownloadServer,
 } from '@server/lib/downloadtracker';
+import { backissueScanner } from '@server/lib/scanners/comics/backissue';
 import { getSettings } from '@server/lib/settings';
 
 it('bounds queue hydration per service family', () => {
@@ -114,6 +116,61 @@ describe('DownloadTracker Kapowarr queues', () => {
       assert.deepStrictEqual(tracker.getComicProgress(41, 1, 'kapowarr'), []);
     } finally {
       settings.kapowarr = originalKapowarr;
+    }
+  });
+});
+
+describe('DownloadTracker BackIssue queues', () => {
+  it('counts a pack grab as the series download and rescans once it leaves the queue', async (t) => {
+    const settings = getSettings();
+    const original = settings.backissue;
+    settings.backissue = [
+      {
+        id: 7,
+        name: 'BackIssue',
+        hostname: 'backissue.local',
+        port: 8787,
+        apiKey: 'backissue-key',
+        useSsl: false,
+        baseUrl: '',
+        externalUrl: '',
+        tags: [],
+        isDefault: true,
+        syncEnabled: true,
+        preventSearch: false,
+      },
+    ];
+    let queue = [
+      {
+        id: 77,
+        seriesId: 31,
+        title: '[Oshi No Ko]',
+        status: 'downloading',
+        progress: 62.5,
+        pack: true,
+      },
+    ];
+    t.mock.method(BackIssueAPI.prototype, 'getQueue', async () => queue);
+    const rescans = t.mock.method(
+      backissueScanner,
+      'scheduleRescan',
+      () => undefined
+    );
+    const tracker = new DownloadTracker();
+    try {
+      await tracker.updateDownloads();
+      const progress = tracker.getComicProgress(7, 31, 'backissue');
+      assert.strictEqual(progress.length, 1);
+      assert.strictEqual(progress[0].percent, 62.5);
+      assert.strictEqual(progress[0].downloadId, 'pack:77');
+      assert.strictEqual(rescans.mock.callCount(), 0);
+
+      queue = [];
+      await tracker.updateDownloads();
+      assert.deepStrictEqual(tracker.getComicProgress(7, 31, 'backissue'), []);
+      assert.strictEqual(rescans.mock.callCount(), 1);
+    } finally {
+      settings.backissue = original;
     }
   });
 });

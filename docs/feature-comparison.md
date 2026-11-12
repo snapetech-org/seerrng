@@ -59,7 +59,7 @@ imply a corresponding Lumen or native screen.
 | ChaptarrNG and Bookshelf compatibility | Not found | Format-aware requests, import preparation, service key and migration boundaries | [Guide](./using-seerr/bookshelf-backend.md) |
 | Bindery book acquisition | Not found | Dedicated ebook/audiobook backend configuration | [Guide](./using-seerr/bindery-backend.md) |
 | Read-only Audiobookshelf availability | Not found | ISBN-matched audiobook library scan; no acquisition writes | [Guide](./using-seerr/bookshelf-backend.md) |
-| Comic requests | Not found | Issuarr/Mylar-compatible, Kapowarr and BackIssue destinations | [Guide](./using-seerr/comics-backend.md) |
+| Comic requests | Not found | Issuarr/Mylar-compatible, Kapowarr and BackIssue destinations; manga through BackIssue with AniList search and edition choice | [Guide](./using-seerr/comics-backend.md) |
 | Magazine requests | Not found | Google Books/LazyLibrarian discovery and magazine acquisition | [Guide](./using-seerr/magazines-backend.md) |
 | Retro and Modern ROM requests | Not found | Platform browsing and ROMarrNG acquisition | [Guide](./using-seerr/software-acquisition.md) |
 | PC game requests | Not found | Windows/Linux/macOS catalogue and QuestarrNG acquisition | [Guide](./using-seerr/software-acquisition.md) |

@@ -1270,6 +1270,24 @@ const getStageFromRequest = (
     };
   }
   if (
+    request.type === MediaType.COMIC &&
+    hasRequestedServiceLink(request) &&
+    getRequestedMediaStatus(request) === MediaStatus.PARTIALLY_AVAILABLE
+  ) {
+    // Some volumes/issues are in the library, nothing is downloading now.
+    const progress = (
+      request.media as { comicProgress?: { owned: number; total: number } }
+    )?.comicProgress;
+    return {
+      stage: RequestStatusStage.LIBRARY,
+      queueFailure: false,
+      downloads,
+      message: progress
+        ? `${progress.owned} of ${progress.total} in the library. The rest arrive as they are found.`
+        : 'Part of this series is in the library. The rest arrive as they are found.',
+    };
+  }
+  if (
     (request.type === MediaType.MOVIE ||
       request.type === MediaType.TV ||
       request.type === MediaType.COMIC ||

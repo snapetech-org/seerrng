@@ -67,6 +67,7 @@ export const apiMessages: Record<
   m052bbc78d377691b9ed1:
     "Failed to create Jellyfin API token from admin account. Please check your network configuration or edit your settings.json by adding an ''apiKey'' field inside of the ''jellyfin'' section to fix this issue.",
   m052ef16c7671b6e462a9: 'Scheduled job lease was lost: {value0}',
+  m05343e9845302eb730fa: 'finished',
   m0539c6f6dcd0b2578b67: 'Book quota exceeded.',
   m053d64cdb6bb108bb03d: 'Sportarr quality profile must be a positive integer',
   m056a1948099f9b30635e: 'This adult scene is blocklisted.',
@@ -150,6 +151,8 @@ export const apiMessages: Record<
   m0b1e0b544b78273d9f00: 'SEERR_EXTERNAL_CONFIG.{value0} must be an object',
   m0b32447dd9d1a826dcc9: 'Settings body must be an object.',
   m0b33703eea6421cb5830: 'Invalid software request id.',
+  m0b35f00624bfdbb51e20:
+    'Part of this series is in the library. The rest arrive as they are found.',
   m0b3fc7176fb77831957e: 'Media server configuration changed during login.',
   m0b570eb9b0e9ff05fb9f: 'The operation was aborted.',
   m0b5a756b4b39c61fc1ac: 'Media type must be a string.',
@@ -165,6 +168,7 @@ export const apiMessages: Record<
   m0c1f53cabff162236cdf: 'Image exceeds disk cache capacity.',
   m0c2ef17c27865380c0a1: 'The selected patch project is invalid.',
   m0c3ba8214637694c9ac4: 'Media status body must be an object.',
+  m0c438f8acef93d8b8ec1: 'Comics are unavailable right now. Please try again.',
   m0c6b2918b0077082ad16:
     '[MusicBrainz] Failed to fetch release labels: Unknown error',
   m0c70b45fc02a1a26fa09:
@@ -176,6 +180,7 @@ export const apiMessages: Record<
   m0cd7bb3089910dccd77b: 'Invalid comic identity.',
   m0cdd74535be0c71f3dc0: 'Invalid Plex collection selection.',
   m0cdf275bfa9ce8ddd412: 'Malformed CSV quoting.',
+  m0cfbd301e90696d361d4: 'Kavita did not return a session token.',
   m0d1aa7daf134cba1ff93: 'Open Library book discovery request timed out.',
   m0d1f623c24509c4a535f: 'Cannot check series collections right now.',
   m0d2d3b16bdad80d2d4bc: 'requestRootFolders must be an object.',
@@ -249,6 +254,7 @@ export const apiMessages: Record<
   m119c88b21206f2daba4b: '{value0}: enabled setting must be true or false.',
   m11a820d15d1fcca9d380: 'Whisparr library browsing is unavailable right now.',
   m11b44a3822666c4add2e: 'downloadPathMappings[{value0}] must be an object.',
+  m11b5ce29e8bbc6d3ad28: 'Kavita returned an invalid series page.',
   m11bdb9e60e27ddd8f987: 'Enter a valid game title and library state.',
   m11cb10f04bdab434e57e:
     'Transport bootstrap is only available before setup is complete or to an authenticated administrator.',
@@ -624,6 +630,7 @@ export const apiMessages: Record<
     'This exact edition is already available at the selected destination.',
   m2dde86154c483ac240e0: 'ReadMeABook rejected the configured API token.',
   m2df10b0ad0af3e53f03f: 'Plex collection owner authority is required.',
+  m2e0d9b7086c3134bea98: 'ongoing',
   m2e2d7f041fb58bd77e4e:
     'SEERR_TRUSTED_PROXIES must contain trusted proxy IP addresses or CIDRs.',
   m2e6e931292f955a2432b:
@@ -649,6 +656,7 @@ export const apiMessages: Record<
   m2fed7b1ffd4626d82cdc: 'Could not leave the watch session.',
   m3036e36626bbf2935df0:
     'Sonarr no longer confirms every selected season is complete.',
+  m3074674271f4cfa024bf: 'External API shared rate limit is invalid.',
   m3077c61cfc2cde85f9fc:
     'Incomplete or invalid Radarr inventory; deletion reconciliation is not safe.',
   m307eb7ccabbb19a0db29:
@@ -852,6 +860,7 @@ export const apiMessages: Record<
   m3e85fa1497670aebfd66: 'The AI provider could not be reached.',
   m3eb5cd6c7879beaed7eb: 'TLS material must not be hard-linked: {value0}',
   m3eb93358a5b611597b29: 'You do not have permission to access this endpoint',
+  m3ec5ccc45bb0cbce609f: 'hiatus',
   m3ee2654728bf597c6452: '[Readarr] Failed to start book search: {value0}',
   m3ef3ecff4a0e4ab138d1: 'This software provider does not support bundles.',
   m3f0a130295db7f932f0c: 'ageGate.maxMovieCertification must be valid.',
@@ -1054,6 +1063,7 @@ export const apiMessages: Record<
   m4ced5b92a007a52e82fb:
     'A valid software category and catalog title are required.',
   m4cf7aa014cb8380548c4: 'Book server series metadata is unavailable.',
+  m4cfecb7d2efaacdc8a6c: 'Could not connect to Kavita.',
   m4d42e64ae7072f77f003: 'Choose a valid source folder.',
   m4d46b2241240c02f52a7: 'Invalid Discogs release identity',
   m4d4a7857fa672e925b64: 'Reader service did not return an access token.',
@@ -1336,6 +1346,7 @@ export const apiMessages: Record<
   m605c0f0fe0296bbccbcb: 'Choose ebook or audiobook media.',
   m60640eb2b75cb8b9fdf3:
     'Advanced Request or Manage Requests permission is required.',
+  m6073c2cc8ef854f98857: 'Kavita returned an invalid library list.',
   m6082cbd02cd60e41f6e3: 'Sportarr returned an invalid league library',
   m608b4833bb61b61cf825: 'Invalid Cover Art Archive settings.',
   m6091dc83b97a03269d0c:
@@ -1375,6 +1386,7 @@ export const apiMessages: Record<
   m63454cd9b9a8c5eeffe8: 'Unable to retrieve upcoming series.',
   m635695ed7f9a22220dda:
     'Bookshelf media tools are only available for Chaptarr.',
+  m63604cb7f600530fa7c8: 'BackIssue returned an unexpectedly large collection.',
   m63692f9f971b0833cef3: 'slskdN returned an invalid wishlist item.',
   m63702b032137b3e218ad: 'Request id must be a positive integer.',
   m63874f1f209fa72567a9: 'Media status does not exist.',
@@ -1485,6 +1497,8 @@ export const apiMessages: Record<
   m6b1b4a3246e7feca83d7: 'Withdrawn in SeerrNG.',
   m6b2e648ed574d9f394f3: 'Settings instance not found.',
   m6b472548d8e3a8219f83: 'Plex returned an invalid PIN.',
+  m6b4ff64008e2bee6bffa:
+    'AniList, the service used for manga, timed out or is unavailable. Please try again.',
   m6b5d3403cf9af66c7424:
     'You do not have permission to make 4K movie requests.',
   m6b818835004f0ef09577: 'Artist catalogue exceeds its limit',
@@ -1695,7 +1709,6 @@ export const apiMessages: Record<
     'The selected request destination is no longer available.',
   m79bae6832d09e322ae9b: 'Invalid Sportarr service ID.',
   m79bee6d6fcb53ed8f70d: 'Anthropic rejected the API key.',
-  m79c436406b993817b6f0: 'BackIssue returned an incomplete collection page.',
   m79c6cb840c2ec2d838b9: 'Webhook template filter is unknown.',
   m79e00f05272303cdf501: 'Incomplete catalog identifier evidence.',
   m79fa10100b808966015b: 'Webhook payload exceeds maximum object count.',
@@ -1935,6 +1948,7 @@ export const apiMessages: Record<
   m8b23ffe38e815ea9447d: 'This is not an IMDb title export.',
   m8b3c75e4dc18a931829c: 'Metadata test flags must be booleans.',
   m8b3f81c7a17e7cc9743d: 'Choose favorites from your library or requests.',
+  m8b47045eb7b8ca42aa96: 'cancelled',
   m8b63e3e35832839b0d99: 'Unable to retrieve comic details.',
   m8b6b0d42f0707af0f39f: 'A request for this magazine already exists.',
   m8b7741e1aac03b859db0: '{value0} must be at most {value1} characters.',
@@ -1949,6 +1963,7 @@ export const apiMessages: Record<
   m8c1f7e5fca21f8c819d5:
     'Set the SeerrNG application URL before connecting Spotify.',
   m8c45d56a622eddb64e77: 'externalUrl must be a valid HTTP URL.',
+  m8c4e4c407c9dc15fe4a6: 'Unable to retrieve this comic.',
   m8c55b74bdc50be81cb5b: 'Magazine request details are available in SeerrNG.',
   m8c8633f9d2f0446be73a: 'Could not load session movies.',
   m8c90ca408dfb21981742: 'Plex returned an invalid library container.',
@@ -2433,6 +2448,8 @@ export const apiMessages: Record<
   mb0599ffa6829152b54ae: 'Collection exceeds the safe lookup limit.',
   mb072b076f9fcce219f2b:
     'discordIds may not contain more than {value0} entries.',
+  mb07ccf2a30b4750b8f66:
+    'External API shared rate limit configuration changed.',
   mb09b1612046a75c854b3: 'Unable to verify official TVDB season data.',
   mb09e464918d4f8ef0786: 'Bindery returned an incomplete library scan.',
   mb0b93ff42dc2215257b2: 'A collection title could not be mapped',
@@ -2715,6 +2732,7 @@ export const apiMessages: Record<
   mc73fee6c5396519dd225: 'BookOrbit connection needs an account and password.',
   mc74896863adb52dfa21b: 'User settings body must be an object.',
   mc7736058413ee241e5c4: 'Unable to submit request.',
+  mc7c17d51f450414ddbc9: 'Kavita returned an unexpectedly large library.',
   mc7d019063e6f084cc936:
     'Bindery could not confirm the request status. Refresh and try again.',
   mc7d39f1dd87ed20fe835:
@@ -2744,6 +2762,7 @@ export const apiMessages: Record<
   mc9170e52bf281c4ba67c: 'urlBase must be a relative path.',
   mc94d3b768d912b3e77d4:
     'episodeNumbers must contain positive integers no greater than 10000.',
+  mc95f33d38665934ec54a: 'BackIssue returned an invalid library list.',
   mc964ed7000645259bac1: 'Unable to retrieve popular series.',
   mc98df4650b60def585d9: 'import failure is not classified',
   mc99d34e17f4ce903f4ae: 'Media server configuration changed during setup.',
@@ -2803,6 +2822,7 @@ export const apiMessages: Record<
   mcd0ab584bf5635189eba:
     '{value0} {value1} must be an integer between 1 and 65535.',
   mcd17bb3560eadab307c7: 'Discogs release identity mismatch',
+  mcd271fe8144124f7ec77: 'External API request canceled',
   mcd5e9d46a2997275db3d: '[Sonarr] Failed to retrieve episode files: {value0}',
   mcdb223031a91ed791afb: 'Could not load TV request access requests.',
   mcdca62ab8e269f635a5d: 'Invalid TMDB metadata ID',
@@ -3089,6 +3109,7 @@ export const apiMessages: Record<
   me1b41fc8e1d4bd73cab7: 'Jellystat API key is required.',
   me1eb45d8578142f483c8: 'Failed to get series history',
   me237a93a58ed25d364ac: 'Plex returned an invalid library count.',
+  me243049e80ec1d32ff3d: 'External API rate limit capacity exceeded.',
   me24b06582057a31f4a81: 'OIDC authorization redirect is not allowed.',
   me24b7cd232968fd51d4a: 'Invalid shared game filters.',
   me24ecd01e1188c6ba5a4:
@@ -3314,12 +3335,15 @@ export const apiMessages: Record<
   mf1b167bb645033b0df5c: 'The vision provider returned an invalid reading.',
   mf1bde7fc2fff83134270: '[Readarr] Failed to retrieve books: {value0}',
   mf1d320b606b1127cb5ca: 'External API request target is not allowed.',
+  mf1dfb9d5b5b5565ecd1f: 'Kavita service URL is invalid.',
   mf1e5d5c2e1f7a2d1adcb:
     'Per-request comic folders are only supported by Kapowarr.',
   mf1ff8dbdf80526670c41: 'You do not have permission to update this request.',
   mf2092c95f6c696addb7d: 'Person not found.',
   mf2405d921965acd12a40: 'Choose a valid destination root folder.',
   mf2a332bedb4c81cf1489: 'Anime-List mapping entries are invalid',
+  mf2c0d5eb0ede1fb68dbe:
+    '{value0} of {value1} in the library. The rest arrive as they are found.',
   mf2e0ecbb7d3de79489fa:
     'The selected edition language is unknown or disallowed by the current book language policy.',
   mf2e36b41a2526b4f69a7:

@@ -142,6 +142,58 @@ describe('external media-service settings behind the OpenAPI validator', () => {
     assert.equal(profiles.body.message, 'Settings instance not found');
   });
 
+  it('serves the Kavita reader settings behind the OpenAPI validator', async () => {
+    const app = createOpenApiValidatedApp();
+
+    const empty = await request(app).get('/api/v1/settings/kavita').expect(200);
+    assert.equal(empty.body, null);
+
+    const invalid = await request(app)
+      .post('/api/v1/settings/kavita/test')
+      .send({});
+    assert.equal(invalid.status, 400);
+    assert.notEqual(invalid.body.message, 'not found');
+
+    const badUrl = await request(app).put('/api/v1/settings/kavita').send({
+      hostname: '127.0.0.1',
+      port: 5000,
+      apiKey: 'kavita-auth-key',
+      useSsl: false,
+      externalUrl: 'not a url',
+    });
+    assert.equal(badUrl.status, 400);
+
+    const saved = await request(app)
+      .put('/api/v1/settings/kavita')
+      .send({
+        hostname: '127.0.0.1',
+        port: 5000,
+        apiKey: 'kavita-auth-key',
+        useSsl: false,
+        baseUrl: '',
+        externalUrl: 'https://manga.example.test/',
+      })
+      .expect(200);
+    assert.equal(saved.body.externalUrl, 'https://manga.example.test');
+    assert.notEqual(saved.body.apiKey, 'kavita-auth-key');
+
+    // a redacted key keeps the saved one
+    const again = await request(app)
+      .put('/api/v1/settings/kavita')
+      .send({ ...saved.body, port: 5001 })
+      .expect(200);
+    assert.equal(again.body.port, 5001);
+    const { getSettings } = await import('@server/lib/settings');
+    assert.equal(getSettings().kavita?.apiKey, 'kavita-auth-key');
+
+    const read = await request(app).get('/api/v1/settings/kavita').expect(200);
+    assert.equal(read.body.hostname, '127.0.0.1');
+    assert.notEqual(read.body.apiKey, 'kavita-auth-key');
+
+    await request(app).delete('/api/v1/settings/kavita').expect(204);
+    assert.equal(getSettings().kavita, null);
+  });
+
   it('lets Whisparr discovery and service routes reach their handlers', async () => {
     const app = createOpenApiValidatedApp();
 

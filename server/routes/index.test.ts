@@ -113,6 +113,17 @@ afterEach(() => {
 
 setupTestDb();
 
+const mockPrivateMethod = mock.method as (
+  object: object,
+  methodName: string,
+  implementation: (...args: unknown[]) => unknown
+) => unknown;
+const mockPrivate = (
+  object: object,
+  methodName: string,
+  implementation: (...args: unknown[]) => unknown
+) => mockPrivateMethod.call(mock, object, methodName, implementation);
+
 describe('Public endpoint resource boundaries', () => {
   it('bounds unauthenticated backdrop provider requests', () => {
     assert.deepStrictEqual(PUBLIC_BACKDROPS_RATE_LIMIT, {
@@ -178,20 +189,27 @@ describe('Authenticated metadata resource boundaries', () => {
 
   it('cannot reset the metadata budget by switching route families', async () => {
     const agent = await login();
+    const settings = getSettings();
+    const previousCategories = { ...settings.main.enabledMediaCategories };
+    settings.main.enabledMediaCategories = {
+      ...previousCategories,
+      comic: true,
+    };
     const environment = process.env as Record<string, string | undefined>;
     const previousNodeEnv = environment.NODE_ENV;
     environment.NODE_ENV = 'production';
 
     try {
       for (let index = 0; index < EXTERNAL_METADATA_RATE_LIMIT.limit; index++) {
-        const route = index % 2 === 0 ? '/movie/0' : '/tv/0';
+        const route = ['/movie/0', '/tv/0', '/comic/work/not-a-key'][index % 3];
         const response = await agent.get(`/api/v1${route}`);
         assert.notStrictEqual(response.status, 429);
       }
 
-      const limited = await agent.get('/api/v1/person/0');
+      const limited = await agent.get('/api/v1/comic/work/not-a-key');
       assert.strictEqual(limited.status, 429);
     } finally {
+      settings.main.enabledMediaCategories = previousCategories;
       if (previousNodeEnv === undefined) {
         delete environment.NODE_ENV;
       } else {
@@ -208,13 +226,13 @@ describe('Authenticated metadata resource boundaries', () => {
       movie: false,
       tv: false,
     };
-    const providerLookup = mock.method(
+    const providerLookup = mockPrivate(
       ExternalAPI.prototype,
       'get',
       async () => {
         throw new Error('Person provider should not be called');
       }
-    );
+    ) as ReturnType<typeof mock.method>;
 
     try {
       const agent = await loginAs('friend@seerr.dev');
@@ -243,13 +261,13 @@ describe('Authenticated metadata resource boundaries', () => {
       tv: false,
     };
     await getRepository(UserSettings).save(userSettings);
-    const providerLookup = mock.method(
+    const providerLookup = mockPrivate(
       ExternalAPI.prototype,
       'get',
       async () => {
         throw new Error('Person provider should not be called');
       }
-    );
+    ) as ReturnType<typeof mock.method>;
 
     try {
       const agent = await loginAs('friend@seerr.dev');
@@ -710,5 +728,100 @@ describe('Top-level API route validation', () => {
 
     assert.strictEqual(res.status, 400);
     assert.match(res.body.message, /Watch region/);
+  });
+});
+
+describe('comics follow the per-user media category', () => {
+  const settings = getSettings();
+  let prior: {
+    cats: typeof settings.main.enabledMediaCategories;
+    defaults: typeof settings.main.defaultEnabledMediaCategories;
+    key: typeof settings.main.comicVineApiKey;
+  };
+  const setFriendComic = async (value: boolean | null) => {
+    const friend = await getRepository(User).findOneOrFail({
+      where: { email: 'friend@seerr.dev' },
+      relations: { settings: true },
+    });
+    const row = friend.settings ?? new UserSettings({ user: friend });
+    row.enabledMediaCategories = value === null ? null : { comic: value };
+    await getRepository(UserSettings).save(row);
+  };
+  const paths = [
+    '/api/v1/discover/comics',
+    '/api/v1/discover/comics/landing',
+    '/api/v1/discover/comics/browse?type=manga',
+    '/api/v1/comic/work/al-1',
+    '/api/v1/comic/1',
+    '/api/v1/comic/1/issues',
+  ];
+
+  before(() => {
+    prior = {
+      cats: { ...settings.main.enabledMediaCategories },
+      defaults: { ...settings.main.defaultEnabledMediaCategories },
+      key: settings.main.comicVineApiKey,
+    };
+  });
+  afterEach(async () => {
+    settings.main.enabledMediaCategories = { ...prior.cats };
+    settings.main.defaultEnabledMediaCategories = { ...prior.defaults };
+    settings.main.comicVineApiKey = prior.key;
+    await setFriendComic(null);
+  });
+  const configure = () => {
+    settings.main.enabledMediaCategories = {
+      ...settings.main.enabledMediaCategories,
+      comic: true,
+    };
+    settings.main.defaultEnabledMediaCategories = {
+      ...settings.main.defaultEnabledMediaCategories,
+      comic: false,
+    };
+    settings.main.comicVineApiKey = '';
+  };
+
+  it('hides every comics route from a user without the category', async () => {
+    configure();
+    const agent = await loginAs('friend@seerr.dev');
+    for (const path of paths) {
+      const res = await agent.get(path);
+      assert.strictEqual(res.status, 404, path);
+      assert.strictEqual(res.body.message, 'Not found.', path);
+    }
+  });
+
+  it('returns no comic results in search and refuses comic requests', async () => {
+    configure();
+    settings.main.comicVineApiKey = 'key';
+    const agent = await loginAs('friend@seerr.dev');
+    const search = await agent
+      .get('/api/v1/search')
+      .query({ query: 'batman', type: 'comic' });
+    assert.strictEqual(search.status, 200);
+    assert.deepStrictEqual(search.body.results, []);
+    const req = await agent
+      .post('/api/v1/request')
+      .send({ mediaType: 'comic', mediaId: 1 });
+    assert.strictEqual(req.status, 403);
+    assert.match(req.body.message, /unavailable for this user/);
+  });
+
+  it('lets a user whose own setting turns comics on through', async () => {
+    configure();
+    await setFriendComic(true);
+    const agent = await loginAs('friend@seerr.dev');
+    const discover = await agent.get('/api/v1/discover/comics');
+    assert.strictEqual(discover.status, 200);
+    const work = await agent.get('/api/v1/comic/work/not-a-key');
+    assert.strictEqual(work.status, 404);
+    assert.strictEqual(work.body.message, 'Comic not found');
+  });
+
+  it('keeps comics for an administrator', async () => {
+    configure();
+    const agent = await login();
+    const res = await agent.get('/api/v1/discover/comics');
+    assert.strictEqual(res.status, 200);
   });
 });

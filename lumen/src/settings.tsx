@@ -64,6 +64,7 @@ export interface AdminConfig {
   locked?: string[]; // e.g. ["narratorChoice", "rows.genres"]
   seerrPublicUrl?: string;
   audiobookshelfUrl?: string; // where "Listen/Read in Audiobookshelf" go
+  kavitaUrl?: string; // where "Read in Kavita" goes, instead of SeerrNG's Kavita address
   mediaServer?: MediaServerSetting; // read by mediaServer.ts before sign-in
   loginStyle?: 'buttons' | 'form'; // read by mediaServer.ts before sign-in
   branding?: {
@@ -82,6 +83,7 @@ interface Ctx {
   locked: Set<string>;
   seerrPublicUrl?: string;
   audiobookshelfUrl?: string;
+  kavitaUrl?: string;
   set: (path: string, value: boolean | string) => void;
   reset: () => void;
   // the admin page saved a new lumen-config.json: use it now, without a reload
@@ -228,6 +230,7 @@ export function PrefsProvider({ children }: { children: ReactNode }) {
         locked,
         seerrPublicUrl: admin.seerrPublicUrl,
         audiobookshelfUrl: admin.audiobookshelfUrl,
+        kavitaUrl: admin.kavitaUrl,
         set,
         reset,
         adminSaved: (c: AdminConfig) => {

@@ -8188,7 +8188,6 @@
   "utils.ApiMessage.m799a3ff8c44a78cc15c5": "O destino selecionado não está mais disponível.",
   "utils.ApiMessage.m79bae6832d09e322ae9b": "Invalid Sportarr ID de serviço.",
   "utils.ApiMessage.m79bee6d6fcb53ed8f70d": "Antropic rejeitou a chave API.",
-  "utils.ApiMessage.m79c436406b993817b6f0": "BackIssue devolveu uma página de coleção incompleta.",
   "utils.ApiMessage.m79e00f05272303cdf501": "Evidências de identificação de catálogo incompleto.",
   "utils.ApiMessage.m79fa10100b808966015b": "A carga de pagamento do Webhook excede o número máximo de objetos.",
   "utils.ApiMessage.m79fcbd1326e77ca2e1fa": "Não conseguiu monitorar episódios",

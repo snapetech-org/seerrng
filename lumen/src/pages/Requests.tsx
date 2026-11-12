@@ -3,6 +3,7 @@ import { Link, useSearchParams } from 'react-router-dom';
 import {
   api,
   ApiError,
+  artUrl,
   bookMediaForFormat,
   cancelRequest,
   mediaLink,
@@ -247,12 +248,31 @@ function state(
 } {
   const r = x.r;
   const current = r.currentStatus;
+  // a comic or manga series with part of it in the library and nothing downloading
+  if (
+    r.type === 'comic' &&
+    r.media.status === MediaStatus.PARTIAL &&
+    (!current || current.stage === 'library' || current.stage === 'searching')
+  ) {
+    const p = r.media.comicProgress;
+    return {
+      k: 'ok',
+      word: p?.total
+        ? `${Math.min(p.owned, p.total)} of ${p.total} in library`
+        : 'Partly in library',
+      ico: 'check',
+      active: true,
+      detail: current?.message,
+    };
+  }
   if (current) {
     const base = { active: true, detail: current.message };
     const available =
-      r.type !== 'movie' && r.type !== 'tv'
-        ? 'In library'
-        : `${r.is4k ? '4K on' : 'On'} ${serverName}`;
+      r.type === 'comic'
+        ? 'Complete'
+        : r.type !== 'movie' && r.type !== 'tv'
+          ? 'In library'
+          : `${r.is4k ? '4K on' : 'On'} ${serverName}`;
     switch (current.stage) {
       case 'available':
         return {
@@ -738,10 +758,12 @@ async function describeExtra(r: RequestItem): Promise<Row | null> {
     return {
       r,
       title: c?.title || 'Comic',
-      art: c?.posterPath,
+      art: artUrl(c?.posterPath),
       cover: true,
       href: `/comic/${id}`,
-      sub: ['Comic', c?.publisher].filter(Boolean).join(' · '),
+      sub: [c?.manga ? 'Manga' : 'Comic', c?.publisher]
+        .filter(Boolean)
+        .join(' · '),
     };
   }
   if (r.type === 'magazine') {

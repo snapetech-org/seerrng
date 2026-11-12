@@ -8194,7 +8194,6 @@
   "utils.ApiMessage.m799a3ff8c44a78cc15c5": "已選擇的請求目的地不再可用。",
   "utils.ApiMessage.m79bae6832d09e322ae9b": "Invalid Sportarr 服務 ID.",
   "utils.ApiMessage.m79bee6d6fcb53ed8f70d": "Anthropic 拒絕了 API 密鑰。",
-  "utils.ApiMessage.m79c436406b993817b6f0": "BackIssue 返回了不完整的收集頁面。",
   "utils.ApiMessage.m79e00f05272303cdf501": "不完整的目錄識別證據。",
   "utils.ApiMessage.m79fa10100b808966015b": "Webhook 支付負載超過最大對象數量。",
   "utils.ApiMessage.m79fcbd1326e77ca2e1fa": "未能跟蹤事件",

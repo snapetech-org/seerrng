@@ -79,8 +79,12 @@ export interface MediaInfo {
   audiobookExternalServiceId?: number | null;
   audiobookLibraryServiceId?: number | null;
   audiobookLibraryItemId?: string | null;
-  downloadStatus?: { size: number; sizeLeft: number }[];
+  downloadStatus?: { size: number; sizeLeft: number; percent?: number }[];
   downloadStatus4k?: { size: number; sizeLeft: number }[];
+  // comics: issues/volumes in the library out of those known (BackIssue)
+  comicProgress?: { owned: number; total: number };
+  // comics: the series in the reading server (Kavita), once any of it is in
+  readerUrl?: string;
   status?: number;
   status4k?: number;
   mediaAddedAt?: string;
@@ -234,6 +238,21 @@ export const tmdbImg = (path: string | undefined | null, size = 'w342') => {
   if (!isSafeImagePath(path)) return '';
   const safeSize = TMDB_IMAGE_SIZES.has(size) ? size : 'w342';
   return `/imageproxy/tmdb/t/p/${safeSize}${path}`;
+};
+
+// ComicVine and AniList covers through SeerrNG's image proxy (cached on the server, and
+// no third-party requests from the browser); anything else is used as given
+const PROXIED_ART: [string, string][] = [
+  ['https://comicvine.gamespot.com/', '/imageproxy/comicvine/'],
+  ['https://comicvine.cbsistatic.com/', '/imageproxy/comicvinestatic/'],
+  ['https://comicvine1.cbsistatic.com/', '/imageproxy/comicvinestatic1/'],
+  ['https://s4.anilist.co/', '/imageproxy/anilist/'],
+];
+export const artUrl = (url?: string | null) => {
+  if (!url) return undefined;
+  for (const [from, to] of PROXIED_ART)
+    if (url.startsWith(from)) return to + url.slice(from.length);
+  return url;
 };
 
 export const titleOf = (r: TitleResult) => r.title || r.name || '';
@@ -408,6 +427,37 @@ export const hardcoverWorkId = (id: string) => {
     return null;
   }
 };
+// "Read in Kavita": SeerrNG's link to the series (http/https only), moved onto the admin's
+// Kavita address when Lumen has one, the way the Audiobookshelf address works
+export const kavitaLink = (
+  readerUrl?: string | null,
+  base?: string
+): string | null => {
+  const web = (raw: string) => {
+    try {
+      const url = new URL(raw);
+      return ['http:', 'https:'].includes(url.protocol) &&
+        !url.username &&
+        !url.password
+        ? url
+        : null;
+    } catch {
+      return null;
+    }
+  };
+  const link = readerUrl ? web(readerUrl) : null;
+  if (!link) return null;
+  const series = /\/library\/(\d+)\/series\/(\d+)\/?$/.exec(link.pathname);
+  const own = base ? web(base) : null;
+  if (own && series) {
+    own.search = '';
+    own.hash = '';
+    own.pathname = `${own.pathname.replace(/\/+$/, '')}/library/${series[1]}/series/${series[2]}`;
+    return own.href;
+  }
+  return link.href;
+};
+
 // The admin's Audiobookshelf address (http/https only), opening the item when SeerrNG knows it
 export const audiobookshelfLink = (
   base?: string,

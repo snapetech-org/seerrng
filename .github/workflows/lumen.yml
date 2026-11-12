@@ -101,6 +101,47 @@ jobs:
           path: ${{ runner.temp }}/lumen-tv-request-baseline/
           if-no-files-found: ignore
           retention-days: 7
+      - name: Check out the pre-Comics/Manga Lumen baseline
+        if: github.event_name == 'pull_request'
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: ${{ github.event.pull_request.base.repo.full_name }}
+          ref: ${{ github.event.pull_request.base.sha }}
+          path: baseline-comics
+          persist-credentials: false
+      - name: Add the Comics baseline screenshot fixture
+        if: github.event_name == 'pull_request'
+        run: cp lumen/tests/browser/comics-baseline.spec.ts baseline-comics/lumen/tests/browser/
+      - name: Install pre-Comics Lumen dependencies
+        if: github.event_name == 'pull_request'
+        working-directory: baseline-comics/lumen
+        run: npm ci --ignore-scripts
+      - name: Build the pre-Comics Lumen baseline
+        if: github.event_name == 'pull_request'
+        working-directory: baseline-comics/lumen
+        run: npm run build
+      - name: Install Chromium for the pre-Comics baseline
+        if: github.event_name == 'pull_request'
+        working-directory: baseline-comics/lumen
+        run: npx --no-install playwright install --with-deps chromium
+      - name: Capture the pre-Comics route at matched viewports
+        if: github.event_name == 'pull_request'
+        working-directory: baseline-comics/lumen
+        run: >-
+          npm run test:browser -- tests/browser/comics-baseline.spec.ts
+          --project=desktop --workers=1
+        env:
+          LUMEN_COMICS_BASELINE: 'true'
+          LUMEN_COMICS_BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          LUMEN_TEST_OUTPUT: ${{ runner.temp }}/lumen-comics-baseline
+      - name: Retain pre-Comics Lumen visual baseline
+        if: always() && github.event_name == 'pull_request'
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: lumen-comics-baseline
+          path: ${{ runner.temp }}/lumen-comics-baseline/
+          if-no-files-found: ignore
+          retention-days: 7
       - name: Retain browser evidence
         if: always()
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2

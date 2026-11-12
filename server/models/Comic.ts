@@ -18,6 +18,13 @@ export interface ComicResult {
   deck?: string;
   siteDetailUrl?: string;
   mediaInfo?: Media;
+  /** Manga (or manhwa), as opposed to a Western comic. */
+  manga?: boolean;
+  /** 'en' for an English manga edition, 'ja' for the Japanese original. */
+  edition?: 'en' | 'ja';
+  anilistId?: number;
+  /** A short human line, e.g. "Manga · English edition · Yen Press · 13 vols". */
+  label?: string;
 }
 
 export interface ComicIssueReference {
@@ -78,3 +85,63 @@ export const mapComicVineVolumeDetails = (
   issues: volume.issues?.map(mapComicVineIssueResult),
   onUserWatchlist,
 });
+
+const volumeCount = (count?: number) =>
+  count ? `${count} vol${count === 1 ? '' : 's'}` : '';
+
+export const mangaLabel = (
+  edition: 'en' | 'ja' | undefined,
+  publisher?: string,
+  count?: number
+): string =>
+  [
+    'Manga',
+    edition === 'en'
+      ? 'English edition'
+      : edition === 'ja'
+        ? 'Japanese edition'
+        : '',
+    publisher ?? '',
+    volumeCount(count),
+  ]
+    .filter(Boolean)
+    .join(' · ');
+
+/**
+ * Tags a ComicVine result as manga from its publisher, so a plain ComicVine
+ * search still says which results are manga and in which language.
+ */
+export const withMangaEdition = (
+  result: ComicResult,
+  edition: { manga: boolean; edition?: 'en' | 'ja' }
+): ComicResult =>
+  edition.manga
+    ? {
+        ...result,
+        manga: true,
+        edition: edition.edition,
+        label: mangaLabel(edition.edition, result.publisher, result.issueCount),
+      }
+    : result;
+
+/** A manga found on AniList, keyed by its English-edition ComicVine volume. */
+export const mapMangaEditionResult = (
+  match: {
+    anilistId: number;
+    volume: ComicVineVolumeResult;
+    title: string;
+    coverUrl?: string;
+  },
+  media?: Media
+): ComicResult => {
+  const base = mapComicVineVolumeResult(match.volume, media);
+  return {
+    ...base,
+    title: match.title || base.title,
+    posterPath: match.coverUrl ?? base.posterPath,
+    manga: true,
+    edition: 'en',
+    anilistId: match.anilistId,
+    label: mangaLabel('en', base.publisher, base.issueCount),
+  };
+};

@@ -8188,7 +8188,6 @@
   "utils.ApiMessage.m799a3ff8c44a78cc15c5": "Das ausgewählte Anfrageziel ist nicht mehr verfügbar.",
   "utils.ApiMessage.m79bae6832d09e322ae9b": "Ungültige Sportarr-Dienst-ID.",
   "utils.ApiMessage.m79bee6d6fcb53ed8f70d": "Anthropic hat den API-Schlüssel abgelehnt.",
-  "utils.ApiMessage.m79c436406b993817b6f0": "BackIssue hat eine unvollständige Sammlungsseite zurückgegeben.",
   "utils.ApiMessage.m79e00f05272303cdf501": "Unvollständige Nachweise für Katalogkennungen.",
   "utils.ApiMessage.m79fa10100b808966015b": "Webhook-Payload überschreitet die maximale Objektanzahl.",
   "utils.ApiMessage.m79fcbd1326e77ca2e1fa": "Fehler beim Überwachen von Episoden",

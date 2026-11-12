@@ -8193,7 +8193,6 @@
   "utils.ApiMessage.m799a3ff8c44a78cc15c5": "선택한 요청 목적지는 더 이상 사용할 수 없습니다.",
   "utils.ApiMessage.m79bae6832d09e322ae9b": "Invalid Sportarr 서비스 ID",
   "utils.ApiMessage.m79bee6d6fcb53ed8f70d": "Anthropic은 API 키를 거부했습니다.",
-  "utils.ApiMessage.m79c436406b993817b6f0": "BackIssue는 불완전한 컬렉션 페이지를 반환했습니다.",
   "utils.ApiMessage.m79e00f05272303cdf501": "불완전한 카탈로그 식별 증거.",
   "utils.ApiMessage.m79fa10100b808966015b": "Webhook 지불로드는 최대 개체 수를 초과합니다.",
   "utils.ApiMessage.m79fcbd1326e77ca2e1fa": "에피소드를 모니터링하지 못했다.",

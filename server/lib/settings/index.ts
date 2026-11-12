@@ -479,6 +479,20 @@ export interface AudiobookshelfSettings {
   syncEnabled: boolean;
 }
 
+/**
+ * A Kavita reading server. Read-only: SeerrNG looks up which Kavita series
+ * holds each comic or manga so "Read in Kavita" can open it.
+ */
+export interface KavitaSettings {
+  hostname: string;
+  port: number;
+  apiKey: string;
+  useSsl: boolean;
+  baseUrl?: string;
+  /** Address readers open (e.g. https://manga.example.com). */
+  externalUrl?: string;
+}
+
 export interface CollectorServiceSettings {
   id: number;
   name: string;
@@ -945,6 +959,7 @@ export interface AllSettings {
   audiobookshelf?: AudiobookshelfSettings | null;
   navidrome?: NavidromeSettings | null;
   jellystat?: JellystatSettings | null;
+  kavita?: KavitaSettings | null;
   mylar: MylarSettings[];
   kapowarr: KapowarrSettings[];
   backissue: BackIssueSettings[];
@@ -1094,6 +1109,7 @@ class Settings {
       audiobookshelf: null,
       navidrome: null,
       jellystat: null,
+      kavita: null,
       mylar: [],
       kapowarr: [],
       backissue: [],
@@ -1667,6 +1683,14 @@ class Settings {
     this.data.audiobookshelf = data;
   }
 
+  get kavita(): KavitaSettings | null {
+    return this.data.kavita ?? null;
+  }
+
+  set kavita(data: KavitaSettings | null) {
+    this.data.kavita = data;
+  }
+
   get sonarr(): SonarrSettings[] {
     return this.data.sonarr;
   }
@@ -2175,6 +2199,7 @@ class Settings {
       audiobookshelf: null,
       navidrome: null,
       jellystat: null,
+      kavita: null,
       mylar: [],
       kapowarr: [],
       backissue: [],

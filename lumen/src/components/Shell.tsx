@@ -119,18 +119,26 @@ export default function Shell({ children }: { children: ReactNode }) {
             ? 'audio'
             : path === '/books' || path.startsWith('/book/')
               ? 'ebook'
-              : 'all';
+              : path === '/comics' || path.startsWith('/comic/')
+                ? 'comic'
+                : 'all';
   const word: Record<string, string> = {
     movie: 'movies',
     tv: 'series',
     ebook: 'books and authors',
     audio: 'audiobooks and narrators',
+    comic: 'comics and manga',
   };
+  const comics = extras.list.some((e) => e.key === 'comic');
   const placeholder = word[scope]
     ? `Search ${word[scope]}…`
     : prefs.showBooks
-      ? 'Search movies, series, books, narrators…'
-      : 'Search movies and series…';
+      ? comics
+        ? 'Search movies, series, books, manga…'
+        : 'Search movies, series, books, narrators…'
+      : comics
+        ? 'Search movies, series, comics…'
+        : 'Search movies and series…';
   const [term, setTerm] = useState('');
   useEffect(() => {
     setTerm(path === '/search' ? params.get('q') || '' : '');
