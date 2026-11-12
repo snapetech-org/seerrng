@@ -484,6 +484,7 @@ async function fixtures(page: Page) {
         pageInfo: { pages: 1, page: 1, results: count, pageSize: 20 },
         counts: {
           total: 10,
+          pending: 1,
           active: 7,
           incomplete: 7,
           attention: 1,
@@ -1045,6 +1046,7 @@ test('native request loading, empty and error states retain a title and recovery
         pageInfo: { pages: 1, page: 1, results: 0, pageSize: 20 },
         counts: {
           total: 0,
+          pending: 0,
           active: 0,
           incomplete: 0,
           attention: 0,
