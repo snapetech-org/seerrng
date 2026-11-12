@@ -33,7 +33,9 @@ test(
     for (const width of widths) {
       await page.setViewportSize({ width, height: 800 });
       await page.goto('/comics');
-      await expect(page.locator('h1')).toHaveText('Page not found');
+      await expect(
+        page.getByText('Something went wrong on this page')
+      ).toBeVisible();
       await page.screenshot({
         path: info.outputPath(`comics-baseline-${width}.png`),
         fullPage: true,
@@ -49,7 +51,7 @@ test(
           baselineSha: process.env.LUMEN_COMICS_BASE_SHA,
           viewports: widths.map((width) => ({ width, height: 800 })),
           result:
-            'The main branch renders its not-found placeholder at each viewport.',
+            'The main branch renders its page-boundary fallback at each viewport.',
         },
         null,
         2
