@@ -113,6 +113,17 @@ afterEach(() => {
 
 setupTestDb();
 
+const mockPrivateMethod = mock.method as (
+  object: object,
+  methodName: string,
+  implementation: (...args: unknown[]) => unknown
+) => unknown;
+const mockPrivate = (
+  object: object,
+  methodName: string,
+  implementation: (...args: unknown[]) => unknown
+) => mockPrivateMethod.call(mock, object, methodName, implementation);
+
 describe('Public endpoint resource boundaries', () => {
   it('bounds unauthenticated backdrop provider requests', () => {
     assert.deepStrictEqual(PUBLIC_BACKDROPS_RATE_LIMIT, {
@@ -215,13 +226,13 @@ describe('Authenticated metadata resource boundaries', () => {
       movie: false,
       tv: false,
     };
-    const providerLookup = mock.method(
+    const providerLookup = mockPrivate(
       ExternalAPI.prototype,
       'get',
       async () => {
         throw new Error('Person provider should not be called');
       }
-    );
+    ) as ReturnType<typeof mock.method>;
 
     try {
       const agent = await loginAs('friend@seerr.dev');
@@ -250,13 +261,13 @@ describe('Authenticated metadata resource boundaries', () => {
       tv: false,
     };
     await getRepository(UserSettings).save(userSettings);
-    const providerLookup = mock.method(
+    const providerLookup = mockPrivate(
       ExternalAPI.prototype,
       'get',
       async () => {
         throw new Error('Person provider should not be called');
       }
-    );
+    ) as ReturnType<typeof mock.method>;
 
     try {
       const agent = await loginAs('friend@seerr.dev');

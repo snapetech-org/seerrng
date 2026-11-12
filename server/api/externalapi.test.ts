@@ -449,8 +449,10 @@ describe('ExternalAPI shared request budgets', () => {
       sharedRateLimit,
     });
     const other = new TestExternalAPI('https://other.example', {}, {
-      ...sharedRateLimit,
-      key: `other-provider:${randomBytes(16).toString('hex')}`,
+      sharedRateLimit: {
+        ...sharedRateLimit,
+        key: `other-provider:${randomBytes(16).toString('hex')}`,
+      },
     });
     const started: string[] = [];
     const adapter: AxiosAdapter = async (config) => {
