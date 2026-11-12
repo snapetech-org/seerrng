@@ -6643,6 +6643,8 @@ components:
           properties:
             total:
               type: integer
+            pending:
+              type: integer
             active:
               type: integer
             incomplete:
@@ -6657,6 +6659,7 @@ components:
               type: integer
           required:
             - total
+            - pending
             - active
             - incomplete
             - attention
