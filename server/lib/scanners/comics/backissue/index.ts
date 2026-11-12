@@ -1,5 +1,9 @@
 import type { BackIssueCollectionItem } from '@server/api/comics/backissue';
 import BackIssueAPI from '@server/api/comics/backissue';
+import {
+  backIssueSeriesState,
+  setComicLibraryProgress,
+} from '@server/lib/comicLibraryProgress';
 import { getExternalRuntimeConfig } from '@server/lib/externalRuntimeConfig';
 import type {
   RunnableScanner,
@@ -34,6 +38,23 @@ class BackIssueScanner
       currentServer: this.currentServer,
       servers: this.servers,
     };
+  }
+
+  private rescanTimer?: ReturnType<typeof setTimeout>;
+
+  /**
+   * Rescans shortly after a download leaves BackIssue's queue, so a finished
+   * series turns available (and its requester is told) without waiting for
+   * the scheduled scan. Repeated calls coalesce into one scan.
+   */
+  public scheduleRescan(delayMs = 90_000): void {
+    if (this.rescanTimer) return;
+    this.rescanTimer = setTimeout(() => {
+      this.rescanTimer = undefined;
+      if (this.running) return;
+      this.run().catch(() => undefined);
+    }, delayMs);
+    this.rescanTimer.unref?.();
   }
 
   public async run(): Promise<void> {
@@ -80,17 +101,22 @@ class BackIssueScanner
   }
 
   private async processSeries(series: BackIssueCollectionItem): Promise<void> {
-    if (series.type && series.type !== 'comic') return;
+    // Comics and manga (each manga volume is one ComicVine "issue").
+    if (series.type && series.type !== 'comic' && series.type !== 'manga')
+      return;
     try {
+      const counts = {
+        owned: series.owned,
+        total: series.total,
+        active: series.active,
+      };
+      setComicLibraryProgress(this.currentServer.id, series.id, counts);
       await this.processComic(String(series.cv_id), {
         serviceId: this.currentServer.id,
         externalServiceId: series.id,
         externalServiceSlug: String(series.id),
         title: series.title,
-        hasFile: series.owned > 0,
-        processing:
-          series.active > 0 ||
-          (series.total > 0 && series.owned > 0 && series.owned < series.total),
+        ...backIssueSeriesState(counts),
         comicServiceType: 'backissue',
         mutationGuard: (callback) =>
           runWithServarrServiceSnapshot(

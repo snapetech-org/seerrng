@@ -67,6 +67,7 @@ export const apiMessages: Record<
   m052bbc78d377691b9ed1:
     "Failed to create Jellyfin API token from admin account. Please check your network configuration or edit your settings.json by adding an ''apiKey'' field inside of the ''jellyfin'' section to fix this issue.",
   m052ef16c7671b6e462a9: 'Scheduled job lease was lost: {value0}',
+  m05343e9845302eb730fa: 'finished',
   m0539c6f6dcd0b2578b67: 'Book quota exceeded.',
   m053d64cdb6bb108bb03d: 'Sportarr quality profile must be a positive integer',
   m056a1948099f9b30635e: 'This adult scene is blocklisted.',
@@ -148,6 +149,8 @@ export const apiMessages: Record<
   m0b1e0b544b78273d9f00: 'SEERR_EXTERNAL_CONFIG.{value0} must be an object',
   m0b32447dd9d1a826dcc9: 'Settings body must be an object.',
   m0b33703eea6421cb5830: 'Invalid software request id.',
+  m0b35f00624bfdbb51e20:
+    'Part of this series is in the library. The rest arrive as they are found.',
   m0b3fc7176fb77831957e: 'Media server configuration changed during login.',
   m0b570eb9b0e9ff05fb9f: 'The operation was aborted.',
   m0b5a756b4b39c61fc1ac: 'Media type must be a string.',
@@ -163,6 +166,7 @@ export const apiMessages: Record<
   m0c1f53cabff162236cdf: 'Image exceeds disk cache capacity.',
   m0c2ef17c27865380c0a1: 'The selected patch project is invalid.',
   m0c3ba8214637694c9ac4: 'Media status body must be an object.',
+  m0c438f8acef93d8b8ec1: 'Comics are unavailable right now. Please try again.',
   m0c6b2918b0077082ad16:
     '[MusicBrainz] Failed to fetch release labels: Unknown error',
   m0c70b45fc02a1a26fa09:
@@ -618,6 +622,7 @@ export const apiMessages: Record<
     'This exact edition is already available at the selected destination.',
   m2dde86154c483ac240e0: 'ReadMeABook rejected the configured API token.',
   m2df10b0ad0af3e53f03f: 'Plex collection owner authority is required.',
+  m2e0d9b7086c3134bea98: 'ongoing',
   m2e2d7f041fb58bd77e4e:
     'SEERR_TRUSTED_PROXIES must contain trusted proxy IP addresses or CIDRs.',
   m2e6e931292f955a2432b:
@@ -846,6 +851,7 @@ export const apiMessages: Record<
   m3e85fa1497670aebfd66: 'The AI provider could not be reached.',
   m3eb5cd6c7879beaed7eb: 'TLS material must not be hard-linked: {value0}',
   m3eb93358a5b611597b29: 'You do not have permission to access this endpoint',
+  m3ec5ccc45bb0cbce609f: 'hiatus',
   m3ee2654728bf597c6452: '[Readarr] Failed to start book search: {value0}',
   m3ef3ecff4a0e4ab138d1: 'This software provider does not support bundles.',
   m3f0a130295db7f932f0c: 'ageGate.maxMovieCertification must be valid.',
@@ -1367,6 +1373,7 @@ export const apiMessages: Record<
   m63454cd9b9a8c5eeffe8: 'Unable to retrieve upcoming series.',
   m635695ed7f9a22220dda:
     'Bookshelf media tools are only available for Chaptarr.',
+  m63604cb7f600530fa7c8: 'BackIssue returned an unexpectedly large collection.',
   m63692f9f971b0833cef3: 'slskdN returned an invalid wishlist item.',
   m63702b032137b3e218ad: 'Request id must be a positive integer.',
   m63874f1f209fa72567a9: 'Media status does not exist.',
@@ -1477,6 +1484,8 @@ export const apiMessages: Record<
   m6b1b4a3246e7feca83d7: 'Withdrawn in SeerrNG.',
   m6b2e648ed574d9f394f3: 'Settings instance not found.',
   m6b472548d8e3a8219f83: 'Plex returned an invalid PIN.',
+  m6b4ff64008e2bee6bffa:
+    'AniList, the service used for manga, timed out or is unavailable. Please try again.',
   m6b5d3403cf9af66c7424:
     'You do not have permission to make 4K movie requests.',
   m6b818835004f0ef09577: 'Artist catalogue exceeds its limit',
@@ -1685,7 +1694,6 @@ export const apiMessages: Record<
     'The selected request destination is no longer available.',
   m79bae6832d09e322ae9b: 'Invalid Sportarr service ID.',
   m79bee6d6fcb53ed8f70d: 'Anthropic rejected the API key.',
-  m79c436406b993817b6f0: 'BackIssue returned an incomplete collection page.',
   m79c6cb840c2ec2d838b9: 'Webhook template filter is unknown.',
   m79e00f05272303cdf501: 'Incomplete catalog identifier evidence.',
   m79fa10100b808966015b: 'Webhook payload exceeds maximum object count.',
@@ -1925,6 +1933,7 @@ export const apiMessages: Record<
   m8b23ffe38e815ea9447d: 'This is not an IMDb title export.',
   m8b3c75e4dc18a931829c: 'Metadata test flags must be booleans.',
   m8b3f81c7a17e7cc9743d: 'Choose favorites from your library or requests.',
+  m8b47045eb7b8ca42aa96: 'cancelled',
   m8b63e3e35832839b0d99: 'Unable to retrieve comic details.',
   m8b6b0d42f0707af0f39f: 'A request for this magazine already exists.',
   m8b7741e1aac03b859db0: '{value0} must be at most {value1} characters.',
@@ -1939,6 +1948,7 @@ export const apiMessages: Record<
   m8c1f7e5fca21f8c819d5:
     'Set the SeerrNG application URL before connecting Spotify.',
   m8c45d56a622eddb64e77: 'externalUrl must be a valid HTTP URL.',
+  m8c4e4c407c9dc15fe4a6: 'Unable to retrieve this comic.',
   m8c55b74bdc50be81cb5b: 'Magazine request details are available in SeerrNG.',
   m8c8633f9d2f0446be73a: 'Could not load session movies.',
   m8c90ca408dfb21981742: 'Plex returned an invalid library container.',
@@ -2734,6 +2744,7 @@ export const apiMessages: Record<
   mc9170e52bf281c4ba67c: 'urlBase must be a relative path.',
   mc94d3b768d912b3e77d4:
     'episodeNumbers must contain positive integers no greater than 10000.',
+  mc95f33d38665934ec54a: 'BackIssue returned an invalid library list.',
   mc964ed7000645259bac1: 'Unable to retrieve popular series.',
   mc98df4650b60def585d9: 'import failure is not classified',
   mc99d34e17f4ce903f4ae: 'Media server configuration changed during setup.',
@@ -3309,6 +3320,8 @@ export const apiMessages: Record<
   mf2092c95f6c696addb7d: 'Person not found.',
   mf2405d921965acd12a40: 'Choose a valid destination root folder.',
   mf2a332bedb4c81cf1489: 'Anime-List mapping entries are invalid',
+  mf2c0d5eb0ede1fb68dbe:
+    '{value0} of {value1} in the library. The rest arrive as they are found.',
   mf2e0ecbb7d3de79489fa:
     'The selected edition language is unknown or disallowed by the current book language policy.',
   mf2e36b41a2526b4f69a7:

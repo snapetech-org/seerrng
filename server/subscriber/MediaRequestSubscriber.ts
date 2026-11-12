@@ -76,6 +76,7 @@ import {
   cleanMagazineTitle,
   normalizeMagazineTitle,
 } from '@server/lib/magazineIdentity';
+import { isMangaComicVineVolume } from '@server/lib/mangaVolume';
 import { runMediaEntityMutation } from '@server/lib/mediaMutation';
 import { upsertMediaServiceStatus } from '@server/lib/mediaServiceStatus';
 import { getLidarrAlbumMediaStatus } from '@server/lib/musicAvailability';
@@ -3981,7 +3982,9 @@ export class MediaRequestSubscriber implements EntitySubscriberInterface<MediaRe
           url: BackIssueAPI.buildUrl(backissueSettings),
           apiKey: backissueSettings.apiKey,
         });
-        const result = await backissue.addVolume(Number(comicVineId));
+        const result = await backissue.addVolume(Number(comicVineId), {
+          manga: await isMangaComicVineVolume(Number(comicVineId)),
+        });
         externalServiceId = result.seriesId;
         externalServiceSlug = String(result.seriesId);
       }

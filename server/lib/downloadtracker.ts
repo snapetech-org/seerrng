@@ -1048,6 +1048,7 @@ export class DownloadTracker {
             delete this.backissueServers[server.id];
             return;
           }
+          const previous = this.backissueServers[server.id] ?? [];
           this.backissueServers[server.id] = queueItems.map((item) => ({
             externalId: item.seriesId,
             estimatedCompletionTime: new Date(Number.NaN),
@@ -1057,9 +1058,25 @@ export class DownloadTracker {
             status: item.status,
             timeLeft: 'unknown',
             title: item.title,
-            downloadId: String(item.id),
+            downloadId: item.pack ? `pack:${item.id}` : String(item.id),
             ...(item.progress !== undefined ? { percent: item.progress } : {}),
           }));
+          // A series whose downloads all left the queue has probably been
+          // imported: rescan so its availability (and notification) follows
+          // within minutes rather than at the next scheduled scan.
+          const stillActive = new Set(queueItems.map((item) => item.seriesId));
+          if (
+            previous.some(
+              (item) =>
+                item.externalId !== undefined &&
+                !stillActive.has(item.externalId) &&
+                item.status !== 'failed'
+            )
+          ) {
+            const { backissueScanner } =
+              await import('@server/lib/scanners/comics/backissue');
+            backissueScanner.scheduleRescan();
+          }
         } catch (error) {
           logger.error(
             `Unable to get queue from BackIssue server: ${server.name}`,

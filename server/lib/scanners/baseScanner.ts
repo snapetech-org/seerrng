@@ -110,6 +110,10 @@ export interface ProcessOptions {
   bookServiceType?: 'ebook' | 'audiobook';
   audiobookLibrarySource?: { serviceId: number; itemId: string };
   comicServiceType?: 'mylar' | 'kapowarr' | 'backissue';
+  /** Comics: some, but not all, issues/volumes are in the library. */
+  partiallyAvailable?: boolean;
+  /** Comics: only update a media row that already exists. */
+  updateOnly?: boolean;
   mutationGuard?: <Result>(callback: () => Promise<Result>) => Promise<Result>;
   outerMutationGuard?: <Result>(
     callback: () => Promise<Result>
@@ -1372,6 +1376,8 @@ class BaseScanner<T> {
       title = 'Unknown Comic',
       hasFile = true,
       comicServiceType = 'mylar',
+      partiallyAvailable = false,
+      updateOnly = false,
       mutationGuard,
       outerMutationGuard,
     }: ProcessOptions = {}
@@ -1407,15 +1413,17 @@ class BaseScanner<T> {
                   existing.status =
                     !processing && hasFile
                       ? MediaStatus.AVAILABLE
-                      : !processing && !hasFile
-                        ? previousStatus === MediaStatus.DELETED
-                          ? MediaStatus.DELETED
-                          : MediaStatus.UNKNOWN
-                        : processing
+                      : partiallyAvailable
+                        ? MediaStatus.PARTIALLY_AVAILABLE
+                        : !processing && !hasFile
                           ? previousStatus === MediaStatus.DELETED
                             ? MediaStatus.DELETED
-                            : MediaStatus.PROCESSING
-                          : previousStatus;
+                            : MediaStatus.UNKNOWN
+                          : processing
+                            ? previousStatus === MediaStatus.DELETED
+                              ? MediaStatus.DELETED
+                              : MediaStatus.PROCESSING
+                            : previousStatus;
 
                   if (existing.status !== previousStatus) {
                     changedExisting = true;
@@ -1462,7 +1470,10 @@ class BaseScanner<T> {
                     await mediaRepository.save(existing);
                     this.log(`Updating existing comic: ${title}`, 'info');
                   }
-                } else if (processing || hasFile) {
+                } else if (
+                  !updateOnly &&
+                  (processing || hasFile || partiallyAvailable)
+                ) {
                   const media = await mediaRepository.save(
                     new Media({
                       tmdbId: 0,
@@ -1475,9 +1486,11 @@ class BaseScanner<T> {
                       status:
                         !processing && hasFile
                           ? MediaStatus.AVAILABLE
-                          : processing
-                            ? MediaStatus.PROCESSING
-                            : MediaStatus.UNKNOWN,
+                          : partiallyAvailable
+                            ? MediaStatus.PARTIALLY_AVAILABLE
+                            : processing
+                              ? MediaStatus.PROCESSING
+                              : MediaStatus.UNKNOWN,
                       status4k: MediaStatus.UNKNOWN,
                     })
                   );
@@ -1540,8 +1553,13 @@ class BaseScanner<T> {
                         changed = true;
                         return { ...target, status: scannedMedia!.status };
                       });
+                      // A finished series that gains a newly published
+                      // volume drops to partial; its request stays complete
+                      // so the requester is not told "available" twice.
                       if (
                         scannedMedia.status !== MediaStatus.AVAILABLE &&
+                        scannedMedia.status !==
+                          MediaStatus.PARTIALLY_AVAILABLE &&
                         request.status === MediaRequestStatus.COMPLETED
                       ) {
                         request.status = MediaRequestStatus.APPROVED;

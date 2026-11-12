@@ -299,3 +299,102 @@ export const searchComicCatalogIndex = async (
     totalResults,
   };
 };
+
+/** Indexed volumes by ComicVine id, from whichever generation has them. */
+export const lookupComicCatalogVolumes = async (
+  ids: number[]
+): Promise<ComicVineVolumeResult[]> => {
+  const wanted = [...new Set(ids)].filter(
+    (id) => Number.isSafeInteger(id) && id > 0
+  );
+  if (!wanted.length) return [];
+  const rows = await getRepository(ComicCatalogVolume)
+    .createQueryBuilder('volume')
+    .where('volume.id IN (:...ids)', { ids: wanted })
+    .orderBy('volume.generation', 'DESC')
+    .getMany();
+  const byId = new Map<number, ComicVineVolumeResult>();
+  for (const row of rows) {
+    if (!byId.has(row.id))
+      byId.set(row.id, JSON.parse(row.payload) as ComicVineVolumeResult);
+  }
+  return [...byId.values()];
+};
+
+export type ComicCatalogBrowseSort = 'issues' | 'newest' | 'title';
+
+/**
+ * Browses the index for the Comics page: the finished index, or the rows a
+ * first scan has written so far. Limited to the given publishers (keys as
+ * normalized() spells them) and, optionally, to runs started since a year.
+ */
+export const browseComicCatalogIndex = async ({
+  publishers,
+  publisher,
+  sinceYear,
+  sort = 'issues',
+  minIssues,
+  page,
+  limit,
+}: {
+  publishers?: string[];
+  publisher?: string;
+  sinceYear?: number;
+  sort?: ComicCatalogBrowseSort;
+  minIssues?: number;
+  page: number;
+  limit: number;
+}): Promise<{
+  results: ComicVineVolumeResult[];
+  totalResults: number;
+  indexing: boolean;
+}> => {
+  const scan = await getRepository(ComicCatalogScan).findOneBy({
+    id: INDEX_ID,
+  });
+  const generation = scan?.completeGeneration || scan?.scanGeneration || 0;
+  if (!scan || !generation) {
+    return { results: [], totalResults: 0, indexing: true };
+  }
+  const query = getRepository(ComicCatalogVolume)
+    .createQueryBuilder('volume')
+    .where('volume.generation = :generation', { generation });
+  if (publishers?.length) {
+    query.andWhere('volume.publisherKey IN (:...publishers)', {
+      publishers: publishers.map(normalized),
+    });
+  }
+  if (publisher) {
+    query.andWhere('volume.publisherKey = :publisher', {
+      publisher: normalized(publisher),
+    });
+  }
+  if (sinceYear !== undefined) {
+    query.andWhere('volume.startYear >= :sinceYear', { sinceYear });
+  }
+  if (minIssues !== undefined) {
+    query.andWhere('volume.issueCount >= :minIssues', { minIssues });
+  }
+  if (sort === 'newest') {
+    query
+      .orderBy('volume.startYear', 'DESC', 'NULLS LAST')
+      .addOrderBy('volume.issueCount', 'DESC', 'NULLS LAST');
+  } else if (sort === 'title') {
+    query.orderBy('volume.title', 'ASC');
+  } else {
+    query
+      .orderBy('volume.issueCount', 'DESC', 'NULLS LAST')
+      .addOrderBy('volume.title', 'ASC');
+  }
+  const [rows, totalResults] = await query
+    .skip((page - 1) * limit)
+    .take(limit)
+    .getManyAndCount();
+  return {
+    results: rows.map(
+      (row) => JSON.parse(row.payload) as ComicVineVolumeResult
+    ),
+    totalResults,
+    indexing: scan.completeGeneration === 0,
+  };
+};

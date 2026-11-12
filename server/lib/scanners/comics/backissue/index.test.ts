@@ -111,4 +111,106 @@ describe('BackIssue collection scanner', () => {
     assert.strictEqual(getCollection.mock.callCount(), 0);
     assert.strictEqual(backissueScanner.status().running, false);
   });
+
+  it('tracks a manga series from downloading through partial to complete', async () => {
+    settings.backissue = [
+      {
+        id: 7,
+        name: 'Home BackIssue',
+        hostname: 'backissue.test',
+        port: 8787,
+        apiKey: 'backissue-test-key',
+        useSsl: false,
+        baseUrl: '',
+        isDefault: true,
+        externalUrl: '',
+        tags: [],
+        syncEnabled: true,
+        preventSearch: false,
+      },
+    ];
+    scannerInternals.updateRate = 0;
+    let counts = { owned: 0, total: 16, active: 1 };
+    mock.method(BackIssueAPI.prototype, 'getCollection', async () => [
+      {
+        id: 31,
+        title: '[Oshi No Ko]',
+        cv_id: 147500,
+        missing: counts.total - counts.owned,
+        type: 'manga',
+        ...counts,
+      },
+    ]);
+    const status = async () =>
+      (
+        await getRepository(Media).findOneByOrFail({
+          mediaType: MediaType.COMIC,
+        })
+      ).status;
+
+    await backissueScanner.run();
+    assert.strictEqual(await status(), MediaStatus.PROCESSING);
+
+    counts = { owned: 9, total: 16, active: 1 };
+    await backissueScanner.run();
+    assert.strictEqual(await status(), MediaStatus.PARTIALLY_AVAILABLE);
+    const partial = await getRepository(Media).findOneByOrFail({
+      mediaType: MediaType.COMIC,
+    });
+    assert.deepStrictEqual(partial.comicProgress, { owned: 9, total: 16 });
+
+    // every volume owned, but a download is still running
+    counts = { owned: 16, total: 16, active: 1 };
+    await backissueScanner.run();
+    assert.strictEqual(await status(), MediaStatus.PARTIALLY_AVAILABLE);
+
+    counts = { owned: 16, total: 16, active: 0 };
+    await backissueScanner.run();
+    assert.strictEqual(await status(), MediaStatus.AVAILABLE);
+
+    // a newly published volume makes it partial again
+    counts = { owned: 16, total: 17, active: 0 };
+    await backissueScanner.run();
+    assert.strictEqual(await status(), MediaStatus.PARTIALLY_AVAILABLE);
+  });
+
+  it('does not list a series nobody requested that has nothing yet', async () => {
+    settings.backissue = [
+      {
+        id: 7,
+        name: 'Home BackIssue',
+        hostname: 'backissue.test',
+        port: 8787,
+        apiKey: 'backissue-test-key',
+        useSsl: false,
+        baseUrl: '',
+        isDefault: true,
+        externalUrl: '',
+        tags: [],
+        syncEnabled: true,
+        preventSearch: false,
+      },
+    ];
+    scannerInternals.updateRate = 0;
+    mock.method(BackIssueAPI.prototype, 'getCollection', async () => [
+      {
+        id: 32,
+        title: 'Followed only',
+        cv_id: 4242,
+        total: 5,
+        owned: 0,
+        missing: 5,
+        active: 0,
+        type: 'comic',
+      },
+    ]);
+
+    await backissueScanner.run();
+
+    assert.strictEqual(
+      await getRepository(Media).countBy({ mediaType: MediaType.COMIC }),
+      0
+    );
+    assert.strictEqual(backissueScanner.status().running, false);
+  });
 });

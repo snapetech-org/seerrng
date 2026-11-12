@@ -930,6 +930,34 @@ for (const status of [
     );
   });
 }
+test('a part-owned comic series reports how much is in the library', () => {
+  const comic = request({
+    type: MediaType.COMIC,
+    serverId: 7,
+    serviceTargets: [
+      {
+        serviceType: 'backissue',
+        format: 'comic',
+        serverId: 7,
+        externalServiceId: 31,
+        status: MediaStatus.PARTIALLY_AVAILABLE,
+      },
+    ],
+    media: {
+      ...request().media,
+      mediaType: MediaType.COMIC,
+      status: MediaStatus.PARTIALLY_AVAILABLE,
+      comicServiceType: 'backissue',
+      serviceId: 7,
+      externalServiceId: 31,
+      comicProgress: { owned: 9, total: 16 },
+    },
+  });
+  const status = getRequestStatus(comic, { downloads: [] });
+  assert.equal(status.stage, RequestStatusStage.LIBRARY);
+  assert.match(status.message ?? '', /^9 of 16 in the library/);
+  assert.equal(status.isTerminal, false);
+});
 test('comic availability belongs to the requested destination, not another library', () => {
   const comic = request({
     type: MediaType.COMIC,
