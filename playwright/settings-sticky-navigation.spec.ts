@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test';
+import { expect, test, type Page, type TestInfo } from '@playwright/test';
 
 test.use({ serviceWorkers: 'block' });
 
@@ -6,10 +6,63 @@ const widths = [390, 640, 767, 768, 1023, 1024, 1280];
 
 const themeCases = [
   { theme: 'seerrOrig', mode: 'dark' },
+  { theme: 'seerrOrig', mode: 'light' },
   { theme: 'persiusNG', mode: 'dark' },
   { theme: 'persiusNG', mode: 'light' },
   { theme: 'seerrNGJ', mode: 'dark' },
+  { theme: 'seerrNGJ', mode: 'light' },
 ];
+
+const captureStickyComparison = async (
+  page: Page,
+  info: TestInfo,
+  theme: string,
+  mode: string,
+  width: number
+) => {
+  const baselineOverride = await page.addStyleTag({
+    content: `
+      .settings-page-navigation-row {
+        position: static !important;
+        top: auto !important;
+        z-index: auto !important;
+        max-height: none !important;
+        overflow: visible !important;
+        padding-block: 0 !important;
+        border-radius: 0 !important;
+        background: transparent !important;
+        backdrop-filter: none !important;
+      }
+    `,
+  });
+  try {
+    await page.evaluate(() => {
+      const root = document.documentElement;
+      const previous = root.style.scrollBehavior;
+      root.style.scrollBehavior = 'auto';
+      window.scrollTo(0, 400);
+      root.style.scrollBehavior = previous;
+    });
+    await page.screenshot({
+      path: info.outputPath(`${theme}-${mode}-${width}-baseline.png`),
+      animations: 'disabled',
+    });
+  } finally {
+    await baselineOverride.evaluate((style) => style.remove());
+  }
+
+  await page.evaluate(() => {
+    const root = document.documentElement;
+    const previous = root.style.scrollBehavior;
+    root.style.scrollBehavior = 'auto';
+    window.scrollTo(0, 400);
+    root.style.scrollBehavior = previous;
+  });
+  await page.screenshot({
+    path: info.outputPath(`${theme}-${mode}-${width}-candidate.png`),
+    animations: 'disabled',
+  });
+};
 
 test.afterEach(async ({ page }) => {
   const login = await page.request.post('/api/v1/auth/local', {
@@ -113,9 +166,7 @@ for (const { theme, mode } of themeCases) {
         }
 
         if (width === 390) {
-          await page.screenshot({
-            path: info.outputPath(`${theme}-${mode}-${width}-sticky.png`),
-          });
+          await captureStickyComparison(page, info, theme, mode, width);
           await page.evaluate(() =>
             window.scrollTo(0, document.documentElement.scrollHeight)
           );
@@ -130,9 +181,7 @@ for (const { theme, mode } of themeCases) {
         }
 
         if (width === 1280) {
-          await page.screenshot({
-            path: info.outputPath(`${theme}-${mode}-${width}-sticky.png`),
-          });
+          await captureStickyComparison(page, info, theme, mode, width);
           await page.evaluate(() =>
             window.scrollTo(0, document.documentElement.scrollHeight)
           );

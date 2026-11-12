@@ -1,6 +1,13 @@
 /* Shared safety and interaction rules for every selectable interface system. */
 :where(:root[data-interface-theme], [data-interface-theme]) {
+  --settings-navigation-sticky-background: rgb(
+    var(--theme-overlay-main) / 0.96
+  );
+  --settings-navigation-sticky-backdrop-filter: blur(8px);
   --settings-navigation-sticky-offset: calc(4rem + env(safe-area-inset-top));
+  --settings-navigation-sticky-padding: 0.5rem;
+  --settings-navigation-sticky-radius: 0.5rem;
+  --settings-navigation-sticky-viewport-gap: 0.5rem;
   --interface-sidebar-width: 16rem;
   --interface-page-gutter: 1rem;
   --interface-grid-gap: 1rem;

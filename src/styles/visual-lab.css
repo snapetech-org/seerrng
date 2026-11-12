@@ -3286,7 +3286,10 @@
   }
 
   .settings-page-navigation-row {
-    @apply flex min-w-0 flex-col items-start;
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    align-items: flex-start;
   }
 
   .settings-page-filter-nav {
