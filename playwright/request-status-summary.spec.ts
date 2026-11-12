@@ -83,6 +83,7 @@ for (const theme of ['seerrOrig', 'seerrNGJ'])
             results: [{ request, status: current, canRemove: true }],
             counts: {
               total: 1,
+              pending: 0,
               active: 0,
               incomplete: 0,
               attention: 0,

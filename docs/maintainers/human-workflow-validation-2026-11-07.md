@@ -330,3 +330,44 @@ Retained evidence: `issue170-http-qualified.log`,
 Initial fixture failures remain preserved and are excluded from passing counts.
 The closed-receipt screening covers all 73 currently closed issues; that
 screening remains distinct from the unfinished complete human-workflow audit.
+
+
+## Request findability follow-up — November 11
+
+The prior #503 validation covers the Episode Queue editor's existing save,
+reload, default-reset and permission behavior. This follow-up found the editor
+was reachable in Persius only after opening request Details. It surfaces the
+same admin-only editor on eligible TV request cards; queue eligibility and save
+behavior are unchanged. The Requests badge now counts pending work and opens
+`/requests?filter=pending`. Pending is available as a tab in Persius and as a
+filter in the request status view, with counts scoped to the selected view.
+
+The source-level render comparison uses baseline commit `87061e5b8`, this
+change's candidate build, `/requests?filter=pending`, one seeded pending TV
+request, and an admin with the Persius theme. Baseline and candidate
+were captured at 1440×900 and 390×844. Baseline shows the old 166 active-request
+badge, no Pending tab, and no card-level Episode Queue action. Candidate shows
+the badge count 1, the selected Pending tab, and the existing Episode Queue
+modal from the card. The phone card wraps its other actions without horizontal
+overflow. In the matching phone drawer state, baseline Requests links to
+`/requests`, while the candidate link opens `/requests?filter=pending` and shows
+the count 1. Evidence is retained under
+`/mnt/disks/scratch/task-deliverables/seerrng-request-feedback-20261111/`:
+
+- Baseline: `baseline-screens/requests-desktop.png` and
+  `baseline-screens/requests-phone.png`.
+- Candidate: `candidate-screens/requests-desktop.png`,
+  `candidate-screens/requests-phone.png`,
+  `candidate-screens/request-menu-phone.png`, and
+  `candidate-screens/episode-queue-modal-phone.png`.
+- `cypress/e2e/request-feedback.cy.ts` passes desktop and phone cases for the
+  pending route, badge destination/count, phone drawer destination/count, and card
+  modal entry point. The modal was opened but not submitted in this follow-up;
+  no provider or household request was mutated.
+- The Cypress `visit` workaround substitutes animation frames while the page
+  loads; the phone assertion checks the drawer's open state and link destination,
+  while the Playwright capture verifies its visible rendering. Offline mode
+  blocks remote Gravatar requests, so the reference avatar is omitted from the
+  captures.
+- `pnpm build:all` and `pnpm cypress:typecheck` pass. Queue persistence is not
+  re-claimed here; it remains covered by the earlier #503 validation above.

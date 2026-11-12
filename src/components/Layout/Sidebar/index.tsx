@@ -24,13 +24,11 @@ import {
 import versionedAsset from '@app/utils/versionedAsset';
 import { Transition, TransitionChild } from '@headlessui/react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
-import type { RequestResultsResponse } from '@server/interfaces/api/requestInterfaces';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { cloneElement, Fragment, useEffect, useRef } from 'react';
 import { useIntl } from 'react-intl';
-import useSWR from 'swr';
 import { getPersiusNavigationSections } from './navigationPresentation';
 
 interface SidebarProps {
@@ -58,15 +56,7 @@ const Sidebar = ({
   const { user, hasPermission } = useUser();
   const showBlocklistNavigation = useBlocklistNavigation();
   const { currentSettings } = useSettings();
-  const { data: ownRequests } = useSWR<RequestResultsResponse>(
-    persius && user?.id
-      ? `/api/v1/request?take=1&skip=0&filter=active&requestedBy=${user.id}`
-      : null,
-    { refreshInterval: 30000 }
-  );
-  const requestBadgeCount = persius
-    ? (ownRequests?.pageInfo.results ?? 0)
-    : pendingRequestsCount;
+  const requestBadgeCount = pendingRequestsCount;
   const serviceAvailability = getUserServiceAvailability(
     currentSettings,
     user?.settings?.enabledMediaCategories,
@@ -138,11 +128,16 @@ const Sidebar = ({
               ? 'main-menu-link sidebar-link-selected'
               : 'main-menu-link sidebar-link-idle'
           }`;
+    const showRequestBadge =
+      link.messagesKey === 'requests' &&
+      requestBadgeCount > 0 &&
+      (persius || hasPermission(Permission.MANAGE_REQUESTS));
+    const href = showRequestBadge ? '/requests?filter=pending' : link.href;
 
     return (
       <Link
         key={`${device}-${link.id}`}
-        href={link.href}
+        href={href}
         prefetch={false}
         onClick={device === 'mobile' ? setClosed : undefined}
         className={className}
