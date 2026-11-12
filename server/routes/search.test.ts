@@ -1703,6 +1703,48 @@ describe('GET /search', () => {
       ]
     );
   });
+
+  it('suppresses people in generic and person-only search without video categories', async () => {
+    const settings = getSettings();
+    const user = await getRepository(User).findOneByOrFail({
+      email: 'friend@seerr.dev',
+    });
+    const userSettings = user.settings ?? new UserSettings({ user });
+    const originalCategories = userSettings.enabledMediaCategories;
+    userSettings.enabledMediaCategories = {
+      ...originalCategories,
+      movie: false,
+      tv: false,
+    };
+    await getRepository(UserSettings).save(userSettings);
+    settings.lidarr = [];
+    settings.readarr = [];
+    settings.lazylibrarian = [];
+    const providerLookup = mockPrivate(
+      ExternalAPI.prototype,
+      'get',
+      async (endpoint: unknown) => {
+        throw new Error(`Unexpected provider lookup: ${String(endpoint)}`);
+      }
+    ) as ReturnType<typeof mock.method>;
+
+    try {
+      const agent = await loginAs('friend@seerr.dev', 'test1234');
+      for (const params of [
+        { query: 'Jane' },
+        { query: 'Jane', type: 'person' },
+      ]) {
+        const res = await agent.get('/search').query(params);
+
+        assert.strictEqual(res.status, 200);
+        assert.deepStrictEqual(res.body.results, []);
+      }
+      assert.strictEqual(providerLookup.mock.callCount(), 0);
+    } finally {
+      userSettings.enabledMediaCategories = originalCategories;
+      await getRepository(UserSettings).save(userSettings);
+    }
+  });
 });
 
 describe('search filters behind the OpenAPI validator', () => {

@@ -103,7 +103,7 @@ export default function PersonDetail() {
               <p className="sub">Born in {person.data.placeOfBirth}</p>
             )}
             {person.data.biography && (
-              <p className="person-bio">{person.data.biography}</p>
+              <p className="ov long">{person.data.biography}</p>
             )}
           </div>
         </div>
@@ -113,7 +113,7 @@ export default function PersonDetail() {
         <p className="note">Loading credits…</p>
       )}
       {!!titles.length && (
-        <Section title="Known for">
+        <Section title="Known For">
           <div className="grid">
             {titles.map((title) => (
               <TitleCard key={`${title.mediaType}:${title.id}`} it={title} />

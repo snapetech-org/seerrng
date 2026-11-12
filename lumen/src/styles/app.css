@@ -1408,6 +1408,7 @@ body.is-detail .tabbar {
   align-items: start;
 }
 .person-overview .portrait {
+  position: relative;
   aspect-ratio: 2 / 3;
   border-radius: var(--r-md);
   overflow: hidden;
@@ -1422,10 +1423,6 @@ body.is-detail .tabbar {
   display: grid;
   height: 100%;
   place-items: center;
-}
-.person-bio {
-  line-height: 1.6;
-  white-space: pre-line;
 }
 @media (max-width: 699px) {
   .person-overview {

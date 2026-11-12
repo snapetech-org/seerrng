@@ -112,6 +112,49 @@ test('always-checked answers are reused briefly, and asked again after a change'
   assert.equal(cache.isFresh('/request?take=40'), false);
 });
 
+test('person details and credits never reuse cached data from a prior policy', (t) => {
+  session.resetSessionState(null);
+  const at = Date.now();
+  stored.set(
+    'lumen-cache:9',
+    JSON.stringify([
+      ['/person/77', { at, data: { name: 'Jane Example' } }],
+      [
+        '/person/77/combined_credits',
+        {
+          at,
+          data: {
+            cast: [{ mediaType: 'movie', title: 'Previously allowed' }],
+            crew: [],
+          },
+        },
+      ],
+      [
+        '/person/77/combined_credits?language=fr',
+        {
+          at,
+          data: {
+            cast: [{ mediaType: 'movie', title: 'Previously allowed' }],
+            crew: [],
+          },
+        },
+      ],
+      ['/movie/1', { at, data: { title: 'Still cached' } }],
+    ])
+  );
+  session.resetSessionState(9);
+  t.after(() => session.resetSessionState(null));
+
+  assert.equal(cache.cached('/person/77'), undefined);
+  assert.equal(cache.cached('/person/77/combined_credits'), undefined);
+  assert.equal(
+    cache.cached('/person/77/combined_credits?language=fr'),
+    undefined
+  );
+  assert.equal(cache.isFresh('/person/77/combined_credits'), false);
+  assert.deepEqual(cache.cached('/movie/1'), { title: 'Still cached' });
+});
+
 test('the saved copy stays small and leaves out big lists', async (t) => {
   session.resetSessionState(5);
   t.after(() => session.resetSessionState(null));

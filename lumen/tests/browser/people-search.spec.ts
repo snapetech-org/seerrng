@@ -10,7 +10,16 @@ const paged = (results: unknown[]) => ({
 const theAudioDbImage =
   'https://r2.theaudiodb.com/images/media/artist/thumb/image.jpg';
 
-async function fixtures(page: Page, includeArtistSearchResult = false) {
+async function fixtures(
+  page: Page,
+  includeArtistSearchResult = false,
+  options: {
+    includePeople?: () => boolean;
+    includeMovieCredit?: () => boolean;
+  } = {}
+) {
+  const includePeople = options.includePeople ?? (() => true);
+  const includeMovieCredit = options.includeMovieCredit ?? (() => true);
   await page.route('**/lumen-config.json', (r) => r.fulfill({ json: {} }));
   await page.route('**/api/v1/**', (route) => {
     const requestUrl = new URL(route.request().url());
@@ -63,12 +72,16 @@ async function fixtures(page: Page, includeArtistSearchResult = false) {
                 },
               ]
             : [
-                {
-                  id: 77,
-                  mediaType: 'person',
-                  name: 'Jane Example',
-                  profilePath: 'https://attacker.invalid/profile.jpg',
-                },
+                ...(includePeople()
+                  ? [
+                      {
+                        id: 77,
+                        mediaType: 'person',
+                        name: 'Jane Example',
+                        profilePath: 'https://attacker.invalid/profile.jpg',
+                      },
+                    ]
+                  : []),
                 ...(includeArtistSearchResult
                   ? [
                       {
@@ -125,8 +138,12 @@ async function fixtures(page: Page, includeArtistSearchResult = false) {
           id === 77
             ? {
                 id,
-                cast: [{ id: 5, mediaType: 'movie', title: 'Example Film' }],
-                crew: [{ id: 5, mediaType: 'movie', title: 'Example Film' }],
+                cast: includeMovieCredit()
+                  ? [{ id: 5, mediaType: 'movie', title: 'Example Film' }]
+                  : [],
+                crew: includeMovieCredit()
+                  ? [{ id: 5, mediaType: 'movie', title: 'Example Film' }]
+                  : [],
               }
             : { id, cast: [], crew: [] },
       });
@@ -139,19 +156,27 @@ test('All search shows People and opens an internal Lumen person page', async ({
   page,
 }, info) => {
   const externalImageRequests: string[] = [];
+  let includePeople = false;
   page.on('request', (request) => {
     if (new URL(request.url()).hostname === 'attacker.invalid')
       externalImageRequests.push(request.url());
   });
-  await fixtures(page);
+  await fixtures(page, false, { includePeople: () => includePeople });
   await page.goto('/search?q=Jane');
+  await expect(page.getByRole('heading', { name: 'Movies' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'People' })).toHaveCount(0);
+  await page.screenshot({
+    path: info.outputPath('people-search-baseline.png'),
+  });
+
+  includePeople = true;
+  await page.reload();
   await expect(page.getByRole('heading', { name: 'People' })).toBeVisible();
   await expect(
     page.locator('.results').getByRole('link', { name: 'Jane Example' })
   ).toBeVisible();
   await page.screenshot({
-    path: info.outputPath('people-search-results.png'),
-    fullPage: true,
+    path: info.outputPath('people-search-candidate.png'),
   });
   await page
     .locator('.results')
@@ -162,17 +187,78 @@ test('All search shows People and opens an internal Lumen person page', async ({
   await expect(personHeading).toBeVisible();
   await expect(personHeading).toBeInViewport();
   await expect(page.getByText('Performer and director.')).toBeVisible();
-  await expect(page.getByRole('heading', { name: 'Known for' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Known For' })).toBeVisible();
   await expect(page.locator('.grid .poster')).toHaveCount(1);
   await expect(page.locator('.portrait .art-ph')).toBeVisible();
+  await page.evaluate(() => window.scrollTo(0, 0));
+  await page.mouse.move(0, 0);
+  await expect(personHeading).toBeInViewport();
   await page.screenshot({
-    path: info.outputPath('person-detail.png'),
-    fullPage: true,
+    path: info.outputPath('person-detail-candidate-top.png'),
+  });
+  const creditsHeading = page.getByRole('heading', { name: 'Known For' });
+  await creditsHeading.scrollIntoViewIfNeeded();
+  await page.mouse.move(0, 0);
+  await page.screenshot({
+    path: info.outputPath('person-detail-candidate-credits.png'),
   });
   await expect(
     page.locator('img[src^="https://attacker.invalid/"]')
   ).toHaveCount(0);
   expect(externalImageRequests).toEqual([]);
+});
+
+test('All search refetches person visibility after a category policy change', async ({
+  page,
+}) => {
+  let personCategoryEnabled = true;
+  let searchRequests = 0;
+  page.on('request', (request) => {
+    if (new URL(request.url()).pathname === '/api/v1/search') searchRequests++;
+  });
+  await fixtures(page, false, {
+    includePeople: () => personCategoryEnabled,
+  });
+  await page.goto('/search?q=Jane');
+  await expect(page.getByRole('heading', { name: 'People' })).toBeVisible();
+  await expect.poll(() => searchRequests).toBe(1);
+
+  personCategoryEnabled = false;
+  await page.reload();
+
+  await expect(page.getByRole('heading', { name: 'People' })).toHaveCount(0);
+  await expect.poll(() => searchRequests).toBe(2);
+});
+
+test('person credits refetch after a category or maturity policy tightens', async ({
+  page,
+}) => {
+  let movieCreditAllowed = true;
+  let creditRequests = 0;
+  page.on('request', (request) => {
+    if (new URL(request.url()).pathname === '/api/v1/person/77/combined_credits')
+      creditRequests++;
+  });
+  await fixtures(page, false, {
+    includeMovieCredit: () => movieCreditAllowed,
+  });
+  await page.goto('/person/77');
+  await expect(
+    page.getByRole('heading', { name: 'Jane Example' })
+  ).toBeVisible();
+  await expect(page.getByText('Example Film')).toBeVisible();
+  await expect.poll(() => creditRequests).toBe(1);
+  await page.waitForTimeout(500);
+
+  movieCreditAllowed = false;
+  await page.goto('/search?q=Jane');
+  await page.goto('/person/77');
+
+  await expect(
+    page.getByRole('heading', { name: 'Jane Example' })
+  ).toBeVisible();
+  await expect(page.getByText('Example Film')).toHaveCount(0);
+  await expect.poll(() => creditRequests).toBe(2);
 });
 
 test('search result TheAudioDB portraits load through the same-origin proxy', async ({

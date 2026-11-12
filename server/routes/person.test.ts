@@ -2,6 +2,9 @@ import assert from 'node:assert/strict';
 import { afterEach, before, describe, it, mock } from 'node:test';
 
 import ExternalAPI from '@server/api/externalapi';
+import { getRepository } from '@server/datasource';
+import { User } from '@server/entity/User';
+import { UserSettings } from '@server/entity/UserSettings';
 import { getSettings } from '@server/lib/settings';
 import { checkUser } from '@server/middleware/auth';
 import { setupTestDb } from '@server/test/db';
@@ -67,6 +70,10 @@ const mockPrivate = (
 ) => mockPrivateMethod.call(mock, object, methodName, implementation);
 
 async function login() {
+  return loginAs('admin@seerr.dev');
+}
+
+async function loginAs(email: string) {
   const settings = getSettings();
   const priorLocalLogin = settings.main.localLogin;
   settings.main.localLogin = true;
@@ -75,7 +82,7 @@ async function login() {
     const agent = request.agent(app);
     const res = await agent
       .post('/auth/local')
-      .send({ email: 'admin@seerr.dev', password: 'test1234' });
+      .send({ email, password: 'test1234' });
     assert.strictEqual(res.status, 200);
     return agent;
   } finally {
@@ -87,10 +94,11 @@ const castCredit = (
   id: number,
   title: string,
   voteAverage: number,
-  voteCount: number
+  voteCount: number,
+  mediaType: 'movie' | 'tv' = 'movie'
 ) => ({
   id,
-  media_type: 'movie',
+  media_type: mediaType,
   original_language: 'en',
   episode_count: 0,
   overview: '',
@@ -148,5 +156,47 @@ describe('GET /person/:id/combined_credits', () => {
       res.body.cast.map((result: { title: string }) => result.title),
       ['Proven Credit', 'Thin Credit']
     );
+  });
+
+  it('omits credits for video categories disabled for the user', async () => {
+    const user = await getRepository(User).findOneByOrFail({
+      email: 'friend@seerr.dev',
+    });
+    const settings =
+      user.settings ?? new UserSettings({ user });
+    const originalCategories = settings.enabledMediaCategories;
+    settings.enabledMediaCategories = {
+      ...originalCategories,
+      movie: false,
+      tv: true,
+    };
+    await getRepository(UserSettings).save(settings);
+
+    mockPrivate(ExternalAPI.prototype, 'get', async (endpoint: unknown) => {
+      assert.strictEqual(endpoint, '/person/123/combined_credits');
+
+      return {
+        id: 123,
+        cast: [
+          castCredit(1, 'Hidden Movie', 8, 1000),
+          castCredit(2, 'Visible Series', 8, 1000, 'tv'),
+        ],
+        crew: [],
+      };
+    });
+
+    try {
+      const agent = await loginAs('friend@seerr.dev');
+      const res = await agent.get('/person/123/combined_credits');
+
+      assert.strictEqual(res.status, 200);
+      assert.deepStrictEqual(
+        res.body.cast.map((result: { title: string }) => result.title),
+        ['Visible Series']
+      );
+    } finally {
+      settings.enabledMediaCategories = originalCategories;
+      await getRepository(UserSettings).save(settings);
+    }
   });
 });

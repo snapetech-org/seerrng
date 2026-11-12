@@ -48,6 +48,8 @@ jobs:
           pnpm exec vitest run --maxWorkers=2
           server/test/auditRemediation.vitest.test.ts
           server/routes/clientApiKeys.test.ts server/lib/mediaAccess.test.ts
+          server/routes/person.test.ts server/routes/search.test.ts
+          server/routes/index.test.ts
           server/middleware/streamAuthorization.test.ts server/lib/follow/index.test.ts
           server/lib/resolve/admission.test.ts server/utils/securityBoundaries.test.ts
           server/migration/clientApiKeys.test.ts server/lib/typeormSessionStore.test.ts
