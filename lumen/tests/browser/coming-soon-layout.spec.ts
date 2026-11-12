@@ -98,6 +98,7 @@ test(
 
       // Recreate the pre-fix CSS from the PR base: desktop Coming Soon uses three
       // columns from 1040px onward, and .btn retains its shared nowrap behavior.
+      // Keep the base's two-line title wrapping from #658 in both captures.
       const baselineStyles = await page.addStyleTag({
         content: `
           @media (min-width: 1040px) {
@@ -140,8 +141,9 @@ test(
           state: 'authenticated dark-theme fixture with six upcoming movies',
           project: info.project.name,
           deviceScaleFactor: 2,
-          baselineCommit: 'f99b6fd0e2d6a8f9659236a14f90aca5d4cb6110',
-          baseline: 'PR base CSS: three desktop columns and shared nowrap buttons',
+          baselineCommit: 'aa372c3f44fda2437174f386571bf890d1872100',
+          baseline:
+            'PR base after #658: three desktop columns, shared nowrap buttons, and two-line card titles',
           candidate:
             'PR CSS: two columns 1040–1319px; shared data-label-wrap button variant',
           measurements,
