@@ -105,7 +105,10 @@ import {
 import { isSportarrLeagueExternalId } from '@server/lib/sportarrIdentity';
 import { isTvSeasonWatchGateEnabledForUser } from '@server/lib/tvSeasonWatchGate';
 import logger from '@server/logger';
-import { isProviderBookEdition } from '@server/utils/bookEdition';
+import {
+  isProviderBookEdition,
+  sameEditionId,
+} from '@server/utils/bookEdition';
 import { parseBookshelfBookId } from '@server/utils/bookshelfCatalog';
 import {
   hydrateBookshelfLookupResult,
@@ -3399,8 +3402,10 @@ export class MediaRequestSubscriber implements EntitySubscriberInterface<MediaRe
           editions?: ReadarrEdition[]
         ): ReadarrEdition | undefined =>
           (preferredEditionId
-            ? editions?.find(
-                (edition) => edition.foreignEditionId === preferredEditionId
+            ? editions?.find((edition) =>
+                // Chaptarr lookups qualify edition ids (hc:31923605) while the
+                // library catalog and narrator lists offer them bare (31923605).
+                sameEditionId(edition.foreignEditionId, preferredEditionId)
               )
             : undefined) ??
           (preferredIsbn
@@ -3706,7 +3711,7 @@ export class MediaRequestSubscriber implements EntitySubscriberInterface<MediaRe
             operation.format === serviceType &&
             operation.serviceId === destination?.id &&
             (!isProviderBookEdition(preferredEditionId) ||
-              operation.providerEditionId === preferredEditionId) &&
+              sameEditionId(operation.providerEditionId, preferredEditionId)) &&
             operation.state !== 'failed' &&
             operation.state !== 'unavailable'
         );

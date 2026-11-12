@@ -87,6 +87,29 @@ const getObservedReadarrFileCount = (
     : undefined;
 };
 
+// Service links name one record on one server; a scan that observed that
+// record owns its file evidence even when the row's identity is scoped elsewhere.
+const getServiceRecordKey = (
+  serviceId: number,
+  format: BookServiceFormat,
+  externalServiceId: number
+): string => `${serviceId}:${format}:record:${externalServiceId}`;
+
+const getLinkedServiceRecordKey = (
+  media: Media,
+  format: BookServiceFormat
+): string | undefined => {
+  const serviceId =
+    format === 'audiobook' ? media.audiobookServiceId : media.serviceId;
+  const externalServiceId =
+    format === 'audiobook'
+      ? media.audiobookExternalServiceId
+      : media.externalServiceId;
+  return serviceId != null && externalServiceId != null
+    ? getServiceRecordKey(serviceId, format, externalServiceId)
+    : undefined;
+};
+
 const SQLITE_BUSY_RETRY_ATTEMPTS = 3;
 const SQLITE_BUSY_RETRY_DELAY_MS = 750;
 
@@ -617,6 +640,14 @@ class ReadarrScanner
           ? ownFileCount
           : getObservedReadarrFileCount(evidenceRecord, serviceType);
       const bookFileObservationKnown = observedFileCount !== undefined;
+      if (bookFileObservationKnown)
+        this.scannedFormatKeys.add(
+          getServiceRecordKey(
+            this.currentServer.id,
+            serviceType,
+            evidenceRecord.id
+          )
+        );
       const bookFileCount = observedFileCount ?? 0;
       const hasFile = bookFileCount > 0;
       const totalBooks = evidenceRecord.statistics?.totalBookCount ?? 1;
@@ -751,6 +782,14 @@ class ReadarrScanner
           `${this.currentServer.id}:${book.binderyFormat}:${getBookIdentifierKey(item.provider, item.value)}`
         );
       }
+      if (book.id != null)
+        this.scannedFormatKeys.add(
+          getServiceRecordKey(
+            this.currentServer.id,
+            book.binderyFormat,
+            book.id
+          )
+        );
       await this.processBookWithRetry(provider, identifier, {
         serviceId: this.currentServer.id,
         externalServiceId: book.id,
@@ -828,6 +867,13 @@ class ReadarrScanner
           `${this.currentServer.id}:${book.bookorbitFormat}:${getBookIdentifierKey(identifier.provider, identifier.value)}`
         );
       }
+      this.scannedFormatKeys.add(
+        getServiceRecordKey(
+          this.currentServer.id,
+          book.bookorbitFormat,
+          book.id
+        )
+      );
       await this.processBookWithRetry(
         identifiers[0].provider,
         identifiers[0].value,
@@ -896,10 +942,12 @@ class ReadarrScanner
         );
 
         const missingSources = (['ebook', 'audiobook'] as const).flatMap(
-          (format) =>
-            (format === 'ebook'
-              ? (media.availableEbookServiceIds ?? [])
-              : (media.availableAudiobookServiceIds ?? [])
+          (format) => {
+            const linkedRecordKey = getLinkedServiceRecordKey(media, format);
+            return (
+              format === 'ebook'
+                ? (media.availableEbookServiceIds ?? [])
+                : (media.availableAudiobookServiceIds ?? [])
             )
               .filter(
                 (serviceId) =>
@@ -908,9 +956,14 @@ class ReadarrScanner
                   ) &&
                   !identifierKeys.some((key) =>
                     this.scannedFormatKeys.has(`${serviceId}:${format}:${key}`)
+                  ) &&
+                  !(
+                    linkedRecordKey?.startsWith(`${serviceId}:${format}:`) &&
+                    this.scannedFormatKeys.has(linkedRecordKey)
                   )
               )
-              .map((serviceId) => ({ format, serviceId }))
+              .map((serviceId) => ({ format, serviceId }));
+          }
         );
         const orphanedProcessing =
           media.status === MediaStatus.PROCESSING &&

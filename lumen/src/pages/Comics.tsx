@@ -171,7 +171,7 @@ export function ComicDetail() {
                           <b>{i.name || `Issue #${i.issueNumber}`}</b>
                           {i.coverDate && (
                             <small>
-                              {shortDate(i.coverDate)},{' '}
+                              {shortDate(i.coverDate, false)},{' '}
                               {i.coverDate.slice(0, 4)}
                             </small>
                           )}
