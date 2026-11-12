@@ -3285,6 +3285,8 @@
     @apply flex flex-wrap;
   }
 
+  /* The Visual Lab has no SettingsLayout instance.
+     Sticky behavior stays on the app owner. */
   .settings-page-navigation-row {
     display: flex;
     min-width: 0;
