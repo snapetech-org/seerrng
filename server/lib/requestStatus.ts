@@ -174,6 +174,7 @@ export interface RequestStatusPage {
   results: RequestStatusPageItem[];
   counts: {
     total: number;
+    pending: number;
     active: number;
     incomplete: number;
     attention: number;
@@ -2144,6 +2145,7 @@ export const getRequestStatusCounts = async (
     mediaType: MediaType;
     mediaStatus: string | number;
   }>();
+  let pending = 0;
   let active = 0;
   let incomplete = 0;
   let attention = 0;
@@ -2151,6 +2153,9 @@ export const getRequestStatusCounts = async (
   let unavailable = 0;
   let failed = 0;
   for (const row of rows) {
+    if (Number(row.requestStatus) === MediaRequestStatus.PENDING) {
+      pending += 1;
+    }
     let stage = row.stage as RequestStatusStage | undefined;
     if (!stage) {
       const coarseStatus = Number(row.requestStatus);
@@ -2190,6 +2195,7 @@ export const getRequestStatusCounts = async (
   }
   return {
     total: rows.length,
+    pending,
     active,
     incomplete,
     attention,

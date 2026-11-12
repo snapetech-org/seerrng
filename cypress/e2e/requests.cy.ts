@@ -44,6 +44,7 @@ describe('Requests', () => {
       results: [],
       counts: {
         total: 1,
+        pending: 0,
         active: 0,
         incomplete: 0,
         attention: 0,
@@ -118,6 +119,7 @@ describe('Requests', () => {
       results: [],
       counts: {
         total: 0,
+        pending: 0,
         active: 0,
         incomplete: 0,
         attention: 0,
@@ -201,6 +203,7 @@ describe('Requests', () => {
       results: [],
       counts: {
         total: 0,
+        pending: 0,
         active: 0,
         incomplete: 0,
         attention: 0,
