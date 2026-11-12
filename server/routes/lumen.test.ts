@@ -119,6 +119,21 @@ test('embedded Lumen reports an unusable configuration directory without changin
   );
 });
 
+test('embedded Lumen does not unlink a probe path when exclusive creation fails', async (t) => {
+  const open = t.mock.method(fs, 'open', async () => {
+    throw Object.assign(new Error('probe already exists'), { code: 'EEXIST' });
+  });
+  const unlink = t.mock.method(fs, 'unlink', async () => {});
+  const check = await request(app)
+    .get('/api/v1/lumen/config')
+    .set('x-test-role', 'admin');
+
+  assert.equal(check.status, 200);
+  assert.equal(check.body.canSave, false);
+  assert.equal(open.mock.callCount(), 1);
+  assert.equal(unlink.mock.callCount(), 0);
+});
+
 test('branding differentiates undecodable input from storage errors', async () => {
   const url = '/api/v1/lumen/branding/logo';
   const corruptedPng = Buffer.concat([

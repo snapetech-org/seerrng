@@ -55,14 +55,18 @@ export const createLumenRoutes = (
     isAuthenticated(Permission.ADMIN),
     async (_req, res, next) => {
       const probe = path.join(directory(), `${randomUUID()}.probe`);
+      let probeCreated = false;
       try {
         // Verify the actual write path; access(W_OK) can give false positives.
         await fs.mkdir(directory(), { recursive: true, mode: 0o700 });
-        await fs.writeFile(probe, '', { mode: 0o600, flag: 'wx' });
+        const handle = await fs.open(probe, 'wx', 0o600);
+        probeCreated = true;
+        await handle.close();
         await fs.unlink(probe);
+        probeCreated = false;
         return res.json({ canSave: true, folder: 'ok' });
       } catch (error) {
-        await fs.unlink(probe).catch(() => undefined);
+        if (probeCreated) await fs.unlink(probe).catch(() => undefined);
         const message = lumenStorageError(error);
         if (message)
           return res.json({ canSave: false, folder: 'readonly', message });
