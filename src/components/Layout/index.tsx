@@ -322,15 +322,6 @@ const Layout = ({ children }: LayoutProps) => {
               data-theme-part="searchbar-account"
               className="relative z-20 ms-2 flex shrink-0 items-center gap-2"
             >
-              {upstream &&
-                discoveryMediaType &&
-                currentSettings.swipeEnabled !== false && (
-                  <DiscoveryModeTabs
-                    compact
-                    selected="discover"
-                    mediaType={discoveryMediaType}
-                  />
-                )}
               <ThemePicker />
               <UserDropdown />
             </div>
