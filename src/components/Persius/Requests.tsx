@@ -1,4 +1,5 @@
 import CachedImage from '@app/components/Common/CachedImage';
+import globalMessages from '@app/i18n/globalMessages';
 import type { RequestResultsResponse } from '@server/interfaces/api/requestInterfaces';
 import Link from 'next/link';
 import type { ReactNode } from 'react';
@@ -30,6 +31,10 @@ export function RequestTabs({
     `${endpoint}?take=1&skip=0&filter=all${scope}`,
     { refreshInterval: 15000 }
   );
+  const { data: pending } = useSWR<RequestResultsResponse>(
+    `${endpoint}?take=1&skip=0&filter=pending${scope}`,
+    { refreshInterval: 15000 }
+  );
   return (
     <div
       className="persius-segments persius-request-tabs"
@@ -37,6 +42,7 @@ export function RequestTabs({
       aria-label={intl.formatMessage(messages.requests)}
     >
       {[
+        { value: 'pending', label: globalMessages.pending, data: pending },
         { value: 'active', label: messages.active, data: active },
         { value: 'available', label: messages.ready, data: ready },
         { value: 'all', label: messages.all, data: all },

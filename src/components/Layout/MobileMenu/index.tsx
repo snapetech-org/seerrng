@@ -42,6 +42,7 @@ const MobileMenu = ({
   );
   const intl = useIntl();
   const { interfaceThemeDefinition } = useTheme();
+  const persius = interfaceThemeDefinition.layout === 'persius';
   const [isOpen, setIsOpen] = useState(false);
   const { hasPermission, user } = useUser();
   const showBlocklistNavigation = useBlocklistNavigation();
@@ -163,10 +164,16 @@ const MobileMenu = ({
             <div className="sidebar-navigation-items">
               {section.links.map((link: NavigationLink) => {
                 const isActive = router.pathname.match(link.activeRegExp);
+                const showRequestBadge =
+                  link.href === '/requests' &&
+                  pendingRequestsCount > 0 &&
+                  (persius || hasPermission(Permission.MANAGE_REQUESTS));
                 return (
                   <Link
                     key={`mobile-menu-link-${link.id}`}
-                    href={link.href}
+                    href={
+                      showRequestBadge ? '/requests?filter=pending' : link.href
+                    }
                     prefetch={false}
                     onClick={() => setIsOpen(false)}
                     className={`main-menu-link flex items-center px-2 py-2 ${
@@ -189,7 +196,8 @@ const MobileMenu = ({
                     </span>
                     {link.href === '/requests' &&
                       pendingRequestsCount > 0 &&
-                      hasPermission(Permission.MANAGE_REQUESTS) && (
+                      (persius ||
+                        hasPermission(Permission.MANAGE_REQUESTS)) && (
                         <div className="ms-auto flex">
                           <Badge className="rounded-md border-indigo-500 bg-gradient-to-br from-indigo-600 to-purple-600">
                             {pendingRequestsCount}
@@ -219,10 +227,16 @@ const MobileMenu = ({
             .map((link) => {
               const isActive =
                 router.pathname.match(link.activeRegExp) && !isOpen;
+              const showRequestBadge =
+                link.href === '/requests' &&
+                pendingRequestsCount > 0 &&
+                (persius || hasPermission(Permission.MANAGE_REQUESTS));
               return (
                 <Link
                   key={`mobile-menu-link-${link.id}`}
-                  href={link.href}
+                  href={
+                    showRequestBadge ? '/requests?filter=pending' : link.href
+                  }
                   prefetch={false}
                   aria-label={intl.formatMessage(
                     menuMessages[link.messagesKey]
@@ -245,7 +259,7 @@ const MobileMenu = ({
                   )}
                   {link.href === '/requests' &&
                     pendingRequestsCount > 0 &&
-                    hasPermission(Permission.MANAGE_REQUESTS) && (
+                    (persius || hasPermission(Permission.MANAGE_REQUESTS)) && (
                       <div className="absolute start-3 bottom-3">
                         <Badge
                           className={`bg-gradient-to-br ${
