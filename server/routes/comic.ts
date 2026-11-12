@@ -10,6 +10,7 @@ import { findComicMediaByComicVineIds } from '@server/lib/comicMediaMatcher';
 import {
   editionFromVolume,
   editionIds,
+  getAllowedMangaMedia,
   getWorkForEdition,
   resolveMangaWork,
   withWorkMedia,
@@ -34,6 +35,17 @@ import { parsePositiveRouteId } from '@server/utils/routeId';
 import { Router } from 'express';
 
 const comicRoutes = Router();
+
+const isMangaVolumeAllowed = async (comicVineId: number): Promise<boolean> => {
+  const work = getWorkForEdition(comicVineId);
+  const hint = getMangaVolumeHint(comicVineId);
+  const anilistId = hint?.anilistId ?? work?.anilistId;
+  if (!anilistId) return true;
+  return !!(await getAllowedMangaMedia({
+    anilistId,
+    getManga: (id) => new AnilistAPI().getManga(id),
+  }));
+};
 
 /**
  * A work with its editions, for the comic page's edition picker. "al-<id>" is
@@ -76,6 +88,9 @@ comicRoutes.get('/work/:key', async (req, res) => {
           };
       }
     } else if (comicVineId !== undefined) {
+      if (!(await isMangaVolumeAllowed(comicVineId))) {
+        return res.status(404).json({ status: 404, message: 'Comic not found' });
+      }
       work = getWorkForEdition(comicVineId);
       const hint = getMangaVolumeHint(comicVineId);
       if (!work && hint?.anilistId) {
@@ -145,6 +160,9 @@ comicRoutes.get('/:id/issues', async (req, res) => {
   const page = parsePositiveInt(req.query.page, 1, 500);
   const itemsPerPage = 20;
   try {
+    if (!(await isMangaVolumeAllowed(comicVineId))) {
+      return res.status(404).json({ status: 404, message: 'Comic not found' });
+    }
     const response = await new ComicVineAPI(comicVineApiKey).getVolumeIssues({
       volumeId: comicVineId,
       page,
@@ -185,6 +203,9 @@ comicRoutes.get('/:id', async (req, res, next) => {
   }
 
   try {
+    if (!(await isMangaVolumeAllowed(comicVineId))) {
+      return res.status(404).json({ status: 404, message: 'Comic not found' });
+    }
     const comicVine = new ComicVineAPI(comicVineApiKey);
     const [volume, onUserWatchlist] = await Promise.all([
       comicVine.getVolume(comicVineId),

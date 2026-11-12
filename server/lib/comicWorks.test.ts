@@ -347,6 +347,7 @@ describe('resolveMangaWork', () => {
 
   it('finds the editions with one ComicVine search and caches them', async () => {
     let searches = 0;
+    let mangaLookups = 0;
     const comicVine = {
       searchVolumes: async ({ query }: { query: string }) => {
         searches++;
@@ -364,7 +365,10 @@ describe('resolveMangaWork', () => {
     };
     const work = await resolveMangaWork({
       anilistId: 105778,
-      getManga: async () => chainsawMan,
+      getManga: async () => {
+        mangaLookups++;
+        return chainsawMan;
+      },
       comicVine,
     });
     assert.equal(work?.recommendedId, '130799');
@@ -373,13 +377,45 @@ describe('resolveMangaWork', () => {
     const again = await resolveMangaWork({
       anilistId: 105778,
       getManga: async () => {
-        throw new Error('should come from the cache');
+        mangaLookups++;
+        return chainsawMan;
       },
       comicVine,
     });
     assert.equal(again?.editions.length, 8);
     assert.equal(searches, 1);
+    assert.equal(mangaLookups, 2);
     assert.equal(getCachedWork('al-105778')?.editionsResolved, true);
+  });
+
+  it('removes cached editions and volume hints when AniList marks manga adult', async () => {
+    await resolveMangaWork({
+      anilistId: 105778,
+      getManga: async () => chainsawMan,
+      comicVine: {
+        searchVolumes: async () => ({
+          error: 'OK',
+          limit: 30,
+          offset: 0,
+          number_of_page_results: CHAINSAW.length,
+          number_of_total_results: CHAINSAW.length,
+          status_code: 1,
+          results: CHAINSAW,
+        }),
+      },
+    });
+    assert.equal(getWorkForEdition(130799)?.id, 'al-105778');
+    assert.equal(getMangaVolumeHint(130799)?.anilistId, 105778);
+
+    const adult = await resolveMangaWork({
+      anilistId: 105778,
+      getManga: async () => ({ ...chainsawMan, isAdult: true }),
+    });
+
+    assert.equal(adult, null);
+    assert.equal(getCachedWork('al-105778'), undefined);
+    assert.equal(getWorkForEdition(130799), undefined);
+    assert.equal(getMangaVolumeHint(130799), undefined);
   });
 
   it('tries the romaji title when the English one finds no English edition', async () => {

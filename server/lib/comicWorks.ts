@@ -11,6 +11,8 @@ import {
 import { isMangaPublisher } from '@server/lib/mangaPublishers';
 import {
   anilistTitles,
+  forgetMangaVolume,
+  forgetMangaVolumesForAnilist,
   getMangaVolumeHint,
   isSameSeries,
   normalizeTitle,
@@ -114,6 +116,36 @@ export const getWorkForEdition = (
   const workId = editionWork.get<string>(String(comicVineId));
   return workId ? workCache.get<ComicWork>(workId) : undefined;
 };
+
+const forgetCachedWork = (workId: string): void => {
+  const work = workCache.get<ComicWork>(workId);
+  workCache.del(workId);
+  if (work) {
+    for (const edition of work.editions) {
+      editionWork.del(edition.id);
+      forgetMangaVolume(edition.id);
+    }
+  }
+  const anilistId = Number(workId.slice('al-'.length));
+  if (Number.isSafeInteger(anilistId) && anilistId > 0)
+    forgetMangaVolumesForAnilist(anilistId);
+};
+
+/** Fetch the current provider maturity value and discard stale cached mappings. */
+export async function getAllowedMangaMedia({
+  anilistId,
+  getManga,
+}: {
+  anilistId: number;
+  getManga: (id: number) => Promise<AnilistMangaSearchResult | null>;
+}): Promise<AnilistMangaSearchResult | null> {
+  const media = await getManga(anilistId);
+  if (!media || media.isAdult) {
+    forgetCachedWork(`al-${anilistId}`);
+    return null;
+  }
+  return media;
+}
 
 /** Test hook. */
 export const clearComicWorkCaches = (): void => {
@@ -586,9 +618,13 @@ export async function resolveMangaWork({
   maxComicVineSearches?: number;
 }): Promise<ComicWork | null> {
   const cached = getCachedWork(`al-${anilistId}`);
-  if (cached?.editionsResolved) return cached;
-  const media = await getManga(anilistId);
-  if (!media || media.isAdult) return null;
+  const media = await getAllowedMangaMedia({ anilistId, getManga });
+  if (!media) return null;
+  if (cached?.editionsResolved) {
+    const refreshed = mangaWork(media, cached.editions, true);
+    rememberWorks([refreshed]);
+    return refreshed;
+  }
   if (!comicVine) return mangaWork(media, [], false);
   const titles = anilistTitles(media, true);
   const queries: string[] = [];

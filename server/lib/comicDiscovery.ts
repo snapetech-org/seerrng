@@ -404,8 +404,8 @@ export interface ComicLanding {
   failed: string[];
 }
 
-// AniList sections shared by everyone for 30 minutes (the library is per call)
-const landingCache = new NodeCache({ stdTTL: 30 * 60, useClones: false });
+// AniList sections shared by everyone for five minutes (the library is per call)
+const landingCache = new NodeCache({ stdTTL: 5 * 60, useClones: false });
 
 export async function buildComicLanding({
   user,

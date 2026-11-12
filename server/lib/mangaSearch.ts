@@ -66,6 +66,17 @@ export const getMangaVolumeHint = (
 ): MangaVolumeHint | undefined =>
   volumeHints.get<MangaVolumeHint>(String(comicVineId));
 
+export const forgetMangaVolume = (comicVineId: number | string): void => {
+  volumeHints.del(String(comicVineId));
+};
+
+export const forgetMangaVolumesForAnilist = (anilistId: number): void => {
+  for (const key of volumeHints.keys()) {
+    if (volumeHints.get<MangaVolumeHint>(key)?.anilistId === anilistId)
+      volumeHints.del(key);
+  }
+};
+
 /** Test hook. */
 export const clearMangaSearchCaches = (): void => {
   editionCache.flushAll();

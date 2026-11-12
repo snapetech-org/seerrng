@@ -68,6 +68,7 @@ jobs:
           pnpm test:node --test-concurrency=1
           server/api/externalapi.test.ts server/routes/discover.test.ts
           server/routes/index.test.ts server/lib/comicLibraryProgress.test.ts
+          server/lib/comicWorks.test.ts
           server/lib/scanners/comics/backissue/index.test.ts
       - name: Check deployment and scanner gates
         run: node --test scripts/check-helm-security.test.mjs scripts/healthcheck.test.mjs scripts/check-semgrep-baseline.test.mjs scripts/check-repository-hygiene.test.mjs packaging/cloudron/start-cloudron.test.mjs

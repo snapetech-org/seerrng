@@ -230,6 +230,9 @@ async function fixtures(
           enabledMediaCategories: { comic: true },
         },
       });
+    if (path === '/genres/tv') return r.fulfill({ json: [] });
+    if (path.startsWith('/discover/tv'))
+      return r.fulfill({ json: paged([]) });
     if (path === '/discover/comics/landing')
       return r.fulfill({
         json: {
@@ -631,8 +634,19 @@ for (const width of [360, 768, 1280]) {
     test.skip(info.project.name !== 'desktop', 'sets its own viewport');
     await page.setViewportSize({ width, height: 800 });
     await fixtures(page, { library: [oshi(downloading), saga(partial)] });
+    await page.goto('/series');
+    await expect(page.locator('h1')).toHaveText('Series');
+    await page.waitForLoadState('networkidle');
+    await page.screenshot({
+      path: info.outputPath(`series-reference-${width}.png`),
+      fullPage: true,
+    });
     await page.goto('/comics');
     await expect(page.locator('.comic-grid .poster')).toHaveCount(3);
+    await page.screenshot({
+      path: info.outputPath(`comics-candidate-${width}.png`),
+      fullPage: true,
+    });
     const overflow = await page.evaluate(
       () => document.documentElement.scrollWidth - window.innerWidth
     );
@@ -650,6 +664,10 @@ for (const width of [360, 768, 1280]) {
       () => document.documentElement.scrollWidth - window.innerWidth
     );
     expect(detailOverflow).toBeLessThanOrEqual(0);
+    await page.screenshot({
+      path: info.outputPath(`comic-detail-candidate-${width}.png`),
+      fullPage: true,
+    });
   });
 }
 

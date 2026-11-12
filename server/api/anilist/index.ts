@@ -527,7 +527,7 @@ class AnilistAPI extends ExternalAPI {
   /**
    * Manga by title (type MANGA also covers manhwa, one-shots and light
    * novels). AniList matches English, romaji and native titles and synonyms.
-   * Cached for an hour; titles and covers rarely change.
+   * Cached briefly so provider-side maturity changes are reflected promptly.
    */
   async searchManga(
     search: string,
@@ -535,13 +535,13 @@ class AnilistAPI extends ExternalAPI {
   ): Promise<AnilistMangaSearchResult[]> {
     const data = await this.graphql<{
       Page: { media: AnilistMangaSearchResult[] };
-    }>(SEARCH_MANGA_QUERY, { search, perPage }, 60 * 60);
+    }>(SEARCH_MANGA_QUERY, { search, perPage }, 5 * 60);
     return data.Page?.media ?? [];
   }
 
   /**
-   * A page of English-licensed manga for the Comics page. Cached for half an
-   * hour: trending moves slowly and AniList asks clients to go easy.
+   * A page of English-licensed manga for the Comics page. Cached briefly so
+   * provider-side maturity changes are reflected promptly.
    */
   async browseManga({
     page = 1,
@@ -575,18 +575,18 @@ class AnilistAPI extends ExternalAPI {
         pageInfo?: { hasNextPage?: boolean };
         media: AnilistMangaSearchResult[];
       };
-    }>(BROWSE_MANGA_QUERY, variables, 30 * 60);
+    }>(BROWSE_MANGA_QUERY, variables, 5 * 60);
     return {
       hasNextPage: !!data.Page?.pageInfo?.hasNextPage,
       media: (data.Page?.media ?? []).filter((m) => m?.id && !m.isAdult),
     };
   }
 
-  /** One manga with its description; cached for a day. */
+  /** One manga with its description; cached briefly to refresh maturity. */
   async getManga(id: number): Promise<AnilistMangaSearchResult | null> {
     const data = await this.graphql<{
       Media: AnilistMangaSearchResult | null;
-    }>(MANGA_BY_ID_QUERY, { id }, 24 * 60 * 60);
+    }>(MANGA_BY_ID_QUERY, { id }, 5 * 60);
     return data.Media ?? null;
   }
 
