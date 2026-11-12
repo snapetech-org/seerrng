@@ -74,7 +74,7 @@ async function fixtures(page: Page) {
 
 test('All search shows People and opens an internal Lumen person page', async ({
   page,
-}) => {
+}, info) => {
   const externalImageRequests: string[] = [];
   page.on('request', (request) => {
     if (new URL(request.url()).hostname === 'attacker.invalid')
@@ -86,6 +86,10 @@ test('All search shows People and opens an internal Lumen person page', async ({
   await expect(
     page.locator('.results').getByRole('link', { name: 'Jane Example' })
   ).toBeVisible();
+  await page.screenshot({
+    path: info.outputPath('people-search-results.png'),
+    fullPage: true,
+  });
   await page.locator('.results').getByRole('link', { name: 'Jane Example' }).click();
   await expect(page).toHaveURL(/\/person\/77$/);
   await expect(page.getByRole('heading', { name: 'Jane Example' })).toBeVisible();
@@ -93,6 +97,10 @@ test('All search shows People and opens an internal Lumen person page', async ({
   await expect(page.getByRole('heading', { name: 'Known for' })).toBeVisible();
   await expect(page.locator('.grid .poster')).toHaveCount(1);
   await expect(page.locator('.portrait .art-ph')).toBeVisible();
+  await page.screenshot({
+    path: info.outputPath('person-detail.png'),
+    fullPage: true,
+  });
   await expect(
     page.locator('img[src^="https://attacker.invalid/"]')
   ).toHaveCount(0);
