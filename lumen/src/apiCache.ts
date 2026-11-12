@@ -25,6 +25,9 @@ const SAVE_DELAY_MS = 400;
 export const RECHECK_MS = 15_000;
 // these change as people use the site: always asked again (still shown at once meanwhile)
 const ALWAYS_CHECK = /^\/(request|auth|user\/\d+\/quota|settings\/public)/;
+// These answers depend on current account category and maturity policies.
+// Never serve cached person details or credits after those settings tighten.
+const NEVER_CACHE = /^\/person\/\d+(?:\/combined_credits)?(?:\?|$)/;
 
 type Entry = { at: number; data: unknown };
 let entries = new Map<string, Entry>();
@@ -89,6 +92,10 @@ function save() {
 }
 function currentEntry(path: string) {
   ensureLoaded();
+  if (NEVER_CACHE.test(path)) {
+    if (entries.delete(path)) save();
+    return undefined;
+  }
   const e = entries.get(path);
   if (retained(e)) return e;
   entries.delete(path);
@@ -113,6 +120,10 @@ export function remember(
 ) {
   if (expectedGeneration !== generation) return;
   ensureLoaded();
+  if (NEVER_CACHE.test(path)) {
+    if (entries.delete(path)) save();
+    return;
+  }
   entries.set(path, { at: Date.now(), data });
   save();
 }

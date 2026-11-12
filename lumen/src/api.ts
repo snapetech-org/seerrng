@@ -96,6 +96,7 @@ export interface TitleResult {
   title?: string;
   name?: string;
   posterPath?: string;
+  profilePath?: string;
   backdropPath?: string;
   releaseDate?: string;
   firstAirDate?: string;
@@ -144,13 +145,96 @@ export interface Genre {
   backdrops: string[];
 }
 
-// TMDB artwork goes through SeerrNG's image proxy, the same as SeerrNG's own UI
-export const tmdbImg = (path: string | undefined | null, size = 'w342') =>
-  !path
-    ? ''
-    : path.startsWith('http')
-      ? path
-      : `/imageproxy/tmdb/t/p/${size}${path}`;
+// TMDB artwork goes through SeerrNG's image proxy, the same as SeerrNG's own UI.
+// Treat provider paths as untrusted input: accepting an arbitrary absolute URL here
+// would turn metadata into a browser-side tracking/request primitive.
+const TMDB_IMAGE_SIZES = new Set(['w342', 'w500', 'w780', 'w1280']);
+const THEAUDIODB_IMAGE_HOST = 'theaudiodb.com';
+const isSafeImagePath = (path: string) => {
+  if (
+    path.length > 2048 ||
+    !path.startsWith('/') ||
+    path.startsWith('//') ||
+    path.includes('//') ||
+    path.includes('\\') ||
+    /[\u0000-\u001f\u007f?#]/.test(path)
+  ) {
+    return false;
+  }
+
+  return path
+    .slice(1)
+    .split('/')
+    .every((segment) => {
+      let decoded = segment;
+      // URL and proxy layers can decode more than one percent-encoding layer.
+      // Check every layer so encoded dot segments and separators cannot become
+      // traversal after the browser has canonicalized the URL.
+      for (let layer = 0; layer < 8; layer++) {
+        let next: string;
+        try {
+          next = decodeURIComponent(decoded);
+        } catch {
+          return false;
+        }
+        if (
+          decoded === '.' ||
+          decoded === '..' ||
+          decoded.includes('/') ||
+          decoded.includes('\\') ||
+          /[\u0000-\u001f\u007f?#]/.test(decoded)
+        ) {
+          return false;
+        }
+        if (next === decoded) return true;
+        decoded = next;
+      }
+      // Excessive nested encodings are unnecessary for provider image paths.
+      return false;
+    });
+};
+const theAudioDbImg = (value: string) => {
+  if (
+    value.length > 2048 ||
+    value.includes('?') ||
+    value.includes('#') ||
+    value.includes('\\')
+  ) {
+    return '';
+  }
+  // Validate the original path before WHATWG URL parsing normalizes literal or
+  // percent-encoded dot segments. The image proxy receives a path, never a
+  // provider-selected origin.
+  const rawPath = value.match(/^https:\/\/[^/?#]+(\/[^?#]*)?$/i)?.[1];
+  if (!rawPath || !isSafeImagePath(rawPath)) return '';
+  try {
+    const url = new URL(value);
+    const hostname = url.hostname.toLowerCase();
+    if (
+      url.protocol !== 'https:' ||
+      (url.port && url.port !== '443') ||
+      url.username ||
+      url.password ||
+      (hostname !== THEAUDIODB_IMAGE_HOST &&
+        !hostname.endsWith(`.${THEAUDIODB_IMAGE_HOST}`)) ||
+      url.search ||
+      url.hash ||
+      !isSafeImagePath(url.pathname)
+    ) {
+      return '';
+    }
+    return `/imageproxy/theaudiodb${url.pathname}`;
+  } catch {
+    return '';
+  }
+};
+export const tmdbImg = (path: string | undefined | null, size = 'w342') => {
+  if (typeof path !== 'string' || !path) return '';
+  if (path.startsWith('https://')) return theAudioDbImg(path);
+  if (!isSafeImagePath(path)) return '';
+  const safeSize = TMDB_IMAGE_SIZES.has(size) ? size : 'w342';
+  return `/imageproxy/tmdb/t/p/${safeSize}${path}`;
+};
 
 export const titleOf = (r: TitleResult) => r.title || r.name || '';
 export const yearOf = (r: TitleResult) =>
