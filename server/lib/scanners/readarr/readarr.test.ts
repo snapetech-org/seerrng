@@ -3,6 +3,10 @@ import BookRequestSearch from '@server/entity/BookRequestSearch';
 import MediaRequest from '@server/entity/MediaRequest';
 import { User } from '@server/entity/User';
 import requestDispatchManager from '@server/lib/requestDispatch';
+import {
+  RequestStatusStage,
+  getRequestStatus,
+} from '@server/lib/requestStatus';
 import assert from 'node:assert/strict';
 import { beforeEach, describe, it, mock } from 'node:test';
 
@@ -1262,6 +1266,175 @@ describe('Readarr Scanner', () => {
       );
     });
   }
+
+  describe('rows linked to a scanned record but scoped to another catalog server', () => {
+    // A request for an ebook made from the audiobook catalog owns a row whose
+    // identity is bookshelf:1:* while its ebook link names server 0, record 250.
+    // The ebook scan resolves identity to the bookshelf:0:* sibling instead.
+    const seedSplitRows = async (link = 250) => {
+      const requested = await getRepository(Media).save(
+        new Media({
+          tmdbId: 0,
+          mediaType: MediaType.BOOK,
+          status: MediaStatus.AVAILABLE,
+          status4k: MediaStatus.UNKNOWN,
+          serviceId: 0,
+          externalServiceId: link,
+          audiobookServiceId: 1,
+          audiobookExternalServiceId: 2031,
+          availableAudiobookServiceIds: [1],
+          identifiers: [
+            new MediaIdentifier({
+              provider: MediaIdentifierProvider.BOOKSHELF,
+              value: makeBookshelfBookId(1, '428290'),
+              canonical: true,
+            }),
+          ],
+        })
+      );
+      const sibling = await getRepository(Media).save(
+        new Media({
+          tmdbId: 0,
+          mediaType: MediaType.BOOK,
+          status: MediaStatus.UNKNOWN,
+          status4k: MediaStatus.UNKNOWN,
+          identifiers: [
+            new MediaIdentifier({
+              provider: MediaIdentifierProvider.BOOKSHELF,
+              value: makeBookshelfBookId(0, '428290'),
+              canonical: true,
+            }),
+          ],
+        })
+      );
+      return { requested, sibling };
+    };
+    const seedRequest = async (
+      media: Media,
+      preferredEditionId: string | null = null
+    ) => {
+      const requester = await getRepository(User).findOneByOrFail({ id: 1 });
+      return getRepository(MediaRequest).save(
+        new MediaRequest({
+          type: MediaType.BOOK,
+          media,
+          requestedBy: requester,
+          status: MediaRequestStatus.COMPLETED,
+          is4k: false,
+          bookFormat: 'ebook',
+          preferredEditionId,
+          serviceTargets: [
+            {
+              serviceType: 'readarr',
+              format: 'ebook',
+              serverId: 0,
+              status: MediaStatus.PROCESSING,
+              externalServiceId: 250,
+            },
+          ],
+        })
+      );
+    };
+    const stageOf = async (id: number) =>
+      getRequestStatus(
+        await getRepository(MediaRequest).findOneOrFail({
+          where: { id },
+          relations: { media: true },
+        }),
+        { downloads: [], servarrHistory: undefined }
+      ).stage;
+    let files = 1;
+    beforeEach(() => {
+      files = 1;
+      mock.method(requestDispatchManager, 'enqueue', async () => undefined);
+      mock.method(ReadarrAPI.prototype, 'getEditionCatalog', async () => []);
+      configureReadarr([{ id: 0, serviceType: 'ebook' }]);
+      knownDialect = 'hc';
+      getBooksImpl = async () => [
+        fakeReadarrBook({
+          id: 250,
+          foreignBookId: 'hc:428290',
+          editions: [
+            {
+              foreignEditionId: 'gr:18846563-ebook',
+              title: 'Test Book',
+              monitored: true,
+            },
+          ],
+          statistics: { bookFileCount: files, totalBookCount: 1 },
+        }),
+      ];
+      getEditionsImpl = async () => [
+        {
+          foreignEditionId: 'gr:18846563-ebook',
+          title: 'Test Book',
+          monitored: true,
+        },
+        {
+          foreignEditionId: 'hc:edition:31497360-ebook',
+          title: 'Test Book',
+          monitored: false,
+        },
+      ];
+    });
+
+    it('publishes the record file evidence to the linked row and keeps it across scans', async () => {
+      const { requested, sibling } = await seedSplitRows();
+      const request = await seedRequest(requested);
+      assert.equal(await stageOf(request.id), RequestStatusStage.LIBRARY);
+
+      for (let scan = 0; scan < 2; scan += 1) {
+        await readarrScanner.run();
+        const row = await getRepository(Media).findOneByOrFail({
+          id: requested.id,
+        });
+        assert.deepEqual(row.availableEbookServiceIds, [0]);
+        assert.deepEqual(row.availableAudiobookServiceIds, [1]);
+        assert.equal(row.status, MediaStatus.AVAILABLE);
+        assert.deepEqual(
+          (await getRepository(Media).findOneByOrFail({ id: sibling.id }))
+            .availableEbookServiceIds,
+          [0]
+        );
+        assert.equal(await stageOf(request.id), RequestStatusStage.AVAILABLE);
+      }
+
+      files = 0;
+      await readarrScanner.run();
+      assert.deepEqual(
+        (await getRepository(Media).findOneByOrFail({ id: requested.id }))
+          .availableEbookServiceIds,
+        []
+      );
+      assert.equal(await stageOf(request.id), RequestStatusStage.LIBRARY);
+    });
+
+    it('does not touch a row linked to a different record on the same server', async () => {
+      const { requested } = await seedSplitRows(999);
+      await readarrScanner.run();
+      const row = await getRepository(Media).findOneByOrFail({
+        id: requested.id,
+      });
+      assert.equal(row.availableEbookServiceIds, null);
+      assert.equal(row.externalServiceId, 999);
+    });
+
+    it('keeps an exact-edition request open when another edition is on disk', async () => {
+      const { requested } = await seedSplitRows();
+      const request = await seedRequest(requested, '31497360');
+      await readarrScanner.run();
+      assert.deepEqual(
+        (await getRepository(Media).findOneByOrFail({ id: requested.id }))
+          .availableEbookServiceIds,
+        [0]
+      );
+      const fresh = await getRepository(MediaRequest).findOneByOrFail({
+        id: request.id,
+      });
+      assert.equal(fresh.serviceTargets?.[0]?.status, MediaStatus.PROCESSING);
+      assert.notEqual(await stageOf(request.id), RequestStatusStage.AVAILABLE);
+    });
+  });
 
   describe('exact-edition requests completed outside their search', () => {
     beforeEach(() =>

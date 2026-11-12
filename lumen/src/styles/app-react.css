@@ -303,6 +303,12 @@
 }
 .rq .rqa .btn {
   min-height: 34px;
+  /* a long label ("Watch on Plex") wraps inside a narrow card instead of running past its edge */
+  max-width: 100%;
+  min-width: 0;
+  white-space: normal;
+  text-align: center;
+  line-height: 1.2;
 }
 
 /* extra categories (music, comics, magazines, games, sports, adult) */

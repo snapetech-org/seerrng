@@ -242,6 +242,11 @@ html.no-overscroll body {
   .set a.go {
     min-height: 44px;
   }
+  /* a one-word button ("All") is still a full-size target */
+  .seg button,
+  .seg a {
+    min-width: 44px;
+  }
 }
 
 /* second pass: the remaining controls a real phone measured under 44px */
@@ -273,5 +278,30 @@ html.no-overscroll body {
     align-items: center;
     min-height: 44px;
     margin-block: -12px;
+  }
+}
+
+/* the whole search bar is the tap target: the field fills its height instead of a 25px strip */
+@media (pointer: coarse) {
+  .search:has(input) {
+    padding-right: 0;
+  }
+  .search input {
+    align-self: stretch;
+    padding-right: 14px;
+  }
+}
+
+/* the "Let people change it" box was 13px: a bigger box inside a full-height label */
+@media (pointer: coarse) {
+  .cfg-lock {
+    gap: 10px;
+    min-width: 44px;
+  }
+  .cfg-lock input {
+    width: 24px;
+    height: 24px;
+    margin: 0;
+    flex: none;
   }
 }

@@ -32,6 +32,13 @@ export const isAdministrator = (permissions: unknown): boolean =>
   (BigInt(permissions) & 2n) !== 0n;
 export const useMediaServerName = () => serverName();
 
+// the page-load check of who is signed in: one call even if two providers start it together
+let meInFlight: Promise<User> | null = null;
+const sharedMe = () =>
+  (meInFlight ??= api<User>('/auth/me').finally(() => {
+    meInFlight = null;
+  }));
+
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null | undefined>(undefined);
   const [unreachable, setUnreachable] = useState(false);
@@ -43,24 +50,28 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     principal.current = id;
     setUser(next);
   }, []);
-  const refresh = useCallback(async () => {
-    const request = ++authRequest.current;
-    try {
-      const next = await api<User>('/auth/me');
-      if (request === authRequest.current) {
-        setUnreachable(false);
-        setPrincipal(next);
+  const check = useCallback(
+    async (share: boolean) => {
+      const request = ++authRequest.current;
+      try {
+        const next = await (share ? sharedMe() : api<User>('/auth/me'));
+        if (request === authRequest.current) {
+          setUnreachable(false);
+          setPrincipal(next);
+        }
+      } catch (e) {
+        if (request !== authRequest.current) return;
+        // only an answer from the server means signed out; a network drop or 5xx must not
+        // sign anyone out (whoever was signed in stays, otherwise a retry screen is shown)
+        if (e instanceof ApiError && (e.status === 401 || e.status === 403)) {
+          setUnreachable(false);
+          setPrincipal(null);
+        } else setUnreachable(true);
       }
-    } catch (e) {
-      if (request !== authRequest.current) return;
-      // only an answer from the server means signed out; a network drop or 5xx must not
-      // sign anyone out (whoever was signed in stays, otherwise a retry screen is shown)
-      if (e instanceof ApiError && (e.status === 401 || e.status === 403)) {
-        setUnreachable(false);
-        setPrincipal(null);
-      } else setUnreachable(true);
-    }
-  }, [setPrincipal]);
+    },
+    [setPrincipal]
+  );
+  const refresh = useCallback(() => check(false), [check]);
   const signOut = useCallback(async () => {
     ++authRequest.current;
     try {
@@ -72,8 +83,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setPrincipal(null);
   }, [setPrincipal]);
   useEffect(() => {
-    void refresh();
-  }, [refresh]);
+    // the first check is shared, so a remounted provider (StrictMode in development) doesn't ask twice
+    void check(true);
+  }, [check]);
   return (
     <Ctx.Provider value={{ user, unreachable, refresh, signOut }}>
       <Fragment key={user?.id ?? 'signed-out'}>{children}</Fragment>

@@ -1,8 +1,13 @@
 import { Link, useSearchParams } from 'react-router-dom';
-import { bookMediaForFormat, MediaStatus, type BookResult } from '../api';
+import { MediaStatus, type BookResult } from '../api';
 import { BookCard, GridSkeleton, MoreOnScroll } from '../components/cards';
 import { Avatar } from '../components/Shell';
-import { useEbookCovers, usePaged } from '../hooks';
+import {
+  bookMediaWithLibrary,
+  useEbookCovers,
+  useOwnedBooks,
+  usePaged,
+} from '../hooks';
 import { Icon } from '../icons';
 import { usePrefs } from '../settings';
 
@@ -18,15 +23,40 @@ export default function Books({ format }: { format: 'ebook' | 'audiobook' }) {
       : `/discover/books?format=${format}`
   );
   const audio = format === 'audiobook';
+  // the popular feed doesn't say which books are owned: "Not yet" checks the owned list
+  const library = useOwnedBooks(format);
+  const waiting = show === 'not' && !library;
+  const incompleteLibrary =
+    show === 'not' && !!library && !library.complete;
+  const mediaFor = (b: BookResult) =>
+    bookMediaWithLibrary(b, format, library);
+  const identityUnknown = (b: BookResult) =>
+    b.provider === 'openlibrary' && !!library?.complete && !mediaFor(b);
   const have = (b: BookResult) =>
-    bookMediaForFormat(b.mediaInfo, format)?.status === MediaStatus.AVAILABLE;
-  const raw = list.items
-    .map((b) => ({ ...b, bookFormat: format }))
-    .filter((b) =>
-      show === 'have' ? have(b) : show === 'not' ? !have(b) : true
-    );
+    mediaFor(b)?.status === MediaStatus.AVAILABLE;
+  const unknownCount =
+    show === 'not' && library?.complete
+      ? list.items.filter(identityUnknown).length
+      : 0;
+  const raw =
+    waiting || incompleteLibrary
+      ? []
+      : list.items
+          .map((b) => ({ ...b, bookFormat: format }))
+          .filter((b) =>
+            show === 'have'
+              ? have(b)
+              : show === 'not'
+                ? !identityUnknown(b) && !!mediaFor(b) && !have(b)
+                : true
+          );
   const withCovers = useEbookCovers(raw);
   const items = audio ? raw : withCovers;
+  const hiddenOnlyPage =
+    show === 'not' &&
+    unknownCount > 0 &&
+    items.length === 0 &&
+    !list.done;
   const upd = (v: string) => {
     const n = new URLSearchParams(p);
     if (v === 'all') n.delete('show');
@@ -93,7 +123,28 @@ export default function Books({ format }: { format: 'ebook' | 'audiobook' }) {
             {list.error}
           </div>
         )}
+        {incompleteLibrary && (
+          <div className="empty" role="alert">
+            <b>
+              {library?.unavailable
+                ? 'Library Check Unavailable'
+                : 'Library Check Incomplete'}
+            </b>
+            {library?.unavailable
+              ? 'Refresh the page to try the library check again.'
+              : 'The library exceeds the check limit. Not yet results are hidden to avoid mislabeling owned books.'}
+          </div>
+        )}
+        {unknownCount > 0 && !incompleteLibrary && (
+          <div className="note" role="status">
+            Some books on this page are hidden because their library status
+            could not be confirmed. Switch to All to review them.
+          </div>
+        )}
         {!list.loading &&
+          !waiting &&
+          !incompleteLibrary &&
+          unknownCount === 0 &&
           !list.error &&
           list.page > 0 &&
           items.length === 0 && (
@@ -103,23 +154,46 @@ export default function Books({ format }: { format: 'ebook' | 'audiobook' }) {
                 : 'No books match this view.'}
             </div>
           )}
-        {list.loading && !items.length && list.page === 0 && (
-          <div style={{ marginTop: 16 }}>
-            <GridSkeleton sq={audio} className={`grid ${audio ? 'sqg' : ''}`} />
-          </div>
-        )}
+        {((waiting && !library) || (list.loading && list.page === 0)) &&
+          !items.length && (
+            <div style={{ marginTop: 16 }}>
+              <GridSkeleton
+                sq={audio}
+                className={`grid ${audio ? 'sqg' : ''}`}
+              />
+            </div>
+          )}
         <div className={`grid ${audio ? 'sqg' : ''}`} style={{ marginTop: 16 }}>
           {items.map((b) => (
             <BookCard key={b.id} b={b} />
           ))}
         </div>
-        <MoreOnScroll
-          done={list.done}
-          loading={list.loading}
-          more={list.more}
-          error={list.error}
-          retry={list.retry}
-        />
+        {hiddenOnlyPage ? (
+          <div className="more-scroll" aria-live="polite">
+            {list.error && list.retry ? (
+              <>
+                Couldn’t load more.{' '}
+                <button className="btn btn-tonal btn-sm" onClick={list.retry}>
+                  Retry
+                </button>
+              </>
+            ) : list.loading ? (
+              'Loading more…'
+            ) : (
+              <button className="btn btn-tonal btn-sm" onClick={list.more}>
+                Load more books
+              </button>
+            )}
+          </div>
+        ) : (
+          <MoreOnScroll
+            done={waiting || incompleteLibrary || list.done}
+            loading={waiting || incompleteLibrary || list.loading}
+            more={list.more}
+            error={list.error}
+            retry={list.retry}
+          />
+        )}
       </section>
     </>
   );

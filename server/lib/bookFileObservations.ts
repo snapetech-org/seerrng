@@ -153,7 +153,8 @@ export async function projectBookFileObservations(
       }
       const plex = confirmed.find((m) => m.hasPlexAudiobookFile || m.ratingKey);
       if (plex) {
-        result.hasPlexAudiobookFile = plex.hasPlexAudiobookFile;
+        result.hasPlexAudiobookFile =
+          plex.hasPlexAudiobookFile === true || !!plex.ratingKey;
         result.ratingKey = plex.ratingKey;
       }
       if (

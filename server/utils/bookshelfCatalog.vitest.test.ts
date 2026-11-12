@@ -282,6 +282,79 @@ describe('Bookshelf catalog identities', () => {
     });
   });
 
+  describe('library records cached under a bare numeric id', () => {
+    const server = {
+      id: 116,
+      hostname: 'bookshelf.test',
+      port: 8787,
+      apiKey: 'test-key',
+      useSsl: false,
+      baseUrl: '',
+      serviceType: 'audiobook',
+    } as ReadarrSettings;
+    const thin: ReadarrBookLookupResult = {
+      title: 'Wool',
+      foreignBookId: '260468',
+    };
+    const full: ReadarrBookLookupResult = {
+      title: 'Wool',
+      foreignBookId: 'hc:260468',
+      editions: [
+        { title: 'Wool', isbn13: '9798212197557' },
+        { title: 'Wool', overview: 'A ruined and toxic world.' },
+      ] as ReadarrBookLookupResult['editions'],
+    };
+
+    it('looks the blurb up when the cached library record has no editions', async () => {
+      const id = makeBookshelfBookId(server.id, '260468');
+      mapBookshelfBook(thin, server.id, server);
+      const lookup = vi
+        .spyOn(ReadarrAPI.prototype, 'lookupBookByProviderIdentity')
+        .mockResolvedValue(full);
+
+      const details = await getBookshelfBookDetails([server], id);
+
+      expect(lookup).toHaveBeenCalledWith('260468');
+      expect(details).toMatchObject({
+        id,
+        title: 'Wool',
+        description: 'A ruined and toxic world.',
+      });
+    });
+
+    it('keeps the cached record when the lookup finds nothing or fails', async () => {
+      const id = makeBookshelfBookId(server.id, '260468');
+      const lookup = vi
+        .spyOn(ReadarrAPI.prototype, 'lookupBookByProviderIdentity')
+        .mockResolvedValueOnce(undefined)
+        .mockRejectedValueOnce(new Error('proxy down'));
+
+      for (let attempt = 0; attempt < 2; attempt++) {
+        mapBookshelfBook(thin, server.id, server);
+        const details = await getBookshelfBookDetails([server], id, undefined, {
+          failOnUnavailable: true,
+        });
+        expect(details).toMatchObject({ id, title: 'Wool' });
+        expect(details?.description).toBeUndefined();
+      }
+      expect(lookup).toHaveBeenCalledTimes(2);
+    });
+
+    it('reuses a cached record that already carries a blurb', async () => {
+      const id = makeBookshelfBookId(server.id, '260468');
+      mapBookshelfBook({ ...full, foreignBookId: '260468' }, server.id, server);
+      const lookup = vi.spyOn(
+        ReadarrAPI.prototype,
+        'lookupBookByProviderIdentity'
+      );
+
+      const details = await getBookshelfBookDetails([server], id);
+
+      expect(lookup).not.toHaveBeenCalled();
+      expect(details?.description).toBe('A ruined and toxic world.');
+    });
+  });
+
   it('does not reuse catalog results after Bookshelf settings change', async () => {
     const server = {
       id: 114,

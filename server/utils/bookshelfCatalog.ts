@@ -809,6 +809,11 @@ export const searchBookshelfNarrators = async (
   return [...deduped.values()];
 };
 
+const hasEditionOverview = (result: ReadarrBookLookupResult): boolean =>
+  ((result.editions ?? []) as { overview?: string }[]).some(
+    (edition) => !!edition.overview
+  );
+
 const getBookshelfBookDetailsUnbounded = async (
   servers: ReadarrSettings[],
   requestedId: string,
@@ -828,8 +833,27 @@ const getBookshelfBookDetailsUnbounded = async (
   try {
     const api = getApi(server);
     let result: ReadarrBookLookupResult | undefined = getCachedBook(id, server);
-    if (!result)
-      result = await api.lookupBookByProviderIdentity(parsed.foreignBookId);
+    // Library listings cache the server's native book resource under the bare
+    // numeric id, and Chaptarr omits editions (so every blurb) from those.
+    // Such a record cannot describe the book: resolve it through the provider
+    // lookup instead, and keep the cached record only if that finds nothing.
+    const thinCachedBook =
+      result &&
+      /^\d+$/.test(parsed.foreignBookId) &&
+      !hasEditionOverview(result)
+        ? result
+        : undefined;
+    if (!result || thinCachedBook) {
+      let refreshed: ReadarrBookLookupResult | undefined;
+      try {
+        refreshed = await api.lookupBookByProviderIdentity(
+          parsed.foreignBookId
+        );
+      } catch (error) {
+        if (!thinCachedBook) throw error;
+      }
+      result = refreshed ?? thinCachedBook;
+    }
     // A legacy title fallback is allowed only after an exact identity miss,
     // and its result still has to match the negotiated provider identity.
     if (!result && lookupTitle?.trim()) {
