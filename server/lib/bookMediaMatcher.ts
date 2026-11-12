@@ -16,7 +16,9 @@ import {
   normalizeOpenLibraryWorkId,
 } from '@server/lib/externalIds';
 import { normalizeValidIsbn } from '@server/lib/isbn';
-import { restrictMediaRelationsForUser } from '@server/lib/mediaResponse';
+import {
+  restrictMediaOperationalIdentifiersForUser,
+} from '@server/lib/mediaResponse';
 import { hydrateMediaSummaryRelations } from '@server/lib/mediaSummaryHydration';
 import { parseBookshelfBookId } from '@server/utils/bookshelfCatalog';
 import { Brackets, In } from 'typeorm';
@@ -227,10 +229,10 @@ const findBookMediaByIdentifiers = async (
   for (const batch of chunk(media))
     await hydrateMediaSummaryRelations(batch, user);
   const mediaById = await projectBookFileObservations(media);
-  // File-observation projection can copy operational identifiers from a
-  // linked media row, so apply the viewer's response policy after projection.
+  // File-observation projection can graft manager-only identifiers from a
+  // linked row. Download statuses were already tokenized during hydration.
   for (const projectedMedia of mediaById.values())
-    restrictMediaRelationsForUser(projectedMedia, user);
+    restrictMediaOperationalIdentifiersForUser(projectedMedia, user);
 
   const mediaByIdentifier = new Map<string, Media>();
 

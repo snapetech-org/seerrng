@@ -5666,6 +5666,10 @@ describe('GET /discover/books', () => {
       undefined
     );
     assert.strictEqual(res.body.results[0].mediaInfo.ratingKey, undefined);
+    assert.strictEqual(
+      res.body.results[0].mediaInfo.hasPlexAudiobookFile,
+      true
+    );
   });
 });
 

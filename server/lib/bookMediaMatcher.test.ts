@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { describe, it } from 'node:test';
+import { describe, it, mock } from 'node:test';
 
 import { MediaStatus, MediaType } from '@server/constants/media';
 import { getRepository } from '@server/datasource';
@@ -7,6 +7,13 @@ import Media from '@server/entity/Media';
 import MediaIdentifier, {
   MediaIdentifierProvider,
 } from '@server/entity/MediaIdentifier';
+import { User } from '@server/entity/User';
+import downloadTracker, {
+  type DownloadingItem,
+} from '@server/lib/downloadtracker';
+import { resolveLiveDownloadToken } from '@server/lib/liveDownloadTokens';
+import { aliasDownloadId } from '@server/lib/mediaResponse';
+import { Permission } from '@server/lib/permissions';
 import { setupTestDb } from '@server/test/db';
 import { makeBookshelfBookId } from '@server/utils/bookshelfCatalog';
 import {
@@ -171,6 +178,69 @@ describe('owned library matching with duplicate media rows (issue #625)', () => 
     assert.equal(matches.get(id)?.id, scoped.id);
     assert.equal(matches.get(id)?.audiobookLibraryItemId, 'abs-martian');
   });
+
+  it(
+    'keeps book live-download tokens valid after projecting duplicate file observations',
+    async () => {
+      const id = makeBookshelfBookId(1, 'active-download');
+      const serviceId = 0;
+      const externalServiceId = 9876;
+      const downloadId = 'a'.repeat(40);
+      const user = new User({ id: 92, permissions: Permission.REQUEST });
+      const download: DownloadingItem = {
+        mediaType: MediaType.BOOK,
+        externalId: externalServiceId,
+        size: 100,
+        sizeLeft: 40,
+        status: 'downloading',
+        timeLeft: '1 hour',
+        estimatedCompletionTime: new Date('2026-11-12T00:00:00Z'),
+        title: 'Private.Release.Name-GROUP',
+        downloadId,
+        protocol: 'torrent',
+        downloadClient: 'Private qBittorrent',
+      };
+      const primary = await getRepository(Media).save(
+        bookRow(
+          { serviceId, externalServiceId, status: MediaStatus.AVAILABLE },
+          id
+        )
+      );
+      await getRepository(Media).save(
+        bookRow(
+          { serviceId, externalServiceId, status: MediaStatus.AVAILABLE },
+          makeBookshelfBookId(0, 'active-download')
+        )
+      );
+      const getBookProgress = mock.method(
+        downloadTracker,
+        'getBookProgress',
+        (serverId: number, recordId: number) =>
+          serverId === serviceId && recordId === externalServiceId
+            ? [download]
+            : []
+      );
+
+      try {
+        const media = (
+          await findBookMediaForBookResults(
+            [{ id, provider: 'bookshelf' }],
+            user
+          )
+        ).get(id);
+        const liveDownload = media?.downloadStatus?.[0];
+
+        assert.equal(media?.id, primary.id);
+        assert.equal(liveDownload?.downloadId, aliasDownloadId(downloadId));
+        assert.equal(
+          resolveLiveDownloadToken(liveDownload?.liveDownloadToken, user.id),
+          downloadId
+        );
+      } finally {
+        getBookProgress.mock.restore();
+      }
+    }
+  );
 
   it('keeps the exact row when a duplicate has no better evidence or belongs to another service', async () => {
     const id = makeBookshelfBookId(1, '427578');

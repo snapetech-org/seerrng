@@ -163,6 +163,8 @@ test('a partial season with a live request stays locked and keeps playback avail
     {
       id: 2074,
       status: 4,
+      mediaUrl:
+        'https://app.plex.tv/desktop#!/server/x/details?key=%2Flibrary%2Fmetadata%2F1',
       downloadStatus: [],
       requests: [req([1])],
       seasons: [{ seasonNumber: 1, status: 4 }],
