@@ -9,6 +9,8 @@ import { getExternalRuntimeConfig } from '@server/lib/externalRuntimeConfig';
 import {
   isKavitaConfigured,
   needsComicSeriesFolder,
+  pruneComicSeriesRefServices,
+  pruneComicSeriesRefs,
   recordComicSeries,
   refreshKavitaIndex,
 } from '@server/lib/kavitaReader';
@@ -71,6 +73,9 @@ class BackIssueScanner
 
     try {
       this.servers = structuredClone(settings.backissue);
+      pruneComicSeriesRefServices(
+        this.servers.map((server) => server.id)
+      );
       pruneComicLibraryProgressServices(
         this.servers.map((server) => server.id)
       );
@@ -97,30 +102,33 @@ class BackIssueScanner
             return client.getCollection();
           }
         );
+        const comicSeries = this.items.filter(
+          (series) =>
+            !series.type ||
+            series.type === 'comic' ||
+            series.type === 'manga'
+        );
+        pruneComicSeriesRefs(
+          server.id,
+          comicSeries.map((series) => series.id)
+        );
         replaceComicLibraryProgress(
           server.id,
-          this.items
-            .filter(
-              (series) =>
-                !series.type ||
-                series.type === 'comic' ||
-                series.type === 'manga'
-            )
-            .map((series) => ({
-              externalServiceId: series.id,
-              progress: {
-                owned: series.owned,
-                total: series.total,
-                active: series.active,
-              },
-            }))
+          comicSeries.map((series) => ({
+            externalServiceId: series.id,
+            progress: {
+              owned: series.owned,
+              total: series.total,
+              active: series.active,
+            },
+          }))
         );
         await this.loop(this.processSeries.bind(this), { sessionId });
       }
       this.log('BackIssue comics scan complete', 'info');
       // match the scanned series against the reading server (Kavita)
       if (isKavitaConfigured()) {
-        void refreshKavitaIndex().catch(() => undefined);
+        void refreshKavitaIndex(false).catch(() => undefined);
       }
     } catch (error) {
       this.log('Scan interrupted', 'error', {

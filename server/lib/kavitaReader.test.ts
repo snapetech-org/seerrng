@@ -10,12 +10,15 @@ import Media from '@server/entity/Media';
 import { User } from '@server/entity/User';
 import {
   clearComicLibraryProgress,
-  setComicLibraryProgress,
+  replaceComicLibraryProgress,
 } from '@server/lib/comicLibraryProgress';
 import {
   buildKavitaIndex,
   getKavitaReaderUrl,
   matchKavitaSeries,
+  needsComicSeriesFolder,
+  pruneComicSeriesRefServices,
+  pruneComicSeriesRefs,
   recordComicSeries,
   refreshKavitaIndex,
   resetKavitaReader,
@@ -247,6 +250,27 @@ describe('Kavita reader links', () => {
     );
   });
 
+  it('prunes reader references for removed series and services', () => {
+    recordComicSeries(7, 501, {
+      title: 'Removed manga',
+      folder: '/manga/Removed',
+      owned: 3,
+    });
+    recordComicSeries(7, 502, {
+      title: 'Current manga',
+      folder: '/manga/Current',
+      owned: 3,
+    });
+    assert.equal(needsComicSeriesFolder(7, 501, 3), false);
+
+    pruneComicSeriesRefs(7, [502]);
+    assert.equal(needsComicSeriesFolder(7, 501, 3), true);
+    assert.equal(needsComicSeriesFolder(7, 502, 3), false);
+
+    pruneComicSeriesRefServices([8]);
+    assert.equal(needsComicSeriesFolder(7, 502, 3), true);
+  });
+
   it('links a comic with volumes in the library to its Kavita series', async () => {
     recordComicSeries(7, 501, {
       title: 'Frieren',
@@ -254,7 +278,12 @@ describe('Kavita reader links', () => {
       folder: '/manga/Frieren',
     });
     await refreshKavitaIndex();
-    setComicLibraryProgress(7, 501, { owned: 3, total: 13, active: 0 });
+    replaceComicLibraryProgress(7, [
+      {
+        externalServiceId: 501,
+        progress: { owned: 3, total: 13, active: 0 },
+      },
+    ]);
 
     const media = loaded(comicMedia(MediaStatus.PARTIALLY_AVAILABLE));
     assert.equal(
@@ -267,7 +296,12 @@ describe('Kavita reader links', () => {
   it('gives no link before anything is in the library', async () => {
     recordComicSeries(7, 501, { title: 'Frieren', kind: 'manga' });
     await refreshKavitaIndex();
-    setComicLibraryProgress(7, 501, { owned: 0, total: 13, active: 1 });
+    replaceComicLibraryProgress(7, [
+      {
+        externalServiceId: 501,
+        progress: { owned: 0, total: 13, active: 1 },
+      },
+    ]);
     assert.equal(
       loaded(comicMedia(MediaStatus.PROCESSING)).readerUrl,
       undefined
@@ -289,6 +323,8 @@ describe('Kavita reader links', () => {
     recordComicSeries(7, 501, { title: 'Look Back', kind: 'manga' });
     recordComicSeries(7, 502, { title: 'Watchmen', kind: 'comic' });
     await refreshKavitaIndex();
+    await refreshKavitaIndex(false);
+    assert.equal(seriesReads, 1);
     for (let i = 0; i < 5; i++) {
       assert.ok(getKavitaReaderUrl(7, 501));
       assert.ok(getKavitaReaderUrl(7, 502));
@@ -299,6 +335,24 @@ describe('Kavita reader links', () => {
     assert.equal(
       getKavitaReaderUrl(7, 503),
       'https://manga.example.com/library/1/series/11'
+    );
+    assert.equal(seriesReads, 1);
+  });
+
+  it('backs off failed refreshes unless a refresh is forced', async () => {
+    recordComicSeries(7, 501, { title: 'Look Back', kind: 'manga' });
+    kavitaUp = false;
+    await refreshKavitaIndex();
+    assert.equal(getKavitaReaderUrl(7, 501), undefined);
+
+    kavitaUp = true;
+    await refreshKavitaIndex(false);
+    assert.equal(getKavitaReaderUrl(7, 501), undefined);
+
+    await refreshKavitaIndex();
+    assert.equal(
+      getKavitaReaderUrl(7, 501),
+      'https://manga.example.com/library/1/series/13'
     );
     assert.equal(seriesReads, 1);
   });

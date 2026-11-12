@@ -58,6 +58,7 @@ const matches = new Map<string, KavitaSeriesMatch | null>();
 let index: KavitaIndex | undefined;
 let refreshing: Promise<void> | undefined;
 let lastFailureAt = 0;
+let lastFailureConnection: string | undefined;
 
 const key = (serviceId: number, externalServiceId: number) =>
   `${serviceId}:${externalServiceId}`;
@@ -244,6 +245,38 @@ export const recordComicSeries = (
   rematch(k);
 };
 
+/** Drop cached comic-service series that a complete scan no longer reports. */
+export const pruneComicSeriesRefs = (
+  serviceId: number,
+  currentExternalServiceIds: Iterable<number>
+): void => {
+  const current = new Set(currentExternalServiceIds);
+  const prefix = `${serviceId}:`;
+  for (const refKey of refs.keys()) {
+    if (!refKey.startsWith(prefix)) continue;
+    const externalServiceId = Number(refKey.slice(prefix.length));
+    if (!current.has(externalServiceId)) {
+      refs.delete(refKey);
+      matches.delete(refKey);
+    }
+  }
+};
+
+/** Drop cached series for a comics service that is no longer configured. */
+export const pruneComicSeriesRefServices = (
+  configuredServiceIds: Iterable<number>
+): void => {
+  const configured = new Set(configuredServiceIds);
+  for (const refKey of refs.keys()) {
+    const separator = refKey.indexOf(':');
+    const serviceId = Number(refKey.slice(0, separator));
+    if (!configured.has(serviceId)) {
+      refs.delete(refKey);
+      matches.delete(refKey);
+    }
+  }
+};
+
 /** True when the scan should look up this series' folder (new, or its files changed). */
 export const needsComicSeriesFolder = (
   serviceId: number,
@@ -260,21 +293,40 @@ export const isKavitaConfigured = (): boolean => !!getSettings().kavita;
  * Re-reads Kavita's libraries and series. A failure keeps the last good list.
  * Concurrent calls share one read.
  */
-export const refreshKavitaIndex = async (): Promise<void> => {
+export const refreshKavitaIndex = async (force = true): Promise<void> => {
   const settings = getSettings().kavita;
   if (!settings) {
     index = undefined;
     matches.clear();
+    lastFailureAt = 0;
+    lastFailureConnection = undefined;
     return;
   }
   if (refreshing) return refreshing;
+  const connection = connectionKey(settings);
+  const now = Date.now();
+  if (
+    !force &&
+    index?.connection === connection &&
+    now - index.loadedAt < KAVITA_INDEX_TTL_MS
+  ) {
+    return;
+  }
+  if (
+    !force &&
+    lastFailureConnection === connection &&
+    now - lastFailureAt < KAVITA_RETRY_MS
+  ) {
+    return;
+  }
   refreshing = (async () => {
     try {
       const api = new KavitaAPI(settings);
       const libraries = await api.getLibraries();
       const series = await api.getAllSeries();
-      index = buildKavitaIndex(libraries, series, connectionKey(settings));
+      index = buildKavitaIndex(libraries, series, connection);
       lastFailureAt = 0;
+      lastFailureConnection = undefined;
       rematch();
       const found = [...matches.values()].filter(Boolean).length;
       logger.debug(
@@ -283,6 +335,7 @@ export const refreshKavitaIndex = async (): Promise<void> => {
       );
     } catch (error) {
       lastFailureAt = Date.now();
+      lastFailureConnection = connection;
       logger.warn('Kavita could not be read; keeping the last series list', {
         ...LOG,
         errorMessage: error instanceof Error ? error.message : String(error),
@@ -295,7 +348,7 @@ export const refreshKavitaIndex = async (): Promise<void> => {
 };
 
 const refreshInBackground = () => {
-  void refreshKavitaIndex().catch(() => undefined);
+  void refreshKavitaIndex(false).catch(() => undefined);
 };
 
 /** The Kavita series for a comics-service series, from the cache (never waits). */
@@ -341,4 +394,5 @@ export const resetKavitaReader = (): void => {
   index = undefined;
   refreshing = undefined;
   lastFailureAt = 0;
+  lastFailureConnection = undefined;
 };

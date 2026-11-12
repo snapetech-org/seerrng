@@ -124,6 +124,16 @@ describe('BackIssue collection scanner', () => {
       'refreshKavitaIndex',
       async () => undefined
     );
+    const pruneServices = mock.method(
+      kavitaReader,
+      'pruneComicSeriesRefServices',
+      () => undefined
+    );
+    const pruneSeries = mock.method(
+      kavitaReader,
+      'pruneComicSeriesRefs',
+      () => undefined
+    );
     const recorded: unknown[] = [];
     const record = mock.method(
       kavitaReader,
@@ -185,6 +195,11 @@ describe('BackIssue collection scanner', () => {
     // only the owned series without a folder in its row is looked up
     assert.strictEqual(getSeries.mock.callCount(), 1);
     assert.strictEqual(record.mock.callCount(), 3);
+    assert.deepStrictEqual(pruneServices.mock.calls[0].arguments, [[7]]);
+    assert.deepStrictEqual(pruneSeries.mock.calls[0].arguments, [
+      7,
+      [412, 413, 414],
+    ]);
     // series in one batch are processed side by side
     recorded.sort(
       (a, b) => (a as [number, number])[1] - (b as [number, number])[1]
