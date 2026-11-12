@@ -5523,6 +5523,100 @@ components:
           type: string
         mediaInfo:
           $ref: '#/components/schemas/MediaInfo'
+        manga:
+          type: boolean
+          description: Manga or manhwa rather than a Western comic.
+        edition:
+          type: string
+          enum: [en, ja]
+          description: English edition or Japanese original, from the publisher.
+        anilistId:
+          type: integer
+        label:
+          type: string
+          example: Manga · English edition · Yen Press · 13 vols
+        description:
+          type: string
+        issues:
+          type: array
+          items:
+            type: object
+    ComicEdition:
+      type: object
+      required: [id, title]
+      properties:
+        id:
+          type: string
+          description: ComicVine volume ID; requests use it as mediaId.
+        title:
+          type: string
+        publisher:
+          type: string
+        language:
+          type: string
+          description: ISO 639-1 code derived from the publisher.
+        languageName:
+          type: string
+        startYear:
+          type: string
+        issueCount:
+          type: number
+        posterPath:
+          type: string
+        recommended:
+          type: boolean
+        mediaInfo:
+          $ref: '#/components/schemas/MediaInfo'
+    ComicWork:
+      type: object
+      required: [id, mediaType, kind, title, editions, editionsResolved]
+      properties:
+        id:
+          type: string
+          description: "`al-<AniList id>` for a manga work, else the main edition's ComicVine volume ID."
+          example: al-105778
+        mediaType:
+          type: string
+          enum: [comic]
+        kind:
+          type: string
+          enum: [manga, comic]
+        title:
+          type: string
+        anilistId:
+          type: integer
+        posterPath:
+          type: string
+        startYear:
+          type: string
+        publisher:
+          type: string
+        issueCount:
+          type: number
+        status:
+          type: string
+          enum: [ongoing, finished, hiatus, cancelled]
+        genres:
+          type: array
+          items:
+            type: string
+        description:
+          type: string
+        editions:
+          type: array
+          items:
+            $ref: '#/components/schemas/ComicEdition'
+        editionsResolved:
+          type: boolean
+          description: False for an AniList manga whose ComicVine editions haven't been looked up yet.
+        recommendedId:
+          type: string
+          description: The edition a quick request asks for (the English edition).
+        mediaInfo:
+          $ref: '#/components/schemas/MediaInfo'
+        mediaEditionId:
+          type: string
+          description: The edition mediaInfo belongs to.
     ComicServiceOption:
       type: object
       required:
@@ -6978,6 +7072,15 @@ components:
         id:
           type: number
           readOnly: true
+        comicProgress:
+          type: object
+          readOnly: true
+          description: Comics on BackIssue - issues or volumes in the library out of those known at the last scan.
+          properties:
+            owned:
+              type: integer
+            total:
+              type: integer
         tmdbId:
           type: number
           readOnly: true
@@ -19901,9 +20004,15 @@ paths:
             type: integer
             minimum: 0
             maximum: 100000
+        - in: query
+          name: group
+          description: '`works` answers a search as one ComicWork per work (manga grouped by their AniList series, Western runs with their translations) instead of one ComicResult per ComicVine volume.'
+          schema:
+            type: string
+            enum: [works]
       responses:
         '200':
-          description: Comic discovery results
+          description: Comic discovery results (ComicWork items when group=works)
           content:
             application/json:
               schema:
@@ -19941,6 +20050,125 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/ComicResult'
+  /discover/comics/landing:
+    get:
+      summary: Comics page sections
+      description: The sections the Comics/Manga page opens with. The library and requested comics, trending and new English-licensed manga from AniList (cached for 30 minutes), and Western comics from the ComicVine catalog index built so far. A section that can't be loaded is empty and listed in `failed`.
+      tags:
+        - search
+      responses:
+        '200':
+          description: Comics landing sections
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  library:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ComicWork'
+                  trending:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ComicWork'
+                  newest:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ComicWork'
+                  western:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ComicWork'
+                  failed:
+                    type: array
+                    items:
+                      type: string
+                      enum: [trending, newest, western]
+                  genres:
+                    type: array
+                    items:
+                      type: string
+                  publishers:
+                    type: array
+                    items:
+                      type: string
+                  comicVineConfigured:
+                    type: boolean
+        '503':
+          description: Comics are unavailable
+  /discover/comics/browse:
+    get:
+      summary: Browse comics and manga
+      description: A page of works for the Comics/Manga page. Manga come from AniList (English-licensed titles); Western comics from the ComicVine catalog index; `show` lists library or requested works instead.
+      tags:
+        - search
+      parameters:
+        - in: query
+          name: type
+          description: Omit for both (with show=library|requested); browsing without show defaults to manga.
+          schema:
+            type: string
+            enum: [manga, comic]
+        - in: query
+          name: show
+          schema:
+            type: string
+            enum: [library, requested]
+        - in: query
+          name: sort
+          description: Manga sorts are trending, popular, newest and title; Western comic sorts are issues, newest and title.
+          schema:
+            type: string
+            enum: [trending, popular, newest, title, issues]
+        - in: query
+          name: genre
+          description: Comma-separated AniList genres (manga only).
+          schema:
+            type: string
+            maxLength: 512
+        - in: query
+          name: status
+          schema:
+            type: string
+            enum: [ongoing, finished]
+        - in: query
+          name: publisher
+          description: One of the Western publishers the landing response lists.
+          schema:
+            type: string
+            maxLength: 128
+        - in: query
+          name: page
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 500
+            default: 1
+      responses:
+        '200':
+          description: A page of works
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  page:
+                    type: integer
+                  totalPages:
+                    type: integer
+                  totalResults:
+                    type: integer
+                  indexing:
+                    type: boolean
+                  comicVineConfigured:
+                    type: boolean
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ComicWork'
+        '503':
+          description: AniList or the comic catalog is unavailable
   /discover/sports:
     get:
       summary: Search Sportarr leagues
@@ -20561,6 +20789,31 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/BookResult'
+  /comic/work/{key}:
+    get:
+      summary: Get a comic or manga work with its editions
+      description: '`al-<AniList id>` is a manga; its ComicVine editions are looked up (at most two ComicVine searches, cached for a week). A ComicVine volume id answers with the work it was grouped into, or that volume alone.'
+      tags:
+        - search
+      parameters:
+        - in: path
+          name: key
+          required: true
+          schema:
+            type: string
+            pattern: '^(?:al-\d{1,9}|\d{1,12})$'
+            example: al-105778
+      responses:
+        '200':
+          description: The work and its editions
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ComicWork'
+        '404':
+          description: Comic not found
+        '503':
+          description: ComicVine or AniList is unavailable
   /comic/{comicId}/issues:
     get:
       summary: List issues in a comic volume
