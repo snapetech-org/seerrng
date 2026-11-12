@@ -54,18 +54,47 @@ const originalNavigationOrder = [
   'settings',
 ];
 
-/** Applies the upstream flat menu order without changing the visible links. */
+/** Keeps Seerr's core order and tucks fork-only routes into a More section. */
 export const getNavigationSectionsForTheme = (
   sections: NavigationSection[],
-  navigation: InterfaceThemeNavigation
+  navigation: InterfaceThemeNavigation,
+  upstream = false
 ): NavigationSection[] => {
-  if (navigation !== 'flat' || sections.length === 0) {
+  if (sections.length === 0 || (!upstream && navigation !== 'flat')) {
     return sections;
   }
 
   const links = sections
     .flatMap((section) => section.links)
     .map((link, sourceOrder) => ({ link, sourceOrder }));
+
+  if (upstream) {
+    const coreLinks = originalNavigationOrder.flatMap((id) =>
+      links.filter(({ link }) => link.id === id).map(({ link }) => link)
+    );
+    const coreLinkIds = new Set(originalNavigationOrder);
+    const extensionLinks = links
+      .filter(({ link }) => !coreLinkIds.has(link.id))
+      .map(({ link }) => link);
+
+    return [
+      {
+        id: 'original',
+        ariaLabelKey: 'discover',
+        links: coreLinks,
+      },
+      ...(extensionLinks.length > 0
+        ? [
+            {
+              id: 'upstream-more',
+              ariaLabelKey: 'more' as const,
+              headingKey: 'more' as const,
+              links: extensionLinks,
+            },
+          ]
+        : []),
+    ];
+  }
 
   links.sort((left, right) => {
     const leftOrder = originalNavigationOrder.indexOf(left.link.id);

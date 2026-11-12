@@ -107,3 +107,23 @@ Settings search now confirms actual keyboard focus after a visible destination
 is ready, rather than treating a DOM match as success. A delayed-visibility
 regression reproduces lost focus on both prior themes; a bounded observer now
 tracks visibility/control readiness and schedules focus after layout.
+
+## SeerrOrig rebuild started 2026-11-12
+
+The user reports that the current SeerrOrig presentation still looks materially
+unlike upstream. Treat the earlier screenshot gallery and route comparison as
+historical evidence only; it does not close this request or prove the user's
+current deployment matches those captures. The pinned reference remains the
+actual Seerr v3.5.1 source snapshot above.
+
+Source inspection found a concrete navigation divergence: the `flat` profile
+reordered Seerr's eight primary links but left every SeerrNG-only route in the
+same visible list. This first rebuild slice preserves the upstream primary
+order and moves fork-only routes into a native collapsible “More” disclosure.
+Permission and enabled-media filtering still happens before the menu is split.
+
+The screenshot archive noted above is not available in this checkout. Candidate
+rendering and matched upstream comparisons have not yet been repeated for this
+rebuild. Remaining scope includes the shared header, discovery, detail, search,
+settings, request, and fork-only page families; visual acceptance remains
+unverified until matching routes, states, and viewports are rendered.

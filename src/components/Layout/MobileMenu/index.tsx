@@ -17,7 +17,11 @@ import {
   isOptionalCatalogPathEnabled,
 } from '@app/utils/serviceAvailability';
 import { Transition } from '@headlessui/react';
-import { EllipsisHorizontalIcon, XMarkIcon } from '@heroicons/react/24/outline';
+import {
+  ChevronDownIcon,
+  EllipsisHorizontalIcon,
+  XMarkIcon,
+} from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { cloneElement, useEffect, useMemo, useRef, useState } from 'react';
@@ -43,6 +47,7 @@ const MobileMenu = ({
   const intl = useIntl();
   const { interfaceThemeDefinition } = useTheme();
   const persius = interfaceThemeDefinition.layout === 'persius';
+  const upstream = interfaceThemeDefinition.layout === 'upstream';
   const [isOpen, setIsOpen] = useState(false);
   const { hasPermission, user } = useUser();
   const showBlocklistNavigation = useBlocklistNavigation();
@@ -103,9 +108,10 @@ const MobileMenu = ({
     () =>
       getNavigationSectionsForTheme(
         filteredSections,
-        interfaceThemeDefinition.navigation
+        interfaceThemeDefinition.navigation,
+        upstream
       ),
-    [filteredSections, interfaceThemeDefinition.navigation]
+    [filteredSections, interfaceThemeDefinition.navigation, upstream]
   );
   const filteredLinks = useMemo(
     () => displayedSections.flatMap((section) => section.links),
@@ -141,26 +147,8 @@ const MobileMenu = ({
         leaveTo="opacity-0 translate-y-0"
         className="app-menu-gradient mobile-menu-navigation absolute inset-x-0 top-0 flex w-full -translate-y-full flex-col border-t border-gray-600 px-6 py-6 font-semibold text-gray-100 backdrop-blur"
       >
-        {displayedSections.map((section) => (
-          <div
-            key={`mobile-menu-section-${section.id}`}
-            className="sidebar-navigation-section"
-            role={
-              interfaceThemeDefinition.navigation === 'flat'
-                ? undefined
-                : 'group'
-            }
-            aria-label={
-              interfaceThemeDefinition.navigation === 'flat'
-                ? undefined
-                : intl.formatMessage(menuMessages[section.ariaLabelKey])
-            }
-          >
-            {section.headingKey && (
-              <h2 className="sidebar-navigation-heading">
-                {intl.formatMessage(menuMessages[section.headingKey])}
-              </h2>
-            )}
+        {displayedSections.map((section) => {
+          const content = (
             <div className="sidebar-navigation-items">
               {section.links.map((link: NavigationLink) => {
                 const isActive = router.pathname.match(link.activeRegExp);
@@ -217,8 +205,47 @@ const MobileMenu = ({
                 );
               })}
             </div>
-          </div>
-        ))}
+          );
+
+          if (upstream && section.id === 'upstream-more') {
+            return (
+              <details
+                key={`mobile-menu-section-${section.id}`}
+                className="sidebar-navigation-section upstream-navigation-more"
+              >
+                <summary className="sidebar-navigation-heading upstream-navigation-more-toggle">
+                  {intl.formatMessage(menuMessages.more)}
+                  <ChevronDownIcon aria-hidden="true" />
+                </summary>
+                {content}
+              </details>
+            );
+          }
+
+          return (
+            <div
+              key={`mobile-menu-section-${section.id}`}
+              className="sidebar-navigation-section"
+              role={
+                interfaceThemeDefinition.navigation === 'flat'
+                  ? undefined
+                  : 'group'
+              }
+              aria-label={
+                interfaceThemeDefinition.navigation === 'flat'
+                  ? undefined
+                  : intl.formatMessage(menuMessages[section.ariaLabelKey])
+              }
+            >
+              {section.headingKey && (
+                <h2 className="sidebar-navigation-heading">
+                  {intl.formatMessage(menuMessages[section.headingKey])}
+                </h2>
+              )}
+              {content}
+            </div>
+          );
+        })}
       </Transition>
       <div className="app-mobile-menu-surface padding-bottom-safe border-t border-gray-600 backdrop-blur">
         <div className="flex h-full items-center justify-between px-6 py-4 text-gray-100">

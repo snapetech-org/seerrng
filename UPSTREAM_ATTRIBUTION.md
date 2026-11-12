@@ -182,6 +182,7 @@ These records were already identified as incorporated, adapted, or verified in S
 - [PR #3659](https://github.com/seerr-team/seerr/pull/3659) — “fix(requests): complete pending requests when media becomes available,” opened upstream by [@fallenbagel](https://github.com/fallenbagel). SeerrNG incorporated, adapted, or verified the represented upstream behavior.
 - [issue #3665](https://github.com/seerr-team/seerr/issues/3665) — “Version check: GitHub cache's 6 h TTL is never applied and failed lookups are not cached, so /api/v1/status pollers retry api.github.com on every request after a 403,” opened upstream by [@wstock](https://github.com/wstock). SeerrNG incorporated, adapted, or verified the represented upstream behavior.
 - [PR #3667](https://github.com/seerr-team/seerr/pull/3667) — “feat(i18n): complete Indonesian (id.json) translation,” opened upstream by [@centralsofware](https://github.com/centralsofware). SeerrNG incorporated, adapted, or verified the represented upstream behavior.
+- [Seerr v3.5.1 sidebar source](https://github.com/seerr-team/seerr/blob/564bfb08b54caa374bddaf820abfd226e5e69151/src/components/Layout/Sidebar/index.tsx) — the Seerr v3.5.1 source snapshot was prepared for release by [@gauthier-th](https://github.com/gauthier-th). SeerrNG independently adapts the upstream eight-link primary order for SeerrOrig and keeps fork-only destinations reachable in a collapsed “More” section; this source credit does not claim the release author contributed to or endorsed SeerrNG.
 
 ## Referenced or in-progress upstream sources
 

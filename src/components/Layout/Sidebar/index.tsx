@@ -23,7 +23,7 @@ import {
 } from '@app/utils/serviceAvailability';
 import versionedAsset from '@app/utils/versionedAsset';
 import { Transition, TransitionChild } from '@headlessui/react';
-import { XMarkIcon } from '@heroicons/react/24/outline';
+import { ChevronDownIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -53,6 +53,7 @@ const Sidebar = ({
   const intl = useIntl();
   const { interfaceThemeDefinition } = useTheme();
   const persius = interfaceThemeDefinition.layout === 'persius';
+  const upstream = interfaceThemeDefinition.layout === 'upstream';
   const { user, hasPermission } = useUser();
   const showBlocklistNavigation = useBlocklistNavigation();
   const { currentSettings } = useSettings();
@@ -89,7 +90,8 @@ const Sidebar = ({
     persius
       ? getPersiusNavigationSections(visibleSidebarSections)
       : visibleSidebarSections,
-    interfaceThemeDefinition.navigation
+    interfaceThemeDefinition.navigation,
+    upstream
   );
 
   const renderNavigationLink = (
@@ -206,6 +208,20 @@ const Sidebar = ({
           >
             <summary className="sidebar-navigation-heading">
               {intl.formatMessage(menuMessages.more)}
+            </summary>
+            {content}
+          </details>
+        );
+      if (upstream && section.id === 'upstream-more')
+        return (
+          <details
+            key={`${device}-${section.id}`}
+            className="sidebar-navigation-section upstream-navigation-more"
+            data-navigation-section={section.id}
+          >
+            <summary className="sidebar-navigation-heading upstream-navigation-more-toggle">
+              {intl.formatMessage(menuMessages.more)}
+              <ChevronDownIcon aria-hidden="true" />
             </summary>
             {content}
           </details>
