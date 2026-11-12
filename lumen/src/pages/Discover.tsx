@@ -314,7 +314,7 @@ export default function Discover() {
       )}
 
       {on.comingSoon && !empty(soon.data?.results) && (
-        <Section title="Coming soon" link={['Calendar', '/soon']}>
+        <Section title="Coming soon" link={['See all', '/soon']}>
           {soon.data ? (
             <Rail>
               {soon.data.results.map((m) => (
