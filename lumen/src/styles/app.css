@@ -1477,11 +1477,6 @@ body.is-detail .tabbar {
   z-index: 2;
   margin-top: 6px;
 }
-.si .act .btn {
-  max-width: 100%;
-  white-space: normal;
-}
-
 /* ---------- Search ---------- */
 .top-hit {
   display: grid;

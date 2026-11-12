@@ -293,6 +293,11 @@ h3 {
   padding: 0 14px;
   font-size: 14px;
 }
+/* Constrained card actions may wrap their label instead of leaving the card. */
+.btn[data-label-wrap] {
+  max-width: 100%;
+  white-space: normal;
+}
 .icon-btn {
   width: 44px;
   height: 44px;
