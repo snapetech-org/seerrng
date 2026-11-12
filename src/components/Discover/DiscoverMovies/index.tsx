@@ -1,6 +1,7 @@
 import CachedImage from '@app/components/Common/CachedImage';
 import Header from '@app/components/Common/Header';
 import ListView from '@app/components/Common/ListView';
+import PageErrorMessage from '@app/components/Common/PageErrorMessage';
 import PageTitle from '@app/components/Common/PageTitle';
 import type { FilterOptions } from '@app/components/Discover/constants';
 import {
@@ -20,7 +21,6 @@ import useDiscoverScrollRestoration from '@app/hooks/useDiscoverScrollRestoratio
 import { useSearchActivityReporter } from '@app/hooks/useSearchActivity';
 import useUpstreamTheme from '@app/hooks/useUpstreamTheme';
 import { Permission, useUser } from '@app/hooks/useUser';
-import ErrorPage from '@app/pages/_error';
 import defineMessages from '@app/utils/defineMessages';
 import type { ProductionCompany } from '@server/models/common';
 import type { MovieResult } from '@server/models/Search';
@@ -31,6 +31,10 @@ import { useIntl } from 'react-intl';
 const messages = defineMessages('components.Discover.DiscoverMovies', {
   movies: 'Movies',
   studioMovies: '{studio} Movies',
+  loadErrorTitle: 'Movies Could Not Be Loaded',
+  loadErrorDescription:
+    'The discovery request failed. Try again or adjust the filters.',
+  retryDescription: 'Retry loading movies using the current filters.',
 });
 
 interface DiscoverMoviesProps {
@@ -89,15 +93,6 @@ const DiscoverMovies = ({
   const title = studio
     ? intl.formatMessage(messages.studioMovies, { studio: studio.name })
     : (titleOverride ?? intl.formatMessage(messages.movies));
-  if (discover.error) {
-    return (
-      <>
-        <PageTitle title={title} />
-        <Header>{title}</Header>
-        <ErrorPage statusCode={500} />
-      </>
-    );
-  }
   const curatedStudio = studio
     ? studios.find((item) => item.url.endsWith(`/${studio.id}`))
     : undefined;
@@ -155,18 +150,31 @@ const DiscoverMovies = ({
           />
         )}
       </div>
-      <ListView
-        enableDiscoverNavigation
-        items={discover.titles}
-        isEmpty={discover.isEmpty}
-        isLoading={
-          discover.isLoadingInitialData ||
-          discover.isSearchingFilteredResults ||
-          (discover.isLoadingMore && discover.titles.length > 0)
-        }
-        isReachingEnd={discover.isReachingEnd}
-        onScrollBottom={discover.fetchMore}
-      />
+      {discover.error && (
+        <PageErrorMessage
+          title={intl.formatMessage(messages.loadErrorTitle)}
+          description={intl.formatMessage(messages.loadErrorDescription)}
+          retry={{
+            onClick: () => discover.mutate?.(),
+            tooltip: intl.formatMessage(messages.retryDescription),
+            busy: discover.isValidating,
+          }}
+        />
+      )}
+      {(!discover.error || discover.titles.length > 0) && (
+        <ListView
+          enableDiscoverNavigation
+          items={discover.titles}
+          isEmpty={discover.isEmpty}
+          isLoading={
+            discover.isLoadingInitialData ||
+            discover.isSearchingFilteredResults ||
+            (discover.isLoadingMore && discover.titles.length > 0)
+          }
+          isReachingEnd={!!discover.error || discover.isReachingEnd}
+          onScrollBottom={discover.fetchMore}
+        />
+      )}
     </>
   );
 };
