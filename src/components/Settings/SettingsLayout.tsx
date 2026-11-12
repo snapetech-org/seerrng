@@ -613,10 +613,13 @@ const SettingsLayoutContent = ({ children }: SettingsLayoutProps) => {
       {!upstream && (
         <Header>{intl.formatMessage(globalMessages.settings)}</Header>
       )}
-      <div className="settings-page-navigation-row">
+      <div
+        className="settings-page-navigation-row"
+      >
         <SettingsTabs
           tabType={upstream ? 'default' : 'filter'}
           settingsRoutes={settingsRoutes}
+          compactOnNarrowScreens
         />
         <div
           className="app-action-row settings-page-controls"

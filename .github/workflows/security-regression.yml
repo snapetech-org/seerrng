@@ -75,10 +75,38 @@ jobs:
         run: pnpm cypress:prepare
       - name: Install Chromium
         run: pnpm exec playwright install --with-deps chromium
-      - name: Exercise both production frontends under CSP
+      - name: Exercise production frontends under CSP and responsive layouts
         env:
           E2E_OFFLINE: true
-        run: pnpm exec playwright test playwright/production-csp.spec.ts playwright/client-tokens.spec.ts playwright/narrator-permissions.spec.ts playwright/movie-discovery-recovery.spec.ts
+        run: >-
+          pnpm exec playwright test playwright/production-csp.spec.ts playwright/client-tokens.spec.ts
+          playwright/narrator-permissions.spec.ts
+          playwright/movie-discovery-recovery.spec.ts
+          playwright/settings-sticky-navigation.spec.ts
+      - name: Install Lumen locked dependencies for the tablet regression
+        working-directory: lumen
+        run: npm ci --ignore-scripts
+      - name: Build Lumen for the tablet regression
+        working-directory: lumen
+        run: npm run build
+      - name: Install Chromium for Lumen
+        working-directory: lumen
+        run: npx --no-install playwright install --with-deps chromium
+      - name: Exercise Coming Soon tablet layout and request behavior
+        working-directory: lumen
+        run: >-
+          npm run test:browser --
+          tests/browser/coming-soon-layout.spec.ts
+          --project=tablet --workers=1
+        env:
+          LUMEN_TEST_OUTPUT: ${{ runner.temp }}/lumen-coming-soon-evidence
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        if: always()
+        with:
+          name: security-lumen-coming-soon-evidence
+          path: ${{ runner.temp }}/lumen-coming-soon-evidence/
+          if-no-files-found: ignore
+          retention-days: 14
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         if: always()
         with:

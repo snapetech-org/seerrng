@@ -173,6 +173,7 @@ export default function Soon() {
                       ) : (
                         <button
                           className="btn btn-sm btn-tonal"
+                          data-label-wrap
                           onClick={() =>
                             asks ||
                             (it.mediaType === 'tv' ? offers4kTv : offers4kMovie)
