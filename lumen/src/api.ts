@@ -98,6 +98,7 @@ export interface TitleResult {
 export interface BookResult {
   id: string;
   mediaType: 'book';
+  provider?: 'openlibrary' | 'bookshelf';
   title: string;
   author?: string;
   posterPath?: string | null;
