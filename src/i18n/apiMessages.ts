@@ -656,6 +656,7 @@ export const apiMessages: Record<
   m2fed7b1ffd4626d82cdc: 'Could not leave the watch session.',
   m3036e36626bbf2935df0:
     'Sonarr no longer confirms every selected season is complete.',
+  m3074674271f4cfa024bf: 'External API shared rate limit is invalid.',
   m3077c61cfc2cde85f9fc:
     'Incomplete or invalid Radarr inventory; deletion reconciliation is not safe.',
   m307eb7ccabbb19a0db29:
@@ -2447,6 +2448,8 @@ export const apiMessages: Record<
   mb0599ffa6829152b54ae: 'Collection exceeds the safe lookup limit.',
   mb072b076f9fcce219f2b:
     'discordIds may not contain more than {value0} entries.',
+  mb07ccf2a30b4750b8f66:
+    'External API shared rate limit configuration changed.',
   mb09b1612046a75c854b3: 'Unable to verify official TVDB season data.',
   mb09e464918d4f8ef0786: 'Bindery returned an incomplete library scan.',
   mb0b93ff42dc2215257b2: 'A collection title could not be mapped',
@@ -2819,6 +2822,7 @@ export const apiMessages: Record<
   mcd0ab584bf5635189eba:
     '{value0} {value1} must be an integer between 1 and 65535.',
   mcd17bb3560eadab307c7: 'Discogs release identity mismatch',
+  mcd271fe8144124f7ec77: 'External API request canceled',
   mcd5e9d46a2997275db3d: '[Sonarr] Failed to retrieve episode files: {value0}',
   mcdb223031a91ed791afb: 'Could not load TV request access requests.',
   mcdca62ab8e269f635a5d: 'Invalid TMDB metadata ID',
@@ -3105,6 +3109,7 @@ export const apiMessages: Record<
   me1b41fc8e1d4bd73cab7: 'Jellystat API key is required.',
   me1eb45d8578142f483c8: 'Failed to get series history',
   me237a93a58ed25d364ac: 'Plex returned an invalid library count.',
+  me243049e80ec1d32ff3d: 'External API rate limit capacity exceeded.',
   me24b06582057a31f4a81: 'OIDC authorization redirect is not allowed.',
   me24b7cd232968fd51d4a: 'Invalid shared game filters.',
   me24ecd01e1188c6ba5a4:
