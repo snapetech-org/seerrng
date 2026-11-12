@@ -246,7 +246,9 @@ test('person credits refetch after a category or maturity policy tightens', asyn
   await expect(
     page.getByRole('heading', { name: 'Jane Example' })
   ).toBeVisible();
-  await expect(page.getByText('Example Film')).toBeVisible();
+  const visibleCreditTitle = page.locator('.grid .poster > a.t');
+  await expect(visibleCreditTitle).toHaveText('Example Film');
+  await expect(visibleCreditTitle).toBeVisible();
   await expect.poll(() => creditRequests).toBe(1);
   await page.waitForTimeout(500);
 
@@ -257,7 +259,7 @@ test('person credits refetch after a category or maturity policy tightens', asyn
   await expect(
     page.getByRole('heading', { name: 'Jane Example' })
   ).toBeVisible();
-  await expect(page.getByText('Example Film')).toHaveCount(0);
+  await expect(page.locator('.grid .poster > a.t')).toHaveCount(0);
   await expect.poll(() => creditRequests).toBe(2);
 });
 
