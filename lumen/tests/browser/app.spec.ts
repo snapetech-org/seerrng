@@ -283,8 +283,17 @@ test('account changes clear private API responses and preferences without reload
       .first()
   ).toBeVisible();
   await profile(page);
-  await page
-    .getByRole('group', { name: 'Theme', exact: true })
+  const themeControls = page.getByRole('group', {
+    name: 'Theme',
+    exact: true,
+  });
+  const darkTheme = themeControls.getByRole('button', {
+    name: 'Dark',
+    exact: true,
+  });
+  await darkTheme.click();
+  await expect(darkTheme).toHaveAttribute('aria-pressed', 'true');
+  await themeControls
     .getByRole('button', { name: 'Light', exact: true })
     .click();
   await expect

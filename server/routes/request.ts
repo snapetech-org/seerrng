@@ -1285,7 +1285,10 @@ const sanitizeMediaRequestBody = (
     anilistId = parsePositiveRouteId(bodyObject.anilistId, maxRequestIdValue);
     if (anilistId === undefined) {
       return {
-        error: { status: 400, message: 'anilistId must be a positive integer.' },
+        error: {
+          status: 400,
+          message: 'anilistId must be a positive integer.',
+        },
       };
     }
   }
@@ -2628,6 +2631,13 @@ requestRoutes.get<
       includeMediaIdentifiers: true,
       viewer: requestReadLease?.actor ?? req.user,
     });
+
+    // The request rows and their viewer projection are now loaded. Profile
+    // names are display-only and call external services, so release the
+    // user-security admission transaction before performing those calls.
+    // Keeping it open here can deadlock with service admission when both
+    // resources hash to the same PostgreSQL slot.
+    await requestReadLease?.release();
 
     const canHydrateServiceProfiles =
       requestReadLease?.actor.hasPermission(
