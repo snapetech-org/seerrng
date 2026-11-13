@@ -11,6 +11,7 @@ import { AuthProvider, useAuth } from './auth';
 import { PageBoundary } from './components/PageBoundary';
 import Shell, { Placeholder } from './components/Shell';
 import { ToastProvider } from './components/toast';
+import { embedded } from './deployment';
 import { MediaServerProvider } from './mediaServer';
 import BookDetail from './pages/BookDetail';
 import Books from './pages/Books';
@@ -92,15 +93,16 @@ function App() {
 }
 
 // pages still controlled by SeerrNG's old service worker: drop it (public/sw.js does the same
-// for browsers that only check /sw.js)
-if ('serviceWorker' in navigator) {
+// for browsers that only check /sw.js). Not when included in SeerrNG under /lumen/: there
+// the service worker and caches belong to classic SeerrNG, which still uses them.
+if (!embedded && 'serviceWorker' in navigator) {
   navigator.serviceWorker
     .getRegistrations()
     .then((regs) => regs.forEach((r) => r.unregister()))
     .catch(() => {});
 }
 // ...and the offline caches it left behind
-if ('caches' in window) {
+if (!embedded && 'caches' in window) {
   caches
     .keys()
     .then((keys) =>
