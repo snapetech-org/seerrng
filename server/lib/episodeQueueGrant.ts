@@ -3,7 +3,7 @@ import {
   type EpisodeQueueAccessStatus,
 } from '@server/constants/episodeQueueAccess';
 
-/** An administrator may grant a root request a buffer independently of account defaults. */
+/** A user manager may grant a root request a buffer independently of account defaults. */
 export const hasEpisodeQueueGrant = (request: {
   watchAheadUsesUserDefault: boolean;
   requestedBy?: { episodeQueueAccessStatus: EpisodeQueueAccessStatus };

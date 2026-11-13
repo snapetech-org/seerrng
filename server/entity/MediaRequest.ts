@@ -681,15 +681,30 @@ export class MediaRequest {
       requestUser = requestUserWithPlaybackCredentials;
     }
 
-    const watchAheadUsesUserDefault = true;
+    const hasExplicitEpisodeQueueOverride =
+      requestBody.watchAheadEpisodeCount !== undefined;
+    if (
+      hasExplicitEpisodeQueueOverride &&
+      (!user.hasPermission(Permission.MANAGE_USERS) ||
+        requestBody.mediaType !== MediaType.TV ||
+        options.isAutoRequest)
+    ) {
+      throw new RequestPermissionError(
+        'Only user managers can set an Episode Queue override for an interactive TV request.'
+      );
+    }
+    let watchAheadUsesUserDefault = !hasExplicitEpisodeQueueOverride;
     let watchAheadEpisodeCount =
       requestBody.mediaType === MediaType.TV && !options.isAutoRequest
-        ? (requestUser.settings?.episodeQueueDefaultEpisodeCount ?? 0)
+        ? hasExplicitEpisodeQueueOverride
+          ? requestBody.watchAheadEpisodeCount!
+          : (requestUser.settings?.episodeQueueDefaultEpisodeCount ?? 0)
         : 0;
     if (requesterTagOnly) {
       // This action changes only the requester's Servarr tag. The normal TV
       // watch-ahead selector describes acquisition scope and does not apply.
       watchAheadEpisodeCount = 0;
+      watchAheadUsesUserDefault = true;
     }
     if (
       !Number.isSafeInteger(watchAheadEpisodeCount) ||
@@ -698,6 +713,15 @@ export class MediaRequest {
     ) {
       throw new RequestPermissionError(
         'The requested episode queue must be between 0 and 5 episodes.'
+      );
+    }
+    if (
+      hasExplicitEpisodeQueueOverride &&
+      watchAheadEpisodeCount > 0 &&
+      !hasMediaRequestPermission(requestUser, MediaType.TV, requestBody.is4k)
+    ) {
+      throw new RequestPermissionError(
+        'The request owner must have permission for the selected TV quality to use Episode Queue.'
       );
     }
     const isManagedRequestForAnotherUser =
@@ -2926,6 +2950,11 @@ export class MediaRequest {
         !Number.isSafeInteger(Number(resolvedTvdbId)) ||
         Number(resolvedTvdbId) <= 0
       ) {
+        if (hasExplicitEpisodeQueueOverride) {
+          throw new RequestPermissionError(
+            'Episode Queue needs a TVDB identity for this series.'
+          );
+        }
         watchAheadEpisodeCount = 0;
       } else if (
         requestBody.seasonRequests?.length !== 1 ||

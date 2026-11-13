@@ -525,7 +525,7 @@ describe('per-request Episode Queue API', () => {
 });
 
 describe('POST /request with Episode Queue', () => {
-  it('rejects client-supplied per-request queue values', async () => {
+  it('rejects per-request queue values supplied by non-managers', async () => {
     const owner = await loginAs('friend@seerr.dev', 'test1234');
     const response = await owner.post('/request').send({
       mediaType: 'tv',
@@ -535,7 +535,7 @@ describe('POST /request with Episode Queue', () => {
     });
 
     assert.strictEqual(response.status, 403);
-    assert.match(response.body.message, /managed by an administrator/i);
+    assert.match(response.body.message, /only user managers/i);
     assert.strictEqual(
       await getRepository(MediaRequest).count({
         where: {

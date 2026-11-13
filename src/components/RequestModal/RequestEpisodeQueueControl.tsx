@@ -9,12 +9,14 @@ import { useIntl } from 'react-intl';
 import { useSWRConfig } from 'swr';
 
 const messages = defineMessages('components.RequestEpisodeQueueControl', {
-  watchAheadLoading: 'Loading your Episode Queue setting…',
+  watchAheadLoading: 'Loading Episode Queue settings…',
   watchAheadOverride: 'Queue Length',
   watchAheadUseDefault: 'Account default ({count})',
   watchAheadOff: 'Off',
   watchAheadOverrideHelp:
     'Queue length is a playback buffer, not a total episode limit. Existing requests and downloads stay in place. For a pending request, choose one starting episode before approval.',
+  watchAheadDraftHelp:
+    'Set the buffer for this series request. When on, it starts with one episode; playback then keeps the selected number of upcoming episodes queued.',
   watchAheadSaved: 'Episode Queue saved.',
   watchAheadSaveFailed:
     'Could not save Episode Queue. Reload the request and try again.',
@@ -23,6 +25,71 @@ const messages = defineMessages('components.RequestEpisodeQueueControl', {
 });
 
 type QueueSetting = { episodeCount: number; usesUserDefault: boolean };
+
+export const RequestEpisodeQueueSelector = ({
+  id,
+  value,
+  defaultEpisodeCount,
+  onChange,
+  disabled,
+  help = 'none',
+}: {
+  id: string;
+  value: number;
+  defaultEpisodeCount: number;
+  onChange: (value: number) => void;
+  disabled?: boolean;
+  help?: 'none' | 'draft' | 'saved';
+}) => {
+  const intl = useIntl();
+  const defaultValueLabel =
+    defaultEpisodeCount > 0
+      ? intl.formatMessage(messages.watchAheadEpisodeOption, {
+          count: defaultEpisodeCount,
+        })
+      : intl.formatMessage(messages.watchAheadOff);
+
+  return (
+    <>
+      <RequestListboxControl
+        id={id}
+        loadingLabel={intl.formatMessage(messages.watchAheadLoading)}
+        label={intl.formatMessage(messages.watchAheadOverride)}
+        value={value}
+        options={[
+          {
+            value: -1,
+            label: intl.formatMessage(messages.watchAheadUseDefault, {
+              count: defaultValueLabel,
+            }),
+          },
+          {
+            value: 0,
+            label: intl.formatMessage(messages.watchAheadOff),
+          },
+          ...[1, 2, 3, 4, 5].map((count) => ({
+            value: count,
+            label: intl.formatMessage(messages.watchAheadEpisodeOption, {
+              count,
+            }),
+          })),
+        ]}
+        onChange={onChange}
+        disabled={disabled}
+      />
+      {help !== 'none' && (
+        <p className="request-episode-queue-description refreshed-detail-text-muted">
+          {intl.formatMessage(
+            help === 'draft'
+              ? messages.watchAheadDraftHelp
+              : messages.watchAheadOverrideHelp
+          )}
+        </p>
+      )}
+    </>
+  );
+};
+
 const RequestEpisodeQueueControl = ({
   requestId,
   episodeCount,
@@ -45,35 +112,14 @@ const RequestEpisodeQueueControl = ({
   const [savingQueueOverride, setSavingQueueOverride] = useState(false);
   return (
     <div className="request-selection-options">
-      <RequestListboxControl
+      <RequestEpisodeQueueSelector
         id="request-episode-queue-override"
-        loadingLabel={intl.formatMessage(messages.watchAheadLoading)}
-        label={intl.formatMessage(messages.watchAheadOverride)}
         value={queueOverride}
-        options={[
-          {
-            value: -1,
-            label: intl.formatMessage(messages.watchAheadUseDefault, {
-              count: defaultEpisodeCount,
-            }),
-          },
-          {
-            value: 0,
-            label: intl.formatMessage(messages.watchAheadOff),
-          },
-          ...[1, 2, 3, 4, 5].map((count) => ({
-            value: count,
-            label: intl.formatMessage(messages.watchAheadEpisodeOption, {
-              count,
-            }),
-          })),
-        ]}
+        defaultEpisodeCount={defaultEpisodeCount}
         onChange={setQueueOverride}
         disabled={savingQueueOverride}
+        help="saved"
       />
-      <p className="request-episode-queue-description refreshed-detail-text-muted">
-        {intl.formatMessage(messages.watchAheadOverrideHelp)}
-      </p>
       <Button
         type="button"
         buttonType="primary"

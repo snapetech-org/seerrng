@@ -23143,7 +23143,7 @@ paths:
 
         The requester may set `requestQuotaApproval: true` for their own movie or TV request when it exceeds their quota. Only one quota exception per media type can await review for a user. Pending exceptions count against quota until an administrator approves them; approved exceptions are excluded from future quota usage. Bulk, automated, and on-behalf requests cannot use this path.
 
-        TV Episode Queue is applied from the request owner's administrator-managed profile default. Per-request Episode Queue values are not accepted.
+        TV Episode Queue follows the request owner's profile default unless a user manager sets a per-request queue length. A per-request value of 0 turns the queue off for that series; values from 1 to 5 queue that many upcoming episodes. Omit the field to follow the account default. The request owner's TV quality permission and the Episode Queue identity and playback requirements still apply.
       tags:
         - request
       requestBody:
@@ -23153,9 +23153,7 @@ paths:
             schema:
               type: object
               not:
-                anyOf:
-                  - required: [watchAheadEpisodeCount]
-                  - required: [watchAheadUsesUserDefault]
+                required: [watchAheadUsesUserDefault]
               properties:
                 mediaType:
                   type: string
@@ -23183,6 +23181,12 @@ paths:
                   description: Exact season and episode selections. Omit episodeNumbers to request an entire season.
                   items:
                     $ref: '#/components/schemas/SeasonEpisodeSelection'
+                watchAheadEpisodeCount:
+                  type: integer
+                  minimum: 0
+                  maximum: 5
+                  description: >-
+                    Per-request Episode Queue override for an interactive TV request. A value from 0 to 5 sets this series request's queue length; omit it to follow the request owner's account default. Requires MANAGE_USERS.
                 is4k:
                   type: boolean
                   example: false
@@ -23261,7 +23265,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/MediaRequest'
         '403':
-          description: Request permission denied, quota exceeded without approval, or a per-request Episode Queue value was supplied
+          description: Request permission denied, quota exceeded without approval, or the caller is not authorized to set a per-request Episode Queue value
           content:
             application/json:
               schema:
@@ -24812,7 +24816,7 @@ paths:
                 $ref: '#/components/schemas/MediaRequest'
     put:
       summary: Update MediaRequest
-      description: Updates a specific media request and returns the request in a JSON object. Requires the `MANAGE_REQUESTS` permission. Episode Queue settings remain controlled by the request owner's profile default.
+      description: Updates a specific media request and returns the request in a JSON object. Requires the `MANAGE_REQUESTS` permission. Episode Queue settings are changed through the dedicated user-manager endpoint.
       tags:
         - request
       parameters:
@@ -24915,7 +24919,7 @@ paths:
           description: Succesfully removed request
   /request/{requestId}/episode-queue:
     post:
-      summary: Set an administrator's per-request Episode Queue override
+      summary: Set a user manager's per-request Episode Queue override
       description: Changes future queueing only. Existing episode selections and downloaded files are preserved. Send null to follow the owner's account default again.
       tags: [request]
       parameters:
@@ -24951,7 +24955,7 @@ paths:
         '400':
           description: Invalid queue policy
         '403':
-          description: Administrator access required
+          description: User-management permission required
         '404':
           description: Request not found
         '409':

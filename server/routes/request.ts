@@ -1204,6 +1204,7 @@ const sanitizeMediaRequestBody = (
     requireCreateIdentity?: boolean;
     preserveNullOverrides?: boolean;
     allowRequesterTagOnly?: boolean;
+    allowEpisodeQueueOverride?: boolean;
   } = {}
 ): RequestOptionValidationResult<MediaRequestBody> => {
   if (!body || typeof body !== 'object' || Array.isArray(body)) {
@@ -1218,17 +1219,43 @@ const sanitizeMediaRequestBody = (
   const bodyObject = body as Partial<Record<keyof MediaRequestBody, unknown>>;
   const mediaType = bodyObject.mediaType;
 
-  if (
-    bodyObject.watchAheadEpisodeCount !== undefined ||
-    bodyObject.watchAheadUsesUserDefault !== undefined
-  ) {
+  if (bodyObject.watchAheadUsesUserDefault !== undefined) {
     return {
       error: {
         status: 403,
-        message:
-          'Episode Queue is managed by an administrator from the user profile.',
+        message: 'Episode Queue default ownership is managed by the server.',
       },
     };
+  }
+
+  if (bodyObject.watchAheadEpisodeCount !== undefined) {
+    if (
+      !options.requireCreateIdentity ||
+      !options.allowEpisodeQueueOverride ||
+      mediaType !== MediaType.TV ||
+      bodyObject.requesterTagOnly === true
+    ) {
+      return {
+        error: {
+          status: 403,
+          message:
+            'Episode Queue overrides are only valid when creating an interactive TV request.',
+        },
+      };
+    }
+
+    if (
+      !Number.isSafeInteger(bodyObject.watchAheadEpisodeCount) ||
+      (bodyObject.watchAheadEpisodeCount as number) < 0 ||
+      (bodyObject.watchAheadEpisodeCount as number) > 5
+    ) {
+      return {
+        error: {
+          status: 400,
+          message: 'watchAheadEpisodeCount must be an integer from 0 to 5.',
+        },
+      };
+    }
   }
 
   if (
@@ -3066,6 +3093,7 @@ requestRoutes.post<never, MediaRequestCreationResponse, MediaRequestBody>(
       const body = sanitizeMediaRequestBody(req.body, {
         requireCreateIdentity: true,
         allowRequesterTagOnly: true,
+        allowEpisodeQueueOverride: true,
       });
       if ('error' in body) {
         logRequestValidationFailure(
@@ -3077,6 +3105,17 @@ requestRoutes.post<never, MediaRequestCreationResponse, MediaRequestBody>(
         return next(body.error);
       }
 
+      if (
+        body.value.watchAheadEpisodeCount !== undefined &&
+        !req.user.hasPermission(Permission.MANAGE_USERS)
+      ) {
+        return next({
+          status: 403,
+          message:
+            'Only user managers can set an Episode Queue override for a request.',
+        });
+      }
+
       const episodeQueueUser =
         body.value.userId && body.value.userId !== req.user.id
           ? await getRepository(User).findOne({
@@ -3085,7 +3124,9 @@ requestRoutes.post<never, MediaRequestCreationResponse, MediaRequestBody>(
           : req.user;
       const configuredEpisodeQueueCount =
         body.value.mediaType === MediaType.TV
-          ? (episodeQueueUser?.settings?.episodeQueueDefaultEpisodeCount ?? 0)
+          ? (body.value.watchAheadEpisodeCount ??
+            episodeQueueUser?.settings?.episodeQueueDefaultEpisodeCount ??
+            0)
           : 0;
       const requestUsesEpisodeQueue =
         configuredEpisodeQueueCount > 0 &&
@@ -4375,7 +4416,7 @@ requestRoutes.get('/:requestId', async (req, res, next) => {
 
 requestRoutes.post(
   '/:requestId/episode-queue',
-  isAuthenticated(Permission.ADMIN),
+  isAuthenticated(Permission.MANAGE_USERS),
   async (req, res, next) => {
     const requestId = parseRequestParamId(req.params.requestId);
     if (!requestId) return next({ status: 404, message: 'Request not found.' });
@@ -4405,15 +4446,15 @@ requestRoutes.post(
       return await runUserSecurityMutationWithActor(
         req.user!.id,
         initial.requestedBy.id,
-        Permission.ADMIN,
+        Permission.MANAGE_USERS,
         (actor) =>
           runWithRequestAdmission(
             [getRequestMutationAdmissionKey(requestId)],
             async () => {
-              if (!actor.hasPermission(Permission.ADMIN))
+              if (!actor.hasPermission(Permission.MANAGE_USERS))
                 return next({
                   status: 403,
-                  message: 'Administrator access is required.',
+                  message: 'User-management permission is required.',
                 });
               const request = await repository.findOne({
                 where: { id: requestId },
@@ -4480,7 +4521,7 @@ requestRoutes.post(
       if (error instanceof UserMutationActorUnauthorizedError)
         return next({
           status: 403,
-          message: 'Administrator access is required.',
+          message: 'User-management permission is required.',
         });
       return next(error);
     }
