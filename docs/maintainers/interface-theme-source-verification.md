@@ -44,6 +44,9 @@ permissions to simplify a page.
 - The Users page uses the upstream toolbar, sortable table, selection controls,
   row hierarchy, and pagination. SeerrNG-only user filters and TV queue tools
   remain in a collapsed extension area.
+- The Blocklist page uses upstream's native filters, movie/TV cards, empty
+  state, pagination, and removal controls. SeerrNG's expanded media types,
+  filters, and metadata remain reachable in its extended view.
 - SeerrNG logos and brand assets remain in use throughout SeerrOrig.
 
 Changing theme source styles requires rebuilding the packaged theme assets and
@@ -92,6 +95,11 @@ The Users page now follows upstream's action/search/sort toolbar, paginated
 sortable table, checkboxes, row proportions, and page-size controls. SeerrNG's
 account-type/role filters and TV season queue tools remain available under
 collapsed extension areas.
+
+The Blocklist page now uses upstream's original movie/TV card presentation and
+filter/pagination controls. The expanded SeerrNG blocklist remains available
+from the collapsed extension disclosure, including extra media types and
+metadata.
 
 ## Visual review status
 
