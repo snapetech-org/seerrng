@@ -324,6 +324,7 @@ const SettingsMain = () => {
           otherUsersAvailability:
             data?.otherUsersAvailability ?? OtherUserAvailabilityMode.SHOW,
           hideBlocklisted: data?.hideBlocklisted,
+          hideRequested: data?.hideRequested ?? false,
           locale: data?.locale ?? 'en',
           discoverRegion: data?.discoverRegion,
           originalLanguage: data?.originalLanguage,
@@ -377,6 +378,7 @@ const SettingsMain = () => {
               hideAvailable: values.hideAvailable,
               otherUsersAvailability: values.otherUsersAvailability,
               hideBlocklisted: values.hideBlocklisted,
+              hideRequested: values.hideRequested,
               locale: values.locale,
               discoverRegion: values.discoverRegion,
               streamingRegion: values.streamingRegion,
@@ -1159,6 +1161,28 @@ const SettingsMain = () => {
                       }}
                     />
                   </SettingsFormRow>
+                  {upstream && (
+                    <SettingsFormRow
+                      htmlFor="hideRequested"
+                      label={intl.formatMessage(messages.hideRequested)}
+                      description={intl.formatMessage(
+                        messages.hideRequestedTip
+                      )}
+                      labelClassName="checkbox-label"
+                    >
+                      <SettingsField
+                        type="checkbox"
+                        id="hideRequested"
+                        name="hideRequested"
+                        onChange={() => {
+                          setFieldValue(
+                            'hideRequested',
+                            !values.hideRequested
+                          );
+                        }}
+                      />
+                    </SettingsFormRow>
+                  )}
                   <SettingsGroup
                     inline
                     title={intl.formatMessage(messages.requestsGroup)}
@@ -1172,21 +1196,6 @@ const SettingsMain = () => {
                       'trackEpisodeAvailability',
                     ]}
                   >
-                    <SettingsFormRow
-                      htmlFor="enable4k"
-                      label={intl.formatMessage(messages.enable4k)}
-                      description={intl.formatMessage(messages.enable4kTip)}
-                      labelClassName="checkbox-label"
-                    >
-                      <SettingsField
-                        type="checkbox"
-                        id="enable4k"
-                        name="enable4k"
-                        onChange={() => {
-                          setFieldValue('enable4k', !values.enable4k);
-                        }}
-                      />
-                    </SettingsFormRow>
                     <div className="form-row">
                       <label
                         htmlFor="partialRequestsEnabled"
@@ -1210,6 +1219,23 @@ const SettingsMain = () => {
                         />
                       </div>
                     </div>
+                    <SettingsFormRow
+                      htmlFor="enableSpecialEpisodes"
+                      label={intl.formatMessage(messages.enableSpecialEpisodes)}
+                      labelClassName="checkbox-label"
+                    >
+                      <SettingsField
+                        type="checkbox"
+                        id="enableSpecialEpisodes"
+                        name="enableSpecialEpisodes"
+                        onChange={() => {
+                          setFieldValue(
+                            'enableSpecialEpisodes',
+                            !values.enableSpecialEpisodes
+                          );
+                        }}
+                      />
+                    </SettingsFormRow>
                     <details
                       open={!upstream}
                       className={upstream ? 'mt-3' : undefined}
@@ -1219,6 +1245,21 @@ const SettingsMain = () => {
                           {intl.formatMessage(messages.moreRequestRules)}
                         </summary>
                       )}
+                      <SettingsFormRow
+                        htmlFor="enable4k"
+                        label={intl.formatMessage(messages.enable4k)}
+                        description={intl.formatMessage(messages.enable4kTip)}
+                        labelClassName="checkbox-label"
+                      >
+                        <SettingsField
+                          type="checkbox"
+                          id="enable4k"
+                          name="enable4k"
+                          onChange={() => {
+                            setFieldValue('enable4k', !values.enable4k);
+                          }}
+                        />
+                      </SettingsFormRow>
                       <SettingsFormRow
                         htmlFor="tvSeasonWatchGateEnabled"
                         label={intl.formatMessage(
@@ -1263,29 +1304,6 @@ const SettingsMain = () => {
                           }}
                         />
                       </SettingsFormRow>
-                      <div className="form-row">
-                        <label
-                          htmlFor="enableSpecialEpisodes"
-                          className="checkbox-label"
-                        >
-                          <span className="me-2">
-                            {intl.formatMessage(messages.enableSpecialEpisodes)}
-                          </span>
-                        </label>
-                        <div className="form-input-area">
-                          <SettingsField
-                            type="checkbox"
-                            id="enableSpecialEpisodes"
-                            name="enableSpecialEpisodes"
-                            onChange={() => {
-                              setFieldValue(
-                                'enableSpecialEpisodes',
-                                !values.enableSpecialEpisodes
-                              );
-                            }}
-                          />
-                        </div>
-                      </div>
                       <SettingsFormRow
                         htmlFor="trackEpisodeAvailability"
                         label={intl.formatMessage(
