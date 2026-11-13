@@ -3321,6 +3321,33 @@ export class MediaRequestSubscriber implements EntitySubscriberInterface<MediaRe
           }
         }
 
+        if (!searchResults.length) {
+          const localTitle = work?.title?.trim() || media.title?.trim();
+          if (localTitle) {
+            const localBook = await readarr.findLocalBookByTitle({
+              title: localTitle,
+              authorName: await getOpenLibraryAuthorName(),
+              openLibraryWorkId: normalizedOpenLibraryId,
+              isbn: preferredIsbn,
+              editionId: preferredEditionId,
+            });
+            if (localBook) {
+              lookupTerm = localTitle;
+              searchResults = [localBook];
+              logger.info(
+                'Reused an exact local Chaptarr book before remote metadata search.',
+                {
+                  label: 'Readarr',
+                  mediaId: media.id,
+                  requestId: entity.id,
+                  serviceType,
+                  localBookId: localBook.id,
+                }
+              );
+            }
+          }
+        }
+
         for (
           let index = 0;
           !searchResults.length && index < termsToTry.length;
