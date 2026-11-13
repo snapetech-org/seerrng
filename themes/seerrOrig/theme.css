@@ -1434,14 +1434,6 @@
   padding-block: 0;
 }
 :is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
-  .page-title-row
-  > .page-title {
-  background: linear-gradient(135deg, #818cf8, #c084fc);
-  background-clip: text;
-  color: transparent;
-  -webkit-text-fill-color: transparent;
-}
-:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
   .upstream-discovery-header {
   display: grid;
   grid-template-columns: minmax(0, 1fr);

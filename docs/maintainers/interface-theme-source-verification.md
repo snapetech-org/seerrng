@@ -127,3 +127,13 @@ rendering and matched upstream comparisons have not yet been repeated for this
 rebuild. Remaining scope includes the shared header, discovery, detail, search,
 settings, request, and fork-only page families; visual acceptance remains
 unverified until matching routes, states, and viewports are rendered.
+
+The next presentation slice removes the compact SeerrNG Discover/Swipe switch
+from the SeerrOrig header, pins gray/indigo/purple utility tokens to upstream
+Tailwind values regardless of the account palette, removes the gradient page
+heading, and hides SeerrNG-only book/music shelves from the upstream Discover
+home. The theme provider now applies the upstream dark palette for SeerrOrig;
+the account's chosen palette and light/dark preference are preserved and resume
+when another design is selected. Fork destinations and slider configuration
+remain available through the existing SeerrNG routes and editor. These
+source-level changes have not yet been rendered or compared in a browser.

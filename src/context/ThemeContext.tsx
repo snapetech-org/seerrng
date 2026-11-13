@@ -1195,38 +1195,37 @@ const applyTheme = (
     return;
   }
 
-  const themeTokens = getThemeTokens(mode, palette);
-  const originalAccents =
-    interfaceTheme === 'seerrOrig' && palette === DEFAULT_THEME_PALETTE_ID;
-  const accentBackgrounds = [
-    themeTokens.pageBg,
-    themeTokens.pageGlowStart,
-    themeTokens.pageGradientMain,
-  ];
+  const usesUpstreamAppearance = interfaceTheme === 'seerrOrig';
+  const selectedThemeTokens = getThemeTokens(mode, palette);
+  const themeTokens = usesUpstreamAppearance
+    ? getThemeTokens('dark', DEFAULT_THEME_PALETTE_ID)
+    : selectedThemeTokens;
+  const originalAccents = usesUpstreamAppearance;
   const primaryScale = originalAccents
-    ? mode === 'light'
-      ? ensureReadableLightText(themeScales.indigo, accentBackgrounds, 1, 4)
-      : themeScales.indigo
+    ? themeScales.indigo
     : themeTokens.primaryScale;
   const secondaryScale = originalAccents
-    ? mode === 'light'
-      ? ensureReadableLightText(themeScales.purple, accentBackgrounds, 1, 4)
-      : themeScales.purple
+    ? themeScales.purple
     : themeTokens.secondaryScale;
 
   resetAdvancedThemeOverrides(document.documentElement);
-  document.documentElement.dataset.themeMode = mode;
+  document.documentElement.dataset.themeMode = usesUpstreamAppearance
+    ? 'dark'
+    : mode;
   document.documentElement.dataset.themePalette = themeTokens.activePaletteId;
   document.documentElement.dataset.interfaceTheme = interfaceTheme;
-  document.documentElement.classList.toggle('dark', mode === 'dark');
+  document.documentElement.classList.toggle(
+    'dark',
+    usesUpstreamAppearance || mode === 'dark'
+  );
 
   applyScale(document.documentElement, 'indigo', primaryScale);
   applyScale(document.documentElement, 'purple', secondaryScale);
   applyScale(document.documentElement, 'gray', themeTokens.surfaceScale);
   applyThemeChrome(document.documentElement, themeTokens);
   const johnPreset = getAdvancedThemePreset('john-redesign');
-  let effectiveOverrides = overrides;
-  let applyPresetChrome = true;
+  let effectiveOverrides = usesUpstreamAppearance ? null : overrides;
+  let applyPresetChrome = !usesUpstreamAppearance;
   if (interfaceTheme === 'seerrNGJ' && johnPreset) {
     const useJohnDefaultPalette = palette === DEFAULT_THEME_PALETTE_ID;
     const hasExplicitJohnPreset = overrides?.preset === johnPreset.id;
@@ -1240,9 +1239,6 @@ const applyTheme = (
       effectiveOverrides = { ...overrides, preset: johnPreset.id };
       applyPresetChrome = false;
     }
-  } else if (interfaceTheme === 'seerrOrig' && overrides?.preset) {
-    effectiveOverrides = { ...overrides };
-    delete effectiveOverrides.preset;
   }
   applyAdvancedThemeOverrides(
     document.documentElement,
@@ -1271,7 +1267,10 @@ const applyTheme = (
       )
     );
   writeLocalStorageValue(THEME_MODE_KEY, mode);
-  writeLocalStorageValue(THEME_PALETTE_KEY, themeTokens.selectedPaletteId);
+  writeLocalStorageValue(
+    THEME_PALETTE_KEY,
+    selectedThemeTokens.selectedPaletteId
+  );
 };
 
 export const ThemeProvider = ({ children }: { children: ReactNode }) => {
