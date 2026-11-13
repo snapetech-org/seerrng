@@ -19,6 +19,7 @@ import useDiscover from '@app/hooks/useDiscover';
 import useMediaFilterPin from '@app/hooks/useMediaFilterPin';
 import { setSearchActivity } from '@app/hooks/useSearchActivity';
 import useSettings from '@app/hooks/useSettings';
+import useUpstreamTheme from '@app/hooks/useUpstreamTheme';
 import { Permission, useUser } from '@app/hooks/useUser';
 import defineMessages from '@app/utils/defineMessages';
 import {
@@ -28,7 +29,11 @@ import {
   isOptionalCatalogPathEnabled,
 } from '@app/utils/serviceAvailability';
 import { stableSearchResults } from '@app/utils/stableSearchResults';
-import { BarsArrowDownIcon, BarsArrowUpIcon } from '@heroicons/react/24/solid';
+import {
+  BarsArrowDownIcon,
+  BarsArrowUpIcon,
+  ChevronDownIcon,
+} from '@heroicons/react/24/solid';
 import type { DetailDisclosureMediaType } from '@server/interfaces/api/userSettingsInterfaces';
 import type {
   AlbumResult,
@@ -103,6 +108,7 @@ const messages = defineMessages('components.Search', {
   retrySearch: 'Try again',
   retryingSearch: 'Trying again…',
   clearFilters: 'Clear Filters',
+  moreSearchOptions: 'More search options',
 });
 
 const searchCategories = [
@@ -333,6 +339,7 @@ const compareOptional = <T,>(
 const Search = () => {
   const intl = useIntl();
   const router = useRouter();
+  const upstream = useUpstreamTheme();
   const { currentSettings } = useSettings();
   const { user, hasPermission } = useUser();
   const serviceAvailability = getUserServiceAvailability(
@@ -689,6 +696,44 @@ const Search = () => {
         : sortedTitles,
     [orderKey, sortedTitles]
   );
+  const displayedTitles = useMemo(
+    () =>
+      upstream && category.key === 'all'
+        ? stableTitles.filter(
+            (title) =>
+              title.mediaType === 'movie' ||
+              title.mediaType === 'tv' ||
+              title.mediaType === 'person'
+          )
+        : stableTitles,
+    [category.key, stableTitles, upstream]
+  );
+  useEffect(() => {
+    if (
+      !upstream ||
+      !isSearchReady ||
+      category.key !== 'all' ||
+      displayedTitles.length > 0 ||
+      !titles?.length ||
+      isReachingEnd ||
+      isLoadingInitialData ||
+      isLoadingMore
+    ) {
+      return;
+    }
+
+    void fetchMore();
+  }, [
+    category.key,
+    displayedTitles.length,
+    fetchMore,
+    isSearchReady,
+    isLoadingInitialData,
+    isLoadingMore,
+    isReachingEnd,
+    titles?.length,
+    upstream,
+  ]);
   useEffect(() => {
     if (stableTitles.length > 0 || previousOrder.current.key !== orderKey) {
       previousOrder.current = {
@@ -703,6 +748,10 @@ const Search = () => {
     !isLoadingMore &&
     isReachingEnd &&
     stableTitles.length === 0;
+  const displayedResultsAreEmpty =
+    upstream && category.key === 'all'
+      ? displayedTitles.length === 0 && isReachingEnd
+      : isShowingEmptyState || (isSearchReady && isEmpty);
   const providerErrorMessage = (
     error as { response?: { data?: { message?: string } } } | undefined
   )?.response?.data?.message;
@@ -741,10 +790,10 @@ const Search = () => {
   return (
     <>
       <PageTitle title={intl.formatMessage(messages.search)} />
-      <div>
+      <div className={upstream ? 'mb-5 mt-1' : undefined}>
         <Header
           subtext={
-            preferredBookFormat ? (
+            !upstream && preferredBookFormat ? (
               <span className="inline-flex items-center gap-2">
                 <span>{intl.formatMessage(messages.showingFormat)}</span>
                 <BookFormatBadge
@@ -758,183 +807,198 @@ const Search = () => {
           {intl.formatMessage(messages.searchresults)}
         </Header>
       </div>
-      <PinnedFilterSection
-        mediaType={filterMediaType}
-        section="mediaFilters"
-        label={intl.formatMessage(messages.mediaFilters)}
+      <details
+        className={upstream ? 'upstream-search-more' : undefined}
+        open={!upstream || category.key !== 'all' || hasActiveFilters}
       >
-        <div
-          className="app-filter-row"
-          aria-label={intl.formatMessage(messages.mediaFilters)}
-        >
-          {router.isReady && currentSettings.booksEnabled && (
-            <Link
-              className={getFilterToggleButtonClass(false)}
-              href={{
-                pathname: '/book-series',
-                query: {
-                  query,
-                  ...(preferredBookFormat
-                    ? { format: preferredBookFormat }
-                    : {}),
-                },
-              }}
-            >
-              {intl.formatMessage(messages.bookSeries)}
-            </Link>
-          )}
-          {visibleSearchCategories.map((searchCategory) => {
-            const isSelected = category.key === searchCategory.key;
-
-            return (
-              <MediaFilterOption
-                key={searchCategory.key}
-                pin={mediaPin}
-                value={searchCategory.key}
-                label={intl.formatMessage(searchCategory.message)}
-                selected={isSelected}
-              >
-                <button
-                  type="button"
-                  className="app-control-shadow-exempt app-filter-segment-focus"
-                  aria-pressed={isSelected}
-                  onClick={() => {
-                    mediaPin.select(searchCategory.key);
-                    const nextQuery = getSearchCategoryQuery(router.query, {
-                      type: searchCategory.type,
-                      format:
-                        'format' in searchCategory
-                          ? searchCategory.format
-                          : undefined,
-                    });
-
-                    void router.replace(
-                      { pathname: router.pathname, query: nextQuery },
-                      undefined,
-                      { shallow: true, scroll: false }
-                    );
-                  }}
-                >
-                  {intl.formatMessage(searchCategory.message)}
-                </button>
-              </MediaFilterOption>
-            );
-          })}
-        </div>
-      </PinnedFilterSection>
-      {category.key !== 'software' && (
+        {upstream && (
+          <summary>
+            <span>{intl.formatMessage(messages.moreSearchOptions)}</span>
+            <ChevronDownIcon aria-hidden="true" />
+          </summary>
+        )}
         <PinnedFilterSection
           mediaType={filterMediaType}
-          section="filters"
-          label={intl.formatMessage(messages.filter)}
+          section="mediaFilters"
+          label={intl.formatMessage(messages.mediaFilters)}
         >
           <div
             className="app-filter-row"
-            aria-label={intl.formatMessage(messages.filter)}
+            aria-label={intl.formatMessage(messages.mediaFilters)}
           >
-            <FilterResetButton
-              label={intl.formatMessage(messages.clearFilters)}
-              selected={!hasActiveFilters}
-              onClick={() => {
-                void router.replace(
-                  {
-                    pathname: router.pathname,
-                    query: { query: query || undefined },
+            {router.isReady && currentSettings.booksEnabled && (
+              <Link
+                className={getFilterToggleButtonClass(false)}
+                href={{
+                  pathname: '/book-series',
+                  query: {
+                    query,
+                    ...(preferredBookFormat
+                      ? { format: preferredBookFormat }
+                      : {}),
                   },
-                  undefined,
-                  { shallow: true, scroll: false }
-                );
-              }}
-            />
-            <CardTextVisibilityToggle
-              mediaType={['movie', 'tv', 'album', 'book']}
-            />
-            <ContextualSearchFilters category={category.key} />
-          </div>
-        </PinnedFilterSection>
-      )}
-      {category.key !== 'software' && (
-        <PinnedFilterSection
-          mediaType={filterMediaType}
-          section="sortBy"
-          label={intl.formatMessage(messages.sortBy)}
-        >
-          <div className="app-filter-row">
-            {sortOptions.map((sortOption) => {
-              const isSelected = sortField === sortOption.field;
-              const displayedOrder = isSelected
-                ? sortOrder
-                : sortOption.defaultOrder;
-              const directionLabel = intl.formatMessage(
-                displayedOrder === 'asc'
-                  ? messages.ascending
-                  : messages.descending
-              );
-              const SortDirectionIcon =
-                displayedOrder === 'asc' ? BarsArrowUpIcon : BarsArrowDownIcon;
+                }}
+              >
+                {intl.formatMessage(messages.bookSeries)}
+              </Link>
+            )}
+            {visibleSearchCategories.map((searchCategory) => {
+              const isSelected = category.key === searchCategory.key;
 
               return (
-                <Tooltip key={sortOption.field} content={directionLabel}>
+                <MediaFilterOption
+                  key={searchCategory.key}
+                  pin={mediaPin}
+                  value={searchCategory.key}
+                  label={intl.formatMessage(searchCategory.message)}
+                  selected={isSelected}
+                >
                   <button
                     type="button"
-                    className={getFilterToggleButtonClass(isSelected)}
+                    className="app-control-shadow-exempt app-filter-segment-focus"
                     aria-pressed={isSelected}
-                    aria-label={`${intl.formatMessage(
-                      sortOption.message
-                    )}: ${directionLabel}`}
                     onClick={() => {
-                      const nextOrder = isSelected
-                        ? sortOrder === 'asc'
-                          ? 'desc'
-                          : 'asc'
-                        : sortOption.defaultOrder;
+                      mediaPin.select(searchCategory.key);
+                      const nextQuery = getSearchCategoryQuery(router.query, {
+                        type: searchCategory.type,
+                        format:
+                          'format' in searchCategory
+                            ? searchCategory.format
+                            : undefined,
+                      });
 
                       void router.replace(
-                        {
-                          pathname: router.pathname,
-                          query: {
-                            ...router.query,
-                            sort: sortOption.field,
-                            order: nextOrder,
-                          },
-                        },
+                        { pathname: router.pathname, query: nextQuery },
                         undefined,
                         { shallow: true, scroll: false }
                       );
                     }}
                   >
-                    {intl.formatMessage(sortOption.message)}
-                    <SortDirectionIcon />
+                    {intl.formatMessage(searchCategory.message)}
                   </button>
-                </Tooltip>
+                </MediaFilterOption>
               );
             })}
           </div>
         </PinnedFilterSection>
-      )}
-      {router.isReady && showBookSeries && (
-        <InlineBookSeriesResults query={query} format={preferredBookFormat} />
-      )}
+        {category.key !== 'software' && (
+          <PinnedFilterSection
+            mediaType={filterMediaType}
+            section="filters"
+            label={intl.formatMessage(messages.filter)}
+          >
+            <div
+              className="app-filter-row"
+              aria-label={intl.formatMessage(messages.filter)}
+            >
+              <FilterResetButton
+                label={intl.formatMessage(messages.clearFilters)}
+                selected={!hasActiveFilters}
+                onClick={() => {
+                  void router.replace(
+                    {
+                      pathname: router.pathname,
+                      query: { query: query || undefined },
+                    },
+                    undefined,
+                    { shallow: true, scroll: false }
+                  );
+                }}
+              />
+              <CardTextVisibilityToggle
+                mediaType={['movie', 'tv', 'album', 'book']}
+              />
+              <ContextualSearchFilters category={category.key} />
+            </div>
+          </PinnedFilterSection>
+        )}
+        {category.key !== 'software' && (
+          <PinnedFilterSection
+            mediaType={filterMediaType}
+            section="sortBy"
+            label={intl.formatMessage(messages.sortBy)}
+          >
+            <div className="app-filter-row">
+              {sortOptions.map((sortOption) => {
+                const isSelected = sortField === sortOption.field;
+                const displayedOrder = isSelected
+                  ? sortOrder
+                  : sortOption.defaultOrder;
+                const directionLabel = intl.formatMessage(
+                  displayedOrder === 'asc'
+                    ? messages.ascending
+                    : messages.descending
+                );
+                const SortDirectionIcon =
+                  displayedOrder === 'asc'
+                    ? BarsArrowUpIcon
+                    : BarsArrowDownIcon;
+
+                return (
+                  <Tooltip key={sortOption.field} content={directionLabel}>
+                    <button
+                      type="button"
+                      className={getFilterToggleButtonClass(isSelected)}
+                      aria-pressed={isSelected}
+                      aria-label={`${intl.formatMessage(
+                        sortOption.message
+                      )}: ${directionLabel}`}
+                      onClick={() => {
+                        const nextOrder = isSelected
+                          ? sortOrder === 'asc'
+                            ? 'desc'
+                            : 'asc'
+                          : sortOption.defaultOrder;
+
+                        void router.replace(
+                          {
+                            pathname: router.pathname,
+                            query: {
+                              ...router.query,
+                              sort: sortOption.field,
+                              order: nextOrder,
+                            },
+                          },
+                          undefined,
+                          { shallow: true, scroll: false }
+                        );
+                      }}
+                    >
+                      {intl.formatMessage(sortOption.message)}
+                      <SortDirectionIcon />
+                    </button>
+                  </Tooltip>
+                );
+              })}
+            </div>
+          </PinnedFilterSection>
+        )}
+      </details>
+      {router.isReady &&
+        showBookSeries &&
+        (!upstream || category.key !== 'all') && (
+          <InlineBookSeriesResults query={query} format={preferredBookFormat} />
+        )}
       {category.key === 'software' ? (
         <SoftwareCatalog externalQuery={query} embedded />
-      ) : error && stableTitles.length === 0 ? (
+      ) : error && displayedTitles.length === 0 ? (
         searchError
       ) : (
         <>
           {error && searchError}
-          {category.key === 'all' && query && (
+          {!upstream && category.key === 'all' && query && (
             <SoftwareSearchPreview query={query} />
           )}
           <ListView
-            items={stableTitles}
+            items={displayedTitles}
             preferredBookFormat={preferredBookFormat}
             emptyMessage={intl.formatMessage(
-              showBookSeries && query.length >= 2
+              !upstream && showBookSeries && query.length >= 2
                 ? messages.noTitleResults
                 : messages.noResultsFound
             )}
             emptyClassName="mt-6"
-            isEmpty={isShowingEmptyState || (isSearchReady && isEmpty)}
+            isEmpty={displayedResultsAreEmpty}
             isLoading={
               (!router.isReady && hasRoutedSearchParams) ||
               (isSearchReady &&

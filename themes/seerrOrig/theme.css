@@ -2217,3 +2217,55 @@
   .settings-page-search {
   margin-top: 0;
 }
+
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .upstream-search-more {
+  display: grid;
+  justify-items: end;
+  margin-top: -12px;
+  margin-bottom: 8px;
+}
+
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .upstream-search-more
+  > summary {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  min-height: 24px;
+  color: #9ca3af;
+  font-size: 12px;
+  cursor: pointer;
+  list-style: none;
+}
+
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .upstream-search-more
+  > summary::-webkit-details-marker {
+  display: none;
+}
+
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .upstream-search-more
+  > summary:hover,
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .upstream-search-more
+  > summary:focus-visible {
+  color: #e5e7eb;
+}
+
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .upstream-search-more
+  > summary
+  svg {
+  width: 14px;
+  height: 14px;
+  transition: transform 150ms ease;
+}
+
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .upstream-search-more[open]
+  > summary
+  svg {
+  transform: rotate(180deg);
+}

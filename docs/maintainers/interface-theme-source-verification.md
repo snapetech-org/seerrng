@@ -144,3 +144,10 @@ preferences, and the shared save bar remain available through a collapsed
 “More settings” area or when edits need saving. SeerrNG's existing branding
 assets remain in use. This source-level alignment is not a visual acceptance
 result; matched route and viewport screenshots still need to be rendered.
+
+The Search route now uses upstream's PageTitle, Search Results heading, and
+ListView composition. Fork-only catalog categories and advanced filters are
+available under “More search options”; the default SeerrOrig result list shows
+only movies, series, and people. When an extended category fills an earlier
+page, the list continues paging until it finds native results or reaches the
+end. This source-level change still needs matched route and viewport renders.
