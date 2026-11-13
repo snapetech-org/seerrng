@@ -106,16 +106,21 @@ export function DetailTop({
   status?: Stat;
 }) {
   // the floating back button lives in Shell, so it's there while the page loads or if it fails
+  // art that fails to load is left out, as if there were none
+  const [failed, setFailed] = useState<string[]>([]);
+  const ok = (src?: string) => (src && !failed.includes(src) ? src : undefined);
+  const drop = (src: string) => () => setFailed((f) => f.concat(src));
+  const hero = ok(backdrop) || ok(poster);
   return (
     <>
       <div className={`dhero ${backdrop ? '' : 'blur'}`}>
-        {(backdrop || poster) && <img src={backdrop || poster} alt="" />}
+        {hero && <img src={hero} alt="" onError={drop(hero)} />}
       </div>
       <div className="dtop">
         <div
           className={`dposter ${square ? 'sq' : ''} ${whole ? 'whole' : ''}`}
         >
-          {poster && <img src={poster} alt="" />}
+          {ok(poster) && <img src={poster} alt="" onError={drop(poster!)} />}
           <Glyph s={status ?? null} />
         </div>
         <div className="dtitle">

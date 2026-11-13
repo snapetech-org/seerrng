@@ -2649,7 +2649,7 @@ export class MediaRequestSubscriber implements EntitySubscriberInterface<MediaRe
 
       const media = await mediaRepository.findOne({
         where: { id: entity.media.id },
-        relations: { identifiers: true },
+        relations: { identifiers: true, searchMetadata: true },
       });
 
       if (!media) {
@@ -3318,6 +3318,34 @@ export class MediaRequestSubscriber implements EntitySubscriberInterface<MediaRe
               }
             );
             searchResults = [];
+          }
+        }
+
+        if (!searchResults.length) {
+          const localTitle =
+            work?.title?.trim() || media.searchMetadata?.title?.trim();
+          if (localTitle) {
+            const localBook = await readarr.findLocalBookByTitle({
+              title: localTitle,
+              authorName: await getOpenLibraryAuthorName(),
+              openLibraryWorkId: normalizedOpenLibraryId,
+              isbn: preferredIsbn,
+              editionId: preferredEditionId,
+            });
+            if (localBook) {
+              lookupTerm = localTitle;
+              searchResults = [localBook];
+              logger.info(
+                'Reused an exact local Chaptarr book before remote metadata search.',
+                {
+                  label: 'Readarr',
+                  mediaId: media.id,
+                  requestId: entity.id,
+                  serviceType,
+                  localBookId: localBook.id,
+                }
+              );
+            }
           }
         }
 

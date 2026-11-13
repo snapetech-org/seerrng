@@ -13,6 +13,7 @@ import {
   mapBookshelfBook,
   parseBookshelfAuthorId,
   parseBookshelfBookId,
+  realCoverUrl,
   searchBookshelfCatalogs,
 } from './bookshelfCatalog';
 
@@ -53,6 +54,54 @@ describe('Bookshelf catalog identities', () => {
       foreignAuthorId: 'loc-author:abc',
       authorName: 'Example Author',
     });
+  });
+
+  it('maps Readarr-style nested ratings, popularity and full release dates', () => {
+    const book = mapBookshelfBook(
+      {
+        title: 'A Court of Frost and Starlight',
+        foreignBookId: 'hc:1',
+        releaseDate: '2018-05-01T00:00:00Z',
+        ratings: { votes: 191372, value: 3.38, popularity: 646837.36 },
+      },
+      7
+    );
+    expect(book).toMatchObject({
+      ratingsAverage: 3.38,
+      ratingsCount: 191372,
+      popularity: 646837.36,
+      releaseDate: '2018-05-01T00:00:00.000Z',
+      firstPublishYear: 2018,
+    });
+
+    // Flat fields win; popularity falls back to votes x average.
+    expect(
+      mapBookshelfBook(
+        {
+          title: 'Flat',
+          foreignBookId: 'hc:2',
+          ratingsAverage: 4.5,
+          ratingsCount: 10,
+          ratings: { votes: 99, value: 1 },
+        },
+        7
+      )
+    ).toMatchObject({ ratingsAverage: 4.5, ratingsCount: 10, popularity: 45 });
+
+    // A zero-vote 0 rating is "unrated", and 0001-01-01 means "no date".
+    const unrated = mapBookshelfBook(
+      {
+        title: 'Unrated',
+        foreignBookId: 'hc:3',
+        releaseDate: '0001-01-01T00:00:00Z',
+        ratings: { votes: 0, value: 0, popularity: 0 },
+      },
+      7
+    );
+    expect(unrated.ratingsAverage).toBeUndefined();
+    expect(unrated.ratingsCount).toBe(0);
+    expect(unrated.releaseDate).toBeUndefined();
+    expect(unrated.firstPublishYear).toBeUndefined();
   });
 
   it('maps source IDs and ISBN editions without coercing them to Open Library IDs', () => {
@@ -571,4 +620,24 @@ it('retains normalized edition languages when the work omits language metadata',
   expect(
     mapBookshelfBook({ title: 'Unknown', foreignBookId: 'work-2' }, 1).languages
   ).toBeUndefined();
+});
+
+describe('realCoverUrl', () => {
+  it('drops stock "no image" placeholders and keeps real covers', () => {
+    expect(
+      realCoverUrl('https://m.media-amazon.com/images/I/01RmK+J4pJL.gif')
+    ).toBeUndefined();
+    expect(
+      realCoverUrl(
+        'https://m.media-amazon.com/images/I/01RmK+J4pJL._SL500_.gif'
+      )
+    ).toBeUndefined();
+    expect(
+      realCoverUrl('https://images.gr-assets.com/nophoto/book/111x148.png')
+    ).toBeUndefined();
+    expect(realCoverUrl(undefined)).toBeUndefined();
+    expect(
+      realCoverUrl('https://m.media-amazon.com/images/I/81YOuOGFCJL.jpg')
+    ).toBe('https://m.media-amazon.com/images/I/81YOuOGFCJL.jpg');
+  });
 });

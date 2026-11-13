@@ -4,6 +4,7 @@ import {
   api,
   audiobookEditionsPath,
   audiobookshelfLink,
+  bookArt,
   bookIdFor,
   bookMediaForFormat,
   chaptarrWork,
@@ -458,7 +459,7 @@ export default function BookDetail() {
     <article className="detail">
       <DetailTop
         status={s}
-        poster={b.posterPath || undefined}
+        poster={bookArt(b.posterPath, 'L')}
         square={audio}
         whole
         title={b.title}
@@ -589,7 +590,11 @@ export default function BookDetail() {
                           </span>
                           <span className="nart">
                             {b.posterPath ? (
-                              <img src={b.posterPath} alt="" loading="lazy" />
+                              <img
+                                src={bookArt(b.posterPath)}
+                                alt=""
+                                loading="lazy"
+                              />
                             ) : (
                               <Icon name="headphones" />
                             )}
@@ -654,7 +659,11 @@ export default function BookDetail() {
                         </span>
                         <span className="nart">
                           {b.posterPath ? (
-                            <img src={b.posterPath} alt="" loading="lazy" />
+                            <img
+                              src={bookArt(b.posterPath)}
+                              alt=""
+                              loading="lazy"
+                            />
                           ) : (
                             <Icon name="headphones" />
                           )}

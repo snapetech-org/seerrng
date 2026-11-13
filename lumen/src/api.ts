@@ -240,19 +240,29 @@ export const tmdbImg = (path: string | undefined | null, size = 'w342') => {
   return `/imageproxy/tmdb/t/p/${safeSize}${path}`;
 };
 
-// ComicVine and AniList covers through SeerrNG's image proxy (cached on the server, and
-// no third-party requests from the browser); anything else is used as given
+// ComicVine, AniList and Open Library covers through SeerrNG's image proxy (cached on the
+// server, and no third-party requests from the browser); anything else is used as given
 const PROXIED_ART: [string, string][] = [
   ['https://comicvine.gamespot.com/', '/imageproxy/comicvine/'],
   ['https://comicvine.cbsistatic.com/', '/imageproxy/comicvinestatic/'],
   ['https://comicvine1.cbsistatic.com/', '/imageproxy/comicvinestatic1/'],
   ['https://s4.anilist.co/', '/imageproxy/anilist/'],
+  ['https://covers.openlibrary.org/', '/imageproxy/openlibrarycovers/'],
 ];
 export const artUrl = (url?: string | null) => {
   if (!url) return undefined;
   for (const [from, to] of PROXIED_ART)
     if (url.startsWith(from)) return to + url.slice(from.length);
   return url;
+};
+
+// a book cover through the image proxy; Open Library covers come in the medium size for
+// cards (about half the bytes of the large one, which the book page keeps)
+export const bookArt = (url?: string | null, size: 'M' | 'L' = 'M') => {
+  const u = artUrl(url);
+  return u?.startsWith('/imageproxy/openlibrarycovers/')
+    ? u.replace(/-[SML](\.jpg)(?=$|\?)/i, `-${size}$1`)
+    : u;
 };
 
 export const titleOf = (r: TitleResult) => r.title || r.name || '';

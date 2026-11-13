@@ -28,6 +28,10 @@ export interface BookResult {
   editionCount?: number;
   ratingsAverage?: number;
   ratingsCount?: number;
+  /** Catalogue popularity (Bookshelf `ratings.popularity`, else votes). */
+  popularity?: number;
+  /** Full release date when the catalogue knows it (ISO 8601). */
+  releaseDate?: string;
   subjects?: string[];
   languages?: string[];
   wantToReadCount?: number;

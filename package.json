@@ -1,6 +1,6 @@
 {
   "name": "seerrng",
-  "version": "3.72.32",
+  "version": "3.72.34",
   "private": true,
   "packageManager": "pnpm@10.24.0",
   "scripts": {
@@ -80,7 +80,7 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@anthropic-ai/sdk": "0.131.0",
+    "@anthropic-ai/sdk": "1.6.0",
     "@dr.pogodin/csurf": "^1.17.1",
     "@floating-ui/react": "0.27.20",
     "@fontsource-variable/inter": "^5.3.0",
@@ -124,7 +124,7 @@
     "node-cache": "5.1.2",
     "node-schedule": "2.1.2",
     "nodemailer": "10.3.1",
-    "openid-client": "^6.8.8",
+    "openid-client": "^6.8.9",
     "openpgp": "6.3.2",
     "pg": "8.23.1",
     "postcss": "8.5.28",

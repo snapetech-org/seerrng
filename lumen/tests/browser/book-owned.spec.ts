@@ -216,7 +216,7 @@ test('audiobook cards show the books already in the library', async ({
   page,
 }, info) => {
   const calls = await fixtures(page);
-  await page.goto('/audiobooks');
+  await page.goto('/audiobooks?sort=ranked');
   await expect(poster(page, 'Not Owned Recording')).toHaveCount(1);
   await expectOwned(
     page,
@@ -259,16 +259,17 @@ test('ebook cards use server-resolved Open Library identity without title guesse
   page,
 }, info) => {
   await fixtures(page);
-  await page.goto('/books');
+  await page.goto('/books?sort=ranked');
   await expect(poster(page, 'Pride and Prejudice')).toHaveCount(1);
   await expectOwned(page, 'Throne of Glass', true);
   await expectOwned(page, 'Project Hail Mary', true);
   await expectOwned(page, 'Pride and Prejudice', false);
   await expectOwned(page, 'Wool', false);
   await expectOwned(page, 'Project Hail Mary: Illustrated Edition', false);
+  // unknown is not a state worth a corner badge; the request still says "anyway"
   await expect(
-    poster(page, 'Pride and Prejudice').locator('.glyph.wait')
-  ).toHaveAttribute('title', 'Library status unknown');
+    poster(page, 'Pride and Prejudice').locator('.glyph')
+  ).toHaveCount(0);
   const unknownBook = poster(page, 'Pride and Prejudice');
   if (info.project.name === 'desktop') {
     await unknownBook.hover();
@@ -384,7 +385,7 @@ test('server status stays visible while Not yet hides unverified books when the 
       ]),
     })
   );
-  await page.goto('/audiobooks');
+  await page.goto('/audiobooks?sort=ranked');
   await expectOwned(page, 'Marked By Server', true);
   await expectOwned(page, 'Unmarked', false);
   await page.getByRole('button', { name: 'Not yet', exact: true }).click();

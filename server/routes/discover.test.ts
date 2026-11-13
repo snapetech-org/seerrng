@@ -4275,32 +4275,32 @@ describe('GET /discover/books', () => {
       OpenLibraryAPI.prototype,
       'searchBooks'
     );
-    const getBooks = mock.method(ReadarrAPI.prototype, 'getBooks');
-    const getBooksPage = mock.method(
+    // 120 identified records (popularity 1..120) plus records SeerrNG cannot
+    // show; the alphabetical provider page used to come back short for them.
+    const catalog = [
+      ...Array.from({ length: 120 }, (_, index) => ({
+        id: index + 1,
+        title: `Audiobook ${String(index + 1).padStart(3, '0')}`,
+        foreignBookId: `hardcover:audio-work-${index + 1}`,
+        author: { authorName: 'Writer One' },
+        ratings: {
+          votes: index + 1,
+          value: 4,
+          popularity: index + 1,
+        },
+      })),
+      ...Array.from({ length: 30 }, (_, index) => ({
+        id: 500 + index,
+        title: `Unidentified Audio Edition ${index}`,
+        author: { authorName: 'Writer Two' },
+      })),
+    ];
+    const getBooks = mock.method(
       ReadarrAPI.prototype,
-      'getBooksPage',
-      async (offset: number, pageSize: number) => {
-        assert.strictEqual(offset, 50);
-        assert.strictEqual(pageSize, 50);
-        return {
-          books: [
-            {
-              id: 51,
-              title: 'Existing Audio Edition',
-              foreignBookId: 'hardcover:audio-work',
-              author: { authorName: 'Writer One' },
-              narrators: ['Reader One'],
-            },
-            {
-              id: 52,
-              title: 'Unidentified Audio Edition',
-              author: { authorName: 'Writer Two' },
-            },
-          ],
-          totalCount: 300,
-        };
-      }
+      'getBooks',
+      async () => catalog
     );
+    const getBooksPage = mock.method(ReadarrAPI.prototype, 'getBooksPage');
 
     try {
       const agent = await login();
@@ -4309,15 +4309,28 @@ describe('GET /discover/books', () => {
         .query({ format: 'audiobook', page: 2 });
 
       assert.strictEqual(result.status, 200);
-      assert.deepStrictEqual(
-        result.body.results.map((book: { title: string }) => book.title),
-        ['Existing Audio Edition']
+      const titles = result.body.results.map(
+        (book: { title: string }) => book.title
       );
-      assert.strictEqual(result.body.totalResults, 300);
-      assert.strictEqual(result.body.totalPages, 6);
-      assert.strictEqual(getBooksPage.mock.callCount(), 1);
-      assert.strictEqual(getBooks.mock.callCount(), 0);
+      assert.strictEqual(titles.length, 50);
+      // Popular orders by popularity: page 2 holds ranks 51-100.
+      assert.strictEqual(titles[0], 'Audiobook 070');
+      assert.strictEqual(titles[49], 'Audiobook 021');
+      assert.strictEqual(result.body.results[0].popularity, 70);
+      assert.strictEqual(result.body.totalResults, 120);
+      assert.strictEqual(result.body.totalPages, 3);
+      assert.strictEqual(getBooksPage.mock.callCount(), 0);
       assert.strictEqual(searchOpenLibrary.mock.callCount(), 0);
+
+      for (const sortBy of ['trending', 'newest', 'rating.desc']) {
+        const sorted = await agent
+          .get('/discover/books')
+          .query({ format: 'audiobook', page: 1, sortBy });
+        assert.strictEqual(sorted.status, 200);
+        assert.strictEqual(sorted.body.results.length, 50);
+        assert.strictEqual(sorted.body.totalResults, 120);
+      }
+      assert.ok(getBooks.mock.callCount() >= 1);
     } finally {
       getSettings().readarr = [];
     }
@@ -4356,23 +4369,20 @@ describe('GET /discover/books', () => {
       OpenLibraryAPI.prototype,
       'searchBooks'
     );
-    mock.method(ReadarrAPI.prototype, 'getBooksPage', async () => ({
-      books: [
-        {
-          id: 1,
-          title: 'Owned Recording',
-          foreignBookId: 'owned-work',
-          author: { authorName: 'Writer One' },
-        },
-        {
-          id: 2,
-          title: 'Catalogue Only',
-          foreignBookId: 'other-work',
-          author: { authorName: 'Writer Two' },
-        },
-      ],
-      totalCount: 2,
-    }));
+    mock.method(ReadarrAPI.prototype, 'getBooks', async () => [
+      {
+        id: 1,
+        title: 'Owned Recording',
+        foreignBookId: 'owned-work',
+        author: { authorName: 'Writer One' },
+      },
+      {
+        id: 2,
+        title: 'Catalogue Only',
+        foreignBookId: 'other-work',
+        author: { authorName: 'Writer Two' },
+      },
+    ]);
 
     try {
       const agent = await login();
@@ -4955,6 +4965,47 @@ describe('GET /discover/books', () => {
     );
   });
 
+  it('keeps Open Library date sorts on real, dated books', async () => {
+    const queries: { query: string; sort?: string }[] = [];
+    mock.method(
+      OpenLibraryAPI.prototype,
+      'searchBooks',
+      async ({ query, sort }: { query: string; sort?: string }) => {
+        queries.push({ query, sort });
+        return {
+          numFound: 1,
+          start: 0,
+          docs: [{ key: '/works/OL-dated', title: 'Dated Book' }],
+        };
+      }
+    );
+    const futureCap = `-first_publish_year:[${new Date().getUTCFullYear() + 2} TO *]`;
+
+    const agent = await login();
+    for (const path of [
+      '/discover/books?format=ebook&sortBy=newest',
+      '/discover/books?format=ebook&sortBy=oldest',
+      '/discover/books?format=ebook&query=dune',
+    ]) {
+      const res = await agent.get(path);
+      assert.strictEqual(res.status, 200);
+    }
+
+    assert.deepStrictEqual(queries[0], {
+      query: `cover_i:[1 TO *] AND ${futureCap}`,
+      sort: 'new',
+    });
+    assert.deepStrictEqual(queries[1], {
+      query: 'cover_i:[1 TO *] AND -first_publish_year:[* TO 1449]',
+      sort: 'old',
+    });
+    // Searches default to newest: still drop impossible years, but never
+    // hide a coverless match.
+    assert.strictEqual(queries[2].sort, 'new');
+    assert.ok(queries[2].query.endsWith(` AND ${futureCap}`));
+    assert.ok(!queries[2].query.includes('cover_i'));
+  });
+
   it('combines book filters and applies the selected minimum rating', async () => {
     const searchBooksMock = mock.method(
       OpenLibraryAPI.prototype,
@@ -5177,7 +5228,7 @@ describe('GET /discover/books', () => {
       async ({ query, limit }: { query: string; limit?: number }) => {
         assert.strictEqual(
           query,
-          '(title:"microsoft" OR author:"microsoft" OR subject:"microsoft") AND (title:"windows" OR author:"windows" OR subject:"windows") AND (title:"11" OR author:"11" OR subject:"11")'
+          `(title:"microsoft" OR author:"microsoft" OR subject:"microsoft") AND (title:"windows" OR author:"windows" OR subject:"windows") AND (title:"11" OR author:"11" OR subject:"11") AND -first_publish_year:[${new Date().getUTCFullYear() + 2} TO *]`
         );
         assert.strictEqual(limit, 50);
 

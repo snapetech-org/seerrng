@@ -245,6 +245,23 @@ report. The final Trivy CI-mode scan reported zero HIGH/CRITICAL findings across
 vulnerabilities, misconfigurations, and secrets. Both reports are retained
 under `/mnt/disks/scratch/task-deliverables/seerrng-security-audit-20261113/`.
 
+Both `pnpm audit --prod` and full `pnpm audit` on the current source report the
+same one LOW `GHSA-gcqx-w48m-w2h4` version match for `deepmerge@4.3.1`.
+Production reaches it through `email-templates → html-to-text → deepmerge`;
+the full audit also reports the development path
+`@svgr/webpack → @svgr/plugin-svgo → deepmerge`. The GitHub advisory currently
+lists no patched package version, but its associated `CVE-2026-93753` record
+was rejected on November 2 after a dispute and reproduction showed no
+`Object.prototype` modification or privilege boundary. The advisory
+database discussion requesting withdrawal remains open
+([GHSA](https://github.com/advisories/GHSA-gcqx-w48m-w2h4),
+[rejection discussion](https://github.com/TehShrike/deepmerge/issues/285#issuecomment-6565072025),
+[advisory database issue](https://github.com/github/advisory-database/issues/10910)).
+SeerrNG retains its lockfile-bound patches and regression coverage as defense
+in depth; `pnpm audit` does not account for the patched package contents, so the
+LOW version warning remains visible. The current GitHub Dependabot, code-scanning
+and secret-scanning alert inventories are empty.
+
 ### Native rendered comparison results
 
 Both [Android comparison jobs](https://github.com/snapetech-org/seerrng/actions/runs/42709114266)
