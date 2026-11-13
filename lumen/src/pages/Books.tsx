@@ -11,16 +11,29 @@ import {
 import { Icon } from '../icons';
 import { usePrefs } from '../settings';
 
+// the sorts SeerrNG's book feed takes (the same four the SeerrNG web app offers); the first is
+// the default and stays out of the address
+const SORTS = [
+  ['ranked', 'Popular'],
+  ['trending', 'Trending'],
+  ['newest', 'Newest'],
+  ['rating.desc', 'Rating'],
+] as const;
+
 // Books and Audiobooks share a page with an Ebooks / Audiobooks switch. Both come from
 // ChaptarrNG's (Hardcover) catalogue: SeerrNG's ebook feed is Open Library's random sample.
 export default function Books({ format }: { format: 'ebook' | 'audiobook' }) {
   const [p, setP] = useSearchParams();
   const { prefs } = usePrefs();
   const show = p.get('show') || 'all';
+  const sortParam = p.get('sort');
+  const sort = SORTS.some(([v]) => v === sortParam) ? sortParam! : 'ranked';
+  // the library list has no sort of its own, so the menu only applies to the catalogue
+  const sorted = show !== 'have' && sort !== 'ranked';
   const list = usePaged<BookResult>(
     show === 'have'
       ? `/book/library?format=${format}`
-      : `/discover/books?format=${format}`
+      : `/discover/books?format=${format}${sorted ? `&sortBy=${sort}` : ''}`
   );
   const audio = format === 'audiobook';
   // the popular feed doesn't say which books are owned: "Not yet" checks the owned list
@@ -63,6 +76,12 @@ export default function Books({ format }: { format: 'ebook' | 'audiobook' }) {
     else n.set('show', v);
     setP(n, { replace: true });
   };
+  const setSort = (v: string) => {
+    const n = new URLSearchParams(p);
+    if (v === 'ranked') n.delete('sort');
+    else n.set('sort', v);
+    setP(n, { replace: true });
+  };
 
   return (
     <>
@@ -95,7 +114,15 @@ export default function Books({ format }: { format: 'ebook' | 'audiobook' }) {
       </header>
       <section>
         <div className="sec-head">
-          <h2>{audio ? 'Popular audiobooks' : 'Popular ebooks'}</h2>
+          <h2>
+            {sorted
+              ? audio
+                ? 'All audiobooks'
+                : 'All ebooks'
+              : audio
+                ? 'Popular audiobooks'
+                : 'Popular ebooks'}
+          </h2>
         </div>
         <p className="note" style={{ margin: '-4px 0 14px' }}>
           {audio
@@ -116,6 +143,18 @@ export default function Books({ format }: { format: 'ebook' | 'audiobook' }) {
               </button>
             ))}
           </div>
+          {show !== 'have' && (
+            <label className="sel">
+              <span className="lbl">Sort</span>
+              <select value={sort} onChange={(e) => setSort(e.target.value)}>
+                {SORTS.map(([v, t]) => (
+                  <option key={v} value={v}>
+                    {t}
+                  </option>
+                ))}
+              </select>
+            </label>
+          )}
         </div>
         {list.error && !items.length && (
           <div className="empty">

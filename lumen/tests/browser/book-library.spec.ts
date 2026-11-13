@@ -71,6 +71,49 @@ test('manager records do not mark missing book files available', async ({
       page.locator('.poster', { hasText: title }).locator('.glyph.ok')
     ).toHaveCount(1);
 });
+test('Books and Audiobooks can be sorted like the SeerrNG web app', async ({
+  page,
+}) => {
+  const requests = await fixtures(page);
+  const feed = () =>
+    requests.filter((r) => r.path === '/discover/books').map((r) => r.query);
+  await page.goto('/books');
+  const sort = page.getByLabel('Sort');
+  await expect(sort).toHaveValue('ranked');
+  await expect(
+    page.getByRole('heading', { name: 'Popular ebooks' })
+  ).toBeVisible();
+  await expect
+    .poll(feed)
+    .toContainEqual(expect.stringContaining('format=ebook'));
+  expect(feed().some((q) => q.includes('sortBy='))).toBe(false);
+
+  await sort.selectOption('newest');
+  await expect(page).toHaveURL(/[?&]sort=newest/);
+  await expect(page.getByRole('heading', { name: 'All ebooks' })).toBeVisible();
+  await expect
+    .poll(feed)
+    .toContainEqual(expect.stringContaining('sortBy=newest'));
+
+  // the library list has no sort, so the menu steps aside there
+  await page.getByRole('button', { name: 'In library' }).click();
+  await expect(page.getByLabel('Sort')).toHaveCount(0);
+
+  await page.goto('/audiobooks?sort=rating.desc');
+  await expect(page.getByLabel('Sort')).toHaveValue('rating.desc');
+  await expect(
+    page.getByRole('heading', { name: 'All audiobooks' })
+  ).toBeVisible();
+  await expect
+    .poll(feed)
+    .toContainEqual(
+      expect.stringMatching(/format=audiobook.*sortBy=rating\.desc/)
+    );
+
+  // an unknown sort in the address falls back to Popular
+  await page.goto('/books?sort=bogus');
+  await expect(page.getByLabel('Sort')).toHaveValue('ranked');
+});
 const paged = (results: unknown[]) => ({
   page: 1,
   totalPages: 1,
