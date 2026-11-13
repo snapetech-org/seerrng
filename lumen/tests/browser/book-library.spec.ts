@@ -91,7 +91,16 @@ test('Books and Audiobooks open on rows, one per sort', async ({ page }) => {
   await expect.poll(feed).toContainEqual('?format=ebook');
   // the rows are one page each: the full list's paging stays quiet until See all
   expect(feed().some((q) => q.includes('page='))).toBe(false);
-  await expect(page.getByLabel('Sort')).toHaveCount(0);
+  // Sort and genres are on the landing too; neither is picked yet
+  await expect(page.getByLabel('Sort')).toHaveValue('');
+  const genres = page.getByRole('group', { name: 'Genres' });
+  await expect(
+    genres.getByRole('button', { name: 'All genres' })
+  ).toHaveAttribute('aria-pressed', 'true');
+  for (const name of ['Fantasy', 'Science Fiction', 'Young Adult'])
+    await expect(
+      genres.getByRole('button', { name, exact: true })
+    ).toBeVisible();
   // the library row marks what is owned
   const libraryRow = page
     .locator('section')
@@ -159,7 +168,7 @@ test('See all opens the full list with that sort, and Overview or Back returns t
   await expect(
     page.getByRole('heading', { name: 'Top rated', exact: true })
   ).toBeVisible();
-  await expect(page.getByLabel('Sort')).toHaveCount(0);
+  await expect(page.getByLabel('Sort')).toHaveValue('');
 
   // In library from the rows opens the library list
   await page.getByRole('button', { name: 'In library', exact: true }).click();
@@ -247,6 +256,136 @@ test('Books and Audiobooks can be sorted like the SeerrNG web app', async ({
   await page.goto('/books?sort=bogus');
   await expect(page.getByLabel('Sort')).toHaveValue('ranked');
 });
+test('a genre or a sort from the landing fills the page with that list, and Back returns to the rows', async ({
+  page,
+}) => {
+  const requests = await fixtures(page);
+  const feed = () =>
+    requests.filter((r) => r.path === '/discover/books').map((r) => r.query);
+  const genres = page.getByRole('group', { name: 'Genres' });
+  const chip = (name: string) =>
+    genres.getByRole('button', { name, exact: true });
+  await page.goto('/books');
+  await expect(
+    page.getByRole('heading', { name: 'Trending', exact: true })
+  ).toBeVisible();
+
+  // a sort opens the full list sorted that way
+  await page.getByLabel('Sort').selectOption('newest');
+  await expect(page).toHaveURL(/\/books\?sort=newest$/);
+  await expect(page.getByRole('heading', { name: 'New ebooks' })).toBeVisible();
+  await expect(
+    page.getByRole('heading', { name: 'Trending', exact: true })
+  ).toHaveCount(0);
+  await expect.poll(feed).toContainEqual('?format=ebook&sortBy=newest&page=1');
+  await page.goBack();
+  await expect(page).toHaveURL(/\/books$/);
+  await expect(
+    page.getByRole('heading', { name: 'Trending', exact: true })
+  ).toBeVisible();
+
+  // a genre opens the full list of that genre (a phrase is sent as one quoted term)
+  await chip('Science Fiction').click();
+  await expect(page).toHaveURL(/\/books\?genre=science\+fiction$/);
+  await expect(
+    page.getByRole('heading', { name: 'Popular science fiction ebooks' })
+  ).toBeVisible();
+  await expect(chip('Science Fiction')).toHaveAttribute('aria-pressed', 'true');
+  await expect(chip('All genres')).toHaveAttribute('aria-pressed', 'false');
+  await expect
+    .poll(feed)
+    .toContainEqual('?format=ebook&subject=%22science%20fiction%22&page=1');
+
+  // genre and sort go together
+  await page.getByLabel('Sort').selectOption('trending');
+  await expect(
+    page.getByRole('heading', { name: 'Trending science fiction ebooks' })
+  ).toBeVisible();
+  await expect
+    .poll(feed)
+    .toContainEqual(
+      '?format=ebook&sortBy=trending&subject=%22science%20fiction%22&page=1'
+    );
+  await chip('Fantasy').click();
+  await expect
+    .poll(feed)
+    .toContainEqual('?format=ebook&sortBy=trending&subject=fantasy&page=1');
+  await expect(chip('Fantasy')).toHaveAttribute('aria-pressed', 'true');
+  await expect(chip('Science Fiction')).toHaveAttribute(
+    'aria-pressed',
+    'false'
+  );
+
+  // In library has no genres; the genre comes back with All
+  await page.getByRole('button', { name: 'In library', exact: true }).click();
+  await expect(genres).toHaveCount(0);
+  await expect(
+    page.getByRole('heading', { name: 'In your library' })
+  ).toBeVisible();
+  await page.getByRole('button', { name: 'All', exact: true }).click();
+  await expect(chip('Fantasy')).toHaveAttribute('aria-pressed', 'true');
+
+  // All genres clears the genre and stays on the list
+  await chip('All genres').click();
+  await expect(page).toHaveURL(/\/books\?sort=trending$/);
+  await expect(
+    page.getByRole('heading', { name: 'Trending ebooks' })
+  ).toBeVisible();
+  await expect(chip('All genres')).toHaveAttribute('aria-pressed', 'true');
+
+  // Back goes to the rows (the list's changes replaced its own entry)
+  await page.goBack();
+  await expect(page).toHaveURL(/\/books$/);
+  await expect(
+    page.getByRole('heading', { name: 'New releases', exact: true })
+  ).toBeVisible();
+
+  // a shared address opens the same list; audiobooks too
+  await page.goto('/audiobooks?genre=young%20adult&sort=rating.desc');
+  await expect(
+    page.getByRole('heading', { name: 'Top rated young adult audiobooks' })
+  ).toBeVisible();
+  await expect
+    .poll(feed)
+    .toContainEqual(
+      '?format=audiobook&sortBy=rating.desc&subject=%22young%20adult%22&page=1'
+    );
+});
+
+test('the full list keeps loading until it fills a tall screen', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1280, height: 2400 });
+  await fixtures(page);
+  // this route answers before the fixtures' one, so it keeps its own record
+  const pages: string[] = [];
+  await page.route('**/api/v1/discover/books?**', (route) => {
+    const url = new URL(route.request().url());
+    pages.push(url.search);
+    const n = Number(url.searchParams.get('page') || 1);
+    return route.fulfill({
+      json: {
+        page: n,
+        totalPages: 3,
+        totalResults: 6,
+        results: [1, 2].map((i) =>
+          book(`fill-${n}-${i}`, 'ebook', `Fill ${n}.${i}`)
+        ),
+      },
+    });
+  });
+  await page.goto('/books?genre=fantasy');
+  await expect(
+    page.locator('.grid .poster', { hasText: 'Fill 1.1' })
+  ).toHaveCount(1);
+  // no scrolling: the short first page leaves room, so the next ones load by themselves
+  await expect
+    .poll(() => pages)
+    .toContainEqual('?format=ebook&subject=fantasy&page=2');
+  await expect(page.locator('.grid .poster')).toHaveCount(6);
+  expect(await page.evaluate(() => window.scrollY)).toBe(0);
+});
+
 const paged = (results: unknown[]) => ({
   page: 1,
   totalPages: 1,

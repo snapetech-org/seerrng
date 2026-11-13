@@ -28,25 +28,55 @@ const SORTS = [
   ['newest', 'Newest'],
   ['rating.desc', 'Rating'],
 ] as const;
-// what the full list of each sort is called
-const SORT_TITLES: Record<string, [string, string]> = {
-  ranked: ['Popular ebooks', 'Popular audiobooks'],
-  trending: ['Trending ebooks', 'Trending audiobooks'],
-  newest: ['New ebooks', 'New audiobooks'],
-  'rating.desc': ['Top rated ebooks', 'Top rated audiobooks'],
+// what the full list of each sort is called ("Trending" + "fantasy" + "ebooks")
+const SORT_TITLES: Record<string, string> = {
+  ranked: 'Popular',
+  trending: 'Trending',
+  newest: 'New',
+  'rating.desc': 'Top rated',
 };
+// genres that work for both catalogues: SeerrNG sends the genre to Open Library as a
+// subject: clause (ebooks) and matches it, case-insensitively, against each ChaptarrNG
+// (Hardcover) book's genres (audiobooks), so each is a word or phrase both of them use
+const GENRES = [
+  'fantasy',
+  'science fiction',
+  'romance',
+  'mystery',
+  'thriller',
+  'horror',
+  'historical fiction',
+  'young adult',
+  'biography',
+  'history',
+  'business',
+  'poetry',
+];
+const genreLabel = (g: string) =>
+  g.replace(/(^|\s)(\S)/g, (_, a: string, c: string) => a + c.toUpperCase());
+// a phrase goes in quotes, so "science fiction" is one term (not science and fiction)
+const subjectParam = (g: string) =>
+  `&subject=${encodeURIComponent(g.includes(' ') ? `"${g}"` : g)}`;
+// the genre in the address, tidied (quotes would break the phrase the feed is sent)
+const genreOf = (p: URLSearchParams) =>
+  (p.get('genre') || '')
+    .replace(/"/g, '')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .toLowerCase()
+    .slice(0, 100);
 // a row shows the first page of its feed, at most this many cards
 const ROW_MAX = 20;
 
 // Books and Audiobooks share a page with an Ebooks / Audiobooks switch. Both come from
 // ChaptarrNG's (Hardcover) catalogue: SeerrNG's ebook feed is Open Library's random sample.
 // With nothing in the address the page is a set of rows (like Comics/Manga); each row's
-// "See all" opens the full list with that sort, ?sort= (and ?show=) in the address.
+// "See all" opens the full list with that sort, ?sort= (and ?show=, ?genre=) in the address.
 export default function Books({ format }: { format: 'ebook' | 'audiobook' }) {
   const [p] = useSearchParams();
   const { prefs } = usePrefs();
   const audio = format === 'audiobook';
-  const grid = p.has('show') || p.has('sort');
+  const grid = p.has('show') || p.has('sort') || p.has('genre');
   const note = (
     <p className="note" style={{ margin: '-4px 0 14px' }}>
       {audio
@@ -118,6 +148,56 @@ function LibrarySeg({
   );
 }
 
+// the Sort menu; the landing has no sort of its own, so it shows a prompt instead
+function SortMenu({ sort, pick }: { sort: string; pick: (v: string) => void }) {
+  return (
+    <label className="sel">
+      <span className="lbl">Sort</span>
+      <select value={sort} onChange={(e) => pick(e.target.value)}>
+        {!sort && (
+          <option value="" disabled hidden>
+            Choose
+          </option>
+        )}
+        {SORTS.map(([v, t]) => (
+          <option key={v} value={v}>
+            {t}
+          </option>
+        ))}
+      </select>
+    </label>
+  );
+}
+
+// one genre at a time; a genre from a shared address that isn't on the list gets a chip too
+function GenreChips({
+  genre,
+  pick,
+}: {
+  genre: string;
+  pick: (v: string) => void;
+}) {
+  const list = genre && !GENRES.includes(genre) ? [genre, ...GENRES] : GENRES;
+  return (
+    <div className="chips genre-chips" role="group" aria-label="Genres">
+      <button className="chip" aria-pressed={!genre} onClick={() => pick('')}>
+        All genres
+      </button>
+      {list.map((g) => (
+        <button
+          key={g}
+          className="chip"
+          aria-pressed={genre === g}
+          onClick={() => pick(g)}
+        >
+          {genre === g && <Icon name="check" size="sm" />}
+          {genreLabel(g)}
+        </button>
+      ))}
+    </div>
+  );
+}
+
 // ---- the landing: one row per sort, each loading on its own ----
 function BooksLanding({
   format,
@@ -129,11 +209,12 @@ function BooksLanding({
   const [p, setP] = useSearchParams();
   const base = format === 'ebook' ? '/books' : '/audiobooks';
   const feed = `/discover/books?format=${format}`;
-  // a pushed entry, so Back from In library / Not yet returns to the rows
-  const pick = (v: string) => {
-    if (v === 'all') return;
+  // pushed entries, so Back from the list (In library, Not yet, a sort or a genre) returns
+  // to the rows
+  const open = (key: string, v: string) => {
+    if (!v || (key === 'show' && v === 'all')) return;
     const n = new URLSearchParams(p);
-    n.set('show', v);
+    n.set(key, v);
     setP(n);
   };
   return (
@@ -141,7 +222,9 @@ function BooksLanding({
       <section>
         {note}
         <div className="toolbar">
-          <LibrarySeg show="all" pick={pick} />
+          <LibrarySeg show="all" pick={(v) => open('show', v)} />
+          <SortMenu sort="" pick={(v) => open('sort', v)} />
+          <GenreChips genre="" pick={(v) => open('genre', v)} />
         </div>
       </section>
       {/* the same first page the owned list reads, so it is asked for once */}
@@ -247,10 +330,12 @@ function BooksGrid({
   const sort = SORTS.some(([v]) => v === sortParam) ? sortParam! : 'ranked';
   // the library list has no sort of its own, so the menu only applies to the catalogue
   const sorted = show !== 'have' && sort !== 'ranked';
+  // nor genres: In library is the whole library (the genre waits in the address for All)
+  const genre = show === 'have' ? '' : genreOf(p);
   const list = usePaged<BookResult>(
     show === 'have'
       ? `/book/library?format=${format}`
-      : `/discover/books?format=${format}${sorted ? `&sortBy=${sort}` : ''}`
+      : `/discover/books?format=${format}${sorted ? `&sortBy=${sort}` : ''}${genre ? subjectParam(genre) : ''}`
   );
   const audio = format === 'audiobook';
   // the popular feed doesn't say which books are owned: "Not yet" checks the owned list
@@ -280,14 +365,24 @@ function BooksGrid({
   const items = useEbookCovers(raw, audio);
   const hiddenOnlyPage =
     show === 'not' && unknownCount > 0 && items.length === 0 && !list.done;
-  // the list stays a list: All keeps the sort in the address (the rows are one link away)
+  // the list stays a list: All (or All genres) keeps a sort in the address (the rows are
+  // one link away)
+  const keepList = (n: URLSearchParams) => {
+    if (!n.has('show') && !n.has('genre') && !n.has('sort'))
+      n.set('sort', 'ranked');
+    setP(n, { replace: true });
+  };
   const upd = (v: string) => {
     const n = new URLSearchParams(p);
-    if (v === 'all') {
-      n.delete('show');
-      if (!n.has('sort')) n.set('sort', 'ranked');
-    } else n.set('show', v);
-    setP(n, { replace: true });
+    if (v === 'all') n.delete('show');
+    else n.set('show', v);
+    keepList(n);
+  };
+  const setGenre = (v: string) => {
+    const n = new URLSearchParams(p);
+    if (v) n.set('genre', v);
+    else n.delete('genre');
+    keepList(n);
   };
   const setSort = (v: string) => {
     const n = new URLSearchParams(p);
@@ -301,25 +396,17 @@ function BooksGrid({
         <h2>
           {show === 'have'
             ? 'In your library'
-            : SORT_TITLES[sort][audio ? 1 : 0]}
+            : [SORT_TITLES[sort], genre, audio ? 'audiobooks' : 'ebooks']
+                .filter(Boolean)
+                .join(' ')}
         </h2>
         <Link to={audio ? '/audiobooks' : '/books'}>Overview</Link>
       </div>
       {note}
       <div className="toolbar">
         <LibrarySeg show={show} pick={upd} />
-        {show !== 'have' && (
-          <label className="sel">
-            <span className="lbl">Sort</span>
-            <select value={sort} onChange={(e) => setSort(e.target.value)}>
-              {SORTS.map(([v, t]) => (
-                <option key={v} value={v}>
-                  {t}
-                </option>
-              ))}
-            </select>
-          </label>
-        )}
+        {show !== 'have' && <SortMenu sort={sort} pick={setSort} />}
+        {show !== 'have' && <GenreChips genre={genre} pick={setGenre} />}
       </div>
       {list.error && !items.length && (
         <div className="empty">
