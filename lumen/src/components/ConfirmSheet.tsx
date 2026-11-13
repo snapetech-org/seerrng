@@ -47,7 +47,8 @@ export function ConfirmSheet({
             >
               {confirm}
             </button>
-            <button className="btn btn-tonal" onClick={onClose}>
+            {/* focus starts here, not on the action that can't be undone */}
+            <button className="btn btn-tonal" data-autofocus onClick={onClose}>
               Keep it
             </button>
           </div>
