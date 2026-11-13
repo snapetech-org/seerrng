@@ -118,6 +118,12 @@ transition, item presentation, and primary/ghost roles in SeerrOrig. Fork-only
 action types map to the closest upstream visual role; the SeerrNG theme keeps
 its current menu presentation and action variants.
 
+
+Movie and TV request rows retain upstream's responsive card hierarchy and
+request actions. SeerrOrig now also uses the upstream horizontal backdrop fade;
+SeerrNG's extra media types and request-failure information remain in their
+existing card roles.
+
 Shared movie, TV, and collection poster cards now use upstream's frame and
 hover shadow, backdrop gradient, title and summary typography, type-badge
 geometry, and status-badge sizing. SeerrNG's additional poster actions and

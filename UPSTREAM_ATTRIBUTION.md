@@ -15,6 +15,9 @@ with upstream's [\`TitleCard\`](https://github.com/seerr-team/seerr/blob/564bfb0
 and its poster badge and status presentation. SeerrNG poster actions and
 additional media metadata remain available, and SeerrNG logos and brand assets
 remain in use.
+SeerrOrig's movie and TV request rows follow upstream's [\`RequestItem\`](https://github.com/seerr-team/seerr/blob/564bfb08b54caa374bddaf820abfd226e5e69151/src/components/RequestList/RequestItem/index.tsx)
+layout and backdrop treatment. SeerrNG's extra media types, failure details, and
+request actions remain available.
 The Issues list and movie/TV issue-detail composition are adapted from
 upstream's [`IssueList`](https://github.com/seerr-team/seerr/blob/564bfb08b54caa374bddaf820abfd226e5e69151/src/components/IssueList/index.tsx),
 [`IssueItem`](https://github.com/seerr-team/seerr/blob/564bfb08b54caa374bddaf820abfd226e5e69151/src/components/IssueList/IssueItem/index.tsx),
