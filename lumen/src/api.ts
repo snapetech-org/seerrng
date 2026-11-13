@@ -241,19 +241,50 @@ export const tmdbImg = (path: string | undefined | null, size = 'w342') => {
 };
 
 // ComicVine, AniList and Open Library covers through SeerrNG's image proxy (cached on the
-// server, and no third-party requests from the browser); anything else is used as given
-const PROXIED_ART: [string, string][] = [
-  ['https://comicvine.gamespot.com/', '/imageproxy/comicvine/'],
-  ['https://comicvine.cbsistatic.com/', '/imageproxy/comicvinestatic/'],
-  ['https://comicvine1.cbsistatic.com/', '/imageproxy/comicvinestatic1/'],
-  ['https://s4.anilist.co/', '/imageproxy/anilist/'],
-  ['https://covers.openlibrary.org/', '/imageproxy/openlibrarycovers/'],
-];
+// server, and no third-party requests from the browser); other https covers are used as given
+const PROXIED_ART: Record<string, string> = {
+  'comicvine.gamespot.com': '/imageproxy/comicvine/',
+  'comicvine.cbsistatic.com': '/imageproxy/comicvinestatic/',
+  'comicvine1.cbsistatic.com': '/imageproxy/comicvinestatic1/',
+  's4.anilist.co': '/imageproxy/anilist/',
+  'covers.openlibrary.org': '/imageproxy/openlibrarycovers/',
+};
+// an https address without a user name or password, or undefined
+const httpsArt = (raw: string) => {
+  try {
+    const u = new URL(raw);
+    return u.protocol === 'https:' && !u.username && !u.password
+      ? u
+      : undefined;
+  } catch {
+    return undefined;
+  }
+};
+// The path of a cover on exactly this host, for a proxy route on this side. The raw path is
+// checked before URL parsing tidies it: nothing that could climb out of the route (dot
+// segments or backslashes, plain or encoded). Query and fragment are dropped.
+export function proxiedArtPath(raw: string, host: string): string | undefined {
+  const u = httpsArt(raw);
+  if (!u || u.hostname !== host || (u.port && u.port !== '443'))
+    return undefined;
+  const rawPath = raw.match(/^https:\/\/[^/?#\\]+(\/[^?#]*)/i)?.[1];
+  if (!rawPath || rawPath === '/' || !isSafeImagePath(rawPath))
+    return undefined;
+  return u.pathname.slice(1) || undefined;
+}
 export const artUrl = (url?: string | null) => {
   if (!url) return undefined;
-  for (const [from, to] of PROXIED_ART)
-    if (url.startsWith(from)) return to + url.slice(from.length);
-  return url;
+  // already on this site (SeerrNG's own proxy paths)
+  if (url.startsWith('/') && !url.startsWith('//') && !url.includes('\\'))
+    return url;
+  const u = httpsArt(url);
+  if (!u) return undefined;
+  const to = Object.hasOwn(PROXIED_ART, u.hostname)
+    ? PROXIED_ART[u.hostname]
+    : undefined;
+  if (!to) return u.href;
+  const path = proxiedArtPath(url, u.hostname);
+  return path ? to + path : undefined;
 };
 
 // a book cover through the image proxy; Open Library covers come in the medium size for
@@ -704,9 +735,7 @@ export async function hcCovers(
         (d.data?.books || []).map((x) => [String(x.id), x.image?.url || ''])
       );
       for (const w of ids) {
-        const path = /^https:\/\/assets\.hardcover\.app\/(.+)$/.exec(
-          byId.get(w) || ''
-        )?.[1];
+        const path = proxiedArtPath(byId.get(w) || '', 'assets.hardcover.app');
         coverCache.set(w, path ? `/seerr-classic/hcimg/${path}` : undefined);
       }
     } catch {
