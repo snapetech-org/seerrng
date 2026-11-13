@@ -10,7 +10,7 @@ import {
   type TitleResult,
   type TvDetails,
 } from '../api';
-import { useAuth, useMediaServerName } from '../auth';
+import { useMediaServerName } from '../auth';
 import {
   Rail,
   Section,
@@ -21,7 +21,6 @@ import {
 import {
   ActionBar,
   AdvancedOptions,
-  canRequest4k,
   DetailTop,
   Facts,
   fmtRun,
@@ -29,7 +28,9 @@ import {
   Pill,
 } from '../components/detail';
 import { ServiceNote } from '../components/extra';
+import { useOffers4k } from '../components/requestSheet';
 import { useToast } from '../components/toast';
+import { localToday } from '../dates';
 import { friendlyError } from '../errors';
 import { useApi, usePublicSettings } from '../hooks';
 import { Icon } from '../icons';
@@ -68,13 +69,16 @@ export default function TvDetail() {
   const { data: t, error, reload, refresh } = useApi<TvDetails>(`/tv/${id}`);
   const like = useApi<Paged<TitleResult>>(`/tv/${id}/recommendations`).data;
   const pub = usePublicSettings();
-  const { user } = useAuth();
   const { prefs } = usePrefs();
   const toast = useToast();
   const [sel, setSel] = useState<Set<number>>(new Set());
   const [opts, setOpts] = useState<RequestOptions>({});
   const [busy, setBusy] = useState(false);
   const onOpts = useCallback((o: RequestOptions) => setOpts(o), []);
+  // people who may request 4K series pick 1080p or 4K here, admins or not
+  const offers4k = useOffers4k('tv');
+  const [fourK, setFourK] = useState(false);
+  const is4k = offers4k && fourK;
 
   const seasons = useMemo(
     () => (t?.seasons || []).filter((s) => s.seasonNumber > 0),
@@ -83,11 +87,11 @@ export default function TvDetail() {
   const stat = useMemo(() => {
     const m = new Map<number, SeasonState>();
     for (const s of t?.mediaInfo?.seasons || [])
-      m.set(s.seasonNumber, stateOf(opts.is4k ? s.status4k : s.status));
+      m.set(s.seasonNumber, stateOf(is4k ? s.status4k : s.status));
     // SeerrNG only fills in mediaInfo.seasons once Sonarr has synced them, so a fresh request
     // shows up in the requests alone: its seasons count as asked until then
     for (const r of t?.mediaInfo?.requests || [])
-      if (!!r.is4k === !!opts.is4k && live(r.status))
+      if (!!r.is4k === !!is4k && live(r.status))
         for (const s of r.seasons || [])
           if (
             live(s.status ?? r.status) &&
@@ -95,15 +99,15 @@ export default function TvDetail() {
           )
             m.set(s.seasonNumber, 'asked');
     return m;
-  }, [t, opts.is4k]);
+  }, [t, is4k]);
   const activeRequestSeasons = useMemo(() => {
     const requested = new Set<number>();
     for (const r of t?.mediaInfo?.requests || [])
-      if (!!r.is4k === !!opts.is4k && live(r.status))
+      if (!!r.is4k === !!is4k && live(r.status))
         for (const s of r.seasons || [])
           if (live(s.status ?? r.status)) requested.add(s.seasonNumber);
     return requested;
-  }, [t, opts.is4k]);
+  }, [t, is4k]);
   const missing = seasons
     .filter((s) => {
       const st = stat.get(s.seasonNumber) || 'none';
@@ -135,7 +139,7 @@ export default function TvDetail() {
   useEffect(() => {
     setSel(new Set(prefs.wholeSeriesDefault || !partialOk ? missing : []));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [showId, prefs.wholeSeriesDefault, partialOk, opts.is4k]);
+  }, [showId, prefs.wholeSeriesDefault, partialOk, is4k]);
   // seasons that were just requested (or arrived) can no longer be ticked
   const missingKey = missing.join(',');
   useEffect(() => {
@@ -181,7 +185,7 @@ export default function TvDetail() {
       await requestSeries(
         t.id,
         whole ? 'all' : [...sel].sort((a, b) => a - b),
-        opts
+        is4k ? { ...opts, is4k: true } : opts
       );
       toast(
         `Requested ${t.name} · ${whole ? 'entire series' : n === 1 ? 'Season ' + [...sel][0] : n + ' seasons'}`
@@ -194,6 +198,7 @@ export default function TvDetail() {
     }
   };
 
+  const today = localToday();
   const years = [
     (t.firstAirDate || '').slice(0, 4),
     t.status === 'Ended' && t.lastEpisodeToAir
@@ -210,7 +215,7 @@ export default function TvDetail() {
       : '';
   // the series' own state, as the poster glyph says it (downloading x%, requested, ...)
   const mine = statusOf(
-    opts.is4k && t.mediaInfo
+    is4k && t.mediaInfo
       ? {
           ...t.mediaInfo,
           status: t.mediaInfo.status4k ?? 1,
@@ -222,18 +227,18 @@ export default function TvDetail() {
     serverName
   );
   const asks = (t.mediaInfo?.requests || []).filter(
-    (r) => !!r.is4k === !!opts.is4k && live(r.status)
+    (r) => !!r.is4k === !!is4k && live(r.status)
   );
   const main = missing.length ? (
     <button className="btn btn-primary" disabled={!n || busy} onClick={request}>
       <Icon name="plus" />
       {label}
-      {opts.is4k ? ' in 4K' : ''}
+      {is4k ? ' in 4K' : ''}
     </button>
   ) : watchable ? (
     <a
       className="btn btn-primary"
-      {...mediaLink(t.mediaInfo, !!opts.is4k, 'tv', serverName)}
+      {...mediaLink(t.mediaInfo, !!is4k, 'tv', serverName)}
     >
       <Icon name="play" />
       Watch on {serverName}
@@ -248,7 +253,7 @@ export default function TvDetail() {
     <article className="detail">
       <DetailTop
         status={statusOf(
-          opts.is4k && t.mediaInfo
+          is4k && t.mediaInfo
             ? {
                 ...t.mediaInfo,
                 status: t.mediaInfo.status4k ?? 1,
@@ -299,7 +304,7 @@ export default function TvDetail() {
           {watchable && missing.length > 0 && (
             <a
               className="btn btn-quiet"
-              {...mediaLink(t.mediaInfo, !!opts.is4k, 'tv', serverName)}
+              {...mediaLink(t.mediaInfo, !!is4k, 'tv', serverName)}
             >
               <Icon name="play" />
               Watch on {serverName}
@@ -333,21 +338,36 @@ export default function TvDetail() {
             })}
           </ul>
         )}
-        {(missing.length > 0 ||
-          (pub?.series4kEnabled &&
-            canRequest4k(user?.permissions, 'tv') &&
-            seasons.some((season) => {
-              const status = t.mediaInfo?.seasons?.find(
-                (s) => s.seasonNumber === season.seasonNumber
-              )?.status4k;
-              return !status || status === 1 || status === 4;
-            }))) && (
+        {offers4k && (
+          <div
+            className="seg"
+            role="group"
+            aria-label="Quality"
+            style={{ justifySelf: 'start' }}
+          >
+            {(
+              [
+                [false, '1080p'],
+                [true, '4K'],
+              ] as [boolean, string][]
+            ).map(([v, label]) => (
+              <button
+                key={label}
+                type="button"
+                aria-pressed={fourK === v}
+                onClick={() => setFourK(v)}
+              >
+                {label}
+              </button>
+            ))}
+          </div>
+        )}
+        {missing.length > 0 && (
+          // keyed by quality: 4K lists the 4K servers with their own defaults
           <AdvancedOptions
+            key={is4k ? '4k' : 'hd'}
             kind="tv"
-            is4k={false}
-            allow4k={
-              !!pub?.series4kEnabled && canRequest4k(user?.permissions, 'tv')
-            }
+            is4k={is4k}
             onChange={onOpts}
           />
         )}
@@ -399,7 +419,7 @@ export default function TvDetail() {
                   const locked = st === 'have' || requested;
                   const on = locked || sel.has(s.seasonNumber);
                   const yr = s.airDate
-                    ? s.airDate > new Date().toISOString().slice(0, 10)
+                    ? s.airDate > today
                       ? 'Premieres ' + shortDate(s.airDate)
                       : s.airDate.slice(0, 4)
                     : 'TBA';
@@ -507,7 +527,7 @@ export default function TvDetail() {
             className="icon-btn"
             aria-label={`Watch on ${serverName}`}
             title={`Watch on ${serverName}`}
-            {...mediaLink(t.mediaInfo, !!opts.is4k, 'tv', serverName)}
+            {...mediaLink(t.mediaInfo, !!is4k, 'tv', serverName)}
           >
             <Icon name="play" />
           </a>
