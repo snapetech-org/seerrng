@@ -2649,7 +2649,7 @@ export class MediaRequestSubscriber implements EntitySubscriberInterface<MediaRe
 
       const media = await mediaRepository.findOne({
         where: { id: entity.media.id },
-        relations: { identifiers: true },
+        relations: { identifiers: true, searchMetadata: true },
       });
 
       if (!media) {
@@ -3322,7 +3322,8 @@ export class MediaRequestSubscriber implements EntitySubscriberInterface<MediaRe
         }
 
         if (!searchResults.length) {
-          const localTitle = work?.title?.trim() || media.title?.trim();
+          const localTitle =
+            work?.title?.trim() || media.searchMetadata?.title?.trim();
           if (localTitle) {
             const localBook = await readarr.findLocalBookByTitle({
               title: localTitle,
