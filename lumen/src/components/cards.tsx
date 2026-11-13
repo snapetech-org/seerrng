@@ -128,6 +128,14 @@ export function statusOf(
     return { k: 'wait', word: 'Requested', ico: 'clock' };
   return null;
 }
+// A pending or processing 4K copy must not make the independent HD request look requested
+// (the same rule as the movie page).
+export const withoutPending4k = (mi?: MediaInfo): MediaInfo | undefined =>
+  mi &&
+  (mi.status4k === MediaStatus.PENDING ||
+    mi.status4k === MediaStatus.PROCESSING)
+    ? { ...mi, status4k: undefined, downloadStatus4k: undefined }
+    : mi;
 export const Glyph = ({ s }: { s: Stat }) =>
   s ? (
     <span className={`glyph ${s.k}`} title={s.word}>
@@ -220,8 +228,10 @@ export function TitleCard({ it, meta }: { it: TitleResult; meta?: string }) {
   const toast = useToast();
   const { prefs } = usePrefs();
   const tv = it.mediaType === 'tv';
+  // the glyph still shows a 4K-only request; the request buttons follow HD alone
+  const shown = statusOf(it.mediaInfo, false, serverName);
   const [s, markRequested] = useRequested(
-    statusOf(it.mediaInfo, false, serverName)
+    statusOf(withoutPending4k(it.mediaInfo), false, serverName)
   );
   const date = it.releaseDate || it.firstAirDate;
   const unreleased = !!date && date > TODAY;
@@ -271,7 +281,7 @@ export function TitleCard({ it, meta }: { it: TitleResult; meta?: string }) {
     qb = plex ? (
       <a
         className="qbtn okb"
-        {...mediaLink(it.mediaInfo, false, tv ? 'tv' : 'movie', serverName)}
+        {...mediaLink(it.mediaInfo, false, tv ? 'tv' : 'movie')}
       >
         <Icon name="play" size="sm" />
         Watch on {serverName}
@@ -329,7 +339,7 @@ export function TitleCard({ it, meta }: { it: TitleResult; meta?: string }) {
           sub={yearOf(it)}
           icon={tv ? 'tv' : 'film'}
         />
-        <Glyph s={s} />
+        <Glyph s={s || shown} />
         <Link className="hit" to={href} aria-label={titleOf(it)} />
         {prefs.hoverRequest && !s && (!tv || prefs.wholeSeriesDefault) && (
           <TouchQuick
@@ -524,7 +534,7 @@ export function FeatCard({
 }) {
   const serverName = useMediaServerName();
   const tv = it.mediaType === 'tv';
-  const s = statusOf(it.mediaInfo, false, serverName);
+  const s = statusOf(withoutPending4k(it.mediaInfo), false, serverName);
   const toast = useToast();
   const { prefs } = usePrefs();
   const [done, setDone] = useState('');
@@ -574,12 +584,7 @@ export function FeatCard({
             plexUrl(it.mediaInfo) ? (
               <a
                 className="btn go"
-                {...mediaLink(
-                  it.mediaInfo,
-                  false,
-                  tv ? 'tv' : 'movie',
-                  serverName
-                )}
+                {...mediaLink(it.mediaInfo, false, tv ? 'tv' : 'movie')}
               >
                 <Icon name="play" size="sm" />
                 Watch

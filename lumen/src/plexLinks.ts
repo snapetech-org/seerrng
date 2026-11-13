@@ -1,3 +1,5 @@
+import { mediaServer, type MediaServerKind } from './mediaServer.ts';
+
 export type PlexLinks = {
   mediaUrl?: string;
   mediaUrl4k?: string;
@@ -81,12 +83,15 @@ export const plexLink = (
 
 // Only Plex receives native Plex app links. Jellyfin and Emby use the
 // configured server URL supplied by SeerrNG, with the same URL validation.
+// Decided by the server kind: admins can rename Plex, so its display name says nothing.
+// (The name argument is still accepted from older callers and not used.)
 export const mediaLink = (
   m: PlexLinks | undefined,
   is4k = false,
   kind = 'movie',
-  serverName = 'Plex'
+  _serverName?: string,
+  server: MediaServerKind = mediaServer().kind
 ) =>
-  serverName === 'Plex'
+  server === 'plex'
     ? plexLink(m, is4k, kind)
     : { href: plexUrl(m, is4k), target: '_blank', rel: 'noreferrer' };
