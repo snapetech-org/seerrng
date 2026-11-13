@@ -137,7 +137,7 @@ the collapsed “More settings” route list.
 
 User settings show upstream's primary tabs in SeerrOrig; SeerrNG-only maturity,
 season-rule, episode-queue, advanced-theme, and client-token routes remain
-available under a collapsed “More settings” disclosure.
+available under a collapsed “More settings” disclosure. The permission editor follows upstream order, with SeerrNG-only restriction and request-service controls under a collapsed extension section.
 
 User general settings keep the upstream account, language, discovery, request-limit,
 and Plex watchlist controls in upstream order. SeerrNG-only language preferences,

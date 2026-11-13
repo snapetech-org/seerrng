@@ -5,6 +5,7 @@ import PageTitle from '@app/components/Common/PageTitle';
 import PermissionEdit from '@app/components/PermissionEdit';
 import useToasts from '@app/hooks/useToasts';
 import { getPositiveQueryParamNumber } from '@app/hooks/useUpdateQueryParams';
+import useUpstreamTheme from '@app/hooks/useUpstreamTheme';
 import { useUser } from '@app/hooks/useUser';
 import globalMessages from '@app/i18n/globalMessages';
 import ErrorPage from '@app/pages/_error';
@@ -34,11 +35,13 @@ const messages = defineMessages(
     contentRestrictionOn: 'Restricted (kid account)',
     contentRestrictionOff: 'Unrestricted',
     requestServiceGrantDescription: 'Available when requesting {mediaType}.',
+    morePermissionOptions: 'More permission options',
   }
 );
 
 const UserPermissions = () => {
   const intl = useIntl();
+  const upstream = useUpstreamTheme();
   const { addToast } = useToasts();
   const router = useRouter();
   const { user: currentUser } = useUser();
@@ -176,87 +179,97 @@ const UserPermissions = () => {
                     setFieldValue('currentPermissions', newPermission)
                   }
                 />
-                <div className="form-row">
-                  <label htmlFor="contentRestricted" className="text-label">
-                    {intl.formatMessage(messages.contentRestriction)}
-                    <span className="label-tip">
-                      {intl.formatMessage(
-                        messages.contentRestrictionDescription
-                      )}
-                    </span>
-                  </label>
-                  <div className="form-input-area">
-                    <select
-                      id="contentRestricted"
-                      name="contentRestricted"
-                      value={values.contentRestricted}
-                      onChange={(event) =>
-                        setFieldValue('contentRestricted', event.target.value)
-                      }
-                    >
-                      <option value="default">
-                        {intl.formatMessage(messages.contentRestrictionDefault)}
-                      </option>
-                      <option value="on">
-                        {intl.formatMessage(messages.contentRestrictionOn)}
-                      </option>
-                      <option value="off">
-                        {intl.formatMessage(messages.contentRestrictionOff)}
-                      </option>
-                    </select>
-                  </div>
-                </div>
-                {requestServiceOptions.length > 0 && (
-                  <div>
-                    <h4 className="heading">
-                      {intl.formatMessage(messages.requestServices)}
-                    </h4>
-                    <p className="settings-form-row-description">
-                      {intl.formatMessage(messages.requestServicesDescription)}
-                    </p>
-                    <div>
-                      {requestServiceOptions.map((service) => (
-                        <div className="form-row" key={service.key}>
-                          <label
-                            htmlFor={`request-service-${service.key}`}
-                            className="checkbox-label"
-                          >
-                            {service.label}
-                          </label>
-                          <div className="form-input-area">
-                            <input
-                              type="checkbox"
-                              id={`request-service-${service.key}`}
-                              checked={values.requestServices.includes(
-                                service.key
-                              )}
-                              onChange={(event) => {
-                                const nextServices = new Set(
-                                  values.requestServices
-                                );
-                                if (event.target.checked) {
-                                  nextServices.add(service.key);
-                                } else {
-                                  nextServices.delete(service.key);
-                                }
-                                setFieldValue(
-                                  'requestServices',
-                                  [...nextServices].sort()
-                                );
-                              }}
-                            />
-                          </div>
-                          <span className="settings-form-row-description">
-                            {intl.formatMessage(
-                              messages.requestServiceGrantDescription,
-                              { mediaType: service.mediaType }
-                            )}
-                          </span>
-                        </div>
-                      ))}
+                <details
+                  open={!upstream}
+                  className={upstream ? 'mt-3' : undefined}
+                >
+                  {upstream && (
+                    <summary className="cursor-pointer text-sm font-medium text-gray-300">
+                      {intl.formatMessage(messages.morePermissionOptions)}
+                    </summary>
+                  )}
+                  <div className="form-row">
+                    <label htmlFor="contentRestricted" className="text-label">
+                      {intl.formatMessage(messages.contentRestriction)}
+                      <span className="label-tip">
+                        {intl.formatMessage(
+                          messages.contentRestrictionDescription
+                        )}
+                      </span>
+                    </label>
+                    <div className="form-input-area">
+                      <select
+                        id="contentRestricted"
+                        name="contentRestricted"
+                        value={values.contentRestricted}
+                        onChange={(event) =>
+                          setFieldValue('contentRestricted', event.target.value)
+                        }
+                      >
+                        <option value="default">
+                          {intl.formatMessage(messages.contentRestrictionDefault)}
+                        </option>
+                        <option value="on">
+                          {intl.formatMessage(messages.contentRestrictionOn)}
+                        </option>
+                        <option value="off">
+                          {intl.formatMessage(messages.contentRestrictionOff)}
+                        </option>
+                      </select>
                     </div>
                   </div>
-                )}
+                  {requestServiceOptions.length > 0 && (
+                    <div>
+                      <h4 className="heading">
+                        {intl.formatMessage(messages.requestServices)}
+                      </h4>
+                      <p className="settings-form-row-description">
+                        {intl.formatMessage(messages.requestServicesDescription)}
+                      </p>
+                      <div>
+                        {requestServiceOptions.map((service) => (
+                          <div className="form-row" key={service.key}>
+                            <label
+                              htmlFor={`request-service-${service.key}`}
+                              className="checkbox-label"
+                            >
+                              {service.label}
+                            </label>
+                            <div className="form-input-area">
+                              <input
+                                type="checkbox"
+                                id={`request-service-${service.key}`}
+                                checked={values.requestServices.includes(
+                                  service.key
+                                )}
+                                onChange={(event) => {
+                                  const nextServices = new Set(
+                                    values.requestServices
+                                  );
+                                  if (event.target.checked) {
+                                    nextServices.add(service.key);
+                                  } else {
+                                    nextServices.delete(service.key);
+                                  }
+                                  setFieldValue(
+                                    'requestServices',
+                                    [...nextServices].sort()
+                                  );
+                                }}
+                              />
+                            </div>
+                            <span className="settings-form-row-description">
+                              {intl.formatMessage(
+                                messages.requestServiceGrantDescription,
+                                { mediaType: service.mediaType }
+                              )}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </details>
               </div>
               <div className="actions">
                 <div className="flex justify-end">
