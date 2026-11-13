@@ -356,7 +356,7 @@
       "callsites": [
         {
           "path": "server/api/servarr/readarr.ts",
-          "line": 2944,
+          "line": 2958,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`[Readarr] Failed to lookup author: ${e.message}`",
@@ -3414,7 +3414,7 @@
       "callsites": [
         {
           "path": "server/api/servarr/readarr.ts",
-          "line": 3092,
+          "line": 3106,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Chaptarr returned an invalid pending add ID.'",
@@ -5319,7 +5319,7 @@
       "callsites": [
         {
           "path": "server/api/servarr/readarr.ts",
-          "line": 3237,
+          "line": 3251,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'This destination cannot add an edition alongside.'",
@@ -11737,7 +11737,7 @@
       "callsites": [
         {
           "path": "server/api/servarr/readarr.ts",
-          "line": 3381,
+          "line": 3395,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`[Readarr] Failed to remove book: ${e.message}`",
@@ -14051,7 +14051,7 @@
       "callsites": [
         {
           "path": "server/api/servarr/readarr.ts",
-          "line": 2784,
+          "line": 2798,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`[Readarr] Failed to lookup book: ${e.message}`",
@@ -17039,7 +17039,7 @@
       "callsites": [
         {
           "path": "server/api/servarr/readarr.ts",
-          "line": 3405,
+          "line": 3419,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`[Readarr] Failed to start book search: ${getReadarrErrorMessage(e)}`",
@@ -19151,7 +19151,7 @@
       "callsites": [
         {
           "path": "server/api/servarr/readarr.ts",
-          "line": 3098,
+          "line": 3112,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Chaptarr queued author preparation without advertising pending-import support. Update ChaptarrNG before retrying this request.'",
@@ -22412,7 +22412,7 @@
       "callsites": [
         {
           "path": "server/api/servarr/readarr.ts",
-          "line": 2927,
+          "line": 2941,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`[Readarr] Failed to cancel pending Chaptarr import ${pendingId}: ${getReadarrErrorMessage(error)}`",
@@ -32759,7 +32759,7 @@
       "callsites": [
         {
           "path": "server/api/servarr/readarr.ts",
-          "line": 3246,
+          "line": 3260,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'An additional edition requires an explicit selection.'",
@@ -34485,7 +34485,7 @@
       "callsites": [
         {
           "path": "server/api/servarr/readarr.ts",
-          "line": 2897,
+          "line": 2911,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`[Readarr] Failed to retrieve pending Chaptarr import ${pendingId}: ${getReadarrErrorMessage(error)}`",
@@ -40757,7 +40757,7 @@
       "callsites": [
         {
           "path": "server/api/servarr/readarr.ts",
-          "line": 3241,
+          "line": 3255,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'This destination no longer supports additional editions.'",
@@ -51024,7 +51024,7 @@
       "callsites": [
         {
           "path": "server/api/servarr/readarr.ts",
-          "line": 3254,
+          "line": 3268,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'The selected additional edition is missing from the catalog.'",
@@ -51617,7 +51617,7 @@
       "callsites": [
         {
           "path": "server/api/servarr/readarr.ts",
-          "line": 3149,
+          "line": 3163,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`[Readarr] Failed to add book: ${getReadarrErrorMessage(e)}`",
@@ -59309,7 +59309,7 @@
       "callsites": [
         {
           "path": "server/api/servarr/readarr.ts",
-          "line": 3131,
+          "line": 3145,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Bookshelf returned an invalid book response.'",
@@ -68993,7 +68993,7 @@
     },
     {
       "path": "server/api/servarr/readarr.ts",
-      "line": 2555,
+      "line": 2568,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -69002,7 +69002,7 @@
     },
     {
       "path": "server/api/servarr/readarr.ts",
-      "line": 2555,
+      "line": 2568,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -69011,7 +69011,7 @@
     },
     {
       "path": "server/api/servarr/readarr.ts",
-      "line": 2651,
+      "line": 2665,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -69020,7 +69020,7 @@
     },
     {
       "path": "server/api/servarr/readarr.ts",
-      "line": 2651,
+      "line": 2665,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -69029,7 +69029,7 @@
     },
     {
       "path": "server/api/servarr/readarr.ts",
-      "line": 2719,
+      "line": 2733,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -69038,7 +69038,7 @@
     },
     {
       "path": "server/api/servarr/readarr.ts",
-      "line": 2719,
+      "line": 2733,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -69047,7 +69047,7 @@
     },
     {
       "path": "server/api/servarr/readarr.ts",
-      "line": 2778,
+      "line": 2792,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -69056,7 +69056,7 @@
     },
     {
       "path": "server/api/servarr/readarr.ts",
-      "line": 2778,
+      "line": 2792,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -69065,7 +69065,7 @@
     },
     {
       "path": "server/api/servarr/readarr.ts",
-      "line": 2870,
+      "line": 2884,
       "kind": "message-helper-expression",
       "field": "message",
       "expression": "readText(response[camel] ?? response[pascal])",
@@ -69074,7 +69074,7 @@
     },
     {
       "path": "server/api/servarr/readarr.ts",
-      "line": 2889,
+      "line": 2903,
       "kind": "authored-message-field",
       "field": "lastError",
       "expression": "status('lastError', 'LastError')",
@@ -69083,7 +69083,7 @@
     },
     {
       "path": "server/api/servarr/readarr.ts",
-      "line": 3108,
+      "line": 3122,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "typeof (postedBook.message ?? postedBook.Message) === 'string'\n                ? String(postedBook.message ?? postedBook.Message).slice(\n                    0,\n                    10_000\n                  )\n                : undefined",
@@ -69092,7 +69092,7 @@
     },
     {
       "path": "server/api/servarr/readarr.ts",
-      "line": 3108,
+      "line": 3122,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "typeof (postedBook.message ?? postedBook.Message) === 'string'\n                ? String(postedBook.message ?? postedBook.Message).slice(\n                    0,\n                    10_000\n                  )\n                : undefined",
@@ -69101,7 +69101,7 @@
     },
     {
       "path": "server/api/servarr/readarr.ts",
-      "line": 3322,
+      "line": 3336,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "getReadarrErrorMessage(e)",
@@ -69110,7 +69110,7 @@
     },
     {
       "path": "server/api/servarr/readarr.ts",
-      "line": 3351,
+      "line": 3365,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "getReadarrErrorMessage(e)",
@@ -69119,7 +69119,7 @@
     },
     {
       "path": "server/api/servarr/readarr.ts",
-      "line": 3400,
+      "line": 3414,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "getReadarrErrorMessage(e)",
