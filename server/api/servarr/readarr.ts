@@ -2545,16 +2545,30 @@ class ReadarrAPI extends ServarrBase<ReadarrQueueItem> {
         }
         return undefined;
       } catch (error) {
-        logger.debug(
-          'Chaptarr local library search failed after provider lookup returned no addable book.',
-          {
-            label: 'Readarr',
-            mediaType: this.mediaType,
-            title,
-            errorMessage:
-              error instanceof Error ? error.message : String(error),
-          }
-        );
+        const status = axios.isAxiosError(error)
+          ? error.response?.status
+          : undefined;
+        if (status === 401 || status === 403) {
+          logger.warn(
+            'Chaptarr local library search was denied. Update ChaptarrNG to a version that permits /api/v1/library/search for the restricted SeerrNG service key, and verify SeerrNG is configured with that key.',
+            {
+              label: 'Readarr',
+              mediaType: this.mediaType,
+              status,
+            }
+          );
+        } else {
+          logger.debug(
+            'Chaptarr local library search failed after provider lookup returned no addable book.',
+            {
+              label: 'Readarr',
+              mediaType: this.mediaType,
+              title,
+              errorMessage:
+                error instanceof Error ? error.message : String(error),
+            }
+          );
+        }
         return undefined;
       }
     });
