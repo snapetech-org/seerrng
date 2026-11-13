@@ -209,6 +209,7 @@ const messages = defineMessages('components.Settings.SettingsMain', {
     'Optional. Metron searches comics when ComicVine search fails. Comic details still require ComicVine.',
   moreInterfaceOptions: 'More interface options',
   moreContentOptions: 'More content options',
+  moreAvailabilityOptions: 'More availability options',
   moreStreamingRequestOptions: 'More streaming request options',
   moreBlocklistFilters: 'More blocklist filters',
   moreRequestRules: 'More request rules',
@@ -1096,7 +1097,7 @@ const SettingsMain = () => {
                   >
                     {upstream && (
                       <summary className="cursor-pointer text-sm font-medium text-gray-300">
-                        {intl.formatMessage(messages.moreContentOptions)}
+                        {intl.formatMessage(messages.moreAvailabilityOptions)}
                       </summary>
                     )}
                     <SettingsFormRow
