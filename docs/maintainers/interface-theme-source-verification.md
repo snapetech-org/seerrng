@@ -131,6 +131,12 @@ media-specific information remain available. The card treatment still needs
 matched rendered comparison against upstream before it can be marked visually
 accepted.
 
+Public sign-in, password-request, and password-reset screens use the
+upstream full-screen backdrop and centered form composition. SeerrNG logos,
+transport-security messaging, and additional sign-in options remain. Setup
+keeps its upstream backdrop and stepper framing while retaining the expanded
+SeerrNG onboarding path.
+
 ## Visual review status
 
 The current rebuild has not yet had matched upstream and SeerrOrig renders for
