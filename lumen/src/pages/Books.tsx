@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { Link, useSearchParams } from 'react-router-dom';
+import { Link, useLocation, useSearchParams } from 'react-router-dom';
 import { MediaStatus, type BookResult, type Paged } from '../api';
 import {
   BookCard,
@@ -9,6 +9,7 @@ import {
   RailSkeleton,
   Section,
 } from '../components/cards';
+import { GenrePicker } from '../components/GenrePicker';
 import { Avatar } from '../components/Shell';
 import {
   bookMediaWithLibrary,
@@ -54,17 +55,39 @@ const GENRES = [
 ];
 const genreLabel = (g: string) =>
   g.replace(/(^|\s)(\S)/g, (_, a: string, c: string) => a + c.toUpperCase());
-// a phrase goes in quotes, so "science fiction" is one term (not science and fiction)
-const subjectParam = (g: string) =>
-  `&subject=${encodeURIComponent(g.includes(' ') ? `"${g}"` : g)}`;
-// the genre in the address, tidied (quotes would break the phrase the feed is sent)
-const genreOf = (p: URLSearchParams) =>
-  (p.get('genre') || '')
-    .replace(/"/g, '')
-    .replace(/\s+/g, ' ')
-    .trim()
-    .toLowerCase()
-    .slice(0, 100);
+// at most this many genres at once (what SeerrNG's feed accepts)
+const MAX_GENRES = 8;
+// one genre goes as before: a phrase in quotes, so "science fiction" is one term (not science
+// and fiction); several go as one list, a|b, and the feed returns books in any of them
+const subjectParam = (genres: string[]) =>
+  !genres.length
+    ? ''
+    : `&subject=${encodeURIComponent(
+        genres.length > 1
+          ? genres.join('|')
+          : genres[0].includes(' ')
+            ? `"${genres[0]}"`
+            : genres[0]
+      )}`;
+// the genres in the address (?genre=fantasy,romance; a lone ?genre= or repeated ones work
+// too), tidied: quotes would break the phrase the feed is sent, | would split it
+const genresOf = (p: URLSearchParams) =>
+  [
+    ...new Set(
+      p
+        .getAll('genre')
+        .flatMap((v) => v.split(','))
+        .map((g) =>
+          g
+            .replace(/["|]/g, '')
+            .replace(/\s+/g, ' ')
+            .trim()
+            .toLowerCase()
+            .slice(0, 100)
+        )
+        .filter(Boolean)
+    ),
+  ].slice(0, MAX_GENRES);
 // a row shows the first page of its feed, at most this many cards
 const ROW_MAX = 20;
 
@@ -174,32 +197,29 @@ function SortMenu({ sort, pick }: { sort: string; pick: (v: string) => void }) {
   );
 }
 
-// one genre at a time; a genre from a shared address that isn't on the list gets a chip too
-function GenreChips({
-  genre,
+// several genres at once (books in any of them); a genre from a shared address that isn't
+// on the list is offered too
+function BookGenres({
+  genres,
   pick,
+  defaultOpen,
 }: {
-  genre: string;
-  pick: (v: string) => void;
+  genres: string[];
+  pick: (v: string[]) => void;
+  defaultOpen?: boolean;
 }) {
-  const list = genre && !GENRES.includes(genre) ? [genre, ...GENRES] : GENRES;
+  const extra = genres.filter((g) => !GENRES.includes(g));
   return (
-    <div className="chips genre-chips" role="group" aria-label="Genres">
-      <button className="chip" aria-pressed={!genre} onClick={() => pick('')}>
-        All genres
-      </button>
-      {list.map((g) => (
-        <button
-          key={g}
-          className="chip"
-          aria-pressed={genre === g}
-          onClick={() => pick(g)}
-        >
-          {genre === g && <Icon name="check" size="sm" />}
-          {genreLabel(g)}
-        </button>
-      ))}
-    </div>
+    <GenrePicker
+      options={[...extra, ...GENRES].map((g) => ({
+        value: g,
+        label: genreLabel(g),
+      }))}
+      picked={genres}
+      onChange={pick}
+      max={MAX_GENRES}
+      defaultOpen={defaultOpen}
+    />
   );
 }
 
@@ -215,12 +235,12 @@ function BooksLanding({
   const base = format === 'ebook' ? '/books' : '/audiobooks';
   const feed = `/discover/books?format=${format}`;
   // pushed entries, so Back from the list (In library, Not yet, a sort or a genre) returns
-  // to the rows
+  // to the rows; a genre keeps the genre picker open on the list, for picking more
   const open = (key: string, v: string) => {
     if (!v || (key === 'show' && v === 'all')) return;
     const n = new URLSearchParams(p);
     n.set(key, v);
-    setP(n);
+    setP(n, key === 'genre' ? { state: { genrePicker: true } } : undefined);
   };
   return (
     <>
@@ -229,7 +249,7 @@ function BooksLanding({
         <div className="toolbar">
           <LibrarySeg show="all" pick={(v) => open('show', v)} />
           <SortMenu sort="" pick={(v) => open('sort', v)} />
-          <GenreChips genre="" pick={(v) => open('genre', v)} />
+          <BookGenres genres={[]} pick={(v) => open('genre', v.join(','))} />
         </div>
       </section>
       {/* the same first page the owned list reads, so it is asked for once */}
@@ -330,17 +350,18 @@ function BooksGrid({
   note: ReactNode;
 }) {
   const [p, setP] = useSearchParams();
+  const location = useLocation();
   const show = p.get('show') || 'all';
   const sortParam = p.get('sort');
   const sort = SORTS.some(([v]) => v === sortParam) ? sortParam! : 'ranked';
   // the library list has no sort of its own, so the menu only applies to the catalogue
   const sorted = show !== 'have' && sort !== 'ranked';
   // nor genres: In library is the whole library (the genre waits in the address for All)
-  const genre = show === 'have' ? '' : genreOf(p);
+  const genres = show === 'have' ? [] : genresOf(p);
   const list = usePaged<BookResult>(
     show === 'have'
       ? `/book/library?format=${format}`
-      : `/discover/books?format=${format}${sorted ? `&sortBy=${sort}` : ''}${genre ? subjectParam(genre) : ''}`
+      : `/discover/books?format=${format}${sorted ? `&sortBy=${sort}` : ''}${subjectParam(genres)}`
   );
   const audio = format === 'audiobook';
   // the popular feed doesn't say which books are owned: "Not yet" checks the owned list
@@ -383,12 +404,13 @@ function BooksGrid({
     else n.set('show', v);
     keepList(n);
   };
-  const setGenre = (v: string) => {
+  const setGenres = (v: string[]) => {
     const n = new URLSearchParams(p);
-    if (v) n.set('genre', v);
-    else n.delete('genre');
+    n.delete('genre');
+    if (v.length) n.set('genre', v.join(','));
     keepList(n);
   };
+  const noun = audio ? 'audiobooks' : 'ebooks';
   const setSort = (v: string) => {
     const n = new URLSearchParams(p);
     n.set('sort', v);
@@ -401,9 +423,11 @@ function BooksGrid({
         <h2>
           {show === 'have'
             ? 'In your library'
-            : [SORT_TITLES[sort], genre, audio ? 'audiobooks' : 'ebooks']
-                .filter(Boolean)
-                .join(' ')}
+            : genres.length > 2
+              ? `${genres.length} genres · ${SORT_TITLES[sort]} ${noun}`
+              : [SORT_TITLES[sort], genres.join(' & '), noun]
+                  .filter(Boolean)
+                  .join(' ')}
         </h2>
         <Link to={audio ? '/audiobooks' : '/books'}>Overview</Link>
       </div>
@@ -411,7 +435,16 @@ function BooksGrid({
       <div className="toolbar">
         <LibrarySeg show={show} pick={upd} />
         {show !== 'have' && <SortMenu sort={sort} pick={setSort} />}
-        {show !== 'have' && <GenreChips genre={genre} pick={setGenre} />}
+        {show !== 'have' && (
+          <BookGenres
+            genres={genres}
+            pick={setGenres}
+            defaultOpen={
+              !!(location.state as { genrePicker?: boolean } | null)
+                ?.genrePicker
+            }
+          />
+        )}
       </div>
       {list.error && !items.length && (
         <div className="empty">
