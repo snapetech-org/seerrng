@@ -441,16 +441,18 @@ export function bookMediaWithLibrary(
   return match ?? mi;
 }
 
-// ebook covers: Hardcover's book cover when the companion has one, else what SeerrNG gave
+// ebook covers: Hardcover's book cover when the companion has one, else what SeerrNG gave;
+// with onlyMissing (audiobooks, whose square art is kept) only books with no art at all
 export function useEbookCovers<
   T extends { id: string; posterPath?: string | null },
->(books: T[]): T[] {
+>(books: T[], onlyMissing = false): T[] {
   const [covers, setCovers] = useState<Map<string, string | undefined>>(
     new Map()
   );
-  const key = books.map((b) => b.id).join(',');
+  const wanted = onlyMissing ? books.filter((b) => !b.posterPath) : books;
+  const key = wanted.map((b) => b.id).join(',');
   useEffect(() => {
-    const works = books
+    const works = wanted
       .map((b) => hardcoverWorkId(b.id))
       .filter(Boolean) as string[];
     if (!works.length) return;
@@ -462,6 +464,7 @@ export function useEbookCovers<
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [key]);
   return books.map((b) => {
+    if (onlyMissing && b.posterPath) return b;
     const c = covers.get(hardcoverWorkId(b.id) || '');
     return c ? { ...b, posterPath: c } : b;
   });

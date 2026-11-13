@@ -4,6 +4,7 @@ import {
   api,
   ApiError,
   artUrl,
+  bookArt,
   bookMediaForFormat,
   cancelRequest,
   mediaLink,
@@ -696,7 +697,7 @@ async function describeOnce(r: RequestItem): Promise<Row> {
     return {
       r,
       title: b?.title || 'Book',
-      art: b?.posterPath || undefined,
+      art: bookArt(b?.posterPath),
       cover: true,
       href: `/book/${encodeURIComponent(id)}${audio ? '?f=audio' : ''}`,
       sub: audio ? 'Audiobook' : 'Ebook',
@@ -1233,6 +1234,8 @@ export default function Requests() {
                     alt=""
                     aria-hidden="true"
                     loading="lazy"
+                    decoding="async"
+                    onError={(e) => (e.currentTarget.style.display = 'none')}
                   />
                 )}
                 <Cover

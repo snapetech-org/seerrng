@@ -206,8 +206,8 @@ function BookRow({
         bookMediaWithLibrary(b, format, null)?.status === MediaStatus.AVAILABLE
     )
     .slice(0, ROW_MAX);
-  const withCovers = useEbookCovers(raw);
-  const books = audio ? raw : withCovers;
+  // audiobooks keep their square art; Hardcover only fills in a missing cover
+  const books = useEbookCovers(raw, audio);
   if (row.data && !books.length) return null;
   // the library row is a bonus: no access to it just leaves it out
   if (row.error && owned) return null;
@@ -277,8 +277,7 @@ function BooksGrid({
                 ? !identityUnknown(b) && !!mediaFor(b) && !have(b)
                 : true
           );
-  const withCovers = useEbookCovers(raw);
-  const items = audio ? raw : withCovers;
+  const items = useEbookCovers(raw, audio);
   const hiddenOnlyPage =
     show === 'not' && unknownCount > 0 && items.length === 0 && !list.done;
   // the list stays a list: All keeps the sort in the address (the rows are one link away)

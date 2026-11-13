@@ -868,3 +868,157 @@ test('a card title keeps the existing keyboard target and cannot render title ma
   await page.keyboard.press('Enter');
   await expect(page).toHaveURL(/\/book\/OL123W$/);
 });
+
+const PNG = Buffer.from(
+  'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==',
+  'base64'
+);
+const olCover = 'https://covers.openlibrary.org/b/id/8231856-L.jpg';
+
+test('book covers load through the SeerrNG image cache, medium on cards and large on the book page', async ({
+  page,
+}) => {
+  await fixtures(page);
+  const images: string[] = [];
+  await page.route('**/imageproxy/**', (route) => {
+    images.push(new URL(route.request().url()).pathname);
+    return route.fulfill({ contentType: 'image/png', body: PNG });
+  });
+  await page.route('**/api/v1/discover/books?**', (route) =>
+    route.fulfill({
+      json: paged([
+        {
+          ...book(ebookId, 'ebook', 'Open Library cover'),
+          posterPath: olCover,
+        },
+      ]),
+    })
+  );
+  await page.route('**/api/v1/book/bookshelf*', (route) =>
+    route.fulfill({
+      json: {
+        ...book(ebookId, 'ebook', 'Open Library cover'),
+        posterPath: olCover,
+      },
+    })
+  );
+  await page.goto('/books?sort=ranked');
+  const img = page.locator('.grid .poster img');
+  await expect(img).toHaveAttribute(
+    'src',
+    '/imageproxy/openlibrarycovers/b/id/8231856-M.jpg'
+  );
+  await expect(img).toHaveAttribute('loading', 'lazy');
+  await expect(img).toHaveAttribute('decoding', 'async');
+  await expect
+    .poll(() => images)
+    .toContain('/imageproxy/openlibrarycovers/b/id/8231856-M.jpg');
+
+  await page.goto(`/book/${encodeURIComponent(ebookId)}`);
+  await expect(page.locator('.dposter img')).toHaveAttribute(
+    'src',
+    '/imageproxy/openlibrarycovers/b/id/8231856-L.jpg'
+  );
+});
+
+test('an audiobook with no art borrows the Hardcover cover; one with art keeps its own', async ({
+  page,
+}) => {
+  await fixtures(page);
+  const asked: string[] = [];
+  await page.route('**/seerr-classic/hccovers?**', (route) => {
+    asked.push(new URL(route.request().url()).searchParams.get('ids') || '');
+    return route.fulfill({
+      json: {
+        data: {
+          books: [12345, 22222].map((id) => ({
+            id,
+            image: { url: `https://assets.hardcover.app/covers/${id}.jpg` },
+          })),
+        },
+      },
+    });
+  });
+  await page.route('**/seerr-classic/hcimg/**', (route) =>
+    route.fulfill({ contentType: 'image/png', body: PNG })
+  );
+  await page.route('**/imageproxy/**', (route) =>
+    route.fulfill({ contentType: 'image/png', body: PNG })
+  );
+  await page.route('**/api/v1/discover/books?**', (route) =>
+    route.fulfill({
+      json: paged([
+        book(audioId, 'audiobook', 'No art recording'),
+        {
+          ...book('bookshelf:43:aGM6MjIyMjI', 'audiobook', 'Own art recording'),
+          posterPath: olCover,
+        },
+      ]),
+    })
+  );
+  await page.goto('/audiobooks?sort=ranked');
+  const cover = (title: string) =>
+    page.locator('.grid .poster', { hasText: title }).locator('img');
+  await expect(cover('No art recording')).toHaveAttribute(
+    'src',
+    '/seerr-classic/hcimg/covers/12345.jpg'
+  );
+  await expect(cover('Own art recording')).toHaveAttribute(
+    'src',
+    '/imageproxy/openlibrarycovers/b/id/8231856-M.jpg'
+  );
+  // only the book without art is looked up
+  expect(asked).toEqual(['12345']);
+});
+
+test('without the companion an audiobook with no art keeps its drawn cover', async ({
+  page,
+}) => {
+  const requests = await fixtures(page);
+  await page.goto('/audiobooks?sort=ranked');
+  const card = page.locator('.grid .poster', { hasText: 'Native audiobook' });
+  await expect(card.locator('.nocover')).toHaveAttribute(
+    'data-title',
+    'Native audiobook'
+  );
+  await expect(card.locator('img')).toHaveCount(0);
+  expect(requests.some((r) => r.path.startsWith('/discover/books'))).toBe(true);
+});
+
+test('a cover that fails to load shows the drawn cover, on cards and the book page', async ({
+  page,
+}) => {
+  await fixtures(page);
+  await page.route('**/imageproxy/**', (route) =>
+    route.fulfill({ status: 502, body: '' })
+  );
+  await page.route('**/api/v1/discover/books?**', (route) =>
+    route.fulfill({
+      json: paged([
+        { ...book(ebookId, 'ebook', 'Broken cover'), posterPath: olCover },
+      ]),
+    })
+  );
+  await page.route('**/api/v1/book/bookshelf*', (route) =>
+    route.fulfill({
+      json: { ...book(ebookId, 'ebook', 'Broken cover'), posterPath: olCover },
+    })
+  );
+  await page.goto('/books');
+  const card = page
+    .locator('section')
+    .filter({
+      has: page.getByRole('heading', { name: 'Trending', exact: true }),
+    })
+    .locator('.poster', { hasText: 'Broken cover' });
+  await expect(card.locator('.nocover')).toHaveAttribute(
+    'data-title',
+    'Broken cover'
+  );
+  await expect(card.locator('img')).toHaveCount(0);
+
+  await page.goto(`/book/${encodeURIComponent(ebookId)}`);
+  await expect(page.locator('h1')).toContainText('Broken cover');
+  await expect(page.locator('.dposter img')).toHaveCount(0);
+  await expect(page.locator('.dhero img')).toHaveCount(0);
+});

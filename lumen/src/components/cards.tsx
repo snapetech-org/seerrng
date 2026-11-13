@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 import {
+  bookArt,
   englishAudioEdition,
   hardcoverWorkId,
   mediaLink,
@@ -55,7 +56,13 @@ export function Cover({
   useEffect(() => setFailed(false), [src]);
   if (src && !failed)
     return (
-      <img loading="lazy" src={src} alt="" onError={() => setFailed(true)} />
+      <img
+        loading="lazy"
+        decoding="async"
+        src={src}
+        alt=""
+        onError={() => setFailed(true)}
+      />
     );
   return (
     <div
@@ -411,7 +418,7 @@ export function BookCard({ b }: { b: BookResult }) {
     <div className={`poster ${audio ? 'sq' : 'book'}`}>
       <div className="art">
         <Cover
-          src={b.posterPath}
+          src={bookArt(b.posterPath)}
           title={b.title}
           sub={b.author}
           icon={audio ? 'headphones' : 'book'}
