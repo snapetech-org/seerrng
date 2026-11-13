@@ -82,6 +82,16 @@ test('book detail shows author, description and the whole cover', async ({
   await fixtures(page, (path) =>
     path.startsWith('/book/') ? { json: bookJson() } : undefined
   );
+  // a cover that fails to load is left out, so this one has to load
+  await page.route('**/cover.jpg', (route) =>
+    route.fulfill({
+      contentType: 'image/png',
+      body: Buffer.from(
+        'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==',
+        'base64'
+      ),
+    })
+  );
   await page.goto(`/book/${encodeURIComponent(audioId)}?f=audio`);
   await expect(
     page.getByRole('heading', { name: 'Whole Cover Book' })
