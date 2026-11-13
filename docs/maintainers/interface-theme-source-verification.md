@@ -183,4 +183,6 @@ sort selector, issue-card spacing, empty state, and pagination layout. Movie and
 TV issues use the upstream card composition. SeerrNG's issue types, media
 categories, metadata filters, keyword search, and status sort remain available
 under “More issue filters”; fork-only media types continue to use the fork card.
+Movie and TV issue links open the upstream detail-page frame, facts, comments,
+and actions. Fork-only issue types keep their expanded inline detail behavior.
 Matched route/state/viewport rendering remains outstanding.
