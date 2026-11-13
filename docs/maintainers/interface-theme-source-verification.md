@@ -172,3 +172,8 @@ The person page retains the upstream profile, biography, credits, and native
 movie/series filter. SeerrNG's credit sort, follow action, and bulk movie
 request are reachable in a collapsed “More person options” disclosure. The
 same route and viewport render comparison remains outstanding.
+
+The collection page uses the upstream 493px media frame, backdrop, responsive
+poster/title/action header, aggregate HD/4K status indicators, and movie slider.
+Collection selection, playback, metadata, and service tools remain reachable
+in the existing extension disclosure. Browser comparison remains outstanding.

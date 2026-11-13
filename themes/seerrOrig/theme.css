@@ -2856,3 +2856,13 @@
     justify-content: flex-start;
     margin-top: 0;
     font-size: 16px;
+    line-height: 24px;
+  }
+
+  :is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+    .upstream-media-actions {
+    max-width: 50%;
+    justify-content: flex-end;
+    margin-top: 0;
+  }
+}
