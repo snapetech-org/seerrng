@@ -19936,6 +19936,7 @@ paths:
           schema:
             type: string
             example: fiction
+          description: Genre or subject filter. Several genres can be sent as one pipe-separated list (for example `fantasy|science fiction`, at most 8); books in any of them match, each genre as a phrase.
         - in: query
           name: format
           schema:
