@@ -228,7 +228,7 @@
     "prettier-plugin-organize-imports": "4.3.0",
     "prettier-plugin-tailwindcss": "0.8.1",
     "supertest": "^7.3.1",
-    "tailwindcss": "4.3.3",
+    "tailwindcss": "4.3.4",
     "ts-node": "10.9.2",
     "tsconfig-paths": "4.2.0",
     "typescript": "6.0.3",
