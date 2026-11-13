@@ -8,6 +8,13 @@ Implemented and referenced/in-progress records are separated so source credit ne
 
 The [feature comparison](./docs/feature-comparison.md) links these source credits to user-facing guides. Each linked guide carries its relevant attribution footer; source credit alone does not establish feature or release status.
 
+SeerrOrig's native layout and presentation are based on the Seerr v3.5.1 source
+snapshot at [`564bfb08b54caa374bddaf820abfd226e5e69151`](https://github.com/seerr-team/seerr/tree/564bfb08b54caa374bddaf820abfd226e5e69151).
+The issue-list item composition is adapted from upstream's
+[`IssueItem`](https://github.com/seerr-team/seerr/blob/564bfb08b54caa374bddaf820abfd226e5e69151/src/components/IssueList/IssueItem/index.tsx)
+under the upstream MIT license. SeerrNG's own logo and brand assets remain in
+use.
+
 ## Integrated or verified upstream sources
 
 These records were already identified as incorporated, adapted, or verified in SeerrNG.

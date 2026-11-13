@@ -177,3 +177,10 @@ The collection page uses the upstream 493px media frame, backdrop, responsive
 poster/title/action header, aggregate HD/4K status indicators, and movie slider.
 Collection selection, playback, metadata, and service tools remain reachable
 in the existing extension disclosure. Browser comparison remains outstanding.
+
+The Issues route now follows upstream's heading, open/all/resolved selector,
+sort selector, issue-card spacing, empty state, and pagination layout. Movie and
+TV issues use the upstream card composition. SeerrNG's issue types, media
+categories, metadata filters, keyword search, and status sort remain available
+under “More issue filters”; fork-only media types continue to use the fork card.
+Matched route/state/viewport rendering remains outstanding.
