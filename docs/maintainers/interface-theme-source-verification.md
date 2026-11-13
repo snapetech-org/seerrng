@@ -131,6 +131,20 @@ controls in SeerrOrig. Main movie and series discovery show upstream's plain
 error fallback; SeerrNG's retry panel and multi-catalog trending tabs stay in
 the native theme.
 
+Notification settings use upstream's page heading and provider-tab button
+spacing in SeerrOrig. The SeerrNG-only Apprise provider remains available from
+the collapsed “More settings” route list.
+
+User settings show upstream's primary tabs in SeerrOrig; SeerrNG-only maturity,
+season-rule, episode-queue, advanced-theme, and client-token routes remain
+available under a collapsed “More settings” disclosure. The permission editor follows upstream order, with SeerrNG-only restriction and request-service controls under a collapsed extension section.
+
+User general settings keep the upstream account, language, discovery, request-limit,
+and Plex watchlist controls in upstream order. SeerrNG-only language preferences,
+media limits, watchlist integrations, display options, and account integrations
+remain reachable in collapsed extension sections under SeerrOrig.
+The linked-accounts page keeps upstream media-server account cards and the primary link menu; OIDC and discovery-provider integrations move into a collapsed extension area.
+
 Common buttons, badges, alerts, page headers, and dialogs now switch to
 upstream's shared-control presentation when SeerrOrig is selected. SeerrNG's
 own variants and behavior remain active in its native theme.

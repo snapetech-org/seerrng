@@ -9,6 +9,7 @@ import PageTitle from '@app/components/Common/PageTitle';
 import type { SettingsRoute } from '@app/components/Common/SettingsTabs';
 import SettingsTabs from '@app/components/Common/SettingsTabs';
 import SettingsHelp from '@app/components/Settings/SettingsHelp';
+import useUpstreamTheme from '@app/hooks/useUpstreamTheme';
 import globalMessages from '@app/i18n/globalMessages';
 import defineMessages from '@app/utils/defineMessages';
 import { BoltIcon, CloudIcon, EnvelopeIcon } from '@heroicons/react/24/solid';
@@ -30,6 +31,7 @@ type SettingsNotificationsProps = {
 
 const SettingsNotifications = ({ children }: SettingsNotificationsProps) => {
   const intl = useIntl();
+  const upstream = useUpstreamTheme();
 
   const settingsRoutes: SettingsRoute[] = [
     {
@@ -149,6 +151,11 @@ const SettingsNotifications = ({ children }: SettingsNotificationsProps) => {
       regex: /^\/settings\/notifications\/webhook/,
     },
   ];
+  const visibleSettingsRoutes = upstream
+    ? settingsRoutes.filter(
+        (route) => route.route !== '/settings/notifications/apprise'
+      )
+    : settingsRoutes;
 
   return (
     <>
@@ -158,18 +165,39 @@ const SettingsNotifications = ({ children }: SettingsNotificationsProps) => {
           intl.formatMessage(globalMessages.settings),
         ]}
       />
-      <section className="app-card-sub settings-group-card">
-        <h3 className="settings-group-heading">
-          {intl.formatMessage(messages.notificationsettings)}
-        </h3>
-        <SettingsHelp className="settings-group-description">
-          {intl.formatMessage(messages.notificationAgentSettingsDescription)}
-        </SettingsHelp>
-        <div className="mt-2">
-          <SettingsTabs tabType="button" settingsRoutes={settingsRoutes} />
-        </div>
-        <div className="settings-group-content mt-2">{children}</div>
-      </section>
+      {upstream ? (
+        <>
+          <div className="mb-6">
+            <h3 className="heading">
+              {intl.formatMessage(messages.notificationsettings)}
+            </h3>
+            <p className="description">
+              {intl.formatMessage(messages.notificationAgentSettingsDescription)}
+            </p>
+          </div>
+          <SettingsTabs
+            tabType="button"
+            settingsRoutes={visibleSettingsRoutes}
+          />
+          <div className="section">{children}</div>
+        </>
+      ) : (
+        <section className="app-card-sub settings-group-card">
+          <h3 className="settings-group-heading">
+            {intl.formatMessage(messages.notificationsettings)}
+          </h3>
+          <SettingsHelp className="settings-group-description">
+            {intl.formatMessage(messages.notificationAgentSettingsDescription)}
+          </SettingsHelp>
+          <div className="mt-2">
+            <SettingsTabs
+              tabType="button"
+              settingsRoutes={settingsRoutes}
+            />
+          </div>
+          <div className="settings-group-content mt-2">{children}</div>
+        </section>
+      )}
     </>
   );
 };
