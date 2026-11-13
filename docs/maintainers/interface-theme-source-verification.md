@@ -42,16 +42,14 @@ permissions to simplify a page.
   SeerrNG quota categories, watchlist entries, and avatar editing remain
   available.
 - The Users page uses the upstream toolbar, sortable table, selection controls,
-  and row hierarchy in the repository's shared scrollable table. SeerrNG-only
-  user filters and TV queue tools remain in a collapsed extension area.
+  row hierarchy, and pagination. SeerrNG-only user filters and TV queue tools
+  remain in a collapsed extension area.
 - The Blocklist page uses upstream's native filters, movie/TV cards, empty
   state, pagination, and removal controls. SeerrNG's expanded media types,
   filters, and metadata remain reachable in its extended view.
 - Shared buttons, badges, alerts, headers, and modal framing use upstream
   presentation in SeerrOrig while the SeerrNG theme keeps its own component
   styling and behavior.
-- The shared Header component uses the upstream v3.5.1 heading markup and responsive spacing in SeerrOrig.
-- The SeerrNG-only release calendar reuses SeerrOrig's upstream Header, alert, badge, control, and card presentation while retaining its cross-media release data.
 - SeerrNG logos and brand assets remain in use throughout SeerrOrig.
 
 Changing theme source styles requires rebuilding the packaged theme assets and
@@ -70,11 +68,12 @@ filtering.
 Discover uses the upstream header and shelf hierarchy with the upstream dark
 palette. SeerrNG-only shelves and display preferences remain available through
 existing routes and settings.
-The Upcoming Movies route uses the same upstream heading spacing and error fallback while retaining SeerrNG's navigation context. The Upcoming Series route now follows the same upstream heading and error presentation.
-
 
 Settings use upstream tabs, ordering, breakpoints, spacing, and page wrapper.
 SeerrNG-only settings and tools remain under “More settings.”
+The global settings page uses upstream's single-form structure and shared
+control order. SeerrNG-only interface, content, request-policy, and integration
+settings remain available through labeled disclosures in SeerrOrig.
 
 Search uses upstream's heading and result-list presentation. Fork-only catalog
 categories and advanced filters remain under “More search options.” The
@@ -98,15 +97,10 @@ music, book, comic, and magazine quotas and watchlist entries remain available
 in collapsed extension sections. The SeerrNG avatar editing action remains
 available.
 
-The Users page follows upstream's action/search/sort toolbar, sortable table,
-row hierarchy, and actions inside the shared scrollable table card. It keeps the
-repository's one-set user list, shared selection circles, table geometry, and
-standard filter/action owners. SeerrNG's account-type/role filters and TV season
-queue tools remain available under collapsed extension areas.
-
-The Issues list uses the shared pagination footer and starts with All Issues
-selected. The upstream presentation does not change the repository's paging
-controls or default task filter.
+The Users page now follows upstream's action/search/sort toolbar, paginated
+sortable table, checkboxes, row proportions, and page-size controls. SeerrNG's
+account-type/role filters and TV season queue tools remain available under
+collapsed extension areas.
 
 The Blocklist page now uses upstream's original movie/TV card presentation and
 filter/pagination controls. The expanded SeerrNG blocklist remains available
@@ -137,13 +131,7 @@ the collapsed “More settings” route list.
 
 User settings show upstream's primary tabs in SeerrOrig; SeerrNG-only maturity,
 season-rule, episode-queue, advanced-theme, and client-token routes remain
-available under a collapsed “More settings” disclosure. The permission editor follows upstream order, with SeerrNG-only restriction and request-service controls under a collapsed extension section.
-
-User general settings keep the upstream account, language, discovery, request-limit,
-and Plex watchlist controls in upstream order. SeerrNG-only language preferences,
-media limits, watchlist integrations, display options, and account integrations
-remain reachable in collapsed extension sections under SeerrOrig.
-The linked-accounts page keeps upstream media-server account cards and the primary link menu; OIDC and discovery-provider integrations move into a collapsed extension area.
+available under a collapsed “More settings” disclosure.
 
 Common buttons, badges, alerts, page headers, and dialogs now switch to
 upstream's shared-control presentation when SeerrOrig is selected. SeerrNG's
@@ -154,25 +142,12 @@ transition, item presentation, and primary/ghost roles in SeerrOrig. Fork-only
 action types map to the closest upstream visual role; the SeerrNG theme keeps
 its current menu presentation and action variants.
 
-
-Movie and TV request rows retain upstream's responsive card hierarchy and
-request actions. SeerrOrig now also uses the upstream horizontal backdrop fade;
-SeerrNG's extra media types and request-failure information remain in their
-existing card roles.
-
 Shared movie, TV, and collection poster cards now use upstream's frame and
 hover shadow, backdrop gradient, title and summary typography, type-badge
 geometry, and status-badge sizing. SeerrNG's additional poster actions and
 media-specific information remain available. The card treatment still needs
 matched rendered comparison against upstream before it can be marked visually
 accepted.
-
-Public sign-in, password-request, and password-reset screens use the
-upstream full-screen backdrop and centered form composition. SeerrOrig uses
-upstream's original-resolution backdrops and gradient without the fork-only
-title caption. SeerrNG logos, transport-security messaging, and additional
-sign-in options remain. Setup keeps its upstream backdrop and stepper framing
-while retaining the expanded SeerrNG onboarding path.
 
 ## Visual review status
 
