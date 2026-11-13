@@ -34,6 +34,15 @@ methods remain in use. These presentation patterns come from the upstream v3.5.1
 sources contributed to Seerr by [@gauthier-th](https://github.com/gauthier-th);
 SeerrNG independently adapted them, without implying direct contribution to or
 endorsement of SeerrNG.
+The sign-in and recovery backdrop behavior also follows upstream's
+[`ImageFader`](https://github.com/seerr-team/seerr/blob/564bfb08b54caa374bddaf820abfd226e5e69151/src/components/Common/ImageFader/index.tsx)
+and backdrop sources from that release; SeerrNG independently adapted it.
+The Upcoming Movies page follows upstream's
+[`Upcoming`](https://github.com/seerr-team/seerr/blob/564bfb08b54caa374bddaf820abfd226e5e69151/src/components/Discover/Upcoming.tsx)
+heading and error presentation. [@gauthier-th](https://github.com/gauthier-th)
+contributed this source to upstream Seerr, and SeerrNG independently adapted
+its presentation without implying direct contribution to or endorsement of
+SeerrNG.
 The shared page header follows upstream's [`Header`](https://github.com/seerr-team/seerr/blob/564bfb08b54caa374bddaf820abfd226e5e69151/src/components/Common/Header/index.tsx)
 spacing and typography. This source is part of the upstream v3.5.1 release
 contributed to Seerr by [@gauthier-th](https://github.com/gauthier-th); SeerrNG

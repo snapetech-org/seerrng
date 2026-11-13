@@ -94,12 +94,8 @@ const ImageFader: ForwardRefRenderFunction<HTMLDivElement, ImageFaderProps> = (
             />
             {upstream ? (
               <div
-                className="absolute inset-0"
-                style={{
-                  backgroundImage: isDarker
-                    ? 'linear-gradient(180deg, rgba(17, 24, 39, 0.47) 0%, rgba(17, 24, 39, 1) 100%)'
-                    : 'linear-gradient(180deg, rgba(45, 55, 72, 0.47) 0%, #1A202E 100%)',
-                }}
+                className="upstream-image-fader-overlay"
+                data-tone={isDarker ? 'dark' : 'light'}
               />
             ) : (
               <div
