@@ -117,6 +117,11 @@ Genre, keyword, and language discovery routes use upstream's loading and error
 fallbacks and heading spacing. SeerrNG genre-follow actions remain reachable
 under a collapsed “More options” disclosure.
 
+Network and studio discovery pages use upstream's metadata-backed title and
+logo header, heading spacing, and result-list presentation. The genre directory
+pages use upstream's card image resolution and route links, plus upstream's
+loading and error fallbacks.
+
 Common buttons, badges, alerts, page headers, and dialogs now switch to
 upstream's shared-control presentation when SeerrOrig is selected. SeerrNG's
 own variants and behavior remain active in its native theme.
