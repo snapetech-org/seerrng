@@ -234,6 +234,7 @@ The source files below come from the Seerr v3.5.1 snapshot prepared for the upst
 
 - [Seerr v3.5.1 genre, keyword, and language discovery sources](https://github.com/seerr-team/seerr/tree/564bfb08b54caa374bddaf820abfd226e5e69151/src/components/Discover) — used to align SeerrOrig's browse-route loading, error, and heading presentation while keeping SeerrNG's genre-follow action collapsed under More. The source snapshot was prepared for release by [@gauthier-th](https://github.com/gauthier-th); no contribution or endorsement is implied.
 - [Seerr v3.5.1 DiscoverNetwork, DiscoverStudio, MovieGenreList, and TvGenreList sources](https://github.com/seerr-team/seerr/tree/564bfb08b54caa374bddaf820abfd226e5e69151/src/components/Discover) — used to align SeerrOrig's network/studio headers, genre cards, route links, and loading/error presentation while retaining SeerrNG behavior in its own theme. The source snapshot was prepared for release by [@gauthier-th](https://github.com/gauthier-th); no contribution or endorsement is implied.
+- [Seerr v3.5.1 DiscoverWatchlist source](https://github.com/seerr-team/seerr/blob/564bfb08b54caa374bddaf820abfd226e5e69151/src/components/Discover/DiscoverWatchlist/index.tsx) — used to align SeerrOrig's watchlist title, owner subheading, page spacing, error fallback, and list presentation; SeerrNG filters remain available under More. The source snapshot was prepared for release by [@gauthier-th](https://github.com/gauthier-th); no contribution or endorsement is implied.
 
 ## Referenced or in-progress upstream sources
 
