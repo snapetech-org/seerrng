@@ -805,7 +805,7 @@
     },
     {
       "file": "src/components/Requests/index.tsx",
-      "line": 2048,
+      "line": 2050,
       "expression": "current.message",
       "context": [
         "RequestStatusMessageText",
@@ -818,7 +818,7 @@
     },
     {
       "file": "src/components/Requests/index.tsx",
-      "line": 2055,
+      "line": 2057,
       "expression": "`${getStageLabel(intl, currentStage)}: ${currentMessage}`",
       "context": [
         "span",
@@ -832,7 +832,7 @@
     },
     {
       "file": "src/components/Requests/index.tsx",
-      "line": 2127,
+      "line": 2129,
       "expression": "event.message",
       "context": [
         "RequestStatusMessageText",
@@ -847,7 +847,7 @@
     },
     {
       "file": "src/components/Search/index.tsx",
-      "line": 719,
+      "line": 768,
       "expression": "providerErrorMessage ??\n                intl.formatMessage(messages.searchUnavailable)",
       "context": [
         "ApiMessageText",
@@ -859,56 +859,60 @@
     },
     {
       "file": "src/components/Search/index.tsx",
-      "line": 794,
+      "line": 853,
       "expression": "intl.formatMessage(searchCategory.message)",
       "context": [
         "MediaFilterOption",
         "div",
-        "PinnedFilterSection"
+        "PinnedFilterSection",
+        "details"
       ],
       "attribute": "label",
       "classification": "already-localized"
     },
     {
       "file": "src/components/Search/index.tsx",
-      "line": 818,
+      "line": 877,
       "expression": "intl.formatMessage(searchCategory.message)",
       "context": [
         "button",
         "MediaFilterOption",
         "div",
-        "PinnedFilterSection"
+        "PinnedFilterSection",
+        "details"
       ],
       "classification": "already-localized"
     },
     {
       "file": "src/components/Search/index.tsx",
-      "line": 882,
-      "expression": "`${intl.formatMessage(\n                      sortOption.message\n                    )}: ${directionLabel}`",
+      "line": 943,
+      "expression": "`${intl.formatMessage(\n                        sortOption.message\n                      )}: ${directionLabel}`",
       "context": [
         "button",
         "Tooltip",
         "div",
-        "PinnedFilterSection"
+        "PinnedFilterSection",
+        "details"
       ],
       "attribute": "aria-label",
       "classification": "already-localized"
     },
     {
       "file": "src/components/Search/index.tsx",
-      "line": 906,
+      "line": 967,
       "expression": "intl.formatMessage(sortOption.message)",
       "context": [
         "button",
         "Tooltip",
         "div",
-        "PinnedFilterSection"
+        "PinnedFilterSection",
+        "details"
       ],
       "classification": "already-localized"
     },
     {
       "file": "src/components/Search/index.tsx",
-      "line": 924,
+      "line": 988,
       "expression": "error && searchError",
       "context": [],
       "classification": "localized-child-boundary",

@@ -10027,7 +10027,7 @@
       "callsites": [
         {
           "path": "src/context/ThemeContext.tsx",
-          "line": 1426,
+          "line": 1425,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Theme preference was not confirmed.'",
@@ -24485,7 +24485,7 @@
       "callsites": [
         {
           "path": "src/context/ThemeContext.tsx",
-          "line": 1608,
+          "line": 1607,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'useTheme must be used inside ThemeProvider'",
@@ -36116,7 +36116,7 @@
       "callsites": [
         {
           "path": "src/context/ThemeContext.tsx",
-          "line": 1468,
+          "line": 1467,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Sign in and choose an installed interface theme after the current save finishes.'",
@@ -39592,7 +39592,7 @@
       "callsites": [
         {
           "path": "src/context/ThemeContext.tsx",
-          "line": 1416,
+          "line": 1415,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Sign in and choose a valid theme after the current save finishes.'",
@@ -40970,7 +40970,7 @@
       "callsites": [
         {
           "path": "src/context/ThemeContext.tsx",
-          "line": 1481,
+          "line": 1480,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Interface theme preference was not confirmed.'",
@@ -57733,7 +57733,7 @@
       "callsites": [
         {
           "path": "src/context/ThemeContext.tsx",
-          "line": 1532,
+          "line": 1531,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Sign in to save advanced theme settings.'",
@@ -88496,7 +88496,7 @@
     },
     {
       "path": "src/context/ThemeContext.tsx",
-      "line": 1537,
+      "line": 1536,
       "kind": "app-error-candidate",
       "field": "message",
       "expression": "validation.error",
