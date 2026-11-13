@@ -1990,7 +1990,7 @@
   display: inline-block;
   border-radius: 999px;
   background: var(--interface-accent-a);
-  color: #fff;
+  color: var(--interface-accent-contrast);
   padding: 2px 8px;
   font-size: 12px;
   line-height: 16px;
