@@ -124,7 +124,7 @@
     "node-cache": "5.1.2",
     "node-schedule": "2.1.2",
     "nodemailer": "10.3.1",
-    "openid-client": "^6.8.8",
+    "openid-client": "^6.8.9",
     "openpgp": "6.3.2",
     "pg": "8.23.1",
     "postcss": "8.5.28",
