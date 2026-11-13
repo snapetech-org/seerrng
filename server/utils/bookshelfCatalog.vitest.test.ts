@@ -13,6 +13,7 @@ import {
   mapBookshelfBook,
   parseBookshelfAuthorId,
   parseBookshelfBookId,
+  realCoverUrl,
   searchBookshelfCatalogs,
 } from './bookshelfCatalog';
 
@@ -619,4 +620,24 @@ it('retains normalized edition languages when the work omits language metadata',
   expect(
     mapBookshelfBook({ title: 'Unknown', foreignBookId: 'work-2' }, 1).languages
   ).toBeUndefined();
+});
+
+describe('realCoverUrl', () => {
+  it('drops stock "no image" placeholders and keeps real covers', () => {
+    expect(
+      realCoverUrl('https://m.media-amazon.com/images/I/01RmK+J4pJL.gif')
+    ).toBeUndefined();
+    expect(
+      realCoverUrl(
+        'https://m.media-amazon.com/images/I/01RmK+J4pJL._SL500_.gif'
+      )
+    ).toBeUndefined();
+    expect(
+      realCoverUrl('https://images.gr-assets.com/nophoto/book/111x148.png')
+    ).toBeUndefined();
+    expect(realCoverUrl(undefined)).toBeUndefined();
+    expect(
+      realCoverUrl('https://m.media-amazon.com/images/I/81YOuOGFCJL.jpg')
+    ).toBe('https://m.media-amazon.com/images/I/81YOuOGFCJL.jpg');
+  });
 });

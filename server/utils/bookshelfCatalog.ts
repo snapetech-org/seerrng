@@ -475,7 +475,7 @@ export const mapBookshelfBook = (
           result.author.authorName ?? result.authorTitle ?? ''
         )
       : undefined,
-    posterPath: image?.remoteUrl ?? image?.url,
+    posterPath: realCoverUrl(image?.remoteUrl ?? image?.url),
     isbn13: isbnCandidates.find((candidate) => candidate.isbn.length === 13)
       ?.isbn,
     firstPublishYear: releaseYear > 1 ? releaseYear : undefined,
@@ -491,6 +491,13 @@ export const mapBookshelfBook = (
     narrators: narrators?.length ? [...new Set(narrators)] : undefined,
   };
 };
+
+// Amazon serves a stock "No image available" GIF for books without art, and catalogues pass it
+// on as the cover. Treat it as no cover so clients can fall back to other artwork.
+const PLACEHOLDER_COVER =
+  /\/images\/I\/01RmK\+J4pJL\.|\/nophoto\/|no[-_]image[-_]available/i;
+export const realCoverUrl = (url?: string | null) =>
+  url && !PLACEHOLDER_COVER.test(url) ? url : undefined;
 
 export const searchBookshelfAuthors = async (
   servers: ReadarrSettings[],

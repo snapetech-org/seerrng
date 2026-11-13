@@ -27762,7 +27762,7 @@
       "callsites": [
         {
           "path": "server/utils/bookshelfCatalog.ts",
-          "line": 701,
+          "line": 708,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Configured Bookshelf catalogs are unavailable.'",
@@ -64186,7 +64186,7 @@
       "callsites": [
         {
           "path": "server/utils/bookshelfCatalog.ts",
-          "line": 753,
+          "line": 760,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Configured audiobook catalogs are unavailable.'",
@@ -64194,7 +64194,7 @@
         },
         {
           "path": "server/utils/bookshelfCatalog.ts",
-          "line": 793,
+          "line": 800,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Configured audiobook catalogs are unavailable.'",
@@ -64202,7 +64202,7 @@
         },
         {
           "path": "server/utils/bookshelfCatalog.ts",
-          "line": 839,
+          "line": 846,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Configured audiobook catalogs are unavailable.'",
@@ -88003,7 +88003,7 @@
     },
     {
       "path": "server/utils/bookshelfCatalog.ts",
-      "line": 940,
+      "line": 947,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -88012,7 +88012,7 @@
     },
     {
       "path": "server/utils/bookshelfCatalog.ts",
-      "line": 940,
+      "line": 947,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
