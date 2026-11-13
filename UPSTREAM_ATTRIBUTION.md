@@ -8,6 +8,21 @@ Implemented and referenced/in-progress records are separated so source credit ne
 
 The [feature comparison](./docs/feature-comparison.md) links these source credits to user-facing guides. Each linked guide carries its relevant attribution footer; source credit alone does not establish feature or release status.
 
+SeerrOrig's native layout and presentation are based on the Seerr v3.5.1 source
+snapshot at [`564bfb08b54caa374bddaf820abfd226e5e69151`](https://github.com/seerr-team/seerr/tree/564bfb08b54caa374bddaf820abfd226e5e69151).
+The Issues list and movie/TV issue-detail composition are adapted from
+upstream's [`IssueList`](https://github.com/seerr-team/seerr/blob/564bfb08b54caa374bddaf820abfd226e5e69151/src/components/IssueList/index.tsx),
+[`IssueItem`](https://github.com/seerr-team/seerr/blob/564bfb08b54caa374bddaf820abfd226e5e69151/src/components/IssueList/IssueItem/index.tsx),
+[`IssueDetails`](https://github.com/seerr-team/seerr/blob/564bfb08b54caa374bddaf820abfd226e5e69151/src/components/IssueDetails/index.tsx),
+[`IssueDescription`](https://github.com/seerr-team/seerr/blob/564bfb08b54caa374bddaf820abfd226e5e69151/src/components/IssueDetails/IssueDescription/index.tsx),
+and [`IssueComment`](https://github.com/seerr-team/seerr/blob/564bfb08b54caa374bddaf820abfd226e5e69151/src/components/IssueDetails/IssueComment/index.tsx)
+under the upstream MIT license. SeerrNG's own logo and brand assets remain in
+use. The user-profile hierarchy is aligned with upstream's
+[`UserProfile`](https://github.com/seerr-team/seerr/blob/564bfb08b54caa374bddaf820abfd226e5e69151/src/components/UserProfile/index.tsx)
+and [`ProfileHeader`](https://github.com/seerr-team/seerr/blob/564bfb08b54caa374bddaf820abfd226e5e69151/src/components/UserProfile/ProfileHeader/index.tsx)
+composition; SeerrNG-only quota and watchlist categories remain in a collapsed
+extension area.
+
 ## Integrated or verified upstream sources
 
 These records were already identified as incorporated, adapted, or verified in SeerrNG.

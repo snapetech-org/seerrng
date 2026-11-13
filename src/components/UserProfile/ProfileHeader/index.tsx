@@ -1,5 +1,6 @@
 import Button from '@app/components/Common/Button';
 import CachedImage from '@app/components/Common/CachedImage';
+import useUpstreamTheme from '@app/hooks/useUpstreamTheme';
 import useToasts from '@app/hooks/useToasts';
 import type { User } from '@app/hooks/useUser';
 import { Permission, UserType, useUser } from '@app/hooks/useUser';
@@ -41,6 +42,7 @@ interface ProfileHeaderProps {
 
 const ProfileHeader = ({ user, isSettingsPage }: ProfileHeaderProps) => {
   const intl = useIntl();
+  const upstream = useUpstreamTheme();
   const { addToast } = useToasts();
   const { mutate } = useSWRConfig();
   const { user: loggedInUser, hasPermission } = useUser();
@@ -175,7 +177,11 @@ const ProfileHeader = ({ user, isSettingsPage }: ProfileHeaderProps) => {
               href={
                 user.id === loggedInUser?.id ? '/profile' : `/users/${user.id}`
               }
-              className="page-title"
+              className={
+                upstream
+                  ? 'text-overseerr text-lg font-bold hover:to-purple-200 sm:text-2xl'
+                  : 'page-title'
+              }
             >
               {user.displayName}
             </Link>
