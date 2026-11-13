@@ -26,6 +26,7 @@ import {
   ServiceNote,
   StatPill,
 } from '../components/extra';
+import { GenrePicker } from '../components/GenrePicker';
 import { useToast } from '../components/toast';
 import { friendlyError } from '../errors';
 import {
@@ -291,32 +292,16 @@ export function Comics() {
           </label>
         )}
         {kind === 'manga' && (
-          <div className="chips genre-chips" role="group" aria-label="Genres">
-            <button
-              className="chip"
-              aria-pressed={!picked.length}
-              onClick={() => upd({ genre: null })}
-            >
-              All genres
-            </button>
-            {genres.map((g) => {
-              const on = picked.includes(g);
-              const next = on
-                ? picked.filter((x) => x !== g)
-                : picked.concat(g);
-              return (
-                <button
-                  key={g}
-                  className="chip"
-                  aria-pressed={on}
-                  onClick={() => mangaOnly({ genre: next.join(',') || null })}
-                >
-                  {on && <Icon name="check" size="sm" />}
-                  {g}
-                </button>
-              );
-            })}
-          </div>
+          <GenrePicker
+            options={genres.map((g) => ({ value: g, label: g }))}
+            picked={picked}
+            // a genre narrows All to manga; All genres only clears the genres
+            onChange={(next) =>
+              next.length
+                ? mangaOnly({ genre: next.join(',') })
+                : upd({ genre: null })
+            }
+          />
         )}
       </div>
       {!filtered && (

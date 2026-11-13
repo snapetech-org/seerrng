@@ -243,6 +243,23 @@ const filterRequestVideoResults = async <T extends { id: number }>(
 };
 const MAX_DISCOVER_QUERY_LENGTH = 256;
 const MAX_DISCOVER_FILTER_LENGTH = 512;
+// Book discovery takes several genres as one pipe-separated subject
+// ("fantasy|science fiction"); a book in any of them matches.
+const MAX_BOOK_SUBJECTS = 8;
+const splitBookSubjects = (subject: string): string[] => [
+  ...new Set(
+    subject
+      .split('|')
+      .map((part) =>
+        part
+          .replace(/["\\]/g, '')
+          .replace(/\s+/g, ' ')
+          .trim()
+          .toLocaleLowerCase()
+      )
+      .filter(Boolean)
+  ),
+];
 const MAGAZINE_CATALOG_LOOKUP_TIMEOUT_MS = 20_000;
 export const MAX_GENRE_SLIDER_ITEMS = 50;
 export const GENRE_SLIDER_CONCURRENCY = 10;
@@ -4026,7 +4043,34 @@ discoverRoutes.get('/books', async (req, res) => {
     .match(/^subject:(.+)$/i)?.[1]
     ?.trim();
   const subjectQuery = parsedSubject.value ?? legacySubjectQuery ?? '';
-  const hasSubjectFilter = !!subjectQuery;
+  // a single subject goes to the provider as it came; a list becomes one OR
+  // clause of quoted phrases
+  const subjectList = subjectQuery.includes('|')
+    ? splitBookSubjects(subjectQuery)
+    : undefined;
+  if (subjectList && subjectList.length > MAX_BOOK_SUBJECTS) {
+    return res.status(400).json({
+      status: 400,
+      message: `Subject can list at most ${MAX_BOOK_SUBJECTS} genres.`,
+    });
+  }
+  const subjectClause = subjectList
+    ? subjectList.length > 1
+      ? `(${subjectList.map((subject) => `subject:"${subject}"`).join(' OR ')})`
+      : subjectList.length
+        ? `subject:"${subjectList[0]}"`
+        : ''
+    : subjectQuery
+      ? `subject:${subjectQuery}`
+      : '';
+  const hasSubjectFilter = !!subjectClause;
+  const matchesSubject = (subjects: string[]) =>
+    subjectList
+      ? !subjectList.length ||
+        subjectList.some((subject) =>
+          matchesAllSearchTerms(subjects, `"${subject}"`)
+        )
+      : !subjectQuery || matchesAllSearchTerms(subjects, subjectQuery);
   const searchQuery = legacySubjectQuery ? '' : rawSearchQuery;
   const firstPublishYear = parsedFirstPublishYear.value ?? '';
   const language = parsedLanguage.value ?? '';
@@ -4094,13 +4138,11 @@ discoverRoutes.get('/books', async (req, res) => {
   const queryParts = [
     hasSearchQuery
       ? toFieldedBooleanAndQuery(searchQuery, ['title', 'author', 'subject'])
-      : hasSubjectFilter
-        ? `subject:${subjectQuery}`
-        : '',
+      : subjectClause,
   ];
 
   if (hasSearchQuery && hasSubjectFilter) {
-    queryParts.push(`subject:${subjectQuery}`);
+    queryParts.push(subjectClause);
   }
   if (authorQuery) {
     queryParts.push(toFieldedBooleanAndQuery(authorQuery, ['author']));
@@ -4143,8 +4185,7 @@ discoverRoutes.get('/books', async (req, res) => {
           (!authorQuery || matchesAllSearchTerms([book.author], authorQuery)) &&
           (!narratorQuery ||
             matchesAllSearchTerms(book.narrators ?? [], narratorQuery)) &&
-          (!subjectQuery ||
-            matchesAllSearchTerms(book.subjects ?? [], subjectQuery)) &&
+          matchesSubject(book.subjects ?? []) &&
           (!language || book.languages?.includes(language)) &&
           (parsedRatingNumber === undefined ||
             (book.ratingsAverage ?? 0) >= parsedRatingNumber) &&

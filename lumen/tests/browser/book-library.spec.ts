@@ -93,7 +93,13 @@ test('Books and Audiobooks open on rows, one per sort', async ({ page }) => {
   expect(feed().some((q) => q.includes('page='))).toBe(false);
   // Sort and genres are on the landing too; neither is picked yet
   await expect(page.getByLabel('Sort')).toHaveValue('');
+  // the genres are folded into one button until it is opened
+  const picker = page.getByRole('button', { name: /^Genres:/ });
+  await expect(picker).toHaveText('All genres');
+  await expect(picker).toHaveAttribute('aria-expanded', 'false');
   const genres = page.getByRole('group', { name: 'Genres' });
+  await expect(genres).toHaveCount(0);
+  await picker.click();
   await expect(
     genres.getByRole('button', { name: 'All genres' })
   ).toHaveAttribute('aria-pressed', 'true');
@@ -101,6 +107,9 @@ test('Books and Audiobooks open on rows, one per sort', async ({ page }) => {
     await expect(
       genres.getByRole('button', { name, exact: true })
     ).toBeVisible();
+  await page.keyboard.press('Escape');
+  await expect(genres).toHaveCount(0);
+  await expect(picker).toBeFocused();
   // the library row marks what is owned
   const libraryRow = page
     .locator('section')
@@ -262,9 +271,13 @@ test('a genre or a sort from the landing fills the page with that list, and Back
   const requests = await fixtures(page);
   const feed = () =>
     requests.filter((r) => r.path === '/discover/books').map((r) => r.query);
+  // the button by class: while the phone sheet is open the page behind it is inert, out of
+  // the accessibility tree
+  const picker = page.locator('.gp-btn');
   const genres = page.getByRole('group', { name: 'Genres' });
   const chip = (name: string) =>
     genres.getByRole('button', { name, exact: true });
+  const phone = page.viewportSize()!.width < 700;
   await page.goto('/books');
   await expect(
     page.getByRole('heading', { name: 'Trending', exact: true })
@@ -284,7 +297,9 @@ test('a genre or a sort from the landing fills the page with that list, and Back
     page.getByRole('heading', { name: 'Trending', exact: true })
   ).toBeVisible();
 
-  // a genre opens the full list of that genre (a phrase is sent as one quoted term)
+  // a genre opens the full list of that genre (a phrase is sent as one quoted term); the
+  // picker stays open on the list for picking more
+  await picker.click();
   await chip('Science Fiction').click();
   await expect(page).toHaveURL(/\/books\?genre=science\+fiction$/);
   await expect(
@@ -296,17 +311,48 @@ test('a genre or a sort from the landing fills the page with that list, and Back
     .poll(feed)
     .toContainEqual('?format=ebook&subject=%22science%20fiction%22&page=1');
 
-  // genre and sort go together
+  // a second genre: books in either, sent as one a|b list
+  await chip('Romance').click();
+  await expect(page).toHaveURL(/\/books\?genre=science\+fiction%2Cromance$/);
+  await expect(
+    page.getByRole('heading', {
+      name: 'Popular science fiction & romance ebooks',
+    })
+  ).toBeVisible();
+  await expect
+    .poll(feed)
+    .toContainEqual('?format=ebook&subject=science%20fiction%7Cromance&page=1');
+  await expect(picker).toHaveText('Science Fiction + 1');
+  // Done closes it and puts focus back on the button
+  await page.getByRole('button', { name: 'Done' }).click();
+  await expect(genres).toHaveCount(0);
+  await expect(picker).toBeFocused();
+
+  // genres and sort go together
   await page.getByLabel('Sort').selectOption('trending');
   await expect(
-    page.getByRole('heading', { name: 'Trending science fiction ebooks' })
+    page.getByRole('heading', {
+      name: 'Trending science fiction & romance ebooks',
+    })
   ).toBeVisible();
   await expect
     .poll(feed)
     .toContainEqual(
-      '?format=ebook&sortBy=trending&subject=%22science%20fiction%22&page=1'
+      '?format=ebook&sortBy=trending&subject=science%20fiction%7Cromance&page=1'
     );
+  // three or more: the heading counts them
+  await picker.click();
   await chip('Fantasy').click();
+  await expect(
+    page.getByRole('heading', { name: '3 genres · Trending ebooks' })
+  ).toBeVisible();
+  await expect
+    .poll(feed)
+    .toContainEqual(
+      '?format=ebook&sortBy=trending&subject=science%20fiction%7Cromance%7Cfantasy&page=1'
+    );
+  await chip('Science Fiction').click();
+  await chip('Romance').click();
   await expect
     .poll(feed)
     .toContainEqual('?format=ebook&sortBy=trending&subject=fantasy&page=1');
@@ -315,23 +361,35 @@ test('a genre or a sort from the landing fills the page with that list, and Back
     'aria-pressed',
     'false'
   );
+  await expect(picker).toHaveText('Fantasy');
+  // a click outside closes it (on a phone, the dimmed page above the sheet)
+  if (phone)
+    await page.locator('.sheet-scrim').click({ position: { x: 20, y: 20 } });
+  else
+    await page
+      .getByRole('heading', { name: 'Trending fantasy ebooks' })
+      .click();
+  await expect(genres).toHaveCount(0);
 
   // In library has no genres; the genre comes back with All
   await page.getByRole('button', { name: 'In library', exact: true }).click();
-  await expect(genres).toHaveCount(0);
+  await expect(picker).toHaveCount(0);
   await expect(
     page.getByRole('heading', { name: 'In your library' })
   ).toBeVisible();
   await page.getByRole('button', { name: 'All', exact: true }).click();
-  await expect(chip('Fantasy')).toHaveAttribute('aria-pressed', 'true');
+  await expect(picker).toHaveText('Fantasy');
 
-  // All genres clears the genre and stays on the list
+  // All genres clears the genres and stays on the list
+  await picker.click();
   await chip('All genres').click();
   await expect(page).toHaveURL(/\/books\?sort=trending$/);
   await expect(
     page.getByRole('heading', { name: 'Trending ebooks' })
   ).toBeVisible();
   await expect(chip('All genres')).toHaveAttribute('aria-pressed', 'true');
+  await page.keyboard.press('Escape');
+  await expect(picker).toHaveText('All genres');
 
   // Back goes to the rows (the list's changes replaced its own entry)
   await page.goBack();
@@ -350,6 +408,14 @@ test('a genre or a sort from the landing fills the page with that list, and Back
     .toContainEqual(
       '?format=audiobook&sortBy=rating.desc&subject=%22young%20adult%22&page=1'
     );
+  // repeated genre= in a shared address are several genres too
+  await page.goto('/audiobooks?genre=fantasy&genre=Romance');
+  await expect(
+    page.getByRole('heading', { name: 'Popular fantasy & romance audiobooks' })
+  ).toBeVisible();
+  await expect
+    .poll(feed)
+    .toContainEqual('?format=audiobook&subject=fantasy%7Cromance&page=1');
 });
 
 test('the full list keeps loading until it fills a tall screen', async ({

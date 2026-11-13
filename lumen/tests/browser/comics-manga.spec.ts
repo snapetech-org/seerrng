@@ -528,15 +528,21 @@ test('filters and sort ask for the matching list', async ({ page }) => {
   await page.goto('/comics');
   await expect(page.locator('.comic-grid .poster')).toHaveCount(3);
   // a genre narrows to manga
-  await page
-    .locator('.genre-chips')
-    .getByRole('button', { name: 'Romance' })
-    .click();
+  const picker = page.getByRole('button', { name: /^Genres:/ });
+  const genres = page.getByRole('group', { name: 'Genres' });
+  await expect(picker).toHaveText('All genres');
+  await picker.click();
+  await genres.getByRole('button', { name: 'Romance' }).click();
   await expect(page).toHaveURL(/type=manga/);
   await expect(page).toHaveURL(/genre=Romance/);
   await expect
     .poll(() => browsed.at(-1))
     .toMatch(/type=manga.*genre=Romance|genre=Romance.*type=manga/);
+  // several genres at once
+  await genres.getByRole('button', { name: 'Comedy' }).click();
+  await expect.poll(() => browsed.at(-1)).toContain('genre=Romance%2CComedy');
+  await page.getByRole('button', { name: 'Done' }).click();
+  await expect(picker).toHaveText('Romance + 1');
   // the landing rows give way to the filtered grid
   await expect(
     page.locator('.sec-head h2', { hasText: 'Trending manga' })
@@ -551,7 +557,7 @@ test('filters and sort ask for the matching list', async ({ page }) => {
     .getByRole('button', { name: 'Comics' })
     .click();
   await expect.poll(() => browsed.at(-1)).toContain('type=comic');
-  await expect(page.locator('.genre-chips')).toHaveCount(0);
+  await expect(picker).toHaveCount(0);
   await page.getByLabel('Publisher').selectOption('Image');
   await expect.poll(() => browsed.at(-1)).toContain('publisher=Image');
   // library state

@@ -4841,6 +4841,128 @@ describe('GET /discover/books', () => {
     assert.deepStrictEqual(res.body.results, []);
   });
 
+  it('sends a single quoted book subject to Open Library unchanged', async () => {
+    const searchBooksMock = mock.method(
+      OpenLibraryAPI.prototype,
+      'searchBooks',
+      async ({ query }: { query: string }) => {
+        assert.strictEqual(query, 'subject:"science fiction"');
+        return { numFound: 0, start: 0, docs: [] };
+      }
+    );
+
+    const agent = await login();
+    const res = await agent
+      .get('/discover/books')
+      .query({ format: 'ebook', subject: '"science fiction"' });
+
+    assert.strictEqual(res.status, 200);
+    assert.strictEqual(searchBooksMock.mock.callCount(), 1);
+  });
+
+  it('asks Open Library for books in any of several subjects', async () => {
+    const searchBooksMock = mock.method(
+      OpenLibraryAPI.prototype,
+      'searchBooks',
+      async ({ query }: { query: string }) => {
+        assert.strictEqual(
+          query,
+          '(subject:"fantasy" OR subject:"science fiction" OR subject:"romance")'
+        );
+        return { numFound: 0, start: 0, docs: [] };
+      }
+    );
+
+    const agent = await login();
+    const res = await agent.get('/discover/books').query({
+      format: 'ebook',
+      // repeats, case, stray quotes and backslashes are tidied away
+      subject: 'Fantasy|"science  fiction"|fantasy| ro"man\\ce |',
+    });
+
+    assert.strictEqual(res.status, 200);
+    assert.strictEqual(searchBooksMock.mock.callCount(), 1);
+  });
+
+  it('rejects book subject lists longer than eight genres', async () => {
+    const searchBooks = mock.method(OpenLibraryAPI.prototype, 'searchBooks');
+
+    const agent = await login();
+    const res = await agent.get('/discover/books').query({
+      subject: Array.from({ length: 9 }, (_, i) => `genre ${i}`).join('|'),
+    });
+
+    assert.strictEqual(res.status, 400);
+    assert.match(res.body.message, /at most 8 genres/);
+    assert.strictEqual(searchBooks.mock.callCount(), 0);
+  });
+
+  it('matches audiobooks in any of several subjects', async () => {
+    getSettings().readarr = [
+      {
+        id: 3,
+        hostname: 'audiobookshelf.test',
+        port: 8787,
+        apiKey: 'audio-key',
+        useSsl: false,
+        baseUrl: '',
+        serviceType: 'audiobook',
+      } as ReadarrSettings,
+    ];
+    mock.method(ReadarrAPI.prototype, 'getBooks', async () => [
+      {
+        id: 1,
+        title: 'Dragon Tale',
+        foreignBookId: 'work-fantasy',
+        author: { authorName: 'Writer One' },
+        genres: ['Fantasy'],
+      },
+      {
+        id: 2,
+        title: 'Star Voyage',
+        foreignBookId: 'work-scifi',
+        author: { authorName: 'Writer Two' },
+        genres: ['Science Fiction', 'Space Opera'],
+      },
+      {
+        id: 3,
+        title: 'Lab Notes',
+        foreignBookId: 'work-science',
+        author: { authorName: 'Writer Three' },
+        genres: ['Science'],
+      },
+      {
+        id: 4,
+        title: 'Love Letters',
+        foreignBookId: 'work-romance',
+        author: { authorName: 'Writer Four' },
+        genres: ['Romance'],
+      },
+    ]);
+
+    try {
+      const agent = await login();
+      const titlesFor = async (subject: string) => {
+        const res = await agent
+          .get('/discover/books')
+          .query({ format: 'audiobook', subject });
+        assert.strictEqual(res.status, 200);
+        return res.body.results
+          .map((book: { title: string }) => book.title)
+          .sort();
+      };
+
+      assert.deepStrictEqual(await titlesFor('fantasy|science fiction'), [
+        'Dragon Tale',
+        'Star Voyage',
+      ]);
+      // one genre still matches on its own, as before
+      assert.deepStrictEqual(await titlesFor('romance'), ['Love Letters']);
+    } finally {
+      getSettings().readarr = [];
+    }
+  });
+
   it('returns mapped Open Library book discovery results', async () => {
     mock.method(OpenLibraryAPI.prototype, 'searchBooks', async () => ({
       numFound: 1,
