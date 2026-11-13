@@ -1,1 +1,8 @@
+---
+category: fixed
+audience: users
+area: requests
+action: none
+breaking: false
+---
 The request list releases its user-security admission lease after loading request data and before looking up display-only Servarr profile names. This prevents PostgreSQL slot collisions from deadlocking request reads with service configuration admission.
