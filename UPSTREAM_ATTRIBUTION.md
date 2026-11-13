@@ -10,6 +10,11 @@ The [feature comparison](./docs/feature-comparison.md) links these source credit
 
 SeerrOrig's native layout and presentation are based on the Seerr v3.5.1 source
 snapshot at [`564bfb08b54caa374bddaf820abfd226e5e69151`](https://github.com/seerr-team/seerr/tree/564bfb08b54caa374bddaf820abfd226e5e69151).
+SeerrOrig's shared movie, TV, and collection poster-card presentation is aligned
+with upstream's [\`TitleCard\`](https://github.com/seerr-team/seerr/blob/564bfb08b54caa374bddaf820abfd226e5e69151/src/components/TitleCard/index.tsx)
+and its poster badge and status presentation. SeerrNG poster actions and
+additional media metadata remain available, and SeerrNG logos and brand assets
+remain in use.
 The Issues list and movie/TV issue-detail composition are adapted from
 upstream's [`IssueList`](https://github.com/seerr-team/seerr/blob/564bfb08b54caa374bddaf820abfd226e5e69151/src/components/IssueList/index.tsx),
 [`IssueItem`](https://github.com/seerr-team/seerr/blob/564bfb08b54caa374bddaf820abfd226e5e69151/src/components/IssueList/IssueItem/index.tsx),
