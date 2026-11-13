@@ -5247,36 +5247,41 @@ const validateCurrentBatchContract = (files) => {
     const jsx = parsedJsx(
       requireFile('src/components/Settings/SettingsMain/index.tsx')
     );
-    for (const name of [
-      'generalsettings',
-      'playlistIntegrations',
-      'comicsMetadata',
-    ]) {
+    const generalSettingsGroup = jsx.elements.find((node) => {
+      const className = jsx.compact(jsx.expression(node, 'className'));
+      return (
+        jsx.tag(node) === 'section' &&
+        className?.includes('upstream-settings-main-group') &&
+        className.includes('app-card-subsettings-group-card') &&
+        jsx.elements.some(
+          (heading) =>
+            jsx.tag(heading) === 'h3' &&
+            jsx.within(heading, node) &&
+            jsx
+              .compact(heading)
+              .includes('intl.formatMessage(messages.generalsettings)')
+        )
+      );
+    });
+    if (!generalSettingsGroup) throw new Error('Missing shared main group');
+
+    for (const name of ['playlistIntegrations', 'comicsMetadata']) {
       const owner = jsx.elements.find((node) => {
-        if (!jsx.roles(node, 'app-card-sub', 'settings-group-card'))
+        if (
+          jsx.tag(node) !== 'SettingsGroup' ||
+          !jsx.roles(node, 'app-card-sub', 'settings-group-card')
+        )
           return false;
-        if (jsx.tag(node) === 'SettingsGroup')
-          return (
-            jsx.compact(jsx.expression(node, 'title')) ===
-            `intl.formatMessage(messages.${name})`
-          );
         return (
-          jsx.tag(node) === 'section' &&
-          jsx.elements.some(
-            (heading) =>
-              jsx.tag(heading) === 'h3' &&
-              jsx.within(heading, node) &&
-              jsx
-                .compact(heading)
-                .includes(`intl.formatMessage(messages.${name})`)
-          )
+          jsx.compact(jsx.expression(node, 'title')) ===
+          `intl.formatMessage(messages.${name})`
         );
       });
       if (!owner) throw new Error('Missing distinct shared group');
     }
   } catch {
     errors.push(
-      'src/components/Settings/SettingsMain/index.tsx: General Settings and Playlist Integrations must be separate standard subcards'
+      'src/components/Settings/SettingsMain/index.tsx: General Settings must retain its shared native card and upstream main group; Playlist Integrations and Comics Metadata must remain distinct shared groups'
     );
   }
   requireOrder(
@@ -5286,7 +5291,7 @@ const validateCurrentBatchContract = (files) => {
       'messages.playlistIntegrations',
       'className="actions"',
     ],
-    'General Settings and Playlist Integrations subcards must precede the shared form submission path'
+    'General Settings, Playlist Integrations, and Comics Metadata must precede the shared form submission path'
   );
   for (const token of [
     '.settings-page-navigation-row {',

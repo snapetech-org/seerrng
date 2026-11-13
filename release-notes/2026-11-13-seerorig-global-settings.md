@@ -5,6 +5,6 @@ area: interface
 action: none
 breaking: false
 ---
-SeerrOrig's global settings now use upstream Seerr's single-form layout and shared control order. SeerrNG-only interface, content, request-policy, and integration settings remain available through labeled disclosures.
+SeerrOrig global settings follow upstream's single-form layout; SeerrNG policies and integrations remain available.
 
-Source: [Seerr v3.5.1 SettingsMain](https://github.com/seerr-team/seerr/blob/564bfb08b54caa374bddaf820abfd226e5e69151/src/components/Settings/SettingsMain/index.tsx) by [@gauthier-th](https://github.com/gauthier-th). They contributed this source to upstream Seerr; SeerrNG independently adapted its global settings presentation while preserving fork settings and behavior.
+Source: [Seerr v3.5.1](https://github.com/seerr-team/seerr/commit/564bfb08b54caa374bddaf820abfd226e5e69151), contributed to upstream by [@gauthier-th](https://github.com/gauthier-th); SeerrNG independently adapted the presentation.

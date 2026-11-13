@@ -2240,7 +2240,7 @@ test('settings groups retain distinct semantic identities after compact display 
   const file = 'src/components/Settings/SettingsMain/index.tsx';
   const source = repositoryFilesWith()[file];
   const reason =
-    'General Settings and Playlist Integrations must be separate standard subcards';
+    'General Settings must retain its shared native card and upstream main group; Playlist Integrations and Comics Metadata must remain distinct shared groups';
   const errors = (text) =>
     validateCurrentBatchContract(repositoryFilesWith({ [file]: text })).filter(
       (error) => error.includes(reason)
