@@ -269,18 +269,12 @@ test('renderer bumps and packages multiple changed charts', () => {
   }
 });
 
-test('hosted runners are the default and gVisor smoke is the only JIT exception', () => {
+test('GitHub-hosted runners are the default with no private workflow exception', () => {
   const workflowsDirectory = path.join(rootDirectory, '.github', 'workflows');
-  const gvisor = yaml.load(
-    fs.readFileSync(
-      path.join(workflowsDirectory, 'gvisor-runner-smoke.yml'),
-      'utf8'
-    )
+  assert.equal(
+    fs.existsSync(path.join(workflowsDirectory, 'gvisor-runner-smoke.yml')),
+    false
   );
-  assert.deepEqual(gvisor.jobs.smoke['runs-on'], {
-    group: 'gvisor-sandbox',
-    labels: 'gvisor-sandbox',
-  });
 
   const forkSafe = yaml.load(
     fs.readFileSync(
@@ -308,9 +302,7 @@ test('hosted runners are the default and gVisor smoke is the only JIT exception'
 
   for (const fileName of fs
     .readdirSync(workflowsDirectory)
-    .filter(
-      (name) => /\.ya?ml$/u.test(name) && name !== 'gvisor-runner-smoke.yml'
-    )) {
+    .filter((name) => /\.ya?ml$/u.test(name))) {
     const source = fs.readFileSync(
       path.join(workflowsDirectory, fileName),
       'utf8'
@@ -327,7 +319,7 @@ test('hosted runners are the default and gVisor smoke is the only JIT exception'
       assert.equal(typeof runner, 'string', `${fileName}/${jobName}`);
       assert.doesNotMatch(
         runner,
-        /self-hosted|ng-shared-main-jit|private-apple-builds|packer-windows/u,
+        /self-hosted|ng-shared-main-jit|private-apple-builds|packer-windows|gvisor-sandbox/u,
         `${fileName}/${jobName}`
       );
     }
@@ -694,19 +686,12 @@ test('main validation and image scanning use GitHub-hosted runners', () => {
   assert.match(semgrep, /docker run/u);
 });
 
-test('only the explicit gVisor smoke workflow uses a private runner', () => {
+test('no workflow routes jobs to a private runner', () => {
   const workflowsDirectory = path.join(rootDirectory, '.github', 'workflows');
-  const gvisor = yaml.load(
-    fs.readFileSync(
-      path.join(workflowsDirectory, 'gvisor-runner-smoke.yml'),
-      'utf8'
-    )
+  assert.equal(
+    fs.existsSync(path.join(workflowsDirectory, 'gvisor-runner-smoke.yml')),
+    false
   );
-  assert.deepEqual(gvisor.jobs.smoke['runs-on'], {
-    group: 'gvisor-sandbox',
-    labels: 'gvisor-sandbox',
-  });
-  let privateRunnerCount = 0;
   for (const filename of fs
     .readdirSync(workflowsDirectory)
     .filter((name) => /\.ya?ml$/u.test(name))) {
@@ -716,23 +701,14 @@ test('only the explicit gVisor smoke workflow uses a private runner', () => {
     for (const [jobName, job] of Object.entries(workflow.jobs ?? {})) {
       const runner = job?.['runs-on'];
       if (runner === undefined) continue;
-      if (filename === 'gvisor-runner-smoke.yml') {
-        assert.deepEqual(runner, {
-          group: 'gvisor-sandbox',
-          labels: 'gvisor-sandbox',
-        });
-        privateRunnerCount += 1;
-        continue;
-      }
       assert.equal(typeof runner, 'string', `${filename}/${jobName}`);
       assert.doesNotMatch(
         runner,
-        /self-hosted|ng-shared-main-jit|private-apple-builds|packer-windows/u,
+        /self-hosted|ng-shared-main-jit|private-apple-builds|packer-windows|gvisor-sandbox/u,
         `${filename}/${jobName}`
       );
     }
   }
-  assert.equal(privateRunnerCount, 1);
 });
 
 test('credentialed chart publication uses a GitHub-hosted runner', () => {

@@ -1,9 +1,9 @@
 # GitHub Actions runner routing
 
-Status: GitHub-hosted runners are primary for SeerrNG since the owner directive
-of 2026-11-03. SeerrNG is a public repository; standard GitHub-hosted runners
-are free and unlimited for public repositories. See the [GitHub-hosted runners
-reference](https://docs.github.com/en/actions/reference/runners/github-hosted-runners#standard-github-hosted-runners-for-public-repositories).
+Status: GitHub-hosted runners are the default for SeerrNG under the owner
+directive of 2026-11-13. SeerrNG is a public repository; standard
+GitHub-hosted runners are free and unlimited for public repositories. See the
+[GitHub-hosted runners reference](https://docs.github.com/en/actions/reference/runners/github-hosted-runners#standard-github-hosted-runners-for-public-repositories).
 
 Use these labels to preserve native platforms in release builds:
 
@@ -16,11 +16,13 @@ Use these labels to preserve native platforms in release builds:
 | Windows x64 | `windows-2025` |
 | Windows arm64 | `windows-11-vs2026-arm` |
 
-Private ephemeral JIT runners are reserved for work that needs private network
-access, special hardware, or explicit JIT validation. Currently only
-`.github/workflows/gvisor-runner-smoke.yml` uses the private gVisor runner group;
-that workflow checks the sandbox boundary itself. Public-fork validation runs
-on GitHub-hosted runners with read-only repository permissions and no secrets.
+Private ephemeral JIT is reserved for explicit overflow on `kspld0` or
+`kspls0` (Linux or Windows, x64 or ARM64) and Apple-signed builds on the
+MacBook Air. These are explicit routes, never automatic fallbacks. The former
+`.github/workflows/gvisor-runner-smoke.yml` private-runner exception was removed
+on 2026-11-13; no current workflow requires private JIT. `xcode-27` is a
+GitHub-hosted image. Public-fork validation runs on isolated disposable
+GitHub-hosted runners with read-only repository permissions and no secrets.
 
 The main CI workflow remains manually dispatchable from `main`; choose
 `action=ci` and `runner_pool=public` for validation. Image publication remains

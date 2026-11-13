@@ -1,16 +1,16 @@
-## Runner policy — SeerrNG owner directive, 2026-11-03
+## Runner policy — SeerrNG owner directive, 2026-11-13
 
-Use standard GitHub-hosted runners for SeerrNG build, test, scan, package, and
-release jobs wherever the required operating system and architecture are
-available. Preserve native OS and architecture. Use private ephemeral JIT only
-for a task that needs private network access, special hardware, or explicit JIT
-validation; currently `.github/workflows/gvisor-runner-smoke.yml` is the only
-such workflow. Do not add automatic runner fallbacks.
+Use GitHub-hosted runners for all SeerrNG build, test, scan, package, and
+release jobs when the required operating system and architecture are available.
+Preserve native OS and architecture. Private ephemeral JIT is reserved for
+explicit overflow on `kspld0` or `kspls0` (Linux or Windows, x64 or ARM64) and
+Apple-signed builds on the MacBook Air. These are explicit routes, never
+automatic fallbacks. `xcode-27` is a GitHub-hosted image.
 
-Untrusted pull-request code must run on an isolated disposable runner without
-secrets. SeerrNG public-fork validation uses GitHub-hosted runners with
-read-only repository permissions. Preserve active builds and other agents'
-work, and do not restart the broker while it owns running guests.
+Untrusted pull-request code must run on an isolated disposable GitHub-hosted
+runner without secrets. SeerrNG public-fork validation uses read-only
+repository permissions. Preserve active builds and other agents' work, and do
+not restart the broker while it owns running guests.
 
 The shared inventory in `snapetech-org/packer/scripts/shared-jit-runner-pool/`
 continues to govern other repositories. This SeerrNG-specific owner directive
