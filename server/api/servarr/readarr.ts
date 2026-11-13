@@ -599,9 +599,11 @@ const normalizeProviderIdentity = (
 export const matchesReadarrBookProviderIdentity = (
   book: ReadarrBookLookupResult,
   providerBookId: string,
-  providerEditionId?: string
+  providerEditionId?: string,
+  providerBookAliases: readonly string[] = []
 ): boolean => {
   const normalizedBookId = normalizeProviderIdentity(providerBookId);
+  const currentBookId = normalizeProviderIdentity(book.foreignBookId);
   const normalizedEditionId = normalizeProviderIdentity(
     providerEditionId,
     true
@@ -609,7 +611,11 @@ export const matchesReadarrBookProviderIdentity = (
 
   return (
     (!!normalizedBookId &&
-      normalizeProviderIdentity(book.foreignBookId) === normalizedBookId) ||
+      !!currentBookId &&
+      [
+        normalizedBookId,
+        ...providerBookAliases.map((id) => normalizeProviderIdentity(id)),
+      ].includes(currentBookId)) ||
     (!!normalizedEditionId &&
       (normalizeProviderIdentity(book.foreignEditionId, true) ===
         normalizedEditionId ||
@@ -1830,18 +1836,33 @@ class ReadarrAPI extends ServarrBase<ReadarrQueueItem> {
     return result;
   }
 
-  /** Provider knowledge was negotiated while reading this client's catalog. */
-  public getKnownBookIdentityAliases(id: string): string[] {
+  /** Negotiated identities; legacy clients require an explicitly scoped response. */
+  public getKnownBookIdentityAliases(
+    id: string,
+    options: { formatScopedResponse?: boolean } = {}
+  ): string[] {
     const dialect = this.chaptarrDialect;
     const contract = this.chaptarrCapabilities?.contract;
-    if (
-      !dialect ||
-      !['chaptarrng-seerr-bookshelf', 'seerrng-bookshelf'].includes(
+    const explicitContract =
+      ['chaptarrng-seerr-bookshelf', 'seerrng-bookshelf'].includes(
         contract ?? ''
-      ) ||
-      this.chaptarrCapabilities?.contractVersion !== 1
-    )
-      return [id];
+      ) && this.chaptarrCapabilities?.contractVersion === 1;
+    // Older Chaptarr builds have no capability document. Only callers holding
+    // a response from this exact selected, namespaced facade may use its IDs.
+    const knownScopedResponse =
+      options.formatScopedResponse === true &&
+      this.isChaptarr() &&
+      !!this.mediaType &&
+      !!dialect &&
+      this.chaptarrCapabilities?.features?.formatScopedFacade === true &&
+      this.requestBaseUrl !== this.nativeApiUrl &&
+      this.requestBaseUrl ===
+        ReadarrAPI.buildChaptarrFacadeUrl(
+          this.nativeApiUrl,
+          this.mediaType,
+          dialect
+        );
+    if (!dialect || (!explicitContract && !knownScopedResponse)) return [id];
     const prefix =
       dialect === 'hc'
         ? /^(?:hc|hardcover|metadata-api):/i

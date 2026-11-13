@@ -586,7 +586,10 @@ export class BookRequestSearchManager {
       matchesReadarrBookProviderIdentity(
         currentBook,
         providerBookId,
-        operation.providerEditionId ?? undefined
+        operation.providerEditionId ?? undefined,
+        readarr.getKnownBookIdentityAliases(providerBookId, {
+          formatScopedResponse: true,
+        })
       ) &&
       (await hasRequestedEditionFiles(
         readarr,
@@ -1080,7 +1083,10 @@ export class BookRequestSearchManager {
         matchesReadarrBookProviderIdentity(
           currentBook,
           providerBookId,
-          providerEditionId
+          providerEditionId,
+          readarr.getKnownBookIdentityAliases(providerBookId, {
+            formatScopedResponse: true,
+          })
         ))
     ) {
       return currentBook;

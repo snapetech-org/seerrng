@@ -12,7 +12,9 @@ import type {
   ReadarrBookLookupResult,
   ReadarrBookOptions,
 } from '@server/api/servarr/readarr';
-import ReadarrAPI from '@server/api/servarr/readarr';
+import ReadarrAPI, {
+  matchesReadarrBookProviderIdentity,
+} from '@server/api/servarr/readarr';
 import axios from 'axios';
 
 import {
@@ -3014,6 +3016,142 @@ describe('Chaptarr pending local work recovery', () => {
         allowedLanguages: ['eng'],
       });
       assert.equal(found?.id, language === 'eng' ? 46503 : undefined);
+    });
+  }
+});
+
+describe('dialect-aware tracked book identity comparison', () => {
+  const book = { id: 46503, title: 'Wool', foreignBookId: '260468' };
+
+  it('keeps bare and qualified work IDs strict without negotiated aliases', () => {
+    assert.equal(matchesReadarrBookProviderIdentity(book, 'hc:260468'), false);
+  });
+
+  for (const dialect of ['hc', 'gr'] as const) {
+    it(`compares bare facade IDs only inside the negotiated ${dialect} namespace`, () => {
+      const api = new ReadarrAPI({
+        apiKey: 'fixture',
+        url: 'http://localhost:8787/api/v1',
+        mediaType: 'audiobook',
+      });
+      Object.assign(api, {
+        chaptarrDialect: dialect,
+        chaptarrCapabilities: {
+          contract: 'chaptarrng-seerr-bookshelf',
+          contractVersion: 1,
+          providerIdDialect: dialect,
+        },
+      });
+      assert.equal(
+        matchesReadarrBookProviderIdentity(
+          book,
+          'hc:260468',
+          undefined,
+          api.getKnownBookIdentityAliases('hc:260468')
+        ),
+        dialect === 'hc'
+      );
+      assert.equal(
+        matchesReadarrBookProviderIdentity(
+          { ...book, foreignBookId: 'gr:260468' },
+          'hc:260468',
+          undefined,
+          api.getKnownBookIdentityAliases('hc:260468')
+        ),
+        false
+      );
+    });
+  }
+});
+
+describe('legacy selected facade identity context', () => {
+  for (const dialect of ['hc', 'gr'] as const) {
+    it(`uses legacy ${dialect} aliases only for an explicitly selected format response`, () => {
+      const api = new ReadarrAPI({
+        apiKey: 'fixture',
+        url: 'http://localhost:8787/api/v1',
+        mediaType: 'audiobook',
+      });
+      Object.assign(api, {
+        detectedSystemStatus: { appName: 'Chaptarr' },
+        chaptarrDialect: dialect,
+        chaptarrCapabilities: { features: { formatScopedFacade: true } },
+        requestBaseUrl: `http://localhost:8787/readarr/${dialect}/audiobook/api/v1`,
+      });
+      const stored = `${dialect}:260468`;
+      const book = { id: 46503, title: 'Wool', foreignBookId: '260468' };
+      assert.deepEqual(api.getKnownBookIdentityAliases(stored), [stored]);
+      assert.equal(
+        matchesReadarrBookProviderIdentity(
+          book,
+          stored,
+          undefined,
+          api.getKnownBookIdentityAliases(stored, {
+            formatScopedResponse: true,
+          })
+        ),
+        true
+      );
+      assert.equal(
+        matchesReadarrBookProviderIdentity(
+          book,
+          'hc:260468',
+          undefined,
+          api.getKnownBookIdentityAliases('hc:260468', {
+            formatScopedResponse: true,
+          })
+        ),
+        dialect === 'hc'
+      );
+      assert.equal(
+        matchesReadarrBookProviderIdentity(
+          { ...book, foreignBookId: 'gr:260468' },
+          'hc:260468',
+          undefined,
+          api.getKnownBookIdentityAliases('hc:260468', {
+            formatScopedResponse: true,
+          })
+        ),
+        false
+      );
+    });
+  }
+
+  for (const [name, patch] of [
+    ['native path', { requestBaseUrl: 'http://localhost:8787/api/v1' }],
+    [
+      'wrong dialect path',
+      { requestBaseUrl: 'http://localhost:8787/readarr/gr/audiobook/api/v1' },
+    ],
+    [
+      'wrong format path',
+      { requestBaseUrl: 'http://localhost:8787/readarr/hc/ebook/api/v1' },
+    ],
+    ['unselected path', { requestBaseUrl: undefined }],
+    [
+      'unrecognized application',
+      { detectedSystemStatus: { appName: 'Readarr' } },
+    ],
+  ] as const) {
+    it(`does not infer a namespace from a ${name}`, () => {
+      const api = new ReadarrAPI({
+        apiKey: 'fixture',
+        url: 'http://localhost:8787/api/v1',
+        mediaType: 'audiobook',
+      });
+      Object.assign(api, {
+        detectedSystemStatus: { appName: 'Chaptarr' },
+        chaptarrDialect: 'hc',
+        chaptarrCapabilities: { features: { formatScopedFacade: true } },
+        requestBaseUrl: 'http://localhost:8787/readarr/hc/audiobook/api/v1',
+        ...patch,
+      });
+      assert.deepEqual(
+        api.getKnownBookIdentityAliases('hc:260468', {
+          formatScopedResponse: true,
+        }),
+        ['hc:260468']
+      );
     });
   }
 });

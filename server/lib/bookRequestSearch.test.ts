@@ -1213,6 +1213,85 @@ describe('BookRequestSearchManager', () => {
     assert.equal(getCommand.mock.callCount(), 0);
   });
 
+  for (const initiallyAvailable of [false, true]) {
+    it(`keeps the tracked HC facade record and finalizes actual files (initially available=${initiallyAvailable})`, async () => {
+      const { media, request } = await createTrackedRequest({
+        createdBook: false,
+        createdAuthor: false,
+        monitoring: true,
+        providerBookId: 'hc:260468',
+      });
+      await getRepository(BookRequestSearch).update(
+        { requestId: request.id },
+        { bookId: 46503 }
+      );
+      await getRepository(Media).update(media.id, { externalServiceId: 46503 });
+      let fileCount = initiallyAvailable ? 1 : 0;
+      mock.method(
+        ReadarrAPI.prototype,
+        'getBookIfExists',
+        async function (this: ReadarrAPI, id: number) {
+          Object.assign(this, {
+            detectedSystemStatus: { appName: 'Chaptarr' },
+            chaptarrDialect: 'hc',
+            chaptarrCapabilities: { features: { formatScopedFacade: true } },
+            requestBaseUrl:
+              'http://bookshelf.local:8787/readarr/hc/ebook/api/v1',
+          });
+          return {
+            id,
+            title: 'Wool',
+            foreignBookId: '260468',
+            statistics: { bookFileCount: fileCount },
+          };
+        }
+      );
+      const remote = mock.method(
+        ReadarrAPI.prototype,
+        'lookupBookByProviderIdentity',
+        async () => {
+          throw new Error('must not rewire a matching tracked record');
+        }
+      );
+      const search = mock.method(
+        ReadarrAPI.prototype,
+        'startBookSearch',
+        async () => ({ id: 9001, name: 'BookSearch', status: 'started' })
+      );
+      let commandStatus = 'started';
+      mock.method(ReadarrAPI.prototype, 'getCommand', async () => ({
+        id: 9001,
+        name: 'BookSearch',
+        status: commandStatus,
+      }));
+      mock.method(ReadarrAPI.prototype, 'getQueue', async () => []);
+      mock.method(ReadarrAPI.prototype, 'getBookHistory', async () => []);
+      await bookRequestSearchManager.run();
+      if (!initiallyAvailable) {
+        assert.equal(search.mock.calls.length, 1);
+        assert.equal(search.mock.calls[0].arguments[0], 46503);
+        await bookRequestSearchManager.run();
+        commandStatus = 'completed';
+        fileCount = 1;
+        await bookRequestSearchManager.run();
+      }
+      assert.equal(remote.mock.calls.length, 0);
+      assert.equal(search.mock.calls.length, initiallyAvailable ? 0 : 1);
+      assert.equal(
+        await getRepository(BookRequestSearch).countBy({
+          requestId: request.id,
+        }),
+        0
+      );
+      const current = await getRepository(Media).findOneByOrFail({
+        id: media.id,
+      });
+      assert.equal(current.externalServiceId, 46503);
+      assert.deepEqual(current.availableEbookServiceIds, [20]);
+      assert.equal(current.status, MediaStatus.AVAILABLE);
+    });
+  }
+
   it('starts and tracks BookSearch until the library scan finds a file', async () => {
     const { media, request } = await createTrackedRequest({
       createdBook: true,
