@@ -8,6 +8,7 @@ import TitleCard from '@app/components/TitleCard';
 import TmdbTitleCard from '@app/components/TitleCard/TmdbTitleCard';
 import ProfileHeader from '@app/components/UserProfile/ProfileHeader';
 import { getPositiveQueryParamNumber } from '@app/hooks/useUpdateQueryParams';
+import useUpstreamTheme from '@app/hooks/useUpstreamTheme';
 import { Permission, UserType, useUser } from '@app/hooks/useUser';
 import ErrorPage from '@app/pages/_error';
 import defineMessages from '@app/utils/defineMessages';
@@ -46,8 +47,13 @@ const messages = defineMessages('components.UserProfile', {
   magazinerequests: 'Magazine Requests',
   recentlywatched: 'Recently Watched',
   plexwatchlist: 'Watchlist',
+  plexWatchlistUpstream: 'Plex Watchlist',
   localWatchlist: "{username}'s Watchlist",
   emptywatchlist: 'Items added to this watchlist will appear here.',
+  emptyPlexWatchlist:
+    'Media added to your <PlexWatchlistSupportLink>Plex Watchlist</PlexWatchlistSupportLink> will appear here.',
+  moreRequestQuotas: 'More SeerrNG request limits',
+  moreMediaWatchlist: 'More SeerrNG media',
 });
 
 type MediaTitle =
@@ -125,6 +131,7 @@ const QuotaSummaryCard = ({
 const UserProfile = () => {
   const intl = useIntl();
   const router = useRouter();
+  const upstream = useUpstreamTheme();
   const userId = getPositiveQueryParamNumber(router.query.userId);
   const { user, error } = useUser({
     id: userId,
@@ -203,16 +210,59 @@ const UserProfile = () => {
 
   const watchlistSliderTitle = intl.formatMessage(
     user.userType === UserType.PLEX
-      ? messages.plexwatchlist
+      ? upstream
+        ? messages.plexWatchlistUpstream
+        : messages.plexwatchlist
       : messages.localWatchlist,
     { username: user.displayName }
   );
+  const additionalQuotas = quota
+    ? [
+        {
+          title: intl.formatMessage(messages.musicrequests),
+          quota: quota.music,
+        },
+        {
+          title: intl.formatMessage(messages.bookrequests),
+          quota: quota.book,
+        },
+        {
+          title: intl.formatMessage(messages.comicrequests),
+          quota: quota.comic,
+        },
+        {
+          title: intl.formatMessage(messages.magazinerequests),
+          quota: quota.magazine,
+        },
+      ]
+    : [];
+  const allWatchlistItems = watchlistItems?.results ?? [];
+  const primaryWatchlistItems = upstream
+    ? allWatchlistItems.filter(
+        (item) => item.mediaType === 'movie' || item.mediaType === 'tv'
+      )
+    : allWatchlistItems;
+  const additionalWatchlistItems = upstream
+    ? allWatchlistItems.filter(
+        (item) => item.mediaType !== 'movie' && item.mediaType !== 'tv'
+      )
+    : [];
+  const canViewWatchlist =
+    user.id === currentUser?.id ||
+    currentHasPermission(
+      [Permission.MANAGE_REQUESTS, Permission.WATCHLIST_VIEW],
+      { type: 'or' }
+    );
 
   return (
     <>
       <PageTitle title={user.displayName} />
       {Object.keys(availableTitles).length > 0 && (
-        <div className="absolute start-0 end-0 -top-16 z-0 h-96">
+        <div
+          className={`absolute -top-16 z-0 h-96 ${
+            upstream ? 'left-0 right-0' : 'start-0 end-0'
+          }`}
+        >
           <ImageFader
             key={user.id}
             isDarker
@@ -234,7 +284,11 @@ const UserProfile = () => {
             { type: 'and' }
           )) && (
           <div className="relative z-40">
-            <dl className="mt-5 grid grid-cols-1 gap-5 lg:grid-cols-4">
+            <dl
+              className={`mt-5 grid grid-cols-1 gap-5 ${
+                upstream ? 'lg:grid-cols-3' : 'lg:grid-cols-4'
+              }`}
+            >
               <div className="overflow-hidden rounded-lg bg-gray-800/50 px-4 py-5 shadow ring-1 ring-gray-700 sm:p-6">
                 <dt className="truncate text-sm font-bold text-gray-300">
                   {intl.formatMessage(messages.totalrequests)}
@@ -364,6 +418,8 @@ const UserProfile = () => {
                   )}
                 </dd>
               </div>
+              {!upstream && (
+                <>
               <div
                 className={`overflow-hidden rounded-lg bg-gray-800/50 px-4 py-5 shadow ring-1 ${
                   quota.music.restricted
@@ -482,7 +538,25 @@ const UserProfile = () => {
                 title={intl.formatMessage(messages.magazinerequests)}
                 quota={quota.magazine}
               />
+                </>
+              )}
             </dl>
+            {upstream && additionalQuotas.length > 0 && (
+              <details className="mt-5">
+                <summary className="cursor-pointer py-3 text-sm font-semibold text-gray-300">
+                  {intl.formatMessage(messages.moreRequestQuotas)}
+                </summary>
+                <dl className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+                  {additionalQuotas.map(({ title, quota: categoryQuota }) => (
+                    <QuotaSummaryCard
+                      key={title}
+                      title={title}
+                      quota={categoryQuota}
+                    />
+                  ))}
+                </dl>
+              </details>
+            )}
           </div>
         )}
       {(user.id === currentUser?.id ||
@@ -532,13 +606,16 @@ const UserProfile = () => {
           { type: 'or' }
         )) &&
         (!watchlistItems ||
-          !!watchlistItems.results.length ||
+          primaryWatchlistItems.length > 0 ||
           (user.id === currentUser?.id &&
-            (user.settings?.watchlistSyncMovies ||
-              user.settings?.watchlistSyncTv ||
-              user.settings?.watchlistSyncMusic ||
-              user.settings?.watchlistSyncBooks ||
-              user.settings?.watchlistSyncComics))) &&
+            (upstream
+              ? user.settings?.watchlistSyncMovies ||
+                user.settings?.watchlistSyncTv
+              : user.settings?.watchlistSyncMovies ||
+                user.settings?.watchlistSyncTv ||
+                user.settings?.watchlistSyncMusic ||
+                user.settings?.watchlistSyncBooks ||
+                user.settings?.watchlistSyncComics))) &&
         !watchlistError && (
           <>
             <Slider
@@ -559,9 +636,24 @@ const UserProfile = () => {
               }
               sliderKey="watchlist"
               isLoading={!watchlistItems}
-              isEmpty={!!watchlistItems && watchlistItems.results.length === 0}
-              emptyMessage={intl.formatMessage(messages.emptywatchlist)}
-              items={watchlistItems?.results.map((item) => (
+              isEmpty={!!watchlistItems && primaryWatchlistItems.length === 0}
+              emptyMessage={
+                upstream && user.userType === UserType.PLEX
+                  ? intl.formatMessage(messages.emptyPlexWatchlist, {
+                      PlexWatchlistSupportLink: (msg: React.ReactNode) => (
+                        <a
+                          href="https://support.plex.tv/articles/universal-watchlist/"
+                          className="text-white transition duration-300 hover:underline"
+                          target="_blank"
+                          rel="noreferrer"
+                        >
+                          {msg}
+                        </a>
+                      ),
+                    })
+                  : intl.formatMessage(messages.emptywatchlist)
+              }
+              items={primaryWatchlistItems.map((item) => (
                 <div key={`watchlist-slider-item-${item.ratingKey}`}>
                   {item.mediaType === 'music' && item.mbId ? (
                     <TitleCard
@@ -596,6 +688,50 @@ const UserProfile = () => {
               ))}
             />
           </>
+        )}
+      {upstream &&
+        canViewWatchlist &&
+        additionalWatchlistItems.length > 0 &&
+        !watchlistError && (
+          <details className="mt-4">
+            <summary className="cursor-pointer py-3 text-sm font-semibold text-gray-300">
+              {intl.formatMessage(messages.moreMediaWatchlist)}
+            </summary>
+            <Slider
+              heading={
+                <div className="page-heading">
+                  {intl.formatMessage(messages.moreMediaWatchlist)}
+                </div>
+              }
+              sliderKey="watchlist-seerrng-media"
+              items={additionalWatchlistItems.map((item) => (
+                <div key={`watchlist-extension-item-${item.ratingKey}`}>
+                  {item.mediaType === 'music' && item.mbId ? (
+                    <TitleCard
+                      id={item.mbId}
+                      title={item.title}
+                      mediaType="album"
+                      isAddedToWatchlist
+                    />
+                  ) : item.mediaType === 'book' && item.externalId ? (
+                    <TitleCard
+                      id={item.externalId}
+                      title={item.title}
+                      mediaType="book"
+                      isAddedToWatchlist
+                    />
+                  ) : item.mediaType === 'comic' && item.externalId ? (
+                    <TitleCard
+                      id={item.externalId}
+                      title={item.title}
+                      mediaType="comic"
+                      isAddedToWatchlist
+                    />
+                  ) : null}
+                </div>
+              ))}
+            />
+          </details>
         )}
       {user.userType === UserType.PLEX &&
         (user.id === currentUser?.id ||

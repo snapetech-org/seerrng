@@ -17,7 +17,11 @@ upstream's [`IssueList`](https://github.com/seerr-team/seerr/blob/564bfb08b54caa
 [`IssueDescription`](https://github.com/seerr-team/seerr/blob/564bfb08b54caa374bddaf820abfd226e5e69151/src/components/IssueDetails/IssueDescription/index.tsx),
 and [`IssueComment`](https://github.com/seerr-team/seerr/blob/564bfb08b54caa374bddaf820abfd226e5e69151/src/components/IssueDetails/IssueComment/index.tsx)
 under the upstream MIT license. SeerrNG's own logo and brand assets remain in
-use.
+use. The user-profile hierarchy is aligned with upstream's
+[`UserProfile`](https://github.com/seerr-team/seerr/blob/564bfb08b54caa374bddaf820abfd226e5e69151/src/components/UserProfile/index.tsx)
+and [`ProfileHeader`](https://github.com/seerr-team/seerr/blob/564bfb08b54caa374bddaf820abfd226e5e69151/src/components/UserProfile/ProfileHeader/index.tsx)
+composition; SeerrNG-only quota and watchlist categories remain in a collapsed
+extension area.
 
 ## Integrated or verified upstream sources
 
