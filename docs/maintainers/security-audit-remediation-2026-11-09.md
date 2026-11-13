@@ -245,9 +245,11 @@ report. The final Trivy CI-mode scan reported zero HIGH/CRITICAL findings across
 vulnerabilities, misconfigurations, and secrets. Both reports are retained
 under `/mnt/disks/scratch/task-deliverables/seerrng-security-audit-20261113/`.
 
-`pnpm audit --prod` on the current source still reports one LOW
-`GHSA-gcqx-w48m-w2h4` version match for `deepmerge@4.3.1`, through
-`email-templates → html-to-text → deepmerge`. The GitHub advisory currently
+Both `pnpm audit --prod` and full `pnpm audit` on the current source report the
+same one LOW `GHSA-gcqx-w48m-w2h4` version match for `deepmerge@4.3.1`.
+Production reaches it through `email-templates → html-to-text → deepmerge`;
+the full audit also reports the development path
+`@svgr/webpack → @svgr/plugin-svgo → deepmerge`. The GitHub advisory currently
 lists no patched package version, but its associated `CVE-2026-93753` record
 was rejected on November 2 after a dispute and reproduction showed no
 `Object.prototype` modification or privilege boundary. The advisory
