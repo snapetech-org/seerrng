@@ -10,6 +10,20 @@ The [feature comparison](./docs/feature-comparison.md) links these source credit
 
 SeerrOrig's native layout and presentation are based on the Seerr v3.5.1 source
 snapshot at [`564bfb08b54caa374bddaf820abfd226e5e69151`](https://github.com/seerr-team/seerr/tree/564bfb08b54caa374bddaf820abfd226e5e69151).
+SeerrOrig's shared movie, TV, and collection poster-card presentation is aligned
+with upstream's [\`TitleCard\`](https://github.com/seerr-team/seerr/blob/564bfb08b54caa374bddaf820abfd226e5e69151/src/components/TitleCard/index.tsx)
+and its poster badge and status presentation. SeerrNG poster actions and
+additional media metadata remain available, and SeerrNG logos and brand assets
+remain in use.
+SeerrOrig's movie and TV request rows follow upstream's [\`RequestItem\`](https://github.com/seerr-team/seerr/blob/564bfb08b54caa374bddaf820abfd226e5e69151/src/components/RequestList/RequestItem/index.tsx)
+layout and backdrop treatment. SeerrNG's extra media types, failure details, and
+request actions remain available.
+Public sign-in and password-recovery presentation also follows upstream's
+[\`Login\`](https://github.com/seerr-team/seerr/blob/564bfb08b54caa374bddaf820abfd226e5e69151/src/components/Login/index.tsx),
+[\`ResetPassword\`](https://github.com/seerr-team/seerr/blob/564bfb08b54caa374bddaf820abfd226e5e69151/src/components/ResetPassword/index.tsx),
+and [\`RequestResetLink\`](https://github.com/seerr-team/seerr/blob/564bfb08b54caa374bddaf820abfd226e5e69151/src/components/ResetPassword/RequestResetLink.tsx)
+composition. SeerrNG's own logo, transport-security notice, and additional sign-in
+methods remain in use.
 The Issues list and movie/TV issue-detail composition are adapted from
 upstream's [`IssueList`](https://github.com/seerr-team/seerr/blob/564bfb08b54caa374bddaf820abfd226e5e69151/src/components/IssueList/index.tsx),
 [`IssueItem`](https://github.com/seerr-team/seerr/blob/564bfb08b54caa374bddaf820abfd226e5e69151/src/components/IssueList/IssueItem/index.tsx),
@@ -200,6 +214,7 @@ The source files below come from the Seerr v3.5.1 snapshot prepared for the upst
 - [PR #3667](https://github.com/seerr-team/seerr/pull/3667) — “feat(i18n): complete Indonesian (id.json) translation,” opened upstream by [@centralsofware](https://github.com/centralsofware). SeerrNG incorporated, adapted, or verified the represented upstream behavior.
 - [Seerr v3.5.1 sidebar source](https://github.com/seerr-team/seerr/blob/564bfb08b54caa374bddaf820abfd226e5e69151/src/components/Layout/Sidebar/index.tsx) — this upstream sidebar source is part of the v3.5.1 release contributed by [@gauthier-th](https://github.com/gauthier-th); SeerrNG independently adapts its eight-link primary order for SeerrOrig and keeps fork-only destinations reachable in a collapsed “More” section, without implying direct contribution to or endorsement of SeerrNG.
 - [Seerr v3.5.1 Discover source](https://github.com/seerr-team/seerr/blob/564bfb08b54caa374bddaf820abfd226e5e69151/src/components/Discover/index.tsx) — used to align SeerrOrig's landing-page hierarchy and supported discovery slider families with upstream; SeerrNG-only catalog shelves remain available outside that upstream presentation. This source is part of the upstream v3.5.1 release contributed by [@gauthier-th](https://github.com/gauthier-th); SeerrNG independently adapted it, without implying direct contribution to or endorsement of SeerrNG.
+- [Seerr v3.5.1 UpcomingMovies source](https://github.com/seerr-team/seerr/blob/564bfb08b54caa374bddaf820abfd226e5e69151/src/components/Discover/Upcoming.tsx) — restores upstream heading spacing and error fallback in SeerrOrig while preserving SeerrNG's discover-navigation context.
 - [Seerr v3.5.1 SettingsLayout source](https://github.com/seerr-team/seerr/blob/564bfb08b54caa374bddaf820abfd226e5e69151/src/components/Settings/SettingsLayout.tsx) — SeerrOrig follows the upstream settings tab set and hierarchy while retaining SeerrNG-only settings in a collapsed extension area. This source is part of the upstream v3.5.1 release contributed by [@gauthier-th](https://github.com/gauthier-th); SeerrNG independently adapted it, without implying direct contribution to or endorsement of SeerrNG.
 - [Seerr v3.5.1 Search source](https://github.com/seerr-team/seerr/blob/564bfb08b54caa374bddaf820abfd226e5e69151/src/components/Search/index.tsx) — used to restore the upstream search heading and result-list presentation in SeerrOrig; SeerrNG search categories and filters remain available in a collapsed options disclosure. This source is part of the upstream v3.5.1 release contributed by [@gauthier-th](https://github.com/gauthier-th); SeerrNG independently adapted it, without implying direct contribution to or endorsement of SeerrNG.
 - [Seerr v3.5.1 RequestList source](https://github.com/seerr-team/seerr/blob/564bfb08b54caa374bddaf820abfd226e5e69151/src/components/RequestList/index.tsx) — used to restore SeerrOrig's original request filter controls and heading layout; expanded SeerrNG request filters remain available under a disclosure. This source is part of the upstream v3.5.1 release contributed by [@gauthier-th](https://github.com/gauthier-th); SeerrNG independently adapted it, without implying direct contribution to or endorsement of SeerrNG.

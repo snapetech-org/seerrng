@@ -2,6 +2,7 @@ import Header from '@app/components/Common/Header';
 import ListView from '@app/components/Common/ListView';
 import PageTitle from '@app/components/Common/PageTitle';
 import useDiscover from '@app/hooks/useDiscover';
+import useUpstreamTheme from '@app/hooks/useUpstreamTheme';
 import ErrorPage from '@app/pages/_error';
 import defineMessages from '@app/utils/defineMessages';
 import type { MovieResult } from '@server/models/Search';
@@ -13,6 +14,7 @@ const messages = defineMessages('components.Discover', {
 
 const UpcomingMovies = () => {
   const intl = useIntl();
+  const upstream = useUpstreamTheme();
 
   const {
     isLoadingInitialData,
@@ -27,6 +29,10 @@ const UpcomingMovies = () => {
   const title = intl.formatMessage(messages.upcomingmovies);
 
   if (error) {
+    if (upstream) {
+      return <ErrorPage statusCode={500} />;
+    }
+
     return (
       <>
         <PageTitle title={title} />
@@ -39,7 +45,7 @@ const UpcomingMovies = () => {
   return (
     <>
       <PageTitle title={intl.formatMessage(messages.upcomingmovies)} />
-      <div>
+      <div className={upstream ? 'mb-5 mt-1' : undefined}>
         <Header>{intl.formatMessage(messages.upcomingmovies)}</Header>
       </div>
       <ListView

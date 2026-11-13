@@ -68,6 +68,8 @@ filtering.
 Discover uses the upstream header and shelf hierarchy with the upstream dark
 palette. SeerrNG-only shelves and display preferences remain available through
 existing routes and settings.
+The Upcoming Movies route uses the same upstream heading spacing and error fallback while retaining SeerrNG's navigation context.
+
 
 Settings use upstream tabs, ordering, breakpoints, spacing, and page wrapper.
 SeerrNG-only settings and tools remain under “More settings.”
@@ -117,6 +119,25 @@ Dropdown and split-button menus use upstream's trigger sizing, menu surface,
 transition, item presentation, and primary/ghost roles in SeerrOrig. Fork-only
 action types map to the closest upstream visual role; the SeerrNG theme keeps
 its current menu presentation and action variants.
+
+
+Movie and TV request rows retain upstream's responsive card hierarchy and
+request actions. SeerrOrig now also uses the upstream horizontal backdrop fade;
+SeerrNG's extra media types and request-failure information remain in their
+existing card roles.
+
+Shared movie, TV, and collection poster cards now use upstream's frame and
+hover shadow, backdrop gradient, title and summary typography, type-badge
+geometry, and status-badge sizing. SeerrNG's additional poster actions and
+media-specific information remain available. The card treatment still needs
+matched rendered comparison against upstream before it can be marked visually
+accepted.
+
+Public sign-in, password-request, and password-reset screens use the
+upstream full-screen backdrop and centered form composition. SeerrNG logos,
+transport-security messaging, and additional sign-in options remain. Setup
+keeps its upstream backdrop and stepper framing while retaining the expanded
+SeerrNG onboarding path.
 
 ## Visual review status
 
