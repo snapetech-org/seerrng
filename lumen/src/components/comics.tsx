@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { artUrl, kavitaLink, MediaStatus } from '../api';
 import { friendlyError } from '../errors';
@@ -67,6 +67,14 @@ export function ComicCard({ w }: { w: ComicWork }) {
       : cs.stat;
   const [busy, setBusy] = useState(false);
   const running = useRef(false);
+  // the card can scroll away (or the page change) while the lookup runs
+  const mounted = useRef(true);
+  useEffect(() => {
+    mounted.current = true;
+    return () => {
+      mounted.current = false;
+    };
+  }, []);
   const href = comicWorkHref(w);
   const editions = w.editions.length;
   const rec = recommendedEdition(w);
@@ -83,6 +91,13 @@ export function ComicCard({ w }: { w: ComicWork }) {
       if (!edition) {
         work = await loadComicWork(w.id);
         edition = recommendedEdition(work);
+        if (!mounted.current) return;
+        // the fresh lookup may show it's already here or asked for
+        const st = edition && comicState(edition.mediaInfo).stat;
+        if (st) {
+          toast(`${w.title}: ${st.word}`);
+          return;
+        }
       }
       if (!edition) {
         toast(`No English edition of ${w.title} found. Choose one instead.`);
@@ -90,13 +105,13 @@ export function ComicCard({ w }: { w: ComicWork }) {
         return;
       }
       const said = await requestComicEdition(work, edition);
-      setAsked(edition.id);
       toast(said);
+      if (mounted.current) setAsked(edition.id);
     } catch (e) {
       toast(friendlyError(e, 'Request failed'));
     } finally {
       running.current = false;
-      setBusy(false);
+      if (mounted.current) setBusy(false);
     }
   };
   const qm = [
@@ -170,9 +185,15 @@ export function ComicCard({ w }: { w: ComicWork }) {
                       Read
                     </a>
                   ) : (
-                    <Link className="qbtn okb" to={href}>
+                    // the same page as the poster's own link: kept out of Tab order
+                    <Link
+                      className="qbtn okb"
+                      to={href}
+                      tabIndex={-1}
+                      aria-hidden="true"
+                    >
                       <Icon name="book" size="sm" />
-                      {s.word}
+                      <span className="ql">{s.word}</span>
                     </Link>
                   )}
                   {readHref && !complete && readGhost}
@@ -182,7 +203,7 @@ export function ComicCard({ w }: { w: ComicWork }) {
                 <>
                   <button className="qbtn done" disabled>
                     <Icon name={s.ico} size="sm" />
-                    {s.word}
+                    <span className="ql">{s.word}</span>
                   </button>
                   {readHref && readGhost}
                 </>

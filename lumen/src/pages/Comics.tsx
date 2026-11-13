@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link, useParams, useSearchParams } from 'react-router-dom';
 import { artUrl, kavitaLink, MediaStatus } from '../api';
 import {
@@ -59,6 +59,10 @@ function useQueryParam() {
     return () => clearTimeout(t);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [q]);
+  // ?q= changed from outside (Back, Forward, a link): show that in the box
+  useEffect(() => {
+    setQ((x) => (x.trim() === query ? x : query));
+  }, [query]);
   return { q, setQ, query, p, setP };
 }
 
@@ -386,7 +390,17 @@ export function Comics() {
 // the chosen edition's volumes or issues, as ComicVine lists them
 function ComicIssues({ id, manga }: { id: string; manga: boolean }) {
   const issues = usePaged<ComicIssue>(`/comic/${id}/issues`);
-  if (!issues.items.length) return null;
+  if (!issues.items.length)
+    return issues.error ? (
+      <div>
+        <div className="h2">{manga ? 'Volumes' : 'Issues'}</div>
+        <ServiceNote
+          error={issues.error}
+          what={manga ? 'the volumes' : 'the issues'}
+          retry={issues.retry}
+        />
+      </div>
+    ) : null;
   return (
     <div>
       <div className="h2">{manga ? 'Volumes' : 'Issues'}</div>
@@ -425,12 +439,16 @@ export function ComicDetail() {
   const { id = '' } = useParams();
   const toast = useToast();
   const { kavitaUrl } = usePrefs();
-  const { data: work, error: workError } = useApi<ComicWork>(
-    `/comic/work/${encodeURIComponent(id)}`
-  );
+  const {
+    data: work,
+    error: workError,
+    reload,
+  } = useApi<ComicWork>(`/comic/work/${encodeURIComponent(id)}`);
   const [pick, setPick] = useState<string | null>(null);
   const [asked, setAsked] = useState<Set<string>>(new Set());
   const [busy, setBusy] = useState(false);
+  // set at once, unlike busy: a double tap can't send the request twice
+  const sending = useRef(false);
   useEffect(() => setPick(null), [id]);
   // #editions (from a card's "Choose edition") scrolls to the picker once it's there
   useEffect(() => {
@@ -456,16 +474,19 @@ export function ComicDetail() {
   if (workError)
     return (
       <ExtraGate k="comic">
-        <div className="empty">
-          <b>Couldn’t load this comic</b>
-          {workError}
-        </div>
+        <ServiceNote error={workError} what="this comic" retry={reload} />
       </ExtraGate>
     );
   if (!work) return <div className="detail-loading" aria-busy="true" />;
   const manga = work.kind === 'manga';
   const unit = manga ? 'vol' : 'issue';
-  const cs = comicState(chosen?.mediaInfo ?? work.mediaInfo);
+  // the chosen edition's own state: an edition not in the library doesn't show the owned
+  // edition's progress or reader link
+  const shown = chosen
+    ? (chosen.mediaInfo ??
+      (chosen.id === work.mediaEditionId ? work.mediaInfo : undefined))
+    : work.mediaInfo;
+  const cs = comicState(shown);
   const s = chosen ? stateOf(chosen.id) : cs.stat;
   const about = work.description
     ? work.description
@@ -474,7 +495,8 @@ export function ComicDetail() {
         .filter(Boolean)
     : plainText(c?.description);
   const request = async () => {
-    if (!chosen) return;
+    if (!chosen || sending.current) return;
+    sending.current = true;
     setBusy(true);
     try {
       toast(await requestComicEdition(work, chosen));
@@ -482,12 +504,12 @@ export function ComicDetail() {
     } catch (e) {
       toast(friendlyError(e, 'Request failed'));
     } finally {
+      sending.current = false;
       setBusy(false);
     }
   };
   // in the library: complete opens it in Kavita; part of it keeps its state and offers
   // the reader as well. No Kavita link: no button
-  const shown = chosen?.mediaInfo ?? work.mediaInfo;
   const readHref = kavitaLink(shown?.readerUrl, kavitaUrl);
   const complete =
     s?.k === 'ok' && shown?.status === MediaStatus.AVAILABLE;
@@ -763,6 +785,7 @@ export function Magazines() {
       <ServiceNote
         error={list.items.length ? null : list.error}
         what="magazines"
+        retry={list.retry}
       />
       {!list.error && !list.items.length && !list.loading && (
         <div className="empty">
@@ -804,16 +827,15 @@ export function Magazines() {
 
 export function MagazineDetail() {
   const { title = '' } = useParams();
-  const { data: m, error } = useApi<Magazine>(
-    `/magazine/${encodeURIComponent(title)}`
-  );
+  const {
+    data: m,
+    error,
+    reload,
+  } = useApi<Magazine>(`/magazine/${encodeURIComponent(title)}`);
   if (error)
     return (
       <ExtraGate k="magazine">
-        <div className="empty">
-          <b>Couldn’t load this magazine</b>
-          {error}
-        </div>
+        <ServiceNote error={error} what="this magazine" retry={reload} />
       </ExtraGate>
     );
   if (!m) return <div className="detail-loading" aria-busy="true" />;
