@@ -251,6 +251,115 @@ describe('Readarr full-library response limit', () => {
   });
 });
 
+describe('ReadarrAPI.findLocalBookByTitle', () => {
+  afterEach(() => mock.restoreAll());
+
+  it('hydrates one exact local Chaptarr book from the indexed catalog', async () => {
+    const api = new ReadarrAPI({
+      url: 'http://localhost:8787/api/v1',
+      apiKey: 'key',
+      mediaType: 'ebook',
+    });
+    const provider = api as unknown as {
+      detectedSystemStatus?: { appName?: string };
+      ensureProvider: () => Promise<void>;
+    };
+    mock.method(provider, 'ensureProvider', async () => {
+      provider.detectedSystemStatus = { appName: 'Chaptarr' };
+    });
+    const getMock = mock.method(
+      api as unknown as MockableReadarr,
+      'get',
+      async (endpoint: string) => {
+        if (endpoint === '/library/search') {
+          return {
+            books: [
+              {
+                title: 'Winteraustern',
+                authorName: 'Alexander Oetker',
+                localEbookBooks: [
+                  { id: 42, title: 'Winteraustern', mediaType: 'ebook' },
+                ],
+              },
+            ],
+          };
+        }
+        if (endpoint === '/book/42') {
+          return existingBook({
+            id: 42,
+            title: 'Winteraustern',
+            mediaType: 'ebook',
+            foreignBookId: 'work-42',
+            author: {
+              authorName: 'Alexander Oetker',
+              foreignAuthorId: 'author-42',
+            },
+            editions: [
+              {
+                foreignEditionId: 'edition-42',
+                title: 'Winteraustern',
+                monitored: false,
+              },
+            ],
+          });
+        }
+        throw new Error(`Unexpected Readarr endpoint: ${endpoint}`);
+      }
+    );
+
+    const result = await api.findLocalBookByTitle({
+      title: 'Winteraustern',
+      authorName: 'Alexander Oetker',
+      openLibraryWorkId: 'OL24335900W',
+    });
+
+    assert.equal(result?.id, 42);
+    assert.equal(result?.title, 'Winteraustern');
+    assert.equal(getMock.mock.calls[0].arguments[0], '/library/search');
+    assert.deepEqual(getMock.mock.calls[0].arguments[1]?.params, {
+      term: 'Winteraustern',
+      limit: 50,
+      mediaType: 'ebook',
+    });
+    assert.equal(getMock.mock.calls[1].arguments[0], '/book/42');
+  });
+
+  it('does not hydrate local rows for another requested book format', async () => {
+    const api = new ReadarrAPI({
+      url: 'http://localhost:8787/api/v1',
+      apiKey: 'key',
+      mediaType: 'ebook',
+    });
+    const provider = api as unknown as {
+      detectedSystemStatus?: { appName?: string };
+      ensureProvider: () => Promise<void>;
+    };
+    mock.method(provider, 'ensureProvider', async () => {
+      provider.detectedSystemStatus = { appName: 'Chaptarr' };
+    });
+    const getMock = mock.method(
+      api as unknown as MockableReadarr,
+      'get',
+      async () => ({
+        books: [
+          {
+            title: 'Winteraustern',
+            localAudiobookBooks: [
+              { id: 42, title: 'Winteraustern', mediaType: 'audiobook' },
+            ],
+          },
+        ],
+      })
+    );
+
+    assert.equal(
+      await api.findLocalBookByTitle({ title: 'Winteraustern' }),
+      undefined
+    );
+    assert.equal(getMock.mock.calls.length, 1);
+  });
+});
+
 describe('ReadarrAPI.getBook', () => {
   afterEach(() => {
     mock.restoreAll();
