@@ -6,6 +6,7 @@ import {
   useState,
   type ReactNode,
 } from 'react';
+import { createPortal } from 'react-dom';
 
 const Ctx = createContext<(msg: string) => void>(() => {});
 export const useToast = () => useContext(Ctx);
@@ -23,9 +24,14 @@ export function ToastProvider({ children }: { children: ReactNode }) {
   return (
     <Ctx.Provider value={toast}>
       {children}
-      <div className={`toast ${show ? 'show' : ''}`} role="status">
-        <span>{msg}</span>
-      </div>
+      {/* outside #root: an open sheet makes #root inert, which would silence the toast it fires
+          as it closes */}
+      {createPortal(
+        <div className={`toast ${show ? 'show' : ''}`} role="status">
+          <span>{msg}</span>
+        </div>,
+        document.body
+      )}
     </Ctx.Provider>
   );
 }

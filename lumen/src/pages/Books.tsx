@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import { useState, type ReactNode } from 'react';
 import { Link, useLocation, useSearchParams } from 'react-router-dom';
 import { MediaStatus, type BookResult, type Paged } from '../api';
 import {
@@ -90,6 +90,9 @@ const genresOf = (p: URLSearchParams) =>
   ].slice(0, MAX_GENRES);
 // a row shows the first page of its feed, at most this many cards
 const ROW_MAX = 20;
+// Not yet: pages read before asking, and how many new books count as a screenful
+const PAGES_PER_LOOK = 5;
+const SCREENFUL = 18;
 
 // Books and Audiobooks share a page with an Ebooks / Audiobooks switch. Both come from
 // ChaptarrNG's (Hardcover) catalogue: SeerrNG's ebook feed is Open Library's random sample.
@@ -385,12 +388,27 @@ function BooksGrid({
             show === 'have'
               ? have(b)
               : show === 'not'
-                ? !identityUnknown(b) && !!mediaFor(b) && !have(b)
+                ? !identityUnknown(b) && !have(b)
                 : true
           );
   const items = useEbookCovers(raw, audio);
   const hiddenOnlyPage =
     show === 'not' && unknownCount > 0 && items.length === 0 && !list.done;
+  // Not yet hides owned books here, page by page: with most of a feed owned the grid stays
+  // short and scrolling would fetch page after page. As on Movies and Series, a run of pages
+  // that finds less than a screenful stops and asks first.
+  const filterKey = `${format}|${show}|${sort}|${genres.join(',')}`;
+  const [look, setLook] = useState({ key: filterKey, page: 0, found: 0 });
+  if (look.key !== filterKey) setLook({ key: filterKey, page: 0, found: 0 });
+  else if (items.length - look.found >= SCREENFUL)
+    setLook({ key: filterKey, page: list.page, found: items.length });
+  const capped =
+    show === 'not' &&
+    !waiting &&
+    !incompleteLibrary &&
+    !list.done &&
+    list.page - look.page >= PAGES_PER_LOOK &&
+    items.length - look.found < SCREENFUL;
   // the list stays a list: All (or All genres) keeps a sort in the address (the rows are
   // one link away)
   const keepList = (n: URLSearchParams) => {
@@ -476,6 +494,7 @@ function BooksGrid({
         unknownCount === 0 &&
         !list.error &&
         list.page > 0 &&
+        list.done &&
         items.length === 0 && (
           <div className="empty">
             {show === 'have'
@@ -510,6 +529,18 @@ function BooksGrid({
               Load more books
             </button>
           )}
+        </div>
+      ) : capped && !list.loading ? (
+        <div className="more-scroll" aria-live="polite">
+          <button
+            className="btn btn-tonal btn-sm"
+            onClick={() => {
+              setLook({ key: filterKey, page: list.page, found: items.length });
+              void list.more();
+            }}
+          >
+            Load more books
+          </button>
         </div>
       ) : (
         <MoreOnScroll

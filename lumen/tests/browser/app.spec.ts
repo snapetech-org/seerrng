@@ -367,6 +367,12 @@ test('empty and failed trending feeds finish loading', async ({ page }) => {
   await page.route('**/api/v1/discover/trending', (route) =>
     route.fulfill({ status: 503, json: { message: 'Provider unavailable' } })
   );
+  // the saved answers survive a reload (written when the page goes away): drop them
+  await page.waitForTimeout(500);
+  await page.evaluate(() => {
+    for (const k of Object.keys(localStorage))
+      if (k.startsWith('lumen-cache:')) localStorage.removeItem(k);
+  });
   await page.reload();
   await expect(
     page.getByText('Couldn’t load popular titles', { exact: true })

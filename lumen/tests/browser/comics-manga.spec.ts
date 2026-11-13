@@ -823,8 +823,9 @@ test('hovering a complete card reads it in Kavita, a part-owned one offers it to
     cards.nth(0).getByRole('link', { name: 'Read [Oshi no Ko] in Kavita' })
   ).toHaveAttribute('href', KAVITA);
   await cards.nth(1).hover();
+  // the same page as the poster's own link, so it's hidden from assistive tech
   await expect(
-    cards.nth(1).getByRole('link', { name: '9 of 16 in library' })
+    cards.nth(1).locator('a.qbtn.okb', { hasText: '9 of 16 in library' })
   ).toBeVisible();
   await expect(
     cards.nth(1).getByRole('link', { name: 'Read Saga in Kavita' })

@@ -148,40 +148,54 @@ export function usePaged<T>(base: string) {
     inFlight.current = null;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [base]);
-  // Back to a list after something changed (a request): quietly re-read the pages that were
-  // shown and swap them in place, so scroll position holds and statuses are current
+  // Back to a list after something changed (a request): quietly re-read the top of the list
+  // and the last pages loaded (where Back lands, near the title just opened), and swap them
+  // in place so scroll position holds. Re-reading every page shown would cost one call per
+  // page after each request, back to back; the pages between keep their rows.
   useEffect(() => {
     const s = pagedSnap.get(snapKey);
     if (!s || s.gen === cacheGeneration()) return;
     let live = true;
     const gen = cacheGeneration();
     const sep = base.includes('?') ? '&' : '?';
+    const idOf = (x: T) => String((x as { id?: unknown }).id);
+    const head = Math.min(2, s.page);
+    const tail = [s.page - 1, s.page].filter((p) => p > head);
     (async () => {
-      const rows: T[] = [];
-      const seen = new Set<string>();
-      let totalPages = s.total;
-      for (let p = 1; p <= s.page; p++) {
-        const d = await cachedApi<{
+      const read = (p: number) =>
+        cachedApi<{
           page: number;
           totalPages: number;
           results: T[];
         }>(`${base}${sep}page=${p}`);
-        totalPages = d.totalPages || 1;
-        for (const r of d.results) {
-          const id = String((r as { id?: unknown }).id);
-          if (!seen.has(id)) {
-            seen.add(id);
+      const rows: T[] = [];
+      const seen = new Set<string>();
+      let totalPages = s.total;
+      for (let p = 1; p <= head; p++) {
+        const d = await read(p);
+        if (!live) return;
+        if (p === 1) totalPages = d.totalPages || 1;
+        for (const r of d.results)
+          if (!seen.has(idOf(r))) {
+            seen.add(idOf(r));
             rows.push(r);
           }
-        }
+      }
+      const later = new Map<string, T>();
+      for (const p of tail) {
+        const d = await read(p);
         if (!live) return;
+        for (const r of d.results) later.set(idOf(r), r);
       }
       rowsGen.current = gen;
-      // pages scrolled in while this ran stay after the refreshed ones
-      setItems((cur) => {
-        const idOf = (x: T) => String((x as { id?: unknown }).id);
-        return rows.concat(cur.filter((x) => !seen.has(idOf(x))));
-      });
+      // the rest (and pages scrolled in while this ran) stay after the refreshed top
+      setItems((cur) =>
+        rows.concat(
+          cur
+            .filter((x) => !seen.has(idOf(x)))
+            .map((x) => later.get(idOf(x)) ?? x)
+        )
+      );
       setTotal(totalPages);
     })().catch(() => {
       // the restored rows stay up if refreshing them fails

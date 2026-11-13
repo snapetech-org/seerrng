@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useParams, useSearchParams } from 'react-router-dom';
 import { api } from '../api';
-import { MoreOnScroll, type Stat } from '../components/cards';
+import { GridSkeleton, MoreOnScroll, type Stat } from '../components/cards';
 import { DetailTop, Facts, fmtHrs, Pill } from '../components/detail';
 import {
   ExtraCard,
@@ -123,6 +123,7 @@ export function Games() {
   }, [q]);
   // no game service behind the category: the gate explains, so don't ask SeerrNG for lists
   const list = useGames(x.enabled('game') ? cat : undefined, query);
+  const checking = x.enabled('game') && !x.gamesChecked;
   const setCat = (c: GameCategory) => {
     const n = new URLSearchParams(p);
     n.set('c', c);
@@ -164,15 +165,28 @@ export function Games() {
           }
         />
       </ExtraHeader>
-      <ServiceNote
-        error={list.items.length ? null : list.error}
-        what="games"
-        retry={list.retry}
-      />
-      {!list.error && !list.items.length && !list.loading && (
-        <div className="empty">
-          <b>No games found</b>Try the game’s full title.
-        </div>
+      {/* the catalogue checks are still out, or none of them answered */}
+      {checking ? (
+        <GridSkeleton />
+      ) : !cat ? (
+        <ServiceNote
+          error="None of the game catalogues answered."
+          what="games"
+          retry={x.recheckGames}
+        />
+      ) : (
+        <>
+          <ServiceNote
+            error={list.items.length ? null : list.error}
+            what="games"
+            retry={list.retry}
+          />
+          {!list.error && !list.items.length && !list.loading && (
+            <div className="empty">
+              <b>No games found</b>Try the game’s full title.
+            </div>
+          )}
+        </>
       )}
       <div className="grid">
         {list.items.map((g) => (

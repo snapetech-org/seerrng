@@ -6,9 +6,22 @@ self.addEventListener('activate', (event) => {
   event.waitUntil(
     (async () => {
       for (const key of await caches.keys()) await caches.delete(key);
+      // pages are reloaded before unregistering: afterwards this worker can't reach them.
+      // Only pages this worker controls can be sent elsewhere, so take them over first.
+      await self.clients.claim().catch(() => {});
+      const pages = await self.clients.matchAll({
+        type: 'window',
+        includeUncontrolled: true,
+      });
+      // one page that can't be reloaded must not stop the others
+      await Promise.all(
+        pages.map((client) =>
+          Promise.resolve()
+            .then(() => client.navigate(client.url))
+            .catch(() => {})
+        )
+      );
       await self.registration.unregister();
-      for (const client of await self.clients.matchAll({ type: 'window' }))
-        client.navigate(client.url);
     })()
   );
 });

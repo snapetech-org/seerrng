@@ -1646,6 +1646,8 @@ test('a title in the library shows the check on its page too', async ({
   await page.route('**/api/v1/movie/301', (route) =>
     route.fulfill({ json: { ...details301, mediaInfo: undefined } })
   );
+  // let the waiting cache save land first: a save still waiting is written on reload
+  await page.waitForTimeout(500);
   await page.evaluate(() => localStorage.clear());
   await page.reload();
   await expect(page.locator('.dtitle h1')).toHaveText('Only In 4K');
@@ -2555,8 +2557,12 @@ test('4K series selection uses 4K season ownership even when every HD season is 
     })
   );
   await page.goto('/tv/400');
+  await page
+    .getByRole('group', { name: 'Quality' })
+    .getByRole('button', { name: '4K' })
+    .click();
   await page.getByText('Advanced (admins)').click();
-  await page.getByLabel('Server').selectOption('2');
+  await expect(page.getByLabel('Server')).toHaveValue('2');
   await expect(page.getByLabel('Folder')).toHaveValue('/tv4k');
   await page.screenshot({
     path: info.outputPath('4k-season-selection.png'),

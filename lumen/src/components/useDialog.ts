@@ -22,8 +22,13 @@ export function useDialog(
     if (root) root.inert = true;
     document.body.style.overflow = 'hidden';
     if (!box.hasAttribute('tabindex')) box.tabIndex = -1;
-    // the first control, but not a destructive-looking one: the dialog itself when it has none
-    (box.querySelector<HTMLElement>(FOCUSABLE) || box).focus({
+    // the control marked data-autofocus (the safe choice in a confirmation), else the first
+    // control, else the dialog itself
+    (
+      box.querySelector<HTMLElement>('[data-autofocus]') ||
+      box.querySelector<HTMLElement>(FOCUSABLE) ||
+      box
+    ).focus({
       preventScroll: true,
     });
     const onKey = (e: KeyboardEvent) => {

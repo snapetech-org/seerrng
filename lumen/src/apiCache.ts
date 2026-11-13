@@ -135,6 +135,7 @@ export function forget(prefix: string) {
   for (const k of [...entries.keys()])
     if (k.startsWith(prefix)) entries.delete(k);
   save();
+  flushSave();
 }
 
 // one call per path at a time: everyone asking while it's in flight gets the same answer
@@ -163,18 +164,33 @@ export function markAllStale() {
   inFlight.clear(); // an answer already on its way may predate the change
   const stale = Date.now() - FRESH_MS - 1;
   for (const e of entries.values()) e.at = Math.min(e.at, stale);
+  // written at once: a reload right after a request must not bring back fresh old answers
   save();
+  flushSave();
 }
 
-onSessionReset(() => {
+// a save still waiting is written now, before the page goes away
+function flushSave() {
+  clearTimeout(saveTimer);
+  pendingSave?.();
+}
+if (typeof window !== 'undefined') {
+  window.addEventListener('pagehide', flushSave);
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'hidden') flushSave();
+  });
+}
+
+onSessionReset((previousUser) => {
   generation += 1;
-  const previous = loadedFor;
-  if (previous != null && previous !== sessionUserId())
-    try {
-      localStorage.removeItem(storeKey(previous));
-    } catch {
-      // blocked storage: nothing was saved
-    }
+  // the cache may never have been read for the previous account, so loadedFor can be unset
+  for (const previous of new Set([loadedFor, previousUser]))
+    if (previous != null && previous !== sessionUserId())
+      try {
+        localStorage.removeItem(storeKey(previous));
+      } catch {
+        // blocked storage: nothing was saved
+      }
   clearTimeout(saveTimer);
   pendingSave = undefined;
   inFlight.clear();

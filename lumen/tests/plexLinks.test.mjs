@@ -3,7 +3,7 @@ import { test } from 'node:test';
 import { mediaLink, plexLink, plexPlatform } from '../src/plexLinks.ts';
 
 test('Jellyfin and Emby ignore stale Plex app metadata and keep safe server URLs', () => {
-  for (const name of ['Jellyfin', 'Emby']) {
+  for (const server of ['jellyfin', 'emby']) {
     assert.equal(
       mediaLink(
         {
@@ -12,16 +12,38 @@ test('Jellyfin and Emby ignore stale Plex app metadata and keep safe server URLs
         },
         false,
         'movie',
-        name
+        'Plex',
+        server
       ).href,
       'https://media.example/web/#!/details?id=1'
     );
     for (const url of ['javascript:alert(1)', 'https://secret@media.example/'])
       assert.equal(
-        mediaLink({ mediaUrl: url }, false, 'movie', name).href,
+        mediaLink({ mediaUrl: url }, false, 'movie', undefined, server).href,
         undefined
       );
   }
+});
+test('native Plex links follow the server kind, not its display name', () => {
+  const plex = {
+    mediaUrl: 'https://app.plex.tv/desktop/#!/server/s/details?key=1',
+    iOSPlexUrl:
+      'plex://preplay/?metadataKey=%2Flibrary%2Fmetadata%2F1&server=s',
+  };
+  // a renamed Plex server still gets Plex's own link handling
+  const renamed = mediaLink(plex, false, 'movie', 'Home Cinema', 'plex');
+  assert.deepEqual(renamed, plexLink(plex, false, 'movie'));
+  // and a Jellyfin server someone named "Plex" does not
+  assert.deepEqual(mediaLink(plex, false, 'movie', 'Plex', 'jellyfin'), {
+    href: plex.mediaUrl,
+    target: '_blank',
+    rel: 'noreferrer',
+  });
+  // without a kind, the configured server decides (Plex until SeerrNG says otherwise)
+  assert.deepEqual(
+    mediaLink(plex, false, 'movie', 'Jellyfin'),
+    plexLink(plex, false, 'movie')
+  );
 });
 const links = {
   mediaUrl: 'https://app.plex.tv/desktop/#!/server/server/details?key=1',

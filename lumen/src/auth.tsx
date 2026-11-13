@@ -94,8 +94,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 }
 
 // ---- Plex sign-in: the same PIN flow SeerrNG's own login uses, then SeerrNG's /auth/plex ----
+// kept for this page when browser storage is blocked
+let plexClientId: string | undefined;
 const PLEX_HEADERS = () => {
-  let id = localStorage.getItem('lumen-plex-client');
+  let id: string | null = null;
+  try {
+    id = localStorage.getItem('lumen-plex-client');
+  } catch {
+    // blocked storage: use this page's id
+  }
+  id ||= plexClientId ?? null;
   if (!id) {
     // crypto.randomUUID only exists on https/localhost pages; getRandomValues works everywhere
     const b = crypto.getRandomValues(new Uint8Array(16));
@@ -103,8 +111,13 @@ const PLEX_HEADERS = () => {
     b[8] = (b[8] & 0x3f) | 0x80;
     const h = [...b].map((x) => x.toString(16).padStart(2, '0')).join('');
     id = `${h.slice(0, 8)}-${h.slice(8, 12)}-${h.slice(12, 16)}-${h.slice(16, 20)}-${h.slice(20)}`;
-    localStorage.setItem('lumen-plex-client', id);
+    try {
+      localStorage.setItem('lumen-plex-client', id);
+    } catch {
+      // blocked storage: remembered for this page only
+    }
   }
+  plexClientId = id;
   return {
     Accept: 'application/json',
     'X-Plex-Product': 'SeerrNG (Lumen)',
@@ -117,48 +130,66 @@ const PLEX_HEADERS = () => {
 export async function signInWithPlex(): Promise<void> {
   // open the window first so popup blockers treat it as a click result
   const win = window.open('', 'plex-auth', 'width=600,height=700');
-  if (win) win.opener = null;
+  // without the window there is nothing to sign in with: say so now, not after 5 minutes
+  if (!win)
+    throw new Error(
+      'Your browser blocked the Plex sign-in window. Allow pop-ups for this site, then try again.'
+    );
+  win.opener = null;
   try {
     await plexPinFlow(win);
   } catch (e) {
-    win?.close(); // never leave a blank Plex window behind
+    win.close(); // never leave a blank Plex window behind
     throw e;
   }
 }
 
-async function plexPinFlow(win: Window | null): Promise<void> {
-  const pin = await (
-    await fetch('https://plex.tv/api/v2/pins?strong=true', {
-      method: 'POST',
-      headers: PLEX_HEADERS(),
-    })
-  ).json();
+async function plexPinFlow(win: Window): Promise<void> {
+  const created = await fetch('https://plex.tv/api/v2/pins?strong=true', {
+    method: 'POST',
+    headers: PLEX_HEADERS(),
+  });
+  if (!created.ok)
+    throw new Error(
+      `Plex didn’t start the sign-in (${created.status}). Try again in a moment.`
+    );
+  const pin = await created.json();
   const params = new URLSearchParams({
     clientID: PLEX_HEADERS()['X-Plex-Client-Identifier'],
     code: pin.code,
     'context[device][product]': 'SeerrNG (Lumen)',
   });
-  if (win) win.location.href = `https://app.plex.tv/auth#?${params}`;
+  win.location.href = `https://app.plex.tv/auth#?${params}`;
   const deadline = Date.now() + 5 * 60_000;
+  // a dropped connection or a Plex hiccup now and then is not a failed sign-in
+  let failures = 0;
   while (Date.now() < deadline) {
     await new Promise((r) => setTimeout(r, 1500));
-    if (win?.closed) break;
-    const p = await (
-      await fetch(`https://plex.tv/api/v2/pins/${pin.id}`, {
+    if (win.closed) break;
+    let p: { authToken?: string };
+    try {
+      const res = await fetch(`https://plex.tv/api/v2/pins/${pin.id}`, {
         headers: PLEX_HEADERS(),
-      })
-    ).json();
+      });
+      if (!res.ok) throw new Error(`Plex ${res.status}`);
+      p = await res.json();
+      failures = 0;
+    } catch {
+      if (++failures >= 3)
+        throw new Error('Couldn’t reach Plex to finish signing in. Try again.');
+      continue;
+    }
     // Closing Plex cancels even when an already-started poll returns a token.
-    if (win?.closed) break;
+    if (win.closed) break;
     if (p.authToken) {
-      win?.close();
+      win.close();
       await api('/auth/plex', {
         method: 'POST',
         body: JSON.stringify({ authToken: p.authToken }),
       });
       return;
     }
-    if (win?.closed) break;
+    if (win.closed) break;
   }
   throw new Error('Plex sign-in was cancelled or timed out.');
 }

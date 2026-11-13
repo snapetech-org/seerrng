@@ -487,6 +487,15 @@ body.is-detail .tabbar {
   background: #1f9d50;
   color: #fff;
 }
+/* a long state ("Partly in library · 3 of 12") ends in an ellipsis inside its button */
+.comic-card .qa .qbtn {
+  min-width: 0;
+}
+.qa .qbtn .ql {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 @media (hover: hover) and (pointer: fine) {
   .poster:hover .qa,
   .poster:focus-within .qa,

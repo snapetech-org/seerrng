@@ -27,24 +27,131 @@ const SWITCHES = [
   ['showBooks', 'Show books and audiobooks'],
 ] as const;
 type Switch = (typeof SWITCHES)[number][0];
+type Edit = (c: AdminConfig) => AdminConfig;
+
+// These stay outside the page: declared inside it, every change would make them new
+// components and the select or checkbox in use would lose focus.
+
+// one choice per setting: the starting value, and whether people may change it
+// ("locked" in lumen-config.json)
+function Lock({
+  locked,
+  onChange,
+}: {
+  locked: boolean;
+  onChange: (locked: boolean) => void;
+}) {
+  return (
+    <label className="cfg-lock">
+      <input
+        type="checkbox"
+        checked={!locked}
+        onChange={(e) => onChange(!e.target.checked)}
+      />
+      Let people change it
+    </label>
+  );
+}
+
+function Row({
+  title,
+  on,
+  locked,
+  onChange,
+}: {
+  title: string;
+  on: boolean;
+  locked: boolean;
+  onChange: (on: boolean, locked: boolean) => void;
+}) {
+  const value = `${on ? 'on' : 'off'}${locked ? '-locked' : ''}`;
+  return (
+    <label className="set cfg-row">
+      <span>
+        <b>{title}</b>
+      </span>
+      <select
+        className="cfg-select"
+        value={value}
+        onChange={(e) => {
+          const v = e.target.value;
+          onChange(v.startsWith('on'), v.endsWith('-locked'));
+        }}
+      >
+        <option value="on">On (people can turn it off)</option>
+        <option value="off">Off (people can turn it on)</option>
+        <option value="on-locked">Always on</option>
+        <option value="off-locked">Always off</option>
+      </select>
+    </label>
+  );
+}
+
+function Upload({
+  kind,
+  ready,
+  uploading,
+  onFile,
+}: {
+  kind: 'logo' | 'icon';
+  ready: boolean; // writable storage and the current settings loaded
+  uploading: 'logo' | 'icon' | null;
+  onFile: (kind: 'logo' | 'icon', file: File) => void;
+}) {
+  return ready ? (
+    <label className="btn btn-tonal btn-sm cfg-upload">
+      {uploading === kind ? 'Uploading…' : 'Upload'}
+      <input
+        type="file"
+        className="sr"
+        accept={
+          embedded
+            ? 'image/png,image/jpeg,image/webp'
+            : 'image/png,image/jpeg,image/webp,image/svg+xml,image/x-icon'
+        }
+        aria-label={kind === 'logo' ? 'Upload logo' : 'Upload tab icon'}
+        disabled={!!uploading}
+        onChange={(e) => {
+          const f = e.target.files?.[0];
+          e.target.value = '';
+          if (f) onFile(kind, f);
+        }}
+      />
+    </label>
+  ) : (
+    <button
+      className="btn btn-tonal btn-sm"
+      disabled
+      title="Upload needs writable storage and the current settings. See the message above."
+    >
+      Upload
+    </button>
+  );
+}
+
+const clone = (c: AdminConfig): AdminConfig =>
+  JSON.parse(JSON.stringify(c || {}));
 
 export default function LumenSettings() {
   const { user } = useAuth();
-  const { adminConfig, adminSaved } = usePrefs();
+  const { adminConfig, adminConfigState, retryAdminConfig, adminSaved } =
+    usePrefs();
   const toast = useToast();
-  const [cfg, setCfgState] = useState<AdminConfig>(() =>
-    JSON.parse(JSON.stringify(adminConfig || {}))
-  );
-  // lumen-config.json may still be loading when this page opens: follow it until the
-  // admin changes something
-  const touched = useRef(false);
+  // Save writes the whole file, so it must start from the file as it is: until it has
+  // loaded, Save and Upload stay off.
+  const loaded = adminConfigState === 'ready';
+  // The draft is the loaded file with the admin's changes on top. Changes made before the
+  // file arrives (or after a save) are replayed onto it instead of replacing it.
+  const edits = useRef<Edit[]>([]);
+  const replay = (base: AdminConfig) =>
+    edits.current.reduce((c, edit) => edit(c), clone(base));
+  const [cfg, setCfgState] = useState<AdminConfig>(() => replay(adminConfig));
   useEffect(() => {
-    if (!touched.current)
-      setCfgState(JSON.parse(JSON.stringify(adminConfig || {})));
+    setCfgState(replay(adminConfig));
   }, [adminConfig]);
-  const setCfg: typeof setCfgState = (v) => {
-    touched.current = true;
-    setCfgState(v);
+  const setCfg = (edit: Edit) => {
+    edits.current.push(edit);
+    setCfgState(edit);
   };
   const isAdmin = isAdministrator(user?.permissions);
   // can this server save the file itself? null while asking
@@ -135,11 +242,14 @@ export default function LumenSettings() {
     if (!r.ok) throw new Error(d?.message || `Couldn’t save (${r.status})`);
   };
   const save = async () => {
+    if (!loaded) return;
     setSaving(true);
+    // changes made while this save is on its way stay in the draft
+    const sent = edits.current.length;
     try {
       await putConfig(json);
+      edits.current = edits.current.slice(sent);
       adminSaved(JSON.parse(json));
-      touched.current = false;
       toast('Saved. Everyone gets it the next time they open Lumen.');
     } catch (e) {
       toast(e instanceof Error ? e.message : 'Couldn’t save');
@@ -152,6 +262,7 @@ export default function LumenSettings() {
   // on this page stay unsaved until Save.
   const [uploading, setUploading] = useState<'logo' | 'icon' | null>(null);
   const upload = async (kind: 'logo' | 'icon', file: File) => {
+    if (!loaded) return;
     if (file.size > 2 * 1024 * 1024) {
       toast('Choose an image of up to 2 MB.');
       return;
@@ -175,10 +286,8 @@ export default function LumenSettings() {
         branding: { ...(adminConfig?.branding || {}), [kind]: d.url },
       };
       await putConfig(JSON.stringify(saved, null, 2) + '\n');
-      setCfgState((c) => ({
-        ...c,
-        branding: { ...(c.branding || {}), [kind]: d.url },
-      }));
+      // the draft shows the new image too, over any address typed in before
+      setBrand(kind, d.url);
       adminSaved(saved);
       toast(
         `${kind === 'logo' ? 'Logo' : 'Tab icon'} uploaded and saved for everyone.`
@@ -189,36 +298,15 @@ export default function LumenSettings() {
       setUploading(null);
     }
   };
-  const Upload = ({ kind }: { kind: 'logo' | 'icon' }) =>
-    saveState?.canSave ? (
-      <label className="btn btn-tonal btn-sm cfg-upload">
-        {uploading === kind ? 'Uploading…' : 'Upload'}
-        <input
-          type="file"
-          className="sr"
-          accept={
-            embedded
-              ? 'image/png,image/jpeg,image/webp'
-              : 'image/png,image/jpeg,image/webp,image/svg+xml,image/x-icon'
-          }
-          aria-label={kind === 'logo' ? 'Upload logo' : 'Upload tab icon'}
-          disabled={!!uploading}
-          onChange={(e) => {
-            const f = e.target.files?.[0];
-            e.target.value = '';
-            if (f) void upload(kind, f);
-          }}
-        />
-      </label>
-    ) : (
-      <button
-        className="btn btn-tonal btn-sm"
-        disabled
-        title="Saving needs writable storage. See the storage message above."
-      >
-        Upload
-      </button>
-    );
+  const canWrite = !!saveState?.canSave && loaded;
+  const onFile = (kind: 'logo' | 'icon', f: File) => void upload(kind, f);
+  const row = (path: string) => ({
+    locked: locked.has(path),
+    onChange: (on: boolean, lock: boolean) => {
+      setDefault(path, on);
+      setLock(path, lock);
+    },
+  });
   const copy = () =>
     navigator.clipboard
       ?.writeText(json)
@@ -232,51 +320,6 @@ export default function LumenSettings() {
         These settings change Lumen for everyone.
       </div>
     );
-
-  // one choice per setting: the starting value, and whether people may change it
-  // ("locked" in lumen-config.json)
-  const Lock = ({ path }: { path: string }) => (
-    <label className="cfg-lock">
-      <input
-        type="checkbox"
-        checked={!locked.has(path)}
-        onChange={(e) => setLock(path, !e.target.checked)}
-      />
-      Let people change it
-    </label>
-  );
-  const Row = ({
-    path,
-    title,
-    on,
-  }: {
-    path: string;
-    title: string;
-    on: boolean;
-  }) => {
-    const value = `${on ? 'on' : 'off'}${locked.has(path) ? '-locked' : ''}`;
-    return (
-      <label className="set cfg-row">
-        <span>
-          <b>{title}</b>
-        </span>
-        <select
-          className="cfg-select"
-          value={value}
-          onChange={(e) => {
-            const v = e.target.value;
-            setDefault(path, v.startsWith('on'));
-            setLock(path, v.endsWith('-locked'));
-          }}
-        >
-          <option value="on">On (people can turn it off)</option>
-          <option value="off">Off (people can turn it on)</option>
-          <option value="on-locked">Always on</option>
-          <option value="off-locked">Always off</option>
-        </select>
-      </label>
-    );
-  };
 
   return (
     <>
@@ -329,6 +372,24 @@ export default function LumenSettings() {
             environment variable. Your draft stays here while you check.
           </p>
         </div>
+      )}
+
+      {adminConfigState === 'failed' ? (
+        <div className="note" role="alert">
+          <p>
+            Couldn’t load the current settings, so Save and Upload are off: they
+            would replace settings this page hasn’t seen.
+          </p>
+          <button className="btn btn-tonal btn-sm" onClick={retryAdminConfig}>
+            Try again
+          </button>
+        </div>
+      ) : (
+        adminConfigState === 'loading' && (
+          <div className="note" role="status">
+            <p>Loading the current settings…</p>
+          </div>
+        )
       )}
 
       <Section title="Sign-in and media server">
@@ -473,7 +534,12 @@ export default function LumenSettings() {
               value={cfg.branding?.logo ?? ''}
               onChange={(e) => setBrand('logo', e.target.value)}
             />
-            <Upload kind="logo" />
+            <Upload
+              kind="logo"
+              ready={canWrite}
+              uploading={uploading}
+              onFile={onFile}
+            />
           </div>
           <div className="set cfg-row">
             <span>
@@ -496,7 +562,12 @@ export default function LumenSettings() {
             {cfg.branding?.icon && (
               <img className="cfg-icon" src={cfg.branding.icon} alt="" />
             )}
-            <Upload kind="icon" />
+            <Upload
+              kind="icon"
+              ready={canWrite}
+              uploading={uploading}
+              onFile={onFile}
+            />
           </div>
           <div className="set cfg-row">
             <span>
@@ -552,7 +623,7 @@ export default function LumenSettings() {
       <Section title="Defaults for everyone">
         <div className="setlist">
           {SWITCHES.map(([k, t]) => (
-            <Row key={k} path={k} title={t} on={defaults[k as Switch]} />
+            <Row key={k} title={t} on={defaults[k as Switch]} {...row(k)} />
           ))}
           <div className="set cfg-row">
             <span>
@@ -567,7 +638,10 @@ export default function LumenSettings() {
               <option value="light">Light</option>
               <option value="system">Device</option>
             </select>
-            <Lock path="theme" />
+            <Lock
+              locked={locked.has('theme')}
+              onChange={(lock) => setLock('theme', lock)}
+            />
           </div>
         </div>
       </Section>
@@ -577,9 +651,9 @@ export default function LumenSettings() {
           {(Object.keys(DISCOVER_ROWS) as DiscoverRow[]).map((r) => (
             <Row
               key={r}
-              path={`rows.${r}`}
               title={discoverRowLabel(r)}
               on={rows[r]}
+              {...row(`rows.${r}`)}
             />
           ))}
         </div>
@@ -590,11 +664,13 @@ export default function LumenSettings() {
           <button
             className="btn btn-primary"
             onClick={save}
-            disabled={saving || !saveState?.canSave}
+            disabled={saving || !canWrite}
             title={
-              saveState?.canSave
-                ? undefined
-                : 'Saving needs writable storage. See the storage message above.'
+              !saveState?.canSave
+                ? 'Saving needs writable storage. See the storage message above.'
+                : !loaded
+                  ? 'Saving waits for the current settings. See the message above.'
+                  : undefined
             }
           >
             {saving ? 'Saving…' : 'Save for everyone'}

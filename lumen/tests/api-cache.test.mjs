@@ -12,6 +12,11 @@ const session = await import(sessionUrl);
 const source = (
   await readFile(new URL('../src/apiCache.ts', import.meta.url), 'utf8')
 ).replace("'./sessionState'", JSON.stringify(sessionUrl));
+// enough of a page for the pagehide / visibilitychange flush
+globalThis.window = new EventTarget();
+globalThis.document = Object.assign(new EventTarget(), {
+  visibilityState: 'visible',
+});
 const cache = await import(moduleUrl(source));
 const stored = new Map();
 globalThis.localStorage = {
@@ -172,6 +177,46 @@ test('the saved copy stays small and leaves out big lists', async (t) => {
     cache.cached('/request?take=500'),
     'big list still served from memory'
   );
+});
+
+test('marking everything stale and forgetting are saved at once', (t) => {
+  let now = 7_000_000;
+  t.mock.method(Date, 'now', () => now);
+  session.resetSessionState(21);
+  t.after(() => session.resetSessionState(null));
+  cache.remember('/movie/5', { title: 'Five' });
+  cache.remember('/tv/6', { name: 'Six' });
+  cache.markAllStale();
+  const saved = new Map(JSON.parse(stored.get('lumen-cache:21')));
+  assert.ok(now - saved.get('/movie/5').at > cache.FRESH_MS);
+  cache.forget('/tv');
+  const after = new Map(JSON.parse(stored.get('lumen-cache:21')));
+  assert.equal(after.has('/tv/6'), false);
+  assert.equal(after.has('/movie/5'), true);
+});
+
+test('a waiting save is written when the page is hidden or closed', () => {
+  session.resetSessionState(22);
+  globalThis.window.dispatchEvent(new Event('pagehide'));
+  cache.remember('/movie/8', { title: 'Eight' });
+  assert.equal(stored.has('lumen-cache:22'), false);
+  globalThis.window.dispatchEvent(new Event('pagehide'));
+  assert.ok(stored.get('lumen-cache:22').includes('/movie/8'));
+  cache.remember('/movie/9', { title: 'Nine' });
+  globalThis.document.visibilityState = 'hidden';
+  globalThis.document.dispatchEvent(new Event('visibilitychange'));
+  globalThis.document.visibilityState = 'visible';
+  assert.ok(stored.get('lumen-cache:22').includes('/movie/9'));
+  session.resetSessionState(null);
+});
+
+test('switching account drops the previous account copy even if it was never read', () => {
+  session.resetSessionState(null);
+  stored.set('lumen-cache:23', JSON.stringify([]));
+  session.resetSessionState(23);
+  session.resetSessionState(24);
+  assert.equal(stored.has('lumen-cache:23'), false);
+  session.resetSessionState(null);
 });
 
 test('marking everything stale also tells anything kept outside the cache', () => {

@@ -8,7 +8,7 @@ import {
   type ReactNode,
 } from 'react';
 import { useAuth } from './auth';
-import { forgetLumenConfig, loadLumenConfig } from './deployment';
+import { forgetLumenConfig, readLumenConfig } from './deployment';
 import { serverName, services, type MediaServerSetting } from './mediaServer';
 
 // Every switchable part of Lumen. Admins set defaults (and can lock them) in
@@ -77,9 +77,13 @@ export interface AdminConfig {
   [other: string]: unknown;
 }
 
+// 'failed': lumen-config.json couldn't be read, which is not the same as having none
+export type AdminConfigState = 'loading' | 'ready' | 'failed';
 interface Ctx {
   prefs: Prefs;
   adminConfig: AdminConfig; // lumen-config.json as loaded (the admin settings page starts from it)
+  adminConfigState: AdminConfigState;
+  retryAdminConfig: () => void;
   locked: Set<string>;
   seerrPublicUrl?: string;
   audiobookshelfUrl?: string;
@@ -92,6 +96,8 @@ interface Ctx {
 const C = createContext<Ctx>({
   prefs: DEFAULT_PREFS,
   adminConfig: {},
+  adminConfigState: 'loading',
+  retryAdminConfig: () => {},
   locked: new Set(),
   set: () => {},
   reset: () => {},
@@ -134,10 +140,26 @@ export function PrefsProvider({ children }: { children: ReactNode }) {
       return {};
     }
   });
+  const [adminState, setAdminState] = useState<AdminConfigState>('loading');
+  const [adminAttempt, setAdminAttempt] = useState(0);
   useEffect(() => {
-    loadLumenConfig()
-      .then((value) => setAdmin(record(value ?? {}) as AdminConfig))
-      .catch(() => setAdmin({}));
+    let live = true;
+    setAdminState('loading');
+    readLumenConfig()
+      .then((value) => {
+        if (!live) return;
+        setAdmin(record(value ?? {}) as AdminConfig);
+        setAdminState('ready');
+      })
+      // everyone carries on with the built-in defaults; only the admin page cares
+      .catch(() => live && setAdminState('failed'));
+    return () => {
+      live = false;
+    };
+  }, [adminAttempt]);
+  const retryAdminConfig = useCallback(() => {
+    forgetLumenConfig();
+    setAdminAttempt((n) => n + 1);
   }, []);
 
   const locked = useMemo(
@@ -227,6 +249,8 @@ export function PrefsProvider({ children }: { children: ReactNode }) {
       value={{
         prefs,
         adminConfig: admin,
+        adminConfigState: adminState,
+        retryAdminConfig,
         locked,
         seerrPublicUrl: admin.seerrPublicUrl,
         audiobookshelfUrl: admin.audiobookshelfUrl,
@@ -236,6 +260,7 @@ export function PrefsProvider({ children }: { children: ReactNode }) {
         adminSaved: (c: AdminConfig) => {
           forgetLumenConfig();
           setAdmin(c);
+          setAdminState('ready');
         },
       }}
     >
