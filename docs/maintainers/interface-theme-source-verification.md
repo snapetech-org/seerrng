@@ -42,8 +42,8 @@ permissions to simplify a page.
   SeerrNG quota categories, watchlist entries, and avatar editing remain
   available.
 - The Users page uses the upstream toolbar, sortable table, selection controls,
-  row hierarchy, and pagination. SeerrNG-only user filters and TV queue tools
-  remain in a collapsed extension area.
+  and row hierarchy in the repository's shared scrollable table. SeerrNG-only
+  user filters and TV queue tools remain in a collapsed extension area.
 - The Blocklist page uses upstream's native filters, movie/TV cards, empty
   state, pagination, and removal controls. SeerrNG's expanded media types,
   filters, and metadata remain reachable in its extended view.

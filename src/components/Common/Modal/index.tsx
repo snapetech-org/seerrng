@@ -119,11 +119,7 @@ const Modal = React.forwardRef<HTMLDivElement, ModalProps>(
     useLockBodyScroll(true, disableScrollLock);
     const modalCardClass = upstream
       ? `page-overlay-card hide-scrollbar relative inline-block w-full overflow-auto bg-gray-800 px-4 pb-4 pt-4 text-left align-bottom shadow-xl ring-1 ring-gray-700 transition-all sm:my-8 sm:max-w-3xl sm:rounded-lg sm:align-middle ${dialogClass ?? ''}`
-      : [
-          'page-overlay-card',
-          !alignTop && 'hide-scrollbar',
-          dialogClass,
-        ]
+      : ['page-overlay-card', !alignTop && 'hide-scrollbar', dialogClass]
           .filter(Boolean)
           .join(' ');
 
@@ -203,11 +199,7 @@ const Modal = React.forwardRef<HTMLDivElement, ModalProps>(
                   <div className="flex flex-col space-y-1">
                     {title && (
                       <span
-                        className={
-                          upstream
-                            ? 'text-overseerr truncate pb-0.5 text-2xl font-bold leading-6'
-                            : 'page-title'
-                        }
+                        className="page-title"
                         id="modal-headline"
                         data-testid="modal-title"
                       >
@@ -298,9 +290,7 @@ const Modal = React.forwardRef<HTMLDivElement, ModalProps>(
                           : undefined
                       }
                       buttonSize={upstream ? 'default' : actionButtonSize}
-                      className={
-                        upstream ? 'ml-3 sm:ml-0' : undefined
-                      }
+                      className={upstream ? 'ml-3 sm:ml-0' : undefined}
                       onClick={onCancel}
                       data-testid="modal-cancel-button"
                       {...cancelButtonProps}

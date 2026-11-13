@@ -6,6 +6,7 @@ import ConfirmButton from '@app/components/Common/ConfirmButton';
 import Header from '@app/components/Common/Header';
 import LoadingSpinner from '@app/components/Common/LoadingSpinner';
 import PageTitle from '@app/components/Common/PageTitle';
+import PaginationFooter from '@app/components/Common/PaginationFooter';
 import useDebouncedState from '@app/hooks/useDebouncedState';
 import useToasts from '@app/hooks/useToasts';
 import { useUpdateQueryParams } from '@app/hooks/useUpdateQueryParams';
@@ -14,8 +15,6 @@ import globalMessages from '@app/i18n/globalMessages';
 import ErrorPage from '@app/pages/_error';
 import defineMessages from '@app/utils/defineMessages';
 import {
-  ChevronLeftIcon,
-  ChevronRightIcon,
   FunnelIcon,
   MagnifyingGlassIcon,
   TrashIcon,
@@ -102,8 +101,10 @@ const Blocklist = () => {
     setSearchFilter(e.target.value as string);
   };
 
-  const hasNextPage = data && data.pageInfo.pages > pageIndex + 1;
-  const hasPrevPage = pageIndex > 0;
+  const changePage = (nextPage: number) => {
+    updateQueryParams('page', String(nextPage));
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   return (
     <>
@@ -112,7 +113,7 @@ const Blocklist = () => {
         <Header>{intl.formatMessage(globalMessages.blocklist)}</Header>
 
         <div className="mt-2 flex flex-grow flex-col sm:flex-row lg:flex-grow-0">
-          <div className="mb-2 flex flex-grow sm:mb-0 sm:mr-2 lg:flex-grow-0">
+          <div className="mb-2 flex flex-grow sm:mr-2 sm:mb-0 lg:flex-grow-0">
             <span className="inline-flex cursor-default items-center rounded-l-md border border-r-0 border-gray-500 bg-gray-800 px-3 text-sm text-gray-100">
               <FunnelIcon className="h-6 w-6" />
             </span>
@@ -143,7 +144,7 @@ const Blocklist = () => {
             </select>
           </div>
 
-          <div className="mb-2 flex flex-grow sm:mb-0 sm:mr-2 md:flex-grow-0">
+          <div className="mb-2 flex flex-grow sm:mr-2 sm:mb-0 md:flex-grow-0">
             <span className="inline-flex cursor-default items-center rounded-l-md border border-r-0 border-gray-500 bg-gray-800 px-3 text-sm text-gray-100">
               <MagnifyingGlassIcon className="h-6 w-6" />
             </span>
@@ -188,77 +189,23 @@ const Blocklist = () => {
         })
       )}
 
-      <div className="actions">
-        <nav
-          className="mb-3 flex flex-col items-center space-y-3 sm:flex-row sm:space-y-0"
-          aria-label="Pagination"
-        >
-          <div className="hidden lg:flex lg:flex-1">
-            <p className="text-sm">
-              {data &&
-                (data?.results.length ?? 0) > 0 &&
-                intl.formatMessage(globalMessages.showingresults, {
-                  from: pageIndex * currentPageSize + 1,
-                  to:
-                    data.results.length < currentPageSize
-                      ? pageIndex * currentPageSize + data.results.length
-                      : (pageIndex + 1) * currentPageSize,
-                  total: data.pageInfo.results,
-                  strong: (msg: React.ReactNode) => (
-                    <span className="font-medium">{msg}</span>
-                  ),
-                })}
-            </p>
-          </div>
-          <div className="flex justify-center sm:flex-1 sm:justify-start lg:justify-center">
-            <span className="-mt-3 items-center truncate text-sm sm:mt-0">
-              {intl.formatMessage(globalMessages.resultsperpage, {
-                pageSize: (
-                  <select
-                    id="pageSize"
-                    name="pageSize"
-                    onChange={(e) => {
-                      setCurrentPageSize(Number(e.target.value));
-                      router
-                        .push({
-                          pathname: router.pathname,
-                          query: router.query.userId
-                            ? { userId: router.query.userId }
-                            : {},
-                        })
-                        .then(() => window.scrollTo(0, 0));
-                    }}
-                    value={currentPageSize}
-                    className="short inline"
-                  >
-                    <option value="5">5</option>
-                    <option value="10">10</option>
-                    <option value="25">25</option>
-                    <option value="50">50</option>
-                    <option value="100">100</option>
-                  </select>
-                ),
-              })}
-            </span>
-          </div>
-          <div className="flex flex-auto justify-center space-x-2 sm:flex-1 sm:justify-end">
-            <Button
-              disabled={!hasPrevPage}
-              onClick={() => updateQueryParams('page', (page - 1).toString())}
-            >
-              <ChevronLeftIcon />
-              <span>{intl.formatMessage(globalMessages.previous)}</span>
-            </Button>
-            <Button
-              disabled={!hasNextPage}
-              onClick={() => updateQueryParams('page', (page + 1).toString())}
-            >
-              <span>{intl.formatMessage(globalMessages.next)}</span>
-              <ChevronRightIcon />
-            </Button>
-          </div>
-        </nav>
-      </div>
+      <PaginationFooter
+        defaultPageSize={10}
+        page={page}
+        pageSize={currentPageSize}
+        pageSizeOptions={[5, 10, 25, 50, 100]}
+        totalPages={data?.pageInfo.pages ?? 1}
+        onPageChange={changePage}
+        onPageSizeChange={(size) => {
+          setCurrentPageSize(size);
+          router
+            .push({
+              pathname: router.pathname,
+              query: router.query.userId ? { userId: router.query.userId } : {},
+            })
+            .then(() => window.scrollTo(0, 0));
+        }}
+      />
     </>
   );
 };
@@ -335,17 +282,11 @@ const BlocklistedItem = ({ item, revalidateList }: BlocklistedItemProps) => {
             style={{ width: '100%', height: '100%', objectFit: 'cover' }}
             fill
           />
-          <div
-            className="absolute inset-0"
-            style={{
-              backgroundImage:
-                'linear-gradient(90deg, rgba(31, 41, 55, 0.47) 0%, rgba(31, 41, 55, 1) 100%)',
-            }}
-          />
+          <div className="upstream-backdrop-overlay" />
         </div>
       )}
       <div className="relative flex w-full flex-col justify-between overflow-hidden sm:flex-row">
-        <div className="relative z-10 flex w-full items-center overflow-hidden pl-4 pr-4 sm:pr-0 xl:w-7/12 2xl:w-2/3">
+        <div className="relative z-10 flex w-full items-center overflow-hidden pr-4 pl-4 sm:pr-0 xl:w-7/12 2xl:w-2/3">
           <Link
             href={
               item.mediaType === 'movie'
@@ -390,7 +331,7 @@ const BlocklistedItem = ({ item, revalidateList }: BlocklistedItemProps) => {
           </div>
         </div>
 
-        <div className="z-10 ml-4 mt-4 flex w-full flex-col justify-center overflow-hidden pr-4 text-sm sm:ml-2 sm:mt-0 xl:flex-1 xl:pr-0">
+        <div className="z-10 mt-4 ml-4 flex w-full flex-col justify-center overflow-hidden pr-4 text-sm sm:mt-0 sm:ml-2 xl:flex-1 xl:pr-0">
           <div className="card-field">
             <span className="card-field-name">Status</span>
             <Badge badgeType="danger">
@@ -447,13 +388,13 @@ const BlocklistedItem = ({ item, revalidateList }: BlocklistedItemProps) => {
           <div className="card-field">
             {item.mediaType === 'movie' ? (
               <div className="pointer-events-none z-40 self-start rounded-full border border-blue-500 bg-blue-600/80 shadow-md">
-                <div className="flex h-4 items-center px-2 py-2 text-center text-xs font-medium uppercase tracking-wider text-white sm:h-5">
+                <div className="flex h-4 items-center px-2 py-2 text-center text-xs font-medium tracking-wider text-white uppercase sm:h-5">
                   {intl.formatMessage(globalMessages.movie)}
                 </div>
               </div>
             ) : (
               <div className="pointer-events-none z-40 self-start rounded-full border border-purple-600 bg-purple-600/80 shadow-md">
-                <div className="flex h-4 items-center px-2 py-2 text-center text-xs font-medium uppercase tracking-wider text-white sm:h-5">
+                <div className="flex h-4 items-center px-2 py-2 text-center text-xs font-medium tracking-wider text-white uppercase sm:h-5">
                   {intl.formatMessage(globalMessages.tvshow)}
                 </div>
               </div>
@@ -461,7 +402,7 @@ const BlocklistedItem = ({ item, revalidateList }: BlocklistedItemProps) => {
           </div>
         </div>
       </div>
-      <div className="z-10 mt-4 flex w-full flex-col justify-center space-y-2 pl-4 pr-4 xl:mt-0 xl:w-96 xl:items-end xl:pl-0">
+      <div className="z-10 mt-4 flex w-full flex-col justify-center space-y-2 pr-4 pl-4 xl:mt-0 xl:w-96 xl:items-end xl:pl-0">
         {hasPermission(Permission.MANAGE_BLOCKLIST) && (
           <ConfirmButton
             onClick={() =>

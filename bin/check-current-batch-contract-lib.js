@@ -5518,7 +5518,7 @@ const validateCurrentBatchContract = (files) => {
   }
   for (const token of [
     "bgColor: 'border border-orange-400 backdrop-blur bg-orange-500/40'",
-    '<div className="flex items-center">',
+    "upstream ? 'flex' : 'flex items-center'",
   ]) {
     requireText(
       'src/components/Common/Alert/index.tsx',
