@@ -385,7 +385,7 @@ function BooksGrid({
             show === 'have'
               ? have(b)
               : show === 'not'
-                ? !identityUnknown(b) && !!mediaFor(b) && !have(b)
+                ? !identityUnknown(b) && !have(b)
                 : true
           );
   const items = useEbookCovers(raw, audio);
@@ -476,6 +476,7 @@ function BooksGrid({
         unknownCount === 0 &&
         !list.error &&
         list.page > 0 &&
+        list.done &&
         items.length === 0 && (
           <div className="empty">
             {show === 'have'

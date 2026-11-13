@@ -257,7 +257,13 @@ test('the image runs as any unprivileged user, saving into a /lumen-data that us
         '-c',
         'test ! -w /usr/share/nginx/html/index.html'
       );
-      const config = await (await fetch(base + '/lumen/config')).json();
+      // the storage status describes the container, so only an admin gets it
+      assert.equal((await fetch(base + '/lumen/config')).status, 401, user);
+      const config = await (
+        await fetch(base + '/lumen/config', {
+          headers: { cookie: 'fixture-session=valid' },
+        })
+      ).json();
       assert.deepEqual(
         config,
         {
@@ -499,4 +505,22 @@ test('actual nginx saves and serves admin branding without deleting the live log
     await docker('rm', '-f', id);
     containers.delete(id);
   }
+});
+
+test('the old-SeerrNG redirect list never takes a page Lumen serves itself', async () => {
+  const { readFile } = await import('node:fs/promises');
+  const conf = await readFile(join(root, 'deploy/nginx.conf.template'), 'utf8');
+  const main = await readFile(join(root, 'src/main.tsx'), 'utf8');
+  const legacy = /location ~ \^\/\(([^)]*)\)\(\/\|\$\)\s*\{\s*return 302/.exec(
+    conf
+  );
+  assert.ok(legacy, 'legacy redirect block not found');
+  const redirected = new Set(legacy[1].split('|'));
+  const lumen = [...main.matchAll(/path="\/([a-z-]+)/g)].map((m) => m[1]);
+  assert.ok(lumen.includes('person'));
+  for (const page of lumen)
+    assert.ok(
+      !redirected.has(page),
+      `/${page} is a Lumen page but nginx redirects it`
+    );
 });

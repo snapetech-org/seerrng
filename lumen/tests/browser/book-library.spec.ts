@@ -452,6 +452,38 @@ test('the full list keeps loading until it fills a tall screen', async ({
   expect(await page.evaluate(() => window.scrollY)).toBe(0);
 });
 
+test('Not yet lists books that are neither owned nor requested', async ({
+  page,
+}) => {
+  await fixtures(page);
+  await page.route('**/api/v1/discover/books?**', (route) =>
+    route.fulfill({
+      json: paged([
+        // never requested: no library state at all
+        book('bookshelf:42:aGM6NTU1NTU', 'audiobook', 'Never requested'),
+        // owned, matched through the owned list
+        book(ownedId, 'audiobook', 'Owned outside popular'),
+        // requested, still downloading
+        {
+          ...book('bookshelf:42:aGM6NjY2NjY', 'audiobook', 'On its way'),
+          mediaInfo: { status: 3 },
+        },
+      ]),
+    })
+  );
+  await page.goto('/audiobooks?show=not');
+  await expect(
+    page.locator('.grid .poster', { hasText: 'Never requested' })
+  ).toHaveCount(1);
+  await expect(
+    page.locator('.grid .poster', { hasText: 'On its way' })
+  ).toHaveCount(1);
+  await expect(
+    page.locator('.grid .poster', { hasText: 'Owned outside popular' })
+  ).toHaveCount(0);
+  await expect(page.getByText('No books match this view.')).toHaveCount(0);
+});
+
 const paged = (results: unknown[]) => ({
   page: 1,
   totalPages: 1,

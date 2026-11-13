@@ -106,3 +106,18 @@ test('non-admin and malformed settings cannot alter saved defaults or upload bra
     '{"branding":{"name":"Original"}}'
   );
 });
+
+test('the settings status (GET /lumen/config) is only for admins', async (t) => {
+  const { handlers, request } = await fixture(t);
+  for (const [me, expected] of [
+    [{ status: 401 }, 401],
+    [{ status: 200, responseText: '{"permissions":32}' }, 403],
+    [{ status: 200, responseText: '{"permissions":2}' }, 200],
+  ]) {
+    const r = request({ method: 'GET', subrequest: async () => me });
+    await handlers.save(r);
+    assert.equal(r.status, expected);
+    if (expected === 200) assert.equal(typeof r.body.canSave, 'boolean');
+    else assert.equal(r.body.uid, undefined);
+  }
+});

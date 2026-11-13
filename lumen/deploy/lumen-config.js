@@ -73,6 +73,8 @@ async function isAdmin(r) {
 
 async function save(r) {
   if (r.method === 'GET') {
+    // only the admin settings page asks, and the answer describes the container
+    if (!(await isAdmin(r))) return;
     const f = folder();
     send(r, 200, {
       canSave: f === 'ok',
