@@ -30,6 +30,7 @@ import {
 } from '../components/detail';
 import { ServiceNote } from '../components/extra';
 import { useToast } from '../components/toast';
+import { localToday } from '../dates';
 import { useApi, usePublicSettings } from '../hooks';
 import { Icon } from '../icons';
 import { friendlyError } from '../errors';
@@ -73,7 +74,7 @@ export default function MovieDetail() {
   );
   const s4k = m.mediaInfo?.status4k;
   const date = m.releaseDate || '';
-  const unreleased = date > new Date().toISOString().slice(0, 10);
+  const unreleased = date > localToday();
   const director = (m.credits?.crew || [])
     .filter((c) => c.job === 'Director')
     .map((c) => c.name)

@@ -18,6 +18,7 @@ import {
   type TitleResult,
 } from '../api';
 import { useMediaServerName } from '../auth';
+import { localToday } from '../dates';
 import { friendlyError } from '../errors';
 import {
   bookMediaWithLibrary,
@@ -187,7 +188,6 @@ export function TouchQuick({
   );
 }
 
-const TODAY = new Date().toISOString().slice(0, 10);
 const MON = [
   'Jan',
   'Feb',
@@ -234,7 +234,7 @@ export function TitleCard({ it, meta }: { it: TitleResult; meta?: string }) {
     statusOf(withoutPending4k(it.mediaInfo), false, serverName)
   );
   const date = it.releaseDate || it.firstAirDate;
-  const unreleased = !!date && date > TODAY;
+  const unreleased = !!date && date > localToday();
   const href = `/${tv ? 'tv' : 'movie'}/${it.id}`;
   const m =
     meta ||
