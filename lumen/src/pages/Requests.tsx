@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import {
   api,
@@ -22,6 +22,7 @@ import { canChooseRequestOptions, Pill } from '../components/detail';
 import { RequestEditSheet } from '../components/requestEdit';
 import { Avatar } from '../components/Shell';
 import { useToast } from '../components/toast';
+import { localToday } from '../dates';
 import { friendlyError } from '../errors';
 import {
   GAME_LABEL,
@@ -460,7 +461,7 @@ function progress(r: RequestItem) {
 // Requests whose download has started, wherever they are in the history: a big queue pushes
 // the one that's actually downloading far past the newest requests. `query` narrows the list
 // (e.g. one person's requests). Two pages of SeerrNG's in-progress requests are plenty.
-async function startedDownloads(query = '') {
+async function processingRequests(query = '') {
   const page = (skip: number) =>
     requestList(
       `/request?take=100&skip=${skip}&filter=processing&sort=added${query}`
@@ -468,8 +469,10 @@ async function startedDownloads(query = '') {
   const first = await page(0);
   const more =
     (first.pageInfo?.pages || 1) > 1 ? (await page(100)).results : [];
-  return first.results.concat(more).filter((r) => progress(r) > 0);
+  return first.results.concat(more);
 }
+const startedDownloads = async (query = '') =>
+  (await processingRequests(query)).filter((r) => progress(r) > 0);
 // All of one person's requests, newest first, so the tab counts are the real totals and nothing
 // falls out of every tab. Keep each request page small for status accuracy, with bounded
 // concurrency so large histories don't issue hundreds of sequential round trips.
@@ -709,7 +712,7 @@ async function describeOnce(r: RequestItem): Promise<Row> {
   const t = await api<TvDetails>(`/${kind}/${r.media.tmdbId}`).catch(
     keepUnless404(r)
   );
-  const today = new Date().toISOString().slice(0, 10);
+  const today = localToday();
   const seasons = r.seasons?.length
     ? r.seasons.length === 1
       ? `Season ${r.seasons[0].seasonNumber}`
@@ -853,6 +856,8 @@ export default function Requests() {
   const [rows, setRows] = useState<Row[] | null>(null);
   const [ownError, setOwnError] = useState(false);
   const [tick, setTick] = useState(0);
+  // full list loads in flight (a poll waits for them)
+  const loads = useRef(0);
   const [refreshing, setRefreshing] = useState(false);
   const pull = usePullToRefresh(() => {
     setRefreshing(true);
@@ -949,6 +954,7 @@ export default function Requests() {
       show === 'all'
         ? list('pending', 50).then((x) => x.results)
         : Promise.resolve([]);
+    loads.current++;
     Promise.all([pending, started, list(show, take)])
       .then(async ([waitingList, startedList, rest]) => {
         const rows = await describeAll(
@@ -965,6 +971,7 @@ export default function Requests() {
         setOthersError(true);
       })
       .finally(() => {
+        loads.current--;
         if (!live) return;
         setRefreshing(false);
         setLoadingMore(false);
@@ -978,6 +985,7 @@ export default function Requests() {
     if (!user || everyone) return;
     let live = true;
     setOwnError(false);
+    loads.current++;
     const media = Promise.all([
       ownRequests(user.id),
       startedDownloads(`&requestedBy=${user.id}`).catch(() => []),
@@ -1010,34 +1018,15 @@ export default function Requests() {
       )
       .then((x) => live && setRows(x))
       .catch(() => live && setOwnError(true))
-      .finally(() => live && setRefreshing(false));
+      .finally(() => {
+        loads.current--;
+        if (live) setRefreshing(false);
+      });
     return () => {
       live = false;
     };
   }, [user, everyone, tick, extras.games.length]);
 
-  // keep download percentages moving while anything is downloading
-  const busy = (rows || []).some((x) => state(x, serverName).pct != null);
-  useEffect(() => {
-    if (!busy) return;
-    // a hidden tab (or backgrounded app) doesn't poll; it catches up when it's shown again
-    const t = window.setInterval(() => {
-      if (!document.hidden) setTick((n) => n + 1);
-    }, 30_000);
-    let hiddenAt: number | null = null;
-    const onVisible = () => {
-      if (document.hidden) hiddenAt = Date.now();
-      else if (hiddenAt != null) {
-        if (Date.now() - hiddenAt >= 30_000) setTick((n) => n + 1);
-        hiddenAt = null;
-      }
-    };
-    document.addEventListener('visibilitychange', onVisible);
-    return () => {
-      window.clearInterval(t);
-      document.removeEventListener('visibilitychange', onVisible);
-    };
-  }, [busy]);
   const all = rows || [];
   const act = all.filter((x) => state(x, serverName).active);
   const ready = all.filter(
@@ -1055,6 +1044,79 @@ export default function Requests() {
         ? all
         : act;
   const shown = everyone ? others : rows;
+
+  // keep download percentages moving while anything shown is downloading
+  const busy = list.some((x) => state(x, serverName).pct != null);
+  const [poll, setPoll] = useState(0);
+  useEffect(() => {
+    if (!busy) return;
+    // a hidden tab (or backgrounded app) doesn't poll; it catches up when it's shown again
+    const t = window.setInterval(() => {
+      if (!document.hidden) setPoll((n) => n + 1);
+    }, 30_000);
+    let hiddenAt: number | null = null;
+    const onVisible = () => {
+      if (document.hidden) hiddenAt = Date.now();
+      else if (hiddenAt != null) {
+        if (Date.now() - hiddenAt >= 30_000) setPoll((n) => n + 1);
+        hiddenAt = null;
+      }
+    };
+    document.addEventListener('visibilitychange', onVisible);
+    return () => {
+      window.clearInterval(t);
+      document.removeEventListener('visibilitychange', onVisible);
+    };
+  }, [busy]);
+  // a poll asks only for the requests in progress and updates those rows in place; the whole
+  // history is fetched again only when one finishes or a new one starts
+  useEffect(() => {
+    // a full load still on its way would land over the poll's newer numbers: skip this one
+    if (!poll || !user || loads.current) return;
+    let live = true;
+    const current = shown || [];
+    const ids = new Set(current.map((x) => x.r.id));
+    // these lists always include every started download
+    const withStarted = !everyone || show === 'all' || show === 'processing';
+    const gameBusy =
+      !everyone &&
+      current.some((x) => x.r.id < 0 && state(x, serverName).pct != null);
+    Promise.all([
+      processingRequests(everyone ? '' : `&requestedBy=${user.id}`),
+      gameBusy
+        ? api<{ results: SoftwareRequest[] }>(
+            `/request/software/status?take=40&requestedBy=${user.id}`
+          ).then((d) => d.results.map(gameRow))
+        : Promise.resolve([] as Row[]),
+    ])
+      .then(([fresh, games]) => {
+        if (!live) return;
+        const byId = new Map<number, RequestItem>(fresh.map((r) => [r.id, r]));
+        const gameById = new Map(games.map((g) => [g.r.id, g]));
+        const finished = current.some(
+          (x) =>
+            x.r.id > 0 && state(x, serverName).pct != null && !byId.has(x.r.id)
+        );
+        const started =
+          withStarted &&
+          fresh.some((r) => !ids.has(r.id) && (!everyone || progress(r) > 0));
+        if (finished || started) return setTick((n) => n + 1);
+        const update = (l: Row[] | null) =>
+          l &&
+          l.map((x) =>
+            byId.has(x.r.id)
+              ? { ...x, r: byId.get(x.r.id)! }
+              : gameById.get(x.r.id) || x
+          );
+        if (everyone) setOthers(update);
+        else setRows(update);
+      })
+      .catch(() => {}); // the next poll tries again
+    return () => {
+      live = false;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [poll]);
   const decide = async (
     id: number,
     how: 'approve' | 'decline' | 'retry' | 'remove'
