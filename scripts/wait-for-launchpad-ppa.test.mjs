@@ -253,6 +253,78 @@ test('does not resubmit a long-running build based only on its age', () => {
   );
 });
 
+test('retries transient Launchpad API failures within the original deadline', () => {
+  const python = [
+    'import importlib.util',
+    'import sys',
+    'import types',
+    'from datetime import datetime, timezone',
+    'from http.client import RemoteDisconnected',
+    'from urllib.error import HTTPError',
+    'sys.dont_write_bytecode = True',
+    '',
+    'launchpadlib = types.ModuleType("launchpadlib")',
+    'launchpadlib.__path__ = []',
+    'launchpad_module = types.ModuleType("launchpadlib.launchpad")',
+    'launchpad_module.Launchpad = object',
+    'sys.modules["launchpadlib"] = launchpadlib',
+    'sys.modules["launchpadlib.launchpad"] = launchpad_module',
+    '',
+    'spec = importlib.util.spec_from_file_location("waiter", sys.argv[1])',
+    'waiter = importlib.util.module_from_spec(spec)',
+    'spec.loader.exec_module(waiter)',
+    '',
+    'source_link = "https://api.launchpad.net/1.0/+sourcepub/12345"',
+    'binary = types.SimpleNamespace(binary_package_name="seerrng", status="Published", web_link="https://launchpad.net/+binarypub/67890")',
+    'build = types.SimpleNamespace(arch_tag="amd64", buildstate="Successfully built")',
+    'publication = types.SimpleNamespace(',
+    '    status="Published",',
+    '    date_created=datetime.now(timezone.utc),',
+    '    self_link=source_link,',
+    '    getBuilds=lambda: [build],',
+    '    getPublishedBinaries=lambda: [binary],',
+    ')',
+    'attempts = {"count": 0}',
+    'def get_sources(**kwargs):',
+    '    attempts["count"] += 1',
+    '    if attempts["count"] == 1:',
+    '        raise RemoteDisconnected("Remote end closed connection without response")',
+    '    return [publication]',
+    'archive = types.SimpleNamespace(getPublishedSources=get_sources)',
+    'client = types.SimpleNamespace(',
+    '    load=lambda url: archive,',
+    '    distributions={"ubuntu": types.SimpleNamespace(getSeries=lambda name_or_version: object())},',
+    ')',
+    'waiter.create_launchpad_client = lambda: client',
+    'clock = {"now": 0}',
+    'waiter.time.monotonic = lambda: clock["now"]',
+    'def advance_clock(seconds):',
+    '    clock["now"] += seconds',
+    'waiter.time.sleep = advance_clock',
+    'sys.argv = [waiter.__file__, "--archive-url", "https://api.launchpad.net/1.0/archive", "--archive-web", "https://launchpad.net/~owner/+archive/ubuntu/seerrng", "--series", "jammy", "--source-version", "3.41.2+ppa1", "--timeout-minutes", "2"]',
+    'assert waiter.is_transient_launchpad_error(HTTPError("https://api.launchpad.net", 503, "unavailable", {}, None))',
+    'assert not waiter.is_transient_launchpad_error(HTTPError("https://api.launchpad.net", 403, "forbidden", {}, None))',
+    'ApiError = type("ApiError", (Exception,), {"status": 503})',
+    'assert waiter.is_transient_launchpad_error(ApiError("service unavailable"))',
+    'status = waiter.main()',
+    'assert status == 0, status',
+    'assert attempts["count"] == 2, attempts',
+  ].join('\n');
+  const pythonCommand = process.platform === 'win32' ? 'python' : 'python3';
+  const result = spawnSync(pythonCommand, ['-c', python, waiterPath], {
+    encoding: 'utf8',
+  });
+
+  assert.equal(
+    result.status,
+    0,
+    'transient Launchpad API retry regression failed.\n' +
+      result.stdout +
+      '\n' +
+      result.stderr
+  );
+});
+
 test('times out when an accepted upload has no source record instead of resubmitting', () => {
   const python = [
     'import contextlib',

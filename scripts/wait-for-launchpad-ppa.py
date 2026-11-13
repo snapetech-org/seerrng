@@ -10,10 +10,13 @@ from __future__ import annotations
 
 import argparse
 import gzip
+from http.client import HTTPException
+from socket import gaierror
 import sys
 import time
 from datetime import datetime
 from typing import Any
+from urllib.error import HTTPError, URLError
 from urllib.request import urlopen
 
 from launchpadlib.launchpad import Launchpad
@@ -21,6 +24,7 @@ from launchpadlib.launchpad import Launchpad
 
 POLL_INTERVAL_SECONDS = 60
 PUBLISHED = "Published"
+TRANSIENT_HTTP_STATUS_CODES = {408, 425, 429, 500, 502, 503, 504}
 
 
 class FreshUploadRequired(RuntimeError):
@@ -63,6 +67,42 @@ def matching_source_publications(
 
 def get_builds(source_publication: Any) -> list[Any]:
     return list(source_publication.getBuilds())
+
+
+def is_transient_launchpad_error(error: Exception) -> bool:
+    """Return whether a public Launchpad read can safely be retried."""
+    if isinstance(error, HTTPError):
+        return error.code in TRANSIENT_HTTP_STATUS_CODES
+    if isinstance(error, URLError):
+        reason = error.reason
+        return isinstance(reason, (ConnectionError, TimeoutError, gaierror, HTTPException)) or (
+            isinstance(reason, str)
+            and any(
+                marker in reason.lower()
+                for marker in (
+                    "timed out",
+                    "temporarily unavailable",
+                    "temporary failure",
+                    "remote end closed",
+                    "connection closed",
+                    "connection refused",
+                    "connection reset",
+                )
+            )
+        )
+    if isinstance(error, (ConnectionError, TimeoutError, gaierror, HTTPException)):
+        return True
+
+    if type(error).__name__ == "ServerNotFoundError":
+        return True
+
+    response = getattr(error, "response", None)
+    status = (
+        getattr(response, "status", None)
+        or getattr(error, "status", None)
+        or getattr(error, "code", None)
+    )
+    return status in TRANSIENT_HTTP_STATUS_CODES
 
 
 def classify_failed_upload(
@@ -124,22 +164,18 @@ def main() -> int:
         print("--timeout-minutes must be positive.", file=sys.stderr)
         return 1
 
-    try:
-        launchpad = create_launchpad_client()
-        archive = launchpad.load(args.archive_url)
-        distribution = launchpad.distributions["ubuntu"]
-        series = distribution.getSeries(name_or_version=args.series)
-    except Exception as error:
-        print(
-            f"Unable to read public Launchpad publication data: {error}",
-            file=sys.stderr,
-        )
-        return 1
-
     deadline = time.monotonic() + args.timeout_minutes * 60
     last_report = ""
+    archive = None
+    series = None
     while time.monotonic() < deadline:
         try:
+            if archive is None or series is None:
+                launchpad = create_launchpad_client()
+                archive = launchpad.load(args.archive_url)
+                distribution = launchpad.distributions["ubuntu"]
+                series = distribution.getSeries(name_or_version=args.series)
+
             publications = matching_source_publications(
                 archive, series, args.source_version
             )
@@ -240,10 +276,19 @@ def main() -> int:
             print(error, file=sys.stderr)
             return 2
         except Exception as error:
-            print(f"Launchpad publication check failed: {error}", file=sys.stderr)
-            return 1
+            if not is_transient_launchpad_error(error):
+                print(f"Launchpad publication check failed: {error}", file=sys.stderr)
+                return 1
 
-        time.sleep(POLL_INTERVAL_SECONDS)
+            report = (
+                "Temporary Launchpad API error; retrying within the existing "
+                f"timeout: {error}"
+            )
+            if report != last_report:
+                print(report, flush=True)
+                last_report = report
+
+        time.sleep(min(POLL_INTERVAL_SECONDS, max(deadline - time.monotonic(), 0)))
 
     print(
         f"Timed out waiting for {args.source_version} and its published binary "
