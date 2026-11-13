@@ -1,5 +1,129 @@
 # Changelog
 
+## [3.72.35](https://github.com/snapetech-org/seerrng/compare/v3.72.34..v3.72.35) - 2026-11-13
+
+### User-facing changes
+
+#### Added
+
+- **Discovery:** Lumen's Books, Comics, and Browse catalogues now share a Genres picker that lets you select multiple genres and see titles matching any selected genre. Selected genres remain in the URL, and Clear restores the unfiltered catalogue.
+- **Interface:** User color palettes now apply to all three native interface styles: SeerrOrig, SeerrNGJ, and PersiusNG. SeerrOrig users can choose a palette from the theme menu while keeping its upstream layout and dark-mode presentation. Accent text uses a palette-aware foreground for readability; success, warning, and error colors keep their existing meanings.
+
+#### Changed
+
+- **Interface:** SeerrOrig now follows upstream page hierarchy across navigation, discovery, requests, media details, and administration; SeerrNG actions remain available. Source: [Seerr v3.5.1](https://github.com/seerr-team/seerr/commit/564bfb08b54caa374bddaf820abfd226e5e69151), contributed to upstream by [@gauthier-th](https://github.com/gauthier-th); SeerrNG independently adapted the presentation.
+- **Interface:** SeerrOrig password recovery now uses upstream's full-screen backdrop and form layout while retaining SeerrNG branding. Source: [Seerr v3.5.1](https://github.com/seerr-team/seerr/commit/564bfb08b54caa374bddaf820abfd226e5e69151), contributed to upstream by [@gauthier-th](https://github.com/gauthier-th); SeerrNG independently adapted the presentation.
+- **Interface:** The SeerrNG release calendar uses SeerrOrig's upstream headings, controls, cards, and status badges. Source: [Seerr v3.5.1](https://github.com/seerr-team/seerr/commit/564bfb08b54caa374bddaf820abfd226e5e69151), contributed to upstream by [@gauthier-th](https://github.com/gauthier-th); SeerrNG independently adapted the presentation.
+- **Interface:** SeerrOrig genre, keyword, and language pages now share upstream headings and loading and error states. Source: [Seerr v3.5.1](https://github.com/seerr-team/seerr/commit/564bfb08b54caa374bddaf820abfd226e5e69151), contributed to upstream by [@gauthier-th](https://github.com/gauthier-th); SeerrNG independently adapted the presentation.
+- **Interface:** SeerrOrig watchlists use upstream headings and list layout; SeerrNG filters remain under More. Source: [Seerr v3.5.1](https://github.com/seerr-team/seerr/commit/564bfb08b54caa374bddaf820abfd226e5e69151), contributed to upstream by [@gauthier-th](https://github.com/gauthier-th); SeerrNG independently adapted the presentation.
+- **Interface:** SeerrOrig studio, network, and genre pages now use upstream metadata headers, card images, and route links. Source: [Seerr v3.5.1](https://github.com/seerr-team/seerr/commit/564bfb08b54caa374bddaf820abfd226e5e69151), contributed to upstream by [@gauthier-th](https://github.com/gauthier-th); SeerrNG independently adapted the presentation.
+- **Interface:** SeerrOrig now styles fork-only library, download, calendar, game/software, swipe, adult, and Sportarr pages with compact upstream-style controls and slate cards. Source: [Seerr v3.5.1](https://github.com/seerr-team/seerr/commit/564bfb08b54caa374bddaf820abfd226e5e69151), contributed upstream by [@gauthier-th](https://github.com/gauthier-th); SeerrNG independently adapted these styles.
+- **Interface:** SeerrOrig global settings show the upstream General Settings heading. More Settings stays compact, with SeerrNG-only controls in disclosures. Source: [Seerr v3.5.1](https://github.com/seerr-team/seerr/commit/564bfb08b54caa374bddaf820abfd226e5e69151), contributed upstream by [@gauthier-th](https://github.com/gauthier-th); SeerrNG independently adapted it.
+- **Interface:** SeerrOrig linked accounts prioritize upstream media-server cards; OIDC and discovery integrations remain under More. Source: [Seerr v3.5.1](https://github.com/seerr-team/seerr/commit/564bfb08b54caa374bddaf820abfd226e5e69151), contributed to upstream by [@gauthier-th](https://github.com/gauthier-th); SeerrNG independently adapted the presentation.
+- **Interface:** SeerrOrig sign-in and recovery now use upstream backdrops and gradient while retaining SeerrNG branding and providers. Source: [Seerr v3.5.1](https://github.com/seerr-team/seerr/commit/564bfb08b54caa374bddaf820abfd226e5e69151), contributed to upstream by [@gauthier-th](https://github.com/gauthier-th); SeerrNG independently adapted the presentation.
+- **Interface:** SeerrOrig notification settings use upstream page and provider-tab presentation; the Apprise route remains accessible. Source: [Seerr v3.5.1](https://github.com/seerr-team/seerr/commit/564bfb08b54caa374bddaf820abfd226e5e69151), contributed to upstream by [@gauthier-th](https://github.com/gauthier-th); SeerrNG independently adapted the presentation.
+- **Interface:** SeerrOrig Upcoming Movies now uses upstream heading and error styles while preserving SeerrNG navigation. Source: [Seerr v3.5.1](https://github.com/seerr-team/seerr/commit/564bfb08b54caa374bddaf820abfd226e5e69151), contributed to upstream by [@gauthier-th](https://github.com/gauthier-th); SeerrNG independently adapted the presentation.
+- **Interface:** SeerrOrig Upcoming Series now uses upstream heading and error styles while preserving SeerrNG navigation. Source: [Seerr v3.5.1](https://github.com/seerr-team/seerr/commit/564bfb08b54caa374bddaf820abfd226e5e69151), contributed to upstream by [@gauthier-th](https://github.com/gauthier-th); SeerrNG independently adapted the presentation.
+- **Interface:** SeerrOrig Discover keeps recoverable movie and series errors, upstream title colors, and Trending time-window controls. Source: [Seerr v3.5.1](https://github.com/seerr-team/seerr/commit/564bfb08b54caa374bddaf820abfd226e5e69151), contributed upstream by [@gauthier-th](https://github.com/gauthier-th); SeerrNG independently adapted it.
+- **Interface:** SeerrOrig page headings now follow upstream responsive spacing and typography; SeerrNG retains its own header. Source: [Seerr v3.5.1](https://github.com/seerr-team/seerr/commit/564bfb08b54caa374bddaf820abfd226e5e69151), contributed to upstream by [@gauthier-th](https://github.com/gauthier-th); SeerrNG independently adapted the presentation.
+- **Interface:** SeerrOrig dropdowns now use upstream sizing, surfaces, transitions, and item layout while retaining fork actions. Source: [Seerr v3.5.1](https://github.com/seerr-team/seerr/commit/564bfb08b54caa374bddaf820abfd226e5e69151), contributed to upstream by [@gauthier-th](https://github.com/gauthier-th); SeerrNG independently adapted the presentation.
+- **Interface:** SeerrOrig movie, TV, and collection cards now use upstream framing, typography, and status treatments. Source: [Seerr v3.5.1](https://github.com/seerr-team/seerr/commit/564bfb08b54caa374bddaf820abfd226e5e69151), contributed to upstream by [@gauthier-th](https://github.com/gauthier-th); SeerrNG independently adapted the presentation.
+- **Interface:** SeerrOrig request rows now use upstream horizontal backdrop fades with SeerrNG actions and status details. Source: [Seerr v3.5.1](https://github.com/seerr-team/seerr/commit/564bfb08b54caa374bddaf820abfd226e5e69151), contributed to upstream by [@gauthier-th](https://github.com/gauthier-th); SeerrNG independently adapted the presentation.
+- **Interface:** SeerrOrig profile settings use upstream form order; fork-only preferences remain in collapsed extension sections. Source: [Seerr v3.5.1](https://github.com/seerr-team/seerr/commit/564bfb08b54caa374bddaf820abfd226e5e69151), contributed to upstream by [@gauthier-th](https://github.com/gauthier-th); SeerrNG independently adapted the presentation.
+- **Interface:** SeerrOrig permission editing follows upstream order while retaining SeerrNG age and service request controls. Source: [Seerr v3.5.1](https://github.com/seerr-team/seerr/commit/564bfb08b54caa374bddaf820abfd226e5e69151), contributed to upstream by [@gauthier-th](https://github.com/gauthier-th); SeerrNG independently adapted the presentation.
+- **Interface:** SeerrOrig profile settings show upstream primary tabs; SeerrNG-only routes remain under More settings. Source: [Seerr v3.5.1](https://github.com/seerr-team/seerr/commit/564bfb08b54caa374bddaf820abfd226e5e69151), contributed to upstream by [@gauthier-th](https://github.com/gauthier-th); SeerrNG independently adapted the presentation.
+
+#### Fixed
+
+- **Requests:** The request list releases its user-security admission lease after loading request data and before looking up display-only Servarr profile names. This prevents PostgreSQL slot collisions from deadlocking request reads with service configuration admission.
+- **Interface:** Fixed SeerrOrig theme loading so the interface theme menu and saved theme selection remain available.
+- **Books:** When provider metadata lookup returns no addable result, SeerrNG can fall back to ChaptarrNG's local catalog search. If ChaptarrNG denies that request, SeerrNG now logs an actionable warning identifying the required `/api/v1/library/search` permission for its restricted service key. Verify that ChaptarrNG is updated and SeerrNG is configured with the restricted key.
+  - **Action required:** Grant the restricted ChaptarrNG service key access to `/api/v1/library/search`.
+- **Lumen:** Fixed several Lumen issues affecting library requests, person-page refreshes, settings access, cover loading, and request polling. The Not Yet view now includes eligible unrequested books, and authorized users can request 4K TV.
+
+### 🛡️ Security
+- *(security)* Merge follow-up fixes - ([87f8f32](https://github.com/snapetech-org/seerrng/commit/87f8f324a43c35b52d1e6414ea2bfd190c8e9983))
+- *(security)* Assert migration logs before restoring spy - ([3cb9b81](https://github.com/snapetech-org/seerrng/commit/3cb9b8152af2fbc1913f45f5a5bc10336f0e5488))
+- *(security)* Harden Arr migration failure logs - ([12b5248](https://github.com/snapetech-org/seerrng/commit/12b5248558c14eb26f52230a56e2c49d1edd436d))
+- *(security)* Cover nested deepmerge prototype payload - ([befac8b](https://github.com/snapetech-org/seerrng/commit/befac8b82cb124da09c0662960bee4b77df317eb))
+
+### 🚀 Features
+- *(ui)* Align SeerrOrig extension routes - ([c20c88f](https://github.com/snapetech-org/seerrng/commit/c20c88fe8b7ab854543f991fc80e2bd24467b482))
+- *(ui)* Align extension routes with SeerrOrig - ([dbe3151](https://github.com/snapetech-org/seerrng/commit/dbe31519bd6162007563667a9c0856421a117902))
+- *(ui)* Apply palettes across native interfaces - ([6320e26](https://github.com/snapetech-org/seerrng/commit/6320e26f46f40b7633427bb2974ca1f28115e134))
+- One Genres picker with multi-select on every catalogue page (#680) - ([167537d](https://github.com/snapetech-org/seerrng/commit/167537dd4059cbb0740bcb086223cf7845bd4f69))
+
+### 🐛 Bug Fixes
+- *(discover)* Preserve media tabs in upstream trending - ([34a4809](https://github.com/snapetech-org/seerrng/commit/34a4809bcc3801d0ad0ec248b48b91fd7a44ddba))
+- *(i18n)* Refresh settings source callsites - ([073c8f6](https://github.com/snapetech-org/seerrng/commit/073c8f613321448f9f90694ed4fb7e2a7269a9c3))
+- *(i18n)* Sync BackIssue message catalogs - ([f873879](https://github.com/snapetech-org/seerrng/commit/f8738792c7a42e4fed5cf73e5f958e9754e73bde))
+- *(i18n)* Refresh API message source map - ([0bdcc37](https://github.com/snapetech-org/seerrng/commit/0bdcc37f993b4c222c4881165647a5ba1d003491))
+- *(i18n)* Sync BackIssue message catalogs - ([64ecf08](https://github.com/snapetech-org/seerrng/commit/64ecf08407bc5c64e76045f3a53edef6929e386b))
+- *(i18n)* Sync SeerrOrig source catalogs - ([2cb21ae](https://github.com/snapetech-org/seerrng/commit/2cb21ae7eed3c29bcd866ff15d23f3e9f0a18de0))
+- *(lumen)* Not yet asks before reading page after page of owned books - ([dad815d](https://github.com/snapetech-org/seerrng/commit/dad815d6cc9b006924de7dfe3f989cd341efbfb5))
+- *(lumen)* Comic editions show their own state, comic pages retry, quick requests check first - ([5dc0a9b](https://github.com/snapetech-org/seerrng/commit/5dc0a9bb3efcf112e5b77a038f9f7ce6c0597a0d))
+- *(lumen)* Owned audiobooks open the library without the companion, book requests send once - ([2ddf810](https://github.com/snapetech-org/seerrng/commit/2ddf8103a23e54bd0d7bed91baa44b9e42e503b1))
+- *(lumen)* Games shows placeholders while catalogues are checked, and Retry if none answer - ([c32b457](https://github.com/snapetech-org/seerrng/commit/c32b4578211f4277c4285ebfce6ff2d1d73e531c))
+- *(lumen)* Confirmations start on Keep it, toasts are announced while a sheet is open - ([9755b54](https://github.com/snapetech-org/seerrng/commit/9755b54026fa9c334de26015c4c674b8bc000b86))
+- *(lumen)* Download polling refreshes only the requests in progress, on every tab - ([de18df7](https://github.com/snapetech-org/seerrng/commit/de18df746a559501e322606b40dad4d61188b8d3))
+- *(lumen)* The series page offers 1080p or 4K to anyone allowed to request 4K series - ([92a0c66](https://github.com/snapetech-org/seerrng/commit/92a0c66ca015d74d0a52df3993297c9d7110813c))
+- *(lumen)* Unreleased dates compare with the viewer's local today, worked out at render - ([f364f42](https://github.com/snapetech-org/seerrng/commit/f364f422c5be25cb5b5e07aaf6e3bb7a4458672c))
+- *(lumen)* Service worker reloads pages before unregistering; embedded Lumen keeps SeerrNG's - ([78578f0](https://github.com/snapetech-org/seerrng/commit/78578f08b443ea8bca763bd0d4a13fba5cecc3d7))
+- *(lumen)* Unique temp file for settings saves; security headers on error responses - ([be1c276](https://github.com/snapetech-org/seerrng/commit/be1c276bc4bbace50c8ce8d8f0ef5b3c1950eef6))
+- *(lumen)* Write the cache at once after changes and drop the previous account's copy - ([ba72c17](https://github.com/snapetech-org/seerrng/commit/ba72c17c3f23521d557b980f12b2da8eaf0e6a20))
+- *(lumen)* Plex sign-in fails at once when the window is blocked and rides out failed checks - ([c119808](https://github.com/snapetech-org/seerrng/commit/c119808e4ce9b80aec1d191987b548f439cea447))
+- *(lumen)* Check cover addresses before rewriting them to the image proxy - ([2a577f8](https://github.com/snapetech-org/seerrng/commit/2a577f83a3b53045dde198d67fc09cdb2e8f6242))
+- *(lumen)* Back to a long list re-reads only the first and last pages - ([db0a03c](https://github.com/snapetech-org/seerrng/commit/db0a03ccd16c5b397ebfb12d88f989a06446bc4d))
+- *(lumen)* A 4K-only request leaves HD requestable on posters; Plex links follow the server kind - ([241105f](https://github.com/snapetech-org/seerrng/commit/241105f77a1a7529c18af4b568ff92d501bfc6b7))
+- *(lumen)* Admin settings never save over a config that failed to load, and keep focus - ([329fa65](https://github.com/snapetech-org/seerrng/commit/329fa65a0f46752a1cd3078b051c96849fce3264))
+- *(lumen)* Not yet lists unrequested books, person pages survive a refresh, settings status is admin-only - ([dd02f05](https://github.com/snapetech-org/seerrng/commit/dd02f05546aa2d07de12397b884bb185d0aa500e))
+- *(release)* Retry transient Launchpad API failures - ([619bfc2](https://github.com/snapetech-org/seerrng/commit/619bfc23fbe2884d9197c45a3cd65ab4f0c43385))
+- *(release-notes)* Shorten extension theme summary - ([33d9d26](https://github.com/snapetech-org/seerrng/commit/33d9d269033f1b5eaa145b094b850eadf5679aa6))
+- *(release-notes)* Validate SeerrOrig theme entries - ([a115c67](https://github.com/snapetech-org/seerrng/commit/a115c675059bcee575bd87720244e217f22459ed))
+- *(requests)* Release read lease before profile lookups - ([1b9bb80](https://github.com/snapetech-org/seerrng/commit/1b9bb80c15ca1b74d053cb44a53f108c74f55846))
+- *(seerorig)* Complete settings contract and release metadata - ([36f014d](https://github.com/snapetech-org/seerrng/commit/36f014d0ad10653f7d9723632dceaa878dc34c12))
+- *(seerorig)* Align settings extensions with shared roles - ([7108110](https://github.com/snapetech-org/seerrng/commit/710811047f96a09cca12c5360206eb45108f4078))
+- *(seerorig)* Use semantic calendar presentation - ([00fe164](https://github.com/snapetech-org/seerrng/commit/00fe16462f9a02d5d614ccb09b1548006899da90))
+- *(seerorig)* Use semantic upstream style owners - ([4d57127](https://github.com/snapetech-org/seerrng/commit/4d57127cdc8ab320ea35234fdfc96b3d944aec4e))
+- *(seerorig)* Use semantic header styles and credit upstream sources - ([2af6086](https://github.com/snapetech-org/seerrng/commit/2af6086cfde7064b88fac713223d19eafebe917a))
+- *(seerorig)* Scope backdrop overlay and credit upstream menus - ([bc05803](https://github.com/snapetech-org/seerrng/commit/bc05803fbb2fc4e890630e4cd706004c43b7463c))
+- *(seerorig)* Use shared controls and localization owners - ([a4a050c](https://github.com/snapetech-org/seerrng/commit/a4a050cb1fa4d3097b191e0ca16dd49c929a1498))
+- *(seerorig)* Align shared visuals and localization contracts - ([f71f834](https://github.com/snapetech-org/seerrng/commit/f71f834d3eb90cefd212a5529f9e50be758d247d))
+- *(theme)* Scope SeerrOrig poster status selectors - ([364db0c](https://github.com/snapetech-org/seerrng/commit/364db0cbfdf9af310db984c4eea01638edf03338))
+- *(ui)* Align SeerrOrig settings and discovery states - ([0039b0a](https://github.com/snapetech-org/seerrng/commit/0039b0abec2b578720e7b4de2c23f60abe0bd260))
+- *(ui)* Restore SeerrOrig stylesheet source - ([808ea98](https://github.com/snapetech-org/seerrng/commit/808ea9838a41271f43dbb4c1f265e07a5b902eed))
+- *(ui)* Preserve palette contrast on season status - ([4b9f100](https://github.com/snapetech-org/seerrng/commit/4b9f10009e97a16345545bebc5bf0edcacfc7ef0))
+
+### 📖 Documentation
+- *(release)* Complete pending user-facing release notes - ([83b3255](https://github.com/snapetech-org/seerrng/commit/83b3255fb8ec949357d183f5224d3c2fef66b430))
+- *(release)* Add Lumen genre picker note - ([6abd0e8](https://github.com/snapetech-org/seerrng/commit/6abd0e87090409e1c30425f7ecac569b0a28bb34))
+- *(ui)* Close source-level route review - ([c821747](https://github.com/snapetech-org/seerrng/commit/c821747fc4cd93d34a468ea5e0e1eb83309b9d7c))
+- *(ui)* Record visual review environment blocker - ([a5af877](https://github.com/snapetech-org/seerrng/commit/a5af877d3ea258e12d8f651aa3d9174d5f705c3b))
+
+### 🎨 Styling
+- *(seerorig)* Format restored settings controls - ([d295519](https://github.com/snapetech-org/seerrng/commit/d295519235e03a4ecf5f73a959d4213b6c99f646))
+- *(seerorig)* Align collection details with upstream - ([6d3fd47](https://github.com/snapetech-org/seerrng/commit/6d3fd47d332a25b9bcbbd1900ce2c39e8ecf54f1))
+- *(seerorig)* Restore upstream person page hierarchy - ([6d2f55c](https://github.com/snapetech-org/seerrng/commit/6d2f55cdfb3b1c804ab582b763a2531ed227cf55))
+- *(seerorig)* Match upstream media detail pages - ([a92a8f9](https://github.com/snapetech-org/seerrng/commit/a92a8f99208e04673fb9582ed5071ecabb849ec2))
+- *(seerorig)* Align request list controls with upstream - ([5923edd](https://github.com/snapetech-org/seerrng/commit/5923edd8ad95e53650a4931de43072b9d0c5c175))
+- *(seerorig)* Match upstream search presentation - ([f5fa811](https://github.com/snapetech-org/seerrng/commit/f5fa8119a39dc74c9dc8290f2984cea736012641))
+- *(seerorig)* Retain SeerrNG branding - ([c463fed](https://github.com/snapetech-org/seerrng/commit/c463fed19370766cfd7c57323f68908154aea3e4))
+- *(seerorig)* Restore upstream branding and settings layout - ([6a94a8a](https://github.com/snapetech-org/seerrng/commit/6a94a8a6269fd70e692468f66026fe5435c35cae))
+- *(seerorig)* Align Discover with upstream - ([46ebcb4](https://github.com/snapetech-org/seerrng/commit/46ebcb49074195b23b264b6fc626ae59b4223453))
+- *(seerorig)* Restore upstream header and palette - ([1a1e566](https://github.com/snapetech-org/seerrng/commit/1a1e566d79fe79a220ca87192b889fca27ab0f3f))
+- *(seerorig)* Align upstream sidebar navigation - ([44b2ad3](https://github.com/snapetech-org/seerrng/commit/44b2ad33c185b4f1e53aea8da77731da8bb61e33))
+
+### 🧪 Testing
+- *(lumen)* Cover the page review fixes - ([5a41b56](https://github.com/snapetech-org/seerrng/commit/5a41b56756ff0489f32d3fffe35ba4281057221f))
+- *(lumen)* Drop saved answers before reloads that expect a fresh read - ([8969e91](https://github.com/snapetech-org/seerrng/commit/8969e91480151bba9649ef852365ca9b38ffc79f))
+- *(lumen)* Browser tests for settings, poster, list, cover and Plex sign-in fixes - ([db433a8](https://github.com/snapetech-org/seerrng/commit/db433a88a8d6d1299900ae1e406aa1f7c8ee9d98))
+- *(lumen)* Wait for preference persistence between toggles - ([72981e9](https://github.com/snapetech-org/seerrng/commit/72981e944929851d8cfd406ceae7a60488bfffbb))
+- *(lumen)* Set theme before checking persisted preference - ([ffa88f6](https://github.com/snapetech-org/seerrng/commit/ffa88f6dd013bc062f07fb041e870b22e3120202))
+
+### ⚙️ Miscellaneous Tasks
+- *(i18n)* Refresh readarr API source map - ([0b61795](https://github.com/snapetech-org/seerrng/commit/0b6179570bcf33c8ea1f8963066efedc9ee9f04e))
+- Remove obsolete private gVisor runner route - ([58a186b](https://github.com/snapetech-org/seerrng/commit/58a186bea3198b53be4687d94cb84c2c09e6b307))
+
 ## [3.72.34](https://github.com/snapetech-org/seerrng/compare/v3.72.33..v3.72.34) - 2026-11-13
 
 ### User-facing changes
