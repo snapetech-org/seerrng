@@ -21,7 +21,6 @@ import useDiscoverScrollRestoration from '@app/hooks/useDiscoverScrollRestoratio
 import { useSearchActivityReporter } from '@app/hooks/useSearchActivity';
 import useUpstreamTheme from '@app/hooks/useUpstreamTheme';
 import { Permission, useUser } from '@app/hooks/useUser';
-import ErrorPage from '@app/pages/_error';
 import defineMessages from '@app/utils/defineMessages';
 import type { ProductionCompany } from '@server/models/common';
 import type { MovieResult } from '@server/models/Search';
@@ -102,10 +101,6 @@ const DiscoverMovies = ({
     (studio?.logoPath
       ? `https://image.tmdb.org/t/p/original${studio.logoPath}`
       : undefined);
-
-  if (upstream && discover.error) {
-    return <ErrorPage statusCode={500} />;
-  }
 
   return (
     <>

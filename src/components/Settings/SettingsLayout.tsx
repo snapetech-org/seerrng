@@ -17,10 +17,7 @@ import { Permission, useUser } from '@app/hooks/useUser';
 import globalMessages from '@app/i18n/globalMessages';
 import defineMessages from '@app/utils/defineMessages';
 import { Transition } from '@headlessui/react';
-import {
-  ChevronDownIcon,
-  MagnifyingGlassIcon,
-} from '@heroicons/react/24/solid';
+import { MagnifyingGlassIcon } from '@heroicons/react/24/solid';
 import { MediaServerType, ServerType } from '@server/constants/server';
 import { useRouter } from 'next/router';
 import type { ReactNode } from 'react';
@@ -688,12 +685,7 @@ const SettingsLayoutContent = ({ children }: SettingsLayoutProps) => {
         <OptionalDisclosure
           enabled={upstream}
           open={shouldOpenSettingsMore || undefined}
-          label={
-            <>
-              <span>{intl.formatMessage(messages.moreSettings)}</span>
-              <ChevronDownIcon aria-hidden="true" />
-            </>
-          }
+          label={<span>{intl.formatMessage(messages.moreSettings)}</span>}
           className="upstream-extra-tools upstream-extra-tools--compact"
         >
           {visibleExtensionSettingsRoutes.length > 0 && (

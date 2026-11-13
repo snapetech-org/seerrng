@@ -257,7 +257,7 @@
 :is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
   .page-title {
   background: none;
-  color: #fff;
+  color: var(--interface-accent-b-bright);
   -webkit-text-fill-color: currentColor;
   font-size: 24px;
   line-height: 32px;

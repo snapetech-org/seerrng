@@ -5,6 +5,6 @@ area: interface
 action: none
 breaking: false
 ---
-SeerrOrig global settings follow upstream's single-form layout and include Hide Requested Media. SeerrNG-only settings remain available in labeled disclosures.
+SeerrOrig global settings show the upstream General Settings heading. More Settings stays compact, with SeerrNG-only controls in disclosures.
 
-Source: [Seerr v3.5.1](https://github.com/seerr-team/seerr/commit/564bfb08b54caa374bddaf820abfd226e5e69151), contributed to upstream by [@gauthier-th](https://github.com/gauthier-th); SeerrNG independently adapted the presentation.
+Source: [Seerr v3.5.1](https://github.com/seerr-team/seerr/commit/564bfb08b54caa374bddaf820abfd226e5e69151), contributed upstream by [@gauthier-th](https://github.com/gauthier-th); SeerrNG independently adapted it.

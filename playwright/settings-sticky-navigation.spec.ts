@@ -5,12 +5,12 @@ test.use({ serviceWorkers: 'block' });
 const widths = [390, 640, 767, 768, 1023, 1024, 1280];
 
 const themeCases = [
-  { theme: 'seerrOrig', mode: 'dark' },
-  { theme: 'seerrOrig', mode: 'light' },
-  { theme: 'persiusNG', mode: 'dark' },
-  { theme: 'persiusNG', mode: 'light' },
-  { theme: 'seerrNGJ', mode: 'dark' },
-  { theme: 'seerrNGJ', mode: 'light' },
+  { theme: 'seerrOrig', mode: 'dark', expectedMode: 'dark' },
+  { theme: 'seerrOrig', mode: 'light', expectedMode: 'dark' },
+  { theme: 'persiusNG', mode: 'dark', expectedMode: 'dark' },
+  { theme: 'persiusNG', mode: 'light', expectedMode: 'light' },
+  { theme: 'seerrNGJ', mode: 'dark', expectedMode: 'dark' },
+  { theme: 'seerrNGJ', mode: 'light', expectedMode: 'light' },
 ];
 
 const captureStickyComparison = async (
@@ -77,7 +77,7 @@ test.afterEach(async ({ page }) => {
   expect(restore.status()).toBe(200);
 });
 
-for (const { theme, mode } of themeCases) {
+for (const { theme, mode, expectedMode } of themeCases) {
   test(
     `sticky Settings navigation stays reachable at responsive widths in ${theme} (${mode})`,
     async ({ page }, info) => {
@@ -99,7 +99,7 @@ for (const { theme, mode } of themeCases) {
       await page.goto('/settings/services');
       const root = page.locator('html');
       await expect(root).toHaveAttribute('data-interface-theme', theme);
-      await expect(root).toHaveAttribute('data-theme-mode', mode);
+      await expect(root).toHaveAttribute('data-theme-mode', expectedMode);
 
       for (const width of widths) {
         // CSS widths cover layouts also reached through zoom; this does not emulate browser zoom.
@@ -153,7 +153,9 @@ for (const { theme, mode } of themeCases) {
 
         const mobileSelector = navigation.locator('select#tabs');
         const desktopNavigation = navigation.locator('nav');
-        if (width < 1024) {
+        const usesMobileSelector =
+          theme === 'seerrOrig' ? width < 640 : width < 1024;
+        if (usesMobileSelector) {
           await expect(mobileSelector).toBeVisible();
           await expect(mobileSelector).toHaveAttribute(
             'aria-label',

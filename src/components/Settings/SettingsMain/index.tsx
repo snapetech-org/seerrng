@@ -312,6 +312,16 @@ const SettingsMain = () => {
           intl.formatMessage(globalMessages.settings),
         ]}
       />
+      {upstream && (
+        <div className="mb-6">
+          <h3 className="heading">
+            {intl.formatMessage(messages.generalsettings)}
+          </h3>
+          <p className="description">
+            {intl.formatMessage(messages.generalsettingsDescription)}
+          </p>
+        </div>
+      )}
       <Formik
         initialValues={{
           applicationTitle: data?.applicationTitle,
