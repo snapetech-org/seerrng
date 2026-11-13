@@ -48,6 +48,11 @@ spacing and typography. This source is part of the upstream v3.5.1 release
 contributed to Seerr by [@gauthier-th](https://github.com/gauthier-th); SeerrNG
 independently adapted the header presentation, without implying direct
 contribution to or endorsement of SeerrNG.
+The SeerrNG-only release calendar reuses the upstream v3.5.1 shared Header,
+Alert, Badge, and control roles. These controls come from sources contributed to
+upstream Seerr by [@gauthier-th](https://github.com/gauthier-th); SeerrNG
+independently applied their presentation to its own calendar data, without
+implying direct contribution to or endorsement of SeerrNG.
 The Issues list and movie/TV issue-detail composition are adapted from
 upstream's [`IssueList`](https://github.com/seerr-team/seerr/blob/564bfb08b54caa374bddaf820abfd226e5e69151/src/components/IssueList/index.tsx),
 [`IssueItem`](https://github.com/seerr-team/seerr/blob/564bfb08b54caa374bddaf820abfd226e5e69151/src/components/IssueList/IssueItem/index.tsx),
