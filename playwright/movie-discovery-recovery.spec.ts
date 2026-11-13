@@ -161,16 +161,13 @@ test('movie discovery retains loaded titles when revalidation is denied', async 
     .first();
   await expect(title).toBeVisible();
   denied = true;
-  // Reconnection revalidates the same cache key after SWR's de-duplication window.
+  // Let Chromium deliver both connection-change events before checking SWR revalidation.
+  await page.context().setOffline(true);
+  await expect.poll(() => page.evaluate(() => navigator.onLine)).toBe(false);
+  await page.context().setOffline(false);
+  await expect.poll(() => page.evaluate(() => navigator.onLine)).toBe(true);
   await expect
-    .poll(
-      async () => {
-        await page.context().setOffline(true);
-        await page.context().setOffline(false);
-        return failures;
-      },
-      { timeout: 10_000, intervals: [250, 500, 1000] }
-    )
+    .poll(() => failures, { timeout: 10_000, intervals: [250, 500, 1000] })
     .toBeGreaterThan(0);
   await expect(
     page.getByRole('alert').filter({ hasText: 'Movies Could Not Be Loaded' })
