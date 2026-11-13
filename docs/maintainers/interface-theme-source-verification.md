@@ -78,6 +78,8 @@ The Upcoming Movies route uses the same upstream heading spacing and error fallb
 
 Settings use upstream tabs, ordering, breakpoints, spacing, and page wrapper.
 SeerrNG-only settings and tools remain under “More settings.”
+The global settings page uses upstream's single-form hierarchy and shared-control
+order; SeerrNG-only policies and integrations remain in labeled disclosures.
 
 Search uses upstream's heading and result-list presentation. Fork-only catalog
 categories and advanced filters remain under “More search options.” The
@@ -149,13 +151,13 @@ remain reachable in collapsed extension sections under SeerrOrig.
 The linked-accounts page keeps upstream media-server account cards and the primary link menu; OIDC and discovery-provider integrations move into a collapsed extension area.
 
 The November 13 settings work also changes SeerrOrig's route tabs and
-collapsible fork-only settings on notification, general profile, permission,
-and linked-account pages. No matched rendered reference, fixture data, state,
-or candidate comparison has been recorded for `/settings/notifications/email`,
-`/profile/settings/main`, `/profile/settings/permissions`, or
-`/profile/settings/linked-accounts` at phone or desktop widths. These routes
-remain visually unverified; source review and the earlier exploratory captures
-do not qualify them.
+collapsible fork-only settings on the global settings, notification, general
+profile, permission, and linked-account pages. No matched rendered reference,
+fixture data, state, or candidate comparison has been recorded for
+`/settings/main`, `/settings/notifications/email`, `/profile/settings/main`,
+`/profile/settings/permissions`, or `/profile/settings/linked-accounts` at phone
+or desktop widths. These routes remain visually unverified; source review and
+the earlier exploratory captures do not qualify them.
 
 Common buttons, badges, alerts, page headers, and dialogs now switch to
 upstream's shared-control presentation when SeerrOrig is selected. SeerrNG's
@@ -201,7 +203,7 @@ fixture data. The page content therefore does not match, so the captures are
 exploratory and are not visual acceptance evidence.
 
 Matched route, data, UI-state, and viewport comparisons remain incomplete for
-both SeerrOrig and SeerrNGJ. No release or merge decision should treat this
+both SeerrOrig and SeerrNG. No release or merge decision should treat this
 source-level review or the exploratory renders as visual acceptance. Keep this
 pull request in draft until the required representative route families,
 responsive sizes, and interaction states have matching rendered comparisons

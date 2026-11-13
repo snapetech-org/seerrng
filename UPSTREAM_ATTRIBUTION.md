@@ -1,6 +1,6 @@
 # Upstream source attribution
 
-This ledger publicly credits 196 source records from [seerr-team/seerr](https://github.com/seerr-team/seerr) that informed implemented behavior, maintained documentation, release notes, or active plans in this fork.
+This ledger publicly credits 197 source records from [seerr-team/seerr](https://github.com/seerr-team/seerr) that informed implemented behavior, maintained documentation, release notes, or active plans in this fork.
 
 The linked people made their reports, suggestions, discussions, or code contributions to the upstream project. This is source credit only: it does not claim that they contributed directly to this fork, endorsed it, or participated in the fork integration.
 
@@ -11,24 +11,24 @@ The [feature comparison](./docs/feature-comparison.md) links these source credit
 SeerrOrig's native layout and presentation are based on the Seerr v3.5.1 source
 snapshot at [`564bfb08b54caa374bddaf820abfd226e5e69151`](https://github.com/seerr-team/seerr/tree/564bfb08b54caa374bddaf820abfd226e5e69151).
 SeerrOrig's shared movie, TV, and collection poster-card presentation is aligned
-with upstream's [\`TitleCard\`](https://github.com/seerr-team/seerr/blob/564bfb08b54caa374bddaf820abfd226e5e69151/src/components/TitleCard/index.tsx)
+with upstream's [`TitleCard`](https://github.com/seerr-team/seerr/blob/564bfb08b54caa374bddaf820abfd226e5e69151/src/components/TitleCard/index.tsx)
 and its poster badge and status presentation. SeerrNG poster actions and
 additional media metadata remain available, and SeerrNG logos and brand assets
 remain in use. This presentation comes from the upstream v3.5.1 source
 contributed to Seerr by [@gauthier-th](https://github.com/gauthier-th); SeerrNG
 independently adapted it, without implying direct contribution to or endorsement
 of SeerrNG.
-SeerrOrig's movie and TV request rows follow upstream's [\`RequestItem\`](https://github.com/seerr-team/seerr/blob/564bfb08b54caa374bddaf820abfd226e5e69151/src/components/RequestList/RequestItem/index.tsx)
+SeerrOrig's movie and TV request rows follow upstream's [`RequestItem`](https://github.com/seerr-team/seerr/blob/564bfb08b54caa374bddaf820abfd226e5e69151/src/components/RequestList/RequestItem/index.tsx)
 layout and backdrop treatment. SeerrNG's extra media types, failure details, and
 request actions remain available. This layout comes from the upstream v3.5.1
 source contributed to Seerr by [@gauthier-th](https://github.com/gauthier-th);
 SeerrNG independently adapted it, without implying direct contribution to or
 endorsement of SeerrNG.
 Public sign-in and password-recovery presentation also follows upstream's
-[\`Login\`](https://github.com/seerr-team/seerr/blob/564bfb08b54caa374bddaf820abfd226e5e69151/src/components/Login/index.tsx),
-[\`ResetPassword\`](https://github.com/seerr-team/seerr/blob/564bfb08b54caa374bddaf820abfd226e5e69151/src/components/ResetPassword/index.tsx),
-[\`RequestResetLink\`](https://github.com/seerr-team/seerr/blob/564bfb08b54caa374bddaf820abfd226e5e69151/src/components/ResetPassword/RequestResetLink.tsx),
-and [\`ImageFader\`](https://github.com/seerr-team/seerr/blob/564bfb08b54caa374bddaf820abfd226e5e69151/src/components/Common/ImageFader/index.tsx)
+[`Login`](https://github.com/seerr-team/seerr/blob/564bfb08b54caa374bddaf820abfd226e5e69151/src/components/Login/index.tsx),
+[`ResetPassword`](https://github.com/seerr-team/seerr/blob/564bfb08b54caa374bddaf820abfd226e5e69151/src/components/ResetPassword/index.tsx),
+[`RequestResetLink`](https://github.com/seerr-team/seerr/blob/564bfb08b54caa374bddaf820abfd226e5e69151/src/components/ResetPassword/RequestResetLink.tsx),
+and [`ImageFader`](https://github.com/seerr-team/seerr/blob/564bfb08b54caa374bddaf820abfd226e5e69151/src/components/Common/ImageFader/index.tsx)
 composition. SeerrNG's own logo, transport-security notice, and additional sign-in
 methods remain in use. These presentation patterns come from the upstream v3.5.1
 sources contributed to Seerr by [@gauthier-th](https://github.com/gauthier-th);
@@ -270,10 +270,11 @@ The source files below come from the Seerr v3.5.1 snapshot prepared for the upst
 - [Seerr v3.5.1 UserGeneralSettings component source code](https://github.com/seerr-team/seerr/blob/564bfb08b54caa374bddaf820abfd226e5e69151/src/components/UserProfile/UserSettings/UserGeneralSettings/index.tsx) — informed SeerrOrig's profile form order and primary controls, while SeerrNG-only settings remain available in collapsed extension sections. The linked source snapshot was authored and contributed to upstream Seerr by [@gauthier-th](https://github.com/gauthier-th); SeerrNG independently adapted the presentation while preserving settings behavior, without implying direct contribution to or endorsement of SeerrNG.
 - [Seerr v3.5.1 UserPermissions component source code](https://github.com/seerr-team/seerr/blob/564bfb08b54caa374bddaf820abfd226e5e69151/src/components/UserProfile/UserSettings/UserPermissions/index.tsx) — informed SeerrOrig's primary permission-editor hierarchy; SeerrNG age restrictions and per-service request grants remain available in a collapsed extension section. The linked source snapshot was authored and contributed to upstream Seerr by [@gauthier-th](https://github.com/gauthier-th); SeerrNG independently adapted the presentation and retained existing authorization behavior, without implying direct contribution to or endorsement of SeerrNG.
 - [Seerr v3.5.1 UserLinkedAccountsSettings component source code](https://github.com/seerr-team/seerr/blob/564bfb08b54caa374bddaf820abfd226e5e69151/src/components/UserProfile/UserSettings/UserLinkedAccountsSettings/index.tsx) — informed SeerrOrig's linked media-server account cards and primary link menu; SeerrNG identity providers and discovery integrations remain available in a collapsed extension area. The linked source snapshot was authored and contributed to upstream Seerr by [@gauthier-th](https://github.com/gauthier-th); SeerrNG independently adapted the presentation and preserved account actions, without implying direct contribution to or endorsement of SeerrNG.
+- [Seerr v3.5.1 SettingsMain source](https://github.com/seerr-team/seerr/blob/564bfb08b54caa374bddaf820abfd226e5e69151/src/components/Settings/SettingsMain/index.tsx) — used to restore SeerrOrig's global settings form hierarchy and shared-control order; SeerrNG-only policies and integrations remain reachable through labeled disclosures. This source is part of the upstream v3.5.1 release contributed to Seerr by [@gauthier-th](https://github.com/gauthier-th); SeerrNG independently adapted it without implying direct contribution to or endorsement of SeerrNG.
 
 ## Referenced or in-progress upstream sources
 
 These additional records are cited by maintained fork source, documentation, release notes, or plans. They are credited as idea/provenance sources without claiming complete implementation.
 
 
-_Attribution ledger refreshed 2026-11-13; 196 source records._
+_Attribution ledger refreshed 2026-11-13; 197 source records._
