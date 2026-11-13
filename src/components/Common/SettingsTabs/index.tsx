@@ -1,4 +1,5 @@
 import { useUser } from '@app/hooks/useUser';
+import useUpstreamTheme from '@app/hooks/useUpstreamTheme';
 import defineMessages from '@app/utils/defineMessages';
 import type { Permission } from '@server/lib/permissions';
 import { hasPermission } from '@server/lib/permissions';
@@ -28,6 +29,7 @@ type SettingsLinkProps = {
   route: string;
   regex: RegExp;
   hidden?: boolean;
+  upstreamTheme: boolean;
   children: React.ReactNode;
 };
 
@@ -38,21 +40,29 @@ const SettingsLink = ({
   route,
   regex,
   hidden = false,
+  upstreamTheme,
 }: SettingsLinkProps) => {
   if (hidden) {
     return null;
   }
 
-  let linkClasses =
-    'px-1 py-4 ms-8 text-sm font-medium leading-5 transition duration-300 border-b-2 border-transparent whitespace-nowrap first:ms-0';
+  let linkClasses = upstreamTheme
+    ? 'px-1 py-4 ml-8 text-sm font-medium leading-5 transition duration-300 border-b-2 border-transparent whitespace-nowrap first:ml-0'
+    : 'px-1 py-4 ms-8 text-sm font-medium leading-5 transition duration-300 border-b-2 border-transparent whitespace-nowrap first:ms-0';
   let activeLinkColor = 'text-indigo-500 border-indigo-600';
   let inactiveLinkColor =
     'text-gray-500 border-transparent hover:text-gray-300 hover:border-gray-400 focus:text-gray-300 focus:border-gray-400';
 
   if (tabType === 'button') {
-    linkClasses = 'app-filter-button whitespace-nowrap';
-    activeLinkColor = 'app-filter-button-active';
-    inactiveLinkColor = 'app-filter-button-idle';
+    linkClasses = upstreamTheme
+      ? 'px-3 py-2 text-sm font-medium transition duration-300 rounded-md whitespace-nowrap mx-2 my-1'
+      : 'app-filter-button whitespace-nowrap';
+    activeLinkColor = upstreamTheme
+      ? 'bg-indigo-700'
+      : 'app-filter-button-active';
+    inactiveLinkColor = upstreamTheme
+      ? 'bg-gray-800 hover:bg-gray-700 focus:bg-gray-700'
+      : 'app-filter-button-idle';
   }
 
   if (tabType === 'filter') {
@@ -78,20 +88,18 @@ const SettingsTabs = ({
   tabType = 'default',
   settingsRoutes,
   compactOnNarrowScreens = false,
-  isRouteVisible,
 }: {
   tabType?: 'default' | 'button' | 'filter';
   settingsRoutes: SettingsRoute[];
   compactOnNarrowScreens?: boolean;
-  isRouteVisible?: (route: SettingsRoute) => boolean;
 }) => {
   const intl = useIntl();
   const router = useRouter();
+  const upstreamTheme = useUpstreamTheme();
   const { user: currentUser } = useUser();
   const visibleSettingsRoutes = settingsRoutes.filter(
     (route) =>
       !route.hidden &&
-      (isRouteVisible ? isRouteVisible(route) : true) &&
       (route.requiredPermission
         ? hasPermission(
             route.requiredPermission,
@@ -152,13 +160,16 @@ const SettingsTabs = ({
             className={
               tabType === 'filter'
                 ? 'flex w-full min-w-0 flex-wrap justify-between gap-[5px]'
-                : 'flex flex-wrap gap-[5px]'
+                : upstreamTheme
+                  ? '-mx-2 -my-1 flex flex-wrap'
+                  : 'flex flex-wrap gap-[5px]'
             }
             aria-label={intl.formatMessage(messages.tabs)}
           >
             {visibleSettingsRoutes.map((route, index) => (
               <SettingsLink
                 tabType={tabType}
+                upstreamTheme={upstreamTheme}
                 currentPath={router.pathname}
                 route={route.route}
                 regex={route.regex}
@@ -180,6 +191,7 @@ const SettingsTabs = ({
             {visibleSettingsRoutes.map((route, index) => (
               <SettingsLink
                 tabType={tabType}
+                upstreamTheme={upstreamTheme}
                 currentPath={router.pathname}
                 route={route.route}
                 regex={route.regex}

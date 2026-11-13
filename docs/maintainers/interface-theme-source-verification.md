@@ -131,6 +131,10 @@ controls in SeerrOrig. Main movie and series discovery show upstream's plain
 error fallback; SeerrNG's retry panel and multi-catalog trending tabs stay in
 the native theme.
 
+Notification settings use upstream's page heading and provider-tab button
+spacing in SeerrOrig. The SeerrNG-only Apprise provider remains available from
+the collapsed “More settings” route list.
+
 Common buttons, badges, alerts, page headers, and dialogs now switch to
 upstream's shared-control presentation when SeerrOrig is selected. SeerrNG's
 own variants and behavior remain active in its native theme.
