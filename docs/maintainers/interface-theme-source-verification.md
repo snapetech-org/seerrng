@@ -143,6 +143,7 @@ User general settings keep the upstream account, language, discovery, request-li
 and Plex watchlist controls in upstream order. SeerrNG-only language preferences,
 media limits, watchlist integrations, display options, and account integrations
 remain reachable in collapsed extension sections under SeerrOrig.
+The linked-accounts page keeps upstream media-server account cards and the primary link menu; OIDC and discovery-provider integrations move into a collapsed extension area.
 
 Common buttons, badges, alerts, page headers, and dialogs now switch to
 upstream's shared-control presentation when SeerrOrig is selected. SeerrNG's
