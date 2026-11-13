@@ -1,5 +1,5 @@
 ---
-category: fixes
+category: fixed
 audience: users
 area: localization
 action: none
