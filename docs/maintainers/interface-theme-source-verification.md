@@ -208,6 +208,12 @@ The review workspace has a production-mode candidate server and installed
 frontend dependencies. Existing candidate captures cover only `/movie/550` and
 `/discover/movies`; they do not validate the later settings-route changes.
 
+The current checkout cannot reproduce that review setup. It runs Node
+24.22.1, while `package.json` requires `^24.22.2`; the available offline pnpm
+store also lacks `@anthropic-ai/sdk@0.131.0`. The frozen offline install stops
+at that missing archive, so this checkout cannot start a candidate app for
+matched route rendering. No dependency or lockfile changes were made.
+
 An earlier candidate render at 390 × 844 CSS pixels captured `/movie/550` and
 `/discover/movies`; the SeerrOrig theme was selected. Captures are retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-pr663-visual-qa-20261113/candidate-390-movie-550-page.png`
