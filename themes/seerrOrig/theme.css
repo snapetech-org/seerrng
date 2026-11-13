@@ -2121,3 +2121,99 @@
   svg {
   filter: none;
 }
+
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .settings-page-navigation-row {
+  margin-top: 24px;
+}
+
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .upstream-settings-content {
+  margin-top: 40px;
+  color: #fff;
+}
+
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .upstream-settings-more {
+  margin-top: 16px;
+  color: #d1d5db;
+  font-size: 14px;
+}
+
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .upstream-settings-more
+  > summary {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 36px;
+  padding: 0 10px;
+  border: 1px solid #4b5563;
+  border-radius: 4px;
+  background: #1f2937;
+  color: #d1d5db;
+  cursor: pointer;
+  list-style: none;
+}
+
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .upstream-settings-more
+  > summary::-webkit-details-marker {
+  display: none;
+}
+
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .upstream-settings-more
+  > summary
+  svg {
+  width: 16px;
+  height: 16px;
+  transition: transform 150ms ease;
+}
+
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .upstream-settings-more[open]
+  > summary
+  svg {
+  transform: rotate(180deg);
+}
+
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .upstream-settings-more-content {
+  display: grid;
+  gap: 16px;
+  margin-top: 12px;
+}
+
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .upstream-settings-more-content
+  nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+}
+
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .upstream-settings-more-content
+  nav
+  a {
+  color: #9ca3af;
+  text-decoration: none;
+}
+
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .upstream-settings-more-content
+  nav
+  a:hover,
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .upstream-settings-more-content
+  nav
+  a[aria-current='page'] {
+  color: #6366f1;
+}
+
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .upstream-settings-more-content
+  .settings-page-search {
+  margin-top: 0;
+}

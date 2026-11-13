@@ -16,8 +16,12 @@ import { Permission, useUser } from '@app/hooks/useUser';
 import globalMessages from '@app/i18n/globalMessages';
 import defineMessages from '@app/utils/defineMessages';
 import { Transition } from '@headlessui/react';
-import { MagnifyingGlassIcon } from '@heroicons/react/24/solid';
+import {
+  ChevronDownIcon,
+  MagnifyingGlassIcon,
+} from '@heroicons/react/24/solid';
 import { MediaServerType, ServerType } from '@server/constants/server';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import type { ReactNode } from 'react';
 import {
@@ -48,6 +52,7 @@ const messages = defineMessages('components.Settings', {
   menuMetadataProviders: 'Metadata Providers',
   menuDiscoveryIntegrations: 'Discovery Integrations',
   searchSettings: 'Search Settings',
+  moreSettings: 'More settings',
   save: 'Save',
   discard: 'Discard',
   unsavedChanges: 'Unsaved Changes',
@@ -222,6 +227,37 @@ const SettingsLayoutContent = ({ children }: SettingsLayoutProps) => {
       regex: /^\/settings\/about/,
     },
   ];
+  const upstreamSettingsPaths = new Set([
+    '/settings/main',
+    '/settings/users',
+    '/settings/plex',
+    '/settings/jellyfin',
+    '/settings/services',
+    '/settings/network',
+    '/settings/metadata',
+    '/settings/notifications/email',
+    '/settings/logs',
+    '/settings/jobs',
+    '/settings/about',
+  ]);
+  const upstreamSettingsRoutes = settingsRoutes.filter((route) =>
+    upstreamSettingsPaths.has(route.route)
+  );
+  const extensionSettingsRoutes = settingsRoutes.filter(
+    (route) => !upstreamSettingsPaths.has(route.route)
+  );
+  const visibleExtensionSettingsRoutes = extensionSettingsRoutes.filter(
+    (route) =>
+      !route.requiredPermission ||
+      hasPermission(route.requiredPermission, {
+        type: route.permissionType?.type ?? 'and',
+      })
+  );
+  const shouldOpenSettingsMore =
+    visibleExtensionSettingsRoutes.some((route) =>
+      router.pathname.match(route.regex)
+    ) ||
+    Boolean(router.query.settingsSearch || router.query.settingsSearchTarget);
 
   const setDirty = (dirty: boolean) => {
     dirtyRef.current = dirty;
@@ -534,6 +570,32 @@ const SettingsLayoutContent = ({ children }: SettingsLayoutProps) => {
     });
   };
 
+  const settingsTools = (
+    <div
+      className="app-action-row settings-page-controls"
+      data-action-placement="leading"
+    >
+      <form
+        className="discover-filter-control settings-page-search"
+        onSubmit={handleSettingsSearch}
+      >
+        <span className="discover-filter-control-label gap-1.5">
+          <MagnifyingGlassIcon className="h-4 w-4" aria-hidden="true" />
+          {intl.formatMessage(messages.searchSettings)}
+        </span>
+        <input
+          type="search"
+          disabled={permissionsLoading}
+          value={keywordSearch}
+          onChange={(event) => setKeywordSearch(event.target.value)}
+          aria-label={intl.formatMessage(messages.searchSettings)}
+          className="settings-page-search-input"
+        />
+      </form>
+      <SettingsDisplayControl />
+    </div>
+  );
+
   useEffect(() => {
     const targetId = router.query.settingsSearchTarget;
     if (!router.isReady || typeof targetId !== 'string') return;
@@ -613,40 +675,52 @@ const SettingsLayoutContent = ({ children }: SettingsLayoutProps) => {
       {!upstream && (
         <Header>{intl.formatMessage(globalMessages.settings)}</Header>
       )}
-      <div
-        className="settings-page-navigation-row"
-      >
+      <div className="settings-page-navigation-row">
         <SettingsTabs
           tabType={upstream ? 'default' : 'filter'}
-          settingsRoutes={settingsRoutes}
-          compactOnNarrowScreens
+          settingsRoutes={upstream ? upstreamSettingsRoutes : settingsRoutes}
+          compactOnNarrowScreens={!upstream}
         />
-        <div
-          className="app-action-row settings-page-controls"
-          data-action-placement="leading"
-        >
-          <form
-            className="discover-filter-control settings-page-search"
-            onSubmit={handleSettingsSearch}
-          >
-            <span className="discover-filter-control-label gap-1.5">
-              <MagnifyingGlassIcon className="h-4 w-4" aria-hidden="true" />
-              {intl.formatMessage(messages.searchSettings)}
-            </span>
-            <input
-              type="search"
-              disabled={permissionsLoading}
-              value={keywordSearch}
-              onChange={(event) => setKeywordSearch(event.target.value)}
-              aria-label={intl.formatMessage(messages.searchSettings)}
-              className="settings-page-search-input"
-            />
-          </form>
-          <SettingsDisplayControl />
-        </div>
+        {!upstream && settingsTools}
       </div>
 
-      <article className="app-card-main settings-main-card max-w-full min-w-0">
+      {upstream && (
+        <details
+          className="upstream-settings-more"
+          open={shouldOpenSettingsMore || undefined}
+        >
+          <summary>
+            <span>{intl.formatMessage(messages.moreSettings)}</span>
+            <ChevronDownIcon aria-hidden="true" />
+          </summary>
+          <div className="upstream-settings-more-content">
+            {visibleExtensionSettingsRoutes.length > 0 && (
+              <nav aria-label={intl.formatMessage(messages.moreSettings)}>
+                {visibleExtensionSettingsRoutes.map((route) => (
+                  <Link
+                    href={route.route}
+                    key={route.route}
+                    aria-current={
+                      router.pathname.match(route.regex) ? 'page' : undefined
+                    }
+                  >
+                    {route.text}
+                  </Link>
+                ))}
+              </nav>
+            )}
+            {settingsTools}
+          </div>
+        </details>
+      )}
+
+      <article
+        className={`${
+          upstream
+            ? 'upstream-settings-content'
+            : 'app-card-main settings-main-card'
+        } max-w-full min-w-0`}
+      >
         <div
           ref={contentRef}
           className={`settings-page-content ${settingsLayoutStyles.settingsContent} ${
@@ -665,40 +739,46 @@ const SettingsLayoutContent = ({ children }: SettingsLayoutProps) => {
         >
           {children}
         </div>
-        <div className="settings-page-actions">
-          <Button
-            buttonType="danger"
-            buttonSize="standard"
-            onClick={discardAndLeave}
-            buttonIcon="cancel"
+        {(!upstream || hasUnsavedChanges || pageAction) && (
+          <div
+            className={`settings-page-actions ${
+              upstream ? 'upstream-settings-actions' : ''
+            }`}
           >
-            {intl.formatMessage(globalMessages.cancel)}
-          </Button>
-          {pageAction && (
             <Button
-              buttonType="success"
+              buttonType="danger"
               buttonSize="standard"
-              disabled={pageAction.disabled}
-              onClick={pageAction.onClick}
+              onClick={discardAndLeave}
+              buttonIcon="cancel"
             >
-              {pageAction.icon}
-              <span>{pageAction.label}</span>
+              {intl.formatMessage(globalMessages.cancel)}
             </Button>
-          )}
-          {hasSaveActions && (
-            <Button
-              data-testid="settings-save-button"
-              buttonType="success"
-              buttonSize="standard"
-              disabled={!hasUnsavedChanges || managedFormsSaving}
-              onClick={submitSettingsForms}
-            >
-              {intl.formatMessage(
-                managedFormsSaving ? globalMessages.saving : messages.save
-              )}
-            </Button>
-          )}
-        </div>
+            {pageAction && (
+              <Button
+                buttonType="success"
+                buttonSize="standard"
+                disabled={pageAction.disabled}
+                onClick={pageAction.onClick}
+              >
+                {pageAction.icon}
+                <span>{pageAction.label}</span>
+              </Button>
+            )}
+            {hasSaveActions && (
+              <Button
+                data-testid="settings-save-button"
+                buttonType="success"
+                buttonSize="standard"
+                disabled={!hasUnsavedChanges || managedFormsSaving}
+                onClick={submitSettingsForms}
+              >
+                {intl.formatMessage(
+                  managedFormsSaving ? globalMessages.saving : messages.save
+                )}
+              </Button>
+            )}
+          </div>
+        )}
       </article>
     </SettingsPageActionContext.Provider>
   );

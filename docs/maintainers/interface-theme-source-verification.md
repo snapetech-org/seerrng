@@ -137,3 +137,12 @@ the account's chosen palette and light/dark preference are preserved and resume
 when another design is selected. Fork destinations and slider configuration
 remain available through the existing SeerrNG routes and editor. These
 source-level changes have not yet been rendered or compared in a browser.
+
+The following slice now reuses Seerr v3.5.1's exact full and stacked logo SVGs
+for the SeerrOrig sidebar and sign-in page. The settings shell follows upstream's
+native tab list, order, breakpoints, spacing, and page wrapper. Fork-only
+settings routes, settings search, display preferences, and the shared save bar
+remain available through a collapsed “More settings” area or when edits need
+saving. The selected settings tab remains functional on narrow screens. This
+source-level alignment is not a visual acceptance result; matched route and
+viewport screenshots still need to be rendered.

@@ -54,6 +54,9 @@ const Sidebar = ({
   const { interfaceThemeDefinition } = useTheme();
   const persius = interfaceThemeDefinition.layout === 'persius';
   const upstream = interfaceThemeDefinition.layout === 'upstream';
+  const brandLogo = versionedAsset(
+    upstream ? '/logo_full_seerr.svg' : '/logo_full.svg'
+  );
   const { user, hasPermission } = useUser();
   const showBlocklistNavigation = useBlocklistNavigation();
   const { currentSettings } = useSettings();
@@ -316,7 +319,7 @@ const Sidebar = ({
                         <span className="w-full px-4 text-xl text-gray-50">
                           <Link href="/" className="relative block h-24 w-64">
                             <Image
-                              src={versionedAsset('/logo_full.svg')}
+                              src={brandLogo}
                               alt="Seerr"
                               fill
                               className="object-contain object-left rtl:object-right"
@@ -366,7 +369,7 @@ const Sidebar = ({
                   <span className="w-full px-4 py-2 text-2xl text-gray-50">
                     <Link href="/" className="relative block h-24">
                       <Image
-                        src={versionedAsset('/logo_full.svg')}
+                        src={brandLogo}
                         alt="Seerr"
                         fill
                         className="object-contain object-left rtl:object-right"
