@@ -1198,9 +1198,10 @@ const applyTheme = (
   const usesUpstreamAppearance = interfaceTheme === 'seerrOrig';
   const selectedThemeTokens = getThemeTokens(mode, palette);
   const themeTokens = usesUpstreamAppearance
-    ? getThemeTokens('dark', DEFAULT_THEME_PALETTE_ID)
+    ? getThemeTokens('dark', palette)
     : selectedThemeTokens;
-  const originalAccents = usesUpstreamAppearance;
+  const originalAccents =
+    usesUpstreamAppearance && palette === DEFAULT_THEME_PALETTE_ID;
   const primaryScale = originalAccents
     ? themeScales.indigo
     : themeTokens.primaryScale;
@@ -1223,6 +1224,49 @@ const applyTheme = (
   applyScale(document.documentElement, 'purple', secondaryScale);
   applyScale(document.documentElement, 'gray', themeTokens.surfaceScale);
   applyThemeChrome(document.documentElement, themeTokens);
+  if (palette === DEFAULT_THEME_PALETTE_ID) {
+    document.documentElement.style.removeProperty(
+      '--interface-accent-contrast'
+    );
+    document.documentElement.style.removeProperty(
+      '--interface-accent-b-contrast'
+    );
+  } else {
+    const white = '255 255 255';
+    const black = '0 0 0';
+    const accentBackgrounds = [
+      primaryScale[5],
+      primaryScale[6],
+      primaryScale[7],
+      secondaryScale[5],
+      secondaryScale[6],
+      secondaryScale[7],
+    ];
+    const whiteContrast = Math.min(
+      ...accentBackgrounds.map((accent) => getContrastRatio(white, accent))
+    );
+    const blackContrast = Math.min(
+      ...accentBackgrounds.map((accent) => getContrastRatio(black, accent))
+    );
+    document.documentElement.style.setProperty(
+      '--interface-accent-contrast',
+      whiteContrast >= blackContrast ? '#fff' : '#000'
+    );
+    const secondaryWhiteContrast = Math.min(
+      getContrastRatio(white, secondaryScale[5]),
+      getContrastRatio(white, secondaryScale[6]),
+      getContrastRatio(white, secondaryScale[7])
+    );
+    const secondaryBlackContrast = Math.min(
+      getContrastRatio(black, secondaryScale[5]),
+      getContrastRatio(black, secondaryScale[6]),
+      getContrastRatio(black, secondaryScale[7])
+    );
+    document.documentElement.style.setProperty(
+      '--interface-accent-b-contrast',
+      secondaryWhiteContrast >= secondaryBlackContrast ? '#fff' : '#000'
+    );
+  }
   const johnPreset = getAdvancedThemePreset('john-redesign');
   let effectiveOverrides = usesUpstreamAppearance ? null : overrides;
   let applyPresetChrome = !usesUpstreamAppearance;

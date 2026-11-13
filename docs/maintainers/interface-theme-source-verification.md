@@ -56,9 +56,23 @@ permissions to simplify a page.
 - The shared Header keeps its native page-title markup; the SeerrOrig theme package owns upstream title styling and responsive spacing.
 - The SeerrNG-only release calendar reuses SeerrOrig's upstream Header, alert, badge, control, and card presentation while retaining its cross-media release data.
 - SeerrNG logos and brand assets remain in use throughout SeerrOrig.
+- The color-palette picker is available in SeerrOrig, SeerrNGJ, and PersiusNG.
+  Non-default palettes recolor each package's existing surface and accent roles
+  while preserving its independent layout. Accent foregrounds adapt to palette
+  brightness; semantic success, warning, and error colors remain unchanged.
 
 Changing theme source styles requires rebuilding the packaged theme assets and
 restarting the application before visual comparison.
+
+## Native palette support — 2026-11-13
+
+The theme picker now exposes color palettes while SeerrOrig is active. Its
+default Seerr palette preserves the upstream v3.5.1 colors; alternate palettes
+flow through the package's upstream surface and accent roles. SeerrNGJ and
+PersiusNG apply the same user selection through their own independent style
+roles. The three native packages retain their separate geometry and semantic
+status colors. The implementation has not yet received matched rendered review
+across all three styles, so palette rendering remains unverified.
 
 ## SeerrOrig rebuild started 2026-11-12
 

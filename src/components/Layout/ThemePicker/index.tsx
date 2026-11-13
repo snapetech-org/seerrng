@@ -148,51 +148,47 @@ const ThemePicker = ({ triggerIcon }: { triggerIcon?: ReactNode } = {}) => {
               </Menu.Item>
             ))}
           </div>
-          {!upstreamAppearance && (
-            <>
-              <p className="px-1 pb-2 text-xs font-semibold tracking-wide text-gray-400 uppercase">
-                {intl.formatMessage(messages.colorPalette)}
-              </p>
-              <div className="scrollable-card grid max-h-96 grid-cols-2 gap-2 overflow-y-auto">
-                {themePalettes.map((themePalette) => (
-                  <Menu.Item
-                    key={themePalette.id}
-                    as="button"
-                    type="button"
-                    onClick={() => void choosePalette(themePalette.id)}
-                    disabled={!user || saving}
-                    aria-busy={saving}
-                    className={({ active }) =>
-                      `flex min-w-0 items-center rounded border px-2 py-2 text-start text-sm font-medium transition ${
-                        palette === themePalette.id
-                          ? 'border-indigo-500 bg-indigo-600/20 text-gray-100'
-                          : active
-                            ? 'border-gray-500 bg-gray-700 text-gray-100'
-                            : 'border-gray-700 bg-gray-900/60 text-gray-200'
-                      }`
-                    }
-                  >
-                    <span className="me-2 flex shrink-0 -space-x-1">
-                      {themePalette.swatches.map((swatch) => (
-                        <span
-                          key={`${themePalette.id}-${swatch}`}
-                          data-theme-swatch
-                          className="h-4 w-4 rounded-full border border-gray-950/30"
-                          style={{ backgroundColor: swatch }}
-                        />
-                      ))}
-                    </span>
-                    <span className="min-w-0 flex-1 truncate">
-                      {themePalette.name}
-                    </span>
-                    {palette === themePalette.id && (
-                      <CheckIcon className="ms-2 h-4 w-4 shrink-0 text-indigo-400" />
-                    )}
-                  </Menu.Item>
-                ))}
-              </div>
-            </>
-          )}
+          <p className="px-1 pb-2 text-xs font-semibold tracking-wide text-gray-400 uppercase">
+            {intl.formatMessage(messages.colorPalette)}
+          </p>
+          <div className="scrollable-card grid max-h-96 grid-cols-2 gap-2 overflow-y-auto">
+            {themePalettes.map((themePalette) => (
+              <Menu.Item
+                key={themePalette.id}
+                as="button"
+                type="button"
+                onClick={() => void choosePalette(themePalette.id)}
+                disabled={!user || saving}
+                aria-busy={saving}
+                className={({ active }) =>
+                  `flex min-w-0 items-center rounded border px-2 py-2 text-start text-sm font-medium transition ${
+                    palette === themePalette.id
+                      ? 'border-indigo-500 bg-indigo-600/20 text-gray-100'
+                      : active
+                        ? 'border-gray-500 bg-gray-700 text-gray-100'
+                        : 'border-gray-700 bg-gray-900/60 text-gray-200'
+                  }`
+                }
+              >
+                <span className="me-2 flex shrink-0 -space-x-1">
+                  {themePalette.swatches.map((swatch) => (
+                    <span
+                      key={`${themePalette.id}-${swatch}`}
+                      data-theme-swatch
+                      className="h-4 w-4 rounded-full border border-gray-950/30"
+                      style={{ backgroundColor: swatch }}
+                    />
+                  ))}
+                </span>
+                <span className="min-w-0 flex-1 truncate">
+                  {themePalette.name}
+                </span>
+                {palette === themePalette.id && (
+                  <CheckIcon className="ms-2 h-4 w-4 shrink-0 text-indigo-400" />
+                )}
+              </Menu.Item>
+            ))}
+          </div>
         </div>
       </Menu.Items>
     </Menu>
