@@ -134,6 +134,7 @@ class ReadarrScanner
   // Records of one format that share a work identity (duplicate Chaptarr
   // books) pool their file evidence: the record with the most files wins.
   private readarrWorkFileRecords = new Map<string, ReadarrBook>();
+  private readarrInventoryRecordKeys = new Set<string>();
   private scanItemsComplete = true;
   private didScan = false;
 
@@ -159,10 +160,49 @@ class ReadarrScanner
     }
     this.scannedIdentifierKeys.clear();
     this.scannedFormatKeys.clear();
+    this.readarrInventoryRecordKeys.clear();
     this.didScan = false;
     this.scanItemsComplete = true;
 
     try {
+      const requestedRecordKeys = new Set<string>();
+      const requests = await getRepository(MediaRequest).find({
+        where: {
+          type: MediaType.BOOK,
+          status: In([
+            MediaRequestStatus.PENDING,
+            MediaRequestStatus.APPROVED,
+            MediaRequestStatus.COMPLETED,
+          ]),
+        },
+        relations: { media: true },
+      });
+      for (const request of requests) {
+        for (const format of ['ebook', 'audiobook'] as const) {
+          if (
+            request.bookFormat !== 'both' &&
+            (request.bookFormat ?? 'ebook') !== format
+          )
+            continue;
+          const linked = getLinkedServiceRecordKey(request.media, format);
+          if (linked) requestedRecordKeys.add(linked);
+        }
+        for (const target of request.serviceTargets ?? []) {
+          if (
+            target.serviceType === 'readarr' &&
+            (target.format === 'ebook' || target.format === 'audiobook') &&
+            target.externalServiceId != null
+          ) {
+            requestedRecordKeys.add(
+              getServiceRecordKey(
+                target.serverId,
+                target.format,
+                target.externalServiceId
+              )
+            );
+          }
+        }
+      }
       this.servers = uniqWith(
         structuredClone(settings.readarr),
         (readarrA, readarrB) =>
@@ -219,10 +259,38 @@ class ReadarrScanner
                 mediaType:
                   current.serviceType === 'audiobook' ? 'audiobook' : 'ebook',
               });
-              return this.readarrApi.getBooks();
+              const books = await this.readarrApi.getBooks();
+              const format = this.getReadarrServiceType();
+              // Chaptarr includes an author's entire catalog. Keep its local
+              // inventory for absence checks, but enrich only tracked titles or
+              // actual files. Unknown file counts stay conservative.
+              for (const book of books) {
+                this.readarrInventoryRecordKeys.add(
+                  getServiceRecordKey(current.id, format, book.id)
+                );
+              }
+              return books.filter((book) => {
+                const fileCount = getObservedReadarrFileCount(book, format);
+                return (
+                  book.monitored ||
+                  fileCount === undefined ||
+                  fileCount > 0 ||
+                  requestedRecordKeys.has(
+                    getServiceRecordKey(current.id, format, book.id)
+                  )
+                );
+              });
             }
           );
           this.didScan = true;
+          this.log(
+            'Selected tracked and file-backed Bookshelf books.',
+            'info',
+            {
+              selectedBooks: this.items.length,
+              inventoryRecords: this.readarrInventoryRecordKeys.size,
+            }
+          );
           this.indexReadarrWorkFileRecords();
           await this.loop(
             async (book) =>
@@ -968,7 +1036,13 @@ class ReadarrScanner
         const orphanedProcessing =
           media.status === MediaStatus.PROCESSING &&
           identifierKeys.length > 0 &&
-          !identifierKeys.some((key) => this.scannedIdentifierKeys.has(key));
+          !identifierKeys.some((key) => this.scannedIdentifierKeys.has(key)) &&
+          !(['ebook', 'audiobook'] as const).some((format) => {
+            const linked = getLinkedServiceRecordKey(media, format);
+            return (
+              linked != null && this.readarrInventoryRecordKeys.has(linked)
+            );
+          });
         if (missingSources.length || orphanedProcessing) {
           const changed = await runMediaEntityMutation(media, () =>
             runWithServarrServiceSnapshots(
