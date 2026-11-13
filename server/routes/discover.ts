@@ -52,6 +52,10 @@ import type {
   WatchlistResponse,
 } from '@server/interfaces/api/discoverInterfaces';
 import {
+  getOpenLibraryDateSortClauses,
+  sortBookshelfBooks,
+} from '@server/lib/bookCatalogueSort';
+import {
   bookLanguageAllowed,
   bookLanguageQuery,
 } from '@server/lib/bookLanguagePolicy';
@@ -149,7 +153,6 @@ import { mapSportarrLeague } from '@server/models/Sportarr';
 import { mapNetwork } from '@server/models/Tv';
 import {
   getBookshelfAudiobookLibrary,
-  getBookshelfAudiobookLibraryPage,
   searchBookshelfCatalogs,
   searchBookshelfNarrators,
 } from '@server/utils/bookshelfCatalog';
@@ -4111,6 +4114,13 @@ discoverRoutes.get('/books', async (req, res) => {
   if (firstPublishYear && firstPublishYear !== 'before-1970') {
     queryParts.push(`first_publish_year:${firstPublishYear}`);
   }
+  queryParts.push(
+    ...getOpenLibraryDateSortClauses({
+      sortBy: sortByValue,
+      browsing: !hasSearchQuery && !authorQuery,
+      exactYear: !!firstPublishYear && firstPublishYear !== 'before-1970',
+    })
+  );
 
   // A match-all prefix combined with real clauses is much more expensive for
   // Open Library. Keep it only for an otherwise unfiltered catalog request.
@@ -4121,8 +4131,8 @@ discoverRoutes.get('/books', async (req, res) => {
     parsedRatingNumber !== undefined ||
     firstPublishYear === 'before-1970';
   const filterAndSortAudiobooks = (books: BookResult[]) =>
-    books
-      .filter(
+    sortBookshelfBooks(
+      books.filter(
         (book) =>
           bookLanguageAllowed(book.languages) &&
           (!searchQuery ||
@@ -4142,23 +4152,9 @@ discoverRoutes.get('/books', async (req, res) => {
             (firstPublishYear === 'before-1970'
               ? (book.firstPublishYear ?? Number.POSITIVE_INFINITY) < 1970
               : book.firstPublishYear === Number(firstPublishYear)))
-      )
-      .sort((left, right) => {
-        const comparison =
-          sortByBase === 'rating'
-            ? (right.ratingsAverage ?? -1) - (left.ratingsAverage ?? -1)
-            : sortByBase === 'editions'
-              ? (right.isbnCandidates?.length ?? 0) -
-                (left.isbnCandidates?.length ?? 0)
-              : sortByValue === 'newest' || sortByValue === 'oldest'
-                ? (right.firstPublishYear ?? -1) - (left.firstPublishYear ?? -1)
-                : 0;
-        return (
-          (sortAscending || sortByValue === 'oldest'
-            ? -comparison
-            : comparison) || left.title.localeCompare(right.title)
-        );
-      });
+      ),
+      sortByValue
+    );
   const searchAudiobookResults = async (): Promise<BookResult[]> => {
     if (narratorQuery) {
       return filterAndSortAudiobooks(
@@ -4217,50 +4213,20 @@ discoverRoutes.get('/books', async (req, res) => {
     if (catalogError) throw catalogError;
     return results;
   };
-  const canPageAudiobookBrowse =
-    audiobookEnabled &&
-    getSettings().readarr.filter(
-      (server) =>
-        server.backend !== 'bindery' &&
-        server.backend !== 'bookorbit' &&
-        readarrServiceSupportsFormat(server, 'audiobook')
-    ).length === 1 &&
-    !hasSearchQuery &&
-    !authorQuery &&
-    !narratorQuery &&
-    !subjectQuery &&
-    !language &&
-    !bookLanguageQuery() &&
-    parsedRatingNumber === undefined &&
-    !firstPublishYear &&
-    sortByBase === 'ranked';
-  const audiobookSearchOutcome = audiobookEnabled
-    ? (canPageAudiobookBrowse
-        ? getBookshelfAudiobookLibraryPage(
-            getSettings().readarr,
-            (page - 1) * itemsPerPage,
-            itemsPerPage
-          ).then(({ books, totalCount }) => ({
-            books: filterAndSortAudiobooks(books),
-            totalCount,
-            pageResolved: true,
-          }))
-        : searchAudiobookResults().then((books) => ({
-            books,
-            totalCount: books.length,
-            pageResolved: false,
-          }))
-      ).catch((error: unknown) => ({
-        books: [] as BookResult[],
-        totalCount: 0,
-        pageResolved: false,
-        error,
-      }))
-    : Promise.resolve({
-        books: [] as BookResult[],
-        totalCount: 0,
-        pageResolved: false,
-      });
+  // Every audiobook sort, Popular included, orders the whole catalogue. The
+  // provider's own paged library is alphabetical and drops records SeerrNG
+  // cannot show (no foreign id, filtered languages) after its total was
+  // counted, which left pages short and totals that disagreed between sorts.
+  // The full library read goes through the Bookshelf API cache.
+  const audiobookSearchOutcome: Promise<{
+    books: BookResult[];
+    error?: unknown;
+  }> = audiobookEnabled
+    ? searchAudiobookResults().then(
+        (books) => ({ books }),
+        (error: unknown) => ({ books: [] as BookResult[], error })
+      )
+    : Promise.resolve({ books: [] as BookResult[] });
   const providerWindow = needsLocalFiltering
     ? getProviderWindow(page, pageSizePerFormat, pageSizePerFormat)
     : undefined;
@@ -4297,17 +4263,13 @@ discoverRoutes.get('/books', async (req, res) => {
       if ('error' in outcome) throw outcome.error;
       const books = outcome.books;
       const offset = (page - 1) * itemsPerPage;
-      const resultCount = outcome.pageResolved
-        ? outcome.totalCount
-        : books.length;
+      const resultCount = books.length;
       return res.status(200).json({
         page,
         totalPages: Math.max(Math.ceil(resultCount / itemsPerPage), 1),
         totalResults: resultCount,
         results: await withBookMedia(
-          outcome.pageResolved
-            ? books
-            : books.slice(offset, offset + itemsPerPage)
+          books.slice(offset, offset + itemsPerPage)
         ),
       });
     } catch (error) {
@@ -4455,16 +4417,12 @@ discoverRoutes.get('/books', async (req, res) => {
     }
     const audiobookOffset = (page - 1) * itemsPerPage;
     const audiobookResults = await withBookMedia(
-      audiobookOutcome.pageResolved
-        ? audiobookOutcome.books
-        : audiobookOutcome.books.slice(
-            audiobookOffset,
-            audiobookOffset + itemsPerPage
-          )
+      audiobookOutcome.books.slice(
+        audiobookOffset,
+        audiobookOffset + itemsPerPage
+      )
     );
-    const audiobookTotalResults = audiobookOutcome.pageResolved
-      ? audiobookOutcome.totalCount
-      : audiobookOutcome.books.length;
+    const audiobookTotalResults = audiobookOutcome.books.length;
     const ebookResults = pagedDocs.map((doc) => ({
       ...mapOpenLibrarySearchDoc(
         doc,
@@ -4513,13 +4471,9 @@ discoverRoutes.get('/books', async (req, res) => {
     if (audiobookOutcome.books.length > 0) {
       const offset = (page - 1) * itemsPerPage;
       const results = await withBookMedia(
-        audiobookOutcome.pageResolved
-          ? audiobookOutcome.books
-          : audiobookOutcome.books.slice(offset, offset + itemsPerPage)
+        audiobookOutcome.books.slice(offset, offset + itemsPerPage)
       );
-      const audiobookTotalResults = audiobookOutcome.pageResolved
-        ? audiobookOutcome.totalCount
-        : audiobookOutcome.books.length;
+      const audiobookTotalResults = audiobookOutcome.books.length;
       logger.warn(
         'Open Library failed during combined discovery; returning audiobook results.',
         {

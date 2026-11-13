@@ -180,6 +180,12 @@ export interface ReadarrBookLookupResult {
   languages?: string[];
   ratingsAverage?: number;
   ratingsCount?: number;
+  /** Readarr and ChaptarrNG book resources report ratings in this shape. */
+  ratings?: {
+    votes?: number;
+    value?: number;
+    popularity?: number;
+  };
   releaseDate?: string;
   audiobookDuration?: number;
   audioSeconds?: number;

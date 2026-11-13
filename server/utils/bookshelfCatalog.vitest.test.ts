@@ -55,6 +55,54 @@ describe('Bookshelf catalog identities', () => {
     });
   });
 
+  it('maps Readarr-style nested ratings, popularity and full release dates', () => {
+    const book = mapBookshelfBook(
+      {
+        title: 'A Court of Frost and Starlight',
+        foreignBookId: 'hc:1',
+        releaseDate: '2018-05-01T00:00:00Z',
+        ratings: { votes: 191372, value: 3.38, popularity: 646837.36 },
+      },
+      7
+    );
+    expect(book).toMatchObject({
+      ratingsAverage: 3.38,
+      ratingsCount: 191372,
+      popularity: 646837.36,
+      releaseDate: '2018-05-01T00:00:00.000Z',
+      firstPublishYear: 2018,
+    });
+
+    // Flat fields win; popularity falls back to votes x average.
+    expect(
+      mapBookshelfBook(
+        {
+          title: 'Flat',
+          foreignBookId: 'hc:2',
+          ratingsAverage: 4.5,
+          ratingsCount: 10,
+          ratings: { votes: 99, value: 1 },
+        },
+        7
+      )
+    ).toMatchObject({ ratingsAverage: 4.5, ratingsCount: 10, popularity: 45 });
+
+    // A zero-vote 0 rating is "unrated", and 0001-01-01 means "no date".
+    const unrated = mapBookshelfBook(
+      {
+        title: 'Unrated',
+        foreignBookId: 'hc:3',
+        releaseDate: '0001-01-01T00:00:00Z',
+        ratings: { votes: 0, value: 0, popularity: 0 },
+      },
+      7
+    );
+    expect(unrated.ratingsAverage).toBeUndefined();
+    expect(unrated.ratingsCount).toBe(0);
+    expect(unrated.releaseDate).toBeUndefined();
+    expect(unrated.firstPublishYear).toBeUndefined();
+  });
+
   it('maps source IDs and ISBN editions without coercing them to Open Library IDs', () => {
     const result: ReadarrBookLookupResult = {
       title: 'Example title',

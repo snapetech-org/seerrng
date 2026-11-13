@@ -5471,6 +5471,12 @@ components:
         firstPublishYear:
           type: number
           example: 1965
+        releaseDate:
+          type: string
+          description: Full release date (ISO 8601), when Bookshelf provides it.
+        popularity:
+          type: number
+          description: Bookshelf catalogue popularity, used by the Popular and Trending audiobook sorts.
         posterPath:
           type: string
         isbn13:
