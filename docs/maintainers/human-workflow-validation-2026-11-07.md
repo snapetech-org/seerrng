@@ -11,6 +11,25 @@ No household acquisition, account mutation or email delivery is used by these te
 Artifacts are retained on kspld0 under
 `/mnt/disks/scratch/task-deliverables/seerrng-human-workflow-audit-20261107/`.
 
+## Current reconciliation — November 13, 2026
+
+The latest published release is v3.72.32. The live GitHub issue inventory has
+no open issues. The latest receipts for #53, #91, #132, #199, #500 and #511
+confirm delivery in v3.72.25 with resolving commit `b5f51e1c1`; v3.72.32
+contains that commit. Earlier pending-release statements below are historical
+and are superseded by those issue-specific receipts.
+
+Other follow-ups marked pending in the dated sections have shipped: #602,
+#608, #612 and #613 in v3.72.25; #598 in v3.72.26; and #625 and #629 in
+v3.72.29. Current v3.72.32 includes those releases. Their issue receipts
+retain the specific workflow scope and limitations.
+
+This live status reconciliation does not complete the human-workflow audit.
+The dated checks below retain their original scope, and the full 73-issue
+workflow requalification remains unfinished. A source link, closed issue or
+successful aggregate workflow is not substituted for an issue-specific human
+path.
+
 | Issues | Human path and result | Verification and limits |
 | --- | --- | --- |
 | #498 | Settings → Plex → Analyze On Playback → Save; repeat without reloading | Released baseline fails both desktop themes on the second save. Candidate passes four phone/desktop cases using actual settings persistence and a loopback Plex fixture. Eight maintained cases also cover failed-save recovery and untouched Tautulli. Real household playback is not claimed. |
