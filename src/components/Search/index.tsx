@@ -14,6 +14,7 @@ import {
 import MediaFilterOption from '@app/components/Discover/MediaFilterOption';
 import PinnedFilterSection from '@app/components/Discover/PinnedFilterSection';
 import { prepareFilterValues } from '@app/components/Discover/constants';
+import { OptionalDisclosure } from '@app/components/Persius/Primitives';
 import SoftwareCatalog from '@app/components/SoftwareCatalog';
 import useDiscover from '@app/hooks/useDiscover';
 import useMediaFilterPin from '@app/hooks/useMediaFilterPin';
@@ -108,7 +109,7 @@ const messages = defineMessages('components.Search', {
   retrySearch: 'Try again',
   retryingSearch: 'Trying again…',
   clearFilters: 'Clear Filters',
-  moreSearchOptions: 'More search options',
+  moreSearchOptions: 'More Search Options',
 });
 
 const searchCategories = [
@@ -790,33 +791,29 @@ const Search = () => {
   return (
     <>
       <PageTitle title={intl.formatMessage(messages.search)} />
-      <div className={upstream ? 'mb-5 mt-1' : undefined}>
-        <Header
-          subtext={
-            !upstream && preferredBookFormat ? (
-              <span className="inline-flex items-center gap-2">
-                <span>{intl.formatMessage(messages.showingFormat)}</span>
-                <BookFormatBadge
-                  format={preferredBookFormat}
-                  variant="inline"
-                />
-              </span>
-            ) : undefined
-          }
-        >
-          {intl.formatMessage(messages.searchresults)}
-        </Header>
-      </div>
-      <details
-        className={upstream ? 'upstream-search-more' : undefined}
-        open={!upstream || category.key !== 'all' || hasActiveFilters}
+      <Header
+        subtext={
+          !upstream && preferredBookFormat ? (
+            <span className="inline-flex items-center gap-2">
+              <span>{intl.formatMessage(messages.showingFormat)}</span>
+              <BookFormatBadge format={preferredBookFormat} variant="inline" />
+            </span>
+          ) : undefined
+        }
       >
-        {upstream && (
-          <summary>
+        {intl.formatMessage(messages.searchresults)}
+      </Header>
+      <OptionalDisclosure
+        enabled={upstream}
+        open={category.key !== 'all' || hasActiveFilters}
+        label={
+          <>
             <span>{intl.formatMessage(messages.moreSearchOptions)}</span>
             <ChevronDownIcon aria-hidden="true" />
-          </summary>
-        )}
+          </>
+        }
+        className="upstream-extra-tools upstream-extra-tools--compact"
+      >
         <PinnedFilterSection
           mediaType={filterMediaType}
           section="mediaFilters"
@@ -973,7 +970,7 @@ const Search = () => {
             </div>
           </PinnedFilterSection>
         )}
-      </details>
+      </OptionalDisclosure>
       {router.isReady &&
         showBookSeries &&
         (!upstream || category.key !== 'all') && (

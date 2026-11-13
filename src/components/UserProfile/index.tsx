@@ -704,6 +704,7 @@ const UserProfile = () => {
                 </div>
               }
               sliderKey="watchlist-seerrng-media"
+              isLoading={false}
               items={additionalWatchlistItems.map((item) => (
                 <div key={`watchlist-extension-item-${item.ratingKey}`}>
                   {item.mediaType === 'music' && item.mbId ? (

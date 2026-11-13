@@ -7,6 +7,7 @@ import UpstreamCollectionDetails from '@app/components/CollectionDetails/Upstrea
 import Button from '@app/components/Common/Button';
 import CachedImage from '@app/components/Common/CachedImage';
 import FormatRequestControl from '@app/components/Common/FormatRequestControl';
+import Header from '@app/components/Common/Header';
 import LoadingSpinner from '@app/components/Common/LoadingSpinner';
 import MediaServerPlayButton from '@app/components/Common/MediaServerPlayButton';
 import PageErrorMessage from '@app/components/Common/PageErrorMessage';
@@ -234,18 +235,34 @@ const CollectionDetails = ({ collection }: CollectionDetailsProps) => {
     );
   }, [orderedParts, hasManualPlaybackSelection]);
 
-  if (!data && !error) return <LoadingSpinner />;
+  if (!data && !error) {
+    return (
+      <>
+        <PageTitle title={intl.formatMessage(messages.collection)} />
+        <Header>{intl.formatMessage(messages.collection)}</Header>
+        <LoadingSpinner />
+      </>
+    );
+  }
   if (!data) {
     if (axios.isAxiosError(error) && error.response?.status === 404)
       return <ErrorPage statusCode={404} />;
     return (
-      <PageErrorMessage
-        title={intl.formatMessage(messages.loadError)}
-        retry={{
-          onClick: () => revalidate(),
-          tooltip: intl.formatMessage(globalMessages.retry),
-        }}
-      />
+      <>
+        {upstream && (
+          <>
+            <PageTitle title={intl.formatMessage(messages.collection)} />
+            <Header>{intl.formatMessage(messages.collection)}</Header>
+          </>
+        )}
+        <PageErrorMessage
+          title={intl.formatMessage(messages.loadError)}
+          retry={{
+            onClick: () => revalidate(),
+            tooltip: intl.formatMessage(globalMessages.retry),
+          }}
+        />
+      </>
     );
   }
 

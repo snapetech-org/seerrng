@@ -8,7 +8,6 @@ import Modal from '@app/components/Common/Modal';
 import PageTitle from '@app/components/Common/PageTitle';
 import SelectionCircle from '@app/components/Common/SelectionCircle';
 import SensitiveInput from '@app/components/Common/SensitiveInput';
-import Table from '@app/components/Common/Table';
 import {
   CompactSelect,
   getFilterToggleButtonClass,
@@ -21,16 +20,11 @@ import useDebouncedState from '@app/hooks/useDebouncedState';
 import useSettings from '@app/hooks/useSettings';
 import useToasts from '@app/hooks/useToasts';
 import useUpstreamTheme from '@app/hooks/useUpstreamTheme';
-import {
-  getPositiveQueryParamNumber,
-  useUpdateQueryParams,
-} from '@app/hooks/useUpdateQueryParams';
 import type { User } from '@app/hooks/useUser';
 import { Permission, UserType, useUser } from '@app/hooks/useUser';
 import globalMessages from '@app/i18n/globalMessages';
 import defineMessages from '@app/utils/defineMessages';
 import {
-  isStoredPageSize,
   isStoredOption,
   readLocalStoredRecord,
   writeLocalStoredRecord,
@@ -40,8 +34,6 @@ import {
   BarsArrowDownIcon,
   BarsArrowUpIcon,
   ChevronDownIcon,
-  ChevronLeftIcon,
-  ChevronRightIcon,
   ChevronUpIcon,
   InboxArrowDownIcon,
   MagnifyingGlassIcon,
@@ -132,12 +124,7 @@ const messages = defineMessages('components.UserList', {
 });
 
 type Sort =
-  | 'created'
-  | 'updated'
-  | 'requests'
-  | 'displayname'
-  | 'usertype'
-  | 'role';
+  'created' | 'updated' | 'requests' | 'displayname' | 'usertype' | 'role';
 type SortDirection = 'asc' | 'desc';
 const USER_SORT_OPTIONS: readonly Sort[] = [
   'created',
@@ -161,20 +148,12 @@ const UserList = () => {
   const { addToast } = useToasts();
   const { user: currentUser, hasPermission: currentHasPermission } = useUser();
   const [currentSort, setCurrentSort] = useState<Sort>('created');
-  const [currentPageSize, setCurrentPageSize] = useState(10);
-  const page = upstream
-    ? (getPositiveQueryParamNumber(router.query.page, 1) ?? 1)
-    : 1;
-  const pageIndex = page - 1;
-  const updateQueryParams = useUpdateQueryParams({ page: page.toString() });
   const [keywordSearch, debouncedKeywordSearch, setKeywordSearch] =
     useDebouncedState('', 300);
   const searchInputRef = useRef<HTMLInputElement>(null);
   const isSearchFocusedRef = useRef(false);
-  const previousSearchQueryRef = useRef<string | undefined>(undefined);
   const [typeFilter, setTypeFilter] = useState('all');
   const [roleFilter, setRoleFilter] = useState('all');
-  const advancedFiltersEnabled = typeFilter !== 'all' || roleFilter !== 'all';
   const [filterSettingsHydrated, setFilterSettingsHydrated] = useState(false);
 
   const defaultSortDirection = (sortKey: Sort): SortDirection =>
@@ -190,9 +169,6 @@ const UserList = () => {
       if (isStoredOption(filterSettings.currentSort, USER_SORT_OPTIONS)) {
         setCurrentSort(filterSettings.currentSort);
       }
-      if (isStoredPageSize(filterSettings.currentPageSize)) {
-        setCurrentPageSize(filterSettings.currentPageSize);
-      }
       if (
         isStoredOption(filterSettings.sortDirection, SORT_DIRECTION_OPTIONS)
       ) {
@@ -206,39 +182,23 @@ const UserList = () => {
     if (filterSettingsHydrated) {
       writeLocalStoredRecord('ul-filter-settings', {
         currentSort,
-        currentPageSize,
         sortDirection,
       });
     }
-  }, [currentPageSize, currentSort, filterSettingsHydrated, sortDirection]);
+  }, [currentSort, filterSettingsHydrated, sortDirection]);
 
   const {
     data,
     error,
     mutate: revalidate,
   } = useSWR<ClientUserResultsResponse>(
-    `/api/v1/user?take=${
-      upstream && !advancedFiltersEnabled ? currentPageSize : 100
-    }&skip=${
-      upstream && !advancedFiltersEnabled ? pageIndex * currentPageSize : 0
-    }&sort=${currentSort}&sortDirection=${sortDirection}${
+    `/api/v1/user?take=100&skip=0&sort=${currentSort}&sortDirection=${sortDirection}${
       debouncedKeywordSearch.trim()
         ? `&q=${encodeURIComponent(debouncedKeywordSearch.trim())}`
         : ''
     }`,
     upstream ? { keepPreviousData: true } : undefined
   );
-
-  useEffect(() => {
-    if (
-      previousSearchQueryRef.current !== undefined &&
-      previousSearchQueryRef.current !== debouncedKeywordSearch &&
-      page > 1
-    ) {
-      updateQueryParams('page', '1');
-    }
-    previousSearchQueryRef.current = debouncedKeywordSearch;
-  }, [debouncedKeywordSearch, page, updateQueryParams]);
 
   useEffect(() => {
     if (isSearchFocusedRef.current) {
@@ -252,9 +212,6 @@ const UserList = () => {
     } else {
       setCurrentSort(sortKey);
       setSortDirection(defaultSortDirection(sortKey));
-    }
-    if (upstream && page !== 1) {
-      updateQueryParams('page', '1');
     }
   };
 
@@ -290,13 +247,6 @@ const UserList = () => {
   const editableVisibleUsers = visibleUsers.filter((user) =>
     isUserPermsEditable(user.id)
   );
-  const totalPages = data
-    ? advancedFiltersEnabled
-      ? 1
-      : Math.max(1, Math.ceil(data.pageInfo.results / currentPageSize))
-    : 1;
-  const hasPrevPage = page > 1;
-  const hasNextPage = page < totalPages;
   const isAllUsersSelected = () => {
     return (
       editableVisibleUsers.length > 0 &&
@@ -473,9 +423,17 @@ const UserList = () => {
     };
 
     return (
-      <Table.TH
-        className="cursor-pointer"
+      <th
+        className="app-data-table-heading cursor-pointer"
+        scope="col"
+        tabIndex={0}
         onClick={() => handleSortChange(sortKey)}
+        onKeyDown={(event) => {
+          if (event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault();
+            handleSortChange(sortKey);
+          }
+        }}
         data-testid={`column-header-${sortKey}`}
         title={getTooltip()}
         aria-sort={
@@ -498,7 +456,7 @@ const UserList = () => {
             </span>
           )}
         </div>
-      </Table.TH>
+      </th>
     );
   };
 
@@ -761,7 +719,7 @@ const UserList = () => {
           <div className="mt-2 flex flex-grow flex-col lg:flex-grow-0 lg:flex-row">
             <div className="mb-2 flex flex-grow flex-col justify-between sm:flex-row lg:mb-0 lg:flex-grow-0">
               <Button
-                className="mb-2 flex-grow sm:mb-0 sm:mr-2"
+                className="mb-2 flex-grow sm:mr-2 sm:mb-0"
                 buttonType="primary"
                 onClick={() => setCreateModal({ isOpen: true })}
               >
@@ -798,10 +756,7 @@ const UserList = () => {
                   onBlur={() => {
                     isSearchFocusedRef.current = false;
                   }}
-                  onChange={(event) => {
-                    setKeywordSearch(event.target.value);
-                    if (page !== 1) updateQueryParams('page', '1');
-                  }}
+                  onChange={(event) => setKeywordSearch(event.target.value)}
                   aria-label={intl.formatMessage(messages.searchUsers)}
                 />
               </div>
@@ -809,10 +764,9 @@ const UserList = () => {
                 <button
                   type="button"
                   className="inline-flex cursor-pointer items-center rounded-l-md border border-r-0 border-gray-500 bg-gray-800 px-3 text-sm text-gray-100"
-                  onClick={() => {
-                    setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
-                    if (page !== 1) updateQueryParams('page', '1');
-                  }}
+                  onClick={() =>
+                    setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc')
+                  }
                   aria-label={intl.formatMessage(
                     messages.toggleSortDirectionAria
                   )}
@@ -875,19 +829,13 @@ const UserList = () => {
               label={intl.formatMessage(messages.accounttype)}
               value={typeFilter}
               options={typeOptions}
-              onChange={(value) => {
-                setTypeFilter(value);
-                if (page !== 1) updateQueryParams('page', '1');
-              }}
+              onChange={setTypeFilter}
             />
             <CompactSelect
               label={intl.formatMessage(messages.role)}
               value={roleFilter}
               options={roleOptions}
-              onChange={(value) => {
-                setRoleFilter(value);
-                if (page !== 1) updateQueryParams('page', '1');
-              }}
+              onChange={setRoleFilter}
             />
           </div>
           <button
@@ -928,503 +876,392 @@ const UserList = () => {
           <TvSeasonWatchGateApprovalQueue />
         </details>
       )}
-      <article
-        className={
-          upstream
-            ? 'mt-5'
-            : 'app-card-main refreshed-card-surface mt-5 rounded-xl border border-gray-700 p-3 shadow-lg shadow-gray-950/20'
-        }
-      >
+      <article className="app-card-main refreshed-card-surface mt-5 rounded-xl border border-gray-700 p-3 shadow-lg shadow-gray-950/20">
         {!upstream && (
           <>
-        <div className="text-sm text-gray-300">
-          {intl.formatMessage(messages.filters)}
-        </div>
-        <div className="app-filter-row">
-          <form
-            className="discover-filter-control app-filter-search-control"
-            onSubmit={(event) => event.preventDefault()}
-          >
-            <span className="discover-filter-control-label">
-              <MagnifyingGlassIcon aria-hidden="true" />
-              {intl.formatMessage(messages.keywordSearch)}
-            </span>
-            <input
-              type="search"
-              value={keywordSearch}
-              onChange={(event) => setKeywordSearch(event.target.value)}
-              placeholder={intl.formatMessage(messages.searchUsers)}
-              aria-label={intl.formatMessage(messages.searchUsers)}
-              className="app-filter-search-input"
-            />
-          </form>
-          <CompactSelect
-            label={intl.formatMessage(messages.accounttype)}
-            value={typeFilter}
-            options={typeOptions}
-            onChange={setTypeFilter}
-          />
-          <CompactSelect
-            label={intl.formatMessage(messages.role)}
-            value={roleFilter}
-            options={roleOptions}
-            onChange={setRoleFilter}
-          />
-        </div>
-
-        <div className="app-filter-section-heading">
-          {intl.formatMessage(messages.sortByHeading)}
-        </div>
-        <div className="app-filter-row">
-          {sortOptions.map((option) => {
-            const active = currentSort === option.key;
-            const Icon =
-              active && sortDirection === 'asc'
-                ? BarsArrowUpIcon
-                : BarsArrowDownIcon;
-            return (
-              <button
-                key={option.key}
-                type="button"
-                aria-pressed={active}
-                onClick={() => handleSortChange(option.key)}
-                className={getFilterToggleButtonClass(active)}
+            <div className="text-sm text-gray-300">
+              {intl.formatMessage(messages.filters)}
+            </div>
+            <div className="app-filter-row">
+              <form
+                className="discover-filter-control app-filter-search-control"
+                onSubmit={(event) => event.preventDefault()}
               >
-                {option.label}
-                <Icon aria-hidden="true" />
-              </button>
-            );
-          })}
-        </div>
+                <span className="discover-filter-control-label">
+                  <MagnifyingGlassIcon aria-hidden="true" />
+                  {intl.formatMessage(messages.keywordSearch)}
+                </span>
+                <input
+                  type="search"
+                  value={keywordSearch}
+                  onChange={(event) => setKeywordSearch(event.target.value)}
+                  placeholder={intl.formatMessage(messages.searchUsers)}
+                  aria-label={intl.formatMessage(messages.searchUsers)}
+                  className="app-filter-search-input"
+                />
+              </form>
+              <CompactSelect
+                label={intl.formatMessage(messages.accounttype)}
+                value={typeFilter}
+                options={typeOptions}
+                onChange={setTypeFilter}
+              />
+              <CompactSelect
+                label={intl.formatMessage(messages.role)}
+                value={roleFilter}
+                options={roleOptions}
+                onChange={setRoleFilter}
+              />
+            </div>
+
+            <div className="app-filter-section-heading">
+              {intl.formatMessage(messages.sortByHeading)}
+            </div>
+            <div className="app-filter-row">
+              {sortOptions.map((option) => {
+                const active = currentSort === option.key;
+                const Icon =
+                  active && sortDirection === 'asc'
+                    ? BarsArrowUpIcon
+                    : BarsArrowDownIcon;
+                return (
+                  <button
+                    key={option.key}
+                    type="button"
+                    aria-pressed={active}
+                    onClick={() => handleSortChange(option.key)}
+                    className={getFilterToggleButtonClass(active)}
+                  >
+                    {option.label}
+                    <Icon aria-hidden="true" />
+                  </button>
+                );
+              })}
+            </div>
           </>
         )}
 
-        <div
-          className={
-            upstream
-              ? 'app-data-table-container card-spacing-before'
-              : 'app-card-inset refreshed-inset-surface card-spacing-before overflow-hidden rounded-lg border border-gray-700'
-          }
-        >
-          <div
-            className={
-              upstream
-                ? 'app-data-table-scroll scrollable-card'
-                : 'user-list-table-scroll scrollable-card overflow-auto'
-            }
-          >
+        <div className="app-data-table-container card-spacing-before">
+          <div className="user-list-table-scroll scrollable-card overflow-auto">
             <div className="app-data-table-frame">
               <div className="overflow-hidden rounded-lg">
-            <table
-              className={
-                upstream
-                  ? 'app-data-table'
-                  : 'app-data-table user-list-data-table'
-              }
-            >
-              <thead className="app-data-table-head">
-                <tr className="app-data-table-header-row">
-                  <Table.TH
-                    className={upstream ? undefined : 'user-list-select-column'}
-                  >
-                    {editableVisibleUsers.length > 0 &&
-                      (upstream ? (
-                        <input
-                          type="checkbox"
-                          id="selectAll"
-                          name="selectAll"
-                          checked={isAllUsersSelected()}
-                          ref={(input) => {
-                            if (input) {
-                              input.indeterminate = areSomeUsersSelected;
-                            }
-                          }}
-                          aria-label={intl.formatMessage(
-                            userSelectionMessages.selectAllUsers
-                          )}
-                          onChange={toggleAllUsers}
-                        />
-                      ) : (
-                        <SelectionCircle
-                          selected={isAllUsersSelected()}
-                          partial={areSomeUsersSelected}
-                          label={intl.formatMessage(
-                            userSelectionMessages.selectAllUsers
-                          )}
-                          onClick={toggleAllUsers}
-                        />
-                      ))}
-                  </Table.TH>
-                  {upstream ? (
-                    <SortableColumnHeader sortKey="displayname">
-                      {intl.formatMessage(messages.user)}
-                    </SortableColumnHeader>
-                  ) : (
-                    <Table.TH className="user-list-name-column">
-                      {intl.formatMessage(messages.user)}
-                    </Table.TH>
-                  )}
-                  {upstream ? (
-                    <SortableColumnHeader sortKey="requests">
-                      {intl.formatMessage(messages.totalrequests)}
-                    </SortableColumnHeader>
-                  ) : (
-                    <Table.TH className="user-list-requests-column text-center">
-                      {intl.formatMessage(messages.totalrequests)}
-                    </Table.TH>
-                  )}
-                  {upstream ? (
-                    <SortableColumnHeader sortKey="usertype">
-                      {intl.formatMessage(messages.accounttype)}
-                    </SortableColumnHeader>
-                  ) : (
-                    <Table.TH className="user-list-type-column">
-                      {intl.formatMessage(messages.accounttype)}
-                    </Table.TH>
-                  )}
-                  {upstream ? (
-                    <SortableColumnHeader sortKey="role">
-                      {intl.formatMessage(messages.role)}
-                    </SortableColumnHeader>
-                  ) : (
-                    <Table.TH className="user-list-role-column">
-                      {intl.formatMessage(messages.role)}
-                    </Table.TH>
-                  )}
-                  {upstream ? (
-                    <SortableColumnHeader sortKey="created">
-                      {intl.formatMessage(messages.created)}
-                    </SortableColumnHeader>
-                  ) : (
-                    <Table.TH className="user-list-joined-column">
-                      {intl.formatMessage(messages.created)}
-                    </Table.TH>
-                  )}
-                  <Table.TH
-                    className={
-                      upstream
-                        ? 'w-1/12 min-w-[12rem] whitespace-nowrap text-right'
-                        : 'user-list-actions-column'
-                    }
-                  >
-                    {upstream && visibleUsers.length > 1 && (
-                      <div className="flex justify-end">
-                        <Button
-                          buttonType="warning"
-                          className="w-full"
-                          onClick={() => setShowBulkEditModal(true)}
-                          disabled={selectedUsers.length === 0}
-                        >
-                          <PencilIcon />
-                          <span>{intl.formatMessage(messages.bulkedit)}</span>
-                        </Button>
-                      </div>
-                    )}
-                  </Table.TH>
-                </tr>
-              </thead>
-              <Table.TBody>
-                {visibleUsers.map((user) => {
-                  const displayName =
-                    user.username ||
-                    user.jellyfinUsername ||
-                    user.plexUsername ||
-                    user.email;
-                  return (
-                    <tr
-                      key={`user-list-${user.id}`}
-                      className="app-data-table-row"
-                      data-testid="user-list-row"
-                    >
-                      <td
-                        className={
-                          upstream
-                            ? 'app-data-table-cell'
-                            : 'app-data-table-cell user-list-select-column'
-                        }
+                <table className="app-data-table user-list-data-table">
+                  <thead className="app-data-table-head">
+                    <tr className="app-data-table-header-row">
+                      <th
+                        className={`app-data-table-heading${upstream ? '' : 'user-list-select-column'}`}
+                        scope="col"
                       >
-                        {isUserPermsEditable(user.id) &&
-                          (upstream ? (
-                            <input
-                              type="checkbox"
-                              id={`user-list-select-${user.id}`}
-                              name={`user-list-select-${user.id}`}
-                              checked={isUserSelected(user.id)}
-                              aria-label={intl.formatMessage(
-                                userSelectionMessages.selectUser,
-                                {
-                                  user:
-                                    user.jellyfinUsername ?? user.username,
-                                }
-                              )}
-                              onChange={() => toggleUser(user.id)}
-                            />
-                          ) : (
-                            <SelectionCircle
-                              selected={isUserSelected(user.id)}
-                              label={intl.formatMessage(
-                                userSelectionMessages.selectUser,
-                                {
-                                  user:
-                                    user.jellyfinUsername ?? user.username,
-                                }
-                              )}
-                              onClick={() => toggleUser(user.id)}
-                            />
-                          ))}
-                      </td>
-                      <td className="app-data-table-cell">
-                        <div
-                          className={
-                            upstream
-                              ? 'flex min-w-0 items-center'
-                              : 'flex min-w-0 items-center gap-2'
-                          }
+                        {editableVisibleUsers.length > 0 && (
+                          <SelectionCircle
+                            selected={isAllUsersSelected()}
+                            partial={areSomeUsersSelected}
+                            label={intl.formatMessage(
+                              userSelectionMessages.selectAllUsers
+                            )}
+                            onClick={toggleAllUsers}
+                          />
+                        )}
+                      </th>
+                      {upstream ? (
+                        <SortableColumnHeader sortKey="displayname">
+                          {intl.formatMessage(messages.user)}
+                        </SortableColumnHeader>
+                      ) : (
+                        <th
+                          className="app-data-table-heading user-list-name-column"
+                          scope="col"
                         >
-                          <Link
-                            href={`/users/${user.id}`}
+                          {intl.formatMessage(messages.user)}
+                        </th>
+                      )}
+                      {upstream ? (
+                        <SortableColumnHeader sortKey="requests">
+                          {intl.formatMessage(messages.totalrequests)}
+                        </SortableColumnHeader>
+                      ) : (
+                        <th
+                          className="app-data-table-heading user-list-requests-column text-center"
+                          scope="col"
+                        >
+                          {intl.formatMessage(messages.totalrequests)}
+                        </th>
+                      )}
+                      {upstream ? (
+                        <SortableColumnHeader sortKey="usertype">
+                          {intl.formatMessage(messages.accounttype)}
+                        </SortableColumnHeader>
+                      ) : (
+                        <th
+                          className="app-data-table-heading user-list-type-column"
+                          scope="col"
+                        >
+                          {intl.formatMessage(messages.accounttype)}
+                        </th>
+                      )}
+                      {upstream ? (
+                        <SortableColumnHeader sortKey="role">
+                          {intl.formatMessage(messages.role)}
+                        </SortableColumnHeader>
+                      ) : (
+                        <th
+                          className="app-data-table-heading user-list-role-column"
+                          scope="col"
+                        >
+                          {intl.formatMessage(messages.role)}
+                        </th>
+                      )}
+                      {upstream ? (
+                        <SortableColumnHeader sortKey="created">
+                          {intl.formatMessage(messages.created)}
+                        </SortableColumnHeader>
+                      ) : (
+                        <th
+                          className="app-data-table-heading user-list-joined-column"
+                          scope="col"
+                        >
+                          {intl.formatMessage(messages.created)}
+                        </th>
+                      )}
+                      <th
+                        className="app-data-table-heading user-list-actions-column"
+                        scope="col"
+                      >
+                        {upstream && visibleUsers.length > 1 && (
+                          <div className="flex justify-end">
+                            <Button
+                              buttonType="warning"
+                              onClick={() => setShowBulkEditModal(true)}
+                              disabled={selectedUsers.length === 0}
+                            >
+                              <PencilIcon />
+                              <span>
+                                {intl.formatMessage(messages.bulkedit)}
+                              </span>
+                            </Button>
+                          </div>
+                        )}
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody className="app-data-table-body">
+                    {visibleUsers.map((user) => {
+                      const displayName =
+                        user.username ||
+                        user.jellyfinUsername ||
+                        user.plexUsername ||
+                        user.email;
+                      return (
+                        <tr
+                          key={`user-list-${user.id}`}
+                          className="app-data-table-row"
+                          data-testid="user-list-row"
+                        >
+                          <td
                             className={
                               upstream
-                                ? 'h-10 w-10 flex-shrink-0'
-                                : 'h-8 w-8 flex-shrink-0'
+                                ? 'app-data-table-cell'
+                                : 'app-data-table-cell user-list-select-column'
                             }
                           >
-                            <CachedImage
-                              type="avatar"
-                              className={`${upstream ? 'h-10 w-10' : 'h-8 w-8'} rounded-full object-cover`}
-                              src={user.avatar}
-                              alt=""
-                              width={upstream ? 40 : 32}
-                              height={upstream ? 40 : 32}
-                            />
-                          </Link>
-                          <div className={upstream ? 'ml-4 min-w-0' : 'min-w-0'}>
-                            <Link
-                              href={`/users/${user.id}`}
+                            {isUserPermsEditable(user.id) && (
+                              <SelectionCircle
+                                selected={isUserSelected(user.id)}
+                                label={intl.formatMessage(
+                                  userSelectionMessages.selectUser,
+                                  { user: displayName }
+                                )}
+                                onClick={() => toggleUser(user.id)}
+                              />
+                            )}
+                          </td>
+                          <td className="app-data-table-cell">
+                            <div
                               className={
                                 upstream
-                                  ? 'block truncate text-base leading-5 font-bold transition duration-300 hover:underline'
-                                  : 'block truncate text-xs leading-4 font-semibold transition duration-300 hover:underline'
+                                  ? 'flex min-w-0 items-center'
+                                  : 'flex min-w-0 items-center gap-2'
                               }
-                              data-testid="user-list-username-link"
                             >
-                              {displayName}
-                            </Link>
-                            {(
-                              user.username ||
-                              user.jellyfinUsername ||
-                              user.plexUsername
-                            )?.toLowerCase() !== user.email && (
-                              <div
+                              <Link
+                                href={`/users/${user.id}`}
                                 className={
                                   upstream
-                                    ? 'truncate text-sm leading-5 text-gray-300'
-                                    : 'refreshed-detail-text-muted truncate text-xs leading-4'
+                                    ? 'h-10 w-10 flex-shrink-0'
+                                    : 'h-8 w-8 flex-shrink-0'
                                 }
                               >
-                                {user.email}
-                              </div>
-                            )}
-                          </div>
-                        </div>
-                      </td>
-                      <td
-                        className={
-                          upstream
-                            ? 'app-data-table-cell'
-                            : 'app-data-table-cell text-center'
-                        }
-                      >
-                        {user.id === currentUser?.id ||
-                        currentHasPermission(
-                          [Permission.MANAGE_REQUESTS, Permission.REQUEST_VIEW],
-                          { type: 'or' }
-                        ) ? (
-                          <Link
-                            href={`/users/${user.id}/requests`}
-                            className="text-sm leading-5 transition duration-300 hover:underline"
-                          >
-                            {user.requestCount}
-                          </Link>
-                        ) : (
-                          user.requestCount
-                        )}
-                      </td>
-                      <td
-                        className={
-                          upstream
-                            ? 'app-data-table-cell text-end'
-                            : 'app-data-table-cell'
-                        }
-                      >
-                        {user.userType === UserType.PLEX ? (
-                          <Badge badgeType="warning">
-                            {intl.formatMessage(messages.plexuser)}
-                          </Badge>
-                        ) : user.userType === UserType.LOCAL ? (
-                          <Badge badgeType="default">
-                            {intl.formatMessage(messages.localuser)}
-                          </Badge>
-                        ) : user.userType === UserType.EMBY ? (
-                          <Badge badgeType="success">
-                            {intl.formatMessage(messages.mediaServerUser, {
-                              mediaServerName: ServerType.EMBY,
-                            })}
-                          </Badge>
-                        ) : user.userType === UserType.JELLYFIN ? (
-                          <Badge badgeType="default">
-                            {intl.formatMessage(messages.mediaServerUser, {
-                              mediaServerName: ServerType.JELLYFIN,
-                            })}
-                          </Badge>
-                        ) : null}
-                      </td>
-                      <td className="app-data-table-cell">
-                        {user.id === 1
-                          ? intl.formatMessage(messages.owner)
-                          : hasPermission(Permission.ADMIN, user.permissions)
-                            ? intl.formatMessage(messages.admin)
-                            : intl.formatMessage(messages.user)}
-                      </td>
-                      <td className="app-data-table-cell">
-                        {intl.formatDate(user.createdAt, {
-                          year: 'numeric',
-                          month: upstream ? 'long' : 'short',
-                          day: 'numeric',
-                        })}
-                      </td>
-                      <td className="app-data-table-cell">
-                        <div
-                          className={
-                            upstream
-                              ? 'grid grid-cols-1 gap-1 sm:grid-cols-2 sm:gap-2'
-                              : 'flex justify-end gap-[5px]'
-                          }
-                        >
-                          <Button
-                            buttonType="warning"
-                            buttonSize={upstream ? undefined : 'standard'}
-                            disabled={user.id === 1 && currentUser?.id !== 1}
-                            onClick={() =>
-                              router.push(
-                                '/users/[userId]/settings',
-                                `/users/${user.id}/settings`
-                              )
-                            }
-                          >
-                            {intl.formatMessage(globalMessages.edit)}
-                          </Button>
-                          <Button
-                            buttonType="danger"
-                            buttonSize={upstream ? undefined : 'standard'}
-                            disabled={
-                              user.id === 1 ||
-                              (currentUser?.id !== 1 &&
-                                hasPermission(
-                                  Permission.ADMIN,
-                                  user.permissions
-                                ))
-                            }
-                            onClick={() =>
-                              setDeleteModal({ isOpen: true, user })
-                            }
-                          >
-                            {intl.formatMessage(globalMessages.delete)}
-                          </Button>
-                        </div>
-                      </td>
-                    </tr>
-                  );
-                })}
-                {visibleUsers.length === 0 && (
-                  <tr className="app-data-table-row">
-                    <td className="app-data-table-cell text-center" colSpan={7}>
-                      {intl.formatMessage(messages.noUsers)}
-                    </td>
-                  </tr>
-                )}
-                {upstream && !advancedFiltersEnabled && (
-                  <tr className="bg-gray-700">
-                    <td className="app-data-table-cell p-0" colSpan={7}>
-                      <nav
-                        className="flex w-screen flex-col items-center space-x-4 space-y-3 px-6 py-3 sm:flex-row sm:space-y-0 lg:w-full"
-                        aria-label="Pagination"
-                      >
-                        <div className="hidden lg:flex lg:flex-1">
-                          <p className="text-sm">
-                            {data.results.length > 0 &&
-                              intl.formatMessage(
-                                globalMessages.showingresults,
-                                {
-                                  from: pageIndex * currentPageSize + 1,
-                                  to:
-                                    data.results.length < currentPageSize
-                                      ? pageIndex * currentPageSize +
-                                        data.results.length
-                                      : (pageIndex + 1) * currentPageSize,
-                                  total: data.pageInfo.results,
-                                  strong: (msg: React.ReactNode) => (
-                                    <span className="font-medium">{msg}</span>
-                                  ),
+                                <CachedImage
+                                  type="avatar"
+                                  className={`${upstream ? 'h-10 w-10' : 'h-8 w-8'} rounded-full object-cover`}
+                                  src={user.avatar}
+                                  alt=""
+                                  width={upstream ? 40 : 32}
+                                  height={upstream ? 40 : 32}
+                                />
+                              </Link>
+                              <div
+                                className={
+                                  upstream ? 'ml-4 min-w-0' : 'min-w-0'
                                 }
-                              )}
-                          </p>
-                        </div>
-                        <div className="flex justify-center sm:flex-1 sm:justify-start lg:justify-center">
-                          <span className="-mt-3 items-center text-sm sm:-ml-4 sm:mt-0 lg:ml-0">
-                            {intl.formatMessage(globalMessages.resultsperpage, {
-                              pageSize: (
-                                <select
-                                  id="pageSize"
-                                  name="pageSize"
-                                  onChange={(event) => {
-                                    setCurrentPageSize(
-                                      Number(event.target.value)
-                                    );
-                                    updateQueryParams('page', '1');
-                                    window.scrollTo(0, 0);
-                                  }}
-                                  value={currentPageSize}
-                                  className="short inline"
+                              >
+                                <Link
+                                  href={`/users/${user.id}`}
+                                  className={
+                                    upstream
+                                      ? 'block truncate text-base leading-5 font-bold transition duration-300 hover:underline'
+                                      : 'block truncate text-xs leading-4 font-semibold transition duration-300 hover:underline'
+                                  }
+                                  data-testid="user-list-username-link"
                                 >
-                                  <option value="5">5</option>
-                                  <option value="10">10</option>
-                                  <option value="25">25</option>
-                                  <option value="50">50</option>
-                                  <option value="100">100</option>
-                                </select>
-                              ),
+                                  {displayName}
+                                </Link>
+                                {(
+                                  user.username ||
+                                  user.jellyfinUsername ||
+                                  user.plexUsername
+                                )?.toLowerCase() !== user.email && (
+                                  <div
+                                    className={
+                                      upstream
+                                        ? 'truncate text-sm leading-5 text-gray-300'
+                                        : 'refreshed-detail-text-muted truncate text-xs leading-4'
+                                    }
+                                  >
+                                    {user.email}
+                                  </div>
+                                )}
+                              </div>
+                            </div>
+                          </td>
+                          <td
+                            className={
+                              upstream
+                                ? 'app-data-table-cell'
+                                : 'app-data-table-cell text-center'
+                            }
+                          >
+                            {user.id === currentUser?.id ||
+                            currentHasPermission(
+                              [
+                                Permission.MANAGE_REQUESTS,
+                                Permission.REQUEST_VIEW,
+                              ],
+                              { type: 'or' }
+                            ) ? (
+                              <Link
+                                href={`/users/${user.id}/requests`}
+                                className="text-sm leading-5 transition duration-300 hover:underline"
+                              >
+                                {user.requestCount}
+                              </Link>
+                            ) : (
+                              user.requestCount
+                            )}
+                          </td>
+                          <td
+                            className={
+                              upstream
+                                ? 'app-data-table-cell text-end'
+                                : 'app-data-table-cell'
+                            }
+                          >
+                            {user.userType === UserType.PLEX ? (
+                              <Badge badgeType="warning">
+                                {intl.formatMessage(messages.plexuser)}
+                              </Badge>
+                            ) : user.userType === UserType.LOCAL ? (
+                              <Badge badgeType="default">
+                                {intl.formatMessage(messages.localuser)}
+                              </Badge>
+                            ) : user.userType === UserType.EMBY ? (
+                              <Badge badgeType="success">
+                                {intl.formatMessage(messages.mediaServerUser, {
+                                  mediaServerName: ServerType.EMBY,
+                                })}
+                              </Badge>
+                            ) : user.userType === UserType.JELLYFIN ? (
+                              <Badge badgeType="default">
+                                {intl.formatMessage(messages.mediaServerUser, {
+                                  mediaServerName: ServerType.JELLYFIN,
+                                })}
+                              </Badge>
+                            ) : null}
+                          </td>
+                          <td className="app-data-table-cell">
+                            {user.id === 1
+                              ? intl.formatMessage(messages.owner)
+                              : hasPermission(
+                                    Permission.ADMIN,
+                                    user.permissions
+                                  )
+                                ? intl.formatMessage(messages.admin)
+                                : intl.formatMessage(messages.user)}
+                          </td>
+                          <td className="app-data-table-cell">
+                            {intl.formatDate(user.createdAt, {
+                              year: 'numeric',
+                              month: upstream ? 'long' : 'short',
+                              day: 'numeric',
                             })}
-                          </span>
-                        </div>
-                        <div className="flex flex-auto justify-center space-x-2 sm:flex-1 sm:justify-end">
-                          <Button
-                            disabled={!hasPrevPage}
-                            onClick={() =>
-                              updateQueryParams('page', (page - 1).toString())
-                            }
-                          >
-                            <ChevronLeftIcon />
-                            <span>
-                              {intl.formatMessage(globalMessages.previous)}
-                            </span>
-                          </Button>
-                          <Button
-                            disabled={!hasNextPage}
-                            onClick={() =>
-                              updateQueryParams('page', (page + 1).toString())
-                            }
-                          >
-                            <span>{intl.formatMessage(globalMessages.next)}</span>
-                            <ChevronRightIcon />
-                          </Button>
-                        </div>
-                      </nav>
-                    </td>
-                  </tr>
-                )}
-              </Table.TBody>
-            </table>
+                          </td>
+                          <td className="app-data-table-cell">
+                            <div
+                              className={
+                                upstream
+                                  ? 'grid grid-cols-1 gap-1 sm:grid-cols-2 sm:gap-2'
+                                  : 'flex justify-end gap-[5px]'
+                              }
+                            >
+                              <Button
+                                buttonType="warning"
+                                buttonSize={upstream ? undefined : 'standard'}
+                                disabled={
+                                  user.id === 1 && currentUser?.id !== 1
+                                }
+                                onClick={() =>
+                                  router.push(
+                                    '/users/[userId]/settings',
+                                    `/users/${user.id}/settings`
+                                  )
+                                }
+                              >
+                                {intl.formatMessage(globalMessages.edit)}
+                              </Button>
+                              <Button
+                                buttonType="danger"
+                                buttonSize={upstream ? undefined : 'standard'}
+                                disabled={
+                                  user.id === 1 ||
+                                  (currentUser?.id !== 1 &&
+                                    hasPermission(
+                                      Permission.ADMIN,
+                                      user.permissions
+                                    ))
+                                }
+                                onClick={() =>
+                                  setDeleteModal({ isOpen: true, user })
+                                }
+                              >
+                                {intl.formatMessage(globalMessages.delete)}
+                              </Button>
+                            </div>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                    {visibleUsers.length === 0 && (
+                      <tr className="app-data-table-row">
+                        <td
+                          className="app-data-table-cell text-center"
+                          colSpan={7}
+                        >
+                          {intl.formatMessage(messages.noUsers)}
+                        </td>
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
               </div>
             </div>
           </div>

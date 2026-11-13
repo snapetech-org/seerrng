@@ -78,10 +78,12 @@ const SettingsTabs = ({
   tabType = 'default',
   settingsRoutes,
   compactOnNarrowScreens = false,
+  isRouteVisible,
 }: {
   tabType?: 'default' | 'button' | 'filter';
   settingsRoutes: SettingsRoute[];
   compactOnNarrowScreens?: boolean;
+  isRouteVisible?: (route: SettingsRoute) => boolean;
 }) => {
   const intl = useIntl();
   const router = useRouter();
@@ -89,6 +91,7 @@ const SettingsTabs = ({
   const visibleSettingsRoutes = settingsRoutes.filter(
     (route) =>
       !route.hidden &&
+      (isRouteVisible ? isRouteVisible(route) : true) &&
       (route.requiredPermission
         ? hasPermission(
             route.requiredPermission,

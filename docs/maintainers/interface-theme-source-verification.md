@@ -88,10 +88,15 @@ music, book, comic, and magazine quotas and watchlist entries remain available
 in collapsed extension sections. The SeerrNG avatar editing action remains
 available.
 
-The Users page now follows upstream's action/search/sort toolbar, paginated
-sortable table, checkboxes, row proportions, and page-size controls. SeerrNG's
-account-type/role filters and TV season queue tools remain available under
-collapsed extension areas.
+The Users page follows upstream's action/search/sort toolbar, sortable table,
+row hierarchy, and actions inside the shared scrollable table card. It keeps the
+repository's one-set user list, shared selection circles, table geometry, and
+standard filter/action owners. SeerrNG's account-type/role filters and TV season
+queue tools remain available under collapsed extension areas.
+
+The Issues list uses the shared pagination footer and starts with All Issues
+selected. The upstream presentation does not change the repository's paging
+controls or default task filter.
 
 ## Visual review status
 

@@ -1186,7 +1186,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/IssueList/index.tsx",
-          "line": 76,
+          "line": 84,
           "defaultMessage": "'Album'"
         }
       ],
@@ -1206,7 +1206,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/IssueList/index.tsx",
-          "line": 80,
+          "line": 88,
           "defaultMessage": "'Audio'"
         }
       ],
@@ -1226,7 +1226,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/IssueList/index.tsx",
-          "line": 66,
+          "line": 74,
           "defaultMessage": "'Comics'"
         }
       ],
@@ -1246,7 +1246,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/IssueList/index.tsx",
-          "line": 72,
+          "line": 80,
           "defaultMessage": "'Genres'"
         }
       ],
@@ -1266,7 +1266,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/IssueList/index.tsx",
-          "line": 78,
+          "line": 86,
           "defaultMessage": "'Single'"
         }
       ],
@@ -1286,7 +1286,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/IssueList/index.tsx",
-          "line": 52,
+          "line": 60,
           "defaultMessage": "'Status'"
         }
       ],
@@ -1306,7 +1306,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/IssueList/index.tsx",
-          "line": 73,
+          "line": 81,
           "defaultMessage": "'Studio'"
         }
       ],
@@ -1326,7 +1326,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/IssueList/index.tsx",
-          "line": 81,
+          "line": 89,
           "defaultMessage": "'Video'"
         }
       ],
@@ -2786,7 +2786,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/IssueList/index.tsx",
-          "line": 80,
+          "line": 88,
           "defaultMessage": "'Audio'"
         }
       ],
@@ -4134,7 +4134,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/IssueList/index.tsx",
-          "line": 76,
+          "line": 84,
           "defaultMessage": "'Album'"
         }
       ],
@@ -4154,7 +4154,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/IssueList/index.tsx",
-          "line": 80,
+          "line": 88,
           "defaultMessage": "'Audio'"
         }
       ],
@@ -4174,7 +4174,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/IssueList/index.tsx",
-          "line": 78,
+          "line": 86,
           "defaultMessage": "'Single'"
         }
       ],
@@ -4194,7 +4194,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/IssueList/index.tsx",
-          "line": 50,
+          "line": 58,
           "defaultMessage": "'Date'"
         }
       ],
@@ -4214,7 +4214,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/IssueList/index.tsx",
-          "line": 73,
+          "line": 81,
           "defaultMessage": "'Studio'"
         }
       ],
@@ -4914,7 +4914,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/UserList/index.tsx",
-          "line": 61,
+          "line": 64,
           "defaultMessage": "'Type'"
         }
       ],
@@ -5654,7 +5654,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/IssueList/index.tsx",
-          "line": 76,
+          "line": 84,
           "defaultMessage": "'Album'"
         }
       ],
@@ -5674,7 +5674,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/IssueList/index.tsx",
-          "line": 80,
+          "line": 88,
           "defaultMessage": "'Audio'"
         }
       ],
@@ -5694,7 +5694,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/IssueList/index.tsx",
-          "line": 52,
+          "line": 60,
           "defaultMessage": "'Status'"
         }
       ],
@@ -5714,7 +5714,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/IssueList/index.tsx",
-          "line": 73,
+          "line": 81,
           "defaultMessage": "'Studio'"
         }
       ],
@@ -5734,7 +5734,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/IssueList/index.tsx",
-          "line": 81,
+          "line": 89,
           "defaultMessage": "'Video'"
         }
       ],
@@ -6640,7 +6640,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/IssueList/index.tsx",
-          "line": 78,
+          "line": 86,
           "defaultMessage": "'Single'"
         }
       ],
@@ -6986,7 +6986,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/IssueList/index.tsx",
-          "line": 76,
+          "line": 84,
           "defaultMessage": "'Album'"
         }
       ],

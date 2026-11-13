@@ -4,6 +4,7 @@ import LoadingSpinner, {
   PageStatus,
 } from '@app/components/Common/LoadingSpinner';
 import PageTitle from '@app/components/Common/PageTitle';
+import PaginationFooter from '@app/components/Common/PaginationFooter';
 import {
   CompactSelect,
   FilterResetButton,
@@ -35,13 +36,11 @@ import {
   MagnifyingGlassIcon,
 } from '@heroicons/react/24/outline';
 import {
-  BarsArrowDownIcon as UpstreamSortIcon,
-  ChevronLeftIcon,
-  ChevronRightIcon,
   FunnelIcon,
+  BarsArrowDownIcon as UpstreamSortIcon,
 } from '@heroicons/react/24/solid';
-import { MediaType } from '@server/constants/media';
 import type { TmdbGenre } from '@server/api/themoviedb/interfaces';
+import { MediaType } from '@server/constants/media';
 import type { IssueResultsResponse } from '@server/interfaces/api/issueInterfaces';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
@@ -108,7 +107,7 @@ const IssueList = () => {
   const router = useRouter();
   const upstream = useUpstreamTheme();
   const focusedIssueId = getPositiveQueryParamNumber(router.query.issue);
-  const [filter, setFilter] = useState<Filter>(upstream ? 'open' : 'all');
+  const [filter, setFilter] = useState<Filter>('all');
   const [sort, setSort] = useState<Sort>('added');
   const [direction, setDirection] = useState<Direction>('desc');
   const [timeFrame, setTimeFrame] = useState<TimeFrame>('all');
@@ -557,7 +556,7 @@ const IssueList = () => {
         <div className="mb-4 flex flex-col justify-between lg:flex-row lg:items-end">
           <Header>{intl.formatMessage(messages.issues)}</Header>
           <div className="mt-2 flex flex-grow flex-col sm:flex-row lg:flex-grow-0">
-            <div className="mb-2 flex flex-grow sm:mb-0 sm:mr-2 lg:flex-grow-0">
+            <div className="mb-2 flex flex-grow sm:mr-2 sm:mb-0 lg:flex-grow-0">
               <span className="inline-flex cursor-default items-center rounded-l-md border border-r-0 border-gray-500 bg-gray-800 px-3 text-sm text-gray-100">
                 <FunnelIcon className="h-6 w-6" />
               </span>
@@ -571,8 +570,12 @@ const IssueList = () => {
                 value={filter}
                 className="rounded-r-only"
               >
-                <option value="all">{intl.formatMessage(globalMessages.all)}</option>
-                <option value="open">{intl.formatMessage(globalMessages.open)}</option>
+                <option value="all">
+                  {intl.formatMessage(globalMessages.all)}
+                </option>
+                <option value="open">
+                  {intl.formatMessage(globalMessages.open)}
+                </option>
                 <option value="resolved">
                   {intl.formatMessage(globalMessages.resolved)}
                 </option>
@@ -682,82 +685,16 @@ const IssueList = () => {
             )}
           </div>
         ))}
-      {upstream ? (
-        <div className="actions">
-          <nav
-            className="mb-3 flex flex-col items-center space-y-3 sm:flex-row sm:space-y-0"
-            aria-label="Pagination"
-          >
-            <div className="hidden lg:flex lg:flex-1">
-              <p className="text-sm">
-                {data.results.length > 0 &&
-                  intl.formatMessage(globalMessages.showingresults, {
-                    from: pageIndex * pageSize + 1,
-                    to:
-                      data.results.length < pageSize
-                        ? pageIndex * pageSize + data.results.length
-                        : (pageIndex + 1) * pageSize,
-                    total: data.pageInfo.results,
-                    strong: (message: React.ReactNode) => (
-                      <span className="font-medium">{message}</span>
-                    ),
-                  })}
-              </p>
-            </div>
-            <div className="flex justify-center sm:flex-1 sm:justify-start lg:justify-center">
-              <span className="-mt-3 items-center truncate text-sm sm:mt-0">
-                {intl.formatMessage(globalMessages.resultsperpage, {
-                  pageSize: (
-                    <select
-                      id="pageSize"
-                      name="pageSize"
-                      onChange={(event) => {
-                        setPageSize(Number(event.target.value));
-                        resetPage();
-                      }}
-                      value={pageSize}
-                      className="short inline"
-                    >
-                      <option value="5">5</option>
-                      <option value="10">10</option>
-                      <option value="25">25</option>
-                      <option value="50">50</option>
-                      <option value="100">100</option>
-                    </select>
-                  ),
-                })}
-              </span>
-            </div>
-            <div className="flex flex-auto justify-center space-x-2 sm:flex-1 sm:justify-end">
-              <Button
-                disabled={pageIndex <= 0}
-                onClick={() => changePage(page - 1)}
-              >
-                <ChevronLeftIcon />
-                <span>{intl.formatMessage(globalMessages.previous)}</span>
-              </Button>
-              <Button
-                disabled={pageIndex + 1 >= totalPages}
-                onClick={() => changePage(page + 1)}
-              >
-                <span>{intl.formatMessage(globalMessages.next)}</span>
-                <ChevronRightIcon />
-              </Button>
-            </div>
-          </nav>
-        </div>
-      ) : (
-        <PaginationFooter
-          page={page}
-          pageSize={pageSize}
-          totalPages={totalPages}
-          onPageChange={changePage}
-          onPageSizeChange={(size) => {
-            setPageSize(size);
-            resetPage();
-          }}
-        />
-      )}
+      <PaginationFooter
+        page={page}
+        pageSize={pageSize}
+        totalPages={totalPages}
+        onPageChange={changePage}
+        onPageSizeChange={(size) => {
+          setPageSize(size);
+          resetPage();
+        }}
+      />
     </>
   );
 };

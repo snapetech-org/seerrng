@@ -182,22 +182,13 @@ const IssueDetails = () => {
 
   return (
     <div
-      className="media-page"
+      className="media-page upstream-media-page"
       style={{
         height: 493,
       }}
     >
       <PageTitle title={[intl.formatMessage(messages.issuepagetitle), title]} />
-      <Transition
-        as="div"
-        enter="transition-opacity duration-300"
-        enterFrom="opacity-0"
-        enterTo="opacity-100"
-        leave="transition-opacity duration-300"
-        leaveFrom="opacity-100"
-        leaveTo="opacity-0"
-        show={showDeleteModal}
-      >
+      <Transition as="div" show={showDeleteModal}>
         <Modal
           title={intl.formatMessage(messages.deleteissue)}
           onCancel={() => setShowDeleteModal(false)}
@@ -209,21 +200,14 @@ const IssueDetails = () => {
         </Modal>
       </Transition>
       {data.backdropPath && (
-        <div className="media-page-bg-image">
+        <div className="upstream-media-backdrop">
           <CachedImage
             type="tmdb"
+            className="object-cover"
             alt=""
             src={`https://image.tmdb.org/t/p/w1920_and_h800_multi_faces/${data.backdropPath}`}
-            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
             fill
             priority
-          />
-          <div
-            className="absolute inset-0"
-            style={{
-              backgroundImage:
-                'linear-gradient(180deg, rgba(17, 24, 39, 0.47) 0%, rgba(17, 24, 39, 1) 100%)',
-            }}
           />
         </div>
       )}
@@ -372,7 +356,7 @@ const IssueDetails = () => {
                 </span>
               </div>
             </div>
-            <div className="mb-6 mt-4 flex flex-col space-y-2">
+            <div className="mt-4 mb-6 flex flex-col space-y-2">
               {issueData?.media.mediaUrl && (
                 <Button
                   as="a"
@@ -485,7 +469,7 @@ const IssueDetails = () => {
               />
             ))}
             {otherComments.length === 0 && (
-              <div className="mb-10 mt-4 text-gray-400">
+              <div className="mt-4 mb-10 text-gray-400">
                 <span>{intl.formatMessage(messages.nocomments)}</span>
               </div>
             )}
@@ -638,7 +622,7 @@ const IssueDetails = () => {
               </span>
             </div>
           </div>
-          <div className="mb-6 mt-4 flex flex-col space-y-2">
+          <div className="mt-4 mb-6 flex flex-col space-y-2">
             {issueData?.media.mediaUrl && (
               <Button
                 as="a"

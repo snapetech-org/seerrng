@@ -107,7 +107,7 @@
     },
     {
       "file": "src/components/CollectionDetails/index.tsx",
-      "line": 643,
+      "line": 660,
       "expression": "availability.error",
       "context": [
         "CollectionServerActions",
@@ -496,6 +496,71 @@
       "reason": "The producing state/validation path uses intl.formatMessage before rendering."
     },
     {
+      "file": "src/components/IssueDetails/UpstreamIssueComment.tsx",
+      "line": 232,
+      "expression": "comment.message",
+      "context": [
+        "ReactMarkdown",
+        "div",
+        "div",
+        "div",
+        "div",
+        "div"
+      ],
+      "classification": "user-data",
+      "reason": "Issue comments are user-authored Markdown; preserve their text."
+    },
+    {
+      "file": "src/components/IssueDetails/UpstreamIssueDetails.tsx",
+      "line": 299,
+      "expression": "firstComment.message",
+      "context": [
+        "IssueDescription",
+        "div",
+        "div",
+        "div"
+      ],
+      "attribute": "description",
+      "classification": "user-data",
+      "reason": "The first issue comment is user-authored Markdown; preserve its text."
+    },
+    {
+      "file": "src/components/IssueDetails/UpstreamIssueDetails.tsx",
+      "line": 521,
+      "expression": "intl.formatMessage(\n                                      values.message\n                                        ? messages.closeissueandcomment\n                                        : messages.closeissue\n                                    )",
+      "context": [
+        "span",
+        "Button",
+        "div",
+        "div",
+        "Form",
+        "Formik",
+        "div",
+        "div",
+        "div",
+        "div"
+      ],
+      "classification": "already-localized"
+    },
+    {
+      "file": "src/components/IssueDetails/UpstreamIssueDetails.tsx",
+      "line": 542,
+      "expression": "intl.formatMessage(\n                                      values.message\n                                        ? messages.reopenissueandcomment\n                                        : messages.reopenissue\n                                    )",
+      "context": [
+        "span",
+        "Button",
+        "div",
+        "div",
+        "Form",
+        "Formik",
+        "div",
+        "div",
+        "div",
+        "div"
+      ],
+      "classification": "already-localized"
+    },
+    {
       "file": "src/components/IssueModal/CreateIssueModal/index.tsx",
       "line": 445,
       "expression": "errors.message",
@@ -621,7 +686,7 @@
     },
     {
       "file": "src/components/MovieDetails/MovieDetailsLayout.tsx",
-      "line": 554,
+      "line": 556,
       "expression": "statusMessage",
       "context": [
         "div"
@@ -847,7 +912,7 @@
     },
     {
       "file": "src/components/Search/index.tsx",
-      "line": 768,
+      "line": 769,
       "expression": "providerErrorMessage ??\n                intl.formatMessage(messages.searchUnavailable)",
       "context": [
         "ApiMessageText",
@@ -859,60 +924,60 @@
     },
     {
       "file": "src/components/Search/index.tsx",
-      "line": 853,
+      "line": 850,
       "expression": "intl.formatMessage(searchCategory.message)",
       "context": [
         "MediaFilterOption",
         "div",
         "PinnedFilterSection",
-        "details"
+        "OptionalDisclosure"
       ],
       "attribute": "label",
       "classification": "already-localized"
     },
     {
       "file": "src/components/Search/index.tsx",
-      "line": 877,
+      "line": 874,
       "expression": "intl.formatMessage(searchCategory.message)",
       "context": [
         "button",
         "MediaFilterOption",
         "div",
         "PinnedFilterSection",
-        "details"
+        "OptionalDisclosure"
       ],
       "classification": "already-localized"
     },
     {
       "file": "src/components/Search/index.tsx",
-      "line": 943,
+      "line": 940,
       "expression": "`${intl.formatMessage(\n                        sortOption.message\n                      )}: ${directionLabel}`",
       "context": [
         "button",
         "Tooltip",
         "div",
         "PinnedFilterSection",
-        "details"
+        "OptionalDisclosure"
       ],
       "attribute": "aria-label",
       "classification": "already-localized"
     },
     {
       "file": "src/components/Search/index.tsx",
-      "line": 967,
+      "line": 964,
       "expression": "intl.formatMessage(sortOption.message)",
       "context": [
         "button",
         "Tooltip",
         "div",
         "PinnedFilterSection",
-        "details"
+        "OptionalDisclosure"
       ],
       "classification": "already-localized"
     },
     {
       "file": "src/components/Search/index.tsx",
-      "line": 988,
+      "line": 985,
       "expression": "error && searchError",
       "context": [],
       "classification": "localized-child-boundary",

@@ -14,8 +14,8 @@ import usePersius from '@app/components/Persius/usePersius';
 import { DiscoverSliderScrollRestorationContext } from '@app/components/Slider';
 import { encodeURIExtraParams } from '@app/hooks/useDiscover';
 import useSettings from '@app/hooks/useSettings';
-import useUpstreamTheme from '@app/hooks/useUpstreamTheme';
 import useToasts from '@app/hooks/useToasts';
+import useUpstreamTheme from '@app/hooks/useUpstreamTheme';
 import { Permission, useUser } from '@app/hooks/useUser';
 import globalMessages from '@app/i18n/globalMessages';
 import defineMessages from '@app/utils/defineMessages';
@@ -271,7 +271,15 @@ const Discover = ({ initialSliders }: DiscoverProps) => {
     .split('T')[0];
 
   if (!discoverData && !discoverError) {
-    if (upstream) return <LoadingSpinner />;
+    if (upstream) {
+      return (
+        <>
+          <PageTitle title={intl.formatMessage(messages.discover)} />
+          <Header>{intl.formatMessage(messages.discover)}</Header>
+          <LoadingSpinner />
+        </>
+      );
+    }
 
     return (
       <>

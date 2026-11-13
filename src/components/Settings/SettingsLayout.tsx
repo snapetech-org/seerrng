@@ -4,6 +4,7 @@ import Modal from '@app/components/Common/Modal';
 import PageTitle from '@app/components/Common/PageTitle';
 import type { SettingsRoute } from '@app/components/Common/SettingsTabs';
 import SettingsTabs from '@app/components/Common/SettingsTabs';
+import { OptionalDisclosure } from '@app/components/Persius/Primitives';
 import {
   SettingsDisplayControl,
   SettingsDisplayProvider,
@@ -21,7 +22,6 @@ import {
   MagnifyingGlassIcon,
 } from '@heroicons/react/24/solid';
 import { MediaServerType, ServerType } from '@server/constants/server';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 import type { ReactNode } from 'react';
 import {
@@ -52,7 +52,7 @@ const messages = defineMessages('components.Settings', {
   menuMetadataProviders: 'Metadata Providers',
   menuDiscoveryIntegrations: 'Discovery Integrations',
   searchSettings: 'Search Settings',
-  moreSettings: 'More settings',
+  moreSettings: 'More Settings',
   save: 'Save',
   discard: 'Discard',
   unsavedChanges: 'Unsaved Changes',
@@ -240,9 +240,6 @@ const SettingsLayoutContent = ({ children }: SettingsLayoutProps) => {
     '/settings/jobs',
     '/settings/about',
   ]);
-  const upstreamSettingsRoutes = settingsRoutes.filter((route) =>
-    upstreamSettingsPaths.has(route.route)
-  );
   const extensionSettingsRoutes = settingsRoutes.filter(
     (route) => !upstreamSettingsPaths.has(route.route)
   );
@@ -678,49 +675,41 @@ const SettingsLayoutContent = ({ children }: SettingsLayoutProps) => {
       <div className="settings-page-navigation-row">
         <SettingsTabs
           tabType={upstream ? 'default' : 'filter'}
-          settingsRoutes={upstream ? upstreamSettingsRoutes : settingsRoutes}
+          settingsRoutes={settingsRoutes}
+          isRouteVisible={(route) =>
+            !upstream || upstreamSettingsPaths.has(route.route)
+          }
           compactOnNarrowScreens={!upstream}
         />
         {!upstream && settingsTools}
       </div>
 
       {upstream && (
-        <details
-          className="upstream-settings-more"
+        <OptionalDisclosure
+          enabled={upstream}
           open={shouldOpenSettingsMore || undefined}
+          label={
+            <>
+              <span>{intl.formatMessage(messages.moreSettings)}</span>
+              <ChevronDownIcon aria-hidden="true" />
+            </>
+          }
+          className="upstream-extra-tools upstream-extra-tools--compact"
         >
-          <summary>
-            <span>{intl.formatMessage(messages.moreSettings)}</span>
-            <ChevronDownIcon aria-hidden="true" />
-          </summary>
-          <div className="upstream-settings-more-content">
-            {visibleExtensionSettingsRoutes.length > 0 && (
-              <nav aria-label={intl.formatMessage(messages.moreSettings)}>
-                {visibleExtensionSettingsRoutes.map((route) => (
-                  <Link
-                    href={route.route}
-                    key={route.route}
-                    aria-current={
-                      router.pathname.match(route.regex) ? 'page' : undefined
-                    }
-                  >
-                    {route.text}
-                  </Link>
-                ))}
-              </nav>
-            )}
-            {settingsTools}
-          </div>
-        </details>
+          {visibleExtensionSettingsRoutes.length > 0 && (
+            <SettingsTabs
+              tabType="default"
+              settingsRoutes={settingsRoutes}
+              isRouteVisible={(route) =>
+                !upstreamSettingsPaths.has(route.route)
+              }
+            />
+          )}
+          {settingsTools}
+        </OptionalDisclosure>
       )}
 
-      <article
-        className={`${
-          upstream
-            ? 'upstream-settings-content'
-            : 'app-card-main settings-main-card'
-        } max-w-full min-w-0`}
-      >
+      <article className="app-card-main settings-main-card max-w-full min-w-0">
         <div
           ref={contentRef}
           className={`settings-page-content ${settingsLayoutStyles.settingsContent} ${
@@ -733,18 +722,15 @@ const SettingsLayoutContent = ({ children }: SettingsLayoutProps) => {
             if (
               !(event.target instanceof HTMLFormElement) ||
               !event.target.hasAttribute('data-settings-dirty')
-            )
+            ) {
               setDirty(false);
+            }
           }}
         >
           {children}
         </div>
         {(!upstream || hasUnsavedChanges || pageAction) && (
-          <div
-            className={`settings-page-actions ${
-              upstream ? 'upstream-settings-actions' : ''
-            }`}
-          >
+          <div className="settings-page-actions">
             <Button
               buttonType="danger"
               buttonSize="standard"

@@ -62,6 +62,18 @@
       "reason": "Issue comments and the original issue description are user-authored Markdown; preserve their text."
     },
     {
+      "file": "src/components/IssueDetails/UpstreamIssueComment.tsx",
+      "expression": "comment.message",
+      "classification": "user-data",
+      "reason": "Issue comments are user-authored Markdown; preserve their text."
+    },
+    {
+      "file": "src/components/IssueDetails/UpstreamIssueDetails.tsx",
+      "expression": "firstComment.message",
+      "classification": "user-data",
+      "reason": "The first issue comment is user-authored Markdown; preserve its text."
+    },
+    {
       "file": "src/components/IssueDetails/IssueDiscussion.tsx",
       "expression": "description?.message ?? ''",
       "classification": "user-data",
@@ -72,6 +84,12 @@
       "expression": "errors.message",
       "classification": "localized-state",
       "reason": "The producing state/validation path uses intl.formatMessage before rendering."
+    },
+    {
+      "file": "src/components/IssueList/index.tsx",
+      "expression": "message",
+      "classification": "localized-rich-text",
+      "reason": "This is the rich-text callback argument supplied by an enclosing intl.formatMessage call."
     },
     {
       "file": "src/components/IssueModal/CreateIssueModal/index.tsx",

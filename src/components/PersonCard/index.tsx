@@ -19,6 +19,7 @@ const PersonCard = ({
   name,
   subName,
   profilePath,
+  canExpand,
 }: PersonCardProps) => {
   const upstream = useUpstreamTheme();
   const [isHovered, setHovered] = useState(false);

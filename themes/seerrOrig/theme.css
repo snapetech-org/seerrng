@@ -189,19 +189,23 @@
 }
 
 :is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
-  .upstream-navigation-more-toggle > svg {
+  .upstream-navigation-more-toggle
+  > svg {
   width: 16px;
   height: 16px;
   transition: transform 180ms ease;
 }
 
 :is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
-  .upstream-navigation-more[open] > .upstream-navigation-more-toggle > svg {
+  .upstream-navigation-more[open]
+  > .upstream-navigation-more-toggle
+  > svg {
   transform: rotate(180deg);
 }
 
 :is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
-  .upstream-navigation-more > .sidebar-navigation-items {
+  .upstream-navigation-more
+  > .sidebar-navigation-items {
   display: flex;
   flex-direction: column;
   gap: 16px;
@@ -642,6 +646,12 @@
   position: absolute;
   inset: 0;
   background: linear-gradient(180deg, rgb(17 24 39 / 0.47), #111827);
+}
+
+.upstream-backdrop-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgb(31 41 55 / 0.47) 0%, #1f2937 100%);
 }
 
 :is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
@@ -1163,64 +1173,20 @@
   font-size: 14px;
 }
 
-:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
-  .upstream-person-more {
-  margin-block: 8px 16px;
-  color: #d1d5db;
-  font-size: 14px;
-}
-
-:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
-  .upstream-person-more
-  > summary {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  min-height: 32px;
-  color: #9ca3af;
-  cursor: pointer;
-  list-style: none;
-}
-
-:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
-  .upstream-person-more
-  > summary::-webkit-details-marker {
-  display: none;
-}
-
-:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
-  .upstream-person-more
-  > summary
-  svg {
-  width: 16px;
-  height: 16px;
-  transition: transform 150ms ease;
-}
-
-:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
-  .upstream-person-more[open]
-  > summary
-  svg {
-  transform: rotate(180deg);
-}
-
-:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
-  .upstream-person-more-content {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 12px;
-  margin-top: 8px;
-}
-
 @media (min-width: 640px) {
-  :is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  :is(
+      :root[data-interface-theme='seerrOrig'],
+      [data-interface-theme='seerrOrig']
+    )
     .upstream-person-name {
     font-size: 36px;
     line-height: 40px;
   }
 
-  :is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  :is(
+      :root[data-interface-theme='seerrOrig'],
+      [data-interface-theme='seerrOrig']
+    )
     .upstream-person-media-filter {
     flex-grow: 0;
     margin-bottom: 0;
@@ -2249,134 +2215,42 @@
 }
 
 :is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
-  .upstream-settings-content {
-  margin-top: 40px;
-  color: #fff;
+  .upstream-extra-tools--compact {
+  margin-block: 8px;
+  color: #9ca3af;
+  font-size: 12px;
+  line-height: 16px;
 }
 
 :is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
-  .upstream-settings-more {
-  margin-top: 16px;
-  color: #d1d5db;
-  font-size: 14px;
-}
-
-:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
-  .upstream-settings-more
+  .upstream-extra-tools--compact
   > summary {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  min-height: 36px;
-  padding: 0 10px;
-  border: 1px solid #4b5563;
-  border-radius: 4px;
-  background: #1f2937;
-  color: #d1d5db;
-  cursor: pointer;
-  list-style: none;
-}
-
-:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
-  .upstream-settings-more
-  > summary::-webkit-details-marker {
-  display: none;
-}
-
-:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
-  .upstream-settings-more
-  > summary
-  svg {
-  width: 16px;
-  height: 16px;
-  transition: transform 150ms ease;
-}
-
-:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
-  .upstream-settings-more[open]
-  > summary
-  svg {
-  transform: rotate(180deg);
-}
-
-:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
-  .upstream-settings-more-content {
-  display: grid;
-  gap: 16px;
-  margin-top: 12px;
-}
-
-:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
-  .upstream-settings-more-content
-  nav {
   display: flex;
-  flex-wrap: wrap;
-  gap: 8px 16px;
-}
-
-:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
-  .upstream-settings-more-content
-  nav
-  a {
-  color: #9ca3af;
-  text-decoration: none;
-}
-
-:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
-  .upstream-settings-more-content
-  nav
-  a:hover,
-:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
-  .upstream-settings-more-content
-  nav
-  a[aria-current='page'] {
-  color: #6366f1;
-}
-
-:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
-  .upstream-settings-more-content
-  .settings-page-search {
-  margin-top: 0;
-}
-
-:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
-  .upstream-search-more {
-  display: grid;
-  justify-items: end;
-  margin-top: -12px;
-  margin-bottom: 8px;
-}
-
-:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
-  .upstream-search-more
-  > summary {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
   min-height: 24px;
-  color: #9ca3af;
-  font-size: 12px;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 4px;
   cursor: pointer;
   list-style: none;
 }
 
 :is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
-  .upstream-search-more
+  .upstream-extra-tools--compact
   > summary::-webkit-details-marker {
   display: none;
 }
 
 :is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
-  .upstream-search-more
+  .upstream-extra-tools--compact
   > summary:hover,
 :is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
-  .upstream-search-more
+  .upstream-extra-tools--compact
   > summary:focus-visible {
   color: #e5e7eb;
 }
 
 :is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
-  .upstream-search-more
+  .upstream-extra-tools--compact
   > summary
   svg {
   width: 14px;
@@ -2385,59 +2259,7 @@
 }
 
 :is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
-  .upstream-search-more[open]
-  > summary
-  svg {
-  transform: rotate(180deg);
-}
-
-:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
-  .upstream-request-more {
-  display: grid;
-  justify-items: end;
-  margin-top: -16px;
-  margin-bottom: 16px;
-}
-
-:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
-  .upstream-request-more
-  > summary {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  min-height: 24px;
-  color: #9ca3af;
-  font-size: 12px;
-  cursor: pointer;
-  list-style: none;
-}
-
-:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
-  .upstream-request-more
-  > summary::-webkit-details-marker {
-  display: none;
-}
-
-:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
-  .upstream-request-more
-  > summary:hover,
-:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
-  .upstream-request-more
-  > summary:focus-visible {
-  color: #e5e7eb;
-}
-
-:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
-  .upstream-request-more
-  > summary
-  svg {
-  width: 14px;
-  height: 14px;
-  transition: transform 150ms ease;
-}
-
-:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
-  .upstream-request-more[open]
+  .upstream-extra-tools--compact[open]
   > summary
   svg {
   transform: rotate(180deg);
@@ -2741,7 +2563,10 @@
   background: #1f2937;
   box-shadow: 0 4px 6px rgb(0 0 0 / 0.1);
   color: #e5e7eb;
-  transition: color 180ms ease, transform 180ms ease, border-color 180ms ease;
+  transition:
+    color 180ms ease,
+    transform 180ms ease,
+    border-color 180ms ease;
 }
 
 :is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
@@ -2749,7 +2574,11 @@
   position: absolute;
   z-index: -1;
   inset: 0;
-  background: linear-gradient(180deg, rgb(31 41 55 / 0.47), rgb(31 41 55 / 0.8));
+  background: linear-gradient(
+    180deg,
+    rgb(31 41 55 / 0.47),
+    rgb(31 41 55 / 0.8)
+  );
   content: '';
 }
 
@@ -2780,27 +2609,39 @@
 }
 
 @media (min-width: 640px) {
-  :is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  :is(
+      :root[data-interface-theme='seerrOrig'],
+      [data-interface-theme='seerrOrig']
+    )
     .upstream-media-attributes {
     font-size: 14px;
     line-height: 20px;
   }
 
-  :is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  :is(
+      :root[data-interface-theme='seerrOrig'],
+      [data-interface-theme='seerrOrig']
+    )
     .upstream-media-overview-copy
     > p {
     font-size: 16px;
     line-height: 24px;
   }
 
-  :is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  :is(
+      :root[data-interface-theme='seerrOrig'],
+      [data-interface-theme='seerrOrig']
+    )
     .upstream-media-crew {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
 
 @media (min-width: 768px) {
-  :is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  :is(
+      :root[data-interface-theme='seerrOrig'],
+      [data-interface-theme='seerrOrig']
+    )
     .upstream-media-poster {
     width: 176px;
     border-radius: 8px;
@@ -2809,12 +2650,18 @@
 }
 
 @media (min-width: 1024px) {
-  :is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  :is(
+      :root[data-interface-theme='seerrOrig'],
+      [data-interface-theme='seerrOrig']
+    )
     .upstream-media-overview {
     flex-direction: row;
   }
 
-  :is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  :is(
+      :root[data-interface-theme='seerrOrig'],
+      [data-interface-theme='seerrOrig']
+    )
     .upstream-media-overview-right {
     flex: 0 0 320px;
     width: 320px;
@@ -2824,34 +2671,49 @@
 }
 
 @media (min-width: 1280px) {
-  :is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  :is(
+      :root[data-interface-theme='seerrOrig'],
+      [data-interface-theme='seerrOrig']
+    )
     .upstream-media-header {
     flex-direction: row;
     align-items: flex-end;
     gap: 0;
   }
 
-  :is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  :is(
+      :root[data-interface-theme='seerrOrig'],
+      [data-interface-theme='seerrOrig']
+    )
     .upstream-media-poster {
     width: 208px;
     margin-right: 16px;
   }
 
-  :is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  :is(
+      :root[data-interface-theme='seerrOrig'],
+      [data-interface-theme='seerrOrig']
+    )
     .upstream-media-title {
     margin-top: 0;
     margin-right: 16px;
     text-align: left;
   }
 
-  :is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  :is(
+      :root[data-interface-theme='seerrOrig'],
+      [data-interface-theme='seerrOrig']
+    )
     .upstream-media-title
     h1 {
     font-size: 36px;
     line-height: 40px;
   }
 
-  :is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  :is(
+      :root[data-interface-theme='seerrOrig'],
+      [data-interface-theme='seerrOrig']
+    )
     .upstream-media-attributes {
     justify-content: flex-start;
     margin-top: 0;
@@ -2859,7 +2721,10 @@
     line-height: 24px;
   }
 
-  :is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  :is(
+      :root[data-interface-theme='seerrOrig'],
+      [data-interface-theme='seerrOrig']
+    )
     .upstream-media-actions {
     max-width: 50%;
     justify-content: flex-end;

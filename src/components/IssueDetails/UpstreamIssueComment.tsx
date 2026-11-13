@@ -23,14 +23,17 @@ import { FormattedRelativeTime, useIntl } from 'react-intl';
 import ReactMarkdown from 'react-markdown';
 import * as Yup from 'yup';
 
-const messages = defineMessages('components.IssueDetails.IssueComment', {
-  postedby: 'Posted {relativeTime} by {username}',
-  postedbyedited: 'Posted {relativeTime} by {username} (Edited)',
-  delete: 'Delete Comment',
-  areyousuredelete: 'Are you sure you want to delete this comment?',
-  validationComment: 'You must enter a message',
-  edit: 'Edit Comment',
-});
+const messages = defineMessages(
+  'components.IssueDetails.UpstreamIssueComment',
+  {
+    postedby: 'Posted {relativeTime} by {username}',
+    postedbyedited: 'Posted {relativeTime} by {username} (Edited)',
+    delete: 'Delete Comment',
+    areyousuredelete: 'Are you sure you want to delete this comment?',
+    validationComment: 'You must enter a message',
+    edit: 'Edit Comment',
+  }
+);
 
 interface IssueCommentProps {
   comment: IssueCommentType;
@@ -74,16 +77,7 @@ const IssueComment = ({
         isReversed ? 'flex-row' : 'flex-row-reverse space-x-reverse'
       } mt-4 space-x-4`}
     >
-      <Transition
-        as={Fragment}
-        enter="transition-opacity duration-300"
-        enterFrom="opacity-0"
-        enterTo="opacity-100"
-        leave="transition-opacity duration-300"
-        leaveFrom="opacity-100"
-        leaveTo="opacity-0"
-        show={showDeleteModal}
-      >
+      <Transition as={Fragment} show={showDeleteModal}>
         <Modal
           title={intl.formatMessage(messages.delete)}
           onCancel={() => setShowDeleteModal(false)}
@@ -109,12 +103,12 @@ const IssueComment = ({
           {(isActiveUser || hasPermission(Permission.MANAGE_ISSUES)) && (
             <Menu
               as="div"
-              className="absolute right-1 top-2 z-40 inline-block text-left"
+              className="absolute top-2 right-1 z-40 inline-block text-left"
             >
               {({ open }) => (
                 <>
                   <div>
-                    <MenuButton className="flex items-center rounded-full text-gray-400 hover:text-gray-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-100">
+                    <MenuButton className="flex items-center rounded-full text-gray-400 hover:text-gray-200 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-100 focus:outline-none">
                       <span className="sr-only">Open options</span>
                       <EllipsisVerticalIcon
                         className="h-5 w-5"
@@ -135,7 +129,7 @@ const IssueComment = ({
                   >
                     <MenuItems
                       static
-                      className="absolute right-0 mt-2 w-56 origin-top-right rounded-md bg-gray-700 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+                      className="ring-opacity-5 absolute right-0 mt-2 w-56 origin-top-right rounded-md bg-gray-700 shadow-lg ring-1 ring-black focus:outline-none"
                     >
                       <div className="py-1">
                         {isActiveUser && (
@@ -180,7 +174,7 @@ const IssueComment = ({
               isReversed ? '-left-1' : '-right-1'
             }`}
           />
-          <div className="relative z-20 w-full rounded-md bg-gray-800 py-4 pl-4 pr-8">
+          <div className="relative z-20 w-full rounded-md bg-gray-800 py-4 pr-8 pl-4">
             {isEditing ? (
               <Formik
                 initialValues={{ newMessage: comment.message }}

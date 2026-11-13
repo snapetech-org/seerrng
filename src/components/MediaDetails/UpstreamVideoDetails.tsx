@@ -174,10 +174,12 @@ export default function UpstreamVideoDetails({
   const facts: [string, ReactNode][] = [
     ...(movie?.originalTitle &&
     movie.originalLanguage !== intl.locale.slice(0, 2)
-      ? [[intl.formatMessage(messages.originalTitle), movie.originalTitle] as [
-          string,
-          ReactNode,
-        ]]
+      ? [
+          [intl.formatMessage(messages.originalTitle), movie.originalTitle] as [
+            string,
+            ReactNode,
+          ],
+        ]
       : []),
     [intl.formatMessage(messages.status), data.status],
     ...(movie
@@ -244,22 +246,28 @@ export default function UpstreamVideoDetails({
         ]
       : []),
     ...(countryNames.length
-      ? [[intl.formatMessage(messages.country), countryNames.join(', ')] as [
-          string,
-          ReactNode,
-        ]]
+      ? [
+          [intl.formatMessage(messages.country), countryNames.join(', ')] as [
+            string,
+            ReactNode,
+          ],
+        ]
       : []),
     ...(movie?.budget
-      ? [[intl.formatMessage(messages.budget), currency(movie.budget)] as [
-          string,
-          ReactNode,
-        ]]
+      ? [
+          [intl.formatMessage(messages.budget), currency(movie.budget)] as [
+            string,
+            ReactNode,
+          ],
+        ]
       : []),
     ...(movie?.revenue
-      ? [[intl.formatMessage(messages.revenue), currency(movie.revenue)] as [
-          string,
-          ReactNode,
-        ]]
+      ? [
+          [intl.formatMessage(messages.revenue), currency(movie.revenue)] as [
+            string,
+            ReactNode,
+          ],
+        ]
       : []),
     ...(tv && seasonCount
       ? [
@@ -349,7 +357,10 @@ export default function UpstreamVideoDetails({
         </div>
       )}
       <header className="upstream-media-header">
-        <div className="upstream-media-poster" data-testid="media-details-poster">
+        <div
+          className="upstream-media-poster"
+          data-testid="media-details-poster"
+        >
           <CachedImage
             type="tmdb"
             src={
@@ -388,7 +399,9 @@ export default function UpstreamVideoDetails({
           </div>
           <h1 data-testid="media-title">
             {title}
-            {date && <span className="upstream-media-year"> ({date.slice(0, 4)})</span>}
+            {date && (
+              <span className="upstream-media-year"> ({date.slice(0, 4)})</span>
+            )}
           </h1>
           <div className="upstream-media-attributes">
             {attributes.map((attribute, index) => (
@@ -413,9 +426,7 @@ export default function UpstreamVideoDetails({
                 {crew.map((person, index) => (
                   <li key={`${person.id}-${person.job}-${index}`}>
                     <span>{person.job}</span>
-                    <Link href={`/person/${person.id}`}>
-                      {person.name}
-                    </Link>
+                    <Link href={`/person/${person.id}`}>{person.name}</Link>
                   </li>
                 ))}
               </ul>
@@ -474,7 +485,10 @@ export default function UpstreamVideoDetails({
             <div className="upstream-media-ratings">{ratings}</div>
             <dl>
               {facts
-                .filter(([, value]) => value !== undefined && value !== null && value !== '')
+                .filter(
+                  ([, value]) =>
+                    value !== undefined && value !== null && value !== ''
+                )
                 .map(([label, value]) => (
                   <div className="upstream-media-fact" key={label}>
                     <dt>{label}</dt>
@@ -498,7 +512,7 @@ export default function UpstreamVideoDetails({
           heading={
             <Link
               href={`/${mediaType}/${data.id}/cast`}
-              className="slider-title"
+              className="page-heading upstream-cast-heading"
             >
               <span>{intl.formatMessage(messages.cast)}</span>
               <ArrowRightCircleIcon aria-hidden="true" />

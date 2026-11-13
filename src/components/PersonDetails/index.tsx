@@ -1,6 +1,7 @@
 import Ellipsis from '@app/assets/ellipsis.svg';
 import Button from '@app/components/Common/Button';
 import CachedImage from '@app/components/Common/CachedImage';
+import Header from '@app/components/Common/Header';
 import ImageFader from '@app/components/Common/ImageFader';
 import LoadingSpinner from '@app/components/Common/LoadingSpinner';
 import Modal from '@app/components/Common/Modal';
@@ -11,6 +12,7 @@ import {
 } from '@app/components/Discover/FilterPanel/CompactFilterSelect';
 import ExternalLinkBlock from '@app/components/ExternalLinkBlock';
 import FollowButton from '@app/components/Following/FollowButton';
+import { OptionalDisclosure } from '@app/components/Persius/Primitives';
 import TitleCard from '@app/components/TitleCard';
 import { SettingsContext } from '@app/context/SettingsContext';
 import useToasts from '@app/hooks/useToasts';
@@ -64,7 +66,8 @@ const messages = defineMessages('components.PersonDetails', {
   requestAllMoviesSuccess:
     'Submitted {created} movie requests. {skipped} skipped; {failed} failed.',
   requestAllMoviesFailure: 'Could not request movies by this person.',
-  moreTools: 'More person options',
+  moreTools: 'More Person Options',
+  person: 'Person',
 });
 
 type MediaType = 'all' | 'movie' | 'tv';
@@ -213,7 +216,13 @@ const PersonDetails = () => {
   };
 
   if (!data && !error) {
-    return <LoadingSpinner />;
+    return (
+      <>
+        <PageTitle title={intl.formatMessage(messages.person)} />
+        <Header>{intl.formatMessage(messages.person)}</Header>
+        <LoadingSpinner />
+      </>
+    );
   }
 
   if (!data) {
@@ -325,7 +334,9 @@ const PersonDetails = () => {
         id="mediaType"
         name="mediaType"
         value={currentMediaType}
-        onChange={(event) => setCurrentMediaType(event.target.value as MediaType)}
+        onChange={(event) =>
+          setCurrentMediaType(event.target.value as MediaType)
+        }
         aria-label={intl.formatMessage(messages.mediaTypeFilter)}
       >
         <option value="all">{intl.formatMessage(globalMessages.all)}</option>
@@ -566,37 +577,41 @@ const PersonDetails = () => {
         </div>
       )}
       {upstream && (
-        <details className="upstream-person-more">
-          <summary>
-            <span>{intl.formatMessage(messages.moreTools)}</span>
-            <ChevronDownIcon aria-hidden="true" />
-          </summary>
-          <div className="upstream-person-more-content">
-            {creditSortPicker}
-            {(canRequestAllMovies || canFollowPerson) && (
-              <div className="app-action-row" data-action-placement="leading">
-                {canRequestAllMovies && (
-                  <Button
-                    buttonType="primary"
-                    onClick={() => setShowRequestAllMovies(true)}
-                  >
-                    {intl.formatMessage(messages.requestAllMovies)}
-                  </Button>
-                )}
-                {canFollowPerson && (
-                  <FollowButton
-                    input={{
-                      kind: 'tmdb-person',
-                      subjectKey: `tmdb:person:${data.id}`,
-                      subjectLabel: data.name,
-                      conditions: { ref: { tmdbId: data.id } },
-                    }}
-                  />
-                )}
-              </div>
-            )}
-          </div>
-        </details>
+        <OptionalDisclosure
+          enabled={upstream}
+          label={
+            <>
+              <span>{intl.formatMessage(messages.moreTools)}</span>
+              <ChevronDownIcon aria-hidden="true" />
+            </>
+          }
+          className="upstream-extra-tools upstream-extra-tools--compact"
+          panelClassName="upstream-extra-actions"
+        >
+          {creditSortPicker}
+          {(canRequestAllMovies || canFollowPerson) && (
+            <div className="app-action-row" data-action-placement="leading">
+              {canRequestAllMovies && (
+                <Button
+                  buttonType="primary"
+                  onClick={() => setShowRequestAllMovies(true)}
+                >
+                  {intl.formatMessage(messages.requestAllMovies)}
+                </Button>
+              )}
+              {canFollowPerson && (
+                <FollowButton
+                  input={{
+                    kind: 'tmdb-person',
+                    subjectKey: `tmdb:person:${data.id}`,
+                    subjectLabel: data.name,
+                    conditions: { ref: { tmdbId: data.id } },
+                  }}
+                />
+              )}
+            </div>
+          )}
+        </OptionalDisclosure>
       )}
       {showRequestAllMovies && canRequestAllMovies && (
         <Modal

@@ -1,6 +1,7 @@
 import Button from '@app/components/Common/Button';
 import Header from '@app/components/Common/Header';
 import LoadingSpinner from '@app/components/Common/LoadingSpinner';
+import PageErrorMessage from '@app/components/Common/PageErrorMessage';
 import PageTitle from '@app/components/Common/PageTitle';
 import PaginationFooter from '@app/components/Common/PaginationFooter';
 import Tooltip from '@app/components/Common/Tooltip';
@@ -34,8 +35,8 @@ import {
   ArrowDownIcon,
   ArrowUpIcon,
   Bars3BottomLeftIcon,
-  CircleStackIcon,
   ChevronDownIcon,
+  CircleStackIcon,
   FunnelIcon,
 } from '@heroicons/react/24/solid';
 import type { RequestResultsResponse } from '@server/interfaces/api/requestInterfaces';
@@ -57,7 +58,8 @@ const messages = defineMessages('components.RequestList', {
   sortTitle: 'Title',
   sortDirection: 'Toggle Sort Direction',
   taskFilters: 'Task Filters',
-  moreRequestFilters: 'More request filters',
+  moreRequestFilters: 'More Request Filters',
+  loadError: 'Could Not Load Requests',
   mediaFilters: 'Media Filters',
   sortBy: 'Sort By',
   mediaType: 'Media Type',
@@ -154,11 +156,8 @@ const RequestList = () => {
   const upstreamMediaType = ['all', 'movie', 'tv'].includes(effectiveMediaType)
     ? effectiveMediaType
     : 'all';
-  const upstreamFilter = Object.values(Filter)
-    .filter((filter) => filter !== Filter.ACTIVE)
-    .includes(effectiveFilter)
-    ? effectiveFilter
-    : Filter.PENDING;
+  const upstreamFilter =
+    effectiveFilter === Filter.ACTIVE ? Filter.PENDING : effectiveFilter;
   const upstreamSort =
     effectiveSort === 'added' || effectiveSort === 'modified'
       ? effectiveSort
@@ -278,9 +277,9 @@ const RequestList = () => {
 
   const upstreamRequestControls = (
     <div className="mt-2 flex flex-grow flex-col sm:flex-row lg:flex-grow-0">
-      <div className="mb-2 flex flex-grow sm:mb-0 sm:mr-2 lg:flex-grow-0">
+      <div className="mb-2 flex flex-grow sm:mr-2 sm:mb-0 lg:flex-grow-0">
         <span className="inline-flex cursor-default items-center rounded-l-md border border-r-0 border-gray-500 bg-gray-800 px-3 text-sm text-gray-100">
-          <CircleStackIcon className="h-6 w-6" />
+          <CircleStackIcon />
         </span>
         <select
           id="mediaType"
@@ -300,9 +299,7 @@ const RequestList = () => {
             }
             void router.push({
               pathname: router.pathname,
-              query: router.query.userId
-                ? { userId: router.query.userId }
-                : {},
+              query: router.query.userId ? { userId: router.query.userId } : {},
             });
           }}
         >
@@ -310,12 +307,14 @@ const RequestList = () => {
           <option value="movie">
             {intl.formatMessage(globalMessages.movies)}
           </option>
-          <option value="tv">{intl.formatMessage(globalMessages.tvshows)}</option>
+          <option value="tv">
+            {intl.formatMessage(globalMessages.tvshows)}
+          </option>
         </select>
       </div>
-      <div className="mb-2 flex flex-grow sm:mb-0 sm:mr-2 lg:flex-grow-0">
+      <div className="mb-2 flex flex-grow sm:mr-2 sm:mb-0 lg:flex-grow-0">
         <span className="inline-flex cursor-default items-center rounded-l-md border border-r-0 border-gray-500 bg-gray-800 px-3 text-sm text-gray-100">
-          <FunnelIcon className="h-6 w-6" />
+          <FunnelIcon />
         </span>
         <select
           id="filter"
@@ -326,9 +325,7 @@ const RequestList = () => {
             setCurrentFilter(event.target.value as Filter);
             void router.push({
               pathname: router.pathname,
-              query: router.query.userId
-                ? { userId: router.query.userId }
-                : {},
+              query: router.query.userId ? { userId: router.query.userId } : {},
             });
           }}
         >
@@ -361,7 +358,7 @@ const RequestList = () => {
       </div>
       <div className="mb-2 flex flex-grow lg:flex-grow-0">
         <span className="inline-flex cursor-default items-center rounded-l-md border border-r-0 border-gray-500 bg-gray-800 px-3 text-gray-100 sm:text-sm">
-          <Bars3BottomLeftIcon className="h-6 w-6" />
+          <Bars3BottomLeftIcon />
         </span>
         <select
           id="sort"
@@ -373,13 +370,13 @@ const RequestList = () => {
             setCurrentSortDirection('desc');
             void router.push({
               pathname: router.pathname,
-              query: router.query.userId
-                ? { userId: router.query.userId }
-                : {},
+              query: router.query.userId ? { userId: router.query.userId } : {},
             });
           }}
         >
-          <option value="added">{intl.formatMessage(messages.sortAdded)}</option>
+          <option value="added">
+            {intl.formatMessage(messages.sortAdded)}
+          </option>
           <option value="modified">
             {intl.formatMessage(messages.sortModified)}
           </option>
@@ -396,9 +393,9 @@ const RequestList = () => {
             }
           >
             {effectiveSortDirection === 'asc' ? (
-              <ArrowUpIcon className="h-6 w-6" />
+              <ArrowUpIcon />
             ) : (
-              <ArrowDownIcon className="h-6 w-6" />
+              <ArrowDownIcon />
             )}
           </Button>
         </Tooltip>
@@ -407,7 +404,14 @@ const RequestList = () => {
   );
 
   if (!data && !error) {
-    if (upstream) return <LoadingSpinner />;
+    if (upstream) {
+      return (
+        <>
+          {pendingHeading}
+          <LoadingSpinner />
+        </>
+      );
+    }
 
     return (
       <>
@@ -418,7 +422,20 @@ const RequestList = () => {
   }
 
   if (!data) {
-    if (upstream) return <LoadingSpinner />;
+    if (upstream) {
+      return (
+        <>
+          {pendingHeading}
+          <PageErrorMessage
+            title={intl.formatMessage(messages.loadError)}
+            retry={{
+              onClick: () => revalidate(),
+              tooltip: intl.formatMessage(globalMessages.retry),
+            }}
+          />
+        </>
+      );
+    }
 
     return (
       <>
@@ -656,16 +673,19 @@ const RequestList = () => {
             {requestHeader}
             {upstreamRequestControls}
           </div>
-          <details
-            className="upstream-request-more"
+          <OptionalDisclosure
+            enabled={upstream}
             open={shouldOpenRequestMore || undefined}
+            label={
+              <>
+                <span>{intl.formatMessage(messages.moreRequestFilters)}</span>
+                <ChevronDownIcon aria-hidden="true" />
+              </>
+            }
+            className="upstream-extra-tools upstream-extra-tools--compact"
           >
-            <summary>
-              <span>{intl.formatMessage(messages.moreRequestFilters)}</span>
-              <ChevronDownIcon aria-hidden="true" />
-            </summary>
             {requestFilters}
-          </details>
+          </OptionalDisclosure>
         </>
       ) : (
         <>
