@@ -41,6 +41,9 @@ permissions to simplify a page.
 - User profiles use the upstream quota summary and media-slider hierarchy.
   SeerrNG quota categories, watchlist entries, and avatar editing remain
   available.
+- The Users page uses the upstream toolbar, sortable table, selection controls,
+  row hierarchy, and pagination. SeerrNG-only user filters and TV queue tools
+  remain in a collapsed extension area.
 - SeerrNG logos and brand assets remain in use throughout SeerrOrig.
 
 Changing theme source styles requires rebuilding the packaged theme assets and
@@ -84,6 +87,11 @@ User profiles use the upstream quota-card and media-slider hierarchy. SeerrNG
 music, book, comic, and magazine quotas and watchlist entries remain available
 in collapsed extension sections. The SeerrNG avatar editing action remains
 available.
+
+The Users page now follows upstream's action/search/sort toolbar, paginated
+sortable table, checkboxes, row proportions, and page-size controls. SeerrNG's
+account-type/role filters and TV season queue tools remain available under
+collapsed extension areas.
 
 ## Visual review status
 
