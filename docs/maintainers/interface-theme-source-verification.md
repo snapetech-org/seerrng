@@ -167,3 +167,8 @@ SeerrNG request, playback, issue, quality, and service controls remain connected
 through the detail action slots. Person cards in SeerrOrig use the upstream
 card component; other interface themes retain the fork card. This is source
 alignment only: matching browser renders have not yet been produced.
+
+The person page retains the upstream profile, biography, credits, and native
+movie/series filter. SeerrNG's credit sort, follow action, and bulk movie
+request are reachable in a collapsed “More person options” disclosure. The
+same route and viewport render comparison remains outstanding.
