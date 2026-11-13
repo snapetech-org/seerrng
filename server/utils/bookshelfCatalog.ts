@@ -348,6 +348,46 @@ const getIsbnCandidates = (
   return [...unique.values()];
 };
 
+const finiteNonNegative = (value: unknown): number | undefined =>
+  typeof value === 'number' && Number.isFinite(value) && value >= 0
+    ? value
+    : undefined;
+
+/**
+ * Readarr and ChaptarrNG report ratings as `ratings: { votes, value,
+ * popularity }` (popularity is roughly votes x value); other Bookshelf
+ * backends send flat `ratingsAverage`/`ratingsCount`. A zero-vote rating of 0
+ * means "unrated", not one star.
+ */
+export const getBookshelfRatings = (
+  result: Pick<
+    ReadarrBookLookupResult,
+    'ratingsAverage' | 'ratingsCount' | 'ratings'
+  >
+): Pick<BookResult, 'ratingsAverage' | 'ratingsCount' | 'popularity'> => {
+  const ratingsCount =
+    finiteNonNegative(result.ratingsCount) ??
+    finiteNonNegative(result.ratings?.votes);
+  const nestedAverage = finiteNonNegative(result.ratings?.value);
+  const ratingsAverage =
+    result.ratingsAverage ??
+    (nestedAverage && ratingsCount !== 0 ? nestedAverage : undefined);
+  const popularity =
+    finiteNonNegative(result.ratings?.popularity) ??
+    (ratingsCount !== undefined && ratingsAverage !== undefined
+      ? ratingsCount * ratingsAverage
+      : ratingsCount);
+  return { ratingsAverage, ratingsCount, popularity };
+};
+
+const getBookshelfReleaseDate = (value?: string): string | undefined => {
+  const time = value ? Date.parse(value) : Number.NaN;
+  // Readarr-family APIs send 0001-01-01 when a book has no release date.
+  return Number.isFinite(time) && new Date(time).getUTCFullYear() > 1
+    ? new Date(time).toISOString()
+    : undefined;
+};
+
 export const mapBookshelfBook = (
   result: ReadarrBookLookupResult,
   serviceId: number,
@@ -419,6 +459,7 @@ export const mapBookshelfBook = (
   const subjects = [...(result.genres ?? []), ...(result.subjects ?? [])]
     .map((subject) => subject.trim())
     .filter(Boolean);
+  const releaseYear = Number(result.releaseDate?.match(/\d{4}/)?.[0]);
   return {
     id: makeBookshelfBookId(serviceId, result.foreignBookId),
     provider: 'bookshelf',
@@ -434,24 +475,29 @@ export const mapBookshelfBook = (
           result.author.authorName ?? result.authorTitle ?? ''
         )
       : undefined,
-    posterPath: image?.remoteUrl ?? image?.url,
+    posterPath: realCoverUrl(image?.remoteUrl ?? image?.url),
     isbn13: isbnCandidates.find((candidate) => candidate.isbn.length === 13)
       ?.isbn,
-    firstPublishYear: result.releaseDate
-      ? Number(result.releaseDate.match(/\d{4}/)?.[0]) || undefined
-      : undefined,
+    firstPublishYear: releaseYear > 1 ? releaseYear : undefined,
+    releaseDate: getBookshelfReleaseDate(result.releaseDate),
     isbnCandidates,
     editionId:
       result.foreignEditionId ?? result.editions?.[0]?.foreignEditionId,
     subjects: subjects.length ? [...new Set(subjects)] : undefined,
     languages: languages.length ? languages : undefined,
-    ratingsAverage: result.ratingsAverage,
-    ratingsCount: result.ratingsCount,
+    ...getBookshelfRatings(result),
     series,
     audiobookDuration,
     narrators: narrators?.length ? [...new Set(narrators)] : undefined,
   };
 };
+
+// Amazon serves a stock "No image available" GIF for books without art, and catalogues pass it
+// on as the cover. Treat it as no cover so clients can fall back to other artwork.
+const PLACEHOLDER_COVER =
+  /\/images\/I\/01RmK\+J4pJL\.|\/nophoto\/|no[-_]image[-_]available/i;
+export const realCoverUrl = (url?: string | null) =>
+  url && !PLACEHOLDER_COVER.test(url) ? url : undefined;
 
 export const searchBookshelfAuthors = async (
   servers: ReadarrSettings[],
