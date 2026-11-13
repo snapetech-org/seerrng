@@ -70,7 +70,7 @@ filtering.
 Discover uses the upstream header and shelf hierarchy with the upstream dark
 palette. SeerrNG-only shelves and display preferences remain available through
 existing routes and settings.
-The Upcoming Movies route uses the same upstream heading spacing and error fallback while retaining SeerrNG's navigation context.
+The Upcoming Movies route uses the same upstream heading spacing and error fallback while retaining SeerrNG's navigation context. The Upcoming Series route now follows the same upstream heading and error presentation.
 
 
 Settings use upstream tabs, ordering, breakpoints, spacing, and page wrapper.
