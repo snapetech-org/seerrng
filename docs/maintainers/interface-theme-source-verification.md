@@ -154,6 +154,6 @@ accepted.
 The current rebuild has not yet had matched upstream and SeerrOrig renders for
 all routes, states, and viewports. Keep this pull request in draft until the
 remaining page families are aligned and those comparisons have been reviewed.
-The current workspace has no installed frontend dependencies or running
+The current workspace lacks the installed Next.js runtime needed to run a
 candidate server, so browser captures are not yet available. Source-level
 alignment is not counted as rendered visual acceptance.
