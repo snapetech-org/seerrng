@@ -51,6 +51,7 @@ permissions to simplify a page.
   presentation in SeerrOrig while the SeerrNG theme keeps its own component
   styling and behavior.
 - The shared Header component uses the upstream v3.5.1 heading markup and responsive spacing in SeerrOrig.
+- The SeerrNG-only release calendar reuses SeerrOrig's upstream Header, alert, badge, control, and card presentation while retaining its cross-media release data.
 - SeerrNG logos and brand assets remain in use throughout SeerrOrig.
 
 Changing theme source styles requires rebuilding the packaged theme assets and
