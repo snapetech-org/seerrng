@@ -135,6 +135,10 @@ Notification settings use upstream's page heading and provider-tab button
 spacing in SeerrOrig. The SeerrNG-only Apprise provider remains available from
 the collapsed “More settings” route list.
 
+User settings show upstream's primary tabs in SeerrOrig; SeerrNG-only maturity,
+season-rule, episode-queue, advanced-theme, and client-token routes remain
+available under a collapsed “More settings” disclosure.
+
 Common buttons, badges, alerts, page headers, and dialogs now switch to
 upstream's shared-control presentation when SeerrOrig is selected. SeerrNG's
 own variants and behavior remain active in its native theme.
