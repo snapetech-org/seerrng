@@ -53,7 +53,7 @@ test('manager records do not mark missing book files available', async ({
       ]),
     })
   );
-  await page.goto('/books');
+  await page.goto('/books?sort=ranked');
   for (const title of ['Manager only', 'Audio only', 'Plex audiobook'])
     await expect(
       page.locator('.poster', { hasText: title }).locator('.glyph.ok')
@@ -61,7 +61,7 @@ test('manager records do not mark missing book files available', async ({
   await expect(
     page.locator('.poster', { hasText: 'Imported ebook' }).locator('.glyph.ok')
   ).toHaveCount(1);
-  await page.goto('/audiobooks');
+  await page.goto('/audiobooks?sort=ranked');
   for (const title of ['Manager only', 'Imported ebook'])
     await expect(
       page.locator('.poster', { hasText: title }).locator('.glyph.ok')
@@ -71,13 +71,146 @@ test('manager records do not mark missing book files available', async ({
       page.locator('.poster', { hasText: title }).locator('.glyph.ok')
     ).toHaveCount(1);
 });
-test('Books and Audiobooks can be sorted like the SeerrNG web app', async ({
+test('Books and Audiobooks open on rows, one per sort', async ({ page }) => {
+  const requests = await fixtures(page);
+  const feed = () =>
+    requests.filter((r) => r.path === '/discover/books').map((r) => r.query);
+  await page.goto('/books');
+  for (const name of [
+    'In your library',
+    'Trending',
+    'New releases',
+    'Top rated',
+    'Popular',
+  ])
+    await expect(
+      page.getByRole('heading', { name, exact: true })
+    ).toBeVisible();
+  for (const sortBy of ['trending', 'newest', 'rating.desc'])
+    await expect.poll(feed).toContainEqual(`?format=ebook&sortBy=${sortBy}`);
+  await expect.poll(feed).toContainEqual('?format=ebook');
+  // the rows are one page each: the full list's paging stays quiet until See all
+  expect(feed().some((q) => q.includes('page='))).toBe(false);
+  await expect(page.getByLabel('Sort')).toHaveCount(0);
+  // the library row marks what is owned
+  const libraryRow = page
+    .locator('section')
+    .filter({ has: page.getByRole('heading', { name: 'In your library' }) });
+  await expect(
+    libraryRow
+      .locator('.poster', { hasText: 'Owned outside popular' })
+      .locator('.glyph.ok')
+  ).toHaveCount(1);
+  await expect(
+    libraryRow.getByRole('link', { name: 'See all' })
+  ).toHaveAttribute('href', '/books?show=have');
+
+  await page.goto('/audiobooks');
+  await expect(
+    page.getByRole('heading', { name: 'Top rated', exact: true })
+  ).toBeVisible();
+  await expect
+    .poll(feed)
+    .toContainEqual('?format=audiobook&sortBy=rating.desc');
+  await expect(
+    page.getByText(/Lengths are the full|Request goes straight through/)
+  ).toBeVisible();
+});
+
+test('See all opens the full list with that sort, and Overview or Back returns to the rows', async ({
   page,
 }) => {
   const requests = await fixtures(page);
   const feed = () =>
     requests.filter((r) => r.path === '/discover/books').map((r) => r.query);
   await page.goto('/books');
+  const row = (name: string) =>
+    page
+      .locator('section')
+      .filter({ has: page.getByRole('heading', { name, exact: true }) });
+  await row('Trending').getByRole('link', { name: 'See all' }).click();
+  await expect(page).toHaveURL(/\/books\?sort=trending$/);
+  await expect(page.getByLabel('Sort')).toHaveValue('trending');
+  await expect(
+    page.getByRole('heading', { name: 'Trending ebooks' })
+  ).toBeVisible();
+  await expect
+    .poll(feed)
+    .toContainEqual('?format=ebook&sortBy=trending&page=1');
+
+  // Back is the rows again
+  await page.goBack();
+  await expect(page).toHaveURL(/\/books$/);
+  await expect(
+    page.getByRole('heading', { name: 'New releases', exact: true })
+  ).toBeVisible();
+
+  // Popular is the feed's default order: its list keeps sort=ranked so it stays a list
+  await row('Popular').getByRole('link', { name: 'See all' }).click();
+  await expect(page).toHaveURL(/\/books\?sort=ranked$/);
+  await expect(page.getByLabel('Sort')).toHaveValue('ranked');
+  await expect(
+    page.getByRole('heading', { name: 'Popular ebooks' })
+  ).toBeVisible();
+  await expect.poll(feed).toContainEqual('?format=ebook&page=1');
+
+  await page.getByRole('link', { name: 'Overview', exact: true }).click();
+  await expect(page).toHaveURL(/\/books$/);
+  await expect(
+    page.getByRole('heading', { name: 'Top rated', exact: true })
+  ).toBeVisible();
+  await expect(page.getByLabel('Sort')).toHaveCount(0);
+
+  // In library from the rows opens the library list
+  await page.getByRole('button', { name: 'In library', exact: true }).click();
+  await expect(page).toHaveURL(/\/books\?show=have$/);
+  await expect(
+    page.getByRole('heading', { name: 'In your library' })
+  ).toBeVisible();
+  await expect(
+    page.locator('.grid .poster', { hasText: 'Owned outside popular' })
+  ).toHaveCount(1);
+  // All stays on the full list
+  await page.getByRole('button', { name: 'All', exact: true }).click();
+  await expect(page).toHaveURL(/\/books\?sort=ranked$/);
+});
+
+test('a row that fails does not take the others with it', async ({ page }) => {
+  await fixtures(page);
+  let fail = true;
+  await page.route('**/api/v1/discover/books?**', (route) =>
+    fail &&
+    new URL(route.request().url()).searchParams.get('sortBy') === 'newest'
+      ? route.fulfill({ status: 503, json: { message: 'Feed unavailable' } })
+      : route.fallback()
+  );
+  await page.goto('/audiobooks');
+  const row = (name: string) =>
+    page
+      .locator('section')
+      .filter({ has: page.getByRole('heading', { name, exact: true }) });
+  await expect(row('New releases')).toContainText('Couldn’t load this row');
+  for (const name of ['Trending', 'Top rated', 'Popular'])
+    await expect(
+      row(name).getByRole('link', { name: 'Native audiobook', exact: true })
+    ).toBeVisible();
+  fail = false;
+  await row('New releases').getByRole('button', { name: 'Retry' }).click();
+  await expect(
+    row('New releases').getByRole('link', {
+      name: 'Native audiobook',
+      exact: true,
+    })
+  ).toBeVisible();
+});
+
+test('Books and Audiobooks can be sorted like the SeerrNG web app', async ({
+  page,
+}) => {
+  const requests = await fixtures(page);
+  const feed = () =>
+    requests.filter((r) => r.path === '/discover/books').map((r) => r.query);
+  await page.goto('/books?sort=ranked');
   const sort = page.getByLabel('Sort');
   await expect(sort).toHaveValue('ranked');
   await expect(
@@ -90,7 +223,7 @@ test('Books and Audiobooks can be sorted like the SeerrNG web app', async ({
 
   await sort.selectOption('newest');
   await expect(page).toHaveURL(/[?&]sort=newest/);
-  await expect(page.getByRole('heading', { name: 'All ebooks' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'New ebooks' })).toBeVisible();
   await expect
     .poll(feed)
     .toContainEqual(expect.stringContaining('sortBy=newest'));
@@ -102,7 +235,7 @@ test('Books and Audiobooks can be sorted like the SeerrNG web app', async ({
   await page.goto('/audiobooks?sort=rating.desc');
   await expect(page.getByLabel('Sort')).toHaveValue('rating.desc');
   await expect(
-    page.getByRole('heading', { name: 'All audiobooks' })
+    page.getByRole('heading', { name: 'Top rated audiobooks' })
   ).toBeVisible();
   await expect
     .poll(feed)
@@ -230,7 +363,9 @@ for (const format of ['ebook', 'audiobook'] as const) {
     page,
   }, info) => {
     const requests = await fixtures(page);
-    await page.goto(format === 'ebook' ? '/books' : '/audiobooks');
+    await page.goto(
+      format === 'ebook' ? '/books?sort=ranked' : '/audiobooks?sort=ranked'
+    );
     const native = page.getByRole('link', {
       name: `Native ${format}`,
       exact: true,
@@ -617,7 +752,7 @@ test('cards without art get a drawn cover, and the title opens the book', async 
       ]),
     })
   );
-  await page.goto('/books');
+  await page.goto('/books?sort=ranked');
   for (const title of ['Book Without Art', 'Broken Art'])
     await expect(
       page.locator('.poster', { hasText: title }).locator('.nocover')
@@ -710,7 +845,7 @@ test('a card title keeps the existing keyboard target and cannot render title ma
   await page.route('**/api/v1/discover/books?**', (route) =>
     route.fulfill({ json: paged([book('OL123W', 'ebook', title)]) })
   );
-  await page.goto('/books');
+  await page.goto('/books?sort=ranked');
   const card = page.locator('.poster');
   await expect(card.locator('.nocover')).toHaveAttribute('data-title', title);
   await expect(page.locator('#injected-cover')).toHaveCount(0);

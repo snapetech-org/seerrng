@@ -216,7 +216,7 @@ test('audiobook cards show the books already in the library', async ({
   page,
 }, info) => {
   const calls = await fixtures(page);
-  await page.goto('/audiobooks');
+  await page.goto('/audiobooks?sort=ranked');
   await expect(poster(page, 'Not Owned Recording')).toHaveCount(1);
   await expectOwned(
     page,
@@ -259,7 +259,7 @@ test('ebook cards use server-resolved Open Library identity without title guesse
   page,
 }, info) => {
   await fixtures(page);
-  await page.goto('/books');
+  await page.goto('/books?sort=ranked');
   await expect(poster(page, 'Pride and Prejudice')).toHaveCount(1);
   await expectOwned(page, 'Throne of Glass', true);
   await expectOwned(page, 'Project Hail Mary', true);
@@ -384,7 +384,7 @@ test('server status stays visible while Not yet hides unverified books when the 
       ]),
     })
   );
-  await page.goto('/audiobooks');
+  await page.goto('/audiobooks?sort=ranked');
   await expectOwned(page, 'Marked By Server', true);
   await expectOwned(page, 'Unmarked', false);
   await page.getByRole('button', { name: 'Not yet', exact: true }).click();
