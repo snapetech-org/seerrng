@@ -4,6 +4,30 @@ import { getRepository } from '@server/datasource';
 import { User } from '@server/entity/User';
 import type { AllSettings } from '@server/lib/settings';
 
+export const reportArrTagMigrationFailure = (
+  service: 'Radarr' | 'Sonarr',
+  instanceName: string,
+  error: unknown
+): void => {
+  const details = {
+    instanceName,
+    providerError: error instanceof Error ? error.message : String(error),
+  };
+
+  if (service === 'Radarr') {
+    console.error(
+      'Unable to rename Radarr tags to the new format. Please check your Radarr connection settings.',
+      details
+    );
+    return;
+  }
+
+  console.error(
+    'Unable to rename Sonarr tags to the new format. Please check your Sonarr connection settings.',
+    details
+  );
+};
+
 const migrationArrTags = async (settings: any): Promise<AllSettings> => {
   if (
     Array.isArray(settings.migrations) &&
@@ -60,10 +84,7 @@ const migrationArrTags = async (settings: any): Promise<AllSettings> => {
         });
       }
     } catch (error) {
-      console.error(
-        `Unable to rename Radarr tags to the new format. Please check your Radarr connection settings for the instance "${radarrSettings.name}".`,
-        error.message
-      );
+      reportArrTagMigrationFailure('Radarr', radarrSettings.name, error);
       errorOccurred = true;
     }
   }
@@ -102,10 +123,7 @@ const migrationArrTags = async (settings: any): Promise<AllSettings> => {
         });
       }
     } catch (error) {
-      console.error(
-        `Unable to rename Sonarr tags to the new format. Please check your Sonarr connection settings for the instance "${sonarrSettings.name}".`,
-        error.message
-      );
+      reportArrTagMigrationFailure('Sonarr', sonarrSettings.name, error);
       errorOccurred = true;
     }
   }

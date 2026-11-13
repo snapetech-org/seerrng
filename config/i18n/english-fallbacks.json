@@ -1400,6 +1400,78 @@
       "owner": "localization-maintainers",
       "reason": "Machine-assisted contextual review (Codex, 2026-10-31): The placeholders are a numeric status code and dynamic API error payload; the template has no English words. Preserve the error text verbatim. Source: src/pages/_error.tsx and src/pages/404.tsx. The exact source template is intentionally preserved; this is not a claim that surrounding dynamic content is English-free. Native-speaker and RTL review have not been performed; this approval expires 2027-10-31.",
       "expiresOn": "2027-10-31"
+    },
+    {
+      "domain": "client",
+      "id": "utils.ApiMessage.m17752719fdf05cd6c1a4",
+      "sourceHash": "17752719fdf05cd6c1a4af2fda827f67af07d9239e716af2c5f39846ff14ca02",
+      "owner": "localization-maintainers",
+      "reason": "BackIssue manga and comic API diagnostics added with the November 2026 integration. Keep a temporary explicit English fallback in locales pending translation review; preserve provider names and identifier wording.",
+      "expiresOn": "2027-02-10"
+    },
+    {
+      "domain": "client",
+      "id": "utils.ApiMessage.m2be3f01c59be273f71c8",
+      "sourceHash": "2be3f01c59be273f71c87fe1fa88f013c6e52dc35764e33018080ca8aeda1252",
+      "owner": "localization-maintainers",
+      "reason": "BackIssue manga and comic API diagnostics added with the November 2026 integration. Keep a temporary explicit English fallback in locales pending translation review; preserve provider names and identifier wording.",
+      "expiresOn": "2027-02-10"
+    },
+    {
+      "domain": "client",
+      "id": "utils.ApiMessage.m336df420361edbbf5118",
+      "sourceHash": "336df420361edbbf5118a208adf0fab0d04c26fabc298ba01e35e587b11a7a5b",
+      "owner": "localization-maintainers",
+      "reason": "BackIssue manga and comic API diagnostics added with the November 2026 integration. Keep a temporary explicit English fallback in locales pending translation review; preserve provider names and identifier wording.",
+      "expiresOn": "2027-02-10"
+    },
+    {
+      "domain": "client",
+      "id": "utils.ApiMessage.m37955f3a1035ae57628e",
+      "sourceHash": "37955f3a1035ae57628e0f9a415c1a68f82147c4fb3e06cbbae718c975a0cb03",
+      "owner": "localization-maintainers",
+      "reason": "BackIssue manga and comic API diagnostics added with the November 2026 integration. Keep a temporary explicit English fallback in locales pending translation review; preserve provider names and identifier wording.",
+      "expiresOn": "2027-02-10"
+    },
+    {
+      "domain": "client",
+      "id": "utils.ApiMessage.m78adf8a3c05839fa0e4a",
+      "sourceHash": "78adf8a3c05839fa0e4a341b68fcd5afd65d905db5e2b1191f4e8ece988dbc68",
+      "owner": "localization-maintainers",
+      "reason": "BackIssue manga and comic API diagnostics added with the November 2026 integration. Keep a temporary explicit English fallback in locales pending translation review; preserve provider names and identifier wording.",
+      "expiresOn": "2027-02-10"
+    },
+    {
+      "domain": "client",
+      "id": "utils.ApiMessage.m80e67799e317f5475f5d",
+      "sourceHash": "80e67799e317f5475f5d3671b9a918c6ea0019185eec86b46208f467ddf351c9",
+      "owner": "localization-maintainers",
+      "reason": "BackIssue manga and comic API diagnostics added with the November 2026 integration. Keep a temporary explicit English fallback in locales pending translation review; preserve provider names and identifier wording.",
+      "expiresOn": "2027-02-10"
+    },
+    {
+      "domain": "client",
+      "id": "utils.ApiMessage.m82d436617aa6cc2b4a32",
+      "sourceHash": "82d436617aa6cc2b4a32968949469614946f25ad279f2c84fc9f979254a257d5",
+      "owner": "localization-maintainers",
+      "reason": "BackIssue manga and comic API diagnostics added with the November 2026 integration. Keep a temporary explicit English fallback in locales pending translation review; preserve provider names and identifier wording.",
+      "expiresOn": "2027-02-10"
+    },
+    {
+      "domain": "client",
+      "id": "utils.ApiMessage.mc52b19a247de99a605a1",
+      "sourceHash": "c52b19a247de99a605a18dd5499da74204c1adfbecaa119f42c4a7ffce889feb",
+      "owner": "localization-maintainers",
+      "reason": "BackIssue manga and comic API diagnostics added with the November 2026 integration. Keep a temporary explicit English fallback in locales pending translation review; preserve provider names and identifier wording.",
+      "expiresOn": "2027-02-10"
+    },
+    {
+      "domain": "client",
+      "id": "utils.ApiMessage.mcf6da25fcc54b75d614f",
+      "sourceHash": "cf6da25fcc54b75d614f44f42d66927330ed288c79542bccc63208f9c3ccbd95",
+      "owner": "localization-maintainers",
+      "reason": "BackIssue manga and comic API diagnostics added with the November 2026 integration. Keep a temporary explicit English fallback in locales pending translation review; preserve provider names and identifier wording.",
+      "expiresOn": "2027-02-10"
     }
   ]
 }
