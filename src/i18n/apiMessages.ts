@@ -336,6 +336,8 @@ export const apiMessages: Record<
   m17525d8037adf665dfee: 'Failed to get metadata languages',
   m175b24be739b4b977fff: 'streamingRequestPolicy.enabled must be a boolean.',
   m1772bdb2187f915f88ef: 'Jellyfin returned an invalid user library response.',
+  m17752719fdf05cd6c1a4:
+    'This ComicVine edition is already linked to a different AniList manga.',
   m177660ceed099c45c93a: 'Provide only a boolean quality selection.',
   m178018db523aec585d3e:
     'SEERR_EXTERNAL_CONFIG is required for outbound integrations. Run scripts/export-external-config.mjs to migrate existing settings.',
@@ -606,6 +608,7 @@ export const apiMessages: Record<
   m2ba0b8fb35a4333ce664: 'Bindery requester mappings must be an object.',
   m2bb0cc9094010589d1d9: 'Anthropic returned HTTP {value0}.',
   m2bbb9fea1aafe158b7ee: 'Session is unavailable.',
+  m2be3f01c59be273f71c8: 'anilistId is only valid for comic requests.',
   m2bf0d95f28f5ac32a2e5:
     'The provider did not confirm that the request was cancelled.',
   m2bf4b8c4c8f0b570f0e5:
@@ -706,6 +709,7 @@ export const apiMessages: Record<
     'Choose an existing eligible collection in this Series library.',
   m336d2fd060bba8be8a45:
     'HTTP authentication cannot be enabled together with TLS. Choose built-in HTTPS or disable TLS.',
+  m336df420361edbbf5118: 'ComicVine did not return publisher metadata.',
   m3377b34d9567d114b0db: 'BookOrbit did not return a Kobo collection ID.',
   m337b6bf2dd77900bf84e: 'This request was cancelled.',
   m33a76e7032cf75ebe77f: 'Missing TMDB identifier.',
@@ -750,6 +754,7 @@ export const apiMessages: Record<
   m36f3acd8dec99b29b8d6: '[Sonarr] Failed to retrieve series: {value0}',
   m370fd7b95e8ea5d501be:
     'The configured Bindery requester account is unavailable. Ask an administrator to update the account mapping.',
+  m37955f3a1035ae57628e: 'ComicVine could not verify this manga edition.',
   m37ad1cac693301ccb59f: 'qBittorrent rejected the username or password.',
   m37c7a8f268190e8e815c: 'Unable to retrieve series.',
   m37d11ec043657c9568e7: 'notificationTypes.{value0} must be valid.',
@@ -1695,6 +1700,8 @@ export const apiMessages: Record<
   m7885c7e5c1c4f7f6ee57:
     'A matching Sonarr server must be configured for this request.',
   m789516031c28106d20fe: 'Slider type is invalid.',
+  m78adf8a3c05839fa0e4a:
+    'ComicVine must be configured to classify a BackIssue request.',
   m78ae6621fe3dd23c7a02:
     'movieIds must contain between 1 and {value0} valid movie IDs.',
   m78bd221dc61b4cac068a:
@@ -1819,6 +1826,7 @@ export const apiMessages: Record<
   m80a3ef5bacda1efb3926: 'User missing from request context.',
   m80aedf4eb8b581500d79: 'Invalid title identities.',
   m80de5ba77f205c2a34d5: 'Invalid numbered catalog pagination options.',
+  m80e67799e317f5475f5d: 'BackIssue returned an invalid library entry.',
   m80ec62e1f6148b48eb08: 'Could not update the watch session.',
   m80ef41c05938ad7f05ab: 'The download service did not confirm cancellation.',
   m80f74dd616a85d065bd3: 'You do not have permission to comment on this issue.',
@@ -1854,6 +1862,8 @@ export const apiMessages: Record<
   m82bb4dc4cba4565ec299: 'Unable to retrieve network.',
   m82c39fbf3906b08d0260: 'applicationUrl must be a valid HTTP URL.',
   m82c42c7fd69ca3602522: 'Radarr returned an invalid movie',
+  m82d436617aa6cc2b4a32:
+    'The selected AniList manga does not match this ComicVine edition.',
   m82f26c41cf37e3e0916d:
     'This magazine is already available or being processed at the selected destination.',
   m8365c089f1d91d691e4d: 'A valid media item is required.',
@@ -2718,6 +2728,7 @@ export const apiMessages: Record<
     'TMDB list ID must be a positive decimal ID of {value0} digits or fewer.',
   mc5087828b3deda3ed148:
     '[Sportarr] Failed to retrieve cover for league {value0}: {value1}',
+  mc52b19a247de99a605a1: 'anilistId must be a positive integer.',
   mc57c0dee8e070f33b1cb: 'Each problem episode selection must be an object.',
   mc5bf6ff67cb8b43a48d7: 'Request access to this category is required.',
   mc5c0e5c35fa06242f5d9: 'QuestarrNG is not configured.',
@@ -2864,6 +2875,8 @@ export const apiMessages: Record<
   mcf5bb7b7fcc5f0e3ba00: 'The download is being imported.',
   mcf60eb3ab22858b41339:
     '{value0} emulation requests are unavailable for this user.',
+  mcf6da25fcc54b75d614f:
+    'ComicVine must be configured to verify manga editions.',
   mcf6e42eb07fd1d229434:
     'Episode Queue requests must specify exactly one starting episode.',
   mcf6f06776722fac74936:

@@ -153,15 +153,6 @@
     "reason": "Windows npm.cmd requires a shell. Executable and arguments are fixed literals, with no request or repository data interpolated into a command. Non-Windows builds do not use a shell."
   },
   {
-    "rule": "javascript.lang.security.audit.unsafe-formatstring.unsafe-formatstring",
-    "path": "server/lib/settings/migrations/0007_migrate_arr_tags.ts",
-    "sha256": "6cc62bd7d20f300b1d71784efaee79e946d7136e6ecb91bb09eaae7f8ceddd61",
-    "count": 2,
-    "owner": "SeerrNG maintainers",
-    "expires": "2027-02-07",
-    "reason": "Console output contains migration status strings. Node formatting here cannot execute code or expose a format-string memory primitive."
-  },
-  {
     "rule": "javascript.lang.security.insecure-object-assign.insecure-object-assign",
     "path": "server/i18n/index.ts",
     "sha256": "f3fa473b1aba60885564f8a4fbd45cc9c62d775a11a2607c3738ef34f7a55d2b",
