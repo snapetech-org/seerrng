@@ -593,18 +593,26 @@
 }
 
 :is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .page-overlay {
+  background-color: rgb(31 41 55 / 0.7);
+}
+
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
   .page-overlay-card {
   --main-card-padding: 16px;
-  max-width: 448px;
+  max-width: 48rem;
   padding: 16px;
-  border-radius: 8px;
+  border-radius: 0;
   background: #1f2937;
-  box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1);
+  box-shadow:
+    0 0 0 1px #374151,
+    0 20px 25px -5px rgb(0 0 0 / 0.1),
+    0 8px 10px -6px rgb(0 0 0 / 0.1);
 }
 
 :is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
   .page-overlay-card.request-modal-site-surface {
-  max-width: 448px;
+  max-width: 48rem;
 }
 
 :is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
@@ -947,6 +955,14 @@
 }
 
 @media (min-width: 640px) {
+  :is(
+      :root[data-interface-theme='seerrOrig'],
+      [data-interface-theme='seerrOrig']
+    )
+    .page-overlay-card {
+    border-radius: 0.5rem;
+  }
+
   :is(
       :root[data-interface-theme='seerrOrig'],
       [data-interface-theme='seerrOrig']
@@ -1793,8 +1809,8 @@
       [data-interface-theme='seerrOrig']
     )
     .page-overlay-card {
-    --main-card-padding: 24px;
-    padding: 24px;
+    --main-card-padding: 16px;
+    padding: 16px;
   }
 }
 @media (prefers-reduced-motion: reduce) {

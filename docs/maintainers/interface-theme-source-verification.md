@@ -44,6 +44,12 @@ permissions to simplify a page.
 - The Users page uses the upstream toolbar, sortable table, selection controls,
   row hierarchy, and pagination. SeerrNG-only user filters and TV queue tools
   remain in a collapsed extension area.
+- The Blocklist page uses upstream's native filters, movie/TV cards, empty
+  state, pagination, and removal controls. SeerrNG's expanded media types,
+  filters, and metadata remain reachable in its extended view.
+- Shared buttons, badges, alerts, headers, and modal framing use upstream
+  presentation in SeerrOrig while the SeerrNG theme keeps its own component
+  styling and behavior.
 - SeerrNG logos and brand assets remain in use throughout SeerrOrig.
 
 Changing theme source styles requires rebuilding the packaged theme assets and
@@ -97,6 +103,15 @@ queue tools remain available under collapsed extension areas.
 The Issues list uses the shared pagination footer and starts with All Issues
 selected. The upstream presentation does not change the repository's paging
 controls or default task filter.
+
+The Blocklist page now uses upstream's original movie/TV card presentation and
+filter/pagination controls. The expanded SeerrNG blocklist remains available
+from the collapsed extension disclosure, including extra media types and
+metadata.
+
+Common buttons, badges, alerts, page headers, and dialogs now switch to
+upstream's shared-control presentation when SeerrOrig is selected. SeerrNG's
+own variants and behavior remain active in its native theme.
 
 ## Visual review status
 
