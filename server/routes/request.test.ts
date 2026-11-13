@@ -1,6 +1,7 @@
 import { RequestDispatchOutbox } from '@server/entity/RequestDispatchOutbox';
 import { waitForBackgroundTasks } from '@server/utils/backgroundTasks';
 import assert from 'node:assert/strict';
+import { randomBytes } from 'node:crypto';
 import { afterEach, before, beforeEach, describe, it, mock } from 'node:test';
 
 import ListenBrainzAPI from '@server/api/listenbrainz';
@@ -182,7 +183,7 @@ function createApp() {
   app.use(express.json());
   app.use(
     session({
-      secret: 'test-secret',
+      secret: randomBytes(32).toString('hex'),
       cookie: { secure: 'auto' },
       resave: false,
       saveUninitialized: false,
@@ -525,7 +526,7 @@ describe('per-request Episode Queue API', () => {
 });
 
 describe('POST /request with Episode Queue', () => {
-  it('rejects client-supplied per-request queue values', async () => {
+  it('rejects per-request queue values supplied by non-managers', async () => {
     const owner = await loginAs('friend@seerr.dev', 'test1234');
     const response = await owner.post('/request').send({
       mediaType: 'tv',
@@ -535,7 +536,7 @@ describe('POST /request with Episode Queue', () => {
     });
 
     assert.strictEqual(response.status, 403);
-    assert.match(response.body.message, /managed by an administrator/i);
+    assert.match(response.body.message, /only user managers/i);
     assert.strictEqual(
       await getRepository(MediaRequest).count({
         where: {
@@ -549,6 +550,61 @@ describe('POST /request with Episode Queue', () => {
         },
       }),
       0
+    );
+  });
+
+  it('lets a user manager set the queue for one TV request without changing the account default', async (t) => {
+    const userRepository = getRepository(User);
+    const actor = await userRepository.findOneByOrFail({
+      email: 'friend@seerr.dev',
+    });
+    const originalPermissions = actor.permissions;
+    const previousUserSettings = actor.settings;
+    const accountSettings =
+      previousUserSettings ?? new UserSettings({ user: actor });
+    await getRepository(UserSettings).save(accountSettings);
+    await userRepository.update(actor.id, {
+      permissions: Permission.MANAGE_USERS | Permission.REQUEST,
+    });
+
+    const settings = getSettings();
+    const previousSonarr = settings.sonarr;
+    settings.sonarr = [createSonarrSettings(10)];
+    t.after(async () => {
+      await userRepository.update(actor.id, {
+        permissions: originalPermissions,
+      });
+      if (!previousUserSettings) {
+        await getRepository(UserSettings).delete({ id: accountSettings.id });
+      }
+      settings.sonarr = previousSonarr;
+    });
+
+    const defaultEpisodeCount = accountSettings.episodeQueueDefaultEpisodeCount;
+    const manager = await loginAs('friend@seerr.dev', 'test1234');
+    const response = await manager.post('/request').send({
+      mediaType: MediaType.TV,
+      mediaId: 765_438,
+      tvdbId: 123_456,
+      seasonRequests: [{ seasonNumber: 1, episodeNumbers: [1] }],
+      watchAheadEpisodeCount: 3,
+    });
+
+    assert.strictEqual(response.status, 201, response.body.message);
+    const saved = await getRepository(MediaRequest).findOneOrFail({
+      where: { id: response.body.id },
+      relations: { requestedBy: true },
+    });
+    assert.strictEqual(saved.watchAheadEpisodeCount, 3);
+    assert.strictEqual(saved.watchAheadUsesUserDefault, false);
+    assert.strictEqual(saved.requestedBy.id, actor.id);
+    assert.strictEqual(
+      (
+        await getRepository(UserSettings).findOneByOrFail({
+          id: accountSettings.id,
+        })
+      ).episodeQueueDefaultEpisodeCount,
+      defaultEpisodeCount
     );
   });
 });
@@ -999,8 +1055,15 @@ describe('GET /request/status', () => {
       assert.strictEqual(response.body.request.media.seasons.length, 40);
       assert.strictEqual(response.body.request.seasons.length, 40);
 
-      const hasTable = (query: string, table: string) =>
-        new RegExp(`(?:FROM|JOIN)\\s+"${table}"\\s`, 'i').test(query);
+      const hasTable = (query: string, table: string) => {
+        const normalizedQuery = query.toLowerCase();
+        const normalizedTable = table.toLowerCase();
+
+        return (
+          normalizedQuery.includes(`from "${normalizedTable}" `) ||
+          normalizedQuery.includes(`join "${normalizedTable}" `)
+        );
+      };
       const fanOutQueries = capturedQueries.filter(
         (query) =>
           hasTable(query, 'season') && hasTable(query, 'season_request')

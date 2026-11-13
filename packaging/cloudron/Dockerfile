@@ -6,7 +6,8 @@ FROM ghcr.io/snapetech-org/seerrng:v3.72.20@sha256:d3ac93c938c80a46563f1091ad06b
 # Reviewed by SeerrNG maintainers 2026-11-09; re-review by 2027-02-07.
 # trivy:ignore:DS-0002
 USER root
-RUN rm -rf /app/.next/cache && \
+RUN apk upgrade --no-cache zlib && \
+    rm -rf /app/.next/cache && \
     ln -s /tmp/seerrng-next-cache /app/.next/cache
 COPY start-cloudron.cjs /app/start-cloudron.cjs
 ENV CONFIG_DIRECTORY=/app/data HOST=0.0.0.0 PORT=5055

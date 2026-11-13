@@ -112,8 +112,6 @@ export const apiMessages: Record<
   m087296852178d3180afb:
     'Request for this media already exists at the selected destination.',
   m0873102e737d92dbc55a: '{value0} must be a valid port.',
-  m087685f643769e537cdb:
-    'Episode Queue is managed by an administrator from the user profile.',
   m087ccfff535824051b24: 'Bindery returned an invalid or repeated library row.',
   m08946699eba6a2f1e96c: 'ROMarrNG: {value0}',
   m08abdaba478736d0c66f: 'Email address required.',
@@ -206,7 +204,6 @@ export const apiMessages: Record<
     'ROMarrNG cannot stop a download after it reaches the download client. Cancel it in ROMarrNG or the download client.',
   m0e51f8646fbea0f05101: 'BookOrbit returned an invalid book.',
   m0e5a66a83359829dcc09: 'This recording is no longer active.',
-  m0e83b057c6d525008c50: 'Administrator access is required.',
   m0ed69eb916a5bc24b464: 'Whisparr scene catalog is unavailable right now.',
   m0ed7e6dd1e3d36993ad4: 'A marker path is required',
   m0edcecd6aa9be03a8542: 'TVmaze returned an invalid show record',
@@ -301,6 +298,7 @@ export const apiMessages: Record<
   m14c8264bf9f47102d6d3: 'Failed to send web push notification.',
   m14dd84f12ceb6a87ffde: 'Invalid MusicBrainz release group ID',
   m14eb67b8cf2939f7e6a1: 'Failed to download Anime-List mapping: {value0}',
+  m14eca2a90d41ed4d0dc0: 'User-management permission is required.',
   m14fb892ac79c9b715329:
     'TV status filters cannot be combined with local availability results.',
   m150dcaa471d0c8de1a8e: 'BookOrbit returned an invalid paginated book list.',
@@ -427,6 +425,7 @@ export const apiMessages: Record<
   m1df2c53045266e82cee0: 'Failed to send Slack notification.',
   m1e04d6285931135cf9d5:
     'Choose one starting episode in Edit Request before approving an Episode Queue request. Queue length is a playback buffer, not a total download limit.',
+  m1e4160653773f583a471: 'Episode Queue needs a TVDB identity for this series.',
   m1e51f90126f7e58ea93b: 'List URL or reference is required',
   m1e7350e3dfd427a159f9: 'items must contain request objects.',
   m1e90b117a639bf9c1e47: 'You no longer have permission to modify media.',
@@ -790,6 +789,8 @@ export const apiMessages: Record<
   m397741edb60abe43d767: '[{value0}] Failed to run command: {value1}',
   m397c07d2fb43f9b54b4c:
     '[MusicBrainz] Failed to fetch release labels: {value0}',
+  m399eac0bc6507744a735:
+    'Episode Queue default ownership is managed by the server.',
   m39a083213dfc370827b6: 'Minimum issues cannot exceed maximum issues.',
   m39bfb0a62707c8c021b9:
     'LazyLibrarian returned a different magazine; file absence could not be verified.',
@@ -1056,6 +1057,8 @@ export const apiMessages: Record<
   m4c6545c9e8e4d97e1904: '{value0} {value1} must be a boolean.',
   m4c8ebf668ac1df16f731: 'Collection membership could not be verified.',
   m4c9681ac326d5ee80b8e: 'The request could not be completed.',
+  m4cad0f2ae5fcb6c97219:
+    'Only user managers can set an Episode Queue override for an interactive TV request.',
   m4cbb24404c86843114c4: '[TMDB] Failed to fetch all trending: {value0}',
   m4cd6f205d6c1c4b8d675:
     'The selected Sonarr order is unavailable for this series.',
@@ -1154,6 +1157,8 @@ export const apiMessages: Record<
   m536cb7b93940b54bf8d5:
     'Transport is controlled by environment variables: {value0}.',
   m536d4165265cca485dc1: 'Issue comment forbidden',
+  m5378c054980a272c557a:
+    'watchAheadEpisodeCount must be an integer from 0 to 5.',
   m538f68705b3f197886e5:
     '[Readarr] Failed to cancel pending Chaptarr import {value0}: {value1}',
   m53a1ac96bc7f4d8e0574:
@@ -1437,6 +1442,8 @@ export const apiMessages: Record<
   m66faaa3cc5cf743383f5: 'Cover Art Archive connection test failed.',
   m675c5141ff01329b5787: 'Failed to connect to Radarr',
   m675d10cba25fdbd08554: 'Administrator networks must be a string.',
+  m6772040dc3457a1f751d:
+    'Only user managers can set an Episode Queue override for a request.',
   m6783876ee94705c61264: 'Could not revoke the invite link.',
   m679d7ebdc0fbce83241c: 'Unable to retrieve request status history.',
   m67a5ae58b0a49b05bcaa:
@@ -2563,6 +2570,8 @@ export const apiMessages: Record<
   mba296b7b84ec7875c97a: 'Invalid game id.',
   mba2cb1fb759a0a132dad: 'Swipe settings must be an object.',
   mba30a71332912796a41c: 'No series found',
+  mba58966d4ab17f3776f1:
+    'The request owner must have permission for the selected TV quality to use Episode Queue.',
   mba5d38ef8c0e2429cf77: '[TMDB] Failed to fetch collection: {value0}',
   mba61f9ce2b8628368c23:
     'Connect ROMarrNG and confirm the selected catalog capability before choosing it as the emulation catalog.',
@@ -3340,6 +3349,8 @@ export const apiMessages: Record<
     'Per-request comic folders are only supported by Kapowarr.',
   mf1ff8dbdf80526670c41: 'You do not have permission to update this request.',
   mf2092c95f6c696addb7d: 'Person not found.',
+  mf2145afca42d0ea45be5:
+    'Episode Queue overrides are only valid when creating an interactive TV request.',
   mf2405d921965acd12a40: 'Choose a valid destination root folder.',
   mf2a332bedb4c81cf1489: 'Anime-List mapping entries are invalid',
   mf2c0d5eb0ede1fb68dbe:

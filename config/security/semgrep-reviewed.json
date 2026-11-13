@@ -11,7 +11,7 @@
   {
     "rule": "dockerfile.security.last-user-is-root.last-user-is-root",
     "path": "packaging/cloudron/Dockerfile",
-    "sha256": "a60006bb6b48c12559021f5675b584ec400ed716fc647037a4bdaa4ba1ae4f30",
+    "sha256": "201282a8119de32574e39caf78e08abf3eb8ab9b36071a258582314fd38f61a6",
     "count": 1,
     "owner": "SeerrNG maintainers",
     "expires": "2027-02-07",

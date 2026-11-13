@@ -15,7 +15,9 @@ import AdvancedRequester, {
   RequestListboxControl,
 } from '@app/components/RequestModal/AdvancedRequester';
 import QuotaDisplay from '@app/components/RequestModal/QuotaDisplay';
-import RequestEpisodeQueueControl from '@app/components/RequestModal/RequestEpisodeQueueControl';
+import RequestEpisodeQueueControl, {
+  RequestEpisodeQueueSelector,
+} from '@app/components/RequestModal/RequestEpisodeQueueControl';
 import RequestFooterStatus from '@app/components/RequestModal/RequestFooterStatus';
 import RequestMediaCard from '@app/components/RequestModal/RequestMediaCard';
 import RequestSeasonEpisodeTree from '@app/components/RequestModal/RequestSeasonEpisodeTree';
@@ -238,6 +240,7 @@ const TvRequestModal = ({
     (isRequesterTagOnlyRequest ? editRequest?.serverId : undefined);
   const settings = useSettings();
   const { user, hasPermission } = useUser();
+  const canManageEpisodeQueue = hasPermission(Permission.MANAGE_USERS);
   const [selectedIs4k, setSelectedIs4k] = useState(is4k);
   const [streamingPolicyRejection, setStreamingPolicyRejection] =
     useState<string>();
@@ -296,6 +299,7 @@ const TvRequestModal = ({
   const [watchAheadEpisodeCount, setWatchAheadEpisodeCount] = useState(
     editRequest?.watchAheadEpisodeCount ?? 0
   );
+  const [watchAheadQueueOverride, setWatchAheadQueueOverride] = useState(-1);
   const initialQueueOverride =
     editRequest?.watchAheadUsesUserDefault === false
       ? editRequest.watchAheadEpisodeCount
@@ -379,6 +383,8 @@ const TvRequestModal = ({
   );
   const defaultWatchAheadEpisodeCount =
     episodeQueueAccess?.defaultEpisodeCount ?? 0;
+  const episodeQueueSelectionOwnerKey = `${tmdbId}:${requestOwnerId ?? 'current'}`;
+  const requestQueueUsesDefault = watchAheadQueueOverride === -1;
   const watchAheadOwnerLabel =
     requestOwnerId === user?.id
       ? 'your'
@@ -435,10 +441,20 @@ const TvRequestModal = ({
     Number.isSafeInteger(Number(watchAheadTvdbId)) &&
     Number(watchAheadTvdbId) > 0 &&
     !editRequest?.watchAheadParentRequestId;
+  const defaultQueueIsSelected =
+    requestQueueUsesDefault &&
+    episodeQueueAccess?.status === 'approved' &&
+    defaultWatchAheadEpisodeCount > 0;
+  const queueChoiceIsSelected = editRequest
+    ? watchAheadEpisodeCount > 0
+    : requestQueueUsesDefault
+      ? defaultQueueIsSelected
+      : watchAheadQueueOverride > 0;
   const watchAheadMediaServerName = getMediaServerName(
     settings.currentSettings.mediaServerType
   );
   const needsWatchAheadAccountLink =
+    queueChoiceIsSelected &&
     Boolean(watchAheadMediaServerName) &&
     requestOwnerId === user?.id &&
     requestOwnerHasLinkedPlaybackAccount === false;
@@ -448,7 +464,7 @@ const TvRequestModal = ({
       (editRequest.requestedBy.id === user?.id ||
         hasPermission(Permission.MANAGE_USERS)));
   const watchAheadUnavailableMessage = (() => {
-    if (!defaultWatchAheadEpisodeCount || !episodeQueueAccess) {
+    if (!queueChoiceIsSelected || !episodeQueueAccess) {
       return undefined;
     }
     if (!watchAheadMediaServerName) {
@@ -485,6 +501,56 @@ const TvRequestModal = ({
       return intl.formatMessage(messages.watchAheadUnavailableSonarr);
     }
     return undefined;
+  })();
+  const watchAheadCardDescription = (() => {
+    if (
+      (editRequest && savedQueueOverride >= 0) ||
+      (!editRequest && canManageEpisodeQueue && watchAheadQueueOverride >= 0)
+    ) {
+      const count = editRequest ? savedQueueOverride : watchAheadQueueOverride;
+      return intl.formatMessage(messages.watchAheadOverrideDescription, {
+        count:
+          count === 0
+            ? intl.formatMessage(messages.watchAheadOff)
+            : intl.formatMessage(messages.watchAheadEpisodeOption, { count }),
+      });
+    }
+
+    if (!episodeQueueAccess) {
+      return episodeQueueAccessError
+        ? intl.formatMessage(messages.watchAheadLoadError)
+        : intl.formatMessage(messages.watchAheadLoading);
+    }
+
+    if (defaultWatchAheadEpisodeCount === 0) {
+      return intl.formatMessage(messages.watchAheadOffForAccount, {
+        owner: watchAheadOwnerLabel,
+      });
+    }
+
+    if (editRequest && watchAheadEpisodeCount > 0) {
+      return intl.formatMessage(messages.watchAheadActiveForRequest, {
+        count: intl.formatMessage(messages.watchAheadEpisodeOption, {
+          count: watchAheadEpisodeCount,
+        }),
+      });
+    }
+
+    if (!editRequest && watchAheadAppliesToRequest) {
+      return intl.formatMessage(messages.watchAheadEnabledForAccount, {
+        owner: watchAheadOwnerLabel,
+        count: intl.formatMessage(messages.watchAheadEpisodeOption, {
+          count: defaultWatchAheadEpisodeCount,
+        }),
+      });
+    }
+
+    return intl.formatMessage(messages.watchAheadAssignedButUnavailable, {
+      owner: watchAheadOwnerLabel,
+      count: intl.formatMessage(messages.watchAheadEpisodeOption, {
+        count: defaultWatchAheadEpisodeCount,
+      }),
+    });
   })();
   const selectedDestination = useMemo(
     () =>
@@ -760,6 +826,12 @@ const TvRequestModal = ({
           mediaId: data?.id,
           tvdbId: tvdbId ?? data?.externalIds.tvdbId,
           mediaType: 'tv',
+          watchAheadEpisodeCount:
+            !requesterTagOnly &&
+            canManageEpisodeQueue &&
+            watchAheadQueueOverride >= 0
+              ? watchAheadQueueOverride
+              : undefined,
           monitorFutureSeasons: requesterTagOnly
             ? undefined
             : futureSeasonPreference,
@@ -1019,10 +1091,17 @@ const TvRequestModal = ({
   );
 
   useEffect(() => {
+    if (!editRequest) {
+      setWatchAheadQueueOverride(-1);
+    }
+  }, [editRequest?.id, episodeQueueSelectionOwnerKey]);
+
+  useEffect(() => {
     if (
       requesterTagOnly ||
       !episodeQueueAccess ||
       editRequest ||
+      (canManageEpisodeQueue && !requestQueueUsesDefault) ||
       !data ||
       watchAheadEpisodeCount ===
         (watchAheadAppliesToRequest ? defaultWatchAheadEpisodeCount : 0) ||
@@ -1043,6 +1122,8 @@ const TvRequestModal = ({
     episodeQueueAccess,
     initializedSelectionKey,
     requestSelectionKey,
+    canManageEpisodeQueue,
+    requestQueueUsesDefault,
     requesterTagOnly,
     settings.currentSettings.partialRequestsEnabled,
     watchAheadAppliesToRequest,
@@ -1925,61 +2006,7 @@ const TvRequestModal = ({
                       )}
                     </div>
                     <p className="request-episode-queue-description refreshed-detail-text-muted">
-                      {editRequest && savedQueueOverride >= 0
-                        ? intl.formatMessage(
-                            messages.watchAheadOverrideDescription,
-                            {
-                              count:
-                                savedQueueOverride === 0
-                                  ? intl.formatMessage(messages.watchAheadOff)
-                                  : intl.formatMessage(
-                                      messages.watchAheadEpisodeOption,
-                                      { count: savedQueueOverride }
-                                    ),
-                            }
-                          )
-                        : episodeQueueAccess
-                          ? defaultWatchAheadEpisodeCount > 0
-                            ? editRequest && watchAheadEpisodeCount > 0
-                              ? intl.formatMessage(
-                                  messages.watchAheadActiveForRequest,
-                                  {
-                                    count: intl.formatMessage(
-                                      messages.watchAheadEpisodeOption,
-                                      { count: watchAheadEpisodeCount }
-                                    ),
-                                  }
-                                )
-                              : !editRequest && watchAheadAppliesToRequest
-                                ? intl.formatMessage(
-                                    messages.watchAheadEnabledForAccount,
-                                    {
-                                      owner: watchAheadOwnerLabel,
-                                      count: intl.formatMessage(
-                                        messages.watchAheadEpisodeOption,
-                                        { count: defaultWatchAheadEpisodeCount }
-                                      ),
-                                    }
-                                  )
-                                : intl.formatMessage(
-                                    messages.watchAheadAssignedButUnavailable,
-                                    {
-                                      owner: watchAheadOwnerLabel,
-                                      count: intl.formatMessage(
-                                        messages.watchAheadEpisodeOption,
-                                        { count: defaultWatchAheadEpisodeCount }
-                                      ),
-                                    }
-                                  )
-                            : intl.formatMessage(
-                                messages.watchAheadOffForAccount,
-                                {
-                                  owner: watchAheadOwnerLabel,
-                                }
-                              )
-                          : episodeQueueAccessError
-                            ? intl.formatMessage(messages.watchAheadLoadError)
-                            : intl.formatMessage(messages.watchAheadLoading)}
+                      {watchAheadCardDescription}
                     </p>
                     {episodeQueueAccess && watchAheadEpisodeCount > 0 && (
                       <p className="request-episode-queue-description refreshed-detail-text-muted">
@@ -1999,9 +2026,32 @@ const TvRequestModal = ({
                         {watchAheadUnavailableMessage}
                       </p>
                     )}
+                    {!editRequest &&
+                      canManageEpisodeQueue &&
+                      episodeQueueAccess && (
+                        <div className="request-selection-options">
+                          <RequestEpisodeQueueSelector
+                            id="request-episode-queue-selection"
+                            value={watchAheadQueueOverride}
+                            defaultEpisodeCount={defaultWatchAheadEpisodeCount}
+                            onChange={(nextOverride) => {
+                              setWatchAheadQueueOverride(nextOverride);
+                              changeWatchAheadEpisodeCount(
+                                nextOverride === -1
+                                  ? watchAheadAppliesToRequest
+                                    ? defaultWatchAheadEpisodeCount
+                                    : 0
+                                  : nextOverride
+                              );
+                            }}
+                            disabled={isSubmittingRequest}
+                            help="draft"
+                          />
+                        </div>
+                      )}
                     {editRequest &&
                       !editRequest.watchAheadParentRequestId &&
-                      hasPermission(Permission.ADMIN) && (
+                      hasPermission(Permission.MANAGE_USERS) && (
                         <RequestEpisodeQueueControl
                           requestId={editRequest.id}
                           episodeCount={editRequest.watchAheadEpisodeCount}

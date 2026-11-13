@@ -80,7 +80,7 @@ describe('request status routes behind the OpenAPI validator', () => {
     assert.strictEqual(response.status, 204);
   });
 
-  it('accepts bounded overrides only through the dedicated admin queue contract', async () => {
+  it('accepts bounded overrides through the dedicated user-manager queue contract', async () => {
     for (const episodeCount of [null, 0, 5]) {
       assert.equal(
         (
@@ -108,7 +108,7 @@ describe('request status routes behind the OpenAPI validator', () => {
     }
   });
 
-  it('rejects per-request Episode Queue settings on creation', async () => {
+  it('accepts a per-request Episode Queue selection on TV request creation', async () => {
     const response = await request(createValidatedApp())
       .post('/api/v1/request')
       .send({
@@ -118,7 +118,8 @@ describe('request status routes behind the OpenAPI validator', () => {
         watchAheadEpisodeCount: 3,
       });
 
-    assert.strictEqual(response.status, 400);
+    assert.strictEqual(response.status, 201);
+    assert.strictEqual(response.body.watchAheadEpisodeCount, 3);
   });
 
   it('rejects per-request Episode Queue settings on updates', async () => {
