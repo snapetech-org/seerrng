@@ -18,6 +18,7 @@ import SettingsLoadState from '@app/components/Settings/SettingsLoadState';
 import { availableLanguages } from '@app/context/LanguageContext';
 import useLocale from '@app/hooks/useLocale';
 import useToasts from '@app/hooks/useToasts';
+import useUpstreamTheme from '@app/hooks/useUpstreamTheme';
 import { Permission, useUser } from '@app/hooks/useUser';
 import globalMessages from '@app/i18n/globalMessages';
 import defineMessages from '@app/utils/defineMessages';
@@ -206,12 +207,20 @@ const messages = defineMessages('components.Settings.SettingsMain', {
   metronToken: 'Metron API Token',
   metronTokenTip:
     'Optional. Metron searches comics when ComicVine search fails. Comic details still require ComicVine.',
+  moreInterfaceOptions: 'More interface options',
+  moreContentOptions: 'More content options',
+  moreStreamingRequestOptions: 'More streaming request options',
+  moreBlocklistFilters: 'More blocklist filters',
+  moreRequestRules: 'More request rules',
+  moreIntegrationSettings: 'More integrations and library settings',
 });
 
 const SettingsMain = () => {
   const { addToast } = useToasts();
   const { user: currentUser, hasPermission: userHasPermission } = useUser();
-  const { compact } = useSettingsDisplay();
+  const { compact: compactSettings } = useSettingsDisplay();
+  const upstream = useUpstreamTheme();
+  const compact = upstream ? false : compactSettings;
   const intl = useIntl();
   const { setLocale } = useLocale();
   const {
@@ -469,19 +478,37 @@ const SettingsMain = () => {
           );
           return (
             <Form
-              className="settings-page-form"
+              className={
+                upstream ? 'section settings-page-form' : 'settings-page-form'
+              }
               data-testid="settings-main-form"
               data-settings-dirty={dirty}
               data-settings-submitting={isSubmitting}
             >
-              <section className="app-card-sub settings-group-card">
-                <h3 className="settings-group-heading">
-                  {intl.formatMessage(messages.generalsettings)}
-                </h3>
-                <SettingsHelp className="settings-group-description">
-                  {intl.formatMessage(messages.generalsettingsDescription)}
-                </SettingsHelp>
-                <div className="settings-group-content">
+              <section
+                className={
+                  upstream
+                    ? 'upstream-settings-main-group'
+                    : 'app-card-sub settings-group-card'
+                }
+              >
+                {!upstream && (
+                  <>
+                    <h3 className="settings-group-heading">
+                      {intl.formatMessage(messages.generalsettings)}
+                    </h3>
+                    <SettingsHelp className="settings-group-description">
+                      {intl.formatMessage(messages.generalsettingsDescription)}
+                    </SettingsHelp>
+                  </>
+                )}
+                <div
+                  className={
+                    upstream
+                      ? 'upstream-settings-main-content'
+                      : 'settings-group-content'
+                  }
+                >
                   {userHasPermission(Permission.ADMIN) && (
                     <div className="form-row">
                       <label htmlFor="apiKey" className="text-label">
@@ -559,98 +586,108 @@ const SettingsMain = () => {
                         )}
                     </div>
                   </div>
-                  <div className="form-row">
-                    <label htmlFor="defaultFrontend" className="text-label">
-                      {intl.formatMessage(messages.defaultInterface)}
-                    </label>
-                    <div className="form-input-area">
-                      <div className="form-input-field">
-                        <Field
-                          as="select"
-                          id="defaultFrontend"
-                          name="defaultFrontend"
-                        >
-                          <option value="native">
-                            {intl.formatMessage(messages.fullInterface)}
-                          </option>
-                          <option value="lumen">
-                            {intl.formatMessage(messages.includedLumen)}
-                          </option>
-                          <option value="external">
-                            {intl.formatMessage(messages.configuredLumen)}
-                          </option>
-                        </Field>
-                      </div>
-                      <p className="settings-form-row-description">
-                        {intl.formatMessage(messages.defaultInterfaceHelp)}
-                      </p>
-                      <a href="/?interface=default">
-                        {intl.formatMessage(messages.openSavedInterface)}
-                      </a>
-                    </div>
-                  </div>
-                  <SettingsFormRow
-                    htmlFor="enforceDefaultFrontend"
-                    label={intl.formatMessage(messages.enforceDefaultInterface)}
-                    description={intl.formatMessage(
-                      messages.enforceDefaultInterfaceHelp
-                    )}
-                    labelClassName="checkbox-label"
+                  <details
+                    open={!upstream}
+                    className={upstream ? 'mt-3' : undefined}
                   >
-                    <SettingsField
-                      type="checkbox"
-                      id="enforceDefaultFrontend"
-                      name="enforceDefaultFrontend"
-                      onChange={() => {
-                        setFieldValue(
-                          'enforceDefaultFrontend',
-                          !values.enforceDefaultFrontend
-                        );
-                      }}
-                    />
-                  </SettingsFormRow>
-                  {values.defaultFrontend === 'lumen' && (
+                    {upstream && (
+                      <summary className="cursor-pointer text-sm font-medium text-gray-300">
+                        {intl.formatMessage(messages.moreInterfaceOptions)}
+                      </summary>
+                    )}
+                    <div className="form-row">
+                      <label htmlFor="defaultFrontend" className="text-label">
+                        {intl.formatMessage(messages.defaultInterface)}
+                      </label>
+                      <div className="form-input-area">
+                        <div className="form-input-field">
+                          <Field
+                            as="select"
+                            id="defaultFrontend"
+                            name="defaultFrontend"
+                          >
+                            <option value="native">
+                              {intl.formatMessage(messages.fullInterface)}
+                            </option>
+                            <option value="lumen">
+                              {intl.formatMessage(messages.includedLumen)}
+                            </option>
+                            <option value="external">
+                              {intl.formatMessage(messages.configuredLumen)}
+                            </option>
+                          </Field>
+                        </div>
+                        <p className="settings-form-row-description">
+                          {intl.formatMessage(messages.defaultInterfaceHelp)}
+                        </p>
+                        <a href="/?interface=default">
+                          {intl.formatMessage(messages.openSavedInterface)}
+                        </a>
+                      </div>
+                    </div>
                     <SettingsFormRow
-                      htmlFor="lockLumenForNonAdmins"
-                      label={intl.formatMessage(messages.lockLumenForNonAdmins)}
+                      htmlFor="enforceDefaultFrontend"
+                      label={intl.formatMessage(messages.enforceDefaultInterface)}
                       description={intl.formatMessage(
-                        messages.lockLumenForNonAdminsHelp
+                        messages.enforceDefaultInterfaceHelp
                       )}
                       labelClassName="checkbox-label"
                     >
                       <SettingsField
                         type="checkbox"
-                        id="lockLumenForNonAdmins"
-                        name="lockLumenForNonAdmins"
+                        id="enforceDefaultFrontend"
+                        name="enforceDefaultFrontend"
                         onChange={() => {
                           setFieldValue(
-                            'lockLumenForNonAdmins',
-                            !values.lockLumenForNonAdmins
+                            'enforceDefaultFrontend',
+                            !values.enforceDefaultFrontend
                           );
                         }}
                       />
                     </SettingsFormRow>
-                  )}
-                  {values.defaultFrontend === 'external' && (
-                    <div className="form-row">
-                      <label htmlFor="lumenPublicUrl" className="text-label">
-                        {intl.formatMessage(messages.lumenAddress)}
-                      </label>
-                      <div className="form-input-area">
-                        <div className="form-input-field">
-                          <Field
-                            id="lumenPublicUrl"
-                            name="lumenPublicUrl"
-                            type="url"
-                            required
-                          />
+                    {values.defaultFrontend === 'lumen' && (
+                      <SettingsFormRow
+                        htmlFor="lockLumenForNonAdmins"
+                        label={intl.formatMessage(messages.lockLumenForNonAdmins)}
+                        description={intl.formatMessage(
+                          messages.lockLumenForNonAdminsHelp
+                        )}
+                        labelClassName="checkbox-label"
+                      >
+                        <SettingsField
+                          type="checkbox"
+                          id="lockLumenForNonAdmins"
+                          name="lockLumenForNonAdmins"
+                          onChange={() => {
+                            setFieldValue(
+                              'lockLumenForNonAdmins',
+                              !values.lockLumenForNonAdmins
+                            );
+                          }}
+                        />
+                      </SettingsFormRow>
+                    )}
+                    {values.defaultFrontend === 'external' && (
+                      <div className="form-row">
+                        <label htmlFor="lumenPublicUrl" className="text-label">
+                          {intl.formatMessage(messages.lumenAddress)}
+                        </label>
+                        <div className="form-input-area">
+                          <div className="form-input-field">
+                            <Field
+                              id="lumenPublicUrl"
+                              name="lumenPublicUrl"
+                              type="url"
+                              required
+                            />
+                          </div>
+                          <p className="settings-form-row-description">
+                            {intl.formatMessage(messages.lumenAddressHelp)}
+                          </p>
                         </div>
-                        <p className="settings-form-row-description">
-                          {intl.formatMessage(messages.lumenAddressHelp)}
-                        </p>
                       </div>
-                    </div>
-                  )}
+                    )}
+                  </details>
                   {!compact && cacheImagesRow}
                   <div className="form-row">
                     <label htmlFor="locale" className="text-label">
@@ -676,21 +713,31 @@ const SettingsMain = () => {
                       </div>
                     </div>
                   </div>
-                  <SettingsFormRow
-                    htmlFor="includeAdult"
-                    label={intl.formatMessage(messages.includeAdult)}
-                    description={intl.formatMessage(messages.includeAdultTip)}
-                    labelClassName="checkbox-label"
+                  <details
+                    open={!upstream}
+                    className={upstream ? 'mt-3' : undefined}
                   >
-                    <SettingsField
-                      type="checkbox"
-                      id="includeAdult"
-                      name="includeAdult"
-                      onChange={() => {
-                        setFieldValue('includeAdult', !values.includeAdult);
-                      }}
-                    />
-                  </SettingsFormRow>
+                    {upstream && (
+                      <summary className="cursor-pointer text-sm font-medium text-gray-300">
+                        {intl.formatMessage(messages.moreContentOptions)}
+                      </summary>
+                    )}
+                    <SettingsFormRow
+                      htmlFor="includeAdult"
+                      label={intl.formatMessage(messages.includeAdult)}
+                      description={intl.formatMessage(messages.includeAdultTip)}
+                      labelClassName="checkbox-label"
+                    >
+                      <SettingsField
+                        type="checkbox"
+                        id="includeAdult"
+                        name="includeAdult"
+                        onChange={() => {
+                          setFieldValue('includeAdult', !values.includeAdult);
+                        }}
+                      />
+                    </SettingsFormRow>
+                  </details>
                   <SettingsGroup
                     inline
                     title={intl.formatMessage(messages.regionalGroup)}
@@ -749,129 +796,141 @@ const SettingsMain = () => {
                       </div>
                     </SettingsFormRow>
                   </SettingsGroup>
-                  <SettingsFormRow
-                    htmlFor="streamingRequestPolicy.enabled"
-                    label={intl.formatMessage(messages.streamingPolicy)}
-                    description={intl.formatMessage(
-                      messages.streamingPolicyTip
-                    )}
-                    labelClassName="checkbox-label"
+                  <details
+                    open={!upstream}
+                    className={upstream ? 'mt-3' : undefined}
                   >
-                    <SettingsField
-                      type="checkbox"
-                      id="streamingRequestPolicy.enabled"
-                      name="streamingRequestPolicy.enabled"
-                      onChange={() => {
-                        setFieldValue(
-                          'streamingRequestPolicy.enabled',
-                          !values.streamingRequestPolicy.enabled
-                        );
-                      }}
-                    />
-                  </SettingsFormRow>
-                  {values.streamingRequestPolicy.enabled && (
-                    <>
-                      <SettingsFormRow
-                        htmlFor="streamingRequestPolicy.condition"
-                        label={intl.formatMessage(
-                          messages.streamingPolicyCondition
+                    {upstream && (
+                      <summary className="cursor-pointer text-sm font-medium text-gray-300">
+                        {intl.formatMessage(
+                          messages.moreStreamingRequestOptions
                         )}
-                      >
-                        <div className="form-input-field">
-                          <Field
-                            as="select"
-                            id="streamingRequestPolicy.condition"
-                            name="streamingRequestPolicy.condition"
-                          >
-                            <option value="available">
-                              {intl.formatMessage(
-                                messages.streamingPolicyAvailable
-                              )}
-                            </option>
-                            <option value="unavailable">
-                              {intl.formatMessage(
-                                messages.streamingPolicyUnavailable
-                              )}
-                            </option>
-                          </Field>
-                        </div>
-                      </SettingsFormRow>
-                      <SettingsFormRow
-                        htmlFor="streamingRequestPolicy.action"
-                        label={intl.formatMessage(
-                          messages.streamingPolicyAction
-                        )}
-                      >
-                        <div className="form-input-field">
-                          <Field
-                            as="select"
-                            id="streamingRequestPolicy.action"
-                            name="streamingRequestPolicy.action"
-                          >
-                            <option value="reject">
-                              {intl.formatMessage(
-                                messages.streamingPolicyReject
-                              )}
-                            </option>
-                            <option value="pending">
-                              {intl.formatMessage(
-                                messages.streamingPolicyPending
-                              )}
-                            </option>
-                            <option value="approve">
-                              {intl.formatMessage(
-                                messages.streamingPolicyApprove
-                              )}
-                            </option>
-                          </Field>
-                        </div>
-                      </SettingsFormRow>
-                      {values.streamingRequestPolicy.action === 'reject' && (
-                        <>
-                          <SettingsFormRow
-                            htmlFor="streamingRequestPolicy.rejectionMessage"
-                            label={intl.formatMessage(
-                              messages.streamingPolicyMessage
-                            )}
-                            description={intl.formatMessage(
-                              messages.streamingPolicyMessageTip
-                            )}
-                          >
-                            <Field
-                              as="textarea"
-                              id="streamingRequestPolicy.rejectionMessage"
-                              name="streamingRequestPolicy.rejectionMessage"
-                              maxLength={1000}
-                              rows={3}
-                            />
-                          </SettingsFormRow>
-                          <SettingsFormRow
-                            htmlFor="streamingRequestPolicy.allowUserOverride"
-                            label={intl.formatMessage(
-                              messages.streamingPolicyAllowOverride
-                            )}
-                            description={intl.formatMessage(
-                              messages.streamingPolicyAllowOverrideTip
-                            )}
-                            labelClassName="checkbox-label"
-                          >
-                            <SettingsField
-                              type="checkbox"
-                              id="streamingRequestPolicy.allowUserOverride"
-                              name="streamingRequestPolicy.allowUserOverride"
-                              onChange={() => {
-                                setFieldValue(
-                                  'streamingRequestPolicy.allowUserOverride',
-                                  !values.streamingRequestPolicy
-                                    .allowUserOverride
-                                );
-                              }}
-                            />
-                          </SettingsFormRow>
-                        </>
+                      </summary>
+                    )}
+                    <SettingsFormRow
+                      htmlFor="streamingRequestPolicy.enabled"
+                      label={intl.formatMessage(messages.streamingPolicy)}
+                      description={intl.formatMessage(
+                        messages.streamingPolicyTip
                       )}
-                    </>
-                  )}
+                      labelClassName="checkbox-label"
+                    >
+                      <SettingsField
+                        type="checkbox"
+                        id="streamingRequestPolicy.enabled"
+                        name="streamingRequestPolicy.enabled"
+                        onChange={() => {
+                          setFieldValue(
+                            'streamingRequestPolicy.enabled',
+                            !values.streamingRequestPolicy.enabled
+                          );
+                        }}
+                      />
+                    </SettingsFormRow>
+                    {values.streamingRequestPolicy.enabled && (
+                      <>
+                        <SettingsFormRow
+                          htmlFor="streamingRequestPolicy.condition"
+                          label={intl.formatMessage(
+                            messages.streamingPolicyCondition
+                          )}
+                        >
+                          <div className="form-input-field">
+                            <Field
+                              as="select"
+                              id="streamingRequestPolicy.condition"
+                              name="streamingRequestPolicy.condition"
+                            >
+                              <option value="available">
+                                {intl.formatMessage(
+                                  messages.streamingPolicyAvailable
+                                )}
+                              </option>
+                              <option value="unavailable">
+                                {intl.formatMessage(
+                                  messages.streamingPolicyUnavailable
+                                )}
+                              </option>
+                            </Field>
+                          </div>
+                        </SettingsFormRow>
+                        <SettingsFormRow
+                          htmlFor="streamingRequestPolicy.action"
+                          label={intl.formatMessage(
+                            messages.streamingPolicyAction
+                          )}
+                        >
+                          <div className="form-input-field">
+                            <Field
+                              as="select"
+                              id="streamingRequestPolicy.action"
+                              name="streamingRequestPolicy.action"
+                            >
+                              <option value="reject">
+                                {intl.formatMessage(
+                                  messages.streamingPolicyReject
+                                )}
+                              </option>
+                              <option value="pending">
+                                {intl.formatMessage(
+                                  messages.streamingPolicyPending
+                                )}
+                              </option>
+                              <option value="approve">
+                                {intl.formatMessage(
+                                  messages.streamingPolicyApprove
+                                )}
+                              </option>
+                            </Field>
+                          </div>
+                        </SettingsFormRow>
+                        {values.streamingRequestPolicy.action === 'reject' && (
+                          <>
+                            <SettingsFormRow
+                              htmlFor="streamingRequestPolicy.rejectionMessage"
+                              label={intl.formatMessage(
+                                messages.streamingPolicyMessage
+                              )}
+                              description={intl.formatMessage(
+                                messages.streamingPolicyMessageTip
+                              )}
+                            >
+                              <Field
+                                as="textarea"
+                                id="streamingRequestPolicy.rejectionMessage"
+                                name="streamingRequestPolicy.rejectionMessage"
+                                maxLength={1000}
+                                rows={3}
+                              />
+                            </SettingsFormRow>
+                            <SettingsFormRow
+                              htmlFor="streamingRequestPolicy.allowUserOverride"
+                              label={intl.formatMessage(
+                                messages.streamingPolicyAllowOverride
+                              )}
+                              description={intl.formatMessage(
+                                messages.streamingPolicyAllowOverrideTip
+                              )}
+                              labelClassName="checkbox-label"
+                            >
+                              <SettingsField
+                                type="checkbox"
+                                id="streamingRequestPolicy.allowUserOverride"
+                                name="streamingRequestPolicy.allowUserOverride"
+                                onChange={() => {
+                                  setFieldValue(
+                                    'streamingRequestPolicy.allowUserOverride',
+                                    !values.streamingRequestPolicy
+                                      .allowUserOverride
+                                  );
+                                }}
+                              />
+                            </SettingsFormRow>
+                          </>
+                        )}
+                      </>
+                    )}
+                  </details>
                   <SettingsGroup
                     inline
                     title={intl.formatMessage(messages.blocklistGroup)}
@@ -930,56 +989,66 @@ const SettingsMain = () => {
                         />
                       </div>
                     </SettingsFormRow>
-                    <SettingsFormRow
-                      htmlFor="blocklistedGenresMovie"
-                      label={intl.formatMessage(
-                        messages.blocklistedGenresMovie
-                      )}
-                      description={intl.formatMessage(
-                        messages.blocklistedGenresMovieTip
-                      )}
+                    <details
+                      open={!upstream}
+                      className={upstream ? 'mt-3' : undefined}
                     >
-                      <div className="form-input-field">
-                        <GenreSelector
-                          type="movie"
-                          inputId="blocklistedGenresMovie"
-                          isMulti
-                          defaultValue={values.blocklistedGenresMovie}
-                          onChange={(genres) =>
-                            setFieldValue(
-                              'blocklistedGenresMovie',
-                              (genres ?? [])
-                                .map((genre) => genre.value)
-                                .join(',')
-                            )
-                          }
-                        />
-                      </div>
-                    </SettingsFormRow>
-                    <SettingsFormRow
-                      htmlFor="blocklistedGenresTv"
-                      label={intl.formatMessage(messages.blocklistedGenresTv)}
-                      description={intl.formatMessage(
-                        messages.blocklistedGenresTvTip
+                      {upstream && (
+                        <summary className="cursor-pointer text-sm font-medium text-gray-300">
+                          {intl.formatMessage(messages.moreBlocklistFilters)}
+                        </summary>
                       )}
-                    >
-                      <div className="form-input-field">
-                        <GenreSelector
-                          type="tv"
-                          inputId="blocklistedGenresTv"
-                          isMulti
-                          defaultValue={values.blocklistedGenresTv}
-                          onChange={(genres) =>
-                            setFieldValue(
-                              'blocklistedGenresTv',
-                              (genres ?? [])
-                                .map((genre) => genre.value)
-                                .join(',')
-                            )
-                          }
-                        />
-                      </div>
-                    </SettingsFormRow>
+                      <SettingsFormRow
+                        htmlFor="blocklistedGenresMovie"
+                        label={intl.formatMessage(
+                          messages.blocklistedGenresMovie
+                        )}
+                        description={intl.formatMessage(
+                          messages.blocklistedGenresMovieTip
+                        )}
+                      >
+                        <div className="form-input-field">
+                          <GenreSelector
+                            type="movie"
+                            inputId="blocklistedGenresMovie"
+                            isMulti
+                            defaultValue={values.blocklistedGenresMovie}
+                            onChange={(genres) =>
+                              setFieldValue(
+                                'blocklistedGenresMovie',
+                                (genres ?? [])
+                                  .map((genre) => genre.value)
+                                  .join(',')
+                              )
+                            }
+                          />
+                        </div>
+                      </SettingsFormRow>
+                      <SettingsFormRow
+                        htmlFor="blocklistedGenresTv"
+                        label={intl.formatMessage(messages.blocklistedGenresTv)}
+                        description={intl.formatMessage(
+                          messages.blocklistedGenresTvTip
+                        )}
+                      >
+                        <div className="form-input-field">
+                          <GenreSelector
+                            type="tv"
+                            inputId="blocklistedGenresTv"
+                            isMulti
+                            defaultValue={values.blocklistedGenresTv}
+                            onChange={(genres) =>
+                              setFieldValue(
+                                'blocklistedGenresTv',
+                                (genres ?? [])
+                                  .map((genre) => genre.value)
+                                  .join(',')
+                              )
+                            }
+                          />
+                        </div>
+                      </SettingsFormRow>
+                    </details>
                     <SettingsFormRow
                       htmlFor="blocklistedTagsLimit"
                       label={intl.formatMessage(messages.blocklistedTagsLimit)}
@@ -1021,38 +1090,48 @@ const SettingsMain = () => {
                       }}
                     />
                   </SettingsFormRow>
-                  <SettingsFormRow
-                    htmlFor="otherUsersAvailability"
-                    label={intl.formatMessage(messages.otherUsersAvailability)}
-                    description={intl.formatMessage(
-                      messages.otherUsersAvailabilityTip
-                    )}
+                  <details
+                    open={!upstream}
+                    className={upstream ? 'mt-3' : undefined}
                   >
-                    <div className="form-input-field">
-                      <Field
-                        as="select"
-                        id="otherUsersAvailability"
-                        name="otherUsersAvailability"
-                        data-testid="other-users-availability-setting"
-                      >
-                        <option value={OtherUserAvailabilityMode.SHOW}>
-                          {intl.formatMessage(
-                            messages.otherUsersAvailabilityShow
-                          )}
-                        </option>
-                        <option value={OtherUserAvailabilityMode.DISTINGUISH}>
-                          {intl.formatMessage(
-                            messages.otherUsersAvailabilityDistinguish
-                          )}
-                        </option>
-                        <option value={OtherUserAvailabilityMode.HIDE}>
-                          {intl.formatMessage(
-                            messages.otherUsersAvailabilityHide
-                          )}
-                        </option>
-                      </Field>
-                    </div>
-                  </SettingsFormRow>
+                    {upstream && (
+                      <summary className="cursor-pointer text-sm font-medium text-gray-300">
+                        {intl.formatMessage(messages.moreContentOptions)}
+                      </summary>
+                    )}
+                    <SettingsFormRow
+                      htmlFor="otherUsersAvailability"
+                      label={intl.formatMessage(messages.otherUsersAvailability)}
+                      description={intl.formatMessage(
+                        messages.otherUsersAvailabilityTip
+                      )}
+                    >
+                      <div className="form-input-field">
+                        <Field
+                          as="select"
+                          id="otherUsersAvailability"
+                          name="otherUsersAvailability"
+                          data-testid="other-users-availability-setting"
+                        >
+                          <option value={OtherUserAvailabilityMode.SHOW}>
+                            {intl.formatMessage(
+                              messages.otherUsersAvailabilityShow
+                            )}
+                          </option>
+                          <option value={OtherUserAvailabilityMode.DISTINGUISH}>
+                            {intl.formatMessage(
+                              messages.otherUsersAvailabilityDistinguish
+                            )}
+                          </option>
+                          <option value={OtherUserAvailabilityMode.HIDE}>
+                            {intl.formatMessage(
+                              messages.otherUsersAvailabilityHide
+                            )}
+                          </option>
+                        </Field>
+                      </div>
+                    </SettingsFormRow>
+                  </details>
                   <SettingsFormRow
                     htmlFor="hideBlocklisted"
                     label={intl.formatMessage(messages.hideBlocklisted)}
@@ -1124,95 +1203,105 @@ const SettingsMain = () => {
                         />
                       </div>
                     </div>
-                    <SettingsFormRow
-                      htmlFor="tvSeasonWatchGateEnabled"
-                      label={intl.formatMessage(
-                        messages.tvSeasonWatchGateEnabled
-                      )}
-                      description={intl.formatMessage(
-                        messages.tvSeasonWatchGateEnabledTip
-                      )}
-                      labelClassName="checkbox-label"
+                    <details
+                      open={!upstream}
+                      className={upstream ? 'mt-3' : undefined}
                     >
-                      <SettingsField
-                        type="checkbox"
-                        id="tvSeasonWatchGateEnabled"
-                        name="tvSeasonWatchGateEnabled"
-                        onChange={() => {
-                          setFieldValue(
-                            'tvSeasonWatchGateEnabled',
-                            !values.tvSeasonWatchGateEnabled
-                          );
-                        }}
-                      />
-                    </SettingsFormRow>
-                    <SettingsFormRow
-                      htmlFor="personMovieBulkRequestsEnabled"
-                      label={intl.formatMessage(
-                        messages.personMovieBulkRequestsEnabled
+                      {upstream && (
+                        <summary className="cursor-pointer text-sm font-medium text-gray-300">
+                          {intl.formatMessage(messages.moreRequestRules)}
+                        </summary>
                       )}
-                      description={intl.formatMessage(
-                        messages.personMovieBulkRequestsEnabledTip
-                      )}
-                      labelClassName="checkbox-label"
-                    >
-                      <SettingsField
-                        type="checkbox"
-                        id="personMovieBulkRequestsEnabled"
-                        name="personMovieBulkRequestsEnabled"
-                        onChange={() => {
-                          setFieldValue(
-                            'personMovieBulkRequestsEnabled',
-                            !values.personMovieBulkRequestsEnabled
-                          );
-                        }}
-                      />
-                    </SettingsFormRow>
-                    <div className="form-row">
-                      <label
-                        htmlFor="enableSpecialEpisodes"
-                        className="checkbox-label"
+                      <SettingsFormRow
+                        htmlFor="tvSeasonWatchGateEnabled"
+                        label={intl.formatMessage(
+                          messages.tvSeasonWatchGateEnabled
+                        )}
+                        description={intl.formatMessage(
+                          messages.tvSeasonWatchGateEnabledTip
+                        )}
+                        labelClassName="checkbox-label"
                       >
-                        <span className="me-2">
-                          {intl.formatMessage(messages.enableSpecialEpisodes)}
-                        </span>
-                      </label>
-                      <div className="form-input-area">
                         <SettingsField
                           type="checkbox"
-                          id="enableSpecialEpisodes"
-                          name="enableSpecialEpisodes"
+                          id="tvSeasonWatchGateEnabled"
+                          name="tvSeasonWatchGateEnabled"
                           onChange={() => {
                             setFieldValue(
-                              'enableSpecialEpisodes',
-                              !values.enableSpecialEpisodes
+                              'tvSeasonWatchGateEnabled',
+                              !values.tvSeasonWatchGateEnabled
                             );
                           }}
                         />
+                      </SettingsFormRow>
+                      <SettingsFormRow
+                        htmlFor="personMovieBulkRequestsEnabled"
+                        label={intl.formatMessage(
+                          messages.personMovieBulkRequestsEnabled
+                        )}
+                        description={intl.formatMessage(
+                          messages.personMovieBulkRequestsEnabledTip
+                        )}
+                        labelClassName="checkbox-label"
+                      >
+                        <SettingsField
+                          type="checkbox"
+                          id="personMovieBulkRequestsEnabled"
+                          name="personMovieBulkRequestsEnabled"
+                          onChange={() => {
+                            setFieldValue(
+                              'personMovieBulkRequestsEnabled',
+                              !values.personMovieBulkRequestsEnabled
+                            );
+                          }}
+                        />
+                      </SettingsFormRow>
+                      <div className="form-row">
+                        <label
+                          htmlFor="enableSpecialEpisodes"
+                          className="checkbox-label"
+                        >
+                          <span className="me-2">
+                            {intl.formatMessage(messages.enableSpecialEpisodes)}
+                          </span>
+                        </label>
+                        <div className="form-input-area">
+                          <SettingsField
+                            type="checkbox"
+                            id="enableSpecialEpisodes"
+                            name="enableSpecialEpisodes"
+                            onChange={() => {
+                              setFieldValue(
+                                'enableSpecialEpisodes',
+                                !values.enableSpecialEpisodes
+                              );
+                            }}
+                          />
+                        </div>
                       </div>
-                    </div>
-                    <SettingsFormRow
-                      htmlFor="trackEpisodeAvailability"
-                      label={intl.formatMessage(
-                        messages.trackEpisodeAvailability
-                      )}
-                      description={intl.formatMessage(
-                        messages.trackEpisodeAvailabilityTip
-                      )}
-                      labelClassName="checkbox-label"
-                    >
-                      <SettingsField
-                        type="checkbox"
-                        id="trackEpisodeAvailability"
-                        name="trackEpisodeAvailability"
-                        onChange={() => {
-                          setFieldValue(
-                            'trackEpisodeAvailability',
-                            !values.trackEpisodeAvailability
-                          );
-                        }}
-                      />
-                    </SettingsFormRow>
+                      <SettingsFormRow
+                        htmlFor="trackEpisodeAvailability"
+                        label={intl.formatMessage(
+                          messages.trackEpisodeAvailability
+                        )}
+                        description={intl.formatMessage(
+                          messages.trackEpisodeAvailabilityTip
+                        )}
+                        labelClassName="checkbox-label"
+                      >
+                        <SettingsField
+                          type="checkbox"
+                          id="trackEpisodeAvailability"
+                          name="trackEpisodeAvailability"
+                          onChange={() => {
+                            setFieldValue(
+                              'trackEpisodeAvailability',
+                              !values.trackEpisodeAvailability
+                            );
+                          }}
+                        />
+                      </SettingsFormRow>
+                    </details>
                   </SettingsGroup>
                   <SettingsFormRow
                     htmlFor="youtubeUrl"
@@ -1248,236 +1337,246 @@ const SettingsMain = () => {
                   )}
                 </div>
               </section>
-              <SettingsGroup
-                title={intl.formatMessage(messages.playlistIntegrations)}
-                description={intl.formatMessage(
-                  messages.playlistIntegrationsDescription
-                )}
-                configured={Boolean(
-                  (data?.spotifyClientId && data?.spotifyClientSecret) ||
-                  data?.youtubeApiKey
-                )}
-                fields={[
-                  'spotifyClientId',
-                  'spotifyClientSecret',
-                  'youtubeApiKey',
-                ]}
-                className="app-card-sub settings-group-card"
+              <details
+                open={!upstream}
+                className={upstream ? 'mt-4' : undefined}
               >
-                <SettingsFormRow
-                  htmlFor="spotifyClientId"
-                  label={
-                    <a
-                      href="https://developer.spotify.com/dashboard"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      {intl.formatMessage(messages.spotifyClientId)}
-                    </a>
-                  }
-                  description={intl.formatMessage(messages.spotifyClientIdTip)}
-                >
-                  <div className="form-input-field">
-                    <Field
-                      id="spotifyClientId"
-                      name="spotifyClientId"
-                      type="text"
-                    />
-                  </div>
-                </SettingsFormRow>
-                <SettingsFormRow
-                  htmlFor="spotifyClientSecret"
-                  label={
-                    <a
-                      href="https://developer.spotify.com/dashboard"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      {intl.formatMessage(messages.spotifyClientSecret)}
-                    </a>
-                  }
+                {upstream && (
+                  <summary className="cursor-pointer text-sm font-medium text-gray-300">
+                    {intl.formatMessage(messages.moreIntegrationSettings)}
+                  </summary>
+                )}
+                <SettingsGroup
+                  title={intl.formatMessage(messages.playlistIntegrations)}
                   description={intl.formatMessage(
-                    messages.spotifyClientSecretTip
+                    messages.playlistIntegrationsDescription
                   )}
-                >
-                  <div className="form-input-field">
-                    <SensitiveInput
-                      as="field"
-                      id="spotifyClientSecret"
-                      name="spotifyClientSecret"
-                      type="text"
-                      value={values.spotifyClientSecret}
-                      onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-                        setFieldValue('spotifyClientSecret', event.target.value)
-                      }
-                    />
-                  </div>
-                </SettingsFormRow>
-                <SettingsFormRow
-                  htmlFor="youtubeApiKey"
-                  label={
-                    <a
-                      href="https://developers.google.com/youtube/data/guides/authentication"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      {intl.formatMessage(messages.youtubeApiKey)}
-                    </a>
-                  }
-                  description={intl.formatMessage(messages.youtubeApiKeyTip)}
-                >
-                  <div className="form-input-field">
-                    <SensitiveInput
-                      as="field"
-                      id="youtubeApiKey"
-                      name="youtubeApiKey"
-                      type="text"
-                      value={values.youtubeApiKey}
-                      onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-                        setFieldValue('youtubeApiKey', event.target.value)
-                      }
-                    />
-                  </div>
-                </SettingsFormRow>
-              </SettingsGroup>
-              <SettingsGroup
-                title={intl.formatMessage(messages.comicsMetadata)}
-                description={intl.formatMessage(
-                  messages.comicsMetadataDescription
-                )}
-                configured={Boolean(data?.comicVineApiKey || data?.metronToken)}
-                fields={['comicVineApiKey', 'metronToken']}
-                className="app-card-sub settings-group-card"
-              >
-                <SettingsFormRow
-                  htmlFor="comicVineApiKey"
-                  label={
-                    <a
-                      href="https://comicvine.gamespot.com/api/"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      {intl.formatMessage(messages.comicVineApiKey)}
-                    </a>
-                  }
-                  description={intl.formatMessage(messages.comicVineApiKeyTip)}
-                >
-                  <div className="form-input-field">
-                    <SensitiveInput
-                      as="field"
-                      id="comicVineApiKey"
-                      name="comicVineApiKey"
-                      type="text"
-                      value={values.comicVineApiKey}
-                      onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-                        setFieldValue('comicVineApiKey', event.target.value)
-                      }
-                    />
-                  </div>
-                </SettingsFormRow>
-                <SettingsFormRow
-                  htmlFor="metronToken"
-                  label={
-                    <a
-                      href="https://metron.cloud/accounts/tokens/"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      {intl.formatMessage(messages.metronToken)}
-                    </a>
-                  }
-                  description={intl.formatMessage(messages.metronTokenTip)}
-                >
-                  <div className="form-input-field">
-                    <SensitiveInput
-                      as="field"
-                      id="metronToken"
-                      name="metronToken"
-                      type="text"
-                      value={values.metronToken}
-                      onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-                        setFieldValue('metronToken', event.target.value)
-                      }
-                    />
-                  </div>
-                </SettingsFormRow>
-              </SettingsGroup>
-              <SettingsGroup
-                title={intl.formatMessage(messages.magazinesMetadata)}
-                description={intl.formatMessage(
-                  messages.magazinesMetadataDescription
-                )}
-                configured={Boolean(data?.googleBooksApiKey)}
-                fields={['googleBooksApiKey']}
-                className="settings-group-card"
-              >
-                <SettingsFormRow
-                  htmlFor="googleBooksApiKey"
-                  label={
-                    <a
-                      href="https://developers.google.com/books/docs/v1/using#APIKey"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      {intl.formatMessage(messages.googleBooksApiKey)}
-                    </a>
-                  }
-                  description={intl.formatMessage(
-                    messages.googleBooksApiKeyTip
+                  configured={Boolean(
+                    (data?.spotifyClientId && data?.spotifyClientSecret) ||
+                    data?.youtubeApiKey
                   )}
+                  fields={[
+                    'spotifyClientId',
+                    'spotifyClientSecret',
+                    'youtubeApiKey',
+                  ]}
+                  className="app-card-sub settings-group-card"
                 >
-                  <div className="form-input-field">
-                    <SensitiveInput
-                      as="field"
-                      id="googleBooksApiKey"
-                      name="googleBooksApiKey"
-                      type="text"
-                      value={values.googleBooksApiKey}
-                      onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-                        setFieldValue('googleBooksApiKey', event.target.value)
-                      }
-                    />
-                  </div>
-                </SettingsFormRow>
-              </SettingsGroup>
-              <SettingsGroup
-                title={intl.formatMessage(messages.downloadCopies)}
-                description={intl.formatMessage(
-                  messages.downloadCopiesDescription
-                )}
-                configured={Boolean(data?.downloadPathMappings?.length)}
-                fields={['downloadPathMappingsJson']}
-                className="settings-group-card"
-              >
-                <SettingsFormRow
-                  htmlFor="downloadPathMappingsJson"
-                  label={intl.formatMessage(messages.downloadPathMappings)}
-                  description={intl.formatMessage(
-                    messages.downloadPathMappingsTip
-                  )}
-                  badge={<SettingsBadge badgeType="advanced" />}
-                >
-                  <div className="form-input-field">
-                    <Field
-                      as="textarea"
-                      id="downloadPathMappingsJson"
-                      name="downloadPathMappingsJson"
-                      rows={8}
-                      spellCheck={false}
-                      placeholder={downloadPathMappingsExample}
-                      className="w-full font-mono text-xs"
-                    />
-                  </div>
-                  {errors.downloadPathMappingsJson &&
-                    touched.downloadPathMappingsJson && (
-                      <div className="error">
-                        {intl.formatMessage(
-                          messages.downloadPathMappingsJsonError
-                        )}
-                      </div>
+                  <SettingsFormRow
+                    htmlFor="spotifyClientId"
+                    label={
+                      <a
+                        href="https://developer.spotify.com/dashboard"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {intl.formatMessage(messages.spotifyClientId)}
+                      </a>
+                    }
+                    description={intl.formatMessage(messages.spotifyClientIdTip)}
+                  >
+                    <div className="form-input-field">
+                      <Field
+                        id="spotifyClientId"
+                        name="spotifyClientId"
+                        type="text"
+                      />
+                    </div>
+                  </SettingsFormRow>
+                  <SettingsFormRow
+                    htmlFor="spotifyClientSecret"
+                    label={
+                      <a
+                        href="https://developer.spotify.com/dashboard"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {intl.formatMessage(messages.spotifyClientSecret)}
+                      </a>
+                    }
+                    description={intl.formatMessage(
+                      messages.spotifyClientSecretTip
                     )}
-                </SettingsFormRow>
-              </SettingsGroup>
+                  >
+                    <div className="form-input-field">
+                      <SensitiveInput
+                        as="field"
+                        id="spotifyClientSecret"
+                        name="spotifyClientSecret"
+                        type="text"
+                        value={values.spotifyClientSecret}
+                        onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+                          setFieldValue('spotifyClientSecret', event.target.value)
+                        }
+                      />
+                    </div>
+                  </SettingsFormRow>
+                  <SettingsFormRow
+                    htmlFor="youtubeApiKey"
+                    label={
+                      <a
+                        href="https://developers.google.com/youtube/data/guides/authentication"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {intl.formatMessage(messages.youtubeApiKey)}
+                      </a>
+                    }
+                    description={intl.formatMessage(messages.youtubeApiKeyTip)}
+                  >
+                    <div className="form-input-field">
+                      <SensitiveInput
+                        as="field"
+                        id="youtubeApiKey"
+                        name="youtubeApiKey"
+                        type="text"
+                        value={values.youtubeApiKey}
+                        onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+                          setFieldValue('youtubeApiKey', event.target.value)
+                        }
+                      />
+                    </div>
+                  </SettingsFormRow>
+                </SettingsGroup>
+                <SettingsGroup
+                  title={intl.formatMessage(messages.comicsMetadata)}
+                  description={intl.formatMessage(
+                    messages.comicsMetadataDescription
+                  )}
+                  configured={Boolean(data?.comicVineApiKey || data?.metronToken)}
+                  fields={['comicVineApiKey', 'metronToken']}
+                  className="app-card-sub settings-group-card"
+                >
+                  <SettingsFormRow
+                    htmlFor="comicVineApiKey"
+                    label={
+                      <a
+                        href="https://comicvine.gamespot.com/api/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {intl.formatMessage(messages.comicVineApiKey)}
+                      </a>
+                    }
+                    description={intl.formatMessage(messages.comicVineApiKeyTip)}
+                  >
+                    <div className="form-input-field">
+                      <SensitiveInput
+                        as="field"
+                        id="comicVineApiKey"
+                        name="comicVineApiKey"
+                        type="text"
+                        value={values.comicVineApiKey}
+                        onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+                          setFieldValue('comicVineApiKey', event.target.value)
+                        }
+                      />
+                    </div>
+                  </SettingsFormRow>
+                  <SettingsFormRow
+                    htmlFor="metronToken"
+                    label={
+                      <a
+                        href="https://metron.cloud/accounts/tokens/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {intl.formatMessage(messages.metronToken)}
+                      </a>
+                    }
+                    description={intl.formatMessage(messages.metronTokenTip)}
+                  >
+                    <div className="form-input-field">
+                      <SensitiveInput
+                        as="field"
+                        id="metronToken"
+                        name="metronToken"
+                        type="text"
+                        value={values.metronToken}
+                        onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+                          setFieldValue('metronToken', event.target.value)
+                        }
+                      />
+                    </div>
+                  </SettingsFormRow>
+                </SettingsGroup>
+                <SettingsGroup
+                  title={intl.formatMessage(messages.magazinesMetadata)}
+                  description={intl.formatMessage(
+                    messages.magazinesMetadataDescription
+                  )}
+                  configured={Boolean(data?.googleBooksApiKey)}
+                  fields={['googleBooksApiKey']}
+                  className="settings-group-card"
+                >
+                  <SettingsFormRow
+                    htmlFor="googleBooksApiKey"
+                    label={
+                      <a
+                        href="https://developers.google.com/books/docs/v1/using#APIKey"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {intl.formatMessage(messages.googleBooksApiKey)}
+                      </a>
+                    }
+                    description={intl.formatMessage(
+                      messages.googleBooksApiKeyTip
+                    )}
+                  >
+                    <div className="form-input-field">
+                      <SensitiveInput
+                        as="field"
+                        id="googleBooksApiKey"
+                        name="googleBooksApiKey"
+                        type="text"
+                        value={values.googleBooksApiKey}
+                        onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+                          setFieldValue('googleBooksApiKey', event.target.value)
+                        }
+                      />
+                    </div>
+                  </SettingsFormRow>
+                </SettingsGroup>
+                <SettingsGroup
+                  title={intl.formatMessage(messages.downloadCopies)}
+                  description={intl.formatMessage(
+                    messages.downloadCopiesDescription
+                  )}
+                  configured={Boolean(data?.downloadPathMappings?.length)}
+                  fields={['downloadPathMappingsJson']}
+                  className="settings-group-card"
+                >
+                  <SettingsFormRow
+                    htmlFor="downloadPathMappingsJson"
+                    label={intl.formatMessage(messages.downloadPathMappings)}
+                    description={intl.formatMessage(
+                      messages.downloadPathMappingsTip
+                    )}
+                    badge={<SettingsBadge badgeType="advanced" />}
+                  >
+                    <div className="form-input-field">
+                      <Field
+                        as="textarea"
+                        id="downloadPathMappingsJson"
+                        name="downloadPathMappingsJson"
+                        rows={8}
+                        spellCheck={false}
+                        placeholder={downloadPathMappingsExample}
+                        className="w-full font-mono text-xs"
+                      />
+                    </div>
+                    {errors.downloadPathMappingsJson &&
+                      touched.downloadPathMappingsJson && (
+                        <div className="error">
+                          {intl.formatMessage(
+                            messages.downloadPathMappingsJsonError
+                          )}
+                        </div>
+                      )}
+                  </SettingsFormRow>
+                </SettingsGroup>
+              </details>
               <div className="actions">
                 <div className="flex justify-end">
                   <span className="ms-3 inline-flex rounded-md shadow-sm">
