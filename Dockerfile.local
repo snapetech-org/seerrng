@@ -2,7 +2,8 @@ FROM node:24.22.2-alpine3.23@sha256:9b69af715c7f9d038150b54ccccbaeffa9064bbc93e2
 
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
-RUN apk add --no-cache python3 py3-setuptools make g++ gcc libc6-compat
+RUN apk add --no-cache python3 py3-setuptools make g++ gcc libc6-compat && \
+  apk upgrade --no-cache zlib
 RUN corepack enable
 
 COPY --chown=node:node . /app

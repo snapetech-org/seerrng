@@ -1,6 +1,7 @@
 # Lumen: build the static app, then serve it with nginx in front of SeerrNG.
 FROM mirror.gcr.io/library/node:24.22.1-alpine3.23@sha256:4b00b6d1aa138805aace94cc2482808f2b4f01e5e9c9f8cdc0e217fd70600ef9 AS build
 WORKDIR /app
+RUN apk upgrade --no-cache zlib
 COPY package.json package-lock.json ./
 RUN npm ci
 COPY . .
@@ -9,7 +10,7 @@ RUN npm run build
 FROM nginx:1.30.6-alpine@sha256:e9b2d7624fd7957f4ed44ae0a272d93fb73aeb8512ba8916f8118ae6143fd115
 # The pinned image can lag Alpine's security rebuilds; refresh the runtime library
 # used by nginx's bundled XSLT module before the unprivileged runtime stage.
-RUN apk upgrade --no-cache libxslt
+RUN apk upgrade --no-cache libxslt zlib
 # SEERR_URL (or SEERR_INTERNAL_URL) = how this container reaches SeerrNG, e.g. http://seerrng:5055
 ENV SEERR_URL=http://seerrng:5055
 # companion proxy for narrator extras; without one these calls fail and Lumen uses SeerrNG alone

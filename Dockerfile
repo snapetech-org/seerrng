@@ -10,6 +10,7 @@ ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
 ENV npm_config_nodedir="/usr/local"
 RUN apk add --no-cache python3 py3-setuptools make g++ gcc libc6-compat bash && \
+  apk upgrade --no-cache zlib && \
   npm config set fetch-retries 5 && \
   npm config set fetch-retry-mintimeout 20000 && \
   npm config set fetch-retry-maxtimeout 120000 && \
@@ -54,6 +55,7 @@ ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
 ENV npm_config_nodedir="/usr/local"
 RUN apk add --no-cache python3 py3-setuptools make g++ gcc libc6-compat bash && \
+  apk upgrade --no-cache zlib && \
   npm config set fetch-retries 5 && \
   npm config set fetch-retry-mintimeout 20000 && \
   npm config set fetch-retry-maxtimeout 120000 && \
@@ -87,7 +89,7 @@ ENV NODE_ENV=production
 ENV COMMIT_TAG=${COMMIT_TAG}
 ENV BUILD_VERSION=${BUILD_VERSION}
 
-RUN apk add --no-cache --upgrade libcrypto3 libssl3 tzdata && \
+RUN apk add --no-cache --upgrade libcrypto3 libssl3 tzdata zlib && \
   rm -rf /usr/local/lib/node_modules/npm /usr/local/bin/npm /usr/local/bin/npx
 
 USER node:node
