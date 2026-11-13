@@ -50,6 +50,13 @@ for (const [consumer, consumerRequire] of consumers) {
           assert.equal(result.seerrngPoisoned, undefined);
         }
       }
+      const nestedNullTarget = merge(
+        { session: null },
+        JSON.parse('{"session":{"__proto__":{"seerrngPoisoned":true}}}')
+      );
+      assert.equal(Object.getPrototypeOf(nestedNullTarget.session), Object.prototype);
+      assert.equal(nestedNullTarget.session.seerrngPoisoned, undefined);
+      assert.equal(Object.hasOwn(nestedNullTarget.session, '__proto__'), false);
       const nested = merge(
         { values: [poisoned()], nested: poisoned() },
         { nested: {} }
