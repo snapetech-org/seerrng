@@ -798,7 +798,7 @@ export class BookRequestSearchManager {
           authorId: local.authorId ?? local.author?.id ?? null,
           createdBook: false,
           createdAuthor: false,
-          providerManagedSearch: true,
+          providerManagedSearch: operation.providerManagedSearch,
           state: 'monitoring' as const,
           updatedAt: new Date(),
         };
@@ -828,6 +828,8 @@ export class BookRequestSearchManager {
                 current.commandId != null ||
                 current.serviceId !== operation.serviceId ||
                 current.format !== operation.format ||
+                current.providerManagedSearch !==
+                  operation.providerManagedSearch ||
                 current.providerBookId !== operation.providerBookId ||
                 current.providerEditionId !== operation.providerEditionId ||
                 request.media.id !== operation.request.media.id ||

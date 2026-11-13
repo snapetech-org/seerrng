@@ -795,7 +795,7 @@ describe('BookRequestSearchManager', () => {
       assert.equal(operation.providerBookId, 'hc:260468');
       assert.equal(operation.providerEditionId, selectedEdition);
       assert.equal(operation.state, 'monitoring');
-      assert.equal(operation.providerManagedSearch, true);
+      assert.equal(operation.providerManagedSearch, false);
       assert.equal(
         (await getRepository(Media).findOneByOrFail({ id: media.id }))
           .externalServiceId,
@@ -812,10 +812,54 @@ describe('BookRequestSearchManager', () => {
       });
       assert.equal(remote.mock.calls.length, 0);
       assert.equal(add.mock.calls.length, 0);
+      if (selectedEdition == null) {
+        mock.method(
+          ReadarrAPI.prototype,
+          'getBookIfExists',
+          async (id: number) => ({
+            id,
+            title: 'Wool Omnibus Edition',
+            foreignBookId: 'hc:260468',
+            statistics: { bookFileCount: 0 },
+          })
+        );
+        const search = mock.method(
+          ReadarrAPI.prototype,
+          'startBookSearch',
+          async () => ({
+            id: 9001,
+            name: 'BookSearch',
+            status: 'started',
+          })
+        );
+        mock.method(ReadarrAPI.prototype, 'getCommand', async () => ({
+          id: 9001,
+          name: 'BookSearch',
+          status: 'started',
+        }));
+        await bookRequestSearchManager.run();
+        await bookRequestSearchManager.run();
+        const searching = await getRepository(
+          BookRequestSearch
+        ).findOneByOrFail({ requestId: request.id });
+        assert.equal(search.mock.calls.length, 1);
+        assert.equal(search.mock.calls[0].arguments[0], 46503);
+        assert.equal(searching.commandId, 9001);
+        assert.equal(searching.state, 'searching');
+        assert.equal(searching.providerManagedSearch, false);
+        assert.equal(remote.mock.calls.length, 0);
+        assert.equal(add.mock.calls.length, 0);
+      }
     });
   }
 
-  for (const change of ['cancel', 'edition', 'service', 'target'] as const) {
+  for (const change of [
+    'cancel',
+    'edition',
+    'service',
+    'target',
+    'owner',
+  ] as const) {
     it(`does not restore a pending request after ${change} changes during local recovery`, async () => {
       const { media, request } = await createTrackedRequest({
         createdBook: false,
@@ -837,6 +881,11 @@ describe('BookRequestSearchManager', () => {
       mock.method(ReadarrAPI.prototype, 'findLocalBookByTitle', async () => {
         if (change === 'service')
           getSettings().readarr[0].hostname = 'replacement.local';
+        else if (change === 'owner')
+          await getRepository(BookRequestSearch).update(
+            { requestId: request.id },
+            { providerManagedSearch: true }
+          );
         else
           await getRepository(MediaRequest).update(
             request.id,
@@ -1291,6 +1340,7 @@ describe('BookRequestSearchManager', () => {
       requestId: request.id,
     });
     assert.equal(monitoring.state, 'monitoring');
+    assert.equal(monitoring.providerManagedSearch, true);
     assert.equal(startBookSearch.mock.callCount(), 0);
     assert.equal(getCommand.mock.callCount(), 0);
     assert.equal(getQueue.mock.callCount(), 0);
