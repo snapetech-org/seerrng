@@ -153,6 +153,12 @@ test('info panels fill the last row instead of leaving an empty cell', async ({
       }),
     })
   );
+  // the saved answers survive a page load (written when the page goes away): drop them
+  await page.waitForTimeout(500);
+  await page.evaluate(() => {
+    for (const k of Object.keys(localStorage))
+      if (k.startsWith('lumen-cache:')) localStorage.removeItem(k);
+  });
   await page.goto(`/book/${encodeURIComponent(audioId)}?f=audio&x=1`);
   await expect(cells).toHaveCount(3);
   const last = await cells.nth(2).boundingBox();

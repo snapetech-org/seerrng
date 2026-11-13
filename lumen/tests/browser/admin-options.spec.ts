@@ -1646,6 +1646,8 @@ test('a title in the library shows the check on its page too', async ({
   await page.route('**/api/v1/movie/301', (route) =>
     route.fulfill({ json: { ...details301, mediaInfo: undefined } })
   );
+  // let the waiting cache save land first: a save still waiting is written on reload
+  await page.waitForTimeout(500);
   await page.evaluate(() => localStorage.clear());
   await page.reload();
   await expect(page.locator('.dtitle h1')).toHaveText('Only In 4K');
