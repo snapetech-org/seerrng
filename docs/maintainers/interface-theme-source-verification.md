@@ -213,6 +213,14 @@ compact corner radii. It keeps SeerrNG's extension data and workflows. These
 routes still need matched rendered review before their visual acceptance can
 be marked complete.
 
+The final source pass also checked `/404`, `/_error`, and `/setup` against the
+pinned upstream source. The error pages retain upstream's centered error
+hierarchy and recovery link, with logical-direction spacing for RTL. Setup
+retains upstream's full-screen backdrop, centered content width, frosted
+surface, and responsive stepper; SeerrNG's guided defaults and service flows,
+status feedback, and logo remain intact. No additional source-level route gap
+was found in the documented route families; rendered review is still pending.
+
 ## Visual review status
 
 The checkout now uses Node 24.22.2 and pnpm 10.24.0. The Next.js production
