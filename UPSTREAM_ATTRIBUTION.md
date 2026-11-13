@@ -232,6 +232,8 @@ The source files below come from the Seerr v3.5.1 snapshot prepared for the upst
 - [Seerr v3.5.1 Dropdown](https://github.com/seerr-team/seerr/blob/564bfb08b54caa374bddaf820abfd226e5e69151/src/components/Common/Dropdown/index.tsx) and [ButtonWithDropdown](https://github.com/seerr-team/seerr/blob/564bfb08b54caa374bddaf820abfd226e5e69151/src/components/Common/ButtonWithDropdown/index.tsx) — upstream's menu trigger, segmented trigger, menu surface, transition, and item presentation are restored in SeerrOrig. SeerrNG independently maps fork-only action variants onto the nearest upstream visual roles; its native theme retains its own presentation. This source is part of the v3.5.1 release contributed to upstream Seerr by [@gauthier-th](https://github.com/gauthier-th); SeerrNG independently adapted it without implying direct contribution to or endorsement of SeerrNG.
 
 
+- [Seerr v3.5.1 genre, keyword, and language discovery sources](https://github.com/seerr-team/seerr/tree/564bfb08b54caa374bddaf820abfd226e5e69151/src/components/Discover) — used to align SeerrOrig's browse-route loading, error, and heading presentation while keeping SeerrNG's genre-follow action collapsed under More. The source snapshot was prepared for release by [@gauthier-th](https://github.com/gauthier-th); no contribution or endorsement is implied.
+
 ## Referenced or in-progress upstream sources
 
 These additional records are cited by maintained fork source, documentation, release notes, or plans. They are credited as idea/provenance sources without claiming complete implementation.

@@ -113,6 +113,10 @@ filter/pagination controls. The expanded SeerrNG blocklist remains available
 from the collapsed extension disclosure, including extra media types and
 metadata.
 
+Genre, keyword, and language discovery routes use upstream's loading and error
+fallbacks and heading spacing. SeerrNG genre-follow actions remain reachable
+under a collapsed “More options” disclosure.
+
 Common buttons, badges, alerts, page headers, and dialogs now switch to
 upstream's shared-control presentation when SeerrOrig is selected. SeerrNG's
 own variants and behavior remain active in its native theme.
