@@ -69,6 +69,14 @@ import { makeBookshelfBookId } from '@server/utils/bookshelfCatalog';
 import { resetTestDb, seedTestDb } from '@server/utils/seedTestDb';
 import axios from 'axios';
 
+type LocalBookTitleOptions = Parameters<ReadarrAPI['findLocalBookByTitle']>[0];
+type LocalBookTitleResult = Awaited<
+  ReturnType<ReadarrAPI['findLocalBookByTitle']>
+>;
+let localBookTitleResolver: (
+  options: LocalBookTitleOptions
+) => Promise<LocalBookTitleResult> = async () => undefined;
+
 async function getRequester() {
   return getRepository(User).findOneOrFail({
     where: { email: 'friend@seerr.dev' },
@@ -283,6 +291,12 @@ describe('MediaRequestSubscriber service dispatch', () => {
     await resetTestDb();
     enqueuedRequestIds = [];
     startedBookSearches = 0;
+    localBookTitleResolver = async () => undefined;
+    mock.method(
+      ReadarrAPI.prototype,
+      'findLocalBookByTitle',
+      async (options: LocalBookTitleOptions) => localBookTitleResolver(options)
+    );
     mock.method(ReadarrAPI.prototype, 'startBookSearch', async () => {
       startedBookSearches += 1;
       return { id: 901, name: 'BookSearch', status: 'queued' };
@@ -2172,6 +2186,11 @@ describe('MediaRequestSubscriber service dispatch', () => {
     }));
 
     const lookupTerms: string[] = [];
+    const localBookLookups: LocalBookTitleOptions[] = [];
+    localBookTitleResolver = async (options) => {
+      localBookLookups.push(options);
+      return undefined;
+    };
     mock.method(ReadarrAPI.prototype, 'lookupBook', async (term: string) => {
       lookupTerms.push(term);
 
@@ -2222,6 +2241,8 @@ describe('MediaRequestSubscriber service dispatch', () => {
       '9780441478125',
       'isbn:9780441478125',
     ]);
+    assert.equal(localBookLookups.length, 1);
+    assert.equal(localBookLookups[0].title, 'The Left Hand of Darkness');
     assert.equal(addPayload?.qualityProfileId, 0);
     assert.equal(addPayload?.foreignBookId, 'readarr-work-id');
     assert.equal(addPayload?.mediaType, 'ebook');
@@ -2265,6 +2286,106 @@ describe('MediaRequestSubscriber service dispatch', () => {
       id: request.id,
     });
     assert.equal(savedRequest.status, MediaRequestStatus.APPROVED);
+  });
+
+  it('reuses a local Chaptarr book by its stored metadata title before remote lookup', async () => {
+    getSettings().readarr = [
+      {
+        id: 20,
+        name: 'Chaptarr',
+        hostname: 'chaptarr.local',
+        port: 8787,
+        apiKey: 'test-key',
+        useSsl: false,
+        activeProfileId: 11,
+        activeProfileName: 'Books',
+        activeMetadataProfileId: 12,
+        activeMetadataProfileName: 'Standard',
+        activeDirectory: '/books',
+        tags: [],
+        is4k: false,
+        isDefault: true,
+        syncEnabled: true,
+        preventSearch: false,
+        tagRequests: false,
+        overrideRule: [],
+        serviceType: 'ebook',
+      },
+    ];
+
+    const requestedBy = await getRequester();
+    const media = await getRepository(Media).save(
+      new Media({
+        mediaType: MediaType.BOOK,
+        tmdbId: 0,
+        status: MediaStatus.PENDING,
+        status4k: MediaStatus.UNKNOWN,
+        identifiers: [
+          new MediaIdentifier({
+            provider: MediaIdentifierProvider.BOOKSHELF,
+            value: makeBookshelfBookId(20, 'work-42'),
+            canonical: true,
+          }),
+        ],
+      })
+    );
+    await getRepository(MediaSearchMetadata).save(
+      Object.assign(new MediaSearchMetadata(), {
+        mediaId: media.id,
+        title: 'Winteraustern',
+        searchText: 'winteraustern',
+      })
+    );
+    const request = await createApprovedRequest(media, requestedBy);
+    request.serverId = 20;
+
+    const localBookLookups: LocalBookTitleOptions[] = [];
+    localBookTitleResolver = async (options) => {
+      localBookLookups.push(options);
+      return {
+        id: 42,
+        title: 'Winteraustern',
+        titleSlug: 'winteraustern',
+        foreignBookId: 'work-42',
+        mediaType: 'ebook',
+        editions: [
+          {
+            foreignEditionId: 'edition-42',
+            title: 'Winteraustern',
+            monitored: false,
+          },
+        ],
+      };
+    };
+    mock.method(
+      ReadarrAPI.prototype,
+      'lookupBookByProviderIdentity',
+      async () => []
+    );
+    const remoteLookup = mock.method(
+      ReadarrAPI.prototype,
+      'lookupBook',
+      async () => {
+        throw new Error('A local exact match should avoid remote lookup.');
+      }
+    );
+    let addPayload: ReadarrBookOptions | undefined;
+    mock.method(
+      ReadarrAPI.prototype,
+      'addBook',
+      async (payload: ReadarrBookOptions) => {
+        addPayload = payload;
+        return { ...payload, id: 42, titleSlug: 'winteraustern' };
+      }
+    );
+
+    await new MediaRequestSubscriber().sendToReadarr(request);
+
+    assert.equal(localBookLookups.length, 1);
+    assert.equal(localBookLookups[0].title, 'Winteraustern');
+    assert.equal(remoteLookup.mock.callCount(), 0);
+    assert.equal(addPayload?.id, 42);
+    assert.equal(addPayload?.foreignBookId, 'work-42');
   });
 
   it('dispatches a both-format Bindery request once with explicit format intent', async () => {
