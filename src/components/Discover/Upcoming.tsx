@@ -45,7 +45,7 @@ const UpcomingMovies = () => {
   return (
     <>
       <PageTitle title={intl.formatMessage(messages.upcomingmovies)} />
-      <div className={upstream ? 'mb-5 mt-1' : undefined}>
+      <div className={upstream ? 'upstream-discovery-header' : undefined}>
         <Header>{intl.formatMessage(messages.upcomingmovies)}</Header>
       </div>
       <ListView

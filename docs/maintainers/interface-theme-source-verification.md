@@ -142,9 +142,21 @@ SeerrNG onboarding path.
 
 ## Visual review status
 
-The current rebuild has not yet had matched upstream and SeerrOrig renders for
-all routes, states, and viewports. Keep this pull request in draft until the
-remaining page families are aligned and those comparisons have been reviewed.
-The current workspace has no installed frontend dependencies or running
-candidate server, so browser captures are not yet available. Source-level
-alignment is not counted as rendered visual acceptance.
+The review workspace has a running production-mode candidate server and
+installed frontend dependencies. The earlier note that no server or browser
+captures were available is stale.
+
+An earlier candidate render at 390 × 844 CSS pixels captured `/movie/550` and
+`/discover/movies`; the SeerrOrig theme was selected. Captures are retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-pr663-visual-qa-20261113/candidate-390-movie-550-page.png`
+and in the same directory for the full browser capture. These candidate pages
+used live TMDB data, while the upstream comparison images use deterministic
+fixture data. The page content therefore does not match, so the captures are
+exploratory and are not visual acceptance evidence.
+
+Matched route, data, UI-state, and viewport comparisons remain incomplete for
+both SeerrOrig and SeerrNGJ. No release or merge decision should treat this
+source-level review or the exploratory renders as visual acceptance. Keep this
+pull request in draft until the required representative route families,
+responsive sizes, and interaction states have matching rendered comparisons
+and the results have been reviewed.

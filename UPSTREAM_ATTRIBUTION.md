@@ -14,16 +14,30 @@ SeerrOrig's shared movie, TV, and collection poster-card presentation is aligned
 with upstream's [\`TitleCard\`](https://github.com/seerr-team/seerr/blob/564bfb08b54caa374bddaf820abfd226e5e69151/src/components/TitleCard/index.tsx)
 and its poster badge and status presentation. SeerrNG poster actions and
 additional media metadata remain available, and SeerrNG logos and brand assets
-remain in use.
+remain in use. This presentation comes from the upstream v3.5.1 source
+contributed to Seerr by [@gauthier-th](https://github.com/gauthier-th); SeerrNG
+independently adapted it, without implying direct contribution to or endorsement
+of SeerrNG.
 SeerrOrig's movie and TV request rows follow upstream's [\`RequestItem\`](https://github.com/seerr-team/seerr/blob/564bfb08b54caa374bddaf820abfd226e5e69151/src/components/RequestList/RequestItem/index.tsx)
 layout and backdrop treatment. SeerrNG's extra media types, failure details, and
-request actions remain available.
+request actions remain available. This layout comes from the upstream v3.5.1
+source contributed to Seerr by [@gauthier-th](https://github.com/gauthier-th);
+SeerrNG independently adapted it, without implying direct contribution to or
+endorsement of SeerrNG.
 Public sign-in and password-recovery presentation also follows upstream's
 [\`Login\`](https://github.com/seerr-team/seerr/blob/564bfb08b54caa374bddaf820abfd226e5e69151/src/components/Login/index.tsx),
 [\`ResetPassword\`](https://github.com/seerr-team/seerr/blob/564bfb08b54caa374bddaf820abfd226e5e69151/src/components/ResetPassword/index.tsx),
 and [\`RequestResetLink\`](https://github.com/seerr-team/seerr/blob/564bfb08b54caa374bddaf820abfd226e5e69151/src/components/ResetPassword/RequestResetLink.tsx)
 composition. SeerrNG's own logo, transport-security notice, and additional sign-in
-methods remain in use.
+methods remain in use. These presentation patterns come from the upstream v3.5.1
+sources contributed to Seerr by [@gauthier-th](https://github.com/gauthier-th);
+SeerrNG independently adapted them, without implying direct contribution to or
+endorsement of SeerrNG.
+The shared page header follows upstream's [`Header`](https://github.com/seerr-team/seerr/blob/564bfb08b54caa374bddaf820abfd226e5e69151/src/components/Common/Header/index.tsx)
+spacing and typography. This source is part of the upstream v3.5.1 release
+contributed to Seerr by [@gauthier-th](https://github.com/gauthier-th); SeerrNG
+independently adapted the header presentation, without implying direct
+contribution to or endorsement of SeerrNG.
 The Issues list and movie/TV issue-detail composition are adapted from
 upstream's [`IssueList`](https://github.com/seerr-team/seerr/blob/564bfb08b54caa374bddaf820abfd226e5e69151/src/components/IssueList/index.tsx),
 [`IssueItem`](https://github.com/seerr-team/seerr/blob/564bfb08b54caa374bddaf820abfd226e5e69151/src/components/IssueList/IssueItem/index.tsx),
