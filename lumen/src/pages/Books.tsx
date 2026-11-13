@@ -152,11 +152,16 @@ function LibrarySeg({
 function SortMenu({ sort, pick }: { sort: string; pick: (v: string) => void }) {
   return (
     <label className="sel">
-      <span className="lbl">Sort</span>
-      <select value={sort} onChange={(e) => pick(e.target.value)}>
+      {/* nothing picked yet (the landing): the menu itself says "Sort by…" */}
+      {sort && <span className="lbl">Sort</span>}
+      <select
+        aria-label="Sort"
+        value={sort}
+        onChange={(e) => pick(e.target.value)}
+      >
         {!sort && (
           <option value="" disabled hidden>
-            Choose
+            Sort by…
           </option>
         )}
         {SORTS.map(([v, t]) => (
