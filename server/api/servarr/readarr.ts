@@ -513,6 +513,14 @@ const getReadarrErrorMessage = (error: unknown): string => {
 const isRecord = (value: unknown): value is Record<string, unknown> =>
   typeof value === 'object' && value !== null && !Array.isArray(value);
 
+const normalizeLocalBookSearchText = (value: string): string =>
+  value
+    .normalize('NFKD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLocaleLowerCase()
+    .replace(/[^\p{L}\p{N}]+/gu, ' ')
+    .trim();
+
 /**
  * ChaptarrNG answers a lookup of a deleted record with HTTP 500
  * "Expected query to return 1 rows but returned 0" instead of a 404.
@@ -2352,6 +2360,198 @@ class ReadarrAPI extends ServarrBase<ReadarrQueueItem> {
           }
         : {}),
     }));
+  }
+
+  public async findLocalBookByTitle(options: {
+    title: string;
+    authorName?: string;
+    openLibraryWorkId?: string;
+    isbn?: string;
+    editionId?: string;
+  }): Promise<ReadarrBook | undefined> {
+    const title = options.title.trim().slice(0, 256);
+    const normalizedTitle = normalizeLocalBookSearchText(title);
+    if (!title || normalizedTitle.length < 2) return undefined;
+
+    return withBookLookupBudget(async () => {
+      try {
+        await this.ensureProvider();
+        if (!this.isChaptarr() || !this.mediaType) return undefined;
+
+        // Chaptarr's local search index is independent from its remote metadata
+        // providers. It lets an existing catalog row be requested during an
+        // upstream metadata outage without downloading the full book library.
+        const result = await this.get<unknown>(
+          '/library/search',
+          {
+            ...this.getRequestConfig({ term: title, limit: 50 }),
+            baseURL: this.nativeApiUrl,
+          },
+          0
+        );
+        if (!isRecord(result) || !Array.isArray(result.books)) {
+          return undefined;
+        }
+
+        const expectedAuthor = options.authorName
+          ? normalizeLocalBookSearchText(options.authorName)
+          : undefined;
+        const localInstancesKey =
+          this.mediaType === 'ebook'
+            ? 'localEbookBooks'
+            : 'localAudiobookBooks';
+        const candidateIds = new Map<number, string>();
+
+        for (const entry of result.books.slice(0, 50)) {
+          if (!isRecord(entry) || typeof entry.title !== 'string') continue;
+          const entryAuthor =
+            typeof entry.authorName === 'string' ? entry.authorName : '';
+          if (
+            normalizeLocalBookSearchText(entry.title) !== normalizedTitle ||
+            (expectedAuthor &&
+              normalizeLocalBookSearchText(entryAuthor) !== expectedAuthor) ||
+            (options.openLibraryWorkId &&
+              typeof entry.openLibraryWorkId === 'string' &&
+              normalizeOpenLibraryWorkId(entry.openLibraryWorkId) !==
+                normalizeOpenLibraryWorkId(options.openLibraryWorkId))
+          ) {
+            continue;
+          }
+
+          const localInstancesValue = entry[localInstancesKey];
+          const localInstances = Array.isArray(localInstancesValue)
+            ? localInstancesValue
+            : [];
+          for (const instance of localInstances) {
+            if (!isRecord(instance)) continue;
+            const id = Number(instance.id);
+            const instanceTitle =
+              typeof instance.title === 'string'
+                ? instance.title
+                : entry.title;
+            if (
+              instance.mediaType !== this.mediaType ||
+              normalizeLocalBookSearchText(instanceTitle) !== normalizedTitle ||
+              !Number.isSafeInteger(id) ||
+              id <= 0
+            ) {
+              continue;
+            }
+            candidateIds.set(id, entryAuthor);
+          }
+
+          if (
+            localInstances.length === 0 &&
+            entry.mediaType === this.mediaType
+          ) {
+            const id = Number(entry.id);
+            if (Number.isSafeInteger(id) && id > 0) {
+              candidateIds.set(id, entryAuthor);
+            }
+          }
+        }
+
+        // A title and author can still identify duplicate editions. Keep the
+        // targeted hydration bounded, and refuse to guess when the index is
+        // unusually ambiguous.
+        if (candidateIds.size === 0 || candidateIds.size > 20) {
+          return undefined;
+        }
+
+        const expectedIsbn = options.isbn
+          ? normalizeIsbn(options.isbn)
+          : undefined;
+        const matches: ReadarrBook[] = [];
+
+        for (const [id, indexedAuthor] of candidateIds) {
+          try {
+            const book = await this.getBook(id);
+            if (
+              book.id !== id ||
+              (book.mediaType && book.mediaType !== this.mediaType) ||
+              normalizeLocalBookSearchText(book.title) !== normalizedTitle ||
+              !ReadarrAPI.hasAddressableLookupIdentity(book)
+            ) {
+              continue;
+            }
+
+            const bookAuthor = book.author?.authorName?.trim();
+            if (
+              expectedAuthor &&
+              ((bookAuthor &&
+                normalizeLocalBookSearchText(bookAuthor) !== expectedAuthor) ||
+                (!bookAuthor &&
+                  normalizeLocalBookSearchText(indexedAuthor) !==
+                    expectedAuthor))
+            ) {
+              continue;
+            }
+
+            if (
+              expectedIsbn &&
+              !book.editions?.some(
+                (edition) =>
+                  !!edition.isbn13 &&
+                  normalizeIsbn(edition.isbn13) === expectedIsbn
+              )
+            ) {
+              continue;
+            }
+
+            if (
+              options.editionId &&
+              !book.editions?.some(
+                (edition) =>
+                  !!edition.foreignEditionId &&
+                  sameEditionId(
+                    edition.foreignEditionId,
+                    options.editionId as string
+                  )
+              )
+            ) {
+              continue;
+            }
+
+            matches.push(book);
+          } catch (error) {
+            logger.debug('Chaptarr local book candidate could not be loaded.', {
+              label: 'Readarr',
+              mediaType: this.mediaType,
+              bookId: id,
+              errorMessage:
+                error instanceof Error ? error.message : String(error),
+            });
+          }
+        }
+
+        if (matches.length === 1) return matches[0];
+        if (matches.length > 1) {
+          logger.warn(
+            'Chaptarr local book search found multiple exact matches; refusing to select one.',
+            {
+              label: 'Readarr',
+              mediaType: this.mediaType,
+              title,
+              authorName: options.authorName,
+              candidateCount: matches.length,
+            }
+          );
+        }
+        return undefined;
+      } catch (error) {
+        logger.debug(
+          'Chaptarr local library search failed after provider lookup returned no addable book.',
+          {
+            label: 'Readarr',
+            mediaType: this.mediaType,
+            title,
+            errorMessage:
+              error instanceof Error ? error.message : String(error),
+          }
+        );
+        return undefined;
+      }
+    });
   }
 
   public async lookupBook(term: string): Promise<ReadarrBookLookupResult[]> {
