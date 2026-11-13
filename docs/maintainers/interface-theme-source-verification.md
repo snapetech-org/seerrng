@@ -113,8 +113,16 @@ Common buttons, badges, alerts, page headers, and dialogs now switch to
 upstream's shared-control presentation when SeerrOrig is selected. SeerrNG's
 own variants and behavior remain active in its native theme.
 
+Dropdown and split-button menus use upstream's trigger sizing, menu surface,
+transition, item presentation, and primary/ghost roles in SeerrOrig. Fork-only
+action types map to the closest upstream visual role; the SeerrNG theme keeps
+its current menu presentation and action variants.
+
 ## Visual review status
 
 The current rebuild has not yet had matched upstream and SeerrOrig renders for
 all routes, states, and viewports. Keep this pull request in draft until the
 remaining page families are aligned and those comparisons have been reviewed.
+The current workspace has no installed frontend dependencies or running
+candidate server, so browser captures are not yet available. Source-level
+alignment is not counted as rendered visual acceptance.

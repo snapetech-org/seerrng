@@ -1,4 +1,5 @@
 import Dropdown from '@app/components/Common/Dropdown';
+import useUpstreamTheme from '@app/hooks/useUpstreamTheme';
 import globalMessages from '@app/i18n/globalMessages';
 import { withProperties } from '@app/utils/typeHelpers';
 import { Menu, MenuButton } from '@headlessui/react';
@@ -28,6 +29,7 @@ const ButtonWithDropdown = ({
   ...props
 }: ButtonWithDropdownProps) => {
   const intl = useIntl();
+  const upstream = useUpstreamTheme();
   const isSmall = buttonSize === 'sm';
   const buttonTypeClassNames = {
     primary: 'app-button-primary',
@@ -36,8 +38,18 @@ const ButtonWithDropdown = ({
     detailRequest: 'app-button-detail-request',
     playback: 'app-button-playback',
   };
-  const sharedClasses = `app-button ${buttonTypeClassNames[buttonType]} ${
-    isSmall ? 'button-sm' : 'button-standard'
+  const upstreamButtonTypeClassNames = {
+    primary: 'app-button-primary',
+    ghost: 'app-button-ghost',
+    success: 'app-button-success',
+    detailRequest: 'app-button-primary',
+    playback: 'app-button-success',
+  };
+  const buttonTypeClassName = upstream
+    ? upstreamButtonTypeClassNames[buttonType]
+    : buttonTypeClassNames[buttonType];
+  const sharedClasses = `app-button ${buttonTypeClassName} ${
+    isSmall ? 'button-sm' : upstream ? 'button-md' : 'button-standard'
   }`;
 
   const TriggerElement = props.as ?? 'button';
@@ -51,6 +63,7 @@ const ButtonWithDropdown = ({
       as="div"
       className="app-dropdown"
       data-dropdown-segmented={!!children}
+      data-dropdown-presentation={upstream ? 'upstream' : undefined}
     >
       <TriggerElement
         type="button"
@@ -59,7 +72,7 @@ const ButtonWithDropdown = ({
         {...(props as Record<string, string>)}
         data-button-help={props.title}
         data-disabled-reason={disabled ? disabledTitle : undefined}
-        title={undefined}
+        title={upstream ? (disabled ? disabledTitle : props.title) : undefined}
       >
         {text}
       </TriggerElement>
@@ -75,7 +88,13 @@ const ButtonWithDropdown = ({
           >
             {dropdownIcon ? dropdownIcon : <ChevronDownIcon />}
           </MenuButton>
-          <Dropdown.Items>{children}</Dropdown.Items>
+          <Dropdown.Items
+            dropdownType={
+              upstream && buttonType === 'ghost' ? 'ghost' : 'primary'
+            }
+          >
+            {children}
+          </Dropdown.Items>
         </span>
       )}
     </Menu>

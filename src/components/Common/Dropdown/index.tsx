@@ -7,6 +7,7 @@ import {
   type ButtonHTMLAttributes,
   type HTMLAttributes,
 } from 'react';
+import useUpstreamTheme from '@app/hooks/useUpstreamTheme';
 
 type DropdownButtonType =
   'primary' | 'ghost' | 'success' | 'detailRequest' | 'playback';
@@ -20,11 +21,15 @@ const DropdownItem = ({
   buttonType = 'primary',
   ...props
 }: DropdownItemProps) => {
+  const upstream = useUpstreamTheme();
+  const upstreamButtonType = buttonType === 'ghost' ? 'ghost' : 'primary';
+
   return (
     <MenuItem>
       <a
-        className="app-dropdown-item"
-        data-dropdown-type={buttonType}
+        className={`app-dropdown-item${upstream ? ' button-md' : ''}`}
+        data-dropdown-presentation={upstream ? 'upstream' : undefined}
+        data-dropdown-type={upstream ? upstreamButtonType : buttonType}
         {...props}
       >
         {children}
@@ -33,17 +38,24 @@ const DropdownItem = ({
   );
 };
 
-type DropdownItemsProps = HTMLAttributes<HTMLDivElement>;
+type DropdownItemsProps = HTMLAttributes<HTMLDivElement> & {
+  dropdownType?: 'primary' | 'ghost';
+};
 
 const DropdownItems = ({
   children,
   className,
+  dropdownType = 'primary',
   ...props
 }: DropdownItemsProps) => {
+  const upstream = useUpstreamTheme();
+
   return (
     <MenuItems
       transition
       className={['app-dropdown-menu', className].join(' ')}
+      data-dropdown-presentation={upstream ? 'upstream' : undefined}
+      data-dropdown-type={dropdownType}
       {...props}
     >
       <div>{children}</div>
@@ -71,6 +83,7 @@ const Dropdown = ({
   ...props
 }: DropdownProps) => {
   const buttonRef = useRef<HTMLButtonElement>(null);
+  const upstream = useUpstreamTheme();
   const buttonTypeClassNames: Record<DropdownButtonType, string> = {
     primary: 'app-button-primary',
     ghost: 'app-button-ghost',
@@ -78,27 +91,55 @@ const Dropdown = ({
     detailRequest: 'app-button-detail-request',
     playback: 'app-button-playback playback-dropdown-trigger',
   };
+  const upstreamButtonTypeClassNames: Record<DropdownButtonType, string> = {
+    primary: 'app-button-primary',
+    ghost: 'app-button-ghost',
+    success: 'app-button-success',
+    detailRequest: 'app-button-primary',
+    playback: 'app-button-success',
+  };
+  const upstreamButtonType = buttonType === 'ghost' ? 'ghost' : 'primary';
+  const buttonTypeClassName = upstream
+    ? upstreamButtonTypeClassNames[buttonType]
+    : buttonTypeClassNames[buttonType];
+  const buttonSizeClass = buttonSize === 'sm' ? 'button-sm' : 'button-md';
 
   return (
-    <Menu as="div" className="app-dropdown">
+    <Menu
+      as="div"
+      className="app-dropdown"
+      data-dropdown-presentation={upstream ? 'upstream' : undefined}
+    >
       <MenuButton
         type="button"
         className={[
           'app-button',
-          buttonTypeClassNames[buttonType],
-          buttonSize === 'sm' ? 'button-sm' : 'button-md',
+          buttonTypeClassName,
+          buttonSizeClass,
           className,
         ].join(' ')}
         ref={buttonRef}
         disabled={!children}
+        data-dropdown-part="trigger"
         data-button-help={title}
         data-disabled-reason={!children ? disabledReason : undefined}
+        title={
+          upstream
+            ? !children || props.disabled
+              ? disabledReason ?? title
+              : title
+            : undefined
+        }
         {...props}
       >
         <span>{text}</span>
         {children && (dropdownIcon ? dropdownIcon : <ChevronDownIcon />)}
       </MenuButton>
-      {children && <DropdownItems>{children}</DropdownItems>}
+      {children && (
+        <DropdownItems dropdownType={upstreamButtonType}>
+          {children}
+        </DropdownItems>
+      )}
     </Menu>
   );
 };
