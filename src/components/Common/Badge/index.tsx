@@ -1,4 +1,5 @@
 import { getSafeHref, isExternalHref } from '@app/utils/safeUrl';
+import useUpstreamTheme from '@app/hooks/useUpstreamTheme';
 import Link from 'next/link';
 import React from 'react';
 
@@ -32,13 +33,18 @@ const Badge = (
   }: BadgeProps,
   ref?: React.Ref<HTMLElement>
 ) => {
-  const badgeStyle = [
-    'compact-control inline-flex items-center px-2 text-xs leading-none font-semibold whitespace-nowrap',
-  ];
+  const upstream = useUpstreamTheme();
+  const badgeStyle = upstream
+    ? ['px-2 inline-flex text-xs leading-5 font-semibold rounded-full whitespace-nowrap']
+    : [
+        'compact-control inline-flex items-center px-2 text-xs leading-none font-semibold whitespace-nowrap',
+      ];
 
-  badgeStyle.push(
-    shape === 'standard' ? 'app-control-standard-radius' : 'rounded-full'
-  );
+  if (!upstream) {
+    badgeStyle.push(
+      shape === 'standard' ? 'app-control-standard-radius' : 'rounded-full'
+    );
+  }
 
   if (href) {
     badgeStyle.push('transition cursor-pointer !no-underline');
@@ -46,59 +52,94 @@ const Badge = (
     badgeStyle.push('cursor-default');
   }
 
-  switch (badgeType) {
-    case 'danger':
-      badgeStyle.push('bg-red-600/35 border-red-500 border !text-red-100');
-      if (href) {
-        badgeStyle.push('hover:bg-red-500/55 active:bg-red-500/70');
-      }
-      break;
-    case 'warning':
-      badgeStyle.push(
-        'bg-yellow-500/35 border-yellow-500 border !text-yellow-100'
-      );
-      if (href) {
-        badgeStyle.push('hover:bg-yellow-500/55 active:bg-yellow-500/70');
-      }
-      break;
-    case 'success':
-      badgeStyle.push(
-        'bg-green-500/35 border border-green-500 !text-green-100'
-      );
-      if (href) {
-        badgeStyle.push('hover:bg-green-500/55 active:bg-green-500/70');
-      }
-      break;
-    case 'dark':
-      badgeStyle.push('bg-gray-900/35 !text-gray-400');
-      if (href) {
-        badgeStyle.push('hover:bg-gray-800/55 active:bg-gray-800/70');
-      }
-      break;
-    case 'light':
-      badgeStyle.push('bg-gray-700/35 !text-gray-300');
-      if (href) {
-        badgeStyle.push('hover:bg-gray-600/55 active:bg-gray-600/70');
-      }
-      break;
-    case 'association':
-      badgeStyle.push(
-        'border border-cyan-500/90 bg-cyan-950/35 !text-cyan-300'
-      );
-      if (href) {
-        badgeStyle.push('hover:bg-cyan-900/55 active:bg-cyan-900/70');
-      }
-      break;
-    case 'shared':
-      badgeStyle.push('app-badge-shared-availability');
-      break;
-    default:
-      badgeStyle.push(
-        'bg-indigo-500/35 border border-indigo-500 !text-indigo-100'
-      );
-      if (href) {
-        badgeStyle.push('hover:bg-indigo-500/55 active:bg-indigo-500/70');
-      }
+  if (upstream) {
+    switch (badgeType) {
+      case 'danger':
+        badgeStyle.push('bg-red-600/80 border-red-500 border !text-red-100');
+        if (href) badgeStyle.push('hover:bg-red-500');
+        break;
+      case 'warning':
+        badgeStyle.push(
+          'bg-yellow-500/80 border-yellow-500 border !text-yellow-100'
+        );
+        if (href) badgeStyle.push('hover:bg-yellow-500');
+        break;
+      case 'success':
+      case 'shared':
+        badgeStyle.push(
+          'bg-green-500/80 border border-green-500 !text-green-100'
+        );
+        if (href) badgeStyle.push('hover:bg-green-500');
+        break;
+      case 'dark':
+        badgeStyle.push('bg-gray-900 !text-gray-400');
+        if (href) badgeStyle.push('hover:bg-gray-800');
+        break;
+      case 'light':
+        badgeStyle.push('bg-gray-700 !text-gray-300');
+        if (href) badgeStyle.push('hover:bg-gray-600');
+        break;
+      default:
+        badgeStyle.push(
+          'bg-indigo-500/80 border border-indigo-500 !text-indigo-100'
+        );
+        if (href) badgeStyle.push('hover:bg-indigo-500');
+    }
+  } else {
+    switch (badgeType) {
+      case 'danger':
+        badgeStyle.push('bg-red-600/35 border-red-500 border !text-red-100');
+        if (href) {
+          badgeStyle.push('hover:bg-red-500/55 active:bg-red-500/70');
+        }
+        break;
+      case 'warning':
+        badgeStyle.push(
+          'bg-yellow-500/35 border-yellow-500 border !text-yellow-100'
+        );
+        if (href) {
+          badgeStyle.push('hover:bg-yellow-500/55 active:bg-yellow-500/70');
+        }
+        break;
+      case 'success':
+        badgeStyle.push(
+          'bg-green-500/35 border border-green-500 !text-green-100'
+        );
+        if (href) {
+          badgeStyle.push('hover:bg-green-500/55 active:bg-green-500/70');
+        }
+        break;
+      case 'dark':
+        badgeStyle.push('bg-gray-900/35 !text-gray-400');
+        if (href) {
+          badgeStyle.push('hover:bg-gray-800/55 active:bg-gray-800/70');
+        }
+        break;
+      case 'light':
+        badgeStyle.push('bg-gray-700/35 !text-gray-300');
+        if (href) {
+          badgeStyle.push('hover:bg-gray-600/55 active:bg-gray-600/70');
+        }
+        break;
+      case 'association':
+        badgeStyle.push(
+          'border border-cyan-500/90 bg-cyan-950/35 !text-cyan-300'
+        );
+        if (href) {
+          badgeStyle.push('hover:bg-cyan-900/55 active:bg-cyan-900/70');
+        }
+        break;
+      case 'shared':
+        badgeStyle.push('app-badge-shared-availability');
+        break;
+      default:
+        badgeStyle.push(
+          'bg-indigo-500/35 border border-indigo-500 !text-indigo-100'
+        );
+        if (href) {
+          badgeStyle.push('hover:bg-indigo-500/55 active:bg-indigo-500/70');
+        }
+    }
   }
 
   if (className) {
