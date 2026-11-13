@@ -1175,10 +1175,7 @@ const SettingsMain = () => {
                         id="hideRequested"
                         name="hideRequested"
                         onChange={() => {
-                          setFieldValue(
-                            'hideRequested',
-                            !values.hideRequested
-                          );
+                          setFieldValue('hideRequested', !values.hideRequested);
                         }}
                       />
                     </SettingsFormRow>
