@@ -2453,6 +2453,18 @@
   --theme-control-text: 255 255 255;
 }
 :is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .upstream-settings-main-group,
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .upstream-settings-main-content {
+  display: contents;
+}
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .settings-page-form
+  .upstream-settings-main-content
+  > :first-child {
+  margin-top: 0;
+}
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
   .settings-page-content
   .heading,
 :is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
