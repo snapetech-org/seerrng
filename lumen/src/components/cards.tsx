@@ -423,7 +423,9 @@ export function BookCard({ b }: { b: BookResult }) {
           sub={b.author}
           icon={audio ? 'headphones' : 'book'}
         />
-        <Glyph s={s} />
+        {/* unknown is almost always not owned (SeerrNG marks the owned Open Library
+            results), so no corner badge; the request still says "anyway" */}
+        <Glyph s={ownershipUnknown ? null : s} />
         <Link className="hit" to={href} aria-label={b.title} />
         {prefs.hoverRequest && (!s || ownershipUnknown) && straight && (
           <TouchQuick

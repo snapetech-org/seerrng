@@ -266,9 +266,10 @@ test('ebook cards use server-resolved Open Library identity without title guesse
   await expectOwned(page, 'Pride and Prejudice', false);
   await expectOwned(page, 'Wool', false);
   await expectOwned(page, 'Project Hail Mary: Illustrated Edition', false);
+  // unknown is not a state worth a corner badge; the request still says "anyway"
   await expect(
-    poster(page, 'Pride and Prejudice').locator('.glyph.wait')
-  ).toHaveAttribute('title', 'Library status unknown');
+    poster(page, 'Pride and Prejudice').locator('.glyph')
+  ).toHaveCount(0);
   const unknownBook = poster(page, 'Pride and Prejudice');
   if (info.project.name === 'desktop') {
     await unknownBook.hover();
