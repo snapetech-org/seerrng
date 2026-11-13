@@ -167,12 +167,14 @@ const SettingsNotifications = ({ children }: SettingsNotificationsProps) => {
       />
       {upstream ? (
         <>
-          <div className="mb-6">
+          <div className="settings-page-intro">
             <h3 className="heading">
               {intl.formatMessage(messages.notificationsettings)}
             </h3>
             <p className="description">
-              {intl.formatMessage(messages.notificationAgentSettingsDescription)}
+              {intl.formatMessage(
+                messages.notificationAgentSettingsDescription
+              )}
             </p>
           </div>
           <SettingsTabs
@@ -190,10 +192,7 @@ const SettingsNotifications = ({ children }: SettingsNotificationsProps) => {
             {intl.formatMessage(messages.notificationAgentSettingsDescription)}
           </SettingsHelp>
           <div className="mt-2">
-            <SettingsTabs
-              tabType="button"
-              settingsRoutes={settingsRoutes}
-            />
+            <SettingsTabs tabType="button" settingsRoutes={settingsRoutes} />
           </div>
           <div className="settings-group-content mt-2">{children}</div>
         </section>

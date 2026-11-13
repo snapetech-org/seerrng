@@ -5,15 +5,15 @@ import type { SettingsRoute } from '@app/components/Common/SettingsTabs';
 import SettingsTabs from '@app/components/Common/SettingsTabs';
 import ProfileHeader from '@app/components/UserProfile/ProfileHeader';
 import useSettings from '@app/hooks/useSettings';
-import useUpstreamTheme from '@app/hooks/useUpstreamTheme';
 import { getPositiveQueryParamNumber } from '@app/hooks/useUpdateQueryParams';
+import useUpstreamTheme from '@app/hooks/useUpstreamTheme';
 import { useUser } from '@app/hooks/useUser';
 import globalMessages from '@app/i18n/globalMessages';
 import ErrorPage from '@app/pages/_error';
 import defineMessages from '@app/utils/defineMessages';
+import { ChevronDownIcon } from '@heroicons/react/24/outline';
 import type { UserSettingsNotificationsResponse } from '@server/interfaces/api/userSettingsInterfaces';
 import { hasPermission, Permission } from '@server/lib/permissions';
-import { ChevronDownIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useIntl } from 'react-intl';
@@ -215,7 +215,7 @@ const UserSettings = ({ children }: UserSettingsProps) => {
       </div>
       {upstream && extensionSettingsRoutes.length > 0 && (
         <details
-          className="upstream-settings-more mt-2"
+          className="upstream-settings-more"
           open={shouldOpenMoreSettings || undefined}
         >
           <summary>
@@ -239,7 +239,11 @@ const UserSettings = ({ children }: UserSettingsProps) => {
           </div>
         </details>
       )}
-      <div className={upstream ? 'mt-10 text-white' : 'mt-10 text-gray-100'}>
+      <div
+        className={
+          upstream ? 'upstream-settings-content' : 'mt-10 text-gray-100'
+        }
+      >
         {children}
       </div>
     </>

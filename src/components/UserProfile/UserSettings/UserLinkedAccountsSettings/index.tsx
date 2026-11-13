@@ -8,8 +8,8 @@ import PageTitle from '@app/components/Common/PageTitle';
 import DiscoveryAccounts from '@app/components/DiscoveryIntegrations/Accounts';
 import LinkJellyfinQuickConnectModal from '@app/components/UserProfile/UserSettings/UserLinkedAccountsSettings/LinkJellyfinQuickConnectModal';
 import useSettings from '@app/hooks/useSettings';
-import useUpstreamTheme from '@app/hooks/useUpstreamTheme';
 import { getPositiveQueryParamNumber } from '@app/hooks/useUpdateQueryParams';
+import useUpstreamTheme from '@app/hooks/useUpstreamTheme';
 import { Permission, UserType, useUser } from '@app/hooks/useUser';
 import globalMessages from '@app/i18n/globalMessages';
 import defineMessages from '@app/utils/defineMessages';
@@ -319,7 +319,9 @@ const UserLinkedAccountsSettings = () => {
     (account) => account.type !== LinkedAccountType.OpenIdConnect
   );
   const oidcAccounts = accounts.filter(
-    (account): account is Extract<
+    (
+      account
+    ): account is Extract<
       LinkedAccount,
       { type: LinkedAccountType.OpenIdConnect }
     > => account.type === LinkedAccountType.OpenIdConnect
@@ -346,12 +348,12 @@ const UserLinkedAccountsSettings = () => {
           <EmbyLogo />
         ) : acct.type === LinkedAccountType.Jellyfin ? (
           <JellyfinLogo />
-        ) : (
+        ) : acct.type === LinkedAccountType.OpenIdConnect ? (
           <img
             src={acct.provider.logo || '/images/openid.svg'}
             alt={acct.provider.name}
           />
-        )}
+        ) : null}
       </div>
       <div>
         <div className="truncate text-sm font-bold text-gray-300">
@@ -426,7 +428,9 @@ const UserLinkedAccountsSettings = () => {
       {error && <Alert title={error} type="error" />}
       {visibleAccounts.length ? (
         <ul className="space-y-4">
-          {visibleAccounts.map((acct, i) => renderLinkedAccount(acct, `account-${i}`))}
+          {visibleAccounts.map((acct, i) =>
+            renderLinkedAccount(acct, `account-${i}`)
+          )}
         </ul>
       ) : (
         <div className="mt-4 text-center md:py-12">
@@ -450,10 +454,8 @@ const UserLinkedAccountsSettings = () => {
       />
 
       {showMoreIntegrations && (
-        <details className="mt-5">
-          <summary className="cursor-pointer text-sm font-medium text-gray-300">
-            {intl.formatMessage(messages.moreIntegrations)}
-          </summary>
+        <details className="settings-extension-disclosure settings-extension-disclosure-spaced">
+          <summary>{intl.formatMessage(messages.moreIntegrations)}</summary>
           {oidcAccounts.length > 0 && (
             <ul className="mt-4 space-y-4">
               {oidcAccounts.map((account) =>

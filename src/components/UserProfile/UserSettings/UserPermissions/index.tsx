@@ -181,10 +181,12 @@ const UserPermissions = () => {
                 />
                 <details
                   open={!upstream}
-                  className={upstream ? 'mt-3' : undefined}
+                  className={
+                    upstream ? 'settings-extension-disclosure' : undefined
+                  }
                 >
                   {upstream && (
-                    <summary className="cursor-pointer text-sm font-medium text-gray-300">
+                    <summary>
                       {intl.formatMessage(messages.morePermissionOptions)}
                     </summary>
                   )}
@@ -207,7 +209,9 @@ const UserPermissions = () => {
                         }
                       >
                         <option value="default">
-                          {intl.formatMessage(messages.contentRestrictionDefault)}
+                          {intl.formatMessage(
+                            messages.contentRestrictionDefault
+                          )}
                         </option>
                         <option value="on">
                           {intl.formatMessage(messages.contentRestrictionOn)}
@@ -224,7 +228,9 @@ const UserPermissions = () => {
                         {intl.formatMessage(messages.requestServices)}
                       </h4>
                       <p className="settings-form-row-description">
-                        {intl.formatMessage(messages.requestServicesDescription)}
+                        {intl.formatMessage(
+                          messages.requestServicesDescription
+                        )}
                       </p>
                       <div>
                         {requestServiceOptions.map((service) => (

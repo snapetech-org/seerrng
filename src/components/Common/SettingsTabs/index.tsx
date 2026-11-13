@@ -1,5 +1,5 @@
-import { useUser } from '@app/hooks/useUser';
 import useUpstreamTheme from '@app/hooks/useUpstreamTheme';
+import { useUser } from '@app/hooks/useUser';
 import defineMessages from '@app/utils/defineMessages';
 import type { Permission } from '@server/lib/permissions';
 import { hasPermission } from '@server/lib/permissions';
@@ -47,7 +47,7 @@ const SettingsLink = ({
   }
 
   let linkClasses = upstreamTheme
-    ? 'px-1 py-4 ml-8 text-sm font-medium leading-5 transition duration-300 border-b-2 border-transparent whitespace-nowrap first:ml-0'
+    ? 'settings-tab-upstream'
     : 'px-1 py-4 ms-8 text-sm font-medium leading-5 transition duration-300 border-b-2 border-transparent whitespace-nowrap first:ms-0';
   let activeLinkColor = 'text-indigo-500 border-indigo-600';
   let inactiveLinkColor =
@@ -55,14 +55,15 @@ const SettingsLink = ({
 
   if (tabType === 'button') {
     linkClasses = upstreamTheme
-      ? 'px-3 py-2 text-sm font-medium transition duration-300 rounded-md whitespace-nowrap mx-2 my-1'
+      ? 'settings-tab-upstream'
       : 'app-filter-button whitespace-nowrap';
-    activeLinkColor = upstreamTheme
-      ? 'bg-indigo-700'
-      : 'app-filter-button-active';
-    inactiveLinkColor = upstreamTheme
-      ? 'bg-gray-800 hover:bg-gray-700 focus:bg-gray-700'
-      : 'app-filter-button-idle';
+    activeLinkColor = upstreamTheme ? '' : 'app-filter-button-active';
+    inactiveLinkColor = upstreamTheme ? '' : 'app-filter-button-idle';
+  }
+
+  if (upstreamTheme && tabType !== 'filter') {
+    activeLinkColor = '';
+    inactiveLinkColor = '';
   }
 
   if (tabType === 'filter') {
@@ -74,9 +75,12 @@ const SettingsLink = ({
   return (
     <Link
       href={route}
-      className={`${linkClasses} ${
-        currentPath.match(regex) ? activeLinkColor : inactiveLinkColor
-      }`}
+      className={[
+        linkClasses,
+        currentPath.match(regex) ? activeLinkColor : inactiveLinkColor,
+      ]
+        .filter(Boolean)
+        .join(' ')}
       aria-current={currentPath.match(regex) ? 'page' : undefined}
     >
       {children}
@@ -87,10 +91,12 @@ const SettingsLink = ({
 const SettingsTabs = ({
   tabType = 'default',
   settingsRoutes,
+  isRouteVisible,
   compactOnNarrowScreens = false,
 }: {
   tabType?: 'default' | 'button' | 'filter';
   settingsRoutes: SettingsRoute[];
+  isRouteVisible?: (route: SettingsRoute) => boolean;
   compactOnNarrowScreens?: boolean;
 }) => {
   const intl = useIntl();
@@ -100,6 +106,7 @@ const SettingsTabs = ({
   const visibleSettingsRoutes = settingsRoutes.filter(
     (route) =>
       !route.hidden &&
+      (!isRouteVisible || isRouteVisible(route)) &&
       (route.requiredPermission
         ? hasPermission(
             route.requiredPermission,
@@ -161,7 +168,11 @@ const SettingsTabs = ({
               tabType === 'filter'
                 ? 'flex w-full min-w-0 flex-wrap justify-between gap-[5px]'
                 : upstreamTheme
-                  ? '-mx-2 -my-1 flex flex-wrap'
+                  ? `settings-tabs-upstream${
+                      tabType === 'button'
+                        ? 'settings-tabs-upstream-buttons'
+                        : ''
+                    }`
                   : 'flex flex-wrap gap-[5px]'
             }
             aria-label={intl.formatMessage(messages.tabs)}
@@ -187,7 +198,10 @@ const SettingsTabs = ({
             compactOnNarrowScreens ? 'lg:block' : 'sm:block'
           }`}
         >
-          <nav className="flex" data-testid="settings-nav-desktop">
+          <nav
+            className={upstreamTheme ? 'settings-tabs-upstream' : 'flex'}
+            data-testid="settings-nav-desktop"
+          >
             {visibleSettingsRoutes.map((route, index) => (
               <SettingsLink
                 tabType={tabType}

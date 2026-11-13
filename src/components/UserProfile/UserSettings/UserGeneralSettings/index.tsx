@@ -15,8 +15,8 @@ import { availableLanguages } from '@app/context/LanguageContext';
 import useLocale from '@app/hooks/useLocale';
 import useSettings from '@app/hooks/useSettings';
 import useToasts from '@app/hooks/useToasts';
-import useUpstreamTheme from '@app/hooks/useUpstreamTheme';
 import { getPositiveQueryParamNumber } from '@app/hooks/useUpdateQueryParams';
+import useUpstreamTheme from '@app/hooks/useUpstreamTheme';
 import { Permission, UserType, useUser } from '@app/hooks/useUser';
 import globalMessages from '@app/i18n/globalMessages';
 import ErrorPage from '@app/pages/_error';
@@ -684,10 +684,12 @@ const UserGeneralSettings = () => {
               </div>
               <details
                 open={!upstream}
-                className={upstream ? 'mt-3' : undefined}
+                className={
+                  upstream ? 'settings-extension-disclosure' : undefined
+                }
               >
                 {upstream && (
-                  <summary className="cursor-pointer text-sm font-medium text-gray-300">
+                  <summary>
                     {intl.formatMessage(messages.moreLanguagePreferences)}
                   </summary>
                 )}
@@ -875,10 +877,12 @@ const UserGeneralSettings = () => {
               </div>
               <details
                 open={!upstream}
-                className={upstream ? 'mt-3' : undefined}
+                className={
+                  upstream ? 'settings-extension-disclosure' : undefined
+                }
               >
                 {upstream && (
-                  <summary className="cursor-pointer text-sm font-medium text-gray-300">
+                  <summary>
                     {intl.formatMessage(messages.moreStreamingOptions)}
                   </summary>
                 )}
@@ -1009,10 +1013,12 @@ const UserGeneralSettings = () => {
                     </div>
                     <details
                       open={!upstream}
-                      className={upstream ? 'mt-3' : undefined}
+                      className={
+                        upstream ? 'settings-extension-disclosure' : undefined
+                      }
                     >
                       {upstream && (
-                        <summary className="cursor-pointer text-sm font-medium text-gray-300">
+                        <summary>
                           {intl.formatMessage(messages.moreRequestLimits)}
                         </summary>
                       )}
@@ -1333,13 +1339,13 @@ const UserGeneralSettings = () => {
                 )}
               <details
                 open={!upstream}
-                className={upstream ? 'mt-3' : undefined}
+                className={
+                  upstream ? 'settings-extension-disclosure' : undefined
+                }
               >
                 {upstream && (
-                  <summary className="cursor-pointer text-sm font-medium text-gray-300">
-                    {intl.formatMessage(
-                      messages.moreRequestAndDisplayOptions
-                    )}
+                  <summary>
+                    {intl.formatMessage(messages.moreRequestAndDisplayOptions)}
                   </summary>
                 )}
                 {hasPermission(
@@ -1467,8 +1473,13 @@ const UserGeneralSettings = () => {
                   </div>
                 )}
                 <div className="form-row">
-                  <label htmlFor="cardTextVisibilityMovie" className="text-label">
-                    <span>{intl.formatMessage(messages.cardTextVisibility)}</span>
+                  <label
+                    htmlFor="cardTextVisibilityMovie"
+                    className="text-label"
+                  >
+                    <span>
+                      {intl.formatMessage(messages.cardTextVisibility)}
+                    </span>
                     <span className="label-tip">
                       {intl.formatMessage(messages.cardTextVisibilityTip)}
                     </span>
@@ -1477,9 +1488,15 @@ const UserGeneralSettings = () => {
                     <div className="grid max-w-2xl gap-3 sm:grid-cols-2">
                       {(
                         [
-                          ['cardTextVisibilityMovie', 'cardTextVisibilityMovie'],
+                          [
+                            'cardTextVisibilityMovie',
+                            'cardTextVisibilityMovie',
+                          ],
                           ['cardTextVisibilityTv', 'cardTextVisibilityTv'],
-                          ['cardTextVisibilityAlbum', 'cardTextVisibilityAlbum'],
+                          [
+                            'cardTextVisibilityAlbum',
+                            'cardTextVisibilityAlbum',
+                          ],
                           ['cardTextVisibilityBook', 'cardTextVisibilityBook'],
                         ] as const
                       ).map(([fieldName, messageKey]) => (
@@ -1554,7 +1571,9 @@ const UserGeneralSettings = () => {
                           );
                         }}
                       >
-                        {intl.formatMessage(messages.mediaCategoriesUseDefaults)}
+                        {intl.formatMessage(
+                          messages.mediaCategoriesUseDefaults
+                        )}
                       </button>
                     </div>
                   )}
@@ -1661,12 +1680,14 @@ const UserGeneralSettings = () => {
       {user?.id === currentUser?.id && (
         <details
           open={!upstream}
-          className={upstream ? 'mt-5' : undefined}
+          className={
+            upstream
+              ? 'settings-extension-disclosure settings-extension-disclosure-spaced'
+              : undefined
+          }
         >
           {upstream && (
-            <summary className="cursor-pointer text-sm font-medium text-gray-300">
-              {intl.formatMessage(messages.moreIntegrations)}
-            </summary>
+            <summary>{intl.formatMessage(messages.moreIntegrations)}</summary>
           )}
           <ExternalRequestLists />
           <BookHomeSections />

@@ -663,7 +663,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/Discover/DiscoverWatchlist/index.tsx",
-          "line": 47,
+          "line": 51,
           "defaultMessage": "'Comics'"
         }
       ],
@@ -2706,7 +2706,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/Discover/DiscoverWatchlist/index.tsx",
-          "line": 44,
+          "line": 48,
           "defaultMessage": "'Series'"
         }
       ],
@@ -3146,7 +3146,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/UserProfile/UserSettings/index.tsx",
-          "line": 20,
+          "line": 23,
           "defaultMessage": "'General'"
         }
       ],
@@ -4634,7 +4634,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/Settings/SettingsNotifications.tsx",
-          "line": 18,
+          "line": 19,
           "defaultMessage": "'Notifications'"
         }
       ],
@@ -4974,7 +4974,7 @@
       "sourceCallsites": [
         {
           "path": "src/components/UserProfile/UserSettings/index.tsx",
-          "line": 23,
+          "line": 26,
           "defaultMessage": "'Notifications'"
         }
       ],

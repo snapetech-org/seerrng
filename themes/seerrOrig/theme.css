@@ -2474,7 +2474,10 @@
   > .section,
 :is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
   .settings-page-content
-  > .mb-6 {
+  > .mb-6,
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .settings-page-content
+  > .settings-page-intro {
   --inset-card-padding: 0px;
   padding: 0;
   border: 0;
@@ -2738,6 +2741,123 @@
 :is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
   .settings-page-navigation-row {
   margin-top: 24px;
+}
+
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .settings-page-intro {
+  margin-top: 0;
+  margin-bottom: 0;
+  padding: 0;
+}
+
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .settings-tabs-upstream {
+  display: flex;
+  flex-wrap: wrap;
+  margin: -4px -8px;
+}
+
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .settings-tabs-upstream
+  .settings-tab-upstream {
+  display: block;
+  min-height: 48px;
+  padding: 16px 4px;
+  border-bottom: 2px solid transparent;
+  border-radius: 0;
+  margin-left: 32px;
+  color: #6b7280;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+  text-decoration: none;
+  transition:
+    color 300ms ease,
+    border-color 300ms ease;
+  white-space: nowrap;
+}
+
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .settings-tabs-upstream
+  .settings-tab-upstream:first-child {
+  margin-left: 0;
+}
+
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .settings-tabs-upstream:not(.settings-tabs-upstream-buttons)
+  .settings-tab-upstream:hover,
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .settings-tabs-upstream:not(.settings-tabs-upstream-buttons)
+  .settings-tab-upstream:focus-visible {
+  border-bottom-color: #9ca3af;
+  color: #d1d5db;
+}
+
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .settings-tabs-upstream:not(.settings-tabs-upstream-buttons)
+  .settings-tab-upstream[aria-current='page'] {
+  border-bottom-color: #4f46e5;
+  color: #6366f1;
+}
+
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .settings-tabs-upstream-buttons
+  .settings-tab-upstream {
+  min-height: 40px;
+  padding: 8px 12px;
+  border: 0;
+  border-radius: 6px;
+  margin: 4px 8px;
+  background: #1f2937;
+  color: inherit;
+  transition: background-color 300ms ease;
+}
+
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .settings-tabs-upstream-buttons
+  .settings-tab-upstream:hover,
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .settings-tabs-upstream-buttons
+  .settings-tab-upstream:focus-visible {
+  background: #374151;
+}
+
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .settings-tabs-upstream-buttons
+  .settings-tab-upstream[aria-current='page'] {
+  background: #4338ca;
+}
+
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .settings-extension-disclosure {
+  margin-top: 12px;
+  color: #d1d5db;
+}
+
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .settings-extension-disclosure-spaced {
+  margin-top: 20px;
+}
+
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .settings-extension-disclosure
+  > summary {
+  color: #d1d5db;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :is(
+      :root[data-interface-theme='seerrOrig'],
+      [data-interface-theme='seerrOrig']
+    )
+    .settings-tabs-upstream
+    .settings-tab-upstream {
+    transition: none;
+  }
 }
 
 :is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])

@@ -36,6 +36,9 @@ permissions to simplify a page.
 - Settings, search, requests, people, and issues use upstream page hierarchy
   and primary controls. Fork-only settings and filters remain available through
   their extension areas.
+- Settings route tabs and fork-only disclosures use shared semantic component
+  roles. The SeerrOrig theme package owns their navigation geometry and
+  disclosure presentation; page components retain route and permission checks.
 - Movie and TV issue routes use the upstream issue card and detail presentation.
   Additional issue media types keep their existing fork detail flow.
 - User profiles use the upstream quota summary and media-slider hierarchy.
@@ -145,6 +148,15 @@ media limits, watchlist integrations, display options, and account integrations
 remain reachable in collapsed extension sections under SeerrOrig.
 The linked-accounts page keeps upstream media-server account cards and the primary link menu; OIDC and discovery-provider integrations move into a collapsed extension area.
 
+The November 13 settings work also changes SeerrOrig's route tabs and
+collapsible fork-only settings on notification, general profile, permission,
+and linked-account pages. No matched rendered reference, fixture data, state,
+or candidate comparison has been recorded for `/settings/notifications/email`,
+`/profile/settings/main`, `/profile/settings/permissions`, or
+`/profile/settings/linked-accounts` at phone or desktop widths. These routes
+remain visually unverified; source review and the earlier exploratory captures
+do not qualify them.
+
 Common buttons, badges, alerts, page headers, and dialogs now switch to
 upstream's shared-control presentation when SeerrOrig is selected. SeerrNG's
 own variants and behavior remain active in its native theme.
@@ -176,9 +188,9 @@ while retaining the expanded SeerrNG onboarding path.
 
 ## Visual review status
 
-The review workspace has a running production-mode candidate server and
-installed frontend dependencies. The earlier note that no server or browser
-captures were available is stale.
+The review workspace has a production-mode candidate server and installed
+frontend dependencies. Existing candidate captures cover only `/movie/550` and
+`/discover/movies`; they do not validate the later settings-route changes.
 
 An earlier candidate render at 390 × 844 CSS pixels captured `/movie/550` and
 `/discover/movies`; the SeerrOrig theme was selected. Captures are retained at
