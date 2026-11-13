@@ -55,6 +55,10 @@ permissions to simplify a page.
   styling and behavior.
 - The shared Header keeps its native page-title markup; the SeerrOrig theme package owns upstream title styling and responsive spacing.
 - The SeerrNG-only release calendar reuses SeerrOrig's upstream Header, alert, badge, control, and card presentation while retaining its cross-media release data.
+- Fork-only library, download inbox, game/software catalog, swipe, adult-detail,
+  and Sportarr pages use the same compact page gutters, control sizing, slate
+  surfaces, and restrained card geometry in SeerrOrig. Their fork-specific
+  data and actions stay intact.
 - SeerrNG logos and brand assets remain in use throughout SeerrOrig.
 - The color-palette picker is available in SeerrOrig, SeerrNGJ, and PersiusNG.
   Non-default palettes recolor each package's existing surface and accent roles
@@ -201,6 +205,13 @@ upstream's original-resolution backdrops and gradient without the fork-only
 title caption. SeerrNG logos, transport-security messaging, and additional
 sign-in options remain. Setup keeps its upstream backdrop and stepper framing
 while retaining the expanded SeerrNG onboarding path.
+
+The November 13 extension-page pass aligns SeerrOrig's library, download inbox,
+calendar, game/software catalogs, swipe deck, adult details, and Sportarr event
+cards to upstream's page spacing, flat slate surfaces, button dimensions, and
+compact corner radii. It keeps SeerrNG's extension data and workflows. These
+routes still need matched rendered review before their visual acceptance can
+be marked complete.
 
 ## Visual review status
 

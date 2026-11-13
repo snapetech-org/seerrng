@@ -103,13 +103,13 @@ export default function CalendarPage() {
     setLimit(25);
   };
   return (
-    <div className="text-gray-100">
+    <div className="text-gray-100 upstream-extension-page upstream-calendar-page">
       <PageTitle title={intl.formatMessage(messages.title)} />
       <Header>{intl.formatMessage(messages.title)}</Header>
       <p className="description mb-6">
         {intl.formatMessage(messages.description)}
       </p>
-      <div className="mb-6 flex flex-wrap items-end gap-4">
+      <div className="upstream-extension-toolbar mb-6 flex flex-wrap items-end gap-4">
         <label htmlFor="calendar-month">
           {intl.formatMessage(messages.month)}
           <input

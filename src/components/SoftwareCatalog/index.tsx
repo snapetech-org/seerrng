@@ -601,7 +601,13 @@ const SoftwareCatalog = ({
   return (
     <>
       {!embedded && <PageTitle title={intl.formatMessage(messages.title)} />}
-      <main className="mb-10">
+      <main
+        className={
+          embedded
+            ? 'mb-10'
+            : 'upstream-extension-page upstream-software-page mb-10'
+        }
+      >
         {!embedded && (
           <Header subtext={intl.formatMessage(messages.intro)}>
             {intl.formatMessage(messages.title)}
@@ -750,7 +756,7 @@ const SoftwareCatalog = ({
         {requestSuccess && (
           <div
             role="status"
-            className="mt-4 rounded-md border border-green-700 bg-green-900/30 px-4 py-3 text-sm text-green-200"
+            className="software-catalog-state-panel mt-4 rounded-md border border-green-700 bg-green-900/30 px-4 py-3 text-sm text-green-200"
           >
             {requestSuccess}
           </div>
@@ -785,7 +791,7 @@ const SoftwareCatalog = ({
             <LoadingSpinner />
           </div>
         ) : error && !games.length ? (
-          <div className="mt-5 rounded-lg border border-gray-700 bg-gray-800 px-5 py-6 text-sm text-gray-300">
+          <div className="software-catalog-state-panel mt-5 rounded-lg border border-gray-700 bg-gray-800 px-5 py-6 text-sm text-gray-300">
             <p>{intl.formatMessage(catalogErrorMessage)}</p>
             {(catalogErrorMessage === messages.loadError ||
               catalogErrorMessage === messages.datUnavailable) && (
@@ -808,7 +814,7 @@ const SoftwareCatalog = ({
             <ul className="mt-4 grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
               {games.map((game) => (
                 <li key={game.id}>
-                  <article className="group h-full overflow-hidden rounded-lg border border-gray-700 bg-gray-800 shadow transition hover:border-gray-500 hover:shadow-lg">
+                  <article className="software-catalog-item group h-full overflow-hidden rounded-lg border border-gray-700 bg-gray-800 shadow transition hover:border-gray-500 hover:shadow-lg">
                     <div className="relative aspect-[2/3] overflow-hidden bg-gray-900">
                       {availabilityLabel(game) && (
                         <span className="absolute start-2 top-2 z-10 rounded bg-gray-950/85 px-2 py-1 text-xs font-semibold text-white">
@@ -900,7 +906,7 @@ const SoftwareCatalog = ({
             </ul>
           </>
         ) : !hasMore ? (
-          <div className="mt-5 rounded-lg border border-gray-700 bg-gray-800 px-5 py-8 text-center text-sm text-gray-300">
+          <div className="software-catalog-state-panel mt-5 rounded-lg border border-gray-700 bg-gray-800 px-5 py-8 text-center text-sm text-gray-300">
             {intl.formatMessage(messages.noResults)}
           </div>
         ) : null}

@@ -147,7 +147,7 @@ const AdultDetails = () => {
 
   if (!data) {
     return (
-      <div className="media-page grid animate-pulse grid-cols-1 gap-6 lg:grid-cols-[minmax(0,1fr)_18rem]">
+      <div className="media-page adult-detail-page grid animate-pulse grid-cols-1 gap-6 lg:grid-cols-[minmax(0,1fr)_18rem]">
         <section className="space-y-5">
           <div className="h-5 w-36 rounded bg-gray-800" />
           <div className="h-10 w-3/4 rounded bg-gray-800" />
@@ -167,12 +167,12 @@ const AdultDetails = () => {
   return (
     <>
       <PageTitle title={data.title} />
-      <div className="media-page space-y-5">
+      <div className="media-page adult-detail-page space-y-5">
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,1fr)_18rem] lg:items-start">
           <section className="order-2 space-y-5 lg:order-1">
             <Link
               href={returnHref}
-              className="inline-flex min-h-10 items-center gap-2 rounded-md text-sm font-medium text-indigo-200 transition hover:text-white focus-visible:ring-2 focus-visible:ring-indigo-400 focus-visible:ring-offset-2 focus-visible:ring-offset-gray-950"
+              className="adult-detail-back-link inline-flex min-h-10 items-center gap-2 rounded-md text-sm font-medium text-indigo-200 transition hover:text-white focus-visible:ring-2 focus-visible:ring-indigo-400 focus-visible:ring-offset-2 focus-visible:ring-offset-gray-950"
             >
               <ArrowLeftIcon aria-hidden="true" className="h-4 w-4" />
               {intl.formatMessage(
@@ -185,11 +185,11 @@ const AdultDetails = () => {
               <div className="flex flex-wrap items-center gap-3">
                 <MediaTypeBadge mediaType="adult" variant="compact" />
                 {data.year && (
-                  <span className="rounded-full border border-gray-700 bg-gray-900/70 px-3 py-1 text-sm text-gray-300">
+                  <span className="adult-detail-meta-chip rounded-full border border-gray-700 bg-gray-900/70 px-3 py-1 text-sm text-gray-300">
                     {intl.formatMessage(messages.year)}: {data.year}
                   </span>
                 )}
-                <span className="rounded-full border border-gray-700 bg-gray-900/70 px-3 py-1 text-sm text-gray-300">
+                <span className="adult-detail-meta-chip rounded-full border border-gray-700 bg-gray-900/70 px-3 py-1 text-sm text-gray-300">
                   {intl.formatMessage(messages.server)}: {data.serviceName}
                 </span>
               </div>
@@ -243,7 +243,7 @@ const AdultDetails = () => {
                             serverId: returnServerId,
                           },
                         }}
-                        className="rounded-full border border-gray-700 bg-gray-900/70 px-3 py-1 text-sm text-gray-200 transition hover:border-indigo-400 hover:text-white"
+                        className="adult-detail-performer-link rounded-full border border-gray-700 bg-gray-900/70 px-3 py-1 text-sm text-gray-200 transition hover:border-indigo-400 hover:text-white"
                         aria-label={intl.formatMessage(
                           messages.searchPerformer,
                           { performer }
@@ -289,7 +289,7 @@ const AdultDetails = () => {
             )}
           </section>
 
-          <div className="order-1 mx-auto w-full max-w-xs overflow-hidden rounded-xl border border-gray-700 bg-gray-900 shadow-xl lg:order-2 lg:max-w-none">
+          <div className="adult-detail-poster order-1 mx-auto w-full max-w-xs overflow-hidden rounded-xl border border-gray-700 bg-gray-900 shadow-xl lg:order-2 lg:max-w-none">
             <div className="relative aspect-[2/3]">
               <CachedImage
                 src={data.posterPath ?? '/images/seerr_poster_not_found.png'}
