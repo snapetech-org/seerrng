@@ -2834,3 +2834,186 @@ describe('negotiated catalog identity aliases', () => {
       ]);
     });
 });
+
+describe('Chaptarr pending local work recovery', () => {
+  afterEach(() => mock.restoreAll());
+
+  const prepare = (
+    overrides: Record<string, unknown> = {},
+    ambiguous = false,
+    language = 'eng'
+  ) => {
+    const api = new ReadarrAPI({
+      url: 'http://localhost:8787/api/v1',
+      apiKey: 'key',
+      mediaType: 'audiobook',
+    });
+    const provider = api as unknown as {
+      detectedSystemStatus?: { appName: string };
+      ensureProvider: () => Promise<void>;
+    };
+    mock.method(provider, 'ensureProvider', async () => {
+      provider.detectedSystemStatus = { appName: 'Chaptarr' };
+    });
+    const get = mock.method(
+      api as unknown as MockableReadarr,
+      'get',
+      async (endpoint: string) => {
+        if (endpoint === '/library/search')
+          return {
+            books: [
+              {
+                title: 'Wool',
+                authorName: 'Hugh Howey',
+                localAudiobookBooks: [
+                  {
+                    id: 46503,
+                    title: 'Wool Omnibus Edition (Wool 1 - 5)',
+                    mediaType: 'audiobook',
+                    monitored: true,
+                  },
+                  {
+                    id: 46354,
+                    title: 'Wool',
+                    mediaType: 'audiobook',
+                    monitored: false,
+                  },
+                  ...(ambiguous
+                    ? [
+                        {
+                          id: 46504,
+                          title: 'Wool',
+                          mediaType: 'audiobook',
+                          monitored: true,
+                        },
+                      ]
+                    : []),
+                ],
+              },
+            ],
+          };
+        if (endpoint === '/edition')
+          return [
+            {
+              foreignEditionId: 'hc:333',
+              isbn13: '9780306406157',
+              language,
+              title: 'Wool',
+              monitored: true,
+            },
+          ];
+        if (endpoint.startsWith('/book/'))
+          return {
+            id: Number(endpoint.split('/').pop()),
+            title: 'Wool Omnibus Edition (Wool 1 - 5)',
+            mediaType: 'audiobook',
+            monitored: true,
+            foreignBookId: 'hc:260468',
+            goodreadsWorkId: 'gr:18979356',
+            foreignEditionId: 'hc:333',
+            author: { authorName: 'Hugh Howey' },
+            ...overrides,
+          };
+        throw new Error(`Unexpected remote lookup: ${endpoint}`);
+      }
+    );
+    return { api, get };
+  };
+
+  it('recovers a unique monitored legacy GR work using native identities without remote metadata', async () => {
+    const { api, get } = prepare();
+    const result = await api.findLocalBookByTitle({
+      title: 'Wool',
+      authorName: 'Hugh Howey',
+      providerBookId: '18979356',
+    });
+    assert.equal(result?.id, 46503);
+    assert.equal(result?.foreignBookId, 'hc:260468');
+    assert.deepEqual(
+      get.mock.calls.map((x) => x.arguments[0]),
+      ['/library/search', '/book/46503']
+    );
+  });
+
+  for (const [name, overrides, options] of [
+    [
+      'different work',
+      { foreignBookId: 'hc:999', goodreadsWorkId: 'gr:999' },
+      {},
+    ],
+    ['different format', { mediaType: 'ebook' }, {}],
+    ['no longer monitored', { monitored: false }, {}],
+    ['different author', { author: { authorName: 'Another Author' } }, {}],
+    [
+      'different explicitly namespaced provider',
+      {},
+      { providerBookId: 'hc:18979356' },
+    ],
+    ['different selected edition', {}, { editionId: 'hc:444' }],
+    ['different selected ISBN', {}, { isbn: '9780140328721' }],
+  ] as const) {
+    it(`refuses a ${name}`, async () => {
+      const { api } = prepare(overrides);
+      assert.equal(
+        await api.findLocalBookByTitle({
+          title: 'Wool',
+          authorName: 'Hugh Howey',
+          providerBookId: '18979356',
+          ...options,
+        }),
+        undefined
+      );
+    });
+  }
+
+  it('refuses multiple monitored records for the same work', async () => {
+    const { api } = prepare({}, true);
+    assert.equal(
+      await api.findLocalBookByTitle({
+        title: 'Wool',
+        authorName: 'Hugh Howey',
+        providerBookId: '18979356',
+      }),
+      undefined
+    );
+  });
+
+  it('does not recover a bare provider ID without a saved author', async () => {
+    const { api, get } = prepare();
+    assert.equal(
+      await api.findLocalBookByTitle({
+        title: 'Wool',
+        providerBookId: '18979356',
+      }),
+      undefined
+    );
+    assert.equal(get.mock.calls.length, 0);
+  });
+  it('requires a selected recording when language policy restricts recovery', async () => {
+    const { api, get } = prepare();
+    assert.equal(
+      await api.findLocalBookByTitle({
+        title: 'Wool',
+        authorName: 'Hugh Howey',
+        providerBookId: '18979356',
+        allowedLanguages: ['eng'],
+      }),
+      undefined
+    );
+    assert.equal(get.mock.calls.length, 0);
+  });
+
+  for (const language of ['eng', 'fra', '']) {
+    it(`verifies the current selected edition language ${language || 'unknown'}`, async () => {
+      const { api } = prepare({}, false, language);
+      const found = await api.findLocalBookByTitle({
+        title: 'Wool',
+        authorName: 'Hugh Howey',
+        providerBookId: '18979356',
+        editionId: 'hc:333',
+        allowedLanguages: ['eng'],
+      });
+      assert.equal(found?.id, language === 'eng' ? 46503 : undefined);
+    });
+  }
+});

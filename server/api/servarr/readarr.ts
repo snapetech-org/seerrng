@@ -1,3 +1,4 @@
+import { bookLanguageAllowed } from '@server/lib/bookLanguagePolicy';
 import {
   getBookLookupBudget,
   withBookLookupBudget,
@@ -2374,10 +2375,20 @@ class ReadarrAPI extends ServarrBase<ReadarrQueueItem> {
     openLibraryWorkId?: string;
     isbn?: string;
     editionId?: string;
+    /** Pending recovery: require an already monitored, explicitly matching work. */
+    providerBookId?: string;
+    allowedLanguages?: string[];
   }): Promise<ReadarrBook | undefined> {
     const title = options.title.trim().slice(0, 256);
     const normalizedTitle = normalizeLocalBookSearchText(title);
     if (!title || normalizedTitle.length < 2) return undefined;
+    if (options.providerBookId && !options.authorName?.trim()) return undefined;
+    if (
+      options.providerBookId &&
+      options.allowedLanguages?.length &&
+      !options.editionId
+    )
+      return undefined;
 
     return withBookLookupBudget(async () => {
       try {
@@ -2432,12 +2443,13 @@ class ReadarrAPI extends ServarrBase<ReadarrQueueItem> {
             if (!isRecord(instance)) continue;
             const id = Number(instance.id);
             const instanceTitle =
-              typeof instance.title === 'string'
-                ? instance.title
-                : entry.title;
+              typeof instance.title === 'string' ? instance.title : entry.title;
             if (
               instance.mediaType !== this.mediaType ||
-              normalizeLocalBookSearchText(instanceTitle) !== normalizedTitle ||
+              (options.providerBookId
+                ? instance.monitored !== true
+                : normalizeLocalBookSearchText(instanceTitle) !==
+                  normalizedTitle) ||
               !Number.isSafeInteger(id) ||
               id <= 0
             ) {
@@ -2471,14 +2483,71 @@ class ReadarrAPI extends ServarrBase<ReadarrQueueItem> {
 
         for (const [id, indexedAuthor] of candidateIds) {
           try {
-            const book = await this.getBook(id);
+            const book = options.providerBookId
+              ? await this.get<ReadarrBook & { goodreadsWorkId?: string }>(
+                  `/book/${id}`,
+                  { ...this.getRequestConfig(), baseURL: this.nativeApiUrl },
+                  0
+                )
+              : await this.getBook(id);
             if (
               book.id !== id ||
               (book.mediaType && book.mediaType !== this.mediaType) ||
-              normalizeLocalBookSearchText(book.title) !== normalizedTitle ||
-              !ReadarrAPI.hasAddressableLookupIdentity(book)
+              (!options.providerBookId &&
+                normalizeLocalBookSearchText(book.title) !== normalizedTitle) ||
+              (!options.providerBookId &&
+                !ReadarrAPI.hasAddressableLookupIdentity(book))
             ) {
               continue;
+            }
+
+            if (options.providerBookId) {
+              // Native responses retain explicit provider namespaces even when
+              // the selected compatibility facade has switched from GR to HC.
+              // A legacy bare ID may match an explicit native identity only
+              // after the index verified this request's title and author.
+              const explicitIdentity = (value: unknown): string | undefined => {
+                if (typeof value !== 'string') return undefined;
+                const match = /^(hc|hardcover|gr|goodreads):(\d+)$/i.exec(
+                  value.trim()
+                );
+                if (!match) return undefined;
+                return `${/^(hc|hardcover)$/i.test(match[1]) ? 'hc' : 'gr'}:${match[2]}`;
+              };
+              const expected = explicitIdentity(options.providerBookId);
+              const legacy = /^\d+$/.test(options.providerBookId.trim())
+                ? options.providerBookId.trim()
+                : undefined;
+              const identities = [
+                book.foreignBookId,
+                (book as ReadarrBook & { goodreadsWorkId?: string })
+                  .goodreadsWorkId,
+              ]
+                .map(explicitIdentity)
+                .filter((value): value is string => !!value);
+              if (
+                book.monitored !== true ||
+                book.mediaType !== this.mediaType ||
+                !explicitIdentity(book.foreignBookId) ||
+                !identities.some((value) =>
+                  expected
+                    ? value === expected
+                    : legacy && value.split(':')[1] === legacy
+                ) ||
+                (options.editionId &&
+                  !sameEditionId(book.foreignEditionId, options.editionId))
+              )
+                continue;
+              if (options.isbn || options.editionId) {
+                book.editions = await this.get<ReadarrEdition[]>(
+                  '/edition',
+                  {
+                    ...this.getRequestConfig({ bookId: id }),
+                    baseURL: this.nativeApiUrl,
+                  },
+                  0
+                );
+              }
             }
 
             const bookAuthor = book.author?.authorName?.trim();
@@ -2516,6 +2585,19 @@ class ReadarrAPI extends ServarrBase<ReadarrQueueItem> {
               )
             ) {
               continue;
+            }
+
+            if (options.providerBookId && options.allowedLanguages?.length) {
+              const selected = book.editions?.find((edition) =>
+                sameEditionId(edition.foreignEditionId, options.editionId)
+              );
+              if (
+                !bookLanguageAllowed(
+                  [selected?.language],
+                  options.allowedLanguages
+                )
+              )
+                continue;
             }
 
             matches.push(book);
