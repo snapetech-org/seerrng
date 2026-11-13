@@ -551,6 +551,61 @@ describe('POST /request with Episode Queue', () => {
       0
     );
   });
+
+  it('lets a user manager set the queue for one TV request without changing the account default', async (t) => {
+    const userRepository = getRepository(User);
+    const actor = await userRepository.findOneByOrFail({
+      email: 'friend@seerr.dev',
+    });
+    const originalPermissions = actor.permissions;
+    const previousUserSettings = actor.settings;
+    const accountSettings =
+      previousUserSettings ?? new UserSettings({ user: actor });
+    await getRepository(UserSettings).save(accountSettings);
+    await userRepository.update(actor.id, {
+      permissions: Permission.MANAGE_USERS | Permission.REQUEST,
+    });
+
+    const settings = getSettings();
+    const previousSonarr = settings.sonarr;
+    settings.sonarr = [createSonarrSettings(10)];
+    t.after(async () => {
+      await userRepository.update(actor.id, {
+        permissions: originalPermissions,
+      });
+      if (!previousUserSettings) {
+        await getRepository(UserSettings).delete({ id: accountSettings.id });
+      }
+      settings.sonarr = previousSonarr;
+    });
+
+    const defaultEpisodeCount = accountSettings.episodeQueueDefaultEpisodeCount;
+    const manager = await loginAs('friend@seerr.dev', 'test1234');
+    const response = await manager.post('/request').send({
+      mediaType: MediaType.TV,
+      mediaId: 765_438,
+      tvdbId: 123_456,
+      seasonRequests: [{ seasonNumber: 1, episodeNumbers: [1] }],
+      watchAheadEpisodeCount: 3,
+    });
+
+    assert.strictEqual(response.status, 201, response.body.message);
+    const saved = await getRepository(MediaRequest).findOneOrFail({
+      where: { id: response.body.id },
+      relations: { requestedBy: true },
+    });
+    assert.strictEqual(saved.watchAheadEpisodeCount, 3);
+    assert.strictEqual(saved.watchAheadUsesUserDefault, false);
+    assert.strictEqual(saved.requestedBy.id, actor.id);
+    assert.strictEqual(
+      (
+        await getRepository(UserSettings).findOneByOrFail({
+          id: accountSettings.id,
+        })
+      ).episodeQueueDefaultEpisodeCount,
+      defaultEpisodeCount
+    );
+  });
 });
 
 describe('GET /request/count', () => {
