@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { MediaStatus, type TitleResult } from '../api';
 import { GridSkeleton, MoreOnScroll, TitleCard } from '../components/cards';
+import { GenrePicker } from '../components/GenrePicker';
 import { useAsksRequestOptions } from '../components/requestSheet';
 import { Avatar } from '../components/Shell';
 import { CAN_HOVER, useApi, usePaged } from '../hooks';
@@ -22,7 +23,7 @@ const SORTS = {
   ],
 } as const;
 
-// Movies and Series share one page: availability switch, sort, genre chips, grid
+// Movies and Series share one page: availability switch, sort, genres, grid
 export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
   const [p, setP] = useSearchParams();
   const { prefs } = usePrefs();
@@ -144,47 +145,19 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
             ))}
           </select>
         </label>
-        {picked.length > 1 && (
-          <div className="seg" role="group" aria-label="Genres to match">
-            <button aria-pressed={!matchAll} onClick={() => setMatch(false)}>
-              Match any
-            </button>
-            <button aria-pressed={matchAll} onClick={() => setMatch(true)}>
-              Match all
-            </button>
-          </div>
-        )}
-        <div className="chips genre-chips">
-          <button
-            className="chip"
-            aria-pressed={!picked.length}
-            onClick={() => {
-              const n = new URLSearchParams(p);
-              n.delete('genre');
-              n.delete('match');
-              setP(n, { replace: true });
-            }}
-          >
-            All genres
-          </button>
-          {genres.map((g) => {
-            const on = picked.includes(String(g.id));
-            const next = on
-              ? picked.filter((x) => x !== String(g.id))
-              : picked.concat(String(g.id));
-            return (
-              <button
-                key={g.id}
-                className="chip"
-                aria-pressed={on}
-                onClick={() => upd('genre', next.join(','))}
-              >
-                {on && <Icon name="check" size="sm" />}
-                {g.name}
-              </button>
-            );
-          })}
-        </div>
+        <GenrePicker
+          options={genres.map((g) => ({ value: String(g.id), label: g.name }))}
+          picked={picked}
+          onChange={(next) => {
+            const n = new URLSearchParams(p);
+            if (next.length) n.set('genre', next.join(','));
+            else n.delete('genre');
+            // All genres starts over: the match switch goes back to any
+            if (!next.length) n.delete('match');
+            setP(n, { replace: true });
+          }}
+          match={{ all: matchAll, set: setMatch }}
+        />
       </div>
       {list.error && !items.length && (
         <div className="empty">

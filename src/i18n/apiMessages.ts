@@ -38,6 +38,7 @@ export const apiMessages: Record<
   m02dfb04fc6525fda5c08: 'This list is already connected.',
   m02dfc7136440ef5e87b3: 'No default Lidarr server configured.',
   m031e117ad2dfbdc8d858: 'Unable to retrieve watch provider regions.',
+  m0322b2f7d706d0730822: 'Subject can list at most {value0} genres.',
   m032537ac6e8460967060:
     'Seerr cannot safely remove an untracked empty Bookshelf entry.',
   m03366f9df066b2e25bc7: 'Directory path must not contain symlinks: {value0}',
