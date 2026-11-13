@@ -243,6 +243,8 @@ The source files below come from the Seerr v3.5.1 snapshot prepared for the upst
 
 - [Seerr v3.5.1 UserPermissions source](https://github.com/seerr-team/seerr/blob/564bfb08b54caa374bddaf820abfd226e5e69151/src/components/UserProfile/UserSettings/UserPermissions/index.tsx) — used to keep SeerrOrig's core permission editor in upstream's primary position while SeerrNG's age restriction and per-service request grants remain under a collapsed extension section. The source snapshot was prepared for release by [@gauthier-th](https://github.com/gauthier-th); no contribution or endorsement is implied.
 
+- [Seerr v3.5.1 UserLinkedAccountsSettings source](https://github.com/seerr-team/seerr/blob/564bfb08b54caa374bddaf820abfd226e5e69151/src/components/UserProfile/UserSettings/UserLinkedAccountsSettings/index.tsx) — reused for SeerrOrig's linked media-server account page and primary link menu; SeerrNG identity providers and discovery integration remain accessible in a collapsed extension area. The source snapshot was prepared for release by [@gauthier-th](https://github.com/gauthier-th); no contribution or endorsement is implied.
+
 ## Referenced or in-progress upstream sources
 
 These additional records are cited by maintained fork source, documentation, release notes, or plans. They are credited as idea/provenance sources without claiming complete implementation.
