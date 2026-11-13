@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { Link, useParams, useSearchParams } from 'react-router-dom';
 import {
   api,
@@ -145,7 +145,8 @@ export default function BookDetail() {
   const { prefs, audiobookshelfUrl } = usePrefs();
   const toast = useToast();
   const { user } = useAuth();
-  const plainId = bookIdFor(decodeURIComponent(id), f);
+  // useParams has already decoded it (decoding again breaks on a literal %)
+  const plainId = bookIdFor(id, f);
   const first = useApi<BookDetails>(`/book/${encodeURIComponent(plainId)}`);
   const bookId = plainId;
   // Books stored under a bare Hardcover id can come back without a description while the
@@ -177,6 +178,8 @@ export default function BookDetail() {
   );
   const [pick, setPick] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
+  // set at once, unlike busy: a double tap can't send a request twice before the re-render
+  const sending = useRef(false);
   // ChaptarrNG's view of this work: which narrations are already here, and its own ids
   const [cw, setCw] = useState<ChaptarrWork[] | null | undefined>(undefined);
   const [cwTick, setCwTick] = useState(0);
@@ -342,7 +345,8 @@ export default function BookDetail() {
   const requestAnother = async () => {
     const row = chosenRow;
     const ce = row && chaptarrFor(row);
-    if (!row || !ce) return;
+    if (!row || !ce || sending.current) return;
+    sending.current = true;
     setBusy(true);
     try {
       const res = await requestAnotherNarration(ce.bookId, ce.id);
@@ -357,18 +361,21 @@ export default function BookDetail() {
     } catch (e) {
       toast(friendlyError(e, 'Request failed'));
     } finally {
+      sending.current = false;
       setBusy(false);
     }
   };
   const request = async () => {
+    if (sending.current) return;
+    sending.current = true;
     setBusy(true);
     try {
       // "any narrator" or narrator choice off: still target an English recording
       const exact = audio && showNarr ? chosenRow?.id || undefined : undefined;
       const fallback =
         audio && !exact
-          ? rows.find((r) => r.selected && r.narrators?.length)?.id ||
-            (await englishAudioEdition(work))
+          ? rows.find((r) => r.selected && r.narrators?.length && pinnable(r))
+              ?.id || (await englishAudioEdition(work))
           : undefined;
       await requestBook(
         bookId,
@@ -388,6 +395,7 @@ export default function BookDetail() {
     } catch (e) {
       toast(friendlyError(e, 'Request failed'));
     } finally {
+      sending.current = false;
       setBusy(false);
     }
   };
@@ -418,6 +426,9 @@ export default function BookDetail() {
     );
   };
   const listen = inAbs(true);
+  // picking another narrator makes that the main button: the copy already here stays reachable
+  const alsoListen =
+    audio && anotherMode && ownsAny && chosenRow ? listen : null;
   const main = pendingRequest ? (
     <button className="btn btn-ok" disabled={busy} onClick={approve}>
       <Icon name="check" />
@@ -441,7 +452,8 @@ export default function BookDetail() {
         Requested
       </button>
     )
-  ) : available && (!showNarr || !requestable.length) ? (
+  ) : available ? (
+    // owned: another narrator is only offered once ChaptarrNG's copies have loaded (above)
     inAbs(audio)
   ) : s && s.k !== 'ok' ? (
     <button className="btn btn-tonal" disabled>
@@ -509,6 +521,8 @@ export default function BookDetail() {
             </Pill>
           )}
         </div>
+        {/* phones: the action bar holds only the request, so the owned copy's link goes here */}
+        {alsoListen && <div className="dacts ph">{alsoListen}</div>}
         <div className="dcols">
           <div style={{ display: 'grid', gap: 22 }}>
             {b.description && <p className="ov long">{b.description.trim()}</p>}
@@ -722,7 +736,7 @@ export default function BookDetail() {
             )}
             <div className="dacts pc">
               {main}
-              {audio && anotherMode && ownsAny && chosenRow ? listen : null}
+              {alsoListen}
             </div>
           </div>
           <aside>
