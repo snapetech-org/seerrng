@@ -1,6 +1,13 @@
 import assert from 'node:assert/strict';
 import { existsSync } from 'node:fs';
-import { mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
+import {
+  mkdir,
+  mkdtemp,
+  readdir,
+  readFile,
+  rm,
+  writeFile,
+} from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import test from 'node:test';
@@ -104,6 +111,35 @@ test('non-admin and malformed settings cannot alter saved defaults or upload bra
   assert.equal(
     await readFile(path, 'utf8'),
     '{"branding":{"name":"Original"}}'
+  );
+});
+
+test('each save writes its own copy and leaves nothing behind when it fails', async (t) => {
+  const { dir, handlers, request } = await fixture(t);
+  const path = join(dir, 'lumen-config.json');
+  // the copy name every save once shared, left behind by an earlier crash
+  await mkdir(join(dir, 'lumen-config.json.saving'));
+  const ok = request({ requestText: '{"seerrPublicUrl":"https://a.example"}' });
+  await handlers.save(ok);
+  assert.equal(ok.status, 200);
+  assert.equal(
+    JSON.parse(await readFile(path, 'utf8')).seerrPublicUrl,
+    'https://a.example'
+  );
+  // the swap fails: something that isn't a file sits where the settings go
+  await rm(path);
+  await mkdir(path);
+  await writeFile(join(path, 'keep'), '');
+  const failed = request({
+    requestText: '{"seerrPublicUrl":"https://b.example"}',
+  });
+  await handlers.save(failed);
+  assert.equal(failed.status, 500);
+  assert.deepEqual(
+    (await readdir(dir)).filter(
+      (name) => name.endsWith('.saving') && name !== 'lumen-config.json.saving'
+    ),
+    []
   );
 });
 

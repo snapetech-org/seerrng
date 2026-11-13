@@ -32,11 +32,12 @@ server {
   set $lumen_runtime_uid "${LUMEN_RUNTIME_UID}";
   set $lumen_runtime_gid "${LUMEN_RUNTIME_GID}";
 
-  # security headers (repeated in each location below that sets headers of its own)
-  add_header Content-Security-Policy $lumen_csp;
-  add_header X-Frame-Options DENY;
-  add_header X-Content-Type-Options nosniff;
-  add_header Referrer-Policy same-origin;
+  # security headers (repeated in each location below that sets headers of its own);
+  # "always" so error pages carry them too
+  add_header Content-Security-Policy $lumen_csp always;
+  add_header X-Frame-Options DENY always;
+  add_header X-Content-Type-Options nosniff always;
+  add_header Referrer-Policy same-origin always;
 
   location /api/ {
     proxy_pass ${SEERR_URL};
@@ -105,39 +106,39 @@ server {
   # /branding/: uploads first, then a branding folder mounted into the app. Images only, so
   # nothing here may run scripts (an SVG opened on its own included).
   location /branding/ {
-    add_header Cache-Control "no-cache";
-    add_header Content-Security-Policy "default-src 'none'; style-src 'unsafe-inline'; img-src data:; sandbox";
-    add_header X-Frame-Options DENY;
-    add_header X-Content-Type-Options nosniff;
-    add_header Referrer-Policy same-origin;
+    add_header Cache-Control "no-cache" always;
+    add_header Content-Security-Policy "default-src 'none'; style-src 'unsafe-inline'; img-src data:; sandbox" always;
+    add_header X-Frame-Options DENY always;
+    add_header X-Content-Type-Options nosniff always;
+    add_header Referrer-Policy same-origin always;
     root /lumen-data;
     try_files $uri @branding_mounted;
   }
   location @branding_mounted {
-    add_header Cache-Control "no-cache";
-    add_header Content-Security-Policy "default-src 'none'; style-src 'unsafe-inline'; img-src data:; sandbox";
-    add_header X-Frame-Options DENY;
-    add_header X-Content-Type-Options nosniff;
-    add_header Referrer-Policy same-origin;
+    add_header Cache-Control "no-cache" always;
+    add_header Content-Security-Policy "default-src 'none'; style-src 'unsafe-inline'; img-src data:; sandbox" always;
+    add_header X-Frame-Options DENY always;
+    add_header X-Content-Type-Options nosniff always;
+    add_header Referrer-Policy same-origin always;
     root /usr/share/nginx/html;
     try_files $uri =404;
   }
   # settings saved from the admin page win over a lumen-config.json mounted into the app
   location = /lumen-config.json {
-    add_header Cache-Control "no-cache";
-    add_header Content-Security-Policy $lumen_csp;
-    add_header X-Frame-Options DENY;
-    add_header X-Content-Type-Options nosniff;
-    add_header Referrer-Policy same-origin;
+    add_header Cache-Control "no-cache" always;
+    add_header Content-Security-Policy $lumen_csp always;
+    add_header X-Frame-Options DENY always;
+    add_header X-Content-Type-Options nosniff always;
+    add_header Referrer-Policy same-origin always;
     root /lumen-data;
     try_files /lumen-config.json @lumen_config_mounted;
   }
   location @lumen_config_mounted {
-    add_header Cache-Control "no-cache";
-    add_header Content-Security-Policy $lumen_csp;
-    add_header X-Frame-Options DENY;
-    add_header X-Content-Type-Options nosniff;
-    add_header Referrer-Policy same-origin;
+    add_header Cache-Control "no-cache" always;
+    add_header Content-Security-Policy $lumen_csp always;
+    add_header X-Frame-Options DENY always;
+    add_header X-Content-Type-Options nosniff always;
+    add_header Referrer-Policy same-origin always;
     root /usr/share/nginx/html;
     try_files /lumen-config.json =404;
   }
@@ -154,11 +155,11 @@ server {
 
   # replaces SeerrNG's service worker; must never be cached or the old one lingers
   location = /sw.js {
-    add_header Cache-Control "no-store";
-    add_header Content-Security-Policy $lumen_csp;
-    add_header X-Frame-Options DENY;
-    add_header X-Content-Type-Options nosniff;
-    add_header Referrer-Policy same-origin;
+    add_header Cache-Control "no-store" always;
+    add_header Content-Security-Policy $lumen_csp always;
+    add_header X-Frame-Options DENY always;
+    add_header X-Content-Type-Options nosniff always;
+    add_header Referrer-Policy same-origin always;
     try_files $uri =404;
   }
   location = /manifest.webmanifest {
@@ -166,19 +167,20 @@ server {
     try_files $uri =404;
   }
   location /assets/ {
+    # not "always": a missing file must not be cached for a year
     add_header Cache-Control "public, max-age=31536000, immutable";
-    add_header Content-Security-Policy $lumen_csp;
-    add_header X-Frame-Options DENY;
-    add_header X-Content-Type-Options nosniff;
-    add_header Referrer-Policy same-origin;
+    add_header Content-Security-Policy $lumen_csp always;
+    add_header X-Frame-Options DENY always;
+    add_header X-Content-Type-Options nosniff always;
+    add_header Referrer-Policy same-origin always;
   }
   # client-side routes (/movie/123, /books, ...) all load the app
   location / {
-    add_header Cache-Control "no-cache";
-    add_header Content-Security-Policy $lumen_csp;
-    add_header X-Frame-Options DENY;
-    add_header X-Content-Type-Options nosniff;
-    add_header Referrer-Policy same-origin;
+    add_header Cache-Control "no-cache" always;
+    add_header Content-Security-Policy $lumen_csp always;
+    add_header X-Frame-Options DENY always;
+    add_header X-Content-Type-Options nosniff always;
+    add_header Referrer-Policy same-origin always;
     try_files $uri /index.html;
   }
 }

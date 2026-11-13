@@ -31,6 +31,14 @@ function folder() {
   }
 }
 
+function removeQuietly(path) {
+  try {
+    fs.unlinkSync(path);
+  } catch (e) {
+    // never written, or already gone
+  }
+}
+
 function send(r, status, body) {
   r.headersOut['Content-Type'] = 'application/json';
   r.headersOut['Cache-Control'] = 'no-store';
@@ -116,12 +124,14 @@ async function save(r) {
     });
     return;
   }
+  // write a copy first, then swap it in, so a reader never sees half a file; each save has
+  // its own copy, so two admins saving at once can't mix them up
+  const tmp = DIR + '/.lumen-config.' + r.variables.request_id + '.saving';
   try {
-    // write a copy first, then swap it in, so a reader never sees half a file
-    const tmp = FILE + '.saving';
     fs.writeFileSync(tmp, JSON.stringify(cfg, null, 2) + '\n');
     fs.renameSync(tmp, FILE);
   } catch (e) {
+    removeQuietly(tmp);
     send(r, 500, { message: 'Couldn’t write lumen-config.json: ' + e.message });
     return;
   }
@@ -191,18 +201,19 @@ async function branding(r) {
   }
   const name =
     kind + '-' + Date.now() + '-' + r.variables.request_id + '.' + ext;
+  const tmp = BRANDING + '/.' + name + '.saving';
   try {
     try {
       fs.mkdirSync(BRANDING);
     } catch (e) {
       // already there
     }
-    const tmp = BRANDING + '/.' + name + '.saving';
     fs.writeFileSync(tmp, body);
     fs.renameSync(tmp, BRANDING + '/' + name);
     // An upload is not a config commit. Keep earlier images: the saved defaults,
     // a concurrent admin, or a failed config save may still reference them.
   } catch (e) {
+    removeQuietly(tmp);
     send(r, 500, { message: 'Couldn’t keep the image: ' + e.message });
     return;
   }
