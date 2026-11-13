@@ -1,5 +1,25 @@
 # Changelog
 
+## [3.72.34](https://github.com/snapetech-org/seerrng/compare/v3.72.33..v3.72.34) - 2026-11-13
+
+### User-facing changes
+
+#### Added
+
+- **Books:** Books and Audiobooks now open on separate discovery pages with In your library, Trending, New releases, Top rated, and Popular rows. Genre and sort selections open a catalogue grid and stay in the URL. Open Library covers use SeerrNG's image cache, audiobooks without art borrow a matching Hardcover cover, and books without a confirmed library match no longer show an unknown-status badge.
+
+### 🚀 Features
+- *(lumen)* Genre chips and sort on the Books and Audiobooks landing - ([526d5b6](https://github.com/snapetech-org/seerrng/commit/526d5b6c50eac2ddf4fd09de23044a24f4ed1876))
+- *(lumen)* Books and Audiobooks landing with Trending, New releases and Top rated rows - ([2bf27b9](https://github.com/snapetech-org/seerrng/commit/2bf27b9888586989b5da45c9c4512422dabc9b37))
+
+### 🐛 Bug Fixes
+- *(lumen)* The landing's Sort menu reads "Sort by…" until a sort is picked - ([0826c72](https://github.com/snapetech-org/seerrng/commit/0826c72ad1751bbd473d520661946189b5a99867))
+- *(lumen)* No corner badge for books whose library status is unknown - ([82914d5](https://github.com/snapetech-org/seerrng/commit/82914d5302afad5cb7b22e35214c63ca19a2541d))
+- *(lumen)* Load book covers through the SeerrNG image cache - ([440d0de](https://github.com/snapetech-org/seerrng/commit/440d0ded7c40fdad1661566fdf51737f07806acc))
+
+### 📖 Documentation
+- *(release)* Add Books and Audiobooks landing notes - ([12dfe2f](https://github.com/snapetech-org/seerrng/commit/12dfe2f698c9d97efc4c9e51d8fbf1148e0530e8))
+
 SeerrNG release notes describe user-visible behavior and operational changes.
 The release workflow adds curated notes from `release-notes/` before the
 conventional-commit history.
