@@ -139,6 +139,11 @@ User settings show upstream's primary tabs in SeerrOrig; SeerrNG-only maturity,
 season-rule, episode-queue, advanced-theme, and client-token routes remain
 available under a collapsed “More settings” disclosure.
 
+User general settings keep the upstream account, language, discovery, request-limit,
+and Plex watchlist controls in upstream order. SeerrNG-only language preferences,
+media limits, watchlist integrations, display options, and account integrations
+remain reachable in collapsed extension sections under SeerrOrig.
+
 Common buttons, badges, alerts, page headers, and dialogs now switch to
 upstream's shared-control presentation when SeerrOrig is selected. SeerrNG's
 own variants and behavior remain active in its native theme.

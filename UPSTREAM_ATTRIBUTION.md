@@ -239,6 +239,8 @@ The source files below come from the Seerr v3.5.1 snapshot prepared for the upst
 - [Seerr v3.5.1 SettingsNotifications and SettingsTabs sources](https://github.com/seerr-team/seerr/tree/564bfb08b54caa374bddaf820abfd226e5e69151/src/components) — used to restore SeerrOrig's upstream notification-settings wrapper and provider-tab button layout while keeping the fork-only Apprise provider in the extended settings route. The source snapshot was prepared for release by [@gauthier-th](https://github.com/gauthier-th); no contribution or endorsement is implied.
 - [Seerr v3.5.1 UserSettings source](https://github.com/seerr-team/seerr/blob/564bfb08b54caa374bddaf820abfd226e5e69151/src/components/UserProfile/UserSettings/index.tsx) — used to keep SeerrOrig's primary user-settings tabs in upstream order while leaving SeerrNG-only settings reachable in a collapsed extension area. The source snapshot was prepared for release by [@gauthier-th](https://github.com/gauthier-th); no contribution or endorsement is implied.
 
+- [Seerr v3.5.1 UserGeneralSettings source](https://github.com/seerr-team/seerr/blob/564bfb08b54caa374bddaf820abfd226e5e69151/src/components/UserProfile/UserSettings/UserGeneralSettings/index.tsx) — used to align SeerrOrig's account form order, language labels, and primary request controls with upstream while keeping SeerrNG-only settings in collapsed extension sections. The source snapshot was prepared for release by [@gauthier-th](https://github.com/gauthier-th); no contribution or endorsement is implied.
+
 ## Referenced or in-progress upstream sources
 
 These additional records are cited by maintained fork source, documentation, release notes, or plans. They are credited as idea/provenance sources without claiming complete implementation.

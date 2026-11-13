@@ -15,6 +15,7 @@ import { availableLanguages } from '@app/context/LanguageContext';
 import useLocale from '@app/hooks/useLocale';
 import useSettings from '@app/hooks/useSettings';
 import useToasts from '@app/hooks/useToasts';
+import useUpstreamTheme from '@app/hooks/useUpstreamTheme';
 import { getPositiveQueryParamNumber } from '@app/hooks/useUpdateQueryParams';
 import { Permission, UserType, useUser } from '@app/hooks/useUser';
 import globalMessages from '@app/i18n/globalMessages';
@@ -103,6 +104,11 @@ const messages = defineMessages(
       'Each medium inherits this default unless you set an override. SeerrNG uses matching Radarr or Sonarr language profiles when available and selects a matching book edition when available. Music services do not currently expose a language-based request choice. You can still change the destination or edition for each request.',
     preferredLanguageAny: 'Any language',
     preferredLanguageInherit: 'Use all-media preference',
+    moreLanguagePreferences: 'More language preferences',
+    moreStreamingOptions: 'More streaming options',
+    moreRequestLimits: 'More request limits',
+    moreRequestAndDisplayOptions: 'More request and display options',
+    moreIntegrations: 'More integrations',
     validationemailrequired: 'Email required',
     validationemailformat: 'Valid email required',
     plexwatchlistsyncmovies: 'Auto-Request Movies',
@@ -154,6 +160,7 @@ const messages = defineMessages(
 
 const UserGeneralSettings = () => {
   const intl = useIntl();
+  const upstream = useUpstreamTheme();
   const { addToast } = useToasts();
   const { locale, setLocale, setFormatRegion } = useLocale();
   const [browserPreference, setBrowserPreference] =
@@ -636,13 +643,18 @@ const UserGeneralSettings = () => {
                   <div className="form-input-field">
                     <Field as="select" id="locale" name="locale">
                       <option value="" lang={locale}>
-                        {intl.formatMessage(messages.languageBrowserDefault, {
-                          language:
-                            availableLanguages[
-                              (browserPreference?.locale ??
-                                currentSettings.locale) as keyof typeof availableLanguages
-                            ]?.display ?? availableLanguages.en.display,
-                        })}
+                        {intl.formatMessage(
+                          upstream
+                            ? messages.languageDefault
+                            : messages.languageBrowserDefault,
+                          {
+                            language:
+                              availableLanguages[
+                                (browserPreference?.locale ??
+                                  currentSettings.locale) as keyof typeof availableLanguages
+                              ]?.display ?? availableLanguages.en.display,
+                          }
+                        )}
                       </option>
                       {(
                         Object.keys(
@@ -654,126 +666,104 @@ const UserGeneralSettings = () => {
                           value={availableLanguages[key].code}
                           lang={availableLanguages[key].code}
                         >
-                          {availableLanguages[key].display} ({key})
+                          {availableLanguages[key].display}
+                          {!upstream && ` (${key})`}
                         </option>
                       ))}
                     </Field>
                   </div>
-                  {(values.locale ||
-                    browserPreference?.locale ||
-                    currentSettings.locale) !== 'en' && (
-                    <span className="label-tip">
-                      {intl.formatMessage(messages.translationStatusNotice)}
-                    </span>
-                  )}
+                  {!upstream &&
+                    (values.locale ||
+                      browserPreference?.locale ||
+                      currentSettings.locale) !== 'en' && (
+                      <span className="label-tip">
+                        {intl.formatMessage(messages.translationStatusNotice)}
+                      </span>
+                    )}
                 </div>
               </div>
-              <div className="form-row">
-                <label htmlFor="metadataLocale" className="text-label">
-                  {intl.formatMessage(messages.metadataLanguage)}
-                </label>
-                <div className="form-input-area">
-                  <div className="form-input-field">
-                    <Field
-                      as="select"
-                      id="metadataLocale"
-                      name="metadataLocale"
-                    >
-                      <option value="">
-                        {intl.formatMessage(messages.metadataLanguageDefault)}
-                      </option>
-                      {(
-                        Object.keys(
-                          availableLanguages
-                        ) as (keyof typeof availableLanguages)[]
-                      ).map((key) => (
-                        <option
-                          key={key}
-                          value={availableLanguages[key].code}
-                          lang={availableLanguages[key].code}
-                        >
-                          {availableLanguages[key].display} ({key})
-                        </option>
-                      ))}
-                    </Field>
-                  </div>
-                  <span className="label-tip">
-                    {intl.formatMessage(messages.metadataLanguageTip)}
-                  </span>
-                </div>
-              </div>
-              <div className="form-row">
-                <label htmlFor="formatRegion" className="text-label">
-                  {intl.formatMessage(messages.formatRegion)}
-                </label>
-                <div className="form-input-area">
-                  <div className="form-input-field">
-                    <Field as="select" id="formatRegion" name="formatRegion">
-                      <option value="">
-                        {intl.formatMessage(messages.formatRegionDefault)}
-                      </option>
-                      {formatRegionOptions.map(({ code, name }) => (
-                        <option key={code} value={code}>
-                          {name} ({code})
-                        </option>
-                      ))}
-                    </Field>
-                  </div>
-                  <span className="label-tip">
-                    {intl.formatMessage(messages.formatRegionTip)}
-                  </span>
-                </div>
-              </div>
-              <div className="form-row">
-                <div className="text-label">
-                  <label htmlFor="preferredLanguageAll">
-                    {intl.formatMessage(messages.preferredLanguageAll)}
-                  </label>
-                  <span className="label-tip">
-                    {intl.formatMessage(messages.preferredLanguageTip)}
-                  </span>
-                </div>
-                <div className="form-input-area">
-                  <div className="form-input-field">
-                    <Field
-                      as="select"
-                      id="preferredLanguageAll"
-                      name="preferredLanguageAll"
-                    >
-                      <option value="">
-                        {intl.formatMessage(messages.preferredLanguageAny)}
-                      </option>
-                      {preferredLanguageOptions.map((language) => (
-                        <option
-                          key={language.code}
-                          value={language.code}
-                          lang={language.code}
-                        >
-                          {language.name}
-                        </option>
-                      ))}
-                    </Field>
-                  </div>
-                </div>
-              </div>
-              {preferredLanguageOverrides.map((override) => (
-                <div className="form-row" key={override.field}>
-                  <label htmlFor={override.field} className="text-label">
-                    {intl.formatMessage(override.label)}
+              <details
+                open={!upstream}
+                className={upstream ? 'mt-3' : undefined}
+              >
+                {upstream && (
+                  <summary className="cursor-pointer text-sm font-medium text-gray-300">
+                    {intl.formatMessage(messages.moreLanguagePreferences)}
+                  </summary>
+                )}
+                <div className="form-row">
+                  <label htmlFor="metadataLocale" className="text-label">
+                    {intl.formatMessage(messages.metadataLanguage)}
                   </label>
                   <div className="form-input-area">
                     <div className="form-input-field">
                       <Field
                         as="select"
-                        id={override.field}
-                        name={override.field}
+                        id="metadataLocale"
+                        name="metadataLocale"
                       >
-                        <option value="inherit">
-                          {intl.formatMessage(
-                            messages.preferredLanguageInherit
-                          )}
+                        <option value="">
+                          {intl.formatMessage(messages.metadataLanguageDefault)}
                         </option>
-                        <option value="any">
+                        {(
+                          Object.keys(
+                            availableLanguages
+                          ) as (keyof typeof availableLanguages)[]
+                        ).map((key) => (
+                          <option
+                            key={key}
+                            value={availableLanguages[key].code}
+                            lang={availableLanguages[key].code}
+                          >
+                            {availableLanguages[key].display} ({key})
+                          </option>
+                        ))}
+                      </Field>
+                    </div>
+                    <span className="label-tip">
+                      {intl.formatMessage(messages.metadataLanguageTip)}
+                    </span>
+                  </div>
+                </div>
+                <div className="form-row">
+                  <label htmlFor="formatRegion" className="text-label">
+                    {intl.formatMessage(messages.formatRegion)}
+                  </label>
+                  <div className="form-input-area">
+                    <div className="form-input-field">
+                      <Field as="select" id="formatRegion" name="formatRegion">
+                        <option value="">
+                          {intl.formatMessage(messages.formatRegionDefault)}
+                        </option>
+                        {formatRegionOptions.map(({ code, name }) => (
+                          <option key={code} value={code}>
+                            {name} ({code})
+                          </option>
+                        ))}
+                      </Field>
+                    </div>
+                    <span className="label-tip">
+                      {intl.formatMessage(messages.formatRegionTip)}
+                    </span>
+                  </div>
+                </div>
+                <div className="form-row">
+                  <div className="text-label">
+                    <label htmlFor="preferredLanguageAll">
+                      {intl.formatMessage(messages.preferredLanguageAll)}
+                    </label>
+                    <span className="label-tip">
+                      {intl.formatMessage(messages.preferredLanguageTip)}
+                    </span>
+                  </div>
+                  <div className="form-input-area">
+                    <div className="form-input-field">
+                      <Field
+                        as="select"
+                        id="preferredLanguageAll"
+                        name="preferredLanguageAll"
+                      >
+                        <option value="">
                           {intl.formatMessage(messages.preferredLanguageAny)}
                         </option>
                         {preferredLanguageOptions.map((language) => (
@@ -789,14 +779,48 @@ const UserGeneralSettings = () => {
                     </div>
                   </div>
                 </div>
-              ))}
+                {preferredLanguageOverrides.map((override) => (
+                  <div className="form-row" key={override.field}>
+                    <label htmlFor={override.field} className="text-label">
+                      {intl.formatMessage(override.label)}
+                    </label>
+                    <div className="form-input-area">
+                      <div className="form-input-field">
+                        <Field
+                          as="select"
+                          id={override.field}
+                          name={override.field}
+                        >
+                          <option value="inherit">
+                            {intl.formatMessage(
+                              messages.preferredLanguageInherit
+                            )}
+                          </option>
+                          <option value="any">
+                            {intl.formatMessage(messages.preferredLanguageAny)}
+                          </option>
+                          {preferredLanguageOptions.map((language) => (
+                            <option
+                              key={language.code}
+                              value={language.code}
+                              lang={language.code}
+                            >
+                              {language.name}
+                            </option>
+                          ))}
+                        </Field>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </details>
               <div className="form-row">
-                <div className="text-label">
+                <label htmlFor="discoverRegion" className="text-label">
                   <span>{intl.formatMessage(messages.discoverRegion)}</span>
                   <span className="label-tip">
                     {intl.formatMessage(messages.discoverRegionTip)}
                   </span>
-                </div>
+                </label>
                 <div className="form-input-area">
                   <div className="form-input-field relative z-[22]">
                     <RegionSelector
@@ -810,12 +834,12 @@ const UserGeneralSettings = () => {
                 </div>
               </div>
               <div className="form-row">
-                <div className="text-label">
+                <label htmlFor="originalLanguage" className="text-label">
                   <span>{intl.formatMessage(messages.originallanguage)}</span>
                   <span className="label-tip">
                     {intl.formatMessage(messages.originallanguageTip)}
                   </span>
-                </div>
+                </label>
                 <div className="form-input-area">
                   <div className="form-input-field relative z-[21]">
                     <LanguageSelector
@@ -829,12 +853,12 @@ const UserGeneralSettings = () => {
                 </div>
               </div>
               <div className="form-row">
-                <div className="text-label">
+                <label htmlFor="streamingRegion" className="text-label">
                   <span>{intl.formatMessage(messages.streamingRegion)}</span>
                   <span className="label-tip">
                     {intl.formatMessage(messages.streamingRegionTip)}
                   </span>
-                </div>
+                </label>
                 <div className="form-input-area">
                   <div className="form-input-field relative z-20">
                     <RegionSelector
@@ -849,41 +873,51 @@ const UserGeneralSettings = () => {
                   </div>
                 </div>
               </div>
-              <div className="form-row">
-                <div className="text-label">
-                  <span>
-                    {intl.formatMessage(messages.streamingSubscriptions)}
-                  </span>
-                  <span className="label-tip">
-                    {intl.formatMessage(messages.streamingSubscriptionsTip)}
-                  </span>
+              <details
+                open={!upstream}
+                className={upstream ? 'mt-3' : undefined}
+              >
+                {upstream && (
+                  <summary className="cursor-pointer text-sm font-medium text-gray-300">
+                    {intl.formatMessage(messages.moreStreamingOptions)}
+                  </summary>
+                )}
+                <div className="form-row">
+                  <div className="text-label">
+                    <span>
+                      {intl.formatMessage(messages.streamingSubscriptions)}
+                    </span>
+                    <span className="label-tip">
+                      {intl.formatMessage(messages.streamingSubscriptionsTip)}
+                    </span>
+                  </div>
+                  <div className="form-input-area">
+                    <WatchProviderSelector
+                      key={
+                        values.streamingRegion ||
+                        currentSettings.streamingRegion ||
+                        'US'
+                      }
+                      type="both"
+                      region={
+                        values.streamingRegion ||
+                        currentSettings.streamingRegion ||
+                        'US'
+                      }
+                      activeProviders={
+                        values.streamingSubscriptionProviderIds ?? []
+                      }
+                      showRegionSelector={false}
+                      onChange={(_region, providerIds) => {
+                        void setFieldValue(
+                          'streamingSubscriptionProviderIds',
+                          providerIds
+                        );
+                      }}
+                    />
+                  </div>
                 </div>
-                <div className="form-input-area">
-                  <WatchProviderSelector
-                    key={
-                      values.streamingRegion ||
-                      currentSettings.streamingRegion ||
-                      'US'
-                    }
-                    type="both"
-                    region={
-                      values.streamingRegion ||
-                      currentSettings.streamingRegion ||
-                      'US'
-                    }
-                    activeProviders={
-                      values.streamingSubscriptionProviderIds ?? []
-                    }
-                    showRegionSelector={false}
-                    onChange={(_region, providerIds) => {
-                      void setFieldValue(
-                        'streamingSubscriptionProviderIds',
-                        providerIds
-                      );
-                    }}
-                  />
-                </div>
-              </div>
+              </details>
               {currentHasPermission(Permission.MANAGE_USERS) &&
                 !hasPermission(Permission.MANAGE_USERS) && (
                   <>
@@ -973,225 +1007,235 @@ const UserGeneralSettings = () => {
                         </div>
                       </div>
                     </div>
-                    <div className="form-row">
-                      <div className="text-label">
-                        <span>
-                          {intl.formatMessage(messages.musicrequestlimit)}
-                        </span>
-                      </div>
-                      <div className="form-input-area">
-                        <div className="flex flex-col">
-                          <div className="mb-4 flex items-center">
-                            <input
-                              type="checkbox"
-                              checked={musicQuotaEnabled}
-                              onChange={() => setMusicQuotaEnabled((s) => !s)}
-                            />
-                            <span className="ms-2 text-gray-300">
-                              {intl.formatMessage(messages.enableOverride)}
-                            </span>
-                          </div>
-                          <QuotaSelector
-                            isDisabled={!musicQuotaEnabled}
-                            dayFieldName="musicQuotaDays"
-                            limitFieldName="musicQuotaLimit"
-                            label={intl.formatMessage(
-                              messages.musicrequestlimit
-                            )}
-                            mediaType="music"
-                            onChange={setFieldValue}
-                            defaultDays={values.musicQuotaDays}
-                            defaultLimit={values.musicQuotaLimit}
-                            dayOverride={
-                              !musicQuotaEnabled
-                                ? data?.globalMusicQuotaDays
-                                : undefined
-                            }
-                            limitOverride={
-                              !musicQuotaEnabled
-                                ? data?.globalMusicQuotaLimit
-                                : undefined
-                            }
-                          />
+                    <details
+                      open={!upstream}
+                      className={upstream ? 'mt-3' : undefined}
+                    >
+                      {upstream && (
+                        <summary className="cursor-pointer text-sm font-medium text-gray-300">
+                          {intl.formatMessage(messages.moreRequestLimits)}
+                        </summary>
+                      )}
+                      <div className="form-row">
+                        <div className="text-label">
+                          <span>
+                            {intl.formatMessage(messages.musicrequestlimit)}
+                          </span>
                         </div>
-                      </div>
-                    </div>
-                    <div className="form-row">
-                      <div className="text-label">
-                        <span>
-                          {intl.formatMessage(messages.bookrequestlimit)}
-                        </span>
-                      </div>
-                      <div className="form-input-area">
-                        <div className="flex flex-col">
-                          <div className="mb-4 flex items-center">
-                            <input
-                              type="checkbox"
-                              checked={bookQuotaEnabled}
-                              onChange={() => setBookQuotaEnabled((s) => !s)}
-                            />
-                            <span className="ms-2 text-gray-300">
-                              {intl.formatMessage(messages.enableOverride)}
-                            </span>
-                          </div>
-                          <QuotaSelector
-                            isDisabled={!bookQuotaEnabled}
-                            dayFieldName="bookQuotaDays"
-                            limitFieldName="bookQuotaLimit"
-                            label={intl.formatMessage(
-                              messages.bookrequestlimit
-                            )}
-                            mediaType="book"
-                            onChange={setFieldValue}
-                            defaultDays={values.bookQuotaDays}
-                            defaultLimit={values.bookQuotaLimit}
-                            dayOverride={
-                              !bookQuotaEnabled
-                                ? data?.globalBookQuotaDays
-                                : undefined
-                            }
-                            limitOverride={
-                              !bookQuotaEnabled
-                                ? data?.globalBookQuotaLimit
-                                : undefined
-                            }
-                          />
-                        </div>
-                      </div>
-                    </div>
-                    <div className="form-row">
-                      <div className="text-label">
-                        <span>
-                          {intl.formatMessage(messages.comicrequestlimit)}
-                        </span>
-                      </div>
-                      <div className="form-input-area">
-                        <div className="flex flex-col">
-                          <div className="mb-4 flex items-center">
-                            <input
-                              type="checkbox"
-                              checked={comicQuotaEnabled}
-                              onChange={() => setComicQuotaEnabled((s) => !s)}
-                            />
-                            <span className="ms-2 text-gray-300">
-                              {intl.formatMessage(messages.enableOverride)}
-                            </span>
-                          </div>
-                          <QuotaSelector
-                            isDisabled={!comicQuotaEnabled}
-                            dayFieldName="comicQuotaDays"
-                            limitFieldName="comicQuotaLimit"
-                            label={intl.formatMessage(
-                              messages.comicrequestlimit
-                            )}
-                            mediaType="comic"
-                            onChange={setFieldValue}
-                            defaultDays={values.comicQuotaDays}
-                            defaultLimit={values.comicQuotaLimit}
-                            dayOverride={
-                              !comicQuotaEnabled
-                                ? data?.globalComicQuotaDays
-                                : undefined
-                            }
-                            limitOverride={
-                              !comicQuotaEnabled
-                                ? data?.globalComicQuotaLimit
-                                : undefined
-                            }
-                          />
-                        </div>
-                      </div>
-                    </div>
-                    <div className="form-row">
-                      <div className="text-label">
-                        <span>
-                          {intl.formatMessage(messages.magazinerequestlimit)}
-                        </span>
-                      </div>
-                      <div className="form-input-area">
-                        <div className="flex flex-col">
-                          <div className="mb-4 flex items-center">
-                            <input
-                              type="checkbox"
-                              checked={magazineQuotaEnabled}
-                              onChange={() =>
-                                setMagazineQuotaEnabled((enabled) => !enabled)
+                        <div className="form-input-area">
+                          <div className="flex flex-col">
+                            <div className="mb-4 flex items-center">
+                              <input
+                                type="checkbox"
+                                checked={musicQuotaEnabled}
+                                onChange={() => setMusicQuotaEnabled((s) => !s)}
+                              />
+                              <span className="ms-2 text-gray-300">
+                                {intl.formatMessage(messages.enableOverride)}
+                              </span>
+                            </div>
+                            <QuotaSelector
+                              isDisabled={!musicQuotaEnabled}
+                              dayFieldName="musicQuotaDays"
+                              limitFieldName="musicQuotaLimit"
+                              label={intl.formatMessage(
+                                messages.musicrequestlimit
+                              )}
+                              mediaType="music"
+                              onChange={setFieldValue}
+                              defaultDays={values.musicQuotaDays}
+                              defaultLimit={values.musicQuotaLimit}
+                              dayOverride={
+                                !musicQuotaEnabled
+                                  ? data?.globalMusicQuotaDays
+                                  : undefined
+                              }
+                              limitOverride={
+                                !musicQuotaEnabled
+                                  ? data?.globalMusicQuotaLimit
+                                  : undefined
                               }
                             />
-                            <span className="ms-2 text-gray-300">
-                              {intl.formatMessage(messages.enableOverride)}
-                            </span>
                           </div>
-                          <QuotaSelector
-                            isDisabled={!magazineQuotaEnabled}
-                            dayFieldName="magazineQuotaDays"
-                            limitFieldName="magazineQuotaLimit"
-                            label={intl.formatMessage(
-                              messages.magazinerequestlimit
-                            )}
-                            mediaType="magazine"
-                            onChange={setFieldValue}
-                            defaultDays={values.magazineQuotaDays}
-                            defaultLimit={values.magazineQuotaLimit}
-                            dayOverride={
-                              !magazineQuotaEnabled
-                                ? data?.globalMagazineQuotaDays
-                                : undefined
-                            }
-                            limitOverride={
-                              !magazineQuotaEnabled
-                                ? data?.globalMagazineQuotaLimit
-                                : undefined
-                            }
-                          />
                         </div>
                       </div>
-                    </div>
-                    <div className="form-row">
-                      <div className="text-label">
-                        <span>
-                          {intl.formatMessage(messages.softwarerequestlimit)}
-                        </span>
-                      </div>
-                      <div className="form-input-area">
-                        <div className="flex flex-col">
-                          <div className="mb-4 flex items-center">
-                            <input
-                              type="checkbox"
-                              checked={softwareQuotaEnabled}
-                              onChange={() =>
-                                setSoftwareQuotaEnabled((enabled) => !enabled)
+                      <div className="form-row">
+                        <div className="text-label">
+                          <span>
+                            {intl.formatMessage(messages.bookrequestlimit)}
+                          </span>
+                        </div>
+                        <div className="form-input-area">
+                          <div className="flex flex-col">
+                            <div className="mb-4 flex items-center">
+                              <input
+                                type="checkbox"
+                                checked={bookQuotaEnabled}
+                                onChange={() => setBookQuotaEnabled((s) => !s)}
+                              />
+                              <span className="ms-2 text-gray-300">
+                                {intl.formatMessage(messages.enableOverride)}
+                              </span>
+                            </div>
+                            <QuotaSelector
+                              isDisabled={!bookQuotaEnabled}
+                              dayFieldName="bookQuotaDays"
+                              limitFieldName="bookQuotaLimit"
+                              label={intl.formatMessage(
+                                messages.bookrequestlimit
+                              )}
+                              mediaType="book"
+                              onChange={setFieldValue}
+                              defaultDays={values.bookQuotaDays}
+                              defaultLimit={values.bookQuotaLimit}
+                              dayOverride={
+                                !bookQuotaEnabled
+                                  ? data?.globalBookQuotaDays
+                                  : undefined
+                              }
+                              limitOverride={
+                                !bookQuotaEnabled
+                                  ? data?.globalBookQuotaLimit
+                                  : undefined
                               }
                             />
-                            <span className="ms-2 text-gray-300">
-                              {intl.formatMessage(messages.enableOverride)}
-                            </span>
                           </div>
-                          <QuotaSelector
-                            isDisabled={!softwareQuotaEnabled}
-                            dayFieldName="softwareQuotaDays"
-                            limitFieldName="softwareQuotaLimit"
-                            label={intl.formatMessage(
-                              messages.softwarerequestlimit
-                            )}
-                            mediaType="software"
-                            onChange={setFieldValue}
-                            defaultDays={values.softwareQuotaDays}
-                            defaultLimit={values.softwareQuotaLimit}
-                            dayOverride={
-                              !softwareQuotaEnabled
-                                ? data?.globalSoftwareQuotaDays
-                                : undefined
-                            }
-                            limitOverride={
-                              !softwareQuotaEnabled
-                                ? data?.globalSoftwareQuotaLimit
-                                : undefined
-                            }
-                          />
                         </div>
                       </div>
-                    </div>
+                      <div className="form-row">
+                        <div className="text-label">
+                          <span>
+                            {intl.formatMessage(messages.comicrequestlimit)}
+                          </span>
+                        </div>
+                        <div className="form-input-area">
+                          <div className="flex flex-col">
+                            <div className="mb-4 flex items-center">
+                              <input
+                                type="checkbox"
+                                checked={comicQuotaEnabled}
+                                onChange={() => setComicQuotaEnabled((s) => !s)}
+                              />
+                              <span className="ms-2 text-gray-300">
+                                {intl.formatMessage(messages.enableOverride)}
+                              </span>
+                            </div>
+                            <QuotaSelector
+                              isDisabled={!comicQuotaEnabled}
+                              dayFieldName="comicQuotaDays"
+                              limitFieldName="comicQuotaLimit"
+                              label={intl.formatMessage(
+                                messages.comicrequestlimit
+                              )}
+                              mediaType="comic"
+                              onChange={setFieldValue}
+                              defaultDays={values.comicQuotaDays}
+                              defaultLimit={values.comicQuotaLimit}
+                              dayOverride={
+                                !comicQuotaEnabled
+                                  ? data?.globalComicQuotaDays
+                                  : undefined
+                              }
+                              limitOverride={
+                                !comicQuotaEnabled
+                                  ? data?.globalComicQuotaLimit
+                                  : undefined
+                              }
+                            />
+                          </div>
+                        </div>
+                      </div>
+                      <div className="form-row">
+                        <div className="text-label">
+                          <span>
+                            {intl.formatMessage(messages.magazinerequestlimit)}
+                          </span>
+                        </div>
+                        <div className="form-input-area">
+                          <div className="flex flex-col">
+                            <div className="mb-4 flex items-center">
+                              <input
+                                type="checkbox"
+                                checked={magazineQuotaEnabled}
+                                onChange={() =>
+                                  setMagazineQuotaEnabled((enabled) => !enabled)
+                                }
+                              />
+                              <span className="ms-2 text-gray-300">
+                                {intl.formatMessage(messages.enableOverride)}
+                              </span>
+                            </div>
+                            <QuotaSelector
+                              isDisabled={!magazineQuotaEnabled}
+                              dayFieldName="magazineQuotaDays"
+                              limitFieldName="magazineQuotaLimit"
+                              label={intl.formatMessage(
+                                messages.magazinerequestlimit
+                              )}
+                              mediaType="magazine"
+                              onChange={setFieldValue}
+                              defaultDays={values.magazineQuotaDays}
+                              defaultLimit={values.magazineQuotaLimit}
+                              dayOverride={
+                                !magazineQuotaEnabled
+                                  ? data?.globalMagazineQuotaDays
+                                  : undefined
+                              }
+                              limitOverride={
+                                !magazineQuotaEnabled
+                                  ? data?.globalMagazineQuotaLimit
+                                  : undefined
+                              }
+                            />
+                          </div>
+                        </div>
+                      </div>
+                      <div className="form-row">
+                        <div className="text-label">
+                          <span>
+                            {intl.formatMessage(messages.softwarerequestlimit)}
+                          </span>
+                        </div>
+                        <div className="form-input-area">
+                          <div className="flex flex-col">
+                            <div className="mb-4 flex items-center">
+                              <input
+                                type="checkbox"
+                                checked={softwareQuotaEnabled}
+                                onChange={() =>
+                                  setSoftwareQuotaEnabled((enabled) => !enabled)
+                                }
+                              />
+                              <span className="ms-2 text-gray-300">
+                                {intl.formatMessage(messages.enableOverride)}
+                              </span>
+                            </div>
+                            <QuotaSelector
+                              isDisabled={!softwareQuotaEnabled}
+                              dayFieldName="softwareQuotaDays"
+                              limitFieldName="softwareQuotaLimit"
+                              label={intl.formatMessage(
+                                messages.softwarerequestlimit
+                              )}
+                              mediaType="software"
+                              onChange={setFieldValue}
+                              defaultDays={values.softwareQuotaDays}
+                              defaultLimit={values.softwareQuotaLimit}
+                              dayOverride={
+                                !softwareQuotaEnabled
+                                  ? data?.globalSoftwareQuotaDays
+                                  : undefined
+                              }
+                              limitOverride={
+                                !softwareQuotaEnabled
+                                  ? data?.globalSoftwareQuotaLimit
+                                  : undefined
+                              }
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </details>
                   </>
                 )}
               {hasPermission(
@@ -1287,299 +1331,311 @@ const UserGeneralSettings = () => {
                     </div>
                   </div>
                 )}
-              {hasPermission(
-                [Permission.AUTO_REQUEST, Permission.AUTO_REQUEST_MUSIC],
-                { type: 'or' }
-              ) && (
-                <div className="form-row">
-                  <label
-                    htmlFor="watchlistSyncMusic"
-                    className="checkbox-label"
-                  >
-                    <span>
-                      {intl.formatMessage(messages.musicwatchlistsync)}
-                    </span>
-                    <span className="label-tip">
-                      {intl.formatMessage(messages.musicwatchlistsynctip)}
-                    </span>
-                  </label>
-                  <div className="form-input-area">
-                    <Field
-                      type="checkbox"
-                      id="watchlistSyncMusic"
-                      name="watchlistSyncMusic"
-                      onChange={() => {
-                        setFieldValue(
-                          'watchlistSyncMusic',
-                          !values.watchlistSyncMusic
-                        );
-                      }}
-                    />
-                  </div>
-                </div>
-              )}
-              {hasPermission(
-                [Permission.AUTO_REQUEST, Permission.AUTO_REQUEST_BOOK],
-                { type: 'or' }
-              ) && (
-                <div className="form-row">
-                  <label
-                    htmlFor="watchlistSyncBooks"
-                    className="checkbox-label"
-                  >
-                    <span>
-                      {intl.formatMessage(messages.bookwatchlistsync)}
-                    </span>
-                    <span className="label-tip">
-                      {intl.formatMessage(messages.bookwatchlistsynctip)}
-                    </span>
-                  </label>
-                  <div className="form-input-area">
-                    <Field
-                      type="checkbox"
-                      id="watchlistSyncBooks"
-                      name="watchlistSyncBooks"
-                      onChange={() => {
-                        setFieldValue(
-                          'watchlistSyncBooks',
-                          !values.watchlistSyncBooks
-                        );
-                      }}
-                    />
-                  </div>
-                </div>
-              )}
-              {hasPermission(
-                [Permission.AUTO_REQUEST, Permission.AUTO_REQUEST_COMIC],
-                { type: 'or' }
-              ) && (
-                <div className="form-row">
-                  <label
-                    htmlFor="watchlistSyncComics"
-                    className="checkbox-label"
-                  >
-                    <span>
-                      {intl.formatMessage(messages.comicwatchlistsync)}
-                    </span>
-                    <span className="label-tip">
-                      {intl.formatMessage(messages.comicwatchlistsynctip)}
-                    </span>
-                  </label>
-                  <div className="form-input-area">
-                    <Field
-                      type="checkbox"
-                      id="watchlistSyncComics"
-                      name="watchlistSyncComics"
-                      onChange={() => {
-                        setFieldValue(
-                          'watchlistSyncComics',
-                          !values.watchlistSyncComics
-                        );
-                      }}
-                    />
-                  </div>
-                </div>
-              )}
-              {hasPermission(
-                [Permission.AUTO_REQUEST, Permission.AUTO_REQUEST_MAGAZINE],
-                { type: 'or' }
-              ) && (
-                <div className="form-row">
-                  <label
-                    htmlFor="watchlistSyncMagazines"
-                    className="checkbox-label"
-                  >
-                    <span>
-                      {intl.formatMessage(messages.magazinewatchlistsync)}
-                    </span>
-                    <span className="label-tip">
-                      {intl.formatMessage(messages.magazinewatchlistsynctip)}
-                    </span>
-                  </label>
-                  <div className="form-input-area">
-                    <Field
-                      type="checkbox"
-                      id="watchlistSyncMagazines"
-                      name="watchlistSyncMagazines"
-                      onChange={() => {
-                        setFieldValue(
-                          'watchlistSyncMagazines',
-                          !values.watchlistSyncMagazines
-                        );
-                      }}
-                    />
-                  </div>
-                </div>
-              )}
-              <div className="form-row">
-                <label htmlFor="cardTextVisibilityMovie" className="text-label">
-                  <span>{intl.formatMessage(messages.cardTextVisibility)}</span>
-                  <span className="label-tip">
-                    {intl.formatMessage(messages.cardTextVisibilityTip)}
-                  </span>
-                </label>
-                <div className="form-input-area">
-                  <div className="grid max-w-2xl gap-3 sm:grid-cols-2">
-                    {(
-                      [
-                        ['cardTextVisibilityMovie', 'cardTextVisibilityMovie'],
-                        ['cardTextVisibilityTv', 'cardTextVisibilityTv'],
-                        ['cardTextVisibilityAlbum', 'cardTextVisibilityAlbum'],
-                        ['cardTextVisibilityBook', 'cardTextVisibilityBook'],
-                      ] as const
-                    ).map(([fieldName, messageKey]) => (
-                      <div key={fieldName}>
-                        <label
-                          htmlFor={fieldName}
-                          className="mb-1 block text-sm font-medium text-gray-300"
-                        >
-                          {intl.formatMessage(messages[messageKey])}
-                        </label>
-                        <Field as="select" id={fieldName} name={fieldName}>
-                          <option value="hover">
-                            {intl.formatMessage(
-                              messages.cardTextVisibilityHover
-                            )}
-                          </option>
-                          <option value="always">
-                            {intl.formatMessage(
-                              messages.cardTextVisibilityAlways
-                            )}
-                          </option>
-                        </Field>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-              <div
-                role="group"
-                aria-labelledby="media-categories-label"
-                className="form-group"
+              <details
+                open={!upstream}
+                className={upstream ? 'mt-3' : undefined}
               >
-                <div className="form-row">
-                  <span id="media-categories-label" className="group-label">
-                    {intl.formatMessage(messages.mediaCategories)}
-                  </span>
-                  <span className="settings-form-row-description">
+                {upstream && (
+                  <summary className="cursor-pointer text-sm font-medium text-gray-300">
                     {intl.formatMessage(
-                      isAdminTarget
-                        ? messages.mediaCategoriesAdmin
-                        : data?.usesDefaultEnabledMediaCategories === false
-                          ? messages.mediaCategoriesCustom
-                          : messages.mediaCategoriesDefault
+                      messages.moreRequestAndDisplayOptions
                     )}
-                  </span>
-                </div>
-                <MediaCategoryPreferences
-                  fieldPrefix="enabledMediaCategories"
-                  disabled={isAdminTarget}
-                  testIdPrefix="user-category"
-                  onChange={() =>
-                    void setFieldValue(
-                      'usesDefaultEnabledMediaCategories',
-                      false
-                    )
-                  }
-                />
-                {!isAdminTarget && (
-                  <div className="form-row">
-                    <span />
-                    <button
-                      type="button"
-                      className="text-primary-400 hover:text-primary-300 focus-visible:outline-primary-400 text-start text-sm font-medium focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
-                      onClick={() => {
-                        void setFieldValue('enabledMediaCategories', {
-                          ...DEFAULT_USER_ENABLED_MEDIA_CATEGORIES,
-                          ...currentSettings.defaultEnabledMediaCategories,
-                        });
-                        void setFieldValue(
-                          'usesDefaultEnabledMediaCategories',
-                          true
-                        );
-                      }}
-                    >
-                      {intl.formatMessage(messages.mediaCategoriesUseDefaults)}
-                    </button>
-                  </div>
+                  </summary>
                 )}
-              </div>
-              <div
-                role="group"
-                aria-labelledby="indexer-details-label"
-                className="form-group"
-              >
-                <div className="form-row">
-                  <span id="indexer-details-label" className="group-label">
-                    {intl.formatMessage(messages.indexerDetails)}
-                  </span>
-                  <span className="settings-form-row-description">
-                    {intl.formatMessage(
-                      isAdminTarget
-                        ? messages.indexerDetailsAdmin
-                        : !data?.defaultShowIndexerDetails
-                          ? messages.indexerDetailsGloballyHidden
-                          : data?.usesDefaultShowIndexerDetails === false
-                            ? messages.indexerDetailsCustom
-                            : messages.indexerDetailsDefault
-                    )}
-                  </span>
-                </div>
-                {currentHasPermission(Permission.MANAGE_USERS) &&
-                  !isAdminTarget &&
-                  data?.defaultShowIndexerDetails && (
-                    <>
-                      <LabeledCheckbox
-                        id="showIndexerDetails"
-                        label={intl.formatMessage(messages.indexerDetails)}
-                        description={intl.formatMessage(
-                          messages.indexerDetailsTip
-                        )}
+                {hasPermission(
+                  [Permission.AUTO_REQUEST, Permission.AUTO_REQUEST_MUSIC],
+                  { type: 'or' }
+                ) && (
+                  <div className="form-row">
+                    <label
+                      htmlFor="watchlistSyncMusic"
+                      className="checkbox-label"
+                    >
+                      <span>
+                        {intl.formatMessage(messages.musicwatchlistsync)}
+                      </span>
+                      <span className="label-tip">
+                        {intl.formatMessage(messages.musicwatchlistsynctip)}
+                      </span>
+                    </label>
+                    <div className="form-input-area">
+                      <Field
+                        type="checkbox"
+                        id="watchlistSyncMusic"
+                        name="watchlistSyncMusic"
                         onChange={() => {
-                          void setFieldValue(
-                            'showIndexerDetails',
-                            !values.showIndexerDetails
-                          );
-                          void setFieldValue(
-                            'usesDefaultShowIndexerDetails',
-                            false
+                          setFieldValue(
+                            'watchlistSyncMusic',
+                            !values.watchlistSyncMusic
                           );
                         }}
                       />
-                      <div className="form-row">
-                        <span />
-                        <button
-                          type="button"
-                          className="text-primary-400 hover:text-primary-300 focus-visible:outline-primary-400 text-start text-sm font-medium focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
-                          onClick={() => {
+                    </div>
+                  </div>
+                )}
+                {hasPermission(
+                  [Permission.AUTO_REQUEST, Permission.AUTO_REQUEST_BOOK],
+                  { type: 'or' }
+                ) && (
+                  <div className="form-row">
+                    <label
+                      htmlFor="watchlistSyncBooks"
+                      className="checkbox-label"
+                    >
+                      <span>
+                        {intl.formatMessage(messages.bookwatchlistsync)}
+                      </span>
+                      <span className="label-tip">
+                        {intl.formatMessage(messages.bookwatchlistsynctip)}
+                      </span>
+                    </label>
+                    <div className="form-input-area">
+                      <Field
+                        type="checkbox"
+                        id="watchlistSyncBooks"
+                        name="watchlistSyncBooks"
+                        onChange={() => {
+                          setFieldValue(
+                            'watchlistSyncBooks',
+                            !values.watchlistSyncBooks
+                          );
+                        }}
+                      />
+                    </div>
+                  </div>
+                )}
+                {hasPermission(
+                  [Permission.AUTO_REQUEST, Permission.AUTO_REQUEST_COMIC],
+                  { type: 'or' }
+                ) && (
+                  <div className="form-row">
+                    <label
+                      htmlFor="watchlistSyncComics"
+                      className="checkbox-label"
+                    >
+                      <span>
+                        {intl.formatMessage(messages.comicwatchlistsync)}
+                      </span>
+                      <span className="label-tip">
+                        {intl.formatMessage(messages.comicwatchlistsynctip)}
+                      </span>
+                    </label>
+                    <div className="form-input-area">
+                      <Field
+                        type="checkbox"
+                        id="watchlistSyncComics"
+                        name="watchlistSyncComics"
+                        onChange={() => {
+                          setFieldValue(
+                            'watchlistSyncComics',
+                            !values.watchlistSyncComics
+                          );
+                        }}
+                      />
+                    </div>
+                  </div>
+                )}
+                {hasPermission(
+                  [Permission.AUTO_REQUEST, Permission.AUTO_REQUEST_MAGAZINE],
+                  { type: 'or' }
+                ) && (
+                  <div className="form-row">
+                    <label
+                      htmlFor="watchlistSyncMagazines"
+                      className="checkbox-label"
+                    >
+                      <span>
+                        {intl.formatMessage(messages.magazinewatchlistsync)}
+                      </span>
+                      <span className="label-tip">
+                        {intl.formatMessage(messages.magazinewatchlistsynctip)}
+                      </span>
+                    </label>
+                    <div className="form-input-area">
+                      <Field
+                        type="checkbox"
+                        id="watchlistSyncMagazines"
+                        name="watchlistSyncMagazines"
+                        onChange={() => {
+                          setFieldValue(
+                            'watchlistSyncMagazines',
+                            !values.watchlistSyncMagazines
+                          );
+                        }}
+                      />
+                    </div>
+                  </div>
+                )}
+                <div className="form-row">
+                  <label htmlFor="cardTextVisibilityMovie" className="text-label">
+                    <span>{intl.formatMessage(messages.cardTextVisibility)}</span>
+                    <span className="label-tip">
+                      {intl.formatMessage(messages.cardTextVisibilityTip)}
+                    </span>
+                  </label>
+                  <div className="form-input-area">
+                    <div className="grid max-w-2xl gap-3 sm:grid-cols-2">
+                      {(
+                        [
+                          ['cardTextVisibilityMovie', 'cardTextVisibilityMovie'],
+                          ['cardTextVisibilityTv', 'cardTextVisibilityTv'],
+                          ['cardTextVisibilityAlbum', 'cardTextVisibilityAlbum'],
+                          ['cardTextVisibilityBook', 'cardTextVisibilityBook'],
+                        ] as const
+                      ).map(([fieldName, messageKey]) => (
+                        <div key={fieldName}>
+                          <label
+                            htmlFor={fieldName}
+                            className="mb-1 block text-sm font-medium text-gray-300"
+                          >
+                            {intl.formatMessage(messages[messageKey])}
+                          </label>
+                          <Field as="select" id={fieldName} name={fieldName}>
+                            <option value="hover">
+                              {intl.formatMessage(
+                                messages.cardTextVisibilityHover
+                              )}
+                            </option>
+                            <option value="always">
+                              {intl.formatMessage(
+                                messages.cardTextVisibilityAlways
+                              )}
+                            </option>
+                          </Field>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+                <div
+                  role="group"
+                  aria-labelledby="media-categories-label"
+                  className="form-group"
+                >
+                  <div className="form-row">
+                    <span id="media-categories-label" className="group-label">
+                      {intl.formatMessage(messages.mediaCategories)}
+                    </span>
+                    <span className="settings-form-row-description">
+                      {intl.formatMessage(
+                        isAdminTarget
+                          ? messages.mediaCategoriesAdmin
+                          : data?.usesDefaultEnabledMediaCategories === false
+                            ? messages.mediaCategoriesCustom
+                            : messages.mediaCategoriesDefault
+                      )}
+                    </span>
+                  </div>
+                  <MediaCategoryPreferences
+                    fieldPrefix="enabledMediaCategories"
+                    disabled={isAdminTarget}
+                    testIdPrefix="user-category"
+                    onChange={() =>
+                      void setFieldValue(
+                        'usesDefaultEnabledMediaCategories',
+                        false
+                      )
+                    }
+                  />
+                  {!isAdminTarget && (
+                    <div className="form-row">
+                      <span />
+                      <button
+                        type="button"
+                        className="text-primary-400 hover:text-primary-300 focus-visible:outline-primary-400 text-start text-sm font-medium focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+                        onClick={() => {
+                          void setFieldValue('enabledMediaCategories', {
+                            ...DEFAULT_USER_ENABLED_MEDIA_CATEGORIES,
+                            ...currentSettings.defaultEnabledMediaCategories,
+                          });
+                          void setFieldValue(
+                            'usesDefaultEnabledMediaCategories',
+                            true
+                          );
+                        }}
+                      >
+                        {intl.formatMessage(messages.mediaCategoriesUseDefaults)}
+                      </button>
+                    </div>
+                  )}
+                </div>
+                <div
+                  role="group"
+                  aria-labelledby="indexer-details-label"
+                  className="form-group"
+                >
+                  <div className="form-row">
+                    <span id="indexer-details-label" className="group-label">
+                      {intl.formatMessage(messages.indexerDetails)}
+                    </span>
+                    <span className="settings-form-row-description">
+                      {intl.formatMessage(
+                        isAdminTarget
+                          ? messages.indexerDetailsAdmin
+                          : !data?.defaultShowIndexerDetails
+                            ? messages.indexerDetailsGloballyHidden
+                            : data?.usesDefaultShowIndexerDetails === false
+                              ? messages.indexerDetailsCustom
+                              : messages.indexerDetailsDefault
+                      )}
+                    </span>
+                  </div>
+                  {currentHasPermission(Permission.MANAGE_USERS) &&
+                    !isAdminTarget &&
+                    data?.defaultShowIndexerDetails && (
+                      <>
+                        <LabeledCheckbox
+                          id="showIndexerDetails"
+                          label={intl.formatMessage(messages.indexerDetails)}
+                          description={intl.formatMessage(
+                            messages.indexerDetailsTip
+                          )}
+                          onChange={() => {
                             void setFieldValue(
                               'showIndexerDetails',
-                              values.defaultShowIndexerDetails
+                              !values.showIndexerDetails
                             );
                             void setFieldValue(
                               'usesDefaultShowIndexerDetails',
-                              true
+                              false
                             );
                           }}
-                        >
-                          {intl.formatMessage(
-                            messages.indexerDetailsUseDefault
-                          )}
-                        </button>
-                      </div>
-                    </>
+                        />
+                        <div className="form-row">
+                          <span />
+                          <button
+                            type="button"
+                            className="text-primary-400 hover:text-primary-300 focus-visible:outline-primary-400 text-start text-sm font-medium focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+                            onClick={() => {
+                              void setFieldValue(
+                                'showIndexerDetails',
+                                values.defaultShowIndexerDetails
+                              );
+                              void setFieldValue(
+                                'usesDefaultShowIndexerDetails',
+                                true
+                              );
+                            }}
+                          >
+                            {intl.formatMessage(
+                              messages.indexerDetailsUseDefault
+                            )}
+                          </button>
+                        </div>
+                      </>
+                    )}
+                </div>
+                <RequestRootFolderSettings
+                  canEdit={currentHasPermission(
+                    [Permission.MANAGE_REQUESTS, Permission.REQUEST_ADVANCED],
+                    { type: 'or' }
                   )}
-              </div>
-              <RequestRootFolderSettings
-                canEdit={currentHasPermission(
-                  [Permission.MANAGE_REQUESTS, Permission.REQUEST_ADVANCED],
-                  { type: 'or' }
-                )}
-                value={values.requestRootFolders ?? {}}
-                onChange={(requestRootFolders) =>
-                  void setFieldValue('requestRootFolders', requestRootFolders)
-                }
-              />
+                  value={values.requestRootFolders ?? {}}
+                  onChange={(requestRootFolders) =>
+                    void setFieldValue('requestRootFolders', requestRootFolders)
+                  }
+                />
+              </details>
               <div className="actions">
                 <div className="flex justify-end">
                   <span className="ms-3 inline-flex rounded-md shadow-sm">
@@ -1602,8 +1658,20 @@ const UserGeneralSettings = () => {
           );
         }}
       </Formik>
-      {user?.id === currentUser?.id && <ExternalRequestLists />}
-      {user?.id === currentUser?.id && <BookHomeSections />}
+      {user?.id === currentUser?.id && (
+        <details
+          open={!upstream}
+          className={upstream ? 'mt-5' : undefined}
+        >
+          {upstream && (
+            <summary className="cursor-pointer text-sm font-medium text-gray-300">
+              {intl.formatMessage(messages.moreIntegrations)}
+            </summary>
+          )}
+          <ExternalRequestLists />
+          <BookHomeSections />
+        </details>
+      )}
     </>
   );
 };
