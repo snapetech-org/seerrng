@@ -1,10 +1,6 @@
 import Header from '@app/components/Common/Header';
 import ListView from '@app/components/Common/ListView';
 import PageTitle from '@app/components/Common/PageTitle';
-import useDiscover from '@app/hooks/useDiscover';
-import useUpstreamTheme from '@app/hooks/useUpstreamTheme';
-import globalMessages from '@app/i18n/globalMessages';
-import ErrorPage from '@app/pages/_error';
 import DiscoverBooks from '@app/components/Discover/DiscoverBooks';
 import DiscoverMediaTabs, {
   type DiscoverMediaType,
@@ -12,8 +8,11 @@ import DiscoverMediaTabs, {
 import DiscoverMovies from '@app/components/Discover/DiscoverMovies';
 import DiscoverMusic from '@app/components/Discover/DiscoverMusic';
 import DiscoverTv from '@app/components/Discover/DiscoverTv';
+import { getFilterToggleButtonClass } from '@app/components/Discover/FilterPanel/CompactFilterSelect';
+import useDiscover from '@app/hooks/useDiscover';
+import useUpstreamTheme from '@app/hooks/useUpstreamTheme';
+import ErrorPage from '@app/pages/_error';
 import defineMessages from '@app/utils/defineMessages';
-import { CircleStackIcon, FunnelIcon } from '@heroicons/react/24/solid';
 import type {
   MovieResult,
   PersonResult,
@@ -25,17 +24,20 @@ import { useIntl } from 'react-intl';
 
 const messages = defineMessages('components.Discover', {
   trending: 'Trending',
+  timeWindow: 'Time Window',
   timeWindowDay: 'Daily',
   timeWindowWeek: 'Weekly',
 });
 
-type UpstreamMediaType = 'all' | 'movie' | 'tv';
 type TimeWindow = 'day' | 'week';
 
 const UpstreamTrending = () => {
   const intl = useIntl();
-  const [currentMediaType, setCurrentMediaType] =
-    useState<UpstreamMediaType>('all');
+  const router = useRouter();
+  const currentMediaType: 'all' | 'movie' | 'tv' =
+    router.query.mediaType === 'movie' || router.query.mediaType === 'tv'
+      ? router.query.mediaType
+      : 'all';
   const [currentTimeWindow, setCurrentTimeWindow] = useState<TimeWindow>('day');
   const {
     isLoadingInitialData,
@@ -57,53 +59,34 @@ const UpstreamTrending = () => {
   return (
     <>
       <PageTitle title={intl.formatMessage(messages.trending)} />
-      <div className="mb-5 mt-1 flex flex-col justify-between lg:flex-row lg:items-end">
+      <div className="upstream-discovery-header">
         <Header>{intl.formatMessage(messages.trending)}</Header>
-        <div className="mt-2 flex flex-grow flex-col sm:flex-row lg:flex-grow-0">
-          <div className="mb-2 flex flex-grow sm:mb-0 sm:mr-2 lg:flex-grow-0">
-            <span className="inline-flex cursor-default items-center rounded-l-md border border-r-0 border-gray-500 bg-gray-800 px-3 text-sm text-gray-100">
-              <CircleStackIcon className="h-6 w-6" />
-            </span>
-            <select
-              id="mediaType"
-              name="mediaType"
-              onChange={(event) =>
-                setCurrentMediaType(event.target.value as UpstreamMediaType)
-              }
-              value={currentMediaType}
-              className="rounded-r-only"
-            >
-              <option value="all">{intl.formatMessage(globalMessages.all)}</option>
-              <option value="movie">
-                {intl.formatMessage(globalMessages.movies)}
-              </option>
-              <option value="tv">
-                {intl.formatMessage(globalMessages.tvshows)}
-              </option>
-            </select>
-          </div>
-          <div className="mb-2 flex flex-grow sm:mb-0 sm:mr-2 lg:flex-grow-0">
-            <span className="inline-flex cursor-default items-center rounded-l-md border border-r-0 border-gray-500 bg-gray-800 px-3 text-sm text-gray-100">
-              <FunnelIcon className="h-6 w-6" />
-            </span>
-            <select
-              id="timeWindow"
-              name="timeWindow"
-              onChange={(event) =>
-                setCurrentTimeWindow(event.target.value as TimeWindow)
-              }
-              value={currentTimeWindow}
-              className="rounded-r-only"
-            >
-              <option value="day">
-                {intl.formatMessage(messages.timeWindowDay)}
-              </option>
-              <option value="week">
-                {intl.formatMessage(messages.timeWindowWeek)}
-              </option>
-            </select>
-          </div>
-        </div>
+      </div>
+      <DiscoverMediaTabs
+        selected={currentMediaType}
+        basePath="/discover/trending"
+      />
+      <div
+        className="app-filter-row"
+        role="group"
+        aria-label={intl.formatMessage(messages.timeWindow)}
+      >
+        <button
+          type="button"
+          className={getFilterToggleButtonClass(currentTimeWindow === 'day')}
+          aria-pressed={currentTimeWindow === 'day'}
+          onClick={() => setCurrentTimeWindow('day')}
+        >
+          {intl.formatMessage(messages.timeWindowDay)}
+        </button>
+        <button
+          type="button"
+          className={getFilterToggleButtonClass(currentTimeWindow === 'week')}
+          aria-pressed={currentTimeWindow === 'week'}
+          onClick={() => setCurrentTimeWindow('week')}
+        >
+          {intl.formatMessage(messages.timeWindowWeek)}
+        </button>
       </div>
       <ListView
         items={titles}
@@ -171,7 +154,19 @@ const SeerrNgTrending = () => {
 
 const Trending = () => {
   const upstream = useUpstreamTheme();
-  return upstream ? <UpstreamTrending /> : <SeerrNgTrending />;
+  const router = useRouter();
+  const mediaType = router.query.mediaType;
+  const upstreamMediaType =
+    mediaType === undefined ||
+    mediaType === 'all' ||
+    mediaType === 'movie' ||
+    mediaType === 'tv';
+
+  return upstream && upstreamMediaType ? (
+    <UpstreamTrending />
+  ) : (
+    <SeerrNgTrending />
+  );
 };
 
 export default Trending;
