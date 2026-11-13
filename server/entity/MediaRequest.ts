@@ -30,6 +30,7 @@ import {
   bookLanguageAllowed,
 } from '@server/lib/bookLanguagePolicy';
 import { isBookDestinationFileAvailable } from '@server/lib/bookRequestDestination';
+import { expandBookshelfBookIds } from '@server/lib/bookshelfIdentity';
 import { compareBookEditions } from '@server/lib/editionCompare';
 import { getVerifiedMangaVolumeIdentity } from '@server/lib/mangaVolume';
 import {
@@ -1041,9 +1042,26 @@ export class MediaRequest {
         requestBody.editionId && !bookshelfBook
           ? normalizeOpenLibraryEditionId(requestBody.editionId.toString())
           : undefined;
+      // A ChaptarrNG work keeps the bare catalog id it was first stored under
+      // (bookshelf:1:459744) next to the qualified one (bookshelf:1:hc:459744);
+      // either spelling must reuse the same media row.
+      const bookshelfAliases = bookshelfBook
+        ? (
+            (
+              await expandBookshelfBookIds(
+                [submittedBookId],
+                settings.readarr,
+                {
+                  detect: true,
+                }
+              ).catch(() => new Map<string, string[]>())
+            ).get(submittedBookId) ?? []
+          ).filter((alias) => alias !== submittedBookId)
+        : [];
       const maxIsbnCandidates =
         MAX_BOOK_REQUEST_IDENTIFIER_CANDIDATES -
         1 -
+        bookshelfAliases.length -
         (openLibraryEditionId ? 1 : 0);
       const normalizedIsbns = new Set<string>();
       const addIsbn = (value?: string) => {
@@ -1078,6 +1096,11 @@ export class MediaRequest {
             value: openLibraryId,
             canonical: true,
           },
+          ...bookshelfAliases.map((value) => ({
+            provider: MediaIdentifierProvider.BOOKSHELF,
+            value,
+            canonical: false,
+          })),
           ...[...normalizedIsbns].map((isbn) => ({
             provider: MediaIdentifierProvider.ISBN,
             value: isbn,

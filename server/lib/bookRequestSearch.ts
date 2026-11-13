@@ -4,7 +4,6 @@ import BinderyAPI, {
 } from '@server/api/bindery';
 import BookOrbitAPI from '@server/api/bookorbit';
 import ReadarrAPI, {
-  matchesReadarrBookProviderIdentity,
   type ReadarrBook,
   type ReadarrBookLookupResult,
   type ReadarrPendingAuthorImport,
@@ -578,7 +577,7 @@ export class BookRequestSearchManager {
     if (
       currentBook &&
       providerBookId &&
-      matchesReadarrBookProviderIdentity(
+      readarr.matchesBookProviderIdentity(
         currentBook,
         providerBookId,
         operation.providerEditionId ?? undefined
@@ -962,7 +961,7 @@ export class BookRequestSearchManager {
     if (
       currentBook &&
       (!providerBookId ||
-        matchesReadarrBookProviderIdentity(
+        readarr.matchesBookProviderIdentity(
           currentBook,
           providerBookId,
           providerEditionId
