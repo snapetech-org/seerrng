@@ -23,6 +23,7 @@ tags. The comparison link is the complete commit range.
 
 #### Fixed
 
+- **Books:** Audiobook discovery now sorts Popular, Trending, Rating, Newest, and Oldest from catalogue metadata before paging, keeping results and totals consistent. Newest and Oldest ebook browsing also filters impossible Open Library years and placeholder covers.
 - **Localization:** BackIssue comic and manga API errors now have English fallback catalog entries, keeping generated API message catalogs synchronized with the new request-validation paths.
 - **Books:** When ChaptarrNG's remote metadata source is unavailable, SeerrNG now checks Chaptarr's indexed local catalog before remote book searches. It only reuses a matching title and format, confirms the author and Open Library identity when available, and verifies a selected ISBN or edition before monitoring. The fallback uses bounded indexed and per-book requests; it does not download the full library.
 - **Comics:** Harden BackIssue collection sync so only an explicitly unsupported libraries endpoint triggers the legacy unfiltered scan. Validate BackIssue's collection and queue during the read-only connection test, preserve verified AniList manga identity with comic requests across restarts, and document least-privilege BackIssue account setup.
@@ -42,6 +43,8 @@ tags. The comparison link is the complete commit range.
 - Allow per-request episode queue settings - ([ffea30d](https://github.com/snapetech-org/seerrng/commit/ffea30d3985584b8b75d46112fa2a827dd0a61c2))
 
 ### 🐛 Bug Fixes
+- *(books)* Treat stock "no image" covers from catalogues as missing - ([6eacc59](https://github.com/snapetech-org/seerrng/commit/6eacc594a1178053973fb2486ccd7916e12f40a5))
+- *(books)* Sort audiobooks by ChaptarrNG ratings and popularity, drop junk Open Library dates - ([63358f0](https://github.com/snapetech-org/seerrng/commit/63358f085f7c17a485c4ce65c21b6ed86975cdab))
 - *(books)* Reuse stored title for Chaptarr fallback (#643) - ([d0ff232](https://github.com/snapetech-org/seerrng/commit/d0ff2329769ec5f26c049cc827145a11466c7e95))
 - *(deps)* Bump actions/setup-java from 6.1.0 to 6.2.0 - ([0612302](https://github.com/snapetech-org/seerrng/commit/0612302b7a5825f0c54e1b47d0c3a8902fc56886))
 - *(deps)* Bump @anthropic-ai/sdk from 0.131.0 to 1.6.0 - ([72b2872](https://github.com/snapetech-org/seerrng/commit/72b2872a748658ef9c6bb039f3da41a82b272008))
