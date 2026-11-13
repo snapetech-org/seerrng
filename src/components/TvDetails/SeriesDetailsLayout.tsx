@@ -1262,6 +1262,7 @@ const SeriesDetailsLayout = ({
       <UpstreamVideoDetails
         data={data}
         mediaType="tv"
+        sortedCrew={sortedCrew}
         seasons={
           seasonBrowser ?? (
             <UpstreamSeasons tvId={data.id} seasons={visibleSeasons} />
