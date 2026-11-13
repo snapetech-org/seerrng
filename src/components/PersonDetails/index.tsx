@@ -14,6 +14,7 @@ import FollowButton from '@app/components/Following/FollowButton';
 import TitleCard from '@app/components/TitleCard';
 import { SettingsContext } from '@app/context/SettingsContext';
 import useToasts from '@app/hooks/useToasts';
+import useUpstreamTheme from '@app/hooks/useUpstreamTheme';
 import { Permission, useUser } from '@app/hooks/useUser';
 import globalMessages from '@app/i18n/globalMessages';
 import ErrorPage from '@app/pages/_error';
@@ -24,6 +25,8 @@ import {
   sortPersonCredits,
   type CreditSortOption,
 } from '@app/utils/personCredits';
+import { ChevronDownIcon } from '@heroicons/react/24/outline';
+import { CircleStackIcon } from '@heroicons/react/24/solid';
 import type { PersonCombinedCreditsResponse } from '@server/interfaces/api/personInterfaces';
 import type { PersonMovieBulkRequestResponse } from '@server/interfaces/api/requestInterfaces';
 import type { PersonDetails as PersonDetailsType } from '@server/models/Person';
@@ -61,12 +64,14 @@ const messages = defineMessages('components.PersonDetails', {
   requestAllMoviesSuccess:
     'Submitted {created} movie requests. {skipped} skipped; {failed} failed.',
   requestAllMoviesFailure: 'Could not request movies by this person.',
+  moreTools: 'More person options',
 });
 
 type MediaType = 'all' | 'movie' | 'tv';
 const PersonDetails = () => {
   const intl = useIntl();
   const router = useRouter();
+  const upstream = useUpstreamTheme();
   const { currentSettings } = useContext(SettingsContext);
   const { hasPermission } = useUser();
   const { addToast } = useToasts();
@@ -311,6 +316,35 @@ const PersonDetails = () => {
       value: 'title.desc',
     },
   ];
+  const mediaTypePicker = (
+    <div className="upstream-person-media-filter">
+      <span aria-hidden="true">
+        <CircleStackIcon />
+      </span>
+      <select
+        id="mediaType"
+        name="mediaType"
+        value={currentMediaType}
+        onChange={(event) => setCurrentMediaType(event.target.value as MediaType)}
+        aria-label={intl.formatMessage(messages.mediaTypeFilter)}
+      >
+        <option value="all">{intl.formatMessage(globalMessages.all)}</option>
+        <option value="movie">
+          {intl.formatMessage(globalMessages.movies)}
+        </option>
+        <option value="tv">{intl.formatMessage(globalMessages.tvshows)}</option>
+      </select>
+    </div>
+  );
+  const creditSortPicker = (
+    <CompactSelect
+      label={intl.formatMessage(messages.creditSort)}
+      value={creditSort}
+      options={creditSortOptions}
+      onChange={(value) => setCreditSort(value as CreditSortOption)}
+      defaultValue="vote_count.desc"
+    />
+  );
   const creditFilters = (
     <div className="app-filter-row">
       <CompactSelect
@@ -320,20 +354,14 @@ const PersonDetails = () => {
         onChange={(value) => setCurrentMediaType(value as MediaType)}
         defaultValue="all"
       />
-      <CompactSelect
-        label={intl.formatMessage(messages.creditSort)}
-        value={creditSort}
-        options={creditSortOptions}
-        onChange={(value) => setCreditSort(value as CreditSortOption)}
-        defaultValue="vote_count.desc"
-      />
+      {creditSortPicker}
     </div>
   );
 
   const cast = (sortedCast ?? []).length > 0 && (
     <>
       <div className="slider-header">
-        <div className="page-heading">
+        <div className={upstream ? 'slider-title' : 'page-heading'}>
           <span>{intl.formatMessage(messages.appearsin)}</span>
         </div>
       </div>
@@ -381,7 +409,7 @@ const PersonDetails = () => {
   const crew = (sortedCrew ?? []).length > 0 && (
     <>
       <div className="slider-header">
-        <div className="page-heading">
+        <div className={upstream ? 'slider-title' : 'page-heading'}>
           <span>{intl.formatMessage(messages.crewmember)}</span>
         </div>
       </div>
@@ -459,8 +487,12 @@ const PersonDetails = () => {
         )}
         <div className="w-full text-center text-gray-300 lg:text-start">
           <div className="flex w-full items-center justify-center lg:justify-between">
-            <h1 className="page-title">{data.name}</h1>
-            <div className="hidden flex-shrink-0 lg:block">{creditFilters}</div>
+            <h1 className={upstream ? 'upstream-person-name' : 'page-title'}>
+              {data.name}
+            </h1>
+            <div className="hidden flex-shrink-0 lg:block">
+              {upstream ? mediaTypePicker : creditFilters}
+            </div>
           </div>
           <div className="flex w-full items-center justify-center lg:justify-between">
             <div className="mt-3 mb-3">
@@ -486,7 +518,9 @@ const PersonDetails = () => {
               </div>
             )}
           </div>
-          <div className="lg:hidden">{creditFilters}</div>
+          <div className="lg:hidden">
+            {upstream ? mediaTypePicker : creditFilters}
+          </div>
           {data.biography && (
             <div className="relative text-start">
               {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events */}
@@ -509,7 +543,7 @@ const PersonDetails = () => {
           )}
         </div>
       </div>
-      {(canRequestAllMovies || canFollowPerson) && (
+      {!upstream && (canRequestAllMovies || canFollowPerson) && (
         <div className="app-action-row" data-action-placement="leading">
           {canRequestAllMovies && (
             <Button
@@ -530,6 +564,39 @@ const PersonDetails = () => {
             />
           )}
         </div>
+      )}
+      {upstream && (
+        <details className="upstream-person-more">
+          <summary>
+            <span>{intl.formatMessage(messages.moreTools)}</span>
+            <ChevronDownIcon aria-hidden="true" />
+          </summary>
+          <div className="upstream-person-more-content">
+            {creditSortPicker}
+            {(canRequestAllMovies || canFollowPerson) && (
+              <div className="app-action-row" data-action-placement="leading">
+                {canRequestAllMovies && (
+                  <Button
+                    buttonType="primary"
+                    onClick={() => setShowRequestAllMovies(true)}
+                  >
+                    {intl.formatMessage(messages.requestAllMovies)}
+                  </Button>
+                )}
+                {canFollowPerson && (
+                  <FollowButton
+                    input={{
+                      kind: 'tmdb-person',
+                      subjectKey: `tmdb:person:${data.id}`,
+                      subjectLabel: data.name,
+                      conditions: { ref: { tmdbId: data.id } },
+                    }}
+                  />
+                )}
+              </div>
+            )}
+          </div>
+        </details>
       )}
       {showRequestAllMovies && canRequestAllMovies && (
         <Modal

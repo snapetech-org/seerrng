@@ -158,3 +158,22 @@ status filters, and sort options remain under “More request filters.” Existi
 request rows, service errors, profile scoping, pagination, and permissions are
 still rendered from the fork's data and actions; visual alignment of those
 rows and footer remains under review.
+
+Movie and TV detail pages now share the upstream v3.5.1 media-page frame,
+responsive artwork header, facts panel, crew list, and cast slider. Movie
+release/certification, collection, and keyword details, plus TV season,
+network, content-rating, and provider data, are rendered in upstream hierarchy.
+SeerrNG request, playback, issue, quality, and service controls remain connected
+through the detail action slots. Person cards in SeerrOrig use the upstream
+card component; other interface themes retain the fork card. This is source
+alignment only: matching browser renders have not yet been produced.
+
+The person page retains the upstream profile, biography, credits, and native
+movie/series filter. SeerrNG's credit sort, follow action, and bulk movie
+request are reachable in a collapsed “More person options” disclosure. The
+same route and viewport render comparison remains outstanding.
+
+The collection page uses the upstream 493px media frame, backdrop, responsive
+poster/title/action header, aggregate HD/4K status indicators, and movie slider.
+Collection selection, playback, metadata, and service tools remain reachable
+in the existing extension disclosure. Browser comparison remains outstanding.

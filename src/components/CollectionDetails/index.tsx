@@ -383,7 +383,7 @@ const CollectionDetails = ({ collection }: CollectionDetailsProps) => {
           ),
         }}
         attributes={genreIds.map((genreId) => (
-          <Link key={genreId} href={`/discover/movies?genre=${genreId}`}>
+          <Link key={genreId} href={`/discover/movies/genre/${genreId}`}>
             {genres?.find((genre) => genre.id === genreId)?.name ?? genreId}
           </Link>
         ))}
