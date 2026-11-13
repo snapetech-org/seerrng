@@ -13,7 +13,6 @@ import OidcLoginButton from '@app/components/Login/OidcLoginButton';
 import PlexLoginButton from '@app/components/Login/PlexLoginButton';
 import TransportSecurityNotice from '@app/components/TransportSecurityNotice';
 import useSettings from '@app/hooks/useSettings';
-import useUpstreamTheme from '@app/hooks/useUpstreamTheme';
 import { useUser } from '@app/hooks/useUser';
 import defineMessages from '@app/utils/defineMessages';
 import { getSafeReturnPath } from '@app/utils/loginReturn';
@@ -71,7 +70,6 @@ const Login = ({
   intlRef.current = intl;
   const router = useRouter();
   const settings = useSettings();
-  const upstream = useUpstreamTheme();
   const { user, revalidate } = useUser();
 
   const [error, setError] = useState('');
@@ -327,9 +325,7 @@ const Login = ({
       <div className="auth-login-brand relative z-40 flex flex-col items-center px-4 sm:mx-auto sm:w-full sm:max-w-md">
         <div className="relative h-48 w-full max-w-full drop-shadow-[0_2px_8px_rgba(15,23,42,0.65)]">
           <Image
-            src={versionedAsset(
-              upstream ? '/logo_stacked_seerr.svg' : '/logo_stacked.svg'
-            )}
+            src={versionedAsset('/logo_stacked.svg')}
             alt="Seerr"
             fill
             priority
