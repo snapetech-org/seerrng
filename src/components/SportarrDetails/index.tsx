@@ -172,7 +172,7 @@ const SportarrDetailsPage = () => {
   const retryLeague = () => void revalidateLeague();
 
   return (
-    <div className="media-page sportarr-detail-page">
+    <div className="media-page upstream-extension-page sportarr-detail-page">
       <PageTitle title={title} />
       <div className="page-title-row">
         <h1 className="page-title">{title}</h1>

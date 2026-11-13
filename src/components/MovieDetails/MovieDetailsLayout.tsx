@@ -506,6 +506,8 @@ const MovieDetailsLayout = ({
         <UpstreamVideoDetails
           data={data}
           mediaType="movie"
+          sortedCrew={sortedCrew}
+          filteredReleases={filteredReleases}
           actions={
             <>
               {availableFormats.length > 0 &&

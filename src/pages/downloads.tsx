@@ -257,7 +257,7 @@ export default function DownloadsPage() {
     'rejection-outcome-unknown': messages.unknownReject,
   };
   return (
-    <div className="text-gray-100">
+    <div className="text-gray-100 upstream-extension-page upstream-downloads-page">
       <PageTitle title={intl.formatMessage(messages.title)} />
       <h1 className="page-title">{intl.formatMessage(messages.title)}</h1>
       <p className="description mb-6">
@@ -267,7 +267,7 @@ export default function DownloadsPage() {
         <p>{intl.formatMessage(messages.denied)}</p>
       ) : (
         <>
-          <div className="mb-5 flex flex-wrap gap-3">
+          <div className="upstream-extension-toolbar mb-5 flex flex-wrap gap-3">
             {(['active', 'history'] as const).map((value) => (
               <Button
                 key={value}
@@ -287,7 +287,7 @@ export default function DownloadsPage() {
             </Button>
           </div>
           {notice && (
-            <p role="status" className="mb-4 rounded-md bg-gray-800 p-4">
+            <p role="status" className="upstream-extension-notice mb-4 p-4">
               {<ApiMessageText>{notice}</ApiMessageText>}
             </p>
           )}
@@ -304,11 +304,11 @@ export default function DownloadsPage() {
           {data?.results.length === 0 && (
             <p>{intl.formatMessage(messages.empty)}</p>
           )}
-          <div className="space-y-4" aria-busy={isLoading || busy}>
+          <div className="upstream-download-list space-y-4" aria-busy={isLoading || busy}>
             {data?.results.map((warning) => (
               <article
                 key={warning.id}
-                className="rounded-lg border border-gray-700 bg-gray-800 p-4"
+                className="upstream-extension-item rounded-lg border border-gray-700 bg-gray-800 p-4"
               >
                 <div className="flex flex-wrap items-start justify-between gap-3">
                   <div className="min-w-0 flex-1">
@@ -342,7 +342,7 @@ export default function DownloadsPage() {
                     </summary>
                     <ol className="mt-3 space-y-3">
                       {warning.actions.map((action, index) => (
-                        <li key={index} className="rounded-md bg-gray-900 p-3">
+                        <li key={index} className="upstream-download-action p-3">
                           <p>
                             {intl.formatDate(new Date(action.at), {
                               dateStyle: 'medium',

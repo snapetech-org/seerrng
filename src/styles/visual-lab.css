@@ -3331,7 +3331,7 @@
     color: rgb(var(--theme-control-text) / 0.86);
   }
 
-  .settings-page-content > .mb-6 {
+  .settings-page-content > :is(.mb-6, .settings-page-intro) {
     @apply mt-0 mb-0 rounded-t-lg border border-b-0 border-gray-700 p-3 pb-0;
     margin-top: 0 !important;
     margin-bottom: 0 !important;
@@ -3339,7 +3339,7 @@
     padding: var(--inset-card-padding) var(--inset-card-padding) 0 !important;
   }
 
-  .settings-page-content > .mb-6 + .section {
+  .settings-page-content > :is(.mb-6, .settings-page-intro) + .section {
     @apply mt-0 rounded-t-none border-t-0 pt-0;
     margin-top: 0 !important;
     padding-top: 0 !important;

@@ -1,4 +1,6 @@
 import CachedImage from '@app/components/Common/CachedImage';
+import UpstreamPersonCard from '@app/components/MediaDetails/UpstreamPersonCard';
+import useUpstreamTheme from '@app/hooks/useUpstreamTheme';
 import { getTmdbPosterImageUrl } from '@app/utils/imageCache';
 import { UserCircleIcon } from '@heroicons/react/24/solid';
 import Link from 'next/link';
@@ -17,8 +19,22 @@ const PersonCard = ({
   name,
   subName,
   profilePath,
+  canExpand,
 }: PersonCardProps) => {
+  const upstream = useUpstreamTheme();
   const [isHovered, setHovered] = useState(false);
+
+  if (upstream) {
+    return (
+      <UpstreamPersonCard
+        personId={personId}
+        name={name}
+        subName={subName}
+        profilePath={profilePath}
+        canExpand={canExpand}
+      />
+    );
+  }
 
   return (
     <Link

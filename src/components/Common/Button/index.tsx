@@ -1,3 +1,4 @@
+import useUpstreamTheme from '@app/hooks/useUpstreamTheme';
 import {
   ArrowPathIcon,
   MagnifyingGlassIcon,
@@ -6,7 +7,6 @@ import {
 } from '@heroicons/react/24/outline';
 import type { ForwardedRef, JSX } from 'react';
 import React from 'react';
-import { twMerge } from 'tailwind-merge';
 import buttonStyles from './Button.module.css';
 
 export type ButtonType =
@@ -101,14 +101,17 @@ function Button<P extends ElementTypes = 'button'>(
   }: ButtonProps<P>,
   ref?: React.Ref<Element<P>>
 ): JSX.Element {
-  const buttonStyle = twMerge(
+  const upstream = useUpstreamTheme();
+  const buttonStyle = [
     'app-button',
     buttonTypeStyles[buttonType],
     buttonSizeStyles[buttonSize],
     iconOnly && 'app-button-icon-only',
     className,
-    buttonStyles.button
-  );
+    buttonStyles.button,
+  ]
+    .filter(Boolean)
+    .join(' ');
 
   if (as === 'a') {
     return (
@@ -117,7 +120,9 @@ function Button<P extends ElementTypes = 'button'>(
         {...(props as React.ComponentProps<'a'>)}
         data-button-icon={buttonIcon}
         data-button-help={props.title}
-        title={undefined}
+        title={
+          upstream ? (props as React.ComponentProps<'a'>).title : undefined
+        }
         ref={ref as ForwardedRef<HTMLAnchorElement>}
       >
         <span>
@@ -144,7 +149,7 @@ function Button<P extends ElementTypes = 'button'>(
         data-button-icon={buttonIcon}
         data-button-help={buttonProps.title}
         data-disabled-reason={disabledTitle}
-        title={undefined}
+        title={upstream ? buttonProps.title : undefined}
         ref={ref as ForwardedRef<HTMLButtonElement>}
       >
         <span>

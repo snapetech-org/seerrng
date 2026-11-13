@@ -1,5 +1,9 @@
+import Alert from '@app/components/Common/Alert';
+import Badge from '@app/components/Common/Badge';
 import Button from '@app/components/Common/Button';
+import Header from '@app/components/Common/Header';
 import PageTitle from '@app/components/Common/PageTitle';
+import useUpstreamTheme from '@app/hooks/useUpstreamTheme';
 import { Permission, useUser } from '@app/hooks/useUser';
 import {
   encodeApiPathSegment,
@@ -64,6 +68,7 @@ const dateMonth = (date: Date) =>
   `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
 export default function CalendarPage() {
   const intl = useIntl();
+  const upstream = useUpstreamTheme();
   const { hasPermission } = useUser();
   const [month, setMonth] = useState(() => dateMonth(new Date()));
   const [scope, setScope] = useState('mine');
@@ -98,13 +103,13 @@ export default function CalendarPage() {
     setLimit(25);
   };
   return (
-    <div className="text-gray-100">
+    <div className="text-gray-100 upstream-extension-page upstream-calendar-page">
       <PageTitle title={intl.formatMessage(messages.title)} />
-      <h1 className="page-title">{intl.formatMessage(messages.title)}</h1>
+      <Header>{intl.formatMessage(messages.title)}</Header>
       <p className="description mb-6">
         {intl.formatMessage(messages.description)}
       </p>
-      <div className="mb-6 flex flex-wrap items-end gap-4">
+      <div className="upstream-extension-toolbar mb-6 flex flex-wrap items-end gap-4">
         <label htmlFor="calendar-month">
           {intl.formatMessage(messages.month)}
           <input
@@ -190,35 +195,63 @@ export default function CalendarPage() {
         </Button>
       </nav>
       {isLoading && <p role="status">{intl.formatMessage(messages.loading)}</p>}
-      {error && (
-        <p role="alert">
-          {intl.formatMessage(messages.failed)}{' '}
-          <Button onClick={() => void mutate()}>
-            {intl.formatMessage(messages.retry)}
-          </Button>
-        </p>
-      )}
-      {!!data?.partialSources.length && (
-        <p
-          role="status"
-          className="mb-4 rounded-lg border border-yellow-500 p-4"
-        >
-          {intl.formatMessage(messages.partial)}
-        </p>
-      )}
-      {data?.truncated && (
-        <p role="status" className="mb-4 text-yellow-400">
-          {intl.formatMessage(messages.truncated)}
-        </p>
-      )}
+      {error &&
+        (upstream ? (
+          <div role="alert">
+            <Alert type="error">
+              {intl.formatMessage(messages.failed)}{' '}
+              <Button onClick={() => void mutate()}>
+                {intl.formatMessage(messages.retry)}
+              </Button>
+            </Alert>
+          </div>
+        ) : (
+          <p role="alert">
+            {intl.formatMessage(messages.failed)}{' '}
+            <Button onClick={() => void mutate()}>
+              {intl.formatMessage(messages.retry)}
+            </Button>
+          </p>
+        ))}
+      {!!data?.partialSources.length &&
+        (upstream ? (
+          <div role="status">
+            <Alert type="warning">{intl.formatMessage(messages.partial)}</Alert>
+          </div>
+        ) : (
+          <p
+            role="status"
+            className="mb-4 rounded-lg border border-yellow-500 p-4"
+          >
+            {intl.formatMessage(messages.partial)}
+          </p>
+        ))}
+      {data?.truncated &&
+        (upstream ? (
+          <div role="status">
+            <Alert type="warning">
+              {intl.formatMessage(messages.truncated)}
+            </Alert>
+          </div>
+        ) : (
+          <p role="status" className="mb-4 text-yellow-400">
+            {intl.formatMessage(messages.truncated)}
+          </p>
+        ))}
       {data && !data.results.length && (
-        <p>{intl.formatMessage(messages.empty)}</p>
+        <p className={upstream ? 'description' : undefined}>
+          {intl.formatMessage(messages.empty)}
+        </p>
       )}
       <ol className="space-y-3">
         {data?.results.slice(0, limit).map((item) => (
           <li
             key={item.id}
-            className="grid gap-2 rounded-lg border border-gray-700 bg-gray-800 p-4 sm:grid-cols-[10rem_minmax(0,1fr)_auto]"
+            className={
+              upstream
+                ? 'app-card-main grid gap-2 border border-gray-700 p-4 sm:grid-cols-[10rem_minmax(0,1fr)_auto]'
+                : 'grid gap-2 rounded-lg border border-gray-700 bg-gray-800 p-4 sm:grid-cols-[10rem_minmax(0,1fr)_auto]'
+            }
           >
             <div className="min-w-32 text-sm">
               <time dateTime={item.startsAt}>
@@ -244,28 +277,36 @@ export default function CalendarPage() {
                 item.igdbId ? (
                   <Link
                     href={`/software?category=${item.softwareCategory}&game=${item.igdbId}`}
-                    className="text-blue-300 hover:text-blue-200"
+                    className={
+                      upstream ? undefined : 'text-blue-300 hover:text-blue-200'
+                    }
                   >
                     {item.title}
                   </Link>
                 ) : item.mediaType === 'music' && item.mbId ? (
                   <Link
                     href={`/music/${encodeApiPathSegment(normalizeMusicBrainzId(item.mbId))}`}
-                    className="text-blue-300 hover:text-blue-200"
+                    className={
+                      upstream ? undefined : 'text-blue-300 hover:text-blue-200'
+                    }
                   >
                     {item.title}
                   </Link>
                 ) : item.mediaType === 'book' && item.bookId ? (
                   <Link
                     href={`/book/${encodeApiPathSegment(item.bookId)}?format=${item.bookFormat ?? 'ebook'}&lookupTitle=${encodeURIComponent(item.title)}`}
-                    className="text-blue-300 hover:text-blue-200"
+                    className={
+                      upstream ? undefined : 'text-blue-300 hover:text-blue-200'
+                    }
                   >
                     {item.title}
                   </Link>
                 ) : item.mediaType === 'comic' && item.comicId ? (
                   <Link
                     href={'/comic/' + encodeApiPathSegment(item.comicId)}
-                    className="text-blue-300 hover:text-blue-200"
+                    className={
+                      upstream ? undefined : 'text-blue-300 hover:text-blue-200'
+                    }
                   >
                     {item.title}
                   </Link>
@@ -274,14 +315,18 @@ export default function CalendarPage() {
                     href={
                       '/magazine/' + encodeApiPathSegment(item.magazineTitle)
                     }
-                    className="text-blue-300 hover:text-blue-200"
+                    className={
+                      upstream ? undefined : 'text-blue-300 hover:text-blue-200'
+                    }
                   >
                     {item.title}
                   </Link>
                 ) : item.tmdbId ? (
                   <Link
                     href={`/${item.mediaType}/${item.tmdbId}`}
-                    className="text-blue-300 hover:text-blue-200"
+                    className={
+                      upstream ? undefined : 'text-blue-300 hover:text-blue-200'
+                    }
                   >
                     {item.title}
                   </Link>
@@ -350,14 +395,23 @@ export default function CalendarPage() {
                 </p>
               ))}
             </div>
-            <span
-              className={`text-sm ${item.available ? 'text-green-400' : 'text-gray-400'}`}
-            >
-              {intl.formatMessage(
-                item.available ? messages.available : messages.upcoming
-              )}
-              {item.is4k ? ' · 4K' : ''}
-            </span>
+            {upstream ? (
+              <Badge badgeType={item.available ? 'success' : 'dark'}>
+                {intl.formatMessage(
+                  item.available ? messages.available : messages.upcoming
+                )}
+                {item.is4k ? ' · 4K' : ''}
+              </Badge>
+            ) : (
+              <span
+                className={`text-sm ${item.available ? 'text-green-400' : 'text-gray-400'}`}
+              >
+                {intl.formatMessage(
+                  item.available ? messages.available : messages.upcoming
+                )}
+                {item.is4k ? ' · 4K' : ''}
+              </span>
+            )}
           </li>
         ))}
       </ol>

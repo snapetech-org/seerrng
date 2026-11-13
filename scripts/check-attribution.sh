@@ -63,6 +63,15 @@ has_upstream_branding() {
     "$1" >/dev/null 2>&1
 }
 
+has_explicit_upstream_source_credit() {
+  local path="$1"
+
+  rg -qi 'Source: .*https://github\.com/seerr-team/seerr/' "$path" &&
+    rg -q '\[[^]]+\]\(https://github\.com/[A-Za-z0-9-]+\)' "$path" &&
+    rg -qi '(contributed|suggested|reported).{0,100}upstream|upstream.{0,100}(contributed|suggested|reported)' "$path" &&
+    rg -q 'SeerrNG independently (adapted|integrated|verified)' "$path"
+}
+
 while IFS=$'\t' read -r status path rest; do
   [[ -n "${path:-}" ]] || continue
   [[ -f "$path" ]] || continue
@@ -71,7 +80,7 @@ while IFS=$'\t' read -r status path rest; do
     continue
   fi
 
-  if is_fresh_file "$status" && has_upstream_branding "$path"; then
+  if is_fresh_file "$status" && has_upstream_branding "$path" && ! has_explicit_upstream_source_credit "$path"; then
     echo "Attribution check: fresh file contains upstream Seerr branding: $path" >&2
     problem=1
     continue

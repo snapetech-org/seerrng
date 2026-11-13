@@ -101,6 +101,7 @@ const DiscoverMovies = ({
     (studio?.logoPath
       ? `https://image.tmdb.org/t/p/original${studio.logoPath}`
       : undefined);
+
   return (
     <>
       <PageTitle title={title} />

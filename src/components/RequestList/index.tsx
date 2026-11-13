@@ -1,6 +1,7 @@
 import Button from '@app/components/Common/Button';
 import Header from '@app/components/Common/Header';
 import LoadingSpinner from '@app/components/Common/LoadingSpinner';
+import PageErrorMessage from '@app/components/Common/PageErrorMessage';
 import PageTitle from '@app/components/Common/PageTitle';
 import PaginationFooter from '@app/components/Common/PaginationFooter';
 import Tooltip from '@app/components/Common/Tooltip';
@@ -19,6 +20,7 @@ import {
   getQueryParamString,
   useUpdateQueryParams,
 } from '@app/hooks/useUpdateQueryParams';
+import useUpstreamTheme from '@app/hooks/useUpstreamTheme';
 import { Permission, useUser } from '@app/hooks/useUser';
 import globalMessages from '@app/i18n/globalMessages';
 import defineMessages from '@app/utils/defineMessages';
@@ -29,7 +31,14 @@ import {
   writeLocalStoredRecord,
 } from '@app/utils/localStorage';
 import { ExclamationTriangleIcon } from '@heroicons/react/24/outline';
-import { ArrowDownIcon, ArrowUpIcon } from '@heroicons/react/24/solid';
+import {
+  ArrowDownIcon,
+  ArrowUpIcon,
+  Bars3BottomLeftIcon,
+  ChevronDownIcon,
+  CircleStackIcon,
+  FunnelIcon,
+} from '@heroicons/react/24/solid';
 import type { RequestResultsResponse } from '@server/interfaces/api/requestInterfaces';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -49,6 +58,8 @@ const messages = defineMessages('components.RequestList', {
   sortTitle: 'Title',
   sortDirection: 'Toggle Sort Direction',
   taskFilters: 'Task Filters',
+  moreRequestFilters: 'More Request Filters',
+  loadError: 'Could Not Load Requests',
   mediaFilters: 'Media Filters',
   sortBy: 'Sort By',
   mediaType: 'Media Type',
@@ -92,6 +103,7 @@ const SORT_DIRECTION_OPTIONS: readonly SortDirection[] = ['asc', 'desc'];
 
 const RequestList = () => {
   const persius = usePersius();
+  const upstream = useUpstreamTheme();
   const router = useRouter();
   const intl = useIntl();
   const userId = getPositiveQueryParamNumber(router.query.userId);
@@ -141,6 +153,19 @@ const RequestList = () => {
     : 'added';
   const effectiveSortDirection =
     effectiveSort === currentSort ? currentSortDirection : 'desc';
+  const upstreamMediaType = ['all', 'movie', 'tv'].includes(effectiveMediaType)
+    ? effectiveMediaType
+    : 'all';
+  const upstreamFilter =
+    effectiveFilter === Filter.ACTIVE ? Filter.PENDING : effectiveFilter;
+  const upstreamSort =
+    effectiveSort === 'added' || effectiveSort === 'modified'
+      ? effectiveSort
+      : 'added';
+  const shouldOpenRequestMore =
+    upstreamMediaType !== effectiveMediaType ||
+    effectiveFilter === Filter.ACTIVE ||
+    !['added', 'modified'].includes(effectiveSort);
 
   const requestedBy = router.pathname.startsWith('/profile')
     ? currentUser?.id
@@ -230,7 +255,164 @@ const RequestList = () => {
     </>
   );
 
+  const requestHeader = (
+    <Header
+      subtext={
+        router.pathname.startsWith('/profile') ? (
+          <Link href={`/profile`} className="hover:underline">
+            {currentUser?.displayName}
+          </Link>
+        ) : router.query.userId ? (
+          <Link href={`/users/${user?.id}`} className="hover:underline">
+            {user?.displayName}
+          </Link>
+        ) : (
+          ''
+        )
+      }
+    >
+      {intl.formatMessage(messages.requests)}
+    </Header>
+  );
+
+  const upstreamRequestControls = (
+    <div className="mt-2 flex flex-grow flex-col sm:flex-row lg:flex-grow-0">
+      <div className="mb-2 flex flex-grow sm:mr-2 sm:mb-0 lg:flex-grow-0">
+        <span className="inline-flex cursor-default items-center rounded-l-md border border-r-0 border-gray-500 bg-gray-800 px-3 text-sm text-gray-100">
+          <CircleStackIcon />
+        </span>
+        <select
+          id="mediaType"
+          name="mediaType"
+          value={upstreamMediaType}
+          className="rounded-r-only"
+          onChange={(event) => {
+            const value = event.target.value as MediaType;
+            setCurrentMediaType(value);
+            if (
+              value !== 'movie' &&
+              value !== 'tv' &&
+              !['added', 'modified'].includes(effectiveSort)
+            ) {
+              setCurrentSort('added');
+              setCurrentSortDirection('desc');
+            }
+            void router.push({
+              pathname: router.pathname,
+              query: router.query.userId ? { userId: router.query.userId } : {},
+            });
+          }}
+        >
+          <option value="all">{intl.formatMessage(globalMessages.all)}</option>
+          <option value="movie">
+            {intl.formatMessage(globalMessages.movies)}
+          </option>
+          <option value="tv">
+            {intl.formatMessage(globalMessages.tvshows)}
+          </option>
+        </select>
+      </div>
+      <div className="mb-2 flex flex-grow sm:mr-2 sm:mb-0 lg:flex-grow-0">
+        <span className="inline-flex cursor-default items-center rounded-l-md border border-r-0 border-gray-500 bg-gray-800 px-3 text-sm text-gray-100">
+          <FunnelIcon />
+        </span>
+        <select
+          id="filter"
+          name="filter"
+          value={upstreamFilter}
+          className="rounded-r-only"
+          onChange={(event) => {
+            setCurrentFilter(event.target.value as Filter);
+            void router.push({
+              pathname: router.pathname,
+              query: router.query.userId ? { userId: router.query.userId } : {},
+            });
+          }}
+        >
+          <option value="all">{intl.formatMessage(globalMessages.all)}</option>
+          <option value="pending">
+            {intl.formatMessage(globalMessages.pending)}
+          </option>
+          <option value="approved">
+            {intl.formatMessage(globalMessages.approved)}
+          </option>
+          <option value="completed">
+            {intl.formatMessage(globalMessages.completed)}
+          </option>
+          <option value="processing">
+            {intl.formatMessage(globalMessages.processing)}
+          </option>
+          <option value="failed">
+            {intl.formatMessage(globalMessages.failed)}
+          </option>
+          <option value="available">
+            {intl.formatMessage(globalMessages.available)}
+          </option>
+          <option value="unavailable">
+            {intl.formatMessage(globalMessages.unavailable)}
+          </option>
+          <option value="deleted">
+            {intl.formatMessage(globalMessages.deleted)}
+          </option>
+        </select>
+      </div>
+      <div className="mb-2 flex flex-grow lg:flex-grow-0">
+        <span className="inline-flex cursor-default items-center rounded-l-md border border-r-0 border-gray-500 bg-gray-800 px-3 text-gray-100 sm:text-sm">
+          <Bars3BottomLeftIcon />
+        </span>
+        <select
+          id="sort"
+          name="sort"
+          value={upstreamSort}
+          className="rounded-none border-r-0"
+          onChange={(event) => {
+            setCurrentSort(event.target.value as Sort);
+            setCurrentSortDirection('desc');
+            void router.push({
+              pathname: router.pathname,
+              query: router.query.userId ? { userId: router.query.userId } : {},
+            });
+          }}
+        >
+          <option value="added">
+            {intl.formatMessage(messages.sortAdded)}
+          </option>
+          <option value="modified">
+            {intl.formatMessage(messages.sortModified)}
+          </option>
+        </select>
+        <Tooltip content={intl.formatMessage(messages.sortDirection)}>
+          <Button
+            buttonType="default"
+            className="z-40 mr-2 rounded-l-none border !border-gray-500 !bg-gray-800 !px-3 !text-gray-500 hover:!bg-gray-400 hover:!text-white"
+            buttonSize="md"
+            onClick={() =>
+              setCurrentSortDirection(
+                effectiveSortDirection === 'asc' ? 'desc' : 'asc'
+              )
+            }
+          >
+            {effectiveSortDirection === 'asc' ? (
+              <ArrowUpIcon />
+            ) : (
+              <ArrowDownIcon />
+            )}
+          </Button>
+        </Tooltip>
+      </div>
+    </div>
+  );
+
   if (!data && !error) {
+    if (upstream) {
+      return (
+        <>
+          {pendingHeading}
+          <LoadingSpinner />
+        </>
+      );
+    }
+
     return (
       <>
         {pendingHeading}
@@ -240,6 +422,21 @@ const RequestList = () => {
   }
 
   if (!data) {
+    if (upstream) {
+      return (
+        <>
+          {pendingHeading}
+          <PageErrorMessage
+            title={intl.formatMessage(messages.loadError)}
+            retry={{
+              onClick: () => revalidate(),
+              tooltip: intl.formatMessage(globalMessages.retry),
+            }}
+          />
+        </>
+      );
+    }
+
     return (
       <>
         {pendingHeading}
@@ -465,30 +662,37 @@ const RequestList = () => {
   return (
     <>
       <PageTitle
-        title={
-          router.query.userId && user?.displayName
-            ? `${intl.formatMessage(messages.requests)} - ${user.displayName}`
-            : intl.formatMessage(messages.requests)
-        }
+        title={[
+          intl.formatMessage(messages.requests),
+          router.query.userId ? user?.displayName : '',
+        ]}
       />
-      <Header
-        subtext={
-          router.pathname.startsWith('/profile') ? (
-            <Link href={`/profile`} className="hover:underline">
-              {currentUser?.displayName}
-            </Link>
-          ) : router.query.userId ? (
-            <Link href={`/users/${user?.id}`} className="hover:underline">
-              {user?.displayName}
-            </Link>
-          ) : (
-            ''
-          )
-        }
-      >
-        {intl.formatMessage(messages.requests)}
-      </Header>
-      {!persius && requestFilters}
+      {!persius && upstream ? (
+        <>
+          <div className="mb-4 flex flex-col justify-between lg:flex-row lg:items-end">
+            {requestHeader}
+            {upstreamRequestControls}
+          </div>
+          <OptionalDisclosure
+            enabled={upstream}
+            open={shouldOpenRequestMore || undefined}
+            label={
+              <>
+                <span>{intl.formatMessage(messages.moreRequestFilters)}</span>
+                <ChevronDownIcon aria-hidden="true" />
+              </>
+            }
+            className="upstream-extra-tools upstream-extra-tools--compact"
+          >
+            {requestFilters}
+          </OptionalDisclosure>
+        </>
+      ) : (
+        <>
+          {requestHeader}
+          {!persius && requestFilters}
+        </>
+      )}
       {persius && (
         <>
           <p className="persius-page-description">

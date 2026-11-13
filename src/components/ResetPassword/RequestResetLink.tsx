@@ -1,3 +1,4 @@
+import AuthBackdrop from '@app/components/Common/AuthBackdrop';
 import Button from '@app/components/Common/Button';
 import PageTitle from '@app/components/Common/PageTitle';
 import LanguagePicker from '@app/components/Layout/LanguagePicker';
@@ -41,11 +42,12 @@ const ResetPassword = () => {
   return (
     <div className="relative flex min-h-screen flex-col bg-gray-900 py-14">
       <PageTitle title={intl.formatMessage(messages.passwordreset)} />
+      <AuthBackdrop />
       <div className="absolute end-4 top-4 z-50">
         <LanguagePicker />
       </div>
       <div className="relative z-40 mt-10 flex flex-col items-center px-4 sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="relative h-48 w-full max-w-full drop-shadow-[0_2px_8px_rgba(15,23,42,0.65)]">
+        <div className="relative h-48 w-full max-w-full">
           <Image
             src={versionedAsset('/logo_stacked.svg')}
             alt="Seerr"

@@ -886,7 +886,7 @@ const GameLibrary = () => {
   return (
     <>
       <PageTitle title={intl.formatMessage(messages.title)} />
-      <main className="page-layout">
+      <main className="page-layout upstream-extension-page upstream-game-library-page">
         <div data-page-layout-part="content" data-page-flow="stack">
           <div className="page-title-row">
             <h1 className="page-title">{intl.formatMessage(messages.title)}</h1>

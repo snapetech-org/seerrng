@@ -15,6 +15,7 @@ import { DiscoverSliderScrollRestorationContext } from '@app/components/Slider';
 import { encodeURIExtraParams } from '@app/hooks/useDiscover';
 import useSettings from '@app/hooks/useSettings';
 import useToasts from '@app/hooks/useToasts';
+import useUpstreamTheme from '@app/hooks/useUpstreamTheme';
 import { Permission, useUser } from '@app/hooks/useUser';
 import globalMessages from '@app/i18n/globalMessages';
 import defineMessages from '@app/utils/defineMessages';
@@ -92,6 +93,30 @@ const messages = defineMessages('components.Discover', {
   createnewslider: 'Create New Slider',
 });
 
+const upstreamDiscoverSliderTypes = new Set<number>([
+  DiscoverSliderType.RECENTLY_ADDED,
+  DiscoverSliderType.RECENT_REQUESTS,
+  DiscoverSliderType.PLEX_WATCHLIST,
+  DiscoverSliderType.TRENDING,
+  DiscoverSliderType.POPULAR_MOVIES,
+  DiscoverSliderType.MOVIE_GENRES,
+  DiscoverSliderType.UPCOMING_MOVIES,
+  DiscoverSliderType.STUDIOS,
+  DiscoverSliderType.POPULAR_TV,
+  DiscoverSliderType.TV_GENRES,
+  DiscoverSliderType.UPCOMING_TV,
+  DiscoverSliderType.NETWORKS,
+  DiscoverSliderType.TMDB_MOVIE_KEYWORD,
+  DiscoverSliderType.TMDB_MOVIE_GENRE,
+  DiscoverSliderType.TMDB_TV_KEYWORD,
+  DiscoverSliderType.TMDB_TV_GENRE,
+  DiscoverSliderType.TMDB_SEARCH,
+  DiscoverSliderType.TMDB_STUDIO,
+  DiscoverSliderType.TMDB_NETWORK,
+  DiscoverSliderType.TMDB_MOVIE_STREAMING_SERVICES,
+  DiscoverSliderType.TMDB_TV_STREAMING_SERVICES,
+]);
+
 const isDiscoverSliderEnabled = (
   type: number,
   availability: ReturnType<typeof useSettings>['currentSettings']
@@ -144,6 +169,7 @@ type DiscoverProps = {
 const Discover = ({ initialSliders }: DiscoverProps) => {
   const intl = useIntl();
   const persius = usePersius();
+  const upstream = useUpstreamTheme();
   const { hasPermission, user } = useUser();
   const { currentSettings } = useSettings();
   const serviceAvailability = useMemo(
@@ -178,8 +204,12 @@ const Discover = ({ initialSliders }: DiscoverProps) => {
   );
   const visibleSliders = (isEditing ? sliders : discoverData)?.filter(
     (slider) =>
-      slider.type === undefined ||
-      isDiscoverSliderEnabled(slider.type, serviceAvailability)
+      (slider.type === undefined ||
+        isDiscoverSliderEnabled(slider.type, serviceAvailability)) &&
+      (!upstream ||
+        isEditing ||
+        slider.type === undefined ||
+        upstreamDiscoverSliderTypes.has(slider.type))
   );
 
   // We need to sync the state here so that we can modify the changes locally without commiting
@@ -241,6 +271,16 @@ const Discover = ({ initialSliders }: DiscoverProps) => {
     .split('T')[0];
 
   if (!discoverData && !discoverError) {
+    if (upstream) {
+      return (
+        <>
+          <PageTitle title={intl.formatMessage(messages.discover)} />
+          <Header>{intl.formatMessage(messages.discover)}</Header>
+          <LoadingSpinner />
+        </>
+      );
+    }
+
     return (
       <>
         <PageTitle title={intl.formatMessage(messages.discover)} />
@@ -261,9 +301,9 @@ const Discover = ({ initialSliders }: DiscoverProps) => {
           <DiscoveryHeader />
           <HeroShelf />
         </>
-      ) : (
+      ) : !upstream ? (
         <Header>{intl.formatMessage(messages.discover)}</Header>
-      )}
+      ) : null}
       <OptionalDisclosure
         enabled={persius}
         label={intl.formatMessage(messages.customizediscover)}
@@ -741,7 +781,8 @@ const Discover = ({ initialSliders }: DiscoverProps) => {
           <div key={`discover-slider-${slider.id}`}>{sliderComponent}</div>
         );
       })}
-      {!isEditing &&
+      {!upstream &&
+        !isEditing &&
         bookHomeSections?.sections
           .filter((section) => section.enabled)
           .map((section) => {

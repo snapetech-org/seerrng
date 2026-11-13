@@ -34,6 +34,7 @@ const ThemePicker = ({ triggerIcon }: { triggerIcon?: ReactNode } = {}) => {
     setInterfaceTheme,
     toggleMode,
   } = useTheme();
+  const upstreamAppearance = interfaceTheme === 'seerrOrig';
   const { user } = useUser();
   const { addToast } = useToasts();
   const [saving, setSaving] = useState(false);
@@ -85,22 +86,24 @@ const ThemePicker = ({ triggerIcon }: { triggerIcon?: ReactNode } = {}) => {
         className="absolute end-0 z-50 mt-2 w-80 rounded-md shadow-lg transition duration-100 ease-out data-closed:scale-95 data-closed:opacity-0"
       >
         <div className="app-theme-picker-surface rounded-md p-3 ring-1 ring-gray-700 backdrop-blur">
-          <Menu.Item
-            as="button"
-            type="button"
-            onClick={toggleMode}
-            className="app-button app-button-default button-standard mb-3 flex w-full justify-between px-3 py-2 text-sm"
-          >
-            <span className="flex items-center">
-              {mode === 'dark' ? <MoonIcon /> : <SunIcon />}
-              {mode === 'dark'
-                ? intl.formatMessage(messages.darkMode)
-                : intl.formatMessage(messages.lightMode)}
-            </span>
-            <span className="text-xs tracking-wide text-gray-400 uppercase">
-              {intl.formatMessage(messages.toggle)}
-            </span>
-          </Menu.Item>
+          {!upstreamAppearance && (
+            <Menu.Item
+              as="button"
+              type="button"
+              onClick={toggleMode}
+              className="app-button app-button-default button-standard mb-3 flex w-full justify-between px-3 py-2 text-sm"
+            >
+              <span className="flex items-center">
+                {mode === 'dark' ? <MoonIcon /> : <SunIcon />}
+                {mode === 'dark'
+                  ? intl.formatMessage(messages.darkMode)
+                  : intl.formatMessage(messages.lightMode)}
+              </span>
+              <span className="text-xs tracking-wide text-gray-400 uppercase">
+                {intl.formatMessage(messages.toggle)}
+              </span>
+            </Menu.Item>
+          )}
           <Menu.Item
             as="a"
             href="/lumen/"

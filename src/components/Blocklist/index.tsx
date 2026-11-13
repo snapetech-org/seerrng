@@ -25,6 +25,7 @@ import useDebouncedState from '@app/hooks/useDebouncedState';
 import useMediaFilterPin from '@app/hooks/useMediaFilterPin';
 import { useSearchActivityReporter } from '@app/hooks/useSearchActivity';
 import useToasts from '@app/hooks/useToasts';
+import useUpstreamTheme from '@app/hooks/useUpstreamTheme';
 import {
   getPositiveQueryParamNumber,
   useUpdateQueryParams,
@@ -63,6 +64,7 @@ import { useState } from 'react';
 import { useInView } from 'react-intersection-observer';
 import { FormattedDate, useIntl } from 'react-intl';
 import useSWR from 'swr';
+import UpstreamBlocklist from './UpstreamBlocklist';
 
 const messages = defineMessages('components.Blocklist', {
   taskFilters: 'Task Filters',
@@ -118,6 +120,11 @@ const messages = defineMessages('components.Blocklist', {
   sortDate: 'Date',
   sortTitle: 'Title',
   sortMediaType: 'Media Type',
+  moreSeerrNgTools: 'More SeerrNG blocklist tools',
+  extendedBlocklistDescription:
+    'Open the expanded blocklist view for additional media types, filters, and metadata.',
+  openExtendedBlocklist: 'Open extended blocklist',
+  returnToUpstreamBlocklist: 'Return to upstream blocklist layout',
 });
 
 enum Filter {
@@ -386,7 +393,7 @@ const getSecondaryDetails = (
   ];
 };
 
-const Blocklist = () => {
+const ForkBlocklist = () => {
   const [currentPageSize, setCurrentPageSize] = useState(10);
   const [searchFilter, debouncedSearchFilter, setSearchFilter] =
     useDebouncedState('');
@@ -1067,6 +1074,53 @@ const BlocklistedItem = ({ item, revalidateList }: BlocklistedItemProps) => {
         </div>
       </div>
     </article>
+  );
+};
+
+const Blocklist = () => {
+  const upstream = useUpstreamTheme();
+  const router = useRouter();
+  const intl = useIntl();
+  const extendedView = router.query.view === 'seerrng';
+
+  if (upstream && !extendedView) {
+    return (
+      <>
+        <UpstreamBlocklist />
+        <details className="mx-4 mt-4">
+          <summary className="cursor-pointer py-3 text-sm font-semibold text-gray-300">
+            {intl.formatMessage(messages.moreSeerrNgTools)}
+          </summary>
+          <div className="app-card-main refreshed-card-surface rounded-lg border border-gray-700 p-4">
+            <p className="mb-3 text-sm text-gray-300">
+              {intl.formatMessage(messages.extendedBlocklistDescription)}
+            </p>
+            <Link
+              href="/blocklist?view=seerrng"
+              className="inline-flex min-h-10 items-center rounded-md border border-indigo-500 bg-indigo-600 px-4 text-sm font-semibold text-white hover:bg-indigo-500"
+            >
+              {intl.formatMessage(messages.openExtendedBlocklist)}
+            </Link>
+          </div>
+        </details>
+      </>
+    );
+  }
+
+  return (
+    <>
+      {upstream && (
+        <div className="mb-4 flex justify-end">
+          <Link
+            href="/blocklist"
+            className="inline-flex min-h-10 items-center rounded-md border border-gray-600 bg-gray-800 px-4 text-sm font-semibold text-gray-100 hover:bg-gray-700"
+          >
+            {intl.formatMessage(messages.returnToUpstreamBlocklist)}
+          </Link>
+        </div>
+      )}
+      <ForkBlocklist />
+    </>
   );
 };
 

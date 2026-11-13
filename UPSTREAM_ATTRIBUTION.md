@@ -1,6 +1,6 @@
 # Upstream source attribution
 
-This ledger publicly credits 170 source records from [seerr-team/seerr](https://github.com/seerr-team/seerr) that informed implemented behavior, maintained documentation, release notes, or active plans in this fork.
+This ledger publicly credits 197 source records from [seerr-team/seerr](https://github.com/seerr-team/seerr) that informed implemented behavior, maintained documentation, release notes, or active plans in this fork.
 
 The linked people made their reports, suggestions, discussions, or code contributions to the upstream project. This is source credit only: it does not claim that they contributed directly to this fork, endorsed it, or participated in the fork integration.
 
@@ -8,9 +8,74 @@ Implemented and referenced/in-progress records are separated so source credit ne
 
 The [feature comparison](./docs/feature-comparison.md) links these source credits to user-facing guides. Each linked guide carries its relevant attribution footer; source credit alone does not establish feature or release status.
 
+SeerrOrig's native layout and presentation are based on the Seerr v3.5.1 source
+snapshot at [`564bfb08b54caa374bddaf820abfd226e5e69151`](https://github.com/seerr-team/seerr/tree/564bfb08b54caa374bddaf820abfd226e5e69151).
+SeerrOrig's shared movie, TV, and collection poster-card presentation is aligned
+with upstream's [`TitleCard`](https://github.com/seerr-team/seerr/blob/564bfb08b54caa374bddaf820abfd226e5e69151/src/components/TitleCard/index.tsx)
+and its poster badge and status presentation. SeerrNG poster actions and
+additional media metadata remain available, and SeerrNG logos and brand assets
+remain in use. This presentation comes from the upstream v3.5.1 source
+contributed to Seerr by [@gauthier-th](https://github.com/gauthier-th); SeerrNG
+independently adapted it, without implying direct contribution to or endorsement
+of SeerrNG.
+SeerrOrig's movie and TV request rows follow upstream's [`RequestItem`](https://github.com/seerr-team/seerr/blob/564bfb08b54caa374bddaf820abfd226e5e69151/src/components/RequestList/RequestItem/index.tsx)
+layout and backdrop treatment. SeerrNG's extra media types, failure details, and
+request actions remain available. This layout comes from the upstream v3.5.1
+source contributed to Seerr by [@gauthier-th](https://github.com/gauthier-th);
+SeerrNG independently adapted it, without implying direct contribution to or
+endorsement of SeerrNG.
+Public sign-in and password-recovery presentation also follows upstream's
+[`Login`](https://github.com/seerr-team/seerr/blob/564bfb08b54caa374bddaf820abfd226e5e69151/src/components/Login/index.tsx),
+[`ResetPassword`](https://github.com/seerr-team/seerr/blob/564bfb08b54caa374bddaf820abfd226e5e69151/src/components/ResetPassword/index.tsx),
+[`RequestResetLink`](https://github.com/seerr-team/seerr/blob/564bfb08b54caa374bddaf820abfd226e5e69151/src/components/ResetPassword/RequestResetLink.tsx),
+and [`ImageFader`](https://github.com/seerr-team/seerr/blob/564bfb08b54caa374bddaf820abfd226e5e69151/src/components/Common/ImageFader/index.tsx)
+composition. SeerrNG's own logo, transport-security notice, and additional sign-in
+methods remain in use. These presentation patterns come from the upstream v3.5.1
+sources contributed to Seerr by [@gauthier-th](https://github.com/gauthier-th);
+SeerrNG independently adapted them, without implying direct contribution to or
+endorsement of SeerrNG.
+The sign-in and recovery backdrop behavior also follows upstream's
+[`ImageFader`](https://github.com/seerr-team/seerr/blob/564bfb08b54caa374bddaf820abfd226e5e69151/src/components/Common/ImageFader/index.tsx)
+and backdrop sources from that release; SeerrNG independently adapted it.
+The Upcoming Movies page follows upstream's
+[`Upcoming`](https://github.com/seerr-team/seerr/blob/564bfb08b54caa374bddaf820abfd226e5e69151/src/components/Discover/Upcoming.tsx)
+heading and error presentation. [@gauthier-th](https://github.com/gauthier-th)
+contributed this source to upstream Seerr, and SeerrNG independently adapted
+its presentation without implying direct contribution to or endorsement of
+SeerrNG.
+The shared page header follows upstream's [`Header`](https://github.com/seerr-team/seerr/blob/564bfb08b54caa374bddaf820abfd226e5e69151/src/components/Common/Header/index.tsx)
+spacing and typography. This source is part of the upstream v3.5.1 release
+contributed to Seerr by [@gauthier-th](https://github.com/gauthier-th); SeerrNG
+independently adapted the header presentation, without implying direct
+contribution to or endorsement of SeerrNG.
+The SeerrNG-only release calendar reuses the upstream v3.5.1 shared Header,
+Alert, Badge, and control roles. These controls come from sources contributed to
+upstream Seerr by [@gauthier-th](https://github.com/gauthier-th); SeerrNG
+independently applied their presentation to its own calendar data, without
+implying direct contribution to or endorsement of SeerrNG.
+SeerrOrig's fork-only library, downloads, game/software catalog, swipe, adult,
+and Sportarr routes reuse the upstream v3.5.1 Header, common control, slate
+surface, and compact card presentation roles where applicable. These patterns
+come from the v3.5.1 source contributed to upstream by
+[@gauthier-th](https://github.com/gauthier-th); SeerrNG independently adapted
+them while keeping its own route data and actions.
+The Issues list and movie/TV issue-detail composition are adapted from
+upstream's [`IssueList`](https://github.com/seerr-team/seerr/blob/564bfb08b54caa374bddaf820abfd226e5e69151/src/components/IssueList/index.tsx),
+[`IssueItem`](https://github.com/seerr-team/seerr/blob/564bfb08b54caa374bddaf820abfd226e5e69151/src/components/IssueList/IssueItem/index.tsx),
+[`IssueDetails`](https://github.com/seerr-team/seerr/blob/564bfb08b54caa374bddaf820abfd226e5e69151/src/components/IssueDetails/index.tsx),
+[`IssueDescription`](https://github.com/seerr-team/seerr/blob/564bfb08b54caa374bddaf820abfd226e5e69151/src/components/IssueDetails/IssueDescription/index.tsx),
+and [`IssueComment`](https://github.com/seerr-team/seerr/blob/564bfb08b54caa374bddaf820abfd226e5e69151/src/components/IssueDetails/IssueComment/index.tsx)
+under the upstream MIT license. SeerrNG's own logo and brand assets remain in
+use. The user-profile hierarchy is aligned with upstream's
+[`UserProfile`](https://github.com/seerr-team/seerr/blob/564bfb08b54caa374bddaf820abfd226e5e69151/src/components/UserProfile/index.tsx)
+and [`ProfileHeader`](https://github.com/seerr-team/seerr/blob/564bfb08b54caa374bddaf820abfd226e5e69151/src/components/UserProfile/ProfileHeader/index.tsx)
+composition; SeerrNG-only quota and watchlist categories remain in a collapsed
+extension area.
+
 ## Integrated or verified upstream sources
 
 These records were already identified as incorporated, adapted, or verified in SeerrNG.
+The source files below come from the Seerr v3.5.1 snapshot prepared for the upstream project by [@gauthier-th](https://github.com/gauthier-th), who contributed that release to Seerr. SeerrNG independently adapted the listed presentation patterns; this credit does not imply participation in or endorsement of SeerrNG.
 
 - [issue #180](https://github.com/seerr-team/seerr/issues/180) — “\[Feature Request\] Not respecting Media Server User Access Restrictions,” opened upstream by [@ghost](https://github.com/ghost). SeerrNG incorporated, adapted, or verified the represented upstream behavior.
 - [issue #206](https://github.com/seerr-team/seerr/issues/206) — “Possibility to ignore videos from streaming services,” opened upstream by [@xoniq](https://github.com/xoniq). SeerrNG incorporated, adapted, or verified the represented upstream behavior.
@@ -182,10 +247,40 @@ These records were already identified as incorporated, adapted, or verified in S
 - [PR #3659](https://github.com/seerr-team/seerr/pull/3659) — “fix(requests): complete pending requests when media becomes available,” opened upstream by [@fallenbagel](https://github.com/fallenbagel). SeerrNG incorporated, adapted, or verified the represented upstream behavior.
 - [issue #3665](https://github.com/seerr-team/seerr/issues/3665) — “Version check: GitHub cache's 6 h TTL is never applied and failed lookups are not cached, so /api/v1/status pollers retry api.github.com on every request after a 403,” opened upstream by [@wstock](https://github.com/wstock). SeerrNG incorporated, adapted, or verified the represented upstream behavior.
 - [PR #3667](https://github.com/seerr-team/seerr/pull/3667) — “feat(i18n): complete Indonesian (id.json) translation,” opened upstream by [@centralsofware](https://github.com/centralsofware). SeerrNG incorporated, adapted, or verified the represented upstream behavior.
+- [Seerr v3.5.1 sidebar source](https://github.com/seerr-team/seerr/blob/564bfb08b54caa374bddaf820abfd226e5e69151/src/components/Layout/Sidebar/index.tsx) — this upstream sidebar source is part of the v3.5.1 release contributed by [@gauthier-th](https://github.com/gauthier-th); SeerrNG independently adapts its eight-link primary order for SeerrOrig and keeps fork-only destinations reachable in a collapsed “More” section, without implying direct contribution to or endorsement of SeerrNG.
+- [Seerr v3.5.1 Discover source](https://github.com/seerr-team/seerr/blob/564bfb08b54caa374bddaf820abfd226e5e69151/src/components/Discover/index.tsx) — used to align SeerrOrig's landing-page hierarchy and supported discovery slider families with upstream; SeerrNG-only catalog shelves remain available outside that upstream presentation. This source is part of the upstream v3.5.1 release contributed by [@gauthier-th](https://github.com/gauthier-th); SeerrNG independently adapted it, without implying direct contribution to or endorsement of SeerrNG.
+- [Seerr v3.5.1 DiscoverTvUpcoming source](https://github.com/seerr-team/seerr/blob/564bfb08b54caa374bddaf820abfd226e5e69151/src/components/Discover/DiscoverTvUpcoming.tsx) — restores upstream's Upcoming Series error fallback and heading spacing in SeerrOrig while preserving SeerrNG's discover-navigation context. This source is part of the upstream v3.5.1 release contributed by [@gauthier-th](https://github.com/gauthier-th); SeerrNG independently adapted the presentation, without implying direct contribution to or endorsement of SeerrNG.
+- [Seerr v3.5.1 UpcomingMovies source](https://github.com/seerr-team/seerr/blob/564bfb08b54caa374bddaf820abfd226e5e69151/src/components/Discover/Upcoming.tsx) — restores upstream heading spacing and error fallback in SeerrOrig while preserving SeerrNG's discover-navigation context.
+- [Seerr v3.5.1 Header source](https://github.com/seerr-team/seerr/blob/564bfb08b54caa374bddaf820abfd226e5e69151/src/components/Common/Header/index.tsx) — restores upstream's exact shared page-heading structure, spacing, and responsive typography in SeerrOrig while leaving SeerrNG's native header unchanged. This source is part of the upstream v3.5.1 release contributed by [@gauthier-th](https://github.com/gauthier-th); SeerrNG independently adapted the presentation, without implying direct contribution to or endorsement of SeerrNG.
+- [Seerr v3.5.1 SettingsLayout source](https://github.com/seerr-team/seerr/blob/564bfb08b54caa374bddaf820abfd226e5e69151/src/components/Settings/SettingsLayout.tsx) — SeerrOrig follows the upstream settings tab set and hierarchy while retaining SeerrNG-only settings in a collapsed extension area. This source is part of the upstream v3.5.1 release contributed by [@gauthier-th](https://github.com/gauthier-th); SeerrNG independently adapted it, without implying direct contribution to or endorsement of SeerrNG.
+- [Seerr v3.5.1 Search source](https://github.com/seerr-team/seerr/blob/564bfb08b54caa374bddaf820abfd226e5e69151/src/components/Search/index.tsx) — used to restore the upstream search heading and result-list presentation in SeerrOrig; SeerrNG search categories and filters remain available in a collapsed options disclosure. This source is part of the upstream v3.5.1 release contributed by [@gauthier-th](https://github.com/gauthier-th); SeerrNG independently adapted it, without implying direct contribution to or endorsement of SeerrNG.
+- [Seerr v3.5.1 RequestList source](https://github.com/seerr-team/seerr/blob/564bfb08b54caa374bddaf820abfd226e5e69151/src/components/RequestList/index.tsx) — used to restore SeerrOrig's original request filter controls and heading layout; expanded SeerrNG request filters remain available under a disclosure. This source is part of the upstream v3.5.1 release contributed by [@gauthier-th](https://github.com/gauthier-th); SeerrNG independently adapted it, without implying direct contribution to or endorsement of SeerrNG.
+- [Seerr v3.5.1 MovieDetails and TvDetails sources](https://github.com/seerr-team/seerr/tree/564bfb08b54caa374bddaf820abfd226e5e69151/src/components) — used to align SeerrOrig's media-detail backdrop, responsive header, facts, crew, collection, and cast hierarchy while keeping SeerrNG request and playback actions wired into the native slots. This source is part of the upstream v3.5.1 release contributed by [@gauthier-th](https://github.com/gauthier-th); SeerrNG independently adapted it, without implying direct contribution to or endorsement of SeerrNG.
+- [Seerr v3.5.1 media-page styles](https://github.com/seerr-team/seerr/blob/564bfb08b54caa374bddaf820abfd226e5e69151/src/styles/globals.css) — the SeerrOrig detail layout follows the upstream media-page spacing and responsive breakpoints. This source is part of the upstream v3.5.1 release contributed by [@gauthier-th](https://github.com/gauthier-th); SeerrNG independently adapted it, without implying direct contribution to or endorsement of SeerrNG.
+- [Seerr v3.5.1 PersonCard source](https://github.com/seerr-team/seerr/blob/564bfb08b54caa374bddaf820abfd226e5e69151/src/components/PersonCard/index.tsx) — copied for SeerrOrig's native cast/search person cards; the default SeerrNG card remains active in the fork theme. This source is part of the upstream v3.5.1 release contributed by [@gauthier-th](https://github.com/gauthier-th); SeerrNG independently adapted it, without implying direct contribution to or endorsement of SeerrNG.
+- [Seerr v3.5.1 PersonDetails source](https://github.com/seerr-team/seerr/blob/564bfb08b54caa374bddaf820abfd226e5e69151/src/components/PersonDetails/index.tsx) — used to keep SeerrOrig's person page on the upstream profile hierarchy and native media-type filter, with SeerrNG's sort and follow/request tools reachable under More. This source is part of the upstream v3.5.1 release contributed by [@gauthier-th](https://github.com/gauthier-th); SeerrNG independently adapted it, without implying direct contribution to or endorsement of SeerrNG.
+- [Seerr v3.5.1 CollectionDetails source](https://github.com/seerr-team/seerr/blob/564bfb08b54caa374bddaf820abfd226e5e69151/src/components/CollectionDetails/index.tsx) — used to align SeerrOrig's collection backdrop, media header, aggregate status badges, and movie slider while retaining SeerrNG's collection actions. This source is part of the upstream v3.5.1 release contributed by [@gauthier-th](https://github.com/gauthier-th); SeerrNG independently adapted it, without implying direct contribution to or endorsement of SeerrNG.
+- [Seerr v3.5.1 UserList source](https://github.com/seerr-team/seerr/blob/564bfb08b54caa374bddaf820abfd226e5e69151/src/components/UserList/index.tsx) — used to align SeerrOrig's user toolbar, sortable table, row hierarchy, and selection controls in the shared scrollable table; SeerrNG-specific filters and tools remain available in the extension area. [@gauthier-th](https://github.com/gauthier-th) contributed this source to upstream Seerr; SeerrNG independently adapted it, with no direct contribution to or endorsement of SeerrNG implied.
+- [Seerr v3.5.1 Blocklist source](https://github.com/seerr-team/seerr/blob/564bfb08b54caa374bddaf820abfd226e5e69151/src/components/Blocklist/index.tsx) — reused for SeerrOrig's native blocklist controls, card rows, and pagination; SeerrNG's expanded media types and filters remain available in its extended view. [@gauthier-th](https://github.com/gauthier-th) contributed this source to upstream Seerr; SeerrNG independently adapted it, with no direct contribution to or endorsement of SeerrNG implied.
+- [Seerr v3.5.1 shared controls](https://github.com/seerr-team/seerr/tree/564bfb08b54caa374bddaf820abfd226e5e69151/src/components/Common) — SeerrOrig uses upstream button variants, badge treatments, alerts, page headers, and modal layout in shared components while retaining SeerrNG behavior and extra capabilities. [@gauthier-th](https://github.com/gauthier-th) contributed this source to upstream Seerr; SeerrNG independently adapted it, with no direct contribution to or endorsement of SeerrNG implied.
+- [Seerr v3.5.1 Dropdown](https://github.com/seerr-team/seerr/blob/564bfb08b54caa374bddaf820abfd226e5e69151/src/components/Common/Dropdown/index.tsx) and [ButtonWithDropdown](https://github.com/seerr-team/seerr/blob/564bfb08b54caa374bddaf820abfd226e5e69151/src/components/Common/ButtonWithDropdown/index.tsx) — upstream's menu trigger, segmented trigger, menu surface, transition, and item presentation are restored in SeerrOrig. SeerrNG independently maps fork-only action variants onto the nearest upstream visual roles; its native theme retains its own presentation. This source is part of the v3.5.1 release contributed to upstream Seerr by [@gauthier-th](https://github.com/gauthier-th); SeerrNG independently adapted it without implying direct contribution to or endorsement of SeerrNG.
+
+
+- [Seerr v3.5.1 genre, keyword, and language discovery sources](https://github.com/seerr-team/seerr/tree/564bfb08b54caa374bddaf820abfd226e5e69151/src/components/Discover) — used to align SeerrOrig's browse-route loading, error, and heading presentation while keeping SeerrNG's genre-follow action collapsed under More. The linked v3.5.1 source snapshot was authored and contributed to upstream Seerr by [@gauthier-th](https://github.com/gauthier-th); SeerrNG independently adapted these presentation behaviors, without implying direct contribution to or endorsement of SeerrNG.
+- [Seerr v3.5.1 DiscoverNetwork, DiscoverStudio, MovieGenreList, and TvGenreList sources](https://github.com/seerr-team/seerr/tree/564bfb08b54caa374bddaf820abfd226e5e69151/src/components/Discover) — used to align SeerrOrig's network/studio headers, genre cards, route links, and loading/error presentation while retaining SeerrNG behavior in its own theme. The linked v3.5.1 source snapshot was authored and contributed to upstream Seerr by [@gauthier-th](https://github.com/gauthier-th); SeerrNG independently adapted these presentation behaviors, without implying direct contribution to or endorsement of SeerrNG.
+- [Seerr v3.5.1 DiscoverWatchlist source](https://github.com/seerr-team/seerr/blob/564bfb08b54caa374bddaf820abfd226e5e69151/src/components/Discover/DiscoverWatchlist/index.tsx) — used to align SeerrOrig's watchlist title, owner subheading, page spacing, error fallback, and list presentation; SeerrNG filters remain available under More. The linked v3.5.1 source snapshot was authored and contributed to upstream Seerr by [@gauthier-th](https://github.com/gauthier-th); SeerrNG independently adapted these presentation behaviors, without implying direct contribution to or endorsement of SeerrNG.
+- [Seerr v3.5.1 DiscoverMovies, DiscoverTv, and Trending sources](https://github.com/seerr-team/seerr/tree/564bfb08b54caa374bddaf820abfd226e5e69151/src/components/Discover) — used to restore SeerrOrig's upstream movie/series error fallback and original Trending media/time-window controls, while leaving SeerrNG multi-catalog tabs in its native theme. Discover failures retain their recoverable inline retry state. The linked v3.5.1 source snapshot was authored and contributed to upstream Seerr by [@gauthier-th](https://github.com/gauthier-th); SeerrNG independently adapted these presentation behaviors, without implying direct contribution to or endorsement of SeerrNG.
+
+- [Seerr v3.5.1 SettingsNotifications and SettingsTabs component source code](https://github.com/seerr-team/seerr/tree/564bfb08b54caa374bddaf820abfd226e5e69151/src/components) — informed SeerrOrig's notification page and provider-tab presentation, while the SeerrNG-only Apprise route remains reachable in its extension area. The linked source snapshot was authored and contributed to upstream Seerr by [@gauthier-th](https://github.com/gauthier-th); SeerrNG independently adapted the presentation and preserved fork behavior, without implying direct contribution to or endorsement of SeerrNG.
+- [Seerr v3.5.1 UserSettings component source code](https://github.com/seerr-team/seerr/blob/564bfb08b54caa374bddaf820abfd226e5e69151/src/components/UserProfile/UserSettings/index.tsx) — informed the upstream order for SeerrOrig's primary profile tabs; SeerrNG-only settings remain reachable in an extension area. The linked source snapshot was authored and contributed to upstream Seerr by [@gauthier-th](https://github.com/gauthier-th); SeerrNG independently adapted the presentation and preserved permission checks, without implying direct contribution to or endorsement of SeerrNG.
+- [Seerr v3.5.1 UserGeneralSettings component source code](https://github.com/seerr-team/seerr/blob/564bfb08b54caa374bddaf820abfd226e5e69151/src/components/UserProfile/UserSettings/UserGeneralSettings/index.tsx) — informed SeerrOrig's profile form order and primary controls, while SeerrNG-only settings remain available in collapsed extension sections. The linked source snapshot was authored and contributed to upstream Seerr by [@gauthier-th](https://github.com/gauthier-th); SeerrNG independently adapted the presentation while preserving settings behavior, without implying direct contribution to or endorsement of SeerrNG.
+- [Seerr v3.5.1 UserPermissions component source code](https://github.com/seerr-team/seerr/blob/564bfb08b54caa374bddaf820abfd226e5e69151/src/components/UserProfile/UserSettings/UserPermissions/index.tsx) — informed SeerrOrig's primary permission-editor hierarchy; SeerrNG age restrictions and per-service request grants remain available in a collapsed extension section. The linked source snapshot was authored and contributed to upstream Seerr by [@gauthier-th](https://github.com/gauthier-th); SeerrNG independently adapted the presentation and retained existing authorization behavior, without implying direct contribution to or endorsement of SeerrNG.
+- [Seerr v3.5.1 UserLinkedAccountsSettings component source code](https://github.com/seerr-team/seerr/blob/564bfb08b54caa374bddaf820abfd226e5e69151/src/components/UserProfile/UserSettings/UserLinkedAccountsSettings/index.tsx) — informed SeerrOrig's linked media-server account cards and primary link menu; SeerrNG identity providers and discovery integrations remain available in a collapsed extension area. The linked source snapshot was authored and contributed to upstream Seerr by [@gauthier-th](https://github.com/gauthier-th); SeerrNG independently adapted the presentation and preserved account actions, without implying direct contribution to or endorsement of SeerrNG.
+- [Seerr v3.5.1 SettingsMain source](https://github.com/seerr-team/seerr/blob/564bfb08b54caa374bddaf820abfd226e5e69151/src/components/Settings/SettingsMain/index.tsx) — used to restore SeerrOrig's global settings heading, description, form hierarchy, shared-control order, and Hide Requested Media preference; SeerrNG-only controls such as 4K request behavior remain in labeled disclosures. This source is part of the upstream v3.5.1 release contributed to Seerr by [@gauthier-th](https://github.com/gauthier-th); SeerrNG independently adapted it without implying direct contribution to or endorsement of SeerrNG.
 
 ## Referenced or in-progress upstream sources
 
 These additional records are cited by maintained fork source, documentation, release notes, or plans. They are credited as idea/provenance sources without claiming complete implementation.
 
 
-_Attribution ledger refreshed 2026-11-09; 170 source records._
+_Attribution ledger refreshed 2026-11-13; 197 source records._

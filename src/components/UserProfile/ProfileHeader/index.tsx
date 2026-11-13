@@ -170,7 +170,7 @@ const ProfileHeader = ({ user, isSettingsPage }: ProfileHeaderProps) => {
           </div>
         </div>
         <div className="pt-1.5">
-          <h1 className="mb-1 flex flex-col sm:flex-row sm:items-center">
+          <h1 className="page-title mb-1 flex flex-col sm:flex-row sm:items-center">
             <Link
               href={
                 user.id === loggedInUser?.id ? '/profile' : `/users/${user.id}`

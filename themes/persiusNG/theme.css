@@ -12,6 +12,15 @@
   --interface-link: #8ba5ff;
   --interface-accent-a: #8ba5ff;
   --interface-accent-b: #8ba5ff;
+  --interface-accent-a-bright: #b5c7ff;
+  --interface-accent-a-soft: #c4d0ff;
+  --interface-accent-a-light: #b5c7ff;
+  --interface-accent-a-hover: #425cc2;
+  --interface-accent-a-focus: #c4d0ff;
+  --interface-accent-contrast: #0b0d11;
+  --interface-accent-b-contrast: #0b0d11;
+  --interface-text-subtle: #b0bac9;
+  --interface-text-bright: #dce5f7;
   --interface-sidebar-top: #14171d;
   --interface-sidebar-bottom: #14171d;
   --interface-sidebar-selected: #1c2547;
@@ -151,7 +160,7 @@
   height: 30px;
   border-radius: 10px;
   background: var(--interface-accent-a);
-  color: #0b0d11;
+  color: var(--interface-accent-contrast);
 }
 [data-interface-theme='persiusNG'] .persius-brand svg {
   width: 16px;
@@ -204,14 +213,14 @@
   width: 18px;
   height: 18px;
   margin-inline: 0 12px;
-  color: #b0bac9;
+  color: var(--interface-text-subtle);
 }
 [data-interface-theme='persiusNG'] .sidebar-link-selected {
   background: var(--interface-sidebar-selected);
-  color: #b5c7ff;
+  color: var(--interface-accent-a-bright);
 }
 [data-interface-theme='persiusNG'] .sidebar-link-selected svg {
-  color: #c4d0ff;
+  color: var(--interface-accent-a-soft);
 }
 [data-interface-theme='persiusNG'] .main-menu-link:hover {
   background: var(--interface-panel-raised);
@@ -226,7 +235,7 @@
   height: 20px;
   padding: 0 5px;
   background: var(--interface-accent-a);
-  color: #101426;
+  color: var(--interface-accent-contrast);
   font-size: 12px;
 }
 [data-interface-theme='persiusNG'] .persius-sidebar-account {
@@ -584,7 +593,7 @@
   padding: 18px;
 }
 [data-interface-theme='persiusNG'] .persius-hero-kicker {
-  color: #dce5f7;
+  color: var(--interface-text-bright);
   font-size: 12px;
   font-weight: 700;
   text-transform: uppercase;
@@ -740,7 +749,7 @@
     .app-button-bulk-request
   ) {
   background: var(--interface-accent-a);
-  color: #0b0d11;
+  color: var(--interface-accent-contrast);
 }
 [data-interface-theme='persiusNG'] .app-button-success {
   background: #123522;
@@ -963,11 +972,11 @@
 }
 [data-interface-theme='persiusNG'] .persius-button[data-primary='true'] {
   background: var(--interface-accent-a);
-  color: #0b0d11;
+  color: var(--interface-accent-contrast);
 }
 [data-interface-theme='persiusNG'] .persius-button[data-tone='subtle'] {
   background: var(--interface-sidebar-selected);
-  color: #c4d0ff;
+  color: var(--interface-accent-a-soft);
 }
 [data-interface-theme='persiusNG'] .persius-button svg {
   width: 16px;
@@ -981,7 +990,7 @@
   border-radius: 999px;
   padding: 3px 8px;
   background: var(--interface-sidebar-selected);
-  color: #b5c7ff;
+  color: var(--interface-accent-a-bright);
   font-size: 11px;
   font-weight: 700;
   line-height: 18px;
@@ -1428,7 +1437,7 @@
   height: 64px;
   overflow: hidden;
   border-radius: 8px;
-  background: #252a35;
+  background: var(--interface-panel-raised);
   color: var(--interface-muted);
 }
 [data-interface-theme='persiusNG'] .persius-recording-cover img {
@@ -1551,11 +1560,11 @@
   height: 4px;
   accent-color: var(--interface-accent-a);
   border: 0;
-  background: #555963;
+  background: var(--interface-border);
 }
 [data-interface-theme='persiusNG']
   .persius-download-progress::-webkit-progress-bar {
-  background: #555963;
+  background: var(--interface-border);
 }
 [data-interface-theme='persiusNG']
   .persius-download-progress::-webkit-progress-value {
@@ -1820,7 +1829,7 @@
   flex: 1 1 100%;
   min-height: 44px;
   background: var(--interface-accent-a);
-  color: #0b0d11;
+  color: var(--interface-accent-contrast);
 }
 [data-interface-theme='persiusNG']
   .persius-season-modal
@@ -2102,7 +2111,7 @@
   content: '✓';
   display: block;
   text-align: center;
-  color: #0b0d11;
+  color: var(--interface-accent-contrast);
   line-height: 18px;
   font-size: 15px;
 }
@@ -2118,7 +2127,7 @@
   content: '−';
   display: block;
   text-align: center;
-  color: #0b0d11;
+  color: var(--interface-accent-contrast);
   line-height: 18px;
 }
 [data-interface-theme='persiusNG']
@@ -2168,8 +2177,8 @@
 [data-interface-theme='persiusNG']
   .persius-request-status
   [data-badge-tone='primary'] {
-  background: #1c2547;
-  color: #b5c7ff !important;
+  background: var(--interface-sidebar-selected);
+  color: var(--interface-accent-a-bright) !important;
 }
 [data-interface-theme='persiusNG']
   .main-menu-link
@@ -2181,9 +2190,9 @@
   border: 0;
   border-radius: 50%;
   justify-content: center;
-  background: #8ba5ff;
+  background: var(--interface-accent-a);
   background-image: none;
-  color: #0b0d11 !important;
+  color: var(--interface-accent-contrast) !important;
   font-size: 12px;
 }
 [data-interface-theme='persiusNG'] .app-button svg {
@@ -2309,4 +2318,44 @@
   [data-interface-theme='persiusNG'] .persius-future-seasons input::after {
     transition: none;
   }
+}
+
+
+/* Alternative user palettes recolor Persius' existing color roles without
+   changing its separate layout, typography or semantic success/warning/error colors. */
+:root[data-interface-theme='persiusNG'][data-theme-palette]:not([data-theme-palette='seerr']) {
+  --interface-page: rgb(var(--theme-page-bg));
+  --interface-panel: rgb(var(--theme-control-surface));
+  --interface-panel-raised: rgb(var(--theme-control-surface-hover));
+  --interface-border: rgb(var(--theme-control-border));
+  --interface-muted: rgb(var(--color-gray-400));
+  --interface-text: rgb(var(--color-gray-50));
+  --interface-link: rgb(var(--color-indigo-200));
+  --interface-accent-a: rgb(var(--color-indigo-600));
+  --interface-accent-a-bright: rgb(var(--color-indigo-500));
+  --interface-accent-a-soft: rgb(var(--color-indigo-300));
+  --interface-accent-a-light: rgb(var(--color-indigo-200));
+  --interface-accent-a-hover: rgb(var(--color-indigo-700));
+  --interface-accent-a-focus: rgb(var(--color-indigo-400));
+  --interface-accent-b: rgb(var(--color-purple-600));
+  --interface-sidebar-top: rgb(var(--theme-sidebar-start));
+  --interface-sidebar-bottom: rgb(var(--theme-sidebar-end));
+  --interface-sidebar-selected: color-mix(
+    in srgb,
+    var(--interface-accent-a) 18%,
+    var(--interface-panel)
+  );
+  --interface-dropdown-menu-surface: var(--interface-panel-raised);
+  --interface-dropdown-menu-border: var(--interface-border);
+  --interface-table-header: var(--interface-panel-raised);
+  --interface-table-hover: color-mix(
+    in srgb,
+    var(--interface-accent-a) 9%,
+    var(--interface-panel)
+  );
+  --app-card-frame-background: var(--interface-border);
+  --persius-secondary-text: rgb(var(--color-gray-300));
+  --persius-panel-rgb: var(--theme-control-surface);
+  --interface-text-subtle: rgb(var(--color-gray-300));
+  --interface-text-bright: rgb(var(--color-gray-100));
 }

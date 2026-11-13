@@ -8,17 +8,20 @@ export function OptionalDisclosure({
   label,
   className,
   panelClassName,
+  open,
 }: {
   enabled: boolean;
   children: ReactNode;
-  label?: string;
+  label?: ReactNode;
   className?: string;
   panelClassName?: string;
+  open?: boolean;
 }) {
   const intl = useIntl();
   if (!enabled) return <>{children}</>;
   return (
     <details
+      open={open}
       className={['persius-secondary', className].filter(Boolean).join(' ')}
     >
       <summary>{label ?? intl.formatMessage(messages.details)}</summary>

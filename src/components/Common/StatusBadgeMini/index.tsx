@@ -59,6 +59,7 @@ const StatusBadgeMini = memo(
     const badgeStyle = [
       `shadow-md ${shrink ? 'poster-control poster-control-icon' : 'w-5 rounded-full p-0.5'}`,
     ];
+    const mediaStatus = MediaStatus[status]?.toLowerCase().replace(/_/g, '-');
 
     let indicatorIcon: React.ReactNode;
 
@@ -205,7 +206,12 @@ const StatusBadgeMini = memo(
         role="img"
         aria-label={label || undefined}
       >
-        <div className={badgeStyle.join(' ')}>{indicatorIcon}</div>
+        <div
+          className={badgeStyle.join(' ')}
+          data-media-status={availability.shared ? 'shared' : mediaStatus}
+        >
+          {indicatorIcon}
+        </div>
         {quality && <span className="ps-1 pe-2 text-gray-200">{quality}</span>}
       </div>
     );

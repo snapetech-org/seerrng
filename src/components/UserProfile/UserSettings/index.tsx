@@ -6,12 +6,15 @@ import SettingsTabs from '@app/components/Common/SettingsTabs';
 import ProfileHeader from '@app/components/UserProfile/ProfileHeader';
 import useSettings from '@app/hooks/useSettings';
 import { getPositiveQueryParamNumber } from '@app/hooks/useUpdateQueryParams';
+import useUpstreamTheme from '@app/hooks/useUpstreamTheme';
 import { useUser } from '@app/hooks/useUser';
 import globalMessages from '@app/i18n/globalMessages';
 import ErrorPage from '@app/pages/_error';
 import defineMessages from '@app/utils/defineMessages';
+import { ChevronDownIcon } from '@heroicons/react/24/outline';
 import type { UserSettingsNotificationsResponse } from '@server/interfaces/api/userSettingsInterfaces';
 import { hasPermission, Permission } from '@server/lib/permissions';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useIntl } from 'react-intl';
 import useSWR from 'swr';
@@ -26,6 +29,7 @@ const messages = defineMessages('components.UserProfile.UserSettings', {
   menuTvRequestAccess: 'TV Season Rule',
   menuEpisodeQueue: 'Episode Queue',
   menuAdvancedTheme: 'Advanced Theme',
+  moreSettings: 'More settings',
   unauthorizedDescription:
     "You do not have permission to modify this user's settings.",
   menuClientTokens: 'Client Tokens',
@@ -38,6 +42,7 @@ type UserSettingsProps = {
 const UserSettings = ({ children }: UserSettingsProps) => {
   const router = useRouter();
   const settings = useSettings();
+  const upstream = useUpstreamTheme();
   const { user: currentUser } = useUser();
   const userId = getPositiveQueryParamNumber(router.query.userId);
   const { user, error } = useUser({ id: userId });
@@ -166,6 +171,34 @@ const UserSettings = ({ children }: UserSettingsProps) => {
       : `/users/${user.id}${settingsRoute.route}`;
   });
 
+  const extensionRoutePatterns = [
+    /\/settings\/client-tokens/,
+    /\/settings\/maturity/,
+    /\/settings\/tv-request-access/,
+    /\/settings\/episode-queue/,
+    /\/profile\/advanced-theme$/,
+  ];
+  const isExtensionRoute = (route: SettingsRoute) =>
+    extensionRoutePatterns.some((pattern) => pattern.test(route.route));
+  const upstreamSettingsRoutes = settingsRoutes.filter(
+    (route) => !isExtensionRoute(route)
+  );
+  const extensionSettingsRoutes = settingsRoutes.filter(
+    (route) =>
+      isExtensionRoute(route) &&
+      !route.hidden &&
+      (route.requiredPermission
+        ? hasPermission(
+            route.requiredPermission,
+            currentUser?.permissions ?? 0,
+            route.permissionType
+          )
+        : true)
+  );
+  const shouldOpenMoreSettings = extensionSettingsRoutes.some((route) =>
+    router.pathname.match(route.regex)
+  );
+
   return (
     <>
       <PageTitle
@@ -176,9 +209,43 @@ const UserSettings = ({ children }: UserSettingsProps) => {
       />
       <ProfileHeader user={user} isSettingsPage />
       <div className="mt-6">
-        <SettingsTabs settingsRoutes={settingsRoutes} />
+        <SettingsTabs
+          settingsRoutes={upstream ? upstreamSettingsRoutes : settingsRoutes}
+        />
       </div>
-      <div className="mt-10 text-gray-100">{children}</div>
+      {upstream && extensionSettingsRoutes.length > 0 && (
+        <details
+          className="upstream-settings-more"
+          open={shouldOpenMoreSettings || undefined}
+        >
+          <summary>
+            <span>{intl.formatMessage(messages.moreSettings)}</span>
+            <ChevronDownIcon aria-hidden="true" />
+          </summary>
+          <div className="upstream-settings-more-content">
+            <nav aria-label={intl.formatMessage(messages.moreSettings)}>
+              {extensionSettingsRoutes.map((route) => (
+                <Link
+                  href={route.route}
+                  key={route.route}
+                  aria-current={
+                    router.pathname.match(route.regex) ? 'page' : undefined
+                  }
+                >
+                  {route.text}
+                </Link>
+              ))}
+            </nav>
+          </div>
+        </details>
+      )}
+      <div
+        className={
+          upstream ? 'upstream-settings-content' : 'mt-10 text-gray-100'
+        }
+      >
+        {children}
+      </div>
     </>
   );
 };

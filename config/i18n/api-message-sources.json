@@ -10073,7 +10073,7 @@
       "callsites": [
         {
           "path": "src/context/ThemeContext.tsx",
-          "line": 1426,
+          "line": 1469,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Theme preference was not confirmed.'",
@@ -24588,7 +24588,7 @@
       "callsites": [
         {
           "path": "src/context/ThemeContext.tsx",
-          "line": 1608,
+          "line": 1651,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'useTheme must be used inside ThemeProvider'",
@@ -36288,7 +36288,7 @@
       "callsites": [
         {
           "path": "src/context/ThemeContext.tsx",
-          "line": 1468,
+          "line": 1511,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Sign in and choose an installed interface theme after the current save finishes.'",
@@ -39764,7 +39764,7 @@
       "callsites": [
         {
           "path": "src/context/ThemeContext.tsx",
-          "line": 1416,
+          "line": 1459,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Sign in and choose a valid theme after the current save finishes.'",
@@ -41142,7 +41142,7 @@
       "callsites": [
         {
           "path": "src/context/ThemeContext.tsx",
-          "line": 1481,
+          "line": 1524,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Interface theme preference was not confirmed.'",
@@ -57951,7 +57951,7 @@
       "callsites": [
         {
           "path": "src/context/ThemeContext.tsx",
-          "line": 1532,
+          "line": 1575,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Sign in to save advanced theme settings.'",
@@ -65814,7 +65814,7 @@
       "callsites": [
         {
           "path": "src/components/ResetPassword/index.tsx",
-          "line": 96,
+          "line": 98,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Reset password link is invalid.'",
@@ -88784,7 +88784,7 @@
     },
     {
       "path": "src/context/ThemeContext.tsx",
-      "line": 1537,
+      "line": 1580,
       "kind": "app-error-candidate",
       "field": "message",
       "expression": "validation.error",

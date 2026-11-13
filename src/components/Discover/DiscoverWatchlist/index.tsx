@@ -9,6 +9,7 @@ import {
 } from '@app/components/Discover/FilterPanel/CompactFilterSelect';
 import useDiscover from '@app/hooks/useDiscover';
 import useSettings from '@app/hooks/useSettings';
+import useUpstreamTheme from '@app/hooks/useUpstreamTheme';
 import {
   getPositiveQueryParamNumber,
   useBatchUpdateQueryParams,
@@ -28,6 +29,7 @@ import {
   type WatchlistResponse,
   type WatchlistSort,
 } from '@server/interfaces/api/discoverInterfaces';
+import { ChevronDownIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useMemo, useState } from 'react';
@@ -36,6 +38,8 @@ import { useIntl } from 'react-intl';
 const messages = defineMessages('components.Discover.DiscoverWatchlist', {
   discoverwatchlist: 'Your Watchlist',
   watchlist: 'Watchlist',
+  plexWatchlist: 'Plex Watchlist',
+  moreOptions: 'More options',
   title: 'Title',
   searchTitles: 'Search titles',
   mediaType: 'Media Type',
@@ -87,6 +91,7 @@ const getWatchlistFilterDraft = (
 const DiscoverWatchlist = () => {
   const intl = useIntl();
   const router = useRouter();
+  const upstream = useUpstreamTheme();
   const userId = getPositiveQueryParamNumber(router.query.userId);
   const { user } = useUser({
     id: userId,
@@ -293,11 +298,104 @@ const DiscoverWatchlist = () => {
     visibleTitles.length,
   ]);
 
+  const filterControls = (
+    <>
+      {filtersSupported === true && (
+        <div className="app-filter-row" data-testid="watchlist-filters">
+          <div
+            className="discover-filter-control app-filter-search-control"
+            role="search"
+          >
+            <span
+              className={`discover-filter-control-label ${
+                filterDraft.search.trim()
+                  ? 'discover-filter-control-label-active'
+                  : ''
+              }`}
+            >
+              {intl.formatMessage(messages.title)}
+            </span>
+            <input
+              aria-label={intl.formatMessage(messages.searchTitles)}
+              className="app-filter-search-input"
+              data-testid="watchlist-title-search"
+              maxLength={100}
+              onChange={(event) =>
+                setFilterDraft((draft) => ({
+                  ...draft,
+                  search: event.target.value,
+                }))
+              }
+              onKeyDown={(event) => {
+                if (event.key === 'Enter') {
+                  event.preventDefault();
+                  applyFilters();
+                }
+              }}
+              placeholder={intl.formatMessage(messages.searchTitles)}
+              type="search"
+              value={filterDraft.search}
+            />
+          </div>
+          <CompactSelect
+            label={intl.formatMessage(messages.mediaType)}
+            onChange={(value) =>
+              setFilterDraft((draft) => ({
+                ...draft,
+                mediaType: value as WatchlistFilterDraft['mediaType'],
+              }))
+            }
+            options={mediaTypeOptions}
+            value={filterDraft.mediaType}
+          />
+          <CompactSelect
+            label={intl.formatMessage(messages.sortBy)}
+            onChange={(value) =>
+              setFilterDraft((draft) => ({
+                ...draft,
+                sortBy: value as WatchlistFilterDraft['sortBy'],
+              }))
+            }
+            options={sortOptions}
+            value={filterDraft.sortBy}
+          />
+          <Button
+            buttonSize="sm"
+            buttonType="primary"
+            data-testid="watchlist-apply-filters"
+            onClick={applyFilters}
+            type="button"
+          >
+            {intl.formatMessage(messages.applyFilters)}
+          </Button>
+          {hasActiveFilters && (
+            <FilterResetButton
+              label={intl.formatMessage(messages.clearFilters)}
+              onClick={clearFilters}
+              selected
+            />
+          )}
+        </div>
+      )}
+      {filtersSupported === false && (
+        <p className="description">
+          {intl.formatMessage(messages.plexFilterUnavailable)}
+        </p>
+      )}
+    </>
+  );
+
   const title = intl.formatMessage(
-    userId ? messages.watchlist : messages.discoverwatchlist
+    userId
+      ? upstream
+        ? messages.plexWatchlist
+        : messages.watchlist
+      : messages.discoverwatchlist
   );
 
   if (error) {
+    if (upstream) return <ErrorPage statusCode={500} />;
+
     return (
       <>
         <PageTitle title={title} />
@@ -310,7 +408,7 @@ const DiscoverWatchlist = () => {
   return (
     <>
       <PageTitle title={[title, userId ? user?.displayName : '']} />
-      <div className="app-filter-section-gap">
+      <div className={upstream ? 'mb-5 mt-1' : 'app-filter-section-gap'}>
         <Header
           subtext={
             userId ? (
@@ -324,89 +422,17 @@ const DiscoverWatchlist = () => {
         >
           {title}
         </Header>
-        {filtersSupported === true && (
-          <div className="app-filter-row" data-testid="watchlist-filters">
-            <div
-              className="discover-filter-control app-filter-search-control"
-              role="search"
-            >
-              <span
-                className={`discover-filter-control-label ${
-                  filterDraft.search.trim()
-                    ? 'discover-filter-control-label-active'
-                    : ''
-                }`}
-              >
-                {intl.formatMessage(messages.title)}
-              </span>
-              <input
-                aria-label={intl.formatMessage(messages.searchTitles)}
-                className="app-filter-search-input"
-                data-testid="watchlist-title-search"
-                maxLength={100}
-                onChange={(event) =>
-                  setFilterDraft((draft) => ({
-                    ...draft,
-                    search: event.target.value,
-                  }))
-                }
-                onKeyDown={(event) => {
-                  if (event.key === 'Enter') {
-                    event.preventDefault();
-                    applyFilters();
-                  }
-                }}
-                placeholder={intl.formatMessage(messages.searchTitles)}
-                type="search"
-                value={filterDraft.search}
-              />
-            </div>
-            <CompactSelect
-              label={intl.formatMessage(messages.mediaType)}
-              onChange={(value) =>
-                setFilterDraft((draft) => ({
-                  ...draft,
-                  mediaType: value as WatchlistFilterDraft['mediaType'],
-                }))
-              }
-              options={mediaTypeOptions}
-              value={filterDraft.mediaType}
-            />
-            <CompactSelect
-              label={intl.formatMessage(messages.sortBy)}
-              onChange={(value) =>
-                setFilterDraft((draft) => ({
-                  ...draft,
-                  sortBy: value as WatchlistFilterDraft['sortBy'],
-                }))
-              }
-              options={sortOptions}
-              value={filterDraft.sortBy}
-            />
-            <Button
-              buttonSize="sm"
-              buttonType="primary"
-              data-testid="watchlist-apply-filters"
-              onClick={applyFilters}
-              type="button"
-            >
-              {intl.formatMessage(messages.applyFilters)}
-            </Button>
-            {hasActiveFilters && (
-              <FilterResetButton
-                label={intl.formatMessage(messages.clearFilters)}
-                onClick={clearFilters}
-                selected
-              />
-            )}
-          </div>
-        )}
-        {filtersSupported === false && (
-          <p className="description">
-            {intl.formatMessage(messages.plexFilterUnavailable)}
-          </p>
-        )}
+        {!upstream && filterControls}
       </div>
+      {upstream && (filtersSupported === true || filtersSupported === false) && (
+        <details className="upstream-search-more">
+          <summary>
+            <span>{intl.formatMessage(messages.moreOptions)}</span>
+            <ChevronDownIcon aria-hidden="true" />
+          </summary>
+          <div className="app-filter-section-gap mt-2">{filterControls}</div>
+        </details>
+      )}
       <ListView
         enableDiscoverNavigation
         plexItems={visibleTitles}

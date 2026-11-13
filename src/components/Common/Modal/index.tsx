@@ -7,6 +7,7 @@ import usePersius from '@app/components/Persius/usePersius';
 import useClickOutside from '@app/hooks/useClickOutside';
 import { useLockBodyScroll } from '@app/hooks/useLockBodyScroll';
 import useModalBackNavigation from '@app/hooks/useModalBackNavigation';
+import useUpstreamTheme from '@app/hooks/useUpstreamTheme';
 import globalMessages from '@app/i18n/globalMessages';
 import { Transition, TransitionChild } from '@headlessui/react';
 import type { MouseEvent } from 'react';
@@ -95,6 +96,7 @@ const Modal = React.forwardRef<HTMLDivElement, ModalProps>(
     parentRef
   ) => {
     const intl = useIntl();
+    const upstream = useUpstreamTheme();
     const modalRef = useRef<HTMLDivElement>(null);
     const persius = usePersius();
     useDialogFocus(modalRef, persius && !loading, onCancel);
@@ -115,6 +117,11 @@ const Modal = React.forwardRef<HTMLDivElement, ModalProps>(
       }
     });
     useLockBodyScroll(true, disableScrollLock);
+    const modalCardClass = upstream
+      ? `page-overlay-card hide-scrollbar relative inline-block w-full overflow-auto bg-gray-800 px-4 pb-4 pt-4 text-left align-bottom shadow-xl ring-1 ring-gray-700 transition-all sm:my-8 sm:max-w-3xl sm:rounded-lg sm:align-middle ${dialogClass ?? ''}`
+      : ['page-overlay-card', !alignTop && 'hide-scrollbar', dialogClass]
+          .filter(Boolean)
+          .join(' ');
 
     return ReactDOM.createPortal(
       <Transition as={Fragment} appear show>
@@ -141,13 +148,7 @@ const Modal = React.forwardRef<HTMLDivElement, ModalProps>(
             </div>
           </Transition>
           <Transition
-            className={[
-              'page-overlay-card',
-              !alignTop && 'hide-scrollbar',
-              dialogClass,
-            ]
-              .filter(Boolean)
-              .join(' ')}
+            className={modalCardClass}
             data-alignment={alignTop ? 'top' : 'center'}
             role="dialog"
             aria-modal="true"
@@ -185,7 +186,11 @@ const Modal = React.forwardRef<HTMLDivElement, ModalProps>(
             )}
             <div
               data-modal-part="heading"
-              className="relative min-w-0 pt-0.5 sm:flex sm:items-center"
+              className={
+                upstream
+                  ? 'relative -mx-4 overflow-x-hidden px-4 pt-0.5 sm:flex sm:items-center'
+                  : 'relative min-w-0 pt-0.5 sm:flex sm:items-center'
+              }
             >
               <div
                 className={`mt-3 min-w-0 truncate text-center text-white sm:mt-0 sm:text-start`}
@@ -227,12 +232,17 @@ const Modal = React.forwardRef<HTMLDivElement, ModalProps>(
             {!hideActions &&
               (onCancel || onOk || onSecondary || onTertiary) && (
                 <div
-                  className={`app-modal-actions relative flex flex-row-reverse justify-center sm:justify-start ${actionsClass}`}
+                  className={
+                    upstream
+                      ? `relative mt-5 flex flex-row-reverse justify-center sm:mt-4 sm:justify-start ${actionsClass}`
+                      : `app-modal-actions relative flex flex-row-reverse justify-center sm:justify-start ${actionsClass}`
+                  }
                 >
                   {typeof onOk === 'function' && (
                     <Button
                       buttonType={okButtonType}
-                      buttonSize={actionButtonSize}
+                      buttonSize={upstream ? 'default' : actionButtonSize}
+                      className={upstream ? 'ml-3' : undefined}
                       onClick={onOk}
                       disabled={okDisabled}
                       data-testid="modal-ok-button"
@@ -244,7 +254,8 @@ const Modal = React.forwardRef<HTMLDivElement, ModalProps>(
                   {typeof onSecondary === 'function' && secondaryText && (
                     <Button
                       buttonType={secondaryButtonType}
-                      buttonSize={actionButtonSize}
+                      buttonSize={upstream ? 'default' : actionButtonSize}
+                      className={upstream ? 'ml-3' : undefined}
                       onClick={onSecondary}
                       disabled={secondaryDisabled}
                       data-testid="modal-secondary-button"
@@ -256,7 +267,8 @@ const Modal = React.forwardRef<HTMLDivElement, ModalProps>(
                   {typeof onTertiary === 'function' && tertiaryText && (
                     <Button
                       buttonType={tertiaryButtonType}
-                      buttonSize={actionButtonSize}
+                      buttonSize={upstream ? 'default' : actionButtonSize}
+                      className={upstream ? 'ml-3' : undefined}
                       onClick={onTertiary}
                       disabled={tertiaryDisabled}
                       {...tertiaryButtonProps}
@@ -268,14 +280,17 @@ const Modal = React.forwardRef<HTMLDivElement, ModalProps>(
                     <Button
                       buttonType={cancelButtonType}
                       buttonIcon={
-                        !cancelText ||
-                        cancelText ===
-                          intl.formatMessage(globalMessages.cancel) ||
-                        cancelText === intl.formatMessage(globalMessages.close)
+                        !upstream &&
+                        (!cancelText ||
+                          cancelText ===
+                            intl.formatMessage(globalMessages.cancel) ||
+                          cancelText ===
+                            intl.formatMessage(globalMessages.close))
                           ? 'cancel'
                           : undefined
                       }
-                      buttonSize={actionButtonSize}
+                      buttonSize={upstream ? 'default' : actionButtonSize}
+                      className={upstream ? 'ml-3 sm:ml-0' : undefined}
                       onClick={onCancel}
                       data-testid="modal-cancel-button"
                       {...cancelButtonProps}

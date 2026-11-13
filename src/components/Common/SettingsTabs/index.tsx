@@ -1,3 +1,4 @@
+import useUpstreamTheme from '@app/hooks/useUpstreamTheme';
 import { useUser } from '@app/hooks/useUser';
 import defineMessages from '@app/utils/defineMessages';
 import type { Permission } from '@server/lib/permissions';
@@ -28,6 +29,7 @@ type SettingsLinkProps = {
   route: string;
   regex: RegExp;
   hidden?: boolean;
+  upstreamTheme: boolean;
   children: React.ReactNode;
 };
 
@@ -38,21 +40,30 @@ const SettingsLink = ({
   route,
   regex,
   hidden = false,
+  upstreamTheme,
 }: SettingsLinkProps) => {
   if (hidden) {
     return null;
   }
 
-  let linkClasses =
-    'px-1 py-4 ms-8 text-sm font-medium leading-5 transition duration-300 border-b-2 border-transparent whitespace-nowrap first:ms-0';
+  let linkClasses = upstreamTheme
+    ? 'settings-tab-upstream'
+    : 'px-1 py-4 ms-8 text-sm font-medium leading-5 transition duration-300 border-b-2 border-transparent whitespace-nowrap first:ms-0';
   let activeLinkColor = 'text-indigo-500 border-indigo-600';
   let inactiveLinkColor =
     'text-gray-500 border-transparent hover:text-gray-300 hover:border-gray-400 focus:text-gray-300 focus:border-gray-400';
 
   if (tabType === 'button') {
-    linkClasses = 'app-filter-button whitespace-nowrap';
-    activeLinkColor = 'app-filter-button-active';
-    inactiveLinkColor = 'app-filter-button-idle';
+    linkClasses = upstreamTheme
+      ? 'settings-tab-upstream'
+      : 'app-filter-button whitespace-nowrap';
+    activeLinkColor = upstreamTheme ? '' : 'app-filter-button-active';
+    inactiveLinkColor = upstreamTheme ? '' : 'app-filter-button-idle';
+  }
+
+  if (upstreamTheme && tabType !== 'filter') {
+    activeLinkColor = '';
+    inactiveLinkColor = '';
   }
 
   if (tabType === 'filter') {
@@ -64,9 +75,12 @@ const SettingsLink = ({
   return (
     <Link
       href={route}
-      className={`${linkClasses} ${
-        currentPath.match(regex) ? activeLinkColor : inactiveLinkColor
-      }`}
+      className={[
+        linkClasses,
+        currentPath.match(regex) ? activeLinkColor : inactiveLinkColor,
+      ]
+        .filter(Boolean)
+        .join(' ')}
       aria-current={currentPath.match(regex) ? 'page' : undefined}
     >
       {children}
@@ -77,18 +91,22 @@ const SettingsLink = ({
 const SettingsTabs = ({
   tabType = 'default',
   settingsRoutes,
+  isRouteVisible,
   compactOnNarrowScreens = false,
 }: {
   tabType?: 'default' | 'button' | 'filter';
   settingsRoutes: SettingsRoute[];
+  isRouteVisible?: (route: SettingsRoute) => boolean;
   compactOnNarrowScreens?: boolean;
 }) => {
   const intl = useIntl();
   const router = useRouter();
+  const upstreamTheme = useUpstreamTheme();
   const { user: currentUser } = useUser();
   const visibleSettingsRoutes = settingsRoutes.filter(
     (route) =>
       !route.hidden &&
+      (!isRouteVisible || isRouteVisible(route)) &&
       (route.requiredPermission
         ? hasPermission(
             route.requiredPermission,
@@ -149,13 +167,20 @@ const SettingsTabs = ({
             className={
               tabType === 'filter'
                 ? 'flex w-full min-w-0 flex-wrap justify-between gap-[5px]'
-                : 'flex flex-wrap gap-[5px]'
+                : upstreamTheme
+                  ? `settings-tabs-upstream${
+                      tabType === 'button'
+                        ? 'settings-tabs-upstream-buttons'
+                        : ''
+                    }`
+                  : 'flex flex-wrap gap-[5px]'
             }
             aria-label={intl.formatMessage(messages.tabs)}
           >
             {visibleSettingsRoutes.map((route, index) => (
               <SettingsLink
                 tabType={tabType}
+                upstreamTheme={upstreamTheme}
                 currentPath={router.pathname}
                 route={route.route}
                 regex={route.regex}
@@ -173,10 +198,14 @@ const SettingsTabs = ({
             compactOnNarrowScreens ? 'lg:block' : 'sm:block'
           }`}
         >
-          <nav className="flex" data-testid="settings-nav-desktop">
+          <nav
+            className={upstreamTheme ? 'settings-tabs-upstream' : 'flex'}
+            data-testid="settings-nav-desktop"
+          >
             {visibleSettingsRoutes.map((route, index) => (
               <SettingsLink
                 tabType={tabType}
+                upstreamTheme={upstreamTheme}
                 currentPath={router.pathname}
                 route={route.route}
                 regex={route.regex}

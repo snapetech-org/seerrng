@@ -4,6 +4,7 @@ import Modal from '@app/components/Common/Modal';
 import PageTitle from '@app/components/Common/PageTitle';
 import type { SettingsRoute } from '@app/components/Common/SettingsTabs';
 import SettingsTabs from '@app/components/Common/SettingsTabs';
+import { OptionalDisclosure } from '@app/components/Persius/Primitives';
 import {
   SettingsDisplayControl,
   SettingsDisplayProvider,
@@ -48,6 +49,7 @@ const messages = defineMessages('components.Settings', {
   menuMetadataProviders: 'Metadata Providers',
   menuDiscoveryIntegrations: 'Discovery Integrations',
   searchSettings: 'Search Settings',
+  moreSettings: 'More Settings',
   save: 'Save',
   discard: 'Discard',
   unsavedChanges: 'Unsaved Changes',
@@ -222,6 +224,34 @@ const SettingsLayoutContent = ({ children }: SettingsLayoutProps) => {
       regex: /^\/settings\/about/,
     },
   ];
+  const upstreamSettingsPaths = new Set([
+    '/settings/main',
+    '/settings/users',
+    '/settings/plex',
+    '/settings/jellyfin',
+    '/settings/services',
+    '/settings/network',
+    '/settings/metadata',
+    '/settings/notifications/email',
+    '/settings/logs',
+    '/settings/jobs',
+    '/settings/about',
+  ]);
+  const extensionSettingsRoutes = settingsRoutes.filter(
+    (route) => !upstreamSettingsPaths.has(route.route)
+  );
+  const visibleExtensionSettingsRoutes = extensionSettingsRoutes.filter(
+    (route) =>
+      !route.requiredPermission ||
+      hasPermission(route.requiredPermission, {
+        type: route.permissionType?.type ?? 'and',
+      })
+  );
+  const shouldOpenSettingsMore =
+    visibleExtensionSettingsRoutes.some((route) =>
+      router.pathname.match(route.regex)
+    ) ||
+    Boolean(router.query.settingsSearch || router.query.settingsSearchTarget);
 
   const setDirty = (dirty: boolean) => {
     dirtyRef.current = dirty;
@@ -534,6 +564,32 @@ const SettingsLayoutContent = ({ children }: SettingsLayoutProps) => {
     });
   };
 
+  const settingsTools = (
+    <div
+      className="app-action-row settings-page-controls"
+      data-action-placement="leading"
+    >
+      <form
+        className="discover-filter-control settings-page-search"
+        onSubmit={handleSettingsSearch}
+      >
+        <span className="discover-filter-control-label gap-1.5">
+          <MagnifyingGlassIcon className="h-4 w-4" aria-hidden="true" />
+          {intl.formatMessage(messages.searchSettings)}
+        </span>
+        <input
+          type="search"
+          disabled={permissionsLoading}
+          value={keywordSearch}
+          onChange={(event) => setKeywordSearch(event.target.value)}
+          aria-label={intl.formatMessage(messages.searchSettings)}
+          className="settings-page-search-input"
+        />
+      </form>
+      <SettingsDisplayControl />
+    </div>
+  );
+
   useEffect(() => {
     const targetId = router.query.settingsSearchTarget;
     if (!router.isReady || typeof targetId !== 'string') return;
@@ -613,38 +669,37 @@ const SettingsLayoutContent = ({ children }: SettingsLayoutProps) => {
       {!upstream && (
         <Header>{intl.formatMessage(globalMessages.settings)}</Header>
       )}
-      <div
-        className="settings-page-navigation-row"
-      >
+      <div className="settings-page-navigation-row">
         <SettingsTabs
           tabType={upstream ? 'default' : 'filter'}
           settingsRoutes={settingsRoutes}
-          compactOnNarrowScreens
+          isRouteVisible={(route) =>
+            !upstream || upstreamSettingsPaths.has(route.route)
+          }
+          compactOnNarrowScreens={!upstream}
         />
-        <div
-          className="app-action-row settings-page-controls"
-          data-action-placement="leading"
-        >
-          <form
-            className="discover-filter-control settings-page-search"
-            onSubmit={handleSettingsSearch}
-          >
-            <span className="discover-filter-control-label gap-1.5">
-              <MagnifyingGlassIcon className="h-4 w-4" aria-hidden="true" />
-              {intl.formatMessage(messages.searchSettings)}
-            </span>
-            <input
-              type="search"
-              disabled={permissionsLoading}
-              value={keywordSearch}
-              onChange={(event) => setKeywordSearch(event.target.value)}
-              aria-label={intl.formatMessage(messages.searchSettings)}
-              className="settings-page-search-input"
-            />
-          </form>
-          <SettingsDisplayControl />
-        </div>
+        {!upstream && settingsTools}
       </div>
+
+      {upstream && (
+        <OptionalDisclosure
+          enabled={upstream}
+          open={shouldOpenSettingsMore || undefined}
+          label={<span>{intl.formatMessage(messages.moreSettings)}</span>}
+          className="upstream-extra-tools upstream-extra-tools--compact"
+        >
+          {visibleExtensionSettingsRoutes.length > 0 && (
+            <SettingsTabs
+              tabType="default"
+              settingsRoutes={settingsRoutes}
+              isRouteVisible={(route) =>
+                !upstreamSettingsPaths.has(route.route)
+              }
+            />
+          )}
+          {settingsTools}
+        </OptionalDisclosure>
+      )}
 
       <article className="app-card-main settings-main-card max-w-full min-w-0">
         <div
@@ -659,46 +714,49 @@ const SettingsLayoutContent = ({ children }: SettingsLayoutProps) => {
             if (
               !(event.target instanceof HTMLFormElement) ||
               !event.target.hasAttribute('data-settings-dirty')
-            )
+            ) {
               setDirty(false);
+            }
           }}
         >
           {children}
         </div>
-        <div className="settings-page-actions">
-          <Button
-            buttonType="danger"
-            buttonSize="standard"
-            onClick={discardAndLeave}
-            buttonIcon="cancel"
-          >
-            {intl.formatMessage(globalMessages.cancel)}
-          </Button>
-          {pageAction && (
+        {(!upstream || hasUnsavedChanges || pageAction) && (
+          <div className="settings-page-actions">
             <Button
-              buttonType="success"
+              buttonType="danger"
               buttonSize="standard"
-              disabled={pageAction.disabled}
-              onClick={pageAction.onClick}
+              onClick={discardAndLeave}
+              buttonIcon="cancel"
             >
-              {pageAction.icon}
-              <span>{pageAction.label}</span>
+              {intl.formatMessage(globalMessages.cancel)}
             </Button>
-          )}
-          {hasSaveActions && (
-            <Button
-              data-testid="settings-save-button"
-              buttonType="success"
-              buttonSize="standard"
-              disabled={!hasUnsavedChanges || managedFormsSaving}
-              onClick={submitSettingsForms}
-            >
-              {intl.formatMessage(
-                managedFormsSaving ? globalMessages.saving : messages.save
-              )}
-            </Button>
-          )}
-        </div>
+            {pageAction && (
+              <Button
+                buttonType="success"
+                buttonSize="standard"
+                disabled={pageAction.disabled}
+                onClick={pageAction.onClick}
+              >
+                {pageAction.icon}
+                <span>{pageAction.label}</span>
+              </Button>
+            )}
+            {hasSaveActions && (
+              <Button
+                data-testid="settings-save-button"
+                buttonType="success"
+                buttonSize="standard"
+                disabled={!hasUnsavedChanges || managedFormsSaving}
+                onClick={submitSettingsForms}
+              >
+                {intl.formatMessage(
+                  managedFormsSaving ? globalMessages.saving : messages.save
+                )}
+              </Button>
+            )}
+          </div>
+        )}
       </article>
     </SettingsPageActionContext.Provider>
   );

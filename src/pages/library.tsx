@@ -207,7 +207,7 @@ export default function LibraryPage() {
     dropped: messages.dropped,
   };
   return (
-    <div className="text-gray-100">
+    <div className="text-gray-100 upstream-extension-page upstream-library-page">
       <PageTitle title={intl.formatMessage(messages.title)} />
       <h1 className="page-title">{intl.formatMessage(messages.title)}</h1>
       <p className="description mb-6">
@@ -218,13 +218,13 @@ export default function LibraryPage() {
               ? '/profile/settings'
               : '/profile/settings/linked-accounts'
           }
-          className="text-blue-300"
+          className="upstream-extension-link text-blue-300"
         >
           {intl.formatMessage(messages.accounts)}
         </Link>
       </p>
       <IdentityMappingPackControls onUpdated={() => mutate()} />
-      <div className="mb-6 flex flex-wrap gap-4">
+      <div className="upstream-extension-toolbar mb-6 flex flex-wrap gap-4">
         <label className="block" htmlFor="library-source">
           {intl.formatMessage(messages.provider)}
           <select
@@ -318,7 +318,7 @@ export default function LibraryPage() {
         )}
       </div>
       {connected && !nativeSource && (
-        <section className="mb-6 rounded-lg border border-gray-700 bg-gray-800 p-4">
+        <section className="upstream-extension-panel mb-6 p-4">
           <p className="mb-3 text-sm text-gray-300">
             {intl.formatMessage(messages.repairDescription)}
           </p>
@@ -536,7 +536,7 @@ export default function LibraryPage() {
         {data?.items.map((item) => (
           <article
             key={item.id}
-            className="min-w-0 overflow-hidden rounded-lg border border-gray-700 bg-gray-800"
+            className="upstream-extension-item min-w-0 overflow-hidden rounded-lg border border-gray-700 bg-gray-800"
           >
             {item.tmdbId && item.mediaType ? (
               <TmdbTitleCard
@@ -565,7 +565,7 @@ export default function LibraryPage() {
                 <h2 className="p-3 font-semibold break-words">{item.title}</h2>
               </>
             )}
-            <div className="space-y-1 px-3 pt-3 text-sm text-gray-300">
+            <div className="upstream-library-item-metadata space-y-1 px-3 pt-3 text-sm text-gray-300">
               {item.status && (
                 <p>{intl.formatMessage(statuses[item.status])}</p>
               )}
