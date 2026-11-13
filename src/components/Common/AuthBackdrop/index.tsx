@@ -16,7 +16,7 @@ const AuthBackdrop = () => {
     <ImageFader
       backgroundImages={
         data?.map(
-          (backdrop) => `https://image.tmdb.org/t/p/w1280${backdrop.path}`
+          (backdrop) => `https://image.tmdb.org/t/p/original${backdrop.path}`
         ) ?? []
       }
     />
