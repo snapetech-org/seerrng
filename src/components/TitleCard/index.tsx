@@ -63,6 +63,7 @@ const RequestModal = dynamic(() => import('@app/components/RequestModal'), {
 });
 interface TitleCardProps {
   id: number | string;
+  anilistId?: number;
   image?: string;
   fallbackImage?: string;
   enablePosterFallbackLookup?: boolean;
@@ -141,6 +142,7 @@ const messages = defineMessages('components.TitleCard', {
 
 const TitleCard = ({
   id,
+  anilistId,
   image,
   fallbackImage,
   enablePosterFallbackLookup = false,
@@ -633,7 +635,12 @@ const TitleCard = ({
                   }),
                 }
               : mediaType === 'comic'
-                ? `/comic/${encodeApiPathSegment(canonicalId)}`
+                ? anilistId && Number.isSafeInteger(anilistId) && anilistId > 0
+                  ? {
+                      pathname: `/comic/${encodeApiPathSegment(canonicalId)}`,
+                      query: { anilistId: String(anilistId) },
+                    }
+                  : `/comic/${encodeApiPathSegment(canonicalId)}`
                 : mediaType === 'magazine'
                   ? `/magazine/${encodeApiPathSegment(canonicalId)}`
                   : isSports
@@ -998,6 +1005,7 @@ const TitleCard = ({
           {isComic && typeof canonicalId === 'string' && (
             <RequestModal
               comicId={canonicalId}
+              initialAnilistId={anilistId}
               show={showRequestModal}
               type="comic"
               onComplete={requestComplete}

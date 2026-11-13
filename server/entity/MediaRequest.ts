@@ -31,6 +31,7 @@ import {
 } from '@server/lib/bookLanguagePolicy';
 import { isBookDestinationFileAvailable } from '@server/lib/bookRequestDestination';
 import { compareBookEditions } from '@server/lib/editionCompare';
+import { getVerifiedMangaVolumeIdentity } from '@server/lib/mangaVolume';
 import {
   normalizeMusicBrainzId,
   normalizeOpenLibraryAuthorId,
@@ -1977,6 +1978,20 @@ export class MediaRequest {
         throw new BlocklistedMediaError('This comic is blocklisted.');
       }
 
+      let verifiedAnilistId: number | undefined;
+      if (requestBody.anilistId !== undefined) {
+        const mangaIdentity = await getVerifiedMangaVolumeIdentity(
+          comicVineId,
+          requestBody.anilistId
+        );
+        if (!mangaIdentity) {
+          throw new ServiceConfigurationError(
+            'The selected AniList manga does not match this ComicVine edition.'
+          );
+        }
+        verifiedAnilistId = mangaIdentity.anilistId;
+      }
+
       const existingIdentifier = await mediaIdentifierRepository.findOne({
         where: {
           provider: MediaIdentifierProvider.COMICVINE,
@@ -2187,8 +2202,10 @@ export class MediaRequest {
 
       return dataSource.transaction(async (manager) => {
         const savedMedia = await manager.getRepository(Media).save(media!);
+        const transactionalIdentifierRepository =
+          manager.getRepository(MediaIdentifier);
         if (!existingIdentifier) {
-          await manager.getRepository(MediaIdentifier).save(
+          await transactionalIdentifierRepository.save(
             new MediaIdentifier({
               media: savedMedia,
               provider: MediaIdentifierProvider.COMICVINE,
@@ -2196,6 +2213,33 @@ export class MediaRequest {
               canonical: true,
             })
           );
+        }
+        if (verifiedAnilistId !== undefined) {
+          const existingMangaIdentifier =
+            await transactionalIdentifierRepository.findOne({
+              where: {
+                provider: MediaIdentifierProvider.ANILIST,
+                media: { id: savedMedia.id },
+              },
+            });
+          if (
+            existingMangaIdentifier &&
+            existingMangaIdentifier.value !== String(verifiedAnilistId)
+          ) {
+            throw new ServiceConfigurationError(
+              'This ComicVine edition is already linked to a different AniList manga.'
+            );
+          }
+          if (!existingMangaIdentifier) {
+            await transactionalIdentifierRepository.save(
+              new MediaIdentifier({
+                media: savedMedia,
+                provider: MediaIdentifierProvider.ANILIST,
+                value: String(verifiedAnilistId),
+                canonical: false,
+              })
+            );
+          }
         }
         request.media = savedMedia;
         return saveRequestWithFreshMedia(manager, request);

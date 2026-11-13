@@ -1,4 +1,5 @@
 import BinderyAPI from '@server/api/bindery';
+import BackIssueAPI from '@server/api/comics/backissue';
 import KapowarrAPI from '@server/api/comics/kapowarr';
 import ReadarrAPI from '@server/api/servarr/readarr';
 import {
@@ -97,7 +98,7 @@ const createActiveBookRequest = async () => {
 };
 
 const createActiveComicRequest = async (
-  comicServiceType: 'mylar' | 'kapowarr'
+  comicServiceType: 'mylar' | 'kapowarr' | 'backissue'
 ) => {
   const requestedBy = await getRepository(User).findOneByOrFail({
     email: 'friend@seerr.dev',
@@ -133,6 +134,7 @@ describe('RequestWorkCleanupManager', () => {
   beforeEach(async () => {
     await resetTestDb();
     configureBookshelf();
+    getSettings().backissue = [];
     mock.method(requestDispatchManager, 'cancel', async () => undefined);
   });
 
@@ -141,6 +143,7 @@ describe('RequestWorkCleanupManager', () => {
     getSettings().readarr = [];
     getSettings().mylar = [];
     getSettings().kapowarr = [];
+    getSettings().backissue = [];
   });
 
   it('preserves an imported ebook while cancelling the still-pending audiobook', async () => {
@@ -742,5 +745,43 @@ describe('RequestWorkCleanupManager', () => {
       () => requestWorkCleanupManager.cleanup(request, true),
       RequestWorkCleanupError
     );
+  });
+
+  it('cancels a BackIssue pack grab by its pack queue ID', async () => {
+    getSettings().backissue = [
+      {
+        id: 40,
+        name: 'BackIssue',
+        hostname: 'backissue.local',
+        port: 8787,
+        apiKey: 'backissue-key',
+        useSsl: false,
+        tags: [],
+        isDefault: true,
+        syncEnabled: true,
+        preventSearch: false,
+      },
+    ];
+    const request = await createActiveComicRequest('backissue');
+    const pack = {
+      id: 77,
+      seriesId: 1,
+      title: 'Manga volumes 1-13',
+      status: 'downloading',
+      progress: 62.5,
+      pack: true,
+    };
+    let queueRead = 0;
+    mock.method(BackIssueAPI.prototype, 'getQueue', async () =>
+      queueRead++ === 0 ? [pack] : []
+    );
+    const canceled: number[] = [];
+    mock.method(BackIssueAPI.prototype, 'cancelQueueItem', async (id: number) => {
+      canceled.push(id);
+    });
+
+    await requestWorkCleanupManager.cleanup(request, true);
+
+    assert.deepEqual(canceled, [77]);
   });
 });

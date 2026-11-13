@@ -110,13 +110,23 @@ const ComicDetails = () => {
   const [toggleWatchlist, setToggleWatchlist] = useState(true);
   const comicId =
     typeof router.query.comicId === 'string' ? router.query.comicId : '';
+  const anilistId =
+    typeof router.query.anilistId === 'string' &&
+    /^\d{1,9}$/.test(router.query.anilistId) &&
+    Number(router.query.anilistId) > 0
+      ? router.query.anilistId
+      : undefined;
 
   const {
     data,
     error,
     mutate: revalidate,
   } = useSWR<ComicDetailsType>(
-    comicId ? `/api/v1/comic/${encodeApiPathSegment(comicId)}` : null
+    comicId
+      ? `/api/v1/comic/${encodeApiPathSegment(comicId)}${
+          anilistId ? `?anilistId=${anilistId}` : ''
+        }`
+      : null
   );
   const {
     data: issuePages,
@@ -350,6 +360,7 @@ const ComicDetails = () => {
       {showRequestModal && (
         <RequestModal
           comicId={data.id}
+          initialAnilistId={data.anilistId}
           editRequest={editRequest}
           show={showRequestModal}
           type="comic"

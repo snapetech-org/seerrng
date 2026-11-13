@@ -4022,7 +4022,7 @@ export class MediaRequestSubscriber implements EntitySubscriberInterface<MediaRe
         comicVineId,
       });
     } catch (e) {
-      if (isTransientExternalError(e)) {
+      if (isRetryableRequestDispatchError(e)) {
         const providerRetryDelay = getRetryAfterMs(e);
         const retryAfterMs =
           providerRetryDelay === undefined

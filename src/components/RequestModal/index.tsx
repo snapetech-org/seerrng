@@ -60,6 +60,7 @@ interface RequestModalProps {
   mbId?: string;
   bookId?: string;
   comicId?: string;
+  initialAnilistId?: number;
   magazineTitle?: string;
   adultId?: string;
   adultRequestId?: number;
@@ -87,6 +88,7 @@ const RequestModal = ({
   mbId,
   bookId,
   comicId,
+  initialAnilistId,
   magazineTitle,
   adultId,
   adultRequestId,
@@ -168,6 +170,7 @@ const RequestModal = ({
           onComplete={onComplete}
           onCancel={onCancel}
           comicId={comicId}
+          initialAnilistId={initialAnilistId}
           onUpdating={onUpdating}
           editRequest={editRequest}
         />

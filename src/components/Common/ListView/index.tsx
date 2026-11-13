@@ -484,6 +484,7 @@ const ListView = ({
                 titleWeight={posterTitleWeight}
                 key={title.id}
                 id={title.id}
+                anilistId={title.anilistId}
                 isAddedToWatchlist={title.mediaInfo?.watchlists?.length ?? 0}
                 image={title.posterPath}
                 status={title.mediaInfo?.status}
