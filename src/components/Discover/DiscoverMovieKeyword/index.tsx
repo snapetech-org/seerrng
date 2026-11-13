@@ -2,6 +2,7 @@ import Header from '@app/components/Common/Header';
 import ListView from '@app/components/Common/ListView';
 import PageTitle from '@app/components/Common/PageTitle';
 import useDiscover, { encodeURIExtraParams } from '@app/hooks/useDiscover';
+import useUpstreamTheme from '@app/hooks/useUpstreamTheme';
 import globalMessages from '@app/i18n/globalMessages';
 import ErrorPage from '@app/pages/_error';
 import defineMessages from '@app/utils/defineMessages';
@@ -17,6 +18,7 @@ const messages = defineMessages('components.Discover.DiscoverMovieKeyword', {
 const DiscoverMovieKeyword = () => {
   const router = useRouter();
   const intl = useIntl();
+  const upstream = useUpstreamTheme();
   const keywords =
     typeof router.query.keywords === 'string' ? router.query.keywords : '';
 
@@ -37,8 +39,16 @@ const DiscoverMovieKeyword = () => {
     { enabled: !!keywords }
   );
 
-  const title =
-    isLoadingInitialData || error || !firstResultData?.keywords?.length
+  const isWaitingForRoute = upstream && !keywords;
+  const title = upstream
+    ? isLoadingInitialData || isWaitingForRoute
+      ? intl.formatMessage(globalMessages.loading)
+      : intl.formatMessage(messages.keywordMovies, {
+          keywordTitle: firstResultData?.keywords
+            .map((k) => `${k.name[0].toUpperCase()}${k.name.substring(1)}`)
+            .join(', '),
+        })
+    : isLoadingInitialData || error || !firstResultData?.keywords?.length
       ? intl.formatMessage(globalMessages.movies)
       : intl.formatMessage(messages.keywordMovies, {
           keywordTitle: firstResultData?.keywords
@@ -47,6 +57,8 @@ const DiscoverMovieKeyword = () => {
         });
 
   if (error) {
+    if (upstream) return <ErrorPage statusCode={500} />;
+
     return (
       <>
         <PageTitle title={title} />
@@ -59,7 +71,7 @@ const DiscoverMovieKeyword = () => {
   return (
     <>
       <PageTitle title={title} />
-      <div>
+      <div className={upstream ? 'mb-5 mt-1' : undefined}>
         <Header>{title}</Header>
       </div>
       <ListView
@@ -67,7 +79,9 @@ const DiscoverMovieKeyword = () => {
         items={titles}
         isEmpty={isEmpty}
         isLoading={
-          isLoadingInitialData || (isLoadingMore && (titles?.length ?? 0) > 0)
+          isLoadingInitialData ||
+          isWaitingForRoute ||
+          (isLoadingMore && (titles?.length ?? 0) > 0)
         }
         isReachingEnd={isReachingEnd}
         onScrollBottom={fetchMore}

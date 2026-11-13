@@ -113,6 +113,24 @@ filter/pagination controls. The expanded SeerrNG blocklist remains available
 from the collapsed extension disclosure, including extra media types and
 metadata.
 
+Genre, keyword, and language discovery routes use upstream's loading and error
+fallbacks and heading spacing. SeerrNG genre-follow actions remain reachable
+under a collapsed “More options” disclosure.
+
+Network and studio discovery pages use upstream's metadata-backed title and
+logo header, heading spacing, and result-list presentation. The genre directory
+pages use upstream's card image resolution and route links, plus upstream's
+loading and error fallbacks.
+
+The watchlist page uses upstream's title, owner subheading, spacing, and default
+list presentation. SeerrNG's watchlist search, media, and sort filters remain
+available under a collapsed “More options” disclosure.
+
+Trending restores upstream's movie/series/person results with its daily/weekly
+controls in SeerrOrig. Main movie and series discovery show upstream's plain
+error fallback; SeerrNG's retry panel and multi-catalog trending tabs stay in
+the native theme.
+
 Common buttons, badges, alerts, page headers, and dialogs now switch to
 upstream's shared-control presentation when SeerrOrig is selected. SeerrNG's
 own variants and behavior remain active in its native theme.
