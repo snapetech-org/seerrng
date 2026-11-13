@@ -2198,7 +2198,7 @@ describe('GET /request', () => {
     assert.strictEqual(REQUEST_SERVICE_PROFILE_CONCURRENCY, 10);
   });
 
-  it('hydrates profiles only for services referenced by the result page', async (t) => {
+  it('hydrates only referenced profiles after releasing the request read lease', async (t) => {
     const settings = getSettings();
     settings.radarr = [createRadarrSettings(30), createRadarrSettings(31)];
     const mediaRequest = await seedRequest();
@@ -2206,10 +2206,42 @@ describe('GET /request', () => {
       serverId: 30,
       profileId: 5,
     });
+    const admin = await getRepository(User).findOneByOrFail({
+      email: 'admin@seerr.dev',
+    });
+    let activeRequestReadLeases = 0;
+    const originalRun = requestAdmissionCoordinator.run.bind(
+      requestAdmissionCoordinator
+    );
+    const observedRun: typeof requestAdmissionCoordinator.run = (
+      resources,
+      callback
+    ) => {
+      const isRequestReadLease = resources.includes(
+        `user-security:user:${admin.id}`
+      );
+      if (isRequestReadLease) {
+        activeRequestReadLeases += 1;
+      }
+      const result = originalRun(resources, callback);
+      return isRequestReadLease
+        ? result.finally(() => {
+            activeRequestReadLeases -= 1;
+          })
+        : result;
+    };
+    mock.method(requestAdmissionCoordinator, 'run', observedRun);
     const profiles = mock.method(
       RadarrAPI.prototype,
       'getProfiles',
-      async () => [{ id: 5, name: 'HD' }]
+      async () => {
+        assert.strictEqual(
+          activeRequestReadLeases,
+          0,
+          'display-only profile lookups must run after the user-security lease is released'
+        );
+        return [{ id: 5, name: 'HD' }];
+      }
     );
     t.after(() => {
       profiles.mock.restore();
