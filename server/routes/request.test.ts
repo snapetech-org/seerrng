@@ -1,6 +1,7 @@
 import { RequestDispatchOutbox } from '@server/entity/RequestDispatchOutbox';
 import { waitForBackgroundTasks } from '@server/utils/backgroundTasks';
 import assert from 'node:assert/strict';
+import { randomBytes } from 'node:crypto';
 import { afterEach, before, beforeEach, describe, it, mock } from 'node:test';
 
 import ListenBrainzAPI from '@server/api/listenbrainz';
@@ -182,7 +183,7 @@ function createApp() {
   app.use(express.json());
   app.use(
     session({
-      secret: 'test-secret',
+      secret: randomBytes(32).toString('hex'),
       cookie: { secure: 'auto' },
       resave: false,
       saveUninitialized: false,
@@ -1054,8 +1055,15 @@ describe('GET /request/status', () => {
       assert.strictEqual(response.body.request.media.seasons.length, 40);
       assert.strictEqual(response.body.request.seasons.length, 40);
 
-      const hasTable = (query: string, table: string) =>
-        new RegExp(`(?:FROM|JOIN)\\s+"${table}"\\s`, 'i').test(query);
+      const hasTable = (query: string, table: string) => {
+        const normalizedQuery = query.toLowerCase();
+        const normalizedTable = table.toLowerCase();
+
+        return (
+          normalizedQuery.includes(`from "${normalizedTable}" `) ||
+          normalizedQuery.includes(`join "${normalizedTable}" `)
+        );
+      };
       const fanOutQueries = capturedQueries.filter(
         (query) =>
           hasTable(query, 'season') && hasTable(query, 'season_request')
