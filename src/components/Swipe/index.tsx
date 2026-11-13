@@ -1065,7 +1065,7 @@ const Swipe = () => {
       effectiveFiltersForMode.magazineCatalog === 'public');
 
   return (
-    <div className="page-layout">
+    <div className="page-layout upstream-extension-page upstream-swipe-page">
       <DiscoveryModeTabs
         selected="swipe"
         mediaType={discoveryMediaType}

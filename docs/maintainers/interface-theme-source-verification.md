@@ -215,27 +215,22 @@ be marked complete.
 
 ## Visual review status
 
-The review workspace has a production-mode candidate server and installed
-frontend dependencies. Existing candidate captures cover only `/movie/550` and
-`/discover/movies`; they do not validate the later settings-route changes.
+The checkout now uses Node 24.22.2 and pnpm 10.24.0. The Next.js production
+build and server asset build pass, including the SeerrOrig stylesheet packaged
+under `dist/interface-themes/`.
 
-The current checkout cannot reproduce that review setup. It runs Node
-24.22.1, while `package.json` requires `^24.22.2`; the available offline pnpm
-store also lacks `@anthropic-ai/sdk@0.131.0`. The frozen offline install stops
-at that missing archive, so this checkout cannot start a candidate app for
-matched route rendering. No dependency or lockfile changes were made.
+The candidate server starts inside the checkout, but the review browsers run in
+a separate network namespace and cannot reach its loopback port. The desktop
+browser also blocks direct `file://` access, and local Chromium cannot start in
+this container. As a result, this workspace cannot capture the candidate app
+for matched route rendering.
 
-An earlier candidate render at 390 × 844 CSS pixels captured `/movie/550` and
-`/discover/movies`; the SeerrOrig theme was selected. Captures are retained at
-`/mnt/disks/scratch/task-deliverables/seerrng-pr663-visual-qa-20261113/candidate-390-movie-550-page.png`
-and in the same directory for the full browser capture. These candidate pages
-used live TMDB data, while the upstream comparison images use deterministic
-fixture data. The page content therefore does not match, so the captures are
-exploratory and are not visual acceptance evidence.
+Earlier exploratory captures of `/movie/550` and `/discover/movies` used live
+TMDB data, while the upstream comparison images use deterministic fixture
+data. Their content does not match, so they are not visual acceptance evidence.
 
 Matched route, data, UI-state, and viewport comparisons remain incomplete for
-both SeerrOrig and SeerrNG. No release or merge decision should treat this
-source-level review or the exploratory renders as visual acceptance. Keep this
-pull request in draft until the required representative route families,
-responsive sizes, and interaction states have matching rendered comparisons
-and the results have been reviewed.
+SeerrOrig. No release or merge decision should treat source review or the
+exploratory renders as visual acceptance. Keep the pull request in draft until
+representative shared routes, settings, fork-only extensions, responsive sizes,
+and interaction states have matched rendered comparisons and review.

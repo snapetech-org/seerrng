@@ -53,6 +53,12 @@ Alert, Badge, and control roles. These controls come from sources contributed to
 upstream Seerr by [@gauthier-th](https://github.com/gauthier-th); SeerrNG
 independently applied their presentation to its own calendar data, without
 implying direct contribution to or endorsement of SeerrNG.
+SeerrOrig's fork-only library, downloads, game/software catalog, swipe, adult,
+and Sportarr routes reuse the upstream v3.5.1 Header, common control, slate
+surface, and compact card presentation roles where applicable. These patterns
+come from the v3.5.1 source contributed to upstream by
+[@gauthier-th](https://github.com/gauthier-th); SeerrNG independently adapted
+them while keeping its own route data and actions.
 The Issues list and movie/TV issue-detail composition are adapted from
 upstream's [`IssueList`](https://github.com/seerr-team/seerr/blob/564bfb08b54caa374bddaf820abfd226e5e69151/src/components/IssueList/index.tsx),
 [`IssueItem`](https://github.com/seerr-team/seerr/blob/564bfb08b54caa374bddaf820abfd226e5e69151/src/components/IssueList/IssueItem/index.tsx),
