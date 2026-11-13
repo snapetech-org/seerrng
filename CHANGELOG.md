@@ -9,6 +9,63 @@ v3.72.7 section consolidates changes from the requested v3.71.4 baseline
 through v3.72.7, including changes also represented by unpublished interim
 tags. The comparison link is the complete commit range.
 
+## [3.72.33](https://github.com/snapetech-org/seerrng/compare/v3.72.32..v3.72.33) - 2026-11-13
+
+### User-facing changes
+
+#### Added
+
+- **Books:** Lumen's Books and Audiobooks pages now offer Popular, Trending, Newest, and Rating sort options. The selected sort stays in the URL for sharing; the In library view hides sorting because it has no sort support.
+
+#### Changed
+
+- **Episode Queue:** User managers can now choose the Episode Queue length for one TV request while leaving the user's account default unchanged. Playback advances only that show's queue.
+
+#### Fixed
+
+- **Localization:** BackIssue comic and manga API errors now have English fallback catalog entries, keeping generated API message catalogs synchronized with the new request-validation paths.
+- **Books:** When ChaptarrNG's remote metadata source is unavailable, SeerrNG now checks Chaptarr's indexed local catalog before remote book searches. It only reuses a matching title and format, confirms the author and Open Library identity when available, and verifies a selected ISBN or edition before monitoring. The fallback uses bounded indexed and per-book requests; it does not download the full library.
+- **Comics:** Harden BackIssue collection sync so only an explicitly unsupported libraries endpoint triggers the legacy unfiltered scan. Validate BackIssue's collection and queue during the read-only connection test, preserve verified AniList manga identity with comic requests across restarts, and document least-privilege BackIssue account setup.
+
+#### Security
+
+- **Containers:** Upgrade Alpine's `zlib` package during SeerrNG, Lumen, local-development and Cloudron image builds. The next images will include Alpine's fixed `zlib` 1.4-r0 package, addressing CVE-2026-4738 found in the current published images.
+- **Security:** Arr tag migration failures now log instance names and provider messages as structured data. This prevents format tokens in those values from being interpreted as part of the log message.
+
+### 🛡️ Security
+- *(security)* Harden Arr migration failure logs (#674) - ([62ba851](https://github.com/snapetech-org/seerrng/commit/62ba851f58fd1b32e2aad2f8a0c039588d5ea20e))
+- *(security)* Refresh Cloudron Semgrep hash - ([167e8ce](https://github.com/snapetech-org/seerrng/commit/167e8ce4a050f6485d2a24508f0181fa4707ce05))
+- *(security)* Update Alpine zlib in container builds - ([b0065bf](https://github.com/snapetech-org/seerrng/commit/b0065bf9edc1ae1913f51a145ac660e4f61918c1))
+
+### 🚀 Features
+- *(lumen)* Sort Books and Audiobooks like the SeerrNG web app - ([6797675](https://github.com/snapetech-org/seerrng/commit/6797675b17efd20f2a11808a3a972511e719b190))
+- Allow per-request episode queue settings - ([ffea30d](https://github.com/snapetech-org/seerrng/commit/ffea30d3985584b8b75d46112fa2a827dd0a61c2))
+
+### 🐛 Bug Fixes
+- *(books)* Reuse stored title for Chaptarr fallback (#643) - ([d0ff232](https://github.com/snapetech-org/seerrng/commit/d0ff2329769ec5f26c049cc827145a11466c7e95))
+- *(deps)* Bump actions/setup-java from 6.1.0 to 6.2.0 - ([0612302](https://github.com/snapetech-org/seerrng/commit/0612302b7a5825f0c54e1b47d0c3a8902fc56886))
+- *(deps)* Bump @anthropic-ai/sdk from 0.131.0 to 1.6.0 - ([72b2872](https://github.com/snapetech-org/seerrng/commit/72b2872a748658ef9c6bb039f3da41a82b272008))
+- *(deps)* Bump openid-client from 6.8.8 to 6.8.9 - ([29c41f3](https://github.com/snapetech-org/seerrng/commit/29c41f35cad0fbb425b648549ca45c6c98d65db2))
+- *(deps)* Bump tailwindcss from 4.3.3 to 4.3.4 - ([4b24054](https://github.com/snapetech-org/seerrng/commit/4b24054727953d499cb82d7dd2412152d1eec6d2))
+- *(deps)* Bump dawidd6/action-download-artifact from 27 to 28 - ([d3f0cb8](https://github.com/snapetech-org/seerrng/commit/d3f0cb8da1d5ab80194fc1775b822dbd2426e428))
+- *(deps)* Bump softprops/action-gh-release from 3.0.3 to 3.0.4 - ([9bad7d7](https://github.com/snapetech-org/seerrng/commit/9bad7d716de3b779671d427f5e67ed9091222570))
+- *(deps)* Bump cypress-io/github-action from 7.4.8 to 7.4.9 (#665) - ([e2e2ae3](https://github.com/snapetech-org/seerrng/commit/e2e2ae3f58bf17b1614fe0013ba1fdf920a4d768))
+- *(deps)* Bump express from 5.2.1 to 5.3.0 (#668) - ([c123e0f](https://github.com/snapetech-org/seerrng/commit/c123e0fbf6b3f94eacabb0440b47222c1d29aed5))
+- *(deps)* Bump eslint from 10.13.0 to 10.14.0 (#664) - ([9093000](https://github.com/snapetech-org/seerrng/commit/909300011831e7534059def9c2615aa24e06e350))
+- *(deps)* Bump docker/login-action from 4.7.0 to 4.8.0 - ([ceb6fd3](https://github.com/snapetech-org/seerrng/commit/ceb6fd33f5390fd12cdd16b611bae2c43f77c9ab))
+- *(test)* Keep security regression fixtures current - ([8971bae](https://github.com/snapetech-org/seerrng/commit/8971bae8aeefb12e74998d95c52a845ee86508ed))
+- Reuse local Chaptarr books during metadata outages (#643) - ([e8cde86](https://github.com/snapetech-org/seerrng/commit/e8cde86eeca5ae3cc93cac53f91c4bc93190951c))
+- Harden BackIssue comic and manga support - ([8604b05](https://github.com/snapetech-org/seerrng/commit/8604b052fa36c48a936fc104fe0224ba80034af9))
+- Sync episode queue request catalogs - ([5492a70](https://github.com/snapetech-org/seerrng/commit/5492a70d944e09b10d3a48b575f8708410831a46))
+
+### 📖 Documentation
+- *(release)* Add book sorting notes and audit advisory paths - ([1f13068](https://github.com/snapetech-org/seerrng/commit/1f13068a171f6182912b56882cefaa3dbdff46af))
+- Reconcile issue delivery and release notes - ([27d2c25](https://github.com/snapetech-org/seerrng/commit/27d2c2536a97014849d962892213afc4dd5c3132))
+
+### 🧪 Testing
+- *(discover)* Wait for reconnect events before revalidation - ([ea4e517](https://github.com/snapetech-org/seerrng/commit/ea4e51751a83a568183e38ca7742af4646e4285d))
+- Clear request helper security findings - ([35bbc42](https://github.com/snapetech-org/seerrng/commit/35bbc428d9fa638a3ee1ab86ab2f72abce636350))
+
 ## [3.72.32](https://github.com/snapetech-org/seerrng/compare/v3.72.31..v3.72.32) - 2026-11-12
 
 ### User-facing changes

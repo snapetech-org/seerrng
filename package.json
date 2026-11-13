@@ -1,6 +1,6 @@
 {
   "name": "seerrng",
-  "version": "3.72.32",
+  "version": "3.72.33",
   "private": true,
   "packageManager": "pnpm@10.24.0",
   "scripts": {
