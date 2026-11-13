@@ -928,7 +928,7 @@
   background: linear-gradient(180deg, rgb(17 24 39 / 0.47), #111827);
 }
 
-.upstream-backdrop-overlay {
+[data-interface-theme='seerrOrig'] .upstream-backdrop-overlay {
   position: absolute;
   inset: 0;
   background: linear-gradient(90deg, rgb(31 41 55 / 0.47) 0%, #1f2937 100%);
