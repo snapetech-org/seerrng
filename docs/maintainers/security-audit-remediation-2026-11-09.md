@@ -219,6 +219,32 @@ excluded from the production scan by the existing test-fixture policy.
 Trivy's HIGH/CRITICAL filesystem vulnerability, configuration and secret gate
 passed using the previously downloaded database from this audit session.
 
+### November 13 follow-up
+
+The full local scan on the November 13 candidate reported 53 Semgrep matches.
+Review confirmed the matches remain within the existing file-hash review set;
+the two `unsafe-formatstring` matches in Migration 0007 were removed by keeping
+the log message constant and writing administrator-controlled instance names
+and provider errors as structured fields. The matching reviewed exception was
+removed. The other reviewed matches remain scoped to exact file hashes, counts,
+owners and expiry dates; they include path checks with containment and symlink
+guards, escaped metadata regular expressions, administrator-validated email
+links, a root bootstrap that drops privileges before application startup, and
+archived audit evidence. They are not treated as application vulnerabilities
+without an exploitable path through their current callers.
+
+The Trivy CI-mode filesystem scan found no HIGH/CRITICAL vulnerabilities,
+misconfigurations, or secrets in the scanned manifests and configuration. This
+result applies to the candidate tree and scan configuration; it does not
+replace exact-head GitHub checks or scans of published production images.
+
+The final pinned Semgrep CE 1.184.0 run reported 51 findings. The checked-in
+review baseline accepted all 51 with zero unreviewed, changed-hash, over-count,
+or expired matches; 99 parser/engine diagnostics remain in the retained JSON
+report. The final Trivy CI-mode scan reported zero HIGH/CRITICAL findings across
+vulnerabilities, misconfigurations, and secrets. Both reports are retained
+under `/mnt/disks/scratch/task-deliverables/seerrng-security-audit-20261113/`.
+
 ### Native rendered comparison results
 
 Both [Android comparison jobs](https://github.com/snapetech-org/seerrng/actions/runs/42709114266)
