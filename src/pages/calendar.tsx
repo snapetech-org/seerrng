@@ -1,5 +1,9 @@
+import Alert from '@app/components/Common/Alert';
+import Badge from '@app/components/Common/Badge';
 import Button from '@app/components/Common/Button';
+import Header from '@app/components/Common/Header';
 import PageTitle from '@app/components/Common/PageTitle';
+import useUpstreamTheme from '@app/hooks/useUpstreamTheme';
 import { Permission, useUser } from '@app/hooks/useUser';
 import {
   encodeApiPathSegment,
@@ -64,6 +68,7 @@ const dateMonth = (date: Date) =>
   `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
 export default function CalendarPage() {
   const intl = useIntl();
+  const upstream = useUpstreamTheme();
   const { hasPermission } = useUser();
   const [month, setMonth] = useState(() => dateMonth(new Date()));
   const [scope, setScope] = useState('mine');
@@ -83,6 +88,9 @@ export default function CalendarPage() {
   };
   const start = `${month}-01`;
   const end = `${dateMonth(new Date(year, number, 1))}-01`;
+  const titleLinkClass = upstream
+    ? 'text-gray-300 transition hover:text-white'
+    : 'text-blue-300 hover:text-blue-200';
   const { data, error, isLoading, mutate } = useSWR<{
     results: ReleaseCalendarItem[];
     partialSources: { source: string }[];
@@ -100,12 +108,15 @@ export default function CalendarPage() {
   return (
     <div className="text-gray-100">
       <PageTitle title={intl.formatMessage(messages.title)} />
-      <h1 className="page-title">{intl.formatMessage(messages.title)}</h1>
-      <p className="description mb-6">
+      <Header>{intl.formatMessage(messages.title)}</Header>
+      <p className={upstream ? 'mb-6 text-gray-400' : 'description mb-6'}>
         {intl.formatMessage(messages.description)}
       </p>
       <div className="mb-6 flex flex-wrap items-end gap-4">
-        <label htmlFor="calendar-month">
+        <label
+          className={upstream ? 'text-sm text-gray-300' : undefined}
+          htmlFor="calendar-month"
+        >
           {intl.formatMessage(messages.month)}
           <input
             className="mt-2 block rounded-md border border-gray-600 bg-gray-800 px-3 py-2 text-gray-100 [color-scheme:dark]"
@@ -118,7 +129,10 @@ export default function CalendarPage() {
             }}
           />
         </label>
-        <label htmlFor="calendar-scope">
+        <label
+          className={upstream ? 'text-sm text-gray-300' : undefined}
+          htmlFor="calendar-scope"
+        >
           {intl.formatMessage(messages.scope)}
           <select
             id="calendar-scope"
@@ -142,7 +156,10 @@ export default function CalendarPage() {
             )}
           </select>
         </label>
-        <label htmlFor="calendar-media-type">
+        <label
+          className={upstream ? 'text-sm text-gray-300' : undefined}
+          htmlFor="calendar-media-type"
+        >
           {intl.formatMessage(messages.mediaType)}
           <select
             id="calendar-media-type"
@@ -191,34 +208,65 @@ export default function CalendarPage() {
       </nav>
       {isLoading && <p role="status">{intl.formatMessage(messages.loading)}</p>}
       {error && (
-        <p role="alert">
-          {intl.formatMessage(messages.failed)}{' '}
-          <Button onClick={() => void mutate()}>
-            {intl.formatMessage(messages.retry)}
-          </Button>
-        </p>
+        upstream ? (
+          <div role="alert">
+            <Alert type="error">
+              {intl.formatMessage(messages.failed)}{' '}
+              <Button onClick={() => void mutate()}>
+                {intl.formatMessage(messages.retry)}
+              </Button>
+            </Alert>
+          </div>
+        ) : (
+          <p role="alert">
+            {intl.formatMessage(messages.failed)}{' '}
+            <Button onClick={() => void mutate()}>
+              {intl.formatMessage(messages.retry)}
+            </Button>
+          </p>
+        )
       )}
       {!!data?.partialSources.length && (
-        <p
-          role="status"
-          className="mb-4 rounded-lg border border-yellow-500 p-4"
-        >
-          {intl.formatMessage(messages.partial)}
-        </p>
+        upstream ? (
+          <div role="status">
+            <Alert type="warning">{intl.formatMessage(messages.partial)}</Alert>
+          </div>
+        ) : (
+          <p
+            role="status"
+            className="mb-4 rounded-lg border border-yellow-500 p-4"
+          >
+            {intl.formatMessage(messages.partial)}
+          </p>
+        )
       )}
       {data?.truncated && (
-        <p role="status" className="mb-4 text-yellow-400">
-          {intl.formatMessage(messages.truncated)}
-        </p>
+        upstream ? (
+          <div role="status">
+            <Alert type="warning">
+              {intl.formatMessage(messages.truncated)}
+            </Alert>
+          </div>
+        ) : (
+          <p role="status" className="mb-4 text-yellow-400">
+            {intl.formatMessage(messages.truncated)}
+          </p>
+        )
       )}
       {data && !data.results.length && (
-        <p>{intl.formatMessage(messages.empty)}</p>
+        <p className={upstream ? 'text-gray-400' : undefined}>
+          {intl.formatMessage(messages.empty)}
+        </p>
       )}
       <ol className="space-y-3">
         {data?.results.slice(0, limit).map((item) => (
           <li
             key={item.id}
-            className="grid gap-2 rounded-lg border border-gray-700 bg-gray-800 p-4 sm:grid-cols-[10rem_minmax(0,1fr)_auto]"
+            className={
+              upstream
+                ? 'grid gap-2 rounded-md border border-gray-700 bg-gray-800 p-4 sm:grid-cols-[10rem_minmax(0,1fr)_auto]'
+                : 'grid gap-2 rounded-lg border border-gray-700 bg-gray-800 p-4 sm:grid-cols-[10rem_minmax(0,1fr)_auto]'
+            }
           >
             <div className="min-w-32 text-sm">
               <time dateTime={item.startsAt}>
@@ -244,28 +292,28 @@ export default function CalendarPage() {
                 item.igdbId ? (
                   <Link
                     href={`/software?category=${item.softwareCategory}&game=${item.igdbId}`}
-                    className="text-blue-300 hover:text-blue-200"
+                    className={titleLinkClass}
                   >
                     {item.title}
                   </Link>
                 ) : item.mediaType === 'music' && item.mbId ? (
                   <Link
                     href={`/music/${encodeApiPathSegment(normalizeMusicBrainzId(item.mbId))}`}
-                    className="text-blue-300 hover:text-blue-200"
+                    className={titleLinkClass}
                   >
                     {item.title}
                   </Link>
                 ) : item.mediaType === 'book' && item.bookId ? (
                   <Link
                     href={`/book/${encodeApiPathSegment(item.bookId)}?format=${item.bookFormat ?? 'ebook'}&lookupTitle=${encodeURIComponent(item.title)}`}
-                    className="text-blue-300 hover:text-blue-200"
+                    className={titleLinkClass}
                   >
                     {item.title}
                   </Link>
                 ) : item.mediaType === 'comic' && item.comicId ? (
                   <Link
                     href={'/comic/' + encodeApiPathSegment(item.comicId)}
-                    className="text-blue-300 hover:text-blue-200"
+                    className={titleLinkClass}
                   >
                     {item.title}
                   </Link>
@@ -274,14 +322,14 @@ export default function CalendarPage() {
                     href={
                       '/magazine/' + encodeApiPathSegment(item.magazineTitle)
                     }
-                    className="text-blue-300 hover:text-blue-200"
+                    className={titleLinkClass}
                   >
                     {item.title}
                   </Link>
                 ) : item.tmdbId ? (
                   <Link
                     href={`/${item.mediaType}/${item.tmdbId}`}
-                    className="text-blue-300 hover:text-blue-200"
+                    className={titleLinkClass}
                   >
                     {item.title}
                   </Link>
@@ -350,14 +398,23 @@ export default function CalendarPage() {
                 </p>
               ))}
             </div>
-            <span
-              className={`text-sm ${item.available ? 'text-green-400' : 'text-gray-400'}`}
-            >
-              {intl.formatMessage(
-                item.available ? messages.available : messages.upcoming
-              )}
-              {item.is4k ? ' · 4K' : ''}
-            </span>
+            {upstream ? (
+              <Badge badgeType={item.available ? 'success' : 'dark'}>
+                {intl.formatMessage(
+                  item.available ? messages.available : messages.upcoming
+                )}
+                {item.is4k ? ' · 4K' : ''}
+              </Badge>
+            ) : (
+              <span
+                className={`text-sm ${item.available ? 'text-green-400' : 'text-gray-400'}`}
+              >
+                {intl.formatMessage(
+                  item.available ? messages.available : messages.upcoming
+                )}
+                {item.is4k ? ' · 4K' : ''}
+              </span>
+            )}
           </li>
         ))}
       </ol>

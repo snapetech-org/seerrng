@@ -51,6 +51,7 @@ permissions to simplify a page.
   presentation in SeerrOrig while the SeerrNG theme keeps its own component
   styling and behavior.
 - The shared Header component uses the upstream v3.5.1 heading markup and responsive spacing in SeerrOrig.
+- The SeerrNG-only release calendar reuses SeerrOrig's upstream Header, alert, badge, control, and card presentation while retaining its cross-media release data.
 - SeerrNG logos and brand assets remain in use throughout SeerrOrig.
 
 Changing theme source styles requires rebuilding the packaged theme assets and
@@ -69,7 +70,7 @@ filtering.
 Discover uses the upstream header and shelf hierarchy with the upstream dark
 palette. SeerrNG-only shelves and display preferences remain available through
 existing routes and settings.
-The Upcoming Movies route uses the same upstream heading spacing and error fallback while retaining SeerrNG's navigation context.
+The Upcoming Movies route uses the same upstream heading spacing and error fallback while retaining SeerrNG's navigation context. The Upcoming Series route now follows the same upstream heading and error presentation.
 
 
 Settings use upstream tabs, ordering, breakpoints, spacing, and page wrapper.
