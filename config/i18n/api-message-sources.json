@@ -65789,7 +65789,7 @@
       "callsites": [
         {
           "path": "src/components/ResetPassword/index.tsx",
-          "line": 98,
+          "line": 96,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Reset password link is invalid.'",
