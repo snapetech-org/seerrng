@@ -8,6 +8,7 @@ import PageTitle from '@app/components/Common/PageTitle';
 import DiscoveryAccounts from '@app/components/DiscoveryIntegrations/Accounts';
 import LinkJellyfinQuickConnectModal from '@app/components/UserProfile/UserSettings/UserLinkedAccountsSettings/LinkJellyfinQuickConnectModal';
 import useSettings from '@app/hooks/useSettings';
+import useUpstreamTheme from '@app/hooks/useUpstreamTheme';
 import { getPositiveQueryParamNumber } from '@app/hooks/useUpdateQueryParams';
 import { Permission, UserType, useUser } from '@app/hooks/useUser';
 import globalMessages from '@app/i18n/globalMessages';
@@ -47,6 +48,8 @@ const messages = defineMessages(
     plexErrorExists: 'This account is already linked to a Plex user',
     errorUnknown: 'An unknown error occurred',
     deleteFailed: 'Unable to delete linked account.',
+    moreIntegrations: 'More integrations',
+    linkIdentityProvider: 'Link Identity Provider',
   }
 );
 
@@ -73,6 +76,7 @@ type LinkedAccount =
 
 const UserLinkedAccountsSettings = () => {
   const intl = useIntl();
+  const upstream = useUpstreamTheme();
   const settings = useSettings();
   const router = useRouter();
   const { user: currentUser } = useUser();
@@ -250,6 +254,7 @@ const UserLinkedAccountsSettings = () => {
     },
     ...settings.currentSettings.openIdProviders.map((p) => ({
       name: p.name,
+      forkOnly: true,
       action: async () => {
         try {
           await initiateOidcLogin(
@@ -267,6 +272,12 @@ const UserLinkedAccountsSettings = () => {
       ),
     })),
   ].filter((l) => !l.hide);
+  const upstreamLinkable = linkable.filter(
+    (entry) => !('forkOnly' in entry && entry.forkOnly)
+  );
+  const extendedLinkable = linkable.filter(
+    (entry) => 'forkOnly' in entry && entry.forkOnly
+  );
 
   const deleteRequest = async (account: string) => {
     try {
@@ -304,6 +315,74 @@ const UserLinkedAccountsSettings = () => {
   const canUnlink = !!passwordInfo?.hasPassword || accounts.length > 1;
   // primary admin cannot unlink their media server account
   const canUnlinkMediaServer = canUnlink && user?.id !== 1;
+  const mediaServerAccounts = accounts.filter(
+    (account) => account.type !== LinkedAccountType.OpenIdConnect
+  );
+  const oidcAccounts = accounts.filter(
+    (account): account is Extract<
+      LinkedAccount,
+      { type: LinkedAccountType.OpenIdConnect }
+    > => account.type === LinkedAccountType.OpenIdConnect
+  );
+  const visibleAccounts = upstream ? mediaServerAccounts : accounts;
+  const visibleLinkable = upstream ? upstreamLinkable : linkable;
+  const showMoreIntegrations =
+    upstream &&
+    (oidcAccounts.length > 0 ||
+      extendedLinkable.length > 0 ||
+      currentUser?.id === user?.id);
+
+  const renderLinkedAccount = (acct: LinkedAccount, key: string) => (
+    <li
+      key={key}
+      className="flex items-center gap-4 overflow-hidden rounded-lg bg-gray-800/50 px-4 py-5 shadow ring-1 ring-gray-700 sm:p-6"
+    >
+      <div className="w-12">
+        {acct.type === LinkedAccountType.Plex ? (
+          <div className="flex aspect-square h-full items-center justify-center rounded-full bg-neutral-800">
+            <PlexLogo className="w-9" />
+          </div>
+        ) : acct.type === LinkedAccountType.Emby ? (
+          <EmbyLogo />
+        ) : acct.type === LinkedAccountType.Jellyfin ? (
+          <JellyfinLogo />
+        ) : (
+          <img
+            src={acct.provider.logo || '/images/openid.svg'}
+            alt={acct.provider.name}
+          />
+        )}
+      </div>
+      <div>
+        <div className="truncate text-sm font-bold text-gray-300">
+          {acct.type === LinkedAccountType.OpenIdConnect
+            ? acct.provider.name
+            : acct.type}
+        </div>
+        <div className="text-xl font-semibold text-white">{acct.username}</div>
+      </div>
+      <div className="flex-grow" />
+      {(acct.type === LinkedAccountType.OpenIdConnect
+        ? canUnlink
+        : canUnlinkMediaServer) && (
+        <ConfirmButton
+          onClick={() => {
+            deleteRequest(
+              acct.type === LinkedAccountType.OpenIdConnect
+                ? String(acct.id)
+                : acct.type === LinkedAccountType.Plex
+                  ? 'plex'
+                  : 'jellyfin'
+            );
+          }}
+          confirmText={intl.formatMessage(globalMessages.areyousure)}
+        >
+          <TrashIcon />
+          <span>{intl.formatMessage(globalMessages.delete)}</span>
+        </ConfirmButton>
+      )}
+    </li>
+  );
 
   return (
     <>
@@ -325,11 +404,18 @@ const UserLinkedAccountsSettings = () => {
             })}
           </h6>
         </div>
-        {currentUser?.id === user?.id && !!linkable.length && (
+        {currentUser?.id === user?.id && !!visibleLinkable.length && (
           <div>
-            <Dropdown text="Link Account" buttonType="ghost">
-              {linkable.map(({ name, action }) => (
-                <Dropdown.Item key={name} onClick={action} buttonType="ghost">
+            <Dropdown
+              text="Link Account"
+              buttonType={upstream ? undefined : 'ghost'}
+            >
+              {visibleLinkable.map(({ name, action }) => (
+                <Dropdown.Item
+                  key={name}
+                  onClick={action}
+                  buttonType={upstream ? undefined : 'ghost'}
+                >
                   {name}
                 </Dropdown.Item>
               ))}
@@ -338,61 +424,9 @@ const UserLinkedAccountsSettings = () => {
         )}
       </div>
       {error && <Alert title={error} type="error" />}
-      {accounts.length ? (
+      {visibleAccounts.length ? (
         <ul className="space-y-4">
-          {accounts.map((acct, i) => (
-            <li
-              key={i}
-              className="flex items-center gap-4 overflow-hidden rounded-lg bg-gray-800/50 px-4 py-5 shadow ring-1 ring-gray-700 sm:p-6"
-            >
-              <div className="w-12">
-                {acct.type === LinkedAccountType.Plex ? (
-                  <div className="flex aspect-square h-full items-center justify-center rounded-full bg-neutral-800">
-                    <PlexLogo className="w-9" />
-                  </div>
-                ) : acct.type === LinkedAccountType.Emby ? (
-                  <EmbyLogo />
-                ) : acct.type === LinkedAccountType.Jellyfin ? (
-                  <JellyfinLogo />
-                ) : acct.type === LinkedAccountType.OpenIdConnect ? (
-                  <img
-                    src={acct.provider.logo || '/images/openid.svg'}
-                    alt={acct.provider.name}
-                  />
-                ) : null}
-              </div>
-              <div>
-                <div className="truncate text-sm font-bold text-gray-300">
-                  {acct.type === LinkedAccountType.OpenIdConnect
-                    ? acct.provider.name
-                    : acct.type}
-                </div>
-                <div className="text-xl font-semibold text-white">
-                  {acct.username}
-                </div>
-              </div>
-              <div className="flex-grow" />
-              {(acct.type === LinkedAccountType.OpenIdConnect
-                ? canUnlink
-                : canUnlinkMediaServer) && (
-                <ConfirmButton
-                  onClick={() => {
-                    deleteRequest(
-                      acct.type === LinkedAccountType.OpenIdConnect
-                        ? String(acct.id)
-                        : acct.type === LinkedAccountType.Plex
-                          ? 'plex'
-                          : 'jellyfin'
-                    );
-                  }}
-                  confirmText={intl.formatMessage(globalMessages.areyousure)}
-                >
-                  <TrashIcon />
-                  <span>{intl.formatMessage(globalMessages.delete)}</span>
-                </ConfirmButton>
-              )}
-            </li>
-          ))}
+          {visibleAccounts.map((acct, i) => renderLinkedAccount(acct, `account-${i}`))}
         </ul>
       ) : (
         <div className="mt-4 text-center md:py-12">
@@ -415,7 +449,41 @@ const UserLinkedAccountsSettings = () => {
         }}
       />
 
-      {currentUser?.id === user?.id && <DiscoveryAccounts />}
+      {showMoreIntegrations && (
+        <details className="mt-5">
+          <summary className="cursor-pointer text-sm font-medium text-gray-300">
+            {intl.formatMessage(messages.moreIntegrations)}
+          </summary>
+          {oidcAccounts.length > 0 && (
+            <ul className="mt-4 space-y-4">
+              {oidcAccounts.map((account) =>
+                renderLinkedAccount(account, `oidc-${account.id}`)
+              )}
+            </ul>
+          )}
+          {currentUser?.id === user?.id && extendedLinkable.length > 0 && (
+            <div className="mt-4">
+              <Dropdown
+                text={intl.formatMessage(messages.linkIdentityProvider)}
+                buttonType={upstream ? undefined : 'ghost'}
+              >
+                {extendedLinkable.map(({ name, action }) => (
+                  <Dropdown.Item
+                    key={name}
+                    onClick={action}
+                    buttonType={upstream ? undefined : 'ghost'}
+                  >
+                    {name}
+                  </Dropdown.Item>
+                ))}
+              </Dropdown>
+            </div>
+          )}
+          {currentUser?.id === user?.id && <DiscoveryAccounts />}
+        </details>
+      )}
+
+      {!upstream && currentUser?.id === user?.id && <DiscoveryAccounts />}
 
       <LinkJellyfinQuickConnectModal
         show={showJellyfinQuickConnectModal}
