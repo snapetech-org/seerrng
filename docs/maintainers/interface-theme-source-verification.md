@@ -126,6 +126,11 @@ The watchlist page uses upstream's title, owner subheading, spacing, and default
 list presentation. SeerrNG's watchlist search, media, and sort filters remain
 available under a collapsed “More options” disclosure.
 
+Trending restores upstream's movie/series/person results with its daily/weekly
+controls in SeerrOrig. Main movie and series discovery show upstream's plain
+error fallback; SeerrNG's retry panel and multi-catalog trending tabs stay in
+the native theme.
+
 Common buttons, badges, alerts, page headers, and dialogs now switch to
 upstream's shared-control presentation when SeerrOrig is selected. SeerrNG's
 own variants and behavior remain active in its native theme.
