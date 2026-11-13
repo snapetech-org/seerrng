@@ -9,22 +9,34 @@ export const lumenAdminUrl = embedded ? '/api/v1/lumen' : '/lumen';
 // The configuration is read by the media-server check and then by the preferences; one
 // download serves both when they land close together.
 let configLoad: { at: number; p: Promise<unknown> } | undefined;
-export function loadLumenConfig(signal?: AbortSignal): Promise<unknown> {
+// null when there is no file (404, empty, or the app page served in its place); rejects
+// when it couldn't be read (server error, network, broken JSON). The admin page must tell
+// these apart: saving over a config it never saw would erase it.
+export function readLumenConfig(): Promise<unknown> {
   if (!configLoad || Date.now() - configLoad.at > 10_000) {
     const p = fetch(lumenConfigUrl, {
       cache: 'no-store',
       credentials: 'same-origin',
-    })
-      .then((r) => (r.ok ? r.json() : null))
-      .catch(() => null);
+    }).then(async (r) => {
+      if (r.status === 404) return null;
+      if (!r.ok) throw new Error(`lumen-config.json: ${r.status}`);
+      if ((r.headers.get('Content-Type') || '').includes('text/html'))
+        return null;
+      const text = await r.text();
+      return text.trim() ? (JSON.parse(text) as unknown) : null;
+    });
     const load = { at: Date.now(), p };
     configLoad = load;
     // a failed read is not kept for the next caller
-    void p.then((v) => {
-      if (v == null && configLoad === load) configLoad = undefined;
+    p.catch(() => {
+      if (configLoad === load) configLoad = undefined;
     });
   }
-  const p = configLoad.p;
+  return configLoad.p;
+}
+// for readers that treat a failed read like no file
+export function loadLumenConfig(signal?: AbortSignal): Promise<unknown> {
+  const p = readLumenConfig().catch(() => null);
   if (!signal) return p;
   return Promise.race([
     p,
