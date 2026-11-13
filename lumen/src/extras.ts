@@ -115,6 +115,19 @@ const probe = (path: string, configured = false) => {
   }
   return probes.get(cachePath)!.result;
 };
+const GAME_PROBE = '/request/software/catalog/popular?category=';
+// drop the kept answers for one kind of check, so the next probe asks SeerrNG again
+const forgetProbes = (part: string) => {
+  for (const k of [...probes.keys()]) if (k.includes(part)) probes.delete(k);
+  try {
+    const key = probeKey();
+    const all = savedProbes(key);
+    for (const k of Object.keys(all)) if (k.includes(part)) delete all[k];
+    sessionStorage.setItem(key, JSON.stringify(all));
+  } catch {
+    // storage blocked: nothing was kept there
+  }
+};
 
 // which extras this server has turned on (games count when any of its three categories is)
 export function useExtras() {
@@ -156,9 +169,12 @@ export function useExtras() {
   const [working, setWorking] = useState<Set<Extra> | null>(null);
   // the game categories whose catalogue answers (PC games need QuestarrNG, consoles may not)
   const [gamesWorking, setGamesWorking] = useState<GameCategory[] | null>(null);
+  // Retry on Games: forget the saved game answers and ask again
+  const [recheck, setRecheck] = useState(0);
   const key =
     EXTRAS.map((e) => (enabled(e.key) ? e.key : '')).join(',') +
-    games.join(',');
+    games.join(',') +
+    recheck;
   useEffect(() => {
     if (!pub || !userSettled) return;
     let live = true;
@@ -169,7 +185,7 @@ export function useExtras() {
           ? Promise.all(
               games.map((c) =>
                 probe(
-                  `/request/software/catalog/popular?category=${c}&limit=1`,
+                  `${GAME_PROBE}${c}&limit=1`,
                   pub.softwareEnabled === true ||
                     (c !== 'game' && pub.romarrEnabled === true)
                 )
@@ -198,6 +214,13 @@ export function useExtras() {
     games: !enabled('game')
       ? games
       : games.filter((c) => gamesWorking?.includes(c)),
+    // the game catalogue checks have answered (games above may still be empty: none works)
+    gamesChecked: !enabled('game') || gamesWorking !== null,
+    recheckGames: () => {
+      forgetProbes(GAME_PROBE);
+      setGamesWorking(null);
+      setRecheck((n) => n + 1);
+    },
     list: EXTRAS.filter((e) => enabled(e.key) && working?.has(e.key)),
   };
 }
