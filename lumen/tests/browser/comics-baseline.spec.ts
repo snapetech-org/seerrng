@@ -1,11 +1,21 @@
-import { writeFile } from 'node:fs/promises';
 import { expect, test } from '@playwright/test';
+import { writeFile } from 'node:fs/promises';
 
 test('capture the pre-Comics/Manga route at matching responsive viewports', async ({
   page,
 }, info) => {
   test.skip(process.env.LUMEN_COMICS_BASELINE !== 'true');
   test.skip(info.project.name !== 'desktop');
+
+  const baselineComic = {
+    id: 'al-147500',
+    mediaType: 'comic' as const,
+    kind: 'manga' as const,
+    title: 'Baseline Comic',
+    startYear: '2025',
+    editions: [],
+    editionsResolved: false,
+  };
 
   await page.route('**/lumen-config.json', (route) =>
     route.fulfill({ json: { defaults: { requestOptions: false } } })
@@ -29,18 +39,29 @@ test('capture the pre-Comics/Manga route at matching responsive viewports', asyn
     if (path === '/discover/comics')
       return route.fulfill({
         json: {
+          comicVineConfigured: true,
+        },
+      });
+    if (path === '/discover/comics/landing')
+      return route.fulfill({
+        json: {
+          library: [],
+          trending: [],
+          newest: [],
+          western: [],
+          failed: [],
+          genres: [],
+          publishers: [],
+          comicVineConfigured: true,
+        },
+      });
+    if (path === '/discover/comics/browse')
+      return route.fulfill({
+        json: {
           page: 1,
           totalPages: 1,
-          comicVineConfigured: true,
-          results: [
-            {
-              id: 147500,
-              title: 'Baseline Comic',
-              publisher: 'Example Comics',
-              startYear: 2025,
-              issueCount: 12,
-            },
-          ],
+          totalResults: 1,
+          results: [baselineComic],
         },
       });
     return route.fulfill({ json: {} });
@@ -50,8 +71,12 @@ test('capture the pre-Comics/Manga route at matching responsive viewports', asyn
   for (const width of widths) {
     await page.setViewportSize({ width, height: 800 });
     await page.goto('/comics');
-    await expect(page.getByRole('heading', { name: 'Comics' })).toBeVisible();
-    await expect(page.getByText('Baseline Comic')).toBeVisible();
+    await expect(
+      page.getByRole('heading', { name: 'Comics/Manga' })
+    ).toBeVisible();
+    await expect(page.locator('.comic-grid .comic-card .t')).toHaveText(
+      'Baseline Comic'
+    );
     await page.waitForLoadState('networkidle');
     await page.screenshot({
       path: info.outputPath(`comics-baseline-${width}.png`),
@@ -69,7 +94,7 @@ test('capture the pre-Comics/Manga route at matching responsive viewports', asyn
         baselineSha: process.env.LUMEN_COMICS_BASE_SHA,
         viewports: widths.map((width) => ({ width, height: 800 })),
         result:
-          'The main branch renders its existing Comics page with one ComicVine result.',
+          'The main branch renders its Comics/Manga page with one fixture series.',
       },
       null,
       2
