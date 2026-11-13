@@ -1272,6 +1272,24 @@ const sanitizeMediaRequestBody = (
     };
   }
 
+  let anilistId: number | undefined;
+  if (bodyObject.anilistId !== undefined) {
+    if (mediaType !== MediaType.COMIC) {
+      return {
+        error: {
+          status: 400,
+          message: 'anilistId is only valid for comic requests.',
+        },
+      };
+    }
+    anilistId = parsePositiveRouteId(bodyObject.anilistId, maxRequestIdValue);
+    if (anilistId === undefined) {
+      return {
+        error: { status: 400, message: 'anilistId must be a positive integer.' },
+      };
+    }
+  }
+
   const futureSeasonError = validateFutureSeasonPreference(
     bodyObject.monitorFutureSeasons,
     mediaType
@@ -1888,6 +1906,7 @@ const sanitizeMediaRequestBody = (
   }
   const value = {
     ...body,
+    ...(anilistId !== undefined ? { anilistId } : {}),
     is4k: bodyObject.is4k ?? false,
     serverId: serverId.value,
     requestServiceServerId: requestServiceServerId.value,

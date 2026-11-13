@@ -105,6 +105,7 @@ backissueRoutes.post<
         apiKey: parsed.value.apiKey,
       });
       const about = await client.getAbout();
+      await client.testConnection();
       return res.status(200).json({ ...about });
     } catch (error) {
       if (error instanceof BackIssuePermissionError) {

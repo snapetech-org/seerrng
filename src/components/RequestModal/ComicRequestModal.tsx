@@ -54,6 +54,7 @@ const messages = defineMessages('components.RequestModal.Comic', {
 
 interface ComicRequestModalProps {
   comicId: string;
+  initialAnilistId?: number;
   initialServerId?: number;
   onCancel?: () => void;
   onComplete?: (newStatus: MediaStatus) => void;
@@ -68,6 +69,7 @@ interface KapowarrRootFoldersResponse {
 
 const ComicRequestModal = ({
   comicId,
+  initialAnilistId,
   initialServerId,
   onCancel,
   onComplete,
@@ -81,10 +83,17 @@ const ComicRequestModal = ({
   const [selectedServerId, setSelectedServerId] = useState<number | undefined>(
     initialServerId
   );
+  const anilistId =
+    Number.isSafeInteger(initialAnilistId) && (initialAnilistId ?? 0) > 0
+      ? initialAnilistId
+      : undefined;
+  const comicDetailsUrl = `/api/v1/comic/${encodeApiPathSegment(comicId)}${
+    anilistId ? `?anilistId=${anilistId}` : ''
+  }`;
   const [selectedRootFolder, setSelectedRootFolder] = useState('');
   const rootFolderManuallySelected = useRef(false);
   const { data, error } = useSWR<ComicDetails>(
-    `/api/v1/comic/${encodeApiPathSegment(comicId)}`,
+    comicDetailsUrl,
     { revalidateOnMount: true }
   );
   const { data: quota } = useSWR<QuotaResponse>(
@@ -166,6 +175,7 @@ const ComicRequestModal = ({
       const response = await axios.post<MediaRequest>('/api/v1/request', {
         mediaId: comicId,
         mediaType: 'comic',
+        ...(data?.anilistId ? { anilistId: data.anilistId } : {}),
         ...(selectedServerId !== undefined
           ? { serverId: selectedServerId }
           : {}),

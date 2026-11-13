@@ -19,7 +19,14 @@ import {
 import { extractImageCacheUrls } from '@server/lib/imageCacheUrls';
 import { enqueueImageCacheWarm } from '@server/lib/imageCacheWarmer';
 import { mangaEditionOf } from '@server/lib/mangaPublishers';
-import { getMangaVolumeHint } from '@server/lib/mangaSearch';
+import {
+  getMangaVolumeHint,
+  rememberMangaVolume,
+} from '@server/lib/mangaSearch';
+import {
+  getPersistedMangaAnilistId,
+  getVerifiedMangaVolumeIdentity,
+} from '@server/lib/mangaVolume';
 import { hydrateMediaSummaryRelations } from '@server/lib/mediaSummaryHydration';
 import { getSettings } from '@server/lib/settings';
 import logger from '@server/logger';
@@ -193,6 +200,17 @@ comicRoutes.get('/:id', async (req, res, next) => {
   if (comicVineId === undefined) {
     return res.status(404).json({ status: 404, message: 'Comic not found' });
   }
+  const rawAnilistId = req.query.anilistId;
+  const requestedAnilistId =
+    rawAnilistId === undefined
+      ? undefined
+      : parsePositiveRouteId(rawAnilistId);
+  if (rawAnilistId !== undefined && requestedAnilistId === undefined) {
+    return res.status(400).json({
+      status: 400,
+      message: 'anilistId must be a positive integer.',
+    });
+  }
 
   const { comicVineApiKey } = getSettings().main;
   if (!comicVineApiKey) {
@@ -203,10 +221,35 @@ comicRoutes.get('/:id', async (req, res, next) => {
   }
 
   try {
+    const persistedAnilistId =
+      await getPersistedMangaAnilistId(comicVineId);
+    if (
+      requestedAnilistId !== undefined &&
+      persistedAnilistId !== undefined &&
+      requestedAnilistId !== persistedAnilistId
+    ) {
+      return res.status(404).json({ status: 404, message: 'Comic not found' });
+    }
+
+    const comicVine = new ComicVineAPI(comicVineApiKey);
+    if (persistedAnilistId && !getMangaVolumeHint(comicVineId)) {
+      rememberMangaVolume(comicVineId, { anilistId: persistedAnilistId });
+    }
+    if (requestedAnilistId !== undefined) {
+      const mangaIdentity = await getVerifiedMangaVolumeIdentity(
+        comicVineId,
+        requestedAnilistId,
+        comicVine
+      );
+      if (!mangaIdentity) {
+        return res.status(404).json({ status: 404, message: 'Comic not found' });
+      }
+      rememberMangaVolume(comicVineId, mangaIdentity);
+    }
+
     if (!(await isMangaVolumeAllowed(comicVineId))) {
       return res.status(404).json({ status: 404, message: 'Comic not found' });
     }
-    const comicVine = new ComicVineAPI(comicVineApiKey);
     const [volume, onUserWatchlist] = await Promise.all([
       comicVine.getVolume(comicVineId),
       req.user
@@ -244,14 +287,16 @@ comicRoutes.get('/:id', async (req, res, next) => {
     // cover on the detail page too.
     const hint = getMangaVolumeHint(comicVineId);
     const edition = mangaEditionOf(volume.publisher?.name);
+    const hasMangaIdentity =
+      hint?.anilistId !== undefined || persistedAnilistId !== undefined;
     const comicDetails = withMangaEdition(
       {
         ...details,
         title: hint?.title || details.title,
         posterPath: hint?.coverUrl || details.posterPath,
-        anilistId: hint?.anilistId,
+        anilistId: hint?.anilistId ?? persistedAnilistId,
       },
-      hint && !edition.manga ? { manga: true } : edition
+      hasMangaIdentity && !edition.manga ? { manga: true } : edition
     ) as typeof details;
     enqueueImageCacheWarm(extractImageCacheUrls(comicDetails));
 

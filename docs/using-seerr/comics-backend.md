@@ -159,19 +159,22 @@ Point Kapowarr's FlareSolverr setting at the `flaresolverr` container, then:
 ## BackIssue setup
 
 1. Install BackIssue using its [getting-started
-   guide](https://backissue.app/getting-started), then create a personal API
-   key for an account with `library.view`, `library.manage`, and
-   `downloads.grab` permissions. Those permissions let SeerrNG scan the
-   collection, add or remove a series, and read or cancel its download queue.
+   guide](https://backissue.app/getting-started), then create a dedicated
+   service account and personal API key. Give that account only
+   `library.view`, `library.manage`, and `downloads.grab` permissions. Those
+   permissions let SeerrNG scan the collection, add or remove a series, and
+   read or cancel its download queue. Use a custom role with those permissions
+   when available; an administrator account is not needed.
 2. Configure BackIssue's own download sources and whether adding a series
    should start acquisition. SeerrNG sends the ComicVine volume to BackIssue;
    BackIssue controls the search and download behavior.
 3. In SeerrNG, open **Settings → Services → BackIssue Settings** and select
    **Add BackIssue Server**.
 4. Enter a recognizable server name, its address, port (8787 by default), and
-   API key. Use **Test** to confirm SeerrNG can reach it, then choose whether
-   it should be the default destination and whether SeerrNG should scan its
-   collection.
+   API key. Use **Test** to check authentication, status, a small read from a
+   comic or manga library when one exists, and the download queue. The check
+   does not add, remove, or cancel anything. Then choose whether it should be
+   the default destination and whether SeerrNG should scan its collection.
 
 ## Manage BackIssue from the CLI or API
 
@@ -221,7 +224,9 @@ request quota.
 - **English recommended.** The work page lists the editions and recommends
   the English one with the most volumes. A request is sent for one edition,
   and BackIssue files a manga request in its manga library (BackIssue creates
-  that library on first use).
+  that library on first use). SeerrNG verifies the selected AniList work
+  against the ComicVine edition and saves the mapping with the request, so it
+  remains available after a restart or when another app worker handles it.
 - **Availability.** The BackIssue scan reads the comic and manga libraries
   separately. A series is **Available** only when every known volume is in the
   library and nothing is still downloading; until then it is partially
@@ -315,8 +320,10 @@ a live progress bar in between.
 BackIssue connection test fails:
 
 - confirm SeerrNG can reach BackIssue's host and port from its own container.
-- confirm the API key can manage the BackIssue library and that its URL base
-  and HTTPS settings match BackIssue.
+- confirm the dedicated account has `library.view`, `library.manage`, and
+  `downloads.grab`, and that its URL base and HTTPS settings match BackIssue.
+- confirm BackIssue has a comic or manga library and returns a valid collection
+  page and queue response.
 - confirm BackIssue has acquisition sources configured if adding a volume
   should start downloads.
 

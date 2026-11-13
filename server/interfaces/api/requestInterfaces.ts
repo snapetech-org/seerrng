@@ -51,6 +51,8 @@ export interface StreamingRequestPolicyRejectionResponse {
 export type MediaRequestBody = {
   mediaType: MediaType;
   mediaId: number | string;
+  /** AniList work ID for a verified manga edition selected from discovery. */
+  anilistId?: number;
   tvdbId?: number;
   seasons?: number[] | 'all';
   seasonRequests?: SeasonEpisodeSelection[];

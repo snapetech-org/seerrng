@@ -1,5 +1,6 @@
 import ExternalAPI from '@server/api/externalapi';
 import type { BackIssueSettings } from '@server/lib/settings';
+import { getHttpErrorDetails } from '@server/utils/httpError';
 import { buildServiceUrl } from '@server/utils/serviceUrl';
 
 export interface BackIssueCollectionItem {
@@ -58,6 +59,13 @@ export interface BackIssueLibrary {
 }
 
 const COLLECTION_LIBRARY_TYPES = new Set(['comic', 'manga']);
+const COLLECTION_PAGE_SIZE = 500;
+const MAX_COLLECTION_PAGES = 400;
+
+const supportsLegacyCollectionEndpoint = (error: unknown): boolean => {
+  const { status } = getHttpErrorDetails(error);
+  return status === 404 || status === 405;
+};
 
 const isRecord = (value: unknown): value is Record<string, unknown> =>
   !!value && typeof value === 'object' && !Array.isArray(value);
@@ -210,17 +218,20 @@ class BackIssueAPI extends ExternalAPI {
     if (!isRecord(response) || !Array.isArray(response.libraries)) {
       throw new Error('BackIssue returned an invalid library list.');
     }
-    return response.libraries.flatMap((candidate) => {
-      if (!isRecord(candidate)) return [];
+    return response.libraries.map((candidate) => {
+      if (!isRecord(candidate)) {
+        throw new Error('BackIssue returned an invalid library entry.');
+      }
       const id = boundedInteger(candidate.id);
-      if (id === undefined || id === 0) return [];
-      return [
-        {
-          id,
-          name: boundedString(candidate.name, 255) ?? `Library ${id}`,
-          type: (boundedString(candidate.type, 64) ?? 'comic').toLowerCase(),
-        },
-      ];
+      const type = boundedString(candidate.type, 64);
+      if (id === undefined || id === 0 || !type) {
+        throw new Error('BackIssue returned an invalid library entry.');
+      }
+      return {
+        id,
+        name: boundedString(candidate.name, 255) ?? `Library ${id}`,
+        type: type.toLowerCase(),
+      };
     });
   }
 
@@ -236,12 +247,13 @@ class BackIssueAPI extends ExternalAPI {
       const comicLibraries = (await this.getLibraries()).filter((library) =>
         COLLECTION_LIBRARY_TYPES.has(library.type)
       );
-      if (comicLibraries.length) {
-        libraries = comicLibraries.map((library) => library.id);
-      }
-    } catch {
-      // older BackIssue without libraries: read the whole collection
+      libraries = comicLibraries.map((library) => library.id);
+    } catch (error) {
+      if (!supportsLegacyCollectionEndpoint(error)) throw error;
+      // Older BackIssue versions do not expose libraries; scan the legacy
+      // unfiltered collection only when the endpoint itself is unsupported.
     }
+    if (!libraries.length) return [];
     const rows: BackIssueCollectionItem[] = [];
     const seen = new Set<number>();
     for (const library of libraries) {
@@ -254,11 +266,35 @@ class BackIssueAPI extends ExternalAPI {
     return rows;
   }
 
+  /**
+   * A read-only health check for the connection form. It exercises the
+   * endpoints used by scans and queue tracking without walking the full
+   * collection or changing BackIssue state.
+   */
+  public async testConnection(): Promise<void> {
+    let library: number | undefined;
+    let legacyCollectionEndpoint = false;
+    try {
+      const comicLibrary = (await this.getLibraries()).find((candidate) =>
+        COLLECTION_LIBRARY_TYPES.has(candidate.type)
+      );
+      library = comicLibrary?.id;
+    } catch (error) {
+      if (!supportsLegacyCollectionEndpoint(error)) throw error;
+      legacyCollectionEndpoint = true;
+    }
+
+    if (library !== undefined || legacyCollectionEndpoint) {
+      await this.getCollectionRows(library, 1, 1);
+    }
+    await this.getQueue();
+  }
+
   private async getCollectionRows(
-    library?: number
+    library?: number,
+    pageSize = COLLECTION_PAGE_SIZE,
+    maxPages = MAX_COLLECTION_PAGES
   ): Promise<BackIssueCollectionItem[]> {
-    const pageSize = 500;
-    const maxPages = 400;
     const rows: BackIssueCollectionItem[] = [];
     let offset = 0;
 

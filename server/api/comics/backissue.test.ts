@@ -26,6 +26,12 @@ const row = (id: number, cvId: number, type = 'comic', owned = 0) => ({
   type,
 });
 
+const httpError = (status: number) =>
+  Object.assign(new Error(`HTTP ${status}`), {
+    isAxiosError: true,
+    response: { status },
+  });
+
 describe('BackIssueAPI', () => {
   afterEach(() => mock.restoreAll());
 
@@ -89,11 +95,98 @@ describe('BackIssueAPI', () => {
       BackIssueAPI.prototype as unknown as MockableBackIssue,
       'get',
       async (endpoint: string) => {
-        if (endpoint === '/api/libraries') throw new Error('404');
+        if (endpoint === '/api/libraries') throw httpError(404);
         return { rows: [row(1, 10)], total: 1 };
       }
     );
     assert.equal((await api().getCollection()).length, 1);
+  });
+
+  it('does not fall back to an unfiltered scan when the library request fails', async () => {
+    const collectionCalls: string[] = [];
+    mock.method(
+      BackIssueAPI.prototype as unknown as MockableBackIssue,
+      'get',
+      async (endpoint: string) => {
+        if (endpoint === '/api/libraries') throw httpError(503);
+        collectionCalls.push(endpoint);
+        return { rows: [], total: 0 };
+      }
+    );
+
+    await assert.rejects(api().getCollection(), /HTTP 503/);
+    assert.deepEqual(collectionCalls, []);
+  });
+
+  it('does not scan libraries when BackIssue has no comic or manga library', async () => {
+    const calls: string[] = [];
+    mock.method(
+      BackIssueAPI.prototype as unknown as MockableBackIssue,
+      'get',
+      async (endpoint: string) => {
+        calls.push(endpoint);
+        if (endpoint === '/api/libraries') {
+          return { libraries: [{ id: 8, name: 'Books', type: 'ebook' }] };
+        }
+        return { rows: [], total: 0 };
+      }
+    );
+
+    assert.deepEqual(await api().getCollection(), []);
+    assert.deepEqual(calls, ['/api/libraries']);
+  });
+
+  it('does not guess a missing library type or fall back to a global scan', async () => {
+    const calls: string[] = [];
+    mock.method(
+      BackIssueAPI.prototype as unknown as MockableBackIssue,
+      'get',
+      async (endpoint: string) => {
+        calls.push(endpoint);
+        if (endpoint === '/api/libraries') {
+          return { libraries: [{ id: 2, name: 'Unclassified' }] };
+        }
+        return { rows: [], total: 0 };
+      }
+    );
+
+    await assert.rejects(api().getCollection(), /invalid library entry/i);
+    assert.deepEqual(calls, ['/api/libraries']);
+  });
+
+  it('checks one collection row and the queue without mutating BackIssue', async () => {
+    const calls: { endpoint: string; params?: Record<string, unknown> }[] = [];
+    mock.method(
+      BackIssueAPI.prototype as unknown as MockableBackIssue,
+      'get',
+      async (
+        endpoint: string,
+        options?: { params?: Record<string, unknown> }
+      ) => {
+        calls.push({ endpoint, params: options?.params });
+        if (endpoint === '/api/libraries') {
+          return {
+            libraries: [{ id: 2, name: 'Comics', type: 'comic' }],
+          };
+        }
+        if (endpoint === '/api/collection') {
+          return { rows: [row(1, 10)], total: 1 };
+        }
+        return { items: [], packs: [] };
+      }
+    );
+
+    await api().testConnection();
+    assert.deepEqual(
+      calls.map(({ endpoint }) => endpoint),
+      ['/api/libraries', '/api/collection', '/api/queue']
+    );
+    assert.deepEqual(calls[1].params, {
+      limit: 1,
+      offset: 0,
+      counts: 0,
+      library: 2,
+    });
   });
 
   it('files a manga into the manga library when adding it', async () => {
@@ -159,6 +252,23 @@ describe('BackIssueAPI', () => {
         progress: 62.5,
         pack: true,
       },
+    ]);
+  });
+
+  it('cancels a pack grab using the pack queue ID', async () => {
+    const calls: { endpoint: string; data?: Record<string, unknown> }[] = [];
+    mock.method(
+      BackIssueAPI.prototype as unknown as MockableBackIssue,
+      'post',
+      async (endpoint: string, data?: Record<string, unknown>) => {
+        calls.push({ endpoint, data });
+        return {};
+      }
+    );
+
+    await api().cancelQueueItem(77);
+    assert.deepEqual(calls, [
+      { endpoint: '/api/queue/cancel/77', data: {} },
     ]);
   });
 });
