@@ -1155,21 +1155,28 @@ const SettingsMain = () => {
                       }}
                     />
                   </SettingsFormRow>
-                  <SettingsFormRow
-                    htmlFor="hideRequested"
-                    label={intl.formatMessage(messages.hideRequested)}
-                    description={intl.formatMessage(messages.hideRequestedTip)}
-                    labelClassName="checkbox-label"
-                  >
-                    <SettingsField
-                      type="checkbox"
-                      id="hideRequested"
-                      name="hideRequested"
-                      onChange={() => {
-                        setFieldValue('hideRequested', !values.hideRequested);
-                      }}
-                    />
-                  </SettingsFormRow>
+                  {upstream && (
+                    <SettingsFormRow
+                      htmlFor="hideRequested"
+                      label={intl.formatMessage(messages.hideRequested)}
+                      description={intl.formatMessage(
+                        messages.hideRequestedTip
+                      )}
+                      labelClassName="checkbox-label"
+                    >
+                      <SettingsField
+                        type="checkbox"
+                        id="hideRequested"
+                        name="hideRequested"
+                        onChange={() => {
+                          setFieldValue(
+                            'hideRequested',
+                            !values.hideRequested
+                          );
+                        }}
+                      />
+                    </SettingsFormRow>
+                  )}
                   <SettingsGroup
                     inline
                     title={intl.formatMessage(messages.requestsGroup)}
