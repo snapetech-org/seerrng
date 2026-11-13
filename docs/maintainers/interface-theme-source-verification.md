@@ -151,3 +151,10 @@ available under “More search options”; the default SeerrOrig result list sho
 only movies, series, and people. When an extended category fills an earlier
 page, the list continues paging until it finds native results or reaches the
 end. This source-level change still needs matched route and viewport renders.
+
+The request list now uses upstream's combined heading and three native filter
+controls for media type, status, and sort. SeerrNG's added request media types,
+status filters, and sort options remain under “More request filters.” Existing
+request rows, service errors, profile scoping, pagination, and permissions are
+still rendered from the fork's data and actions; visual alignment of those
+rows and footer remains under review.
