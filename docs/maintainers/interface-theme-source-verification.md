@@ -50,6 +50,7 @@ permissions to simplify a page.
 - Shared buttons, badges, alerts, headers, and modal framing use upstream
   presentation in SeerrOrig while the SeerrNG theme keeps its own component
   styling and behavior.
+- The shared Header component uses the upstream v3.5.1 heading markup and responsive spacing in SeerrOrig.
 - SeerrNG logos and brand assets remain in use throughout SeerrOrig.
 
 Changing theme source styles requires rebuilding the packaged theme assets and
