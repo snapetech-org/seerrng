@@ -304,7 +304,7 @@ const Login = ({
       <ImageFader
         backgroundImages={
           backdrops?.map(
-            (backdrop) => `https://image.tmdb.org/t/p/w1280${backdrop.path}`
+            (backdrop) => `https://image.tmdb.org/t/p/original${backdrop.path}`
           ) ?? []
         }
         backgroundTitles={

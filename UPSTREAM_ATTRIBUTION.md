@@ -21,7 +21,8 @@ request actions remain available.
 Public sign-in and password-recovery presentation also follows upstream's
 [\`Login\`](https://github.com/seerr-team/seerr/blob/564bfb08b54caa374bddaf820abfd226e5e69151/src/components/Login/index.tsx),
 [\`ResetPassword\`](https://github.com/seerr-team/seerr/blob/564bfb08b54caa374bddaf820abfd226e5e69151/src/components/ResetPassword/index.tsx),
-and [\`RequestResetLink\`](https://github.com/seerr-team/seerr/blob/564bfb08b54caa374bddaf820abfd226e5e69151/src/components/ResetPassword/RequestResetLink.tsx)
+[\`RequestResetLink\`](https://github.com/seerr-team/seerr/blob/564bfb08b54caa374bddaf820abfd226e5e69151/src/components/ResetPassword/RequestResetLink.tsx),
+and [\`ImageFader\`](https://github.com/seerr-team/seerr/blob/564bfb08b54caa374bddaf820abfd226e5e69151/src/components/Common/ImageFader/index.tsx)
 composition. SeerrNG's own logo, transport-security notice, and additional sign-in
 methods remain in use.
 The Issues list and movie/TV issue-detail composition are adapted from

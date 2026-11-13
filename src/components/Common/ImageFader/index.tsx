@@ -1,4 +1,5 @@
 import CachedImage from '@app/components/Common/CachedImage';
+import useUpstreamTheme from '@app/hooks/useUpstreamTheme';
 import type { ForwardRefRenderFunction, HTMLAttributes } from 'react';
 import React, { useEffect, useMemo, useState } from 'react';
 
@@ -23,6 +24,7 @@ const ImageFader: ForwardRefRenderFunction<HTMLDivElement, ImageFaderProps> = (
   },
   ref
 ) => {
+  const upstream = useUpstreamTheme();
   const [activeIndex, setIndex] = useState(0);
   const imageCount = backgroundImages.length;
   const visibleImageIndexes = useMemo(() => {
@@ -90,10 +92,21 @@ const ImageFader: ForwardRefRenderFunction<HTMLDivElement, ImageFaderProps> = (
               loading={i === activeIndex ? 'eager' : 'lazy'}
               {...imageOverrides}
             />
-            <div
-              className={`absolute inset-0 ${isDarker ? 'bg-gray-900/55' : 'bg-gray-800/45'}`}
-            />
-            {backgroundTitles?.[i] && (
+            {upstream ? (
+              <div
+                className="absolute inset-0"
+                style={{
+                  backgroundImage: isDarker
+                    ? 'linear-gradient(180deg, rgba(17, 24, 39, 0.47) 0%, rgba(17, 24, 39, 1) 100%)'
+                    : 'linear-gradient(180deg, rgba(45, 55, 72, 0.47) 0%, #1A202E 100%)',
+                }}
+              />
+            ) : (
+              <div
+                className={`absolute inset-0 ${isDarker ? 'bg-gray-900/55' : 'bg-gray-800/45'}`}
+              />
+            )}
+            {!upstream && backgroundTitles?.[i] && (
               <h1
                 className="auth-backdrop-title page-title"
                 aria-hidden={i !== activeIndex}

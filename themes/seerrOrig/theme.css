@@ -2584,7 +2584,14 @@
 
 :is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
   .auth-login-page {
-  padding-top: calc(80px + env(safe-area-inset-top));
+  padding-top: calc(56px + env(safe-area-inset-top));
+  padding-bottom: calc(56px + env(safe-area-inset-bottom));
+}
+
+:is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
+  .auth-login-brand {
+  margin-top: 40px;
+  filter: none;
 }
 
 :is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
@@ -2605,7 +2612,9 @@
   border-radius: 0;
   background: rgb(31 41 55 / 0.5);
   border: 0;
-  box-shadow: none;
+  box-shadow:
+    0 1px 3px rgb(0 0 0 / 0.1),
+    0 1px 2px -1px rgb(0 0 0 / 0.1);
 }
 
 :is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
