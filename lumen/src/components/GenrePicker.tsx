@@ -113,16 +113,28 @@ export function GenrePicker({
     <>
       <div className="gp-head">
         <h3>Genres</h3>
-        {picked.length > 0 && (
-          <span className="gp-count">{picked.length} picked</span>
-        )}
+        {/* always in place: a line appearing after the first tick moved the list under the finger */}
+        {
+          <span className="gp-count" aria-hidden={!picked.length}>
+            {picked.length ? `${picked.length} picked` : '\u00a0'}
+          </span>
+        }
       </div>
-      {match && picked.length > 1 && (
+      {/* shown from the start (off until two genres are picked) so the list never shifts */}
+      {match && (
         <div className="seg gp-match" role="group" aria-label="Genres to match">
-          <button aria-pressed={!match.all} onClick={() => match.set(false)}>
+          <button
+            aria-pressed={!match.all}
+            disabled={picked.length < 2}
+            onClick={() => match.set(false)}
+          >
             Match any
           </button>
-          <button aria-pressed={match.all} onClick={() => match.set(true)}>
+          <button
+            aria-pressed={match.all}
+            disabled={picked.length < 2}
+            onClick={() => match.set(true)}
+          >
             Match all
           </button>
         </div>

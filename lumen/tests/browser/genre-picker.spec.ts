@@ -58,17 +58,32 @@ test('Movies: All genres by default; ticking genres updates the address and the 
   await expect(picker).toHaveAttribute('aria-expanded', 'true');
   await expect(page.getByRole('dialog', { name: 'Genres' })).toBeVisible();
   await expect(opt('All genres')).toHaveAttribute('aria-pressed', 'true');
-  // the switch only matters with two or more genres
+  // the switch only matters with two or more genres: it's there from the start (so the list
+  // never shifts under the finger) but stays off until then
+  const matchRow = page.getByRole('group', { name: 'Genres to match' });
   await expect(
-    page.getByRole('group', { name: 'Genres to match' })
-  ).toHaveCount(0);
+    matchRow.getByRole('button', { name: 'Match all' })
+  ).toBeDisabled();
+  // the phone sheet slides up: measure once it has settled
+  const settled = () =>
+    page.waitForFunction(() =>
+      document.getAnimations().every((x) => x.playState !== 'running')
+    );
+  await settled();
+  const before = await opt('Comedy').boundingBox();
 
   await opt('Action').click();
   await expect(page).toHaveURL(/\/movies\?genre=28$/);
   await expect.poll(() => feed.at(-1)).toContain('genre=28');
   await expect(picker).toHaveText('Action');
+  // ticking a genre doesn't move the rest of the list
+  await settled();
+  expect((await opt('Comedy').boundingBox())!.y).toBeCloseTo(before!.y, 0);
   await opt('Comedy').click();
   await expect(page).toHaveURL(/genre=28%2C35/);
+  await expect(
+    matchRow.getByRole('button', { name: 'Match all' })
+  ).toBeEnabled();
   // any of them (the default) asks TMDB for 28|35
   await expect.poll(() => feed.at(-1)).toContain('genre=28%7C35');
   await expect(picker).toHaveText('Action + 1');
