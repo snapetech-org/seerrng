@@ -37,15 +37,15 @@ it('logs administrator and provider text as structured data, not a format string
       '%s\r\nforged entry',
       new Error('%s\r\nprovider response')
     );
+
+    assert.deepStrictEqual(logger.mock.calls[0]?.arguments, [
+      'Unable to rename Radarr tags to the new format. Please check your Radarr connection settings.',
+      {
+        instanceName: '%s\r\nforged entry',
+        providerError: '%s\r\nprovider response',
+      },
+    ]);
   } finally {
     logger.mock.restore();
   }
-
-  assert.deepStrictEqual(logger.mock.calls[0]?.arguments, [
-    'Unable to rename Radarr tags to the new format. Please check your Radarr connection settings.',
-    {
-      instanceName: '%s\r\nforged entry',
-      providerError: '%s\r\nprovider response',
-    },
-  ]);
 });
