@@ -1,3 +1,4 @@
+import { bookLanguageAllowed } from '@server/lib/bookLanguagePolicy';
 import {
   getBookLookupBudget,
   withBookLookupBudget,
@@ -44,7 +45,7 @@ export interface ReadarrDevelopmentConfig {
 }
 
 export type ReadarrMediaType = 'ebook' | 'audiobook';
-type ChaptarrDialect = 'hc' | 'gr';
+export type ChaptarrDialect = 'hc' | 'gr';
 interface ChaptarrIntegrationCapabilities {
   contract?: string;
   contractVersion?: number;
@@ -595,12 +596,87 @@ const normalizeProviderIdentity = (
   return (openLibraryId ?? value).trim().toLowerCase();
 };
 
+/**
+ * ChaptarrNG's Readarr facades write provider ids bare, in the facade's
+ * dialect (Hardcover work 459744 is "459744"), while its native API and
+ * SeerrNG's catalog identities qualify them ("hc:459744"). Bare digits are
+ * qualified; prefixed, ISBN-like and non-numeric ids are left unchanged.
+ */
+export const qualifyChaptarrProviderId = <T extends string | undefined>(
+  id: T,
+  dialect: ChaptarrDialect
+): T => {
+  if (typeof id !== 'string') return id;
+  const value = id.trim();
+  return (
+    /^\d+$/.test(value) && !normalizeValidIsbn(value)
+      ? `${dialect}:${value}`
+      : id
+  ) as T;
+};
+
+/** Qualifies one facade book record's work, edition and author ids. */
+export const qualifyChaptarrBookRecord = <T extends ReadarrBookLookupResult>(
+  book: T,
+  dialect: ChaptarrDialect
+): T => {
+  if (!isRecord(book)) return book;
+  return {
+    ...book,
+    ...(typeof book.foreignBookId === 'string'
+      ? {
+          foreignBookId: qualifyChaptarrProviderId(book.foreignBookId, dialect),
+        }
+      : {}),
+    ...(book.foreignEditionId
+      ? {
+          foreignEditionId: qualifyChaptarrProviderId(
+            book.foreignEditionId,
+            dialect
+          ),
+        }
+      : {}),
+    ...(isRecord(book.author)
+      ? {
+          author: {
+            ...book.author,
+            ...(book.author.foreignAuthorId
+              ? {
+                  foreignAuthorId: qualifyChaptarrProviderId(
+                    book.author.foreignAuthorId,
+                    dialect
+                  ),
+                }
+              : {}),
+          },
+        }
+      : {}),
+    ...(Array.isArray(book.editions)
+      ? {
+          editions: book.editions.map((edition) =>
+            isRecord(edition)
+              ? {
+                  ...edition,
+                  foreignEditionId: qualifyChaptarrProviderId(
+                    edition.foreignEditionId,
+                    dialect
+                  ),
+                }
+              : edition
+          ),
+        }
+      : {}),
+  };
+};
+
 export const matchesReadarrBookProviderIdentity = (
   book: ReadarrBookLookupResult,
   providerBookId: string,
-  providerEditionId?: string
+  providerEditionId?: string,
+  providerBookAliases: readonly string[] = []
 ): boolean => {
   const normalizedBookId = normalizeProviderIdentity(providerBookId);
+  const currentBookId = normalizeProviderIdentity(book.foreignBookId);
   const normalizedEditionId = normalizeProviderIdentity(
     providerEditionId,
     true
@@ -608,7 +684,11 @@ export const matchesReadarrBookProviderIdentity = (
 
   return (
     (!!normalizedBookId &&
-      normalizeProviderIdentity(book.foreignBookId) === normalizedBookId) ||
+      !!currentBookId &&
+      [
+        normalizedBookId,
+        ...providerBookAliases.map((id) => normalizeProviderIdentity(id)),
+      ].includes(currentBookId)) ||
     (!!normalizedEditionId &&
       (normalizeProviderIdentity(book.foreignEditionId, true) ===
         normalizedEditionId ||
@@ -621,6 +701,22 @@ export const matchesReadarrBookProviderIdentity = (
 };
 
 class ReadarrAPI extends ServarrBase<ReadarrQueueItem> {
+  /**
+   * The dialect each detected service's library ids are qualified with, keyed
+   * by API URL (null: not a qualifying ChaptarrNG facade). Book matching uses
+   * it to recognise ids minted bare before library reads were qualified.
+   */
+  private static readonly libraryIdDialects = new Map<
+    string,
+    ChaptarrDialect | null
+  >();
+
+  public static getKnownLibraryIdDialect(
+    apiUrl: string
+  ): ChaptarrDialect | null | undefined {
+    return ReadarrAPI.libraryIdDialects.get(trimTrailingSlashes(apiUrl));
+  }
+
   private readonly nativeApiUrl: string;
   private readonly mediaType?: ReadarrMediaType;
   private coverBaseUrl: string;
@@ -836,6 +932,13 @@ class ReadarrAPI extends ServarrBase<ReadarrQueueItem> {
           // Older BookshelfNG releases continue to use the standard Readarr routes.
         }
       }
+
+      if (this.mediaType) {
+        const dialects = ReadarrAPI.libraryIdDialects;
+        dialects.delete(this.nativeApiUrl);
+        dialects.set(this.nativeApiUrl, this.getFacadeIdDialect() ?? null);
+        if (dialects.size > 100) dialects.delete(dialects.keys().next().value!);
+      }
     })();
 
     try {
@@ -889,6 +992,49 @@ class ReadarrAPI extends ServarrBase<ReadarrQueueItem> {
     return ReadarrAPI.isChaptarrStatus(this.detectedSystemStatus ?? {});
   }
 
+  /** The dialect the current ChaptarrNG facade writes bare provider ids in. */
+  private getFacadeIdDialect(): ChaptarrDialect | undefined {
+    return this.isChaptarr() && this.requestBaseUrl
+      ? (this.chaptarrDialect ?? 'hc')
+      : undefined;
+  }
+
+  /**
+   * Facade book records carry bare provider ids; qualify them the way lookups
+   * are qualified so every book SeerrNG reads names one work one way. Plain
+   * Readarr and BookshelfNG records are returned unchanged.
+   */
+  private qualifyFacadeBook<T extends ReadarrBookLookupResult>(book: T): T {
+    const dialect = this.getFacadeIdDialect();
+    return dialect ? qualifyChaptarrBookRecord(book, dialect) : book;
+  }
+
+  private qualifyFacadeBooks<T extends ReadarrBookLookupResult>(
+    books: T[]
+  ): T[] {
+    const dialect = this.getFacadeIdDialect();
+    return dialect
+      ? books.map((book) => qualifyChaptarrBookRecord(book, dialect))
+      : books;
+  }
+
+  /**
+   * Whether a book names the stored provider work. Identities saved before
+   * library reads were qualified are bare; accept every known spelling.
+   */
+  public matchesBookProviderIdentity(
+    book: ReadarrBookLookupResult,
+    providerBookId: string,
+    providerEditionId?: string,
+    identityAliases?: string[]
+  ): boolean {
+    return (
+      identityAliases ?? this.getKnownBookIdentityAliases(providerBookId)
+    ).some((id) =>
+      matchesReadarrBookProviderIdentity(book, id, providerEditionId)
+    );
+  }
+
   private static hasAddressableLookupIdentity(
     result: ReadarrBookLookupResult
   ): boolean {
@@ -933,7 +1079,7 @@ class ReadarrAPI extends ServarrBase<ReadarrQueueItem> {
     fallback: ReadarrBookLookupResult
   ): Promise<ReadarrBookLookupResult> {
     if (typeof result !== 'number') {
-      return result;
+      return this.qualifyFacadeBook(result);
     }
 
     return this.getFreshBook(result).catch(() => ({
@@ -949,7 +1095,7 @@ class ReadarrAPI extends ServarrBase<ReadarrQueueItem> {
       undefined,
       this.getRequestConfig()
     );
-    return response.data;
+    return this.qualifyFacadeBook(response.data);
   }
 
   public async getBookHistory(bookId: number): Promise<ReadarrHistoryItem[]> {
@@ -977,15 +1123,19 @@ class ReadarrAPI extends ServarrBase<ReadarrQueueItem> {
     authorId: number,
     cacheTtl?: number
   ): Promise<ReadarrBook[]> {
-    return sanitizeServarrRecordArray<ReadarrBook>(
-      await this.get<ReadarrBook[]>(
-        '/book',
-        {
-          ...this.getRequestConfig({ authorId }),
-        },
-        cacheTtl
-      ),
-      MAX_SERVARR_LIBRARY_RESULTS
+    // A cached response skips request(); detect the facade dialect first.
+    await this.ensureProvider();
+    return this.qualifyFacadeBooks(
+      sanitizeServarrRecordArray<ReadarrBook>(
+        await this.get<ReadarrBook[]>(
+          '/book',
+          {
+            ...this.getRequestConfig({ authorId }),
+          },
+          cacheTtl
+        ),
+        MAX_SERVARR_LIBRARY_RESULTS
+      )
     );
   }
 
@@ -1232,15 +1382,17 @@ class ReadarrAPI extends ServarrBase<ReadarrQueueItem> {
         )?.[1];
         if (providerId && this.requestBaseUrl) {
           try {
-            const matches = sanitizeServarrRecordArray<ReadarrBook>(
-              await this.get<ReadarrBook[]>(
-                '/book',
-                this.getRequestConfig({
-                  titleSlug: providerId,
-                  mediaType: this.mediaType,
-                })
-              ),
-              5
+            const matches = this.qualifyFacadeBooks(
+              sanitizeServarrRecordArray<ReadarrBook>(
+                await this.get<ReadarrBook[]>(
+                  '/book',
+                  this.getRequestConfig({
+                    titleSlug: providerId,
+                    mediaType: this.mediaType,
+                  })
+                ),
+                5
+              )
             );
             const matched = matches.find((book) =>
               ReadarrAPI.matchesExistingBook(book, options)
@@ -1295,6 +1447,10 @@ class ReadarrAPI extends ServarrBase<ReadarrQueueItem> {
   }
 
   private async getChaptarrBooks(): Promise<ReadarrBook[]> {
+    return this.qualifyFacadeBooks(await this.getChaptarrFacadeBooks());
+  }
+
+  private async getChaptarrFacadeBooks(): Promise<ReadarrBook[]> {
     if (this.chaptarrCapabilities?.features?.pagedLibrary !== true) {
       return sanitizeServarrRecordArray<ReadarrBook>(
         await this.get<ReadarrBook[]>('/book', {
@@ -1841,16 +1997,49 @@ class ReadarrAPI extends ServarrBase<ReadarrQueueItem> {
     return result;
   }
 
-  /** Provider knowledge was negotiated while reading this client's catalog. */
-  public getKnownBookIdentityAliases(id: string): string[] {
-    const dialect = this.chaptarrDialect;
+  /** Negotiated identities; legacy clients require an explicitly scoped response. */
+  public getKnownBookIdentityAliases(
+    id: string,
+    options: { formatScopedResponse?: boolean } = {}
+  ): string[] {
     const contract = this.chaptarrCapabilities?.contract;
+    const explicitContract =
+      ['chaptarrng-seerr-bookshelf', 'seerrng-bookshelf'].includes(
+        contract ?? ''
+      ) && this.chaptarrCapabilities?.contractVersion === 1;
+    const facadeDialect = this.getFacadeIdDialect();
+    const dialect = this.chaptarrDialect ?? facadeDialect;
+    // Older Chaptarr builds have no capability document. Only callers holding
+    // a response from this exact selected, namespaced facade may use its IDs.
+    const knownScopedResponse =
+      options.formatScopedResponse === true &&
+      this.isChaptarr() &&
+      !!this.mediaType &&
+      !!dialect &&
+      this.chaptarrCapabilities?.features?.formatScopedFacade === true &&
+      this.requestBaseUrl !== this.nativeApiUrl &&
+      this.requestBaseUrl ===
+        ReadarrAPI.buildChaptarrFacadeUrl(
+          this.nativeApiUrl,
+          this.mediaType,
+          dialect
+        );
+    // ChaptarrNG library reads can also safely alias identities when the
+    // negotiated facade URL is selected, even if it has no identity contract.
+    // Keep this path separate from arbitrary responses passed by callers.
+    const qualifiedFacadeLibrary =
+      this.isChaptarr() &&
+      !!this.mediaType &&
+      !!facadeDialect &&
+      this.requestBaseUrl ===
+        ReadarrAPI.buildChaptarrFacadeUrl(
+          this.nativeApiUrl,
+          this.mediaType,
+          facadeDialect
+        );
     if (
       !dialect ||
-      !['chaptarrng-seerr-bookshelf', 'seerrng-bookshelf'].includes(
-        contract ?? ''
-      ) ||
-      this.chaptarrCapabilities?.contractVersion !== 1
+      (!explicitContract && !knownScopedResponse && !qualifiedFacadeLibrary)
     )
       return [id];
     const prefix =
@@ -1932,9 +2121,8 @@ class ReadarrAPI extends ServarrBase<ReadarrQueueItem> {
       }
 
       return {
-        books: sanitizeServarrRecordArray<ReadarrBook>(
-          payload.records,
-          safePageSize
+        books: this.qualifyFacadeBooks(
+          sanitizeServarrRecordArray<ReadarrBook>(payload.records, safePageSize)
         ),
         totalCount: Number(payload.totalCount),
       };
@@ -1954,6 +2142,27 @@ class ReadarrAPI extends ServarrBase<ReadarrQueueItem> {
         }
       );
     }
+  }
+
+  public override async getReleaseCalendar(
+    start: string,
+    end: string,
+    includeUnmonitored = false,
+    includeArtist = false,
+    includeAuthor = false
+  ): Promise<unknown[]> {
+    // A cached response skips request(); detect the facade dialect first.
+    await this.ensureProvider();
+    const rows = await super.getReleaseCalendar(
+      start,
+      end,
+      includeUnmonitored,
+      includeArtist,
+      includeAuthor
+    );
+    return rows.map((row) =>
+      isReadarrBookLookupResult(row) ? this.qualifyFacadeBook(row) : row
+    );
   }
 
   public async getMediaMoveAuthors(): Promise<ReadarrMediaMoveAuthor[]> {
@@ -2146,10 +2355,14 @@ class ReadarrAPI extends ServarrBase<ReadarrQueueItem> {
     cacheTtl?: number
   ): Promise<ReadarrBook> {
     try {
-      return await this.get<ReadarrBook>(
-        `/book/${bookId}`,
-        this.getRequestConfig(),
-        cacheTtl
+      // A cached response skips request(); detect the facade dialect first.
+      await this.ensureProvider();
+      return this.qualifyFacadeBook(
+        await this.get<ReadarrBook>(
+          `/book/${bookId}`,
+          this.getRequestConfig(),
+          cacheTtl
+        )
       );
     } catch (e) {
       throw new Error(
@@ -2193,7 +2406,9 @@ class ReadarrAPI extends ServarrBase<ReadarrQueueItem> {
         undefined,
         this.getRequestConfig()
       );
-      return response.data;
+      return response.data
+        ? this.qualifyFacadeBook(response.data)
+        : response.data;
     } catch (e) {
       if (e?.response?.status === 404 || isMissingRowServerError(e)) {
         return null;
@@ -2351,33 +2566,7 @@ class ReadarrAPI extends ServarrBase<ReadarrQueueItem> {
     results: ReadarrBookLookupResult[],
     dialect: ChaptarrDialect
   ): ReadarrBookLookupResult[] {
-    const qualify = (id: string) =>
-      /^\d+$/.test(id) ? `${dialect}:${id}` : id;
-    return results.map((book) => ({
-      ...book,
-      foreignBookId: qualify(book.foreignBookId),
-      ...(book.foreignEditionId
-        ? { foreignEditionId: qualify(book.foreignEditionId) }
-        : {}),
-      ...(book.author
-        ? {
-            author: {
-              ...book.author,
-              ...(book.author.foreignAuthorId
-                ? { foreignAuthorId: qualify(book.author.foreignAuthorId) }
-                : {}),
-            },
-          }
-        : {}),
-      ...(book.editions
-        ? {
-            editions: book.editions.map((edition) => ({
-              ...edition,
-              foreignEditionId: qualify(edition.foreignEditionId),
-            })),
-          }
-        : {}),
-    }));
+    return results.map((book) => qualifyChaptarrBookRecord(book, dialect));
   }
 
   public async findLocalBookByTitle(options: {
@@ -2386,10 +2575,20 @@ class ReadarrAPI extends ServarrBase<ReadarrQueueItem> {
     openLibraryWorkId?: string;
     isbn?: string;
     editionId?: string;
+    /** Pending recovery: require an already monitored, explicitly matching work. */
+    providerBookId?: string;
+    allowedLanguages?: string[];
   }): Promise<ReadarrBook | undefined> {
     const title = options.title.trim().slice(0, 256);
     const normalizedTitle = normalizeLocalBookSearchText(title);
     if (!title || normalizedTitle.length < 2) return undefined;
+    if (options.providerBookId && !options.authorName?.trim()) return undefined;
+    if (
+      options.providerBookId &&
+      options.allowedLanguages?.length &&
+      !options.editionId
+    )
+      return undefined;
 
     return withBookLookupBudget(async () => {
       try {
@@ -2447,7 +2646,10 @@ class ReadarrAPI extends ServarrBase<ReadarrQueueItem> {
               typeof instance.title === 'string' ? instance.title : entry.title;
             if (
               instance.mediaType !== this.mediaType ||
-              normalizeLocalBookSearchText(instanceTitle) !== normalizedTitle ||
+              (options.providerBookId
+                ? instance.monitored !== true
+                : normalizeLocalBookSearchText(instanceTitle) !==
+                  normalizedTitle) ||
               !Number.isSafeInteger(id) ||
               id <= 0
             ) {
@@ -2481,14 +2683,71 @@ class ReadarrAPI extends ServarrBase<ReadarrQueueItem> {
 
         for (const [id, indexedAuthor] of candidateIds) {
           try {
-            const book = await this.getBook(id);
+            const book = options.providerBookId
+              ? await this.get<ReadarrBook & { goodreadsWorkId?: string }>(
+                  `/book/${id}`,
+                  { ...this.getRequestConfig(), baseURL: this.nativeApiUrl },
+                  0
+                )
+              : await this.getBook(id);
             if (
               book.id !== id ||
               (book.mediaType && book.mediaType !== this.mediaType) ||
-              normalizeLocalBookSearchText(book.title) !== normalizedTitle ||
-              !ReadarrAPI.hasAddressableLookupIdentity(book)
+              (!options.providerBookId &&
+                normalizeLocalBookSearchText(book.title) !== normalizedTitle) ||
+              (!options.providerBookId &&
+                !ReadarrAPI.hasAddressableLookupIdentity(book))
             ) {
               continue;
+            }
+
+            if (options.providerBookId) {
+              // Native responses retain explicit provider namespaces even when
+              // the selected compatibility facade has switched from GR to HC.
+              // A legacy bare ID may match an explicit native identity only
+              // after the index verified this request's title and author.
+              const explicitIdentity = (value: unknown): string | undefined => {
+                if (typeof value !== 'string') return undefined;
+                const match = /^(hc|hardcover|gr|goodreads):(\d+)$/i.exec(
+                  value.trim()
+                );
+                if (!match) return undefined;
+                return `${/^(hc|hardcover)$/i.test(match[1]) ? 'hc' : 'gr'}:${match[2]}`;
+              };
+              const expected = explicitIdentity(options.providerBookId);
+              const legacy = /^\d+$/.test(options.providerBookId.trim())
+                ? options.providerBookId.trim()
+                : undefined;
+              const identities = [
+                book.foreignBookId,
+                (book as ReadarrBook & { goodreadsWorkId?: string })
+                  .goodreadsWorkId,
+              ]
+                .map(explicitIdentity)
+                .filter((value): value is string => !!value);
+              if (
+                book.monitored !== true ||
+                book.mediaType !== this.mediaType ||
+                !explicitIdentity(book.foreignBookId) ||
+                !identities.some((value) =>
+                  expected
+                    ? value === expected
+                    : legacy && value.split(':')[1] === legacy
+                ) ||
+                (options.editionId &&
+                  !sameEditionId(book.foreignEditionId, options.editionId))
+              )
+                continue;
+              if (options.isbn || options.editionId) {
+                book.editions = await this.get<ReadarrEdition[]>(
+                  '/edition',
+                  {
+                    ...this.getRequestConfig({ bookId: id }),
+                    baseURL: this.nativeApiUrl,
+                  },
+                  0
+                );
+              }
             }
 
             const bookAuthor = book.author?.authorName?.trim();
@@ -2526,6 +2785,19 @@ class ReadarrAPI extends ServarrBase<ReadarrQueueItem> {
               )
             ) {
               continue;
+            }
+
+            if (options.providerBookId && options.allowedLanguages?.length) {
+              const selected = book.editions?.find((edition) =>
+                sameEditionId(edition.foreignEditionId, options.editionId)
+              );
+              if (
+                !bookLanguageAllowed(
+                  [selected?.language],
+                  options.allowedLanguages
+                )
+              )
+                continue;
             }
 
             matches.push(book);
@@ -3150,7 +3422,7 @@ class ReadarrAPI extends ServarrBase<ReadarrQueueItem> {
           id: postedBook,
         };
       } else if (isReadarrBookLookupResult(postedBook)) {
-        addedBook = postedBook;
+        addedBook = this.qualifyFacadeBook(postedBook);
       } else {
         throw new Error('Bookshelf returned an invalid book response.');
       }
@@ -3307,7 +3579,9 @@ class ReadarrAPI extends ServarrBase<ReadarrQueueItem> {
       },
       this.getRequestConfig()
     );
-    return response.data;
+    return isRecord(response.data)
+      ? this.qualifyFacadeBook(response.data)
+      : response.data;
   }
 
   /** Makes one narrator the preferred performance for a whole series. */

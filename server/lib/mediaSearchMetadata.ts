@@ -114,3 +114,43 @@ export const upsertMediaSearchMetadata = async (
     });
   }
 };
+
+/**
+ * Stores the title and primary author of a Bookshelf-sourced book so request
+ * notifications can name it. Existing values are never replaced, so metadata
+ * written from Open Library or another provider wins.
+ */
+export const upsertMissingBookMetadata = async (
+  mediaId: number | undefined,
+  input: { title?: string; author?: string; externalIds?: string }
+): Promise<void> => {
+  if (!mediaId) {
+    return;
+  }
+
+  try {
+    const existing = await getRepository(MediaSearchMetadata).findOne({
+      where: { mediaId },
+    });
+    const hasTitle = !!existing?.title?.trim();
+    const hasAuthor = !!existing?.author?.trim();
+    const title = hasTitle ? undefined : clean(input.title);
+    const author = hasAuthor ? undefined : clean(input.author);
+    if (!title && !author) {
+      return;
+    }
+
+    await upsertMediaSearchMetadata(mediaId, {
+      title,
+      author,
+      provider: hasTitle ? undefined : 'Bookshelf catalog',
+      externalIds: hasTitle ? undefined : input.externalIds,
+    });
+  } catch (error) {
+    logger.warn('Unable to refresh searchable media metadata', {
+      label: 'Metadata Search',
+      mediaId,
+      errorMessage: error instanceof Error ? error.message : String(error),
+    });
+  }
+};

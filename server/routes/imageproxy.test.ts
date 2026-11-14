@@ -57,6 +57,7 @@ describe('GET /imageproxy/:type/*path', () => {
       'comicvine',
       'comicvinestatic',
       'comicvinestatic1',
+      'hardcover',
       'igdb',
       'theaudiodb',
     ]) {

@@ -4,14 +4,47 @@
 
 ### User-facing changes
 
+#### Changed
+
+- **Discovery:** Comics and Manga now use the same All, In library, and Not yet filters as Books and Audiobooks. Not yet hides owned series, keeps requested series visible until they arrive, and preserves the browse filters.
+- **Books:** Lumen now reads book narrations, library state, and covers directly from SeerrNG. Requesting another narrator follows the regular approval flow, so these features work without the `/seerr-classic` proxy.
+
 #### Fixed
 
 - **Book Acquisition:** BookOrbit connections can be tested and saved in Settings → Services. The test preserves passwords as entered and identifies sign-in or library access errors. Service removal shows why a server cannot be removed. ChaptarrNG acquisition can start a search for a newly added, already monitored book without editing it.
 - **Requests:** Episode Queue loads long-running series in batches and lets you choose a starting episode from seasons that loaded. Retry fetches the missing seasons. Requests opens with all statuses and shows other users’ requests when your account has permission, including in Lumen.
+- **Books:** Bookshelf requests that span ebook and audiobook servers now keep their processing status consistent during scans. A request no longer briefly appears unknown because an idle server was scanned before the server handling it.
+- **Notifications:** Notifications for Bookshelf requests now use the book title and primary author instead of a provider ID or a generic “Book request” label.
+- **Books:** ChaptarrNG books now keep their Hardcover or Goodreads identity across library reads and scans. Existing requests continue to match, and Lumen can again find the related covers and edition details without a data migration.
+- **Bookshelf:** Pending Chaptarr requests can reconnect to a local book when an older Goodreads identity no longer resolves. Recovery matches saved title, author, work, format, and edition without loading the author's catalog or creating a duplicate. Tracked work IDs keep their provider identity when format-scoped lookups return bare IDs. Ambiguous matches and active imports or searches remain untouched.
+- **Bookshelf:** Bookshelf scans enrich monitored books, requested books, and records with files instead of expanding every unmonitored title in an author's catalog. Requests retain their tracked records and availability checks still use the complete local inventory, so filtering catalog-only titles does not falsely mark linked books as missing.
+
+### 🚀 Features
+- *(imageproxy)* Serve Hardcover book covers through the image proxy - ([2274b63](https://github.com/snapetech-org/seerrng/commit/2274b630a34863dccf1a44ae12ebe432a39d54f6))
+- *(lumen)* Read narrations, covers and extra-narration requests from SeerrNG - ([624119c](https://github.com/snapetech-org/seerrng/commit/624119c4ae21352c2c01837ca8f7519d466872d2))
 
 ### 🐛 Bug Fixes
+- *(books)* Keep PROCESSING when one format's server is idle during a scan - ([d3a7a46](https://github.com/snapetech-org/seerrng/commit/d3a7a468274c92c66e9020eef6278d0b2edff894))
+- *(books)* Name Bookshelf book requests in notifications - ([a8ede1c](https://github.com/snapetech-org/seerrng/commit/a8ede1c235df36d0755f7027b296c82174c57829))
+- *(books)* Match tracked facade identities within their known provider - ([fdcf690](https://github.com/snapetech-org/seerrng/commit/fdcf6904058ee1ce1f694ae634b113df562ab3e1))
+- *(books)* Preserve acquisition ownership when recovering local requests - ([07dca74](https://github.com/snapetech-org/seerrng/commit/07dca744e6502bd0c5bf375d8653bdd497a11eda))
+- *(books)* Recover orphaned pending requests from verified local records - ([9ec07ae](https://github.com/snapetech-org/seerrng/commit/9ec07aee278e71f3becfe1140fc34c20f4084892))
+- *(books)* Keep bare Readarr ids matching after library ids are qualified - ([69b4177](https://github.com/snapetech-org/seerrng/commit/69b417726c72383b61129cc794805f559890edec))
+- *(books)* Qualify ChaptarrNG library ids like lookups - ([5647c2c](https://github.com/snapetech-org/seerrng/commit/5647c2c45c9946aa3b144e8b54e44c0a44c90f7e))
+- *(books)* Scan requested and file-backed books without author catalog expansion - ([c3da3b1](https://github.com/snapetech-org/seerrng/commit/c3da3b1c761a845a54e84a6a0d036ad8f4de1a32))
 - *(books)* Report acquisition connection and removal failures - ([dd6b941](https://github.com/snapetech-org/seerrng/commit/dd6b941cbe4eb71dec5a5040c255dda1cf9dd4d6))
 - *(books)* Accept BookOrbit in service settings API - ([4ebc794](https://github.com/snapetech-org/seerrng/commit/4ebc79442505330b772d96e8af56545eaa61c961))
+- *(lumen)* Use All / In library / Not yet on Comics/Manga, as on Books - ([972e10a](https://github.com/snapetech-org/seerrng/commit/972e10a91805e1ead55a25ff4758e5ed54989bad))
+- *(requests)* Recover TV episode selection and restore request visibility - ([9dd038d](https://github.com/snapetech-org/seerrng/commit/9dd038dccb61d273c25292121c100c94bddbda5c))
+- *(test)* Avoid dynamic regex in BookOrbit route matcher - ([93084d8](https://github.com/snapetech-org/seerrng/commit/93084d8e522cdbadc48b09472b6a6202c6bd31b3))
+
+### 📖 Documentation
+- *(release)* Describe provider-scoped tracked book recovery - ([a430327](https://github.com/snapetech-org/seerrng/commit/a43032700bda160e72869735f4ad09163daf0442))
+- *(release)* Describe requested Bookshelf inventory scans - ([5e010f5](https://github.com/snapetech-org/seerrng/commit/5e010f54baa02082edb36e5ef0b6c71000d59f46))
+
+### ⚙️ Miscellaneous Tasks
+- *(i18n)* Refresh book recovery source locations - ([09937a6](https://github.com/snapetech-org/seerrng/commit/09937a6bb5e7c588b0af9d985c2fa97024caad43))
+- *(i18n)* Refresh requested book scanner source locations - ([213c99c](https://github.com/snapetech-org/seerrng/commit/213c99cf65b0ce0ba1f6ab182406b2f7e93d80f0))
 
 ## [3.72.35](https://github.com/snapetech-org/seerrng/compare/v3.72.34..v3.72.35) - 2026-11-13
 

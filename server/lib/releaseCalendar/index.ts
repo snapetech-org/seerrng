@@ -11,12 +11,17 @@ import { getRepository } from '@server/datasource';
 import { MediaIdentifierProvider } from '@server/entity/MediaIdentifier';
 import { MediaRequest } from '@server/entity/MediaRequest';
 import {
+  getBookshelfBookIdAliases,
+  getKnownBookshelfServiceDialect,
+} from '@server/lib/bookshelfIdentity';
+import {
   normalizeMusicBrainzId,
   normalizeOpenLibraryEditionId,
   normalizeOpenLibraryWorkId,
 } from '@server/lib/externalIds';
 import { normalizeValidIsbn } from '@server/lib/isbn';
 import { isMediaCategoryEnabled } from '@server/lib/mediaCategories';
+import type { ReadarrSettings } from '@server/lib/settings';
 import { getSettings } from '@server/lib/settings';
 import logger from '@server/logger';
 import { parseBookshelfBookId } from '@server/utils/bookshelfCatalog';
@@ -66,6 +71,9 @@ export async function getReleaseCalendar(
           .getMany()
       : [];
   const requests = loadedRequests.slice(0, 5_000);
+  // Every catalog id of a ChaptarrNG calendar book on its service: requests
+  // made before library ids were qualified carry the bare spelling.
+  const bookIdAliases = new WeakMap<ReleaseCalendarItem, string[]>();
   const sources = [
     ...settings.radarr.map((server) => ({
       source: 'radarr' as const,
@@ -240,6 +248,10 @@ export async function getReleaseCalendar(
             )
               Object.assign(row, { series: byId.get(row.seriesId as number) });
         }
+        const libraryIdDialect =
+          source === 'readarr'
+            ? getKnownBookshelfServiceDialect(server as ReadarrSettings)
+            : undefined;
         return rows.flatMap((row) => {
           const item = normalizeCalendarRow(
             source,
@@ -250,6 +262,11 @@ export async function getReleaseCalendar(
             query.allDayEnd,
             source === 'readarr' ? bookFormat : undefined
           );
+          if (item?.bookId && libraryIdDialect)
+            bookIdAliases.set(
+              item,
+              getBookshelfBookIdAliases(item.bookId, libraryIdDialect)
+            );
           return item &&
             new Date(item.startsAt) >=
               (item.allDay ? query.allDayStart : query.start) &&
@@ -344,6 +361,11 @@ export async function getReleaseCalendar(
             `${identifier.provider}:${(bookshelfId?.foreignBookId ?? value).toLowerCase()}`,
             requestedFormats
           );
+          if (
+            bookshelfId &&
+            identifier.provider === MediaIdentifierProvider.BOOKSHELF
+          )
+            addBookIdentity(`bookshelf-id:${value}`, requestedFormats);
         } else if (
           identifier.provider === MediaIdentifierProvider.OPENLIBRARY
         ) {
@@ -384,6 +406,9 @@ export async function getReleaseCalendar(
           `readarr:${foreignBookId.toLowerCase()}`,
           `bookshelf:${foreignBookId.toLowerCase()}`,
           `audiobookshelf:${foreignBookId.toLowerCase()}`,
+          ...(bookIdAliases.get(item) ?? []).map(
+            (alias) => `bookshelf-id:${alias}`
+          ),
         ];
         const openLibraryId = foreignBookId.match(
           /^(?:openlibrary:)?(?:\/?works\/)?(OL\d+W)$/i

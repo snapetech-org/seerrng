@@ -164,9 +164,9 @@ for (const theme of ['seerrNGJ', 'seerrOrig', 'persiusNG']) {
       const serviceCard = page
         .getByRole('listitem')
         .filter({ hasText: service.name });
-      const removal = new RegExp(`/api/v1/settings/readarr/${createdId}$`);
+      const removalPath = `/api/v1/settings/readarr/${createdId}`;
       await page.route(
-        removal,
+        (url) => url.pathname.endsWith(removalPath),
         (route) =>
           route.fulfill({
             status: 409,
