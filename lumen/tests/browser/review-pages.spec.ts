@@ -196,7 +196,7 @@ for (const everyone of [false, true]) {
           };
       },
     });
-    await page.goto(everyone ? '/requests?tab=everyone' : '/requests');
+    await page.goto(everyone ? '/requests?tab=everyone' : '/requests?tab=active');
     await expect(page.getByText('Downloading 40%').first()).toBeVisible();
     // let the first load (and its title lookups) settle, then count only what one tick asks for
     await expect.poll(() => Date.now() - lastCall > 700).toBe(true);

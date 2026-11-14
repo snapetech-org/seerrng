@@ -1742,7 +1742,7 @@ test('downloads that have started show even when far down the history', async ({
           : [];
     return route.fulfill({ json: { pageInfo: { pages: 1 }, results } });
   });
-  await page.goto('/requests');
+  await page.goto('/requests?tab=active');
   await expect(page.locator('.rq')).toHaveCount(2);
   await expect(page.locator('.rq').getByText('Downloading 60%')).toBeVisible();
   await expect(page.locator('.rq').getByText('Queued')).toBeVisible();

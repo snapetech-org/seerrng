@@ -1,9 +1,9 @@
 import { useEffect, useState, type ReactNode } from 'react';
 import { api, type Person, type RequestOptions } from '../api';
 import { useAuth } from '../auth';
+import { friendlyError } from '../errors';
 import { Icon, type IconName } from '../icons';
 import { Glyph, type Stat } from './cards';
-import { friendlyError } from '../errors';
 
 const hue = (s: string) =>
   [...s].reduce((h, c) => (h * 31 + c.charCodeAt(0)) % 360, 0);
@@ -157,6 +157,7 @@ export const ActionBar = ({
 
 // ---- admin-only request options: which server, quality profile and folder ----
 const MANAGE = 2 | 16; // ADMIN | MANAGE_REQUESTS
+const REQUEST_VIEW = 16384;
 interface Server {
   id: number;
   name: string;
@@ -179,6 +180,8 @@ const permissionBits = (permissions?: number) =>
 // who may pick the Radarr/Sonarr server, quality and folder for a request
 export const canChooseRequestOptions = (permissions?: number) =>
   (permissionBits(permissions) & MANAGE) !== 0;
+export const canViewAllRequests = (permissions?: number) =>
+  (permissionBits(permissions) & (MANAGE | REQUEST_VIEW)) !== 0;
 // who may request in 4K: Admin, Request 4K, or Request 4K Movies / Request 4K Series
 export const canRequest4k = (
   permissions: number | undefined,

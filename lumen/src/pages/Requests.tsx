@@ -18,7 +18,11 @@ import {
 import { useAuth, useMediaServerName } from '../auth';
 import { Cover, shortDate } from '../components/cards';
 import { ConfirmSheet } from '../components/ConfirmSheet';
-import { canChooseRequestOptions, Pill } from '../components/detail';
+import {
+  canChooseRequestOptions,
+  canViewAllRequests,
+  Pill,
+} from '../components/detail';
 import { RequestEditSheet } from '../components/requestEdit';
 import { Avatar } from '../components/Shell';
 import { useToast } from '../components/toast';
@@ -852,7 +856,13 @@ export default function Requests() {
   const { user } = useAuth();
   const toast = useToast();
   const [p, setP] = useSearchParams();
-  const tab = p.get('tab') || 'active';
+  const viewAll = canViewAllRequests(user?.permissions);
+  const defaultTab = viewAll ? 'everyone' : 'active';
+  const requestedTab = p.get('tab');
+  const tab =
+    requestedTab === 'everyone' && !viewAll
+      ? defaultTab
+      : requestedTab || defaultTab;
   const [rows, setRows] = useState<Row[] | null>(null);
   const [ownError, setOwnError] = useState(false);
   const [tick, setTick] = useState(0);
@@ -864,9 +874,8 @@ export default function Requests() {
     setTick((t) => t + 1);
   });
   const extras = useExtras();
-  // admins and request managers also see everyone's requests, and approve or decline them
   const manage = canChooseRequestOptions(user?.permissions);
-  const everyone = manage && tab === 'everyone';
+  const everyone = viewAll && tab === 'everyone';
   const [others, setOthers] = useState<Row[] | null>(null);
   const [othersError, setOthersError] = useState(false);
   // SeerrNG's request counts, for the Everyone tab and its filters
@@ -891,7 +900,7 @@ export default function Requests() {
     title: string;
   } | null>(null);
   useEffect(() => {
-    if (!manage) return;
+    if (!viewAll) return;
     let live = true;
     api<Record<string, number>>('/request/count')
       .then(
@@ -914,7 +923,7 @@ export default function Requests() {
     return () => {
       live = false;
     };
-  }, [manage, tick]);
+  }, [viewAll, tick]);
 
   useEffect(() => {
     if (!everyone) return;
@@ -1200,13 +1209,13 @@ export default function Requests() {
           ['active', 'Active', act.length],
           ['ready', 'Ready', ready.length],
           ['all', 'All', all.length],
-          ...(manage ? [['everyone', 'Everyone', waiting ?? '']] : []),
+          ...(viewAll ? [['everyone', 'Everyone', waiting ?? '']] : []),
         ].map(([v, t, n]) => (
           <button
             key={v as string}
             aria-pressed={tab === v}
             onClick={() =>
-              setP(v === 'active' ? {} : { tab: v as string }, {
+              setP(v === defaultTab ? {} : { tab: v as string }, {
                 replace: true,
               })
             }
@@ -1334,7 +1343,7 @@ export default function Requests() {
                   {st.detail && <span className="d">{st.detail}</span>}
                 </div>
                 <div className="rqa">
-                  {everyone ? (
+                  {everyone && manage ? (
                     <>
                       {x.r.status === 1 && (
                         <>
@@ -1408,7 +1417,7 @@ export default function Requests() {
                         ? `Listen on ${serverName}`
                         : `Watch on ${serverName}`}
                     </a>
-                  ) : x.r.status === 1 ? (
+                  ) : !everyone && x.r.status === 1 ? (
                     <button
                       className="btn btn-sm btn-quiet"
                       disabled={acting === x.r.id}

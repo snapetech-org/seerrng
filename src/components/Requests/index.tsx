@@ -2340,14 +2340,12 @@ const Requests = () => {
   const { cache: requestCache, mutate: prefetchRequestCache } = useSWRConfig();
   const prefetchedDetails = useRef(new Set<string>());
   const { user: currentUser, hasPermission } = useUser();
-  const currentUserId = currentUser?.id;
   const { addToast } = useToasts();
   const isAdminView = hasPermission(Permission.MANAGE_REQUESTS);
-  const canViewOtherUsers =
-    isAdminView &&
-    hasPermission([Permission.MANAGE_REQUESTS, Permission.REQUEST_VIEW], {
-      type: 'or',
-    });
+  const canViewOtherUsers = hasPermission(
+    [Permission.MANAGE_REQUESTS, Permission.REQUEST_VIEW],
+    { type: 'or' }
+  );
   const [mediaFilter, setMediaFilter] = useState<MediaFilter>('all');
   const [searchFilter, debouncedSearchFilter, setSearchFilter] =
     useDebouncedState('');
@@ -2383,11 +2381,7 @@ const Requests = () => {
       return;
     }
 
-    setFilter(
-      router.query.filter === undefined && persius
-        ? 'active'
-        : getSafeQueryValue(router.query.filter, requestTypeFilterValues)
-    );
+    setFilter(getSafeQueryValue(router.query.filter, requestTypeFilterValues));
     setMediaFilter(
       getSafeQueryValue(router.query.mediaType, mediaTypeValues) as MediaFilter
     );
@@ -2415,17 +2409,11 @@ const Requests = () => {
     setSelectedUser(
       resolveRequestStatusUserSelection({
         canViewOtherUsers,
-        queryUserId:
-          rawUserId ??
-          (persius && currentUserId != null
-            ? String(currentUserId)
-            : undefined),
+        queryUserId: rawUserId,
       })
     );
   }, [
-    persius,
     canViewOtherUsers,
-    currentUserId,
     router.isReady,
     router.query.filter,
     router.query.mediaType,
@@ -2639,16 +2627,14 @@ const Requests = () => {
     nextUser?: UserSelection | null;
     nextPage?: number;
   } = {}) => ({
-    ...(persius || nextFilter !== 'all' ? { filter: nextFilter } : {}),
+    ...(nextFilter !== 'all' ? { filter: nextFilter } : {}),
     ...(nextMediaFilter !== 'all' ? { mediaType: nextMediaFilter } : {}),
     ...(nextSort !== 'added' ? { sort: nextSort } : {}),
     ...(nextSortDirection !== 'desc'
       ? { sortDirection: nextSortDirection }
       : {}),
     ...(nextTimeFrame !== 'all' ? { timeFrame: nextTimeFrame } : {}),
-    ...(canViewOtherUsers &&
-    nextUser !== null &&
-    (persius || nextUser !== 'all')
+    ...(canViewOtherUsers && nextUser !== null && nextUser !== 'all'
       ? { userId: String(nextUser) }
       : {}),
     ...(nextPage > 1 ? { page: String(nextPage) } : {}),
@@ -2997,22 +2983,20 @@ const Requests = () => {
         : null;
   const hasFilters =
     searchFilter.trim() !== '' ||
-    filter !== (persius ? 'active' : 'all') ||
+    filter !== 'all' ||
     mediaFilter !== 'all' ||
     sort !== 'added' ||
     sortDirection !== 'desc' ||
     timeFrame !== 'all' ||
-    (canViewOtherUsers && selectedUser !== (persius ? currentUser?.id : 'all'));
+    (canViewOtherUsers && selectedUser !== null && selectedUser !== 'all');
   const clearFilters = () => {
     setSearchFilter('');
-    setFilter(persius ? 'active' : 'all');
+    setFilter('all');
     setMediaFilter('all');
     setSort('added');
     setSortDirection('desc');
     setTimeFrame('all');
-    setSelectedUser(
-      canViewOtherUsers ? (persius ? (currentUser?.id ?? null) : 'all') : null
-    );
+    setSelectedUser(canViewOtherUsers ? 'all' : null);
     pushRouteQuery({});
   };
 
@@ -3053,7 +3037,11 @@ const Requests = () => {
       {persius && (
         <>
           <p className="persius-description">
-            {intl.formatMessage(persiusMessages.requestsDescription)}
+            {intl.formatMessage(
+              canViewOtherUsers && selectedUser === 'all'
+                ? persiusMessages.allRequestsDescription
+                : persiusMessages.requestsDescription
+            )}
           </p>
           <RequestTabs
             endpoint="/api/v1/request/status"
@@ -3138,10 +3126,10 @@ const Requests = () => {
                       <span className="app-filter-count">{option.value}</span>
                     </button>
                   ))}
-                  {isAdminView && canViewOtherUsers && (
+                  {canViewOtherUsers && (
                     <CompactSelect
                       label={intl.formatMessage(messages.userFilter)}
-                      value={String(selectedUser ?? currentUser?.id ?? 'all')}
+                      value={String(selectedUser ?? 'all')}
                       options={requestUserOptions}
                       onChange={updateUser}
                       defaultValue="all"

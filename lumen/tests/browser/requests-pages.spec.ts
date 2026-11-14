@@ -2,7 +2,11 @@ import { expect, test, type Page } from '@playwright/test';
 
 // SeerrNG verifies at most 32 title variants per answer and reports the rest as not available,
 // so request lists are fetched in pages small enough that every title keeps its real status.
-async function fixture(page: Page, count = 40) {
+async function fixture(
+  page: Page,
+  count = 40,
+  options = { permissions: 2, requesterId: 1 }
+) {
   const takes: number[] = [];
   let activeOwnerPages = 0;
   let maxConcurrentOwnerPages = 0;
@@ -12,7 +16,7 @@ async function fixture(page: Page, count = 40) {
     status: 2,
     is4k: false,
     createdAt: new Date(Date.UTC(2026, 10, 8, 12) - i * 60_000).toISOString(),
-    requestedBy: { id: 1, displayName: 'viewer' },
+    requestedBy: { id: options.requesterId, displayName: 'Movie requester' },
     media: { mediaType: 'movie', tmdbId: 1000 + i, status: 5 },
   }));
   await page.route('https://**/*', (r) => r.abort());
@@ -23,7 +27,11 @@ async function fixture(page: Page, count = 40) {
     const path = url.pathname.slice(7);
     if (path === '/auth/me')
       return r.fulfill({
-        json: { id: 1, displayName: 'viewer', permissions: 2 },
+        json: {
+          id: 1,
+          displayName: 'viewer',
+          permissions: options.permissions,
+        },
       });
     if (path === '/settings/public')
       return r.fulfill({ json: { mediaServerType: 1 } });
@@ -32,7 +40,15 @@ async function fixture(page: Page, count = 40) {
       const skip = Number(url.searchParams.get('skip') || 0);
       takes.push(take);
       const filter = url.searchParams.get('filter');
-      const list = filter === 'pending' || filter === 'processing' ? [] : all;
+      const requestedBy = url.searchParams.get('requestedBy');
+      const list =
+        filter === 'pending' || filter === 'processing'
+          ? []
+          : all.filter(
+              (row) =>
+                (!requestedBy || String(row.requestedBy.id) === requestedBy) &&
+                (options.permissions !== 32 || row.requestedBy.id === 1)
+            );
       const ownerPage =
         filter === 'all' && url.searchParams.get('requestedBy') === '1';
       if (ownerPage) {
@@ -96,4 +112,38 @@ test('My requests loads every page so the counts are the real totals', async ({
   );
   expect(maxConcurrentOwnerPages()).toBeGreaterThan(1);
   expect(maxConcurrentOwnerPages()).toBeLessThanOrEqual(4);
+});
+
+test('the Requests link shows another user’s approved movie to a read-only viewer', async ({
+  page,
+}) => {
+  await fixture(page, 1, { permissions: 16384, requesterId: 2 });
+  await page.goto('/requests');
+  const everyone = page.getByRole('button', { name: /^Everyone/ });
+  const row = page.locator('.rq').filter({ hasText: 'Title 1000' });
+  await expect(everyone).toHaveAttribute('aria-pressed', 'true');
+  await expect(row).toContainText('Movie requester');
+  await expect(
+    row.getByRole('button', {
+      name: /Approve|Decline|Remove|Retry|Change|Cancel/,
+    })
+  ).toHaveCount(0);
+
+  await page.getByRole('button', { name: /^Active/ }).click();
+  await expect(page).toHaveURL(/tab=active$/);
+  await expect(row).toHaveCount(0);
+  await everyone.click();
+  await expect(row).toBeVisible();
+});
+
+test('a personal viewer stays on their own requests', async ({ page }) => {
+  await fixture(page, 1, { permissions: 32, requesterId: 2 });
+  await page.goto('/requests?tab=everyone');
+  await expect(page.getByRole('button', { name: /^Active/ })).toHaveAttribute(
+    'aria-pressed',
+    'true'
+  );
+  await expect(page.getByRole('button', { name: /^Everyone/ })).toHaveCount(0);
+  await expect(page.getByText('No active requests')).toBeVisible();
+  await expect(page.getByText('Title 1000')).toHaveCount(0);
 });

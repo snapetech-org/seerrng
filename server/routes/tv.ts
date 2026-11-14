@@ -13,7 +13,9 @@ import type { TmdbKeyword } from '@server/api/themoviedb/interfaces';
 import { MediaType } from '@server/constants/media';
 import { getRepository } from '@server/datasource';
 import Media from '@server/entity/Media';
+import type { User } from '@server/entity/User';
 import { Watchlist } from '@server/entity/Watchlist';
+import { REQUEST_SEASON_BATCH_SIZE } from '@server/interfaces/api/seasonInterfaces';
 import {
   getActiveEpisodeAvailabilitySources,
   getEpisodeAvailability,
@@ -43,6 +45,7 @@ import {
 import logger from '@server/logger';
 import { mapTvResult } from '@server/models/Search';
 import { mapSeasonWithEpisodes, mapTvDetails } from '@server/models/Tv';
+import { mapWithConcurrency } from '@server/utils/concurrency';
 import { filterEntityResponse } from '@server/utils/entityResponse';
 import {
   parseOptionalPositiveInt,
@@ -394,6 +397,122 @@ tvRoutes.get('/:id/cover', async (req, res) => {
   }
 });
 
+const getSeasonMetadataProvider = async (tvId: number, user?: User) => {
+  const tmdbTv = await new TheMovieDb().getTvShow({ tvId });
+  if (
+    user &&
+    !isVideoWithinMaturityLimit(
+      tmdbTv,
+      MediaType.TV,
+      (await getUserVideoMaturityPolicy(user.id)).tv
+    )
+  ) {
+    return undefined;
+  }
+
+  const isAnime = tmdbTv.keywords.results.some(
+    (keyword: TmdbKeyword) => keyword.id === ANIME_KEYWORD_ID
+  );
+  return {
+    isAnime,
+    provider: await getMetadataProvider(isAnime ? 'anime' : 'tv'),
+  };
+};
+
+const requestSeasonBatchRateLimit = rateLimit({
+  windowMs: 60_000,
+  limit: 6,
+  standardHeaders: true,
+  legacyHeaders: false,
+  keyGenerator: (req) =>
+    req.user?.id ? `user:${req.user.id}` : getRateLimitKey(req),
+  skip: () =>
+    process.env.NODE_ENV === 'test' || process.env.E2E_TESTS === 'true',
+});
+
+tvRoutes.get(
+  '/:id/seasons',
+  requestSeasonBatchRateLimit,
+  async (req, res, next) => {
+    const tvId = parseTvRouteId(req.params.id);
+    if (!tvId) {
+      return next({ status: 404, message: 'Season not found.' });
+    }
+
+    const rawSeasonNumbers = req.query.seasonNumbers;
+    const seasonNumbers =
+      typeof rawSeasonNumbers === 'string' &&
+      rawSeasonNumbers.length <= REQUEST_SEASON_BATCH_SIZE * 6 - 1
+        ? rawSeasonNumbers.split(',').map(parseSeasonRouteNumber)
+        : [];
+    if (
+      seasonNumbers.length === 0 ||
+      seasonNumbers.length > REQUEST_SEASON_BATCH_SIZE ||
+      seasonNumbers.some((seasonNumber) => seasonNumber === undefined)
+    ) {
+      return next({
+        status: 400,
+        message: 'Provide 1 to 20 valid season numbers.',
+      });
+    }
+
+    const parsedLanguage = parseOptionalLanguage(req.query.language);
+    if ('error' in parsedLanguage) {
+      return res
+        .status(400)
+        .json({ status: 400, message: parsedLanguage.error });
+    }
+    const language = parsedLanguage.value ?? req.metadataLocale;
+
+    try {
+      const metadata = await getSeasonMetadataProvider(tvId, req.user);
+      if (!metadata) {
+        return next({ status: 404, message: 'Season not found.' });
+      }
+
+      // The request tree already has library availability from the series
+      // response. Keep episode metadata independent of linked library lookups.
+      const seasons = await mapWithConcurrency(
+        [...new Set(seasonNumbers.filter((number) => number !== undefined))],
+        3,
+        async (seasonNumber) => {
+          try {
+            const season = await metadata.provider.getTvSeason({
+              tvId,
+              seasonNumber,
+              language,
+            });
+            return season.season_number === seasonNumber &&
+              season.id > 0 &&
+              season.episodes.length > 0
+              ? mapSeasonWithEpisodes(season)
+              : undefined;
+          } catch (error) {
+            logger.debug('Something went wrong retrieving season', {
+              label: 'API',
+              tvId,
+              seasonNumber,
+              errorMessage:
+                error instanceof Error ? error.message : String(error),
+            });
+            return undefined;
+          }
+        }
+      );
+      return res
+        .status(200)
+        .json(seasons.filter((season) => season !== undefined));
+    } catch (error) {
+      logger.debug('Something went wrong retrieving series for season batch', {
+        label: 'API',
+        tvId,
+        errorMessage: error instanceof Error ? error.message : String(error),
+      });
+      return next({ status: 500, message: 'Unable to retrieve season.' });
+    }
+  }
+);
+
 tvRoutes.get('/:id/season/:seasonNumber', async (req, res, next) => {
   const tvId = parseTvRouteId(req.params.id);
   const seasonNumber = parseSeasonRouteNumber(req.params.seasonNumber);
@@ -407,26 +526,11 @@ tvRoutes.get('/:id/season/:seasonNumber', async (req, res, next) => {
   const language = parsedLanguage.value ?? req.metadataLocale;
 
   try {
-    const tmdb = new TheMovieDb();
-    const tmdbTv = await tmdb.getTvShow({
-      tvId,
-    });
-    if (
-      req.user &&
-      !isVideoWithinMaturityLimit(
-        tmdbTv,
-        MediaType.TV,
-        (await getUserVideoMaturityPolicy(req.user.id)).tv
-      )
-    ) {
+    const metadata = await getSeasonMetadataProvider(tvId, req.user);
+    if (!metadata) {
       return next({ status: 404, message: 'Season not found.' });
     }
-    const isAnime = tmdbTv.keywords.results.some(
-      (keyword: TmdbKeyword) => keyword.id === ANIME_KEYWORD_ID
-    );
-    const metadataProvider = await getMetadataProvider(
-      isAnime ? 'anime' : 'tv'
-    );
+    const { isAnime, provider: metadataProvider } = metadata;
 
     const season = await metadataProvider.getTvSeason({
       tvId,

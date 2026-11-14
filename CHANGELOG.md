@@ -7,6 +7,7 @@
 #### Fixed
 
 - **Book Acquisition:** BookOrbit connections can be tested and saved in Settings → Services. The test preserves passwords as entered and identifies sign-in or library access errors. Service removal shows why a server cannot be removed. ChaptarrNG acquisition can start a search for a newly added, already monitored book without editing it.
+- **Requests:** Episode Queue loads long-running series in batches and lets you choose a starting episode from seasons that loaded. Retry fetches the missing seasons. Requests opens with all statuses and shows other users’ requests when your account has permission, including in Lumen.
 
 ### 🐛 Bug Fixes
 - *(books)* Report acquisition connection and removal failures - ([dd6b941](https://github.com/snapetech-org/seerrng/commit/dd6b941cbe4eb71dec5a5040c255dda1cf9dd4d6))

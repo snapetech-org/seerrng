@@ -89,7 +89,7 @@ for (const [stage, percent, word] of [
 ] as const) {
   test(`${stage} ${percent} uses current request truth`, async ({ page }) => {
     const calls = await fixture(page, { stage, percent });
-    await page.goto('/requests');
+    await page.goto('/requests?tab=active');
     const row = page.locator('.rq').filter({ hasText: 'Requested audio' });
     await expect(row).toBeVisible();
     await expect(row.locator('.st')).toContainText(word);
@@ -102,7 +102,7 @@ test('older backend falls back without treating an ebook as audio', async ({
   page,
 }) => {
   const calls = await fixture(page, undefined, true);
-  await page.goto('/requests');
+  await page.goto('/requests?tab=active');
   const row = page.locator('.rq').filter({ hasText: 'Requested audio' });
   await expect(row).toBeVisible();
   await expect(row.getByText('In library', { exact: true })).toHaveCount(0);
@@ -114,7 +114,7 @@ test('an outage does not downgrade to coarse legacy status', async ({
   page,
 }) => {
   const calls = await fixture(page, undefined, false, true);
-  await page.goto('/requests');
+  await page.goto('/requests?tab=active');
   await expect(page.getByRole('alert')).toContainText('Couldn’t load requests');
   await page.getByRole('button', { name: 'Retry', exact: true }).click();
   await expect.poll(() => calls.length).toBeGreaterThan(2);
@@ -337,7 +337,7 @@ test('a double click on Cancel cancels the request once', async ({ page }) => {
     await new Promise((resolve) => setTimeout(resolve, 300));
     await route.fulfill({ status: 204 });
   });
-  await page.goto('/requests');
+  await page.goto('/requests?tab=active');
   const row = page.locator('.rq').filter({ hasText: 'Requested audio' });
   await row.getByRole('button', { name: 'Cancel', exact: true }).click();
   await page.getByRole('button', { name: 'Cancel request' }).dblclick();

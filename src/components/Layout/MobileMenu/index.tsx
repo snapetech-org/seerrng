@@ -159,9 +159,7 @@ const MobileMenu = ({
                 return (
                   <Link
                     key={`mobile-menu-link-${link.id}`}
-                    href={
-                      showRequestBadge ? '/requests?filter=pending' : link.href
-                    }
+                    href={link.href}
                     prefetch={false}
                     onClick={() => setIsOpen(false)}
                     className={`main-menu-link flex items-center px-2 py-2 ${
@@ -182,16 +180,13 @@ const MobileMenu = ({
                     <span className="ms-2">
                       {intl.formatMessage(menuMessages[link.messagesKey])}
                     </span>
-                    {link.href === '/requests' &&
-                      pendingRequestsCount > 0 &&
-                      (persius ||
-                        hasPermission(Permission.MANAGE_REQUESTS)) && (
-                        <div className="ms-auto flex">
-                          <Badge className="rounded-md border-indigo-500 bg-gradient-to-br from-indigo-600 to-purple-600">
-                            {pendingRequestsCount}
-                          </Badge>
-                        </div>
-                      )}
+                    {showRequestBadge && (
+                      <div className="ms-auto flex">
+                        <Badge className="rounded-md border-indigo-500 bg-gradient-to-br from-indigo-600 to-purple-600">
+                          {pendingRequestsCount}
+                        </Badge>
+                      </div>
+                    )}
                     {link.href === '/issues' &&
                       openIssuesCount > 0 &&
                       hasPermission(Permission.MANAGE_ISSUES) && (
@@ -261,9 +256,7 @@ const MobileMenu = ({
               return (
                 <Link
                   key={`mobile-menu-link-${link.id}`}
-                  href={
-                    showRequestBadge ? '/requests?filter=pending' : link.href
-                  }
+                  href={link.href}
                   prefetch={false}
                   aria-label={intl.formatMessage(
                     menuMessages[link.messagesKey]
@@ -284,25 +277,23 @@ const MobileMenu = ({
                       className: 'h-6 w-6',
                     }
                   )}
-                  {link.href === '/requests' &&
-                    pendingRequestsCount > 0 &&
-                    (persius || hasPermission(Permission.MANAGE_REQUESTS)) && (
-                      <div className="absolute start-3 bottom-3">
-                        <Badge
-                          className={`bg-gradient-to-br ${
-                            router.pathname.match(link.activeRegExp)
-                              ? 'border-indigo-600 from-indigo-700 to-purple-700'
-                              : 'border-indigo-500 from-indigo-600 to-purple-600'
-                          } flex ${
-                            pendingRequestsCount > 99 ? 'w-6' : 'w-4'
-                          } h-4 items-center justify-center !px-[5px] !py-[7px] text-[8px]`}
-                        >
-                          {pendingRequestsCount > 99
-                            ? '99+'
-                            : pendingRequestsCount}
-                        </Badge>
-                      </div>
-                    )}
+                  {showRequestBadge && (
+                    <div className="absolute start-3 bottom-3">
+                      <Badge
+                        className={`bg-gradient-to-br ${
+                          router.pathname.match(link.activeRegExp)
+                            ? 'border-indigo-600 from-indigo-700 to-purple-700'
+                            : 'border-indigo-500 from-indigo-600 to-purple-600'
+                        } flex ${
+                          pendingRequestsCount > 99 ? 'w-6' : 'w-4'
+                        } h-4 items-center justify-center !px-[5px] !py-[7px] text-[8px]`}
+                      >
+                        {pendingRequestsCount > 99
+                          ? '99+'
+                          : pendingRequestsCount}
+                      </Badge>
+                    </div>
+                  )}
                 </Link>
               );
             })}

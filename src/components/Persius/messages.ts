@@ -12,6 +12,7 @@ export default defineMessages('components.Persius', {
   comingSoon: 'Coming soon',
   comingSoonDescription: 'Request ahead and follow upcoming releases.',
   requests: 'Requests',
+  allRequestsDescription: 'Requests from everyone, newest first.',
   requestsDescription: 'Everything you’ve asked for, newest first.',
   moviesDescription:
     'Open a poster to request. Titles in your library have a green check.',

@@ -959,10 +959,9 @@ it('applies the administrator default across shows and submits no per-request se
           seasonRequests: [{ seasonNumber: 2, episodeNumbers: [2] }],
         })
       );
-      const submittedBody = vi.mocked(axios.post).mock.calls[0][1] as Record<
-        string,
-        unknown
-      >;
+      const submittedBody = JSON.parse(
+        JSON.stringify(vi.mocked(axios.post).mock.calls[0][1])
+      );
       expect(submittedBody).not.toHaveProperty('watchAheadEpisodeCount');
       expect(submittedBody).not.toHaveProperty('watchAheadUsesUserDefault');
     },
@@ -999,10 +998,9 @@ it('keeps normal season selection when the administrator has turned Episode Queu
         '/api/v1/request',
         expect.objectContaining({ seasons: [1, 2] })
       );
-      const submittedBody = vi.mocked(axios.post).mock.calls[0][1] as Record<
-        string,
-        unknown
-      >;
+      const submittedBody = JSON.parse(
+        JSON.stringify(vi.mocked(axios.post).mock.calls[0][1])
+      );
       expect(submittedBody).not.toHaveProperty('watchAheadEpisodeCount');
     },
     {

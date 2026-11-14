@@ -606,21 +606,25 @@ class Tvdb extends ExternalAPI implements TvShowProvider {
         await this.refreshToken();
 
         const tvdbId = await this.getTvdbIdFromTmdb(tmdbTvShow);
-
-        if (!this.isValidTvdbId(tvdbId)) {
-          return await this.tmdb.getTvSeason({ tvId, seasonNumber, language });
+        if (this.isValidTvdbId(tvdbId)) {
+          const season = await this.getTvdbSeasonData(
+            tvdbId,
+            seasonNumber,
+            tvId,
+            language
+          );
+          if (
+            season.id > 0 &&
+            season.season_number === seasonNumber &&
+            season.episodes.length > 0
+          ) {
+            return season;
+          }
         }
-
-        return await this.getTvdbSeasonData(
-          tvdbId,
-          seasonNumber,
-          tvId,
-          language
-        );
       } catch (error) {
         this.handleError('Failed to fetch TV season details', error);
-        return await this.tmdb.getTvSeason({ tvId, seasonNumber, language });
       }
+      return await this.tmdb.getTvSeason({ tvId, seasonNumber, language });
     } catch (error) {
       logger.error(
         `[TVDB] Failed to fetch TV season details: ${error.message}`

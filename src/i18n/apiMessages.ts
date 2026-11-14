@@ -15,6 +15,7 @@ export const apiMessages: Record<
   m00963bbf3be70d276718: 'BookOrbit request ID is invalid.',
   m009c11bd9ae6c0cfa6fd: 'QuestarrNG API v{value0} is not supported',
   m00bb1d8dccdca7a52b0f: 'Unable to read request folders.',
+  m00d07a9b06f83b95dd27: 'Provide 1 to 20 valid season numbers.',
   m00e13f5b885f310d6275: ': URL base is invalid.',
   m00e62ec3cc8df0e0d51e: 'No library copies were found.',
   m00fedebf57763f86cc17: '{value0} must have at most 100 indexer IDs.',

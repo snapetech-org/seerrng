@@ -134,12 +134,11 @@ const Sidebar = ({
       link.messagesKey === 'requests' &&
       requestBadgeCount > 0 &&
       (persius || hasPermission(Permission.MANAGE_REQUESTS));
-    const href = showRequestBadge ? '/requests?filter=pending' : link.href;
 
     return (
       <Link
         key={`${device}-${link.id}`}
-        href={href}
+        href={link.href}
         prefetch={false}
         onClick={device === 'mobile' ? setClosed : undefined}
         className={className}
@@ -157,22 +156,19 @@ const Sidebar = ({
         {cloneElement(navigationIcon, { className: iconClass })}
         {intl.formatMessage(menuMessages[link.messagesKey])}
         {link.messagesKey === 'following' && <FollowUnreadCount />}
-        {device === 'desktop' &&
-          link.messagesKey === 'requests' &&
-          requestBadgeCount > 0 &&
-          (persius || hasPermission(Permission.MANAGE_REQUESTS)) && (
-            <div className="ms-auto flex">
-              <Badge
-                className={`rounded-md bg-gradient-to-br ${
-                  selected
-                    ? 'border-indigo-600 from-indigo-700 to-purple-700'
-                    : 'border-indigo-500 from-indigo-600 to-purple-600'
-                }`}
-              >
-                {requestBadgeCount}
-              </Badge>
-            </div>
-          )}
+        {device === 'desktop' && showRequestBadge && (
+          <div className="ms-auto flex">
+            <Badge
+              className={`rounded-md bg-gradient-to-br ${
+                selected
+                  ? 'border-indigo-600 from-indigo-700 to-purple-700'
+                  : 'border-indigo-500 from-indigo-600 to-purple-600'
+              }`}
+            >
+              {requestBadgeCount}
+            </Badge>
+          </div>
+        )}
         {device === 'desktop' &&
           link.messagesKey === 'issues' &&
           openIssuesCount > 0 &&

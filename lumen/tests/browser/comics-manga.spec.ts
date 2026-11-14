@@ -618,7 +618,7 @@ test('requests list a manga with its cover, progress and volumes in', async ({
       comicRequest(3, complete, { stage: 'available', percent: null }),
     ],
   });
-  await page.goto('/requests');
+  await page.goto('/requests?tab=active');
   const rows = page.locator('.rq');
   await expect(rows.first()).toBeVisible();
   const downloadingRow = rows.filter({ hasText: 'Downloading 62%' });

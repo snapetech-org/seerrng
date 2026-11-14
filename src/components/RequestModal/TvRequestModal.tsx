@@ -1825,6 +1825,8 @@ const TvRequestModal = ({
             <RequestSeasonEpisodeTree
               key={requestSelectionKey}
               tvId={data.id}
+              viewerId={user?.id}
+              metadataLocale={user?.settings?.metadataLocale}
               seasons={visibleSeasons}
               selections={requestableSelections}
               disabledSeasons={getAllRequestedSeasons()}

@@ -5,10 +5,15 @@ test.use({
   serviceWorkers: 'block',
   reducedMotion: 'reduce',
   timezoneId: 'America/Regina',
+  ...(process.env.PLAYWRIGHT_CHROMIUM_PATH
+    ? {
+        launchOptions: { executablePath: process.env.PLAYWRIGHT_CHROMIUM_PATH },
+      }
+    : {}),
 });
 test.afterEach(async ({ page }) => restoreAdminPresentation(page));
 
-for (const theme of ['seerrOrig', 'seerrNGJ'])
+for (const theme of ['seerrOrig', 'seerrNGJ', 'persiusNG'])
   for (const width of [390, 1440]) {
     test(`${theme} request status keeps compact geometry and calendar dates at ${width}px`, async ({
       page,
@@ -35,7 +40,8 @@ for (const theme of ['seerrOrig', 'seerrNGJ'])
           })
         ).status()
       ).toBe(200);
-      const user = { id: 1, displayName: 'Admin', avatar: '' };
+      const requester = { id: 2, displayName: 'Movie requester', avatar: '' };
+      const account = { id: 1, displayName: 'Admin', avatar: '' };
       const media = {
         id: 9101,
         tmdbId: 550,
@@ -53,7 +59,7 @@ for (const theme of ['seerrOrig', 'seerrNGJ'])
         status: 5,
         is4k: false,
         media,
-        requestedBy: user,
+        requestedBy: requester,
         seasons: [],
         canRemove: true,
         createdAt: '2026-01-01T12:00:00Z',
@@ -76,14 +82,24 @@ for (const theme of ['seerrOrig', 'seerrNGJ'])
         retryable: false,
       };
       const pageInfo = { pages: 1, pageSize: 10, results: 1, page: 1 };
-      await page.route('**/api/v1/request/status?*', (route) =>
-        route.fulfill({
+      await page.route('**/api/v1/request/status?*', (route) => {
+        const { searchParams } = new URL(route.request().url());
+        const visible =
+          ['all', 'available', 'completed'].includes(
+            searchParams.get('filter') ?? 'all'
+          ) &&
+          [null, String(requester.id)].includes(
+            searchParams.get('requestedBy')
+          );
+        return route.fulfill({
           json: {
-            pageInfo,
-            results: [{ request, status: current, canRemove: true }],
+            pageInfo: visible ? pageInfo : { ...pageInfo, results: 0 },
+            results: visible
+              ? [{ request, status: current, canRemove: true }]
+              : [],
             counts: {
               total: 1,
-              pending: 0,
+              pending: 1,
               active: 0,
               incomplete: 0,
               attention: 0,
@@ -93,10 +109,13 @@ for (const theme of ['seerrOrig', 'seerrNGJ'])
             },
             olderCount: 0,
           },
-        })
+        });
+      });
+      await page.route('**/api/v1/request/count', (route) =>
+        route.fulfill({ json: { pending: 1, total: 2 } })
       );
       await page.route('**/api/v1/request/status/users?*', (route) =>
-        route.fulfill({ json: { pageInfo, results: [user] } })
+        route.fulfill({ json: { pageInfo, results: [account, requester] } })
       );
       await page.route('**/api/v1/request/status/9102', (route) =>
         route.fulfill({
@@ -122,6 +141,23 @@ for (const theme of ['seerrOrig', 'seerrNGJ'])
         })
       );
       await page.goto('/requests');
+      if (width >= 640) {
+        const requestLink = page.locator(
+          'a[data-navigation-link-id="requests"]:visible'
+        );
+        await expect(requestLink.first()).toHaveAttribute('href', '/requests');
+      }
+      if (theme === 'persiusNG') {
+        await expect(
+          page
+            .getByRole('link', { name: 'Calendar Date Fixture', exact: true })
+            .first()
+        ).toBeVisible();
+        await expect(
+          page.getByRole('button', { name: /^All/ }).first()
+        ).toHaveAttribute('aria-pressed', 'true');
+        return;
+      }
       const card = page.getByTestId('request-status-9102');
       await expect(card).toBeVisible();
       await expect(

@@ -9,12 +9,15 @@ import { usePersius } from '@app/components/Persius/usePersius';
 import UpstreamSeasonPicker from '@app/components/RequestModal/UpstreamSeasonPicker';
 import useUpstreamTheme from '@app/hooks/useUpstreamTheme';
 import defineMessages from '@app/utils/defineMessages';
-import type { SeasonEpisodeSelection } from '@server/interfaces/api/seasonInterfaces';
+import {
+  REQUEST_SEASON_BATCH_SIZE,
+  type SeasonEpisodeSelection,
+} from '@server/interfaces/api/seasonInterfaces';
 import type { SeasonWithEpisodes, TvDetails } from '@server/models/Tv';
 import axios from 'axios';
 import { useEffect, useMemo, type ReactNode } from 'react';
 import { useIntl } from 'react-intl';
-import useSWR from 'swr';
+import useSWR, { unstable_serialize, useSWRConfig } from 'swr';
 import {
   buildRequestTreeData,
   firstSelectableRequestEpisodeId,
@@ -32,12 +35,16 @@ const messages = defineMessages('components.RequestModal.RequestTree', {
   loadError: 'Episodes Could Not Be Loaded',
   loadErrorHint:
     'Your request selection is preserved. Load all season information before changing it.',
+  partialQueueHint:
+    'Choose a starting episode from a loaded season, or retry the seasons that failed to load.',
   retryTooltip:
     'Fetch the seasons and episodes again without changing your request selection.',
 });
 
 export interface RequestSeasonEpisodeTreeProps {
   tvId: number;
+  viewerId?: number;
+  metadataLocale?: string | null;
   seasons: TvDetails['seasons'];
   selections: SeasonEpisodeSelection[];
   onSelectionsChange: (selections: SeasonEpisodeSelection[]) => void;
@@ -52,6 +59,8 @@ export interface RequestSeasonEpisodeTreeProps {
 
 const RequestSeasonEpisodeTree = ({
   tvId,
+  viewerId,
+  metadataLocale,
   seasons,
   selections,
   onSelectionsChange,
@@ -66,46 +75,63 @@ const RequestSeasonEpisodeTree = ({
   const intl = useIntl();
   const persius = usePersius();
   const upstream = useUpstreamTheme();
+  const { cache } = useSWRConfig();
+  const seasonNumbers = seasons.map((season) => season.seasonNumber);
+  const key = seasons.length
+    ? [
+        'request-season-metadata',
+        tvId,
+        viewerId,
+        metadataLocale,
+        seasons.map(({ seasonNumber, episodeCount }) => [
+          seasonNumber,
+          episodeCount,
+        ]),
+      ]
+    : null;
   const { data, error, isValidating, mutate } = useSWR<SeasonWithEpisodes[]>(
-    seasons.length
-      ? [
-          'request-season-metadata',
-          tvId,
-          ...seasons.map((season) => season.seasonNumber),
-        ]
-      : null,
-    async () =>
-      Promise.all(
-        seasons.map(
-          async (season) =>
-            (
-              await axios.get<SeasonWithEpisodes>(
-                `/api/v1/tv/${tvId}/season/${season.seasonNumber}`
-              )
-            ).data
-        )
-      ),
+    key,
+    async () => {
+      const loaded: SeasonWithEpisodes[] = [
+        ...(cache.get(unstable_serialize(key))?.data ?? []),
+      ];
+      const missing = seasonNumbers.filter(
+        (number) => !loaded.some((season) => season.seasonNumber === number)
+      );
+      for (
+        let start = 0;
+        start < missing.length;
+        start += REQUEST_SEASON_BATCH_SIZE
+      ) {
+        const batch = missing.slice(start, start + REQUEST_SEASON_BATCH_SIZE);
+        try {
+          const response = await axios.get<SeasonWithEpisodes[]>(
+            `/api/v1/tv/${tvId}/seasons`,
+            { params: { seasonNumbers: batch.join(',') } }
+          );
+          loaded.push(
+            ...response.data.filter(
+              (season) =>
+                batch.includes(season.seasonNumber) &&
+                Array.isArray(season.episodes) &&
+                season.episodes.length > 0
+            )
+          );
+        } catch {
+          // Keep seasons from earlier batches and surface a retry on incomplete data.
+          break;
+        }
+      }
+      return loaded;
+    },
     {
       revalidateOnFocus: false,
+      revalidateIfStale: false,
       shouldRetryOnError: false,
       keepPreviousData: false,
     }
   );
-  const complete = hasCompleteRequestMetadata(seasons, data);
-  const ready = complete && !error;
-  useEffect(() => {
-    onLoadingChange?.(isValidating);
-  }, [isValidating, onLoadingChange]);
-  useEffect(() => {
-    onReadyChange?.(ready);
-  }, [ready, tvId, onReadyChange]);
-  useEffect(
-    () => () => {
-      onLoadingChange?.(false);
-      onReadyChange?.(false);
-    },
-    [onLoadingChange, onReadyChange]
-  );
+  const complete = hasCompleteRequestMetadata(seasons, data) && !error;
   const treeData = useMemo(
     () =>
       buildRequestTreeData(
@@ -132,6 +158,31 @@ const RequestSeasonEpisodeTree = ({
       upstream,
     ]
   );
+  const selectedIds = requestSelectionToTreeIds(treeData, selections);
+  const singleEpisodeId =
+    selectionMode === 'single-episode'
+      ? firstSelectableRequestEpisodeId(treeData, selectedIds)
+      : undefined;
+  const canChoose = complete || singleEpisodeId !== undefined;
+  const hasSelectedStart =
+    singleEpisodeId !== undefined &&
+    selectedIds.includes(singleEpisodeId) &&
+    selections.length === 1 &&
+    selections[0].episodeNumbers?.length === 1;
+  const ready = complete || hasSelectedStart;
+  useEffect(() => {
+    onLoadingChange?.(isValidating);
+  }, [isValidating, onLoadingChange]);
+  useEffect(() => {
+    onReadyChange?.(ready);
+  }, [ready, tvId, onReadyChange]);
+  useEffect(
+    () => () => {
+      onLoadingChange?.(false);
+      onReadyChange?.(false);
+    },
+    [onLoadingChange, onReadyChange]
+  );
   const feedback =
     seasons.length === 0 ? (
       <PageErrorMessage
@@ -141,7 +192,9 @@ const RequestSeasonEpisodeTree = ({
     ) : error || (!complete && data !== undefined && !isValidating) ? (
       <PageErrorMessage
         title={intl.formatMessage(messages.loadError)}
-        description={intl.formatMessage(messages.loadErrorHint)}
+        description={intl.formatMessage(
+          canChoose ? messages.partialQueueHint : messages.loadErrorHint
+        )}
         retry={{
           onClick: () => mutate(),
           tooltip: intl.formatMessage(messages.retryTooltip),
@@ -154,34 +207,29 @@ const RequestSeasonEpisodeTree = ({
         severity="info"
       />
     ) : null;
-  const selectedIds = requestSelectionToTreeIds(treeData, selections);
-  const singleEpisodeId =
-    selectionMode === 'single-episode'
-      ? firstSelectableRequestEpisodeId(treeData, selectedIds)
-      : undefined;
   const renderedSelectedIds =
-    singleEpisodeId === undefined ? selectedIds : [singleEpisodeId];
-  const singleEpisodeSelection =
-    singleEpisodeId === undefined
-      ? []
-      : treeSelectionToRequests(treeData, [singleEpisodeId], [], true);
-  const selectionKey = JSON.stringify(selections);
-  const singleEpisodeSelectionKey = JSON.stringify(singleEpisodeSelection);
+    selectionMode === 'multiple'
+      ? selectedIds
+      : singleEpisodeId !== undefined && ready
+        ? [singleEpisodeId]
+        : [];
   useEffect(() => {
-    if (
-      selectionMode === 'single-episode' &&
-      ready &&
-      selectionKey !== singleEpisodeSelectionKey
-    ) {
-      onSelectionsChange(singleEpisodeSelection);
+    if (selectionMode !== 'single-episode' || !complete) return;
+
+    const startingSelection =
+      singleEpisodeId === undefined
+        ? []
+        : treeSelectionToRequests(treeData, [singleEpisodeId], [], true);
+    if (JSON.stringify(selections) !== JSON.stringify(startingSelection)) {
+      onSelectionsChange(startingSelection);
     }
   }, [
     onSelectionsChange,
-    ready,
-    selectionKey,
+    complete,
     selectionMode,
-    singleEpisodeSelection,
-    singleEpisodeSelectionKey,
+    selections,
+    singleEpisodeId,
+    treeData,
   ]);
 
   return (
@@ -223,6 +271,7 @@ const RequestSeasonEpisodeTree = ({
           {afterSeasonSelection}
         </>
       )}
+      {(!(persius || upstream) || selectionMode !== 'multiple') && feedback}
       <OptionalDisclosure
         enabled={(persius || upstream) && selectionMode === 'multiple'}
         label={intl.formatMessage(persiusMessages.episodeChoices)}
@@ -231,12 +280,12 @@ const RequestSeasonEpisodeTree = ({
           key={tvId}
           layout={1}
           selectionPurpose="request"
-          disabled={!ready}
+          disabled={!canChoose}
           seasons={treeData}
           selectedIds={renderedSelectedIds}
           selectionMode={selectionMode}
           onSelectionChange={(ids) => {
-            if (ready) {
+            if (canChoose) {
               onSelectionsChange(
                 treeSelectionToRequests(
                   treeData,
@@ -247,11 +296,6 @@ const RequestSeasonEpisodeTree = ({
               );
             }
           }}
-          feedback={
-            (persius || upstream) && selectionMode === 'multiple'
-              ? undefined
-              : feedback
-          }
         />
       </OptionalDisclosure>
       {(!(persius || upstream) || selectionMode !== 'multiple') &&

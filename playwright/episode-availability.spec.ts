@@ -1,6 +1,16 @@
 import { expect, test, type Page } from '@playwright/test';
 
-test.use({ serviceWorkers: 'block', reducedMotion: 'reduce' });
+test.use({
+  serviceWorkers: 'block',
+  reducedMotion: 'reduce',
+  ...(process.env.PLAYWRIGHT_CHROMIUM_PATH
+    ? {
+        launchOptions: {
+          executablePath: process.env.PLAYWRIGHT_CHROMIUM_PATH,
+        },
+      }
+    : {}),
+});
 const baseline = process.env.SEERR_EPISODE_BASELINE === 'true';
 const tv = {
   id: 1396,
@@ -248,3 +258,124 @@ for (const width of process.env.SEERR_EPISODE_WIDTHS?.split(',').map(
     ).toBe(true);
   });
 }
+
+test.describe('Episode Queue season loading', () => {
+  for (const width of [390, 1440]) {
+    test(`a 13-season series can be requested after a season lookup fails at ${width}px`, async ({
+      page,
+      baseURL,
+    }, info) => {
+      await page.setViewportSize({ width, height: 900 });
+      await login(page, baseURL!);
+      const series = {
+        ...tv,
+        name: 'American Horror Story',
+        originalName: 'American Horror Story',
+        firstAirDate: '2011-10-05',
+        numberOfSeasons: 13,
+        seasons: Array.from({ length: 13 }, (_, i) => ({
+          ...tv.seasons[0],
+          id: i + 1,
+          seasonNumber: i + 1,
+          name: `Season ${i + 1}`,
+        })),
+      };
+      await page.route('**/_next/data/**/tv/1396.json*', (route) =>
+        route.fulfill({ json: { pageProps: { tv: series }, __N_SSP: true } })
+      );
+      await page.route('**/api/v1/tv/1396', (route) =>
+        route.fulfill({ json: series })
+      );
+      await page.route('**/api/v1/user/1/settings/episode-queue', (route) =>
+        route.fulfill({ json: { status: 'approved', defaultEpisodeCount: 5 } })
+      );
+      const sonarr = {
+        id: 1,
+        name: 'Sonarr',
+        isDefault: true,
+        is4k: false,
+        activeProfileId: 1,
+        activeDirectory: '/tv',
+        activeTags: [],
+      };
+      await page.route('**/api/v1/service/sonarr**', (route) => {
+        const path = new URL(route.request().url()).pathname;
+        return route.fulfill({
+          json: path.endsWith('/sonarr')
+            ? [sonarr]
+            : path.includes('/lookup/')
+              ? []
+              : { server: sonarr, profiles: [], rootFolders: [], tags: [] },
+        });
+      });
+      const batches: string[] = [];
+      await page.route('**/api/v1/tv/1396/seasons?*', (route) => {
+        const numbers = new URL(route.request().url()).searchParams.get(
+          'seasonNumbers'
+        );
+        batches.push(numbers ?? '');
+        const loaded =
+          batches.length === 1
+            ? [1]
+            : Array.from({ length: 12 }, (_, i) => i + 2);
+        return route.fulfill({
+          json: loaded.map((seasonNumber) => ({
+            id: seasonNumber,
+            seasonNumber,
+            episodes: [
+              {
+                id: 100 + seasonNumber,
+                episodeNumber: 1,
+                seasonNumber,
+                name: seasonNumber === 1 ? 'Pilot' : 'First episode',
+                airDate: '2011-10-05',
+              },
+            ],
+          })),
+        });
+      });
+      let submitted: unknown;
+      await page.route('**/api/v1/request', (route) => {
+        submitted = route.request().postDataJSON();
+        return route.fulfill({ status: 201, json: { id: 41 } });
+      });
+
+      await page.goto('/');
+      await page.evaluate(() => (window as any).next.router.push('/tv/1396'));
+      await page.getByRole('button', { name: 'Request', exact: true }).click();
+      const dialog = page.getByRole('dialog');
+      await expect(
+        dialog.getByText('Episodes Could Not Be Loaded')
+      ).toBeVisible();
+      await expect(dialog.getByTestId('modal-ok-button')).toBeDisabled();
+      await dialog.getByRole('button', { name: 'Expand Season 01' }).click();
+      await dialog
+        .getByRole('button', { name: 'Select episode 1: Pilot' })
+        .click();
+      await expect(dialog.getByTestId('modal-ok-button')).toBeEnabled();
+      await dialog.getByRole('button', { name: 'Retry', exact: true }).click();
+      await expect(
+        dialog.getByText('Episodes Could Not Be Loaded')
+      ).toHaveCount(0);
+      await expect(
+        dialog.getByRole('button', { name: 'Deselect episode 1: Pilot' })
+      ).toBeVisible();
+      expect(batches).toEqual([
+        '1,2,3,4,5,6,7,8,9,10,11,12,13',
+        '2,3,4,5,6,7,8,9,10,11,12,13',
+      ]);
+      await page.screenshot({
+        path: info.outputPath('episode-queue.png'),
+        animations: 'disabled',
+      });
+      await dialog.getByTestId('modal-ok-button').click();
+      await expect
+        .poll(() => submitted)
+        .toMatchObject({
+          mediaType: 'tv',
+          seasons: [1],
+          seasonRequests: [{ seasonNumber: 1, episodeNumbers: [1] }],
+        });
+    });
+  }
+});

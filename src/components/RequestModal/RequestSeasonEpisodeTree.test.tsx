@@ -13,10 +13,13 @@ const swr = vi.hoisted(() => ({
   isValidating: false,
   mutate: vi.fn().mockResolvedValue(undefined),
   get: vi.fn(),
+  cached: undefined as SeasonWithEpisodes[] | undefined,
   fetcher: undefined as (() => Promise<SeasonWithEpisodes[]>) | undefined,
   key: undefined as unknown,
 }));
 vi.mock('swr', () => ({
+  unstable_serialize: JSON.stringify,
+  useSWRConfig: () => ({ cache: { get: () => ({ data: swr.cached }) } }),
   default: (key: unknown, fetcher: () => Promise<SeasonWithEpisodes[]>) => {
     swr.key = key;
     swr.fetcher = fetcher;
@@ -46,6 +49,7 @@ afterEach(() => {
   vi.unstubAllGlobals();
   vi.clearAllMocks();
   swr.data = undefined;
+  swr.cached = undefined;
   swr.error = undefined;
   swr.isValidating = false;
 });
@@ -243,18 +247,54 @@ it('retries metadata GETs only, preserves cached selected rows on failure and re
     await ui.click('Retry');
     expect(swr.mutate).toHaveBeenCalledOnce();
     expect(ui.changed).not.toHaveBeenCalled();
-    swr.get.mockImplementation(async (path: string) => ({
-      data: path.endsWith('/0') ? metadata[0] : metadata[1],
-    }));
+    swr.cached = metadata.slice(0, 1);
+    swr.get.mockResolvedValueOnce({ data: metadata.slice(1) });
     expect(await swr.fetcher!()).toEqual(metadata);
-    expect(swr.get.mock.calls.map(([path]) => path)).toEqual([
-      '/api/v1/tv/24/season/0',
-      '/api/v1/tv/24/season/1',
-    ]);
+    expect(swr.get).toHaveBeenCalledExactlyOnceWith('/api/v1/tv/24/seasons', {
+      params: { seasonNumbers: '1' },
+    });
     swr.error = undefined;
     await ui.render();
     expect(ui.ready).toHaveBeenLastCalledWith(true);
     expect(ui.button('Deselect episode 1: First').disabled).toBe(false);
+  } finally {
+    await ui.close();
+  }
+});
+
+it('loads all 13 seasons in one request and permits an explicit queue start after a partial response', async () => {
+  const visibleSeasons = Array.from({ length: 13 }, (_, i) => ({
+    ...seasons[1],
+    seasonNumber: i + 1,
+  }));
+  swr.get.mockResolvedValueOnce({ data: metadata.slice(1) });
+  const previous = [{ seasonNumber: 1 }, { seasonNumber: 13 }];
+  const ui = await setup(
+    previous,
+    {},
+    {
+      selectionMode: 'single-episode',
+      visibleSeasons,
+    }
+  );
+  try {
+    swr.data = await swr.fetcher!();
+    expect(swr.get).toHaveBeenCalledExactlyOnceWith('/api/v1/tv/24/seasons', {
+      params: {
+        seasonNumbers: visibleSeasons
+          .map((season) => season.seasonNumber)
+          .join(','),
+      },
+    });
+    await ui.render();
+    expect(ui.ready).toHaveBeenLastCalledWith(false);
+    expect(ui.changed).not.toHaveBeenCalled();
+    await ui.click('Expand Season 01');
+    await ui.click('Select episode 2: Second');
+    expect(ui.changed).toHaveBeenLastCalledWith([
+      { seasonNumber: 1, episodeNumbers: [2] },
+    ]);
+    expect(ui.ready).toHaveBeenLastCalledWith(true);
   } finally {
     await ui.close();
   }

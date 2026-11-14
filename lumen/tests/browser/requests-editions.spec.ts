@@ -90,7 +90,7 @@ for (const [name, pin] of [
 ] as const) {
   test(`${name} request still says checking library`, async ({ page }) => {
     await fixture(page, pin);
-    await page.goto('/requests');
+    await page.goto('/requests?tab=active');
     const row = page.locator('.rq').filter({ hasText: 'Pinned book' });
     await expect(row.locator('.st')).toContainText('Checking library');
   });
