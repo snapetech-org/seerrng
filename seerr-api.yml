@@ -3654,7 +3654,10 @@ components:
           type: string
         backend:
           type: string
-          enum: [readarr, bindery]
+          enum: [readarr, bindery, bookorbit]
+        bookorbitUsername:
+          type: string
+          description: BookOrbit account username when the backend is bookorbit.
         serviceType:
           type: string
           enum: [ebook, audiobook, both]
@@ -7457,6 +7460,11 @@ components:
         - $ref: '#/components/schemas/LidarrSettings'
         - type: object
           properties:
+            backend:
+              type: string
+              enum: [readarr, bindery, bookorbit]
+            bookorbitUsername:
+              type: string
             binderyUserMappings:
               type: object
               description: Administrator-configured SeerrNG user ID to Bindery user ID links for requester-owned requests.
@@ -7801,6 +7809,28 @@ components:
         requesterAccounts:
           type: integer
           minimum: 0
+    BookOrbitServiceTestResult:
+      type: object
+      required: [backend, system, features]
+      properties:
+        backend:
+          type: string
+          enum: [bookorbit]
+        system:
+          type: object
+          properties:
+            version:
+              type: string
+        features:
+          type: object
+          required: [requests, ebook, audiobook]
+          properties:
+            requests:
+              type: boolean
+            ebook:
+              type: boolean
+            audiobook:
+              type: boolean
     PageInfo:
       type: object
       properties:
@@ -21937,13 +21967,14 @@ paths:
               $ref: '#/components/schemas/ServarrConnectionSettings'
       responses:
         '200':
-          description: Bookshelf or Bindery connection details returned
+          description: Book acquisition service connection details returned
           content:
             application/json:
               schema:
                 anyOf:
                   - $ref: '#/components/schemas/ServarrServiceDetails'
                   - $ref: '#/components/schemas/BinderyServiceTestResult'
+                  - $ref: '#/components/schemas/BookOrbitServiceTestResult'
   /settings/readarr/diagnose:
     post:
       summary: Diagnose Bookshelf lookup and add readiness

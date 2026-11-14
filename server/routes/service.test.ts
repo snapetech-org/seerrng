@@ -3,6 +3,7 @@ import path from 'node:path';
 import { afterEach, before, beforeEach, describe, it, mock } from 'node:test';
 
 import BinderyAPI from '@server/api/bindery';
+import BookOrbitAPI from '@server/api/bookorbit';
 import LidarrAPI from '@server/api/servarr/lidarr';
 import RadarrAPI from '@server/api/servarr/radarr';
 import ReadarrAPI from '@server/api/servarr/readarr';
@@ -1693,6 +1694,53 @@ describe('GET /service/reader-delivery', () => {
 });
 
 describe('Bookshelf settings routes', () => {
+  it('tests, saves and removes a BookOrbit service through the public API schema', async () => {
+    const testConnection = mock.method(
+      BookOrbitAPI.prototype,
+      'testConnection',
+      async () => ({ version: '3.8.0', userId: 4 })
+    );
+    const app = createOpenApiApp();
+    const { id: _id, ...settings } = makeReadarr({
+      backend: 'bookorbit',
+      bookorbitUsername: 'requester',
+      serviceType: 'both',
+    });
+    const { backend, bookorbitUsername, serviceType, hostname, port, apiKey } =
+      settings;
+    const tested = await request(app)
+      .post('/api/v1/settings/readarr/test')
+      .send({
+        backend,
+        bookorbitUsername,
+        serviceType,
+        hostname,
+        port,
+        apiKey,
+      });
+    assert.strictEqual(tested.status, 200, JSON.stringify(tested.body));
+    assert.strictEqual(testConnection.mock.callCount(), 1);
+    assert.deepStrictEqual(tested.body, {
+      backend: 'bookorbit',
+      system: { version: '3.8.0' },
+      features: { requests: true, ebook: true, audiobook: true },
+    });
+
+    const saved = await request(app)
+      .post('/api/v1/settings/readarr')
+      .send(settings);
+    assert.strictEqual(saved.status, 201, JSON.stringify(saved.body));
+    assert.strictEqual(saved.body.backend, 'bookorbit');
+    assert.strictEqual(saved.body.bookorbitUsername, 'requester');
+    assert.strictEqual(saved.body.apiKey, '[REDACTED]');
+
+    const removed = await request(app).delete(
+      `/api/v1/settings/readarr/${saved.body.id}`
+    );
+    assert.strictEqual(removed.status, 200, JSON.stringify(removed.body));
+    assert.deepStrictEqual(getSettings().readarr, []);
+  });
+
   it('reports Bindery requester support and the available account count', async () => {
     mock.method(BinderyAPI.prototype, 'getSystemStatus', async () => ({
       version: '1.37.0',
