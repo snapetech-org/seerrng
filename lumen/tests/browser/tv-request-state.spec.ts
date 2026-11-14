@@ -51,7 +51,6 @@ async function show(
 ) {
   await page.route('https://**/*', (r) => r.abort());
   await page.route('**/lumen-config.json', (r) => r.fulfill({ json: {} }));
-  await page.route('**/seerr-classic/**', (r) => r.fulfill({ status: 404 }));
   await page.route('**/api/v1/**', (r) => {
     const path = new URL(r.request().url()).pathname.slice(7);
     if (r.request().method() !== 'GET')
@@ -79,80 +78,78 @@ async function show(
   await page.goto('/tv/84773');
 }
 
-test(
-  'a fully requested series shows Requested and its request, not the request button @tv-request-visual',
-  async ({ page }, testInfo) => {
-    await show(page, {
+test('a fully requested series shows Requested and its request, not the request button @tv-request-visual', async ({
+  page,
+}, testInfo) => {
+  await show(page, {
+    id: 2074,
+    status: 3,
+    status4k: 1,
+    downloadStatus: [],
+    requests: [req([1, 2, 3])],
+    seasons: [],
+  });
+  if (isBaseline) {
+    await expect(page.locator('.rinfo')).toHaveCount(0);
+    await expect(page.locator('.srow')).toHaveCount(3);
+    await expect(page.locator('.srow.locked')).toHaveCount(0);
+    await captureRequestState(page, testInfo, 'fully-requested');
+    return;
+  }
+  await expect(
+    page.getByRole('button', { name: 'Requested', exact: true })
+  ).toBeVisible();
+  await expect(
+    page.getByRole('button', { name: /^Request(?!ed)/ })
+  ).toHaveCount(0);
+  await expect(page.locator('.rinfo')).toContainText(
+    'Approved · requested by alex on'
+  );
+  await expect(page.locator('.rinfo')).toContainText('Entire series');
+  const rows = page.locator('.srow');
+  await expect(rows).toHaveCount(3);
+  for (let i = 0; i < 3; i++) {
+    await expect(rows.nth(i)).toHaveClass(/locked/);
+    await expect(rows.nth(i)).toContainText('Requested');
+  }
+  await captureRequestState(page, testInfo, 'fully-requested');
+});
+
+test('a partly requested series keeps the other seasons requestable @tv-request-visual', async ({
+  page,
+}, testInfo) => {
+  const posts: RecordedPost[] = [];
+  await show(
+    page,
+    {
       id: 2074,
       status: 3,
-      status4k: 1,
       downloadStatus: [],
-      requests: [req([1, 2, 3])],
+      requests: [req([1])],
       seasons: [],
-    });
-    if (isBaseline) {
-      await expect(page.locator('.rinfo')).toHaveCount(0);
-      await expect(page.locator('.srow')).toHaveCount(3);
-      await expect(page.locator('.srow.locked')).toHaveCount(0);
-      await captureRequestState(page, testInfo, 'fully-requested');
-      return;
-    }
-    await expect(
-      page.getByRole('button', { name: 'Requested', exact: true })
-    ).toBeVisible();
-    await expect(
-      page.getByRole('button', { name: /^Request(?!ed)/ })
-    ).toHaveCount(0);
-    await expect(page.locator('.rinfo')).toContainText(
-      'Approved · requested by alex on'
-    );
-    await expect(page.locator('.rinfo')).toContainText('Entire series');
-    const rows = page.locator('.srow');
-    await expect(rows).toHaveCount(3);
-    for (let i = 0; i < 3; i++) {
-      await expect(rows.nth(i)).toHaveClass(/locked/);
-      await expect(rows.nth(i)).toContainText('Requested');
-    }
-    await captureRequestState(page, testInfo, 'fully-requested');
-  }
-);
-
-test(
-  'a partly requested series keeps the other seasons requestable @tv-request-visual',
-  async ({ page }, testInfo) => {
-    const posts: RecordedPost[] = [];
-    await show(
-      page,
-      {
-        id: 2074,
-        status: 3,
-        downloadStatus: [],
-        requests: [req([1])],
-        seasons: [],
-      },
-      posts
-    );
-    if (isBaseline) {
-      await expect(page.locator('.rinfo')).toHaveCount(0);
-      await expect(page.locator('.srow')).toHaveCount(3);
-      await expect(page.locator('.srow.locked')).toHaveCount(0);
-      await captureRequestState(page, testInfo, 'partly-requested');
-      return;
-    }
-    await expect(page.locator('.rinfo')).toContainText('Season 1');
-    await expect(page.getByText('1 season requested')).toBeVisible();
-    const rows = page.locator('.srow');
-    await expect(rows.nth(0)).toHaveClass(/locked/);
-    await expect(rows.nth(1)).not.toHaveClass(/locked/);
+    },
+    posts
+  );
+  if (isBaseline) {
+    await expect(page.locator('.rinfo')).toHaveCount(0);
+    await expect(page.locator('.srow')).toHaveCount(3);
+    await expect(page.locator('.srow.locked')).toHaveCount(0);
     await captureRequestState(page, testInfo, 'partly-requested');
-    await page.getByRole('button', { name: 'All missing (2)' }).click();
-    await expect(rows.nth(1)).toHaveAttribute('aria-checked', 'true');
-    await expect(
-      page.getByRole('button', { name: 'Request 2 more seasons' })
-    ).toBeEnabled();
-    expect(posts).toEqual([]);
+    return;
   }
-);
+  await expect(page.locator('.rinfo')).toContainText('Season 1');
+  await expect(page.getByText('1 season requested')).toBeVisible();
+  const rows = page.locator('.srow');
+  await expect(rows.nth(0)).toHaveClass(/locked/);
+  await expect(rows.nth(1)).not.toHaveClass(/locked/);
+  await captureRequestState(page, testInfo, 'partly-requested');
+  await page.getByRole('button', { name: 'All missing (2)' }).click();
+  await expect(rows.nth(1)).toHaveAttribute('aria-checked', 'true');
+  await expect(
+    page.getByRole('button', { name: 'Request 2 more seasons' })
+  ).toBeEnabled();
+  expect(posts).toEqual([]);
+});
 
 test('a partial season with a live request stays locked and keeps playback available', async ({
   page,

@@ -14,7 +14,6 @@ const root = resolve(import.meta.dirname, '..');
 const containers = new Set();
 let image, port, gateway;
 let imageBuilt = false;
-let extraCalls = 0;
 const malformedPermissions = new Map([
   ['fixture-session=string-admin', '2'],
   ['fixture-session=array-admin', [2]],
@@ -47,18 +46,6 @@ const echo = createServer((req, res) => {
       res.setHeader('content-encoding', 'gzip');
       res.end(gzipSync(body));
     } else res.end(body);
-    return;
-  }
-  if (req.url.startsWith('/seerr-classic/')) extraCalls += 1;
-  if (req.url === '/seerr-classic/narration') {
-    let body = '';
-    req.on('data', (chunk) => {
-      body += chunk;
-    });
-    req.on('end', () => {
-      res.setHeader('content-type', 'application/json');
-      res.end(JSON.stringify({ method: req.method, body }));
-    });
     return;
   }
   res.setHeader('content-type', 'application/json');
@@ -108,18 +95,11 @@ const args = (settings = {}) => [
   '-e',
   `SEERR_URL=http://host.docker.internal:${port}`,
   '-e',
-  `SEERR_EXTRAS_URL=http://host.docker.internal:${port}`,
-  '-e',
   'SEERR_FULL_URL=https://seerr.example.test',
   ...Object.entries(settings).flatMap(([k, v]) => ['-e', `${k}=${v}`]),
   image,
 ];
-const paths = [
-  '/api/v1/probe',
-  '/imageproxy/probe',
-  '/avatarproxy/probe',
-  '/seerr-classic/probe',
-];
+const paths = ['/api/v1/probe', '/imageproxy/probe', '/avatarproxy/probe'];
 async function check(settings, clientIp, scheme, headers = {}) {
   const id = await docker(
     'run',
@@ -313,75 +293,6 @@ test('invalid trust configuration prevents startup', async () => {
       docker('run', '--rm', ...args(settings)),
       /not an address|must be/
     );
-  }
-});
-
-test('companion reads and narration writes require a current SeerrNG session', async () => {
-  const id = await docker(
-    'run',
-    '-d',
-    '--label',
-    'io.snapetech.task=lumen-proxy-tests',
-    '-p',
-    '127.0.0.1::80',
-    ...args()
-  );
-  containers.add(id);
-  try {
-    const base = `http://${await docker('port', id, '80/tcp')}`;
-    for (let i = 0; i < 100; i++) {
-      try {
-        if ((await fetch(base + '/api/v1/probe')).ok) break;
-      } catch {}
-      await new Promise((resolve) => setTimeout(resolve, 100));
-    }
-    const before = extraCalls;
-    for (const method of ['GET', 'POST']) {
-      const denied = await fetch(base + '/seerr-classic/narration', { method });
-      assert.equal(denied.status, 401, `anonymous ${method}`);
-      const expired = await fetch(base + '/seerr-classic/narration', {
-        method,
-        headers: { cookie: 'fixture-session=expired' },
-      });
-      assert.equal(expired.status, 401, `expired ${method}`);
-    }
-    for (const [session, status] of [
-      ['forbidden', 403],
-      ['unavailable', 500],
-    ]) {
-      const rejected = await fetch(base + '/seerr-classic/narration', {
-        method: 'POST',
-        headers: { cookie: `fixture-session=${session}` },
-      });
-      assert.equal(rejected.status, status, session);
-    }
-    assert.equal(
-      extraCalls,
-      before,
-      'denied requests must never reach the companion'
-    );
-    assert.equal(
-      (await fetch(base + '/_lumen_session_check')).status,
-      404,
-      'auth check is internal only'
-    );
-    const accepted = await fetch(base + '/seerr-classic/narration', {
-      method: 'POST',
-      headers: {
-        cookie: 'fixture-session=valid',
-        'content-type': 'application/json',
-      },
-      body: JSON.stringify({ bookId: 1, editionId: 2 }),
-    });
-    assert.equal(accepted.status, 200);
-    assert.deepEqual(await accepted.json(), {
-      method: 'POST',
-      body: JSON.stringify({ bookId: 1, editionId: 2 }),
-    });
-    assert.equal(extraCalls, before + 1);
-  } finally {
-    await docker('rm', '-f', id);
-    containers.delete(id);
   }
 });
 

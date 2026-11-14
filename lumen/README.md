@@ -125,7 +125,6 @@ Open `http://<host>:5080` and sign in with Plex, Jellyfin, Emby or a SeerrNG loc
 | --- | --- |
 | `SEERR_INTERNAL_URL` | SeerrNG's address as the container sees it (older name `SEERR_URL` still works). `/api`, `/imageproxy` and `/avatarproxy` are proxied here. |
 | `SEERR_BROWSER_URL` | Where people open full SeerrNG in their browser (older name `SEERR_FULL_URL` still works). Links to pages Lumen doesn't have (issues, settings, users…) redirect here. |
-| `SEERR_EXTRAS_URL` | Optional companion service for the narrator extras (see below). Without it Lumen uses SeerrNG alone. |
 | `LUMEN_TRUSTED_PROXIES` | Addresses or CIDRs of the reverse proxy or tunnel in front of Lumen, comma separated (e.g. `172.17.0.0/16`). Only these may tell Lumen who the visitor is. Empty (the default) = the address that connected. |
 | `LUMEN_REAL_IP_HEADER` | The header that proxy puts the visitor's address in: `X-Forwarded-For` (default) or `CF-Connecting-IP`. |
 
@@ -155,21 +154,6 @@ Turning **narrator choice** off removes every narrator widget: audiobooks get on
 - Discover, Movies, Series, Books, Audiobooks, Search (scoped to the section you came from), Requests, Coming soon and You.
 - Movie, series and book pages: season picker, narrator picker, admin request options (server, quality, folder).
 - Music (albums, artists), Comics, Magazines, Games (PC, retro and modern consoles), Sports and Adult. Each appears in the menus only when SeerrNG has the category turned on (Adult also needs SeerrNG's adult switch) **and** its catalogue answers, so a category that's on with no service behind it stays out of the way. Opening one by URL explains why it isn't there. SeerrNG still checks every call, including each person's category and adult permissions.
-
-## The companion service (optional)
-
-A few book features need ChaptarrNG data that SeerrNG's API doesn't expose yet. Lumen asks for them at `/seerr-classic/…`, which nginx passes to `SEERR_EXTRAS_URL`:
-
-| Path | Used for |
-| --- | --- |
-| `GET /seerr-classic/hcsearch?q=` | Book search by Hardcover id, with per-format library state |
-| `GET /seerr-classic/hccovers?ids=` and `/seerr-classic/hcimg/…` | Real ebook covers instead of square audiobook art |
-| `GET /seerr-classic/lookup?f=audiobook&d=hc&id=` | Every narration of a book, for the narrator picker |
-| `POST /seerr-classic/narration` | "Request another narrator" for a book already in the library |
-
-Lumen checks the current SeerrNG session before forwarding companion calls. The companion must also validate the caller’s identity, category permissions, request approval rules and quotas; a successful session check does not authorize every action. Do not expose an unauthenticated acquisition service as this upstream.
-
-Without the companion, search falls back to SeerrNG's own book search and the narrator picker shows what SeerrNG returns. Native SeerrNG endpoints for these would remove the need for it.
 
 ## Validate
 

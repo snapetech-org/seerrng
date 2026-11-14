@@ -13,8 +13,6 @@ FROM nginx:1.30.6-alpine@sha256:e9b2d7624fd7957f4ed44ae0a272d93fb73aeb8512ba8916
 RUN apk upgrade --no-cache libxslt zlib
 # SEERR_URL (or SEERR_INTERNAL_URL) = how this container reaches SeerrNG, e.g. http://seerrng:5055
 ENV SEERR_URL=http://seerrng:5055
-# companion proxy for narrator extras; without one these calls fail and Lumen uses SeerrNG alone
-ENV SEERR_EXTRAS_URL=http://127.0.0.1:9
 # SEERR_FULL_URL (or SEERR_BROWSER_URL) = the address people open full SeerrNG at, for
 # pages Lumen doesn't have (issues, settings, users...)
 ENV SEERR_FULL_URL=http://seerrng:5055
