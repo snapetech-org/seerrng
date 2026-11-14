@@ -52,6 +52,7 @@ import { RequestDispatchOutbox } from '@server/entity/RequestDispatchOutbox';
 import Season from '@server/entity/Season';
 import SeasonRequest from '@server/entity/SeasonRequest';
 import { User } from '@server/entity/User';
+import { BookLookupTimeoutError } from '@server/lib/bookLookupBudget';
 import { getExternalRuntimeConfig } from '@server/lib/externalRuntimeConfig';
 import { runMediaEntityMutation } from '@server/lib/mediaMutation';
 import notificationManager, { Notification } from '@server/lib/notifications';
@@ -4380,6 +4381,90 @@ describe('MediaRequestSubscriber service dispatch', () => {
     });
     assert.equal(savedRequest.status, MediaRequestStatus.APPROVED);
     assert.equal(retryAfterMs, 2_000);
+
+    request.status = MediaRequestStatus.DECLINED;
+    assert.equal(
+      await new MediaRequestSubscriber().sendToReadarr(request),
+      undefined
+    );
+  });
+
+  it('keeps a book request approved and retries soon when the metadata lookup times out', async () => {
+    const settings = getSettings();
+    settings.readarr = [
+      {
+        id: 20,
+        name: 'Bookshelf',
+        hostname: 'bookshelf.local',
+        port: 8787,
+        apiKey: 'test-key',
+        useSsl: false,
+        activeProfileId: 11,
+        activeProfileName: 'Books',
+        activeMetadataProfileId: 12,
+        activeMetadataProfileName: 'Standard',
+        activeDirectory: '/books',
+        tags: [],
+        is4k: false,
+        isDefault: true,
+        syncEnabled: true,
+        preventSearch: false,
+        tagRequests: false,
+        overrideRule: [],
+        serviceType: 'ebook',
+      },
+    ];
+
+    const requestedBy = await getRequester();
+    const media = await getRepository(Media).save(
+      new Media({
+        mediaType: MediaType.BOOK,
+        tmdbId: 0,
+        status: MediaStatus.PENDING,
+        status4k: MediaStatus.UNKNOWN,
+        identifiers: [
+          new MediaIdentifier({
+            provider: MediaIdentifierProvider.ISBN,
+            value: '9788427249530',
+          }),
+        ],
+      })
+    );
+    const request = await createApprovedRequest(media, requestedBy);
+    await getRepository(MediaRequest).update(request.id, {
+      status: MediaRequestStatus.APPROVED,
+    });
+
+    mock.method(OpenLibraryAPI.prototype, 'getWork', async () => undefined);
+    const lookupBook = mock.method(
+      ReadarrAPI.prototype,
+      'lookupBook',
+      async () => {
+        throw new Error('Chaptarr native lookup fallback failed', {
+          cause: new BookLookupTimeoutError(),
+        });
+      }
+    );
+    const sendNotification = mock.method(
+      notificationManager,
+      'sendNotification',
+      () => undefined
+    );
+
+    const retryAfterMs = await new MediaRequestSubscriber().sendToReadarr(
+      request
+    );
+
+    const savedRequest = await getRepository(MediaRequest).findOneByOrFail({
+      id: request.id,
+    });
+    assert.equal(savedRequest.status, MediaRequestStatus.APPROVED);
+    // no provider delay: the dispatch queue's short backoff applies, not the 6 h failure delay
+    assert.equal(retryAfterMs, undefined);
+    assert.notEqual(retryAfterMs, READARR_FAILED_RETRY_DELAY_MS);
+    // a spent lookup budget is not retried inside the same dispatch attempt
+    assert.equal(lookupBook.mock.callCount(), 1);
+    assert.equal(sendNotification.mock.callCount(), 0);
 
     request.status = MediaRequestStatus.DECLINED;
     assert.equal(
