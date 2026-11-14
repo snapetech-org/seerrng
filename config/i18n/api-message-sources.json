@@ -18547,7 +18547,7 @@
       "callsites": [
         {
           "path": "server/routes/imageproxy.ts",
-          "line": 390,
+          "line": 397,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'urls must contain strings.'",
@@ -19787,7 +19787,7 @@
       "callsites": [
         {
           "path": "server/routes/imageproxy.ts",
-          "line": 308,
+          "line": 315,
           "kind": "response-body",
           "field": "body",
           "expression": "'Unsupported image type'",
@@ -20382,7 +20382,7 @@
       "callsites": [
         {
           "path": "server/routes/imageproxy.ts",
-          "line": 378,
+          "line": 385,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'urls must be an array.'",
@@ -21130,7 +21130,7 @@
       "callsites": [
         {
           "path": "server/routes/imageproxy.ts",
-          "line": 384,
+          "line": 391,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "`urls are limited to ${maxWarmRequestUrls} values.`",
@@ -42063,7 +42063,7 @@
       "callsites": [
         {
           "path": "server/routes/imageproxy.ts",
-          "line": 299,
+          "line": 306,
           "kind": "response-body",
           "field": "body",
           "expression": "'Invalid URL for image proxy'",
@@ -46441,7 +46441,7 @@
       "callsites": [
         {
           "path": "server/routes/imageproxy.ts",
-          "line": 395,
+          "line": 402,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "`urls must be ${maxWarmUrlLength} characters or fewer.`",
@@ -55466,7 +55466,7 @@
       "callsites": [
         {
           "path": "server/routes/imageproxy.ts",
-          "line": 342,
+          "line": 349,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Failed to proxy image.'",
@@ -79037,7 +79037,7 @@
     },
     {
       "path": "server/routes/imageproxy.ts",
-      "line": 339,
+      "line": 346,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "e.message",
@@ -79046,7 +79046,7 @@
     },
     {
       "path": "server/routes/imageproxy.ts",
-      "line": 358,
+      "line": 365,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "e.message",
