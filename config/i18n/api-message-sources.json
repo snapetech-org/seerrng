@@ -57153,7 +57153,7 @@
       "callsites": [
         {
           "path": "server/lib/scanners/baseScanner.ts",
-          "line": 2618,
+          "line": 2680,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`declineOrphanedRequests called for media ${media.id} without the 'requests' relation loaded`",
@@ -58350,7 +58350,7 @@
       "callsites": [
         {
           "path": "server/lib/scanners/baseScanner.ts",
-          "line": 2725,
+          "line": 2788,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Sync was aborted.'",
@@ -61265,7 +61265,7 @@
       "callsites": [
         {
           "path": "server/lib/scanners/baseScanner.ts",
-          "line": 2729,
+          "line": 2792,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'New session was started. Old session aborted.'",
@@ -75133,7 +75133,7 @@
     },
     {
       "path": "server/lib/scanners/baseScanner.ts",
-      "line": 166,
+      "line": 170,
       "kind": "protocol-helper-return",
       "field": "message",
       "expression": "`${tmdbId}:${is4k ? '4k' : 'standard'}`",
@@ -75142,7 +75142,7 @@
     },
     {
       "path": "server/lib/scanners/baseScanner.ts",
-      "line": 166,
+      "line": 170,
       "kind": "protocol-helper-return",
       "field": "message",
       "expression": "`${tmdbId}:${is4k ? '4k' : 'standard'}`",
@@ -75151,7 +75151,7 @@
     },
     {
       "path": "server/lib/scanners/baseScanner.ts",
-      "line": 174,
+      "line": 178,
       "kind": "protocol-helper-return",
       "field": "message",
       "expression": "`${this.movieStatusKey(tmdbId, is4k)}:${seasonNumber}`",
@@ -75160,7 +75160,7 @@
     },
     {
       "path": "server/lib/scanners/baseScanner.ts",
-      "line": 2018,
+      "line": 2080,
       "kind": "persisted-message-assignment",
       "field": "failureReason",
       "expression": "null",
@@ -75169,7 +75169,7 @@
     },
     {
       "path": "server/lib/scanners/baseScanner.ts",
-      "line": 2745,
+      "line": 2808,
       "kind": "app-error-candidate",
       "field": "message",
       "expression": "e.message",
