@@ -31,9 +31,6 @@ async function fixtures(
   const posts: { path: string; body: unknown }[] = [];
   await page.route('https://**/*', (r) => r.abort());
   await page.route('**/lumen-config.json', (r) => r.fulfill({ json: {} }));
-  await page.route('**/seerr-classic/**', (r) =>
-    r.fulfill({ status: 404, body: '' })
-  );
   await page.route('**/api/v1/**', async (route) => {
     const req = route.request();
     const url = new URL(req.url());
@@ -471,49 +468,20 @@ test.describe('phones', () => {
         if (path === '/editions/book')
           return {
             json: {
+              // Jane Reader's copy is here, Ann Voice can be added alongside it
+              source: 'library',
+              supportsAlongside: true,
               editions: [
-                edition('hc:1', ['Jane Reader']),
+                edition('hc:1', ['Jane Reader'], {
+                  owned: true,
+                  selected: true,
+                }),
                 edition('hc:2', ['Ann Voice']),
               ],
             },
           };
       },
     });
-    // the companion's view: Jane Reader's copy is here, Ann Voice can be added
-    await page.route('**/seerr-classic/lookup**', (r) =>
-      r.fulfill({
-        json: [
-          {
-            localAudiobookBooks: [
-              {
-                id: 1,
-                narrator: 'Jane Reader',
-                hasFiles: true,
-                title: 'Owned Story',
-              },
-            ],
-            editions: [
-              {
-                id: 11,
-                bookId: 5,
-                foreignEditionId: 1,
-                narratorNames: ['Jane Reader'],
-                format: 'audiobook',
-                language: 'eng',
-              },
-              {
-                id: 12,
-                bookId: 5,
-                foreignEditionId: 2,
-                narratorNames: ['Ann Voice'],
-                format: 'audiobook',
-                language: 'eng',
-              },
-            ],
-          },
-        ],
-      })
-    );
     await page.route('**/lumen-config.json', (r) =>
       r.fulfill({ json: { audiobookshelfUrl: 'https://abs.example.org' } })
     );

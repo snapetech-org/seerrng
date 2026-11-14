@@ -1,7 +1,6 @@
 # One origin for the app and SeerrNG's API, so SeerrNG's sign-in cookie just works.
 #   SEERR_URL         SeerrNG's API (e.g. http://seerrng:5055);
 #                     SEERR_INTERNAL_URL also sets it (05-lumen-env-aliases.envsh)
-#   SEERR_EXTRAS_URL  optional companion proxy (ChaptarrNG lookups, "request another narrator")
 #   SEERR_FULL_URL    where people reach full SeerrNG for pages Lumen doesn't have;
 #                     SEERR_BROWSER_URL also sets it (05-lumen-env-aliases.envsh)
 
@@ -74,17 +73,6 @@ server {
     proxy_set_header Host $host;
     proxy_set_header X-Forwarded-For $remote_addr;
     proxy_set_header X-Real-IP $remote_addr;
-    proxy_set_header CF-Connecting-IP "";
-    proxy_set_header Forwarded "";
-    proxy_set_header X-Forwarded-Proto $lumen_forwarded_proto;
-  }
-  location /seerr-classic/ {
-    auth_request /_lumen_session_check;
-    proxy_pass ${SEERR_EXTRAS_URL};
-    proxy_set_header Host $host;
-    proxy_set_header X-Forwarded-For $remote_addr;
-    proxy_set_header X-Real-IP $remote_addr;
-    # never pass on a client's own copies of other forwarding headers
     proxy_set_header CF-Connecting-IP "";
     proxy_set_header Forwarded "";
     proxy_set_header X-Forwarded-Proto $lumen_forwarded_proto;
