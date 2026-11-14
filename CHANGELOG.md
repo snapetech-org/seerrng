@@ -24,6 +24,7 @@
 - *(lumen)* Read narrations, covers and extra-narration requests from SeerrNG - ([624119c](https://github.com/snapetech-org/seerrng/commit/624119c4ae21352c2c01837ca8f7519d466872d2))
 
 ### 🐛 Bug Fixes
+- *(books)* Accept scoped aliases in identity checks - ([00cfe7a](https://github.com/snapetech-org/seerrng/commit/00cfe7a6d0ed1580121f873c84398378acdd5ae2))
 - *(books)* Keep PROCESSING when one format's server is idle during a scan - ([d3a7a46](https://github.com/snapetech-org/seerrng/commit/d3a7a468274c92c66e9020eef6278d0b2edff894))
 - *(books)* Name Bookshelf book requests in notifications - ([a8ede1c](https://github.com/snapetech-org/seerrng/commit/a8ede1c235df36d0755f7027b296c82174c57829))
 - *(books)* Match tracked facade identities within their known provider - ([fdcf690](https://github.com/snapetech-org/seerrng/commit/fdcf6904058ee1ce1f694ae634b113df562ab3e1))
@@ -43,6 +44,8 @@
 - *(release)* Describe requested Bookshelf inventory scans - ([5e010f5](https://github.com/snapetech-org/seerrng/commit/5e010f54baa02082edb36e5ef0b6c71000d59f46))
 
 ### ⚙️ Miscellaneous Tasks
+- *(i18n)* Refresh API source locations after merge fix - ([ee22e2a](https://github.com/snapetech-org/seerrng/commit/ee22e2a6b8e58777df25207128a6119435ac5d9a))
+- *(i18n)* Refresh API message source locations - ([5aadaae](https://github.com/snapetech-org/seerrng/commit/5aadaae994c20d9abd3861e1cb3b970b02582e2d))
 - *(i18n)* Refresh book recovery source locations - ([09937a6](https://github.com/snapetech-org/seerrng/commit/09937a6bb5e7c588b0af9d985c2fa97024caad43))
 - *(i18n)* Refresh requested book scanner source locations - ([213c99c](https://github.com/snapetech-org/seerrng/commit/213c99cf65b0ce0ba1f6ab182406b2f7e93d80f0))
 
