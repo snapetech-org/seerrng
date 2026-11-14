@@ -270,6 +270,22 @@ class ReadarrScanner
       : 'ebook';
   }
 
+  /**
+   * Every spelling of the book's provider id on this server, the facade's
+   * bare spelling first: when a bare-id row and a qualified-id row both
+   * exist, the older bare row (the one requests were made against) stays the
+   * scanned record's primary match, as it was before ids were qualified.
+   */
+  private getReadarrProviderIdAliases(book: ReadarrBook): string[] {
+    const foreignBookId = book.foreignBookId?.trim();
+    if (!foreignBookId) return [];
+    const aliases = this.readarrApi.getKnownBookIdentityAliases(foreignBookId);
+    return [
+      ...aliases.filter((id) => /^\d+$/.test(id)),
+      ...aliases.filter((id) => !/^\d+$/.test(id)),
+    ];
+  }
+
   private getReadarrWorkKey(book: ReadarrBook): string | undefined {
     const foreignBookId = book.foreignBookId?.trim();
     if (!foreignBookId) return undefined;
@@ -551,24 +567,31 @@ class ReadarrScanner
         : MediaIdentifierProvider.READARR;
       const resolvedOpenLibraryIdentifiers =
         await resolveOpenLibraryIdentifiersForReadarrBook(readarrBook);
+      const providerIdAliases = this.getReadarrProviderIdAliases(readarrBook);
 
       const secondaryIdentifiers = [
         // Catalog requests use an opaque identity scoped to the selected server.
         // Keep that same record when ISBN/Readarr identifiers become available.
-        ...(readarrBook.foreignBookId
-          ? this.readarrApi
-              .getKnownBookIdentityAliases(readarrBook.foreignBookId)
-              .map((id) => ({
-                provider: MediaIdentifierProvider.BOOKSHELF,
-                value: makeBookshelfBookId(this.currentServer.id, id),
-              }))
-          : []),
+        ...providerIdAliases.map((id) => ({
+          provider: MediaIdentifierProvider.BOOKSHELF,
+          value: makeBookshelfBookId(this.currentServer.id, id),
+        })),
         readarrBook.foreignBookId
           ? {
               provider: MediaIdentifierProvider.READARR,
               value: readarrBook.foreignBookId,
             }
           : undefined,
+        // ChaptarrNG library ids used to be read bare (431561) and are now
+        // qualified (hc:431561). Rows stored under the bare Readarr id must
+        // keep matching and stay observed, or a requested book's row loses
+        // its service link and a PROCESSING row is cleaned up as orphaned.
+        ...providerIdAliases
+          .filter((id) => id !== readarrBook.foreignBookId && /^\d+$/.test(id))
+          .map((id) => ({
+            provider: MediaIdentifierProvider.READARR,
+            value: id,
+          })),
         ...((readarrBook.editions ?? [])
           .map((edition) => {
             const isbn = normalizeReadarrIsbn(edition.isbn13);

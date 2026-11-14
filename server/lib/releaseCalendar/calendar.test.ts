@@ -638,6 +638,66 @@ it('matches personal Readarr releases by provider identity and requested format'
   );
 });
 
+it('matches a request stored under a bare ChaptarrNG id to its qualified release', async () => {
+  getSettings().radarr = [];
+  getSettings().sonarr = [];
+  getSettings().lidarr = [];
+  getSettings().readarr = [
+    {
+      ...server,
+      id: 12,
+      hostname: 'hc.chaptarr.test',
+      serviceType: 'audiobook',
+    } as ReadarrSettings,
+  ];
+  mock.method(ReadarrAPI, 'getKnownLibraryIdDialect', () => 'hc');
+  const user = await getRepository(User).findOneByOrFail({ id: 1 });
+  const media = await getRepository(Media).save(
+    new Media({ mediaType: MediaType.BOOK, tmdbId: 0 })
+  );
+  await getRepository(MediaIdentifier).save(
+    new MediaIdentifier({
+      media,
+      provider: MediaIdentifierProvider.BOOKSHELF,
+      value: makeBookshelfBookId(12, '459744'),
+      canonical: true,
+    })
+  );
+  await getRepository(MediaRequest).save({
+    media,
+    type: MediaType.BOOK,
+    requestedBy: user,
+    is4k: false,
+    bookFormat: 'audiobook',
+    status: MediaRequestStatus.APPROVED,
+  });
+  mock.method(ReadarrAPI.prototype, 'getReleaseCalendar', async () => [
+    {
+      id: 51,
+      title: 'Requested book',
+      foreignBookId: 'hc:459744',
+      releaseDate: '2026-09-12',
+    },
+    {
+      id: 52,
+      title: 'Same number, other provider',
+      foreignBookId: 'gr:459744',
+      releaseDate: '2026-09-13',
+    },
+  ]);
+
+  const calendar = await getReleaseCalendar(
+    parseCalendarQuery(range, false, false),
+    user.id,
+    false,
+    { includeDateHistory: false }
+  );
+  assert.deepEqual(
+    calendar.results.map((item) => item.id),
+    ['readarr:12:51']
+  );
+});
+
 it('uses local month boundaries for episode times and UTC date boundaries for all-day movies', () => {
   const query = parseCalendarQuery(
     { ...range, timeZone: 'America/Regina' },

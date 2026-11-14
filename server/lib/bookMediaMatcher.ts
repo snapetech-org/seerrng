@@ -10,6 +10,7 @@ import MediaIdentifier, {
 } from '@server/entity/MediaIdentifier';
 import type { User } from '@server/entity/User';
 import { projectBookFileObservations } from '@server/lib/bookFileObservations';
+import { expandBookshelfBookIds } from '@server/lib/bookshelfIdentity';
 import {
   isValidOpenLibraryResourceId,
   normalizeOpenLibraryEditionId,
@@ -350,10 +351,25 @@ export const findBookMediaForBookResults = async (
         }))
       : []
   );
+  // A ChaptarrNG work can be stored under its bare or its qualified catalog
+  // id (rows minted before library ids were qualified); match either.
+  const aliasesByBookId = await expandBookshelfBookIds(
+    lookups.flatMap((lookup) =>
+      lookup.provider === MediaIdentifierProvider.BOOKSHELF
+        ? [lookup.value]
+        : []
+    )
+  );
+  const aliasLookups = [...aliasesByBookId.values()].flatMap((aliases) =>
+    aliases.map((value) => ({
+      provider: MediaIdentifierProvider.BOOKSHELF,
+      value,
+    }))
+  );
   // Exact catalog identities first, so ISBN fallbacks can never crowd a book's
   // own identity out of the lookup budget.
   const mediaByIdentifier = await findBookMediaByIdentifiers(
-    [...lookups, ...isbnLookups],
+    [...lookups, ...aliasLookups, ...isbnLookups],
     user,
     { limit: MAX_BOOK_RESULT_IDENTIFIER_LOOKUPS }
   );
@@ -367,6 +383,11 @@ export const findBookMediaForBookResults = async (
 
     const media =
       mediaByIdentifier.get(`${identifier.provider}:${identifier.value}`) ??
+      (aliasesByBookId.get(identifier.value) ?? [])
+        .map((alias) =>
+          mediaByIdentifier.get(`${MediaIdentifierProvider.BOOKSHELF}:${alias}`)
+        )
+        .find((matchedMedia): matchedMedia is Media => !!matchedMedia) ??
       getBookResultIsbns(book)
         .map((isbn) =>
           mediaByIdentifier.get(`${MediaIdentifierProvider.ISBN}:${isbn}`)

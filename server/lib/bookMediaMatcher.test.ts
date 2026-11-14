@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
-import { describe, it, mock } from 'node:test';
+import { afterEach, beforeEach, describe, it, mock } from 'node:test';
 
+import ReadarrAPI from '@server/api/servarr/readarr';
 import { MediaStatus, MediaType } from '@server/constants/media';
 import { getRepository } from '@server/datasource';
 import Media from '@server/entity/Media';
@@ -14,6 +15,7 @@ import downloadTracker, {
 import { resolveLiveDownloadToken } from '@server/lib/liveDownloadTokens';
 import { aliasDownloadId } from '@server/lib/mediaResponse';
 import { Permission } from '@server/lib/permissions';
+import { getSettings, type ReadarrSettings } from '@server/lib/settings';
 import { setupTestDb } from '@server/test/db';
 import { makeBookshelfBookId } from '@server/utils/bookshelfCatalog';
 import {
@@ -101,6 +103,121 @@ describe('Bookshelf scoped catalog matching (issue #382)', () => {
       { id: makeBookshelfBookId(1, 'missing-work'), isbn13: '9781234567890' },
     ]);
     assert.equal(unmatched.size, 0);
+  });
+});
+
+describe('ChaptarrNG bare and qualified catalog ids', () => {
+  // Service 1 is a Hardcover ChaptarrNG, 2 a Goodreads one, 3 plain Readarr.
+  const services = [
+    { id: 1, hostname: 'hc.chaptarr.test', dialect: 'hc' as const },
+    { id: 2, hostname: 'gr.chaptarr.test', dialect: 'gr' as const },
+    { id: 3, hostname: 'readarr.test', dialect: null },
+  ];
+  let originalReadarr: ReadarrSettings[];
+
+  beforeEach(() => {
+    const settings = getSettings();
+    originalReadarr = settings.readarr;
+    settings.readarr = services.map(
+      ({ id, hostname }) =>
+        ({
+          id,
+          name: hostname,
+          hostname,
+          port: 8787,
+          apiKey: 'key',
+          useSsl: false,
+          serviceType: 'audiobook',
+        }) as ReadarrSettings
+    );
+    // The dialect each service's library ids were read with.
+    mock.method(
+      ReadarrAPI,
+      'getKnownLibraryIdDialect',
+      (url: string) =>
+        services.find(({ hostname }) => url.includes(hostname))?.dialect
+    );
+  });
+
+  afterEach(() => {
+    getSettings().readarr = originalReadarr;
+    mock.restoreAll();
+  });
+
+  it('matches an old bare-id row to the qualified library book', async () => {
+    const media = await seedIdentity(
+      MediaIdentifierProvider.BOOKSHELF,
+      makeBookshelfBookId(1, '459744')
+    );
+    const qualified = makeBookshelfBookId(1, 'hc:459744');
+    const matches = await findBookMediaForBookResults([{ id: qualified }]);
+    assert.equal(matches.get(qualified)?.id, media.id);
+  });
+
+  it('matches a qualified row to an old bare-id link', async () => {
+    const media = await seedIdentity(
+      MediaIdentifierProvider.BOOKSHELF,
+      makeBookshelfBookId(2, 'gr:90439420')
+    );
+    const bare = makeBookshelfBookId(2, '90439420');
+    const matches = await findBookMediaForBookResults([{ id: bare }]);
+    assert.equal(matches.get(bare)?.id, media.id);
+  });
+
+  it('prefers the exact row over an alias row', async () => {
+    const qualified = makeBookshelfBookId(1, 'hc:459744');
+    const exact = await seedIdentity(
+      MediaIdentifierProvider.BOOKSHELF,
+      qualified
+    );
+    await seedIdentity(
+      MediaIdentifierProvider.BOOKSHELF,
+      makeBookshelfBookId(1, '459744')
+    );
+    const matches = await findBookMediaForBookResults([{ id: qualified }]);
+    assert.equal(matches.get(qualified)?.id, exact.id);
+  });
+
+  it('never matches across dialects or services', async () => {
+    // A bare number on the Hardcover service is a Hardcover work ...
+    await seedIdentity(
+      MediaIdentifierProvider.BOOKSHELF,
+      makeBookshelfBookId(1, '459744')
+    );
+    // ... and a bare number on the Goodreads service a Goodreads work.
+    await seedIdentity(
+      MediaIdentifierProvider.BOOKSHELF,
+      makeBookshelfBookId(2, '459745')
+    );
+    // Plain Readarr ids have no qualified spelling.
+    await seedIdentity(
+      MediaIdentifierProvider.BOOKSHELF,
+      makeBookshelfBookId(3, '459746')
+    );
+    const ids = [
+      makeBookshelfBookId(1, 'gr:459744'),
+      makeBookshelfBookId(2, 'hc:459745'),
+      makeBookshelfBookId(2, 'gr:459744'),
+      makeBookshelfBookId(1, 'hc:459745'),
+      makeBookshelfBookId(3, 'hc:459746'),
+    ];
+    const matches = await findBookMediaForBookResults(
+      ids.map((id) => ({ id }))
+    );
+    assert.equal(matches.size, 0);
+  });
+
+  it('does not bridge ids before the service dialect is known', async () => {
+    mock.restoreAll();
+    mock.method(ReadarrAPI, 'getKnownLibraryIdDialect', () => undefined);
+    await seedIdentity(
+      MediaIdentifierProvider.BOOKSHELF,
+      makeBookshelfBookId(1, '459744')
+    );
+    const matches = await findBookMediaForBookResults([
+      { id: makeBookshelfBookId(1, 'hc:459744') },
+    ]);
+    assert.equal(matches.size, 0);
   });
 });
 
