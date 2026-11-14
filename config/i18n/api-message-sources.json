@@ -75275,7 +75275,7 @@
     },
     {
       "path": "server/lib/scanners/readarr/index.ts",
-      "line": 145,
+      "line": 146,
       "kind": "message-helper-return",
       "field": "message",
       "expression": "{\n      running: this.running,\n      progress: this.progress,\n      total: this.items.length,\n      currentServer: this.currentServer,\n      servers: this.servers,\n    }",
@@ -75284,7 +75284,7 @@
     },
     {
       "path": "server/lib/scanners/readarr/index.ts",
-      "line": 485,
+      "line": 553,
       "kind": "persisted-message-assignment",
       "field": "failureReason",
       "expression": "null",
@@ -75293,7 +75293,7 @@
     },
     {
       "path": "server/lib/scanners/readarr/index.ts",
-      "line": 707,
+      "line": 775,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "e.message",
@@ -75302,7 +75302,7 @@
     },
     {
       "path": "server/lib/scanners/readarr/index.ts",
-      "line": 813,
+      "line": 881,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -75311,7 +75311,7 @@
     },
     {
       "path": "server/lib/scanners/readarr/index.ts",
-      "line": 813,
+      "line": 881,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -75320,7 +75320,7 @@
     },
     {
       "path": "server/lib/scanners/readarr/index.ts",
-      "line": 901,
+      "line": 969,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -75329,7 +75329,7 @@
     },
     {
       "path": "server/lib/scanners/readarr/index.ts",
-      "line": 901,
+      "line": 969,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
