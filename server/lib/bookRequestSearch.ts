@@ -26,6 +26,7 @@ import {
   isBookRequestFileAvailable,
   recordBookFileAvailability,
 } from '@server/lib/bookAvailability';
+import { allowedBookLanguages } from '@server/lib/bookLanguagePolicy';
 import { hasRequestedEditionFiles } from '@server/lib/editionCompare/availability';
 import { getExternalRuntimeConfig } from '@server/lib/externalRuntimeConfig';
 import { normalizeValidIsbn } from '@server/lib/isbn';
@@ -34,12 +35,14 @@ import {
   RequestStatusStage,
   recordRequestStatusOverride,
 } from '@server/lib/requestStatus';
+import { runWithServarrServiceSnapshot } from '@server/lib/serviceAdmission';
 import type { ReadarrSettings } from '@server/lib/settings';
 import logger from '@server/logger';
 import {
   isProviderBookEdition,
   sameEditionId,
 } from '@server/utils/bookEdition';
+import type { EntityManager } from 'typeorm';
 
 const terminalCommandStates = new Set([
   'completed',
@@ -124,7 +127,9 @@ export class BookRequestSearchManager {
 
   private async reconcile(): Promise<void> {
     const operations = await getRepository(BookRequestSearch).find({
-      relations: { request: { media: true } },
+      relations: {
+        request: { media: { searchMetadata: true, identifiers: true } },
+      },
       order: { id: 'ASC' },
       take: 500,
     });
@@ -581,7 +586,10 @@ export class BookRequestSearchManager {
       matchesReadarrBookProviderIdentity(
         currentBook,
         providerBookId,
-        operation.providerEditionId ?? undefined
+        operation.providerEditionId ?? undefined,
+        readarr.getKnownBookIdentityAliases(providerBookId, {
+          formatScopedResponse: true,
+        })
       ) &&
       (await hasRequestedEditionFiles(
         readarr,
@@ -753,6 +761,116 @@ export class BookRequestSearchManager {
       operation.providerEditionId ??
       operation.request.preferredEditionId ??
       undefined;
+    const metadata = operation.request.media.searchMetadata;
+    const allowedLanguages = [...allowedBookLanguages()];
+    if (
+      operation.bookId == null &&
+      operation.pendingId == null &&
+      operation.commandId == null &&
+      (operation.request.preferredEditionId == null ||
+        isProviderBookEdition(operation.request.preferredEditionId)) &&
+      (!allowedLanguages.length ||
+        isProviderBookEdition(operation.request.preferredEditionId)) &&
+      metadata?.title &&
+      metadata.author
+    ) {
+      const currentEditionId = isProviderBookEdition(
+        operation.request.preferredEditionId
+      )
+        ? operation.request.preferredEditionId!
+        : undefined;
+      const local = await readarr.findLocalBookByTitle({
+        title: metadata.title,
+        authorName: metadata.author,
+        providerBookId,
+        allowedLanguages,
+        openLibraryWorkId: operation.request.media.identifiers?.find(
+          (identifier) =>
+            identifier.provider === MediaIdentifierProvider.OPENLIBRARY
+        )?.value,
+        isbn: operation.request.preferredIsbn13 ?? undefined,
+        editionId: currentEditionId,
+      });
+      if (local) {
+        const recovered = {
+          bookId: local.id,
+          pendingId: null,
+          commandId: null,
+          providerBookId: local.foreignBookId,
+          providerEditionId: currentEditionId ?? null,
+          authorId: local.authorId ?? local.author?.id ?? null,
+          createdBook: false,
+          createdAuthor: false,
+          providerManagedSearch: operation.providerManagedSearch,
+          state: 'monitoring' as const,
+          updatedAt: new Date(),
+        };
+        await runWithRequestAdmission(
+          [getRequestMutationAdmissionKey(operation.requestId)],
+          () =>
+            runWithServarrServiceSnapshot('readarr', server, async () => {
+              const current = await getRepository(BookRequestSearch).findOneBy({
+                id: operation.id,
+              });
+              const request = await getRepository(MediaRequest).findOne({
+                where: { id: operation.requestId },
+                relations: { media: true },
+              });
+              // Local I/O must not restore cancelled, retargeted, or newly pinned
+              // requests, nor overwrite an operation another reconciliation owns.
+              if (
+                !current ||
+                !request ||
+                ![
+                  MediaRequestStatus.APPROVED,
+                  MediaRequestStatus.COMPLETED,
+                ].includes(request.status) ||
+                current.state !== 'pending' ||
+                current.bookId != null ||
+                current.pendingId != null ||
+                current.commandId != null ||
+                current.serviceId !== operation.serviceId ||
+                current.format !== operation.format ||
+                current.providerManagedSearch !==
+                  operation.providerManagedSearch ||
+                current.providerBookId !== operation.providerBookId ||
+                current.providerEditionId !== operation.providerEditionId ||
+                request.media.id !== operation.request.media.id ||
+                request.bookFormat !== operation.request.bookFormat ||
+                request.serverId !== operation.request.serverId ||
+                request.profileId !== operation.request.profileId ||
+                request.metadataProfileId !==
+                  operation.request.metadataProfileId ||
+                request.rootFolder !== operation.request.rootFolder ||
+                JSON.stringify(request.tags ?? []) !==
+                  JSON.stringify(operation.request.tags ?? []) ||
+                JSON.stringify(allowedBookLanguages()) !==
+                  JSON.stringify(allowedLanguages) ||
+                request.editionPolicy !== operation.request.editionPolicy ||
+                request.variantKey !== operation.request.variantKey ||
+                JSON.stringify(request.serviceTargets ?? []) !==
+                  JSON.stringify(operation.request.serviceTargets ?? []) ||
+                request.preferredEditionId !==
+                  operation.request.preferredEditionId ||
+                request.preferredIsbn13 !== operation.request.preferredIsbn13
+              )
+                return;
+              await getRepository(BookRequestSearch).manager.transaction(
+                async (manager) => {
+                  await manager
+                    .getRepository(BookRequestSearch)
+                    .update(operation.id, recovered);
+                  Object.assign(operation, recovered);
+                  operation.request = request;
+                  await this.storeBookServiceLink(operation, local, manager);
+                }
+              );
+            })
+        );
+        return;
+      }
+    }
+
     const lookup = await readarr.lookupBookByProviderIdentity(
       providerBookId,
       providerEditionId
@@ -965,7 +1083,10 @@ export class BookRequestSearchManager {
         matchesReadarrBookProviderIdentity(
           currentBook,
           providerBookId,
-          providerEditionId
+          providerEditionId,
+          readarr.getKnownBookIdentityAliases(providerBookId, {
+            formatScopedResponse: true,
+          })
         ))
     ) {
       return currentBook;
@@ -1157,7 +1278,8 @@ export class BookRequestSearchManager {
 
   private async storeBookServiceLink(
     operation: BookRequestSearch,
-    book: ReadarrBookLookupResult | undefined
+    book: ReadarrBookLookupResult | undefined,
+    manager?: EntityManager
   ): Promise<void> {
     const providerBookId = operation.providerBookId ?? book?.foreignBookId;
     const externalServiceId = book?.id ?? null;
@@ -1174,7 +1296,10 @@ export class BookRequestSearchManager {
       mediaPatch.externalServiceId = externalServiceId;
       mediaPatch.externalServiceSlug = externalServiceSlug;
     }
-    await getRepository(Media).update(media.id, mediaPatch);
+    await (manager?.getRepository(Media) ?? getRepository(Media)).update(
+      media.id,
+      mediaPatch
+    );
     Object.assign(media, mediaPatch);
 
     const targets = operation.request.serviceTargets ?? [];
@@ -1197,7 +1322,9 @@ export class BookRequestSearchManager {
         : targets.map((candidate, index) =>
             index === targetIndex ? { ...candidate, ...target } : candidate
           );
-    await getRepository(MediaRequest).update(operation.requestId, {
+    await (
+      manager?.getRepository(MediaRequest) ?? getRepository(MediaRequest)
+    ).update(operation.requestId, {
       serviceTargets: nextTargets,
     });
     operation.request.serviceTargets = nextTargets;

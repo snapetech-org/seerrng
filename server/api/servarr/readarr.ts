@@ -1,3 +1,4 @@
+import { bookLanguageAllowed } from '@server/lib/bookLanguagePolicy';
 import {
   getBookLookupBudget,
   withBookLookupBudget,
@@ -598,9 +599,11 @@ const normalizeProviderIdentity = (
 export const matchesReadarrBookProviderIdentity = (
   book: ReadarrBookLookupResult,
   providerBookId: string,
-  providerEditionId?: string
+  providerEditionId?: string,
+  providerBookAliases: readonly string[] = []
 ): boolean => {
   const normalizedBookId = normalizeProviderIdentity(providerBookId);
+  const currentBookId = normalizeProviderIdentity(book.foreignBookId);
   const normalizedEditionId = normalizeProviderIdentity(
     providerEditionId,
     true
@@ -608,7 +611,11 @@ export const matchesReadarrBookProviderIdentity = (
 
   return (
     (!!normalizedBookId &&
-      normalizeProviderIdentity(book.foreignBookId) === normalizedBookId) ||
+      !!currentBookId &&
+      [
+        normalizedBookId,
+        ...providerBookAliases.map((id) => normalizeProviderIdentity(id)),
+      ].includes(currentBookId)) ||
     (!!normalizedEditionId &&
       (normalizeProviderIdentity(book.foreignEditionId, true) ===
         normalizedEditionId ||
@@ -1829,18 +1836,33 @@ class ReadarrAPI extends ServarrBase<ReadarrQueueItem> {
     return result;
   }
 
-  /** Provider knowledge was negotiated while reading this client's catalog. */
-  public getKnownBookIdentityAliases(id: string): string[] {
+  /** Negotiated identities; legacy clients require an explicitly scoped response. */
+  public getKnownBookIdentityAliases(
+    id: string,
+    options: { formatScopedResponse?: boolean } = {}
+  ): string[] {
     const dialect = this.chaptarrDialect;
     const contract = this.chaptarrCapabilities?.contract;
-    if (
-      !dialect ||
-      !['chaptarrng-seerr-bookshelf', 'seerrng-bookshelf'].includes(
+    const explicitContract =
+      ['chaptarrng-seerr-bookshelf', 'seerrng-bookshelf'].includes(
         contract ?? ''
-      ) ||
-      this.chaptarrCapabilities?.contractVersion !== 1
-    )
-      return [id];
+      ) && this.chaptarrCapabilities?.contractVersion === 1;
+    // Older Chaptarr builds have no capability document. Only callers holding
+    // a response from this exact selected, namespaced facade may use its IDs.
+    const knownScopedResponse =
+      options.formatScopedResponse === true &&
+      this.isChaptarr() &&
+      !!this.mediaType &&
+      !!dialect &&
+      this.chaptarrCapabilities?.features?.formatScopedFacade === true &&
+      this.requestBaseUrl !== this.nativeApiUrl &&
+      this.requestBaseUrl ===
+        ReadarrAPI.buildChaptarrFacadeUrl(
+          this.nativeApiUrl,
+          this.mediaType,
+          dialect
+        );
+    if (!dialect || (!explicitContract && !knownScopedResponse)) return [id];
     const prefix =
       dialect === 'hc'
         ? /^(?:hc|hardcover|metadata-api):/i
@@ -2374,10 +2396,20 @@ class ReadarrAPI extends ServarrBase<ReadarrQueueItem> {
     openLibraryWorkId?: string;
     isbn?: string;
     editionId?: string;
+    /** Pending recovery: require an already monitored, explicitly matching work. */
+    providerBookId?: string;
+    allowedLanguages?: string[];
   }): Promise<ReadarrBook | undefined> {
     const title = options.title.trim().slice(0, 256);
     const normalizedTitle = normalizeLocalBookSearchText(title);
     if (!title || normalizedTitle.length < 2) return undefined;
+    if (options.providerBookId && !options.authorName?.trim()) return undefined;
+    if (
+      options.providerBookId &&
+      options.allowedLanguages?.length &&
+      !options.editionId
+    )
+      return undefined;
 
     return withBookLookupBudget(async () => {
       try {
@@ -2432,12 +2464,13 @@ class ReadarrAPI extends ServarrBase<ReadarrQueueItem> {
             if (!isRecord(instance)) continue;
             const id = Number(instance.id);
             const instanceTitle =
-              typeof instance.title === 'string'
-                ? instance.title
-                : entry.title;
+              typeof instance.title === 'string' ? instance.title : entry.title;
             if (
               instance.mediaType !== this.mediaType ||
-              normalizeLocalBookSearchText(instanceTitle) !== normalizedTitle ||
+              (options.providerBookId
+                ? instance.monitored !== true
+                : normalizeLocalBookSearchText(instanceTitle) !==
+                  normalizedTitle) ||
               !Number.isSafeInteger(id) ||
               id <= 0
             ) {
@@ -2471,14 +2504,71 @@ class ReadarrAPI extends ServarrBase<ReadarrQueueItem> {
 
         for (const [id, indexedAuthor] of candidateIds) {
           try {
-            const book = await this.getBook(id);
+            const book = options.providerBookId
+              ? await this.get<ReadarrBook & { goodreadsWorkId?: string }>(
+                  `/book/${id}`,
+                  { ...this.getRequestConfig(), baseURL: this.nativeApiUrl },
+                  0
+                )
+              : await this.getBook(id);
             if (
               book.id !== id ||
               (book.mediaType && book.mediaType !== this.mediaType) ||
-              normalizeLocalBookSearchText(book.title) !== normalizedTitle ||
-              !ReadarrAPI.hasAddressableLookupIdentity(book)
+              (!options.providerBookId &&
+                normalizeLocalBookSearchText(book.title) !== normalizedTitle) ||
+              (!options.providerBookId &&
+                !ReadarrAPI.hasAddressableLookupIdentity(book))
             ) {
               continue;
+            }
+
+            if (options.providerBookId) {
+              // Native responses retain explicit provider namespaces even when
+              // the selected compatibility facade has switched from GR to HC.
+              // A legacy bare ID may match an explicit native identity only
+              // after the index verified this request's title and author.
+              const explicitIdentity = (value: unknown): string | undefined => {
+                if (typeof value !== 'string') return undefined;
+                const match = /^(hc|hardcover|gr|goodreads):(\d+)$/i.exec(
+                  value.trim()
+                );
+                if (!match) return undefined;
+                return `${/^(hc|hardcover)$/i.test(match[1]) ? 'hc' : 'gr'}:${match[2]}`;
+              };
+              const expected = explicitIdentity(options.providerBookId);
+              const legacy = /^\d+$/.test(options.providerBookId.trim())
+                ? options.providerBookId.trim()
+                : undefined;
+              const identities = [
+                book.foreignBookId,
+                (book as ReadarrBook & { goodreadsWorkId?: string })
+                  .goodreadsWorkId,
+              ]
+                .map(explicitIdentity)
+                .filter((value): value is string => !!value);
+              if (
+                book.monitored !== true ||
+                book.mediaType !== this.mediaType ||
+                !explicitIdentity(book.foreignBookId) ||
+                !identities.some((value) =>
+                  expected
+                    ? value === expected
+                    : legacy && value.split(':')[1] === legacy
+                ) ||
+                (options.editionId &&
+                  !sameEditionId(book.foreignEditionId, options.editionId))
+              )
+                continue;
+              if (options.isbn || options.editionId) {
+                book.editions = await this.get<ReadarrEdition[]>(
+                  '/edition',
+                  {
+                    ...this.getRequestConfig({ bookId: id }),
+                    baseURL: this.nativeApiUrl,
+                  },
+                  0
+                );
+              }
             }
 
             const bookAuthor = book.author?.authorName?.trim();
@@ -2516,6 +2606,19 @@ class ReadarrAPI extends ServarrBase<ReadarrQueueItem> {
               )
             ) {
               continue;
+            }
+
+            if (options.providerBookId && options.allowedLanguages?.length) {
+              const selected = book.editions?.find((edition) =>
+                sameEditionId(edition.foreignEditionId, options.editionId)
+              );
+              if (
+                !bookLanguageAllowed(
+                  [selected?.language],
+                  options.allowedLanguages
+                )
+              )
+                continue;
             }
 
             matches.push(book);
