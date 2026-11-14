@@ -136,6 +136,96 @@ async function seedBook(identifier: string, status = MediaStatus.PROCESSING) {
 }
 
 describe('Readarr Scanner', () => {
+  it('skips unmonitored author catalog entries before edition or external metadata enrichment', async () => {
+    configureReadarr();
+    getBooksImpl = async () => [
+      fakeReadarrBook({
+        id: 11,
+        foreignBookId: 'catalog-only',
+        monitored: false,
+        editions: [],
+        statistics: { bookFileCount: 0, totalBookCount: 1 },
+      }),
+      fakeReadarrBook({
+        id: 12,
+        foreignBookId: 'wanted',
+        monitored: true,
+        editions: [],
+        statistics: { bookFileCount: 0, totalBookCount: 1 },
+      }),
+      fakeReadarrBook({
+        id: 13,
+        foreignBookId: 'owned',
+        monitored: false,
+        editions: [],
+        statistics: { bookFileCount: 1, totalBookCount: 1 },
+      }),
+    ];
+    const enrichedIds: number[] = [];
+    getEditionsImpl = async (id) => {
+      enrichedIds.push(id);
+      return [];
+    };
+    await readarrScanner.run();
+    assert.deepEqual(enrichedIds.sort(), [12, 13]);
+    const rows = await getRepository(Media).find({
+      where: { mediaType: MediaType.BOOK },
+    });
+    assert.equal(
+      rows.some((row) => row.externalServiceId === 11),
+      false
+    );
+    assert.equal(
+      rows.some((row) => row.externalServiceId === 12),
+      true
+    );
+    assert.equal(
+      rows.some((row) => row.externalServiceId === 13),
+      true
+    );
+  });
+
+  it('keeps explicitly requested unmonitored records eligible for reconciliation', async () => {
+    mock.method(requestDispatchManager, 'enqueue', async () => undefined);
+    configureReadarr();
+    const media = await seedBook('9780306406157');
+    const requester = await getRepository(User).findOneByOrFail({ id: 1 });
+    await getRepository(MediaRequest).save(
+      new MediaRequest({
+        type: MediaType.BOOK,
+        media,
+        requestedBy: requester,
+        status: MediaRequestStatus.APPROVED,
+        is4k: false,
+        bookFormat: 'ebook',
+        serviceTargets: [
+          {
+            serviceType: 'readarr',
+            format: 'ebook',
+            serverId: 0,
+            status: MediaStatus.PROCESSING,
+            externalServiceId: 14,
+          },
+        ],
+      })
+    );
+    getBooksImpl = async () => [
+      fakeReadarrBook({
+        id: 14,
+        monitored: false,
+        editions: [],
+        statistics: { bookFileCount: 0, totalBookCount: 1 },
+      }),
+    ];
+    const enrichedIds: number[] = [];
+    getEditionsImpl = async (id) => {
+      enrichedIds.push(id);
+      return [];
+    };
+    await readarrScanner.run();
+    assert.deepEqual(enrichedIds, [14]);
+  });
+
   for (const serviceType of ['ebook', 'audiobook'] as const) {
     it(`keeps downloaded unmonitored ${serviceType} books available`, async () => {
       configureReadarr([{ serviceType }]);
