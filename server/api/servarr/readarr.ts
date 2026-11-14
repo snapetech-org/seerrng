@@ -1025,9 +1025,12 @@ class ReadarrAPI extends ServarrBase<ReadarrQueueItem> {
   public matchesBookProviderIdentity(
     book: ReadarrBookLookupResult,
     providerBookId: string,
-    providerEditionId?: string
+    providerEditionId?: string,
+    identityAliases?: string[]
   ): boolean {
-    return this.getKnownBookIdentityAliases(providerBookId).some((id) =>
+    return (
+      identityAliases ?? this.getKnownBookIdentityAliases(providerBookId)
+    ).some((id) =>
       matchesReadarrBookProviderIdentity(book, id, providerEditionId)
     );
   }
