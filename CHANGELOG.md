@@ -1,5 +1,17 @@
 # Changelog
 
+## [3.72.36](https://github.com/snapetech-org/seerrng/compare/v3.72.35..v3.72.36) - 2026-11-14
+
+### User-facing changes
+
+#### Fixed
+
+- **Book Acquisition:** BookOrbit connections can be tested and saved in Settings → Services. The test preserves passwords as entered and identifies sign-in or library access errors. Service removal shows why a server cannot be removed. ChaptarrNG acquisition can start a search for a newly added, already monitored book without editing it.
+
+### 🐛 Bug Fixes
+- *(books)* Report acquisition connection and removal failures - ([dd6b941](https://github.com/snapetech-org/seerrng/commit/dd6b941cbe4eb71dec5a5040c255dda1cf9dd4d6))
+- *(books)* Accept BookOrbit in service settings API - ([4ebc794](https://github.com/snapetech-org/seerrng/commit/4ebc79442505330b772d96e8af56545eaa61c961))
+
 ## [3.72.35](https://github.com/snapetech-org/seerrng/compare/v3.72.34..v3.72.35) - 2026-11-13
 
 ### User-facing changes
