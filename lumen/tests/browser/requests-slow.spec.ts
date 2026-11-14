@@ -6,7 +6,6 @@ async function fixture(page: Page, everyone = false, mixed = false) {
   const held = new Promise<void>((resolve) => (release = resolve));
   await page.route('https://**/*', (r) => r.abort());
   await page.route('**/lumen-config.json', (r) => r.fulfill({ json: {} }));
-  await page.route('**/seerr-classic/**', (r) => r.fulfill({ status: 404 }));
   const request = (id: number, tmdbId: number) => ({
     id,
     type: 'movie',

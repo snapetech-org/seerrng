@@ -3450,6 +3450,173 @@ describe('MediaRequestSubscriber service dispatch', () => {
     assert.equal(savedRequest.status, MediaRequestStatus.APPROVED);
   });
 
+  it('stores the Bookshelf book title and author for request notifications', async () => {
+    const settings = getSettings();
+    settings.readarr = [
+      {
+        id: 20,
+        name: 'Chaptarr',
+        hostname: 'chaptarr.local',
+        port: 8787,
+        apiKey: 'test-key',
+        useSsl: false,
+        activeProfileId: 11,
+        activeProfileName: 'Books',
+        activeMetadataProfileId: 12,
+        activeMetadataProfileName: 'Standard',
+        activeDirectory: '/books',
+        tags: [],
+        is4k: false,
+        isDefault: true,
+        syncEnabled: true,
+        preventSearch: false,
+        tagRequests: false,
+        overrideRule: [],
+        serviceType: 'ebook',
+      },
+    ];
+
+    const requestedBy = await getRequester();
+    const media = await getRepository(Media).save(
+      new Media({
+        mediaType: MediaType.BOOK,
+        tmdbId: 0,
+        status: MediaStatus.PENDING,
+        status4k: MediaStatus.UNKNOWN,
+        identifiers: [
+          new MediaIdentifier({
+            provider: MediaIdentifierProvider.BOOKSHELF,
+            value: makeBookshelfBookId(20, '374541'),
+            canonical: true,
+          }),
+        ],
+      })
+    );
+    const request = await createApprovedRequest(media, requestedBy);
+    mock.method(
+      ReadarrAPI.prototype,
+      'lookupBookByProviderIdentity',
+      async () => ({
+        title: 'The Return of the King',
+        foreignBookId: 'hc:374541',
+        author: {
+          foreignAuthorId: 'hc:author-1',
+          authorName: 'J. R. R. Tolkien',
+        },
+        editions: [
+          {
+            foreignEditionId: 'hc:edition-1',
+            title: 'The Return of the King',
+            monitored: true,
+          },
+        ],
+      })
+    );
+    mock.method(
+      ReadarrAPI.prototype,
+      'addBook',
+      async (payload: ReadarrBookOptions) => ({
+        ...payload,
+        id: 72,
+      })
+    );
+
+    await new MediaRequestSubscriber().sendToReadarr(request);
+
+    const metadata = await getRepository(MediaSearchMetadata).findOneByOrFail({
+      mediaId: media.id,
+    });
+    assert.equal(metadata.title, 'The Return of the King');
+    assert.equal(metadata.author, 'J. R. R. Tolkien');
+  });
+
+  it('keeps an existing book title when Bookshelf adds the book', async () => {
+    const settings = getSettings();
+    settings.readarr = [
+      {
+        id: 20,
+        name: 'Chaptarr',
+        hostname: 'chaptarr.local',
+        port: 8787,
+        apiKey: 'test-key',
+        useSsl: false,
+        activeProfileId: 11,
+        activeProfileName: 'Books',
+        activeMetadataProfileId: 12,
+        activeMetadataProfileName: 'Standard',
+        activeDirectory: '/books',
+        tags: [],
+        is4k: false,
+        isDefault: true,
+        syncEnabled: true,
+        preventSearch: false,
+        tagRequests: false,
+        overrideRule: [],
+        serviceType: 'ebook',
+      },
+    ];
+
+    const requestedBy = await getRequester();
+    const media = await getRepository(Media).save(
+      new Media({
+        mediaType: MediaType.BOOK,
+        tmdbId: 0,
+        status: MediaStatus.PENDING,
+        status4k: MediaStatus.UNKNOWN,
+        identifiers: [
+          new MediaIdentifier({
+            provider: MediaIdentifierProvider.BOOKSHELF,
+            value: makeBookshelfBookId(20, '374541'),
+            canonical: true,
+          }),
+        ],
+      })
+    );
+    await getRepository(MediaSearchMetadata).save(
+      getRepository(MediaSearchMetadata).create({
+        mediaId: media.id,
+        title: 'Open Library Title',
+        searchText: 'open library title',
+      })
+    );
+    const request = await createApprovedRequest(media, requestedBy);
+    mock.method(
+      ReadarrAPI.prototype,
+      'lookupBookByProviderIdentity',
+      async () => ({
+        title: 'The Return of the King',
+        foreignBookId: 'hc:374541',
+        author: {
+          foreignAuthorId: 'hc:author-1',
+          authorName: 'J. R. R. Tolkien',
+        },
+        editions: [
+          {
+            foreignEditionId: 'hc:edition-1',
+            title: 'The Return of the King',
+            monitored: true,
+          },
+        ],
+      })
+    );
+    mock.method(
+      ReadarrAPI.prototype,
+      'addBook',
+      async (payload: ReadarrBookOptions) => ({
+        ...payload,
+        id: 72,
+      })
+    );
+
+    await new MediaRequestSubscriber().sendToReadarr(request);
+
+    const metadata = await getRepository(MediaSearchMetadata).findOneByOrFail({
+      mediaId: media.id,
+    });
+    assert.equal(metadata.title, 'Open Library Title');
+    assert.equal(metadata.author, 'J. R. R. Tolkien');
+  });
+
   it('does not save Bookshelf identifiers already linked to another book media row', async () => {
     const settings = getSettings();
     settings.readarr = [

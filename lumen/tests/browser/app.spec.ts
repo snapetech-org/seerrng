@@ -493,9 +493,6 @@ test('recent searches discard shared history and stay with their account', async
   await page.route('**/api/v1/search?**', (route) =>
     route.fulfill({ json: paged([]) })
   );
-  await page.route('**/seerr-classic/hcsearch?**', (route) =>
-    route.fulfill({ json: [] })
-  );
   const search = page
     .locator('input[type="search"]')
     .filter({ visible: true })
@@ -575,9 +572,6 @@ test('unavailable history storage still permits searching', async ({
   });
   await page.route('**/api/v1/search?**', (route) =>
     route.fulfill({ json: paged([]) })
-  );
-  await page.route('**/seerr-classic/hcsearch?**', (route) =>
-    route.fulfill({ json: [] })
   );
   await page.goto('/search');
   await expect(

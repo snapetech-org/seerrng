@@ -15,6 +15,7 @@ import {
   runWithRequestAdmission,
 } from '@server/entity/MediaRequest';
 import MediaRequestStatusEvent from '@server/entity/MediaRequestStatusEvent';
+import { MediaSearchMetadata } from '@server/entity/MediaSearchMetadata';
 import { User } from '@server/entity/User';
 import notificationManager, { Notification } from '@server/lib/notifications';
 import { getSettings } from '@server/lib/settings';
@@ -741,6 +742,366 @@ describe('BookRequestSearchManager', () => {
     assert.equal(retained.binderyRequestId, 93);
   });
 
+  for (const selectedEdition of [null, 'hc:333']) {
+    it(`recovers a legacy pending work using current edition policy ${selectedEdition}`, async () => {
+      const { media, request } = await createTrackedRequest({
+        createdBook: false,
+        createdAuthor: false,
+        pendingId: 901,
+        providerBookId: '18979356',
+      });
+      await getRepository(MediaRequest).update(request.id, {
+        preferredEditionId: selectedEdition,
+      });
+      await getRepository(BookRequestSearch).update(
+        { requestId: request.id },
+        { pendingId: null, providerEditionId: '192016103' }
+      );
+      await getRepository(MediaSearchMetadata).save(
+        getRepository(MediaSearchMetadata).create({
+          mediaId: media.id,
+          title: 'Wool',
+          author: 'Hugh Howey',
+        })
+      );
+      const local = mock.method(
+        ReadarrAPI.prototype,
+        'findLocalBookByTitle',
+        async () =>
+          ({
+            id: 46503,
+            title: 'Wool Omnibus Edition',
+            foreignBookId: 'hc:260468',
+            monitored: true,
+            mediaType: 'ebook',
+            authorId: 102,
+          }) as Awaited<ReturnType<ReadarrAPI['getBook']>>
+      );
+      const remote = mock.method(
+        ReadarrAPI.prototype,
+        'lookupBookByProviderIdentity',
+        async () => {
+          throw new Error('must not use remote metadata');
+        }
+      );
+      const add = mock.method(ReadarrAPI.prototype, 'addBook', async () => {
+        throw new Error('must not add duplicate books');
+      });
+      await bookRequestSearchManager.run();
+      const operation = await getRepository(BookRequestSearch).findOneByOrFail({
+        requestId: request.id,
+      });
+      assert.equal(operation.bookId, 46503);
+      assert.equal(operation.providerBookId, 'hc:260468');
+      assert.equal(operation.providerEditionId, selectedEdition);
+      assert.equal(operation.state, 'monitoring');
+      assert.equal(operation.providerManagedSearch, false);
+      assert.equal(
+        (await getRepository(Media).findOneByOrFail({ id: media.id }))
+          .externalServiceId,
+        46503
+      );
+      assert.deepEqual(local.mock.calls[0].arguments[0], {
+        title: 'Wool',
+        authorName: 'Hugh Howey',
+        providerBookId: '18979356',
+        allowedLanguages: [],
+        openLibraryWorkId: undefined,
+        isbn: undefined,
+        editionId: selectedEdition ?? undefined,
+      });
+      assert.equal(remote.mock.calls.length, 0);
+      assert.equal(add.mock.calls.length, 0);
+      if (selectedEdition == null) {
+        mock.method(
+          ReadarrAPI.prototype,
+          'getBookIfExists',
+          async (id: number) => ({
+            id,
+            title: 'Wool Omnibus Edition',
+            foreignBookId: 'hc:260468',
+            statistics: { bookFileCount: 0 },
+          })
+        );
+        const search = mock.method(
+          ReadarrAPI.prototype,
+          'startBookSearch',
+          async () => ({
+            id: 9001,
+            name: 'BookSearch',
+            status: 'started',
+          })
+        );
+        mock.method(ReadarrAPI.prototype, 'getCommand', async () => ({
+          id: 9001,
+          name: 'BookSearch',
+          status: 'started',
+        }));
+        await bookRequestSearchManager.run();
+        await bookRequestSearchManager.run();
+        const searching = await getRepository(
+          BookRequestSearch
+        ).findOneByOrFail({ requestId: request.id });
+        assert.equal(search.mock.calls.length, 1);
+        assert.equal(search.mock.calls[0].arguments[0], 46503);
+        assert.equal(searching.commandId, 9001);
+        assert.equal(searching.state, 'searching');
+        assert.equal(searching.providerManagedSearch, false);
+        assert.equal(remote.mock.calls.length, 0);
+        assert.equal(add.mock.calls.length, 0);
+      }
+    });
+  }
+
+  for (const change of [
+    'cancel',
+    'edition',
+    'service',
+    'target',
+    'owner',
+  ] as const) {
+    it(`does not restore a pending request after ${change} changes during local recovery`, async () => {
+      const { media, request } = await createTrackedRequest({
+        createdBook: false,
+        createdAuthor: false,
+        pendingId: 901,
+        providerBookId: '18979356',
+      });
+      await getRepository(BookRequestSearch).update(
+        { requestId: request.id },
+        { pendingId: null }
+      );
+      await getRepository(MediaSearchMetadata).save(
+        getRepository(MediaSearchMetadata).create({
+          mediaId: media.id,
+          title: 'Wool',
+          author: 'Hugh Howey',
+        })
+      );
+      mock.method(ReadarrAPI.prototype, 'findLocalBookByTitle', async () => {
+        if (change === 'service')
+          getSettings().readarr[0].hostname = 'replacement.local';
+        else if (change === 'owner')
+          await getRepository(BookRequestSearch).update(
+            { requestId: request.id },
+            { providerManagedSearch: true }
+          );
+        else
+          await getRepository(MediaRequest).update(
+            request.id,
+            change === 'cancel'
+              ? { status: MediaRequestStatus.DECLINED }
+              : change === 'target'
+                ? {
+                    serviceTargets: [
+                      {
+                        serviceType: 'readarr',
+                        format: 'ebook',
+                        serverId: 21,
+                        externalServiceId: 42,
+                      },
+                    ],
+                  }
+                : { preferredEditionId: 'hc:444' }
+          );
+        return {
+          id: 46503,
+          title: 'Wool',
+          foreignBookId: 'hc:260468',
+          monitored: true,
+          mediaType: 'ebook',
+        } as Awaited<ReturnType<ReadarrAPI['getBook']>>;
+      });
+      await bookRequestSearchManager.run();
+      const operation = await getRepository(BookRequestSearch).findOneByOrFail({
+        requestId: request.id,
+      });
+      assert.equal(operation.bookId, null);
+      assert.equal(operation.state, 'pending');
+      assert.equal(
+        (await getRepository(Media).findOneByOrFail({ id: media.id }))
+          .externalServiceId,
+        null
+      );
+    });
+  }
+
+  for (const blocked of ['openlibrary-edition', 'active-command'] as const) {
+    it(`retains original pending ownership for ${blocked}`, async () => {
+      const { media, request } = await createTrackedRequest({
+        createdBook: false,
+        createdAuthor: false,
+        pendingId: 901,
+        providerBookId: '18979356',
+      });
+      await getRepository(BookRequestSearch).update(
+        { requestId: request.id },
+        {
+          pendingId: null,
+          providerEditionId: '192016103',
+          commandId: blocked === 'active-command' ? 777 : null,
+        }
+      );
+      if (blocked === 'openlibrary-edition')
+        await getRepository(MediaRequest).update(request.id, {
+          preferredEditionId: 'OL28821775M',
+        });
+      await getRepository(MediaSearchMetadata).save(
+        getRepository(MediaSearchMetadata).create({
+          mediaId: media.id,
+          title: 'Wool',
+          author: 'Hugh Howey',
+        })
+      );
+      const local = mock.method(
+        ReadarrAPI.prototype,
+        'findLocalBookByTitle',
+        async () => undefined
+      );
+      mock.method(
+        ReadarrAPI.prototype,
+        'lookupBookByProviderIdentity',
+        async () => undefined
+      );
+      await bookRequestSearchManager.run();
+      const operation = await getRepository(BookRequestSearch).findOneByOrFail({
+        requestId: request.id,
+      });
+      assert.equal(local.mock.calls.length, 0);
+      assert.equal(operation.bookId, null);
+      assert.equal(operation.providerEditionId, '192016103');
+      assert.equal(
+        operation.commandId,
+        blocked === 'active-command' ? 777 : null
+      );
+    });
+  }
+
+  it('does not append an old audiobook target when a BOTH request changes only that destination', async () => {
+    const { media, request } = await createTrackedRequest({
+      createdBook: false,
+      createdAuthor: false,
+      pendingId: 901,
+      providerBookId: '18979356',
+    });
+    getSettings().readarr[0].serviceType = 'audiobook';
+    const ebookTarget = {
+      serviceType: 'readarr' as const,
+      format: 'ebook' as const,
+      serverId: 99,
+      externalServiceId: 100,
+    };
+    await getRepository(MediaRequest).update(request.id, {
+      bookFormat: 'both',
+      serverId: 99,
+      serviceTargets: [
+        ebookTarget,
+        {
+          serviceType: 'readarr',
+          format: 'audiobook',
+          serverId: 20,
+          externalServiceId: null,
+        },
+      ],
+    });
+    await getRepository(BookRequestSearch).update(
+      { requestId: request.id },
+      { pendingId: null, format: 'audiobook' }
+    );
+    await getRepository(MediaSearchMetadata).save(
+      getRepository(MediaSearchMetadata).create({
+        mediaId: media.id,
+        title: 'Wool',
+        author: 'Hugh Howey',
+      })
+    );
+    mock.method(ReadarrAPI.prototype, 'findLocalBookByTitle', async () => {
+      await getRepository(MediaRequest).update(request.id, {
+        serviceTargets: [
+          ebookTarget,
+          {
+            serviceType: 'readarr',
+            format: 'audiobook',
+            serverId: 21,
+            externalServiceId: 77,
+          },
+        ],
+      });
+      return {
+        id: 46503,
+        title: 'Wool',
+        foreignBookId: 'hc:260468',
+        mediaType: 'audiobook',
+        monitored: true,
+      } as Awaited<ReturnType<ReadarrAPI['getBook']>>;
+    });
+    await bookRequestSearchManager.run();
+    const operation = await getRepository(BookRequestSearch).findOneByOrFail({
+      requestId: request.id,
+    });
+    const current = await getRepository(MediaRequest).findOneByOrFail({
+      id: request.id,
+    });
+    assert.equal(operation.bookId, null);
+    assert.equal(current.serverId, 99);
+    assert.equal(current.serviceTargets?.length, 2);
+    assert.equal(
+      current.serviceTargets?.find((x) => x.format === 'audiobook')?.serverId,
+      21
+    );
+    assert.equal(
+      (await getRepository(Media).findOneByOrFail({ id: media.id }))
+        .audiobookExternalServiceId,
+      null
+    );
+  });
+
+  it('leaves an unpinned pending request unchanged when book language policy restricts selection', async () => {
+    const previous = getSettings().metadataSettings.allowedBookLanguages;
+    try {
+      getSettings().metadataSettings.allowedBookLanguages = ['eng'];
+      const { media, request } = await createTrackedRequest({
+        createdBook: false,
+        createdAuthor: false,
+        pendingId: 901,
+        providerBookId: '18979356',
+      });
+      await getRepository(BookRequestSearch).update(
+        { requestId: request.id },
+        { pendingId: null }
+      );
+      await getRepository(MediaSearchMetadata).save(
+        getRepository(MediaSearchMetadata).create({
+          mediaId: media.id,
+          title: 'Wool',
+          author: 'Hugh Howey',
+        })
+      );
+      const local = mock.method(
+        ReadarrAPI.prototype,
+        'findLocalBookByTitle',
+        async () => undefined
+      );
+      mock.method(
+        ReadarrAPI.prototype,
+        'lookupBookByProviderIdentity',
+        async () => undefined
+      );
+      await bookRequestSearchManager.run();
+      assert.equal(local.mock.calls.length, 0);
+      assert.equal(
+        (
+          await getRepository(BookRequestSearch).findOneByOrFail({
+            requestId: request.id,
+          })
+        ).bookId,
+        null
+      );
+    } finally {
+      getSettings().metadataSettings.allowedBookLanguages = previous;
+    }
+  });
+
   it('keeps a queued Chaptarr author import pending while its format retries', async () => {
     const { request } = await createTrackedRequest({
       createdBook: false,
@@ -851,6 +1212,85 @@ describe('BookRequestSearchManager', () => {
     assert.equal(startBookSearch.mock.callCount(), 0);
     assert.equal(getCommand.mock.callCount(), 0);
   });
+
+  for (const initiallyAvailable of [false, true]) {
+    it(`keeps the tracked HC facade record and finalizes actual files (initially available=${initiallyAvailable})`, async () => {
+      const { media, request } = await createTrackedRequest({
+        createdBook: false,
+        createdAuthor: false,
+        monitoring: true,
+        providerBookId: 'hc:260468',
+      });
+      await getRepository(BookRequestSearch).update(
+        { requestId: request.id },
+        { bookId: 46503 }
+      );
+      await getRepository(Media).update(media.id, { externalServiceId: 46503 });
+      let fileCount = initiallyAvailable ? 1 : 0;
+      mock.method(
+        ReadarrAPI.prototype,
+        'getBookIfExists',
+        async function (this: ReadarrAPI, id: number) {
+          Object.assign(this, {
+            detectedSystemStatus: { appName: 'Chaptarr' },
+            chaptarrDialect: 'hc',
+            chaptarrCapabilities: { features: { formatScopedFacade: true } },
+            requestBaseUrl:
+              'http://bookshelf.local:8787/readarr/hc/ebook/api/v1',
+          });
+          return {
+            id,
+            title: 'Wool',
+            foreignBookId: '260468',
+            statistics: { bookFileCount: fileCount },
+          };
+        }
+      );
+      const remote = mock.method(
+        ReadarrAPI.prototype,
+        'lookupBookByProviderIdentity',
+        async () => {
+          throw new Error('must not rewire a matching tracked record');
+        }
+      );
+      const search = mock.method(
+        ReadarrAPI.prototype,
+        'startBookSearch',
+        async () => ({ id: 9001, name: 'BookSearch', status: 'started' })
+      );
+      let commandStatus = 'started';
+      mock.method(ReadarrAPI.prototype, 'getCommand', async () => ({
+        id: 9001,
+        name: 'BookSearch',
+        status: commandStatus,
+      }));
+      mock.method(ReadarrAPI.prototype, 'getQueue', async () => []);
+      mock.method(ReadarrAPI.prototype, 'getBookHistory', async () => []);
+      await bookRequestSearchManager.run();
+      if (!initiallyAvailable) {
+        assert.equal(search.mock.calls.length, 1);
+        assert.equal(search.mock.calls[0].arguments[0], 46503);
+        await bookRequestSearchManager.run();
+        commandStatus = 'completed';
+        fileCount = 1;
+        await bookRequestSearchManager.run();
+      }
+      assert.equal(remote.mock.calls.length, 0);
+      assert.equal(search.mock.calls.length, initiallyAvailable ? 0 : 1);
+      assert.equal(
+        await getRepository(BookRequestSearch).countBy({
+          requestId: request.id,
+        }),
+        0
+      );
+      const current = await getRepository(Media).findOneByOrFail({
+        id: media.id,
+      });
+      assert.equal(current.externalServiceId, 46503);
+      assert.deepEqual(current.availableEbookServiceIds, [20]);
+      assert.equal(current.status, MediaStatus.AVAILABLE);
+    });
+  }
 
   it('starts and tracks BookSearch until the library scan finds a file', async () => {
     const { media, request } = await createTrackedRequest({
@@ -979,6 +1419,7 @@ describe('BookRequestSearchManager', () => {
       requestId: request.id,
     });
     assert.equal(monitoring.state, 'monitoring');
+    assert.equal(monitoring.providerManagedSearch, true);
     assert.equal(startBookSearch.mock.callCount(), 0);
     assert.equal(getCommand.mock.callCount(), 0);
     assert.equal(getQueue.mock.callCount(), 0);

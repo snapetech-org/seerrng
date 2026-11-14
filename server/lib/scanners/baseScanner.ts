@@ -22,6 +22,8 @@ import SeasonRequest, {
 import type { AudioPlaybackFormat } from '@server/lib/audioPlaybackFormat';
 import {
   getBookAvailabilityStatus,
+  hasBookFileEvidence,
+  isActiveBookFormatRequest,
   recordBookFileAvailability,
 } from '@server/lib/bookAvailability';
 import { matchesComicDestination } from '@server/lib/comicAvailability';
@@ -37,7 +39,7 @@ import logger from '@server/logger';
 import AsyncLock from '@server/utils/asyncLock';
 import { parseBookshelfBookId } from '@server/utils/bookshelfCatalog';
 import { randomUUID } from 'crypto';
-import { In, MoreThan, type Repository } from 'typeorm';
+import { In, MoreThan, type EntityManager, type Repository } from 'typeorm';
 
 // Default scan rates (can be overidden)
 const BUNDLE_SIZE = 20;
@@ -158,6 +160,8 @@ class BaseScanner<T> {
     }
   >();
   private processingSeasonKeys = new Set<string>();
+  // Book format passes already seen in this run: mediaId -> format -> processing.
+  private bookFormatPasses = new Map<number, Map<string, boolean>>();
   private failedShowKeys = new Set<string>();
   private failedShowTvdbKeys = new Set<string>();
   private failedShowProfiles = new Set<boolean>();
@@ -973,6 +977,49 @@ class BaseScanner<T> {
     );
   }
 
+  /**
+   * A book row is shared by its ebook and audiobook servers, but each pass only
+   * sees one of them. Without this, the pass for an idle server downgraded the
+   * PROCESSING status the other server had just (or would shortly) report, so
+   * the status flipped every scan. Returns whether the row should count as
+   * processing for this pass, taking the other format into account.
+   */
+  private async resolveBookProcessing(
+    manager: EntityManager,
+    media: Media,
+    format: 'ebook' | 'audiobook',
+    processing: boolean
+  ): Promise<boolean> {
+    if (!this.running) return processing;
+    const passes =
+      this.bookFormatPasses.get(media.id) ?? new Map<string, boolean>();
+    this.bookFormatPasses.set(media.id, passes);
+    passes.set(format, processing);
+    if (processing || media.status !== MediaStatus.PROCESSING)
+      return processing;
+
+    const other = format === 'ebook' ? 'audiobook' : 'ebook';
+    if (hasBookFileEvidence(media, other)) return false;
+    const otherPass = passes.get(other);
+    if (otherPass !== undefined) return otherPass;
+    // The other server has not reported yet this run (it will correct the
+    // status if it is idle). Keep PROCESSING only while an approved request
+    // still wants that format from a server linked to the row.
+    const linked =
+      other === 'audiobook'
+        ? media.audiobookServiceId != null
+        : media.serviceId != null;
+    if (!linked) return false;
+    const requests = await manager
+      .getRepository(MediaRequest)
+      .find({ where: { media: { id: media.id } } });
+    return requests.some(
+      (request) =>
+        request.status !== MediaRequestStatus.PENDING &&
+        isActiveBookFormatRequest(request, other)
+    );
+  }
+
   protected async processBook(
     provider: MediaIdentifierProvider,
     value: string,
@@ -1126,7 +1173,12 @@ class BaseScanner<T> {
                       );
                       const status = getBookAvailabilityStatus(
                         alias,
-                        processing
+                        await this.resolveBookProcessing(
+                          manager,
+                          alias,
+                          bookServiceType,
+                          processing
+                        )
                       );
                       if (changed || alias.status !== status) {
                         alias.status = status;
@@ -1228,7 +1280,12 @@ class BaseScanner<T> {
 
                   existing.status = getBookAvailabilityStatus(
                     existing,
-                    processing
+                    await this.resolveBookProcessing(
+                      manager,
+                      existing,
+                      bookServiceType,
+                      processing
+                    )
                   );
                   if (existing.status !== previousStatus) {
                     changedExisting = true;
@@ -1389,7 +1446,12 @@ class BaseScanner<T> {
                     );
                     const status = getBookAvailabilityStatus(
                       linked,
-                      processing
+                      await this.resolveBookProcessing(
+                        manager,
+                        linked,
+                        bookServiceType,
+                        processing
+                      )
                     );
                     if (changed || linked.status !== status) {
                       linked.status = status;
@@ -2661,6 +2723,7 @@ class BaseScanner<T> {
     this.failedMovieKeys.clear();
     this.deferredSeasonStatusResets.clear();
     this.processingSeasonKeys.clear();
+    this.bookFormatPasses.clear();
     this.failedShowKeys.clear();
     this.failedShowTvdbKeys.clear();
     this.failedShowProfiles.clear();

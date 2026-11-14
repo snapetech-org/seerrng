@@ -32,13 +32,12 @@ const bookLookupCache = new Map<
     serviceUrl: string;
     apiKey: string;
     serviceType: 'ebook' | 'audiobook';
+    /** A library record: Chaptarr omits editions (and blurbs) from these. */
+    libraryRecord?: boolean;
   }
 >();
 
-const getCachedBook = (
-  id: string,
-  server: ReadarrSettings
-): ReadarrBookLookupResult | undefined => {
+const getCachedBookEntry = (id: string, server: ReadarrSettings) => {
   const entry = bookLookupCache.get(id);
   if (!entry) return undefined;
   if (
@@ -50,7 +49,7 @@ const getCachedBook = (
     bookLookupCache.delete(id);
     return undefined;
   }
-  return entry.book;
+  return entry;
 };
 
 const encodeForeignId = (foreignBookId: string) =>
@@ -303,7 +302,9 @@ export const getBookshelfLibraryBookSeries = async (
         const book = await getApi(server).getBook(bookId, 300);
         if (book.id !== bookId) return [];
 
-        const mapped = mapBookshelfBook(book, serviceId, server);
+        const mapped = mapBookshelfBook(book, serviceId, server, {
+          libraryRecord: true,
+        });
         const authorId =
           typeof book.authorId === 'number' &&
           Number.isSafeInteger(book.authorId) &&
@@ -391,18 +392,27 @@ const getBookshelfReleaseDate = (value?: string): string | undefined => {
 export const mapBookshelfBook = (
   result: ReadarrBookLookupResult,
   serviceId: number,
-  server?: ReadarrSettings
+  server?: ReadarrSettings,
+  options: { libraryRecord?: boolean } = {}
 ): BookResult => {
   if (result.foreignBookId && server?.id === serviceId) {
     const id = makeBookshelfBookId(serviceId, result.foreignBookId);
-    bookLookupCache.delete(id);
-    bookLookupCache.set(id, {
-      book: result,
-      expiresAt: Date.now() + BOOK_LOOKUP_CACHE_TTL_MS,
-      serviceUrl: ReadarrAPI.buildUrl(server, '/api/v1'),
-      apiKey: server.apiKey,
-      serviceType: server.serviceType === 'audiobook' ? 'audiobook' : 'ebook',
-    });
+    // Library and lookup records of one work now share a qualified id; a thin
+    // library record must not replace a fresh lookup record that has editions.
+    const current = options.libraryRecord
+      ? getCachedBookEntry(id, server)
+      : undefined;
+    if (!current || current.libraryRecord) {
+      bookLookupCache.delete(id);
+      bookLookupCache.set(id, {
+        book: result,
+        expiresAt: Date.now() + BOOK_LOOKUP_CACHE_TTL_MS,
+        serviceUrl: ReadarrAPI.buildUrl(server, '/api/v1'),
+        apiKey: server.apiKey,
+        serviceType: server.serviceType === 'audiobook' ? 'audiobook' : 'ebook',
+        ...(options.libraryRecord ? { libraryRecord: true } : {}),
+      });
+    }
     if (bookLookupCache.size > BOOK_LOOKUP_CACHE_LIMIT) {
       bookLookupCache.delete(bookLookupCache.keys().next().value!);
     }
@@ -569,8 +579,13 @@ export const getBookshelfSeriesDetails = async (
         (series) => normalizeSeriesTitle(series.title) === expectedTitle
       )
     );
-    const books = [...nativeMatches, ...catalogMatches].map((book) => {
-      const mappedBook = mapBookshelfBook(book, server.id, server);
+    const books = [
+      ...nativeMatches.map((book) => ({ book, libraryRecord: true })),
+      ...catalogMatches.map((book) => ({ book, libraryRecord: false })),
+    ].map(({ book, libraryRecord }) => {
+      const mappedBook = mapBookshelfBook(book, server.id, server, {
+        libraryRecord,
+      });
       return {
         ...mappedBook,
         series: mappedBook.series?.map((series) =>
@@ -648,14 +663,20 @@ export const getBookshelfAuthorDetails = async (
       api.lookupAuthor(parsed.authorName),
       api.lookupBook(parsed.authorName),
     ]);
-    const author = authorMatches.find(
-      (candidate) => candidate.foreignAuthorId === parsed.foreignAuthorId
+    // Book records qualify author ids (hc:123) where author lookups can keep
+    // them bare (123); both spellings name one author on this service.
+    const authorIds = new Set(
+      api.getKnownBookIdentityAliases(parsed.foreignAuthorId)
+    );
+    const author = authorMatches.find((candidate) =>
+      authorIds.has(candidate.foreignAuthorId)
     );
     if (!author) return undefined;
     const books = bookMatches
       .filter(
         (book) =>
-          book.author?.foreignAuthorId === parsed.foreignAuthorId ||
+          (!!book.author?.foreignAuthorId &&
+            authorIds.has(book.author.foreignAuthorId)) ||
           book.author?.authorName?.toLowerCase() ===
             parsed.authorName.toLowerCase()
       )
@@ -749,7 +770,9 @@ export const getBookshelfBookLibrary = async (
     audiobookServers.map(async (server) =>
       (await getApi(server).getBooks())
         .filter((book) => book.foreignBookId)
-        .map((book) => mapBookshelfBook(book, server.id, server))
+        .map((book) =>
+          mapBookshelfBook(book, server.id, server, { libraryRecord: true })
+        )
     )
   );
   if (
@@ -791,7 +814,9 @@ export const getBookshelfAudiobookLibraryPage = async (
       return {
         books: page.books
           .filter((book) => book.foreignBookId)
-          .map((book) => mapBookshelfBook(book, server.id, server)),
+          .map((book) =>
+            mapBookshelfBook(book, server.id, server, { libraryRecord: true })
+          ),
         totalCount: page.totalCount,
       };
     })
@@ -834,7 +859,9 @@ export const searchBookshelfNarrators = async (
       const books = await getApi(server).getBooks();
       return books
         .filter((book) => book.foreignBookId)
-        .map((book) => mapBookshelfBook(book, server.id, server))
+        .map((book) =>
+          mapBookshelfBook(book, server.id, server, { libraryRecord: true })
+        )
         .filter(
           (book) =>
             book.narrators?.length &&
@@ -878,14 +905,15 @@ const getBookshelfBookDetailsUnbounded = async (
   if (!server) return undefined;
   try {
     const api = getApi(server);
-    let result: ReadarrBookLookupResult | undefined = getCachedBook(id, server);
-    // Library listings cache the server's native book resource under the bare
-    // numeric id, and Chaptarr omits editions (so every blurb) from those.
-    // Such a record cannot describe the book: resolve it through the provider
-    // lookup instead, and keep the cached record only if that finds nothing.
+    const cached = getCachedBookEntry(id, server);
+    let result: ReadarrBookLookupResult | undefined = cached?.book;
+    // Library listings cache the server's book resource, and Chaptarr omits
+    // editions (so every blurb) from those. Such a record cannot describe the
+    // book: resolve it through the provider lookup instead, and keep the
+    // cached record only if that finds nothing.
     const thinCachedBook =
       result &&
-      /^\d+$/.test(parsed.foreignBookId) &&
+      (cached?.libraryRecord || /^\d+$/.test(parsed.foreignBookId)) &&
       !hasEditionOverview(result)
         ? result
         : undefined;

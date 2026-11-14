@@ -21,16 +21,16 @@ import {
 } from '../components/cards';
 import { Avatar } from '../components/Shell';
 import { useExtras } from '../extras';
-import { cachedApi, useApi, useEbookCovers } from '../hooks';
+import { cachedApi, useApi } from '../hooks';
 import { Icon, type IconName } from '../icons';
-import { sessionGeneration } from '../sessionState';
-import { usePrefs } from '../settings';
 import {
+  enrichRecentMediaTitles,
   RECENT_MEDIA_QUERY,
   RECENT_ROW_CACHE_KEY,
-  enrichRecentMediaTitles,
   recentMediaTitles,
 } from '../recentMedia';
+import { sessionGeneration } from '../sessionState';
+import { usePrefs } from '../settings';
 
 // Rows that are switched off (or have no service behind them) don't fetch anything, and
 // rows use saved answers (useApi): every call counts against SeerrNG's per-account rate limit.
@@ -142,7 +142,7 @@ export default function Discover() {
   });
   const withCovers = (r?: Paged<BookResult> | null) =>
     (r?.results || []).filter((b) => b.posterPath).slice(0, 14);
-  const ebookCards = useEbookCovers(withCovers(books.data));
+  const ebookCards = withCovers(books.data);
   // a row that loaded with nothing in it is left out, not shown as a bare heading
   const empty = (d: unknown[] | undefined) => d !== undefined && !d.length;
 

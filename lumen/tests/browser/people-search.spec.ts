@@ -236,7 +236,9 @@ test('person credits refetch after a category or maturity policy tightens', asyn
   let movieCreditAllowed = true;
   let creditRequests = 0;
   page.on('request', (request) => {
-    if (new URL(request.url()).pathname === '/api/v1/person/77/combined_credits')
+    if (
+      new URL(request.url()).pathname === '/api/v1/person/77/combined_credits'
+    )
       creditRequests++;
   });
   await fixtures(page, false, {

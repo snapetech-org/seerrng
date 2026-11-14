@@ -123,14 +123,18 @@ function ComicRail({
   );
 }
 
+// owned, wholly or in part: the same test as the In library list
+const inLibrary = (w: ComicWork) =>
+  w.mediaInfo?.status === MediaStatus.AVAILABLE ||
+  w.mediaInfo?.status === MediaStatus.PARTIAL;
+
 // ---- comics and manga: manga from AniList, Western comics from ComicVine; one card per
 // work with its editions inside; searching is the top search bar's job ----
 export function Comics() {
   const [p, setP] = useSearchParams();
   const type = (['manga', 'comic'] as const).find((t) => t === p.get('type'));
-  const show = (['library', 'requested'] as const).find(
-    (s) => s === p.get('show')
-  );
+  // All / In library / Not yet, as on Books: Not yet is the browse feed minus owned works
+  const show = (['library', 'not'] as const).find((s) => s === p.get('show'));
   const picked = (p.get('genre') || '').split(',').filter(Boolean);
   const status = p.get('status') || '';
   const publisher = p.get('publisher') || '';
@@ -143,7 +147,7 @@ export function Comics() {
   const publishers = landing.data?.publishers || [];
   const kind = type || 'manga';
   const q = new URLSearchParams({ type: kind });
-  if (show) {
+  if (show === 'library') {
     q.set('show', show);
     if (!type) q.delete('type');
   }
@@ -155,8 +159,19 @@ export function Comics() {
   // a work can come back on a later page too
   const seen = new Set<string>();
   const items = list.items.filter((w) =>
-    seen.has(w.id) ? false : (seen.add(w.id), true)
+    seen.has(w.id) ? false : (seen.add(w.id), !(show === 'not' && inLibrary(w)))
   );
+  // Not yet: a page can be all owned works; fetch on until something shows or the feed ends
+  const hiddenPage =
+    show === 'not' &&
+    !items.length &&
+    list.page > 0 &&
+    !list.done &&
+    !list.loading &&
+    !list.error;
+  useEffect(() => {
+    if (hiddenPage) list.more();
+  }, [hiddenPage, list]);
   const upd = (changes: Record<string, string | null>) => {
     const n = new URLSearchParams(p);
     for (const [k, v] of Object.entries(changes)) {
@@ -170,15 +185,16 @@ export function Comics() {
     upd({ ...changes, ...(type ? {} : { type: 'manga' }) });
   const noKey = landing.data?.comicVineConfigured === false;
   const sorts = kind === 'comic' ? COMIC_SORTS : MANGA_SORTS;
-  const gridTitle = show
-    ? show === 'library'
+  const gridTitle =
+    show === 'library'
       ? 'In your library'
-      : 'Requested'
-    : kind === 'comic'
-      ? 'Western comics'
-      : picked.length || status || sort
-        ? 'Manga'
-        : 'Popular manga';
+      : show === 'not'
+        ? 'Not in your library yet'
+        : kind === 'comic'
+          ? 'Western comics'
+          : picked.length || status || sort
+            ? 'Manga'
+            : 'Popular manga';
 
   return (
     <ExtraGate k="comic">
@@ -228,7 +244,7 @@ export function Comics() {
             [
               ['', 'All'],
               ['library', 'In library'],
-              ['requested', 'Requested'],
+              ['not', 'Not yet'],
             ] as const
           ).map(([v, t]) => (
             <button
@@ -240,7 +256,7 @@ export function Comics() {
             </button>
           ))}
         </div>
-        {!show && (
+        {show !== 'library' && (
           <label className="sel">
             <span className="lbl">Sort</span>
             <select
@@ -266,7 +282,7 @@ export function Comics() {
             </select>
           </label>
         )}
-        {kind === 'manga' && !show && (
+        {kind === 'manga' && show !== 'library' && (
           <label className="sel">
             <span className="lbl">Status</span>
             <select
@@ -343,30 +359,35 @@ export function Comics() {
         {list.error && !items.length && (
           <ServiceNote error={list.error} what="comics" retry={list.retry} />
         )}
-        {!list.error && !items.length && !list.loading && list.page > 0 && (
-          <div className="empty">
-            {show ? (
-              <>
-                <b>
-                  {show === 'library'
-                    ? 'Nothing in the library yet'
-                    : 'Nothing requested'}
-                </b>
-                Request a series and it shows up here.
-              </>
-            ) : kind === 'comic' ? (
-              <>
-                <b>Western comics are still being catalogued</b>
-                SeerrNG is reading ComicVine’s catalogue in the background. Use
-                the search bar to find a series meanwhile.
-              </>
-            ) : (
-              <>
-                <b>Nothing here</b>Try another genre, or switch to All.
-              </>
-            )}
-          </div>
-        )}
+        {!list.error &&
+          !items.length &&
+          !list.loading &&
+          list.page > 0 &&
+          (show !== 'not' || list.done) && (
+            <div className="empty">
+              {show === 'library' ? (
+                <>
+                  <b>Nothing in the library yet</b>
+                  Request a series and it shows up here.
+                </>
+              ) : show === 'not' ? (
+                <>
+                  <b>You have all of these</b>Try another genre, or switch to
+                  All.
+                </>
+              ) : kind === 'comic' ? (
+                <>
+                  <b>Western comics are still being catalogued</b>
+                  SeerrNG is reading ComicVine’s catalogue in the background.
+                  Use the search bar to find a series meanwhile.
+                </>
+              ) : (
+                <>
+                  <b>Nothing here</b>Try another genre, or switch to All.
+                </>
+              )}
+            </div>
+          )}
         {list.loading && !items.length && list.page === 0 && (
           <GridSkeleton className="comic-grid grid" />
         )}

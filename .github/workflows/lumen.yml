@@ -42,7 +42,7 @@ jobs:
       - name: Install current Trivy image scanner
         uses: ./.github/actions/setup-trivy
         with:
-          version: latest
+          version: v0.76.2
       - name: Reject fixable HIGH and CRITICAL production-image vulnerabilities
         run: >-
           trivy image --input "${{ runner.temp }}/lumen-production-image.tar"

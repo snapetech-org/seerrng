@@ -140,9 +140,6 @@ async function fixtures(
   const calls: string[] = [];
   await page.route('https://**/*', (r) => r.abort());
   await page.route('**/lumen-config.json', (r) => r.fulfill({ json: {} }));
-  await page.route('**/seerr-classic/**', (r) =>
-    r.fulfill({ status: 404, body: '' })
-  );
   await page.route('**/api/v1/**', (route) => {
     const url = new URL(route.request().url());
     const path = url.pathname.slice(7);

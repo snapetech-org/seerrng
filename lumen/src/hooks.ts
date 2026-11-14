@@ -3,9 +3,8 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import {
   api,
   ApiError,
+  bookCovers,
   bookMediaForFormat,
-  hardcoverWorkId,
-  hcCovers,
   MediaStatus,
   type BookResult,
   type MediaInfo,
@@ -364,9 +363,7 @@ async function fetchOwnedBooks(format: BookFormat): Promise<OwnedBooks> {
   for (let page = 1; page <= MAX_LIBRARY_PAGES; page++) {
     const d = await cachedApi<
       Partial<Paged<BookResult>> & { totalResults?: number }
-    >(
-      `/book/library?format=${format}&page=${page}`
-    );
+    >(`/book/library?format=${format}&page=${page}`);
     if (!d || !Array.isArray(d.results)) {
       throw new Error('Invalid book library response');
     }
@@ -449,37 +446,34 @@ export function bookMediaWithLibrary(
   const mi = bookMediaForFormat(b.mediaInfo, format);
   if (mi?.status === MediaStatus.AVAILABLE || !lib) return mi;
   const work = ownedWorkKey(b.id);
-  const match =
-    lib.byId.get(b.id) ??
-    (work ? lib.byWork.get(work) : undefined);
+  const match = lib.byId.get(b.id) ?? (work ? lib.byWork.get(work) : undefined);
   return match ?? mi;
 }
 
-// ebook covers: Hardcover's book cover when the companion has one, else what SeerrNG gave;
-// with onlyMissing (audiobooks, whose square art is kept) only books with no art at all
-export function useEbookCovers<
+// books that came back with no cover get the one on their own detail page (a few at a time)
+const MAX_COVER_LOOKUPS = 12;
+export function useMissingCovers<
   T extends { id: string; posterPath?: string | null },
->(books: T[], onlyMissing = false): T[] {
+>(books: T[]): T[] {
   const [covers, setCovers] = useState<Map<string, string | undefined>>(
     new Map()
   );
-  const wanted = onlyMissing ? books.filter((b) => !b.posterPath) : books;
-  const key = wanted.map((b) => b.id).join(',');
+  const wanted = books
+    .filter((b) => !b.posterPath)
+    .map((b) => b.id)
+    .slice(0, MAX_COVER_LOOKUPS);
+  const key = wanted.join(',');
   useEffect(() => {
-    const works = wanted
-      .map((b) => hardcoverWorkId(b.id))
-      .filter(Boolean) as string[];
-    if (!works.length) return;
+    if (!wanted.length) return;
     let live = true;
-    hcCovers(works).then((m) => live && setCovers(m));
+    bookCovers(wanted).then((m) => live && setCovers(m));
     return () => {
       live = false;
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [key]);
   return books.map((b) => {
-    if (onlyMissing && b.posterPath) return b;
-    const c = covers.get(hardcoverWorkId(b.id) || '');
+    const c = b.posterPath ? undefined : covers.get(b.id);
     return c ? { ...b, posterPath: c } : b;
   });
 }

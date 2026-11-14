@@ -78,6 +78,7 @@ import {
 } from '@server/lib/magazineIdentity';
 import { isMangaComicVineVolume } from '@server/lib/mangaVolume';
 import { runMediaEntityMutation } from '@server/lib/mediaMutation';
+import { upsertMissingBookMetadata } from '@server/lib/mediaSearchMetadata';
 import { upsertMediaServiceStatus } from '@server/lib/mediaServiceStatus';
 import { getLidarrAlbumMediaStatus } from '@server/lib/musicAvailability';
 import notificationManager, { Notification } from '@server/lib/notifications';
@@ -3634,6 +3635,20 @@ export class MediaRequestSubscriber implements EntitySubscriberInterface<MediaRe
         }
 
         await mediaRepository.save(media);
+        await upsertMissingBookMetadata(media.id, {
+          title: result.title || bookInfo.title,
+          author:
+            result.author?.authorName ||
+            bookInfo.author?.authorName ||
+            bookInfo.authorTitle,
+          externalIds: providerBookId,
+        });
+        // Media is saved again for the other format below; keep its loaded
+        // search metadata in sync so that save does not detach the new row.
+        media.searchMetadata =
+          (await getRepository(MediaSearchMetadata).findOne({
+            where: { mediaId: media.id },
+          })) ?? undefined;
         await saveRequestServiceTarget(entity, {
           serviceType: 'readarr',
           format: serviceType,

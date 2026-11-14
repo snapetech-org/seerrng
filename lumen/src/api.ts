@@ -240,7 +240,7 @@ export const tmdbImg = (path: string | undefined | null, size = 'w342') => {
   return `/imageproxy/tmdb/t/p/${safeSize}${path}`;
 };
 
-// ComicVine, AniList and Open Library covers through SeerrNG's image proxy (cached on the
+// ComicVine, AniList, Hardcover and Open Library covers through SeerrNG's image proxy (cached on the
 // server, and no third-party requests from the browser); other https covers are used as given
 const PROXIED_ART: Record<string, string> = {
   'comicvine.gamespot.com': '/imageproxy/comicvine/',
@@ -248,6 +248,7 @@ const PROXIED_ART: Record<string, string> = {
   'comicvine1.cbsistatic.com': '/imageproxy/comicvinestatic1/',
   's4.anilist.co': '/imageproxy/anilist/',
   'covers.openlibrary.org': '/imageproxy/openlibrarycovers/',
+  'assets.hardcover.app': '/imageproxy/hardcover/',
 };
 // an https address without a user name or password, or undefined
 const httpsArt = (raw: string) => {
@@ -323,12 +324,13 @@ export const requestSeries = (
   o: RequestOptions = {}
 ) => post({ mediaType: 'tv', mediaId: id, seasons, ...o });
 // books: the format decides which ChaptarrNG server; an edition pins one narration
-// policy 'only' = exactly that narration; 'either' = that edition is the target, other copies OK
+// policy 'only' = exactly that narration; 'either' = that edition is the target, other copies OK;
+// 'alongside' = add that narration as a separate copy next to the one already in the library
 export const requestBook = (
   id: string,
   format: 'ebook' | 'audiobook',
   editionId?: string,
-  policy: 'only' | 'either' = 'only'
+  policy: 'only' | 'either' | 'alongside' = 'only'
 ) =>
   post({
     mediaType: 'book',
@@ -381,66 +383,6 @@ export async function englishAudioEdition(
 export const cancelRequest = (id: number) =>
   api(`/request/${id}`, { method: 'DELETE' });
 
-// ---- ChaptarrNG extras (served by the SeerrNG companion proxy at /seerr-classic/) ----
-// SeerrNG refuses a second request once an audiobook is in the library, and its edition list
-// doesn't say which narrations are already there. ChaptarrNG's own lookup does, and the
-// companion's /narration endpoint adds another narration as a separate copy.
-export interface ChaptarrEdition {
-  id: number;
-  bookId: number;
-  foreignEditionId: string;
-  narratorNames?: string[];
-  narrator?: string;
-  language?: string;
-  durationSeconds?: number;
-  publisher?: string;
-  releaseDate?: string;
-  format?: string;
-  bookFileCount?: number;
-}
-export interface ChaptarrWork {
-  id?: number;
-  title: string;
-  editions?: ChaptarrEdition[];
-  localAudiobookBooks?: {
-    id: number;
-    title: string;
-    narrator?: string;
-    hasFiles: boolean;
-    monitored?: boolean;
-  }[];
-}
-export async function chaptarrWork(
-  workId: string
-): Promise<ChaptarrWork[] | null> {
-  const res = await fetch(
-    `/seerr-classic/lookup?f=audiobook&d=hc&id=${encodeURIComponent(workId)}`,
-    { credentials: 'same-origin', cache: 'no-cache' }
-  );
-  if (!res.ok) return null; // companion not installed: Lumen falls back to SeerrNG alone
-  return res.json();
-}
-export async function requestAnotherNarration(
-  bookId: number,
-  editionId: number
-) {
-  const res = await fetch('/seerr-classic/narration', {
-    method: 'POST',
-    credentials: 'same-origin',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ bookId, editionId }),
-  });
-  const body = await res.json().catch(() => ({}));
-  if (!res.ok)
-    throw new ApiError(res.status, body.error || 'The request failed.');
-  markAllStale();
-  return body as {
-    ok: true;
-    bookId: number;
-    narrators: string;
-    alreadyTracked: boolean;
-  };
-}
 // "Tracy-Ann Oberman" and "Tracy Ann Oberman" are the same person
 export const narratorKey = (names?: (string | null | undefined)[] | null) =>
   (names || [])
@@ -675,6 +617,13 @@ export interface Edition {
   selected?: boolean;
   requestable?: boolean; // false: no edition id SeerrNG can pin a request to
 }
+// GET /editions/book: 'library' lists what the book service tracks (owned / selected are real);
+// 'lookup' is a catalogue preview where selected is only the suggested pick
+export interface EditionList {
+  editions: Edition[];
+  supportsAlongside?: boolean;
+  source?: 'library' | 'lookup' | 'none';
+}
 export interface DownloadItem {
   size: number;
   sizeLeft: number;
@@ -714,33 +663,29 @@ export interface RequestItem {
   };
 }
 
-// Hardcover book covers through the companion (one GraphQL call per 30 ids, images cached on
-// the server). Ebook lists otherwise show square audiobook art cropped into a book shape.
-const coverCache = new Map<string, string | undefined>();
-export async function hcCovers(
-  works: string[]
-): Promise<Map<string, string | undefined>> {
-  const missing = [...new Set(works)].filter((w) => !coverCache.has(w));
-  for (let i = 0; i < missing.length; i += 30) {
-    const ids = missing.slice(i, i + 30);
-    try {
-      const c = await fetch(`/seerr-classic/hccovers?ids=${ids.join(',')}`, {
-        credentials: 'same-origin',
-      });
-      if (!c.ok) break; // no companion: keep the covers SeerrNG gave
-      const d: {
-        data?: { books?: { id: number; image?: { url?: string } }[] };
-      } = await c.json();
-      const byId = new Map(
-        (d.data?.books || []).map((x) => [String(x.id), x.image?.url || ''])
-      );
-      for (const w of ids) {
-        const path = proxiedArtPath(byId.get(w) || '', 'assets.hardcover.app');
-        coverCache.set(w, path ? `/seerr-classic/hcimg/${path}` : undefined);
-      }
-    } catch {
-      break;
-    }
+// A book with no cover in a list gets the one on its own detail page. SeerrNG's book lookup
+// has it (Hardcover art, served through /imageproxy/hardcover), so no extra service is needed.
+// Answers are kept for the session; a failed lookup is not retried.
+const coverCache = new Map<string, Promise<string | undefined>>();
+export function bookCover(id: string): Promise<string | undefined> {
+  let hit = coverCache.get(id);
+  if (!hit) {
+    hit = api<BookDetails>(`/book/${encodeURIComponent(id)}`)
+      .then((d) => bookArt(d.posterPath))
+      .catch(() => undefined);
+    coverCache.set(id, hit);
   }
-  return new Map(works.map((w) => [w, coverCache.get(w)]));
+  return hit;
+}
+export async function bookCovers(
+  ids: string[]
+): Promise<Map<string, string | undefined>> {
+  const out = new Map<string, string | undefined>();
+  const queue = [...new Set(ids)];
+  const worker = async () => {
+    for (let id = queue.shift(); id; id = queue.shift())
+      out.set(id, await bookCover(id));
+  };
+  await Promise.all([worker(), worker(), worker()]);
+  return out;
 }

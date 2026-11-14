@@ -14,7 +14,7 @@ import { Avatar } from '../components/Shell';
 import {
   bookMediaWithLibrary,
   useApi,
-  useEbookCovers,
+  useMissingCovers,
   useOwnedBooks,
   usePaged,
 } from '../hooks';
@@ -317,8 +317,8 @@ function BookRow({
         bookMediaWithLibrary(b, format, null)?.status === MediaStatus.AVAILABLE
     )
     .slice(0, ROW_MAX);
-  // audiobooks keep their square art; Hardcover only fills in a missing cover
-  const books = useEbookCovers(raw, audio);
+  // a book with no cover gets the one on its detail page
+  const books = useMissingCovers(raw);
   if (row.data && !books.length) return null;
   // the library row is a bonus: no access to it just leaves it out
   if (row.error && owned) return null;
@@ -391,7 +391,7 @@ function BooksGrid({
                 ? !identityUnknown(b) && !have(b)
                 : true
           );
-  const items = useEbookCovers(raw, audio);
+  const items = useMissingCovers(raw);
   const hiddenOnlyPage =
     show === 'not' && unknownCount > 0 && items.length === 0 && !list.done;
   // Not yet hides owned books here, page by page: with most of a feed owned the grid stays

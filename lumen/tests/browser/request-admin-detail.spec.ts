@@ -6,8 +6,9 @@ test('request managers see the pending count and can approve a book in place', a
   page,
 }, testInfo) => {
   let approved = false;
-  await page.route('**/lumen-config.json', (route) => route.fulfill({ json: {} }));
-  await page.route('**/seerr-classic/**', (route) => route.fulfill({ status: 404 }));
+  await page.route('**/lumen-config.json', (route) =>
+    route.fulfill({ json: {} })
+  );
   await page.route('**/api/v1/**', (route) => {
     const { pathname } = new URL(route.request().url());
     const path = pathname.slice('/api/v1'.length);
@@ -41,7 +42,9 @@ test('request managers see the pending count and can approve a book in place', a
           author: 'Ada Writer',
           mediaInfo: {
             status: approved ? 3 : 2,
-            requests: [{ id: 17, status: approved ? 2 : 1, bookFormat: 'ebook' }],
+            requests: [
+              { id: 17, status: approved ? 2 : 1, bookFormat: 'ebook' },
+            ],
           },
         },
       });
@@ -49,14 +52,18 @@ test('request managers see the pending count and can approve a book in place', a
   });
 
   await page.goto('/requests');
-  await expect(page.locator('[aria-label="1 pending requests"]:visible')).toHaveCount(1);
+  await expect(
+    page.locator('[aria-label="1 pending requests"]:visible')
+  ).toHaveCount(1);
   if (process.env.UI_EVIDENCE_DIR)
     await page.screenshot({
       path: `${process.env.UI_EVIDENCE_DIR}/${testInfo.project.name}-requests.png`,
       fullPage: true,
     });
   await page.goto(`/book/${encodeURIComponent(bookId)}`);
-  await expect(page.getByRole('button', { name: 'Approve request' })).toBeVisible();
+  await expect(
+    page.getByRole('button', { name: 'Approve request' })
+  ).toBeVisible();
   if (process.env.UI_EVIDENCE_DIR)
     await page.screenshot({
       path: `${process.env.UI_EVIDENCE_DIR}/${testInfo.project.name}-book.png`,
@@ -64,5 +71,7 @@ test('request managers see the pending count and can approve a book in place', a
     });
   await page.getByRole('button', { name: 'Approve request' }).click();
   await expect.poll(() => approved).toBe(true);
-  await expect(page.getByRole('button', { name: 'Approve request' })).toHaveCount(0);
+  await expect(
+    page.getByRole('button', { name: 'Approve request' })
+  ).toHaveCount(0);
 });

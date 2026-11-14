@@ -1,7 +1,13 @@
-import { MediaStatus, MediaType } from '@server/constants/media';
+import {
+  MediaRequestStatus,
+  MediaStatus,
+  MediaType,
+} from '@server/constants/media';
 import { getRepository } from '@server/datasource';
 import Media from '@server/entity/Media';
 import { MediaIdentifierProvider } from '@server/entity/MediaIdentifier';
+import { MediaRequest } from '@server/entity/MediaRequest';
+import { User } from '@server/entity/User';
 import {
   hasAvailableBookFormat,
   isRequestedBookFormatAvailable,
@@ -15,6 +21,12 @@ import { it } from 'node:test';
 class BookScanner extends BaseScanner<never> {
   constructor() {
     super('Book format proof');
+  }
+  begin() {
+    return this.startRun();
+  }
+  finish(sessionId: string) {
+    this.endRun(sessionId);
   }
   scan(options: ProcessOptions) {
     return this.processBook(MediaIdentifierProvider.ISBN, '9780261103573', {
@@ -140,4 +152,108 @@ it('an incomplete file observation preserves a previously confirmed copy', async
     processing: true,
   });
   assert.equal(hasAvailableBookFormat(await read(), 'ebook'), true);
+});
+
+// A shared book row is linked to an ebook server and an audiobook server, and a
+// scan processes both. The idle server's pass must not downgrade the status the
+// busy server's pass reported.
+const requestBook = async (bookFormat: 'ebook' | 'audiobook') => {
+  const media = await read();
+  const requestedBy = await getRepository(User).findOneOrFail({
+    where: { email: 'friend@seerr.dev' },
+  });
+  // Insert without listeners so the request dispatch queue stays out of the scan.
+  await getRepository(MediaRequest)
+    .createQueryBuilder()
+    .insert()
+    .values({
+      type: MediaType.BOOK,
+      status: MediaRequestStatus.APPROVED,
+      media,
+      requestedBy,
+      is4k: false,
+      bookFormat,
+    })
+    .callListeners(false)
+    .execute();
+  await getRepository(Media)
+    .createQueryBuilder()
+    .update()
+    .set({ status: MediaStatus.PROCESSING })
+    .where('id = :id', { id: media.id })
+    .callListeners(false)
+    .execute();
+};
+const ebookIdle = {
+  bookServiceType: 'ebook',
+  serviceId: 0,
+  externalServiceId: 10,
+  hasFile: false,
+  processing: false,
+} as const;
+const audiobookBusy = {
+  bookServiceType: 'audiobook',
+  serviceId: 1,
+  externalServiceId: 20,
+  hasFile: false,
+  processing: true,
+} as const;
+const runScan = async (
+  scanner: BookScanner,
+  passes: ProcessOptions[],
+  afterEachPass?: (media: Media) => void
+): Promise<void> => {
+  const sessionId = scanner.begin();
+  assert.ok(sessionId);
+  try {
+    for (const pass of passes) {
+      await scanner.scan(pass);
+      afterEachPass?.(await read());
+    }
+  } finally {
+    scanner.finish(sessionId);
+  }
+};
+
+for (const order of ['ebook first', 'audiobook first'] as const)
+  it(`an idle ebook server cannot downgrade an audiobook-only request being processed (${order})`, async () => {
+    const scanner = new BookScanner();
+    await runScan(scanner, [audiobookBusy, ebookIdle]);
+    await requestBook('audiobook');
+    for (let i = 0; i < 3; i++) {
+      await runScan(
+        scanner,
+        order === 'ebook first'
+          ? [ebookIdle, audiobookBusy]
+          : [audiobookBusy, ebookIdle],
+        (media) => assert.equal(media.status, MediaStatus.PROCESSING)
+      );
+    }
+    // Stopping the audiobook search is not hidden by the ebook pass.
+    await runScan(scanner, [
+      ebookIdle,
+      { ...audiobookBusy, processing: false },
+    ]);
+    assert.equal((await read()).status, MediaStatus.UNKNOWN);
+  });
+
+it('the book becomes available when the audiobook file appears', async () => {
+  const scanner = new BookScanner();
+  await runScan(scanner, [audiobookBusy, ebookIdle]);
+  await requestBook('audiobook');
+  await runScan(scanner, [
+    ebookIdle,
+    { ...audiobookBusy, hasFile: true, processing: false },
+  ]);
+  const media = await read();
+  assert.equal(media.status, MediaStatus.AVAILABLE);
+  assert.equal(isRequestedBookFormatAvailable(media, 'audiobook'), true);
+});
+
+it('an ebook-only request still goes unknown when nothing is processing', async () => {
+  const scanner = new BookScanner();
+  await runScan(scanner, [audiobookBusy, ebookIdle]);
+  await requestBook('ebook');
+  await runScan(scanner, [ebookIdle, { ...audiobookBusy, processing: false }]);
+  assert.equal((await read()).status, MediaStatus.UNKNOWN);
 });

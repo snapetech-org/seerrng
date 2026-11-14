@@ -34,66 +34,28 @@ const woolEditions = [
   ed('', ['Minnie Goode'], { publisher: 'Broad Reach Publishing' }),
   ed('', ['Minnie Goode'], { durationSeconds: 64380 }),
 ];
-const cEd = (id: number, foreignEditionId: string, narrator: string) => ({
-  id,
-  bookId: 329,
-  foreignEditionId,
-  narratorNames: narrator ? [narrator] : [],
-  narrator,
-  language: 'eng',
-  format: 'audiobook',
-});
-// ChaptarrNG: Edoardo Ballerini downloaded, Susannah Harker monitored (requested)
-const woolLookup = [
-  {
-    title: 'Wool',
-    editions: [
-      cEd(3334, '31877632', 'Edoardo Ballerini'),
-      cEd(3336, '31747196', 'Susannah Harker'),
-      cEd(3338, '33113576', 'Minnie Goode'),
-      cEd(3344, '33383711', 'Amanda Sayle'),
-      cEd(3350, '33383714', ''),
-    ],
-    localAudiobookBooks: [
-      {
-        id: 329,
-        title: 'Wool',
-        narrator: 'Edoardo Ballerini',
-        monitored: true,
-        hasFiles: true,
-      },
-      {
-        id: 2833,
-        title: 'Wool',
-        narrator: 'Susannah Harker',
-        monitored: true,
-        hasFiles: false,
-      },
-    ],
-  },
-];
+// the book service's own list: Edoardo Ballerini is downloaded, Susannah Harker is monitored
+// (requested); SeerrNG reports it as a library list that can keep a second copy alongside
+const libraryEditions = woolEditions.map((e) =>
+  e.id === '31747196' ? { ...e, selected: true } : e
+);
+const inLibrary = {
+  id: 7,
+  status: 5,
+  availableAudiobookServiceIds: [0],
+  requests: [],
+};
 
 type Sent = { url: string; body: unknown };
 async function fixtures(
   page: Page,
-  editions: unknown[],
-  lookup: unknown | null
+  list: unknown[] | Record<string, unknown>,
+  mediaInfo?: unknown
 ): Promise<Sent[]> {
+  const editions = Array.isArray(list) ? { editions: list } : list;
   const sent: Sent[] = [];
   await page.route('https://**/*', (r) => r.abort());
   await page.route('**/lumen-config.json', (r) => r.fulfill({ json: {} }));
-  await page.route('**/seerr-classic/**', (route) => {
-    const req = route.request();
-    if (req.method() === 'POST') {
-      sent.push({ url: req.url(), body: req.postDataJSON() });
-      return route.fulfill({
-        json: { ok: true, bookId: 329, narrators: 'x', alreadyTracked: false },
-      });
-    }
-    if (lookup && req.url().includes('/seerr-classic/lookup'))
-      return route.fulfill({ json: lookup });
-    return route.fulfill({ status: 404 });
-  });
   await page.route('**/api/v1/**', async (route) => {
     const req = route.request();
     const path = new URL(req.url()).pathname.slice(7);
@@ -116,7 +78,7 @@ async function fixtures(
       return route.fulfill({
         json: { id: 1, displayName: 'fam', permissions: 2 },
       });
-    if (path === '/editions/book') return route.fulfill({ json: { editions } });
+    if (path === '/editions/book') return route.fulfill({ json: editions });
     if (path.startsWith('/book/'))
       return route.fulfill({
         json: {
@@ -127,6 +89,7 @@ async function fixtures(
           author: 'Hugh Howey',
           description: 'A silo story.',
           posterPath: '/cover.jpg',
+          ...(mediaInfo ? { mediaInfo } : {}),
         },
       });
     if (path.startsWith('/service/') || path.startsWith('/genres/'))
@@ -152,7 +115,11 @@ const requestButton = (page: Page) =>
 test('another narrator: one selection at a time, and the click moves it', async ({
   page,
 }) => {
-  const sent = await fixtures(page, woolEditions, woolLookup);
+  const sent = await fixtures(
+    page,
+    { editions: libraryEditions, source: 'library', supportsAlongside: true },
+    inLibrary
+  );
   await page.goto(`/book/${encodeURIComponent(woolId)}?f=audio`);
   await expect(row(page, 'Edoardo Ballerini')).toContainText('In library');
   await expect(row(page, 'Susannah Harker')).toContainText('Requested');
@@ -203,20 +170,53 @@ test('another narrator: one selection at a time, and the click moves it', async 
   ])
     await expect(row(page, name)).toHaveAttribute('aria-disabled', 'true');
 
-  // the request names Minnie Goode's ChaptarrNG edition
+  // an ordinary request for Minnie Goode's edition, added alongside the copy already here
   await row(page, 'Minnie Goode').click();
   await button.click();
   await expect.poll(() => sent.length).toBe(1);
-  expect(sent[0].url).toContain('/seerr-classic/narration');
-  expect(sent[0].body).toEqual({ bookId: 329, editionId: 3338 });
+  expect(sent[0].url).toContain('/api/v1/request');
+  expect(sent[0].body).toMatchObject({
+    mediaType: 'book',
+    format: 'audiobook',
+    preferredEditionId: '33113576',
+    editionPolicy: 'alongside',
+  });
+  await expect(row(page, 'Minnie Goode')).toContainText('Requested');
+});
+
+test('another narrator is not offered when the service cannot keep two copies', async ({
+  page,
+}) => {
+  await fixtures(
+    page,
+    { editions: libraryEditions, source: 'library', supportsAlongside: false },
+    inLibrary
+  );
+  await page.goto(`/book/${encodeURIComponent(woolId)}?f=audio`);
+  await expect(row(page, 'Edoardo Ballerini')).toContainText('In library');
+  await expect(row(page, 'Amanda Sayle')).toHaveAttribute(
+    'aria-disabled',
+    'true'
+  );
+  await expect(
+    page.getByText('Every narration we can request is already in the library')
+  ).toBeVisible();
+});
+
+test('the ebook page counts narrations from SeerrNG alone', async ({
+  page,
+}) => {
+  await fixtures(page, woolEditions);
+  await page.goto(`/book/${encodeURIComponent(woolId)}`);
+  await expect(page.locator('.fmt a').nth(1)).toContainText(/\d+ narrations?/);
 });
 
 test('first request: rows SeerrNG can pin are selectable and send their edition id', async ({
   page,
 }) => {
-  // nothing in the library yet (no companion): every row with an edition id is requestable
+  // nothing in the library yet (book not in the library): every row with an edition id is requestable
   const editions = woolEditions.map((e) => ({ ...e, owned: false }));
-  const sent = await fixtures(page, editions, null);
+  const sent = await fixtures(page, editions);
   await page.goto(`/book/${encodeURIComponent(woolId)}?f=audio`);
   await expect(
     page.getByRole('heading', { name: 'Choose a narrator' })
@@ -280,7 +280,7 @@ test('a full cast listed without an edition id does not share a selection with a
     ed('32752239', cast),
     ed('32063555', ['Jim Dale'], { durationSeconds: 29880 }),
   ];
-  const sent = await fixtures(page, editions, null);
+  const sent = await fixtures(page, editions);
   await page.goto(`/book/${encodeURIComponent(woolId)}?f=audio`);
   const castRow = row(page, 'Full cast');
   await castRow.click();
@@ -311,7 +311,7 @@ test('"Any English narrator" still names an edition SeerrNG can pin', async ({
     ed('33113576', ['Minnie Goode']),
     ed('33383711', ['Amanda Sayle']),
   ];
-  const sent = await fixtures(page, editions, null);
+  const sent = await fixtures(page, editions);
   await page.goto(`/book/${encodeURIComponent(woolId)}?f=audio`);
   await row(page, 'Any English narrator').click();
   await expect(row(page, 'Any English narrator')).toHaveAttribute(
@@ -338,11 +338,9 @@ test('a recommended recording SeerrNG can only list without an id is not offered
     'Kristen DiMercurio',
     'Ann Marie Gideon',
   ];
-  const sent = await fixtures(
-    page,
-    [ed('', cast, { selected: true, durationSeconds: 5880 })],
-    null
-  );
+  const sent = await fixtures(page, [
+    ed('', cast, { selected: true, durationSeconds: 5880 }),
+  ]);
   await page.goto(`/book/${encodeURIComponent(woolId)}?f=audio`);
   const castRow = row(page, 'Full cast');
   await expect(castRow).toHaveAttribute('aria-disabled', 'true');

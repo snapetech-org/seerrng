@@ -26,14 +26,6 @@ export default defineConfig({
       '/api': { target: SEERR_URL, changeOrigin: false },
       '/imageproxy': { target: SEERR_URL, changeOrigin: false },
       '/avatarproxy': { target: SEERR_URL, changeOrigin: false },
-      ...(process.env.SEERR_EXTRAS_URL
-        ? {
-            '/seerr-classic': {
-              target: process.env.SEERR_EXTRAS_URL,
-              changeOrigin: false,
-            },
-          }
-        : {}),
     },
   },
 });

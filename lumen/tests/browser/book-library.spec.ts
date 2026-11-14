@@ -504,9 +504,6 @@ async function fixtures(
   await page.route('**/lumen-config.json', (r) =>
     r.fulfill({ json: opts.config || {} })
   );
-  await page.route('**/seerr-classic/**', (r) =>
-    r.fulfill({ status: 404, body: '' })
-  );
   await page.route('**/api/v1/**', (route) => {
     const req = route.request();
     const url = new URL(req.url());
@@ -1158,27 +1155,11 @@ test('book covers load through the SeerrNG image cache, medium on cards and larg
   );
 });
 
-test('an audiobook with no art borrows the Hardcover cover; one with art keeps its own', async ({
+test('an audiobook with no art takes the cover from its book page; one with art keeps its own', async ({
   page,
 }) => {
   await fixtures(page);
   const asked: string[] = [];
-  await page.route('**/seerr-classic/hccovers?**', (route) => {
-    asked.push(new URL(route.request().url()).searchParams.get('ids') || '');
-    return route.fulfill({
-      json: {
-        data: {
-          books: [12345, 22222].map((id) => ({
-            id,
-            image: { url: `https://assets.hardcover.app/covers/${id}.jpg` },
-          })),
-        },
-      },
-    });
-  });
-  await page.route('**/seerr-classic/hcimg/**', (route) =>
-    route.fulfill({ contentType: 'image/png', body: PNG })
-  );
   await page.route('**/imageproxy/**', (route) =>
     route.fulfill({ contentType: 'image/png', body: PNG })
   );
@@ -1193,22 +1174,31 @@ test('an audiobook with no art borrows the Hardcover cover; one with art keeps i
       ]),
     })
   );
+  await page.route('**/api/v1/book/bookshelf*', (route) => {
+    asked.push(decodeURIComponent(new URL(route.request().url()).pathname));
+    return route.fulfill({
+      json: {
+        ...book(audioId, 'audiobook', 'No art recording'),
+        posterPath: 'https://assets.hardcover.app/covers/12345.jpg',
+      },
+    });
+  });
   await page.goto('/audiobooks?sort=ranked');
   const cover = (title: string) =>
     page.locator('.grid .poster', { hasText: title }).locator('img');
   await expect(cover('No art recording')).toHaveAttribute(
     'src',
-    '/seerr-classic/hcimg/covers/12345.jpg'
+    '/imageproxy/hardcover/covers/12345.jpg'
   );
   await expect(cover('Own art recording')).toHaveAttribute(
     'src',
     '/imageproxy/openlibrarycovers/b/id/8231856-M.jpg'
   );
-  // only the book without art is looked up
-  expect(asked).toEqual(['12345']);
+  // only the book without art is looked up, and nothing goes to the old companion route
+  expect(asked).toEqual([`/api/v1/book/${audioId}`]);
 });
 
-test('without the companion an audiobook with no art keeps its drawn cover', async ({
+test('an audiobook whose book page has no art keeps its drawn cover', async ({
   page,
 }) => {
   const requests = await fixtures(page);

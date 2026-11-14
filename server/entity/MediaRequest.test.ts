@@ -3,6 +3,7 @@ import { afterEach, beforeEach, describe, it, mock } from 'node:test';
 
 import ExternalAPI from '@server/api/externalapi';
 import PlexAPI, { type PlexMetadata } from '@server/api/plexapi';
+import ReadarrAPI from '@server/api/servarr/readarr';
 import SportarrAPI from '@server/api/servarr/sportarr';
 import {
   MediaRequestStatus,
@@ -12,6 +13,9 @@ import {
 import { MediaServerType } from '@server/constants/server';
 import { getRepository } from '@server/datasource';
 import Media from '@server/entity/Media';
+import MediaIdentifier, {
+  MediaIdentifierProvider,
+} from '@server/entity/MediaIdentifier';
 import {
   DuplicateMediaRequestError,
   MediaRequest,
@@ -28,6 +32,7 @@ import { Permission } from '@server/lib/permissions';
 import { getSettings } from '@server/lib/settings';
 import { TvSeasonWatchGateError } from '@server/lib/tvSeasonWatchGate';
 import { setupTestDb } from '@server/test/db';
+import { makeBookshelfBookId } from '@server/utils/bookshelfCatalog';
 
 // get is a prototype method unlike getMovie, and replaces the cache lookup too
 const externalApiGetMock = mock.method(
@@ -765,5 +770,130 @@ describe('MediaRequest.request', () => {
       }),
       1
     );
+  });
+});
+
+describe('ChaptarrNG catalog book requests', () => {
+  let originalReadarr: ReturnType<typeof getSettings>['readarr'];
+  let restoreDialect = () => undefined as void;
+
+  beforeEach(() => {
+    const settings = getSettings();
+    originalReadarr = settings.readarr;
+    settings.readarr = [
+      {
+        id: 61,
+        name: 'ChaptarrNG',
+        hostname: 'chaptarr.test',
+        port: 8789,
+        apiKey: 'test-key',
+        useSsl: false,
+        activeProfileId: 1,
+        activeProfileName: 'Any',
+        activeDirectory: '/audiobooks',
+        isDefault: true,
+        serviceType: 'audiobook',
+      },
+    ];
+    // The service's library ids were read through its Hardcover facade.
+    const dialect = mock.method(
+      ReadarrAPI,
+      'getKnownLibraryIdDialect',
+      () => 'hc' as const
+    );
+    restoreDialect = () => dialect.mock.restore();
+  });
+
+  afterEach(() => {
+    restoreDialect();
+    getSettings().readarr = originalReadarr;
+  });
+
+  it('reuses the media row stored under the old bare catalog id', async () => {
+    const media = await getRepository(Media).save(
+      new Media({
+        tmdbId: 0,
+        mediaType: MediaType.BOOK,
+        status: MediaStatus.UNKNOWN,
+      })
+    );
+    await getRepository(MediaIdentifier).save(
+      new MediaIdentifier({
+        media,
+        provider: MediaIdentifierProvider.BOOKSHELF,
+        value: makeBookshelfBookId(61, '459744'),
+        canonical: true,
+      })
+    );
+    const requester = await createRequester(
+      'chaptarr-book-requester@seerr.dev',
+      Permission.REQUEST_BOOK
+    );
+
+    const created = await MediaRequest.request(
+      {
+        mediaId: makeBookshelfBookId(61, 'hc:459744'),
+        mediaType: MediaType.BOOK,
+        format: 'audiobook',
+      },
+      requester
+    );
+
+    assert.equal(created.media.id, media.id);
+    assert.equal(
+      await getRepository(Media).count({
+        where: { mediaType: MediaType.BOOK },
+      }),
+      1
+    );
+    const identifiers = await getRepository(MediaIdentifier).find({
+      where: { media: { id: media.id } },
+    });
+    assert.deepEqual(
+      identifiers
+        .filter(
+          (identifier) =>
+            identifier.provider === MediaIdentifierProvider.BOOKSHELF
+        )
+        .map((identifier) => identifier.value)
+        .sort(),
+      [
+        makeBookshelfBookId(61, '459744'),
+        makeBookshelfBookId(61, 'hc:459744'),
+      ].sort()
+    );
+  });
+
+  it('keeps a Goodreads number from another dialect on its own row', async () => {
+    const media = await getRepository(Media).save(
+      new Media({
+        tmdbId: 0,
+        mediaType: MediaType.BOOK,
+        status: MediaStatus.UNKNOWN,
+      })
+    );
+    await getRepository(MediaIdentifier).save(
+      new MediaIdentifier({
+        media,
+        provider: MediaIdentifierProvider.BOOKSHELF,
+        value: makeBookshelfBookId(61, '459744'),
+        canonical: true,
+      })
+    );
+    const requester = await createRequester(
+      'chaptarr-gr-requester@seerr.dev',
+      Permission.REQUEST_BOOK
+    );
+
+    const created = await MediaRequest.request(
+      {
+        mediaId: makeBookshelfBookId(61, 'gr:459744'),
+        mediaType: MediaType.BOOK,
+        format: 'audiobook',
+      },
+      requester
+    );
+
+    assert.notEqual(created.media.id, media.id);
   });
 });

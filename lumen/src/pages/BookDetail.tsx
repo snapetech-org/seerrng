@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import { Link, useParams, useSearchParams } from 'react-router-dom';
 import {
   api,
@@ -7,17 +7,14 @@ import {
   bookArt,
   bookIdFor,
   bookMediaForFormat,
-  chaptarrWork,
   englishAudioEdition,
   hardcoverWorkId,
   MediaStatus,
   narratorKey,
-  requestAnotherNarration,
   requestBook,
   type BookDetails,
-  type ChaptarrEdition,
-  type ChaptarrWork,
   type Edition,
+  type EditionList,
 } from '../api';
 import { useAuth } from '../auth';
 import { statusOf } from '../components/cards';
@@ -107,20 +104,6 @@ function narrations(list: Edition[]): NarrationRow[] {
   );
 }
 
-// is a ChaptarrNG copy (narrator text) the same recording as a narration row (narrator key)?
-// full casts are listed with different subsets of the same cast, so overlap counts
-function sameCopy(k: string, narrator?: string) {
-  const theirs = narratorKey(String(narrator || '').split(/\s*,\s*/))
-    .split('|')
-    .filter(Boolean);
-  if (!k || !theirs.length) return false;
-  if (narratorKey(theirs) === k) return true;
-  const mine = new Set(k.split('|'));
-  if (mine.size < 3 || theirs.length < 3) return false;
-  const shared = theirs.filter((n) => mine.has(n)).length;
-  return shared >= 3 || shared >= Math.min(mine.size, theirs.length) / 2;
-}
-
 // Hardcover tags that name a format, not a subject ("Audiobook" on the ebook page)
 const FORMAT_TAG = /^(audio ?books?|e-?books?|kindle|audible)$/i;
 
@@ -169,7 +152,7 @@ export default function BookDetail() {
   const showNarr = f === 'audiobook' && prefs.narratorChoice;
   // narrations load on the ebook page too, so its Audiobook button reads the same as on the audiobook page
   const narrData = prefs.narratorChoice && !!work;
-  const eds = useApi<{ editions: Edition[] }>(
+  const eds = useApi<EditionList>(
     narrData && work ? audiobookEditionsPath(work) : null
   );
   const allRows = useMemo(
@@ -180,92 +163,30 @@ export default function BookDetail() {
   const [busy, setBusy] = useState(false);
   // set at once, unlike busy: a double tap can't send a request twice before the re-render
   const sending = useRef(false);
-  // ChaptarrNG's view of this work: which narrations are already here, and its own ids
-  const [cw, setCw] = useState<ChaptarrWork[] | null | undefined>(undefined);
-  const [cwTick, setCwTick] = useState(0);
   const [justAsked, setJustAsked] = useState<Set<string>>(new Set());
-  useEffect(() => {
-    if (!narrData) return;
-    let live = true;
-    chaptarrWork(work)
-      .then((d) => live && setCw(d))
-      .catch(() => live && setCw(null));
-    return () => {
-      live = false;
-    };
-  }, [narrData, work, cwTick]);
-  // ChaptarrNG also lists unmonitored catalogue entries (an author's other books); only copies
-  // with files or that are monitored count as "in the library" or "requested"
-  const local = useMemo(
-    () =>
-      (cw || [])
-        .flatMap((w) => w.localAudiobookBooks || [])
-        .filter((x, i, a) => a.findIndex((y) => y.id === x.id) === i)
-        .filter((x) => x.hasFiles || (x as { monitored?: boolean }).monitored),
-    [cw]
-  );
-  // SeerrNG often leaves an edition's language blank; ChaptarrNG knows it (e.g. German or French
-  // narrations listed with no language). Drop narrations ChaptarrNG only has in other languages.
-  const langs = useMemo(() => {
-    const m = new Map<string, Set<string>>();
-    for (const e of (cw || []).flatMap((w) => w.editions || [])) {
-      const k = narratorKey(
-        e.narratorNames?.length
-          ? e.narratorNames
-          : e.narrator
-            ? e.narrator.split(/\s*,\s*/)
-            : []
-      );
-      if (!k) continue;
-      if (!m.has(k)) m.set(k, new Set());
-      m.get(k)!.add((e.language || 'und').toLowerCase());
-    }
-    return m;
-  }, [cw]);
-  const rows = useMemo(
-    () =>
-      allRows.filter((r) => {
-        const l = langs.get(narratorKey(r.narrators));
-        if (!l) return true;
-        const known = [...l].filter((x) => x !== 'und');
-        return !known.length || known.some((x) => /^(en|eng)$/.test(x));
-      }),
-    [allRows, langs]
-  );
-  const cEditions = useMemo(
-    () =>
-      (cw || [])
-        .flatMap((w) => w.editions || [])
-        .filter((e) => e.bookId > 0 && (!e.format || e.format === 'audiobook')),
-    [cw]
-  );
+  // what SeerrNG says about the audiobook itself: requested or in the library at all?
+  const audioStatus = bookMediaForFormat(
+    first.data?.mediaInfo,
+    'audiobook'
+  )?.status;
+  const tracked =
+    audioStatus === MediaStatus.PENDING ||
+    audioStatus === MediaStatus.PROCESSING ||
+    audioStatus === MediaStatus.PARTIAL ||
+    audioStatus === MediaStatus.AVAILABLE;
+  // the book service's own list says which narrations it holds (owned) or has asked for (selected)
+  const fromLibrary = eds.data?.source === 'library';
+  const rows = allRows;
   // the library already has (or has asked for) this audiobook: other narrators are added as separate copies
-  const anotherMode = local.length > 0;
+  const anotherMode =
+    tracked &&
+    fromLibrary &&
+    (eds.data?.editions || []).some((e) => e.owned || e.selected);
   const stateOf = (r: Edition): '' | 'library' | 'requested' => {
     const k = narratorKey(r.narrators);
     if (k && justAsked.has(k)) return 'requested';
-    const hit = local.filter((l) => sameCopy(k, l.narrator));
-    if (k && hit.some((l) => l.hasFiles)) return 'library';
-    if (k && hit.length) return 'requested';
-    return r.owned ? 'library' : '';
-  };
-  const chaptarrFor = (r: Edition): ChaptarrEdition | undefined => {
-    const num = (r.id || '').replace(/^hc:/, '');
-    return (
-      (num
-        ? cEditions.find((e) => String(e.foreignEditionId) === num)
-        : undefined) ||
-      cEditions.find(
-        (e) =>
-          narratorKey(
-            e.narratorNames?.length
-              ? e.narratorNames
-              : e.narrator
-                ? e.narrator.split(/\s*,\s*/)
-                : []
-          ) === narratorKey(r.narrators)
-      )
-    );
+    if (r.owned) return 'library';
+    return tracked && fromLibrary && r.selected ? 'requested' : '';
   };
 
   if (error)
@@ -287,19 +208,19 @@ export default function BookDetail() {
   if (!b) return <div className="detail-loading" aria-busy="true" />;
 
   const s = statusOf(bookMediaForFormat(b.mediaInfo, f), true);
-  const unlisted = local.filter(
-    (l) =>
-      l.hasFiles &&
-      !rows.some((r) => sameCopy(narratorKey(r.narrators), l.narrator))
+  // copies in the library that the English list leaves out (another language)
+  const unlisted = (eds.data?.editions || []).filter(
+    (e) => e.format === 'audiobook' && e.owned && !english(e)
   );
   const ownedRows = rows.filter((r) => stateOf(r) === 'library');
-  const ownsAny = ownedRows.length > 0 || local.some((l) => l.hasFiles);
-  // another-narrator copies need a named narrator and ChaptarrNG's edition id; a first request
-  // pins SeerrNG's edition id, so a recording SeerrNG can't pin can't be chosen
+  const ownsAny = ownedRows.length > 0 || unlisted.length > 0;
+  // a request pins SeerrNG's edition id, so a recording it can't pin can't be chosen; another
+  // copy next to the one already here also needs a named narrator and a service that can keep both
   const requestable = rows.filter(
     (r) =>
       !stateOf(r) &&
-      (anotherMode ? r.narrators?.length && chaptarrFor(r) : pinnable(r))
+      pinnable(r) &&
+      (!anotherMode || (r.narrators?.length && eds.data?.supportsAlongside))
   );
   // the selection is a row key ('*' = any English narrator, '' = nothing picked yet)
   const chosen =
@@ -344,20 +265,19 @@ export default function BookDetail() {
 
   const requestAnother = async () => {
     const row = chosenRow;
-    const ce = row && chaptarrFor(row);
-    if (!row || !ce || sending.current) return;
+    if (!row?.id || sending.current) return;
     sending.current = true;
     setBusy(true);
     try {
-      const res = await requestAnotherNarration(ce.bookId, ce.id);
+      // an ordinary request, so it goes through approval like any other
+      await requestBook(bookId, 'audiobook', row.id, 'alongside');
       setJustAsked((x) => new Set(x).add(narratorKey(row.narrators)));
       setPick(null);
       toast(
-        res.alreadyTracked
-          ? `${who(row)} is already in the library or requested`
-          : `Requested ${b.title} · ${res.narrators}. It arrives as a separate copy.`
+        `Requested ${b.title} · ${who(row)}. It will arrive as a separate copy.`
       );
-      setCwTick((t) => t + 1);
+      dropBookStates();
+      first.refresh();
     } catch (e) {
       toast(friendlyError(e, 'Request failed'));
     } finally {
@@ -386,7 +306,6 @@ export default function BookDetail() {
       if (audio && showNarr && chosenRow)
         setJustAsked((x) => new Set(x).add(narratorKey(chosenRow.narrators)));
       setPick(null);
-      setCwTick((t) => t + 1);
       toast(
         `Requested ${b.title} · ${audio ? (showNarr && chosenRow ? who(chosenRow) : 'audiobook') : 'ebook'}`
       );
@@ -453,7 +372,7 @@ export default function BookDetail() {
       </button>
     )
   ) : available ? (
-    // owned: another narrator is only offered once ChaptarrNG's copies have loaded (above)
+    // owned: another narrator is only offered once the narration list has loaded (above)
     inAbs(audio)
   ) : s && s.k !== 'ok' ? (
     <button className="btn btn-tonal" disabled>
@@ -661,7 +580,7 @@ export default function BookDetail() {
                     })}
                     {unlisted.map((l) => (
                       <div
-                        key={'local' + l.id}
+                        key={'local' + l.id + l.title}
                         className="nrow owned"
                         role="radio"
                         aria-checked={false}
@@ -683,12 +602,8 @@ export default function BookDetail() {
                           )}
                         </span>
                         <span>
-                          <div className="who">
-                            {l.narrator || 'Another copy'}
-                          </div>
-                          <div className="det">
-                            {l.narrator ? l.title : 'Narrator not listed'}
-                          </div>
+                          <div className="who">{who(l)}</div>
+                          <div className="det">{l.title}</div>
                           <div className="tags">
                             <span className="tag own">
                               <Icon name="check" />

@@ -184,6 +184,7 @@ let comicVineImageProxy: ImageProxy;
 let comicVineStaticImageProxy: ImageProxy;
 let comicVineStatic1ImageProxy: ImageProxy;
 let igdbImageProxy: ImageProxy;
+let hardcoverImageProxy: ImageProxy;
 let anilistImageProxy: ImageProxy;
 const getImageProxy = (type: string): ImageProxy | null => {
   switch (type) {
@@ -230,6 +231,12 @@ const getImageProxy = (type: string): ImageProxy | null => {
         'comicvinestatic1',
         'https://comicvine1.cbsistatic.com',
         { rateLimitOptions: { maxRequests: 5, maxRPS: 5 } }
+      ));
+    case 'hardcover':
+      return (hardcoverImageProxy ??= new ImageProxy(
+        'hardcover',
+        'https://assets.hardcover.app',
+        { rateLimitOptions: { maxRequests: 10, maxRPS: 10 } }
       ));
     case 'igdb':
       return (igdbImageProxy ??= new ImageProxy(

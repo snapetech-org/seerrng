@@ -1,5 +1,5 @@
-import { writeFile } from 'node:fs/promises';
 import { expect, test, type Page } from '@playwright/test';
+import { writeFile } from 'node:fs/promises';
 
 // 1x1 PNG for every proxied cover
 const PNG = Buffer.from(
@@ -214,7 +214,6 @@ async function fixtures(
   const searched: string[] = [];
   await page.route('https://**/*', (r) => r.abort());
   await page.route('**/lumen-config.json', (r) => r.fulfill({ json: config }));
-  await page.route('**/seerr-classic/**', (r) => r.fulfill({ status: 404 }));
   await page.route('**/imageproxy/**', (r) =>
     r.fulfill({ body: PNG, contentType: 'image/png' })
   );
@@ -238,8 +237,7 @@ async function fixtures(
         },
       });
     if (path === '/genres/tv') return r.fulfill({ json: [] });
-    if (path.startsWith('/discover/tv'))
-      return r.fulfill({ json: paged([]) });
+    if (path.startsWith('/discover/tv')) return r.fulfill({ json: paged([]) });
     if (path === '/discover/comics/landing')
       return r.fulfill({
         json: {
@@ -523,6 +521,45 @@ test('cards show requested, downloading, part-owned and complete', async ({
   await expect(cards.nth(3).locator('.glyph')).toHaveCount(0);
 });
 
+test('Not yet hides owned series and keeps the browse filters', async ({
+  page,
+}) => {
+  const { browsed } = await fixtures(page, {
+    browse: [
+      oshi(downloading),
+      saga(partial),
+      chainsaw(complete, '130799'),
+      onePiece(),
+    ],
+    library: [],
+  });
+  await page.goto('/comics?type=manga');
+  const cards = page.locator('.comic-grid .poster');
+  await expect(cards).toHaveCount(4);
+  const library = page.getByRole('group', { name: 'Library' });
+  await expect(library.getByRole('button')).toHaveText([
+    'All',
+    'In library',
+    'Not yet',
+  ]);
+  await library.getByRole('button', { name: 'Not yet' }).click();
+  await expect(page).toHaveURL(/show=not/);
+  await expect(
+    page.locator('.sec-head h2', { hasText: 'Not in your library yet' })
+  ).toBeVisible();
+  // part-owned and complete series are left out; a requested one stays, with its badge
+  await expect(cards).toHaveCount(2);
+  await expect(cards.nth(0).locator('.glyph')).toHaveAttribute(
+    'title',
+    'Downloading 62%'
+  );
+  await expect(cards.nth(1).locator('.glyph')).toHaveCount(0);
+  // it is the browse feed, so its sort and filters stay
+  expect(browsed.every((q) => !q.includes('show='))).toBe(true);
+  await expect(page.getByLabel('Sort')).toBeVisible();
+  await expect(page.getByLabel('Status')).toBeVisible();
+});
+
 test('filters and sort ask for the matching list', async ({ page }) => {
   const { browsed } = await fixtures(page);
   await page.goto('/comics');
@@ -688,7 +725,8 @@ for (const width of [360, 768, 1280]) {
           candidateSha: process.env.GITHUB_SHA,
           referenceRoute: '/series',
           candidateRoutes: ['/comics', '/comic/al-105778'],
-          state: 'authenticated dark theme with downloading and partial library entries',
+          state:
+            'authenticated dark theme with downloading and partial library entries',
           viewport: { width, height: 800 },
           overflow: { comicsPage: overflow, detailPage: detailOverflow },
           screenshots: [
@@ -831,9 +869,9 @@ test('hovering a complete card reads it in Kavita, a part-owned one offers it to
     cards.nth(1).getByRole('link', { name: 'Read Saga in Kavita' })
   ).toHaveAttribute('href', KAVITA);
   await cards.nth(2).hover();
-  await expect(cards.nth(2).getByRole('link', { name: /in Kavita/ })).toHaveCount(
-    0
-  );
+  await expect(
+    cards.nth(2).getByRole('link', { name: /in Kavita/ })
+  ).toHaveCount(0);
 });
 
 for (const width of [360, 768]) {

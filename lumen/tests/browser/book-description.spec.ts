@@ -19,9 +19,6 @@ async function mocks(page: Page, bare: unknown, hc: unknown) {
   const lookups: string[] = [];
   await page.route('https://**/*', (r) => r.abort());
   await page.route('**/lumen-config.json', (r) => r.fulfill({ json: {} }));
-  await page.route('**/seerr-classic/**', (r) =>
-    r.fulfill({ status: 404, body: '' })
-  );
   await page.route('**/api/v1/**', (route) => {
     const path = new URL(route.request().url()).pathname.slice(7);
     if (path === '/auth/me')

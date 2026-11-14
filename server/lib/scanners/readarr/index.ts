@@ -134,6 +134,7 @@ class ReadarrScanner
   // Records of one format that share a work identity (duplicate Chaptarr
   // books) pool their file evidence: the record with the most files wins.
   private readarrWorkFileRecords = new Map<string, ReadarrBook>();
+  private readarrInventoryRecordKeys = new Set<string>();
   private scanItemsComplete = true;
   private didScan = false;
 
@@ -159,10 +160,49 @@ class ReadarrScanner
     }
     this.scannedIdentifierKeys.clear();
     this.scannedFormatKeys.clear();
+    this.readarrInventoryRecordKeys.clear();
     this.didScan = false;
     this.scanItemsComplete = true;
 
     try {
+      const requestedRecordKeys = new Set<string>();
+      const requests = await getRepository(MediaRequest).find({
+        where: {
+          type: MediaType.BOOK,
+          status: In([
+            MediaRequestStatus.PENDING,
+            MediaRequestStatus.APPROVED,
+            MediaRequestStatus.COMPLETED,
+          ]),
+        },
+        relations: { media: true },
+      });
+      for (const request of requests) {
+        for (const format of ['ebook', 'audiobook'] as const) {
+          if (
+            request.bookFormat !== 'both' &&
+            (request.bookFormat ?? 'ebook') !== format
+          )
+            continue;
+          const linked = getLinkedServiceRecordKey(request.media, format);
+          if (linked) requestedRecordKeys.add(linked);
+        }
+        for (const target of request.serviceTargets ?? []) {
+          if (
+            target.serviceType === 'readarr' &&
+            (target.format === 'ebook' || target.format === 'audiobook') &&
+            target.externalServiceId != null
+          ) {
+            requestedRecordKeys.add(
+              getServiceRecordKey(
+                target.serverId,
+                target.format,
+                target.externalServiceId
+              )
+            );
+          }
+        }
+      }
       this.servers = uniqWith(
         structuredClone(settings.readarr),
         (readarrA, readarrB) =>
@@ -219,10 +259,38 @@ class ReadarrScanner
                 mediaType:
                   current.serviceType === 'audiobook' ? 'audiobook' : 'ebook',
               });
-              return this.readarrApi.getBooks();
+              const books = await this.readarrApi.getBooks();
+              const format = this.getReadarrServiceType();
+              // Chaptarr includes an author's entire catalog. Keep its local
+              // inventory for absence checks, but enrich only tracked titles or
+              // actual files. Unknown file counts stay conservative.
+              for (const book of books) {
+                this.readarrInventoryRecordKeys.add(
+                  getServiceRecordKey(current.id, format, book.id)
+                );
+              }
+              return books.filter((book) => {
+                const fileCount = getObservedReadarrFileCount(book, format);
+                return (
+                  book.monitored ||
+                  fileCount === undefined ||
+                  fileCount > 0 ||
+                  requestedRecordKeys.has(
+                    getServiceRecordKey(current.id, format, book.id)
+                  )
+                );
+              });
             }
           );
           this.didScan = true;
+          this.log(
+            'Selected tracked and file-backed Bookshelf books.',
+            'info',
+            {
+              selectedBooks: this.items.length,
+              inventoryRecords: this.readarrInventoryRecordKeys.size,
+            }
+          );
           this.indexReadarrWorkFileRecords();
           await this.loop(
             async (book) =>
@@ -268,6 +336,22 @@ class ReadarrScanner
     return this.currentServer.serviceType === 'audiobook'
       ? 'audiobook'
       : 'ebook';
+  }
+
+  /**
+   * Every spelling of the book's provider id on this server, the facade's
+   * bare spelling first: when a bare-id row and a qualified-id row both
+   * exist, the older bare row (the one requests were made against) stays the
+   * scanned record's primary match, as it was before ids were qualified.
+   */
+  private getReadarrProviderIdAliases(book: ReadarrBook): string[] {
+    const foreignBookId = book.foreignBookId?.trim();
+    if (!foreignBookId) return [];
+    const aliases = this.readarrApi.getKnownBookIdentityAliases(foreignBookId);
+    return [
+      ...aliases.filter((id) => /^\d+$/.test(id)),
+      ...aliases.filter((id) => !/^\d+$/.test(id)),
+    ];
   }
 
   private getReadarrWorkKey(book: ReadarrBook): string | undefined {
@@ -551,24 +635,31 @@ class ReadarrScanner
         : MediaIdentifierProvider.READARR;
       const resolvedOpenLibraryIdentifiers =
         await resolveOpenLibraryIdentifiersForReadarrBook(readarrBook);
+      const providerIdAliases = this.getReadarrProviderIdAliases(readarrBook);
 
       const secondaryIdentifiers = [
         // Catalog requests use an opaque identity scoped to the selected server.
         // Keep that same record when ISBN/Readarr identifiers become available.
-        ...(readarrBook.foreignBookId
-          ? this.readarrApi
-              .getKnownBookIdentityAliases(readarrBook.foreignBookId)
-              .map((id) => ({
-                provider: MediaIdentifierProvider.BOOKSHELF,
-                value: makeBookshelfBookId(this.currentServer.id, id),
-              }))
-          : []),
+        ...providerIdAliases.map((id) => ({
+          provider: MediaIdentifierProvider.BOOKSHELF,
+          value: makeBookshelfBookId(this.currentServer.id, id),
+        })),
         readarrBook.foreignBookId
           ? {
               provider: MediaIdentifierProvider.READARR,
               value: readarrBook.foreignBookId,
             }
           : undefined,
+        // ChaptarrNG library ids used to be read bare (431561) and are now
+        // qualified (hc:431561). Rows stored under the bare Readarr id must
+        // keep matching and stay observed, or a requested book's row loses
+        // its service link and a PROCESSING row is cleaned up as orphaned.
+        ...providerIdAliases
+          .filter((id) => id !== readarrBook.foreignBookId && /^\d+$/.test(id))
+          .map((id) => ({
+            provider: MediaIdentifierProvider.READARR,
+            value: id,
+          })),
         ...((readarrBook.editions ?? [])
           .map((edition) => {
             const isbn = normalizeReadarrIsbn(edition.isbn13);
@@ -968,7 +1059,13 @@ class ReadarrScanner
         const orphanedProcessing =
           media.status === MediaStatus.PROCESSING &&
           identifierKeys.length > 0 &&
-          !identifierKeys.some((key) => this.scannedIdentifierKeys.has(key));
+          !identifierKeys.some((key) => this.scannedIdentifierKeys.has(key)) &&
+          !(['ebook', 'audiobook'] as const).some((format) => {
+            const linked = getLinkedServiceRecordKey(media, format);
+            return (
+              linked != null && this.readarrInventoryRecordKeys.has(linked)
+            );
+          });
         if (missingSources.length || orphanedProcessing) {
           const changed = await runMediaEntityMutation(media, () =>
             runWithServarrServiceSnapshots(
