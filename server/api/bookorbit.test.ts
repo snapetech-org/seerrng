@@ -70,30 +70,49 @@ describe('BookOrbit acquisition contract', () => {
   it('tests a requester account and a library read before enabling the connection', async () => {
     const api = new InspectBookOrbitAPI([
       { accessToken: 'token' },
-      { version: '1.2.3' },
       { id: 4, permissions: ['book_request_access'] },
       { items: [], total: 0 },
+      { version: '3.8.0' },
     ]);
     assert.deepEqual(await api.testConnection(), {
-      version: '1.2.3',
+      version: '3.8.0',
       userId: 4,
     });
     assert.deepEqual(
       api.calls.map(({ method, path }) => [method, path]),
       [
         ['POST', '/api/v1/auth/login'],
-        ['GET', '/api/v1/app-info'],
         ['GET', '/api/v1/auth/me'],
         ['POST', '/api/v1/books/query'],
+        ['GET', '/api/v1/app-info'],
       ]
     );
     assert.equal(
       (api.calls[0].body as { password: string }).password,
       'secret'
     );
-    assert.deepEqual(api.calls[3].config?.headers, {
+    assert.deepEqual(api.calls[2].config?.headers, {
       Authorization: 'Bearer token',
     });
+  });
+
+  it('keeps a failed password login from making a second attempt', async () => {
+    const api = new InspectBookOrbitAPI([
+      new AxiosError('Unauthorized', 'ERR_BAD_REQUEST', undefined, undefined, {
+        status: 401,
+      } as AxiosResponse),
+    ]);
+    await assert.rejects(api.testConnection(), /rejected the account sign-in/);
+    assert.equal(api.calls.length, 1);
+  });
+
+  it('reports the missing request permission after a successful sign-in', async () => {
+    const api = new InspectBookOrbitAPI([
+      { accessToken: 'token' },
+      { id: 4, permissions: [] },
+    ]);
+    await assert.rejects(api.testConnection(), /Request books permission/);
+    assert.equal(api.calls.length, 2);
   });
 
   it('submits both formats as one pair and rejects mismatched response shapes', async () => {

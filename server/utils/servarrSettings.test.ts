@@ -71,6 +71,23 @@ describe('preserveServarrConnectionSecret', () => {
 });
 
 describe('Servarr settings validation', () => {
+  it('preserves BookOrbit password whitespace during connection tests and saves', () => {
+    const body = {
+      ...baseSettings,
+      backend: 'bookorbit',
+      serviceType: 'both',
+      bookorbitUsername: 'requester',
+      apiKey: '  Actual password  ',
+    };
+    for (const parsed of [
+      parseReadarrSettings(body),
+      parseServarrConnectionSettings(body),
+    ]) {
+      assert.ok('value' in parsed);
+      assert.equal(parsed.value.apiKey, body.apiKey);
+    }
+  });
+
   it('accepts a BookOrbit account with both formats and rejects a missing username', () => {
     const body = {
       ...baseSettings,

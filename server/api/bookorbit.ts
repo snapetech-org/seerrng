@@ -70,6 +70,16 @@ const EBOOK = new Set([
   'cb7',
 ]);
 
+export class BookOrbitConnectionError extends Error {
+  constructor(
+    message: string,
+    public readonly step: 'login' | 'account' | 'library',
+    cause?: unknown
+  ) {
+    super(message, { cause });
+  }
+}
+
 /** BookOrbit owns acquisition and file storage. Never transfer its credentials to clients. */
 export default class BookOrbitAPI extends ExternalAPI {
   private token?: string;
@@ -128,8 +138,9 @@ export default class BookOrbitAPI extends ExternalAPI {
         headers: { Authorization: `Bearer ${token}` },
         maxRedirects: 0,
       });
+    const token = this.token ?? (await this.login());
     try {
-      return (await execute(this.token ?? (await this.login()))).data;
+      return (await execute(token)).data;
     } catch (error) {
       if (!axios.isAxiosError(error) || error.response?.status !== 401)
         throw error;
@@ -139,20 +150,68 @@ export default class BookOrbitAPI extends ExternalAPI {
   }
 
   public async testConnection(): Promise<{ version?: string; userId: number }> {
-    const info = await this.call<unknown>('GET', '/api/v1/app-info');
-    const me = await this.call<unknown>('GET', '/api/v1/auth/me');
+    try {
+      if (!this.token) await this.login();
+    } catch (cause) {
+      const status = axios.isAxiosError(cause)
+        ? cause.response?.status
+        : undefined;
+      throw new BookOrbitConnectionError(
+        status === 401
+          ? 'BookOrbit rejected the account sign-in. Check the username and password or whether the account is locked.'
+          : status === 403
+            ? 'BookOrbit denied password sign-in. Check whether local password sign-in is enabled.'
+            : status === 429
+              ? 'BookOrbit is limiting sign-in attempts. Wait before testing again.'
+              : 'SeerrNG could not sign in to the BookOrbit API. Check the hostname, port, SSL and URL base from the SeerrNG server.',
+        'login',
+        cause
+      );
+    }
+    const me = await this.call<unknown>('GET', '/api/v1/auth/me').catch(
+      (cause) => {
+        throw new BookOrbitConnectionError(
+          'BookOrbit signed in but could not verify the account. Check its account settings in BookOrbit.',
+          'account',
+          cause
+        );
+      }
+    );
     if (!isRecord(me) || !validId(me.id))
-      throw new Error('BookOrbit account is invalid.');
+      throw new BookOrbitConnectionError(
+        'BookOrbit account is invalid.',
+        'account'
+      );
     const permissions = Array.isArray(me.permissions) ? me.permissions : [];
     if (
       !permissions.includes('*') &&
       !permissions.includes('book_request_access')
     )
-      throw new Error('BookOrbit account needs the Request books permission.');
-    await this.call('POST', '/api/v1/books/query', {
-      sort: [{ field: 'title', dir: 'asc' }],
+      throw new BookOrbitConnectionError(
+        'BookOrbit account needs the Request books permission.',
+        'account'
+      );
+    const library = await this.call<unknown>('POST', '/api/v1/books/query', {
       pagination: { page: 0, size: 1 },
+    }).catch((cause) => {
+      throw new BookOrbitConnectionError(
+        'BookOrbit signed in but the library could not be read. Check library access for this account.',
+        'library',
+        cause
+      );
     });
+    if (
+      !isRecord(library) ||
+      !Array.isArray(library.items) ||
+      !Number.isSafeInteger(library.total)
+    )
+      throw new BookOrbitConnectionError(
+        'BookOrbit returned an unexpected library response. Check the URL base and BookOrbit version.',
+        'library'
+      );
+    const info = await this.call<unknown>('GET', '/api/v1/app-info').catch(
+      () => undefined
+    );
     return {
       version:
         isRecord(info) && typeof info.version === 'string'

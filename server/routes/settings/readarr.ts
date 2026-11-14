@@ -1,5 +1,5 @@
 import BinderyAPI from '@server/api/bindery';
-import BookOrbitAPI from '@server/api/bookorbit';
+import BookOrbitAPI, { BookOrbitConnectionError } from '@server/api/bookorbit';
 import type {
   ReadarrBookLookupResult,
   ReadarrMediaMoveAuthor,
@@ -31,6 +31,7 @@ import {
   getBookshelfProviderNotice,
 } from '@server/utils/bookshelfProvider';
 import { mapWithConcurrency } from '@server/utils/concurrency';
+import { getHttpErrorDetails } from '@server/utils/httpError';
 import { getReadarrServiceFormats } from '@server/utils/readarrService';
 import { parseNonNegativeRouteId } from '@server/utils/routeId';
 import { REDACTED_SECRET, redactSecrets } from '@server/utils/security';
@@ -624,6 +625,16 @@ readarrRoutes.post<
         metadataSource: development?.metadataSource,
       });
     } catch (e) {
+      if (e instanceof BookOrbitConnectionError) {
+        const { status, errorCode } = getHttpErrorDetails(e.cause);
+        logger.warn('BookOrbit connection test failed.', {
+          label: 'Readarr',
+          step: e.step,
+          providerStatus: status,
+          errorCode,
+        });
+        return res.status(422).json({ message: e.message });
+      }
       logger.error('Failed to test Readarr', {
         label: 'Readarr',
         message: e.message,

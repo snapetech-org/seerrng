@@ -1029,6 +1029,18 @@ class ReadarrAPI extends ServarrBase<ReadarrQueueItem> {
       return observedBook;
     }
 
+    // Chaptarr clears the persisted search flag after scheduling a search.
+    // When monitoring is already correct, schedule the search directly rather
+    // than editing a book that was just saved.
+    if (!needsMonitoringRepair) {
+      await this.post(
+        '/command',
+        { name: 'BookSearch', bookIds: [addedBook.id] },
+        this.getRequestConfig()
+      );
+      return observedBook;
+    }
+
     const updatedBookResponse = await this.request<
       ReadarrBookLookupResult | number
     >(
@@ -2432,9 +2444,7 @@ class ReadarrAPI extends ServarrBase<ReadarrQueueItem> {
             if (!isRecord(instance)) continue;
             const id = Number(instance.id);
             const instanceTitle =
-              typeof instance.title === 'string'
-                ? instance.title
-                : entry.title;
+              typeof instance.title === 'string' ? instance.title : entry.title;
             if (
               instance.mediaType !== this.mediaType ||
               normalizeLocalBookSearchText(instanceTitle) !== normalizedTitle ||

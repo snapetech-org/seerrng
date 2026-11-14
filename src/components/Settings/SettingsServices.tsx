@@ -830,6 +830,8 @@ const SettingsServices = ({
     type: 'radarr',
     serverId: null,
   });
+  const [deletingServer, setDeletingServer] = useState(false);
+  const [deleteServerError, setDeleteServerError] = useState<string>();
   const [overrideRuleModal, setOverrideRuleModal] = useState<{
     open: boolean;
     rule: OverrideRule | null;
@@ -1018,18 +1020,27 @@ const SettingsServices = ({
     : (visibleServiceCategories[0] ?? 'tv-movies');
 
   const deleteServer = async () => {
-    if (deleteServerModal.type === 'audiobookshelf') {
-      await axios.delete('/api/v1/settings/audiobookshelf');
-    } else if (deleteServerModal.type === 'navidrome') {
-      await axios.delete('/api/v1/settings/navidrome');
-    } else if (deleteServerModal.type === 'kavita') {
-      await axios.delete('/api/v1/settings/kavita');
-    } else if (deleteServerModal.type === 'jellystat') {
-      await axios.delete('/api/v1/settings/jellystat');
-    } else {
+    const { type, serverId } = deleteServerModal;
+    const singleton = [
+      'audiobookshelf',
+      'navidrome',
+      'kavita',
+      'jellystat',
+    ].includes(type);
+    setDeletingServer(true);
+    setDeleteServerError(undefined);
+    try {
       await axios.delete(
-        `/api/v1/settings/${deleteServerModal.type}/${deleteServerModal.serverId}`
+        `/api/v1/settings/${type}${singleton ? '' : `/${serverId}`}`
       );
+    } catch (error) {
+      setDeleteServerError(
+        getSafeApiErrorDetails(error).message ??
+          intl.formatMessage(globalMessages.error)
+      );
+      return;
+    } finally {
+      setDeletingServer(false);
     }
     setDeleteServerModal({ open: false, serverId: null, type: 'radarr' });
     revalidateRadarr();
@@ -1397,15 +1408,22 @@ const SettingsServices = ({
               <Transition as={Fragment} show={deleteServerModal.open}>
                 <Modal
                   okText={intl.formatMessage(globalMessages.delete)}
+                  okDisabled={deletingServer}
+                  backgroundClickable={!deletingServer}
                   okButtonType="danger"
                   okButtonProps={{ buttonIcon: 'delete' }}
                   onOk={() => deleteServer()}
-                  onCancel={() =>
-                    setDeleteServerModal({
-                      open: false,
-                      serverId: null,
-                      type: 'radarr',
-                    })
+                  onCancel={
+                    deletingServer
+                      ? undefined
+                      : () => {
+                          setDeleteServerError(undefined);
+                          setDeleteServerModal({
+                            open: false,
+                            serverId: null,
+                            type: 'radarr',
+                          });
+                        }
                   }
                   title={intl.formatMessage(messages.deleteServer, {
                     serverType:
@@ -1433,6 +1451,11 @@ const SettingsServices = ({
                   })}
                 >
                   {intl.formatMessage(messages.deleteserverconfirm)}
+                  {deleteServerError && (
+                    <p className="error" role="alert">
+                      {deleteServerError}
+                    </p>
+                  )}
                 </Modal>
               </Transition>
               <div

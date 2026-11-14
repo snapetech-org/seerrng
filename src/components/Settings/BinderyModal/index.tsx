@@ -5,6 +5,7 @@ import SettingsField from '@app/components/Settings/SettingsField';
 import SettingsHelp from '@app/components/Settings/SettingsHelp';
 import useToasts from '@app/hooks/useToasts';
 import globalMessages from '@app/i18n/globalMessages';
+import { getSafeApiErrorDetails } from '@app/utils/apiError';
 import defineMessages from '@app/utils/defineMessages';
 import { REDACTED_SECRET } from '@app/utils/secret';
 import { isValidURL } from '@app/utils/urlValidationHelper';
@@ -214,13 +215,14 @@ const BinderyModal = ({
           }
         );
         return response.data;
-      } catch {
+      } catch (error) {
         setIsValidated(false);
         setTestResult(undefined);
         addToast(
-          intl.formatMessage(
-            isBookOrbit ? messages.bookorbitTestFailure : messages.testFailure
-          ),
+          (isBookOrbit ? getSafeApiErrorDetails(error).message : undefined) ??
+            intl.formatMessage(
+              isBookOrbit ? messages.bookorbitTestFailure : messages.testFailure
+            ),
           {
             appearance: 'error',
             autoDismiss: true,
@@ -260,7 +262,7 @@ const BinderyModal = ({
           name: settings?.name ?? (isBookOrbit ? 'BookOrbit' : 'Bindery'),
           bookorbitUsername: settings?.bookorbitUsername ?? '',
           hostname: settings?.hostname ?? '',
-          port: settings?.port ?? 8787,
+          port: settings?.port ?? (isBookOrbit ? 3000 : 8787),
           useSsl: settings?.useSsl ?? false,
           apiKey: settings?.apiKey ?? '',
           baseUrl: settings?.baseUrl ?? '',

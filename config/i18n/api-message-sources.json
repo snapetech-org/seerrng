@@ -82,7 +82,7 @@
         },
         {
           "path": "server/utils/servarrSettings.ts",
-          "line": 217,
+          "line": 228,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'settings must be an object.'",
@@ -90,7 +90,7 @@
         },
         {
           "path": "server/utils/servarrSettings.ts",
-          "line": 299,
+          "line": 311,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'settings must be an object.'",
@@ -98,7 +98,7 @@
         },
         {
           "path": "server/utils/servarrSettings.ts",
-          "line": 437,
+          "line": 449,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'settings must be an object.'",
@@ -106,7 +106,7 @@
         },
         {
           "path": "server/utils/servarrSettings.ts",
-          "line": 639,
+          "line": 651,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'settings must be an object.'",
@@ -114,7 +114,7 @@
         },
         {
           "path": "server/utils/servarrSettings.ts",
-          "line": 773,
+          "line": 786,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'settings must be an object.'",
@@ -179,7 +179,7 @@
       "callsites": [
         {
           "path": "server/utils/servarrSettings.ts",
-          "line": 251,
+          "line": 262,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'backend is invalid.'",
@@ -187,7 +187,7 @@
         },
         {
           "path": "server/utils/servarrSettings.ts",
-          "line": 724,
+          "line": 737,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'backend is invalid.'",
@@ -206,7 +206,7 @@
       "callsites": [
         {
           "path": "server/api/bookorbit.ts",
-          "line": 213,
+          "line": 272,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'BookOrbit request ID is invalid.'",
@@ -214,7 +214,7 @@
         },
         {
           "path": "server/api/bookorbit.ts",
-          "line": 220,
+          "line": 279,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'BookOrbit request ID is invalid.'",
@@ -222,7 +222,7 @@
         },
         {
           "path": "server/api/bookorbit.ts",
-          "line": 225,
+          "line": 284,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'BookOrbit request ID is invalid.'",
@@ -356,7 +356,7 @@
       "callsites": [
         {
           "path": "server/api/servarr/readarr.ts",
-          "line": 2958,
+          "line": 2968,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`[Readarr] Failed to lookup author: ${e.message}`",
@@ -560,7 +560,7 @@
       "callsites": [
         {
           "path": "server/api/servarr/readarr.ts",
-          "line": 2315,
+          "line": 2327,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`[Readarr] Failed to retrieve cover for author ${authorId}: ${\n        lastError instanceof Error ? lastError.message : 'No poster path worked'\n      }`",
@@ -783,7 +783,7 @@
       "callsites": [
         {
           "path": "server/utils/servarrSettings.ts",
-          "line": 365,
+          "line": 377,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "e instanceof Error ? e.message : 'downloadQueueSize is invalid.'",
@@ -886,6 +886,27 @@
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Failed request recovery cannot change the request owner.'",
+          "captured": []
+        }
+      ]
+    },
+    {
+      "key": "m046eba654a62bf7f5c82",
+      "id": "utils.ApiMessage.m046eba654a62bf7f5c82",
+      "source": "BookOrbit signed in but the library could not be read. Check library access for this account.",
+      "defaultMessage": "BookOrbit signed in but the library could not be read. Check library access for this account.",
+      "sourceHash": "046eba654a62bf7f5c8265ba712e174c2b15f689bf107635cac5154e9ee37b4e",
+      "parts": [
+        "BookOrbit signed in but the library could not be read. Check library access for this account."
+      ],
+      "parameterCount": 0,
+      "callsites": [
+        {
+          "path": "server/api/bookorbit.ts",
+          "line": 198,
+          "kind": "app-error-candidate",
+          "field": "message",
+          "expression": "'BookOrbit signed in but the library could not be read. Check library access for this account.'",
           "captured": []
         }
       ]
@@ -1337,7 +1358,7 @@
       "callsites": [
         {
           "path": "server/api/servarr/readarr.ts",
-          "line": 1773,
+          "line": 1785,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Invalid book ID.'",
@@ -1575,7 +1596,7 @@
       "callsites": [
         {
           "path": "server/api/bookorbit.ts",
-          "line": 151,
+          "line": 191,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'BookOrbit account needs the Request books permission.'",
@@ -1594,7 +1615,7 @@
       "callsites": [
         {
           "path": "server/api/servarr/readarr.ts",
-          "line": 1672,
+          "line": 1684,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Invalid series cover content type.'",
@@ -2704,7 +2725,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/readarr.ts",
-          "line": 319,
+          "line": 320,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'The selected authors no longer match this source folder. Reload the library and preview again.'",
@@ -2779,7 +2800,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/readarr.ts",
-          "line": 353,
+          "line": 354,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "status === 404\n            ? 'This BookshelfNG instance does not support media moves. Update BookshelfNG, then retry.'\n            : 'BookshelfNG could not preview this move. Reload the library and try again.'",
@@ -3414,7 +3435,7 @@
       "callsites": [
         {
           "path": "server/api/servarr/readarr.ts",
-          "line": 3106,
+          "line": 3116,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Chaptarr returned an invalid pending add ID.'",
@@ -3653,7 +3674,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/readarr.ts",
-          "line": 772,
+          "line": 783,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Bookshelf lookup returned no results.'",
@@ -3710,7 +3731,7 @@
       "callsites": [
         {
           "path": "server/api/servarr/readarr.ts",
-          "line": 1649,
+          "line": 1661,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Invalid series cover path.'",
@@ -3964,7 +3985,7 @@
       "callsites": [
         {
           "path": "server/api/bookorbit.ts",
-          "line": 273,
+          "line": 332,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'BookOrbit returned an invalid book.'",
@@ -4238,7 +4259,7 @@
       "callsites": [
         {
           "path": "server/api/servarr/readarr.ts",
-          "line": 2168,
+          "line": 2180,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`[Readarr] Failed to retrieve book files: ${error.message}`",
@@ -5319,7 +5340,7 @@
       "callsites": [
         {
           "path": "server/api/servarr/readarr.ts",
-          "line": 3251,
+          "line": 3261,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'This destination cannot add an edition alongside.'",
@@ -6549,6 +6570,27 @@
       ]
     },
     {
+      "key": "m177c58de1c5f1381fb7d",
+      "id": "utils.ApiMessage.m177c58de1c5f1381fb7d",
+      "source": "BookOrbit rejected the account sign-in. Check the username and password or whether the account is locked.",
+      "defaultMessage": "BookOrbit rejected the account sign-in. Check the username and password or whether the account is locked.",
+      "sourceHash": "177c58de1c5f1381fb7d81636dccd061c71d8632b53ffcacef819c69773cf2fb",
+      "parts": [
+        "BookOrbit rejected the account sign-in. Check the username and password or whether the account is locked."
+      ],
+      "parameterCount": 0,
+      "callsites": [
+        {
+          "path": "server/api/bookorbit.ts",
+          "line": 160,
+          "kind": "app-error-candidate",
+          "field": "message",
+          "expression": "status === 401\n          ? 'BookOrbit rejected the account sign-in. Check the username and password or whether the account is locked.'\n          : status === 403\n            ? 'BookOrbit denied password sign-in. Check whether local password sign-in is enabled.'\n            : status === 429\n              ? 'BookOrbit is limiting sign-in attempts. Wait before testing again.'\n              : 'SeerrNG could not sign in to the BookOrbit API. Check the hostname, port, SSL and URL base from the SeerrNG server.'",
+          "captured": []
+        }
+      ]
+    },
+    {
       "key": "m178018db523aec585d3e",
       "id": "utils.ApiMessage.m178018db523aec585d3e",
       "source": "SEERR_EXTERNAL_CONFIG is required for outbound integrations. Run scripts/export-external-config.mjs to migrate existing settings.",
@@ -7148,7 +7190,7 @@
       "callsites": [
         {
           "path": "server/api/servarr/readarr.ts",
-          "line": 1824,
+          "line": 1836,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Book server edition metadata is unavailable.'",
@@ -7312,7 +7354,7 @@
       "callsites": [
         {
           "path": "server/utils/servarrSettings.ts",
-          "line": 587,
+          "line": 599,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'monitorNewItems is invalid.'",
@@ -8153,7 +8195,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/readarr.ts",
-          "line": 230,
+          "line": 231,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Choose ebook or audiobook.'",
@@ -8638,6 +8680,27 @@
       ]
     },
     {
+      "key": "m204cf75e99185b513d94",
+      "id": "utils.ApiMessage.m204cf75e99185b513d94",
+      "source": "BookOrbit denied password sign-in. Check whether local password sign-in is enabled.",
+      "defaultMessage": "BookOrbit denied password sign-in. Check whether local password sign-in is enabled.",
+      "sourceHash": "204cf75e99185b513d9405b73fe63d651b017c58b339495c2933c222aea4761f",
+      "parts": [
+        "BookOrbit denied password sign-in. Check whether local password sign-in is enabled."
+      ],
+      "parameterCount": 0,
+      "callsites": [
+        {
+          "path": "server/api/bookorbit.ts",
+          "line": 160,
+          "kind": "app-error-candidate",
+          "field": "message",
+          "expression": "status === 401\n          ? 'BookOrbit rejected the account sign-in. Check the username and password or whether the account is locked.'\n          : status === 403\n            ? 'BookOrbit denied password sign-in. Check whether local password sign-in is enabled.'\n            : status === 429\n              ? 'BookOrbit is limiting sign-in attempts. Wait before testing again.'\n              : 'SeerrNG could not sign in to the BookOrbit API. Check the hostname, port, SSL and URL base from the SeerrNG server.'",
+          "captured": []
+        }
+      ]
+    },
+    {
       "key": "m20776c7d62c289b39c2b",
       "id": "utils.ApiMessage.m20776c7d62c289b39c2b",
       "source": "[TMDB] Failed to fetch TV show details: {value0}",
@@ -8945,7 +9008,7 @@
       "callsites": [
         {
           "path": "server/api/bookorbit.ts",
-          "line": 115,
+          "line": 125,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'BookOrbit did not return an access token.'",
@@ -9556,7 +9619,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/readarr.ts",
-          "line": 937,
+          "line": 948,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'The import remains queued because Chaptarr may share it with an active SeerrNG request. Check its status in Chaptarr and cancel it only when no request needs it.'",
@@ -11737,7 +11800,7 @@
       "callsites": [
         {
           "path": "server/api/servarr/readarr.ts",
-          "line": 3395,
+          "line": 3405,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`[Readarr] Failed to remove book: ${e.message}`",
@@ -12003,7 +12066,7 @@
       "callsites": [
         {
           "path": "server/api/servarr/readarr.ts",
-          "line": 1397,
+          "line": 1409,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Invalid author ID.'",
@@ -14051,7 +14114,7 @@
       "callsites": [
         {
           "path": "server/api/servarr/readarr.ts",
-          "line": 2798,
+          "line": 2808,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`[Readarr] Failed to lookup book: ${e.message}`",
@@ -14337,7 +14400,7 @@
       "callsites": [
         {
           "path": "server/api/servarr/readarr.ts",
-          "line": 2023,
+          "line": 2035,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'BookshelfNG returned an incomplete media-move preview.'",
@@ -15889,7 +15952,7 @@
       "callsites": [
         {
           "path": "server/api/servarr/readarr.ts",
-          "line": 2144,
+          "line": 2156,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`[Readarr] Failed to retrieve book ${bookId}: ${e.message}`",
@@ -15908,7 +15971,7 @@
         },
         {
           "path": "server/api/servarr/readarr.ts",
-          "line": 2190,
+          "line": 2202,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`[Readarr] Failed to retrieve book ${bookId}: ${e.message}`",
@@ -16563,7 +16626,7 @@
       "callsites": [
         {
           "path": "server/api/servarr/readarr.ts",
-          "line": 1939,
+          "line": 1951,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`[Readarr] Failed to retrieve a book page: ${getReadarrErrorMessage(error)}`",
@@ -16876,7 +16939,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/readarr.ts",
-          "line": 86,
+          "line": 87,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'Move details must be an object.'",
@@ -17039,7 +17102,7 @@
       "callsites": [
         {
           "path": "server/api/servarr/readarr.ts",
-          "line": 3419,
+          "line": 3429,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`[Readarr] Failed to start book search: ${getReadarrErrorMessage(e)}`",
@@ -17142,7 +17205,7 @@
       "callsites": [
         {
           "path": "server/api/servarr/readarr.ts",
-          "line": 1366,
+          "line": 1378,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Chaptarr returned a non-advancing library page'",
@@ -17412,7 +17475,7 @@
       "callsites": [
         {
           "path": "server/api/bookorbit.ts",
-          "line": 353,
+          "line": 412,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'BookOrbit library exceeds the safe scan limit.'",
@@ -19151,7 +19214,7 @@
       "callsites": [
         {
           "path": "server/api/servarr/readarr.ts",
-          "line": 3112,
+          "line": 3122,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Chaptarr queued author preparation without advertising pending-import support. Update ChaptarrNG before retrying this request.'",
@@ -19189,7 +19252,7 @@
       "callsites": [
         {
           "path": "server/api/servarr/readarr.ts",
-          "line": 2003,
+          "line": 2015,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'BookshelfNG returned an invalid media-move preview.'",
@@ -20271,7 +20334,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/readarr.ts",
-          "line": 228,
+          "line": 229,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Bookshelf service not found.'",
@@ -20279,7 +20342,7 @@
         },
         {
           "path": "server/routes/settings/readarr.ts",
-          "line": 270,
+          "line": 271,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Bookshelf service not found.'",
@@ -20287,7 +20350,7 @@
         },
         {
           "path": "server/routes/settings/readarr.ts",
-          "line": 296,
+          "line": 297,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Bookshelf service not found.'",
@@ -20295,7 +20358,7 @@
         },
         {
           "path": "server/routes/settings/readarr.ts",
-          "line": 341,
+          "line": 342,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Bookshelf service not found.'",
@@ -20303,7 +20366,7 @@
         },
         {
           "path": "server/routes/settings/readarr.ts",
-          "line": 367,
+          "line": 368,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Bookshelf service not found.'",
@@ -20311,7 +20374,7 @@
         },
         {
           "path": "server/routes/settings/readarr.ts",
-          "line": 414,
+          "line": 415,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Bookshelf service not found.'",
@@ -20319,7 +20382,7 @@
         },
         {
           "path": "server/routes/settings/readarr.ts",
-          "line": 454,
+          "line": 455,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Bookshelf service not found.'",
@@ -20725,7 +20788,7 @@
       "callsites": [
         {
           "path": "server/api/servarr/readarr.ts",
-          "line": 1423,
+          "line": 1435,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Book server series metadata is unavailable.'",
@@ -20763,7 +20826,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/readarr.ts",
-          "line": 118,
+          "line": 119,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'Choose a valid source folder.'",
@@ -21680,7 +21743,7 @@
       "callsites": [
         {
           "path": "server/api/bookorbit.ts",
-          "line": 351,
+          "line": 410,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'BookOrbit library page is incomplete.'",
@@ -21800,7 +21863,7 @@
       "callsites": [
         {
           "path": "server/api/servarr/readarr.ts",
-          "line": 1919,
+          "line": 1931,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Readarr returned an invalid paged library response.'",
@@ -21943,7 +22006,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/readarr.ts",
-          "line": 673,
+          "line": 684,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Readarr diagnostics are not available for Bindery.'",
@@ -22412,7 +22475,7 @@
       "callsites": [
         {
           "path": "server/api/servarr/readarr.ts",
-          "line": 2941,
+          "line": 2951,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`[Readarr] Failed to cancel pending Chaptarr import ${pendingId}: ${getReadarrErrorMessage(error)}`",
@@ -22780,7 +22843,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/readarr.ts",
-          "line": 353,
+          "line": 354,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "status === 404\n            ? 'This BookshelfNG instance does not support media moves. Update BookshelfNG, then retry.'\n            : 'BookshelfNG could not preview this move. Reload the library and try again.'",
@@ -22788,7 +22851,7 @@
         },
         {
           "path": "server/routes/settings/readarr.ts",
-          "line": 426,
+          "line": 427,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "status === 404\n            ? 'This BookshelfNG instance does not support media moves. Update BookshelfNG, then retry.'\n            : status === 409\n              ? 'The library changed after preview. Preview the move again.'\n              : 'BookshelfNG could not queue this move.'",
@@ -24277,7 +24340,7 @@
       "callsites": [
         {
           "path": "server/api/servarr/readarr.ts",
-          "line": 1797,
+          "line": 1809,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Invalid book server member.'",
@@ -24367,7 +24430,7 @@
       "callsites": [
         {
           "path": "server/api/servarr/readarr.ts",
-          "line": 1315,
+          "line": 1327,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Chaptarr returned an invalid paged library response'",
@@ -25572,7 +25635,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/readarr.ts",
-          "line": 857,
+          "line": 868,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "authorLookupFailed\n            ? 'Bookshelf found book results, but the metadata provider failed to resolve an author. Check provider logs and retry.'\n            : 'Bookshelf lookup returned results, but none had usable author and edition metadata.'",
@@ -25842,6 +25905,27 @@
       ]
     },
     {
+      "key": "m602dbfc7015d76ca9116",
+      "id": "utils.ApiMessage.m602dbfc7015d76ca9116",
+      "source": "SeerrNG could not sign in to the BookOrbit API. Check the hostname, port, SSL and URL base from the SeerrNG server.",
+      "defaultMessage": "SeerrNG could not sign in to the BookOrbit API. Check the hostname, port, SSL and URL base from the SeerrNG server.",
+      "sourceHash": "602dbfc7015d76ca9116cba45a8e31a45853ae9e3ad28d47a87c14f1c751b417",
+      "parts": [
+        "SeerrNG could not sign in to the BookOrbit API. Check the hostname, port, SSL and URL base from the SeerrNG server."
+      ],
+      "parameterCount": 0,
+      "callsites": [
+        {
+          "path": "server/api/bookorbit.ts",
+          "line": 160,
+          "kind": "app-error-candidate",
+          "field": "message",
+          "expression": "status === 401\n          ? 'BookOrbit rejected the account sign-in. Check the username and password or whether the account is locked.'\n          : status === 403\n            ? 'BookOrbit denied password sign-in. Check whether local password sign-in is enabled.'\n            : status === 429\n              ? 'BookOrbit is limiting sign-in attempts. Wait before testing again.'\n              : 'SeerrNG could not sign in to the BookOrbit API. Check the hostname, port, SSL and URL base from the SeerrNG server.'",
+          "captured": []
+        }
+      ]
+    },
+    {
       "key": "m602ef4d683cea1a2f354",
       "id": "utils.ApiMessage.m602ef4d683cea1a2f354",
       "source": "Invalid TMDB studio response",
@@ -25929,7 +26013,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/readarr.ts",
-          "line": 93,
+          "line": 94,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'Choose ebook or audiobook media.'",
@@ -26736,7 +26820,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/readarr.ts",
-          "line": 143,
+          "line": 144,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Bookshelf media tools are only available for Chaptarr.'",
@@ -27483,7 +27567,7 @@
       "callsites": [
         {
           "path": "server/utils/servarrSettings.ts",
-          "line": 571,
+          "line": 583,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'defaultSeasonType is invalid.'",
@@ -27854,7 +27938,7 @@
       "callsites": [
         {
           "path": "server/utils/servarrSettings.ts",
-          "line": 229,
+          "line": 240,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'hostname is invalid.'",
@@ -27862,7 +27946,7 @@
         },
         {
           "path": "server/utils/servarrSettings.ts",
-          "line": 310,
+          "line": 322,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'hostname is invalid.'",
@@ -27870,7 +27954,7 @@
         },
         {
           "path": "server/utils/servarrSettings.ts",
-          "line": 784,
+          "line": 797,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'hostname is invalid.'",
@@ -28531,7 +28615,7 @@
       "callsites": [
         {
           "path": "server/api/servarr/readarr.ts",
-          "line": 1598,
+          "line": 1610,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Invalid series catalog ID.'",
@@ -28626,7 +28710,7 @@
       "callsites": [
         {
           "path": "server/utils/servarrSettings.ts",
-          "line": 418,
+          "line": 430,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'Whisparr does not support a 4K service type.'",
@@ -28872,7 +28956,7 @@
       "callsites": [
         {
           "path": "server/api/servarr/readarr.ts",
-          "line": 1356,
+          "line": 1368,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`Chaptarr returned an empty page before the reported library total of ${totalCount}`",
@@ -28886,7 +28970,7 @@
         },
         {
           "path": "server/api/servarr/readarr.ts",
-          "line": 1356,
+          "line": 1368,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`Chaptarr returned an empty page before the reported library total of ${totalCount}`",
@@ -29280,7 +29364,7 @@
       "callsites": [
         {
           "path": "server/api/servarr/readarr.ts",
-          "line": 2332,
+          "line": 2344,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`[Readarr] Failed to retrieve editions for book ${bookId}: ${e.message}`",
@@ -32449,6 +32533,25 @@
       ]
     },
     {
+      "key": "m780477bc0b46ce0ee723",
+      "id": "utils.ApiMessage.m780477bc0b46ce0ee723",
+      "source": "Enter a BookOrbit password of up to 1024 characters.",
+      "defaultMessage": "Enter a BookOrbit password of up to 1024 characters.",
+      "sourceHash": "780477bc0b46ce0ee7239cc84bf807e8a7e7df74c53275be05a9272b38c386e7",
+      "parts": ["Enter a BookOrbit password of up to 1024 characters."],
+      "parameterCount": 0,
+      "callsites": [
+        {
+          "path": "server/utils/servarrSettings.ts",
+          "line": 156,
+          "kind": "authored-message-field",
+          "field": "error",
+          "expression": "'Enter a BookOrbit password of up to 1024 characters.'",
+          "captured": []
+        }
+      ]
+    },
+    {
       "key": "m783c8bda14364f201da1",
       "id": "utils.ApiMessage.m783c8bda14364f201da1",
       "source": "SEERR_TLS_HOSTS must contain between 1 and 64 hosts.",
@@ -32564,7 +32667,7 @@
       "callsites": [
         {
           "path": "server/api/bookorbit.ts",
-          "line": 340,
+          "line": 399,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'BookOrbit library page is invalid or exceeds the scan limit.'",
@@ -32759,7 +32862,7 @@
       "callsites": [
         {
           "path": "server/api/servarr/readarr.ts",
-          "line": 3260,
+          "line": 3270,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'An additional edition requires an explicit selection.'",
@@ -34390,7 +34493,7 @@
       "callsites": [
         {
           "path": "server/api/servarr/readarr.ts",
-          "line": 1568,
+          "line": 1580,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Catalog book identity does not match the requested work and format.'",
@@ -34485,7 +34588,7 @@
       "callsites": [
         {
           "path": "server/api/servarr/readarr.ts",
-          "line": 2911,
+          "line": 2921,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`[Readarr] Failed to retrieve pending Chaptarr import ${pendingId}: ${getReadarrErrorMessage(error)}`",
@@ -35627,7 +35730,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/readarr.ts",
-          "line": 757,
+          "line": 768,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'The configured metadata provider failed this lookup. Check the Bookshelf provider logs and try again.'",
@@ -37007,7 +37110,7 @@
       "callsites": [
         {
           "path": "server/utils/servarrSettings.ts",
-          "line": 183,
+          "line": 194,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'baseUrl must be a relative path.'",
@@ -37476,7 +37579,7 @@
       "callsites": [
         {
           "path": "server/utils/servarrSettings.ts",
-          "line": 167,
+          "line": 178,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'externalUrl must be a valid HTTP URL.'",
@@ -38022,7 +38125,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/readarr.ts",
-          "line": 994,
+          "line": 1005,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Bookshelf lookup returned usable metadata.'",
@@ -38392,7 +38495,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/readarr.ts",
-          "line": 857,
+          "line": 868,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "authorLookupFailed\n            ? 'Bookshelf found book results, but the metadata provider failed to resolve an author. Check provider logs and retry.'\n            : 'Bookshelf lookup returned results, but none had usable author and edition metadata.'",
@@ -39060,7 +39163,7 @@
       "callsites": [
         {
           "path": "server/utils/servarrSettings.ts",
-          "line": 519,
+          "line": 531,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'seriesType is invalid.'",
@@ -39241,7 +39344,7 @@
       "callsites": [
         {
           "path": "server/api/bookorbit.ts",
-          "line": 180,
+          "line": 239,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'BookOrbit returned an invalid request.'",
@@ -39249,7 +39352,7 @@
         },
         {
           "path": "server/api/bookorbit.ts",
-          "line": 237,
+          "line": 296,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'BookOrbit returned an invalid request.'",
@@ -39289,7 +39392,7 @@
       "callsites": [
         {
           "path": "server/api/bookorbit.ts",
-          "line": 345,
+          "line": 404,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'BookOrbit repeated a library book.'",
@@ -40757,7 +40860,7 @@
       "callsites": [
         {
           "path": "server/api/servarr/readarr.ts",
-          "line": 3255,
+          "line": 3265,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'This destination no longer supports additional editions.'",
@@ -42741,7 +42844,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/readarr.ts",
-          "line": 102,
+          "line": 103,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "`Select between 1 and ${MAX_BOOKSHELF_MEDIA_MOVE_AUTHORS} unique authors.`",
@@ -42766,7 +42869,7 @@
       "callsites": [
         {
           "path": "server/api/bookorbit.ts",
-          "line": 145,
+          "line": 182,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'BookOrbit account is invalid.'",
@@ -44835,7 +44938,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/readarr.ts",
-          "line": 330,
+          "line": 331,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Choose an accessible destination root folder from this BookshelfNG instance.'",
@@ -44974,6 +45077,27 @@
       ]
     },
     {
+      "key": "mac4b3ffd83102e77abd0",
+      "id": "utils.ApiMessage.mac4b3ffd83102e77abd0",
+      "source": "BookOrbit signed in but could not verify the account. Check its account settings in BookOrbit.",
+      "defaultMessage": "BookOrbit signed in but could not verify the account. Check its account settings in BookOrbit.",
+      "sourceHash": "ac4b3ffd83102e77abd06cdbb6997c5ff0381af76eb36f42dc30099d530a26bd",
+      "parts": [
+        "BookOrbit signed in but could not verify the account. Check its account settings in BookOrbit."
+      ],
+      "parameterCount": 0,
+      "callsites": [
+        {
+          "path": "server/api/bookorbit.ts",
+          "line": 174,
+          "kind": "app-error-candidate",
+          "field": "message",
+          "expression": "'BookOrbit signed in but could not verify the account. Check its account settings in BookOrbit.'",
+          "captured": []
+        }
+      ]
+    },
+    {
       "key": "mac4becbd9d1ade55b9d5",
       "id": "utils.ApiMessage.mac4becbd9d1ade55b9d5",
       "source": "[Readarr] Failed to retrieve cover for author {value0}: No poster path worked",
@@ -44987,7 +45111,7 @@
       "callsites": [
         {
           "path": "server/api/servarr/readarr.ts",
-          "line": 2315,
+          "line": 2327,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`[Readarr] Failed to retrieve cover for author ${authorId}: ${\n        lastError instanceof Error ? lastError.message : 'No poster path worked'\n      }`",
@@ -46636,7 +46760,7 @@
       "callsites": [
         {
           "path": "server/api/servarr/readarr.ts",
-          "line": 2252,
+          "line": 2264,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`[Readarr] Failed to retrieve cover for book ${bookId}: ${\n        lastError instanceof Error ? lastError.message : 'No cover path worked'\n      }`",
@@ -47342,7 +47466,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/readarr.ts",
-          "line": 467,
+          "line": 468,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "status === 404\n            ? 'Media-move command not found.'\n            : 'BookshelfNG command status could not be loaded.'",
@@ -47419,7 +47543,7 @@
       "callsites": [
         {
           "path": "server/api/servarr/readarr.ts",
-          "line": 2261,
+          "line": 2273,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'[Readarr] Invalid author ID for cover lookup.'",
@@ -47482,7 +47606,7 @@
       "callsites": [
         {
           "path": "server/api/servarr/readarr.ts",
-          "line": 2103,
+          "line": 2115,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'BookshelfNG returned an invalid media-move command.'",
@@ -47490,7 +47614,7 @@
         },
         {
           "path": "server/api/servarr/readarr.ts",
-          "line": 2109,
+          "line": 2121,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'BookshelfNG returned an invalid media-move command.'",
@@ -50035,7 +50159,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/readarr.ts",
-          "line": 193,
+          "line": 194,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "`${fieldName} is invalid.`",
@@ -50091,7 +50215,7 @@
         },
         {
           "path": "server/utils/servarrSettings.ts",
-          "line": 209,
+          "line": 220,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "`${fieldName} is invalid.`",
@@ -51024,7 +51148,7 @@
       "callsites": [
         {
           "path": "server/api/servarr/readarr.ts",
-          "line": 3268,
+          "line": 3278,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'The selected additional edition is missing from the catalog.'",
@@ -51269,7 +51393,7 @@
       "callsites": [
         {
           "path": "server/api/bookorbit.ts",
-          "line": 79,
+          "line": 89,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'BookOrbit connection needs an account and password.'",
@@ -51617,7 +51741,7 @@
       "callsites": [
         {
           "path": "server/api/servarr/readarr.ts",
-          "line": 3163,
+          "line": 3173,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`[Readarr] Failed to add book: ${getReadarrErrorMessage(e)}`",
@@ -51972,7 +52096,7 @@
       "callsites": [
         {
           "path": "server/api/servarr/readarr.ts",
-          "line": 1333,
+          "line": 1345,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`Chaptarr returned offset ${responseOffset} when SeerrNG requested ${offset}`",
@@ -51991,7 +52115,7 @@
         },
         {
           "path": "server/api/servarr/readarr.ts",
-          "line": 1333,
+          "line": 1345,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`Chaptarr returned offset ${responseOffset} when SeerrNG requested ${offset}`",
@@ -52532,7 +52656,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/readarr.ts",
-          "line": 902,
+          "line": 913,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Test add selections must match accessible Bookshelf profiles and root folders.'",
@@ -52589,7 +52713,7 @@
       "callsites": [
         {
           "path": "server/utils/servarrSettings.ts",
-          "line": 380,
+          "line": 392,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'activeProfileId is invalid.'",
@@ -52597,7 +52721,7 @@
         },
         {
           "path": "server/utils/servarrSettings.ts",
-          "line": 656,
+          "line": 668,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'activeProfileId is invalid.'",
@@ -52996,7 +53120,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/readarr.ts",
-          "line": 426,
+          "line": 427,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "status === 404\n            ? 'This BookshelfNG instance does not support media moves. Update BookshelfNG, then retry.'\n            : status === 409\n              ? 'The library changed after preview. Preview the move again.'\n              : 'BookshelfNG could not queue this move.'",
@@ -53159,6 +53283,27 @@
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'Request management permission is required.'",
+          "captured": []
+        }
+      ]
+    },
+    {
+      "key": "mcea09d5afb9282f77e06",
+      "id": "utils.ApiMessage.mcea09d5afb9282f77e06",
+      "source": "BookOrbit returned an unexpected library response. Check the URL base and BookOrbit version.",
+      "defaultMessage": "BookOrbit returned an unexpected library response. Check the URL base and BookOrbit version.",
+      "sourceHash": "cea09d5afb9282f77e06771978eaf68e952f2a8a9614f1d610f5bdb0a5f3465d",
+      "parts": [
+        "BookOrbit returned an unexpected library response. Check the URL base and BookOrbit version."
+      ],
+      "parameterCount": 0,
+      "callsites": [
+        {
+          "path": "server/api/bookorbit.ts",
+          "line": 209,
+          "kind": "app-error-candidate",
+          "field": "message",
+          "expression": "'BookOrbit returned an unexpected library response. Check the URL base and BookOrbit version.'",
           "captured": []
         }
       ]
@@ -54472,7 +54617,7 @@
       "callsites": [
         {
           "path": "server/utils/servarrSettings.ts",
-          "line": 263,
+          "line": 274,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "backend !== 'readarr'\n          ? 'serviceType must be ebook, audiobook, or both.'\n          : 'serviceType must be ebook or audiobook.'",
@@ -54864,7 +55009,7 @@
         },
         {
           "path": "server/routes/settings/readarr.ts",
-          "line": 1034,
+          "line": 1045,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Settings instance not found'",
@@ -54872,7 +55017,7 @@
         },
         {
           "path": "server/routes/settings/readarr.ts",
-          "line": 1042,
+          "line": 1053,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Settings instance not found'",
@@ -54880,7 +55025,7 @@
         },
         {
           "path": "server/routes/settings/readarr.ts",
-          "line": 1054,
+          "line": 1065,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Settings instance not found'",
@@ -54888,7 +55033,7 @@
         },
         {
           "path": "server/routes/settings/readarr.ts",
-          "line": 1142,
+          "line": 1153,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Settings instance not found'",
@@ -54896,7 +55041,7 @@
         },
         {
           "path": "server/routes/settings/readarr.ts",
-          "line": 1150,
+          "line": 1161,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Settings instance not found'",
@@ -54904,7 +55049,7 @@
         },
         {
           "path": "server/routes/settings/readarr.ts",
-          "line": 1162,
+          "line": 1173,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Settings instance not found'",
@@ -56052,7 +56197,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/readarr.ts",
-          "line": 631,
+          "line": 642,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Failed to connect to Bookshelf'",
@@ -56224,7 +56369,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/readarr.ts",
-          "line": 125,
+          "line": 126,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'Preview the move again before starting it.'",
@@ -56913,7 +57058,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/readarr.ts",
-          "line": 426,
+          "line": 427,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "status === 404\n            ? 'This BookshelfNG instance does not support media moves. Update BookshelfNG, then retry.'\n            : status === 409\n              ? 'The library changed after preview. Preview the move again.'\n              : 'BookshelfNG could not queue this move.'",
@@ -57329,7 +57474,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/readarr.ts",
-          "line": 282,
+          "line": 283,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "status === 404\n            ? 'This BookshelfNG instance does not expose the media-move API. Update BookshelfNG, then retry.'\n            : 'Bookshelf library details could not be loaded.'",
@@ -57519,7 +57664,7 @@
       "callsites": [
         {
           "path": "server/utils/servarrSettings.ts",
-          "line": 735,
+          "line": 748,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'serviceType is invalid.'",
@@ -58090,7 +58235,7 @@
       "callsites": [
         {
           "path": "server/api/servarr/readarr.ts",
-          "line": 1124,
+          "line": 1136,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`[Readarr] Failed to retrieve metadata profiles: ${e.message}`",
@@ -59309,7 +59454,7 @@
       "callsites": [
         {
           "path": "server/api/servarr/readarr.ts",
-          "line": 3145,
+          "line": 3155,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Bookshelf returned an invalid book response.'",
@@ -59505,7 +59650,7 @@
       "callsites": [
         {
           "path": "server/api/bookorbit.ts",
-          "line": 205,
+          "line": 264,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'BookOrbit returned an invalid request pair.'",
@@ -59687,7 +59832,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/readarr.ts",
-          "line": 706,
+          "line": 717,
           "kind": "authored-message-variable",
           "field": "message",
           "expression": "('error' in term && term.error) ||\n        ('error' in testAdd && testAdd.error) ||\n        ('error' in activeDirectory && activeDirectory.error) ||\n        ('error' in activeProfileId && activeProfileId.error) ||\n        ('error' in activeMetadataProfileId && activeMetadataProfileId.error) ||\n        'Invalid diagnostic request.'",
@@ -59861,7 +60006,7 @@
       "callsites": [
         {
           "path": "server/utils/servarrSettings.ts",
-          "line": 263,
+          "line": 274,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "backend !== 'readarr'\n          ? 'serviceType must be ebook, audiobook, or both.'\n          : 'serviceType must be ebook or audiobook.'",
@@ -61126,7 +61271,7 @@
       "callsites": [
         {
           "path": "server/api/servarr/readarr.ts",
-          "line": 1385,
+          "line": 1397,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`Chaptarr library scan reached the ${MAX_SERVARR_LIBRARY_RESULTS}-book safety limit before confirming the library was complete`",
@@ -61137,6 +61282,27 @@
               "disposition": "opaque captured value; preserve verbatim"
             }
           ]
+        }
+      ]
+    },
+    {
+      "key": "mecf8dc3e523fa9d0bcef",
+      "id": "utils.ApiMessage.mecf8dc3e523fa9d0bcef",
+      "source": "BookOrbit is limiting sign-in attempts. Wait before testing again.",
+      "defaultMessage": "BookOrbit is limiting sign-in attempts. Wait before testing again.",
+      "sourceHash": "ecf8dc3e523fa9d0bcefa5c03c81d389e23993b01f478e8130d797a63bb29ef3",
+      "parts": [
+        "BookOrbit is limiting sign-in attempts. Wait before testing again."
+      ],
+      "parameterCount": 0,
+      "callsites": [
+        {
+          "path": "server/api/bookorbit.ts",
+          "line": 160,
+          "kind": "app-error-candidate",
+          "field": "message",
+          "expression": "status === 401\n          ? 'BookOrbit rejected the account sign-in. Check the username and password or whether the account is locked.'\n          : status === 403\n            ? 'BookOrbit denied password sign-in. Check whether local password sign-in is enabled.'\n            : status === 429\n              ? 'BookOrbit is limiting sign-in attempts. Wait before testing again.'\n              : 'SeerrNG could not sign in to the BookOrbit API. Check the hostname, port, SSL and URL base from the SeerrNG server.'",
+          "captured": []
         }
       ]
     },
@@ -61522,7 +61688,7 @@
       "callsites": [
         {
           "path": "server/api/servarr/readarr.ts",
-          "line": 1153,
+          "line": 1165,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`[Readarr] Failed to retrieve development config: ${e.message}`",
@@ -62269,7 +62435,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/readarr.ts",
-          "line": 391,
+          "line": 392,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'The selected authors or source folder changed after preview. Preview the move again.'",
@@ -62316,7 +62482,7 @@
       "callsites": [
         {
           "path": "server/api/servarr/readarr.ts",
-          "line": 2252,
+          "line": 2264,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`[Readarr] Failed to retrieve cover for book ${bookId}: ${\n        lastError instanceof Error ? lastError.message : 'No cover path worked'\n      }`",
@@ -62592,7 +62758,7 @@
       "callsites": [
         {
           "path": "server/api/servarr/readarr.ts",
-          "line": 1877,
+          "line": 1889,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`[Readarr] Failed to retrieve books: ${e.message}`",
@@ -62773,7 +62939,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/readarr.ts",
-          "line": 110,
+          "line": 111,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'Choose a valid destination root folder.'",
@@ -64607,7 +64773,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/readarr.ts",
-          "line": 282,
+          "line": 283,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "status === 404\n            ? 'This BookshelfNG instance does not expose the media-move API. Update BookshelfNG, then retry.'\n            : 'Bookshelf library details could not be loaded.'",
@@ -65672,7 +65838,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/readarr.ts",
-          "line": 402,
+          "line": 403,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'The destination root folder is no longer available. Preview the move again.'",
@@ -66500,7 +66666,7 @@
         },
         {
           "path": "server/utils/servarrSettings.ts",
-          "line": 196,
+          "line": 207,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "`${fieldName} must be a boolean.`",
@@ -66714,7 +66880,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/readarr.ts",
-          "line": 442,
+          "line": 443,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Media-move command not found.'",
@@ -66722,7 +66888,7 @@
         },
         {
           "path": "server/routes/settings/readarr.ts",
-          "line": 467,
+          "line": 468,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "status === 404\n            ? 'Media-move command not found.'\n            : 'BookshelfNG command status could not be loaded.'",
@@ -66920,7 +67086,7 @@
       "callsites": [
         {
           "path": "server/utils/servarrSettings.ts",
-          "line": 237,
+          "line": 248,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'port is invalid.'",
@@ -66928,7 +67094,7 @@
         },
         {
           "path": "server/utils/servarrSettings.ts",
-          "line": 376,
+          "line": 388,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'port is invalid.'",
@@ -66936,7 +67102,7 @@
         },
         {
           "path": "server/utils/servarrSettings.ts",
-          "line": 813,
+          "line": 826,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'port is invalid.'",
@@ -68921,7 +69087,7 @@
     },
     {
       "path": "server/api/servarr/readarr.ts",
-      "line": 1245,
+      "line": 1257,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -68930,7 +69096,7 @@
     },
     {
       "path": "server/api/servarr/readarr.ts",
-      "line": 1245,
+      "line": 1257,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -68939,7 +69105,7 @@
     },
     {
       "path": "server/api/servarr/readarr.ts",
-      "line": 1265,
+      "line": 1277,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -68948,7 +69114,7 @@
     },
     {
       "path": "server/api/servarr/readarr.ts",
-      "line": 1265,
+      "line": 1277,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -68957,7 +69123,7 @@
     },
     {
       "path": "server/api/servarr/readarr.ts",
-      "line": 2050,
+      "line": 2062,
       "kind": "authored-message-field",
       "field": "warnings",
       "expression": "Array.isArray(record.warnings)\n        ? record.warnings\n            .slice(0, 100)\n            .flatMap((warning) =>\n              typeof warning === 'string' ? [boundedMediaMoveText(warning)] : []\n            )\n        : []",
@@ -68966,7 +69132,7 @@
     },
     {
       "path": "server/api/servarr/readarr.ts",
-      "line": 2115,
+      "line": 2127,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "boundedMediaMoveText(record.message)",
@@ -68975,7 +69141,7 @@
     },
     {
       "path": "server/api/servarr/readarr.ts",
-      "line": 2528,
+      "line": 2538,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -68984,7 +69150,7 @@
     },
     {
       "path": "server/api/servarr/readarr.ts",
-      "line": 2528,
+      "line": 2538,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -68993,7 +69159,7 @@
     },
     {
       "path": "server/api/servarr/readarr.ts",
-      "line": 2568,
+      "line": 2578,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -69002,7 +69168,7 @@
     },
     {
       "path": "server/api/servarr/readarr.ts",
-      "line": 2568,
+      "line": 2578,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -69011,7 +69177,7 @@
     },
     {
       "path": "server/api/servarr/readarr.ts",
-      "line": 2665,
+      "line": 2675,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -69020,7 +69186,7 @@
     },
     {
       "path": "server/api/servarr/readarr.ts",
-      "line": 2665,
+      "line": 2675,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -69029,7 +69195,7 @@
     },
     {
       "path": "server/api/servarr/readarr.ts",
-      "line": 2733,
+      "line": 2743,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -69038,7 +69204,7 @@
     },
     {
       "path": "server/api/servarr/readarr.ts",
-      "line": 2733,
+      "line": 2743,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -69047,7 +69213,7 @@
     },
     {
       "path": "server/api/servarr/readarr.ts",
-      "line": 2792,
+      "line": 2802,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -69056,7 +69222,7 @@
     },
     {
       "path": "server/api/servarr/readarr.ts",
-      "line": 2792,
+      "line": 2802,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -69065,7 +69231,7 @@
     },
     {
       "path": "server/api/servarr/readarr.ts",
-      "line": 2884,
+      "line": 2894,
       "kind": "message-helper-expression",
       "field": "message",
       "expression": "readText(response[camel] ?? response[pascal])",
@@ -69074,7 +69240,7 @@
     },
     {
       "path": "server/api/servarr/readarr.ts",
-      "line": 2903,
+      "line": 2913,
       "kind": "authored-message-field",
       "field": "lastError",
       "expression": "status('lastError', 'LastError')",
@@ -69083,7 +69249,7 @@
     },
     {
       "path": "server/api/servarr/readarr.ts",
-      "line": 3122,
+      "line": 3132,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "typeof (postedBook.message ?? postedBook.Message) === 'string'\n                ? String(postedBook.message ?? postedBook.Message).slice(\n                    0,\n                    10_000\n                  )\n                : undefined",
@@ -69092,7 +69258,7 @@
     },
     {
       "path": "server/api/servarr/readarr.ts",
-      "line": 3122,
+      "line": 3132,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "typeof (postedBook.message ?? postedBook.Message) === 'string'\n                ? String(postedBook.message ?? postedBook.Message).slice(\n                    0,\n                    10_000\n                  )\n                : undefined",
@@ -69101,7 +69267,7 @@
     },
     {
       "path": "server/api/servarr/readarr.ts",
-      "line": 3336,
+      "line": 3346,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "getReadarrErrorMessage(e)",
@@ -69110,7 +69276,7 @@
     },
     {
       "path": "server/api/servarr/readarr.ts",
-      "line": 3365,
+      "line": 3375,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "getReadarrErrorMessage(e)",
@@ -69119,7 +69285,7 @@
     },
     {
       "path": "server/api/servarr/readarr.ts",
-      "line": 3414,
+      "line": 3424,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "getReadarrErrorMessage(e)",
@@ -84995,7 +85161,7 @@
     },
     {
       "path": "server/routes/settings/readarr.ts",
-      "line": 298,
+      "line": 299,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "parsed.error",
@@ -85004,7 +85170,7 @@
     },
     {
       "path": "server/routes/settings/readarr.ts",
-      "line": 369,
+      "line": 370,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "parsed.error",
@@ -85013,7 +85179,7 @@
     },
     {
       "path": "server/routes/settings/readarr.ts",
-      "line": 483,
+      "line": 484,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "parsedReadarr.error",
@@ -85022,7 +85188,7 @@
     },
     {
       "path": "server/routes/settings/readarr.ts",
-      "line": 541,
+      "line": 542,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "parsedReadarr.error",
@@ -85031,7 +85197,7 @@
     },
     {
       "path": "server/routes/settings/readarr.ts",
-      "line": 622,
+      "line": 623,
       "kind": "authored-message-field",
       "field": "providerNotice",
       "expression": "getBookshelfProviderNotice(provider)",
@@ -85040,7 +85206,7 @@
     },
     {
       "path": "server/routes/settings/readarr.ts",
-      "line": 623,
+      "line": 624,
       "kind": "authored-message-field",
       "field": "legacyWarning",
       "expression": "getBookshelfProviderNotice(provider)",
@@ -85049,7 +85215,7 @@
     },
     {
       "path": "server/routes/settings/readarr.ts",
-      "line": 629,
+      "line": 636,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "e.message",
@@ -85058,7 +85224,16 @@
     },
     {
       "path": "server/routes/settings/readarr.ts",
-      "line": 661,
+      "line": 640,
+      "kind": "authored-message-field",
+      "field": "message",
+      "expression": "e.message",
+      "source": "{value0}",
+      "reason": "dynamic/provider/user value"
+    },
+    {
+      "path": "server/routes/settings/readarr.ts",
+      "line": 672,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "parsedReadarr.error",
@@ -85067,7 +85242,7 @@
     },
     {
       "path": "server/routes/settings/readarr.ts",
-      "line": 706,
+      "line": 717,
       "kind": "authored-message-variable",
       "field": "message",
       "expression": "('error' in term && term.error) ||\n        ('error' in testAdd && testAdd.error) ||\n        ('error' in activeDirectory && activeDirectory.error) ||\n        ('error' in activeProfileId && activeProfileId.error) ||\n        ('error' in activeMetadataProfileId && activeMetadataProfileId.error) ||\n        'Invalid diagnostic request.'",
@@ -85076,7 +85251,7 @@
     },
     {
       "path": "server/routes/settings/readarr.ts",
-      "line": 706,
+      "line": 717,
       "kind": "authored-message-variable",
       "field": "message",
       "expression": "('error' in term && term.error) ||\n        ('error' in testAdd && testAdd.error) ||\n        ('error' in activeDirectory && activeDirectory.error) ||\n        ('error' in activeProfileId && activeProfileId.error) ||\n        ('error' in activeMetadataProfileId && activeMetadataProfileId.error) ||\n        'Invalid diagnostic request.'",
@@ -85085,7 +85260,7 @@
     },
     {
       "path": "server/routes/settings/readarr.ts",
-      "line": 706,
+      "line": 717,
       "kind": "authored-message-variable",
       "field": "message",
       "expression": "('error' in term && term.error) ||\n        ('error' in testAdd && testAdd.error) ||\n        ('error' in activeDirectory && activeDirectory.error) ||\n        ('error' in activeProfileId && activeProfileId.error) ||\n        ('error' in activeMetadataProfileId && activeMetadataProfileId.error) ||\n        'Invalid diagnostic request.'",
@@ -85094,7 +85269,7 @@
     },
     {
       "path": "server/routes/settings/readarr.ts",
-      "line": 706,
+      "line": 717,
       "kind": "authored-message-variable",
       "field": "message",
       "expression": "('error' in term && term.error) ||\n        ('error' in testAdd && testAdd.error) ||\n        ('error' in activeDirectory && activeDirectory.error) ||\n        ('error' in activeProfileId && activeProfileId.error) ||\n        ('error' in activeMetadataProfileId && activeMetadataProfileId.error) ||\n        'Invalid diagnostic request.'",
@@ -85103,7 +85278,7 @@
     },
     {
       "path": "server/routes/settings/readarr.ts",
-      "line": 706,
+      "line": 717,
       "kind": "authored-message-variable",
       "field": "message",
       "expression": "('error' in term && term.error) ||\n        ('error' in testAdd && testAdd.error) ||\n        ('error' in activeDirectory && activeDirectory.error) ||\n        ('error' in activeProfileId && activeProfileId.error) ||\n        ('error' in activeMetadataProfileId && activeMetadataProfileId.error) ||\n        'Invalid diagnostic request.'",
@@ -85112,7 +85287,7 @@
     },
     {
       "path": "server/routes/settings/readarr.ts",
-      "line": 737,
+      "line": 748,
       "kind": "authored-message-variable",
       "field": "providerNotice",
       "expression": "getBookshelfProviderNotice(provider)",
@@ -85121,7 +85296,7 @@
     },
     {
       "path": "server/routes/settings/readarr.ts",
-      "line": 750,
+      "line": 761,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -85130,7 +85305,7 @@
     },
     {
       "path": "server/routes/settings/readarr.ts",
-      "line": 750,
+      "line": 761,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -85139,7 +85314,7 @@
     },
     {
       "path": "server/routes/settings/readarr.ts",
-      "line": 762,
+      "line": 773,
       "kind": "authored-message-field",
       "field": "legacyWarning",
       "expression": "providerNotice",
@@ -85148,7 +85323,7 @@
     },
     {
       "path": "server/routes/settings/readarr.ts",
-      "line": 782,
+      "line": 793,
       "kind": "authored-message-field",
       "field": "legacyWarning",
       "expression": "providerNotice",
@@ -85157,7 +85332,7 @@
     },
     {
       "path": "server/routes/settings/readarr.ts",
-      "line": 864,
+      "line": 875,
       "kind": "authored-message-field",
       "field": "legacyWarning",
       "expression": "providerNotice",
@@ -85166,7 +85341,7 @@
     },
     {
       "path": "server/routes/settings/readarr.ts",
-      "line": 946,
+      "line": 957,
       "kind": "authored-message-field",
       "field": "legacyWarning",
       "expression": "providerNotice",
@@ -85175,7 +85350,7 @@
     },
     {
       "path": "server/routes/settings/readarr.ts",
-      "line": 963,
+      "line": 974,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "cleanupError instanceof Error\n                    ? cleanupError.message\n                    : String(cleanupError)",
@@ -85184,7 +85359,7 @@
     },
     {
       "path": "server/routes/settings/readarr.ts",
-      "line": 963,
+      "line": 974,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "cleanupError instanceof Error\n                    ? cleanupError.message\n                    : String(cleanupError)",
@@ -85193,7 +85368,7 @@
     },
     {
       "path": "server/routes/settings/readarr.ts",
-      "line": 970,
+      "line": 981,
       "kind": "authored-message-field",
       "field": "legacyWarning",
       "expression": "providerNotice",
@@ -85202,7 +85377,7 @@
     },
     {
       "path": "server/routes/settings/readarr.ts",
-      "line": 980,
+      "line": 991,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "e instanceof Error ? e.message : String(e)",
@@ -85211,7 +85386,7 @@
     },
     {
       "path": "server/routes/settings/readarr.ts",
-      "line": 980,
+      "line": 991,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "e instanceof Error ? e.message : String(e)",
@@ -85220,7 +85395,7 @@
     },
     {
       "path": "server/routes/settings/readarr.ts",
-      "line": 985,
+      "line": 996,
       "kind": "authored-message-field",
       "field": "legacyWarning",
       "expression": "providerNotice",
@@ -85229,7 +85404,7 @@
     },
     {
       "path": "server/routes/settings/readarr.ts",
-      "line": 999,
+      "line": 1010,
       "kind": "authored-message-field",
       "field": "legacyWarning",
       "expression": "providerNotice",
@@ -85238,7 +85413,7 @@
     },
     {
       "path": "server/routes/settings/readarr.ts",
-      "line": 1012,
+      "line": 1023,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "e instanceof Error ? e.message : String(e)",
@@ -85247,7 +85422,7 @@
     },
     {
       "path": "server/routes/settings/readarr.ts",
-      "line": 1012,
+      "line": 1023,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "e instanceof Error ? e.message : String(e)",
@@ -85256,7 +85431,7 @@
     },
     {
       "path": "server/routes/settings/readarr.ts",
-      "line": 1018,
+      "line": 1029,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "e instanceof Error ? e.message : String(e)",
@@ -85265,7 +85440,7 @@
     },
     {
       "path": "server/routes/settings/readarr.ts",
-      "line": 1018,
+      "line": 1029,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "e instanceof Error ? e.message : String(e)",
@@ -85274,7 +85449,7 @@
     },
     {
       "path": "server/routes/settings/readarr.ts",
-      "line": 1062,
+      "line": 1073,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "admittedReadarr.error",
@@ -88685,7 +88860,7 @@
     },
     {
       "path": "server/utils/servarrSettings.ts",
-      "line": 365,
+      "line": 377,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "e instanceof Error ? e.message : 'downloadQueueSize is invalid.'",

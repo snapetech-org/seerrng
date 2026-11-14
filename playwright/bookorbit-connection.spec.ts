@@ -1,4 +1,6 @@
 import { expect, test } from '@playwright/test';
+import { once } from 'node:events';
+import { createServer, type Server } from 'node:http';
 
 test.use({
   serviceWorkers: 'block',
@@ -13,6 +15,40 @@ test.use({
 });
 
 let createdId: number | undefined;
+let bookOrbit: Server;
+let bookOrbitPort: number;
+
+test.beforeAll(async () => {
+  const responses: Record<string, unknown> = {
+    'GET /api/v1/auth/me': { id: 1, permissions: ['book_request_access'] },
+    'POST /api/v1/books/query': { items: [], total: 0 },
+    'GET /api/v1/app-info': { version: 'fixture' },
+  };
+  bookOrbit = createServer((req, res) => {
+    const data =
+      req.url === '/api/v1/auth/login' && req.method === 'POST'
+        ? { accessToken: 'fixture-token' }
+        : req.headers.authorization === 'Bearer fixture-token'
+          ? responses[`${req.method} ${req.url}`]
+          : undefined;
+    req.resume();
+    res.writeHead(data ? 200 : 404, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify(data ?? {}));
+  });
+  bookOrbit.listen(0, '127.0.0.1');
+  await once(bookOrbit, 'listening');
+  const address = bookOrbit.address();
+  if (!address || typeof address === 'string')
+    throw new Error('BookOrbit fixture needs a TCP port.');
+  bookOrbitPort = address.port;
+});
+
+test.afterAll(async () => {
+  await new Promise<void>((resolve, reject) =>
+    bookOrbit.close((error) => (error ? reject(error) : resolve()))
+  );
+});
+
 test.afterEach(async ({ page }) => {
   if (createdId != null) {
     expect(
@@ -73,16 +109,6 @@ for (const theme of ['seerrNGJ', 'seerrOrig', 'persiusNG']) {
           },
         });
       });
-      await page.route('**/api/v1/settings/readarr/test', (route) =>
-        route.fulfill({
-          json: {
-            backend: 'bookorbit',
-            system: { version: 'fixture' },
-            features: { requests: true, ebook: true, audiobook: true },
-          },
-        })
-      );
-
       await page.goto('/settings/services', { waitUntil: 'domcontentloaded' });
       await page
         .getByRole('button', { name: 'Audiobooks & Books', exact: true })
@@ -95,7 +121,8 @@ for (const theme of ['seerrNGJ', 'seerrOrig', 'persiusNG']) {
         fullPage: false,
       });
       await dialog.locator('#name').fill(`BookOrbit fixture ${theme} ${width}`);
-      await dialog.locator('#hostname').fill('books.invalid');
+      await dialog.locator('#hostname').fill('127.0.0.1');
+      await dialog.locator('#port').fill(String(bookOrbitPort));
       await dialog.locator('#bookorbitUsername').fill('requester');
       await dialog.locator('#apiKey').fill('fixture-password');
       await dialog.locator('#serviceType').selectOption('both');
@@ -133,6 +160,43 @@ for (const theme of ['seerrNGJ', 'seerrOrig', 'persiusNG']) {
       });
       expect(JSON.stringify(service)).not.toContain('fixture-password');
       await expect(dialog).toBeHidden();
+
+      const serviceCard = page
+        .getByRole('listitem')
+        .filter({ hasText: service.name });
+      const removal = new RegExp(`/api/v1/settings/readarr/${createdId}$`);
+      await page.route(
+        removal,
+        (route) =>
+          route.fulfill({
+            status: 409,
+            json: {
+              message: 'Service is still referenced by 1 active request.',
+            },
+          }),
+        { times: 1 }
+      );
+      await serviceCard
+        .getByRole('button', { name: 'Delete', exact: true })
+        .click();
+      const confirmation = page.getByRole('dialog', {
+        name: 'Delete Bookshelf Server',
+      });
+      await confirmation
+        .getByRole('button', { name: 'Delete', exact: true })
+        .click();
+      await expect(confirmation.getByRole('alert')).toHaveText(
+        'Service is still referenced by 1 active request.'
+      );
+      await page.screenshot({
+        path: info.outputPath('book-acquisition-remove-conflict.png'),
+      });
+      await confirmation
+        .getByRole('button', { name: 'Delete', exact: true })
+        .click();
+      await expect(confirmation).toBeHidden();
+      await expect(serviceCard).toHaveCount(0);
+      createdId = undefined;
     });
   }
 }

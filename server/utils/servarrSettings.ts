@@ -146,6 +146,17 @@ const parseRequiredServiceString = (
 ): { value: string } | { error: string } =>
   parseBoundedString(value, { fieldName, maxLength });
 
+const parseServiceCredential = (
+  value: unknown,
+  backend?: ReadarrSettings['backend']
+): { value: string } | { error: string } => {
+  if (backend !== 'bookorbit')
+    return parseRequiredServiceString(value, 'apiKey');
+  if (typeof value !== 'string' || !value || value.length > 1024)
+    return { error: 'Enter a BookOrbit password of up to 1024 characters.' };
+  return { value };
+};
+
 const parseOptionalServiceString = (
   value: unknown,
   fieldName: string,
@@ -229,7 +240,7 @@ export const parseServarrConnectionSettings = (
     return { error: 'hostname is invalid.' };
   }
 
-  const apiKey = parseRequiredServiceString(settings.apiKey, 'apiKey');
+  const apiKey = parseServiceCredential(settings.apiKey, settings.backend);
   if ('error' in apiKey) return apiKey;
 
   const port = parseOptionalNonNegativeInteger(settings.port, MAX_SERVICE_PORT);
@@ -293,7 +304,8 @@ export const parseServarrConnectionSettings = (
 
 const parseDvrSettings = (
   body: unknown,
-  current?: DVRSettings
+  current?: DVRSettings,
+  backend?: ReadarrSettings['backend']
 ): { value: DVRSettings } | { error: string } => {
   if (!body || typeof body !== 'object' || Array.isArray(body)) {
     return { error: 'settings must be an object.' };
@@ -310,7 +322,7 @@ const parseDvrSettings = (
     return { error: 'hostname is invalid.' };
   }
 
-  const apiKey = parseRequiredServiceString(settings.apiKey, 'apiKey');
+  const apiKey = parseServiceCredential(settings.apiKey, backend);
   if ('error' in apiKey) return apiKey;
 
   const activeProfileName = parseRequiredServiceString(
@@ -680,9 +692,10 @@ export const parseSportarrSettings = (
 
 export const parseLidarrSettings = (
   body: unknown,
-  current?: LidarrSettings
+  current?: LidarrSettings,
+  backend?: ReadarrSettings['backend']
 ): { value: LidarrSettings } | { error: string } => {
-  const parsed = parseDvrSettings(body, current);
+  const parsed = parseDvrSettings(body, current, backend);
   if ('error' in parsed) return parsed;
   const settings = body as Partial<LidarrSettings>;
 
@@ -710,9 +723,9 @@ export const parseReadarrSettings = (
   body: unknown,
   current?: ReadarrSettings
 ): { value: ReadarrSettings } | { error: string } => {
-  const parsed = parseLidarrSettings(body, current);
-  if ('error' in parsed) return parsed;
   const settings = body as Partial<ReadarrSettings>;
+  const parsed = parseLidarrSettings(body, current, settings?.backend);
+  if ('error' in parsed) return parsed;
 
   const backend =
     settings.backend === undefined || settings.backend === 'readarr'

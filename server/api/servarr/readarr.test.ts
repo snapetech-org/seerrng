@@ -2336,7 +2336,7 @@ describe('ReadarrAPI Chaptarr compatibility', () => {
         },
       ],
     };
-    let bookState = {
+    const bookState = {
       ...nativeResult,
       id: 17,
       mediaType: 'ebook' as const,
@@ -2421,20 +2421,6 @@ describe('ReadarrAPI Chaptarr compatibility', () => {
         }
 
         if (
-          request.method === 'PUT' &&
-          scopedBase &&
-          parsedUrl.pathname === `${scopedBase}/book/17`
-        ) {
-          bookState = {
-            ...bookState,
-            ...(body as Record<string, unknown>),
-            addOptions: { searchForNewBook: true },
-          };
-          writeJson(response, 202, bookState);
-          return;
-        }
-
-        if (
           request.method === 'POST' &&
           scopedBase &&
           parsedUrl.pathname === `${scopedBase}/command`
@@ -2494,18 +2480,12 @@ describe('ReadarrAPI Chaptarr compatibility', () => {
             query.get('titleSlug') === '3194841'
         )
       );
-      const update = requests.find(
-        ({ method, path }) =>
-          method === 'PUT' && path === '/readarr/gr/ebook/api/v1/book/17'
+      assert.ok(
+        !requests.some(
+          ({ method, path }) =>
+            method === 'PUT' && path === '/readarr/gr/ebook/api/v1/book/17'
+        )
       );
-      assert.ok(update);
-      assert.deepStrictEqual(update.body, {
-        id: 17,
-        mediaType: 'ebook',
-        monitored: true,
-        ebookMonitored: true,
-        addOptions: { searchForNewBook: true },
-      });
       assert.ok(
         requests.some(
           ({ method, path }) =>

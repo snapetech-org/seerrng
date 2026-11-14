@@ -2080,6 +2080,40 @@ describe('Bookshelf settings routes', () => {
     );
   });
 
+  it('returns the active book request conflict when removing a Bookshelf service', async () => {
+    getSettings().readarr = [makeReadarr({ id: 7 })];
+    const user = await getRepository(User).findOneByOrFail({ id: 1 });
+    const media = await getRepository(Media).save(
+      new Media({
+        mediaType: MediaType.BOOK,
+        tmdbId: 999_999_979,
+        status: MediaStatus.PENDING,
+      })
+    );
+    const activeRequest = await getRepository(MediaRequest).save(
+      new MediaRequest({
+        type: MediaType.BOOK,
+        media,
+        requestedBy: user,
+        status: MediaRequestStatus.FAILED,
+        serverId: 7,
+        is4k: false,
+      })
+    );
+    const app = createOpenApiApp();
+    const blocked = await request(app).delete('/api/v1/settings/readarr/7');
+    assert.strictEqual(blocked.status, 409, JSON.stringify(blocked.body));
+    assert.match(blocked.body.message, /1 active request/);
+    assert.strictEqual(getSettings().readarr.length, 1);
+
+    await getRepository(MediaRequest).update(activeRequest.id, {
+      status: MediaRequestStatus.COMPLETED,
+    });
+    const removed = await request(app).delete('/api/v1/settings/readarr/7');
+    assert.strictEqual(removed.status, 200, JSON.stringify(removed.body));
+    assert.deepStrictEqual(getSettings().readarr, []);
+  });
+
   it('promotes another Bookshelf server for the same format when editing away the default', async () => {
     getSettings().readarr = [
       makeReadarr({ id: 7, name: 'Primary Ebook', isDefault: true }),

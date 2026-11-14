@@ -53,6 +53,8 @@ export const apiMessages: Record<
     'No enabled Prowlarr indexers are assigned to this medium.',
   m03f2b6c93caee52bbc25:
     'Failed request recovery cannot change the request owner.',
+  m046eba654a62bf7f5c82:
+    'BookOrbit signed in but the library could not be read. Check library access for this account.',
   m04728ad584102ac82477: 'ComicVine ID is required for comic watchlists.',
   m0472e4dce5576b45dc19: 'No ID provided',
   m047b6cc646216d9a4f21: '[MusicBrainz] Failed to search albums: Unknown error',
@@ -340,6 +342,8 @@ export const apiMessages: Record<
   m17752719fdf05cd6c1a4:
     'This ComicVine edition is already linked to a different AniList manga.',
   m177660ceed099c45c93a: 'Provide only a boolean quality selection.',
+  m177c58de1c5f1381fb7d:
+    'BookOrbit rejected the account sign-in. Check the username and password or whether the account is locked.',
   m178018db523aec585d3e:
     'SEERR_EXTERNAL_CONFIG is required for outbound integrations. Run scripts/export-external-config.mjs to migrate existing settings.',
   m17948e7b3877ef187fd3: 'TLS material must be a regular file: {value0}',
@@ -456,6 +460,8 @@ export const apiMessages: Record<
   m20332f5d9c14a820c35e: 'TorrentNG rejected the API token.',
   m2039899a25c509f0b202:
     'Unable to verify all unavailable seasons. Try again later.',
+  m204cf75e99185b513d94:
+    'BookOrbit denied password sign-in. Check whether local password sign-in is enabled.',
   m20776c7d62c289b39c2b: '[TMDB] Failed to fetch TV show details: {value0}',
   m20796bef323c782f4dfd: 'This sports league is blocklisted.',
   m2091ab1465ee70eb51e4: 'Invalid collection member',
@@ -1350,6 +1356,8 @@ export const apiMessages: Record<
     'Add the BookOrbit address in Settings > Services > Reader Apps first.',
   m600a128b9c67c27cea93: 'held work failed',
   m601ad5083228737bc904: 'Mark this game owned before sharing it.',
+  m602dbfc7015d76ca9116:
+    'SeerrNG could not sign in to the BookOrbit API. Check the hostname, port, SSL and URL base from the SeerrNG server.',
   m602ef4d683cea1a2f354: 'Invalid TMDB studio response',
   m604b54981669df32a761:
     'Upgrade {value0} to use software genre and year filters.',
@@ -1697,6 +1705,7 @@ export const apiMessages: Record<
   m77dbdfeadccab4cf81d8: 'Radarr did not confirm the requester tag update.',
   m78035dc8f5b95b89966e:
     'YouTube playlist integration is not configured by an administrator.',
+  m780477bc0b46ce0ee723: 'Enter a BookOrbit password of up to 1024 characters.',
   m783c8bda14364f201da1: 'SEERR_TLS_HOSTS must contain between 1 and 64 hosts.',
   m7885c7e5c1c4f7f6ee57:
     'A matching Sonarr server must be configured for this request.',
@@ -2398,6 +2407,8 @@ export const apiMessages: Record<
   mac2a0ce36b47cc403e61: '{value0} must be a number from 0 through 1.',
   mac3175237b1837c2e4ed: 'Avatar URL must be a string',
   mac3fb701c4c43ad8ced3: 'Music filters require the Music media type.',
+  mac4b3ffd83102e77abd0:
+    'BookOrbit signed in but could not verify the account. Check its account settings in BookOrbit.',
   mac4becbd9d1ade55b9d5:
     '[Readarr] Failed to retrieve cover for author {value0}: No poster path worked',
   mac4ef2a0375da7e54bb0: 'Unable to retrieve request users.',
@@ -2862,6 +2873,8 @@ export const apiMessages: Record<
   mce8ddf7695ef8f4b0f6c:
     'Selected Lidarr server does not match the requested quality tier.',
   mce99dd05c0e86bcf1ab4: 'Request management permission is required.',
+  mcea09d5afb9282f77e06:
+    'BookOrbit returned an unexpected library response. Check the URL base and BookOrbit version.',
   mceadc60782b987f99327: 'Unknown selection.',
   mcece9ac3fd00b832e02e:
     'The provider cannot cancel this request in its current state. Check the provider or download client.',
@@ -3279,6 +3292,8 @@ export const apiMessages: Record<
   mecee8fc579c707f72c7b: 'Backend did not confirm watch state.',
   mecefd80c34056b493fa3:
     'Chaptarr library scan reached the {value0}-book safety limit before confirming the library was complete',
+  mecf8dc3e523fa9d0bcef:
+    'BookOrbit is limiting sign-in attempts. Wait before testing again.',
   med0df8245b351753b17f: 'Log path must resolve to one private regular file.',
   med14e271cfdd4692f62d:
     'No Guid metadata for this title. Skipping. (Try refreshing the metadata in Plex for this media!)',
