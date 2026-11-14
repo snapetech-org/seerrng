@@ -523,6 +523,45 @@ test('cards show requested, downloading, part-owned and complete', async ({
   await expect(cards.nth(3).locator('.glyph')).toHaveCount(0);
 });
 
+test('Not yet hides owned series and keeps the browse filters', async ({
+  page,
+}) => {
+  const { browsed } = await fixtures(page, {
+    browse: [
+      oshi(downloading),
+      saga(partial),
+      chainsaw(complete, '130799'),
+      onePiece(),
+    ],
+    library: [],
+  });
+  await page.goto('/comics?type=manga');
+  const cards = page.locator('.comic-grid .poster');
+  await expect(cards).toHaveCount(4);
+  const library = page.getByRole('group', { name: 'Library' });
+  await expect(library.getByRole('button')).toHaveText([
+    'All',
+    'In library',
+    'Not yet',
+  ]);
+  await library.getByRole('button', { name: 'Not yet' }).click();
+  await expect(page).toHaveURL(/show=not/);
+  await expect(
+    page.locator('.sec-head h2', { hasText: 'Not in your library yet' })
+  ).toBeVisible();
+  // part-owned and complete series are left out; a requested one stays, with its badge
+  await expect(cards).toHaveCount(2);
+  await expect(cards.nth(0).locator('.glyph')).toHaveAttribute(
+    'title',
+    'Downloading 62%'
+  );
+  await expect(cards.nth(1).locator('.glyph')).toHaveCount(0);
+  // it is the browse feed, so its sort and filters stay
+  expect(browsed.every((q) => !q.includes('show='))).toBe(true);
+  await expect(page.getByLabel('Sort')).toBeVisible();
+  await expect(page.getByLabel('Status')).toBeVisible();
+});
+
 test('filters and sort ask for the matching list', async ({ page }) => {
   const { browsed } = await fixtures(page);
   await page.goto('/comics');
