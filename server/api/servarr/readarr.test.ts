@@ -53,6 +53,11 @@ describe('ReadarrAPI.getReleaseCalendar', () => {
       apiKey: 'key',
       mediaType: 'audiobook',
     });
+    mock.method(
+      api as unknown as { ensureProvider: () => Promise<void> },
+      'ensureProvider',
+      async () => undefined
+    );
     const getMock = mock.method(
       ReadarrAPI.prototype as unknown as MockableReadarr,
       'get',
