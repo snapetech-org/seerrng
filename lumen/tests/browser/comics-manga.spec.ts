@@ -1,5 +1,5 @@
-import { writeFile } from 'node:fs/promises';
 import { expect, test, type Page } from '@playwright/test';
+import { writeFile } from 'node:fs/promises';
 
 // 1x1 PNG for every proxied cover
 const PNG = Buffer.from(
@@ -214,7 +214,6 @@ async function fixtures(
   const searched: string[] = [];
   await page.route('https://**/*', (r) => r.abort());
   await page.route('**/lumen-config.json', (r) => r.fulfill({ json: config }));
-  await page.route('**/seerr-classic/**', (r) => r.fulfill({ status: 404 }));
   await page.route('**/imageproxy/**', (r) =>
     r.fulfill({ body: PNG, contentType: 'image/png' })
   );
@@ -238,8 +237,7 @@ async function fixtures(
         },
       });
     if (path === '/genres/tv') return r.fulfill({ json: [] });
-    if (path.startsWith('/discover/tv'))
-      return r.fulfill({ json: paged([]) });
+    if (path.startsWith('/discover/tv')) return r.fulfill({ json: paged([]) });
     if (path === '/discover/comics/landing')
       return r.fulfill({
         json: {
@@ -688,7 +686,8 @@ for (const width of [360, 768, 1280]) {
           candidateSha: process.env.GITHUB_SHA,
           referenceRoute: '/series',
           candidateRoutes: ['/comics', '/comic/al-105778'],
-          state: 'authenticated dark theme with downloading and partial library entries',
+          state:
+            'authenticated dark theme with downloading and partial library entries',
           viewport: { width, height: 800 },
           overflow: { comicsPage: overflow, detailPage: detailOverflow },
           screenshots: [
@@ -831,9 +830,9 @@ test('hovering a complete card reads it in Kavita, a part-owned one offers it to
     cards.nth(1).getByRole('link', { name: 'Read Saga in Kavita' })
   ).toHaveAttribute('href', KAVITA);
   await cards.nth(2).hover();
-  await expect(cards.nth(2).getByRole('link', { name: /in Kavita/ })).toHaveCount(
-    0
-  );
+  await expect(
+    cards.nth(2).getByRole('link', { name: /in Kavita/ })
+  ).toHaveCount(0);
 });
 
 for (const width of [360, 768]) {

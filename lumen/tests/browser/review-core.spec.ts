@@ -323,8 +323,8 @@ test('cover addresses: known hosts go through the proxy, unsafe ones are dropped
   });
   const hc = (n: number) =>
     `bookshelf:1:${Buffer.from(`hc:${n}`).toString('base64url')}`;
-  const hcBook = (n: number) => ({
-    ...book(n, ''),
+  const hcBook = (n: number, posterPath: string) => ({
+    ...book(n, posterPath),
     id: hc(n),
     provider: 'bookshelf',
   });
@@ -349,41 +349,17 @@ test('cover addresses: known hosts go through the proxy, unsafe ones are dropped
           book(6, 'https://m.media-amazon.com/images/I/6.jpg'),
           book(7, 'javascript:alert(1)'),
           book(8, 'https://covers.openlibrary.org\\b\\8.jpg'),
-          hcBook(11),
-          hcBook(12),
-          hcBook(13),
+          hcBook(11, 'https://assets.hardcover.app/books/11/c.jpg?w=1'),
+          hcBook(12, 'https://assets.hardcover.app.evil.example/12.jpg'),
+          hcBook(13, 'https://assets.hardcover.app/a/%2E%2E/13.jpg'),
         ]);
       return undefined;
     },
   });
-  await page.route('**/seerr-classic/hccovers*', (r) =>
-    r.fulfill({
-      json: {
-        data: {
-          books: [
-            {
-              id: 11,
-              image: { url: 'https://assets.hardcover.app/books/11/c.jpg?w=1' },
-            },
-            {
-              id: 12,
-              image: {
-                url: 'https://assets.hardcover.app.evil.example/12.jpg',
-              },
-            },
-            {
-              id: 13,
-              image: { url: 'https://assets.hardcover.app/a/%2E%2E/13.jpg' },
-            },
-          ],
-        },
-      },
-    })
-  );
-  await page.route('**/seerr-classic/hcimg/**', (r) => r.fulfill(svg));
   for (const host of [
     'm.media-amazon.com',
     'covers.openlibrary.org.evil.example',
+    'assets.hardcover.app.evil.example',
   ])
     await page.route(`https://${host}/**`, (r) => r.fulfill(svg));
   await page.goto('/books?sort=ranked');
@@ -411,9 +387,14 @@ test('cover addresses: known hosts go through the proxy, unsafe ones are dropped
   }
   await expect(src(11).locator('img')).toHaveAttribute(
     'src',
-    '/seerr-classic/hcimg/books/11/c.jpg'
+    '/imageproxy/hardcover/books/11/c.jpg'
   );
-  for (const n of [12, 13]) await expect(src(n).locator('img')).toHaveCount(0);
+  await expect(src(12).locator('img')).toHaveAttribute(
+    'src',
+    'https://assets.hardcover.app.evil.example/12.jpg'
+  );
+  await expect(src(13).locator('.nocover')).toHaveCount(1);
+  await expect(src(13).locator('img')).toHaveCount(0);
 });
 
 test('a blocked Plex window fails at once instead of waiting on plex.tv', async ({
