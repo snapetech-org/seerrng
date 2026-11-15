@@ -173,6 +173,11 @@ export interface ReadarrBookLookupResult {
   metadataProfileId?: number;
   rootFolderPath?: string;
   monitored?: boolean;
+  /**
+   * Chaptarr/Readarr: false pins the book to its monitored edition; true lets
+   * automation pick another edition of the same book.
+   */
+  anyEditionOk?: boolean;
   tags?: number[];
   authorTitle?: string;
   seriesTitle?: string;
@@ -3258,11 +3263,20 @@ class ReadarrAPI extends ServarrBase<ReadarrQueueItem> {
       const editionUpdate = existingBook
         ? this.getRequestedEditionUpdate(existingBook, options)
         : undefined;
+      const pinRequestedEdition = this.shouldPinRequestedEdition(
+        options,
+        Boolean(editionUpdate)
+      );
+      // ChaptarrNG pins a saved edition only when the save changes it, so the
+      // requested edition may already be monitored without being pinned.
+      const needsPin =
+        pinRequestedEdition && existingBook?.anyEditionOk !== false;
 
       if (
         existingBook &&
         this.isBookMonitored(existingBook) &&
-        !editionUpdate?.changed
+        !editionUpdate?.changed &&
+        !needsPin
       ) {
         logger.info(
           'Book is already monitored in Bookshelf/Readarr. Skipping add and returning success',
@@ -3305,6 +3319,7 @@ class ReadarrAPI extends ServarrBase<ReadarrQueueItem> {
             ...existingBook,
             editions: editionUpdate?.editions ?? existingBook.editions ?? [],
             monitored: true,
+            ...(pinRequestedEdition ? { anyEditionOk: false } : {}),
             qualityProfileId:
               options.qualityProfileId ?? existingBook.qualityProfileId,
             metadataProfileId:
@@ -3325,6 +3340,7 @@ class ReadarrAPI extends ServarrBase<ReadarrQueueItem> {
             ...existingBook,
             editions: editionUpdate?.editions ?? existingBook.editions ?? [],
             monitored: true,
+            ...(pinRequestedEdition ? { anyEditionOk: false } : {}),
             ...(this.isChaptarr() ? this.getMediaMonitoringFields(true) : {}),
             ...(this.isChaptarr() && options.addOptions
               ? { addOptions: options.addOptions }
@@ -3655,10 +3671,34 @@ class ReadarrAPI extends ServarrBase<ReadarrQueueItem> {
   private getBookAddPayload(
     options: ReadarrBookOptions
   ): Record<string, unknown> {
-    const payload = { ...options };
+    const payload: Record<string, unknown> = { ...options };
+    if (
+      this.shouldPinRequestedEdition(
+        options,
+        options.editions?.some((edition) => edition.monitored) === true
+      )
+    ) {
+      payload.anyEditionOk = false;
+    }
     delete payload.useRequestedEdition;
     delete payload.editionPolicy;
     return payload;
+  }
+
+  /**
+   * "Only this version" on a Chaptarr destination: keep the book on the
+   * requested edition so automation cannot grab or import another narration.
+   */
+  private shouldPinRequestedEdition(
+    options: ReadarrBookOptions,
+    hasRequestedEdition: boolean
+  ): boolean {
+    return (
+      this.isChaptarr() &&
+      options.useRequestedEdition === true &&
+      hasRequestedEdition &&
+      (options.editionPolicy ?? 'only') === 'only'
+    );
   }
 
   public async removeBook(
