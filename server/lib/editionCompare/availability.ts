@@ -4,7 +4,11 @@ import type {
   ReadarrBook,
   ReadarrEdition,
 } from '@server/api/servarr/readarr';
-import { editionIdKey, sameEditionId } from '@server/utils/bookEdition';
+import {
+  editionIdKey,
+  localEditionIdFrom,
+  sameEditionId,
+} from '@server/utils/bookEdition';
 
 export { editionIdKey, sameEditionId };
 
@@ -13,21 +17,29 @@ export { editionIdKey, sameEditionId };
  * which performance exists. */
 export const hasExactEditionFiles = (
   preferredEditionId: string,
-  catalog: Pick<ChaptarrEditionCard, 'foreignEditionId' | 'owned'>[],
-  editions: Pick<ReadarrEdition, 'foreignEditionId' | 'monitored'>[],
+  catalog: (Pick<ChaptarrEditionCard, 'foreignEditionId' | 'owned'> & {
+    editionId?: number;
+  })[],
+  editions: (Pick<ReadarrEdition, 'foreignEditionId' | 'monitored'> & {
+    id?: number;
+  })[],
   bookFileCount: number
 ): boolean => {
+  const localEditionId = localEditionIdFrom(preferredEditionId);
   if (catalog.length)
-    return catalog.some(
-      (item) =>
-        sameEditionId(item.foreignEditionId, preferredEditionId) &&
-        item.owned === true
+    return catalog.some((item) =>
+      localEditionId !== undefined
+        ? item.editionId === localEditionId && item.owned === true
+        : sameEditionId(item.foreignEditionId, preferredEditionId) &&
+          item.owned === true
     );
   const monitored = editions.filter((item) => item.monitored);
   return (
     bookFileCount > 0 &&
     monitored.length === 1 &&
-    sameEditionId(monitored[0].foreignEditionId, preferredEditionId)
+    (localEditionId !== undefined
+      ? monitored[0].id === localEditionId
+      : sameEditionId(monitored[0].foreignEditionId, preferredEditionId))
   );
 };
 

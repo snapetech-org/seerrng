@@ -114,11 +114,61 @@ test('reconciliation uses exact companion ownership and preserves ordinary reque
   assert.equal(await hasRequestedEditionFiles(api, undefined, 'e2'), false);
 });
 
-test('a catalog row without a provider identity is not requestable', () => {
-  const card = cardFromCatalog(
+test('a catalog row with blank foreignEditionId and positive editionId uses local:N and is requestable', () => {
+  const withoutForeignId = cardFromCatalog(
+    {
+      editionId: 17337,
+      title: 'A book',
+      isEbook: false,
+      narrators: ['Narrator A'],
+      monitored: false,
+      owned: false,
+      production: 'unknown',
+      abridged: 'unknown',
+    },
+    'audiobook'
+  );
+  assert.equal(withoutForeignId.id, 'local:17337');
+  assert.equal(withoutForeignId.requestable, true);
+
+  const blankForeignId = cardFromCatalog(
+    {
+      editionId: 17337,
+      foreignEditionId: '   ',
+      title: 'A book',
+      isEbook: false,
+      narrators: ['Narrator A'],
+      monitored: false,
+      owned: false,
+      production: 'unknown',
+      abridged: 'unknown',
+    },
+    'audiobook'
+  );
+  assert.equal(blankForeignId.id, 'local:17337');
+  assert.equal(blankForeignId.requestable, true);
+
+  const withProviderId = cardFromCatalog(
     {
       editionId: 42,
+      foreignEditionId: 'hc:edition:42-audiobook',
       title: 'A book',
+      isEbook: false,
+      narrators: ['Narrator B'],
+      monitored: false,
+      owned: false,
+      production: 'unknown',
+      abridged: 'unknown',
+    },
+    'audiobook'
+  );
+  assert.equal(withProviderId.id, 'hc:edition:42-audiobook');
+  assert.equal(withProviderId.requestable, true);
+
+  const nonPositiveEditionId = cardFromCatalog(
+    {
+      editionId: 0,
+      title: 'Invalid row',
       isEbook: false,
       narrators: [],
       monitored: false,
@@ -128,7 +178,24 @@ test('a catalog row without a provider identity is not requestable', () => {
     },
     'audiobook'
   );
-  assert.equal(card.requestable, false);
+  assert.equal(nonPositiveEditionId.requestable, false);
+});
+
+test('local:N availability checks match numeric edition ids without colliding on blank provider ids', () => {
+  const catalog = [
+    { editionId: 17336, foreignEditionId: '', owned: false },
+    { editionId: 17337, foreignEditionId: '', owned: true },
+  ];
+  assert.equal(hasExactEditionFiles('local:17337', catalog, [], 1), true);
+  assert.equal(hasExactEditionFiles('local:17336', catalog, [], 1), false);
+  assert.equal(hasExactEditionFiles('hc:17337', catalog, [], 1), false);
+
+  const editions = [
+    { id: 17336, foreignEditionId: '', monitored: false },
+    { id: 17337, foreignEditionId: '', monitored: true },
+  ];
+  assert.equal(hasExactEditionFiles('local:17337', [], editions, 1), true);
+  assert.equal(hasExactEditionFiles('hc:17337', [], editions, 1), false);
 });
 
 test('Hardcover edition ids match across request and catalog spellings', () => {

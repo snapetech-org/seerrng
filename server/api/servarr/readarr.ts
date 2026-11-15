@@ -9,7 +9,7 @@ import {
 } from '@server/lib/externalIds';
 import { normalizeIsbn, normalizeValidIsbn } from '@server/lib/isbn';
 import logger from '@server/logger';
-import { sameEditionId } from '@server/utils/bookEdition';
+import { localEditionIdFrom, sameEditionId } from '@server/utils/bookEdition';
 import {
   fetchSafeRemoteImage,
   MAX_SAFE_REMOTE_IMAGE_BYTES,
@@ -209,6 +209,7 @@ export interface ReadarrBookLookupResult {
     manualAdd?: boolean;
   };
   editions?: {
+    id?: number;
     language?: string;
     foreignEditionId: string;
     title: string;
@@ -405,6 +406,7 @@ const sanitizeMediaMoveAuthorPreview = (
 };
 
 export interface ReadarrEdition {
+  id?: number;
   language?: string;
   foreignEditionId: string;
   title: string;
@@ -2679,6 +2681,7 @@ class ReadarrAPI extends ServarrBase<ReadarrQueueItem> {
         const expectedIsbn = options.isbn
           ? normalizeIsbn(options.isbn)
           : undefined;
+        const localEditionId = localEditionIdFrom(options.editionId);
         const matches: ReadarrBook[] = [];
 
         for (const [id, indexedAuthor] of candidateIds) {
@@ -2696,6 +2699,7 @@ class ReadarrAPI extends ServarrBase<ReadarrQueueItem> {
               (!options.providerBookId &&
                 normalizeLocalBookSearchText(book.title) !== normalizedTitle) ||
               (!options.providerBookId &&
+                localEditionId === undefined &&
                 !ReadarrAPI.hasAddressableLookupIdentity(book))
             ) {
               continue;
@@ -2735,6 +2739,7 @@ class ReadarrAPI extends ServarrBase<ReadarrQueueItem> {
                     : legacy && value.split(':')[1] === legacy
                 ) ||
                 (options.editionId &&
+                  localEditionId === undefined &&
                   !sameEditionId(book.foreignEditionId, options.editionId))
               )
                 continue;
@@ -2748,6 +2753,11 @@ class ReadarrAPI extends ServarrBase<ReadarrQueueItem> {
                   0
                 );
               }
+            } else if (
+              localEditionId !== undefined &&
+              !book.editions?.some((edition) => edition.id === localEditionId)
+            ) {
+              book.editions = await this.getEditions(id);
             }
 
             const bookAuthor = book.author?.authorName?.trim();
@@ -2775,13 +2785,14 @@ class ReadarrAPI extends ServarrBase<ReadarrQueueItem> {
 
             if (
               options.editionId &&
-              !book.editions?.some(
-                (edition) =>
-                  !!edition.foreignEditionId &&
-                  sameEditionId(
-                    edition.foreignEditionId,
-                    options.editionId as string
-                  )
+              !book.editions?.some((edition) =>
+                localEditionId !== undefined
+                  ? edition.id === localEditionId
+                  : !!edition.foreignEditionId &&
+                    sameEditionId(
+                      edition.foreignEditionId,
+                      options.editionId as string
+                    )
               )
             ) {
               continue;
@@ -2789,7 +2800,9 @@ class ReadarrAPI extends ServarrBase<ReadarrQueueItem> {
 
             if (options.providerBookId && options.allowedLanguages?.length) {
               const selected = book.editions?.find((edition) =>
-                sameEditionId(edition.foreignEditionId, options.editionId)
+                localEditionId !== undefined
+                  ? edition.id === localEditionId
+                  : sameEditionId(edition.foreignEditionId, options.editionId)
               );
               if (
                 !bookLanguageAllowed(
@@ -3542,8 +3555,17 @@ class ReadarrAPI extends ServarrBase<ReadarrQueueItem> {
       throw new Error('An additional edition requires an explicit selection.');
     }
     const catalog = await this.getEditionCatalog(existingBook.id);
-    const match = catalog.find((edition) =>
-      sameEditionId(edition.foreignEditionId, requested.foreignEditionId)
+    const requestedLocalId =
+      typeof requested.id === 'number' &&
+      Number.isSafeInteger(requested.id) &&
+      requested.id > 0
+        ? requested.id
+        : undefined;
+    const match = catalog.find(
+      (edition) =>
+        (requestedLocalId !== undefined &&
+          edition.editionId === requestedLocalId) ||
+        sameEditionId(edition.foreignEditionId, requested.foreignEditionId)
     );
     if (!match) {
       throw new Error(

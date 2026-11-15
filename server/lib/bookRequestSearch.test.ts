@@ -2034,4 +2034,101 @@ describe('BookRequestSearchManager', () => {
       );
     });
   });
+
+  it('adds a local:N request with that Chaptarr edition monitored, without sending local:N as a provider edition', async () => {
+    const { request } = await createTrackedRequest({
+      createdBook: false,
+      createdAuthor: false,
+      pendingId: 912,
+      providerBookId: 'hc:book-55',
+    });
+    await getRepository(MediaRequest).update(request.id, {
+      preferredEditionId: 'local:17337',
+    });
+    mock.method(ReadarrAPI.prototype, 'getPendingAuthorImport', async () => ({
+      id: 912,
+      overallStatus: 'Succeeded',
+      ebookStatus: 'Succeeded',
+      audiobookStatus: 'NotRequested',
+    }));
+    const providerEditionIds: (string | undefined)[] = [];
+    mock.method(
+      ReadarrAPI.prototype,
+      'lookupBookByProviderIdentity',
+      async (_providerBookId: string, providerEditionId?: string) => {
+        providerEditionIds.push(providerEditionId);
+        return {
+          id: 55,
+          title: 'Tracked Book',
+          titleSlug: 'tracked-book',
+          foreignBookId: 'hc:book-55',
+          editions: [],
+        };
+      }
+    );
+    mock.method(ReadarrAPI.prototype, 'getEditions', async () => [
+      {
+        id: 17336,
+        foreignEditionId: '',
+        title: 'First Local Edition',
+        monitored: true,
+      },
+      {
+        id: 17337,
+        foreignEditionId: '',
+        title: 'Second Local Edition',
+        monitored: false,
+      },
+    ]);
+    let added: Parameters<ReadarrAPI['addBook']>[0] | undefined;
+    mock.method(
+      ReadarrAPI.prototype,
+      'addBook',
+      async (options: Parameters<ReadarrAPI['addBook']>[0]) => {
+        added = options;
+        return {
+          id: 55,
+          title: 'Tracked Book',
+          titleSlug: 'tracked-book',
+          foreignBookId: 'hc:book-55',
+          authorId: 78,
+          createdBook: false,
+          createdAuthor: false,
+        };
+      }
+    );
+    mock.method(ReadarrAPI.prototype, 'getBookIfExists', async () => ({
+      id: 55,
+      title: 'Tracked Book',
+      foreignBookId: 'hc:book-55',
+      statistics: { bookFileCount: 0 },
+    }));
+    mock.method(ReadarrAPI.prototype, 'startBookSearch', async () => ({
+      id: 913,
+      name: 'BookSearch',
+      status: 'started',
+    }));
+    mock.method(ReadarrAPI.prototype, 'getCommand', async () => ({
+      id: 913,
+      name: 'BookSearch',
+      status: 'started',
+    }));
+
+    await bookRequestSearchManager.run();
+
+    assert.ok(providerEditionIds.length > 0);
+    assert.ok(providerEditionIds.every((id) => id === undefined));
+    assert.ok(added, 'the book is added');
+    assert.equal(added?.useRequestedEdition, true);
+    assert.deepEqual(
+      added?.editions?.map((edition) => [
+        (edition as { id?: number }).id,
+        edition.monitored,
+      ]),
+      [
+        [17336, false],
+        [17337, true],
+      ]
+    );
+  });
 });
