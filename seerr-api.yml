@@ -25053,9 +25053,11 @@ paths:
           description: The release was removed but a new search could not be started, or the acquisition service failed
   /request/{requestId}/retry:
     post:
-      summary: Retry failed or unavailable request
+      summary: Retry a failed, unavailable, or searching Episode Queue request
       description: |
         Retries a failed or unavailable request by returning it to the normal dispatch/search flow. For eligible failed TV requests, an optional body can record a TVDB series and an explicit mapping for every active requested season. Standard-order season numbers are checked against official TVDB data; alternate Sonarr v5 orders are checked against the selected series' available season numbers. The request owner may retry their own request when they still have permission to request that media; users with `MANAGE_REQUESTS` or `ADMIN` may retry any request.
+
+        Request managers can also retry an approved Episode Queue request in Searching when no dispatch is queued. The retry reapplies the selected starting episode without cancelling existing work.
 
         Season mappings are scoped to the request's selected Sonarr instance and quality tier, so another destination can retain a different season layout for the same TVDB series.
 

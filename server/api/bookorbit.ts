@@ -1,6 +1,11 @@
 import ExternalAPI from '@server/api/externalapi';
 import type { ReadarrSettings } from '@server/lib/settings';
-import { buildServiceUrl } from '@server/utils/serviceUrl';
+import { getHttpErrorDetails } from '@server/utils/httpError';
+import { isLocalOrPrivateAddress } from '@server/utils/security';
+import {
+  buildServiceUrl,
+  parseBookOrbitServerAddress,
+} from '@server/utils/serviceUrl';
 import axios from 'axios';
 
 export type BookOrbitFormat = 'ebook' | 'audiobook';
@@ -88,17 +93,24 @@ export default class BookOrbitAPI extends ExternalAPI {
     if (settings.backend !== 'bookorbit' || !settings.bookorbitUsername) {
       throw new Error('BookOrbit connection needs an account and password.');
     }
+    const address = parseBookOrbitServerAddress(settings.hostname);
+    if (!address) {
+      throw new BookOrbitConnectionError(
+        'Enter a valid BookOrbit hostname or HTTP address.',
+        'login'
+      );
+    }
     super(
       buildServiceUrl({
-        useSsl: settings.useSsl,
-        hostname: settings.hostname,
-        port: settings.port,
-        urlBase: settings.baseUrl,
-        path: '',
+        useSsl: address.useSsl ?? settings.useSsl,
+        hostname: address.hostname,
+        port: address.port ?? settings.port,
+        urlBase: address.baseUrl ?? settings.baseUrl,
       }),
       {},
       {
         allowPrivateAddresses: true,
+        requireDirectConnection: isLocalOrPrivateAddress(address.hostname),
         timeout: 15_000,
         maxContentLength: 16 * 1024 * 1024,
         maxBodyLength: 256 * 1024,
@@ -122,7 +134,10 @@ export default class BookOrbitAPI extends ExternalAPI {
       ? response.data.accessToken
       : undefined;
     if (typeof token !== 'string' || !token) {
-      throw new Error('BookOrbit did not return an access token.');
+      throw new BookOrbitConnectionError(
+        'The BookOrbit API did not return a session token. Verify that the address points to BookOrbit and includes the correct URL base.',
+        'login'
+      );
     }
     this.token = token;
     return token;
@@ -153,20 +168,41 @@ export default class BookOrbitAPI extends ExternalAPI {
     try {
       if (!this.token) await this.login();
     } catch (cause) {
-      const status = axios.isAxiosError(cause)
-        ? cause.response?.status
-        : undefined;
-      throw new BookOrbitConnectionError(
-        status === 401
-          ? 'BookOrbit rejected the account sign-in. Check the username and password or whether the account is locked.'
-          : status === 403
-            ? 'BookOrbit denied password sign-in. Check whether local password sign-in is enabled.'
-            : status === 429
-              ? 'BookOrbit is limiting sign-in attempts. Wait before testing again.'
-              : 'SeerrNG could not sign in to the BookOrbit API. Check the hostname, port, SSL and URL base from the SeerrNG server.',
-        'login',
-        cause
-      );
+      if (cause instanceof BookOrbitConnectionError) throw cause;
+      const { status, errorCode } = getHttpErrorDetails(cause);
+      let message: string;
+      switch (status) {
+        case 401:
+          message =
+            'BookOrbit rejected the account sign-in. Check the username and password or whether the account is locked.';
+          break;
+        case 403:
+          message =
+            'The BookOrbit address denied API sign-in. Check local password sign-in and whether an access proxy is protecting this address.';
+          break;
+        case 429:
+          message =
+            'BookOrbit is limiting sign-in attempts. Wait before testing again.';
+          break;
+        default:
+          if (status && status >= 300 && status < 400) {
+            message =
+              'The BookOrbit address redirected the API sign-in. Use the final BookOrbit address and check its SSL and URL base.';
+          } else if (errorCode === 'ECONNREFUSED') {
+            message =
+              'The BookOrbit address refused the connection from SeerrNG. Check the listening port and whether the SeerrNG host or container can reach it.';
+          } else if (
+            errorCode === 'ECONNABORTED' ||
+            errorCode === 'ETIMEDOUT'
+          ) {
+            message =
+              'The connection to BookOrbit timed out from SeerrNG. Check whether the SeerrNG host or container can reach the configured address.';
+          } else {
+            message =
+              'SeerrNG could not sign in to the BookOrbit API. Check the hostname, port, SSL and URL base from the SeerrNG server.';
+          }
+      }
+      throw new BookOrbitConnectionError(message, 'login', cause);
     }
     const me = await this.call<unknown>('GET', '/api/v1/auth/me').catch(
       (cause) => {

@@ -88,6 +88,66 @@ describe('Servarr settings validation', () => {
     }
   });
 
+  it('normalizes a pasted BookOrbit address for both testing and saving', () => {
+    const body = {
+      ...baseSettings,
+      backend: 'bookorbit',
+      serviceType: 'both',
+      bookorbitUsername: 'requester',
+      apiKey: '  Fixture-%@&-password  ',
+      port: 3000,
+      useSsl: false,
+      baseUrl: '',
+    };
+    for (const [input, expected] of [
+      [
+        '192.168.0.40:3030',
+        { hostname: '192.168.0.40', port: 3030, useSsl: false, baseUrl: '' },
+      ],
+      [
+        '192.168.0.40:80',
+        { hostname: '192.168.0.40', port: 80, useSsl: false, baseUrl: '' },
+      ],
+      [
+        'https://books.example/bookorbit/',
+        {
+          hostname: 'books.example',
+          port: 443,
+          useSsl: true,
+          baseUrl: '/bookorbit',
+        },
+      ],
+      [
+        '[fd00::1]:3001',
+        { hostname: '[fd00::1]', port: 3001, useSsl: false, baseUrl: '' },
+      ],
+    ] as const) {
+      const candidate = { ...body, hostname: input };
+      for (const result of [
+        parseReadarrSettings(candidate),
+        parseServarrConnectionSettings(candidate),
+      ]) {
+        assert.ok('value' in result);
+        const { hostname, port, useSsl, baseUrl, apiKey } = result.value;
+        assert.deepEqual(
+          { hostname, port, useSsl, baseUrl: baseUrl ?? '' },
+          expected
+        );
+        assert.equal(apiKey, body.apiKey);
+      }
+    }
+    for (const hostname of [
+      'ftp://books.example',
+      'http://user:pass@books.example',
+      '192.168.0.40:3000:3000',
+    ]) {
+      assert.ok('error' in parseReadarrSettings({ ...body, hostname }));
+      assert.ok(
+        'error' in parseServarrConnectionSettings({ ...body, hostname })
+      );
+    }
+  });
+
   it('accepts a BookOrbit account with both formats and rejects a missing username', () => {
     const body = {
       ...baseSettings,

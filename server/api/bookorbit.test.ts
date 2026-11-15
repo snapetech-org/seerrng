@@ -1,6 +1,8 @@
 import type { AxiosRequestConfig, AxiosResponse } from 'axios';
 import { AxiosError } from 'axios';
 import assert from 'node:assert/strict';
+import { once } from 'node:events';
+import { createServer } from 'node:http';
 import { describe, it } from 'node:test';
 
 import type { ReadarrSettings } from '@server/lib/settings';
@@ -95,6 +97,81 @@ describe('BookOrbit acquisition contract', () => {
       Authorization: 'Bearer token',
     });
   });
+
+  it('reaches BookOrbit on a pasted LAN address directly and sends the exact password', async (t) => {
+    const password = '  synthetic-%@&-password  ';
+    const server = createServer(async (request, response) => {
+      let data: unknown;
+      if (request.url === '/bookorbit/api/v1/auth/login') {
+        const chunks: Buffer[] = [];
+        for await (const chunk of request) chunks.push(chunk);
+        const body = JSON.parse(Buffer.concat(chunks).toString('utf8'));
+        if (body.username === 'requester' && body.password === password) {
+          data = { accessToken: 'fixture-token' };
+        }
+      } else if (request.headers.authorization === 'Bearer fixture-token') {
+        if (request.url === '/bookorbit/api/v1/auth/me') {
+          data = { id: 4, permissions: ['book_request_access'] };
+        }
+        if (request.url === '/bookorbit/api/v1/books/query') {
+          data = { items: [], total: 0 };
+        }
+      }
+      response.writeHead(data ? 200 : 401, {
+        'content-type': 'application/json',
+      });
+      response.end(JSON.stringify(data ?? {}));
+    });
+    server.listen(0, '127.0.0.1');
+    await once(server, 'listening');
+    const address = server.address();
+    assert.ok(address && typeof address !== 'string');
+    t.after(() => server.close());
+    const proxy = `http://127.0.0.1:${address.port}`;
+    const overrides = {
+      http_proxy: proxy,
+      HTTP_PROXY: proxy,
+      no_proxy: '',
+      NO_PROXY: '',
+    };
+    for (const [name, value] of Object.entries(overrides)) {
+      const original = process.env[name];
+      process.env[name] = value;
+      t.after(() => {
+        if (original === undefined) delete process.env[name];
+        else process.env[name] = original;
+      });
+    }
+    const api = new BookOrbitAPI({
+      backend: 'bookorbit',
+      bookorbitUsername: 'requester',
+      apiKey: password,
+      hostname: `${proxy}/bookorbit/`,
+      port: 3000,
+    } as ReadarrSettings);
+
+    assert.equal((await api.testConnection()).userId, 4);
+  });
+
+  for (const [error, reason] of [
+    [
+      new AxiosError('Refused', 'ECONNREFUSED'),
+      /refused the connection from SeerrNG/,
+    ],
+    [new AxiosError('Timeout', 'ETIMEDOUT'), /timed out from SeerrNG/],
+    [
+      new AxiosError('Redirect', undefined, undefined, undefined, {
+        status: 302,
+      } as AxiosResponse),
+      /redirected the API sign-in/,
+    ],
+  ] as const) {
+    it(`explains a BookOrbit sign-in failure when the transport reports ${error.message}`, async () => {
+      const api = new InspectBookOrbitAPI([error]);
+      await assert.rejects(api.testConnection(), reason);
+      assert.equal(api.calls.length, 1);
+    });
+  }
 
   it('keeps a failed password login from making a second attempt', async () => {
     const api = new InspectBookOrbitAPI([

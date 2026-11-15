@@ -100,6 +100,8 @@
   "notifications.content.comicRequestDetails": "Comic request details are available in SeerrNG.",
   "notifications.content.comment": "{issueType, select, video {New Comment on Video Issue} audio {New Comment on Audio Issue} subtitles {New Comment on Subtitle Issue} other {New Comment on Issue}}",
   "notifications.content.created": "{issueType, select, video {New Video Issue Reported} audio {New Audio Issue Reported} subtitles {New Subtitle Issue Reported} other {New Issue Reported}}",
+  "notifications.content.episodeQueueHelp": "How Episode Queue works",
+  "notifications.content.episodeQueueSummary": "Episode Queue is set to {count, plural, one {# episode} other {# episodes}} ahead of playback. Episodes are requested as you watch.",
   "notifications.content.magazineRequestDetails": "Magazine request details are available in SeerrNG.",
   "notifications.content.publisher": "Publisher",
   "notifications.content.reopened": "{issueType, select, video {Video Issue Reopened} audio {Audio Issue Reopened} subtitles {Subtitle Issue Reopened} other {Issue Reopened}}",

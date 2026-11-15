@@ -24,6 +24,7 @@ import type { NotificationAgent, NotificationPayload } from './agent';
 import {
   BaseAgent,
   NOTIFICATION_HTTP_OPTIONS,
+  getEpisodeQueueNotificationDetails,
   getIssueTypeName,
   getLocalizedNotificationPayload,
   getMediaTypeLabel,
@@ -230,6 +231,9 @@ class WebPushAgent
           subject: 'Unknown',
         };
     }
+
+    const queue = getEpisodeQueueNotificationDetails(payload, intl);
+    if (queue) message = [message, queue.summary].filter(Boolean).join(' ');
 
     const actionUrl = payload.issue
       ? `/issues/${payload.issue.id}`

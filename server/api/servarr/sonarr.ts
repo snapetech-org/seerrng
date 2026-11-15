@@ -315,6 +315,12 @@ const isConflictError = (error: unknown): boolean =>
     (error as { response?: { status?: number } }).response?.status === 409) ||
   (error instanceof Error && /status code 409/i.test(error.message));
 
+export class SonarrEpisodeSelectionPendingError extends Error {
+  constructor(public readonly seriesId: number) {
+    super('Sonarr has not finished importing the selected episodes.');
+  }
+}
+
 export interface SonarrSeason {
   seasonNumber: number;
   monitored: boolean;
@@ -1334,6 +1340,7 @@ class SonarrAPI extends ServarrBase<{
 
       return createdSeries;
     } catch (e) {
+      if (e instanceof SonarrEpisodeSelectionPendingError) throw e;
       if (isConflictError(e)) {
         const existingSeries = await this.recoverExistingSeries(options).catch(
           (recoveryError) => {
@@ -1676,6 +1683,18 @@ class SonarrAPI extends ServarrBase<{
     selections: SeasonEpisodeSelection[],
     searchNow: boolean
   ): Promise<void> {
+    const exactSelections = selections.filter(
+      (selection) => selection.episodeNumbers !== undefined
+    );
+    if (exactSelections.length > 0) {
+      // Sonarr imports episode rows and applies its initial monitoring rules
+      // asynchronously after adding the series. Those rules can undo an early
+      // monitor write even if episode rows are already visible.
+      const series = await this.getSeriesById(seriesId);
+      if (series.addOptions) {
+        throw new SonarrEpisodeSelectionPendingError(seriesId);
+      }
+    }
     const fallbackSeasons = new Set<number>();
     const fullSeasonNumbers = new Set(
       selections
@@ -1689,9 +1708,7 @@ class SonarrAPI extends ServarrBase<{
     }
 
     const needsEpisodeDetails =
-      searchNow ||
-      fallbackSeasons.size > 0 ||
-      selections.some((selection) => selection.episodeNumbers !== undefined);
+      searchNow || fallbackSeasons.size > 0 || exactSelections.length > 0;
     if (!needsEpisodeDetails) return;
 
     const episodes = await this.getEpisodes(seriesId);
@@ -1705,6 +1722,22 @@ class SonarrAPI extends ServarrBase<{
           selection.episodeNumbers.includes(episode.episodeNumber))
       );
     });
+    const matchedNumbers = new Set(
+      selectedEpisodes.map(
+        ({ seasonNumber, episodeNumber }) => `${seasonNumber}:${episodeNumber}`
+      )
+    );
+    if (
+      exactSelections.some(({ seasonNumber, episodeNumbers }) =>
+        episodeNumbers?.some(
+          (episodeNumber) =>
+            !matchedNumbers.has(`${seasonNumber}:${episodeNumber}`)
+        )
+      )
+    ) {
+      throw new SonarrEpisodeSelectionPendingError(seriesId);
+    }
+
     const episodeIdsToMonitor = selectedEpisodes
       .filter((episode) => {
         const selection = selections.find(

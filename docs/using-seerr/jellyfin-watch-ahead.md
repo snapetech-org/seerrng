@@ -86,6 +86,11 @@ partial requests are enabled). Exact episode selections do not enable monitoring
 for future seasons. Monitoring already established in Sonarr by other requests
 or an administrator is preserved.
 
+After a new series is added, Sonarr finishes importing its episode list before
+SeerrNG applies monitoring to the selected episode. If an older Episode Queue
+request is stuck in **Searching**, a request manager can select **Retry** on
+the request to reapply the original starting episode's monitoring.
+
 ## What SeerrNG does
 
 While at least one request has a buffer enabled, the worker checks active

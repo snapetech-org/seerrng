@@ -18,7 +18,9 @@ import type {
   AddSeriesOptions,
   SonarrSeries,
 } from '@server/api/servarr/sonarr';
-import SonarrAPI from '@server/api/servarr/sonarr';
+import SonarrAPI, {
+  SonarrEpisodeSelectionPendingError,
+} from '@server/api/servarr/sonarr';
 import SportarrAPI from '@server/api/servarr/sportarr';
 import WhisparrAPI from '@server/api/servarr/whisparr';
 import TheMovieDb from '@server/api/themoviedb';
@@ -2312,6 +2314,18 @@ export class MediaRequestSubscriber implements EntitySubscriberInterface<MediaRe
         });
         return true;
       } catch (e) {
+        if (e instanceof SonarrEpisodeSelectionPendingError) {
+          logger.info(
+            'Waiting for Sonarr to finish importing the selected episodes before dispatching the request.',
+            {
+              label: 'Media Request',
+              requestId: entity.id,
+              mediaId: entity.media.id,
+              seriesId: e.seriesId,
+            }
+          );
+          return { delivered: false };
+        }
         if (isRetryableRequestDispatchError(e)) {
           const details = getHttpErrorDetails(e);
           logger.warn(

@@ -59,6 +59,7 @@ import {
 import { hasLinkedWatchAheadAccount } from '@app/utils/watchAhead';
 import { ArrowDownTrayIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import { ANIME_KEYWORD_ID } from '@server/api/themoviedb/constants';
+import { EPISODE_QUEUE_HELP_URL } from '@server/constants/episodeQueueAccess';
 import { MediaRequestStatus, MediaStatus } from '@server/constants/media';
 import type { MediaRequest } from '@server/entity/MediaRequest';
 import type { NonFunctionProperties } from '@server/interfaces/api/common';
@@ -2094,7 +2095,7 @@ const TvRequestModal = ({
                     )}
                     <Button
                       as="a"
-                      href="https://github.com/snapetech-org/seerrng/blob/main/docs/using-seerr/jellyfin-watch-ahead.md"
+                      href={EPISODE_QUEUE_HELP_URL}
                       target="_blank"
                       rel="noreferrer"
                       buttonType="ghost"

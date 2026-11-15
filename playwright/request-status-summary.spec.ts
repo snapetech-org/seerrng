@@ -197,3 +197,95 @@ for (const theme of ['seerrOrig', 'seerrNGJ', 'persiusNG'])
       );
     });
   }
+
+for (const width of [390, 1440]) {
+  test(`a request manager can retry a searching Episode Queue at ${width}px`, async ({
+    page,
+  }, info) => {
+    await page.setViewportSize({ width, height: 900 });
+    expect(
+      (
+        await page.request.post('/api/v1/auth/local', {
+          data: { email: 'admin@seerr.dev', password: 'test1234' },
+        })
+      ).status()
+    ).toBe(200);
+    expect(
+      (
+        await page.request.post('/api/v1/user/1/settings/interface-theme', {
+          data: { theme: 'seerrNGJ' },
+        })
+      ).status()
+    ).toBe(200);
+
+    const request = {
+      id: 9402,
+      type: 'tv',
+      status: 2,
+      is4k: false,
+      watchAheadEpisodeCount: 5,
+      media: {
+        id: 9401,
+        tmdbId: 2734,
+        mediaType: 'tv',
+        status: 3,
+        status4k: 1,
+        requests: [],
+      },
+      requestedBy: { id: 2, displayName: 'Requester', avatar: '' },
+      seasons: [{ seasonNumber: 1, status: 2, episodeNumbers: [3] }],
+      createdAt: '2026-01-01T12:00:00Z',
+      updatedAt: '2026-01-01T12:00:00Z',
+    };
+    const current = {
+      stage: 'searching',
+      attempt: 1,
+      percent: null,
+      observedAt: '2026-01-01T12:00:00Z',
+      isTerminal: false,
+      needsAttention: false,
+      retryable: false,
+    };
+    await page.route('**/api/v1/tv/2734', (route) =>
+      route.fulfill({
+        json: {
+          id: 2734,
+          name: 'Episode Queue fixture',
+          firstAirDate: '1999-09-20',
+          episodeRunTime: [43],
+          seasons: [],
+          genres: [],
+          credits: { cast: [], crew: [] },
+          createdBy: [],
+          networks: [],
+          productionCompanies: [],
+        },
+      })
+    );
+    await page.route('**/api/v1/request/status?*', (route) =>
+      route.fulfill({
+        json: {
+          pageInfo: { pages: 1, pageSize: 10, results: 1, page: 1 },
+          results: [{ request, status: current }],
+          counts: { total: 1 },
+          olderCount: 0,
+        },
+      })
+    );
+    let retries = 0;
+    await page.route('**/api/v1/request/9402/retry', (route) => {
+      expect(route.request().method()).toBe('POST');
+      retries++;
+      return route.fulfill({ json: request });
+    });
+    await page.goto('/requests');
+    const card = page.getByTestId('request-status-9402');
+    await expect(card).toBeVisible();
+    const retry = card.getByRole('button', { name: 'Retry', exact: true });
+    await expect(retry).toBeEnabled();
+    await retry.scrollIntoViewIfNeeded();
+    await page.screenshot({ path: info.outputPath('episode-queue-retry.png') });
+    await retry.click();
+    expect(retries).toBe(1);
+  });
+}

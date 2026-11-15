@@ -66,6 +66,37 @@ export const normalizeServiceHostname = (value?: string): string => {
   }
 };
 
+/** BookOrbit accepts a pasted service address as well as separate fields. */
+export const parseBookOrbitServerAddress = (value: string) => {
+  const address = value.trim();
+  if (!address || /[\s@?#\\]/.test(address)) return undefined;
+  const hasScheme = /^https?:\/\//i.test(address);
+  if (!hasScheme && address.includes('://')) return undefined;
+  const hostAndPath = hasScheme
+    ? address.slice(address.indexOf('//') + 2)
+    : address;
+  const authority = hostAndPath.split('/')[0];
+  if (!authority) return undefined;
+
+  try {
+    const url = new URL(hasScheme ? address : `http://${address}`);
+    if (url.username || url.password || !url.hostname) return undefined;
+    const ssl = url.protocol === 'https:';
+    return {
+      hostname: url.hostname,
+      ...(hasScheme ? { useSsl: ssl } : {}),
+      ...(hasScheme || /:\d+$/.test(authority)
+        ? { port: Number(url.port || (ssl ? 443 : 80)) }
+        : {}),
+      ...(hostAndPath.includes('/')
+        ? { baseUrl: trimTrailingSlashes(url.pathname) }
+        : {}),
+    };
+  } catch {
+    return undefined;
+  }
+};
+
 export const buildServiceUrl = ({
   useSsl,
   hostname,

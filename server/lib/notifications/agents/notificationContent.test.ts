@@ -26,6 +26,32 @@ const base: NotificationPayload = {
 // Supplying recipient messages here checks delivery-time resolution independently
 // of the shipped catalog, which is checked separately by the catalog audit.
 describe('notification content descriptors', () => {
+  it('adds a localized queue count and help link before the provider description', () => {
+    const intl = createIntl<unknown>({ locale: 'en', messages: {} });
+    for (const count of [1, 5]) {
+      const payload = getLocalizedNotificationPayload(
+        { ...base, episodeQueueCount: count },
+        intl
+      );
+      assert.match(
+        payload.message ?? '',
+        new RegExp(
+          `^Episode Queue is set to ${count} ${count === 1 ? 'episode' : 'episodes'} ahead of playback`
+        )
+      );
+      assert.match(
+        payload.message ?? '',
+        /https:\/\/github\.com\/snapetech-org\/seerrng\/blob\/main\/docs\/using-seerr\/jellyfin-watch-ahead\.md/
+      );
+      assert.ok(payload.message?.endsWith(base.message!));
+    }
+    assert.equal(
+      getLocalizedNotificationPayload({ ...base, episodeQueueCount: 0 }, intl)
+        .message,
+      base.message
+    );
+  });
+
   it('maps numeric issue types to canonical ICU selector keys', () => {
     const intl = createIntl<unknown>({
       locale: 'en',

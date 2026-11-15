@@ -1,3 +1,4 @@
+import { EPISODE_QUEUE_HELP_URL } from '@server/constants/episodeQueueAccess';
 import { MediaType } from '@server/constants/media';
 import type Issue from '@server/entity/Issue';
 import type IssueComment from '@server/entity/IssueComment';
@@ -40,6 +41,7 @@ export interface NotificationPayload {
   availabilitySubscription?: boolean;
   extra?: { name: string; value: string; label?: NotificationExtraLabel }[];
   request?: MediaRequest;
+  episodeQueueCount?: number;
   issue?: Issue;
   comment?: IssueComment;
   pendingRequestsCount?: number;
@@ -131,6 +133,9 @@ const notificationContentMessages = defineMessages('notifications.content', {
   bookRequest: 'Book request',
   adultSceneRequest: 'Adult scene request',
   requestedSeasons: 'Requested Seasons',
+  episodeQueueSummary:
+    'Episode Queue is set to {count, plural, one {# episode} other {# episodes}} ahead of playback. Episodes are requested as you watch.',
+  episodeQueueHelp: 'How Episode Queue works',
   artist: 'Artist',
   publisher: 'Publisher',
   affectedSeason: 'Affected Season',
@@ -212,19 +217,53 @@ export const getNotificationExtras = (
   }));
 };
 
+export const getEpisodeQueueNotificationDetails = (
+  payload: NotificationPayload,
+  intl: IntlInstance
+) => {
+  const count = payload.episodeQueueCount;
+  if (
+    count === undefined ||
+    !Number.isInteger(count) ||
+    count < 1 ||
+    count > 5
+  ) {
+    return undefined;
+  }
+  return {
+    summary: intl.formatMessage(
+      notificationContentMessages.episodeQueueSummary,
+      {
+        count,
+      }
+    ),
+    helpLabel: intl.formatMessage(notificationContentMessages.episodeQueueHelp),
+    helpUrl: EPISODE_QUEUE_HELP_URL,
+  };
+};
+
 // Resolve only app-authored descriptors at delivery time. Dynamic media titles,
 // comments, provider descriptions, and legacy/custom payloads stay verbatim.
 export const getLocalizedNotificationPayload = (
   payload: NotificationPayload,
   intl: IntlInstance
-): NotificationPayload => ({
-  ...payload,
-  ...getNotificationContent(payload, intl),
-  subject: payload.subjectMessage
-    ? intl.formatMessage(notificationContentMessages[payload.subjectMessage])
-    : payload.subject,
-  extra: getNotificationExtras(payload, intl),
-});
+): NotificationPayload => {
+  const content = getNotificationContent(payload, intl);
+  const queue = getEpisodeQueueNotificationDetails(payload, intl);
+  return {
+    ...payload,
+    ...content,
+    message: queue
+      ? [queue.summary, `${queue.helpLabel} ${queue.helpUrl}`, content.message]
+          .filter(Boolean)
+          .join('\n\n')
+      : content.message,
+    subject: payload.subjectMessage
+      ? intl.formatMessage(notificationContentMessages[payload.subjectMessage])
+      : payload.subject,
+    extra: getNotificationExtras(payload, intl),
+  };
+};
 
 export const NOTIFICATION_HTTP_OPTIONS = {
   ...createSafeHttpRequestOptions(

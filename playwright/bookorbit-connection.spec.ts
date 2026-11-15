@@ -17,6 +17,7 @@ test.use({
 let createdId: number | undefined;
 let bookOrbit: Server;
 let bookOrbitPort: number;
+const fixturePassword = 'fixture-%@&-password';
 
 test.beforeAll(async () => {
   const responses: Record<string, unknown> = {
@@ -24,15 +25,31 @@ test.beforeAll(async () => {
     'POST /api/v1/books/query': { items: [], total: 0 },
     'GET /api/v1/app-info': { version: 'fixture' },
   };
-  bookOrbit = createServer((req, res) => {
-    const data =
-      req.url === '/api/v1/auth/login' && req.method === 'POST'
-        ? { accessToken: 'fixture-token' }
-        : req.headers.authorization === 'Bearer fixture-token'
-          ? responses[`${req.method} ${req.url}`]
+  bookOrbit = createServer(async (req, res) => {
+    const key = `${req.method} ${req.url?.replace(/^\/bookorbit(?=\/)/, '')}`;
+    let data: unknown;
+    let status = 200;
+    if (key === 'POST /api/v1/auth/login') {
+      const body: Buffer[] = [];
+      for await (const chunk of req) body.push(chunk);
+      const { username, password } = JSON.parse(
+        Buffer.concat(body).toString('utf8')
+      );
+      if (username === 'requester' && password === fixturePassword) {
+        data = { accessToken: 'fixture-token' };
+      } else {
+        status = 401;
+        data = { message: 'Invalid credentials' };
+      }
+    } else {
+      req.resume();
+      data =
+        req.headers.authorization === 'Bearer fixture-token'
+          ? responses[key]
           : undefined;
-    req.resume();
-    res.writeHead(data ? 200 : 404, { 'Content-Type': 'application/json' });
+      if (!data) status = 404;
+    }
+    res.writeHead(status, { 'Content-Type': 'application/json' });
     res.end(JSON.stringify(data ?? {}));
   });
   bookOrbit.listen(0, '127.0.0.1');
@@ -121,10 +138,12 @@ for (const theme of ['seerrNGJ', 'seerrOrig', 'persiusNG']) {
         fullPage: false,
       });
       await dialog.locator('#name').fill(`BookOrbit fixture ${theme} ${width}`);
-      await dialog.locator('#hostname').fill('127.0.0.1');
-      await dialog.locator('#port').fill(String(bookOrbitPort));
+      const address = `127.0.0.1:${bookOrbitPort}`;
+      await dialog
+        .locator('#hostname')
+        .fill(width === 390 ? address : `http://${address}/bookorbit/`);
       await dialog.locator('#bookorbitUsername').fill('requester');
-      await dialog.locator('#apiKey').fill('fixture-password');
+      await dialog.locator('#apiKey').fill(fixturePassword);
       await dialog.locator('#serviceType').selectOption('both');
       await dialog.getByRole('button', { name: 'Test connection' }).click();
       await expect(dialog.getByText('BookOrbit Version')).toBeVisible();
@@ -157,8 +176,25 @@ for (const theme of ['seerrNGJ', 'seerrOrig', 'persiusNG']) {
         backend: 'bookorbit',
         serviceType: 'both',
         bookorbitUsername: 'requester',
+        hostname: '127.0.0.1',
+        port: bookOrbitPort,
       });
-      expect(JSON.stringify(service)).not.toContain('fixture-password');
+      expect(service.baseUrl ?? '').toBe(width === 390 ? '' : '/bookorbit');
+      expect(JSON.stringify(service)).not.toContain(fixturePassword);
+      const retest = await page.request.post('/api/v1/settings/readarr/test', {
+        data: {
+          id: createdId,
+          backend: service.backend,
+          hostname: service.hostname,
+          port: service.port,
+          baseUrl: service.baseUrl,
+          useSsl: service.useSsl,
+          serviceType: service.serviceType,
+          bookorbitUsername: service.bookorbitUsername,
+          apiKey: '[REDACTED]',
+        },
+      });
+      expect(retest.status(), await retest.text()).toBe(200);
       await expect(dialog).toBeHidden();
 
       const serviceCard = page

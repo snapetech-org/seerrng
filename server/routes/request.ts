@@ -5,6 +5,7 @@ import SonarrAPI from '@server/api/servarr/sonarr';
 import SportarrAPI from '@server/api/servarr/sportarr';
 import TheMovieDb from '@server/api/themoviedb';
 import Tvdb from '@server/api/tvdb';
+import { isApprovedEpisodeQueueStart } from '@server/constants/episodeQueueAccess';
 import {
   MediaRequestFailureReason,
   MediaRequestStatus,
@@ -33,6 +34,7 @@ import {
   type MediaRequestServiceTarget,
 } from '@server/entity/MediaRequest';
 import MediaRequestStatusEvent from '@server/entity/MediaRequestStatusEvent';
+import { RequestDispatchOutbox } from '@server/entity/RequestDispatchOutbox';
 import SeasonRequest, {
   isActiveSeasonRequest,
 } from '@server/entity/SeasonRequest';
@@ -5699,6 +5701,32 @@ requestRoutes.post<{
               return next({ status: 404, message: 'Request not found.' });
             }
             const canRetryAny = actor.hasPermission(Permission.MANAGE_REQUESTS);
+            if (
+              canRetryAny &&
+              !manualSeasonMapping &&
+              currentStatus.stage === RequestStatusStage.SEARCHING &&
+              isApprovedEpisodeQueueStart(request) &&
+              !(await getRepository(RequestDispatchOutbox).existsBy({
+                requestId: request.id,
+              }))
+            ) {
+              validateExternalServiceConfiguration(
+                request.type,
+                request.serverId,
+                request.bookFormat,
+                request.is4k
+              );
+              // The request is already approved. Reapply its episode monitoring
+              // without cancelling work or changing the original selection.
+              await requestDispatchManager.enqueue(request.id);
+              const [viewerRequest] = await hydrateMediaRequestRelations(
+                [request],
+                { viewer: req.user }
+              );
+              return res
+                .status(200)
+                .json(filterEntityResponse(viewerRequest, req.user));
+            }
             const alreadyQueued =
               request.status === MediaRequestStatus.APPROVED &&
               currentStatus.stage !== RequestStatusStage.UNAVAILABLE &&

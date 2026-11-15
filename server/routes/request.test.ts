@@ -8568,6 +8568,75 @@ describe('POST /request/:requestId/retry', () => {
     );
   });
 
+  it('lets a request manager recover a searching Episode Queue without cancelling any work', async () => {
+    getSettings().sonarr = [createSonarrSettings(31)];
+    const requestedBy = await getRepository(User).findOneByOrFail({
+      email: 'friend@seerr.dev',
+    });
+    const media = await getRepository(Media).save(
+      new Media({
+        mediaType: MediaType.TV,
+        tmdbId: 2734,
+        tvdbId: 75692,
+        status: MediaStatus.PROCESSING,
+        externalServiceId: 55,
+        serviceId: 31,
+        seasons: [],
+      })
+    );
+    const request = await getRepository(MediaRequest).save(
+      new MediaRequest({
+        media,
+        requestedBy,
+        type: MediaType.TV,
+        status: MediaRequestStatus.APPROVED,
+        serverId: 31,
+        watchAheadEpisodeCount: 5,
+        seasons: [
+          new SeasonRequest({
+            seasonNumber: 1,
+            status: MediaRequestStatus.APPROVED,
+            episodeNumbers: [3],
+          }),
+        ],
+      })
+    );
+    cleanupShouldFail = true;
+    const enqueue = mock.method(
+      requestDispatchManager,
+      'enqueue',
+      async () => undefined
+    );
+    const requester = await loginAs('friend@seerr.dev', 'test1234');
+    const manager = await loginAs('admin@seerr.dev', 'test1234');
+
+    const status = await manager.get(`/request/status/${request.id}`);
+    assert.equal(
+      status.body.current?.stage,
+      'searching',
+      JSON.stringify(status.body)
+    );
+    assert.equal(
+      (await requester.post(`/request/${request.id}/retry`)).status,
+      409
+    );
+    const response = await manager.post(`/request/${request.id}/retry`);
+    assert.equal(response.status, 200, JSON.stringify(response.body));
+    assert.equal(response.body.status, MediaRequestStatus.APPROVED);
+    assert.deepEqual(response.body.seasons[0].episodeNumbers, [3]);
+    assert.equal(enqueue.mock.callCount(), 1);
+    assert.equal(enqueue.mock.calls[0].arguments[0], request.id);
+
+    await getRepository(RequestDispatchOutbox).save(
+      new RequestDispatchOutbox({ requestId: request.id })
+    );
+    assert.equal(
+      (await manager.post(`/request/${request.id}/retry`)).status,
+      409
+    );
+    assert.equal(enqueue.mock.callCount(), 1);
+  });
+
   it('requeues an unavailable approved request for another search', async () => {
     const pending = await seedRequest(MediaRequestStatus.APPROVED);
     await recordRequestStatusOverride(

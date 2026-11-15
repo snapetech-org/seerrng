@@ -15,6 +15,7 @@ import type {
 import {
   normalizeServiceHostname,
   normalizeUrlBase,
+  parseBookOrbitServerAddress,
 } from '@server/utils/serviceUrl';
 import {
   parseBoundedString,
@@ -221,6 +222,20 @@ const parseOptionalServiceId = (
     : { value: parsed };
 };
 
+const normalizeBookOrbitConnection = (body: unknown): unknown => {
+  if (!body || typeof body !== 'object' || Array.isArray(body)) return body;
+  const settings = body as Record<string, unknown>;
+  if (
+    settings.backend !== 'bookorbit' ||
+    typeof settings.hostname !== 'string'
+  ) {
+    return settings;
+  }
+
+  const address = parseBookOrbitServerAddress(settings.hostname);
+  return { ...settings, ...(address ?? { hostname: '' }) };
+};
+
 export const parseServarrConnectionSettings = (
   body: unknown
 ): { value: ServarrConnectionSettings } | { error: string } => {
@@ -228,7 +243,9 @@ export const parseServarrConnectionSettings = (
     return { error: 'settings must be an object.' };
   }
 
-  const settings = body as Partial<DVRSettings> & {
+  const settings = normalizeBookOrbitConnection(
+    body
+  ) as Partial<DVRSettings> & {
     backend?: ReadarrSettings['backend'];
     serviceType?: ReadarrSettings['serviceType'];
     bookorbitUsername?: string;
@@ -724,7 +741,11 @@ export const parseReadarrSettings = (
   current?: ReadarrSettings
 ): { value: ReadarrSettings } | { error: string } => {
   const settings = body as Partial<ReadarrSettings>;
-  const parsed = parseLidarrSettings(body, current, settings?.backend);
+  const parsed = parseLidarrSettings(
+    normalizeBookOrbitConnection(body),
+    current,
+    settings?.backend
+  );
   if ('error' in parsed) return parsed;
 
   const backend =

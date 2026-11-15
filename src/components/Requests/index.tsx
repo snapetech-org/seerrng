@@ -71,6 +71,7 @@ import {
   XMarkIcon,
 } from '@heroicons/react/24/outline';
 import { BarsArrowDownIcon, BarsArrowUpIcon } from '@heroicons/react/24/solid';
+import { isApprovedEpisodeQueueStart } from '@server/constants/episodeQueueAccess';
 import { MediaRequestStatus } from '@server/constants/media';
 import type {
   RequestStatusDetailResponse,
@@ -245,6 +246,8 @@ const messages = defineMessages('components.Requests', {
   retry: 'Retry',
   retrying: 'Retrying…',
   retryTooltip: 'Restart this failed request from approval.',
+  retryEpisodeQueueTooltip:
+    'Reapply Sonarr monitoring for the starting episode.',
   approve: 'Approve',
   approveTooltip: 'Approve this pending request.',
   decline: 'Decline',
@@ -1436,11 +1439,15 @@ const RequestStatusCard = ({
   const genres = getGenres(details, item);
   const canShowDelete =
     isAdminView && hasPermission(Permission.MANAGE_REQUESTS);
+  const canRetryEpisodeQueue =
+    canShowDelete &&
+    observedCurrent.stage === 'searching' &&
+    isApprovedEpisodeQueueStart(item.request);
   const canRetry =
-    (observedCurrent.stage === 'failed' ||
+    canRetryEpisodeQueue ||
+    ((observedCurrent.stage === 'failed' ||
       observedCurrent.stage === 'unavailable') &&
-    ((isAdminView && hasPermission(Permission.MANAGE_REQUESTS)) ||
-      item.request.requestedBy.id === user?.id);
+      (canShowDelete || item.request.requestedBy.id === user?.id));
   const canShowRemove =
     isAdminView && hasPermission(Permission.MANAGE_REQUESTS);
   const canRemove = canShowRemove && item.canRemove === true;
@@ -1610,7 +1617,13 @@ const RequestStatusCard = ({
           </Button>
         </Tooltip>
       )}
-      <Tooltip content={intl.formatMessage(messages.retryTooltip)}>
+      <Tooltip
+        content={intl.formatMessage(
+          canRetryEpisodeQueue
+            ? messages.retryEpisodeQueueTooltip
+            : messages.retryTooltip
+        )}
+      >
         <Button
           type="button"
           buttonType="warning"

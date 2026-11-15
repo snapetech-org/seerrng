@@ -20,6 +20,7 @@ import type { NotificationAgent, NotificationPayload } from './agent';
 import {
   BaseAgent,
   NOTIFICATION_DELIVERY_CONCURRENCY,
+  getEpisodeQueueNotificationDetails,
   getIssueTypeName,
   getLocalizedNotificationPayload,
   getMediaTypeLabel,
@@ -232,6 +233,7 @@ class EmailAgent
         locals: {
           event: payload.event,
           body,
+          episodeQueue: getEpisodeQueueNotificationDetails(payload, intl),
           locale: emailLocale,
           direction,
           greeting:

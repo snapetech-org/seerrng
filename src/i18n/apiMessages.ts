@@ -343,8 +343,6 @@ export const apiMessages: Record<
   m17752719fdf05cd6c1a4:
     'This ComicVine edition is already linked to a different AniList manga.',
   m177660ceed099c45c93a: 'Provide only a boolean quality selection.',
-  m177c58de1c5f1381fb7d:
-    'BookOrbit rejected the account sign-in. Check the username and password or whether the account is locked.',
   m178018db523aec585d3e:
     'SEERR_EXTERNAL_CONFIG is required for outbound integrations. Run scripts/export-external-config.mjs to migrate existing settings.',
   m17948e7b3877ef187fd3: 'TLS material must be a regular file: {value0}',
@@ -461,8 +459,6 @@ export const apiMessages: Record<
   m20332f5d9c14a820c35e: 'TorrentNG rejected the API token.',
   m2039899a25c509f0b202:
     'Unable to verify all unavailable seasons. Try again later.',
-  m204cf75e99185b513d94:
-    'BookOrbit denied password sign-in. Check whether local password sign-in is enabled.',
   m20776c7d62c289b39c2b: '[TMDB] Failed to fetch TV show details: {value0}',
   m20796bef323c782f4dfd: 'This sports league is blocklisted.',
   m2091ab1465ee70eb51e4: 'Invalid collection member',
@@ -481,7 +477,6 @@ export const apiMessages: Record<
     'Bookshelf request tracking is incomplete, so Seerr cannot confirm cancellation yet.',
   m2128f23b6f58f90c00f1: 'Choose to record one airing or the series.',
   m2159c18b47f008eec6d8: 'Lidarr returned an invalid artist list',
-  m2160bdea2d035bd0b5c9: 'BookOrbit did not return an access token.',
   m2192ffc6605307ab798e: 'Book not found',
   m219df593a3290a4bb743:
     'MDBList list references must be 2048 characters or fewer',
@@ -837,6 +832,7 @@ export const apiMessages: Record<
   m3bccf7eda247384a5023: 'Invalid matched work.',
   m3bd505f5648e5f84efef: 'Enter a supported Spotify or YouTube playlist URL.',
   m3bd6b452f0db4ad96520: 'Invalid collection ID.',
+  m3bf8f7c959f1d030155f: 'Enter a valid BookOrbit hostname or HTTP address.',
   m3c0e933c5c58865b3c0e: 'Networks data must be a JSON array.',
   m3c17a6ccd61e05f56768: 'You do not have permission to make sports requests.',
   m3c23f166654165806458:
@@ -1357,8 +1353,6 @@ export const apiMessages: Record<
     'Add the BookOrbit address in Settings > Services > Reader Apps first.',
   m600a128b9c67c27cea93: 'held work failed',
   m601ad5083228737bc904: 'Mark this game owned before sharing it.',
-  m602dbfc7015d76ca9116:
-    'SeerrNG could not sign in to the BookOrbit API. Check the hostname, port, SSL and URL base from the SeerrNG server.',
   m602ef4d683cea1a2f354: 'Invalid TMDB studio response',
   m604b54981669df32a761:
     'Upgrade {value0} to use software genre and year filters.',
@@ -2431,6 +2425,8 @@ export const apiMessages: Record<
   mad50ab9142da9849b189: 'Servarr returned invalid system status',
   mad875dd37ca56137578a: 'mediaType is required.',
   madaadeb03781f6d34868: 'Failed to send Discord notification.',
+  made8fd14902aecfa2806:
+    'The BookOrbit API did not return a session token. Verify that the address points to BookOrbit and includes the correct URL base.',
   made99afa7b4d93acab6d: 'Auth header must be {value0} characters or fewer.',
   madf77c751cf62b8c01e5: 'You cannot review your own request.',
   mae1edf30d8ebd8f27e2a: 'Invalid job enabled setting.',
@@ -3293,8 +3289,6 @@ export const apiMessages: Record<
   mecee8fc579c707f72c7b: 'Backend did not confirm watch state.',
   mecefd80c34056b493fa3:
     'Chaptarr library scan reached the {value0}-book safety limit before confirming the library was complete',
-  mecf8dc3e523fa9d0bcef:
-    'BookOrbit is limiting sign-in attempts. Wait before testing again.',
   med0df8245b351753b17f: 'Log path must resolve to one private regular file.',
   med14e271cfdd4692f62d:
     'No Guid metadata for this title. Skipping. (Try refreshing the metadata in Plex for this media!)',

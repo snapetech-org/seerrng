@@ -40,6 +40,12 @@ html(lang=locale || 'en' dir=direction || 'ltr')
           td(style='text-align: center;')
             div(style='margin: 1rem 0 0; font-size: 1.25em;')
               span(dir=direction)= body
+        if episodeQueue
+          tr
+            td(style='text-align: center;')
+              p= episodeQueue.summary
+              //- nosemgrep: javascript.express.security.audit.xss.pug.var-in-href.var-in-href -- the target is the bundled Episode Queue documentation URL
+              a(href=episodeQueue.helpUrl style='color: #c7d2fe;')= episodeQueue.helpLabel
         tr
           td
             div(style='box-sizing: border-box; margin: 1.5rem 0 0; width: 100%; color: #fff; border-radius: .75rem; padding: 1rem; border: 1px solid rgb(100,100,100); background: linear-gradient(135deg, rgba(17,24,39,0.47) 0%, rgb(17,24,39) 75%), url(' + imageUrl + ') center 25%/cover')

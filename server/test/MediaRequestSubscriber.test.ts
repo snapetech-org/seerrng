@@ -23,7 +23,9 @@ import type {
   AddSeriesOptions,
   SonarrSeries,
 } from '@server/api/servarr/sonarr';
-import SonarrAPI from '@server/api/servarr/sonarr';
+import SonarrAPI, {
+  SonarrEpisodeSelectionPendingError,
+} from '@server/api/servarr/sonarr';
 import type { SportarrLeague } from '@server/api/servarr/sportarr';
 import SportarrAPI from '@server/api/servarr/sportarr';
 import { ANIME_KEYWORD_ID } from '@server/api/themoviedb/constants';
@@ -1615,6 +1617,29 @@ describe('MediaRequestSubscriber service dispatch', () => {
     assert.strictEqual(receivedOptions?.monitorNewItems, 'none');
     assert.strictEqual(receivedOptions?.enableFutureSeasons, false);
     assert.strictEqual(receivedOptions?.searchNow, true);
+  });
+
+  it('keeps a new Sonarr episode selection in the durable dispatch queue during import', async () => {
+    getSettings().sonarr = [makeSonarrSettings(34, 'sonarr.local', 7, 8, true)];
+    mockAnimeTvShow(7004, 17004);
+    mock.method(SonarrAPI.prototype, 'addSeries', async () => {
+      throw new SonarrEpisodeSelectionPendingError(42);
+    });
+    const { request, media } = await createApprovedTvRequest(7004, [1], 17004);
+    request.seasons[0].episodeNumbers = [1];
+    request.watchAheadEpisodeCount = 5;
+
+    const outcome = await new MediaRequestSubscriber().sendToSonarr(request);
+
+    assert.deepEqual(outcome, { delivered: false });
+    const saved = await getRepository(MediaRequest).findOneByOrFail({
+      id: request.id,
+    });
+    assert.equal(saved.status, MediaRequestStatus.APPROVED);
+    const savedMedia = await getRepository(Media).findOneByOrFail({
+      id: media.id,
+    });
+    assert.ok(!savedMedia.externalServiceId);
   });
 
   it('fails a movie request whose explicit Radarr server was removed', async () => {

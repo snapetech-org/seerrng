@@ -22,6 +22,7 @@ import { User } from '@server/entity/User';
 import { UserSettings } from '@server/entity/UserSettings';
 import { Notification } from '@server/lib/notifications';
 import { resetTestDb, seedTestDb } from '@server/utils/seedTestDb';
+import DiscordAgent from './agents/discord';
 import {
   buildMediaRequestNotificationPayload,
   hydrateNotificationIntent,
@@ -148,6 +149,57 @@ describe('comic request notification identity', () => {
     assert.equal(payload.mediaUrl, '/comic/1234');
     assert.equal(payload.event, 'Comic Request Approved');
   });
+});
+
+it('sends the saved Episode Queue buffer and help URL in a TV approval notification', async () => {
+  mock.method(
+    ExternalAPI.prototype as unknown as {
+      get: (...args: unknown[]) => Promise<unknown>;
+    },
+    'get',
+    async () => ({ name: 'Series', overview: 'Provider summary' })
+  );
+  const requestedBy = await getRepository(User).findOneByOrFail({ id: 1 });
+  const media = new Media({ mediaType: MediaType.TV, tmdbId: 2734 });
+  const request = new MediaRequest({
+    type: MediaType.TV,
+    media,
+    seasons: [],
+    requestedBy,
+    watchAheadEpisodeCount: 5,
+  });
+  const approval = await buildMediaRequestNotificationPayload(
+    request,
+    media,
+    Notification.MEDIA_APPROVED
+  );
+  assert.equal(approval.episodeQueueCount, 5);
+  const discord = new DiscordAgent({
+    enabled: true,
+    embedPoster: false,
+    types: Notification.MEDIA_APPROVED,
+    options: {
+      webhookUrl: 'https://discord.com/api/webhooks/test',
+      enableMentions: false,
+      locale: 'en',
+      useUserLocale: false,
+    },
+  });
+  const description = discord.buildEmbed(
+    Notification.MEDIA_APPROVED,
+    approval
+  ).description;
+  assert.ok(description?.startsWith('Episode Queue is set to 5 episodes'));
+  assert.ok(description?.includes('docs/using-seerr/jellyfin-watch-ahead.md'));
+  assert.ok(description?.endsWith('Provider summary'));
+
+  request.watchAheadParentRequestId = 42;
+  const followup = await buildMediaRequestNotificationPayload(
+    request,
+    media,
+    Notification.MEDIA_AVAILABLE
+  );
+  assert.equal(followup.episodeQueueCount, undefined);
 });
 
 describe('availability subscription notification intents', () => {

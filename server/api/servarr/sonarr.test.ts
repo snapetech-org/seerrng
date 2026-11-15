@@ -14,6 +14,7 @@ import {
 import SonarrAPI, {
   sanitizeSonarrLanguageProfiles,
   sanitizeSonarrSeries,
+  SonarrEpisodeSelectionPendingError,
 } from './sonarr';
 
 describe('Sonarr deletion-check inventory', () => {
@@ -1252,6 +1253,127 @@ describe('SonarrAPI exact episode requests', () => {
     assert.ok(!('seasonType' in createPayload));
   });
 
+  for (const version of ['v3', 'v5'] as const) {
+    it(`retries exact episode selection on ${version} after Sonarr's initial import`, async () => {
+      const api = buildSonarr(version);
+      const season = { seasonNumber: 6, monitored: false };
+      const stored = series({
+        seasons: [season],
+        language: { id: 1, name: 'English' },
+      });
+      const queued = { searchForMissingEpisodes: false };
+      const endpoint = (url?: string) =>
+        url && new URL(url).pathname.replace(/^\/api\/v[35]/, '');
+      let phase = 'new';
+      const get = mock.method(getAxios(api), 'get', async (url: string) => {
+        if (endpoint(url) === '/series/lookup') {
+          return {
+            data: [phase === 'new' ? { ...stored, id: undefined } : stored],
+          };
+        }
+        if (endpoint(url) === '/series/42') {
+          return {
+            data: {
+              ...stored,
+              addOptions: phase === 'importing' ? queued : null,
+            },
+          };
+        }
+        assert.equal(endpoint(url), '/episode');
+        return {
+          data: [
+            {
+              id: 101,
+              seriesId: 42,
+              seasonNumber: 6,
+              episodeNumber: 1,
+              monitored: false,
+            },
+            ...(phase === 'ready'
+              ? [
+                  {
+                    id: 102,
+                    seriesId: 42,
+                    seasonNumber: 6,
+                    episodeNumber: 2,
+                    monitored: false,
+                  },
+                ]
+              : []),
+          ],
+        };
+      });
+      const post = mock.method(getAxios(api), 'post', async (url: string) => {
+        if (endpoint(url) === '/series') {
+          phase = 'importing';
+          return { data: { ...stored, addOptions: queued } };
+        }
+        assert.equal(endpoint(url), '/command');
+        return { data: { id: 99, name: 'EpisodeSearch', status: 'queued' } };
+      });
+      const put = mock.method(getAxios(api), 'put', async () => ({
+        data: stored,
+      }));
+      const options = {
+        tvdbid: 100,
+        title: 'Test Series',
+        profileId: 1,
+        seasons: [6],
+        episodeSelections: [{ seasonNumber: 6, episodeNumbers: [2] }],
+        seasonFolder: true,
+        rootFolderPath: '/tv',
+        seriesType: 'standard' as const,
+        searchNow: true,
+      };
+
+      await assert.rejects(
+        api.addSeries(options),
+        SonarrEpisodeSelectionPendingError
+      );
+      assert.ok(
+        !get.mock.calls.some(
+          (call) => endpoint(call.arguments[0]) === '/episode'
+        )
+      );
+      phase = 'partial';
+      await assert.rejects(
+        api.addSeries(options),
+        SonarrEpisodeSelectionPendingError
+      );
+      assert.ok(
+        !put.mock.calls.some(
+          (call) => endpoint(call.arguments[0]) === '/episode/monitor'
+        )
+      );
+      assert.ok(
+        !post.mock.calls.some(
+          (call) => endpoint(call.arguments[0]) === '/command'
+        )
+      );
+
+      phase = 'ready';
+      await api.addSeries(options);
+      assert.equal(
+        post.mock.calls.filter(
+          (call) => endpoint(call.arguments[0]) === '/series'
+        ).length,
+        1
+      );
+      assert.deepEqual(
+        put.mock.calls.find(
+          (call) => endpoint(call.arguments[0]) === '/episode/monitor'
+        )?.arguments[1],
+        { episodeIds: [102], monitored: true }
+      );
+      assert.deepEqual(
+        post.mock.calls.find(
+          (call) => endpoint(call.arguments[0]) === '/command'
+        )?.arguments[1],
+        { name: 'EpisodeSearch', episodeIds: [102] }
+      );
+    });
+  }
+
   it('monitors and searches only the selected episodes', async () => {
     const api = buildSonarr();
     mock.method(api, 'getSeriesByTvdbId', async () =>
@@ -1263,6 +1385,7 @@ describe('SonarrAPI exact episode requests', () => {
         ],
       })
     );
+    mock.method(api, 'getSeriesById', async () => series());
     const update = mock.method(getAxios(api), 'put', async () => ({
       data: series(),
     }));

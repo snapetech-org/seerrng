@@ -290,6 +290,11 @@ export const buildMediaRequestNotificationPayload = async (
         omission: '…',
       }),
       image: `https://image.tmdb.org/t/p/w600_and_h900_bestv2${tv.poster_path}`,
+      episodeQueueCount:
+        !entity.watchAheadParentRequestId &&
+        ![Notification.MEDIA_DECLINED, Notification.MEDIA_FAILED].includes(type)
+          ? entity.watchAheadEpisodeCount
+          : undefined,
       extra: [
         {
           name: 'Requested Seasons',
