@@ -2856,7 +2856,21 @@ class ReadarrAPI extends ServarrBase<ReadarrQueueItem> {
     });
   }
 
+  /**
+   * A bare ISBN ("9781443462815") is not an identifier term for Chaptarr: its
+   * facade does not treat it as an ISBN and the lookup comes back empty after
+   * a long wait, while "isbn:9781443462815" resolves at once. Hardcover work
+   * ids are at most nine digits, so a valid ISBN-10/13 is never one of them.
+   */
+  public static qualifyBareIsbnTerm(term: string): string {
+    const trimmed = term.trim();
+    if (!/^[0-9][0-9 -]{8,15}[0-9Xx]$/.test(trimmed)) return term;
+    const isbn = normalizeValidIsbn(trimmed);
+    return isbn ? `isbn:${isbn}` : term;
+  }
+
   public async lookupBook(term: string): Promise<ReadarrBookLookupResult[]> {
+    term = ReadarrAPI.qualifyBareIsbnTerm(term);
     return withBookLookupBudget(async () => {
       await this.ensureProvider();
       const key = createHash('sha256')

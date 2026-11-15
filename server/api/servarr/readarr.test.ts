@@ -741,6 +741,49 @@ describe('ReadarrAPI media type requests', () => {
     });
   });
 
+  it('sends a bare ISBN as an isbn: lookup term', async () => {
+    const api = new ReadarrAPI({
+      url: 'http://localhost:8787/api/v1',
+      apiKey: 'key',
+      mediaType: 'ebook',
+    });
+    mock.method(
+      api as unknown as { ensureProvider: () => Promise<void> },
+      'ensureProvider',
+      async () => undefined
+    );
+    const getMock = mock.method(
+      ReadarrAPI.prototype as unknown as MockableReadarr,
+      'get',
+      async () => []
+    );
+
+    await api.lookupBook('9781443462815');
+    await api.lookupBook('978-1-4434-6281-5');
+    await api.lookupBook('0306406152');
+
+    assert.deepStrictEqual(
+      getMock.mock.calls.map(
+        (call) =>
+          (call.arguments[1] as { params: { term: string } }).params.term
+      ),
+      ['isbn:9781443462815', 'isbn:9781443462815', 'isbn:9780306406157']
+    );
+  });
+
+  it('leaves work ids, prefixed ids, titles and invalid ISBNs unchanged', () => {
+    for (const term of [
+      '428018',
+      'hc:428018',
+      'isbn:9781443462815',
+      'The Midnight Library',
+      '9781443462816',
+      '2001-2010-2020',
+    ]) {
+      assert.strictEqual(ReadarrAPI.qualifyBareIsbnTerm(term), term);
+    }
+  });
+
   it('reads only the requested Bookshelf page and preserves its total', async () => {
     const api = new ReadarrAPI({
       url: 'http://localhost:8787/api/v1',
